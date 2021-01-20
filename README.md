@@ -16,7 +16,8 @@ For scientific and collaboration inquiries please contact the HELIOS++ team at h
 1. [License](#license)
 
 ## Download pre-built
-***TODO** provide link to download pre-built version for windows here*
+You can download **pre-built** versions for Windows and Linux here: https://github.com/3dgeo-heidelberg/helios/releases
+These versions have been tested with Windows 10 and Ubuntu Linux 20.04.
 
 ## Install
 
