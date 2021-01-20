@@ -1,5 +1,9 @@
 # HELIOS ++
 
+
+[![DOI](https://zenodo.org/badge/331344393.svg)](https://zenodo.org/badge/latestdoi/331344393)
+
+
 HELIOS++ is a software package for simulation of terrestrial, mobile and airborne laser scanning surveys written in C++11.
 
 Official website: https://www.geog.uni-heidelberg.de/gis/helios.html
