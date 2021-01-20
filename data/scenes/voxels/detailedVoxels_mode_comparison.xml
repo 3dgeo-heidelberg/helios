@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+    <scene id="F_BR08" name="syssifoss F_BR08">
+        <part>
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/basic/groundplane/groundplane.obj" />
+            </filter>
+            <filter type="scale">
+                <param type="double" key="scale" value="15" />
+            </filter>
+        </part>
+		
+
+		<!-- 1. from the left: OBJ-model for stem, fixed size (0.25 m) detailedVoxels for crown -->
+		<part>
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/syssifoss/F_BR08_08_stem_Poisson.obj" />
+            </filter>
+			<filter type="translate">
+				<param type="vec3" key="offset" value="-22;+15;-241.401000" />
+			</filter>
+        </part>
+		<part>
+			<filter type="detailedvoxels">
+				<param type="string" key="intersectionMode" value="fixed" />
+				<param type="string" key="filepath" value="data/sceneparts/syssifoss/F_BR08_08_crown_250.vox" />
+				<param type="string" key="matfile" value="data/sceneparts/syssifoss/tree.mtl" />
+				<param type="string" key="matname" value="needles" />
+			</filter>
+			<filter type="translate">
+				<param type="vec3" key="offset" value="-22;+15;-241.401000" />
+			</filter>
+		</part>
+		
+		
+		<!-- 2. OBJ-model for stem, fixed size (0.05 m) detailedVoxels for crown -->
+		<part>
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/syssifoss/F_BR08_08_stem_Poisson.obj" />
+            </filter>
+			<filter type="translate">
+				<param type="vec3" key="offset" value="-17;+15;-241.401000" />
+			</filter>
+        </part>
+		<part>
+			<filter type="detailedvoxels">
+				<param type="string" key="intersectionMode" value="fixed" />
+				<param type="string" key="filepath" value="data/sceneparts/syssifoss/F_BR08_08_crown_50.vox" />
+				<param type="string" key="matfile" value="data/sceneparts/syssifoss/tree.mtl" />
+				<param type="string" key="matname" value="needles" />
+			</filter>
+			<filter type="translate">
+				<param type="vec3" key="offset" value="-17;+15;-241.401000" />
+			</filter>
+		</part>
+		
+		
+		<!-- 3. OBJ-model for stem, transmittive (default) detailedVoxels for crown --> 
+		<part>
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/syssifoss/F_BR08_08_stem_Poisson.obj" />
+            </filter>
+			<filter type="translate">
+				<param type="vec3" key="offset" value="-12;+15;-241.401000" />
+			</filter>
+        </part>
+		<part>
+			<filter type="detailedvoxels">
+				<param type="string" key="filepath" value="data/sceneparts/syssifoss/F_BR08_08_merged.vox" />
+				<param type="string" key="matfile" value="data/sceneparts/syssifoss/tree.mtl" />
+				<param type="string" key="matname" value="needles" />
+			</filter>
+			<filter type="translate">
+				<param type="vec3" key="offset" value="-12;+15;-241.401000" />
+			</filter>
+		</part>
+		
+
+		<!-- 4. OBJ-model for stem, scaled detailedVoxels for crown --> 
+		<part>
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/syssifoss/F_BR08_08_stem_Poisson.obj" />
+            </filter>
+			<filter type="translate">
+				<param type="vec3" key="offset" value="-2;+15;-241.401000" />
+			</filter>
+        </part>
+		<part>
+			<filter type="detailedvoxels">
+				<param type="string" key="intersectionMode" value="scaled" />
+				<param type="double" key="intersectionArgument" value="0.5" />
+				<param type="string" key="filepath" value="data/sceneparts/syssifoss/F_BR08_08_merged.vox" />
+				<param type="string" key="matfile" value="data/sceneparts/syssifoss/tree.mtl" />
+				<param type="string" key="matname" value="needles" />
+			</filter>
+			<filter type="translate">
+				<param type="vec3" key="offset" value="-2;+15;-241.401000" />
+			</filter>
+		</part>
+		
+		
+		<!-- 5. OBJ-model for stem, scaled and randomly shifted detailedVoxels for crown -->
+		<part>
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/syssifoss/F_BR08_08_stem_Poisson.obj" />
+            </filter>
+			<filter type="translate">
+				<param type="vec3" key="offset" value="-7;+15;-241.401000" />
+			</filter>
+        </part>
+		<part>
+			<filter type="detailedvoxels">
+				<param type="string" key="intersectionMode" value="scaled" />
+				<param type="double" key="intersectionArgument" value="0.5" />
+				<param type="boolean" key="randomShift" value="true" />
+				<param type="string" key="filepath" value="data/sceneparts/syssifoss/F_BR08_08_merged.vox" />
+				<param type="string" key="matfile" value="data/sceneparts/syssifoss/tree.mtl" />
+				<param type="string" key="matname" value="needles" />
+			</filter>
+			<filter type="translate">
+				<param type="vec3" key="offset" value="-7;+15;-241.401000" />
+			</filter>
+		</part>
+
+    </scene>
+</document>

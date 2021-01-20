@@ -1,0 +1,25 @@
+newmtl forest
+Ka 0.4 0.4 0.4 1
+Kd 0.8 0.8 0.8 1
+useVertexColors True
+reflectance 0.1
+
+newmtl grass
+Ka 0.4 0.4 0.4 1
+Kd 0.8 0.8 0.8 1
+useVertexColors True
+reflectance 0.3
+
+newmtl rock
+Ka 0.4 0.4 0.4 1
+Kd 0.8 0.8 0.8 1
+
+useVertexColors True
+reflectance 0.5
+
+newmtl snow
+Ka 0.4 0.4 0.4 1
+Kd 0.8 0.8 0.8 1
+useVertexColors True
+reflectance 1.0
+

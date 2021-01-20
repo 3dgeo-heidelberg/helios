@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+    <scene id="hd_demo" name="Heidelberg">
+        <part>
+            <filter type="geotiffloader">
+                <param type="string" key="filepath" value="data/sceneparts/tiff/dem_hd.tif" />
+            </filter>
+        </part>
+    </scene>
+</document>

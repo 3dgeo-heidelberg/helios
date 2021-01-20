@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+
+    <survey name="als_detailed_voxel_modes" seed="42" scene="data/scenes/voxels/detailedVoxels_mode_comparison.xml#F_BR08" platform="data/platforms.xml#sr22" scanner="data/scanners_als.xml#riegl_lms-q780">
+	<FWFSettings beamSampleQuality="3" binSize_ns="0.25" maxFullwaveRange_ns="100" winSize_ns="1"/>
+		<!-- platform: Plane, deflector: rotating -->
+		
+		<leg>
+			<platformSettings  x="-145" y="50" z="500" onGround="false" movePerSec_m="50"/>
+			<scannerSettings  active="true" pulseFreq_hz="100000" scanAngle_deg="30" scanFreq_hz="250" headRotatePerSec_deg="0.00" headRotateStart_deg="0.00" headRotateStop_deg="0.00" trajectoryTimeInterval_s="0.05"/>
+		</leg>
+		
+		<leg>
+			<platformSettings  x="-145" y="-50" z="500" onGround="false" movePerSec_m="50"/>
+			<scannerSettings  active="false" pulseFreq_hz="100000" scanAngle_deg="30" scanFreq_hz="250" headRotatePerSec_deg="0.00" headRotateStart_deg="0.00" headRotateStop_deg="0.00" trajectoryTimeInterval_s="0.05"/>
+		</leg>
+		
+		<leg>
+			<platformSettings  x="145" y="-50" z="500" onGround="false" movePerSec_m="50"/>
+			<scannerSettings  active="true" pulseFreq_hz="100000" scanAngle_deg="30" scanFreq_hz="250" headRotatePerSec_deg="0.00" headRotateStart_deg="0.00" headRotateStop_deg="0.00" trajectoryTimeInterval_s="0.05"/>
+		</leg>
+		
+		<leg>
+			<platformSettings  x="145" y="50" z="500" onGround="false" movePerSec_m="50"/>
+			<scannerSettings  active="false" pulseFreq_hz="100000" scanAngle_deg="30" scanFreq_hz="250" headRotatePerSec_deg="0.00" headRotateStart_deg="0.00" headRotateStop_deg="0.00" trajectoryTimeInterval_s="0.05"/>
+		</leg>
+
+    </survey>
+</document>

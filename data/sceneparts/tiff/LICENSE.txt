@@ -1,0 +1,2 @@
+The DEM of Heidelberg is part of the SRTM 3"-Dataset published by the USGS.
+As work from a public agency of the US, it is considered public domain.

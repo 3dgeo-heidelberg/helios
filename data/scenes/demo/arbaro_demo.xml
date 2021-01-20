@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+    <scene id="arbaro_demo" name="Arbaro Demo">
+        <part>
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/basic/groundplane/groundplane.obj" />
+            </filter>
+            <filter type="scale">
+                <param type="double" key="scale" value="100" />
+            </filter>
+        </part>
+        <part>
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/arbaro/black_tupelo_low.obj" />
+            </filter>
+            <filter type="rotate">
+                <param type="rotation" key="rotation">
+                    <rot axis="x" angle_deg="90" />
+                </param>
+            </filter>
+            <filter type="translate">
+                <param type="vec3" key="offset" value="0;15;0" />
+            </filter>
+            <filter type="scale">
+                <param type="double" key="scale" value="0.5" />
+            </filter>
+        </part>
+        <part>
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/arbaro/sassafras_low.obj" />
+            </filter>
+            <filter type="rotate">
+                <param type="rotation" key="rotation">
+                    <rot axis="x" angle_deg="90" />
+                </param>
+            </filter>
+            <filter type="translate">
+                <param type="vec3" key="offset" value="-10;15;0" />
+            </filter>
+            <filter type="scale">
+                <param type="double" key="scale" value="0.5" />
+            </filter>
+        </part>
+    </scene>
+</document>

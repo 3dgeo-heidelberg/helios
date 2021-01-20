@@ -1,0 +1,37 @@
+# Ignore output, build and library dirs
+cmake-build-*
+bin/*
+lib/*
+output/*
+pyhelios-output/*
+pyhelios-data/*
+gdaldll/*
+*.so
+*.dll
+*.scene
+
+# Ignore IDE stuff
+.idea
+tags
+mswin/
+valgrind.xml
+
+# Ignore vim stuff
+*.swp
+
+# Ignore general stuff
+*.temp
+*.lock
+*.exe
+libhelios.so
+pyhelios.so
+pysimulation_demo.py
+pysimulation_run_demo.py
+pysimulation_multirun_demo.py
+pysimulation_config_demo.py
+helios
+simulate_pyhelios.py
+pyheliostools/*.pyc
+
+# Output log
+helios.log

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+    <survey name="arbaro_demo_tls" scene="data/scenes/demo/arbaro_demo.xml#arbaro_demo" platform="data/platforms.xml#tripod" scanner="data/scanners_tls.xml#riegl_vz400">
+        <FWFSettings binSize_ns="0.2" beamSampleQuality="3" />
+        <leg>
+            <platformSettings x="1.0" y="25.5" onGround="true" />
+            <scannerSettings active="true" pulseFreq_hz="100000" verticalAngleMin_deg="-40.0" verticalAngleMax_deg="60" scanFreq_hz="120" headRotatePerSec_deg="10.0"  headRotateStart_deg="100" headRotateStop_deg="225" />
+        </leg>
+        <leg>
+            <platformSettings x="-4.0" y="-2.5" onGround="true" />
+            <scannerSettings active="true" pulseFreq_hz="100000" verticalAngleMin_deg="-40.0" verticalAngleMax_deg="60" scanFreq_hz="120" headRotatePerSec_deg="10.0"  headRotateStart_deg="-45" headRotateStop_deg="45" />
+        </leg>
+    </survey>
+</document>

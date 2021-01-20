@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+    <survey name="mls_arbaro_wheat" scene="data/scenes/demo/arbaro_wheat_field.xml#arbaro_wheat" platform="data/platforms.xml#tractor" scanner="data/scanners_tls.xml#riegl_vz400">
+		
+		<leg>
+			<platformSettings  x="-10" y="-10" z="0" onGround="true" movePerSec_m="3"/>
+			<scannerSettings  active="true" pulseFreq_hz="100000" scanAngle_deg="20" scanFreq_hz="120" headRotatePerSec_deg="0.00" headRotateStart_deg="0.00" headRotateStop_deg="0.00" trajectoryTimeInterval_s="0.05"/>
+		</leg>
+		
+		<leg>
+			<platformSettings  x="10" y="-10" z="0" onGround="true" movePerSec_m="3"/>
+			<scannerSettings  active="true" pulseFreq_hz="100000" scanAngle_deg="20" scanFreq_hz="120" headRotatePerSec_deg="0.00" headRotateStart_deg="0.00" headRotateStop_deg="0.00" trajectoryTimeInterval_s="0.05"/>
+		</leg>
+		
+		<leg>
+			<platformSettings  x="10" y="10" z="0" onGround="true" movePerSec_m="3"/>
+			<scannerSettings  active="true" pulseFreq_hz="100000" scanAngle_deg="20" scanFreq_hz="120" headRotatePerSec_deg="0.00" headRotateStart_deg="0.00" headRotateStop_deg="0.00" trajectoryTimeInterval_s="0.05"/>
+		</leg>
+		
+		<leg>
+			<platformSettings  x="-10" y="10" z="0" onGround="true" movePerSec_m="3"/>
+			<scannerSettings  active="true" pulseFreq_hz="100000" scanAngle_deg="20" scanFreq_hz="120" headRotatePerSec_deg="0.00" headRotateStart_deg="0.00" headRotateStop_deg="0.00" trajectoryTimeInterval_s="0.05"/>
+		</leg>
+		
+		<leg>
+			<platformSettings  x="-10" y="-10" z="0" onGround="true" movePerSec_m="3"/>
+			<scannerSettings  active="false" pulseFreq_hz="100000" scanAngle_deg="20" scanFreq_hz="120" headRotatePerSec_deg="0.00" headRotateStart_deg="0.00" headRotateStop_deg="0.00" trajectoryTimeInterval_s="0.05"/>
+		</leg>
+    </survey>
+</document>

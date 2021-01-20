@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+    <scene id="arbaro_wheat" name="Arbaro wheat">
+        <part>
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/basic/groundplane/groundplane.obj" />
+            </filter>
+            <filter type="scale">
+                <param type="double" key="scale" value="100" />
+            </filter>
+			<!--<filter type="rotate">
+                <param type="rotation" key="rotation">
+                    <rot axis="x" angle_deg="90" />
+                </param>
+            </filter>-->
+        </part>
+        <part>
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/arbaro/wheat.obj" />
+            </filter>
+            <filter type="rotate">
+                <param type="rotation" key="rotation">
+                    <rot axis="x" angle_deg="90" />
+                </param>
+            </filter>
+			<filter type="scale">
+                <param type="double" key="scale" value="2" />
+            </filter>
+        </part>
+        <part>
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/arbaro/wheat.obj" />
+            </filter>
+            <filter type="rotate">
+                <param type="rotation" key="rotation">
+                    <rot axis="x" angle_deg="90" />
+                </param>
+            </filter>
+            <filter type="translate">
+                <param type="vec3" key="offset" value="1.4;2.8;0" />
+            </filter>
+			<filter type="scale">
+                <param type="double" key="scale" value="2" />
+            </filter>
+        </part>
+		<part>
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/arbaro/wheat.obj" />
+            </filter>
+            <filter type="rotate">
+                <param type="rotation" key="rotation">
+                    <rot axis="x" angle_deg="90" />
+                </param>
+            </filter>
+            <filter type="translate">
+                <param type="vec3" key="offset" value="1.4;1.4;0" />
+            </filter>
+			<filter type="scale">
+                <param type="double" key="scale" value="2" />
+            </filter>
+        </part>
+		<part>
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/arbaro/wheat.obj" />
+            </filter>
+            <filter type="rotate">
+                <param type="rotation" key="rotation">
+                    <rot axis="x" angle_deg="90" />
+                </param>
+            </filter>
+            <filter type="translate">
+                <param type="vec3" key="offset" value="1.4;0;0" />
+            </filter>
+			<filter type="scale">
+                <param type="double" key="scale" value="2" />
+            </filter>
+        </part>
+		<part>
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/arbaro/wheat.obj" />
+            </filter>
+            <filter type="rotate">
+                <param type="rotation" key="rotation">
+                    <rot axis="x" angle_deg="90" />
+                </param>
+            </filter>
+            <filter type="translate">
+                <param type="vec3" key="offset" value="1.4;-1.4;0" />
+            </filter>
+			<filter type="scale">
+                <param type="double" key="scale" value="2" />
+            </filter>
+        </part>
+		<part>
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/arbaro/wheat.obj" />
+            </filter>
+            <filter type="rotate">
+                <param type="rotation" key="rotation">
+                    <rot axis="x" angle_deg="90" />
+                </param>
+            </filter>
+            <filter type="translate">
+                <param type="vec3" key="offset" value="1.4;-2.8;0" />
+            </filter>
+			<filter type="scale">
+                <param type="double" key="scale" value="2" />
+            </filter>
+        </part>
+		<part>
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/arbaro/wheat.obj" />
+            </filter>
+            <filter type="rotate">
+                <param type="rotation" key="rotation">
+                    <rot axis="x" angle_deg="90" />
+                </param>
+            </filter>
+            <filter type="translate">
+                <param type="vec3" key="offset" value="0;2.8;0" />
+            </filter>
+			<filter type="scale">
+                <param type="double" key="scale" value="2" />
+            </filter>
+        </part>
+		<part>
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/arbaro/wheat.obj" />
+            </filter>
+            <filter type="rotate">
+                <param type="rotation" key="rotation">
+                    <rot axis="x" angle_deg="90" />
+                </param>
+            </filter>
+            <filter type="translate">
+                <param type="vec3" key="offset" value="0;1.4;0" />
+            </filter>
+			<filter type="scale">
+                <param type="double" key="scale" value="2" />
+            </filter>
+        </part>
+		<part>
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/arbaro/wheat.obj" />
+            </filter>
+            <filter type="rotate">
+                <param type="rotation" key="rotation">
+                    <rot axis="x" angle_deg="90" />
+                </param>
+            </filter>
+            <filter type="translate">
+                <param type="vec3" key="offset" value="0;0;0" />
+            </filter>
+			<filter type="scale">
+                <param type="double" key="scale" value="2" />
+            </filter>
+        </part>
+		<part>
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/arbaro/wheat.obj" />
+            </filter>
+            <filter type="rotate">
+                <param type="rotation" key="rotation">
+                    <rot axis="x" angle_deg="90" />
+                </param>
+            </filter>
+            <filter type="translate">
+                <param type="vec3" key="offset" value="0;-1.4;0" />
+            </filter>
+			<filter type="scale">
+                <param type="double" key="scale" value="2" />
+            </filter>
+        </part>
+		<part>
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/arbaro/wheat.obj" />
+            </filter>
+            <filter type="rotate">
+                <param type="rotation" key="rotation">
+                    <rot axis="x" angle_deg="90" />
+                </param>
+            </filter>
+            <filter type="translate">
+                <param type="vec3" key="offset" value="0;-2.8;0" />
+            </filter>
+			<filter type="scale">
+                <param type="double" key="scale" value="2" />
+            </filter>
+        </part>
+		<part>
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/arbaro/wheat.obj" />
+            </filter>
+            <filter type="rotate">
+                <param type="rotation" key="rotation">
+                    <rot axis="x" angle_deg="90" />
+                </param>
+            </filter>
+            <filter type="translate">
+                <param type="vec3" key="offset" value="-1.4;2.8;0" />
+            </filter>
+			<filter type="scale">
+                <param type="double" key="scale" value="2" />
+            </filter>
+        </part>
+		<part>
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/arbaro/wheat.obj" />
+            </filter>
+            <filter type="rotate">
+                <param type="rotation" key="rotation">
+                    <rot axis="x" angle_deg="90" />
+                </param>
+            </filter>
+            <filter type="translate">
+                <param type="vec3" key="offset" value="-1.4;1.4;0" />
+            </filter>
+			<filter type="scale">
+                <param type="double" key="scale" value="2" />
+            </filter>
+        </part>
+		<part>
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/arbaro/wheat.obj" />
+            </filter>
+            <filter type="rotate">
+                <param type="rotation" key="rotation">
+                    <rot axis="x" angle_deg="90" />
+                </param>
+            </filter>
+            <filter type="translate">
+                <param type="vec3" key="offset" value="-1.4;0;0" />
+            </filter>
+			<filter type="scale">
+                <param type="double" key="scale" value="2" />
+            </filter>
+        </part>
+		<part>
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/arbaro/wheat.obj" />
+            </filter>
+            <filter type="rotate">
+                <param type="rotation" key="rotation">
+                    <rot axis="x" angle_deg="90" />
+                </param>
+            </filter>
+            <filter type="translate">
+                <param type="vec3" key="offset" value="-1.4;-1.4;0" />
+            </filter>
+			<filter type="scale">
+                <param type="double" key="scale" value="2" />
+            </filter>
+        </part>
+		<part>
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/arbaro/wheat.obj" />
+            </filter>
+            <filter type="rotate">
+                <param type="rotation" key="rotation">
+                    <rot axis="x" angle_deg="90" />
+                </param>
+            </filter>
+            <filter type="translate">
+                <param type="vec3" key="offset" value="-1.4;-2.8;0" />
+            </filter>
+			<filter type="scale">
+                <param type="double" key="scale" value="2" />
+            </filter>
+        </part>
+		
+    </scene>
+</document>

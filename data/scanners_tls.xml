@@ -1,0 +1,108 @@
+<?xml version="1.0"?>
+
+<document>
+
+	<!-- ############### BEGIN Realistic Scanners (Do NOT MODIFY unless data is really wrong!!!) ############### -->
+
+	<!-- ##### BEGIN RIEGL VZ-400 ##### -->	
+	<scanner 	id 							= "riegl_vz400"
+				name              			= "RIEGL VZ-400"
+				accuracy_m					= "0.005"
+			 	beamDivergence_rad 			= "0.0003"
+				headRotatePerSecMax_deg		= "60"
+				
+				optics            			= "rotating"
+				pulseFreqs_Hz				= "100000,300000"
+				pulseLength_ns     			= "5"
+				rangeMin_m					= "1.5"
+				scanAngleMax_deg   			= "50"
+				scanAngleEffectiveMax_deg   = "50"
+				scanFreqMin_Hz				= "3"
+				scanFreqMax_Hz				= "120">
+		
+		<FWFSettings beamSampleQuality="3"/>	
+		<beamOrigin x="0" y="0" z="0.2">
+			<rot axis="y" angle_deg="0" />
+			<rot axis="z" angle_deg="0" />
+			<rot axis="x" angle_deg="0" />
+		</beamOrigin>
+		<headRotateAxis x="0" y="0" z="1"/>
+		
+	</scanner>
+	<!-- ##### END RIEGL VZ-400 ##### -->
+
+
+	<!-- ##### BEGIN RIEGL VZ-1000 ##### -->
+	<scanner 	id 							= "riegl_vz1000"
+				accuracy_m					= "0.008"
+			 	beamDivergence_rad 			= "0.0003"
+			 	headRotatePerSecMax_deg		= "60"
+				name              			= "RIEGL VZ-1000"
+				optics            			= "rotating"
+				pulseFreqs_Hz				= "70000,100000,150000,300000"
+				pulseLength_ns     			= "4"
+				rangeMin_m					= "2.5"
+				scanAngleMax_deg   			= "50"
+				scanAngleEffectiveMax_deg   = "50"
+				scanFreqMin_Hz				= "3"
+				scanFreqMax_Hz				= "120"
+	>
+		<FWFSettings beamSampleQuality="3"/>
+	</scanner>
+	<!-- ##### END RIEGL VZ-1000 ##### -->
+
+
+    <!--######## BEGIN RIEGL VQ-450 ####### -->
+	<scanner 
+        	id="riegl_vq-450" 
+       		accuracy_m="0.008"
+			beamDivergence_rad="0.0003" 
+        	name="RIEGL VQ-450" optics="rotating"
+			pulseFreqs_Hz="150000,200000,300000,380000,550000,550000"
+			pulseLength_ns="4" 
+        	rangeMin_m="1.5" 
+        	scanAngleMax_deg="360"
+			scanAngleEffectiveMax_deg="360" 
+        	scanFreqMin_Hz="10" 
+        	scanFreqMax_Hz="200">
+
+		<FWFSettings beamSampleQuality="3"/>
+		<beamOrigin x="0" y="0.14" z="0.126">
+			<rot axis="x" angle_deg="90" />
+			<rot axis="z" angle_deg="90" />
+		</beamOrigin>
+		<headRotateAxis x="0" y="0" z="1" />
+	</scanner>
+    
+	<!--######## END RIEGL VQ-450 ####### -->
+
+
+	<!-- ############### END Realistic Scanners (Do NOT MODIFY unless data is really wrong!!!) ############### -->
+
+
+	<!-- ############### BEGIN "Fantasy" Scanners ############### -->
+
+	
+	
+	<!-- ##### BEGIN Tractor scanner ##### -->
+	<scanner 	id 							= "tractorscanner"
+				accuracy_m					= "0"
+			 	beamDivergence_rad 			= "0.00035"
+				name              			= "Tractor Scanner"
+				optics            			= "oscillating"
+				pulseFreqs_Hz				= "1000,50000,100000,200000"
+				pulseLength_ns     			= "4"
+				rangeMin_m					= "0"
+				scanAngleMax_deg   			= "30"
+				scanAngleEffectiveMax_deg   = "50"
+				scanFreqMin_Hz				= "100"
+				scanFreqMax_Hz				= "50"
+	>
+		<FWFSettings beamSampleQuality="3"/>
+	</scanner>
+	<!-- ##### END Tractor scanner ##### -->
+	
+	<!-- ############### END "Fantasy" Scanners ############### -->
+
+
+</document>

@@ -1,0 +1,5 @@
+<map id="logger" name="logger">
+<area shape="rect" id="node2" href="$d8/d63/classfile__logger.html" title="Class representing a logger capable of writing to files. " alt="" coords="5,80,87,107"/>
+<area shape="rect" id="node4" href="$d0/db8/classstd__out__logger.html" title="Class representing a logger capable of writing to standard out stream. " alt="" coords="111,80,218,107"/>
+<area shape="rect" id="node3" href="$d2/d65/classfull__logger.html" title="Class representing a logger capable of writing to files and, at the same time, to standard out..." alt="" coords="5,155,87,181"/>
+</map>

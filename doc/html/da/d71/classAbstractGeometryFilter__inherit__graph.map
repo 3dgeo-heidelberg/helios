@@ -1,0 +1,9 @@
+<map id="AbstractGeometryFilter" name="AbstractGeometryFilter">
+<area shape="rect" id="node2" href="$db/d49/classDetailedVoxelLoader.html" title="Loader for deatiled voxel geometries. " alt="" coords="225,5,368,32"/>
+<area shape="rect" id="node3" href="$d1/d0c/classGeoTiffFileLoader.html" title="Loader for tiff files. " alt="" coords="234,56,359,83"/>
+<area shape="rect" id="node4" href="$de/de4/classRotateFilter.html" title="Rotate transform filter. " alt="" coords="251,107,342,133"/>
+<area shape="rect" id="node5" href="$d9/d83/classScaleFilter.html" title="Scale transform filter. " alt="" coords="255,157,339,184"/>
+<area shape="rect" id="node6" href="$df/d5a/classTranslateFilter.html" title="Translate transform filter. " alt="" coords="244,208,349,235"/>
+<area shape="rect" id="node7" href="$d9/d15/classWavefrontObjFileLoader.html" title="OBJ file loader filter. " alt="" coords="215,259,378,285"/>
+<area shape="rect" id="node8" href="$d6/d03/classXYZPointCloudFileLoader.html" title="Import point cloud files abstracting them to a set of voxels. " alt="" coords="211,309,383,336"/>
+</map>

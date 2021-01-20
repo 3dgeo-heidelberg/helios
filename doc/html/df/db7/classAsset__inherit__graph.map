@@ -1,0 +1,14 @@
+<map id="Asset" name="Asset">
+<area shape="rect" id="node2" href="$d4/dfb/classFWFSettings.html" title="Full Waveform settings. " alt="" coords="5,80,104,107"/>
+<area shape="rect" id="node3" href="$df/d1e/classPlatform.html" title="Class representing a platform asset. " alt="" coords="129,80,199,107"/>
+<area shape="rect" id="node9" href="$d5/d0c/classPlatformSettings.html" title="Class representing platform settings. " alt="" coords="223,80,342,107"/>
+<area shape="rect" id="node10" href="$dc/d42/classScanner.html" title="Class representing a scanner asset. " alt="" coords="366,80,437,107"/>
+<area shape="rect" id="node11" href="$d0/d23/classScannerSettings.html" title="Scanner settings class. " alt="" coords="461,80,579,107"/>
+<area shape="rect" id="node12" href="$d5/d9c/classScene.html" title="Class representing a scene asset. " alt="" coords="603,80,661,107"/>
+<area shape="rect" id="node13" href="$d5/db6/classSurvey.html" title="Class representing a Helios++ survey. " alt="" coords="686,80,749,107"/>
+<area shape="rect" id="node4" href="$d1/d83/classMovingPlatform.html" title="Class representing a moving platform. " alt="" coords="107,155,221,181"/>
+<area shape="rect" id="node5" href="$d8/d15/classLinearPathPlatform.html" title="Class representing a linear path platform. " alt="" coords="12,229,145,256"/>
+<area shape="rect" id="node6" href="$d5/d3b/classSimplePhysicsPlatform.html" title="Class representing a simple phyiscs platform. " alt="" coords="170,229,329,256"/>
+<area shape="rect" id="node7" href="$d7/d94/classGroundVehiclePlatform.html" title="Class representing a ground vehicle platform. " alt="" coords="87,304,243,331"/>
+<area shape="rect" id="node8" href="$db/d69/classHelicopterPlatform.html" title="Class representing a helicopter platform. " alt="" coords="268,304,399,331"/>
+</map>

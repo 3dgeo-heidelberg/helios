@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+    <scene id="toyblocks_scene" name="ToyblocksScene">
+        <part>
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/basic/groundplane/groundplane.obj" />
+            </filter>
+            <filter type="scale">
+                <param type="double" key="scale" value="70" />
+            </filter>
+			<filter type="translate">
+				<param type="vec3" key="offset" value="20.0;0;0" />
+			</filter>
+        </part>
+        <part>
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/toyblocks/cube.obj" />
+            </filter>
+			<filter type="scale">
+                <param type="double" key="scale" value="1" />
+            </filter>
+        </part>
+		<part>
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/toyblocks/cube.obj" />
+            </filter>
+			<filter type="rotate">
+				<param key="rotation" type="rotation">
+					<rot angle_deg="45" axis="z"/>
+				</param>
+			</filter>
+			<filter type="scale">
+                <param type="double" key="scale" value="0.75" />
+            </filter>
+			<filter type="translate">
+				<param type="vec3" key="offset" value="-40.0;-5.0;0" />
+			</filter>
+        </part>
+        <part>
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/toyblocks/sphere.obj" />
+            </filter>
+			<filter type="scale">
+                <param type="double" key="scale" value="0.5" />
+            </filter>
+        </part>
+         <part>
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/toyblocks/cylinder.obj" />
+            </filter>
+			<filter type="scale">
+                <param type="double" key="scale" value="1" />
+            </filter>
+        </part>
+
+    </scene>
+</document>
