@@ -1,27 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document>
+	<!-- default scanner settings -->
+	<scannerSettings id="set" active="true" pulseFreq_hz="150000" scanAngle_deg="60" scanFreq_hz="50" />
     <survey name="als_hd_demo" scene="data/scenes/demo/hd_demo.xml#hd_demo" platform="data/platforms.xml#sr22" scanner="data/scanners_als.xml#leica_als50-ii">
 	<!-- platform: Plane, deflector: oscillating -->
 	<FWFSettings beamSampleQuality="3" binSize_ns="0.25" winSize_ns="1"/>
 	
 		<leg>
 			<platformSettings  x="474500" y="5474500" z="1500.000" onGround="false" movePerSec_m="150"/>
-			<scannerSettings  active="true" pulseFreq_hz="150000" scanAngle_deg="60" scanFreq_hz="50" trajectoryTimeInterval_s="0.05"/>
+			<scannerSettings template="set" trajectoryTimeInterval_s="0.05"/>
 		</leg>
 		
 		<leg>
 			<platformSettings  x="490000" y="5474500" z="1500.000" onGround="false" movePerSec_m="150"/>
-			<scannerSettings  active="false" pulseFreq_hz="150000" scanAngle_deg="60" scanFreq_hz="50" trajectoryTimeInterval_s="0.05"/>
+			<scannerSettings template="set" trajectoryTimeInterval_s="0.05"/>
 		</leg>
 
 		<leg>
 			<platformSettings  x="474500" y="5473500" z="1500.000" onGround="false" movePerSec_m="150"/>
-			<scannerSettings  active="true" pulseFreq_hz="150000" scanAngle_deg="60" scanFreq_hz="50" trajectoryTimeInterval_s="0.05"/>
+			<scannerSettings template="set" trajectoryTimeInterval_s="0.05"/>
 		</leg>
 		
 		<leg>
 			<platformSettings  x="490000" y="5473500" z="1500.000" onGround="false" movePerSec_m="150"/>
-			<scannerSettings  active="false" pulseFreq_hz="150000" scanAngle_deg="60" scanFreq_hz="50" trajectoryTimeInterval_s="0.05"/>
+			<scannerSettings  active="false"/>
 		</leg>
 
     </survey>
