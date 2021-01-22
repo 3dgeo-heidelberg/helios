@@ -1,5 +1,6 @@
 # HELIOS ++
-[![DOI](https://zenodo.org/badge/331344393.svg)](https://zenodo.org/badge/latestdoi/331344393) ![Issues](https://img.shields.io/github/issues/3dgeo-heidelberg/helios) ![License](https://img.shields.io/badge/license-GPLv3%2C%20LGPLv3-blue) ![Activity](https://img.shields.io/github/commit-activity/m/3dgeo-heidelberg/helios) ![Downloads](https://img.shields.io/github/downloads/3dgeo-heidelberg/helios/total)
+[![DOI](https://zenodo.org/badge/331344393.svg)](https://zenodo.org/badge/latestdoi/331344393) [![Issues](https://img.shields.io/github/issues/3dgeo-heidelberg/helios)](https://github.com/3dgeo-heidelberg/helios/issues) [![License](https://img.shields.io/badge/license-GPLv3%2C%20LGPLv3-blue)](https://github.com/3dgeo-heidelberg/helios/blob/main/LICENSE.md) [![Activity](https://img.shields.io/github/commit-activity/m/3dgeo-heidelberg/helios)](https://github.com/3dgeo-heidelberg/helios/commits) [![Downloads](https://img.shields.io/github/downloads/3dgeo-heidelberg/helios/total)](https://github.com/3dgeo-heidelberg/helios/releases)
+
 > Heidelberg LiDAR Operations Simulator ++
 
 ![Logo](h++_bk_++.png)
@@ -22,6 +23,9 @@ For scientific and collaboration inquiries please contact the HELIOS++ team at h
 
 We have also published a preprint on HELIOS++. If you use HELIOS++ in a scientific context, please cite
 
+> Winiwarter, L., Esmorís Pena, A., Weiser, H., Anders, K., Martínez Sanchez, J., Searle, M., Höfle, B. (2021): **Virtual laser scanning with HELIOS++: A novel take on ray tracing-based simulation of topographic 3D laser scanning**.
+
+BibTeX:
 ```
 tba
 ```
