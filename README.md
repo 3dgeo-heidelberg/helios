@@ -1,5 +1,5 @@
 # HELIOS ++
-[![DOI](https://zenodo.org/badge/331344393.svg)](https://zenodo.org/badge/latestdoi/331344393)
+[![DOI](https://zenodo.org/badge/331344393.svg)](https://zenodo.org/badge/latestdoi/331344393) ![Issues](https://img.shields.io/github/issues/3dgeo-heidelberg/helios) ![License](https://img.shields.io/badge/license-GPLv3%2C%20LGPLv3-blue) ![Activity](https://img.shields.io/github/commit-activity/m/3dgeo-heidelberg/helios) ![Downloads](https://img.shields.io/github/downloads/3dgeo-heidelberg/helios/total)
 > Heidelberg LiDAR Operations Simulator ++
 
 ![Logo](h++_bk_++.png)
@@ -28,7 +28,7 @@ tba
 
 ## Usage
 
-Helios++ can be invoked with following syntax:
+HELIOS++ can be invoked with following syntax:
 
 ```
 helios --help
