@@ -7,22 +7,22 @@
 		
 		<leg>
 			<platformSettings  x="-145" y="50" z="500" onGround="false" movePerSec_m="50"/>
-			<scannerSettings  active="true" pulseFreq_hz="100000" scanAngle_deg="30" scanFreq_hz="250" headRotatePerSec_deg="0.00" headRotateStart_deg="0.00" headRotateStop_deg="0.00" trajectoryTimeInterval_s="0.05"/>
+			<scannerSettings  active="true" pulseFreq_hz="100000" scanAngle_deg="30" scanFreq_hz="200" headRotatePerSec_deg="0.00" headRotateStart_deg="0.00" headRotateStop_deg="0.00" trajectoryTimeInterval_s="0.05"/>
 		</leg>
 		
 		<leg>
 			<platformSettings  x="-145" y="-50" z="500" onGround="false" movePerSec_m="50"/>
-			<scannerSettings  active="false" pulseFreq_hz="100000" scanAngle_deg="30" scanFreq_hz="250" headRotatePerSec_deg="0.00" headRotateStart_deg="0.00" headRotateStop_deg="0.00" trajectoryTimeInterval_s="0.05"/>
+			<scannerSettings  active="false" pulseFreq_hz="100000" scanAngle_deg="30" scanFreq_hz="200" headRotatePerSec_deg="0.00" headRotateStart_deg="0.00" headRotateStop_deg="0.00" trajectoryTimeInterval_s="0.05"/>
 		</leg>
 		
 		<leg>
 			<platformSettings  x="145" y="-50" z="500" onGround="false" movePerSec_m="50"/>
-			<scannerSettings  active="true" pulseFreq_hz="100000" scanAngle_deg="30" scanFreq_hz="250" headRotatePerSec_deg="0.00" headRotateStart_deg="0.00" headRotateStop_deg="0.00" trajectoryTimeInterval_s="0.05"/>
+			<scannerSettings  active="true" pulseFreq_hz="100000" scanAngle_deg="30" scanFreq_hz="200" headRotatePerSec_deg="0.00" headRotateStart_deg="0.00" headRotateStop_deg="0.00" trajectoryTimeInterval_s="0.05"/>
 		</leg>
 		
 		<leg>
 			<platformSettings  x="145" y="50" z="500" onGround="false" movePerSec_m="50"/>
-			<scannerSettings  active="false" pulseFreq_hz="100000" scanAngle_deg="30" scanFreq_hz="250" headRotatePerSec_deg="0.00" headRotateStart_deg="0.00" headRotateStop_deg="0.00" trajectoryTimeInterval_s="0.05"/>
+			<scannerSettings  active="false" pulseFreq_hz="100000" scanAngle_deg="30" scanFreq_hz="200" headRotatePerSec_deg="0.00" headRotateStart_deg="0.00" headRotateStop_deg="0.00" trajectoryTimeInterval_s="0.05"/>
 		</leg>
 
     </survey>
