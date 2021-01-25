@@ -23,11 +23,18 @@ For scientific and collaboration inquiries please contact the HELIOS++ team at h
 
 We have also published a preprint on HELIOS++. If you use HELIOS++ in a scientific context, please cite
 
-> Winiwarter, L., Esmorís Pena, A., Weiser, H., Anders, K., Martínez Sanchez, J., Searle, M., Höfle, B. (2021): **Virtual laser scanning with HELIOS++: A novel take on ray tracing-based simulation of topographic 3D laser scanning**.
+> Winiwarter, L., Esmorís Pena, A., Weiser, H., Anders, K., Martínez Sanchez, J., Searle, M., Höfle, B. (2021): **Virtual laser scanning with HELIOS++: A novel take on ray tracing-based simulation of topographic 3D laser scanning**. [arXiv:2101.09154](https://arxiv.org/abs/2101.09154) **[cs.CV]**
 
 BibTeX:
 ```
-tba
+@misc{winiwarter2021virtual, 
+      title={Virtual laser scanning with HELIOS++: A novel take on ray tracing-based simulation of topographic 3D laser scanning},  
+      author={Lukas Winiwarter and Alberto Manuel Esmorís Pena and Hannah Weiser and Katharina Anders and Jorge Martínez Sanchez and Mark Searle and Bernhard Höfle}, 
+      year={2021}, 
+      eprint={2101.09154}, 
+      archivePrefix={arXiv}, 
+      primaryClass={cs.CV} 
+} 
 ```
 
 ## Usage
