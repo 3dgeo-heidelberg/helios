@@ -5,7 +5,7 @@ import sys
 import pyhelios_argparser
 
 # Configure runpath from within pyhelios.
-helios_run_path = 'run2/'
+helios_run_path = 'run/'
 
 # Add run path to python path.
 sys.path.append(helios_run_path)
@@ -16,31 +16,52 @@ import pyhelios
 # Empty list for trajectory values and/or measurement values
 tpoints = []
 mpoints = []
+callback_counter = 0
 
-
-# Define callback function to continuously extract trajectory values from simulation in case of live plotting.
+# Define callback function for jupyter live trajectory plot.
+# Extracts trajectory values from simulation.
 def live_plotting_callback(output=None):
     global tpoints
 
-    # Store trajectories in variable.
+    # Extract trajectory points.
     trajectories = output.trajectories
 
-    # Add current values to list
-    try:
+    '''if len(trajectories) == 0:
+        return'''
+
+    tpoints.append([trajectories[-1].getPosition().x,
+                    trajectories[-1].getPosition().y,
+                    trajectories[-1].getPosition().z])
+
+# Define callback function to continuously extract measurement (and trajectory)
+# values from simulation in case of live plotting.
+def live_plotting_callback_full(output=None):
+    global mpoints
+    global tpoints
+    global callback_counter
+
+    callback_counter += 1
+
+    n = 10
+
+    # Executes in every nth iteration of callback function.
+    if callback_counter % n == 0:
+
+        # Extract trajectory points.
+        trajectories = output.trajectories
+
+        if len(trajectories) == 0:
+            return
+
         tpoints.append([trajectories[len(trajectories) - 1].getPosition().x,
                         trajectories[len(trajectories) - 1].getPosition().y,
                         trajectories[len(trajectories) - 1].getPosition().z])
 
-    except Exception:
-        pass
-
-
-# Define callback function to continuously extract measurement values from simulation in case of live plotting.
-def live_plotting_callback_full(output=None):
-    global mpoints
+        callback_counter = 0
 
     # Extract measurement points.
     measurements = output.measurements
+
     if len(measurements) == 0:
         return
 
@@ -225,9 +246,6 @@ if __name__ == '__main__':
         sim.setCallback(live_plotting_callback_full)
         sim.simFrequency = 10
 
-        # Create point cloud geometry for survey data.
-        measurement = o3d.geometry.PointCloud()
-
         # Parse survey file to extract scene file and then parse the scene file.
         scene = ET.parse(ET.parse(args.survey_file).find('survey').attrib['scene'].split('#')[0])
 
@@ -242,15 +260,22 @@ if __name__ == '__main__':
             scene_part_data = {}
 
             for filter in scene_part.findall('filter'):
+
+                # --------------------------------------------------------------------------
+                # GeoTIFF scenepart.
+                # --------------------------------------------------------------------------
+                # Get file path.
+                if filter.attrib['type'] == 'geotiffloader':
+                    scene_part_data['extension'] = '.tif'
+                    scene_part_data['filepath'] = filter.find('param').attrib['value']
+
                 # --------------------------------------------------------------------------
                 # Wavefront scenepart.
                 # --------------------------------------------------------------------------
+                # Get file path.
                 if filter.attrib['type'] == 'objloader':
                     scene_part_data['extension'] = '.obj'
                     scene_part_data['filepath'] = filter.find('param').attrib['value']
-
-                if filter.attrib['type'] == 'scale':
-                    scene_part_data['scale'] = float(filter.find('param').attrib['value'])
 
                 # --------------------------------------------------------------------------
                 # Point cloud scenepart.
@@ -258,6 +283,7 @@ if __name__ == '__main__':
                 if filter.attrib['type'] == 'xyzloader':
                     scene_part_data['extension'] = '.xyz'
 
+                    # Iterate through (large number of) different params of point cloud.
                     for param in filter.findall('param'):
                         if param.attrib['key'] == 'filepath':
                             scene_part_data['filepath'] = param.attrib['value']
@@ -265,9 +291,19 @@ if __name__ == '__main__':
                         if param.attrib['key'] == 'voxelSize':
                             scene_part_data['voxelsize'] = float(param.attrib['value'])
 
-                # Translate filter for point clouds.
+                # Translate filter for point clouds and wavefront objects.
                 if filter.attrib['type'] == 'translate':
                     scene_part_data['translation'] = filter.find('param').attrib['value'].split(';')
+
+                # Scale filter, is a parameter for each respective scene part datatype.
+                if filter.attrib['type'] == 'scale':
+                    scene_part_data['scale'] = float(filter.find('param').attrib['value'])
+
+                # Rotate filter, is a parameter for each respective scene part datatype.
+                if filter.attrib['type'] == 'rotate':
+                    scene_part_data['rotate'] = []
+                    for rotation in filter.find('param').findall('rot'):
+                        scene_part_data['rotate'].append([rotation.attrib['axis'], rotation.attrib['angle_deg']])
 
             scene_parts.append(scene_part_data)
 
@@ -275,10 +311,7 @@ if __name__ == '__main__':
         vis = o3d.visualization.Visualizer()
         vis.create_window(window_name="PyHelios Simulation")
 
-        # Add measurement point cloud to window.
-        vis.add_geometry(measurement)
-
-        # Loop over scene parts and create individual open3d geometries. Also add the geometries to window.
+        # Iterate over sceneparts and create individual open3d geometries. Also add the geometries to window.
         # .obj-dict = {extension : '.obj', file_path : str, scale : float, geometry : (o3d_triangle_mesh)}
         # .xyz-dict = {extension : '.xyz', file_path : str, translation : [x, y ,z], voxelsize : float,
         # geometry : (o3d_point_cloud/VoxelGrid)}
@@ -286,7 +319,7 @@ if __name__ == '__main__':
 
             if scene_part['extension'] == '.obj':
                 # Create open3d object.
-                scene_part['geometry'] = (o3d.io.read_triangle_mesh(scene_part['filepath']))
+                scene_part['geometry'] = o3d.io.read_triangle_mesh(scene_part['filepath'])
 
                 # Change colour of first scene part. This should be the ground plane.
                 if scene_parts.index(scene_part) == 0:
@@ -294,11 +327,19 @@ if __name__ == '__main__':
 
                 # Apply translation.
                 if 'translation' in scene_part:
-                    scene_part['geometry'].translate(np.array(scene_part['translation']))
+                    scene_part['translation'] = [float(i) for i in scene_part['translation']]
+                    print('Translating geometry: ', scene_part['filepath'])
+                    print('Translation: ', scene_part['translation'])
+                    scene_part['geometry'].translate(np.array(scene_part['translation'], dtype=float), relative=True)
 
                 # Apply scaling.
-                if scene_part['scale'] != 1:
+                if 'scale' in scene_part:
+                    print('Scaling geometry: ', scene_part['filepath'])
                     scene_part['geometry'].scale(scene_part['scale'], [0, 0, 0])
+
+                '''if 'rotate' in scene_part:
+                    R = scene_part['geometry'].get_rotation_matrix_from_axis_angle(np.array([0, 0, -0.5]))
+                    scene_part['geometry'].rotate(R, center=scene_part['geometry'].get_center())'''
 
                 # Add geometry to visualizer.
                 vis.add_geometry(scene_part['geometry'])
@@ -325,11 +366,73 @@ if __name__ == '__main__':
                     np.random.uniform(0, 1, size=(point_cloud.shape[0], 3)))
 
                 # Voxelise.
-                scene_part['geometry'] = o3d.geometry.VoxelGrid.create_from_point_cloud(scene_part['geometry'],
-                                                                                        voxel_size=scene_part['voxelsize'])
+                scene_part['geometry'] = o3d.geometry.VoxelGrid.create_from_point_cloud(
+                    scene_part['geometry'], voxel_size=scene_part['voxelsize'])
 
                 # Add voxels to visualizer.
                 vis.add_geometry(scene_part['geometry'])
+
+            elif scene_part['extension'] == '.tif':
+                # Imports.
+                from osgeo import gdal
+
+                file = scene_part['filepath']
+                scale = scene_part['scale']
+
+                ds = gdal.Open(file)
+
+                numBands = ds.RasterCount
+
+                width = ds.RasterXSize
+                height = ds.RasterYSize
+                gt = ds.GetGeoTransform()
+                band = ds.GetRasterBand(1)
+
+                point_count = width * height
+
+                minx = (gt[0]) * scale
+                miny = (gt[3] + width * gt[4] + height * gt[5]) * scale
+                data = band.ReadAsArray(0, 0, width, height).astype(np.float)
+
+                # Create array with 3d points for each pixel centre in raster.
+                points = np.zeros(shape=(0, 3), dtype=float)
+                for i in range(0, width):
+                    for j in range(0, height):
+                        points = np.vstack((points, [miny + (i * abs(gt[1]) * scale),
+                                                     minx + (j * abs(gt[5]) * scale),
+                                                     data[i, j]]))
+
+                # Create triangles based on indices of points in 3d array.
+                triangles = np.zeros(shape=(0, 3), dtype=int)
+                c = 0
+                for i in range(np.shape(points)[0] - width):
+                    c += 1
+                    # Exclude last point in row to avoid messy triangles.
+                    if c < width:
+                        triangles = np.vstack((triangles, [i, i + width, i + 1]))
+                        triangles = np.vstack((triangles, [i + 1, i + width, i + width + 1]))
+                    if c == width:
+                        c = 0
+
+                scene_part['geometry'] = o3d.geometry.TriangleMesh()
+                scene_part['geometry'].vertices = o3d.utility.Vector3dVector(points)
+                scene_part['geometry'].triangles = o3d.utility.Vector3iVector(triangles)
+
+                vis.add_geometry(scene_part['geometry'])
+
+        # Create point cloud geometry for survey data and scanner trajectory.
+        measurement = o3d.geometry.PointCloud()
+        trajectory = o3d.geometry.PointCloud()
+
+        # Add center point to visualization.
+        center_point = np.array([[0, 0, 0]])
+        center = o3d.geometry.PointCloud()
+        center.points = o3d.utility.Vector3dVector(center_point)
+        vis.add_geometry(center)
+
+        # Add measurement point cloud to window.
+        vis.add_geometry(measurement)
+        vis.add_geometry(trajectory)
 
         # Start pyhelios simulation.
         sim.start()
@@ -338,8 +441,22 @@ if __name__ == '__main__':
             if len(mpoints) > 0:
                 # Convert x, y, z lists with points from pyhelios callback to arrays.
                 a = np.array(mpoints)
+                b = np.array(tpoints)
+
+                '''line_indices = np.zeros([0, 2])
+                for i in range(np.shape(b)[0]):
+                    line_indices = np.vstack((line_indices, [i, i+1]))
+                print(line_indices)'''
+
                 # Update o3d point clouds with points from callback.
                 measurement.points = o3d.utility.Vector3dVector(a[:, :-1])
+                try:
+                    trajectory.points = o3d.utility.Vector3dVector(b)
+                    #trajectory.lines = o3d.utility.Vector3dVector(line_indices)
+                except Exception as err:
+                    print(err)
+
+                trajectory.paint_uniform_color([1, 0.706, 0])
 
                 colours = np.zeros((a.shape[0], 3))
 
@@ -357,12 +474,11 @@ if __name__ == '__main__':
 
                 # Update geometries for visualizer.
                 vis.update_geometry(measurement)
+                vis.update_geometry(trajectory)
 
                 # Refresh GUI.
                 vis.poll_events()
                 vis.update_renderer()
-
-            print('running')
 
             time.sleep(0.1)
 
