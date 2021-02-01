@@ -302,6 +302,7 @@ if __name__ == '__main__':
                 # Rotate filter, is a parameter for each respective scene part datatype.
                 if filter.attrib['type'] == 'rotate':
                     scene_part_data['rotate'] = []
+                    scene_part_data['rotate_method'] = filter.attrib['rotations'] if 'rotations' in filter.attrib else 'global'
                     for rotation in filter.find('param').findall('rot'):
                         scene_part_data['rotate'].append([rotation.attrib['axis'], rotation.attrib['angle_deg']])
 
@@ -325,6 +326,29 @@ if __name__ == '__main__':
                 if scene_parts.index(scene_part) == 0:
                     scene_part['geometry'].paint_uniform_color([0.866, 0.858, 0.792])
 
+                # Apply rotation
+                if 'rotate' in scene_part:
+                    if scene_part['rotate_method'].lower() == 'local':
+                        print('WARNING: Local rotation mode not supported yet! Applying global rotations.')
+                    for axis, angle in scene_part['rotate']:
+                        print('Rotating geometry: ', scene_part['filepath'])
+                        print('Axis, Angle: ', axis, ",", angle)
+                        if axis.lower() == 'x':
+                            rot = [1, 0, 0]
+                        elif axis.lower() == 'y':
+                            rot = [0, 1, 0]
+                        elif axis.lower() == 'z':
+                            rot = [0, 0, 1]
+                        else:
+                            raise Exception(f"Unknown rotation axis: {axis.lower()}")
+                        R = scene_part['geometry'].get_rotation_matrix_from_axis_angle(np.array(rot) * float(angle) / 180. * np.pi)
+                        scene_part['geometry'].rotate(R, center=[0, 0, 0])
+
+                # Apply scaling.
+                if 'scale' in scene_part:
+                    print('Scaling geometry: ', scene_part['filepath'])
+                    scene_part['geometry'].scale(scene_part['scale'], [0, 0, 0])
+
                 # Apply translation.
                 if 'translation' in scene_part:
                     scene_part['translation'] = [float(i) for i in scene_part['translation']]
@@ -332,14 +356,6 @@ if __name__ == '__main__':
                     print('Translation: ', scene_part['translation'])
                     scene_part['geometry'].translate(np.array(scene_part['translation'], dtype=float), relative=True)
 
-                # Apply scaling.
-                if 'scale' in scene_part:
-                    print('Scaling geometry: ', scene_part['filepath'])
-                    scene_part['geometry'].scale(scene_part['scale'], [0, 0, 0])
-
-                '''if 'rotate' in scene_part:
-                    R = scene_part['geometry'].get_rotation_matrix_from_axis_angle(np.array([0, 0, -0.5]))
-                    scene_part['geometry'].rotate(R, center=scene_part['geometry'].get_center())'''
 
                 # Add geometry to visualizer.
                 vis.add_geometry(scene_part['geometry'])
