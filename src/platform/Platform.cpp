@@ -75,8 +75,8 @@ void Platform::applySettings(std::shared_ptr<PlatformSettings> settings, bool ma
 
 void Platform::setAttitude(Rotation attitude) {
 	this->attitude = attitude;
-	this->cached_absoluteMountAttitude =
-	    this->attitude.applyTo(this->cfg_device_relativeMountAttitude);
+    this->cached_absoluteMountAttitude = this->getDirectionalAttitude()
+        .applyTo(this->cfg_device_relativeMountAttitude);
     updateDynamicCache();
 }
 

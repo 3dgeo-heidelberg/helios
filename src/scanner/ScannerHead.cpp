@@ -2,6 +2,7 @@
 
 #define _USE_MATH_DEFINES
 #include <math.h>
+#include <MathConstants.h>
 
 #include "typedef.h"
 
@@ -53,7 +54,7 @@ void ScannerHead::setCurrentRotateAngle_rad(double angle_rad) {
 	state_currentRotateAngle_rad = angle_rad;
 	cached_mountRelativeAttitude = Rotation(
 	    cfg_device_rotateAxis,
-	    fmod(state_currentRotateAngle_rad, 2 * M_PI)
+	    fmod(state_currentRotateAngle_rad, PI_2)
     );
 }
 
