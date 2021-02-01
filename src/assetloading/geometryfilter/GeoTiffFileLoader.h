@@ -133,4 +133,6 @@ public:
 	 */
 	void buildTriangles();
 
+    const double eps = 0.0000001;
+
 };

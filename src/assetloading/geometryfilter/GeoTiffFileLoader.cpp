@@ -161,8 +161,11 @@ void GeoTiffFileLoader::obtainEnvelope(GDALDataset *tiff){
     logging::INFO(ss.str());
 }
 
+
+
 void GeoTiffFileLoader::fillVertices(){
     float z;
+    float nodata = raster->GetNoDataValue();
     Vertex *v;
     vertices = new Vertex**[rasterWidth];
     double halfPixelWidth = pixelWidth / 2.0;
@@ -192,17 +195,20 @@ void GeoTiffFileLoader::fillVertices(){
                     << std::endl;
                 logging::WARN(ss.str());
             }
-
-            v = new Vertex();
-            v->pos = glm::dvec3(
-                minx + x * pixelWidth + halfPixelWidth,
-                miny - y * pixelHeight - halfPixelHeight + height,
-                z
-            );
-            v->texcoords = glm::dvec2(
-                ((double)x) / ((double)rasterWidth),
-                ((double)(rasterHeight - y)) / ((double)rasterHeight)
-            );
+            if (std::abs(z-nodata) < eps) {
+                v = nullptr;
+            } else {
+                v = new Vertex();
+                v->pos = glm::dvec3(
+                        minx + x * pixelWidth + halfPixelWidth,
+                        miny - y * pixelHeight - halfPixelHeight + height,
+                        z
+                );
+                v->texcoords = glm::dvec2(
+                        ((double) x) / ((double) rasterWidth),
+                        ((double) (rasterHeight - y)) / ((double) rasterHeight)
+                );
+            }
             vertices[x][y] = v;
         }
     }
