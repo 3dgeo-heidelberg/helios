@@ -61,8 +61,14 @@ bool ScenePartSplitTest::run(){
     // Validate scene part splits
     for(int i = 0 ; i < 32 ; ++i){
         int partIdx = std::atoi(prims[i]->part->mId.c_str());
-        if(partIdx != (i/4)) return false;
+        if(partIdx != (i/4)){ // On test failed
+            for(Primitive * prim : prims) delete prim;
+            return false;
+        }
     }
+
+    // Delete primitives
+    for(Primitive * prim : prims) delete prim;
 
     return true;
 };

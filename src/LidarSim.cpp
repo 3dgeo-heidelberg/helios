@@ -22,7 +22,7 @@ namespace fs = boost::filesystem;
 #include <iomanip>
 
 using namespace std;
-void doTests();
+void doTests(std::string const & testDir);
 
 // LOGGING FLAGS (DO NOT MODIFY HERE BUT IN logging.hpp makeDefault())
 bool    logging::LOGGING_SHOW_TRACE, logging::LOGGING_SHOW_DEBUG,
@@ -106,7 +106,7 @@ int main(int argc, char** argv) {
 	else if(argc > 1){
 	    std::string inputPath, outputPath;
 	    if(ap.parseTestRequest()) {
-            doTests();
+            doTests(ap.parseTestDir());
             done = true;
         }
 	    else if(ap.parseUnzip(&inputPath, &outputPath)){

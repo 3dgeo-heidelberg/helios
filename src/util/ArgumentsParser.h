@@ -32,6 +32,12 @@ public:
      */
     bool parseTestRequest();
     /**
+     * @brief Parse test directory specification (not necessary,
+     *  default one will be relative path "data/test/")
+     * @return Parsed test directory path
+     */
+    std::string parseTestDir();
+    /**
      * @brief Parse the survery path from invocation arguments
      * @return Parsed survey path
      */

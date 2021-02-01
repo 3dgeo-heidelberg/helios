@@ -19,13 +19,20 @@
 
 using namespace HeliosTests;
 
-void doTests(){
+void doTests(std::string const & testDir){
     // Validate current working directory
     if(boost::filesystem::current_path().leaf() != "helios-plusplus"){
         std::cout <<
         "WARNING! You might not be inside helios-plusplus root directory.\n\t"
-        "This might cause tests to fail." << std::endl;
+        "This might cause tests to fail.\n"
+        "Please, change to helios-plusplus root directory.\n"
+        "Alternatively, specify path to directory containing required test "
+        "files with:\n\t --testDir <path>"
+        << std::endl;
     }
+
+    std::cout << "\nCurrent test files directory is: \""<<testDir<<"\"\n"
+        << std::endl;
 
 
     // ***  T E S T S  *** //
@@ -36,7 +43,7 @@ void doTests(){
     NoiseTest noiseTest;
     noiseTest.test(std::cout, TEST_COLOR);
 
-    VoxelParsingTest voxelParsingTest;
+    VoxelParsingTest voxelParsingTest(testDir);
     voxelParsingTest.test(std::cout, TEST_COLOR);
 
     RayIntersectionTest rayIntersectionTest;
@@ -51,7 +58,7 @@ void doTests(){
     PlaneFitterTest planeFitterTest;
     planeFitterTest.test(std::cout, TEST_COLOR);
 
-    LadLutTest ladLutTest;
+    LadLutTest ladLutTest(testDir);
     ladLutTest.test(std::cout, TEST_COLOR);
 
     PlatformPhysicsTest platformPhysicsTest;

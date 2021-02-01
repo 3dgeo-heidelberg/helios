@@ -13,17 +13,28 @@ namespace HeliosTests{
  */
 class LadLutTest : public BaseTest{
 public:
+    // ***  ATTRIBUTES  *** //
+    // ******************** //
     /**
      * @brief Decimal precision for validation purposes
      */
     double eps = 0.00001; // Decimal precision for validation purposes
+    /**
+     * @brief Where required test files are stored.
+     * For LadLutTest it is required that a file named spherical.txt
+     * is inside the test folder so ladlut can be parsed
+     */
+    std::string testDir;
 
     // ***  CONSTRUCTOR  *** //
     // ********************* //
     /**
      * @brief Leaf angle distribution look-up table test constructor
      */
-    LadLutTest() : BaseTest("LadLut test"){}
+    LadLutTest(std::string testDir="data/test/") :
+        BaseTest("LadLut test"),
+        testDir(testDir)
+    {}
 
     // ***  R U N  *** //
     // *************** //
@@ -52,7 +63,7 @@ public:
      * @param y Obtained Y coordinate
      * @param z Obtained Z coordinate
      * @param ex Expected X coordinate
-     * @param ey Expected Y coordiante
+     * @param ey Expected Y coordinate
      * @param ez Expected Z coordinate
      * @return True if transformation was valid, false otherwise
      * @see LadLutTest::eps
@@ -74,8 +85,9 @@ bool LadLutTest::run(){
     double g3 = 0.673911;
 
     // Load spherical
+    std::string llPath = testDir + "spherical.txt";
     LadLutLoader loader;
-    std::shared_ptr<LadLut> ladlut = loader.load("data/lut/spherical.txt");
+    std::shared_ptr<LadLut> ladlut = loader.load(llPath);
     if(!validateLadLut(*ladlut)) return false;
 
     // Transform to LadLut domain

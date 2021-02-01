@@ -13,6 +13,16 @@ bool ArgumentsParser::parseTestRequest(){
     return findIndexOfArgument("--test") >= 0;
 }
 
+std::string ArgumentsParser::parseTestDir(){
+    int index = findIndexOfArgument("--testDir");
+    if(index >= 0){
+        size_t idx = std::string(argv[index+1]).length()-1;
+        if(argv[index+1][idx] == '/') return argv[index+1];
+        return std::string(argv[index+1])+"/";
+    }
+    return "data/test/";
+}
+
 std::string ArgumentsParser::parseSurveyPath() {
     if(argc < 2){
         std::cout << "Survey path as first argument is required!" << std::endl;

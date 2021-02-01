@@ -321,8 +321,8 @@ void HelicopterPlatform::computeTurningAngles(){
                 if (roll < 0.0) roll += cfg_rollStepMagnitude;
                 else roll -= cfg_rollStepMagnitude;
             } else { // Roll : Turn
-                if (sign > 0.0) roll -= cfg_rollStepMagnitude;
-                else roll += cfg_rollStepMagnitude;
+                if (sign > 0.0) roll += cfg_rollStepMagnitude;
+                else roll -= cfg_rollStepMagnitude;
             }
             if (roll > cfg_max_roll_offset) roll = cfg_max_roll_offset;
             if (roll < -cfg_max_roll_offset) roll = -cfg_max_roll_offset;
@@ -345,9 +345,9 @@ void HelicopterPlatform::computeTurningAngles(){
 void HelicopterPlatform::rotate(double roll, double pitch, double yaw){
     try {
         // Platform attitude
-        Rotation newAttitude = Rotation(Directions::right, pitch)
-            .applyTo(Rotation(Directions::forward, roll));
-        r = Rotation(Directions::up, yaw);
+        Rotation newAttitude = Rotation(Directions::right, roll)
+            .applyTo(Rotation(Directions::forward, pitch));
+        r = Rotation(newAttitude.applyTo(Directions::up), yaw);
         setAttitude(r.applyTo(newAttitude));
 
         // Directional attitude over XY

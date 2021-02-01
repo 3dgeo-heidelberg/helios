@@ -12,11 +12,11 @@ public:
     // ***  CONSTANTS  *** //
     // ******************* //
     /**
-     * @brief <b>x</b> : forward-backward direction
+     * @brief <b>x</b> : left-right direction
      */
     static const glm::dvec3 right;
     /**
-     * @brief <b>y</b> : right-left direction
+     * @brief <b>y</b> : forward-backward direction
      */
 	static const glm::dvec3 forward;
 	/**

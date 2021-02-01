@@ -12,12 +12,25 @@ namespace HeliosTests{
  */
 class VoxelParsingTest : public BaseTest {
 public:
+    // ***  ATTRIBUTES  *** //
+    // ******************** //
+    /**
+     * @brief Where required test files are stored.
+     * For VoxelParsingTest it is required that a file named
+     * semitransparent_voxel.vox is inside the test folder so voxels can be
+     * parsed
+     */
+    std::string testDir;
+
    // ***  CONSTRUCTION  *** //
    // ********************** //
    /**
     * @brief Constructor for voxel parsing test
     */
-   VoxelParsingTest() : BaseTest("Voxel parsing test"){}
+    VoxelParsingTest(std::string testDir="data/test/") :
+        BaseTest("Voxel parsing test"),
+        testDir(testDir)
+    {}
 
    // ***  R U N  *** //
    // *************** //
@@ -30,9 +43,10 @@ public:
 
 bool VoxelParsingTest::run(){
     double eps = 0.0001;
+    std::string vfPath = testDir + "semitransparent_voxels.vox";
     VoxelFileParser vfp;
     std::vector<std::shared_ptr<DetailedVoxel>> dvoxels = vfp.parseDetailed(
-        "data/sceneparts/toyblocks/semitransparent_voxels.vox",
+        vfPath,
         2,
         false
     );
