@@ -358,6 +358,7 @@ if __name__ == '__main__':
 
 
                 # Add geometry to visualizer.
+                scene_part['geometry'].compute_vertex_normals()
                 vis.add_geometry(scene_part['geometry'])
 
             elif scene_part['extension'] == '.xyz':
@@ -393,7 +394,7 @@ if __name__ == '__main__':
                 from osgeo import gdal
 
                 file = scene_part['filepath']
-                scale = scene_part['scale']
+                #scale = scene_part['scale']
 
                 ds = gdal.Open(file)
 
@@ -406,34 +407,43 @@ if __name__ == '__main__':
 
                 point_count = width * height
 
-                minx = (gt[0]) * scale
-                miny = (gt[3] + width * gt[4] + height * gt[5]) * scale
+                ulx, xres, xskew, uly, yskew, yres = ds.GetGeoTransform()
+                lrx = ulx + (ds.RasterXSize * xres)
+                lry = uly + (ds.RasterYSize * yres)
                 data = band.ReadAsArray(0, 0, width, height).astype(np.float)
-
-                # Create array with 3d points for each pixel centre in raster.
-                points = np.zeros(shape=(0, 3), dtype=float)
-                for i in range(0, width):
-                    for j in range(0, height):
-                        points = np.vstack((points, [miny + (i * abs(gt[1]) * scale),
-                                                     minx + (j * abs(gt[5]) * scale),
-                                                     data[i, j]]))
+                xs = np.linspace(lrx, ulx, ds.RasterXSize)
+                ys = np.linspace(lry, uly, ds.RasterYSize)
+                xm, ym = np.meshgrid(xs, ys)
+                points = np.vstack([xm.flatten(), ym.flatten(), data.flatten()]).T
+                where_nodata = points[:, 2] == band.GetNoDataValue()
+                where_data = np.logical_not(where_nodata)
+                points[where_nodata, 2] = np.mean(points[where_data, 2], axis=0)
 
                 # Create triangles based on indices of points in 3d array.
-                triangles = np.zeros(shape=(0, 3), dtype=int)
-                c = 0
-                for i in range(np.shape(points)[0] - width):
-                    c += 1
-                    # Exclude last point in row to avoid messy triangles.
-                    if c < width:
-                        triangles = np.vstack((triangles, [i, i + width, i + 1]))
-                        triangles = np.vstack((triangles, [i + 1, i + width, i + width + 1]))
-                    if c == width:
-                        c = 0
+                tri1_1 = np.arange(0, points.shape[0] - width) # the last row has no triangles
+                tri1_2 = tri1_1 + width  #up
+                tri1_3 = tri1_1 + 1  #right
+                tri1 = np.vstack([tri1_1, tri1_2, tri1_3]).T
+                # second type of triangle
+                tri2_2 = tri1_1 + width + 1 # up & right
+                tri2 = np.vstack([tri1_2, tri2_2, tri1_3]).T
+                #tri2 = tri2[:-1, :]  # remove last triangle
+
+                # remove edge triangles
+                to_del = np.arange(1, height-1) * width
+
+                # remove nodata triangles
+                nodata_del = np.nonzero(data[:-1, :].flatten() == band.GetNoDataValue())[0]
+                to_del = np.unique(np.concatenate([to_del, nodata_del, nodata_del-1, nodata_del-width, nodata_del-width-1]))
+
+                tri1 = np.delete(tri1, to_del, axis=0)
+                tri2 = np.delete(tri2, to_del, axis=0)
+                triangles = np.concatenate([tri1, tri2])
 
                 scene_part['geometry'] = o3d.geometry.TriangleMesh()
                 scene_part['geometry'].vertices = o3d.utility.Vector3dVector(points)
                 scene_part['geometry'].triangles = o3d.utility.Vector3iVector(triangles)
-
+                scene_part['geometry'].compute_vertex_normals()
                 vis.add_geometry(scene_part['geometry'])
 
         # Create point cloud geometry for survey data and scanner trajectory.
