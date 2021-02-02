@@ -12,6 +12,7 @@
 #include <PyPrimitiveWrapper.h>
 #include <PySimulationCycleCallback.h>
 #include <Material.h>
+#include <gdal_priv.h>
 
 using namespace boost::python;
 
@@ -21,6 +22,9 @@ BOOST_PYTHON_MODULE(pyhelios){
     logging::configure({
         {"type", "std_out"}
     });
+
+    // Enable GDAL (Load its drivers)
+    GDALAllRegister();
 
     // Definitions
     def(
