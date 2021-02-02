@@ -225,6 +225,16 @@ BOOST_PYTHON_MODULE(pyhelios){
             &ScannerSettings::scanAngle_rad
         )
         .add_property(
+            "verticalAngleMin",
+            &ScannerSettings::verticalAngleMin_rad,
+            &ScannerSettings::verticalAngleMin_rad
+        )
+        .add_property(
+            "verticalAngleMax",
+            &ScannerSettings::verticalAngleMax_rad,
+            &ScannerSettings::verticalAngleMax_rad
+        )
+        .add_property(
             "scanFreq",
             &ScannerSettings::scanFreq_Hz,
             &ScannerSettings::scanFreq_Hz
@@ -238,6 +248,11 @@ BOOST_PYTHON_MODULE(pyhelios){
             "pulseLength",
             &ScannerSettings::pulseLength_ns,
             &ScannerSettings::pulseLength_ns
+        )
+        .add_property(
+            "trajectoryTimeInterval",
+            &ScannerSettings::trajectoryTimeInterval,
+            &ScannerSettings::trajectoryTimeInterval
         )
     ;
 

@@ -81,10 +81,13 @@ public:
 		this->headRotatePerSec_rad = other->headRotatePerSec_rad;
 		this->headRotateStart_rad = other->headRotateStart_rad;
 		this->headRotateStop_rad = other->headRotateStop_rad;
+		this->verticalAngleMin_rad = other->verticalAngleMin_rad;
+		this->verticalAngleMax_rad = other->verticalAngleMax_rad;
 		this->pulseFreq_Hz = other->pulseFreq_Hz;
 		this->scanAngle_rad = other->scanAngle_rad;
 		this->scanFreq_Hz = other->scanFreq_Hz;
 		this->beamDivAngle = other->beamDivAngle;
 		this->pulseLength_ns = other->pulseLength_ns;
+		this->trajectoryTimeInterval = other->trajectoryTimeInterval;
 	}
 };

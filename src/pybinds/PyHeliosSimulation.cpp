@@ -246,6 +246,7 @@ PyHeliosSimulation * PyHeliosSimulation::copy(){
     phs->survey = std::make_shared<Survey>(*survey);
     phs->callback = this->callback;
     phs->lasOutput = this->lasOutput;
+    phs->zipOutput = this->zipOutput;
     phs->exportToFile = this->exportToFile;
     phs->setSimFrequency(getSimFrequency());
     return phs;
