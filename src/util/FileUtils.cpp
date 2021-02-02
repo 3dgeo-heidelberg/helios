@@ -8,6 +8,35 @@
 #include <boost/archive/binary_iarchive.hpp>
 namespace fs = boost::filesystem;
 
+
+std::vector<std::string> FileUtils::handleFilePath(
+    std::map<std::string, ObjectT> & params
+){
+    std::vector<std::string> filePaths(0);
+    std::string path;
+    bool extendedFilePath = false;
+
+    try{
+        path = boost::get<std::string const &>(params["efilepath"]);
+        extendedFilePath = true;
+    }
+    catch(std::exception &e){
+        try{
+            path = boost::get<std::string const &>(params["filepath"]);
+            filePaths.push_back(path);
+        }
+        catch(std::exception &e2){
+            std::stringstream ss;
+            ss << "No filepath was provided.\nEXCEPTION: " << e2.what();
+            logging::ERR(ss.str());
+        }
+    }
+
+    if(extendedFilePath) filePaths = FileUtils::getFilesByExpression(path);
+    return filePaths;
+}
+
+
 std::vector<std::string> FileUtils::getFilesByExpression(
     std::string const pathExpression
 ){

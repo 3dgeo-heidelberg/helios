@@ -2,6 +2,9 @@
 
 #include <string>
 #include <vector>
+#include <map>
+
+#include <util/typedef.h>
 
 /**
  * @author Alberto M. Esmoris Pena
@@ -10,6 +13,16 @@
  */
 class FileUtils{
 public:
+    /**
+     * @brief Handle a the filepath or efilepath argument from a map of
+     * parameters in the context of geometry loading
+     * @param params Map of parameters defining the geometry loading process
+     * @return Vector of parsed file paths (1 for filepath, n for efilepath)
+     */
+    static std::vector<std::string> handleFilePath(
+        std::map<std::string, ObjectT> & params
+    );
+
     /**
      * @brief Obtain the files which are referenced by the path expression
      *

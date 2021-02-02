@@ -10,6 +10,7 @@ using namespace glm;
 
 #include <logging.hpp>
 #include <util/HeliosException.h>
+#include <util/FileUtils.h>
 
 #include "Material.h"
 #include "PlaneFitter.h"
@@ -19,21 +20,17 @@ using namespace glm;
 // ***  R U N  *** //
 // *************** //
 ScenePart* XYZPointCloudFileLoader::run() {
-    // Get file path
-	string const & filePathString =
-	    boost::get<string const &>(params["filepath"]);
+    // Determine filepath
+    std::vector<std::string> filePaths = FileUtils::handleFilePath(params);
 
     // Read separator
 	string const & pSep = boost::get<string const &>(params["separator"]);
-	if (pSep.empty()) {
-		separator = pSep;
-	}
+	if (pSep.empty()) separator = pSep;
 
 	// Read voxel size
     double pVoxelSize = boost::get<double>(params["voxelSize"]);
-	if (pVoxelSize != 0) {
-		voxelSize = pVoxelSize;
-	}
+	if (pVoxelSize != 0) voxelSize = pVoxelSize;
+
 	// Read max color value
 	maxColorValue = 255.0;
     if(params.find("maxColorValue") != params.end()){
@@ -43,18 +40,6 @@ ScenePart* XYZPointCloudFileLoader::run() {
         }
     }
 
-	// Material
-	string matName = "default";
-	logging::INFO("Adding default material");
-	Material mat;
-	mat.useVertexColors = true;
-	mat.isGround = true;
-	mat.name = matName;
-	materials.insert(materials.end(), pair<string, Material>(matName, mat));
-	logging::INFO(
-	    "Reading point cloud from XYZ file " + filePathString + " ..."
-    );
-
 	// Default normal
 	if(params.find("defaultNormal") != params.end()){
 	    defaultNormal = boost::get<dvec3>(params["defaultNormal"]);
@@ -62,36 +47,68 @@ ScenePart* XYZPointCloudFileLoader::run() {
 	    assignDefaultNormal = true;
 	}
 
-	// Open file input stream
-	ifstream ifs;
-	try {
-		ifs = ifstream(filePathString, ifstream::binary);
-	}
-	catch (std::exception &e) {
-		logging::ERR("Failed to open xyz point cloud file: " + filePathString +
-		    "\nEXCEPTION: " + e.what());
-		exit(-1);
-	}
+	// Parse
+    for(std::string const & filePath : filePaths){
+        lastNumVoxels = primsOut->mPrimitives.size();
+        parse(filePath);
+        primsOut->subpartLimit.push_back(primsOut->mPrimitives.size());
+    }
+
+    // Return
+	return primsOut;
+}
+
+
+// ***  MAIN PARSING METHODS  *** //
+// ****************************** //
+void XYZPointCloudFileLoader::parse(std::string const & filePath){
+    logging::INFO(
+        "Reading point cloud from XYZ file " + filePath + " ..."
+    );
+
+    // Initialize counters
+    unsafeNormalEstimations = 0;
+    discardedPointsByNormal = 0;
+
+    // Material
+    string matName = "default";
+    logging::INFO("Adding default material");
+    Material mat;
+    mat.useVertexColors = true;
+    mat.isGround = true;
+    mat.name = matName;
+    materials.insert(materials.end(), pair<string, Material>(matName, mat));
+
+    // Open file input stream
+    ifstream ifs;
+    try {
+        ifs = ifstream(filePath, ifstream::binary);
+    }
+    catch (std::exception &e) {
+        logging::ERR("Failed to open xyz point cloud file: " + filePath +
+                     "\nEXCEPTION: " + e.what());
+        exit(-1);
+    }
 
     // First pass
-    firstPass(filePathString, ifs);
+    firstPass(filePath, ifs);
 
-	// Second pass
-	secondPass(filePathString, matName, ifs);
+    // Second pass
+    secondPass(filePath, matName, ifs);
 
-	// Release
-	if(voxels != nullptr){
-	    delete[] voxels;
-	    voxels = nullptr;
-	}
+    // Release
+    if(voxels != nullptr){
+        delete[] voxels;
+        voxels = nullptr;
+    }
 
-	// Load material
-	loadMaterial();
+    // Load material
+    loadMaterial();
 
     // Final report
-	stringstream ss;
+    stringstream ss;
     ss << "Point cloud file read successful ("
-	    << primsOut->mPrimitives.size() << " voxels)\n";
+       << primsOut->mPrimitives.size()-lastNumVoxels << " voxels)\n";
     if(unsafeNormalEstimations > 0) {
         ss  << "\t" << unsafeNormalEstimations
             << " voxels did not have enough points ("
@@ -104,14 +121,8 @@ ScenePart* XYZPointCloudFileLoader::run() {
     }
     logging::INFO(ss.str());
     ss.str("");
-
-    // Return
-	return primsOut;
 }
 
-
-// ***  MAIN PARSING METHODS  *** //
-// ****************************** //
 void XYZPointCloudFileLoader::firstPass(
     string const & filePathString,
     ifstream &ifs
