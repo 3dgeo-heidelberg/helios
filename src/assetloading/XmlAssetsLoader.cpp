@@ -33,6 +33,7 @@ namespace fs = boost::filesystem;
 #include "FullWaveformPulseDetector.h"
 #include "OscillatingMirrorBeamDeflector.h"
 #include "PolygonMirrorBeamDeflector.h"
+#include "SinusoidalOscillatingBeamDeflector.h"
 
 #include "XmlAssetsLoader.h"
 #include <NormalNoiseSource.h>
@@ -525,6 +526,11 @@ std::shared_ptr<Scanner> XmlAssetsLoader::createScannerFromXml(
             ))
         );
 		beamDeflector = std::shared_ptr<PolygonMirrorBeamDeflector>(new PolygonMirrorBeamDeflector(scanFreqMax_Hz, scanFreqMin_Hz, scanAngleMax_rad, scanAngleEffectiveMax_rad));
+	}
+	else if (str_opticsType == "sinusoidal")
+	{
+		int scanProduct = boost::get<int>(getAttribute(scannerNode, "scanProduct", "int", 1000000));
+		beamDeflector = std::shared_ptr<SinusoidalOscillatingBeamDeflector>(new SinusoidalOscillatingBeamDeflector(scanAngleMax_rad, scanFreqMax_Hz, scanFreqMin_Hz, scanProduct));
 	}
 
 	if (beamDeflector == NULL) {
