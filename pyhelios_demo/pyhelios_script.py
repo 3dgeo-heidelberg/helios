@@ -309,8 +309,10 @@ if __name__ == '__main__':
             scene_parts.append(scene_part_data)
 
         # Create instance of visualizer class. Needed for creation of GUI.
-        vis = o3d.visualization.Visualizer()
+        vis = o3d.visualization.VisualizerWithKeyCallback()
         vis.create_window(window_name="PyHelios Simulation")
+        #vis.register_key_callback(80, lambda *x: sim.pause)  # 80 = p
+        #vis.register_key_callback(67, lambda *x: sim.resume)  # 67 = c
 
         # Iterate over sceneparts and create individual open3d geometries. Also add the geometries to window.
         # .obj-dict = {extension : '.obj', file_path : str, scale : float, geometry : (o3d_triangle_mesh)}
@@ -411,8 +413,8 @@ if __name__ == '__main__':
                 lrx = ulx + (ds.RasterXSize * xres)
                 lry = uly + (ds.RasterYSize * yres)
                 data = band.ReadAsArray(0, 0, width, height).astype(np.float)
-                xs = np.linspace(lrx, ulx, ds.RasterXSize)
-                ys = np.linspace(lry, uly, ds.RasterYSize)
+                xs = np.linspace(ulx, lrx, ds.RasterXSize)
+                ys = np.linspace(uly, lry, ds.RasterYSize)
                 xm, ym = np.meshgrid(xs, ys)
                 points = np.vstack([xm.flatten(), ym.flatten(), data.flatten()]).T
                 where_nodata = points[:, 2] == band.GetNoDataValue()
@@ -420,21 +422,21 @@ if __name__ == '__main__':
                 points[where_nodata, 2] = np.mean(points[where_data, 2], axis=0)
 
                 # Create triangles based on indices of points in 3d array.
-                tri1_1 = np.arange(0, points.shape[0] - width) # the last row has no triangles
-                tri1_2 = tri1_1 + width  #up
-                tri1_3 = tri1_1 + 1  #right
+                tri1_1 = np.arange(0, points.shape[0] - width - 1)  # the last row has no triangles
+                tri1_2 = tri1_1 + width  # up
+                tri1_3 = tri1_1 + 1  # right
                 tri1 = np.vstack([tri1_1, tri1_2, tri1_3]).T
                 # second type of triangle
                 tri2_2 = tri1_1 + width + 1 # up & right
                 tri2 = np.vstack([tri1_2, tri2_2, tri1_3]).T
-                #tri2 = tri2[:-1, :]  # remove last triangle
 
                 # remove edge triangles
-                to_del = np.arange(1, height-1) * width
+                to_del = np.arange(1, height-1) * width - 1
 
                 # remove nodata triangles
                 nodata_del = np.nonzero(data[:-1, :].flatten() == band.GetNoDataValue())[0]
-                to_del = np.unique(np.concatenate([to_del, nodata_del, nodata_del-1, nodata_del-width, nodata_del-width-1]))
+                to_del = np.unique(np.concatenate([to_del, nodata_del, nodata_del-1,
+                                                   nodata_del-width, nodata_del-width-1]))
 
                 tri1 = np.delete(tri1, to_del, axis=0)
                 tri2 = np.delete(tri2, to_del, axis=0)
@@ -459,6 +461,9 @@ if __name__ == '__main__':
         # Add measurement point cloud to window.
         vis.add_geometry(measurement)
         vis.add_geometry(trajectory)
+        # Refresh GUI.
+        vis.poll_events()
+        vis.update_renderer()
 
         # Start pyhelios simulation.
         sim.start()
