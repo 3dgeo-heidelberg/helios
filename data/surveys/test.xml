@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+    <survey name="forwarder" scene="data/scenes/stem_scenes.xml#stem_scene"
+            platform="data/platforms.xml#tripod"
+            scanner="data/scanners_tls.xml#blickfeld_cube1">
+
+        <FWFSettings binSize_ns="0.2" beamSampleQuality="3" />
+
+        
+        <leg>
+          <platformSettings x="0.0" y="0.0"
+                          onGround="true"
+                            />
+          <scannerSettings  active="true"
+                           scanAngle_deg = "35"
+                           pulseFreq_hz="90000"
+                           scanFreq_hz="450"
+                           headRotatePerSec_deg="10"
+                           headRotateStart_deg="-30" headRotateStop_deg="30"
+                            />
+        </leg>
+       
+        
+    </survey>
+</document>

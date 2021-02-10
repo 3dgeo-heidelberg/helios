@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+    <survey name="forwarder" scene="data/scenes/stem_scenes.xml#stem_scene"
+            platform="data/platforms.xml#forwarder"
+            scanner="data/scanners_tls.xml#livox">
+
+        <FWFSettings binSize_ns="0.2" beamSampleQuality="3" />
+
+        
+        <!--<leg>
+          <platformSettings x="0.0" y="0.0"
+                          onGround="true"
+                            />
+          <scannerSettings  active="true"
+                           scanAngle_deg = "35"
+                           pulseFreq_hz="100000"
+                           headRotatePerSecDegree="0.01"
+                           headRotateStart_deg="0.0" headRotateStop_deg="0.001"
+                            />
+        </leg>-->
+        <leg>
+            <platformSettings x="0.0" y="-0.0"
+                            onGround="true"
+                            movePerSec_m="0.01"
+                            />
+            <scannerSettings  active="true"
+                            scanAngle_deg = "35"
+                            pulseFreq_hz="100000"
+                            headRotatePerSecDegree="0"
+                            />
+        </leg>
+        <leg>
+            <platformSettings x="0.0" y="-0.001"
+                            onGround="true"
+                            movePerSec_m="0.0"
+                            />
+            <scannerSettings  active="true"
+                            scanAngle_deg = "35"
+                            pulseFreq_hz="100000"
+                            headRotatePerSecDegree="0"
+                              />
+        </leg>
+
+        
+    </survey>
+</document>

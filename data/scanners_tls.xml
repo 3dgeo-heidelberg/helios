@@ -74,6 +74,8 @@
 		<headRotateAxis x="0" y="0" z="1" />
 	</scanner>
     
+
+	
 	<!--######## END RIEGL VQ-450 ####### -->
 
 
@@ -82,24 +84,87 @@
 
 	<!-- ############### BEGIN "Fantasy" Scanners ############### -->
 
-	
-	
-	<!-- ##### BEGIN Tractor scanner ##### -->
-	<scanner 	id 							= "tractorscanner"
-				accuracy_m					= "0"
-			 	beamDivergence_rad 			= "0.00035"
-				name              			= "Tractor Scanner"
-				optics            			= "oscillating"
-				pulseFreqs_Hz				= "1000,50000,100000,200000"
+
+	<!-- Ultra Puck 
+	@ 5 Hz rotation: 
+	@ 20 Hz rotation: 
+	-->
+	<scanner 	id 							= "ultra_puck"
+				accuracy_m					= "0.03"
+			 	beamDivergence_rad 			= "0.00698"	
+				name              			= "Ultra Puck"
+				optics            			= "rotating"
+				numFibers					= "120"
+				pulseFreqs_Hz				= "18000"
 				pulseLength_ns     			= "4"
-				rangeMin_m					= "0"
-				scanAngleMax_deg   			= "30"
-				scanAngleEffectiveMax_deg   = "50"
-				scanFreqMin_Hz				= "100"
-				scanFreqMax_Hz				= "50"
+				rangeMin_m					= "2"
+				scanAngleMax_deg   			= "360"
+				scanAngleEffectiveMax_deg   = "360"
+				scanFreqMin_Hz				= "18000"
+				scanFreqMax_Hz				= "18000"
+				headRotatePerSecMax_deg		= "10000"
+				wavelength_nm				= "903"
 	>
 		<FWFSettings beamSampleQuality="3"/>
+		<beamOrigin x="0" y="0" z="0">
+			
+			<rot axis="z" angle_deg="90" />
+		</beamOrigin>
+
+		<headRotateAxis x="0" y="0" z="1" />
 	</scanner>
+	
+	<!-- ##### LIVOX Mid 70 -->
+	<!-- beam divergence horizontal: 0.000523598, vertical: 0.004887 -->	
+	<scanner 	id 							= "livox"
+				accuracy_m					= "0.02"
+			 	beamDivergence_rad 			= "0.00052"	
+				name              			= "livox Mid 70"
+				optics            			= "risley"
+				pulseFreqs_Hz				= "90000"
+				pulseLength_ns     			= "4"
+				rangeMin_m					= "2"
+				scanAngleMax_deg   			= "35"
+				scanAngleEffectiveMax_deg   = "35"
+				scanFreqMin_Hz				= "450"
+				scanFreqMax_Hz				= "450"
+				headRotatePerSecMax_deg		= "100000"
+				wavelength_nm				= "905"
+	>
+		<FWFSettings beamSampleQuality="3"/>
+		<beamOrigin x="0" y="0" z="0">
+			
+			<rot axis="z" angle_deg="-90" />
+		</beamOrigin>
+
+		<headRotateAxis x="1" y="0" z="0" />
+	</scanner>
+	
+	<!-- ##### BEGIN Blickfeld scanner ##### -->
+	<scanner 	id 							= "blickfeld_cube1"
+				accuracy_m					= "0.02"
+			 	beamDivergence_rad 			= "0.00698"	
+				name              			= "Blickfeld Cube1"
+				optics            			= "rotating"
+				pulseFreqs_Hz				= "90000"
+				pulseLength_ns     			= "4"
+				rangeMin_m					= "2"
+				scanAngleMax_deg   			= "30"
+				scanAngleEffectiveMax_deg   = "30"
+				scanFreqMin_Hz				= "450"
+				scanFreqMax_Hz				= "450"
+				headRotatePerSecMax_deg		= "175"
+				wavelength_nm				= "905"
+	>
+		<FWFSettings beamSampleQuality="3"/>
+		<beamOrigin x="0" y="0.14" z="0.126">
+			
+			<rot axis="z" angle_deg="90" />
+		</beamOrigin>
+
+		<headRotateAxis x="0" y="0" z="1" />
+	</scanner>
+	
 	<!-- ##### END Tractor scanner ##### -->
 	
 	<!-- ############### END "Fantasy" Scanners ############### -->
