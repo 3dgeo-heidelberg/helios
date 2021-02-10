@@ -34,6 +34,7 @@ namespace fs = boost::filesystem;
 #include "OscillatingMirrorBeamDeflector.h"
 #include "PolygonMirrorBeamDeflector.h"
 #include "SinusoidalOscillatingBeamDeflector.h"
+#include "RisleyBeamDeflector.h"
 
 #include "XmlAssetsLoader.h"
 #include <NormalNoiseSource.h>
@@ -498,6 +499,7 @@ std::shared_ptr<Scanner> XmlAssetsLoader::createScannerFromXml(
 	// ########### BEGIN Read and apply generic properties ##########
 	double scanFreqMax_Hz = boost::get<double>(getAttribute(scannerNode, "scanFreqMax_Hz", "double", 0.0));
 	double scanFreqMin_Hz = boost::get<double>(getAttribute(scannerNode, "scanFreqMin_Hz", "double", 0.0));
+
 	double scanAngleMax_rad = MathConverter::degreesToRadians(
 	    boost::get<double>(
 	        getAttribute(scannerNode, "scanAngleMax_deg", "double", 0.0)
@@ -531,6 +533,12 @@ std::shared_ptr<Scanner> XmlAssetsLoader::createScannerFromXml(
 	{
 		int scanProduct = boost::get<int>(getAttribute(scannerNode, "scanProduct", "int", 1000000));
 		beamDeflector = std::shared_ptr<SinusoidalOscillatingBeamDeflector>(new SinusoidalOscillatingBeamDeflector(scanAngleMax_rad, scanFreqMax_Hz, scanFreqMin_Hz, scanProduct));
+	}
+	else if (str_opticsType == "risley")
+	{
+		int rotorFreq_1_Hz = boost::get<int>(getAttribute(scannerNode, "rotorFreq_1", "int", 7294));
+		int rotorFreq_2_Hz = boost::get<int>(getAttribute(scannerNode, "rotorFreq_2", "int", -4664));
+		beamDeflector = std::shared_ptr<RisleyBeamDeflector>(new RisleyBeamDeflector(scanAngleMax_rad, (double) rotorFreq_1_Hz, (double)rotorFreq_2_Hz));
 	}
 
 	if (beamDeflector == NULL) {

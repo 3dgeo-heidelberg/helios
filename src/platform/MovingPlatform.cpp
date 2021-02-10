@@ -104,7 +104,7 @@ void MovingPlatform::initLegManualIterative(){
 
 bool MovingPlatform::waypointReached() {
 	// TODO 5: Make waypoint tolerance configurable
-	bool result = glm::l2Norm(cached_vectorToTarget) < 0.3;
+	bool result = glm::l2Norm(cached_vectorToTarget) < 0.000001;
 	if (result) logging::INFO("Waypoint reached!");
 	return result;
 }
