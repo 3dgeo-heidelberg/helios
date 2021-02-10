@@ -91,9 +91,10 @@ void HelicopterPlatform::initLeg(){
 bool HelicopterPlatform::waypointReached(){
     if(smoothTurn && cache_turning){
         cache_turnIterations--;
-        if(cache_turnIterations == 0){
+        if(cache_turnIterations <= 0){
             cache_turning = false;
             cache_speedUpFinished = false;
+            logging::INFO("Waypoint passed (smooth turn)!");
             return true;
         }
     }
@@ -151,7 +152,9 @@ void HelicopterPlatform::computeTurnDistanceThreshold(){
         yMove += vyt * moveNorm;
 
         // Prepare next iteration
-        speed = computeSlowdownStep(speed);
+        if(slowdownEnabled) {
+            speed = computeSlowdownStep(speed);
+        }
     }
 
     // Determine turn start condition

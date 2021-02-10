@@ -354,6 +354,11 @@ std::shared_ptr<PlatformSettings> XmlAssetsLoader::createPlatformSettingsFromXml
 	settings->smoothTurn = boost::get<bool>(getAttribute(
 	    node, "smoothTurn", "bool", template1->smoothTurn));
 
+	if (settings->stopAndTurn && settings->smoothTurn){
+	    logging::INFO("Both stopAndTurn and smoothTurn have been set to true. Setting stopAndTurn to false.");
+	    settings->stopAndTurn = false;
+	}
+
 	// Read if platform must be able to slowdown (true) or not (false)
 	settings->slowdownEnabled = boost::get<bool>(getAttribute(
 	    node, "slowdownEnabled", "bool", template1->slowdownEnabled));
