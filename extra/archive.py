@@ -117,7 +117,7 @@ for path in assets_path:
     outzip.write(path)
 
 print("Writing run")
-run_path = Path("runs").glob("*")
+run_path = Path("run").glob("*")
 if sorted(run_path):
     for path in run_path:
         if path.parts[-1] != "helios.exe":
