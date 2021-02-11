@@ -118,10 +118,10 @@
 	<!-- beam divergence horizontal: 0.000523598, vertical: 0.004887 -->	
 	<scanner 	id 							= "livox"
 				accuracy_m					= "0.02"
-			 	beamDivergence_rad 			= "0.00052"	
+			 	beamDivergence_rad 			= "0.0027"	
 				name              			= "livox Mid 70"
 				optics            			= "risley"
-				pulseFreqs_Hz				= "90000"
+				pulseFreqs_Hz				= "100000"
 				pulseLength_ns     			= "4"
 				rangeMin_m					= "2"
 				scanAngleMax_deg   			= "35"

@@ -186,7 +186,9 @@
 	</platform>
 
 	<platform id="forwarder" name="Forwarder test" type="linearpath">
-		<scannerMount x="0.0" y="0.0" z="3.1">		
+		<scannerMount x="0.0" y="0.0" z="3.1">
+      <rot axis="y" angle_deg="30" />
+      <rot axis="z" angle_deg="-30" />
 		</scannerMount>
 	</platform> 
 	

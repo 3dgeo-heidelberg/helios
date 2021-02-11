@@ -15,7 +15,7 @@
     <scene id="single_log" name="a single log">
         <part>
             <filter type="objloader">
-                <param type="string" key="filepath" value="data/sceneparts/log.obj" />
+                <param type="string" key="filepath" value="data/sceneparts/single_log_at_10_little_end.obj" />
             </filter>
 
             <!-- <filter type="scale">
