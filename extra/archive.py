@@ -66,16 +66,22 @@ def get_sceneparts(scene):
     return remove_duplicates(scenepart_paths)
 
 
+root = Path.cwd()
 survey_path = Path(sys.argv[1])
 executable = Path(sys.argv[2])
+search_dir = executable.parent.absolute().relative_to(root)
+sys.path.append(str(search_dir)+"/")
 outfile = Path(sys.argv[3])
 allowed_suffixes = [".zip", ".7z", ".rar", ".gz", ".tar"]
 if len(set(allowed_suffixes).intersection(outfile.suffixes)) == 0:
     print("yup")
     outfile = outfile.with_suffix(".zip")
-root = Path.cwd()
 
-helios_version = get_version_number(executable)
+try:
+    import pyhelios
+    helios_version = str(pyhelios.getVersion())
+except Exception as e:
+    helios_version = get_version_number(executable)
 print("Your HELIOS++ version is %s" % helios_version)
 
 print("Writing data")
