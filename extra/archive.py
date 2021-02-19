@@ -40,7 +40,7 @@ def remove_duplicates(a_list):
     return list(dict.fromkeys(a_list))
 
 
-def get_xml(survey, search_text):
+def get_xml(survey, search_text, root):
     with open(survey, "r") as survey_file:
         search_text_end = "#"
         for line in survey_file.readlines():
@@ -48,6 +48,8 @@ def get_xml(survey, search_text):
                 start_idx = line.find(search_text) + len(search_text) + 1
                 end_idx = line.find(search_text_end, start_idx)
                 xml_path = Path(line[start_idx:end_idx])
+                if xml_path.is_absolute():
+                    xml_path = xml_path.relative_to(root)
                 break
     return xml_path
 
@@ -63,7 +65,10 @@ def get_sceneparts(scene, root):
                 end_idx = line.find('"', start_idx)
                 if end_idx is None:
                     end_idx = line.find("'", start_idx)
-                scenepart_paths.append(Path(line[start_idx:end_idx]).relative_to(root))
+                sp_path = Path(line[start_idx:end_idx])
+                if sp_path.is_absolute():
+                    sp_path = sp_path.relative_to(root)
+                scenepart_paths.append(sp_path)
     return remove_duplicates(scenepart_paths)
 
 
@@ -100,15 +105,15 @@ for survey in surveys:
     else:
         outzip.write(survey)
 
-    platform_path = get_xml(survey, "platform=")
+    platform_path = get_xml(survey, "platform=", root)
     if platform_path not in [Path(file) for file in outzip.namelist()]:
         outzip.write(platform_path)
 
-    scanner_path = get_xml(survey, "scanner=")
+    scanner_path = get_xml(survey, "scanner=", root)
     if scanner_path not in [Path(file) for file in outzip.namelist()]:
         outzip.write(scanner_path)
 
-    scene_path = get_xml(survey, "scene=")
+    scene_path = get_xml(survey, "scene=", root)
     if scene_path not in [Path(file) for file in outzip.namelist()]:
         outzip.write(scene_path)
 
