@@ -29,7 +29,8 @@ def get_version_number(path):
     try:
         helios_run = subprocess.run([path, "--version"], stdout=subprocess.PIPE, text=True)
     except Exception as e:
-        print("Error. Could not execute helios: " + e)
+        print("Error. Could not execute helios:")
+        print(e)
     idx1 = helios_run.stdout.find("VERSION ") + len("VERSION ")
     idx2 = helios_run.stdout.find("\n", idx1)
     return helios_run.stdout[idx1:idx2]
@@ -51,7 +52,7 @@ def get_xml(survey, search_text):
     return xml_path
 
 
-def get_sceneparts(scene):
+def get_sceneparts(scene, root):
     with open(scene, "r") as scene_file:
         search_text_key = '="filepath"'
         search_text_value = "value="
@@ -62,26 +63,25 @@ def get_sceneparts(scene):
                 end_idx = line.find('"', start_idx)
                 if end_idx is None:
                     end_idx = line.find("'", start_idx)
-                scenepart_paths.append(Path(line[start_idx:end_idx]))
+                scenepart_paths.append(Path(line[start_idx:end_idx]).relative_to(root))
     return remove_duplicates(scenepart_paths)
 
 
 root = Path.cwd()
-survey_path = Path(sys.argv[1])
-executable = Path(sys.argv[2])
+executable = Path(sys.argv[1])
+survey_path = Path(sys.argv[2])
 search_dir = executable.parent.absolute().relative_to(root)
 sys.path.append(str(search_dir)+"/")
 outfile = Path(sys.argv[3])
 allowed_suffixes = [".zip", ".7z", ".rar", ".gz", ".tar"]
 if len(set(allowed_suffixes).intersection(outfile.suffixes)) == 0:
-    print("yup")
     outfile = outfile.with_suffix(".zip")
 
 try:
     import pyhelios
     helios_version = str(pyhelios.getVersion())
 except Exception as e:
-    helios_version = get_version_number(executable)
+    helios_version = get_version_number(str(executable))
 print("Your HELIOS++ version is %s" % helios_version)
 
 print("Writing data")
@@ -112,9 +112,9 @@ for survey in surveys:
     if scene_path not in [Path(file) for file in outzip.namelist()]:
         outzip.write(scene_path)
 
-    scenepart_paths = get_sceneparts(scene_path)
+    scenepart_paths = get_sceneparts(scene_path, root)
     for sp_path in scenepart_paths:
-        if sp_path not in [Path(file) for file in outzip.namelist()]:
+        if Path(sp_path) not in [Path(file) for file in outzip.namelist()]:
             outzip.write(sp_path)
 
 print("Writing assets")
@@ -122,15 +122,15 @@ assets_path = Path("assets").glob("**/*")
 for path in assets_path:
     outzip.write(path)
 
+path = None
 print("Writing run")
 run_path = Path("run").glob("*")
-if sorted(run_path):
-    for path in run_path:
-        if path.parts[-1] != "helios.exe":
-            outzip.write(path)
-    outzip.write(executable)
-    zipurl = None
-else:
+for path in run_path:
+    if path.parts[-1] != "helios.exe":
+        outzip.write(path)
+outzip.write(executable)
+zipurl = None
+if not Path("run").exists():
     print("There is no run-folder in your root directory. Downloading run folder from GitHub repository")
     if platform.system() == "Windows":
         zipurl = "https://github.com/3dgeo-heidelberg/helios/releases/download/v" + helios_version +  "/helios-plusplus-win.zip"
@@ -146,12 +146,13 @@ try:
     idx = content.find(search_text)
     idx_end = content.find(end_text, idx)
     doi = content[idx:idx_end]
-except HTTPError or URLError:
+#except HTTPError or URLError:
+except Exception as e:
     doi = "https://doi.org/10.5281/zenodo.4498305"
     helios_doi_version = "1.0.3"
 
 
-if zipurl:
+if zipurl is not None:
     try:
         zipresp = urlopen(zipurl)
     except HTTPError or URLError:
