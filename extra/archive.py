@@ -40,6 +40,12 @@ def remove_duplicates(a_list):
     return list(dict.fromkeys(a_list))
 
 
+#def replace_abs_path(fileobj, search, replace):
+#        content.replace(search, replace)
+#
+#    return content
+
+
 def get_xml(survey, search_text, root):
     with open(survey, "r") as survey_file:
         search_text_end = "#"
@@ -49,13 +55,18 @@ def get_xml(survey, search_text, root):
                 end_idx = line.find(search_text_end, start_idx)
                 xml_path = Path(line[start_idx:end_idx])
                 if xml_path.is_absolute():
-                    xml_path = xml_path.relative_to(root)
+                    xml_path_new = xml_path.relative_to(root)
+                else:
+                    xml_path_new = xml_path
                 break
-    return xml_path
+
+    return xml_path, xml_path_new
 
 
 def get_sceneparts(scene, root):
     with open(scene, "r") as scene_file:
+        content = scene_file.read()
+        scene_file.seek(0, 0)
         search_text_key = '="filepath"'
         search_text_value = "value="
         scenepart_paths = []
@@ -65,15 +76,20 @@ def get_sceneparts(scene, root):
                 end_idx = line.find('"', start_idx)
                 if end_idx is None:
                     end_idx = line.find("'", start_idx)
-                sp_path = Path(line[start_idx:end_idx])
-                if sp_path.is_absolute():
-                    sp_path = sp_path.relative_to(root)
-                scenepart_paths.append(sp_path)
-    return remove_duplicates(scenepart_paths)
+                sp_path = line[start_idx:end_idx]
+                if Path(sp_path).is_absolute():
+                    abs_path = sp_path
+                    sp_path = Path(sp_path).relative_to(root)
+                    content = content.replace(abs_path, str(sp_path))
+                scenepart_paths.append(Path(sp_path))
+
+    return remove_duplicates(scenepart_paths), content
 
 
 root = Path.cwd()
 executable = Path(sys.argv[1])
+if executable.suffix == "":
+    executable = executable.with_suffix(".exe")
 survey_path = Path(sys.argv[2])
 search_dir = executable.parent.absolute().relative_to(root)
 sys.path.append(str(search_dir)+"/")
@@ -100,27 +116,35 @@ elif survey_path.suffix == ".xml":
 outzip = zipfile.ZipFile(outfile, "w")  # , compression="ZIP_DEFLATED")
 
 for survey in surveys:
-    if survey.is_absolute():
-        outzip.write(survey.relative_to(root))
-    else:
-        outzip.write(survey)
+    scene_path, scene_path_new = get_xml(survey, "scene=", root)
 
-    platform_path = get_xml(survey, "platform=", root)
-    if platform_path not in [Path(file) for file in outzip.namelist()]:
-        outzip.write(platform_path)
-
-    scanner_path = get_xml(survey, "scanner=", root)
-    if scanner_path not in [Path(file) for file in outzip.namelist()]:
-        outzip.write(scanner_path)
-
-    scene_path = get_xml(survey, "scene=", root)
-    if scene_path not in [Path(file) for file in outzip.namelist()]:
-        outzip.write(scene_path)
-
-    scenepart_paths = get_sceneparts(scene_path, root)
+    scenepart_paths, scene_text = get_sceneparts(scene_path, root)
     for sp_path in scenepart_paths:
         if Path(sp_path) not in [Path(file) for file in outzip.namelist()]:
             outzip.write(sp_path)
+
+    if scene_path not in [Path(file) for file in outzip.namelist()]:
+        outzip.writestr(str(scene_path_new), scene_text)
+
+    platform_path, platform_path_new = get_xml(survey, "platform=", root)
+    if platform_path not in [Path(file) for file in outzip.namelist()]:
+        outzip.write(platform_path_new)
+
+    scanner_path, scanner_path_new = get_xml(survey, "scanner=", root)
+    if scanner_path not in [Path(file) for file in outzip.namelist()]:
+        outzip.write(scanner_path_new)
+
+    with open(survey, "r") as survey_file:
+        # replace absolute with relative filepaths
+        content = survey_file.read()
+        content = content.replace(str(scene_path), str(scene_path_new))
+        content = content.replace(str(platform_path), str(platform_path_new))
+        content = content.replace(str(scanner_path), str(scanner_path_new))
+    if survey.is_absolute():
+        outzip.writestr(survey.relative_to(root), content)
+    else:
+        outzip.writestr(str(survey), content)
+
 
 print("Writing assets")
 assets_path = Path("assets").glob("**/*")
