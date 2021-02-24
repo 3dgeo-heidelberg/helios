@@ -19,9 +19,9 @@
                             />
         </leg>-->
 		<leg>
-			<platformSettings x="-3.0" y="-3.0"
+			<platformSettings x="-0.0" y="-3.0"
                             onGround="true"
-                            movePerSec_m="0.01"
+                            movePerSec_m="0.001"
                             />
 			<scannerSettings  active="true"
                             scanAngle_deg = "35"
@@ -30,7 +30,7 @@
                             />
 		</leg>
 		<leg>
-			<platformSettings x="-3.0" y="-3.01"
+			<platformSettings x="-0.0" y="-3.003"
                             onGround="true"
                             movePerSec_m="0.0"
                             />

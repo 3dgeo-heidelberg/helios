@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document>
     <survey name="forwarder" scene="data/scenes/stem_scenes.xml#stem_scene"
-            platform="data/platforms.xml#forwarder"
+            platform="data/platforms.xml#minimal_mov"
             scanner="data/scanners_tls.xml#livox">
 
         <FWFSettings binSize_ns="0.2" beamSampleQuality="3" />
