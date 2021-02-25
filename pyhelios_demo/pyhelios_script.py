@@ -248,7 +248,9 @@ if __name__ == '__main__':
 
         # Parse survey file to extract scene file and then parse the scene file.
         scene = ET.parse(ET.parse(args.survey_file).find('survey').attrib['scene'].split('#')[0])
-
+        # Get scene name from survey file.
+        scene_name = ET.parse(args.survey_file).find('survey').attrib['scene'].split('#')[1]
+        
         # Access XML root of scene file.
         root = scene.getroot()
 
@@ -258,9 +260,11 @@ if __name__ == '__main__':
         for scene_part in root.find('scene'):
 
             scene_part_data = {}
+            # Default value of efilepath is False. Flag is necessary because efilepath scenedef requires different set of steps than regular filepath def.
+            efile_flag = False
 
             for filter in scene_part.findall('filter'):
-
+                
                 # --------------------------------------------------------------------------
                 # GeoTIFF scenepart.
                 # --------------------------------------------------------------------------
@@ -274,40 +278,146 @@ if __name__ == '__main__':
                 # --------------------------------------------------------------------------
                 # Get file path.
                 if filter.attrib['type'] == 'objloader':
-                    scene_part_data['extension'] = '.obj'
-                    scene_part_data['filepath'] = filter.find('param').attrib['value']
+                
+                    # In case of efilepath, create new scenepart dictionary for every obj file in said directory.
+                    # Also get tranformation data and add it to each scenepart.
+                    if filter.find('param').attrib['key'] == 'efilepath':
+                        import os
+                        path = os.path.dirname(filter.find('param').attrib['value'])
+                        
+                        # Set ignore transformation to true to stop appending of tranformation after efilepath process.
+                        efile_flag = True
+                        
+                        translation = False
+                        scale = False
+                        rotate = False
+                        
+                        # Get transformation. 
+                        for filter in scene_part.findall('filter'):
+                        
+                            # Translate filter for point clouds and wavefront objects.
+                            if filter.attrib['type'] == 'translate':
+                                    translation = filter.find('param').attrib['value'].split(';')
+
+                            # Scale filter, is a parameter for each respective scene part datatype.
+                            if filter.attrib['type'] == 'scale':
+                                    scale = float(filter.find('param').attrib['value'])
+
+                            # Rotate filter, is a parameter for each respective scene part datatype.
+                            if filter.attrib['type'] == 'rotate':
+                                    rotate = []
+                                    rotate = filter.attrib['rotations'] if 'rotations' in filter.attrib else 'global'
+                                    for rotation in filter.find('param').findall('rot'):
+                                        rotate.append([rotation.attrib['axis'], rotation.attrib['angle_deg']])
+                                    
+                        for file in os.listdir(path):
+                            scene_part_data = {}
+                            
+                            # Add extension and filepath if file is 
+                            if file.endswith(".obj"):
+                                scene_part_data['extension'] = '.obj'
+                                scene_part_data['filepath'] = os.path.join(path, file)
+                                
+                                # If transformation values exist, add them to scenepart definition of each scenepart file.
+                                if rotate:
+                                    scene_part_data['rotate'] = rotate
+                                if translation:
+                                    scene_part_data['translation'] = translation
+                                if scale:
+                                    scene_part_data['scale'] = scale
+                                scene_parts.append(scene_part_data)
+                    else:
+                        scene_part_data['extension'] = '.obj'
+                        scene_part_data['filepath'] = filter.find('param').attrib['value']
 
                 # --------------------------------------------------------------------------
                 # Point cloud scenepart.
                 # --------------------------------------------------------------------------
                 if filter.attrib['type'] == 'xyzloader':
-                    scene_part_data['extension'] = '.xyz'
+                    
+                    # In case of efilepath, create new scenepart dictionary for every obj file in said directory.
+                    # Also get tranformation data and add it to each scenepart.
+                    if filter.find('param').attrib['key'] == 'efilepath':
+                        import os
+                        path = os.path.dirname(filter.find('param').attrib['value'])
+                        
+                        # Set ignore transformation to true to stop appending of tranformation after efilepath process.
+                        efile_flag = True
+                        
+                        translation = False
+                        scale = False
+                        rotate = False
+                        voxelsize = 1
+                        
+                        # Get transformation. 
+                        for filter in scene_part.findall('filter'):
+                        
+                            # Translate filter for point clouds and wavefront objects.
+                            if filter.attrib['type'] == 'translate':
+                                    translation = filter.find('param').attrib['value'].split(';')
 
-                    # Iterate through (large number of) different params of point cloud.
-                    for param in filter.findall('param'):
-                        if param.attrib['key'] == 'filepath':
-                            scene_part_data['filepath'] = param.attrib['value']
+                            # Scale filter, is a parameter for each respective scene part datatype.
+                            if filter.attrib['type'] == 'scale':
+                                    scale = float(filter.find('param').attrib['value'])
 
-                        if param.attrib['key'] == 'voxelSize':
-                            scene_part_data['voxelsize'] = float(param.attrib['value'])
+                            # Rotate filter, is a parameter for each respective scene part datatype.
+                            if filter.attrib['type'] == 'rotate':
+                                    rotate = []
+                                    rotate = filter.attrib['rotations'] if 'rotations' in filter.attrib else 'global'
+                                    for rotation in filter.find('param').findall('rot'):
+                                        rotate.append([rotation.attrib['axis'], rotation.attrib['angle_deg']])
+                            if filter.attrib['key'] == 'voxelSize':
+                                voxelsize = float(filter.attrib['value'])
+                                    
+                        for file in os.listdir(path):
+                            scene_part_data = {}
+                            
+                            # Add extension and filepath if file is 
+                            if file.endswith(".xyz"):
+                                scene_part_data['extension'] = '.xyz'
+                                scene_part_data['filepath'] = os.path.join(path, file)
+                                scene_part_data['voxelsize'] = voxelsize
+                                
+                                # If transformation values exist, add them to scenepart definition of each scenepart file.
+                                if rotate:
+                                    scene_part_data['rotate'] = rotate
+                                if translation:
+                                    scene_part_data['translation'] = translation
+                                if scale:
+                                    scene_part_data['scale'] = scale
+                                scene_parts.append(scene_part_data)
+                    else:
+                        
+                        scene_part_data['extension'] = '.xyz'
+                        # Iterate through (large number of) different params of point cloud.
+                        for param in filter.findall('param'):
+                            if param.attrib['key'] == 'filepath':
+                                scene_part_data['filepath'] = param.attrib['value']
 
-                # Translate filter for point clouds and wavefront objects.
-                if filter.attrib['type'] == 'translate':
-                    scene_part_data['translation'] = filter.find('param').attrib['value'].split(';')
+                            if param.attrib['key'] == 'voxelSize':
+                                scene_part_data['voxelsize'] = float(param.attrib['value'])
+                
+                # If efilepath used, transformation has already been added to each individual scenepart.
+                if not efile_flag:
+                    # Translate filter for point clouds and wavefront objects.
+                    if filter.attrib['type'] == 'translate':
+                        scene_part_data['translation'] = filter.find('param').attrib['value'].split(';')
 
-                # Scale filter, is a parameter for each respective scene part datatype.
-                if filter.attrib['type'] == 'scale':
-                    scene_part_data['scale'] = float(filter.find('param').attrib['value'])
+                    # Scale filter, is a parameter for each respective scene part datatype.
+                    if filter.attrib['type'] == 'scale':
+                        scene_part_data['scale'] = float(filter.find('param').attrib['value'])
 
-                # Rotate filter, is a parameter for each respective scene part datatype.
-                if filter.attrib['type'] == 'rotate':
-                    scene_part_data['rotate'] = []
-                    scene_part_data['rotate_method'] = filter.attrib['rotations'] if 'rotations' in filter.attrib else 'global'
-                    for rotation in filter.find('param').findall('rot'):
-                        scene_part_data['rotate'].append([rotation.attrib['axis'], rotation.attrib['angle_deg']])
+                    # Rotate filter, is a parameter for each respective scene part datatype.
+                    if filter.attrib['type'] == 'rotate':
+                        scene_part_data['rotate'] = []
+                        scene_part_data['rotate_method'] = filter.attrib['rotations'] if 'rotations' in filter.attrib else 'global'
+                        for rotation in filter.find('param').findall('rot'):
+                            scene_part_data['rotate'].append([rotation.attrib['axis'], rotation.attrib['angle_deg']])
 
-            scene_parts.append(scene_part_data)
-
+            # If efilepath used, sceneparts have already been added to list.
+            if not efile_flag:
+                scene_parts.append(scene_part_data)
+        
         # Create instance of visualizer class. Needed for creation of GUI.
         vis = o3d.visualization.VisualizerWithKeyCallback()
         vis.create_window(window_name="PyHelios Simulation")
@@ -368,6 +478,7 @@ if __name__ == '__main__':
                 scene_part['geometry'] = (o3d.io.read_point_cloud(scene_part['filepath']))
 
                 if 'translation' in scene_part:
+                    print('Translating geometry: ', scene_part['filepath'])
                     # Translate point cloud.
                     # Get points as np array
                     point_cloud = np.asarray(scene_part['geometry'].points)
@@ -379,7 +490,20 @@ if __name__ == '__main__':
 
                     # Update geometry points with new values.
                     scene_part['geometry'].points = o3d.utility.Vector3dVector(point_cloud)
-
+                    
+                '''
+                if 'scale' in scene_part:
+                    print('Scaling geometry: ', scene_part['filepath'])
+                    
+                    # Scale point cloud.
+                    # Get points as np array
+                    point_cloud = np.asarray(scene_part['geometry'].points)
+                    point_cloud = point_cloud*scene_part['scale']
+                    
+                    # Update geometry points with new values.
+                    scene_part['geometry'].points = o3d.utility.Vector3dVector(point_cloud)
+                '''
+                
                 # Set random colours.
                 scene_part['geometry'].colors = o3d.utility.Vector3dVector(
                     np.random.uniform(0, 1, size=(point_cloud.shape[0], 3)))
