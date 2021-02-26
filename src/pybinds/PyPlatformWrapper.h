@@ -43,6 +43,18 @@ public:
 
     void setStopAndTurn(bool stopAndTurn) { platform.stopAndTurn = stopAndTurn; }
 
+    bool isSlowdownEnabled() { return platform.slowdownEnabled; }
+
+    void setSlowdownEnabled(bool slowdownEnabled) { platform.slowdownEnabled = slowdownEnabled; }
+
+    //double getYawAtDeparture() { return platform.yawAtDeparture; }
+
+    //void setYawAtDeparture(double yawAtDeparture) { platform.yawAtDeparture = yawAtDeparture; }
+
+    bool isSmoothTurn() { return platform.smoothTurn; }
+
+    void setSmoothTurn(bool smoothTurn) { platform.smoothTurn = smoothTurn; }
+
     bool isOrientationOnLegInit() { return platform.mSetOrientationOnLegInit; }
 
     void setOrientationOnLegInit(bool setOrientationOnLegInit) { platform.mSetOrientationOnLegInit = setOrientationOnLegInit; }

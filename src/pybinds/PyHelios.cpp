@@ -280,6 +280,21 @@ BOOST_PYTHON_MODULE(pyhelios){
             &PlatformSettings::movePerSec_m,
             &PlatformSettings::movePerSec_m
         )
+        .add_property(
+            "slowdownEnabled",
+            &PlatformSettings::slowdownEnabled,
+            &PlatformSettings::slowdownEnabled
+        )
+        /*.add_property(
+            "yawAtDeparture",
+            &PlatformSettings::yawAtDeparture,
+            &PlatformSettings::yawAtDeparture
+        )*/
+        .add_property(
+            "smoothTurn",
+            &PlatformSettings::smoothTurn,
+            &PlatformSettings::smoothTurn
+        )
     ;
 
     // Register Leg
@@ -782,6 +797,21 @@ BOOST_PYTHON_MODULE(pyhelios){
             "stopAndTurn",
             &PyPlatformWrapper::isStopAndTurn,
             &PyPlatformWrapper::setStopAndTurn
+        )
+        .add_property(
+            "slowdownEnabled",
+            &PyPlatformWrapper::isSlowdownEnabled,
+            &PyPlatformWrapper::setSlowdownEnabled
+        )
+        /*.add_property(
+            "yawAtDeparture",
+            &PyPlatformWrapper::getYawAtDeparture,
+            &PyPlatformWrapper::setYawAtDeparture
+        )*/
+        .add_property(
+            "smoothTurn",
+            &PyPlatformWrapper::isSmoothTurn,
+            &PyPlatformWrapper::setSmoothTurn
         )
         .add_property(
             "mSetOrientationOnLegInit",
