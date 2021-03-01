@@ -103,7 +103,9 @@ void VoxelFileParser::loadFile(
         }
         inFile.close();
     }catch(std::exception &ex){
-        logging::WARN(std::string("VoxelFileParser::loadFile EXCEPTION:\n\t")+ex.what());
+        logging::ERR(std::string("VoxelFileParser::loadFile EXCEPTION:\n\t") +
+            ex.what()
+        );
         throw HeliosException("Could not load file '" + path + "'" );
     }
 

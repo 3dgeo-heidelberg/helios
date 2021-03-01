@@ -8,6 +8,14 @@
 #include <boost/archive/binary_iarchive.hpp>
 namespace fs = boost::filesystem;
 
+char const FileUtils::pathSeparator =
+#ifdef _WIN32
+'\\'
+#else
+'/'
+#endif
+;
+
 
 std::vector<std::string> FileUtils::handleFilePath(
     std::map<std::string, ObjectT> & params

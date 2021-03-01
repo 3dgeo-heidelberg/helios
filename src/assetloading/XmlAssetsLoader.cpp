@@ -37,6 +37,7 @@ namespace fs = boost::filesystem;
 #include "XmlAssetsLoader.h"
 #include <NormalNoiseSource.h>
 #include <UniformNoiseSource.h>
+#include <FileUtils.h>
 
 #include "MathConverter.h"
 
@@ -51,7 +52,7 @@ XmlAssetsLoader::XmlAssetsLoader(std::string& filePath, std::string& assetsDir)
 
 	tinyxml2::XMLError result = doc.LoadFile(filePath.c_str());
 	if (result != tinyxml2::XML_SUCCESS) {
-		logging::WARN("ERROR: loading " + filePath + " failed.");
+		logging::ERR("ERROR: loading " + filePath + " failed.");
 	}
 }
 
@@ -935,6 +936,7 @@ std::shared_ptr<Asset> XmlAssetsLoader::getAssetById(
     std::string type,
     std::string id
 ){
+    std::string errorMsg = "# DEF ERR MSG #";
 	try {
 	    tinyxml2::XMLElement* assetNodes = doc.FirstChild()->NextSibling()->FirstChildElement(type.c_str());
 		
@@ -947,19 +949,27 @@ std::shared_ptr<Asset> XmlAssetsLoader::getAssetById(
             assetNodes = assetNodes->NextSiblingElement(type.c_str());
 	    }
 
-	    logging::WARN(
-	        "ERROR: "+type+" asset definition not found: "+
-	        this->xmlDocFilePath+"#"+id
-        );
+	    std::stringstream ss;
+        ss  << "ERROR: " << type << " asset definition not found: "
+            << this->xmlDocFilePath << FileUtils::pathSeparator
+            << this->xmlDocFilename << "#" << id
+            << "\nExecution aborted!";
+        errorMsg = ss.str();
+        logging::ERR(errorMsg);
 
 	} catch (std::exception &e) {
-		logging::WARN(
-		    "ERROR: Failed to read " + type + " asset definition: " +
-		    this->xmlDocFilePath + "#" + id + "\nEXCEPTION: " + e.what()
-        );
+	    std::stringstream ss;
+	    ss  << "ERROR: Failed to read " << type << " asset definition: "
+	        << this->xmlDocFilePath << FileUtils::pathSeparator
+	        << this->xmlDocFilename << "#" << id
+	        << "\nEXCEPTION: " << e.what()
+	        << "\nExecution aborted!";
+	    errorMsg = ss.str();
+		logging::ERR(errorMsg);
 	}
 
-	return NULL;
+	throw HeliosException(errorMsg);
+	return nullptr;
 }
 
 std::shared_ptr<Asset> XmlAssetsLoader::getAssetByLocation(
@@ -1026,7 +1036,7 @@ ObjectT XmlAssetsLoader::getAttribute(
 			result = attrVal;
 		}
 		else {
-			logging::WARN("ERROR: unknown type " + type);
+			logging::ERR("ERROR: unknown type " + type);
 		}
 	}
 

@@ -21,7 +21,7 @@ shared_ptr<Survey> XmlSurveyLoader::load(
 ){
 	tinyxml2::XMLNode* pRoot = doc.FirstChild();
 	if (pRoot == nullptr) {
-		logging::WARN("ERROR: xml root not found");
+		logging::ERR("ERROR: xml root not found");
 		return nullptr;
 	}
 	tinyxml2::XMLElement* surveyNodes = pRoot->NextSibling()->FirstChildElement("survey");

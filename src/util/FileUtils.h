@@ -13,6 +13,15 @@
  */
 class FileUtils{
 public:
+    // ***  CONSTANTS  *** //
+    // ******************* //
+    /**
+     * @brief Path separator constant
+     */
+    static char const pathSeparator;
+
+    // ***  METHODS  *** //
+    // ***************** //
     /**
      * @brief Handle a the filepath or efilepath argument from a map of
      * parameters in the context of geometry loading

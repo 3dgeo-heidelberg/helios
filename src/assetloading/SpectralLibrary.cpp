@@ -35,7 +35,7 @@ void SpectralLibrary::readFileAster(fs::path path) {
 		ifstream ins(path.string(), ifstream::binary);
 		if (!ins.is_open()) {
 
-			logging::WARN("failed to open " + path.string());
+			logging::ERR("failed to open " + path.string());
 			throw exception();
 		}
 		float wavelength = 0;
@@ -86,7 +86,7 @@ void SpectralLibrary::readReflectances() {
 	logging::INFO("Reading Spectral Library...");
 
 	if (!fs::is_directory(spectra)) {
-		logging::WARN("Error: folder " + spectra + " not found");
+		logging::ERR("ERROR: folder " + spectra + " not found");
 		return;
 	}
 
