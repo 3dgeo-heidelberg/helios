@@ -2,6 +2,7 @@
 
 #include <memory>
 #include <string>
+#include <unordered_map>
 
 #include <tinyxml2.h>
 
@@ -34,6 +35,17 @@ protected:
 	 * @brief Path to the XML file
 	 */
 	std::string xmlDocFilePath = "";
+
+	/**
+	 * @brief Map containing all scanner templates that were loading while
+	 *  building from XML file. No repetitions, each template appears only
+	 *  one time.
+	 *
+	 * The id of the template is used as the key, while the template itself
+	 *  is the value (ScannerSettings object)
+	 */
+	std::unordered_map<std::string, std::shared_ptr<ScannerSettings>>
+	    scannerTemplates;
 
 public:
     /**

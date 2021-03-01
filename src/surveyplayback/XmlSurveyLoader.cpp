@@ -204,17 +204,17 @@ shared_ptr<Survey> XmlSurveyLoader::createSurveyFromXml(
 
     tinyxml2::XMLElement * attitudeXNoise =
         surveyNode->FirstChildElement("attitudeXNoise");
-    if(attitudeXNoise != NULL)
+    if(attitudeXNoise != nullptr)
         survey->scanner->platform->attitudeXNoiseSource =
             createNoiseSource(attitudeXNoise);
     tinyxml2::XMLElement * attitudeYNoise =
         surveyNode->FirstChildElement("attitudeYNoise");
-    if(attitudeYNoise != NULL)
+    if(attitudeYNoise != nullptr)
         survey->scanner->platform->attitudeYNoiseSource =
             createNoiseSource(attitudeYNoise);
     tinyxml2::XMLElement * attitudeZNoise =
         surveyNode->FirstChildElement("attitudeZNoise");
-    if(attitudeZNoise != NULL)
+    if(attitudeZNoise != nullptr)
         survey->scanner->platform->attitudeZNoiseSource =
             createNoiseSource(attitudeZNoise);
     // ### END platform noise (overriding platform.xml spec if necessary) ###
@@ -227,13 +227,13 @@ shared_ptr<Leg> XmlSurveyLoader::createLegFromXML(tinyxml2::XMLElement* legNode)
 
 	tinyxml2::XMLElement* platformSettingsNode = legNode->FirstChildElement("platformSettings");
 
-	if (platformSettingsNode != NULL) {
+	if (platformSettingsNode != nullptr) {
 		leg->mPlatformSettings = createPlatformSettingsFromXml(platformSettingsNode);
 	}
 
 	tinyxml2::XMLElement* scannerSettingsNode = legNode->FirstChildElement("scannerSettings");
 
-	if (scannerSettingsNode != NULL) {
+	if (scannerSettingsNode != nullptr) {
 		leg->mScannerSettings = createScannerSettingsFromXml(scannerSettingsNode);
 	}
 	else {

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Asset.h"
+#include <memory>
 
 /**
  * @brief Scanner settings class
@@ -10,6 +11,18 @@ class ScannerSettings : public Asset {
 public:
     // ***  ATTRIBUTES  *** //
     // ******************** //
+    /**
+     * @brief The ID for this scanner settings.
+     * It does not make sense for all scanner settings, but it is specially
+     * useful when it comes to handling XML templates
+     */
+    std::string id = "#nullid#";
+    /**
+     * @brief Template defining default values which was used to build the
+     *  ScannerSettings object
+     */
+    std::shared_ptr<ScannerSettings> baseTemplate = nullptr;
+
     /**
      * @brief Flag to specify if scanner is active (true) or not (false)
      *
@@ -90,4 +103,22 @@ public:
 		this->pulseLength_ns = other->pulseLength_ns;
 		this->trajectoryTimeInterval = other->trajectoryTimeInterval;
 	}
+
+	// ***  GETTERS and SETTERS  *** //
+	// ***************************** //
+	/**
+	 * @brief Check if this ScannerSettings has an associated template (true)
+	 *  or not (false)
+	 * @return True when there is an associated template, false otherwise
+	 * @see ScannerSettings::baseTemplate
+	 * @see ScannerSettings::hasTemplate
+	 */
+	bool hasTemplate() {return this->baseTemplate != nullptr;}
+	/**
+	 * @brief Obtain template by reference
+	 * @return Reference to template associated to this ScannerSettings
+	 * @see ScannerSettings::baseTemplate
+	 * @see ScannerSettings::hasTemplate
+	 */
+	ScannerSettings & getTemplate() {return *this->baseTemplate;}
 };

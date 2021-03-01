@@ -258,6 +258,20 @@ BOOST_PYTHON_MODULE(pyhelios){
             &ScannerSettings::trajectoryTimeInterval,
             &ScannerSettings::trajectoryTimeInterval
         )
+        .add_property(
+            "id",
+            &ScannerSettings::id,
+            &ScannerSettings::id
+        )
+        .def(
+            "hasTemplate",
+            &ScannerSettings::hasTemplate
+        )
+        .def(
+            "getTemplate",
+            &ScannerSettings::getTemplate,
+            return_internal_reference<>()
+        )
     ;
 
     // Register PlatformSettings
@@ -285,11 +299,11 @@ BOOST_PYTHON_MODULE(pyhelios){
             &PlatformSettings::slowdownEnabled,
             &PlatformSettings::slowdownEnabled
         )
-        /*.add_property(
+        .add_property(
             "yawAtDeparture",
             &PlatformSettings::yawAtDeparture,
             &PlatformSettings::yawAtDeparture
-        )*/
+        )
         .add_property(
             "smoothTurn",
             &PlatformSettings::smoothTurn,

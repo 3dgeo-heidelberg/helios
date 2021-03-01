@@ -564,6 +564,7 @@ std::shared_ptr<ScannerSettings> XmlAssetsLoader::createScannerSettingsFromXml(
 	std::shared_ptr<ScannerSettings> settings(new ScannerSettings());
 	std::shared_ptr<ScannerSettings> template1(new ScannerSettings());
 
+	template1->id = "DEFAULT_TEMPLATE1_HELIOSCPP";
 	template1->active = true;
 	template1->headRotatePerSec_rad = 0;
 	template1->headRotateStart_rad = 0;
@@ -574,17 +575,25 @@ std::shared_ptr<ScannerSettings> XmlAssetsLoader::createScannerSettingsFromXml(
 	template1->verticalAngleMax_rad = 0;
 	template1->scanFreq_Hz = 0;
 
-	if (node->Attribute("template") != NULL) {
-		std::shared_ptr<ScannerSettings> bla =
-		    std::dynamic_pointer_cast<ScannerSettings>(
-		        getAssetByLocation(
-		            "scannerSettings",
-		            node->Attribute("template")
+	if (node->Attribute("template") != nullptr) {
+	    std::string templateId = node->Attribute("template");
+		std::shared_ptr<ScannerSettings> bla = nullptr;
+		if(scannerTemplates.find(templateId) == scannerTemplates.end()) {
+		    // If scanner template has not been loaded yet, load it
+            bla = std::dynamic_pointer_cast<ScannerSettings>(
+                getAssetByLocation(
+                    "scannerSettings",
+                    node->Attribute("template")
                 )
             );
-		if (bla != NULL) {
+            bla->id = templateId;
+            scannerTemplates.emplace(templateId, bla);
+        }
+		else{ // If scanner template has been loaded, then use already loaded
+            bla = scannerTemplates[templateId];
+		}
+		if (bla != nullptr) {
 			template1 = bla;
-
 			// ATTENTION:
 			// We need to temporarily convert the head rotation settings from radians back to degrees, since degrees
 			// is the unit in which they are read from the XML, and below, the template settings are used as defaults
@@ -618,16 +627,18 @@ std::shared_ptr<ScannerSettings> XmlAssetsLoader::createScannerSettingsFromXml(
 		    std::stringstream ss;
 		    ss << "XML Assets Loader: " <<
                 "WARNING: Scanner settings template specified in line " <<
-                node->GetLineNum() + " not found: '" <<
+                node->GetLineNum() << " not found: '" <<
 				"Using hard-coded defaults instead.";
             logging::WARN(ss.str());
 		}
 	}
 
+	settings->baseTemplate = template1;
 	settings->active = boost::get<bool>(getAttribute(
 	    node, "active", "bool", template1->active));
-	settings->beamSampleQuality = boost::get<int>(
-	    getAttribute(node, "beamSampleQuality", "int", template1->beamSampleQuality));
+	settings->beamSampleQuality = boost::get<int>(getAttribute(
+	    node, "beamSampleQuality", "int", template1->beamSampleQuality
+    ));
 	settings->headRotatePerSec_rad = MathConverter::degreesToRadians(
 	    boost::get<double>(getAttribute(
 	        node, "headRotatePerSec_deg", "double",
