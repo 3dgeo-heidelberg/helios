@@ -8,6 +8,7 @@ var annotated_dup =
       [ "PlatformPhysicsTest", "d6/d96/classHeliosTests_1_1PlatformPhysicsTest.html", "d6/d96/classHeliosTests_1_1PlatformPhysicsTest" ],
       [ "RandomTest", "db/dcd/classHeliosTests_1_1RandomTest.html", "db/dcd/classHeliosTests_1_1RandomTest" ],
       [ "RayIntersectionTest", "d4/dba/classHeliosTests_1_1RayIntersectionTest.html", "d4/dba/classHeliosTests_1_1RayIntersectionTest" ],
+      [ "ScenePartSplitTest", "d5/d2a/classHeliosTests_1_1ScenePartSplitTest.html", "d5/d2a/classHeliosTests_1_1ScenePartSplitTest" ],
       [ "SerializationTest", "df/da1/classHeliosTests_1_1SerializationTest.html", "df/da1/classHeliosTests_1_1SerializationTest" ],
       [ "SurveyCopyTest", "de/d9c/classHeliosTests_1_1SurveyCopyTest.html", "de/d9c/classHeliosTests_1_1SurveyCopyTest" ],
       [ "VoxelParsingTest", "da/d8d/classHeliosTests_1_1VoxelParsingTest.html", "da/d8d/classHeliosTests_1_1VoxelParsingTest" ]
@@ -73,6 +74,7 @@ var annotated_dup =
     [ "PyHeliosException", "d1/d0f/classPyHeliosException.html", "d1/d0f/classPyHeliosException" ],
     [ "PyHeliosOutputWrapper", "de/da4/classPyHeliosOutputWrapper.html", "de/da4/classPyHeliosOutputWrapper" ],
     [ "PyHeliosSimulation", "d3/d76/classPyHeliosSimulation.html", "d3/d76/classPyHeliosSimulation" ],
+    [ "PyHeliosUtils", "d6/d41/classPyHeliosUtils.html", "d6/d41/classPyHeliosUtils" ],
     [ "PyIntegerList", "d6/de0/classPyIntegerList.html", "d6/de0/classPyIntegerList" ],
     [ "PyMeasurementVectorWrapper", "df/d26/classPyMeasurementVectorWrapper.html", "df/d26/classPyMeasurementVectorWrapper" ],
     [ "PyMeasurementWrapper", "da/d9a/classPyMeasurementWrapper.html", "da/d9a/classPyMeasurementWrapper" ],

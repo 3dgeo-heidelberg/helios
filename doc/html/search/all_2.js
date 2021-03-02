@@ -1,6 +1,7 @@
 var searchData=
 [
   ['b',['b',['../d6/d44/classVoxel.html#ad0d8bf678c6a673313f2faad373d2dcf',1,'Voxel']]],
+  ['basetemplate',['baseTemplate',['../d0/d23/classScannerSettings.html#af1984f07114e89c789afd105b3f1f371',1,'ScannerSettings']]],
   ['basetest',['BaseTest',['../d9/d52/classHeliosTests_1_1BaseTest.html',1,'HeliosTests::BaseTest'],['../d9/d52/classHeliosTests_1_1BaseTest.html#ad4389cad0216026e48543cdb4095efbf',1,'HeliosTests::BaseTest::BaseTest()']]],
   ['batchsize',['batchSize',['../d6/d03/classXYZPointCloudFileLoader.html#a1c651c3912d41261b997c29d00b155a9',1,'XYZPointCloudFileLoader']]],
   ['bbox',['bbox',['../d6/d44/classVoxel.html#abb6ccf8e56e919d083d282c6d9152530',1,'Voxel::bbox()'],['../d5/d9c/classScene.html#a012be28a1b960338f634d5fec54c5330',1,'Scene::bbox()']]],
@@ -16,6 +17,7 @@ var searchData=
   ['beta',['BETA',['../d1/d2b/classMarquardtFitter.html#aea14c157fe30ada0174c309dc69c556e',1,'MarquardtFitter']]],
   ['binsize_5fns',['binSize_ns',['../d4/dfb/classFWFSettings.html#a07274de10710a51846ba5a07f8d9a220',1,'FWFSettings']]],
   ['blank_5fcharacters',['BLANK_CHARACTERS',['../d9/ddf/classVoxelFileParser.html#a08f8426398c5b71b60420ad49ee8c963',1,'VoxelFileParser']]],
+  ['bounds',['bounds',['../d2/d1a/classAABB.html#af41b9802252d42310200694c104d6499',1,'AABB']]],
   ['bruteparsedetailed',['bruteParseDetailed',['../d9/ddf/classVoxelFileParser.html#ae71162e8c99f8df851732367c12898f9',1,'VoxelFileParser']]],
   ['buffer',['buffer',['../d3/dec/classMeasurementsBuffer.html#ae724179a2fe1328c4488e50026b7ff26',1,'MeasurementsBuffer']]],
   ['build',['build',['../d9/d6b/classNoiseSource.html#af229b3d574ff1135fbb7b710cb7318a2',1,'NoiseSource::build()'],['../d0/d64/classKDTreeNodeRoot.html#a899e82ab716e46d8fdd29678c2e0c2a4',1,'KDTreeNodeRoot::build()']]],

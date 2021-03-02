@@ -18,6 +18,7 @@ var classArgumentsParser =
     [ "parseRebuildScene", "d7/d5c/classArgumentsParser.html#aa20e345afd89b97e9ff03b77eea1acb9", null ],
     [ "parseSeed", "d7/d5c/classArgumentsParser.html#aa0b6a0e12b46d2cc8b64e2b5c385cda9", null ],
     [ "parseSurveyPath", "d7/d5c/classArgumentsParser.html#a22628bb734395a2c0c4a1be378bef422", null ],
+    [ "parseTestDir", "d7/d5c/classArgumentsParser.html#a9e0c4fdd2cfc193ed919e727a0330513", null ],
     [ "parseTestRequest", "d7/d5c/classArgumentsParser.html#a6efe2336824af3715f8d810389518395", null ],
     [ "parseUnzip", "d7/d5c/classArgumentsParser.html#af22c5f8a91023f9f1c56611800ec553b", null ],
     [ "parseWriteWaveform", "d7/d5c/classArgumentsParser.html#afe88924622795980c6e92b98c85e7fbb", null ],

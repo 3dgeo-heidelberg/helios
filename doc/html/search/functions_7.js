@@ -150,6 +150,7 @@ var searchData=
   ['getsupportedpulsefrequencies',['getSupportedPulseFrequencies',['../dc/d42/classScanner.html#a03a379d6afbb13b9f5f1d171d1e1f152',1,'Scanner']]],
   ['getsurvey',['getSurvey',['../d3/d76/classPyHeliosSimulation.html#a5a55b7103aa4d2fae229a2352f822905',1,'PyHeliosSimulation']]],
   ['getsurveypath',['getSurveyPath',['../d3/d76/classPyHeliosSimulation.html#aabc09307be680576c4105c25fff0b28a',1,'PyHeliosSimulation']]],
+  ['gettemplate',['getTemplate',['../d0/d23/classScannerSettings.html#a1fd03e0a409115c15b37d84b1c1d1ec2',1,'ScannerSettings']]],
   ['gettimewave',['getTimeWave',['../dc/d42/classScanner.html#aea7abb871b697faec9607edc72a79bbd',1,'Scanner']]],
   ['gettrajectoryoutputpath',['getTrajectoryOutputPath',['../d6/da1/classSurveyPlayback.html#ab2a9bb88a92ea8e6c3a4bcf95abce254',1,'SurveyPlayback']]],
   ['getvectortotarget',['getVectorToTarget',['../df/d1e/classPlatform.html#a07da18307aa452893333427db8bdfa2c',1,'Platform']]],

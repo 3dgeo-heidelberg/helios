@@ -2,7 +2,7 @@ var searchData=
 [
   ['ladlut',['LadLut',['../d9/d22/classLadLut.html',1,'LadLut'],['../dd/dc4/classScenePart.html#ab97c85e1d868194353a4274f98d8b5f4',1,'ScenePart::ladlut()'],['../d9/d22/classLadLut.html#ac7dc4bf9857a7076a8fc0460997567ed',1,'LadLut::LadLut()']]],
   ['ladlutloader',['LadLutLoader',['../de/d6b/classLadLutLoader.html',1,'LadLutLoader'],['../de/d6b/classLadLutLoader.html#a0dbdd87478e9ce469a3090ad93cdd25d',1,'LadLutLoader::LadLutLoader()']]],
-  ['ladluttest',['LadLutTest',['../dd/df9/classHeliosTests_1_1LadLutTest.html',1,'HeliosTests::LadLutTest'],['../dd/df9/classHeliosTests_1_1LadLutTest.html#a30461b4ec8f8fa57b0dd72a828d3f014',1,'HeliosTests::LadLutTest::LadLutTest()']]],
+  ['ladluttest',['LadLutTest',['../dd/df9/classHeliosTests_1_1LadLutTest.html',1,'HeliosTests::LadLutTest'],['../dd/df9/classHeliosTests_1_1LadLutTest.html#ae13b3c0ecb23d9e149aa6b70400deb9c',1,'HeliosTests::LadLutTest::LadLutTest()']]],
   ['lambda',['LAMBDA',['../d1/d2b/classMarquardtFitter.html#a80d09545e15e84af3b566192e63de214',1,'MarquardtFitter']]],
   ['lasoutput',['lasOutput',['../d8/d6b/classAbstractDetector.html#a70d7c482e01b01231e6d1d6af7c69774',1,'AbstractDetector::lasOutput()'],['../d6/da1/classSurveyPlayback.html#a1b2a23d061084f30108d2115cbfe313e',1,'SurveyPlayback::lasOutput()']]],
   ['lasscale',['lasScale',['../d8/d6b/classAbstractDetector.html#aae600568ef0e70601193f2a0006b93c3',1,'AbstractDetector']]],
@@ -11,6 +11,7 @@ var searchData=
   ['last_5freopen',['last_reopen',['../d8/d63/classfile__logger.html#a5dc97d5b89f897216e9ae5b881265685',1,'file_logger']]],
   ['lastcheckz',['lastCheckZ',['../df/d1e/classPlatform.html#a22ad88a8ce46e0b0043d252ca856aace',1,'Platform']]],
   ['lastgroundcheck',['lastGroundCheck',['../df/d1e/classPlatform.html#a9bf408d82ba72c2750ff1253cbe4b78d',1,'Platform']]],
+  ['lastnumvoxels',['lastNumVoxels',['../d6/d03/classXYZPointCloudFileLoader.html#a46ea40e1e3eeb38dc55f3780deb2d9d2',1,'XYZPointCloudFileLoader']]],
   ['lastpulseleftdevice',['lastPulseLeftDevice',['../d7/d92/classAbstractBeamDeflector.html#ae45b6eb2f3596a65b5b278521610b0c9',1,'AbstractBeamDeflector::lastPulseLeftDevice()'],['../db/d7e/classPolygonMirrorBeamDeflector.html#ab02b19f592551bfebba9c496956402e3',1,'PolygonMirrorBeamDeflector::lastPulseLeftDevice()']]],
   ['lastpulsewashit',['lastPulseWasHit',['../dc/d42/classScanner.html#a7421916eb913355b9cac1b26f8eb953d',1,'Scanner']]],
   ['lastsign',['lastSign',['../db/d69/classHelicopterPlatform.html#a2dcfe4799486ac1e7e1b4fac1d25431e',1,'HelicopterPlatform']]],

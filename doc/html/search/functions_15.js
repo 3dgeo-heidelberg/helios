@@ -7,6 +7,6 @@ var searchData=
   ['vertex',['Vertex',['../d2/da0/classVertex.html#ae2152b82b92f1522812a1e2bb8c32ba5',1,'Vertex']]],
   ['voxel',['Voxel',['../d6/d44/classVoxel.html#a2a39138e73cedf56a2b9a9e2f28a2c5d',1,'Voxel::Voxel()=default'],['../d6/d44/classVoxel.html#a13fc18a3aefca7e9d9a04c2eec4ec366',1,'Voxel::Voxel(glm::dvec3 center, double voxelSize)'],['../d6/d44/classVoxel.html#a4da51b73b1521e7e7e4614f0c5b42172',1,'Voxel::Voxel(double x, double y, double z, double halfVoxelSize)']]],
   ['voxelfileparser',['VoxelFileParser',['../d9/ddf/classVoxelFileParser.html#aacfe87951117d8b72c1709751a27f787',1,'VoxelFileParser']]],
-  ['voxelparsingtest',['VoxelParsingTest',['../da/d8d/classHeliosTests_1_1VoxelParsingTest.html#a8ff986b33b3c4a8054a8bf47a26926b0',1,'HeliosTests::VoxelParsingTest']]],
+  ['voxelparsingtest',['VoxelParsingTest',['../da/d8d/classHeliosTests_1_1VoxelParsingTest.html#a5a44670a18e986c0324180950be4891c',1,'HeliosTests::VoxelParsingTest']]],
   ['voxelsgridtoscenepart',['voxelsGridToScenePart',['../d6/d03/classXYZPointCloudFileLoader.html#a25b7bb04cfbda40824d1bed040dadb2e',1,'XYZPointCloudFileLoader']]]
 ];

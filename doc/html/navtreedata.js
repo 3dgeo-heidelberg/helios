@@ -22,14 +22,14 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 ".html",
-"d2/d51/classTriangle.html#a3658a5bff29b9881b6e46c594ba06b3b",
-"d3/dbe/FullWaveformPulseDetector_8h_source.html",
-"d6/d03/classXYZPointCloudFileLoader.html#aa4abebcf0131e85079d6848209bf8c8d",
-"d7/d5a/classDetailedVoxel.html",
-"d9/d22/classLadLut.html",
-"db/d69/classHelicopterPlatform.html#a5db6362a800f7c95618ff98255fe5488",
-"dc/da7/classScannerHead.html#a232b2e2585dae91c0515d3b6c9f89b8a",
-"df/d5a/classTranslateFilter.html#ad2873f3b3d9b815e3f0c9eee086504af"
+"d2/d51/classTriangle.html#a10a167adac697a8b7837f25741582b52",
+"d3/d89/classMaterial.html#ab53d06bd8262886bd96970fb6123a8c8",
+"d6/d03/ScenePart_8h_source.html",
+"d6/de0/classPyIntegerList.html#ad49c1a11f60cff59e0fcb9dc382ba99d",
+"d8/dc2/classPyDoubleVector.html#aa1a212830c42a7530c297a7c2d21155a",
+"db/d2e/classMeasurement.html#ac537713b6754711cd47677703bbb632e",
+"dc/d6e/classRandomnessGenerator.html#a401ccf936cff07a52298b0939150af30",
+"df/d1e/classPlatform.html#ae864cbab492ab021fe49031a3c7bcf91"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

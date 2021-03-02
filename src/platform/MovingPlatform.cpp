@@ -66,9 +66,9 @@ void MovingPlatform::initLegManual() {
     );
     if(angle > eps){ // If direct computation failed
         std::stringstream ss;
-        ss  << "It was not possible to determine attitude with a single  "
+        ss  << "It was not possible to determine attitude with a single "
             << "computation at MovingPlatform::initLegManual\n\t"
-            << "angle = " << angle << " but it should below " << eps
+            << "angle = " << angle << " but it should be below " << eps
             << "\n\tUsing iterative computation instead";
         logging::WARN(ss.str());
         initLegManualIterative();

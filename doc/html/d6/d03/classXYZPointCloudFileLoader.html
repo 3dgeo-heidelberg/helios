@@ -162,6 +162,9 @@ static int const&#160;</td><td class="memItemRight" valign="bottom"><a class="el
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
+<tr class="memitem:a533ee095a113fabfc4e6b29e70a3b53d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d03/classXYZPointCloudFileLoader.html#a533ee095a113fabfc4e6b29e70a3b53d">parse</a> (std::string const &amp;filePath)</td></tr>
+<tr class="memdesc:a533ee095a113fabfc4e6b29e70a3b53d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parse XYZ file.  <a href="#a533ee095a113fabfc4e6b29e70a3b53d">More...</a><br /></td></tr>
+<tr class="separator:a533ee095a113fabfc4e6b29e70a3b53d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af0c6399f452601d947eb88e70ee52aa0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d03/classXYZPointCloudFileLoader.html#af0c6399f452601d947eb88e70ee52aa0">firstPass</a> (string const &amp;filePathString, ifstream &amp;ifs)</td></tr>
 <tr class="memdesc:af0c6399f452601d947eb88e70ee52aa0"><td class="mdescLeft">&#160;</td><td class="mdescRight">First pass of input file used to find essential information needed to successfully abstract the point cloud to voxels.  <a href="#af0c6399f452601d947eb88e70ee52aa0">More...</a><br /></td></tr>
 <tr class="separator:af0c6399f452601d947eb88e70ee52aa0"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -311,6 +314,10 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="..
 size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d03/classXYZPointCloudFileLoader.html#a39bdf4f3c5dd49bd90925967a9fce0c0">numBatches</a></td></tr>
 <tr class="memdesc:a39bdf4f3c5dd49bd90925967a9fce0c0"><td class="mdescLeft">&#160;</td><td class="mdescRight">How many batches are necessary to estimate normals. <br /></td></tr>
 <tr class="separator:a39bdf4f3c5dd49bd90925967a9fce0c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a46ea40e1e3eeb38dc55f3780deb2d9d2"><td class="memItemLeft" align="right" valign="top"><a id="a46ea40e1e3eeb38dc55f3780deb2d9d2"></a>
+size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d03/classXYZPointCloudFileLoader.html#a46ea40e1e3eeb38dc55f3780deb2d9d2">lastNumVoxels</a></td></tr>
+<tr class="memdesc:a46ea40e1e3eeb38dc55f3780deb2d9d2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Used to correctly report number of voxels for each part when reading multiple files at once (i.e. efilepath is given) <br /></td></tr>
+<tr class="separator:a46ea40e1e3eeb38dc55f3780deb2d9d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
@@ -696,6 +703,40 @@ std::map&lt; std::string, <a class="el" href="../../d3/d89/classMaterial.html">M
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>True if line is a comment, false otherwise </dd></dl>
+
+</div>
+</div>
+<a id="a533ee095a113fabfc4e6b29e70a3b53d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a533ee095a113fabfc4e6b29e70a3b53d">&#9670;&nbsp;</a></span>parse()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void XYZPointCloudFileLoader::parse </td>
+          <td>(</td>
+          <td class="paramtype">std::string const &amp;&#160;</td>
+          <td class="paramname"><em>filePath</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Parse XYZ file. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">filePath</td><td>Path to XYZ file to be parsed </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

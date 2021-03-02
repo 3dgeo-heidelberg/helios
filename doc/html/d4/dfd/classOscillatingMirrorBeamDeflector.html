@@ -132,6 +132,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>_clone</b> (std::shar
 <tr class="separator:ad874586cc9bac70f8a341db3731fd9f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5f4656b37019afef7a2477ae8ef1a587"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/dfd/classOscillatingMirrorBeamDeflector.html#a5f4656b37019afef7a2477ae8ef1a587">doSimStep</a> () override</td></tr>
 <tr class="separator:a5f4656b37019afef7a2477ae8ef1a587"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9c4e402ecd8d6dffbc5c851c71c1015b"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/dfd/classOscillatingMirrorBeamDeflector.html#a9c4e402ecd8d6dffbc5c851c71c1015b">computeTurningVelocityOffset</a> ()</td></tr>
+<tr class="memdesc:a9c4e402ecd8d6dffbc5c851c71c1015b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the turning velocity offset.  <a href="#a9c4e402ecd8d6dffbc5c851c71c1015b">More...</a><br /></td></tr>
+<tr class="separator:a9c4e402ecd8d6dffbc5c851c71c1015b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa394ab40e0133c9c11cd81ffe9dacbf8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/dfd/classOscillatingMirrorBeamDeflector.html#aa394ab40e0133c9c11cd81ffe9dacbf8">setScanAngle_rad</a> (double scanAngle_rad) override</td></tr>
 <tr class="separator:aa394ab40e0133c9c11cd81ffe9dacbf8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af38ad1e69a823b19755385c1639c8e3e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/dfd/classOscillatingMirrorBeamDeflector.html#af38ad1e69a823b19755385c1639c8e3e">setScanFreq_Hz</a> (double scanFreq_Hz) override</td></tr>
@@ -160,10 +163,34 @@ int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../..
 int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/dfd/classOscillatingMirrorBeamDeflector.html#aad09aab136c10bc85619ce30cb78a4ac">currentScanLinePulse</a> = 0</td></tr>
 <tr class="memdesc:aad09aab136c10bc85619ce30cb78a4ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Current scan line pulse. <br /></td></tr>
 <tr class="separator:aad09aab136c10bc85619ce30cb78a4ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1f54f84e93cd6eebc584ee857cfe5c9f"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/dfd/classOscillatingMirrorBeamDeflector.html#a1f54f84e93cd6eebc584ee857cfe5c9f">cfg_device_turningPulses</a> = 100</td></tr>
+<tr class="memdesc:a1f54f84e93cd6eebc584ee857cfe5c9f"><td class="mdescLeft">&#160;</td><td class="mdescRight">How many pulses are required for the turning around.  <a href="#a1f54f84e93cd6eebc584ee857cfe5c9f">More...</a><br /></td></tr>
+<tr class="separator:a1f54f84e93cd6eebc584ee857cfe5c9f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a41f616db18c5e954dfb35844962a4c31"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/dfd/classOscillatingMirrorBeamDeflector.html#a41f616db18c5e954dfb35844962a4c31">cfg_device_turningPulsesf</a> = 100.0f</td></tr>
+<tr class="memdesc:a41f616db18c5e954dfb35844962a4c31"><td class="mdescLeft">&#160;</td><td class="mdescRight">Decimal encoding of cfg_device_turningPulses.  <a href="#a41f616db18c5e954dfb35844962a4c31">More...</a><br /></td></tr>
+<tr class="separator:a41f616db18c5e954dfb35844962a4c31"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a48a9149572876a6fa4929a134e5164ea"><td class="memItemLeft" align="right" valign="top"><a id="a48a9149572876a6fa4929a134e5164ea"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/dfd/classOscillatingMirrorBeamDeflector.html#a48a9149572876a6fa4929a134e5164ea">cached_pulsesPerScanline</a> = 0</td></tr>
 <tr class="memdesc:a48a9149572876a6fa4929a134e5164ea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pulses per scan line. <br /></td></tr>
 <tr class="separator:a48a9149572876a6fa4929a134e5164ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac7902f3b583968ff0c4b9c37d8379e36"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/dfd/classOscillatingMirrorBeamDeflector.html#ac7902f3b583968ff0c4b9c37d8379e36">cached_thresholdPulse</a> = -1</td></tr>
+<tr class="memdesc:ac7902f3b583968ff0c4b9c37d8379e36"><td class="mdescLeft">&#160;</td><td class="mdescRight">At which pulse step the turning around must be computed. cached_threshold_pulse = cached_pulsesPerScanline - cfg_device_turningPulses.  <a href="#ac7902f3b583968ff0c4b9c37d8379e36">More...</a><br /></td></tr>
+<tr class="separator:ac7902f3b583968ff0c4b9c37d8379e36"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a169f1da2dbcb613a6ffe885bc0216487"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/dfd/classOscillatingMirrorBeamDeflector.html#a169f1da2dbcb613a6ffe885bc0216487">cached_aHalfThresholdPulse</a> = -1</td></tr>
+<tr class="memdesc:a169f1da2dbcb613a6ffe885bc0216487"><td class="mdescLeft">&#160;</td><td class="mdescRight">The starting point for first turning around stage on top peak.  <a href="#a169f1da2dbcb613a6ffe885bc0216487">More...</a><br /></td></tr>
+<tr class="separator:a169f1da2dbcb613a6ffe885bc0216487"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a60c7269f00553532fd8fa964a2813daa"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/dfd/classOscillatingMirrorBeamDeflector.html#a60c7269f00553532fd8fa964a2813daa">cached_halfThresholdPulse</a> = -1</td></tr>
+<tr class="memdesc:a60c7269f00553532fd8fa964a2813daa"><td class="mdescLeft">&#160;</td><td class="mdescRight">The starting point for second turning around stage on top peak.  <a href="#a60c7269f00553532fd8fa964a2813daa">More...</a><br /></td></tr>
+<tr class="separator:a60c7269f00553532fd8fa964a2813daa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac3501b1f508ea293148d6e7c0df0c722"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/dfd/classOscillatingMirrorBeamDeflector.html#ac3501b1f508ea293148d6e7c0df0c722">cached_bHalfThresholdPulse</a> = -1</td></tr>
+<tr class="memdesc:ac3501b1f508ea293148d6e7c0df0c722"><td class="mdescLeft">&#160;</td><td class="mdescRight">The ending point for second turning around stage on top peak.  <a href="#ac3501b1f508ea293148d6e7c0df0c722">More...</a><br /></td></tr>
+<tr class="separator:ac3501b1f508ea293148d6e7c0df0c722"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a799f536a74e91f8e2c87c00c71fc6c49"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/dfd/classOscillatingMirrorBeamDeflector.html#a799f536a74e91f8e2c87c00c71fc6c49">cached_halfTurningPulses</a> = -1.0</td></tr>
+<tr class="memdesc:a799f536a74e91f8e2c87c00c71fc6c49"><td class="mdescLeft">&#160;</td><td class="mdescRight">Half of the turning pulses, because they are required to compute turning velocity offset.  <a href="#a799f536a74e91f8e2c87c00c71fc6c49">More...</a><br /></td></tr>
+<tr class="separator:a799f536a74e91f8e2c87c00c71fc6c49"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae3d7f012303bf7d3647d638c8d167c9f"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/dfd/classOscillatingMirrorBeamDeflector.html#ae3d7f012303bf7d3647d638c8d167c9f">cached_offsetScaleFactor</a> = -1.0</td></tr>
+<tr class="memdesc:ae3d7f012303bf7d3647d638c8d167c9f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Offset scale factor used to speed-up turning velocity offset computations. cached_offsetScaleFactor = cached_halfTurningPulses * cached_angleBetweenPulses_rad.  <a href="#ae3d7f012303bf7d3647d638c8d167c9f">More...</a><br /></td></tr>
+<tr class="separator:ae3d7f012303bf7d3647d638c8d167c9f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_attribs_classAbstractBeamDeflector"><td colspan="2" onclick="javascript:toggleInherit('pub_attribs_classAbstractBeamDeflector')"><img src="../../closed.png" alt="-"/>&#160;Public Attributes inherited from <a class="el" href="../../d7/d92/classAbstractBeamDeflector.html">AbstractBeamDeflector</a></td></tr>
 <tr class="memitem:a05fb07b929326ebc229981fda258b991 inherit pub_attribs_classAbstractBeamDeflector"><td class="memItemLeft" align="right" valign="top"><a id="a05fb07b929326ebc229981fda258b991"></a>
 double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d92/classAbstractBeamDeflector.html#a05fb07b929326ebc229981fda258b991">cfg_device_scanFreqMax_Hz</a> = 0</td></tr>
@@ -296,6 +323,39 @@ double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="..
 
 </div>
 </div>
+<a id="a9c4e402ecd8d6dffbc5c851c71c1015b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9c4e402ecd8d6dffbc5c851c71c1015b">&#9670;&nbsp;</a></span>computeTurningVelocityOffset()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double OscillatingMirrorBeamDeflector::computeTurningVelocityOffset </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Compute the turning velocity offset. </p>
+<p>The turning velocity offset can be expressed as a set of 4 equations. For this purpose, let \(l\) be the number of pulses per scan line, \(c\) the current scan line pulse, \(n\) the number of pulses the turning around takes, \(\Delta\) the angle between pulses in radians and \(\epsilon_{n}(x)\) the function corresponding to turning velocity offset.</p>
+<p>Equation for down to bottom peak offset: </p><p class="formulaDsp">
+\[ \left\{\begin{array}{lll} x &amp; = &amp; l - c \\ \epsilon_{n}(x) &amp; = &amp; \frac{n\Delta}{2} \left(1 - \frac{x}{n}\right)^2 \end{array}\right. \]
+</p>
+<p>Equation for up from bottom peak offset: </p><p class="formulaDsp">
+\[ \left\{\begin{array}{lll} x &amp; = &amp; c \\ \epsilon_{n}(x) &amp; = &amp; \frac{n\Delta}{2} \left(1 - \frac{x}{n}\right)^2 \end{array}\right. \]
+</p>
+<p>Equation for up to top peak offset: </p><p class="formulaDsp">
+\[ \left\{\begin{array}{lll} x &amp; = &amp; c - \frac{l}{2} + n \\ \epsilon_{n}(x) &amp; = &amp; - \frac{n\Delta}{2} \left(\frac{x}{n}\right)^2 \end{array}\right. \]
+</p>
+<p>Equation for down from top peak offset: </p><p class="formulaDsp">
+\[ \left\{\begin{array}{lll} x &amp; = &amp; \frac{l}{2} + n - c \\ \epsilon_{n}(x) &amp; = &amp; - \frac{n\Delta}{2} \left(\frac{x}{n}\right)^2 \end{array}\right. \]
+</p>
+<p>The function behavior of oscillating mirror velocity has been taken from: "The geometry of Airborne Laser Scanning in a Kinematical Framework" by Andreas Roncat. See pages 54 to 56 for more information. </p>
+
+</div>
+</div>
 <a id="a5f4656b37019afef7a2477ae8ef1a587"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a5f4656b37019afef7a2477ae8ef1a587">&#9670;&nbsp;</a></span>doSimStep()</h2>
 
@@ -379,6 +439,157 @@ double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="..
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d7/d92/classAbstractBeamDeflector.html#ad653f84b83d7d6b6030d9db0ca56e871" title="Set the scanning frequency. ">AbstractBeamDeflector::setScanFreq_Hz</a> </dd></dl>
 
 <p>Reimplemented from <a class="el" href="../../d7/d92/classAbstractBeamDeflector.html#ad653f84b83d7d6b6030d9db0ca56e871">AbstractBeamDeflector</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="a169f1da2dbcb613a6ffe885bc0216487"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a169f1da2dbcb613a6ffe885bc0216487">&#9670;&nbsp;</a></span>cached_aHalfThresholdPulse</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int OscillatingMirrorBeamDeflector::cached_aHalfThresholdPulse = -1</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The starting point for first turning around stage on top peak. </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d4/dfd/classOscillatingMirrorBeamDeflector.html#ac7902f3b583968ff0c4b9c37d8379e36" title="At which pulse step the turning around must be computed. cached_threshold_pulse = cached_pulsesPerSca...">OscillatingMirrorBeamDeflector::cached_thresholdPulse</a> </dd>
+<dd>
+<a class="el" href="../../d4/dfd/classOscillatingMirrorBeamDeflector.html#a9c4e402ecd8d6dffbc5c851c71c1015b" title="Compute the turning velocity offset. ">OscillatingMirrorBeamDeflector::computeTurningVelocityOffset</a> </dd></dl>
+
+</div>
+</div>
+<a id="ac3501b1f508ea293148d6e7c0df0c722"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac3501b1f508ea293148d6e7c0df0c722">&#9670;&nbsp;</a></span>cached_bHalfThresholdPulse</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int OscillatingMirrorBeamDeflector::cached_bHalfThresholdPulse = -1</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The ending point for second turning around stage on top peak. </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d4/dfd/classOscillatingMirrorBeamDeflector.html#ac7902f3b583968ff0c4b9c37d8379e36" title="At which pulse step the turning around must be computed. cached_threshold_pulse = cached_pulsesPerSca...">OscillatingMirrorBeamDeflector::cached_thresholdPulse</a> </dd>
+<dd>
+<a class="el" href="../../d4/dfd/classOscillatingMirrorBeamDeflector.html#a9c4e402ecd8d6dffbc5c851c71c1015b" title="Compute the turning velocity offset. ">OscillatingMirrorBeamDeflector::computeTurningVelocityOffset</a> </dd></dl>
+
+</div>
+</div>
+<a id="a60c7269f00553532fd8fa964a2813daa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a60c7269f00553532fd8fa964a2813daa">&#9670;&nbsp;</a></span>cached_halfThresholdPulse</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int OscillatingMirrorBeamDeflector::cached_halfThresholdPulse = -1</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The starting point for second turning around stage on top peak. </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d4/dfd/classOscillatingMirrorBeamDeflector.html#ac7902f3b583968ff0c4b9c37d8379e36" title="At which pulse step the turning around must be computed. cached_threshold_pulse = cached_pulsesPerSca...">OscillatingMirrorBeamDeflector::cached_thresholdPulse</a> </dd>
+<dd>
+<a class="el" href="../../d4/dfd/classOscillatingMirrorBeamDeflector.html#a9c4e402ecd8d6dffbc5c851c71c1015b" title="Compute the turning velocity offset. ">OscillatingMirrorBeamDeflector::computeTurningVelocityOffset</a> </dd></dl>
+
+</div>
+</div>
+<a id="a799f536a74e91f8e2c87c00c71fc6c49"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a799f536a74e91f8e2c87c00c71fc6c49">&#9670;&nbsp;</a></span>cached_halfTurningPulses</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double OscillatingMirrorBeamDeflector::cached_halfTurningPulses = -1.0</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Half of the turning pulses, because they are required to compute turning velocity offset. </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d4/dfd/classOscillatingMirrorBeamDeflector.html#a9c4e402ecd8d6dffbc5c851c71c1015b" title="Compute the turning velocity offset. ">OscillatingMirrorBeamDeflector::computeTurningVelocityOffset</a> </dd></dl>
+
+</div>
+</div>
+<a id="ae3d7f012303bf7d3647d638c8d167c9f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae3d7f012303bf7d3647d638c8d167c9f">&#9670;&nbsp;</a></span>cached_offsetScaleFactor</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double OscillatingMirrorBeamDeflector::cached_offsetScaleFactor = -1.0</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Offset scale factor used to speed-up turning velocity offset computations. cached_offsetScaleFactor = cached_halfTurningPulses * cached_angleBetweenPulses_rad. </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d4/dfd/classOscillatingMirrorBeamDeflector.html#a799f536a74e91f8e2c87c00c71fc6c49" title="Half of the turning pulses, because they are required to compute turning velocity offset...">OscillatingMirrorBeamDeflector::cached_halfTurningPulses</a> </dd>
+<dd>
+<a class="el" href="../../d7/d92/classAbstractBeamDeflector.html#a9568e351ea8108ba88abf1111438a952" title="Angle between pulses (radians) ">OscillatingMirrorBeamDeflector::cached_angleBetweenPulses_rad</a> </dd></dl>
+
+</div>
+</div>
+<a id="ac7902f3b583968ff0c4b9c37d8379e36"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac7902f3b583968ff0c4b9c37d8379e36">&#9670;&nbsp;</a></span>cached_thresholdPulse</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int OscillatingMirrorBeamDeflector::cached_thresholdPulse = -1</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>At which pulse step the turning around must be computed. cached_threshold_pulse = cached_pulsesPerScanline - cfg_device_turningPulses. </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d4/dfd/classOscillatingMirrorBeamDeflector.html#a9c4e402ecd8d6dffbc5c851c71c1015b" title="Compute the turning velocity offset. ">OscillatingMirrorBeamDeflector::computeTurningVelocityOffset</a> </dd>
+<dd>
+<a class="el" href="../../d4/dfd/classOscillatingMirrorBeamDeflector.html#a48a9149572876a6fa4929a134e5164ea" title="Pulses per scan line. ">OscillatingMirrorBeamDeflector::cached_pulsesPerScanline</a> </dd>
+<dd>
+<a class="el" href="../../d4/dfd/classOscillatingMirrorBeamDeflector.html#a1f54f84e93cd6eebc584ee857cfe5c9f" title="How many pulses are required for the turning around. ">OscillatingMirrorBeamDeflector::cfg_device_turningPulses</a> </dd></dl>
+
+</div>
+</div>
+<a id="a1f54f84e93cd6eebc584ee857cfe5c9f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1f54f84e93cd6eebc584ee857cfe5c9f">&#9670;&nbsp;</a></span>cfg_device_turningPulses</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int OscillatingMirrorBeamDeflector::cfg_device_turningPulses = 100</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>How many pulses are required for the turning around. </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d4/dfd/classOscillatingMirrorBeamDeflector.html#a9c4e402ecd8d6dffbc5c851c71c1015b" title="Compute the turning velocity offset. ">OscillatingMirrorBeamDeflector::computeTurningVelocityOffset</a> </dd>
+<dd>
+<a class="el" href="../../d4/dfd/classOscillatingMirrorBeamDeflector.html#a41f616db18c5e954dfb35844962a4c31" title="Decimal encoding of cfg_device_turningPulses. ">OscillatingMirrorBeamDeflector::cfg_device_turningPulsesf</a> </dd></dl>
+
+</div>
+</div>
+<a id="a41f616db18c5e954dfb35844962a4c31"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a41f616db18c5e954dfb35844962a4c31">&#9670;&nbsp;</a></span>cfg_device_turningPulsesf</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double OscillatingMirrorBeamDeflector::cfg_device_turningPulsesf = 100.0f</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Decimal encoding of cfg_device_turningPulses. </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d4/dfd/classOscillatingMirrorBeamDeflector.html#a1f54f84e93cd6eebc584ee857cfe5c9f" title="How many pulses are required for the turning around. ">OscillatingMirrorBeamDeflector::cfg_device_turningPulses</a> </dd></dl>
 
 </div>
 </div>

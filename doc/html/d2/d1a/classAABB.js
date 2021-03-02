@@ -22,5 +22,6 @@ var classAABB =
     [ "toString", "d2/d1a/classAABB.html#a86e5cfc1a5c72b37c95a468d305bb008", null ],
     [ "update", "d2/d1a/classAABB.html#a6ae99497dd7c5206d8722aacb41aa652", null ],
     [ "boost::serialization::access", "d2/d1a/classAABB.html#ac98d07dd8f7b70e16ccb9a01abf56b9c", null ],
+    [ "bounds", "d2/d1a/classAABB.html#af41b9802252d42310200694c104d6499", null ],
     [ "vertices", "d2/d1a/classAABB.html#a4efbdbe41e3e4e4728fbfb05ba32c8d8", null ]
 ];

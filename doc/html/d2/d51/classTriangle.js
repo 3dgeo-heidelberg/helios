@@ -26,9 +26,11 @@ var classTriangle =
     [ "boost::serialization::access", "d2/d51/classTriangle.html#ac98d07dd8f7b70e16ccb9a01abf56b9c", null ],
     [ "operator<<", "d2/d51/classTriangle.html#a65ab5c9007813b829f3e101e5fbc0448", null ],
     [ "aabb", "d2/d51/classTriangle.html#a615369f02f0886e30a3c78d9e03cf450", null ],
+    [ "e1", "d2/d51/classTriangle.html#a65143dd180b5a531b31dbcece6e793c2", null ],
+    [ "e2", "d2/d51/classTriangle.html#a8bbc0595d12cd743382563df74c87108", null ],
     [ "eps", "d2/d51/classTriangle.html#aa6acc25b95ca4eb4665943acbb383208", null ],
     [ "faceNormal", "d2/d51/classTriangle.html#a3658a5bff29b9881b6e46c594ba06b3b", null ],
     [ "faceNormalSet", "d2/d51/classTriangle.html#ab56f5c902a05c370f16bd73089ec535a", null ],
-    [ "MEM", "d2/d51/classTriangle.html#aeb0601dcebedd4dabe370a944945f1ca", null ],
+    [ "v0", "d2/d51/classTriangle.html#a5c178572e3eb8a80950461e2c03a734c", null ],
     [ "verts", "d2/d51/classTriangle.html#a0537cb4c881d44091046a4d149302be7", null ]
 ];

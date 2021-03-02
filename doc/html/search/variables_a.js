@@ -7,6 +7,7 @@ var searchData=
   ['last_5freopen',['last_reopen',['../d8/d63/classfile__logger.html#a5dc97d5b89f897216e9ae5b881265685',1,'file_logger']]],
   ['lastcheckz',['lastCheckZ',['../df/d1e/classPlatform.html#a22ad88a8ce46e0b0043d252ca856aace',1,'Platform']]],
   ['lastgroundcheck',['lastGroundCheck',['../df/d1e/classPlatform.html#a9bf408d82ba72c2750ff1253cbe4b78d',1,'Platform']]],
+  ['lastnumvoxels',['lastNumVoxels',['../d6/d03/classXYZPointCloudFileLoader.html#a46ea40e1e3eeb38dc55f3780deb2d9d2',1,'XYZPointCloudFileLoader']]],
   ['lastsign',['lastSign',['../db/d69/classHelicopterPlatform.html#a2dcfe4799486ac1e7e1b4fac1d25431e',1,'HelicopterPlatform']]],
   ['lastspeed_5fxy',['lastSpeed_xy',['../db/d69/classHelicopterPlatform.html#ad8b9b0fd16bd572afe964682a2be7c73',1,'HelicopterPlatform']]],
   ['lasttrajectorytime',['lastTrajectoryTime',['../dc/d42/classScanner.html#ad8af7f001ca4bc13a6a8272e31b4958a',1,'Scanner']]],

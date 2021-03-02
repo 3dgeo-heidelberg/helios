@@ -9,6 +9,7 @@ var searchData=
   ['scanner',['scanner',['../d8/d6b/classAbstractDetector.html#a512ee25b5ab6b8bff4e87eaba5e1996f',1,'AbstractDetector::scanner()'],['../d5/db6/classSurvey.html#aea6c888159a2baca8906aaa8d0377917',1,'Survey::scanner()']]],
   ['scannerefficiency',['scannerEfficiency',['../d4/dfb/classFWFSettings.html#a0013955746fddd21fbb307350e5c776a',1,'FWFSettings']]],
   ['scannerhead',['scannerHead',['../dc/d42/classScanner.html#a44c2e17c2f2a92353667c760040e55a9',1,'Scanner']]],
+  ['scannertemplates',['scannerTemplates',['../d9/d82/classXmlAssetsLoader.html#a000f67d1ce828e0f6809f9cbc972cb51',1,'XmlAssetsLoader']]],
   ['scannerwavelength',['scannerWaveLength',['../d4/dfb/classFWFSettings.html#a1d73bad9c9c6c54ba9f92d963a5d9e5a',1,'FWFSettings']]],
   ['scene',['scene',['../df/d1e/classPlatform.html#a2184c0d8f14256725b96d91da91ab7dd',1,'Platform']]],
   ['scenespec',['sceneSpec',['../d9/d82/classXmlAssetsLoader.html#a531d8400b5dbac617415e4d8e5a287f8',1,'XmlAssetsLoader']]],
@@ -38,5 +39,6 @@ var searchData=
   ['stats_5fmaxdepthreached',['stats_maxDepthReached',['../d0/d64/classKDTreeNodeRoot.html#a30cfc7395f2ecc61eff80743ac06f6b7',1,'KDTreeNodeRoot']]],
   ['stats_5fmaxnumprimsinleaf',['stats_maxNumPrimsInLeaf',['../d0/d64/classKDTreeNodeRoot.html#ab93f4914392e0ed03f42f5b41e1a8194',1,'KDTreeNodeRoot']]],
   ['stats_5fminnumprimsinleaf',['stats_minNumPrimsInLeaf',['../d0/d64/classKDTreeNodeRoot.html#aacaee7bf349baa0d86be5f0da6b9401e',1,'KDTreeNodeRoot']]],
-  ['stopandturn',['stopAndTurn',['../df/d1e/classPlatform.html#a11111178b5c0d4b28273da3ba245fa94',1,'Platform::stopAndTurn()'],['../d5/d0c/classPlatformSettings.html#a7eb0ccbbba5dfab37e8c2d824baf9a9b',1,'PlatformSettings::stopAndTurn()']]]
+  ['stopandturn',['stopAndTurn',['../df/d1e/classPlatform.html#a11111178b5c0d4b28273da3ba245fa94',1,'Platform::stopAndTurn()'],['../d5/d0c/classPlatformSettings.html#a7eb0ccbbba5dfab37e8c2d824baf9a9b',1,'PlatformSettings::stopAndTurn()']]],
+  ['subpartlimit',['subpartLimit',['../dd/dc4/classScenePart.html#a795698a1dbf63a9f5f9ef8fcae317cbd',1,'ScenePart']]]
 ];

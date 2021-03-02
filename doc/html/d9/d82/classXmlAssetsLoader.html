@@ -200,6 +200,9 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
 std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/d82/classXmlAssetsLoader.html#a0eb7f1008b1dc5676191ead80a881a01">xmlDocFilePath</a> = &quot;&quot;</td></tr>
 <tr class="memdesc:a0eb7f1008b1dc5676191ead80a881a01"><td class="mdescLeft">&#160;</td><td class="mdescRight">Path to the XML file. <br /></td></tr>
 <tr class="separator:a0eb7f1008b1dc5676191ead80a881a01"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a000f67d1ce828e0f6809f9cbc972cb51"><td class="memItemLeft" align="right" valign="top">std::unordered_map&lt; std::string, std::shared_ptr&lt; <a class="el" href="../../d0/d23/classScannerSettings.html">ScannerSettings</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/d82/classXmlAssetsLoader.html#a000f67d1ce828e0f6809f9cbc972cb51">scannerTemplates</a></td></tr>
+<tr class="memdesc:a000f67d1ce828e0f6809f9cbc972cb51"><td class="mdescLeft">&#160;</td><td class="mdescRight">Map containing all scanner templates that were loading while building from XML file. No repetitions, each template appears only one time.  <a href="#a000f67d1ce828e0f6809f9cbc972cb51">More...</a><br /></td></tr>
+<tr class="separator:a000f67d1ce828e0f6809f9cbc972cb51"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Class for asset loading from XML file. </p>
@@ -766,6 +769,31 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
+<a id="a000f67d1ce828e0f6809f9cbc972cb51"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a000f67d1ce828e0f6809f9cbc972cb51">&#9670;&nbsp;</a></span>scannerTemplates</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::unordered_map&lt;std::string, std::shared_ptr&lt;<a class="el" href="../../d0/d23/classScannerSettings.html">ScannerSettings</a>&gt; &gt; XmlAssetsLoader::scannerTemplates</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Map containing all scanner templates that were loading while building from XML file. No repetitions, each template appears only one time. </p>
+<p>The id of the template is used as the key, while the template itself is the value (<a class="el" href="../../d0/d23/classScannerSettings.html" title="Scanner settings class. ">ScannerSettings</a> object) </p>
+
+</div>
+</div>
 <a id="a531d8400b5dbac617415e4d8e5a287f8"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a531d8400b5dbac617415e4d8e5a287f8">&#9670;&nbsp;</a></span>sceneSpec</h2>
 

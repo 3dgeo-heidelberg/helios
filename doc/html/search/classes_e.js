@@ -15,6 +15,7 @@ var searchData=
   ['pyheliosexception',['PyHeliosException',['../d1/d0f/classPyHeliosException.html',1,'']]],
   ['pyheliosoutputwrapper',['PyHeliosOutputWrapper',['../de/da4/classPyHeliosOutputWrapper.html',1,'']]],
   ['pyheliossimulation',['PyHeliosSimulation',['../d3/d76/classPyHeliosSimulation.html',1,'']]],
+  ['pyheliosutils',['PyHeliosUtils',['../d6/d41/classPyHeliosUtils.html',1,'']]],
   ['pyintegerlist',['PyIntegerList',['../d6/de0/classPyIntegerList.html',1,'']]],
   ['pymeasurementvectorwrapper',['PyMeasurementVectorWrapper',['../df/d26/classPyMeasurementVectorWrapper.html',1,'']]],
   ['pymeasurementwrapper',['PyMeasurementWrapper',['../da/d9a/classPyMeasurementWrapper.html',1,'']]],
