@@ -6,10 +6,10 @@ This script creates a compressed archive with a ready-to-use HELIOS++ distributi
 XML-files necessary to run the specified survey(s) with the specified helios.exe.
 
 usage: python extra\archive.py <path-to-survey> <path_to_helios.exe> <path-to-zipped_outfile>
-e.g. python extra\archive.py data\surveys\toyblocks\als_toyblocks.xml run\helios.exe archive.zip
+e.g. python extra\archive.py run\helios.exe data\surveys\toyblocks\als_toyblocks.xml archive.zip
 
 instead of a single survey XML-file, a text file can be specified which contains one survey path per line
-e.g. python extra\archive.py list.txt run\helios.exe archive.zip
+e.g. python extra\archive.py run\helios.exe archive.zip list.txt
 
 The archive additionally contains a text file (version.txt) with the helios version and the DOI to the zenodo release.
 """
@@ -141,7 +141,7 @@ for survey in surveys:
         content = content.replace(str(platform_path), str(platform_path_new))
         content = content.replace(str(scanner_path), str(scanner_path_new))
     if survey.is_absolute():
-        outzip.writestr(survey.relative_to(root), content)
+        outzip.writestr(str(survey.relative_to(root)), content)
     else:
         outzip.writestr(str(survey), content)
 
