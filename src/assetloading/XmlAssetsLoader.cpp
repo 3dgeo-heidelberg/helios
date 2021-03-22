@@ -456,6 +456,11 @@ std::shared_ptr<Scanner> XmlAssetsLoader::createScannerFromXml(
         false
     );
 
+	// Parse max number of returns per pulse
+	scanner->maxNOR = boost::get<int>(getAttribute(scannerNode,
+	    "maxNOR", "int", 0
+    ));
+
     // ########## BEGIN Default FWF_settings ##########
     std::shared_ptr<FWFSettings> settings = std::make_shared<FWFSettings>();
     settings->pulseLength_ns = pulseLength_ns;

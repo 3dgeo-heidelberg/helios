@@ -290,6 +290,13 @@ public:
 	 */
 	std::list<int> cfg_device_supportedPulseFreqs_Hz;
 
+    /**
+     * @brief Maximum number of returns per pulse. When 0, it means there is
+     *  not maximum at all
+     * @see Scanner::checkMaxNOR
+     */
+    int maxNOR = 0;
+
 public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //
     // ************************************ //
@@ -424,6 +431,18 @@ public:
      * @return Current GPS time (milliseconds)
      */
     long calcCurrentGpsTime();
+
+    /**
+     * @brief Check if given number of return (nor) is inside
+     *  expected boundaries.
+     * If scanner maxNOR is 0 or nor is less than maxNOR, then the check
+     *  is passed (true is returned). Otherwise, it is not passed (false is
+     *  returned).
+     * @param nor Current number of return
+     * @return True of the check is passed, false otherwise
+     * @see Scanner::maxNOR
+     */
+    inline bool checkMaxNOR(int nor) {return maxNOR==0 || nor < maxNOR;}
 
     // ***  SIM STEP UTILS  *** //
     // ************************ //

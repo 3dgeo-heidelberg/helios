@@ -31,6 +31,34 @@
 	</scanner>
 	<!-- ##### END RIEGL VZ-400 ##### -->
 
+	<!-- ##### BEGIN RIEGL VZ-400 with max NOR ##### -->	
+	<scanner 	id 							= "riegl_vz400maxNOR"
+				name              			= "RIEGL VZ-400 maxNOR"
+				accuracy_m					= "0.005"
+			 	beamDivergence_rad 			= "0.0003"
+				headRotatePerSecMax_deg		= "60"
+				maxNOR						= "3"
+				
+				optics            			= "rotating"
+				pulseFreqs_Hz				= "100000,300000"
+				pulseLength_ns     			= "5"
+				rangeMin_m					= "1.5"
+				scanAngleMax_deg   			= "50"
+				scanAngleEffectiveMax_deg   = "50"
+				scanFreqMin_Hz				= "3"
+				scanFreqMax_Hz				= "120">
+		
+		<FWFSettings beamSampleQuality="3"/>	
+		<beamOrigin x="0" y="0" z="0.2">
+			<rot axis="y" angle_deg="0" />
+			<rot axis="z" angle_deg="0" />
+			<rot axis="x" angle_deg="0" />
+		</beamOrigin>
+		<headRotateAxis x="0" y="0" z="1"/>
+		
+	</scanner>
+	<!-- ##### END RIEGL VZ-400 with max NOR ##### -->
+
 
 	<!-- ##### BEGIN RIEGL VZ-1000 ##### -->
 	<scanner 	id 							= "riegl_vz1000"
