@@ -6,7 +6,9 @@ using namespace std;
 #include <boost/variant/get.hpp>
 
 #include <glm/glm.hpp>
+#include <boost/filesystem.hpp>
 using namespace glm;
+namespace fs = boost::filesystem;
 
 #include <logging.hpp>
 #include <util/HeliosException.h>
@@ -49,6 +51,12 @@ ScenePart* XYZPointCloudFileLoader::run() {
 
 	// Parse
     for(std::string const & filePath : filePaths){
+        if(!fs::exists(fs::path(filePath))){ // Error : file not found
+            std::stringstream ss;
+            ss << "File not found: " << filePath << endl;
+            logging::ERR(ss.str());
+            exit(1);
+        }
         lastNumVoxels = primsOut->mPrimitives.size();
         parse(filePath);
         primsOut->subpartLimit.push_back(primsOut->mPrimitives.size());
