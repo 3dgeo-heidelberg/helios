@@ -67,11 +67,12 @@ def get_sceneparts(scene, root):
     with open(scene, "r") as scene_file:
         content = scene_file.read()
         scene_file.seek(0, 0)
-        search_text_key = '="filepath"'
+        search_text_key = "filepath"
         search_text_value = "value="
+        search_text_key2 = "matfile"
         scenepart_paths = []
         for line in scene_file.readlines():
-            if search_text_key in line:
+            if search_text_key in line or search_text_key2 in line:
                 start_idx = line.find(search_text_value) + len(search_text_value) + 1
                 end_idx = line.find('"', start_idx)
                 if end_idx is None:
@@ -82,6 +83,10 @@ def get_sceneparts(scene, root):
                     sp_path = Path(sp_path).relative_to(root)
                     content = content.replace(abs_path, str(sp_path))
                 scenepart_paths.append(Path(sp_path))
+                if Path(sp_path).suffix == ".obj":
+                    sp_path = str(sp_path).replace(".obj", ".mtl")
+                    scenepart_paths.append(Path(sp_path))
+
 
     return remove_duplicates(scenepart_paths), content
 
