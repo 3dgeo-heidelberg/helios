@@ -205,6 +205,34 @@
 	</scanner>
 	<!-- ##### END RIEGL LMS VQ-880-G II ##### -->
 
+	<!-- ##### LIVOX Mid-70 -->
+	<!-- beam divergence horizontal: 0.000523598, vertical: 0.004887 -->	
+	<scanner 	id 							= "livox_mid-70"
+				accuracy_m					= "0.02"
+			 	beamDivergence_rad 			= "0.004887"	
+				name              			= "Livox Mid-70"
+				optics            			= "risley"
+				pulseFreqs_Hz				= "100000"
+				pulseLength_ns     			= "4"
+				rangeMin_m					= "2"
+				scanAngleMax_deg   			= "35"
+				scanAngleEffectiveMax_deg   = "35"
+				scanFreqMin_Hz				= "450"
+				scanFreqMax_Hz				= "450"
+				headRotatePerSecMax_deg		= "100000"
+				wavelength_nm				= "905"
+				maxNOR						= "1"
+	>
+		<FWFSettings beamSampleQuality="3"/>
+		<beamOrigin x="0" y="0" z="0">
+			<rot axis="x" angle_deg="90" />			
+			<rot axis="z" angle_deg="90" />
+		</beamOrigin>
+
+		<headRotateAxis x="1" y="0" z="0" />
+	</scanner>
+	<!--######## END LIVOX Mid-70 ####### -->
+
 	
 	<!-- ############### END Realistic Scanners (Do NOT MODIFY unless data is really wrong!!!) ############### -->
 
