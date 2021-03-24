@@ -184,7 +184,6 @@
 			clipMin="0.0" clipMax="0.0" clipEnabled="false" fixedLifespan="1"
 			type="NORMAL" mean="0.0" stdev="0.001"/>-->
 	</platform>
-
 	
 	<!-- ###################### END MLS Platforms ###################### -->
 
