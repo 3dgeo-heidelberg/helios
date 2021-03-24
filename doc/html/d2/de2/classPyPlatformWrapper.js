@@ -25,12 +25,16 @@ var classPyPlatformWrapper =
     [ "getRelativePosition", "d2/de2/classPyPlatformWrapper.html#ad894fa3e9815d35a03294c4b72343142", null ],
     [ "isOnGround", "d2/de2/classPyPlatformWrapper.html#a0c9729337ecf82100d2b6fdab191f955", null ],
     [ "isOrientationOnLegInit", "d2/de2/classPyPlatformWrapper.html#afc572476c5ee1c44e9f5687aaf5f374b", null ],
+    [ "isSlowdownEnabled", "d2/de2/classPyPlatformWrapper.html#a82e8693a5ed7c74ead5253c5d0610ece", null ],
+    [ "isSmoothTurn", "d2/de2/classPyPlatformWrapper.html#af04ef2a293c59abe6de1ff53e9603708", null ],
     [ "isStopAndTurn", "d2/de2/classPyPlatformWrapper.html#a2560d7ab37dd9fc98be9a3b5bd17bd0a", null ],
     [ "setDmax", "d2/de2/classPyPlatformWrapper.html#a7230035cff59d31945acd2001ea2181f", null ],
     [ "setLastCheckZ", "d2/de2/classPyPlatformWrapper.html#a7a4c215c3f050b0db129d942da549466", null ],
     [ "setMovePerSec", "d2/de2/classPyPlatformWrapper.html#ad3f8af75c7e5fd79ce65522afe11ff77", null ],
     [ "setOnGround", "d2/de2/classPyPlatformWrapper.html#a59e6f4c9b67ebcf16cc1ce07eeb803e5", null ],
     [ "setOrientationOnLegInit", "d2/de2/classPyPlatformWrapper.html#a1d08e26414a036d0f1edec1d00403430", null ],
+    [ "setSlowdownEnabled", "d2/de2/classPyPlatformWrapper.html#a50b13bda3b1949464c9707ef5e7c24d9", null ],
+    [ "setSmoothTurn", "d2/de2/classPyPlatformWrapper.html#a7dce8dc22e4f47690f909c74078fa765", null ],
     [ "setStopAndTurn", "d2/de2/classPyPlatformWrapper.html#ab33ecfaff72c564299956785ed22986c", null ],
     [ "platform", "d2/de2/classPyPlatformWrapper.html#a1e0b54a945ae8bb3747ac30855a957f2", null ]
 ];

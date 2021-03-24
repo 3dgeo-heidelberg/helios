@@ -46,6 +46,7 @@ var hierarchy =
       [ "HeliosTests::PlatformPhysicsTest", "d6/d96/classHeliosTests_1_1PlatformPhysicsTest.html", null ],
       [ "HeliosTests::RandomTest", "db/dcd/classHeliosTests_1_1RandomTest.html", null ],
       [ "HeliosTests::RayIntersectionTest", "d4/dba/classHeliosTests_1_1RayIntersectionTest.html", null ],
+      [ "HeliosTests::ScenePartSplitTest", "d5/d2a/classHeliosTests_1_1ScenePartSplitTest.html", null ],
       [ "HeliosTests::SerializationTest", "df/da1/classHeliosTests_1_1SerializationTest.html", null ],
       [ "HeliosTests::SurveyCopyTest", "de/d9c/classHeliosTests_1_1SurveyCopyTest.html", null ],
       [ "HeliosTests::VoxelParsingTest", "da/d8d/classHeliosTests_1_1VoxelParsingTest.html", null ]
@@ -108,6 +109,7 @@ var hierarchy =
     [ "PyDoubleVector", "d8/dc2/classPyDoubleVector.html", null ],
     [ "PyHeliosOutputWrapper", "de/da4/classPyHeliosOutputWrapper.html", null ],
     [ "PyHeliosSimulation", "d3/d76/classPyHeliosSimulation.html", null ],
+    [ "PyHeliosUtils", "d6/d41/classPyHeliosUtils.html", null ],
     [ "PyIntegerList", "d6/de0/classPyIntegerList.html", null ],
     [ "PyMeasurementVectorWrapper", "df/d26/classPyMeasurementVectorWrapper.html", null ],
     [ "PyMeasurementWrapper", "da/d9a/classPyMeasurementWrapper.html", null ],

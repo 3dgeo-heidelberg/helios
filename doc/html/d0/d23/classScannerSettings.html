@@ -112,7 +112,7 @@ Collaboration diagram for ScannerSettings:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../d2/d73/classScannerSettings__coll__graph.png" border="0" usemap="#ScannerSettings_coll__map" alt="Collaboration graph"/></div>
 <map name="ScannerSettings_coll__map" id="ScannerSettings_coll__map">
-<area shape="rect" id="node2" href="../../de/d97/classAsset.html" title="Base class for all assets. " alt="" coords="37,124,93,151"/>
+<area shape="rect" id="node2" href="../../de/d97/classAsset.html" title="Base class for all assets. " alt="" coords="79,124,135,151"/>
 </map>
 <center><span class="legend">[<a target="top" href="../../graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -125,6 +125,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a5510f5b3f914ba2aefb546a85283c775"><td class="memItemLeft" align="right" valign="top"><a id="a5510f5b3f914ba2aefb546a85283c775"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>ScannerSettings</b> (<a class="el" href="../../d0/d23/classScannerSettings.html">ScannerSettings</a> *other)</td></tr>
 <tr class="separator:a5510f5b3f914ba2aefb546a85283c775"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afe0319ade625b3b749d274ac26fd9cb6"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d23/classScannerSettings.html#afe0319ade625b3b749d274ac26fd9cb6">hasTemplate</a> ()</td></tr>
+<tr class="memdesc:afe0319ade625b3b749d274ac26fd9cb6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if this <a class="el" href="../../d0/d23/classScannerSettings.html" title="Scanner settings class. ">ScannerSettings</a> has an associated template (true) or not (false)  <a href="#afe0319ade625b3b749d274ac26fd9cb6">More...</a><br /></td></tr>
+<tr class="separator:afe0319ade625b3b749d274ac26fd9cb6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1fd03e0a409115c15b37d84b1c1d1ec2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d0/d23/classScannerSettings.html">ScannerSettings</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d23/classScannerSettings.html#a1fd03e0a409115c15b37d84b1c1d1ec2">getTemplate</a> ()</td></tr>
+<tr class="memdesc:a1fd03e0a409115c15b37d84b1c1d1ec2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain template by reference.  <a href="#a1fd03e0a409115c15b37d84b1c1d1ec2">More...</a><br /></td></tr>
+<tr class="separator:a1fd03e0a409115c15b37d84b1c1d1ec2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classAsset"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classAsset')"><img src="../../closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="../../de/d97/classAsset.html">Asset</a></td></tr>
 <tr class="memitem:a9ad0c79df694d3f079daba3eedf0284c inherit pub_methods_classAsset"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/d97/classAsset.html#a9ad0c79df694d3f079daba3eedf0284c">getLocationString</a> ()</td></tr>
 <tr class="memdesc:a9ad0c79df694d3f079daba3eedf0284c inherit pub_methods_classAsset"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain asset location string.  <a href="../../de/d97/classAsset.html#a9ad0c79df694d3f079daba3eedf0284c">More...</a><br /></td></tr>
@@ -132,6 +138,14 @@ Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
+<tr class="memitem:a1ea4710ab141c2548bb193b29b55107c"><td class="memItemLeft" align="right" valign="top"><a id="a1ea4710ab141c2548bb193b29b55107c"></a>
+std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d23/classScannerSettings.html#a1ea4710ab141c2548bb193b29b55107c">id</a> = &quot;#nullid#&quot;</td></tr>
+<tr class="memdesc:a1ea4710ab141c2548bb193b29b55107c"><td class="mdescLeft">&#160;</td><td class="mdescRight">The ID for this scanner settings. It does not make sense for all scanner settings, but it is specially useful when it comes to handling XML templates. <br /></td></tr>
+<tr class="separator:a1ea4710ab141c2548bb193b29b55107c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af1984f07114e89c789afd105b3f1f371"><td class="memItemLeft" align="right" valign="top"><a id="af1984f07114e89c789afd105b3f1f371"></a>
+std::shared_ptr&lt; <a class="el" href="../../d0/d23/classScannerSettings.html">ScannerSettings</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d23/classScannerSettings.html#af1984f07114e89c789afd105b3f1f371">baseTemplate</a> = nullptr</td></tr>
+<tr class="memdesc:af1984f07114e89c789afd105b3f1f371"><td class="mdescLeft">&#160;</td><td class="mdescRight">Template defining default values which was used to build the <a class="el" href="../../d0/d23/classScannerSettings.html" title="Scanner settings class. ">ScannerSettings</a> object. <br /></td></tr>
+<tr class="separator:af1984f07114e89c789afd105b3f1f371"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab7ab44cae813ced7ecf252228beee109"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d23/classScannerSettings.html#ab7ab44cae813ced7ecf252228beee109">active</a> = true</td></tr>
 <tr class="memdesc:ab7ab44cae813ced7ecf252228beee109"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flag to specify if scanner is active (true) or not (false)  <a href="#ab7ab44cae813ced7ecf252228beee109">More...</a><br /></td></tr>
 <tr class="separator:ab7ab44cae813ced7ecf252228beee109"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -199,7 +213,70 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p><a class="el" href="../../dc/d42/classScanner.html" title="Class representing a scanner asset. ">Scanner</a> settings class. </p>
-</div><h2 class="groupheader">Member Data Documentation</h2>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="a1fd03e0a409115c15b37d84b1c1d1ec2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1fd03e0a409115c15b37d84b1c1d1ec2">&#9670;&nbsp;</a></span>getTemplate()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../d0/d23/classScannerSettings.html">ScannerSettings</a>&amp; ScannerSettings::getTemplate </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Obtain template by reference. </p>
+<dl class="section return"><dt>Returns</dt><dd>Reference to template associated to this <a class="el" href="../../d0/d23/classScannerSettings.html" title="Scanner settings class. ">ScannerSettings</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d0/d23/classScannerSettings.html#af1984f07114e89c789afd105b3f1f371" title="Template defining default values which was used to build the ScannerSettings object. ">ScannerSettings::baseTemplate</a> </dd>
+<dd>
+<a class="el" href="../../d0/d23/classScannerSettings.html#afe0319ade625b3b749d274ac26fd9cb6" title="Check if this ScannerSettings has an associated template (true) or not (false) ">ScannerSettings::hasTemplate</a> </dd></dl>
+
+</div>
+</div>
+<a id="afe0319ade625b3b749d274ac26fd9cb6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afe0319ade625b3b749d274ac26fd9cb6">&#9670;&nbsp;</a></span>hasTemplate()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool ScannerSettings::hasTemplate </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Check if this <a class="el" href="../../d0/d23/classScannerSettings.html" title="Scanner settings class. ">ScannerSettings</a> has an associated template (true) or not (false) </p>
+<dl class="section return"><dt>Returns</dt><dd>True when there is an associated template, false otherwise </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d0/d23/classScannerSettings.html#af1984f07114e89c789afd105b3f1f371" title="Template defining default values which was used to build the ScannerSettings object. ">ScannerSettings::baseTemplate</a> </dd>
+<dd>
+<a class="el" href="../../d0/d23/classScannerSettings.html#afe0319ade625b3b749d274ac26fd9cb6" title="Check if this ScannerSettings has an associated template (true) or not (false) ">ScannerSettings::hasTemplate</a> </dd></dl>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
 <a id="ab7ab44cae813ced7ecf252228beee109"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab7ab44cae813ced7ecf252228beee109">&#9670;&nbsp;</a></span>active</h2>
 

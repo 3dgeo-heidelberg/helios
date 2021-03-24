@@ -18,6 +18,7 @@ var classXmlAssetsLoader =
     [ "getAttribute", "d9/d82/classXmlAssetsLoader.html#a22127072271fc64c415e53381f38af88", null ],
     [ "assetsDir", "d9/d82/classXmlAssetsLoader.html#a93746ec0dd88588e1ddfafe4a0a850fe", null ],
     [ "doc", "d9/d82/classXmlAssetsLoader.html#abf34a777d16253c2783d9459446a4776", null ],
+    [ "scannerTemplates", "d9/d82/classXmlAssetsLoader.html#a000f67d1ce828e0f6809f9cbc972cb51", null ],
     [ "sceneSpec", "d9/d82/classXmlAssetsLoader.html#a531d8400b5dbac617415e4d8e5a287f8", null ],
     [ "xmlDocFilename", "d9/d82/classXmlAssetsLoader.html#a05cabbb720af5497bf9b4b43cd9782f1", null ],
     [ "xmlDocFilePath", "d9/d82/classXmlAssetsLoader.html#a0eb7f1008b1dc5676191ead80a881a01", null ]

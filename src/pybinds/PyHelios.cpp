@@ -12,6 +12,7 @@
 #include <PyPrimitiveWrapper.h>
 #include <PySimulationCycleCallback.h>
 #include <Material.h>
+#include <gdal_priv.h>
 
 using namespace boost::python;
 
@@ -21,6 +22,9 @@ BOOST_PYTHON_MODULE(pyhelios){
     logging::configure({
         {"type", "std_out"}
     });
+
+    // Enable GDAL (Load its drivers)
+    GDALAllRegister();
 
     // Definitions
     def(
@@ -225,6 +229,16 @@ BOOST_PYTHON_MODULE(pyhelios){
             &ScannerSettings::scanAngle_rad
         )
         .add_property(
+            "verticalAngleMin",
+            &ScannerSettings::verticalAngleMin_rad,
+            &ScannerSettings::verticalAngleMin_rad
+        )
+        .add_property(
+            "verticalAngleMax",
+            &ScannerSettings::verticalAngleMax_rad,
+            &ScannerSettings::verticalAngleMax_rad
+        )
+        .add_property(
             "scanFreq",
             &ScannerSettings::scanFreq_Hz,
             &ScannerSettings::scanFreq_Hz
@@ -238,6 +252,25 @@ BOOST_PYTHON_MODULE(pyhelios){
             "pulseLength",
             &ScannerSettings::pulseLength_ns,
             &ScannerSettings::pulseLength_ns
+        )
+        .add_property(
+            "trajectoryTimeInterval",
+            &ScannerSettings::trajectoryTimeInterval,
+            &ScannerSettings::trajectoryTimeInterval
+        )
+        .add_property(
+            "id",
+            &ScannerSettings::id,
+            &ScannerSettings::id
+        )
+        .def(
+            "hasTemplate",
+            &ScannerSettings::hasTemplate
+        )
+        .def(
+            "getTemplate",
+            &ScannerSettings::getTemplate,
+            return_internal_reference<>()
         )
     ;
 
@@ -260,6 +293,21 @@ BOOST_PYTHON_MODULE(pyhelios){
             "movePerSec",
             &PlatformSettings::movePerSec_m,
             &PlatformSettings::movePerSec_m
+        )
+        .add_property(
+            "slowdownEnabled",
+            &PlatformSettings::slowdownEnabled,
+            &PlatformSettings::slowdownEnabled
+        )
+        .add_property(
+            "yawAtDeparture",
+            &PlatformSettings::yawAtDeparture,
+            &PlatformSettings::yawAtDeparture
+        )
+        .add_property(
+            "smoothTurn",
+            &PlatformSettings::smoothTurn,
+            &PlatformSettings::smoothTurn
         )
     ;
 
@@ -763,6 +811,21 @@ BOOST_PYTHON_MODULE(pyhelios){
             "stopAndTurn",
             &PyPlatformWrapper::isStopAndTurn,
             &PyPlatformWrapper::setStopAndTurn
+        )
+        .add_property(
+            "slowdownEnabled",
+            &PyPlatformWrapper::isSlowdownEnabled,
+            &PyPlatformWrapper::setSlowdownEnabled
+        )
+        /*.add_property(
+            "yawAtDeparture",
+            &PyPlatformWrapper::getYawAtDeparture,
+            &PyPlatformWrapper::setYawAtDeparture
+        )*/
+        .add_property(
+            "smoothTurn",
+            &PyPlatformWrapper::isSmoothTurn,
+            &PyPlatformWrapper::setSmoothTurn
         )
         .add_property(
             "mSetOrientationOnLegInit",

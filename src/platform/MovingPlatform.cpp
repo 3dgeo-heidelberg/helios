@@ -66,9 +66,9 @@ void MovingPlatform::initLegManual() {
     );
     if(angle > eps){ // If direct computation failed
         std::stringstream ss;
-        ss  << "It was not possible to determine attitude with a single  "
+        ss  << "It was not possible to determine attitude with a single "
             << "computation at MovingPlatform::initLegManual\n\t"
-            << "angle = " << angle << " but it should below " << eps
+            << "angle = " << angle << " but it should be below " << eps
             << "\n\tUsing iterative computation instead";
         logging::WARN(ss.str());
         initLegManualIterative();
@@ -103,8 +103,9 @@ void MovingPlatform::initLegManualIterative(){
 }
 
 bool MovingPlatform::waypointReached() {
-	// TODO 5: Make waypoint tolerance configurable
-	bool result = glm::l2Norm(cached_vectorToTarget) < 0.000001;
+	// velocity is in m/cycle
+	// m / (m/cycle) => cycles left to reach waypoint
+	bool result = (glm::l2Norm(cached_vectorToTarget) / glm::l2Norm(velocity)) < 1.0;
 	if (result) logging::INFO("Waypoint reached!");
 	return result;
 }

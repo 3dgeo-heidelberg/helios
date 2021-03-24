@@ -480,6 +480,9 @@ void FullWaveformPulseRunnable::digestFullWaveform(
 
         pointsMeasurement.push_back(tmp);
         ++numReturns;
+
+        // Check if maximum number of returns per pulse has been reached
+        if(!fwDetector->scanner->checkMaxNOR(numReturns)) break;
     }
 
 }

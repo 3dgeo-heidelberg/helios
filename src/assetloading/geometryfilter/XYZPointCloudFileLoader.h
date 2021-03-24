@@ -172,8 +172,20 @@ private:
 	 */
 	size_t numBatches;
 
+	/**
+	 * @brief Used to correctly report number of voxels for each part
+	 * when reading multiple files at once (i.e. efilepath is given)
+	 */
+	size_t lastNumVoxels;
+
 	// ***  MAIN PARSING METHODS  *** //
 	// ****************************** //
+	/**
+	 * @brief Parse XYZ file
+	 * @param filePath Path to XYZ file to be parsed
+	 */
+	void parse(std::string const & filePath);
+
 	/**
 	 * @brief First pass of input file used to find essential information
 	 * needed to successfully abstract the point cloud to voxels

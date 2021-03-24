@@ -8,6 +8,7 @@ var dir_d070cf0d69b492364e22332565a6126b =
     [ "PyHeliosException.h", "db/dff/PyHeliosException_8h_source.html", null ],
     [ "PyHeliosOutputWrapper.h", "d7/d69/PyHeliosOutputWrapper_8h_source.html", null ],
     [ "PyHeliosSimulation.h", "d1/d94/PyHeliosSimulation_8h_source.html", null ],
+    [ "PyHeliosUtils.h", "da/d84/PyHeliosUtils_8h_source.html", null ],
     [ "PyIntegerList.h", "d5/d00/PyIntegerList_8h_source.html", null ],
     [ "PyMeasurementVectorWrapper.h", "dd/d6e/PyMeasurementVectorWrapper_8h_source.html", null ],
     [ "PyMeasurementWrapper.h", "d1/d53/PyMeasurementWrapper_8h_source.html", null ],

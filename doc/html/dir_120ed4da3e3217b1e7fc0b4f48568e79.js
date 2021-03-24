@@ -7,6 +7,7 @@ var dir_120ed4da3e3217b1e7fc0b4f48568e79 =
     [ "PlatformPhysicsTest.h", "de/d4c/PlatformPhysicsTest_8h_source.html", null ],
     [ "RandomTest.h", "d7/d89/RandomTest_8h_source.html", null ],
     [ "RayIntersectionTest.h", "dd/d3a/RayIntersectionTest_8h_source.html", null ],
+    [ "ScenePartSplitTest.h", "d9/d59/ScenePartSplitTest_8h_source.html", null ],
     [ "SerializationTest.h", "dc/d02/SerializationTest_8h_source.html", null ],
     [ "SurveyCopyTest.h", "d5/d6c/SurveyCopyTest_8h_source.html", null ],
     [ "Test.h", "da/d97/Test_8h_source.html", null ],

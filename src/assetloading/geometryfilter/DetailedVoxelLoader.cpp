@@ -28,26 +28,7 @@ ScenePart* DetailedVoxelLoader::run() {
     }
 
     // Determine filepath
-    bool extendedFilePath = false;
-    std::vector<std::string> filePaths(0);
-    std::string path;
-    try {
-        path = boost::get<std::string const &>(params["efilepath"]);
-        extendedFilePath = true;
-    }
-    catch(std::exception &e){
-        try {
-            path = boost::get<std::string const &>(params["filepath"]);
-            filePaths.push_back(path);
-        }
-        catch(std::exception &e2){
-            std::stringstream ss;
-            ss << "No filepath was provided.\nEXCEPTION: " << e2.what();
-            logging::ERR(ss.str());
-        }
-    }
-
-    if(extendedFilePath) filePaths = FileUtils::getFilesByExpression(path);
+    std::vector<std::string> filePaths = FileUtils::handleFilePath(params);
     for(std::string filePath : filePaths){
         std::stringstream ss;
         ss << "Reading detailed voxels from " << filePath;

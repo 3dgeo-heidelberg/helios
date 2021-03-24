@@ -50,6 +50,7 @@ var searchData=
   ['computesubrays',['computeSubrays',['../db/da6/classFullWaveformPulseRunnable.html#a39859571a66d2da2aa0bfaf1585c83b1',1,'FullWaveformPulseRunnable']]],
   ['computeturndistancethreshold',['computeTurnDistanceThreshold',['../db/d69/classHelicopterPlatform.html#aef11f24f6e25fe349a5d32342cfd894e',1,'HelicopterPlatform']]],
   ['computeturningangles',['computeTurningAngles',['../db/d69/classHelicopterPlatform.html#a9e01009372ed3f785a934398189f15fc',1,'HelicopterPlatform']]],
+  ['computeturningvelocityoffset',['computeTurningVelocityOffset',['../d4/dfd/classOscillatingMirrorBeamDeflector.html#a9c4e402ecd8d6dffbc5c851c71c1015b',1,'OscillatingMirrorBeamDeflector']]],
   ['computeuniformrealdistribution',['computeUniformRealDistribution',['../dc/d6e/classRandomnessGenerator.html#a3da18d2a03ad93f7f5c767af3debf33a',1,'RandomnessGenerator']]],
   ['computexyspeed',['computeXYSpeed',['../db/d69/classHelicopterPlatform.html#af6f2f18526922029605184bfe91280bb',1,'HelicopterPlatform']]],
   ['configure',['configure',['../d0/da9/logging_8hpp.html#a79ddefc0c13473e083f5576ff7a9427f',1,'logging']]],

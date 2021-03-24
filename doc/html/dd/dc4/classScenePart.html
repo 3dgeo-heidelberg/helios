@@ -126,6 +126,9 @@ Public Member Functions</h2></td></tr>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/dc4/classScenePart.html#a2b1855e4215d1170177caaa95e89dfbd">smoothVertexNormals</a> ()</td></tr>
 <tr class="memdesc:a2b1855e4215d1170177caaa95e89dfbd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Smooth normals for each vertex computing the mean for each triangle using it. <br /></td></tr>
 <tr class="separator:a2b1855e4215d1170177caaa95e89dfbd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a82912d3e287312e90e622b512a653df0"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/dc4/classScenePart.html#a82912d3e287312e90e622b512a653df0">splitSubparts</a> ()</td></tr>
+<tr class="memdesc:a82912d3e287312e90e622b512a653df0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Split each subpart into a different scene part, with the first one corresponding to this scene part.  <a href="#a82912d3e287312e90e622b512a653df0">More...</a><br /></td></tr>
+<tr class="separator:a82912d3e287312e90e622b512a653df0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -137,6 +140,9 @@ std::vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive<
 std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/dc4/classScenePart.html#aec8d33ac2f3d49bd036659c1eda5166b">mId</a> = &quot;&quot;</td></tr>
 <tr class="memdesc:aec8d33ac2f3d49bd036659c1eda5166b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Identifier for the scene part. <br /></td></tr>
 <tr class="separator:aec8d33ac2f3d49bd036659c1eda5166b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a795698a1dbf63a9f5f9ef8fcae317cbd"><td class="memItemLeft" align="right" valign="top">std::vector&lt; size_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/dc4/classScenePart.html#a795698a1dbf63a9f5f9ef8fcae317cbd">subpartLimit</a></td></tr>
+<tr class="memdesc:a795698a1dbf63a9f5f9ef8fcae317cbd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Vector specifying the limit of a subpart as the index of first element of next subpart.  <a href="#a795698a1dbf63a9f5f9ef8fcae317cbd">More...</a><br /></td></tr>
+<tr class="separator:a795698a1dbf63a9f5f9ef8fcae317cbd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8d4c986047a3ae884b22e93575eba2ea"><td class="memItemLeft" align="right" valign="top"><a id="a8d4c986047a3ae884b22e93575eba2ea"></a>
 std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/dc4/classScenePart.html#a8d4c986047a3ae884b22e93575eba2ea">onRayIntersectionMode</a> = &quot;&quot;</td></tr>
 <tr class="memdesc:a8d4c986047a3ae884b22e93575eba2ea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Specify the handling mode for ray intersections. <br /></td></tr>
@@ -205,6 +211,46 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>boost::serialization
 
 <p>Obtain all vertices in the scene part. </p>
 <dl class="section return"><dt>Returns</dt><dd>All vertices in the scene part </dd></dl>
+
+</div>
+</div>
+<a id="a82912d3e287312e90e622b512a653df0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a82912d3e287312e90e622b512a653df0">&#9670;&nbsp;</a></span>splitSubparts()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool ScenePart::splitSubparts </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Split each subpart into a different scene part, with the first one corresponding to this scene part. </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../dd/dc4/classScenePart.html#a795698a1dbf63a9f5f9ef8fcae317cbd" title="Vector specifying the limit of a subpart as the index of first element of next subpart. ">subpartLimit</a> </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>True when split was successfully performed, false otherwise </dd></dl>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="a795698a1dbf63a9f5f9ef8fcae317cbd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a795698a1dbf63a9f5f9ef8fcae317cbd">&#9670;&nbsp;</a></span>subpartLimit</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;size_t&gt; ScenePart::subpartLimit</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Vector specifying the limit of a subpart as the index of first element of next subpart. </p>
+<p>This vector makes sense when a scene part is built from multiple objects, so each one must be placed on its own scene part.</p>
+<p>The ith subpart is defined inside interval \([u[i-1], u[i])\), where \(u\) is the subpartLimit vector. For the first case, the interval is defined as \([0, u[i])\) Having \(|u| = 1\) means there is only one scene part </p>
 
 </div>
 </div>

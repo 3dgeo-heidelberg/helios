@@ -1,7 +1,9 @@
 var searchData=
 [
   ['halfsize',['halfSize',['../d6/d44/classVoxel.html#ab9d383812ebf70210957702b88a86831',1,'Voxel']]],
+  ['handlefilepath',['handleFilePath',['../d5/d4b/classFileUtils.html#a151552fa50b719b536348308f7b32ee8',1,'FileUtils']]],
   ['handlepulsecomputation',['handlePulseComputation',['../dc/d42/classScanner.html#ae462efae6ecbcf82967701beeaca6c44',1,'Scanner']]],
+  ['handlepythonindex',['handlePythonIndex',['../d6/d41/classPyHeliosUtils.html#a2e2b2f2be67a8a42723c7cbc441abd61',1,'PyHeliosUtils']]],
   ['handleroute',['handleRoute',['../db/d69/classHelicopterPlatform.html#a5db6362a800f7c95618ff98255fe5488',1,'HelicopterPlatform']]],
   ['handlesimstepnoise',['handleSimStepNoise',['../dc/d42/classScanner.html#a9162783f755f55792d269396ea6a5172',1,'Scanner']]],
   ['handlespec',['handleSpec',['../d9/ddf/classVoxelFileParser.html#aa135c8fbef4cc45b5c2a1682d0143d92',1,'VoxelFileParser']]],
@@ -10,6 +12,7 @@ var searchData=
   ['handletrajectoryoutput',['handleTrajectoryOutput',['../dc/d42/classScanner.html#a7508f260d36401b7ac316ca2897e37d3',1,'Scanner']]],
   ['hasnormal',['hasNormal',['../d6/d44/classVoxel.html#ac6923c52607931fd700f4b2de465e3c3',1,'Voxel']]],
   ['hasnulls',['hasNulls',['../d7/d7d/classTimeWatcher.html#a4336ff78c523e15db0b7af8e26a2dcf8',1,'TimeWatcher']]],
+  ['hastemplate',['hasTemplate',['../d0/d23/classScannerSettings.html#afe0319ade625b3b749d274ac26fd9cb6',1,'ScannerSettings']]],
   ['headrotatepersec_5frad',['headRotatePerSec_rad',['../d0/d23/classScannerSettings.html#ac58959e3d36c627248ccf922dad63e9f',1,'ScannerSettings']]],
   ['headrotatestart_5frad',['headRotateStart_rad',['../d0/d23/classScannerSettings.html#a6c67ef78ba16208f85fae4e04fd2d869',1,'ScannerSettings']]],
   ['headrotatestop_5frad',['headRotateStop_rad',['../d0/d23/classScannerSettings.html#a30fdaba2022b552a10ecc26c31d01e22',1,'ScannerSettings']]],
