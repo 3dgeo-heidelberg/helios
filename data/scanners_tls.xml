@@ -119,8 +119,8 @@
 				rangeMin_m					= "2"
 				scanAngleMax_deg   			= "35"
 				scanAngleEffectiveMax_deg   = "35"
-				rotorFreq_1					= "7294"
-				rotorFreq_2					= "-4664"
+				rotorFreq1_Hz					= "7294"
+				rotorFreq2_Hz					= "-4664"
 				wavelength_nm				= "905"
 	>
 				

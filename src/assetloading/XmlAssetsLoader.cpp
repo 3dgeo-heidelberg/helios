@@ -541,8 +541,8 @@ std::shared_ptr<Scanner> XmlAssetsLoader::createScannerFromXml(
 	}
 	else if (str_opticsType == "risley")
 	{
-		int rotorFreq_1_Hz = boost::get<int>(getAttribute(scannerNode, "rotorFreq_1", "int", 7294));
-		int rotorFreq_2_Hz = boost::get<int>(getAttribute(scannerNode, "rotorFreq_2", "int", -4664));
+		int rotorFreq_1_Hz = boost::get<int>(getAttribute(scannerNode, "rotorFreq1_Hz", "int", 7294));
+		int rotorFreq_2_Hz = boost::get<int>(getAttribute(scannerNode, "rotorFreq2_Hz", "int", -4664));
 		beamDeflector = std::shared_ptr<RisleyBeamDeflector>(new RisleyBeamDeflector(scanAngleMax_rad, (double) rotorFreq_1_Hz, (double)rotorFreq_2_Hz));
 	}
 

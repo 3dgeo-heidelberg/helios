@@ -7,6 +7,8 @@
         <FWFSettings binSize_ns="0.2" beamSampleQuality="3" />
 
         <leg>
+        <!-- minimal leg: 0.01 m with speed of 0.01 m = 1 s integration time;
+		     decrease movePerSec_m for longer integration time -->
             <platformSettings x="-10.01" y="-15.01"
                             onGround="true"
                             movePerSec_m="0.01"

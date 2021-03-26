@@ -5,7 +5,7 @@
 #include "MathConverter.h"
 
 /**
- * @brief Class representing an oscillating mirror beam deflector
+ * @brief Class representing a risley prisms beam deflector
  */
 class RisleyBeamDeflector : public AbstractBeamDeflector {
 
@@ -27,8 +27,8 @@ public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //
     // ************************************ //
     /**
-     * @brief Constructor for oscillating mirror beam deflector
-     * @see SinusoidalOscillatingBeamDeflector::cfg_device_scanProduct
+     * @brief Constructor for risley prisms beam deflector
+     * @see RisleyBeamDeflector::cfg_device_scanProduct
      * @see AbstractBeamDeflector::AbstractBeamDeflector(
      *  double, double, double)
      */
