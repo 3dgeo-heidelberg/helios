@@ -22,6 +22,7 @@
 
 
 	<!-- ##### BEGIN Leica ALS50-II ##### -->
+	<!-- capable of detecting up to 4 targets for each pulse, vertical discrimination distance is approx. 3.5 m--> 
 	<scanner 	id 							= "leica_als50-ii"
 				accuracy_m					= "0.05"
 			 	beamDivergence_rad 			= "0.00022"
@@ -34,6 +35,7 @@
 				scanAngleMax_deg   			= "37.5"
 				scanFreqMin_Hz				= "0"
 				scanFreqMax_Hz				= "90"
+				maxNOR						= "4"
 	/>
 	<!-- ##### END Leica ALS50-II ##### -->
 
@@ -76,6 +78,7 @@
 				scanFreqMin_Hz				= "0"
 				scanFreqMax_Hz				= "70"
 				scanProduct					= "1000"
+				maxNOR						= "4"
 	/>
 	<!-- ##### END Optech ALTM 3100 ##### -->
 
@@ -92,8 +95,9 @@
 				scanAngleMax_deg   			= "30"
 				scanFreqMin_Hz				= "0"
 				scanFreqMax_Hz				= "120"
-				scanProduct					= "1400"
+				scanProduct					= "2000"
 				wavelength_nm				= "1064"
+				maxNOR						= "8"
 	/>
 	<!-- ##### END Optech Galaxy ##### -->
 
@@ -133,6 +137,9 @@
 	
 	
 	<!-- ##### BEGIN RIEGL VQ 780i ##### -->
+	<!-- Maximum number of returns per pulse dependent on pulse frequency;
+	150-250 kHz: 15; 350 kHz: 14, 500 kHz: 10, 700 kHz: 7, 1000 kHz: 5;
+	for simulations with high pulse frequencies, we recommend to create a copy of this scanner entry with the respective maxNOR value -->
 	<scanner    id                          = "riegl_vq_780i"
 	            accuracy_m					= "0.02"
 			 	beamDivergence_rad 			= "0.00025"
@@ -151,6 +158,9 @@
 
 
 	<!-- ##### BEGIN RIEGL VUX-1UAV ##### -->
+	<!-- Maximum number of returns per pulse dependent on pulse frequency;
+	50-100 kHz: 15; 200 kHz: 13, 300 kHz: 9, 380 kHz: 7, 550 kHz: 4;
+	for simulations with high pulse frequencies, we recommend to create a copy of this scanner entry with the respective maxNOR value -->
 	<scanner 	id 							= "riegl_vux-1uav"
 				accuracy_m					= "0.01"
 			 	beamDivergence_rad 			= "0.0005"
@@ -204,6 +214,7 @@
 
 	</scanner>
 	<!-- ##### END RIEGL LMS VQ-880-G II ##### -->
+
 
 	<!-- ##### LIVOX Mid-70 -->
 	<!-- beam divergence horizontal: 0.000523598, vertical: 0.004887 -->	
