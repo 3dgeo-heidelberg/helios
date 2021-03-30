@@ -8,11 +8,11 @@
 HELIOS++ is a general-purpose software package for simulation of terrestrial, mobile and airborne laser scanning surveys written in C++11. 
 It is developed and maintained by the [3DGeo Research Group](https://uni-heidelberg.de/3dgeo) at Heidelberg University.
 
-## 👩‍💻 Download
+## 💻 Download
 
 Precompiled versions for Windows and Linux are available under [releases](https://github.com/3dgeo-heidelberg/helios/releases).
 
-## Documentation
+## ℹ Documentation
 
 As a starting point, please consult the [wiki](https://github.com/3dgeo-heidelberg/helios/wiki/First-steps). 
 We suggest you take the "first steps" tour to get to know the core concepts of the software.
@@ -135,6 +135,6 @@ helios.exe data/surveys/demo/tls_arbaro_demo.xml
 
 Build instructions for advanced users and developers are available [here](BUILDME.md).
 
-## License
+## 📜 License
 
 See [LICENSE.md](LICENSE.md)
