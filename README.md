@@ -1,4 +1,4 @@
-# HELIOS ++
+# ✈ HELIOS ++
 [![DOI](https://zenodo.org/badge/331344393.svg)](https://zenodo.org/badge/latestdoi/331344393) [![Issues](https://img.shields.io/github/issues/3dgeo-heidelberg/helios)](https://github.com/3dgeo-heidelberg/helios/issues) [![License](https://img.shields.io/badge/license-GPLv3%2C%20LGPLv3-blue)](https://github.com/3dgeo-heidelberg/helios/blob/main/LICENSE.md) [![Activity](https://img.shields.io/github/commit-activity/m/3dgeo-heidelberg/helios)](https://github.com/3dgeo-heidelberg/helios/commits) [![Downloads](https://img.shields.io/github/downloads/3dgeo-heidelberg/helios/total)](https://github.com/3dgeo-heidelberg/helios/releases)
 
 > Heidelberg LiDAR Operations Simulator ++
@@ -8,7 +8,7 @@
 HELIOS++ is a general-purpose software package for simulation of terrestrial, mobile and airborne laser scanning surveys written in C++11. 
 It is developed and maintained by the [3DGeo Research Group](https://uni-heidelberg.de/3dgeo) at Heidelberg University.
 
-## Download
+## 👩‍💻 Download
 
 Precompiled versions for Windows and Linux are available under [releases](https://github.com/3dgeo-heidelberg/helios/releases).
 
@@ -37,7 +37,7 @@ BibTeX:
 } 
 ```
 
-## Usage
+## ⌨ Usage
 
 HELIOS++ can be invoked with following syntax:
 
@@ -131,7 +131,7 @@ helios.exe data/surveys/demo/tls_arbaro_demo.xml
 ```
 
 
-## Building from source
+## 🛠 Building from source
 
 Build instructions for advanced users and developers are available [here](BUILDME.md).
 
