@@ -606,7 +606,7 @@ std::shared_ptr<ScannerSettings> XmlAssetsLoader::createScannerSettingsFromXml(
             bla = scannerTemplates[templateId];
 		}
 		if (bla != nullptr) {
-			template1 = bla;
+			template1 = std::make_shared<ScannerSettings>(*bla);
 			// ATTENTION:
 			// We need to temporarily convert the head rotation settings from radians back to degrees, since degrees
 			// is the unit in which they are read from the XML, and below, the template settings are used as defaults
