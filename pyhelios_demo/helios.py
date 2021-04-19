@@ -247,29 +247,14 @@ if __name__ == '__main__':
         sim.setCallback(live_plotting_callback_full)
         sim.simFrequency = 10
 
-        # Create instance of Scene class, generate scene, print scene, and visualize.
-        scene = Scene(args.survey_file)
+        # Create instance of Scene class, generate scene, print scene (if logging v2), and visualize.
+        scene = Scene(args.survey_file, args.loggingv2)
         scene.gen_from_xml()
-        scene.print_scene()
+
+        if args.loggingv2:
+            scene.print_scene()
+
         scene.visualize()
-
-        # Create point cloud geometry for survey data and scanner trajectory.
-        measurement = o3d.geometry.PointCloud()
-        trajectory = o3d.geometry.PointCloud()
-
-        # Add center point to visualization.
-        center_point = np.array([[0, 0, 0]])
-        center = o3d.geometry.PointCloud()
-        center.points = o3d.utility.Vector3dVector(center_point)
-        scene.visualizer.add_geometry(center)
-
-        # Add measurement point cloud to window.
-        scene.visualizer.add_geometry(measurement)
-        scene.visualizer.add_geometry(trajectory)
-
-        # Refresh GUI.
-        scene.visualizer.poll_events()
-        scene.visualizer.update_renderer()
 
         # Start pyhelios simulation.
         sim.start()
@@ -277,41 +262,21 @@ if __name__ == '__main__':
         while sim.isRunning():
             if len(mpoints) > 0:
                 # Convert x, y, z lists with points from pyhelios callback to arrays.
-                a = np.array(mpoints)
-                b = np.array(tpoints)
-
-                '''line_indices = np.zeros([0, 2])
-                for i in range(np.shape(b)[0]):
-                    line_indices = np.vstack((line_indices, [i, i+1]))
-                print(line_indices)'''
-
                 # Update o3d point clouds with points from callback.
-                measurement.points = o3d.utility.Vector3dVector(a[:, :-1])
-                try:
-                    trajectory.points = o3d.utility.Vector3dVector(b)
-                    #trajectory.lines = o3d.utility.Vector3dVector(line_indices)
-                except Exception as err:
-                    print(err)
+                a = np.array(mpoints)
+                scene.measurement.points = o3d.utility.Vector3dVector(a[:, :-1])
 
-                trajectory.paint_uniform_color([1, 0.706, 0])
+                if len(tpoints) > 0:
+                    b = np.array(tpoints)
+                    scene.trajectory.points = o3d.utility.Vector3dVector(b)
 
-                colours = np.zeros((a.shape[0], 3))
-
-                # Set unique colour for each object based on object id.
-                obj_ids = a[:, -1]
-
-                uid = np.unique(obj_ids)
-
-                cm = plt.get_cmap('tab10')
-
-                for oid in uid:
-                    colours[obj_ids == oid, :] = cm(((oid+1)/15)%1)[:3]  # 15 colors in this colormap, then repeat
-
-                measurement.colors = o3d.utility.Vector3dVector(colours)
+                # Apply colours to trajectory and measurement geometries.
+                # Measurement array needed for dimensions.
+                scene.colourise(a)
 
                 # Update geometries for visualizer.
-                scene.visualizer.update_geometry(measurement)
-                scene.visualizer.update_geometry(trajectory)
+                scene.visualizer.update_geometry(scene.measurement)
+                scene.visualizer.update_geometry(scene.trajectory)
 
                 # Refresh GUI.
                 scene.visualizer.poll_events()
