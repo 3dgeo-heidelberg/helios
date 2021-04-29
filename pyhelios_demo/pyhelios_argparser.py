@@ -81,8 +81,8 @@ parser.add_argument('-ps', '--polyscope', dest='plot_result', action='store_cons
                     help='Display scanner trajectory and resulting data as a point cloud in polyscope.'
                          'Requires Polyscope module to be installed in environment.')
 
-parser.add_argument('-o3d', '--open3d', dest='open3d', action='store_const', const=True,
-                    help='Enable live open3d plot of simulation.')
+parser.add_argument('-o3d', '--open3d', dest='open3d', action='store_const', const=False, default=True,
+                    help='Disable live open3d plot of simulation.')
 
 args = parser.parse_args()
 
