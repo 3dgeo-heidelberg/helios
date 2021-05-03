@@ -24,6 +24,16 @@ jobs:
     - name: Install required packages
       run: sudo apt install -y cmake libboost-dev libboost-system-dev libboost-thread-dev libboost-regex-dev libboost-filesystem-dev libboost-iostreams-dev libgdal-dev libglm-dev libarmadillo-dev zip unzip
    
+    - name: Download and install Boost
+      # You may pin to the exact commit or the version.
+      # uses: MarkusJx/install-boost@072e2dd3b37f8652cda1b00bcaca9bcfe06b7278
+      uses: MarkusJx/install-boost@v1.0.1
+      with:
+        # The boost version to install, e.g. "1.73.0"
+        boost_version: 1.75.0
+        # The platform version boost was compiled on, e.g. "18.04". May only be used on linux
+        platform_version: 18.04
+   
     - name: Download and install LASTools
       run: wget -O LAStools.zip http://lastools.github.io/download/LAStools.zip
     - name: Unzip LAStools
