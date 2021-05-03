@@ -22,7 +22,7 @@ jobs:
     - uses: actions/checkout@v2
     
     - name: Install required packages
-      run: apt install -y cmake libboost-dev libboost-system-dev libboost-thread-dev libboost-regex-dev libboost-filesystem-dev libboost-iostreams-dev libgdal-dev libglm-dev libarmadillo-dev zip unzip
+      run: sudo apt install -y cmake libboost-dev libboost-system-dev libboost-thread-dev libboost-regex-dev libboost-filesystem-dev libboost-iostreams-dev libgdal-dev libglm-dev libarmadillo-dev zip unzip
    
     - name: Download and install LASTools
       run: wget -O LAStools.zip http://lastools.github.io/download/LAStools.zip
