@@ -1,5 +1,6 @@
 # ✈ HELIOS ++
 [![DOI](https://zenodo.org/badge/331344393.svg)](https://zenodo.org/badge/latestdoi/331344393) [![Issues](https://img.shields.io/github/issues/3dgeo-heidelberg/helios)](https://github.com/3dgeo-heidelberg/helios/issues) [![License](https://img.shields.io/badge/license-GPLv3%2C%20LGPLv3-blue)](https://github.com/3dgeo-heidelberg/helios/blob/main/LICENSE.md) [![Activity](https://img.shields.io/github/commit-activity/m/3dgeo-heidelberg/helios)](https://github.com/3dgeo-heidelberg/helios/commits) [![Downloads](https://img.shields.io/github/downloads/3dgeo-heidelberg/helios/total)](https://github.com/3dgeo-heidelberg/helios/releases)
+[![Build](https://github.com/3dgeo-heidelberg/helios/actions/workflows/cmake.yml/badge.svg)](https://github.com/3dgeo-heidelberg/helios/actions)
 
 > Heidelberg LiDAR Operations Simulator ++
 
