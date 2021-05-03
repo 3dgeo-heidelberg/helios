@@ -29,7 +29,7 @@ jobs:
     - name: Unzip LAStools
       run: unzip LAStools.zip -d ${{github.workspace}}/lib/LAStools
     - name: Build LAStools
-      working-directory: ${{github.workspace}}/lib/LAStools
+      working-directory: ${{github.workspace}}/lib/LAStools/src
       run: cmake . && make
       
     - name: Configure CMake
