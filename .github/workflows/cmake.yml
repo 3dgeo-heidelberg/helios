@@ -34,7 +34,7 @@ jobs:
         # The platform version boost was compiled on, e.g. "18.04". May only be used on linux
         platform_version: 18.04
     - name: Copy boost to expected dir
-      run: mkdir ${{github.workspace}}/lib/boost && cp $BOOST_ROOT ${{github.workspace}}/lib/boost
+      run: mkdir ${{github.workspace}}/lib/boost && cp ${{env.BOOST_ROOT}} ${{github.workspace}}/lib/boost
    
     - name: Download and install LASTools
       run: wget -O LAStools.zip http://lastools.github.io/download/LAStools.zip
