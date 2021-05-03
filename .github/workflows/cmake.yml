@@ -27,9 +27,9 @@ jobs:
     - name: Download and install LASTools
       run: wget -O LAStools.zip http://lastools.github.io/download/LAStools.zip
     - name: Unzip LAStools
-      run: unzip LAStools.zip -d ${{github.workspace}}/lib/LAStools
+      run: unzip LAStools.zip -d ${{github.workspace}}/lib
     - name: Build LAStools
-      working-directory: ${{github.workspace}}/lib/LAStools/src
+      working-directory: ${{github.workspace}}/lib/LAStools
       run: cmake . && make
       
     - name: Configure CMake
