@@ -33,7 +33,7 @@ jobs:
         boost_version: 1.71.0
         # The platform version boost was compiled on, e.g. "18.04". May only be used on linux
         platform_version: 18.04
-        boost_install_dir: ${{github.workspace}}/lib/boost
+        boost_install_dir: ${{github.workspace}}/lib
         
    
     - name: Download and install LASTools
