@@ -30,7 +30,7 @@ jobs:
       uses: MarkusJx/install-boost@v1.0.1
       with:
         # The boost version to install, e.g. "1.73.0"
-        boost_version: 1.75.0
+        boost_version: 1.73.0
         # The platform version boost was compiled on, e.g. "18.04". May only be used on linux
         platform_version: 18.04
    
