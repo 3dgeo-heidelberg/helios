@@ -51,6 +51,11 @@ public:
 	 * @see AbstractDetector::lasScale
 	 */
 	bool lasOutput;
+        /**
+         * @brief Flag specifying if detect output must be writing in LAS 1.0
+         * (LAS 1.4 is written by default)
+         */
+        bool las10;
 	/**
 	 * @brief Flag specifying if detector output must be zipped (true)
 	 * or not (false)
@@ -91,6 +96,7 @@ public:
 	    double rangeMin_m
     ){
 	    this->lasOutput = false;
+            this->las10     = false;
 	    this->zipOutput = false;
 	    this->lasScale = 0.0001;
 		this->cfg_device_accuracy_m = accuracy_m;

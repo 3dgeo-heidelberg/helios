@@ -22,6 +22,7 @@ void AbstractDetector::_clone(std::shared_ptr<AbstractDetector> ad){
     ad->outputFileLineFormatString = outputFileLineFormatString;
     ad->outputFilePath = outputFilePath;
     ad->lasOutput = lasOutput;
+    ad->las10     = las10;
     ad->zipOutput = zipOutput;
 }
 
@@ -34,6 +35,8 @@ void AbstractDetector::setOutputFilePath(string path) {
 	try {
         fs::create_directories(outputFilePath.parent_path());
         if (lasOutput) {
+          if (las10)
+          {
             sfw = std::make_shared<LasSyncFileWriter>(
                 path,                                   // Output path
                 zipOutput,                              // Zip flag
@@ -42,6 +45,18 @@ void AbstractDetector::setOutputFilePath(string path) {
                 0.0,                                    // Min intensity
                 1000000.0                               // Delta intensity
             );
+          }
+          else
+          {
+            sfw = std::make_shared<Las14SyncFileWriter>(
+                path,                                   // Output path
+                zipOutput,                              // Zip flag
+                lasScale,                               // Scale factor
+                scanner->platform->scene->getShift(),   // Offset
+                0.0,                                    // Min intensity
+                1000000.0                               // Delta intensity
+            );
+          }
         }
         else if (zipOutput) {
             sfw = std::make_shared<ZipSyncFileWriter>(path);

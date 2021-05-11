@@ -110,6 +110,11 @@ public:
      */
     bool parseLasOutput();
     /**
+     * @brief Parse the LAS version output specification
+     * @return True if LAS v1.0 was requested, False otherwise.
+     */
+    bool parseLas10();
+    /**
      * @brief Parse the ZIP output specification
      * @return True if ZIP output was requested, False otherwise.
      */

@@ -62,9 +62,10 @@ void printHelp(){
         << "\n\t\t\tYYYY-mm-DD HH::MM::SS\n"
         << "\t\t\t\tBy default: a random seed is generated\n\n"
         << "\t\t--lasOutput : Use this flag to generate the output point cloud "
-		   "in LAS format (v 1.0)\n\n"
-		<< "\t\t--zipOutput : Use this flag to generate compressed output\n\n"
-		<< "\t\t--lasScale : Specify the decimal scale factor for LAS output"
+		   "in LAS format (v 1.4)\n\n"
+        << "\t\t--las10: Use this flag to write in LAS format (v 1.0)\n\n"
+        << "\t\t--zipOutput : Use this flag to generate compressed output\n\n"
+        << "\t\t--lasScale : Specify the decimal scale factor for LAS output"
         << "\n\n"
         << "\t\t-j or --njobs or --nthreads <integer> : Specify the number of"
         << "\n\t\t\tjobs to be used to compute the simulation\n"
@@ -166,6 +167,7 @@ int main(int argc, char** argv) {
             ap.parseDisableLegNoise(),
             ap.parseRebuildScene(),
             ap.parseLasOutput(),
+            ap.parseLas10(),
             ap.parseZipOutput(),
             ap.parseFixedIncidenceAngle(),
             ap.parseLasScale()
@@ -187,6 +189,7 @@ void LidarSim::init(
     bool legNoiseDisabled,
     bool rebuildScene,
     bool lasOutput,
+    bool las10,
     bool zipOutput,
     bool fixedIncidenceAngle,
     double lasScale
@@ -196,13 +199,14 @@ void LidarSim::init(
 	    << "assetsPath: \"" << assetsPath << "\"\n"
 	    << "outputPath: \"" << outputPath << "\"\n"
 	    << "writeWaveform: " << writeWaveform << "\n"
-        << "calcEchowidth: " << calcEchowidth << "\n"
+            << "calcEchowidth: " << calcEchowidth << "\n"
 	    << "fullWaveNoise: " << fullWaveNoise << "\n"
 	    << "njobs: " << njobs << "\n"
 	    << "platformNoiseDisabled: " << platformNoiseDisabled << "\n"
 	    << "legNoiseDisabled: " << legNoiseDisabled << "\n"
 	    << "rebuildScene: " << rebuildScene << "\n"
 	    << "lasOutput: " << lasOutput << "\n"
+            << "las10: " << las10 << "\n"
 	    << "fixedIncidenceAngle: " << fixedIncidenceAngle << std::endl;
     logging::INFO(ss.str());
 
@@ -220,6 +224,7 @@ void LidarSim::init(
 	survey->scanner->setPlatformNoiseDisabled(platformNoiseDisabled);
 	survey->scanner->setFixedIncidenceAngle(fixedIncidenceAngle);
 	survey->scanner->detector->lasOutput = lasOutput;
+        survey->scanner->detector->las10 = las10;
 	survey->scanner->detector->zipOutput = zipOutput;
 	survey->scanner->detector->lasScale = lasScale;
 	if (survey == nullptr) {
