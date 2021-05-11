@@ -12,7 +12,7 @@
  * writers
  */
 class SyncFileWriter{
-private:
+protected:
     /**
      * @brief Path to file to be written
      */
@@ -24,12 +24,14 @@ private:
 public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //
     // ************************************ //
+    SyncFileWriter() = default;
+
     /**
      * @brief Instantiate a SyncFileWriter which writes to file at given path
      * @param path Path to file to be written
      * @see SyncFileWriter::path
      */
-    SyncFileWriter(const std::string &path) : path(path) {};
+    explicit SyncFileWriter(const std::string & path) : path(path) {};
     virtual ~SyncFileWriter(){}
 
     // ***  W R I T E  *** //
@@ -73,7 +75,7 @@ public:
       * @see Trajectory
       */
     void write(Trajectory const &t){
-        // Get the mutex to have eclusive access
+        // Get the mutex to have exclusive access
         std::lock_guard<std::mutex> lock(mutex);
 
         // Write data function

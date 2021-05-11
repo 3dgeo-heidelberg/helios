@@ -12,6 +12,7 @@ namespace fs = boost::filesystem;
 #include "MeasurementsBuffer.h"
 #include "SimpleSyncFileWriter.h"
 #include "LasSyncFileWriter.h"
+#include "Las14SyncFileWriter.h"
 #include "ZipSyncFileWriter.h"
 
 /**
