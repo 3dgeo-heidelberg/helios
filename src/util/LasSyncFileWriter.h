@@ -298,9 +298,16 @@ public:
             intensityCoefficient * (intensityf - minIntensity)
         );
         lp.set_intensity(intensity);
+
         lp.set_return_number(U8(m.returnNumber));
+        lp.set_extended_return_number(U8(m.returnNumber));
+
         lp.set_number_of_returns(U8(m.pulseReturnNumber));
+        lp.set_extended_number_of_returns(U8(m.pulseReturnNumber));
+
         lp.set_classification(U8(m.classification) & CLASSIFICATION_MASK);
+        lp.set_extended_classification(U8(m.classification) & CLASSIFICATION_MASK);
+
         lp.set_gps_time(F64(((double)m.gpsTime)/1000.0));
 
         // Populate LAS point (extra bytes attributes)
