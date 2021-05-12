@@ -128,7 +128,7 @@ def flight_lines_from_shp(filename):
     lines = []
     for i in range(shapefile.shape[0]):
         coords = list(shapefile.geometry.iloc[i].coords)
-        lines.append(np.array(coords))
+        lines.append(coords)
 
     return lines
 
@@ -171,14 +171,14 @@ def export_for_xml(waypoints, altitude, template_id, velocity, trajectory_time_i
             xml_string += '''
         <leg>
             <platformSettings x="{x}" y="{y}" z="{z}" movePerSec_m="{v}" />
-            <scannerSettings template="{id}" trajectory_time_interval_s="{interval}" />
+            <scannerSettings template="{id}" trajectoryTimeInterval_s="{interval}" />
         </leg>
             '''.format(x=leg[0], y=leg[1], z=altitude, v=velocity, id=template_id, interval=trajectory_time_interval)
         elif i % 2 != 0 and always_active is False:
             xml_string += '''
         <leg>
             <platformSettings x="{x}" y="{y}" z="{z}" movePerSec_m="{v}" />
-            <scannerSettings template="{id}" active="false" trajectory_time_interval_s="{interval}" />
+            <scannerSettings template="{id}" active="false" trajectoryTimeInterval_s="{interval}" />
         </leg>
             '''.format(x=leg[0], y=leg[1], z=altitude, v=velocity, id=template_id, interval=trajectory_time_interval)
     return xml_string
