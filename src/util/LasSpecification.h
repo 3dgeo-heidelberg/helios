@@ -2,13 +2,16 @@
 
 /**
  * @brief Class representing LAS specification
+ * Classes from 0 to 63 are defined by the specification
+ * Classes from 64 to 255 are user definable.
  *
  * For more information visit:
- *  https://www.asprs.org/a/society/committees/standards/LAS_1_4_r13.pdf
+ *  http://www.asprs.org/wp-content/uploads/2019/07/LAS_1_4_r15.pdf
  */
 class LasSpecification {
-	
-	// See https://www.asprs.org/a/society/committees/standards/LAS_1_4_r13.pdf
+
+
+  // See http://www.asprs.org/wp-content/uploads/2019/07/LAS_1_4_r15.pdf
 public:
     // ***  CONSTANTS  *** //
     // ******************* //
@@ -72,4 +75,27 @@ public:
 	 * @brief Wire structure class integer
 	 */
 	static const int WIRE_STRUCTURE = 16;
+        /**
+         * @brief Bridge Deck class integer
+         */
+        static const int BRIDGE_DECK = 17;
+        /**
+         * @brief High Noise class integer
+         */
+        static const int HIGH_NOISE = 18;
+        /**
+         * @brief Overhead Structure class integer
+         * E.g. conveyors, mining equipment, traffic lights
+         */
+        static const int OVERHEAD_STRUCTURE = 19;
+        /**
+         * @brief Ignored ground class integer
+         * E.g. breakline proximity
+         */
+        static const int IGNORED_GROUND = 20;
+        /**
+         * @brief Snow class integer
+         */
+        static const int SNOW = 21;
+
 };
