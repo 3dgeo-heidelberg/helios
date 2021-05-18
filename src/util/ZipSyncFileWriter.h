@@ -8,7 +8,7 @@
 /**
  * @author Alberto M. Esmoris Pena
  * @version 1.0
- * @brief ZipSyncFileWriter implementation fro zipped text output format
+ * @brief ZipSyncFileWriter implementation for zipped text output format
  */
 class ZipSyncFileWriter : public SimpleSyncFileWriter {
 protected:

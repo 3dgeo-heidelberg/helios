@@ -2,11 +2,13 @@
 
 #include "AbstractDetector.h"
 
+#include "SyncFileWriterFactory.h"
+
 #include <iostream>
 using namespace std;
 
-#include <logging.hpp>
 #include <boost/filesystem.hpp>
+#include <logging.hpp>
 namespace fs = boost::filesystem;
 
 // ***  CONSTRUCTION / DESTRUCTION  *** //
@@ -28,46 +30,33 @@ void AbstractDetector::_clone(std::shared_ptr<AbstractDetector> ad){
 
 // ***  M E T H O D S  *** //
 // *********************** //
-// ATTENTION: This method needs to be synchronized since multiple threads are writing to the output file!
+// ATTENTION: This method needs to be synchronized since multiple threads are
+// writing to the output file!
 void AbstractDetector::setOutputFilePath(string path) {
-	this->outputFilePath = path;
-	logging::WARN("outputFilePath="+path);
-	try {
-        fs::create_directories(outputFilePath.parent_path());
-        if (lasOutput) {
-          if (las10)
-          {
-            sfw = std::make_shared<LasSyncFileWriter>(
-                path,                                   // Output path
-                zipOutput,                              // Zip flag
-                lasScale,                               // Scale factor
-                scanner->platform->scene->getShift(),   // Offset
-                0.0,                                    // Min intensity
-                1000000.0                               // Delta intensity
-            );
-          }
-          else
-          {
-            sfw = std::make_shared<Las14SyncFileWriter>(
-                path,                                   // Output path
-                zipOutput,                              // Zip flag
-                lasScale,                               // Scale factor
-                scanner->platform->scene->getShift(),   // Offset
-                0.0,                                    // Min intensity
-                1000000.0                               // Delta intensity
-            );
-          }
-        }
-        else if (zipOutput) {
-            sfw = std::make_shared<ZipSyncFileWriter>(path);
-        }
-        else {
-            sfw = std::make_shared<SimpleSyncFileWriter>(path);
-        }
-	}
-	catch (std::exception &e) {
-	    logging::WARN(e.what());
-	}
+  this->outputFilePath = path;
+  logging::WARN("outputFilePath=" + path);
+  try {
+    fs::create_directories(outputFilePath.parent_path());
+
+    // Get the type of writer to be created
+    WriterType wt;
+    if (lasOutput) wt = las10 ? las10Type : las14Type;
+    else if (zipOutput) wt = zipType;
+    else wt = simpleType;
+
+    // Create the Writer
+    sfw = SyncFileWriterFactory::makeWriter(
+        wt,
+        path,                                   // Output path
+        zipOutput,                              // Zip flag
+        lasScale,                               // Scale factor
+        scanner->platform->scene->getShift(),   // Offset
+        0.0,                                    // Min intensity
+        1000000.0                               // Delta intensity
+    );
+  } catch (std::exception &e) {
+    logging::WARN(e.what());
+  }
 }
 
 void AbstractDetector::shutdown() {
