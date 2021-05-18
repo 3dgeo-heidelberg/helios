@@ -66,6 +66,16 @@ std::vector<std::string> FileUtils::getFilesByExpression(
         // Register filePath because it matches regexp
         filePaths.push_back(di->path().string());
     }
+
+  if (filePaths.empty())
+  {
+    std::stringstream ss;
+    ss << "Warning: No matching files were found "
+          "in efilepath directory. "
+          "Check regular expression.";
+    logging::WARN(ss.str());
+  }
+
     return filePaths;
 }
 
