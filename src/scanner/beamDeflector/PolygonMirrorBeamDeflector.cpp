@@ -30,6 +30,31 @@ void PolygonMirrorBeamDeflector::_clone(
 
 // ***  M E T H O D S  *** //
 // *********************** //
+
+void PolygonMirrorBeamDeflector::applySettings(std::shared_ptr<ScannerSettings> settings) {
+    setScanAngle_rad(settings->scanAngle_rad);
+    setScanFreq_Hz(settings->scanFreq_Hz);
+    cfg_setting_verticalAngleMin_rad = settings->verticalAngleMin_rad;
+    cfg_setting_verticalAngleMax_rad = settings->verticalAngleMax_rad;
+    state_currentBeamAngle_rad = 0;
+    double angleMax = cfg_device_scanAngleMax_rad;
+    double angleMin = -cfg_device_scanAngleMax_rad;
+    if(angleMax == 0.0){
+        angleMax = cfg_setting_verticalAngleMax_rad;
+        angleMin = cfg_setting_verticalAngleMin_rad;
+    }
+    else{
+        cfg_setting_verticalAngleMin_rad = angleMin;
+        cfg_setting_verticalAngleMax_rad = angleMax;
+    }
+    state_angleDiff_rad = angleMax-angleMin;
+    if(cfg_setting_scanAngle_rad == 0.0) {
+        cfg_setting_scanAngle_rad = state_angleDiff_rad / 2.0;
+    }
+    cached_angleBetweenPulses_rad = (double)(this->cfg_setting_scanFreq_Hz *
+                                             state_angleDiff_rad) / settings->pulseFreq_Hz;
+}
+
 void PolygonMirrorBeamDeflector::doSimStep() {
 	// Update beam angle:
 	state_currentBeamAngle_rad += cached_angleBetweenPulses_rad;
@@ -47,5 +72,5 @@ void PolygonMirrorBeamDeflector::doSimStep() {
 
 bool PolygonMirrorBeamDeflector::lastPulseLeftDevice() {
 	return std::fabs(this->state_currentBeamAngle_rad) <=
-	    this->cfg_device_scanAngleEffective_rad;
+	    std::min(this->cfg_device_scanAngleEffective_rad, this->cfg_setting_scanAngle_rad);
 }
