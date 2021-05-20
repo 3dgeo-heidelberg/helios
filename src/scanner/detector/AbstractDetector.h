@@ -14,6 +14,7 @@ namespace fs = boost::filesystem;
 #include "LasSyncFileWriter.h"
 #include "Las14SyncFileWriter.h"
 #include "ZipSyncFileWriter.h"
+#include "SyncFileWriterFactory.h"
 
 /**
  * @brief Base abstract class for detectors
@@ -99,9 +100,9 @@ public:
             this->las10     = false;
 	    this->zipOutput = false;
 	    this->lasScale = 0.0001;
-		this->cfg_device_accuracy_m = accuracy_m;
-		this->cfg_device_rangeMin_m = rangeMin_m;
-		this->scanner = std::move(scanner);
+            this->cfg_device_accuracy_m = accuracy_m;
+            this->cfg_device_rangeMin_m = rangeMin_m;
+            this->scanner = std::move(scanner);
 	}
 	virtual ~AbstractDetector() {}
 	virtual std::shared_ptr<AbstractDetector> clone() = 0;
@@ -122,11 +123,16 @@ public:
 	 * @brief Write a list of measurements
 	 * @param m List of measurements to be written
 	 */
-    void writeMeasurements(std::list<Measurement*> & m);
-    /**
-     * @brief Apply scanner settings to the detector
-     * @param settings Settings to be applied to de detector
-     */
+        void writeMeasurements(std::list<Measurement*> & m);
+        /**
+         * @brief Choose a type of file writer based on input flags
+         * @return Type of writer to be created
+         */
+        WriterType chooseWriterType();
+        /**
+         * @brief Apply scanner settings to the detector
+         * @param settings Settings to be applied to de detector
+         */
 	virtual void applySettings(std::shared_ptr<ScannerSettings> & settings) {};
 
 	/**

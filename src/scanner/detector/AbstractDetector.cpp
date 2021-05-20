@@ -2,8 +2,6 @@
 
 #include "AbstractDetector.h"
 
-#include "SyncFileWriterFactory.h"
-
 #include <iostream>
 using namespace std;
 
@@ -30,6 +28,29 @@ void AbstractDetector::_clone(std::shared_ptr<AbstractDetector> ad){
 
 // ***  M E T H O D S  *** //
 // *********************** //
+WriterType AbstractDetector::chooseWriterType() {
+
+  // Only one flag at a time!
+  if (lasOutput && zipOutput)
+  {
+    lasOutput = false;
+    zipOutput = false;
+    std::stringstream ss;
+    ss << "Warning: only one type of output can be chosen at a time."
+          "Using default writer.";
+    logging::WARN(ss.str());
+
+    return simpleType;
+  }
+
+  // Get the type of writer to be created
+  WriterType wt;
+  if (lasOutput) wt = las10 ? las10Type : las14Type;
+  else if (zipOutput) wt = zipType;
+  else wt = simpleType;
+
+  return wt;
+}
 // ATTENTION: This method needs to be synchronized since multiple threads are
 // writing to the output file!
 void AbstractDetector::setOutputFilePath(string path) {
@@ -38,12 +59,7 @@ void AbstractDetector::setOutputFilePath(string path) {
   try {
     fs::create_directories(outputFilePath.parent_path());
 
-    // Get the type of writer to be created
-    WriterType wt;
-    if (lasOutput) wt = las10 ? las10Type : las14Type;
-    else if (zipOutput) wt = zipType;
-    else wt = simpleType;
-
+    WriterType wt = chooseWriterType();
     // Create the Writer
     sfw = SyncFileWriterFactory::makeWriter(
         wt,
