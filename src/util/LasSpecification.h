@@ -70,7 +70,7 @@ public:
 	/**
 	 * @brief Transmission tower class integer
 	 */
-	static const int TRANSMISSION_TOWER = 14;
+	static const int TRANSMISSION_TOWER = 15;
 	/**
 	 * @brief Wire structure class integer
 	 */
