@@ -15,7 +15,7 @@
 				pulseFreqs_Hz				= "100000,300000"
 				pulseLength_ns     			= "5"
 				rangeMin_m					= "1.5"
-				scanAngleMax_deg   			= "50"
+				scanAngleMax_deg   			= "120"
 				scanAngleEffectiveMax_deg   = "50"
 				scanFreqMin_Hz				= "3"
 				scanFreqMax_Hz				= "120">
@@ -42,7 +42,7 @@
 				pulseFreqs_Hz				= "70000,100000,150000,300000"
 				pulseLength_ns     			= "4"
 				rangeMin_m					= "2.5"
-				scanAngleMax_deg   			= "50"
+				scanAngleMax_deg   			= "120"
 				scanAngleEffectiveMax_deg   = "50"
 				scanFreqMin_Hz				= "3"
 				scanFreqMax_Hz				= "120"
