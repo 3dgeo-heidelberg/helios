@@ -29,20 +29,6 @@ void AbstractDetector::_clone(std::shared_ptr<AbstractDetector> ad){
 // ***  M E T H O D S  *** //
 // *********************** //
 WriterType AbstractDetector::chooseWriterType() {
-
-  // Only one flag at a time!
-  if (lasOutput && zipOutput)
-  {
-    lasOutput = false;
-    zipOutput = false;
-    std::stringstream ss;
-    ss << "Warning: only one type of output can be chosen at a time."
-          "Using default writer.";
-    logging::WARN(ss.str());
-
-    return simpleType;
-  }
-
   // Get the type of writer to be created
   WriterType wt;
   if (lasOutput) wt = las10 ? las10Type : las14Type;
