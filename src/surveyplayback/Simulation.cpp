@@ -18,6 +18,7 @@ threadPool(
 )
 {
     mbuffer = make_shared<MeasurementsBuffer>();
+    currentGpsTime = calcCurrentGpsTime();
 }
 
 void Simulation::doSimStep(){
@@ -31,7 +32,9 @@ void Simulation::doSimStep(){
 	}
 
 	mScanner->platform->doSimStep(getScanner()->getPulseFreq_Hz());
-	mScanner->doSimStep(threadPool, mCurrentLegIndex);
+	mScanner->doSimStep(threadPool, mCurrentLegIndex, currentGpsTime);
+	currentGpsTime += 1.0/getScanner()->getPulseFreq_Hz();
+
 }
 
 
@@ -73,6 +76,14 @@ void Simulation::setScanner(shared_ptr<Scanner> scanner) {
     if (this->mScanner != nullptr) {
         this->mScanner->detector->mBuffer = this->mbuffer;
     }
+}
+
+
+double Simulation::calcCurrentGpsTime(){
+    long now = duration_cast<milliseconds>(
+            system_clock::now().time_since_epoch()
+    ).count();
+    return ((double)now - 315360000.) - 1000000000.;
 }
 
 void Simulation::setSimSpeedFactor(double factor) {

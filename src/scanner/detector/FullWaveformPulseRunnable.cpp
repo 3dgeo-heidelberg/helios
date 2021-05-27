@@ -594,7 +594,7 @@ void FullWaveformPulseRunnable::captureFullWave(
     double max_time,
     dvec3 & beamOrigin,
     dvec3 & beamDir,
-    long gpstime,
+    double gpstime,
     bool fullWaveNoise,
     RandomnessGenerator<double> &rg2
 ){
