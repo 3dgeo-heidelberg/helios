@@ -64,8 +64,6 @@ public:
     // Adds the byte difference to the data point offset
     lwHeader.offset_to_point_data += 148;
 
-    // global_enconding: rightmost bit set to 1 to indicate standard GPS Time
-    lwHeader.set_global_encoding_bit(0);
   }
 
 
