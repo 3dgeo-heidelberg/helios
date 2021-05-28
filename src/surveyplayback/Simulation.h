@@ -84,7 +84,7 @@ protected:
     /**
      * @brief Time corresponding to simulation start (currentGpsTime)
      */
-    long currentGpsTime = 0;
+    double currentGpsTime_ms = 0;
 
 
 
