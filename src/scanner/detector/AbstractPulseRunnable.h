@@ -51,7 +51,7 @@ public:
 	/**
 	 * @brief Current GPS time in milliseconds
 	 */
-	long currentGpsTime; // In milliseconds
+    double currentGpsTime; // In milliseconds
 
 	/**
 	 * @brief Flag to specify if ground points must be captured (true) or not

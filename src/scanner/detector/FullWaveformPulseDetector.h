@@ -49,7 +49,7 @@ public:
 	    double max_time,
 	    glm::dvec3& beamOrigin,
 	    glm::dvec3& beamDir,
-	    long gpstime
+        double gpstime
     );
 	/**
 	 * @see AbstractDetector::applySettings
@@ -63,7 +63,7 @@ public:
 	    glm::dvec3 absoluteBeamOrigin,
 	    Rotation absoluteBeamAttitude,
 	    int state_currentPulseNumber,
-	    long currentGpsTime
+        double currentGpsTime
     ) override;
 
     // ***  GETTERS and SETTERS  *** //
