@@ -62,4 +62,9 @@ jobs:
       # Execute tests defined by the CMake configuration.  
       # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
       run: ${{github.workspace}}/build/helios --test
-      
+
+    - name: Save compiled executable
+      uses: actions/upload-artifact@v2
+      with:
+          name: linux-executable
+          path: ${{github.workspace}}/build/helios*

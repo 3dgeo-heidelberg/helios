@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -- coding: utf-8 --
+# Hannah Weiser 2021, h.weiser@stud.uni-heidelberg.de
 
 """
 This script creates a compressed archive with a ready-to-use HELIOS++ distribution containing all configuration
@@ -9,7 +10,7 @@ usage: python extra\archive.py <path-to-survey> <path_to_helios.exe> <path-to-zi
 e.g. python extra\archive.py run\helios.exe data\surveys\toyblocks\als_toyblocks.xml archive.zip
 
 instead of a single survey XML-file, a text file can be specified which contains one survey path per line
-e.g. python extra\archive.py run\helios.exe archive.zip list.txt
+e.g. python extra\archive.py run\helios.exe list.txt archive.zip
 
 The archive additionally contains a text file (version.txt) with the helios version and the DOI to the zenodo release.
 """
@@ -40,12 +41,6 @@ def remove_duplicates(a_list):
     return list(dict.fromkeys(a_list))
 
 
-#def replace_abs_path(fileobj, search, replace):
-#        content.replace(search, replace)
-#
-#    return content
-
-
 def get_xml(survey, search_text, root):
     with open(survey, "r") as survey_file:
         search_text_end = "#"
@@ -70,9 +65,10 @@ def get_sceneparts(scene, root):
         search_text_key = "filepath"
         search_text_value = "value="
         search_text_key2 = "matfile"
+        search_text_key3 = "efilepath"
         scenepart_paths = []
         for line in scene_file.readlines():
-            if search_text_key in line or search_text_key2 in line:
+            if search_text_key in line or search_text_key2 in line or search_text_key3 in line:
                 start_idx = line.find(search_text_value) + len(search_text_value) + 1
                 end_idx = line.find('"', start_idx)
                 if end_idx is None:
@@ -82,11 +78,15 @@ def get_sceneparts(scene, root):
                     abs_path = sp_path
                     sp_path = Path(sp_path).relative_to(root)
                     content = content.replace(abs_path, str(sp_path))
-                scenepart_paths.append(Path(sp_path))
-                if Path(sp_path).suffix == ".obj":
-                    sp_path = str(sp_path).replace(".obj", ".mtl")
+                if search_text_key3 in line:
+                    pattern = sp_path.replace(".*", "*").replace(".?", "?")
+                    scenepart_paths.extend(Path('.').glob(pattern))
+                else:
                     scenepart_paths.append(Path(sp_path))
-
+                    if Path(sp_path).suffix == ".obj":
+                        sp_path = str(sp_path).replace(".obj", ".mtl")
+                        if Path(sp_path).exists():
+                            scenepart_paths.append(Path(sp_path))
 
     return remove_duplicates(scenepart_paths), content
 
@@ -130,6 +130,11 @@ for survey in surveys:
 
     if scene_path not in [Path(file) for file in outzip.namelist()]:
         outzip.writestr(str(scene_path_new), scene_text)
+        try:
+            scene_path_built = Path(str(scene_path_new).replace(".xml", ".scene"))
+            outzip.write(scene_path_built)
+        except FileNotFoundError:
+            continue
 
     platform_path, platform_path_new = get_xml(survey, "platform=", root)
     if platform_path not in [Path(file) for file in outzip.namelist()]:
@@ -167,9 +172,11 @@ zipurl = None
 if not Path("run").exists():
     print("There is no run-folder in your root directory. Downloading run folder from GitHub repository")
     if platform.system() == "Windows":
-        zipurl = "https://github.com/3dgeo-heidelberg/helios/releases/download/v" + helios_version +  "/helios-plusplus-win.zip"
+        zipurl = "https://github.com/3dgeo-heidelberg/helios/releases/download/v" + helios_version \
+                 + "/helios-plusplus-win.zip"
     elif platform.system() == "Linux":
-        zipurl = "https://github.com/3dgeo-heidelberg/helios/releases/download/v" + helios_version + "/helios-plusplus-lin.tar.gz"
+        zipurl = "https://github.com/3dgeo-heidelberg/helios/releases/download/v" + helios_version \
+                 + "/helios-plusplus-lin.tar.gz"
 
 release_url = "https://github.com/3dgeo-heidelberg/helios/releases/tag/v" + helios_version
 try:
@@ -180,17 +187,18 @@ try:
     idx = content.find(search_text)
     idx_end = content.find(end_text, idx)
     doi = content[idx:idx_end]
-#except HTTPError or URLError:
+    helios_doi_version = helios_version
+# except HTTPError or URLError:
 except Exception as e:
-    doi = "https://doi.org/10.5281/zenodo.4498305"
-    helios_doi_version = "1.0.3"
+    doi = "https://doi.org/10.5281/zenodo.4674914"
+    helios_doi_version = "1.0.6"
 
 
 if zipurl is not None:
     try:
         zipresp = urlopen(zipurl)
     except HTTPError or URLError:
-        zipurl = "https://github.com/3dgeo-heidelberg/helios/releases/download/v1.0.3/helios-plusplus-win.zip"
+        zipurl = "https://github.com/3dgeo-heidelberg/helios/releases/download/v1.0.6/helios-plusplus-win.zip"
         zipresp = urlopen(zipurl)
 
     temp_dir = root.joinpath("tmp")
@@ -203,7 +211,7 @@ if zipurl is not None:
     for filename in list_files:
         if "run" in Path(filename).parts:
             zf.extract(filename, temp_dir)
-            outzip.write(temp_dir.relative_to(temp_dir).joinpath(filename))
+            outzip.write(temp_dir.joinpath(filename), filename)
     zf.close()
 
     rmtree(temp_dir.absolute())

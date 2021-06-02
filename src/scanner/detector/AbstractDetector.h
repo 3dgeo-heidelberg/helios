@@ -148,7 +148,7 @@ public:
 	    glm::dvec3 absoluteBeamOrigin,
 	    Rotation absoluteBeamAttitude,
 	    int state_currentPulseNumber,
-	    long currentGpsTime
+        double currentGpsTime
     ) = 0;
 
 	// ***  GETTERS and SETTERS  *** //

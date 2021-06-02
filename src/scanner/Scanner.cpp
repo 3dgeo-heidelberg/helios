@@ -184,7 +184,7 @@ string Scanner::toString() {
             "Visibility: " + to_string(cfg_device_visibility_km) + " km";
 }
 
-void Scanner::doSimStep(thread_pool& pool, unsigned int const legIndex) {
+void Scanner::doSimStep(thread_pool& pool, unsigned int const legIndex, double currentGpsTime) {
     // Update head attitude (we do this even when the scanner is inactive):
     scannerHead->doSimStep(cfg_setting_pulseFreq_Hz);
 
@@ -211,7 +211,6 @@ void Scanner::doSimStep(thread_pool& pool, unsigned int const legIndex) {
     handleSimStepNoise(absoluteBeamOrigin, absoluteBeamAttitude);
 
 	// Calculate time of the emitted pulse
-	long currentGpsTime = calcCurrentGpsTime();
 
 	// Handle trajectory output
 	handleTrajectoryOutput(currentGpsTime);
@@ -393,19 +392,13 @@ Rotation Scanner::calcAbsoluteBeamAttitude(){
         .applyTo(beamDeflector->getEmitterRelativeAttitude());
 }
 
-long Scanner::calcCurrentGpsTime(){
-    long now = duration_cast<milliseconds>(
-        system_clock::now().time_since_epoch()
-    ).count();
-    return (static_cast<long>(now) - 315360000) - 1000000000;
-}
 
 void Scanner::handlePulseComputation(
     thread_pool& pool,
     unsigned int const legIndex,
     glm::dvec3 &absoluteBeamOrigin,
     Rotation &absoluteBeamAttitude,
-    long currentGpsTime
+    double currentGpsTime
 ){
     if(pool.getPoolSize() > 1 ) {
         // Submit pulse computation functor to thread pool
@@ -471,7 +464,7 @@ void Scanner::handlePulseComputation(
     }
 }
 
-void Scanner::handleTrajectoryOutput(long currentGpsTime){
+void Scanner::handleTrajectoryOutput(double currentGpsTime){
     // Get out of here if trajectory time interval is 0 (no trajectory output)
     if(trajectoryTimeInterval == 0.0) return;
     // Get out of here it it has been explicitly specified to dont write

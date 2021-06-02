@@ -45,9 +45,13 @@ public:
     // ***  M E T H O D S  *** //
     // *********************** //
     /**
+     * @see AbstractBeamDeflector::applySettings
+     */
+    void applySettings(std::shared_ptr<ScannerSettings>) override;
+    /**
      * @see AbstractBeamDeflector::doSimStep
      */
-	void doSimStep() override;
+    void doSimStep() override;
 	/**
 	 * @see AbstractBeamDeflector::lastPulseLeftDevice
 	 */
