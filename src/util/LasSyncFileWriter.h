@@ -125,6 +125,7 @@ protected:
 public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //
     // ************************************ //
+    LasSyncFileWriter() : SyncFileWriter() {};
     /**
      * @brief Synchronous LAS file writer constructor
      * @see SyncFileWriter::path
@@ -151,96 +152,130 @@ public:
         deltaIntensity(deltaIntensity),
         finished(false)
     {
-        // Prepare
-        std::stringstream ss;
-        scaleFactorInverse = 1.0 / scaleFactor;
-        maxIntensity = minIntensity + deltaIntensity;
-        intensityCoefficient = 65535.0 / deltaIntensity;
+        // Craft header and point format
+        craft();
 
-
-        // Build header
-        ss << "HELIOS++V" << HELIOS_VERSION;
-        std::string ssStr = ss.str();
-        size_t n = ssStr.length();
-        if(n > 31) n = 31;
-        memcpy(
-            lwHeader.generating_software,
-            ssStr.c_str(),
-            sizeof(char) * n
-        );
-        lwHeader.generating_software[n] = 0;
-        ss.str("");
-        lwHeader.version_major = U8(1);
-        lwHeader.version_minor = U8(0); // las version 1.0
-        time_t now = time(0);
-        tm *gmtm = gmtime(&now);
-        lwHeader.file_creation_day = gmtm->tm_yday;
-        lwHeader.file_creation_year = 1900 + gmtm->tm_year;
-        lwHeader.point_data_format = 1;
-        lwHeader.point_data_record_length = 28;
-        lwHeader.x_scale_factor = scaleFactor;
-        lwHeader.y_scale_factor = scaleFactor;
-        lwHeader.z_scale_factor = scaleFactor;
-        lwHeader.x_offset = F64(offset.x);
-        lwHeader.y_offset = F64(offset.y);
-        lwHeader.z_offset = F64(offset.z);
-        lwHeader.global_encoding = 0;
-
-        // Extra bytes
-        ewAttrIdx = -1;
-        fwiAttrIdx = -1;
-        hoiAttrIdx = -1;
-        try{
-            I32 ewType = 9;  // double
-            I32 fwiType = 5; // int
-            I32 hoiType = 5; // int
-            LASattribute ewAttr(
-                ewType,
-                "echo_width",
-                "Helios++ echo width"
-            );
-            LASattribute fwiAttr(
-                fwiType,
-                "fullwaveIndex",
-                "Helios++ fullwave index"
-            );
-            LASattribute hoiAttr(
-                hoiType,
-                "hitObjectId",
-                "Helios++ hit object ID"
-            );
-            ewAttrIdx = lwHeader.add_attribute(ewAttr);
-            fwiAttrIdx = lwHeader.add_attribute(fwiAttr);
-            hoiAttrIdx = lwHeader.add_attribute(hoiAttr);
-        }
-        catch(std::exception &e){
-            std::stringstream ss;
-            ss  << "LasSyncFileWriter failed.\n\tEXCEPTION: "
-                << e.what();
-            logging::WARN(ss.str());
-        }
-        lwHeader.update_extra_bytes_vlr();
-        lwHeader.point_data_record_length += lwHeader.get_attributes_size();
-        ewAttrStart = lwHeader.get_attribute_start(ewAttrIdx);
-        fwiAttrStart = lwHeader.get_attribute_start(fwiAttrIdx);
-        hoiAttrStart = lwHeader.get_attribute_start(hoiAttrIdx);
-
-        // Initialize LASpoint
-        lp.init(
-            &lwHeader,
-            lwHeader.point_data_format,
-            lwHeader.point_data_record_length,
-            0
-        );
+        // Add extra attributes
+        addExtraAttributes();
 
         // Create LASWriter
-        lwOpener.set_file_name(path.c_str());
-        if(compress) lwOpener.set_format(LAS_TOOLS_FORMAT_LAZ);
-        else lwOpener.set_format(LAS_TOOLS_FORMAT_LAS);
-        lw = std::shared_ptr<LASwriter>(lwOpener.open(&lwHeader));
+        createLasWriter(path, compress);
 
     }
+
     ~LasSyncFileWriter() override {LasSyncFileWriter::finish();}
+
+    // *** CRAFTING *** //
+    /**
+     * @brief Crafting of header of the LAS File for version 1.0
+     */
+    void craft()
+    {
+      // Prepare
+      std::stringstream ss;
+      scaleFactorInverse = 1.0 / scaleFactor;
+      maxIntensity = minIntensity + deltaIntensity;
+      intensityCoefficient = 65535.0 / deltaIntensity;
+
+
+      // Build header
+      ss << "HELIOS++V" << HELIOS_VERSION;
+      std::string ssStr = ss.str();
+      size_t n = ssStr.length();
+      if(n > 31) n = 31;
+      memcpy(
+          lwHeader.generating_software,
+          ssStr.c_str(),
+          sizeof(char) * n
+      );
+      lwHeader.generating_software[n] = 0;
+      ss.str("");
+      lwHeader.version_major = U8(1);
+      lwHeader.version_minor = U8(0); // las version 1.0
+      time_t now = time(0);
+      tm *gmtm = gmtime(&now);
+      lwHeader.file_creation_day = gmtm->tm_yday;
+      lwHeader.file_creation_year = 1900 + gmtm->tm_year;
+      lwHeader.point_data_format = 1;
+      lwHeader.point_data_record_length = 28;
+      lwHeader.x_scale_factor = scaleFactor;
+      lwHeader.y_scale_factor = scaleFactor;
+      lwHeader.z_scale_factor = scaleFactor;
+      lwHeader.x_offset = F64(offset.x);
+      lwHeader.y_offset = F64(offset.y);
+      lwHeader.z_offset = F64(offset.z);
+      lwHeader.global_encoding = 0;
+    }
+
+    // *** EXTRA ATTRIBUTES *** //
+    /**
+     * @brief Creation of extra attributes to be added to each record
+     */
+    void addExtraAttributes()
+    {
+      // Extra bytes
+      ewAttrIdx = -1;
+      fwiAttrIdx = -1;
+      hoiAttrIdx = -1;
+      try{
+        I32 ewType = 9;  // double
+        I32 fwiType = 5; // int
+        I32 hoiType = 5; // int
+        LASattribute ewAttr(
+            ewType,
+            "echo_width",
+            "Helios++ echo width"
+        );
+        LASattribute fwiAttr(
+            fwiType,
+            "fullwaveIndex",
+            "Helios++ fullwave index"
+        );
+        LASattribute hoiAttr(
+            hoiType,
+            "hitObjectId",
+            "Helios++ hit object ID"
+        );
+        ewAttrIdx = lwHeader.add_attribute(ewAttr);
+        fwiAttrIdx = lwHeader.add_attribute(fwiAttr);
+        hoiAttrIdx = lwHeader.add_attribute(hoiAttr);
+      }
+      catch(std::exception &e){
+        std::stringstream ss;
+        ss  << "LasSyncFileWriter failed.\n\tEXCEPTION: "
+            << e.what();
+        logging::WARN(ss.str());
+      }
+
+      lwHeader.update_extra_bytes_vlr();
+      lwHeader.point_data_record_length += lwHeader.get_attributes_size();
+      ewAttrStart = lwHeader.get_attribute_start(ewAttrIdx);
+      fwiAttrStart = lwHeader.get_attribute_start(fwiAttrIdx);
+      hoiAttrStart = lwHeader.get_attribute_start(hoiAttrIdx);
+    }
+
+    /**
+     * @brief Creation of the LasWriter itself, including LASpoint
+     * initialization
+     * @param path Path where the file will be save
+     * @param compress Flag to activate/deactivate compression (las/laz format)
+     */
+    void createLasWriter(const std::string & path, bool compress)
+    {
+      // Initialize LASpoint
+      lp.init(
+          &lwHeader,
+          lwHeader.point_data_format,
+          lwHeader.point_data_record_length,
+          0
+      );
+
+      /* Create the writer itself */
+      lwOpener.set_file_name(path.c_str());
+      if(compress) lwOpener.set_format(LAS_TOOLS_FORMAT_LAZ);
+      else lwOpener.set_format(LAS_TOOLS_FORMAT_LAS);
+      lw = std::shared_ptr<LASwriter>(lwOpener.open(&lwHeader));
+    }
 
     // ***  W R I T E  *** //
     // ******************* //
@@ -263,9 +298,16 @@ public:
             intensityCoefficient * (intensityf - minIntensity)
         );
         lp.set_intensity(intensity);
+
         lp.set_return_number(U8(m.returnNumber));
+        lp.set_extended_return_number(U8(m.returnNumber));
+
         lp.set_number_of_returns(U8(m.pulseReturnNumber));
+        lp.set_extended_number_of_returns(U8(m.pulseReturnNumber));
+
         lp.set_classification(U8(m.classification) & CLASSIFICATION_MASK);
+        lp.set_extended_classification(U8(m.classification) & CLASSIFICATION_MASK);
+
         lp.set_gps_time(F64(((double)m.gpsTime)/1000.0));
 
         // Populate LAS point (extra bytes attributes)

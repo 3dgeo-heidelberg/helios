@@ -120,6 +120,10 @@ bool ArgumentsParser::parseLasOutput(){
     return findIndexOfArgument("--lasOutput") >= 0;
 }
 
+bool ArgumentsParser::parseLas10(){
+    return findIndexOfArgument("--las10") >= 0;
+}
+
 bool ArgumentsParser::parseZipOutput(){
     return findIndexOfArgument("--zipOutput") >= 0;
 }

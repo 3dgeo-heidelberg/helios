@@ -49,6 +49,7 @@ public:
         bool legNoiseDisabled = false,
         bool rebuildScene = false,
         bool lasOutput = false,
+        bool las10 = false,
         bool zipOutput = false,
         bool fixedIncidenceAngle = false,
         double lasScale = 0.0001
