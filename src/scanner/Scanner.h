@@ -229,7 +229,7 @@ public:
      * @brief GPS time (milliseconds) corresponding to last recorded trajectory
      * point
      */
-    long lastTrajectoryTime;
+    double lastTrajectoryTime;
 
 	// FWF settings
 	/**
@@ -361,8 +361,9 @@ public:
 	 * @brief Perform computations for current simulation step
 	 * @param pool Thread pool used to handle concurrent computations
 	 * @param legIndex Index of current leg
+	 * @param currentGpsTime GPS time of current pulse
 	 */
-	void doSimStep(thread_pool& pool, unsigned int legIndex);
+	void doSimStep(thread_pool& pool, unsigned int legIndex, double currentGpsTime);
 	/**
 	 * @brief Build a string representation of the scanner
 	 * @return String representing the scanner
@@ -426,11 +427,7 @@ public:
      * @see AbstractBeamDeflector::getEmitterRelativeAttitude
      */
     Rotation calcAbsoluteBeamAttitude();
-    /**
-     * @brief Compute the current GPS time (milliseconds)
-     * @return Current GPS time (milliseconds)
-     */
-    long calcCurrentGpsTime();
+
 
     /**
      * @brief Check if given number of return (nor) is inside
@@ -471,7 +468,7 @@ public:
         unsigned int const legIndex,
         glm::dvec3 &absoluteBeamOrigin,
         Rotation &absoluteBeamAttitude,
-        long currentGpsTime
+        double currentGpsTime
     );
     /**
      * @brief Handle trajectory output whatever it is to output file, to
@@ -480,7 +477,7 @@ public:
      * @see Scanner::allTrajectories
      * @see Scanner::cycleTrajectories
      */
-    void handleTrajectoryOutput(long currentGpsTime);
+    void handleTrajectoryOutput(double currentGpsTime);
 
 	// *** GETTERs and SETTERs *** //
 	// *************************** //

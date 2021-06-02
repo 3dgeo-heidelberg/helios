@@ -69,8 +69,8 @@ void FullWaveformPulseDetector::simulatePulse(
 	thread_pool& pool, 
 	dvec3 absoluteBeamOrigin, 
 	Rotation absoluteBeamAttitude, 
-	int state_currentPulseNumber, 
-	long currentGpsTime
+	int state_currentPulseNumber,
+    double currentGpsTime
 ){
 	// Submit pulse computation task to thread pool
 	shared_ptr<FullWaveformPulseDetector> detector(this);
@@ -102,7 +102,7 @@ void FullWaveformPulseDetector::writeFullWave(
 	double max_time, 
 	dvec3& beamOrigin,
 	dvec3& beamDir,
-	long gpstime
+    double gpstime
 ){
     if(fw_sfw != nullptr) {
         fw_sfw->write(

@@ -76,10 +76,19 @@ protected:
 	 */
 	bool mPaused = false;
 
-	/**
-	 * @brief Time corresponding to simulation start (milliseconds)
-	 */
-	long timeStart_ms = 0;
+    /**
+     * @brief Time corresponding to simulation start (milliseconds)
+     */
+    long timeStart_ms = 0;
+
+    /**
+     * @brief Time corresponding to simulation start (currentGpsTime)
+     */
+    double currentGpsTime_ms = 0;
+
+
+
+
 
 public:
     /**
@@ -147,6 +156,12 @@ public:
 	 * @brief Handle simulation shutdown
 	 */
 	void shutdown();
+
+    /**
+     * @brief Compute the current GPS time (milliseconds)
+     * @return Current GPS time (milliseconds)
+     */
+    double calcCurrentGpsTime();
 
     // ***  GETTERS and SETTERS  *** //
     // ***************************** //

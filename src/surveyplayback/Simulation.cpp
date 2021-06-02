@@ -18,6 +18,7 @@ threadPool(
 )
 {
     mbuffer = make_shared<MeasurementsBuffer>();
+    currentGpsTime_ms = calcCurrentGpsTime();
 }
 
 void Simulation::doSimStep(){
@@ -31,7 +32,10 @@ void Simulation::doSimStep(){
 	}
 
 	mScanner->platform->doSimStep(getScanner()->getPulseFreq_Hz());
-	mScanner->doSimStep(threadPool, mCurrentLegIndex);
+	mScanner->doSimStep(threadPool, mCurrentLegIndex, currentGpsTime_ms);
+    currentGpsTime_ms += 1000. / ((double)getScanner()->getPulseFreq_Hz());
+    if (currentGpsTime_ms > 604800000.) currentGpsTime_ms -= 604800000.;
+
 }
 
 
@@ -73,6 +77,15 @@ void Simulation::setScanner(shared_ptr<Scanner> scanner) {
     if (this->mScanner != nullptr) {
         this->mScanner->detector->mBuffer = this->mbuffer;
     }
+}
+
+
+double Simulation::calcCurrentGpsTime(){
+    long now = duration_cast<seconds>(
+            system_clock::now().time_since_epoch()
+    ).count();
+    return (double)((now - 315964809L) % 604800L) * 1000.; // 315964809s is the difference between 1970-01-01 and 1980-01-06
+                                                       // 604800s per week -> resulting time is in ms since start of GPSweek
 }
 
 void Simulation::setSimSpeedFactor(double factor) {
