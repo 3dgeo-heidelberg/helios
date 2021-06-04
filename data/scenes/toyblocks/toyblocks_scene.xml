@@ -52,24 +52,6 @@
                 <param type="double" key="scale" value="1" />
             </filter>
         </part>
-         <part>
-            <filter type="objloader">
-                <param type="string" key="filepath" value="data/sceneparts/toyblocks/easter2021.obj" />
-            </filter>
-
-			<filter type="rotate">
-				<param key="rotation" type="rotation">
-					<rot angle_deg="90" axis="x"/>
-				</param>
-			</filter>
-			<filter type="scale">
-                <param type="double" key="scale" value="5" />
-            </filter>
-
-			<filter type="translate">
-				<param type="vec3" key="offset" value="60.0;0.0;10.0" />
-			</filter>
-        </part>
 
     </scene>
 </document>
