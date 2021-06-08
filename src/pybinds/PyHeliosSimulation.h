@@ -37,6 +37,7 @@ private:
     boost::thread * thread = nullptr;
     std::shared_ptr<PySimulationCycleCallback> callback = nullptr;
     bool lasOutput = false;
+    bool las10     = false;
     bool zipOutput = false;
 public:
     bool finalOutput = true;
@@ -60,6 +61,7 @@ public:
         std::string outputPath = "output/",
         size_t numThreads = 0,
         bool lasOutput = false,
+        bool las10     = false,
         bool zipOutput = false
     );
     virtual ~PyHeliosSimulation();
@@ -188,19 +190,28 @@ public:
         survey->scanner->cycleMeasurements = nullptr;
         survey->scanner->cycleMeasurementsMutex = nullptr;
     }
-    void setLasOutput(double lasOutput){
+    double getLasOutput(){return lasOutput;}
+    void setLasOutput(double lasOutput_){
         if(started) throw PyHeliosException(
             "Cannot modify LAS output flag for already started simulations."
         );
-        this->lasOutput = lasOutput;
+        this->lasOutput = lasOutput_;
     }
-    double getLasOutput(){return lasOutput;}
+
+    double getLas10(){return las10;}
+    void setLas10(double las10_){
+    if(started) throw PyHeliosException(
+          "Cannot modify LAS v1.0 output flag for already started simulations."
+      );
+    this->las10 = las10_;
+  }
+
     double getZipOutput(){return zipOutput;}
-    void setZipOutput(bool zipOutput){
+    void setZipOutput(bool zipOutput_){
         if(started) throw PyHeliosException(
             "Cannot modify ZIP output flag for already started simulations."
         );
-        this->zipOutput = zipOutput;
+        this->zipOutput = zipOutput_;
     }
 
     // ***  CONTROL FUNCTIONS  *** //

@@ -38,6 +38,9 @@ parser.add_argument('--seed', dest='randomness_seed',
 parser.add_argument('--lasOutput', dest='las_output_flag', action='store_const', const=True, default=False,
                     help='Use this flag to generate the output point cloud in LAS format.')
 
+parser.add_argument('--las10', dest='las10_output_flag', action='store_const', const=True, default=False,
+                    help='Use this flag along with --lasOutput to write LAS v1.0 files.')
+
 parser.add_argument('--zipOutput', dest='zip_output_flag', action='store_const', const=True, default=False,
                     help='Use this flag to generate compressed output.')
 

@@ -21,6 +21,7 @@ class SimulationBuild:
         outputDir,
         numThreads,
         lasOutput,
+        las10,
         zipOutput,
         copy=False
     ):
@@ -33,6 +34,7 @@ class SimulationBuild:
             outputDir,
             numThreads,
             lasOutput,
+            las10,
             zipOutput
         )
 

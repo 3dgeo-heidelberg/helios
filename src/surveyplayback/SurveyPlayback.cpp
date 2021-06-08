@@ -26,11 +26,13 @@ SurveyPlayback::SurveyPlayback(
     size_t numThreads,
     bool lasOutput,
     bool zipOutput,
+    bool las10,
     bool exportToFile
 ):
     Simulation(numThreads, survey->scanner->detector->cfg_device_accuracy_m),
     lasOutput(lasOutput),
     zipOutput(zipOutput),
+    las10(las10),
     outputPath(outputPath)
 {
     this->mSurvey = survey;

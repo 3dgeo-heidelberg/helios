@@ -32,6 +32,7 @@ class SimulationBuilder:
         outputDir -- Path to output directory
         numThreads -- Number of threads (0 means as many as possible)
         lasOutput -- LAS output format flag
+        las10     -- LAS v1.0 output format flag
         zipOutput -- Zip output format flag (can be unzipped with Helios++)
         simFrequency -- Simulation control frequency (do not mismatch with
             the simulation operating frequency)
@@ -92,6 +93,7 @@ class SimulationBuilder:
             self.outputDir,
             self.numThreads,
             self.lasOutput,
+            self.las10,
             self.zipOutput
         )
         build.sim.simFrequency = self.simFrequency
@@ -158,6 +160,10 @@ class SimulationBuilder:
     def setLasOutput(self, lasOutput):
         self.validateBoolean(lasOutput)
         self.lasOutput = lasOutput
+
+    def setLas10(self, las10):
+        self.validateBoolean(las10)
+        self.las10 = las10
 
     def setZipOutput(self, zipOutput):
         self.validateBoolean(zipOutput)
