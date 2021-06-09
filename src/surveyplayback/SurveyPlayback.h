@@ -27,8 +27,7 @@ public:
 	 */
 	bool lasOutput = false;
         /**
-         * @brief Flag to specify if LAS output must be LAS v1.0. Used along
-         * with --lasOutput
+         * @brief Flag to specify if LAS output must be LAS v1.0.
          */
         bool las10 = false;
 	/**
