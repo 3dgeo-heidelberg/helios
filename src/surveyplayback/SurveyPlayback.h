@@ -109,7 +109,7 @@ public:
      * @param lasOutput Flag to specify LAS format for the output (true) or not
      *  (false)
      * @param las10 Flag to specify if LAS output must be LAS v1.0 (true) or not
-     * (false). Used along with --lasOutput
+     * (false).
      * @param zipOutput Flag to specify if output must be zipped (true) or not
      *  (false)
      * @param exportToFile Flag to specify if output must be written to a file

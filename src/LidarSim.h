@@ -31,7 +31,6 @@ public:
      * @param lasOutput Flag to specify LAS output format. True implies using
      *  LAS output format, false implies don't
      * @param las10 Flag to specify that the output format mmust be LAS v1.0.
-     * Used along with lasOutput
      * @param zipOutput Flag to specify output zipping. True implies output
      *  will be zipped, false means it will not
      * @param fixedIncidenceAngle Flag to specify usage of fixed incidence
