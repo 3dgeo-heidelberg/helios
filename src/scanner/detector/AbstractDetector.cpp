@@ -32,6 +32,7 @@ WriterType AbstractDetector::chooseWriterType() {
   // Get the type of writer to be created
   WriterType wt;
   if (lasOutput) wt = las10 ? las10Type : las14Type;
+  else if (las10) wt = las10Type;
   else if (zipOutput) wt = zipType;
   else wt = simpleType;
 

@@ -16,9 +16,11 @@ PyHeliosSimulation::PyHeliosSimulation(
     std::string outputPath,
     size_t numThreads,
     bool lasOutput,
+    bool las10,
     bool zipOutput
 ){
     this->lasOutput = lasOutput;
+    this->las10 = las10;
     this->zipOutput = zipOutput;
     this->surveyPath = surveyPath;
     this->assetsPath = assetsPath;
@@ -64,6 +66,7 @@ void PyHeliosSimulation::start (){
     }
 
     survey->scanner->detector->lasOutput = lasOutput;
+    survey->scanner->detector->las10 = las10;
     survey->scanner->detector->zipOutput = zipOutput;
     playback = std::shared_ptr<SurveyPlayback>(
         new SurveyPlayback(
@@ -71,6 +74,7 @@ void PyHeliosSimulation::start (){
             outputPath,
             numThreads,
             lasOutput,
+            las10,
             zipOutput,
             exportToFile
         )
@@ -246,6 +250,7 @@ PyHeliosSimulation * PyHeliosSimulation::copy(){
     phs->survey = std::make_shared<Survey>(*survey);
     phs->callback = this->callback;
     phs->lasOutput = this->lasOutput;
+    phs->las10     = this->las10;
     phs->zipOutput = this->zipOutput;
     phs->exportToFile = this->exportToFile;
     phs->setSimFrequency(getSimFrequency());

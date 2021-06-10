@@ -67,6 +67,7 @@ BOOST_PYTHON_MODULE(pyhelios){
             std::string,
             size_t,
             bool,
+            bool,
             bool
         >())
         .def(
@@ -153,6 +154,11 @@ BOOST_PYTHON_MODULE(pyhelios){
             "lasOutput",
             &PyHeliosSimulation::getLasOutput,
             &PyHeliosSimulation::setLasOutput
+        )
+        .add_property(
+            "las10",
+            &PyHeliosSimulation::getLas10,
+            &PyHeliosSimulation::setLas10
         )
         .add_property(
             "zipOutput",

@@ -152,8 +152,9 @@ if __name__ == '__main__':
         args.assets_path,
         args.output_path,
         args.number_of_threads,  # Num Threads
-        args.las_output_flag,  # LAS output
-        args.zip_output_flag,  # ZIP output
+        args.las_output_flag,    # LAS v1.4 output
+        args.las10_output_flag,  # LAS v1.0 output
+        args.zip_output_flag,    # ZIP output
     )
 
     # Load the survey file.
