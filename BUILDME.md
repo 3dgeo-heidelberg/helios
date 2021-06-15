@@ -5,6 +5,7 @@
 1. [Install](#install)
     1. [Dependencies](#dependencies)
     1. [Install on Linux](#install-on-linux)
+    1. [Install on Linux with PyHelios Support](#Install on Linux with PyHelios support) 
     1. [Install on Windows](#install-on-windows)
 1. [Usage](#usage)
 1. [License](#license)
