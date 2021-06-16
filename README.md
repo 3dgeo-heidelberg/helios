@@ -136,6 +136,22 @@ helios.exe data/surveys/demo/tls_arbaro_demo.xml
 
 Build instructions for advanced users and developers are available [here](BUILDME.md).
 
+## 🐍 Running pyhelios
+
+For running pyhelios, we suggest setting up a seperate [conda](https://docs.conda.io/en/latest/miniconda.html) environment. Run 
+```
+conda env create -f conda-environment.yml
+```
+in the `base` environment of your conda installation, while you are in the HELIOS++ root directory. Then run
+```
+conda activate pyhelios_env
+```
+to activate the environment and 
+```
+python pyhelios_demo\helios.py data\surveys\toyblocks\als_toyblocks.xml
+```
+to run a demo survey including visualisation.
+
 ## 📜 License
 
 See [LICENSE.md](LICENSE.md)
