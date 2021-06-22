@@ -5,7 +5,7 @@
 1. [Install](#install)
     1. [Dependencies](#dependencies)
     1. [Install on Linux](#install-on-linux)
-    1. [Install on Linux with PyHelios Support](#Install on Linux with PyHelios support) 
+    1. [Install on Linux with PyHelios Support](#install-on-linux-with-pyhelios-support) 
     1. [Install on Windows](#install-on-windows)
 1. [Usage](#usage)
 1. [License](#license)
@@ -129,7 +129,7 @@ Finally, to execute the demo scene using PyHelios:
 
 To obtain the source just clone it from the repository
 ```
-git clone <URL to the public repository>
+git clone https://github.com/3dgeo-heidelberg/helios.git
 ```
 
 #### Solving dependencies
@@ -148,6 +148,48 @@ bootstrap.bat
 b2.exe -j6 -sNO_ZLIB=0 -sZLIB_INCLUDE="zlib-1.2.11" -sZLIB_SOURCE="zlib-1.2.11" address-model=64 link=static
 ```
 **REMEMBER** to change the zlib version in above command if you download a different one
+
+##### Boost C++ with python bindings
+Boost needs to be compiled with support for python if the `HELIOS++` `pyhelios` bindings
+should be compiled. The version of boost-python needs to be adapted to the targeted python version.
+To configure different versions, edit or create a file called `user-config.jam` in the *user home directory*, e.g. `C:\users\yourname\`.
+
+Add the following lines to the file (adapting the paths to your python installations, the example is using [miniconda](https://docs.conda.io/en/latest/miniconda.html)):
+```
+using python 
+   : 3.6
+   : D:\\Miniconda3\\envs\\py36\\python.exe
+   : D:\\Miniconda3\\envs\\py36\\include #directory that contains pyconfig.h
+   : D:\\Miniconda3\\envs\\py36\\libs    #directory that contains python36.lib
+   ;
+using python 
+   : 3.7
+   : D:\\Miniconda3\\envs\\py37\\python.exe
+   : D:\\Miniconda3\\envs\\py37\\include #directory that contains pyconfig.h
+   : D:\\Miniconda3\\envs\\py37\\libs    #directory that contains python37.lib
+   ;
+using python 
+   : 3.8
+   : D:\\Miniconda3\\envs\\py38\\python.exe
+   : D:\\Miniconda3\\envs\\py38\\include #directory that contains pyconfig.h
+   : D:\\Miniconda3\\envs\\py38\\libs    #directory that contains python38.lib
+   ;
+using python 
+   : 3.9
+   : D:\\Miniconda3\\envs\\py39\\python.exe
+   : D:\\Miniconda3\\envs\\py39\\include #directory that contains pyconfig.h
+   : D:\\Miniconda3\\envs\\py39\\libs    #directory that contains python39.lib
+   ;
+```
+
+Then build **Boost C++** using the following command:
+
+```
+bootstrap.bat
+b2.exe -j6 -sNO_ZLIB=0 -sZLIB_INCLUDE="zlib-1.2.11" -sZLIB_SOURCE="zlib-1.2.11" address-model=64 link=static -python=3.6,3.7,3.8,3.9
+```
+
+You can later decide which version to build `pyhelios` for, see [Compiling source](#compiling-source).
 
 ##### OpenGLM Mathematics
 Simply download the [OpenGLM mathematics library](https://github.com/g-truc/glm/tags)
