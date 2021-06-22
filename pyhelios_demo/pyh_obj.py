@@ -467,7 +467,7 @@ class VoxelScenepart(Scenepart):
         self.points = (o3d.io.read_point_cloud(self.path))
 
         # Ptcloud to np for colour assignment.
-        point_cloud = np.asarray(self.points)
+        point_cloud = np.asarray(self.points.points)
 
         # Set random colours.
         self.points.colors = o3d.utility.Vector3dVector(
