@@ -5,7 +5,7 @@
 1. [Install](#install)
     1. [Dependencies](#dependencies)
     1. [Install on Linux](#install-on-linux)
-    1. [Install on Linux with PyHelios Support](#Install on Linux with PyHelios support) 
+    1. [Install on Linux with PyHelios Support](#install-on-linux-with-pyhelios-support) 
     1. [Install on Windows](#install-on-windows)
 1. [Usage](#usage)
 1. [License](#license)
@@ -189,7 +189,7 @@ bootstrap.bat
 b2.exe -j6 -sNO_ZLIB=0 -sZLIB_INCLUDE="zlib-1.2.11" -sZLIB_SOURCE="zlib-1.2.11" address-model=64 link=static -python=3.6,3.7,3.8,3.9
 ```
 
-You can later decide which version to build `pyhelios` for, see [Compiling source](user-content-compiling-source).
+You can later decide which version to build `pyhelios` for, see [Compiling source](#compiling-source).
 
 ##### OpenGLM Mathematics
 Simply download the [OpenGLM mathematics library](https://github.com/g-truc/glm/tags)
