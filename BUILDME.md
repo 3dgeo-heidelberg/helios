@@ -5,6 +5,7 @@
 1. [Install](#install)
     1. [Dependencies](#dependencies)
     1. [Install on Linux](#install-on-linux)
+    1. [Install on Linux with PyHelios Support](#Install on Linux with PyHelios support) 
     1. [Install on Windows](#install-on-windows)
 1. [Usage](#usage)
 1. [License](#license)
@@ -57,15 +58,6 @@ Use cmake to configure and generate build files
 ```
 cmake .
 ```
-If you want to compile enabling python bindings, use this cmake command instead
-```
-cmake -DPYTHON_BINDING=1 .
-```
-Also, if you need to specify a concrete python version or even provide the path to a concrete python installation,
-you can use following flags with cmake (you can change version or path to match yours)
-```
-cmake -DPYTHON_BINDING=1 -DPYTHON_VERSION=38 -DPYTHON_PATH=/home/user/mypython .
-```
 To compile providing a concrete implementation of LAPACK library, use this cmake command
 ```
 cmake -DLAPACK_LIB=/home/user/mylapack.so
@@ -80,6 +72,58 @@ For instance, to compil using 6 threads:
 ```
 make -j 6
 ```
+
+### Install on Linux with PyHelios support
+
+In order to be able to compile the project enabling Python Bindings support,
+all the libraries must be built from scratch:
+
+### Helios Dependencies
+
+- ```apt install cmake make gcc g++ libarmadillo-dev libglm-dev python3 python3-pip libpython3.8-dev unzip```
+
+#### LASTools
+
+- ```cd helios/lib```
+- ```wget https://lastools.github.io/download/LAStools.zip && unzip LAStools.zip```
+- ```cd LAStools && cmake .  && make```
+
+#### Boost
+IMPORTANT: Remove completely any previous existing Boost installation before continue
+
+- ```wget https://boostorg.jfrog.io/artifactory/main/release/1.76.0/source/boost_1_76_0.tar.gz```
+- ```tar -xzvf boost_1_76_0.tar.gz```
+- ```cd boost_1_76_0```
+- ```./bootstrap.sh --with-python=python3.8```
+- ```./b2 cxxflags=-fPIC```
+- ```./b2 install```
+
+#### Proj
+- ```apt install pkg-config libsqlite3-dev sqlite3 libtiff5-dev libcurl4-openssl-dev```
+- ```wget http://download.osgeo.org/proj/proj-8.0.0.tar.gz```
+- ```tar -xzvf proj-8.0.0.tar.gz```
+- ```cd proj-8.0.0 && ./configure && make && make install```
+
+#### GDAL
+- ```wget https://github.com/OSGeo/gdal/releases/download/v3.2.1/gdal-3.3.0.tar.gz --no-check-certificate ```
+- ```tar -xzvf gdal-3.3.0.tar.gz```
+- ```cd gdal-3.3.0 && ./configure && make && make install```
+
+#### PyHelios Dependencies
+
+- ```pip3 install open3d```
+
+Back to the helios root directory, compile:
+
+```cmake -DCMAKE_BUILD_TYPE=Release -DPYTHON_BINDING=1 -DPYTHON_VERSION=38 .```
+
+In order to execute PyHelios scripts, libhelios.so path must be added to PYTHONPATH (default location: helios root directory):
+
+```export PYTHONPATH=$PYTHONPATH:/path/to/helios```
+
+Finally, to execute the demo scene using PyHelios:
+
+```python3 helios/pyhelios_demo/helios.py pyhelios_demo/custom_als_toyblocks.xml```
 
 ### Install on Windows
 
