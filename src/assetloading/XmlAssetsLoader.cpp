@@ -1,7 +1,6 @@
 #include "logging.hpp"
 #include <HeliosException.h>
 
-
 #define _USE_MATH_DEFINES
 #include <cmath>
 #include <sstream>
@@ -35,6 +34,7 @@ namespace fs = boost::filesystem;
 #include "PolygonMirrorBeamDeflector.h"
 #include "RisleyBeamDeflector.h"
 
+#include "WavefrontObjCache.h"
 #include "XmlAssetsLoader.h"
 #include <NormalNoiseSource.h>
 #include <UniformNoiseSource.h>
@@ -755,10 +755,10 @@ std::shared_ptr<Scene> XmlAssetsLoader::createSceneFromXml(
 	int partIndex = -1;
 	tinyxml2::XMLElement* scenePartNodes = sceneNode->FirstChildElement("part");
 	while (scenePartNodes != nullptr) {
-	    partIndex++;
+	        partIndex++;
 		ScenePart *scenePart = nullptr;
 		tinyxml2::XMLElement* filterNodes = scenePartNodes->FirstChildElement("filter");
-        bool holistic = false;
+                bool holistic = false;
 		while (filterNodes != nullptr) {
 			std::string filterType = filterNodes->Attribute("type");
 			std::transform(filterType.begin(), filterType.end(), filterType.begin(), ::tolower);
@@ -817,6 +817,9 @@ std::shared_ptr<Scene> XmlAssetsLoader::createSceneFromXml(
 				filter->params = createParamsFromXml(filterNodes);
 				logging::INFO("Applying filter: "+filterType);
 				scenePart = filter->run();
+
+                                ScenePart * test = new ScenePart(*scenePart);
+
 				if(scenePart == filter->primsOut) filter->primsOut = nullptr;
                 delete filter;
 			}
@@ -858,7 +861,7 @@ std::shared_ptr<Scene> XmlAssetsLoader::createSceneFromXml(
 		// ######### END Read and set scene part ID #########
 
 		// Consider scene loading specification
-        sceneSpec.apply(scenePart);
+                sceneSpec.apply(scenePart);
 
 		// For all primitives, set reference to their scene part and transform:
 		std::shared_ptr<ScenePart> sharedScenePart(scenePart);

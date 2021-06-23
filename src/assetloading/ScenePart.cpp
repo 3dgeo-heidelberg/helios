@@ -27,7 +27,7 @@ ScenePart::ScenePart(ScenePart &sp){
         this->mPrimitives.push_back(p);
     }
 
-    this->subpartLimit = subpartLimit;
+    this->subpartLimit = sp.subpartLimit;
 
 }
 

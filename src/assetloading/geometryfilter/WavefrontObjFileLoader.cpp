@@ -1,4 +1,5 @@
 #include "WavefrontObjFileLoader.h"
+#include "WavefrontObjCache.h"
 #include <fstream>
 #include <iostream>
 #include "logging.hpp"
@@ -67,10 +68,25 @@ ScenePart* WavefrontObjFileLoader::run() {
 	    filePaths = FileUtils::getFilesByExpression(filePathString);
 
 	// Load OBJ files
+        WavefrontObjCache & cache = WavefrontObjCache::getInstance();
+
+
 	for(std::string const & pathString : filePaths){
+            // At this point, if we are in objLoader filterType, primsOut should be null
+
+            // TODO: Load from caché if not found in caché
+            // TODO: If pathstring not in cache
+
+            // cache.addScenePart(filePaths[0], primsOut);
+
 	    loadObj(pathString, yIsUp);
 	    primsOut->subpartLimit.push_back(primsOut->mPrimitives.size());
+
+            // TODO: If pathstring in cache
+            // Load from cache
 	}
+
+
 
 	// Post-processing
 	bool rvn = boost::get<bool>(params["recomputeVertexNormals"]);
@@ -87,6 +103,9 @@ ScenePart* WavefrontObjFileLoader::run() {
     logging::INFO(ss.str());
 
     // Return
+
+    // TODO: Add to caché if not found in caché
+
     return primsOut;
 }
 
