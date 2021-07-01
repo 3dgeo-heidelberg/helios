@@ -22,9 +22,25 @@ public:
     return instance;
   }
 
-  void addScenePart(const std::string & key, ScenePart* sp)
+  void saveScenePart(const std::string & key, ScenePart* sp)
   {
     cache[key] = new ScenePart(*sp);
+  }
+
+  ScenePart * loadScenePart(const std::string & key)
+  {
+    // TODO: Hacer copia de miembros, no alojar de nuevo!
+    return new ScenePart(*cache[key]);
+  }
+
+  ScenePart * get(const std::string & key)
+  {
+    return cache.at(key);
+  }
+
+  bool exists(const std::string & key)
+  {
+    return !(cache.find(key) == cache.end());
   }
 
 public:

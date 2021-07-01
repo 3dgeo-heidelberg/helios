@@ -119,5 +119,10 @@ public:
 	 * @see subpartLimit
 	 * @return True when split was successfully performed, false otherwise
 	 */
-    bool splitSubparts();
+        bool splitSubparts();
+
+        /**
+         * @brief Copy assigment operator.
+         */
+         ScenePart & operator=(const ScenePart & rhs);
 };

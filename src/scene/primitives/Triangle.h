@@ -63,7 +63,7 @@ public:
      * @see Triangle::verts
      */
 	Triangle(Vertex v0, Vertex v1, Vertex v2);
-	~Triangle() override{if(aabb!=nullptr) delete aabb;}
+	~Triangle() override{ delete aabb;}
 	/**
 	 * @see Primitive::clone
 	 */

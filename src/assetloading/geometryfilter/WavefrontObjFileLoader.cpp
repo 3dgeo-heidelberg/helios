@@ -67,23 +67,30 @@ ScenePart* WavefrontObjFileLoader::run() {
 	if(extendedFilePath)
 	    filePaths = FileUtils::getFilesByExpression(filePathString);
 
-	// Load OBJ files
+	// Load OBJ Cache
         WavefrontObjCache & cache = WavefrontObjCache::getInstance();
 
 
 	for(std::string const & pathString : filePaths){
             // At this point, if we are in objLoader filterType, primsOut should be null
 
-            // TODO: Load from caché if not found in caché
-            // TODO: If pathstring not in cache
+//            loadObj(pathString, yIsUp);
+//            primsOut->subpartLimit.push_back(primsOut->mPrimitives.size());
 
-            // cache.addScenePart(filePaths[0], primsOut);
+            if (!cache.exists(pathString))
+            {
+              logging::INFO("Model not found in cache\n");
+	      loadObj(pathString, yIsUp);
+              primsOut->subpartLimit.push_back(primsOut->mPrimitives.size());
+              cache.saveScenePart(pathString, primsOut);
+            }
+            else
+            {
+              logging::INFO("Loading from cache\n");
+              // At this point, primsOut is allocated. Only member copy needed
 
-	    loadObj(pathString, yIsUp);
-	    primsOut->subpartLimit.push_back(primsOut->mPrimitives.size());
-
-            // TODO: If pathstring in cache
-            // Load from cache
+              *primsOut = *cache.get(pathString);
+            }
 	}
 
 
