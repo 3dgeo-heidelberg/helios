@@ -1,4 +1,5 @@
 #include "WavefrontObjFileLoader.h"
+#include "WavefrontObj.h"
 #include "WavefrontObjCache.h"
 #include "logging.hpp"
 #include <fstream>
@@ -68,7 +69,7 @@ ScenePart *WavefrontObjFileLoader::run() {
   for (std::string const &pathString : filePaths) {
     if (!cache.exists(pathString)) {
       logging::INFO("Model not found in cache\n");
-      loadObj(pathString, yIsUp);
+      WavefrontObj * loadedObj = loadObj(pathString, yIsUp);
       primsOut->subpartLimit.push_back(primsOut->mPrimitives.size());
       cache.saveScenePart(pathString, primsOut);
     } else {
@@ -174,7 +175,8 @@ dvec3 WavefrontObjFileLoader::readNormalVector(vector<string> &lineParts,
   return normal;
 }
 
-void WavefrontObjFileLoader::readPrimitive(vector<string> &lineParts,
+void WavefrontObjFileLoader::readPrimitive(WavefrontObj * loadedObj,
+                                           vector<string> &lineParts,
                                            vector<Vertex> &vertices,
                                            vector<dvec2> &texcoords,
                                            vector<dvec3> &normals,
@@ -216,6 +218,7 @@ void WavefrontObjFileLoader::readPrimitive(vector<string> &lineParts,
       Triangle *tri = new Triangle(verts[0], verts[1], verts[2]);
       tri->material = getMaterial(currentMat);
       primsOut->mPrimitives.push_back(tri);
+      loadedObj->primitives.push_back(tri);
     }
 
     // Read a quad (two triangles):
@@ -223,10 +226,12 @@ void WavefrontObjFileLoader::readPrimitive(vector<string> &lineParts,
       Triangle *tri1 = new Triangle(verts[0], verts[1], verts[2]);
       tri1->material = getMaterial(currentMat);
       primsOut->mPrimitives.push_back(tri1);
+      loadedObj->primitives.push_back(tri1);
 
       Triangle *tri2 = new Triangle(verts[0], verts[2], verts[3]);
       tri2->material = getMaterial(currentMat);
       primsOut->mPrimitives.push_back(tri2);
+      loadedObj->primitives.push_back(tri2);
     }
   } else {
     ss << "Unsupported primitive!";
@@ -235,9 +240,12 @@ void WavefrontObjFileLoader::readPrimitive(vector<string> &lineParts,
   }
 }
 
-void WavefrontObjFileLoader::loadObj(std::string const &pathString,
+WavefrontObj *WavefrontObjFileLoader::loadObj(std::string const &pathString,
                                      bool yIsUp) {
   stringstream ss;
+
+  WavefrontObj *loadedObj = new WavefrontObj();
+
   ss << "Reading 3D model from .obj file '" << pathString << "'...";
   logging::INFO(ss.str());
   ss.str("");
@@ -310,13 +318,14 @@ void WavefrontObjFileLoader::loadObj(std::string const &pathString,
                          boost::lexical_cast<double>(lineParts[2]));
         texcoords.push_back(tc);
       }
-        // ############ END Read texture coordinates ############
+      // ############ END Read texture coordinates ############
 
       // Read face:
       else if (lineParts[0] == "f") {
         // ######### BEGIN Read triangle or quad ##############
-        WavefrontObjFileLoader::readPrimitive(lineParts, vertices, texcoords,
-                                              normals, currentMat, pathString);
+        WavefrontObjFileLoader::readPrimitive(loadedObj, lineParts, vertices,
+                                              texcoords, normals, currentMat,
+                                              pathString);
         // ######### END Read triangle or quad ##############
       }
 
@@ -356,6 +365,8 @@ void WavefrontObjFileLoader::loadObj(std::string const &pathString,
   }
 
   is.close();
+
+  return loadedObj;
 }
 
 // ***  ASSIST METHODS  *** //

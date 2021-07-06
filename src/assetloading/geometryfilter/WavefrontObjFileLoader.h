@@ -2,6 +2,8 @@
 
 #include "AbstractGeometryFilter.h"
 #include <glm/glm.hpp>
+#include "WavefrontObj.h"
+
 using namespace glm;
 
 /**
@@ -55,7 +57,8 @@ public:
    * @param currentMat Current material to be used in the primitive
    * @param pathString Path to the primitive
    */
-  void readPrimitive(std::vector<std::string> &lineParts,
+  void readPrimitive(WavefrontObj *loadedObj,
+                     std::vector<std::string> &lineParts,
                      std::vector<Vertex> &vertices,
                      std::vector<dvec2> &texcoords, std::vector<dvec3> &normals,
                      std::string &currentMat, const std::string &pathString);
@@ -63,7 +66,7 @@ public:
   /**
    * @brief Load an OBJ file
    */
-  void loadObj(std::string const &pathString, bool yIsUp);
+  WavefrontObj *loadObj(std::string const &pathString, bool yIsUp);
 
   // ***  ASSIST METHODS  *** //
   // ************************ //
