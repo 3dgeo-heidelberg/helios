@@ -65,18 +65,21 @@ ScenePart *WavefrontObjFileLoader::run() {
 
   // Load OBJ Cache
   WavefrontObjCache &cache = WavefrontObjCache::getInstance();
-
+  WavefrontObj *loadedObj = nullptr;
   for (std::string const &pathString : filePaths) {
     if (!cache.exists(pathString)) {
       logging::INFO("Model not found in cache\n");
-      WavefrontObj * loadedObj = loadObj(pathString, yIsUp);
-      primsOut->subpartLimit.push_back(primsOut->mPrimitives.size());
-      cache.saveScenePart(pathString, primsOut);
+      loadedObj = loadObj(pathString, yIsUp);
+
+      cache.saveScenePart(pathString, loadedObj);
     } else {
       logging::INFO("Loading from cache\n");
+      loadedObj = cache.get(pathString);
+    }
 
-      // At this point, primsOut is allocated. Only member copy is needed
-      *primsOut = *cache.get(pathString);
+    if (loadedObj->primitives.size() > 0) {
+      primsOut->addObj(loadedObj);
+      primsOut->subpartLimit.push_back(primsOut->mPrimitives.size());
     }
   }
 
@@ -175,13 +178,10 @@ dvec3 WavefrontObjFileLoader::readNormalVector(vector<string> &lineParts,
   return normal;
 }
 
-void WavefrontObjFileLoader::readPrimitive(WavefrontObj * loadedObj,
-                                           vector<string> &lineParts,
-                                           vector<Vertex> &vertices,
-                                           vector<dvec2> &texcoords,
-                                           vector<dvec3> &normals,
-                                           string &currentMat,
-                                           const string &pathString) {
+void WavefrontObjFileLoader::readPrimitive(
+    WavefrontObj *loadedObj, vector<string> &lineParts,
+    vector<Vertex> &vertices, vector<dvec2> &texcoords, vector<dvec3> &normals,
+    string &currentMat, const string &pathString) {
 
   stringstream ss;
   // ######### BEGIN Read triangle or quad ##############
@@ -217,7 +217,7 @@ void WavefrontObjFileLoader::readPrimitive(WavefrontObj * loadedObj,
     if (lineParts.size() == 4) {
       Triangle *tri = new Triangle(verts[0], verts[1], verts[2]);
       tri->material = getMaterial(currentMat);
-      primsOut->mPrimitives.push_back(tri);
+      //      primsOut->mPrimitives.push_back(tri);
       loadedObj->primitives.push_back(tri);
     }
 
@@ -225,12 +225,12 @@ void WavefrontObjFileLoader::readPrimitive(WavefrontObj * loadedObj,
     else if (lineParts.size() == 5) {
       Triangle *tri1 = new Triangle(verts[0], verts[1], verts[2]);
       tri1->material = getMaterial(currentMat);
-      primsOut->mPrimitives.push_back(tri1);
+      //      primsOut->mPrimitives.push_back(tri1);
       loadedObj->primitives.push_back(tri1);
 
       Triangle *tri2 = new Triangle(verts[0], verts[2], verts[3]);
       tri2->material = getMaterial(currentMat);
-      primsOut->mPrimitives.push_back(tri2);
+      //      primsOut->mPrimitives.push_back(tri2);
       loadedObj->primitives.push_back(tri2);
     }
   } else {
@@ -241,7 +241,7 @@ void WavefrontObjFileLoader::readPrimitive(WavefrontObj * loadedObj,
 }
 
 WavefrontObj *WavefrontObjFileLoader::loadObj(std::string const &pathString,
-                                     bool yIsUp) {
+                                              bool yIsUp) {
   stringstream ss;
 
   WavefrontObj *loadedObj = new WavefrontObj();
@@ -330,7 +330,6 @@ WavefrontObj *WavefrontObjFileLoader::loadObj(std::string const &pathString,
       }
 
       // ######### BEGIN Load materials from materials file ########
-      // NOTE: This else-if assumes that only a mtllib is found per .obj file.
       else if (lineParts[0] == "mtllib") {
         string s = filePath.parent_path().string() + "/" + lineParts[1];
         map<string, Material> mats = MaterialsFileReader::loadMaterials(s);

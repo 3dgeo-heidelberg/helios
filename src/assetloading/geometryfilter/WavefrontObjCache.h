@@ -5,7 +5,7 @@
 #ifndef HELIOS_WAVEFRONTOBJCACHE_H
 #define HELIOS_WAVEFRONTOBJCACHE_H
 
-#include "ScenePart.h"
+#include "WavefrontObj.h"
 #include <unordered_map>
 
 /**
@@ -18,7 +18,7 @@ private:
   /**
    * @brief Map where the loaded sceneparts will be stored
    */
-  std::unordered_map<std::string, ScenePart *> cache{};
+  std::unordered_map<std::string, WavefrontObj *> cache{};
 
   // ***  CONSTRUCTION / DESTRUCTION  *** //
   // ************************************ //
@@ -38,17 +38,17 @@ public:
    */
   static WavefrontObjCache &getInstance();
   /**
-   * @brief Saves an ScenePart using the loaded namefile as a key
-   * @param key Key where the ScenePart will be stored
-   * @param sp The ScenePart itself
+   * @brief Saves an WavefrontObj using the loaded namefile as a key
+   * @param key Key where the WavefrontObj will be stored
+   * @param sp The WavefrontObj itself
    */
-  void saveScenePart(const std::string &key, ScenePart *sp);
+  void saveScenePart(const std::string &key, WavefrontObj *obj);
   /**
-   * @brief Returns a ScenePart stored in key
-   * @param key Key where the ScenePart to be loaded is located
-   * @return A pointer to a stored ScenePart
+   * @brief Returns a WavefrontObj stored in key
+   * @param key Key where the WavefrontObj to be loaded is located
+   * @return A pointer to a stored WavefrontObj
    */
-  ScenePart *get(const std::string &key);
+  WavefrontObj *get(const std::string &key);
   /**
    * @brief Checks if a key is already stored in the cache
    * @param key

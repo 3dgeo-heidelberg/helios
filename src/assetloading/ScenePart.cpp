@@ -3,6 +3,7 @@
 
 #include "ScenePart.h"
 #include "Triangle.h"
+#include "WavefrontObj.h"
 #include <util/logger/logging.hpp>
 
 // ***  CONSTRUCTION / DESTRUCTION  *** //
@@ -57,6 +58,15 @@ ScenePart &ScenePart::operator=(const ScenePart &rhs) {
 
 // ***  M E T H O D S  *** //
 // *********************** //
+
+void ScenePart::addObj(WavefrontObj *obj) {
+  Primitive *p;
+  for (size_t i = 0; i < obj->primitives.size(); i++) {
+    p = obj->primitives[i]->clone();
+    mPrimitives.push_back(p);
+  }
+}
+
 std::vector<Vertex *> ScenePart::getAllVertices() {
   std::vector<Vertex *> allPos;
   for (Primitive *p : mPrimitives) {

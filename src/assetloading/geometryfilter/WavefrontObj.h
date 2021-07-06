@@ -17,4 +17,6 @@ public:
   std::vector<Primitive*> primitives{};
 
   WavefrontObj() = default;
+  WavefrontObj(WavefrontObj &obj);
+  // TODO: Destructor
 };

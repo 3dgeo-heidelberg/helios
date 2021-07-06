@@ -9,11 +9,11 @@ WavefrontObjCache &WavefrontObjCache::getInstance() {
   return instance;
 }
 
-void WavefrontObjCache::saveScenePart(const std::string &key, ScenePart *sp) {
-  cache[key] = new ScenePart(*sp);
+void WavefrontObjCache::saveScenePart(const std::string &key, WavefrontObj *obj) {
+  cache[key] = new WavefrontObj(*obj);
 }
 
-ScenePart *WavefrontObjCache::get(const std::string &key) {
+WavefrontObj *WavefrontObjCache::get(const std::string &key) {
   return cache.at(key);
 }
 
