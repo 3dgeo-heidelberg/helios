@@ -60,11 +60,21 @@ ScenePart &ScenePart::operator=(const ScenePart &rhs) {
 // *********************** //
 
 void ScenePart::addObj(WavefrontObj *obj) {
+
+  std::stringstream ss;
+  ss << "Adding primitive to Scenepart ...";
+  logging::INFO(ss.str());
+  ss.str("");
+  size_t oldNumPrimitives = mPrimitives.size();
+
   Primitive *p;
   for (size_t i = 0; i < obj->primitives.size(); i++) {
     p = obj->primitives[i]->clone();
     mPrimitives.push_back(p);
   }
+
+  ss << "# new primitives added: " << mPrimitives.size() - oldNumPrimitives;
+  logging::INFO(ss.str());
 }
 
 std::vector<Vertex *> ScenePart::getAllVertices() {

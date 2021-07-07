@@ -247,7 +247,6 @@ WavefrontObj *WavefrontObjFileLoader::loadObj(std::string const &pathString,
   ss << "Reading 3D model from .obj file '" << pathString << "'...";
   logging::INFO(ss.str());
   ss.str("");
-  size_t oldNumPrimitives = primsOut->mPrimitives.size();
 
   fs::path filePath(pathString);
   if (!fs::exists(filePath)) {
@@ -349,11 +348,6 @@ WavefrontObj *WavefrontObjFileLoader::loadObj(std::string const &pathString,
         ss.str("");
       }
     }
-
-    ss << "# new primitives loaded: "
-       << (primsOut->mPrimitives.size() - oldNumPrimitives);
-    logging::INFO(ss.str());
-    ss.str("");
 
   } catch (std::exception &e) {
     ss << "Error reading primitives.\nEXCEPTION: " << e.what();
