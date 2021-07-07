@@ -56,6 +56,11 @@ public:
    */
   bool exists(const std::string &key);
 
+  /**
+   * Frees the memory managed by the cache.
+   */
+  void clear();
+
   // Avoid accidental copies of this class
   WavefrontObjCache(WavefrontObjCache const &) = delete; // Don't Implement
   WavefrontObjCache

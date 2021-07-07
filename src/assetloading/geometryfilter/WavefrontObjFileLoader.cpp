@@ -65,22 +65,20 @@ ScenePart *WavefrontObjFileLoader::run() {
 
   // Load OBJ Cache
   WavefrontObjCache &cache = WavefrontObjCache::getInstance();
-  WavefrontObj *loadedObj = nullptr;
-  for (std::string const &pathString : filePaths) {
-    if (!cache.exists(pathString)) {
-      logging::INFO("Model not found in cache\n");
-      loadedObj = loadObj(pathString, yIsUp);
 
+  for (std::string const &pathString : filePaths) {
+    stringstream ss;
+    if (!cache.exists(pathString)) {
+      ss << ".obj not found in cache";
+      WavefrontObj * loadedObj = loadObj(pathString, yIsUp);
       cache.saveScenePart(pathString, loadedObj);
     } else {
-      logging::INFO("Loading from cache\n");
-      loadedObj = cache.get(pathString);
+      ss << "Loading .obj from cache";
     }
 
-    if (loadedObj->primitives.size() > 0) {
-      primsOut->addObj(loadedObj);
-      primsOut->subpartLimit.push_back(primsOut->mPrimitives.size());
-    }
+    logging::INFO(ss.str());
+    primsOut->addObj(cache.get(pathString));
+    primsOut->subpartLimit.push_back(primsOut->mPrimitives.size());
   }
 
   // Post-processing
