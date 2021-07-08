@@ -16,5 +16,5 @@ var classScene =
     [ "bbox", "d5/d9c/classScene.html#a012be28a1b960338f634d5fec54c5330", null ],
     [ "bbox_crs", "d5/d9c/classScene.html#a6443452016957950e3a7260dcc0076f1", null ],
     [ "kdtree", "d5/d9c/classScene.html#a4d1d59711628b8599f766b0700a02b2f", null ],
-    [ "primitives", "d5/d9c/classScene.html#ac7ab399b8b2231076a14b28e38bbcafa", null ]
+    [ "primitives", "d5/d9c/classScene.html#a7006d57329f8e8d8563e9ff54ddcb2fc", null ]
 ];

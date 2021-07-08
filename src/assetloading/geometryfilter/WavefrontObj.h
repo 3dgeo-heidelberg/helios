@@ -14,6 +14,9 @@ class Primitive;
  */
 class WavefrontObj {
 public:
+  /**
+   * @brief Vector containing pointers to the primitives of the obj
+   */
   std::vector<Primitive*> primitives{};
 
   WavefrontObj() = default;

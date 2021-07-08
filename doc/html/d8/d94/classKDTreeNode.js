@@ -1,7 +1,7 @@
 var classKDTreeNode =
 [
     [ "~KDTreeNode", "d8/d94/classKDTreeNode.html#a3285444a0413e1345de292884e34b5ac", null ],
-    [ "buildRecursive", "d8/d94/classKDTreeNode.html#aef9b00af05a301df1855077fa36b3eab", null ],
+    [ "buildRecursive", "d8/d94/classKDTreeNode.html#a047d447f871962678bd0bcd6ded2255f", null ],
     [ "computeKDTreeStats", "d8/d94/classKDTreeNode.html#af35b43c1729ceb80b6091aef5b265dee", null ],
     [ "readObject", "d8/d94/classKDTreeNode.html#a1c4a9bfcb77f3e29109fcaf153bdb2c1", null ],
     [ "serialize", "d8/d94/classKDTreeNode.html#a11b2ffaaf7f1b7861fabfd56c288ea7a", null ],

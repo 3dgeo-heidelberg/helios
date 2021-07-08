@@ -6,65 +6,89 @@
 #define HELIOS_WAVEFRONTOBJCACHE_H
 
 #include "WavefrontObj.h"
+#include <list>
 #include <unordered_map>
 
-/**
- * @brief Class representing a cache for all the .obj loaded models
- */
+typedef std::string key_type;
+typedef WavefrontObj *value_type;
+typedef std::list<key_type> list_type;
+typedef typename list_type::iterator list_iterator;
+typedef std::unordered_map<key_type, std::pair<value_type, list_iterator>>
+    map_type;
+typedef typename map_type::iterator map_iterator;
+
 class WavefrontObjCache {
-private:
-  // ***  ATTRIBUTES  *** //
-  // ******************** //
+
+public:
   /**
-   * @brief Map where the loaded sceneparts will be stored
+   * @brief Get the number of elements allocated in the cache
+   * @return Number of elements allocated in the cache
    */
-  std::unordered_map<std::string, WavefrontObj *> cache{};
+  size_t size() const;
+
+  /**
+   * @brief Get the maximum number of elements that can be stored in the cache
+   * @return Number of elements that can be stored in the cache
+   */
+  size_t capacity() const;
+
+  /**
+   * @brief Checks whether the cache is empty
+   * @return True if the cache is empty, false otherwise
+   */
+  bool empty() const;
+
+  /**
+   * @brief Checks whether a value is already stored in the cache looking for
+   * its key
+   * @param key Key of the value to be checked
+   * @return True if the value exists, False otherwise
+   */
+  bool contains(const std::string &key);
+
+  /**
+   * @brief Inserts an element in the cache
+   * @param key Key of the value used in future searches
+   * @param value Element to be stored
+   */
+  void insert(const std::string &key, WavefrontObj * value);
+
+  /**
+   * @brief Returns a cache element by its key, if exists.
+   * @param key Key used to look for an element stored in the cache
+   * @return The element if found, nullptr otherwise
+   */
+  WavefrontObj * get(const std::string &key);
+
+  /**
+   * @brief Removes the last element in the list to make room to a new one.
+   * This function is called only if the cache is full
+   */
+  void deallocate();
+
+  /**
+   * @brief Get an instance of the cache (Singleton Pattern)
+   * @return Instance of the cache itself ready to be used.
+   */
+  static WavefrontObjCache &getInstance();
+
+private:
+  map_type m_map;
+  list_type m_list;
+  size_t m_capacity;
 
   // ***  CONSTRUCTION / DESTRUCTION  *** //
   // ************************************ //
   /**
    * @brief Default constructor for a default OBJ Cache
    */
-  WavefrontObjCache() = default;
+  WavefrontObjCache();
+
+  /**
+   * @brief Destructor with the responsibility of deallocating all the items
+   * stored in the Heap
+   */
   ~WavefrontObjCache();
-
-public:
-  // *** M E T H O D S *** //
-  // **********************//
-  /**
-   * @brief Get the caché object itself. This functions returns always
-   * the same instance of the class
-   * @return Instance of WavefrontObjCache
-   */
-  static WavefrontObjCache &getInstance();
-  /**
-   * @brief Saves an WavefrontObj using the loaded namefile as a key
-   * @param key Key where the WavefrontObj will be stored
-   * @param sp The WavefrontObj itself
-   */
-  void saveScenePart(const std::string &key, WavefrontObj *obj);
-  /**
-   * @brief Returns a WavefrontObj stored in key
-   * @param key Key where the WavefrontObj to be loaded is located
-   * @return A pointer to a stored WavefrontObj
-   */
-  WavefrontObj *get(const std::string &key);
-  /**
-   * @brief Checks if a key is already stored in the cache
-   * @param key
-   * @return
-   */
-  bool exists(const std::string &key);
-
-  /**
-   * Frees the memory managed by the cache.
-   */
-  void clear();
-
-  // Avoid accidental copies of this class
-  WavefrontObjCache(WavefrontObjCache const &) = delete; // Don't Implement
-  WavefrontObjCache
-  operator=(WavefrontObjCache const &) = delete; // Don't implement
 };
 
 #endif // HELIOS_WAVEFRONTOBJCACHE_H

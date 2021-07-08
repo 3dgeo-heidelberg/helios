@@ -1,6 +1,7 @@
 var classSimulation =
 [
     [ "Simulation", "d1/d7b/classSimulation.html#a546896453568ac7077b9f8e04557b74f", null ],
+    [ "calcCurrentGpsTime", "d1/d7b/classSimulation.html#afb4772514f61bdcd00f977106e8833ce", null ],
     [ "doSimStep", "d1/d7b/classSimulation.html#a51ff9d2c2c499f8378f9d77fb523ea0d", null ],
     [ "getScanner", "d1/d7b/classSimulation.html#ab97f12ae37a7c2e81e377236175c3cd8", null ],
     [ "getSimFrequency", "d1/d7b/classSimulation.html#a6ba03b4690e762a3ff5ac07c3dc25b36", null ],
@@ -17,6 +18,7 @@ var classSimulation =
     [ "stop", "d1/d7b/classSimulation.html#af6d3f404c8c791cd05c6e5b6246dcbc2", null ],
     [ "callback", "d1/d7b/classSimulation.html#accc8e53b18f149f9588e44e4316ff032", null ],
     [ "condvar", "d1/d7b/classSimulation.html#abce1df45c8d23deaf580f93dc14a6e6a", null ],
+    [ "currentGpsTime_ms", "d1/d7b/classSimulation.html#a1afafff95801808cecac3eda24bcefbc", null ],
     [ "exitAtEnd", "d1/d7b/classSimulation.html#a9c9e6548d7cfa327c86e648b28f99b78", null ],
     [ "exportToFile", "d1/d7b/classSimulation.html#a920742a7e2a07fef6f4c953423886495", null ],
     [ "finished", "d1/d7b/classSimulation.html#ae26650389687bae4ae945f8c7cb5c9ea", null ],

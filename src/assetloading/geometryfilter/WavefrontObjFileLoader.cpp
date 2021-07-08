@@ -64,21 +64,24 @@ ScenePart *WavefrontObjFileLoader::run() {
     filePaths = FileUtils::getFilesByExpression(filePathString);
 
   // Load OBJ Cache
-  WavefrontObjCache &cache = WavefrontObjCache::getInstance();
-
+  auto &cache = WavefrontObjCache::getInstance();
+  WavefrontObj * loadedObj;
   for (std::string const &pathString : filePaths) {
     stringstream ss;
-    if (!cache.exists(pathString)) {
+    if (!cache.contains(pathString)) {
       ss << ".obj not found in cache";
-      WavefrontObj * loadedObj = loadObj(pathString, yIsUp);
-      cache.saveScenePart(pathString, loadedObj);
+      loadedObj = loadObj(pathString, yIsUp);
+      cache.insert(pathString, loadedObj);
     } else {
       ss << "Loading .obj from cache";
     }
 
     logging::INFO(ss.str());
-    primsOut->addObj(cache.get(pathString));
-    primsOut->subpartLimit.push_back(primsOut->mPrimitives.size());
+    if (loadedObj != nullptr)
+    {
+      primsOut->addObj(cache.get(pathString));
+      primsOut->subpartLimit.push_back(primsOut->mPrimitives.size());
+    }
   }
 
   // Post-processing
