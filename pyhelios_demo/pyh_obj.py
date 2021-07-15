@@ -264,7 +264,7 @@ class Scenepart:
 
         # Apply translation.
         self.translation.translation = [float(i) for i in self.translation.translation]
-        if sum(self.translation.translation) != 0:
+        if not all([item == 0 for item in self.translation.translation]):
             if self.logging:
                 print('Translating geometry...')
             self.o3dGeometry.translate(np.array(self.translation.translation, dtype=float), relative=True)
