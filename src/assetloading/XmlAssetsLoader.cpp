@@ -684,6 +684,8 @@ XmlAssetsLoader::createSceneFromXml(tinyxml2::XMLElement *sceneNode,
   // ############################
   int partIndex = -1;
   tinyxml2::XMLElement *scenePartNodes = sceneNode->FirstChildElement("part");
+
+  size_t scenePartCounter = 0;
   while (scenePartNodes != nullptr) {
     partIndex++;
     ScenePart *scenePart = nullptr;
@@ -746,7 +748,7 @@ XmlAssetsLoader::createSceneFromXml(tinyxml2::XMLElement *sceneNode,
       if (filter != nullptr) {
         // Set params:
         filter->params = createParamsFromXml(filterNodes);
-        logging::INFO("Applying filter: " + filterType);
+        logging::DEBUG("Applying filter: " + filterType);
         scenePart = filter->run();
         if (scenePart == filter->primsOut)
           filter->primsOut = nullptr;
@@ -790,6 +792,7 @@ XmlAssetsLoader::createSceneFromXml(tinyxml2::XMLElement *sceneNode,
     // ######### END Read and set scene part ID #########
 
     // Consider scene loading specification
+    scenePartCounter++;
     sceneSpec.apply(scenePart);
 
     // For all primitives, set reference to their scene part and transform:
@@ -830,6 +833,9 @@ XmlAssetsLoader::createSceneFromXml(tinyxml2::XMLElement *sceneNode,
     exit(-1);
   }
 
+  std::stringstream ss;
+  ss << std::to_string(scenePartCounter) << " sceneparts loaded";
+  logging::INFO(ss.str());
   return scene;
 }
 

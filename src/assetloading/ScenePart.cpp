@@ -63,7 +63,7 @@ void ScenePart::addObj(WavefrontObj *obj) {
 
   std::stringstream ss;
   ss << "Adding primitive to Scenepart ...";
-  logging::INFO(ss.str());
+  logging::DEBUG(ss.str());
   ss.str("");
   size_t oldNumPrimitives = mPrimitives.size();
 
@@ -74,7 +74,7 @@ void ScenePart::addObj(WavefrontObj *obj) {
   }
 
   ss << "# new primitives added: " << mPrimitives.size() - oldNumPrimitives;
-  logging::INFO(ss.str());
+  logging::DEBUG(ss.str());
 }
 
 std::vector<Vertex *> ScenePart::getAllVertices() {

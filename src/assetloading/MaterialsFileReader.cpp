@@ -97,7 +97,7 @@ map<string, Material> MaterialsFileReader::loadMaterials(string filePathString) 
 		newMats.insert(newMats.end(), pair<string, Material>(newMat.name, newMat));
 		std::stringstream ss;
 		ss << newMats.size() << " material(s) loaded.";
-		logging::INFO(ss.str());
+		logging::DEBUG(ss.str());
 	}
 	catch (std::exception &e) {
 		logging::WARN(

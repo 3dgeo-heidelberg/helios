@@ -76,7 +76,7 @@ ScenePart *WavefrontObjFileLoader::run() {
       ss << "Loading .obj from cache";
     }
 
-    logging::INFO(ss.str());
+    logging::DEBUG(ss.str());
     if (loadedObj != nullptr)
     {
       primsOut->addObj(cache.get(pathString));
@@ -97,7 +97,7 @@ ScenePart *WavefrontObjFileLoader::run() {
   // Report
   std::stringstream ss;
   ss << "# total primitives loaded: " << primsOut->mPrimitives.size();
-  logging::INFO(ss.str());
+  logging::DEBUG(ss.str());
 
   // Return
 
