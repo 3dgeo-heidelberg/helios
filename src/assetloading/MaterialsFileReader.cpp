@@ -18,7 +18,7 @@ map<string, Material> MaterialsFileReader::loadMaterials(string filePathString) 
 	map<string, Material> newMats;
 	bool firstMaterial = true;
 
-	logging::INFO("Reading materials from .mtl file '"+filePathString+"'");
+	logging::DEBUG("Reading materials from .mtl file '"+filePathString+"'");
 	string line;
 
 	try {

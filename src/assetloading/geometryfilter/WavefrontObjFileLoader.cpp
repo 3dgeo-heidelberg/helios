@@ -248,7 +248,7 @@ WavefrontObj *WavefrontObjFileLoader::loadObj(std::string const &pathString,
   WavefrontObj *loadedObj = new WavefrontObj();
 
   ss << "Reading 3D model from .obj file '" << pathString << "'...";
-  logging::INFO(ss.str());
+  logging::DEBUG(ss.str());
   ss.str("");
 
   fs::path filePath(pathString);

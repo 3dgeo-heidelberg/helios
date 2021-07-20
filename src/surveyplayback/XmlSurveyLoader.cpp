@@ -9,6 +9,7 @@ namespace fs = boost::filesystem;
 #include "typedef.h"
 #include <logging.hpp>
 
+#include "TimeWatcher.h"
 #include "XmlSurveyLoader.h"
 #include <RandomnessGenerator.h>
 
@@ -229,10 +230,8 @@ shared_ptr<Scene> XmlSurveyLoader::loadScene(string sceneString,
   logging::INFO("Loading Scene...");
 
   shared_ptr<Scene> scene;
-
-  auto timeStart =
-      duration_cast<nanoseconds>(system_clock::now().time_since_epoch())
-          .count();
+  TimeWatcher tw;
+  tw.start();
 
   string sceneFullPath;
   try {
@@ -267,12 +266,9 @@ shared_ptr<Scene> XmlSurveyLoader::loadScene(string sceneString,
     exit(1);
   }
 
-  auto timeFinish =
-      duration_cast<nanoseconds>(system_clock::now().time_since_epoch())
-          .count();
-  auto seconds = (timeFinish - timeStart) / 1000000000;
+  tw.stop();
   stringstream ss;
-  ss << "Scene loaded in " << seconds << " sec.";
+  ss << "Scene loaded in " << tw.getElapsedDecimalSeconds() << "s";
   logging::INFO(ss.str());
 
   return scene;

@@ -41,6 +41,7 @@ namespace fs = boost::filesystem;
 #include <UniformNoiseSource.h>
 
 #include "MathConverter.h"
+#include "TimeWatcher.h"
 
 XmlAssetsLoader::XmlAssetsLoader(std::string &filePath, std::string &assetsDir)
     : assetsDir(assetsDir) {
@@ -680,12 +681,15 @@ XmlAssetsLoader::createSceneFromXml(tinyxml2::XMLElement *sceneNode,
   std::shared_ptr<Scene> scene(new Scene());
   scene->sourceFilePath = path;
 
+  TimeWatcher tw;
+
   // ####################### BEGIN Loop over all part nodes
   // ############################
   int partIndex = -1;
   tinyxml2::XMLElement *scenePartNodes = sceneNode->FirstChildElement("part");
 
   size_t scenePartCounter = 0;
+  tw.start();
   while (scenePartNodes != nullptr) {
     partIndex++;
     ScenePart *scenePart = nullptr;
@@ -824,6 +828,11 @@ XmlAssetsLoader::createSceneFromXml(tinyxml2::XMLElement *sceneNode,
     }
     scenePartNodes = scenePartNodes->NextSiblingElement("part");
   }
+  tw.stop();
+
+  std::stringstream ss;
+  ss << std::to_string(scenePartCounter) << " sceneparts loaded in " << tw.getElapsedDecimalSeconds() << "s\n";
+  logging::INFO(ss.str());
   // ####################### END Loop over all part nodes
   // ############################
   bool success = scene->finalizeLoading();
@@ -833,9 +842,6 @@ XmlAssetsLoader::createSceneFromXml(tinyxml2::XMLElement *sceneNode,
     exit(-1);
   }
 
-  std::stringstream ss;
-  ss << std::to_string(scenePartCounter) << " sceneparts loaded";
-  logging::INFO(ss.str());
   return scene;
 }
 
