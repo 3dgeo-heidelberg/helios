@@ -1,6 +1,6 @@
 var classSurveyPlayback =
 [
-    [ "SurveyPlayback", "d6/da1/classSurveyPlayback.html#a4589f2baa7727649ff124b9942255111", null ],
+    [ "SurveyPlayback", "d6/da1/classSurveyPlayback.html#ada60f96735928b11a4c549e737c237a5", null ],
     [ "clearPointcloudFile", "d6/da1/classSurveyPlayback.html#a8efccdf6eb130b1524a71a89102cdfd3", null ],
     [ "doSimStep", "d6/da1/classSurveyPlayback.html#a716dc6f36c143116fa144bf00d906788", null ],
     [ "estimateTime", "d6/da1/classSurveyPlayback.html#a36f9638ef520b4d7a47a89957b6fed27", null ],
@@ -26,6 +26,7 @@ var classSurveyPlayback =
     [ "trackProgress", "d6/da1/classSurveyPlayback.html#a3ba77b5582defa28808c7e5b748eb1c3", null ],
     [ "elapsedLength", "d6/da1/classSurveyPlayback.html#a13f60c6bbffd7d924886fad2f5f39aae", null ],
     [ "elapsedTime_ms", "d6/da1/classSurveyPlayback.html#a0a961564e496e3a18c89c12734112fe5", null ],
+    [ "las10", "d6/da1/classSurveyPlayback.html#a8923c803b7e38d0d99272a03aa886888", null ],
     [ "lasOutput", "d6/da1/classSurveyPlayback.html#a1b2a23d061084f30108d2115cbfe313e", null ],
     [ "legElapsedTime_ms", "d6/da1/classSurveyPlayback.html#a78dc2aefd26b2d4f36df137d2744bc00", null ],
     [ "legProgress", "d6/da1/classSurveyPlayback.html#a9b0caf77baaf656a538c33932eba68d4", null ],

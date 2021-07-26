@@ -4,6 +4,7 @@
 
 #include "Vertex.h"
 class Primitive;
+class WavefrontObj;
 
 #include "maths/Rotation.h"
 #include <ogr_geometry.h>
@@ -101,6 +102,12 @@ public:
 
 	// ***  M E T H O D S  *** //
 	// *********************** //
+
+        /**
+         * @brief Add the primitives of a WavefrontObj to the ScenePart
+         * @param obj Pointer to a loaded OBJ
+         */
+        void addObj(WavefrontObj * obj);
 	/**
 	 * @brief Obtain all vertices in the scene part
 	 * @return All vertices in the scene part
@@ -119,5 +126,10 @@ public:
 	 * @see subpartLimit
 	 * @return True when split was successfully performed, false otherwise
 	 */
-    bool splitSubparts();
+        bool splitSubparts();
+
+        /**
+         * @brief Copy assigment operator.
+         */
+         ScenePart & operator=(const ScenePart & rhs);
 };

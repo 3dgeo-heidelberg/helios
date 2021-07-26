@@ -1,3 +1,25 @@
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this file.
+
+Copyright (C) 1997-2019 by Dimitri van Heesch
+
+This program is free software; you can redistribute it and/or modify
+it under the terms of version 2 of the GNU General Public License as published by
+the Free Software Foundation
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along
+with this program; if not, write to the Free Software Foundation, Inc.,
+51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+
+@licend  The above is the entire license notice
+for the JavaScript code in this file
+*/
 var NAVTREE =
 [
   [ "Helios++", "index.html", [
@@ -13,8 +35,8 @@ var NAVTREE =
         [ "Related Functions", "functions_rela.html", null ]
       ] ]
     ] ],
-    [ "Files", null, [
-      [ "File List", "files.html", "files" ]
+    [ "Files", "files.html", [
+      [ "File List", "files.html", "files_dup" ]
     ] ]
   ] ]
 ];
@@ -22,14 +44,15 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 ".html",
-"d2/d51/classTriangle.html#a10a167adac697a8b7837f25741582b52",
-"d3/d89/classMaterial.html#ab53d06bd8262886bd96970fb6123a8c8",
-"d6/d03/ScenePart_8h_source.html",
-"d6/de0/classPyIntegerList.html#ad49c1a11f60cff59e0fcb9dc382ba99d",
-"d8/dc2/classPyDoubleVector.html#aa1a212830c42a7530c297a7c2d21155a",
-"db/d2e/classMeasurement.html#ac537713b6754711cd47677703bbb632e",
-"dc/d6e/classRandomnessGenerator.html#a401ccf936cff07a52298b0939150af30",
-"df/d1e/classPlatform.html#ae864cbab492ab021fe49031a3c7bcf91"
+"d2/d43/classTrajectory.html#a3f056dc847ef640fd31a7207b4610794",
+"d3/d89/classMaterial.html#a5d715dbe32345276e9a5391049d000c0",
+"d5/dcb/classRotation.html#a4f8718c8999caf7ccb1999b0e4c8b1f1",
+"d6/dd2/classAbstractGeometryFilter.html#a32771b4b06f2042cbe3901298f8bab08",
+"d8/d6b/classAbstractDetector.html#a512ee25b5ab6b8bff4e87eaba5e1996f",
+"da/d9a/classPyMeasurementWrapper.html#a278d4e692051e1312f1e1590b2fe04e2",
+"dc/d42/classScanner.html#a9a23a9a1b6f756411a7455b784eecbd0",
+"df/d1e/classPlatform.html#a05c5efe2a2c82856728bd836c790998e",
+"functions_func_x.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

@@ -4,7 +4,8 @@ var hierarchy =
       [ "ConicBeamDeflector", "d7/db4/classConicBeamDeflector.html", null ],
       [ "FiberArrayBeamDeflector", "d7/d20/classFiberArrayBeamDeflector.html", null ],
       [ "OscillatingMirrorBeamDeflector", "d4/dfd/classOscillatingMirrorBeamDeflector.html", null ],
-      [ "PolygonMirrorBeamDeflector", "db/d7e/classPolygonMirrorBeamDeflector.html", null ]
+      [ "PolygonMirrorBeamDeflector", "db/d7e/classPolygonMirrorBeamDeflector.html", null ],
+      [ "RisleyBeamDeflector", "d4/d57/classRisleyBeamDeflector.html", null ]
     ] ],
     [ "AbstractDetector", "d8/d6b/classAbstractDetector.html", [
       [ "FullWaveformPulseDetector", "df/d37/classFullWaveformPulseDetector.html", null ]
@@ -148,11 +149,14 @@ var hierarchy =
       [ "stringVisitor", "d8/df4/structstringVisitor.html", null ]
     ] ],
     [ "SyncFileWriter", "d1/d0e/classSyncFileWriter.html", [
-      [ "LasSyncFileWriter", "d2/db3/classLasSyncFileWriter.html", null ],
+      [ "LasSyncFileWriter", "d2/db3/classLasSyncFileWriter.html", [
+        [ "Las14SyncFileWriter", "dd/d09/classLas14SyncFileWriter.html", null ]
+      ] ],
       [ "SimpleSyncFileWriter", "df/d47/classSimpleSyncFileWriter.html", [
         [ "ZipSyncFileWriter", "de/d2a/classZipSyncFileWriter.html", null ]
       ] ]
     ] ],
+    [ "SyncFileWriterFactory", "da/df6/classSyncFileWriterFactory.html", null ],
     [ "Test", "df/da6/classTest.html", null ],
     [ "thread_pool", "d3/dce/classthread__pool.html", null ],
     [ "TimeWatcher", "d7/d7d/classTimeWatcher.html", null ],
@@ -163,6 +167,8 @@ var hierarchy =
     [ "VertexKeyHash", "dc/d35/structVertexKeyHash.html", null ],
     [ "VoxelFileParser", "d9/ddf/classVoxelFileParser.html", null ],
     [ "VoxelGridCell", "d5/df6/structVoxelGridCell.html", null ],
+    [ "WavefrontObj", "d0/d92/classWavefrontObj.html", null ],
+    [ "WavefrontObjCache", "d8/d78/classWavefrontObjCache.html", null ],
     [ "XmlAssetsLoader", "d9/d82/classXmlAssetsLoader.html", [
       [ "XmlSurveyLoader", "df/d9a/classXmlSurveyLoader.html", null ]
     ] ]

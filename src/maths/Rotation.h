@@ -94,7 +94,7 @@ class Rotation {
 public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //
     // ************************************ //
-	Rotation() = default;
+    Rotation() = default;
     Rotation(double q0, double q1, double q2, double q3, bool needsNormalization);
     Rotation(glm::dvec3 axis, double angle);
     Rotation(glm::dvec3 u, glm::dvec3 v);
