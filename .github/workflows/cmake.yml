@@ -23,7 +23,7 @@ jobs:
     
     - name: Install required packages
       run: sudo apt-get update && sudo apt-get install -y cmake libboost-dev libboost-system-dev libboost-thread-dev libboost-regex-dev libboost-filesystem-dev libboost-iostreams-dev libgdal-dev libglm-dev libarmadillo-dev zip unzip
-   
+
     - name: Cache boost and lastools
       id: cache-boost-lastools
       uses: actions/cache@v2
