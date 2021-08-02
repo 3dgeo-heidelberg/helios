@@ -65,7 +65,7 @@ ScenePart *WavefrontObjFileLoader::run() {
 
   // Load OBJ Cache
   auto &cache = WavefrontObjCache::getInstance();
-  WavefrontObj * loadedObj;
+  WavefrontObj * loadedObj = nullptr;
   for (std::string const &pathString : filePaths) {
     stringstream ss;
     if (!cache.contains(pathString)) {
