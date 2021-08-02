@@ -16,8 +16,8 @@ fi
 
 # ---  SCRIPT LOGIC  --- #
 # ---------------------- #
-#${HELIOS_SCRIPTS_DIR}/build/build_armadillo.sh
-#${HELIOS_SCRIPTS_DIR}/build/build_boost.sh
-#${HELIOS_SCRIPTS_DIR}/build/build_glm.sh
+${HELIOS_SCRIPTS_DIR}/build/build_armadillo.sh
+${HELIOS_SCRIPTS_DIR}/build/build_boost.sh
+${HELIOS_SCRIPTS_DIR}/build/build_glm.sh
 ${HELIOS_SCRIPTS_DIR}/build/build_lastools.sh
-#${HELIOS_SCRIPTS_DIR}/build/build_gdal.sh
+${HELIOS_SCRIPTS_DIR}/build/build_gdal.sh
