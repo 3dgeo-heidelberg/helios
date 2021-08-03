@@ -1,25 +1,3 @@
-/*
-@licstart  The following is the entire license notice for the
-JavaScript code in this file.
-
-Copyright (C) 1997-2019 by Dimitri van Heesch
-
-This program is free software; you can redistribute it and/or modify
-it under the terms of version 2 of the GNU General Public License as published by
-the Free Software Foundation
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License along
-with this program; if not, write to the Free Software Foundation, Inc.,
-51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-
-@licend  The above is the entire license notice
-for the JavaScript code in this file
-*/
 var NAVTREE =
 [
   [ "Helios++", "index.html", [
@@ -35,8 +13,8 @@ var NAVTREE =
         [ "Related Functions", "functions_rela.html", null ]
       ] ]
     ] ],
-    [ "Files", "files.html", [
-      [ "File List", "files.html", "files_dup" ]
+    [ "Files", null, [
+      [ "File List", "files.html", "files" ]
     ] ]
   ] ]
 ];
@@ -44,15 +22,15 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 ".html",
-"d2/d43/classTrajectory.html#a3f056dc847ef640fd31a7207b4610794",
-"d3/d89/classMaterial.html#a5d715dbe32345276e9a5391049d000c0",
-"d5/dcb/classRotation.html#a4f8718c8999caf7ccb1999b0e4c8b1f1",
-"d6/dd2/classAbstractGeometryFilter.html#a32771b4b06f2042cbe3901298f8bab08",
-"d8/d6b/classAbstractDetector.html#a512ee25b5ab6b8bff4e87eaba5e1996f",
-"da/d9a/classPyMeasurementWrapper.html#a278d4e692051e1312f1e1590b2fe04e2",
-"dc/d42/classScanner.html#a9a23a9a1b6f756411a7455b784eecbd0",
-"df/d1e/classPlatform.html#a05c5efe2a2c82856728bd836c790998e",
-"functions_func_x.html"
+"d2/d43/classTrajectory.html#a399b9bef7fa76fe6d7c1a89f84430c67",
+"d3/d89/classMaterial.html#a2455e6f519001aa0a8679e826476f29f",
+"d5/dcb/classRotation.html#a0796ec81edaeac64002c4abd878db6b0",
+"d6/db9/classSerialIO.html#a6e93a0a8bc22f276d792009520acee7c",
+"d8/d15/classLinearPathPlatform.html#a0816b2876d79ec5a3987de7e99be80a0",
+"da/d59/classPySceneWrapper.html#a66eea65205cc1f98da6fc97ec1f3c0b8",
+"dc/d42/classScanner.html#a33b2ae27e64bc1f870580abc2ac5e645",
+"de/d6b/classLadLutLoader.html#a0dbdd87478e9ce469a3090ad93cdd25d",
+"dir_4b68c2fef3e151b6b93d5e93b14f1857.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

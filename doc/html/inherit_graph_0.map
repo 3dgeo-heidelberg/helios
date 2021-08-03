@@ -1,7 +1,8 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$d7/d92/classAbstractBeamDeflector.html" title="Base abstract class for beam deflectors. " alt="" coords="5,81,164,108"/>
+<area shape="rect" id="node1" href="$d7/d92/classAbstractBeamDeflector.html" title="Base abstract class for beam deflectors. " alt="" coords="5,107,164,133"/>
 <area shape="rect" id="node2" href="$d7/db4/classConicBeamDeflector.html" title="Class representing a conic beam deflector. " alt="" coords="242,5,385,32"/>
 <area shape="rect" id="node3" href="$d7/d20/classFiberArrayBeamDeflector.html" title="Class representing a fiber array beam deflector. " alt="" coords="229,56,398,83"/>
 <area shape="rect" id="node4" href="$d4/dfd/classOscillatingMirrorBeamDeflector.html" title="Class representing an oscillating mirror beam deflector. " alt="" coords="212,107,415,133"/>
 <area shape="rect" id="node5" href="$db/d7e/classPolygonMirrorBeamDeflector.html" title="Class representing a polygon mirror beam deflector. " alt="" coords="219,157,408,184"/>
+<area shape="rect" id="node6" href="$d4/d57/classRisleyBeamDeflector.html" title="Class representing a risley prisms beam deflector. " alt="" coords="240,208,387,235"/>
 </map>

@@ -1,3 +1,4 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$d5/dcb/classRotation.html" title="Rotation" alt="" coords="5,5,76,32"/>
+<area shape="rect" id="node1" href="$d7/d84/classrigidmotion_1_1RigidMotion.html" title="Interface that must be implemented by any class which represents a specific rigid motions..." alt="" coords="5,5,168,32"/>
+<area shape="rect" id="node2" href="$d9/d20/classrigidmotion_1_1RigidMotionR2.html" title="Implementation of rigid motions in . " alt="" coords="216,5,395,32"/>
 </map>

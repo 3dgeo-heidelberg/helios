@@ -13,6 +13,13 @@ var annotated_dup =
       [ "SurveyCopyTest", "de/d9c/classHeliosTests_1_1SurveyCopyTest.html", "de/d9c/classHeliosTests_1_1SurveyCopyTest" ],
       [ "VoxelParsingTest", "da/d8d/classHeliosTests_1_1VoxelParsingTest.html", "da/d8d/classHeliosTests_1_1VoxelParsingTest" ]
     ] ],
+    [ "rigidmotion", null, [
+      [ "RigidMotion", "d7/d84/classrigidmotion_1_1RigidMotion.html", "d7/d84/classrigidmotion_1_1RigidMotion" ],
+      [ "RigidMotionEngine", "d2/da8/classrigidmotion_1_1RigidMotionEngine.html", "d2/da8/classrigidmotion_1_1RigidMotionEngine" ],
+      [ "RigidMotionFactory", "dc/d00/classrigidmotion_1_1RigidMotionFactory.html", "dc/d00/classrigidmotion_1_1RigidMotionFactory" ],
+      [ "RigidMotionR2", "d9/d20/classrigidmotion_1_1RigidMotionR2.html", "d9/d20/classrigidmotion_1_1RigidMotionR2" ],
+      [ "RigidMotionR2Factory", "d7/da7/classrigidmotion_1_1RigidMotionR2Factory.html", "d7/da7/classrigidmotion_1_1RigidMotionR2Factory" ]
+    ] ],
     [ "AABB", "d2/d1a/classAABB.html", "d2/d1a/classAABB" ],
     [ "AbstractBeamDeflector", "d7/d92/classAbstractBeamDeflector.html", "d7/d92/classAbstractBeamDeflector" ],
     [ "AbstractDetector", "d8/d6b/classAbstractDetector.html", "d8/d6b/classAbstractDetector" ],

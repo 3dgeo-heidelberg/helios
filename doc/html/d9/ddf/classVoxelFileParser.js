@@ -12,7 +12,7 @@ var classVoxelFileParser =
     [ "parseDetailedVoxelLine", "d9/ddf/classVoxelFileParser.html#a6014db45cda99f1fa078a68b4c8edad6", null ],
     [ "removeHeaderLines", "d9/ddf/classVoxelFileParser.html#ae45530e45e81650fe5bf015905007b2e", null ],
     [ "validateDetailed", "d9/ddf/classVoxelFileParser.html#a7bc1f319223e79b9520fd1f3dc2a1f07", null ],
-    [ "BLANK_CHARACTERS", "d9/ddf/classVoxelFileParser.html#ae8d98a566dec8622be2ab84432412f51", null ],
-    [ "N_BLANK_CHARACTERS", "d9/ddf/classVoxelFileParser.html#a2578c56dcd235bf6f5cf581f0f2186b5", null ],
-    [ "SPEC_CHARACTER", "d9/ddf/classVoxelFileParser.html#ade2502d8a650ebfa95a1037ed1b12682", null ]
+    [ "BLANK_CHARACTERS", "d9/ddf/classVoxelFileParser.html#a08f8426398c5b71b60420ad49ee8c963", null ],
+    [ "N_BLANK_CHARACTERS", "d9/ddf/classVoxelFileParser.html#abd42cccaa9d62653c14f5d4b59b016e1", null ],
+    [ "SPEC_CHARACTER", "d9/ddf/classVoxelFileParser.html#ac05108c3371de6ee35e2ea5a85a554d1", null ]
 ];

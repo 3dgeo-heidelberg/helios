@@ -132,6 +132,13 @@ var hierarchy =
     [ "RandomnessGenerator< double >", "dc/d6e/classRandomnessGenerator.html", null ],
     [ "RaySceneIntersection", "dc/da3/classRaySceneIntersection.html", null ],
     [ "RayUtils", "d7/dee/classRayUtils.html", null ],
+    [ "rigidmotion::RigidMotion", "d7/d84/classrigidmotion_1_1RigidMotion.html", [
+      [ "rigidmotion::RigidMotionR2", "d9/d20/classrigidmotion_1_1RigidMotionR2.html", null ]
+    ] ],
+    [ "rigidmotion::RigidMotionEngine", "d2/da8/classrigidmotion_1_1RigidMotionEngine.html", null ],
+    [ "rigidmotion::RigidMotionFactory", "dc/d00/classrigidmotion_1_1RigidMotionFactory.html", [
+      [ "rigidmotion::RigidMotionR2Factory", "d7/da7/classrigidmotion_1_1RigidMotionR2Factory.html", null ]
+    ] ],
     [ "Rotation", "d5/dcb/classRotation.html", null ],
     [ "RotationOrder", "d6/d7f/classRotationOrder.html", null ],
     [ "ScannerHead", "dc/da7/classScannerHead.html", null ],
