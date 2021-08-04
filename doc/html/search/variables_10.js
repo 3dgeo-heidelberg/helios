@@ -2,6 +2,8 @@ var searchData=
 [
   ['r',['r',['../db/d69/classHelicopterPlatform.html#af857a5b02a00cf1f5f358348f8a6cc3b',1,'HelicopterPlatform::r()'],['../d6/d44/classVoxel.html#ae1fc849da46321c5d84daf541ee51aca',1,'Voxel::r()']]],
   ['r1',['r1',['../d7/db4/classConicBeamDeflector.html#aafd4b43d63d67063597dc3a345ac9060',1,'ConicBeamDeflector']]],
+  ['r2x',['R2X',['../db/d8b/classHeliosTests_1_1RigidMotionTest.html#a8f91e1e80529c1836059666949c3d651',1,'HeliosTests::RigidMotionTest']]],
+  ['r3x',['R3X',['../db/d8b/classHeliosTests_1_1RigidMotionTest.html#a3a644169e5f080e4fa4c77c7cd7533d8',1,'HeliosTests::RigidMotionTest']]],
   ['rail',['RAIL',['../df/d64/classLasSpecification.html#a7cae5672cdaa100fee4c68006274f1af',1,'LasSpecification']]],
   ['randgen1',['randGen1',['../dc/d42/classScanner.html#a2a41e7cd79db232b9e591d8f365c73e1',1,'Scanner']]],
   ['randgen2',['randGen2',['../dc/d42/classScanner.html#a57e43006f8c86d513a3668625b7363f5',1,'Scanner']]],
@@ -23,6 +25,8 @@ var searchData=
   ['returnnumber',['returnNumber',['../db/d2e/classMeasurement.html#aca68cb91908d7de7822cbf3095a9f659',1,'Measurement']]],
   ['rg',['rg',['../d4/d38/classRandomNoiseSource.html#a49a8432d24fb4e2b3fba3f5c30e8c4d2',1,'RandomNoiseSource']]],
   ['right',['right',['../df/dc3/classDirections.html#a90c74fe7a0e9ffb276982fd8659b8105',1,'Directions::right()'],['../d8/d94/classKDTreeNode.html#a541cf2b0ab4e928b3df158e3ab2950bd',1,'KDTreeNode::right()']]],
+  ['rm2f',['rm2f',['../db/d8b/classHeliosTests_1_1RigidMotionTest.html#a5919c7c4b95acef22ce9b082a867a0f5',1,'HeliosTests::RigidMotionTest']]],
+  ['rme',['rme',['../db/d8b/classHeliosTests_1_1RigidMotionTest.html#a9184d901320e12d1e328761ea82b6660',1,'HeliosTests::RigidMotionTest']]],
   ['road',['ROAD',['../df/d64/classLasSpecification.html#a5148aba8d9ab7690f19f8a916e1418a7',1,'LasSpecification']]],
   ['roll',['roll',['../db/d69/classHelicopterPlatform.html#a0a4e8ceaa8a560b672d5d943bfbfb38d',1,'HelicopterPlatform::roll()'],['../d2/d43/classTrajectory.html#a3f056dc847ef640fd31a7207b4610794',1,'Trajectory::roll()']]],
   ['root',['root',['../da/d81/classKDTreeRaycaster.html#a3442610d593106a58fbc98e1b24fe4e3',1,'KDTreeRaycaster']]],

@@ -1,0 +1,6 @@
+<map id="HeliosTests::RigidMotionTest" name="HeliosTests::RigidMotionTest">
+<area shape="rect" id="node2" href="$d9/d52/classHeliosTests_1_1BaseTest.html" title="BaseTest class. " alt="" coords="221,5,377,32"/>
+<area shape="rect" id="node3" href="$d7/da7/classrigidmotion_1_1RigidMotionR2Factory.html" title="Class providing building methods for rigid motions in . " alt="" coords="217,57,380,98"/>
+<area shape="rect" id="node4" href="$dc/d00/classrigidmotion_1_1RigidMotionFactory.html" title="Class that must be extended by any class which provides factory methods for rigid motions..." alt="" coords="5,57,168,98"/>
+<area shape="rect" id="node5" href="$d2/da8/classrigidmotion_1_1RigidMotionEngine.html" title="Class to handle operations with rigid motions. " alt="" coords="217,122,380,163"/>
+</map>

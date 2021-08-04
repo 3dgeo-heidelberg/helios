@@ -47,6 +47,7 @@ var hierarchy =
       [ "HeliosTests::PlatformPhysicsTest", "d6/d96/classHeliosTests_1_1PlatformPhysicsTest.html", null ],
       [ "HeliosTests::RandomTest", "db/dcd/classHeliosTests_1_1RandomTest.html", null ],
       [ "HeliosTests::RayIntersectionTest", "d4/dba/classHeliosTests_1_1RayIntersectionTest.html", null ],
+      [ "HeliosTests::RigidMotionTest", "db/d8b/classHeliosTests_1_1RigidMotionTest.html", null ],
       [ "HeliosTests::ScenePartSplitTest", "d5/d2a/classHeliosTests_1_1ScenePartSplitTest.html", null ],
       [ "HeliosTests::SerializationTest", "df/da1/classHeliosTests_1_1SerializationTest.html", null ],
       [ "HeliosTests::SurveyCopyTest", "de/d9c/classHeliosTests_1_1SurveyCopyTest.html", null ],
@@ -132,9 +133,7 @@ var hierarchy =
     [ "RandomnessGenerator< double >", "dc/d6e/classRandomnessGenerator.html", null ],
     [ "RaySceneIntersection", "dc/da3/classRaySceneIntersection.html", null ],
     [ "RayUtils", "d7/dee/classRayUtils.html", null ],
-    [ "rigidmotion::RigidMotion", "d7/d84/classrigidmotion_1_1RigidMotion.html", [
-      [ "rigidmotion::RigidMotionR2", "d9/d20/classrigidmotion_1_1RigidMotionR2.html", null ]
-    ] ],
+    [ "rigidmotion::RigidMotion", "d7/d84/classrigidmotion_1_1RigidMotion.html", null ],
     [ "rigidmotion::RigidMotionEngine", "d2/da8/classrigidmotion_1_1RigidMotionEngine.html", null ],
     [ "rigidmotion::RigidMotionFactory", "dc/d00/classrigidmotion_1_1RigidMotionFactory.html", [
       [ "rigidmotion::RigidMotionR2Factory", "d7/da7/classrigidmotion_1_1RigidMotionR2Factory.html", null ]

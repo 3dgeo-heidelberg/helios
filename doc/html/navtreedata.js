@@ -26,11 +26,11 @@ var NAVTREEINDEX =
 "d3/d89/classMaterial.html#a2455e6f519001aa0a8679e826476f29f",
 "d5/dcb/classRotation.html#a0796ec81edaeac64002c4abd878db6b0",
 "d6/db9/classSerialIO.html#a6e93a0a8bc22f276d792009520acee7c",
-"d8/d15/classLinearPathPlatform.html#a0816b2876d79ec5a3987de7e99be80a0",
-"da/d59/classPySceneWrapper.html#a66eea65205cc1f98da6fc97ec1f3c0b8",
-"dc/d42/classScanner.html#a33b2ae27e64bc1f870580abc2ac5e645",
-"de/d6b/classLadLutLoader.html#a0dbdd87478e9ce469a3090ad93cdd25d",
-"dir_4b68c2fef3e151b6b93d5e93b14f1857.html"
+"d7/df9/classPyRandomnessGeneratorWrapper.html#af316baad4a10da9fa99d3e864d42a5f6",
+"da/d59/classPySceneWrapper.html#ad097ebcc677c7c071309d4caa7b7b786",
+"dc/d42/classScanner.html#a1a7cb2591440280624da410061849bdc",
+"de/d52/classPyDetailedVoxelWrapper.html#a493e6360836f8bba9104b39076517a18",
+"df/de1/classPrimitive.html#ab42e43b38fa0770bb5a5cbe8acbf16bf"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

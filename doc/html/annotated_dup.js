@@ -8,6 +8,7 @@ var annotated_dup =
       [ "PlatformPhysicsTest", "d6/d96/classHeliosTests_1_1PlatformPhysicsTest.html", "d6/d96/classHeliosTests_1_1PlatformPhysicsTest" ],
       [ "RandomTest", "db/dcd/classHeliosTests_1_1RandomTest.html", "db/dcd/classHeliosTests_1_1RandomTest" ],
       [ "RayIntersectionTest", "d4/dba/classHeliosTests_1_1RayIntersectionTest.html", "d4/dba/classHeliosTests_1_1RayIntersectionTest" ],
+      [ "RigidMotionTest", "db/d8b/classHeliosTests_1_1RigidMotionTest.html", "db/d8b/classHeliosTests_1_1RigidMotionTest" ],
       [ "ScenePartSplitTest", "d5/d2a/classHeliosTests_1_1ScenePartSplitTest.html", "d5/d2a/classHeliosTests_1_1ScenePartSplitTest" ],
       [ "SerializationTest", "df/da1/classHeliosTests_1_1SerializationTest.html", "df/da1/classHeliosTests_1_1SerializationTest" ],
       [ "SurveyCopyTest", "de/d9c/classHeliosTests_1_1SurveyCopyTest.html", "de/d9c/classHeliosTests_1_1SurveyCopyTest" ],
@@ -17,7 +18,6 @@ var annotated_dup =
       [ "RigidMotion", "d7/d84/classrigidmotion_1_1RigidMotion.html", "d7/d84/classrigidmotion_1_1RigidMotion" ],
       [ "RigidMotionEngine", "d2/da8/classrigidmotion_1_1RigidMotionEngine.html", "d2/da8/classrigidmotion_1_1RigidMotionEngine" ],
       [ "RigidMotionFactory", "dc/d00/classrigidmotion_1_1RigidMotionFactory.html", "dc/d00/classrigidmotion_1_1RigidMotionFactory" ],
-      [ "RigidMotionR2", "d9/d20/classrigidmotion_1_1RigidMotionR2.html", "d9/d20/classrigidmotion_1_1RigidMotionR2" ],
       [ "RigidMotionR2Factory", "d7/da7/classrigidmotion_1_1RigidMotionR2Factory.html", "d7/da7/classrigidmotion_1_1RigidMotionR2Factory" ]
     ] ],
     [ "AABB", "d2/d1a/classAABB.html", "d2/d1a/classAABB" ],

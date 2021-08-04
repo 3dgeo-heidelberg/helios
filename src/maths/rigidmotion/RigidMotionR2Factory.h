@@ -43,7 +43,7 @@ public:
     /**
      * @brief Implementation of reflection rigid motion in \f$\mathbb{R}^{2}\f$
      *
-     * Let \f$\vec{u}\f$ be an arbitrary axis and let \f$theta\f$ be the angle
+     * Let \f$\vec{u}\f$ be an arbitrary axis and let \f$\theta\f$ be the angle
      *  between \f$\vec{u}\f$ and \f$e_1\f$. Thus, the affine application for
      *  the reflection would be \f$Y = \vec{0} + AX\f$ where \f$A\f$ is:
      *
@@ -55,7 +55,7 @@ public:
      * \f]
      *
      * @param axis Reflection axis
-     * @return Reflexion rigid motion in \f$\mathbb{R}^{2}\f$
+     * @return Reflection rigid motion in \f$\mathbb{R}^{2}\f$
      */
     virtual RigidMotion makeReflection(colvec const axis);
     /**
@@ -67,6 +67,80 @@ public:
      * @see rigidmotion::RigidMotionR2Factory::makeReflection(colvec)
      */
     virtual RigidMotion makeReflection(double const theta);
+    /**
+     * @brief Implementation of glide reflection rigid motion in
+     *  \f$\mathbb{R}^{2}\f$
+     *
+     * Let \f$\vec{u}\f$ be an arbitrary axis, let \f$\theta\f$ be the angle
+     *  between \f$\vec{u}\f$ and \f$e_1\f$ and let \f$\lambda\f$ specify
+     *  how many glide in the \f$\hat{u}\f$ axis direction will be applied after
+     *  the reflection. Notice
+     *  \f$\hat{u} = \frac{\vec{u}}{\Vert\vec{u}\Vert}\f$, it is
+     *  \f$\vec{u}\f$ as normalized director vector.
+     *  Thus, the affine application for the glide reflection
+     *  would be \f$Y = \lambda\hat{u} + AX\f$ where \f$A\f$ is as documented
+     *  for the makeReflection method.
+     *
+     * @param axis Reflection axis
+     * @param glide How many glide apply in the direction of reflection axis
+     *  afther the reflection
+     * @return Glide reflection rigid motion
+     * @see rigidmotion::RigidMotionR2Factory::makeReflection(colvec)
+     */
+    virtual RigidMotion makeGlideReflection(
+        colvec const axis,
+        double const glide
+    );
+    /**
+     * @brief As makeGlideReflection method but receiving \f$\theta\f$ as the
+     *  angle between reflection axis and \f$e_1\f$ instead of the reflection
+     *  axis itself
+     *
+     * @param theta Angle between \f$e_1\f$ (unitary vector for x-axis in
+     *  canonical basis) and rotation axis
+     * @param glide How many glide apply in the direction of reflection axis
+     *  afther the reflection
+     * @see RigidMotionR2Factory::makeGlideReflection(colvec, double)
+     */
+    virtual RigidMotion makeGlideReflection(
+        double const theta,
+        double const glide
+    );
+    /**
+     * @brief Implementation of rotation rigid motion in \f$\mathbb{R}^{2}\f$
+     *
+     * Let \f$\theta\f$ be the rotation angle and \f$Q=(Q_x, Q_y)\f$ be the
+     *  rotation center. Now, the affine application for the rotation would be
+     *  \f$Y = C + AX\f$ where:
+     *
+     * \f[
+     *  A = \left[\begin{array}{ll}
+     *      \cos(\theta) & -\sin(\theta) \\
+     *      \sin(\theta) & \cos(\theta)
+     *  \end{array}\right]
+     * \f]
+     *
+     * and
+     *
+     * \f[
+     *  C = (I-A)Q = \left[\begin{array}{ll}
+     *      1-\cos(\theta) & \sin(\theta) \\
+     *      -\sin(\theta) & 1-\cos(\theta)
+     *  \end{array}\right]
+     *  \left[\begin{array}{l}
+     *      Q_x \\
+     *      Q_y
+     *  \end{array}\right]
+     * \f]
+     *
+     * @param theta The rotation angle
+     * @param center The rotation center point
+     * @return Rotation rigid motion in \f$\mathbb{R}^{2}\f$
+     */
+    virtual RigidMotion makeRotation(
+        double const theta,
+        colvec const center
+    );
 };
 
 }

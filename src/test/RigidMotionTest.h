@@ -1,6 +1,7 @@
 #pragma once
 
 #include "BaseTest.h"
+#include <MathConstants.h>
 #include <maths/rigidmotion/RigidMotionEngine.h>
 #include <maths/rigidmotion/RigidMotionR2Factory.h>
 #include <maths/rigidmotion/RigidMotionR3Factory.h>
@@ -89,6 +90,16 @@ public:
      * @return True if passed, false otherwise
      */
     bool testPureReflectionR2();
+    /**
+     * @brief Test glide reflection rigid motion in \f$\mathbb{R}^{2}\f$
+     * @return True if passed, false otherwise
+     */
+    bool testPureGlideReflectionR2();
+    /**
+     * @brief Test rotation rigid motion in \f$\mathbb{R}^{2}\f$
+     * @return True if passed, false otherwise
+     */
+    bool testPureRotationR2();
 
     // ***  HELIOS TESTS  *** //
     // ********************** //
@@ -120,6 +131,8 @@ bool RigidMotionTest::testPureRigidMotion(){
     if(!testPureIdentityR2()) return false;
     if(!testPureTranslationR2()) return false;
     if(!testPureReflectionR2()) return false;
+    if(!testPureGlideReflectionR2()) return false;
+    if(!testPureRotationR2()) return false;
 
     // R3 tests
     // TODO Rethink : To be implemented
@@ -178,6 +191,47 @@ bool RigidMotionTest::testPureReflectionR2(){
     EY3.at(0, 4) = -0.9137931;          EY3.at(1, 4) = 8.46551724;
     Z = abs(Y3-EY3);
     passed = !any(vectorise(Z) > eps);
+    if(!passed) return passed;
+
+    return passed;
+}
+bool RigidMotionTest::testPureGlideReflectionR2(){
+    colvec axis(std::vector<double>({2.1, 1.9}));
+    RigidMotion f = rm2f.makeGlideReflection(axis, 2);
+    mat Y = rme.apply(f, R2X);
+    mat EY(2, 5);
+    EY.at(0, 0) = 2.7262137;        EY.at(1, 0) = -1.29533046;
+    EY.at(0, 1) = 0.93569001;       EY.at(1, 1) = 0.89419573;
+    EY.at(0, 2) = -0.85483368;      EY.at(1, 2) = 3.08372191;
+    EY.at(0, 3) = -2.64535737;      EY.at(1, 3) = 5.27324809;
+    EY.at(0, 4) = -4.43588106;      EY.at(1, 4) = 7.46277428;
+    mat Z = abs(Y-EY);
+    bool passed = !any(vectorise(Z) > eps);
+    if(!passed) return passed;
+
+    f = rm2f.makeTranslation(2*axis/norm(axis));
+    RigidMotion g = rm2f.makeReflection(axis);
+    RigidMotion h = rme.compose(f, g);
+    mat Y2 = rme.apply(h, R2X);
+    Z = abs(Y-Y2);
+    passed = !any(vectorise(Z) > eps);
+    if(!passed) return passed;
+
+    return passed;
+}
+
+bool RigidMotionTest::testPureRotationR2(){
+    colvec center = R2X.col(2);
+    RigidMotion f = rm2f.makeRotation(-M_PI/3, center);
+    mat Y = rme.apply(f, R2X);
+    mat EY(2, 5);
+    EY.at(0, 0) = 2.96410162;       EY.at(1, 0) = 2.96410162;
+    EY.at(0, 1) = 2.23205081;       EY.at(1, 1) = 0.23205081;
+    EY.at(0, 2) = 1.5;              EY.at(1, 2) = -2.5;
+    EY.at(0, 3) = 0.76794919;       EY.at(1, 3) = -5.23205081;
+    EY.at(0, 4) = 0.03589838;       EY.at(1, 4) = -7.96410162;
+    mat Z = abs(Y-EY);
+    bool passed = !any(vectorise(Z) > eps);
     if(!passed) return passed;
 
     return passed;

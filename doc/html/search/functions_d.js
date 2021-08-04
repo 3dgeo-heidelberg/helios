@@ -1,9 +1,11 @@
 var searchData=
 [
   ['makedefault',['makeDefault',['../d0/da9/logging_8hpp.html#abe503e7a8d4225b50c522708fc4e980c',1,'logging']]],
+  ['makeglidereflection',['makeGlideReflection',['../d7/da7/classrigidmotion_1_1RigidMotionR2Factory.html#a6378b09c780d4c953be8f0f73cb80c76',1,'rigidmotion::RigidMotionR2Factory::makeGlideReflection(colvec const axis, double const glide)'],['../d7/da7/classrigidmotion_1_1RigidMotionR2Factory.html#a900dd1d090008c829de2ed62d7542049',1,'rigidmotion::RigidMotionR2Factory::makeGlideReflection(double const theta, double const glide)']]],
   ['makeidentity',['makeIdentity',['../dc/d00/classrigidmotion_1_1RigidMotionFactory.html#ac97d8ac1a596093d1524d4652d9e0504',1,'rigidmotion::RigidMotionFactory::makeIdentity()'],['../d7/da7/classrigidmotion_1_1RigidMotionR2Factory.html#a170cf7ff3e1f230c84ea17a24e717215',1,'rigidmotion::RigidMotionR2Factory::makeIdentity()']]],
   ['makequiet',['makeQuiet',['../d0/da9/logging_8hpp.html#a692b6f848d37bbe59a72573a8573d6ed',1,'logging']]],
   ['makereflection',['makeReflection',['../d7/da7/classrigidmotion_1_1RigidMotionR2Factory.html#ac8da85a6996597eacb77e19043ec13a1',1,'rigidmotion::RigidMotionR2Factory::makeReflection(colvec const axis)'],['../d7/da7/classrigidmotion_1_1RigidMotionR2Factory.html#a728ef10898f75613d02d20c2f9b3dd4a',1,'rigidmotion::RigidMotionR2Factory::makeReflection(double const theta)']]],
+  ['makerotation',['makeRotation',['../d7/da7/classrigidmotion_1_1RigidMotionR2Factory.html#ada4e17c7558229638e3ab7cf9ad9fb14',1,'rigidmotion::RigidMotionR2Factory']]],
   ['makesilent',['makeSilent',['../d0/da9/logging_8hpp.html#a46f0f70041004a98f8047cd4065e889a',1,'logging']]],
   ['maketranslation',['makeTranslation',['../dc/d00/classrigidmotion_1_1RigidMotionFactory.html#adf0d59729296ee6cd99628eafb3c7730',1,'rigidmotion::RigidMotionFactory::makeTranslation()'],['../d7/da7/classrigidmotion_1_1RigidMotionR2Factory.html#a9f7fcfa75c68652f58a502b384fd62ce',1,'rigidmotion::RigidMotionR2Factory::makeTranslation()']]],
   ['makeverbose',['makeVerbose',['../d0/da9/logging_8hpp.html#a0d8d83c825f31a8a41f611aeec85eed2',1,'logging']]],

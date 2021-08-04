@@ -1,8 +1,15 @@
 var searchData=
 [
   ['test',['test',['../d9/d52/classHeliosTests_1_1BaseTest.html#ab788d674d43f48f76f7c9ac98c5d9e06',1,'HeliosTests::BaseTest']]],
+  ['testheliosrigidmotion',['testHeliosRigidMotion',['../db/d8b/classHeliosTests_1_1RigidMotionTest.html#a23cb46ea1d2885b17777e0467c28daf0',1,'HeliosTests::RigidMotionTest']]],
   ['testpitchonlyrotations',['testPitchOnlyRotations',['../d6/d96/classHeliosTests_1_1PlatformPhysicsTest.html#a76329855eb8d96001e9022001f33e807',1,'HeliosTests::PlatformPhysicsTest']]],
   ['testpitchyawrotations',['testPitchYawRotations',['../d6/d96/classHeliosTests_1_1PlatformPhysicsTest.html#a25d243b214836cdaf6b9853901dfdf13',1,'HeliosTests::PlatformPhysicsTest']]],
+  ['testpureglidereflectionr2',['testPureGlideReflectionR2',['../db/d8b/classHeliosTests_1_1RigidMotionTest.html#abda4db2f178471e6145a7aaea64cba46',1,'HeliosTests::RigidMotionTest']]],
+  ['testpureidentityr2',['testPureIdentityR2',['../db/d8b/classHeliosTests_1_1RigidMotionTest.html#a3f4ac717956e0b49713bac772727e8fe',1,'HeliosTests::RigidMotionTest']]],
+  ['testpurereflectionr2',['testPureReflectionR2',['../db/d8b/classHeliosTests_1_1RigidMotionTest.html#aa5726fc1e1088a5035eed8ae610e0784',1,'HeliosTests::RigidMotionTest']]],
+  ['testpurerigidmotion',['testPureRigidMotion',['../db/d8b/classHeliosTests_1_1RigidMotionTest.html#a46c0fc0fa8b3eca831e9297afb8a0804',1,'HeliosTests::RigidMotionTest']]],
+  ['testpurerotationr2',['testPureRotationR2',['../db/d8b/classHeliosTests_1_1RigidMotionTest.html#a72c98956c6efdd502397fe8e875e35d0',1,'HeliosTests::RigidMotionTest']]],
+  ['testpuretranslationr2',['testPureTranslationR2',['../db/d8b/classHeliosTests_1_1RigidMotionTest.html#ac3699c4aebc3b08f4d52ba92f107dc3c',1,'HeliosTests::RigidMotionTest']]],
   ['testrollonlyrotations',['testRollOnlyRotations',['../d6/d96/classHeliosTests_1_1PlatformPhysicsTest.html#a0bf039090cfdbf2e0f646788a4f4c901',1,'HeliosTests::PlatformPhysicsTest']]],
   ['testrollpitchrotations',['testRollPitchRotations',['../d6/d96/classHeliosTests_1_1PlatformPhysicsTest.html#a9d949649e23f8669ed03c7cd7d8cc34c',1,'HeliosTests::PlatformPhysicsTest']]],
   ['testrollpitchyawrotations',['testRollPitchYawRotations',['../d6/d96/classHeliosTests_1_1PlatformPhysicsTest.html#a836c58705c0561ce21a49eaf33af603b',1,'HeliosTests::PlatformPhysicsTest']]],

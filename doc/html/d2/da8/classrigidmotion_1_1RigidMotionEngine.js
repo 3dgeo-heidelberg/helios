@@ -2,7 +2,7 @@ var classrigidmotion_1_1RigidMotionEngine =
 [
     [ "RigidMotionEngine", "d2/da8/classrigidmotion_1_1RigidMotionEngine.html#a1301ee234a2006cfab2d7d38142941bc", null ],
     [ "~RigidMotionEngine", "d2/da8/classrigidmotion_1_1RigidMotionEngine.html#acb4954fa9eeefc45e948e7371e4d9e57", null ],
-    [ "apply", "d2/da8/classrigidmotion_1_1RigidMotionEngine.html#a2e78806215963c87d92a520c91c9b46e", null ],
-    [ "apply", "d2/da8/classrigidmotion_1_1RigidMotionEngine.html#a794b04f017ec0f0282fa15dc737c9081", null ],
-    [ "compose", "d2/da8/classrigidmotion_1_1RigidMotionEngine.html#aeec3a8241aae1f76c95e136e1d478e0b", null ]
+    [ "apply", "d2/da8/classrigidmotion_1_1RigidMotionEngine.html#a029fc21bc380b291c447484c08b03b86", null ],
+    [ "apply", "d2/da8/classrigidmotion_1_1RigidMotionEngine.html#a262a9a5179cced5e80bc61412aa31e98", null ],
+    [ "compose", "d2/da8/classrigidmotion_1_1RigidMotionEngine.html#abba32219e7d65188f1bbe74255e86574", null ]
 ];

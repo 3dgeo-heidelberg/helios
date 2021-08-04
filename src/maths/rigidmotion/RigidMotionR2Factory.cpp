@@ -32,3 +32,32 @@ RigidMotion RigidMotionR2Factory::makeReflection(double const theta){
     colvec C = colvec(2, arma::fill::zeros);
     return RigidMotion(C, A);
 }
+
+RigidMotion RigidMotionR2Factory::makeGlideReflection(
+    colvec const axis,
+    double const glide
+){
+    return makeGlideReflection(std::atan2(axis[1], axis[0]), glide);
+}
+
+RigidMotion RigidMotionR2Factory::makeGlideReflection(
+    double const theta,
+    double const glide
+){
+    colvec const axis(std::vector<double>({std::cos(theta), std::sin(theta)}));
+    RigidMotion rm = makeReflection(theta);
+    rm.setC(glide * axis);
+    return rm;
+}
+
+RigidMotion RigidMotionR2Factory::makeRotation(
+    double const theta,
+    colvec const center
+){
+    mat A = mat(2, 2);
+    A.at(0, 0) = std::cos(theta);
+    A.at(0, 1) = -std::sin(theta);
+    A.at(1, 0) = std::sin(theta);
+    A.at(1, 1) = std::cos(theta);
+    return RigidMotion((eye(2, 2)-A)*center, A);
+}
