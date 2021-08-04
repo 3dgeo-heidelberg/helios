@@ -12,6 +12,7 @@ var searchData=
   ['rigidmotionengine',['RigidMotionEngine',['../d2/da8/classrigidmotion_1_1RigidMotionEngine.html',1,'rigidmotion']]],
   ['rigidmotionfactory',['RigidMotionFactory',['../dc/d00/classrigidmotion_1_1RigidMotionFactory.html',1,'rigidmotion']]],
   ['rigidmotionr2factory',['RigidMotionR2Factory',['../d7/da7/classrigidmotion_1_1RigidMotionR2Factory.html',1,'rigidmotion']]],
+  ['rigidmotionr3factory',['RigidMotionR3Factory',['../dc/df6/classrigidmotion_1_1RigidMotionR3Factory.html',1,'rigidmotion']]],
   ['rigidmotiontest',['RigidMotionTest',['../db/d8b/classHeliosTests_1_1RigidMotionTest.html',1,'HeliosTests']]],
   ['risleybeamdeflector',['RisleyBeamDeflector',['../d4/d57/classRisleyBeamDeflector.html',1,'']]],
   ['rotatefilter',['RotateFilter',['../de/de4/classRotateFilter.html',1,'']]],

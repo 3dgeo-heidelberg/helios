@@ -136,7 +136,8 @@ var hierarchy =
     [ "rigidmotion::RigidMotion", "d7/d84/classrigidmotion_1_1RigidMotion.html", null ],
     [ "rigidmotion::RigidMotionEngine", "d2/da8/classrigidmotion_1_1RigidMotionEngine.html", null ],
     [ "rigidmotion::RigidMotionFactory", "dc/d00/classrigidmotion_1_1RigidMotionFactory.html", [
-      [ "rigidmotion::RigidMotionR2Factory", "d7/da7/classrigidmotion_1_1RigidMotionR2Factory.html", null ]
+      [ "rigidmotion::RigidMotionR2Factory", "d7/da7/classrigidmotion_1_1RigidMotionR2Factory.html", null ],
+      [ "rigidmotion::RigidMotionR3Factory", "dc/df6/classrigidmotion_1_1RigidMotionR3Factory.html", null ]
     ] ],
     [ "Rotation", "d5/dcb/classRotation.html", null ],
     [ "RotationOrder", "d6/d7f/classRotationOrder.html", null ],

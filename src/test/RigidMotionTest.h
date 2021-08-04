@@ -37,7 +37,7 @@ public:
     /**
      * @brief The R3 rigid motion factory to be used by tests
      */
-    //RigidMotionR3Factory rm3f; // TODO Rethink : To be implemented
+    RigidMotionR3Factory rm3f;
     /**
      * @brief Matrix of points in R2 to be used by tests
      */
@@ -46,6 +46,7 @@ public:
      * @brief Matrix of points in R3 to be used by tests
      */
     mat R3X;
+
     // ***  CONSTRUCTOR  *** //
     // ********************* //
     /**
@@ -100,6 +101,21 @@ public:
      * @return True if passed, false otherwise
      */
     bool testPureRotationR2();
+    /**
+     * @brief Test identity rigid motion in \f$\mathbb{R}^{3}\f$
+     * @return True if passed, false otherwise
+     */
+    bool testPureIdentityR3();
+    /**
+     * @brief Test translation rigid motion in \f$\mathbb{R}^{3}\f$
+     * @return True if passed, false otherwise
+     */
+    bool testPureTranslationR3();
+    /**
+     * @brief Test reflection rigid motion in \f$\mathbb{R}^{3}\f$
+     * @return True if passed, false otherwise
+     */
+    bool testPureReflectionR3();
 
     // ***  HELIOS TESTS  *** //
     // ********************** //
@@ -135,6 +151,9 @@ bool RigidMotionTest::testPureRigidMotion(){
     if(!testPureRotationR2()) return false;
 
     // R3 tests
+    if(!testPureIdentityR3()) return false;
+    if(!testPureTranslationR3()) return false;
+    if(!testPureReflectionR3()) return false;
     // TODO Rethink : To be implemented
 
     return true;
@@ -237,6 +256,34 @@ bool RigidMotionTest::testPureRotationR2(){
     return passed;
 }
 
+bool RigidMotionTest::testPureIdentityR3(){
+    RigidMotion f = rm3f.makeIdentity();
+    mat Y = rme.apply(f, R3X);
+    mat Z = abs(Y-R3X);
+    return !any(vectorise(Z) > eps);
+}
+
+bool RigidMotionTest::testPureTranslationR3(){
+    colvec shift(std::vector<double>({1.1, -3.39, 0.24}));
+    RigidMotion f = rm3f.makeTranslation(shift);
+    mat Y = rme.apply(f, R3X);
+    mat EY = R3X.each_col() + shift;
+    mat Z = abs(Y-EY);
+    return !any(vectorise(Z) > eps);
+}
+
+bool RigidMotionTest::testPureReflectionR3(){
+    colvec ortho(std::vector<double>({1.0, 0.5, 0.3}));
+    RigidMotion f = rm3f.makeReflection(ortho);
+    mat Y = rme.apply(f, R3X);
+    mat EY(
+        "0.3358209 0.24626866 -0.82835821 1.41044776 -1.99253731; "
+        "2.91791045 1.87313433 -6.6641791 11.45522388 -16.24626866; "
+        "0.35074627 -2.2761194 4.20149254 -6.12686567 8.05223881"
+    );
+    mat Z = abs(Y-EY);
+    return !any(vectorise(Z) > eps);
+}
 
 
 }

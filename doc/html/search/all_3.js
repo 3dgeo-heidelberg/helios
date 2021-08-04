@@ -55,6 +55,7 @@ var searchData=
   ['cancomputesigmawithladlut',['canComputeSigmaWithLadLut',['../d7/d5a/classDetailedVoxel.html#a200752eb05bac674963bf30404f5ecff',1,'DetailedVoxel::canComputeSigmaWithLadLut()'],['../df/de1/classPrimitive.html#a12bb1ea47cfbef1e30fec75538468815',1,'Primitive::canComputeSigmaWithLadLut()']]],
   ['canhandleintersections',['canHandleIntersections',['../d7/d5a/classDetailedVoxel.html#a0b741e4fa3bf2ede4852b7c1cd92f22a',1,'DetailedVoxel::canHandleIntersections()'],['../df/de1/classPrimitive.html#a7e674cbee867db6bd7524e6ce28ab4c2',1,'Primitive::canHandleIntersections()']]],
   ['canmove',['canMove',['../d1/d83/classMovingPlatform.html#ad252ab38b2363cee72a55d54235e0e3f',1,'MovingPlatform::canMove()'],['../df/d1e/classPlatform.html#ab2e77b89eb4dba596852ab99091e4387',1,'Platform::canMove()']]],
+  ['canonicalreflection',['canonicalReflection',['../dc/df6/classrigidmotion_1_1RigidMotionR3Factory.html#a76ccff05613bbeb96b437b1101f93cbb',1,'rigidmotion::RigidMotionR3Factory']]],
   ['canraycontinue',['canRayContinue',['../d1/dc8/classIntersectionHandlingResult.html#a313d5f714e968475c5c5c3def5d61314',1,'IntersectionHandlingResult']]],
   ['canstopandturn',['canStopAndTurn',['../db/d69/classHelicopterPlatform.html#aef615151ed945fb6baf2421fa3b64aaf',1,'HelicopterPlatform::canStopAndTurn()'],['../df/d1e/classPlatform.html#a28a933a159f8cd2c51d37a890bc8526a',1,'Platform::canStopAndTurn()']]],
   ['capacity',['capacity',['../d8/d78/classWavefrontObjCache.html#a24447cf23dded99fdedd21f7043ef4ea',1,'WavefrontObjCache']]],

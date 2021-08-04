@@ -32,6 +32,7 @@ var searchData=
   ['cached_5fvectortotarget',['cached_vectorToTarget',['../df/d1e/classPlatform.html#a56c1a52e68b521c2c7634c801acefb8e',1,'Platform']]],
   ['cached_5fvectortotarget_5fxy',['cached_vectorToTarget_xy',['../df/d1e/classPlatform.html#a275a2e5fc09e2d8076bc7bcd74fccca7',1,'Platform']]],
   ['calcechowidth',['calcEchowidth',['../db/da6/classFullWaveformPulseRunnable.html#ab817063a50399ea3b1ba7b9cb4a3165b',1,'FullWaveformPulseRunnable::calcEchowidth()'],['../dc/d42/classScanner.html#aca065cd1d5ef6bfe59ddcecd270a7393',1,'Scanner::calcEchowidth()']]],
+  ['canonicalreflection',['canonicalReflection',['../dc/df6/classrigidmotion_1_1RigidMotionR3Factory.html#a76ccff05613bbeb96b437b1101f93cbb',1,'rigidmotion::RigidMotionR3Factory']]],
   ['cfg_5falignmentthreshold',['cfg_alignmentThreshold',['../db/d69/classHelicopterPlatform.html#ab641cbc77373c66a131b20ac91d0131b',1,'HelicopterPlatform']]],
   ['cfg_5fdevice_5faccuracy_5fm',['cfg_device_accuracy_m',['../d8/d6b/classAbstractDetector.html#ae14086d0d232e23911a7ec99dff6299a',1,'AbstractDetector']]],
   ['cfg_5fdevice_5faveragepower_5fw',['cfg_device_averagePower_w',['../dc/d42/classScanner.html#aaa2dbf3a4be70f3543cea8c43089d24a',1,'Scanner']]],

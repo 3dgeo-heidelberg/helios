@@ -26,6 +26,7 @@ var searchData=
   ['rigidmotionengine',['RigidMotionEngine',['../d2/da8/classrigidmotion_1_1RigidMotionEngine.html#a1301ee234a2006cfab2d7d38142941bc',1,'rigidmotion::RigidMotionEngine']]],
   ['rigidmotionfactory',['RigidMotionFactory',['../dc/d00/classrigidmotion_1_1RigidMotionFactory.html#a328e56dda7414eb61cba24b6f05eb75f',1,'rigidmotion::RigidMotionFactory']]],
   ['rigidmotionr2factory',['RigidMotionR2Factory',['../d7/da7/classrigidmotion_1_1RigidMotionR2Factory.html#a79a7c9dea2a2f2f8344b2bf6cf8d0475',1,'rigidmotion::RigidMotionR2Factory']]],
+  ['rigidmotionr3factory',['RigidMotionR3Factory',['../dc/df6/classrigidmotion_1_1RigidMotionR3Factory.html#a9acb4b78e31754570273e007a6b7ca48',1,'rigidmotion::RigidMotionR3Factory']]],
   ['rigidmotiontest',['RigidMotionTest',['../db/d8b/classHeliosTests_1_1RigidMotionTest.html#aae08423913ac3b97212566a7419bbb14',1,'HeliosTests::RigidMotionTest']]],
   ['risleybeamdeflector',['RisleyBeamDeflector',['../d4/d57/classRisleyBeamDeflector.html#aad8da2f622136943fe420389bdb315da',1,'RisleyBeamDeflector']]],
   ['rotate',['rotate',['../db/d69/classHelicopterPlatform.html#ad822cc815ed1f28b54dd5cc76fd6bc3b',1,'HelicopterPlatform::rotate()'],['../df/de1/classPrimitive.html#a92a26214b9bd4db443002d63ca9877fa',1,'Primitive::rotate()'],['../d6/d44/classVoxel.html#a88a867600ebb626dc889d5e66663d37f',1,'Voxel::rotate()']]],
