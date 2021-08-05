@@ -178,5 +178,8 @@ var hierarchy =
     [ "WavefrontObjCache", "d8/d78/classWavefrontObjCache.html", null ],
     [ "XmlAssetsLoader", "d9/d82/classXmlAssetsLoader.html", [
       [ "XmlSurveyLoader", "df/d9a/classXmlSurveyLoader.html", null ]
+    ] ],
+    [ "runtime_error", null, [
+      [ "rigidmotion::RigidMotionException", "dd/db6/classrigidmotion_1_1RigidMotionException.html", null ]
     ] ]
 ];

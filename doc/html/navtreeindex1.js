@@ -1,5 +1,6 @@
 var NAVTREEINDEX1 =
 {
+"d2/d43/classTrajectory.html#a22bebd0f8076cc699eec3aaa30bafdef":[1,0,111,5],
 "d2/d43/classTrajectory.html#a399b9bef7fa76fe6d7c1a89f84430c67":[1,0,111,3],
 "d2/d43/classTrajectory.html#a3f056dc847ef640fd31a7207b4610794":[1,0,111,7],
 "d2/d43/classTrajectory.html#a45ac2286c53b0a477c4d80e8d831fe43":[1,0,111,6],
@@ -162,7 +163,7 @@ var NAVTREEINDEX1 =
 "d3/d1f/Las14SyncFileWriter_8h_source.html":[2,0,0,9,5],
 "d3/d40/classLidarSim.html":[1,0,37],
 "d3/d40/classLidarSim.html#a3180ca0f250fe3ef008d55e83b304e3c":[1,0,37,0],
-"d3/d41/RigidMotionFactory_8h_source.html":[2,0,0,1,0,2],
+"d3/d41/RigidMotionFactory_8h_source.html":[2,0,0,1,0,3],
 "d3/d43/ThreadPool_8h_source.html":[2,0,0,9,14],
 "d3/d57/classUniformNoiseSource.html":[1,0,114],
 "d3/d57/classUniformNoiseSource.html#a089b932288c2c50a829e70ebf222dae1":[1,0,114,7],
@@ -248,6 +249,5 @@ var NAVTREEINDEX1 =
 "d3/d89/classMaterial.html#a0da3768af0d50c6889fb56aff82faf77":[1,0,42,3],
 "d3/d89/classMaterial.html#a1130686f6de6c659973aab3e36d4cac9":[1,0,42,24],
 "d3/d89/classMaterial.html#a179e16d6a1bd4a0f039b8e4cbf2ade30":[1,0,42,2],
-"d3/d89/classMaterial.html#a1959b3ab772a8389826c368875efaab9":[1,0,42,4],
-"d3/d89/classMaterial.html#a208703bcc362c4817f3a0daf42e29702":[1,0,42,19]
+"d3/d89/classMaterial.html#a1959b3ab772a8389826c368875efaab9":[1,0,42,4]
 };

@@ -1,9 +1,11 @@
 #include <rigidmotion/RigidMotionR3Factory.h>
+#include <rigidmotion/RigidMotionException.h>
 
 using namespace rigidmotion;
 
 // ***  CONSTANTS  *** //
 // ******************* //
+double const RigidMotionR3Factory::eps = 0.000000001;
 mat const RigidMotionR3Factory::canonicalReflection = mat(
     "-1 0 0; 0 1 0; 0 0 1"
 );
@@ -67,4 +69,176 @@ RigidMotion RigidMotionR3Factory::makeReflectionFast(
 
     // Build reflection
     return RigidMotion(zeros(3), B*canonicalReflection*Binv);
+
+}
+
+RigidMotion RigidMotionR3Factory::makeReflectionX(){
+    return RigidMotion(zeros(3), canonicalReflection);
+}
+
+RigidMotion RigidMotionR3Factory::makeReflectionY(){
+    return RigidMotion(zeros(3), mat("1 0 0; 0 -1 0; 0 0 1"));
+}
+
+RigidMotion RigidMotionR3Factory::makeReflectionZ(){
+    return RigidMotion(zeros(3), mat("1 0 0; 0 1 0; 0 0 -1"));
+}
+
+RigidMotion RigidMotionR3Factory::makeGlideReflection(
+    colvec const ortho,
+    colvec const shift
+){
+    return makeGlideReflectionFast(normalise(ortho), shift);
+}
+
+RigidMotion RigidMotionR3Factory::makeGlideReflectionFast(
+    colvec const orthonormal,
+    colvec const shift
+){
+    // Check shift is orthogonal to plane orthonormal
+    if(std::fabs(dot(orthonormal, shift)) > eps){
+        throw RigidMotionException(
+            "RigidMotionR3Factory failed to build glide reflection.\n"
+            "Shift vector was not contained in the reflection plane"
+        );
+    }
+
+    // Build the rigid motion
+    RigidMotion rm = makeReflectionFast(orthonormal);
+    rm.setC(shift);
+    return rm;
+}
+
+RigidMotion RigidMotionR3Factory::makeRotation(
+    colvec const axis,
+    double const theta
+){
+    return makeRotationFast(normalise(axis), theta);
+}
+
+RigidMotion RigidMotionR3Factory::makeRotationFast(
+    colvec const axis,
+    double const theta
+){
+    // Cache partial computations
+    double const uxuy = axis(0)*axis(1);
+    double const uxuz = axis(0)*axis(2);
+    double const uyuz = axis(1)*axis(2);
+    double const tcos = std::cos(theta);
+    double const ccos = 1-tcos;
+    double const tsin = std::sin(theta);
+    double const uxuyccos = uxuy*ccos;
+    double const uxuzccos = uxuz*ccos;
+    double const uyuzccos = uyuz*ccos;
+    double const uxtsin = axis(0)*tsin;
+    double const uytsin = axis(1)*tsin;
+    double const uztsin = axis(2)*tsin;
+
+    // Compute the rotation matrix
+    mat A(3, 3);
+    A.at(0, 0) = tcos + axis(0)*axis(0)*ccos;
+    A.at(0, 1) = uxuyccos - uztsin;
+    A.at(0, 2) = uxuzccos + uytsin;
+    A.at(1, 0) = uxuyccos + uztsin;
+    A.at(1, 1) = tcos + axis(1)*axis(1)*ccos;
+    A.at(1, 2) = uyuzccos - uxtsin;
+    A.at(2, 0) = uxuzccos - uytsin;
+    A.at(2, 1) = uyuzccos + uxtsin;
+    A.at(2, 2) = tcos + axis(2)*axis(2)*ccos;
+
+    // Build the rigid motion
+    return RigidMotion(zeros(3), A);
+}
+
+RigidMotion RigidMotionR3Factory::makeRotationX(double const theta){
+    // Cache partial computations
+    double const thetacos = std::cos(theta);
+    double const thetasin = std::sin(theta);
+
+    // Compute the rotation matrix
+    mat A = eye(3, 3);
+    A.at(1, 1) = thetacos;
+    A.at(1, 2) = -thetasin;
+    A.at(2, 1) = thetasin;
+    A.at(2, 2) = thetacos;
+
+    // Build the rigid motion
+    return RigidMotion(zeros(3), A);
+}
+
+RigidMotion RigidMotionR3Factory::makeRotationY(double const theta){
+    // Cache partial computations
+    double const thetacos = std::cos(theta);
+    double const thetasin = std::sin(theta);
+
+    // Compute the rotation matrix
+    mat A = eye(3, 3);
+    A.at(0, 0) = thetacos;
+    A.at(0, 2) = thetasin;
+    A.at(2, 0) = -thetasin;
+    A.at(2, 2) = thetacos;
+
+    // Build the rigid motion
+    return RigidMotion(zeros(3), A);
+}
+
+RigidMotion RigidMotionR3Factory::makeRotationZ(double const theta){
+    // Cache partial computations
+    double const thetacos = std::cos(theta);
+    double const thetasin = std::sin(theta);
+
+    // Compute the rotation matrix
+    mat A = eye(3, 3);
+    A.at(0, 0) = thetacos;
+    A.at(0, 1) = -thetasin;
+    A.at(1, 0) = thetasin;
+    A.at(1, 1) = thetacos;
+
+    // Build the rigid motion
+    return RigidMotion(zeros(3), A);
+}
+
+RigidMotion RigidMotionR3Factory::makeHelical(
+    colvec const axis,
+    double const theta,
+    double const glide
+){
+    return makeHelicalFast(normalise(axis), theta, glide);
+}
+
+RigidMotion RigidMotionR3Factory::makeHelicalFast(
+    colvec const axis,
+    double const theta,
+    double const glide
+){
+    RigidMotion rm = makeRotationFast(axis, theta);
+    rm.setC(glide*axis);
+    return rm;
+}
+
+RigidMotion RigidMotionR3Factory::makeHelicalX(
+    double const theta,
+    double const glide
+){
+    RigidMotion rm = makeRotationX(theta);
+    rm.setC(colvec(std::vector<double>({glide, 0, 0})));
+    return rm;
+}
+
+RigidMotion RigidMotionR3Factory::makeHelicalY(
+    double const theta,
+    double const glide
+){
+    RigidMotion rm = makeRotationY(theta);
+    rm.setC(colvec(std::vector<double>({0, glide, 0})));
+    return rm;
+}
+
+RigidMotion RigidMotionR3Factory::makeHelicalZ(
+    double const theta,
+    double const glide
+){
+    RigidMotion rm = makeRotationZ(theta);
+    rm.setC(colvec(std::vector<double>({0, 0, glide})));
+    return rm;
 }

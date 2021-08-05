@@ -2,10 +2,26 @@ var classrigidmotion_1_1RigidMotionR3Factory =
 [
     [ "RigidMotionR3Factory", "dc/df6/classrigidmotion_1_1RigidMotionR3Factory.html#a9acb4b78e31754570273e007a6b7ca48", null ],
     [ "~RigidMotionR3Factory", "dc/df6/classrigidmotion_1_1RigidMotionR3Factory.html#aaaf309c915047d7624ddbc806d40fcc1", null ],
+    [ "makeGlideReflection", "dc/df6/classrigidmotion_1_1RigidMotionR3Factory.html#aeb54c92f5e1ef22bc35539f06fa36fa9", null ],
+    [ "makeGlideReflectionFast", "dc/df6/classrigidmotion_1_1RigidMotionR3Factory.html#aa2322ec1e0195853fa398db0ab98410e", null ],
+    [ "makeHelical", "dc/df6/classrigidmotion_1_1RigidMotionR3Factory.html#aad7b59d42cf51adfcb4f81e5078b129c", null ],
+    [ "makeHelicalFast", "dc/df6/classrigidmotion_1_1RigidMotionR3Factory.html#a62269dde26298ee7064e725f3a42d86a", null ],
+    [ "makeHelicalX", "dc/df6/classrigidmotion_1_1RigidMotionR3Factory.html#ad1c2597d1abd9a8fe60a76bf17c5ca28", null ],
+    [ "makeHelicalY", "dc/df6/classrigidmotion_1_1RigidMotionR3Factory.html#ac843da6dcda3c6632dbc7263dd6dd86e", null ],
+    [ "makeHelicalZ", "dc/df6/classrigidmotion_1_1RigidMotionR3Factory.html#a8629bc7e21d1f5413df78de67600d906", null ],
     [ "makeIdentity", "dc/df6/classrigidmotion_1_1RigidMotionR3Factory.html#a846b6e0f10812806ae4ead1baa8b01f8", null ],
     [ "makeReflection", "dc/df6/classrigidmotion_1_1RigidMotionR3Factory.html#a052afcff81ca106514ff04a9f6e03aa9", null ],
     [ "makeReflectionFast", "dc/df6/classrigidmotion_1_1RigidMotionR3Factory.html#acfb6b8b76e8207357fac1e33e2305b26", null ],
     [ "makeReflectionFast", "dc/df6/classrigidmotion_1_1RigidMotionR3Factory.html#a1cd8e9d7d7e6c053cbb56c258ad080be", null ],
+    [ "makeReflectionX", "dc/df6/classrigidmotion_1_1RigidMotionR3Factory.html#a5bcf89e6e2e8db421074d4fcf5be9091", null ],
+    [ "makeReflectionY", "dc/df6/classrigidmotion_1_1RigidMotionR3Factory.html#a699c07ceb28fa4a2aecb22963883d2b2", null ],
+    [ "makeReflectionZ", "dc/df6/classrigidmotion_1_1RigidMotionR3Factory.html#a23e5d84564484a887e55ffcaac0deaa5", null ],
+    [ "makeRotation", "dc/df6/classrigidmotion_1_1RigidMotionR3Factory.html#a29a0fd2a522b2d5246dfc8210bff7dba", null ],
+    [ "makeRotationFast", "dc/df6/classrigidmotion_1_1RigidMotionR3Factory.html#aeb1c7d8a6c09fa5b74c3a5e26cb63ac7", null ],
+    [ "makeRotationX", "dc/df6/classrigidmotion_1_1RigidMotionR3Factory.html#a61ad8c3a572ff33449e3492c43509476", null ],
+    [ "makeRotationY", "dc/df6/classrigidmotion_1_1RigidMotionR3Factory.html#a7eb06223182c4e259c9c7801d8fa2d23", null ],
+    [ "makeRotationZ", "dc/df6/classrigidmotion_1_1RigidMotionR3Factory.html#a2bc396cac450b0411145ce6f9d53ec28", null ],
     [ "makeTranslation", "dc/df6/classrigidmotion_1_1RigidMotionR3Factory.html#a301ce93f357ac67e88f2283e5d3719d1", null ],
-    [ "canonicalReflection", "dc/df6/classrigidmotion_1_1RigidMotionR3Factory.html#a76ccff05613bbeb96b437b1101f93cbb", null ]
+    [ "canonicalReflection", "dc/df6/classrigidmotion_1_1RigidMotionR3Factory.html#a76ccff05613bbeb96b437b1101f93cbb", null ],
+    [ "eps", "dc/df6/classrigidmotion_1_1RigidMotionR3Factory.html#a911a72f54e96353f54bcb44a9703212f", null ]
 ];

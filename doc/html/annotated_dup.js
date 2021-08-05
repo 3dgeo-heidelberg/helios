@@ -17,6 +17,7 @@ var annotated_dup =
     [ "rigidmotion", null, [
       [ "RigidMotion", "d7/d84/classrigidmotion_1_1RigidMotion.html", "d7/d84/classrigidmotion_1_1RigidMotion" ],
       [ "RigidMotionEngine", "d2/da8/classrigidmotion_1_1RigidMotionEngine.html", "d2/da8/classrigidmotion_1_1RigidMotionEngine" ],
+      [ "RigidMotionException", "dd/db6/classrigidmotion_1_1RigidMotionException.html", "dd/db6/classrigidmotion_1_1RigidMotionException" ],
       [ "RigidMotionFactory", "dc/d00/classrigidmotion_1_1RigidMotionFactory.html", "dc/d00/classrigidmotion_1_1RigidMotionFactory" ],
       [ "RigidMotionR2Factory", "d7/da7/classrigidmotion_1_1RigidMotionR2Factory.html", "d7/da7/classrigidmotion_1_1RigidMotionR2Factory" ],
       [ "RigidMotionR3Factory", "dc/df6/classrigidmotion_1_1RigidMotionR3Factory.html", "dc/df6/classrigidmotion_1_1RigidMotionR3Factory" ]

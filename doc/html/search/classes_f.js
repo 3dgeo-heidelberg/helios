@@ -10,6 +10,7 @@ var searchData=
   ['rayutils',['RayUtils',['../d7/dee/classRayUtils.html',1,'']]],
   ['rigidmotion',['RigidMotion',['../d7/d84/classrigidmotion_1_1RigidMotion.html',1,'rigidmotion']]],
   ['rigidmotionengine',['RigidMotionEngine',['../d2/da8/classrigidmotion_1_1RigidMotionEngine.html',1,'rigidmotion']]],
+  ['rigidmotionexception',['RigidMotionException',['../dd/db6/classrigidmotion_1_1RigidMotionException.html',1,'rigidmotion']]],
   ['rigidmotionfactory',['RigidMotionFactory',['../dc/d00/classrigidmotion_1_1RigidMotionFactory.html',1,'rigidmotion']]],
   ['rigidmotionr2factory',['RigidMotionR2Factory',['../d7/da7/classrigidmotion_1_1RigidMotionR2Factory.html',1,'rigidmotion']]],
   ['rigidmotionr3factory',['RigidMotionR3Factory',['../dc/df6/classrigidmotion_1_1RigidMotionR3Factory.html',1,'rigidmotion']]],

@@ -50,10 +50,12 @@ RigidMotion RigidMotionR2Factory::makeRotation(
     double const theta,
     colvec const center
 ){
+    double const thetacos = std::cos(theta);
+    double const thetasin = std::sin(theta);
     mat A = mat(2, 2);
-    A.at(0, 0) = std::cos(theta);
-    A.at(0, 1) = -std::sin(theta);
-    A.at(1, 0) = std::sin(theta);
-    A.at(1, 1) = std::cos(theta);
+    A.at(0, 0) = thetacos;
+    A.at(0, 1) = -thetasin;
+    A.at(1, 0) = thetasin;
+    A.at(1, 1) = thetacos;
     return RigidMotion((eye(2, 2)-A)*center, A);
 }

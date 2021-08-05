@@ -2,9 +2,11 @@
 
 #include "BaseTest.h"
 #include <MathConstants.h>
+#include <maths/rigidmotion/RigidMotionException.h>
 #include <maths/rigidmotion/RigidMotionEngine.h>
 #include <maths/rigidmotion/RigidMotionR2Factory.h>
 #include <maths/rigidmotion/RigidMotionR3Factory.h>
+
 
 #include <armadillo>
 
@@ -116,6 +118,21 @@ public:
      * @return True if passed, false otherwise
      */
     bool testPureReflectionR3();
+    /**
+     * @brief Test glide reflection rigid motion in \f$\mathbb{R}^{3}\f$
+     * @return True if passed, false otherwise
+     */
+    bool testPureGlideReflectionR3();
+    /**
+     * @brief Test rotation rigid motion in \f$\mathbb{R}^{3}\f$
+     * @return True if passed, false otherwise
+     */
+    bool testPureRotationR3();
+    /**
+     * @brief Test helical rigid motion in \f$\mathbb{R}^{3}\f$
+     * @return True if passed, false otherwise
+     */
+    bool testPureHelicalR3();
 
     // ***  HELIOS TESTS  *** //
     // ********************** //
@@ -154,6 +171,9 @@ bool RigidMotionTest::testPureRigidMotion(){
     if(!testPureIdentityR3()) return false;
     if(!testPureTranslationR3()) return false;
     if(!testPureReflectionR3()) return false;
+    if(!testPureGlideReflectionR3()) return false;
+    if(!testPureRotationR3()) return false;
+    if(!testPureHelicalR3()) return false;
     // TODO Rethink : To be implemented
 
     return true;
@@ -282,7 +302,238 @@ bool RigidMotionTest::testPureReflectionR3(){
         "0.35074627 -2.2761194 4.20149254 -6.12686567 8.05223881"
     );
     mat Z = abs(Y-EY);
-    return !any(vectorise(Z) > eps);
+    bool passed = !any(vectorise(Z) > eps);
+    if(!passed) return passed;
+    Y = rme.apply(f, Y);
+    Z = abs(Y-R3X);
+    passed = !any(vectorise(Z) > eps);
+    if(!passed) return passed;
+
+    f = rm3f.makeReflectionX();
+    Y = rme.apply(f, R3X);
+    EY = mat(
+        "2.5   0.5  -3.5   6.5  -9.5;"
+        "1.5   1.5  -4.5   7.5 -10.5;"
+        "-0.5  -2.5   5.5  -8.5  11.5"
+    );
+    Z = abs(Y-EY);
+    passed = !any(vectorise(Z) > eps);
+    if(!passed) return passed;
+    f = rm3f.makeReflection(colvec(std::vector<double>({1.0, 0.0, 0.0})));
+    Y = rme.apply(f, R3X);
+    Z = abs(Y-EY);
+    passed = !any(vectorise(Z) > eps);
+    if(!passed) return passed;
+
+    f = rm3f.makeReflectionY();
+    Y = rme.apply(f, R3X);
+    EY = mat(
+        "-2.5 -0.5  3.5 -6.5  9.5;"
+        "-1.5 -1.5  4.5 -7.5 10.5;"
+        "-0.5 -2.5  5.5 -8.5 11.5"
+    );
+    Z = abs(Y-EY);
+    passed = !any(vectorise(Z) > eps);
+    if(!passed) return passed;
+    f = rm3f.makeReflection(colvec(std::vector<double>({0.0, 1.0, 0.0})));
+    Y = rme.apply(f, R3X);
+    Z = abs(Y-EY);
+    passed = !any(vectorise(Z) > eps);
+    if(!passed) return passed;
+
+    f = rm3f.makeReflectionY();
+    Y = rme.apply(f, R3X);
+    EY = mat(
+        "-2.5 -0.5  3.5 -6.5  9.5;"
+        "-1.5 -1.5  4.5 -7.5 10.5;"
+        "-0.5 -2.5  5.5 -8.5 11.5"
+    );
+    Z = abs(Y-EY);
+    passed = !any(vectorise(Z) > eps);
+    if(!passed) return passed;
+    f = rm3f.makeReflection(colvec(std::vector<double>({0.0, 1.0, 0.0})));
+    Y = rme.apply(f, R3X);
+    Z = abs(Y-EY);
+    passed = !any(vectorise(Z) > eps);
+    if(!passed) return passed;
+
+    f = rm3f.makeReflectionZ();
+    Y = rme.apply(f, R3X);
+    EY = mat(
+        "-2.5  -0.5   3.5  -6.5   9.5;"
+        "1.5   1.5  -4.5   7.5 -10.5;"
+        "0.5   2.5  -5.5   8.5 -11.5;"
+    );
+    Z = abs(Y-EY);
+    passed = !any(vectorise(Z) > eps);
+    if(!passed) return passed;
+    f = rm3f.makeReflection(colvec(std::vector<double>({0.0, 0.0, 1.0})));
+    Y = rme.apply(f, R3X);
+    Z = abs(Y-EY);
+    passed = !any(vectorise(Z) > eps);
+    if(!passed) return passed;
+
+    f = rm3f.makeReflectionX();
+    RigidMotion g = rm3f.makeReflectionY();
+    f = rme.compose(f, g);
+    g = rm3f.makeReflectionZ();
+    f = rme.compose(f, g);
+    Y = rme.apply(f, R3X);
+    EY = mat(
+        "2.5   0.5  -3.5   6.5  -9.5;"
+        "-1.5  -1.5 4.5   -7.5  10.5;"
+        "0.5   2.5  -5.5   8.5 -11.5;"
+    );
+    Z = abs(Y-EY);
+    passed = !any(vectorise(Z) > eps);
+    if(!passed) return passed;
+
+    return passed;
+}
+
+bool RigidMotionTest::testPureGlideReflectionR3(){
+    colvec ortho(std::vector<double>({1.0, 0.5, 0.3}));
+    colvec shift(std::vector<double>({-4.0/5.0, 1, 1}));
+    RigidMotion f = rm3f.makeGlideReflection(ortho, shift);
+    mat Y = rme.apply(f, R3X);
+    mat EY = (
+        "-0.4641791   -0.55373134  -1.62835821   0.61044776  -2.79253731;"
+        "3.91791045   2.87313433  -5.6641791   12.45522388 -15.24626866;"
+        "1.35074627  -1.2761194    5.20149254  -5.12686567   9.05223881"
+    );
+    mat Z = abs(Y-EY);
+    bool passed = !any(vectorise(Z) > eps);
+    if(!passed) return passed;
+
+    f = rm3f.makeGlideReflection(ortho, -shift);
+    Y = rme.apply(f, Y);
+    Z = abs(Y-R3X);
+    passed = !any(vectorise(Z) > eps);
+    if(!passed) return passed;
+
+    try{
+        passed = false;
+        f = rm3f.makeGlideReflection(ortho, colvec("1 1 1"));
+    }
+    catch(RigidMotionException &rmex){
+        passed = true;
+    }
+
+    return passed;
+}
+
+bool RigidMotionTest::testPureRotationR3(){
+    colvec axis(std::vector<double>({0.4, 0.2, 1.0}));
+    double theta = 4.5;
+    RigidMotion f = rm3f.makeRotation(axis, theta);
+    mat Y = rme.apply(f, R3X);
+    mat EY(
+        "1.4704453    0.92147891  -3.31340313   5.70532734  -8.09725156;"
+        "1.49407244  -1.24669143   0.99931042  -0.75192941   0.5045484;"
+        "-2.08699261  -2.51925328   7.12549917 -11.73174506  16.33799094"
+    );
+    mat Z = abs(Y-EY);
+    bool passed = !any(vectorise(Z) > eps);
+    if(!passed) return passed;
+
+    f = rm3f.makeRotation(axis, -theta);
+    Y = rme.apply(f, Y);
+    Z = abs(Y-R3X);
+    passed = !any(vectorise(Z) > eps);
+    if(!passed) return passed;
+
+    f = rm3f.makeRotationX(theta);
+    Y = rme.apply(f, R3X);
+    EY = mat(
+        "-2.5        -0.5         3.5        -6.5         9.5;"
+        "-0.80495876 -2.76001899  6.32499674 -9.8899745  13.45495225;"
+        "-1.36089728 -0.93930568  3.23950863 -5.53971159  7.83991454"
+    );
+    Z = abs(Y-EY);
+    passed = !any(vectorise(Z) > eps);
+    if(!passed) return passed;
+
+    f = rm3f.makeRotationY(theta);
+    Y = rme.apply(f, R3X);
+    EY = mat(
+        "1.01575456   2.54922319  -6.11420095   9.6791787  -13.24415645;"
+        "1.5          1.5         -4.5          7.5        -10.5;"
+        "-2.33842739   0.03822444   2.26197851  -4.56218147   6.86238442"
+    );
+    Z = abs(Y-EY);
+    passed = !any(vectorise(Z) > eps);
+    if(!passed) return passed;
+
+    f = rm3f.makeRotationZ(theta);
+    Y = rme.apply(f, R3X);
+    EY = mat(
+        "1.99328468   1.57169308  -5.13667083   8.70164858 -12.26662633;"
+        "2.1276316    0.17257136  -2.47277431   4.77297727  -7.07318022;"
+        "-0.5         -2.5          5.5         -8.5         11.5"
+    );
+    Z = abs(Y-EY);
+    passed = !any(vectorise(Z) > eps);
+    if(!passed) return passed;
+
+    return passed;
+}
+
+bool RigidMotionTest::testPureHelicalR3(){
+    colvec axis(std::vector<double>({0.4, 0.2, 1.0}));
+    double theta = 4.5;
+    double glide = 5.0;
+    RigidMotion f = rm3f.makeHelical(axis, theta, glide);
+    mat Y = rme.apply(f, R3X);
+    mat EY(
+        "3.29618716  2.74722077 -1.48766127  7.5310692  -6.2715097;"
+        "2.40694337 -0.3338205   1.91218135  0.16094152  1.41741933;"
+        "2.47736204  2.04510137 11.68985381 -7.16739041 20.90234559"
+    );
+    mat Z = abs(Y-EY);
+    bool passed = !any(vectorise(Z) > eps);
+    if(!passed) return passed;
+
+    f = rm3f.makeHelical(axis, -theta, -glide);
+    Y = rme.apply(f, Y);
+    Z = abs(Y-R3X);
+    passed = !any(vectorise(Z) > eps);
+    if(!passed) return passed;
+
+    f = rm3f.makeHelicalX(theta, glide);
+    Y = rme.apply(f, R3X);
+    EY = mat(
+        "2.5         4.5         8.5        -1.5        14.5;"
+        "-0.80495876 -2.76001899  6.32499674 -9.8899745  13.45495225;"
+        "-1.36089728 -0.93930568  3.23950863 -5.53971159  7.83991454"
+    );
+    Z = abs(Y-EY);
+    passed = !any(vectorise(Z) > eps);
+    if(!passed) return passed;
+
+    f = rm3f.makeHelicalY(theta, glide);
+    Y = rme.apply(f, R3X);
+    EY = mat(
+        "1.01575456   2.54922319  -6.11420095   9.6791787  -13.24415645;"
+        "6.5          6.5          0.5         12.5         -5.5;"
+        "-2.33842739   0.03822444   2.26197851  -4.56218147   6.86238442"
+    );
+    Z = abs(Y-EY);
+    passed = !any(vectorise(Z) > eps);
+    if(!passed) return passed;
+
+    f = rm3f.makeHelicalZ(theta, glide);
+    Y = rme.apply(f, R3X);
+    EY = mat(
+        "1.99328468   1.57169308  -5.13667083   8.70164858 -12.26662633;"
+        "2.1276316    0.17257136  -2.47277431   4.77297727  -7.07318022;"
+        "4.5          2.5         10.5         -3.5         16.5"
+
+    );
+    Z = abs(Y-EY);
+    passed = !any(vectorise(Z) > eps);
+    if(!passed) return passed;
+
+    return passed;
 }
 
 

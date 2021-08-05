@@ -211,6 +211,7 @@ var NAVTREEINDEX0 =
 "d1/d83/classMovingPlatform.html#af5d15b23c515b76110884ec7ec049df0":[1,0,47,2],
 "d1/d94/PyHeliosSimulation_8h_source.html":[2,0,0,4,7],
 "d1/da7/XmlSurveyLoader_8h_source.html":[2,0,0,7,5],
+"d1/dc7/RigidMotionException_8h_source.html":[2,0,0,1,0,2],
 "d1/dc8/classIntersectionHandlingResult.html":[1,0,26],
 "d1/dc8/classIntersectionHandlingResult.html#a313d5f714e968475c5c5c3def5d61314":[1,0,26,1],
 "d1/dc8/classIntersectionHandlingResult.html#a473ff10a1b9693b04f698c4307adb70b":[1,0,26,2],
@@ -248,6 +249,5 @@ var NAVTREEINDEX0 =
 "d2/d1a/classAABB.html#af41b9802252d42310200694c104d6499":[1,0,2,22],
 "d2/d2e/PyDoubleVector_8h_source.html":[2,0,0,4,4],
 "d2/d43/classTrajectory.html":[1,0,111],
-"d2/d43/classTrajectory.html#a222ddf39ff990707dc6af84b39821d74":[1,0,111,1],
-"d2/d43/classTrajectory.html#a22bebd0f8076cc699eec3aaa30bafdef":[1,0,111,5]
+"d2/d43/classTrajectory.html#a222ddf39ff990707dc6af84b39821d74":[1,0,111,1]
 };

@@ -24,6 +24,7 @@ var searchData=
   ['revert',['revert',['../d5/dcb/classRotation.html#a8ae920f72866cd231100ccbff1c4e88c',1,'Rotation']]],
   ['rigidmotion',['RigidMotion',['../d7/d84/classrigidmotion_1_1RigidMotion.html#acf4e7627472f7afd7593a1b02ad49ac2',1,'rigidmotion::RigidMotion::RigidMotion()=default'],['../d7/d84/classrigidmotion_1_1RigidMotion.html#a948b4e13d2ea606ba9cbf3906cef6186',1,'rigidmotion::RigidMotion::RigidMotion(colvec const C, mat const A)']]],
   ['rigidmotionengine',['RigidMotionEngine',['../d2/da8/classrigidmotion_1_1RigidMotionEngine.html#a1301ee234a2006cfab2d7d38142941bc',1,'rigidmotion::RigidMotionEngine']]],
+  ['rigidmotionexception',['RigidMotionException',['../dd/db6/classrigidmotion_1_1RigidMotionException.html#a5337e4ab2b9ca3781308209c9e081f2f',1,'rigidmotion::RigidMotionException']]],
   ['rigidmotionfactory',['RigidMotionFactory',['../dc/d00/classrigidmotion_1_1RigidMotionFactory.html#a328e56dda7414eb61cba24b6f05eb75f',1,'rigidmotion::RigidMotionFactory']]],
   ['rigidmotionr2factory',['RigidMotionR2Factory',['../d7/da7/classrigidmotion_1_1RigidMotionR2Factory.html#a79a7c9dea2a2f2f8344b2bf6cf8d0475',1,'rigidmotion::RigidMotionR2Factory']]],
   ['rigidmotionr3factory',['RigidMotionR3Factory',['../dc/df6/classrigidmotion_1_1RigidMotionR3Factory.html#a9acb4b78e31754570273e007a6b7ca48',1,'rigidmotion::RigidMotionR3Factory']]],
