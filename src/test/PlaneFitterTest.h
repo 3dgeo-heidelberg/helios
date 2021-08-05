@@ -1,6 +1,6 @@
 #pragma once
 
-#include <BaseTest.h>
+#include "BaseTest.h"
 #include <PlaneFitter.h>
 
 namespace HeliosTests{

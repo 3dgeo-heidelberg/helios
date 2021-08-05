@@ -6,7 +6,7 @@ var classFullWaveformPulseDetector =
     [ "clone", "df/d37/classFullWaveformPulseDetector.html#aaf9176b8ebce3b60d6b9017cb9d5f097", null ],
     [ "setOutputFilePath", "df/d37/classFullWaveformPulseDetector.html#a0e0af393c179a27e824c820bda96b3f7", null ],
     [ "shutdown", "df/d37/classFullWaveformPulseDetector.html#a9a509e24c415b5fd5cbd8bb0dfbe9832", null ],
-    [ "simulatePulse", "df/d37/classFullWaveformPulseDetector.html#a2357dd3ecf0adcc1e8e60f4d913e2692", null ],
-    [ "writeFullWave", "df/d37/classFullWaveformPulseDetector.html#a25fdce95e7ab73146282361be0d82d8f", null ],
+    [ "simulatePulse", "df/d37/classFullWaveformPulseDetector.html#a4104958c1eb7c72576b08d4b70a9c223", null ],
+    [ "writeFullWave", "df/d37/classFullWaveformPulseDetector.html#af01112a22b7b3f8a963d72f2e27b93dd", null ],
     [ "fw_sfw", "df/d37/classFullWaveformPulseDetector.html#ae6da1f5e5ce08480f737adb569913b55", null ]
 ];

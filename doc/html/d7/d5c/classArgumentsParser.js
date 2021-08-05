@@ -9,6 +9,7 @@ var classArgumentsParser =
     [ "parseFixedIncidenceAngle", "d7/d5c/classArgumentsParser.html#a4ff03c5a307080829b7c72477316253c", null ],
     [ "parseFullWaveNoise", "d7/d5c/classArgumentsParser.html#a01a623c8014d1d0745941e3d41dbd957", null ],
     [ "parseHelpRequest", "d7/d5c/classArgumentsParser.html#adfb3a765d1a087d7ce9d1b08613fdaff", null ],
+    [ "parseLas10", "d7/d5c/classArgumentsParser.html#af9124496c63acc99a4815099ffd720e4", null ],
     [ "parseLasOutput", "d7/d5c/classArgumentsParser.html#a713a2349b0f56232c94ac24327f02f19", null ],
     [ "parseLasScale", "d7/d5c/classArgumentsParser.html#adfbfce3204fab92267aadb98c570937c", null ],
     [ "parseLoggingOutputMode", "d7/d5c/classArgumentsParser.html#ae90da5477da23abd2a0a84d1da175570", null ],

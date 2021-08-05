@@ -79,6 +79,9 @@ class Scene:
                     elif loader == 'xyzloader':
                         part = VoxelScenepart(scene_part, self.logging)
 
+                    elif loader == 'detailedvoxels':
+                        part = PointCloudScenepart(scene_part, self.logging)
+
                     part.gen_from_xml()
                     part.parse_tranformation()
                     part.apply_tf()
@@ -261,7 +264,7 @@ class Scenepart:
 
         # Apply translation.
         self.translation.translation = [float(i) for i in self.translation.translation]
-        if sum(self.translation.translation) != 0:
+        if not all([item == 0 for item in self.translation.translation]):
             if self.logging:
                 print('Translating geometry...')
             self.o3dGeometry.translate(np.array(self.translation.translation, dtype=float), relative=True)
@@ -302,21 +305,121 @@ class Scenepart:
 
 class PointCloudScenepart(Scenepart):
     """
+    Detailed voxel scene part generated from .vox file.
+    For more information see parent class (Scenepart).
     """
     def __init__(self, xml_loc, logging_flag):
         super().__init__(xml_loc, logging_flag)
         self.type = 'pt_cloud'
+        self.points = o3d.geometry.PointCloud()
+        self.voxel_size = 0.05
+        self.mode = 'transmittive'
+
+        # Iterate through xml parameters.
+        for param in xml_loc.find('filter').findall('param'):
+            # Path needs to be extracted seperately, as path is not always first param in xml.
+            if param.attrib['key'] == 'filepath':
+                self.path = param.attrib['value']
+
+            # Extract intersection mode, to be used in voxel building.
+            if param.attrib['key'] == 'intersectionMode':
+                self.mode = param.attrib['value']
 
         if self.logging:
             print("------------------------------------------------------------------------")
             print("Detailed voxel scenepart:")
             print("Source file: {}".format(self.path))
-        # TODO: What exactly is this? Not found in wiki and was not implemented in previous script.
 
     def gen_from_xml(self):
+        """
+        Creates open3d geometry for detailed voxel scene part from scenepart path.
+        """
+
         if self.logging:
             print("Loading detailed voxel scenepart!")
-        pass
+            print("Mode: {}".format(self.mode))
+
+        # Get header of .vox file, including important positional data.
+        header = []
+        with open(self.path, "r") as src:
+            for i in range(6):
+                header.append(src.readline().rstrip("\n"))
+        header.pop(5)
+        header[0] = "Format: [1] - min_corner; " \
+                    "[2] - max_corner; " \
+                    "[3] - split; " \
+                    "[4] - res val"
+
+        for i in range(1, 4):
+            header[i] = [float(i) for i in header[i].split(': ')[1].split(' ')]
+
+        # Parsing res no longer necessary for current implementation.
+        '''try:
+            header[4] = float(header[4].split('#res: ')[1].split(' ')[0])
+        except Exception:
+            header[4] = float(header[4].split('#res:')[1].split(' ')[0])'''
+
+        # Get vertices of voxels.
+        vertices = np.loadtxt(self.path, usecols=range(0, 3), skiprows=6, dtype=np.float64)
+
+        # Apply transformation to vertices using header data. (min corner, max corner, split)
+        for i in vertices:
+            for j in range(3):
+                i[j] = i[j] / header[3][j] * (header[2][j] - header[1][j]) + header[1][j]
+
+        # In case of transmittive or fixed apply fixed mode, using only voxels with transmittance < 1.
+        if self.mode == 'transmittive' or self.mode == 'fixed':
+            transmittance = np.loadtxt(self.path, usecols=13, skiprows=6, dtype=np.float64)
+            vertices = np.delete(vertices, np.where(transmittance >= 1), axis=0)
+
+        # In case of scaled mode apply rudimentary scaled mode, using only voxels with pad (PADVBTotal) != 0.
+        if self.mode == 'scaled':
+            padvb = np.loadtxt(self.path, usecols=3, skiprows=6, dtype=np.float64)
+            vertices = np.delete(vertices, np.where(padvb == 0), axis=0)
+
+        # Vertices to o3d point cloud and o3d point cloud to o3d voxelgrid.
+        self.points.points = o3d.utility.Vector3dVector(vertices)
+        self.o3dGeometry = o3d.geometry.VoxelGrid.create_from_point_cloud(self.points, voxel_size=self.voxel_size)
+
+    def apply_tf(self):
+        """
+        Apply transformation from attributes rotate, scale, translation to open3d geometry.
+        Overloaded to translate first the voxel point cloud and then set new points to final voxelgrid geometry.
+        """
+        if self.logging:
+            print("Applying transformation!")
+        # Apply rotation
+        if self.rotate.rotate:
+            if self.rotate.method.lower() == 'local':
+                print('WARNING: Local rotation mode not supported yet! Applying global rotations.')
+            for axis, angle in self.rotate.rotate:
+                if self.logging:
+                    print('Rotating geometry...')
+                if axis.lower() == 'x':
+                    rot = [1, 0, 0]
+                elif axis.lower() == 'y':
+                    rot = [0, 1, 0]
+                elif axis.lower() == 'z':
+                    rot = [0, 0, 1]
+                else:
+                    raise Exception(f"Unknown rotation axis: {axis.lower()}")
+                R = self.o3dGeometry.get_rotation_matrix_from_axis_angle(
+                    np.array(rot) * float(angle) / 180. * np.pi)
+                self.o3dGeometry.rotate(R, center=[0, 0, 0])
+
+        # Apply scaling.
+        if self.scale.scale != 1.0:
+            if self.logging:
+                print('Scaling geometry...')
+            self.o3dGeometry.scale(self.scale.scale, [0, 0, 0])
+
+        # Apply translation.
+        self.translation.translation = [float(i) for i in self.translation.translation]
+        if sum(self.translation.translation) != 0:
+            if self.logging:
+                print('Translating geometry...')
+            self.points.translate(np.array(self.translation.translation, dtype=float), relative=True)
+            self.o3dGeometry = o3d.geometry.VoxelGrid.create_from_point_cloud(self.points, voxel_size=self.voxel_size)
 
 
 class VoxelScenepart(Scenepart):
@@ -328,6 +431,7 @@ class VoxelScenepart(Scenepart):
         super().__init__(xml_loc, logging_flag)
         self.type = 'voxel'
         self.voxel_size = 1.0
+        self.points = o3d.geometry.PointCloud()
 
         if self.logging:
             print("------------------------------------------------------------------------")
@@ -360,13 +464,13 @@ class VoxelScenepart(Scenepart):
             print('Loading Voxel Scenepart...')
 
         # Create o3d point cloud.
-        self.o3dGeometry = (o3d.io.read_point_cloud(self.path))
+        self.points = (o3d.io.read_point_cloud(self.path))
 
         # Ptcloud to np for colour assignment.
-        point_cloud = np.asarray(self.o3dGeometry.points)
+        point_cloud = np.asarray(self.points.points)
 
         # Set random colours.
-        self.o3dGeometry.colors = o3d.utility.Vector3dVector(
+        self.points.colors = o3d.utility.Vector3dVector(
             np.random.uniform(0, 1, size=(point_cloud.shape[0], 3)))
 
         if self.logging:
@@ -374,10 +478,50 @@ class VoxelScenepart(Scenepart):
 
         # Voxelise.
         self.o3dGeometry = o3d.geometry.VoxelGrid.create_from_point_cloud(
-            self.o3dGeometry, voxel_size=self.voxel_size)
+            self.points, voxel_size=self.voxel_size)
 
         if self.logging:
             print("Voxel scenepart successfully loaded.")
+
+    def apply_tf(self):
+        """
+        Apply transformation from attributes rotate, scale, translation to open3d geometry.
+        Overloaded to translate first the voxel point cloud and then set new points to final voxelgrid geometry.
+        """
+        if self.logging:
+            print("Applying transformation!")
+        # Apply rotation
+        if self.rotate.rotate:
+            if self.rotate.method.lower() == 'local':
+                print('WARNING: Local rotation mode not supported yet! Applying global rotations.')
+            for axis, angle in self.rotate.rotate:
+                if self.logging:
+                    print('Rotating geometry...')
+                if axis.lower() == 'x':
+                    rot = [1, 0, 0]
+                elif axis.lower() == 'y':
+                    rot = [0, 1, 0]
+                elif axis.lower() == 'z':
+                    rot = [0, 0, 1]
+                else:
+                    raise Exception(f"Unknown rotation axis: {axis.lower()}")
+                R = self.o3dGeometry.get_rotation_matrix_from_axis_angle(
+                    np.array(rot) * float(angle) / 180. * np.pi)
+                self.o3dGeometry.rotate(R, center=[0, 0, 0])
+
+        # Apply scaling.
+        if self.scale.scale != 1.0:
+            if self.logging:
+                print('Scaling geometry...')
+            self.o3dGeometry.scale(self.scale.scale, [0, 0, 0])
+
+        # Apply translation.
+        self.translation.translation = [float(i) for i in self.translation.translation]
+        if sum(self.translation.translation) != 0:
+            if self.logging:
+                print('Translating geometry...')
+            self.points.translate(np.array(self.translation.translation, dtype=float), relative=True)
+            self.o3dGeometry = o3d.geometry.VoxelGrid.create_from_point_cloud(self.points, voxel_size=self.voxel_size)
 
 
 class ObjScenepart(Scenepart):
@@ -562,12 +706,3 @@ class Scale:
         """
         self.scale = float(filter.find('param').attrib['value'])
 
-
-#voxel_scene = r'C:\Users\Mark\Documents\helios_main\data\surveys\voxels\tls_sphere_xyzloader.xml'
-#toyblocks_scene = r'C:\Users\Mark\Documents\helios_main\data\surveys\toyblocks\als_toyblocks.xml'
-'''
-toyblocks_scene = Scene(toyblocks_scene)
-toyblocks_scene.gen_from_xml()
-toyblocks_scene.print_scene()
-toyblocks_scene.visualize()
-'''

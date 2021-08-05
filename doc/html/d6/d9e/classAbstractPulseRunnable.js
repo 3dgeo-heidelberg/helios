@@ -12,7 +12,7 @@ var classAbstractPulseRunnable =
     [ "phongBDRF", "d6/d9e/classAbstractPulseRunnable.html#a46b7718ac32f6b1574aca2b21aaba916", null ],
     [ "absoluteBeamAttitude", "d6/d9e/classAbstractPulseRunnable.html#a5431be620a94c48f0b13bdb4627b9f54", null ],
     [ "absoluteBeamOrigin", "d6/d9e/classAbstractPulseRunnable.html#aa7f3f0ea66414823b4bd1e4ebd12295f", null ],
-    [ "currentGpsTime", "d6/d9e/classAbstractPulseRunnable.html#a743a064a0f548746bcee315cdca1a369", null ],
+    [ "currentGpsTime", "d6/d9e/classAbstractPulseRunnable.html#a9e6215211c94b37b40f9d0e724c053fd", null ],
     [ "currentPulseNum", "d6/d9e/classAbstractPulseRunnable.html#ac5d3bcb0892688c12fe36b128d07c395", null ],
     [ "detector", "d6/d9e/classAbstractPulseRunnable.html#a5f89956813516dcb6090715f2aed8631", null ],
     [ "writeGround", "d6/d9e/classAbstractPulseRunnable.html#afb0cbbe6296be3c71c0647bab194166d", null ]

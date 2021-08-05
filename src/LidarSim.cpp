@@ -237,6 +237,7 @@ void LidarSim::init(
         outputPath,
         njobs,
         lasOutput,
+        las10,
         zipOutput
 	);
 

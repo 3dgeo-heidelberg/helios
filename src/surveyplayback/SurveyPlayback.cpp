@@ -25,11 +25,13 @@ SurveyPlayback::SurveyPlayback(
     const std::string outputPath,
     size_t numThreads,
     bool lasOutput,
+    bool las10,
     bool zipOutput,
     bool exportToFile
 ):
     Simulation(numThreads, survey->scanner->detector->cfg_device_accuracy_m),
     lasOutput(lasOutput),
+    las10(las10),
     zipOutput(zipOutput),
     outputPath(outputPath)
 {
@@ -203,8 +205,7 @@ string SurveyPlayback::getCurrentOutputPath() {
 string SurveyPlayback::getTrajectoryOutputPath(){
     stringstream ss;
     ss << getLegOutputPrefix();
-    if(zipOutput) ss << "_trajectory.bin";
-    else ss << "_trajectory.txt";
+    ss << "_trajectory.txt";
     return ss.str();
 }
 
@@ -374,16 +375,9 @@ void SurveyPlayback::prepareOutput(){
     if(mSurvey->scanner->trajectoryTimeInterval != 0.0){
         std::string trajectoryOutputPath = mOutputFilePathString +
                                            getTrajectoryOutputPath();
-        if(zipOutput){
-            mSurvey->scanner->setTrajectoryFileWriter(
-                std::make_shared<ZipSyncFileWriter>(trajectoryOutputPath)
+        mSurvey->scanner->setTrajectoryFileWriter(
+            std::make_shared<SimpleSyncFileWriter>(trajectoryOutputPath)
             );
-        }
-        else{
-            mSurvey->scanner->setTrajectoryFileWriter(
-                std::make_shared<SimpleSyncFileWriter>(trajectoryOutputPath)
-            );
-        }
     }
 }
 

@@ -1,11 +1,11 @@
 var classFullWaveformPulseRunnable =
 [
-    [ "FullWaveformPulseRunnable", "db/da6/classFullWaveformPulseRunnable.html#a8fda4b071c75e62840a5bd6bb9b21be5", null ],
+    [ "FullWaveformPulseRunnable", "db/da6/classFullWaveformPulseRunnable.html#ab713e4e8c1abbb7279b173672c2eef8c", null ],
     [ "~FullWaveformPulseRunnable", "db/da6/classFullWaveformPulseRunnable.html#a5b90bd0c27124ae881f381ad29ef67f6", null ],
     [ "calcEmmitedPower", "db/da6/classFullWaveformPulseRunnable.html#ad8b27665f5d28502e9389f8677b12f7b", null ],
     [ "calcIntensity", "db/da6/classFullWaveformPulseRunnable.html#a82e687f44dac1934cf355758de926f82", null ],
     [ "calcIntensity", "db/da6/classFullWaveformPulseRunnable.html#aa694228f11e3aedb909b5fb04fe697ed", null ],
-    [ "captureFullWave", "db/da6/classFullWaveformPulseRunnable.html#aadfb2cb3e8b1b64ea16c697a31cb49a8", null ],
+    [ "captureFullWave", "db/da6/classFullWaveformPulseRunnable.html#ad5dc9d5418e88b31655b7b79b432618d", null ],
     [ "computeSubrays", "db/da6/classFullWaveformPulseRunnable.html#a39859571a66d2da2aa0bfaf1585c83b1", null ],
     [ "detectPeak", "db/da6/classFullWaveformPulseRunnable.html#a4f0587b710f6a2d84b1c8758dd2f7cd0", null ],
     [ "digestFullWaveform", "db/da6/classFullWaveformPulseRunnable.html#af44d7312cdd43ccc9a34bc1db5e9d3ba", null ],

@@ -32,19 +32,17 @@ def callback(output=None):
     n = 10
 
     # Executes in every nth iteration of callback function.
-    if callback_counter % n == 0:
+    if callback_counter >= n:
 
         # Extract trajectory points.
         trajectories = output.trajectories
 
-        if len(trajectories) == 0:
-            return
-
-        tpoints.append([trajectories[len(trajectories) - 1].getPosition().x,
+        if len(trajectories) != 0:
+            tpoints.append([trajectories[len(trajectories) - 1].getPosition().x,
                         trajectories[len(trajectories) - 1].getPosition().y,
                         trajectories[len(trajectories) - 1].getPosition().z])
 
-        callback_counter = 0
+            callback_counter = 0
 
     # Extract measurement points.
     measurements = output.measurements
@@ -97,7 +95,8 @@ if __name__ == '__main__':
         args.assets_path,
         args.output_path,
         args.number_of_threads,  # Num Threads
-        args.las_output_flag,  # LAS output
+        args.las_output_flag,  # LAS v1.4 output
+        args.las10_output_flag,# LAS v1.0 output
         args.zip_output_flag,  # ZIP output
     )
 
@@ -124,7 +123,7 @@ if __name__ == '__main__':
 
         # Set callback function which retrieves measurement values.
         sim.setCallback(callback)
-        sim.simFrequency = 10
+        sim.simFrequency = 1
 
         # Create instance of Scene class, generate scene, print scene (if logging v2), and visualize.
         scene = Scene(args.survey_file, args.loggingv2)
