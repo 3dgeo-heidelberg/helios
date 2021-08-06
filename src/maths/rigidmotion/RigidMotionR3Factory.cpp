@@ -242,3 +242,30 @@ RigidMotion RigidMotionR3Factory::makeHelicalZ(
     rm.setC(colvec(std::vector<double>({0, 0, glide})));
     return rm;
 }
+
+RigidMotion RigidMotionR3Factory::makeRotationalSymmetry(
+    colvec const axis,
+    double const theta
+){
+    return makeRotationalSymmetryFast(normalise(axis), theta);
+}
+
+RigidMotion RigidMotionR3Factory::makeRotationalSymmetryFast(
+    colvec const axis,
+    double const theta
+){
+    return makeReflectionFast(axis).compose(makeRotation(axis, theta));
+}
+
+RigidMotion RigidMotionR3Factory::makeRotationalSymmetryX(double const theta){
+    return makeReflectionX().compose(makeRotationX(theta));
+}
+
+RigidMotion RigidMotionR3Factory::makeRotationalSymmetryY(double const theta){
+    return makeReflectionY().compose(makeRotationY(theta));
+
+}
+
+RigidMotion RigidMotionR3Factory::makeRotationalSymmetryZ(double const theta){
+    return makeReflectionZ().compose(makeRotationZ(theta));
+}

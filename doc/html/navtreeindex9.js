@@ -1,5 +1,11 @@
 var NAVTREEINDEX9 =
 {
+"df/dc9/classPyBeamDeflectorWrapper.html#a1fb9e28b958fba46caad97712728137f":[1,0,57,10],
+"df/dc9/classPyBeamDeflectorWrapper.html#a23d28472392a519624df95a755cdd89d":[1,0,57,7],
+"df/dc9/classPyBeamDeflectorWrapper.html#a2ba5df15a0ab7de41100f425e7433bcc":[1,0,57,22],
+"df/dc9/classPyBeamDeflectorWrapper.html#a38f11020f1681cf3017b105a1c744430":[1,0,57,12],
+"df/dc9/classPyBeamDeflectorWrapper.html#a3aa77f28948506ace91f3fd2533a7bb8":[1,0,57,20],
+"df/dc9/classPyBeamDeflectorWrapper.html#a3f4b467d423c4ef72cca49f2592480cc":[1,0,57,15],
 "df/dc9/classPyBeamDeflectorWrapper.html#a441c41a5598338613a98ef91d605d125":[1,0,57,16],
 "df/dc9/classPyBeamDeflectorWrapper.html#a50977df1eb2a6714c643e79aaa0b2974":[1,0,57,0],
 "df/dc9/classPyBeamDeflectorWrapper.html#a5d3e4356728b5c721e5f10edf3f2584a":[1,0,57,1],
@@ -113,8 +119,8 @@ var NAVTREEINDEX9 =
 "functions_t.html":[1,3,0,20],
 "functions_u.html":[1,3,0,21],
 "functions_v.html":[1,3,0,22],
-"functions_vars.html":[1,3,2],
 "functions_vars.html":[1,3,2,0],
+"functions_vars.html":[1,3,2],
 "functions_vars_b.html":[1,3,2,1],
 "functions_vars_c.html":[1,3,2,2],
 "functions_vars_d.html":[1,3,2,3],

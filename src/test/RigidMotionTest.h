@@ -133,6 +133,11 @@ public:
      * @return True if passed, false otherwise
      */
     bool testPureHelicalR3();
+    /**
+     * @brief Test rotational symmetry rigid motion in \f$\mathbb{R}^{3}\f$
+     * @return True if passed, false otherwise
+     */
+    bool testPureRotationalSymmetryR3();
 
     // ***  HELIOS TESTS  *** //
     // ********************** //
@@ -174,7 +179,7 @@ bool RigidMotionTest::testPureRigidMotion(){
     if(!testPureGlideReflectionR3()) return false;
     if(!testPureRotationR3()) return false;
     if(!testPureHelicalR3()) return false;
-    // TODO Rethink : To be implemented
+    if(!testPureRotationalSymmetryR3()) return false;
 
     return true;
 }
@@ -488,7 +493,7 @@ bool RigidMotionTest::testPureHelicalR3(){
         "3.29618716  2.74722077 -1.48766127  7.5310692  -6.2715097;"
         "2.40694337 -0.3338205   1.91218135  0.16094152  1.41741933;"
         "2.47736204  2.04510137 11.68985381 -7.16739041 20.90234559"
-    );
+        );
     mat Z = abs(Y-EY);
     bool passed = !any(vectorise(Z) > eps);
     if(!passed) return passed;
@@ -505,7 +510,7 @@ bool RigidMotionTest::testPureHelicalR3(){
         "2.5         4.5         8.5        -1.5        14.5;"
         "-0.80495876 -2.76001899  6.32499674 -9.8899745  13.45495225;"
         "-1.36089728 -0.93930568  3.23950863 -5.53971159  7.83991454"
-    );
+        );
     Z = abs(Y-EY);
     passed = !any(vectorise(Z) > eps);
     if(!passed) return passed;
@@ -516,7 +521,7 @@ bool RigidMotionTest::testPureHelicalR3(){
         "1.01575456   2.54922319  -6.11420095   9.6791787  -13.24415645;"
         "6.5          6.5          0.5         12.5         -5.5;"
         "-2.33842739   0.03822444   2.26197851  -4.56218147   6.86238442"
-    );
+        );
     Z = abs(Y-EY);
     passed = !any(vectorise(Z) > eps);
     if(!passed) return passed;
@@ -528,6 +533,61 @@ bool RigidMotionTest::testPureHelicalR3(){
         "2.1276316    0.17257136  -2.47277431   4.77297727  -7.07318022;"
         "4.5          2.5         10.5         -3.5         16.5"
 
+        );
+    Z = abs(Y-EY);
+    passed = !any(vectorise(Z) > eps);
+    if(!passed) return passed;
+
+    return passed;
+}
+
+bool RigidMotionTest::testPureRotationalSymmetryR3(){
+    colvec axis(std::vector<double>({1.0, 0.5, 0.3}));
+    double theta = 4.5;
+    RigidMotion f = rm3f.makeRotationalSymmetry(axis, theta);
+    mat Y = rme.apply(f, R3X);
+    mat EY(
+        "2.23713056   1.83545467  -5.90803989   9.98062512 -14.05321035;"
+        "0.45443109  -2.15342901   3.85242692  -5.55142484   7.25042276;"
+        "-1.8811537   -0.8624672    3.6060881   -6.349709     9.0933299"
+    );
+    mat Z = abs(Y-EY);
+    bool passed = !any(vectorise(Z) > eps);
+    if(!passed) return passed;
+    f = rm3f.makeRotationalSymmetry(axis, -theta);
+    Y = rme.apply(f, Y);
+    Z = abs(Y-R3X);
+    passed = !any(vectorise(Z) > eps);
+    if(!passed) return passed;
+
+    f = rm3f.makeRotationalSymmetryX(theta);
+    Y = rme.apply(f, R3X);
+    EY = mat(
+        "2.5         0.5        -3.5         6.5        -9.5;"
+        "-0.80495876 -2.76001899  6.32499674 -9.8899745  13.45495225;"
+        "-1.36089728 -0.93930568  3.23950863 -5.53971159  7.83991454"
+    );
+    Z = abs(Y-EY);
+    passed = !any(vectorise(Z) > eps);
+    if(!passed) return passed;
+
+    f = rm3f.makeRotationalSymmetryY(theta);
+    Y = rme.apply(f, R3X);
+    EY = mat(
+        "1.01575456   2.54922319  -6.11420095   9.6791787  -13.24415645;"
+        "-1.5         -1.5          4.5         -7.5         10.5;"
+        "-2.33842739   0.03822444   2.26197851  -4.56218147   6.86238442"
+    );
+    Z = abs(Y-EY);
+    passed = !any(vectorise(Z) > eps);
+    if(!passed) return passed;
+
+    f = rm3f.makeRotationalSymmetryZ(theta);
+    Y = rme.apply(f, R3X);
+    EY = mat(
+        "1.99328468   1.57169308  -5.13667083   8.70164858 -12.26662633;"
+        "2.1276316    0.17257136  -2.47277431   4.77297727  -7.07318022;"
+        "0.5          2.5         -5.5          8.5        -11.5"
     );
     Z = abs(Y-EY);
     passed = !any(vectorise(Z) > eps);

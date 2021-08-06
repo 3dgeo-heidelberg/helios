@@ -350,6 +350,78 @@ public:
      *  \f$\mathbb{R}^{3}\f$
      */
     virtual RigidMotion makeHelicalZ(double const theta, double const glide);
+    /**
+     * @brief Implementation of rotational symmetry rigid motion over an
+     *  arbitrary rotation axis in \f$\mathbb{R}^{3}\f$
+     *
+     * Let \f$\vec{u}\f$ be an arbitrary director vector defining the rotation
+     *  axis so the symmetry/reflection plane is \f$\pi = \left\{(x, y, z) :
+     *  \lambda\vec{\alpha} + \mu\vec{\beta}\right\}\f$ where
+     *  \f$\left\langle{\vec{u}, \vec{\alpha}}\right\rangle =
+     *  \left\langle{\vec{u}, \vec{\beta}}\right\rangle =
+     *  \left\langle{\vec{\alpha}, \vec{\beta}}\right\rangle =
+     *  0\f$. It is \f$\pi \perp \vec{u}\f$. Thus, the rotational symmetry
+     *  can be understood as a rotation around \f$\vec{u}\f$ followed by
+     *  a reflection over \f$\pi\f$ as the symmetry plane which is orthogonal
+     *  to the rotation axis.
+     *
+     * In consequence, the affine application can be defined as
+     *  \f$Y = \vec{0} + AX\f$ where \f$A = BJB^{-1}R\f$. In this case,
+     *  \f$R\f$ would be the arbitrary rotation matrix in \f$\mathbb{R}^{3}\f$
+     *  as defined for the makeRotation(colvec const, double const) method
+     *  while \f$BJB^{-1}\f$ is the arbitrary reflection matrix in
+     *  \f$\mathbb{R}^{3}\f$ as defined for the makeReflection(colvec const)
+     *  method.
+     *
+     * @param axis Rotation axis which is also the orthogonal vector for the
+     *  symmetry/reflection plane
+     * @param theta Rotation angle
+     * @return Rotational symmetry rigid motion in \f$\mathbb{R}^{3}\f$
+     * @see RigidMotionR3Factory::makeRotation(colvec const, double const)
+     * @see RigidMotionR3Factory::makeReflection(colvec const)
+     */
+    virtual RigidMotion makeRotationalSymmetry(
+        colvec const axis,
+        double const theta
+    );
+    /**
+     * @brief Fast implementation of a rotational symmetry rigid motion in
+     *  \f$\mathbb{R}^{3}\f$
+     *
+     * For this function to work properly, it is recommended that input
+     *  rotation axis is normalized. Otherwise, output might lead to unexpected
+     *  behaviors.
+     *
+     * @param axis Normalized rotation axis which is also the orthonormal
+     *  vector for the symmetry/reflection plane
+     * @param theta Rotation angle
+     * @see makeRotationalSymmetry(colvec const, double const)
+     */
+    virtual RigidMotion makeRotationalSymmetryFast(
+        colvec const axis,
+        double const theta
+    );
+    /**
+     * @brief Implementation of a rotational symmetry over the \f$x\f$-axis
+     * @param theta Rotation angle
+     * @return Rotational symmetry rigid motion over \f$e_1\f$ vector
+     *  (\f$x\f$-axis) in \f$\mathbb{R}^{3}\f$
+     */
+    virtual RigidMotion makeRotationalSymmetryX(double const theta);
+    /**
+     * @brief Implementation of a rotational symmetry over the \f$y\f$-axis
+     * @param theta Rotation angle
+     * @return Rotational symmetry rigid motion over \f$e_2\f$ vector
+     *  (\f$y\f$-axis) in \f$\mathbb{R}^{3}\f$
+     */
+    virtual RigidMotion makeRotationalSymmetryY(double const theta);
+    /**
+     * @brief Implementation of a rotational symmetry over the \f$z\f$-axis
+     * @param theta Rotation angle
+     * @return Rotational symmetry rigid motion over \f$e_3\f$ vector
+     *  (\f$z\f$-axis) in \f$\mathbb{R}^{3}\f$
+     */
+    virtual RigidMotion makeRotationalSymmetryZ(double const theta);
 
 };
 }

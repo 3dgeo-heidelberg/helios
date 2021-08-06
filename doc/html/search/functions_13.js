@@ -12,6 +12,7 @@ var searchData=
   ['testpurereflectionr2',['testPureReflectionR2',['../db/d8b/classHeliosTests_1_1RigidMotionTest.html#aa5726fc1e1088a5035eed8ae610e0784',1,'HeliosTests::RigidMotionTest']]],
   ['testpurereflectionr3',['testPureReflectionR3',['../db/d8b/classHeliosTests_1_1RigidMotionTest.html#a8e24a9de4d5abf3801fd65ea1792d36a',1,'HeliosTests::RigidMotionTest']]],
   ['testpurerigidmotion',['testPureRigidMotion',['../db/d8b/classHeliosTests_1_1RigidMotionTest.html#a46c0fc0fa8b3eca831e9297afb8a0804',1,'HeliosTests::RigidMotionTest']]],
+  ['testpurerotationalsymmetryr3',['testPureRotationalSymmetryR3',['../db/d8b/classHeliosTests_1_1RigidMotionTest.html#ada8034422e3932a79cb9b36f35a19801',1,'HeliosTests::RigidMotionTest']]],
   ['testpurerotationr2',['testPureRotationR2',['../db/d8b/classHeliosTests_1_1RigidMotionTest.html#a72c98956c6efdd502397fe8e875e35d0',1,'HeliosTests::RigidMotionTest']]],
   ['testpurerotationr3',['testPureRotationR3',['../db/d8b/classHeliosTests_1_1RigidMotionTest.html#a32caa969ff62ad4aab777bfdaf0aaf38',1,'HeliosTests::RigidMotionTest']]],
   ['testpuretranslationr2',['testPureTranslationR2',['../db/d8b/classHeliosTests_1_1RigidMotionTest.html#ac3699c4aebc3b08f4d52ba92f107dc3c',1,'HeliosTests::RigidMotionTest']]],

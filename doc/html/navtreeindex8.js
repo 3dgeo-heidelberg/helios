@@ -1,5 +1,11 @@
 var NAVTREEINDEX8 =
 {
+"dd/dc4/classScenePart.html#ac24a8aed9151384e58ed415d753916c3":[1,0,95,17],
+"dd/dc4/classScenePart.html#ac8d1c1199b07fbaca54f50c09c931f77":[1,0,95,6],
+"dd/dc4/classScenePart.html#ac98d07dd8f7b70e16ccb9a01abf56b9c":[1,0,95,9],
+"dd/dc4/classScenePart.html#ad08313c2aed966def11c0f507a116666":[1,0,95,0],
+"dd/dc4/classScenePart.html#ad77755e3d5bf661ef5a69ca848de833d":[1,0,95,3],
+"dd/dc4/classScenePart.html#aec8d33ac2f3d49bd036659c1eda5166b":[1,0,95,13],
 "dd/dcb/MaterialsFileReader_8h_source.html":[2,0,0,0,3],
 "dd/dcf/MovingPlatform_8h_source.html":[2,0,0,3,3],
 "dd/df2/PyVertexWrapper_8h_source.html":[2,0,0,4,24],
@@ -243,11 +249,5 @@ var NAVTREEINDEX8 =
 "df/dc9/classPyBeamDeflectorWrapper.html#a029429bba5ab415515a2296c9af74fc4":[1,0,57,6],
 "df/dc9/classPyBeamDeflectorWrapper.html#a06e262a535b574278718c98c9d285527":[1,0,57,13],
 "df/dc9/classPyBeamDeflectorWrapper.html#a08e130df4210db004df25edaea89b7bd":[1,0,57,3],
-"df/dc9/classPyBeamDeflectorWrapper.html#a139bf37a456b5670096ca671fc3f373e":[1,0,57,5],
-"df/dc9/classPyBeamDeflectorWrapper.html#a1fb9e28b958fba46caad97712728137f":[1,0,57,10],
-"df/dc9/classPyBeamDeflectorWrapper.html#a23d28472392a519624df95a755cdd89d":[1,0,57,7],
-"df/dc9/classPyBeamDeflectorWrapper.html#a2ba5df15a0ab7de41100f425e7433bcc":[1,0,57,22],
-"df/dc9/classPyBeamDeflectorWrapper.html#a38f11020f1681cf3017b105a1c744430":[1,0,57,12],
-"df/dc9/classPyBeamDeflectorWrapper.html#a3aa77f28948506ace91f3fd2533a7bb8":[1,0,57,20],
-"df/dc9/classPyBeamDeflectorWrapper.html#a3f4b467d423c4ef72cca49f2592480cc":[1,0,57,15]
+"df/dc9/classPyBeamDeflectorWrapper.html#a139bf37a456b5670096ca671fc3f373e":[1,0,57,5]
 };

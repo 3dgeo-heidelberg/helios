@@ -28,9 +28,9 @@ var NAVTREEINDEX =
 "d6/db9/classSerialIO.html#a6a3585248c4f8097a814f023c3390bba",
 "d7/df9/classPyRandomnessGeneratorWrapper.html#acb9a6c1f7eb0dac1192cfdf80316594e",
 "da/d59/classPySceneWrapper.html#ac1685b51613c0e4799ae1b6d59518948",
-"dc/d42/classScanner.html#a0eaa67c7710d2a173210591e8481774c",
-"dd/dcb/MaterialsFileReader_8h_source.html",
-"df/dc9/classPyBeamDeflectorWrapper.html#a441c41a5598338613a98ef91d605d125"
+"dc/d42/classScanner.html#a0ae429a2ec7064d9b7c57f88184d942d",
+"dd/dc4/classScenePart.html#ac24a8aed9151384e58ed415d753916c3",
+"df/dc9/classPyBeamDeflectorWrapper.html#a1fb9e28b958fba46caad97712728137f"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
