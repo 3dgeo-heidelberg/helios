@@ -379,6 +379,7 @@ public:
      * @return Rotational symmetry rigid motion in \f$\mathbb{R}^{3}\f$
      * @see RigidMotionR3Factory::makeRotation(colvec const, double const)
      * @see RigidMotionR3Factory::makeReflection(colvec const)
+     * @see makeRotationalSymmetry(colvec const, double const, colvec const)
      */
     virtual RigidMotion makeRotationalSymmetry(
         colvec const axis,
@@ -402,6 +403,49 @@ public:
         double const theta
     );
     /**
+     * @brief Implementation of rotational symmetry rigid motion over an
+     *  arbitrary rotation axis in \f$\mathbb{R}^{3}\f$
+     *
+     * The rotation center implies redefining \f$C\f$ for the affine
+     *  application as follows, where \f$Q\f$ is the rotation center:
+     *
+     * \f[
+     *  Y = C + AX = (I-A)Q + AX
+     * \f]
+     *
+     * @param axis Rotation axis which is also the orthogonal vector for the
+     *  symmetry/reflection plane
+     * @param theta Rotation angle
+     * @param center The center of rotational symmetry where the rotation
+     *  axis and the reflection plane intersect
+     * @see makeRotationalSymmetry(colvec const, double const)
+     */
+    virtual RigidMotion makeRotationalSymmetry(
+        colvec const axis,
+        double const theta,
+        colvec const center
+    );
+    /**
+     * @brief Fast implementation of a rotational symmetry rigid motion in
+     *  \f$\mathbb{R}^{3}\f$
+     *
+     * For this function to work properly, it is recommended that input
+     *  rotation axis is normalized. Otherwise, output might lead to unexpected
+     *  behaviors.
+     *
+     * @param axis Rotation axis which is also the orthogonal vector for the
+     *  symmetry/reflection plane
+     * @param theta Rotation angle
+     * @param center The center of rotational symmetry where the rotation
+     *  axis and the reflection plane intersect
+     * @see makeRotationalSymmetry(colvec const, double const, colvec const)
+     */
+    virtual RigidMotion makeRotationalSymmetryFast(
+        colvec const axis,
+        double const theta,
+        colvec const center
+    );
+    /**
      * @brief Implementation of a rotational symmetry over the \f$x\f$-axis
      * @param theta Rotation angle
      * @return Rotational symmetry rigid motion over \f$e_1\f$ vector
@@ -422,6 +466,5 @@ public:
      *  (\f$z\f$-axis) in \f$\mathbb{R}^{3}\f$
      */
     virtual RigidMotion makeRotationalSymmetryZ(double const theta);
-
 };
 }

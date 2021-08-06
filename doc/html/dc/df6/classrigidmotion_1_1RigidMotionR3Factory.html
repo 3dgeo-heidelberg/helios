@@ -188,6 +188,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a413ce7167ae16a5f5c51fbe92fcfdf43"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="../../d7/d84/classrigidmotion_1_1RigidMotion.html">RigidMotion</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/df6/classrigidmotion_1_1RigidMotionR3Factory.html#a413ce7167ae16a5f5c51fbe92fcfdf43">makeRotationalSymmetryFast</a> (colvec const axis, double const theta)</td></tr>
 <tr class="memdesc:a413ce7167ae16a5f5c51fbe92fcfdf43"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fast implementation of a rotational symmetry rigid motion in \(\mathbb{R}^{3}\).  <a href="#a413ce7167ae16a5f5c51fbe92fcfdf43">More...</a><br /></td></tr>
 <tr class="separator:a413ce7167ae16a5f5c51fbe92fcfdf43"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5b87043bc0d1a2b212084c7955406de5"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="../../d7/d84/classrigidmotion_1_1RigidMotion.html">RigidMotion</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/df6/classrigidmotion_1_1RigidMotionR3Factory.html#a5b87043bc0d1a2b212084c7955406de5">makeRotationalSymmetry</a> (colvec const axis, double const theta, colvec const center)</td></tr>
+<tr class="memdesc:a5b87043bc0d1a2b212084c7955406de5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implementation of rotational symmetry rigid motion over an arbitrary rotation axis in \(\mathbb{R}^{3}\).  <a href="#a5b87043bc0d1a2b212084c7955406de5">More...</a><br /></td></tr>
+<tr class="separator:a5b87043bc0d1a2b212084c7955406de5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab3835ac151592760e37c431cf925c0ff"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="../../d7/d84/classrigidmotion_1_1RigidMotion.html">RigidMotion</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/df6/classrigidmotion_1_1RigidMotionR3Factory.html#ab3835ac151592760e37c431cf925c0ff">makeRotationalSymmetryFast</a> (colvec const axis, double const theta, colvec const center)</td></tr>
+<tr class="memdesc:ab3835ac151592760e37c431cf925c0ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fast implementation of a rotational symmetry rigid motion in \(\mathbb{R}^{3}\).  <a href="#ab3835ac151592760e37c431cf925c0ff">More...</a><br /></td></tr>
+<tr class="separator:ab3835ac151592760e37c431cf925c0ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6b39bd330a1322398ccec222296a3a5d"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="../../d7/d84/classrigidmotion_1_1RigidMotion.html">RigidMotion</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/df6/classrigidmotion_1_1RigidMotionR3Factory.html#a6b39bd330a1322398ccec222296a3a5d">makeRotationalSymmetryX</a> (double const theta)</td></tr>
 <tr class="memdesc:a6b39bd330a1322398ccec222296a3a5d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implementation of a rotational symmetry over the \(x\)-axis.  <a href="#a6b39bd330a1322398ccec222296a3a5d">More...</a><br /></td></tr>
 <tr class="separator:a6b39bd330a1322398ccec222296a3a5d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -875,7 +881,7 @@ static double const&#160;</td><td class="memItemRight" valign="bottom"><a class=
 </div>
 </div>
 <a id="ad8b30d3e162790b87209ed18628ef7ac"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad8b30d3e162790b87209ed18628ef7ac">&#9670;&nbsp;</a></span>makeRotationalSymmetry()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ad8b30d3e162790b87209ed18628ef7ac">&#9670;&nbsp;</a></span>makeRotationalSymmetry() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -921,12 +927,71 @@ static double const&#160;</td><td class="memItemRight" valign="bottom"><a class=
 <dl class="section return"><dt>Returns</dt><dd>Rotational symmetry rigid motion in \(\mathbb{R}^{3}\) </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="../../dc/df6/classrigidmotion_1_1RigidMotionR3Factory.html#a29a0fd2a522b2d5246dfc8210bff7dba" title="Implementation of rotation rigid motion over an arbitrary axis in . ">RigidMotionR3Factory::makeRotation(colvec const, double const)</a> </dd>
 <dd>
-<a class="el" href="../../dc/df6/classrigidmotion_1_1RigidMotionR3Factory.html#a052afcff81ca106514ff04a9f6e03aa9" title="Implementation of reflection rigid motion in . ">RigidMotionR3Factory::makeReflection(colvec const)</a> </dd></dl>
+<a class="el" href="../../dc/df6/classrigidmotion_1_1RigidMotionR3Factory.html#a052afcff81ca106514ff04a9f6e03aa9" title="Implementation of reflection rigid motion in . ">RigidMotionR3Factory::makeReflection(colvec const)</a> </dd>
+<dd>
+<a class="el" href="../../dc/df6/classrigidmotion_1_1RigidMotionR3Factory.html#a5b87043bc0d1a2b212084c7955406de5" title="Implementation of rotational symmetry rigid motion over an arbitrary rotation axis in ...">makeRotationalSymmetry(colvec const, double const, colvec const)</a> </dd></dl>
+
+</div>
+</div>
+<a id="a5b87043bc0d1a2b212084c7955406de5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5b87043bc0d1a2b212084c7955406de5">&#9670;&nbsp;</a></span>makeRotationalSymmetry() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../d7/d84/classrigidmotion_1_1RigidMotion.html">RigidMotion</a> RigidMotionR3Factory::makeRotationalSymmetry </td>
+          <td>(</td>
+          <td class="paramtype">colvec const&#160;</td>
+          <td class="paramname"><em>axis</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double const&#160;</td>
+          <td class="paramname"><em>theta</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">colvec const&#160;</td>
+          <td class="paramname"><em>center</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implementation of rotational symmetry rigid motion over an arbitrary rotation axis in \(\mathbb{R}^{3}\). </p>
+<p>The rotation center implies redefining \(C\) for the affine application as follows, where \(Q\) is the rotation center:</p>
+<p class="formulaDsp">
+\[ Y = C + AX = (I-A)Q + AX \]
+</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">axis</td><td><a class="el" href="../../d5/dcb/classRotation.html">Rotation</a> axis which is also the orthogonal vector for the symmetry/reflection plane </td></tr>
+    <tr><td class="paramname">theta</td><td><a class="el" href="../../d5/dcb/classRotation.html">Rotation</a> angle </td></tr>
+    <tr><td class="paramname">center</td><td>The center of rotational symmetry where the rotation axis and the reflection plane intersect </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../dc/df6/classrigidmotion_1_1RigidMotionR3Factory.html#ad8b30d3e162790b87209ed18628ef7ac" title="Implementation of rotational symmetry rigid motion over an arbitrary rotation axis in ...">makeRotationalSymmetry(colvec const, double const)</a> </dd></dl>
 
 </div>
 </div>
 <a id="a413ce7167ae16a5f5c51fbe92fcfdf43"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a413ce7167ae16a5f5c51fbe92fcfdf43">&#9670;&nbsp;</a></span>makeRotationalSymmetryFast()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a413ce7167ae16a5f5c51fbe92fcfdf43">&#9670;&nbsp;</a></span>makeRotationalSymmetryFast() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -969,6 +1034,60 @@ static double const&#160;</td><td class="memItemRight" valign="bottom"><a class=
   </dd>
 </dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="../../dc/df6/classrigidmotion_1_1RigidMotionR3Factory.html#ad8b30d3e162790b87209ed18628ef7ac" title="Implementation of rotational symmetry rigid motion over an arbitrary rotation axis in ...">makeRotationalSymmetry(colvec const, double const)</a> </dd></dl>
+
+</div>
+</div>
+<a id="ab3835ac151592760e37c431cf925c0ff"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab3835ac151592760e37c431cf925c0ff">&#9670;&nbsp;</a></span>makeRotationalSymmetryFast() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../d7/d84/classrigidmotion_1_1RigidMotion.html">RigidMotion</a> RigidMotionR3Factory::makeRotationalSymmetryFast </td>
+          <td>(</td>
+          <td class="paramtype">colvec const&#160;</td>
+          <td class="paramname"><em>axis</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double const&#160;</td>
+          <td class="paramname"><em>theta</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">colvec const&#160;</td>
+          <td class="paramname"><em>center</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Fast implementation of a rotational symmetry rigid motion in \(\mathbb{R}^{3}\). </p>
+<p>For this function to work properly, it is recommended that input rotation axis is normalized. Otherwise, output might lead to unexpected behaviors.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">axis</td><td><a class="el" href="../../d5/dcb/classRotation.html">Rotation</a> axis which is also the orthogonal vector for the symmetry/reflection plane </td></tr>
+    <tr><td class="paramname">theta</td><td><a class="el" href="../../d5/dcb/classRotation.html">Rotation</a> angle </td></tr>
+    <tr><td class="paramname">center</td><td>The center of rotational symmetry where the rotation axis and the reflection plane intersect </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../dc/df6/classrigidmotion_1_1RigidMotionR3Factory.html#a5b87043bc0d1a2b212084c7955406de5" title="Implementation of rotational symmetry rigid motion over an arbitrary rotation axis in ...">makeRotationalSymmetry(colvec const, double const, colvec const)</a> </dd></dl>
 
 </div>
 </div>

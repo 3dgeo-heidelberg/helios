@@ -1,5 +1,7 @@
 var NAVTREEINDEX9 =
 {
+"df/d64/classLasSpecification.html#ae7b4d9e56b7626c35d1ee880f5294c24":[1,0,34,3],
+"df/d64/classLasSpecification.html#ae8ad8d4cd27de51ec1439498eb9ca988":[1,0,34,17],
 "df/d64/classLasSpecification.html#afbcf3a099a35ca8ac42a7689c5593b09":[1,0,34,2],
 "df/d9a/classXmlSurveyLoader.html":[1,0,126],
 "df/d9a/classXmlSurveyLoader.html#a382733ca57300e779bc945d4f90f1842":[1,0,126,1],

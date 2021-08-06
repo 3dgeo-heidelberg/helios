@@ -269,3 +269,21 @@ RigidMotion RigidMotionR3Factory::makeRotationalSymmetryY(double const theta){
 RigidMotion RigidMotionR3Factory::makeRotationalSymmetryZ(double const theta){
     return makeReflectionZ().compose(makeRotationZ(theta));
 }
+
+RigidMotion RigidMotionR3Factory::makeRotationalSymmetry(
+    colvec const axis,
+    double const theta,
+    colvec const center
+){
+    return makeRotationalSymmetryFast(normalise(axis), theta, center);
+}
+
+RigidMotion RigidMotionR3Factory::makeRotationalSymmetryFast(
+    colvec const axis,
+    double const theta,
+    colvec const center
+){
+    RigidMotion rm = makeRotationalSymmetryFast(axis, theta);
+    rm.setC((eye(3, 3)-rm.getA())*center);
+    return rm;
+}

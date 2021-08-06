@@ -727,7 +727,6 @@ bool RigidMotionTest::testPureRotationalSymmetryR3(){
     if(!passed) return passed;
     size_t dim;
     mat L = rme.computeFixedPoints(f, dim);
-    if(L(0, 0) > 0) L = -L; // Solve sign ambiguity wrt expected solution
     mat EL("0; 0; 0;");
     passed = !any(vectorise(abs(L-EL)) > eps);
     if(!passed) return passed;
@@ -763,6 +762,29 @@ bool RigidMotionTest::testPureRotationalSymmetryR3(){
     );
     Z = abs(Y-EY);
     passed = !any(vectorise(Z) > eps);
+    if(!passed) return passed;
+
+    f = rm3f.makeRotationalSymmetry(axis, theta, colvec("1;1;-1"));
+    Y = rme.apply(f, R3X);
+    EY = mat(
+        "3.47911047   3.07743457  -4.66605999  11.22260503 -12.81123044;"
+        "3.11639653   0.50853643   6.51439236  -2.8894594    9.91238819;"
+        "-2.45769578  -1.43900929   3.02954602  -6.92625109   8.51678782"
+    );
+    Z = abs(Y-EY);
+    passed = !any(vectorise(Z) > eps);
+    if(!passed) return passed;
+    f = rm3f.makeRotationalSymmetry(axis, theta);
+    RigidMotion g = rm3f.makeTranslation(colvec("-1;-1;1"));
+    RigidMotion h = rm3f.makeTranslation(colvec("1;1;-1"));
+    f = f.compose(g);
+    f = h.compose(f);
+    mat Y2 = rme.apply(f, R3X);
+    Z = abs(Y2-EY) + abs(Y-EY);
+    passed = !any(vectorise(Z) > eps);
+    if(!passed) return passed;
+    L = rme.computeFixedPoints(f, dim);
+    passed = !any(vectorise(abs(L-colvec("1;1;-1"))) > eps);
     if(!passed) return passed;
 
     return passed;
