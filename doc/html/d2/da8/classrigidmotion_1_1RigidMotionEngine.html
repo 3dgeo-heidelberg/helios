@@ -114,6 +114,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:abba32219e7d65188f1bbe74255e86574"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d7/d84/classrigidmotion_1_1RigidMotion.html">RigidMotion</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/da8/classrigidmotion_1_1RigidMotionEngine.html#abba32219e7d65188f1bbe74255e86574">compose</a> (<a class="el" href="../../d7/d84/classrigidmotion_1_1RigidMotion.html">RigidMotion</a> const &amp;f, <a class="el" href="../../d7/d84/classrigidmotion_1_1RigidMotion.html">RigidMotion</a> const &amp;g)</td></tr>
 <tr class="memdesc:abba32219e7d65188f1bbe74255e86574"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compose given rigid motions: \(f \circ g = f(g(X))\).  <a href="#abba32219e7d65188f1bbe74255e86574">More...</a><br /></td></tr>
 <tr class="separator:abba32219e7d65188f1bbe74255e86574"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a54565faf4bb040e25967127578e134b0"><td class="memItemLeft" align="right" valign="top">mat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/da8/classrigidmotion_1_1RigidMotionEngine.html#a54565faf4bb040e25967127578e134b0">computeFixedPoints</a> (<a class="el" href="../../d7/d84/classrigidmotion_1_1RigidMotion.html">RigidMotion</a> const &amp;f, size_t &amp;dim, bool safe=true)</td></tr>
+<tr class="memdesc:a54565faf4bb040e25967127578e134b0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the set of fixed points of given rigid motion.  <a href="#a54565faf4bb040e25967127578e134b0">More...</a><br /></td></tr>
+<tr class="separator:a54565faf4bb040e25967127578e134b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Class to handle operations with rigid motions. </p>
@@ -235,6 +238,52 @@ Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Composition of given rigid motions \(f \circ g = f(g(X))\) </dd></dl>
+
+</div>
+</div>
+<a id="a54565faf4bb040e25967127578e134b0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a54565faf4bb040e25967127578e134b0">&#9670;&nbsp;</a></span>computeFixedPoints()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">mat RigidMotionEngine::computeFixedPoints </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="../../d7/d84/classrigidmotion_1_1RigidMotion.html">RigidMotion</a> const &amp;&#160;</td>
+          <td class="paramname"><em>f</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t &amp;&#160;</td>
+          <td class="paramname"><em>dim</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>safe</em> = <code>true</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Compute the set of fixed points of given rigid motion. </p>
+<p>Computing the set of fixed points for a given rigid motion means solving \((I-A)X = C\)</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir"></td><td class="paramname">f</td><td>Rigid motion which set of fixed points must be computed </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">dim</td><td>Where the dimensionality of the fixed points variety will be stored. If it is \(0\), then the lineal variety is a point, if it is \(1\) then the lineal variety is a line, if it is \(2\) then the lineal variety is a plane. Generalizing, dim is the dimensionality of the hyperplane of fixed points. </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">safe</td><td>Specify if use safe mode or not. When safe mode is enabled, existence of fixed points will be checked. Please, disable safe mode only if you are sure the rigid motion has a set of fixed points. Otherwise, unexpected behaviors might occur. It is enabled by default. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>When dimensionality is \(0\), it returns the exact coordinates of the only fixed point. When dimensionality is \(n\) (matches the full space dimensionality), then the matrix containing basis vectors will be returned. When dimensionality is \(0&lt;d&lt;n\) the coefficients of implicit equation defining the lineal variety of fixed points will be returned. </dd></dl>
 
 </div>
 </div>

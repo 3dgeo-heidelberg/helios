@@ -10,6 +10,7 @@ var NAVTREE =
         [ "All", "functions.html", "functions_dup" ],
         [ "Functions", "functions_func.html", "functions_func" ],
         [ "Variables", "functions_vars.html", "functions_vars" ],
+        [ "Enumerations", "functions_enum.html", null ],
         [ "Related Functions", "functions_rela.html", null ]
       ] ]
     ] ],
@@ -23,14 +24,14 @@ var NAVTREEINDEX =
 [
 ".html",
 "d2/d43/classTrajectory.html#a22bebd0f8076cc699eec3aaa30bafdef",
-"d3/d89/classMaterial.html#a208703bcc362c4817f3a0daf42e29702",
-"d5/dcb/classRotation.html#a032220d2fefefa8ed30a9cb959d984bc",
-"d6/db9/classSerialIO.html#a6a3585248c4f8097a814f023c3390bba",
-"d7/df9/classPyRandomnessGeneratorWrapper.html#acb9a6c1f7eb0dac1192cfdf80316594e",
-"da/d59/classPySceneWrapper.html#ac1685b51613c0e4799ae1b6d59518948",
-"dc/d42/classScanner.html#a0ae429a2ec7064d9b7c57f88184d942d",
-"dd/dc4/classScenePart.html#ac24a8aed9151384e58ed415d753916c3",
-"df/dc9/classPyBeamDeflectorWrapper.html#a1fb9e28b958fba46caad97712728137f"
+"d3/d89/classMaterial.html#a1959b3ab772a8389826c368875efaab9",
+"d5/dcb/classRotation.html",
+"d6/db9/classSerialIO.html#a65971df3dd0b25242f3f53c516f49394",
+"d7/da7/classrigidmotion_1_1RigidMotionR2Factory.html#a728ef10898f75613d02d20c2f9b3dd4a",
+"d9/dd0/Platform_8h_source.html",
+"db/dcd/classHeliosTests_1_1RandomTest.html",
+"dd/d8d/classPySimulationCycleCallback.html#a385bd24a6acaaba4e96633a86beb208b",
+"df/d64/classLasSpecification.html#afbcf3a099a35ca8ac42a7689c5593b09"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

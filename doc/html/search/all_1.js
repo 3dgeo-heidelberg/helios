@@ -4,7 +4,7 @@ var searchData=
   ['a1',['a1',['../d6/d7f/classRotationOrder.html#ae1e79a9be04701a8498ff9d0d0ffbda5',1,'RotationOrder']]],
   ['a2',['a2',['../d6/d7f/classRotationOrder.html#a94e6d412fb6ea94d460e9215c84d6442',1,'RotationOrder']]],
   ['a3',['a3',['../d6/d7f/classRotationOrder.html#a1e279094daf5b6381ecfa9b38b66f89f',1,'RotationOrder']]],
-  ['aabb',['AABB',['../d2/d1a/classAABB.html',1,'AABB'],['../d2/d1a/classAABB.html#a66add0564807b5af7c6a492ae270a0d9',1,'AABB::AABB()=default'],['../d2/d1a/classAABB.html#a64068a2ddefd51df5c9192eebc31f650',1,'AABB::AABB(glm::dvec3 min, glm::dvec3 max)'],['../d2/d51/classTriangle.html#a615369f02f0886e30a3c78d9e03cf450',1,'Triangle::aabb()']]],
+  ['aabb',['AABB',['../d2/d1a/classAABB.html',1,'AABB'],['../d2/d51/classTriangle.html#a615369f02f0886e30a3c78d9e03cf450',1,'Triangle::aabb()'],['../d2/d1a/classAABB.html#a66add0564807b5af7c6a492ae270a0d9',1,'AABB::AABB()=default'],['../d2/d1a/classAABB.html#a64068a2ddefd51df5c9192eebc31f650',1,'AABB::AABB(glm::dvec3 min, glm::dvec3 max)']]],
   ['absolutebeamattitude',['absoluteBeamAttitude',['../d6/d9e/classAbstractPulseRunnable.html#a5431be620a94c48f0b13bdb4627b9f54',1,'AbstractPulseRunnable']]],
   ['absolutebeamorigin',['absoluteBeamOrigin',['../d6/d9e/classAbstractPulseRunnable.html#aa7f3f0ea66414823b4bd1e4ebd12295f',1,'AbstractPulseRunnable']]],
   ['abstractbeamdeflector',['AbstractBeamDeflector',['../d7/d92/classAbstractBeamDeflector.html',1,'AbstractBeamDeflector'],['../d7/d92/classAbstractBeamDeflector.html#a1eba6f027b964c01653685dca48daf5d',1,'AbstractBeamDeflector::AbstractBeamDeflector()']]],

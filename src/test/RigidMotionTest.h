@@ -194,7 +194,24 @@ bool RigidMotionTest::testPureIdentityR2(){
     RigidMotion f = rm2f.makeIdentity();
     mat Y = rme.apply(f, R2X);
     mat Z = abs(Y-R2X);
-    return !any(vectorise(Z) > eps);
+    bool passed = !any(vectorise(Z) > eps);
+    if(!passed) return passed;
+
+    passed = RigidMotion::SuperType::R2_BASE == f.findSuperType();
+    if(!passed) return passed;
+    passed = f.hasFixedPoints();
+    if(!passed) return passed;
+    passed = RigidMotion::Type::IDENTITY_R2 == f.findType();
+    if(!passed) return passed;
+    passed = f.findInvariantDimensionality() == 2;
+    if(!passed) return passed;
+    size_t dim;
+    mat L = rme.computeFixedPoints(f, dim);
+    mat EL = eye(2, 2);
+    passed = !any(vectorise(abs(L-EL)) > eps);
+    if(!passed) return passed;
+
+    return passed;
 }
 bool RigidMotionTest::testPureTranslationR2(){
     colvec shift(std::vector<double>({1.67, -2.27}));
@@ -202,7 +219,28 @@ bool RigidMotionTest::testPureTranslationR2(){
     mat Y = rme.apply(f, R2X);
     mat EY = R2X.each_col() + shift;
     mat Z = abs(Y-EY);
-    return !any(vectorise(Z) > eps);
+    bool passed = !any(vectorise(Z) > eps);
+    if(!passed) return passed;
+
+    passed = RigidMotion::SuperType::R2_BASE == f.findSuperType();
+    if(!passed) return passed;
+    passed = !f.hasFixedPoints();
+    if(!passed) return passed;
+    passed = RigidMotion::Type::TRANSLATION_R2 == f.findType();
+    if(!passed) return passed;
+    passed = f.findInvariantDimensionality() == 2;
+    if(!passed) return passed;
+    try{
+        passed = false;
+        size_t dim;
+        mat L = rme.computeFixedPoints(f, dim);
+    }
+    catch(RigidMotionException &ex){
+        passed = true;
+    }
+    if(!passed) return passed;
+
+    return passed;
 }
 bool RigidMotionTest::testPureReflectionR2(){
     colvec axis(std::vector<double>({2.1, -3.9}));
@@ -211,6 +249,21 @@ bool RigidMotionTest::testPureReflectionR2(){
     colvec Y = rme.apply(f, X);
     colvec EY(std::vector<double>({0.81651376, 3.05504587}));
     bool passed = !any(vectorise(abs(Y-EY)) > eps);
+    if(!passed) return passed;
+
+    passed = RigidMotion::SuperType::R2_REFLECTION == f.findSuperType();
+    if(!passed) return passed;
+    passed = f.hasFixedPoints();
+    if(!passed) return passed;
+    passed = RigidMotion::Type::REFLECTION_R2 == f.findType();
+    if(!passed) return passed;
+    passed = f.findInvariantDimensionality() == 1;
+    if(!passed) return passed;
+    size_t dim;
+    mat L = rme.computeFixedPoints(f, dim);
+    if(L(0,0) > 0.0) L = -L; // Solve sign ambiguity wrt expected solution
+    mat EL("-0.88047109992; -0.47409982304");
+    passed = !any(vectorise(abs(L-EL)) > eps);
     if(!passed) return passed;
 
     mat Y2 = rme.apply(f, R2X);
@@ -253,6 +306,15 @@ bool RigidMotionTest::testPureGlideReflectionR2(){
     bool passed = !any(vectorise(Z) > eps);
     if(!passed) return passed;
 
+    passed = RigidMotion::SuperType::R2_REFLECTION == f.findSuperType();
+    if(!passed) return passed;
+    passed = !f.hasFixedPoints();
+    if(!passed) return passed;
+    passed = RigidMotion::Type::GLIDE_REFLECTION_R2 == f.findType();
+    if(!passed) return passed;
+    passed = f.findInvariantDimensionality() == 1;
+    if(!passed) return passed;
+
     f = rm2f.makeTranslation(2*axis/norm(axis));
     RigidMotion g = rm2f.makeReflection(axis);
     RigidMotion h = rme.compose(f, g);
@@ -278,6 +340,20 @@ bool RigidMotionTest::testPureRotationR2(){
     bool passed = !any(vectorise(Z) > eps);
     if(!passed) return passed;
 
+    passed = RigidMotion::SuperType::R2_ROTATION == f.findSuperType();
+    if(!passed) return passed;
+    passed = f.hasFixedPoints();
+    if(!passed) return passed;
+    passed = RigidMotion::Type::ROTATION_R2 == f.findType();
+    if(!passed) return passed;
+    passed = f.findInvariantDimensionality() == 0;
+    if(!passed) return passed;
+    size_t dim;
+    mat L = rme.computeFixedPoints(f, dim);
+    mat EL("1.5; -2.5");
+    passed = !any(vectorise(abs(L-EL)) > eps);
+    if(!passed) return passed;
+
     return passed;
 }
 
@@ -285,7 +361,28 @@ bool RigidMotionTest::testPureIdentityR3(){
     RigidMotion f = rm3f.makeIdentity();
     mat Y = rme.apply(f, R3X);
     mat Z = abs(Y-R3X);
-    return !any(vectorise(Z) > eps);
+    bool passed = !any(vectorise(Z) > eps);
+    if(!passed) return passed;
+
+    passed = RigidMotion::SuperType::R3_BASE == f.findSuperType();
+    if(!passed) return passed;
+    passed = f.hasFixedPoints();
+    if(!passed) return passed;
+    passed = RigidMotion::Type::IDENTITY_R3 == f.findType();
+    if(!passed) return passed;
+    passed = f.findInvariantDimensionality() == 3;
+    if(!passed) return passed;
+    size_t dim;
+    mat L = rme.computeFixedPoints(f, dim);
+    mat EL(
+        "1 0 0;"
+        "0 1 0;"
+        "0 0 1"
+    );
+    passed = !any(vectorise(L-EL) > eps);
+    if(!passed) return passed;
+
+    return passed;
 }
 
 bool RigidMotionTest::testPureTranslationR3(){
@@ -294,7 +391,19 @@ bool RigidMotionTest::testPureTranslationR3(){
     mat Y = rme.apply(f, R3X);
     mat EY = R3X.each_col() + shift;
     mat Z = abs(Y-EY);
-    return !any(vectorise(Z) > eps);
+    bool passed = !any(vectorise(Z) > eps);
+    if(!passed) return passed;
+
+    passed = RigidMotion::SuperType::R3_BASE == f.findSuperType();
+    if(!passed) return passed;
+    passed = !f.hasFixedPoints();
+    if(!passed) return passed;
+    passed = RigidMotion::Type::TRANSLATION_R3 == f.findType();
+    if(!passed) return passed;
+    passed = f.findInvariantDimensionality() == 3;
+    if(!passed) return passed;
+
+    return passed;
 }
 
 bool RigidMotionTest::testPureReflectionR3(){
@@ -312,6 +421,21 @@ bool RigidMotionTest::testPureReflectionR3(){
     Y = rme.apply(f, Y);
     Z = abs(Y-R3X);
     passed = !any(vectorise(Z) > eps);
+    if(!passed) return passed;
+
+    passed = RigidMotion::SuperType::R3_REFLECTION == f.findSuperType();
+    if(!passed) return passed;
+    passed = f.hasFixedPoints();
+    if(!passed) return passed;
+    passed = RigidMotion::Type::REFLECTION_R3 == f.findType();
+    if(!passed) return passed;
+    passed = f.findInvariantDimensionality() == 2;
+    if(!passed) return passed;
+    size_t dim;
+    mat L = rme.computeFixedPoints(f, dim);
+    if(L(0,0) < 0) L = -L; // Solve sign ambiguity wrt expected solution
+    mat EL("0.86386843; 0.43193421; 0.25916053");
+    passed = !any(vectorise(abs(L-EL)) > eps);
     if(!passed) return passed;
 
     f = rm3f.makeReflectionX();
@@ -410,6 +534,15 @@ bool RigidMotionTest::testPureGlideReflectionR3(){
     bool passed = !any(vectorise(Z) > eps);
     if(!passed) return passed;
 
+    passed = RigidMotion::SuperType::R3_REFLECTION == f.findSuperType();
+    if(!passed) return passed;
+    passed = !f.hasFixedPoints();
+    if(!passed) return passed;
+    passed = RigidMotion::Type::GLIDE_REFLECTION_R3 == f.findType();
+    if(!passed) return passed;
+    passed = f.findInvariantDimensionality() == 2;
+    if(!passed) return passed;
+
     f = rm3f.makeGlideReflection(ortho, -shift);
     Y = rme.apply(f, Y);
     Z = abs(Y-R3X);
@@ -439,6 +572,21 @@ bool RigidMotionTest::testPureRotationR3(){
     );
     mat Z = abs(Y-EY);
     bool passed = !any(vectorise(Z) > eps);
+    if(!passed) return passed;
+
+    passed = RigidMotion::SuperType::R3_ROTATION == f.findSuperType();
+    if(!passed) return passed;
+    passed = f.hasFixedPoints();
+    if(!passed) return passed;
+    passed = RigidMotion::Type::ROTATION_R3 == f.findType();
+    if(!passed) return passed;
+    passed = f.findInvariantDimensionality() == 1;
+    if(!passed) return passed;
+    size_t dim;
+    mat L = rme.computeFixedPoints(f, dim);
+    if(L(0, 0) > 0) L = -L; // Solve sign ambiguity wrt expected solution
+    mat EL("-0.72434672620; -0.56025593648; 0.40178987778");
+    passed = !any(vectorise(abs(L-EL)) > eps);
     if(!passed) return passed;
 
     f = rm3f.makeRotation(axis, -theta);
@@ -496,6 +644,15 @@ bool RigidMotionTest::testPureHelicalR3(){
         );
     mat Z = abs(Y-EY);
     bool passed = !any(vectorise(Z) > eps);
+    if(!passed) return passed;
+
+    passed = RigidMotion::SuperType::R3_ROTATION == f.findSuperType();
+    if(!passed) return passed;
+    passed = !f.hasFixedPoints();
+    if(!passed) return passed;
+    passed = RigidMotion::Type::HELICAL_R3 == f.findType();
+    if(!passed) return passed;
+    passed = f.findInvariantDimensionality() == 1;
     if(!passed) return passed;
 
     f = rm3f.makeHelical(axis, -theta, -glide);
@@ -558,6 +715,21 @@ bool RigidMotionTest::testPureRotationalSymmetryR3(){
     Y = rme.apply(f, Y);
     Z = abs(Y-R3X);
     passed = !any(vectorise(Z) > eps);
+    if(!passed) return passed;
+
+    passed = RigidMotion::SuperType::R3_ROTATIONAL_SYMMETRY==f.findSuperType();
+    if(!passed) return passed;
+    passed = f.hasFixedPoints();
+    if(!passed) return passed;
+    passed = RigidMotion::Type::ROTATIONAL_SYMMETRY_R3 == f.findType();
+    if(!passed) return passed;
+    passed = f.findInvariantDimensionality() == 0;
+    if(!passed) return passed;
+    size_t dim;
+    mat L = rme.computeFixedPoints(f, dim);
+    if(L(0, 0) > 0) L = -L; // Solve sign ambiguity wrt expected solution
+    mat EL("0; 0; 0;");
+    passed = !any(vectorise(abs(L-EL)) > eps);
     if(!passed) return passed;
 
     f = rm3f.makeRotationalSymmetryX(theta);

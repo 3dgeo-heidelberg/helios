@@ -44,6 +44,7 @@ var searchData=
   ['computealignmentangles',['computeAlignmentAngles',['../db/d69/classHelicopterPlatform.html#a1ca633d895758f0731ae33d9e9978bce',1,'HelicopterPlatform']]],
   ['computeangles',['computeAngles',['../d9/d22/classLadLut.html#a8283615340e12a703bd63c40c234cbfc',1,'LadLut']]],
   ['computeengineforce',['computeEngineForce',['../db/d69/classHelicopterPlatform.html#ab35ce371755b03593b9587b662013085',1,'HelicopterPlatform']]],
+  ['computefixedpoints',['computeFixedPoints',['../d2/da8/classrigidmotion_1_1RigidMotionEngine.html#a54565faf4bb040e25967127578e134b0',1,'rigidmotion::RigidMotionEngine']]],
   ['computekdtreestats',['computeKDTreeStats',['../d8/d94/classKDTreeNode.html#af35b43c1729ceb80b6091aef5b265dee',1,'KDTreeNode']]],
   ['computeliftsinkrate',['computeLiftSinkRate',['../db/d69/classHelicopterPlatform.html#a0917d3a5dcd2bf0dc91b1fd3403d9fe0',1,'HelicopterPlatform']]],
   ['computenormaldistribution',['computeNormalDistribution',['../dc/d6e/classRandomnessGenerator.html#a7f06cc0c69a88de5e9ae836ba39b822e',1,'RandomnessGenerator']]],

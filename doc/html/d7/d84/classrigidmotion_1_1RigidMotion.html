@@ -87,6 +87,7 @@ $(document).ready(function(){initNavTree('d7/d84/classrigidmotion_1_1RigidMotion
 
 <div class="header">
   <div class="summary">
+<a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pro-attribs">Protected Attributes</a> &#124;
 <a href="../../da/d58/classrigidmotion_1_1RigidMotion-members.html">List of all members</a>  </div>
@@ -100,6 +101,41 @@ $(document).ready(function(){initNavTree('d7/d84/classrigidmotion_1_1RigidMotion
 
 <p><code>#include &lt;<a class="el" href="../../d3/d0c/RigidMotion_8h_source.html">RigidMotion.h</a>&gt;</code></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
+Public Types</h2></td></tr>
+<tr class="memitem:a377def083f7c289d4a286a45638f3e61"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d84/classrigidmotion_1_1RigidMotion.html#a377def083f7c289d4a286a45638f3e61">SuperType</a> { <br />
+&#160;&#160;<b>R2_BASE</b>, 
+<b>R2_REFLECTION</b>, 
+<b>R2_ROTATION</b>, 
+<b>R3_BASE</b>, 
+<br />
+&#160;&#160;<b>R3_REFLECTION</b>, 
+<b>R3_ROTATION</b>, 
+<b>R3_ROTATIONAL_SYMMETRY</b>
+<br />
+ }<tr class="memdesc:a377def083f7c289d4a286a45638f3e61"><td class="mdescLeft">&#160;</td><td class="mdescRight">Rigid motions supertypes. It is, the classification of a rigid motion attending to its fixed origin transformation matrix \(A\) only.  <a href="../../d7/d84/classrigidmotion_1_1RigidMotion.html#a377def083f7c289d4a286a45638f3e61">More...</a><br /></td></tr>
+</td></tr>
+<tr class="separator:a377def083f7c289d4a286a45638f3e61"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9f6af528c327231f6ad4565fa9bef21f"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d84/classrigidmotion_1_1RigidMotion.html#a9f6af528c327231f6ad4565fa9bef21f">Type</a> { <br />
+&#160;&#160;<b>IDENTITY_R2</b>, 
+<b>TRANSLATION_R2</b>, 
+<b>REFLECTION_R2</b>, 
+<b>GLIDE_REFLECTION_R2</b>, 
+<br />
+&#160;&#160;<b>ROTATION_R2</b>, 
+<b>IDENTITY_R3</b>, 
+<b>TRANSLATION_R3</b>, 
+<b>REFLECTION_R3</b>, 
+<br />
+&#160;&#160;<b>GLIDE_REFLECTION_R3</b>, 
+<b>ROTATION_R3</b>, 
+<b>HELICAL_R3</b>, 
+<b>ROTATIONAL_SYMMETRY_R3</b>
+<br />
+ }<tr class="memdesc:a9f6af528c327231f6ad4565fa9bef21f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Rigid motions types. It is, the classification of a rigid motion attending to its associated isometry and fixed points.  <a href="../../d7/d84/classrigidmotion_1_1RigidMotion.html#a9f6af528c327231f6ad4565fa9bef21f">More...</a><br /></td></tr>
+</td></tr>
+<tr class="separator:a9f6af528c327231f6ad4565fa9bef21f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:acf4e7627472f7afd7593a1b02ad49ac2"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d84/classrigidmotion_1_1RigidMotion.html#acf4e7627472f7afd7593a1b02ad49ac2">RigidMotion</a> ()=default</td></tr>
@@ -114,6 +150,18 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a3c45e22fd4f3f7447afac038feb1f4cc"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d84/classrigidmotion_1_1RigidMotion.html#a3c45e22fd4f3f7447afac038feb1f4cc">composeInPlace</a> (<a class="el" href="../../d7/d84/classrigidmotion_1_1RigidMotion.html">RigidMotion</a> const rm)</td></tr>
 <tr class="memdesc:a3c45e22fd4f3f7447afac038feb1f4cc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Like compose method but updating this rigid motion instead of returning a new one.  <a href="#a3c45e22fd4f3f7447afac038feb1f4cc">More...</a><br /></td></tr>
 <tr class="separator:a3c45e22fd4f3f7447afac038feb1f4cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2337a41faab77d6f21612394d9c35def"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="../../d7/d84/classrigidmotion_1_1RigidMotion.html#a377def083f7c289d4a286a45638f3e61">SuperType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d84/classrigidmotion_1_1RigidMotion.html#a2337a41faab77d6f21612394d9c35def">findSuperType</a> () const</td></tr>
+<tr class="memdesc:a2337a41faab77d6f21612394d9c35def"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain the supertype of the rigid motion.  <a href="#a2337a41faab77d6f21612394d9c35def">More...</a><br /></td></tr>
+<tr class="separator:a2337a41faab77d6f21612394d9c35def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa388856994940d07795aff189ba61fa9"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d84/classrigidmotion_1_1RigidMotion.html#aa388856994940d07795aff189ba61fa9">hasFixedPoints</a> () const</td></tr>
+<tr class="memdesc:aa388856994940d07795aff189ba61fa9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if rigid motion has fixed points.  <a href="#aa388856994940d07795aff189ba61fa9">More...</a><br /></td></tr>
+<tr class="separator:aa388856994940d07795aff189ba61fa9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a17cd1f0c5795abe7440223730fb78021"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="../../d7/d84/classrigidmotion_1_1RigidMotion.html#a9f6af528c327231f6ad4565fa9bef21f">Type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d84/classrigidmotion_1_1RigidMotion.html#a17cd1f0c5795abe7440223730fb78021">findType</a> () const</td></tr>
+<tr class="memdesc:a17cd1f0c5795abe7440223730fb78021"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain the type of the rigid motion.  <a href="#a17cd1f0c5795abe7440223730fb78021">More...</a><br /></td></tr>
+<tr class="separator:a17cd1f0c5795abe7440223730fb78021"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac8c8ccf506a652cbafd87f715ec3f392"><td class="memItemLeft" align="right" valign="top">virtual size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d84/classrigidmotion_1_1RigidMotion.html#ac8c8ccf506a652cbafd87f715ec3f392">findInvariantDimensionality</a> () const</td></tr>
+<tr class="memdesc:ac8c8ccf506a652cbafd87f715ec3f392"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain the dimensionality of the associated invariant which can be either the set of fixed points or the associated invariant variety if there are no fixed points.  <a href="#ac8c8ccf506a652cbafd87f715ec3f392">More...</a><br /></td></tr>
+<tr class="separator:ac8c8ccf506a652cbafd87f715ec3f392"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a372313667e416c8601a4640bebc7b152"><td class="memItemLeft" align="right" valign="top">colvec&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d84/classrigidmotion_1_1RigidMotion.html#a372313667e416c8601a4640bebc7b152">getC</a> () const</td></tr>
 <tr class="memdesc:a372313667e416c8601a4640bebc7b152"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the translation column vector.  <a href="#a372313667e416c8601a4640bebc7b152">More...</a><br /></td></tr>
 <tr class="separator:a372313667e416c8601a4640bebc7b152"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -126,6 +174,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a2cd8787bdb1433cafef2f4b81d3163af"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d84/classrigidmotion_1_1RigidMotion.html#a2cd8787bdb1433cafef2f4b81d3163af">setA</a> (mat const <a class="el" href="../../d7/d84/classrigidmotion_1_1RigidMotion.html#ae3525a13930940febd66c3c89e185303">A</a>)</td></tr>
 <tr class="memdesc:a2cd8787bdb1433cafef2f4b81d3163af"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the fixed origin transformation matrix.  <a href="#a2cd8787bdb1433cafef2f4b81d3163af">More...</a><br /></td></tr>
 <tr class="separator:a2cd8787bdb1433cafef2f4b81d3163af"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a898022ad71198e441197cb3ee917345e"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d84/classrigidmotion_1_1RigidMotion.html#a898022ad71198e441197cb3ee917345e">getDimensionality</a> () const</td></tr>
+<tr class="memdesc:a898022ad71198e441197cb3ee917345e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the dimensionality of the rigid motion.  <a href="#a898022ad71198e441197cb3ee917345e">More...</a><br /></td></tr>
+<tr class="separator:a898022ad71198e441197cb3ee917345e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
@@ -150,7 +201,48 @@ mat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../..
 <p class="formulaDsp">
 \[ \left[\begin{array}{c|c} 1 &amp; 0 \\ \hline C &amp; A \end{array}\right] = \left[\begin{array}{c|c} 1 &amp; 0 \\ \hline C &amp; I \end{array}\right] \left[\begin{array}{c|c} 1 &amp; 0 \\ \hline 0 &amp; A \end{array}\right] \]
 </p>
- </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+ </div><h2 class="groupheader">Member Enumeration Documentation</h2>
+<a id="a377def083f7c289d4a286a45638f3e61"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a377def083f7c289d4a286a45638f3e61">&#9670;&nbsp;</a></span>SuperType</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="../../d7/d84/classrigidmotion_1_1RigidMotion.html#a377def083f7c289d4a286a45638f3e61">rigidmotion::RigidMotion::SuperType</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Rigid motions supertypes. It is, the classification of a rigid motion attending to its fixed origin transformation matrix \(A\) only. </p>
+<p>For instance, a reflection and a glide reflection would be different types which share the same supertype (reflection).</p>
+<p>The supertype is determined attending to \(\mathrm{rank}\left(I-A\right)\)</p>
+<p><b>NOTICE</b> both identity and translation transformations are considered as base supertype, since both of them have \(\mathrm{rank}\left(I-A\right) = 0\)</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d7/d84/classrigidmotion_1_1RigidMotion.html#a2337a41faab77d6f21612394d9c35def" title="Obtain the supertype of the rigid motion. ">rigidmotion::RigidMotion::findSuperType</a> </dd></dl>
+
+</div>
+</div>
+<a id="a9f6af528c327231f6ad4565fa9bef21f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9f6af528c327231f6ad4565fa9bef21f">&#9670;&nbsp;</a></span>Type</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="../../d7/d84/classrigidmotion_1_1RigidMotion.html#a9f6af528c327231f6ad4565fa9bef21f">rigidmotion::RigidMotion::Type</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Rigid motions types. It is, the classification of a rigid motion attending to its associated isometry and fixed points. </p>
+<p>The type is fully determined attending to: </p><p class="formulaDsp">
+\[ \left\{\begin{array}{l} \mathrm{rank}\left(I-A\right) \\ \mathrm{rank}\left(I-A | C\right) \end{array}\right. \]
+</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d7/d84/classrigidmotion_1_1RigidMotion.html#a17cd1f0c5795abe7440223730fb78021" title="Obtain the type of the rigid motion. ">rigidmotion::RigidMotion::findType</a> </dd></dl>
+
+</div>
+</div>
+<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="acf4e7627472f7afd7593a1b02ad49ac2"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#acf4e7627472f7afd7593a1b02ad49ac2">&#9670;&nbsp;</a></span>RigidMotion() <span class="overload">[1/2]</span></h2>
 
@@ -292,6 +384,96 @@ mat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../..
 
 </div>
 </div>
+<a id="ac8c8ccf506a652cbafd87f715ec3f392"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac8c8ccf506a652cbafd87f715ec3f392">&#9670;&nbsp;</a></span>findInvariantDimensionality()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t RigidMotion::findInvariantDimensionality </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Obtain the dimensionality of the associated invariant which can be either the set of fixed points or the associated invariant variety if there are no fixed points. </p>
+<p>The dimensionality \(d\) of the associated invariant can be obtained computing as follows, where \(n\) is the dimensionality of the space for which the rigid motion is defined: </p><p class="formulaDsp">
+\[ d = n - \mathrm{rank}\left(I-A\right) \]
+</p>
+<p>A dimension of \(0\) means the associated invariant is a point, a dimension of \(1\) means it is a line, a dimension of \(2\) means it is a plane and for the general case a dimension of \(d\) means the associated invariant is a \(d\)-dimensional hyperplane</p>
+<dl class="section return"><dt>Returns</dt><dd>Dimensionality of the associated invariant </dd></dl>
+
+</div>
+</div>
+<a id="a2337a41faab77d6f21612394d9c35def"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2337a41faab77d6f21612394d9c35def">&#9670;&nbsp;</a></span>findSuperType()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../d7/d84/classrigidmotion_1_1RigidMotion.html#a377def083f7c289d4a286a45638f3e61">RigidMotion::SuperType</a> RigidMotion::findSuperType </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Obtain the supertype of the rigid motion. </p>
+<dl class="section return"><dt>Returns</dt><dd>Rigid motion supertype </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d7/d84/classrigidmotion_1_1RigidMotion.html#a377def083f7c289d4a286a45638f3e61" title="Rigid motions supertypes. It is, the classification of a rigid motion attending to its fixed origin t...">rigidmotion::RigidMotion::SuperType</a> </dd></dl>
+
+</div>
+</div>
+<a id="a17cd1f0c5795abe7440223730fb78021"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a17cd1f0c5795abe7440223730fb78021">&#9670;&nbsp;</a></span>findType()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../d7/d84/classrigidmotion_1_1RigidMotion.html#a9f6af528c327231f6ad4565fa9bef21f">RigidMotion::Type</a> RigidMotion::findType </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Obtain the type of the rigid motion. </p>
+<dl class="section return"><dt>Returns</dt><dd>Rigid motion type </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d7/d84/classrigidmotion_1_1RigidMotion.html#a9f6af528c327231f6ad4565fa9bef21f" title="Rigid motions types. It is, the classification of a rigid motion attending to its associated isometry...">rigidmotion::RigidMotion::Type</a> </dd></dl>
+
+</div>
+</div>
 <a id="a6cae5e720cf710f39b269a95ecc92880"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a6cae5e720cf710f39b269a95ecc92880">&#9670;&nbsp;</a></span>getA()</h2>
 
@@ -345,6 +527,63 @@ mat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../..
 
 <p>Get the translation column vector. </p>
 <dl class="section return"><dt>Returns</dt><dd>Translation column vector of the rigid motion </dd></dl>
+
+</div>
+</div>
+<a id="a898022ad71198e441197cb3ee917345e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a898022ad71198e441197cb3ee917345e">&#9670;&nbsp;</a></span>getDimensionality()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t rigidmotion::RigidMotion::getDimensionality </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the dimensionality of the rigid motion. </p>
+<dl class="section return"><dt>Returns</dt><dd>Rigid motion dimensionality </dd></dl>
+
+</div>
+</div>
+<a id="aa388856994940d07795aff189ba61fa9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa388856994940d07795aff189ba61fa9">&#9670;&nbsp;</a></span>hasFixedPoints()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool RigidMotion::hasFixedPoints </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Check if rigid motion has fixed points. </p>
+<p>A rigid motion is said to have fixed points by applying Rouché-Frobenius theorem to check if the system \((I-A | C)\) can be solved or not. Thus, if \(\mathrm{rank}(I-A) = \mathrm{rank}(I-A|C)\) the system has solution and hence fixed points. Otherwise, the system cannot be solved so there are no fixed points.</p>
+<dl class="section return"><dt>Returns</dt><dd>True if rigid motion has fixed points, false otherwise </dd></dl>
 
 </div>
 </div>

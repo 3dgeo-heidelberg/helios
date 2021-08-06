@@ -36,6 +36,7 @@ var searchData=
   ['getcurrentlegindex',['getCurrentLegIndex',['../d6/da1/classSurveyPlayback.html#afab006b6ace6eb6b21cb417a0bed78a2',1,'SurveyPlayback']]],
   ['getcurrentoutputpath',['getCurrentOutputPath',['../d6/da1/classSurveyPlayback.html#a39aafbf7c2af19018e1dd0689a57cd17',1,'SurveyPlayback']]],
   ['getdeviceid',['getDeviceId',['../dc/d42/classScanner.html#a35fb0c52dbe478fcf27f7bba351caef5',1,'Scanner']]],
+  ['getdimensionality',['getDimensionality',['../d7/d84/classrigidmotion_1_1RigidMotion.html#a898022ad71198e441197cb3ee917345e',1,'rigidmotion::RigidMotion']]],
   ['getdirectionalattitude',['getDirectionalAttitude',['../db/d69/classHelicopterPlatform.html#a10d48f4db2d10ad5c174e82a05af4b06',1,'HelicopterPlatform::getDirectionalAttitude()'],['../df/d1e/classPlatform.html#a36c7efd81596583854a6161ea41efb41',1,'Platform::getDirectionalAttitude()']]],
   ['getdoubleseed',['getDoubleSeed',['../dc/d6e/classRandomnessGenerator.html#a86cecdf0d8f8f574fc6ca371558b4f99',1,'RandomnessGenerator']]],
   ['getdoublevalue',['getDoubleValue',['../d7/d5a/classDetailedVoxel.html#aed3aefba26f5cc156fd9be0a1315a370',1,'DetailedVoxel']]],
