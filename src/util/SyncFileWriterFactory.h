@@ -22,6 +22,7 @@
 #include "SimpleSyncFileWriter.h"
 #include "SyncFileWriter.h"
 #include "ZipSyncFileWriter.h"
+#include <util/HeliosException.h>
 
 
 // ** Types of writers ** //
@@ -89,6 +90,12 @@ makeWriter(WriterType type, const std::string &path, bool compress = false,
   case simpleType:
     return std::make_shared<SimpleSyncFileWriter>(path);
   }
+
+  // Handle unexpected type
+  std::stringstream ss;
+  ss << "SyncFileWriterFactory::makeWriter received an unexpected type: ("
+     << type << ")" ;
+  throw HeliosException(ss.str());
 }
 };
 
