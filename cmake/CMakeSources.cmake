@@ -15,6 +15,7 @@ include_directories(
     "src/surveyplayback/"
     "src/noise/"
     "src/maths/"
+    "src/maths/rigidmotion/"
     "src/util/"
     "src/util/logger/"
     "src/test/"

@@ -1,5 +1,6 @@
 <map id="SyncFileWriter" name="SyncFileWriter">
-<area shape="rect" id="node2" href="$d2/db3/classLasSyncFileWriter.html" title="SyncFileWriter implementation for LAS format. " alt="" coords="5,80,135,107"/>
-<area shape="rect" id="node3" href="$df/d47/classSimpleSyncFileWriter.html" title="SyncFileWriter implementation for simple text format. " alt="" coords="159,80,307,107"/>
-<area shape="rect" id="node4" href="$de/d2a/classZipSyncFileWriter.html" title="ZipSyncFileWriter implementation fro zipped text output format. " alt="" coords="169,155,296,181"/>
+<area shape="rect" id="node2" href="$d2/db3/classLasSyncFileWriter.html" title="SyncFileWriter implementation for LAS format. " alt="" coords="12,80,141,107"/>
+<area shape="rect" id="node4" href="$df/d47/classSimpleSyncFileWriter.html" title="SyncFileWriter implementation for simple text format. " alt="" coords="165,80,313,107"/>
+<area shape="rect" id="node3" href="$dd/d09/classLas14SyncFileWriter.html" title="LasSyncFileWriter implementation for LAS v1.4 format. " alt="" coords="5,155,148,181"/>
+<area shape="rect" id="node5" href="$de/d2a/classZipSyncFileWriter.html" title="ZipSyncFileWriter implementation for zipped text output format. " alt="" coords="176,155,303,181"/>
 </map>
