@@ -47,7 +47,7 @@ Scene::Scene(Scene &s) {
   for (ScenePart *sp : parts) { // Handle primitives associated with ScenePart
     std::shared_ptr<ScenePart> spc = std::make_shared<ScenePart>(*sp);
     for (Primitive *p : spc->mPrimitives) {
-      Primitive *_p = p->clone();
+      Primitive *_p = p;
       _p->part = spc;
       this->primitives.push_back(_p);
     }

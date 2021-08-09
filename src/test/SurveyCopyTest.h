@@ -32,7 +32,7 @@ public:
 
 bool SurveyCopyTest::run(){
     // Build base Survey
-    Survey *survey = new Survey();
+    std::shared_ptr<Survey> survey = std::make_shared<Survey>();
     survey->name = "MySurvey";
     survey->numRuns = 1;
     survey->simSpeedFactor = 1;
@@ -97,7 +97,7 @@ bool SurveyCopyTest::run(){
     baseScene->primitives[1]->material->ks[1] = 1.2;
 
     // Copy base Survey
-    Survey *copy = new Survey(*survey);
+    std::shared_ptr<Survey> copy = std::make_shared<Survey>(*survey);
 
     // Do some changes on copy
     copy->name = "CopiedSurvey";
@@ -197,9 +197,6 @@ bool SurveyCopyTest::run(){
     if((*baseDv)[0] != (*copyDv)[0]) return false;
     if((*baseDv)[1] == (*copyDv)[1]) return false;
 
-
-
-    // Successfully reached end of test
     return true;
 }
 

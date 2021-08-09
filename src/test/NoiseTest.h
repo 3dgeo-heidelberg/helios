@@ -8,7 +8,7 @@ namespace HeliosTests{
 
 /**
  * @author Alberto M. Esmoris Pena
- * @veresion 1.0
+ * @version 1.0
  * @brief Test for noise generation
  */
 class NoiseTest : public BaseTest {
