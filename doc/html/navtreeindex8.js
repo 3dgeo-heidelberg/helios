@@ -1,5 +1,6 @@
 var NAVTREEINDEX8 =
 {
+"dd/d40/PythonDVec3_8h_source.html":[2,0,0,4,20],
 "dd/d6e/PyMeasurementVectorWrapper_8h_source.html":[2,0,0,4,10],
 "dd/d8d/classPySimulationCycleCallback.html":[1,0,75],
 "dd/d8d/classPySimulationCycleCallback.html#a385bd24a6acaaba4e96633a86beb208b":[1,0,75,3],
@@ -248,6 +249,5 @@ var NAVTREEINDEX8 =
 "df/d64/classLasSpecification.html#aa9c826365fbe77d2808352882e74780c":[1,0,34,5],
 "df/d64/classLasSpecification.html#ab84ede5666c9f48f85f83cf738366c20":[1,0,34,8],
 "df/d64/classLasSpecification.html#abbd6cbe2346067ce04e3f34fbd6f2b22":[1,0,34,12],
-"df/d64/classLasSpecification.html#ac7b831a00a7d76816624948170bd6839":[1,0,34,4],
-"df/d64/classLasSpecification.html#ae04e5b30ee67fa66c89667beff906df5":[1,0,34,18]
+"df/d64/classLasSpecification.html#ac7b831a00a7d76816624948170bd6839":[1,0,34,4]
 };

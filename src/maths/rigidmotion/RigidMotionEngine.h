@@ -87,11 +87,45 @@ public:
      * @return When dimensionality is \f$0\f$, it returns the exact coordinates
      *  of the only fixed point. When dimensionality is \f$n\f$ (matches
      *  the full space dimensionality), then the matrix containing basis
-     *  vectors will be returned. When dimensionality is \f$0<d<n\f$ the
-     *  coefficients of implicit equation defining the lineal variety of fixed
-     *  points will be returned.
+     *  vectors will be returned. When dimensionality is \f$0<d<n\f$ a unitary
+     *  vector defining the lineal variety will be returned. When the lineal
+     *  variety is a line, then the normalized director vector of the line
+     *  will be returned. If the lineal variety is a plane, then the
+     *  orthonormal vector of the plane will be returned.
      */
     mat computeFixedPoints(
+        RigidMotion const &f,
+        size_t &dim,
+        bool safe=true
+    );
+    /**
+     * @brief Compute the associated invariant of given rigid motion.
+     *
+     * Computing the associated invariant for a given rigid motion means
+     *  solving \f$(A-I)^2X+(I-A)C=0\f$
+     *
+     * @param f Rigid motion which associated invariant must be computed
+     * @param[out] dim Where the dimensionality of associated invariant
+     *  will be stored. If it is \f$0\f$, then the associated invariant is a
+     *  point (which should never happen for \f$\mathbb{R}^{2}\f$ and
+     *  \f$\mathbb{R}^{3}\f$). If it is \f$1\f$ then the associated invariant is
+     *  a line, if it is \f$2\f$ then the associated invariant is a plane.
+     *  Generalizing, dim is the dimensionality of the associated invariant
+     *  hyperplane.
+     * @param safe Specify if use safe mode or not. When safe mode is enabled,
+     *  existence of associated invariant will be checked. Please, disable safe
+     *  mode only if you are sure the rigid motion has an associated invariant.
+     * @return When dimensionality is \f$0\f$, it returns the exact coordinates
+     *  of the only associated invariant (this should never happen neither in
+     *   \f$\mathbb{R}^{2}\f$ nor in \f$\mathbb{R}^{3}\f$). When dimensionality
+     *   is \f$n\f$ (matches the full space dimensionality), then the matrix
+     *   containing basis vectors will be returned. When dimensionality is
+     *   \f$0<d<n\f$ a unitary vector defining the lineal variety will be
+     *   returned. When the lineal variety is a line, then the normalized
+     *   director vector of the line will be returned. If the lineal variety is
+     *   a plane, then the orthonormal vector of the plane will be returned.
+     */
+    mat computeAssociatedInvariant(
         RigidMotion const &f,
         size_t &dim,
         bool safe=true

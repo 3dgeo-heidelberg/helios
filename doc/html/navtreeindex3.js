@@ -1,5 +1,6 @@
 var NAVTREEINDEX3 =
 {
+"d5/db6/classSurvey.html#aea6c888159a2baca8906aaa8d0377917":[1,0,104,11],
 "d5/dcb/classRotation.html":[1,0,87],
 "d5/dcb/classRotation.html#a032220d2fefefa8ed30a9cb959d984bc":[1,0,87,12],
 "d5/dcb/classRotation.html#a0796ec81edaeac64002c4abd878db6b0":[1,0,87,18],
@@ -248,6 +249,5 @@ var NAVTREEINDEX3 =
 "d6/da3/logger_8hpp_source.html":[2,0,0,9,0,2],
 "d6/da6/MathConverter_8h_source.html":[2,0,0,1,4],
 "d6/db9/classSerialIO.html":[1,0,96],
-"d6/db9/classSerialIO.html#a04a14f46d2374bd1621ae407e32a6619":[1,0,96,5],
-"d6/db9/classSerialIO.html#a510e940ee144da57e36a0b1c488d0261":[1,0,96,0]
+"d6/db9/classSerialIO.html#a04a14f46d2374bd1621ae407e32a6619":[1,0,96,5]
 };

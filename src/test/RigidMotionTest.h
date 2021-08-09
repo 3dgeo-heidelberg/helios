@@ -261,8 +261,8 @@ bool RigidMotionTest::testPureReflectionR2(){
     if(!passed) return passed;
     size_t dim;
     mat L = rme.computeFixedPoints(f, dim);
-    if(L(0,0) > 0.0) L = -L; // Solve sign ambiguity wrt expected solution
-    mat EL("-0.88047109992; -0.47409982304");
+    if(L(0,0) < 0.0) L = -L; // Solve sign ambiguity wrt expected solution
+    mat EL("0.47409982; -0.8804711");
     passed = !any(vectorise(abs(L-EL)) > eps);
     if(!passed) return passed;
 
@@ -313,6 +313,12 @@ bool RigidMotionTest::testPureGlideReflectionR2(){
     passed = RigidMotion::Type::GLIDE_REFLECTION_R2 == f.findType();
     if(!passed) return passed;
     passed = f.findInvariantDimensionality() == 1;
+    if(!passed) return passed;
+    size_t dim;
+    mat L = rme.computeAssociatedInvariant(f, dim);
+    if(L(0, 0) < 0) L = -L; // Solve sign ambiguity wrt expected solution
+    mat EL("0.74153578; 0.67091332");
+    passed = !any(vectorise(abs(L-EL)) > eps);
     if(!passed) return passed;
 
     f = rm2f.makeTranslation(2*axis/norm(axis));
@@ -542,6 +548,12 @@ bool RigidMotionTest::testPureGlideReflectionR3(){
     if(!passed) return passed;
     passed = f.findInvariantDimensionality() == 2;
     if(!passed) return passed;
+    size_t dim;
+    mat L = rme.computeAssociatedInvariant(f, dim);
+    if(L(0, 0) < 0) L = -L; // Solve sign ambiguity wrt expected solution
+    mat EL("0.86386843; 0.43193421; 0.25916053");
+    passed = !any(vectorise(abs(L-EL)) > eps);
+    if(!passed) return passed;
 
     f = rm3f.makeGlideReflection(ortho, -shift);
     Y = rme.apply(f, Y);
@@ -584,8 +596,8 @@ bool RigidMotionTest::testPureRotationR3(){
     if(!passed) return passed;
     size_t dim;
     mat L = rme.computeFixedPoints(f, dim);
-    if(L(0, 0) > 0) L = -L; // Solve sign ambiguity wrt expected solution
-    mat EL("-0.72434672620; -0.56025593648; 0.40178987778");
+    if(L(0, 0) < 0) L = -L; // Solve sign ambiguity wrt expected solution
+    mat EL("0.36514837; 0.18257419; 0.91287093");
     passed = !any(vectorise(abs(L-EL)) > eps);
     if(!passed) return passed;
 
@@ -641,7 +653,7 @@ bool RigidMotionTest::testPureHelicalR3(){
         "3.29618716  2.74722077 -1.48766127  7.5310692  -6.2715097;"
         "2.40694337 -0.3338205   1.91218135  0.16094152  1.41741933;"
         "2.47736204  2.04510137 11.68985381 -7.16739041 20.90234559"
-        );
+    );
     mat Z = abs(Y-EY);
     bool passed = !any(vectorise(Z) > eps);
     if(!passed) return passed;
@@ -653,6 +665,12 @@ bool RigidMotionTest::testPureHelicalR3(){
     passed = RigidMotion::Type::HELICAL_R3 == f.findType();
     if(!passed) return passed;
     passed = f.findInvariantDimensionality() == 1;
+    if(!passed) return passed;
+    size_t dim;
+    mat L = rme.computeAssociatedInvariant(f, dim);
+    if(L(0, 0) < 0) L = -L; // Solve sign ambiguity wrt expected solution
+    mat EL("0.36514837; 0.18257419; 0.91287093");
+    passed = !any(vectorise(abs(L-EL)) > eps);
     if(!passed) return passed;
 
     f = rm3f.makeHelical(axis, -theta, -glide);
@@ -667,7 +685,7 @@ bool RigidMotionTest::testPureHelicalR3(){
         "2.5         4.5         8.5        -1.5        14.5;"
         "-0.80495876 -2.76001899  6.32499674 -9.8899745  13.45495225;"
         "-1.36089728 -0.93930568  3.23950863 -5.53971159  7.83991454"
-        );
+    );
     Z = abs(Y-EY);
     passed = !any(vectorise(Z) > eps);
     if(!passed) return passed;

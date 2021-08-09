@@ -1,5 +1,6 @@
 var NAVTREEINDEX4 =
 {
+"d6/db9/classSerialIO.html#a510e940ee144da57e36a0b1c488d0261":[1,0,96,0],
 "d6/db9/classSerialIO.html#a65971df3dd0b25242f3f53c516f49394":[1,0,96,2],
 "d6/db9/classSerialIO.html#a6a3585248c4f8097a814f023c3390bba":[1,0,96,4],
 "d6/db9/classSerialIO.html#a6e93a0a8bc22f276d792009520acee7c":[1,0,96,1],
@@ -248,6 +249,5 @@ var NAVTREEINDEX4 =
 "d7/d96/RotationOrder_8h_source.html":[2,0,0,1,8],
 "d7/da7/classrigidmotion_1_1RigidMotionR2Factory.html":[1,0,1,4],
 "d7/da7/classrigidmotion_1_1RigidMotionR2Factory.html#a170cf7ff3e1f230c84ea17a24e717215":[1,0,1,4,4],
-"d7/da7/classrigidmotion_1_1RigidMotionR2Factory.html#a218c5d312c34b18e40fdb4b15e25a01c":[1,0,1,4,1],
-"d7/da7/classrigidmotion_1_1RigidMotionR2Factory.html#a6378b09c780d4c953be8f0f73cb80c76":[1,0,1,4,2]
+"d7/da7/classrigidmotion_1_1RigidMotionR2Factory.html#a218c5d312c34b18e40fdb4b15e25a01c":[1,0,1,4,1]
 };

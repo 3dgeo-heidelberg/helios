@@ -70,7 +70,8 @@ var NAVTREEINDEX1 =
 "d2/da8/classrigidmotion_1_1RigidMotionEngine.html#a029fc21bc380b291c447484c08b03b86":[1,0,1,1,2],
 "d2/da8/classrigidmotion_1_1RigidMotionEngine.html#a1301ee234a2006cfab2d7d38142941bc":[1,0,1,1,0],
 "d2/da8/classrigidmotion_1_1RigidMotionEngine.html#a262a9a5179cced5e80bc61412aa31e98":[1,0,1,1,3],
-"d2/da8/classrigidmotion_1_1RigidMotionEngine.html#a54565faf4bb040e25967127578e134b0":[1,0,1,1,5],
+"d2/da8/classrigidmotion_1_1RigidMotionEngine.html#a54565faf4bb040e25967127578e134b0":[1,0,1,1,6],
+"d2/da8/classrigidmotion_1_1RigidMotionEngine.html#a831300aa5a68e83ca7dd077e80e62e14":[1,0,1,1,5],
 "d2/da8/classrigidmotion_1_1RigidMotionEngine.html#abba32219e7d65188f1bbe74255e86574":[1,0,1,1,4],
 "d2/da8/classrigidmotion_1_1RigidMotionEngine.html#acb4954fa9eeefc45e948e7371e4d9e57":[1,0,1,1,1],
 "d2/db3/classLasSyncFileWriter.html":[1,0,35],
@@ -248,6 +249,5 @@ var NAVTREEINDEX1 =
 "d3/d89/classMaterial.html#a0164709639038ed6d4ac7d47b9e6db6c":[1,0,42,29],
 "d3/d89/classMaterial.html#a050760e542e3ea7aac6f8801a1b823d9":[1,0,42,23],
 "d3/d89/classMaterial.html#a0da3768af0d50c6889fb56aff82faf77":[1,0,42,3],
-"d3/d89/classMaterial.html#a1130686f6de6c659973aab3e36d4cac9":[1,0,42,24],
-"d3/d89/classMaterial.html#a179e16d6a1bd4a0f039b8e4cbf2ade30":[1,0,42,2]
+"d3/d89/classMaterial.html#a1130686f6de6c659973aab3e36d4cac9":[1,0,42,24]
 };
