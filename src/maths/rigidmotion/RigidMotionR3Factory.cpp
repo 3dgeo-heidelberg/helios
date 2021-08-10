@@ -1,5 +1,6 @@
 #include <rigidmotion/RigidMotionR3Factory.h>
 #include <rigidmotion/RigidMotionException.h>
+#include <maths/MathConstants.h>
 
 using namespace rigidmotion;
 
@@ -29,8 +30,8 @@ RigidMotion RigidMotionR3Factory::makeReflectionFast(colvec const orthonormal){
     // Compute alpha vector
     colvec alpha(3);
     if(orthonormal[0] == 0.0 && orthonormal[1] == 0.0){
-        alpha[0] = M_SQRT2;
-        alpha[1] = M_SQRT2;
+        alpha[0] = SQRT2;
+        alpha[1] = SQRT2;
         alpha[2] = 0;
     }
     else if(orthonormal[1] == 0.0){

@@ -53,3 +53,11 @@ const double ALMOST_MINUS_1 = -0.9999999999;
  * @brief Constant representing a very close from below to 1 number
  */
 const double ALMOST_PLUS_1 = 0.9999999999;
+
+/**
+ * \f[
+ *  \sqrt{2}
+ * \f]
+ */
+
+const double SQRT2 = 1.4142135623730951;
