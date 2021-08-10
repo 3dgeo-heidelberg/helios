@@ -29,6 +29,8 @@ LAS_DIR="${HELIOS_LIB_DIR}"'LAStools/'
 
 # ---  SCRIPT LOGIC  --- #
 # ---------------------- #
+parse_build_args $@
+
 # Download LAStools if it is not downloaded yet
 if [ ! -f "${LAS_TAR}" ]; then
     wget -c "${LAS_URL}" -O "${LAS_TAR}"
@@ -43,4 +45,4 @@ fi
 # Build LAStools
 cd "${LAS_DIR}"
 cmake . -DCMAKE_INSTALL_PREFIX:PATH="${LAS_DIR}"
-make
+make -j${HELIOS_BUILD_NCORES}

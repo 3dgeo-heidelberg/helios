@@ -11,7 +11,7 @@ if(${PYTHON_BINDING})
 else()
     find_package(Boost 1.71.0 REQUIRED COMPONENTS
         ${BASE_BOOST_COMPONENTS}
-        )
+    )
 endif()
 if(Boost_FOUND)
     message(STATUS "boost found")

@@ -6,8 +6,8 @@
 #include <PyHeliosOutputWrapper.h>
 #include <boost/python.hpp>
 
-using namespace boost::python;
 using boost::ref;
+using boost::python::call;
 
 /**
  * @author Alberto M. Esmoris Pena
