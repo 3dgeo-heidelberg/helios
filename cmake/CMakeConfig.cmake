@@ -8,16 +8,20 @@
 if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE RELEASE)
 endif()
+# Common flags
+if(PCL_BINDING)
+    set(CMAKE_CXX_STANDARD 14)
+else()
+    set(CMAKE_CXX_STANDARD 11)
+endif()
 if(WIN32 OR MSVC) # Windows flags
     set(CMAKE_CXX_FLAGS_RELEASE "/MD /O2 /Ob2 /DNDEBUG")
     set(CMAKE_CXX_FLAGS_DEBUG "")
-    set(CMAKE_CXX_STANDARD 11)
     set(CMAKE_CXX_FLAGS "-D_OS_WINDOWS_  /EHsc")
 else() # Linux flags
     #set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "-O3 -g -DNDEBUG -Wall")
     set(CMAKE_CXX_FLAGS_RELEASE "-O3 -DNDEBUG -Wall")
     set(CMAKE_CXX_FLAGS_DEBUG "-O0 -g3 -Wall")
-    set(CMAKE_CXX_STANDARD 11)
     set(CMAKE_CXX_FLAGS "-pthread -lz -Wno-deprecated")
 endif()
 

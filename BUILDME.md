@@ -4,9 +4,10 @@
 1. [Legacy version](#legacy-version)
 1. [Install](#install)
     1. [Dependencies](#dependencies)
-    1. [Install on Linux](#install-on-linux)
-    1. [Install on Linux with PyHelios Support](#install-on-linux-with-pyhelios-support) 
-    1. [Install on Windows](#install-on-windows)
+    2. [Install on Linux](#install-on-linux)
+    3. [Install on Linux with PyHelios Support](#install-on-linux-with-pyhelios-support) 
+    4. [Install on Linux with Visual Debug](#install-on-linux-with-visual-debug)
+    5. [Install on Windows](#install-on-windows)
 1. [Usage](#usage)
 1. [License](#license)
 
@@ -125,6 +126,27 @@ Finally, to execute the demo scene using PyHelios:
 
 ```python3 helios/pyhelios_demo/helios.py pyhelios_demo/custom_als_toyblocks.xml```
 
+### Install on Linux with Visual Debug
+Linux users might compile Helios++ with a visual debug module used mainly for
+development and debugging purposes. 
+
+First step is building Helios libraries through development scripts in
+*helios/scripts/build/* using script:
+```
+./build_all_libs.sh -c -v -w 6
+```
+The `-c` flag is used to include PCL (Point Cloud Library), the `-v` flag
+will build VTK and use it later to build PCL and the `-w 6` argument requests
+compilation acceleration using 6 threads. Of course, `-w n` is supported so
+feel free to use preferred number of threads. There is one more flag that
+can be used to specify the python version for Boost and PyHelios `-p 3.7`,
+just in case.
+
+Finally, when compiling Helios++ remember to call CMake with flag
+`-DPCL_BINDING=1` so PCL and VTK are considered when building Helios. Notice
+using PCL requires the C++ standard upgrades from C++11 to C++14, which differs
+from base Helios building which only requires C++11.
+
 ### Install on Windows
 
 To obtain the source just clone it from the repository
@@ -231,7 +253,7 @@ In this case we are going to use [Scilab 6.1.0 x64](https://www.scilab.org/downl
 Now it is necessary to download [Armadillo](http://arma.sourceforge.net/download.html)
 and decompress it inside *lib/armadillo*.
 
-Using [Armadillo 9.900.1](http://sourceforge.net/projects/arma/files/armadillo-9.900.1.tar.xz)
+Using [Armadillo 10.6.2](http://sourceforge.net/projects/arma/files/armadillo-10.6.2.tar.xz)
 or newer is recommended.
 
 Once Armadillo has been decompressed it is time to use CMake to configurate and
@@ -247,6 +269,19 @@ For instance: *C:\Program Files\scilab-6.1.0\bin*
 2) At `Linker -> Input` it is necessary to add path to the folder where scilab
 lib files are contained.
 For instance: *C:\Program Files\scilab-6.1.0\bin*
+
+<p>
+<b><span style="color:red;">/!\</span>
+WARNING
+<span style="color:red">/!\</span></b>
+Visual studio linking errors might occur. If it is your case, try explicitly
+binding both LAPACK and BLAS at the IDE itself:
+</p>
+
+```
+scilab-6.1.0/bin/lapack.lib
+scilab-6.1.0/bin/blasplus.lib
+```
 
 #### Compiling source
 

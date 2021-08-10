@@ -27,12 +27,13 @@ BOOST_TAR="${HELIOS_LIB_DIR}${BOOST_PKG}"
 BOOST_DEF_DIR="${HELIOS_LIB_DIR}"$(sed 's/\.tar\.gz//g' <<< ${BOOST_PKG})
 # Boost lib path (where it MUST be placed)
 BOOST_DIR="${HELIOS_LIB_DIR}"'boost/'
-# Target version that boost must link against
-BOOST_PYTHON_TARGET_VERSION='python3.7'
+
 
 
 # ---  SCRIPT LOGIC  --- #
 # ---------------------- #
+parse_build_args $@
+
 # Download armadillo if it is not downloaded yet
 if [ ! -f "${BOOST_TAR}" ]; then
     wget -c "${BOOST_URL}" -O "${BOOST_TAR}"
@@ -48,5 +49,5 @@ fi
 # Build boost
 cd "${BOOST_DIR}"
 ./bootstrap.sh --with-python=${BOOST_PYTHON_TARGET_VERSION}  --prefix="${BOOST_DIR}"
-./b2 cxxflags=-fPIC
-./b2 install
+./b2 -j ${HELIOS_BUILD_NCORES} cxxflags=-fPIC
+./b2 -j ${HELIOS_BUILD_NCORES} install

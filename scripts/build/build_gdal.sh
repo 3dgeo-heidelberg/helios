@@ -45,6 +45,8 @@ PROJ_BDIR="${GDAL_DIR}"'projlib/'
 
 # ---  SCRIPT LOGIC  --- #
 # ---------------------- #
+parse_build_args $@
+
 # Download GDAL if it is not downloaded yet
 if [ ! -f "${GDAL_TAR}" ]; then
     wget -c "${GDAL_URL}" -O "${GDAL_TAR}"
@@ -72,12 +74,12 @@ fi
 # Build PROJ
 cd "${PROJ_DIR}"
 ./configure --prefix="${PROJ_BDIR}"
-make
-make install
+make -j${HELIOS_BUILD_NCORES}
+make -j${HELIOS_BUILD_NCORES} install
 
 # Build GDAL
 cd "${GDAL_DIR}"
 ./configure --prefix="${GDAL_DIR}" --with-proj="${PROJ_BDIR}"
-make
-make install
+make -j${HELIOS_BUILD_NCORES}
+make -j${HELIOS_BUILD_NCORES} install
 
