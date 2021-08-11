@@ -20,8 +20,10 @@ namespace fs = boost::filesystem;
 #include <FileUtils.h>
 #include <armadillo>
 #include <iomanip>
+#ifdef PCL_BINDING
+#include <demo/DemoSelector.h>
+#endif
 
-using namespace std;
 void doTests(std::string const & testDir);
 
 // LOGGING FLAGS (DO NOT MODIFY HERE BUT IN logging.hpp makeDefault())
@@ -30,7 +32,7 @@ bool    logging::LOGGING_SHOW_TRACE, logging::LOGGING_SHOW_DEBUG,
         logging::LOGGING_SHOW_ERR;
 
 void printHelp(){
-    cout << "helios++ help:\n\n"
+    std::cout << "helios++ help:\n\n"
         << "\tSyntax: helios++ <survey_file_path> [OPTIONAL ARGUMENTS]\n\n"
         << "\tOPTIONAL ARGUMENTS:\n\n"
         << "\t\t-h or --help : Show this help\n\n"
@@ -94,7 +96,7 @@ void printHelp(){
         << "\t\t-v2 or -vv : Specify the verbosity level to report all "
         <<  "messages\n"
         << "\t\t\tBy default: only information and errors are reported\n\n"
-        << endl;
+        << std::endl;
 }
 
 int main(int argc, char** argv) {
@@ -106,10 +108,17 @@ int main(int argc, char** argv) {
 	}
 	else if(argc > 1){
 	    std::string inputPath, outputPath;
+	    std::string demo = ap.parseDemoRequest();
 	    if(ap.parseTestRequest()) {
             doTests(ap.parseTestDir());
             done = true;
         }
+        #ifdef PCL_BINDING
+	    else if(demo != "NULL"){
+            HeliosDemos::DemoSelector::getInstance()->select(demo);
+	        done = true;
+	    }
+        #endif
 	    else if(ap.parseUnzip(&inputPath, &outputPath)){
 	        FileUtils::unzipFile(inputPath, outputPath);
 	        done = true;
@@ -142,9 +151,9 @@ int main(int argc, char** argv) {
         logging::INFO(ss.str());
 
         // Handle default randomness generator
-        string seed = ap.parseSeed();
+        std::string seed = ap.parseSeed();
         if(seed != ""){
-            stringstream ss;
+            std::stringstream ss;
             ss << "seed: " << seed;
             logging::INFO(ss.str());
             setDefaultRandomnessGeneratorSeed(seed);
@@ -178,9 +187,9 @@ int main(int argc, char** argv) {
 }
 
 void LidarSim::init(
-    string surveyPath,
-    string assetsPath,
-    string outputPath,
+    std::string surveyPath,
+    std::string assetsPath,
+    std::string outputPath,
     bool writeWaveform,
     bool calcEchowidth,
     size_t njobs,
@@ -211,10 +220,10 @@ void LidarSim::init(
     logging::INFO(ss.str());
 
 	// Load survey description from XML file:
- 	shared_ptr<XmlSurveyLoader> xmlreader(
+ 	std::shared_ptr<XmlSurveyLoader> xmlreader(
  	    new XmlSurveyLoader(surveyPath, assetsPath)
  	);
-	shared_ptr<Survey> survey = xmlreader->load(
+	std::shared_ptr<Survey> survey = xmlreader->load(
 	    legNoiseDisabled,
 	    rebuildScene
     );
@@ -232,7 +241,7 @@ void LidarSim::init(
 		exit(-1);
 	}
 
-	shared_ptr<SurveyPlayback> playback = std::make_shared<SurveyPlayback>(
+	std::shared_ptr<SurveyPlayback> playback=std::make_shared<SurveyPlayback>(
         survey,
         outputPath,
         njobs,

@@ -50,6 +50,13 @@ public:
 	 * @brief Default vertex constructor
 	 */
 	Vertex() = default;
+	/**
+	 * @brief Build a vertex with given position coordinates
+	 * @param x \f$x\f$ position coordinate
+	 * @param y  \f$y\f$ position coordinate
+	 * @param z \f$z\f$ position coordinate
+	 */
+	Vertex(double const x, double const y, double const z) : pos(x, y, z) {};
 	Vertex(const Vertex &v);
 
 	// ***  M E T H O D S  *** //

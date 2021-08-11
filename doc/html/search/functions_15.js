@@ -4,7 +4,7 @@ var searchData=
   ['validatedetailed',['validateDetailed',['../d9/ddf/classVoxelFileParser.html#a7bc1f319223e79b9520fd1f3dc2a1f07',1,'VoxelFileParser']]],
   ['validateladlut',['validateLadLut',['../dd/df9/classHeliosTests_1_1LadLutTest.html#a5137d5997a6877bad8ed0b0fe8a28ce5',1,'HeliosTests::LadLutTest']]],
   ['validatetransformation',['validateTransformation',['../dd/df9/classHeliosTests_1_1LadLutTest.html#ac546064c5861eaf039930b49856869ed',1,'HeliosTests::LadLutTest']]],
-  ['vertex',['Vertex',['../d2/da0/classVertex.html#ae2152b82b92f1522812a1e2bb8c32ba5',1,'Vertex']]],
+  ['vertex',['Vertex',['../d2/da0/classVertex.html#ae2152b82b92f1522812a1e2bb8c32ba5',1,'Vertex::Vertex()=default'],['../d2/da0/classVertex.html#a4380b481411653af70ac6a7d87dc8f4d',1,'Vertex::Vertex(double const x, double const y, double const z)']]],
   ['voxel',['Voxel',['../d6/d44/classVoxel.html#a2a39138e73cedf56a2b9a9e2f28a2c5d',1,'Voxel::Voxel()=default'],['../d6/d44/classVoxel.html#a13fc18a3aefca7e9d9a04c2eec4ec366',1,'Voxel::Voxel(glm::dvec3 center, double voxelSize)'],['../d6/d44/classVoxel.html#a4da51b73b1521e7e7e4614f0c5b42172',1,'Voxel::Voxel(double x, double y, double z, double halfVoxelSize)']]],
   ['voxelfileparser',['VoxelFileParser',['../d9/ddf/classVoxelFileParser.html#aacfe87951117d8b72c1709751a27f787',1,'VoxelFileParser']]],
   ['voxelparsingtest',['VoxelParsingTest',['../da/d8d/classHeliosTests_1_1VoxelParsingTest.html#a5a44670a18e986c0324180950be4891c',1,'HeliosTests::VoxelParsingTest']]],

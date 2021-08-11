@@ -23,6 +23,12 @@ std::string ArgumentsParser::parseTestDir(){
     return "data/test/";
 }
 
+std::string ArgumentsParser::parseDemoRequest(){
+    int index = findIndexOfArgument("--demo");
+    if(index >= 0) return argv[index+1];
+    return "NULL";
+}
+
 std::string ArgumentsParser::parseSurveyPath() {
     if(argc < 2){
         std::cout << "Survey path as first argument is required!" << std::endl;

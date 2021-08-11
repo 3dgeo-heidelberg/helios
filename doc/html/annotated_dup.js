@@ -1,5 +1,10 @@
 var annotated_dup =
 [
+    [ "HeliosDemos", null, [
+      [ "BaseDemo", "df/df9/classHeliosDemos_1_1BaseDemo.html", "df/df9/classHeliosDemos_1_1BaseDemo" ],
+      [ "DemoSelector", "df/d3f/classHeliosDemos_1_1DemoSelector.html", "df/d3f/classHeliosDemos_1_1DemoSelector" ],
+      [ "SimplePrimitivesDemo", "d0/d1c/classHeliosDemos_1_1SimplePrimitivesDemo.html", "d0/d1c/classHeliosDemos_1_1SimplePrimitivesDemo" ]
+    ] ],
     [ "HeliosTests", null, [
       [ "BaseTest", "d9/d52/classHeliosTests_1_1BaseTest.html", "d9/d52/classHeliosTests_1_1BaseTest" ],
       [ "LadLutTest", "dd/df9/classHeliosTests_1_1LadLutTest.html", "dd/df9/classHeliosTests_1_1LadLutTest" ],
@@ -34,6 +39,8 @@ var annotated_dup =
     [ "DetailedVoxel", "d7/d5a/classDetailedVoxel.html", "d7/d5a/classDetailedVoxel" ],
     [ "DetailedVoxelLoader", "db/d49/classDetailedVoxelLoader.html", "db/d49/classDetailedVoxelLoader" ],
     [ "Directions", "df/dc3/classDirections.html", "df/dc3/classDirections" ],
+    [ "DynMovingObject", "d4/d96/classDynMovingObject.html", "d4/d96/classDynMovingObject" ],
+    [ "DynObject", "d5/d6a/classDynObject.html", "d5/d6a/classDynObject" ],
     [ "enum_hasher", "da/ded/structenum__hasher.html", "da/ded/structenum__hasher" ],
     [ "FiberArrayBeamDeflector", "d7/d20/classFiberArrayBeamDeflector.html", "d7/d20/classFiberArrayBeamDeflector" ],
     [ "file_logger", "d8/d63/classfile__logger.html", "d8/d63/classfile__logger" ],

@@ -27,7 +27,7 @@ var searchData=
   ['right',['right',['../df/dc3/classDirections.html#a90c74fe7a0e9ffb276982fd8659b8105',1,'Directions::right()'],['../d8/d94/classKDTreeNode.html#a541cf2b0ab4e928b3df158e3ab2950bd',1,'KDTreeNode::right()']]],
   ['rm2f',['rm2f',['../db/d8b/classHeliosTests_1_1RigidMotionTest.html#a5919c7c4b95acef22ce9b082a867a0f5',1,'HeliosTests::RigidMotionTest']]],
   ['rm3f',['rm3f',['../db/d8b/classHeliosTests_1_1RigidMotionTest.html#a57a3eaa06354010505edaea9b9bb0b78',1,'HeliosTests::RigidMotionTest']]],
-  ['rme',['rme',['../db/d8b/classHeliosTests_1_1RigidMotionTest.html#a9184d901320e12d1e328761ea82b6660',1,'HeliosTests::RigidMotionTest']]],
+  ['rme',['rme',['../d4/d96/classDynMovingObject.html#a532eb0f3bad6066ae73ccad2f2d22697',1,'DynMovingObject::rme()'],['../db/d8b/classHeliosTests_1_1RigidMotionTest.html#a9184d901320e12d1e328761ea82b6660',1,'HeliosTests::RigidMotionTest::rme()']]],
   ['road',['ROAD',['../df/d64/classLasSpecification.html#a5148aba8d9ab7690f19f8a916e1418a7',1,'LasSpecification']]],
   ['roll',['roll',['../db/d69/classHelicopterPlatform.html#a0a4e8ceaa8a560b672d5d943bfbfb38d',1,'HelicopterPlatform::roll()'],['../d2/d43/classTrajectory.html#a3f056dc847ef640fd31a7207b4610794',1,'Trajectory::roll()']]],
   ['root',['root',['../da/d81/classKDTreeRaycaster.html#a3442610d593106a58fbc98e1b24fe4e3',1,'KDTreeRaycaster']]],

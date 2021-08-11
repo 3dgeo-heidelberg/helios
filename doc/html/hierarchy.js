@@ -40,6 +40,9 @@ var hierarchy =
       [ "Scene", "d5/d9c/classScene.html", null ],
       [ "Survey", "d5/db6/classSurvey.html", null ]
     ] ],
+    [ "HeliosDemos::BaseDemo", "df/df9/classHeliosDemos_1_1BaseDemo.html", [
+      [ "HeliosDemos::SimplePrimitivesDemo", "d0/d1c/classHeliosDemos_1_1SimplePrimitivesDemo.html", null ]
+    ] ],
     [ "HeliosTests::BaseTest", "d9/d52/classHeliosTests_1_1BaseTest.html", [
       [ "HeliosTests::LadLutTest", "dd/df9/classHeliosTests_1_1LadLutTest.html", null ],
       [ "HeliosTests::NoiseTest", "de/dad/classHeliosTests_1_1NoiseTest.html", null ],
@@ -54,7 +57,11 @@ var hierarchy =
       [ "HeliosTests::VoxelParsingTest", "da/d8d/classHeliosTests_1_1VoxelParsingTest.html", null ]
     ] ],
     [ "Color4f", "db/d02/classColor4f.html", null ],
+    [ "HeliosDemos::DemoSelector", "df/d3f/classHeliosDemos_1_1DemoSelector.html", null ],
     [ "Directions", "df/dc3/classDirections.html", null ],
+    [ "DynObject", "d5/d6a/classDynObject.html", [
+      [ "DynMovingObject", "d4/d96/classDynMovingObject.html", null ]
+    ] ],
     [ "enum_hasher", "da/ded/structenum__hasher.html", null ],
     [ "exception", null, [
       [ "HeliosException", "d6/dda/classHeliosException.html", [

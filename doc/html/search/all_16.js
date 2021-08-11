@@ -7,7 +7,7 @@ var searchData=
   ['validatetransformation',['validateTransformation',['../dd/df9/classHeliosTests_1_1LadLutTest.html#ac546064c5861eaf039930b49856869ed',1,'HeliosTests::LadLutTest']]],
   ['vectorial',['Vectorial',['../dc/db6/classVectorial.html',1,'']]],
   ['velocity',['velocity',['../d1/d83/classMovingPlatform.html#ac80aef1ae5cbe96b5fa6ee1059ce8fdc',1,'MovingPlatform']]],
-  ['vertex',['Vertex',['../d2/da0/classVertex.html',1,'Vertex'],['../d2/da0/classVertex.html#ae2152b82b92f1522812a1e2bb8c32ba5',1,'Vertex::Vertex()']]],
+  ['vertex',['Vertex',['../d2/da0/classVertex.html',1,'Vertex'],['../d2/da0/classVertex.html#ae2152b82b92f1522812a1e2bb8c32ba5',1,'Vertex::Vertex()=default'],['../d2/da0/classVertex.html#a4380b481411653af70ac6a7d87dc8f4d',1,'Vertex::Vertex(double const x, double const y, double const z)']]],
   ['vertexkeyequal',['VertexKeyEqual',['../d5/dab/structVertexKeyEqual.html',1,'']]],
   ['vertexkeyhash',['VertexKeyHash',['../dc/d35/structVertexKeyHash.html',1,'']]],
   ['verticalanglemax_5frad',['verticalAngleMax_rad',['../d0/d23/classScannerSettings.html#a62b14d6ee9bb4e4e8f0d4bb866a2b682',1,'ScannerSettings']]],

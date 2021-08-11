@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['y',['y',['../d5/d0c/classPlatformSettings.html#a7a7e8510ad3cd1e4a3dfe4bffbed3f86',1,'PlatformSettings::y()'],['../db/d02/classColor4f.html#abceca2fffe29ef0cbe01189301ff190b',1,'Color4f::y()'],['../d9/d22/classLadLut.html#a0ebe1c4c037f0bdc3c041ac19981e005',1,'LadLut::Y()']]],
+  ['y',['Y',['../d9/d22/classLadLut.html#a0ebe1c4c037f0bdc3c041ac19981e005',1,'LadLut::Y()'],['../d5/d0c/classPlatformSettings.html#a7a7e8510ad3cd1e4a3dfe4bffbed3f86',1,'PlatformSettings::y()'],['../db/d02/classColor4f.html#abceca2fffe29ef0cbe01189301ff190b',1,'Color4f::y()']]],
   ['yaw',['yaw',['../db/d69/classHelicopterPlatform.html#a324eec9527d9ea53b14c183c969cb068',1,'HelicopterPlatform::yaw()'],['../d2/d43/classTrajectory.html#ab8d2ab4029cee86679428a51772987ee',1,'Trajectory::yaw()']]],
   ['yawatdeparture',['yawAtDeparture',['../d5/d0c/classPlatformSettings.html#ae00efd3cae8ef6c6a8e98b9678b90c43',1,'PlatformSettings']]],
   ['yawatdeparturespecified',['yawAtDepartureSpecified',['../d5/d0c/classPlatformSettings.html#ac3d7e57a7da4e24e1c3fe60cc916b0e6',1,'PlatformSettings']]],
