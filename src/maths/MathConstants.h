@@ -12,6 +12,13 @@ const double PI_HALF = M_PI/2.0;
 
 /**
  * \f[
+ *  \frac{\pi}{4}
+ * \f]
+ */
+const double PI_QUARTER = M_PI/4.0;
+
+/**
+ * \f[
  *  \frac{3{\pi}}{2}
  * \f]
  */

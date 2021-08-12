@@ -56,13 +56,13 @@ public:
      * @brief Implementation of identity rigid motion in \f$\mathbb{R}^{3}\f$
      * @see rigidmotion::RigidMotionFactory::makeIdentity
      */
-    RigidMotion makeIdentity() override;
+    RigidMotion makeIdentity() const override;
     /**
      * @brief Implementation of translation rigid motion in
      *  \f$\mathbb{R}^{3}\f$
      * @see rigidmotion::RigidMotionFactory::makeTranslation
      */
-    RigidMotion makeTranslation(colvec const shift) override;
+    RigidMotion makeTranslation(colvec const shift) const override;
     /**
      * @brief Implementation of reflection rigid motion in \f$\mathbb{R}^{3}\f$
      *
@@ -109,7 +109,7 @@ public:
      * @return Reflection rigid motion in \f$\mathbb{R}^{3}\f$
      * @see rigidmotion::RigidMotionR3Factory::canonicalReflection
      */
-    virtual RigidMotion makeReflection(colvec const ortho);
+    virtual RigidMotion makeReflection(colvec const ortho) const ;
     /**
      * @brief Fast implementation of a reflection rigid motion in
      *  \f$\mathbb{R}^{3}\f$
@@ -126,7 +126,7 @@ public:
      * @see rigidmotion::RigidMotionR3Factory::makeReflection(colvec const)
      * @see makeReflectionFast(colvec const, colvec const, colvec const)
      */
-    virtual RigidMotion makeReflectionFast(colvec const orthonormal);
+    virtual RigidMotion makeReflectionFast(colvec const orthonormal) const;
     /**
      * @brief Fast implementation of a reflection rigid motion in
      *  \f$\mathbb{R}^{3}\f$
@@ -148,7 +148,7 @@ public:
         colvec const u,
         colvec const alpha,
         colvec const beta
-    );
+    ) const;
     /**
      * @brief Implementation of a reflection rigid motion over a plane with
      *  \f$x\f$-axis as orthonormal.
@@ -156,7 +156,7 @@ public:
      *  \f$\mathbb{R}^{3}\f$
      * @see rigidmotion::RigidMotionR3Factory::makeReflection(colvec const)
      */
-    virtual RigidMotion makeReflectionX();
+    virtual RigidMotion makeReflectionX() const;
     /**
      * @brief Implementation of a reflection rigid motion over a plane with
      *  \f$y\f$-axis as orthonormal.
@@ -164,7 +164,7 @@ public:
      *  \f$\mathbb{R}^{3}\f$
      * @see rigidmotion::RigidMotionR3Factory::makeReflection(colvec const)
      */
-    virtual RigidMotion makeReflectionY();
+    virtual RigidMotion makeReflectionY() const;
     /**
      * @brief Implementation of a reflection rigid motion over a plane with
      *  \f$z\f$-axis as orthonormal.
@@ -172,7 +172,7 @@ public:
      *  \f$\mathbb{R}^{3}\f$
      * @see rigidmotion::RigidMotionR3Factory::makeReflection(colvec const)
      */
-    virtual RigidMotion makeReflectionZ();
+    virtual RigidMotion makeReflectionZ() const;
     /**
      * @brief Implementation of a glide reflection or glide plane rigid motion
      *  in \f$\mathbb{R}^{3}\f$.
@@ -197,7 +197,7 @@ public:
     virtual RigidMotion makeGlideReflection(
         colvec const ortho,
         colvec const shift
-    );
+    ) const;
     /**
      * @brief Fast implementation of a reflection rigid motion in
      *  \f$\mathbb{R}^{3}\f$
@@ -217,7 +217,7 @@ public:
     virtual RigidMotion makeGlideReflectionFast(
         colvec const orthonormal,
         colvec const shift
-    );
+    ) const;
     /**
      * @brief Implementation of rotation rigid motion over an arbitrary axis
      *  in \f$\mathbb{R}^{3}\f$
@@ -246,7 +246,10 @@ public:
      * @param theta The rotation angle
      * @return Rotation rigid motion in \f$\mathbb{R}^{3}\f$
      */
-    virtual RigidMotion makeRotation(colvec const axis, double const theta);
+    virtual RigidMotion makeRotation(
+        colvec const axis,
+        double const theta
+    ) const;
     /**
      * @brief Fast implementation of a rotation rigid motion in
      *  \f$\mathbb{R}^{3}\f$
@@ -262,28 +265,28 @@ public:
     virtual RigidMotion makeRotationFast(
         colvec const axis,
         double const theta
-    );
+    ) const;
     /**
      * @brief Implementation of a rotation rigid motion over the \f$x\f$-axis.
      * @param theta The rotation angle
      * @return Rotation rigid motion over \f$e_1\f$ vector (\f$x\f$-axis) in
      *  \f$\mathbb{R}^{3}\f$
      */
-    virtual RigidMotion makeRotationX(double const theta);
+    virtual RigidMotion makeRotationX(double const theta) const;
     /**
      * @brief Implementation of a rotation rigid motion over the \f$y\f$-axis.
      * @param theta The rotation angle
      * @return Rotation rigid motion over \f$e_2\f$ vector (\f$y\f$-axis) in
      *  \f$\mathbb{R}^{3}\f$
      */
-    virtual RigidMotion makeRotationY(double const theta);
+    virtual RigidMotion makeRotationY(double const theta) const;
     /**
      * @brief Implementation of a rotation rigid motion over the \f$z\f$-axis.
      * @param theta The rotation angle
      * @return Rotation rigid motion over \f$e_3\f$ vector (\f$z\f$-axis) in
      *  \f$\mathbb{R}^{3}\f$
      */
-    virtual RigidMotion makeRotationZ(double const theta);
+    virtual RigidMotion makeRotationZ(double const theta) const;
     /**
      * @brief Implementation of an helical rigid motion over an arbitrary axis
      *  in \f$\mathbb{R}^3\f$.
@@ -306,7 +309,7 @@ public:
         colvec const axis,
         double const theta,
         double const glide
-    );
+    ) const;
     /**
      * @brief Fast implementation of a helical rigid motion in
      *  \f$\mathbb{R}^{3}\f$
@@ -325,7 +328,7 @@ public:
         colvec const axis,
         double const theta,
         double const glide
-    );
+    ) const;
     /**
      * @brief Implementation of a helical rigid motion over the \f$x\f$-axis.
      * @param theta The rotation angle
@@ -333,7 +336,10 @@ public:
      * @return Helical rigid motion over \f$e_1\f$ vector (\f$x\f$-axis) in
      *  \f$\mathbb{R}^{3}\f$
      */
-    virtual RigidMotion makeHelicalX(double const theta, double const glide);
+    virtual RigidMotion makeHelicalX(
+        double const theta,
+        double const glide
+    ) const;
     /**
      * @brief Implementation of a helical rigid motion over the \f$y\f$-axis.
      * @param theta The rotation angle
@@ -341,7 +347,10 @@ public:
      * @return Helical rigid motion over \f$e_2\f$ vector (\f$y\f$-axis) in
      *  \f$\mathbb{R}^{3}\f$
      */
-    virtual RigidMotion makeHelicalY(double const theta, double const glide);
+    virtual RigidMotion makeHelicalY(
+        double const theta,
+        double const glide
+    ) const;
     /**
      * @brief Implementation of a helical rigid motion over the \f$z\f$-axis.
      * @param theta The rotation angle
@@ -349,7 +358,10 @@ public:
      * @return Helical rigid motion over \f$e_3\f$ vector (\f$z\f$-axis) in
      *  \f$\mathbb{R}^{3}\f$
      */
-    virtual RigidMotion makeHelicalZ(double const theta, double const glide);
+    virtual RigidMotion makeHelicalZ(
+        double const theta,
+        double const glide
+    ) const;
     /**
      * @brief Implementation of rotational symmetry rigid motion over an
      *  arbitrary rotation axis in \f$\mathbb{R}^{3}\f$
@@ -384,7 +396,7 @@ public:
     virtual RigidMotion makeRotationalSymmetry(
         colvec const axis,
         double const theta
-    );
+    ) const;
     /**
      * @brief Fast implementation of a rotational symmetry rigid motion in
      *  \f$\mathbb{R}^{3}\f$
@@ -401,7 +413,7 @@ public:
     virtual RigidMotion makeRotationalSymmetryFast(
         colvec const axis,
         double const theta
-    );
+    ) const;
     /**
      * @brief Implementation of rotational symmetry rigid motion over an
      *  arbitrary rotation axis in \f$\mathbb{R}^{3}\f$
@@ -424,7 +436,7 @@ public:
         colvec const axis,
         double const theta,
         colvec const center
-    );
+    ) const;
     /**
      * @brief Fast implementation of a rotational symmetry rigid motion in
      *  \f$\mathbb{R}^{3}\f$
@@ -444,27 +456,27 @@ public:
         colvec const axis,
         double const theta,
         colvec const center
-    );
+    ) const;
     /**
      * @brief Implementation of a rotational symmetry over the \f$x\f$-axis
      * @param theta Rotation angle
      * @return Rotational symmetry rigid motion over \f$e_1\f$ vector
      *  (\f$x\f$-axis) in \f$\mathbb{R}^{3}\f$
      */
-    virtual RigidMotion makeRotationalSymmetryX(double const theta);
+    virtual RigidMotion makeRotationalSymmetryX(double const theta) const;
     /**
      * @brief Implementation of a rotational symmetry over the \f$y\f$-axis
      * @param theta Rotation angle
      * @return Rotational symmetry rigid motion over \f$e_2\f$ vector
      *  (\f$y\f$-axis) in \f$\mathbb{R}^{3}\f$
      */
-    virtual RigidMotion makeRotationalSymmetryY(double const theta);
+    virtual RigidMotion makeRotationalSymmetryY(double const theta) const;
     /**
      * @brief Implementation of a rotational symmetry over the \f$z\f$-axis
      * @param theta Rotation angle
      * @return Rotational symmetry rigid motion over \f$e_3\f$ vector
      *  (\f$z\f$-axis) in \f$\mathbb{R}^{3}\f$
      */
-    virtual RigidMotion makeRotationalSymmetryZ(double const theta);
+    virtual RigidMotion makeRotationalSymmetryZ(double const theta) const;
 };
 }

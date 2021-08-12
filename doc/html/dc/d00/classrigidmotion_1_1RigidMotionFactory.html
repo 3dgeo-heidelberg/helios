@@ -114,12 +114,12 @@ Public Member Functions</h2></td></tr>
 &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d00/classrigidmotion_1_1RigidMotionFactory.html#a328e56dda7414eb61cba24b6f05eb75f">RigidMotionFactory</a> ()=default</td></tr>
 <tr class="memdesc:a328e56dda7414eb61cba24b6f05eb75f"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="../../dc/d00/classrigidmotion_1_1RigidMotionFactory.html" title="Class that must be extended by any class which provides factory methods for rigid motions...">RigidMotionFactory</a> default constructor. <br /></td></tr>
 <tr class="separator:a328e56dda7414eb61cba24b6f05eb75f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac97d8ac1a596093d1524d4652d9e0504"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="../../d7/d84/classrigidmotion_1_1RigidMotion.html">RigidMotion</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d00/classrigidmotion_1_1RigidMotionFactory.html#ac97d8ac1a596093d1524d4652d9e0504">makeIdentity</a> ()=0</td></tr>
-<tr class="memdesc:ac97d8ac1a596093d1524d4652d9e0504"><td class="mdescLeft">&#160;</td><td class="mdescRight">Build the identity rigid motion.  <a href="#ac97d8ac1a596093d1524d4652d9e0504">More...</a><br /></td></tr>
-<tr class="separator:ac97d8ac1a596093d1524d4652d9e0504"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adf0d59729296ee6cd99628eafb3c7730"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="../../d7/d84/classrigidmotion_1_1RigidMotion.html">RigidMotion</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d00/classrigidmotion_1_1RigidMotionFactory.html#adf0d59729296ee6cd99628eafb3c7730">makeTranslation</a> (arma::colvec const shift)=0</td></tr>
-<tr class="memdesc:adf0d59729296ee6cd99628eafb3c7730"><td class="mdescLeft">&#160;</td><td class="mdescRight">Build the translation rigid motion.  <a href="#adf0d59729296ee6cd99628eafb3c7730">More...</a><br /></td></tr>
-<tr class="separator:adf0d59729296ee6cd99628eafb3c7730"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a00a6e79e3d7dbe4c2859b00241c7e4ae"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="../../d7/d84/classrigidmotion_1_1RigidMotion.html">RigidMotion</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d00/classrigidmotion_1_1RigidMotionFactory.html#a00a6e79e3d7dbe4c2859b00241c7e4ae">makeIdentity</a> () const =0</td></tr>
+<tr class="memdesc:a00a6e79e3d7dbe4c2859b00241c7e4ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Build the identity rigid motion.  <a href="#a00a6e79e3d7dbe4c2859b00241c7e4ae">More...</a><br /></td></tr>
+<tr class="separator:a00a6e79e3d7dbe4c2859b00241c7e4ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a81c78af76b9d3fcd1b77f357be7131d0"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="../../d7/d84/classrigidmotion_1_1RigidMotion.html">RigidMotion</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d00/classrigidmotion_1_1RigidMotionFactory.html#a81c78af76b9d3fcd1b77f357be7131d0">makeTranslation</a> (arma::colvec const shift) const =0</td></tr>
+<tr class="memdesc:a81c78af76b9d3fcd1b77f357be7131d0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Build the translation rigid motion.  <a href="#a81c78af76b9d3fcd1b77f357be7131d0">More...</a><br /></td></tr>
+<tr class="separator:a81c78af76b9d3fcd1b77f357be7131d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Class that must be extended by any class which provides factory methods for rigid motions. Notice all rigid motions should be instantiated through corresponding factories. </p>
@@ -129,8 +129,8 @@ Public Member Functions</h2></td></tr>
 <dd>
 <a class="el" href="../../dc/df6/classrigidmotion_1_1RigidMotionR3Factory.html" title="Class providing building methods for rigid motions in . ">rigidmotion::RigidMotionR3Factory</a> </dd></dl>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="ac97d8ac1a596093d1524d4652d9e0504"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac97d8ac1a596093d1524d4652d9e0504">&#9670;&nbsp;</a></span>makeIdentity()</h2>
+<a id="a00a6e79e3d7dbe4c2859b00241c7e4ae"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a00a6e79e3d7dbe4c2859b00241c7e4ae">&#9670;&nbsp;</a></span>makeIdentity()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -142,7 +142,7 @@ Public Member Functions</h2></td></tr>
           <td class="memname">virtual <a class="el" href="../../d7/d84/classrigidmotion_1_1RigidMotion.html">RigidMotion</a> rigidmotion::RigidMotionFactory::makeIdentity </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
-          <td></td>
+          <td> const</td>
         </tr>
       </table>
   </td>
@@ -156,12 +156,12 @@ Public Member Functions</h2></td></tr>
 <p>The identity rigid motion \(f\) satisfies \(f(x)=x\). Using affine application notation it is \(X = C + AX\) which is satisfied if \(C=\vec{0}\) and \(A=I\) where \(I\) is the identity matrix.</p>
 <dl class="section return"><dt>Returns</dt><dd>Identity rigid motion </dd></dl>
 
-<p>Implemented in <a class="el" href="../../dc/df6/classrigidmotion_1_1RigidMotionR3Factory.html#a846b6e0f10812806ae4ead1baa8b01f8">rigidmotion::RigidMotionR3Factory</a>, and <a class="el" href="../../d7/da7/classrigidmotion_1_1RigidMotionR2Factory.html#a170cf7ff3e1f230c84ea17a24e717215">rigidmotion::RigidMotionR2Factory</a>.</p>
+<p>Implemented in <a class="el" href="../../dc/df6/classrigidmotion_1_1RigidMotionR3Factory.html#ad2b43502e385052b0297c24a3ff55ca3">rigidmotion::RigidMotionR3Factory</a>, and <a class="el" href="../../d7/da7/classrigidmotion_1_1RigidMotionR2Factory.html#ab246737ce5ca5583ff1dc23cf1abcf4c">rigidmotion::RigidMotionR2Factory</a>.</p>
 
 </div>
 </div>
-<a id="adf0d59729296ee6cd99628eafb3c7730"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adf0d59729296ee6cd99628eafb3c7730">&#9670;&nbsp;</a></span>makeTranslation()</h2>
+<a id="a81c78af76b9d3fcd1b77f357be7131d0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a81c78af76b9d3fcd1b77f357be7131d0">&#9670;&nbsp;</a></span>makeTranslation()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -174,7 +174,7 @@ Public Member Functions</h2></td></tr>
           <td>(</td>
           <td class="paramtype">arma::colvec const&#160;</td>
           <td class="paramname"><em>shift</em></td><td>)</td>
-          <td></td>
+          <td> const</td>
         </tr>
       </table>
   </td>

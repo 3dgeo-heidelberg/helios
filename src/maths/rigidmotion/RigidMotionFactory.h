@@ -36,7 +36,7 @@ public:
      *
      * @return Identity rigid motion
      */
-    virtual RigidMotion makeIdentity() = 0;
+    virtual RigidMotion makeIdentity() const = 0;
     /**
      * @brief Build the translation rigid motion.
      *
@@ -48,7 +48,7 @@ public:
      * @param shift Shift vector defining the translation
      * @return Translation rigid motion
      */
-    virtual RigidMotion makeTranslation(arma::colvec const shift) = 0;
+    virtual RigidMotion makeTranslation(arma::colvec const shift) const = 0;
 };
 
 }

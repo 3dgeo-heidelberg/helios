@@ -9,6 +9,7 @@ var searchData=
   ['addextraattributes',['addExtraAttributes',['../d2/db3/classLasSyncFileWriter.html#aca389d77ccde794405d3c483bff20015',1,'LasSyncFileWriter']]],
   ['addleg',['addLeg',['../d5/db6/classSurvey.html#a088718323fe8013b2e5eb5145cead976',1,'Survey']]],
   ['addobj',['addObj',['../dd/dc4/classScenePart.html#ad77755e3d5bf661ef5a69ca848de833d',1,'ScenePart']]],
+  ['appenddynobj',['appendDynObj',['../d9/dc5/classvisualhelios_1_1VHSimpleCanvas.html#ac0365afafb9727315c4f2e5e634f6871',1,'visualhelios::VHSimpleCanvas']]],
   ['apply',['apply',['../d7/d48/classSceneLoadingSpecification.html#ab7b283d285f87a755ce72297e4406a32',1,'SceneLoadingSpecification::apply()'],['../d2/da8/classrigidmotion_1_1RigidMotionEngine.html#a029fc21bc380b291c447484c08b03b86',1,'rigidmotion::RigidMotionEngine::apply(RigidMotion const &amp;f, mat const X)'],['../d2/da8/classrigidmotion_1_1RigidMotionEngine.html#a262a9a5179cced5e80bc61412aa31e98',1,'rigidmotion::RigidMotionEngine::apply(RigidMotion const &amp;f, colvec const X)']]],
   ['applyinverseto',['applyInverseTo',['../d5/dcb/classRotation.html#ac2cf2e57d5f9e550f81da26c0e9f692f',1,'Rotation::applyInverseTo(glm::dvec3 u)'],['../d5/dcb/classRotation.html#a5b380e6de65e16c39850af3f46fc8739',1,'Rotation::applyInverseTo(double *in, double *out)'],['../d5/dcb/classRotation.html#a831a880a832d291597f0b6eecdbe4a63',1,'Rotation::applyInverseTo(Rotation r)']]],
   ['applymeasurementerror',['applyMeasurementError',['../d6/d9e/classAbstractPulseRunnable.html#ad1ef3d2f2b751388bd1a5a44aa89b1d4',1,'AbstractPulseRunnable']]],

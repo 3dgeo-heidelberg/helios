@@ -24,7 +24,7 @@ arma::mat DynObject::matrixFromPrimitives(
     arma::mat X(3, m);
     size_t i = 0;
     for(size_t j = 0 ; j < primitives.size() ; ++j){
-        Primitive * primitive = primitives[i];
+        Primitive * primitive = primitives[j];
         Vertex const * vertices = primitive->getVertices();
         for(size_t k = 0 ; k < primitive->getNumVertices() ; ++k, ++i){
             X.col(i) = get(vertices + k);
@@ -34,19 +34,19 @@ arma::mat DynObject::matrixFromPrimitives(
 }
 
 void DynObject::matrixToPrimitives(
-    std::function<arma::colvec(Vertex *, arma::colvec const &)> set,
+    std::function<void(Vertex *, arma::colvec const&)> set,
     arma::mat const &X
 ){
     matrixToPrimitives(countVertices(), set, X);
 }
 void DynObject::matrixToPrimitives(
     size_t const m,
-    std::function<arma::colvec(Vertex *, arma::colvec const &)> set,
+    std::function<void(Vertex *, arma::colvec const&)> set,
     arma::mat const &X
 ){
     size_t i = 0;
     for(size_t j = 0 ; j < primitives.size() ; ++j){
-        Primitive * primitive = primitives[i];
+        Primitive * primitive = primitives[j];
         Vertex *vertices = primitive->getVertices();
         for(size_t k = 0 ; k < primitive->getNumVertices() ; ++k, ++i){
             set(vertices + k, X.col(i));
@@ -87,7 +87,15 @@ void DynObject::updatePrimitivesPositionFromMatrix(
     size_t const m,
     arma::mat const &X
 ){
-    // TODO Rethink : Implement
+    matrixToPrimitives(
+        m,
+        [](Vertex *p, arma::colvec const &x) -> void{
+            p->pos.x = x(0);
+            p->pos.y = x(1);
+            p->pos.z = x(2);
+        },
+        X
+    );
 }
 
 void DynObject::updatePrimitivesNormalFromMatrix(arma::mat const &X){
@@ -97,6 +105,14 @@ void DynObject::updatePrimitivesNormalFromMatrix(
     size_t const m,
     arma::mat const &X
 ){
-    // TODO Rethink : Implement
+    matrixToPrimitives(
+        m,
+        [](Vertex *p, arma::colvec const &x) -> void{
+            p->normal.x = x(0);
+            p->normal.y = x(1);
+            p->normal.z = x(2);
+        },
+        X
+    );
 }
 

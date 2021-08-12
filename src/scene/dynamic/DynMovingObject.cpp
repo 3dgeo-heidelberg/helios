@@ -12,7 +12,10 @@ shared_ptr<RigidMotion> DynMovingObject::_next(
 
 // ***  DYNAMIC BEHAVIOR  *** //
 // ************************** //
-void DynMovingObject::doStep(){
+bool DynMovingObject::doStep(){
+    // Flag to control whether the dynamic object has been modified or not
+    bool modified = false;
+
     // Apply position rigid motions, if any
     if(positionMotionQueueHasNext()){
         arma::mat X = positionMatrixFromPrimitives();
@@ -21,6 +24,7 @@ void DynMovingObject::doStep(){
             X = rme.apply(*rm, X);
         }
         updatePrimitivesPositionFromMatrix(X);
+        modified = true;
     }
 
     // Apply normal rigid motions, if any
@@ -31,5 +35,9 @@ void DynMovingObject::doStep(){
             X = rme.apply(*rm, X);
         }
         updatePrimitivesNormalFromMatrix(X);
+        modified = true;
     }
+
+    // Return modifications control flag
+    return modified;
 }

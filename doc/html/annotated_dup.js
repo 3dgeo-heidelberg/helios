@@ -27,6 +27,11 @@ var annotated_dup =
       [ "RigidMotionR2Factory", "d7/da7/classrigidmotion_1_1RigidMotionR2Factory.html", "d7/da7/classrigidmotion_1_1RigidMotionR2Factory" ],
       [ "RigidMotionR3Factory", "dc/df6/classrigidmotion_1_1RigidMotionR3Factory.html", "dc/df6/classrigidmotion_1_1RigidMotionR3Factory" ]
     ] ],
+    [ "visualhelios", null, [
+      [ "VHCanvas", "de/dda/classvisualhelios_1_1VHCanvas.html", "de/dda/classvisualhelios_1_1VHCanvas" ],
+      [ "VHDynObjectAdapter", "d5/dc4/classvisualhelios_1_1VHDynObjectAdapter.html", "d5/dc4/classvisualhelios_1_1VHDynObjectAdapter" ],
+      [ "VHSimpleCanvas", "d9/dc5/classvisualhelios_1_1VHSimpleCanvas.html", "d9/dc5/classvisualhelios_1_1VHSimpleCanvas" ]
+    ] ],
     [ "AABB", "d2/d1a/classAABB.html", "d2/d1a/classAABB" ],
     [ "AbstractBeamDeflector", "d7/d92/classAbstractBeamDeflector.html", "d7/d92/classAbstractBeamDeflector" ],
     [ "AbstractDetector", "d8/d6b/classAbstractDetector.html", "d8/d6b/classAbstractDetector" ],

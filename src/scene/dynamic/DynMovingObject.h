@@ -113,7 +113,7 @@ public:
      * @see DynMovingObject::positionMotionQueue
      * @see DynMovingObject::normalMotionQueue
      */
-    void doStep() override;
+    bool doStep() override;
 
     // ***  MOTION QUEUES METHODS  *** //
     // ******************************* //

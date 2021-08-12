@@ -81,9 +81,12 @@ public:
      * \f[
      *  \mathcal{D}_{t+1} = f\left(\mathcal{D}_{t}\right)
      * \f]
+     *
+     * @return True if computing the step has modified the dynamic object.
+     *  False if no changes have been performed.
      * @see DynObject::operator()()
      */
-    virtual void doStep() = 0;
+    virtual bool doStep() = 0;
     /**
      * @brief Alias for DynObject::doStep method so it can be used as a functor
      * @see DynObject::doStep
@@ -152,9 +155,9 @@ public:
      *
      * It can increase efficiency when the number of primitives defining the
      *  dynamic object remains the same by caching the countVertices method
-     *  output and passing as \f$m\f$. Otherwise, it will be computed for each
-     *  call of positionMatrixFromPrimitives method which implies iterating
-     *  through vertices of each primitive.
+     *  output and passing it as \f$m\f$. Otherwise, it will be computed for
+     *  each call of positionMatrixFromPrimitives method which implies
+     *  iterating through vertices of each primitive.
      *
      * @param m Total number of vertices
      * @see DynObject::positionMatrixFromPrimitives
@@ -182,8 +185,8 @@ public:
      *
      * It can increase efficiency when the number of primitives defining the
      *  dynamic object remains the same by caching the countVertices method
-     *  output and passing as \f$m\f$. Otherwise, it will be computed for each
-     *  call of normalMatrixFromPrimitives method which implies iterating
+     *  output and passing it as \f$m\f$. Otherwise, it will be computed for
+     *  each call of normalMatrixFromPrimitives method which implies iterating
      *  through vertices of each primitive.
      *
      * @param m Total number of vertices
@@ -201,6 +204,7 @@ public:
      *  the new position of the \f$j\f$-th primitive.
      *
      * @param X The position matrix containing new coordinates
+     * @see updatePrimitivesPositionFromMatrix(size_t const, arma::mat const &)
      */
     void updatePrimitivesPositionFromMatrix(arma::mat const &X);
     /**
@@ -214,7 +218,7 @@ public:
      *  iterating through vertices of each primitive.
      *
      * @param m Total number of vertices
-     * @see updatePrimitivesPositionFromMatrix(size_t const, arma::mat const &)
+     * @see updatePrimitivesPositionFromMatrix(arma::mat const &)
      */
     void updatePrimitivesPositionFromMatrix(
         size_t const m,
@@ -230,6 +234,7 @@ public:
      *  new normal of the \f$j\f$-th primitive.
      *
      * @param X The normal matrix containing new components
+     * @see updatePrimitivesNormalFromMatrix(size_t const, arma::mat const &)
      */
     void updatePrimitivesNormalFromMatrix(arma::mat const &X);
     /**
@@ -243,24 +248,108 @@ public:
      *  through vertices of each primitive.
      *
      * @param m Total number of vertices
-     * @see updatePrimitivesNormalFromMatrix(size_t const, arma::mat const &)
+     * @see updatePrimitivesNormalFromMatrix(arma::mat const &)
      */
     void updatePrimitivesNormalFromMatrix(size_t const m, arma::mat const &X);
 protected:
+    /**
+     * @brief Build a matrix from the set of primitives defining the dynamic
+     *  object.
+     *
+     * Let \f$X\f$ be the built matrix:
+     *
+     * \f[
+     *  X = \left[\begin{array}{lll}
+     *      x_{11} &\ldots& x_{1n} \\
+     *      \vdots &\ddots& \vdots \\
+     *      x_{m1} &\ldots& x_{mn}
+     *  \end{array}\right]
+     * \f]
+     *
+     * Now, let \f$\vec{x}_{j}=\left(x_{1j}, \ldots, x_{mj}\right)\f$ be the
+     *  \f$j\f$-th column vector of matrix \f$X\f$, \f$p_j\f$ be the
+     *  \f$j\f$-th vertex defining the dynamic object and \f$f\f$ be the
+     *  get function. Thus, the usage of the get function can be defined
+     *  as follows:
+     *
+     * \f[
+     *  \vec{x}_{j} = f\left(p_j\right)
+     * \f]
+     *
+     * @param get Function to extract a column vector for a vertex which will
+     *  be inserted in the matrix
+     * @return Built matrix
+     */
     arma::mat matrixFromPrimitives(
         std::function<arma::colvec(Vertex const *)> get
     );
+    /**
+     * @brief Like DynObject::matrixFromPrimitives but receiving the total
+     *  number of vertices beforehand
+     *
+     * It can increase efficiency when the number of primitives defining the
+     *  dynamic object remains the same by caching the countVertices method
+     *  output and passing it as \f$m\f$. Otherwise, it will be computed for
+     *  each call of matrixFromPrimitives method which implies iterating
+     *  through vertices of each primitive.
+     *
+     * @param m Total number of vertices
+     * @see DynObject::matrixFromPrimitives
+     * @see DynObject::countVertices
+     */
     arma::mat matrixFromPrimitives(
         size_t const m,
         std::function<arma::colvec(Vertex const *)> get
     );
+    /**
+     * @brief Update primitives defining the dynamic object from given matrix.
+     *
+     * Let \f$X\f$ be the input matrix:
+     *
+     * \f[
+     *  X = \left[\begin{array}{lll}
+     *      x_{11} &\ldots& x_{1n} \\
+     *      \vdots &\ddots& \vdots \\
+     *      x_{m1} &\ldots& x_{mn}
+     *  \end{array}\right]
+     * \f]
+     *
+     * Now, let \f$\vec{x}_{j}=\left(x_{1j}, \ldots, x_{mj}\right)\f$ be the
+     *  \f$j\f$-th column vector of matrix \f$X\f$, \f$p_j\f$ be the
+     *  \f$j\f$-th vertex defining the dynamic object and \f$f\f$ be the
+     *  set function. Thus, the usage of the set function can be defined
+     *  as follows:
+     *
+     * \f[
+     *  p_j = f\left(\vec{x}_{j}\right)
+     * \f]
+     *
+     * @param set Function to update a vertex from corresponding column vector
+     *  in given matrix
+     * @param X Matrix containing necessary data to update vertices. Each
+     *  column contains the data for its corresponding vertex
+     */
     void matrixToPrimitives(
-        std::function<arma::colvec(Vertex *, arma::colvec const &)> set,
+        std::function<void(Vertex *, arma::colvec const &)> set,
         arma::mat const &X
     );
+    /**
+     * @brief Like DynObject::matrixToPrimitives but receiving the total
+     *  number of vertices beforehand
+     *
+     * It can increase efficiency when the number of primitives defining the
+     *  dynamic object remains the same by caching the countVertices method
+     *  output and passing it as \f$m\f$. Otherwise, it will be computed for
+     *  each call of matrixToPrimitives method which implies iterating
+     *  through vertices of each primitive.
+     *
+     * @param m Total number of vertices
+     * @see DynObject::matrixToPrimitives
+     * @see DynObject::countVertices
+     */
     void matrixToPrimitives(
         size_t const m,
-        std::function<arma::colvec(Vertex *, arma::colvec const &)> set,
+        std::function<void(Vertex *, arma::colvec const &)> set,
         arma::mat const &X
     );
 };

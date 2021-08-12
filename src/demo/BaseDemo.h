@@ -10,7 +10,7 @@ using std::string;
 
 /**
  * @author Alberto M. Esmoris Pena
- * @verison 1.0
+ * @version 1.0
  *
  * @brief BaseDemo class
  *

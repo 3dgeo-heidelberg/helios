@@ -129,11 +129,11 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ac0f8e569c2c379fe43e0442a296e7036"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d6a/classDynObject.html#ac0f8e569c2c379fe43e0442a296e7036">DynObject</a> (string const <a class="el" href="../../d5/d6a/classDynObject.html#a59ad5ac3292b10132419c07d4297206e">id</a>, vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *&gt; const &amp;<a class="el" href="../../d5/d6a/classDynObject.html#a40b56284c87d4779f81d51032ab45b33">primitives</a>)</td></tr>
 <tr class="memdesc:ac0f8e569c2c379fe43e0442a296e7036"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dynamic object constructor with id and primitives as arguments.  <a href="#ac0f8e569c2c379fe43e0442a296e7036">More...</a><br /></td></tr>
 <tr class="separator:ac0f8e569c2c379fe43e0442a296e7036"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a759d824390008709eb4e99c9c1114fab"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d6a/classDynObject.html#a759d824390008709eb4e99c9c1114fab">doStep</a> ()=0</td></tr>
-<tr class="memdesc:a759d824390008709eb4e99c9c1114fab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Any dynamic object concrete implementation must override this method providing dynamic behavior to the object.  <a href="#a759d824390008709eb4e99c9c1114fab">More...</a><br /></td></tr>
-<tr class="separator:a759d824390008709eb4e99c9c1114fab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae3308d5d877a37e6880749925e6e3d8c"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d6a/classDynObject.html#ae3308d5d877a37e6880749925e6e3d8c">doStep</a> ()=0</td></tr>
+<tr class="memdesc:ae3308d5d877a37e6880749925e6e3d8c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Any dynamic object concrete implementation must override this method providing dynamic behavior to the object.  <a href="#ae3308d5d877a37e6880749925e6e3d8c">More...</a><br /></td></tr>
+<tr class="separator:ae3308d5d877a37e6880749925e6e3d8c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad3708a4115b39e1936c4a96c622faea7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d6a/classDynObject.html#ad3708a4115b39e1936c4a96c622faea7">operator()</a> ()</td></tr>
-<tr class="memdesc:ad3708a4115b39e1936c4a96c622faea7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Alias for <a class="el" href="../../d5/d6a/classDynObject.html#a759d824390008709eb4e99c9c1114fab" title="Any dynamic object concrete implementation must override this method providing dynamic behavior to th...">DynObject::doStep</a> method so it can be used as a functor.  <a href="#ad3708a4115b39e1936c4a96c622faea7">More...</a><br /></td></tr>
+<tr class="memdesc:ad3708a4115b39e1936c4a96c622faea7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Alias for <a class="el" href="../../d5/d6a/classDynObject.html#ae3308d5d877a37e6880749925e6e3d8c" title="Any dynamic object concrete implementation must override this method providing dynamic behavior to th...">DynObject::doStep</a> method so it can be used as a functor.  <a href="#ad3708a4115b39e1936c4a96c622faea7">More...</a><br /></td></tr>
 <tr class="separator:ad3708a4115b39e1936c4a96c622faea7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a87a7226168af1b3e91daf2556be1b799"><td class="memItemLeft" align="right" valign="top">vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> * &gt; const  &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d6a/classDynObject.html#a87a7226168af1b3e91daf2556be1b799">getPrimitives</a> () const</td></tr>
 <tr class="memdesc:a87a7226168af1b3e91daf2556be1b799"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain the primitives of the dynamic object.  <a href="#a87a7226168af1b3e91daf2556be1b799">More...</a><br /></td></tr>
@@ -177,18 +177,18 @@ Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
-<tr class="memitem:a54d8f77e0f633f224f17ccd6d312b6d5"><td class="memItemLeft" align="right" valign="top"><a id="a54d8f77e0f633f224f17ccd6d312b6d5"></a>
-arma::mat&#160;</td><td class="memItemRight" valign="bottom"><b>matrixFromPrimitives</b> (std::function&lt; arma::colvec(<a class="el" href="../../d2/da0/classVertex.html">Vertex</a> const *)&gt; get)</td></tr>
+<tr class="memitem:a54d8f77e0f633f224f17ccd6d312b6d5"><td class="memItemLeft" align="right" valign="top">arma::mat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d6a/classDynObject.html#a54d8f77e0f633f224f17ccd6d312b6d5">matrixFromPrimitives</a> (std::function&lt; arma::colvec(<a class="el" href="../../d2/da0/classVertex.html">Vertex</a> const *)&gt; get)</td></tr>
+<tr class="memdesc:a54d8f77e0f633f224f17ccd6d312b6d5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Build a matrix from the set of primitives defining the dynamic object.  <a href="#a54d8f77e0f633f224f17ccd6d312b6d5">More...</a><br /></td></tr>
 <tr class="separator:a54d8f77e0f633f224f17ccd6d312b6d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aadfde626d3139ca0766bdc6347cf51fa"><td class="memItemLeft" align="right" valign="top"><a id="aadfde626d3139ca0766bdc6347cf51fa"></a>
-arma::mat&#160;</td><td class="memItemRight" valign="bottom"><b>matrixFromPrimitives</b> (size_t const m, std::function&lt; arma::colvec(<a class="el" href="../../d2/da0/classVertex.html">Vertex</a> const *)&gt; get)</td></tr>
+<tr class="memitem:aadfde626d3139ca0766bdc6347cf51fa"><td class="memItemLeft" align="right" valign="top">arma::mat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d6a/classDynObject.html#aadfde626d3139ca0766bdc6347cf51fa">matrixFromPrimitives</a> (size_t const m, std::function&lt; arma::colvec(<a class="el" href="../../d2/da0/classVertex.html">Vertex</a> const *)&gt; get)</td></tr>
+<tr class="memdesc:aadfde626d3139ca0766bdc6347cf51fa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Like <a class="el" href="../../d5/d6a/classDynObject.html#a54d8f77e0f633f224f17ccd6d312b6d5" title="Build a matrix from the set of primitives defining the dynamic object. ">DynObject::matrixFromPrimitives</a> but receiving the total number of vertices beforehand.  <a href="#aadfde626d3139ca0766bdc6347cf51fa">More...</a><br /></td></tr>
 <tr class="separator:aadfde626d3139ca0766bdc6347cf51fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1e83eef6da8ba02de3076ba9b135631c"><td class="memItemLeft" align="right" valign="top"><a id="a1e83eef6da8ba02de3076ba9b135631c"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>matrixToPrimitives</b> (std::function&lt; arma::colvec(<a class="el" href="../../d2/da0/classVertex.html">Vertex</a> *, arma::colvec const &amp;)&gt; set, arma::mat const &amp;X)</td></tr>
-<tr class="separator:a1e83eef6da8ba02de3076ba9b135631c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a86cf40f551f6c5f5618edbf213eaf7c6"><td class="memItemLeft" align="right" valign="top"><a id="a86cf40f551f6c5f5618edbf213eaf7c6"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>matrixToPrimitives</b> (size_t const m, std::function&lt; arma::colvec(<a class="el" href="../../d2/da0/classVertex.html">Vertex</a> *, arma::colvec const &amp;)&gt; set, arma::mat const &amp;X)</td></tr>
-<tr class="separator:a86cf40f551f6c5f5618edbf213eaf7c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad2414442009a1d0e7dcfa160f02df9a7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d6a/classDynObject.html#ad2414442009a1d0e7dcfa160f02df9a7">matrixToPrimitives</a> (std::function&lt; void(<a class="el" href="../../d2/da0/classVertex.html">Vertex</a> *, arma::colvec const &amp;)&gt; set, arma::mat const &amp;X)</td></tr>
+<tr class="memdesc:ad2414442009a1d0e7dcfa160f02df9a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Update primitives defining the dynamic object from given matrix.  <a href="#ad2414442009a1d0e7dcfa160f02df9a7">More...</a><br /></td></tr>
+<tr class="separator:ad2414442009a1d0e7dcfa160f02df9a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afc48ff88ccb94ecafe080dc6c27d6484"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d6a/classDynObject.html#afc48ff88ccb94ecafe080dc6c27d6484">matrixToPrimitives</a> (size_t const m, std::function&lt; void(<a class="el" href="../../d2/da0/classVertex.html">Vertex</a> *, arma::colvec const &amp;)&gt; set, arma::mat const &amp;X)</td></tr>
+<tr class="memdesc:afc48ff88ccb94ecafe080dc6c27d6484"><td class="mdescLeft">&#160;</td><td class="mdescRight">Like <a class="el" href="../../d5/d6a/classDynObject.html#ad2414442009a1d0e7dcfa160f02df9a7" title="Update primitives defining the dynamic object from given matrix. ">DynObject::matrixToPrimitives</a> but receiving the total number of vertices beforehand.  <a href="#afc48ff88ccb94ecafe080dc6c27d6484">More...</a><br /></td></tr>
+<tr class="separator:afc48ff88ccb94ecafe080dc6c27d6484"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
@@ -348,8 +348,8 @@ vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *
 
 </div>
 </div>
-<a id="a759d824390008709eb4e99c9c1114fab"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a759d824390008709eb4e99c9c1114fab">&#9670;&nbsp;</a></span>doStep()</h2>
+<a id="ae3308d5d877a37e6880749925e6e3d8c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae3308d5d877a37e6880749925e6e3d8c">&#9670;&nbsp;</a></span>doStep()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -358,7 +358,7 @@ vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual void DynObject::doStep </td>
+          <td class="memname">virtual bool DynObject::doStep </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -376,9 +376,10 @@ vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *
 <p class="formulaDsp">
 \[ \mathcal{D}_{t+1} = f\left(\mathcal{D}_{t}\right) \]
 </p>
- <dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d5/d6a/classDynObject.html#ad3708a4115b39e1936c4a96c622faea7" title="Alias for DynObject::doStep method so it can be used as a functor. ">DynObject::operator()()</a> </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>True if computing the step has modified the dynamic object. False if no changes have been performed. </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d5/d6a/classDynObject.html#ad3708a4115b39e1936c4a96c622faea7" title="Alias for DynObject::doStep method so it can be used as a functor. ">DynObject::operator()()</a> </dd></dl>
 
-<p>Implemented in <a class="el" href="../../d4/d96/classDynMovingObject.html#a9e623f12f1d161cc231509f3068cc031">DynMovingObject</a>.</p>
+<p>Implemented in <a class="el" href="../../d4/d96/classDynMovingObject.html#a813d8a76e64b24b059959998520325ff">DynMovingObject</a>.</p>
 
 </div>
 </div>
@@ -440,6 +441,204 @@ vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *
 
 </div>
 </div>
+<a id="a54d8f77e0f633f224f17ccd6d312b6d5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a54d8f77e0f633f224f17ccd6d312b6d5">&#9670;&nbsp;</a></span>matrixFromPrimitives() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">arma::mat DynObject::matrixFromPrimitives </td>
+          <td>(</td>
+          <td class="paramtype">std::function&lt; arma::colvec(<a class="el" href="../../d2/da0/classVertex.html">Vertex</a> const *)&gt;&#160;</td>
+          <td class="paramname"><em>get</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Build a matrix from the set of primitives defining the dynamic object. </p>
+<p>Let \(X\) be the built matrix:</p>
+<p class="formulaDsp">
+\[ X = \left[\begin{array}{lll} x_{11} &amp;\ldots&amp; x_{1n} \\ \vdots &amp;\ddots&amp; \vdots \\ x_{m1} &amp;\ldots&amp; x_{mn} \end{array}\right] \]
+</p>
+<p>Now, let \(\vec{x}_{j}=\left(x_{1j}, \ldots, x_{mj}\right)\) be the \(j\)-th column vector of matrix \(X\), \(p_j\) be the \(j\)-th vertex defining the dynamic object and \(f\) be the get function. Thus, the usage of the get function can be defined as follows:</p>
+<p class="formulaDsp">
+\[ \vec{x}_{j} = f\left(p_j\right) \]
+</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">get</td><td>Function to extract a column vector for a vertex which will be inserted in the matrix </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Built matrix </dd></dl>
+
+</div>
+</div>
+<a id="aadfde626d3139ca0766bdc6347cf51fa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aadfde626d3139ca0766bdc6347cf51fa">&#9670;&nbsp;</a></span>matrixFromPrimitives() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">arma::mat DynObject::matrixFromPrimitives </td>
+          <td>(</td>
+          <td class="paramtype">size_t const&#160;</td>
+          <td class="paramname"><em>m</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::function&lt; arma::colvec(<a class="el" href="../../d2/da0/classVertex.html">Vertex</a> const *)&gt;&#160;</td>
+          <td class="paramname"><em>get</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Like <a class="el" href="../../d5/d6a/classDynObject.html#a54d8f77e0f633f224f17ccd6d312b6d5" title="Build a matrix from the set of primitives defining the dynamic object. ">DynObject::matrixFromPrimitives</a> but receiving the total number of vertices beforehand. </p>
+<p>It can increase efficiency when the number of primitives defining the dynamic object remains the same by caching the countVertices method output and passing it as \(m\). Otherwise, it will be computed for each call of matrixFromPrimitives method which implies iterating through vertices of each primitive.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">m</td><td>Total number of vertices </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d5/d6a/classDynObject.html#a54d8f77e0f633f224f17ccd6d312b6d5" title="Build a matrix from the set of primitives defining the dynamic object. ">DynObject::matrixFromPrimitives</a> </dd>
+<dd>
+<a class="el" href="../../d5/d6a/classDynObject.html#aa74992b76cb5193f1b5d301c5e79da15" title="Count how many vertices there are defining the dynamic object. ">DynObject::countVertices</a> </dd></dl>
+
+</div>
+</div>
+<a id="ad2414442009a1d0e7dcfa160f02df9a7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad2414442009a1d0e7dcfa160f02df9a7">&#9670;&nbsp;</a></span>matrixToPrimitives() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void DynObject::matrixToPrimitives </td>
+          <td>(</td>
+          <td class="paramtype">std::function&lt; void(<a class="el" href="../../d2/da0/classVertex.html">Vertex</a> *, arma::colvec const &amp;)&gt;&#160;</td>
+          <td class="paramname"><em>set</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">arma::mat const &amp;&#160;</td>
+          <td class="paramname"><em>X</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Update primitives defining the dynamic object from given matrix. </p>
+<p>Let \(X\) be the input matrix:</p>
+<p class="formulaDsp">
+\[ X = \left[\begin{array}{lll} x_{11} &amp;\ldots&amp; x_{1n} \\ \vdots &amp;\ddots&amp; \vdots \\ x_{m1} &amp;\ldots&amp; x_{mn} \end{array}\right] \]
+</p>
+<p>Now, let \(\vec{x}_{j}=\left(x_{1j}, \ldots, x_{mj}\right)\) be the \(j\)-th column vector of matrix \(X\), \(p_j\) be the \(j\)-th vertex defining the dynamic object and \(f\) be the set function. Thus, the usage of the set function can be defined as follows:</p>
+<p class="formulaDsp">
+\[ p_j = f\left(\vec{x}_{j}\right) \]
+</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">set</td><td>Function to update a vertex from corresponding column vector in given matrix </td></tr>
+    <tr><td class="paramname">X</td><td>Matrix containing necessary data to update vertices. Each column contains the data for its corresponding vertex </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="afc48ff88ccb94ecafe080dc6c27d6484"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afc48ff88ccb94ecafe080dc6c27d6484">&#9670;&nbsp;</a></span>matrixToPrimitives() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void DynObject::matrixToPrimitives </td>
+          <td>(</td>
+          <td class="paramtype">size_t const&#160;</td>
+          <td class="paramname"><em>m</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::function&lt; void(<a class="el" href="../../d2/da0/classVertex.html">Vertex</a> *, arma::colvec const &amp;)&gt;&#160;</td>
+          <td class="paramname"><em>set</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">arma::mat const &amp;&#160;</td>
+          <td class="paramname"><em>X</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Like <a class="el" href="../../d5/d6a/classDynObject.html#ad2414442009a1d0e7dcfa160f02df9a7" title="Update primitives defining the dynamic object from given matrix. ">DynObject::matrixToPrimitives</a> but receiving the total number of vertices beforehand. </p>
+<p>It can increase efficiency when the number of primitives defining the dynamic object remains the same by caching the countVertices method output and passing it as \(m\). Otherwise, it will be computed for each call of matrixToPrimitives method which implies iterating through vertices of each primitive.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">m</td><td>Total number of vertices </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d5/d6a/classDynObject.html#ad2414442009a1d0e7dcfa160f02df9a7" title="Update primitives defining the dynamic object from given matrix. ">DynObject::matrixToPrimitives</a> </dd>
+<dd>
+<a class="el" href="../../d5/d6a/classDynObject.html#aa74992b76cb5193f1b5d301c5e79da15" title="Count how many vertices there are defining the dynamic object. ">DynObject::countVertices</a> </dd></dl>
+
+</div>
+</div>
 <a id="ae1dcb51388910e45473dac03705a26ee"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae1dcb51388910e45473dac03705a26ee">&#9670;&nbsp;</a></span>normalMatrixFromPrimitives() <span class="overload">[1/2]</span></h2>
 
@@ -480,7 +679,7 @@ vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *
 </div><div class="memdoc">
 
 <p>Like <a class="el" href="../../d5/d6a/classDynObject.html#ae1dcb51388910e45473dac03705a26ee" title="Obtain the normal matrix for primitives defining the dynamic object. ">DynObject::normalMatrixFromPrimitives</a> but receiving the total number of vertices beforehand. </p>
-<p>It can increase efficiency when the number of primitives defining the dynamic object remains the same by caching the countVertices method output and passing as \(m\). Otherwise, it will be computed for each call of normalMatrixFromPrimitives method which implies iterating through vertices of each primitive.</p>
+<p>It can increase efficiency when the number of primitives defining the dynamic object remains the same by caching the countVertices method output and passing it as \(m\). Otherwise, it will be computed for each call of normalMatrixFromPrimitives method which implies iterating through vertices of each primitive.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">m</td><td>Total number of vertices </td></tr>
@@ -516,8 +715,8 @@ vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *
 </table>
 </div><div class="memdoc">
 
-<p>Alias for <a class="el" href="../../d5/d6a/classDynObject.html#a759d824390008709eb4e99c9c1114fab" title="Any dynamic object concrete implementation must override this method providing dynamic behavior to th...">DynObject::doStep</a> method so it can be used as a functor. </p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d5/d6a/classDynObject.html#a759d824390008709eb4e99c9c1114fab" title="Any dynamic object concrete implementation must override this method providing dynamic behavior to th...">DynObject::doStep</a> </dd></dl>
+<p>Alias for <a class="el" href="../../d5/d6a/classDynObject.html#ae3308d5d877a37e6880749925e6e3d8c" title="Any dynamic object concrete implementation must override this method providing dynamic behavior to th...">DynObject::doStep</a> method so it can be used as a functor. </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d5/d6a/classDynObject.html#ae3308d5d877a37e6880749925e6e3d8c" title="Any dynamic object concrete implementation must override this method providing dynamic behavior to th...">DynObject::doStep</a> </dd></dl>
 
 </div>
 </div>
@@ -561,7 +760,7 @@ vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *
 </div><div class="memdoc">
 
 <p>Like <a class="el" href="../../d5/d6a/classDynObject.html#a0831fcbb5ee555d5ba3ef32aa7be6200" title="Obtain the position matrix for primitives defining the dynamic object. ">DynObject::positionMatrixFromPrimitives</a> but receiving the total number of vertices beforehand. </p>
-<p>It can increase efficiency when the number of primitives defining the dynamic object remains the same by caching the countVertices method output and passing as \(m\). Otherwise, it will be computed for each call of positionMatrixFromPrimitives method which implies iterating through vertices of each primitive.</p>
+<p>It can increase efficiency when the number of primitives defining the dynamic object remains the same by caching the countVertices method output and passing it as \(m\). Otherwise, it will be computed for each call of positionMatrixFromPrimitives method which implies iterating through vertices of each primitive.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">m</td><td>Total number of vertices </td></tr>
@@ -668,6 +867,7 @@ vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *
   </table>
   </dd>
 </dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d5/d6a/classDynObject.html#a85885c7da0fdb84f80785ae91ad325e3" title="Like updatePrimitivesNormalFromMatrix(arma::mat const &amp;) but receiving the total number of vertices b...">updatePrimitivesNormalFromMatrix(size_t const, arma::mat const &amp;)</a> </dd></dl>
 
 </div>
 </div>
@@ -705,7 +905,7 @@ vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *
   </table>
   </dd>
 </dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d5/d6a/classDynObject.html#a85885c7da0fdb84f80785ae91ad325e3" title="Like updatePrimitivesNormalFromMatrix(arma::mat const &amp;) but receiving the total number of vertices b...">updatePrimitivesNormalFromMatrix(size_t const, arma::mat const &amp;)</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d5/d6a/classDynObject.html#a0000b9944193085372ffd75212009513" title="Update the normal of each primitive with given matrix. ">updatePrimitivesNormalFromMatrix(arma::mat const &amp;)</a> </dd></dl>
 
 </div>
 </div>
@@ -733,6 +933,7 @@ vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *
   </table>
   </dd>
 </dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d5/d6a/classDynObject.html#a7afb8e0e89669ecbdf62672cba59ab0c" title="Like updatePrimitivesPositionFromMatrix(arma::mat const &amp;) but receiving the total number of vertices...">updatePrimitivesPositionFromMatrix(size_t const, arma::mat const &amp;)</a> </dd></dl>
 
 </div>
 </div>
@@ -770,7 +971,7 @@ vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *
   </table>
   </dd>
 </dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d5/d6a/classDynObject.html#a7afb8e0e89669ecbdf62672cba59ab0c" title="Like updatePrimitivesPositionFromMatrix(arma::mat const &amp;) but receiving the total number of vertices...">updatePrimitivesPositionFromMatrix(size_t const, arma::mat const &amp;)</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d5/d6a/classDynObject.html#aa4e769bc59d0fa9444523745662c7be1" title="Update the position of each primitive with given matrix. ">updatePrimitivesPositionFromMatrix(arma::mat const &amp;)</a> </dd></dl>
 
 </div>
 </div>

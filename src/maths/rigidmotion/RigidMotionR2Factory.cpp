@@ -4,19 +4,21 @@ using namespace rigidmotion;
 
 // ***  RIGID MOTION FACTORY METHODS  *** //
 // ************************************** //
-RigidMotion RigidMotionR2Factory::makeIdentity(){
+RigidMotion RigidMotionR2Factory::makeIdentity() const {
     return RigidMotion(zeros(2), eye(2, 2));
 };
 
-RigidMotion RigidMotionR2Factory::makeTranslation(arma::colvec const shift){
+RigidMotion RigidMotionR2Factory::makeTranslation(
+    arma::colvec const shift
+) const {
     return RigidMotion(shift, eye(2, 2));
 }
 
-RigidMotion RigidMotionR2Factory::makeReflection(colvec const axis){
+RigidMotion RigidMotionR2Factory::makeReflection(colvec const axis) const {
     return makeReflection(std::atan2(axis[1], axis[0]));
 }
 
-RigidMotion RigidMotionR2Factory::makeReflection(double const theta){
+RigidMotion RigidMotionR2Factory::makeReflection(double const theta) const {
     double const theta2 = 2.0*theta;
     double const theta2cos = std::cos(theta2);
     double const theta2sin = std::sin(theta2);
@@ -32,14 +34,14 @@ RigidMotion RigidMotionR2Factory::makeReflection(double const theta){
 RigidMotion RigidMotionR2Factory::makeGlideReflection(
     colvec const axis,
     double const glide
-){
+) const {
     return makeGlideReflection(std::atan2(axis[1], axis[0]), glide);
 }
 
 RigidMotion RigidMotionR2Factory::makeGlideReflection(
     double const theta,
     double const glide
-){
+) const {
     colvec const axis(std::vector<double>({std::cos(theta), std::sin(theta)}));
     RigidMotion rm = makeReflection(theta);
     rm.setC(glide * axis);
@@ -49,7 +51,7 @@ RigidMotion RigidMotionR2Factory::makeGlideReflection(
 RigidMotion RigidMotionR2Factory::makeRotation(
     double const theta,
     colvec const center
-){
+) const {
     double const thetacos = std::cos(theta);
     double const thetasin = std::sin(theta);
     mat A = mat(2, 2);

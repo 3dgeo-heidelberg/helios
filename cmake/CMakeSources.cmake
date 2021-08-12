@@ -30,6 +30,10 @@ if(${PYTHON_BINDING})
 endif()
 # PCL specific include directories
 if(${PCL_BINDING})
-    list(APPEND HELIOS_INCLUDE_DIRECTORIES "src/demo/")
+    list(APPEND HELIOS_INCLUDE_DIRECTORIES
+        "src/visualhelios/"
+        "src/visualhelios/adapters/"
+        "src/demo/"
+    )
 endif()
 include_directories(${HELIOS_INCLUDE_DIRECTORIES})

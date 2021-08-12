@@ -31,6 +31,7 @@ var searchData=
   ['isfinished',['isFinished',['../d3/d76/classPyHeliosSimulation.html#a5e672e3392cbba32f8182fab64924894',1,'PyHeliosSimulation']]],
   ['isfixedincidenceangle',['isFixedIncidenceAngle',['../dc/d42/classScanner.html#a1ee06c00b4ed28f0a487722229385c5c',1,'Scanner']]],
   ['isfixedvalueenabled',['isFixedValueEnabled',['../d9/d6b/classNoiseSource.html#a40405e51526c82cd853143c113887eb1',1,'NoiseSource']]],
+  ['isforceredraw',['isForceRedraw',['../de/dda/classvisualhelios_1_1VHCanvas.html#a5d3556d969232357a5b2fc5d2472be66',1,'visualhelios::VHCanvas']]],
   ['isfullwavenoise',['isFullWaveNoise',['../dc/d42/classScanner.html#a9175c9b48fe385d9fe217fbb087e3555',1,'Scanner']]],
   ['isground',['isGround',['../d3/d89/classMaterial.html#ab01034a003a0e9798f11971f9af624c3',1,'Material']]],
   ['islinecomment',['isLineComment',['../d6/d03/classXYZPointCloudFileLoader.html#af109c0c3a32aa5069392d552460c842f',1,'XYZPointCloudFileLoader']]],

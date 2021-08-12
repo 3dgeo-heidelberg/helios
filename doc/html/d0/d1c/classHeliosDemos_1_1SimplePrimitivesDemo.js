@@ -1,9 +1,10 @@
 var classHeliosDemos_1_1SimplePrimitivesDemo =
 [
     [ "SimplePrimitivesDemo", "d0/d1c/classHeliosDemos_1_1SimplePrimitivesDemo.html#a587e53ca085606ba4572b8c5cd9308d8", null ],
-    [ "buildFixedStructure", "d0/d1c/classHeliosDemos_1_1SimplePrimitivesDemo.html#a760f02a30e7e882007bce5bdb6ecb9f9", null ],
-    [ "buildMobileStructure", "d0/d1c/classHeliosDemos_1_1SimplePrimitivesDemo.html#a166ace498d08e21963e24216ef2c5d3a", null ],
-    [ "buildPolymesh", "d0/d1c/classHeliosDemos_1_1SimplePrimitivesDemo.html#a9aae06acb723e76918209f5c7ba1918a", null ],
-    [ "buildStaticStructure", "d0/d1c/classHeliosDemos_1_1SimplePrimitivesDemo.html#a226848cd38c4cf366d9b057069ea33e5", null ],
+    [ "buildFixedStructure", "d0/d1c/classHeliosDemos_1_1SimplePrimitivesDemo.html#a044a27424671f1a73683f217bbb14747", null ],
+    [ "buildGroundStructure", "d0/d1c/classHeliosDemos_1_1SimplePrimitivesDemo.html#a6dc26c56a164822ab09741dba934472e", null ],
+    [ "buildHelicalStructure", "d0/d1c/classHeliosDemos_1_1SimplePrimitivesDemo.html#ae3987f55ff64b592a544ed629458b4f4", null ],
+    [ "buildMobileStructure", "d0/d1c/classHeliosDemos_1_1SimplePrimitivesDemo.html#a19a51b2cc4b03b1947800c96330ddce0", null ],
+    [ "buildStaticStructure", "d0/d1c/classHeliosDemos_1_1SimplePrimitivesDemo.html#a77a30ca810bbd9591ec068b54c7be354", null ],
     [ "run", "d0/d1c/classHeliosDemos_1_1SimplePrimitivesDemo.html#a2301b68dd9d1047b8860052a35954f84", null ]
 ];

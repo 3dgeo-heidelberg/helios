@@ -3,6 +3,7 @@
 
 #include <demo/BaseDemo.h>
 #include <scene/primitives/Triangle.h>
+#include <visualhelios/adapters/VHDynObjectAdapter.h>
 
 #include <vector>
 #include <memory>
@@ -10,6 +11,8 @@
 #include <pcl/PolygonMesh.h>
 
 namespace HeliosDemos{
+
+using visualhelios::VHDynObjectAdapter;
 
 using std::vector;
 using std::shared_ptr;
@@ -19,7 +22,8 @@ using std::shared_ptr;
  * @version 1.0
  * @brief Simple primitives demo
  *
- * This demo implements simple objects
+ * This demo implements the rendering of simple objects performing different
+ *  motions
  */
 class SimplePrimitivesDemo : public BaseDemo{
 public:
@@ -40,32 +44,30 @@ public:
     // ***  U T I L  *** //
     // ***************** //
     /**
-     * @brief Build a polygon mesh from given set of helios triangle primitives
-     * @param[in] triangles Triangle primitives
-     * @param[out] vertices Where the indices of vertices defining the mesh
-     *  will be stored
-     * @return Built point cloud from given triangles
-     * @see Triangle
+     * @brief Build the dynamic object representing the mobile structure
+     * @return Dynamic object representing the mobile structure
      */
-    pcl::PointCloud<pcl::PointXYZ>::Ptr buildPolymesh(
-        vector<shared_ptr<Triangle>> const triangles,
-        std::vector<pcl::Vertices> &vertices
-    );
+    shared_ptr<DynObject> buildMobileStructure();
     /**
-     * @brief Build the triangles representing the mobile structure
-     * @return Triangles representing the mobile structure
+     * @brief Build the dynamic object representing the fixed structure
+     * @return Dynamic object representing the fixed structure
      */
-    vector<shared_ptr<Triangle>> buildMobileStructure();
+    shared_ptr<DynObject> buildFixedStructure();
     /**
-     * @brief Build the triangles representing the fixed structure
-     * @return Triangles representing the fixed structure
+     * @brief Build the dynamic object representing the helical structure
+     * @return Dynamic object representing the helical structure
      */
-    vector<shared_ptr<Triangle>> buildFixedStructure();
+    shared_ptr<DynObject> buildHelicalStructure();
     /**
-     * @brief Build the triangles representing the static structure
-     * @return Triangles representing the static structure
+     * @brief Build the dynamic object representing the static structure
+     * @return Dynamic object representing the static structure
      */
-    vector<shared_ptr<Triangle>> buildStaticStructure();
+    shared_ptr<DynObject> buildStaticStructure();
+    /**
+     * @brief Build the dynamic object representing the ground structure
+     * @return Dynamic object representing the ground structure
+     */
+    shared_ptr<DynObject> buildGroundStructure();
 };
 
 
