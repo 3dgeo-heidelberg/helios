@@ -20,6 +20,7 @@ var searchData=
   ['reflectance',['reflectance',['../d3/d89/classMaterial.html#a2455e6f519001aa0a8679e826476f29f',1,'Material']]],
   ['reflectancemap',['reflectanceMap',['../d5/d20/classSpectralLibrary.html#ad99c8eced0b7330ee341504b06c7fbe7',1,'SpectralLibrary']]],
   ['remainingtime_5fms',['remainingTime_ms',['../d6/da1/classSurveyPlayback.html#a44385985d0e2f71e6094e0b59c8d252e',1,'SurveyPlayback']]],
+  ['renderingnormals',['renderingNormals',['../d5/dc4/classvisualhelios_1_1VHDynObjectAdapter.html#a57315220035f70367cf1883d911d14d4',1,'visualhelios::VHDynObjectAdapter::renderingNormals()'],['../d9/dc5/classvisualhelios_1_1VHSimpleCanvas.html#a76a292de27f8f04421b6dc3853ceaffe',1,'visualhelios::VHSimpleCanvas::renderingNormals()']]],
   ['reopen_5finterval',['reopen_interval',['../d8/d63/classfile__logger.html#a22eefca55a39a57805665846147e877d',1,'file_logger']]],
   ['resourcesetavailable',['resourceSetAvailable',['../d3/dce/classthread__pool.html#a86673ff577c3837604ac6f7eedb227fd',1,'thread_pool']]],
   ['returnnumber',['returnNumber',['../db/d2e/classMeasurement.html#aca68cb91908d7de7822cbf3095a9f659',1,'Measurement']]],

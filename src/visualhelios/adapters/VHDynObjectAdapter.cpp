@@ -8,9 +8,7 @@ using visualhelios::VHDynObjectAdapter;
 // ****************** //
 void VHDynObjectAdapter::buildPolymesh(){
     // Instantiate a new polymesh replacing the old one, if any
-    polymesh = pcl::PointCloud<pcl::PointXYZ>::Ptr(
-        new pcl::PointCloud<pcl::PointXYZ>()
-    );
+    constructPolymesh();
     vertices.clear();
 
     // Add each primitive to the polymesh
@@ -21,12 +19,7 @@ void VHDynObjectAdapter::buildPolymesh(){
         int const n = (int) primitive->getNumVertices();
         Vertex *primitiveVerts = primitive->getVertices();
         for(int i = 0 ; i < n ; ++i){
-            pcl::PointXYZ p(  // Instantiate the vertex for the polymesh
-                (float) primitiveVerts[i].getX(),
-                (float) primitiveVerts[i].getY(),
-                (float) primitiveVerts[i].getZ()
-            );
-            polymesh->push_back(p);  // Add vertex to the polymesh
+            vertexToMesh(primitiveVerts[i]);
             verts.vertices.push_back(offset+i);  // Register vertex order
         }
         vertices.push_back(verts);  // Register primitive order of vertices
@@ -36,8 +29,10 @@ void VHDynObjectAdapter::buildPolymesh(){
 
 // ***  DYNAMIC BEHAVIOR  *** //
 // ************************** //
-void VHDynObjectAdapter::doStep(){
-    if(dynObj.doStep()) buildPolymesh();
+bool VHDynObjectAdapter::doStep(){
+    bool updated = dynObj.doStep();
+    if(updated) buildPolymesh();
+    return updated;
 }
 
 #endif

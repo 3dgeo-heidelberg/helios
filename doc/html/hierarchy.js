@@ -182,7 +182,10 @@ var hierarchy =
     [ "visualhelios::VHCanvas", "de/dda/classvisualhelios_1_1VHCanvas.html", [
       [ "visualhelios::VHSimpleCanvas", "d9/dc5/classvisualhelios_1_1VHSimpleCanvas.html", null ]
     ] ],
-    [ "visualhelios::VHDynObjectAdapter", "d5/dc4/classvisualhelios_1_1VHDynObjectAdapter.html", null ],
+    [ "visualhelios::VHDynObjectAdapter", "d5/dc4/classvisualhelios_1_1VHDynObjectAdapter.html", [
+      [ "visualhelios::VHDynObjectXYZAdapter", "de/d3c/classvisualhelios_1_1VHDynObjectXYZAdapter.html", null ],
+      [ "visualhelios::VHDynObjectXYZRGBAdapter", "d6/dd1/classvisualhelios_1_1VHDynObjectXYZRGBAdapter.html", null ]
+    ] ],
     [ "VoxelFileParser", "d9/ddf/classVoxelFileParser.html", null ],
     [ "VoxelGridCell", "d5/df6/structVoxelGridCell.html", null ],
     [ "WavefrontObj", "d0/d92/classWavefrontObj.html", null ],

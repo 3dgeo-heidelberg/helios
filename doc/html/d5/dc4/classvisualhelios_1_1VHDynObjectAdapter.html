@@ -91,9 +91,23 @@ $(document).ready(function(){initNavTree('d5/dc4/classvisualhelios_1_1VHDynObjec
 <a href="#pro-attribs">Protected Attributes</a> &#124;
 <a href="../../d2/d1e/classvisualhelios_1_1VHDynObjectAdapter-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">visualhelios::VHDynObjectAdapter Class Reference</div>  </div>
+<div class="title">visualhelios::VHDynObjectAdapter Class Reference<span class="mlabels"><span class="mlabel">abstract</span></span></div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>Abstract class defining core mechanisms to adapt dynamic objects to the visual Helios context based on PCL and VTK libraries.  
+ <a href="../../d5/dc4/classvisualhelios_1_1VHDynObjectAdapter.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="../../dc/d7c/VHDynObjectAdapter_8h_source.html">VHDynObjectAdapter.h</a>&gt;</code></p>
+<div class="dynheader">
+Inheritance diagram for visualhelios::VHDynObjectAdapter:</div>
+<div class="dyncontent">
+<div class="center"><img src="../../dd/da3/classvisualhelios_1_1VHDynObjectAdapter__inherit__graph.png" border="0" usemap="#visualhelios_1_1VHDynObjectAdapter_inherit__map" alt="Inheritance graph"/></div>
+<map name="visualhelios_1_1VHDynObjectAdapter_inherit__map" id="visualhelios_1_1VHDynObjectAdapter_inherit__map">
+<area shape="rect" id="node2" href="../../de/d3c/classvisualhelios_1_1VHDynObjectXYZAdapter.html" title="Class providing concrete implementation of a VHDynObjectAdapter for a simple XYZ visualization with n..." alt="" coords="5,95,184,136"/>
+<area shape="rect" id="node3" href="../../d6/dd1/classvisualhelios_1_1VHDynObjectXYZRGBAdapter.html" title="Class providing concrete implementation of a VHDynObjectAdapter for a simple XYZ visualization with R..." alt="" coords="208,95,387,136"/>
+</map>
+<center><span class="legend">[<a target="top" href="../../graph_legend.html">legend</a>]</span></center></div>
 <div class="dynheader">
 Collaboration diagram for visualhelios::VHDynObjectAdapter:</div>
 <div class="dyncontent">
@@ -111,6 +125,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ae701def6228c5c389653bcbdccce6248"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/dc4/classvisualhelios_1_1VHDynObjectAdapter.html#ae701def6228c5c389653bcbdccce6248">buildPolymesh</a> ()</td></tr>
 <tr class="memdesc:ae701def6228c5c389653bcbdccce6248"><td class="mdescLeft">&#160;</td><td class="mdescRight">Build the polygon mesh from dynamic object primitives. This implies building corresponding vertices vector too.  <a href="#ae701def6228c5c389653bcbdccce6248">More...</a><br /></td></tr>
 <tr class="separator:ae701def6228c5c389653bcbdccce6248"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a090ded6755f5de016155dfccaaf47aa1"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/dc4/classvisualhelios_1_1VHDynObjectAdapter.html#a090ded6755f5de016155dfccaaf47aa1">constructPolymesh</a> ()=0</td></tr>
+<tr class="memdesc:a090ded6755f5de016155dfccaaf47aa1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Instantiate the polymesh object.  <a href="#a090ded6755f5de016155dfccaaf47aa1">More...</a><br /></td></tr>
+<tr class="separator:a090ded6755f5de016155dfccaaf47aa1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab50cb534e9c220373481cad29a9d162c"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/dc4/classvisualhelios_1_1VHDynObjectAdapter.html#ab50cb534e9c220373481cad29a9d162c">vertexToMesh</a> (<a class="el" href="../../d2/da0/classVertex.html">Vertex</a> const &amp;vertex)=0</td></tr>
+<tr class="memdesc:ab50cb534e9c220373481cad29a9d162c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a vertex to the polymesh.  <a href="#ab50cb534e9c220373481cad29a9d162c">More...</a><br /></td></tr>
+<tr class="separator:ab50cb534e9c220373481cad29a9d162c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af00e84d619122104a3b3b1432b768908"><td class="memItemLeft" align="right" valign="top"><a id="af00e84d619122104a3b3b1432b768908"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/dc4/classvisualhelios_1_1VHDynObjectAdapter.html#af00e84d619122104a3b3b1432b768908">doStep</a> ()</td></tr>
 <tr class="memdesc:af00e84d619122104a3b3b1432b768908"><td class="mdescLeft">&#160;</td><td class="mdescRight">Method to adapt dynamic object computations over time to visual Helios. <br /></td></tr>
@@ -118,30 +138,37 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../.
 <tr class="memitem:a57e16c1d7f6a7431083fb02832639a0a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d5/d6a/classDynObject.html">DynObject</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/dc4/classvisualhelios_1_1VHDynObjectAdapter.html#a57e16c1d7f6a7431083fb02832639a0a">getDynObj</a> ()</td></tr>
 <tr class="memdesc:a57e16c1d7f6a7431083fb02832639a0a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain the adapted dynamic object.  <a href="#a57e16c1d7f6a7431083fb02832639a0a">More...</a><br /></td></tr>
 <tr class="separator:a57e16c1d7f6a7431083fb02832639a0a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a02b725a6e51b46715481a00b48495169"><td class="memItemLeft" align="right" valign="top">pcl::PointCloud&lt; pcl::PointXYZ &gt;::ConstPtr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/dc4/classvisualhelios_1_1VHDynObjectAdapter.html#a02b725a6e51b46715481a00b48495169">getPolymesh</a> () const</td></tr>
-<tr class="memdesc:a02b725a6e51b46715481a00b48495169"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain the polygon mesh representing the dynamic object.  <a href="#a02b725a6e51b46715481a00b48495169">More...</a><br /></td></tr>
-<tr class="separator:a02b725a6e51b46715481a00b48495169"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad488d76211bd042da9490c16be65e966"><td class="memItemLeft" align="right" valign="top">vector&lt; pcl::Vertices &gt; const  &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/dc4/classvisualhelios_1_1VHDynObjectAdapter.html#ad488d76211bd042da9490c16be65e966">getVertices</a> () const</td></tr>
 <tr class="memdesc:ad488d76211bd042da9490c16be65e966"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain the ordered vertices indices representing the dynamic object.  <a href="#ad488d76211bd042da9490c16be65e966">More...</a><br /></td></tr>
 <tr class="separator:ad488d76211bd042da9490c16be65e966"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa3b1bb14958f7f255df7483ecafb1997"><td class="memItemLeft" align="right" valign="top">string const  &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/dc4/classvisualhelios_1_1VHDynObjectAdapter.html#aa3b1bb14958f7f255df7483ecafb1997">getId</a> () const</td></tr>
 <tr class="memdesc:aa3b1bb14958f7f255df7483ecafb1997"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain the ID of the dynamic object.  <a href="#aa3b1bb14958f7f255df7483ecafb1997">More...</a><br /></td></tr>
 <tr class="separator:aa3b1bb14958f7f255df7483ecafb1997"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a13ae4d686bb0b1aace3aa39c42574964"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/dc4/classvisualhelios_1_1VHDynObjectAdapter.html#a13ae4d686bb0b1aace3aa39c42574964">isRenderingNormals</a> () const</td></tr>
+<tr class="memdesc:a13ae4d686bb0b1aace3aa39c42574964"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check whether the dynamic object normals must be rendered or not.  <a href="#a13ae4d686bb0b1aace3aa39c42574964">More...</a><br /></td></tr>
+<tr class="separator:a13ae4d686bb0b1aace3aa39c42574964"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2e21f885b04c2e2663ecead9fe4b68c9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/dc4/classvisualhelios_1_1VHDynObjectAdapter.html#a2e21f885b04c2e2663ecead9fe4b68c9">setRenderingNormals</a> (bool const <a class="el" href="../../d5/dc4/classvisualhelios_1_1VHDynObjectAdapter.html#a57315220035f70367cf1883d911d14d4">renderingNormals</a>)</td></tr>
+<tr class="memdesc:a2e21f885b04c2e2663ecead9fe4b68c9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enable or disable normals rendering for the dynamic object.  <a href="#a2e21f885b04c2e2663ecead9fe4b68c9">More...</a><br /></td></tr>
+<tr class="separator:a2e21f885b04c2e2663ecead9fe4b68c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
 <tr class="memitem:abef8c25276bfc9a10b44604572939976"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d5/d6a/classDynObject.html">DynObject</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/dc4/classvisualhelios_1_1VHDynObjectAdapter.html#abef8c25276bfc9a10b44604572939976">dynObj</a></td></tr>
 <tr class="memdesc:abef8c25276bfc9a10b44604572939976"><td class="mdescLeft">&#160;</td><td class="mdescRight">The adapted dynamic object.  <a href="#abef8c25276bfc9a10b44604572939976">More...</a><br /></td></tr>
 <tr class="separator:abef8c25276bfc9a10b44604572939976"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0a051e39e874a72b397a19bede21a949"><td class="memItemLeft" align="right" valign="top"><a id="a0a051e39e874a72b397a19bede21a949"></a>
-pcl::PointCloud&lt; pcl::PointXYZ &gt;::Ptr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/dc4/classvisualhelios_1_1VHDynObjectAdapter.html#a0a051e39e874a72b397a19bede21a949">polymesh</a></td></tr>
-<tr class="memdesc:a0a051e39e874a72b397a19bede21a949"><td class="mdescLeft">&#160;</td><td class="mdescRight">Polygon mesh representing the dynamic object for visualization purposes. <br /></td></tr>
-<tr class="separator:a0a051e39e874a72b397a19bede21a949"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afe40f315b5e9c2d2055d0dca8c2c8464"><td class="memItemLeft" align="right" valign="top">vector&lt; pcl::Vertices &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/dc4/classvisualhelios_1_1VHDynObjectAdapter.html#afe40f315b5e9c2d2055d0dca8c2c8464">vertices</a></td></tr>
 <tr class="memdesc:afe40f315b5e9c2d2055d0dca8c2c8464"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dynamic object vertices connection specification through ordered indices for visualization purposes.  <a href="#afe40f315b5e9c2d2055d0dca8c2c8464">More...</a><br /></td></tr>
 <tr class="separator:afe40f315b5e9c2d2055d0dca8c2c8464"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a57315220035f70367cf1883d911d14d4"><td class="memItemLeft" align="right" valign="top"><a id="a57315220035f70367cf1883d911d14d4"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/dc4/classvisualhelios_1_1VHDynObjectAdapter.html#a57315220035f70367cf1883d911d14d4">renderingNormals</a></td></tr>
+<tr class="memdesc:a57315220035f70367cf1883d911d14d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Specify if the dynamic object normals must be rendered (true) or not (false) <br /></td></tr>
+<tr class="separator:a57315220035f70367cf1883d911d14d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Abstract class defining core mechanisms to adapt dynamic objects to the visual Helios context based on PCL and VTK libraries. </p>
+<dl class="section author"><dt>Author</dt><dd>Alberto M. Esmoris Pena </dd></dl>
+<dl class="section version"><dt>Version</dt><dd>1.0 </dd></dl>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a1c2e5780900857384762ca418d60c2b9"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a1c2e5780900857384762ca418d60c2b9">&#9670;&nbsp;</a></span>VHDynObjectAdapter()</h2>
 
@@ -193,9 +220,42 @@ pcl::PointCloud&lt; pcl::PointXYZ &gt;::Ptr&#160;</td><td class="memItemRight" v
 </div><div class="memdoc">
 
 <p>Build the polygon mesh from dynamic object primitives. This implies building corresponding vertices vector too. </p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d5/dc4/classvisualhelios_1_1VHDynObjectAdapter.html#a0a051e39e874a72b397a19bede21a949" title="Polygon mesh representing the dynamic object for visualization purposes. ">VHDynObjectAdapter::polymesh</a> </dd>
+<dl class="section see"><dt>See also</dt><dd>VHDynObjectAdapter::polymesh </dd>
 <dd>
 <a class="el" href="../../d5/dc4/classvisualhelios_1_1VHDynObjectAdapter.html#afe40f315b5e9c2d2055d0dca8c2c8464" title="Dynamic object vertices connection specification through ordered indices for visualization purposes...">VHDynObjectAdapter::vertices</a> </dd></dl>
+
+</div>
+</div>
+<a id="a090ded6755f5de016155dfccaaf47aa1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a090ded6755f5de016155dfccaaf47aa1">&#9670;&nbsp;</a></span>constructPolymesh()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void visualhelios::VHDynObjectAdapter::constructPolymesh </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Instantiate the polymesh object. </p>
+<p>The buildPolymesh method requires to call this function to instantiate a new mesh replacing the old one if any. Therefore, any concrete implementation of a <a class="el" href="../../d5/dc4/classvisualhelios_1_1VHDynObjectAdapter.html" title="Abstract class defining core mechanisms to adapt dynamic objects to the visual Helios context based o...">VHDynObjectAdapter</a> must provide its own definition for this method.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d5/dc4/classvisualhelios_1_1VHDynObjectAdapter.html#ae701def6228c5c389653bcbdccce6248" title="Build the polygon mesh from dynamic object primitives. This implies building corresponding vertices v...">VHDynObjectAdapter::buildPolymesh</a> </dd>
+<dd>
+<a class="el" href="../../d5/dc4/classvisualhelios_1_1VHDynObjectAdapter.html#ab50cb534e9c220373481cad29a9d162c" title="Add a vertex to the polymesh. ">VHDynObjectAdapter::vertexToMesh(Vertex const &amp;)</a> </dd></dl>
+
+<p>Implemented in <a class="el" href="../../de/d3c/classvisualhelios_1_1VHDynObjectXYZAdapter.html#a2fa7957badcfd1ace0af39ce1c74c40d">visualhelios::VHDynObjectXYZAdapter</a>, and <a class="el" href="../../d6/dd1/classvisualhelios_1_1VHDynObjectXYZRGBAdapter.html#ac494b085fcd9b4b667b8e3f008615fcf">visualhelios::VHDynObjectXYZRGBAdapter</a>.</p>
 
 </div>
 </div>
@@ -256,34 +316,6 @@ pcl::PointCloud&lt; pcl::PointXYZ &gt;::Ptr&#160;</td><td class="memItemRight" v
 
 </div>
 </div>
-<a id="a02b725a6e51b46715481a00b48495169"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a02b725a6e51b46715481a00b48495169">&#9670;&nbsp;</a></span>getPolymesh()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">pcl::PointCloud&lt;pcl::PointXYZ&gt;::ConstPtr visualhelios::VHDynObjectAdapter::getPolymesh </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Obtain the polygon mesh representing the dynamic object. </p>
-<dl class="section return"><dt>Returns</dt><dd>Polygon mesh representing the dynamic object </dd></dl>
-
-</div>
-</div>
 <a id="ad488d76211bd042da9490c16be65e966"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad488d76211bd042da9490c16be65e966">&#9670;&nbsp;</a></span>getVertices()</h2>
 
@@ -309,6 +341,110 @@ pcl::PointCloud&lt; pcl::PointXYZ &gt;::Ptr&#160;</td><td class="memItemRight" v
 
 <p>Obtain the ordered vertices indices representing the dynamic object. </p>
 <dl class="section return"><dt>Returns</dt><dd>Ordered vertices indices representing the dynamic object </dd></dl>
+
+</div>
+</div>
+<a id="a13ae4d686bb0b1aace3aa39c42574964"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a13ae4d686bb0b1aace3aa39c42574964">&#9670;&nbsp;</a></span>isRenderingNormals()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool visualhelios::VHDynObjectAdapter::isRenderingNormals </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Check whether the dynamic object normals must be rendered or not. </p>
+<dl class="section return"><dt>Returns</dt><dd>True if dynamic objects normals must be rendered, false otherwise </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d5/dc4/classvisualhelios_1_1VHDynObjectAdapter.html#a57315220035f70367cf1883d911d14d4" title="Specify if the dynamic object normals must be rendered (true) or not (false) ">VHDynObjectAdapter::renderingNormals</a> </dd></dl>
+
+</div>
+</div>
+<a id="a2e21f885b04c2e2663ecead9fe4b68c9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2e21f885b04c2e2663ecead9fe4b68c9">&#9670;&nbsp;</a></span>setRenderingNormals()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void visualhelios::VHDynObjectAdapter::setRenderingNormals </td>
+          <td>(</td>
+          <td class="paramtype">bool const&#160;</td>
+          <td class="paramname"><em>renderingNormals</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Enable or disable normals rendering for the dynamic object. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">renderingNormals</td><td>True to enable rendering normals, false to disable it </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d5/dc4/classvisualhelios_1_1VHDynObjectAdapter.html#a57315220035f70367cf1883d911d14d4" title="Specify if the dynamic object normals must be rendered (true) or not (false) ">VHDynObjectAdapter::renderingNormals</a> </dd></dl>
+
+</div>
+</div>
+<a id="ab50cb534e9c220373481cad29a9d162c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab50cb534e9c220373481cad29a9d162c">&#9670;&nbsp;</a></span>vertexToMesh()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void visualhelios::VHDynObjectAdapter::vertexToMesh </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="../../d2/da0/classVertex.html">Vertex</a> const &amp;&#160;</td>
+          <td class="paramname"><em>vertex</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Add a vertex to the polymesh. </p>
+<p>The buildPolymesh method requires to call this function to generate points/vertices defining the mesh from dynamic object primitives. Therefore, any concrete implementation of a <a class="el" href="../../d5/dc4/classvisualhelios_1_1VHDynObjectAdapter.html" title="Abstract class defining core mechanisms to adapt dynamic objects to the visual Helios context based o...">VHDynObjectAdapter</a> must provide its own definition for this method.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">vertex</td><td><a class="el" href="../../d2/da0/classVertex.html" title="Class representing a vertex. ">Vertex</a> from the dynamic object that must be added to the mesh </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d5/dc4/classvisualhelios_1_1VHDynObjectAdapter.html#ae701def6228c5c389653bcbdccce6248" title="Build the polygon mesh from dynamic object primitives. This implies building corresponding vertices v...">VHDynObjectAdapter::buildPolymesh</a> </dd>
+<dd>
+<a class="el" href="../../d5/dc4/classvisualhelios_1_1VHDynObjectAdapter.html#a090ded6755f5de016155dfccaaf47aa1" title="Instantiate the polymesh object. ">VHDynObjectAdapter::constructPolymesh</a> </dd></dl>
+
+<p>Implemented in <a class="el" href="../../de/d3c/classvisualhelios_1_1VHDynObjectXYZAdapter.html#a90969851f8d0da3f4b588a1599b86391">visualhelios::VHDynObjectXYZAdapter</a>, and <a class="el" href="../../d6/dd1/classvisualhelios_1_1VHDynObjectXYZRGBAdapter.html#a54f10e78c820440c1c722640cfb6455e">visualhelios::VHDynObjectXYZRGBAdapter</a>.</p>
 
 </div>
 </div>

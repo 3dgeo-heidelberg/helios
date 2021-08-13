@@ -117,7 +117,7 @@ var searchData=
   ['getpath',['getPath',['../d1/d0e/classSyncFileWriter.html#a35538cb3ab484a0dd287ae3961d849c9',1,'SyncFileWriter']]],
   ['getplatform',['getPlatform',['../d3/d76/classPyHeliosSimulation.html#a169f24260c5c6c2448d3e0cb3303066a',1,'PyHeliosSimulation']]],
   ['getplatformsettings',['getPlatformSettings',['../de/d51/classLeg.html#a0ddb260904dcb84e37ff44afccee1a09',1,'Leg']]],
-  ['getpolymesh',['getPolymesh',['../d5/dc4/classvisualhelios_1_1VHDynObjectAdapter.html#a02b725a6e51b46715481a00b48495169',1,'visualhelios::VHDynObjectAdapter']]],
+  ['getpolymesh',['getPolymesh',['../de/d3c/classvisualhelios_1_1VHDynObjectXYZAdapter.html#a5e805649265025c895f53781e6933a9d',1,'visualhelios::VHDynObjectXYZAdapter::getPolymesh()'],['../d6/dd1/classvisualhelios_1_1VHDynObjectXYZRGBAdapter.html#a2df48c8e2a8939c467852ee817bb8659',1,'visualhelios::VHDynObjectXYZRGBAdapter::getPolymesh()']]],
   ['getpoolsize',['getPoolSize',['../d3/dce/classthread__pool.html#aacc30adda2123562f4190c779f002fbe',1,'thread_pool']]],
   ['getposition',['getPosition',['../df/d1e/classPlatform.html#a3b433931b25f161791cf90ad096a2356',1,'Platform::getPosition()'],['../d5/d0c/classPlatformSettings.html#abbf30f0c2e94bef9d94d0002f770dd9d',1,'PlatformSettings::getPosition()']]],
   ['getprimitives',['getPrimitives',['../d5/d6a/classDynObject.html#a87a7226168af1b3e91daf2556be1b799',1,'DynObject']]],

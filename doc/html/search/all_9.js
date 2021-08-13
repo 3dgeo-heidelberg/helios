@@ -37,6 +37,7 @@ var searchData=
   ['islinecomment',['isLineComment',['../d6/d03/classXYZPointCloudFileLoader.html#af109c0c3a32aa5069392d552460c842f',1,'XYZPointCloudFileLoader']]],
   ['ispaused',['isPaused',['../d3/d76/classPyHeliosSimulation.html#aa177006cf8935e9bc6e94d55510e391a',1,'PyHeliosSimulation::isPaused()'],['../d1/d7b/classSimulation.html#abfb774d5e1aae1b8a081c2d5c355077e',1,'Simulation::isPaused()']]],
   ['isplatformnoisedisabled',['isPlatformNoiseDisabled',['../dc/d42/classScanner.html#a893596be90d7c1b16a4d538701ed828d',1,'Scanner']]],
+  ['isrenderingnormals',['isRenderingNormals',['../d5/dc4/classvisualhelios_1_1VHDynObjectAdapter.html#a13ae4d686bb0b1aace3aa39c42574964',1,'visualhelios::VHDynObjectAdapter::isRenderingNormals()'],['../d9/dc5/classvisualhelios_1_1VHSimpleCanvas.html#af3e0b4c311981a5d61ce22dcf3023430',1,'visualhelios::VHSimpleCanvas::isRenderingNormals()']]],
   ['isrunning',['isRunning',['../d3/d76/classPyHeliosSimulation.html#a5ea671ee6798940be60a10fe90018bbf',1,'PyHeliosSimulation']]],
   ['isstarted',['isStarted',['../d3/d76/classPyHeliosSimulation.html#a5a513e4f7ab87159540794d442207da9',1,'PyHeliosSimulation']]],
   ['isstopped',['isStopped',['../d3/d76/classPyHeliosSimulation.html#a51ba7cd2fc50e4ac0a6ad315fb31c18e',1,'PyHeliosSimulation::isStopped()'],['../d1/d7b/classSimulation.html#a8f55cc0ab14c095fdae0823acc57e423',1,'Simulation::isStopped()']]],

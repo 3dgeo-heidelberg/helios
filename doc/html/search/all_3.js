@@ -165,6 +165,7 @@ var searchData=
   ['configurenormalnoise',['configureNormalNoise',['../d9/d8f/classNormalNoiseSource.html#aa15410a941e4c996573cefe77ca5bd0c',1,'NormalNoiseSource']]],
   ['configureuniformnoise',['configureUniformNoise',['../d3/d57/classUniformNoiseSource.html#a9e07e2def6a5bf3cdaabe3cb2a32793a',1,'UniformNoiseSource']]],
   ['conicbeamdeflector',['ConicBeamDeflector',['../d7/db4/classConicBeamDeflector.html',1,'ConicBeamDeflector'],['../d7/db4/classConicBeamDeflector.html#a94c22e5815bded7e81f88a03ed2c1766',1,'ConicBeamDeflector::ConicBeamDeflector()']]],
+  ['constructpolymesh',['constructPolymesh',['../d5/dc4/classvisualhelios_1_1VHDynObjectAdapter.html#a090ded6755f5de016155dfccaaf47aa1',1,'visualhelios::VHDynObjectAdapter::constructPolymesh()'],['../de/d3c/classvisualhelios_1_1VHDynObjectXYZAdapter.html#a2fa7957badcfd1ace0af39ce1c74c40d',1,'visualhelios::VHDynObjectXYZAdapter::constructPolymesh()'],['../d6/dd1/classvisualhelios_1_1VHDynObjectXYZRGBAdapter.html#ac494b085fcd9b4b667b8e3f008615fcf',1,'visualhelios::VHDynObjectXYZRGBAdapter::constructPolymesh()']]],
   ['contains',['contains',['../d8/d78/classWavefrontObjCache.html#a013aa992165e212e9a544043044f8f70',1,'WavefrontObjCache']]],
   ['copy',['copy',['../d2/da0/classVertex.html#a37d10a2452cee437861e511f5f271c60',1,'Vertex']]],
   ['correctnormal',['correctNormal',['../d6/d03/classXYZPointCloudFileLoader.html#a1ee68ccc2d636ba49339a5ee300217d2',1,'XYZPointCloudFileLoader']]],

@@ -23,8 +23,8 @@ VHCanvas::VHCanvas(string const title) : title(title) {
 void VHCanvas::configure(){
     // Configure 3D viewer
     viewer->setBackgroundColor(0, 0, 0);
-    viewer->addCoordinateSystem(1.0);  // Coordinate system unitary scaled
     viewer->initCameraParameters();
+    viewer->setSize(1024, 768);
 }
 void VHCanvas::start() {}
 void VHCanvas::update() {}

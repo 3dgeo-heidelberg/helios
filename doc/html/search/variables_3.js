@@ -14,7 +14,7 @@ var searchData=
   ['doubleseed',['doubleSeed',['../dc/d6e/classRandomnessGenerator.html#ac4eda58f8ff25e3306124ed5701d4af5',1,'RandomnessGenerator']]],
   ['doublevalues',['doubleValues',['../d7/d5a/classDetailedVoxel.html#a91473e619eb04af16612c267db427260',1,'DetailedVoxel']]],
   ['ds',['ds',['../df/d3f/classHeliosDemos_1_1DemoSelector.html#a2a327b9119f0e06742da6e44fbef4f46',1,'HeliosDemos::DemoSelector']]],
-  ['dynamicupdatefunction',['dynamicUpdateFunction',['../d9/dc5/classvisualhelios_1_1VHSimpleCanvas.html#a3e920bd43fd8c9500bbef30288d64e83',1,'visualhelios::VHSimpleCanvas']]],
+  ['dynamicupdatefunction',['dynamicUpdateFunction',['../d9/dc5/classvisualhelios_1_1VHSimpleCanvas.html#af18ec918584e33e3e99a50c6f31d75f0',1,'visualhelios::VHSimpleCanvas']]],
   ['dynobj',['dynObj',['../d5/dc4/classvisualhelios_1_1VHDynObjectAdapter.html#abef8c25276bfc9a10b44604572939976',1,'visualhelios::VHDynObjectAdapter']]],
-  ['dynobjs',['dynObjs',['../d9/dc5/classvisualhelios_1_1VHSimpleCanvas.html#a6e5b8d7051fc80e9ae7bf2e02818b197',1,'visualhelios::VHSimpleCanvas']]]
+  ['dynobjs',['dynObjs',['../d9/dc5/classvisualhelios_1_1VHSimpleCanvas.html#ac0f036f0f9a611bebc9bc42c663ba7cf',1,'visualhelios::VHSimpleCanvas']]]
 ];

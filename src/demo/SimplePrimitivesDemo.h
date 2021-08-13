@@ -3,7 +3,7 @@
 
 #include <demo/BaseDemo.h>
 #include <scene/primitives/Triangle.h>
-#include <visualhelios/adapters/VHDynObjectAdapter.h>
+#include <visualhelios/adapters/VHDynObjectXYZAdapter.h>
 
 #include <vector>
 #include <memory>
@@ -12,7 +12,7 @@
 
 namespace HeliosDemos{
 
-using visualhelios::VHDynObjectAdapter;
+using visualhelios::VHDynObjectXYZAdapter;
 
 using std::vector;
 using std::shared_ptr;

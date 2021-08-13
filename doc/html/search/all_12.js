@@ -39,6 +39,7 @@ var searchData=
   ['remainingtime_5fms',['remainingTime_ms',['../d6/da1/classSurveyPlayback.html#a44385985d0e2f71e6094e0b59c8d252e',1,'SurveyPlayback']]],
   ['removeheaderlines',['removeHeaderLines',['../d9/ddf/classVoxelFileParser.html#ae45530e45e81650fe5bf015905007b2e',1,'VoxelFileParser']]],
   ['removeleg',['removeLeg',['../d3/d76/classPyHeliosSimulation.html#a57f6f6e5e365c28696a42dd50d0108d0',1,'PyHeliosSimulation::removeLeg()'],['../d5/db6/classSurvey.html#ad3a729ca193a8e594d7414886fb74e32',1,'Survey::removeLeg()']]],
+  ['renderingnormals',['renderingNormals',['../d5/dc4/classvisualhelios_1_1VHDynObjectAdapter.html#a57315220035f70367cf1883d911d14d4',1,'visualhelios::VHDynObjectAdapter::renderingNormals()'],['../d9/dc5/classvisualhelios_1_1VHSimpleCanvas.html#a76a292de27f8f04421b6dc3853ceaffe',1,'visualhelios::VHSimpleCanvas::renderingNormals()']]],
   ['reopen',['reopen',['../d8/d63/classfile__logger.html#ae72ef19f2554e7e5121328365c815432',1,'file_logger']]],
   ['reopen_5finterval',['reopen_interval',['../d8/d63/classfile__logger.html#a22eefca55a39a57805665846147e877d',1,'file_logger']]],
   ['reportformat',['reportFormat',['../d7/d7d/classTimeWatcher.html#a6da0a0397e8a8af74f55d3bc859c40d7',1,'TimeWatcher']]],

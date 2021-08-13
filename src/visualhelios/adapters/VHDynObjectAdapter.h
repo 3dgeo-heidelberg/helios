@@ -9,6 +9,13 @@
 
 namespace visualhelios{
 
+/**
+ * @author Alberto M. Esmoris Pena
+ * @version 1.0
+ *
+ * @brief Abstract class defining core mechanisms to adapt dynamic objects
+ *  to the visual Helios context based on PCL and VTK libraries
+ */
 class VHDynObjectAdapter {
 protected:
     // ***  ATTRIBUTES  *** //
@@ -19,11 +26,6 @@ protected:
      */
     DynObject &dynObj;
     /**
-     * @brief Polygon mesh representing the dynamic object for visualization
-     *  purposes
-     */
-    pcl::PointCloud<pcl::PointXYZ>::Ptr polymesh;
-    /**
      * @brief Dynamic object vertices connection specification through ordered
      *  indices for visualization purposes.
      *
@@ -31,6 +33,12 @@ protected:
      *  the polygon mesh
      */
     vector<pcl::Vertices> vertices;
+    /**
+     * @brief Specify if the dynamic object normals must be rendered (true) or
+     *  not (false)
+     */
+    bool renderingNormals;
+
 public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //
     // ************************************ //
@@ -51,14 +59,42 @@ public:
      * @see VHDynObjectAdapter::vertices
      */
     void buildPolymesh();
+    /**
+     * @brief Instantiate the polymesh object.
+     *
+     * The buildPolymesh method requires to call this function to instantiate
+     *  a new mesh replacing the old one if any. Therefore, any concrete
+     *  implementation of a VHDynObjectAdapter must provide its own definition
+     *  for this method.
+     *
+     * @see VHDynObjectAdapter::buildPolymesh
+     * @see VHDynObjectAdapter::vertexToMesh(Vertex const &)
+     */
+    virtual void constructPolymesh() = 0;
+    /**
+     * @brief Add a vertex to the polymesh.
+     *
+     * The buildPolymesh method requires to call this function to generate
+     *  points/vertices defining the mesh from dynamic object primitives.
+     *  Therefore, any concrete implementation of a VHDynObjectAdapter must
+     *  provide its own definition for this method.
+     *
+     * @param vertex Vertex from the dynamic object that must be added to
+     *  the mesh
+     * @see VHDynObjectAdapter::buildPolymesh
+     * @see VHDynObjectAdapter::constructPolymesh
+     */
+    virtual void vertexToMesh(Vertex const & vertex) = 0;
 
     // ***  DYNAMIC BEHAVIOR  *** //
     // ************************** //
     /**
      * @brief Method to adapt dynamic object computations over time to visual
      *  Helios
+     *
+     * @return True if the dynamic object was modified, false otherwise
      */
-    void doStep();
+    bool doStep();
 
     // ***  GETTERS and SETTERS  *** //
     // ***************************** //
@@ -72,12 +108,6 @@ public:
      */
     inline DynObject & getDynObj() {return dynObj;}
     /**
-     * @brief Obtain the polygon mesh representing the dynamic object
-     * @return Polygon mesh representing the dynamic object
-     */
-    inline pcl::PointCloud<pcl::PointXYZ>::ConstPtr getPolymesh() const
-    {return polymesh;}
-    /**
      * @brief Obtain the ordered vertices indices representing the dynamic
      *  object
      * @return Ordered vertices indices representing the dynamic object
@@ -89,7 +119,23 @@ public:
      * @return Dynamic object ID
      */
     inline string const & getId() const {return dynObj.getId();}
+    /**
+     * @brief Check whether the dynamic object normals must be rendered or not
+     * @return True if dynamic objects normals must be rendered, false otherwise
+     * @see VHDynObjectAdapter::renderingNormals
+     */
+    inline bool isRenderingNormals() const {return renderingNormals;}
+    /**
+     * @brief Enable or disable normals rendering for the dynamic object
+     * @param renderingNormals True to enable rendering normals, false to
+     *  disable it
+     * @see VHDynObjectAdapter::renderingNormals
+     */
+    inline void setRenderingNormals(bool const renderingNormals)
+    {this->renderingNormals = renderingNormals;}
+
 };
+
 
 }
 

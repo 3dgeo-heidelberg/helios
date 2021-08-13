@@ -30,6 +30,8 @@ var annotated_dup =
     [ "visualhelios", null, [
       [ "VHCanvas", "de/dda/classvisualhelios_1_1VHCanvas.html", "de/dda/classvisualhelios_1_1VHCanvas" ],
       [ "VHDynObjectAdapter", "d5/dc4/classvisualhelios_1_1VHDynObjectAdapter.html", "d5/dc4/classvisualhelios_1_1VHDynObjectAdapter" ],
+      [ "VHDynObjectXYZAdapter", "de/d3c/classvisualhelios_1_1VHDynObjectXYZAdapter.html", "de/d3c/classvisualhelios_1_1VHDynObjectXYZAdapter" ],
+      [ "VHDynObjectXYZRGBAdapter", "d6/dd1/classvisualhelios_1_1VHDynObjectXYZRGBAdapter.html", "d6/dd1/classvisualhelios_1_1VHDynObjectXYZRGBAdapter" ],
       [ "VHSimpleCanvas", "d9/dc5/classvisualhelios_1_1VHSimpleCanvas.html", "d9/dc5/classvisualhelios_1_1VHSimpleCanvas" ]
     ] ],
     [ "AABB", "d2/d1a/classAABB.html", "d2/d1a/classAABB" ],

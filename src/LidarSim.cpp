@@ -96,6 +96,13 @@ void printHelp(){
         << "\t\t-v2 or -vv : Specify the verbosity level to report all "
         <<  "messages\n"
         << "\t\t\tBy default: only information and errors are reported\n\n"
+
+        #ifdef PCL_BINDING
+        << "\n\n\tDEV-MODE ONLY ARGUMENTS:\n\n"
+           "\t\t--demo <demo_name>\n"
+           "\t\t\tRun demo with given name.\n"
+           "\t\t\t\tFor example: --demo simple_primitives\n\n"
+        #endif
         << std::endl;
 }
 

@@ -17,7 +17,7 @@ using HeliosDemos::SimplePrimitivesDemo;
 using rigidmotion::RigidMotion;
 using rigidmotion::RigidMotionR3Factory;
 using visualhelios::VHSimpleCanvas;
-using visualhelios::VHDynObjectAdapter;
+using visualhelios::VHDynObjectXYZRGBAdapter;
 
 // ***  R U N  *** //
 // *************** //
@@ -26,20 +26,25 @@ void SimplePrimitivesDemo::run(){
 
     // Build objects
     shared_ptr<DynObject> mobileStructure = buildMobileStructure();
-    shared_ptr<VHDynObjectAdapter> adaptedMobileStructure =
-        make_shared<VHDynObjectAdapter>(*mobileStructure);
+    shared_ptr<VHDynObjectXYZRGBAdapter> adaptedMobileStructure =
+        make_shared<VHDynObjectXYZRGBAdapter>(*mobileStructure);
+    adaptedMobileStructure->setRenderingNormals(true);
     shared_ptr<DynObject> fixedStructure = buildFixedStructure();
-    shared_ptr<VHDynObjectAdapter> adaptedFixedStructure =
-        make_shared<VHDynObjectAdapter>(*fixedStructure);
+    shared_ptr<VHDynObjectXYZRGBAdapter> adaptedFixedStructure =
+        make_shared<VHDynObjectXYZRGBAdapter>(*fixedStructure);
+    adaptedFixedStructure->setRenderingNormals(true);
     shared_ptr<DynObject> helicalStructure = buildHelicalStructure();
-    shared_ptr<VHDynObjectAdapter> adaptedHelicalStructure =
-        make_shared<VHDynObjectAdapter>(*helicalStructure);
+    shared_ptr<VHDynObjectXYZRGBAdapter> adaptedHelicalStructure =
+        make_shared<VHDynObjectXYZRGBAdapter>(*helicalStructure);
+    adaptedHelicalStructure->setRenderingNormals(true);
     shared_ptr<DynObject> staticStructure = buildStaticStructure();
-    shared_ptr<VHDynObjectAdapter> adaptedStaticStructure =
-        make_shared<VHDynObjectAdapter>(*staticStructure);
+    shared_ptr<VHDynObjectXYZRGBAdapter> adaptedStaticStructure =
+        make_shared<VHDynObjectXYZRGBAdapter>(*staticStructure);
+    adaptedStaticStructure->setRenderingNormals(true);
     shared_ptr<DynObject> groundStructure = buildGroundStructure();
-    shared_ptr<VHDynObjectAdapter> adaptedGroundStructure =
-        make_shared<VHDynObjectAdapter>(*groundStructure);
+    shared_ptr<VHDynObjectXYZRGBAdapter> adaptedGroundStructure =
+        make_shared<VHDynObjectXYZRGBAdapter>(*groundStructure);
+    adaptedGroundStructure->setRenderingNormals(false);
 
     // Build canvas
     VHSimpleCanvas canvas("Simple primitives demo");
@@ -49,14 +54,15 @@ void SimplePrimitivesDemo::run(){
     canvas.appendDynObj(adaptedStaticStructure);
     canvas.appendDynObj(adaptedGroundStructure);
     canvas.setTimeBetweenUpdates(20);
+    canvas.setRenderingNormals(true);
 
     // Define initial transformations
     RigidMotionR3Factory rm3f;
     shared_ptr<DynMovingObject> dmoMobile =
         std::static_pointer_cast<DynMovingObject>(mobileStructure);
-    dmoMobile->pushPositionMotion(make_shared<RigidMotion>(
-        rm3f.makeRotationZ(PI_HALF)
-    ));
+    RigidMotion rm = rm3f.makeRotationZ(PI_HALF);
+    dmoMobile->pushPositionMotion(make_shared<RigidMotion>(rm));
+    dmoMobile->pushNormalMotion(make_shared<RigidMotion>(rm));
     dmoMobile->pushPositionMotion(make_shared<RigidMotion>(
         rm3f.makeTranslation(arma::colvec("-40;0;1"))
     ));
@@ -67,9 +73,9 @@ void SimplePrimitivesDemo::run(){
     ));
     shared_ptr<DynMovingObject> dmoHelical =
         std::static_pointer_cast<DynMovingObject>(helicalStructure);
-    dmoHelical->pushPositionMotion(make_shared<RigidMotion>(
-        rm3f.makeRotationX(PI_HALF)
-    ));
+    rm = rm3f.makeRotationX(PI_HALF);
+    dmoHelical->pushPositionMotion(make_shared<RigidMotion>(rm));
+    dmoHelical->pushNormalMotion(make_shared<RigidMotion>(rm));
     dmoHelical->pushPositionMotion(make_shared<RigidMotion>(
         rm3f.makeTranslation(arma::colvec("0;5;1"))
     ));
@@ -82,7 +88,7 @@ void SimplePrimitivesDemo::run(){
     // Define dynamic behavior function
     canvas.setDynamicUpdateFunction(
         [&rm3f](
-            const vector<shared_ptr<VHDynObjectAdapter>>& objs
+            const vector<shared_ptr<VHDynObjectXYZRGBAdapter>>& objs
         ) -> void {
             DynMovingObject & dmoMobile = static_cast<DynMovingObject&>(
                 objs[0]->getDynObj()
@@ -93,15 +99,15 @@ void SimplePrimitivesDemo::run(){
             DynMovingObject & dmoHelical = static_cast<DynMovingObject&>(
                 objs[2]->getDynObj()
             );
-            dmoMobile.pushPositionMotion(make_shared<RigidMotion>(
-                rm3f.makeRotationZ(0.01)
-            ));
+            RigidMotion rm = rm3f.makeRotationZ(0.01);
+            dmoMobile.pushPositionMotion(make_shared<RigidMotion>(rm));
+            dmoMobile.pushNormalMotion(make_shared<RigidMotion>(rm));
             dmoFixed.pushPositionMotion(make_shared<RigidMotion>(
                 rm3f.makeTranslation(arma::colvec("-10;-10;-4"))
             ));
-            dmoFixed.pushPositionMotion(make_shared<RigidMotion>(
-                rm3f.makeRotationZ(0.05)
-            ));
+            rm = rm3f.makeRotationZ(0.05);
+            dmoFixed.pushPositionMotion(make_shared<RigidMotion>(rm));
+            dmoFixed.pushNormalMotion(make_shared<RigidMotion>(rm));
             dmoFixed.pushPositionMotion(make_shared<RigidMotion>(
                 rm3f.makeTranslation(arma::colvec("10;10;4"))
             ));
@@ -111,6 +117,9 @@ void SimplePrimitivesDemo::run(){
                 ));
             dmoHelical.pushPositionMotion(make_shared<RigidMotion>(
                 rm3f.makeHelicalZ(0.15, 0.034)
+            ));
+            dmoHelical.pushNormalMotion(make_shared<RigidMotion>(
+                rm3f.makeRotationZ(0.15)
             ));
         }
     );
@@ -151,13 +160,13 @@ shared_ptr<DynObject> SimplePrimitivesDemo::buildMobileStructure(){
     // Top surface
     triangles.push_back(new Triangle(
         Vertex(-4.0, 2.0, 1.0),
-        Vertex(4.0, -2.0, 1.0),
-        Vertex(-4.0, -2.0, 1.0)
+        Vertex(-4.0, -2.0, 1.0),
+        Vertex(4.0, -2.0, 1.0)
     ));
     triangles.push_back(new Triangle(
         Vertex(-4.0, 2.0, 1.0),
-        Vertex(4.0, 2.0, 1.0),
-        Vertex(4.0, -2.0, 1.0)
+        Vertex(4.0, -2.0, 1.0),
+        Vertex(4.0, 2.0, 1.0)
     ));
     // Left surface
     triangles.push_back(new Triangle(
@@ -173,26 +182,26 @@ shared_ptr<DynObject> SimplePrimitivesDemo::buildMobileStructure(){
     // Right surface
     triangles.push_back(new Triangle(
         Vertex(4.0, -2.0, -1.0),
-        Vertex(4.0, -2.0, 1.0),
-        Vertex(4.0, 2.0, 1.0)
-    ));
-    triangles.push_back(new Triangle(
-        Vertex(4.0, -2.0, -1.0),
         Vertex(4.0, 2.0, 1.0),
-        Vertex(4.0, 2.0, -1.0)
-    ));
-    // Front face
-    triangles.push_back(new Triangle(
-        Vertex(-4.0, -2.0, -1.0),
-        Vertex(-4.0, -2.0, 1.0),
         Vertex(4.0, -2.0, 1.0)
     ));
     triangles.push_back(new Triangle(
-        Vertex(-4.0, -2.0, -1.0),
-        Vertex(4.0, -2.0, 1.0),
-        Vertex(4.0, -2.0, -1.0)
+        Vertex(4.0, -2.0, -1.0),
+        Vertex(4.0, 2.0, -1.0),
+        Vertex(4.0, 2.0, 1.0)
     ));
     // Front face
+    triangles.push_back(new Triangle(
+        Vertex(-4.0, -2.0, -1.0),
+        Vertex(4.0, -2.0, 1.0),
+        Vertex(-4.0, -2.0, 1.0)
+    ));
+    triangles.push_back(new Triangle(
+        Vertex(-4.0, -2.0, -1.0),
+        Vertex(4.0, -2.0, -1.0),
+        Vertex(4.0, -2.0, 1.0)
+    ));
+    // Back face
     triangles.push_back(new Triangle(
         Vertex(-4.0, 2.0, -1.0),
         Vertex(-4.0, 2.0, 1.0),
@@ -203,6 +212,19 @@ shared_ptr<DynObject> SimplePrimitivesDemo::buildMobileStructure(){
         Vertex(4.0, 2.0, 1.0),
         Vertex(4.0, 2.0, -1.0)
     ));
+
+    // Color and normals
+    for(Primitive * primitive : triangles){
+        ((Triangle *)primitive)->update(); // Compute normal
+        ((Triangle *)primitive)->setAllVertexNormalsFromFace();
+        Vertex * vertices = primitive->getVertices();
+        for(size_t i = 0 ; i < primitive->getNumVertices() ; ++i){
+            Color4f &color = vertices[i].color;
+            color.x = 0.5;
+            color.y = 0.0;
+            color.z = 0.0;
+        }
+    }
 
     // Dynamic object
     shared_ptr<DynObject> dynObj = make_shared<DynMovingObject>(
@@ -227,13 +249,13 @@ shared_ptr<DynObject> SimplePrimitivesDemo::buildFixedStructure(){
     // Top surface
     triangles.push_back(new Triangle(
         Vertex(-2.0, 2.0, 4.0),
-        Vertex(2.0, -2.0, 4.0),
-        Vertex(-2.0, -2.0, 4.0)
+        Vertex(-2.0, -2.0, 4.0),
+        Vertex(2.0, -2.0, 4.0)
     ));
     triangles.push_back(new Triangle(
         Vertex(-2.0, 2.0, 4.0),
-        Vertex(2.0, 2.0, 4.0),
-        Vertex(2.0, -2.0, 4.0)
+        Vertex(2.0, -2.0, 4.0),
+        Vertex(2.0, 2.0, 4.0)
     ));
     // Left surface
     triangles.push_back(new Triangle(
@@ -249,24 +271,24 @@ shared_ptr<DynObject> SimplePrimitivesDemo::buildFixedStructure(){
     // Right surface
     triangles.push_back(new Triangle(
         Vertex(2.0, -2.0, -4.0),
-        Vertex(2.0, -2.0, 4.0),
-        Vertex(2.0, 2.0, 4.0)
+        Vertex(2.0, 2.0, 4.0),
+        Vertex(2.0, -2.0, 4.0)
     ));
     triangles.push_back(new Triangle(
         Vertex(2.0, -2.0, -4.0),
-        Vertex(2.0, 2.0, 4.0),
-        Vertex(2.0, 2.0, -4.0)
+        Vertex(2.0, 2.0, -4.0),
+        Vertex(2.0, 2.0, 4.0)
     ));
     // Front face
     triangles.push_back(new Triangle(
         Vertex(-2.0, -2.0, -4.0),
-        Vertex(-2.0, -2.0, 4.0),
-        Vertex(2.0, -2.0, 4.0)
+        Vertex(2.0, -2.0, 4.0),
+        Vertex(-2.0, -2.0, 4.0)
     ));
     triangles.push_back(new Triangle(
         Vertex(-2.0, -2.0, -4.0),
-        Vertex(2.0, -2.0, 4.0),
-        Vertex(2.0, -2.0, -4.0)
+        Vertex(2.0, -2.0, -4.0),
+        Vertex(2.0, -2.0, 4.0)
     ));
     // Front face
     triangles.push_back(new Triangle(
@@ -279,6 +301,19 @@ shared_ptr<DynObject> SimplePrimitivesDemo::buildFixedStructure(){
         Vertex(2.0, 2.0, 4.0),
         Vertex(2.0, 2.0, -4.0)
     ));
+
+    // Color and normals
+    for(Primitive * primitive : triangles){
+        Vertex * vertices = primitive->getVertices();
+        ((Triangle *)primitive)->update(); // Compute normal
+        ((Triangle *)primitive)->setAllVertexNormalsFromFace();
+        for(size_t i = 0 ; i < primitive->getNumVertices() ; ++i){
+            Color4f &color = vertices[i].color;
+            color.x = 0.0;
+            color.y = 0.5;
+            color.z = 0.0;
+        }
+    }
 
     // Dynamic object
     shared_ptr<DynObject> dynObj = make_shared<DynMovingObject>(
@@ -296,8 +331,8 @@ shared_ptr<DynObject> SimplePrimitivesDemo::buildHelicalStructure(){
         Vertex(0, 0, 2)
     ));
     triangles.push_back(new Triangle(
-        Vertex(1, -1, 0),
         Vertex(0, 0, 2),
+        Vertex(1, -1, 0),
         Vertex(0, 1, 0)
     ));
     triangles.push_back(new Triangle(
@@ -308,19 +343,32 @@ shared_ptr<DynObject> SimplePrimitivesDemo::buildHelicalStructure(){
     // Lower surface
     triangles.push_back(new Triangle(
         Vertex(-1, -1, 0),
-        Vertex(1, -1, 0),
-        Vertex(0, 0, -2)
+        Vertex(0, 0, -2),
+        Vertex(1, -1, 0)
     ));
     triangles.push_back(new Triangle(
-        Vertex(1, -1, 0),
         Vertex(0, 0, -2),
-        Vertex(0, 1, 0)
+        Vertex(0, 1, 0),
+        Vertex(1, -1, 0)
     ));
     triangles.push_back(new Triangle(
         Vertex(-1, -1, 0),
-        Vertex(0, 0, -2),
-        Vertex(0, 1, 0)
-        ));
+        Vertex(0, 1, 0),
+        Vertex(0, 0, -2)
+    ));
+
+    // Color and normals
+    for(Primitive * primitive : triangles){
+        ((Triangle *)primitive)->update(); // Compute normal
+        ((Triangle *)primitive)->setAllVertexNormalsFromFace();
+        Vertex * vertices = primitive->getVertices();
+        for(size_t i = 0 ; i < primitive->getNumVertices() ; ++i){
+            Color4f &color = vertices[i].color;
+            color.x = 0.6;
+            color.y = 0.6;
+            color.z = 0.0;
+        }
+    }
 
     // Dynamic object
     shared_ptr<DynObject> dynObj = make_shared<DynMovingObject>(
@@ -345,13 +393,13 @@ shared_ptr<DynObject> SimplePrimitivesDemo::buildStaticStructure(){
     // Top surface
     triangles.push_back(new Triangle(
         Vertex(-1.0, 1.0, 10.0),
-        Vertex(1.0, -1.0, 10.0),
-        Vertex(-1.0, -1.0, 10.0)
+        Vertex(-1.0, -1.0, 10.0),
+        Vertex(1.0, -1.0, 10.0)
     ));
     triangles.push_back(new Triangle(
         Vertex(-1.0, 1.0, 10.0),
-        Vertex(1.0, 1.0, 10.0),
-        Vertex(1.0, -1.0, 10.0)
+        Vertex(1.0, -1.0, 10.0),
+        Vertex(1.0, 1.0, 10.0)
     ));
     // Left surface
     triangles.push_back(new Triangle(
@@ -367,26 +415,26 @@ shared_ptr<DynObject> SimplePrimitivesDemo::buildStaticStructure(){
     // Right surface
     triangles.push_back(new Triangle(
         Vertex(1.0, -1.0, -10.0),
-        Vertex(1.0, -1.0, 10.0),
-        Vertex(1.0, 1.0, 10.0)
-    ));
-    triangles.push_back(new Triangle(
-        Vertex(1.0, -1.0, -10.0),
         Vertex(1.0, 1.0, 10.0),
-        Vertex(1.0, 1.0, -10.0)
-    ));
-    // Front face
-    triangles.push_back(new Triangle(
-        Vertex(-1.0, -1.0, -10.0),
-        Vertex(-1.0, -1.0, 10.0),
         Vertex(1.0, -1.0, 10.0)
     ));
     triangles.push_back(new Triangle(
-        Vertex(-1.0, -1.0, -10.0),
-        Vertex(1.0, -1.0, 10.0),
-        Vertex(1.0, -1.0, -10.0)
+        Vertex(1.0, -1.0, -10.0),
+        Vertex(1.0, 1.0, -10.0),
+        Vertex(1.0, 1.0, 10.0)
     ));
     // Front face
+    triangles.push_back(new Triangle(
+        Vertex(-1.0, -1.0, -10.0),
+        Vertex(1.0, -1.0, 10.0),
+        Vertex(-1.0, -1.0, 10.0)
+    ));
+    triangles.push_back(new Triangle(
+        Vertex(-1.0, -1.0, -10.0),
+        Vertex(1.0, -1.0, -10.0),
+        Vertex(1.0, -1.0, 10.0)
+    ));
+    // Back face
     triangles.push_back(new Triangle(
         Vertex(-1.0, 1.0, -10.0),
         Vertex(-1.0, 1.0, 10.0),
@@ -397,6 +445,19 @@ shared_ptr<DynObject> SimplePrimitivesDemo::buildStaticStructure(){
         Vertex(1.0, 1.0, 10.0),
         Vertex(1.0, 1.0, -10.0)
     ));
+
+    // Color and normals
+    for(Primitive * primitive : triangles){
+        ((Triangle *)primitive)->update(); // Compute normal
+        ((Triangle *)primitive)->setAllVertexNormalsFromFace();
+        Vertex * vertices = primitive->getVertices();
+        for(size_t i = 0 ; i < primitive->getNumVertices() ; ++i){
+            Color4f &color = vertices[i].color;
+            color.x = 0.2;
+            color.y = 0.0;
+            color.z = 0.4;
+        }
+    }
 
     // Dynamic object
     shared_ptr<DynObject> dynObj = make_shared<DynMovingObject>(
@@ -420,13 +481,23 @@ shared_ptr<DynObject> SimplePrimitivesDemo::buildGroundStructure(){
         Vertex(-50.0, -50.0, 0.0)
     ));
 
+    // Color
+    for(Primitive * primitive : triangles){
+        Vertex * vertices = primitive->getVertices();
+        for(size_t i = 0 ; i < primitive->getNumVertices() ; ++i){
+            Color4f &color = vertices[i].color;
+            color.x = 0.5;
+            color.y = 0.5;
+            color.z = 0.5;
+        }
+    }
+
     // Dynamic object
     shared_ptr<DynObject> dynObj = make_shared<DynMovingObject>(
         "groundStructure",
         triangles
     );
     return dynObj;
-
 }
 
 

@@ -4,7 +4,7 @@
 #include <vector>
 
 #include <visualhelios/VHCanvas.h>
-#include <visualhelios/adapters/VHDynObjectAdapter.h>
+#include <visualhelios/adapters/VHDynObjectXYZRGBAdapter.h>
 
 namespace visualhelios{
 
@@ -28,7 +28,7 @@ protected:
      * @see VHSimpleCanvas::setDynObj
      * @see VHSimpleCanvas::clearDynObjs
      */
-    vector<shared_ptr<VHDynObjectAdapter>> dynObjs;
+    vector<shared_ptr<VHDynObjectXYZRGBAdapter>> dynObjs;
     /**
      * @brief Function to define dynamic objects behavior before updating the
      *  canvas
@@ -41,8 +41,24 @@ protected:
      *  behavior of dynamic objects must be done through this ad-hoc function
      */
     std::function<void(
-        vector<shared_ptr<VHDynObjectAdapter>>
+        vector<shared_ptr<VHDynObjectXYZRGBAdapter>>
     )> dynamicUpdateFunction;
+
+    /**
+     * @brief Specify if the simple canvas must render normals (true) or not
+     *  (false)
+     */
+    bool renderingNormals;
+    /**
+     * @brief Specify the magnitude of normal vector for visualization
+     */
+    float normalMagnitude;
+
+    /**
+     * @brief Control whether an update is needed even when dynamic objects
+     *  themselves have not been updated (true) or not (false)
+     */
+    bool needUpdate;
 
 public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //
@@ -65,6 +81,10 @@ protected:
     // ***  CANVAS METHODS  *** //
     // ************************ //
     /**
+     * @see VHCanvas::configure
+     */
+    void configure() override;
+    /**
      * @see VHCanvas::start
      */
     void start() override;
@@ -72,6 +92,17 @@ protected:
      * @see VHCanvas::update
      */
     void update() override;
+
+    // ***  UTIL METHODS  ***  //
+    // ********************** //
+    /**
+     * @brief Render normals for each primitive of given dynamic object
+     */
+    void renderNormals(VHDynObjectXYZRGBAdapter & dynObj);
+    /**
+     * @brief Remove all rendered normals
+     */
+    void unrenderAllNormals();
 
 public:
     // ***  GETTERS and SETTERS  *** //
@@ -81,7 +112,7 @@ public:
      * @param dynObj Dynamic object to be appended
      * @see VHSimpleCanvas::dynObjs
      */
-    inline void appendDynObj(shared_ptr<VHDynObjectAdapter> dynObj)
+    inline void appendDynObj(shared_ptr<VHDynObjectXYZRGBAdapter> dynObj)
     {dynObjs.push_back(dynObj);}
     /**
      * @brief Obtain a dynamic object from simple canvas
@@ -95,7 +126,10 @@ public:
      * @param index Index of dynamic object to be replaced
      * @param dynObj Dynamic object to replace with
      */
-    inline void setDynObj(size_t index, shared_ptr<VHDynObjectAdapter> dynObj)
+    inline void setDynObj(
+        size_t index,
+        shared_ptr<VHDynObjectXYZRGBAdapter> dynObj
+    )
     {dynObjs[index] = dynObj;}
     /**
      * @brief Remove all dynamic objects from simple canvas
@@ -104,14 +138,29 @@ public:
     {dynObjs.clear();}
     /**
      * @brief Set the dynamic update function
-     * @param dynamicUpdateFunction
-     * @see visualhelios::VHSimpleCanvas::DynamicUpdateFunction
+     * @param dynamicUpdateFunction  The dynamic update function
+     * @see visualhelios::VHSimpleCanvas::dynamicUpdateFunction
      */
     inline void setDynamicUpdateFunction(
         std::function<void(
-            vector<shared_ptr<VHDynObjectAdapter>>
+            vector<shared_ptr<VHDynObjectXYZRGBAdapter>>
         )> const dynamicUpdateFunction
     ){this->dynamicUpdateFunction = dynamicUpdateFunction;}
+    /**
+     * @brief Check whether the simple canvas is rendering normals or not
+     * @return True if simple canvas is rendering normals, false otherwise
+     * @see visualhelios::VHSimpleCanvas::renderingNormals
+     */
+    inline bool isRenderingNormals() const {return renderingNormals;}
+    /**
+     * @brief Enable or disable normals rendering
+     * @param renderingNormals True to enable rendering normals, false
+     *  to disable it
+     * @see visualhelios::VHSimpleCanvas::renderingNormals
+     */
+    inline void setRenderingNormals(bool const renderingNormals)
+    {this->renderingNormals = renderingNormals;}
+
 
 };
 
