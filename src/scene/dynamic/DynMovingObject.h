@@ -108,6 +108,7 @@ public:
      *  and \f$A\f$ but coming from the normal motion queue instead of the
      *  position motion queue.
      *
+     * @return True if the dynamic object was modified, false otherwise
      * @see DynObject::doStep
      * @see rigidmotion::RigidMotion
      * @see DynMovingObject::positionMotionQueue
@@ -115,6 +116,31 @@ public:
      */
     bool doStep() override;
 
+protected:
+    /**
+     * @brief Method to assist rigid motions computation.
+     *
+     * It provides the abstract logic to compute rigid motions in an efficient
+     *  way. Functions to extract rigid motion queue elements and to read and
+     *  update primitives must be given as input arguments.
+     *
+     * @param matrixFromPrimitives Function to get a matrix from primitives
+     *  composing the dynamic object
+     * @param matrixToPrimitives Function to update primitives from a given
+     *  matrix
+     * @param queueHasNext Function to check whether the queue has rigid
+     *  motions left (true) or not (false)
+     * @param queueNext Function to obtain the next rigid motion from a queue
+     * @return True if modifications occurred, false otherwise
+     */
+    bool applyRigidMotionQueue(
+        std::function<arma::mat()> matrixFromPrimitives,
+        std::function<void(arma::mat const &X)> matrixToPrimitives,
+        std::function<bool()> queueHasNext,
+        std::function<shared_ptr<RigidMotion>()> queueNext
+    );
+
+public:
     // ***  MOTION QUEUES METHODS  *** //
     // ******************************* //
     /**

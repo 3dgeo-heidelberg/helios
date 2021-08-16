@@ -1,5 +1,7 @@
 #include <scene/dynamic/DynMovingObject.h>
 
+#include <functional>
+
 // ***  MOTION QUEUES METHODS  *** //
 // ******************************* //
 shared_ptr<RigidMotion> DynMovingObject::_next(
@@ -17,24 +19,61 @@ bool DynMovingObject::doStep(){
     bool modified = false;
 
     // Apply position rigid motions, if any
-    if(positionMotionQueueHasNext()){
-        arma::mat X = positionMatrixFromPrimitives();
-        while(positionMotionQueueHasNext()){
-            shared_ptr<RigidMotion> rm = nextPositionMotion();
-            X = rme.apply(*rm, X);
+    modified |= applyRigidMotionQueue(
+        [=]()->arma::mat{
+            return this->positionMatrixFromPrimitives();
+        },
+        [=](arma::mat const &X)->void{
+            this->updatePrimitivesPositionFromMatrix(X);
+        },
+        [=]()->bool{
+            return this->positionMotionQueueHasNext();
+        },
+        [=]()->shared_ptr<RigidMotion>{
+            return this->nextPositionMotion();
         }
-        updatePrimitivesPositionFromMatrix(X);
-        modified = true;
-    }
+    );
 
     // Apply normal rigid motions, if any
-    if(normalMotionQueueHasNext()){
-        arma::mat X = normalMatrixFromPrimitives();
-        while(normalMotionQueueHasNext()){
-            shared_ptr<RigidMotion> rm = nextNormalMotion();
-            X = rme.apply(*rm, X);
+    modified |= applyRigidMotionQueue(
+        [=]()->arma::mat{
+            return this->normalMatrixFromPrimitives();
+        },
+        [=](arma::mat const &X)->void{
+            this->updatePrimitivesNormalFromMatrix(X);
+        },
+        [=]()->bool{
+            return this->normalMotionQueueHasNext();
+        },
+        [=]()->shared_ptr<RigidMotion>{
+            return this->nextNormalMotion();
         }
-        updatePrimitivesNormalFromMatrix(X);
+    );
+
+    // Return modifications control flag
+    return modified;
+}
+bool DynMovingObject::applyRigidMotionQueue(
+    std::function<arma::mat()> matrixFromPrimitives,
+    std::function<void(arma::mat const &X)> matrixToPrimitives,
+    std::function<bool()> queueHasNext,
+    std::function<shared_ptr<RigidMotion>()> queueNext
+){
+    // Flag to control whether the dynamic object has been modified or not
+    bool modified = false;
+
+    // Apply rigid motions from queue, if any
+    if(queueHasNext()){
+        arma::mat X = matrixFromPrimitives();
+        shared_ptr<RigidMotion> rm = nullptr;
+        while(queueHasNext()){
+            if(rm == nullptr) rm = queueNext();
+            else{
+                rm = make_shared<RigidMotion>(rme.compose(*queueNext(), *rm));
+            }
+        }
+        X = rme.apply(*rm, X);
+        matrixToPrimitives(X);
         modified = true;
     }
 
