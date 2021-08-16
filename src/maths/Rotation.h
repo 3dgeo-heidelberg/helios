@@ -75,6 +75,7 @@
 
 #if PYTHON_BINDING
 #include <PythonDVec3.h>
+using pyhelios::PythonDVec3;
 #endif
 
 class Rotation {

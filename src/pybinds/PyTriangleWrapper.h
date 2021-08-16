@@ -5,6 +5,8 @@
 #include <PyPrimitiveWrapper.h>
 #include <Triangle.h>
 
+namespace pyhelios{
+
 /**
  * @author Alberto M. Esmoris Pena
  * @version 1.0
@@ -24,5 +26,7 @@ public:
     PythonDVec3 * getFaceNormal()
         {return new PythonDVec3( ((Triangle *) prim)->getFaceNormal() ); }
 };
+
+}
 
 #endif

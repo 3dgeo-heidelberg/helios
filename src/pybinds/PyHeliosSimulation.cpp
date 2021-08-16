@@ -8,6 +8,9 @@
 #include <PyHeliosOutputWrapper.h>
 #include <chrono>
 
+using pyhelios::PyHeliosSimulation;
+using pyhelios::PyHeliosOutputWrapper;
+
 // ***  CONSTRUCTION / DESTRUCTION  *** //
 // ************************************ //
 PyHeliosSimulation::PyHeliosSimulation(

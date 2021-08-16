@@ -27,7 +27,7 @@ var searchData=
   ['parseunzip',['parseUnzip',['../d7/d5c/classArgumentsParser.html#af22c5f8a91023f9f1c56611800ec553b',1,'ArgumentsParser']]],
   ['parsewritewaveform',['parseWriteWaveform',['../d7/d5c/classArgumentsParser.html#afe88924622795980c6e92b98c85e7fbb',1,'ArgumentsParser']]],
   ['parsezipoutput',['parseZipOutput',['../d7/d5c/classArgumentsParser.html#a367b681f421a3a840de6c46b227aba11',1,'ArgumentsParser']]],
-  ['pause',['pause',['../d3/d76/classPyHeliosSimulation.html#aebda4270ad4bc1f25950fb3444cee21b',1,'PyHeliosSimulation::pause()'],['../d1/d7b/classSimulation.html#aeac57ace03ce426e470c4552563216b2',1,'Simulation::pause()']]],
+  ['pause',['pause',['../d9/ddd/classpyhelios_1_1PyHeliosSimulation.html#aebda4270ad4bc1f25950fb3444cee21b',1,'pyhelios::PyHeliosSimulation::pause()'],['../d1/d7b/classSimulation.html#aeac57ace03ce426e470c4552563216b2',1,'Simulation::pause()']]],
   ['phongbdrf',['phongBDRF',['../d6/d9e/classAbstractPulseRunnable.html#a46b7718ac32f6b1574aca2b21aaba916',1,'AbstractPulseRunnable']]],
   ['planefittertest',['PlaneFitterTest',['../d6/dda/classHeliosTests_1_1PlaneFitterTest.html#a6a0aba6929996743b2dc310bac1d3615',1,'HeliosTests::PlaneFitterTest']]],
   ['platform',['Platform',['../df/d1e/classPlatform.html#a6b2ba3089df1d2ed16a8349f0876c100',1,'Platform']]],
@@ -45,5 +45,5 @@ var searchData=
   ['produce',['produce',['../d7/deb/classlogger__factory.html#a53ed3dac136023677e6128402ea59dfe',1,'logger_factory']]],
   ['pushnormalmotion',['pushNormalMotion',['../d4/d96/classDynMovingObject.html#a435223a732103b615dcf523206768523',1,'DynMovingObject']]],
   ['pushpositionmotion',['pushPositionMotion',['../d4/d96/classDynMovingObject.html#a359e92db6427e6fd63603ad4f0f8a3d0',1,'DynMovingObject']]],
-  ['pyheliossimulation',['PyHeliosSimulation',['../d3/d76/classPyHeliosSimulation.html#a7c2f3ba2bf2df619c681d5d6e28ec9ae',1,'PyHeliosSimulation']]]
+  ['pyheliossimulation',['PyHeliosSimulation',['../d9/ddd/classpyhelios_1_1PyHeliosSimulation.html#a7c2f3ba2bf2df619c681d5d6e28ec9ae',1,'pyhelios::PyHeliosSimulation']]]
 ];

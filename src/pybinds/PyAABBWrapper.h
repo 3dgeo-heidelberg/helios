@@ -4,6 +4,8 @@
 
 #include <PyVertexWrapper.h>
 
+namespace pyhelios{
+
 /**
  * @author Alberto M. Esmoris Pena
  * @version 1.0
@@ -29,5 +31,7 @@ public:
     PyVertexWrapper * getMaxVertex()
         {return new PyVertexWrapper(aabb->vertices + 1);}
 };
+
+}
 
 #endif

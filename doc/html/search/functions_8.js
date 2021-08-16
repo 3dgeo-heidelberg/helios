@@ -2,7 +2,7 @@ var searchData=
 [
   ['handlefilepath',['handleFilePath',['../d5/d4b/classFileUtils.html#a151552fa50b719b536348308f7b32ee8',1,'FileUtils']]],
   ['handlepulsecomputation',['handlePulseComputation',['../dc/d42/classScanner.html#aa6a0870710d84e7da5b6ae627cef9cf5',1,'Scanner']]],
-  ['handlepythonindex',['handlePythonIndex',['../d6/d41/classPyHeliosUtils.html#a2e2b2f2be67a8a42723c7cbc441abd61',1,'PyHeliosUtils']]],
+  ['handlepythonindex',['handlePythonIndex',['../dd/d69/classpyhelios_1_1PyHeliosUtils.html#aa1083c7b1fca0027f9f39234b732bc57',1,'pyhelios::PyHeliosUtils']]],
   ['handleroute',['handleRoute',['../db/d69/classHelicopterPlatform.html#a5db6362a800f7c95618ff98255fe5488',1,'HelicopterPlatform']]],
   ['handlesimstepnoise',['handleSimStepNoise',['../dc/d42/classScanner.html#a9162783f755f55792d269396ea6a5172',1,'Scanner']]],
   ['handlespec',['handleSpec',['../d9/ddf/classVoxelFileParser.html#aa135c8fbef4cc45b5c2a1682d0143d92',1,'VoxelFileParser']]],

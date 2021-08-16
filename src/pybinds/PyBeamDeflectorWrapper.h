@@ -5,6 +5,8 @@
 #include <AbstractBeamDeflector.h>
 #include <memory>
 
+namespace pyhelios{
+
 /**
  * @author Alberto M. Esmoris Pena
  * @version 1.0
@@ -70,5 +72,7 @@ public:
     inline Rotation& getEmitterRelativeAttitude()
         {return beamDeflector.getEmitterRelativeAttitudeByReference();}
 };
+
+}
 
 #endif

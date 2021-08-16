@@ -12,6 +12,8 @@
 #include <PyHeliosException.h>
 #include <XmlSurveyLoader.h>
 
+namespace pyhelios{
+
 /**
  * @author Alberto M. Esmoris Pena
  * @version 1.0
@@ -274,5 +276,7 @@ public:
     // ************************* //
     PyHeliosSimulation * copy();
 };
+
+}
 
 #endif
