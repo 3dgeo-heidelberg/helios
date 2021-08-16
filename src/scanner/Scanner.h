@@ -17,13 +17,20 @@ class AbstractDetector;
 #include "SyncFileWriter.h"
 #ifdef PYTHON_BINDING
 #include <PyBeamDeflectorWrapper.h>
-class PyDetectorWrapper;
+namespace pyhelios{ class PyDetectorWrapper;};
 #include <PyIntegerList.h>
 #include <PyNoiseSourceWrapper.h>
 #include <PyRandomnessGeneratorWrapper.h>
 #include <PyDoubleVector.h>
+using pyhelios::PyBeamDeflectorWrapper;
+using pyhelios::PyDetectorWrapper;
+using pyhelios::PyIntegerList;
+using pyhelios::PyNoiseSourceWrapper;
+using pyhelios::PyRandomnessGeneratorWrapper;
+using pyhelios::PyDoubleVector;
 #endif
 #include <Measurement.h>
+
 
 /**
  * @brief Class representing a scanner asset

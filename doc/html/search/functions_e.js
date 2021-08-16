@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['newleg',['newLeg',['../d3/d76/classPyHeliosSimulation.html#a7041314c9422e4d3566ffd43d552b5ff',1,'PyHeliosSimulation']]],
+  ['newleg',['newLeg',['../d9/ddd/classpyhelios_1_1PyHeliosSimulation.html#a7041314c9422e4d3566ffd43d552b5ff',1,'pyhelios::PyHeliosSimulation']]],
   ['next',['next',['../d9/d6b/classNoiseSource.html#a02912fa8163d0dd729ff6580bb4901fd',1,'NoiseSource']]],
   ['nextnormalmotion',['nextNormalMotion',['../d4/d96/classDynMovingObject.html#a17ca754fd758ae9100c826a49c55e45c',1,'DynMovingObject']]],
   ['nextpositionmotion',['nextPositionMotion',['../d4/d96/classDynMovingObject.html#a1a66715cfd307f0fa56b6948ab61353f',1,'DynMovingObject']]],

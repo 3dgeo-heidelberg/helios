@@ -4,6 +4,8 @@
 
 #include <PyPrimitiveWrapper.h>
 
+namespace pyhelios{
+
 /**
  * @author Alberto M. Esmoris Pena
  * @version 1.0
@@ -22,18 +24,20 @@ public:
     // ***************************** //
     int getNbEchos() {return ((DetailedVoxel *)prim)->getNbEchos(); }
     void setNbEchos(int nbEchos)
-        {((DetailedVoxel *)prim)->setNbEchos(nbEchos); }
+    {((DetailedVoxel *)prim)->setNbEchos(nbEchos); }
     int getNbSampling() {return ((DetailedVoxel *)prim)->getNbSampling(); }
     void setNbSampling(int nbSampling)
-        {((DetailedVoxel *)prim)->setNbSampling(nbSampling); }
+    {((DetailedVoxel *)prim)->setNbSampling(nbSampling); }
     size_t getNumberOfDoubleValues()
-        {return ((DetailedVoxel *)prim)->getNumberOfDoubleValues();}
+    {return ((DetailedVoxel *)prim)->getNumberOfDoubleValues();}
     double getDoubleValue(size_t index)
-        {return ((DetailedVoxel *)prim)->getDoubleValue(index);}
+    {return ((DetailedVoxel *)prim)->getDoubleValue(index);}
     void setDoubleValue(size_t index, double value)
-        {((DetailedVoxel *)prim)->setDoubleValue(index, value);}
+    {((DetailedVoxel *)prim)->setDoubleValue(index, value);}
     double getMaxPad() {return ((DetailedVoxel *)prim)->getMaxPad();}
     void setMaxPad(double maxPad) {((DetailedVoxel *)prim)->setMaxPad(maxPad);}
 };
+
+}
 
 #endif

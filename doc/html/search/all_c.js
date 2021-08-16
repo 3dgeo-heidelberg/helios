@@ -40,7 +40,7 @@ var searchData=
   ['loadmaterials',['loadMaterials',['../d3/d74/classMaterialsFileReader.html#a7eecb767618c3e50fab2003461640761',1,'MaterialsFileReader']]],
   ['loadobj',['loadObj',['../d9/d15/classWavefrontObjFileLoader.html#a756909f9f8f6bc6d2212947b07770baf',1,'WavefrontObjFileLoader']]],
   ['loadscene',['loadScene',['../df/d9a/classXmlSurveyLoader.html#ac2a16d088fb5c5921cffc8c863a1c9ec',1,'XmlSurveyLoader']]],
-  ['loadsurvey',['loadSurvey',['../d3/d76/classPyHeliosSimulation.html#a2fcccc6995bf1432c4415dd170c13766',1,'PyHeliosSimulation']]],
+  ['loadsurvey',['loadSurvey',['../d9/ddd/classpyhelios_1_1PyHeliosSimulation.html#a2fcccc6995bf1432c4415dd170c13766',1,'pyhelios::PyHeliosSimulation']]],
   ['localrotation',['localRotation',['../de/de4/classRotateFilter.html#a80583da7571d8216b283aeec230ec6e4',1,'RotateFilter']]],
   ['localscalefactor',['localScaleFactor',['../d9/d83/classScaleFilter.html#a241840ef9a21faa8b7acdf053d93c359',1,'ScaleFilter']]],
   ['localtranslation',['localTranslation',['../df/d5a/classTranslateFilter.html#a0a672ad28c5f7c8acdf63c5e8dd2ff72',1,'TranslateFilter']]],

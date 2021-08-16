@@ -9,6 +9,8 @@
 using boost::ref;
 using boost::python::call;
 
+namespace pyhelios{
+
 /**
  * @author Alberto M. Esmoris Pena
  * @version 1.0
@@ -41,5 +43,6 @@ public:
 
 };
 
+}
 
 #endif

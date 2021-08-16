@@ -5,6 +5,8 @@
 #include <Trajectory.h>
 #include <PythonDVec3.h>
 
+namespace pyhelios{
+
 /**
  * @author Alberto M. Esmoris Pena
  * @version 1.0
@@ -39,5 +41,7 @@ public:
     double getYaw() {return t.yaw;}
     void setYaw(double yaw) {t.yaw = yaw;}
 };
+
+}
 
 #endif

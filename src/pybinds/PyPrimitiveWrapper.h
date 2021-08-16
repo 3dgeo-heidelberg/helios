@@ -8,6 +8,8 @@
 #include <PyDoubleVector.h>
 #include <PyVertexWrapper.h>
 
+namespace pyhelios{
+
 /**
  * @author Alberto M. Esmoris Pena
  * @version 1.0
@@ -71,5 +73,7 @@ public:
 
 
 };
+
+}
 
 #endif
