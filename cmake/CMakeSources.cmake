@@ -2,7 +2,9 @@
 # ----------------------- #
 # Define helios executable ###################
 file(GLOB_RECURSE sources CONFIGURE_DEPENDS src/*.cpp src/*.hpp src/*.h)
-include_directories(
+
+# Common Helios include directories
+set(HELIOS_INCLUDE_DIRECTORIES
     "src/"
     "src/assetloading/"
     "src/assetloading/geometryfilter/"
@@ -12,6 +14,7 @@ include_directories(
     "src/scanner/detector/"
     "src/scene/"
     "src/scene/primitives/"
+    "src/scene/dynamic/"
     "src/surveyplayback/"
     "src/noise/"
     "src/maths/"
@@ -19,4 +22,18 @@ include_directories(
     "src/util/"
     "src/util/logger/"
     "src/test/"
+
 )
+# Pyhelios specific include directories
+if(${PYTHON_BINDING})
+    list(APPEND HELIOS_INCLUDE_DIRECTORIES "src/pybinds/")
+endif()
+# PCL specific include directories
+if(${PCL_BINDING})
+    list(APPEND HELIOS_INCLUDE_DIRECTORIES
+        "src/visualhelios/"
+        "src/visualhelios/adapters/"
+        "src/demo/"
+    )
+endif()
+include_directories(${HELIOS_INCLUDE_DIRECTORIES})

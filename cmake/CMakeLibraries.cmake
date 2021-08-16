@@ -134,7 +134,7 @@ if(PCL_BINDING)
         set(PCL_INCLUDE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/lib/pcl/install/include)
         set(PCL_LIBRARIES
             ${CMAKE_CURRENT_SOURCE_DIR}/lib/pcl/install/lib/libpcl_common.so
-            #${CMAKE_CURRENT_SOURCE_DIR}/lib/pcl/install/lib/libpcl_features.so
+            ${CMAKE_CURRENT_SOURCE_DIR}/lib/pcl/install/lib/libpcl_features.so
             #${CMAKE_CURRENT_SOURCE_DIR}/lib/pcl/install/lib/libpcl_filters.so
             ${CMAKE_CURRENT_SOURCE_DIR}/lib/pcl/install/lib/libpcl_io_ply.so
             ${CMAKE_CURRENT_SOURCE_DIR}/lib/pcl/install/lib/libpcl_io.so
@@ -158,6 +158,7 @@ if(PCL_BINDING)
         find_package(PCL REQUIRED 1.12)
     endif()
     include_directories(${VTK_INCLUDE_DIRS} ${PCL_INCLUDE_DIRS})
+    add_definitions(-DPCL_BINDING) # Define PCL has been binded
     message("VTK include: " ${VTK_INCLUDE_DIRS})
     message("VTK libraries: " ${VTK_LIBRARIES})
     message("PCL include: " ${PCL_INCLUDE_DIRS})

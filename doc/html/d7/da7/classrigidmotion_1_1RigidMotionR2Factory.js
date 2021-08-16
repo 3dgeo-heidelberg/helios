@@ -2,11 +2,11 @@ var classrigidmotion_1_1RigidMotionR2Factory =
 [
     [ "RigidMotionR2Factory", "d7/da7/classrigidmotion_1_1RigidMotionR2Factory.html#a79a7c9dea2a2f2f8344b2bf6cf8d0475", null ],
     [ "~RigidMotionR2Factory", "d7/da7/classrigidmotion_1_1RigidMotionR2Factory.html#a218c5d312c34b18e40fdb4b15e25a01c", null ],
-    [ "makeGlideReflection", "d7/da7/classrigidmotion_1_1RigidMotionR2Factory.html#a6378b09c780d4c953be8f0f73cb80c76", null ],
-    [ "makeGlideReflection", "d7/da7/classrigidmotion_1_1RigidMotionR2Factory.html#a900dd1d090008c829de2ed62d7542049", null ],
-    [ "makeIdentity", "d7/da7/classrigidmotion_1_1RigidMotionR2Factory.html#a170cf7ff3e1f230c84ea17a24e717215", null ],
-    [ "makeReflection", "d7/da7/classrigidmotion_1_1RigidMotionR2Factory.html#ac8da85a6996597eacb77e19043ec13a1", null ],
-    [ "makeReflection", "d7/da7/classrigidmotion_1_1RigidMotionR2Factory.html#a728ef10898f75613d02d20c2f9b3dd4a", null ],
-    [ "makeRotation", "d7/da7/classrigidmotion_1_1RigidMotionR2Factory.html#ada4e17c7558229638e3ab7cf9ad9fb14", null ],
-    [ "makeTranslation", "d7/da7/classrigidmotion_1_1RigidMotionR2Factory.html#a9f7fcfa75c68652f58a502b384fd62ce", null ]
+    [ "makeGlideReflection", "d7/da7/classrigidmotion_1_1RigidMotionR2Factory.html#afcb887bd4b6289c82a25ecc2050537a2", null ],
+    [ "makeGlideReflection", "d7/da7/classrigidmotion_1_1RigidMotionR2Factory.html#a11a6afaab88cbcae30f175954e3becc2", null ],
+    [ "makeIdentity", "d7/da7/classrigidmotion_1_1RigidMotionR2Factory.html#ab246737ce5ca5583ff1dc23cf1abcf4c", null ],
+    [ "makeReflection", "d7/da7/classrigidmotion_1_1RigidMotionR2Factory.html#afdf3da31cd903dccd04747e7b47ccb67", null ],
+    [ "makeReflection", "d7/da7/classrigidmotion_1_1RigidMotionR2Factory.html#a665b6141e94a3691d994938235f536c1", null ],
+    [ "makeRotation", "d7/da7/classrigidmotion_1_1RigidMotionR2Factory.html#ac4dcfc1ea1326e92d752e26a746119bc", null ],
+    [ "makeTranslation", "d7/da7/classrigidmotion_1_1RigidMotionR2Factory.html#a4673005c488dd0ec757ae16a433a7e1f", null ]
 ];

@@ -16,7 +16,7 @@ using namespace rigidmotion;
 namespace HeliosTests{
 
 /**
- * @author: Alberto M. Esmoris Pena
+ * @author Alberto M. Esmoris Pena
  * @version 1.0
  * @brief Rigid motion test
  */

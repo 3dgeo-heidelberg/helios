@@ -1,5 +1,10 @@
 var annotated_dup =
 [
+    [ "HeliosDemos", null, [
+      [ "BaseDemo", "df/df9/classHeliosDemos_1_1BaseDemo.html", "df/df9/classHeliosDemos_1_1BaseDemo" ],
+      [ "DemoSelector", "df/d3f/classHeliosDemos_1_1DemoSelector.html", "df/d3f/classHeliosDemos_1_1DemoSelector" ],
+      [ "SimplePrimitivesDemo", "d0/d1c/classHeliosDemos_1_1SimplePrimitivesDemo.html", "d0/d1c/classHeliosDemos_1_1SimplePrimitivesDemo" ]
+    ] ],
     [ "HeliosTests", null, [
       [ "BaseTest", "d9/d52/classHeliosTests_1_1BaseTest.html", "d9/d52/classHeliosTests_1_1BaseTest" ],
       [ "LadLutTest", "dd/df9/classHeliosTests_1_1LadLutTest.html", "dd/df9/classHeliosTests_1_1LadLutTest" ],
@@ -22,6 +27,13 @@ var annotated_dup =
       [ "RigidMotionR2Factory", "d7/da7/classrigidmotion_1_1RigidMotionR2Factory.html", "d7/da7/classrigidmotion_1_1RigidMotionR2Factory" ],
       [ "RigidMotionR3Factory", "dc/df6/classrigidmotion_1_1RigidMotionR3Factory.html", "dc/df6/classrigidmotion_1_1RigidMotionR3Factory" ]
     ] ],
+    [ "visualhelios", null, [
+      [ "VHCanvas", "de/dda/classvisualhelios_1_1VHCanvas.html", "de/dda/classvisualhelios_1_1VHCanvas" ],
+      [ "VHDynObjectAdapter", "d5/dc4/classvisualhelios_1_1VHDynObjectAdapter.html", "d5/dc4/classvisualhelios_1_1VHDynObjectAdapter" ],
+      [ "VHDynObjectXYZAdapter", "de/d3c/classvisualhelios_1_1VHDynObjectXYZAdapter.html", "de/d3c/classvisualhelios_1_1VHDynObjectXYZAdapter" ],
+      [ "VHDynObjectXYZRGBAdapter", "d6/dd1/classvisualhelios_1_1VHDynObjectXYZRGBAdapter.html", "d6/dd1/classvisualhelios_1_1VHDynObjectXYZRGBAdapter" ],
+      [ "VHSimpleCanvas", "d9/dc5/classvisualhelios_1_1VHSimpleCanvas.html", "d9/dc5/classvisualhelios_1_1VHSimpleCanvas" ]
+    ] ],
     [ "AABB", "d2/d1a/classAABB.html", "d2/d1a/classAABB" ],
     [ "AbstractBeamDeflector", "d7/d92/classAbstractBeamDeflector.html", "d7/d92/classAbstractBeamDeflector" ],
     [ "AbstractDetector", "d8/d6b/classAbstractDetector.html", "d8/d6b/classAbstractDetector" ],
@@ -34,6 +46,8 @@ var annotated_dup =
     [ "DetailedVoxel", "d7/d5a/classDetailedVoxel.html", "d7/d5a/classDetailedVoxel" ],
     [ "DetailedVoxelLoader", "db/d49/classDetailedVoxelLoader.html", "db/d49/classDetailedVoxelLoader" ],
     [ "Directions", "df/dc3/classDirections.html", "df/dc3/classDirections" ],
+    [ "DynMovingObject", "d4/d96/classDynMovingObject.html", "d4/d96/classDynMovingObject" ],
+    [ "DynObject", "d5/d6a/classDynObject.html", "d5/d6a/classDynObject" ],
     [ "enum_hasher", "da/ded/structenum__hasher.html", "da/ded/structenum__hasher" ],
     [ "FiberArrayBeamDeflector", "d7/d20/classFiberArrayBeamDeflector.html", "d7/d20/classFiberArrayBeamDeflector" ],
     [ "file_logger", "d8/d63/classfile__logger.html", "d8/d63/classfile__logger" ],
