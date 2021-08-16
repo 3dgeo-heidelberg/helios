@@ -37,7 +37,7 @@ public:
     // ***  BUILDING  *** //
     // ****************** //
     /**
-     * @see visualhelios::VHDynObjectAdapter:::buildPolymesh
+     * @see visualhelios::VHDynObjectAdapter::buildPolymesh
      */
     void constructPolymesh() override;
     /**
