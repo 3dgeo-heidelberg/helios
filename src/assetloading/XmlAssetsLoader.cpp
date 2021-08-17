@@ -13,15 +13,7 @@
 namespace fs = boost::filesystem;
 
 #include "typedef.h"
-
-#include "AbstractGeometryFilter.h"
-#include "DetailedVoxelLoader.h"
-#include "GeoTiffFileLoader.h"
-#include "RotateFilter.h"
-#include "ScaleFilter.h"
-#include "TranslateFilter.h"
-#include "WavefrontObjFileLoader.h"
-#include "XYZPointCloudFileLoader.h"
+#include <XmlUtils.h>
 
 #include "GroundVehiclePlatform.h"
 #include "HelicopterPlatform.h"
@@ -37,8 +29,6 @@ namespace fs = boost::filesystem;
 #include "WavefrontObjCache.h"
 #include "XmlAssetsLoader.h"
 #include <FileUtils.h>
-#include <NormalNoiseSource.h>
-#include <UniformNoiseSource.h>
 
 #include "MathConverter.h"
 #include "TimeWatcher.h"
@@ -61,7 +51,7 @@ XmlAssetsLoader::XmlAssetsLoader(std::string &filePath, std::string &assetsDir)
 std::shared_ptr<Asset>
 XmlAssetsLoader::createAssetFromXml(std::string type,
                                     tinyxml2::XMLElement *assetNode) {
-  if (assetNode == NULL) {
+  if (assetNode == nullptr) {
     logging::ERR("ERROR: Asset definition XML node is null!");
     exit(-1);
   }
@@ -76,7 +66,7 @@ XmlAssetsLoader::createAssetFromXml(std::string type,
     result = std::dynamic_pointer_cast<Asset>(createScannerFromXml(assetNode));
   } else if (type == "scene") {
     result = std::dynamic_pointer_cast<Asset>(
-        createSceneFromXml(assetNode, xmlDocFilePath));
+        sceneLoader.createSceneFromXml(assetNode, xmlDocFilePath));
   } else if (type == "scannerSettings") {
     result = std::dynamic_pointer_cast<Asset>(
         createScannerSettingsFromXml(assetNode));
@@ -90,84 +80,12 @@ XmlAssetsLoader::createAssetFromXml(std::string type,
 
   // Read "asset" properties:
   result->id = boost::get<std::string>(
-      getAttribute(assetNode, "id", "string", std::string("")));
-  result->name = boost::get<std::string>(
-      getAttribute(assetNode, "name", "string", "Unnamed " + type + " asset"));
+      XmlUtils::getAttribute(assetNode, "id", "string", std::string("")));
+  result->name = boost::get<std::string>(XmlUtils::getAttribute(
+      assetNode, "name", "string", "Unnamed " + type + " asset"));
 
   // Store source file path for possible later XML export:
   result->sourceFilePath = xmlDocFilePath;
-
-  return result;
-}
-
-Color4f XmlAssetsLoader::createColorFromXml(tinyxml2::XMLElement *node) {
-  Color4f col;
-  try {
-    float r = boost::lexical_cast<float>(node->Attribute("r"));
-    float g = boost::lexical_cast<float>(node->Attribute("g"));
-    float b = boost::lexical_cast<float>(node->Attribute("b"));
-    col = Color4f(r, g, b, 1);
-  } catch (std::exception &e) {
-    logging::INFO(std::string("Error creating color from xml.\nEXCEPTION: ") +
-                  e.what());
-  }
-  return col;
-}
-
-std::map<std::string, ObjectT>
-XmlAssetsLoader::createParamsFromXml(tinyxml2::XMLElement *paramsNode) {
-
-  std::map<std::string, ObjectT> result;
-
-  if (paramsNode == nullptr) {
-    return result;
-  }
-
-  tinyxml2::XMLElement *element = paramsNode->FirstChildElement("param");
-  while (element != nullptr) {
-
-    try {
-      std::string type = element->Attribute("type");
-      std::string key = element->Attribute("key");
-      std::string valueString;
-      const char *attribute = element->Attribute("value");
-      if (attribute)
-        valueString = attribute;
-
-      if (type.empty() || type.compare("string") == 0) {
-        result.insert(std::pair<std::string, std::string>(key, valueString));
-      } else {
-
-        if (type == "boolean") {
-          bool b = valueString == "true" ? true : false;
-          result.insert(std::pair<std::string, bool>(key, b));
-        } else if (type == "double") {
-          result.insert(std::pair<std::string, double>(
-              key, boost::lexical_cast<double>(valueString)));
-        } else if (type == "integer" || type == "int") {
-          result.insert(std::pair<std::string, int>(
-              key, boost::lexical_cast<int>(valueString)));
-        } else if (type == "rotation") {
-          result.insert(std::pair<std::string, Rotation>(
-              key, createRotationFromXml(element)));
-        } else if (type == "vec3") {
-          std::vector<std::string> vec;
-          boost::split(vec, valueString, boost::is_any_of(";"));
-          double x = boost::lexical_cast<double>(vec.at(0));
-          double y = boost::lexical_cast<double>(vec.at(1));
-          double z = boost::lexical_cast<double>(vec.at(2));
-
-          result.insert(
-              std::pair<std::string, glm::dvec3>(key, glm::dvec3(x, y, z)));
-        }
-      }
-    } catch (std::exception &e) {
-      logging::INFO(std::string("Failed to read filter parameter: ") +
-                    e.what());
-    }
-
-    element = element->NextSiblingElement("param");
-  }
 
   return result;
 }
@@ -230,11 +148,11 @@ XmlAssetsLoader::createPlatformFromXml(tinyxml2::XMLElement *platformNode) {
 
     // Read relative position of the scanner mount on the platform:
     platform->cfg_device_relativeMountPosition =
-        createVec3dFromXml(scannerMountNode, "");
+        XmlUtils::createVec3dFromXml(scannerMountNode, "");
 
     // Read relative orientation of the scanner mount on the platform:
     platform->cfg_device_relativeMountAttitude =
-        createRotationFromXml(scannerMountNode);
+        XmlUtils::createRotationFromXml(scannerMountNode);
   } catch (std::exception &e) {
     logging::WARN(std::string("No scanner orientation defined.\nEXCEPTION: ") +
                   e.what());
@@ -243,39 +161,55 @@ XmlAssetsLoader::createPlatformFromXml(tinyxml2::XMLElement *platformNode) {
   // ########## BEGIN Read Platform noise specification ##########
   tinyxml2::XMLElement *positionXNoise =
       platformNode->FirstChildElement("positionXNoise");
-  if (positionXNoise != NULL)
-    platform->positionXNoiseSource = createNoiseSource(positionXNoise);
-  else
-    logging::DEBUG("No default platform position X noise was specified");
+  if (positionXNoise != nullptr){
+      platform->positionXNoiseSource = XmlUtils::createNoiseSource(
+          positionXNoise
+      );
+  }
+  else logging::DEBUG("No default platform position X noise was specified");
   tinyxml2::XMLElement *positionYNoise =
       platformNode->FirstChildElement("positionYNoise");
-  if (positionYNoise != NULL)
-    platform->positionYNoiseSource = createNoiseSource(positionYNoise);
-  else
-    logging::DEBUG("No default platform position Y noise was specified");
+  if (positionYNoise != nullptr){
+      platform->positionYNoiseSource = XmlUtils::createNoiseSource(
+          positionYNoise
+      );
+  }
+  else logging::DEBUG("No default platform position Y noise was specified");
   tinyxml2::XMLElement *positionZNoise =
       platformNode->FirstChildElement("positionZNoise");
-  if (positionZNoise != NULL)
-    platform->positionZNoiseSource = createNoiseSource(positionZNoise);
+  if (positionZNoise != nullptr){
+      platform->positionZNoiseSource = XmlUtils::createNoiseSource(
+          positionZNoise
+      );
+  }
   else
     logging::DEBUG("No default platform position Z noise was specified");
 
   tinyxml2::XMLElement *attitudeXNoise =
       platformNode->FirstChildElement("attitudeXNoise");
-  if (attitudeXNoise != NULL)
-    platform->attitudeXNoiseSource = createNoiseSource(attitudeXNoise);
+  if (attitudeXNoise != nullptr){
+      platform->attitudeXNoiseSource = XmlUtils::createNoiseSource(
+          attitudeXNoise
+      );
+  }
   else
     logging::DEBUG("No default platform attitude X noise was specified");
   tinyxml2::XMLElement *attitudeYNoise =
       platformNode->FirstChildElement("attitudeYNoise");
-  if (attitudeYNoise != NULL)
-    platform->attitudeYNoiseSource = createNoiseSource(attitudeYNoise);
+  if (attitudeYNoise != nullptr){
+      platform->attitudeYNoiseSource = XmlUtils::createNoiseSource(
+          attitudeYNoise
+      );
+  }
   else
     logging::DEBUG("No default platform attitude Y noise was specified");
   tinyxml2::XMLElement *attitudeZNoise =
       platformNode->FirstChildElement("attitudeZNoise");
-  if (attitudeZNoise != NULL)
-    platform->attitudeZNoiseSource = createNoiseSource(attitudeZNoise);
+  if (attitudeZNoise != nullptr){
+      platform->attitudeZNoiseSource = XmlUtils::createNoiseSource(
+          attitudeZNoise
+      );
+  }
   else
     logging::DEBUG("No default platform attitude Z noise was specified");
 
@@ -289,10 +223,10 @@ XmlAssetsLoader::createPlatformSettingsFromXml(tinyxml2::XMLElement *node) {
 
   std::shared_ptr<PlatformSettings> settings(new PlatformSettings());
   std::shared_ptr<PlatformSettings> template1(new PlatformSettings());
-  if (node->Attribute("template") != NULL) {
+  if (node->Attribute("template") != nullptr) {
     std::shared_ptr<Asset> bla =
         getAssetByLocation("platformSettings", node->Attribute("template"));
-    if (bla != NULL) {
+    if (bla != nullptr) {
       template1 = std::dynamic_pointer_cast<PlatformSettings>(bla);
       // ATTENTION:
       // We need to temporarily convert the head rotation settings from radians
@@ -311,24 +245,24 @@ XmlAssetsLoader::createPlatformSettingsFromXml(tinyxml2::XMLElement *node) {
   }
 
   // Read platform coordinates
-  settings->x =
-      boost::get<double>(getAttribute(node, "x", "double", template1->x));
-  settings->y =
-      boost::get<double>(getAttribute(node, "y", "double", template1->y));
-  settings->z =
-      boost::get<double>(getAttribute(node, "z", "double", template1->z));
+  settings->x = boost::get<double>(XmlUtils::getAttribute(
+      node, "x", "double", template1->x));
+  settings->y = boost::get<double>(XmlUtils::getAttribute(
+      node, "y", "double", template1->y));
+  settings->z = boost::get<double>(XmlUtils::getAttribute(
+      node, "z", "double", template1->z));
 
   // Read if platform should be put on ground, ignoring z coordinate:
   settings->onGround = boost::get<bool>(
-      getAttribute(node, "onGround", "bool", template1->onGround));
+      XmlUtils::getAttribute(node, "onGround", "bool", template1->onGround));
 
   // Read if platform must use stop and turn mechanics or not
-  settings->stopAndTurn = boost::get<bool>(
-      getAttribute(node, "stopAndTurn", "bool", template1->stopAndTurn));
+  settings->stopAndTurn = boost::get<bool>(XmlUtils::getAttribute(
+      node, "stopAndTurn", "bool", template1->stopAndTurn));
 
   // Read if platform must use smooth turn mechanics or not
-  settings->smoothTurn = boost::get<bool>(
-      getAttribute(node, "smoothTurn", "bool", template1->smoothTurn));
+  settings->smoothTurn = boost::get<bool>(XmlUtils::getAttribute(
+      node, "smoothTurn", "bool", template1->smoothTurn));
 
   if (settings->stopAndTurn && settings->smoothTurn) {
     logging::INFO("Both stopAndTurn and smoothTurn have been set to true. "
@@ -337,18 +271,20 @@ XmlAssetsLoader::createPlatformSettingsFromXml(tinyxml2::XMLElement *node) {
   }
 
   // Read if platform must be able to slowdown (true) or not (false)
-  settings->slowdownEnabled = boost::get<bool>(getAttribute(
+  settings->slowdownEnabled = boost::get<bool>(XmlUtils::getAttribute(
       node, "slowdownEnabled", "bool", template1->slowdownEnabled));
 
   // Read platform speed:
-  settings->movePerSec_m = boost::get<double>(
-      getAttribute(node, "movePerSec_m", "double", template1->movePerSec_m));
+  settings->movePerSec_m = boost::get<double>(XmlUtils::getAttribute(
+      node, "movePerSec_m", "double", template1->movePerSec_m));
 
   if (node->FindAttribute("yawAtDeparture_deg") != nullptr) {
     settings->yawAtDepartureSpecified = true;
-    settings->yawAtDeparture =
-        MathConverter::degreesToRadians(boost::get<double>(getAttribute(
-            node, "yawAtDeparture_deg", "double", template1->yawAtDeparture)));
+    settings->yawAtDeparture = MathConverter::degreesToRadians(
+        boost::get<double>(XmlUtils::getAttribute(
+            node, "yawAtDeparture_deg", "double", template1->yawAtDeparture
+        ))
+    );
   }
 
   return settings;
@@ -366,10 +302,10 @@ XmlAssetsLoader::createScannerFromXml(tinyxml2::XMLElement *scannerNode) {
         scannerNode->FirstChildElement("beamOrigin");
 
     // Read relative position of the scanner mount on the platform:
-    emitterPosition = createVec3dFromXml(emitterNode, "");
+    emitterPosition = XmlUtils::createVec3dFromXml(emitterNode, "");
 
     // Read relative orientation of the scanner mount on the platform:
-    emitterAttitude = createRotationFromXml(emitterNode);
+    emitterAttitude = XmlUtils::createRotationFromXml(emitterNode);
   } catch (std::exception &e) {
     logging::WARN(std::string("No scanner orientation defined.\n") +
                   "EXCEPTION: " + e.what());
@@ -379,12 +315,15 @@ XmlAssetsLoader::createScannerFromXml(tinyxml2::XMLElement *scannerNode) {
 
   // ########## BEGIN Read supported pulse frequencies ############
   std::string pulseFreqsString = boost::get<std::string>(
-      getAttribute(scannerNode, "pulseFreqs_Hz", "string", std::string("")));
+      XmlUtils::getAttribute(
+          scannerNode, "pulseFreqs_Hz", "string", std::string("")
+      )
+  );
   std::list<int> pulseFreqs = std::list<int>();
 
   std::vector<std::string> freqs;
   boost::split(freqs, pulseFreqsString, boost::is_any_of(","));
-  for (std::string freq : freqs) {
+  for (std::string & freq : freqs) {
     int f = boost::lexical_cast<int>(freq);
     pulseFreqs.push_back(f);
   }
@@ -392,24 +331,24 @@ XmlAssetsLoader::createScannerFromXml(tinyxml2::XMLElement *scannerNode) {
   // ########## END Read supported pulse frequencies ############
 
   // ########### BEGIN Read all the rest #############
-  double beamDiv_rad = boost::get<double>(
-      getAttribute(scannerNode, "beamDivergence_rad", "double", 0.0003));
-  double pulseLength_ns = boost::get<double>(
-      getAttribute(scannerNode, "pulseLength_ns", "double", 4.0));
-  std::string id = boost::get<std::string>(
-      getAttribute(scannerNode, "id", "string", std::string("Default")));
-  double avgPower = boost::get<double>(
-      getAttribute(scannerNode, "averagePower_w", "double", 4.0));
-  double beamQuality = boost::get<double>(
-      getAttribute(scannerNode, "beamQualityFactor", "double", 1.0));
-  double efficiency = boost::get<double>(
-      getAttribute(scannerNode, "opticalEfficiency", "double", 0.99));
-  double receiverDiameter = boost::get<double>(
-      getAttribute(scannerNode, "receiverDiameter_m", "double", 0.15));
-  double visibility = boost::get<double>(
-      getAttribute(scannerNode, "atmosphericVisibility_km", "double", 23.0));
-  int wavelength =
-      boost::get<int>(getAttribute(scannerNode, "wavelength_nm", "int", 1064));
+  double beamDiv_rad = boost::get<double>(XmlUtils::getAttribute(
+      scannerNode, "beamDivergence_rad", "double", 0.0003));
+  double pulseLength_ns = boost::get<double>(XmlUtils::getAttribute(
+      scannerNode, "pulseLength_ns", "double", 4.0));
+  std::string id = boost::get<std::string>(XmlUtils::getAttribute(
+      scannerNode, "id", "string", std::string("Default")));
+  double avgPower = boost::get<double>(XmlUtils::getAttribute(
+      scannerNode, "averagePower_w", "double", 4.0));
+  double beamQuality = boost::get<double>(XmlUtils::getAttribute(
+      scannerNode, "beamQualityFactor", "double", 1.0));
+  double efficiency = boost::get<double>(XmlUtils::getAttribute(
+      scannerNode, "opticalEfficiency", "double", 0.99));
+  double receiverDiameter = boost::get<double>(XmlUtils::getAttribute(
+      scannerNode, "receiverDiameter_m", "double", 0.15));
+  double visibility = boost::get<double>(XmlUtils::getAttribute(
+      scannerNode, "atmosphericVisibility_km", "double", 23.0));
+  int wavelength = boost::get<int>(XmlUtils::getAttribute(
+      scannerNode, "wavelength_nm", "int", 1064));
   // ########### END Read all the rest #############
 
   std::shared_ptr<Scanner> scanner = std::make_shared<Scanner>(
@@ -418,8 +357,8 @@ XmlAssetsLoader::createScannerFromXml(tinyxml2::XMLElement *scannerNode) {
       wavelength, false);
 
   // Parse max number of returns per pulse
-  scanner->maxNOR =
-      boost::get<int>(getAttribute(scannerNode, "maxNOR", "int", 0));
+  scanner->maxNOR = boost::get<int>(XmlUtils::getAttribute(
+      scannerNode, "maxNOR", "int", 0));
 
   // ########## BEGIN Default FWF_settings ##########
   std::shared_ptr<FWFSettings> settings = std::make_shared<FWFSettings>();
@@ -434,7 +373,7 @@ XmlAssetsLoader::createScannerFromXml(tinyxml2::XMLElement *scannerNode) {
   glm::dvec3 headRotateAxis = glm::dvec3(0, 0, 1);
 
   try {
-    glm::dvec3 axis = createVec3dFromXml(
+    glm::dvec3 axis = XmlUtils::createVec3dFromXml(
         scannerNode->FirstChildElement("headRotateAxis"), "");
     if (glm::l2Norm(axis) > 0.1) {
       headRotateAxis = axis;
@@ -450,9 +389,11 @@ XmlAssetsLoader::createScannerFromXml(tinyxml2::XMLElement *scannerNode) {
   // ############### END Read Scan head rotation axis ###############
 
   // Read head rotation speed:
-  double headRotatePerSecMax_rad =
-      MathConverter::degreesToRadians(boost::get<double>(
-          getAttribute(scannerNode, "headRotatePerSecMax_deg", "double", 0.0)));
+  double headRotatePerSecMax_rad = MathConverter::degreesToRadians(
+      boost::get<double>(XmlUtils::getAttribute(
+          scannerNode, "headRotatePerSecMax_deg", "double", 0.0
+      ))
+  );
 
   // Configure scanner head:
   scanner->scannerHead = std::shared_ptr<ScannerHead>(
@@ -466,12 +407,12 @@ XmlAssetsLoader::createScannerFromXml(tinyxml2::XMLElement *scannerNode) {
 
   // ########### BEGIN Read and apply generic properties ##########
   double scanFreqMax_Hz = boost::get<double>(
-      getAttribute(scannerNode, "scanFreqMax_Hz", "double", 0.0));
+      XmlUtils::getAttribute(scannerNode, "scanFreqMax_Hz", "double", 0.0));
   double scanFreqMin_Hz = boost::get<double>(
-      getAttribute(scannerNode, "scanFreqMin_Hz", "double", 0.0));
+      XmlUtils::getAttribute(scannerNode, "scanFreqMin_Hz", "double", 0.0));
 
   double scanAngleMax_rad = MathConverter::degreesToRadians(boost::get<double>(
-      getAttribute(scannerNode, "scanAngleMax_deg", "double", 0.0)));
+      XmlUtils::getAttribute(scannerNode, "scanAngleMax_deg", "double", 0.0)));
   // ########### END Read and apply generic properties ##########
 
   std::string str_opticsType = scannerNode->Attribute("optics");
@@ -479,7 +420,7 @@ XmlAssetsLoader::createScannerFromXml(tinyxml2::XMLElement *scannerNode) {
 
   if (str_opticsType == "oscillating") {
     int scanProduct = boost::get<int>(
-        getAttribute(scannerNode, "scanProduct", "int", 1000000));
+        XmlUtils::getAttribute(scannerNode, "scanProduct", "int", 1000000));
     beamDeflector = std::shared_ptr<OscillatingMirrorBeamDeflector>(
         new OscillatingMirrorBeamDeflector(scanAngleMax_rad, scanFreqMax_Hz,
                                            scanFreqMin_Hz, scanProduct));
@@ -487,30 +428,32 @@ XmlAssetsLoader::createScannerFromXml(tinyxml2::XMLElement *scannerNode) {
     beamDeflector = std::shared_ptr<ConicBeamDeflector>(new ConicBeamDeflector(
         scanAngleMax_rad, scanFreqMax_Hz, scanFreqMin_Hz));
   } else if (str_opticsType == "line") {
-    int numFibers =
-        boost::get<int>(getAttribute(scannerNode, "numFibers", "int", 1));
+    int numFibers = boost::get<int>(XmlUtils::getAttribute(
+        scannerNode, "numFibers", "int", 1));
     beamDeflector =
         std::shared_ptr<FiberArrayBeamDeflector>(new FiberArrayBeamDeflector(
             scanAngleMax_rad, scanFreqMax_Hz, scanFreqMin_Hz, numFibers));
   } else if (str_opticsType == "rotating") {
-    double scanAngleEffectiveMax_rad =
-        MathConverter::degreesToRadians(boost::get<double>(getAttribute(
-            scannerNode, "scanAngleEffectiveMax_deg", "double", 0.0)));
+    double scanAngleEffectiveMax_rad = MathConverter::degreesToRadians(
+        boost::get<double>(XmlUtils::getAttribute(
+            scannerNode, "scanAngleEffectiveMax_deg", "double", 0.0
+        ))
+    );
     beamDeflector = std::shared_ptr<PolygonMirrorBeamDeflector>(
         new PolygonMirrorBeamDeflector(scanFreqMax_Hz, scanFreqMin_Hz,
                                        scanAngleMax_rad,
                                        scanAngleEffectiveMax_rad));
   } else if (str_opticsType == "risley") {
     int rotorFreq_1_Hz = boost::get<int>(
-        getAttribute(scannerNode, "rotorFreq1_Hz", "int", 7294));
+        XmlUtils::getAttribute(scannerNode, "rotorFreq1_Hz", "int", 7294));
     int rotorFreq_2_Hz = boost::get<int>(
-        getAttribute(scannerNode, "rotorFreq2_Hz", "int", -4664));
+        XmlUtils::getAttribute(scannerNode, "rotorFreq2_Hz", "int", -4664));
     beamDeflector =
         std::shared_ptr<RisleyBeamDeflector>(new RisleyBeamDeflector(
             scanAngleMax_rad, (double)rotorFreq_1_Hz, (double)rotorFreq_2_Hz));
   }
 
-  if (beamDeflector == NULL) {
+  if (beamDeflector == nullptr) {
     std::stringstream ss;
     ss << "ERROR: Unknown beam deflector type: '" << str_opticsType
        << "'. Aborting.";
@@ -526,9 +469,9 @@ XmlAssetsLoader::createScannerFromXml(tinyxml2::XMLElement *scannerNode) {
   // ############################ BEGIN Configure detector
   // ###############################
   double rangeMin_m = boost::get<double>(
-      getAttribute(scannerNode, "rangeMin_m", "double", 0.0));
+      XmlUtils::getAttribute(scannerNode, "rangeMin_m", "double", 0.0));
   double accuracy_m = boost::get<double>(
-      getAttribute(scannerNode, "accuracy_m", "double", 0.0));
+      XmlUtils::getAttribute(scannerNode, "accuracy_m", "double", 0.0));
   scanner->detector = std::make_shared<FullWaveformPulseDetector>(
       scanner, accuracy_m, rangeMin_m);
   // ############################ END Configure detector
@@ -596,20 +539,28 @@ XmlAssetsLoader::createScannerSettingsFromXml(tinyxml2::XMLElement *node) {
   }
 
   settings->baseTemplate = template1;
-  settings->active =
-      boost::get<bool>(getAttribute(node, "active", "bool", template1->active));
-  settings->beamSampleQuality = boost::get<int>(getAttribute(
-      node, "beamSampleQuality", "int", template1->beamSampleQuality));
+  settings->active = boost::get<bool>(XmlUtils::getAttribute(
+      node, "active", "bool", template1->active
+  ));
+  settings->beamSampleQuality = boost::get<int>(XmlUtils::getAttribute(
+      node, "beamSampleQuality", "int", template1->beamSampleQuality
+  ));
   settings->headRotatePerSec_rad = MathConverter::degreesToRadians(
-      boost::get<double>(getAttribute(node, "headRotatePerSec_deg", "double",
-                                      template1->headRotatePerSec_rad)));
+      boost::get<double>(XmlUtils::getAttribute(
+          node, "headRotatePerSec_deg", "double",
+          template1->headRotatePerSec_rad
+      ))
+  );
   settings->headRotateStart_rad = MathConverter::degreesToRadians(
-      boost::get<double>(getAttribute(node, "headRotateStart_deg", "double",
-                                      template1->headRotateStart_rad)));
+      boost::get<double>(XmlUtils::getAttribute(
+          node, "headRotateStart_deg", "double", template1->headRotateStart_rad
+          )
+      ));
 
   double hrStop_rad = MathConverter::degreesToRadians(
-      boost::get<double>(getAttribute(node, "headRotateStop_deg", "double",
-                                      template1->headRotateStop_rad)));
+      boost::get<double>(XmlUtils::getAttribute(
+          node, "headRotateStop_deg", "double", template1->headRotateStop_rad
+      )));
 
   // Make sure that rotation stop angle is larger than rotation start angle if
   // rotation speed is positive:
@@ -633,21 +584,32 @@ XmlAssetsLoader::createScannerSettingsFromXml(tinyxml2::XMLElement *node) {
   }
 
   settings->headRotateStop_rad = hrStop_rad;
-  settings->pulseFreq_Hz = boost::get<int>(
-      getAttribute(node, "pulseFreq_hz", "int", template1->pulseFreq_Hz));
+  settings->pulseFreq_Hz = boost::get<int>(XmlUtils::getAttribute(
+      node, "pulseFreq_hz", "int", template1->pulseFreq_Hz));
   settings->scanAngle_rad = MathConverter::degreesToRadians(boost::get<double>(
-      getAttribute(node, "scanAngle_deg", "double", template1->scanAngle_rad)));
+      XmlUtils::getAttribute(
+          node, "scanAngle_deg", "double", template1->scanAngle_rad
+      )
+  ));
   settings->verticalAngleMin_rad = MathConverter::degreesToRadians(
-      boost::get<double>(getAttribute(node, "verticalAngleMin_deg", "double",
-                                      template1->verticalAngleMin_rad)));
+      boost::get<double>(XmlUtils::getAttribute(
+          node, "verticalAngleMin_deg", "double",
+          template1->verticalAngleMin_rad
+      ))
+  );
   settings->verticalAngleMax_rad = MathConverter::degreesToRadians(
-      boost::get<double>(getAttribute(node, "verticalAngleMax_deg", "double",
-                                      template1->verticalAngleMax_rad)));
-  settings->scanFreq_Hz = boost::get<int>(
-      getAttribute(node, "scanFreq_hz", "int", template1->scanFreq_Hz));
+      boost::get<double>(XmlUtils::getAttribute(
+          node, "verticalAngleMax_deg", "double",
+          template1->verticalAngleMax_rad
+      ))
+  );
+  settings->scanFreq_Hz = boost::get<int>(XmlUtils::getAttribute(
+      node, "scanFreq_hz", "int", template1->scanFreq_Hz
+  ));
 
-  settings->trajectoryTimeInterval = boost::get<double>(
-      getAttribute(node, "trajectoryTimeInterval_s", "double", 0.0));
+  settings->trajectoryTimeInterval = boost::get<double>(XmlUtils::getAttribute(
+    node, "trajectoryTimeInterval_s", "double", 0.0)
+  );
 
   return settings;
 }
@@ -659,14 +621,15 @@ std::shared_ptr<FWFSettings> XmlAssetsLoader::createFWFSettingsFromXml(
   }
   // If no FWFSettings node appears on XML, default is used
   if (node != nullptr) {
-    settings->binSize_ns = boost::get<double>(
-        getAttribute(node, "binSize_ns", "double", settings->binSize_ns));
+    settings->binSize_ns = boost::get<double>(XmlUtils::getAttribute(
+        node, "binSize_ns", "double", settings->binSize_ns
+    ));
     settings->winSize_ns = settings->pulseLength_ns / 4.0; // By default
-    settings->beamSampleQuality = boost::get<int>(getAttribute(
+    settings->beamSampleQuality = boost::get<int>(XmlUtils::getAttribute(
         node, "beamSampleQuality", "int", settings->beamSampleQuality));
-    settings->winSize_ns = boost::get<double>(
-        getAttribute(node, "winSize_ns", "double", settings->winSize_ns));
-    settings->maxFullwaveRange_ns = boost::get<double>(getAttribute(
+    settings->winSize_ns = boost::get<double>(XmlUtils::getAttribute(
+        node, "winSize_ns", "double", settings->winSize_ns));
+    settings->maxFullwaveRange_ns = boost::get<double>(XmlUtils::getAttribute(
         node, "maxFullwaveRange_ns", "double", settings->maxFullwaveRange_ns));
   }
 
@@ -674,234 +637,6 @@ std::shared_ptr<FWFSettings> XmlAssetsLoader::createFWFSettingsFromXml(
 }
 
 // ################# END get(asset) by id methods #############
-
-std::shared_ptr<Scene>
-XmlAssetsLoader::createSceneFromXml(tinyxml2::XMLElement *sceneNode,
-                                    std::string path) {
-  std::shared_ptr<Scene> scene(new Scene());
-  scene->sourceFilePath = path;
-
-  TimeWatcher tw;
-
-  // ####################### BEGIN Loop over all part nodes
-  // ############################
-  int partIndex = -1;
-  tinyxml2::XMLElement *scenePartNodes = sceneNode->FirstChildElement("part");
-
-  size_t scenePartCounter = 0;
-  tw.start();
-  while (scenePartNodes != nullptr) {
-    partIndex++;
-    ScenePart *scenePart = nullptr;
-    tinyxml2::XMLElement *filterNodes =
-        scenePartNodes->FirstChildElement("filter");
-    bool holistic = false;
-    while (filterNodes != nullptr) {
-      std::string filterType = filterNodes->Attribute("type");
-      std::transform(filterType.begin(), filterType.end(), filterType.begin(),
-                     ::tolower);
-      AbstractGeometryFilter *filter = nullptr;
-
-      // ################### BEGIN Set up filter ##################
-
-      // Apply scale transformation:
-      if (filterType == "scale") {
-        filter = new ScaleFilter(scenePart);
-      }
-
-      // Read GeoTiff file:
-      else if (filterType == "geotiffloader") {
-        filter = new GeoTiffFileLoader();
-      }
-
-      // Read Wavefront Object file:
-      else if (filterType == "objloader") {
-        filter = new WavefrontObjFileLoader();
-      }
-
-      // Apply rotation filter:
-      else if (filterType == "rotate") {
-        filter = new RotateFilter(scenePart);
-      }
-
-      // Apply translate transformation:
-      else if (filterType == "translate") {
-        filter = new TranslateFilter(scenePart);
-      }
-
-      // Read xyz ASCII point cloud file:
-      else if (filterType == "xyzloader") {
-        // Read defined point cloud color:
-        Color4f color(1.0, 1.0, 1.0, 1.0);
-        if (scenePartNodes->FindAttribute("color") != nullptr) {
-          color =
-              createColorFromXml(scenePartNodes->FirstChildElement("color"));
-        }
-        filter = new XYZPointCloudFileLoader();
-        holistic = true;
-      }
-
-      // Read detailed voxels file
-      else if (filterType == "detailedvoxels") {
-        filter = new DetailedVoxelLoader();
-      }
-
-      // ################### END Set up filter ##################
-
-      // Finally, apply the filter:
-      if (filter != nullptr) {
-        // Set params:
-        filter->params = createParamsFromXml(filterNodes);
-        logging::DEBUG("Applying filter: " + filterType);
-        scenePart = filter->run();
-        if (scenePart == filter->primsOut)
-          filter->primsOut = nullptr;
-        delete filter;
-      }
-
-      filterNodes = filterNodes->NextSiblingElement("filter");
-    }
-    // ############## END Loop over filter nodes ##################
-
-    // ######### BEGIN Read and set scene part ID #########
-    std::string partId = "";
-    tinyxml2::XMLAttribute const *partIdAttr =
-        scenePartNodes->FindAttribute("id");
-    char const *str = NULL;
-    if (partIdAttr != NULL)
-      str = scenePartNodes->FindAttribute("id")->Value();
-    if (str != NULL) {
-      partId = std::string(str);
-      try {
-        boost::lexical_cast<int>(partId);
-      } catch (boost::bad_lexical_cast &blcex) {
-        std::stringstream exss;
-        exss << "You have provided a scene part id \"" << partId
-             << "\" which is non numerical.\n"
-             << "Caution! "
-             << "This is not compatible with LAS format specification"
-             << std::endl;
-        logging::INFO(exss.str());
-      }
-    }
-
-    bool splitPart = true;
-    if (partId.empty()) {
-      scenePart->mId = std::to_string(partIndex);
-    } else {
-      scenePart->mId = partId;
-      splitPart = false;
-    }
-
-    // ######### END Read and set scene part ID #########
-
-    // Consider scene loading specification
-    scenePartCounter++;
-    sceneSpec.apply(scenePart);
-
-    // For all primitives, set reference to their scene part and transform:
-    std::shared_ptr<ScenePart> sharedScenePart(scenePart);
-    for (Primitive *p : scenePart->mPrimitives) {
-      p->part = sharedScenePart;
-      p->rotate(scenePart->mRotation);
-      if (holistic) {
-        for (size_t i = 0; i < p->getNumVertices(); i++) {
-          p->getVertices()[i].pos.x *= scenePart->mScale;
-          p->getVertices()[i].pos.y *= scenePart->mScale;
-          p->getVertices()[i].pos.z *= scenePart->mScale;
-        }
-      }
-      p->scale(scenePart->mScale);
-      p->translate(scenePart->mOrigin);
-    }
-
-    // Add scene part to the scene:
-    scene->primitives.insert(scene->primitives.end(),
-                             scenePart->mPrimitives.begin(),
-                             scenePart->mPrimitives.end());
-
-    // Split subparts into different scene parts
-    if (splitPart) {
-      size_t partIndexOffset = scenePart->subpartLimit.size() - 1;
-      if (scenePart->splitSubparts())
-        partIndex += partIndexOffset;
-    }
-    scenePartNodes = scenePartNodes->NextSiblingElement("part");
-  }
-  tw.stop();
-
-  std::stringstream ss;
-  ss << std::to_string(scenePartCounter) << " sceneparts loaded in " << tw.getElapsedDecimalSeconds() << "s\n";
-  logging::INFO(ss.str());
-  // ####################### END Loop over all part nodes
-  // ############################
-  bool success = scene->finalizeLoading();
-
-  if (!success) {
-    logging::ERR("Finalizing the scene failed.");
-    exit(-1);
-  }
-
-  return scene;
-}
-
-Rotation
-XmlAssetsLoader::createRotationFromXml(tinyxml2::XMLElement *rotGroupNode) {
-  bool globalRotation = true;
-  if (rotGroupNode->Attribute("rotations", "local"))
-    globalRotation = false;
-
-  Rotation r = Rotation(glm::dvec3(1, 0, 0), 0);
-  Rotation r2 = Rotation(glm::dvec3(1, 0, 0), 0);
-
-  if (rotGroupNode == nullptr) {
-    return r;
-  }
-
-  tinyxml2::XMLElement *rotNodes = rotGroupNode->FirstChildElement("rot");
-  while (rotNodes != nullptr) {
-    std::string axis = rotNodes->Attribute("axis");
-    double angle_rad = MathConverter::degreesToRadians(
-        boost::lexical_cast<double>(rotNodes->Attribute("angle_deg")));
-
-    if (angle_rad != 0) {
-      if (axis == "z" || axis == "Z") {
-        r2 = Rotation(glm::dvec3(0, 0, 1), angle_rad);
-      }
-      if (axis == "x" || axis == "X") {
-        r2 = Rotation(glm::dvec3(1, 0, 0), angle_rad);
-      }
-      if (axis == "y" || axis == "Y") {
-        r2 = Rotation(glm::dvec3(0, 1, 0), angle_rad);
-      }
-      if (globalRotation)
-        r = r2.applyTo(r); // Global rotation
-      else
-        r = r.applyTo(r2); // Local rotation
-    }
-
-    rotNodes = rotNodes->NextSiblingElement("rot");
-  }
-
-  return r;
-}
-
-glm::dvec3 XmlAssetsLoader::createVec3dFromXml(tinyxml2::XMLElement *node,
-                                               std::string attrPrefix) {
-  if (node == nullptr) {
-    throw HeliosException("No node with attribute " + attrPrefix + "[xyz]");
-  }
-
-  double x =
-      boost::get<double>(getAttribute(node, attrPrefix + "x", "double", 0.0));
-  double y =
-      boost::get<double>(getAttribute(node, attrPrefix + "y", "double", 0.0));
-  double z =
-      boost::get<double>(getAttribute(node, attrPrefix + "z", "double", 0.0));
-
-  return glm::dvec3(x, y, z);
-}
-
 std::shared_ptr<Asset> XmlAssetsLoader::getAssetById(std::string type,
                                                      std::string id) {
   std::string errorMsg = "# DEF ERR MSG #";
@@ -951,7 +686,7 @@ XmlAssetsLoader::getAssetByLocation(std::string type, std::string location) {
   // External document location provided:
   if (vec.size() == 2) {
     loader = new XmlAssetsLoader(id, assetsDir);
-    loader->sceneSpec = sceneSpec;
+    loader->sceneLoader.sceneSpec = sceneLoader.sceneSpec;
     id = vec[1].erase(vec[1].find_last_not_of('#') + 1);
     freeLoader = true;
   }
@@ -960,97 +695,4 @@ XmlAssetsLoader::getAssetByLocation(std::string type, std::string location) {
   if (freeLoader)
     delete loader;
   return asset;
-}
-
-// ################# BEGIN (small stuff)FromXML methods #############
-
-ObjectT XmlAssetsLoader::getAttribute(tinyxml2::XMLElement *element,
-                                      std::string attrName, std::string type,
-                                      ObjectT defaultVal) {
-
-  ObjectT result;
-  try {
-    if (!element->Attribute(attrName.c_str())) {
-      throw HeliosException("Attribute '" + attrName + "' does not exist!");
-    }
-    std::string attrVal = element->Attribute(attrName.c_str());
-    if (type == "bool") {
-      if (attrVal == "1" || attrVal == "true")
-        result = true;
-      else if (attrVal == "0" || attrVal == "false")
-        result = false;
-      else {
-        std::ostringstream s;
-        s << "Attribute '" << attrName << "' does not exist!";
-        logging::WARN(s.str());
-        throw std::exception();
-      }
-    } else if (type == "int") {
-      result = boost::lexical_cast<int>(attrVal);
-    } else if (type == "float") {
-      result = boost::lexical_cast<float>(attrVal);
-    } else if (type == "double") {
-      result = boost::lexical_cast<double>(attrVal);
-    } else if (type == "string") {
-      result = attrVal;
-    } else {
-      logging::ERR("ERROR: unknown type " + type);
-    }
-  }
-
-  catch (std::exception &e) {
-    std::stringstream ss;
-    ss << "XML Assets Loader: Could not find attribute '" << attrName
-       << "' of <" << element->Name() << "> element in line "
-       << element->GetLineNum();
-    logging::DEBUG(ss.str());
-    ss.flush();
-    ss.str("");
-
-    if (!defaultVal.empty()) {
-      result = defaultVal;
-      ss << "Using default value for attribute '" << attrName
-         << "' : " << boost::apply_visitor(stringVisitor{}, defaultVal);
-      logging::INFO(ss.str());
-    } else {
-      ss << "Exception:\n" << e.what() << "\n";
-      ss << "ERROR: No default value specified for attribute '" << attrName
-         << "'. Aborting.";
-      logging::ERR(ss.str());
-      exit(-1);
-    }
-  }
-
-  return result;
-}
-
-std::shared_ptr<NoiseSource<double>>
-XmlAssetsLoader::createNoiseSource(tinyxml2::XMLElement *noise) {
-  std::shared_ptr<NoiseSource<double>> ns;
-
-  // Instantiate considering type
-  std::string type = noise->Attribute("type", "NORMAL");
-  if (type == "UNIFORM") {
-    double min = noise->DoubleAttribute("min", 0.0);
-    double max = noise->DoubleAttribute("max", 1.0);
-    ns = std::make_shared<UniformNoiseSource<double>>(
-        UniformNoiseSource<double>(*DEFAULT_RG, min, max));
-  } else {
-    double mean = noise->DoubleAttribute("mean", 0.0);
-    double stdev = noise->DoubleAttribute("stdev", 1.0);
-    ns = std::make_shared<NormalNoiseSource<double>>(
-        NormalNoiseSource<double>(*DEFAULT_RG, mean, stdev));
-  }
-
-  // Configure clipping
-  bool clipEnabled = noise->BoolAttribute("clipEnabled", false);
-  double clipMin = noise->DoubleAttribute("clipMin", 0.0);
-  double clipMax = noise->DoubleAttribute("clipMax", 1.0);
-  ns->setClipMin(clipMin).setClipMax(clipMax).setClipEnabled(clipEnabled);
-
-  // Configure fixed behavior
-  unsigned long fixedLifespan = noise->Unsigned64Attribute("fixedLifespan", 1L);
-  ns->setFixedLifespan(fixedLifespan);
-
-  return ns;
 }

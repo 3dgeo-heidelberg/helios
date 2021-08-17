@@ -1,5 +1,9 @@
 #pragma once
 
+#include <boost/archive/text_iarchive.hpp>
+#include <boost/archive/text_oarchive.hpp>
+#include <boost/serialization/base_object.hpp>
+
 /**
  * @brief Class representing a color with 4 float components: RGBA
  */

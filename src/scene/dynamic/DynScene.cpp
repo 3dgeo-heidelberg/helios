@@ -16,5 +16,5 @@ void DynScene::doSimStep(){
 }
 
 void DynScene::doStep(){
-    for(shared_ptr<DynObject> dynObj : dynObjs) dynObj->doStep();
+    for(shared_ptr<DynObject> & dynObj : dynObjs) dynObj->doStep();
 }

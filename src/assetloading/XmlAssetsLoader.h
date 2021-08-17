@@ -13,11 +13,16 @@
 #include "Platform.h"
 #include "PlatformSettings.h"
 #include "Scanner.h"
-#include <NoiseSource.h>
-#include <SceneLoadingSpecification.h>
+#include <XmlSceneLoader.h>
 
 /**
- * @brief Class for asset loading from XML file
+ * @brief Class for asset loading from XML file.
+ *
+ * It is the main class for XML loading. It uses both XmlSceneLoader and
+ *  XmlUtils
+ *
+ * @see XmlSceneLoader
+ * @see XmlUtils
  */
 class XmlAssetsLoader {
     // ***  ATTRIBUTES  *** //
@@ -49,14 +54,13 @@ protected:
 
 public:
     /**
+	 * @brief The scene loader. It is used to load scenes from XML files
+	 */
+    XmlSceneLoader sceneLoader;
+    /**
      * @brief XML file through tinyxml2 library
      */
 	tinyxml2::XMLDocument doc;
-	/**
-	 * @brief Scene loading specification
-	 * @see SceneLoadingSpecification
-	 */
-	SceneLoadingSpecification sceneSpec;
 
 	// ***  CONSTRUCTION / DESTRUCTION  *** //
 	// ************************************ //
@@ -66,6 +70,7 @@ public:
 	 * @param assetsDir Path to assets directory
 	 */
 	XmlAssetsLoader(std::string& filePath, std::string& assetsDir);
+	virtual ~XmlAssetsLoader() {}
 
 	// ***  GETTERS and SETTERS  *** //
 	// ***************************** //
@@ -83,22 +88,6 @@ public:
 	 * @return Shared pointer to requested asset
 	 */
 	std::shared_ptr<Asset> getAssetByLocation(std::string type, std::string location);
-protected:
-    /**
-     * @brief Obtain attribute from XML
-     * @param element XML element (node) where the attribute must be taken from
-     * @param attrName Name of the attribute to be obtained
-     * @param type Type of the attribute to be obtained
-     * @param defaultVal Default value to be used in case attribute was not
-     * found
-     * @return Obtained attribute or default value if attribute was not found
-     */
-    ObjectT getAttribute(
-        tinyxml2::XMLElement* element,
-        std::string attrName,
-        std::string type,
-        ObjectT defaultVal
-    );
 
 public:
     // ***  CREATION METHODS  *** //
@@ -115,22 +104,6 @@ public:
 	    tinyxml2::XMLElement* assetNode
     );
 
-	/**
-	 * @brief Create a color from given XML element (node)
-	 * @param node XML element (node) containing color data
-	 * @return Created color
-	 * @see Color4f
-	 */
-	Color4f createColorFromXml(tinyxml2::XMLElement* node);
-	/**
-	 * @brief Create a map of parameters from given XML element (node)
-	 * @param paramsNode XML element (node) containing parameters
-	 * @return Map with parameters, so each one is identified by a different
-	 * string
-	 */
-	std::map<std::string, ObjectT> createParamsFromXml(
-	    tinyxml2::XMLElement* paramsNode
-    );
 	/**
 	 * @brief Create a platform from given XML element (node)
 	 * @param platformNode XML element (node) containing platform data
@@ -179,47 +152,4 @@ public:
 	    tinyxml2::XMLElement* node,
 	    std::shared_ptr<FWFSettings> settings = nullptr
     );
-	/**
-	 * @brief Create scene from given XML element (node)
-	 * @param sceneNode XML element (node) containing scene data
-	 * @param path Path to scene file
-	 * @return Shared pointer to created scene
-	 * @see Scene
-	 */
-	std::shared_ptr<Scene> createSceneFromXml(
-	    tinyxml2::XMLElement* sceneNode,
-	    std::string path
-    );
-	/**
-	 * @brief Create a rotation from given XML element (node)
-	 * @param rotGroupNode XML element (node) containing rotation data
-	 * @return Created rotation
-	 * @see Rotation
-	 */
-	Rotation createRotationFromXml(
-	    tinyxml2::XMLElement* rotGroupNode
-    );
-	/**
-	 * @brief Create a 3D vector from given XML element (node)
-	 * @param node XML element (node) containing 3D vector data
-	 * @param attrPrefix Attribute prefix. It will be used so x component is
-	 * "attrPrefix" + "x" and so on for y and z components too.
-	 * @return Created 3D vector
-	 * @see glm::dvec3
-	 */
-	glm::dvec3 createVec3dFromXml(
-	    tinyxml2::XMLElement* node,
-	    std::string attrPrefix
-    );
-	/**
-	 * @brief Create a noise source from given XML element (node)
-	 * @param noise XML element (node) containing noise source specification
-	 * @return Shared pointer to created noise source
-	 * @see NoiseSource
-	 */
-    static std::shared_ptr<NoiseSource<double>>
-    createNoiseSource(
-        tinyxml2::XMLElement *noise
-    );
-
 };

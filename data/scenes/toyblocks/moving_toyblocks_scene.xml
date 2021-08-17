@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+    <scene id="moving_toyblocks_scene" name="MovingToyblocksScene">
+        <part>
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/basic/groundplane/groundplane.obj" />
+            </filter>
+            <filter type="scale">
+                <param type="double" key="scale" value="70" />
+            </filter>
+			<filter type="translate">
+				<param type="vec3" key="offset" value="20.0;0;0" />
+			</filter>
+        </part>
+		<part>
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/toyblocks/cube.obj" />
+            </filter>
+			<filter type="rotate">
+				<param key="rotation" type="rotation">
+					<rot angle_deg="45" axis="z"/>
+				</param>
+			</filter>
+			<filter type="scale">
+                <param type="double" key="scale" value="0.75" />
+            </filter>
+			<filter type="translate">
+				<param type="vec3" key="offset" value="-40.0;-5.0;0" />
+			</filter>
+			<rmotion id ="cube_rotation" loop="0">
+				<translation vec="40;5;0;" />
+				<rotation axis="0;0;1" angle="1" />
+				<translation vec="-40;-5;0;" />
+			</rmotion>
+        </part>
+        <part>
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/toyblocks/sphere.obj" />
+            </filter>
+			<filter type="scale">
+                <param type="double" key="scale" value="0.5" />
+            </filter>
+			<rmotion id="sphere_helical_up" loop="300" next="sphere_helical_down">
+				<helical axis="0;0;1" angle="4" glide="0.1"/>
+			</rmotion>
+			<rmotion id="sphere_helical_down" loop="300" next="sphere_helical_up">
+				<helical axis="0;0;1" angle="-4" glide="-0.1"/>
+			</rmotion>
+        </part>
+		<part>
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/toyblocks/cylinder.obj" />
+            </filter>
+			<filter type="scale">
+                <param type="double" key="scale" value="1" />
+            </filter>
+			<rmotion id="cylinder_translation1" loop="100" next="cylinder_translation2">
+				<translation vec="0;0.2;0"/>
+			</rmotion>
+			<rmotion id="cylinder_translation2" loop="100" next="cylinder_translation3">
+				<translation vec="0.2;0;0"/>
+			</rmotion>
+			<rmotion id="cylinder_translation3" loop="100" next="cylinder_translation4">
+				<translation vec="-0.2;0;0"/>
+			</rmotion>
+			<rmotion id="cylinder_translation4" loop="100" next="cylinder_translation1">
+				<translation vec="0;-0.2;0"/>
+			</rmotion>
+        </part>
+        <part>
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/toyblocks/easter2021.obj" />
+            </filter>
+			<filter type="rotate">
+				<param key="rotation" type="rotation">
+					<rot angle_deg="90" axis="x"/>
+				</param>
+			</filter>
+			<filter type="scale">
+                <param type="double" key="scale" value="5" />
+            </filter>
+			<filter type="translate">
+				<param type="vec3" key="offset" value="60.0;0.0;10.0" />
+			</filter>
+			<rmotion id="easter_gpup" next="easter_gpdown" loop="200">
+				<glideplane ortho="1;1;0" shift="0;0;0.1"/>
+			</rmotion>
+			<rmotion id="easter_gpdown" next="easter_gpup" loop="200">
+				<glideplane ortho="1;1;0" shift="0;0;-0.1"/>
+			</rmotion>
+        </part>
+		<part>
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/toyblocks/cube.obj" />
+            </filter>
+			<filter type="rotate">
+				<param key="rotation" type="rotation">
+					<rot angle_deg="90" axis="z"/>
+				</param>
+			</filter>
+			<filter type="scale">
+                <param type="double" key="scale" value="0.75" />
+            </filter>
+			<filter type="translate">
+				<param type="vec3" key="offset" value="-15.0;-70.0;0" />
+			</filter>
+			<rmotion id ="cube_rotation" loop="0">
+				<rotsym axis="0;0;1" angle="2" center="-5;50;0" />
+			</rmotion>
+        </part>
+    </scene>
+</document>

@@ -214,8 +214,8 @@ void PyHeliosSimulation::addRotateFilter(
     rf.primsOut = nullptr;
     rf.useLocalRotation = true;
     rf.localRotation = Rotation(q0, q1, q2, q3, true);
-    xmlreader->sceneSpec.rotations.push_back(rf);
-    xmlreader->sceneSpec.rotationsId.push_back(partId);
+    xmlreader->sceneLoader.sceneSpec.rotations.push_back(rf);
+    xmlreader->sceneLoader.sceneSpec.rotationsId.push_back(partId);
 }
 void PyHeliosSimulation::addScaleFilter(
     double scaleFactor, std::string partId
@@ -225,8 +225,8 @@ void PyHeliosSimulation::addScaleFilter(
     sf.primsOut = nullptr;
     sf.useLocalScaleFactor = true;
     sf.localScaleFactor = scaleFactor;
-    xmlreader->sceneSpec.scales.push_back(sf);
-    xmlreader->sceneSpec.scalesId.push_back(partId);
+    xmlreader->sceneLoader.sceneSpec.scales.push_back(sf);
+    xmlreader->sceneLoader.sceneSpec.scalesId.push_back(partId);
 }
 void PyHeliosSimulation::addTranslateFilter(
     double x, double y, double z, std::string partId
@@ -236,8 +236,8 @@ void PyHeliosSimulation::addTranslateFilter(
     tf.primsOut = nullptr;
     tf.useLocalTranslation = true;
     tf.localTranslation = glm::dvec3(x, y, z);
-    xmlreader->sceneSpec.translations.push_back(tf);
-    xmlreader->sceneSpec.translationsId.push_back(partId);
+    xmlreader->sceneLoader.sceneSpec.translations.push_back(tf);
+    xmlreader->sceneLoader.sceneSpec.translationsId.push_back(partId);
 }
 
 // ***  SIMULATION COPY  *** //
