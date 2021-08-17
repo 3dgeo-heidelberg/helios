@@ -145,10 +145,8 @@ bool ScenePart::splitSubparts() {
     newPart->onRayIntersectionMode = onRayIntersectionMode;
     newPart->onRayIntersectionArgument = onRayIntersectionArgument;
     newPart->randomShift = randomShift;
-    if (ladlut == nullptr)
-      newPart->ladlut = nullptr;
-    else
-      newPart->ladlut = std::make_shared<LadLut>(*ladlut);
+    if (ladlut == nullptr) newPart->ladlut = nullptr;
+    else newPart->ladlut = std::make_shared<LadLut>(*ladlut);
     newPart->mOrigin = mOrigin;
     newPart->mRotation = mRotation;
     newPart->mScale = mScale;

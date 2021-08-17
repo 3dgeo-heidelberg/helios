@@ -28,9 +28,9 @@
 				<param type="vec3" key="offset" value="-40.0;-5.0;0" />
 			</filter>
 			<rmotion id ="cube_rotation" loop="0">
-				<translation vec="40;5;0;" />
-				<rotation axis="0;0;1" angle="1" />
-				<translation vec="-40;-5;0;" />
+				<motion type="translation" vec="40;5;0;" />
+				<motion type="rotation" axis="0;0;1" angle="1" />
+				<motion type="translation" vec="-40;-5;0;" />
 			</rmotion>
         </part>
         <part>
@@ -41,10 +41,10 @@
                 <param type="double" key="scale" value="0.5" />
             </filter>
 			<rmotion id="sphere_helical_up" loop="300" next="sphere_helical_down">
-				<helical axis="0;0;1" angle="4" glide="0.1"/>
+				<motion type="helical" axis="0;0;1" angle="4" glide="0.1"/>
 			</rmotion>
 			<rmotion id="sphere_helical_down" loop="300" next="sphere_helical_up">
-				<helical axis="0;0;1" angle="-4" glide="-0.1"/>
+				<motion type="helical" axis="0;0;1" angle="-4" glide="-0.1"/>
 			</rmotion>
         </part>
 		<part>
@@ -55,16 +55,16 @@
                 <param type="double" key="scale" value="1" />
             </filter>
 			<rmotion id="cylinder_translation1" loop="100" next="cylinder_translation2">
-				<translation vec="0;0.2;0"/>
+				<motion type="translation" vec="0;0.2;0"/>
 			</rmotion>
 			<rmotion id="cylinder_translation2" loop="100" next="cylinder_translation3">
-				<translation vec="0.2;0;0"/>
+				<motion type="translation" vec="0.2;0;0"/>
 			</rmotion>
 			<rmotion id="cylinder_translation3" loop="100" next="cylinder_translation4">
-				<translation vec="-0.2;0;0"/>
+				<motion type="translation" vec="-0.2;0;0"/>
 			</rmotion>
 			<rmotion id="cylinder_translation4" loop="100" next="cylinder_translation1">
-				<translation vec="0;-0.2;0"/>
+				<motion type="translation" vec="0;-0.2;0"/>
 			</rmotion>
         </part>
         <part>
@@ -83,10 +83,10 @@
 				<param type="vec3" key="offset" value="60.0;0.0;10.0" />
 			</filter>
 			<rmotion id="easter_gpup" next="easter_gpdown" loop="200">
-				<glideplane ortho="1;1;0" shift="0;0;0.1"/>
+				<motion type="glideplane" ortho="1;1;0" shift="0;0;0.1"/>
 			</rmotion>
 			<rmotion id="easter_gpdown" next="easter_gpup" loop="200">
-				<glideplane ortho="1;1;0" shift="0;0;-0.1"/>
+				<motion type="glideplane" ortho="1;1;0" shift="0;0;-0.1"/>
 			</rmotion>
         </part>
 		<part>
@@ -105,7 +105,7 @@
 				<param type="vec3" key="offset" value="-15.0;-70.0;0" />
 			</filter>
 			<rmotion id ="cube_rotation" loop="0">
-				<rotsym axis="0;0;1" angle="2" center="-5;50;0" />
+				<motion type="rotsym" axis="0;0;1" angle="2" center="-5;50;0" />
 			</rmotion>
         </part>
     </scene>
