@@ -57,6 +57,11 @@ public:
     DynScene() = default;
     ~DynScene() override {}
     DynScene(DynScene &ds);
+    /**
+     * @brief Build a dynamic scene using given scene as basis
+     * @param ds Basis scene for dynamic scene
+     */
+    DynScene(Scene &s) : Scene(s) {}
 
     // ***  SIMULATION STEP  *** //
     // ************************* //
@@ -84,5 +89,41 @@ public:
      * @see DynScene::doSimStep
      */
     void doStep();
+
+    // ***  GETTERs and SETTERs  *** //
+    // ***************************** //
+    /**
+     * @brief Append given dynamic object to the scene
+     * @param dynobj Dynamic object to be appended to the scene
+     * @see DynObject
+     */
+    inline void appendDynObject(shared_ptr<DynObject> dynobj)
+    {dynObjs.push_back(dynobj);}
+    /**
+     * @brief Obtain dynamic object at given index
+     * @param index Index of dynamic object to be obtained
+     * @return Dynamic object at given index
+     */
+    inline shared_ptr<DynObject> getDynObject(size_t index)
+    {return dynObjs[index];}
+    /**
+     * @brief Set dynamic object at given index
+     * @param index Index of dynamic object to be setted
+     * @param dynobj New dynamic object
+     */
+    inline void setDynObject(size_t index, shared_ptr<DynObject> dynobj)
+    {dynObjs[index] = dynobj;}
+    /**
+     * @brief Remove dynamic object at given index
+     * @param index Index of dynamic object to be removed
+     */
+    inline void removeDynObject(size_t index)
+    {dynObjs.erase(dynObjs.begin()+index);}
+    /**
+     * @brief Obtain the number of dynamic objects in the scene
+     * @return Number of dynamic objects in the scene
+     */
+    inline size_t numDynObjects() {return dynObjs.size();}
+
 
 };

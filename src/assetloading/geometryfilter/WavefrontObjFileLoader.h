@@ -4,8 +4,6 @@
 #include <glm/glm.hpp>
 #include "WavefrontObj.h"
 
-using namespace glm;
-
 /**
  * @brief OBJ file loader filter
  */
@@ -45,7 +43,7 @@ public:
    * @param yIsUp
    * @return
    */
-  dvec3 readNormalVector(std::vector<std::string> &lineParts, bool yIsUp);
+  glm::dvec3 readNormalVector(std::vector<std::string> &lineParts, bool yIsUp);
 
   /**
    * @brief Reads a face from a given line
@@ -57,11 +55,13 @@ public:
    * @param currentMat Current material to be used in the primitive
    * @param pathString Path to the primitive
    */
-  void readPrimitive(WavefrontObj *loadedObj,
-                     std::vector<std::string> &lineParts,
-                     std::vector<Vertex> &vertices,
-                     std::vector<dvec2> &texcoords, std::vector<dvec3> &normals,
-                     std::string &currentMat, const std::string &pathString);
+  void readPrimitive(
+        WavefrontObj *loadedObj,
+        std::vector<std::string> &lineParts,
+        std::vector<Vertex> &vertices,
+        std::vector<glm::dvec2> &texcoords, std::vector<glm::dvec3> &normals,
+        std::string &currentMat, const std::string &pathString
+    );
 
   /**
    * @brief Load an OBJ file
@@ -83,6 +83,6 @@ public:
    */
   static void buildPrimitiveVertex(Vertex &dstVert, Vertex &srcVert, int texIdx,
                                    int normalIdx,
-                                   std::vector<dvec2> const &texcoords,
-                                   std::vector<dvec3> const &normals);
+                                   std::vector<glm::dvec2> const &texcoords,
+                                   std::vector<glm::dvec3> const &normals);
 };

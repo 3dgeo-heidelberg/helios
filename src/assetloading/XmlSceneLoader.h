@@ -4,7 +4,7 @@
 
 #include <Scene.h>
 #include <SceneLoadingSpecification.h>
-#include <scene/dynamic/DynSequentialMovingObject.h>
+#include <scene/dynamic/DynSequentiableMovingObject.h>
 
 /**
  * @brief Class for scene loading from XML file.
@@ -27,6 +27,9 @@ public:
 
     // ***  CONSTRUCTION / DESTRUCTION  *** //
     // ************************************ //
+    /**
+     * @brief Default constructor for XML scene loader
+     */
     XmlSceneLoader() = default;
     virtual ~XmlSceneLoader() {}
 
@@ -60,8 +63,30 @@ public:
         bool &holistic
     );
 
-    // TODO Rethink : Document
-    shared_ptr<DynSequentialMovingObject> loadRigidMotions(
+    /**
+     * @brief Build a dynamic sequentiable moving object which is composed of
+     *  rigid motions.
+     *
+     * It is mandatory that rmotion elements contained in the part element
+     *  also contain an id attribute specifying the unique identifier for the
+     *  sequence in its context. The loop attribute is also mandatory, where
+     *  \f$0\f$ means infinity loop and \f$n > 0\f$ specifies how many times
+     *  the sequence will be repeated until proceeding to next sequence. Next
+     *  sequence can be specified through the next attribute, which may contain
+     *  the identifier of the next sequence. If no next attribute is given,
+     *  then it is assumed that there is no next sequence.
+     *
+     * @param scenePartNode XML part node defining the scene part
+     * @param scenePart The scene part object where the dynamic sequentiable
+     *  moving object belongs to
+     * @return Built dynamic sequentiable moving object composed of rigid
+     *  motions specified in the XML
+     * @see DynSequencer
+     * @see DynSequence
+     * @see rigidmotion::RigidMotion
+     * @see XmlUtils::createRigidMotionsVector
+     */
+    shared_ptr<DynSequentiableMovingObject> loadRigidMotions(
         tinyxml2::XMLElement *scenePartNode,
         ScenePart *scenePart
     );
@@ -104,4 +129,17 @@ public:
         bool splitPart,
         int &partIndex
     );
+
+    /**
+     * @brief Build a dynamic scene based on given standard scene.
+     *
+     * NOTICE for this method to work properly given scene MUST be of Scene
+     *  type or unexpected behaviors might occur. Use with caution
+     *
+     * @param scene Basic standard scene to be used to build a dynamic scene
+     * @return Built dynamic scene based on given standard scene
+     * @see Scene
+     * @see DynScene
+     */
+    shared_ptr<Scene> makeSceneDynamic(shared_ptr<Scene> scene);
 };

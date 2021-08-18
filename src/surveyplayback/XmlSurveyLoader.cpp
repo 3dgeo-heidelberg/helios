@@ -83,7 +83,7 @@ XmlSurveyLoader::createSurveyFromXml(tinyxml2::XMLElement *surveyNode,
   // ######### END Set initial sim speed factor ##########
   tinyxml2::XMLElement *legNodes = surveyNode->FirstChildElement("leg");
   while (legNodes != nullptr) {
-    dvec3 origin = dvec3(0, 0, 0);
+    glm::dvec3 origin = glm::dvec3(0, 0, 0);
     shared_ptr<Leg> leg(createLegFromXML(legNodes));
     // Add originWaypoint shift to waypoint coordinates:
     if (leg->mPlatformSettings != NULL /* && originWaypoint != null*/) {
@@ -126,16 +126,20 @@ XmlSurveyLoader::createSurveyFromXml(tinyxml2::XMLElement *surveyNode,
   }
   for (std::shared_ptr<Leg> leg : survey->legs) {
     if (leg->mPlatformSettings != NULL) {
-      dvec3 shift = survey->scanner->platform->scene->getShift();
-      dvec3 platformPos = leg->mPlatformSettings->getPosition();
+      glm::dvec3 shift = survey->scanner->platform->scene->getShift();
+      glm::dvec3 platformPos = leg->mPlatformSettings->getPosition();
       leg->mPlatformSettings->setPosition(platformPos - shift);
 
       // ############ BEGIN If specified, move waypoint z coordinate to ground
       // level ###############
       if (leg->mPlatformSettings->onGround) {
-        dvec3 pos = leg->mPlatformSettings->getPosition();
-        dvec3 ground = survey->scanner->platform->scene->getGroundPointAt(pos);
-        leg->mPlatformSettings->setPosition(dvec3(pos.x, pos.y, ground.z));
+        glm::dvec3 pos = leg->mPlatformSettings->getPosition();
+        glm::dvec3 ground = survey->scanner->platform->scene->getGroundPointAt(
+            pos
+        );
+        leg->mPlatformSettings->setPosition(glm::dvec3(
+            pos.x, pos.y, ground.z
+        ));
       }
       // ############ END If specified, move waypoint z coordinate to ground
       // level ###############

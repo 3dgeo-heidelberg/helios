@@ -2,7 +2,7 @@
 
 // ***  CONSTRUCTION / DESTRUCTION  *** //
 // ************************************ //
-DynScene::DynScene(DynScene &ds) : Scene(ds){
+DynScene::DynScene(DynScene &ds) : DynScene(static_cast<Scene&>(ds)){
     for(shared_ptr<DynObject> dynObj : ds.dynObjs){
         dynObjs.push_back(dynObj);
     }

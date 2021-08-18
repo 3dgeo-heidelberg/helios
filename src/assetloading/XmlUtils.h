@@ -3,11 +3,19 @@
 #include <Color4f.h>
 #include <typedef.h>
 #include <NoiseSource.h>
+#include <scene/dynamic/DynSequence.h>
+#include <maths/rigidmotion/RigidMotion.h>
 
 #include <tinyxml2.h>
 
 #include <map>
+#include <vector>
 
+using namespace rigidmotion;
+
+/**
+ * @brief Common utils for XML handling
+ */
 class XmlUtils{
 public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //
@@ -75,5 +83,25 @@ public:
         std::string attrName,
         std::string type,
         ObjectT defaultVal
+    );
+
+    /**
+     * @brief Obtain a dynamic sequence of rigid motions from given XML
+     *  element.
+     *
+     * It is expected that given element contains children elements of type
+     *  <motion type="motion_type"/> where motion_type can be either
+     *  translation, rotation, rotsym, reflection, glideplane or helical.
+     * These children element will be used to build the dynamic sequence of
+     *  rigid motions with the same order as the one in the XML.
+     *
+     * @param element XML element containing motion children elements
+     * @return Vector of rigid motions built from XML
+     * @see DynSequencer
+     * @see DynSequence
+     * @see rigidmotion::RigidMotion
+     */
+    static std::vector<std::shared_ptr<RigidMotion>> createRigidMotionsVector(
+        tinyxml2::XMLElement *element
     );
 };

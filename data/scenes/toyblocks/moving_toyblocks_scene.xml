@@ -80,13 +80,32 @@
                 <param type="double" key="scale" value="5" />
             </filter>
 			<filter type="translate">
-				<param type="vec3" key="offset" value="60.0;0.0;10.0" />
+				<param type="vec3" key="offset" value="60.0;0.0;15.0" />
 			</filter>
 			<rmotion id="easter_gpup" next="easter_gpdown" loop="200">
 				<motion type="glideplane" ortho="1;1;0" shift="0;0;0.1"/>
 			</rmotion>
 			<rmotion id="easter_gpdown" next="easter_gpup" loop="200">
 				<motion type="glideplane" ortho="1;1;0" shift="0;0;-0.1"/>
+			</rmotion>
+        </part>
+		<part>
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/toyblocks/easter2021.obj" />
+            </filter>
+			<filter type="rotate">
+				<param key="rotation" type="rotation">
+					<rot angle_deg="90" axis="x"/>
+				</param>
+			</filter>
+			<filter type="scale">
+                <param type="double" key="scale" value="5" />
+            </filter>
+			<filter type="translate">
+				<param type="vec3" key="offset" value="60.0;0.0;15.0" />
+			</filter>
+			<rmotion id="easter_reflection" loop="200">
+				<motion type="reflection" ortho="0;0;1" />
 			</rmotion>
         </part>
 		<part>

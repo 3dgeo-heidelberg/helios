@@ -14,8 +14,9 @@ using namespace std;
 #include <boost/variant/variant.hpp>
 
 #include "maths/Rotation.h"
-typedef boost::variant<bool, int, float, double, std::string, dvec3, Rotation>
-    ObjectT;
+typedef boost::variant<
+    bool, int, float, double, std::string, glm::dvec3, Rotation
+> ObjectT;
 
 #include <boost/filesystem.hpp>
 namespace fs = boost::filesystem;
@@ -141,7 +142,7 @@ Vertex WavefrontObjFileLoader::readVertex(vector<string> &lineParts,
     ss.str("");
   }
 
-  v.pos = dvec3(x, y, z);
+  v.pos = glm::dvec3(x, y, z);
 
   // ######## BEGIN Read vertex color #########
   if (lineParts.size() >= 7) {
@@ -164,11 +165,11 @@ Vertex WavefrontObjFileLoader::readVertex(vector<string> &lineParts,
   return v;
 }
 
-dvec3 WavefrontObjFileLoader::readNormalVector(vector<string> &lineParts,
+glm::dvec3 WavefrontObjFileLoader::readNormalVector(vector<string> &lineParts,
                                                bool yIsUp) {
 
   stringstream ss;
-  dvec3 normal{};
+  glm::dvec3 normal{};
   try {
     double x = 0, y = 0, z = 0;
 
@@ -182,7 +183,7 @@ dvec3 WavefrontObjFileLoader::readNormalVector(vector<string> &lineParts,
       z = boost::lexical_cast<double>(lineParts[3]);
     }
 
-    normal = dvec3(x, y, z);
+    normal = glm::dvec3(x, y, z);
   } catch (boost::bad_lexical_cast &e) {
     ss << "Error reading normal vector.\nEXCEPTION: " << e.what();
     logging::WARN(ss.str());
@@ -193,9 +194,14 @@ dvec3 WavefrontObjFileLoader::readNormalVector(vector<string> &lineParts,
 }
 
 void WavefrontObjFileLoader::readPrimitive(
-    WavefrontObj *loadedObj, vector<string> &lineParts,
-    vector<Vertex> &vertices, vector<dvec2> &texcoords, vector<dvec3> &normals,
-    string &currentMat, const string &pathString) {
+    WavefrontObj *loadedObj,
+    vector<string> &lineParts,
+    vector<Vertex> &vertices,
+    vector<glm::dvec2> &texcoords,
+    vector<glm::dvec3> &normals,
+    string &currentMat,
+    const string &pathString
+) {
 
   stringstream ss;
   // ######### BEGIN Read triangle or quad ##############
@@ -282,8 +288,8 @@ WavefrontObj *WavefrontObjFileLoader::loadObj(std::string const &pathString,
   }
 
   vector<Vertex> vertices;
-  vector<dvec3> normals;
-  vector<dvec2> texcoords;
+  vector<glm::dvec3> normals;
+  vector<glm::dvec2> texcoords;
 
   string currentMat = "default";
 
@@ -319,7 +325,7 @@ WavefrontObj *WavefrontObjFileLoader::loadObj(std::string const &pathString,
 
       // ############ BEGIN Read normal vector ##############
       else if (lineParts[0] == "vn" && lineParts.size() >= 4) {
-        dvec3 normal =
+        glm::dvec3 normal =
             WavefrontObjFileLoader::readNormalVector(lineParts, yIsUp);
         normals.push_back(normal);
       }
@@ -327,7 +333,7 @@ WavefrontObj *WavefrontObjFileLoader::loadObj(std::string const &pathString,
 
       // ############ BEGIN Read texture coordinates ############
       else if (lineParts[0] == "vt" && lineParts.size() >= 3) {
-        dvec2 tc = dvec2(boost::lexical_cast<double>(lineParts[1]),
+        glm::dvec2 tc = glm::dvec2(boost::lexical_cast<double>(lineParts[1]),
                          boost::lexical_cast<double>(lineParts[2]));
         texcoords.push_back(tc);
       }
@@ -379,8 +385,13 @@ WavefrontObj *WavefrontObjFileLoader::loadObj(std::string const &pathString,
 // ***  ASSIST METHODS  *** //
 // ************************ //
 void WavefrontObjFileLoader::buildPrimitiveVertex(
-    Vertex &dstVert, Vertex &srcVert, int texIdx, int normalIdx,
-    std::vector<dvec2> const &texcoords, std::vector<dvec3> const &normals) {
+    Vertex &dstVert,
+    Vertex &srcVert,
+    int texIdx,
+    int normalIdx,
+    std::vector<glm::dvec2> const &texcoords,
+    std::vector<glm::dvec3> const &normals
+) {
   dstVert = srcVert.copy();
   if (texIdx >= 0)
     dstVert.texcoords = texcoords[texIdx];

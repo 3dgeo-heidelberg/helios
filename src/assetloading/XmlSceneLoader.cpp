@@ -5,10 +5,13 @@
 #include <WavefrontObjFileLoader.h>
 #include <XYZPointCloudFileLoader.h>
 #include <DetailedVoxelLoader.h>
-
-#include <boost/lexical_cast.hpp>
+#include <scene/dynamic/DynScene.h>
 
 #include <logging.hpp>
+
+#include <boost/lexical_cast.hpp>
+#include <memory>
+
 
 // ***  SCENE CREATION  *** //
 // ************************ //
@@ -37,7 +40,7 @@ XmlSceneLoader::createSceneFromXml(
         ScenePart *scenePart = loadFilters(scenePartNode, holistic);
 
         // Load rigid motions if any
-        shared_ptr<DynSequentialMovingObject> dsmo =
+        shared_ptr<DynSequentiableMovingObject> dsmo =
             loadRigidMotions(scenePartNode, scenePart);
         if(!dynScene && dsmo != nullptr){
             scene = makeSceneDynamic(scene);
@@ -153,7 +156,7 @@ ScenePart * XmlSceneLoader::loadFilters(
     return scenePart;
 }
 
-shared_ptr<DynSequentialMovingObject> XmlSceneLoader::loadRigidMotions(
+shared_ptr<DynSequentiableMovingObject> XmlSceneLoader::loadRigidMotions(
     tinyxml2::XMLElement *scenePartNode,
     ScenePart *scenePart
 ){
@@ -163,8 +166,8 @@ shared_ptr<DynSequentialMovingObject> XmlSceneLoader::loadRigidMotions(
     if(rmotionNode == nullptr) return nullptr; // No rmotion found
 
     // Build dynamic sequential moving object from XML
-    shared_ptr<DynSequentialMovingObject> dsmo =
-        make_shared<DynSequentialMovingObject>();
+    shared_ptr<DynSequentiableMovingObject> dsmo =
+        make_shared<DynSequentiableMovingObject>();
     while(rmotionNode != nullptr){
         // Optional attributes
         std::string nextId = "";
@@ -180,19 +183,27 @@ shared_ptr<DynSequentialMovingObject> XmlSceneLoader::loadRigidMotions(
             "no id"
         );
         tinyxml2::XMLAttribute const *loopAttr =
-            rmotionNode->findAttribute("loop");
+            rmotionNode->FindAttribute("loop");
         if(loopAttr == nullptr) throw HeliosException(
             "XmlSceneLoader::loadRigidMotions found a rmotion element with "
             "no loop"
         );
 
         // Add rigid motion sequence
-        dsmo.addSequence(
-            idAttr->Value(),
-            nextIdAttr,
-            loopAttr->Int64Value(),
-            XmlUtils::createMotionsVector(rmotionNode)
-        );
+        shared_ptr<DynSequence<RigidMotion>> rmSequence =
+            make_shared<DynSequence<RigidMotion>>(
+                idAttr->Value(),
+                nextId,
+                loopAttr->Int64Value()
+            );
+        rmSequence->append(XmlUtils::createRigidMotionsVector(rmotionNode));
+        if(rmSequence == nullptr){  // Check rmSequence is not null
+            throw HeliosException(
+                "XmlSceneLoader::loadRigidMotions found a rmotion element with"
+                " no motions. This is not allowed."
+            );
+        }
+        dsmo->addSequence(rmSequence);
 
         // Next rigid motion sequence
         rmotionNode = rmotionNode->NextSiblingElement("rmotion");
@@ -274,4 +285,8 @@ void XmlSceneLoader::digestScenePart(
         size_t partIndexOffset = scenePart->subpartLimit.size() - 1;
         if (scenePart->splitSubparts()) partIndex += partIndexOffset;
     }
+}
+
+shared_ptr<Scene> XmlSceneLoader::makeSceneDynamic(shared_ptr<Scene> scene){
+    return std::static_pointer_cast<Scene>(make_shared<DynScene>(*scene));
 }
