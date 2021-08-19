@@ -269,7 +269,8 @@ void FullWaveformPulseRunnable::digestIntersections(
         fullwave,
         distanceThreshold,
         minHitTime_ns,
-        nsPerBin
+        nsPerBin,
+        peakIntensityIndex
     );
 
     // Digest full waveform, generating measurements
@@ -337,12 +338,16 @@ bool FullWaveformPulseRunnable::initializeFullWaveform(
 ){
     // Calc time at minimum and maximum distance
     // (i.e. total beam time in fwf signal)
-    minHitTime_ns = minHitDist_m / cfg_speedOfLight_mPerNanosec;
-    maxHitTime_ns = maxHitDist_m / cfg_speedOfLight_mPerNanosec;
+
+    peakIntensityIndex = detector->scanner->peakIntensityIndex;
+    nsPerBin = detector->scanner->FWF_settings.binSize_ns;
+
+    minHitTime_ns = minHitDist_m / cfg_speedOfLight_mPerNanosec - peakIntensityIndex * nsPerBin;
+    maxHitTime_ns = maxHitDist_m / cfg_speedOfLight_mPerNanosec +
+            detector->scanner->getPulseLength_ns() - peakIntensityIndex * nsPerBin;
 
     // Calc ranges and threshold
-    double hitTimeDelta_ns = maxHitTime_ns - minHitTime_ns +
-                             detector->scanner->getPulseLength_ns();
+    double hitTimeDelta_ns = maxHitTime_ns - minHitTime_ns;
     double maxFullwaveRange_ns =
         detector->scanner->FWF_settings.maxFullwaveRange_ns;
     distanceThreshold = maxHitDist_m;
@@ -359,9 +364,7 @@ bool FullWaveformPulseRunnable::initializeFullWaveform(
     }
 
     // Compute fullwave variables
-    nsPerBin = detector->scanner->FWF_settings.binSize_ns;
     numFullwaveBins = (int)(hitTimeDelta_ns / nsPerBin);
-    peakIntensityIndex = detector->scanner->peakIntensityIndex;
 
     return true;
 }
@@ -371,7 +374,8 @@ void FullWaveformPulseRunnable::populateFullWaveform(
     std::vector<double> &fullwave,
     double distanceThreshold,
     double minHitTime_ns,
-    double nsPerBin
+    double nsPerBin,
+    int peakIntensityIndex
 ){
     // Multiply each sub-beam intensity with time_wave and
     // add to the full waveform
@@ -382,7 +386,7 @@ void FullWaveformPulseRunnable::populateFullWaveform(
         if(entryDistance_m > distanceThreshold) continue;
         double entryIntensity = it->second;
         double wavePeakTime_ns = (entryDistance_m / cfg_speedOfLight_mPerNanosec); // [ns]
-        int binStart = (int)((wavePeakTime_ns-minHitTime_ns) / nsPerBin);
+        int binStart = (int)((wavePeakTime_ns-minHitTime_ns) / nsPerBin) - peakIntensityIndex;
         for (size_t i = 0; i < time_wave.size(); i++) {
             fullwave[binStart + i] += time_wave[i] * entryIntensity;
         }
