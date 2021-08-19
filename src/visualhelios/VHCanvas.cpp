@@ -28,6 +28,7 @@ void VHCanvas::configure(){
 }
 void VHCanvas::start() {}
 void VHCanvas::update() {}
+void VHCanvas::postUpdate() {}
 void VHCanvas::onStop(){
     std::cout   << "Visual helios canvas \"" << title
                 << "\" has finised" << std::endl;

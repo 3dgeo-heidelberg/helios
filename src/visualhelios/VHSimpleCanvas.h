@@ -3,7 +3,7 @@
 #include <memory>
 #include <vector>
 
-#include <visualhelios/VHCanvas.h>
+#include <visualhelios/VHNormalsCanvas.h>
 #include <visualhelios/adapters/VHDynObjectXYZRGBAdapter.h>
 
 namespace visualhelios{
@@ -17,7 +17,7 @@ using std::vector;
  * @brief Visual Helios Simple Canvas is a class which supports rendering
  *  polygon meshes which are updated over time
  */
-class VHSimpleCanvas : public VHCanvas{
+class VHSimpleCanvas : public VHNormalsCanvas{
 protected:
     // ***  ATTRIBUTES  *** //
     // ******************** //
@@ -44,35 +44,19 @@ protected:
         vector<shared_ptr<VHDynObjectXYZRGBAdapter>>
     )> dynamicUpdateFunction;
 
-    /**
-     * @brief Specify if the simple canvas must render normals (true) or not
-     *  (false)
-     */
-    bool renderingNormals;
-    /**
-     * @brief Specify the magnitude of normal vector for visualization
-     */
-    float normalMagnitude;
-
-    /**
-     * @brief Control whether an update is needed even when dynamic objects
-     *  themselves have not been updated (true) or not (false)
-     */
-    bool needUpdate;
-
 public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //
     // ************************************ //
     /**
      * @brief Default constructor for the visual helios simple canvas
-     * @see visualhelios::VHCanvas::VHCanvas
+     * @see visualhelios::VHNormalsCanvas::VHNormalsCanvas
      */
     VHSimpleCanvas() : VHSimpleCanvas("Visual Helios simple canvas") {}
     /**
-     * @brief Constructor for the visual helios simple canvas which allows for
+     * @brief Constructor for the visual Helios simple canvas which allows for
      *  title specification
      * @param title Title for the visualizer
-     * @see visualhelios::VHCanvas::VHCanvas(string const)
+     * @see visualhelios::VHNormalCanvas::VHNormalCanvas(string const)
      */
     VHSimpleCanvas(string const title);
     virtual ~VHSimpleCanvas() = default;
@@ -81,28 +65,30 @@ protected:
     // ***  CANVAS METHODS  *** //
     // ************************ //
     /**
-     * @see VHCanvas::configure
+     * @see VHNormalsCanvas::configure
      */
     void configure() override;
     /**
-     * @see VHCanvas::start
+     * @see VHNormalsCanvas::start
      */
     void start() override;
     /**
-     * @see VHCanvas::update
+     * @see VHNormalsCanvas::update
      */
     void update() override;
 
-    // ***  UTIL METHODS  ***  //
-    // ********************** //
+    // ***  NORMALS RENDERING METHODS  ***  //
+    // ************************************ //
     /**
      * @brief Render normals for each primitive of given dynamic object
+     * @see visualhelios::VHNormalsCanvas::renderNormals
      */
-    void renderNormals(VHDynObjectAdapter & dynObj);
+    void renderNormals(VHDynObjectAdapter & dynObj) override;
     /**
      * @brief Remove all rendered normals
+     * @see visualhelios::VHNormalsCanvas::unrenderAllNormals
      */
-    void unrenderAllNormals();
+    void unrenderAllNormals() override;
 
 public:
     // ***  GETTERS and SETTERS  *** //
@@ -146,20 +132,6 @@ public:
             vector<shared_ptr<VHDynObjectXYZRGBAdapter>>
         )> const dynamicUpdateFunction
     ){this->dynamicUpdateFunction = dynamicUpdateFunction;}
-    /**
-     * @brief Check whether the simple canvas is rendering normals or not
-     * @return True if simple canvas is rendering normals, false otherwise
-     * @see visualhelios::VHSimpleCanvas::renderingNormals
-     */
-    inline bool isRenderingNormals() const {return renderingNormals;}
-    /**
-     * @brief Enable or disable normals rendering
-     * @param renderingNormals True to enable rendering normals, false
-     *  to disable it
-     * @see visualhelios::VHSimpleCanvas::renderingNormals
-     */
-    inline void setRenderingNormals(bool const renderingNormals)
-    {this->renderingNormals = renderingNormals;}
 };
 
 }
