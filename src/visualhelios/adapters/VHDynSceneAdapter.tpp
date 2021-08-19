@@ -1,6 +1,8 @@
 #ifdef PCL_BINDING
 #ifndef _VHDYNSCENEADAPTER_H_
 
+using std::make_shared;
+
 // ***  CONSTRUCTION / DESTRUCTION  *** //
 // ************************************ //
 template <typename T>

@@ -99,12 +99,12 @@ public:
     // ***  GETTERS and SETTERS  *** //
     // ***************************** //
     /**
-     * @brief Obtain the adapted dynamic object
+     * @brief Obtain the dynamic object
      *
      * <b><span style="color: red;">WARNING</span></b> this getter returns the
      *  dynamic object reference allowing modifications. Use with caution.
      *
-     * @return Adapted dynamic object
+     * @return Dynamic object
      */
     inline DynObject & getDynObj() {return dynObj;}
     /**

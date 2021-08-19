@@ -34,7 +34,7 @@ void VHSimpleCanvas::start(){
             dynObj->getPolymesh(),
             dynObj->getVertices(),
             dynObj->getId()
-            );
+        );
     }
 
     // Apply initial transformations
@@ -51,13 +51,13 @@ void VHSimpleCanvas::start(){
 }
 
 void VHSimpleCanvas::update(){
-    // Bse canvas update
+    // Base canvas update
     VHNormalsCanvas::update();
 
     // Apply dynamic update function to primitives
     if(dynamicUpdateFunction) dynamicUpdateFunction(dynObjs);
 
-    // Update the polygon mesh after applying dynamic function
+    // Update polygon meshes after applying dynamic function if necessary
     for(shared_ptr<VHDynObjectXYZRGBAdapter> & dynObj : dynObjs){
         // Continue to next iteration if no updates are needed for this
         if(!dynObj->doStep() && !isNeedingUpdate()) continue;
@@ -111,7 +111,7 @@ void VHSimpleCanvas::renderNormals(VHDynObjectAdapter & dynObj){
 }
 
 void VHSimpleCanvas::unrenderAllNormals(){
-    for(shared_ptr<VHDynObjectXYZRGBAdapter> dynObj : dynObjs){
+    for(shared_ptr<VHDynObjectXYZRGBAdapter> const &dynObj : dynObjs){
         if(!dynObj->isRenderingNormals()) continue; // Skip, nothing to remove
         vector<Primitive *> const primitives = \
             dynObj->getDynObj().getPrimitives();

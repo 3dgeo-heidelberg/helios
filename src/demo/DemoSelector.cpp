@@ -5,6 +5,7 @@
 #include <sstream>
 
 #include <demo/SimplePrimitivesDemo.h>
+#include <demo/DynamicSceneDemo.h>
 
 using HeliosDemos::DemoSelector;
 using std::shared_ptr;
@@ -29,6 +30,9 @@ void HeliosDemos::DemoSelector::select(string const name){
     // Handle demo
     if(name == "simple_primitives"){ // Handle simple primitives demo
         HeliosDemos::SimplePrimitivesDemo().run();
+    }
+    else if(name == "dynamic_scene"){  // Handle dynamic scene demo
+        HeliosDemos::DynamicSceneDemo().run();
     }
     else{ // Handle unexpected demo
         stringstream ss;

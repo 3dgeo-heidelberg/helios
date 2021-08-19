@@ -77,7 +77,16 @@ public:
     inline size_t numDynObjects() const {return dynObjs.size();}
     /**
      * @brief Obtain the adapted dynamic object at given index
+     * @return Adapted dynamic object at given index
+     * @see visualhelios::VHDynObjectAdapter
+     */
+    inline shared_ptr<T> getAdaptedDynObj(size_t const index){
+        return dynObjs[index];
+    }
+    /**
+     * @brief Obtain the dynamic object at given index
      * @see visualhelios::VHDynObjectAdapter::getDynObj
+     * @see DynObject
      */
     inline DynObject & getDynObj(size_t const index){
         return  static_pointer_cast<VHDynObjectAdapter>(dynObjs[index])\

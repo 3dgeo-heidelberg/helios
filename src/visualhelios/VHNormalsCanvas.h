@@ -47,7 +47,7 @@ public:
      * @brief Main constructor for the visual helios normals canvas which
      *  allows for title specification, flags specification and normal
      *  magnitude specification too
-     * @see visualhelios::VHNormalsCanvas::normalsKeyboardCallback
+     * @see visualhelios::VHNormalsCanvas::normalsKeyboardCallbackEnabled
      * @see visualhelios::VHNormalsCanvas::normalsUsageTextEnabled
      * @see visualhelios::VHNormalsCanvas::renderingNormals
      * @see visualhelios::VHNormalsCanvas::normalMagnitude

@@ -48,7 +48,7 @@ public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //
     // ************************************ //
     /**
-     * @brief Default constructor for the visual helios simple canvas
+     * @brief Default constructor for the visual Helios simple canvas
      * @see visualhelios::VHNormalsCanvas::VHNormalsCanvas
      */
     VHSimpleCanvas() : VHSimpleCanvas("Visual Helios simple canvas") {}
