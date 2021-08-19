@@ -98,7 +98,7 @@ protected:
     /**
      * @brief Render normals for each primitive of given dynamic object
      */
-    void renderNormals(VHDynObjectXYZRGBAdapter & dynObj);
+    void renderNormals(VHDynObjectAdapter & dynObj);
     /**
      * @brief Remove all rendered normals
      */
@@ -160,8 +160,6 @@ public:
      */
     inline void setRenderingNormals(bool const renderingNormals)
     {this->renderingNormals = renderingNormals;}
-
-
 };
 
 }

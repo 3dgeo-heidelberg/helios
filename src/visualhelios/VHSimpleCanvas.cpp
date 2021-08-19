@@ -97,7 +97,7 @@ void VHSimpleCanvas::update(){
 
 // ***  UTIL METHODS  ***  //
 // ********************** //
-void VHSimpleCanvas::renderNormals(VHDynObjectXYZRGBAdapter & dynObj){
+void VHSimpleCanvas::renderNormals(VHDynObjectAdapter & dynObj){
     if(!dynObj.isRenderingNormals()) return;
     vector<Primitive *> const primitives = dynObj.getDynObj().getPrimitives();
     for(size_t i = 0 ; i < primitives.size() ; ++i){

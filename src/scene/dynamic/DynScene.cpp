@@ -11,8 +11,8 @@ DynScene::DynScene(DynScene &ds) : DynScene(static_cast<Scene&>(ds)){
 // ***  SIMULATION STEP  *** //
 // ************************* //
 void DynScene::doSimStep(){
-    currentStep = (currentStep + 1) % dynamicSpaceFrequency;
-    if(currentStep == (dynamicSpaceFrequency-1)) doStep();
+    currentStep = (currentStep + 1) % dynamicSpaceInterval;
+    if(currentStep == (dynamicSpaceInterval-1)) doStep();
 }
 
 void DynScene::doStep(){

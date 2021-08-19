@@ -33,7 +33,7 @@ protected:
      * @brief Specify how many simulation steps must elapse between each
      *  simulation step computation for the dynamic scene
      */
-    int dynamicSpaceFrequency = 1;
+    int dynamicSpaceInterval = 1;
     /**
      * @brief Stores the current simulation step.
      *
@@ -44,7 +44,7 @@ protected:
      * \f[
      *   s_{t+1} = \left(s_{t} + 1\right) \mod \delta
      * \f]
-     * @see DynScene::dynamicSpaceFrequency
+     * @see DynScene::dynamicSpaceInterval
      */
     int currentStep = 0;
 
@@ -76,7 +76,7 @@ public:
      *
      * Where \f$\delta\f$ is the dynamic space frequency and \f$s_{t}\f$ is the
      *  current step at instant \f$t\f$.
-     * @see DynScene::dynamicSpaceFrequency
+     * @see DynScene::dynamicSpaceInterval
      * @see DynScene::currentStep
      * @see DynScene::doStep
      */
