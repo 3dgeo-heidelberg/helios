@@ -39,6 +39,9 @@ XmlSceneLoader::createSceneFromXml(
         // Load filter nodes, if any
         ScenePart *scenePart = loadFilters(scenePartNode, holistic);
 
+        // Read and set scene part ID
+        bool splitPart = loadScenePartId(scenePartNode, partIndex, scenePart);
+
         // Load rigid motions if any
         shared_ptr<DynSequentiableMovingObject> dsmo =
             loadRigidMotions(scenePartNode, scenePart);
@@ -49,9 +52,6 @@ XmlSceneLoader::createSceneFromXml(
         if(dsmo != nullptr){
             std::static_pointer_cast<DynScene>(scene)->appendDynObject(dsmo);
         }
-
-        // Read and set scene part ID
-        bool splitPart = loadScenePartId(scenePartNode, partIndex, scenePart);
 
         // Consider scene loading specification
         scenePartCounter++;
@@ -209,6 +209,14 @@ shared_ptr<DynSequentiableMovingObject> XmlSceneLoader::loadRigidMotions(
         rmotionNode = rmotionNode->NextSiblingElement("rmotion");
     }
 
+    // Link scene part primitives with dynamic sequentiable moving object
+    dsmo->setPrimitives(scenePart->mPrimitives);
+
+    // Use scene part ID to build dynamic dynamic sequentiable moving object ID
+    std::stringstream ss;
+    ss << "DSMO_" << scenePart->mId;
+    dsmo->setId(ss.str());
+
     // Return
     return dsmo;
 }
@@ -221,10 +229,9 @@ bool XmlSceneLoader::loadScenePartId(
     std::string partId = "";
     tinyxml2::XMLAttribute const *partIdAttr =
         scenePartNode->FindAttribute("id");
-    char const *str = NULL;
-    if (partIdAttr != NULL)
-        str = scenePartNode->FindAttribute("id")->Value();
-    if (str != NULL) {
+    char const *str = nullptr;
+    if(partIdAttr!=nullptr) str = scenePartNode->FindAttribute("id")->Value();
+    if (str != nullptr) {
         partId = std::string(str);
         try {
             boost::lexical_cast<int>(partId);

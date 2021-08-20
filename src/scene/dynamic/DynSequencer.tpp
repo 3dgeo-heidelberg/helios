@@ -26,6 +26,7 @@ vector<shared_ptr<T>> DynSequencer<T>::nextStep(){
         }
         else{ // At least one more sequence left
             current = dynseqs[nextId];
+            current->restart();
         }
     }
 

@@ -14,7 +14,7 @@ void VHDynObjectAdapter::buildPolymesh(){
     // Add each primitive to the polymesh
     int offset = 0;  // To handle vertex indices
     vector<Primitive *> const primitives = dynObj.getPrimitives();
-    for(Primitive * primitive : primitives){ // For each primitive in dynobj
+    for(Primitive * primitive : primitives){ // For each primitive in dynObj
         pcl::Vertices verts;  // Vertex connection order for the primitive
         int const n = (int) primitive->getNumVertices();
         Vertex *primitiveVerts = primitive->getVertices();

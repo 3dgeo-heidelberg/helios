@@ -93,6 +93,16 @@ public:
                 ->getDynObj();
     }
     /**
+     * @brief Check if the dynamic object at given index has been updated on
+     *  last step (true) or not (false)
+     * @param index Index of dynamic object to be checked
+     * @return True if dynamic object at given index has been udpated on last
+     *  step, false otherwise
+     * @see DynScene::isUpdated
+     */
+    inline bool isUpdated(size_t const index) const
+    {return dynScene.isUpdated(index);}
+    /**
      * @brief Obtain the ordered vertices indices representing the dynamic
      *  object at given index
      * @see visualhelios::VHDynObjectAdapter::getVertices

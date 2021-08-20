@@ -22,4 +22,9 @@ vector<shared_ptr<T>> DynSequence<T>::nextStep(){
     throw HeliosException(ss.str());
 }
 
+template <typename T>
+void DynSequence<T>::restart(){
+    iteration = 0;
+}
+
 #endif

@@ -5,6 +5,7 @@
 DynScene::DynScene(DynScene &ds) : DynScene(static_cast<Scene&>(ds)){
     for(shared_ptr<DynObject> dynObj : ds.dynObjs){
         dynObjs.push_back(dynObj);
+        updated.push_back(true);
     }
 }
 
@@ -16,5 +17,8 @@ void DynScene::doSimStep(){
 }
 
 void DynScene::doStep(){
-    for(shared_ptr<DynObject> & dynObj : dynObjs) dynObj->doStep();
+    size_t const n = numDynObjects();
+    for(size_t i = 0 ; i < n ; ++i){
+        updated[i] = dynObjs[i]->doStep();
+    }
 }

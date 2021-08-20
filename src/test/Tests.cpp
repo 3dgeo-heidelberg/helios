@@ -1,4 +1,3 @@
-#include <boost/filesystem.hpp>
 #include <test/BaseTest.h>
 #include <test/RandomTest.h>
 #include <test/NoiseTest.h>
@@ -11,6 +10,8 @@
 #include <test/PlatformPhysicsTest.h>
 #include <test/ScenePartSplitTest.h>
 #include <test/RigidMotionTest.h>
+
+#include <boost/filesystem.hpp>
 
 #if defined(_WIN32) || defined(_WIN64)
 #define TEST_COLOR false

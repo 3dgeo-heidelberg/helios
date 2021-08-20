@@ -93,6 +93,11 @@ public:
      * @brief Obtain sequence corresponding to next step
      */
     vector<shared_ptr<T>> nextStep();
+    /**
+     * @brief Restart the dynamic sequence so when nextStep is called again
+     *  it will start from the first iteration
+     */
+    void restart();
 
     // ***  GETTERs and SETTERs  *** //
     // ***************************** //

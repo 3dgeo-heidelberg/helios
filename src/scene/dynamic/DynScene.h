@@ -30,6 +30,15 @@ protected:
      */
     vector<shared_ptr<DynObject>> dynObjs;
     /**
+     * @brief Vector of flags controlling whether a dynamic object has been
+     *  updated after last step (true) or not.
+     *
+     * If updated[i] is true it means the i-th dynamic object has been updated
+     *  on last step, if it is false then it means the i-th dynamic object
+     *  has NOT been updated on last step.
+     */
+    vector<bool> updated;
+    /**
      * @brief Specify how many simulation steps must elapse between each
      *  simulation step computation for the dynamic scene
      */
@@ -97,8 +106,10 @@ public:
      * @param dynobj Dynamic object to be appended to the scene
      * @see DynObject
      */
-    inline void appendDynObject(shared_ptr<DynObject> dynobj)
-    {dynObjs.push_back(dynobj);}
+    inline void appendDynObject(shared_ptr<DynObject> dynobj) {
+        dynObjs.push_back(dynobj);
+        updated.push_back(true);
+    }
     /**
      * @brief Obtain dynamic object at given index
      * @param index Index of dynamic object to be obtained
@@ -111,19 +122,31 @@ public:
      * @param index Index of dynamic object to be setted
      * @param dynobj New dynamic object
      */
-    inline void setDynObject(size_t index, shared_ptr<DynObject> dynobj)
-    {dynObjs[index] = dynobj;}
+    inline void setDynObject(size_t index, shared_ptr<DynObject> dynobj){
+        dynObjs[index] = dynobj;
+        updated[index] = true;
+    }
     /**
      * @brief Remove dynamic object at given index
      * @param index Index of dynamic object to be removed
      */
-    inline void removeDynObject(size_t index)
-    {dynObjs.erase(dynObjs.begin()+index);}
+    inline void removeDynObject(size_t index){
+        dynObjs.erase(dynObjs.begin()+index);
+        updated.erase(updated.begin()+index);
+    }
     /**
      * @brief Obtain the number of dynamic objects in the scene
      * @return Number of dynamic objects in the scene
      */
     inline size_t numDynObjects() {return dynObjs.size();}
+    /**
+     * @brief Check whether the dynamic object at given index has been updated
+     *  on last step (true) or not (false)
+     * @param index Index of dynamic object to be checked
+     * @return True if dynamic object at given index has been updated on last
+     *  step, false otherwise
+     */
+    inline bool isUpdated(size_t const index) const {return updated[index];}
 
 
 };

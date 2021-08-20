@@ -29,6 +29,18 @@ std::string ArgumentsParser::parseDemoRequest(){
     return "NULL";
 }
 
+std::string ArgumentsParser::parseDemoSurveyPath(){
+    int index = findIndexOfArgument("--demoSurvey");
+    if(index >= 0) return argv[index+1];
+    return "";
+}
+
+std::string ArgumentsParser::parseDemoAssetsPath(){
+    int index = findIndexOfArgument("--demoAssets");
+    if(index >= 0) return argv[index+1];
+    return "";
+}
+
 std::string ArgumentsParser::parseSurveyPath() {
     if(argc < 2){
         std::cout << "Survey path as first argument is required!" << std::endl;

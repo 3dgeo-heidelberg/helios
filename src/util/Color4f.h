@@ -19,19 +19,19 @@ public:
     /**
      * @brief Color red component (R)
      */
-	float x;
+	float x = 1;
 	/**
 	 * @brief Color green component (G)
 	 */
-	float y;
+	float y = 1;
 	/**
 	 * @brief Color blue component (B)
 	 */
-	float z;
+	float z = 1;
 	/**
 	 * @brief Color alpha component (A)
 	 */
-	float w;
+	float w = 1;
 
 	// ***  CONSTRUCTION / DESTRUCTION  *** //
 	// ************************************ //

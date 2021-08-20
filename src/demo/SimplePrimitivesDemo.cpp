@@ -374,7 +374,7 @@ shared_ptr<DynObject> SimplePrimitivesDemo::buildHelicalStructure(){
     shared_ptr<DynObject> dynObj = make_shared<DynMovingObject>(
         "helicalStructure",
         triangles
-        );
+    );
     return dynObj;
 }
 shared_ptr<DynObject> SimplePrimitivesDemo::buildStaticStructure(){

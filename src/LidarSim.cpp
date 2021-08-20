@@ -116,13 +116,19 @@ int main(int argc, char** argv) {
 	else if(argc > 1){
 	    std::string inputPath, outputPath;
 	    std::string demo = ap.parseDemoRequest();
+	    std::string demoSurveyPath = ap.parseDemoSurveyPath();
+	    std::string demoAssetsPath = ap.parseDemoAssetsPath();
 	    if(ap.parseTestRequest()) {
             doTests(ap.parseTestDir());
             done = true;
         }
         #ifdef PCL_BINDING
 	    else if(demo != "NULL"){
-            HeliosDemos::DemoSelector::getInstance()->select(demo);
+            HeliosDemos::DemoSelector::getInstance()->select(
+                demo,
+                demoSurveyPath,
+                demoAssetsPath
+            );
 	        done = true;
 	    }
         #endif
@@ -234,19 +240,19 @@ void LidarSim::init(
 	    legNoiseDisabled,
 	    rebuildScene
     );
+    if (survey == nullptr) {
+        logging::ERR("Failed to load survey!");
+        exit(-1);
+	}
 	survey->scanner->setWriteWaveform(writeWaveform);
 	survey->scanner->setCalcEchowidth(calcEchowidth);
 	survey->scanner->setFullWaveNoise(fullWaveNoise);
 	survey->scanner->setPlatformNoiseDisabled(platformNoiseDisabled);
 	survey->scanner->setFixedIncidenceAngle(fixedIncidenceAngle);
 	survey->scanner->detector->lasOutput = lasOutput;
-        survey->scanner->detector->las10 = las10;
+    survey->scanner->detector->las10 = las10;
 	survey->scanner->detector->zipOutput = zipOutput;
 	survey->scanner->detector->lasScale = lasScale;
-	if (survey == nullptr) {
-		logging::ERR("Failed to load survey!");
-		exit(-1);
-	}
 
 	std::shared_ptr<SurveyPlayback> playback=std::make_shared<SurveyPlayback>(
         survey,

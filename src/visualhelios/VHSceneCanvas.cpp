@@ -36,11 +36,15 @@ void VHSceneCanvas::configure(){
     VHNormalsCanvas::configure();
 
     // Configure camera
-    glm::dvec3 const centerP = dynScene->getDynScene().getAABB()->getCentroid();
-    glm::dvec3 const maxP = dynScene->getDynScene().getAABB()->getMax();
+    glm::dvec3 const c = dynScene->getDynScene().getAABB()->getCentroid();
+    glm::dvec3 const p = dynScene->getDynScene().getAABB()->getMin();
+    double const cosPIoct = std::cos(M_PI/8.0);
+    double const coef = cosPIoct/(1.0-cosPIoct*cosPIoct);
+    double const camZ = (p.z-coef*(p.x-2*c.x))/2.0;
     viewer->setCameraPosition(
-        centerP.x, centerP.y, maxP.z+centerP.z,
-        0.0, 0.0, -1.0
+        c.x, c.y, camZ,
+        c.x, c.y, p.z,
+        0.0, 1.0, 0.0
     );
 }
 
@@ -48,7 +52,10 @@ void VHSceneCanvas::start(){
     // Start base canvas
     VHNormalsCanvas::start();
 
-    // Build polygon meshes and add them to viewer
+    // Build polygon meshes for non dynamic objects and add them to viewer
+    // TODO Rethink : Implement
+
+    // Build polygon meshes for dynamic objects and add them to viewer
     size_t const n = dynScene->numDynObjects();
     for(size_t i = 0 ; i < n ; ++i){
         shared_ptr<VHDynObjectXYZRGBAdapter> dynObj =
@@ -68,13 +75,16 @@ void VHSceneCanvas::update(){
     // Base canvas update
     VHNormalsCanvas::update();
 
-    // Update polygon meshes which need an update
+    // Compute next step
+    dynScene->doStep();
+
+    // Update polygon meshes for dynamic objects which need an update
     size_t const n = dynScene->numDynObjects();
     for(size_t i = 0 ; i < n ; ++i){
         shared_ptr<VHDynObjectXYZRGBAdapter> dynObj =
             dynScene->getAdaptedDynObj(i);
         // Continue to next iteration if no updates are needed for this
-        if(dynObj->doStep() && !isNeedingUpdate()) continue;
+        if(!dynScene->isUpdated(i) && !isNeedingUpdate()) continue;
         // Update the polygon mesh itself
         viewer->updatePolygonMesh<pcl::PointXYZRGB>(
             dynObj->getPolymesh(),
