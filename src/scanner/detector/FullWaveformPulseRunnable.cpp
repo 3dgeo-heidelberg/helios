@@ -342,9 +342,10 @@ bool FullWaveformPulseRunnable::initializeFullWaveform(
     peakIntensityIndex = detector->scanner->peakIntensityIndex;
     nsPerBin = detector->scanner->FWF_settings.binSize_ns;
 
-    minHitTime_ns = minHitDist_m / cfg_speedOfLight_mPerNanosec - peakIntensityIndex * nsPerBin;
-    maxHitTime_ns = maxHitDist_m / cfg_speedOfLight_mPerNanosec +
-            detector->scanner->getPulseLength_ns() - peakIntensityIndex * nsPerBin;
+    minHitTime_ns = minHitDist_m / cfg_speedOfLight_mPerNanosec - peakIntensityIndex * nsPerBin; // time until first maximum minus rising flank
+    maxHitTime_ns = maxHitDist_m / cfg_speedOfLight_mPerNanosec + // time until last maximum
+            detector->scanner->getPulseLength_ns() - peakIntensityIndex * nsPerBin + // time for signal decay
+            nsPerBin; // 1 bin for buffer
 
     // Calc ranges and threshold
     double hitTimeDelta_ns = maxHitTime_ns - minHitTime_ns;
@@ -444,7 +445,7 @@ void FullWaveformPulseRunnable::digestFullWaveform(
 
         // Compute distance
         double distance = cfg_speedOfLight_mPerNanosec *
-            ((i-peakIntensityIndex) * nsPerBin + minHitTime_ns);
+            (i * nsPerBin + minHitTime_ns);
 
         // Build list of objects that produced this return
         double minDifference = numeric_limits<double>::max();
