@@ -35,10 +35,11 @@ las.x = xyz[:, 0]
 las.y = xyz[:, 1]
 las.z = xyz[:, 2]
 las.intensity = pts[:, 3]
-las.wavepacket_index=np.ones((xyz.shape[0]))
+las.wavepacket_index=np.ones((xyz.shape[0]))  # 1 refers to the value 100 (99+1) in the VLR below
 las.wavepacket_offset = 60 + np.array([wfs_lut_rev[idx] for idx in pts[:, 7]]) * (max_len)
-las.wavepacket_size = [max_len * 8] * xyz.shape[0]
-las.return_point_wave_location = [0] * xyz.shape[0]
+las.wavepacket_size = [max_len] * xyz.shape[0]  # always write a wavepacket of the longest size
+las.return_point_wave_location = [0] * xyz.shape[0]  # adapt this if you need the information on which position this point
+                                                     # represents in the waveform
 las.x_t = [wfs[idx][2] for idx in pts[:, 7]]
 las.y_t = [wfs[idx][3] for idx in pts[:, 7]]
 las.z_t = [wfs[idx][4] for idx in pts[:, 7]]
@@ -51,14 +52,12 @@ VLR_data = struct.pack("<BBLLdd",
                         1,  # digitizer gain
                         0,  # digitizer offset
                        )
-new_vlr = laspy.VLR(user_id="LASF_Spec", record_id=100,
-              record_data=VLR_data)
-# Append our new vlr to the current list.
+new_vlr = laspy.VLR(user_id="LASF_Spec", record_id=100, record_data=VLR_data)
 las.vlrs.append(new_vlr)
 
 las.write("test.las")
 
-wf_data = bytes()
+wf_data = bytes()  # WDP header (same as EVLR header)
 wf_data = b''.join([wf_data, struct.pack("<H", 0)])  #reserved
 wf_data = b''.join([wf_data, struct.pack("<s", b"LASF_Spec       ")])  #user id
 wf_data = b''.join([wf_data, struct.pack("<H", 65535)])  #record id
@@ -76,4 +75,4 @@ with open("test.wdp", 'wb') as f:
 
 with open("test.las", 'r+b') as f:
     f.seek(6)
-    f.write(struct.pack("<H", int('0000000000000100', 2)))
+    f.write(struct.pack("<H", int('0000000000000100', 2))) # set "external waveform" bit to 1 in las file (not possible with laspy)
