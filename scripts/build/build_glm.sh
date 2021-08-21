@@ -32,6 +32,8 @@ GLM_DIR="${HELIOS_LIB_DIR}"'glm/'
 
 # ---  SCRIPT LOGIC  --- #
 # ---------------------- #
+parse_build_args $@
+
 # Download GLM if it is not downloaded yet
 if [ ! -f "${GLM_TAR}" ]; then
     wget -c "${GLM_URL}" -O "${GLM_TAR}"

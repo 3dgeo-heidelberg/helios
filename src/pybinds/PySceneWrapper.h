@@ -12,6 +12,8 @@
 #include <PyAABBWrapper.h>
 #include <PyRaySceneIntersectionWrapper.h>
 
+namespace pyhelios{
+
 /**
  * @author Alberto M. Esmoris Pena
  * @version 1.0
@@ -73,5 +75,7 @@ public:
     bool finalizeLoading() {return scene.finalizeLoading();}
     void writeObject(std::string path) {scene.writeObject(path);}
 };
+
+}
 
 #endif

@@ -27,7 +27,7 @@ ScenePart* XYZPointCloudFileLoader::run() {
 
     // Read separator
 	string const & pSep = boost::get<string const &>(params["separator"]);
-	if (pSep.empty()) separator = pSep;
+	if (!pSep.empty()) separator = pSep;
 
 	// Read voxel size
     double pVoxelSize = boost::get<double>(params["voxelSize"]);

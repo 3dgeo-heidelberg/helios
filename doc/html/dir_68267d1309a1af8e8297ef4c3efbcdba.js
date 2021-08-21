@@ -1,6 +1,7 @@
 var dir_68267d1309a1af8e8297ef4c3efbcdba =
 [
     [ "assetloading", "dir_7dda38ba3c79667233e5dd64fbbdae1f.html", "dir_7dda38ba3c79667233e5dd64fbbdae1f" ],
+    [ "demo", "dir_ea2db1c5c9ef405bfa9ccf9d4f68ec9b.html", "dir_ea2db1c5c9ef405bfa9ccf9d4f68ec9b" ],
     [ "maths", "dir_faad1d323dbeb8fa5608a69643a716c1.html", "dir_faad1d323dbeb8fa5608a69643a716c1" ],
     [ "noise", "dir_91cf3052f1e869449ba7f0eac2ee4e7b.html", "dir_91cf3052f1e869449ba7f0eac2ee4e7b" ],
     [ "platform", "dir_4b68c2fef3e151b6b93d5e93b14f1857.html", "dir_4b68c2fef3e151b6b93d5e93b14f1857" ],
@@ -10,6 +11,7 @@ var dir_68267d1309a1af8e8297ef4c3efbcdba =
     [ "surveyplayback", "dir_b2140ecfea9456ad49a3379cd5b4da07.html", "dir_b2140ecfea9456ad49a3379cd5b4da07" ],
     [ "test", "dir_120ed4da3e3217b1e7fc0b4f48568e79.html", "dir_120ed4da3e3217b1e7fc0b4f48568e79" ],
     [ "util", "dir_b7878ad5ecbf2506f4125b9d34c97e45.html", "dir_b7878ad5ecbf2506f4125b9d34c97e45" ],
+    [ "visualhelios", "dir_f066251d22cf413d9ce3d9dfe72aafe6.html", "dir_f066251d22cf413d9ce3d9dfe72aafe6" ],
     [ "helios_version.h", "db/d7c/helios__version_8h_source.html", null ],
     [ "LidarSim.h", "db/d14/LidarSim_8h_source.html", null ],
     [ "targetver.h", "d9/da6/targetver_8h_source.html", null ]

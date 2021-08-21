@@ -5,6 +5,8 @@
 #include <PyMeasurementVectorWrapper.h>
 #include <PyTrajectoryVectorWrapper.h>
 
+namespace pyhelios{
+
 /**
  * @author Alberto M. Esmoris Pena
  * @version 1.0
@@ -43,5 +45,7 @@ public:
     {}
     virtual ~PyHeliosOutputWrapper() {}
 };
+
+}
 
 #endif

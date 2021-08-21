@@ -33,13 +33,13 @@ public:
      * @brief Implementation of identity rigid motion in \f$\mathbb{R}^{2}\f$
      * @see rigidmotion::RigidMotionFactory::makeIdentity
      */
-    RigidMotion makeIdentity() override;
+    RigidMotion makeIdentity() const override;
     /**
      * @brief Implementation of translation rigid motion in
      *  \f$\mathbb{R}^{2}\f$
      * @see rigidmotion::RigidMotionFactory::makeTranslation
      */
-    RigidMotion makeTranslation(colvec const shift) override;
+    RigidMotion makeTranslation(colvec const shift) const override;
     /**
      * @brief Implementation of reflection rigid motion in \f$\mathbb{R}^{2}\f$
      *
@@ -57,7 +57,7 @@ public:
      * @param axis Reflection axis
      * @return Reflection rigid motion in \f$\mathbb{R}^{2}\f$
      */
-    virtual RigidMotion makeReflection(colvec const axis);
+    virtual RigidMotion makeReflection(colvec const axis) const;
     /**
      * @brief As makeReflection method but receiving \f$\theta\f$ as the angle
      *  between reflection axis and \f$e_1\f$ instead of the reflection axis
@@ -66,7 +66,7 @@ public:
      *  canonical basis) and rotation axis
      * @see rigidmotion::RigidMotionR2Factory::makeReflection(colvec)
      */
-    virtual RigidMotion makeReflection(double const theta);
+    virtual RigidMotion makeReflection(double const theta) const;
     /**
      * @brief Implementation of glide reflection rigid motion in
      *  \f$\mathbb{R}^{2}\f$
@@ -90,7 +90,7 @@ public:
     virtual RigidMotion makeGlideReflection(
         colvec const axis,
         double const glide
-    );
+    ) const;
     /**
      * @brief As makeGlideReflection method but receiving \f$\theta\f$ as the
      *  angle between reflection axis and \f$e_1\f$ instead of the reflection
@@ -105,7 +105,7 @@ public:
     virtual RigidMotion makeGlideReflection(
         double const theta,
         double const glide
-    );
+    ) const;
     /**
      * @brief Implementation of rotation rigid motion in \f$\mathbb{R}^{2}\f$
      *
@@ -140,7 +140,7 @@ public:
     virtual RigidMotion makeRotation(
         double const theta,
         colvec const center
-    );
+    ) const;
 };
 
 }

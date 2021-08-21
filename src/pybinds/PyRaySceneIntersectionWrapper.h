@@ -4,6 +4,8 @@
 
 #include <PythonDVec3.h>
 
+namespace pyhelios{
+
 /**
  * @author Alberto M. Esmoris Pena
  * @version 1.0
@@ -34,5 +36,7 @@ public:
         {rsi->incidenceAngle = incidenceAngle;}
 
 };
+
+}
 
 #endif

@@ -6,6 +6,8 @@
 #include <AbstractDetector.h>
 #include <memory>
 
+namespace pyhelios{
+
 /**
  * @author Alberto M. Esmoris Pena
  * @version 1.0
@@ -43,5 +45,7 @@ public:
     inline void setLasScale(double lasScale)
         {detector.lasScale = lasScale;}
 };
+
+}
 
 #endif

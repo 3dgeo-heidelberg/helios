@@ -14,19 +14,21 @@ mat const RigidMotionR3Factory::canonicalReflection = mat(
 
 // ***  RIGID MOTION FACTORY METHODS  *** //
 // ************************************** //
-RigidMotion RigidMotionR3Factory::makeIdentity(){
+RigidMotion RigidMotionR3Factory::makeIdentity() const{
     return RigidMotion(zeros(3), eye(3, 3));
 }
 
-RigidMotion RigidMotionR3Factory::makeTranslation(colvec const shift){
+RigidMotion RigidMotionR3Factory::makeTranslation(colvec const shift) const{
     return RigidMotion(shift, eye(3, 3));
 }
 
-RigidMotion RigidMotionR3Factory::makeReflection(colvec const ortho){
+RigidMotion RigidMotionR3Factory::makeReflection(colvec const ortho) const{
     return makeReflectionFast(normalise(ortho));
 }
 
-RigidMotion RigidMotionR3Factory::makeReflectionFast(colvec const orthonormal){
+RigidMotion RigidMotionR3Factory::makeReflectionFast(
+    colvec const orthonormal
+) const{
     // Compute alpha vector
     colvec alpha(3);
     if(orthonormal[0] == 0.0 && orthonormal[1] == 0.0){
@@ -58,7 +60,7 @@ RigidMotion RigidMotionR3Factory::makeReflectionFast(
     colvec const u,
     colvec const alpha,
     colvec const beta
-){
+) const {
     // Build basis matrix
     mat B(3, 3);
     B.col(0) = u;
@@ -73,29 +75,29 @@ RigidMotion RigidMotionR3Factory::makeReflectionFast(
 
 }
 
-RigidMotion RigidMotionR3Factory::makeReflectionX(){
+RigidMotion RigidMotionR3Factory::makeReflectionX() const {
     return RigidMotion(zeros(3), canonicalReflection);
 }
 
-RigidMotion RigidMotionR3Factory::makeReflectionY(){
+RigidMotion RigidMotionR3Factory::makeReflectionY() const {
     return RigidMotion(zeros(3), mat("1 0 0; 0 -1 0; 0 0 1"));
 }
 
-RigidMotion RigidMotionR3Factory::makeReflectionZ(){
+RigidMotion RigidMotionR3Factory::makeReflectionZ() const {
     return RigidMotion(zeros(3), mat("1 0 0; 0 1 0; 0 0 -1"));
 }
 
 RigidMotion RigidMotionR3Factory::makeGlideReflection(
     colvec const ortho,
     colvec const shift
-){
+) const {
     return makeGlideReflectionFast(normalise(ortho), shift);
 }
 
 RigidMotion RigidMotionR3Factory::makeGlideReflectionFast(
     colvec const orthonormal,
     colvec const shift
-){
+) const {
     // Check shift is orthogonal to plane orthonormal
     if(std::fabs(dot(orthonormal, shift)) > eps){
         throw RigidMotionException(
@@ -113,14 +115,14 @@ RigidMotion RigidMotionR3Factory::makeGlideReflectionFast(
 RigidMotion RigidMotionR3Factory::makeRotation(
     colvec const axis,
     double const theta
-){
+) const {
     return makeRotationFast(normalise(axis), theta);
 }
 
 RigidMotion RigidMotionR3Factory::makeRotationFast(
     colvec const axis,
     double const theta
-){
+) const {
     // Cache partial computations
     double const uxuy = axis(0)*axis(1);
     double const uxuz = axis(0)*axis(2);
@@ -151,7 +153,7 @@ RigidMotion RigidMotionR3Factory::makeRotationFast(
     return RigidMotion(zeros(3), A);
 }
 
-RigidMotion RigidMotionR3Factory::makeRotationX(double const theta){
+RigidMotion RigidMotionR3Factory::makeRotationX(double const theta) const {
     // Cache partial computations
     double const thetacos = std::cos(theta);
     double const thetasin = std::sin(theta);
@@ -167,7 +169,7 @@ RigidMotion RigidMotionR3Factory::makeRotationX(double const theta){
     return RigidMotion(zeros(3), A);
 }
 
-RigidMotion RigidMotionR3Factory::makeRotationY(double const theta){
+RigidMotion RigidMotionR3Factory::makeRotationY(double const theta) const {
     // Cache partial computations
     double const thetacos = std::cos(theta);
     double const thetasin = std::sin(theta);
@@ -183,7 +185,7 @@ RigidMotion RigidMotionR3Factory::makeRotationY(double const theta){
     return RigidMotion(zeros(3), A);
 }
 
-RigidMotion RigidMotionR3Factory::makeRotationZ(double const theta){
+RigidMotion RigidMotionR3Factory::makeRotationZ(double const theta) const {
     // Cache partial computations
     double const thetacos = std::cos(theta);
     double const thetasin = std::sin(theta);
@@ -203,7 +205,7 @@ RigidMotion RigidMotionR3Factory::makeHelical(
     colvec const axis,
     double const theta,
     double const glide
-){
+) const {
     return makeHelicalFast(normalise(axis), theta, glide);
 }
 
@@ -211,7 +213,7 @@ RigidMotion RigidMotionR3Factory::makeHelicalFast(
     colvec const axis,
     double const theta,
     double const glide
-){
+) const {
     RigidMotion rm = makeRotationFast(axis, theta);
     rm.setC(glide*axis);
     return rm;
@@ -220,7 +222,7 @@ RigidMotion RigidMotionR3Factory::makeHelicalFast(
 RigidMotion RigidMotionR3Factory::makeHelicalX(
     double const theta,
     double const glide
-){
+) const {
     RigidMotion rm = makeRotationX(theta);
     rm.setC(colvec(std::vector<double>({glide, 0, 0})));
     return rm;
@@ -229,7 +231,7 @@ RigidMotion RigidMotionR3Factory::makeHelicalX(
 RigidMotion RigidMotionR3Factory::makeHelicalY(
     double const theta,
     double const glide
-){
+) const {
     RigidMotion rm = makeRotationY(theta);
     rm.setC(colvec(std::vector<double>({0, glide, 0})));
     return rm;
@@ -238,7 +240,7 @@ RigidMotion RigidMotionR3Factory::makeHelicalY(
 RigidMotion RigidMotionR3Factory::makeHelicalZ(
     double const theta,
     double const glide
-){
+) const {
     RigidMotion rm = makeRotationZ(theta);
     rm.setC(colvec(std::vector<double>({0, 0, glide})));
     return rm;
@@ -247,27 +249,33 @@ RigidMotion RigidMotionR3Factory::makeHelicalZ(
 RigidMotion RigidMotionR3Factory::makeRotationalSymmetry(
     colvec const axis,
     double const theta
-){
+) const {
     return makeRotationalSymmetryFast(normalise(axis), theta);
 }
 
 RigidMotion RigidMotionR3Factory::makeRotationalSymmetryFast(
     colvec const axis,
     double const theta
-){
+) const {
     return makeReflectionFast(axis).compose(makeRotation(axis, theta));
 }
 
-RigidMotion RigidMotionR3Factory::makeRotationalSymmetryX(double const theta){
+RigidMotion RigidMotionR3Factory::makeRotationalSymmetryX(
+    double const theta
+) const {
     return makeReflectionX().compose(makeRotationX(theta));
 }
 
-RigidMotion RigidMotionR3Factory::makeRotationalSymmetryY(double const theta){
+RigidMotion RigidMotionR3Factory::makeRotationalSymmetryY(
+    double const theta
+) const {
     return makeReflectionY().compose(makeRotationY(theta));
 
 }
 
-RigidMotion RigidMotionR3Factory::makeRotationalSymmetryZ(double const theta){
+RigidMotion RigidMotionR3Factory::makeRotationalSymmetryZ(
+    double const theta
+) const {
     return makeReflectionZ().compose(makeRotationZ(theta));
 }
 
@@ -275,7 +283,7 @@ RigidMotion RigidMotionR3Factory::makeRotationalSymmetry(
     colvec const axis,
     double const theta,
     colvec const center
-){
+) const {
     return makeRotationalSymmetryFast(normalise(axis), theta, center);
 }
 
@@ -283,7 +291,7 @@ RigidMotion RigidMotionR3Factory::makeRotationalSymmetryFast(
     colvec const axis,
     double const theta,
     colvec const center
-){
+) const {
     RigidMotion rm = makeRotationalSymmetryFast(axis, theta);
     rm.setC((eye(3, 3)-rm.getA())*center);
     return rm;

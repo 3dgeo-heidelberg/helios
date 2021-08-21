@@ -4,6 +4,8 @@
 
 #include <PyNoiseSourceWrapper.h>
 
+namespace pyhelios{
+
 /**
  * @author Alberto M. Esmoris Pena
  * @version 1.0
@@ -114,5 +116,7 @@ public:
     PythonDVec3 * getCachedVectorToTargetXY()
         {return new PythonDVec3(&platform.cached_vectorToTarget_xy);}
 };
+
+}
 
 #endif

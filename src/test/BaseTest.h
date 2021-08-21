@@ -36,7 +36,7 @@ public:
     // ***  GETTERS and SETTERS  *** //
     // ***************************** //
     /**
-     * Obtain the test name
+     * @brief Obtain the test name
      * @return Test name
      */
     std::string getName(){return name;}

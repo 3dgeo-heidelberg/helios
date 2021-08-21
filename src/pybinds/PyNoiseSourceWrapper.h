@@ -4,6 +4,8 @@
 
 #include <NoiseSource.h>
 
+namespace pyhelios{
+
 /**
  * @author Alberto M. Esmoris Pena
  * @version 1.0
@@ -40,5 +42,7 @@ public:
         {ns.setFixedValueRemainingUses(remainingUses);}
     double next(){return ns.next();}
 };
+
+}
 
 #endif

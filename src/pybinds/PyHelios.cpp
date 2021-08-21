@@ -14,9 +14,11 @@
 #include <Material.h>
 #include <gdal_priv.h>
 
-using namespace boost::python;
-
 BOOST_PYTHON_MODULE(pyhelios){
+    // Namespace must be used locally to prevent conflicts
+    using namespace boost::python;
+    using namespace pyhelios;
+
     // Configure logging system
     logging::makeQuiet();
     logging::configure({

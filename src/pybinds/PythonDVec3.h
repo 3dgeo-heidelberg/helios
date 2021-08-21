@@ -5,6 +5,8 @@
 #include <glm/glm.hpp>
 #include <memory>
 
+namespace pyhelios{
+
 /**
  * @author Alberto M. Esmoris Pena
  * @version 1.0
@@ -44,5 +46,7 @@ public:
     void setZ(double z) {v->z = z;}
 
 };
+
+}
 
 #endif

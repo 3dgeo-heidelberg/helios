@@ -6,8 +6,10 @@
 #include <PyHeliosOutputWrapper.h>
 #include <boost/python.hpp>
 
-using namespace boost::python;
 using boost::ref;
+using boost::python::call;
+
+namespace pyhelios{
 
 /**
  * @author Alberto M. Esmoris Pena
@@ -41,5 +43,6 @@ public:
 
 };
 
+}
 
 #endif

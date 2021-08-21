@@ -5,6 +5,8 @@
 #include <Measurement.h>
 #include <PythonDVec3.h>
 
+namespace pyhelios{
+
 /**
  * @author Alberto M. Esmoris Pena
  * @version 1.0
@@ -56,5 +58,7 @@ public:
     long getGpsTime() {return m.gpsTime;}
     void setGpsTime(long gpsTime) {m.gpsTime = gpsTime;}
 };
+
+}
 
 #endif

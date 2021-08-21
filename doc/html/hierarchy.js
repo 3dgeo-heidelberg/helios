@@ -40,6 +40,9 @@ var hierarchy =
       [ "Scene", "d5/d9c/classScene.html", null ],
       [ "Survey", "d5/db6/classSurvey.html", null ]
     ] ],
+    [ "HeliosDemos::BaseDemo", "df/df9/classHeliosDemos_1_1BaseDemo.html", [
+      [ "HeliosDemos::SimplePrimitivesDemo", "d0/d1c/classHeliosDemos_1_1SimplePrimitivesDemo.html", null ]
+    ] ],
     [ "HeliosTests::BaseTest", "d9/d52/classHeliosTests_1_1BaseTest.html", [
       [ "HeliosTests::LadLutTest", "dd/df9/classHeliosTests_1_1LadLutTest.html", null ],
       [ "HeliosTests::NoiseTest", "de/dad/classHeliosTests_1_1NoiseTest.html", null ],
@@ -54,11 +57,15 @@ var hierarchy =
       [ "HeliosTests::VoxelParsingTest", "da/d8d/classHeliosTests_1_1VoxelParsingTest.html", null ]
     ] ],
     [ "Color4f", "db/d02/classColor4f.html", null ],
+    [ "HeliosDemos::DemoSelector", "df/d3f/classHeliosDemos_1_1DemoSelector.html", null ],
     [ "Directions", "df/dc3/classDirections.html", null ],
+    [ "DynObject", "d5/d6a/classDynObject.html", [
+      [ "DynMovingObject", "d4/d96/classDynMovingObject.html", null ]
+    ] ],
     [ "enum_hasher", "da/ded/structenum__hasher.html", null ],
     [ "exception", null, [
       [ "HeliosException", "d6/dda/classHeliosException.html", [
-        [ "PyHeliosException", "d1/d0f/classPyHeliosException.html", null ]
+        [ "pyhelios::PyHeliosException", "d8/d98/classpyhelios_1_1PyHeliosException.html", null ]
       ] ]
     ] ],
     [ "FileUtils", "d5/d4b/classFileUtils.html", null ],
@@ -105,30 +112,30 @@ var hierarchy =
         [ "DetailedVoxel", "d7/d5a/classDetailedVoxel.html", null ]
       ] ]
     ] ],
-    [ "PyAABBWrapper", "de/dbe/classPyAABBWrapper.html", null ],
-    [ "PyBeamDeflectorWrapper", "df/dc9/classPyBeamDeflectorWrapper.html", null ],
-    [ "PyDetectorWrapper", "d4/da9/classPyDetectorWrapper.html", null ],
-    [ "PyDoubleVector", "d8/dc2/classPyDoubleVector.html", null ],
-    [ "PyHeliosOutputWrapper", "de/da4/classPyHeliosOutputWrapper.html", null ],
-    [ "PyHeliosSimulation", "d3/d76/classPyHeliosSimulation.html", null ],
-    [ "PyHeliosUtils", "d6/d41/classPyHeliosUtils.html", null ],
-    [ "PyIntegerList", "d6/de0/classPyIntegerList.html", null ],
-    [ "PyMeasurementVectorWrapper", "df/d26/classPyMeasurementVectorWrapper.html", null ],
-    [ "PyMeasurementWrapper", "da/d9a/classPyMeasurementWrapper.html", null ],
-    [ "PyNoiseSourceWrapper", "d7/d80/classPyNoiseSourceWrapper.html", null ],
-    [ "PyPlatformWrapper", "d2/de2/classPyPlatformWrapper.html", null ],
-    [ "PyPrimitiveWrapper", "d2/de8/classPyPrimitiveWrapper.html", [
-      [ "PyDetailedVoxelWrapper", "de/d52/classPyDetailedVoxelWrapper.html", null ],
-      [ "PyTriangleWrapper", "d8/d42/classPyTriangleWrapper.html", null ]
+    [ "pyhelios::PyAABBWrapper", "de/df3/classpyhelios_1_1PyAABBWrapper.html", null ],
+    [ "pyhelios::PyBeamDeflectorWrapper", "d0/d0e/classpyhelios_1_1PyBeamDeflectorWrapper.html", null ],
+    [ "pyhelios::PyDetectorWrapper", "de/ddf/classpyhelios_1_1PyDetectorWrapper.html", null ],
+    [ "pyhelios::PyDoubleVector", "da/dec/classpyhelios_1_1PyDoubleVector.html", null ],
+    [ "pyhelios::PyHeliosOutputWrapper", "d1/d65/classpyhelios_1_1PyHeliosOutputWrapper.html", null ],
+    [ "pyhelios::PyHeliosSimulation", "d9/ddd/classpyhelios_1_1PyHeliosSimulation.html", null ],
+    [ "pyhelios::PyHeliosUtils", "dd/d69/classpyhelios_1_1PyHeliosUtils.html", null ],
+    [ "pyhelios::PyIntegerList", "d8/d83/classpyhelios_1_1PyIntegerList.html", null ],
+    [ "pyhelios::PyMeasurementVectorWrapper", "d5/dfb/classpyhelios_1_1PyMeasurementVectorWrapper.html", null ],
+    [ "pyhelios::PyMeasurementWrapper", "d4/d45/classpyhelios_1_1PyMeasurementWrapper.html", null ],
+    [ "pyhelios::PyNoiseSourceWrapper", "d4/d55/classpyhelios_1_1PyNoiseSourceWrapper.html", null ],
+    [ "pyhelios::PyPlatformWrapper", "d4/d9d/classpyhelios_1_1PyPlatformWrapper.html", null ],
+    [ "pyhelios::PyPrimitiveWrapper", "de/df5/classpyhelios_1_1PyPrimitiveWrapper.html", [
+      [ "pyhelios::PyDetailedVoxelWrapper", "d7/d21/classpyhelios_1_1PyDetailedVoxelWrapper.html", null ],
+      [ "pyhelios::PyTriangleWrapper", "d1/dbf/classpyhelios_1_1PyTriangleWrapper.html", null ]
     ] ],
-    [ "PyRandomnessGeneratorWrapper", "d7/df9/classPyRandomnessGeneratorWrapper.html", null ],
-    [ "PyRaySceneIntersectionWrapper", "d3/de1/classPyRaySceneIntersectionWrapper.html", null ],
-    [ "PyScenePartWrapper", "d4/dd7/classPyScenePartWrapper.html", null ],
-    [ "PySceneWrapper", "da/d59/classPySceneWrapper.html", null ],
-    [ "PythonDVec3", "d8/dd2/classPythonDVec3.html", null ],
-    [ "PyTrajectoryVectorWrapper", "d7/d52/classPyTrajectoryVectorWrapper.html", null ],
-    [ "PyTrajectoryWrapper", "d6/dda/classPyTrajectoryWrapper.html", null ],
-    [ "PyVertexWrapper", "d0/d51/classPyVertexWrapper.html", null ],
+    [ "pyhelios::PyRandomnessGeneratorWrapper", "d2/d5b/classpyhelios_1_1PyRandomnessGeneratorWrapper.html", null ],
+    [ "pyhelios::PyRaySceneIntersectionWrapper", "da/db0/classpyhelios_1_1PyRaySceneIntersectionWrapper.html", null ],
+    [ "pyhelios::PyScenePartWrapper", "df/d28/classpyhelios_1_1PyScenePartWrapper.html", null ],
+    [ "pyhelios::PySceneWrapper", "d7/d17/classpyhelios_1_1PySceneWrapper.html", null ],
+    [ "pyhelios::PythonDVec3", "dd/d8f/classpyhelios_1_1PythonDVec3.html", null ],
+    [ "pyhelios::PyTrajectoryVectorWrapper", "d4/d2c/classpyhelios_1_1PyTrajectoryVectorWrapper.html", null ],
+    [ "pyhelios::PyTrajectoryWrapper", "d1/d2f/classpyhelios_1_1PyTrajectoryWrapper.html", null ],
+    [ "pyhelios::PyVertexWrapper", "d6/d95/classpyhelios_1_1PyVertexWrapper.html", null ],
     [ "RandomnessGenerator< RealType >", "dc/d6e/classRandomnessGenerator.html", null ],
     [ "RandomnessGenerator< double >", "dc/d6e/classRandomnessGenerator.html", null ],
     [ "RaySceneIntersection", "dc/da3/classRaySceneIntersection.html", null ],
@@ -149,7 +156,7 @@ var hierarchy =
       [ "SurveyPlayback", "d6/da1/classSurveyPlayback.html", null ]
     ] ],
     [ "SimulationCycleCallback", "dc/d7a/classSimulationCycleCallback.html", [
-      [ "PySimulationCycleCallback", "dd/d8d/classPySimulationCycleCallback.html", null ]
+      [ "pyhelios::PySimulationCycleCallback", "d9/d64/classpyhelios_1_1PySimulationCycleCallback.html", null ]
     ] ],
     [ "SpectralLibrary", "d5/d20/classSpectralLibrary.html", null ],
     [ "static_visitor", null, [
@@ -172,6 +179,13 @@ var hierarchy =
     [ "Vertex", "d2/da0/classVertex.html", null ],
     [ "VertexKeyEqual", "d5/dab/structVertexKeyEqual.html", null ],
     [ "VertexKeyHash", "dc/d35/structVertexKeyHash.html", null ],
+    [ "visualhelios::VHCanvas", "de/dda/classvisualhelios_1_1VHCanvas.html", [
+      [ "visualhelios::VHSimpleCanvas", "d9/dc5/classvisualhelios_1_1VHSimpleCanvas.html", null ]
+    ] ],
+    [ "visualhelios::VHDynObjectAdapter", "d5/dc4/classvisualhelios_1_1VHDynObjectAdapter.html", [
+      [ "visualhelios::VHDynObjectXYZAdapter", "de/d3c/classvisualhelios_1_1VHDynObjectXYZAdapter.html", null ],
+      [ "visualhelios::VHDynObjectXYZRGBAdapter", "d6/dd1/classvisualhelios_1_1VHDynObjectXYZRGBAdapter.html", null ]
+    ] ],
     [ "VoxelFileParser", "d9/ddf/classVoxelFileParser.html", null ],
     [ "VoxelGridCell", "d5/df6/structVoxelGridCell.html", null ],
     [ "WavefrontObj", "d0/d92/classWavefrontObj.html", null ],

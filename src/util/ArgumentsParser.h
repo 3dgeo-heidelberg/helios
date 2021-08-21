@@ -38,6 +38,11 @@ public:
      */
     std::string parseTestDir();
     /**
+     * @brief Parse demo request argument if any (--demo)
+     * @return Parsed demo if any or "NULL" if no demo was requested
+     */
+    std::string parseDemoRequest();
+    /**
      * @brief Parse the survery path from invocation arguments
      * @return Parsed survey path
      */

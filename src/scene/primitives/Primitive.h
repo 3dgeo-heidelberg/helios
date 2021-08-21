@@ -117,9 +117,9 @@ public:
     virtual Vertex* getVertices() = 0;
 
     /**
-     * @brief Obtain the number of vertices returned by the getNumFullVertices
+     * @brief Obtain the number of vertices returned by the getFullVertices
      * function
-     * @return Nummber of vertices returned by the getNumFullVertices function
+     * @return Number of vertices returned by the getFullVertices function
      * @see Primitive::getFullVertices
      */
     inline virtual size_t getNumFullVertices() {return getNumVertices();};

@@ -4,6 +4,7 @@ var classArgumentsParser =
     [ "findIndexOfArgument", "d7/d5c/classArgumentsParser.html#a6f5548d30a46011bdfcac0c6638d6ee4", null ],
     [ "parseAssetsPath", "d7/d5c/classArgumentsParser.html#a4099e6b87cbdb2d90f6b2713068ccf18", null ],
     [ "parseCalcEchowidth", "d7/d5c/classArgumentsParser.html#af8e82dbe3eea1812ffe95a0d28c5c919", null ],
+    [ "parseDemoRequest", "d7/d5c/classArgumentsParser.html#affb6efa512c250e84d05b0a6c9493b37", null ],
     [ "parseDisableLegNoise", "d7/d5c/classArgumentsParser.html#a80d71b40ea4187c2ab52f146f8e88cf3", null ],
     [ "parseDisablePlatformNoise", "d7/d5c/classArgumentsParser.html#a0eeea55ac2ec2940667444bf7d9deb70", null ],
     [ "parseFixedIncidenceAngle", "d7/d5c/classArgumentsParser.html#a4ff03c5a307080829b7c72477316253c", null ],

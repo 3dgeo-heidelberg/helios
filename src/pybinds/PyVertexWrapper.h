@@ -5,6 +5,8 @@
 #include <Vertex.h>
 #include <PythonDVec3.h>
 
+namespace pyhelios{
+
 /**
  * @author Alberto M. Esmoris Pena
  * @version 1.0
@@ -36,5 +38,7 @@ public:
     PythonDVec3 * getPosition() {return new PythonDVec3(&v->pos);}
     PythonDVec3 * getNormal() {return new PythonDVec3(&v->normal);}
 };
+
+}
 
 #endif

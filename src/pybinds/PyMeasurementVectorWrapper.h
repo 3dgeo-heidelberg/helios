@@ -6,6 +6,8 @@
 #include <PyHeliosUtils.h>
 #include <vector>
 
+namespace pyhelios{
+
 /**
  * @author Alberto M. Esmoris Pena
  * @version 1.0
@@ -43,5 +45,7 @@ public:
     size_t length() {return allMeasurements.size();}
 
 };
+
+}
 
 #endif

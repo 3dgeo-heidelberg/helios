@@ -4,6 +4,8 @@
 
 #include <ScenePart.h>
 
+namespace pyhelios{
+
 /**
  * @author Alberto M. Esmoris Pena
  * @version 1.0
@@ -35,5 +37,7 @@ public:
     double getScale() {return sp.mScale;}
     void setScale(double scale) {sp.mScale = scale;}
 };
+
+}
 
 #endif

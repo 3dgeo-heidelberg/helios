@@ -3,6 +3,8 @@
 
 #include <boost/python/errors.hpp>
 
+namespace pyhelios{
+
 class PyHeliosUtils{
 public:
     /**
@@ -25,5 +27,7 @@ public:
         return index;
     }
 };
+
+}
 
 #endif
