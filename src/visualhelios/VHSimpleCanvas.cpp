@@ -44,7 +44,7 @@ void VHSimpleCanvas::start(){
             dynObj->getPolymesh(),
             dynObj->getVertices(),
             dynObj->getId()
-            );
+        );
         // Render initial normals if requested
         if(isRenderingNormals()) renderNormals(*dynObj);
     }
@@ -74,9 +74,10 @@ void VHSimpleCanvas::update(){
 
 // ***  NORMALS RENDERING METHODS  ***  //
 // ************************************ //
-void VHSimpleCanvas::renderNormals(VHDynObjectAdapter & dynObj){
-    if(!dynObj.isRenderingNormals()) return;
-    vector<Primitive *> const primitives = dynObj.getDynObj().getPrimitives();
+void VHSimpleCanvas::renderNormals(VHStaticObjectAdapter & staticObj){
+    if(!staticObj.isRenderingNormals()) return;
+    vector<Primitive *> const primitives =
+        staticObj.getStaticObj().getPrimitives();
     for(size_t i = 0 ; i < primitives.size() ; ++i){
         Primitive * primitive = primitives[i];
         float nx = 0;
@@ -104,7 +105,7 @@ void VHSimpleCanvas::renderNormals(VHDynObjectAdapter & dynObj){
         q.y = p.y + getNormalMagnitude() * ny;
         q.z = p.z + getNormalMagnitude() * nz;
         std::stringstream ss;
-        ss << dynObj.getId() << "_normal" << i;
+        ss << staticObj.getId() << "_normal" << i;
         viewer->removeShape(ss.str());
         viewer->addLine(p, q, 1.0, 1.0, 0.0, ss.str());
     }
@@ -113,7 +114,7 @@ void VHSimpleCanvas::renderNormals(VHDynObjectAdapter & dynObj){
 void VHSimpleCanvas::unrenderAllNormals(){
     for(shared_ptr<VHDynObjectXYZRGBAdapter> const &dynObj : dynObjs){
         if(!dynObj->isRenderingNormals()) continue; // Skip, nothing to remove
-        vector<Primitive *> const primitives = \
+        vector<Primitive *> const primitives =
             dynObj->getDynObj().getPrimitives();
         for(size_t i = 0 ; i < primitives.size() ; ++i){
             std::stringstream ss;

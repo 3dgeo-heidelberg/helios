@@ -66,6 +66,10 @@ public:
      */
     DynMovingObject() = default;
     /**
+     * @see DynObject::DynObject(ScenePart const &)
+     */
+    DynMovingObject(ScenePart const &sp) : DynObject(sp) {}
+    /**
      * @see DynObject::DynObject(string const)
      */
     DynMovingObject(string const id) : DynObject(id) {}

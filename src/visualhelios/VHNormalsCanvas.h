@@ -1,7 +1,7 @@
 #ifdef PCL_BINDING
 
 #include <visualhelios/VHDynCanvas.h>
-#include <visualhelios/adapters/VHDynObjectAdapter.h>
+#include <visualhelios/adapters/VHStaticObjectAdapter.h>
 
 namespace visualhelios{
 
@@ -82,7 +82,7 @@ protected:
      *  so the logic of the VHNormalCanvas can be computed
      * @param dynObj Dynamic object which normals will be rendered if enabled
      */
-    virtual void renderNormals(VHDynObjectAdapter & dynObj) = 0;
+    virtual void renderNormals(VHStaticObjectAdapter & dynObj) = 0;
     /**
      * @brief Remove all rendered normals.
      * This method implementation must be provided by concrete derived classes

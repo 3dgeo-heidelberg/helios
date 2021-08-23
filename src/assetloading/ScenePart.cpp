@@ -8,7 +8,7 @@
 
 // ***  CONSTRUCTION / DESTRUCTION  *** //
 // ************************************ //
-ScenePart::ScenePart(ScenePart &sp) {
+ScenePart::ScenePart(ScenePart const &sp) {
   this->mId = sp.mId;
   this->onRayIntersectionMode = sp.onRayIntersectionMode;
   this->onRayIntersectionArgument = sp.onRayIntersectionArgument;

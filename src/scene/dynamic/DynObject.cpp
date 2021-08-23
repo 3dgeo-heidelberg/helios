@@ -5,8 +5,8 @@
 size_t DynObject::countVertices(){
     size_t m = 0;
     Primitive * primitive;
-    for(size_t i = 0 ; i < primitives.size(); ++i){
-        primitive = primitives[i];
+    for(size_t i = 0 ; i < mPrimitives.size(); ++i){
+        primitive = mPrimitives[i];
         m += primitive->getNumVertices();
     }
     return m;
@@ -23,8 +23,8 @@ arma::mat DynObject::matrixFromPrimitives(
 ){
     arma::mat X(3, m);
     size_t i = 0;
-    for(size_t j = 0 ; j < primitives.size() ; ++j){
-        Primitive * primitive = primitives[j];
+    for(size_t j = 0 ; j < mPrimitives.size() ; ++j){
+        Primitive * primitive = mPrimitives[j];
         Vertex const * vertices = primitive->getVertices();
         for(size_t k = 0 ; k < primitive->getNumVertices() ; ++k, ++i){
             X.col(i) = get(vertices + k);
@@ -45,8 +45,8 @@ void DynObject::matrixToPrimitives(
     arma::mat const &X
 ){
     size_t i = 0;
-    for(size_t j = 0 ; j < primitives.size() ; ++j){
-        Primitive * primitive = primitives[j];
+    for(size_t j = 0 ; j < mPrimitives.size() ; ++j){
+        Primitive * primitive = mPrimitives[j];
         Vertex *vertices = primitive->getVertices();
         for(size_t k = 0 ; k < primitive->getNumVertices() ; ++k, ++i){
             set(vertices + k, X.col(i));

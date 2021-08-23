@@ -2,11 +2,15 @@
 
 // ***  CONSTRUCTION / DESTRUCTION  *** //
 // ************************************ //
-DynScene::DynScene(DynScene &ds) : DynScene(static_cast<Scene&>(ds)){
+DynScene::DynScene(DynScene &ds) :
+    DynScene(static_cast<StaticScene&>(ds))
+{
     for(shared_ptr<DynObject> dynObj : ds.dynObjs){
         dynObjs.push_back(dynObj);
         updated.push_back(true);
     }
+    dynamicSpaceInterval = ds.dynamicSpaceInterval;
+    currentStep = ds.currentStep;
 }
 
 // ***  SIMULATION STEP  *** //

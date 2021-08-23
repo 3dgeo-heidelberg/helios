@@ -34,6 +34,10 @@ public:
      */
     DynSequentiableMovingObject() = default;
     /**
+     * @see DynMovingObject::DynMovingObject(ScenePart const &sp)
+     */
+    DynSequentiableMovingObject(ScenePart const &sp) : DynMovingObject(sp) {}
+    /**
      * @see DynMovingObject::DynMovingObject(string const)
      */
     DynSequentiableMovingObject(string const id) : DynMovingObject(id) {}

@@ -1,20 +1,19 @@
 #ifdef PCL_BINDING
 
+#include <VHStaticObjectXYZAdapter.h>
 
-#include <VHDynObjectXYZAdapter.h>
-
-using visualhelios::VHDynObjectXYZAdapter;
+using visualhelios::VHStaticObjectXYZAdapter;
 
 // ***  BUILDING  *** //
 // ****************** //
-void VHDynObjectXYZAdapter::constructPolymesh(){
+void VHStaticObjectXYZAdapter::constructPolymesh(){
     // Instantiate a new polymesh replacing the old one, if any
     polymesh = pcl::PointCloud<pcl::PointXYZ>::Ptr(
         new pcl::PointCloud<pcl::PointXYZ>()
     );
 }
 
-void VHDynObjectXYZAdapter::vertexToMesh(Vertex const & vertex){
+void VHStaticObjectXYZAdapter::vertexToMesh(Vertex const & vertex){
     polymesh->push_back(pcl::PointXYZ(  // Add vertex to the polymesh
         (float) vertex.getX(),
         (float) vertex.getY(),

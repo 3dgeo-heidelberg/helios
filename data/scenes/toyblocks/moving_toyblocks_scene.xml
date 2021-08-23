@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document>
     <scene id="moving_toyblocks_scene" name="MovingToyblocksScene">
-        <part>
+		<part>
             <filter type="objloader">
                 <param type="string" key="filepath" value="data/sceneparts/basic/groundplane/groundplane.obj" />
             </filter>
             <filter type="scale">
-                <param type="double" key="scale" value="70" />
+                <param type="double" key="scale" value="120" />
             </filter>
 			<filter type="translate">
-				<param type="vec3" key="offset" value="20.0;0;0" />
+				<param type="vec3" key="offset" value="50.0;0;0" />
 			</filter>
         </part>
 		<part>
@@ -31,6 +31,25 @@
 				<motion type="translation" vec="40;5;0;" />
 				<motion type="rotation" axis="0;0;1" angle="1" />
 				<motion type="translation" vec="-40;-5;0;" />
+			</rmotion>
+        </part>
+		<part>
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/toyblocks/cube.obj" />
+            </filter>
+			<filter type="rotate">
+				<param key="rotation" type="rotation">
+					<rot angle_deg="90" axis="z"/>
+				</param>
+			</filter>
+			<filter type="scale">
+                <param type="double" key="scale" value="0.75" />
+            </filter>
+			<filter type="translate">
+				<param type="vec3" key="offset" value="-15.0;-70.0;0" />
+			</filter>
+			<rmotion id ="cube_rotation" loop="0">
+				<motion type="rotsym" axis="0;0;1" angle="2" center="-5;50;0" />
 			</rmotion>
         </part>
         <part>
@@ -83,14 +102,14 @@
 				<param type="vec3" key="offset" value="60.0;0.0;15.0" />
 			</filter>
 			<rmotion id="easter_gpup" next="easter_gpdown" loop="200">
-				<motion type="translation" vec="-180.0;0.0;0.0"/>
+				<motion type="translation" vec="-250.0;0.0;0.0"/>
 				<motion type="glideplane" ortho="1;1;0" shift="0;0;0.1"/>
-				<motion type="translation" vec="180.0;0.0;0.0"/>
+				<motion type="translation" vec="250.0;0.0;0.0"/>
 			</rmotion>
 			<rmotion id="easter_gpdown" next="easter_gpup" loop="200">
-				<motion type="translation" vec="-180.0;0.0;0.0"/>
+				<motion type="translation" vec="-250.0;0.0;0.0"/>
 				<motion type="glideplane" ortho="1;1;0" shift="0;0;-0.1"/>
-				<motion type="translation" vec="180.0;0.0;0.0"/>
+				<motion type="translation" vec="250.0;0.0;0.0"/>
 			</rmotion>
         </part>
 		<part>
@@ -110,25 +129,6 @@
 			</filter>
 			<rmotion id="easter_reflection" loop="1">
 				<motion type="reflection" ortho="0;0;1" />
-			</rmotion>
-        </part>
-		<part>
-            <filter type="objloader">
-                <param type="string" key="filepath" value="data/sceneparts/toyblocks/cube.obj" />
-            </filter>
-			<filter type="rotate">
-				<param key="rotation" type="rotation">
-					<rot angle_deg="90" axis="z"/>
-				</param>
-			</filter>
-			<filter type="scale">
-                <param type="double" key="scale" value="0.75" />
-            </filter>
-			<filter type="translate">
-				<param type="vec3" key="offset" value="-15.0;-70.0;0" />
-			</filter>
-			<rmotion id ="cube_rotation" loop="0">
-				<motion type="rotsym" axis="0;0;1" angle="2" center="-5;50;0" />
 			</rmotion>
         </part>
     </scene>

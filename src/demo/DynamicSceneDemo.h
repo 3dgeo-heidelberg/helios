@@ -24,6 +24,15 @@ using std::shared_ptr;
  * This demo implements the rendering of a given dynamic scene
  */
 class DynamicSceneDemo : public SurveyDemo{
+protected:
+    // ***  ATTRIBUTES  *** //
+    // ******************** //
+    /**
+     * @brief Used to store the dynamic scene wrapper that must be used to
+     *  render non dynamic scenes
+     */
+    shared_ptr<DynScene> dsWrapper = nullptr;
+
 public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //
     // ************************************ //

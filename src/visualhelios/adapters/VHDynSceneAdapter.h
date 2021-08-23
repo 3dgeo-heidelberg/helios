@@ -2,6 +2,7 @@
 #ifndef _VHDYNSCENEADAPTER_H_
 
 #include <scene/dynamic/DynScene.h>
+#include <visualhelios/adapters/VHStaticObjectAdapter.h>
 #include <visualhelios/adapters/VHDynObjectAdapter.h>
 
 #include <vector>
@@ -16,14 +17,16 @@ using std::static_pointer_cast;
 /**
  * @author Alberto M. Esmoris Pena
  * @version 1.0
- * @tparam T Type of dynamic object adapter to be used by the dynamic scene
+ * @tparam ST Type of static object adapter to be used by the dynamic scene
+ *  adapter
+ * @tparam DT Type of dynamic object adapter to be used by the dynamic scene
  *  adapter
  * @brief Class defining core mechanisms to adapt dynamic scenes to the visual
  *  Helios context based on PCL and VTK libraries
  *
  * @see visualhelios::VHDynObjectAdapter
  */
-template <typename T>
+template <typename ST, typename DT>
 class VHDynSceneAdapter{
 protected:
     // ***  ATTRIBUTES  *** //
@@ -37,7 +40,13 @@ protected:
      * @brief Vector of adapted dynamic objects from the adapted dynamic scene
      * @see visualhelios::VHDynObjectAdapter
      */
-    vector<shared_ptr<T>> dynObjs;
+    vector<shared_ptr<DT>> dynObjs;
+    /**
+     * @brief Vector of adapted static objects from the adapted dynamic scene
+     *
+     * @see visualhelios::VHStaticObjectAdapter
+     */
+    vector<shared_ptr<ST>> staticObjs;
 
 public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //
@@ -71,20 +80,47 @@ public:
      */
     inline DynScene & getDynScene() {return dynScene;}
     /**
+     * @brief Obtain the number of static objects composing the dynamic scene
+     * @return Number of static objects composing the dynamic scene
+     */
+    inline size_t numStaticObjects() const {return staticObjs.size();}
+    /**
+     * @brief Obtain the adapted static object at given index
+     * @param index Index of the static object to be obtained
+     * @return Adapted static object at given index
+     * @see visualhelios::VHStaticObjectAdapter
+     */
+    inline shared_ptr<ST> getAdaptedStaticObj(size_t const index)
+    {return staticObjs[index];}
+    /**
+     * @brief Obtain the static object at given index
+     * @param index Index of static object to be obtained
+     * @return Static object at given index
+     * @see visualhelios::VHStaticObjectAdapter::getStaticObj
+     * @see ScenePart
+     */
+    inline ScenePart & getStaticObj(size_t const index){
+        return  static_pointer_cast<VHStaticObjectAdapter>(staticObjs[index])\
+                ->getStaticObj();
+    }
+    /**
      * @brief Obtain the number of dynamic objects composing the dynamic scene
      * @return Number of dynamic objects composing the dynamic scene
      */
     inline size_t numDynObjects() const {return dynObjs.size();}
     /**
      * @brief Obtain the adapted dynamic object at given index
+     * @param index Index of the dynamic object to be obtained
      * @return Adapted dynamic object at given index
      * @see visualhelios::VHDynObjectAdapter
      */
-    inline shared_ptr<T> getAdaptedDynObj(size_t const index){
+    inline shared_ptr<DT> getAdaptedDynObj(size_t const index){
         return dynObjs[index];
     }
     /**
      * @brief Obtain the dynamic object at given index
+     * @param index Index of dynamic object to be obtained
+     * @return Dynanic object at given index
      * @see visualhelios::VHDynObjectAdapter::getDynObj
      * @see DynObject
      */
@@ -100,8 +136,8 @@ public:
      *  step, false otherwise
      * @see DynScene::isUpdated
      */
-    inline bool isUpdated(size_t const index) const
-    {return dynScene.isUpdated(index);}
+    inline bool isDynObjectUpdated(size_t const index) const
+    {return dynScene.isDynObjectUpdated(index);}
     /**
      * @brief Obtain the ordered vertices indices representing the dynamic
      *  object at given index

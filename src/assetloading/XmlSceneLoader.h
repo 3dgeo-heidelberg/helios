@@ -3,6 +3,7 @@
 #include <tinyxml2.h>
 
 #include <Scene.h>
+#include <StaticScene.h>
 #include <SceneLoadingSpecification.h>
 #include <scene/dynamic/DynSequentiableMovingObject.h>
 
@@ -58,7 +59,7 @@ public:
      *  primitive must be considered as a whole (true) or not
      * @return Built scene part if any, nullptr otherwise
      */
-    ScenePart * loadFilters(
+    shared_ptr<ScenePart> loadFilters(
         tinyxml2::XMLElement *scenePartNode,
         bool &holistic
     );
@@ -88,7 +89,7 @@ public:
      */
     shared_ptr<DynSequentiableMovingObject> loadRigidMotions(
         tinyxml2::XMLElement *scenePartNode,
-        ScenePart *scenePart
+        shared_ptr<ScenePart> scenePart
     );
 
     /**
@@ -106,7 +107,7 @@ public:
     bool loadScenePartId(
         tinyxml2::XMLElement *scenePartNode,
         int partIndex,
-        ScenePart *scenePart
+        shared_ptr<ScenePart> scenePart
     );
 
     /**
@@ -118,28 +119,31 @@ public:
      *  primitive must be considered as a whole (true) or not (false)
      * @param splitPart Flag to specify if scene part must be splitted into
      *  subparts (true) or not (false)
+     * @param dynObject Flag to specify if the scene part corresponds to a
+     *  dynamic object (true) or to a static one (false)
      * @param[out] partIndex If the subpart is splitted, then partIndex will
      *  be opportunely updated
      * @see ScenePart::splitSubparts
      */
     void digestScenePart(
-        ScenePart *scenePart,
-        std::shared_ptr<Scene> scene,
+        shared_ptr<ScenePart> scenePart,
+        std::shared_ptr<StaticScene> scene,
         bool holistic,
         bool splitPart,
+        bool dynObject,
         int &partIndex
     );
 
     /**
-     * @brief Build a dynamic scene based on given standard scene.
+     * @brief Build a dynamic scene based on given static scene.
      *
-     * NOTICE for this method to work properly given scene MUST be of Scene
-     *  type or unexpected behaviors might occur. Use with caution
+     * NOTICE for this method to work properly given scene MUST be of
+     *  StaticScene type or unexpected behaviors might occur. Use with caution.
      *
-     * @param scene Basic standard scene to be used to build a dynamic scene
-     * @return Built dynamic scene based on given standard scene
-     * @see Scene
+     * @param scene Static scene to be used to build a dynamic scene
+     * @return Built dynamic scene based on given static scene
+     * @see StaticScene
      * @see DynScene
      */
-    shared_ptr<Scene> makeSceneDynamic(shared_ptr<Scene> scene);
+    shared_ptr<StaticScene> makeSceneDynamic(shared_ptr<StaticScene> scene);
 };

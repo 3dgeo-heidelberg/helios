@@ -80,10 +80,10 @@ protected:
     // ***  NORMALS RENDERING METHODS  ***  //
     // ************************************ //
     /**
-     * @brief Render normals for each primitive of given dynamic object
+     * @brief Render normals for each primitive of given static object
      * @see visualhelios::VHNormalsCanvas::renderNormals
      */
-    void renderNormals(VHDynObjectAdapter & dynObj) override;
+    void renderNormals(VHStaticObjectAdapter & staticObj) override;
     /**
      * @brief Remove all rendered normals
      * @see visualhelios::VHNormalsCanvas::unrenderAllNormals

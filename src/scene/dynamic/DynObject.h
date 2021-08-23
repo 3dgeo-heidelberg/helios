@@ -4,6 +4,7 @@
 #include <vector>
 #include <armadillo>
 
+#include <assetloading/ScenePart.h>
 #include <scene/primitives/Primitive.h>
 
 using std::vector;
@@ -19,19 +20,7 @@ using std::string;
  *  object. This object is expected to have a dynamic behavior which changes
  *  over time.
  */
-class DynObject {
-protected:
-    // ***  ATTRIBUTES  *** //
-    // ******************** //
-    /**
-     * @brief Identifier for the dynamic object
-     */
-    string id;
-    /**
-     * @brief Primitives defining the dynamic object
-     */
-    vector<Primitive *> primitives;
-
+class DynObject : public ScenePart{
 public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //
     // ************************************ //
@@ -40,17 +29,23 @@ public:
      */
     DynObject() = default;
     /**
+     * @brief Build the dynamic object from given scene part
+     * @param sp Scene part as basis for dynamic object
+     */
+    DynObject(ScenePart const &sp) : ScenePart(sp) {}
+    /**
      * @brief Dynamic object constructor with id as argument
      * @param id The id for the dynamic object
      * @see DynObject::id
      */
-    DynObject(string const id) : id(id) {}
+    DynObject(string const id) {setId(id);}
     /**
      * @brief Dynamic object constructor with primitives as argument
      * @param primitives The primitives defining the dynamic object
      * @see DynObject::primitives
      */
-    DynObject(vector<Primitive *> const &primitives) : primitives(primitives){}
+    DynObject(vector<Primitive *> const &primitives)
+    {setPrimitives(primitives);}
     /**
      * @brief Dynamic object constructor with id and primitives as arguments
      * @param id The id for the dynamic object
@@ -58,10 +53,10 @@ public:
      * @see DynObject::id
      * @see DynObject::primitives
      */
-    DynObject(string const id, vector<Primitive *> const &primitives) :
-        id(id),
-        primitives(primitives)
-    {}
+    DynObject(string const id, vector<Primitive *> const &primitives){
+        setId(id);
+        setPrimitives(primitives);
+    }
     virtual ~DynObject() = default;
 
     // ***  DYNAMIC BEHAVIOR  *** //
@@ -92,36 +87,6 @@ public:
      * @see DynObject::doStep
      */
     inline void operator() () {doStep();}
-
-    // ***  GETTERS and SETTERS  *** //
-    // ***************************** //
-    /**
-     * @brief Obtain the primitives of the dynamic object
-     * @return Dynamic object primitives
-     * @see DynObject::primitives
-     */
-    inline vector<Primitive *> const & getPrimitives() const
-    {return primitives;}
-    /**
-     * @brief Set the primitives of the dynamic object
-     * @param primitives Dynamic object primitives
-     * @see DynObject::primitives
-     */
-    inline void setPrimitives(vector<Primitive *> const &primitives)
-    {this->primitives = primitives;}
-
-    /**
-     * @brief Obtain the ID of the dynamic object
-     * @return Dynamic object ID
-     * @see DynObject::id
-     */
-    inline string const &getId() const {return id;}
-    /**
-     * @brief Set the ID of the dynamic object
-     * @param id Dynamic object ID
-     * @see DynObject::id
-     */
-    inline void setId(const string &id) {this->id = id;}
 
     // ***  U T I L  *** //
     // ***************** //

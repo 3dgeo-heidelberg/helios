@@ -25,7 +25,9 @@ VHSceneCanvas::VHSceneCanvas(
         normalMagnitude
     )
 {
-    dynScene = make_shared<VHDynSceneAdapter<VHDynObjectXYZRGBAdapter>>(ds);
+    dynScene = make_shared<VHDynSceneAdapter<
+        VHStaticObjectXYZRGBAdapter, VHDynObjectXYZRGBAdapter
+    >>(ds);
 }
 
 
@@ -52,8 +54,22 @@ void VHSceneCanvas::start(){
     // Start base canvas
     VHNormalsCanvas::start();
 
+    // TODO Rethink : Externalize both objects to viewer regions to method
+
     // Build polygon meshes for non dynamic objects and add them to viewer
-    // TODO Rethink : Implement
+    size_t const m = dynScene->numStaticObjects();
+    for(size_t i = 0 ; i < m ; ++i){
+        shared_ptr<VHStaticObjectXYZRGBAdapter> staticObj =
+            dynScene->getAdaptedStaticObj(i);
+        staticObj->buildPolymesh();
+        viewer->addPolygonMesh<pcl::PointXYZRGB>(
+            staticObj->getPolymesh(),
+            staticObj->getVertices(),
+            staticObj->getId()
+        );
+        // Render initial normals if requested
+        if(isRenderingNormals()) renderNormals(*staticObj);
+    }
 
     // Build polygon meshes for dynamic objects and add them to viewer
     size_t const n = dynScene->numDynObjects();
@@ -84,7 +100,7 @@ void VHSceneCanvas::update(){
         shared_ptr<VHDynObjectXYZRGBAdapter> dynObj =
             dynScene->getAdaptedDynObj(i);
         // Continue to next iteration if no updates are needed for this
-        if(!dynScene->isUpdated(i) && !isNeedingUpdate()) continue;
+        if(!dynScene->isDynObjectUpdated(i) && !isNeedingUpdate()) continue;
         // Update the polygon mesh itself
         viewer->updatePolygonMesh<pcl::PointXYZRGB>(
             dynObj->getPolymesh(),
@@ -99,8 +115,8 @@ void VHSceneCanvas::update(){
 
 // ***  NORMALS RENDERING METHODS  ***  //
 // ************************************ //
-void VHSceneCanvas::renderNormals(VHDynObjectAdapter & dynObj){
-    if(!dynObj.isRenderingNormals()) return;
+void VHSceneCanvas::renderNormals(VHStaticObjectAdapter & staticObj){
+    if(!staticObj.isRenderingNormals()) return;
     // TODO Rethink : Implement
 }
 

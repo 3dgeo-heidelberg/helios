@@ -7,6 +7,7 @@
 using HeliosDemos::DynamicSceneDemo;
 using visualhelios::VHSceneCanvas;
 using std::make_shared;
+using std::static_pointer_cast;
 
 
 // ***   R U N   *** //
@@ -98,16 +99,17 @@ shared_ptr<VHSceneCanvas> DynamicSceneDemo::buildCanvas(
         std::cout   << "DynamicSceneDemo received a non dynamic scene but a "
                     << "basic one. In consequence, it was wrapped."
                     << std::endl;
-        DynScene ds(*survey->scanner->platform->scene);
+        dsWrapper = make_shared<DynScene>(*static_pointer_cast<StaticScene>(
+            survey->scanner->platform->scene
+        ));
         canvas = make_shared<VHSceneCanvas>(
-            ds,
+            *dsWrapper,
             canvasTitle,
             normalsKeyboardCallback,
             normalsUsageText,
             renderNormals,
             normalMagnitude
         );
-
     }
 
     // Configure canvas

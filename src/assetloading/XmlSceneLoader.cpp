@@ -21,7 +21,7 @@ XmlSceneLoader::createSceneFromXml(
     tinyxml2::XMLElement *sceneNode,
     std::string path
 ){
-    std::shared_ptr<Scene> scene = std::make_shared<Scene>();
+    std::shared_ptr<StaticScene> scene = std::make_shared<StaticScene>();
     bool dynScene = false;
     scene->sourceFilePath = path;
 
@@ -35,9 +35,10 @@ XmlSceneLoader::createSceneFromXml(
     while (scenePartNode != nullptr) {
         partIndex++;
         bool holistic = false;
+        bool dynObject = false;
 
         // Load filter nodes, if any
-        ScenePart *scenePart = loadFilters(scenePartNode, holistic);
+        shared_ptr<ScenePart> scenePart = loadFilters(scenePartNode, holistic);
 
         // Read and set scene part ID
         bool splitPart = loadScenePartId(scenePartNode, partIndex, scenePart);
@@ -49,8 +50,10 @@ XmlSceneLoader::createSceneFromXml(
             scene = makeSceneDynamic(scene);
             dynScene = true;
         }
-        if(dsmo != nullptr){
+        if(dsmo != nullptr){ // Append to scene, replace scene part, flag dyn
             std::static_pointer_cast<DynScene>(scene)->appendDynObject(dsmo);
+            scenePart = std::static_pointer_cast<ScenePart>(dsmo);
+            dynObject = true;
         }
 
         // Consider scene loading specification
@@ -58,7 +61,9 @@ XmlSceneLoader::createSceneFromXml(
         sceneSpec.apply(scenePart);
 
         // Digest scene part
-        digestScenePart(scenePart, scene, holistic, splitPart, partIndex);
+        digestScenePart(
+            scenePart, scene, holistic, splitPart, dynObject, partIndex
+        );
 
         // Read next scene part from XML
         scenePartNode = scenePartNode->NextSiblingElement("part");
@@ -71,6 +76,7 @@ XmlSceneLoader::createSceneFromXml(
         << tw.getElapsedDecimalSeconds() << "s\n";
     logging::INFO(ss.str());
 
+
     // Finish scene loading
     bool success = scene->finalizeLoading();
     if (!success) {
@@ -82,7 +88,7 @@ XmlSceneLoader::createSceneFromXml(
     return scene;
 }
 
-ScenePart * XmlSceneLoader::loadFilters(
+shared_ptr<ScenePart> XmlSceneLoader::loadFilters(
     tinyxml2::XMLElement *scenePartNode,
     bool &holistic
 ){
@@ -153,12 +159,12 @@ ScenePart * XmlSceneLoader::loadFilters(
         filterNodes = filterNodes->NextSiblingElement("filter");
     }
     // ############## END Loop over filter nodes ##################
-    return scenePart;
+    return shared_ptr<ScenePart>(scenePart);
 }
 
 shared_ptr<DynSequentiableMovingObject> XmlSceneLoader::loadRigidMotions(
     tinyxml2::XMLElement *scenePartNode,
-    ScenePart *scenePart
+    shared_ptr<ScenePart> scenePart
 ){
     // Find first rmotion node
     tinyxml2::XMLElement *rmotionNode =
@@ -167,7 +173,7 @@ shared_ptr<DynSequentiableMovingObject> XmlSceneLoader::loadRigidMotions(
 
     // Build dynamic sequential moving object from XML
     shared_ptr<DynSequentiableMovingObject> dsmo =
-        make_shared<DynSequentiableMovingObject>();
+        make_shared<DynSequentiableMovingObject>(*scenePart);
     while(rmotionNode != nullptr){
         // Optional attributes
         std::string nextId = "";
@@ -209,8 +215,9 @@ shared_ptr<DynSequentiableMovingObject> XmlSceneLoader::loadRigidMotions(
         rmotionNode = rmotionNode->NextSiblingElement("rmotion");
     }
 
-    // Link scene part primitives with dynamic sequentiable moving object
-    dsmo->setPrimitives(scenePart->mPrimitives);
+    for(Primitive *primitive : dsmo->mPrimitives){
+        primitive->part = dsmo;
+    }
 
     // Use scene part ID to build dynamic dynamic sequentiable moving object ID
     std::stringstream ss;
@@ -224,7 +231,7 @@ shared_ptr<DynSequentiableMovingObject> XmlSceneLoader::loadRigidMotions(
 bool XmlSceneLoader::loadScenePartId(
     tinyxml2::XMLElement *scenePartNode,
     int partIndex,
-    ScenePart *scenePart
+    shared_ptr<ScenePart> scenePart
 ){
     std::string partId = "";
     tinyxml2::XMLAttribute const *partIdAttr =
@@ -258,16 +265,16 @@ bool XmlSceneLoader::loadScenePartId(
 }
 
 void XmlSceneLoader::digestScenePart(
-    ScenePart *scenePart,
-    std::shared_ptr<Scene> scene,
+    shared_ptr<ScenePart> scenePart,
+    shared_ptr<StaticScene> scene,
     bool holistic,
     bool splitPart,
+    bool dynObject,
     int &partIndex
 ){
     // For all primitives, set reference to their scene part and transform:
-    std::shared_ptr<ScenePart> sharedScenePart(scenePart);
     for (Primitive *p : scenePart->mPrimitives) {
-        p->part = sharedScenePart;
+        p->part = scenePart;
         p->rotate(scenePart->mRotation);
         if (holistic) {
             for (size_t i = 0; i < p->getNumVertices(); i++) {
@@ -280,7 +287,11 @@ void XmlSceneLoader::digestScenePart(
         p->translate(scenePart->mOrigin);
     }
 
-    // Add scene part to the scene:
+    // Append as static object if it is not dynamic
+    // If it is dynamic, it must have been appended before
+    if(!dynObject) scene->appendStaticObject(scenePart);
+
+    // Add scene part primitives to the scene
     scene->primitives.insert(
         scene->primitives.end(),
         scenePart->mPrimitives.begin(),
@@ -294,6 +305,25 @@ void XmlSceneLoader::digestScenePart(
     }
 }
 
-shared_ptr<Scene> XmlSceneLoader::makeSceneDynamic(shared_ptr<Scene> scene){
-    return std::static_pointer_cast<Scene>(make_shared<DynScene>(*scene));
+shared_ptr<StaticScene> XmlSceneLoader::makeSceneDynamic(
+    shared_ptr<StaticScene> scene
+){
+    // Upgrade static scene to dynamic scene
+    std::shared_ptr<StaticScene> newScene =
+        std::static_pointer_cast<StaticScene>(make_shared<DynScene>(*scene));
+
+    // Primitives were automatically updated at scene level
+    // Now, update them at static object level
+    // It is as simple as rebuilding the static objects because at this point
+    // there is no dynamic object in the scene yet, since it didnt support them
+    newScene->clearStaticObjects();
+    std::set<shared_ptr<ScenePart>> parts; // Scene parts with no repeats
+    std::vector<Primitive *> const primitives = newScene->primitives;
+    for(Primitive *primitive : primitives)
+        if(primitive->part != nullptr) parts.insert(primitive->part);
+    for(shared_ptr<ScenePart> part : parts)
+        newScene->appendStaticObject(part);
+
+    // Return upgraded scene
+    return newScene;
 }

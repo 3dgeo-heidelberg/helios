@@ -11,6 +11,7 @@ class WavefrontObj;
 #include "LadLut.h"
 #include <iostream>
 
+
 /**
  * @brief Class representing a scene part
  */
@@ -97,17 +98,17 @@ public:
 	 * @brief Default constructor for a scene part
 	 */
 	ScenePart() = default;
-	ScenePart(ScenePart &sp);
+	ScenePart(ScenePart const &sp);
 	virtual ~ScenePart(){}
 
 	// ***  M E T H O D S  *** //
 	// *********************** //
 
-        /**
-         * @brief Add the primitives of a WavefrontObj to the ScenePart
-         * @param obj Pointer to a loaded OBJ
-         */
-        void addObj(WavefrontObj * obj);
+    /**
+     * @brief Add the primitives of a WavefrontObj to the ScenePart
+     * @param obj Pointer to a loaded OBJ
+     */
+    void addObj(WavefrontObj * obj);
 	/**
 	 * @brief Obtain all vertices in the scene part
 	 * @return All vertices in the scene part
@@ -126,10 +127,40 @@ public:
 	 * @see subpartLimit
 	 * @return True when split was successfully performed, false otherwise
 	 */
-        bool splitSubparts();
+    bool splitSubparts();
 
-        /**
-         * @brief Copy assigment operator.
-         */
-         ScenePart & operator=(const ScenePart & rhs);
+    /**
+     * @brief Copy assigment operator.
+     */
+     ScenePart & operator=(const ScenePart & rhs);
+
+     // ***  GETTERS and SETTERS  *** //
+    // ***************************** //
+    /**
+     * @brief Obtain the primitives of the scene part
+     * @return Scene part primitives
+     * @see ScenePart::mPrimitives
+     */
+    inline std::vector<Primitive *> const & getPrimitives() const
+    {return mPrimitives;}
+    /**
+     * @brief Set the primitives of the scene part
+     * @param primitives Scene part primitives
+     * @see ScenePart::mPrimitives
+     */
+    inline void setPrimitives(std::vector<Primitive *> const &primitives)
+    {this->mPrimitives = primitives;}
+
+    /**
+     * @brief Obtain the ID of the scene part
+     * @return Scene part ID
+     * @see ScenePart::mId
+     */
+    inline std::string const &getId() const {return mId;}
+    /**
+     * @brief Set the ID of the scene part
+     * @param id Scene part ID
+     * @see ScenePart::id
+     */
+    inline void setId(const std::string &id) {this->mId = id;}
 };

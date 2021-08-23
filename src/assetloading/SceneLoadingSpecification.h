@@ -64,5 +64,5 @@ public:
      * @brief Apply the scene loading specification to given scene part
      * @param sp Scene part to apply scene loading specification over
      */
-    void apply(ScenePart *sp);
+    void apply(std::shared_ptr<ScenePart> sp);
 };

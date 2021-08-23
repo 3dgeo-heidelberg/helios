@@ -4,6 +4,7 @@
 #include <memory>
 
 #include <scene/Scene.h>
+#include <scene/StaticScene.h>
 #include <scene/dynamic/DynObject.h>
 
 using std::vector;
@@ -15,13 +16,16 @@ using std::shared_ptr;
  *
  * @brief Dynamic scene base implementation
  *
- * A dynamic scene extends the functionalities of a basic scene considering
+ * A dynamic scene extends the functionalities of a static scene considering
  *  dynamic objects. Thus, the dynamic scene implements a doSimStep method
  *  as Platform or Scanner do. In consequence, using a dynamic scene means the
  *  scene will change as the simulation advances. This differs from basic
  *  scenes which are totally static.
+ *
+ * @see StaticScene
+ * @see Scene
  */
-class DynScene : public Scene{
+class DynScene : public StaticScene{
 protected:
     // ***  ATTRIBUTES  *** //
     // ******************** //
@@ -65,12 +69,21 @@ public:
      */
     DynScene() = default;
     ~DynScene() override {}
+    /**
+     * @brief Copy constructor for dynamic scene
+     * @param ds Dynamic scene to be copied
+     */
     DynScene(DynScene &ds);
     /**
      * @brief Build a dynamic scene using given scene as basis
-     * @param ds Basis scene for dynamic scene
+     * @param s Basis scene for dynamic scene
      */
-    DynScene(Scene &s) : Scene(s) {}
+    DynScene(Scene &s) : StaticScene(s) {}
+    /**
+     * @brief Build a dynamic scene using given static scene as basis
+     * @param ss Basis static scene for dynamic scene
+     */
+    DynScene(StaticScene &ss) : StaticScene(ss) {}
 
     // ***  SIMULATION STEP  *** //
     // ************************* //
@@ -115,14 +128,14 @@ public:
      * @param index Index of dynamic object to be obtained
      * @return Dynamic object at given index
      */
-    inline shared_ptr<DynObject> getDynObject(size_t index)
+    inline shared_ptr<DynObject> getDynObject(size_t const index)
     {return dynObjs[index];}
     /**
      * @brief Set dynamic object at given index
      * @param index Index of dynamic object to be setted
      * @param dynobj New dynamic object
      */
-    inline void setDynObject(size_t index, shared_ptr<DynObject> dynobj){
+    inline void setDynObject(size_t const index, shared_ptr<DynObject> dynobj){
         dynObjs[index] = dynobj;
         updated[index] = true;
     }
@@ -130,10 +143,14 @@ public:
      * @brief Remove dynamic object at given index
      * @param index Index of dynamic object to be removed
      */
-    inline void removeDynObject(size_t index){
+    inline void removeDynObject(size_t const index){
         dynObjs.erase(dynObjs.begin()+index);
         updated.erase(updated.begin()+index);
     }
+    /**
+     * @brief Remove all dynamic objects from the dynamic scene
+     */
+    inline void clearDynObjects(){dynObjs.clear();}
     /**
      * @brief Obtain the number of dynamic objects in the scene
      * @return Number of dynamic objects in the scene
@@ -146,7 +163,8 @@ public:
      * @return True if dynamic object at given index has been updated on last
      *  step, false otherwise
      */
-    inline bool isUpdated(size_t const index) const {return updated[index];}
+    inline bool isDynObjectUpdated(size_t const index) const
+    {return updated[index];}
 
 
 };

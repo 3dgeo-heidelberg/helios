@@ -24,14 +24,10 @@ using namespace glm;
 // ***  CONSTRUCTION / DESTRUCTION  *** //
 // ************************************ //
 Scene::Scene(Scene &s) {
-  if (s.bbox == nullptr)
-    this->bbox = nullptr;
-  else
-    this->bbox = std::shared_ptr<AABB>((AABB *)s.bbox->clone());
-  if (s.bbox_crs == nullptr)
-    this->bbox_crs = nullptr;
-  else
-    this->bbox_crs = std::shared_ptr<AABB>((AABB *)s.bbox_crs->clone());
+  if (s.bbox == nullptr) this->bbox = nullptr;
+  else this->bbox = std::shared_ptr<AABB>((AABB *)s.bbox->clone());
+  if (s.bbox_crs == nullptr) this->bbox_crs = nullptr;
+  else this->bbox_crs = std::shared_ptr<AABB>((AABB *)s.bbox_crs->clone());
   std::set<ScenePart *> parts; // Pointer to each ScenePart, no repeats
   std::vector<Primitive *> nonPartPrimitives; // Primitives without ScenePart
   ScenePart *_sp;
