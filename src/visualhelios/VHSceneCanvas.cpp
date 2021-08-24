@@ -1,11 +1,20 @@
 #ifdef PCL_BINDING
 
 #include <visualhelios/VHSceneCanvas.h>
+#include <MathConstants.h>
+
 #include <glm/detail/type_vec3.hpp>
+
 
 using namespace visualhelios;
 
 using std::make_shared;
+
+// ***  CONSTANTS  *** //
+// ******************* //
+double const VHSceneCanvas::cosPIeighth = std::cos(PI_EIGHTH);
+double const VHSceneCanvas::camCoef = cosPIeighth/
+    std::sqrt(1.0-cosPIeighth*cosPIeighth);
 
 // ***  CONSTRUCTION / DESTRUCTION  *** //
 // ************************************ //
@@ -38,16 +47,7 @@ void VHSceneCanvas::configure(){
     VHNormalsCanvas::configure();
 
     // Configure camera
-    glm::dvec3 const c = dynScene->getDynScene().getAABB()->getCentroid();
-    glm::dvec3 const p = dynScene->getDynScene().getAABB()->getMin();
-    double const cosPIoct = std::cos(M_PI/8.0);
-    double const coef = cosPIoct/(1.0-cosPIoct*cosPIoct);
-    double const camZ = (p.z-coef*(p.x-2*c.x))/2.0;
-    viewer->setCameraPosition(
-        c.x, c.y, camZ,
-        c.x, c.y, p.z,
-        0.0, 1.0, 0.0
-    );
+    cameraFromScene();
 }
 
 void VHSceneCanvas::start(){
@@ -124,4 +124,18 @@ void VHSceneCanvas::unrenderAllNormals(){
     // TODO Rethink : Implement
 }
 
+
+// ***   U T I L S   *** //
+// ********************* //
+void VHSceneCanvas::cameraFromScene(){
+    // Configure camera
+    glm::dvec3 const c = dynScene->getDynScene().getAABB()->getCentroid();
+    glm::dvec3 const p = dynScene->getDynScene().getAABB()->getMin();
+    double const camZ = (p.z-camCoef*(p.x-2*c.x))/2.0;
+    viewer->setCameraPosition(
+        c.x, c.y, camZ,
+        c.x, c.y, p.z,
+        0.0, 1.0, 0.0
+    );
+}
 #endif

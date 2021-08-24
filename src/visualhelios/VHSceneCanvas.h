@@ -18,6 +18,22 @@ using std::shared_ptr;
  */
 class VHSceneCanvas : public VHNormalsCanvas{
 protected:
+    // ***  CONSTANTS  *** //
+    // ******************* //
+    /**
+     * \f[
+     *  \cos\left(\frac{\pi}{8}\right)
+     * \f]
+     */
+    static double const cosPIeighth;
+    /**
+     * \f[
+     *  \frac{\cos\left(\frac{\pi}{8}\right)}
+     *  {\sqrt{1 - \cos\left(\frac{\pi}{8}\right)^2}}
+     * \f]
+     */
+    static double const camCoef;
+
     // ***  ATTRIBUTES  *** //
     // ******************** //
     /**
@@ -80,6 +96,62 @@ public:
      * @see visualhelios::VHNormalsCanvas::unrenderAllNormals
      */
     void unrenderAllNormals() override;
+
+protected:
+    // ***   U T I L S   *** //
+    // ********************* //
+    /**
+     * @brief Set the camera position from the scene.
+     *
+     * For this purpose let \f$O\f$ be the point where the camera is located,
+     *  \f$P\f$ be the point with minimum coordinates from the scene and
+     *  \f$C\f$ be the centroid of the scene. Now lets define the normalized
+     *  director vector \f$\hat{v}\f$ that will be used to define the
+     *  \f$\overrightarrow{OP}\f$ direction with a \f$\frac{\pi}{8}\f$ angle
+     *  which is half of \f$\frac{\pi}{4}\f$ angle that is the approximated
+     *  angle corresponding to camera field of view:
+     *
+     * \f[
+     *  \hat{v} = \left(
+     *      \sqrt{1-\cos\left(\frac{\pi}{8}\right)^2},
+     *      0,
+     *      \cos\left(\frac{\pi}{8}\right)
+     *  \right)
+     * \f]
+     *
+     * For the point \f$O = \left(O_x, O_y, O_z\right)\f$ its \f$O_x\f$ and
+     *  \f$O_y\f$ components are known, but its \f$O_z\f$ component must be
+     *  calculated from expression \f$\overrightarrow{OP} = O + t\hat{v}\f$
+     *  as the required \f$z\f$-distance so the camera is guaranteed to view
+     *  all the scene from above. Thus, following system must be solved:
+     *
+     * \f[
+     *  \left\{\begin{array}{lll}
+     *      P_x - O_x &=& O_x + t \hat{v}_x \\
+     *      P_z - O_z &=& O_z + t \hat{v}_z
+     *  \end{array}\right.
+     * \f]
+     *
+     * It is easy to see that:
+     *
+     * \f[
+     *  t = \frac{P_x - 2 O_x}{\hat{v}_x}
+     * \f]
+     *
+     * In consequence:
+     *
+     * \f[
+     *  O_z =
+     *      \frac{P_z - t \hat{v}_z}{2} =
+     *      \frac{1}{2}\left[
+     *          P_z -
+     *          \frac{\cos\left(\frac{\pi}{8}\right)}
+     *              {\sqrt{1-\cos\left(\frac{\pi}{8}\right)^2}}
+     *          \left(P_x - 2 O_x\right)
+     *      \right]
+     * \f]
+     */
+    void cameraFromScene();
 
 };
 
