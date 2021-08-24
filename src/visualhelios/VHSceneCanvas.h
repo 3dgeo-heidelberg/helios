@@ -65,7 +65,7 @@ public:
         bool const normalsKeyboardCallbackEnabled=true,
         bool const normalsUsageTextEnabled=true,
         bool const renderingNormals=true,
-        float const normalMagnitude=1.0
+        float const normalMagnitude=0.2
     );
     virtual ~VHSceneCanvas() = default;
 
@@ -152,6 +152,23 @@ protected:
      * \f]
      */
     void cameraFromScene();
+    /**
+     * @brief Unrender normals for objects obtained through given get function
+     *  ranging in \f$[0, m)\f$
+     * @param m How many objects can be obtained
+     * @param get Getter to obtain \f$i\f$-th object
+     */
+    void unrenderNormals(
+        size_t const m,
+        std::function<ScenePart&(size_t const)> get
+    );
+    /**
+     * @brief Add given object to the viewer and render its normals if
+     *  scene canvas is requested to render normals
+     * @param obj The object, whether dynamic or static, to be added to the
+     *  viewer
+     */
+    void addObjectToViewer(VHStaticObjectXYZRGBAdapter &obj);
 
 };
 

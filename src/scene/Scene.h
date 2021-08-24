@@ -149,4 +149,10 @@ public:
    * @return Imported scene
    */
   static Scene *readObject(std::string path);
+
+  /**
+   * @brief Obtain all vertices (without repetitions) composing the scene
+   * @return All vertices (without repetitions) composing the scene
+   */
+  std::vector<Vertex *> getAllVertices();
 };

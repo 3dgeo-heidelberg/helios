@@ -98,19 +98,21 @@ public:
      *
      * Where \f$\delta\f$ is the dynamic space frequency and \f$s_{t}\f$ is the
      *  current step at instant \f$t\f$.
+     * @return True if any dynamic object was udpated, false otherwise
      * @see DynScene::dynamicSpaceInterval
      * @see DynScene::currentStep
      * @see DynScene::doStep
      */
-    void doSimStep();
+    bool doSimStep();
     /**
      * @brief Dynamic behavior computation itself.
      *
      * This function is invoked by doSimStep when necessary.
      *
+     * @return True if any dynamic object was udpated, false otherwise
      * @see DynScene::doSimStep
      */
-    void doStep();
+    bool doStep();
 
     // ***  GETTERs and SETTERs  *** //
     // ***************************** //

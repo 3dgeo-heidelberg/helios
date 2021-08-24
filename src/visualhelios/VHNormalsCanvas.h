@@ -34,6 +34,11 @@ protected:
      * @brief Specify the magnitude of normal vector for visualization
      */
     float normalMagnitude;
+    /**
+     * @brief Default color for normals in RGB format with components in
+     *  \f$[0, 1]\f$
+     */
+    float normalDefColor[3];
 
 public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //
@@ -146,6 +151,33 @@ public:
      */
     virtual inline bool isNormalsUsageTextEnabled() const
     {return normalsUsageTextEnabled;}
+    /**
+     * @brief Return the default color for normals visualization
+     * @return Default color for normals visualization
+     * @see visualhelios::VHNormalCanvas::normalDefColor
+     */
+    virtual inline float const * getNormalDefColor() const
+    {return normalDefColor;}
+    /**
+     * @brief Set the default color for normals visualization
+     * @param color Default color for normals visualization
+     * @see visualhelios::VHNormalCanvas::normalDefColor
+     */
+    virtual inline void setNormalDefColor(float const color[3])
+    {for(size_t i = 0 ; i < 3 ; ++i) normalDefColor[i] = color[i];}
+    /**
+     * @brief Set the default color for normals visualization
+     * @param r Red component for normals default color
+     * @param g Green component for normals default color
+     * @param b Blue component for normals default color
+     */
+    virtual inline void setNormalDefColor(
+        float const r, float const g, float const b
+    ){
+        normalDefColor[0] = r;
+        normalDefColor[1] = g;
+        normalDefColor[2] = b;
+    }
 
 };
 

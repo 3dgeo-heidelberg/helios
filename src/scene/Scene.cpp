@@ -219,3 +219,13 @@ Scene *Scene::readObject(string path) {
   logging::INFO(ss.str());
   return SerialIO::getInstance()->read<Scene>(path);
 }
+
+vector<Vertex *> Scene::getAllVertices(){
+    unordered_set<Vertex *> vset;
+    for(Primitive *primitive : primitives){
+        size_t const m  = primitive->getNumVertices();
+        Vertex *vertices = primitive->getVertices();
+        for(size_t i = 0 ; i < m ; ++i) vset.insert(vertices + i);
+    }
+    return {vset.begin(), vset.end()};
+}

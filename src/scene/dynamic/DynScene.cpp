@@ -15,14 +15,18 @@ DynScene::DynScene(DynScene &ds) :
 
 // ***  SIMULATION STEP  *** //
 // ************************* //
-void DynScene::doSimStep(){
+bool DynScene::doSimStep(){
     currentStep = (currentStep + 1) % dynamicSpaceInterval;
-    if(currentStep == (dynamicSpaceInterval-1)) doStep();
+    if(currentStep == (dynamicSpaceInterval-1)) return doStep();
+    return false;
 }
 
-void DynScene::doStep(){
+bool DynScene::doStep(){
+    bool updateFlag = false;
     size_t const n = numDynObjects();
     for(size_t i = 0 ; i < n ; ++i){
         updated[i] = dynObjs[i]->doStep();
+        updateFlag |= updated[i];
     }
+    return updateFlag;
 }

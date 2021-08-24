@@ -38,6 +38,7 @@ void VHCanvas::show(){
     start();
     while(!viewer->wasStopped()){
         update();
+        postUpdate();
         viewer->spinOnce(timeBetweenUpdates, forceRedraw);
         std::this_thread::sleep_for(
             std::chrono::milliseconds(timeBetweenUpdates)

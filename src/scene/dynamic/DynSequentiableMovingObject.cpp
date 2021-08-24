@@ -28,7 +28,11 @@ void DynSequentiableMovingObject::fillMotionQueues(){
                 stype == RigidMotion::SuperType::R3_ROTATION ||
                 stype == RigidMotion::SuperType::R3_ROTATIONAL_SYMMETRY
             ){ // If rigid motion modifies normal, push to normal queue too
-                pushNormalMotion(rm);
+                // Considering only the fixed transformation with zero shift
+                pushNormalMotion(make_shared<RigidMotion>(
+                    arma::zeros(rm->getDimensionality()),
+                    rm->getA()
+                ));
             }
         }
     }

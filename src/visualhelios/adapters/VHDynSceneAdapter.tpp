@@ -26,10 +26,16 @@ VHDynSceneAdapter<ST, DT>::VHDynSceneAdapter(DynScene &dynScene) :
 // ************************** //
 template <typename ST, typename DT>
 bool VHDynSceneAdapter<ST, DT>::doStep(){
-    bool updated = false;
-    for(shared_ptr<DT> dynObj : dynObjs){
-        updated |= static_pointer_cast<VHDynObjectAdapter>(dynObj)->doStep();
+    // Compute steps
+    bool updated = dynScene.doSimStep();
+
+    // Rebuild polygon mesh for updated objects
+    size_t const m = numDynObjects();
+    for(size_t i = 0 ; i < m ; ++i){
+        if(isDynObjectUpdated(i)) getAdaptedDynObj(i)->doStep(false, true);
     }
+
+    // Return update status
     return updated;
 }
 

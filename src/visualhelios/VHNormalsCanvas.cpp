@@ -17,7 +17,8 @@ VHNormalsCanvas::VHNormalsCanvas(
     normalsKeyboardCallbackEnabled(normalsKeyboardCallbackEnabled),
     normalsUsageTextEnabled(normalsUsageTextEnabled),
     renderingNormals(renderingNormals),
-    normalMagnitude(normalMagnitude)
+    normalMagnitude(normalMagnitude),
+    normalDefColor{1.0, 1.0, 0}
 {}
 
 

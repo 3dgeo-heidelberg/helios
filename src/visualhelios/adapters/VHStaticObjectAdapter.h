@@ -52,7 +52,10 @@ public:
      * @brief Constructor for the visual Helios static object adapter
      * @param staticObj Static object to be adapted for visual Helios
      */
-    VHStaticObjectAdapter(ScenePart &staticObj) : staticObj(staticObj) {}
+    VHStaticObjectAdapter(ScenePart &staticObj) :
+        staticObj(staticObj),
+        renderingNormals(true)
+    {}
     virtual ~VHStaticObjectAdapter() = default;
 
 

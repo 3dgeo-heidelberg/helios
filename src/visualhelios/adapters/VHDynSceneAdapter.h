@@ -104,6 +104,27 @@ public:
                 ->getStaticObj();
     }
     /**
+     * @brief Check whether the normals of static object at given index must
+     *  be rendered or not
+     * @see visualhelios::VHStaticObjectAdapter::isRenderingNormals
+     */
+    inline bool isStaticObjectRenderingNormals(size_t const index) const{
+        return  static_pointer_cast<VHStaticObjectAdapter>(staticObjs[index])\
+                ->isRenderingNormals();
+    }
+    /**
+     * @brief Enable or disable normals rendering for the static object at
+     *  given index
+     * @see VHStaticObjectAdapter::setRenderingNormals
+     */
+    inline void setStaticObjectRenderingNormals(
+        size_t const index,
+        bool const renderingNormals
+    ){
+        static_pointer_cast<VHStaticObjectAdapter>(staticObjs[index])\
+            ->setRenderingNormals(renderingNormals);
+    }
+    /**
      * @brief Obtain the number of dynamic objects composing the dynamic scene
      * @return Number of dynamic objects composing the dynamic scene
      */
@@ -143,6 +164,27 @@ public:
      *  object at given index
      * @see visualhelios::VHDynObjectAdapter::getVertices
      */
+    /**
+     * @brief Check whether the normals of dynamic object at given index must
+     *  be rendered or not
+     * @see visualhelios::VHDynObjectAdapter::isRenderingNormals
+     */
+    inline bool isDynObjectRenderingNormals(size_t const index) const{
+        return  static_pointer_cast<VHDynObjectAdapter>(dynObjs[index])\
+                ->isRenderingNormals();
+    }
+    /**
+     * @brief Enable or disable normals rendering for the dynamic object at
+     *  given index
+     * @see VHDynObjectAdapter::setRenderingNormals
+     */
+    inline void setDynObjectRenderingNormals(
+        size_t const index,
+        bool const renderingNormals
+    ){
+        static_pointer_cast<VHDynObjectAdapter>(dynObjs[index])\
+            ->setRenderingNormals(renderingNormals);
+    }
     inline vector<pcl::Vertices> const & getVertices(size_t const index) const{
         return  static_pointer_cast<VHDynObjectAdapter>(dynObjs[index])\
                 ->getVertices();
@@ -154,27 +196,6 @@ public:
     inline string const & getId(size_t const index) const{
         return  static_pointer_cast<VHDynObjectAdapter>(dynObjs[index])\
                 ->getId();
-    }
-    /**
-     * @brief Check whether the normals of dynamic object at given index must
-     *  be rendered or not
-     * @see visualhelios::VHDynObjectAdapter::isRenderingNormals
-     */
-    inline bool isRenderingNormals(size_t const index) const{
-        return  static_pointer_cast<VHDynObjectAdapter>(dynObjs[index])\
-                ->isRenderingNormals();
-    }
-    /**
-     * @brief Enable or disable normals rendering for the dynamic object at
-     *  given index
-     * @see VHDynObjectAdapter::setRenderingNormals
-     */
-    inline void setRenderingNormals(
-        size_t const index,
-        bool const renderingNormals
-    ){
-        static_pointer_cast<VHDynObjectAdapter>(dynObjs[index])\
-            ->setRenderingNormals(renderingNormals);
     }
 };
 
