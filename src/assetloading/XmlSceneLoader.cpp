@@ -15,7 +15,6 @@
 
 // ***  SCENE CREATION  *** //
 // ************************ //
-
 std::shared_ptr<Scene>
 XmlSceneLoader::createSceneFromXml(
     tinyxml2::XMLElement *sceneNode,
@@ -43,9 +42,9 @@ XmlSceneLoader::createSceneFromXml(
         // Read and set scene part ID
         bool splitPart = loadScenePartId(scenePartNode, partIndex, scenePart);
 
-        // Load rigid motions if any
+        // Load dynamic motions if any
         shared_ptr<DynSequentiableMovingObject> dsmo =
-            loadRigidMotions(scenePartNode, scenePart);
+            loadDynMotions(scenePartNode, scenePart);
         if(!dynScene && dsmo != nullptr){
             scene = makeSceneDynamic(scene);
             dynScene = true;
@@ -162,57 +161,57 @@ shared_ptr<ScenePart> XmlSceneLoader::loadFilters(
     return shared_ptr<ScenePart>(scenePart);
 }
 
-shared_ptr<DynSequentiableMovingObject> XmlSceneLoader::loadRigidMotions(
+shared_ptr<DynSequentiableMovingObject> XmlSceneLoader::loadDynMotions(
     tinyxml2::XMLElement *scenePartNode,
     shared_ptr<ScenePart> scenePart
 ){
-    // Find first rmotion node
-    tinyxml2::XMLElement *rmotionNode =
-        scenePartNode->FirstChildElement("rmotion");
-    if(rmotionNode == nullptr) return nullptr; // No rmotion found
+    // Find first dmotion node
+    tinyxml2::XMLElement *dmotionNode =
+        scenePartNode->FirstChildElement("dmotion");
+    if(dmotionNode == nullptr) return nullptr; // No dmotion found
 
     // Build dynamic sequential moving object from XML
     shared_ptr<DynSequentiableMovingObject> dsmo =
         make_shared<DynSequentiableMovingObject>(*scenePart);
-    while(rmotionNode != nullptr){
+    while(dmotionNode != nullptr){
         // Optional attributes
         std::string nextId = "";
         tinyxml2::XMLAttribute const *nextIdAttr =
-            rmotionNode->FindAttribute("next");
+            dmotionNode->FindAttribute("next");
         if(nextIdAttr != nullptr) nextId = nextIdAttr->Value();
 
         // Mandatory attributes
         tinyxml2::XMLAttribute const *idAttr =
-            rmotionNode->FindAttribute("id");
+            dmotionNode->FindAttribute("id");
         if(idAttr == nullptr) throw HeliosException(
-            "XmlSceneLoader::loadRigidMotions found a rmotion element with "
+            "XmlSceneLoader::loadDynMotions found a dmotion element with "
             "no id"
         );
         tinyxml2::XMLAttribute const *loopAttr =
-            rmotionNode->FindAttribute("loop");
+            dmotionNode->FindAttribute("loop");
         if(loopAttr == nullptr) throw HeliosException(
-            "XmlSceneLoader::loadRigidMotions found a rmotion element with "
+            "XmlSceneLoader::loadDynMotions found a dmotion element with "
             "no loop"
         );
 
-        // Add rigid motion sequence
-        shared_ptr<DynSequence<RigidMotion>> rmSequence =
-            make_shared<DynSequence<RigidMotion>>(
+        // Add dynamic motion sequence
+        shared_ptr<DynSequence<DynMotion>> dmSequence =
+            make_shared<DynSequence<DynMotion>>(
                 idAttr->Value(),
                 nextId,
                 loopAttr->Int64Value()
             );
-        rmSequence->append(XmlUtils::createRigidMotionsVector(rmotionNode));
-        if(rmSequence == nullptr){  // Check rmSequence is not null
+        dmSequence->append(XmlUtils::createDynMotionsVector(dmotionNode));
+        if(dmSequence == nullptr){  // Check dmSequence is not null
             throw HeliosException(
-                "XmlSceneLoader::loadRigidMotions found a rmotion element with"
+                "XmlSceneLoader::loadDynMotions found a dmotion element with"
                 " no motions. This is not allowed."
             );
         }
-        dsmo->addSequence(rmSequence);
+        dsmo->addSequence(dmSequence);
 
-        // Next rigid motion sequence
-        rmotionNode = rmotionNode->NextSiblingElement("rmotion");
+        // Next dynamic motion sequence
+        dmotionNode = dmotionNode->NextSiblingElement("dmotion");
     }
 
     for(Primitive *primitive : dsmo->mPrimitives){
@@ -265,8 +264,8 @@ bool XmlSceneLoader::loadScenePartId(
 }
 
 void XmlSceneLoader::digestScenePart(
-    shared_ptr<ScenePart> scenePart,
-    shared_ptr<StaticScene> scene,
+    shared_ptr<ScenePart> &scenePart,
+    shared_ptr<StaticScene> &scene,
     bool holistic,
     bool splitPart,
     bool dynObject,

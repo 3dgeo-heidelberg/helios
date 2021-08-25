@@ -66,9 +66,9 @@ public:
 
     /**
      * @brief Build a dynamic sequentiable moving object which is composed of
-     *  rigid motions.
+     *  dynamic motions.
      *
-     * It is mandatory that rmotion elements contained in the part element
+     * It is mandatory that dmotion elements contained in the part element
      *  also contain an id attribute specifying the unique identifier for the
      *  sequence in its context. The loop attribute is also mandatory, where
      *  \f$0\f$ means infinity loop and \f$n > 0\f$ specifies how many times
@@ -80,14 +80,15 @@ public:
      * @param scenePartNode XML part node defining the scene part
      * @param scenePart The scene part object where the dynamic sequentiable
      *  moving object belongs to
-     * @return Built dynamic sequentiable moving object composed of rigid
+     * @return Built dynamic sequentiable moving object composed of dynamic
      *  motions specified in the XML
      * @see DynSequencer
      * @see DynSequence
      * @see rigidmotion::RigidMotion
-     * @see XmlUtils::createRigidMotionsVector
+     * @see DynMotion
+     * @see XmlUtils::createDynMotionsVector
      */
-    shared_ptr<DynSequentiableMovingObject> loadRigidMotions(
+    shared_ptr<DynSequentiableMovingObject> loadDynMotions(
         tinyxml2::XMLElement *scenePartNode,
         shared_ptr<ScenePart> scenePart
     );
@@ -126,8 +127,8 @@ public:
      * @see ScenePart::splitSubparts
      */
     void digestScenePart(
-        shared_ptr<ScenePart> scenePart,
-        std::shared_ptr<StaticScene> scene,
+        shared_ptr<ScenePart> &scenePart,
+        std::shared_ptr<StaticScene> &scene,
         bool holistic,
         bool splitPart,
         bool dynObject,

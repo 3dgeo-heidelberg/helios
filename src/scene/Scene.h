@@ -64,6 +64,15 @@ public:
    * @brief Vector of primitives composing the scene
    */
   std::vector<Primitive *> primitives;
+  /**
+   * @brief Parts composing the scene with no repeats.
+   *
+   * Please avoid manually computing this vector. If it is necessary to
+   *    initialize or update it, call registerParts instead.
+   *
+   * @see Scene::registerParts
+   */
+  std::vector<std::shared_ptr<ScenePart>> parts;
 
   // ***  CONSTRUCTION / DESTRUCTION  *** //
   // ************************************ //
@@ -77,8 +86,8 @@ public:
   }
   Scene(Scene &s);
 
-  // ***  M E T H O D S  *** //
-  // *********************** //
+  // ***   M E T H O D S   *** //
+  // ************************* //
   /**
    * @brief Handle scene loading finish process
    *
@@ -89,6 +98,12 @@ public:
    * @return True if scene loading was successfully finished, false otherwise
    */
   bool finalizeLoading();
+  /**
+   * @brief Register all scene parts composing the scene in the parts vector
+   *    with no repetitions
+   * @see Scene::parts
+   */
+  void registerParts();
   /**
    * @brief Obtain the axis aligned bounding box defining scene boundaries
    * @see Scene::bbox

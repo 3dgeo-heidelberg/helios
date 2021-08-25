@@ -5,6 +5,7 @@
 #include <NoiseSource.h>
 #include <scene/dynamic/DynSequence.h>
 #include <maths/rigidmotion/RigidMotion.h>
+#include <DynMotion.h>
 
 #include <tinyxml2.h>
 
@@ -86,22 +87,23 @@ public:
     );
 
     /**
-     * @brief Obtain a dynamic sequence of rigid motions from given XML
+     * @brief Obtain a dynamic sequence of dynamic motions from given XML
      *  element.
      *
      * It is expected that given element contains children elements of type
      *  <motion type="motion_type"/> where motion_type can be either
      *  translation, rotation, rotsym, reflection, glideplane or helical.
      * These children element will be used to build the dynamic sequence of
-     *  rigid motions with the same order as the one in the XML.
+     *  dynamic motions with the same order as the one in the XML.
      *
      * @param element XML element containing motion children elements
-     * @return Vector of rigid motions built from XML
+     * @return Vector of dynamic motions built from XML
      * @see DynSequencer
      * @see DynSequence
      * @see rigidmotion::RigidMotion
+     * @see DynMotion
      */
-    static std::vector<std::shared_ptr<RigidMotion>> createRigidMotionsVector(
+    static std::vector<std::shared_ptr<DynMotion>> createDynMotionsVector(
         tinyxml2::XMLElement *element
     );
 };

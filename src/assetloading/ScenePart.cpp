@@ -9,6 +9,7 @@
 // ***  CONSTRUCTION / DESTRUCTION  *** //
 // ************************************ //
 ScenePart::ScenePart(ScenePart const &sp) {
+  this->centroid = sp.centroid;
   this->mId = sp.mId;
   this->onRayIntersectionMode = sp.onRayIntersectionMode;
   this->onRayIntersectionArgument = sp.onRayIntersectionArgument;
@@ -30,9 +31,10 @@ ScenePart::ScenePart(ScenePart const &sp) {
   this->subpartLimit = sp.subpartLimit;
 }
 
-// *** COPY OPERATORS *** //
-// ********************** //
+// ***  COPY / MOVE OPERATORS  *** //
+// ******************************* //
 ScenePart &ScenePart::operator=(const ScenePart &rhs) {
+  this->centroid = rhs.centroid;
   this->mId = rhs.mId;
   this->onRayIntersectionMode = rhs.onRayIntersectionMode;
   this->onRayIntersectionArgument = rhs.onRayIntersectionArgument;
@@ -177,4 +179,33 @@ bool ScenePart::splitSubparts() {
    *  have different hitObjectId for different components.
    */
   return true;
+}
+
+void ScenePart::computeCentroid(){
+    // Find centroid coordinates
+    double xmin=std::numeric_limits<double>::max();
+    double xmax=std::numeric_limits<double>::lowest();
+    double ymin=xmin, ymax=xmax, zmin=xmin, zmax=xmax;
+    std::vector<Vertex*> vertices = getAllVertices();
+    for(Vertex * vertex : vertices){
+        // Find centroid x coordinate
+        double const x = vertex->getX();
+        if(x < xmin) xmin = x;
+        if(x > xmax) xmax = x;
+        // Find centroid y coordinate
+        double const y = vertex->getY();
+        if(y < ymin) ymin = y;
+        if(y > ymax) ymax = y;
+        // Find centroid z coordinate
+        double const z = vertex->getZ();
+        if(z < zmin) zmin = z;
+        if(z > zmax) zmax = z;
+    }
+
+    // Build the centroid
+    centroid = arma::colvec(std::vector<double>({
+        (xmin+xmax)/2.0,
+        (ymin+ymax)/2.0,
+        (zmin+zmax)/2.0,
+    }));
 }

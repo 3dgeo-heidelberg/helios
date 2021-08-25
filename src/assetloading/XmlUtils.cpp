@@ -236,18 +236,18 @@ ObjectT XmlUtils::getAttribute(
     return result;
 }
 
-std::vector<std::shared_ptr<RigidMotion>> XmlUtils::createRigidMotionsVector(
+std::vector<std::shared_ptr<DynMotion>> XmlUtils::createDynMotionsVector(
         tinyxml2::XMLElement *element
 ){
     // Check there is at least one motion defined
     tinyxml2::XMLElement *xmlMotion = element->FirstChildElement("motion");
     if(xmlMotion == nullptr){
         throw HeliosException(
-            "XmlUtils::createRigidMotionsVector cannot create a vector from "
+            "XmlUtils::createDynMotionsVector cannot create a vector from "
             "a XML element with not even a single motion child"
         );
     }
-    std::vector<shared_ptr<RigidMotion>> rms;
+    std::vector<shared_ptr<DynMotion>> dms;
     RigidMotionR3Factory rm3f;
     tinyxml2::XMLAttribute const *motionAttr;
 
@@ -258,44 +258,54 @@ std::vector<std::shared_ptr<RigidMotion>> XmlUtils::createRigidMotionsVector(
         );
         if(typeAttr == nullptr){ // Check type is given, it is a MUST
             throw HeliosException(
-                "XmlUtils::createRigidMotionsVector found a motion with no "
+                "XmlUtils::createDynMotionsVector found a motion with no "
                 "type. This is not allowed."
             );
         }
         std::string type = typeAttr->Value();
+        // Handle motion self mode flag
+        bool selfMode = false;
+        tinyxml2::XMLAttribute const *selfModeAttr = xmlMotion->FindAttribute(
+            "selfMode"
+        );
+        if(selfModeAttr != nullptr && selfModeAttr->BoolValue()){
+            selfMode = true;
+        }
 
         // Handle translation
         if(type=="translation"){
             motionAttr = xmlMotion->FindAttribute("vec");
             if(motionAttr == nullptr){
                 throw HeliosException(
-                    "XmlUtils::createRigidMotionsVector found a translation "
+                    "XmlUtils::createDynMotionsVector found a translation "
                     "motion with no vec attribute"
                 );
             }
             arma::colvec vec(motionAttr->Value());
-            rms.push_back(std::make_shared<RigidMotion>(
-                rm3f.makeTranslation(arma::colvec(vec))
+            dms.push_back(std::make_shared<DynMotion>(
+                rm3f.makeTranslation(arma::colvec(vec)),
+                selfMode
             ));
         }
         else if(type=="reflection"){
             motionAttr = xmlMotion->FindAttribute("ortho");
             if(motionAttr == nullptr){
                 throw HeliosException(
-                    "XmlUtils::createRigidMotionsVector found a reflection "
+                    "XmlUtils::createDynMotionsVector found a reflection "
                     "motion with no ortho attribute"
                 );
             }
             arma::colvec ortho(motionAttr->Value());
-            rms.push_back(std::make_shared<RigidMotion>(
-                rm3f.makeReflection(ortho)
+            dms.push_back(std::make_shared<DynMotion>(
+                rm3f.makeReflection(ortho),
+                selfMode
             ));
         }
         else if(type=="glideplane"){
             motionAttr = xmlMotion->FindAttribute("ortho");
             if(motionAttr == nullptr){
                 throw HeliosException(
-                    "XmlUtils::createRigidMotionsVector found a glideplane "
+                    "XmlUtils::createDynMotionsVector found a glideplane "
                     "motion with no ortho attribute"
                 );
             }
@@ -303,20 +313,21 @@ std::vector<std::shared_ptr<RigidMotion>> XmlUtils::createRigidMotionsVector(
             motionAttr = xmlMotion->FindAttribute("shift");
             if(motionAttr == nullptr){
                 throw HeliosException(
-                    "XmlUtils::createRigidMotionsVector found a glideplane "
+                    "XmlUtils::createDynMotionsVector found a glideplane "
                     "motion with no axis attribute"
                 );
             }
             arma::colvec shift(motionAttr->Value());
-            rms.push_back(std::make_shared<RigidMotion>(
-                rm3f.makeGlideReflection(ortho, shift)
+            dms.push_back(std::make_shared<DynMotion>(
+                rm3f.makeGlideReflection(ortho, shift),
+                selfMode
             ));
         }
         else if(type=="rotation"){
             motionAttr = xmlMotion->FindAttribute("axis");
             if(motionAttr == nullptr){
                 throw HeliosException(
-                    "XmlUtils::createRigidMotionsVector found a rotation "
+                    "XmlUtils::createDynMotionsVector found a rotation "
                     "motion with no axis attribute"
                 );
             }
@@ -324,22 +335,23 @@ std::vector<std::shared_ptr<RigidMotion>> XmlUtils::createRigidMotionsVector(
             motionAttr = xmlMotion->FindAttribute("angle");
             if(motionAttr == nullptr){
                 throw HeliosException(
-                    "XmlUtils::createRigidMotionsVector found a rotation "
+                    "XmlUtils::createDynMotionsVector found a rotation "
                     "motion with no angle attribute"
                 );
             }
             double angle = MathConverter::degreesToRadians(
                 motionAttr->DoubleValue()
             );
-            rms.push_back(std::make_shared<RigidMotion>(
-                rm3f.makeRotation(axis, angle)
+            dms.push_back(std::make_shared<DynMotion>(
+                rm3f.makeRotation(axis, angle),
+                selfMode
             ));
         }
         else if(type=="helical"){
             motionAttr = xmlMotion->FindAttribute("axis");
             if(motionAttr == nullptr){
                 throw HeliosException(
-                    "XmlUtils::createRigidMotionsVector found a helical "
+                    "XmlUtils::createDynMotionsVector found a helical "
                     "motion with no axis attribute"
                 );
             }
@@ -347,7 +359,7 @@ std::vector<std::shared_ptr<RigidMotion>> XmlUtils::createRigidMotionsVector(
             motionAttr = xmlMotion->FindAttribute("angle");
             if(motionAttr == nullptr){
                 throw HeliosException(
-                    "XmlUtils::createRigidMotionsVector found a helical "
+                    "XmlUtils::createDynMotionsVector found a helical "
                     "motion with no angle attribute"
                 );
             }
@@ -357,20 +369,21 @@ std::vector<std::shared_ptr<RigidMotion>> XmlUtils::createRigidMotionsVector(
             motionAttr = xmlMotion->FindAttribute("glide");
             if(motionAttr == nullptr){
                 throw HeliosException(
-                    "XmlUtils::createRigidMotionsVector found a helical "
+                    "XmlUtils::createDynMotionsVector found a helical "
                     "motion with no glide attribute"
                 );
             }
             double glide = motionAttr->DoubleValue();
-            rms.push_back(std::make_shared<RigidMotion>(
-                rm3f.makeHelical(axis, angle, glide)
+            dms.push_back(std::make_shared<DynMotion>(
+                rm3f.makeHelical(axis, angle, glide),
+                selfMode
             ));
         }
         else if(type=="rotsym"){
             motionAttr = xmlMotion->FindAttribute("axis");
             if(motionAttr == nullptr){
                 throw HeliosException(
-                    "XmlUtils::createRigidMotionsVector found a rotsym "
+                    "XmlUtils::createDynMotionsVector found a rotsym "
                     "motion with no axis attribute"
                 );
             }
@@ -378,7 +391,7 @@ std::vector<std::shared_ptr<RigidMotion>> XmlUtils::createRigidMotionsVector(
             motionAttr = xmlMotion->FindAttribute("angle");
             if(motionAttr == nullptr){
                 throw HeliosException(
-                    "XmlUtils::createRigidMotionsVector found a rotsym "
+                    "XmlUtils::createDynMotionsVector found a rotsym "
                     "motion with no angle attribute"
                 );
             }
@@ -387,21 +400,23 @@ std::vector<std::shared_ptr<RigidMotion>> XmlUtils::createRigidMotionsVector(
             );
             motionAttr = xmlMotion->FindAttribute("center");
             if(motionAttr == nullptr){
-                rms.push_back(std::make_shared<RigidMotion>(
-                    rm3f.makeRotationalSymmetry(axis, angle)
+                dms.push_back(std::make_shared<DynMotion>(
+                    rm3f.makeRotationalSymmetry(axis, angle),
+                    selfMode
                 ));
             }
             else{
                 arma::colvec center(motionAttr->Value());
-                rms.push_back(std::make_shared<RigidMotion>(
-                    rm3f.makeRotationalSymmetry(axis,angle,center)
+                dms.push_back(std::make_shared<DynMotion>(
+                    rm3f.makeRotationalSymmetry(axis, angle, center),
+                    selfMode
                 ));
             }
         }
         // Handle unexpected type
         else{
             std::stringstream ss;
-            ss  << "XmlUtils::createRigidMotionsVector found an unexpected "
+            ss  << "XmlUtils::createDynMotionsVector found an unexpected "
                 << "type \"" << type << "\"";
             throw HeliosException(ss.str());
         }
@@ -410,5 +425,5 @@ std::vector<std::shared_ptr<RigidMotion>> XmlUtils::createRigidMotionsVector(
         xmlMotion = xmlMotion->NextSiblingElement("motion");
     }
 
-    return rms;
+    return dms;
 }

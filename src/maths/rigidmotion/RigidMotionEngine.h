@@ -44,7 +44,7 @@ public:
      * @param X The matrix of points to be transformed
      * @return Result of applying the rigid motion to the matrix of points
      */
-    mat apply(RigidMotion const &f, mat const X);
+    mat apply(RigidMotion const &f, mat const &X);
     /**
      * @brief Apply rigid motion \f$f\f$ to a point \f$X\f$
      *
@@ -58,7 +58,7 @@ public:
      * @param X The point as column vector to be transformed
      * @return Result of applying the rigid motion to the point
      */
-    colvec apply(RigidMotion const &f, colvec const X);
+    colvec apply(RigidMotion const &f, colvec const &X);
     /**
      * @brief Compose given rigid motions: \f$f \circ g = f(g(X))\f$
      *

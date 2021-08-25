@@ -1,16 +1,17 @@
 #pragma once
 
-#include <vector>
 
-#include "Vertex.h"
 class Primitive;
 class WavefrontObj;
 
+#include "Vertex.h"
 #include "maths/Rotation.h"
-#include <ogr_geometry.h>
 #include "LadLut.h"
-#include <iostream>
 
+#include <armadillo>
+#include <ogr_geometry.h>
+#include <iostream>
+#include <vector>
 
 /**
  * @brief Class representing a scene part
@@ -39,6 +40,10 @@ public:
      * @brief Vector of pointers to primitives used by this scene part
      */
 	std::vector<Primitive*> mPrimitives;
+	/**
+	 * @brief The centroid of the scene part
+	 */
+    arma::colvec centroid;
 	/**
 	 * @brief Identifier for the scene part
 	 */
@@ -89,6 +94,7 @@ public:
 	 */
 	double mScale = 1;
 
+
 	OGRSpatialReference *mCrs = nullptr;
 	OGREnvelope *mEnv = nullptr;
 
@@ -101,8 +107,15 @@ public:
 	ScenePart(ScenePart const &sp);
 	virtual ~ScenePart(){}
 
-	// ***  M E T H O D S  *** //
-	// *********************** //
+	// ***  COPY / MOVE OPERATORS  *** //
+	// ******************************* //
+    /**
+     * @brief Copy assigment operator.
+     */
+    ScenePart & operator=(const ScenePart & rhs);
+
+    // ***   M E T H O D S   *** //
+	// ************************* //
 
     /**
      * @brief Add the primitives of a WavefrontObj to the ScenePart
@@ -130,9 +143,29 @@ public:
     bool splitSubparts();
 
     /**
-     * @brief Copy assigment operator.
+     * @brief Compute the default centroid for the scene part as the midrange
+     *  point
+     *
+     * Let \f$P = \left\{p_1, \ldots, p_m\right\}\f$ be the set of
+     *  points/vertices defining the scene part, where
+     *  \f$\forall p_i \in P,\, p_i=\left(p_{ix}, p_{iy}, p_{iz}\right)\f$. So
+     *  \f$\vec{p}_{x}\f$ is the vector containing the \f$m\f$
+     *  \f$x\f$-coordinates, \f$\vec{p}_{y}\f$ is the vector containing the
+     *  \f$m\f$ \f$y\f$-coordinates and \f$\vec{p}_{z}\f$ is the vector
+     *  containing the \f$m\f$ \f$z\f$-cordinates. Now, let \f$o\f$ be the
+     *  centroid of the scene part, so it can be defined as
+     *
+     * \f[
+     *  o = \frac{1}{2} \left(
+     *      \min\left(\vec{p}_x\right)+\max\left(\vec{p}_{x}\right),
+     *      \min\left(\vec{p}_y\right)+\max\left(\vec{p}_{y}\right),
+     *      \min\left(\vec{p}_z\right)+\max\left(\vec{p}_{z}\right)
+     *  \right)
+     * \f]
+     *
+     * @see ScenePart::centroid
      */
-     ScenePart & operator=(const ScenePart & rhs);
+    void computeCentroid();
 
      // ***  GETTERS and SETTERS  *** //
     // ***************************** //
@@ -150,6 +183,18 @@ public:
      */
     inline void setPrimitives(std::vector<Primitive *> const &primitives)
     {this->mPrimitives = primitives;}
+    /**
+     * @brief Obtain the centroid of the scene part
+     * @return Scene part centroid
+     * @see ScenePart::centroid
+     */
+    inline arma::colvec getCentroid() const {return centroid;}
+    /**
+     * @brief Set the centroid of the scene part
+     * @param centroid New centroid for the scene part
+     * @see ScenePart::centroid
+     */
+    inline void setCentroid(arma::colvec centroid) {this->centroid = centroid;}
 
     /**
      * @brief Obtain the ID of the scene part

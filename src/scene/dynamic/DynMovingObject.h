@@ -4,27 +4,30 @@
 #include <deque>
 
 #include <scene/dynamic/DynObject.h>
-#include <rigidmotion/RigidMotion.h>
+#include <scene/dynamic/DynMotion.h>
 #include <rigidmotion/RigidMotionEngine.h>
+#include <scene/dynamic/DynMotionEngine.h>
 
 using std::shared_ptr;
 using std::make_shared;
 using std::deque;
 
 using rigidmotion::RigidMotionEngine;
-using rigidmotion::RigidMotion;
 
 /**
  * @author Alberto M. Esmoris Pena
  * @version 1.0
  *
- * @brief Implementation of a dynamic object which supports rigid motion
+ * @brief Implementation of a dynamic object which supports dynamic motions
+ *  (extended rigid motions)
  *
  * This dynamic object handles any rigid motion in \f$\mathbb{R}^2\f$ and
- *  \f$\mathbb{R}^{3}\f$.
+ *  \f$\mathbb{R}^{3}\f$ and also extended functionalities coming from
+ *  dynamic motion extra features, if any
  *
  * @see DynObject
  * @see rigidmotion::RigidMotion
+ * @see DynMotion
  * @see rigidmotion::RigidMotionEngine
  * @see rigidmotion::RigidMotionR2Factory
  * @see rigidmotion::RigidMotionR3Factory
@@ -41,7 +44,7 @@ protected:
      *
      * @see DynMovingObject::normalMotionQueue
      */
-    deque<shared_ptr<RigidMotion>> positionMotionQueue;
+    deque<shared_ptr<DynMotion>> positionMotionQueue;
     /**
      * @brief Queue of motions to be applied to the normal vector of each
      *  primitive
@@ -51,12 +54,13 @@ protected:
      *
      * @see DynMovingObject::positionMotionQueue
      */
-    deque<shared_ptr<RigidMotion>> normalMotionQueue;
+    deque<shared_ptr<DynMotion>> normalMotionQueue;
     /**
-     * @brief The rigid motion engine to apply rigid motions
+     * @brief The dynamic motion engine to apply dynamic motions
      * @see rigidmotion::RigidMotionEngine
+     * @see DynMotionEngine
      */
-    RigidMotionEngine rme;
+    DynMotionEngine dme;
 
 public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //
@@ -90,7 +94,7 @@ public:
     // ***  DYNAMIC BEHAVIOR  *** //
     // ************************** //
     /**
-     * @brief Rigid motion behavior implementation
+     * @brief Dynamic motion behavior implementation
      *
      * Let a moving dynamic object \f$\mathcal{D}\f$ be defined by matrices
      *  \f$P_{n \times m}\f$ defining the position and \f$U_{n \times m}\f$
@@ -108,13 +112,14 @@ public:
      *
      * Where \f$C_{n \times 1}\f$ is the transposition column vector and
      *  \f$A_{n \times n}\f$ is the fixed origin transformation matrix defining
-     *  the rigid motion. Then, \f$C'\f$ and \f$A'\f$ are analogous to \f$C\f$
-     *  and \f$A\f$ but coming from the normal motion queue instead of the
-     *  position motion queue.
+     *  the rigid motion at the core of the dynamic motion. Then, \f$C'\f$ and
+     *  \f$A'\f$ are analogous to \f$C\f$ and \f$A\f$ but coming from the
+     *  normal motion queue instead of the position motion queue.
      *
      * @return True if the dynamic object was modified, false otherwise
      * @see DynObject::doStep
      * @see rigidmotion::RigidMotion
+     * @see DynMotion
      * @see DynMovingObject::positionMotionQueue
      * @see DynMovingObject::normalMotionQueue
      */
@@ -122,81 +127,81 @@ public:
 
 protected:
     /**
-     * @brief Method to assist rigid motions computation.
+     * @brief Method to assist dynamic motions computation.
      *
-     * It provides the abstract logic to compute rigid motions in an efficient
-     *  way. Functions to extract rigid motion queue elements and to read and
-     *  update primitives must be given as input arguments.
+     * It provides the abstract logic to compute dynamic motions in an
+     *  efficient way. Functions to extract dynamic motion queue elements and to
+     *  read and update primitives must be given as input arguments.
      *
      * @param matrixFromPrimitives Function to get a matrix from primitives
      *  composing the dynamic object
      * @param matrixToPrimitives Function to update primitives from a given
      *  matrix
-     * @param queueHasNext Function to check whether the queue has rigid
+     * @param queueHasNext Function to check whether the queue has dynamic
      *  motions left (true) or not (false)
-     * @param queueNext Function to obtain the next rigid motion from a queue
+     * @param queueNext Function to obtain the next dynamic motion from a queue
      * @return True if modifications occurred, false otherwise
      */
-    bool applyRigidMotionQueue(
+    bool applyDynMotionQueue(
         std::function<arma::mat()> matrixFromPrimitives,
         std::function<void(arma::mat const &X)> matrixToPrimitives,
         std::function<bool()> queueHasNext,
-        std::function<shared_ptr<RigidMotion>()> queueNext
+        std::function<shared_ptr<DynMotion>()> queueNext
     );
 
 public:
     // ***  MOTION QUEUES METHODS  *** //
     // ******************************* //
     /**
-     * @brief Push given rigid motion to the position motion queue
-     * @param rm Rigid motion to be pushed to the position motion queue
+     * @brief Push given dynamic motion to the position motion queue
+     * @param dm Dynamic motion to be pushed to the position motion queue
      */
-    inline void pushPositionMotion(shared_ptr<RigidMotion> const rm)
-    {positionMotionQueue.push_back(rm);}
+    inline void pushPositionMotion(shared_ptr<DynMotion> const dm)
+    {positionMotionQueue.push_back(dm);}
     /**
-     * @brief Retrieve the first in rigid motion in the position motion queue
+     * @brief Retrieve the first dynamic motion in the position motion queue
      *
      * Notice this implies removing it from the queue.
      *
-     * @return First rigid motion in the position motion queue
+     * @return First dynamic motion in the position motion queue
      */
-    inline shared_ptr<RigidMotion> nextPositionMotion()
+    inline shared_ptr<DynMotion> nextPositionMotion()
     {return _next(positionMotionQueue);}
     /**
-     * @brief Remove all rigid motions from the position motion queue
+     * @brief Remove all dynamic motions from the position motion queue
      */
     inline void clearPositionMotionQueue()
     {positionMotionQueue.clear();}
     /**
-     * @brief Check if position motion queue has a next rigid motion or not
-     * @return True if position motion queue has a next rigid motion, false
+     * @brief Check if position motion queue has a next dynamic motion or not
+     * @return True if position motion queue has a next dynamic motion, false
      *  otherwise
      */
     inline bool positionMotionQueueHasNext() const
     {return !positionMotionQueue.empty();}
     /**
-     * @brief Push given rigid motion to the normal motion queue
-     * @param rm Rigid motion to be pushed to the normal motion queue
+     * @brief Push given dynamic motion to the normal motion queue
+     * @param dm Dynamic motion to be pushed to the normal motion queue
      */
-    inline void pushNormalMotion(shared_ptr<RigidMotion> const rm)
-    {normalMotionQueue.push_back(rm);}
+    inline void pushNormalMotion(shared_ptr<DynMotion> const dm)
+    {normalMotionQueue.push_back(dm);}
     /**
-     * @brief Retrieve the first rigid motion in the normal motion queue
+     * @brief Retrieve the first dynamic motion in the normal motion queue
      *
      * Notice this implies removing it from the queue.
      *
-     * @return First rigid motion in the normal motion queue
+     * @return First dynamic motion in the normal motion queue
      */
-    inline shared_ptr<RigidMotion> nextNormalMotion()
+    inline shared_ptr<DynMotion> nextNormalMotion()
     {return _next(normalMotionQueue);}
     /**
-     * @brief Remove all rigid motions from the normal motion queue
+     * @brief Remove all dynamic motions from the normal motion queue
      */
     inline void clearNormalMotionQueue()
     {normalMotionQueue.clear();}
     /**
-     * @brief Check if normal motion queue has a next rigid motion or not
-     * @return True if normal motion queue has a next rigid motion, false
+     * @brief Check if normal motion queue has a next dynamic motion or not
+     * @return True if normal motion queue has a next dynamic motion, false
      *  otherwise
      */
     inline bool normalMotionQueueHasNext() const
@@ -210,7 +215,7 @@ protected:
      *  queue
      *
      * @param deck Queue to retrieve next from
-     * @return First rigid motion in the given queue
+     * @return First dynamic motion in the given queue
      */
-    shared_ptr<RigidMotion> _next(deque<shared_ptr<RigidMotion>> &deck);
+    shared_ptr<DynMotion> _next(deque<shared_ptr<DynMotion>> &deck);
 };

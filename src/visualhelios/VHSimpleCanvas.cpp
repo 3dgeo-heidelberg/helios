@@ -60,7 +60,7 @@ void VHSimpleCanvas::update(){
     // Update polygon meshes after applying dynamic function if necessary
     for(shared_ptr<VHDynObjectXYZRGBAdapter> & dynObj : dynObjs){
         // Continue to next iteration if no updates are needed for this
-        if(!dynObj->doStep() && !isNeedingUpdate()) continue;
+        if(!dynObj->doStep(true, false) && !isNeedingUpdate()) continue;
         // Update the polygon mesh itself
         viewer->updatePolygonMesh<pcl::PointXYZRGB>(
             dynObj->getPolymesh(),
@@ -107,7 +107,11 @@ void VHSimpleCanvas::renderNormals(VHStaticObjectAdapter & staticObj){
         std::stringstream ss;
         ss << staticObj.getId() << "_normal" << i;
         viewer->removeShape(ss.str());
-        viewer->addLine(p, q, 1.0, 1.0, 0.0, ss.str());
+        viewer->addLine(
+            p, q,
+            normalDefColor[0], normalDefColor[1], normalDefColor[2],
+            ss.str()
+        );
     }
 }
 

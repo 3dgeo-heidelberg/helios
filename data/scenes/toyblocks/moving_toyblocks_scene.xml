@@ -27,11 +27,34 @@
 			<filter type="translate">
 				<param type="vec3" key="offset" value="-40.0;-5.0;0" />
 			</filter>
-			<rmotion id ="cube_rotation" loop="0">
-				<motion type="translation" vec="40;5;0;" />
+			<dmotion id ="cube_rotation" loop="0">
+				<motion type="rotation" axis="0;0;1" angle="1" selfMode="true"/>
+			</dmotion>
+        </part>
+		<part>
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/toyblocks/cube.obj" />
+            </filter>
+			<filter type="rotate">
+				<param key="rotation" type="rotation">
+					<rot angle_deg="60" axis="z"/>
+				</param>
+			</filter>
+			<filter type="scale">
+                <param type="double" key="scale" value="0.75" />
+            </filter>
+			<filter type="translate">
+				<param type="vec3" key="offset" value="50.0;30.0;0" />
+			</filter>
+			<dmotion id="cube_flight" loop="1" next="cube_planet">
+				<motion type="translation" vec="0;0;70" />
+			</dmotion>
+			<dmotion id ="cube_planet" loop="0">
+				<motion type="translation" vec="-120;-100;0" />
 				<motion type="rotation" axis="0;0;1" angle="1" />
-				<motion type="translation" vec="-40;-5;0;" />
-			</rmotion>
+				<motion type="translation" vec="120;100;0" />
+				<motion type="rotation" axis="0;0;1" angle="2" selfMode="true" />
+			</dmotion>
         </part>
 		<part>
             <filter type="objloader">
@@ -48,9 +71,9 @@
 			<filter type="translate">
 				<param type="vec3" key="offset" value="-15.0;-70.0;0" />
 			</filter>
-			<rmotion id ="cube_rotation" loop="0">
+			<dmotion id ="cube_rotation" loop="0">
 				<motion type="rotsym" axis="0;0;1" angle="2" center="-5;50;0" />
-			</rmotion>
+			</dmotion>
         </part>
         <part>
             <filter type="objloader">
@@ -59,12 +82,12 @@
 			<filter type="scale">
                 <param type="double" key="scale" value="0.5" />
             </filter>
-			<rmotion id="sphere_helical_up" loop="300" next="sphere_helical_down">
+			<dmotion id="sphere_helical_up" loop="300" next="sphere_helical_down">
 				<motion type="helical" axis="0;0;1" angle="4" glide="0.1"/>
-			</rmotion>
-			<rmotion id="sphere_helical_down" loop="300" next="sphere_helical_up">
+			</dmotion>
+			<dmotion id="sphere_helical_down" loop="300" next="sphere_helical_up">
 				<motion type="helical" axis="0;0;1" angle="-4" glide="-0.1"/>
-			</rmotion>
+			</dmotion>
         </part>
 		<part>
             <filter type="objloader">
@@ -73,18 +96,18 @@
 			<filter type="scale">
                 <param type="double" key="scale" value="1" />
             </filter>
-			<rmotion id="cylinder_translation1" loop="100" next="cylinder_translation2">
+			<dmotion id="cylinder_translation1" loop="100" next="cylinder_translation2">
 				<motion type="translation" vec="0;0.2;0"/>
-			</rmotion>
-			<rmotion id="cylinder_translation2" loop="100" next="cylinder_translation3">
+			</dmotion>
+			<dmotion id="cylinder_translation2" loop="100" next="cylinder_translation3">
 				<motion type="translation" vec="0.2;0;0"/>
-			</rmotion>
-			<rmotion id="cylinder_translation3" loop="100" next="cylinder_translation4">
+			</dmotion>
+			<dmotion id="cylinder_translation3" loop="100" next="cylinder_translation4">
 				<motion type="translation" vec="-0.2;0;0"/>
-			</rmotion>
-			<rmotion id="cylinder_translation4" loop="100" next="cylinder_translation1">
+			</dmotion>
+			<dmotion id="cylinder_translation4" loop="100" next="cylinder_translation1">
 				<motion type="translation" vec="0;-0.2;0"/>
-			</rmotion>
+			</dmotion>
         </part>
         <part>
             <filter type="objloader">
@@ -101,16 +124,14 @@
 			<filter type="translate">
 				<param type="vec3" key="offset" value="60.0;0.0;15.0" />
 			</filter>
-			<rmotion id="easter_gpup" next="easter_gpdown" loop="200">
+			<dmotion id="easter_gpup" next="easter_gpdown" loop="200">
 				<motion type="translation" vec="-250.0;0.0;0.0"/>
 				<motion type="glideplane" ortho="1;1;0" shift="0;0;0.1"/>
 				<motion type="translation" vec="250.0;0.0;0.0"/>
-			</rmotion>
-			<rmotion id="easter_gpdown" next="easter_gpup" loop="200">
-				<motion type="translation" vec="-250.0;0.0;0.0"/>
-				<motion type="glideplane" ortho="1;1;0" shift="0;0;-0.1"/>
-				<motion type="translation" vec="250.0;0.0;0.0"/>
-			</rmotion>
+			</dmotion>
+			<dmotion id="easter_gpdown" next="easter_gpup" loop="200">
+				<motion type="glideplane" ortho="1;1;0" shift="0;0;-0.1" selfMode="true" />
+			</dmotion>
         </part>
 		<part>
             <filter type="objloader">
@@ -127,9 +148,9 @@
 			<filter type="translate">
 				<param type="vec3" key="offset" value="60.0;0.0;15.0" />
 			</filter>
-			<rmotion id="easter_reflection" loop="1">
+			<dmotion id="easter_reflection" loop="1">
 				<motion type="reflection" ortho="0;0;1" />
-			</rmotion>
+			</dmotion>
         </part>
     </scene>
 </document>

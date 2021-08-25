@@ -8,10 +8,10 @@
  * @version 1.0
  *
  * @brief Implementation of a dynamic object which supports sequentiable
- *  rigid motions.
+ *  dynamic motions.
  *
- * Sequentiable rigid motions use sequences to modify motion queues so
- *  at each step queues are filled with corresponding rigid motions from
+ * Sequentiable dynamic motions use sequences to modify motion queues so
+ *  at each step queues are filled with corresponding dynamic motions from
  *  dynamic sequencers.
  *
  * @see DynMovingObject
@@ -22,9 +22,9 @@ protected:
     // ***  ATTRIBUTES  *** //
     // ******************** //
     /**
-     * @brief Rigid motion sequencer
+     * @brief Dynamic motion sequencer
      */
-    DynSequencer<RigidMotion> rmSequencer;
+    DynSequencer<DynMotion> dmSequencer;
 
 public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //
@@ -60,10 +60,10 @@ public:
     // ***  DYNAMIC BEHAVIOR  *** //
     // ************************** //
     /**
-     * @brief Sequentiable rigid motions behavior implementation
+     * @brief Sequentiable dynamic motions behavior implementation
      *
      * It is basically as the DynMovingObject::doStep but filling motion
-     *  queues with rigid motions coming from dynamic sequencer
+     *  queues with dynamic motions coming from dynamic sequencer
      *
      * @return True if the dynamic object was modified, false otherwise
      * @see DynMovingObject::doStep
@@ -73,7 +73,7 @@ public:
     bool doStep() override;
 protected:
     /**
-     * @brief Fill motion queues with rigid motions coming from dynamic
+     * @brief Fill motion queues with dynamic motions coming from dynamic
      *  sequencer
      */
     void fillMotionQueues();
@@ -82,45 +82,46 @@ public:
     // ***  GETTERs and SETTERs  *** //
     // ***************************** //
     /**
-     * @brief Add the dynamic sequence of rigid motions to the rigid motion
+     * @brief Add the dynamic sequence of dynamic motions to the dynamic motion
      *  sequencer
-     * @param rmSequence Rigid motion sequence to be added
+     * @param dmSequence Dynamic motion sequence to be added
      * @see DynSequencer::add
      */
-    inline void addSequence(shared_ptr<DynSequence<RigidMotion>> rmSequence)
-    {return rmSequencer.add(rmSequence);}
+    inline void addSequence(shared_ptr<DynSequence<DynMotion>> dmSequence)
+    {return dmSequencer.add(dmSequence);}
     /**
-     * @brief Remove the dynamic sequence of rigid motions with given
+     * @brief Remove the dynamic sequence of dynamic motions with given
      *  identifier
-     * @param id Identifier of dynamic sequence of rigid motions to be removed
+     * @param id Identifier of dynamic sequence of dynamic motions to be
+     *  removed
      * @see DynSequencer::remove
      */
     inline void removeSequence(string const & id)
-    {return rmSequencer.remove(id);}
+    {return dmSequencer.remove(id);}
     /**
-     * @brief Get the dynamic sequence of rigid motions with given identifier
-     * @param id Identifier of dynamic sequence of rigid motions to be
+     * @brief Get the dynamic sequence of dynamic motions with given identifier
+     * @param id Identifier of dynamic sequence of dynamic motions to be
      *  retrieved
-     * @return Requested dynamic sequence of rigid motions if any, nullptr
+     * @return Requested dynamic sequence of dynamic motions if any, nullptr
      *  otherwise
      * @see DynSequencer::get
      */
-    inline shared_ptr<DynSequence<RigidMotion>> getSequence(string const &id)
-    {return rmSequencer.get(id);}
+    inline shared_ptr<DynSequence<DynMotion>> getSequence(string const &id)
+    {return dmSequencer.get(id);}
     /**
-     * @brief Check if the dynamic sequenccer has a dynamic sequence of rigid
+     * @brief Check if the dynamic sequencer has a dynamic sequence of dynamic
      *  motions with given identifier
-     * @param id Identifier of the dynamic sequence of rigid motions to be
+     * @param id Identifier of the dynamic sequence of dynamic motions to be
      *  checked
-     * @return True if there is a dynamic sequence of rigid motions with
+     * @return True if there is a dynamic sequence of dynamic motions with
      *  given identifier, false otherwise
      * @see DynSequencer::has
      */
-    inline bool hasSequences(string const &id) {return rmSequencer.has(id);}
+    inline bool hasSequences(string const &id) {return dmSequencer.has(id);}
     /**
-     * @brief Remove all dynamic sequences of rigid motions composing the
+     * @brief Remove all dynamic sequences of dynamic motions composing the
      *  dynamic sequencer
      * @see DynSequencer::clear
      */
-    inline void clearSequences() {rmSequencer.clear();}
+    inline void clearSequences() {dmSequencer.clear();}
 };

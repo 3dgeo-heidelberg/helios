@@ -119,7 +119,7 @@ public:
      * @see rigidmotion::RigidMotion::C
      * @see rigidmotion::RigidMotion::A
      */
-    RigidMotion(colvec const C, mat const A) : C(C), A(A) {};
+    RigidMotion(colvec const &C, mat const &A) : C(C), A(A) {};
     virtual ~RigidMotion() = default;
 
     // ***  RIGID MOTION METHODS  *** //

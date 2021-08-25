@@ -28,24 +28,21 @@ Scene::Scene(Scene &s) {
   else this->bbox = std::shared_ptr<AABB>((AABB *)s.bbox->clone());
   if (s.bbox_crs == nullptr) this->bbox_crs = nullptr;
   else this->bbox_crs = std::shared_ptr<AABB>((AABB *)s.bbox_crs->clone());
-  std::set<ScenePart *> parts; // Pointer to each ScenePart, no repeats
+  std::set<ScenePart *> _parts; // Pointer to each ScenePart, no repeats
   std::vector<Primitive *> nonPartPrimitives; // Primitives without ScenePart
   ScenePart *_sp;
   Primitive *_p;
   for (size_t i = 0; i < s.primitives.size(); i++) { // Fill parts
     _p = s.primitives[i];
     _sp = _p->part.get();
-    if (_sp != nullptr)
-      parts.insert(_sp); // Primitive with part
-    else
-      nonPartPrimitives.push_back(_p); // Primitive with no part
+    if (_sp != nullptr) _parts.insert(_sp); // Primitive with part
+    else nonPartPrimitives.push_back(_p); // Primitive with no part
   }
-  for (ScenePart *sp : parts) { // Handle primitives associated with ScenePart
+  for (ScenePart *sp : _parts) { // Handle primitives associated with ScenePart
     std::shared_ptr<ScenePart> spc = std::make_shared<ScenePart>(*sp);
     for (Primitive *p : spc->mPrimitives) {
-      Primitive *_p = p;
-      _p->part = spc;
-      this->primitives.push_back(_p);
+      p->part = spc;
+      this->primitives.push_back(p);
     }
   }
   for (Primitive *p : nonPartPrimitives) { // Handle primitives with no part
@@ -53,6 +50,7 @@ Scene::Scene(Scene &s) {
   }
 
   this->kdtree = shared_ptr<KDTreeNodeRoot>(KDTreeNodeRoot::build(primitives));
+  registerParts();
 }
 
 // ***  M E T H O D S  *** //
@@ -129,6 +127,10 @@ bool Scene::finalizeLoading() {
 
   // ################ END Shift primitives to originWaypoint ##################
 
+  // Register parts and compute its centroid wrt to scene
+  registerParts();
+  for(shared_ptr<ScenePart> & part : parts) part->computeCentroid();
+
   // ############# BEGIN Build KD-tree ##################
   logging::INFO("Building KD-Tree... ");
 
@@ -142,6 +144,12 @@ bool Scene::finalizeLoading() {
   // ############# END Build KD-tree ##################
 
   return true;
+}
+
+void Scene::registerParts(){
+    unordered_set<shared_ptr<ScenePart>> partsSet;
+    for(Primitive *primitive : primitives) partsSet.insert(primitive->part);
+    parts = vector<shared_ptr<ScenePart>>(partsSet.begin(), partsSet.end());
 }
 
 shared_ptr<AABB> Scene::getAABB() { return this->bbox; }
