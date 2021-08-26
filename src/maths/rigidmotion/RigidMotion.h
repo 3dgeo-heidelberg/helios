@@ -1,6 +1,7 @@
 #pragma once
 
 #include <armadillo>
+#include <boost/serialization/serialization.hpp>
 
 using namespace arma;
 
@@ -46,6 +47,21 @@ namespace rigidmotion{
  * \f]
  */
 class RigidMotion{
+private:
+    // ***  SERIALIZATION  *** //
+    // *********************** //
+    friend class boost::serialization::access;
+    /**
+     * @brief Serialize a rigid motion to a stream of bytes
+     * @tparam Archive Type of rendering
+     * @param ar Specific rendering for the stream of bytes
+     * @param version Version number for the rigid motion
+     */
+    template <typename Archive>
+    void serialize(Archive &ar, const unsigned int version){
+        ar &C;
+        ar &A;
+    }
 protected:
     // ***  ATTRIBUTES  *** //
     // ******************** //
@@ -56,7 +72,7 @@ protected:
     /**
      * @brief The matrix representing the fixed origin transformation
      */
-    mat A;
+    arma::mat A;
 
 public:
     // ***  TYPE ENUMS  *** //
@@ -119,7 +135,7 @@ public:
      * @see rigidmotion::RigidMotion::C
      * @see rigidmotion::RigidMotion::A
      */
-    RigidMotion(colvec const &C, mat const &A) : C(C), A(A) {};
+    RigidMotion(colvec const &C, arma::mat const &A) : C(C), A(A) {};
     virtual ~RigidMotion() = default;
 
     // ***  RIGID MOTION METHODS  *** //
@@ -199,12 +215,12 @@ public:
      * @brief Get the fixed origin transformation matrix
      * @return Fixed origin transformation matrix of the rigid motion
      */
-    inline mat getA() const {return A;}
+    inline arma::mat getA() const {return A;}
     /**
      * @brief Set the fixed origin transformation matrix
      * @param A New fixed origin transformation matrix for the rigid motion
      */
-    inline void setA(mat const A) {this->A = A;}
+    inline void setA(arma::mat const A) {this->A = A;}
     /**
      * @brief Get the dimensionality of the rigid motion
      * @return Rigid motion dimensionality

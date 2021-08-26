@@ -21,6 +21,18 @@ using std::string;
  *  over time.
  */
 class DynObject : public ScenePart{
+private:
+    // ***  SERALIZATION  *** //
+    // ********************** //
+    /**
+     * @brief Serialize a dynamic object to a stream of bytes
+     * @tparam Archive Type of rendering
+     * @param ar Specific rendering for the stream of bytes
+     * @param version Version number for the dynamic object
+     */
+    template <typename Archive>
+    void serialize(Archive &ar, const unsigned int version) {}
+
 public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //
     // ************************************ //

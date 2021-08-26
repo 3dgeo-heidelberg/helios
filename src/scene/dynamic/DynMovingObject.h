@@ -33,6 +33,24 @@ using rigidmotion::RigidMotionEngine;
  * @see rigidmotion::RigidMotionR3Factory
  */
 class DynMovingObject : public DynObject{
+private:
+    // ***  SERIALIZATION  *** //
+    // *********************** //
+    friend class boost::serialization::access;
+    /**
+     * @brief Serialize a dynamic moving object to a stream of bytes
+     * @tparam Archive Type of rendering
+     * @param ar Specific rendering for the stream of bytes
+     * @param version Version number for the dynamic moving object
+     */
+    template <typename Archive>
+    void serialize(Archive &ar, const unsigned int version){
+        boost::serialization::void_cast_register<DynMovingObject, DynObject>();
+        ar &boost::serialization::base_object<RigidMotion>(*this);
+        ar &positionMotionQueue;
+        ar &normalMotionQueue;
+        ar &dme;
+    }
 protected:
     // ***  ATTRIBUTES  *** //
     // ******************** //

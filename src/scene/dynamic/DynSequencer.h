@@ -23,6 +23,23 @@ using std::shared_ptr;
  */
 template <typename T>
 class DynSequencer {
+private:
+    // ***  SERIALIZATION  *** //
+    // *********************** //
+    friend class boost::serialization::access;
+    /**
+     * @brief Serialize a dynamic sequencer to a stream of bytes
+     * @tparam Archive Type of rendering
+     * @param ar Specific rendering for the stream of bytes
+     * @param version Version number for the dynamic sequencer
+     */
+    template <typename Archive>
+    void serialize(Archive &ar, const unsigned int version){
+        ar &dynseqs;
+        ar &start;
+        ar &current;
+    }
+
 protected:
     // ***  ATTRIBUTES  *** //
     // ******************** //

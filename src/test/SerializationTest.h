@@ -67,7 +67,7 @@ public:
 };
 
 bool SerializationTest::run(){
-    std::string path("SerializationTest.tmp");
+    std::string path = "SerializationTest.tmp";
 
     // Detailed voxel serialization test
     DetailedVoxel dv1(
@@ -85,6 +85,8 @@ bool SerializationTest::run(){
     dv1.material->ka[0] = 2.0;
     dv1.material->ka[0] = 3.0;
     dv1.material->ka[0] = 4.0;
+    SerialIO * sio = SerialIO::getInstance();
+    sio->write<DetailedVoxel>(path, &dv1);
     SerialIO::getInstance()->write<DetailedVoxel>(path, &dv1);
     DetailedVoxel *dv2 = SerialIO::getInstance()->read<DetailedVoxel>(path);
     if(!validate(dv1,*dv2)) return false;
@@ -121,6 +123,10 @@ bool SerializationTest::run(){
 
     // Remove temporary file
     std::remove(path.c_str());
+
+    // Remove stuff allocated at serialization
+    delete dv2;
+    delete scene2;
 
     // Successfully reached end of test
     return true;

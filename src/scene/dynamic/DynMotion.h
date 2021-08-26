@@ -3,6 +3,8 @@
 #include <rigidmotion/RigidMotion.h>
 
 #include <memory>
+#include <boost/serialization/void_cast.hpp>
+#include <boost/serialization/base_object.hpp>
 
 using namespace arma;
 using rigidmotion::RigidMotion;
@@ -21,6 +23,25 @@ using std::make_shared;
  * @see DynMotion::makeNormalCounterpart
  */
 class DynMotion : public RigidMotion {
+    // ***  SERIALIZATION  *** //
+    // *********************** //
+    friend class boost::serialization::access;
+    /**
+     * @brief Serialize a dynamic motion to a stream of bytes
+     * @tparam Archive Type of rendering
+     * @param ar Specific rendering for the stream of bytes
+     * @param version Version number for the dynamic motion
+     */
+    template <typename Archive>
+    void serialize(Archive &ar, const unsigned int version){
+        boost::serialization::void_cast_register<DynMotion, RigidMotion>();
+        ar &boost::serialization::base_object<RigidMotion>(*this);
+        ar &selfMode;
+        ar &normalMode;
+        //ar &C; // Not needed because it is in save/load construct
+        //ar &A; // Not needed because it is in save/load construct
+    }
+
 protected:
     // ***  ATTRIBUTES  *** //
     // ******************** //
@@ -74,7 +95,7 @@ public:
      * @param A Matrix representing the fixed origin transformation
      * @see rigidmotion::RigidMotion::RigidMotion(colvec const, mat const)
      */
-    DynMotion(colvec const &C, mat const &A) : RigidMotion(C, A) {}
+    DynMotion(colvec const &C, arma::mat const &A) : RigidMotion(C, A) {}
     virtual ~DynMotion() = default;
 
     // ***  NORMALS UTILS  *** //

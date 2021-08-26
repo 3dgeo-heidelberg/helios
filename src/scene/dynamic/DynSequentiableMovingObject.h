@@ -18,6 +18,30 @@
  * @see DynSequencer
  */
 class DynSequentiableMovingObject : public DynMovingObject{
+private:
+    // ***  SERIALIZATION  *** //
+    // *********************** //
+    friend class boost::serialization::access;
+    /**
+     * @brief Serialize a dynamic sequentiable moving object o a stream of
+     *  bytes
+     * @tparam Archive Type of rendering
+     * @param ar Specific rendering for the stream of bytes
+     * @param version Version number for the dynamic sequentiable moving
+     *  object
+     */
+    template <typename Archive>
+    void serialize(Archive &ar, const unsigned int version){
+        boost::serialization::void_cast_register<
+            DynSequentiableMovingObject,
+            DynMovingObject
+        >();
+        ar &boost::serialization::base_object<
+            DynSequentiableMovingObject
+        >(*this);
+        ar &dmSequencer;
+    }
+
 protected:
     // ***  ATTRIBUTES  *** //
     // ******************** //

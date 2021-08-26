@@ -26,6 +26,19 @@ using std::shared_ptr;
  * @see Scene
  */
 class DynScene : public StaticScene{
+private:
+    // ***  SERIALIZATION  *** //
+    // *********************** //
+    friend class boost::serialization::access;
+    template <class Archive>
+    void serialize(Archive &ar, const unsigned int version){
+        boost::serialization::void_cast_register<DynScene, StaticScene>();
+        ar &boost::serialization::base_object<StaticScene>(*this);
+        ar &dynObjs;
+        ar &updated;
+        ar &dynamicSpaceInterval;
+        ar &currentStep;
+    }
 protected:
     // ***  ATTRIBUTES  *** //
     // ******************** //

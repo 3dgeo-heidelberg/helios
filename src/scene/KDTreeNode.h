@@ -17,6 +17,12 @@ class KDTreeNode {
     // ***  SERIALIZATION  *** //
     // *********************** //
 	friend class boost::serialization::access;
+	/**
+	 * @brief Serialize a KDTreeNode to a stream of bytes
+	 * @tparam Archive Type of rendering
+	 * @param ar Specific rendering for the stream of bytes
+	 * @param version Version number for the KDTreeNode
+	 */
 	template<class Archive>
 	void serialize(Archive & ar, const unsigned int version) {
 		ar & left;

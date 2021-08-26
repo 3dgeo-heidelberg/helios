@@ -12,9 +12,9 @@
 // ************************* //
 template<class SerialClass>
 void SerialIO::write(
-    std::string& path,
-    SerialClass *object,
-    bool fastCompression
+    std::string const &path,
+    SerialClass const *object,
+    bool const fastCompression
 ){
     std::ofstream ofs;
     int compressionMode = (fastCompression) ?
@@ -38,7 +38,10 @@ void SerialIO::write(
 }
 
 template<typename SerialClass>
-SerialClass * SerialIO::read(std::string& path, bool fastCompression){
+SerialClass * SerialIO::read(
+    std::string const& path,
+    bool const fastCompression
+){
     SerialClass *object = NULL;
     std::ifstream ifs;
     int compressionMode = (fastCompression) ?

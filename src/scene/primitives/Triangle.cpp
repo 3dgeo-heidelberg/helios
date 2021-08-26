@@ -9,8 +9,8 @@
 #include <glm/glm.hpp>
 #include <glm/gtx/norm.hpp>
 #include <glm/gtx/vector_angle.hpp>
-using namespace glm;
 
+using namespace glm;
 using namespace std;
 
 // ***  CONSTRUCTION / DESTRUCTION  *** //

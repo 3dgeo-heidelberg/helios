@@ -3,6 +3,8 @@
 #include <rigidmotion/RigidMotionFactory.h>
 
 #include <armadillo>
+#include <boost/serialization/base_object.hpp>
+#include <boost/serialization/void_cast.hpp>
 
 using namespace arma;
 
@@ -18,6 +20,27 @@ namespace rigidmotion{
  * @see rigidmotion::RigidMotionFactory
  */
 class RigidMotionR3Factory : public RigidMotionFactory{
+private:
+    // ***  SERIALIZATION  *** //
+    // *********************** //
+    friend class boost::serialization::access;
+    /**
+     * @brief Serialize a \f$\mathbb{R}^{3}\f$ rigid motion factory to a
+     *  stream of bytes
+     * @tparam Archive Type of rendering
+     * @param ar Specific rendering for the stream of bytes
+     * @param version Version number for the \f$\mathbb{R}^{3}\f$ rigid motion
+     *  factory
+     */
+    template <typename Archive>
+    void serialize(Archive &ar, const unsigned int version){
+        boost::serialization::void_cast_register<
+            RigidMotionR3Factory,
+            RigidMotionFactory
+        >();
+        ar &boost::serialization::base_object<RigidMotionFactory>(*this);
+    }
+
 protected:
     // ***  CONSTANTS  *** //
     // ******************* //

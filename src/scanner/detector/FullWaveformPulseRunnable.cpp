@@ -11,7 +11,6 @@
 #include <maths/RayUtils.h>
 
 using namespace std;
-using namespace glm;
 
 // ***  CONSTANTS  *** //
 // ******************* //
@@ -29,7 +28,7 @@ void FullWaveformPulseRunnable::operator()(
 	shared_ptr<Scene> scene(detector->scanner->platform->scene);
 
 	// Compute beam direction
-	dvec3 beamDir = absoluteBeamAttitude.applyTo(Directions::forward);
+	glm::dvec3 beamDir = absoluteBeamAttitude.applyTo(Directions::forward);
 
 	// NOTE:
 	// With beam divergence / full waveform being simulated, this is not perfect, since a sub-ray
@@ -127,7 +126,7 @@ void FullWaveformPulseRunnable::handleSubray(
     Rotation r2 = Rotation(Directions::forward, circleStep_rad * circleStep);
     r2 = r2.applyTo(r1);
 
-    dvec3 subrayDirection = absoluteBeamAttitude
+    glm::dvec3 subrayDirection = absoluteBeamAttitude
         .applyTo(r2)
         .applyTo(Directions::forward);
 
@@ -592,8 +591,8 @@ void FullWaveformPulseRunnable::captureFullWave(
     int fullwaveIndex,
     double min_time,
     double max_time,
-    dvec3 & beamOrigin,
-    dvec3 & beamDir,
+    glm::dvec3 & beamOrigin,
+    glm::dvec3 & beamDir,
     double gpstime,
     bool fullWaveNoise,
     RandomnessGenerator<double> &rg2

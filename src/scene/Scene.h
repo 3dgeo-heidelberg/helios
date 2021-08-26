@@ -28,6 +28,12 @@ private:
   // ***  SERIALIZATION  *** //
   // *********************** //
   friend class boost::serialization::access;
+  /**
+   * @brief Serialize a Scene to a stream of bytes
+   * @tparam Archive Type of rendering
+   * @param ar Specific rendering for the stream of bytes
+   * @param version Verison number for the Scene
+   */
   template <class Archive>
   void serialize(Archive &ar, const unsigned int version) {
     // register primitive derivates
@@ -38,9 +44,11 @@ private:
     ar.template register_type<DetailedVoxel>();
 
     ar &boost::serialization::base_object<Asset>(*this);
-    ar &primitives;
-    ar &bbox &bbox_crs;
     ar &kdtree;
+    ar &bbox;
+    ar &bbox_crs;
+    ar &primitives;
+    ar &parts;
   }
   // ***  ATTRIBUTES  *** //
   // ******************** //

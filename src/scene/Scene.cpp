@@ -96,7 +96,7 @@ bool Scene::finalizeLoading() {
   // Store original bounding box (CRS coordinates):
   this->bbox_crs = AABB::getForVertices(vertices);
 
-  dvec3 diff = this->bbox_crs->getMin();
+  glm::dvec3 diff = this->bbox_crs->getMin();
 
   stringstream ss;
   ss << "CRS bounding box (by vertices): " << this->bbox_crs->toString()
@@ -148,16 +148,18 @@ bool Scene::finalizeLoading() {
 
 void Scene::registerParts(){
     unordered_set<shared_ptr<ScenePart>> partsSet;
-    for(Primitive *primitive : primitives) partsSet.insert(primitive->part);
+    for(Primitive *primitive : primitives)
+        if(primitive->part != nullptr)
+            partsSet.insert(primitive->part);
     parts = vector<shared_ptr<ScenePart>>(partsSet.begin(), partsSet.end());
 }
 
 shared_ptr<AABB> Scene::getAABB() { return this->bbox; }
 
-dvec3 Scene::getGroundPointAt(dvec3 point) {
+glm::dvec3 Scene::getGroundPointAt(glm::dvec3 point) {
 
-  dvec3 origin = dvec3(point.x, point.y, bbox->getMin()[2] - 0.1);
-  dvec3 dir = dvec3(0, 0, 1);
+  glm::dvec3 origin = glm::dvec3(point.x, point.y, bbox->getMin()[2] - 0.1);
+  glm::dvec3 dir = glm::dvec3(0, 0, 1);
 
   shared_ptr<RaySceneIntersection> intersect =
       getIntersection(origin, dir, true);
@@ -178,7 +180,11 @@ dvec3 Scene::getGroundPointAt(dvec3 point) {
 }
 
 shared_ptr<RaySceneIntersection>
-Scene::getIntersection(dvec3 &rayOrigin, dvec3 &rayDir, bool groundOnly) {
+Scene::getIntersection(
+    glm::dvec3 &rayOrigin,
+    glm::dvec3 &rayDir,
+    bool groundOnly
+){
   vector<double> tMinMax = bbox->getRayIntersection(rayOrigin, rayDir);
   if (tMinMax.empty()) {
     logging::DEBUG("tMinMax is empty");
@@ -199,7 +205,11 @@ Scene::getIntersection(dvec3 &rayOrigin, dvec3 &rayDir, bool groundOnly) {
 }
 
 map<double, Primitive *>
-Scene::getIntersections(dvec3 &rayOrigin, dvec3 &rayDir, bool groundOnly) {
+Scene::getIntersections(
+    glm::dvec3 &rayOrigin,
+    glm::dvec3 &rayDir,
+    bool groundOnly
+){
 
   vector<double> tMinMax = bbox->getRayIntersection(rayOrigin, rayDir);
   if (tMinMax.empty()) {
@@ -212,7 +222,7 @@ Scene::getIntersections(dvec3 &rayOrigin, dvec3 &rayDir, bool groundOnly) {
                               groundOnly);
 }
 
-dvec3 Scene::getShift() { return this->bbox_crs->getMin(); }
+glm::dvec3 Scene::getShift() { return this->bbox_crs->getMin(); }
 
 void Scene::writeObject(string path) {
   stringstream ss;

@@ -44,7 +44,7 @@
                 <param type="double" key="scale" value="0.75" />
             </filter>
 			<filter type="translate">
-				<param type="vec3" key="offset" value="50.0;30.0;70" />
+				<param type="vec3" key="offset" value="50.0;30.0;120" />
 			</filter>
 			<dmotion id ="cube_planet" loop="0">
 				<motion type="rotation" axis="0;0;1" angle="2" selfMode="true" />
@@ -66,10 +66,15 @@
                 <param type="double" key="scale" value="0.75" />
             </filter>
 			<filter type="translate">
-				<param type="vec3" key="offset" value="-15.0;-70.0;0" />
+				<param type="vec3" key="offset" value="-30.0;40.0;0" />
 			</filter>
-			<dmotion id ="cube_rotation" loop="0">
+			<dmotion id ="cube_bounce1" loop="1" next="cube_bounce2">
+				<motion type="translation" vec="-50;-150;-20" />
 				<motion type="rotsym" axis="0;0;1" angle="2" center="-5;50;0" />
+				<motion type="translation" vec="50;150;20" />
+			</dmotion>
+			<dmotion id ="cube_bounce2" loop="8" next="cube_bounce1">
+				<motion type="translation" vec="0;0;-3.2" />
 			</dmotion>
         </part>
         <part>
@@ -80,10 +85,14 @@
                 <param type="double" key="scale" value="0.5" />
             </filter>
 			<dmotion id="sphere_helical_up" loop="300" next="sphere_helical_down">
-				<motion type="helical" axis="0;0;1" angle="4" glide="0.1"/>
+				<motion type="translation" vec="-129;-120;0" />
+				<motion type="helical" axis="0;0;1" angle="4" glide="0.3"/>
+				<motion type="translation" vec="129;120;0" />
 			</dmotion>
 			<dmotion id="sphere_helical_down" loop="300" next="sphere_helical_up">
-				<motion type="helical" axis="0;0;1" angle="-4" glide="-0.1"/>
+				<motion type="translation" vec="-129;-120;0" />
+				<motion type="helical" axis="0;0;1" angle="-4" glide="-0.3"/>
+				<motion type="translation" vec="129;120;0" />
 			</dmotion>
         </part>
 		<part>
@@ -93,6 +102,9 @@
 			<filter type="scale">
                 <param type="double" key="scale" value="1" />
             </filter>
+			<filter type="translate">
+				<param type="vec3" key="offset" value="90.0;30.0;0" />
+			</filter>
 			<dmotion id="cylinder_translation1" loop="100" next="cylinder_translation2">
 				<motion type="translation" vec="0;0.2;0"/>
 			</dmotion>

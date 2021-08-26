@@ -30,7 +30,7 @@ public:
      */
     static SerialIO * getInstance();
 
-    ~SerialIO(){};
+    virtual ~SerialIO() = default;
 
     // *** SERIAL IO METHODS *** //
     // ************************* //
@@ -46,8 +46,8 @@ public:
      */
     template<class SerialClass>
     void write(
-        std::string& path,
-        SerialClass *object,
+        std::string const& path,
+        SerialClass const *object,
         bool fastCompression=true
     );
 
@@ -62,7 +62,10 @@ public:
      * @return Instance built from serialized object file
      */
     template<typename SerialClass>
-    SerialClass * read(std::string& path, bool fastCompression=true);
+    SerialClass * read(
+        std::string const& path,
+        bool const fastCompression=true
+    );
 };
 
 #include <SerialIO.tcc>
