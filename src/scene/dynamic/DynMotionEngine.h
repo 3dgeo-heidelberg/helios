@@ -90,15 +90,70 @@ public:
      */
     mat apply(DynMotion const &f, mat const &X, DynObject &dynObj);
     /**
-     * @brief Compose given dynamic motions: \f$f \circ g = f(g(X))\f$
-     *  considering they belong to given dynamic object
+     * @brief Compose given dynamic motions  considering they belong to given
+     *  dynamic object
+     *
+     * To explain how dynamic motion composition works, let \f$f\f$ and \f$g\f$
+     *  be dynamic motions with self mode disabled and \f$f'\f$ and \f$g'\f$
+     *  their counterpart dynamic motions with self mode enabled. Also, let
+     *  \f$O\f$ be the centroid of given dynamic object. Now, there are four
+     *  different cases that must be handled:
+     *
+     * Case \f$f \circ g\f$
+     * \f[
+     *  \left(f \circ g\right)\left(X\right) =
+     *      f\left(g\left(X\right)\right)
+     * \f]
+     *
+     * Case \f$f' \circ g\f$
+     * \f[
+     *  \left(f' \circ g\right)\left(X\right) =
+     *      g(O) + f\left[g(X)-g(O)\right]
+     * \f]
+     *
+     * Case \f$f \circ g'\f$
+     * \f[
+     *  \left(f \circ g\right)\left(X\right) =
+     *      f\left[O+g(X-O)\right]
+     * \f]
+     *
+     * Case \f$f' \circ g'\f$
+     * \f[
+     *  \left(f' \circ g'\right) =
+     *      g(O) + f\left[O + g(X-O) - g(O)\right]
+     * \f]
+     *
+     *
+     * Finally, in case any dynamic motion involved in the composition has
+     *  normal mode enabled, then resulting dynamic motion will have normal
+     *  mode enabled too. It is called the normal mode transitivity property
+     *  of dynamic motions.
+     *
      * @param f The dynamic motion in second place of composition
      * @param g The dynamic motion in first place of composition
      * @param dynObj Dynamic object associated with given dynamic motions
      *  to be composed
-     * @return Composition of given dynamic motions \f$f \circ g = f(g(X))\f$
+     * @return Composition of given dynamic motions
+     * @see rigidmotion::RigidMotionEngine::compose
+     * @see rigidmotion::RigidMotion::compose
      */
     DynMotion compose(
+        DynMotion const &f,
+        DynMotion const &g,
+        DynObject const &dynObj
+    );
+
+protected:
+    /**
+     * @brief Assist compose method do its stuff.
+     *
+     * It takes care of the composition itself so the main compose method
+     *  implements the proper configuration of composition depending on the
+     *  dynamic object and given dynamic motions
+     *
+     * @see compose(DynMotion const &, DynMotion const &, DynObject const &)
+     */
+    DynMotion _compose(
         DynMotion const &f,
         DynMotion const &g,
         DynObject const &dynObj

@@ -44,16 +44,13 @@
                 <param type="double" key="scale" value="0.75" />
             </filter>
 			<filter type="translate">
-				<param type="vec3" key="offset" value="50.0;30.0;0" />
+				<param type="vec3" key="offset" value="50.0;30.0;70" />
 			</filter>
-			<dmotion id="cube_flight" loop="1" next="cube_planet">
-				<motion type="translation" vec="0;0;70" />
-			</dmotion>
 			<dmotion id ="cube_planet" loop="0">
+				<motion type="rotation" axis="0;0;1" angle="2" selfMode="true" />
 				<motion type="translation" vec="-120;-100;0" />
 				<motion type="rotation" axis="0;0;1" angle="1" />
 				<motion type="translation" vec="120;100;0" />
-				<motion type="rotation" axis="0;0;1" angle="2" selfMode="true" />
 			</dmotion>
         </part>
 		<part>

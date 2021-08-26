@@ -17,8 +17,12 @@ mat DynMotionEngine::apply(
     }
 
     // Handle plain dynamic motion (base rigid motion)
-    if(!f.isNormalMode()) dynObj.setCentroid(rme.apply(f, dynObj.getCentroid()));
-    return rme.apply(f, X);
+    if(!f.isNormalMode()){  // Position update
+        dynObj.setCentroid(rme.apply(f, dynObj.getCentroid()));
+        return rme.apply(f, X);
+    }
+    // Normal update
+    return rme.apply(RigidMotion(zeros(f.getDimensionality()), f.getA()), X);
 }
 
 
@@ -29,6 +33,22 @@ mat DynMotionEngine::apply(
 
 
 DynMotion DynMotionEngine::compose(
+    DynMotion const &f,
+    DynMotion const &g,
+    DynObject const &dynObj
+){
+    // Compose the underlying rigid motion
+    DynMotion dm = _compose(f, g, dynObj);
+
+    // Configure dynamic motion
+    if(f.isNormalMode() || g.isNormalMode()) // Normal mode transitivity
+        dm.setNormalMode(true);
+
+    // Return
+    return dm;
+}
+
+DynMotion DynMotionEngine::_compose(
     DynMotion const &f,
     DynMotion const &g,
     DynObject const &dynObj

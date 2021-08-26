@@ -150,6 +150,13 @@ protected:
      *          \left(P_x - 2 O_x\right)
      *      \right]
      * \f]
+     *
+     * Finally, one last consideration must be taken into account. If \f$z^*\f$
+     *  is the maximum value of the \f$z\f$ coordinate in the scene, then
+     *  when \f$O_z < z^*\f$ the \f$z\f$ coordinate for the initial
+     *  camera position will be \f$z^*\f$ instead of \f$O_z\f$. It is, the
+     *  camera position will be \f$O = \left(O_x, O_y, z^*\right)\f$
+     *
      */
     void cameraFromScene();
     /**

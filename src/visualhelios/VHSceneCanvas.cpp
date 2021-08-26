@@ -172,9 +172,13 @@ void VHSceneCanvas::unrenderAllNormals(){
 // ********************* //
 void VHSceneCanvas::cameraFromScene(){
     // Configure camera
+    double const sceneMaxZ = dynScene->getDynScene().getAABB()->getMax().z;
     glm::dvec3 const c = dynScene->getDynScene().getAABB()->getCentroid();
     glm::dvec3 const p = dynScene->getDynScene().getAABB()->getMin();
-    double const camZ = (p.z-camCoef*(p.x-2*c.x))/2.0;
+    double const camZ = std::max(
+        (p.z-camCoef*(p.x-2*c.x))/2.0,
+        sceneMaxZ
+    );
     viewer->setCameraPosition(
         c.x, c.y, camZ,
         c.x, c.y, p.z,
