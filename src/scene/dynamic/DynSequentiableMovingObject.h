@@ -37,7 +37,7 @@ private:
             DynMovingObject
         >();
         ar &boost::serialization::base_object<
-            DynSequentiableMovingObject
+            DynMovingObject
         >(*this);
         ar &dmSequencer;
     }

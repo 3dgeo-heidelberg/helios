@@ -57,7 +57,7 @@ public:
      * @param X The matrix of points to be transformed
      * @return Result of applying the rigid motion to the matrix of points
      */
-    mat apply(RigidMotion const &f, mat const &X);
+    arma::mat apply(RigidMotion const &f, arma::mat const &X);
     /**
      * @brief Apply rigid motion \f$f\f$ to a point \f$X\f$
      *
@@ -106,7 +106,7 @@ public:
      *  will be returned. If the lineal variety is a plane, then the
      *  orthonormal vector of the plane will be returned.
      */
-    mat computeFixedPoints(
+    arma::mat computeFixedPoints(
         RigidMotion const &f,
         size_t &dim,
         bool safe=true
@@ -138,7 +138,7 @@ public:
      *   director vector of the line will be returned. If the lineal variety is
      *   a plane, then the orthonormal vector of the plane will be returned.
      */
-    mat computeAssociatedInvariant(
+    arma::mat computeAssociatedInvariant(
         RigidMotion const &f,
         size_t &dim,
         bool safe=true

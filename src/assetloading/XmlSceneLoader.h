@@ -4,6 +4,8 @@
 
 #include <Scene.h>
 #include <StaticScene.h>
+#include <DynScene.h>
+#include <SerialSceneWrapper.h>
 #include <SceneLoadingSpecification.h>
 #include <scene/dynamic/DynSequentiableMovingObject.h>
 
@@ -40,12 +42,15 @@ public:
 	 * @brief Create scene from given XML element (node)
 	 * @param sceneNode XML element (node) containing scene data
 	 * @param path Path to scene file
+     * @param sceneType[out] When it is not null, it will be used to store the
+     *  type of created scene
 	 * @return Shared pointer to created scene
 	 * @see Scene
 	 */
     std::shared_ptr<Scene> createSceneFromXml(
         tinyxml2::XMLElement* sceneNode,
-        std::string path
+        std::string path,
+        SerialSceneWrapper::SceneType *sceneType = nullptr
     );
 
     /**

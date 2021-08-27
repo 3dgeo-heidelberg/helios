@@ -18,7 +18,8 @@
 std::shared_ptr<Scene>
 XmlSceneLoader::createSceneFromXml(
     tinyxml2::XMLElement *sceneNode,
-    std::string path
+    std::string path,
+    SerialSceneWrapper::SceneType *sceneType
 ){
     std::shared_ptr<StaticScene> scene = std::make_shared<StaticScene>();
     bool dynScene = false;
@@ -81,6 +82,12 @@ XmlSceneLoader::createSceneFromXml(
     if (!success) {
         logging::ERR("Finalizing the scene failed.");
         exit(-1);
+    }
+
+    // Store scene type if requested
+    if(sceneType != nullptr){
+        if(dynScene) *sceneType = SerialSceneWrapper::SceneType::DYNAMIC_SCENE;
+        else *sceneType = SerialSceneWrapper::SceneType::STATIC_SCENE;
     }
 
     // Return built scene

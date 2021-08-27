@@ -50,7 +50,8 @@ shared_ptr<Survey> DynamicSceneDemo::loadSurvey(){
     shared_ptr<XmlSurveyLoader> xmlreader(
         new XmlSurveyLoader(surveyPath, assetsPath)
     );
-    shared_ptr<Survey> survey = xmlreader->load(true, true);
+    logging::makeVerbose2(); // TODO Remove
+    shared_ptr<Survey> survey = xmlreader->load(true, false); // TODO Rethink : Rebuild true
     if(survey == nullptr){
         std::stringstream ss;
         ss  << "DynamicSceneDemo failed to read scene from survey:\n\t\""

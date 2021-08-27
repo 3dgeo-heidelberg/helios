@@ -32,10 +32,11 @@ private:
    * @brief Serialize a Scene to a stream of bytes
    * @tparam Archive Type of rendering
    * @param ar Specific rendering for the stream of bytes
-   * @param version Verison number for the Scene
+   * @param version Version number for the Scene
    */
   template <class Archive>
   void serialize(Archive &ar, const unsigned int version) {
+    std::cout << "Exporting Scene (0) ..." << std::endl; // TODO Remove
     // register primitive derivates
     ar.template register_type<AABB>();
     ar.template register_type<Triangle>();
@@ -43,12 +44,21 @@ private:
     ar.template register_type<Voxel>();
     ar.template register_type<DetailedVoxel>();
 
+    std::cout << "Exporting Scene (1) ..." << std::endl; // TODO Remove
+    boost::serialization::void_cast_register<Scene, Asset>();
+    std::cout << "Exporting Scene (2) ..." << std::endl; // TODO Remove
     ar &boost::serialization::base_object<Asset>(*this);
+    std::cout << "Exporting Scene (3) ..." << std::endl; // TODO Remove
     ar &kdtree;
+    std::cout << "Exporting Scene (4) ..." << std::endl; // TODO Remove
     ar &bbox;
+    std::cout << "Exporting Scene (5) ..." << std::endl; // TODO Remove
     ar &bbox_crs;
+    std::cout << "Exporting Scene (6) ..." << std::endl; // TODO Remove
     ar &primitives;
+    std::cout << "Exporting Scene (7) ..." << std::endl; // TODO Remove
     ar &parts;
+    std::cout << "Exported Scene!" << std::endl; // TODO Remove
   }
   // ***  ATTRIBUTES  *** //
   // ******************** //
@@ -162,20 +172,22 @@ public:
   glm::dvec3 getShift();
 
   /**
+   * @brief Obtain all vertices (without repetitions) composing the scene
+   * @return All vertices (without repetitions) composing the scene
+   */
+  std::vector<Vertex *> getAllVertices();
+
+  // ***   READ/WRITE  *** //
+  // ********************* //
+  /**
    * @brief Serialize the scene and write it to given output file
    * @param path Path to output file where serialized scene shall be stored
    */
-  void writeObject(std::string path);
+  virtual void writeObject(std::string path);
   /**
    * @brief Read serialized scene from given file
    * @param path Path to file where a serialized scene is stored
    * @return Imported scene
    */
   static Scene *readObject(std::string path);
-
-  /**
-   * @brief Obtain all vertices (without repetitions) composing the scene
-   * @return All vertices (without repetitions) composing the scene
-   */
-  std::vector<Vertex *> getAllVertices();
 };

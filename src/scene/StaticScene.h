@@ -34,9 +34,15 @@ private:
      */
     template <class Archive>
     void serialize(Archive &ar, const unsigned int version){
+        std::cout << "Exporting StaticScene (0)..." << std::endl; // TODO Remove
         boost::serialization::void_cast_register<StaticScene, Scene>();
+        std::cout << "Exporting StaticScene (1)..." << std::endl; // TODO Remove
+        boost::serialization::void_cast_register<StaticScene, Scene>();
+        std::cout << "Exporting StaticScene (2)..." << std::endl; // TODO Remove
         ar &boost::serialization::base_object<Scene>(*this);
+        std::cout << "Exporting StaticScene (3)..." << std::endl; // TODO Remove
         ar &staticObjs;
+        std::cout << "Exported StaticScene!" << std::endl; // TODO Remove
     }
 
 protected:
@@ -104,4 +110,19 @@ public:
      * @return Number of static objects in the scene
      */
     inline size_t numStaticObjects() {return staticObjs.size();}
+
+    // ***  READ / WRITE  *** //
+    // ********************** //
+    /**
+     * @brief Serialize the static scene and write it to given output file
+     * @param path Path to output file where serialized static scene shall be
+     *  stored
+     */
+    void writeObject(std::string path) override;
+    /**
+     * @brief Read serialized static scene from given file
+     * @param path Path to file where a serialized static scene is stored
+     * @return Imported static scene
+     */
+    static StaticScene *readObject(std::string path);
 };

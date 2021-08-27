@@ -6,7 +6,10 @@
 #include <boost/iostreams/filter/zlib.hpp>
 #include <boost/archive/binary_oarchive.hpp>
 #include <boost/archive/binary_iarchive.hpp>
+#include <boost/serialization/unordered_map.hpp>
 #include <logging.hpp>
+
+using boost::archive::archive_exception;
 
 // *** SERIAL IO METHODS *** //
 // ************************* //
@@ -42,7 +45,7 @@ SerialClass * SerialIO::read(
     std::string const& path,
     bool const fastCompression
 ){
-    SerialClass *object = NULL;
+    SerialClass *object = nullptr;
     std::ifstream ifs;
     int compressionMode = (fastCompression) ?
         boost::iostreams::zlib::best_speed :  // Reduce size at most
@@ -57,6 +60,9 @@ SerialClass * SerialIO::read(
         boost::archive::binary_iarchive ia(compressedIn);
         ia & object;
     }
+    catch(archive_exception &aex){
+        handleArchiveException("SerialIO::read", aex);
+    }
     catch(std::exception &e){
         std::stringstream ss;
         ss << "SerialIO::read EXCEPTION:\n\t" << e.what();
@@ -66,3 +72,4 @@ SerialClass * SerialIO::read(
     ifs.close();
     return object;
 }
+

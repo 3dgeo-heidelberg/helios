@@ -50,11 +50,11 @@ AABB *Triangle::getAABB() {
   return aabb;
 }
 
-dvec3 Triangle::getCentroid() {
+glm::dvec3 Triangle::getCentroid() {
   return (verts[0].pos + verts[1].pos + verts[2].pos) / 3.0;
 }
 
-dvec3 Triangle::getFaceNormal() {
+glm::dvec3 Triangle::getFaceNormal() {
   if (!faceNormalSet) {
     update();
     faceNormalSet = true; // TODO temp solution
@@ -62,31 +62,42 @@ dvec3 Triangle::getFaceNormal() {
   return faceNormal;
 }
 
-double Triangle::getIncidenceAngle_rad(const glm::dvec3 &rayOrigin,
-                                       const glm::dvec3 &rayDir,
-                                       const glm::dvec3 &intersectionPoint) {
+double Triangle::getIncidenceAngle_rad(
+    const glm::dvec3 &rayOrigin,
+    const glm::dvec3 &rayDir,
+   const glm::dvec3 &intersectionPoint
+ ){
   return M_PI - glm::angle(faceNormal, rayDir);
 }
 
 // These naive methods are much faster than the built-in in Vector3D
-inline double Triangle::dotProductNaive(const dvec3 &v1, const dvec3 &v3) {
+inline double Triangle::dotProductNaive(
+    const glm::dvec3 &v1,
+    const glm::dvec3 &v3
+  ) {
   return v1.x * v3.x + v1.y * v3.y + v1.z * v3.z;
 }
 
-inline dvec3 Triangle::crossProductNaive(const dvec3 &v1, const dvec3 &v2) {
-  return dvec3(v1.y * v2.z - v1.z * v2.y, v1.z * v2.x - v1.x * v2.z,
-               v1.x * v2.y - v1.y * v2.x);
+inline glm::dvec3 Triangle::crossProductNaive(
+    const glm::dvec3 &v1,
+    const glm::dvec3 &v2
+  ) {
+  return glm::dvec3(
+      v1.y * v2.z - v1.z * v2.y,
+      v1.z * v2.x - v1.x * v2.z,
+      v1.x * v2.y - v1.y * v2.x
+    );
 }
 
 /*
  * Fast, Minimum Storage Ray/Triangle Intersection (M�ller and Trumbore, 1997)
  * See http://www.lighthouse3d.com/tutorials/maths/ray-triangle-intersection/
  */
-std::vector<double> Triangle::getRayIntersection(const dvec3 &rayOrigin,
-                                                 const dvec3 &rayDir) {
-  dvec3 e1 = this->verts[1].pos - this->verts[0].pos;
-  dvec3 e2 = this->verts[2].pos - this->verts[0].pos;
-  dvec3 h = crossProductNaive(rayDir, e2);
+std::vector<double> Triangle::getRayIntersection(const glm::dvec3 &rayOrigin,
+                                                 const glm::dvec3 &rayDir) {
+  glm::dvec3 e1 = this->verts[1].pos - this->verts[0].pos;
+  glm::dvec3 e2 = this->verts[2].pos - this->verts[0].pos;
+  glm::dvec3 h = crossProductNaive(rayDir, e2);
   double a = dotProductNaive(e1, h);
 
   if (a > -eps && a < eps) {
@@ -94,14 +105,14 @@ std::vector<double> Triangle::getRayIntersection(const dvec3 &rayOrigin,
   }
 
   double f = 1.0 / a;
-  dvec3 s = rayOrigin - this->verts[0].pos;
+  glm::dvec3 s = rayOrigin - this->verts[0].pos;
   double u = f * dotProductNaive(s, h);
 
   if (u < 0.0 || u > 1.0) {
     return std::vector<double>{-1};
   }
 
-  dvec3 q = crossProductNaive(s, e1);
+  glm::dvec3 q = crossProductNaive(s, e1);
   double v = f * dotProductNaive(rayDir, q);
 
   if (v < 0.0 || u + v > 1.0) {
@@ -164,7 +175,7 @@ void Triangle::update() {
   e1 = verts[1].pos - verts[0].pos;
   e2 = verts[2].pos - verts[0].pos;
 
-  dvec3 normal_unnormalized =
+  glm::dvec3 normal_unnormalized =
       glm::cross(verts[1].pos - verts[0].pos, verts[2].pos - verts[0].pos);
 
   if (glm::l2Norm(normal_unnormalized) > 0) {
@@ -184,7 +195,7 @@ void Triangle::buildAABB() {
       std::min(std::min(verts[0].getY(), verts[1].getY()), verts[2].getY());
   double minZ =
       std::min(std::min(verts[0].getZ(), verts[1].getZ()), verts[2].getZ());
-  dvec3 min = dvec3(minX, minY, minZ);
+  glm::dvec3 min = glm::dvec3(minX, minY, minZ);
 
   double maxX =
       std::max(std::max(verts[0].getX(), verts[1].getX()), verts[2].getX());
@@ -192,7 +203,7 @@ void Triangle::buildAABB() {
       std::max(std::max(verts[0].getY(), verts[1].getY()), verts[2].getY());
   double maxZ =
       std::max(std::max(verts[0].getZ(), verts[1].getZ()), verts[2].getZ());
-  dvec3 max = dvec3(maxX, maxY, maxZ);
+  glm::dvec3 max = glm::dvec3(maxX, maxY, maxZ);
 
   aabb = new AABB(min, max);
 }
@@ -228,17 +239,20 @@ double Triangle::calcArea2D() {
 }
 
 double Triangle::calcArea3D() {
-  dvec3 ab = dvec3(verts[1].getX() - verts[0].getX(),
+  glm::dvec3 ab = glm::dvec3(verts[1].getX() - verts[0].getX(),
                    verts[1].getY() - verts[0].getY(),
                    verts[1].getZ() - verts[0].getZ());
-  dvec3 ac = dvec3(verts[2].getX() - verts[0].getX(),
+  glm::dvec3 ac = glm::dvec3(verts[2].getX() - verts[0].getX(),
                    verts[2].getY() - verts[0].getY(),
                    verts[2].getZ() - verts[0].getZ());
   double cross = glm::l2Norm(crossProductNaive(ab, ac));
   return 0.5 * cross;
 }
 
-inline double Triangle::euclideanDistance2D(const dvec3 &v1, const dvec3 &v2) {
+inline double Triangle::euclideanDistance2D(
+    const glm::dvec3 &v1,
+    const glm::dvec3 &v2
+){
   double diffX = (v1.x - v2.x) * (v1.x - v2.x);
   double diffY = (v1.y - v2.y) * (v1.y - v2.y);
   return sqrt(diffX + diffY);

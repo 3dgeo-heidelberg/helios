@@ -230,6 +230,7 @@ shared_ptr<DynObject> SimplePrimitivesDemo::buildMobileStructure(){
         "mobileStructure",
         triangles
     );
+    dynObj->computeCentroid();
     return dynObj;
 }
 shared_ptr<DynObject> SimplePrimitivesDemo::buildFixedStructure(){
@@ -319,6 +320,7 @@ shared_ptr<DynObject> SimplePrimitivesDemo::buildFixedStructure(){
         "fixedStructure",
         triangles
     );
+    dynObj->computeCentroid();
     return dynObj;
 }
 shared_ptr<DynObject> SimplePrimitivesDemo::buildHelicalStructure(){
@@ -374,6 +376,7 @@ shared_ptr<DynObject> SimplePrimitivesDemo::buildHelicalStructure(){
         "helicalStructure",
         triangles
     );
+    dynObj->computeCentroid();
     return dynObj;
 }
 shared_ptr<DynObject> SimplePrimitivesDemo::buildStaticStructure(){
@@ -463,6 +466,7 @@ shared_ptr<DynObject> SimplePrimitivesDemo::buildStaticStructure(){
         "staticStructure",
         triangles
     );
+    dynObj->computeCentroid();
     return dynObj;
 }
 
@@ -496,6 +500,7 @@ shared_ptr<DynObject> SimplePrimitivesDemo::buildGroundStructure(){
         "groundStructure",
         triangles
     );
+    dynObj->computeCentroid();
     return dynObj;
 }
 

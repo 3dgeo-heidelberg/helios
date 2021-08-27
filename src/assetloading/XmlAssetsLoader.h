@@ -78,16 +78,30 @@ public:
 	 * @brief Get asset by its identifier
 	 * @param type Type of the asset
 	 * @param id Identifier of the asset
+     * @param extraOutput[out] Pointer to where extra output must be stored.
+     *  If it is null, it means no extra output is required. Notice this only
+     *  will be used when requested asset supports extra output
 	 * @return Shared pointer to requested asset
 	 */
-	std::shared_ptr<Asset> getAssetById(std::string type, std::string id);
+	std::shared_ptr<Asset> getAssetById(
+	    std::string type,
+	    std::string id,
+	    void *extraOutput=nullptr
+    );
 	/**
 	 * @brief Get asset by location
 	 * @param type Type of the asset
 	 * @param location Location of the asset
+     * @param extraOutput[out] Pointer to where extra output must be stored.
+     *  If it is null, it means no extra output is required. Notice this only
+     *  will be used when requested asset supports extra output
 	 * @return Shared pointer to requested asset
 	 */
-	std::shared_ptr<Asset> getAssetByLocation(std::string type, std::string location);
+	std::shared_ptr<Asset> getAssetByLocation(
+	    std::string type,
+	    std::string location,
+	    void *extraOutput=nullptr
+    );
 
 public:
     // ***  CREATION METHODS  *** //
@@ -96,12 +110,16 @@ public:
      * @brief Create an asset from given XML element (node)
      * @param type Asset type
      * @param assetNode XML element (node) containing asset data
+     * @param extraOutput[out] Pointer to where extra output must be stored.
+     *  If it is null, it means no extra output is required. Notice this only
+     *  will be used when requested asset supports extra output
      * @return Shared pointer to created asset
      * @see Asset
      */
 	std::shared_ptr<Asset> createAssetFromXml(
 	    std::string type,
-	    tinyxml2::XMLElement* assetNode
+	    tinyxml2::XMLElement* assetNode,
+	    void *extraOutput=nullptr
     );
 
 	/**

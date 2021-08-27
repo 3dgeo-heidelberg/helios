@@ -1,4 +1,8 @@
 #include <scene/dynamic/DynScene.h>
+#include <logging.hpp>
+#include <SerialIO.h>
+
+using std::stringstream;
 
 // ***  CONSTRUCTION / DESTRUCTION  *** //
 // ************************************ //
@@ -29,4 +33,19 @@ bool DynScene::doStep(){
         updateFlag |= updated[i];
     }
     return updateFlag;
+}
+
+// ***   READ/WRITE  *** //
+// ********************* //
+void DynScene::writeObject(std::string path){
+    stringstream ss;
+    ss << "Writing dynamic scene object to " << path << " ...";
+    logging::INFO(ss.str());
+    SerialIO::getInstance()->write<DynScene>(path, this);
+}
+DynScene * DynScene::readObject(std::string path){
+    stringstream ss;
+    ss << "Reading dynamic scene object from " << path << " ...";
+    logging::INFO(ss.str());
+    return SerialIO::getInstance()->read<DynScene>(path);
 }

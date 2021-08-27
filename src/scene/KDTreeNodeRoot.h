@@ -18,13 +18,18 @@ class KDTreeNodeRoot : public KDTreeNode {
      * @param version Version number for the KDTreeNodeRoot
      */
     template <typename Archive>
-    void serialize(Archive& ar, const unsigned int version)
-    {
+    void serialize(Archive& ar, const unsigned int version){
+        std::cout << "Exporting KDTreeRoodNode (1) ..." << std::endl; // TODO Remove
         boost::serialization::void_cast_register<KDTreeNodeRoot, KDTreeNode>();
+        std::cout << "Exporting KDTreeRoodNode (2) ..." << std::endl; // TODO Remove
         ar & boost::serialization::base_object<KDTreeNode>(*this);
+        std::cout << "Exporting KDTreeRoodNode (3) ..." << std::endl; // TODO Remove
         ar & stats_maxNumPrimsInLeaf;
+        std::cout << "Exporting KDTreeRoodNode (4) ..." << std::endl; // TODO Remove
         ar & stats_minNumPrimsInLeaf;
+        std::cout << "Exporting KDTreeRoodNode (5) ..." << std::endl; // TODO Remove
         ar & stats_maxDepthReached;
+        std::cout << "Exported KDTreeRoodNode!" << std::endl; // TODO Remove
     }
 public:
     // ***  ATTRIBUTES  *** //

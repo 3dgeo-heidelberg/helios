@@ -104,7 +104,7 @@ public:
      * @see DynMotion::selfMode
      * @see DynMotion::normalMode
      */
-    mat apply(DynMotion const &f, mat const &X, DynObject &dynObj);
+    arma::mat apply(DynMotion const &f, arma::mat const &X, DynObject &dynObj);
     /**
      * @brief Compose given dynamic motions  considering they belong to given
      *  dynamic object

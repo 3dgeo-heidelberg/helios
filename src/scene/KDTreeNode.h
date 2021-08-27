@@ -9,6 +9,10 @@
 
 #include "Primitive.h"
 #include "AABB.h"
+#include <serial.h> // TODO Rethink : Solves the issue?
+#include <Triangle.h> // TODO Rethink : Solves the issue?
+#include <Voxel.h> // TODO Rethink : Solves the issue?
+#include <DetailedVoxel.h> // TODO Rethink : Solves the issue?
 
 /**
  * @brief Class representing a KDTree node
@@ -25,12 +29,24 @@ class KDTreeNode {
 	 */
 	template<class Archive>
 	void serialize(Archive & ar, const unsigned int version) {
+        // Register classes derived from Primitive
+        ar.template register_type<AABB>();
+        ar.template register_type<Triangle>();
+        ar.template register_type<Vertex>();
+        ar.template register_type<Voxel>();
+        ar.template register_type<DetailedVoxel>();
+	    std::cout << "Exporting KDTreeNode (1) ..." << std::endl; // TODO Remove
 		ar & left;
-		ar & right;
+        std::cout << "Exporting KDTreeNode (2) ..." << std::endl; // TODO Remove
+        ar & right;
+        std::cout << "Exporting KDTreeNode (3) ..." << std::endl; // TODO Remove
 		ar & splitPos;
-		ar & splitAxis;
+        std::cout << "Exporting KDTreeNode (4) ..." << std::endl; // TODO Remove
+        ar & splitAxis;
+        std::cout << "Exporting KDTreeNode (5) ..." << std::endl; // TODO Remove
 		ar & primitives;
-	}
+        std::cout << "Exported KDTreeNode!" << std::endl; // TODO Remove
+    }
 
 public:
     // ***  ATTRIBUTES  *** //

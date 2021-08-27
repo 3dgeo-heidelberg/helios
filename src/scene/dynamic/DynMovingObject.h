@@ -46,7 +46,7 @@ private:
     template <typename Archive>
     void serialize(Archive &ar, const unsigned int version){
         boost::serialization::void_cast_register<DynMovingObject, DynObject>();
-        ar &boost::serialization::base_object<RigidMotion>(*this);
+        ar &boost::serialization::base_object<DynObject>(*this);
         ar &positionMotionQueue;
         ar &normalMotionQueue;
         ar &dme;

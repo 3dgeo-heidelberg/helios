@@ -22,14 +22,21 @@ class Triangle : public Primitive {
    */
   template <typename Archive>
   void serialize(Archive &ar, const unsigned int version) {
+    std::cout << "Exporting Triangle (1) ..." << std::endl; // TODO Remove
     boost::serialization::void_cast_register<Triangle, Primitive>();
+    std::cout << "Exporting Triangle (2) ..." << std::endl; // TODO Remove
     ar &boost::serialization::base_object<Primitive>(*this);
+    std::cout << "Exporting Triangle (3) ..." << std::endl; // TODO Remove
     ar &faceNormal;
+    std::cout << "Exporting Triangle (4) ..." << std::endl; // TODO Remove
     ar &e1 &e2 &v0;
+    std::cout << "Exporting Triangle (5) ..." << std::endl; // TODO Remove
     ar &faceNormalSet;
+    std::cout << "Exporting Triangle (6) ..." << std::endl; // TODO Remove
     ar &eps;
     //ar &aabb;  // Not needed because it is built on construction
     //ar &verts;  // Not needed because they are in save/load construct
+    std::cout << "Exported Triangle!" << std::endl; // TODO Remove
   }
 
   // ***  ATTRIBUTES  *** //

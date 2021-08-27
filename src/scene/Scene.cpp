@@ -224,20 +224,6 @@ Scene::getIntersections(
 
 glm::dvec3 Scene::getShift() { return this->bbox_crs->getMin(); }
 
-void Scene::writeObject(string path) {
-  stringstream ss;
-  ss << "Writing " << path << " ...";
-  logging::INFO(ss.str());
-  SerialIO::getInstance()->write<Scene>(path, this);
-}
-
-Scene *Scene::readObject(string path) {
-  stringstream ss;
-  ss << "Reading scene object " << path << " ...";
-  logging::INFO(ss.str());
-  return SerialIO::getInstance()->read<Scene>(path);
-}
-
 vector<Vertex *> Scene::getAllVertices(){
     unordered_set<Vertex *> vset;
     for(Primitive *primitive : primitives){
@@ -246,4 +232,20 @@ vector<Vertex *> Scene::getAllVertices(){
         for(size_t i = 0 ; i < m ; ++i) vset.insert(vertices + i);
     }
     return {vset.begin(), vset.end()};
+}
+
+// ***  READ/WRITE  *** //
+// ******************** //
+void Scene::writeObject(string path) {
+    stringstream ss;
+    ss << "Writing scene object to " << path << " ...";
+    logging::INFO(ss.str());
+    SerialIO::getInstance()->write<Scene>(path, this);
+}
+
+Scene *Scene::readObject(string path) {
+    stringstream ss;
+    ss << "Reading scene object from " << path << " ...";
+    logging::INFO(ss.str());
+    return SerialIO::getInstance()->read<Scene>(path);
 }

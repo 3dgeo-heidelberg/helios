@@ -30,14 +30,27 @@ private:
     // ***  SERIALIZATION  *** //
     // *********************** //
     friend class boost::serialization::access;
+    /**
+     * @brief Serialize a DynScene to a stream of bytes
+     * @tparam Archive Type of rendering
+     * @param ar Specific rendering for the stream of bytes
+     * @param version Version number for the DynScene
+     */
     template <class Archive>
     void serialize(Archive &ar, const unsigned int version){
+        std::cout << "Exporting DynScene (0)..." << std::endl; // TODO Remove
         boost::serialization::void_cast_register<DynScene, StaticScene>();
+        std::cout << "Exporting DynScene (1)..." << std::endl; // TODO Remove
         ar &boost::serialization::base_object<StaticScene>(*this);
+        std::cout << "Exporting DynScene (2)..." << std::endl; // TODO Remove
         ar &dynObjs;
+        std::cout << "Exporting DynScene (3)..." << std::endl; // TODO Remove
         ar &updated;
+        std::cout << "Exporting DynScene (4)..." << std::endl; // TODO Remove
         ar &dynamicSpaceInterval;
+        std::cout << "Exporting DynScene (5)..." << std::endl; // TODO Remove
         ar &currentStep;
+        std::cout << "DynScene exported!" << std::endl; // TODO Remove
     }
 protected:
     // ***  ATTRIBUTES  *** //
@@ -182,4 +195,18 @@ public:
     {return updated[index];}
 
 
+    // ***   READ/WRITE  *** //
+    // ********************* //
+    /**
+     * @brief Serialize the dynamic scene and write it to given output file
+     * @param path Path to output file where serialized dynamic scene shall be
+     *  stored
+     */
+    void writeObject(std::string path) override;
+    /**
+     * @brief Read serialized dynamic scene from given file
+     * @param path Path to file where a serialized dynamic scene is stored
+     * @return Imported dynamic scene
+     */
+    static DynScene *readObject(std::string path);
 };

@@ -5,6 +5,7 @@
 #include <memory>
 #include <boost/serialization/void_cast.hpp>
 #include <boost/serialization/base_object.hpp>
+#include <boost/serialization/deque.hpp>
 
 using namespace arma;
 using rigidmotion::RigidMotion;
@@ -23,6 +24,7 @@ using std::make_shared;
  * @see DynMotion::makeNormalCounterpart
  */
 class DynMotion : public RigidMotion {
+private:
     // ***  SERIALIZATION  *** //
     // *********************** //
     friend class boost::serialization::access;

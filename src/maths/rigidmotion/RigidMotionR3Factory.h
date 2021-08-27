@@ -61,7 +61,7 @@ protected:
      *
      * @see rigidmotion::RigidMotionR3Factory::makeReflection(colvec const)
      */
-    static mat const canonicalReflection;
+    static arma::mat const canonicalReflection;
 
 public:
 

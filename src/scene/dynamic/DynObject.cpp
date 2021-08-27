@@ -1,8 +1,9 @@
 #include <scene/dynamic/DynObject.h>
+#include <scene/primitives/Primitive.h>
 
 // ***  U T I L  *** //
 // ***************** //
-size_t DynObject::countVertices(){
+size_t DynObject::countVertices() const {
     size_t m = 0;
     Primitive * primitive;
     for(size_t i = 0 ; i < mPrimitives.size(); ++i){
@@ -14,13 +15,13 @@ size_t DynObject::countVertices(){
 
 arma::mat DynObject::matrixFromPrimitives(
     std::function<arma::colvec(Vertex const *)> get
-){
+) const {
     return matrixFromPrimitives(countVertices(), get);
 }
 arma::mat DynObject::matrixFromPrimitives(
     size_t const m,
     std::function<arma::colvec(Vertex const *)> get
-){
+) const {
     arma::mat X(3, m);
     size_t i = 0;
     for(size_t j = 0 ; j < mPrimitives.size() ; ++j){
@@ -54,10 +55,10 @@ void DynObject::matrixToPrimitives(
     }
 }
 
-arma::mat DynObject::positionMatrixFromPrimitives(){
+arma::mat DynObject::positionMatrixFromPrimitives() const{
     return positionMatrixFromPrimitives(countVertices());
 }
-arma::mat DynObject::positionMatrixFromPrimitives(size_t const m){
+arma::mat DynObject::positionMatrixFromPrimitives(size_t const m) const{
     return matrixFromPrimitives(m, [](Vertex const *p) -> arma::colvec{
         arma::colvec x(3);
         x(0) = p->getX();
@@ -67,10 +68,10 @@ arma::mat DynObject::positionMatrixFromPrimitives(size_t const m){
     });
 }
 
-arma::mat DynObject::normalMatrixFromPrimitives(){
+arma::mat DynObject::normalMatrixFromPrimitives() const{
     return normalMatrixFromPrimitives(countVertices());
 }
-arma::mat DynObject::normalMatrixFromPrimitives(size_t const m){
+arma::mat DynObject::normalMatrixFromPrimitives(size_t const m) const{
     return matrixFromPrimitives(m, [](Vertex const *p) -> arma::colvec{
         arma::colvec x(3);
         x(0) = p->normal.x;

@@ -13,6 +13,7 @@ namespace fs = boost::filesystem;
 #include "TimeWatcher.h"
 #include "XmlSurveyLoader.h"
 #include <RandomnessGenerator.h>
+#include <SerialSceneWrapper.h>
 
 using namespace glm;
 using namespace std;
@@ -253,12 +254,17 @@ shared_ptr<Scene> XmlSurveyLoader::loadScene(string sceneString,
     fs::path sceneXml(sceneFullPath + "xml");
     if (fs::is_regular_file(sceneObj) &&
         fs::last_write_time(sceneObj) > fs::last_write_time(sceneXml) &&
-        !rebuildScene) {
-      scene = shared_ptr<Scene>(Scene::readObject(sceneObjPath));
+        !rebuildScene
+    ){
+      SerialSceneWrapper *ssw = SerialSceneWrapper::readScene(sceneObjPath);
+      scene = shared_ptr<Scene>(ssw->getScene());
+      delete ssw;
     } else {
-      scene =
-          dynamic_pointer_cast<Scene>(getAssetByLocation("scene", sceneString));
-      scene->writeObject(sceneObjPath);
+      SerialSceneWrapper::SceneType sceneType;
+      scene = dynamic_pointer_cast<Scene>(
+          getAssetByLocation("scene", sceneString, &sceneType)
+      );
+      SerialSceneWrapper(sceneType, scene.get()).writeScene(sceneObjPath);
     }
   } catch (exception &e) {
     stringstream ss;
@@ -266,7 +272,7 @@ shared_ptr<Scene> XmlSurveyLoader::loadScene(string sceneString,
     logging::WARN(ss.str());
   }
 
-  if (scene == NULL) {
+  if (scene == nullptr) {
     logging::ERR("Error: Cannot load scene");
     exit(1);
   }

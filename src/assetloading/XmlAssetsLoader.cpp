@@ -49,8 +49,11 @@ XmlAssetsLoader::XmlAssetsLoader(std::string &filePath, std::string &assetsDir)
 }
 
 std::shared_ptr<Asset>
-XmlAssetsLoader::createAssetFromXml(std::string type,
-                                    tinyxml2::XMLElement *assetNode) {
+XmlAssetsLoader::createAssetFromXml(
+    std::string type,
+    tinyxml2::XMLElement *assetNode,
+    void *extraOutput
+) {
   if (assetNode == nullptr) {
     logging::ERR("ERROR: Asset definition XML node is null!");
     exit(-1);
@@ -65,8 +68,11 @@ XmlAssetsLoader::createAssetFromXml(std::string type,
   } else if (type == "scanner") {
     result = std::dynamic_pointer_cast<Asset>(createScannerFromXml(assetNode));
   } else if (type == "scene") {
-    result = std::dynamic_pointer_cast<Asset>(
-        sceneLoader.createSceneFromXml(assetNode, xmlDocFilePath));
+    result = std::dynamic_pointer_cast<Asset>(sceneLoader.createSceneFromXml(
+        assetNode,
+        xmlDocFilePath,
+        (SerialSceneWrapper::SceneType *) extraOutput
+    ));
   } else if (type == "scannerSettings") {
     result = std::dynamic_pointer_cast<Asset>(
         createScannerSettingsFromXml(assetNode));
@@ -637,8 +643,11 @@ std::shared_ptr<FWFSettings> XmlAssetsLoader::createFWFSettingsFromXml(
 }
 
 // ################# END get(asset) by id methods #############
-std::shared_ptr<Asset> XmlAssetsLoader::getAssetById(std::string type,
-                                                     std::string id) {
+std::shared_ptr<Asset> XmlAssetsLoader::getAssetById(
+    std::string type,
+    std::string id,
+    void *extraOutput
+) {
   std::string errorMsg = "# DEF ERR MSG #";
   try {
     tinyxml2::XMLElement *assetNodes =
@@ -647,7 +656,7 @@ std::shared_ptr<Asset> XmlAssetsLoader::getAssetById(std::string type,
     while (assetNodes != nullptr) {
       std::string str(assetNodes->Attribute("id"));
       if (str.compare(id) == 0) {
-        return createAssetFromXml(type, assetNodes);
+        return createAssetFromXml(type, assetNodes, extraOutput);
       }
 
       assetNodes = assetNodes->NextSiblingElement(type.c_str());
@@ -676,7 +685,11 @@ std::shared_ptr<Asset> XmlAssetsLoader::getAssetById(std::string type,
 }
 
 std::shared_ptr<Asset>
-XmlAssetsLoader::getAssetByLocation(std::string type, std::string location) {
+XmlAssetsLoader::getAssetByLocation(
+    std::string type,
+    std::string location,
+    void *extraOutput
+) {
   std::vector<std::string> vec;
   boost::split(vec, location, boost::is_any_of("#"));
   XmlAssetsLoader *loader = this;
@@ -691,7 +704,7 @@ XmlAssetsLoader::getAssetByLocation(std::string type, std::string location) {
     freeLoader = true;
   }
 
-  std::shared_ptr<Asset> asset = loader->getAssetById(type, id);
+  std::shared_ptr<Asset> asset = loader->getAssetById(type, id, extraOutput);
   if (freeLoader)
     delete loader;
   return asset;

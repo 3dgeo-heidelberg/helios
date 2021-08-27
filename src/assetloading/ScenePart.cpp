@@ -1,9 +1,10 @@
 #include <boost/lexical_cast.hpp>
 #include <boost/lexical_cast/bad_lexical_cast.hpp>
 
-#include "ScenePart.h"
-#include "Triangle.h"
-#include "WavefrontObj.h"
+#include <ScenePart.h>
+#include <Primitive.h>
+#include <Triangle.h>
+#include <WavefrontObj.h>
 #include <util/logger/logging.hpp>
 
 // ***  CONSTRUCTION / DESTRUCTION  *** //

@@ -1,6 +1,7 @@
 #ifdef PCL_BINDING
 
 #include <visualhelios/VHSimpleCanvas.h>
+#include <Primitive.h>
 
 #include <sstream>
 

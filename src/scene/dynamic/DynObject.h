@@ -5,7 +5,6 @@
 #include <armadillo>
 
 #include <assetloading/ScenePart.h>
-#include <scene/primitives/Primitive.h>
 
 using std::vector;
 using std::string;
@@ -24,6 +23,7 @@ class DynObject : public ScenePart{
 private:
     // ***  SERALIZATION  *** //
     // ********************** //
+    friend class boost::serialization::access;
     /**
      * @brief Serialize a dynamic object to a stream of bytes
      * @tparam Archive Type of rendering
@@ -31,7 +31,10 @@ private:
      * @param version Version number for the dynamic object
      */
     template <typename Archive>
-    void serialize(Archive &ar, const unsigned int version) {}
+    void serialize(Archive &ar, const unsigned int version){
+        boost::serialization::void_cast_register<DynObject, ScenePart>();
+        ar &boost::serialization::base_object<ScenePart>(*this);
+    }
 
 public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //
@@ -110,7 +113,7 @@ public:
      * @return How many vertices there are defining the dynamic object
      * @see primitives
      */
-    size_t countVertices();
+    size_t countVertices() const;
     /**
      * @brief Obtain the position matrix for primitives defining the dynamic
      *  object
@@ -125,7 +128,7 @@ public:
      *
      * @return Position matrix
      */
-    arma::mat positionMatrixFromPrimitives();
+    arma::mat positionMatrixFromPrimitives() const;
     /**
      * @brief Like DynObject::positionMatrixFromPrimitives but receiving
      *  the total number of vertices beforehand
@@ -140,7 +143,7 @@ public:
      * @see DynObject::positionMatrixFromPrimitives
      * @see DynObject::countVertices
      */
-    arma::mat positionMatrixFromPrimitives(size_t const m);
+    arma::mat positionMatrixFromPrimitives(size_t const m) const;
     /**
      * @brief Obtain the normal matrix for primitives defining the dynamic
      *  object
@@ -155,7 +158,7 @@ public:
      *
      * @return Normal matrix
      */
-    arma::mat normalMatrixFromPrimitives();
+    arma::mat normalMatrixFromPrimitives() const;
     /**
      * @brief Like DynObject::normalMatrixFromPrimitives but receiving
      *  the total number of vertices beforehand.
@@ -170,7 +173,7 @@ public:
      * @see DynObject::normalMatrixFromPrimitives
      * @see DynObject::countVertices
      */
-    arma::mat normalMatrixFromPrimitives(size_t const m);
+    arma::mat normalMatrixFromPrimitives(size_t const m) const;
     /**
      * @brief Update the position of each primitive with given matrix
      *
@@ -259,7 +262,7 @@ protected:
      */
     arma::mat matrixFromPrimitives(
         std::function<arma::colvec(Vertex const *)> get
-    );
+    ) const ;
     /**
      * @brief Like DynObject::matrixFromPrimitives but receiving the total
      *  number of vertices beforehand
@@ -277,7 +280,7 @@ protected:
     arma::mat matrixFromPrimitives(
         size_t const m,
         std::function<arma::colvec(Vertex const *)> get
-    );
+    ) const ;
     /**
      * @brief Update primitives defining the dynamic object from given matrix.
      *

@@ -1,6 +1,8 @@
 #pragma once
 
 
+#include <boost/archive/archive_exception.hpp>
+
 #include <string>
 
 /**
@@ -65,6 +67,25 @@ public:
     SerialClass * read(
         std::string const& path,
         bool const fastCompression=true
+    );
+
+protected:
+    // ***  INNER UTIL METHODS  *** //
+    // **************************** //
+    /**
+     * @brief Handle given archive exception.
+     *
+     * A detailed message for the exception will be built and logged as a
+     *  warning
+     *
+     * @param perpetrator Name of the perpetrator where the archive exception
+     *  occurred. Generally speaking, it will be the name of a method
+     *  (i.e. "SerialIO::read")
+     * @param aex Archive exception to be handled
+     */
+    void handleArchiveException(
+        std::string const &perpetrator,
+        boost::archive::archive_exception &aex
     );
 };
 
