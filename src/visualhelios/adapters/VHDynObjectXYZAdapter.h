@@ -3,6 +3,7 @@
 #pragma once
 
 #include <visualhelios/adapters/VHDynObjectAdapter.h>
+#include <visualhelios/adapters/VHStaticObjectXYZAdapter.h>
 
 namespace visualhelios{
 
@@ -15,16 +16,10 @@ namespace visualhelios{
  *
  * @see visualhelios::VHDynObjectAdapter
  */
-class VHDynObjectXYZAdapter : public VHDynObjectAdapter{
-protected:
-    // ***  ATTRIBUTES  *** //
-    // ******************** //
-    /**
-     * @brief Polygon mesh representing the dynamic object in a
-     *  \f$\mathbb{R}^{3}\f$ space with no color nor intensity
-     */
-    pcl::PointCloud<pcl::PointXYZ>::Ptr polymesh;
-
+class VHDynObjectXYZAdapter :
+    public VHStaticObjectXYZAdapter,
+    public VHDynObjectAdapter
+{
 public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //
     // ************************************ //
@@ -33,30 +28,12 @@ public:
      *  providing XYZ visualization
      * @see visualhelios::VHDynObjectAdapter::VHDynObjectAdapter(DynObject &)
      */
-    VHDynObjectXYZAdapter(DynObject &dynObj) : VHDynObjectAdapter(dynObj) {}
+    VHDynObjectXYZAdapter(DynObject &dynObj) :
+        VHStaticObjectAdapter(static_cast<ScenePart &>(dynObj)),
+        VHStaticObjectXYZAdapter(static_cast<ScenePart &>(dynObj)),
+        VHDynObjectAdapter(dynObj)
+    {}
     virtual ~VHDynObjectXYZAdapter() = default;
-
-    // ***  BUILDING  *** //
-    // ****************** //
-    /**
-     * @see visualhelios::VHDynObjectAdapter::buildPolymesh
-     */
-    void constructPolymesh() override;
-    /**
-     * @see visualhelios::VHDynObjectAdapter::vertexToMesh
-     */
-    void vertexToMesh(Vertex const & vertex) override;
-
-    // ***  GETTERS and SETTERS  *** //
-    // ***************************** //
-    /**
-     * @brief Obtain the polygon mesh representing the dynamic object
-     *  in a \f$\mathbb{R}^{3}\f$ space with no color nor intensity
-     * @return Polygon mesh representing the dynamic object in a
-     *  \f$\mathbb{R}^{3}\f$ space with no color nor intensity
-     */
-    inline pcl::PointCloud<pcl::PointXYZ>::ConstPtr getPolymesh() const
-    {return polymesh;}
 };
 
 }

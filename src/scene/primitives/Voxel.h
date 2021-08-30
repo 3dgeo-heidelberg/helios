@@ -18,10 +18,12 @@ private:
         boost::serialization::void_cast_register<Voxel, Primitive>();
         ar & boost::serialization::base_object<Primitive>(*this);
         ar & v;
+        ar & numPoints;
         ar & r & g & b;
-        ar & bbox;
-        ar & halfSize;
         ar & normal;
+        ar & bbox;
+        ar & color;
+        ar & halfSize;
     }
 
 public:
@@ -71,7 +73,7 @@ public:
     /**
      * @brief Default voxel constructor
      */
-    Voxel() = default;
+    Voxel() : Primitive() {};
     /**
      * @brief Voxel constructor
      * @param center Voxel center coordinates

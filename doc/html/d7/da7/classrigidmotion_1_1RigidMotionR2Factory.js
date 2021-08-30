@@ -8,5 +8,7 @@ var classrigidmotion_1_1RigidMotionR2Factory =
     [ "makeReflection", "d7/da7/classrigidmotion_1_1RigidMotionR2Factory.html#afdf3da31cd903dccd04747e7b47ccb67", null ],
     [ "makeReflection", "d7/da7/classrigidmotion_1_1RigidMotionR2Factory.html#a665b6141e94a3691d994938235f536c1", null ],
     [ "makeRotation", "d7/da7/classrigidmotion_1_1RigidMotionR2Factory.html#ac4dcfc1ea1326e92d752e26a746119bc", null ],
-    [ "makeTranslation", "d7/da7/classrigidmotion_1_1RigidMotionR2Factory.html#a4673005c488dd0ec757ae16a433a7e1f", null ]
+    [ "makeTranslation", "d7/da7/classrigidmotion_1_1RigidMotionR2Factory.html#a4673005c488dd0ec757ae16a433a7e1f", null ],
+    [ "serialize", "d7/da7/classrigidmotion_1_1RigidMotionR2Factory.html#a6c0731056681058dc6e726a739c000bc", null ],
+    [ "boost::serialization::access", "d7/da7/classrigidmotion_1_1RigidMotionR2Factory.html#ac98d07dd8f7b70e16ccb9a01abf56b9c", null ]
 ];

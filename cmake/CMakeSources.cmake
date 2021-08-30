@@ -20,6 +20,7 @@ set(HELIOS_INCLUDE_DIRECTORIES
     "src/maths/"
     "src/maths/rigidmotion/"
     "src/util/"
+    "src/util/serialization/"
     "src/util/logger/"
     "src/test/"
 

@@ -16,6 +16,12 @@ const double PI_HALF = M_PI/2.0;
  * \f]
  */
 const double PI_QUARTER = M_PI/4.0;
+/**
+ * \frac[
+ *  \frac{\pi}{8}
+ * \f]
+ */
+const double PI_EIGHTH = M_PI/8.0;
 
 /**
  * \f[

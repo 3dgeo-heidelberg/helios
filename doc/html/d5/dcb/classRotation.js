@@ -21,6 +21,8 @@ var classRotation =
     [ "getQ1", "d5/dcb/classRotation.html#a0796ec81edaeac64002c4abd878db6b0", null ],
     [ "getQ2", "d5/dcb/classRotation.html#ac43cd8328054b2b325dc9f8929105a1c", null ],
     [ "getQ3", "d5/dcb/classRotation.html#a1d3c97c843b1964f5bdb923981e16d67", null ],
+    [ "operator*", "d5/dcb/classRotation.html#a100caea78237eb7a3505609e7ee8c729", null ],
+    [ "operator*", "d5/dcb/classRotation.html#a0b72c82789391f93ff5892d23f326c56", null ],
     [ "revert", "d5/dcb/classRotation.html#a8ae920f72866cd231100ccbff1c4e88c", null ],
     [ "serialize", "d5/dcb/classRotation.html#acf3431fc2755747177ec61e1e8e44c39", null ],
     [ "setQ0", "d5/dcb/classRotation.html#a887ec86c8ed3d6e62fc8eeef0f9816b9", null ],

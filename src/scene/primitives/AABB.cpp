@@ -4,10 +4,10 @@
 #include <glm/gtx/string_cast.hpp>
 
 using namespace std;
-using namespace glm;
+
 // ***  CONSTRUCTION / DESTRUCTION  *** //
 // ************************************ //
-AABB::AABB(dvec3 min, dvec3 max) {
+AABB::AABB(glm::dvec3 min, glm::dvec3 max) {
     this->vertices[0].pos = min;
     this->vertices[1].pos = max;
     this->bounds[0] = min;
@@ -32,12 +32,12 @@ void AABB::_clone(Primitive *p){
 
 // ***  M E T H O D S  *** //
 // *********************** //
-dvec3 AABB::getCentroid() {
-	dvec3 size = getSize();
+glm::dvec3 AABB::getCentroid() {
+	glm::dvec3 size = getSize();
 	return getMin() + size * 0.5;
 }
 
-dvec3 AABB::getSize() {
+glm::dvec3 AABB::getSize() {
 	return getMax() - getMin();
 }
 
@@ -81,8 +81,8 @@ shared_ptr<AABB> AABB::getForPrimitives(std::vector<Primitive*> & primitives) {
 		}
 	}
 
-	dvec3 min = dvec3(minX, minY, minZ);
-	dvec3 max = dvec3(maxX, maxY, maxZ);
+	glm::dvec3 min = glm::dvec3(minX, minY, minZ);
+	glm::dvec3 max = glm::dvec3(maxX, maxY, maxZ);
 
 	return shared_ptr<AABB>(new AABB(min, max));
 }
@@ -119,8 +119,8 @@ shared_ptr<AABB> AABB::getForVertices(vector<Vertex> & verts) {
 		}
 	}
 
-	dvec3 min = dvec3(minX, minY, minZ);
-	dvec3 max = dvec3(maxX, maxY, maxZ);
+	glm::dvec3 min = glm::dvec3(minX, minY, minZ);
+	glm::dvec3 max = glm::dvec3(maxX, maxY, maxZ);
 
 	return shared_ptr<AABB>(new AABB(min, max));
 }
@@ -159,8 +159,8 @@ std::shared_ptr<AABB> AABB::getForVertices(
         }
     }
 
-    dvec3 min = dvec3(minX, minY, minZ);
-    dvec3 max = dvec3(maxX, maxY, maxZ);
+    glm::dvec3 min = glm::dvec3(minX, minY, minZ);
+    glm::dvec3 max = glm::dvec3(maxX, maxY, maxZ);
 
     return shared_ptr<AABB>(new AABB(min, max));
 }
@@ -169,7 +169,10 @@ string AABB::toString() {
 	return "Min: " + glm::to_string(getMin()) + ", Max: " + glm::to_string(getMax());
 }
 
-std::vector<double> AABB::getRayIntersection(const dvec3& orig, const dvec3& dir) {
+std::vector<double> AABB::getRayIntersection(
+    const glm::dvec3& orig,
+    const glm::dvec3& dir
+) {
 	// See http://www.scratchapixel.com/lessons/3d-basic-rendering/minimal-ray-tracer-rendering-simple-shapes/ray-box-intersection
     const int xsign = dir.x < 0;
     const int ysign = dir.y < 0;

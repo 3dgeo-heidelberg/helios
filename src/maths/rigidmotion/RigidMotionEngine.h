@@ -17,6 +17,19 @@ namespace rigidmotion{
  * @see rigidmotion::RigidMotion
  */
 class RigidMotionEngine {
+private:
+    // ***  SERIALIZATION  *** //
+    // *********************** //
+    friend class boost::serialization::access;
+    /**
+     * @brief Serialize a rigid motion engine to a stream of bytes
+     * @tparam Archive Type of rendering
+     * @param ar Specific rendering for the stream of bytes
+     * @param version Version number for the rigid motion engine
+     */
+    template <typename Archive>
+    void serialize(Archive &ar, const unsigned int version) {}
+
 public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //
     // ************************************ //
@@ -44,7 +57,7 @@ public:
      * @param X The matrix of points to be transformed
      * @return Result of applying the rigid motion to the matrix of points
      */
-    mat apply(RigidMotion const &f, mat const X);
+    arma::mat apply(RigidMotion const &f, arma::mat const &X);
     /**
      * @brief Apply rigid motion \f$f\f$ to a point \f$X\f$
      *
@@ -58,7 +71,7 @@ public:
      * @param X The point as column vector to be transformed
      * @return Result of applying the rigid motion to the point
      */
-    colvec apply(RigidMotion const &f, colvec const X);
+    colvec apply(RigidMotion const &f, colvec const &X);
     /**
      * @brief Compose given rigid motions: \f$f \circ g = f(g(X))\f$
      *
@@ -93,7 +106,7 @@ public:
      *  will be returned. If the lineal variety is a plane, then the
      *  orthonormal vector of the plane will be returned.
      */
-    mat computeFixedPoints(
+    arma::mat computeFixedPoints(
         RigidMotion const &f,
         size_t &dim,
         bool safe=true
@@ -125,7 +138,7 @@ public:
      *   director vector of the line will be returned. If the lineal variety is
      *   a plane, then the orthonormal vector of the plane will be returned.
      */
-    mat computeAssociatedInvariant(
+    arma::mat computeAssociatedInvariant(
         RigidMotion const &f,
         size_t &dim,
         bool safe=true

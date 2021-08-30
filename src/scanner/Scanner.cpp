@@ -17,7 +17,6 @@ using namespace std::chrono;
 #include <Trajectory.h>
 
 using namespace std;
-using namespace glm;
 
 // ***  COSNTRUCTION / DESTRUCTION  *** //
 // ************************************ //
@@ -201,7 +200,7 @@ void Scanner::doSimStep(thread_pool& pool, unsigned int const legIndex, double c
     state_currentPulseNumber++;
 
     // Calculate absolute beam originWaypoint:
-    dvec3 absoluteBeamOrigin = platform->getAbsoluteMountPosition() +
+    glm::dvec3 absoluteBeamOrigin = platform->getAbsoluteMountPosition() +
                                cfg_device_headRelativeEmitterPosition;
 
 	// Calculate absolute beam attitude:

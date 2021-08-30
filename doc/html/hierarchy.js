@@ -37,11 +37,19 @@ var hierarchy =
       [ "PlatformSettings", "d5/d0c/classPlatformSettings.html", null ],
       [ "Scanner", "dc/d42/classScanner.html", null ],
       [ "ScannerSettings", "d0/d23/classScannerSettings.html", null ],
-      [ "Scene", "d5/d9c/classScene.html", null ],
+      [ "Scene", "d5/d9c/classScene.html", [
+        [ "StaticScene", "dd/d34/classStaticScene.html", [
+          [ "DynScene", "de/d74/classDynScene.html", null ]
+        ] ]
+      ] ],
+      [ "SerialSceneWrapper", "d3/df0/classSerialSceneWrapper.html", null ],
       [ "Survey", "d5/db6/classSurvey.html", null ]
     ] ],
     [ "HeliosDemos::BaseDemo", "df/df9/classHeliosDemos_1_1BaseDemo.html", [
-      [ "HeliosDemos::SimplePrimitivesDemo", "d0/d1c/classHeliosDemos_1_1SimplePrimitivesDemo.html", null ]
+      [ "HeliosDemos::SimplePrimitivesDemo", "d0/d1c/classHeliosDemos_1_1SimplePrimitivesDemo.html", null ],
+      [ "HeliosDemos::SurveyDemo", "d2/d88/classHeliosDemos_1_1SurveyDemo.html", [
+        [ "HeliosDemos::DynamicSceneDemo", "d4/de8/classHeliosDemos_1_1DynamicSceneDemo.html", null ]
+      ] ]
     ] ],
     [ "HeliosTests::BaseTest", "d9/d52/classHeliosTests_1_1BaseTest.html", [
       [ "HeliosTests::LadLutTest", "dd/df9/classHeliosTests_1_1LadLutTest.html", null ],
@@ -59,9 +67,10 @@ var hierarchy =
     [ "Color4f", "db/d02/classColor4f.html", null ],
     [ "HeliosDemos::DemoSelector", "df/d3f/classHeliosDemos_1_1DemoSelector.html", null ],
     [ "Directions", "df/dc3/classDirections.html", null ],
-    [ "DynObject", "d5/d6a/classDynObject.html", [
-      [ "DynMovingObject", "d4/d96/classDynMovingObject.html", null ]
-    ] ],
+    [ "DynMotionEngine", "d2/d0a/classDynMotionEngine.html", null ],
+    [ "DynSequence< T >", "df/dfa/classDynSequence.html", null ],
+    [ "DynSequencer< T >", "db/d6f/classDynSequencer.html", null ],
+    [ "DynSequencer< DynMotion >", "db/d6f/classDynSequencer.html", null ],
     [ "enum_hasher", "da/ded/structenum__hasher.html", null ],
     [ "exception", null, [
       [ "HeliosException", "d6/dda/classHeliosException.html", [
@@ -140,7 +149,9 @@ var hierarchy =
     [ "RandomnessGenerator< double >", "dc/d6e/classRandomnessGenerator.html", null ],
     [ "RaySceneIntersection", "dc/da3/classRaySceneIntersection.html", null ],
     [ "RayUtils", "d7/dee/classRayUtils.html", null ],
-    [ "rigidmotion::RigidMotion", "d7/d84/classrigidmotion_1_1RigidMotion.html", null ],
+    [ "rigidmotion::RigidMotion", "d7/d84/classrigidmotion_1_1RigidMotion.html", [
+      [ "DynMotion", "d6/d4f/classDynMotion.html", null ]
+    ] ],
     [ "rigidmotion::RigidMotionEngine", "d2/da8/classrigidmotion_1_1RigidMotionEngine.html", null ],
     [ "rigidmotion::RigidMotionFactory", "dc/d00/classrigidmotion_1_1RigidMotionFactory.html", [
       [ "rigidmotion::RigidMotionR2Factory", "d7/da7/classrigidmotion_1_1RigidMotionR2Factory.html", null ],
@@ -150,7 +161,13 @@ var hierarchy =
     [ "RotationOrder", "d6/d7f/classRotationOrder.html", null ],
     [ "ScannerHead", "dc/da7/classScannerHead.html", null ],
     [ "SceneLoadingSpecification", "d7/d48/classSceneLoadingSpecification.html", null ],
-    [ "ScenePart", "dd/dc4/classScenePart.html", null ],
+    [ "ScenePart", "dd/dc4/classScenePart.html", [
+      [ "DynObject", "d5/d6a/classDynObject.html", [
+        [ "DynMovingObject", "d4/d96/classDynMovingObject.html", [
+          [ "DynSequentiableMovingObject", "d4/d48/classDynSequentiableMovingObject.html", null ]
+        ] ]
+      ] ]
+    ] ],
     [ "SerialIO", "d6/db9/classSerialIO.html", null ],
     [ "Simulation", "d1/d7b/classSimulation.html", [
       [ "SurveyPlayback", "d6/da1/classSurveyPlayback.html", null ]
@@ -180,11 +197,25 @@ var hierarchy =
     [ "VertexKeyEqual", "d5/dab/structVertexKeyEqual.html", null ],
     [ "VertexKeyHash", "dc/d35/structVertexKeyHash.html", null ],
     [ "visualhelios::VHCanvas", "de/dda/classvisualhelios_1_1VHCanvas.html", [
-      [ "visualhelios::VHSimpleCanvas", "d9/dc5/classvisualhelios_1_1VHSimpleCanvas.html", null ]
+      [ "visualhelios::VHDynCanvas", "da/d27/classvisualhelios_1_1VHDynCanvas.html", [
+        [ "visualhelios::VHNormalsCanvas", "df/dd2/classvisualhelios_1_1VHNormalsCanvas.html", [
+          [ "visualhelios::VHSceneCanvas", "d3/d71/classvisualhelios_1_1VHSceneCanvas.html", null ],
+          [ "visualhelios::VHSimpleCanvas", "d9/dc5/classvisualhelios_1_1VHSimpleCanvas.html", null ]
+        ] ]
+      ] ]
     ] ],
-    [ "visualhelios::VHDynObjectAdapter", "d5/dc4/classvisualhelios_1_1VHDynObjectAdapter.html", [
-      [ "visualhelios::VHDynObjectXYZAdapter", "de/d3c/classvisualhelios_1_1VHDynObjectXYZAdapter.html", null ],
-      [ "visualhelios::VHDynObjectXYZRGBAdapter", "d6/dd1/classvisualhelios_1_1VHDynObjectXYZRGBAdapter.html", null ]
+    [ "visualhelios::VHDynSceneAdapter< ST, DT >", "db/d0e/classvisualhelios_1_1VHDynSceneAdapter.html", null ],
+    [ "visualhelios::VHStaticObjectAdapter", "d1/dda/classvisualhelios_1_1VHStaticObjectAdapter.html", [
+      [ "visualhelios::VHDynObjectAdapter", "d5/dc4/classvisualhelios_1_1VHDynObjectAdapter.html", [
+        [ "visualhelios::VHDynObjectXYZAdapter", "de/d3c/classvisualhelios_1_1VHDynObjectXYZAdapter.html", null ],
+        [ "visualhelios::VHDynObjectXYZRGBAdapter", "d6/dd1/classvisualhelios_1_1VHDynObjectXYZRGBAdapter.html", null ]
+      ] ],
+      [ "visualhelios::VHStaticObjectXYZAdapter", "db/d6f/classvisualhelios_1_1VHStaticObjectXYZAdapter.html", [
+        [ "visualhelios::VHDynObjectXYZAdapter", "de/d3c/classvisualhelios_1_1VHDynObjectXYZAdapter.html", null ]
+      ] ],
+      [ "visualhelios::VHStaticObjectXYZRGBAdapter", "d5/dfc/classvisualhelios_1_1VHStaticObjectXYZRGBAdapter.html", [
+        [ "visualhelios::VHDynObjectXYZRGBAdapter", "d6/dd1/classvisualhelios_1_1VHDynObjectXYZRGBAdapter.html", null ]
+      ] ]
     ] ],
     [ "VoxelFileParser", "d9/ddf/classVoxelFileParser.html", null ],
     [ "VoxelGridCell", "d5/df6/structVoxelGridCell.html", null ],
@@ -193,6 +224,8 @@ var hierarchy =
     [ "XmlAssetsLoader", "d9/d82/classXmlAssetsLoader.html", [
       [ "XmlSurveyLoader", "df/d9a/classXmlSurveyLoader.html", null ]
     ] ],
+    [ "XmlSceneLoader", "db/d91/classXmlSceneLoader.html", null ],
+    [ "XmlUtils", "de/d52/classXmlUtils.html", null ],
     [ "runtime_error", null, [
       [ "rigidmotion::RigidMotionException", "dd/db6/classrigidmotion_1_1RigidMotionException.html", null ]
     ] ]

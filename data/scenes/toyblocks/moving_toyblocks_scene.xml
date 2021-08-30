@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+    <scene id="moving_toyblocks_scene" name="MovingToyblocksScene">
+		<part>
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/basic/groundplane/groundplane.obj" />
+            </filter>
+            <filter type="scale">
+                <param type="double" key="scale" value="120" />
+            </filter>
+			<filter type="translate">
+				<param type="vec3" key="offset" value="50.0;0;0" />
+			</filter>
+        </part>
+		<part>
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/toyblocks/cube.obj" />
+            </filter>
+			<filter type="rotate">
+				<param key="rotation" type="rotation">
+					<rot angle_deg="45" axis="z"/>
+				</param>
+			</filter>
+			<filter type="scale">
+                <param type="double" key="scale" value="0.75" />
+            </filter>
+			<filter type="translate">
+				<param type="vec3" key="offset" value="-40.0;-5.0;0" />
+			</filter>
+			<dmotion id ="cube_rotation" loop="0">
+				<motion type="rotation" axis="0;0;1" angle="1" selfMode="true"/>
+			</dmotion>
+        </part>
+		<part>
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/toyblocks/cube.obj" />
+            </filter>
+			<filter type="rotate">
+				<param key="rotation" type="rotation">
+					<rot angle_deg="60" axis="z"/>
+				</param>
+			</filter>
+			<filter type="scale">
+                <param type="double" key="scale" value="0.75" />
+            </filter>
+			<filter type="translate">
+				<param type="vec3" key="offset" value="50.0;30.0;120" />
+			</filter>
+			<dmotion id ="cube_planet" loop="0">
+				<motion type="rotation" axis="0;0;1" angle="2" selfMode="true" />
+				<motion type="translation" vec="-120;-100;0" />
+				<motion type="rotation" axis="0;0;1" angle="1" />
+				<motion type="translation" vec="120;100;0" />
+			</dmotion>
+        </part>
+		<part>
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/toyblocks/cube.obj" />
+            </filter>
+			<filter type="rotate">
+				<param key="rotation" type="rotation">
+					<rot angle_deg="90" axis="z"/>
+				</param>
+			</filter>
+			<filter type="scale">
+                <param type="double" key="scale" value="0.75" />
+            </filter>
+			<filter type="translate">
+				<param type="vec3" key="offset" value="-30.0;40.0;0" />
+			</filter>
+			<dmotion id ="cube_bounce1" loop="1" next="cube_bounce2">
+				<motion type="translation" vec="-50;-150;-20" />
+				<motion type="rotsym" axis="0;0;1" angle="2" center="-5;50;0" />
+				<motion type="translation" vec="50;150;20" />
+			</dmotion>
+			<dmotion id ="cube_bounce2" loop="8" next="cube_bounce1">
+				<motion type="translation" vec="0;0;-3.2" />
+			</dmotion>
+        </part>
+        <part>
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/toyblocks/sphere.obj" />
+            </filter>
+			<filter type="scale">
+                <param type="double" key="scale" value="0.5" />
+            </filter>
+			<dmotion id="sphere_helical_up" loop="300" next="sphere_helical_down">
+				<motion type="translation" vec="-129;-120;0" />
+				<motion type="helical" axis="0;0;1" angle="4" glide="0.3"/>
+				<motion type="translation" vec="129;120;0" />
+			</dmotion>
+			<dmotion id="sphere_helical_down" loop="300" next="sphere_helical_up">
+				<motion type="translation" vec="-129;-120;0" />
+				<motion type="helical" axis="0;0;1" angle="-4" glide="-0.3"/>
+				<motion type="translation" vec="129;120;0" />
+			</dmotion>
+        </part>
+		<part>
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/toyblocks/cylinder.obj" />
+            </filter>
+			<filter type="scale">
+                <param type="double" key="scale" value="1" />
+            </filter>
+			<filter type="translate">
+				<param type="vec3" key="offset" value="90.0;30.0;0" />
+			</filter>
+			<dmotion id="cylinder_translation1" loop="100" next="cylinder_translation2">
+				<motion type="translation" vec="0;0.2;0"/>
+			</dmotion>
+			<dmotion id="cylinder_translation2" loop="100" next="cylinder_translation3">
+				<motion type="translation" vec="0.2;0;0"/>
+			</dmotion>
+			<dmotion id="cylinder_translation3" loop="100" next="cylinder_translation4">
+				<motion type="translation" vec="-0.2;0;0"/>
+			</dmotion>
+			<dmotion id="cylinder_translation4" loop="100" next="cylinder_translation1">
+				<motion type="translation" vec="0;-0.2;0"/>
+			</dmotion>
+        </part>
+        <part>
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/toyblocks/easter2021.obj" />
+            </filter>
+			<filter type="rotate">
+				<param key="rotation" type="rotation">
+					<rot angle_deg="90" axis="x"/>
+				</param>
+			</filter>
+			<filter type="scale">
+                <param type="double" key="scale" value="5" />
+            </filter>
+			<filter type="translate">
+				<param type="vec3" key="offset" value="60.0;0.0;15.0" />
+			</filter>
+			<dmotion id="easter_gpup" next="easter_gpdown" loop="200">
+				<motion type="translation" vec="-250.0;0.0;0.0"/>
+				<motion type="glideplane" ortho="1;1;0" shift="0;0;0.1"/>
+				<motion type="translation" vec="250.0;0.0;0.0"/>
+			</dmotion>
+			<dmotion id="easter_gpdown" next="easter_gpup" loop="200">
+				<motion type="glideplane" ortho="1;1;0" shift="0;0;-0.1" selfMode="true" />
+			</dmotion>
+        </part>
+		<part>
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/toyblocks/easter2021.obj" />
+            </filter>
+			<filter type="rotate">
+				<param key="rotation" type="rotation">
+					<rot angle_deg="90" axis="x"/>
+				</param>
+			</filter>
+			<filter type="scale">
+                <param type="double" key="scale" value="5" />
+            </filter>
+			<filter type="translate">
+				<param type="vec3" key="offset" value="60.0;0.0;15.0" />
+			</filter>
+			<dmotion id="easter_reflection" loop="1">
+				<motion type="reflection" ortho="0;0;1" />
+			</dmotion>
+        </part>
+    </scene>
+</document>

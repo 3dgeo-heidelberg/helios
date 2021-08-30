@@ -16,6 +16,18 @@ namespace rigidmotion{
  * @see rigidmotion::RigidMotionR3Factory
  */
 class RigidMotionFactory {
+private:
+    // ***  SERIALIZATION  *** //
+    // *********************** //
+    friend class boost::serialization::access;
+    /**
+     * @brief Serialize a rigid motion factory to a stream of bytes
+     * @tparam Archive Type of rendering
+     * @param ar Specific rendering for the stream of bytes
+     * @param version Version number for the rigid motion factory
+     */
+    template <class Archive>
+    void serialize(Archive &ar, const unsigned int version) {}
 public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //
     // ************************************ //

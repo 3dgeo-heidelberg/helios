@@ -220,9 +220,9 @@ Private Member Functions</h2></td></tr>
 <tr class="memitem:a50b690e9352dfcdc998a35bc222481e9"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/da6/classFullWaveformPulseRunnable.html#a50b690e9352dfcdc998a35bc222481e9">initializeFullWaveform</a> (double minHitDist_m, double maxHitDist_m, double &amp;minHitTime_ns, double &amp;maxHitTime_ns, double &amp;nsPerBin, double &amp;distanceThreshold, int &amp;peakIntensityIndex, int &amp;numFullwaveBins)</td></tr>
 <tr class="memdesc:a50b690e9352dfcdc998a35bc222481e9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize full waveform While the vector is not strictly initialized in this function, necessary variables are computed here.  <a href="#a50b690e9352dfcdc998a35bc222481e9">More...</a><br /></td></tr>
 <tr class="separator:a50b690e9352dfcdc998a35bc222481e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa3911f2587e02c9d3e1966fcf4a59e29"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/da6/classFullWaveformPulseRunnable.html#aa3911f2587e02c9d3e1966fcf4a59e29">populateFullWaveform</a> (std::map&lt; double, double &gt; &amp;reflections, std::vector&lt; double &gt; &amp;fullwave, double distanceThreshold, double minHitTime_ns, double nsPerBin)</td></tr>
-<tr class="memdesc:aa3911f2587e02c9d3e1966fcf4a59e29"><td class="mdescLeft">&#160;</td><td class="mdescRight">Populate a previously initialized full waveform vector.  <a href="#aa3911f2587e02c9d3e1966fcf4a59e29">More...</a><br /></td></tr>
-<tr class="separator:aa3911f2587e02c9d3e1966fcf4a59e29"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a741d1b4cc6302ffb1d8df79ed66804f5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/da6/classFullWaveformPulseRunnable.html#a741d1b4cc6302ffb1d8df79ed66804f5">populateFullWaveform</a> (std::map&lt; double, double &gt; &amp;reflections, std::vector&lt; double &gt; &amp;fullwave, double distanceThreshold, double minHitTime_ns, double nsPerBin, int peakIntensityIndex)</td></tr>
+<tr class="memdesc:a741d1b4cc6302ffb1d8df79ed66804f5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Populate a previously initialized full waveform vector.  <a href="#a741d1b4cc6302ffb1d8df79ed66804f5">More...</a><br /></td></tr>
+<tr class="separator:a741d1b4cc6302ffb1d8df79ed66804f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af44d7312cdd43ccc9a34bc1db5e9d3ba"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/da6/classFullWaveformPulseRunnable.html#af44d7312cdd43ccc9a34bc1db5e9d3ba">digestFullWaveform</a> (std::vector&lt; <a class="el" href="../../db/d2e/classMeasurement.html">Measurement</a> &gt; &amp;pointsMeasurement, int &amp;numReturns, std::vector&lt; std::vector&lt; double &gt;&gt; &amp;apMatrix, std::vector&lt; double &gt; &amp;fullwave, vector&lt; <a class="el" href="../../dc/da3/classRaySceneIntersection.html">RaySceneIntersection</a> &gt; &amp;intersects, glm::dvec3 &amp;beamDir, double nsPerBin, int numFullwaveBins, int peakIntensityIndex, double minHitTime_ns)</td></tr>
 <tr class="memdesc:af44d7312cdd43ccc9a34bc1db5e9d3ba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Digest a previously populated full waveform vector, generating measurements.  <a href="#af44d7312cdd43ccc9a34bc1db5e9d3ba">More...</a><br /></td></tr>
 <tr class="separator:af44d7312cdd43ccc9a34bc1db5e9d3ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -643,7 +643,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="../../db/da6/classFullWaveformPulseRunnable.html#afdef1f81c235056a04beb60f40c2492d" title="Digest intersections found through ray casting. ">FullWaveformPulseRunnable::digestIntersections</a> </dd>
 <dd>
-<a class="el" href="../../db/da6/classFullWaveformPulseRunnable.html#aa3911f2587e02c9d3e1966fcf4a59e29" title="Populate a previously initialized full waveform vector. ">FullWaveformPulseRunnable::populateFullWaveform</a> </dd>
+<a class="el" href="../../db/da6/classFullWaveformPulseRunnable.html#a741d1b4cc6302ffb1d8df79ed66804f5" title="Populate a previously initialized full waveform vector. ">FullWaveformPulseRunnable::populateFullWaveform</a> </dd>
 <dd>
 <a class="el" href="../../db/d2e/classMeasurement.html" title="Class representing a measurement. ">Measurement</a> </dd></dl>
 
@@ -722,7 +722,7 @@ Additional Inherited Members</h2></td></tr>
 <dd>
 <a class="el" href="../../db/da6/classFullWaveformPulseRunnable.html#a50b690e9352dfcdc998a35bc222481e9" title="Initialize full waveform While the vector is not strictly initialized in this function, necessary variables are computed here. ">FullWaveformPulseRunnable::initializeFullWaveform</a> </dd>
 <dd>
-<a class="el" href="../../db/da6/classFullWaveformPulseRunnable.html#aa3911f2587e02c9d3e1966fcf4a59e29" title="Populate a previously initialized full waveform vector. ">FullWaveformPulseRunnable::populateFullWaveform</a> </dd>
+<a class="el" href="../../db/da6/classFullWaveformPulseRunnable.html#a741d1b4cc6302ffb1d8df79ed66804f5" title="Populate a previously initialized full waveform vector. ">FullWaveformPulseRunnable::populateFullWaveform</a> </dd>
 <dd>
 <a class="el" href="../../db/da6/classFullWaveformPulseRunnable.html#af44d7312cdd43ccc9a34bc1db5e9d3ba" title="Digest a previously populated full waveform vector, generating measurements. ">FullWaveformPulseRunnable::digestFullWaveform</a> </dd>
 <dd>
@@ -1115,8 +1115,8 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a id="aa3911f2587e02c9d3e1966fcf4a59e29"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa3911f2587e02c9d3e1966fcf4a59e29">&#9670;&nbsp;</a></span>populateFullWaveform()</h2>
+<a id="a741d1b4cc6302ffb1d8df79ed66804f5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a741d1b4cc6302ffb1d8df79ed66804f5">&#9670;&nbsp;</a></span>populateFullWaveform()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1152,7 +1152,13 @@ Additional Inherited Members</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>nsPerBin</em>&#160;</td>
+          <td class="paramname"><em>nsPerBin</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>peakIntensityIndex</em>&#160;</td>
         </tr>
         <tr>
           <td></td>

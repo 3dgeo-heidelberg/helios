@@ -1,6 +1,7 @@
 #ifdef PCL_BINDING
 
 #include <visualhelios/VHSimpleCanvas.h>
+#include <Primitive.h>
 
 #include <sstream>
 
@@ -10,38 +11,23 @@ using visualhelios::VHSimpleCanvas;
 // ***  CONSTRUCTION / DESTRUCTION  *** //
 // ************************************ //
 VHSimpleCanvas::VHSimpleCanvas(string const title) :
-    VHCanvas(title),
-    renderingNormals(false),
-    normalMagnitude(2.0f)
+    VHNormalsCanvas(title, true, true, false, 2.0f)
 {}
 
 // ***  CANVAS METHODS  *** //
 // ************************ //
 void VHSimpleCanvas::configure(){
     // Configure base canvas
-    VHCanvas::configure();
+    VHNormalsCanvas::configure();
 
     // Configure camera
     viewer->setCameraPosition(0, -75.0, 35.0, 0.0, 1.0, 0.0);
-
-    // Register keyboard callbacks for simple canvas
-    viewer->registerKeyboardCallback(
-        [&](pcl::visualization::KeyboardEvent const &ev) -> void {
-            if(!ev.keyDown()) return; // Consider only key down cases
-
-            // Handle normal toggling by key
-            if(ev.getKeyCode() == 'n' || ev.getKeyCode() == 'N'){
-                this->setRenderingNormals(!this->isRenderingNormals());
-                if(this->isRenderingNormals()) needUpdate = true;
-                else this->unrenderAllNormals();
-                std::cout << "Rendering normals modified by keyboard: "
-                    << this->isRenderingNormals() << std::endl;
-            }
-        }
-    );
 }
 
 void VHSimpleCanvas::start(){
+    // Start base canvas
+    VHNormalsCanvas::start();
+
     // Build polygon meshes and add them to viewer
     for(shared_ptr<VHDynObjectXYZRGBAdapter> & dynObj : dynObjs){
         dynObj->buildPolymesh();
@@ -61,26 +47,21 @@ void VHSimpleCanvas::start(){
             dynObj->getId()
         );
         // Render initial normals if requested
-        if(renderingNormals) renderNormals(*dynObj);
+        if(isRenderingNormals()) renderNormals(*dynObj);
     }
-
-    // Add keyboard usage text
-    viewer->addText(
-        "Press N to enable/disable normals rendering",
-        10, 20,
-        "keyboardUsageText"
-    );
-
 }
 
 void VHSimpleCanvas::update(){
+    // Base canvas update
+    VHNormalsCanvas::update();
+
     // Apply dynamic update function to primitives
     if(dynamicUpdateFunction) dynamicUpdateFunction(dynObjs);
 
-    // Update the polygon mesh after applying dynamic function
+    // Update polygon meshes after applying dynamic function if necessary
     for(shared_ptr<VHDynObjectXYZRGBAdapter> & dynObj : dynObjs){
         // Continue to next iteration if no updates are needed for this
-        if(!dynObj->doStep() && !needUpdate) continue;
+        if(!dynObj->doStep(true, false) && !isNeedingUpdate()) continue;
         // Update the polygon mesh itself
         viewer->updatePolygonMesh<pcl::PointXYZRGB>(
             dynObj->getPolymesh(),
@@ -88,18 +69,16 @@ void VHSimpleCanvas::update(){
             dynObj->getId()
         );
         // Update normals if requested
-        if(renderingNormals) renderNormals(*dynObj);
+        if(isRenderingNormals()) renderNormals(*dynObj);
     }
-
-    // After update no updates are needed from canvas side until modified
-    needUpdate = false;
 }
 
-// ***  UTIL METHODS  ***  //
-// ********************** //
-void VHSimpleCanvas::renderNormals(VHDynObjectXYZRGBAdapter & dynObj){
-    if(!dynObj.isRenderingNormals()) return;
-    vector<Primitive *> const primitives = dynObj.getDynObj().getPrimitives();
+// ***  NORMALS RENDERING METHODS  ***  //
+// ************************************ //
+void VHSimpleCanvas::renderNormals(VHStaticObjectAdapter & staticObj){
+    if(!staticObj.isRenderingNormals()) return;
+    vector<Primitive *> const primitives =
+        staticObj.getStaticObj().getPrimitives();
     for(size_t i = 0 ; i < primitives.size() ; ++i){
         Primitive * primitive = primitives[i];
         float nx = 0;
@@ -123,20 +102,24 @@ void VHSimpleCanvas::renderNormals(VHDynObjectXYZRGBAdapter & dynObj){
         p.x /= numVerticesf;
         p.y /= numVerticesf;
         p.z /= numVerticesf;
-        q.x = p.x + normalMagnitude * nx;
-        q.y = p.y + normalMagnitude * ny;
-        q.z = p.z + normalMagnitude * nz;
+        q.x = p.x + getNormalMagnitude() * nx;
+        q.y = p.y + getNormalMagnitude() * ny;
+        q.z = p.z + getNormalMagnitude() * nz;
         std::stringstream ss;
-        ss << dynObj.getId() << "_normal" << i;
+        ss << staticObj.getId() << "_normal" << i;
         viewer->removeShape(ss.str());
-        viewer->addLine(p, q, 1.0, 1.0, 0.0, ss.str());
+        viewer->addLine(
+            p, q,
+            normalDefColor[0], normalDefColor[1], normalDefColor[2],
+            ss.str()
+        );
     }
 }
 
 void VHSimpleCanvas::unrenderAllNormals(){
-    for(shared_ptr<VHDynObjectXYZRGBAdapter> dynObj : dynObjs){
+    for(shared_ptr<VHDynObjectXYZRGBAdapter> const &dynObj : dynObjs){
         if(!dynObj->isRenderingNormals()) continue; // Skip, nothing to remove
-        vector<Primitive *> const primitives = \
+        vector<Primitive *> const primitives =
             dynObj->getDynObj().getPrimitives();
         for(size_t i = 0 ; i < primitives.size() ; ++i){
             std::stringstream ss;

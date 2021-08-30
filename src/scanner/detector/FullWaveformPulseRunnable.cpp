@@ -11,7 +11,6 @@
 #include <maths/RayUtils.h>
 
 using namespace std;
-using namespace glm;
 
 // ***  CONSTANTS  *** //
 // ******************* //
@@ -29,7 +28,7 @@ void FullWaveformPulseRunnable::operator()(
 	shared_ptr<Scene> scene(detector->scanner->platform->scene);
 
 	// Compute beam direction
-	dvec3 beamDir = absoluteBeamAttitude.applyTo(Directions::forward);
+	glm::dvec3 beamDir = absoluteBeamAttitude.applyTo(Directions::forward);
 
 	// NOTE:
 	// With beam divergence / full waveform being simulated, this is not perfect, since a sub-ray
@@ -127,7 +126,7 @@ void FullWaveformPulseRunnable::handleSubray(
     Rotation r2 = Rotation(Directions::forward, circleStep_rad * circleStep);
     r2 = r2.applyTo(r1);
 
-    dvec3 subrayDirection = absoluteBeamAttitude
+    glm::dvec3 subrayDirection = absoluteBeamAttitude
         .applyTo(r2)
         .applyTo(Directions::forward);
 
@@ -338,14 +337,15 @@ bool FullWaveformPulseRunnable::initializeFullWaveform(
 ){
     // Calc time at minimum and maximum distance
     // (i.e. total beam time in fwf signal)
-
     peakIntensityIndex = detector->scanner->peakIntensityIndex;
     nsPerBin = detector->scanner->FWF_settings.binSize_ns;
-
-    minHitTime_ns = minHitDist_m / cfg_speedOfLight_mPerNanosec - peakIntensityIndex * nsPerBin; // time until first maximum minus rising flank
-    maxHitTime_ns = maxHitDist_m / cfg_speedOfLight_mPerNanosec + // time until last maximum
-            detector->scanner->getPulseLength_ns() - peakIntensityIndex * nsPerBin + // time for signal decay
-            nsPerBin; // 1 bin for buffer
+    double const peakFactor = peakIntensityIndex * nsPerBin;
+    // Time until first maximum minus rising flank
+    minHitTime_ns = minHitDist_m / cfg_speedOfLight_mPerNanosec - peakFactor;
+    // Time until last maximum time for signal decay with 1 bin for buffer
+    maxHitTime_ns = maxHitDist_m / cfg_speedOfLight_mPerNanosec +
+        detector->scanner->getPulseLength_ns() - peakFactor +
+        nsPerBin; // 1 bin for buffer
 
     // Calc ranges and threshold
     double hitTimeDelta_ns = maxHitTime_ns - minHitTime_ns;
@@ -386,8 +386,10 @@ void FullWaveformPulseRunnable::populateFullWaveform(
         double entryDistance_m = it->first;
         if(entryDistance_m > distanceThreshold) continue;
         double entryIntensity = it->second;
-        double wavePeakTime_ns = (entryDistance_m / cfg_speedOfLight_mPerNanosec); // [ns]
-        int binStart = (int)((wavePeakTime_ns-minHitTime_ns) / nsPerBin) - peakIntensityIndex;
+        double wavePeakTime_ns = entryDistance_m /
+            cfg_speedOfLight_mPerNanosec; // in nanoseconds
+        int binStart = (int)((wavePeakTime_ns-minHitTime_ns) / nsPerBin)
+            - peakIntensityIndex;
         for (size_t i = 0; i < time_wave.size(); i++) {
             fullwave[binStart + i] += time_wave[i] * entryIntensity;
         }
@@ -597,8 +599,8 @@ void FullWaveformPulseRunnable::captureFullWave(
     int fullwaveIndex,
     double min_time,
     double max_time,
-    dvec3 & beamOrigin,
-    dvec3 & beamDir,
+    glm::dvec3 & beamOrigin,
+    glm::dvec3 & beamDir,
     double gpstime,
     bool fullWaveNoise,
     RandomnessGenerator<double> &rg2

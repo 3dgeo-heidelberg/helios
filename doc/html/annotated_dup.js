@@ -3,7 +3,9 @@ var annotated_dup =
     [ "HeliosDemos", null, [
       [ "BaseDemo", "df/df9/classHeliosDemos_1_1BaseDemo.html", "df/df9/classHeliosDemos_1_1BaseDemo" ],
       [ "DemoSelector", "df/d3f/classHeliosDemos_1_1DemoSelector.html", "df/d3f/classHeliosDemos_1_1DemoSelector" ],
-      [ "SimplePrimitivesDemo", "d0/d1c/classHeliosDemos_1_1SimplePrimitivesDemo.html", "d0/d1c/classHeliosDemos_1_1SimplePrimitivesDemo" ]
+      [ "DynamicSceneDemo", "d4/de8/classHeliosDemos_1_1DynamicSceneDemo.html", "d4/de8/classHeliosDemos_1_1DynamicSceneDemo" ],
+      [ "SimplePrimitivesDemo", "d0/d1c/classHeliosDemos_1_1SimplePrimitivesDemo.html", "d0/d1c/classHeliosDemos_1_1SimplePrimitivesDemo" ],
+      [ "SurveyDemo", "d2/d88/classHeliosDemos_1_1SurveyDemo.html", "d2/d88/classHeliosDemos_1_1SurveyDemo" ]
     ] ],
     [ "HeliosTests", null, [
       [ "BaseTest", "d9/d52/classHeliosTests_1_1BaseTest.html", "d9/d52/classHeliosTests_1_1BaseTest" ],
@@ -56,10 +58,17 @@ var annotated_dup =
     ] ],
     [ "visualhelios", null, [
       [ "VHCanvas", "de/dda/classvisualhelios_1_1VHCanvas.html", "de/dda/classvisualhelios_1_1VHCanvas" ],
+      [ "VHDynCanvas", "da/d27/classvisualhelios_1_1VHDynCanvas.html", "da/d27/classvisualhelios_1_1VHDynCanvas" ],
       [ "VHDynObjectAdapter", "d5/dc4/classvisualhelios_1_1VHDynObjectAdapter.html", "d5/dc4/classvisualhelios_1_1VHDynObjectAdapter" ],
       [ "VHDynObjectXYZAdapter", "de/d3c/classvisualhelios_1_1VHDynObjectXYZAdapter.html", "de/d3c/classvisualhelios_1_1VHDynObjectXYZAdapter" ],
       [ "VHDynObjectXYZRGBAdapter", "d6/dd1/classvisualhelios_1_1VHDynObjectXYZRGBAdapter.html", "d6/dd1/classvisualhelios_1_1VHDynObjectXYZRGBAdapter" ],
-      [ "VHSimpleCanvas", "d9/dc5/classvisualhelios_1_1VHSimpleCanvas.html", "d9/dc5/classvisualhelios_1_1VHSimpleCanvas" ]
+      [ "VHDynSceneAdapter", "db/d0e/classvisualhelios_1_1VHDynSceneAdapter.html", "db/d0e/classvisualhelios_1_1VHDynSceneAdapter" ],
+      [ "VHNormalsCanvas", "df/dd2/classvisualhelios_1_1VHNormalsCanvas.html", "df/dd2/classvisualhelios_1_1VHNormalsCanvas" ],
+      [ "VHSceneCanvas", "d3/d71/classvisualhelios_1_1VHSceneCanvas.html", "d3/d71/classvisualhelios_1_1VHSceneCanvas" ],
+      [ "VHSimpleCanvas", "d9/dc5/classvisualhelios_1_1VHSimpleCanvas.html", "d9/dc5/classvisualhelios_1_1VHSimpleCanvas" ],
+      [ "VHStaticObjectAdapter", "d1/dda/classvisualhelios_1_1VHStaticObjectAdapter.html", "d1/dda/classvisualhelios_1_1VHStaticObjectAdapter" ],
+      [ "VHStaticObjectXYZAdapter", "db/d6f/classvisualhelios_1_1VHStaticObjectXYZAdapter.html", "db/d6f/classvisualhelios_1_1VHStaticObjectXYZAdapter" ],
+      [ "VHStaticObjectXYZRGBAdapter", "d5/dfc/classvisualhelios_1_1VHStaticObjectXYZRGBAdapter.html", "d5/dfc/classvisualhelios_1_1VHStaticObjectXYZRGBAdapter" ]
     ] ],
     [ "AABB", "d2/d1a/classAABB.html", "d2/d1a/classAABB" ],
     [ "AbstractBeamDeflector", "d7/d92/classAbstractBeamDeflector.html", "d7/d92/classAbstractBeamDeflector" ],
@@ -73,8 +82,14 @@ var annotated_dup =
     [ "DetailedVoxel", "d7/d5a/classDetailedVoxel.html", "d7/d5a/classDetailedVoxel" ],
     [ "DetailedVoxelLoader", "db/d49/classDetailedVoxelLoader.html", "db/d49/classDetailedVoxelLoader" ],
     [ "Directions", "df/dc3/classDirections.html", "df/dc3/classDirections" ],
+    [ "DynMotion", "d6/d4f/classDynMotion.html", "d6/d4f/classDynMotion" ],
+    [ "DynMotionEngine", "d2/d0a/classDynMotionEngine.html", "d2/d0a/classDynMotionEngine" ],
     [ "DynMovingObject", "d4/d96/classDynMovingObject.html", "d4/d96/classDynMovingObject" ],
     [ "DynObject", "d5/d6a/classDynObject.html", "d5/d6a/classDynObject" ],
+    [ "DynScene", "de/d74/classDynScene.html", "de/d74/classDynScene" ],
+    [ "DynSequence", "df/dfa/classDynSequence.html", "df/dfa/classDynSequence" ],
+    [ "DynSequencer", "db/d6f/classDynSequencer.html", "db/d6f/classDynSequencer" ],
+    [ "DynSequentiableMovingObject", "d4/d48/classDynSequentiableMovingObject.html", "d4/d48/classDynSequentiableMovingObject" ],
     [ "enum_hasher", "da/ded/structenum__hasher.html", "da/ded/structenum__hasher" ],
     [ "FiberArrayBeamDeflector", "d7/d20/classFiberArrayBeamDeflector.html", "d7/d20/classFiberArrayBeamDeflector" ],
     [ "file_logger", "d8/d63/classfile__logger.html", "d8/d63/classfile__logger" ],
@@ -133,11 +148,13 @@ var annotated_dup =
     [ "SceneLoadingSpecification", "d7/d48/classSceneLoadingSpecification.html", "d7/d48/classSceneLoadingSpecification" ],
     [ "ScenePart", "dd/dc4/classScenePart.html", "dd/dc4/classScenePart" ],
     [ "SerialIO", "d6/db9/classSerialIO.html", "d6/db9/classSerialIO" ],
+    [ "SerialSceneWrapper", "d3/df0/classSerialSceneWrapper.html", "d3/df0/classSerialSceneWrapper" ],
     [ "SimplePhysicsPlatform", "d5/d3b/classSimplePhysicsPlatform.html", "d5/d3b/classSimplePhysicsPlatform" ],
     [ "SimpleSyncFileWriter", "df/d47/classSimpleSyncFileWriter.html", "df/d47/classSimpleSyncFileWriter" ],
     [ "Simulation", "d1/d7b/classSimulation.html", "d1/d7b/classSimulation" ],
     [ "SimulationCycleCallback", "dc/d7a/classSimulationCycleCallback.html", "dc/d7a/classSimulationCycleCallback" ],
     [ "SpectralLibrary", "d5/d20/classSpectralLibrary.html", "d5/d20/classSpectralLibrary" ],
+    [ "StaticScene", "dd/d34/classStaticScene.html", "dd/d34/classStaticScene" ],
     [ "std_out_logger", "d0/db8/classstd__out__logger.html", "d0/db8/classstd__out__logger" ],
     [ "stringVisitor", "d8/df4/structstringVisitor.html", "d8/df4/structstringVisitor" ],
     [ "Survey", "d5/db6/classSurvey.html", "d5/db6/classSurvey" ],
@@ -162,7 +179,9 @@ var annotated_dup =
     [ "WavefrontObjCache", "d8/d78/classWavefrontObjCache.html", "d8/d78/classWavefrontObjCache" ],
     [ "WavefrontObjFileLoader", "d9/d15/classWavefrontObjFileLoader.html", "d9/d15/classWavefrontObjFileLoader" ],
     [ "XmlAssetsLoader", "d9/d82/classXmlAssetsLoader.html", "d9/d82/classXmlAssetsLoader" ],
+    [ "XmlSceneLoader", "db/d91/classXmlSceneLoader.html", "db/d91/classXmlSceneLoader" ],
     [ "XmlSurveyLoader", "df/d9a/classXmlSurveyLoader.html", "df/d9a/classXmlSurveyLoader" ],
+    [ "XmlUtils", "de/d52/classXmlUtils.html", "de/d52/classXmlUtils" ],
     [ "XYZPointCloudFileLoader", "d6/d03/classXYZPointCloudFileLoader.html", "d6/d03/classXYZPointCloudFileLoader" ],
     [ "ZipSyncFileWriter", "de/d2a/classZipSyncFileWriter.html", "de/d2a/classZipSyncFileWriter" ]
 ];

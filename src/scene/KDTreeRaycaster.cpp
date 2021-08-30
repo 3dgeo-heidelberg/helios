@@ -1,10 +1,15 @@
 #include "KDTreeRaycaster.h"
 #include "logging.hpp"
 
-using namespace glm;
 using namespace std;
 
-map<double, Primitive*> KDTreeRaycaster::searchAll(dvec3 _rayOrigin, dvec3 _rayDir, double tmin, double tmax, bool groundOnly) {
+map<double, Primitive*> KDTreeRaycaster::searchAll(
+    glm::dvec3 _rayOrigin,
+    glm::dvec3 _rayDir,
+    double tmin,
+    double tmax,
+    bool groundOnly
+) {
 	rayDirArray.push_back(_rayDir.x);
 	rayDirArray.push_back(_rayDir.y);
 	rayDirArray.push_back(_rayDir.z);
@@ -25,7 +30,13 @@ map<double, Primitive*> KDTreeRaycaster::searchAll(dvec3 _rayOrigin, dvec3 _rayD
 	return collectedPoints;
 }
 
-RaySceneIntersection* KDTreeRaycaster::search(dvec3 _rayOrigin, dvec3 _rayDir, double tmin, double tmax, bool groundOnly) {
+RaySceneIntersection* KDTreeRaycaster::search(
+    glm::dvec3 _rayOrigin,
+    glm::dvec3 _rayDir,
+    double tmin,
+    double tmax,
+    bool groundOnly
+){
 	rayDirArray.push_back(_rayDir.x);
 	rayDirArray.push_back(_rayDir.y);
 	rayDirArray.push_back(_rayDir.z);

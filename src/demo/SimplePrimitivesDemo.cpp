@@ -1,7 +1,7 @@
 #ifdef PCL_BINDING
 
 #include <demo/SimplePrimitivesDemo.h>
-#include <rigidmotion/RigidMotion.h>
+#include <DynMotion.h>
 #include <rigidmotion/RigidMotionR3Factory.h>
 #include <scene/dynamic/DynObject.h>
 #include <scene/dynamic/DynMovingObject.h>
@@ -14,7 +14,6 @@ using std::vector;
 using std::shared_ptr;
 using std::make_shared;
 using HeliosDemos::SimplePrimitivesDemo;
-using rigidmotion::RigidMotion;
 using rigidmotion::RigidMotionR3Factory;
 using visualhelios::VHSimpleCanvas;
 using visualhelios::VHDynObjectXYZRGBAdapter;
@@ -61,27 +60,27 @@ void SimplePrimitivesDemo::run(){
     shared_ptr<DynMovingObject> dmoMobile =
         std::static_pointer_cast<DynMovingObject>(mobileStructure);
     RigidMotion rm = rm3f.makeRotationZ(PI_HALF);
-    dmoMobile->pushPositionMotion(make_shared<RigidMotion>(rm));
-    dmoMobile->pushNormalMotion(make_shared<RigidMotion>(rm));
-    dmoMobile->pushPositionMotion(make_shared<RigidMotion>(
+    dmoMobile->pushPositionMotion(make_shared<DynMotion>(rm));
+    dmoMobile->pushNormalMotion(make_shared<DynMotion>(rm));
+    dmoMobile->pushPositionMotion(make_shared<DynMotion>(
         rm3f.makeTranslation(arma::colvec("-40;0;1"))
     ));
     shared_ptr<DynMovingObject> dmoFixed =
         std::static_pointer_cast<DynMovingObject>(fixedStructure);
-    dmoFixed->pushPositionMotion(make_shared<RigidMotion>(
+    dmoFixed->pushPositionMotion(make_shared<DynMotion>(
         rm3f.makeTranslation(arma::colvec("10;10;4"))
     ));
     shared_ptr<DynMovingObject> dmoHelical =
         std::static_pointer_cast<DynMovingObject>(helicalStructure);
     rm = rm3f.makeRotationX(PI_HALF);
-    dmoHelical->pushPositionMotion(make_shared<RigidMotion>(rm));
-    dmoHelical->pushNormalMotion(make_shared<RigidMotion>(rm));
-    dmoHelical->pushPositionMotion(make_shared<RigidMotion>(
+    dmoHelical->pushPositionMotion(make_shared<DynMotion>(rm));
+    dmoHelical->pushNormalMotion(make_shared<DynMotion>(rm));
+    dmoHelical->pushPositionMotion(make_shared<DynMotion>(
         rm3f.makeTranslation(arma::colvec("0;5;1"))
     ));
     shared_ptr<DynMovingObject> dmoStatic =
         std::static_pointer_cast<DynMovingObject>(staticStructure);
-    dmoStatic->pushPositionMotion(make_shared<RigidMotion>(
+    dmoStatic->pushPositionMotion(make_shared<DynMotion>(
         rm3f.makeTranslation(arma::colvec("0;0;10"))
     ));
 
@@ -100,25 +99,25 @@ void SimplePrimitivesDemo::run(){
                 objs[2]->getDynObj()
             );
             RigidMotion rm = rm3f.makeRotationZ(0.01);
-            dmoMobile.pushPositionMotion(make_shared<RigidMotion>(rm));
-            dmoMobile.pushNormalMotion(make_shared<RigidMotion>(rm));
-            dmoFixed.pushPositionMotion(make_shared<RigidMotion>(
+            dmoMobile.pushPositionMotion(make_shared<DynMotion>(rm));
+            dmoMobile.pushNormalMotion(make_shared<DynMotion>(rm));
+            dmoFixed.pushPositionMotion(make_shared<DynMotion>(
                 rm3f.makeTranslation(arma::colvec("-10;-10;-4"))
             ));
             rm = rm3f.makeRotationZ(0.05);
-            dmoFixed.pushPositionMotion(make_shared<RigidMotion>(rm));
-            dmoFixed.pushNormalMotion(make_shared<RigidMotion>(rm));
-            dmoFixed.pushPositionMotion(make_shared<RigidMotion>(
+            dmoFixed.pushPositionMotion(make_shared<DynMotion>(rm));
+            dmoFixed.pushNormalMotion(make_shared<DynMotion>(rm));
+            dmoFixed.pushPositionMotion(make_shared<DynMotion>(
                 rm3f.makeTranslation(arma::colvec("10;10;4"))
             ));
             if(dmoHelical.getPrimitives()[0]->getVertices()[0].getZ() >= 20.0)
-                dmoHelical.pushPositionMotion(make_shared<RigidMotion>(
+                dmoHelical.pushPositionMotion(make_shared<DynMotion>(
                     rm3f.makeTranslation(arma::colvec("0;0;-20"))
                 ));
-            dmoHelical.pushPositionMotion(make_shared<RigidMotion>(
+            dmoHelical.pushPositionMotion(make_shared<DynMotion>(
                 rm3f.makeHelicalZ(0.15, 0.034)
             ));
-            dmoHelical.pushNormalMotion(make_shared<RigidMotion>(
+            dmoHelical.pushNormalMotion(make_shared<DynMotion>(
                 rm3f.makeRotationZ(0.15)
             ));
         }
@@ -231,6 +230,7 @@ shared_ptr<DynObject> SimplePrimitivesDemo::buildMobileStructure(){
         "mobileStructure",
         triangles
     );
+    dynObj->computeCentroid();
     return dynObj;
 }
 shared_ptr<DynObject> SimplePrimitivesDemo::buildFixedStructure(){
@@ -320,6 +320,7 @@ shared_ptr<DynObject> SimplePrimitivesDemo::buildFixedStructure(){
         "fixedStructure",
         triangles
     );
+    dynObj->computeCentroid();
     return dynObj;
 }
 shared_ptr<DynObject> SimplePrimitivesDemo::buildHelicalStructure(){
@@ -374,7 +375,8 @@ shared_ptr<DynObject> SimplePrimitivesDemo::buildHelicalStructure(){
     shared_ptr<DynObject> dynObj = make_shared<DynMovingObject>(
         "helicalStructure",
         triangles
-        );
+    );
+    dynObj->computeCentroid();
     return dynObj;
 }
 shared_ptr<DynObject> SimplePrimitivesDemo::buildStaticStructure(){
@@ -464,6 +466,7 @@ shared_ptr<DynObject> SimplePrimitivesDemo::buildStaticStructure(){
         "staticStructure",
         triangles
     );
+    dynObj->computeCentroid();
     return dynObj;
 }
 
@@ -497,6 +500,7 @@ shared_ptr<DynObject> SimplePrimitivesDemo::buildGroundStructure(){
         "groundStructure",
         triangles
     );
+    dynObj->computeCentroid();
     return dynObj;
 }
 

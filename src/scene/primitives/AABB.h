@@ -17,6 +17,7 @@ private:
         boost::serialization::void_cast_register<AABB, Primitive>();
         ar & boost::serialization::base_object<Primitive>(*this);
 		ar & vertices;
+		ar & bounds;
 	}
 
 public:

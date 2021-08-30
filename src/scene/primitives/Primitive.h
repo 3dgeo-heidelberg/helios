@@ -11,6 +11,10 @@
 #include <IntersectionHandlingResult.h>
 #include <util/HeliosException.h>
 
+#include <DynObject.h>
+#include <DynMovingObject.h>
+#include <DynSequentiableMovingObject.h>
+
 class AABB;
 class Vertex;
 
@@ -21,10 +25,22 @@ class Primitive {
     // ***  SERIALIZATION  *** //
     // *********************** //
 	friend class boost::serialization::access;
+	/**
+	 * @brief Serialize a Primitive to a stream of bytes
+	 * @tparam Archive Type of rendering
+	 * @param ar Specific rendering for the stream of bytes
+	 * @param version Version number for the Primitive
+	 */
 	template<class Archive>
 	void serialize(Archive &ar, const unsigned int version) {
+	    // Register ScenePart derived classes
+	    ar.template register_type<DynMovingObject>();
+	    ar.template register_type<DynSequentiableMovingObject>();
+
+        std::string partId = "#NULLID#";
+        if(part!=nullptr) partId = part->getId();
 		ar & part;
-		ar & material;
+        ar & material;
 	}
 
 public:

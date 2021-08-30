@@ -88,6 +88,8 @@ $(document).ready(function(){initNavTree('dc/d00/classrigidmotion_1_1RigidMotion
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pri-methods">Private Member Functions</a> &#124;
+<a href="#friends">Friends</a> &#124;
 <a href="../../db/d6f/classrigidmotion_1_1RigidMotionFactory-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">rigidmotion::RigidMotionFactory Class Reference<span class="mlabels"><span class="mlabel">abstract</span></span></div>  </div>
@@ -120,6 +122,19 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a81c78af76b9d3fcd1b77f357be7131d0"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="../../d7/d84/classrigidmotion_1_1RigidMotion.html">RigidMotion</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d00/classrigidmotion_1_1RigidMotionFactory.html#a81c78af76b9d3fcd1b77f357be7131d0">makeTranslation</a> (arma::colvec const shift) const =0</td></tr>
 <tr class="memdesc:a81c78af76b9d3fcd1b77f357be7131d0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Build the translation rigid motion.  <a href="#a81c78af76b9d3fcd1b77f357be7131d0">More...</a><br /></td></tr>
 <tr class="separator:a81c78af76b9d3fcd1b77f357be7131d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
+Private Member Functions</h2></td></tr>
+<tr class="memitem:af3b1f7e2e12024f1b66d9e10b0d0838c"><td class="memTemplParams" colspan="2">template&lt;class Archive &gt; </td></tr>
+<tr class="memitem:af3b1f7e2e12024f1b66d9e10b0d0838c"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../dc/d00/classrigidmotion_1_1RigidMotionFactory.html#af3b1f7e2e12024f1b66d9e10b0d0838c">serialize</a> (Archive &amp;ar, const unsigned int version)</td></tr>
+<tr class="memdesc:af3b1f7e2e12024f1b66d9e10b0d0838c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Serialize a rigid motion factory to a stream of bytes.  <a href="#af3b1f7e2e12024f1b66d9e10b0d0838c">More...</a><br /></td></tr>
+<tr class="separator:af3b1f7e2e12024f1b66d9e10b0d0838c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="friends"></a>
+Friends</h2></td></tr>
+<tr class="memitem:ac98d07dd8f7b70e16ccb9a01abf56b9c"><td class="memItemLeft" align="right" valign="top"><a id="ac98d07dd8f7b70e16ccb9a01abf56b9c"></a>
+class&#160;</td><td class="memItemRight" valign="bottom"><b>boost::serialization::access</b></td></tr>
+<tr class="separator:ac98d07dd8f7b70e16ccb9a01abf56b9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Class that must be extended by any class which provides factory methods for rigid motions. Notice all rigid motions should be instantiated through corresponding factories. </p>
@@ -193,6 +208,59 @@ Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Translation rigid motion </dd></dl>
+
+</div>
+</div>
+<a id="af3b1f7e2e12024f1b66d9e10b0d0838c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af3b1f7e2e12024f1b66d9e10b0d0838c">&#9670;&nbsp;</a></span>serialize()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Archive &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void rigidmotion::RigidMotionFactory::serialize </td>
+          <td>(</td>
+          <td class="paramtype">Archive &amp;&#160;</td>
+          <td class="paramname"><em>ar</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const unsigned int&#160;</td>
+          <td class="paramname"><em>version</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Serialize a rigid motion factory to a stream of bytes. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">Archive</td><td>Type of rendering </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">ar</td><td>Specific rendering for the stream of bytes </td></tr>
+    <tr><td class="paramname">version</td><td>Version number for the rigid motion factory </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

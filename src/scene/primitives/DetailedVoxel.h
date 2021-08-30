@@ -2,6 +2,8 @@
 
 #include <Voxel.h>
 
+#include <boost/serialization/map.hpp>
+
 /**
  * @author Alberto M. Esmoris Pena
  * @verison 1.0
@@ -15,12 +17,12 @@ class DetailedVoxel : public Voxel{
     friend class boost::serialization::access;
     template <typename Archive>
     void serialize(Archive &ar, const unsigned int version){
-        boost::serialization::void_cast_register<DetailedVoxel, Primitive>();
+        boost::serialization::void_cast_register<DetailedVoxel, Voxel>();
         ar & boost::serialization::base_object<Voxel>(*this);
         ar & intValues;
         ar & doubleValues;
+        ar & identifiers;
         ar & maxPad;
-        ar & material;
     }
 protected:
     // ***  ATTRIBUTES  *** //
@@ -74,7 +76,7 @@ public:
     /**
      * @brief Defualt constructor for detailed voxel
      */
-    DetailedVoxel() = default;
+    DetailedVoxel() : Voxel() {}
     /**
      * @brief Detailed voxel constructor
      * @param center Center for the voxel

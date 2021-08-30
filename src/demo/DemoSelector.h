@@ -46,8 +46,14 @@ public:
     /**
      * @brief Run the demo with given name if any
      * @param name Name of the demo to be run
+     * @param surveyPath Path to the survey to be used by the demo, if any.
+     *  When there is no survey, an empty string should be passed
      */
-    void select(string const name);
+    void select(
+        string const name,
+        string const surveyPath="",
+        string const assetsPath=""
+    );
 };
 }
 #endif

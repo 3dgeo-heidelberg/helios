@@ -6,6 +6,10 @@
 #include <maths/rigidmotion/RigidMotionEngine.h>
 #include <maths/rigidmotion/RigidMotionR2Factory.h>
 #include <maths/rigidmotion/RigidMotionR3Factory.h>
+#include <scene/primitives/Triangle.h>
+#include <scene/dynamic/DynMotionEngine.h>
+#include <scene/dynamic/DynMotion.h>
+#include <scene/dynamic/DynMovingObject.h>
 
 
 #include <armadillo>
@@ -48,6 +52,10 @@ public:
      * @brief Matrix of points in R3 to be used by tests
      */
     mat R3X;
+    /**
+     * @brief The dynamic motion engine to be used by helios tests
+     */
+    DynMotionEngine dme;
 
     // ***  CONSTRUCTOR  *** //
     // ********************* //
@@ -141,6 +149,41 @@ public:
 
     // ***  HELIOS TESTS  *** //
     // ********************** //
+    /**
+     * @brief Test identity dynamic motion in \f$\mathbb{R}^{3}\f$
+     * @return True if passed, false otherwise
+     */
+    bool testHeliosIdentityR3(DynMovingObject const &dmo);
+    /**
+     * @brief Test translation dynamic motion in \f$\mathbb{R}^{3}\f$
+     * @return True if passed, false otherwise
+     */
+    bool testHeliosTranslationR3(DynMovingObject const &dmo);
+    /**
+     * @brief Test reflection dynamic motion in \f$\mathbb{R}^{3}\f$
+     * @return True if passed, false otherwise
+     */
+    bool testHeliosReflectionR3(DynMovingObject const &dmo);
+    /**
+     * @brief Test glide reflection dynamic motion in \f$\mathbb{R}^{3}\f$
+     * @return True if passed, false otherwise
+     */
+    bool testHeliosGlideReflectionR3(DynMovingObject const &dmo);
+    /**
+     * @brief Test rotation dynamic motion in \f$\mathbb{R}^{3}\f$
+     * @return True if passed, false otherwise
+     */
+    bool testHeliosRotationR3(DynMovingObject const &dmo);
+    /**
+     * @brief Test helical dynamic motion in \f$\mathbb{R}^{3}\f$
+     * @return True if passed, false otherwise
+     */
+    bool testHeliosHelicalR3(DynMovingObject const &dmo);
+    /**
+     * @brief Test rotational symmetry dynamic motion in \f$\mathbb{R}^{3}\f$
+     * @return True if passed, false otherwise
+     */
+    bool testHeliosRotationalSymmetryR3(DynMovingObject const &dmo);
 };
 
 // ***  R U N  *** //
@@ -184,7 +227,32 @@ bool RigidMotionTest::testPureRigidMotion(){
     return true;
 }
 bool RigidMotionTest::testHeliosRigidMotion(){
-    // TODO Rethink : To be implemented
+    // Build dynamic moving object for the tests
+    vector<Primitive *> primitives;
+    Vertex v0(-1.0, -1.0, 0.0);
+    Vertex v1(1.0, -1.0, 0.0);
+    Vertex v2(0.0, 1.0, 0.0);
+    Vertex v3(0.0, 0.0, 1.0);
+    Triangle tr0(v0, v1, v2);
+    Triangle tr1(v0, v1, v3);
+    Triangle tr2(v0, v2, v3);
+    Triangle tr3(v1, v2, v3);
+    primitives.push_back(&tr0);
+    primitives.push_back(&tr1);
+    primitives.push_back(&tr2);
+    primitives.push_back(&tr3);
+    DynMovingObject dmo("HRMTestDMO", primitives);
+    dmo.computeCentroid();
+
+    // R3 tests
+    if(!testHeliosIdentityR3(dmo)) return false;
+    if(!testHeliosTranslationR3(dmo)) return false;
+    if(!testHeliosReflectionR3(dmo)) return false;
+    if(!testHeliosGlideReflectionR3(dmo)) return false;
+    if(!testHeliosRotationR3(dmo)) return false;
+    if(!testHeliosHelicalR3(dmo)) return false;
+    if(!testHeliosRotationalSymmetryR3(dmo)) return false;
+
     return true;
 }
 
@@ -808,5 +876,185 @@ bool RigidMotionTest::testPureRotationalSymmetryR3(){
     return passed;
 }
 
+
+// ***  HELIOS TESTS  *** //
+// ********************** //
+bool RigidMotionTest::testHeliosIdentityR3(DynMovingObject const &dmo){
+    // Compute
+    arma::mat X = dmo.positionMatrixFromPrimitives();
+    DynMovingObject dynObj = dmo;
+    RigidMotion id = rm3f.makeIdentity();
+    DynMotion dm(id, false);
+    arma::mat dmeY = dme.apply(dm, X, dynObj);
+    arma::mat rmeY = rme.apply(static_cast<RigidMotion>(dm), X);
+
+    // Delete primitives
+    for(Primitive *primitive : dynObj.getPrimitives()) delete primitive;
+
+    // Validate
+    size_t const m = dmeY.n_elem;
+    size_t const n = rmeY.n_elem;
+    if(m!=n) return false;
+    for(size_t i = 0 ; i < m ; ++i)
+        if(std::fabs(dmeY[i]-rmeY[i]) > eps) return false;
+    return true;
+}
+bool RigidMotionTest::testHeliosTranslationR3(DynMovingObject const &dmo){
+    // Compute
+    arma::mat X = dmo.positionMatrixFromPrimitives();
+    DynMovingObject dynObj = dmo;
+    RigidMotion tr = rm3f.makeTranslation(arma::colvec("-0.1;0.1;0"));
+    DynMotion dm(tr, false);
+    arma::mat dmeY = dme.apply(dm, X, dynObj);
+    arma::mat rmeY = rme.apply(static_cast<RigidMotion>(dm), X);
+
+    // Delete primitives
+    for(Primitive *primitive : dynObj.getPrimitives()) delete primitive;
+
+    // Validate
+    size_t const m = dmeY.n_elem;
+    size_t const n = rmeY.n_elem;
+    if(m!=n) return false;
+    for(size_t i = 0 ; i < m ; ++i)
+        if(std::fabs(dmeY[i]-rmeY[i]) > eps) return false;
+    return true;
+}
+bool RigidMotionTest::testHeliosReflectionR3(DynMovingObject const &dmo){
+    // Compute
+    arma::mat X = dmo.positionMatrixFromPrimitives();
+    arma::colvec O = dmo.getCentroid();
+    DynMovingObject dynObj = dmo;
+    RigidMotion rf = rme.compose(
+        rm3f.makeTranslation(O),
+        rme.compose(rm3f.makeReflectionZ(), rm3f.makeTranslation(-O))
+    );
+    DynMotion dm(rm3f.makeReflectionZ(), true);
+    arma::mat dmeY = dme.apply(dm, X, dynObj);
+    arma::mat rmeY = rme.apply(rf, X);
+
+    // Delete primitives
+    for(Primitive *primitive : dynObj.getPrimitives()) delete primitive;
+
+    // Validate
+    size_t const m = dmeY.n_elem;
+    size_t const n = rmeY.n_elem;
+    if(m!=n) return false;
+    for(size_t i = 0 ; i < m ; ++i)
+        if(std::fabs(dmeY[i]-rmeY[i]) > eps) return false;
+    return true;
+}
+bool RigidMotionTest::testHeliosGlideReflectionR3(DynMovingObject const &dmo){
+    // Compute
+    arma::mat X = dmo.positionMatrixFromPrimitives();
+    arma::colvec O = dmo.getCentroid();
+    DynMovingObject dynObj = dmo;
+    RigidMotion rf = rme.compose(
+        rm3f.makeTranslation(O),
+        rme.compose(
+            rm3f.makeGlideReflection(
+                arma::colvec("0;0;1"),
+                arma::colvec("0.5;0.5;0")
+            ),
+            rm3f.makeTranslation(-O)
+        )
+    );
+    DynMotion dm(
+        rm3f.makeGlideReflection(
+            arma::colvec("0;0;1"),
+            arma::colvec("0.5;0.5;0")
+        ),
+        true
+    );
+    arma::mat dmeY = dme.apply(dm, X, dynObj);
+    arma::mat rmeY = rme.apply(rf, X);
+
+    // Delete primitives
+    for(Primitive *primitive : dynObj.getPrimitives()) delete primitive;
+
+    // Validate
+    size_t const m = dmeY.n_elem;
+    size_t const n = rmeY.n_elem;
+    if(m!=n) return false;
+    for(size_t i = 0 ;  i < m ; ++i)
+        if(std::fabs(dmeY[i]-rmeY[i]) > eps) return false;
+    return true;
+}
+bool RigidMotionTest::testHeliosRotationR3(DynMovingObject const &dmo){
+    // Compute
+    arma::mat X = dmo.positionMatrixFromPrimitives();
+    arma::colvec O = dmo.getCentroid();
+    DynMovingObject dynObj = dmo;
+    RigidMotion rot = rme.compose(
+        rm3f.makeTranslation(O),
+        rme.compose(rm3f.makeRotationZ(0.67), rm3f.makeTranslation(-O))
+    );
+    DynMotion dm(rm3f.makeRotationZ(0.67), true);
+    arma::mat dmeY = dme.apply(dm, X, dynObj);
+    arma::mat rmeY = rme.apply(rot, X);
+
+    // Delete primitives
+    for(Primitive *primitive : dynObj.getPrimitives()) delete primitive;
+
+    // Validate
+    size_t const m = dmeY.n_elem;
+    size_t const n = rmeY.n_elem;
+    if(m!=n) return false;
+    for(size_t i = 0 ; i < m ; ++i)
+        if(std::fabs(dmeY[i]-rmeY[i]) > eps) return false;
+    return true;
+}
+bool RigidMotionTest::testHeliosHelicalR3(DynMovingObject const &dmo){
+    // Compute
+    arma::mat X = dmo.positionMatrixFromPrimitives();
+    arma::colvec O = dmo.getCentroid();
+    DynMovingObject dynObj = dmo;
+    RigidMotion hm = rme.compose(
+        rm3f.makeTranslation(O),
+        rme.compose(rm3f.makeHelicalZ(0.5, 1.0), rm3f.makeTranslation(-O))
+    );
+    DynMotion dm(rm3f.makeHelicalZ(0.5, 1.0), true);
+    arma::mat dmeY = dme.apply(dm, X, dynObj);
+    arma::mat rmeY = rme.apply(hm, X);
+
+    // Delete primitives
+    for(Primitive *primitive : dynObj.getPrimitives()) delete primitive;
+
+    // Validate
+    size_t const m = dmeY.n_elem;
+    size_t const n = rmeY.n_elem;
+    if(m!=n) return false;
+    for(size_t i = 0 ; i < m ; ++i)
+        if(std::fabs(dmeY[i]-rmeY[i]) > eps) return false;
+    return true;
+}
+bool RigidMotionTest::testHeliosRotationalSymmetryR3(
+    DynMovingObject const &dmo
+){
+    // Compute
+    arma::mat X = dmo.positionMatrixFromPrimitives();
+    arma::colvec O = dmo.getCentroid();
+    DynMovingObject dynObj = dmo;
+    RigidMotion rs = rme.compose(
+        rm3f.makeTranslation(O),
+        rme.compose(
+            rm3f.makeRotationalSymmetryZ(0.34),
+            rm3f.makeTranslation(-O)
+        )
+    );
+    DynMotion dm(rm3f.makeRotationalSymmetryZ(0.34), true);
+    arma::mat dmeY = dme.apply(dm, X, dynObj);
+    arma::mat rmeY = rme.apply(rs, X);
+
+    // Delete primitives
+    for(Primitive *primitive : dynObj.getPrimitives()) delete primitive;
+
+    // Validate
+    size_t const m = dmeY.n_elem;
+    size_t const n = rmeY.n_elem;
+    if(m!=n) return false;
+    for(size_t i = 0 ; i < m ; ++i)
+        if(std::fabs(dmeY[i]-rmeY[i]) > eps) return false;
+    return true;
+}
 
 }
