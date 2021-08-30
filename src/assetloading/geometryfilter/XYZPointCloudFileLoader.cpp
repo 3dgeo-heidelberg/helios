@@ -44,7 +44,7 @@ ScenePart* XYZPointCloudFileLoader::run() {
 
 	// Default normal
 	if(params.find("defaultNormal") != params.end()){
-	    defaultNormal = boost::get<dvec3>(params["defaultNormal"]);
+	    defaultNormal = boost::get<glm::dvec3>(params["defaultNormal"]);
 	    defaultNormal = glm::normalize(defaultNormal);
 	    assignDefaultNormal = true;
 	}

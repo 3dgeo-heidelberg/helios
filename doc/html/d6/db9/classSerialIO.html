@@ -89,6 +89,7 @@ $(document).ready(function(){initNavTree('d6/db9/classSerialIO.html','../../');}
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
+<a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="#pri-methods">Private Member Functions</a> &#124;
 <a href="#pri-static-attribs">Static Private Attributes</a> &#124;
 <a href="../../de/dc5/classSerialIO-members.html">List of all members</a>  </div>
@@ -109,17 +110,23 @@ Collaboration diagram for SerialIO:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a6a3585248c4f8097a814f023c3390bba"><td class="memTemplParams" colspan="2">template&lt;class SerialClass &gt; </td></tr>
-<tr class="memitem:a6a3585248c4f8097a814f023c3390bba"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d6/db9/classSerialIO.html#a6a3585248c4f8097a814f023c3390bba">write</a> (std::string &amp;path, SerialClass *object, bool fastCompression=true)</td></tr>
-<tr class="separator:a6a3585248c4f8097a814f023c3390bba"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a91e8398c8de0d8df00ca700e2a0aaf4d"><td class="memTemplParams" colspan="2">template&lt;typename SerialClass &gt; </td></tr>
-<tr class="memitem:a91e8398c8de0d8df00ca700e2a0aaf4d"><td class="memTemplItemLeft" align="right" valign="top">SerialClass *&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d6/db9/classSerialIO.html#a91e8398c8de0d8df00ca700e2a0aaf4d">read</a> (std::string &amp;path, bool fastCompression=true)</td></tr>
-<tr class="separator:a91e8398c8de0d8df00ca700e2a0aaf4d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a10120a0df634e618247ebf19c350a8c9"><td class="memTemplParams" colspan="2">template&lt;class SerialClass &gt; </td></tr>
+<tr class="memitem:a10120a0df634e618247ebf19c350a8c9"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d6/db9/classSerialIO.html#a10120a0df634e618247ebf19c350a8c9">write</a> (std::string const &amp;path, SerialClass const *object, bool fastCompression=true)</td></tr>
+<tr class="separator:a10120a0df634e618247ebf19c350a8c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8dc83336876f1dec30a7b2a777a478d4"><td class="memTemplParams" colspan="2">template&lt;typename SerialClass &gt; </td></tr>
+<tr class="memitem:a8dc83336876f1dec30a7b2a777a478d4"><td class="memTemplItemLeft" align="right" valign="top">SerialClass *&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d6/db9/classSerialIO.html#a8dc83336876f1dec30a7b2a777a478d4">read</a> (std::string const &amp;path, bool const fastCompression=true)</td></tr>
+<tr class="separator:a8dc83336876f1dec30a7b2a777a478d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a65971df3dd0b25242f3f53c516f49394"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="../../d6/db9/classSerialIO.html">SerialIO</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/db9/classSerialIO.html#a65971df3dd0b25242f3f53c516f49394">getInstance</a> ()</td></tr>
 <tr class="separator:a65971df3dd0b25242f3f53c516f49394"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
+Protected Member Functions</h2></td></tr>
+<tr class="memitem:ab7bf8f13df6f7577f880bb84ddc7ca7a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/db9/classSerialIO.html#ab7bf8f13df6f7577f880bb84ddc7ca7a">handleArchiveException</a> (std::string const &amp;perpetrator, boost::archive::archive_exception &amp;aex)</td></tr>
+<tr class="memdesc:ab7bf8f13df6f7577f880bb84ddc7ca7a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle given archive exception.  <a href="#ab7bf8f13df6f7577f880bb84ddc7ca7a">More...</a><br /></td></tr>
+<tr class="separator:ab7bf8f13df6f7577f880bb84ddc7ca7a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
@@ -166,8 +173,54 @@ static <a class="el" href="../../d6/db9/classSerialIO.html">SerialIO</a> *&#160;
 
 </div>
 </div>
-<a id="a91e8398c8de0d8df00ca700e2a0aaf4d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a91e8398c8de0d8df00ca700e2a0aaf4d">&#9670;&nbsp;</a></span>read()</h2>
+<a id="ab7bf8f13df6f7577f880bb84ddc7ca7a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab7bf8f13df6f7577f880bb84ddc7ca7a">&#9670;&nbsp;</a></span>handleArchiveException()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SerialIO::handleArchiveException </td>
+          <td>(</td>
+          <td class="paramtype">std::string const &amp;&#160;</td>
+          <td class="paramname"><em>perpetrator</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">boost::archive::archive_exception &amp;&#160;</td>
+          <td class="paramname"><em>aex</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Handle given archive exception. </p>
+<p>A detailed message for the exception will be built and logged as a warning</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">perpetrator</td><td>Name of the perpetrator where the archive exception occurred. Generally speaking, it will be the name of a method (i.e. "SerialIO::read") </td></tr>
+    <tr><td class="paramname">aex</td><td>Archive exception to be handled </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a8dc83336876f1dec30a7b2a777a478d4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8dc83336876f1dec30a7b2a777a478d4">&#9670;&nbsp;</a></span>read()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -177,13 +230,13 @@ template&lt;typename SerialClass &gt; </div>
         <tr>
           <td class="memname">SerialClass* SerialIO::read </td>
           <td>(</td>
-          <td class="paramtype">std::string &amp;&#160;</td>
+          <td class="paramtype">std::string const &amp;&#160;</td>
           <td class="paramname"><em>path</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">bool&#160;</td>
+          <td class="paramtype">bool const&#160;</td>
           <td class="paramname"><em>fastCompression</em> = <code>true</code>&#160;</td>
         </tr>
         <tr>
@@ -210,8 +263,8 @@ template&lt;typename SerialClass &gt; </div>
 
 </div>
 </div>
-<a id="a6a3585248c4f8097a814f023c3390bba"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6a3585248c4f8097a814f023c3390bba">&#9670;&nbsp;</a></span>write()</h2>
+<a id="a10120a0df634e618247ebf19c350a8c9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a10120a0df634e618247ebf19c350a8c9">&#9670;&nbsp;</a></span>write()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -221,13 +274,13 @@ template&lt;class SerialClass &gt; </div>
         <tr>
           <td class="memname">void SerialIO::write </td>
           <td>(</td>
-          <td class="paramtype">std::string &amp;&#160;</td>
+          <td class="paramtype">std::string const &amp;&#160;</td>
           <td class="paramname"><em>path</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">SerialClass *&#160;</td>
+          <td class="paramtype">SerialClass const *&#160;</td>
           <td class="paramname"><em>object</em>, </td>
         </tr>
         <tr>
@@ -261,8 +314,8 @@ template&lt;class SerialClass &gt; </div>
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>src/util/<a class="el" href="../../d0/d8a/SerialIO_8h_source.html">SerialIO.h</a></li>
-<li>src/util/SerialIO.cpp</li>
+<li>src/util/serialization/<a class="el" href="../../d0/d8a/SerialIO_8h_source.html">SerialIO.h</a></li>
+<li>src/util/serialization/SerialIO.cpp</li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

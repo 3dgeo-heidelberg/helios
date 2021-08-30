@@ -11,9 +11,14 @@ class KDTreeNodeRoot : public KDTreeNode {
     // ***  SERIALIZATION  *** //
     // *********************** //
     friend class boost::serialization::access;
+    /**
+     * @brief Serialize a KDTreeNodeRoot to a stream of bytes
+     * @tparam Archive Type of rendering
+     * @param ar Specific rendering for the stream of bytes
+     * @param version Version number for the KDTreeNodeRoot
+     */
     template <typename Archive>
-    void serialize(Archive& ar, const unsigned int version)
-    {
+    void serialize(Archive& ar, const unsigned int version){
         boost::serialization::void_cast_register<KDTreeNodeRoot, KDTreeNode>();
         ar & boost::serialization::base_object<KDTreeNode>(*this);
         ar & stats_maxNumPrimsInLeaf;

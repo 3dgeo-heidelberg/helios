@@ -1,6 +1,6 @@
 var classDetailedVoxel =
 [
-    [ "DetailedVoxel", "d7/d5a/classDetailedVoxel.html#ac6b8657ec1c6d523685cb7c569e1f407", null ],
+    [ "DetailedVoxel", "d7/d5a/classDetailedVoxel.html#ae614a911aeb8e89cc40544c720c8fb2a", null ],
     [ "DetailedVoxel", "d7/d5a/classDetailedVoxel.html#ac96e1c1d68ab64cf390056c886b834b1", null ],
     [ "DetailedVoxel", "d7/d5a/classDetailedVoxel.html#a9156ec800530d05164ee7248e1ab498e", null ],
     [ "_clone", "d7/d5a/classDetailedVoxel.html#a13cf78caf8036ebea933367b9374148f", null ],

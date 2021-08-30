@@ -9,7 +9,6 @@ namespace fs = boost::filesystem;
 #include "FullWaveformPulseDetector.h"
 
 using namespace std;
-using namespace glm;
 
 // ***  CONSTRUCTION / DESTRUCTION  *** //
 // ************************************ //
@@ -67,7 +66,7 @@ void FullWaveformPulseDetector::setOutputFilePath(
 
 void FullWaveformPulseDetector::simulatePulse(
 	thread_pool& pool, 
-	dvec3 absoluteBeamOrigin, 
+	glm::dvec3 absoluteBeamOrigin,
 	Rotation absoluteBeamAttitude, 
 	int state_currentPulseNumber,
     double currentGpsTime
@@ -100,8 +99,8 @@ void FullWaveformPulseDetector::writeFullWave(
 	int fullwave_index, 
 	double min_time, 
 	double max_time, 
-	dvec3& beamOrigin,
-	dvec3& beamDir,
+	glm::dvec3& beamOrigin,
+	glm::dvec3& beamDir,
     double gpstime
 ){
     if(fw_sfw != nullptr) {

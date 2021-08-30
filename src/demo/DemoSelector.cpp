@@ -5,6 +5,7 @@
 #include <sstream>
 
 #include <demo/SimplePrimitivesDemo.h>
+#include <demo/DynamicSceneDemo.h>
 
 using HeliosDemos::DemoSelector;
 using std::shared_ptr;
@@ -23,12 +24,19 @@ shared_ptr<DemoSelector> DemoSelector::getInstance(){
 
 // ***  DEMO SELECTION METHOD  *** //
 // ******************************* //
-void HeliosDemos::DemoSelector::select(string const name){
+void HeliosDemos::DemoSelector::select(
+    string const name,
+    string const surveyPath,
+    string const assetsPath
+){
     using std::stringstream;
 
     // Handle demo
     if(name == "simple_primitives"){ // Handle simple primitives demo
         HeliosDemos::SimplePrimitivesDemo().run();
+    }
+    else if(name == "dynamic_scene"){  // Handle dynamic scene demo
+        HeliosDemos::DynamicSceneDemo(surveyPath, assetsPath).run();
     }
     else{ // Handle unexpected demo
         stringstream ss;

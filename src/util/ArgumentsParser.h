@@ -43,7 +43,17 @@ public:
      */
     std::string parseDemoRequest();
     /**
-     * @brief Parse the survery path from invocation arguments
+     * @brief Parse the demo survey path from invocation arguments
+     * @return Parsed demo survey path if any, empty string "" otherwise
+     */
+    std::string parseDemoSurveyPath();
+    /**
+     * @brief Parse the demo assets path from invocation arguments
+     * @return Parsed demo assets path if any, empty string "" otherwise
+     */
+    std::string parseDemoAssetsPath();
+    /**
+     * @brief Parse the survey path from invocation arguments
      * @return Parsed survey path
      */
     std::string parseSurveyPath();

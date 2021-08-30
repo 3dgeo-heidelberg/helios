@@ -3,6 +3,7 @@
 #include <utility>
 #include <glm/glm.hpp>
 #include <iostream>
+#include <boost/serialization/serialization.hpp>
 
 /**
  * @author Alberto M. Esmoris Pena
@@ -11,6 +12,22 @@
  * @brief Output class for intersection handling methods
  */
 class IntersectionHandlingResult{
+private:
+    // ***  SERIALIZATION  *** //
+    // *********************** //
+    friend class boost::serialization::access;
+    /**
+     * @brief Serialize an IntersectionHandlingResult to a stream of bytes
+     * @tparam Archive Type of rendering
+     * @param ar Specific rendering for the stream of bytes
+     * @param version Version number for the intersection handling result
+     */
+    template <typename Archive>
+    void serialize(Archive &ar, const unsigned int version){
+        ar &intersectionPoint;
+        ar &canContinue;
+    }
+
 protected:
     // ***  ATTRIBUTES  *** //
     // ******************** //

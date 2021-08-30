@@ -33,6 +33,7 @@ public:
      * @brief Simple primitives demo constructor
      */
     SimplePrimitivesDemo() : BaseDemo("Simple primitives demo"){}
+    virtual ~SimplePrimitivesDemo() = default;
 
     // ***  R U N  *** //
     // *************** //

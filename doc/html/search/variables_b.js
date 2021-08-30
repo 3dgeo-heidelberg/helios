@@ -35,7 +35,7 @@ var searchData=
   ['minus_5fj',['MINUS_J',['../d6/d7f/classRotationOrder.html#a1c14b6e11777f22ec95f60a0750c4015',1,'RotationOrder']]],
   ['minus_5fk',['MINUS_K',['../d6/d7f/classRotationOrder.html#a05df5e979df291a8bd699a171a08114d',1,'RotationOrder']]],
   ['minx',['minx',['../d1/d0c/classGeoTiffFileLoader.html#a53734b4dfef85a1008415b5debd2e1db',1,'GeoTiffFileLoader::minx()'],['../d6/d03/classXYZPointCloudFileLoader.html#abe0120fdba542c02cc73953f20435f10',1,'XYZPointCloudFileLoader::minX()']]],
-  ['miny',['miny',['../d1/d0c/classGeoTiffFileLoader.html#a557546b2c98cb042f97f4aca6341f6b3',1,'GeoTiffFileLoader::miny()'],['../d6/d03/classXYZPointCloudFileLoader.html#abb89bf517c6e40650d762c8c00363b97',1,'XYZPointCloudFileLoader::minY()']]],
+  ['miny',['minY',['../d6/d03/classXYZPointCloudFileLoader.html#abb89bf517c6e40650d762c8c00363b97',1,'XYZPointCloudFileLoader::minY()'],['../d1/d0c/classGeoTiffFileLoader.html#a557546b2c98cb042f97f4aca6341f6b3',1,'GeoTiffFileLoader::miny()']]],
   ['minz',['minZ',['../d6/d03/classXYZPointCloudFileLoader.html#ab7563727b6194200797fdd6b8b7bbab2',1,'XYZPointCloudFileLoader']]],
   ['mlegstarted',['mLegStarted',['../d6/da1/classSurveyPlayback.html#adf2c22be949c14ca7023a26ef5e3e5c1',1,'SurveyPlayback']]],
   ['mode',['mode',['../dc/d6e/classRandomnessGenerator.html#a7853db34e47c881c941d0c96ebdca77f',1,'RandomnessGenerator']]],

@@ -10,6 +10,11 @@
 #include "Primitive.h"
 #include "AABB.h"
 
+// Including primitives below is necessary for serialization
+#include <Triangle.h>
+#include <Voxel.h>
+#include <DetailedVoxel.h>
+
 /**
  * @brief Class representing a KDTree node
  */
@@ -17,14 +22,26 @@ class KDTreeNode {
     // ***  SERIALIZATION  *** //
     // *********************** //
 	friend class boost::serialization::access;
+	/**
+	 * @brief Serialize a KDTreeNode to a stream of bytes
+	 * @tparam Archive Type of rendering
+	 * @param ar Specific rendering for the stream of bytes
+	 * @param version Version number for the KDTreeNode
+	 */
 	template<class Archive>
 	void serialize(Archive & ar, const unsigned int version) {
+        // Register classes derived from Primitive
+        ar.template register_type<AABB>();
+        ar.template register_type<Triangle>();
+        ar.template register_type<Vertex>();
+        ar.template register_type<Voxel>();
+        ar.template register_type<DetailedVoxel>();
 		ar & left;
-		ar & right;
+        ar & right;
 		ar & splitPos;
-		ar & splitAxis;
+        ar & splitAxis;
 		ar & primitives;
-	}
+    }
 
 public:
     // ***  ATTRIBUTES  *** //

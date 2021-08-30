@@ -24,32 +24,25 @@ using namespace glm;
 // ***  CONSTRUCTION / DESTRUCTION  *** //
 // ************************************ //
 Scene::Scene(Scene &s) {
-  if (s.bbox == nullptr)
-    this->bbox = nullptr;
-  else
-    this->bbox = std::shared_ptr<AABB>((AABB *)s.bbox->clone());
-  if (s.bbox_crs == nullptr)
-    this->bbox_crs = nullptr;
-  else
-    this->bbox_crs = std::shared_ptr<AABB>((AABB *)s.bbox_crs->clone());
-  std::set<ScenePart *> parts; // Pointer to each ScenePart, no repeats
+  if (s.bbox == nullptr) this->bbox = nullptr;
+  else this->bbox = std::shared_ptr<AABB>((AABB *)s.bbox->clone());
+  if (s.bbox_crs == nullptr) this->bbox_crs = nullptr;
+  else this->bbox_crs = std::shared_ptr<AABB>((AABB *)s.bbox_crs->clone());
+  std::set<ScenePart *> _parts; // Pointer to each ScenePart, no repeats
   std::vector<Primitive *> nonPartPrimitives; // Primitives without ScenePart
   ScenePart *_sp;
   Primitive *_p;
   for (size_t i = 0; i < s.primitives.size(); i++) { // Fill parts
     _p = s.primitives[i];
     _sp = _p->part.get();
-    if (_sp != nullptr)
-      parts.insert(_sp); // Primitive with part
-    else
-      nonPartPrimitives.push_back(_p); // Primitive with no part
+    if (_sp != nullptr) _parts.insert(_sp); // Primitive with part
+    else nonPartPrimitives.push_back(_p); // Primitive with no part
   }
-  for (ScenePart *sp : parts) { // Handle primitives associated with ScenePart
+  for (ScenePart *sp : _parts) { // Handle primitives associated with ScenePart
     std::shared_ptr<ScenePart> spc = std::make_shared<ScenePart>(*sp);
     for (Primitive *p : spc->mPrimitives) {
-      Primitive *_p = p;
-      _p->part = spc;
-      this->primitives.push_back(_p);
+      p->part = spc;
+      this->primitives.push_back(p);
     }
   }
   for (Primitive *p : nonPartPrimitives) { // Handle primitives with no part
@@ -57,6 +50,7 @@ Scene::Scene(Scene &s) {
   }
 
   this->kdtree = shared_ptr<KDTreeNodeRoot>(KDTreeNodeRoot::build(primitives));
+  registerParts();
 }
 
 // ***  M E T H O D S  *** //
@@ -102,7 +96,7 @@ bool Scene::finalizeLoading() {
   // Store original bounding box (CRS coordinates):
   this->bbox_crs = AABB::getForVertices(vertices);
 
-  dvec3 diff = this->bbox_crs->getMin();
+  glm::dvec3 diff = this->bbox_crs->getMin();
 
   stringstream ss;
   ss << "CRS bounding box (by vertices): " << this->bbox_crs->toString()
@@ -133,6 +127,10 @@ bool Scene::finalizeLoading() {
 
   // ################ END Shift primitives to originWaypoint ##################
 
+  // Register parts and compute its centroid wrt to scene
+  registerParts();
+  for(shared_ptr<ScenePart> & part : parts) part->computeCentroid();
+
   // ############# BEGIN Build KD-tree ##################
   logging::INFO("Building KD-Tree... ");
 
@@ -148,12 +146,20 @@ bool Scene::finalizeLoading() {
   return true;
 }
 
+void Scene::registerParts(){
+    unordered_set<shared_ptr<ScenePart>> partsSet;
+    for(Primitive *primitive : primitives)
+        if(primitive->part != nullptr)
+            partsSet.insert(primitive->part);
+    parts = vector<shared_ptr<ScenePart>>(partsSet.begin(), partsSet.end());
+}
+
 shared_ptr<AABB> Scene::getAABB() { return this->bbox; }
 
-dvec3 Scene::getGroundPointAt(dvec3 point) {
+glm::dvec3 Scene::getGroundPointAt(glm::dvec3 point) {
 
-  dvec3 origin = dvec3(point.x, point.y, bbox->getMin()[2] - 0.1);
-  dvec3 dir = dvec3(0, 0, 1);
+  glm::dvec3 origin = glm::dvec3(point.x, point.y, bbox->getMin()[2] - 0.1);
+  glm::dvec3 dir = glm::dvec3(0, 0, 1);
 
   shared_ptr<RaySceneIntersection> intersect =
       getIntersection(origin, dir, true);
@@ -174,7 +180,11 @@ dvec3 Scene::getGroundPointAt(dvec3 point) {
 }
 
 shared_ptr<RaySceneIntersection>
-Scene::getIntersection(dvec3 &rayOrigin, dvec3 &rayDir, bool groundOnly) {
+Scene::getIntersection(
+    glm::dvec3 &rayOrigin,
+    glm::dvec3 &rayDir,
+    bool groundOnly
+){
   vector<double> tMinMax = bbox->getRayIntersection(rayOrigin, rayDir);
   if (tMinMax.empty()) {
     logging::DEBUG("tMinMax is empty");
@@ -195,7 +205,11 @@ Scene::getIntersection(dvec3 &rayOrigin, dvec3 &rayDir, bool groundOnly) {
 }
 
 map<double, Primitive *>
-Scene::getIntersections(dvec3 &rayOrigin, dvec3 &rayDir, bool groundOnly) {
+Scene::getIntersections(
+    glm::dvec3 &rayOrigin,
+    glm::dvec3 &rayDir,
+    bool groundOnly
+){
 
   vector<double> tMinMax = bbox->getRayIntersection(rayOrigin, rayDir);
   if (tMinMax.empty()) {
@@ -208,18 +222,30 @@ Scene::getIntersections(dvec3 &rayOrigin, dvec3 &rayDir, bool groundOnly) {
                               groundOnly);
 }
 
-dvec3 Scene::getShift() { return this->bbox_crs->getMin(); }
+glm::dvec3 Scene::getShift() { return this->bbox_crs->getMin(); }
 
+vector<Vertex *> Scene::getAllVertices(){
+    unordered_set<Vertex *> vset;
+    for(Primitive *primitive : primitives){
+        size_t const m  = primitive->getNumVertices();
+        Vertex *vertices = primitive->getVertices();
+        for(size_t i = 0 ; i < m ; ++i) vset.insert(vertices + i);
+    }
+    return {vset.begin(), vset.end()};
+}
+
+// ***  READ/WRITE  *** //
+// ******************** //
 void Scene::writeObject(string path) {
-  stringstream ss;
-  ss << "Writing " << path << " ...";
-  logging::INFO(ss.str());
-  SerialIO::getInstance()->write<Scene>(path, this);
+    stringstream ss;
+    ss << "Writing scene object to " << path << " ...";
+    logging::INFO(ss.str());
+    SerialIO::getInstance()->write<Scene>(path, this);
 }
 
 Scene *Scene::readObject(string path) {
-  stringstream ss;
-  ss << "Reading scene object " << path << " ...";
-  logging::INFO(ss.str());
-  return SerialIO::getInstance()->read<Scene>(path);
+    stringstream ss;
+    ss << "Reading scene object from " << path << " ...";
+    logging::INFO(ss.str());
+    return SerialIO::getInstance()->read<Scene>(path);
 }

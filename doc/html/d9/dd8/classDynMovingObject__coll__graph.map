@@ -1,4 +1,9 @@
 <map id="DynMovingObject" name="DynMovingObject">
-<area shape="rect" id="node2" href="$d5/d6a/classDynObject.html" title="Dynamic object base implementation. " alt="" coords="93,102,177,129"/>
-<area shape="rect" id="node5" href="$d2/da8/classrigidmotion_1_1RigidMotionEngine.html" title="Class to handle operations with rigid motions. " alt="" coords="201,95,364,136"/>
+<area shape="rect" id="node2" href="$d5/d6a/classDynObject.html" title="Dynamic object base implementation. " alt="" coords="61,235,145,262"/>
+<area shape="rect" id="node3" href="$dd/dc4/classScenePart.html" title="Class representing a scene part. " alt="" coords="62,131,145,158"/>
+<area shape="rect" id="node4" href="$d5/dcb/classRotation.html" title="Rotation" alt="" coords="5,13,76,39"/>
+<area shape="rect" id="node7" href="$d2/d0a/classDynMotionEngine.html" title="Adapter which wraps a rigid motion engine to make it fit the dynamic Helios context. " alt="" coords="333,235,458,262"/>
+<area shape="rect" id="node8" href="$dc/df6/classrigidmotion_1_1RigidMotionR3Factory.html" title="Class providing building methods for rigid motions in . " alt="" coords="281,124,443,165"/>
+<area shape="rect" id="node9" href="$dc/d00/classrigidmotion_1_1RigidMotionFactory.html" title="Class that must be extended by any class which provides factory methods for rigid motions..." alt="" coords="281,5,443,47"/>
+<area shape="rect" id="node10" href="$d2/da8/classrigidmotion_1_1RigidMotionEngine.html" title="Class to handle operations with rigid motions. " alt="" coords="467,124,630,165"/>
 </map>

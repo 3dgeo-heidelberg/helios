@@ -2,6 +2,7 @@
 #include "KDTreeNodeRoot.h"
 #include "KDTreePrimitiveComparator.h"
 #include <SerialIO.h>
+#include <serial.h>
 
 #include <iostream>
 #include <logging.hpp>

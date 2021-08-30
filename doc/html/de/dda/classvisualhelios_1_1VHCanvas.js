@@ -8,6 +8,7 @@ var classvisualhelios_1_1VHCanvas =
     [ "getTitle", "de/dda/classvisualhelios_1_1VHCanvas.html#abc185b65c30bc6c69f1c42930c789ae5", null ],
     [ "isForceRedraw", "de/dda/classvisualhelios_1_1VHCanvas.html#a5d3556d969232357a5b2fc5d2472be66", null ],
     [ "onStop", "de/dda/classvisualhelios_1_1VHCanvas.html#a8a8b43caac7acf12d4d9800fa683b7cc", null ],
+    [ "postUpdate", "de/dda/classvisualhelios_1_1VHCanvas.html#ab1b12d6d85607736d724032d1c3cc7a8", null ],
     [ "setForceRedraw", "de/dda/classvisualhelios_1_1VHCanvas.html#abf7660f7a34a33875f1ed00d93327b58", null ],
     [ "setTimeBetweenUpdates", "de/dda/classvisualhelios_1_1VHCanvas.html#a79ffd9525c1c4a5100593a7f3ed31e7d", null ],
     [ "show", "de/dda/classvisualhelios_1_1VHCanvas.html#a40ee0cb4cb8a381843402345eb3d9655", null ],

@@ -1,0 +1,4 @@
+<map id="visualhelios::VHStaticObjectXYZAdapter" name="visualhelios::VHStaticObjectXYZAdapter">
+<area shape="rect" id="node3" href="$de/d3c/classvisualhelios_1_1VHDynObjectXYZAdapter.html" title="Class providing concrete implementation of a VHDynObjectAdapter for a simple XYZ visualization with n..." alt="" coords="11,184,189,225"/>
+<area shape="rect" id="node2" href="$d1/dda/classvisualhelios_1_1VHStaticObjectAdapter.html" title="Abstract class defining core mechanisms to adapt static objects to the visual Helios context based on..." alt="" coords="5,5,195,47"/>
+</map>

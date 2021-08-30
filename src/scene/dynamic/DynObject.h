@@ -4,7 +4,7 @@
 #include <vector>
 #include <armadillo>
 
-#include <scene/primitives/Primitive.h>
+#include <assetloading/ScenePart.h>
 
 using std::vector;
 using std::string;
@@ -19,18 +19,22 @@ using std::string;
  *  object. This object is expected to have a dynamic behavior which changes
  *  over time.
  */
-class DynObject {
-protected:
-    // ***  ATTRIBUTES  *** //
-    // ******************** //
+class DynObject : public ScenePart{
+private:
+    // ***  SERALIZATION  *** //
+    // ********************** //
+    friend class boost::serialization::access;
     /**
-     * @brief Identifier for the dynamic object
+     * @brief Serialize a dynamic object to a stream of bytes
+     * @tparam Archive Type of rendering
+     * @param ar Specific rendering for the stream of bytes
+     * @param version Version number for the dynamic object
      */
-    string id;
-    /**
-     * @brief Primitives defining the dynamic object
-     */
-    vector<Primitive *> primitives;
+    template <typename Archive>
+    void serialize(Archive &ar, const unsigned int version){
+        boost::serialization::void_cast_register<DynObject, ScenePart>();
+        ar &boost::serialization::base_object<ScenePart>(*this);
+    }
 
 public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //
@@ -40,17 +44,23 @@ public:
      */
     DynObject() = default;
     /**
+     * @brief Build the dynamic object from given scene part
+     * @param sp Scene part as basis for dynamic object
+     */
+    DynObject(ScenePart const &sp) : ScenePart(sp) {}
+    /**
      * @brief Dynamic object constructor with id as argument
      * @param id The id for the dynamic object
      * @see DynObject::id
      */
-    DynObject(string const id) : id(id) {}
+    DynObject(string const id) {setId(id);}
     /**
      * @brief Dynamic object constructor with primitives as argument
      * @param primitives The primitives defining the dynamic object
      * @see DynObject::primitives
      */
-    DynObject(vector<Primitive *> const &primitives) : primitives(primitives){}
+    DynObject(vector<Primitive *> const &primitives)
+    {setPrimitives(primitives);}
     /**
      * @brief Dynamic object constructor with id and primitives as arguments
      * @param id The id for the dynamic object
@@ -58,10 +68,10 @@ public:
      * @see DynObject::id
      * @see DynObject::primitives
      */
-    DynObject(string const id, vector<Primitive *> const &primitives) :
-        id(id),
-        primitives(primitives)
-    {}
+    DynObject(string const id, vector<Primitive *> const &primitives){
+        setId(id);
+        setPrimitives(primitives);
+    }
     virtual ~DynObject() = default;
 
     // ***  DYNAMIC BEHAVIOR  *** //
@@ -93,36 +103,6 @@ public:
      */
     inline void operator() () {doStep();}
 
-    // ***  GETTERS and SETTERS  *** //
-    // ***************************** //
-    /**
-     * @brief Obtain the primitives of the dynamic object
-     * @return Dynamic object primitives
-     * @see DynObject::primitives
-     */
-    inline vector<Primitive *> const & getPrimitives() const
-    {return primitives;}
-    /**
-     * @brief Set the primitives of the dynamic object
-     * @param primitives Dynamic object primitives
-     * @see DynObject::primitives
-     */
-    inline void setPrimitives(vector<Primitive *> const &primitives)
-    {this->primitives = primitives;}
-
-    /**
-     * @brief Obtain the ID of the dynamic object
-     * @return Dynamic object ID
-     * @see DynObject::id
-     */
-    inline string const &getId() const {return id;}
-    /**
-     * @brief Set the ID of the dynamic object
-     * @param id Dynamic object ID
-     * @see DynObject::id
-     */
-    inline void setId(const string &id) {this->id = id;}
-
     // ***  U T I L  *** //
     // ***************** //
     /**
@@ -133,7 +113,7 @@ public:
      * @return How many vertices there are defining the dynamic object
      * @see primitives
      */
-    size_t countVertices();
+    size_t countVertices() const;
     /**
      * @brief Obtain the position matrix for primitives defining the dynamic
      *  object
@@ -148,7 +128,7 @@ public:
      *
      * @return Position matrix
      */
-    arma::mat positionMatrixFromPrimitives();
+    arma::mat positionMatrixFromPrimitives() const;
     /**
      * @brief Like DynObject::positionMatrixFromPrimitives but receiving
      *  the total number of vertices beforehand
@@ -163,7 +143,7 @@ public:
      * @see DynObject::positionMatrixFromPrimitives
      * @see DynObject::countVertices
      */
-    arma::mat positionMatrixFromPrimitives(size_t const m);
+    arma::mat positionMatrixFromPrimitives(size_t const m) const;
     /**
      * @brief Obtain the normal matrix for primitives defining the dynamic
      *  object
@@ -178,7 +158,7 @@ public:
      *
      * @return Normal matrix
      */
-    arma::mat normalMatrixFromPrimitives();
+    arma::mat normalMatrixFromPrimitives() const;
     /**
      * @brief Like DynObject::normalMatrixFromPrimitives but receiving
      *  the total number of vertices beforehand.
@@ -193,7 +173,7 @@ public:
      * @see DynObject::normalMatrixFromPrimitives
      * @see DynObject::countVertices
      */
-    arma::mat normalMatrixFromPrimitives(size_t const m);
+    arma::mat normalMatrixFromPrimitives(size_t const m) const;
     /**
      * @brief Update the position of each primitive with given matrix
      *
@@ -282,7 +262,7 @@ protected:
      */
     arma::mat matrixFromPrimitives(
         std::function<arma::colvec(Vertex const *)> get
-    );
+    ) const ;
     /**
      * @brief Like DynObject::matrixFromPrimitives but receiving the total
      *  number of vertices beforehand
@@ -300,7 +280,7 @@ protected:
     arma::mat matrixFromPrimitives(
         size_t const m,
         std::function<arma::colvec(Vertex const *)> get
-    );
+    ) const ;
     /**
      * @brief Update primitives defining the dynamic object from given matrix.
      *

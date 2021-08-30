@@ -182,9 +182,9 @@ std::vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive<
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
-<tr class="memitem:a6a597d700fc1da1574837655caeedf7f"><td class="memTemplParams" colspan="2"><a id="a6a597d700fc1da1574837655caeedf7f"></a>
-template&lt;typename Archive &gt; </td></tr>
-<tr class="memitem:a6a597d700fc1da1574837655caeedf7f"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>serialize</b> (Archive &amp;ar, const unsigned int version)</td></tr>
+<tr class="memitem:a6a597d700fc1da1574837655caeedf7f"><td class="memTemplParams" colspan="2">template&lt;typename Archive &gt; </td></tr>
+<tr class="memitem:a6a597d700fc1da1574837655caeedf7f"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d0/d64/classKDTreeNodeRoot.html#a6a597d700fc1da1574837655caeedf7f">serialize</a> (Archive &amp;ar, const unsigned int version)</td></tr>
+<tr class="memdesc:a6a597d700fc1da1574837655caeedf7f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Serialize a <a class="el" href="../../d0/d64/classKDTreeNodeRoot.html" title="Class representing the root node of a KDTree. ">KDTreeNodeRoot</a> to a stream of bytes.  <a href="#a6a597d700fc1da1574837655caeedf7f">More...</a><br /></td></tr>
 <tr class="separator:a6a597d700fc1da1574837655caeedf7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="friends"></a>
@@ -228,6 +228,59 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>boost::serialization
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Pointer to root node of built KDTree </dd></dl>
+
+</div>
+</div>
+<a id="a6a597d700fc1da1574837655caeedf7f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6a597d700fc1da1574837655caeedf7f">&#9670;&nbsp;</a></span>serialize()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Archive &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void KDTreeNodeRoot::serialize </td>
+          <td>(</td>
+          <td class="paramtype">Archive &amp;&#160;</td>
+          <td class="paramname"><em>ar</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const unsigned int&#160;</td>
+          <td class="paramname"><em>version</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Serialize a <a class="el" href="../../d0/d64/classKDTreeNodeRoot.html" title="Class representing the root node of a KDTree. ">KDTreeNodeRoot</a> to a stream of bytes. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">Archive</td><td>Type of rendering </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">ar</td><td>Specific rendering for the stream of bytes </td></tr>
+    <tr><td class="paramname">version</td><td>Version number for the <a class="el" href="../../d0/d64/classKDTreeNodeRoot.html" title="Class representing the root node of a KDTree. ">KDTreeNodeRoot</a> </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

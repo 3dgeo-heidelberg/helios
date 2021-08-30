@@ -80,6 +80,11 @@ protected:
      */
     virtual void update();
     /**
+     * @brief Post-update method which handles the behavior of the canvas
+     *  immediately after the update stage has been computed
+     */
+    virtual void postUpdate();
+    /**
      * @brief Method to handle the behavior of the canvas after visualization
      *  has finished
      */

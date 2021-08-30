@@ -22,6 +22,7 @@ class Material {
 		ar & reflectance;
 		ar & specularity;
 		ar & specularExponent;
+		ar & classification;
 		ar & spectra;
 		ar & ka & kd & ks;
 	}

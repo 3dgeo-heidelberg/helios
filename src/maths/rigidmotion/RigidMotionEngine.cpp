@@ -7,7 +7,7 @@ using namespace rigidmotion;
 // ************************************* //
 mat RigidMotionEngine::apply(
     RigidMotion const &f,
-    mat const X
+    mat const &X
 ){
     mat Y = f.getA() * X;
     return f.getC() + Y.each_col();
@@ -15,7 +15,7 @@ mat RigidMotionEngine::apply(
 
 colvec RigidMotionEngine::apply(
     RigidMotion const &f,
-    colvec const X
+    colvec const &X
 ){
     return f.getC() + f.getA() * X;
 }

@@ -89,6 +89,8 @@ $(document).ready(function(){initNavTree('dc/df6/classrigidmotion_1_1RigidMotion
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pro-static-attribs">Static Protected Attributes</a> &#124;
+<a href="#pri-methods">Private Member Functions</a> &#124;
+<a href="#friends">Friends</a> &#124;
 <a href="../../dd/d45/classrigidmotion_1_1RigidMotionR3Factory-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">rigidmotion::RigidMotionR3Factory Class Reference</div>  </div>
@@ -218,9 +220,22 @@ Static Protected Attributes</h2></td></tr>
 static double const&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/df6/classrigidmotion_1_1RigidMotionR3Factory.html#a911a72f54e96353f54bcb44a9703212f">eps</a> = 0.000000001</td></tr>
 <tr class="memdesc:a911a72f54e96353f54bcb44a9703212f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Decimal precision tolerance. <br /></td></tr>
 <tr class="separator:a911a72f54e96353f54bcb44a9703212f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a76ccff05613bbeb96b437b1101f93cbb"><td class="memItemLeft" align="right" valign="top">static mat const&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/df6/classrigidmotion_1_1RigidMotionR3Factory.html#a76ccff05613bbeb96b437b1101f93cbb">canonicalReflection</a></td></tr>
+<tr class="memitem:a76ccff05613bbeb96b437b1101f93cbb"><td class="memItemLeft" align="right" valign="top">static arma::mat const&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/df6/classrigidmotion_1_1RigidMotionR3Factory.html#a76ccff05613bbeb96b437b1101f93cbb">canonicalReflection</a></td></tr>
 <tr class="memdesc:a76ccff05613bbeb96b437b1101f93cbb"><td class="mdescLeft">&#160;</td><td class="mdescRight">The Jordan normal form of a reflection in \(\mathbb{R}^{3}\).  <a href="#a76ccff05613bbeb96b437b1101f93cbb">More...</a><br /></td></tr>
 <tr class="separator:a76ccff05613bbeb96b437b1101f93cbb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
+Private Member Functions</h2></td></tr>
+<tr class="memitem:ae68cb9aa8ba261d5a1b73a366eafc8d0"><td class="memTemplParams" colspan="2">template&lt;typename Archive &gt; </td></tr>
+<tr class="memitem:ae68cb9aa8ba261d5a1b73a366eafc8d0"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../dc/df6/classrigidmotion_1_1RigidMotionR3Factory.html#ae68cb9aa8ba261d5a1b73a366eafc8d0">serialize</a> (Archive &amp;ar, const unsigned int version)</td></tr>
+<tr class="memdesc:ae68cb9aa8ba261d5a1b73a366eafc8d0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Serialize a \(\mathbb{R}^{3}\) rigid motion factory to a stream of bytes.  <a href="#ae68cb9aa8ba261d5a1b73a366eafc8d0">More...</a><br /></td></tr>
+<tr class="separator:ae68cb9aa8ba261d5a1b73a366eafc8d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="friends"></a>
+Friends</h2></td></tr>
+<tr class="memitem:ac98d07dd8f7b70e16ccb9a01abf56b9c"><td class="memItemLeft" align="right" valign="top"><a id="ac98d07dd8f7b70e16ccb9a01abf56b9c"></a>
+class&#160;</td><td class="memItemRight" valign="bottom"><b>boost::serialization::access</b></td></tr>
+<tr class="separator:ac98d07dd8f7b70e16ccb9a01abf56b9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Class providing building methods for rigid motions in \(\mathbb{R}^{3}\). </p>
@@ -1374,6 +1389,59 @@ makeRotationalSymmetry(colvec const, double const, colvec const) </dd></dl>
 
 <p>Implementation of translation rigid motion in \(\mathbb{R}^{3}\). </p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="../../dc/d00/classrigidmotion_1_1RigidMotionFactory.html#a81c78af76b9d3fcd1b77f357be7131d0" title="Build the translation rigid motion. ">rigidmotion::RigidMotionFactory::makeTranslation</a> </dd></dl>
+
+</div>
+</div>
+<a id="ae68cb9aa8ba261d5a1b73a366eafc8d0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae68cb9aa8ba261d5a1b73a366eafc8d0">&#9670;&nbsp;</a></span>serialize()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Archive &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void rigidmotion::RigidMotionR3Factory::serialize </td>
+          <td>(</td>
+          <td class="paramtype">Archive &amp;&#160;</td>
+          <td class="paramname"><em>ar</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const unsigned int&#160;</td>
+          <td class="paramname"><em>version</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Serialize a \(\mathbb{R}^{3}\) rigid motion factory to a stream of bytes. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">Archive</td><td>Type of rendering </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">ar</td><td>Specific rendering for the stream of bytes </td></tr>
+    <tr><td class="paramname">version</td><td>Version number for the \(\mathbb{R}^{3}\) rigid motion factory </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

@@ -14,12 +14,22 @@ class Triangle : public Primitive {
   // ***  SERIALIZATION  *** //
   // *********************** //
   friend class boost::serialization::access;
+  /**
+   * @brief Serialize a Triangle to a stream of bytes
+   * @tparam Archive Type of rendering
+   * @param ar Specific rendering for the stream of bytes
+   * @param version Version number for the Triangle
+   */
   template <typename Archive>
   void serialize(Archive &ar, const unsigned int version) {
     boost::serialization::void_cast_register<Triangle, Primitive>();
     ar &boost::serialization::base_object<Primitive>(*this);
-    ar &verts;
     ar &faceNormal;
+    ar &e1 &e2 &v0;
+    ar &faceNormalSet;
+    ar &eps;
+    //ar &aabb;  // Not needed because it is built on construction
+    //ar &verts;  // Not needed because they are in save/load construct
   }
 
   // ***  ATTRIBUTES  *** //
@@ -169,5 +179,8 @@ public:
    * @param v2 Second vertex/point
    * @return Euclidean distance over XY (2D euclidean distance)
    */
-  inline double euclideanDistance2D(const glm::dvec3 &v1, const glm::dvec3 &v2);
+  inline double euclideanDistance2D(
+      const glm::dvec3 &v1,
+      const glm::dvec3 &v2
+  );
 };

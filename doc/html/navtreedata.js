@@ -23,16 +23,17 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 ".html",
-"d1/d83/classMovingPlatform.html#a8625dc64a17d52bf88b0b5008a9037a2",
-"d3/dce/classthread__pool.html#a86673ff577c3837604ac6f7eedb227fd",
-"d5/d6a/classDynObject.html#a87a7226168af1b3e91daf2556be1b799",
-"d6/d84/MathConstants_8h_source.html",
-"d7/d84/classrigidmotion_1_1RigidMotion.html#a377def083f7c289d4a286a45638f3e61a1e488bc060f33a319d13eece80644b1a",
-"d9/d6b/classNoiseSource.html#ad4040e0056ffa066667649a95f1e07bc",
-"db/d69/classHelicopterPlatform.html#a0a4e8ceaa8a560b672d5d943bfbfb38d",
-"dc/d42/classScanner.html#af91d7818c7f6ac284a15b2ddb3af25c5",
-"de/ddf/classpyhelios_1_1PyDetectorWrapper.html#a7843dcd4d9f7b9cbfadc3c48e3b1efce",
-"functions.html"
+"d1/d83/classMovingPlatform.html#a3138be155ac4d12834761c924657a050",
+"d3/d71/classvisualhelios_1_1VHSceneCanvas.html#a77743ded11d3775817591711f2002450",
+"d4/d9d/classpyhelios_1_1PyPlatformWrapper.html#ac7d2699c3e1f7229dfb158212281e9fd",
+"d6/d03/classXYZPointCloudFileLoader.html#a471a7eaa12eced954870e41704df505c",
+"d7/d17/classpyhelios_1_1PySceneWrapper.html#aa7ea4859ae9d1f11f927fbf49d896b82",
+"d8/d6b/classAbstractDetector.html#a0568eaa2d69b93d1fae18be7fc6b91fd",
+"d9/ddd/classpyhelios_1_1PyHeliosSimulation.html#ac5caa892758a92dd8d93bf3aed9aa94f",
+"db/d8b/classHeliosTests_1_1RigidMotionTest.html#a32caa969ff62ad4aab777bfdaf0aaf38",
+"dc/da7/classScannerHead.html#a232b2e2585dae91c0515d3b6c9f89b8a",
+"de/dda/classvisualhelios_1_1VHCanvas.html#abf7660f7a34a33875f1ed00d93327b58",
+"df/de1/classPrimitive.html#ac98d07dd8f7b70e16ccb9a01abf56b9c"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

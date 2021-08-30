@@ -1,3 +1,5 @@
 <map id="DynObject" name="DynObject">
-<area shape="rect" id="node2" href="$d4/d96/classDynMovingObject.html" title="Implementation of a dynamic object which supports rigid motion. " alt="" coords="5,80,132,107"/>
+<area shape="rect" id="node3" href="$d4/d96/classDynMovingObject.html" title="Implementation of a dynamic object which supports dynamic motions (extended rigid motions) ..." alt="" coords="43,155,169,181"/>
+<area shape="rect" id="node2" href="$dd/dc4/classScenePart.html" title="Class representing a scene part. " alt="" coords="65,5,147,32"/>
+<area shape="rect" id="node4" href="$d4/d48/classDynSequentiableMovingObject.html" title="Implementation of a dynamic object which supports sequentiable dynamic motions. " alt="" coords="5,229,207,256"/>
 </map>

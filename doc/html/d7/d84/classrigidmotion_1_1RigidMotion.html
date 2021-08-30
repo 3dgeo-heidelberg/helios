@@ -90,6 +90,8 @@ $(document).ready(function(){initNavTree('d7/d84/classrigidmotion_1_1RigidMotion
 <a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pro-attribs">Protected Attributes</a> &#124;
+<a href="#pri-methods">Private Member Functions</a> &#124;
+<a href="#friends">Friends</a> &#124;
 <a href="../../da/d58/classrigidmotion_1_1RigidMotion-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">rigidmotion::RigidMotion Class Reference</div>  </div>
@@ -100,6 +102,14 @@ $(document).ready(function(){initNavTree('d7/d84/classrigidmotion_1_1RigidMotion
  <a href="../../d7/d84/classrigidmotion_1_1RigidMotion.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="../../d3/d0c/RigidMotion_8h_source.html">RigidMotion.h</a>&gt;</code></p>
+<div class="dynheader">
+Inheritance diagram for rigidmotion::RigidMotion:</div>
+<div class="dyncontent">
+<div class="center"><img src="../../d7/d6e/classrigidmotion_1_1RigidMotion__inherit__graph.png" border="0" usemap="#rigidmotion_1_1RigidMotion_inherit__map" alt="Inheritance graph"/></div>
+<map name="rigidmotion_1_1RigidMotion_inherit__map" id="rigidmotion_1_1RigidMotion_inherit__map">
+<area shape="rect" id="node2" href="../../d6/d4f/classDynMotion.html" title="Class which wraps the RigidMotion class to implement extra features such as the self mode control mec..." alt="" coords="44,80,129,107"/>
+</map>
+<center><span class="legend">[<a target="top" href="../../graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
@@ -141,9 +151,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:acf4e7627472f7afd7593a1b02ad49ac2"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d84/classrigidmotion_1_1RigidMotion.html#acf4e7627472f7afd7593a1b02ad49ac2">RigidMotion</a> ()=default</td></tr>
 <tr class="memdesc:acf4e7627472f7afd7593a1b02ad49ac2"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="../../d7/d84/classrigidmotion_1_1RigidMotion.html" title="Interface that must be implemented by any class which represents a specific rigid motions...">RigidMotion</a> default constructor. Notice rigid motions should be instantiated through corresponding factories.  <a href="#acf4e7627472f7afd7593a1b02ad49ac2">More...</a><br /></td></tr>
 <tr class="separator:acf4e7627472f7afd7593a1b02ad49ac2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a948b4e13d2ea606ba9cbf3906cef6186"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d84/classrigidmotion_1_1RigidMotion.html#a948b4e13d2ea606ba9cbf3906cef6186">RigidMotion</a> (colvec const <a class="el" href="../../d7/d84/classrigidmotion_1_1RigidMotion.html#aa5c886a5a11975a809580318ba5cdc42">C</a>, mat const <a class="el" href="../../d7/d84/classrigidmotion_1_1RigidMotion.html#ae3525a13930940febd66c3c89e185303">A</a>)</td></tr>
-<tr class="memdesc:a948b4e13d2ea606ba9cbf3906cef6186"><td class="mdescLeft">&#160;</td><td class="mdescRight">Build a rigid motion with given translation vector and fixed origin transformation matrix.  <a href="#a948b4e13d2ea606ba9cbf3906cef6186">More...</a><br /></td></tr>
-<tr class="separator:a948b4e13d2ea606ba9cbf3906cef6186"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa61488d6e23c10f8143c8ba08a1b0ac3"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d84/classrigidmotion_1_1RigidMotion.html#aa61488d6e23c10f8143c8ba08a1b0ac3">RigidMotion</a> (colvec const &amp;<a class="el" href="../../d7/d84/classrigidmotion_1_1RigidMotion.html#aa5c886a5a11975a809580318ba5cdc42">C</a>, arma::mat const &amp;<a class="el" href="../../d7/d84/classrigidmotion_1_1RigidMotion.html#af809d870aad52d3bd417b4832498c676">A</a>)</td></tr>
+<tr class="memdesc:aa61488d6e23c10f8143c8ba08a1b0ac3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Build a rigid motion with given translation vector and fixed origin transformation matrix.  <a href="#aa61488d6e23c10f8143c8ba08a1b0ac3">More...</a><br /></td></tr>
+<tr class="separator:aa61488d6e23c10f8143c8ba08a1b0ac3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac357c797732ee5a7d988e16ac911efbd"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="../../d7/d84/classrigidmotion_1_1RigidMotion.html">RigidMotion</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d84/classrigidmotion_1_1RigidMotion.html#ac357c797732ee5a7d988e16ac911efbd">compose</a> (<a class="el" href="../../d7/d84/classrigidmotion_1_1RigidMotion.html">RigidMotion</a> const rm) const</td></tr>
 <tr class="memdesc:ac357c797732ee5a7d988e16ac911efbd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compose this rigid motion \(f\) with given rigid motion \(g\) so \(f \circ g = f(g(x))\) is obtained.  <a href="#ac357c797732ee5a7d988e16ac911efbd">More...</a><br /></td></tr>
 <tr class="separator:ac357c797732ee5a7d988e16ac911efbd"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -168,12 +178,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:afee19fb86c47e69c4fa06966c701bd8f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d84/classrigidmotion_1_1RigidMotion.html#afee19fb86c47e69c4fa06966c701bd8f">setC</a> (colvec const <a class="el" href="../../d7/d84/classrigidmotion_1_1RigidMotion.html#aa5c886a5a11975a809580318ba5cdc42">C</a>)</td></tr>
 <tr class="memdesc:afee19fb86c47e69c4fa06966c701bd8f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the translation column vector.  <a href="#afee19fb86c47e69c4fa06966c701bd8f">More...</a><br /></td></tr>
 <tr class="separator:afee19fb86c47e69c4fa06966c701bd8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6cae5e720cf710f39b269a95ecc92880"><td class="memItemLeft" align="right" valign="top">mat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d84/classrigidmotion_1_1RigidMotion.html#a6cae5e720cf710f39b269a95ecc92880">getA</a> () const</td></tr>
-<tr class="memdesc:a6cae5e720cf710f39b269a95ecc92880"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the fixed origin transformation matrix.  <a href="#a6cae5e720cf710f39b269a95ecc92880">More...</a><br /></td></tr>
-<tr class="separator:a6cae5e720cf710f39b269a95ecc92880"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2cd8787bdb1433cafef2f4b81d3163af"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d84/classrigidmotion_1_1RigidMotion.html#a2cd8787bdb1433cafef2f4b81d3163af">setA</a> (mat const <a class="el" href="../../d7/d84/classrigidmotion_1_1RigidMotion.html#ae3525a13930940febd66c3c89e185303">A</a>)</td></tr>
-<tr class="memdesc:a2cd8787bdb1433cafef2f4b81d3163af"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the fixed origin transformation matrix.  <a href="#a2cd8787bdb1433cafef2f4b81d3163af">More...</a><br /></td></tr>
-<tr class="separator:a2cd8787bdb1433cafef2f4b81d3163af"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae77503fd95135ff29988a2da6ed9d440"><td class="memItemLeft" align="right" valign="top">arma::mat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d84/classrigidmotion_1_1RigidMotion.html#ae77503fd95135ff29988a2da6ed9d440">getA</a> () const</td></tr>
+<tr class="memdesc:ae77503fd95135ff29988a2da6ed9d440"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the fixed origin transformation matrix.  <a href="#ae77503fd95135ff29988a2da6ed9d440">More...</a><br /></td></tr>
+<tr class="separator:ae77503fd95135ff29988a2da6ed9d440"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afbcb652a1ce947240c5b70cb132ee09e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d84/classrigidmotion_1_1RigidMotion.html#afbcb652a1ce947240c5b70cb132ee09e">setA</a> (arma::mat const <a class="el" href="../../d7/d84/classrigidmotion_1_1RigidMotion.html#af809d870aad52d3bd417b4832498c676">A</a>)</td></tr>
+<tr class="memdesc:afbcb652a1ce947240c5b70cb132ee09e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the fixed origin transformation matrix.  <a href="#afbcb652a1ce947240c5b70cb132ee09e">More...</a><br /></td></tr>
+<tr class="separator:afbcb652a1ce947240c5b70cb132ee09e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a898022ad71198e441197cb3ee917345e"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d84/classrigidmotion_1_1RigidMotion.html#a898022ad71198e441197cb3ee917345e">getDimensionality</a> () const</td></tr>
 <tr class="memdesc:a898022ad71198e441197cb3ee917345e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the dimensionality of the rigid motion.  <a href="#a898022ad71198e441197cb3ee917345e">More...</a><br /></td></tr>
 <tr class="separator:a898022ad71198e441197cb3ee917345e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -184,10 +194,23 @@ Protected Attributes</h2></td></tr>
 colvec&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d84/classrigidmotion_1_1RigidMotion.html#aa5c886a5a11975a809580318ba5cdc42">C</a></td></tr>
 <tr class="memdesc:aa5c886a5a11975a809580318ba5cdc42"><td class="mdescLeft">&#160;</td><td class="mdescRight">The column vector representing the translation. <br /></td></tr>
 <tr class="separator:aa5c886a5a11975a809580318ba5cdc42"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae3525a13930940febd66c3c89e185303"><td class="memItemLeft" align="right" valign="top"><a id="ae3525a13930940febd66c3c89e185303"></a>
-mat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d84/classrigidmotion_1_1RigidMotion.html#ae3525a13930940febd66c3c89e185303">A</a></td></tr>
-<tr class="memdesc:ae3525a13930940febd66c3c89e185303"><td class="mdescLeft">&#160;</td><td class="mdescRight">The matrix representing the fixed origin transformation. <br /></td></tr>
-<tr class="separator:ae3525a13930940febd66c3c89e185303"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af809d870aad52d3bd417b4832498c676"><td class="memItemLeft" align="right" valign="top"><a id="af809d870aad52d3bd417b4832498c676"></a>
+arma::mat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d84/classrigidmotion_1_1RigidMotion.html#af809d870aad52d3bd417b4832498c676">A</a></td></tr>
+<tr class="memdesc:af809d870aad52d3bd417b4832498c676"><td class="mdescLeft">&#160;</td><td class="mdescRight">The matrix representing the fixed origin transformation. <br /></td></tr>
+<tr class="separator:af809d870aad52d3bd417b4832498c676"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
+Private Member Functions</h2></td></tr>
+<tr class="memitem:a95368d084d984bc260b778a0477d04f9"><td class="memTemplParams" colspan="2">template&lt;typename Archive &gt; </td></tr>
+<tr class="memitem:a95368d084d984bc260b778a0477d04f9"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d7/d84/classrigidmotion_1_1RigidMotion.html#a95368d084d984bc260b778a0477d04f9">serialize</a> (Archive &amp;ar, const unsigned int version)</td></tr>
+<tr class="memdesc:a95368d084d984bc260b778a0477d04f9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Serialize a rigid motion to a stream of bytes.  <a href="#a95368d084d984bc260b778a0477d04f9">More...</a><br /></td></tr>
+<tr class="separator:a95368d084d984bc260b778a0477d04f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="friends"></a>
+Friends</h2></td></tr>
+<tr class="memitem:ac98d07dd8f7b70e16ccb9a01abf56b9c"><td class="memItemLeft" align="right" valign="top"><a id="ac98d07dd8f7b70e16ccb9a01abf56b9c"></a>
+class&#160;</td><td class="memItemRight" valign="bottom"><b>boost::serialization::access</b></td></tr>
+<tr class="separator:ac98d07dd8f7b70e16ccb9a01abf56b9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Interface that must be implemented by any class which represents a specific rigid motions. </p>
@@ -271,8 +294,8 @@ mat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../..
 
 </div>
 </div>
-<a id="a948b4e13d2ea606ba9cbf3906cef6186"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a948b4e13d2ea606ba9cbf3906cef6186">&#9670;&nbsp;</a></span>RigidMotion() <span class="overload">[2/2]</span></h2>
+<a id="aa61488d6e23c10f8143c8ba08a1b0ac3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa61488d6e23c10f8143c8ba08a1b0ac3">&#9670;&nbsp;</a></span>RigidMotion() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -283,13 +306,13 @@ mat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../..
         <tr>
           <td class="memname">rigidmotion::RigidMotion::RigidMotion </td>
           <td>(</td>
-          <td class="paramtype">colvec const&#160;</td>
+          <td class="paramtype">colvec const &amp;&#160;</td>
           <td class="paramname"><em>C</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">mat const&#160;</td>
+          <td class="paramtype">arma::mat const &amp;&#160;</td>
           <td class="paramname"><em>A</em>&#160;</td>
         </tr>
         <tr>
@@ -315,7 +338,7 @@ mat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../..
 </dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d7/d84/classrigidmotion_1_1RigidMotion.html#aa5c886a5a11975a809580318ba5cdc42" title="The column vector representing the translation. ">rigidmotion::RigidMotion::C</a> </dd>
 <dd>
-<a class="el" href="../../d7/d84/classrigidmotion_1_1RigidMotion.html#ae3525a13930940febd66c3c89e185303" title="The matrix representing the fixed origin transformation. ">rigidmotion::RigidMotion::A</a> </dd></dl>
+<a class="el" href="../../d7/d84/classrigidmotion_1_1RigidMotion.html#af809d870aad52d3bd417b4832498c676" title="The matrix representing the fixed origin transformation. ">rigidmotion::RigidMotion::A</a> </dd></dl>
 
 </div>
 </div>
@@ -474,8 +497,8 @@ mat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../..
 
 </div>
 </div>
-<a id="a6cae5e720cf710f39b269a95ecc92880"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6cae5e720cf710f39b269a95ecc92880">&#9670;&nbsp;</a></span>getA()</h2>
+<a id="ae77503fd95135ff29988a2da6ed9d440"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae77503fd95135ff29988a2da6ed9d440">&#9670;&nbsp;</a></span>getA()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -484,7 +507,7 @@ mat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../..
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">mat rigidmotion::RigidMotion::getA </td>
+          <td class="memname">arma::mat rigidmotion::RigidMotion::getA </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -587,8 +610,61 @@ mat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../..
 
 </div>
 </div>
-<a id="a2cd8787bdb1433cafef2f4b81d3163af"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2cd8787bdb1433cafef2f4b81d3163af">&#9670;&nbsp;</a></span>setA()</h2>
+<a id="a95368d084d984bc260b778a0477d04f9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a95368d084d984bc260b778a0477d04f9">&#9670;&nbsp;</a></span>serialize()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Archive &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void rigidmotion::RigidMotion::serialize </td>
+          <td>(</td>
+          <td class="paramtype">Archive &amp;&#160;</td>
+          <td class="paramname"><em>ar</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const unsigned int&#160;</td>
+          <td class="paramname"><em>version</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Serialize a rigid motion to a stream of bytes. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">Archive</td><td>Type of rendering </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">ar</td><td>Specific rendering for the stream of bytes </td></tr>
+    <tr><td class="paramname">version</td><td>Version number for the rigid motion </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="afbcb652a1ce947240c5b70cb132ee09e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afbcb652a1ce947240c5b70cb132ee09e">&#9670;&nbsp;</a></span>setA()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -599,7 +675,7 @@ mat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../..
         <tr>
           <td class="memname">void rigidmotion::RigidMotion::setA </td>
           <td>(</td>
-          <td class="paramtype">mat const&#160;</td>
+          <td class="paramtype">arma::mat const&#160;</td>
           <td class="paramname"><em>A</em></td><td>)</td>
           <td></td>
         </tr>
