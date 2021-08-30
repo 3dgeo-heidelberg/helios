@@ -229,7 +229,8 @@ private:
         std::vector<double> &fullwave,
         double distanceThreshold,
         double minHitTime_ns,
-        double nsPerBin
+        double nsPerBin,
+        int peakIntensityIndex
     );
     /**
      * @brief Digest a previously populated full waveform vector,
