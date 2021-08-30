@@ -9,10 +9,11 @@
 
 #include "Primitive.h"
 #include "AABB.h"
-#include <serial.h> // TODO Rethink : Solves the issue?
-#include <Triangle.h> // TODO Rethink : Solves the issue?
-#include <Voxel.h> // TODO Rethink : Solves the issue?
-#include <DetailedVoxel.h> // TODO Rethink : Solves the issue?
+
+// Including primitives below is necessary for serialization
+#include <Triangle.h>
+#include <Voxel.h>
+#include <DetailedVoxel.h>
 
 /**
  * @brief Class representing a KDTree node
@@ -35,17 +36,11 @@ class KDTreeNode {
         ar.template register_type<Vertex>();
         ar.template register_type<Voxel>();
         ar.template register_type<DetailedVoxel>();
-	    std::cout << "Exporting KDTreeNode (1) ..." << std::endl; // TODO Remove
 		ar & left;
-        std::cout << "Exporting KDTreeNode (2) ..." << std::endl; // TODO Remove
         ar & right;
-        std::cout << "Exporting KDTreeNode (3) ..." << std::endl; // TODO Remove
 		ar & splitPos;
-        std::cout << "Exporting KDTreeNode (4) ..." << std::endl; // TODO Remove
         ar & splitAxis;
-        std::cout << "Exporting KDTreeNode (5) ..." << std::endl; // TODO Remove
 		ar & primitives;
-        std::cout << "Exported KDTreeNode!" << std::endl; // TODO Remove
     }
 
 public:

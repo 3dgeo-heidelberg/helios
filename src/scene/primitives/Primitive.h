@@ -11,7 +11,6 @@
 #include <IntersectionHandlingResult.h>
 #include <util/HeliosException.h>
 
-// TODO Rethink : Includes below solve the issue ?
 #include <DynObject.h>
 #include <DynMovingObject.h>
 #include <DynSequentiableMovingObject.h>
@@ -37,16 +36,11 @@ class Primitive {
 	    // Register ScenePart derived classes
 	    ar.template register_type<DynMovingObject>();
 	    ar.template register_type<DynSequentiableMovingObject>();
-	    // TODO Rethink : Did register above solve the issue?
-        std::string partId = "#NULLID#"; // TODO Remove
-        if(part!=nullptr) partId = part->getId(); // TODO Remove
-	    std::cout   << "Exporting Primitive (1) with " << getNumVertices()
-	                << " vertices and partId " << partId << " ..."
-	                << std::endl; // TODO Remove
+
+        std::string partId = "#NULLID#";
+        if(part!=nullptr) partId = part->getId();
 		ar & part;
-        std::cout << "Exporting Primitive (2) ..." << std::endl; // TODO Remove
         ar & material;
-        std::cout << "Exported Primitive!" << std::endl; // TODO Remove
 	}
 
 public:

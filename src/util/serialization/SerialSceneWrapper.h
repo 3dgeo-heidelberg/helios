@@ -34,27 +34,22 @@ private:
         boost::serialization::void_cast_register<SerialSceneWrapper, Asset>();
         ar &boost::serialization::base_object<Asset>(*this);
         ar &sceneType;
-        std::cout << "SceneType: " << sceneType << std::endl; // TODO Remove
         switch(sceneType){
             case SCENE:
-                std::cout << "SerialSceneWrapper into SCENE" << std::endl; // TODO Remove
                 ar &scene;
                 break;
             case STATIC_SCENE:{
-                std::cout << "SerialSceneWrapper into STATIC_SCENE" << std::endl; // TODO Remove
                 StaticScene *_scene = (StaticScene *) scene;
                 ar &_scene;
                 scene = (Scene *) _scene;
                 break;
             } case DYNAMIC_SCENE:{
-                std::cout << "SerialSceneWrapper into DYNAMIC_SCENE" << std::endl; // TODO Remove
                 DynScene *_scene = (DynScene *) scene;
                 ar &_scene;
                 scene = (Scene *) _scene;
                 break;
             }
         }
-        std::cout << "SerialSceneWrapper serialized!" << std::endl; // TODO Remove
     }
 
 public:

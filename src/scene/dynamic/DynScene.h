@@ -38,19 +38,12 @@ private:
      */
     template <class Archive>
     void serialize(Archive &ar, const unsigned int version){
-        std::cout << "Exporting DynScene (0)..." << std::endl; // TODO Remove
         boost::serialization::void_cast_register<DynScene, StaticScene>();
-        std::cout << "Exporting DynScene (1)..." << std::endl; // TODO Remove
         ar &boost::serialization::base_object<StaticScene>(*this);
-        std::cout << "Exporting DynScene (2)..." << std::endl; // TODO Remove
         ar &dynObjs;
-        std::cout << "Exporting DynScene (3)..." << std::endl; // TODO Remove
         ar &updated;
-        std::cout << "Exporting DynScene (4)..." << std::endl; // TODO Remove
         ar &dynamicSpaceInterval;
-        std::cout << "Exporting DynScene (5)..." << std::endl; // TODO Remove
         ar &currentStep;
-        std::cout << "DynScene exported!" << std::endl; // TODO Remove
     }
 protected:
     // ***  ATTRIBUTES  *** //

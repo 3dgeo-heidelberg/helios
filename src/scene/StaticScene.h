@@ -34,15 +34,10 @@ private:
      */
     template <class Archive>
     void serialize(Archive &ar, const unsigned int version){
-        std::cout << "Exporting StaticScene (0)..." << std::endl; // TODO Remove
         boost::serialization::void_cast_register<StaticScene, Scene>();
-        std::cout << "Exporting StaticScene (1)..." << std::endl; // TODO Remove
         boost::serialization::void_cast_register<StaticScene, Scene>();
-        std::cout << "Exporting StaticScene (2)..." << std::endl; // TODO Remove
         ar &boost::serialization::base_object<Scene>(*this);
-        std::cout << "Exporting StaticScene (3)..." << std::endl; // TODO Remove
         ar &staticObjs;
-        std::cout << "Exported StaticScene!" << std::endl; // TODO Remove
     }
 
 protected:

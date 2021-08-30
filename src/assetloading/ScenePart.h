@@ -28,29 +28,17 @@ class ScenePart {
 	 */
 	template<class Archive>
 	void serialize(Archive &ar, const unsigned int version){
-	    std::cout << "Exporting ScenePart (1) ..." << std::endl; // TODO Remove
 		ar & mPrimitives;
-        std::cout << "Exporting ScenePart (2) ..." << std::endl; // TODO Remove
         ar & centroid;
-        std::cout << "Exporting ScenePart (3) ..." << std::endl; // TODO Remove
 		ar & mId;
-        std::cout << "Exporting ScenePart (4) ..." << std::endl; // TODO Remove
         ar & subpartLimit;
-        std::cout << "Exporting ScenePart (5) ..." << std::endl; // TODO Remove
         ar & onRayIntersectionMode;
-        std::cout << "Exporting ScenePart (6) ..." << std::endl; // TODO Remove
         ar & onRayIntersectionArgument;
-        std::cout << "Exporting ScenePart (7) ..." << std::endl; // TODO Remove
         ar & randomShift;
-        std::cout << "Exporting ScenePart (8) ..." << std::endl; // TODO Remove
         ar & ladlut;
-        std::cout << "Exporting ScenePart (9) ..." << std::endl; // TODO Remove
 		ar & mOrigin;
-        std::cout << "Exporting ScenePart (10) ..." << std::endl; // TODO Remove
         ar & mRotation;
-        std::cout << "Exporting ScenePart (11) ..." << std::endl; // TODO Remove
 		ar & mScale;
-        std::cout << "Exported ScenePart!" << std::endl; // TODO Remove
     }
 public:
     // ***  ATTRIBUTES  *** //
