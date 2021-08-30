@@ -88,9 +88,7 @@ $(document).ready(function(){initNavTree('d9/d82/classXmlAssetsLoader.html','../
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
-<a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="#pro-attribs">Protected Attributes</a> &#124;
 <a href="../../d1/df7/classXmlAssetsLoader-members.html">List of all members</a>  </div>
   <div class="headertitle">
@@ -115,7 +113,8 @@ Collaboration diagram for XmlAssetsLoader:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../da/d7c/classXmlAssetsLoader__coll__graph.png" border="0" usemap="#XmlAssetsLoader_coll__map" alt="Collaboration graph"/></div>
 <map name="XmlAssetsLoader_coll__map" id="XmlAssetsLoader_coll__map">
-<area shape="rect" id="node3" href="../../d7/d48/classSceneLoadingSpecification.html" title="Manually specify scene transformation filters to apply when loading a scene. " alt="" coords="85,5,263,32"/>
+<area shape="rect" id="node2" href="../../db/d91/classXmlSceneLoader.html" title="Class for scene loading from XML file. " alt="" coords="34,95,155,121"/>
+<area shape="rect" id="node3" href="../../d7/d48/classSceneLoadingSpecification.html" title="Manually specify scene transformation filters to apply when loading a scene. " alt="" coords="5,5,184,32"/>
 </map>
 <center><span class="legend">[<a target="top" href="../../graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -124,21 +123,15 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ab05a3221c932ac16673676f671879b7a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/d82/classXmlAssetsLoader.html#ab05a3221c932ac16673676f671879b7a">XmlAssetsLoader</a> (std::string &amp;filePath, std::string &amp;<a class="el" href="../../d9/d82/classXmlAssetsLoader.html#a93746ec0dd88588e1ddfafe4a0a850fe">assetsDir</a>)</td></tr>
 <tr class="memdesc:ab05a3221c932ac16673676f671879b7a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Build a <a class="el" href="../../d9/d82/classXmlAssetsLoader.html" title="Class for asset loading from XML file. ">XmlAssetsLoader</a> for given XML file and assets directory.  <a href="#ab05a3221c932ac16673676f671879b7a">More...</a><br /></td></tr>
 <tr class="separator:ab05a3221c932ac16673676f671879b7a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9925003efb329261285a3b44581d07ab"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="../../de/d97/classAsset.html">Asset</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/d82/classXmlAssetsLoader.html#a9925003efb329261285a3b44581d07ab">getAssetById</a> (std::string type, std::string id)</td></tr>
-<tr class="memdesc:a9925003efb329261285a3b44581d07ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get asset by its identifier.  <a href="#a9925003efb329261285a3b44581d07ab">More...</a><br /></td></tr>
-<tr class="separator:a9925003efb329261285a3b44581d07ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a390fb954561c1b239d869a14d5c43557"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="../../de/d97/classAsset.html">Asset</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/d82/classXmlAssetsLoader.html#a390fb954561c1b239d869a14d5c43557">getAssetByLocation</a> (std::string type, std::string location)</td></tr>
-<tr class="memdesc:a390fb954561c1b239d869a14d5c43557"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get asset by location.  <a href="#a390fb954561c1b239d869a14d5c43557">More...</a><br /></td></tr>
-<tr class="separator:a390fb954561c1b239d869a14d5c43557"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab6eb41df628fa8eb9653a9154e4755c7"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="../../de/d97/classAsset.html">Asset</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/d82/classXmlAssetsLoader.html#ab6eb41df628fa8eb9653a9154e4755c7">createAssetFromXml</a> (std::string type, tinyxml2::XMLElement *assetNode)</td></tr>
-<tr class="memdesc:ab6eb41df628fa8eb9653a9154e4755c7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create an asset from given XML element (node)  <a href="#ab6eb41df628fa8eb9653a9154e4755c7">More...</a><br /></td></tr>
-<tr class="separator:ab6eb41df628fa8eb9653a9154e4755c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6f7ad9729a9484ca0bf81116bc56dc6a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../db/d02/classColor4f.html">Color4f</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/d82/classXmlAssetsLoader.html#a6f7ad9729a9484ca0bf81116bc56dc6a">createColorFromXml</a> (tinyxml2::XMLElement *node)</td></tr>
-<tr class="memdesc:a6f7ad9729a9484ca0bf81116bc56dc6a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a color from given XML element (node)  <a href="#a6f7ad9729a9484ca0bf81116bc56dc6a">More...</a><br /></td></tr>
-<tr class="separator:a6f7ad9729a9484ca0bf81116bc56dc6a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a093799f1a4085bb087b1c99d83e48b79"><td class="memItemLeft" align="right" valign="top">std::map&lt; std::string, ObjectT &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/d82/classXmlAssetsLoader.html#a093799f1a4085bb087b1c99d83e48b79">createParamsFromXml</a> (tinyxml2::XMLElement *paramsNode)</td></tr>
-<tr class="memdesc:a093799f1a4085bb087b1c99d83e48b79"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a map of parameters from given XML element (node)  <a href="#a093799f1a4085bb087b1c99d83e48b79">More...</a><br /></td></tr>
-<tr class="separator:a093799f1a4085bb087b1c99d83e48b79"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7e26413b3e1cdd17107cc5e06693e7f5"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="../../de/d97/classAsset.html">Asset</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/d82/classXmlAssetsLoader.html#a7e26413b3e1cdd17107cc5e06693e7f5">getAssetById</a> (std::string type, std::string id, void *extraOutput=nullptr)</td></tr>
+<tr class="memdesc:a7e26413b3e1cdd17107cc5e06693e7f5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get asset by its identifier.  <a href="#a7e26413b3e1cdd17107cc5e06693e7f5">More...</a><br /></td></tr>
+<tr class="separator:a7e26413b3e1cdd17107cc5e06693e7f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a50f6df27d93e0cec94a7135f71bb88da"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="../../de/d97/classAsset.html">Asset</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/d82/classXmlAssetsLoader.html#a50f6df27d93e0cec94a7135f71bb88da">getAssetByLocation</a> (std::string type, std::string location, void *extraOutput=nullptr)</td></tr>
+<tr class="memdesc:a50f6df27d93e0cec94a7135f71bb88da"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get asset by location.  <a href="#a50f6df27d93e0cec94a7135f71bb88da">More...</a><br /></td></tr>
+<tr class="separator:a50f6df27d93e0cec94a7135f71bb88da"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a63d75245f7448ec41018f3d61dd6173e"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="../../de/d97/classAsset.html">Asset</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/d82/classXmlAssetsLoader.html#a63d75245f7448ec41018f3d61dd6173e">createAssetFromXml</a> (std::string type, tinyxml2::XMLElement *assetNode, void *extraOutput=nullptr)</td></tr>
+<tr class="memdesc:a63d75245f7448ec41018f3d61dd6173e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create an asset from given XML element (node)  <a href="#a63d75245f7448ec41018f3d61dd6173e">More...</a><br /></td></tr>
+<tr class="separator:a63d75245f7448ec41018f3d61dd6173e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aec671d3d36b1907196582a183a0bbd2d"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="../../df/d1e/classPlatform.html">Platform</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/d82/classXmlAssetsLoader.html#aec671d3d36b1907196582a183a0bbd2d">createPlatformFromXml</a> (tinyxml2::XMLElement *platformNode)</td></tr>
 <tr class="memdesc:aec671d3d36b1907196582a183a0bbd2d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a platform from given XML element (node)  <a href="#aec671d3d36b1907196582a183a0bbd2d">More...</a><br /></td></tr>
 <tr class="separator:aec671d3d36b1907196582a183a0bbd2d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -154,37 +147,17 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aaafc4c34e7203c57d917e75d78a73646"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="../../d4/dfb/classFWFSettings.html">FWFSettings</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/d82/classXmlAssetsLoader.html#aaafc4c34e7203c57d917e75d78a73646">createFWFSettingsFromXml</a> (tinyxml2::XMLElement *node, std::shared_ptr&lt; <a class="el" href="../../d4/dfb/classFWFSettings.html">FWFSettings</a> &gt; settings=nullptr)</td></tr>
 <tr class="memdesc:aaafc4c34e7203c57d917e75d78a73646"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create FWF settings from given XML element (node)  <a href="#aaafc4c34e7203c57d917e75d78a73646">More...</a><br /></td></tr>
 <tr class="separator:aaafc4c34e7203c57d917e75d78a73646"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6906ab2d95abd92a94f1e9b75bd3ab32"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="../../d5/d9c/classScene.html">Scene</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/d82/classXmlAssetsLoader.html#a6906ab2d95abd92a94f1e9b75bd3ab32">createSceneFromXml</a> (tinyxml2::XMLElement *sceneNode, std::string path)</td></tr>
-<tr class="memdesc:a6906ab2d95abd92a94f1e9b75bd3ab32"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create scene from given XML element (node)  <a href="#a6906ab2d95abd92a94f1e9b75bd3ab32">More...</a><br /></td></tr>
-<tr class="separator:a6906ab2d95abd92a94f1e9b75bd3ab32"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae7fd1316d53f07d26ebe67c67f1d9f31"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d5/dcb/classRotation.html">Rotation</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/d82/classXmlAssetsLoader.html#ae7fd1316d53f07d26ebe67c67f1d9f31">createRotationFromXml</a> (tinyxml2::XMLElement *rotGroupNode)</td></tr>
-<tr class="memdesc:ae7fd1316d53f07d26ebe67c67f1d9f31"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a rotation from given XML element (node)  <a href="#ae7fd1316d53f07d26ebe67c67f1d9f31">More...</a><br /></td></tr>
-<tr class="separator:ae7fd1316d53f07d26ebe67c67f1d9f31"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4468418169ce65f6bd108b06ebf0e880"><td class="memItemLeft" align="right" valign="top">glm::dvec3&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/d82/classXmlAssetsLoader.html#a4468418169ce65f6bd108b06ebf0e880">createVec3dFromXml</a> (tinyxml2::XMLElement *node, std::string attrPrefix)</td></tr>
-<tr class="memdesc:a4468418169ce65f6bd108b06ebf0e880"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a 3D vector from given XML element (node)  <a href="#a4468418169ce65f6bd108b06ebf0e880">More...</a><br /></td></tr>
-<tr class="separator:a4468418169ce65f6bd108b06ebf0e880"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
-Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a1e7f63da2ca175eb6bc68e4902dd1f74"><td class="memItemLeft" align="right" valign="top">static std::shared_ptr&lt; <a class="el" href="../../d9/d6b/classNoiseSource.html">NoiseSource</a>&lt; double &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/d82/classXmlAssetsLoader.html#a1e7f63da2ca175eb6bc68e4902dd1f74">createNoiseSource</a> (tinyxml2::XMLElement *noise)</td></tr>
-<tr class="memdesc:a1e7f63da2ca175eb6bc68e4902dd1f74"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a noise source from given XML element (node)  <a href="#a1e7f63da2ca175eb6bc68e4902dd1f74">More...</a><br /></td></tr>
-<tr class="separator:a1e7f63da2ca175eb6bc68e4902dd1f74"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
+<tr class="memitem:a1a224706568ac6de1bd59ec83e024979"><td class="memItemLeft" align="right" valign="top"><a id="a1a224706568ac6de1bd59ec83e024979"></a>
+<a class="el" href="../../db/d91/classXmlSceneLoader.html">XmlSceneLoader</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/d82/classXmlAssetsLoader.html#a1a224706568ac6de1bd59ec83e024979">sceneLoader</a></td></tr>
+<tr class="memdesc:a1a224706568ac6de1bd59ec83e024979"><td class="mdescLeft">&#160;</td><td class="mdescRight">The scene loader. It is used to load scenes from XML files. <br /></td></tr>
+<tr class="separator:a1a224706568ac6de1bd59ec83e024979"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abf34a777d16253c2783d9459446a4776"><td class="memItemLeft" align="right" valign="top"><a id="abf34a777d16253c2783d9459446a4776"></a>
 tinyxml2::XMLDocument&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/d82/classXmlAssetsLoader.html#abf34a777d16253c2783d9459446a4776">doc</a></td></tr>
 <tr class="memdesc:abf34a777d16253c2783d9459446a4776"><td class="mdescLeft">&#160;</td><td class="mdescRight">XML file through tinyxml2 library. <br /></td></tr>
 <tr class="separator:abf34a777d16253c2783d9459446a4776"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a531d8400b5dbac617415e4d8e5a287f8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d7/d48/classSceneLoadingSpecification.html">SceneLoadingSpecification</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/d82/classXmlAssetsLoader.html#a531d8400b5dbac617415e4d8e5a287f8">sceneSpec</a></td></tr>
-<tr class="memdesc:a531d8400b5dbac617415e4d8e5a287f8"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="../../d5/d9c/classScene.html" title="Class representing a scene asset. ">Scene</a> loading specification.  <a href="#a531d8400b5dbac617415e4d8e5a287f8">More...</a><br /></td></tr>
-<tr class="separator:a531d8400b5dbac617415e4d8e5a287f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
-Protected Member Functions</h2></td></tr>
-<tr class="memitem:a22127072271fc64c415e53381f38af88"><td class="memItemLeft" align="right" valign="top">ObjectT&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/d82/classXmlAssetsLoader.html#a22127072271fc64c415e53381f38af88">getAttribute</a> (tinyxml2::XMLElement *element, std::string attrName, std::string type, ObjectT defaultVal)</td></tr>
-<tr class="memdesc:a22127072271fc64c415e53381f38af88"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain attribute from XML.  <a href="#a22127072271fc64c415e53381f38af88">More...</a><br /></td></tr>
-<tr class="separator:a22127072271fc64c415e53381f38af88"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
@@ -206,6 +179,10 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Class for asset loading from XML file. </p>
+<p>It is the main class for XML loading. It uses both <a class="el" href="../../db/d91/classXmlSceneLoader.html" title="Class for scene loading from XML file. ">XmlSceneLoader</a> and <a class="el" href="../../de/d52/classXmlUtils.html" title="Common utils for XML handling. ">XmlUtils</a></p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../db/d91/classXmlSceneLoader.html" title="Class for scene loading from XML file. ">XmlSceneLoader</a> </dd>
+<dd>
+<a class="el" href="../../de/d52/classXmlUtils.html" title="Common utils for XML handling. ">XmlUtils</a> </dd></dl>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="ab05a3221c932ac16673676f671879b7a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab05a3221c932ac16673676f671879b7a">&#9670;&nbsp;</a></span>XmlAssetsLoader()</h2>
@@ -245,8 +222,8 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="ab6eb41df628fa8eb9653a9154e4755c7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab6eb41df628fa8eb9653a9154e4755c7">&#9670;&nbsp;</a></span>createAssetFromXml()</h2>
+<a id="a63d75245f7448ec41018f3d61dd6173e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a63d75245f7448ec41018f3d61dd6173e">&#9670;&nbsp;</a></span>createAssetFromXml()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -261,7 +238,13 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">tinyxml2::XMLElement *&#160;</td>
-          <td class="paramname"><em>assetNode</em>&#160;</td>
+          <td class="paramname"><em>assetNode</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>extraOutput</em> = <code>nullptr</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -276,39 +259,12 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
   <table class="params">
     <tr><td class="paramname">type</td><td><a class="el" href="../../de/d97/classAsset.html" title="Base class for all assets. ">Asset</a> type </td></tr>
     <tr><td class="paramname">assetNode</td><td>XML element (node) containing asset data </td></tr>
+    <tr><td class="paramname">extraOutput[out]</td><td>Pointer to where extra output must be stored. If it is null, it means no extra output is required. Notice this only will be used when requested asset supports extra output </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Shared pointer to created asset </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="../../de/d97/classAsset.html" title="Base class for all assets. ">Asset</a> </dd></dl>
-
-</div>
-</div>
-<a id="a6f7ad9729a9484ca0bf81116bc56dc6a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6f7ad9729a9484ca0bf81116bc56dc6a">&#9670;&nbsp;</a></span>createColorFromXml()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="../../db/d02/classColor4f.html">Color4f</a> XmlAssetsLoader::createColorFromXml </td>
-          <td>(</td>
-          <td class="paramtype">tinyxml2::XMLElement *&#160;</td>
-          <td class="paramname"><em>node</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Create a color from given XML element (node) </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">node</td><td>XML element (node) containing color data </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>Created color </dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../db/d02/classColor4f.html" title="Class representing a color with 4 float components: RGBA. ">Color4f</a> </dd></dl>
 
 </div>
 </div>
@@ -348,69 +304,6 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Shared pointer to created FWF settings </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d4/dfb/classFWFSettings.html" title="Full Waveform settings. ">FWFSettings</a> </dd></dl>
-
-</div>
-</div>
-<a id="a1e7f63da2ca175eb6bc68e4902dd1f74"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1e7f63da2ca175eb6bc68e4902dd1f74">&#9670;&nbsp;</a></span>createNoiseSource()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::shared_ptr&lt; <a class="el" href="../../d9/d6b/classNoiseSource.html">NoiseSource</a>&lt; double &gt; &gt; XmlAssetsLoader::createNoiseSource </td>
-          <td>(</td>
-          <td class="paramtype">tinyxml2::XMLElement *&#160;</td>
-          <td class="paramname"><em>noise</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Create a noise source from given XML element (node) </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">noise</td><td>XML element (node) containing noise source specification </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>Shared pointer to created noise source </dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d9/d6b/classNoiseSource.html" title="Class to handle a noise source. ">NoiseSource</a> </dd></dl>
-
-</div>
-</div>
-<a id="a093799f1a4085bb087b1c99d83e48b79"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a093799f1a4085bb087b1c99d83e48b79">&#9670;&nbsp;</a></span>createParamsFromXml()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::map&lt; std::string, ObjectT &gt; XmlAssetsLoader::createParamsFromXml </td>
-          <td>(</td>
-          <td class="paramtype">tinyxml2::XMLElement *&#160;</td>
-          <td class="paramname"><em>paramsNode</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Create a map of parameters from given XML element (node) </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">paramsNode</td><td>XML element (node) containing parameters </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>Map with parameters, so each one is identified by a different string </dd></dl>
 
 </div>
 </div>
@@ -470,34 +363,6 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
 
 </div>
 </div>
-<a id="ae7fd1316d53f07d26ebe67c67f1d9f31"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae7fd1316d53f07d26ebe67c67f1d9f31">&#9670;&nbsp;</a></span>createRotationFromXml()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="../../d5/dcb/classRotation.html">Rotation</a> XmlAssetsLoader::createRotationFromXml </td>
-          <td>(</td>
-          <td class="paramtype">tinyxml2::XMLElement *&#160;</td>
-          <td class="paramname"><em>rotGroupNode</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Create a rotation from given XML element (node) </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">rotGroupNode</td><td>XML element (node) containing rotation data </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>Created rotation </dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d5/dcb/classRotation.html">Rotation</a> </dd></dl>
-
-</div>
-</div>
 <a id="a02363e87fb6308162af5863a2f40022c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a02363e87fb6308162af5863a2f40022c">&#9670;&nbsp;</a></span>createScannerFromXml()</h2>
 
@@ -554,86 +419,8 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
 
 </div>
 </div>
-<a id="a6906ab2d95abd92a94f1e9b75bd3ab32"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6906ab2d95abd92a94f1e9b75bd3ab32">&#9670;&nbsp;</a></span>createSceneFromXml()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::shared_ptr&lt; <a class="el" href="../../d5/d9c/classScene.html">Scene</a> &gt; XmlAssetsLoader::createSceneFromXml </td>
-          <td>(</td>
-          <td class="paramtype">tinyxml2::XMLElement *&#160;</td>
-          <td class="paramname"><em>sceneNode</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">std::string&#160;</td>
-          <td class="paramname"><em>path</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Create scene from given XML element (node) </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">sceneNode</td><td>XML element (node) containing scene data </td></tr>
-    <tr><td class="paramname">path</td><td>Path to scene file </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>Shared pointer to created scene </dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d5/d9c/classScene.html" title="Class representing a scene asset. ">Scene</a> </dd></dl>
-
-</div>
-</div>
-<a id="a4468418169ce65f6bd108b06ebf0e880"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4468418169ce65f6bd108b06ebf0e880">&#9670;&nbsp;</a></span>createVec3dFromXml()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">glm::dvec3 XmlAssetsLoader::createVec3dFromXml </td>
-          <td>(</td>
-          <td class="paramtype">tinyxml2::XMLElement *&#160;</td>
-          <td class="paramname"><em>node</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">std::string&#160;</td>
-          <td class="paramname"><em>attrPrefix</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Create a 3D vector from given XML element (node) </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">node</td><td>XML element (node) containing 3D vector data </td></tr>
-    <tr><td class="paramname">attrPrefix</td><td>Attribute prefix. It will be used so x component is "attrPrefix" + "x" and so on for y and z components too. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>Created 3D vector </dd></dl>
-<dl class="section see"><dt>See also</dt><dd>glm::dvec3 </dd></dl>
-
-</div>
-</div>
-<a id="a9925003efb329261285a3b44581d07ab"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9925003efb329261285a3b44581d07ab">&#9670;&nbsp;</a></span>getAssetById()</h2>
+<a id="a7e26413b3e1cdd17107cc5e06693e7f5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7e26413b3e1cdd17107cc5e06693e7f5">&#9670;&nbsp;</a></span>getAssetById()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -648,7 +435,13 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">std::string&#160;</td>
-          <td class="paramname"><em>id</em>&#160;</td>
+          <td class="paramname"><em>id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>extraOutput</em> = <code>nullptr</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -663,6 +456,7 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
   <table class="params">
     <tr><td class="paramname">type</td><td>Type of the asset </td></tr>
     <tr><td class="paramname">id</td><td>Identifier of the asset </td></tr>
+    <tr><td class="paramname">extraOutput[out]</td><td>Pointer to where extra output must be stored. If it is null, it means no extra output is required. Notice this only will be used when requested asset supports extra output </td></tr>
   </table>
   </dd>
 </dl>
@@ -670,8 +464,8 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
 
 </div>
 </div>
-<a id="a390fb954561c1b239d869a14d5c43557"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a390fb954561c1b239d869a14d5c43557">&#9670;&nbsp;</a></span>getAssetByLocation()</h2>
+<a id="a50f6df27d93e0cec94a7135f71bb88da"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a50f6df27d93e0cec94a7135f71bb88da">&#9670;&nbsp;</a></span>getAssetByLocation()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -686,7 +480,13 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">std::string&#160;</td>
-          <td class="paramname"><em>location</em>&#160;</td>
+          <td class="paramname"><em>location</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>extraOutput</em> = <code>nullptr</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -701,70 +501,11 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
   <table class="params">
     <tr><td class="paramname">type</td><td>Type of the asset </td></tr>
     <tr><td class="paramname">location</td><td>Location of the asset </td></tr>
+    <tr><td class="paramname">extraOutput[out]</td><td>Pointer to where extra output must be stored. If it is null, it means no extra output is required. Notice this only will be used when requested asset supports extra output </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Shared pointer to requested asset </dd></dl>
-
-</div>
-</div>
-<a id="a22127072271fc64c415e53381f38af88"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a22127072271fc64c415e53381f38af88">&#9670;&nbsp;</a></span>getAttribute()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">ObjectT XmlAssetsLoader::getAttribute </td>
-          <td>(</td>
-          <td class="paramtype">tinyxml2::XMLElement *&#160;</td>
-          <td class="paramname"><em>element</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">std::string&#160;</td>
-          <td class="paramname"><em>attrName</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">std::string&#160;</td>
-          <td class="paramname"><em>type</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">ObjectT&#160;</td>
-          <td class="paramname"><em>defaultVal</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Obtain attribute from XML. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">element</td><td>XML element (node) where the attribute must be taken from </td></tr>
-    <tr><td class="paramname">attrName</td><td>Name of the attribute to be obtained </td></tr>
-    <tr><td class="paramname">type</td><td>Type of the attribute to be obtained </td></tr>
-    <tr><td class="paramname">defaultVal</td><td>Default value to be used in case attribute was not found </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>Obtained attribute or default value if attribute was not found </dd></dl>
 
 </div>
 </div>
@@ -791,23 +532,6 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
 
 <p>Map containing all scanner templates that were loading while building from XML file. No repetitions, each template appears only one time. </p>
 <p>The id of the template is used as the key, while the template itself is the value (<a class="el" href="../../d0/d23/classScannerSettings.html" title="Scanner settings class. ">ScannerSettings</a> object) </p>
-
-</div>
-</div>
-<a id="a531d8400b5dbac617415e4d8e5a287f8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a531d8400b5dbac617415e4d8e5a287f8">&#9670;&nbsp;</a></span>sceneSpec</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="../../d7/d48/classSceneLoadingSpecification.html">SceneLoadingSpecification</a> XmlAssetsLoader::sceneSpec</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p><a class="el" href="../../d5/d9c/classScene.html" title="Class representing a scene asset. ">Scene</a> loading specification. </p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d7/d48/classSceneLoadingSpecification.html" title="Manually specify scene transformation filters to apply when loading a scene. ">SceneLoadingSpecification</a> </dd></dl>
 
 </div>
 </div>

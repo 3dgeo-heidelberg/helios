@@ -109,9 +109,9 @@ Collaboration diagram for HeliosDemos::DemoSelector:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a5565feafd7049e3e0bf637f13f56ef6d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d3f/classHeliosDemos_1_1DemoSelector.html#a5565feafd7049e3e0bf637f13f56ef6d">select</a> (string const name)</td></tr>
-<tr class="memdesc:a5565feafd7049e3e0bf637f13f56ef6d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Run the demo with given name if any.  <a href="#a5565feafd7049e3e0bf637f13f56ef6d">More...</a><br /></td></tr>
-<tr class="separator:a5565feafd7049e3e0bf637f13f56ef6d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abfb11b317aa16652130e14098acdbdd1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d3f/classHeliosDemos_1_1DemoSelector.html#abfb11b317aa16652130e14098acdbdd1">select</a> (string const name, string const surveyPath=&quot;&quot;, string const assetsPath=&quot;&quot;)</td></tr>
+<tr class="memdesc:abfb11b317aa16652130e14098acdbdd1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Run the demo with given name if any.  <a href="#abfb11b317aa16652130e14098acdbdd1">More...</a><br /></td></tr>
+<tr class="separator:abfb11b317aa16652130e14098acdbdd1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
@@ -166,8 +166,8 @@ Static Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a5565feafd7049e3e0bf637f13f56ef6d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5565feafd7049e3e0bf637f13f56ef6d">&#9670;&nbsp;</a></span>select()</h2>
+<a id="abfb11b317aa16652130e14098acdbdd1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abfb11b317aa16652130e14098acdbdd1">&#9670;&nbsp;</a></span>select()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -176,8 +176,24 @@ Static Private Attributes</h2></td></tr>
           <td class="memname">void HeliosDemos::DemoSelector::select </td>
           <td>(</td>
           <td class="paramtype">string const&#160;</td>
-          <td class="paramname"><em>name</em></td><td>)</td>
+          <td class="paramname"><em>name</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">string const&#160;</td>
+          <td class="paramname"><em>surveyPath</em> = <code>&quot;&quot;</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">string const&#160;</td>
+          <td class="paramname"><em>assetsPath</em> = <code>&quot;&quot;</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -186,6 +202,7 @@ Static Private Attributes</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">name</td><td>Name of the demo to be run </td></tr>
+    <tr><td class="paramname">surveyPath</td><td>Path to the survey to be used by the demo, if any. When there is no survey, an empty string should be passed </td></tr>
   </table>
   </dd>
 </dl>

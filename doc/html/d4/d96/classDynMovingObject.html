@@ -90,13 +90,15 @@ $(document).ready(function(){initNavTree('d4/d96/classDynMovingObject.html','../
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="#pro-attribs">Protected Attributes</a> &#124;
+<a href="#pri-methods">Private Member Functions</a> &#124;
+<a href="#friends">Friends</a> &#124;
 <a href="../../d5/d49/classDynMovingObject-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">DynMovingObject Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>Implementation of a dynamic object which supports rigid motion.  
+<p>Implementation of a dynamic object which supports dynamic motions (extended rigid motions)  
  <a href="../../d4/d96/classDynMovingObject.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="../../df/d65/DynMovingObject_8h_source.html">DynMovingObject.h</a>&gt;</code></p>
@@ -105,7 +107,9 @@ Inheritance diagram for DynMovingObject:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../d6/d9d/classDynMovingObject__inherit__graph.png" border="0" usemap="#DynMovingObject_inherit__map" alt="Inheritance graph"/></div>
 <map name="DynMovingObject_inherit__map" id="DynMovingObject_inherit__map">
-<area shape="rect" id="node2" href="../../d5/d6a/classDynObject.html" title="Dynamic object base implementation. " alt="" coords="27,5,111,32"/>
+<area shape="rect" id="node4" href="../../d4/d48/classDynSequentiableMovingObject.html" title="Implementation of a dynamic object which supports sequentiable dynamic motions. " alt="" coords="5,229,207,256"/>
+<area shape="rect" id="node2" href="../../d5/d6a/classDynObject.html" title="Dynamic object base implementation. " alt="" coords="64,80,148,107"/>
+<area shape="rect" id="node3" href="../../dd/dc4/classScenePart.html" title="Class representing a scene part. " alt="" coords="65,5,147,32"/>
 </map>
 <center><span class="legend">[<a target="top" href="../../graph_legend.html">legend</a>]</span></center></div>
 <div class="dynheader">
@@ -113,8 +117,13 @@ Collaboration diagram for DynMovingObject:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../d9/dd8/classDynMovingObject__coll__graph.png" border="0" usemap="#DynMovingObject_coll__map" alt="Collaboration graph"/></div>
 <map name="DynMovingObject_coll__map" id="DynMovingObject_coll__map">
-<area shape="rect" id="node2" href="../../d5/d6a/classDynObject.html" title="Dynamic object base implementation. " alt="" coords="93,102,177,129"/>
-<area shape="rect" id="node5" href="../../d2/da8/classrigidmotion_1_1RigidMotionEngine.html" title="Class to handle operations with rigid motions. " alt="" coords="201,95,364,136"/>
+<area shape="rect" id="node2" href="../../d5/d6a/classDynObject.html" title="Dynamic object base implementation. " alt="" coords="61,235,145,262"/>
+<area shape="rect" id="node3" href="../../dd/dc4/classScenePart.html" title="Class representing a scene part. " alt="" coords="62,131,145,158"/>
+<area shape="rect" id="node4" href="../../d5/dcb/classRotation.html" title="Rotation" alt="" coords="5,13,76,39"/>
+<area shape="rect" id="node7" href="../../d2/d0a/classDynMotionEngine.html" title="Adapter which wraps a rigid motion engine to make it fit the dynamic Helios context. " alt="" coords="333,235,458,262"/>
+<area shape="rect" id="node8" href="../../dc/df6/classrigidmotion_1_1RigidMotionR3Factory.html" title="Class providing building methods for rigid motions in . " alt="" coords="281,124,443,165"/>
+<area shape="rect" id="node9" href="../../dc/d00/classrigidmotion_1_1RigidMotionFactory.html" title="Class that must be extended by any class which provides factory methods for rigid motions..." alt="" coords="281,5,443,47"/>
+<area shape="rect" id="node10" href="../../d2/da8/classrigidmotion_1_1RigidMotionEngine.html" title="Class to handle operations with rigid motions. " alt="" coords="467,124,630,165"/>
 </map>
 <center><span class="legend">[<a target="top" href="../../graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -122,85 +131,78 @@ Collaboration diagram for DynMovingObject:</div>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a58becbec4ca0a29101d42ec954a021b3"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/d96/classDynMovingObject.html#a58becbec4ca0a29101d42ec954a021b3">DynMovingObject</a> ()=default</td></tr>
 <tr class="separator:a58becbec4ca0a29101d42ec954a021b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad85d8d5446203c6b242680e6cef89ade"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/d96/classDynMovingObject.html#ad85d8d5446203c6b242680e6cef89ade">DynMovingObject</a> (string const <a class="el" href="../../d5/d6a/classDynObject.html#a59ad5ac3292b10132419c07d4297206e">id</a>)</td></tr>
+<tr class="memitem:ab69b10137e9311565e8aa1442d0d6e1a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/d96/classDynMovingObject.html#ab69b10137e9311565e8aa1442d0d6e1a">DynMovingObject</a> (<a class="el" href="../../dd/dc4/classScenePart.html">ScenePart</a> const &amp;sp)</td></tr>
+<tr class="separator:ab69b10137e9311565e8aa1442d0d6e1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad85d8d5446203c6b242680e6cef89ade"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/d96/classDynMovingObject.html#ad85d8d5446203c6b242680e6cef89ade">DynMovingObject</a> (string const id)</td></tr>
 <tr class="separator:ad85d8d5446203c6b242680e6cef89ade"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a187f21947faec9d522df97ddc481f1a3"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/d96/classDynMovingObject.html#a187f21947faec9d522df97ddc481f1a3">DynMovingObject</a> (vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *&gt; const &amp;<a class="el" href="../../d5/d6a/classDynObject.html#a40b56284c87d4779f81d51032ab45b33">primitives</a>)</td></tr>
+<tr class="memitem:a187f21947faec9d522df97ddc481f1a3"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/d96/classDynMovingObject.html#a187f21947faec9d522df97ddc481f1a3">DynMovingObject</a> (vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *&gt; const &amp;primitives)</td></tr>
 <tr class="separator:a187f21947faec9d522df97ddc481f1a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a894ff48d42b78b9932d5abb5e30ffc46"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/d96/classDynMovingObject.html#a894ff48d42b78b9932d5abb5e30ffc46">DynMovingObject</a> (string const <a class="el" href="../../d5/d6a/classDynObject.html#a59ad5ac3292b10132419c07d4297206e">id</a>, vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *&gt; const &amp;<a class="el" href="../../d5/d6a/classDynObject.html#a40b56284c87d4779f81d51032ab45b33">primitives</a>)</td></tr>
+<tr class="memitem:a894ff48d42b78b9932d5abb5e30ffc46"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/d96/classDynMovingObject.html#a894ff48d42b78b9932d5abb5e30ffc46">DynMovingObject</a> (string const id, vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *&gt; const &amp;primitives)</td></tr>
 <tr class="separator:a894ff48d42b78b9932d5abb5e30ffc46"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a813d8a76e64b24b059959998520325ff"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/d96/classDynMovingObject.html#a813d8a76e64b24b059959998520325ff">doStep</a> () override</td></tr>
-<tr class="memdesc:a813d8a76e64b24b059959998520325ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Rigid motion behavior implementation.  <a href="#a813d8a76e64b24b059959998520325ff">More...</a><br /></td></tr>
+<tr class="memdesc:a813d8a76e64b24b059959998520325ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dynamic motion behavior implementation.  <a href="#a813d8a76e64b24b059959998520325ff">More...</a><br /></td></tr>
 <tr class="separator:a813d8a76e64b24b059959998520325ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a359e92db6427e6fd63603ad4f0f8a3d0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/d96/classDynMovingObject.html#a359e92db6427e6fd63603ad4f0f8a3d0">pushPositionMotion</a> (shared_ptr&lt; <a class="el" href="../../d7/d84/classrigidmotion_1_1RigidMotion.html">RigidMotion</a> &gt; const rm)</td></tr>
-<tr class="memdesc:a359e92db6427e6fd63603ad4f0f8a3d0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Push given rigid motion to the position motion queue.  <a href="#a359e92db6427e6fd63603ad4f0f8a3d0">More...</a><br /></td></tr>
-<tr class="separator:a359e92db6427e6fd63603ad4f0f8a3d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1a66715cfd307f0fa56b6948ab61353f"><td class="memItemLeft" align="right" valign="top">shared_ptr&lt; <a class="el" href="../../d7/d84/classrigidmotion_1_1RigidMotion.html">RigidMotion</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/d96/classDynMovingObject.html#a1a66715cfd307f0fa56b6948ab61353f">nextPositionMotion</a> ()</td></tr>
-<tr class="memdesc:a1a66715cfd307f0fa56b6948ab61353f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve the first in rigid motion in the position motion queue.  <a href="#a1a66715cfd307f0fa56b6948ab61353f">More...</a><br /></td></tr>
-<tr class="separator:a1a66715cfd307f0fa56b6948ab61353f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaeec8774c4dd8a8f37adaf0ae9dd3d70"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/d96/classDynMovingObject.html#aaeec8774c4dd8a8f37adaf0ae9dd3d70">pushPositionMotion</a> (shared_ptr&lt; <a class="el" href="../../d6/d4f/classDynMotion.html">DynMotion</a> &gt; const dm)</td></tr>
+<tr class="memdesc:aaeec8774c4dd8a8f37adaf0ae9dd3d70"><td class="mdescLeft">&#160;</td><td class="mdescRight">Push given dynamic motion to the position motion queue.  <a href="#aaeec8774c4dd8a8f37adaf0ae9dd3d70">More...</a><br /></td></tr>
+<tr class="separator:aaeec8774c4dd8a8f37adaf0ae9dd3d70"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a23ff3e5058ef2aee45d59975d85f723e"><td class="memItemLeft" align="right" valign="top">shared_ptr&lt; <a class="el" href="../../d6/d4f/classDynMotion.html">DynMotion</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/d96/classDynMovingObject.html#a23ff3e5058ef2aee45d59975d85f723e">nextPositionMotion</a> ()</td></tr>
+<tr class="memdesc:a23ff3e5058ef2aee45d59975d85f723e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve the first dynamic motion in the position motion queue.  <a href="#a23ff3e5058ef2aee45d59975d85f723e">More...</a><br /></td></tr>
+<tr class="separator:a23ff3e5058ef2aee45d59975d85f723e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6b8f56370703b93fb839c8dc25b11771"><td class="memItemLeft" align="right" valign="top"><a id="a6b8f56370703b93fb839c8dc25b11771"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/d96/classDynMovingObject.html#a6b8f56370703b93fb839c8dc25b11771">clearPositionMotionQueue</a> ()</td></tr>
-<tr class="memdesc:a6b8f56370703b93fb839c8dc25b11771"><td class="mdescLeft">&#160;</td><td class="mdescRight">Remove all rigid motions from the position motion queue. <br /></td></tr>
+<tr class="memdesc:a6b8f56370703b93fb839c8dc25b11771"><td class="mdescLeft">&#160;</td><td class="mdescRight">Remove all dynamic motions from the position motion queue. <br /></td></tr>
 <tr class="separator:a6b8f56370703b93fb839c8dc25b11771"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad019ddfddb3f4dfafacb91f4021419a6"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/d96/classDynMovingObject.html#ad019ddfddb3f4dfafacb91f4021419a6">positionMotionQueueHasNext</a> () const</td></tr>
-<tr class="memdesc:ad019ddfddb3f4dfafacb91f4021419a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if position motion queue has a next rigid motion or not.  <a href="#ad019ddfddb3f4dfafacb91f4021419a6">More...</a><br /></td></tr>
+<tr class="memdesc:ad019ddfddb3f4dfafacb91f4021419a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if position motion queue has a next dynamic motion or not.  <a href="#ad019ddfddb3f4dfafacb91f4021419a6">More...</a><br /></td></tr>
 <tr class="separator:ad019ddfddb3f4dfafacb91f4021419a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a435223a732103b615dcf523206768523"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/d96/classDynMovingObject.html#a435223a732103b615dcf523206768523">pushNormalMotion</a> (shared_ptr&lt; <a class="el" href="../../d7/d84/classrigidmotion_1_1RigidMotion.html">RigidMotion</a> &gt; const rm)</td></tr>
-<tr class="memdesc:a435223a732103b615dcf523206768523"><td class="mdescLeft">&#160;</td><td class="mdescRight">Push given rigid motion to the normal motion queue.  <a href="#a435223a732103b615dcf523206768523">More...</a><br /></td></tr>
-<tr class="separator:a435223a732103b615dcf523206768523"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a17ca754fd758ae9100c826a49c55e45c"><td class="memItemLeft" align="right" valign="top">shared_ptr&lt; <a class="el" href="../../d7/d84/classrigidmotion_1_1RigidMotion.html">RigidMotion</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/d96/classDynMovingObject.html#a17ca754fd758ae9100c826a49c55e45c">nextNormalMotion</a> ()</td></tr>
-<tr class="memdesc:a17ca754fd758ae9100c826a49c55e45c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve the first rigid motion in the normal motion queue.  <a href="#a17ca754fd758ae9100c826a49c55e45c">More...</a><br /></td></tr>
-<tr class="separator:a17ca754fd758ae9100c826a49c55e45c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6554aca7eb64bfd55254c456fe557345"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/d96/classDynMovingObject.html#a6554aca7eb64bfd55254c456fe557345">pushNormalMotion</a> (shared_ptr&lt; <a class="el" href="../../d6/d4f/classDynMotion.html">DynMotion</a> &gt; const dm)</td></tr>
+<tr class="memdesc:a6554aca7eb64bfd55254c456fe557345"><td class="mdescLeft">&#160;</td><td class="mdescRight">Push given dynamic motion to the normal motion queue.  <a href="#a6554aca7eb64bfd55254c456fe557345">More...</a><br /></td></tr>
+<tr class="separator:a6554aca7eb64bfd55254c456fe557345"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5eeb7fdf653b0e74ff683d1ca6ac47a4"><td class="memItemLeft" align="right" valign="top">shared_ptr&lt; <a class="el" href="../../d6/d4f/classDynMotion.html">DynMotion</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/d96/classDynMovingObject.html#a5eeb7fdf653b0e74ff683d1ca6ac47a4">nextNormalMotion</a> ()</td></tr>
+<tr class="memdesc:a5eeb7fdf653b0e74ff683d1ca6ac47a4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve the first dynamic motion in the normal motion queue.  <a href="#a5eeb7fdf653b0e74ff683d1ca6ac47a4">More...</a><br /></td></tr>
+<tr class="separator:a5eeb7fdf653b0e74ff683d1ca6ac47a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6961083f013274c591d2e861b9b4e467"><td class="memItemLeft" align="right" valign="top"><a id="a6961083f013274c591d2e861b9b4e467"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/d96/classDynMovingObject.html#a6961083f013274c591d2e861b9b4e467">clearNormalMotionQueue</a> ()</td></tr>
-<tr class="memdesc:a6961083f013274c591d2e861b9b4e467"><td class="mdescLeft">&#160;</td><td class="mdescRight">Remove all rigid motions from the normal motion queue. <br /></td></tr>
+<tr class="memdesc:a6961083f013274c591d2e861b9b4e467"><td class="mdescLeft">&#160;</td><td class="mdescRight">Remove all dynamic motions from the normal motion queue. <br /></td></tr>
 <tr class="separator:a6961083f013274c591d2e861b9b4e467"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a10bab66c89b9b5ce4a71756eac4c1225"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/d96/classDynMovingObject.html#a10bab66c89b9b5ce4a71756eac4c1225">normalMotionQueueHasNext</a> () const</td></tr>
-<tr class="memdesc:a10bab66c89b9b5ce4a71756eac4c1225"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if normal motion queue has a next rigid motion or not.  <a href="#a10bab66c89b9b5ce4a71756eac4c1225">More...</a><br /></td></tr>
+<tr class="memdesc:a10bab66c89b9b5ce4a71756eac4c1225"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if normal motion queue has a next dynamic motion or not.  <a href="#a10bab66c89b9b5ce4a71756eac4c1225">More...</a><br /></td></tr>
 <tr class="separator:a10bab66c89b9b5ce4a71756eac4c1225"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classDynObject"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classDynObject')"><img src="../../closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="../../d5/d6a/classDynObject.html">DynObject</a></td></tr>
 <tr class="memitem:a38166f3337e4168cef789e4c8c085689 inherit pub_methods_classDynObject"><td class="memItemLeft" align="right" valign="top"><a id="a38166f3337e4168cef789e4c8c085689"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d6a/classDynObject.html#a38166f3337e4168cef789e4c8c085689">DynObject</a> ()=default</td></tr>
 <tr class="memdesc:a38166f3337e4168cef789e4c8c085689 inherit pub_methods_classDynObject"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dynamic object default constructor. <br /></td></tr>
 <tr class="separator:a38166f3337e4168cef789e4c8c085689 inherit pub_methods_classDynObject"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaa6a46899ccee156cd1b0bec05dc818f inherit pub_methods_classDynObject"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d6a/classDynObject.html#aaa6a46899ccee156cd1b0bec05dc818f">DynObject</a> (string const <a class="el" href="../../d5/d6a/classDynObject.html#a59ad5ac3292b10132419c07d4297206e">id</a>)</td></tr>
+<tr class="memitem:af9f9000f7470df8115c62b467d3b6b58 inherit pub_methods_classDynObject"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d6a/classDynObject.html#af9f9000f7470df8115c62b467d3b6b58">DynObject</a> (<a class="el" href="../../dd/dc4/classScenePart.html">ScenePart</a> const &amp;sp)</td></tr>
+<tr class="memdesc:af9f9000f7470df8115c62b467d3b6b58 inherit pub_methods_classDynObject"><td class="mdescLeft">&#160;</td><td class="mdescRight">Build the dynamic object from given scene part.  <a href="../../d5/d6a/classDynObject.html#af9f9000f7470df8115c62b467d3b6b58">More...</a><br /></td></tr>
+<tr class="separator:af9f9000f7470df8115c62b467d3b6b58 inherit pub_methods_classDynObject"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaa6a46899ccee156cd1b0bec05dc818f inherit pub_methods_classDynObject"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d6a/classDynObject.html#aaa6a46899ccee156cd1b0bec05dc818f">DynObject</a> (string const id)</td></tr>
 <tr class="memdesc:aaa6a46899ccee156cd1b0bec05dc818f inherit pub_methods_classDynObject"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dynamic object constructor with id as argument.  <a href="../../d5/d6a/classDynObject.html#aaa6a46899ccee156cd1b0bec05dc818f">More...</a><br /></td></tr>
 <tr class="separator:aaa6a46899ccee156cd1b0bec05dc818f inherit pub_methods_classDynObject"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a45090e1e59a3ab35dc5b09f8b54fa6d2 inherit pub_methods_classDynObject"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d6a/classDynObject.html#a45090e1e59a3ab35dc5b09f8b54fa6d2">DynObject</a> (vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *&gt; const &amp;<a class="el" href="../../d5/d6a/classDynObject.html#a40b56284c87d4779f81d51032ab45b33">primitives</a>)</td></tr>
+<tr class="memitem:a45090e1e59a3ab35dc5b09f8b54fa6d2 inherit pub_methods_classDynObject"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d6a/classDynObject.html#a45090e1e59a3ab35dc5b09f8b54fa6d2">DynObject</a> (vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *&gt; const &amp;primitives)</td></tr>
 <tr class="memdesc:a45090e1e59a3ab35dc5b09f8b54fa6d2 inherit pub_methods_classDynObject"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dynamic object constructor with primitives as argument.  <a href="../../d5/d6a/classDynObject.html#a45090e1e59a3ab35dc5b09f8b54fa6d2">More...</a><br /></td></tr>
 <tr class="separator:a45090e1e59a3ab35dc5b09f8b54fa6d2 inherit pub_methods_classDynObject"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac0f8e569c2c379fe43e0442a296e7036 inherit pub_methods_classDynObject"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d6a/classDynObject.html#ac0f8e569c2c379fe43e0442a296e7036">DynObject</a> (string const <a class="el" href="../../d5/d6a/classDynObject.html#a59ad5ac3292b10132419c07d4297206e">id</a>, vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *&gt; const &amp;<a class="el" href="../../d5/d6a/classDynObject.html#a40b56284c87d4779f81d51032ab45b33">primitives</a>)</td></tr>
+<tr class="memitem:ac0f8e569c2c379fe43e0442a296e7036 inherit pub_methods_classDynObject"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d6a/classDynObject.html#ac0f8e569c2c379fe43e0442a296e7036">DynObject</a> (string const id, vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *&gt; const &amp;primitives)</td></tr>
 <tr class="memdesc:ac0f8e569c2c379fe43e0442a296e7036 inherit pub_methods_classDynObject"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dynamic object constructor with id and primitives as arguments.  <a href="../../d5/d6a/classDynObject.html#ac0f8e569c2c379fe43e0442a296e7036">More...</a><br /></td></tr>
 <tr class="separator:ac0f8e569c2c379fe43e0442a296e7036 inherit pub_methods_classDynObject"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad3708a4115b39e1936c4a96c622faea7 inherit pub_methods_classDynObject"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d6a/classDynObject.html#ad3708a4115b39e1936c4a96c622faea7">operator()</a> ()</td></tr>
 <tr class="memdesc:ad3708a4115b39e1936c4a96c622faea7 inherit pub_methods_classDynObject"><td class="mdescLeft">&#160;</td><td class="mdescRight">Alias for <a class="el" href="../../d5/d6a/classDynObject.html#ae3308d5d877a37e6880749925e6e3d8c" title="Any dynamic object concrete implementation must override this method providing dynamic behavior to th...">DynObject::doStep</a> method so it can be used as a functor.  <a href="../../d5/d6a/classDynObject.html#ad3708a4115b39e1936c4a96c622faea7">More...</a><br /></td></tr>
 <tr class="separator:ad3708a4115b39e1936c4a96c622faea7 inherit pub_methods_classDynObject"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a87a7226168af1b3e91daf2556be1b799 inherit pub_methods_classDynObject"><td class="memItemLeft" align="right" valign="top">vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> * &gt; const  &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d6a/classDynObject.html#a87a7226168af1b3e91daf2556be1b799">getPrimitives</a> () const</td></tr>
-<tr class="memdesc:a87a7226168af1b3e91daf2556be1b799 inherit pub_methods_classDynObject"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain the primitives of the dynamic object.  <a href="../../d5/d6a/classDynObject.html#a87a7226168af1b3e91daf2556be1b799">More...</a><br /></td></tr>
-<tr class="separator:a87a7226168af1b3e91daf2556be1b799 inherit pub_methods_classDynObject"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8f0f874383b71d65fd1db144569101b7 inherit pub_methods_classDynObject"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d6a/classDynObject.html#a8f0f874383b71d65fd1db144569101b7">setPrimitives</a> (vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *&gt; const &amp;<a class="el" href="../../d5/d6a/classDynObject.html#a40b56284c87d4779f81d51032ab45b33">primitives</a>)</td></tr>
-<tr class="memdesc:a8f0f874383b71d65fd1db144569101b7 inherit pub_methods_classDynObject"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the primitives of the dynamic object.  <a href="../../d5/d6a/classDynObject.html#a8f0f874383b71d65fd1db144569101b7">More...</a><br /></td></tr>
-<tr class="separator:a8f0f874383b71d65fd1db144569101b7 inherit pub_methods_classDynObject"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae6746fa71912daff8592677848b21653 inherit pub_methods_classDynObject"><td class="memItemLeft" align="right" valign="top">string const  &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d6a/classDynObject.html#ae6746fa71912daff8592677848b21653">getId</a> () const</td></tr>
-<tr class="memdesc:ae6746fa71912daff8592677848b21653 inherit pub_methods_classDynObject"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain the ID of the dynamic object.  <a href="../../d5/d6a/classDynObject.html#ae6746fa71912daff8592677848b21653">More...</a><br /></td></tr>
-<tr class="separator:ae6746fa71912daff8592677848b21653 inherit pub_methods_classDynObject"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afca39e237951b141fe69a9e3fa5eced0 inherit pub_methods_classDynObject"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d6a/classDynObject.html#afca39e237951b141fe69a9e3fa5eced0">setId</a> (const string &amp;<a class="el" href="../../d5/d6a/classDynObject.html#a59ad5ac3292b10132419c07d4297206e">id</a>)</td></tr>
-<tr class="memdesc:afca39e237951b141fe69a9e3fa5eced0 inherit pub_methods_classDynObject"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the ID of the dynamic object.  <a href="../../d5/d6a/classDynObject.html#afca39e237951b141fe69a9e3fa5eced0">More...</a><br /></td></tr>
-<tr class="separator:afca39e237951b141fe69a9e3fa5eced0 inherit pub_methods_classDynObject"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa74992b76cb5193f1b5d301c5e79da15 inherit pub_methods_classDynObject"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d6a/classDynObject.html#aa74992b76cb5193f1b5d301c5e79da15">countVertices</a> ()</td></tr>
-<tr class="memdesc:aa74992b76cb5193f1b5d301c5e79da15 inherit pub_methods_classDynObject"><td class="mdescLeft">&#160;</td><td class="mdescRight">Count how many vertices there are defining the dynamic object.  <a href="../../d5/d6a/classDynObject.html#aa74992b76cb5193f1b5d301c5e79da15">More...</a><br /></td></tr>
-<tr class="separator:aa74992b76cb5193f1b5d301c5e79da15 inherit pub_methods_classDynObject"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0831fcbb5ee555d5ba3ef32aa7be6200 inherit pub_methods_classDynObject"><td class="memItemLeft" align="right" valign="top">arma::mat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d6a/classDynObject.html#a0831fcbb5ee555d5ba3ef32aa7be6200">positionMatrixFromPrimitives</a> ()</td></tr>
-<tr class="memdesc:a0831fcbb5ee555d5ba3ef32aa7be6200 inherit pub_methods_classDynObject"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain the position matrix for primitives defining the dynamic object.  <a href="../../d5/d6a/classDynObject.html#a0831fcbb5ee555d5ba3ef32aa7be6200">More...</a><br /></td></tr>
-<tr class="separator:a0831fcbb5ee555d5ba3ef32aa7be6200 inherit pub_methods_classDynObject"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0a4cdf251bb2089f5315d3497e1c49ba inherit pub_methods_classDynObject"><td class="memItemLeft" align="right" valign="top">arma::mat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d6a/classDynObject.html#a0a4cdf251bb2089f5315d3497e1c49ba">positionMatrixFromPrimitives</a> (size_t const m)</td></tr>
-<tr class="memdesc:a0a4cdf251bb2089f5315d3497e1c49ba inherit pub_methods_classDynObject"><td class="mdescLeft">&#160;</td><td class="mdescRight">Like <a class="el" href="../../d5/d6a/classDynObject.html#a0831fcbb5ee555d5ba3ef32aa7be6200" title="Obtain the position matrix for primitives defining the dynamic object. ">DynObject::positionMatrixFromPrimitives</a> but receiving the total number of vertices beforehand.  <a href="../../d5/d6a/classDynObject.html#a0a4cdf251bb2089f5315d3497e1c49ba">More...</a><br /></td></tr>
-<tr class="separator:a0a4cdf251bb2089f5315d3497e1c49ba inherit pub_methods_classDynObject"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae1dcb51388910e45473dac03705a26ee inherit pub_methods_classDynObject"><td class="memItemLeft" align="right" valign="top">arma::mat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d6a/classDynObject.html#ae1dcb51388910e45473dac03705a26ee">normalMatrixFromPrimitives</a> ()</td></tr>
-<tr class="memdesc:ae1dcb51388910e45473dac03705a26ee inherit pub_methods_classDynObject"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain the normal matrix for primitives defining the dynamic object.  <a href="../../d5/d6a/classDynObject.html#ae1dcb51388910e45473dac03705a26ee">More...</a><br /></td></tr>
-<tr class="separator:ae1dcb51388910e45473dac03705a26ee inherit pub_methods_classDynObject"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaf1f8fb52bcaaeb9a6745b44ba530212 inherit pub_methods_classDynObject"><td class="memItemLeft" align="right" valign="top">arma::mat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d6a/classDynObject.html#aaf1f8fb52bcaaeb9a6745b44ba530212">normalMatrixFromPrimitives</a> (size_t const m)</td></tr>
-<tr class="memdesc:aaf1f8fb52bcaaeb9a6745b44ba530212 inherit pub_methods_classDynObject"><td class="mdescLeft">&#160;</td><td class="mdescRight">Like <a class="el" href="../../d5/d6a/classDynObject.html#ae1dcb51388910e45473dac03705a26ee" title="Obtain the normal matrix for primitives defining the dynamic object. ">DynObject::normalMatrixFromPrimitives</a> but receiving the total number of vertices beforehand.  <a href="../../d5/d6a/classDynObject.html#aaf1f8fb52bcaaeb9a6745b44ba530212">More...</a><br /></td></tr>
-<tr class="separator:aaf1f8fb52bcaaeb9a6745b44ba530212 inherit pub_methods_classDynObject"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a05b39e06de27e49717a1f30a18f43b45 inherit pub_methods_classDynObject"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d6a/classDynObject.html#a05b39e06de27e49717a1f30a18f43b45">countVertices</a> () const</td></tr>
+<tr class="memdesc:a05b39e06de27e49717a1f30a18f43b45 inherit pub_methods_classDynObject"><td class="mdescLeft">&#160;</td><td class="mdescRight">Count how many vertices there are defining the dynamic object.  <a href="../../d5/d6a/classDynObject.html#a05b39e06de27e49717a1f30a18f43b45">More...</a><br /></td></tr>
+<tr class="separator:a05b39e06de27e49717a1f30a18f43b45 inherit pub_methods_classDynObject"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6924484df2f3819a9498459e5c487e67 inherit pub_methods_classDynObject"><td class="memItemLeft" align="right" valign="top">arma::mat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d6a/classDynObject.html#a6924484df2f3819a9498459e5c487e67">positionMatrixFromPrimitives</a> () const</td></tr>
+<tr class="memdesc:a6924484df2f3819a9498459e5c487e67 inherit pub_methods_classDynObject"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain the position matrix for primitives defining the dynamic object.  <a href="../../d5/d6a/classDynObject.html#a6924484df2f3819a9498459e5c487e67">More...</a><br /></td></tr>
+<tr class="separator:a6924484df2f3819a9498459e5c487e67 inherit pub_methods_classDynObject"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4f20442cf4bec92b3416590fd34084ce inherit pub_methods_classDynObject"><td class="memItemLeft" align="right" valign="top">arma::mat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d6a/classDynObject.html#a4f20442cf4bec92b3416590fd34084ce">positionMatrixFromPrimitives</a> (size_t const m) const</td></tr>
+<tr class="memdesc:a4f20442cf4bec92b3416590fd34084ce inherit pub_methods_classDynObject"><td class="mdescLeft">&#160;</td><td class="mdescRight">Like <a class="el" href="../../d5/d6a/classDynObject.html#a6924484df2f3819a9498459e5c487e67" title="Obtain the position matrix for primitives defining the dynamic object. ">DynObject::positionMatrixFromPrimitives</a> but receiving the total number of vertices beforehand.  <a href="../../d5/d6a/classDynObject.html#a4f20442cf4bec92b3416590fd34084ce">More...</a><br /></td></tr>
+<tr class="separator:a4f20442cf4bec92b3416590fd34084ce inherit pub_methods_classDynObject"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2d7dcbfdcd30b263b2a62cf05fec23e9 inherit pub_methods_classDynObject"><td class="memItemLeft" align="right" valign="top">arma::mat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d6a/classDynObject.html#a2d7dcbfdcd30b263b2a62cf05fec23e9">normalMatrixFromPrimitives</a> () const</td></tr>
+<tr class="memdesc:a2d7dcbfdcd30b263b2a62cf05fec23e9 inherit pub_methods_classDynObject"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain the normal matrix for primitives defining the dynamic object.  <a href="../../d5/d6a/classDynObject.html#a2d7dcbfdcd30b263b2a62cf05fec23e9">More...</a><br /></td></tr>
+<tr class="separator:a2d7dcbfdcd30b263b2a62cf05fec23e9 inherit pub_methods_classDynObject"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a70d12dee23f6b1b04b3d21faccbd2254 inherit pub_methods_classDynObject"><td class="memItemLeft" align="right" valign="top">arma::mat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d6a/classDynObject.html#a70d12dee23f6b1b04b3d21faccbd2254">normalMatrixFromPrimitives</a> (size_t const m) const</td></tr>
+<tr class="memdesc:a70d12dee23f6b1b04b3d21faccbd2254 inherit pub_methods_classDynObject"><td class="mdescLeft">&#160;</td><td class="mdescRight">Like <a class="el" href="../../d5/d6a/classDynObject.html#a2d7dcbfdcd30b263b2a62cf05fec23e9" title="Obtain the normal matrix for primitives defining the dynamic object. ">DynObject::normalMatrixFromPrimitives</a> but receiving the total number of vertices beforehand.  <a href="../../d5/d6a/classDynObject.html#a70d12dee23f6b1b04b3d21faccbd2254">More...</a><br /></td></tr>
+<tr class="separator:a70d12dee23f6b1b04b3d21faccbd2254 inherit pub_methods_classDynObject"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa4e769bc59d0fa9444523745662c7be1 inherit pub_methods_classDynObject"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d6a/classDynObject.html#aa4e769bc59d0fa9444523745662c7be1">updatePrimitivesPositionFromMatrix</a> (arma::mat const &amp;X)</td></tr>
 <tr class="memdesc:aa4e769bc59d0fa9444523745662c7be1 inherit pub_methods_classDynObject"><td class="mdescLeft">&#160;</td><td class="mdescRight">Update the position of each primitive with given matrix.  <a href="../../d5/d6a/classDynObject.html#aa4e769bc59d0fa9444523745662c7be1">More...</a><br /></td></tr>
 <tr class="separator:aa4e769bc59d0fa9444523745662c7be1 inherit pub_methods_classDynObject"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -213,19 +215,68 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../.
 <tr class="memitem:a85885c7da0fdb84f80785ae91ad325e3 inherit pub_methods_classDynObject"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d6a/classDynObject.html#a85885c7da0fdb84f80785ae91ad325e3">updatePrimitivesNormalFromMatrix</a> (size_t const m, arma::mat const &amp;X)</td></tr>
 <tr class="memdesc:a85885c7da0fdb84f80785ae91ad325e3 inherit pub_methods_classDynObject"><td class="mdescLeft">&#160;</td><td class="mdescRight">Like <a class="el" href="../../d5/d6a/classDynObject.html#a0000b9944193085372ffd75212009513" title="Update the normal of each primitive with given matrix. ">updatePrimitivesNormalFromMatrix(arma::mat const &amp;)</a> but receiving the total number of vertices beforehand.  <a href="../../d5/d6a/classDynObject.html#a85885c7da0fdb84f80785ae91ad325e3">More...</a><br /></td></tr>
 <tr class="separator:a85885c7da0fdb84f80785ae91ad325e3 inherit pub_methods_classDynObject"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_classScenePart"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classScenePart')"><img src="../../closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="../../dd/dc4/classScenePart.html">ScenePart</a></td></tr>
+<tr class="memitem:ad08313c2aed966def11c0f507a116666 inherit pub_methods_classScenePart"><td class="memItemLeft" align="right" valign="top"><a id="ad08313c2aed966def11c0f507a116666"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/dc4/classScenePart.html#ad08313c2aed966def11c0f507a116666">ScenePart</a> ()=default</td></tr>
+<tr class="memdesc:ad08313c2aed966def11c0f507a116666 inherit pub_methods_classScenePart"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor for a scene part. <br /></td></tr>
+<tr class="separator:ad08313c2aed966def11c0f507a116666 inherit pub_methods_classScenePart"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a573c9469b4865af254d50200a7d7972b inherit pub_methods_classScenePart"><td class="memItemLeft" align="right" valign="top"><a id="a573c9469b4865af254d50200a7d7972b"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>ScenePart</b> (<a class="el" href="../../dd/dc4/classScenePart.html">ScenePart</a> const &amp;sp)</td></tr>
+<tr class="separator:a573c9469b4865af254d50200a7d7972b inherit pub_methods_classScenePart"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0e4fe89589057061c7917b1476d268ee inherit pub_methods_classScenePart"><td class="memItemLeft" align="right" valign="top"><a id="a0e4fe89589057061c7917b1476d268ee"></a>
+<a class="el" href="../../dd/dc4/classScenePart.html">ScenePart</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/dc4/classScenePart.html#a0e4fe89589057061c7917b1476d268ee">operator=</a> (const <a class="el" href="../../dd/dc4/classScenePart.html">ScenePart</a> &amp;rhs)</td></tr>
+<tr class="memdesc:a0e4fe89589057061c7917b1476d268ee inherit pub_methods_classScenePart"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy assigment operator. <br /></td></tr>
+<tr class="separator:a0e4fe89589057061c7917b1476d268ee inherit pub_methods_classScenePart"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad77755e3d5bf661ef5a69ca848de833d inherit pub_methods_classScenePart"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/dc4/classScenePart.html#ad77755e3d5bf661ef5a69ca848de833d">addObj</a> (<a class="el" href="../../d0/d92/classWavefrontObj.html">WavefrontObj</a> *obj)</td></tr>
+<tr class="memdesc:ad77755e3d5bf661ef5a69ca848de833d inherit pub_methods_classScenePart"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add the primitives of a <a class="el" href="../../d0/d92/classWavefrontObj.html" title="Class representing a .obj loaded file. ">WavefrontObj</a> to the <a class="el" href="../../dd/dc4/classScenePart.html" title="Class representing a scene part. ">ScenePart</a>.  <a href="../../dd/dc4/classScenePart.html#ad77755e3d5bf661ef5a69ca848de833d">More...</a><br /></td></tr>
+<tr class="separator:ad77755e3d5bf661ef5a69ca848de833d inherit pub_methods_classScenePart"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa17fabe6290c0c01de162457f758833a inherit pub_methods_classScenePart"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="../../d2/da0/classVertex.html">Vertex</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/dc4/classScenePart.html#aa17fabe6290c0c01de162457f758833a">getAllVertices</a> ()</td></tr>
+<tr class="memdesc:aa17fabe6290c0c01de162457f758833a inherit pub_methods_classScenePart"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain all vertices in the scene part.  <a href="../../dd/dc4/classScenePart.html#aa17fabe6290c0c01de162457f758833a">More...</a><br /></td></tr>
+<tr class="separator:aa17fabe6290c0c01de162457f758833a inherit pub_methods_classScenePart"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2b1855e4215d1170177caaa95e89dfbd inherit pub_methods_classScenePart"><td class="memItemLeft" align="right" valign="top"><a id="a2b1855e4215d1170177caaa95e89dfbd"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/dc4/classScenePart.html#a2b1855e4215d1170177caaa95e89dfbd">smoothVertexNormals</a> ()</td></tr>
+<tr class="memdesc:a2b1855e4215d1170177caaa95e89dfbd inherit pub_methods_classScenePart"><td class="mdescLeft">&#160;</td><td class="mdescRight">Smooth normals for each vertex computing the mean for each triangle using it. <br /></td></tr>
+<tr class="separator:a2b1855e4215d1170177caaa95e89dfbd inherit pub_methods_classScenePart"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a82912d3e287312e90e622b512a653df0 inherit pub_methods_classScenePart"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/dc4/classScenePart.html#a82912d3e287312e90e622b512a653df0">splitSubparts</a> ()</td></tr>
+<tr class="memdesc:a82912d3e287312e90e622b512a653df0 inherit pub_methods_classScenePart"><td class="mdescLeft">&#160;</td><td class="mdescRight">Split each subpart into a different scene part, with the first one corresponding to this scene part.  <a href="../../dd/dc4/classScenePart.html#a82912d3e287312e90e622b512a653df0">More...</a><br /></td></tr>
+<tr class="separator:a82912d3e287312e90e622b512a653df0 inherit pub_methods_classScenePart"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a33e9aa7e8940b053e4939e8aacc6fd12 inherit pub_methods_classScenePart"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/dc4/classScenePart.html#a33e9aa7e8940b053e4939e8aacc6fd12">computeCentroid</a> ()</td></tr>
+<tr class="memdesc:a33e9aa7e8940b053e4939e8aacc6fd12 inherit pub_methods_classScenePart"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the default centroid for the scene part as the midrange point.  <a href="../../dd/dc4/classScenePart.html#a33e9aa7e8940b053e4939e8aacc6fd12">More...</a><br /></td></tr>
+<tr class="separator:a33e9aa7e8940b053e4939e8aacc6fd12 inherit pub_methods_classScenePart"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aea61ea007cb84871117666b732f7ce64 inherit pub_methods_classScenePart"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> * &gt; const  &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/dc4/classScenePart.html#aea61ea007cb84871117666b732f7ce64">getPrimitives</a> () const</td></tr>
+<tr class="memdesc:aea61ea007cb84871117666b732f7ce64 inherit pub_methods_classScenePart"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain the primitives of the scene part.  <a href="../../dd/dc4/classScenePart.html#aea61ea007cb84871117666b732f7ce64">More...</a><br /></td></tr>
+<tr class="separator:aea61ea007cb84871117666b732f7ce64 inherit pub_methods_classScenePart"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa7c7eab0f6bec05bbf5d5cf3c0932c46 inherit pub_methods_classScenePart"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/dc4/classScenePart.html#aa7c7eab0f6bec05bbf5d5cf3c0932c46">setPrimitives</a> (std::vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *&gt; const &amp;primitives)</td></tr>
+<tr class="memdesc:aa7c7eab0f6bec05bbf5d5cf3c0932c46 inherit pub_methods_classScenePart"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the primitives of the scene part.  <a href="../../dd/dc4/classScenePart.html#aa7c7eab0f6bec05bbf5d5cf3c0932c46">More...</a><br /></td></tr>
+<tr class="separator:aa7c7eab0f6bec05bbf5d5cf3c0932c46 inherit pub_methods_classScenePart"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac08adff13b3dca6df68d1f6114367d99 inherit pub_methods_classScenePart"><td class="memItemLeft" align="right" valign="top">arma::colvec&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/dc4/classScenePart.html#ac08adff13b3dca6df68d1f6114367d99">getCentroid</a> () const</td></tr>
+<tr class="memdesc:ac08adff13b3dca6df68d1f6114367d99 inherit pub_methods_classScenePart"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain the centroid of the scene part.  <a href="../../dd/dc4/classScenePart.html#ac08adff13b3dca6df68d1f6114367d99">More...</a><br /></td></tr>
+<tr class="separator:ac08adff13b3dca6df68d1f6114367d99 inherit pub_methods_classScenePart"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a49668b1b63fac9583c9cd33b4190c532 inherit pub_methods_classScenePart"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/dc4/classScenePart.html#a49668b1b63fac9583c9cd33b4190c532">setCentroid</a> (arma::colvec <a class="el" href="../../dd/dc4/classScenePart.html#a7317e657208166855f00944ca4f019d9">centroid</a>)</td></tr>
+<tr class="memdesc:a49668b1b63fac9583c9cd33b4190c532 inherit pub_methods_classScenePart"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the centroid of the scene part.  <a href="../../dd/dc4/classScenePart.html#a49668b1b63fac9583c9cd33b4190c532">More...</a><br /></td></tr>
+<tr class="separator:a49668b1b63fac9583c9cd33b4190c532 inherit pub_methods_classScenePart"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9c2c908872ec82fde8a4885c0e68e933 inherit pub_methods_classScenePart"><td class="memItemLeft" align="right" valign="top">std::string const  &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/dc4/classScenePart.html#a9c2c908872ec82fde8a4885c0e68e933">getId</a> () const</td></tr>
+<tr class="memdesc:a9c2c908872ec82fde8a4885c0e68e933 inherit pub_methods_classScenePart"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain the ID of the scene part.  <a href="../../dd/dc4/classScenePart.html#a9c2c908872ec82fde8a4885c0e68e933">More...</a><br /></td></tr>
+<tr class="separator:a9c2c908872ec82fde8a4885c0e68e933 inherit pub_methods_classScenePart"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a015f2bac94d9e0b65cc7706073164b7a inherit pub_methods_classScenePart"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/dc4/classScenePart.html#a015f2bac94d9e0b65cc7706073164b7a">setId</a> (const std::string &amp;id)</td></tr>
+<tr class="memdesc:a015f2bac94d9e0b65cc7706073164b7a inherit pub_methods_classScenePart"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the ID of the scene part.  <a href="../../dd/dc4/classScenePart.html#a015f2bac94d9e0b65cc7706073164b7a">More...</a><br /></td></tr>
+<tr class="separator:a015f2bac94d9e0b65cc7706073164b7a inherit pub_methods_classScenePart"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
-<tr class="memitem:a6d75056fa85074fe05a5afd062b283e3"><td class="memItemLeft" align="right" valign="top">shared_ptr&lt; <a class="el" href="../../d7/d84/classrigidmotion_1_1RigidMotion.html">RigidMotion</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/d96/classDynMovingObject.html#a6d75056fa85074fe05a5afd062b283e3">_next</a> (deque&lt; shared_ptr&lt; <a class="el" href="../../d7/d84/classrigidmotion_1_1RigidMotion.html">RigidMotion</a> &gt;&gt; &amp;deck)</td></tr>
-<tr class="memdesc:a6d75056fa85074fe05a5afd062b283e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assist next operation over given queue.  <a href="#a6d75056fa85074fe05a5afd062b283e3">More...</a><br /></td></tr>
-<tr class="separator:a6d75056fa85074fe05a5afd062b283e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a60cbfaf415d5eeb970935db426a76ceb"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/d96/classDynMovingObject.html#a60cbfaf415d5eeb970935db426a76ceb">applyDynMotionQueue</a> (std::function&lt; arma::mat()&gt; <a class="el" href="../../d5/d6a/classDynObject.html#acf0f5821c7c6f8ab9d3c0548768c5014">matrixFromPrimitives</a>, std::function&lt; void(arma::mat const &amp;X)&gt; <a class="el" href="../../d5/d6a/classDynObject.html#ad2414442009a1d0e7dcfa160f02df9a7">matrixToPrimitives</a>, std::function&lt; bool()&gt; queueHasNext, std::function&lt; shared_ptr&lt; <a class="el" href="../../d6/d4f/classDynMotion.html">DynMotion</a> &gt;()&gt; queueNext)</td></tr>
+<tr class="memdesc:a60cbfaf415d5eeb970935db426a76ceb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Method to assist dynamic motions computation.  <a href="#a60cbfaf415d5eeb970935db426a76ceb">More...</a><br /></td></tr>
+<tr class="separator:a60cbfaf415d5eeb970935db426a76ceb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a597cd6fe5370d57d1e9edce3cf4af349"><td class="memItemLeft" align="right" valign="top">shared_ptr&lt; <a class="el" href="../../d6/d4f/classDynMotion.html">DynMotion</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/d96/classDynMovingObject.html#a597cd6fe5370d57d1e9edce3cf4af349">_next</a> (deque&lt; shared_ptr&lt; <a class="el" href="../../d6/d4f/classDynMotion.html">DynMotion</a> &gt;&gt; &amp;deck)</td></tr>
+<tr class="memdesc:a597cd6fe5370d57d1e9edce3cf4af349"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assist next operation over given queue.  <a href="#a597cd6fe5370d57d1e9edce3cf4af349">More...</a><br /></td></tr>
+<tr class="separator:a597cd6fe5370d57d1e9edce3cf4af349"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_methods_classDynObject"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_classDynObject')"><img src="../../closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="../../d5/d6a/classDynObject.html">DynObject</a></td></tr>
-<tr class="memitem:a54d8f77e0f633f224f17ccd6d312b6d5 inherit pro_methods_classDynObject"><td class="memItemLeft" align="right" valign="top">arma::mat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d6a/classDynObject.html#a54d8f77e0f633f224f17ccd6d312b6d5">matrixFromPrimitives</a> (std::function&lt; arma::colvec(<a class="el" href="../../d2/da0/classVertex.html">Vertex</a> const *)&gt; get)</td></tr>
-<tr class="memdesc:a54d8f77e0f633f224f17ccd6d312b6d5 inherit pro_methods_classDynObject"><td class="mdescLeft">&#160;</td><td class="mdescRight">Build a matrix from the set of primitives defining the dynamic object.  <a href="../../d5/d6a/classDynObject.html#a54d8f77e0f633f224f17ccd6d312b6d5">More...</a><br /></td></tr>
-<tr class="separator:a54d8f77e0f633f224f17ccd6d312b6d5 inherit pro_methods_classDynObject"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aadfde626d3139ca0766bdc6347cf51fa inherit pro_methods_classDynObject"><td class="memItemLeft" align="right" valign="top">arma::mat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d6a/classDynObject.html#aadfde626d3139ca0766bdc6347cf51fa">matrixFromPrimitives</a> (size_t const m, std::function&lt; arma::colvec(<a class="el" href="../../d2/da0/classVertex.html">Vertex</a> const *)&gt; get)</td></tr>
-<tr class="memdesc:aadfde626d3139ca0766bdc6347cf51fa inherit pro_methods_classDynObject"><td class="mdescLeft">&#160;</td><td class="mdescRight">Like <a class="el" href="../../d5/d6a/classDynObject.html#a54d8f77e0f633f224f17ccd6d312b6d5" title="Build a matrix from the set of primitives defining the dynamic object. ">DynObject::matrixFromPrimitives</a> but receiving the total number of vertices beforehand.  <a href="../../d5/d6a/classDynObject.html#aadfde626d3139ca0766bdc6347cf51fa">More...</a><br /></td></tr>
-<tr class="separator:aadfde626d3139ca0766bdc6347cf51fa inherit pro_methods_classDynObject"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acf0f5821c7c6f8ab9d3c0548768c5014 inherit pro_methods_classDynObject"><td class="memItemLeft" align="right" valign="top">arma::mat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d6a/classDynObject.html#acf0f5821c7c6f8ab9d3c0548768c5014">matrixFromPrimitives</a> (std::function&lt; arma::colvec(<a class="el" href="../../d2/da0/classVertex.html">Vertex</a> const *)&gt; get) const</td></tr>
+<tr class="memdesc:acf0f5821c7c6f8ab9d3c0548768c5014 inherit pro_methods_classDynObject"><td class="mdescLeft">&#160;</td><td class="mdescRight">Build a matrix from the set of primitives defining the dynamic object.  <a href="../../d5/d6a/classDynObject.html#acf0f5821c7c6f8ab9d3c0548768c5014">More...</a><br /></td></tr>
+<tr class="separator:acf0f5821c7c6f8ab9d3c0548768c5014 inherit pro_methods_classDynObject"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afcae1d2b28ef4dce137e741f423d7a6e inherit pro_methods_classDynObject"><td class="memItemLeft" align="right" valign="top">arma::mat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d6a/classDynObject.html#afcae1d2b28ef4dce137e741f423d7a6e">matrixFromPrimitives</a> (size_t const m, std::function&lt; arma::colvec(<a class="el" href="../../d2/da0/classVertex.html">Vertex</a> const *)&gt; get) const</td></tr>
+<tr class="memdesc:afcae1d2b28ef4dce137e741f423d7a6e inherit pro_methods_classDynObject"><td class="mdescLeft">&#160;</td><td class="mdescRight">Like <a class="el" href="../../d5/d6a/classDynObject.html#acf0f5821c7c6f8ab9d3c0548768c5014" title="Build a matrix from the set of primitives defining the dynamic object. ">DynObject::matrixFromPrimitives</a> but receiving the total number of vertices beforehand.  <a href="../../d5/d6a/classDynObject.html#afcae1d2b28ef4dce137e741f423d7a6e">More...</a><br /></td></tr>
+<tr class="separator:afcae1d2b28ef4dce137e741f423d7a6e inherit pro_methods_classDynObject"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad2414442009a1d0e7dcfa160f02df9a7 inherit pro_methods_classDynObject"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d6a/classDynObject.html#ad2414442009a1d0e7dcfa160f02df9a7">matrixToPrimitives</a> (std::function&lt; void(<a class="el" href="../../d2/da0/classVertex.html">Vertex</a> *, arma::colvec const &amp;)&gt; set, arma::mat const &amp;X)</td></tr>
 <tr class="memdesc:ad2414442009a1d0e7dcfa160f02df9a7 inherit pro_methods_classDynObject"><td class="mdescLeft">&#160;</td><td class="mdescRight">Update primitives defining the dynamic object from given matrix.  <a href="../../d5/d6a/classDynObject.html#ad2414442009a1d0e7dcfa160f02df9a7">More...</a><br /></td></tr>
 <tr class="separator:ad2414442009a1d0e7dcfa160f02df9a7 inherit pro_methods_classDynObject"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -235,33 +286,92 @@ Protected Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
-<tr class="memitem:a6e32e0e3b6f92402c992d4d9ca358c80"><td class="memItemLeft" align="right" valign="top">deque&lt; shared_ptr&lt; <a class="el" href="../../d7/d84/classrigidmotion_1_1RigidMotion.html">RigidMotion</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/d96/classDynMovingObject.html#a6e32e0e3b6f92402c992d4d9ca358c80">positionMotionQueue</a></td></tr>
-<tr class="memdesc:a6e32e0e3b6f92402c992d4d9ca358c80"><td class="mdescLeft">&#160;</td><td class="mdescRight">Queue of motions to be applied to the position of each primitive.  <a href="#a6e32e0e3b6f92402c992d4d9ca358c80">More...</a><br /></td></tr>
-<tr class="separator:a6e32e0e3b6f92402c992d4d9ca358c80"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9bafcf2e3fa44c1ac120c3e3740e254f"><td class="memItemLeft" align="right" valign="top">deque&lt; shared_ptr&lt; <a class="el" href="../../d7/d84/classrigidmotion_1_1RigidMotion.html">RigidMotion</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/d96/classDynMovingObject.html#a9bafcf2e3fa44c1ac120c3e3740e254f">normalMotionQueue</a></td></tr>
-<tr class="memdesc:a9bafcf2e3fa44c1ac120c3e3740e254f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Queue of motions to be applied to the normal vector of each primitive.  <a href="#a9bafcf2e3fa44c1ac120c3e3740e254f">More...</a><br /></td></tr>
-<tr class="separator:a9bafcf2e3fa44c1ac120c3e3740e254f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a532eb0f3bad6066ae73ccad2f2d22697"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d2/da8/classrigidmotion_1_1RigidMotionEngine.html">RigidMotionEngine</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/d96/classDynMovingObject.html#a532eb0f3bad6066ae73ccad2f2d22697">rme</a></td></tr>
-<tr class="memdesc:a532eb0f3bad6066ae73ccad2f2d22697"><td class="mdescLeft">&#160;</td><td class="mdescRight">The rigid motion engine to apply rigid motions.  <a href="#a532eb0f3bad6066ae73ccad2f2d22697">More...</a><br /></td></tr>
-<tr class="separator:a532eb0f3bad6066ae73ccad2f2d22697"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pro_attribs_classDynObject"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classDynObject')"><img src="../../closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="../../d5/d6a/classDynObject.html">DynObject</a></td></tr>
-<tr class="memitem:a59ad5ac3292b10132419c07d4297206e inherit pro_attribs_classDynObject"><td class="memItemLeft" align="right" valign="top"><a id="a59ad5ac3292b10132419c07d4297206e"></a>
-string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d6a/classDynObject.html#a59ad5ac3292b10132419c07d4297206e">id</a></td></tr>
-<tr class="memdesc:a59ad5ac3292b10132419c07d4297206e inherit pro_attribs_classDynObject"><td class="mdescLeft">&#160;</td><td class="mdescRight">Identifier for the dynamic object. <br /></td></tr>
-<tr class="separator:a59ad5ac3292b10132419c07d4297206e inherit pro_attribs_classDynObject"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a40b56284c87d4779f81d51032ab45b33 inherit pro_attribs_classDynObject"><td class="memItemLeft" align="right" valign="top"><a id="a40b56284c87d4779f81d51032ab45b33"></a>
-vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d6a/classDynObject.html#a40b56284c87d4779f81d51032ab45b33">primitives</a></td></tr>
-<tr class="memdesc:a40b56284c87d4779f81d51032ab45b33 inherit pro_attribs_classDynObject"><td class="mdescLeft">&#160;</td><td class="mdescRight">Primitives defining the dynamic object. <br /></td></tr>
-<tr class="separator:a40b56284c87d4779f81d51032ab45b33 inherit pro_attribs_classDynObject"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0ed9fa3935a3c2f8d0eeb57b70a7bdd0"><td class="memItemLeft" align="right" valign="top">deque&lt; shared_ptr&lt; <a class="el" href="../../d6/d4f/classDynMotion.html">DynMotion</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/d96/classDynMovingObject.html#a0ed9fa3935a3c2f8d0eeb57b70a7bdd0">positionMotionQueue</a></td></tr>
+<tr class="memdesc:a0ed9fa3935a3c2f8d0eeb57b70a7bdd0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Queue of motions to be applied to the position of each primitive.  <a href="#a0ed9fa3935a3c2f8d0eeb57b70a7bdd0">More...</a><br /></td></tr>
+<tr class="separator:a0ed9fa3935a3c2f8d0eeb57b70a7bdd0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a182a69af8fce8333ce2726c8b60cd8be"><td class="memItemLeft" align="right" valign="top">deque&lt; shared_ptr&lt; <a class="el" href="../../d6/d4f/classDynMotion.html">DynMotion</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/d96/classDynMovingObject.html#a182a69af8fce8333ce2726c8b60cd8be">normalMotionQueue</a></td></tr>
+<tr class="memdesc:a182a69af8fce8333ce2726c8b60cd8be"><td class="mdescLeft">&#160;</td><td class="mdescRight">Queue of motions to be applied to the normal vector of each primitive.  <a href="#a182a69af8fce8333ce2726c8b60cd8be">More...</a><br /></td></tr>
+<tr class="separator:a182a69af8fce8333ce2726c8b60cd8be"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1be18938c55fd8ed38477345b462de75"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d2/d0a/classDynMotionEngine.html">DynMotionEngine</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/d96/classDynMovingObject.html#a1be18938c55fd8ed38477345b462de75">dme</a></td></tr>
+<tr class="memdesc:a1be18938c55fd8ed38477345b462de75"><td class="mdescLeft">&#160;</td><td class="mdescRight">The dynamic motion engine to apply dynamic motions.  <a href="#a1be18938c55fd8ed38477345b462de75">More...</a><br /></td></tr>
+<tr class="separator:a1be18938c55fd8ed38477345b462de75"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
+Private Member Functions</h2></td></tr>
+<tr class="memitem:aa0efc61f2082b5309b9c5973e2f718b3"><td class="memTemplParams" colspan="2">template&lt;typename Archive &gt; </td></tr>
+<tr class="memitem:aa0efc61f2082b5309b9c5973e2f718b3"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d4/d96/classDynMovingObject.html#aa0efc61f2082b5309b9c5973e2f718b3">serialize</a> (Archive &amp;ar, const unsigned int version)</td></tr>
+<tr class="memdesc:aa0efc61f2082b5309b9c5973e2f718b3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Serialize a dynamic moving object to a stream of bytes.  <a href="#aa0efc61f2082b5309b9c5973e2f718b3">More...</a><br /></td></tr>
+<tr class="separator:aa0efc61f2082b5309b9c5973e2f718b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="friends"></a>
+Friends</h2></td></tr>
+<tr class="memitem:ac98d07dd8f7b70e16ccb9a01abf56b9c"><td class="memItemLeft" align="right" valign="top"><a id="ac98d07dd8f7b70e16ccb9a01abf56b9c"></a>
+class&#160;</td><td class="memItemRight" valign="bottom"><b>boost::serialization::access</b></td></tr>
+<tr class="separator:ac98d07dd8f7b70e16ccb9a01abf56b9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
+Additional Inherited Members</h2></td></tr>
+<tr class="inherit_header pub_attribs_classScenePart"><td colspan="2" onclick="javascript:toggleInherit('pub_attribs_classScenePart')"><img src="../../closed.png" alt="-"/>&#160;Public Attributes inherited from <a class="el" href="../../dd/dc4/classScenePart.html">ScenePart</a></td></tr>
+<tr class="memitem:a116a4b9d5c153b000349ad6397009859 inherit pub_attribs_classScenePart"><td class="memItemLeft" align="right" valign="top"><a id="a116a4b9d5c153b000349ad6397009859"></a>
+std::vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/dc4/classScenePart.html#a116a4b9d5c153b000349ad6397009859">mPrimitives</a></td></tr>
+<tr class="memdesc:a116a4b9d5c153b000349ad6397009859 inherit pub_attribs_classScenePart"><td class="mdescLeft">&#160;</td><td class="mdescRight">Vector of pointers to primitives used by this scene part. <br /></td></tr>
+<tr class="separator:a116a4b9d5c153b000349ad6397009859 inherit pub_attribs_classScenePart"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7317e657208166855f00944ca4f019d9 inherit pub_attribs_classScenePart"><td class="memItemLeft" align="right" valign="top"><a id="a7317e657208166855f00944ca4f019d9"></a>
+arma::colvec&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/dc4/classScenePart.html#a7317e657208166855f00944ca4f019d9">centroid</a></td></tr>
+<tr class="memdesc:a7317e657208166855f00944ca4f019d9 inherit pub_attribs_classScenePart"><td class="mdescLeft">&#160;</td><td class="mdescRight">The centroid of the scene part. <br /></td></tr>
+<tr class="separator:a7317e657208166855f00944ca4f019d9 inherit pub_attribs_classScenePart"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aec8d33ac2f3d49bd036659c1eda5166b inherit pub_attribs_classScenePart"><td class="memItemLeft" align="right" valign="top"><a id="aec8d33ac2f3d49bd036659c1eda5166b"></a>
+std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/dc4/classScenePart.html#aec8d33ac2f3d49bd036659c1eda5166b">mId</a> = &quot;&quot;</td></tr>
+<tr class="memdesc:aec8d33ac2f3d49bd036659c1eda5166b inherit pub_attribs_classScenePart"><td class="mdescLeft">&#160;</td><td class="mdescRight">Identifier for the scene part. <br /></td></tr>
+<tr class="separator:aec8d33ac2f3d49bd036659c1eda5166b inherit pub_attribs_classScenePart"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a795698a1dbf63a9f5f9ef8fcae317cbd inherit pub_attribs_classScenePart"><td class="memItemLeft" align="right" valign="top">std::vector&lt; size_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/dc4/classScenePart.html#a795698a1dbf63a9f5f9ef8fcae317cbd">subpartLimit</a></td></tr>
+<tr class="memdesc:a795698a1dbf63a9f5f9ef8fcae317cbd inherit pub_attribs_classScenePart"><td class="mdescLeft">&#160;</td><td class="mdescRight">Vector specifying the limit of a subpart as the index of first element of next subpart.  <a href="../../dd/dc4/classScenePart.html#a795698a1dbf63a9f5f9ef8fcae317cbd">More...</a><br /></td></tr>
+<tr class="separator:a795698a1dbf63a9f5f9ef8fcae317cbd inherit pub_attribs_classScenePart"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8d4c986047a3ae884b22e93575eba2ea inherit pub_attribs_classScenePart"><td class="memItemLeft" align="right" valign="top"><a id="a8d4c986047a3ae884b22e93575eba2ea"></a>
+std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/dc4/classScenePart.html#a8d4c986047a3ae884b22e93575eba2ea">onRayIntersectionMode</a> = &quot;&quot;</td></tr>
+<tr class="memdesc:a8d4c986047a3ae884b22e93575eba2ea inherit pub_attribs_classScenePart"><td class="mdescLeft">&#160;</td><td class="mdescRight">Specify the handling mode for ray intersections. <br /></td></tr>
+<tr class="separator:a8d4c986047a3ae884b22e93575eba2ea inherit pub_attribs_classScenePart"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7d8e2726cca8ed5eeeef6326cbfe1385 inherit pub_attribs_classScenePart"><td class="memItemLeft" align="right" valign="top"><a id="a7d8e2726cca8ed5eeeef6326cbfe1385"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/dc4/classScenePart.html#a7d8e2726cca8ed5eeeef6326cbfe1385">onRayIntersectionArgument</a> = 0.0</td></tr>
+<tr class="memdesc:a7d8e2726cca8ed5eeeef6326cbfe1385 inherit pub_attribs_classScenePart"><td class="mdescLeft">&#160;</td><td class="mdescRight">Specify the extra value to be used for ray intersection handling computation, when needed (depends on mode). <br /></td></tr>
+<tr class="separator:a7d8e2726cca8ed5eeeef6326cbfe1385 inherit pub_attribs_classScenePart"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3643db20d99cfe0fb8c7515128326845 inherit pub_attribs_classScenePart"><td class="memItemLeft" align="right" valign="top"><a id="a3643db20d99cfe0fb8c7515128326845"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/dc4/classScenePart.html#a3643db20d99cfe0fb8c7515128326845">randomShift</a> = false</td></tr>
+<tr class="memdesc:a3643db20d99cfe0fb8c7515128326845 inherit pub_attribs_classScenePart"><td class="mdescLeft">&#160;</td><td class="mdescRight">Specify if apply random shift to the scene part (true) or not (false, by default) <br /></td></tr>
+<tr class="separator:a3643db20d99cfe0fb8c7515128326845 inherit pub_attribs_classScenePart"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab97c85e1d868194353a4274f98d8b5f4 inherit pub_attribs_classScenePart"><td class="memItemLeft" align="right" valign="top"><a id="ab97c85e1d868194353a4274f98d8b5f4"></a>
+std::shared_ptr&lt; <a class="el" href="../../d9/d22/classLadLut.html">LadLut</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/dc4/classScenePart.html#ab97c85e1d868194353a4274f98d8b5f4">ladlut</a> = nullptr</td></tr>
+<tr class="memdesc:ab97c85e1d868194353a4274f98d8b5f4 inherit pub_attribs_classScenePart"><td class="mdescLeft">&#160;</td><td class="mdescRight">Look-up table for leaf angle distribution. <br /></td></tr>
+<tr class="separator:ab97c85e1d868194353a4274f98d8b5f4 inherit pub_attribs_classScenePart"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7ceef50b5837b5b221110c247a20165c inherit pub_attribs_classScenePart"><td class="memItemLeft" align="right" valign="top"><a id="a7ceef50b5837b5b221110c247a20165c"></a>
+glm::dvec3&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/dc4/classScenePart.html#a7ceef50b5837b5b221110c247a20165c">mOrigin</a> = glm::dvec3(0, 0, 0)</td></tr>
+<tr class="memdesc:a7ceef50b5837b5b221110c247a20165c inherit pub_attribs_classScenePart"><td class="mdescLeft">&#160;</td><td class="mdescRight">Specify the origin for the scene part. <br /></td></tr>
+<tr class="separator:a7ceef50b5837b5b221110c247a20165c inherit pub_attribs_classScenePart"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8591181e785dc96dfc98be922ba52b14 inherit pub_attribs_classScenePart"><td class="memItemLeft" align="right" valign="top"><a id="a8591181e785dc96dfc98be922ba52b14"></a>
+<a class="el" href="../../d5/dcb/classRotation.html">Rotation</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/dc4/classScenePart.html#a8591181e785dc96dfc98be922ba52b14">mRotation</a> = <a class="el" href="../../d5/dcb/classRotation.html">Rotation</a>(glm::dvec3(1, 0, 0), 0)</td></tr>
+<tr class="memdesc:a8591181e785dc96dfc98be922ba52b14 inherit pub_attribs_classScenePart"><td class="mdescLeft">&#160;</td><td class="mdescRight">Specify the rotation for the scene part. <br /></td></tr>
+<tr class="separator:a8591181e785dc96dfc98be922ba52b14 inherit pub_attribs_classScenePart"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac24a8aed9151384e58ed415d753916c3 inherit pub_attribs_classScenePart"><td class="memItemLeft" align="right" valign="top"><a id="ac24a8aed9151384e58ed415d753916c3"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/dc4/classScenePart.html#ac24a8aed9151384e58ed415d753916c3">mScale</a> = 1</td></tr>
+<tr class="memdesc:ac24a8aed9151384e58ed415d753916c3 inherit pub_attribs_classScenePart"><td class="mdescLeft">&#160;</td><td class="mdescRight">Specify the scale for the scene part. <br /></td></tr>
+<tr class="separator:ac24a8aed9151384e58ed415d753916c3 inherit pub_attribs_classScenePart"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa1c4a69066372a08f3e4c81647c5f64e inherit pub_attribs_classScenePart"><td class="memItemLeft" align="right" valign="top"><a id="aa1c4a69066372a08f3e4c81647c5f64e"></a>
+OGRSpatialReference *&#160;</td><td class="memItemRight" valign="bottom"><b>mCrs</b> = nullptr</td></tr>
+<tr class="separator:aa1c4a69066372a08f3e4c81647c5f64e inherit pub_attribs_classScenePart"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a80e27ef73e53fc04983b6889ba0f8704 inherit pub_attribs_classScenePart"><td class="memItemLeft" align="right" valign="top"><a id="a80e27ef73e53fc04983b6889ba0f8704"></a>
+OGREnvelope *&#160;</td><td class="memItemRight" valign="bottom"><b>mEnv</b> = nullptr</td></tr>
+<tr class="separator:a80e27ef73e53fc04983b6889ba0f8704 inherit pub_attribs_classScenePart"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Implementation of a dynamic object which supports rigid motion. </p>
+<div class="textblock"><p>Implementation of a dynamic object which supports dynamic motions (extended rigid motions) </p>
 <dl class="section author"><dt>Author</dt><dd>Alberto M. Esmoris Pena </dd></dl>
 <dl class="section version"><dt>Version</dt><dd>1.0</dd></dl>
-<p>This dynamic object handles any rigid motion in \(\mathbb{R}^2\) and \(\mathbb{R}^{3}\).</p>
+<p>This dynamic object handles any rigid motion in \(\mathbb{R}^2\) and \(\mathbb{R}^{3}\) and also extended functionalities coming from dynamic motion extra features, if any</p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d5/d6a/classDynObject.html" title="Dynamic object base implementation. ">DynObject</a> </dd>
 <dd>
 <a class="el" href="../../d7/d84/classrigidmotion_1_1RigidMotion.html" title="Interface that must be implemented by any class which represents a specific rigid motions...">rigidmotion::RigidMotion</a> </dd>
+<dd>
+<a class="el" href="../../d6/d4f/classDynMotion.html" title="Class which wraps the RigidMotion class to implement extra features such as the self mode control mec...">DynMotion</a> </dd>
 <dd>
 <a class="el" href="../../d2/da8/classrigidmotion_1_1RigidMotionEngine.html" title="Class to handle operations with rigid motions. ">rigidmotion::RigidMotionEngine</a> </dd>
 <dd>
@@ -270,7 +380,7 @@ vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *
 <a class="el" href="../../dc/df6/classrigidmotion_1_1RigidMotionR3Factory.html" title="Class providing building methods for rigid motions in . ">rigidmotion::RigidMotionR3Factory</a> </dd></dl>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a58becbec4ca0a29101d42ec954a021b3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a58becbec4ca0a29101d42ec954a021b3">&#9670;&nbsp;</a></span>DynMovingObject() <span class="overload">[1/4]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a58becbec4ca0a29101d42ec954a021b3">&#9670;&nbsp;</a></span>DynMovingObject() <span class="overload">[1/5]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -295,8 +405,35 @@ vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *
 
 </div>
 </div>
+<a id="ab69b10137e9311565e8aa1442d0d6e1a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab69b10137e9311565e8aa1442d0d6e1a">&#9670;&nbsp;</a></span>DynMovingObject() <span class="overload">[2/5]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">DynMovingObject::DynMovingObject </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="../../dd/dc4/classScenePart.html">ScenePart</a> const &amp;&#160;</td>
+          <td class="paramname"><em>sp</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d5/d6a/classDynObject.html#af9f9000f7470df8115c62b467d3b6b58" title="Build the dynamic object from given scene part. ">DynObject::DynObject(ScenePart const &amp;)</a> </dd></dl>
+
+</div>
+</div>
 <a id="ad85d8d5446203c6b242680e6cef89ade"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad85d8d5446203c6b242680e6cef89ade">&#9670;&nbsp;</a></span>DynMovingObject() <span class="overload">[2/4]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ad85d8d5446203c6b242680e6cef89ade">&#9670;&nbsp;</a></span>DynMovingObject() <span class="overload">[3/5]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -323,7 +460,7 @@ vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *
 </div>
 </div>
 <a id="a187f21947faec9d522df97ddc481f1a3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a187f21947faec9d522df97ddc481f1a3">&#9670;&nbsp;</a></span>DynMovingObject() <span class="overload">[3/4]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a187f21947faec9d522df97ddc481f1a3">&#9670;&nbsp;</a></span>DynMovingObject() <span class="overload">[4/5]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -345,12 +482,12 @@ vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *
   </tr>
 </table>
 </div><div class="memdoc">
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d5/d6a/classDynObject.html#a45090e1e59a3ab35dc5b09f8b54fa6d2" title="Dynamic object constructor with primitives as argument. ">DynObject::DynObject(vector&lt;Primitive *&gt; const &amp;)</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd>DynObject::DynObject(vector&lt;Primitive *&gt; const &amp;) </dd></dl>
 
 </div>
 </div>
 <a id="a894ff48d42b78b9932d5abb5e30ffc46"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a894ff48d42b78b9932d5abb5e30ffc46">&#9670;&nbsp;</a></span>DynMovingObject() <span class="overload">[4/4]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a894ff48d42b78b9932d5abb5e30ffc46">&#9670;&nbsp;</a></span>DynMovingObject() <span class="overload">[5/5]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -382,13 +519,13 @@ vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *
   </tr>
 </table>
 </div><div class="memdoc">
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d5/d6a/classDynObject.html#ac0f8e569c2c379fe43e0442a296e7036" title="Dynamic object constructor with id and primitives as arguments. ">DynObject::DynObject(string const, vector&lt;Primitive *&gt; const &amp;)</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd>DynObject::DynObject(string const, vector&lt;Primitive *&gt; const &amp;) </dd></dl>
 
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a6d75056fa85074fe05a5afd062b283e3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6d75056fa85074fe05a5afd062b283e3">&#9670;&nbsp;</a></span>_next()</h2>
+<a id="a597cd6fe5370d57d1e9edce3cf4af349"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a597cd6fe5370d57d1e9edce3cf4af349">&#9670;&nbsp;</a></span>_next()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -397,9 +534,9 @@ vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">shared_ptr&lt; <a class="el" href="../../d7/d84/classrigidmotion_1_1RigidMotion.html">RigidMotion</a> &gt; DynMovingObject::_next </td>
+          <td class="memname">shared_ptr&lt; <a class="el" href="../../d6/d4f/classDynMotion.html">DynMotion</a> &gt; DynMovingObject::_next </td>
           <td>(</td>
-          <td class="paramtype">deque&lt; shared_ptr&lt; <a class="el" href="../../d7/d84/classrigidmotion_1_1RigidMotion.html">RigidMotion</a> &gt;&gt; &amp;&#160;</td>
+          <td class="paramtype">deque&lt; shared_ptr&lt; <a class="el" href="../../d6/d4f/classDynMotion.html">DynMotion</a> &gt;&gt; &amp;&#160;</td>
           <td class="paramname"><em>deck</em></td><td>)</td>
           <td></td>
         </tr>
@@ -419,7 +556,68 @@ vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>First rigid motion in the given queue </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>First dynamic motion in the given queue </dd></dl>
+
+</div>
+</div>
+<a id="a60cbfaf415d5eeb970935db426a76ceb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a60cbfaf415d5eeb970935db426a76ceb">&#9670;&nbsp;</a></span>applyDynMotionQueue()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool DynMovingObject::applyDynMotionQueue </td>
+          <td>(</td>
+          <td class="paramtype">std::function&lt; arma::mat()&gt;&#160;</td>
+          <td class="paramname"><em>matrixFromPrimitives</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::function&lt; void(arma::mat const &amp;X)&gt;&#160;</td>
+          <td class="paramname"><em>matrixToPrimitives</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::function&lt; bool()&gt;&#160;</td>
+          <td class="paramname"><em>queueHasNext</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::function&lt; shared_ptr&lt; <a class="el" href="../../d6/d4f/classDynMotion.html">DynMotion</a> &gt;()&gt;&#160;</td>
+          <td class="paramname"><em>queueNext</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Method to assist dynamic motions computation. </p>
+<p>It provides the abstract logic to compute dynamic motions in an efficient way. Functions to extract dynamic motion queue elements and to read and update primitives must be given as input arguments.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">matrixFromPrimitives</td><td>Function to get a matrix from primitives composing the dynamic object </td></tr>
+    <tr><td class="paramname">matrixToPrimitives</td><td>Function to update primitives from a given matrix </td></tr>
+    <tr><td class="paramname">queueHasNext</td><td>Function to check whether the queue has dynamic motions left (true) or not (false) </td></tr>
+    <tr><td class="paramname">queueNext</td><td>Function to obtain the next dynamic motion from a queue </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>True if modifications occurred, false otherwise </dd></dl>
 
 </div>
 </div>
@@ -446,26 +644,31 @@ vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *
 </table>
 </div><div class="memdoc">
 
-<p>Rigid motion behavior implementation. </p>
+<p>Dynamic motion behavior implementation. </p>
 <p>Let a moving dynamic object \(\mathcal{D}\) be defined by matrices \(P_{n \times m}\) defining the position and \(U_{n \times m}\) defining the normals. So the dynamic object is composed by \(m\) vertices and normals in a \(n\)-dimensional space and its update function would be as follows:</p>
 <p class="formulaDsp">
 \[ \mathcal{D}_{t+1} = f\left(\mathcal{D}_{t}\right) = \left\{\begin{array}{lll} P_{t+1} &amp;=&amp; C + AP_{t} \\ U_{t+1} &amp;=&amp; C&#39; + A&#39;P_{t} \end{array}\right. \]
 </p>
-<p>Where \(C_{n \times 1}\) is the transposition column vector and \(A_{n \times n}\) is the fixed origin transformation matrix defining the rigid motion. Then, \(C&#39;\) and \(A&#39;\) are analogous to \(C\) and \(A\) but coming from the normal motion queue instead of the position motion queue.</p>
+<p>Where \(C_{n \times 1}\) is the transposition column vector and \(A_{n \times n}\) is the fixed origin transformation matrix defining the rigid motion at the core of the dynamic motion. Then, \(C&#39;\) and \(A&#39;\) are analogous to \(C\) and \(A\) but coming from the normal motion queue instead of the position motion queue.</p>
+<dl class="section return"><dt>Returns</dt><dd>True if the dynamic object was modified, false otherwise </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d5/d6a/classDynObject.html#ae3308d5d877a37e6880749925e6e3d8c" title="Any dynamic object concrete implementation must override this method providing dynamic behavior to th...">DynObject::doStep</a> </dd>
 <dd>
 <a class="el" href="../../d7/d84/classrigidmotion_1_1RigidMotion.html" title="Interface that must be implemented by any class which represents a specific rigid motions...">rigidmotion::RigidMotion</a> </dd>
 <dd>
-<a class="el" href="../../d4/d96/classDynMovingObject.html#a6e32e0e3b6f92402c992d4d9ca358c80" title="Queue of motions to be applied to the position of each primitive. ">DynMovingObject::positionMotionQueue</a> </dd>
+<a class="el" href="../../d6/d4f/classDynMotion.html" title="Class which wraps the RigidMotion class to implement extra features such as the self mode control mec...">DynMotion</a> </dd>
 <dd>
-<a class="el" href="../../d4/d96/classDynMovingObject.html#a9bafcf2e3fa44c1ac120c3e3740e254f" title="Queue of motions to be applied to the normal vector of each primitive. ">DynMovingObject::normalMotionQueue</a> </dd></dl>
+<a class="el" href="../../d4/d96/classDynMovingObject.html#a0ed9fa3935a3c2f8d0eeb57b70a7bdd0" title="Queue of motions to be applied to the position of each primitive. ">DynMovingObject::positionMotionQueue</a> </dd>
+<dd>
+<a class="el" href="../../d4/d96/classDynMovingObject.html#a182a69af8fce8333ce2726c8b60cd8be" title="Queue of motions to be applied to the normal vector of each primitive. ">DynMovingObject::normalMotionQueue</a> </dd></dl>
 
 <p>Implements <a class="el" href="../../d5/d6a/classDynObject.html#ae3308d5d877a37e6880749925e6e3d8c">DynObject</a>.</p>
 
+<p>Reimplemented in <a class="el" href="../../d4/d48/classDynSequentiableMovingObject.html#acbf48b570e4ba4339f63d1b00f615636">DynSequentiableMovingObject</a>.</p>
+
 </div>
 </div>
-<a id="a17ca754fd758ae9100c826a49c55e45c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a17ca754fd758ae9100c826a49c55e45c">&#9670;&nbsp;</a></span>nextNormalMotion()</h2>
+<a id="a5eeb7fdf653b0e74ff683d1ca6ac47a4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5eeb7fdf653b0e74ff683d1ca6ac47a4">&#9670;&nbsp;</a></span>nextNormalMotion()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -474,7 +677,7 @@ vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">shared_ptr&lt;<a class="el" href="../../d7/d84/classrigidmotion_1_1RigidMotion.html">RigidMotion</a>&gt; DynMovingObject::nextNormalMotion </td>
+          <td class="memname">shared_ptr&lt;<a class="el" href="../../d6/d4f/classDynMotion.html">DynMotion</a>&gt; DynMovingObject::nextNormalMotion </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -487,14 +690,14 @@ vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *
 </table>
 </div><div class="memdoc">
 
-<p>Retrieve the first rigid motion in the normal motion queue. </p>
+<p>Retrieve the first dynamic motion in the normal motion queue. </p>
 <p>Notice this implies removing it from the queue.</p>
-<dl class="section return"><dt>Returns</dt><dd>First rigid motion in the normal motion queue </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>First dynamic motion in the normal motion queue </dd></dl>
 
 </div>
 </div>
-<a id="a1a66715cfd307f0fa56b6948ab61353f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1a66715cfd307f0fa56b6948ab61353f">&#9670;&nbsp;</a></span>nextPositionMotion()</h2>
+<a id="a23ff3e5058ef2aee45d59975d85f723e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a23ff3e5058ef2aee45d59975d85f723e">&#9670;&nbsp;</a></span>nextPositionMotion()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -503,7 +706,7 @@ vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">shared_ptr&lt;<a class="el" href="../../d7/d84/classrigidmotion_1_1RigidMotion.html">RigidMotion</a>&gt; DynMovingObject::nextPositionMotion </td>
+          <td class="memname">shared_ptr&lt;<a class="el" href="../../d6/d4f/classDynMotion.html">DynMotion</a>&gt; DynMovingObject::nextPositionMotion </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -516,9 +719,9 @@ vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *
 </table>
 </div><div class="memdoc">
 
-<p>Retrieve the first in rigid motion in the position motion queue. </p>
+<p>Retrieve the first dynamic motion in the position motion queue. </p>
 <p>Notice this implies removing it from the queue.</p>
-<dl class="section return"><dt>Returns</dt><dd>First rigid motion in the position motion queue </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>First dynamic motion in the position motion queue </dd></dl>
 
 </div>
 </div>
@@ -545,8 +748,8 @@ vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *
 </table>
 </div><div class="memdoc">
 
-<p>Check if normal motion queue has a next rigid motion or not. </p>
-<dl class="section return"><dt>Returns</dt><dd>True if normal motion queue has a next rigid motion, false otherwise </dd></dl>
+<p>Check if normal motion queue has a next dynamic motion or not. </p>
+<dl class="section return"><dt>Returns</dt><dd>True if normal motion queue has a next dynamic motion, false otherwise </dd></dl>
 
 </div>
 </div>
@@ -573,13 +776,13 @@ vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *
 </table>
 </div><div class="memdoc">
 
-<p>Check if position motion queue has a next rigid motion or not. </p>
-<dl class="section return"><dt>Returns</dt><dd>True if position motion queue has a next rigid motion, false otherwise </dd></dl>
+<p>Check if position motion queue has a next dynamic motion or not. </p>
+<dl class="section return"><dt>Returns</dt><dd>True if position motion queue has a next dynamic motion, false otherwise </dd></dl>
 
 </div>
 </div>
-<a id="a435223a732103b615dcf523206768523"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a435223a732103b615dcf523206768523">&#9670;&nbsp;</a></span>pushNormalMotion()</h2>
+<a id="a6554aca7eb64bfd55254c456fe557345"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6554aca7eb64bfd55254c456fe557345">&#9670;&nbsp;</a></span>pushNormalMotion()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -590,8 +793,8 @@ vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *
         <tr>
           <td class="memname">void DynMovingObject::pushNormalMotion </td>
           <td>(</td>
-          <td class="paramtype">shared_ptr&lt; <a class="el" href="../../d7/d84/classrigidmotion_1_1RigidMotion.html">RigidMotion</a> &gt; const&#160;</td>
-          <td class="paramname"><em>rm</em></td><td>)</td>
+          <td class="paramtype">shared_ptr&lt; <a class="el" href="../../d6/d4f/classDynMotion.html">DynMotion</a> &gt; const&#160;</td>
+          <td class="paramname"><em>dm</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -602,18 +805,18 @@ vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *
 </table>
 </div><div class="memdoc">
 
-<p>Push given rigid motion to the normal motion queue. </p>
+<p>Push given dynamic motion to the normal motion queue. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">rm</td><td>Rigid motion to be pushed to the normal motion queue </td></tr>
+    <tr><td class="paramname">dm</td><td>Dynamic motion to be pushed to the normal motion queue </td></tr>
   </table>
   </dd>
 </dl>
 
 </div>
 </div>
-<a id="a359e92db6427e6fd63603ad4f0f8a3d0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a359e92db6427e6fd63603ad4f0f8a3d0">&#9670;&nbsp;</a></span>pushPositionMotion()</h2>
+<a id="aaeec8774c4dd8a8f37adaf0ae9dd3d70"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaeec8774c4dd8a8f37adaf0ae9dd3d70">&#9670;&nbsp;</a></span>pushPositionMotion()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -624,8 +827,8 @@ vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *
         <tr>
           <td class="memname">void DynMovingObject::pushPositionMotion </td>
           <td>(</td>
-          <td class="paramtype">shared_ptr&lt; <a class="el" href="../../d7/d84/classrigidmotion_1_1RigidMotion.html">RigidMotion</a> &gt; const&#160;</td>
-          <td class="paramname"><em>rm</em></td><td>)</td>
+          <td class="paramtype">shared_ptr&lt; <a class="el" href="../../d6/d4f/classDynMotion.html">DynMotion</a> &gt; const&#160;</td>
+          <td class="paramname"><em>dm</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -636,10 +839,63 @@ vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *
 </table>
 </div><div class="memdoc">
 
-<p>Push given rigid motion to the position motion queue. </p>
+<p>Push given dynamic motion to the position motion queue. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">rm</td><td>Rigid motion to be pushed to the position motion queue </td></tr>
+    <tr><td class="paramname">dm</td><td>Dynamic motion to be pushed to the position motion queue </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="aa0efc61f2082b5309b9c5973e2f718b3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa0efc61f2082b5309b9c5973e2f718b3">&#9670;&nbsp;</a></span>serialize()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Archive &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void DynMovingObject::serialize </td>
+          <td>(</td>
+          <td class="paramtype">Archive &amp;&#160;</td>
+          <td class="paramname"><em>ar</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const unsigned int&#160;</td>
+          <td class="paramname"><em>version</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Serialize a dynamic moving object to a stream of bytes. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">Archive</td><td>Type of rendering </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">ar</td><td>Specific rendering for the stream of bytes </td></tr>
+    <tr><td class="paramname">version</td><td>Version number for the dynamic moving object </td></tr>
   </table>
   </dd>
 </dl>
@@ -647,8 +903,8 @@ vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a id="a9bafcf2e3fa44c1ac120c3e3740e254f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9bafcf2e3fa44c1ac120c3e3740e254f">&#9670;&nbsp;</a></span>normalMotionQueue</h2>
+<a id="a1be18938c55fd8ed38477345b462de75"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1be18938c55fd8ed38477345b462de75">&#9670;&nbsp;</a></span>dme</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -657,7 +913,34 @@ vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">deque&lt;shared_ptr&lt;<a class="el" href="../../d7/d84/classrigidmotion_1_1RigidMotion.html">RigidMotion</a>&gt; &gt; DynMovingObject::normalMotionQueue</td>
+          <td class="memname"><a class="el" href="../../d2/d0a/classDynMotionEngine.html">DynMotionEngine</a> DynMovingObject::dme</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The dynamic motion engine to apply dynamic motions. </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d2/da8/classrigidmotion_1_1RigidMotionEngine.html" title="Class to handle operations with rigid motions. ">rigidmotion::RigidMotionEngine</a> </dd>
+<dd>
+<a class="el" href="../../d2/d0a/classDynMotionEngine.html" title="Adapter which wraps a rigid motion engine to make it fit the dynamic Helios context. ">DynMotionEngine</a> </dd></dl>
+
+</div>
+</div>
+<a id="a182a69af8fce8333ce2726c8b60cd8be"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a182a69af8fce8333ce2726c8b60cd8be">&#9670;&nbsp;</a></span>normalMotionQueue</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">deque&lt;shared_ptr&lt;<a class="el" href="../../d6/d4f/classDynMotion.html">DynMotion</a>&gt; &gt; DynMovingObject::normalMotionQueue</td>
         </tr>
       </table>
   </td>
@@ -669,12 +952,12 @@ vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *
 
 <p>Queue of motions to be applied to the normal vector of each primitive. </p>
 <p>The first motion in the queue is the first motion to be applied. The last motion in the queue is the last motion to be applied.</p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d4/d96/classDynMovingObject.html#a6e32e0e3b6f92402c992d4d9ca358c80" title="Queue of motions to be applied to the position of each primitive. ">DynMovingObject::positionMotionQueue</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d4/d96/classDynMovingObject.html#a0ed9fa3935a3c2f8d0eeb57b70a7bdd0" title="Queue of motions to be applied to the position of each primitive. ">DynMovingObject::positionMotionQueue</a> </dd></dl>
 
 </div>
 </div>
-<a id="a6e32e0e3b6f92402c992d4d9ca358c80"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6e32e0e3b6f92402c992d4d9ca358c80">&#9670;&nbsp;</a></span>positionMotionQueue</h2>
+<a id="a0ed9fa3935a3c2f8d0eeb57b70a7bdd0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0ed9fa3935a3c2f8d0eeb57b70a7bdd0">&#9670;&nbsp;</a></span>positionMotionQueue</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -683,7 +966,7 @@ vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">deque&lt;shared_ptr&lt;<a class="el" href="../../d7/d84/classrigidmotion_1_1RigidMotion.html">RigidMotion</a>&gt; &gt; DynMovingObject::positionMotionQueue</td>
+          <td class="memname">deque&lt;shared_ptr&lt;<a class="el" href="../../d6/d4f/classDynMotion.html">DynMotion</a>&gt; &gt; DynMovingObject::positionMotionQueue</td>
         </tr>
       </table>
   </td>
@@ -695,32 +978,7 @@ vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *
 
 <p>Queue of motions to be applied to the position of each primitive. </p>
 <p>The first motion in the queue is the first motion to be applied. The last motion in the queue is the last motion to be applied.</p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d4/d96/classDynMovingObject.html#a9bafcf2e3fa44c1ac120c3e3740e254f" title="Queue of motions to be applied to the normal vector of each primitive. ">DynMovingObject::normalMotionQueue</a> </dd></dl>
-
-</div>
-</div>
-<a id="a532eb0f3bad6066ae73ccad2f2d22697"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a532eb0f3bad6066ae73ccad2f2d22697">&#9670;&nbsp;</a></span>rme</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="../../d2/da8/classrigidmotion_1_1RigidMotionEngine.html">RigidMotionEngine</a> DynMovingObject::rme</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>The rigid motion engine to apply rigid motions. </p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d2/da8/classrigidmotion_1_1RigidMotionEngine.html" title="Class to handle operations with rigid motions. ">rigidmotion::RigidMotionEngine</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d4/d96/classDynMovingObject.html#a182a69af8fce8333ce2726c8b60cd8be" title="Queue of motions to be applied to the normal vector of each primitive. ">DynMovingObject::normalMotionQueue</a> </dd></dl>
 
 </div>
 </div>

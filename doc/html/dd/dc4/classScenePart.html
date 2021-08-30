@@ -102,6 +102,16 @@ $(document).ready(function(){initNavTree('dd/dc4/classScenePart.html','../../');
 
 <p><code>#include &lt;<a class="el" href="../../d6/d03/ScenePart_8h_source.html">ScenePart.h</a>&gt;</code></p>
 <div class="dynheader">
+Inheritance diagram for ScenePart:</div>
+<div class="dyncontent">
+<div class="center"><img src="../../de/db9/classScenePart__inherit__graph.png" border="0" usemap="#ScenePart_inherit__map" alt="Inheritance graph"/></div>
+<map name="ScenePart_inherit__map" id="ScenePart_inherit__map">
+<area shape="rect" id="node2" href="../../d5/d6a/classDynObject.html" title="Dynamic object base implementation. " alt="" coords="64,80,148,107"/>
+<area shape="rect" id="node3" href="../../d4/d96/classDynMovingObject.html" title="Implementation of a dynamic object which supports dynamic motions (extended rigid motions) ..." alt="" coords="43,155,169,181"/>
+<area shape="rect" id="node4" href="../../d4/d48/classDynSequentiableMovingObject.html" title="Implementation of a dynamic object which supports sequentiable dynamic motions. " alt="" coords="5,229,207,256"/>
+</map>
+<center><span class="legend">[<a target="top" href="../../graph_legend.html">legend</a>]</span></center></div>
+<div class="dynheader">
 Collaboration diagram for ScenePart:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../db/d35/classScenePart__coll__graph.png" border="0" usemap="#ScenePart_coll__map" alt="Collaboration graph"/></div>
@@ -116,9 +126,13 @@ Public Member Functions</h2></td></tr>
 &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/dc4/classScenePart.html#ad08313c2aed966def11c0f507a116666">ScenePart</a> ()=default</td></tr>
 <tr class="memdesc:ad08313c2aed966def11c0f507a116666"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor for a scene part. <br /></td></tr>
 <tr class="separator:ad08313c2aed966def11c0f507a116666"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a71eb84286d18f40a8c442bc6ec4cfa61"><td class="memItemLeft" align="right" valign="top"><a id="a71eb84286d18f40a8c442bc6ec4cfa61"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>ScenePart</b> (<a class="el" href="../../dd/dc4/classScenePart.html">ScenePart</a> &amp;sp)</td></tr>
-<tr class="separator:a71eb84286d18f40a8c442bc6ec4cfa61"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a573c9469b4865af254d50200a7d7972b"><td class="memItemLeft" align="right" valign="top"><a id="a573c9469b4865af254d50200a7d7972b"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>ScenePart</b> (<a class="el" href="../../dd/dc4/classScenePart.html">ScenePart</a> const &amp;sp)</td></tr>
+<tr class="separator:a573c9469b4865af254d50200a7d7972b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0e4fe89589057061c7917b1476d268ee"><td class="memItemLeft" align="right" valign="top"><a id="a0e4fe89589057061c7917b1476d268ee"></a>
+<a class="el" href="../../dd/dc4/classScenePart.html">ScenePart</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/dc4/classScenePart.html#a0e4fe89589057061c7917b1476d268ee">operator=</a> (const <a class="el" href="../../dd/dc4/classScenePart.html">ScenePart</a> &amp;rhs)</td></tr>
+<tr class="memdesc:a0e4fe89589057061c7917b1476d268ee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy assigment operator. <br /></td></tr>
+<tr class="separator:a0e4fe89589057061c7917b1476d268ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad77755e3d5bf661ef5a69ca848de833d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/dc4/classScenePart.html#ad77755e3d5bf661ef5a69ca848de833d">addObj</a> (<a class="el" href="../../d0/d92/classWavefrontObj.html">WavefrontObj</a> *obj)</td></tr>
 <tr class="memdesc:ad77755e3d5bf661ef5a69ca848de833d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add the primitives of a <a class="el" href="../../d0/d92/classWavefrontObj.html" title="Class representing a .obj loaded file. ">WavefrontObj</a> to the <a class="el" href="../../dd/dc4/classScenePart.html" title="Class representing a scene part. ">ScenePart</a>.  <a href="#ad77755e3d5bf661ef5a69ca848de833d">More...</a><br /></td></tr>
 <tr class="separator:ad77755e3d5bf661ef5a69ca848de833d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -132,10 +146,27 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../.
 <tr class="memitem:a82912d3e287312e90e622b512a653df0"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/dc4/classScenePart.html#a82912d3e287312e90e622b512a653df0">splitSubparts</a> ()</td></tr>
 <tr class="memdesc:a82912d3e287312e90e622b512a653df0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Split each subpart into a different scene part, with the first one corresponding to this scene part.  <a href="#a82912d3e287312e90e622b512a653df0">More...</a><br /></td></tr>
 <tr class="separator:a82912d3e287312e90e622b512a653df0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0e4fe89589057061c7917b1476d268ee"><td class="memItemLeft" align="right" valign="top"><a id="a0e4fe89589057061c7917b1476d268ee"></a>
-<a class="el" href="../../dd/dc4/classScenePart.html">ScenePart</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/dc4/classScenePart.html#a0e4fe89589057061c7917b1476d268ee">operator=</a> (const <a class="el" href="../../dd/dc4/classScenePart.html">ScenePart</a> &amp;rhs)</td></tr>
-<tr class="memdesc:a0e4fe89589057061c7917b1476d268ee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy assigment operator. <br /></td></tr>
-<tr class="separator:a0e4fe89589057061c7917b1476d268ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a33e9aa7e8940b053e4939e8aacc6fd12"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/dc4/classScenePart.html#a33e9aa7e8940b053e4939e8aacc6fd12">computeCentroid</a> ()</td></tr>
+<tr class="memdesc:a33e9aa7e8940b053e4939e8aacc6fd12"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the default centroid for the scene part as the midrange point.  <a href="#a33e9aa7e8940b053e4939e8aacc6fd12">More...</a><br /></td></tr>
+<tr class="separator:a33e9aa7e8940b053e4939e8aacc6fd12"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aea61ea007cb84871117666b732f7ce64"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> * &gt; const  &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/dc4/classScenePart.html#aea61ea007cb84871117666b732f7ce64">getPrimitives</a> () const</td></tr>
+<tr class="memdesc:aea61ea007cb84871117666b732f7ce64"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain the primitives of the scene part.  <a href="#aea61ea007cb84871117666b732f7ce64">More...</a><br /></td></tr>
+<tr class="separator:aea61ea007cb84871117666b732f7ce64"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa7c7eab0f6bec05bbf5d5cf3c0932c46"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/dc4/classScenePart.html#aa7c7eab0f6bec05bbf5d5cf3c0932c46">setPrimitives</a> (std::vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *&gt; const &amp;primitives)</td></tr>
+<tr class="memdesc:aa7c7eab0f6bec05bbf5d5cf3c0932c46"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the primitives of the scene part.  <a href="#aa7c7eab0f6bec05bbf5d5cf3c0932c46">More...</a><br /></td></tr>
+<tr class="separator:aa7c7eab0f6bec05bbf5d5cf3c0932c46"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac08adff13b3dca6df68d1f6114367d99"><td class="memItemLeft" align="right" valign="top">arma::colvec&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/dc4/classScenePart.html#ac08adff13b3dca6df68d1f6114367d99">getCentroid</a> () const</td></tr>
+<tr class="memdesc:ac08adff13b3dca6df68d1f6114367d99"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain the centroid of the scene part.  <a href="#ac08adff13b3dca6df68d1f6114367d99">More...</a><br /></td></tr>
+<tr class="separator:ac08adff13b3dca6df68d1f6114367d99"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a49668b1b63fac9583c9cd33b4190c532"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/dc4/classScenePart.html#a49668b1b63fac9583c9cd33b4190c532">setCentroid</a> (arma::colvec <a class="el" href="../../dd/dc4/classScenePart.html#a7317e657208166855f00944ca4f019d9">centroid</a>)</td></tr>
+<tr class="memdesc:a49668b1b63fac9583c9cd33b4190c532"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the centroid of the scene part.  <a href="#a49668b1b63fac9583c9cd33b4190c532">More...</a><br /></td></tr>
+<tr class="separator:a49668b1b63fac9583c9cd33b4190c532"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9c2c908872ec82fde8a4885c0e68e933"><td class="memItemLeft" align="right" valign="top">std::string const  &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/dc4/classScenePart.html#a9c2c908872ec82fde8a4885c0e68e933">getId</a> () const</td></tr>
+<tr class="memdesc:a9c2c908872ec82fde8a4885c0e68e933"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain the ID of the scene part.  <a href="#a9c2c908872ec82fde8a4885c0e68e933">More...</a><br /></td></tr>
+<tr class="separator:a9c2c908872ec82fde8a4885c0e68e933"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a015f2bac94d9e0b65cc7706073164b7a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/dc4/classScenePart.html#a015f2bac94d9e0b65cc7706073164b7a">setId</a> (const std::string &amp;id)</td></tr>
+<tr class="memdesc:a015f2bac94d9e0b65cc7706073164b7a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the ID of the scene part.  <a href="#a015f2bac94d9e0b65cc7706073164b7a">More...</a><br /></td></tr>
+<tr class="separator:a015f2bac94d9e0b65cc7706073164b7a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -143,6 +174,10 @@ Public Attributes</h2></td></tr>
 std::vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/dc4/classScenePart.html#a116a4b9d5c153b000349ad6397009859">mPrimitives</a></td></tr>
 <tr class="memdesc:a116a4b9d5c153b000349ad6397009859"><td class="mdescLeft">&#160;</td><td class="mdescRight">Vector of pointers to primitives used by this scene part. <br /></td></tr>
 <tr class="separator:a116a4b9d5c153b000349ad6397009859"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7317e657208166855f00944ca4f019d9"><td class="memItemLeft" align="right" valign="top"><a id="a7317e657208166855f00944ca4f019d9"></a>
+arma::colvec&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/dc4/classScenePart.html#a7317e657208166855f00944ca4f019d9">centroid</a></td></tr>
+<tr class="memdesc:a7317e657208166855f00944ca4f019d9"><td class="mdescLeft">&#160;</td><td class="mdescRight">The centroid of the scene part. <br /></td></tr>
+<tr class="separator:a7317e657208166855f00944ca4f019d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aec8d33ac2f3d49bd036659c1eda5166b"><td class="memItemLeft" align="right" valign="top"><a id="aec8d33ac2f3d49bd036659c1eda5166b"></a>
 std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/dc4/classScenePart.html#aec8d33ac2f3d49bd036659c1eda5166b">mId</a> = &quot;&quot;</td></tr>
 <tr class="memdesc:aec8d33ac2f3d49bd036659c1eda5166b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Identifier for the scene part. <br /></td></tr>
@@ -187,9 +222,9 @@ OGREnvelope *&#160;</td><td class="memItemRight" valign="bottom"><b>mEnv</b> = n
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
-<tr class="memitem:ac8d1c1199b07fbaca54f50c09c931f77"><td class="memTemplParams" colspan="2"><a id="ac8d1c1199b07fbaca54f50c09c931f77"></a>
-template&lt;class Archive &gt; </td></tr>
-<tr class="memitem:ac8d1c1199b07fbaca54f50c09c931f77"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>serialize</b> (Archive &amp;ar, const unsigned int version)</td></tr>
+<tr class="memitem:ac8d1c1199b07fbaca54f50c09c931f77"><td class="memTemplParams" colspan="2">template&lt;class Archive &gt; </td></tr>
+<tr class="memitem:ac8d1c1199b07fbaca54f50c09c931f77"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../dd/dc4/classScenePart.html#ac8d1c1199b07fbaca54f50c09c931f77">serialize</a> (Archive &amp;ar, const unsigned int version)</td></tr>
+<tr class="memdesc:ac8d1c1199b07fbaca54f50c09c931f77"><td class="mdescLeft">&#160;</td><td class="mdescRight">Serialize a <a class="el" href="../../dd/dc4/classScenePart.html" title="Class representing a scene part. ">ScenePart</a> to a stream of bytes.  <a href="#ac8d1c1199b07fbaca54f50c09c931f77">More...</a><br /></td></tr>
 <tr class="separator:ac8d1c1199b07fbaca54f50c09c931f77"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="friends"></a>
@@ -227,6 +262,30 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>boost::serialization
 
 </div>
 </div>
+<a id="a33e9aa7e8940b053e4939e8aacc6fd12"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a33e9aa7e8940b053e4939e8aacc6fd12">&#9670;&nbsp;</a></span>computeCentroid()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ScenePart::computeCentroid </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Compute the default centroid for the scene part as the midrange point. </p>
+<p>Let \(P = \left\{p_1, \ldots, p_m\right\}\) be the set of points/vertices defining the scene part, where \(\forall p_i \in P,\, p_i=\left(p_{ix}, p_{iy}, p_{iz}\right)\). So \(\vec{p}_{x}\) is the vector containing the \(m\) \(x\)-coordinates, \(\vec{p}_{y}\) is the vector containing the \(m\) \(y\)-coordinates and \(\vec{p}_{z}\) is the vector containing the \(m\) \(z\)-cordinates. Now, let \(o\) be the centroid of the scene part, so it can be defined as</p>
+<p class="formulaDsp">
+\[ o = \frac{1}{2} \left( \min\left(\vec{p}_x\right)+\max\left(\vec{p}_{x}\right), \min\left(\vec{p}_y\right)+\max\left(\vec{p}_{y}\right), \min\left(\vec{p}_z\right)+\max\left(\vec{p}_{z}\right) \right) \]
+</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../dd/dc4/classScenePart.html#a7317e657208166855f00944ca4f019d9" title="The centroid of the scene part. ">ScenePart::centroid</a> </dd></dl>
+
+</div>
+</div>
 <a id="aa17fabe6290c0c01de162457f758833a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aa17fabe6290c0c01de162457f758833a">&#9670;&nbsp;</a></span>getAllVertices()</h2>
 
@@ -244,6 +303,251 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>boost::serialization
 
 <p>Obtain all vertices in the scene part. </p>
 <dl class="section return"><dt>Returns</dt><dd>All vertices in the scene part </dd></dl>
+
+</div>
+</div>
+<a id="ac08adff13b3dca6df68d1f6114367d99"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac08adff13b3dca6df68d1f6114367d99">&#9670;&nbsp;</a></span>getCentroid()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">arma::colvec ScenePart::getCentroid </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Obtain the centroid of the scene part. </p>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="../../d5/d9c/classScene.html" title="Class representing a scene asset. ">Scene</a> part centroid </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../dd/dc4/classScenePart.html#a7317e657208166855f00944ca4f019d9" title="The centroid of the scene part. ">ScenePart::centroid</a> </dd></dl>
+
+</div>
+</div>
+<a id="a9c2c908872ec82fde8a4885c0e68e933"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9c2c908872ec82fde8a4885c0e68e933">&#9670;&nbsp;</a></span>getId()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string const&amp; ScenePart::getId </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Obtain the ID of the scene part. </p>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="../../d5/d9c/classScene.html" title="Class representing a scene asset. ">Scene</a> part ID </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../dd/dc4/classScenePart.html#aec8d33ac2f3d49bd036659c1eda5166b" title="Identifier for the scene part. ">ScenePart::mId</a> </dd></dl>
+
+</div>
+</div>
+<a id="aea61ea007cb84871117666b732f7ce64"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aea61ea007cb84871117666b732f7ce64">&#9670;&nbsp;</a></span>getPrimitives()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;<a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *&gt; const&amp; ScenePart::getPrimitives </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Obtain the primitives of the scene part. </p>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="../../d5/d9c/classScene.html" title="Class representing a scene asset. ">Scene</a> part primitives </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../dd/dc4/classScenePart.html#a116a4b9d5c153b000349ad6397009859" title="Vector of pointers to primitives used by this scene part. ">ScenePart::mPrimitives</a> </dd></dl>
+
+</div>
+</div>
+<a id="ac8d1c1199b07fbaca54f50c09c931f77"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac8d1c1199b07fbaca54f50c09c931f77">&#9670;&nbsp;</a></span>serialize()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Archive &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ScenePart::serialize </td>
+          <td>(</td>
+          <td class="paramtype">Archive &amp;&#160;</td>
+          <td class="paramname"><em>ar</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const unsigned int&#160;</td>
+          <td class="paramname"><em>version</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Serialize a <a class="el" href="../../dd/dc4/classScenePart.html" title="Class representing a scene part. ">ScenePart</a> to a stream of bytes. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">Archive</td><td>Type of rendering </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">ar</td><td>Specific rendering for the stream of bytes </td></tr>
+    <tr><td class="paramname">version</td><td>Version number for the <a class="el" href="../../dd/dc4/classScenePart.html" title="Class representing a scene part. ">ScenePart</a> </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a49668b1b63fac9583c9cd33b4190c532"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a49668b1b63fac9583c9cd33b4190c532">&#9670;&nbsp;</a></span>setCentroid()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ScenePart::setCentroid </td>
+          <td>(</td>
+          <td class="paramtype">arma::colvec&#160;</td>
+          <td class="paramname"><em>centroid</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Set the centroid of the scene part. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">centroid</td><td>New centroid for the scene part </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../dd/dc4/classScenePart.html#a7317e657208166855f00944ca4f019d9" title="The centroid of the scene part. ">ScenePart::centroid</a> </dd></dl>
+
+</div>
+</div>
+<a id="a015f2bac94d9e0b65cc7706073164b7a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a015f2bac94d9e0b65cc7706073164b7a">&#9670;&nbsp;</a></span>setId()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ScenePart::setId </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>id</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Set the ID of the scene part. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">id</td><td><a class="el" href="../../d5/d9c/classScene.html" title="Class representing a scene asset. ">Scene</a> part ID </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section see"><dt>See also</dt><dd>ScenePart::id </dd></dl>
+
+</div>
+</div>
+<a id="aa7c7eab0f6bec05bbf5d5cf3c0932c46"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa7c7eab0f6bec05bbf5d5cf3c0932c46">&#9670;&nbsp;</a></span>setPrimitives()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ScenePart::setPrimitives </td>
+          <td>(</td>
+          <td class="paramtype">std::vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *&gt; const &amp;&#160;</td>
+          <td class="paramname"><em>primitives</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Set the primitives of the scene part. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">primitives</td><td><a class="el" href="../../d5/d9c/classScene.html" title="Class representing a scene asset. ">Scene</a> part primitives </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../dd/dc4/classScenePart.html#a116a4b9d5c153b000349ad6397009859" title="Vector of pointers to primitives used by this scene part. ">ScenePart::mPrimitives</a> </dd></dl>
 
 </div>
 </div>

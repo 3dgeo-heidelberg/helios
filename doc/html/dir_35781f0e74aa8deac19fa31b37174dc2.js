@@ -9,5 +9,6 @@ var dir_35781f0e74aa8deac19fa31b37174dc2 =
     [ "KDTreeRaycaster.h", "da/d8b/KDTreeRaycaster_8h_source.html", null ],
     [ "Material.h", "df/d12/Material_8h_source.html", null ],
     [ "RaySceneIntersection.h", "d6/d3c/RaySceneIntersection_8h_source.html", null ],
-    [ "Scene.h", "d5/d2d/Scene_8h_source.html", null ]
+    [ "Scene.h", "d5/d2d/Scene_8h_source.html", null ],
+    [ "StaticScene.h", "d3/d0d/StaticScene_8h_source.html", null ]
 ];

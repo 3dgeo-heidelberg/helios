@@ -190,9 +190,9 @@ Public Attributes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
-<tr class="memitem:a9514a8abc75f6b1f537501b5e5c1177f"><td class="memTemplParams" colspan="2"><a id="a9514a8abc75f6b1f537501b5e5c1177f"></a>
-template&lt;class Archive &gt; </td></tr>
-<tr class="memitem:a9514a8abc75f6b1f537501b5e5c1177f"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>serialize</b> (Archive &amp;ar, const unsigned int version)</td></tr>
+<tr class="memitem:a9514a8abc75f6b1f537501b5e5c1177f"><td class="memTemplParams" colspan="2">template&lt;class Archive &gt; </td></tr>
+<tr class="memitem:a9514a8abc75f6b1f537501b5e5c1177f"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../df/de1/classPrimitive.html#a9514a8abc75f6b1f537501b5e5c1177f">serialize</a> (Archive &amp;ar, const unsigned int version)</td></tr>
+<tr class="memdesc:a9514a8abc75f6b1f537501b5e5c1177f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Serialize a <a class="el" href="../../df/de1/classPrimitive.html" title="Abstract class defining the common behavior for all primitives. ">Primitive</a> to a stream of bytes.  <a href="#a9514a8abc75f6b1f537501b5e5c1177f">More...</a><br /></td></tr>
 <tr class="separator:a9514a8abc75f6b1f537501b5e5c1177f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="friends"></a>
@@ -331,7 +331,7 @@ std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="
 <p>Obtain the axis aligned bounding box containing the primitive. </p>
 <dl class="section return"><dt>Returns</dt><dd>Axis aligned bounding box containing the primitive </dd></dl>
 
-<p>Implemented in <a class="el" href="../../d6/d44/classVoxel.html#a7ff6a6433efb6445e5987c35417dfb8a">Voxel</a>, <a class="el" href="../../d2/d1a/classAABB.html#a81d80617e6cdd7bb63cd905ad7f00ca6">AABB</a>, and <a class="el" href="../../d2/d51/classTriangle.html#a6d7f7a31381168f48d112b22b5385cbe">Triangle</a>.</p>
+<p>Implemented in <a class="el" href="../../d6/d44/classVoxel.html#a7ff6a6433efb6445e5987c35417dfb8a">Voxel</a>, <a class="el" href="../../d2/d51/classTriangle.html#a6d7f7a31381168f48d112b22b5385cbe">Triangle</a>, and <a class="el" href="../../d2/d1a/classAABB.html#a81d80617e6cdd7bb63cd905ad7f00ca6">AABB</a>.</p>
 
 </div>
 </div>
@@ -361,7 +361,7 @@ std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="
 <p>Obtain the primitive centroid. </p>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="../../df/de1/classPrimitive.html" title="Abstract class defining the common behavior for all primitives. ">Primitive</a> centroid </dd></dl>
 
-<p>Implemented in <a class="el" href="../../d6/d44/classVoxel.html#a95005aa955256519498d53af8c9a9ea4">Voxel</a>, <a class="el" href="../../d2/d1a/classAABB.html#a7d92c91bfaab8c2160e8d8a382831ab8">AABB</a>, and <a class="el" href="../../d2/d51/classTriangle.html#a940277eed8d311802254b0c12cdc375d">Triangle</a>.</p>
+<p>Implemented in <a class="el" href="../../d6/d44/classVoxel.html#a95005aa955256519498d53af8c9a9ea4">Voxel</a>, <a class="el" href="../../d2/d51/classTriangle.html#a7b3fabd5cfdf3e407f71d9a45890df44">Triangle</a>, and <a class="el" href="../../d2/d1a/classAABB.html#a91974d9cab5eb5d52ff626c384a7d4c6">AABB</a>.</p>
 
 </div>
 </div>
@@ -434,7 +434,7 @@ std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="
 |
 o
 </pre><dl class="section return"><dt>Returns</dt><dd>Offset for ground point z coordinate </dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d5/d9c/classScene.html#a497fe445d9fb73415a6927f710a082da" title="Obtain the ground point at specified XY coordinates. ">Scene::getGroundPointAt</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d5/d9c/classScene.html#a3f056f98c3ab727a98cb7c4ff0f4a754" title="Obtain the ground point at specified XY coordinates. ">Scene::getGroundPointAt</a> </dd></dl>
 
 <p>Reimplemented in <a class="el" href="../../d6/d44/classVoxel.html#ad6293802cc84c4f489aed5194a0082e6">Voxel</a>.</p>
 
@@ -862,6 +862,59 @@ o
 </dl>
 
 <p>Reimplemented in <a class="el" href="../../d6/d44/classVoxel.html#aa0cc42a810ddc441c47ab4b107601595">Voxel</a>.</p>
+
+</div>
+</div>
+<a id="a9514a8abc75f6b1f537501b5e5c1177f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9514a8abc75f6b1f537501b5e5c1177f">&#9670;&nbsp;</a></span>serialize()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Archive &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Primitive::serialize </td>
+          <td>(</td>
+          <td class="paramtype">Archive &amp;&#160;</td>
+          <td class="paramname"><em>ar</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const unsigned int&#160;</td>
+          <td class="paramname"><em>version</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Serialize a <a class="el" href="../../df/de1/classPrimitive.html" title="Abstract class defining the common behavior for all primitives. ">Primitive</a> to a stream of bytes. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">Archive</td><td>Type of rendering </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">ar</td><td>Specific rendering for the stream of bytes </td></tr>
+    <tr><td class="paramname">version</td><td>Version number for the <a class="el" href="../../df/de1/classPrimitive.html" title="Abstract class defining the common behavior for all primitives. ">Primitive</a> </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

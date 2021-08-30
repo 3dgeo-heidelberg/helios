@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['id',['id',['../de/d97/classAsset.html#ac37173d6b01d7b8caa7bd786b8de2269',1,'Asset::id()'],['../d0/d23/classScannerSettings.html#a1ea4710ab141c2548bb193b29b55107c',1,'ScannerSettings::id()'],['../d5/d6a/classDynObject.html#a59ad5ac3292b10132419c07d4297206e',1,'DynObject::id()']]],
+  ['id',['id',['../de/d97/classAsset.html#ac37173d6b01d7b8caa7bd786b8de2269',1,'Asset::id()'],['../d0/d23/classScannerSettings.html#a1ea4710ab141c2548bb193b29b55107c',1,'ScannerSettings::id()'],['../df/dfa/classDynSequence.html#a5d8e2b91af11934a1f5678927bb7e708',1,'DynSequence::id()']]],
   ['identifiers',['identifiers',['../d7/d5a/classDetailedVoxel.html#ac5791eb69e0db113aadfcb1b3116ea7e',1,'DetailedVoxel']]],
   ['ignored_5fground',['IGNORED_GROUND',['../df/d64/classLasSpecification.html#aa9c826365fbe77d2808352882e74780c',1,'LasSpecification']]],
   ['incidenceangle',['incidenceAngle',['../dc/da3/classRaySceneIntersection.html#ad5b87188865c84aefe07c9ca5734555c',1,'RaySceneIntersection']]],
@@ -28,6 +28,8 @@ var searchData=
   ['isblankline',['isBlankLine',['../d9/ddf/classVoxelFileParser.html#af67af078ef3e5ded5c0d32a21cbfa820',1,'VoxelFileParser']]],
   ['iscalcechowidth',['isCalcEchowidth',['../dc/d42/classScanner.html#ae0cf9cf8014498ea6a997106498ea714',1,'Scanner']]],
   ['isclipenabled',['isClipEnabled',['../d9/d6b/classNoiseSource.html#ad5fa6dcbd1331472337d34359a9be38d',1,'NoiseSource']]],
+  ['isdynobjectrenderingnormals',['isDynObjectRenderingNormals',['../db/d0e/classvisualhelios_1_1VHDynSceneAdapter.html#a2bbc64cbd58972a928f1660423af150d',1,'visualhelios::VHDynSceneAdapter']]],
+  ['isdynobjectupdated',['isDynObjectUpdated',['../de/d74/classDynScene.html#ae8c4abef7c395a2b7b7a7a3ba033968c',1,'DynScene::isDynObjectUpdated()'],['../db/d0e/classvisualhelios_1_1VHDynSceneAdapter.html#a08c66ed06618bcf91394c9ed8a3560de',1,'visualhelios::VHDynSceneAdapter::isDynObjectUpdated()']]],
   ['isfinished',['isFinished',['../d9/ddd/classpyhelios_1_1PyHeliosSimulation.html#a5e672e3392cbba32f8182fab64924894',1,'pyhelios::PyHeliosSimulation']]],
   ['isfixedincidenceangle',['isFixedIncidenceAngle',['../dc/d42/classScanner.html#a1ee06c00b4ed28f0a487722229385c5c',1,'Scanner']]],
   ['isfixedvalueenabled',['isFixedValueEnabled',['../d9/d6b/classNoiseSource.html#a40405e51526c82cd853143c113887eb1',1,'NoiseSource']]],
@@ -35,12 +37,19 @@ var searchData=
   ['isfullwavenoise',['isFullWaveNoise',['../dc/d42/classScanner.html#a9175c9b48fe385d9fe217fbb087e3555',1,'Scanner']]],
   ['isground',['isGround',['../d3/d89/classMaterial.html#ab01034a003a0e9798f11971f9af624c3',1,'Material']]],
   ['islinecomment',['isLineComment',['../d6/d03/classXYZPointCloudFileLoader.html#af109c0c3a32aa5069392d552460c842f',1,'XYZPointCloudFileLoader']]],
+  ['isneedingupdate',['isNeedingUpdate',['../da/d27/classvisualhelios_1_1VHDynCanvas.html#a4fb60ab4c3b0b4fb0018557237bd0bac',1,'visualhelios::VHDynCanvas']]],
+  ['isnormalmode',['isNormalMode',['../d6/d4f/classDynMotion.html#a0e17fbc8ce0f90a88337e25a30412e43',1,'DynMotion']]],
+  ['isnormalskeyboardcallbackenabled',['isNormalsKeyboardCallbackEnabled',['../df/dd2/classvisualhelios_1_1VHNormalsCanvas.html#a87e32ff212658c5e42618429527ce1a4',1,'visualhelios::VHNormalsCanvas']]],
+  ['isnormalsusagetextenabled',['isNormalsUsageTextEnabled',['../df/dd2/classvisualhelios_1_1VHNormalsCanvas.html#a49949200cc6b6be909c00664bd1ec231',1,'visualhelios::VHNormalsCanvas']]],
   ['ispaused',['isPaused',['../d9/ddd/classpyhelios_1_1PyHeliosSimulation.html#a91f7acd4e4f3b81072624830b5e5dbfd',1,'pyhelios::PyHeliosSimulation::isPaused()'],['../d1/d7b/classSimulation.html#abfb774d5e1aae1b8a081c2d5c355077e',1,'Simulation::isPaused()']]],
   ['isplatformnoisedisabled',['isPlatformNoiseDisabled',['../dc/d42/classScanner.html#a893596be90d7c1b16a4d538701ed828d',1,'Scanner']]],
-  ['isrenderingnormals',['isRenderingNormals',['../d5/dc4/classvisualhelios_1_1VHDynObjectAdapter.html#a13ae4d686bb0b1aace3aa39c42574964',1,'visualhelios::VHDynObjectAdapter::isRenderingNormals()'],['../d9/dc5/classvisualhelios_1_1VHSimpleCanvas.html#af3e0b4c311981a5d61ce22dcf3023430',1,'visualhelios::VHSimpleCanvas::isRenderingNormals()']]],
+  ['isrenderingnormals',['isRenderingNormals',['../d1/dda/classvisualhelios_1_1VHStaticObjectAdapter.html#acfca6612d21a9652c1b00e21a1d482e8',1,'visualhelios::VHStaticObjectAdapter::isRenderingNormals()'],['../df/dd2/classvisualhelios_1_1VHNormalsCanvas.html#a78f8e62047a4749341c70af337b1ace5',1,'visualhelios::VHNormalsCanvas::isRenderingNormals()']]],
   ['isrunning',['isRunning',['../d9/ddd/classpyhelios_1_1PyHeliosSimulation.html#a5ea671ee6798940be60a10fe90018bbf',1,'pyhelios::PyHeliosSimulation']]],
+  ['isselfmode',['isSelfMode',['../d6/d4f/classDynMotion.html#a1f7b2cd4c10e14b327e36308329e759e',1,'DynMotion']]],
   ['isstarted',['isStarted',['../d9/ddd/classpyhelios_1_1PyHeliosSimulation.html#a19162c9ce6e4c5945e1b34c06f68b6e1',1,'pyhelios::PyHeliosSimulation']]],
+  ['isstaticobjectrenderingnormals',['isStaticObjectRenderingNormals',['../db/d0e/classvisualhelios_1_1VHDynSceneAdapter.html#a0a3bca16f57e29e21afe85ae4970bc8f',1,'visualhelios::VHDynSceneAdapter']]],
   ['isstopped',['isStopped',['../d9/ddd/classpyhelios_1_1PyHeliosSimulation.html#a1abce8f49c437f329187859ba8392905',1,'pyhelios::PyHeliosSimulation::isStopped()'],['../d1/d7b/classSimulation.html#a8f55cc0ab14c095fdae0823acc57e423',1,'Simulation::isStopped()']]],
   ['iswritewaveform',['isWriteWaveform',['../dc/d42/classScanner.html#acedd2ab5bf6cf8040c99122857d62b53',1,'Scanner']]],
-  ['iteratevalues',['iterateValues',['../d1/d2b/classMarquardtFitter.html#ae2940cc922ad5fb396da1cf598a3a93a',1,'MarquardtFitter']]]
+  ['iteratevalues',['iterateValues',['../d1/d2b/classMarquardtFitter.html#ae2940cc922ad5fb396da1cf598a3a93a',1,'MarquardtFitter']]],
+  ['iteration',['iteration',['../df/dfa/classDynSequence.html#a42fb87bc94b5e7bbfdb6072d51e1d430',1,'DynSequence']]]
 ];

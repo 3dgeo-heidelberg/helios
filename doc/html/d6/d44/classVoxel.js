@@ -1,6 +1,6 @@
 var classVoxel =
 [
-    [ "Voxel", "d6/d44/classVoxel.html#a2a39138e73cedf56a2b9a9e2f28a2c5d", null ],
+    [ "Voxel", "d6/d44/classVoxel.html#a5c7a2b788d03ad489a17c4a21da4c204", null ],
     [ "Voxel", "d6/d44/classVoxel.html#a13fc18a3aefca7e9d9a04c2eec4ec366", null ],
     [ "Voxel", "d6/d44/classVoxel.html#a4da51b73b1521e7e7e4614f0c5b42172", null ],
     [ "~Voxel", "d6/d44/classVoxel.html#a5e774e17d703c3b261480e17ace3fc66", null ],

@@ -1,4 +1,7 @@
 <map id="visualhelios::VHDynObjectXYZRGBAdapter" name="visualhelios::VHDynObjectXYZRGBAdapter">
-<area shape="rect" id="node2" href="$d5/dc4/classvisualhelios_1_1VHDynObjectAdapter.html" title="Abstract class defining core mechanisms to adapt dynamic objects to the visual Helios context based o..." alt="" coords="117,184,296,225"/>
-<area shape="rect" id="node3" href="$d5/d6a/classDynObject.html" title="Dynamic object base implementation. " alt="" coords="93,95,177,121"/>
+<area shape="rect" id="node2" href="$d5/dfc/classvisualhelios_1_1VHStaticObjectXYZRGBAdapter.html" title="visualhelios::VHStaticObject\lXYZRGBAdapter" alt="" coords="5,289,195,331"/>
+<area shape="rect" id="node3" href="$d1/dda/classvisualhelios_1_1VHStaticObjectAdapter.html" title="Abstract class defining core mechanisms to adapt static objects to the visual Helios context based on..." alt="" coords="108,199,297,240"/>
+<area shape="rect" id="node8" href="$d5/dc4/classvisualhelios_1_1VHDynObjectAdapter.html" title="Abstract class defining core mechanisms to adapt dynamic objects to the visual Helios context based o..." alt="" coords="219,289,397,331"/>
+<area shape="rect" id="node4" href="$dd/dc4/classScenePart.html" title="Class representing a scene part. " alt="" coords="64,109,147,136"/>
+<area shape="rect" id="node5" href="$d5/dcb/classRotation.html" title="Rotation" alt="" coords="22,5,93,32"/>
 </map>

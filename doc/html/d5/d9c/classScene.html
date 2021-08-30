@@ -108,7 +108,9 @@ Inheritance diagram for Scene:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../d2/d20/classScene__inherit__graph.png" border="0" usemap="#Scene_inherit__map" alt="Inheritance graph"/></div>
 <map name="Scene_inherit__map" id="Scene_inherit__map">
-<area shape="rect" id="node2" href="../../de/d97/classAsset.html" title="Base class for all assets. " alt="" coords="7,5,63,32"/>
+<area shape="rect" id="node3" href="../../dd/d34/classStaticScene.html" title="Static scene basic implementation. " alt="" coords="5,155,99,181"/>
+<area shape="rect" id="node2" href="../../de/d97/classAsset.html" title="Base class for all assets. " alt="" coords="24,5,80,32"/>
+<area shape="rect" id="node4" href="../../de/d74/classDynScene.html" title="Dynamic scene base implementation. " alt="" coords="11,229,93,256"/>
 </map>
 <center><span class="legend">[<a target="top" href="../../graph_legend.html">legend</a>]</span></center></div>
 <div class="dynheader">
@@ -132,22 +134,28 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a2998daf42ded207ba8de523d3001298d"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d9c/classScene.html#a2998daf42ded207ba8de523d3001298d">finalizeLoading</a> ()</td></tr>
 <tr class="memdesc:a2998daf42ded207ba8de523d3001298d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle scene loading finish process.  <a href="#a2998daf42ded207ba8de523d3001298d">More...</a><br /></td></tr>
 <tr class="separator:a2998daf42ded207ba8de523d3001298d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a866e2103680b966d076df0121f147e6d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d9c/classScene.html#a866e2103680b966d076df0121f147e6d">registerParts</a> ()</td></tr>
+<tr class="memdesc:a866e2103680b966d076df0121f147e6d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Register all scene parts composing the scene in the parts vector with no repetitions.  <a href="#a866e2103680b966d076df0121f147e6d">More...</a><br /></td></tr>
+<tr class="separator:a866e2103680b966d076df0121f147e6d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa9d6bd40ca4908b40dd1d6e14ccea2c2"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="../../d2/d1a/classAABB.html">AABB</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d9c/classScene.html#aa9d6bd40ca4908b40dd1d6e14ccea2c2">getAABB</a> ()</td></tr>
 <tr class="memdesc:aa9d6bd40ca4908b40dd1d6e14ccea2c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain the axis aligned bounding box defining scene boundaries.  <a href="#aa9d6bd40ca4908b40dd1d6e14ccea2c2">More...</a><br /></td></tr>
 <tr class="separator:aa9d6bd40ca4908b40dd1d6e14ccea2c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a497fe445d9fb73415a6927f710a082da"><td class="memItemLeft" align="right" valign="top">glm::dvec3&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d9c/classScene.html#a497fe445d9fb73415a6927f710a082da">getGroundPointAt</a> (glm::dvec3 point)</td></tr>
-<tr class="memdesc:a497fe445d9fb73415a6927f710a082da"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain the ground point at specified XY coordinates.  <a href="#a497fe445d9fb73415a6927f710a082da">More...</a><br /></td></tr>
-<tr class="separator:a497fe445d9fb73415a6927f710a082da"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3f056f98c3ab727a98cb7c4ff0f4a754"><td class="memItemLeft" align="right" valign="top">glm::dvec3&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d9c/classScene.html#a3f056f98c3ab727a98cb7c4ff0f4a754">getGroundPointAt</a> (glm::dvec3 point)</td></tr>
+<tr class="memdesc:a3f056f98c3ab727a98cb7c4ff0f4a754"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain the ground point at specified XY coordinates.  <a href="#a3f056f98c3ab727a98cb7c4ff0f4a754">More...</a><br /></td></tr>
+<tr class="separator:a3f056f98c3ab727a98cb7c4ff0f4a754"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4780b1867590175d6e48f2550b4ccdf4"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="../../dc/da3/classRaySceneIntersection.html">RaySceneIntersection</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d9c/classScene.html#a4780b1867590175d6e48f2550b4ccdf4">getIntersection</a> (glm::dvec3 &amp;rayOrigin, glm::dvec3 &amp;rayDir, bool groundOnly)</td></tr>
 <tr class="memdesc:a4780b1867590175d6e48f2550b4ccdf4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain the intersection between the ray and the scene, if any.  <a href="#a4780b1867590175d6e48f2550b4ccdf4">More...</a><br /></td></tr>
 <tr class="separator:a4780b1867590175d6e48f2550b4ccdf4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0493bdc9aa66ed4143dac01d3ceeda4e"><td class="memItemLeft" align="right" valign="top">std::map&lt; double, <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d9c/classScene.html#a0493bdc9aa66ed4143dac01d3ceeda4e">getIntersections</a> (glm::dvec3 &amp;rayOrigin, glm::dvec3 &amp;rayDir, bool groundOnly)</td></tr>
 <tr class="memdesc:a0493bdc9aa66ed4143dac01d3ceeda4e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain all intersections between the ray and the scene, if any.  <a href="#a0493bdc9aa66ed4143dac01d3ceeda4e">More...</a><br /></td></tr>
 <tr class="separator:a0493bdc9aa66ed4143dac01d3ceeda4e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a61a60e72fe1240dcac742b1a1274eb1f"><td class="memItemLeft" align="right" valign="top">glm::dvec3&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d9c/classScene.html#a61a60e72fe1240dcac742b1a1274eb1f">getShift</a> ()</td></tr>
-<tr class="memdesc:a61a60e72fe1240dcac742b1a1274eb1f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain the minimum boundaries of the original axis aligned bounding box containing the scene, before it was centered so (0, 0, 0) became its new minimum boundaries.  <a href="#a61a60e72fe1240dcac742b1a1274eb1f">More...</a><br /></td></tr>
-<tr class="separator:a61a60e72fe1240dcac742b1a1274eb1f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a782302f4dc1703617d5292251bda044e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d9c/classScene.html#a782302f4dc1703617d5292251bda044e">writeObject</a> (std::string path)</td></tr>
+<tr class="memitem:a1efb5df7a0b3c59c2a6d0d85c6485a84"><td class="memItemLeft" align="right" valign="top">glm::dvec3&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d9c/classScene.html#a1efb5df7a0b3c59c2a6d0d85c6485a84">getShift</a> ()</td></tr>
+<tr class="memdesc:a1efb5df7a0b3c59c2a6d0d85c6485a84"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain the minimum boundaries of the original axis aligned bounding box containing the scene, before it was centered so (0, 0, 0) became its new minimum boundaries.  <a href="#a1efb5df7a0b3c59c2a6d0d85c6485a84">More...</a><br /></td></tr>
+<tr class="separator:a1efb5df7a0b3c59c2a6d0d85c6485a84"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af46ce55bcb11ce26343b4b72066e0cf5"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="../../d2/da0/classVertex.html">Vertex</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d9c/classScene.html#af46ce55bcb11ce26343b4b72066e0cf5">getAllVertices</a> ()</td></tr>
+<tr class="memdesc:af46ce55bcb11ce26343b4b72066e0cf5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain all vertices (without repetitions) composing the scene.  <a href="#af46ce55bcb11ce26343b4b72066e0cf5">More...</a><br /></td></tr>
+<tr class="separator:af46ce55bcb11ce26343b4b72066e0cf5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a782302f4dc1703617d5292251bda044e"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d9c/classScene.html#a782302f4dc1703617d5292251bda044e">writeObject</a> (std::string path)</td></tr>
 <tr class="memdesc:a782302f4dc1703617d5292251bda044e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Serialize the scene and write it to given output file.  <a href="#a782302f4dc1703617d5292251bda044e">More...</a><br /></td></tr>
 <tr class="separator:a782302f4dc1703617d5292251bda044e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classAsset"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classAsset')"><img src="../../closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="../../de/d97/classAsset.html">Asset</a></td></tr>
@@ -167,6 +175,9 @@ Public Attributes</h2></td></tr>
 std::vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d9c/classScene.html#a7006d57329f8e8d8563e9ff54ddcb2fc">primitives</a></td></tr>
 <tr class="memdesc:a7006d57329f8e8d8563e9ff54ddcb2fc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Vector of primitives composing the scene. <br /></td></tr>
 <tr class="separator:a7006d57329f8e8d8563e9ff54ddcb2fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3cc4bc214f0f830bb96ad276c0bdce98"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::shared_ptr&lt; <a class="el" href="../../dd/dc4/classScenePart.html">ScenePart</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d9c/classScene.html#a3cc4bc214f0f830bb96ad276c0bdce98">parts</a></td></tr>
+<tr class="memdesc:a3cc4bc214f0f830bb96ad276c0bdce98"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parts composing the scene with no repeats.  <a href="#a3cc4bc214f0f830bb96ad276c0bdce98">More...</a><br /></td></tr>
+<tr class="separator:a3cc4bc214f0f830bb96ad276c0bdce98"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_attribs_classAsset"><td colspan="2" onclick="javascript:toggleInherit('pub_attribs_classAsset')"><img src="../../closed.png" alt="-"/>&#160;Public Attributes inherited from <a class="el" href="../../de/d97/classAsset.html">Asset</a></td></tr>
 <tr class="memitem:ac37173d6b01d7b8caa7bd786b8de2269 inherit pub_attribs_classAsset"><td class="memItemLeft" align="right" valign="top"><a id="ac37173d6b01d7b8caa7bd786b8de2269"></a>
 std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/d97/classAsset.html#ac37173d6b01d7b8caa7bd786b8de2269">id</a> = &quot;&quot;</td></tr>
@@ -183,9 +194,9 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
-<tr class="memitem:a17fa122e9a94e852f6f82d5fe61b569a"><td class="memTemplParams" colspan="2"><a id="a17fa122e9a94e852f6f82d5fe61b569a"></a>
-template&lt;class Archive &gt; </td></tr>
-<tr class="memitem:a17fa122e9a94e852f6f82d5fe61b569a"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>serialize</b> (Archive &amp;ar, const unsigned int version)</td></tr>
+<tr class="memitem:a17fa122e9a94e852f6f82d5fe61b569a"><td class="memTemplParams" colspan="2">template&lt;class Archive &gt; </td></tr>
+<tr class="memitem:a17fa122e9a94e852f6f82d5fe61b569a"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d5/d9c/classScene.html#a17fa122e9a94e852f6f82d5fe61b569a">serialize</a> (Archive &amp;ar, const unsigned int version)</td></tr>
+<tr class="memdesc:a17fa122e9a94e852f6f82d5fe61b569a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Serialize a <a class="el" href="../../d5/d9c/classScene.html" title="Class representing a scene asset. ">Scene</a> to a stream of bytes.  <a href="#a17fa122e9a94e852f6f82d5fe61b569a">More...</a><br /></td></tr>
 <tr class="separator:a17fa122e9a94e852f6f82d5fe61b569a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
@@ -253,14 +264,34 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>boost::serialization
 
 </div>
 </div>
-<a id="a497fe445d9fb73415a6927f710a082da"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a497fe445d9fb73415a6927f710a082da">&#9670;&nbsp;</a></span>getGroundPointAt()</h2>
+<a id="af46ce55bcb11ce26343b4b72066e0cf5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af46ce55bcb11ce26343b4b72066e0cf5">&#9670;&nbsp;</a></span>getAllVertices()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">dvec3 Scene::getGroundPointAt </td>
+          <td class="memname">vector&lt; <a class="el" href="../../d2/da0/classVertex.html">Vertex</a> * &gt; Scene::getAllVertices </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Obtain all vertices (without repetitions) composing the scene. </p>
+<dl class="section return"><dt>Returns</dt><dd>All vertices (without repetitions) composing the scene </dd></dl>
+
+</div>
+</div>
+<a id="a3f056f98c3ab727a98cb7c4ff0f4a754"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3f056f98c3ab727a98cb7c4ff0f4a754">&#9670;&nbsp;</a></span>getGroundPointAt()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">glm::dvec3 Scene::getGroundPointAt </td>
           <td>(</td>
           <td class="paramtype">glm::dvec3&#160;</td>
           <td class="paramname"><em>point</em></td><td>)</td>
@@ -380,14 +411,14 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>boost::serialization
 
 </div>
 </div>
-<a id="a61a60e72fe1240dcac742b1a1274eb1f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a61a60e72fe1240dcac742b1a1274eb1f">&#9670;&nbsp;</a></span>getShift()</h2>
+<a id="a1efb5df7a0b3c59c2a6d0d85c6485a84"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1efb5df7a0b3c59c2a6d0d85c6485a84">&#9670;&nbsp;</a></span>getShift()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">dvec3 Scene::getShift </td>
+          <td class="memname">glm::dvec3 Scene::getShift </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -435,11 +466,87 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>boost::serialization
 
 </div>
 </div>
+<a id="a866e2103680b966d076df0121f147e6d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a866e2103680b966d076df0121f147e6d">&#9670;&nbsp;</a></span>registerParts()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Scene::registerParts </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Register all scene parts composing the scene in the parts vector with no repetitions. </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d5/d9c/classScene.html#a3cc4bc214f0f830bb96ad276c0bdce98" title="Parts composing the scene with no repeats. ">Scene::parts</a> </dd></dl>
+
+</div>
+</div>
+<a id="a17fa122e9a94e852f6f82d5fe61b569a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a17fa122e9a94e852f6f82d5fe61b569a">&#9670;&nbsp;</a></span>serialize()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Archive &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Scene::serialize </td>
+          <td>(</td>
+          <td class="paramtype">Archive &amp;&#160;</td>
+          <td class="paramname"><em>ar</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const unsigned int&#160;</td>
+          <td class="paramname"><em>version</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Serialize a <a class="el" href="../../d5/d9c/classScene.html" title="Class representing a scene asset. ">Scene</a> to a stream of bytes. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">Archive</td><td>Type of rendering </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">ar</td><td>Specific rendering for the stream of bytes </td></tr>
+    <tr><td class="paramname">version</td><td>Version number for the <a class="el" href="../../d5/d9c/classScene.html" title="Class representing a scene asset. ">Scene</a> </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a782302f4dc1703617d5292251bda044e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a782302f4dc1703617d5292251bda044e">&#9670;&nbsp;</a></span>writeObject()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">void Scene::writeObject </td>
@@ -449,6 +556,11 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>boost::serialization
           <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Serialize the scene and write it to given output file. </p>
@@ -458,6 +570,27 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>boost::serialization
   </table>
   </dd>
 </dl>
+
+<p>Reimplemented in <a class="el" href="../../de/d74/classDynScene.html#a529a2939ee6a7fb973ad19cc298d6ff1">DynScene</a>, and <a class="el" href="../../dd/d34/classStaticScene.html#a72bbc2d954c30d0ea5017e69bf1ee047">StaticScene</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="a3cc4bc214f0f830bb96ad276c0bdce98"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3cc4bc214f0f830bb96ad276c0bdce98">&#9670;&nbsp;</a></span>parts</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;std::shared_ptr&lt;<a class="el" href="../../dd/dc4/classScenePart.html">ScenePart</a>&gt; &gt; Scene::parts</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Parts composing the scene with no repeats. </p>
+<p>Please avoid manually computing this vector. If it is necessary to initialize or update it, call registerParts instead.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d5/d9c/classScene.html#a866e2103680b966d076df0121f147e6d" title="Register all scene parts composing the scene in the parts vector with no repetitions. ">Scene::registerParts</a> </dd></dl>
 
 </div>
 </div>

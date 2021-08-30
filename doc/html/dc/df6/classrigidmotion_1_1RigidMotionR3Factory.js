@@ -29,6 +29,8 @@ var classrigidmotion_1_1RigidMotionR3Factory =
     [ "makeRotationY", "dc/df6/classrigidmotion_1_1RigidMotionR3Factory.html#af7155ebb52ee815ec6dce75bbe0835d6", null ],
     [ "makeRotationZ", "dc/df6/classrigidmotion_1_1RigidMotionR3Factory.html#a1ec209a55a9ffe5ecec17a19ce9a77c8", null ],
     [ "makeTranslation", "dc/df6/classrigidmotion_1_1RigidMotionR3Factory.html#a6f234b49e0d927f161e53ec5c956825b", null ],
+    [ "serialize", "dc/df6/classrigidmotion_1_1RigidMotionR3Factory.html#ae68cb9aa8ba261d5a1b73a366eafc8d0", null ],
+    [ "boost::serialization::access", "dc/df6/classrigidmotion_1_1RigidMotionR3Factory.html#ac98d07dd8f7b70e16ccb9a01abf56b9c", null ],
     [ "canonicalReflection", "dc/df6/classrigidmotion_1_1RigidMotionR3Factory.html#a76ccff05613bbeb96b437b1101f93cbb", null ],
     [ "eps", "dc/df6/classrigidmotion_1_1RigidMotionR3Factory.html#a911a72f54e96353f54bcb44a9703212f", null ]
 ];
