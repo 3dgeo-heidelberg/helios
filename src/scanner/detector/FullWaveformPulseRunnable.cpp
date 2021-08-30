@@ -365,9 +365,7 @@ bool FullWaveformPulseRunnable::initializeFullWaveform(
     }
 
     // Compute fullwave variables
-    nsPerBin = detector->scanner->FWF_settings.binSize_ns;
     numFullwaveBins = (int)(hitTimeDelta_ns / nsPerBin);
-    peakIntensityIndex = detector->scanner->peakIntensityIndex;
 
     return true;
 }
