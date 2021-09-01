@@ -6,6 +6,8 @@ using std::vector;
 
 /**
  * @brief Class representing the root node of a KDTree
+ *
+ * @see KDTreeNode
  */
 class KDTreeNodeRoot : public KDTreeNode {
     // ***  SERIALIZATION  *** //
@@ -52,13 +54,4 @@ public:
         stats_maxDepthReached(0) {}
 
     ~KDTreeNodeRoot() override = default;
-
-    // ***  CLASS METHODS  *** //
-    // *********************** //
-    /**
-     * @brief KDTree build method
-     * @param primitives Primitives to build KDTree splitting them
-     * @return Pointer to root node of built KDTree
-     */
-    static KDTreeNodeRoot* build(const std::vector<Primitive*> & primitives);
 };
