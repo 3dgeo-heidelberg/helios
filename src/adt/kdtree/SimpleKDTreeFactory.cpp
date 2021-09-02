@@ -40,63 +40,37 @@ KDTreeNode * SimpleKDTreeFactory::buildRecursive(
     vector<Primitive*> primitives,
     int const depth
 ) const {
-    size_t primsSize = primitives.size();
-    if (primsSize == 0) {
-        return nullptr;
-    }
+    // If there are no primitives, then KDTree will be null
+    if(primitives.size() == 0) return nullptr;
 
+    // Instantiate node which will be a root node if depth is 0
     KDTreeNode *node;
     if(depth > 0) node = new KDTreeNode();
     else node = new KDTreeNodeRoot();
 
-    // TODO 5: Implement surface area heuristics?
-    int splitAxis = depth % 3;
+    // Determine split axis and position
+    int splitAxis;
+    double splitPos;
+    defineSplit(primitives, depth, splitAxis, splitPos);
 
-    // Sort faces along split axis:
-    // ATTENTION: Sorting must happen BEFORE splitPos is computed as the median
-
-    // Sort primitives along split axis:
-    std::sort(
-        primitives.begin(),
-        primitives.end(),
-        KDTreePrimitiveComparator(splitAxis)
+    // Fill children's primitive lists
+    vector<Primitive*> leftPrimitives, rightPrimitives;
+    populateSplits(
+        primitives, splitAxis, splitPos, leftPrimitives, rightPrimitives
     );
 
-    // Compute split position:
-    auto p = next(primitives.begin(), primsSize / 2);
-    double splitPos = (*p)->getCentroid()[splitAxis];
+    // Build nodes from children's primitive list or make current one leaf
+    buildChildrenNodes(
+        primitives,
+        splitAxis,
+        depth,
+        splitPos,
+        leftPrimitives,
+        rightPrimitives,
+        node
+    );
 
-    // ########## BEGIN Fill children's primitive lists ##########
-
-    vector<Primitive*> sublist_left;
-    vector<Primitive*> sublist_right;
-
-    for (auto p : primitives) {
-        AABB* box = p->getAABB();
-
-        if (box->getMin()[splitAxis] <= splitPos) {
-            sublist_left.push_back(p);
-        }
-
-        if (box->getMax()[splitAxis] > splitPos) {
-            sublist_right.push_back(p);
-        }
-    }
-
-    if(sublist_left.size() != primsSize && sublist_right.size() != primsSize){
-        node->splitAxis = splitAxis;
-        node->splitPos = splitPos;
-        if(!sublist_left.empty())
-            node->left = buildRecursive(sublist_left, depth + 1);
-        if(!sublist_right.empty())
-            node->right = buildRecursive(sublist_right, depth + 1);
-    }
-    else {
-        // Otherwise, make this node a leaf:
-        node->splitAxis = -1;
-        node->primitives = primitives;
-    }
-
+    // Return built node
     return node;
 }
 
@@ -118,4 +92,69 @@ void SimpleKDTreeFactory::computeKDTreeStats(KDTreeNodeRoot *root) const{
     root->stats_maxNumPrimsInLeaf = maxNumPrimsInLeaf;
     root->stats_minNumPrimsInLeaf = minNumPrimsInLeaf;
     root->stats_maxDepthReached = maxDepth;
+}
+
+void SimpleKDTreeFactory::defineSplit(
+    vector<Primitive *> const &primitives,
+    int const depth,
+    int &splitAxis,
+    double &splitPos
+) const {
+    // Find split axis
+    splitAxis = depth % 3;
+
+    // Sort faces along split axis:
+    // ATTENTION: Sorting must happen BEFORE splitPos is computed as the median
+    // Sort primitives along split axis:
+    std::sort(
+        primitives.begin(),
+        primitives.end(),
+        KDTreePrimitiveComparator(splitAxis)
+    );
+
+    // Compute split position from centroid of median primitive
+    auto p = next(primitives.begin(), primitives.size()/2);
+    splitPos = (*p)->getCentroid()[splitAxis];
+}
+
+void SimpleKDTreeFactory::populateSplits(
+    vector<Primitive *> const &primitives,
+    int const splitAxis,
+    double const splitPos,
+    vector<Primitive *> &leftPrimitives,
+    vector<Primitive *> &rightPrimitives
+) const {
+    for(auto p : primitives){
+        AABB *box = p->getAABB();
+        if(box->getMin()[splitAxis] <= splitPos) leftPrimitives.push_back(p);
+        if(box->getMax()[splitAxis] > splitPos) rightPrimitives.push_back(p);
+    }
+}
+
+void SimpleKDTreeFactory::buildChildrenNodes(
+    vector<Primitive *> const &primitives,
+    int const splitAxis,
+    int const depth,
+    double const splitPos,
+    vector<Primitive *> const &leftPrimitives,
+    vector<Primitive *> const &rightPrimitives,
+    KDTreeNode *node
+) const {
+    size_t const primsSize = primitives.size();
+    if(
+        leftPrimitives.size() != primsSize &&
+        rightPrimitives.size() != primsSize
+    ){
+        node->splitAxis = splitAxis;
+        node->splitPos = splitPos;
+        if(!leftPrimitives.empty())
+            node->left = buildRecursive(leftPrimitives, depth + 1);
+        if(!rightPrimitives.empty())
+            node->right = buildRecursive(rightPrimitives, depth + 1);
+    }
+    else {
+        // Otherwise, make this node a leaf:
+        node->splitAxis = -1;
+        node->primitives = primitives;
+    }
 }

@@ -10,9 +10,8 @@
 #include <IBinaryTreeNode.h>
 #include <BinaryTreeDepthIterator.h>
 #include <BinaryTreeFastDepthIterator.h>
-// TODO Rethink : Implement and include below iterators
-/*#include <BinaryTreeBreadthIterator.h>
-#include <BinaryTreeFastBreadthIterator.h>*/
+#include <BinaryTreeBreadthIterator.h>
+#include <BinaryTreeFastBreadthIterator.h>
 #include <Primitive.h>
 #include <AABB.h>
 
@@ -160,23 +159,22 @@ public:
      */
     inline BinaryTreeFastDepthIterator<KDTreeNode> buildFastDepthIterator()
     {return {this};}
-    // TODO Rethink : Uncomment below iterators
     /**
      * @brief Build a breadth iterator starting at this node
      * @return Breadth iterator starting at this node
      * @see BinaryTreeBreadthIterator
      */
-    /*inline BinaryTreeBreadthIterator<KDTreeNode> buildBreadthIterator(
+    inline BinaryTreeBreadthIterator<KDTreeNode> buildBreadthIterator(
         int const depth=0
     )
-    {return {this, depth};}*/
+    {return {this, depth};}
     /**
      * @brief Build a fast breadth iterator starting at this node
      * @return Fast breadth iterator starting at this node
      * @see BinaryTreeFastBreadthIterator
      */
-    /*inline BinaryTreeFastBreadthIterator<KDTreeNode> buildFastBreadthIterator()
-    {return {this};}*/
+    inline BinaryTreeFastBreadthIterator<KDTreeNode> buildFastBreadthIterator()
+    {return {this};}
 
 	// ***  OBJECT METHODS  *** //
 	// ************************ //
