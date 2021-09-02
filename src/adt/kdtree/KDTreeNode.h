@@ -24,7 +24,7 @@
 /**
  * @brief Class representing a KDTree node
  */
-class KDTreeNode : public IBinaryTreeNode<KDTreeNode>{
+class KDTreeNode : public IBinaryTreeNode{
     // ***  SERIALIZATION  *** //
     // *********************** //
 	friend class boost::serialization::access;
@@ -180,14 +180,6 @@ public:
 
 	// ***  OBJECT METHODS  *** //
 	// ************************ //
-	/**
-	 * @brief Analyze KDTree computing its max depth and the minimum and
-	 *  maximum number of primitives considering all nodes
-	 * @param root Root node
-	 * @param depth Current depth. Useful for tracking since computations
-	 *  require recursive analysis of KDTree
-	 */
-    void computeKDTreeStats(KDTreeNode *root, int depth=0);
     /**
      * @brief Serialize KDTree
      * @param path Path to file where the serialized KDTree must be exported

@@ -52,27 +52,6 @@ void KDTreeNode::swap(KDTreeNode &kdtn){
 
 // ***  OBJECT METHODS  *** //
 // ************************ //
-void KDTreeNode::computeKDTreeStats(KDTreeNode *_root, int depth){
-    KDTreeNodeRoot *root = (KDTreeNodeRoot *) _root;
-
-    // Update max depth if necessary
-    if(depth > root->stats_maxDepthReached)
-        root-> stats_maxDepthReached = depth;
-
-    if(splitAxis == -1){ // If leaf node
-        int nPrimitives = primitives.size();
-        if(nPrimitives > root->stats_maxNumPrimsInLeaf)
-            root->stats_maxNumPrimsInLeaf = nPrimitives;
-        if(nPrimitives < root->stats_minNumPrimsInLeaf){
-            root->stats_minNumPrimsInLeaf = nPrimitives;
-        }
-    }
-
-    if(left != nullptr) left->computeKDTreeStats(_root, depth+1);
-    if(right != nullptr) right->computeKDTreeStats(_root, depth+1);
-
-}
-
 void KDTreeNode::writeObject(string path) {
     stringstream ss;
 	ss << "Writing " << path << "...";

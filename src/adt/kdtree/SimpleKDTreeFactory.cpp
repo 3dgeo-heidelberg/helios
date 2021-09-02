@@ -23,8 +23,7 @@ KDTreeNodeRoot* SimpleKDTreeFactory::makeFromPrimitives(
         logging::DEBUG(ss.str());
     }
     else{
-        //root->computeKDTreeStats(root, 0); // TODO Remove
-        computeKDTreeStats(root); // TODO Rethink : Confirm it is working
+        computeKDTreeStats(root);
         ss  << "KDTree (num. primitives " << primitives.size() << ") :\n\t"
             << "Max. # primitives in leaf: "
             << root->stats_maxNumPrimsInLeaf << "\n\t"
@@ -87,18 +86,10 @@ KDTreeNode * SimpleKDTreeFactory::buildRecursive(
     if(sublist_left.size() != primsSize && sublist_right.size() != primsSize){
         node->splitAxis = splitAxis;
         node->splitPos = splitPos;
-
-        // TODO Rethink : Unnecesary ifs?
-        // Because: If |L| != |b| != |R| then both |L| and |R| are > 0
-        // Where b is the node, L the left partition and R the right partition
-
-        if (sublist_left.size() > 0) {
+        if(!sublist_left.empty())
             node->left = buildRecursive(sublist_left, depth + 1);
-        }
-
-        if (sublist_right.size() > 0) {
+        if(!sublist_right.empty())
             node->right = buildRecursive(sublist_right, depth + 1);
-        }
     }
     else {
         // Otherwise, make this node a leaf:
@@ -115,7 +106,7 @@ void SimpleKDTreeFactory::computeKDTreeStats(KDTreeNodeRoot *root) const{
     int maxNumPrimsInLeaf = 0;
     int minNumPrimsInLeaf = std::numeric_limits<int>::max();
     while(btdi.hasNext()){
-        IterableTreeNode<IBinaryTreeNode<KDTreeNode>> node = btdi.next();
+        IterableTreeNode<IBinaryTreeNode> node = btdi.next();
         if(node.getDepth() > maxDepth) maxDepth = node.getDepth();
         KDTreeNode * const kdtNode = static_cast<KDTreeNode *>(node.getNode());
         if(kdtNode->isLeafNode()){

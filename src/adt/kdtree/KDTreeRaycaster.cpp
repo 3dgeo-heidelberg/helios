@@ -174,7 +174,7 @@ Primitive* KDTreeRaycaster::search_recursive(
     double tmax
 ){
 
-	Primitive* hitPrim = NULL;
+	Primitive* hitPrim = nullptr;
 
 	// ######### BEGIN If node is a leaf, perform ray-primitive intersection on all primitives in the leaf's bucket ###########
 	if (node->splitAxis == -1) {
@@ -206,7 +206,7 @@ Primitive* KDTreeRaycaster::search_recursive(
             ){
 				if(
 				    !groundOnly ||
-				    (prim->material != NULL && prim->material->isGround)
+				    (prim->material != nullptr && prim->material->isGround)
                 ){
 					closestHitDistance = newDistance;
 					hitPrim = prim;
@@ -223,8 +223,8 @@ Primitive* KDTreeRaycaster::search_recursive(
 
 		double thit = numeric_limits<double>::infinity();
 
-		KDTreeNode* first = NULL;
-		KDTreeNode* second = NULL;
+		KDTreeNode* first = nullptr;
+		KDTreeNode* second = nullptr;
 
 		// ############ BEGIN Check ray direction to figure out thorugh which sides the ray passes in which order ###########
 
@@ -270,7 +270,7 @@ Primitive* KDTreeRaycaster::search_recursive(
 		else {
 			hitPrim = search_recursive(first, tmin, thit+epsilon);
 
-			if (hitPrim == NULL) {
+			if (hitPrim == nullptr) {
 				hitPrim = search_recursive(second, thit-epsilon, tmax);
 			}
 		}

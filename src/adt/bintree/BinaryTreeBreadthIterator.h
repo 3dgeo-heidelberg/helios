@@ -14,18 +14,18 @@ using std::deque;
  * @author Alberto M. Esmoris Pena
  * @version 1.0
  *
- * @brief Like fast depth first iterator but wrapping tree nodes inside a
+ * @brief Like fast breadth first iterator but wrapping tree nodes inside a
  *  IterableTreeNode instance
  *
  * @tparam NodeType Type of binary tree node. It must correspond to a class
  *  which extends IBinaryTreeNode interface
  *
- * @see BinaryTreeFastDepthIterator
+ * @see BinaryTreeFastBreadthIterator
  * @see IterableTreeNode
  * @see IBinaryTreeNode
  */
 template <typename NodeType>
-class BinaryTreeDepthIterator :
+class BinaryTreeBreadthIterator :
     public ITreeIterator<IterableTreeNode<IBinaryTreeNode>>
 {
 private:
@@ -33,15 +33,15 @@ private:
     // *********************** //
     friend class boost::serialization::access;
     /**
-     * @brief Serialize a BinaryTreeDepthIterator to a stream of bytes
+     * @brief Serialize a BinaryTreeBreadthIterator to a stream of bytes
      * @tparam Archive Type of rendering
      * @param ar Specific rendering for the stream of bytes
-     * @param version Version number for the BinaryTreeDepthIterator
+     * @param version Version number for the BinaryTreeBreadthIterator
      */
-    template<class Archive>
-    void serialize(Archive &ar, const unsigned int version){
+    template <class Archive>
+    void serialize(Archive &ar, unsigned int const version){
         boost::serialization::base_object<
-            BinaryTreeDepthIterator<NodeType>,
+            BinaryTreeBreadthIterator<NodeType>,
             ITreeIterator<IterableTreeNode<IBinaryTreeNode>>
         >();
         ar &boost::serialization::base_object<
@@ -54,7 +54,7 @@ protected:
     // ***  ATTRIBUTES  *** //
     // ******************** //
     /**
-     * @brief Double ended queue used as a stack to handle nodes visiting
+     * @brief Double ended queue used as a queue to handle nodes visiting
      */
     deque<IterableTreeNode<IBinaryTreeNode>> pendingNodes;
 
@@ -62,29 +62,29 @@ public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //
     // ************************************ //
     /**
-     * @brief Default constructor for binary tree depth iterator
+     * @brief Default constructor for binary tree breadth iterator
      */
-    BinaryTreeDepthIterator() = default;
+    BinaryTreeBreadthIterator() = default;
     /**
-     * @brief Construct a binary tree depth iterator calling the start
-     *  method with given node
-     * @param node Node to start depth iterating from
+     * @brief Construct a binary tree breadth iterator calling the start method
+     *  with given node
+     * @param node Node to start breadth iterating from
      * @param depth The depth at which given node is said to be located
-     * @see BinaryTreeDepthIterator::start
+     * @see BinaryTreeBreadthIterator::start
      */
-    BinaryTreeDepthIterator(NodeType *node, int const depth=0) :
-        BinaryTreeDepthIterator()
+    BinaryTreeBreadthIterator(NodeType *node, int const depth=0) :
+        BinaryTreeBreadthIterator()
     {start(node, depth);}
     /**
-     * @brief Construct a binary tree depth iterator calling the start method
+     * @brief Construct a binary tree breadth iterator calling the start method
      *  with given iterable tree node
-     * @param node Iterable tree node to start depth iterating from
-     * @see BinaryTreeDepthIterator::start
+     * @param node Iterable tree node to start breadth iterating from
+     * @see BinaryTreeBreadthIterator::start
      */
-    BinaryTreeDepthIterator(IterableTreeNode<IBinaryTreeNode> node)
-        : BinaryTreeDepthIterator()
+    BinaryTreeBreadthIterator(IterableTreeNode<IBinaryTreeNode> node)
+        : BinaryTreeBreadthIterator()
     {start(node);}
-    virtual ~BinaryTreeDepthIterator() {}
+    virtual ~BinaryTreeBreadthIterator() {}
 
     // ***  TREE ITERATOR INTERFACE  *** //
     // ********************************* //
@@ -101,7 +101,7 @@ public:
      * @param node Node to start depth iterating from
      * @see ITreeIterator::start
      */
-    inline void start(IterableTreeNode<IBinaryTreeNode> node) override {
+    inline void start(IterableTreeNode<IBinaryTreeNode> node) override{
         pendingNodes.clear();
         pendingNodes.push_back(node);
     }
@@ -113,21 +113,21 @@ public:
      */
     inline bool hasNext() const override {return !pendingNodes.empty();}
     /**
-     * @brief Obtain the next node according to depth iteration criterion
-     * @return Next node according to depth iteration criterion
+     * @brief Obtain the next node according to breadth iteration criterion
+     * @return Next node according to breadth iteration criterion
      * @see ITreeIterator::next
      */
-    inline IterableTreeNode<IBinaryTreeNode> next() override {
-        IterableTreeNode<IBinaryTreeNode> node = pendingNodes.back();
-        pendingNodes.pop_back();
-        if(node.getNode()->getRightChild() != nullptr)
-            pendingNodes.emplace_back(
-                node.getNode()->getRightChild(),
-                node.getDepth()+1
-            );
+    inline IterableTreeNode<IBinaryTreeNode> next() override{
+        IterableTreeNode<IBinaryTreeNode> node = pendingNodes.front();
+        pendingNodes.pop_front();
         if(node.getNode()->getLeftChild() != nullptr)
             pendingNodes.emplace_back(
                 node.getNode()->getLeftChild(),
+                node.getDepth()+1
+            );
+        if(node.getNode()->getRightChild() != nullptr)
+            pendingNodes.emplace_back(
+                node.getNode()->getRightChild(),
                 node.getDepth()+1
             );
         return node;
