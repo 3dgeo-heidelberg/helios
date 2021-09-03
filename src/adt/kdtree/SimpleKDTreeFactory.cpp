@@ -95,7 +95,7 @@ void SimpleKDTreeFactory::computeKDTreeStats(KDTreeNodeRoot *root) const{
 }
 
 void SimpleKDTreeFactory::defineSplit(
-    vector<Primitive *> const &primitives,
+    vector<Primitive *> &primitives,
     int const depth,
     int &splitAxis,
     double &splitPos

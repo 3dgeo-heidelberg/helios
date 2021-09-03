@@ -23,6 +23,7 @@ set(HELIOS_INCLUDE_DIRECTORIES
     "src/noise/"
     "src/maths/"
     "src/maths/rigidmotion/"
+    "src/maths/fluxionum/"
     "src/util/"
     "src/util/serialization/"
     "src/util/logger/"

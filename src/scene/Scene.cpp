@@ -15,7 +15,8 @@ using namespace std;
 #include <glm/gtx/string_cast.hpp>
 using namespace glm;
 
-#include <SimpleKDTreeFactory.h>
+//#include <SimpleKDTreeFactory.h> // Uncomment to debug heuristic
+#include <SAHKDTreeFactory.h> // Comment to debug heuristic
 #include "KDTreeRaycaster.h"
 
 #include "Scene.h"
@@ -50,9 +51,10 @@ Scene::Scene(Scene &s) {
     this->primitives.push_back(p->clone());
   }
 
-  SimpleKDTreeFactory skdtf;
+  //SimpleKDTreeFactory skdtf; // Uncomment to debug heuristic is not failing
+  SAHKDTreeFactory sahkdtf; // Comment to debug heuristic is not failing
   this->kdtree = shared_ptr<KDTreeNodeRoot>(
-      skdtf.makeFromPrimitives(primitives)
+      sahkdtf.makeFromPrimitives(primitives)
   );
   registerParts();
 }
@@ -140,8 +142,9 @@ bool Scene::finalizeLoading() {
 
   TimeWatcher tw;
   tw.start();
-  SimpleKDTreeFactory skdtf;
-  kdtree = shared_ptr<KDTreeNodeRoot>(skdtf.makeFromPrimitives(primitives));
+  //SimpleKDTreeFactory skdtf; // Uncomment to debug heuristic is not failing
+  SAHKDTreeFactory sahkdtf; // Comment to debug heuristic is not failing
+  kdtree = shared_ptr<KDTreeNodeRoot>(sahkdtf.makeFromPrimitives(primitives));
 
   tw.stop();
   ss << "KD built in " << tw.getElapsedDecimalSeconds() << "s";

@@ -29,7 +29,7 @@ private:
             SimpleKDTreeFactory,
             KDTreeFactory
         >();
-        ar &boost::serialization::base_object<SimpleKDTreeFactory>(*this);
+        ar &boost::serialization::base_object<KDTreeFactory>(*this);
     }
 
 public:
@@ -48,7 +48,7 @@ public:
      * @param primitives Primitives to build simple KDTree splitting them
      * @return Pointer to root node of built simple KDTree
      */
-    KDTreeNodeRoot* makeFromPrimitives(
+    KDTreeNodeRoot * makeFromPrimitives(
         vector<Primitive *> const &primitives
     ) const override;
 
@@ -100,7 +100,7 @@ protected:
      * @param[out] splitPos Store the split position
      */
     virtual void defineSplit(
-        vector<Primitive *> const &primitives,
+        vector<Primitive *> &primitives,
         int const depth,
         int &splitAxis,
         double &splitPos
