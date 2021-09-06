@@ -142,6 +142,13 @@ public:
      *      \right\rangle}
      * \f]
      *
+     * To clarify, consider the split axis is the \f$j\f$-th axis. Then, the
+     *  spatial median would be:
+     * \f[
+     *  \mathrm{argmin}_{\phi_j} =
+     *      \sum_{i=1}^{m}{\left|p_{ij}-\phi_j\right|}
+     * \f]
+     *
      *
      * <i>For a more detailed explanation refer to "Heuristics for ray tracing
      *  using space subdivision" by J. David MacDonald and Kellogg S. Booth.

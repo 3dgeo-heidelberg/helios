@@ -1,8 +1,14 @@
+#pragma once
+
 #include <Minimizer.h>
 
 #include <boost/serialization/serialization.hpp>
 
+#include <vector>
+
 namespace fluxionum{
+
+using std::vector;
 
 /**
  * @author Alberto M. Esmoris Pena
@@ -53,8 +59,8 @@ public:
      * @brief Differential minimizer default constructor
      * @see fluxionum::DiffMinimizer::df
      */
-    DiffMinimizer(function<OT(IT)> f, vector<function<OT(IT)> df) :
-        Minimizer(f),
+    DiffMinimizer(function<OT(IT)> f, vector<function<OT(IT)>> df) :
+        Minimizer<IT, OT>(f),
         df(df)
     {}
     virtual ~DiffMinimizer() = default;
@@ -66,7 +72,7 @@ public:
      * @return Derivatives of the function to be minimized
      * @see fluxionum::DiffMinimizer::df
      */
-    virtual vector<function<OT(IT)>> getDerivatives() const {return f;}
+    virtual vector<function<OT(IT)>> getDerivatives() const {return df;}
     /**
      * @brief Set the derivatives of the function to be minimized
      * @param df New vector of derivatives of the function to be minimized

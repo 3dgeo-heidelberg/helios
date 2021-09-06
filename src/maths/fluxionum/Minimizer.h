@@ -1,3 +1,5 @@
+#pragma once
+
 #include <boost/serialization/serialization.hpp>
 
 #include <functional>
@@ -65,10 +67,11 @@ public:
     // ********************** //
     /**
      * @brief Find the argument which minimizes minimizer's function
+     * @param x
      * @return Argument which minimizes minimizer's function
      * @see fluxionum::Minimizer::f<OT(IT)>
      */
-    virtual IT argmin() = 0;
+    virtual IT argmin(IT x) = 0;
 
     // ***  GETTERs and SETTERs  *** //
     // ***************************** //

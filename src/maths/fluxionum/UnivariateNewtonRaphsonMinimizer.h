@@ -1,4 +1,8 @@
-#include <Minimizer.h>
+#ifndef _UNIVARIATENEWTONRAHPSONMINIMIZER_H_
+#define _UNIVARIATENEWTONRAHPSONMINIMIZER_H_
+
+#include <DiffMinimizer.h>
+#include <IterativeMethodHandler.h>
 
 #include <boost/serialization/serialization.hpp>
 
@@ -38,7 +42,18 @@ private:
         ar &boost::serialization::base_object<
             DiffMinimizer
         >(*this);
+        ar &imh;
     }
+
+protected:
+    // ***  ATTRIBUTES  *** //
+    // ******************** //
+    /**
+     * @brief Iterative method handler for the univariate Newton-Raphson
+     *  minimization
+     * @see fluxion::IterativeMethodHandler
+     */
+    IterativeMethodHandler<IT, OT> imh;
 
 public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //
@@ -51,8 +66,18 @@ public:
      */
     UnivariateNewtonRaphsonMinimizer(
         function<OT(IT)> f,
-        vector<function<OT(IT)> df
-    ) : DiffMinimizer(f, df) {}
+        vector<function<OT(IT)>> df
+    ) :
+        DiffMinimizer<IT, OT>(f, df),
+        imh(IterativeMethodHandler<IT, OT>(
+            1000,
+            false,
+            0.000000001,
+            3,
+            0.000000001,
+            true
+        ))
+    {}
     /**
      * @brief Alternative constructor for univariate Newton-Raphson minimizer
      * @param f Univariate function to be minimized
@@ -64,7 +89,17 @@ public:
         function<OT(IT)> f,
         function<OT(IT)> df,
         function<OT(IT)> d2f
-    ) : DiffMinimizer(f, df(vector<function<OT(IT)>{df, d2f})) {}
+    ) :
+        DiffMinimizer<IT, OT>(f, vector<function<OT(IT)>>({df, d2f})),
+        imh(IterativeMethodHandler<IT, OT>(
+            1000,
+            false,
+            0.000000001,
+            3,
+            0.000000001,
+            true
+        ))
+    {}
     virtual ~UnivariateNewtonRaphsonMinimizer() = default;
 
     // ***  MINIMIZATION  *** //
@@ -80,7 +115,29 @@ public:
      * \f]
      * @see fluxionum::Minimizer::argmin
      */
-    IT argmin() override;
+    IT argmin(IT x) override;
+
+    // ***  GETTERs and SETTERs  *** //
+    // ***************************** //
+    /**
+     * @brief Obtain the iterative method handler
+     * @return Iterative method handler
+     * @see fluxionum::UnivariateNewtonRaphsonMinimizer::imh
+     */
+    IterativeMethodHandler<IT, OT> & getIterativeMethodHandler() {return imh;}
+    /**
+     * @brief Set the iterative method handler
+     * @param imh New iterative method handler
+     * @see fluxionum::UnivariateNewtonRaphsonMinimizer::imh
+     */
+    void setIterativeMethodHandler(
+        IterativeMethodHandler<IT, OT> const &imh
+    )
+    {this->imh = imh;}
 };
 
+
 }
+#endif
+
+#include <UnivariateNewtonRaphsonMinimizer.tpp>
