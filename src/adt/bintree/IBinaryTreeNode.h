@@ -29,7 +29,7 @@ public:
      * @brief Check whether current node is a leaf node (true) or not (false)
      * @return True if current node is a leaf node, false otherwise
      */
-    virtual bool isLeafNode()
+    virtual bool isLeafNode() const
     {return getLeftChild()==nullptr && getRightChild()==nullptr;}
 
 };

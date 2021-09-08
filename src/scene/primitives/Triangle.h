@@ -11,6 +11,7 @@
  * @brief Class representing triangle primitive
  */
 class Triangle : public Primitive {
+private:
   // ***  SERIALIZATION  *** //
   // *********************** //
   friend class boost::serialization::access;
@@ -32,6 +33,7 @@ class Triangle : public Primitive {
     //ar &verts;  // Not needed because they are in save/load construct
   }
 
+protected:
   // ***  ATTRIBUTES  *** //
   // ******************** //
   /**

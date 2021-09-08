@@ -26,6 +26,9 @@ class KDTreeNodeRoot : public KDTreeNode {
         ar & stats_maxNumPrimsInLeaf;
         ar & stats_minNumPrimsInLeaf;
         ar & stats_maxDepthReached;
+        ar & stats_numInterior;
+        ar & stats_numLeaves;
+        ar & stats_totalCost;
     }
 public:
     // ***  ATTRIBUTES  *** //
@@ -42,6 +45,20 @@ public:
      * @brief Maximum depth of the KDTree
      */
     int stats_maxDepthReached;
+    /**
+     * @brief Number of interior nodes in the KDTree
+     */
+    int stats_numInterior;
+    /**
+     * @brief Number of leaf nodes in the KDTree
+     */
+    int stats_numLeaves;
+    /**
+     * @brief Total cost of three. It changes depending on tree building
+     *  strategy. It might be NaN if tree building strategy is not based on
+     *  computing any cost
+     */
+    double stats_totalCost;
 
     // ***  CONSTRUCTION / DESTRUCTION  *** //
     // ************************************ //

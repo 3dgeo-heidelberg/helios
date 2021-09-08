@@ -56,9 +56,7 @@ RaySceneIntersection* KDTreeRaycaster::search(
 	    tmin-epsilon,
 	    tmax+epsilon
     );
-	if (prim == NULL) {
-		return NULL;
-	}
+	if (prim == nullptr) return nullptr;
 
 	RaySceneIntersection* result = new RaySceneIntersection();
 	result->prim = prim;

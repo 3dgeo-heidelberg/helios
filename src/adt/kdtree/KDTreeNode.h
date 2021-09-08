@@ -44,7 +44,9 @@ class KDTreeNode : public IBinaryTreeNode{
 		ar & left;
         ar & right;
 		ar & splitPos;
+		ar & bound;
         ar & splitAxis;
+        ar & surfaceArea;
 		ar & primitives;
     }
 
@@ -66,9 +68,17 @@ public:
 	 */
     double splitPos = 0;
     /**
+     * @brief The axis-aligned boundary of the node
+     */
+    AABB bound;
+    /**
      * @brief Space axis to consider at current depth
      */
     int splitAxis = 0;
+    /**
+     * @brief The summation of areas for all faces at node boundaries
+     */
+    double surfaceArea = std::numeric_limits<double>::quiet_NaN();
     /**
      * @brief Vector of primitives associated with the node
      */
