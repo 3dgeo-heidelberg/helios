@@ -84,6 +84,12 @@ helios <survey_file_path> [OPTIONAL ARGUMENTS]
             threads will be used to compute the simulation
         --rebuildScene
             Force scene rebuild even when a previosly built scene is available
+        --kdt <integer>
+            Specify the type of KDTree to be bulid for the scene.
+            The default 1 is for the simple KDTree based on median balancing,
+            2 for the SAH based KDTree and 3 for the SAH with best axis one
+        --sahNodes <integer>
+            Specify how many nodes must be used by the Surface Area Heuristic
         --disablePlatformNoise
             Disable platform noise, no matter what is specified on XML files
         --disableLegNoise
