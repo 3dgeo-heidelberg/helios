@@ -8,7 +8,7 @@
 // *************************************** //
 KDTreeNodeRoot* SimpleKDTreeFactory::makeFromPrimitives(
     vector<Primitive *> const &primitives
-) const {
+) {
     KDTreeNodeRoot *root = (KDTreeNodeRoot *) buildRecursive(
         nullptr,        // Parent node
         false,          // Root node is not left, because it is root
@@ -54,7 +54,7 @@ KDTreeNode * SimpleKDTreeFactory::buildRecursive(
     bool const left,
     vector<Primitive*> primitives,
     int const depth
-) const {
+) {
     // If there are no primitives, then KDTree will be null
     if(primitives.empty()) return nullptr;
 
@@ -161,7 +161,7 @@ void SimpleKDTreeFactory::buildChildrenNodes(
     int const depth,
     vector<Primitive *> const &leftPrimitives,
     vector<Primitive *> const &rightPrimitives
- {
+){
     size_t const primsSize = primitives.size();
     if(
         leftPrimitives.size() != primsSize &&
@@ -252,10 +252,5 @@ void SimpleKDTreeFactory::computeNodeBoundaries(
             node->surfaceArea = (1.0-ratio) * parent->surfaceArea;
             node->bound = AABB(ax, ay, az, bx, by, bz);
         }
-        // TODO Remove section ---
-        if(node->surfaceArea < 0.0){
-            std::cout << "Negative surface area: " << node->surfaceArea << std::endl;
-        }
-        // --- TODO Remove section
     }
 }

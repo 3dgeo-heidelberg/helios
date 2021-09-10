@@ -171,7 +171,7 @@ Primitive* KDTreeRaycaster::search_recursive(
     double tmin,
     double tmax
 ){
-
+    if(node==nullptr) return nullptr; // Null nodes cannot contain primitives
 	Primitive* hitPrim = nullptr;
 
 	// ######### BEGIN If node is a leaf, perform ray-primitive intersection on all primitives in the leaf's bucket ###########

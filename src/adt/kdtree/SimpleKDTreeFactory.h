@@ -50,7 +50,7 @@ public:
      */
     KDTreeNodeRoot * makeFromPrimitives(
         vector<Primitive *> const &primitives
-    ) const override;
+    ) override;
 
 protected:
     // ***  BUILDING METHODS  *** //
@@ -73,7 +73,7 @@ protected:
         bool const left,
         vector<Primitive*> primitives,
         int const depth
-    ) const;
+    ) ;
     /**
      * @brief Analyze KDTree computing its max depth and the minimum and
      *  maximum number of primitives considering all nodes

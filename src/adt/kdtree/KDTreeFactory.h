@@ -48,5 +48,5 @@ public:
      */
     virtual KDTreeNodeRoot* makeFromPrimitives(
         vector<Primitive *> const &primitives
-    ) const = 0;
+    ) = 0;
 };

@@ -1,9 +1,6 @@
 #include <SAHKDTreeFactory.h>
 
 #include <KDTreePrimitiveComparator.h>
-#include <fluxionum/UnivariateNewtonRaphsonMinimizer.h>
-
-using fluxionum::UnivariateNewtonRaphsonMinimizer;
 
 // ***  BUILDING METHODS  *** //
 // ************************** //
@@ -23,41 +20,25 @@ void SAHKDTreeFactory::defineSplit(
         primitives.end(),
         KDTreePrimitiveComparator(node->splitAxis)
     );
-    Primitive * medianObject = primitives[m/2]; // The median object
-    double const objectMedian = medianObject->getCentroid()[node->splitAxis];
 
-    // TODO Rethink : This is the Simple KDTree implementation. ...
-    // ... It must be substituted by the SAH implementation
-    node->splitPos = medianObject->getCentroid()[node->splitAxis];
-    //return; // TODO Remove
-
-    // TODO Rethink : Binning based search can be improved with spatial median
     // Discrete search of optimal splitting plane according to loss function
     double const a = node->bound.getMin()[node->splitAxis];
     double const b = node->bound.getMax()[node->splitAxis];
     double const length = b-a;
     double const mu = (b+a)/2.0;
-    double const me = medianObject->getCentroid()[node->splitAxis];
-    size_t const n = 1001; // Number of desired sampling/binning nodes
-    double const n_1 = n-1;
-    double const delta = (mu>me) ? mu-me : me-mu;
+    double me = primitives[m/2]->getCentroid()[node->splitAxis];
+    if(me < a) me = a;
+    if(me > b) me = b;
     double const start = (mu>me) ? me : mu;
-    double const step = delta/n_1;
+    double const step = (mu>me) ? (mu-me)/((double)(lossNodes-1)) :
+        (me-mu)/((double)(lossNodes-1));
     double loss = std::numeric_limits<double>::max();
-    loss = splitLoss( // TODO Remove (used to know loss of median in debug)
-        primitives,
-        node->splitAxis,
-        node->splitPos,
-        node->surfaceArea,
-        (node->splitPos-a) / (b-a)
-    );
-    for(size_t i = 0 ; i < n ; ++i){
+    for(size_t i = 0 ; i < lossNodes ; ++i){
         double const phi = start + ((double)i)*step;
         double const newLoss = splitLoss(
             primitives,
             node->splitAxis,
             phi,
-            node->surfaceArea,
             (phi-a) / length
         );
         if(newLoss < loss){
@@ -83,7 +64,7 @@ void SAHKDTreeFactory::computeKDTreeStats(KDTreeNodeRoot *root) const{
         if(kdtNode->isLeafNode()){
             leafAreaSum += kdtNode->surfaceArea;
             leafObjectAreaSum +=
-                kdtNode->surfaceArea * kdtNode->primitives.size();
+                kdtNode->surfaceArea * ((double)kdtNode->primitives.size());
         }
         else{
             interiorAreaSum += kdtNode->surfaceArea;
@@ -101,25 +82,21 @@ void SAHKDTreeFactory::buildChildrenNodes(
     vector<Primitive *> const &leftPrimitives,
     vector<Primitive *> const &rightPrimitives
 ) {
-    size_t const primsSize = primitives.size();
-    // Compute parent heuristic (INIT ILOT)
-    if(parent==nullptr){
-        double hi, hl, ho, ht;
-        toILOTCache(0.0, 0.0, 0.0, 0.0); // Initialize cache to 0
-        heuristicILOT(
-            hi, hl, ho, ht,
-            node->surfaceArea,  0.0, node->surfaceArea,
-            primitives
-        );
-        toILOTCache(hi, hl, ho, ht); // Set cache to C_T at t0
+    if(parent==nullptr){ // Compute parent heuristic (INIT ILOT)
+        initILOT(node, primitives);
     }
 
-    // Do partitioning
-    if(
-        leftPrimitives.size() != primsSize &&
-        rightPrimitives.size() != primsSize
-    ){ // If there are primitives on both partitions, binary split the node
-        if(!leftPrimitives.empty()){
+    // Compute node as internal
+    double hi, hl, ho, ht;
+    internalizeILOT(
+        hi, hl, ho, ht,
+        node, primitives, leftPrimitives, rightPrimitives
+    );
+
+    // Do partitioning if new cost is smaller than previous one
+    if(ht < this->cacheT){
+        toILOTCache(hi, hl, ho, ht);  // Update heuristic ILOT cache
+        if(!leftPrimitives.empty()){ // Build left child
             node->left = buildRecursive(
                 node,
                 true,
@@ -127,7 +104,7 @@ void SAHKDTreeFactory::buildChildrenNodes(
                 depth + 1
             );
         }
-        if(!rightPrimitives.empty()){
+        if(!rightPrimitives.empty()){ // Build right child
             node->right = buildRecursive(
                 node,
                 false,
@@ -149,8 +126,7 @@ double SAHKDTreeFactory::splitLoss(
     vector<Primitive *> const &primitives,
     int const splitAxis,
     double const splitPos,
-    double const surfaceArea,
-    double const b
+    double const r
 ) const {
     // Split in left and right primitives
     vector<Primitive *> lps(0);
@@ -160,20 +136,9 @@ double SAHKDTreeFactory::splitLoss(
         if(primBox->getMin()[splitAxis] <= splitPos) lps.push_back(primitive);
         if(primBox->getMax()[splitAxis] > splitPos) rps.push_back(primitive);
     }
-    size_t const lpsSize = lps.size();
-    size_t const rpsSize = rps.size();
-
-    // Compute surface ares for left and right sides
-    double const sal = surfaceArea * b;
-    double const sar = surfaceArea * (1.0-b);
 
     // Compute and return loss function
-    /*std::cout   << "lpsSize=" << lpsSize << ", "
-                << "sal=" << sal << ",    "
-                << "rpsSize=" << rpsSize << ", "
-                << "sar=" << sar
-                << std::endl;*/ // TODO Remove
-    return sal*((double)lpsSize) + sar*((double)rpsSize);
+    return r*((double)lps.size()) + (1.0-r)*((double)rps.size());
 }
 
 double SAHKDTreeFactory::heuristicILOT(
@@ -187,13 +152,16 @@ double SAHKDTreeFactory::heuristicILOT(
     vector<Primitive *> const &primitives
 ) const {
     // Extract constants of interest
-    size_t const No = primitives.size();
+    double const No = (double) primitives.size();
 
     // Compute updates
-    hi = this->ci * (this->cacheI+surfaceAreaInterior);
-    hl = this->cl * (this->cacheL+surfaceAreaLeaf);
-    ho = this->co * (this->cacheO+surfaceAreaLeaf*No);
+    hi = this->cacheI + this->ci*surfaceAreaInterior;
+    hl = this->cacheL + this->cl*surfaceAreaLeaf;
+    ho = this->cacheO + this->co*surfaceAreaLeaf*No;
     ht = (hi + hl + ho) / surfaceAreaRoot;
+
+    // Return cost
+    return ht;
 }
 double SAHKDTreeFactory::cumulativeILOT(
     double &hi,
@@ -208,6 +176,60 @@ double SAHKDTreeFactory::cumulativeILOT(
     hi += _hi;
     hl += _hl;
     ho += _ho;
-    ht = (this->ci*hi + this->cl*hl + this->co*ho) / saRoot;
+    ht = (hi + hl + ho) / saRoot;
     return ht;
+}
+
+void SAHKDTreeFactory::internalizeILOT(
+    double &hi,
+    double &hl,
+    double &ho,
+    double &ht,
+    KDTreeNode *node,
+    vector<Primitive *> const &primitives,
+    vector<Primitive *> const &leftPrimitives,
+    vector<Primitive *> const &rightPrimitives
+){
+    heuristicILOT( // Subtract old leaf cost and add new interior cost
+        hi, hl, ho, ht,
+        cacheRoot->surfaceArea,
+        node->surfaceArea,
+        -node->surfaceArea,
+        primitives
+    );
+    double const a = node->bound.getMin()[node->splitAxis];
+    double const b = node->bound.getMax()[node->splitAxis];
+    double const p = node->splitPos;
+    double const r = (p-a)/(b-a);
+    double const leftSurfaceArea = r * node->surfaceArea;
+    double const rightSurfaceArea = (1.0-r) * node->surfaceArea;
+    cumulativeILOT( // Cumulative of leaf cost for left and right splits
+        hi, hl, ho, ht,
+        0.0,
+        this->cl * (leftSurfaceArea + rightSurfaceArea),
+        this->co * (
+            leftSurfaceArea * ((double)leftPrimitives.size()) +
+            rightSurfaceArea * ((double)rightPrimitives.size())
+        ),
+        cacheRoot->surfaceArea
+    );
+}
+
+// ***  CACHE UTILS  *** //
+// ********************* //
+void SAHKDTreeFactory::initILOT(
+    KDTreeNode *root,
+    vector<Primitive *> const &primitives
+){
+    double hi, hl, ho, ht;
+    cacheRoot = root; // Cache root node to compute future children's ILOT
+    toILOTCache(0.0, 0.0, 0.0, 0.0); // Initialize cache to 0
+    heuristicILOT(
+        hi, hl, ho, ht,         // Output variables
+        root->surfaceArea,      // Surface area root
+        0.0,                    // Surface area interior
+        root->surfaceArea,      // Surface area leaf
+        primitives              // Contained primitives
+    );
+    toILOTCache(hi, hl, ho, ht); // Set cache to C_T at t0
 }
