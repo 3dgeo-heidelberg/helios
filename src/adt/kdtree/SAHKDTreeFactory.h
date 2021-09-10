@@ -115,7 +115,8 @@
  *  using space subdivision" by J. David MacDonald and Kellogg S. Booth.
  *  </i>
  *
- * @see SAHKDTreeFactory
+ * @see SimpleKDTreeFactory
+ * @see AxisSAHKDTreeFactory
  */
 class SAHKDTreeFactory : public SimpleKDTreeFactory{
 private:
@@ -229,7 +230,7 @@ public:
      * @see SAHKDTreeFactory::co
      */
     SAHKDTreeFactory (
-        size_t lossNodes=21,
+        size_t const lossNodes=21,
         double const ci=1,
         double const cl=1,
         double const co=1
@@ -280,15 +281,12 @@ public:
      *  in case there are enough objects lying outside node boundaries causing
      *  the median to be also outside, it will be truncated.
      *
-     *
-     *
-     *
-     *
      * @see SimpleKDTreeFactory::defineSplit
      * @see SAHKDTreeFactory::computeKDTreeStats
      * @see SAHKDTreeFactory::buildChildrenNodes
      * @see SAHKDTreeFactory::splitLoss
      * @see SAHKDTreeFactory::lossNodes
+     * @see SAHKDTreeFactory::findSplitPositionBySAH
      */
     void defineSplit(
         KDTreeNode *node,
@@ -331,9 +329,9 @@ public:
      *  \right]
      * \f]
      *
-     * Now if \f$C_{Sr} \geq C_T\f$ at \f$t_0\f$ then the process is stopped and
-     *  all primitives remain in the root node. Otherwise, \f$t_1\f$ happens
-     *  so:
+     * Now if \f$C_{Sr} \geq C_T\f$ at \f$t_0\f$ then the process is stopped
+     *  and all primitives remain in the root node. Otherwise, \f$t_1\f$
+     *  happend so:
      * \f[
      *  t_1 : \mathrm{ILOT} = C_T = C_{Sr}
      * \f]
@@ -415,6 +413,18 @@ protected:
         double const splitPos,
         double const r
     ) const ;
+
+    /**
+     * @brief Find the best split position using Surface Area Heuristic (SAH)
+     *  as described in SAHKDTreeFactory::defineSplit
+     * @return Loss of best split position. The position itself is already
+     *  stored in given node
+     * @see SAHKDTreeFactory::defineSplit
+     */
+    virtual double findSplitPositionBySAH(
+        KDTreeNode *node,
+        vector<Primitive *> &primitives
+    ) const;
 
     /**
      * @brief Compute the \f$C_T\f$ heuristic preserving partials result of

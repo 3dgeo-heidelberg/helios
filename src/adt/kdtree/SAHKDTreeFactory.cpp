@@ -12,40 +12,7 @@ void SAHKDTreeFactory::defineSplit(
 ) const {
     // Find split axis
     node->splitAxis = depth % 3;
-
-    // Obtain the object median
-    size_t const m = primitives.size();
-    std::sort(
-        primitives.begin(),
-        primitives.end(),
-        KDTreePrimitiveComparator(node->splitAxis)
-    );
-
-    // Discrete search of optimal splitting plane according to loss function
-    double const a = node->bound.getMin()[node->splitAxis];
-    double const b = node->bound.getMax()[node->splitAxis];
-    double const length = b-a;
-    double const mu = (b+a)/2.0;
-    double me = primitives[m/2]->getCentroid()[node->splitAxis];
-    if(me < a) me = a;
-    if(me > b) me = b;
-    double const start = (mu>me) ? me : mu;
-    double const step = (mu>me) ? (mu-me)/((double)(lossNodes-1)) :
-        (me-mu)/((double)(lossNodes-1));
-    double loss = std::numeric_limits<double>::max();
-    for(size_t i = 0 ; i < lossNodes ; ++i){
-        double const phi = start + ((double)i)*step;
-        double const newLoss = splitLoss(
-            primitives,
-            node->splitAxis,
-            phi,
-            (phi-a) / length
-        );
-        if(newLoss < loss){
-            loss = newLoss;
-            node->splitPos = phi;
-        }
-    }
+    findSplitPositionBySAH(node, primitives);
 };
 
 void SAHKDTreeFactory::computeKDTreeStats(KDTreeNodeRoot *root) const{
@@ -139,6 +106,47 @@ double SAHKDTreeFactory::splitLoss(
 
     // Compute and return loss function
     return r*((double)lps.size()) + (1.0-r)*((double)rps.size());
+}
+
+double SAHKDTreeFactory::findSplitPositionBySAH(
+    KDTreeNode *node,
+    vector<Primitive *> &primitives
+) const{
+    // Obtain the object median
+    std::sort(
+        primitives.begin(),
+        primitives.end(),
+        KDTreePrimitiveComparator(node->splitAxis)
+    );
+
+    // Discrete search of optimal splitting plane according to loss function
+    double const a = node->bound.getMin()[node->splitAxis];
+    double const b = node->bound.getMax()[node->splitAxis];
+    double const length = b-a;
+    double const mu = (b+a)/2.0;
+    double me = primitives[primitives.size()/2]->getCentroid()[node->splitAxis];
+    if(me < a) me = a;
+    if(me > b) me = b;
+    double const start = (mu>me) ? me : mu;
+    double const step = (mu>me) ? (mu-me)/((double)(lossNodes-1)) :
+                        (me-mu)/((double)(lossNodes-1));
+    double loss = std::numeric_limits<double>::max();
+    for(size_t i = 0 ; i < lossNodes ; ++i){
+        double const phi = start + ((double)i)*step;
+        double const newLoss = splitLoss(
+            primitives,
+            node->splitAxis,
+            phi,
+            (phi-a) / length
+        );
+        if(newLoss < loss){
+            loss = newLoss;
+            node->splitPos = phi;
+        }
+    }
+
+    // Store loss if requested
+    return loss;
 }
 
 double SAHKDTreeFactory::heuristicILOT(

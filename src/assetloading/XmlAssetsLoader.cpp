@@ -32,9 +32,12 @@ namespace fs = boost::filesystem;
 
 #include "MathConverter.h"
 #include "TimeWatcher.h"
+// ***  CONSTRUCTION / DESTRUCTION  *** //
+// ************************************ //
 
 XmlAssetsLoader::XmlAssetsLoader(std::string &filePath, std::string &assetsDir)
-    : assetsDir(assetsDir) {
+    : assetsDir(assetsDir)
+{
 
   fs::path xmlFile(filePath);
   xmlDocFilename = xmlFile.filename().string();
@@ -48,6 +51,8 @@ XmlAssetsLoader::XmlAssetsLoader(std::string &filePath, std::string &assetsDir)
   }
 }
 
+// ***  CREATION METHODS  *** //
+// ************************** //
 std::shared_ptr<Asset>
 XmlAssetsLoader::createAssetFromXml(
     std::string type,
@@ -642,7 +647,8 @@ std::shared_ptr<FWFSettings> XmlAssetsLoader::createFWFSettingsFromXml(
   return settings;
 }
 
-// ################# END get(asset) by id methods #############
+// ***  GETTERS and SETTERS  *** //
+// ***************************** //
 std::shared_ptr<Asset> XmlAssetsLoader::getAssetById(
     std::string type,
     std::string id,
@@ -699,7 +705,7 @@ XmlAssetsLoader::getAssetByLocation(
   // External document location provided:
   if (vec.size() == 2) {
     loader = new XmlAssetsLoader(id, assetsDir);
-    loader->sceneLoader.sceneSpec = sceneLoader.sceneSpec;
+    loader->sceneLoader = sceneLoader;
     id = vec[1].erase(vec[1].find_last_not_of('#') + 1);
     freeLoader = true;
   }

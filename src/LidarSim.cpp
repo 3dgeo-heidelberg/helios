@@ -263,14 +263,14 @@ void LidarSim::init(
 	    << "assetsPath: \"" << assetsPath << "\"\n"
 	    << "outputPath: \"" << outputPath << "\"\n"
 	    << "writeWaveform: " << writeWaveform << "\n"
-            << "calcEchowidth: " << calcEchowidth << "\n"
+        << "calcEchowidth: " << calcEchowidth << "\n"
 	    << "fullWaveNoise: " << fullWaveNoise << "\n"
 	    << "njobs: " << njobs << "\n"
 	    << "platformNoiseDisabled: " << platformNoiseDisabled << "\n"
 	    << "legNoiseDisabled: " << legNoiseDisabled << "\n"
 	    << "rebuildScene: " << rebuildScene << "\n"
 	    << "lasOutput: " << lasOutput << "\n"
-            << "las10: " << las10 << "\n"
+        << "las10: " << las10 << "\n"
 	    << "fixedIncidenceAngle: " << fixedIncidenceAngle << "\n"
 	    << "kdtType: " << kdtType << "\n"
 	    << "sahLossNodes: " << sahLossNodes
@@ -281,6 +281,8 @@ void LidarSim::init(
  	std::shared_ptr<XmlSurveyLoader> xmlreader(
  	    new XmlSurveyLoader(surveyPath, assetsPath)
  	);
+ 	xmlreader->sceneLoader.kdtFactoryType = kdtType;
+    xmlreader->sceneLoader.kdtSAHLossNodes = sahLossNodes;
 	std::shared_ptr<Survey> survey = xmlreader->load(
 	    legNoiseDisabled,
 	    rebuildScene

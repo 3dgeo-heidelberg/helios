@@ -16,6 +16,8 @@
 #include "Voxel.h"
 
 #include "KDTreeNodeRoot.h"
+#include <KDTreeFactory.h>
+#include <SimpleKDTreeFactory.h>
 
 #include "RaySceneIntersection.h"
 
@@ -45,14 +47,23 @@ private:
 
     boost::serialization::void_cast_register<Scene, Asset>();
     ar &boost::serialization::base_object<Asset>(*this);
+    ar &kdtf;
     ar &kdtree;
     ar &bbox;
     ar &bbox_crs;
     ar &primitives;
     ar &parts;
   }
+
+protected:
   // ***  ATTRIBUTES  *** //
   // ******************** //
+  /**
+   * @brief The KDTree factory used to build the scene KDTree
+   * @see KDTreeFactory
+   * @see Scene::kdtree
+   */
+  std::shared_ptr<KDTreeFactory> kdtf;
   /**
    * @brief KDTree splitting scene points/vertices to speed-up intersection
    *  computations
@@ -88,7 +99,9 @@ public:
   /**
    * @brief Scene default constructor
    */
-  Scene() = default;
+  Scene() :
+    kdtf(make_shared<SimpleKDTreeFactory>())
+  {}
   ~Scene() override {
     for (Primitive *p : primitives)
       delete p;
@@ -167,6 +180,22 @@ public:
    * @return All vertices (without repetitions) composing the scene
    */
   std::vector<Vertex *> getAllVertices();
+
+  // ***  GETTERs and SETTERs  *** //
+  // ***************************** //
+  /**
+   * @brief Obtain the KDTree factory used by the scene
+   * @return KDTree factory used by the scene
+   * @see Scene::kdtf
+   */
+  std::shared_ptr<KDTreeFactory> getKDTreeFactory() const {return kdtf;}
+  /**
+   * @brief Set the KDTree factory to be used by the scene
+   * @param kdtf New KDTree factory to be used by the scene
+   * @see Scene::kdtf
+   */
+  void setKDTreeFactory(std::shared_ptr<KDTreeFactory> const kdtf)
+  {this->kdtf = kdtf;}
 
   // ***   READ/WRITE  *** //
   // ********************* //
