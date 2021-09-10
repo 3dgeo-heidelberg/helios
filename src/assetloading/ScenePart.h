@@ -112,7 +112,7 @@ public:
 	 */
 	ScenePart() = default;
 	ScenePart(ScenePart const &sp);
-	virtual ~ScenePart(){}
+	virtual ~ScenePart() {}
 
 	// ***  COPY / MOVE OPERATORS  *** //
 	// ******************************* //
