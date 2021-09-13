@@ -25,5 +25,6 @@ var searchData=
   ['applysettingsfwf',['applySettingsFWF',['../dc/d42/classScanner.html#a000903d1c58e48f770efc0cb53796ee1',1,'Scanner']]],
   ['applyto',['applyTo',['../d5/dcb/classRotation.html#aaab5e08522074fa3c1fa3d48e328608f',1,'Rotation::applyTo(glm::dvec3 u)'],['../d5/dcb/classRotation.html#a3a041aaf8965c0861739e4e735155389',1,'Rotation::applyTo(double *in, double *out)'],['../d5/dcb/classRotation.html#ac5ddc7d952f29cc2e10aa503dff64656',1,'Rotation::applyTo(Rotation r)']]],
   ['argmin',['argmin',['../d9/d82/classfluxionum_1_1Minimizer.html#aee3b505a8afdaf211098ea86988ad89e',1,'fluxionum::Minimizer::argmin()'],['../db/d57/classfluxionum_1_1UnivariateNewtonRaphsonMinimizer.html#a51b95e942575693b3cf186aeb5c1805f',1,'fluxionum::UnivariateNewtonRaphsonMinimizer::argmin()']]],
-  ['argumentsparser',['ArgumentsParser',['../d7/d5c/classArgumentsParser.html#ac17c09e762ec2694ca8e61ec73d3edfb',1,'ArgumentsParser']]]
+  ['argumentsparser',['ArgumentsParser',['../d7/d5c/classArgumentsParser.html#ac17c09e762ec2694ca8e61ec73d3edfb',1,'ArgumentsParser']]],
+  ['axissahkdtreefactory',['AxisSAHKDTreeFactory',['../df/d30/classAxisSAHKDTreeFactory.html#a830a51dc6cdb174357bed9a6fb55e400',1,'AxisSAHKDTreeFactory']]]
 ];

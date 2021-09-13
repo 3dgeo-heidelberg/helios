@@ -84,6 +84,7 @@ var annotated_dup =
     [ "AbstractPulseRunnable", "d6/d9e/classAbstractPulseRunnable.html", "d6/d9e/classAbstractPulseRunnable" ],
     [ "ArgumentsParser", "d7/d5c/classArgumentsParser.html", "d7/d5c/classArgumentsParser" ],
     [ "Asset", "de/d97/classAsset.html", "de/d97/classAsset" ],
+    [ "AxisSAHKDTreeFactory", "df/d30/classAxisSAHKDTreeFactory.html", "df/d30/classAxisSAHKDTreeFactory" ],
     [ "BinaryTreeBreadthIterator", "d0/da5/classBinaryTreeBreadthIterator.html", "d0/da5/classBinaryTreeBreadthIterator" ],
     [ "BinaryTreeDepthIterator", "d4/d02/classBinaryTreeDepthIterator.html", "d4/d02/classBinaryTreeDepthIterator" ],
     [ "BinaryTreeFastBreadthIterator", "d3/d43/classBinaryTreeFastBreadthIterator.html", "d3/d43/classBinaryTreeFastBreadthIterator" ],

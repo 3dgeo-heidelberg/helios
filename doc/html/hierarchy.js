@@ -99,7 +99,9 @@ var hierarchy =
     ] ],
     [ "KDTreeFactory", "d5/dd0/classKDTreeFactory.html", [
       [ "SimpleKDTreeFactory", "d6/d96/classSimpleKDTreeFactory.html", [
-        [ "SAHKDTreeFactory", "db/d58/classSAHKDTreeFactory.html", null ]
+        [ "SAHKDTreeFactory", "db/d58/classSAHKDTreeFactory.html", [
+          [ "AxisSAHKDTreeFactory", "df/d30/classAxisSAHKDTreeFactory.html", null ]
+        ] ]
       ] ]
     ] ],
     [ "KDTreePrimitiveComparator", "d6/d1f/structKDTreePrimitiveComparator.html", null ],

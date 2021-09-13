@@ -54,5 +54,6 @@ var searchData=
   ['attitudeynoisesource',['attitudeYNoiseSource',['../df/d1e/classPlatform.html#aa8714ae4bcb24dbec8f5e26cc7b9d211',1,'Platform']]],
   ['attitudeznoisesource',['attitudeZNoiseSource',['../df/d1e/classPlatform.html#ac3c9ea9311a5842f1ce9f3561589790b',1,'Platform']]],
   ['available_5f',['available_',['../d3/dce/classthread__pool.html#a8341bcc3a61d7887e67660f6e63dc18f',1,'thread_pool']]],
-  ['axis',['axis',['../d6/d1f/structKDTreePrimitiveComparator.html#a1c1049507f049f79fc3a37558da29088',1,'KDTreePrimitiveComparator']]]
+  ['axis',['axis',['../d6/d1f/structKDTreePrimitiveComparator.html#a1c1049507f049f79fc3a37558da29088',1,'KDTreePrimitiveComparator']]],
+  ['axissahkdtreefactory',['AxisSAHKDTreeFactory',['../df/d30/classAxisSAHKDTreeFactory.html',1,'AxisSAHKDTreeFactory'],['../df/d30/classAxisSAHKDTreeFactory.html#a830a51dc6cdb174357bed9a6fb55e400',1,'AxisSAHKDTreeFactory::AxisSAHKDTreeFactory()']]]
 ];

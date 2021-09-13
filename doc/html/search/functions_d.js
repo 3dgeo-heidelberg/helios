@@ -10,6 +10,7 @@ var searchData=
   ['makehelicaly',['makeHelicalY',['../dc/df6/classrigidmotion_1_1RigidMotionR3Factory.html#a6c4be7743c990e5238c213ed181754b9',1,'rigidmotion::RigidMotionR3Factory']]],
   ['makehelicalz',['makeHelicalZ',['../dc/df6/classrigidmotion_1_1RigidMotionR3Factory.html#ad2c30d4c02f4d7244cd64b81c00e9b23',1,'rigidmotion::RigidMotionR3Factory']]],
   ['makeidentity',['makeIdentity',['../dc/d00/classrigidmotion_1_1RigidMotionFactory.html#a00a6e79e3d7dbe4c2859b00241c7e4ae',1,'rigidmotion::RigidMotionFactory::makeIdentity()'],['../d7/da7/classrigidmotion_1_1RigidMotionR2Factory.html#ab246737ce5ca5583ff1dc23cf1abcf4c',1,'rigidmotion::RigidMotionR2Factory::makeIdentity()'],['../dc/df6/classrigidmotion_1_1RigidMotionR3Factory.html#ad2b43502e385052b0297c24a3ff55ca3',1,'rigidmotion::RigidMotionR3Factory::makeIdentity()']]],
+  ['makekdtreefactory',['makeKDTreeFactory',['../db/d91/classXmlSceneLoader.html#ad38181fad7a99fe5c4a4178fd32e9139',1,'XmlSceneLoader']]],
   ['makenormalcounterpart',['makeNormalCounterpart',['../d6/d4f/classDynMotion.html#a62cfddd790dcd3e46cd73bf099089b1d',1,'DynMotion']]],
   ['makenormalcounterpartptr',['makeNormalCounterpartPtr',['../d6/d4f/classDynMotion.html#a0f5bd51dcce3fac001f42e6e16148a9d',1,'DynMotion']]],
   ['makequiet',['makeQuiet',['../d0/da9/logging_8hpp.html#a692b6f848d37bbe59a72573a8573d6ed',1,'logging']]],

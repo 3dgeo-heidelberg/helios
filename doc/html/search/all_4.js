@@ -4,7 +4,7 @@ var searchData=
   ['debug',['DEBUG',['../d0/da9/logging_8hpp.html#acc7cbc688fcbb59f796678f30fca6ab7',1,'logging']]],
   ['defaultnormal',['defaultNormal',['../d6/d03/classXYZPointCloudFileLoader.html#aa4abebcf0131e85079d6848209bf8c8d',1,'XYZPointCloudFileLoader']]],
   ['defaultreflectance',['defaultReflectance',['../d5/d20/classSpectralLibrary.html#a55d55f2e7ffc8bc086405f636419b5ed',1,'SpectralLibrary']]],
-  ['definesplit',['defineSplit',['../db/d58/classSAHKDTreeFactory.html#aa22c06947f61f871156922122c41084d',1,'SAHKDTreeFactory::defineSplit()'],['../d6/d96/classSimpleKDTreeFactory.html#aa3ed0e048fd2e9ae62fdd324e32153c5',1,'SimpleKDTreeFactory::defineSplit()']]],
+  ['definesplit',['defineSplit',['../df/d30/classAxisSAHKDTreeFactory.html#a1a938aa8914f624692228217428c157a',1,'AxisSAHKDTreeFactory::defineSplit()'],['../db/d58/classSAHKDTreeFactory.html#aa22c06947f61f871156922122c41084d',1,'SAHKDTreeFactory::defineSplit()'],['../d6/d96/classSimpleKDTreeFactory.html#aa3ed0e048fd2e9ae62fdd324e32153c5',1,'SimpleKDTreeFactory::defineSplit()']]],
   ['degreestoradians',['degreesToRadians',['../df/d22/classMathConverter.html#a9b0216cc0a7a9d3e6ae2adefe2c88c64',1,'MathConverter']]],
   ['delta',['DELTA',['../d1/d2b/classMarquardtFitter.html#a49990a2f2852a17231d6b081fb3bb110',1,'MarquardtFitter']]],
   ['deltaintensity',['deltaIntensity',['../d2/db3/classLasSyncFileWriter.html#a9a114f0c53100d830e15d869cf80f203',1,'LasSyncFileWriter']]],

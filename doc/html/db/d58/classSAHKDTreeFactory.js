@@ -1,11 +1,12 @@
 var classSAHKDTreeFactory =
 [
-    [ "SAHKDTreeFactory", "db/d58/classSAHKDTreeFactory.html#a83b48263b3df5054061c25873c3d217f", null ],
+    [ "SAHKDTreeFactory", "db/d58/classSAHKDTreeFactory.html#a1b542136f4c7cbf63ac51ea1005ff544", null ],
     [ "~SAHKDTreeFactory", "db/d58/classSAHKDTreeFactory.html#ad13d9408306fcb50779dcafea70f2e0c", null ],
     [ "buildChildrenNodes", "db/d58/classSAHKDTreeFactory.html#ae8fea9ed6b51759b86a8bab4a223f9e1", null ],
     [ "computeKDTreeStats", "db/d58/classSAHKDTreeFactory.html#aca4a9fd27edb126bcbc9fc5020ef9f15", null ],
     [ "cumulativeILOT", "db/d58/classSAHKDTreeFactory.html#ade176397ca04cd7460e49eec33f76b91", null ],
     [ "defineSplit", "db/d58/classSAHKDTreeFactory.html#aa22c06947f61f871156922122c41084d", null ],
+    [ "findSplitPositionBySAH", "db/d58/classSAHKDTreeFactory.html#ac123def37ff4bc4598d7d09bcbfff59c", null ],
     [ "fromILOTCache", "db/d58/classSAHKDTreeFactory.html#a651693da9d8e1431bfcdc40673471e62", null ],
     [ "getInteriorCost", "db/d58/classSAHKDTreeFactory.html#a0fa181a6c477c5b55b514f9b12a70b31", null ],
     [ "getLeafCost", "db/d58/classSAHKDTreeFactory.html#a8cfd3132e5cfa427663f3c84b2d93175", null ],

@@ -49,6 +49,7 @@ Scene::Scene(Scene &s) {
     this->primitives.push_back(p->clone());
   }
 
+  this->kdtf = s.kdtf;
   this->kdtree = shared_ptr<KDTreeNodeRoot>(
       kdtf->makeFromPrimitives(this->primitives)
   );

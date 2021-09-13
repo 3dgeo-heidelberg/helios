@@ -18,6 +18,8 @@
 #include "KDTreeNodeRoot.h"
 #include <KDTreeFactory.h>
 #include <SimpleKDTreeFactory.h>
+#include <SAHKDTreeFactory.h>
+#include <AxisSAHKDTreeFactory.h>
 
 #include "RaySceneIntersection.h"
 
@@ -38,12 +40,17 @@ private:
    */
   template <class Archive>
   void serialize(Archive &ar, const unsigned int version) {
-    // register primitive derivates
+    // Register primitive derivates
     ar.template register_type<AABB>();
     ar.template register_type<Triangle>();
     ar.template register_type<Vertex>();
     ar.template register_type<Voxel>();
     ar.template register_type<DetailedVoxel>();
+
+    // Register KDTree factories
+    ar.template register_type<SimpleKDTreeFactory>();
+    ar.template register_type<SAHKDTreeFactory>();
+    ar.template register_type<AxisSAHKDTreeFactory>();
 
     boost::serialization::void_cast_register<Scene, Asset>();
     ar &boost::serialization::base_object<Asset>(*this);

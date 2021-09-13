@@ -8,7 +8,7 @@ var searchData=
   ['incidenceangle',['incidenceAngle',['../dc/da3/classRaySceneIntersection.html#ad5b87188865c84aefe07c9ca5734555c',1,'RaySceneIntersection']]],
   ['indexfromcoordinates',['indexFromCoordinates',['../d6/d03/classXYZPointCloudFileLoader.html#a0c3f03060ab2a991450d6b31feb862de',1,'XYZPointCloudFileLoader']]],
   ['info',['INFO',['../d0/da9/logging_8hpp.html#a0d21bd29f2facd645f123ec469c16250',1,'logging']]],
-  ['init',['init',['../d3/d40/classLidarSim.html#a3180ca0f250fe3ef008d55e83b304e3c',1,'LidarSim']]],
+  ['init',['init',['../d3/d40/classLidarSim.html#a789323d5e91fb3c3655ea0f54d1560ba',1,'LidarSim']]],
   ['initializefullwaveform',['initializeFullWaveform',['../db/da6/classFullWaveformPulseRunnable.html#a50b690e9352dfcdc998a35bc222481e9',1,'FullWaveformPulseRunnable']]],
   ['initializeworkspace',['initializeWorkspace',['../d1/d2b/classMarquardtFitter.html#a0c716799a24ec0c8ddc46c92e0f9b7b6',1,'MarquardtFitter']]],
   ['initilot',['initILOT',['../db/d58/classSAHKDTreeFactory.html#a4f058348ffc9432e614672e0ce4b6e80',1,'SAHKDTreeFactory']]],

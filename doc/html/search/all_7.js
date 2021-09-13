@@ -93,6 +93,7 @@ var searchData=
   ['getkd1',['getKd1',['../d3/d89/classMaterial.html#ae49fa9e738dcf7ab6f0cc9f328e5ac47',1,'Material']]],
   ['getkd2',['getKd2',['../d3/d89/classMaterial.html#a96b5aeecaf428b39292b78398a998d6d',1,'Material']]],
   ['getkd3',['getKd3',['../d3/d89/classMaterial.html#af65427e97c6272957f8fda42d5fd90d2',1,'Material']]],
+  ['getkdtreefactory',['getKDTreeFactory',['../d5/d9c/classScene.html#a4f0e47293b2322ba327f75a93a869963',1,'Scene']]],
   ['getks0',['getKs0',['../d3/d89/classMaterial.html#a2e914ad2451987e0067d620163a1662c',1,'Material']]],
   ['getks1',['getKs1',['../d3/d89/classMaterial.html#a4169f17c039083b13187d4a6af6260b6',1,'Material']]],
   ['getks2',['getKs2',['../d3/d89/classMaterial.html#a4a71711ee2dd2e79d702a79f93cc7c6c',1,'Material']]],
