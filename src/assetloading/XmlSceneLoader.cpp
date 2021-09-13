@@ -9,6 +9,7 @@
 #include <SimpleKDTreeFactory.h>
 #include <SAHKDTreeFactory.h>
 #include <AxisSAHKDTreeFactory.h>
+#include <FastSAHKDTreeFactory.h>
 
 #include <logging.hpp>
 
@@ -349,6 +350,10 @@ shared_ptr<KDTreeFactory> XmlSceneLoader::makeKDTreeFactory(){
     else if(kdtFactoryType == 3){
         logging::DEBUG("XmlSceneLoader is using a AxisSAHKDTreeFactory");
         return make_shared<AxisSAHKDTreeFactory>(kdtSAHLossNodes);
+    }
+    else if(kdtFactoryType == 4){
+        logging::DEBUG("XmlSceneLoader is using a FastSAHKDTreeFactory");
+        return make_shared<FastSAHKDTreeFactory>(32, kdtSAHLossNodes);
     }
     else{
         std::stringstream ss;

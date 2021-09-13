@@ -140,6 +140,8 @@ private:
         ar &boost::serialization::base_object<SimpleKDTreeFactory>(*this);
         ar &ci &cl &co;
         ar &lossNodes;
+        ar &cacheI &cacheL &cacheO &cacheT;
+
     }
 
 protected:

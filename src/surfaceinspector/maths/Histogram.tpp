@@ -1,12 +1,12 @@
 #ifndef _SURFACEINSPECTOR_MATHS_HISTOGRAM_HPP_
-#include <maths/Histogram.hpp>
+#include <surfaceinspector/maths/Histogram.hpp>
 #endif
 
 #include <cmath>
 
-#include <util/SurfaceInspectorException.hpp>
-#include <maths/Vector.hpp>
-#include <maths/Statistics.hpp>
+#include <surfaceinspector/util/SurfaceInspectorException.hpp>
+#include <surfaceinspector/maths/Vector.hpp>
+#include <surfaceinspector/maths/Statistics.hpp>
 
 using SurfaceInspector::util::SurfaceInspectorException;
 using SurfaceInspector::maths::Histogram;

@@ -3,8 +3,8 @@
 
 #include <vector>
 
-#include <util/Object.hpp>
-#include <maths/functions/GaussianFunction.hpp>
+#include <surfaceinspector/util/Object.hpp>
+#include <surfaceinspector/maths/functions/GaussianFunction.hpp>
 
 using std::vector;
 using SurfaceInspector::util::Object;
@@ -21,6 +21,23 @@ namespace SurfaceInspector { namespace maths{
  */
 template <typename T>
 class Histogram : public Object{
+private:
+    // ***  SERIALIZATION  *** //
+    // *********************** //
+    friend class boost::serialization::access;
+    /**
+     * @brief Serialize a Histogram to a stream of bytes
+     * @tparam Archive Type of rendering
+     * @param ar Specific rendering for the stream of bytes
+     * @param version Verison number of Histogram
+     */
+    template <typename Archive>
+    void serialize(Archive &ar, const unsigned int version){
+        ar &m &n;
+        ar &xmin &xmax &delta & step &norm;
+        ar &c &r &d;
+        ar &a &b;
+    }
 public:
     // ***  ATTRIBUTES  *** //
     // ******************** //
@@ -197,6 +214,6 @@ private:
 };
 }}
 
-#include <maths/Histogram.tpp>
+#include <surfaceinspector/maths/Histogram.tpp>
 
 #endif

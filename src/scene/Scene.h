@@ -20,6 +20,7 @@
 #include <SimpleKDTreeFactory.h>
 #include <SAHKDTreeFactory.h>
 #include <AxisSAHKDTreeFactory.h>
+#include <FastSAHKDTreeFactory.h>
 
 #include "RaySceneIntersection.h"
 
@@ -51,6 +52,7 @@ private:
     ar.template register_type<SimpleKDTreeFactory>();
     ar.template register_type<SAHKDTreeFactory>();
     ar.template register_type<AxisSAHKDTreeFactory>();
+    ar.template register_type<FastSAHKDTreeFactory>();
 
     boost::serialization::void_cast_register<Scene, Asset>();
     ar &boost::serialization::base_object<Asset>(*this);
