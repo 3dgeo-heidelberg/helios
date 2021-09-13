@@ -132,12 +132,22 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a50c2f79a71fce7307f4cf1d5a15a79fe"><td class="memItemLeft" align="right" valign="top">shared_ptr&lt; <a class="el" href="../../dd/d34/classStaticScene.html">StaticScene</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d91/classXmlSceneLoader.html#a50c2f79a71fce7307f4cf1d5a15a79fe">makeSceneDynamic</a> (shared_ptr&lt; <a class="el" href="../../dd/d34/classStaticScene.html">StaticScene</a> &gt; scene)</td></tr>
 <tr class="memdesc:a50c2f79a71fce7307f4cf1d5a15a79fe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Build a dynamic scene based on given static scene.  <a href="#a50c2f79a71fce7307f4cf1d5a15a79fe">More...</a><br /></td></tr>
 <tr class="separator:a50c2f79a71fce7307f4cf1d5a15a79fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad38181fad7a99fe5c4a4178fd32e9139"><td class="memItemLeft" align="right" valign="top">shared_ptr&lt; <a class="el" href="../../d5/dd0/classKDTreeFactory.html">KDTreeFactory</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d91/classXmlSceneLoader.html#ad38181fad7a99fe5c4a4178fd32e9139">makeKDTreeFactory</a> ()</td></tr>
+<tr class="memdesc:ad38181fad7a99fe5c4a4178fd32e9139"><td class="mdescLeft">&#160;</td><td class="mdescRight">Build the KDTree factory from loader's kdtFactoryType and kdtSAHLossNodes attributes.  <a href="#ad38181fad7a99fe5c4a4178fd32e9139">More...</a><br /></td></tr>
+<tr class="separator:ad38181fad7a99fe5c4a4178fd32e9139"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:aa61eab0e070251e322dc07d612a80d1b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d7/d48/classSceneLoadingSpecification.html">SceneLoadingSpecification</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d91/classXmlSceneLoader.html#aa61eab0e070251e322dc07d612a80d1b">sceneSpec</a></td></tr>
 <tr class="memdesc:aa61eab0e070251e322dc07d612a80d1b"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="../../d5/d9c/classScene.html" title="Class representing a scene asset. ">Scene</a> loading specification.  <a href="#aa61eab0e070251e322dc07d612a80d1b">More...</a><br /></td></tr>
 <tr class="separator:aa61eab0e070251e322dc07d612a80d1b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a84baf9f46d993828f45c4ee31f368a25"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d91/classXmlSceneLoader.html#a84baf9f46d993828f45c4ee31f368a25">kdtFactoryType</a> = 1</td></tr>
+<tr class="memdesc:a84baf9f46d993828f45c4ee31f368a25"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of KDTree factory to be used to build scene.  <a href="#a84baf9f46d993828f45c4ee31f368a25">More...</a><br /></td></tr>
+<tr class="separator:a84baf9f46d993828f45c4ee31f368a25"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac76abb33c2f601b4ef5c1e69a39fa593"><td class="memItemLeft" align="right" valign="top"><a id="ac76abb33c2f601b4ef5c1e69a39fa593"></a>
+size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d91/classXmlSceneLoader.html#ac76abb33c2f601b4ef5c1e69a39fa593">kdtSAHLossNodes</a> = 21</td></tr>
+<tr class="memdesc:ac76abb33c2f601b4ef5c1e69a39fa593"><td class="mdescLeft">&#160;</td><td class="mdescRight">How many loss nodes for the Surface Area Heuristic if using a SAH like KDTree factory to build the scene. <br /></td></tr>
+<tr class="separator:ac76abb33c2f601b4ef5c1e69a39fa593"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Class for scene loading from XML file. </p>
@@ -388,6 +398,31 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
+<a id="ad38181fad7a99fe5c4a4178fd32e9139"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad38181fad7a99fe5c4a4178fd32e9139">&#9670;&nbsp;</a></span>makeKDTreeFactory()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">shared_ptr&lt; <a class="el" href="../../d5/dd0/classKDTreeFactory.html">KDTreeFactory</a> &gt; XmlSceneLoader::makeKDTreeFactory </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Build the KDTree factory from loader's kdtFactoryType and kdtSAHLossNodes attributes. </p>
+<dl class="section return"><dt>Returns</dt><dd>Built KDTree factory </dd></dl>
+<dl class="section see"><dt>See also</dt><dd>XmlSceneLoader::kdtFactoryTypr </dd>
+<dd>
+<a class="el" href="../../db/d91/classXmlSceneLoader.html#ac76abb33c2f601b4ef5c1e69a39fa593" title="How many loss nodes for the Surface Area Heuristic if using a SAH like KDTree factory to build the sc...">XmlSceneLoader::kdtSAHLossNodes</a> </dd>
+<dd>
+<a class="el" href="../../d5/dd0/classKDTreeFactory.html" title="Class that must be extended by any class which provides factory methods for k-dimensional trees...">KDTreeFactory</a> </dd></dl>
+
+</div>
+</div>
 <a id="a50c2f79a71fce7307f4cf1d5a15a79fe"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a50c2f79a71fce7307f4cf1d5a15a79fe">&#9670;&nbsp;</a></span>makeSceneDynamic()</h2>
 
@@ -420,6 +455,23 @@ Public Attributes</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
+<a id="a84baf9f46d993828f45c4ee31f368a25"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a84baf9f46d993828f45c4ee31f368a25">&#9670;&nbsp;</a></span>kdtFactoryType</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int XmlSceneLoader::kdtFactoryType = 1</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Type of KDTree factory to be used to build scene. </p>
+<dl class="section see"><dt>See also</dt><dd>KDTReeFactory </dd></dl>
+
+</div>
+</div>
 <a id="aa61eab0e070251e322dc07d612a80d1b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aa61eab0e070251e322dc07d612a80d1b">&#9670;&nbsp;</a></span>sceneSpec</h2>
 

@@ -31,7 +31,7 @@ public:
     /**
      * @brief Decimal precision for validation purposes
      */
-    double eps = 0.00001;
+    double const eps = 0.00001;
     /**
      * @brief The rigid motion engine to be used by tests
      */

@@ -1,3 +1,4 @@
 <map id="KDTreeNodeRoot" name="KDTreeNodeRoot">
-<area shape="rect" id="node2" href="$d8/d94/classKDTreeNode.html" title="Class representing a KDTree node. " alt="" coords="19,5,118,32"/>
+<area shape="rect" id="node2" href="$d8/d94/classKDTreeNode.html" title="Class representing a KDTree node. " alt="" coords="19,80,118,107"/>
+<area shape="rect" id="node3" href="$d7/d98/classIBinaryTreeNode.html" title="Binary tree node interface that must be implemented by any class providing binary tree node based fun..." alt="" coords="9,5,129,32"/>
 </map>

@@ -56,8 +56,9 @@ var searchData=
   ['computecentroid',['computeCentroid',['../dd/dc4/classScenePart.html#a33e9aa7e8940b053e4939e8aacc6fd12',1,'ScenePart']]],
   ['computeengineforce',['computeEngineForce',['../db/d69/classHelicopterPlatform.html#ab35ce371755b03593b9587b662013085',1,'HelicopterPlatform']]],
   ['computefixedpoints',['computeFixedPoints',['../d2/da8/classrigidmotion_1_1RigidMotionEngine.html#a54565faf4bb040e25967127578e134b0',1,'rigidmotion::RigidMotionEngine']]],
-  ['computekdtreestats',['computeKDTreeStats',['../d8/d94/classKDTreeNode.html#af35b43c1729ceb80b6091aef5b265dee',1,'KDTreeNode']]],
+  ['computekdtreestats',['computeKDTreeStats',['../db/d58/classSAHKDTreeFactory.html#aca4a9fd27edb126bcbc9fc5020ef9f15',1,'SAHKDTreeFactory::computeKDTreeStats()'],['../d6/d96/classSimpleKDTreeFactory.html#a259a3500ce239f33914d5da0c694b427',1,'SimpleKDTreeFactory::computeKDTreeStats()']]],
   ['computeliftsinkrate',['computeLiftSinkRate',['../db/d69/classHelicopterPlatform.html#a0917d3a5dcd2bf0dc91b1fd3403d9fe0',1,'HelicopterPlatform']]],
+  ['computenodeboundaries',['computeNodeBoundaries',['../d6/d96/classSimpleKDTreeFactory.html#abbc932ae3ef28f324a656add6c1ac5bd',1,'SimpleKDTreeFactory']]],
   ['computenormaldistribution',['computeNormalDistribution',['../dc/d6e/classRandomnessGenerator.html#a7f06cc0c69a88de5e9ae836ba39b822e',1,'RandomnessGenerator']]],
   ['computerotationangles',['computeRotationAngles',['../db/d69/classHelicopterPlatform.html#a7054de308b809ca7ba853efbc2cbef04',1,'HelicopterPlatform']]],
   ['computesigma',['computeSigma',['../d9/d22/classLadLut.html#a2f703f0d76d170d3dc38900dbbf98b49',1,'LadLut::computeSigma(double padBVTotal, glm::dvec3 direction)'],['../d9/d22/classLadLut.html#a633ed64f702a846032b1c2c2c5750349',1,'LadLut::computeSigma(double padBVTotal, double x, double y, double z)']]],
@@ -98,5 +99,6 @@ var searchData=
   ['createscenefromxml',['createSceneFromXml',['../db/d91/classXmlSceneLoader.html#afd13768a6e98a9f69b2eeb2988361af3',1,'XmlSceneLoader']]],
   ['createsurveyfromxml',['createSurveyFromXml',['../df/d9a/classXmlSurveyLoader.html#af16899a9740eb1da95e25ac8199b23b1',1,'XmlSurveyLoader']]],
   ['createvec3dfromxml',['createVec3dFromXml',['../de/d52/classXmlUtils.html#a4cb23b72ac06cb169da01937f79bbc59',1,'XmlUtils']]],
-  ['crossproductnaive',['crossProductNaive',['../d2/d51/classTriangle.html#a7aec1bdbbb7bfd280692c94f8e8e2fcf',1,'Triangle']]]
+  ['crossproductnaive',['crossProductNaive',['../d2/d51/classTriangle.html#a7aec1bdbbb7bfd280692c94f8e8e2fcf',1,'Triangle']]],
+  ['cumulativeilot',['cumulativeILOT',['../db/d58/classSAHKDTreeFactory.html#ade176397ca04cd7460e49eec33f76b91',1,'SAHKDTreeFactory']]]
 ];

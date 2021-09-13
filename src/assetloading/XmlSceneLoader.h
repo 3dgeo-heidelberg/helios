@@ -27,6 +27,16 @@ public:
 	 * @see SceneLoadingSpecification
 	 */
     SceneLoadingSpecification sceneSpec;
+    /**
+     * @brief Type of KDTree factory to be used to build scene
+     * @see KDTReeFactory
+     */
+    int kdtFactoryType = 1;
+    /**
+     * @brief How many loss nodes for the Surface Area Heuristic if using a SAH
+     *  like KDTree factory to build the scene
+     */
+    size_t kdtSAHLossNodes = 21;
 
     // ***  CONSTRUCTION / DESTRUCTION  *** //
     // ************************************ //
@@ -152,4 +162,14 @@ public:
      * @see DynScene
      */
     shared_ptr<StaticScene> makeSceneDynamic(shared_ptr<StaticScene> scene);
+
+    /**
+     * @brief Build the KDTree factory from loader's kdtFactoryType and
+     *  kdtSAHLossNodes attributes
+     * @return Built KDTree factory
+     * @see XmlSceneLoader::kdtFactoryTypr
+     * @see XmlSceneLoader::kdtSAHLossNodes
+     * @see KDTreeFactory
+     */
+    shared_ptr<KDTreeFactory> makeKDTreeFactory();
 };

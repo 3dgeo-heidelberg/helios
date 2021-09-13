@@ -1,6 +1,7 @@
 var dir_120ed4da3e3217b1e7fc0b4f48568e79 =
 [
     [ "BaseTest.h", "de/da0/BaseTest_8h_source.html", null ],
+    [ "FluxionumTest.h", "d4/d0e/FluxionumTest_8h_source.html", null ],
     [ "LadLutTest.h", "da/ddd/LadLutTest_8h_source.html", null ],
     [ "NoiseTest.h", "d9/dc4/NoiseTest_8h_source.html", null ],
     [ "PlaneFitterTest.h", "d7/dcc/PlaneFitterTest_8h_source.html", null ],

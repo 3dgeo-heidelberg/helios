@@ -63,7 +63,6 @@ ScenePart &ScenePart::operator=(const ScenePart &rhs) {
 // *********************** //
 
 void ScenePart::addObj(WavefrontObj *obj) {
-
   std::stringstream ss;
   ss << "Adding primitive to Scenepart ...";
   logging::DEBUG(ss.str());

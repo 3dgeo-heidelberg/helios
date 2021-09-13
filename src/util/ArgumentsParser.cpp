@@ -168,6 +168,18 @@ bool ArgumentsParser::parseFixedIncidenceAngle(){
     return findIndexOfArgument("--fixedIncidenceAngle") >= 0;
 }
 
+int ArgumentsParser::parseKDTreeType(){
+    int index = findIndexOfArgument("--kdt");
+    if(index < 0) return 1;
+    return std::atoi(argv[index+1]);
+}
+
+size_t ArgumentsParser::parseSAHLossNodes(){
+    int index = findIndexOfArgument("--sahNodes");
+    if(index < 0) return 21;
+    return std::stoul(argv[index+1]);
+}
+
 // *** PRIVATE METHODS *** //
 // *********************** //
 int ArgumentsParser::findIndexOfArgument(std::string&& arg){

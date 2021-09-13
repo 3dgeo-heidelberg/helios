@@ -49,7 +49,10 @@ Scene::Scene(Scene &s) {
     this->primitives.push_back(p->clone());
   }
 
-  this->kdtree = shared_ptr<KDTreeNodeRoot>(KDTreeNodeRoot::build(primitives));
+  this->kdtf = s.kdtf;
+  this->kdtree = shared_ptr<KDTreeNodeRoot>(
+      kdtf->makeFromPrimitives(this->primitives)
+  );
   registerParts();
 }
 
@@ -136,7 +139,7 @@ bool Scene::finalizeLoading() {
 
   TimeWatcher tw;
   tw.start();
-  kdtree = shared_ptr<KDTreeNodeRoot>(KDTreeNodeRoot::build(primitives));
+  kdtree = shared_ptr<KDTreeNodeRoot>(kdtf->makeFromPrimitives(primitives));
 
   tw.stop();
   ss << "KD built in " << tw.getElapsedDecimalSeconds() << "s";

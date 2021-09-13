@@ -90,8 +90,8 @@ $(document).ready(function(){initNavTree('d5/d9c/classScene.html','../../');});
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
+<a href="#pro-attribs">Protected Attributes</a> &#124;
 <a href="#pri-methods">Private Member Functions</a> &#124;
-<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="#friends">Friends</a> &#124;
 <a href="../../db/d67/classScene-members.html">List of all members</a>  </div>
   <div class="headertitle">
@@ -124,10 +124,10 @@ Collaboration diagram for Scene:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a93ccc41b0a2f6c24e467d5d9de76ec0d"><td class="memItemLeft" align="right" valign="top"><a id="a93ccc41b0a2f6c24e467d5d9de76ec0d"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d9c/classScene.html#a93ccc41b0a2f6c24e467d5d9de76ec0d">Scene</a> ()=default</td></tr>
-<tr class="memdesc:a93ccc41b0a2f6c24e467d5d9de76ec0d"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="../../d5/d9c/classScene.html" title="Class representing a scene asset. ">Scene</a> default constructor. <br /></td></tr>
-<tr class="separator:a93ccc41b0a2f6c24e467d5d9de76ec0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad10176d75a9cc0da56626f682d083507"><td class="memItemLeft" align="right" valign="top"><a id="ad10176d75a9cc0da56626f682d083507"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d9c/classScene.html#ad10176d75a9cc0da56626f682d083507">Scene</a> ()</td></tr>
+<tr class="memdesc:ad10176d75a9cc0da56626f682d083507"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="../../d5/d9c/classScene.html" title="Class representing a scene asset. ">Scene</a> default constructor. <br /></td></tr>
+<tr class="separator:ad10176d75a9cc0da56626f682d083507"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9eca6af7cda6d6bd8bf5ae19597f9ddc"><td class="memItemLeft" align="right" valign="top"><a id="a9eca6af7cda6d6bd8bf5ae19597f9ddc"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>Scene</b> (<a class="el" href="../../d5/d9c/classScene.html">Scene</a> &amp;s)</td></tr>
 <tr class="separator:a9eca6af7cda6d6bd8bf5ae19597f9ddc"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -155,6 +155,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:af46ce55bcb11ce26343b4b72066e0cf5"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="../../d2/da0/classVertex.html">Vertex</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d9c/classScene.html#af46ce55bcb11ce26343b4b72066e0cf5">getAllVertices</a> ()</td></tr>
 <tr class="memdesc:af46ce55bcb11ce26343b4b72066e0cf5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain all vertices (without repetitions) composing the scene.  <a href="#af46ce55bcb11ce26343b4b72066e0cf5">More...</a><br /></td></tr>
 <tr class="separator:af46ce55bcb11ce26343b4b72066e0cf5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4f0e47293b2322ba327f75a93a869963"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="../../d5/dd0/classKDTreeFactory.html">KDTreeFactory</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d9c/classScene.html#a4f0e47293b2322ba327f75a93a869963">getKDTreeFactory</a> () const</td></tr>
+<tr class="memdesc:a4f0e47293b2322ba327f75a93a869963"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain the KDTree factory used by the scene.  <a href="#a4f0e47293b2322ba327f75a93a869963">More...</a><br /></td></tr>
+<tr class="separator:a4f0e47293b2322ba327f75a93a869963"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6d5f469f749a08a62f9c7300675900c1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d9c/classScene.html#a6d5f469f749a08a62f9c7300675900c1">setKDTreeFactory</a> (std::shared_ptr&lt; <a class="el" href="../../d5/dd0/classKDTreeFactory.html">KDTreeFactory</a> &gt; const <a class="el" href="../../d5/d9c/classScene.html#a5b4ca990006db81ed71b4850923b1414">kdtf</a>)</td></tr>
+<tr class="memdesc:a6d5f469f749a08a62f9c7300675900c1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the KDTree factory to be used by the scene.  <a href="#a6d5f469f749a08a62f9c7300675900c1">More...</a><br /></td></tr>
+<tr class="separator:a6d5f469f749a08a62f9c7300675900c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a782302f4dc1703617d5292251bda044e"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d9c/classScene.html#a782302f4dc1703617d5292251bda044e">writeObject</a> (std::string path)</td></tr>
 <tr class="memdesc:a782302f4dc1703617d5292251bda044e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Serialize the scene and write it to given output file.  <a href="#a782302f4dc1703617d5292251bda044e">More...</a><br /></td></tr>
 <tr class="separator:a782302f4dc1703617d5292251bda044e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -192,15 +198,11 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
 <tr class="memdesc:a8a9b323b6f7e7f343dacb278d3610645 inherit pub_attribs_classAsset"><td class="mdescLeft">&#160;</td><td class="mdescRight">Path to asset file. <br /></td></tr>
 <tr class="separator:a8a9b323b6f7e7f343dacb278d3610645 inherit pub_attribs_classAsset"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
-Private Member Functions</h2></td></tr>
-<tr class="memitem:a17fa122e9a94e852f6f82d5fe61b569a"><td class="memTemplParams" colspan="2">template&lt;class Archive &gt; </td></tr>
-<tr class="memitem:a17fa122e9a94e852f6f82d5fe61b569a"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d5/d9c/classScene.html#a17fa122e9a94e852f6f82d5fe61b569a">serialize</a> (Archive &amp;ar, const unsigned int version)</td></tr>
-<tr class="memdesc:a17fa122e9a94e852f6f82d5fe61b569a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Serialize a <a class="el" href="../../d5/d9c/classScene.html" title="Class representing a scene asset. ">Scene</a> to a stream of bytes.  <a href="#a17fa122e9a94e852f6f82d5fe61b569a">More...</a><br /></td></tr>
-<tr class="separator:a17fa122e9a94e852f6f82d5fe61b569a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
-Private Attributes</h2></td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
+Protected Attributes</h2></td></tr>
+<tr class="memitem:a5b4ca990006db81ed71b4850923b1414"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="../../d5/dd0/classKDTreeFactory.html">KDTreeFactory</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d9c/classScene.html#a5b4ca990006db81ed71b4850923b1414">kdtf</a></td></tr>
+<tr class="memdesc:a5b4ca990006db81ed71b4850923b1414"><td class="mdescLeft">&#160;</td><td class="mdescRight">The KDTree factory used to build the scene KDTree.  <a href="#a5b4ca990006db81ed71b4850923b1414">More...</a><br /></td></tr>
+<tr class="separator:a5b4ca990006db81ed71b4850923b1414"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4d1d59711628b8599f766b0700a02b2f"><td class="memItemLeft" align="right" valign="top"><a id="a4d1d59711628b8599f766b0700a02b2f"></a>
 std::shared_ptr&lt; <a class="el" href="../../d0/d64/classKDTreeNodeRoot.html">KDTreeNodeRoot</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d9c/classScene.html#a4d1d59711628b8599f766b0700a02b2f">kdtree</a></td></tr>
 <tr class="memdesc:a4d1d59711628b8599f766b0700a02b2f"><td class="mdescLeft">&#160;</td><td class="mdescRight">KDTree splitting scene points/vertices to speed-up intersection computations. <br /></td></tr>
@@ -213,6 +215,13 @@ std::shared_ptr&lt; <a class="el" href="../../d2/d1a/classAABB.html">AABB</a> &g
 std::shared_ptr&lt; <a class="el" href="../../d2/d1a/classAABB.html">AABB</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d9c/classScene.html#a6443452016957950e3a7260dcc0076f1">bbox_crs</a></td></tr>
 <tr class="memdesc:a6443452016957950e3a7260dcc0076f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Original axis aligned bounding box defining scene boundaries before centering it. <br /></td></tr>
 <tr class="separator:a6443452016957950e3a7260dcc0076f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
+Private Member Functions</h2></td></tr>
+<tr class="memitem:a17fa122e9a94e852f6f82d5fe61b569a"><td class="memTemplParams" colspan="2">template&lt;class Archive &gt; </td></tr>
+<tr class="memitem:a17fa122e9a94e852f6f82d5fe61b569a"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d5/d9c/classScene.html#a17fa122e9a94e852f6f82d5fe61b569a">serialize</a> (Archive &amp;ar, const unsigned int version)</td></tr>
+<tr class="memdesc:a17fa122e9a94e852f6f82d5fe61b569a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Serialize a <a class="el" href="../../d5/d9c/classScene.html" title="Class representing a scene asset. ">Scene</a> to a stream of bytes.  <a href="#a17fa122e9a94e852f6f82d5fe61b569a">More...</a><br /></td></tr>
+<tr class="separator:a17fa122e9a94e852f6f82d5fe61b569a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="friends"></a>
 Friends</h2></td></tr>
@@ -411,6 +420,35 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>boost::serialization
 
 </div>
 </div>
+<a id="a4f0e47293b2322ba327f75a93a869963"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4f0e47293b2322ba327f75a93a869963">&#9670;&nbsp;</a></span>getKDTreeFactory()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::shared_ptr&lt;<a class="el" href="../../d5/dd0/classKDTreeFactory.html">KDTreeFactory</a>&gt; Scene::getKDTreeFactory </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Obtain the KDTree factory used by the scene. </p>
+<dl class="section return"><dt>Returns</dt><dd>KDTree factory used by the scene </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d5/d9c/classScene.html#a5b4ca990006db81ed71b4850923b1414" title="The KDTree factory used to build the scene KDTree. ">Scene::kdtf</a> </dd></dl>
+
+</div>
+</div>
 <a id="a1efb5df7a0b3c59c2a6d0d85c6485a84"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a1efb5df7a0b3c59c2a6d0d85c6485a84">&#9670;&nbsp;</a></span>getShift()</h2>
 
@@ -539,6 +577,41 @@ template&lt;class Archive &gt; </div>
 
 </div>
 </div>
+<a id="a6d5f469f749a08a62f9c7300675900c1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6d5f469f749a08a62f9c7300675900c1">&#9670;&nbsp;</a></span>setKDTreeFactory()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Scene::setKDTreeFactory </td>
+          <td>(</td>
+          <td class="paramtype">std::shared_ptr&lt; <a class="el" href="../../d5/dd0/classKDTreeFactory.html">KDTreeFactory</a> &gt; const&#160;</td>
+          <td class="paramname"><em>kdtf</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Set the KDTree factory to be used by the scene. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">kdtf</td><td>New KDTree factory to be used by the scene </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d5/d9c/classScene.html#a5b4ca990006db81ed71b4850923b1414" title="The KDTree factory used to build the scene KDTree. ">Scene::kdtf</a> </dd></dl>
+
+</div>
+</div>
 <a id="a782302f4dc1703617d5292251bda044e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a782302f4dc1703617d5292251bda044e">&#9670;&nbsp;</a></span>writeObject()</h2>
 
@@ -576,6 +649,33 @@ template&lt;class Archive &gt; </div>
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
+<a id="a5b4ca990006db81ed71b4850923b1414"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5b4ca990006db81ed71b4850923b1414">&#9670;&nbsp;</a></span>kdtf</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::shared_ptr&lt;<a class="el" href="../../d5/dd0/classKDTreeFactory.html">KDTreeFactory</a>&gt; Scene::kdtf</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The KDTree factory used to build the scene KDTree. </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d5/dd0/classKDTreeFactory.html" title="Class that must be extended by any class which provides factory methods for k-dimensional trees...">KDTreeFactory</a> </dd>
+<dd>
+<a class="el" href="../../d5/d9c/classScene.html#a4d1d59711628b8599f766b0700a02b2f" title="KDTree splitting scene points/vertices to speed-up intersection computations. ">Scene::kdtree</a> </dd></dl>
+
+</div>
+</div>
 <a id="a3cc4bc214f0f830bb96ad276c0bdce98"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a3cc4bc214f0f830bb96ad276c0bdce98">&#9670;&nbsp;</a></span>parts</h2>
 

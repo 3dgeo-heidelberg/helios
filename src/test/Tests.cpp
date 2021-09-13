@@ -10,6 +10,7 @@
 #include <test/PlatformPhysicsTest.h>
 #include <test/ScenePartSplitTest.h>
 #include <test/RigidMotionTest.h>
+#include <test/FluxionumTest.h>
 
 #include <boost/filesystem.hpp>
 
@@ -80,6 +81,9 @@ void doTests(std::string const & testDir){
 
     RigidMotionTest rigidMotionTest;
     rigidMotionTest.test(std::cout, TEST_COLOR);
+
+    FluxionumTest fluxionumTest;
+    fluxionumTest.test(std::cout, TEST_COLOR);
 }
 
 

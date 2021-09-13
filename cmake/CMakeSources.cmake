@@ -6,6 +6,10 @@ file(GLOB_RECURSE sources CONFIGURE_DEPENDS src/*.cpp src/*.hpp src/*.h)
 # Common Helios include directories
 set(HELIOS_INCLUDE_DIRECTORIES
     "src/"
+    "src/adt/"
+    "src/adt/tree/"
+    "src/adt/bintree/"
+    "src/adt/kdtree/"
     "src/assetloading/"
     "src/assetloading/geometryfilter/"
     "src/platform/"
@@ -19,6 +23,7 @@ set(HELIOS_INCLUDE_DIRECTORIES
     "src/noise/"
     "src/maths/"
     "src/maths/rigidmotion/"
+    "src/maths/fluxionum/"
     "src/util/"
     "src/util/serialization/"
     "src/util/logger/"

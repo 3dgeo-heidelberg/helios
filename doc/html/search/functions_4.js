@@ -2,11 +2,13 @@ var searchData=
 [
   ['deallocate',['deallocate',['../d8/d78/classWavefrontObjCache.html#af1f9c092af89f117c3faecf267d8566f',1,'WavefrontObjCache']]],
   ['debug',['DEBUG',['../d0/da9/logging_8hpp.html#acc7cbc688fcbb59f796678f30fca6ab7',1,'logging']]],
+  ['definesplit',['defineSplit',['../df/d30/classAxisSAHKDTreeFactory.html#a1a938aa8914f624692228217428c157a',1,'AxisSAHKDTreeFactory::defineSplit()'],['../db/d58/classSAHKDTreeFactory.html#aa22c06947f61f871156922122c41084d',1,'SAHKDTreeFactory::defineSplit()'],['../d6/d96/classSimpleKDTreeFactory.html#aa3ed0e048fd2e9ae62fdd324e32153c5',1,'SimpleKDTreeFactory::defineSplit()']]],
   ['degreestoradians',['degreesToRadians',['../df/d22/classMathConverter.html#a9b0216cc0a7a9d3e6ae2adefe2c88c64',1,'MathConverter']]],
   ['demoselector',['DemoSelector',['../df/d3f/classHeliosDemos_1_1DemoSelector.html#a8b4333e776e7b653f9e12767a932f05d',1,'HeliosDemos::DemoSelector']]],
   ['detailedvoxel',['DetailedVoxel',['../d7/d5a/classDetailedVoxel.html#ae614a911aeb8e89cc40544c720c8fb2a',1,'DetailedVoxel::DetailedVoxel()'],['../d7/d5a/classDetailedVoxel.html#ac96e1c1d68ab64cf390056c886b834b1',1,'DetailedVoxel::DetailedVoxel(glm::dvec3 center, double voxelSize, std::vector&lt; int &gt; intValues, std::vector&lt; double &gt; doubleValues)'],['../d7/d5a/classDetailedVoxel.html#a9156ec800530d05164ee7248e1ab498e',1,'DetailedVoxel::DetailedVoxel(double x, double y, double z, double halfVoxelSize, std::vector&lt; int &gt; intValues, std::vector&lt; double &gt; doubleValues)']]],
   ['detailedvoxelloader',['DetailedVoxelLoader',['../db/d49/classDetailedVoxelLoader.html#a24b9858e16033ec23400c4e3029dcf8e',1,'DetailedVoxelLoader']]],
   ['detectpeak',['detectPeak',['../db/da6/classFullWaveformPulseRunnable.html#a4f0587b710f6a2d84b1c8758dd2f7cd0',1,'FullWaveformPulseRunnable']]],
+  ['diffminimizer',['DiffMinimizer',['../d3/d7f/classfluxionum_1_1DiffMinimizer.html#a09edcd879d77570195010b51d52a1f8c',1,'fluxionum::DiffMinimizer']]],
   ['digestfullwaveform',['digestFullWaveform',['../db/da6/classFullWaveformPulseRunnable.html#af44d7312cdd43ccc9a34bc1db5e9d3ba',1,'FullWaveformPulseRunnable']]],
   ['digestintersections',['digestIntersections',['../db/da6/classFullWaveformPulseRunnable.html#afdef1f81c235056a04beb60f40c2492d',1,'FullWaveformPulseRunnable']]],
   ['digestscenepart',['digestScenePart',['../db/d91/classXmlSceneLoader.html#a4f662808bd8f0e04d2b087cfc8061e07',1,'XmlSceneLoader']]],

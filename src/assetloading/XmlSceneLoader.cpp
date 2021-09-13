@@ -6,6 +6,9 @@
 #include <XYZPointCloudFileLoader.h>
 #include <DetailedVoxelLoader.h>
 #include <scene/dynamic/DynScene.h>
+#include <SimpleKDTreeFactory.h>
+#include <SAHKDTreeFactory.h>
+#include <AxisSAHKDTreeFactory.h>
 
 #include <logging.hpp>
 
@@ -76,8 +79,8 @@ XmlSceneLoader::createSceneFromXml(
         << tw.getElapsedDecimalSeconds() << "s\n";
     logging::INFO(ss.str());
 
-
-    // Finish scene loading
+    // Set KDTree factory and finish scene loading
+    scene->setKDTreeFactory(makeKDTreeFactory());
     bool success = scene->finalizeLoading();
     if (!success) {
         logging::ERR("Finalizing the scene failed.");
@@ -332,4 +335,26 @@ shared_ptr<StaticScene> XmlSceneLoader::makeSceneDynamic(
 
     // Return upgraded scene
     return newScene;
+}
+
+shared_ptr<KDTreeFactory> XmlSceneLoader::makeKDTreeFactory(){
+    if(kdtFactoryType == 1){
+        logging::DEBUG("XmlSceneLoader is using a SimpleKDTreeFactory");
+        return make_shared<SimpleKDTreeFactory>();
+    }
+    else if(kdtFactoryType == 2){
+        logging::DEBUG("XmlSceneLoader is using a SAHKDTreeFactory");
+        return make_shared<SAHKDTreeFactory>(kdtSAHLossNodes);
+    }
+    else if(kdtFactoryType == 3){
+        logging::DEBUG("XmlSceneLoader is using a AxisSAHKDTreeFactory");
+        return make_shared<AxisSAHKDTreeFactory>(kdtSAHLossNodes);
+    }
+    else{
+        std::stringstream ss;
+        ss  << "Unexpected KDT factory type at "
+            << "XmlSceneLoader::makeKDTreeFactory: "
+            << kdtFactoryType;
+        throw HeliosException(ss.str());
+    }
 }
