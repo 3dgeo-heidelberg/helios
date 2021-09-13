@@ -52,6 +52,7 @@ var hierarchy =
       ] ]
     ] ],
     [ "HeliosTests::BaseTest", "d9/d52/classHeliosTests_1_1BaseTest.html", [
+      [ "HeliosTests::FluxionumTest", "dd/de0/classHeliosTests_1_1FluxionumTest.html", null ],
       [ "HeliosTests::LadLutTest", "dd/df9/classHeliosTests_1_1LadLutTest.html", null ],
       [ "HeliosTests::NoiseTest", "de/dad/classHeliosTests_1_1NoiseTest.html", null ],
       [ "HeliosTests::PlaneFitterTest", "d6/dda/classHeliosTests_1_1PlaneFitterTest.html", null ],
@@ -78,9 +79,28 @@ var hierarchy =
       ] ]
     ] ],
     [ "FileUtils", "d5/d4b/classFileUtils.html", null ],
+    [ "IBinaryTreeNode", "d7/d98/classIBinaryTreeNode.html", [
+      [ "KDTreeNode", "d8/d94/classKDTreeNode.html", [
+        [ "KDTreeNodeRoot", "d0/d64/classKDTreeNodeRoot.html", null ]
+      ] ]
+    ] ],
     [ "IntersectionHandlingResult", "d1/dc8/classIntersectionHandlingResult.html", null ],
-    [ "KDTreeNode", "d8/d94/classKDTreeNode.html", [
-      [ "KDTreeNodeRoot", "d0/d64/classKDTreeNodeRoot.html", null ]
+    [ "IterableTreeNode< NodeType >", "de/d22/classIterableTreeNode.html", null ],
+    [ "fluxionum::IterativeMethodHandler< IT, ET >", "d8/d34/classfluxionum_1_1IterativeMethodHandler.html", null ],
+    [ "fluxionum::IterativeMethodHandler< IT, OT >", "d8/d34/classfluxionum_1_1IterativeMethodHandler.html", null ],
+    [ "ITreeIterator< NodeType >", "df/d39/classITreeIterator.html", null ],
+    [ "ITreeIterator< IterableTreeNode< IBinaryTreeNode > >", "df/d39/classITreeIterator.html", [
+      [ "BinaryTreeBreadthIterator< NodeType >", "d0/da5/classBinaryTreeBreadthIterator.html", null ],
+      [ "BinaryTreeDepthIterator< NodeType >", "d4/d02/classBinaryTreeDepthIterator.html", null ]
+    ] ],
+    [ "ITreeIterator< NodeType *>", "df/d39/classITreeIterator.html", [
+      [ "BinaryTreeFastBreadthIterator< NodeType >", "d3/d43/classBinaryTreeFastBreadthIterator.html", null ],
+      [ "BinaryTreeFastDepthIterator< NodeType >", "dc/da5/classBinaryTreeFastDepthIterator.html", null ]
+    ] ],
+    [ "KDTreeFactory", "d5/dd0/classKDTreeFactory.html", [
+      [ "SimpleKDTreeFactory", "d6/d96/classSimpleKDTreeFactory.html", [
+        [ "SAHKDTreeFactory", "db/d58/classSAHKDTreeFactory.html", null ]
+      ] ]
     ] ],
     [ "KDTreePrimitiveComparator", "d6/d1f/structKDTreePrimitiveComparator.html", null ],
     [ "KDTreeRaycaster", "da/d81/classKDTreeRaycaster.html", null ],
@@ -102,6 +122,11 @@ var hierarchy =
     [ "MathConverter", "df/d22/classMathConverter.html", null ],
     [ "Measurement", "db/d2e/classMeasurement.html", null ],
     [ "MeasurementsBuffer", "d3/dec/classMeasurementsBuffer.html", null ],
+    [ "fluxionum::Minimizer< IT, OT >", "d9/d82/classfluxionum_1_1Minimizer.html", [
+      [ "fluxionum::DiffMinimizer< IT, OT >", "d3/d7f/classfluxionum_1_1DiffMinimizer.html", [
+        [ "fluxionum::UnivariateNewtonRaphsonMinimizer< IT, OT >", "db/d57/classfluxionum_1_1UnivariateNewtonRaphsonMinimizer.html", null ]
+      ] ]
+    ] ],
     [ "NoiseSource< RealType >", "d9/d6b/classNoiseSource.html", [
       [ "RandomNoiseSource< RealType >", "d4/d38/classRandomNoiseSource.html", [
         [ "NormalNoiseSource< RealType >", "d9/d8f/classNormalNoiseSource.html", null ],

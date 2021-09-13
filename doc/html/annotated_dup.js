@@ -1,5 +1,11 @@
 var annotated_dup =
 [
+    [ "fluxionum", null, [
+      [ "DiffMinimizer", "d3/d7f/classfluxionum_1_1DiffMinimizer.html", "d3/d7f/classfluxionum_1_1DiffMinimizer" ],
+      [ "IterativeMethodHandler", "d8/d34/classfluxionum_1_1IterativeMethodHandler.html", "d8/d34/classfluxionum_1_1IterativeMethodHandler" ],
+      [ "Minimizer", "d9/d82/classfluxionum_1_1Minimizer.html", "d9/d82/classfluxionum_1_1Minimizer" ],
+      [ "UnivariateNewtonRaphsonMinimizer", "db/d57/classfluxionum_1_1UnivariateNewtonRaphsonMinimizer.html", "db/d57/classfluxionum_1_1UnivariateNewtonRaphsonMinimizer" ]
+    ] ],
     [ "HeliosDemos", null, [
       [ "BaseDemo", "df/df9/classHeliosDemos_1_1BaseDemo.html", "df/df9/classHeliosDemos_1_1BaseDemo" ],
       [ "DemoSelector", "df/d3f/classHeliosDemos_1_1DemoSelector.html", "df/d3f/classHeliosDemos_1_1DemoSelector" ],
@@ -9,6 +15,7 @@ var annotated_dup =
     ] ],
     [ "HeliosTests", null, [
       [ "BaseTest", "d9/d52/classHeliosTests_1_1BaseTest.html", "d9/d52/classHeliosTests_1_1BaseTest" ],
+      [ "FluxionumTest", "dd/de0/classHeliosTests_1_1FluxionumTest.html", "dd/de0/classHeliosTests_1_1FluxionumTest" ],
       [ "LadLutTest", "dd/df9/classHeliosTests_1_1LadLutTest.html", "dd/df9/classHeliosTests_1_1LadLutTest" ],
       [ "NoiseTest", "de/dad/classHeliosTests_1_1NoiseTest.html", "de/dad/classHeliosTests_1_1NoiseTest" ],
       [ "PlaneFitterTest", "d6/dda/classHeliosTests_1_1PlaneFitterTest.html", "d6/dda/classHeliosTests_1_1PlaneFitterTest" ],
@@ -77,6 +84,10 @@ var annotated_dup =
     [ "AbstractPulseRunnable", "d6/d9e/classAbstractPulseRunnable.html", "d6/d9e/classAbstractPulseRunnable" ],
     [ "ArgumentsParser", "d7/d5c/classArgumentsParser.html", "d7/d5c/classArgumentsParser" ],
     [ "Asset", "de/d97/classAsset.html", "de/d97/classAsset" ],
+    [ "BinaryTreeBreadthIterator", "d0/da5/classBinaryTreeBreadthIterator.html", "d0/da5/classBinaryTreeBreadthIterator" ],
+    [ "BinaryTreeDepthIterator", "d4/d02/classBinaryTreeDepthIterator.html", "d4/d02/classBinaryTreeDepthIterator" ],
+    [ "BinaryTreeFastBreadthIterator", "d3/d43/classBinaryTreeFastBreadthIterator.html", "d3/d43/classBinaryTreeFastBreadthIterator" ],
+    [ "BinaryTreeFastDepthIterator", "dc/da5/classBinaryTreeFastDepthIterator.html", "dc/da5/classBinaryTreeFastDepthIterator" ],
     [ "Color4f", "db/d02/classColor4f.html", "db/d02/classColor4f" ],
     [ "ConicBeamDeflector", "d7/db4/classConicBeamDeflector.html", "d7/db4/classConicBeamDeflector" ],
     [ "DetailedVoxel", "d7/d5a/classDetailedVoxel.html", "d7/d5a/classDetailedVoxel" ],
@@ -102,7 +113,11 @@ var annotated_dup =
     [ "GroundVehiclePlatform", "d7/d94/classGroundVehiclePlatform.html", "d7/d94/classGroundVehiclePlatform" ],
     [ "HelicopterPlatform", "db/d69/classHelicopterPlatform.html", "db/d69/classHelicopterPlatform" ],
     [ "HeliosException", "d6/dda/classHeliosException.html", "d6/dda/classHeliosException" ],
+    [ "IBinaryTreeNode", "d7/d98/classIBinaryTreeNode.html", "d7/d98/classIBinaryTreeNode" ],
     [ "IntersectionHandlingResult", "d1/dc8/classIntersectionHandlingResult.html", "d1/dc8/classIntersectionHandlingResult" ],
+    [ "IterableTreeNode", "de/d22/classIterableTreeNode.html", "de/d22/classIterableTreeNode" ],
+    [ "ITreeIterator", "df/d39/classITreeIterator.html", "df/d39/classITreeIterator" ],
+    [ "KDTreeFactory", "d5/dd0/classKDTreeFactory.html", "d5/dd0/classKDTreeFactory" ],
     [ "KDTreeNode", "d8/d94/classKDTreeNode.html", "d8/d94/classKDTreeNode" ],
     [ "KDTreeNodeRoot", "d0/d64/classKDTreeNodeRoot.html", "d0/d64/classKDTreeNodeRoot" ],
     [ "KDTreePrimitiveComparator", "d6/d1f/structKDTreePrimitiveComparator.html", "d6/d1f/structKDTreePrimitiveComparator" ],
@@ -140,6 +155,7 @@ var annotated_dup =
     [ "RotateFilter", "de/de4/classRotateFilter.html", "de/de4/classRotateFilter" ],
     [ "Rotation", "d5/dcb/classRotation.html", "d5/dcb/classRotation" ],
     [ "RotationOrder", "d6/d7f/classRotationOrder.html", "d6/d7f/classRotationOrder" ],
+    [ "SAHKDTreeFactory", "db/d58/classSAHKDTreeFactory.html", "db/d58/classSAHKDTreeFactory" ],
     [ "ScaleFilter", "d9/d83/classScaleFilter.html", "d9/d83/classScaleFilter" ],
     [ "Scanner", "dc/d42/classScanner.html", "dc/d42/classScanner" ],
     [ "ScannerHead", "dc/da7/classScannerHead.html", "dc/da7/classScannerHead" ],
@@ -149,6 +165,7 @@ var annotated_dup =
     [ "ScenePart", "dd/dc4/classScenePart.html", "dd/dc4/classScenePart" ],
     [ "SerialIO", "d6/db9/classSerialIO.html", "d6/db9/classSerialIO" ],
     [ "SerialSceneWrapper", "d3/df0/classSerialSceneWrapper.html", "d3/df0/classSerialSceneWrapper" ],
+    [ "SimpleKDTreeFactory", "d6/d96/classSimpleKDTreeFactory.html", "d6/d96/classSimpleKDTreeFactory" ],
     [ "SimplePhysicsPlatform", "d5/d3b/classSimplePhysicsPlatform.html", "d5/d3b/classSimplePhysicsPlatform" ],
     [ "SimpleSyncFileWriter", "df/d47/classSimpleSyncFileWriter.html", "df/d47/classSimpleSyncFileWriter" ],
     [ "Simulation", "d1/d7b/classSimulation.html", "d1/d7b/classSimulation" ],

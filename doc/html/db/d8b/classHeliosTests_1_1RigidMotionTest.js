@@ -24,7 +24,7 @@ var classHeliosTests_1_1RigidMotionTest =
     [ "testPureTranslationR2", "db/d8b/classHeliosTests_1_1RigidMotionTest.html#ac3699c4aebc3b08f4d52ba92f107dc3c", null ],
     [ "testPureTranslationR3", "db/d8b/classHeliosTests_1_1RigidMotionTest.html#a1373ab3ace27b41a01c8fed04c5ca767", null ],
     [ "dme", "db/d8b/classHeliosTests_1_1RigidMotionTest.html#aa08309aa0af82ceaa270994adfbf9b93", null ],
-    [ "eps", "db/d8b/classHeliosTests_1_1RigidMotionTest.html#ac0d6f5717a74fb82b844ef9336f81e72", null ],
+    [ "eps", "db/d8b/classHeliosTests_1_1RigidMotionTest.html#a172eb7277a7322cfade355909c748177", null ],
     [ "R2X", "db/d8b/classHeliosTests_1_1RigidMotionTest.html#a8f91e1e80529c1836059666949c3d651", null ],
     [ "R3X", "db/d8b/classHeliosTests_1_1RigidMotionTest.html#a3a644169e5f080e4fa4c77c7cd7533d8", null ],
     [ "rm2f", "db/d8b/classHeliosTests_1_1RigidMotionTest.html#a5919c7c4b95acef22ce9b082a867a0f5", null ],

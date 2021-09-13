@@ -89,8 +89,8 @@ $(document).ready(function(){initNavTree('d2/d51/classTriangle.html','../../');}
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
+<a href="#pro-attribs">Protected Attributes</a> &#124;
 <a href="#pri-methods">Private Member Functions</a> &#124;
-<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="#friends">Friends</a> &#124;
 <a href="../../d8/d53/classTriangle-members.html">List of all members</a>  </div>
   <div class="headertitle">
@@ -230,15 +230,8 @@ Public Attributes</h2></td></tr>
 <tr class="memdesc:a80fbdabe86c0f08e229c6e388af40140 inherit pub_attribs_classPrimitive"><td class="mdescLeft">&#160;</td><td class="mdescRight">Shared pointer to the material defining certain properties such as reflectance, specularity, ...  <a href="../../df/de1/classPrimitive.html#a80fbdabe86c0f08e229c6e388af40140">More...</a><br /></td></tr>
 <tr class="separator:a80fbdabe86c0f08e229c6e388af40140 inherit pub_attribs_classPrimitive"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
-Private Member Functions</h2></td></tr>
-<tr class="memitem:a3461d56d909226eee6b449f7e9ccdfad"><td class="memTemplParams" colspan="2">template&lt;typename Archive &gt; </td></tr>
-<tr class="memitem:a3461d56d909226eee6b449f7e9ccdfad"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d2/d51/classTriangle.html#a3461d56d909226eee6b449f7e9ccdfad">serialize</a> (Archive &amp;ar, const unsigned int version)</td></tr>
-<tr class="memdesc:a3461d56d909226eee6b449f7e9ccdfad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Serialize a <a class="el" href="../../d2/d51/classTriangle.html" title="Class representing triangle primitive. ">Triangle</a> to a stream of bytes.  <a href="#a3461d56d909226eee6b449f7e9ccdfad">More...</a><br /></td></tr>
-<tr class="separator:a3461d56d909226eee6b449f7e9ccdfad"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
-Private Attributes</h2></td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
+Protected Attributes</h2></td></tr>
 <tr class="memitem:a3658a5bff29b9881b6e46c594ba06b3b"><td class="memItemLeft" align="right" valign="top"><a id="a3658a5bff29b9881b6e46c594ba06b3b"></a>
 glm::dvec3&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d51/classTriangle.html#a3658a5bff29b9881b6e46c594ba06b3b">faceNormal</a></td></tr>
 <tr class="memdesc:a3658a5bff29b9881b6e46c594ba06b3b"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="../../d2/d51/classTriangle.html" title="Class representing triangle primitive. ">Triangle</a> face normal vector. <br /></td></tr>
@@ -264,6 +257,13 @@ double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="..
 <tr class="memitem:a615369f02f0886e30a3c78d9e03cf450"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d2/d1a/classAABB.html">AABB</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d51/classTriangle.html#a615369f02f0886e30a3c78d9e03cf450">aabb</a> = nullptr</td></tr>
 <tr class="memdesc:a615369f02f0886e30a3c78d9e03cf450"><td class="mdescLeft">&#160;</td><td class="mdescRight">Axis aligned bounding box containing the triangle.  <a href="#a615369f02f0886e30a3c78d9e03cf450">More...</a><br /></td></tr>
 <tr class="separator:a615369f02f0886e30a3c78d9e03cf450"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
+Private Member Functions</h2></td></tr>
+<tr class="memitem:a3461d56d909226eee6b449f7e9ccdfad"><td class="memTemplParams" colspan="2">template&lt;typename Archive &gt; </td></tr>
+<tr class="memitem:a3461d56d909226eee6b449f7e9ccdfad"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d2/d51/classTriangle.html#a3461d56d909226eee6b449f7e9ccdfad">serialize</a> (Archive &amp;ar, const unsigned int version)</td></tr>
+<tr class="memdesc:a3461d56d909226eee6b449f7e9ccdfad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Serialize a <a class="el" href="../../d2/d51/classTriangle.html" title="Class representing triangle primitive. ">Triangle</a> to a stream of bytes.  <a href="#a3461d56d909226eee6b449f7e9ccdfad">More...</a><br /></td></tr>
+<tr class="separator:a3461d56d909226eee6b449f7e9ccdfad"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="friends"></a>
 Friends</h2></td></tr>
@@ -865,7 +865,7 @@ template&lt;typename Archive &gt; </div>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">

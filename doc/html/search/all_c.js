@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['ladlut',['LadLut',['../d9/d22/classLadLut.html',1,'LadLut'],['../dd/dc4/classScenePart.html#ab97c85e1d868194353a4274f98d8b5f4',1,'ScenePart::ladlut()'],['../d9/d22/classLadLut.html#ac7dc4bf9857a7076a8fc0460997567ed',1,'LadLut::LadLut()']]],
+  ['ladlut',['LadLut',['../d9/d22/classLadLut.html',1,'LadLut'],['../d9/d22/classLadLut.html#ac7dc4bf9857a7076a8fc0460997567ed',1,'LadLut::LadLut()'],['../dd/dc4/classScenePart.html#ab97c85e1d868194353a4274f98d8b5f4',1,'ScenePart::ladlut()']]],
   ['ladlutloader',['LadLutLoader',['../de/d6b/classLadLutLoader.html',1,'LadLutLoader'],['../de/d6b/classLadLutLoader.html#a0dbdd87478e9ce469a3090ad93cdd25d',1,'LadLutLoader::LadLutLoader()']]],
   ['ladluttest',['LadLutTest',['../dd/df9/classHeliosTests_1_1LadLutTest.html',1,'HeliosTests::LadLutTest'],['../dd/df9/classHeliosTests_1_1LadLutTest.html#ae13b3c0ecb23d9e149aa6b70400deb9c',1,'HeliosTests::LadLutTest::LadLutTest()']]],
   ['lambda',['LAMBDA',['../d1/d2b/classMarquardtFitter.html#a80d09545e15e84af3b566192e63de214',1,'MarquardtFitter']]],
@@ -54,6 +54,7 @@ var searchData=
   ['logging_2ehpp',['logging.hpp',['../d0/da9/logging_8hpp.html',1,'']]],
   ['longseed',['longSeed',['../dc/d6e/classRandomnessGenerator.html#aaf792085f6e985e6c88b112c1b616de4',1,'RandomnessGenerator']]],
   ['loop',['loop',['../df/dfa/classDynSequence.html#ae2f4f6ba13798fe53c44687e9b511ce9',1,'DynSequence']]],
+  ['lossnodes',['lossNodes',['../db/d58/classSAHKDTreeFactory.html#aa4bc15caaa3456f80cbcd729434e1d37',1,'SAHKDTreeFactory']]],
   ['low_5fpoint',['LOW_POINT',['../df/d64/classLasSpecification.html#a539093079758a0d96c69e91066e96e7a',1,'LasSpecification']]],
   ['low_5fvegetation',['LOW_VEGETATION',['../df/d64/classLasSpecification.html#a0fe080fcf46324f52fdc97e9641db67f',1,'LasSpecification']]],
   ['lp',['lp',['../d2/db3/classLasSyncFileWriter.html#a8d05197fc8c6d6e489ed4ef5856be9f2',1,'LasSyncFileWriter']]],

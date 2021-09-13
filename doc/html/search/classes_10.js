@@ -1,5 +1,6 @@
 var searchData=
 [
+  ['sahkdtreefactory',['SAHKDTreeFactory',['../db/d58/classSAHKDTreeFactory.html',1,'']]],
   ['scalefilter',['ScaleFilter',['../d9/d83/classScaleFilter.html',1,'']]],
   ['scanner',['Scanner',['../dc/d42/classScanner.html',1,'']]],
   ['scannerhead',['ScannerHead',['../dc/da7/classScannerHead.html',1,'']]],
@@ -11,6 +12,7 @@ var searchData=
   ['serialio',['SerialIO',['../d6/db9/classSerialIO.html',1,'']]],
   ['serializationtest',['SerializationTest',['../df/da1/classHeliosTests_1_1SerializationTest.html',1,'HeliosTests']]],
   ['serialscenewrapper',['SerialSceneWrapper',['../d3/df0/classSerialSceneWrapper.html',1,'']]],
+  ['simplekdtreefactory',['SimpleKDTreeFactory',['../d6/d96/classSimpleKDTreeFactory.html',1,'']]],
   ['simplephysicsplatform',['SimplePhysicsPlatform',['../d5/d3b/classSimplePhysicsPlatform.html',1,'']]],
   ['simpleprimitivesdemo',['SimplePrimitivesDemo',['../d0/d1c/classHeliosDemos_1_1SimplePrimitivesDemo.html',1,'HeliosDemos']]],
   ['simplesyncfilewriter',['SimpleSyncFileWriter',['../df/d47/classSimpleSyncFileWriter.html',1,'']]],

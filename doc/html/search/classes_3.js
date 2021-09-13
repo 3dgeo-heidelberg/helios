@@ -3,6 +3,7 @@ var searchData=
   ['demoselector',['DemoSelector',['../df/d3f/classHeliosDemos_1_1DemoSelector.html',1,'HeliosDemos']]],
   ['detailedvoxel',['DetailedVoxel',['../d7/d5a/classDetailedVoxel.html',1,'']]],
   ['detailedvoxelloader',['DetailedVoxelLoader',['../db/d49/classDetailedVoxelLoader.html',1,'']]],
+  ['diffminimizer',['DiffMinimizer',['../d3/d7f/classfluxionum_1_1DiffMinimizer.html',1,'fluxionum']]],
   ['directions',['Directions',['../df/dc3/classDirections.html',1,'']]],
   ['dynamicscenedemo',['DynamicSceneDemo',['../d4/de8/classHeliosDemos_1_1DynamicSceneDemo.html',1,'HeliosDemos']]],
   ['dynmotion',['DynMotion',['../d6/d4f/classDynMotion.html',1,'']]],

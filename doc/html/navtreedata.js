@@ -23,17 +23,18 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 ".html",
-"d1/d83/classMovingPlatform.html#a3138be155ac4d12834761c924657a050",
-"d3/d71/classvisualhelios_1_1VHSceneCanvas.html#a77743ded11d3775817591711f2002450",
-"d4/d9d/classpyhelios_1_1PyPlatformWrapper.html#ac7d2699c3e1f7229dfb158212281e9fd",
-"d6/d03/classXYZPointCloudFileLoader.html#a471a7eaa12eced954870e41704df505c",
-"d7/d17/classpyhelios_1_1PySceneWrapper.html#aa7ea4859ae9d1f11f927fbf49d896b82",
-"d8/d6b/classAbstractDetector.html#a0568eaa2d69b93d1fae18be7fc6b91fd",
-"d9/ddd/classpyhelios_1_1PyHeliosSimulation.html#ac5caa892758a92dd8d93bf3aed9aa94f",
-"db/d8b/classHeliosTests_1_1RigidMotionTest.html#a32caa969ff62ad4aab777bfdaf0aaf38",
-"dc/da7/classScannerHead.html#a232b2e2585dae91c0515d3b6c9f89b8a",
-"de/dda/classvisualhelios_1_1VHCanvas.html#abf7660f7a34a33875f1ed00d93327b58",
-"df/de1/classPrimitive.html#ac98d07dd8f7b70e16ccb9a01abf56b9c"
+"d1/d7b/classSimulation.html#a9c9e6548d7cfa327c86e648b28f99b78",
+"d3/d43/classBinaryTreeFastBreadthIterator.html#ac98d07dd8f7b70e16ccb9a01abf56b9c",
+"d4/d57/classRisleyBeamDeflector.html#aad8da2f622136943fe420389bdb315da",
+"d5/dcb/classRotation.html#a6c39c454146bff776b7f3eb8aa4e7c3e",
+"d6/da1/classSurveyPlayback.html#a36f9638ef520b4d7a47a89957b6fed27",
+"d7/d92/classAbstractBeamDeflector.html#a216c63fd87dc1d5ed3c301abedd00a4e",
+"d9/d64/serial__adt_8h_source.html",
+"db/d0e/classvisualhelios_1_1VHDynSceneAdapter.html#a08c66ed06618bcf91394c9ed8a3560de",
+"db/dff/PyHeliosException_8h_source.html",
+"dc/df6/classrigidmotion_1_1RigidMotionR3Factory.html#ad2c30d4c02f4d7244cd64b81c00e9b23",
+"de/df5/classpyhelios_1_1PyPrimitiveWrapper.html#aa17d2551f927721eb8cdc025ee6ecb9f",
+"df/dfa/classDynSequence.html#a7a4acfe21325992f603dc2df297696df"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

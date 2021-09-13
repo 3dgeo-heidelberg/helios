@@ -1,6 +1,7 @@
 var searchData=
 [
   ['makedefault',['makeDefault',['../d0/da9/logging_8hpp.html#abe503e7a8d4225b50c522708fc4e980c',1,'logging']]],
+  ['makefromprimitives',['makeFromPrimitives',['../d5/dd0/classKDTreeFactory.html#a87d961d1bd980133318421f5de71a4df',1,'KDTreeFactory::makeFromPrimitives()'],['../d6/d96/classSimpleKDTreeFactory.html#af15ff698fd31b9b6476778c76ddcad31',1,'SimpleKDTreeFactory::makeFromPrimitives()']]],
   ['makeglidereflection',['makeGlideReflection',['../d7/da7/classrigidmotion_1_1RigidMotionR2Factory.html#afcb887bd4b6289c82a25ecc2050537a2',1,'rigidmotion::RigidMotionR2Factory::makeGlideReflection(colvec const axis, double const glide) const'],['../d7/da7/classrigidmotion_1_1RigidMotionR2Factory.html#a11a6afaab88cbcae30f175954e3becc2',1,'rigidmotion::RigidMotionR2Factory::makeGlideReflection(double const theta, double const glide) const'],['../dc/df6/classrigidmotion_1_1RigidMotionR3Factory.html#a02e2bc7bb486d4f58168734014a5be51',1,'rigidmotion::RigidMotionR3Factory::makeGlideReflection()']]],
   ['makeglidereflectionfast',['makeGlideReflectionFast',['../dc/df6/classrigidmotion_1_1RigidMotionR3Factory.html#aac1456d1581fd8a2fa10d8bceb6f6655',1,'rigidmotion::RigidMotionR3Factory']]],
   ['makehelical',['makeHelical',['../dc/df6/classrigidmotion_1_1RigidMotionR3Factory.html#a3eeb704e9cfc63ada4fbe1de9cf919b9',1,'rigidmotion::RigidMotionR3Factory']]],
@@ -41,5 +42,6 @@ var searchData=
   ['measurement',['Measurement',['../db/d2e/classMeasurement.html#a3685fc6dff9547603c0ccab8dc05e118',1,'Measurement']]],
   ['measurementtostring',['measurementToString',['../df/d47/classSimpleSyncFileWriter.html#a7f69c55e8a02966a0c2bd2a66148d5e7',1,'SimpleSyncFileWriter']]],
   ['millitostring',['milliToString',['../d6/da1/classSurveyPlayback.html#addcb1811778dfc04866894be7fd474c2',1,'SurveyPlayback']]],
+  ['minimizer',['Minimizer',['../d9/d82/classfluxionum_1_1Minimizer.html#af3ea32c6b60170de1fdfbada7d07dca1',1,'fluxionum::Minimizer']]],
   ['movingplatform',['MovingPlatform',['../d1/d83/classMovingPlatform.html#a1fda311a499f27b3dc449dc13b2aeaed',1,'MovingPlatform']]]
 ];
