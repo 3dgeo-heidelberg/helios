@@ -1,0 +1,202 @@
+#ifndef _SURFACEINSPECTOR_MATHS_HISTOGRAM_HPP_
+#define _SURFACEINSPECTOR_MATHS_HISTOGRAM_HPP_
+
+#include <vector>
+
+#include <util/Object.hpp>
+#include <maths/functions/GaussianFunction.hpp>
+
+using std::vector;
+using SurfaceInspector::util::Object;
+using SurfaceInspector::maths::functions::GaussianFunction;
+
+namespace SurfaceInspector { namespace maths{
+
+/**
+ * @author Alberto M. Esmoris PEna
+ * @version 1.0
+ *
+ * @tparam T Type of element
+ * @brief Class for representation and handling of 1D histograms
+ */
+template <typename T>
+class Histogram : public Object{
+public:
+    // ***  ATTRIBUTES  *** //
+    // ******************** //
+    /**
+     * @brief The number of elements considered to build the histogram
+     */
+    size_t m;
+    /**
+     * @brief The number of bins
+     */
+    size_t n;
+
+    /**
+     * @brief The minimum value on data used to build the histogram
+     */
+    T xmin;
+    /**
+     * @brief The maximum value on data used to build the histogram
+     */
+    T xmax;
+    /**
+     * @brief The difference between maximum and minimum value
+     */
+    T delta;
+    /**
+     * @brief The step between bins. It can also be understood as the bin size
+     */
+    T step;
+    /**
+     * @brief The norm for the unitary area histogram
+     * @see Histogram::computeDensity
+     */
+    T norm;
+
+    /**
+     * @brief The absolute frequency, it is number of elements in each bin
+     *
+     * \f$c_i = k\f$ means there are k elements in the i-th bin
+     */
+    vector<size_t> c;
+    /**
+     * @brief The relative frequency for each bin
+     */
+    vector<double> r;
+    /**
+     * @brief The density for each bin corresponding to the unitary area
+     *  version of the histogram
+     * @see Histogram::computeDensity
+     */
+    vector<double> d;
+
+    /**
+     * @brief The start value for each bin
+     *
+     * \f$a_i = x\f$ means x is the start value for i-th bin
+     */
+    vector<T> a;
+    /**
+     * @briet The end value for each bin
+     *
+     * \f$b_i = x\f$ means y is the end value for i-th bin
+     */
+    vector<T> b;
+
+    // *** CONSTRUCTION / DESTRUCTION  *** //
+    // *********************************** //
+    /**
+     * @brief Build a histogram from given vector of values \f$\vec{x}\f$ and
+     *  requested number of bins \f$n\f$
+     * @param x The vector of values
+     * @param n Requested number of bins
+     * @param relative Compute the relative frequencies if true. Skip their
+     *  computation if false
+     * @param density Compute the density if true. Skip its computation if
+     *  false
+     */
+    Histogram(
+        vector<T> x,
+        size_t n=256,
+        bool relative=true,
+        bool density=true
+    );
+    /**
+     * @brief Virtual destructor for the histogram
+     */
+    virtual ~Histogram() = default;
+
+    // ***  HISTOGRAM METHODS  *** //
+    // *************************** //
+    /**
+     * @brief Estimate a gaussian function from the histogram. <b>Notice</b>
+     *  this method MUST NOT be called if histogram's density is not
+     *  available.
+     * @see SurfaceInspector::maths::functions::GaussianFunction
+     */
+    GaussianFunction<T> estimateGaussian();
+    /**
+     * @brief Obtain the cut point (value) \f$\tau\f$ so approximately
+     *  \f$100p \%\f$ of the elements are greater than it.
+     *
+     * <b>Notice</b> this method MUST NOT be called if histogram's relative
+     *  frequencies are not available.
+     *
+     * @param p Percentage in \f$\left[0, 1\right]\f$ interval
+     * @return Cut point \f$\tau\f$
+     */
+    T findCutPoint(double p);
+
+private:
+    // ***  INNER METHODS  *** //
+    // *********************** //
+    /**
+     * @brief Extract min and max values from vector of values
+     * @param x The vector of values
+     */
+    void extractMinMax(vector<T> const &x);
+
+    /**
+     * @brief Compute the \f$[a, b]\f$ interval for each bin
+     */
+    void computeBinningIntervals();
+    /**
+     * @brief Count the number of elements in each bin, considering given
+     *  vector of values \f$\vec{x}\f$
+     *
+     * Let \f$\Delta = max\left(\vec{x}\right) - min\left(\vec{x}\right)\f$ so:
+     * \f[
+     *  \forall x \in \vec{x},
+     *      \hat{x} = \frac{x-min\left(\vec{x}\right)}{\Delta}
+     * \f]
+     *
+     * Now for any \f$i\f$ bin, its count \f$c_i\f$ can be defined as follows:
+     * \f[
+     *  c_i = \left|\left\{
+     *      \hat{x} : \left\lfloor n\hat{x}=i\right\rfloor
+     *  \right\}\right|
+     * \f]
+     *
+     * @param x the Vector of values
+     */
+    void recount(vector<T> const &x);
+    /**
+     * @brief Compute the relative frequencies for each bin
+     *
+     * Let \f$m\f$ be the number of considered data points when building the
+     *  histogram and \f$c_i\f$ the count of elements at i-th bin. Thus,
+     *  the relative frequency for i-th bin \f$r_i\f$ is:
+     * \f[
+     *  r_i = \frac{c_i}{m}
+     * \f]
+     */
+    void computeRelativeFrequencies();
+
+    /**
+     * @brief Compute the density (or normalized) histogram.
+     *
+     * Let \f$h\f$ be the step or bin size, and \f$c_i\f$ the count for i-th
+     *  bin. Now the norm \f$\lambda\f$ can be defined as:
+     * \f[
+     *  \lambda = \sum_{i=1}^{n} h c_i
+     * \f]
+     *
+     * Then, the unitary area density (AKA normalized frequency) for each
+     *  i-th bin \f$d_i\f$ can be calculated.
+     * \f[
+     *  d_i = \frac{c_i}{\lambda}
+     * \f]
+     *
+     * @see Histogram::norm
+     * @see Histogram::d
+     */
+    void computeDensity();
+
+};
+}}
+
+#include <maths/Histogram.tpp>
+
+#endif
