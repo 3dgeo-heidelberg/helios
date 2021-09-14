@@ -1,15 +1,27 @@
 var classKDTreeNode =
 [
+    [ "KDTreeNode", "d8/d94/classKDTreeNode.html#a4544cbb2399baf6d14b1a7d696ccf529", null ],
+    [ "KDTreeNode", "d8/d94/classKDTreeNode.html#af66b3e82f5718f38dac46d86d90900ee", null ],
+    [ "KDTreeNode", "d8/d94/classKDTreeNode.html#abbf503b0b33cef9157e5c805fa44bcba", null ],
     [ "~KDTreeNode", "d8/d94/classKDTreeNode.html#a3285444a0413e1345de292884e34b5ac", null ],
-    [ "buildRecursive", "d8/d94/classKDTreeNode.html#aef9b00af05a301df1855077fa36b3eab", null ],
-    [ "computeKDTreeStats", "d8/d94/classKDTreeNode.html#af35b43c1729ceb80b6091aef5b265dee", null ],
+    [ "buildBreadthIterator", "d8/d94/classKDTreeNode.html#af5b9d903b40727e7151acd4312bd6f24", null ],
+    [ "buildDepthIterator", "d8/d94/classKDTreeNode.html#a63fe097fd69c3ea13c8d96f21a626262", null ],
+    [ "buildFastBreadthIterator", "d8/d94/classKDTreeNode.html#aad3c3195552e8d3508f8f7c4fc825e06", null ],
+    [ "buildFastDepthIterator", "d8/d94/classKDTreeNode.html#a277778c9721e678882fc6b09e0a0f6eb", null ],
+    [ "getLeftChild", "d8/d94/classKDTreeNode.html#ad098d3184f75bca16026dd1cb4f9aec4", null ],
+    [ "getRightChild", "d8/d94/classKDTreeNode.html#ac943321d9b43dc39ead5876770713f0b", null ],
+    [ "operator=", "d8/d94/classKDTreeNode.html#a719c8407defe2e534254672dd8ec7ebe", null ],
+    [ "operator=", "d8/d94/classKDTreeNode.html#ad8e6ef82399b95cd206e667369559b79", null ],
     [ "readObject", "d8/d94/classKDTreeNode.html#a1c4a9bfcb77f3e29109fcaf153bdb2c1", null ],
     [ "serialize", "d8/d94/classKDTreeNode.html#a11b2ffaaf7f1b7861fabfd56c288ea7a", null ],
+    [ "swap", "d8/d94/classKDTreeNode.html#ac745bc904034e1065443f34a6a593510", null ],
     [ "writeObject", "d8/d94/classKDTreeNode.html#aa370936b0c060b28728e4be5f093e987", null ],
     [ "boost::serialization::access", "d8/d94/classKDTreeNode.html#ac98d07dd8f7b70e16ccb9a01abf56b9c", null ],
+    [ "bound", "d8/d94/classKDTreeNode.html#ab25d385b581fd857a02b370c5d6b0e1a", null ],
     [ "left", "d8/d94/classKDTreeNode.html#aa6ce1f60bfeb7592a4f09180c33158d2", null ],
     [ "primitives", "d8/d94/classKDTreeNode.html#a7d1ca671d3f6cbc5bbd893d548bd0f4a", null ],
     [ "right", "d8/d94/classKDTreeNode.html#a541cf2b0ab4e928b3df158e3ab2950bd", null ],
     [ "splitAxis", "d8/d94/classKDTreeNode.html#a93ac940c0a51f747ea8f03abebc094c0", null ],
-    [ "splitPos", "d8/d94/classKDTreeNode.html#a6507c906c532d42c06399cdf69c6c1ff", null ]
+    [ "splitPos", "d8/d94/classKDTreeNode.html#a6507c906c532d42c06399cdf69c6c1ff", null ],
+    [ "surfaceArea", "d8/d94/classKDTreeNode.html#add966965b18e1e08a806b9ef6c8936c1", null ]
 ];

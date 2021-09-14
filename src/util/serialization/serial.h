@@ -13,3 +13,4 @@
 #include <serial_arma.h>
 #include <serial_primitives.h>
 #include <serial_dynamic.h>
+#include <serial_adt.h>

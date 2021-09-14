@@ -153,6 +153,27 @@ public:
      * @return True if fixed incidence angle was requested, False otherwise.
      */
     bool parseFixedIncidenceAngle();
+    /**
+     * @brief Parse the type of KDTree
+     *
+     * 1 (default) : The simple KDTree built based on balancing through median
+     *  heuristic
+     *
+     * 2 : The SAH KDTree built based on surface area heuristic
+     *
+     * 3 : The SAH KDTree built based on surface area heuristic and best axis
+     *
+     * @return Number identifying the type of KDTree to be built if necessary
+     */
+    int parseKDTreeType();
+    /**
+     * @brief Parse on how many nodes the loss function of the surface area
+     *  heuristic must be evaluated when building the KDTree
+     *
+     * @return Number of nodes to evaluate loss function when building KDTree
+     *  with a surface area heuristic approach
+     */
+    size_t parseSAHLossNodes();
 
 
 private:

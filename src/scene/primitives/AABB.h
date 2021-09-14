@@ -49,6 +49,27 @@ public:
      */
     AABB(glm::dvec3 min, glm::dvec3 max);
     /**
+     * @brief Build an axis aligned bounding box through given points \f$a\f$
+     *  and \f$b\f$ which are the minimum and maximum vertex of the axis
+     *  aligned bounding box respectively
+     * @param ax \f$x\f$ component of the minimum vertex
+     * @param ay \f$y\f$ component of the minimum vertex
+     * @param az \f$z\f$ component of the minimum vertex
+     * @param bx \f$x\f$ component of the maximum vertex
+     * @param by \f$y\f$ component of the maximum vertex
+     * @param bz \f$z\f$ component of the maximum vertex
+     */
+    AABB(
+        double const ax,
+        double const ay,
+        double const az,
+        double const bx,
+        double const by,
+        double const bz
+    ) :
+        AABB(glm::dvec3(ax, ay, az), glm::dvec3(bx, by, bz))
+    {}
+    /**
      * @brief Default destructor for axis aligned bounding box
      */
     ~AABB() override = default;

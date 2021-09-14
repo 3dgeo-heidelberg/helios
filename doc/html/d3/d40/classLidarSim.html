@@ -101,16 +101,16 @@ $(document).ready(function(){initNavTree('d3/d40/classLidarSim.html','../../');}
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a3180ca0f250fe3ef008d55e83b304e3c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/d40/classLidarSim.html#a3180ca0f250fe3ef008d55e83b304e3c">init</a> (std::string surveyPath, std::string assetsPath, std::string outputPath, bool writeWaveform=false, bool calcEchowidth=false, size_t njobs=0, bool fullWaveNoise=false, bool platformNoiseDisabled=false, bool legNoiseDisabled=false, bool rebuildScene=false, bool lasOutput=false, bool las10=false, bool zipOutput=false, bool fixedIncidenceAngle=false, double lasScale=0.0001)</td></tr>
-<tr class="memdesc:a3180ca0f250fe3ef008d55e83b304e3c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize a LiDAR simulation.  <a href="#a3180ca0f250fe3ef008d55e83b304e3c">More...</a><br /></td></tr>
-<tr class="separator:a3180ca0f250fe3ef008d55e83b304e3c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a789323d5e91fb3c3655ea0f54d1560ba"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/d40/classLidarSim.html#a789323d5e91fb3c3655ea0f54d1560ba">init</a> (std::string surveyPath, std::string assetsPath, std::string outputPath, bool writeWaveform=false, bool calcEchowidth=false, size_t njobs=0, bool fullWaveNoise=false, bool platformNoiseDisabled=false, bool legNoiseDisabled=false, bool rebuildScene=false, bool lasOutput=false, bool las10=false, bool zipOutput=false, bool fixedIncidenceAngle=false, double lasScale=0.0001, int kdtType=1, size_t sahLossNodes=21)</td></tr>
+<tr class="memdesc:a789323d5e91fb3c3655ea0f54d1560ba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize a LiDAR simulation.  <a href="#a789323d5e91fb3c3655ea0f54d1560ba">More...</a><br /></td></tr>
+<tr class="separator:a789323d5e91fb3c3655ea0f54d1560ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Lidar simulation class. </p>
 <p>It serves as entry point for Helios++ execution </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a3180ca0f250fe3ef008d55e83b304e3c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3180ca0f250fe3ef008d55e83b304e3c">&#9670;&nbsp;</a></span>init()</h2>
+<a id="a789323d5e91fb3c3655ea0f54d1560ba"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a789323d5e91fb3c3655ea0f54d1560ba">&#9670;&nbsp;</a></span>init()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -203,7 +203,19 @@ Public Member Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>lasScale</em> = <code>0.0001</code>&#160;</td>
+          <td class="paramname"><em>lasScale</em> = <code>0.0001</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>kdtType</em> = <code>1</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>sahLossNodes</em> = <code>21</code>&#160;</td>
         </tr>
         <tr>
           <td></td>

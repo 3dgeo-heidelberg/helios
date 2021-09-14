@@ -53,6 +53,8 @@ public:
         bool las10 = false,
         bool zipOutput = false,
         bool fixedIncidenceAngle = false,
-        double lasScale = 0.0001
+        double lasScale = 0.0001,
+        int kdtType = 1,
+        size_t sahLossNodes = 21
     );
 };

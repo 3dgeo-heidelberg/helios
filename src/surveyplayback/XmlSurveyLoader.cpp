@@ -18,8 +18,10 @@ namespace fs = boost::filesystem;
 using namespace glm;
 using namespace std;
 
-shared_ptr<Survey> XmlSurveyLoader::load(bool legNoiseDisabled,
-                                         bool rebuildScene) {
+shared_ptr<Survey> XmlSurveyLoader::load(
+    bool legNoiseDisabled,
+    bool rebuildScene
+){
   tinyxml2::XMLNode *pRoot = doc.FirstChild();
   if (pRoot == nullptr) {
     logging::ERR("ERROR: xml root not found");
@@ -39,8 +41,10 @@ shared_ptr<Survey> XmlSurveyLoader::load(bool legNoiseDisabled,
 }
 
 shared_ptr<Survey>
-XmlSurveyLoader::createSurveyFromXml(tinyxml2::XMLElement *surveyNode,
-                                     bool legNoiseDisabled, bool rebuildScene) {
+XmlSurveyLoader::createSurveyFromXml(
+    tinyxml2::XMLElement *surveyNode,
+    bool legNoiseDisabled, bool rebuildScene
+) {
   Survey *survey = new Survey();
 
   survey->name = boost::get<string>(
@@ -62,7 +66,9 @@ XmlSurveyLoader::createSurveyFromXml(tinyxml2::XMLElement *surveyNode,
       surveyNode->FirstChildElement("FWFSettings");
   survey->scanner->applySettingsFWF(*createFWFSettingsFromXml(
       scannerFWFSettingsNode, std::make_shared<FWFSettings>(
-                                  FWFSettings(survey->scanner->FWF_settings))));
+        FWFSettings(survey->scanner->FWF_settings)
+      )
+  ));
 
   // ##################### BEGIN Read misc parameters ##################
   // Read number of runs:
@@ -231,8 +237,10 @@ XmlSurveyLoader::createLegFromXML(tinyxml2::XMLElement *legNode) {
   return shared_ptr<Leg>(leg);
 }
 
-shared_ptr<Scene> XmlSurveyLoader::loadScene(string sceneString,
-                                             bool rebuildScene) {
+shared_ptr<Scene> XmlSurveyLoader::loadScene(
+    string sceneString,
+    bool rebuildScene
+) {
   logging::INFO("Loading Scene...");
 
   shared_ptr<Scene> scene;

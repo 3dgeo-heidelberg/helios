@@ -182,6 +182,12 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../.
 <tr class="memitem:a4ff03c5a307080829b7c72477316253c"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d5c/classArgumentsParser.html#a4ff03c5a307080829b7c72477316253c">parseFixedIncidenceAngle</a> ()</td></tr>
 <tr class="memdesc:a4ff03c5a307080829b7c72477316253c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parse the fixed incidence angle specification. When fixed incidence angle is requested, incidence angle for all primitives will be exactly 1.0.  <a href="#a4ff03c5a307080829b7c72477316253c">More...</a><br /></td></tr>
 <tr class="separator:a4ff03c5a307080829b7c72477316253c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a63afc3c3a1e1c948cb1d3b8ef81d9c4b"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d5c/classArgumentsParser.html#a63afc3c3a1e1c948cb1d3b8ef81d9c4b">parseKDTreeType</a> ()</td></tr>
+<tr class="memdesc:a63afc3c3a1e1c948cb1d3b8ef81d9c4b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parse the type of KDTree.  <a href="#a63afc3c3a1e1c948cb1d3b8ef81d9c4b">More...</a><br /></td></tr>
+<tr class="separator:a63afc3c3a1e1c948cb1d3b8ef81d9c4b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a459d589c14b5dbcefcecd7e320ef92a2"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d5c/classArgumentsParser.html#a459d589c14b5dbcefcecd7e320ef92a2">parseSAHLossNodes</a> ()</td></tr>
+<tr class="memdesc:a459d589c14b5dbcefcecd7e320ef92a2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parse on how many nodes the loss function of the surface area heuristic must be evaluated when building the KDTree.  <a href="#a459d589c14b5dbcefcecd7e320ef92a2">More...</a><br /></td></tr>
+<tr class="separator:a459d589c14b5dbcefcecd7e320ef92a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
@@ -483,6 +489,29 @@ Private Attributes</h2></td></tr>
 
 </div>
 </div>
+<a id="a63afc3c3a1e1c948cb1d3b8ef81d9c4b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a63afc3c3a1e1c948cb1d3b8ef81d9c4b">&#9670;&nbsp;</a></span>parseKDTreeType()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int ArgumentsParser::parseKDTreeType </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Parse the type of KDTree. </p>
+<p>1 (default) : The simple KDTree built based on balancing through median heuristic</p>
+<p>2 : The SAH KDTree built based on surface area heuristic</p>
+<p>3 : The SAH KDTree built based on surface area heuristic and best axis</p>
+<dl class="section return"><dt>Returns</dt><dd>Number identifying the type of KDTree to be built if necessary </dd></dl>
+
+</div>
+</div>
 <a id="af9124496c63acc99a4815099ffd720e4"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af9124496c63acc99a4815099ffd720e4">&#9670;&nbsp;</a></span>parseLas10()</h2>
 
@@ -620,6 +649,26 @@ Private Attributes</h2></td></tr>
 
 <p>Parse the rebuild scene flag from invocation arguments. </p>
 <dl class="section return"><dt>Returns</dt><dd>True if rebuild scene flag was specified, False otherwise </dd></dl>
+
+</div>
+</div>
+<a id="a459d589c14b5dbcefcecd7e320ef92a2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a459d589c14b5dbcefcecd7e320ef92a2">&#9670;&nbsp;</a></span>parseSAHLossNodes()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t ArgumentsParser::parseSAHLossNodes </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Parse on how many nodes the loss function of the surface area heuristic must be evaluated when building the KDTree. </p>
+<dl class="section return"><dt>Returns</dt><dd>Number of nodes to evaluate loss function when building KDTree with a surface area heuristic approach </dd></dl>
 
 </div>
 </div>

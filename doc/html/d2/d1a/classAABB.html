@@ -130,6 +130,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a64068a2ddefd51df5c9192eebc31f650"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d1a/classAABB.html#a64068a2ddefd51df5c9192eebc31f650">AABB</a> (glm::dvec3 min, glm::dvec3 max)</td></tr>
 <tr class="memdesc:a64068a2ddefd51df5c9192eebc31f650"><td class="mdescLeft">&#160;</td><td class="mdescRight">Build an axis aligned bounding box through min and max values for each coordinate.  <a href="#a64068a2ddefd51df5c9192eebc31f650">More...</a><br /></td></tr>
 <tr class="separator:a64068a2ddefd51df5c9192eebc31f650"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac996ab078298362a09921825f59942da"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d1a/classAABB.html#ac996ab078298362a09921825f59942da">AABB</a> (double const ax, double const ay, double const az, double const bx, double const by, double const bz)</td></tr>
+<tr class="memdesc:ac996ab078298362a09921825f59942da"><td class="mdescLeft">&#160;</td><td class="mdescRight">Build an axis aligned bounding box through given points \(a\) and \(b\) which are the minimum and maximum vertex of the axis aligned bounding box respectively.  <a href="#ac996ab078298362a09921825f59942da">More...</a><br /></td></tr>
+<tr class="separator:ac996ab078298362a09921825f59942da"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a011f63691733fbc0659e54f85a673299"><td class="memItemLeft" align="right" valign="top"><a id="a011f63691733fbc0659e54f85a673299"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d1a/classAABB.html#a011f63691733fbc0659e54f85a673299">~AABB</a> () override=default</td></tr>
 <tr class="memdesc:a011f63691733fbc0659e54f85a673299"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default destructor for axis aligned bounding box. <br /></td></tr>
@@ -251,7 +254,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>boost::serialization
 <div class="textblock"><p>Class representing an Axis Aligned Bounding Box (<a class="el" href="../../d2/d1a/classAABB.html" title="Class representing an Axis Aligned Bounding Box (AABB) ">AABB</a>) </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a64068a2ddefd51df5c9192eebc31f650"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a64068a2ddefd51df5c9192eebc31f650">&#9670;&nbsp;</a></span>AABB()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a64068a2ddefd51df5c9192eebc31f650">&#9670;&nbsp;</a></span>AABB() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -281,6 +284,79 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>boost::serialization
   <table class="params">
     <tr><td class="paramname">min</td><td>Min value for each 3D coordinate </td></tr>
     <tr><td class="paramname">max</td><td>Max value for each 3D coordinate </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ac996ab078298362a09921825f59942da"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac996ab078298362a09921825f59942da">&#9670;&nbsp;</a></span>AABB() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">AABB::AABB </td>
+          <td>(</td>
+          <td class="paramtype">double const&#160;</td>
+          <td class="paramname"><em>ax</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double const&#160;</td>
+          <td class="paramname"><em>ay</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double const&#160;</td>
+          <td class="paramname"><em>az</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double const&#160;</td>
+          <td class="paramname"><em>bx</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double const&#160;</td>
+          <td class="paramname"><em>by</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double const&#160;</td>
+          <td class="paramname"><em>bz</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Build an axis aligned bounding box through given points \(a\) and \(b\) which are the minimum and maximum vertex of the axis aligned bounding box respectively. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">ax</td><td>\(x\) component of the minimum vertex </td></tr>
+    <tr><td class="paramname">ay</td><td>\(y\) component of the minimum vertex </td></tr>
+    <tr><td class="paramname">az</td><td>\(z\) component of the minimum vertex </td></tr>
+    <tr><td class="paramname">bx</td><td>\(x\) component of the maximum vertex </td></tr>
+    <tr><td class="paramname">by</td><td>\(y\) component of the maximum vertex </td></tr>
+    <tr><td class="paramname">bz</td><td>\(z\) component of the maximum vertex </td></tr>
   </table>
   </dd>
 </dl>

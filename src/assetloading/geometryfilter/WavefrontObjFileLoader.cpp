@@ -88,14 +88,15 @@ ScenePart *WavefrontObjFileLoader::run() {
 
 
     logging::DEBUG(ss.str());
-    if (loadedObj != nullptr)
-    {
+    if (loadedObj != nullptr){
       // TODO Restore addObj below
       //primsOut->addObj(cache.get(pathString));
       // TODO Remove addObj below
       primsOut->addObj(loadedObj);
       primsOut->subpartLimit.push_back(primsOut->mPrimitives.size());
     }
+
+    delete loadedObj;
   }
 
   // Post-processing
@@ -260,8 +261,10 @@ void WavefrontObjFileLoader::readPrimitive(
   }
 }
 
-WavefrontObj *WavefrontObjFileLoader::loadObj(std::string const &pathString,
-                                              bool yIsUp) {
+WavefrontObj *WavefrontObjFileLoader::loadObj(
+    std::string const &pathString,
+    bool yIsUp
+){
   stringstream ss;
 
   WavefrontObj *loadedObj = new WavefrontObj();
