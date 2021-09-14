@@ -1,5 +1,6 @@
 #pragma once
 
+#include <string>
 #include <Voxel.h>
 
 #include <boost/serialization/map.hpp>

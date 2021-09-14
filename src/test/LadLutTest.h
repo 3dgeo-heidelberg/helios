@@ -1,5 +1,6 @@
 #pragma once
 
+#include <string>
 #include "BaseTest.h"
 #include <LadLut.h>
 #include <LadLutLoader.h>
