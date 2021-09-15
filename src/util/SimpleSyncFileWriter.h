@@ -1,5 +1,6 @@
 #pragma once
 
+#include <string>
 #include <SyncFileWriter.h>
 #include <fstream>
 #include "MathConverter.h"

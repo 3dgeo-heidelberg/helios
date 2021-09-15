@@ -1,6 +1,7 @@
 #pragma once
 
 // Includes
+#include <string>
 #include "LasSyncFileWriter.h"
 
 
