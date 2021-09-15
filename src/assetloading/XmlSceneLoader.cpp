@@ -353,7 +353,7 @@ shared_ptr<KDTreeFactory> XmlSceneLoader::makeKDTreeFactory(){
     }
     else if(kdtFactoryType == 4){
         logging::DEBUG("XmlSceneLoader is using a FastSAHKDTreeFactory");
-        return make_shared<FastSAHKDTreeFactory>(32, kdtSAHLossNodes);
+        return make_shared<FastSAHKDTreeFactory>(kdtSAHLossNodes);
     }
     else{
         std::stringstream ss;

@@ -9,36 +9,32 @@
  * @brief Class providing building methods for k-dimensional trees with a
  *  fast strategy to approximate Surface Area Heuristic (SAH)
  *
- *
  * The fast strategy to approximate Surface Area Heuristic (SAH) is based on
- *  minmax histograms. Thus let
- *  \f$H_* = \left\{
- *      [a_1, b_1), \ldots, [a_{m-1}, b_{m-1}), [a_m, b_m]
- *  \right\}\f$ be the min histogram and
- *  \f$H^* = \left\{
- *      [c_1, d_1), \ldots, [c_{m-1}, d_{m-1}), [c_m, d_m]
- *  \right\}\f$ be the max histogram. Where each bin is defined by its start
- *  point (\f$a_i\f$ for \f$H_*\f$ and \f$c_i\f$ for \f$H^*\f$) and its end
- *  point (\f$b_i\f$ for \f$H_*\f$ and \f$d_i\f$ for \f$H^*\f$). Thus, the
- *  number of objects per part can be redefined as follows:
+ *  min-max histograms. Now, let \f$H_*\f$ and \f$H^*\f$ be the min and max
+ *  histograms respectively with bins
+ *  \f$\left\{[a_1, b_1), \ldots, [a_{m-1}, b_{m-1}), [a_m, b_m]\right\}\f$,
+ *  where \f$a_i\f$ is the start point of \f$i\f$-th bin and \f$b_i\f$ is the
+ *  end point of \f$i\f$-th bin.
+ *  The min histogram is populated from minimum vertices of axis
+ *  aligned bounding boxes containing each primitive, while the max histogram
+ *  does the same with maximum vertices. For the sake of convenience, let
+ *  \f$b_0 = a_1\f$ so the optimum split position can be approximated as
+ *  \f$b_i\f$ with \f$i \in [0, m]\f$ such that:
  *
  * \f[
- * \left\{\begin{array}{lll}
- *  N_o(L_r) &=& \left|\left\{x : x \leq p_* \right\}\right| \\
- *  N_o(R_r) &=& \left|\left\{x : x \geq p^* \right\}\right|
- * \end{array}\right.
+ *  \mathrm{argmin}_{i} \;\;\;\;
+ *      \frac{i}{m} \left|\left\{x \in H_*: x < b_i\right\}\right| +
+ *      \left(1-\frac{i}{m}\right)
+ *          \left|\left\{x \in H^*: x \geq b_i\right\}\right|
  * \f]
- *
- * Where \f$p_* = b_i\f$ for which
- *  \f$\mathrm{argmin}_i \left|\frac{a_i+b_i}{2} - \varphi(t)\right|\f$ and
- *  \f$p^* = c_i\f$ for which
- *  \f$\mathrm{argmin}_i \left|\frac{c_i+d_i}{2} - \varphi(t)\right|\f$.
- *  Understanding \f$\varphi(t)\f$ as described for the iterative method of
- *  SAHKDTreeFactory::defineSplit.
  *
  * Thus, by means of modifying how the loss function is computed, sorting is
  *  no longer required and can be replaced by a cheap approximation based on
  *  min-max method.
+ *
+ * <i>The approach here proposed is based on "Highly parallel fast KD-tree
+ *  construction for interactive ray tracing of dynamic scenes" by
+ *  Maxim Shevtsov, Alexei Soupikov and Alexander Kapustin</i>
  *
  * @see SAHKDTreeFactory::defineSplit
 */
@@ -98,20 +94,6 @@ public:
 
     // ***  SAH UTILS  *** //
     // ******************* //
-    /**
-     * @brief Compute an approximation of the loss function for the splitting
-     *  hyperplane using a min-max discrete method
-     *
-     * @see SAHKDTreeFactory::splitLoss
-     * @see FastSAHKDTreeFactory
-     */
-    double splitLoss(
-        vector<Primitive *> const &primitives,
-        int const splitAxis,
-        double const splitPos,
-        double const r
-    ) const override;
-
     /**
      * @brief Find the best split position using an min-max like approximation
      *  for the loss function of Surface Area Heuristic (SAH)

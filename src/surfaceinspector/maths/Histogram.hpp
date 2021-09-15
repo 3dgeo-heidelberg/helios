@@ -121,6 +121,27 @@ public:
         bool density=true
     );
     /**
+     * @brief Build a histogram starting at xmin and ending at xmax populated
+     *  by given vector of values \f$\vec{x}\f$ and with requested number of
+     *  bins \f$n\f$
+     * @param xmin Where the histogram must start
+     * @param xmax Where the histogram must end
+     * @param x The vector of values
+     * @param n Requested number of bins
+     * @param relative Compute the relative frequencies if true. Skip their
+     *  computation if false
+     * @param density Compute the density if true. Skip its computation if
+     *  false
+     */
+    Histogram(
+        T xmin,
+        T xmax,
+        vector<T> x,
+        size_t n=256,
+        bool relative=true,
+        bool density=true
+    );
+    /**
      * @brief Virtual destructor for the histogram
      */
     virtual ~Histogram() = default;
@@ -145,6 +166,25 @@ public:
      * @return Cut point \f$\tau\f$
      */
     T findCutPoint(double p);
+    /**
+     * @brief Compute the cumulative sum of absolute frequencies inside given
+     *  index interval
+     *
+     * \f[
+     *  \sum_{i=\alpha}^{\beta-1}{c_i}
+     * \f]
+     *
+     * @param start The inclusive start index of absolute cumsum \f$\alpha\f$
+     * @param end The exclusive end index of absolute cumsum \f$\beta\f$
+     * @return Absoulte cumsum in index interval \f$[\alpha, \beta)\f$
+     */
+    size_t absCumsum(size_t const start, size_t const end);
+    /**
+     * @brief Like absCumsum(size_t const, size_t const) but for the entire
+     *  histogram
+     * @see Histogram::absCumsum(size_t const, size_t const)
+     */
+    inline T absCumsum() {return absCumsum(0, c.size());}
 
 private:
     // ***  INNER METHODS  *** //
@@ -172,7 +212,7 @@ private:
      * Now for any \f$i\f$ bin, its count \f$c_i\f$ can be defined as follows:
      * \f[
      *  c_i = \left|\left\{
-     *      \hat{x} : \left\lfloor n\hat{x}=i\right\rfloor
+     *      \hat{x} : \left\lfloor n\hat{x}\right\rfloor = i
      *  \right\}\right|
      * \f]
      *

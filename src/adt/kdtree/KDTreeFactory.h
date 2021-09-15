@@ -46,7 +46,26 @@ public:
      * @param primitives Primitives to build KDTree splitting them
      * @return Pointer to root node of built KDTree
      */
-    virtual KDTreeNodeRoot* makeFromPrimitives(
-        vector<Primitive *> const &primitives
+    virtual KDTreeNodeRoot * makeFromPrimitivesUnsafe(
+        vector<Primitive *> &primitives
     ) = 0;
+    /**
+     * @brief Safe wrapper from makeFromPrimitivesUnsafe which handles a copy
+     *  to make from primitives by default. This function behavior might be
+     *  overridden by any derived/child class. It is expected that any
+     *  implementation of makeFromPrimitives provides a way to implement
+     *  the makeFromPrimitivesUnsafe method without modifying vector of input
+     *  primitives. Notice this does not mean primitives themselves cannot be
+     *  modified, that depends on the type of KDTreeFactory. It only means
+     *  that the vector itself will not be modified, for instance due to
+     *  sorting purposes.
+     * @see KDTreeFactory::makeFromPrimitivesUnsafe
+     */
+    virtual KDTreeNodeRoot * makeFromPrimitives(
+        vector<Primitive *> const &primitives
+    )
+    {
+        vector<Primitive *> _primitives = primitives; // Copy to work over
+        return makeFromPrimitivesUnsafe(_primitives);
+    };
 };

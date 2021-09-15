@@ -5,62 +5,52 @@ using SurfaceInspector::maths::Histogram;
 
 // ***  SAH UTILS  *** //
 // ******************* //
-double FastSAHKDTreeFactory::splitLoss(
-    vector<Primitive *> const &primitives,
-    int const splitAxis,
-    double const splitPos,
-    double const r
-) const {
-    // Split in left and right primitives
-    size_t lps = 0, rps = 0;
-    for(Primitive *primitive : primitives){
-        AABB const *primBox = primitive->getAABB();
-        if(primBox->getMin()[splitAxis] <= splitPos) ++lps;
-        if(primBox->getMax()[splitAxis] > splitPos) ++rps;
-    }
-
-    // Compute and return loss function
-    return r*((double)lps) + (1.0-r)*((double)rps);
-}
-
 double FastSAHKDTreeFactory::findSplitPositionBySAH(
     KDTreeNode *node,
     vector<Primitive *> &primitives
 ) const {
-    // Extract centroids
-    vector<double> centroids;
+    /*
+     * Code below is commented because it might be necessary in the future.
+     * If problems are found with the fast SAH implementation, notice that it
+     *  is a well known issue that the min-max method might cause problems at
+     *  nodes where number of primitives is smaller than the number of bins.
+     *  In such cases, it is recommended to use the full SAH computation
+     *  instead of the min-max approximation.
+     */
+    // If there are not enough primitives, use a more accurate loss computation
+    /*if(primitives.size() <= numBins)
+        return SAHKDTreeFactory::findSplitPositionBySAH(node, primitives);*/
+
+    // Extract min and max vertices in the same discrete space
+    vector<double> minVerts, maxVerts;
+    double const minp = node->bound.getMin()[node->splitAxis];
+    double const maxp = node->bound.getMax()[node->splitAxis];
     for(Primitive *primitive : primitives){
-        centroids.push_back(primitive->getCentroid()[node->splitAxis]);
+        double const minq = primitive->getAABB()->getMin()[node->splitAxis];
+        double const maxq = primitive->getAABB()->getMax()[node->splitAxis];
+        minVerts.push_back((minq < minp) ? minp : minq);
+        maxVerts.push_back((maxq > maxp) ? maxp : maxq);
     }
-    Histogram<double> H(centroids, numBins, true, false);
+    Histogram<double> Hmin(minp, maxp, minVerts, numBins, false, false);
+    Histogram<double> Hmax(minp, maxp, maxVerts, numBins, false, false);
 
     // Approximated discrete search of optimal splitting plane
-    double const a = node->bound.getMin()[node->splitAxis];
-    double const b = node->bound.getMax()[node->splitAxis];
-    double const length = b-a;
-    double const mu = (b+a)/2.0;
-    double me = H.findCutPoint(0.5);
-    if(me < a) me = a;
-    if(me > b) me = b;
-    double const start = (mu>me) ? me : mu;
-    double const step = (mu>me) ? (mu-me)/((double)(lossNodes-1)) :
-        (me-mu)/((double)(lossNodes-1));
-    double loss = std::numeric_limits<double>::max();
-    for(size_t i = 0 ; i < lossNodes ; ++i){
-        double const phi = start + ((double)i)*step;
-        double const newLoss = splitLoss(
-            primitives,
-            node->splitAxis,
-            phi,
-            (phi-a) / length
-        );
+    size_t NoLr = 0;
+    size_t NoRr = primitives.size();
+    double loss = (double) NoRr, newLoss;
+    node->splitPos = Hmin.a[0];
+    double const rDenom = (double) numBins;
+    for(size_t i = 1 ; i <= numBins ; ++i){
+        double const r = ((double)i) / rDenom;
+        NoLr += Hmin.c[i-1];
+        NoRr -= Hmax.c[i-1];
+        newLoss = r*((double)NoLr) + (1.0-r)*((double)NoRr);
         if(newLoss < loss){
             loss = newLoss;
-            node->splitPos = phi;
+            node->splitPos = Hmin.b[i-1];
         }
     }
 
     // Store loss if requested
     return loss;
-
 }

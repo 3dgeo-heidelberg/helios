@@ -37,6 +37,32 @@ Histogram<T>::Histogram(vector<T> x, size_t n, bool relative, bool density) :
     if(density) computeDensity();
 }
 
+template <typename T>
+Histogram<T>::Histogram(
+    T xmin,
+    T xmax,
+    vector<T> x,
+    size_t n,
+    bool relative,
+    bool density
+) :
+    n(n),
+    xmin(xmin),
+    xmax(xmax)
+{
+    // Compute interval for each bin
+    computeBinningIntervals();
+
+    // Count for each bin
+    recount(x);
+
+    // Compute relative frequencies
+    if(relative) computeRelativeFrequencies();
+
+    // Compute density
+    if(density) computeDensity();
+}
+
 // ***  HISTOGRAM METHODS  *** //
 // *************************** //
 template <typename T>
@@ -53,6 +79,13 @@ T Histogram<T>::findCutPoint(double p){
     size_t i;
     for(i = 0 ; i < n && rsum < p ; ++i) rsum += r[i];
     return a[i-1];
+}
+
+template <typename T>
+size_t Histogram<T>::absCumsum(size_t const start, size_t const end){
+    size_t cumsum = 0;
+    for(size_t i = start ; i < end ; ++i) cumsum += c[i];
+    return cumsum;
 }
 
 // ***  INNER METHODS  *** //
@@ -81,8 +114,8 @@ void Histogram<T>::recount(vector<T> const &x){
     c = vector<size_t>(n, 0);
     size_t cIdx; // Index of bin which count must be increased
     for(T const &xi : x){
-        cIdx = (size_t ) std::floor((xi-xmin)/delta * n);
-        if(cIdx == n) cIdx = n-1;
+        cIdx = (size_t) std::floor((xi-xmin)/delta * n);
+        if(cIdx >= n) cIdx = n-1;
         c[cIdx] += 1;
     }
 }
