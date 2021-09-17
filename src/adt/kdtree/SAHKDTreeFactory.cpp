@@ -31,7 +31,7 @@ void SAHKDTreeFactory::computeKDTreeStats(KDTreeNodeRoot *root) const{
         if(kdtNode->isLeafNode()){
             leafAreaSum += kdtNode->surfaceArea;
             leafObjectAreaSum +=
-                kdtNode->surfaceArea * ((double)kdtNode->primitives.size());
+                kdtNode->surfaceArea * ((double)kdtNode->primitives->size());
         }
         else{
             interiorAreaSum += kdtNode->surfaceArea;
@@ -83,7 +83,7 @@ void SAHKDTreeFactory::buildChildrenNodes(
     else {
         // Otherwise, make this node a leaf:
         node->splitAxis = -1;
-        node->primitives = primitives;
+        node->primitives = std::make_shared<vector<Primitive *>>(primitives);
     }
 }
 

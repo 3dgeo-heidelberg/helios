@@ -46,6 +46,7 @@ KDTreeNodeRoot* SimpleKDTreeFactory::makeFromPrimitivesUnsafe(
             << "Total tree cost: "
             << root->stats_totalCost;
         logging::INFO(ss.str());
+        if(buildLightNodes) lighten(root);
     }
     return root;
 }
@@ -104,7 +105,7 @@ void SimpleKDTreeFactory::computeKDTreeStats(KDTreeNodeRoot *root) const{
         if(node.getDepth() > maxDepth) maxDepth = node.getDepth();
         KDTreeNode * const kdtNode = static_cast<KDTreeNode *>(node.getNode());
         if(kdtNode->isLeafNode()){
-            int const numPrims = kdtNode->primitives.size();
+            int const numPrims = kdtNode->primitives->size();
             if(numPrims > maxNumPrimsInLeaf) maxNumPrimsInLeaf = numPrims;
             if(numPrims < minNumPrimsInLeaf) minNumPrimsInLeaf = numPrims;
             ++numLeaves;
@@ -188,7 +189,7 @@ void SimpleKDTreeFactory::buildChildrenNodes(
     else {
         // Otherwise, make this node a leaf:
         node->splitAxis = -1;
-        node->primitives = primitives;
+        node->primitives = std::make_shared<vector<Primitive *>>(primitives);
     }
 }
 

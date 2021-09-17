@@ -1,29 +1,13 @@
 #pragma once
 
-#include <string>
-#include <vector>
+#include <LightKDTreeNode.h>
 
-#include <boost/archive/text_iarchive.hpp>
-#include <boost/archive/text_oarchive.hpp>
-#include <boost/serialization/vector.hpp>
-
-#include <IBinaryTreeNode.h>
-#include <BinaryTreeDepthIterator.h>
-#include <BinaryTreeFastDepthIterator.h>
-#include <BinaryTreeBreadthIterator.h>
-#include <BinaryTreeFastBreadthIterator.h>
-#include <Primitive.h>
-#include <AABB.h>
-
-// Including primitives below is necessary for serialization
-#include <Triangle.h>
-#include <Voxel.h>
-#include <DetailedVoxel.h>
 
 /**
  * @brief Class representing a KDTree node
  */
-class KDTreeNode : public IBinaryTreeNode{
+class KDTreeNode : public LightKDTreeNode{
+private:
     // ***  SERIALIZATION  *** //
     // *********************** //
 	friend class boost::serialization::access;
@@ -35,61 +19,39 @@ class KDTreeNode : public IBinaryTreeNode{
 	 */
 	template<class Archive>
 	void serialize(Archive & ar, const unsigned int version) {
+	    /*
+	     * Code below is commented because it is no longer needed as it is now
+	     * done in LightKDTreeNode. However, in case problems arise or
+	     * KDTreeNode should become the basis for KDTree node implementation,
+	     * it must be uncommented or serialization will not work
+	     */
         // Register classes derived from Primitive
-        ar.template register_type<Vertex>();
+        /*ar.template register_type<Vertex>();
         ar.template register_type<AABB>();
         ar.template register_type<Triangle>();
         ar.template register_type<Voxel>();
-        ar.template register_type<DetailedVoxel>();
-		ar & left;
-        ar & right;
-		ar & splitPos;
+        ar.template register_type<DetailedVoxel>();*/
+
+	    // Serialization itself
+        boost::serialization::void_cast_register<
+            KDTreeNode, LightKDTreeNode
+        >();
+        ar & boost::serialization::base_object<LightKDTreeNode>(*this);
 		ar & bound;
-        ar & splitAxis;
         ar & surfaceArea;
-		ar & primitives;
     }
 
 public:
     // ***  ATTRIBUTES  *** //
     // ******************** //
     /**
-     * @brief Pointer to node at left side on space partition. Can be nullptr
-     *  if there is no left side node
-     */
-	KDTreeNode* left = nullptr;
-	/**
-	 * @biref Pointer to node at right side on space partition. Can be nullptr
-	 *  if there is no right side node
-	 */
-	KDTreeNode* right = nullptr;
-	/**
-	 * @brief Point position at corresponding split axis
-	 */
-    double splitPos = 0;
-    /**
      * @brief The axis-aligned boundary of the node
      */
     AABB bound;
     /**
-     * @brief Space axis to consider at current depth
-     */
-    int splitAxis = 0;
-    /**
      * @brief The summation of areas for all faces at node boundaries
      */
     double surfaceArea = std::numeric_limits<double>::quiet_NaN();
-    /**
-     * @brief Vector of primitives associated with the node
-     */
-    std::vector<Primitive*> primitives;
-
-	//TODO serialization
-	//KDTreeNode() {}
-	// no default construct guarentees that no invalid object ever exists
-	// > save_construct_data will have to be overridden
-	// see https://www.boost.org/doc/libs/1_55_0/libs/serialization/doc/serialization.html
-	// see Triangle.h
 
 	// ***  CONSTRUCTION / DESTRUCTION  *** //
 	// ************************************ //
@@ -110,10 +72,7 @@ public:
 	/**
 	 * @brief Destructor for KDTreeNode
 	 */
-	virtual ~KDTreeNode() {
-		delete left;
-		delete right;
-	}
+    virtual ~KDTreeNode() = default;
 
 	// ***  ASSIGNMENT OPERATORS  *** //
 	// ****************************** //
@@ -137,54 +96,6 @@ public:
      * @param kdtn KDTreeNode to swap attributes with
      */
     void swap(KDTreeNode &kdtn);
-
-    // ***  BINARY TREE INTERFACE  *** //
-    // ******************************* //
-    /**
-     * @see IBinaryTree::getLeftChild
-     */
-    KDTreeNode * getLeftChild() const override
-    {return left;}
-    /**
-     * @see IBinaryTree::getRightChild
-     */
-    KDTreeNode * getRightChild() const override
-    {return right;}
-
-    // ***  ITERATION METHODS  *** //
-    // *************************** //
-    /**
-     * @brief Build a depth iterator starting at this node
-     * @return Depth iterator starting at this node
-     * @see BinaryTreeDepthIterator
-     */
-    inline BinaryTreeDepthIterator<KDTreeNode> buildDepthIterator(
-        int const depth=0
-    )
-    {return {this, depth};}
-    /**
-     * @brief Build a fast depth iterator starting at this node
-     * @return Fast depth iterator starting at this node
-     * @see BinaryTreeFastDepthIterator
-     */
-    inline BinaryTreeFastDepthIterator<KDTreeNode> buildFastDepthIterator()
-    {return {this};}
-    /**
-     * @brief Build a breadth iterator starting at this node
-     * @return Breadth iterator starting at this node
-     * @see BinaryTreeBreadthIterator
-     */
-    inline BinaryTreeBreadthIterator<KDTreeNode> buildBreadthIterator(
-        int const depth=0
-    )
-    {return {this, depth};}
-    /**
-     * @brief Build a fast breadth iterator starting at this node
-     * @return Fast breadth iterator starting at this node
-     * @see BinaryTreeFastBreadthIterator
-     */
-    inline BinaryTreeFastBreadthIterator<KDTreeNode> buildFastBreadthIterator()
-    {return {this};}
 
 	// ***  OBJECT METHODS  *** //
 	// ************************ //

@@ -10,6 +10,7 @@ using std::vector;
  * @see KDTreeNode
  */
 class KDTreeNodeRoot : public KDTreeNode {
+private:
     // ***  SERIALIZATION  *** //
     // *********************** //
     friend class boost::serialization::access;
