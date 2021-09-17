@@ -68,7 +68,11 @@ public:
     KDTreeNodeRoot() :
         stats_maxNumPrimsInLeaf(0),
         stats_minNumPrimsInLeaf(std::numeric_limits<int>::max()),
-        stats_maxDepthReached(0) {}
+        stats_maxDepthReached(0),
+        stats_numInterior(0),
+        stats_numLeaves(0),
+        stats_totalCost(0.0)
+    {}
 
     ~KDTreeNodeRoot() override = default;
 };

@@ -36,9 +36,9 @@ class KDTreeNode : public IBinaryTreeNode{
 	template<class Archive>
 	void serialize(Archive & ar, const unsigned int version) {
         // Register classes derived from Primitive
+        ar.template register_type<Vertex>();
         ar.template register_type<AABB>();
         ar.template register_type<Triangle>();
-        ar.template register_type<Vertex>();
         ar.template register_type<Voxel>();
         ar.template register_type<DetailedVoxel>();
 		ar & left;

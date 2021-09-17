@@ -119,10 +119,10 @@ shared_ptr<AABB> AABB::getForVertices(vector<Vertex> & verts) {
 		}
 	}
 
-	glm::dvec3 min = glm::dvec3(minX, minY, minZ);
-	glm::dvec3 max = glm::dvec3(maxX, maxY, maxZ);
-
-	return shared_ptr<AABB>(new AABB(min, max));
+	return make_shared<AABB>(
+	    glm::dvec3(minX, minY, minZ),
+	    glm::dvec3(maxX, maxY, maxZ)
+    );
 }
 
 std::shared_ptr<AABB> AABB::getForVertices(

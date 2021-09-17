@@ -16,6 +16,12 @@ double FastSAHKDTreeFactory::findSplitPositionBySAH(
      *  nodes where number of primitives is smaller than the number of bins.
      *  In such cases, it is recommended to use the full SAH computation
      *  instead of the min-max approximation.
+     *
+     * If performance is not good enough, instead of using lossNodes for the
+     *  full SAH and the fast SAH, implement a numBins attribute for the
+     *  fast SAH. Then, use lossNodes just for full SAH. Good initial values
+     *  for the average case would be 21 lossNodes for full SAH and 32 numBins
+     *  for the fast SAH
      */
     // If there are not enough primitives, use a more accurate loss computation
     /*if(primitives.size() <= numBins)
@@ -31,16 +37,16 @@ double FastSAHKDTreeFactory::findSplitPositionBySAH(
         minVerts.push_back((minq < minp) ? minp : minq);
         maxVerts.push_back((maxq > maxp) ? maxp : maxq);
     }
-    Histogram<double> Hmin(minp, maxp, minVerts, numBins, false, false);
-    Histogram<double> Hmax(minp, maxp, maxVerts, numBins, false, false);
+    Histogram<double> Hmin(minp, maxp, minVerts, lossNodes, false, false);
+    Histogram<double> Hmax(minp, maxp, maxVerts, lossNodes, false, false);
 
     // Approximated discrete search of optimal splitting plane
     size_t NoLr = 0;
     size_t NoRr = primitives.size();
     double loss = (double) NoRr, newLoss;
     node->splitPos = Hmin.a[0];
-    double const rDenom = (double) numBins;
-    for(size_t i = 1 ; i <= numBins ; ++i){
+    double const rDenom = (double) lossNodes;
+    for(size_t i = 1 ; i <= lossNodes ; ++i){
         double const r = ((double)i) / rDenom;
         NoLr += Hmin.c[i-1];
         NoRr -= Hmax.c[i-1];

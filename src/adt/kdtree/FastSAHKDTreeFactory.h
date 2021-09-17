@@ -59,36 +59,24 @@ private:
             SAHKDTreeFactory
         >();
         ar &boost::serialization::base_object<SAHKDTreeFactory>(*this);
-        ar &numBins;
     }
-
-protected:
-    // ***  ATTRIBUTES  *** //
-    // ******************** //
-    /**
-     * @brief How many bins use for the min-max approximation of loss function
-     */
-    size_t numBins;
-
 public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //
     // ************************************ //
     /**
      * @brief Fast surface area heuristic KDTree factory default constructor
-     * @param numBins How many bins the \f$H_*\f$ and \f$H^*\f$ histograms must
-     *  use
+     * @param lossNodes How many bins use for the min-max approximation of
+     *  loss function
      * @see SAHKDTreeFactory::SAHKDTreeFactory
      * @see FastSAHKDTreeFactory
      */
     FastSAHKDTreeFactory(
-        size_t const numBins=32,
-        size_t const lossNodes=21,
+        size_t const lossNodes=32,
         double const ci=1,
         double const cl=1,
         double const co=1
     ) :
-        SAHKDTreeFactory(lossNodes, ci, cl, co),
-        numBins(numBins)
+        SAHKDTreeFactory(lossNodes, ci, cl, co)
     {}
     virtual ~FastSAHKDTreeFactory () = default;
 

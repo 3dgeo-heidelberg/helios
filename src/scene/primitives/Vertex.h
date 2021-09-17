@@ -12,16 +12,23 @@
  * @brief Class representing a vertex
  */
 class Vertex {
+private:
     // ***  SERIALIZATION  *** //
-    // ******************
-	friend class boost::serialization::access;
-	template <typename Archive>
-	void serialize(Archive& ar, const unsigned int version) {
-		ar & pos;
-		ar & normal;
-		ar & color;
-		ar & texcoords;
-	}
+    // *********************** //
+    friend class boost::serialization::access;
+    /**
+     * @brief Serialize a Vertex to a stream of bytes
+     * @tparam Archive Type of rendering
+     * @param ar Specific rendering for the stream of bytes
+     * @param version Version number of the Vertex
+     */
+    template <typename Archive>
+    void serialize(Archive& ar, const unsigned int version) {
+        ar & pos;
+        ar & normal;
+        ar & texcoords;
+        ar & color;
+    }
 
 public:
     // ***  ATTRIBUTES  *** //

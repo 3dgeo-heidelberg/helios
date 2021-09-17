@@ -58,7 +58,7 @@ Scene::Scene(Scene &s) {
 
 // ***  M E T H O D S  *** //
 // *********************** //
-bool Scene::finalizeLoading() {
+bool Scene::finalizeLoading(bool const safe) {
   if (primitives.size() == 0) {
     return false;
   }
@@ -140,7 +140,9 @@ bool Scene::finalizeLoading() {
   TimeWatcher tw;
   tw.start();
   kdtree = shared_ptr<KDTreeNodeRoot>(
-      kdtf->makeFromPrimitivesUnsafe(primitives)
+      safe ?
+        kdtf->makeFromPrimitives(primitives) :
+        kdtf->makeFromPrimitivesUnsafe(primitives)
   );
 
   tw.stop();
