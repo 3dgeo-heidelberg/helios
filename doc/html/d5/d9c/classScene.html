@@ -131,9 +131,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a9eca6af7cda6d6bd8bf5ae19597f9ddc"><td class="memItemLeft" align="right" valign="top"><a id="a9eca6af7cda6d6bd8bf5ae19597f9ddc"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>Scene</b> (<a class="el" href="../../d5/d9c/classScene.html">Scene</a> &amp;s)</td></tr>
 <tr class="separator:a9eca6af7cda6d6bd8bf5ae19597f9ddc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2998daf42ded207ba8de523d3001298d"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d9c/classScene.html#a2998daf42ded207ba8de523d3001298d">finalizeLoading</a> ()</td></tr>
-<tr class="memdesc:a2998daf42ded207ba8de523d3001298d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle scene loading finish process.  <a href="#a2998daf42ded207ba8de523d3001298d">More...</a><br /></td></tr>
-<tr class="separator:a2998daf42ded207ba8de523d3001298d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adb8e9900ddf447c30d4ff869e3f0c152"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d9c/classScene.html#adb8e9900ddf447c30d4ff869e3f0c152">finalizeLoading</a> (bool const safe=false)</td></tr>
+<tr class="memdesc:adb8e9900ddf447c30d4ff869e3f0c152"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle scene loading finish process.  <a href="#adb8e9900ddf447c30d4ff869e3f0c152">More...</a><br /></td></tr>
+<tr class="separator:adb8e9900ddf447c30d4ff869e3f0c152"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a866e2103680b966d076df0121f147e6d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d9c/classScene.html#a866e2103680b966d076df0121f147e6d">registerParts</a> ()</td></tr>
 <tr class="memdesc:a866e2103680b966d076df0121f147e6d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Register all scene parts composing the scene in the parts vector with no repetitions.  <a href="#a866e2103680b966d076df0121f147e6d">More...</a><br /></td></tr>
 <tr class="separator:a866e2103680b966d076df0121f147e6d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -155,12 +155,30 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:af46ce55bcb11ce26343b4b72066e0cf5"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="../../d2/da0/classVertex.html">Vertex</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d9c/classScene.html#af46ce55bcb11ce26343b4b72066e0cf5">getAllVertices</a> ()</td></tr>
 <tr class="memdesc:af46ce55bcb11ce26343b4b72066e0cf5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain all vertices (without repetitions) composing the scene.  <a href="#af46ce55bcb11ce26343b4b72066e0cf5">More...</a><br /></td></tr>
 <tr class="separator:af46ce55bcb11ce26343b4b72066e0cf5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4f0e47293b2322ba327f75a93a869963"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="../../d5/dd0/classKDTreeFactory.html">KDTreeFactory</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d9c/classScene.html#a4f0e47293b2322ba327f75a93a869963">getKDTreeFactory</a> () const</td></tr>
-<tr class="memdesc:a4f0e47293b2322ba327f75a93a869963"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain the KDTree factory used by the scene.  <a href="#a4f0e47293b2322ba327f75a93a869963">More...</a><br /></td></tr>
-<tr class="separator:a4f0e47293b2322ba327f75a93a869963"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6d5f469f749a08a62f9c7300675900c1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d9c/classScene.html#a6d5f469f749a08a62f9c7300675900c1">setKDTreeFactory</a> (std::shared_ptr&lt; <a class="el" href="../../d5/dd0/classKDTreeFactory.html">KDTreeFactory</a> &gt; const <a class="el" href="../../d5/d9c/classScene.html#a5b4ca990006db81ed71b4850923b1414">kdtf</a>)</td></tr>
-<tr class="memdesc:a6d5f469f749a08a62f9c7300675900c1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the KDTree factory to be used by the scene.  <a href="#a6d5f469f749a08a62f9c7300675900c1">More...</a><br /></td></tr>
-<tr class="separator:a6d5f469f749a08a62f9c7300675900c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac283c25701a6addafe99071740a15058"><td class="memItemLeft" align="right" valign="top">virtual std::shared_ptr&lt; <a class="el" href="../../d5/dd0/classKDTreeFactory.html">KDTreeFactory</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d9c/classScene.html#ac283c25701a6addafe99071740a15058">getKDTreeFactory</a> () const</td></tr>
+<tr class="memdesc:ac283c25701a6addafe99071740a15058"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain the KDTree factory used by the scene.  <a href="#ac283c25701a6addafe99071740a15058">More...</a><br /></td></tr>
+<tr class="separator:ac283c25701a6addafe99071740a15058"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aed9fc8b80b0e0841421549f1b752f2c9"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d9c/classScene.html#aed9fc8b80b0e0841421549f1b752f2c9">setKDTreeFactory</a> (std::shared_ptr&lt; <a class="el" href="../../d5/dd0/classKDTreeFactory.html">KDTreeFactory</a> &gt; const <a class="el" href="../../d5/d9c/classScene.html#a5b4ca990006db81ed71b4850923b1414">kdtf</a>)</td></tr>
+<tr class="memdesc:aed9fc8b80b0e0841421549f1b752f2c9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the KDTree factory to be used by the scene.  <a href="#aed9fc8b80b0e0841421549f1b752f2c9">More...</a><br /></td></tr>
+<tr class="separator:aed9fc8b80b0e0841421549f1b752f2c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2c95521ec543d494b99f44be0c9042ac"><td class="memItemLeft" align="right" valign="top">virtual std::shared_ptr&lt; <a class="el" href="../../d0/d64/classKDTreeNodeRoot.html">KDTreeNodeRoot</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d9c/classScene.html#a2c95521ec543d494b99f44be0c9042ac">getKDTree</a> () const</td></tr>
+<tr class="memdesc:a2c95521ec543d494b99f44be0c9042ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain the KDTree used by the scene.  <a href="#a2c95521ec543d494b99f44be0c9042ac">More...</a><br /></td></tr>
+<tr class="separator:a2c95521ec543d494b99f44be0c9042ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4f4ea56f0bda2d033133cb02b8f38888"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d9c/classScene.html#a4f4ea56f0bda2d033133cb02b8f38888">setKDTree</a> (std::shared_ptr&lt; <a class="el" href="../../d0/d64/classKDTreeNodeRoot.html">KDTreeNodeRoot</a> &gt; const <a class="el" href="../../d5/d9c/classScene.html#a4d1d59711628b8599f766b0700a02b2f">kdtree</a>)</td></tr>
+<tr class="memdesc:a4f4ea56f0bda2d033133cb02b8f38888"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the KDTree to be used by the scene.  <a href="#a4f4ea56f0bda2d033133cb02b8f38888">More...</a><br /></td></tr>
+<tr class="separator:a4f4ea56f0bda2d033133cb02b8f38888"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a18592eb6dd32e43dd35cd95f22cbbb11"><td class="memItemLeft" align="right" valign="top">virtual std::shared_ptr&lt; <a class="el" href="../../d2/d1a/classAABB.html">AABB</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d9c/classScene.html#a18592eb6dd32e43dd35cd95f22cbbb11">getBBox</a> () const</td></tr>
+<tr class="memdesc:a18592eb6dd32e43dd35cd95f22cbbb11"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain the scene's bounding box.  <a href="#a18592eb6dd32e43dd35cd95f22cbbb11">More...</a><br /></td></tr>
+<tr class="separator:a18592eb6dd32e43dd35cd95f22cbbb11"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acf1c82c4bcd7b6bb176b29c523c15575"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d9c/classScene.html#acf1c82c4bcd7b6bb176b29c523c15575">setBBox</a> (std::shared_ptr&lt; <a class="el" href="../../d2/d1a/classAABB.html">AABB</a> &gt; const <a class="el" href="../../d5/d9c/classScene.html#a012be28a1b960338f634d5fec54c5330">bbox</a>)</td></tr>
+<tr class="memdesc:acf1c82c4bcd7b6bb176b29c523c15575"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the scene's bounding box.  <a href="#acf1c82c4bcd7b6bb176b29c523c15575">More...</a><br /></td></tr>
+<tr class="separator:acf1c82c4bcd7b6bb176b29c523c15575"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afee379217cfb0fc90eb4471274f8de06"><td class="memItemLeft" align="right" valign="top">virtual std::shared_ptr&lt; <a class="el" href="../../d2/d1a/classAABB.html">AABB</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d9c/classScene.html#afee379217cfb0fc90eb4471274f8de06">getBBoxCRS</a> () const</td></tr>
+<tr class="memdesc:afee379217cfb0fc90eb4471274f8de06"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain the scene's coordinate reference system bounding box.  <a href="#afee379217cfb0fc90eb4471274f8de06">More...</a><br /></td></tr>
+<tr class="separator:afee379217cfb0fc90eb4471274f8de06"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af4c42cb5df37ce7340ef497e84e9eacb"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d9c/classScene.html#af4c42cb5df37ce7340ef497e84e9eacb">setBBoxCRS</a> (std::shared_ptr&lt; <a class="el" href="../../d2/d1a/classAABB.html">AABB</a> &gt; const <a class="el" href="../../d5/d9c/classScene.html#a012be28a1b960338f634d5fec54c5330">bbox</a>)</td></tr>
+<tr class="memdesc:af4c42cb5df37ce7340ef497e84e9eacb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the scene's coordinate reference system bounding box.  <a href="#af4c42cb5df37ce7340ef497e84e9eacb">More...</a><br /></td></tr>
+<tr class="separator:af4c42cb5df37ce7340ef497e84e9eacb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a782302f4dc1703617d5292251bda044e"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d9c/classScene.html#a782302f4dc1703617d5292251bda044e">writeObject</a> (std::string path)</td></tr>
 <tr class="memdesc:a782302f4dc1703617d5292251bda044e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Serialize the scene and write it to given output file.  <a href="#a782302f4dc1703617d5292251bda044e">More...</a><br /></td></tr>
 <tr class="separator:a782302f4dc1703617d5292251bda044e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -218,10 +236,17 @@ std::shared_ptr&lt; <a class="el" href="../../d2/d1a/classAABB.html">AABB</a> &g
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
-<tr class="memitem:a17fa122e9a94e852f6f82d5fe61b569a"><td class="memTemplParams" colspan="2">template&lt;class Archive &gt; </td></tr>
-<tr class="memitem:a17fa122e9a94e852f6f82d5fe61b569a"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d5/d9c/classScene.html#a17fa122e9a94e852f6f82d5fe61b569a">serialize</a> (Archive &amp;ar, const unsigned int version)</td></tr>
-<tr class="memdesc:a17fa122e9a94e852f6f82d5fe61b569a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Serialize a <a class="el" href="../../d5/d9c/classScene.html" title="Class representing a scene asset. ">Scene</a> to a stream of bytes.  <a href="#a17fa122e9a94e852f6f82d5fe61b569a">More...</a><br /></td></tr>
-<tr class="separator:a17fa122e9a94e852f6f82d5fe61b569a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4d6039c2337a5085570ab6a9b8cb7683"><td class="memTemplParams" colspan="2">template&lt;class Archive &gt; </td></tr>
+<tr class="memitem:a4d6039c2337a5085570ab6a9b8cb7683"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d5/d9c/classScene.html#a4d6039c2337a5085570ab6a9b8cb7683">save</a> (Archive &amp;ar, unsigned int const version) const</td></tr>
+<tr class="memdesc:a4d6039c2337a5085570ab6a9b8cb7683"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle scene save operation.  <a href="#a4d6039c2337a5085570ab6a9b8cb7683">More...</a><br /></td></tr>
+<tr class="separator:a4d6039c2337a5085570ab6a9b8cb7683"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac68d340293560035fb043da042a26e85"><td class="memTemplParams" colspan="2">template&lt;class Archive &gt; </td></tr>
+<tr class="memitem:ac68d340293560035fb043da042a26e85"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d5/d9c/classScene.html#ac68d340293560035fb043da042a26e85">load</a> (Archive &amp;ar, unsigned int const fileVersion)</td></tr>
+<tr class="memdesc:ac68d340293560035fb043da042a26e85"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle scene load operation.  <a href="#ac68d340293560035fb043da042a26e85">More...</a><br /></td></tr>
+<tr class="separator:ac68d340293560035fb043da042a26e85"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a362e319a7d418a6905a6aa3b82065a5a"><td class="memItemLeft" align="right" valign="top"><a id="a362e319a7d418a6905a6aa3b82065a5a"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>BOOST_SERIALIZATION_SPLIT_MEMBER</b> ()</td></tr>
+<tr class="separator:a362e319a7d418a6905a6aa3b82065a5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="friends"></a>
 Friends</h2></td></tr>
@@ -232,8 +257,8 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>boost::serialization
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Class representing a scene asset. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a2998daf42ded207ba8de523d3001298d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2998daf42ded207ba8de523d3001298d">&#9670;&nbsp;</a></span>finalizeLoading()</h2>
+<a id="adb8e9900ddf447c30d4ff869e3f0c152"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adb8e9900ddf447c30d4ff869e3f0c152">&#9670;&nbsp;</a></span>finalizeLoading()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -241,7 +266,8 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>boost::serialization
         <tr>
           <td class="memname">bool Scene::finalizeLoading </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
+          <td class="paramtype">bool const&#160;</td>
+          <td class="paramname"><em>safe</em> = <code>false</code></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -249,6 +275,12 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>boost::serialization
 
 <p>Handle scene loading finish process. </p>
 <p>Computations such as primitives update and centering the scene (all its vertices) so the axis aligned bounding box defining its boundaries start at (0, 0, 0) and also KDTree building are performed here</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">safe</td><td>Enable safe mode (true) or disable it (false). Safe mode is mainly useful for debugging purposes because it prevents certain changes such as modification of primitives ordering. Whenever safe mode is not necessary, it is recommended to set it to false as enabling it might lead to a slowdown </td></tr>
+  </table>
+  </dd>
+</dl>
 <dl class="section return"><dt>Returns</dt><dd>True if scene loading was successfully finished, false otherwise </dd></dl>
 
 </div>
@@ -290,6 +322,64 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>boost::serialization
 
 <p>Obtain all vertices (without repetitions) composing the scene. </p>
 <dl class="section return"><dt>Returns</dt><dd>All vertices (without repetitions) composing the scene </dd></dl>
+
+</div>
+</div>
+<a id="a18592eb6dd32e43dd35cd95f22cbbb11"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a18592eb6dd32e43dd35cd95f22cbbb11">&#9670;&nbsp;</a></span>getBBox()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual std::shared_ptr&lt;<a class="el" href="../../d2/d1a/classAABB.html">AABB</a>&gt; Scene::getBBox </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Obtain the scene's bounding box. </p>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="../../d5/d9c/classScene.html" title="Class representing a scene asset. ">Scene</a>'s bounding box </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d5/d9c/classScene.html#a012be28a1b960338f634d5fec54c5330" title="Axis aligned bounding box defining scene boundaries. ">Scene::bbox</a> </dd></dl>
+
+</div>
+</div>
+<a id="afee379217cfb0fc90eb4471274f8de06"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afee379217cfb0fc90eb4471274f8de06">&#9670;&nbsp;</a></span>getBBoxCRS()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual std::shared_ptr&lt;<a class="el" href="../../d2/d1a/classAABB.html">AABB</a>&gt; Scene::getBBoxCRS </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Obtain the scene's coordinate reference system bounding box. </p>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="../../d5/d9c/classScene.html" title="Class representing a scene asset. ">Scene</a>'s coordinate reference system bounding box </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d5/d9c/classScene.html#a012be28a1b960338f634d5fec54c5330" title="Axis aligned bounding box defining scene boundaries. ">Scene::bbox</a> </dd></dl>
 
 </div>
 </div>
@@ -420,8 +510,8 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>boost::serialization
 
 </div>
 </div>
-<a id="a4f0e47293b2322ba327f75a93a869963"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4f0e47293b2322ba327f75a93a869963">&#9670;&nbsp;</a></span>getKDTreeFactory()</h2>
+<a id="a2c95521ec543d494b99f44be0c9042ac"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2c95521ec543d494b99f44be0c9042ac">&#9670;&nbsp;</a></span>getKDTree()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -430,7 +520,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>boost::serialization
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::shared_ptr&lt;<a class="el" href="../../d5/dd0/classKDTreeFactory.html">KDTreeFactory</a>&gt; Scene::getKDTreeFactory </td>
+          <td class="memname">virtual std::shared_ptr&lt;<a class="el" href="../../d0/d64/classKDTreeNodeRoot.html">KDTreeNodeRoot</a>&gt; Scene::getKDTree </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -438,7 +528,36 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>boost::serialization
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Obtain the KDTree used by the scene. </p>
+<dl class="section return"><dt>Returns</dt><dd>KDTree used by the scene </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d5/d9c/classScene.html#a4d1d59711628b8599f766b0700a02b2f" title="KDTree splitting scene points/vertices to speed-up intersection computations. ">Scene::kdtree</a> </dd></dl>
+
+</div>
+</div>
+<a id="ac283c25701a6addafe99071740a15058"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac283c25701a6addafe99071740a15058">&#9670;&nbsp;</a></span>getKDTreeFactory()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual std::shared_ptr&lt;<a class="el" href="../../d5/dd0/classKDTreeFactory.html">KDTreeFactory</a>&gt; Scene::getKDTreeFactory </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -466,6 +585,60 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>boost::serialization
 
 <p>Obtain the minimum boundaries of the original axis aligned bounding box containing the scene, before it was centered so (0, 0, 0) became its new minimum boundaries. </p>
 <dl class="section return"><dt>Returns</dt><dd>Minimum boundaries of the original axis aligned bounding box, before translating to (0, 0, 0) </dd></dl>
+
+</div>
+</div>
+<a id="ac68d340293560035fb043da042a26e85"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac68d340293560035fb043da042a26e85">&#9670;&nbsp;</a></span>load()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Archive &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Scene::load </td>
+          <td>(</td>
+          <td class="paramtype">Archive &amp;&#160;</td>
+          <td class="paramname"><em>ar</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int const&#160;</td>
+          <td class="paramname"><em>fileVersion</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Handle scene load operation. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">Archive</td><td>Type of rendering </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">ar</td><td>Specific rendering for the stream of bytes </td></tr>
+    <tr><td class="paramname">s</td><td><a class="el" href="../../d5/d9c/classScene.html" title="Class representing a scene asset. ">Scene</a> to be loaded </td></tr>
+    <tr><td class="paramname">version</td><td>Version number for the <a class="el" href="../../d5/d9c/classScene.html" title="Class representing a scene asset. ">Scene</a> </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -524,8 +697,8 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>boost::serialization
 
 </div>
 </div>
-<a id="a17fa122e9a94e852f6f82d5fe61b569a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a17fa122e9a94e852f6f82d5fe61b569a">&#9670;&nbsp;</a></span>serialize()</h2>
+<a id="a4d6039c2337a5085570ab6a9b8cb7683"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4d6039c2337a5085570ab6a9b8cb7683">&#9670;&nbsp;</a></span>save()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -536,7 +709,7 @@ template&lt;class Archive &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void Scene::serialize </td>
+          <td class="memname">void Scene::save </td>
           <td>(</td>
           <td class="paramtype">Archive &amp;&#160;</td>
           <td class="paramname"><em>ar</em>, </td>
@@ -544,13 +717,13 @@ template&lt;class Archive &gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const unsigned int&#160;</td>
+          <td class="paramtype">unsigned int const&#160;</td>
           <td class="paramname"><em>version</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
           <td>)</td>
-          <td></td><td></td>
+          <td></td><td> const</td>
         </tr>
       </table>
   </td>
@@ -560,7 +733,7 @@ template&lt;class Archive &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Serialize a <a class="el" href="../../d5/d9c/classScene.html" title="Class representing a scene asset. ">Scene</a> to a stream of bytes. </p>
+<p>Handle scene save operation. </p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
     <tr><td class="paramname">Archive</td><td>Type of rendering </td></tr>
@@ -570,6 +743,7 @@ template&lt;class Archive &gt; </div>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">ar</td><td>Specific rendering for the stream of bytes </td></tr>
+    <tr><td class="paramname">s</td><td><a class="el" href="../../d5/d9c/classScene.html" title="Class representing a scene asset. ">Scene</a> to be saved </td></tr>
     <tr><td class="paramname">version</td><td>Version number for the <a class="el" href="../../d5/d9c/classScene.html" title="Class representing a scene asset. ">Scene</a> </td></tr>
   </table>
   </dd>
@@ -577,8 +751,8 @@ template&lt;class Archive &gt; </div>
 
 </div>
 </div>
-<a id="a6d5f469f749a08a62f9c7300675900c1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6d5f469f749a08a62f9c7300675900c1">&#9670;&nbsp;</a></span>setKDTreeFactory()</h2>
+<a id="acf1c82c4bcd7b6bb176b29c523c15575"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acf1c82c4bcd7b6bb176b29c523c15575">&#9670;&nbsp;</a></span>setBBox()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -587,7 +761,112 @@ template&lt;class Archive &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void Scene::setKDTreeFactory </td>
+          <td class="memname">virtual void Scene::setBBox </td>
+          <td>(</td>
+          <td class="paramtype">std::shared_ptr&lt; <a class="el" href="../../d2/d1a/classAABB.html">AABB</a> &gt; const&#160;</td>
+          <td class="paramname"><em>bbox</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Set the scene's bounding box. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">bbox</td><td>New bounding box for the scene </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d5/d9c/classScene.html#a012be28a1b960338f634d5fec54c5330" title="Axis aligned bounding box defining scene boundaries. ">Scene::bbox</a> </dd></dl>
+
+</div>
+</div>
+<a id="af4c42cb5df37ce7340ef497e84e9eacb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af4c42cb5df37ce7340ef497e84e9eacb">&#9670;&nbsp;</a></span>setBBoxCRS()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void Scene::setBBoxCRS </td>
+          <td>(</td>
+          <td class="paramtype">std::shared_ptr&lt; <a class="el" href="../../d2/d1a/classAABB.html">AABB</a> &gt; const&#160;</td>
+          <td class="paramname"><em>bbox</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Set the scene's coordinate reference system bounding box. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">bbox</td><td>New coordinate reference system bounding box for the scene </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d5/d9c/classScene.html#a012be28a1b960338f634d5fec54c5330" title="Axis aligned bounding box defining scene boundaries. ">Scene::bbox</a> </dd></dl>
+
+</div>
+</div>
+<a id="a4f4ea56f0bda2d033133cb02b8f38888"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4f4ea56f0bda2d033133cb02b8f38888">&#9670;&nbsp;</a></span>setKDTree()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void Scene::setKDTree </td>
+          <td>(</td>
+          <td class="paramtype">std::shared_ptr&lt; <a class="el" href="../../d0/d64/classKDTreeNodeRoot.html">KDTreeNodeRoot</a> &gt; const&#160;</td>
+          <td class="paramname"><em>kdtree</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Set the KDTree to be used by the scene. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">kdtree</td><td>New KDTree to be used by the scene </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d5/d9c/classScene.html#a4d1d59711628b8599f766b0700a02b2f" title="KDTree splitting scene points/vertices to speed-up intersection computations. ">Scene::kdtree</a> </dd></dl>
+
+</div>
+</div>
+<a id="aed9fc8b80b0e0841421549f1b752f2c9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aed9fc8b80b0e0841421549f1b752f2c9">&#9670;&nbsp;</a></span>setKDTreeFactory()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void Scene::setKDTreeFactory </td>
           <td>(</td>
           <td class="paramtype">std::shared_ptr&lt; <a class="el" href="../../d5/dd0/classKDTreeFactory.html">KDTreeFactory</a> &gt; const&#160;</td>
           <td class="paramname"><em>kdtf</em></td><td>)</td>
@@ -596,7 +875,7 @@ template&lt;class Archive &gt; </div>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">

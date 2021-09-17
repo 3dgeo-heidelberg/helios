@@ -1,5 +1,6 @@
 #pragma once
 
+#include <string>
 #include <SimpleSyncFileWriter.h>
 #include <boost/iostreams/filtering_stream.hpp>
 #include <boost/iostreams/filter/zlib.hpp>

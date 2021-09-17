@@ -1,7 +1,9 @@
 var searchData=
 [
+  ['magnitude',['magnitude',['../d1/dd3/classSurfaceInspector_1_1maths_1_1Vector.html#a385cc0538672406bd3a2d238f94e13f0',1,'SurfaceInspector::maths::Vector']]],
   ['makedefault',['makeDefault',['../d0/da9/logging_8hpp.html#abe503e7a8d4225b50c522708fc4e980c',1,'logging']]],
-  ['makefromprimitives',['makeFromPrimitives',['../d5/dd0/classKDTreeFactory.html#a87d961d1bd980133318421f5de71a4df',1,'KDTreeFactory::makeFromPrimitives()'],['../d6/d96/classSimpleKDTreeFactory.html#af15ff698fd31b9b6476778c76ddcad31',1,'SimpleKDTreeFactory::makeFromPrimitives()']]],
+  ['makefromprimitives',['makeFromPrimitives',['../d5/dd0/classKDTreeFactory.html#a90c0c7761a500d0d0871369ac5f6c4f9',1,'KDTreeFactory']]],
+  ['makefromprimitivesunsafe',['makeFromPrimitivesUnsafe',['../d5/dd0/classKDTreeFactory.html#a06b1ebdfb108a2c5a389ee390f534197',1,'KDTreeFactory::makeFromPrimitivesUnsafe()'],['../d6/d96/classSimpleKDTreeFactory.html#a3252f0348c7fd5d40b84e52dd9144fad',1,'SimpleKDTreeFactory::makeFromPrimitivesUnsafe()']]],
   ['makeglidereflection',['makeGlideReflection',['../d7/da7/classrigidmotion_1_1RigidMotionR2Factory.html#afcb887bd4b6289c82a25ecc2050537a2',1,'rigidmotion::RigidMotionR2Factory::makeGlideReflection(colvec const axis, double const glide) const'],['../d7/da7/classrigidmotion_1_1RigidMotionR2Factory.html#a11a6afaab88cbcae30f175954e3becc2',1,'rigidmotion::RigidMotionR2Factory::makeGlideReflection(double const theta, double const glide) const'],['../dc/df6/classrigidmotion_1_1RigidMotionR3Factory.html#a02e2bc7bb486d4f58168734014a5be51',1,'rigidmotion::RigidMotionR3Factory::makeGlideReflection()']]],
   ['makeglidereflectionfast',['makeGlideReflectionFast',['../dc/df6/classrigidmotion_1_1RigidMotionR3Factory.html#aac1456d1581fd8a2fa10d8bceb6f6655',1,'rigidmotion::RigidMotionR3Factory']]],
   ['makehelical',['makeHelical',['../dc/df6/classrigidmotion_1_1RigidMotionR3Factory.html#a3eeb704e9cfc63ada4fbe1de9cf919b9',1,'rigidmotion::RigidMotionR3Factory']]],
@@ -35,14 +37,22 @@ var searchData=
   ['makeverbose',['makeVerbose',['../d0/da9/logging_8hpp.html#a0d8d83c825f31a8a41f611aeec85eed2',1,'logging']]],
   ['makeverbose2',['makeVerbose2',['../d0/da9/logging_8hpp.html#a21380f97d3f2b3cb38c40a9d92509943',1,'logging']]],
   ['makewriter',['makeWriter',['../da/df6/classSyncFileWriterFactory.html#ae20051699bcad3b7d8c162fc074b9332',1,'SyncFileWriterFactory']]],
+  ['manhattan',['manhattan',['../dc/d30/classSurfaceInspector_1_1maths_1_1Distances.html#aa15bb04921ffd598377ef2846781f092',1,'SurfaceInspector::maths::Distances']]],
   ['marquardtfitter',['MarquardtFitter',['../d1/d2b/classMarquardtFitter.html#ad1e970a2c178928cd165f0bb112bd659',1,'MarquardtFitter']]],
   ['material',['Material',['../d3/d89/classMaterial.html#a6059ec72855855b11672ff25962e9336',1,'Material']]],
   ['matrixfromprimitives',['matrixFromPrimitives',['../d5/d6a/classDynObject.html#acf0f5821c7c6f8ab9d3c0548768c5014',1,'DynObject::matrixFromPrimitives(std::function&lt; arma::colvec(Vertex const *)&gt; get) const'],['../d5/d6a/classDynObject.html#afcae1d2b28ef4dce137e741f423d7a6e',1,'DynObject::matrixFromPrimitives(size_t const m, std::function&lt; arma::colvec(Vertex const *)&gt; get) const']]],
   ['matrixtoprimitives',['matrixToPrimitives',['../d5/d6a/classDynObject.html#ad2414442009a1d0e7dcfa160f02df9a7',1,'DynObject::matrixToPrimitives(std::function&lt; void(Vertex *, arma::colvec const &amp;)&gt; set, arma::mat const &amp;X)'],['../d5/d6a/classDynObject.html#afc48ff88ccb94ecafe080dc6c27d6484',1,'DynObject::matrixToPrimitives(size_t const m, std::function&lt; void(Vertex *, arma::colvec const &amp;)&gt; set, arma::mat const &amp;X)']]],
   ['matxvec',['matxvec',['../d2/da0/classVertex.html#addc23752ae9bd815356252e61539ea3c',1,'Vertex']]],
+  ['max',['max',['../d1/dd3/classSurfaceInspector_1_1maths_1_1Vector.html#aec10b905c19c5b7dae749c60b76f5816',1,'SurfaceInspector::maths::Vector']]],
+  ['maxdragger',['MaxDragger',['../d8/d3a/classSurfaceInspector_1_1util_1_1draggers_1_1MaxDragger.html#a8209697d8ca52711597e0d95dcf0cd52',1,'SurfaceInspector::util::draggers::MaxDragger']]],
+  ['mean',['mean',['../da/d24/classSurfaceInspector_1_1maths_1_1Statistics.html#a9ddc26ae04c11eb669e8bea32955535b',1,'SurfaceInspector::maths::Statistics']]],
   ['measurement',['Measurement',['../db/d2e/classMeasurement.html#a3685fc6dff9547603c0ccab8dc05e118',1,'Measurement']]],
   ['measurementtostring',['measurementToString',['../df/d47/classSimpleSyncFileWriter.html#a7f69c55e8a02966a0c2bd2a66148d5e7',1,'SimpleSyncFileWriter']]],
+  ['midrange',['midrange',['../d1/dd3/classSurfaceInspector_1_1maths_1_1Vector.html#a75d97c5a9afabf8414803aedf204925d',1,'SurfaceInspector::maths::Vector']]],
   ['millitostring',['milliToString',['../d6/da1/classSurveyPlayback.html#addcb1811778dfc04866894be7fd474c2',1,'SurveyPlayback']]],
+  ['min',['min',['../d1/dd3/classSurfaceInspector_1_1maths_1_1Vector.html#ad4f58f124cd2b67771c3c8eefba9a1ab',1,'SurfaceInspector::maths::Vector']]],
+  ['mindragger',['MinDragger',['../d6/d26/classSurfaceInspector_1_1util_1_1draggers_1_1MinDragger.html#abb34f1aae53d15dee7fa02985f715fb5',1,'SurfaceInspector::util::draggers::MinDragger']]],
   ['minimizer',['Minimizer',['../d9/d82/classfluxionum_1_1Minimizer.html#af3ea32c6b60170de1fdfbada7d07dca1',1,'fluxionum::Minimizer']]],
+  ['minkowski',['minkowski',['../dc/d30/classSurfaceInspector_1_1maths_1_1Distances.html#ad4ca7ec888656afad2fcea6c296b7100',1,'SurfaceInspector::maths::Distances']]],
   ['movingplatform',['MovingPlatform',['../d1/d83/classMovingPlatform.html#a1fda311a499f27b3dc449dc13b2aeaed',1,'MovingPlatform']]]
 ];

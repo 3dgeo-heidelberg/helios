@@ -1,0 +1,27 @@
+var classHistogram =
+[
+    [ "Histogram", "d2/dcb/classHistogram.html#a28ba263b97aefe4da4c30acfe430bede", null ],
+    [ "Histogram", "d2/dcb/classHistogram.html#a4c63f85634fa6624241cb0f14c9feeec", null ],
+    [ "~Histogram", "d2/dcb/classHistogram.html#a1929cc6e893df088114abea3026d52c3", null ],
+    [ "computeBinningIntervals", "d2/dcb/classHistogram.html#ab313f7929f1e82fb646a636d45903b08", null ],
+    [ "computeDensity", "d2/dcb/classHistogram.html#a2625e546167028c20e518b2e0bbe2710", null ],
+    [ "computeRelativeFrequencies", "d2/dcb/classHistogram.html#aab85b627876a02c2d251564cc0a057c8", null ],
+    [ "estimateGaussian", "d2/dcb/classHistogram.html#a892c300e97bbc6c2273ee8da76fe95ef", null ],
+    [ "extractMinMax", "d2/dcb/classHistogram.html#a1d009d41ef49e4ebf929669164b8d75c", null ],
+    [ "findCutPoint", "d2/dcb/classHistogram.html#a7a062dbb7b4eea17d4abea9e3cacca0d", null ],
+    [ "recount", "d2/dcb/classHistogram.html#a52edc5fa91cf100de9a52c0715c62147", null ],
+    [ "serialize", "d2/dcb/classHistogram.html#a42acffd73f205fdb0418d9f513eec9dd", null ],
+    [ "boost::serialization::access", "d2/dcb/classHistogram.html#ac98d07dd8f7b70e16ccb9a01abf56b9c", null ],
+    [ "a", "d2/dcb/classHistogram.html#a0535d9bab002047651171ea0834ba005", null ],
+    [ "b", "d2/dcb/classHistogram.html#addd786628d9aeaa9b6afaa9117f4a2d3", null ],
+    [ "c", "d2/dcb/classHistogram.html#a6b4de5fadc344b434171de511ec8f93b", null ],
+    [ "d", "d2/dcb/classHistogram.html#a8f452d28a0926faebda9c3ce7358110b", null ],
+    [ "delta", "d2/dcb/classHistogram.html#a203ff815c338588da3b02fcbbce216a1", null ],
+    [ "m", "d2/dcb/classHistogram.html#a1d31f198255438049ed587eecda48051", null ],
+    [ "n", "d2/dcb/classHistogram.html#a41e09baaccb49d1c2e0254a562a8b703", null ],
+    [ "norm", "d2/dcb/classHistogram.html#a19bfebcc8467e7fa57782fa872331ca1", null ],
+    [ "r", "d2/dcb/classHistogram.html#a5aadeac0e707f9fd538aed0ebbeb8ec9", null ],
+    [ "step", "d2/dcb/classHistogram.html#ad90d1fc27c7d6c49a6639cb970e28f4b", null ],
+    [ "xmax", "d2/dcb/classHistogram.html#ab3af07b2f5e41681049b1918f2d49eaf", null ],
+    [ "xmin", "d2/dcb/classHistogram.html#aeabb705edda5c39c01b92a79944145b4", null ]
+];

@@ -5,6 +5,7 @@
 #ifndef HELIOS_WAVEFRONTOBJCACHE_H
 #define HELIOS_WAVEFRONTOBJCACHE_H
 
+#include <string>
 #include "WavefrontObj.h"
 #include <list>
 #include <unordered_map>

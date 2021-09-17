@@ -1,5 +1,6 @@
 #pragma once
 
+#include <string>
 #include <RandomnessGenerator.h>
 #include <noise/NoiseSource.h>
 

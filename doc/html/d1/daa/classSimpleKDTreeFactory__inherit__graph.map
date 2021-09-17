@@ -1,5 +1,6 @@
 <map id="SimpleKDTreeFactory" name="SimpleKDTreeFactory">
-<area shape="rect" id="node3" href="$db/d58/classSAHKDTreeFactory.html" title="Class providing building methods for k&#45;dimensional trees with surface area heuristic (SAH) ..." alt="" coords="19,155,157,181"/>
-<area shape="rect" id="node2" href="$d5/dd0/classKDTreeFactory.html" title="Class that must be extended by any class which provides factory methods for k&#45;dimensional trees..." alt="" coords="33,5,143,32"/>
+<area shape="rect" id="node3" href="$db/d58/classSAHKDTreeFactory.html" title="Class providing building methods for k&#45;dimensional trees with surface area heuristic (SAH) ..." alt="" coords="113,155,252,181"/>
+<area shape="rect" id="node2" href="$d5/dd0/classKDTreeFactory.html" title="Class that must be extended by any class which provides factory methods for k&#45;dimensional trees..." alt="" coords="127,5,238,32"/>
 <area shape="rect" id="node4" href="$df/d30/classAxisSAHKDTreeFactory.html" title="Class providing building methods for k&#45;dimensional trees with surface area heuristic and greedy selec..." alt="" coords="5,229,171,256"/>
+<area shape="rect" id="node5" href="$d0/d0e/classFastSAHKDTreeFactory.html" title="Class providing building methods for k&#45;dimensional trees with a fast strategy to approximate Surface ..." alt="" coords="195,229,360,256"/>
 </map>

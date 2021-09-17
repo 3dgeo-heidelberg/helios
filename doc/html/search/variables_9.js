@@ -1,5 +1,6 @@
 var searchData=
 [
+  ['k',['k',['../dc/d41/classSurfaceInspector_1_1maths_1_1permuters_1_1CNRIndexPermuter.html#ad821169df83707b38d1efbb19115df52',1,'SurfaceInspector::maths::permuters::CNRIndexPermuter']]],
   ['ka',['ka',['../d3/d89/classMaterial.html#a32b90a4464b845b50c3dde3bd0fd92e6',1,'Material']]],
   ['kd',['kd',['../d3/d89/classMaterial.html#a7f495c475a52f3126f6ecb59ca14efb5',1,'Material']]],
   ['kdtf',['kdtf',['../d5/d9c/classScene.html#a5b4ca990006db81ed71b4850923b1414',1,'Scene']]],

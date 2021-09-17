@@ -1,12 +1,15 @@
 var searchData=
 [
-  ['a',['A',['../d7/d84/classrigidmotion_1_1RigidMotion.html#af809d870aad52d3bd417b4832498c676',1,'rigidmotion::RigidMotion::A()'],['../d1/d2b/classMarquardtFitter.html#aaba141f675faab660d793e3b0e7cb4f8',1,'MarquardtFitter::A()']]],
+  ['a',['a',['../da/d52/classSurfaceInspector_1_1maths_1_1Histogram.html#a64e07e5f83715dc1a095912230c309b8',1,'SurfaceInspector::maths::Histogram::a()'],['../d6/d26/classSurfaceInspector_1_1util_1_1draggers_1_1MinDragger.html#a666b09efc5b3e457a0483abbe8734587',1,'SurfaceInspector::util::draggers::MinDragger::a()'],['../d7/d84/classrigidmotion_1_1RigidMotion.html#af809d870aad52d3bd417b4832498c676',1,'rigidmotion::RigidMotion::A()'],['../d1/d2b/classMarquardtFitter.html#aaba141f675faab660d793e3b0e7cb4f8',1,'MarquardtFitter::A()']]],
   ['a1',['a1',['../d6/d7f/classRotationOrder.html#ae1e79a9be04701a8498ff9d0d0ffbda5',1,'RotationOrder']]],
   ['a2',['a2',['../d6/d7f/classRotationOrder.html#a94e6d412fb6ea94d460e9215c84d6442',1,'RotationOrder']]],
   ['a3',['a3',['../d6/d7f/classRotationOrder.html#a1e279094daf5b6381ecfa9b38b66f89f',1,'RotationOrder']]],
   ['aabb',['aabb',['../d2/d51/classTriangle.html#a615369f02f0886e30a3c78d9e03cf450',1,'Triangle']]],
+  ['abest',['aBest',['../da/d69/classSurfaceInspector_1_1maths_1_1SingularContextComputer.html#ab44745e6be5c2ee8b7326445afe08ddc',1,'SurfaceInspector::maths::SingularContextComputer']]],
   ['absolutebeamattitude',['absoluteBeamAttitude',['../d6/d9e/classAbstractPulseRunnable.html#a5431be620a94c48f0b13bdb4627b9f54',1,'AbstractPulseRunnable']]],
   ['absolutebeamorigin',['absoluteBeamOrigin',['../d6/d9e/classAbstractPulseRunnable.html#aa7f3f0ea66414823b4bd1e4ebd12295f',1,'AbstractPulseRunnable']]],
+  ['absolutecomponents',['absoluteComponents',['../da/d69/classSurfaceInspector_1_1maths_1_1SingularContextComputer.html#aecbdf07c47c53ffa27c348f3c71c9bc3',1,'SurfaceInspector::maths::SingularContextComputer']]],
+  ['absolutemoments',['absoluteMoments',['../d4/dfa/classSurfaceInspector_1_1maths_1_1DetailedPlane.html#adff291a6df01cface031c4a3008ea77b',1,'SurfaceInspector::maths::DetailedPlane']]],
   ['active',['active',['../d0/d23/classScannerSettings.html#ab7ab44cae813ced7ecf252228beee109',1,'ScannerSettings']]],
   ['allmeasurements',['allMeasurements',['../db/da6/classFullWaveformPulseRunnable.html#aeedfb37ebcaa81fb785f4d0ce5b6ce3c',1,'FullWaveformPulseRunnable::allMeasurements()'],['../dc/d42/classScanner.html#aa6c767c57bf01a1e16fbec89fa0f6c3c',1,'Scanner::allMeasurements()']]],
   ['allmeasurementsmutex',['allMeasurementsMutex',['../db/da6/classFullWaveformPulseRunnable.html#adcaed1b88ed1f08ec6f7a9797ec62fb3',1,'FullWaveformPulseRunnable::allMeasurementsMutex()'],['../dc/d42/classScanner.html#a8cb71381e2e99cc7294c39fdfc7cb554',1,'Scanner::allMeasurementsMutex()']]],
@@ -14,6 +17,8 @@ var searchData=
   ['alpha_5fprime',['ALPHA_PRIME',['../d1/d2b/classMarquardtFitter.html#acca56fe1b7c1661a7df02e608e86189d',1,'MarquardtFitter']]],
   ['alphaprimen',['alphaPrimeN',['../d1/d2b/classMarquardtFitter.html#ad44315bbad0e716ba1b3daea3ef812c7',1,'MarquardtFitter']]],
   ['angles',['angles',['../d9/d22/classLadLut.html#ab74093b290925c63b85144f390a6ee33',1,'LadLut']]],
+  ['angularverticality',['angularVerticality',['../d4/dfa/classSurfaceInspector_1_1maths_1_1DetailedPlane.html#a377554f434066c5ab4336682816ef1ce',1,'SurfaceInspector::maths::DetailedPlane']]],
+  ['anorm',['aNorm',['../da/d69/classSurfaceInspector_1_1maths_1_1SingularContextComputer.html#a879acb56a7e4f2dc88b515bdbbdc3e11',1,'SurfaceInspector::maths::SingularContextComputer']]],
   ['aperturediameter',['apertureDiameter',['../d4/dfb/classFWFSettings.html#a4e38b213c268b8b55981b1cc4528b2fe',1,'FWFSettings']]],
   ['apmatrices',['apMatrices',['../d3/dce/classthread__pool.html#a8b0d1b08285857f558324f785811024f',1,'thread_pool']]],
   ['argc',['argc',['../d7/d5c/classArgumentsParser.html#a19b6e0516fcd660adf425be4b00d5a85',1,'ArgumentsParser']]],
@@ -28,5 +33,6 @@ var searchData=
   ['attitudeynoisesource',['attitudeYNoiseSource',['../df/d1e/classPlatform.html#aa8714ae4bcb24dbec8f5e26cc7b9d211',1,'Platform']]],
   ['attitudeznoisesource',['attitudeZNoiseSource',['../df/d1e/classPlatform.html#ac3c9ea9311a5842f1ce9f3561589790b',1,'Platform']]],
   ['available_5f',['available_',['../d3/dce/classthread__pool.html#a8341bcc3a61d7887e67660f6e63dc18f',1,'thread_pool']]],
+  ['aworst',['aWorst',['../da/d69/classSurfaceInspector_1_1maths_1_1SingularContextComputer.html#a9a3d785c2db6665c183500e0d5e7f0a1',1,'SurfaceInspector::maths::SingularContextComputer']]],
   ['axis',['axis',['../d6/d1f/structKDTreePrimitiveComparator.html#a1c1049507f049f79fc3a37558da29088',1,'KDTreePrimitiveComparator']]]
 ];
