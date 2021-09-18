@@ -28,7 +28,7 @@ jobs:
       run: sudo apt-get install -y cmake libboost-dev libboost-system-dev libboost-thread-dev libboost-regex-dev libboost-filesystem-dev libboost-iostreams-dev libgdal-dev libglm-dev zip unzip
       
     - name: Download armadillo
-      run: mkdir armadillo && cd armadillo && wget -O armadillo.tar.xz http://sourceforge.net/projects/arma/files/armadillo-10.6.2.tar.xz && tar -xzcf armadillo.tar.xz
+      run: mkdir armadillo && cd armadillo && wget -O armadillo.tar.xz http://sourceforge.net/projects/arma/files/armadillo-10.6.2.tar.xz && tar -xzf armadillo.tar.xz
     - name: Install armadillo
       run: ./configure && make && make install
       working-directory: armadillo
