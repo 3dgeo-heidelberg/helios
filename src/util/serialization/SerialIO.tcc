@@ -7,6 +7,8 @@
 #include <boost/archive/binary_oarchive.hpp>
 #include <boost/archive/binary_iarchive.hpp>
 #include <boost/serialization/unordered_map.hpp>
+
+#include <serial.h>
 #include <logging.hpp>
 
 using boost::archive::archive_exception;

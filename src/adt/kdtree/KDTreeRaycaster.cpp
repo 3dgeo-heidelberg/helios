@@ -67,14 +67,14 @@ RaySceneIntersection* KDTreeRaycaster::search(
 }
 
 void KDTreeRaycaster::searchAll_recursive(
-    KDTreeNode* node,
+    LightKDTreeNode* node,
     double tmin,
     double tmax
 ){
 
 	// ######### BEGIN If node is a leaf, perform ray-primitive intersection on all primitives in the leaf's bucket ###########
 	if (node->splitAxis == -1) {
-		for (auto prim : node->primitives) {
+		for (auto prim : *node->primitives) {
 
 			vector<double> tMinMax = prim->getRayIntersection(rayOrigin, rayDir);
 			if (tMinMax.empty()) {
@@ -115,8 +115,8 @@ void KDTreeRaycaster::searchAll_recursive(
 	else {
 		int a = node->splitAxis;
 		double thit = numeric_limits<double>::infinity();
-		KDTreeNode* first = nullptr;
-		KDTreeNode* second = nullptr;
+		LightKDTreeNode* first = nullptr;
+		LightKDTreeNode* second = nullptr;
 
 		// ############ BEGIN Check ray direction to figure out through which sides the ray passes in which order ###########
 
@@ -167,7 +167,7 @@ void KDTreeRaycaster::searchAll_recursive(
 }
 
 Primitive* KDTreeRaycaster::search_recursive(
-    KDTreeNode* node,
+    LightKDTreeNode* node,
     double tmin,
     double tmax
 ){
@@ -177,7 +177,7 @@ Primitive* KDTreeRaycaster::search_recursive(
 	// ######### BEGIN If node is a leaf, perform ray-primitive intersection on all primitives in the leaf's bucket ###########
 	if (node->splitAxis == -1) {
 		//logging::DEBUG("leaf node:");
-		for (auto prim : node->primitives) {
+		for (auto prim : *node->primitives) {
 			double newDistance =
 			    prim->getRayIntersectionDistance(rayOrigin, rayDir);
 
@@ -221,8 +221,8 @@ Primitive* KDTreeRaycaster::search_recursive(
 
 		double thit = numeric_limits<double>::infinity();
 
-		KDTreeNode* first = nullptr;
-		KDTreeNode* second = nullptr;
+		LightKDTreeNode* first = nullptr;
+		LightKDTreeNode* second = nullptr;
 
 		// ############ BEGIN Check ray direction to figure out thorugh which sides the ray passes in which order ###########
 

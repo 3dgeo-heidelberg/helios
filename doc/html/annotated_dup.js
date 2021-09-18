@@ -63,6 +63,38 @@ var annotated_dup =
       [ "RigidMotionR2Factory", "d7/da7/classrigidmotion_1_1RigidMotionR2Factory.html", "d7/da7/classrigidmotion_1_1RigidMotionR2Factory" ],
       [ "RigidMotionR3Factory", "dc/df6/classrigidmotion_1_1RigidMotionR3Factory.html", "dc/df6/classrigidmotion_1_1RigidMotionR3Factory" ]
     ] ],
+    [ "SurfaceInspector", null, [
+      [ "maths", null, [
+        [ "functions", null, [
+          [ "GaussianFunction", "db/dc1/classSurfaceInspector_1_1maths_1_1functions_1_1GaussianFunction.html", "db/dc1/classSurfaceInspector_1_1maths_1_1functions_1_1GaussianFunction" ],
+          [ "IMathFunction", "da/d80/classSurfaceInspector_1_1maths_1_1functions_1_1IMathFunction.html", "da/d80/classSurfaceInspector_1_1maths_1_1functions_1_1IMathFunction" ]
+        ] ],
+        [ "permuters", null, [
+          [ "CNRIndexPermuter", "dc/d41/classSurfaceInspector_1_1maths_1_1permuters_1_1CNRIndexPermuter.html", "dc/d41/classSurfaceInspector_1_1maths_1_1permuters_1_1CNRIndexPermuter" ],
+          [ "IPermuter", "d2/daf/classSurfaceInspector_1_1maths_1_1permuters_1_1IPermuter.html", "d2/daf/classSurfaceInspector_1_1maths_1_1permuters_1_1IPermuter" ]
+        ] ],
+        [ "DetailedPlane", "d4/dfa/classSurfaceInspector_1_1maths_1_1DetailedPlane.html", "d4/dfa/classSurfaceInspector_1_1maths_1_1DetailedPlane" ],
+        [ "Distances", "dc/d30/classSurfaceInspector_1_1maths_1_1Distances.html", "dc/d30/classSurfaceInspector_1_1maths_1_1Distances" ],
+        [ "Histogram", "da/d52/classSurfaceInspector_1_1maths_1_1Histogram.html", "da/d52/classSurfaceInspector_1_1maths_1_1Histogram" ],
+        [ "Plane", "d1/d16/classSurfaceInspector_1_1maths_1_1Plane.html", "d1/d16/classSurfaceInspector_1_1maths_1_1Plane" ],
+        [ "PlaneFitter", "df/d21/classSurfaceInspector_1_1maths_1_1PlaneFitter.html", "df/d21/classSurfaceInspector_1_1maths_1_1PlaneFitter" ],
+        [ "Scalar", "d6/d68/classSurfaceInspector_1_1maths_1_1Scalar.html", "d6/d68/classSurfaceInspector_1_1maths_1_1Scalar" ],
+        [ "SingularContextComputer", "da/d69/classSurfaceInspector_1_1maths_1_1SingularContextComputer.html", "da/d69/classSurfaceInspector_1_1maths_1_1SingularContextComputer" ],
+        [ "SingularContextDescriptors", "d1/db0/classSurfaceInspector_1_1maths_1_1SingularContextDescriptors.html", "d1/db0/classSurfaceInspector_1_1maths_1_1SingularContextDescriptors" ],
+        [ "Statistics", "da/d24/classSurfaceInspector_1_1maths_1_1Statistics.html", "da/d24/classSurfaceInspector_1_1maths_1_1Statistics" ],
+        [ "Vector", "d1/dd3/classSurfaceInspector_1_1maths_1_1Vector.html", "d1/dd3/classSurfaceInspector_1_1maths_1_1Vector" ]
+      ] ],
+      [ "util", null, [
+        [ "draggers", null, [
+          [ "IDragger", "d1/dd1/classSurfaceInspector_1_1util_1_1draggers_1_1IDragger.html", "d1/dd1/classSurfaceInspector_1_1util_1_1draggers_1_1IDragger" ],
+          [ "MaxDragger", "d8/d3a/classSurfaceInspector_1_1util_1_1draggers_1_1MaxDragger.html", "d8/d3a/classSurfaceInspector_1_1util_1_1draggers_1_1MaxDragger" ],
+          [ "MinDragger", "d6/d26/classSurfaceInspector_1_1util_1_1draggers_1_1MinDragger.html", "d6/d26/classSurfaceInspector_1_1util_1_1draggers_1_1MinDragger" ],
+          [ "OptimizationDragger", "d5/d68/classSurfaceInspector_1_1util_1_1draggers_1_1OptimizationDragger.html", "d5/d68/classSurfaceInspector_1_1util_1_1draggers_1_1OptimizationDragger" ]
+        ] ],
+        [ "Object", "d2/df2/classSurfaceInspector_1_1util_1_1Object.html", null ],
+        [ "SurfaceInspectorException", "df/da8/classSurfaceInspector_1_1util_1_1SurfaceInspectorException.html", "df/da8/classSurfaceInspector_1_1util_1_1SurfaceInspectorException" ]
+      ] ]
+    ] ],
     [ "visualhelios", null, [
       [ "VHCanvas", "de/dda/classvisualhelios_1_1VHCanvas.html", "de/dda/classvisualhelios_1_1VHCanvas" ],
       [ "VHDynCanvas", "da/d27/classvisualhelios_1_1VHDynCanvas.html", "da/d27/classvisualhelios_1_1VHDynCanvas" ],
@@ -103,6 +135,7 @@ var annotated_dup =
     [ "DynSequencer", "db/d6f/classDynSequencer.html", "db/d6f/classDynSequencer" ],
     [ "DynSequentiableMovingObject", "d4/d48/classDynSequentiableMovingObject.html", "d4/d48/classDynSequentiableMovingObject" ],
     [ "enum_hasher", "da/ded/structenum__hasher.html", "da/ded/structenum__hasher" ],
+    [ "FastSAHKDTreeFactory", "d0/d0e/classFastSAHKDTreeFactory.html", "d0/d0e/classFastSAHKDTreeFactory" ],
     [ "FiberArrayBeamDeflector", "d7/d20/classFiberArrayBeamDeflector.html", "d7/d20/classFiberArrayBeamDeflector" ],
     [ "file_logger", "d8/d63/classfile__logger.html", "d8/d63/classfile__logger" ],
     [ "FileUtils", "d5/d4b/classFileUtils.html", "d5/d4b/classFileUtils" ],
@@ -130,6 +163,7 @@ var annotated_dup =
     [ "LasSyncFileWriter", "d2/db3/classLasSyncFileWriter.html", "d2/db3/classLasSyncFileWriter" ],
     [ "Leg", "de/d51/classLeg.html", "de/d51/classLeg" ],
     [ "LidarSim", "d3/d40/classLidarSim.html", "d3/d40/classLidarSim" ],
+    [ "LightKDTreeNode", "dd/d79/classLightKDTreeNode.html", "dd/d79/classLightKDTreeNode" ],
     [ "LinearPathPlatform", "d8/d15/classLinearPathPlatform.html", "d8/d15/classLinearPathPlatform" ],
     [ "logger", "dc/d37/classlogger.html", "dc/d37/classlogger" ],
     [ "logger_factory", "d7/deb/classlogger__factory.html", "d7/deb/classlogger__factory" ],

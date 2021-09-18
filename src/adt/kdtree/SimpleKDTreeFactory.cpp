@@ -6,12 +6,13 @@
 
 // ***  SIMPLE KDTREE FACTORY METHODS  *** //
 // *************************************** //
-KDTreeNodeRoot* SimpleKDTreeFactory::makeFromPrimitives(
-    vector<Primitive *> const &primitives
+KDTreeNodeRoot* SimpleKDTreeFactory::makeFromPrimitivesUnsafe(
+    vector<Primitive *> &primitives
 ) {
+    // Build the KDTree using a modifiable copy of primitives pointers vector
     KDTreeNodeRoot *root = (KDTreeNodeRoot *) buildRecursive(
         nullptr,        // Parent node
-        false,          // Root node is not left, because it is root
+        false,          // Node is not left child, because it is root not child
         primitives,     // Primitives to be contained inside the KDTree
         0               // Starting depth level (must be 0 for root node)
     );
@@ -45,6 +46,7 @@ KDTreeNodeRoot* SimpleKDTreeFactory::makeFromPrimitives(
             << "Total tree cost: "
             << root->stats_totalCost;
         logging::INFO(ss.str());
+        if(buildLightNodes) lighten(root);
     }
     return root;
 }
@@ -52,7 +54,7 @@ KDTreeNodeRoot* SimpleKDTreeFactory::makeFromPrimitives(
 KDTreeNode * SimpleKDTreeFactory::buildRecursive(
     KDTreeNode *parent,
     bool const left,
-    vector<Primitive*> primitives,
+    vector<Primitive*> &primitives,
     int const depth
 ) {
     // If there are no primitives, then KDTree will be null
@@ -103,7 +105,7 @@ void SimpleKDTreeFactory::computeKDTreeStats(KDTreeNodeRoot *root) const{
         if(node.getDepth() > maxDepth) maxDepth = node.getDepth();
         KDTreeNode * const kdtNode = static_cast<KDTreeNode *>(node.getNode());
         if(kdtNode->isLeafNode()){
-            int const numPrims = kdtNode->primitives.size();
+            int const numPrims = kdtNode->primitives->size();
             if(numPrims > maxNumPrimsInLeaf) maxNumPrimsInLeaf = numPrims;
             if(numPrims < minNumPrimsInLeaf) minNumPrimsInLeaf = numPrims;
             ++numLeaves;
@@ -159,8 +161,8 @@ void SimpleKDTreeFactory::buildChildrenNodes(
     KDTreeNode *parent,
     vector<Primitive *> const &primitives,
     int const depth,
-    vector<Primitive *> const &leftPrimitives,
-    vector<Primitive *> const &rightPrimitives
+    vector<Primitive *> &leftPrimitives,
+    vector<Primitive *> &rightPrimitives
 ){
     size_t const primsSize = primitives.size();
     if(
@@ -187,7 +189,7 @@ void SimpleKDTreeFactory::buildChildrenNodes(
     else {
         // Otherwise, make this node a leaf:
         node->splitAxis = -1;
-        node->primitives = primitives;
+        node->primitives = std::make_shared<vector<Primitive *>>(primitives);
     }
 }
 

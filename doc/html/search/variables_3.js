@@ -1,9 +1,11 @@
 var searchData=
 [
+  ['d',['d',['../da/d52/classSurfaceInspector_1_1maths_1_1Histogram.html#a650e16654340a9c6769ad71da07612a3',1,'SurfaceInspector::maths::Histogram']]],
   ['defaultnormal',['defaultNormal',['../d6/d03/classXYZPointCloudFileLoader.html#aa4abebcf0131e85079d6848209bf8c8d',1,'XYZPointCloudFileLoader']]],
   ['defaultreflectance',['defaultReflectance',['../d5/d20/classSpectralLibrary.html#a55d55f2e7ffc8bc086405f636419b5ed',1,'SpectralLibrary']]],
-  ['delta',['DELTA',['../d1/d2b/classMarquardtFitter.html#a49990a2f2852a17231d6b081fb3bb110',1,'MarquardtFitter']]],
+  ['delta',['delta',['../da/d52/classSurfaceInspector_1_1maths_1_1Histogram.html#a435bcd0ab73fec77928194c6130a6f84',1,'SurfaceInspector::maths::Histogram::delta()'],['../d1/d2b/classMarquardtFitter.html#a49990a2f2852a17231d6b081fb3bb110',1,'MarquardtFitter::DELTA()']]],
   ['deltaintensity',['deltaIntensity',['../d2/db3/classLasSyncFileWriter.html#a9a114f0c53100d830e15d869cf80f203',1,'LasSyncFileWriter']]],
+  ['deltanorm',['deltaNorm',['../da/d69/classSurfaceInspector_1_1maths_1_1SingularContextComputer.html#a0aed9ce43ed89000b4dc8193cac7ce06',1,'SurfaceInspector::maths::SingularContextComputer']]],
   ['depth',['depth',['../de/d22/classIterableTreeNode.html#a4b084fc69bcb80bcb2f560089d1b9c4d',1,'IterableTreeNode']]],
   ['derivatives',['DERIVATIVES',['../d1/d2b/classMarquardtFitter.html#a91c6b6b1e07f2f1b235faeb3838f3941',1,'MarquardtFitter']]],
   ['detector',['detector',['../d6/d9e/classAbstractPulseRunnable.html#a5f89956813516dcb6090715f2aed8631',1,'AbstractPulseRunnable::detector()'],['../dc/d42/classScanner.html#aae0cadd53ad865a242fdf84ef8a03634',1,'Scanner::detector()']]],

@@ -5,6 +5,8 @@ var searchData=
   ['ignored_5fground',['IGNORED_GROUND',['../df/d64/classLasSpecification.html#aa9c826365fbe77d2808352882e74780c',1,'LasSpecification']]],
   ['imh',['imh',['../db/d57/classfluxionum_1_1UnivariateNewtonRaphsonMinimizer.html#a041caf921ac2956262f56cb4f64dced7',1,'fluxionum::UnivariateNewtonRaphsonMinimizer']]],
   ['incidenceangle',['incidenceAngle',['../dc/da3/classRaySceneIntersection.html#ad5b87188865c84aefe07c9ca5734555c',1,'RaySceneIntersection']]],
+  ['indices',['indices',['../dc/d41/classSurfaceInspector_1_1maths_1_1permuters_1_1CNRIndexPermuter.html#ac913cf6600d817ed3ea14ba7ef3d86a4',1,'SurfaceInspector::maths::permuters::CNRIndexPermuter']]],
+  ['initialized',['initialized',['../d6/d26/classSurfaceInspector_1_1util_1_1draggers_1_1MinDragger.html#aae9f7d2e7a8e5e01fb99b05cf6f752ad',1,'SurfaceInspector::util::draggers::MinDragger']]],
   ['instance',['instance',['../d6/db9/classSerialIO.html#a04a14f46d2374bd1621ae407e32a6619',1,'SerialIO']]],
   ['intensity',['intensity',['../db/d2e/classMeasurement.html#ac537713b6754711cd47677703bbb632e',1,'Measurement']]],
   ['intensitycoefficient',['intensityCoefficient',['../d2/db3/classLasSyncFileWriter.html#ae1fad8ae58c17aece13774f036c15bec',1,'LasSyncFileWriter']]],

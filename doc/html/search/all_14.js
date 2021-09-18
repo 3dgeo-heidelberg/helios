@@ -44,6 +44,7 @@ var searchData=
   ['timestart_5fms',['timeStart_ms',['../d1/d7b/classSimulation.html#abb93b11da9a5fe48f3b4d42ada8ba5d1',1,'Simulation']]],
   ['timewatcher',['TimeWatcher',['../d7/d7d/classTimeWatcher.html',1,'TimeWatcher'],['../d7/d7d/classTimeWatcher.html#ad2ecf27bb2a36c8cf792e013c6576756',1,'TimeWatcher::TimeWatcher()']]],
   ['title',['title',['../de/dda/classvisualhelios_1_1VHCanvas.html#aaab3c8ac4e2f4c0e5b37092bbbc0bf02',1,'visualhelios::VHCanvas']]],
+  ['toangle2d',['toAngle2D',['../d1/dd3/classSurfaceInspector_1_1maths_1_1Vector.html#ab691483a44635f42edebe998726ec882',1,'SurfaceInspector::maths::Vector']]],
   ['toilotcache',['toILOTCache',['../db/d58/classSAHKDTreeFactory.html#abfb53bebdca06fea392f30075915ccdf',1,'SAHKDTreeFactory']]],
   ['tostring',['toString',['../d6/d7f/classRotationOrder.html#adee44a77e3199d0dce485fda80db9579',1,'RotationOrder::toString()'],['../dc/d42/classScanner.html#ae6791b56fa79726f07cfa76e8fa20283',1,'Scanner::toString()'],['../d2/d1a/classAABB.html#a86e5cfc1a5c72b37c95a468d305bb008',1,'AABB::toString()'],['../d2/d51/classTriangle.html#a80a928c3f4254b648b5d31e751c50ec2',1,'Triangle::toString()']]],
   ['trace',['TRACE',['../d0/da9/logging_8hpp.html#a72b71a1882dd7d417fee5c5ad75fa9c5',1,'logging']]],
@@ -54,10 +55,12 @@ var searchData=
   ['transformtoladlutdomain',['transformToLadLutDomain',['../d9/d22/classLadLut.html#ac5655e6c899f0a1ad0fc5c136d739e3d',1,'LadLut']]],
   ['translate',['translate',['../df/de1/classPrimitive.html#a3f6d32a30c09a7b3f987f02a76f28d50',1,'Primitive::translate()'],['../d6/d44/classVoxel.html#abb0024b8af71b8422059cb71da9339ad',1,'Voxel::translate()']]],
   ['translatefilter',['TranslateFilter',['../df/d5a/classTranslateFilter.html',1,'TranslateFilter'],['../df/d5a/classTranslateFilter.html#ad2873f3b3d9b815e3f0c9eee086504af',1,'TranslateFilter::TranslateFilter()']]],
+  ['translatetoorigin',['translateToOrigin',['../df/d21/classSurfaceInspector_1_1maths_1_1PlaneFitter.html#a61e8564386709321198a0c6d9e638678',1,'SurfaceInspector::maths::PlaneFitter']]],
   ['translations',['translations',['../d7/d48/classSceneLoadingSpecification.html#a1908670baeef8991538070804f2712bf',1,'SceneLoadingSpecification']]],
   ['translationsid',['translationsId',['../d7/d48/classSceneLoadingSpecification.html#ad92bf40778b88f0d436bff527015a678',1,'SceneLoadingSpecification']]],
   ['transmission_5ftower',['TRANSMISSION_TOWER',['../df/d64/classLasSpecification.html#a9682a7fa2039c1d8a728ee65d9a41848',1,'LasSpecification']]],
   ['triangle',['Triangle',['../d2/d51/classTriangle.html',1,'Triangle'],['../d2/d51/classTriangle.html#a1cac6fbfed4e04a03a8dd1b838b38907',1,'Triangle::Triangle()']]],
   ['tstart',['tStart',['../d7/d7d/classTimeWatcher.html#a00375c2ae161f1256962d01980aa5b9f',1,'TimeWatcher']]],
+  ['twicesigmasquare',['twiceSigmaSquare',['../db/dc1/classSurfaceInspector_1_1maths_1_1functions_1_1GaussianFunction.html#ac23c21fcddafeccb2daf42e27d8591e9',1,'SurfaceInspector::maths::functions::GaussianFunction']]],
   ['type',['Type',['../d7/d84/classrigidmotion_1_1RigidMotion.html#a9f6af528c327231f6ad4565fa9bef21f',1,'rigidmotion::RigidMotion']]]
 ];

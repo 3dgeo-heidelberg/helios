@@ -31,7 +31,7 @@ void SAHKDTreeFactory::computeKDTreeStats(KDTreeNodeRoot *root) const{
         if(kdtNode->isLeafNode()){
             leafAreaSum += kdtNode->surfaceArea;
             leafObjectAreaSum +=
-                kdtNode->surfaceArea * ((double)kdtNode->primitives.size());
+                kdtNode->surfaceArea * ((double)kdtNode->primitives->size());
         }
         else{
             interiorAreaSum += kdtNode->surfaceArea;
@@ -46,8 +46,8 @@ void SAHKDTreeFactory::buildChildrenNodes(
     KDTreeNode *parent,
     vector<Primitive *> const &primitives,
     int const depth,
-    vector<Primitive *> const &leftPrimitives,
-    vector<Primitive *> const &rightPrimitives
+    vector<Primitive *> &leftPrimitives,
+    vector<Primitive *> &rightPrimitives
 ) {
     if(parent==nullptr){ // Compute parent heuristic (INIT ILOT)
         initILOT(node, primitives);
@@ -83,7 +83,7 @@ void SAHKDTreeFactory::buildChildrenNodes(
     else {
         // Otherwise, make this node a leaf:
         node->splitAxis = -1;
-        node->primitives = primitives;
+        node->primitives = std::make_shared<vector<Primitive *>>(primitives);
     }
 }
 
@@ -96,16 +96,15 @@ double SAHKDTreeFactory::splitLoss(
     double const r
 ) const {
     // Split in left and right primitives
-    vector<Primitive *> lps(0);
-    vector<Primitive *> rps(0);
+    size_t lps = 0, rps = 0;
     for(Primitive *primitive : primitives){
         AABB const *primBox = primitive->getAABB();
-        if(primBox->getMin()[splitAxis] <= splitPos) lps.push_back(primitive);
-        if(primBox->getMax()[splitAxis] > splitPos) rps.push_back(primitive);
+        if(primBox->getMin()[splitAxis] <= splitPos) ++lps;
+        if(primBox->getMax()[splitAxis] > splitPos) ++rps;
     }
 
     // Compute and return loss function
-    return r*((double)lps.size()) + (1.0-r)*((double)rps.size());
+    return r*((double)lps) + (1.0-r)*((double)rps);
 }
 
 double SAHKDTreeFactory::findSplitPositionBySAH(

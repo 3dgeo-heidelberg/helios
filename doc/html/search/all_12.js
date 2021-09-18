@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['r',['r',['../db/d69/classHelicopterPlatform.html#af857a5b02a00cf1f5f358348f8a6cc3b',1,'HelicopterPlatform::r()'],['../d6/d44/classVoxel.html#ae1fc849da46321c5d84daf541ee51aca',1,'Voxel::r()']]],
+  ['r',['r',['../db/d69/classHelicopterPlatform.html#af857a5b02a00cf1f5f358348f8a6cc3b',1,'HelicopterPlatform::r()'],['../d6/d44/classVoxel.html#ae1fc849da46321c5d84daf541ee51aca',1,'Voxel::r()'],['../da/d52/classSurfaceInspector_1_1maths_1_1Histogram.html#addfc791701b322ee54967aa8dfd96eed',1,'SurfaceInspector::maths::Histogram::r()']]],
   ['r1',['r1',['../d7/db4/classConicBeamDeflector.html#aafd4b43d63d67063597dc3a345ac9060',1,'ConicBeamDeflector']]],
   ['r2x',['R2X',['../db/d8b/classHeliosTests_1_1RigidMotionTest.html#a8f91e1e80529c1836059666949c3d651',1,'HeliosTests::RigidMotionTest']]],
   ['r3x',['R3X',['../db/d8b/classHeliosTests_1_1RigidMotionTest.html#a3a644169e5f080e4fa4c77c7cd7533d8',1,'HeliosTests::RigidMotionTest']]],
@@ -34,6 +34,7 @@ var searchData=
   ['readreflectances',['readReflectances',['../d5/d20/classSpectralLibrary.html#aa772ec2d254e5ff04798f0a0bce6878a',1,'SpectralLibrary']]],
   ['readscene',['readScene',['../d3/df0/classSerialSceneWrapper.html#a3401c761f58f59c395f6650181e36b80',1,'SerialSceneWrapper']]],
   ['readvertex',['readVertex',['../d9/d15/classWavefrontObjFileLoader.html#a418ad9f0641064d85209082fe5cc2aa5',1,'WavefrontObjFileLoader']]],
+  ['recount',['recount',['../da/d52/classSurfaceInspector_1_1maths_1_1Histogram.html#aafa1135d1a6b895c1bee0c3dd750784c',1,'SurfaceInspector::maths::Histogram']]],
   ['reflectance',['reflectance',['../d3/d89/classMaterial.html#a2455e6f519001aa0a8679e826476f29f',1,'Material']]],
   ['reflectancemap',['reflectanceMap',['../d5/d20/classSpectralLibrary.html#ad99c8eced0b7330ee341504b06c7fbe7',1,'SpectralLibrary']]],
   ['registernormalskeyboardcallback',['registerNormalsKeyboardCallback',['../df/dd2/classvisualhelios_1_1VHNormalsCanvas.html#ab30897d5fbe1822330640928a7600fd2',1,'visualhelios::VHNormalsCanvas']]],
@@ -61,7 +62,7 @@ var searchData=
   ['returnnumber',['returnNumber',['../db/d2e/classMeasurement.html#aca68cb91908d7de7822cbf3095a9f659',1,'Measurement']]],
   ['revert',['revert',['../d5/dcb/classRotation.html#a8ae920f72866cd231100ccbff1c4e88c',1,'Rotation']]],
   ['rg',['rg',['../d4/d38/classRandomNoiseSource.html#a49a8432d24fb4e2b3fba3f5c30e8c4d2',1,'RandomNoiseSource']]],
-  ['right',['right',['../d8/d94/classKDTreeNode.html#a541cf2b0ab4e928b3df158e3ab2950bd',1,'KDTreeNode::right()'],['../df/dc3/classDirections.html#a90c74fe7a0e9ffb276982fd8659b8105',1,'Directions::right()']]],
+  ['right',['right',['../dd/d79/classLightKDTreeNode.html#a67abdad4253558385d3d3d87573c62bb',1,'LightKDTreeNode::right()'],['../df/dc3/classDirections.html#a90c74fe7a0e9ffb276982fd8659b8105',1,'Directions::right()']]],
   ['rigidmotion',['RigidMotion',['../d7/d84/classrigidmotion_1_1RigidMotion.html',1,'rigidmotion::RigidMotion'],['../d7/d84/classrigidmotion_1_1RigidMotion.html#acf4e7627472f7afd7593a1b02ad49ac2',1,'rigidmotion::RigidMotion::RigidMotion()=default'],['../d7/d84/classrigidmotion_1_1RigidMotion.html#aa61488d6e23c10f8143c8ba08a1b0ac3',1,'rigidmotion::RigidMotion::RigidMotion(colvec const &amp;C, arma::mat const &amp;A)']]],
   ['rigidmotionengine',['RigidMotionEngine',['../d2/da8/classrigidmotion_1_1RigidMotionEngine.html',1,'rigidmotion::RigidMotionEngine'],['../d2/da8/classrigidmotion_1_1RigidMotionEngine.html#a1301ee234a2006cfab2d7d38142941bc',1,'rigidmotion::RigidMotionEngine::RigidMotionEngine()']]],
   ['rigidmotionexception',['RigidMotionException',['../dd/db6/classrigidmotion_1_1RigidMotionException.html',1,'rigidmotion::RigidMotionException'],['../dd/db6/classrigidmotion_1_1RigidMotionException.html#a5337e4ab2b9ca3781308209c9e081f2f',1,'rigidmotion::RigidMotionException::RigidMotionException()']]],
@@ -75,7 +76,7 @@ var searchData=
   ['rme',['rme',['../d2/d0a/classDynMotionEngine.html#afa845bda34bde2bc8f53463fbc2b9cd6',1,'DynMotionEngine::rme()'],['../db/d8b/classHeliosTests_1_1RigidMotionTest.html#a9184d901320e12d1e328761ea82b6660',1,'HeliosTests::RigidMotionTest::rme()']]],
   ['road',['ROAD',['../df/d64/classLasSpecification.html#a5148aba8d9ab7690f19f8a916e1418a7',1,'LasSpecification']]],
   ['roll',['roll',['../db/d69/classHelicopterPlatform.html#a0a4e8ceaa8a560b672d5d943bfbfb38d',1,'HelicopterPlatform::roll()'],['../d2/d43/classTrajectory.html#a3f056dc847ef640fd31a7207b4610794',1,'Trajectory::roll()']]],
-  ['root',['root',['../da/d81/classKDTreeRaycaster.html#a3442610d593106a58fbc98e1b24fe4e3',1,'KDTreeRaycaster']]],
+  ['root',['root',['../da/d81/classKDTreeRaycaster.html#a6be5609184429cd100b63fcca6bd0186',1,'KDTreeRaycaster']]],
   ['rotate',['rotate',['../db/d69/classHelicopterPlatform.html#ad822cc815ed1f28b54dd5cc76fd6bc3b',1,'HelicopterPlatform::rotate()'],['../df/de1/classPrimitive.html#a92a26214b9bd4db443002d63ca9877fa',1,'Primitive::rotate()'],['../d6/d44/classVoxel.html#a88a867600ebb626dc889d5e66663d37f',1,'Voxel::rotate()']]],
   ['rotatecompleted',['rotateCompleted',['../dc/da7/classScannerHead.html#a27b63bac89ed530f7c52b2de790e0671',1,'ScannerHead']]],
   ['rotatefilter',['RotateFilter',['../de/de4/classRotateFilter.html',1,'RotateFilter'],['../de/de4/classRotateFilter.html#a56c3ae625dfe5ab0f24fa522dea9016c',1,'RotateFilter::RotateFilter()']]],

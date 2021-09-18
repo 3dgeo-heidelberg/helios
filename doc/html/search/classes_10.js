@@ -1,6 +1,7 @@
 var searchData=
 [
   ['sahkdtreefactory',['SAHKDTreeFactory',['../db/d58/classSAHKDTreeFactory.html',1,'']]],
+  ['scalar',['Scalar',['../d6/d68/classSurfaceInspector_1_1maths_1_1Scalar.html',1,'SurfaceInspector::maths']]],
   ['scalefilter',['ScaleFilter',['../d9/d83/classScaleFilter.html',1,'']]],
   ['scanner',['Scanner',['../dc/d42/classScanner.html',1,'']]],
   ['scannerhead',['ScannerHead',['../dc/da7/classScannerHead.html',1,'']]],
@@ -18,10 +19,14 @@ var searchData=
   ['simplesyncfilewriter',['SimpleSyncFileWriter',['../df/d47/classSimpleSyncFileWriter.html',1,'']]],
   ['simulation',['Simulation',['../d1/d7b/classSimulation.html',1,'']]],
   ['simulationcyclecallback',['SimulationCycleCallback',['../dc/d7a/classSimulationCycleCallback.html',1,'']]],
+  ['singularcontextcomputer',['SingularContextComputer',['../da/d69/classSurfaceInspector_1_1maths_1_1SingularContextComputer.html',1,'SurfaceInspector::maths']]],
+  ['singularcontextdescriptors',['SingularContextDescriptors',['../d1/db0/classSurfaceInspector_1_1maths_1_1SingularContextDescriptors.html',1,'SurfaceInspector::maths']]],
   ['spectrallibrary',['SpectralLibrary',['../d5/d20/classSpectralLibrary.html',1,'']]],
   ['staticscene',['StaticScene',['../dd/d34/classStaticScene.html',1,'']]],
+  ['statistics',['Statistics',['../da/d24/classSurfaceInspector_1_1maths_1_1Statistics.html',1,'SurfaceInspector::maths']]],
   ['std_5fout_5flogger',['std_out_logger',['../d0/db8/classstd__out__logger.html',1,'']]],
   ['stringvisitor',['stringVisitor',['../d8/df4/structstringVisitor.html',1,'']]],
+  ['surfaceinspectorexception',['SurfaceInspectorException',['../df/da8/classSurfaceInspector_1_1util_1_1SurfaceInspectorException.html',1,'SurfaceInspector::util']]],
   ['survey',['Survey',['../d5/db6/classSurvey.html',1,'']]],
   ['surveycopytest',['SurveyCopyTest',['../de/d9c/classHeliosTests_1_1SurveyCopyTest.html',1,'HeliosTests']]],
   ['surveydemo',['SurveyDemo',['../d2/d88/classHeliosDemos_1_1SurveyDemo.html',1,'HeliosDemos']]],

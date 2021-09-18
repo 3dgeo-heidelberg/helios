@@ -89,7 +89,8 @@ helios <survey_file_path> [OPTIONAL ARGUMENTS]
             The default 1 is for the simple KDTree based on median balancing,
             2 for the SAH based KDTree and 3 for the SAH with best axis one
         --sahNodes <integer>
-            Specify how many nodes must be used by the Surface Area Heuristic
+            Either how many nodes must be used by the Surface Area Heuristic
+            or the number of bins for the fast approximation of SAH
         --disablePlatformNoise
             Disable platform noise, no matter what is specified on XML files
         --disableLegNoise

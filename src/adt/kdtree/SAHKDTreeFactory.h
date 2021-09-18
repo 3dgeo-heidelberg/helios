@@ -140,6 +140,8 @@ private:
         ar &boost::serialization::base_object<SimpleKDTreeFactory>(*this);
         ar &ci &cl &co;
         ar &lossNodes;
+        ar &cacheI &cacheL &cacheO &cacheT;
+
     }
 
 protected:
@@ -372,8 +374,8 @@ public:
         KDTreeNode *parent,
         vector<Primitive *> const &primitives,
         int const depth,
-        vector<Primitive *> const &leftPrimitives,
-        vector<Primitive *> const &rightPrimitives
+        vector<Primitive *> &leftPrimitives,
+        vector<Primitive *> &rightPrimitives
     ) override;
 
 protected:

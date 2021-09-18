@@ -48,8 +48,8 @@ public:
      * @param primitives Primitives to build simple KDTree splitting them
      * @return Pointer to root node of built simple KDTree
      */
-    KDTreeNodeRoot * makeFromPrimitives(
-        vector<Primitive *> const &primitives
+    KDTreeNodeRoot * makeFromPrimitivesUnsafe(
+        vector<Primitive *> &primitives
     ) override;
 
 protected:
@@ -71,7 +71,7 @@ protected:
     virtual KDTreeNode * buildRecursive(
         KDTreeNode *parent,
         bool const left,
-        vector<Primitive*> primitives,
+        vector<Primitive*> &primitives,
         int const depth
     ) ;
     /**
@@ -130,8 +130,8 @@ protected:
         vector<Primitive *> const &primitives,
         int const splitAxis,
         double const splitPos,
-        vector<Primitive *> & leftPrimitives,
-        vector<Primitive *> & rightPrimitives
+        vector<Primitive *> &leftPrimitives,
+        vector<Primitive *> &rightPrimitives
     ) const;
     /**
      * @brief Build children nodes for given node. If no children nodes must
@@ -151,8 +151,8 @@ protected:
         KDTreeNode *parent,
         vector<Primitive *> const &primitives,
         int const depth,
-        vector<Primitive *> const &leftPrimitives,
-        vector<Primitive *> const &rightPrimitives
+        vector<Primitive *> &leftPrimitives,
+        vector<Primitive *> &rightPrimitives
     );
 
     // ***  BUILDING UTILS  *** //

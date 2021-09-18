@@ -239,9 +239,9 @@ glm::dvec3&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
-<tr class="memitem:a3059c61ec0a30514885f87eb1cfbc583"><td class="memTemplParams" colspan="2"><a id="a3059c61ec0a30514885f87eb1cfbc583"></a>
-template&lt;typename Archive &gt; </td></tr>
-<tr class="memitem:a3059c61ec0a30514885f87eb1cfbc583"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>serialize</b> (Archive &amp;ar, const unsigned int version)</td></tr>
+<tr class="memitem:a3059c61ec0a30514885f87eb1cfbc583"><td class="memTemplParams" colspan="2">template&lt;typename Archive &gt; </td></tr>
+<tr class="memitem:a3059c61ec0a30514885f87eb1cfbc583"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d2/d1a/classAABB.html#a3059c61ec0a30514885f87eb1cfbc583">serialize</a> (Archive &amp;ar, const unsigned int version)</td></tr>
+<tr class="memdesc:a3059c61ec0a30514885f87eb1cfbc583"><td class="mdescLeft">&#160;</td><td class="mdescRight">Serialize an axis-aligned bounding box to a stream of bytes.  <a href="#a3059c61ec0a30514885f87eb1cfbc583">More...</a><br /></td></tr>
 <tr class="separator:a3059c61ec0a30514885f87eb1cfbc583"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="friends"></a>
@@ -851,6 +851,59 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>boost::serialization
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="../../df/de1/classPrimitive.html#a995ad05d7bfb53e9f1c77c952a9e5224" title="Obtain basic vertices for the primitive. ">Primitive::getVertices</a> </dd></dl>
 
 <p>Implements <a class="el" href="../../df/de1/classPrimitive.html#a995ad05d7bfb53e9f1c77c952a9e5224">Primitive</a>.</p>
+
+</div>
+</div>
+<a id="a3059c61ec0a30514885f87eb1cfbc583"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3059c61ec0a30514885f87eb1cfbc583">&#9670;&nbsp;</a></span>serialize()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Archive &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void AABB::serialize </td>
+          <td>(</td>
+          <td class="paramtype">Archive &amp;&#160;</td>
+          <td class="paramname"><em>ar</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const unsigned int&#160;</td>
+          <td class="paramname"><em>version</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Serialize an axis-aligned bounding box to a stream of bytes. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">Archive</td><td>Type of rendering </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">ar</td><td>Specific rendering for the stream of bytes </td></tr>
+    <tr><td class="paramname">version</td><td>Version number for the axis-aligned bounding box </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
