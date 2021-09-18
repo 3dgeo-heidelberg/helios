@@ -30,7 +30,7 @@ jobs:
     - name: Download armadillo
       run: mkdir armadillo && cd armadillo && wget -O armadillo.tar.xz http://sourceforge.net/projects/arma/files/armadillo-10.6.2.tar.xz && tar xf armadillo.tar.xz && cd ..
     - name: Install armadillo
-      run: ./configure && make && make install
+      run: ./configure && make && sudo make install
       working-directory: armadillo/armadillo-10.6.2
 
     - name: Cache boost and lastools
