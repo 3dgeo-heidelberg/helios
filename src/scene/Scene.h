@@ -243,6 +243,75 @@ public:
    */
   std::vector<Vertex *> getAllVertices();
 
+  /**
+   * @brief For each scene part which is flagged as forceOnGround, it will be
+   *  vertically translated to closest ground scene part.
+   *
+   * This function requires that there is at least one scene part flagged as
+   *  ground, otherwise it is not possible to apply it. The algorithm can be
+   *  described in 5 steps:
+   *
+   * 1. For any ground scene part, find its min
+   *    \f$a_i = (a_{ix}, a_{iy}, a_{iz})\f$ and max
+   *    \f$b_i = (b_{ix}, b_{iy}, b_{iz})\f$ vertices.
+   *
+   * 2. Let the scene part to be placed on ground be defined by its \f$m\f$
+   *    vertices, such that \f$Q = \left\{q_1, \ldots, q_m\right\}\f$.
+   *    Also, let it be represented by its minimum \f$z\f$ vertex
+   *    \f$q_* = (q_{*x}, q_{*y}, q_{*z}) \f$. Thus, the first found ground
+   *    scene part such that \f$q_*\f$ is inside its \f$\mathbb{R}^{2}\f$
+   *    boundaries is considered as the ground reference. More formally, it
+   *    must be satisfied that:
+   *
+   * \f[
+   *    q_{*x} \in [a_{ix}, b_{ix}] \land
+   *    q_{*y} \in [a_{iy}, b_{iy}]
+   * \f]
+   *
+   * 3. Find the best fitting plane \f$\pi\f$ with respect to vertices of
+   *    ground reference
+   *
+   * \f[
+   *    \pi = \left\{(x, y, z) : o + \lambda \hat{v}\right\}
+   * \f]
+   *
+   * 4. Compute the vertical projection of \f$q_*\f$ on best fitting ground
+   *    plane \f$\pi\f$ as follows:
+   *
+   * \f[
+   * \begin{array}{lll}
+   *    \mathcal{P}^{z}_{\pi}(q_*) &=&
+   *    \left(
+   *        q_{*x}, q_{*y},
+   *        \frac{
+   *            \hat{v}_x o_x + \hat{v}_y o_y + \hat{v}_z o_z -
+   *            \hat{v}_x q_{*x} - \hat{v}_y q_{*y}
+   *        }
+   *        {\hat{v}_z}
+   *    \right) \\ &=&
+   *    \left(
+   *        q_{*x}, q_{*y},
+   *        \frac{
+   *            \left\langle{\hat{v}, \vec{o}}\right\rangle -
+   *            \hat{v}_x q_{*x} - \hat{v}_y q_{*y}
+   *          }{\hat{v}_z}
+   *    \right) \\ &=&
+   *    (p_x, p_y, p_z) \\ &=&
+   *    p
+   * \end{array}
+   * \f]
+   *
+   * 5. Let \f$\Delta_z = q_{*z} - p_z\f$ be the magnitude of vertical
+   *    translation for the entire scene part. Now, each vertex defining the
+   *    scene part must be translated so:
+   *
+   * \f[
+   *    \forall q_i \in Q,\, q'_i = (q_{ix}, q_{iy}, q_{iz} - \Delta_z)
+   * \f]
+   *
+   */
+  void doForceOnGround();
+
   // ***  GETTERs and SETTERs  *** //
   // ***************************** //
   /**

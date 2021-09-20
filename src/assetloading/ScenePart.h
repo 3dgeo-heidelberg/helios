@@ -2,11 +2,12 @@
 
 
 class Primitive;
+class AABB;
 class WavefrontObj;
 
-#include "Vertex.h"
-#include "maths/Rotation.h"
-#include "LadLut.h"
+#include <Vertex.h>
+#include <maths/Rotation.h>
+#include <LadLut.h>
 
 #include <armadillo>
 #include <ogr_geometry.h>
@@ -30,6 +31,7 @@ class ScenePart {
 	void serialize(Archive &ar, const unsigned int version){
 		ar & mPrimitives;
         ar & centroid;
+        ar & bound;
 		ar & mId;
         ar & subpartLimit;
         ar & onRayIntersectionMode;
@@ -39,6 +41,7 @@ class ScenePart {
 		ar & mOrigin;
         ar & mRotation;
 		ar & mScale;
+		ar & forceOnGround;
     }
 public:
     // ***  ATTRIBUTES  *** //
@@ -51,6 +54,11 @@ public:
 	 * @brief The centroid of the scene part
 	 */
     arma::colvec centroid;
+    /**
+     * @brief The axis aligned bounding box defining scene part boundaries
+     */
+    std::shared_ptr<AABB> bound = nullptr;
+
 	/**
 	 * @brief Identifier for the scene part
 	 */
@@ -100,6 +108,15 @@ public:
 	 * @brief Specify the scale for the scene part
 	 */
 	double mScale = 1;
+	/**
+	 * @brief Force the scene part to be on ground if true, do nothing
+	 *  if false.
+	 *
+	 * NOTICE forceOnGround will not force the object to be on ground if it
+	 *  is a dynamic object which moves around the scene. It only assures the
+	 *  object will be INITIALLY placed at ground level
+	 */
+	bool forceOnGround = false;
 
 
 	OGRSpatialReference *mCrs = nullptr;
@@ -123,7 +140,6 @@ public:
 
     // ***   M E T H O D S   *** //
 	// ************************* //
-
     /**
      * @brief Add the primitives of a WavefrontObj to the ScenePart
      * @param obj Pointer to a loaded OBJ
@@ -151,7 +167,7 @@ public:
 
     /**
      * @brief Compute the default centroid for the scene part as the midrange
-     *  point
+     *  point and its boundaries too
      *
      * Let \f$P = \left\{p_1, \ldots, p_m\right\}\f$ be the set of
      *  points/vertices defining the scene part, where
@@ -163,16 +179,44 @@ public:
      *  centroid of the scene part, so it can be defined as
      *
      * \f[
-     *  o = \frac{1}{2} \left(
+     * \begin{array}{lll}
+     *  o &=& \frac{1}{2} \left(
      *      \min\left(\vec{p}_x\right)+\max\left(\vec{p}_{x}\right),
      *      \min\left(\vec{p}_y\right)+\max\left(\vec{p}_{y}\right),
      *      \min\left(\vec{p}_z\right)+\max\left(\vec{p}_{z}\right)
-     *  \right)
+     *  \right) \\
+     *  &=& \frac{1}{2} \left(\frac{a+b}{2}\right)
+     * \end{array}
      * \f]
      *
+     * The boundaries of the scene part are defined as the set of the min and
+     *  max vertices respectively \f$\{a, b\}\f$ where:
+     *
+     * \f[
+     * \begin{array}{lll}
+     *  a &=& \left(
+     *      \min\left(\vec{p}_x\right),
+     *      \min\left(\vec{p}_y\right),
+     *      \min\left(\vec{p}_z\right)
+     *  \right) \\
+     *  b &=& \left(
+     *      \max\left(\vec{p}_x\right),
+     *      \max\left(\vec{p}_y\right),
+     *      \max\left(\vec{p}_z\right)
+     *  \right)
+     * \end{array}
+     * \f]
+     *
+     * @param computeBound True to specify boundaries must be computed, false
+     *  to avoid it. They are already necessary to compute the centroid, so
+     *  if they are needed, calling this function with computeBound=true will
+     *  store them with no extra computations but the ones required to build
+     *  the AABB object itself
+     *
      * @see ScenePart::centroid
+     * @see AABB
      */
-    void computeCentroid();
+    void computeCentroid(bool const computeBound=false);
 
      // ***  GETTERS and SETTERS  *** //
     // ***************************** //
