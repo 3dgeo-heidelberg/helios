@@ -21,8 +21,17 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     
+    - name: Update package lists
+      run: sudo apt update    
+      
     - name: Install required packages
-      run: sudo apt-get update && sudo apt-get install -y cmake libboost-dev libboost-system-dev libboost-thread-dev libboost-regex-dev libboost-filesystem-dev libboost-iostreams-dev libgdal-dev libglm-dev libarmadillo-dev zip unzip
+      run: sudo apt-get install -y cmake libboost-dev libboost-system-dev libboost-thread-dev libboost-regex-dev libboost-filesystem-dev libboost-iostreams-dev libgdal-dev libglm-dev zip unzip xz-utils
+      
+    - name: Download armadillo
+      run: mkdir armadillo && cd armadillo && wget -O armadillo.tar.xz http://sourceforge.net/projects/arma/files/armadillo-10.6.2.tar.xz && tar xf armadillo.tar.xz && cd ..
+    - name: Install armadillo
+      run: ./configure && make && sudo make install
+      working-directory: armadillo/armadillo-10.6.2
 
     - name: Cache boost and lastools
       id: cache-boost-lastools
