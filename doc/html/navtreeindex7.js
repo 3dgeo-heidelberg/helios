@@ -1,5 +1,7 @@
 var NAVTREEINDEX7 =
 {
+"d8/d34/classfluxionum_1_1IterativeMethodHandler.html#ace184deef3ac3b80d2968ec72be2c9b9":[1,0,0,1,15],
+"d8/d34/classfluxionum_1_1IterativeMethodHandler.html#ad1875a751c94b4bf856b1de0e7b3f848":[1,0,0,1,1],
 "d8/d34/classfluxionum_1_1IterativeMethodHandler.html#adc0478bf93c24fdb6115260b7c893a34":[1,0,0,1,6],
 "d8/d34/classfluxionum_1_1IterativeMethodHandler.html#ae4954eb089c5bd53755e14a470d97c00":[1,0,0,1,16],
 "d8/d34/classfluxionum_1_1IterativeMethodHandler.html#aeb467ae58be886679d8fa318612eadcc":[1,0,0,1,27],
@@ -247,7 +249,5 @@ var NAVTREEINDEX7 =
 "d9/dc5/classvisualhelios_1_1VHSimpleCanvas.html#ad60e431590e0d7624297655677a6c7e8":[1,0,6,8,4],
 "d9/dc5/classvisualhelios_1_1VHSimpleCanvas.html#aeb9569f0455bf7aae4db2213b9a48363":[1,0,6,8,0],
 "d9/dc5/classvisualhelios_1_1VHSimpleCanvas.html#af18ec918584e33e3e99a50c6f31d75f0":[1,0,6,8,13],
-"d9/dc5/classvisualhelios_1_1VHSimpleCanvas.html#afae22d677f5ab813977497ea0554b02a":[1,0,6,8,11],
-"d9/dd0/Platform_8h_source.html":[2,0,0,5,4],
-"d9/ddd/classpyhelios_1_1PyHeliosSimulation.html":[1,0,3,7]
+"d9/dc5/classvisualhelios_1_1VHSimpleCanvas.html#afae22d677f5ab813977497ea0554b02a":[1,0,6,8,11]
 };

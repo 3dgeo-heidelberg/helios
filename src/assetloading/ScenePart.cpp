@@ -39,6 +39,7 @@ ScenePart::ScenePart(ScenePart const &sp) {
 // ******************************* //
 ScenePart &ScenePart::operator=(const ScenePart &rhs) {
   this->centroid = rhs.centroid;
+  this->bound = rhs.bound;
   this->mId = rhs.mId;
   this->onRayIntersectionMode = rhs.onRayIntersectionMode;
   this->onRayIntersectionArgument = rhs.onRayIntersectionArgument;
@@ -46,6 +47,7 @@ ScenePart &ScenePart::operator=(const ScenePart &rhs) {
   this->mOrigin = glm::dvec3(rhs.mOrigin);
   this->mRotation = Rotation(rhs.mRotation);
   this->mScale = rhs.mScale;
+  this->forceOnGround = rhs.forceOnGround;
   this->mCrs = nullptr; // TODO Copy this too
   this->mEnv = nullptr; // TODO Copy this too
 

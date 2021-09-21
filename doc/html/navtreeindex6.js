@@ -1,5 +1,7 @@
 var NAVTREEINDEX6 =
 {
+"d7/d21/classpyhelios_1_1PyDetailedVoxelWrapper.html#a97883aa15cdbcde94e86be8a3c9cb838":[1,0,3,2,5],
+"d7/d21/classpyhelios_1_1PyDetailedVoxelWrapper.html#a9987a5ce2ce502ee07c0e7e2032414ec":[1,0,3,2,2],
 "d7/d21/classpyhelios_1_1PyDetailedVoxelWrapper.html#ab68f8c2af8463457088b400e8f4d359c":[1,0,3,2,9],
 "d7/d21/classpyhelios_1_1PyDetailedVoxelWrapper.html#ac7e2437db213155588b7a5967aa96fcc":[1,0,3,2,3],
 "d7/d21/classpyhelios_1_1PyDetailedVoxelWrapper.html#aca4b56cce2dfa9f94774ff7c417dbc33":[1,0,3,2,0],
@@ -247,7 +249,5 @@ var NAVTREEINDEX6 =
 "d8/d34/classfluxionum_1_1IterativeMethodHandler.html#aaf42f26a645a9d701d7651cfd8fb1b44":[1,0,0,1,22],
 "d8/d34/classfluxionum_1_1IterativeMethodHandler.html#aafb6c13f911d82ea3f7d0f3d2d3aafb9":[1,0,0,1,31],
 "d8/d34/classfluxionum_1_1IterativeMethodHandler.html#aafd2696210b5e9d94d90f359aa5df865":[1,0,0,1,28],
-"d8/d34/classfluxionum_1_1IterativeMethodHandler.html#ac98d07dd8f7b70e16ccb9a01abf56b9c":[1,0,0,1,21],
-"d8/d34/classfluxionum_1_1IterativeMethodHandler.html#ace184deef3ac3b80d2968ec72be2c9b9":[1,0,0,1,15],
-"d8/d34/classfluxionum_1_1IterativeMethodHandler.html#ad1875a751c94b4bf856b1de0e7b3f848":[1,0,0,1,1]
+"d8/d34/classfluxionum_1_1IterativeMethodHandler.html#ac98d07dd8f7b70e16ccb9a01abf56b9c":[1,0,0,1,21]
 };

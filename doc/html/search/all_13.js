@@ -33,7 +33,7 @@ var searchData=
   ['scenepart',['ScenePart',['../dd/dc4/classScenePart.html',1,'ScenePart'],['../dd/dc4/classScenePart.html#ad08313c2aed966def11c0f507a116666',1,'ScenePart::ScenePart()']]],
   ['scenepartsplittest',['ScenePartSplitTest',['../d5/d2a/classHeliosTests_1_1ScenePartSplitTest.html',1,'HeliosTests::ScenePartSplitTest'],['../d5/d2a/classHeliosTests_1_1ScenePartSplitTest.html#a37ed7717e759b6ef796bf4f5fd83c831',1,'HeliosTests::ScenePartSplitTest::ScenePartSplitTest()']]],
   ['scenespec',['sceneSpec',['../db/d91/classXmlSceneLoader.html#aa61eab0e070251e322dc07d612a80d1b',1,'XmlSceneLoader']]],
-  ['scenetype',['SceneType',['../d3/df0/classSerialSceneWrapper.html#a5a14c0dcc019f5ec058e18af53fe4746',1,'SerialSceneWrapper::SceneType()'],['../d3/df0/classSerialSceneWrapper.html#aaab45f1f6b6c56a737b9ff31a5e82394',1,'SerialSceneWrapper::sceneType()']]],
+  ['scenetype',['sceneType',['../d3/df0/classSerialSceneWrapper.html#aaab45f1f6b6c56a737b9ff31a5e82394',1,'SerialSceneWrapper::sceneType()'],['../d3/df0/classSerialSceneWrapper.html#a5a14c0dcc019f5ec058e18af53fe4746',1,'SerialSceneWrapper::SceneType()']]],
   ['search',['search',['../da/d81/classKDTreeRaycaster.html#a5a8b58991ee1ae6a83bd3c6b16529f5a',1,'KDTreeRaycaster']]],
   ['search_5frecursive',['search_recursive',['../da/d81/classKDTreeRaycaster.html#ac3caf810e6611998d6f91a2810b6ccbc',1,'KDTreeRaycaster']]],
   ['searchall',['searchAll',['../da/d81/classKDTreeRaycaster.html#a305b4a9dde6253f61a8a3ef4ee230964',1,'KDTreeRaycaster']]],
