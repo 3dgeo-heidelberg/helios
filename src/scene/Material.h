@@ -36,7 +36,7 @@ public:
     /**
      * @brief Flag specifying if material is ground (true) or not (false)
      */
-    bool isGround = true;
+    bool isGround = false;
     /**
      * @brief Flag specifying if use vertex colors (true) or not (false).
      * Color usage is at the moment excluded from Helios++, so this attribute

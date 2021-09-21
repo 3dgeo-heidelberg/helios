@@ -1,5 +1,7 @@
 var NAVTREEINDEX9 =
 {
+"db/d0e/classvisualhelios_1_1VHDynSceneAdapter.html#a5129da797d04762272d2628c67e7cab2":[1,0,6,5,5],
+"db/d0e/classvisualhelios_1_1VHDynSceneAdapter.html#a6d8cb502adf5bf8d10cc3f78f69d65c0":[1,0,6,5,13],
 "db/d0e/classvisualhelios_1_1VHDynSceneAdapter.html#a7c1c757114019b9fc434531f32c950cb":[1,0,6,5,7],
 "db/d0e/classvisualhelios_1_1VHDynSceneAdapter.html#a7e6de15c743d60528300ebde80fb7df0":[1,0,6,5,3],
 "db/d0e/classvisualhelios_1_1VHDynSceneAdapter.html#a7f81c4491265d352a9bbe7a635c4afd6":[1,0,6,5,2],
@@ -247,7 +249,5 @@ var NAVTREEINDEX9 =
 "db/dc1/classSurfaceInspector_1_1maths_1_1functions_1_1GaussianFunction.html#a0318c2b3aa1f98b58f248641a1f5d347":[1,0,5,0,0,0,1],
 "db/dc1/classSurfaceInspector_1_1maths_1_1functions_1_1GaussianFunction.html#a10d8903ba44f92ca17663200ce500867":[1,0,5,0,0,0,4],
 "db/dc1/classSurfaceInspector_1_1maths_1_1functions_1_1GaussianFunction.html#a4b5a6a38faffa93424c3fc3cd1119733":[1,0,5,0,0,0,3],
-"db/dc1/classSurfaceInspector_1_1maths_1_1functions_1_1GaussianFunction.html#a609b3067b921b73edb59dcfb57da7f4c":[1,0,5,0,0,0,0],
-"db/dc1/classSurfaceInspector_1_1maths_1_1functions_1_1GaussianFunction.html#a690724e9107df1a7d654dc96b79291c0":[1,0,5,0,0,0,7],
-"db/dc1/classSurfaceInspector_1_1maths_1_1functions_1_1GaussianFunction.html#ac23c21fcddafeccb2daf42e27d8591e9":[1,0,5,0,0,0,9]
+"db/dc1/classSurfaceInspector_1_1maths_1_1functions_1_1GaussianFunction.html#a609b3067b921b73edb59dcfb57da7f4c":[1,0,5,0,0,0,0]
 };

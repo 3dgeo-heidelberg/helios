@@ -1,5 +1,7 @@
 var NAVTREEINDEX10 =
 {
+"db/dc1/classSurfaceInspector_1_1maths_1_1functions_1_1GaussianFunction.html#a690724e9107df1a7d654dc96b79291c0":[1,0,5,0,0,0,7],
+"db/dc1/classSurfaceInspector_1_1maths_1_1functions_1_1GaussianFunction.html#ac23c21fcddafeccb2daf42e27d8591e9":[1,0,5,0,0,0,9],
 "db/dc1/classSurfaceInspector_1_1maths_1_1functions_1_1GaussianFunction.html#ad3d9981a434ecaf30bc818c127e31628":[1,0,5,0,0,0,2],
 "db/dc1/classSurfaceInspector_1_1maths_1_1functions_1_1GaussianFunction.html#ae43f05fd513f5aae9cac15eb2bafcb66":[1,0,5,0,0,0,5],
 "db/dc1/classSurfaceInspector_1_1maths_1_1functions_1_1GaussianFunction.html#aefb41b9e5c156d76894a89a3d25a3512":[1,0,5,0,0,0,8],
@@ -247,7 +249,5 @@ var NAVTREEINDEX10 =
 "dc/db6/classVectorial.html#aaeeaf313e7fc60e4374b2b82f027253d":[1,0,118,3],
 "dc/db6/classVectorial.html#abb116a2271c4abddd8aa40b4e2c2af12":[1,0,118,0],
 "dc/db6/classVectorial.html#ac4271a5e4879edc2334df02bd71aa412":[1,0,118,1],
-"dc/db6/classVectorial.html#af7a9a79a3e8444149d5f2b9e5cba4fc4":[1,0,118,2],
-"dc/dea/PyTrajectoryVectorWrapper_8h_source.html":[2,0,0,6,21],
-"dc/df6/classrigidmotion_1_1RigidMotionR3Factory.html":[1,0,4,5]
+"dc/db6/classVectorial.html#af7a9a79a3e8444149d5f2b9e5cba4fc4":[1,0,118,2]
 };

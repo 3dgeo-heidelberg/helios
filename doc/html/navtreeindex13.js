@@ -1,5 +1,9 @@
 var NAVTREEINDEX13 =
 {
+"df/dc3/classDirections.html#acdd4e8e3979b368a581cbb10791ff27a":[1,0,23,2],
+"df/dd2/classvisualhelios_1_1VHNormalsCanvas.html":[1,0,6,6],
+"df/dd2/classvisualhelios_1_1VHNormalsCanvas.html#a211ce4e7aaf240532f10c615594afc1c":[1,0,6,6,1],
+"df/dd2/classvisualhelios_1_1VHNormalsCanvas.html#a313d3e438ac2819dffc6e1d257823af5":[1,0,6,6,17],
 "df/dd2/classvisualhelios_1_1VHNormalsCanvas.html#a49949200cc6b6be909c00664bd1ec231":[1,0,6,6,8],
 "df/dd2/classvisualhelios_1_1VHNormalsCanvas.html#a604ab7181f3da0be60066e4642722cde":[1,0,6,6,15],
 "df/dd2/classvisualhelios_1_1VHNormalsCanvas.html#a64f6bb8874b3bff1e76b44f091b1e87d":[1,0,6,6,14],

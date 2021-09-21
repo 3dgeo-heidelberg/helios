@@ -190,6 +190,6 @@ protected:
 
 }}
 
-#include <maths/PlaneFitter.tpp>
+#include <surfaceinspector/maths/PlaneFitter.tpp>
 
 #endif

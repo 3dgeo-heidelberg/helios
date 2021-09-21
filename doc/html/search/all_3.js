@@ -166,7 +166,7 @@ var searchData=
   ['computeangles',['computeAngles',['../d9/d22/classLadLut.html#a8283615340e12a703bd63c40c234cbfc',1,'LadLut']]],
   ['computeassociatedinvariant',['computeAssociatedInvariant',['../d2/da8/classrigidmotion_1_1RigidMotionEngine.html#a831300aa5a68e83ca7dd077e80e62e14',1,'rigidmotion::RigidMotionEngine']]],
   ['computebinningintervals',['computeBinningIntervals',['../da/d52/classSurfaceInspector_1_1maths_1_1Histogram.html#aec0a211810bcf8add93fea93d1b2d742',1,'SurfaceInspector::maths::Histogram']]],
-  ['computecentroid',['computeCentroid',['../dd/dc4/classScenePart.html#a33e9aa7e8940b053e4939e8aacc6fd12',1,'ScenePart']]],
+  ['computecentroid',['computeCentroid',['../dd/dc4/classScenePart.html#a8a35be714f874833b84a29841de8fe2b',1,'ScenePart']]],
   ['computedensity',['computeDensity',['../da/d52/classSurfaceInspector_1_1maths_1_1Histogram.html#a6c33c47c870407fb4972fccce6a132bd',1,'SurfaceInspector::maths::Histogram']]],
   ['computeengineforce',['computeEngineForce',['../db/d69/classHelicopterPlatform.html#ab35ce371755b03593b9587b662013085',1,'HelicopterPlatform']]],
   ['computefixedpoints',['computeFixedPoints',['../d2/da8/classrigidmotion_1_1RigidMotionEngine.html#a54565faf4bb040e25967127578e134b0',1,'rigidmotion::RigidMotionEngine']]],

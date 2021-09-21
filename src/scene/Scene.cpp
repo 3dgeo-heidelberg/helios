@@ -20,6 +20,11 @@ using namespace glm;
 #include "Scene.h"
 #include "TimeWatcher.h"
 #include <UniformNoiseSource.h>
+#include <surfaceinspector/maths/Plane.hpp>
+#include <surfaceinspector/maths/PlaneFitter.hpp>
+
+using SurfaceInspector::maths::Plane;
+using SurfaceInspector::maths::PlaneFitter;
 
 // ***  CONSTRUCTION / DESTRUCTION  *** //
 // ************************************ //
@@ -59,9 +64,7 @@ Scene::Scene(Scene &s) {
 // ***  M E T H O D S  *** //
 // *********************** //
 bool Scene::finalizeLoading(bool const safe) {
-  if (primitives.size() == 0) {
-    return false;
-  }
+  if (primitives.empty()) return false;
 
   // #####   UPDATE PRIMITIVES ON FINISH LOADING   #####
   UniformNoiseSource<double> uns(-1, 1);
@@ -89,9 +92,11 @@ bool Scene::finalizeLoading(bool const safe) {
   s << "Total # of primitives in scene: " << primitives.size() << "\n";
   logging::DEBUG(s.str());
 
-  if (vertices.size() == 0) {
-    return false;
-  }
+  if (vertices.size() == 0) return false;
+
+  // Register all parts and translate to ground those flagged as forceOnGround
+  registerParts();
+  doForceOnGround();
 
   // ########## BEGIN Move the scene so that bounding box minimum is (0,0,0)
   // ######## This is done to prevent precision problems (e.g. camera jitter)
@@ -130,23 +135,22 @@ bool Scene::finalizeLoading(bool const safe) {
 
   // ################ END Shift primitives to originWaypoint ##################
 
-  // Register parts and compute its centroid wrt to scene
-  registerParts();
+  // Compute each part centroid wrt to scene
   for(shared_ptr<ScenePart> & part : parts) part->computeCentroid();
 
   // ############# BEGIN Build KD-tree ##################
   logging::INFO("Building KD-Tree... ");
 
-  TimeWatcher tw;
-  tw.start();
+  TimeWatcher kdtTw;
+  kdtTw.start();
   kdtree = shared_ptr<KDTreeNodeRoot>(
       safe ?
         kdtf->makeFromPrimitives(primitives) :
         kdtf->makeFromPrimitivesUnsafe(primitives)
   );
 
-  tw.stop();
-  ss << "KD built in " << tw.getElapsedDecimalSeconds() << "s";
+  kdtTw.stop();
+  ss << "KD built in " << kdtTw.getElapsedDecimalSeconds() << "s";
   logging::INFO(ss.str());
   // ############# END Build KD-tree ##################
 
@@ -239,6 +243,144 @@ vector<Vertex *> Scene::getAllVertices(){
         for(size_t i = 0 ; i < m ; ++i) vset.insert(vertices + i);
     }
     return {vset.begin(), vset.end()};
+}
+
+void Scene::doForceOnGround(){
+
+    // 1. Find min and max vertices of ground scene parts
+    vector<size_t> I; // Indices of ground parts
+    vector<unique_ptr<Plane<double>>> planes; // Ground best fitting planes
+    size_t const m = parts.size(); // How many parts there are in the scene
+    for(size_t i=0 ; i < m ; ++i){
+       shared_ptr<ScenePart> part = parts[i];
+       if(!part->mPrimitives[0]->material->isGround) continue;
+       I.push_back(i); // Store index of found ground part
+       planes.push_back(nullptr); // Null placeholder for best fitting plane
+       part->computeCentroid(true); // True implies also store boundaries
+    }
+    if(I.empty()){ // Check there is at least one ground part
+        std::stringstream ss;
+        ss  << "Scene::doForceGround could not compute nothing because there "
+            << "was no ground scene part available";
+        logging::WARN(ss.str());
+    }
+
+    // Compute remaining algorithm steps for each on ground scene part
+    for(shared_ptr<ScenePart> & part : parts){
+        if(part->forceOnGround == 0){ // Ignore not on ground scene parts
+            std::stringstream ss;
+            ss  << "Scene::doForceOnGround skipped part \""
+                << part->mId << "\"\n"
+                << "Its forceOnGround attribute was 0";
+            logging::DEBUG(ss.str());
+            continue;
+        }
+        else{ // Report search depth (forceOnGround) as debug info
+            std::stringstream ss;
+            ss  << "Scene::doForceOnGround computing part \""
+                << part->mId << "\"\n"
+                << "Search depth is " << part->forceOnGround;
+            logging::DEBUG(ss.str());
+        }
+        // 2. Find minimum z vertex and pick first ground reference
+        vector<Vertex *> vertices = part->getAllVertices();
+        glm::dvec3 minzv = vertices[0]->pos; // First vertex as minz candidate
+        size_t const n = vertices.size();
+        for(size_t i = 1 ; i < n ; ++i){ // Find best minz candidate
+            Vertex *vertex = vertices[i];
+            if(vertex->pos.z < minzv.z) minzv = vertex->pos;
+        }
+        size_t groundLocalIndex;
+        shared_ptr<ScenePart> groundPart = nullptr; // Ground scene part
+        for(size_t j = 0 ; j < I.size() ; ++j){
+            size_t const i = I[j]; // Ground index i
+            shared_ptr<ScenePart> groundCandidate = parts[i];
+            if( // Ground candidate is valid if minz vertex lies inside in R2
+                minzv.x >= groundCandidate->bound->getMin().x &&
+                minzv.x <= groundCandidate->bound->getMax().x &&
+                minzv.y >= groundCandidate->bound->getMin().y &&
+                minzv.y <= groundCandidate->bound->getMax().y
+            ){
+                groundPart = groundCandidate;
+                groundLocalIndex = j;
+                break;
+            }
+        }
+        if(groundPart == nullptr){
+            std::stringstream ss;
+            ss  << "Scene::doForceOnGround could not place part \""
+                << part->mId << "\" on ground.\n"
+                << "No valid ground candidate was found";
+            logging::WARN(ss.str());
+            continue;
+        }
+        // 3. Find ground reference best fitting plane
+        if(planes[groundLocalIndex] == nullptr){ // Estimate plane if needed
+            vector<Vertex *> groundVertices = groundPart->getAllVertices();
+            size_t const ngv = groundVertices.size();
+            size_t const ngv2 = 2*ngv;
+            arma::mat groundVerticesMatrix(ngv, 3);
+            for(size_t i = 0 ; i < ngv ; ++i){
+                glm::dvec3 const &vert = groundVertices[i]->pos;
+                groundVerticesMatrix[i] = vert.x;
+                groundVerticesMatrix[ngv+i] = vert.y;
+                groundVerticesMatrix[ngv2+i] = vert.z;
+            }
+            planes[groundLocalIndex] = unique_ptr<Plane<double>>(
+                new Plane<double>(
+                    PlaneFitter::bestFittingPlaneSVD<double>(
+                        groundVerticesMatrix
+                    )
+                )
+            );
+        }
+        // 4. Compute the vertical projection of min vertex on ground plane
+        vector<double> const &o = planes[groundLocalIndex]->centroid;
+        vector<double> const &v = planes[groundLocalIndex]->orthonormal;
+        glm::dvec3 q = findForceOnGroundQ(
+            part->forceOnGround,
+            minzv,
+            vertices,
+            o,
+            v
+        );
+        double zDelta = q.z -
+            (v[0]*o[0]+v[1]*o[1]+v[2]*o[2]-v[0]*q.x-v[1]*q.y) / v[2];
+        // 5. Do vertical translation for all vertex of onGround part
+        for(Vertex *vertex : vertices) vertex->pos.z -= zDelta;
+    }
+}
+
+
+glm::dvec3 Scene::findForceOnGroundQ(
+    int const searchDepth,
+    glm::dvec3 const minzv,
+    vector<Vertex *> &vertices,
+    vector<double> const &o,
+    vector<double> const &v
+){
+    if(searchDepth == -1 || searchDepth > 1){ // Iterative search process for q
+        // Compute loop configuration
+        size_t const maxIters = (searchDepth==-1) ?
+            vertices.size() : std::min<size_t>(searchDepth, vertices.size());
+        size_t const stepSize = (searchDepth==-1) ?
+            1 : (size_t) (vertices.size()/maxIters);
+        // Compute the iterative search itself : argmin zDelta
+        double const dot = v[0]*o[0]+v[1]*o[1]+v[2]*o[2];
+        glm::dvec3 qBest = vertices[0]->pos;
+        double zDeltaBest = qBest.z - (dot-v[0]*qBest.x-v[1]*qBest.y)/v[2];
+        for(size_t i = stepSize ; i < maxIters ; i+=stepSize){
+            glm::dvec3 const q  = vertices[i]->pos;
+            double const zDelta = q.z - (dot-v[0]*q.x-v[1]*q.y)/v[2];
+            if(zDelta < zDeltaBest){
+                zDeltaBest = zDelta;
+                qBest = q;
+            }
+        }
+        return qBest;
+    }
+    // By default searchDepth 1 is assumed, so q=q_*
+    return minzv;
 }
 
 // ***  READ/WRITE  *** //

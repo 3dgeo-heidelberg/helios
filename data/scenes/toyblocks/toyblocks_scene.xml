@@ -30,11 +30,11 @@
 				</param>
 			</filter>
 			<filter type="scale">
-                <param type="double" key="scale" value="0.75" />
+                <param type="double" key="scale" value="0.5" />
             </filter>
 			<filter type="translate">
-				<param type="boolean" key="onGround" value="true" />
-				<param type="vec3" key="offset" value="-40.0;-5.0;10" />
+				<param type="integer" key="onGround" value="-1" />
+				<param type="vec3" key="offset" value="-45.0;10.0;10" />
 			</filter>
         </part>
         <part>
@@ -57,7 +57,6 @@
             <filter type="objloader">
                 <param type="string" key="filepath" value="data/sceneparts/toyblocks/easter2021.obj" />
             </filter>
-
 			<filter type="rotate">
 				<param key="rotation" type="rotation">
 					<rot angle_deg="90" axis="x"/>

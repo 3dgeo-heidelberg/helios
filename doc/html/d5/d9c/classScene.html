@@ -155,6 +155,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:af46ce55bcb11ce26343b4b72066e0cf5"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="../../d2/da0/classVertex.html">Vertex</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d9c/classScene.html#af46ce55bcb11ce26343b4b72066e0cf5">getAllVertices</a> ()</td></tr>
 <tr class="memdesc:af46ce55bcb11ce26343b4b72066e0cf5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain all vertices (without repetitions) composing the scene.  <a href="#af46ce55bcb11ce26343b4b72066e0cf5">More...</a><br /></td></tr>
 <tr class="separator:af46ce55bcb11ce26343b4b72066e0cf5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3c173e62cd1c1c31cdd05edcafbee0ab"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d9c/classScene.html#a3c173e62cd1c1c31cdd05edcafbee0ab">doForceOnGround</a> ()</td></tr>
+<tr class="memdesc:a3c173e62cd1c1c31cdd05edcafbee0ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">For each scene part which is flagged as forceOnGround, it will be vertically translated to closest ground scene part.  <a href="#a3c173e62cd1c1c31cdd05edcafbee0ab">More...</a><br /></td></tr>
+<tr class="separator:a3c173e62cd1c1c31cdd05edcafbee0ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abbd93c3c45cb22ba6fa6c6f7da1dcb01"><td class="memItemLeft" align="right" valign="top">glm::dvec3&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d9c/classScene.html#abbd93c3c45cb22ba6fa6c6f7da1dcb01">findForceOnGroundQ</a> (int const searchDepth, glm::dvec3 const minzv, vector&lt; <a class="el" href="../../d2/da0/classVertex.html">Vertex</a> *&gt; &amp;vertices, vector&lt; double &gt; const &amp;o, vector&lt; double &gt; const &amp;v)</td></tr>
+<tr class="memdesc:abbd93c3c45cb22ba6fa6c6f7da1dcb01"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assist doForceOnGround function to find an adequate \(q\) for step 4.  <a href="#abbd93c3c45cb22ba6fa6c6f7da1dcb01">More...</a><br /></td></tr>
+<tr class="separator:abbd93c3c45cb22ba6fa6c6f7da1dcb01"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac283c25701a6addafe99071740a15058"><td class="memItemLeft" align="right" valign="top">virtual std::shared_ptr&lt; <a class="el" href="../../d5/dd0/classKDTreeFactory.html">KDTreeFactory</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d9c/classScene.html#ac283c25701a6addafe99071740a15058">getKDTreeFactory</a> () const</td></tr>
 <tr class="memdesc:ac283c25701a6addafe99071740a15058"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain the KDTree factory used by the scene.  <a href="#ac283c25701a6addafe99071740a15058">More...</a><br /></td></tr>
 <tr class="separator:ac283c25701a6addafe99071740a15058"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -257,6 +263,51 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>boost::serialization
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Class representing a scene asset. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="a3c173e62cd1c1c31cdd05edcafbee0ab"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3c173e62cd1c1c31cdd05edcafbee0ab">&#9670;&nbsp;</a></span>doForceOnGround()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Scene::doForceOnGround </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>For each scene part which is flagged as forceOnGround, it will be vertically translated to closest ground scene part. </p>
+<p>This function requires that there is at least one scene part flagged as ground, otherwise it is not possible to apply it. The algorithm can be described in 5 steps:</p>
+<ol type="1">
+<li>For any ground scene part, find its min \(a_i = (a_{ix}, a_{iy}, a_{iz})\) and max \(b_i = (b_{ix}, b_{iy}, b_{iz})\) vertices.</li>
+<li><p class="startli">Let the scene part to be placed on ground be defined by its \(m\) vertices, such that \(Q = \left\{q_1, \ldots, q_m\right\}\). Also, let it be represented by its minimum \(z\) vertex \(q_* = (q_{*x}, q_{*y}, q_{*z}) \). Thus, the first found ground scene part such that \(q_*\) is inside its \(\mathbb{R}^{2}\) boundaries is considered as the ground reference. More formally, it must be satisfied that:</p>
+<p class="formulaDsp">
+\[ q_{*x} \in [a_{ix}, b_{ix}] \land q_{*y} \in [a_{iy}, b_{iy}] \]
+</p>
+</li>
+<li><p class="startli">Find the best fitting plane \(\pi\) with respect to vertices of ground reference, which orthonormal vector is noted as \(\hat{v}\)</p>
+<p class="formulaDsp">
+\[ \pi = \left\{ p=(x, y, z) : \left\langle{\overrightarrow{op}, \hat{v}}\right\rangle = 0 \right\} \]
+</p>
+</li>
+<li><p class="startli">Compute the vertical projection of \(q\) on best fitting ground plane \(\pi\) as follows:</p>
+<p class="formulaDsp">
+\[ \begin{array}{lll} \mathcal{P}^{z}_{\pi}(q) &amp;=&amp; \left( q_{x}, q_{y}, \frac{ \hat{v}_x o_x + \hat{v}_y o_y + \hat{v}_z o_z - \hat{v}_x q_{x} - \hat{v}_y q_{y} } {\hat{v}_z} \right) \\ &amp;=&amp; \left( q_{x}, q_{y}, \frac{ \left\langle{\hat{v}, \vec{o}}\right\rangle - \hat{v}_x q_{x} - \hat{v}_y q_{y} }{\hat{v}_z} \right) \\ &amp;=&amp; (p_x, p_y, p_z) \\ &amp;=&amp; p \end{array} \]
+</p>
+<p class="startli">Where \(q\) varies depending on search depth, as explained in parameter documentation at the <a class="el" href="../../d5/d9c/classScene.html#abbd93c3c45cb22ba6fa6c6f7da1dcb01" title="Assist doForceOnGround function to find an adequate  for step 4. ">Scene::findForceOnGroundQ</a> function.</p>
+</li>
+<li><p class="startli">Let \(\Delta_z = q_{*z} - p_z\) be the magnitude of vertical translation for the entire scene part. Now, each vertex defining the scene part must be translated so:</p>
+<p class="formulaDsp">
+\[ \forall q_i \in Q,\, q&#39;_i = (q_{ix}, q_{iy}, q_{iz} - \Delta_z) \]
+</p>
+</li>
+</ol>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d5/d9c/classScene.html#abbd93c3c45cb22ba6fa6c6f7da1dcb01" title="Assist doForceOnGround function to find an adequate  for step 4. ">Scene::findForceOnGroundQ</a> </dd></dl>
+
+</div>
+</div>
 <a id="adb8e9900ddf447c30d4ff869e3f0c152"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#adb8e9900ddf447c30d4ff869e3f0c152">&#9670;&nbsp;</a></span>finalizeLoading()</h2>
 
@@ -282,6 +333,70 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>boost::serialization
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>True if scene loading was successfully finished, false otherwise </dd></dl>
+
+</div>
+</div>
+<a id="abbd93c3c45cb22ba6fa6c6f7da1dcb01"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abbd93c3c45cb22ba6fa6c6f7da1dcb01">&#9670;&nbsp;</a></span>findForceOnGroundQ()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">glm::dvec3 Scene::findForceOnGroundQ </td>
+          <td>(</td>
+          <td class="paramtype">int const&#160;</td>
+          <td class="paramname"><em>searchDepth</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">glm::dvec3 const&#160;</td>
+          <td class="paramname"><em>minzv</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">vector&lt; <a class="el" href="../../d2/da0/classVertex.html">Vertex</a> *&gt; &amp;&#160;</td>
+          <td class="paramname"><em>vertices</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">vector&lt; double &gt; const &amp;&#160;</td>
+          <td class="paramname"><em>o</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">vector&lt; double &gt; const &amp;&#160;</td>
+          <td class="paramname"><em>v</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Assist doForceOnGround function to find an adequate \(q\) for step 4. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">searchDepth</td><td>The search strategy specification. This function should never be called with searchDepth 0, that case must be skipped at <a class="el" href="../../d5/d9c/classScene.html#a3c173e62cd1c1c31cdd05edcafbee0ab" title="For each scene part which is flagged as forceOnGround, it will be vertically translated to closest gr...">Scene::doForceOnGround</a> directly. Search depth corresponds with the scene part's forceOnGround attribute</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>If it is 0 the force on ground process will be skipped. If it is 1, a specific algorithm based on \(q=q_*\) as min \(z\) point will be used. If it is \(&gt;1\), then it specifies the number of search steps to be performed to find \(q\) on a discrete linear search with searchDepth steps. If it is -1, then \( q = \mathrm{argmin}_{q \in Q} \;\;\; q_z - \frac{\left\langle{\hat{v}, \vec{o}}\right\rangle - \left( \hat{v}_x q_x + \hat{v}_y q_y \right)}{\hat{v}_z} \) </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">minzv</td><td>The \(q_*\) that is used as \(q\) if searchDepth is 1 </td></tr>
+    <tr><td class="paramname">vertices</td><td>All vertices defining the scene part to be placed on ground </td></tr>
+    <tr><td class="paramname">o</td><td>A point contained in the best fitting ground plane </td></tr>
+    <tr><td class="paramname">v</td><td>The normal vector of the best fitting ground plane </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d5/d9c/classScene.html#a3c173e62cd1c1c31cdd05edcafbee0ab" title="For each scene part which is flagged as forceOnGround, it will be vertically translated to closest gr...">Scene::doForceOnGround</a> </dd></dl>
 
 </div>
 </div>

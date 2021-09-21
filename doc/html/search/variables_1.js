@@ -21,7 +21,7 @@ var searchData=
   ['binsize_5fns',['binSize_ns',['../d4/dfb/classFWFSettings.html#a07274de10710a51846ba5a07f8d9a220',1,'FWFSettings']]],
   ['blank_5fcharacters',['BLANK_CHARACTERS',['../d9/ddf/classVoxelFileParser.html#a08f8426398c5b71b60420ad49ee8c963',1,'VoxelFileParser']]],
   ['bnorm',['bNorm',['../da/d69/classSurfaceInspector_1_1maths_1_1SingularContextComputer.html#aaedd3d88d439be7e7aed2953d5f612e3',1,'SurfaceInspector::maths::SingularContextComputer']]],
-  ['bound',['bound',['../d8/d94/classKDTreeNode.html#ab25d385b581fd857a02b370c5d6b0e1a',1,'KDTreeNode']]],
+  ['bound',['bound',['../d8/d94/classKDTreeNode.html#ab25d385b581fd857a02b370c5d6b0e1a',1,'KDTreeNode::bound()'],['../dd/dc4/classScenePart.html#ae911f7b66e49dbccbbc85661751e7f9b',1,'ScenePart::bound()']]],
   ['bounds',['bounds',['../d2/d1a/classAABB.html#af41b9802252d42310200694c104d6499',1,'AABB']]],
   ['bridge_5fdeck',['BRIDGE_DECK',['../df/d64/classLasSpecification.html#aa8dffe5bcb79ae256a49bb1c1f88b08b',1,'LasSpecification']]],
   ['buffer',['buffer',['../d3/dec/classMeasurementsBuffer.html#ae724179a2fe1328c4488e50026b7ff26',1,'MeasurementsBuffer']]],

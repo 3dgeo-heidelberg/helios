@@ -1,5 +1,9 @@
 var NAVTREEINDEX12 =
 {
+"de/dad/classHeliosTests_1_1NoiseTest.html#ae2769cf4ee242db7dfbcaabce9a77dcf":[1,0,2,3,1],
+"de/dcc/Triangle_8h_source.html":[2,0,0,8,1,3],
+"de/dd9/Vector_8hpp_source.html":[2,0,0,9,0,11],
+"de/dda/classvisualhelios_1_1VHCanvas.html":[1,0,6,0],
 "de/dda/classvisualhelios_1_1VHCanvas.html#a093c23c9a6ec7a53fd30bc49eb915be0":[1,0,6,0,0],
 "de/dda/classvisualhelios_1_1VHCanvas.html#a12caab990bc6181ff39c6b090ba71c47":[1,0,6,0,17],
 "de/dda/classvisualhelios_1_1VHCanvas.html#a12d268eb5ff3086def1ce37be0d564fe":[1,0,6,0,2],
@@ -245,9 +249,5 @@ var NAVTREEINDEX12 =
 "df/db7/ZipSyncFileWriter_8h_source.html":[2,0,0,12,16],
 "df/dc3/classDirections.html":[1,0,23],
 "df/dc3/classDirections.html#a90c74fe7a0e9ffb276982fd8659b8105":[1,0,23,1],
-"df/dc3/classDirections.html#a9ae98fab6f1cd875e069ba3044355e90":[1,0,23,0],
-"df/dc3/classDirections.html#acdd4e8e3979b368a581cbb10791ff27a":[1,0,23,2],
-"df/dd2/classvisualhelios_1_1VHNormalsCanvas.html":[1,0,6,6],
-"df/dd2/classvisualhelios_1_1VHNormalsCanvas.html#a211ce4e7aaf240532f10c615594afc1c":[1,0,6,6,1],
-"df/dd2/classvisualhelios_1_1VHNormalsCanvas.html#a313d3e438ac2819dffc6e1d257823af5":[1,0,6,6,17]
+"df/dc3/classDirections.html#a9ae98fab6f1cd875e069ba3044355e90":[1,0,23,0]
 };
