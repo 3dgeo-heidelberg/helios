@@ -109,14 +109,27 @@ public:
 	 */
 	double mScale = 1;
 	/**
-	 * @brief Force the scene part to be on ground if true, do nothing
-	 *  if false.
+	 * @brief Force the scene part to be on ground if \f$\neq 0\f$, do nothing
+	 *  if \f$= 0\f$.
+	 *
+	 * The force on ground process assumes the ground can be reduced to a
+	 *  plane and uses a search process:
+	 * <br/><b>-1</b> : Force on ground with optimum vertex, it is the one
+	 *  which is closest to the ground plane. Optimum solution with respect
+	 *  to ground plane is guaranteed but it is the most computationally
+	 *  expensive mode
+	 * <br/><b>0</b> : Dont force on ground at all
+	 * <br/><b>1</b> : Uses the minimum \f$z\f$ vertex to calculate to ground
+	 *  translation. It is the least computationally expensive mode
+	 * <br/><b>>1</b> : Uses a search process considering as many search steps
+	 *  as given. It allows to approximate the optimum vertex while maintaining
+	 *  computational cost inside desired boundaries
 	 *
 	 * NOTICE forceOnGround will not force the object to be on ground if it
 	 *  is a dynamic object which moves around the scene. It only assures the
 	 *  object will be INITIALLY placed at ground level
 	 */
-	bool forceOnGround = false;
+	int forceOnGround = 0;
 
 
 	OGRSpatialReference *mCrs = nullptr;

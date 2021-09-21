@@ -269,37 +269,43 @@ public:
    * \f]
    *
    * 3. Find the best fitting plane \f$\pi\f$ with respect to vertices of
-   *    ground reference
+   *    ground reference, which orthonormal vector is noted as \f$\hat{v}\f$
    *
    * \f[
-   *    \pi = \left\{(x, y, z) : o + \lambda \hat{v}\right\}
+   *    \pi = \left\{
+   *        p=(x, y, z) :
+   *            \left\langle{\overrightarrow{op}, \hat{v}}\right\rangle = 0
+   *    \right\}
    * \f]
    *
-   * 4. Compute the vertical projection of \f$q_*\f$ on best fitting ground
+   * 4. Compute the vertical projection of \f$q\f$ on best fitting ground
    *    plane \f$\pi\f$ as follows:
    *
    * \f[
    * \begin{array}{lll}
-   *    \mathcal{P}^{z}_{\pi}(q_*) &=&
+   *    \mathcal{P}^{z}_{\pi}(q) &=&
    *    \left(
-   *        q_{*x}, q_{*y},
+   *        q_{x}, q_{y},
    *        \frac{
    *            \hat{v}_x o_x + \hat{v}_y o_y + \hat{v}_z o_z -
-   *            \hat{v}_x q_{*x} - \hat{v}_y q_{*y}
+   *            \hat{v}_x q_{x} - \hat{v}_y q_{y}
    *        }
    *        {\hat{v}_z}
    *    \right) \\ &=&
    *    \left(
-   *        q_{*x}, q_{*y},
+   *        q_{x}, q_{y},
    *        \frac{
    *            \left\langle{\hat{v}, \vec{o}}\right\rangle -
-   *            \hat{v}_x q_{*x} - \hat{v}_y q_{*y}
+   *            \hat{v}_x q_{x} - \hat{v}_y q_{y}
    *          }{\hat{v}_z}
    *    \right) \\ &=&
    *    (p_x, p_y, p_z) \\ &=&
    *    p
    * \end{array}
    * \f]
+   *
+   *    Where \f$q\f$ varies depending on search depth, as explained in
+   *    parameter documentation at the Scene::findForceOnGroundQ function.
    *
    * 5. Let \f$\Delta_z = q_{*z} - p_z\f$ be the magnitude of vertical
    *    translation for the entire scene part. Now, each vertex defining the
@@ -309,8 +315,42 @@ public:
    *    \forall q_i \in Q,\, q'_i = (q_{ix}, q_{iy}, q_{iz} - \Delta_z)
    * \f]
    *
+   * @see Scene::findForceOnGroundQ
    */
   void doForceOnGround();
+  /**
+   * @brief Assist doForceOnGround function to find an adequate \f$q\f$ for
+   *    step 4
+   * @param searchDepth The search strategy specification. This function should
+   *    never be called with searchDepth 0, that case must be skipped at
+   *    Scene::doForceOnGround directly. Search depth corresponds with the
+   *    scene part's forceOnGround attribute
+   *
+   *    If it is 0 the force on ground process will be skipped.
+   *    If it is 1, a specific algorithm based on \f$q=q_*\f$ as min \f$z\f$
+   *    point will be used. If it is \f$>1\f$, then it specifies the number
+   *    of search steps to be performed to find \f$q\f$ on a discrete linear
+   *    search with searchDepth steps. If it is -1, then
+   *    \f$
+   *        q = \mathrm{argmin}_{q \in Q} \;\;\; q_z -
+   *            \frac{\left\langle{\hat{v}, \vec{o}}\right\rangle - \left(
+   *                \hat{v}_x q_x + \hat{v}_y q_y
+   *            \right)}{\hat{v}_z}
+   *    \f$
+   * @param minzv The \f$q_*\f$ that is used as \f$q\f$ if searchDepth is 1
+   * @param vertices All vertices defining the scene part to be placed on
+   *    ground
+   * @param o A point contained in the best fitting ground plane
+   * @param v The normal vector of the best fitting ground plane
+   * @see Scene::doForceOnGround
+   */
+  glm::dvec3 findForceOnGroundQ(
+      int const searchDepth,
+      glm::dvec3 const minzv,
+      vector<Vertex *> &vertices,
+      vector<double> const &o,
+      vector<double> const &v
+  );
 
   // ***  GETTERs and SETTERs  *** //
   // ***************************** //

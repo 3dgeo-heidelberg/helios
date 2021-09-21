@@ -246,6 +246,7 @@ vector<Vertex *> Scene::getAllVertices(){
 }
 
 void Scene::doForceOnGround(){
+
     // 1. Find min and max vertices of ground scene parts
     vector<size_t> I; // Indices of ground parts
     vector<unique_ptr<Plane<double>>> planes; // Ground best fitting planes
@@ -253,14 +254,34 @@ void Scene::doForceOnGround(){
     for(size_t i=0 ; i < m ; ++i){
        shared_ptr<ScenePart> part = parts[i];
        if(!part->mPrimitives[0]->material->isGround) continue;
-       I.push_back(i);
+       I.push_back(i); // Store index of found ground part
        planes.push_back(nullptr); // Null placeholder for best fitting plane
        part->computeCentroid(true); // True implies also store boundaries
+    }
+    if(I.empty()){ // Check there is at least one ground part
+        std::stringstream ss;
+        ss  << "Scene::doForceGround could not compute nothing because there "
+            << "was no ground scene part available";
+        logging::WARN(ss.str());
     }
 
     // Compute remaining algorithm steps for each on ground scene part
     for(shared_ptr<ScenePart> & part : parts){
-        if(!part->forceOnGround) continue; // Ignore not on ground scene parts
+        if(part->forceOnGround == 0){ // Ignore not on ground scene parts
+            std::stringstream ss;
+            ss  << "Scene::doForceOnGround skipped part \""
+                << part->mId << "\"\n"
+                << "Its forceOnGround attribute was 0";
+            logging::DEBUG(ss.str());
+            continue;
+        }
+        else{ // Report search depth (forceOnGround) as debug info
+            std::stringstream ss;
+            ss  << "Scene::doForceOnGround computing part \""
+                << part->mId << "\"\n"
+                << "Search depth is " << part->forceOnGround;
+            logging::DEBUG(ss.str());
+        }
         // 2. Find minimum z vertex and pick first ground reference
         vector<Vertex *> vertices = part->getAllVertices();
         glm::dvec3 minzv = vertices[0]->pos; // First vertex as minz candidate
@@ -316,11 +337,50 @@ void Scene::doForceOnGround(){
         // 4. Compute the vertical projection of min vertex on ground plane
         vector<double> const &o = planes[groundLocalIndex]->centroid;
         vector<double> const &v = planes[groundLocalIndex]->orthonormal;
-        double zDelta = minzv.z -
-            (v[0]*o[0]+v[1]*o[1]+v[2]*o[2]-v[0]*minzv.x-v[1]*minzv.y) / v[2];
+        glm::dvec3 q = findForceOnGroundQ(
+            part->forceOnGround,
+            minzv,
+            vertices,
+            o,
+            v
+        );
+        double zDelta = q.z -
+            (v[0]*o[0]+v[1]*o[1]+v[2]*o[2]-v[0]*q.x-v[1]*q.y) / v[2];
         // 5. Do vertical translation for all vertex of onGround part
         for(Vertex *vertex : vertices) vertex->pos.z -= zDelta;
     }
+}
+
+
+glm::dvec3 Scene::findForceOnGroundQ(
+    int const searchDepth,
+    glm::dvec3 const minzv,
+    vector<Vertex *> &vertices,
+    vector<double> const &o,
+    vector<double> const &v
+){
+    if(searchDepth == -1 || searchDepth > 1){ // Iterative search process for q
+        // Compute loop configuration
+        size_t const maxIters = (searchDepth==-1) ?
+            vertices.size() : std::min<size_t>(searchDepth, vertices.size());
+        size_t const stepSize = (searchDepth==-1) ?
+            1 : (size_t) (vertices.size()/maxIters);
+        // Compute the iterative search itself : argmin zDelta
+        double const dot = v[0]*o[0]+v[1]*o[1]+v[2]*o[2];
+        glm::dvec3 qBest = vertices[0]->pos;
+        double zDeltaBest = qBest.z - (dot-v[0]*qBest.x-v[1]*qBest.y)/v[2];
+        for(size_t i = stepSize ; i < maxIters ; i+=stepSize){
+            glm::dvec3 const q  = vertices[i]->pos;
+            double const zDelta = q.z - (dot-v[0]*q.x-v[1]*q.y)/v[2];
+            if(zDelta < zDeltaBest){
+                zDeltaBest = zDelta;
+                qBest = q;
+            }
+        }
+        return qBest;
+    }
+    // By default searchDepth 1 is assumed, so q=q_*
+    return minzv;
 }
 
 // ***  READ/WRITE  *** //

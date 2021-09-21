@@ -16,7 +16,7 @@ ScenePart* TranslateFilter::run() {
 
     // Handle on ground
     if(params.find("onGround") != params.end()){
-        primsOut->forceOnGround = boost::get<bool>(params["onGround"]);
+        primsOut->forceOnGround = boost::get<int>(params["onGround"]);
     }
 
     // Return
