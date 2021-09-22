@@ -8,8 +8,8 @@
 
 /**
  * @version 1.0
- * @brief Class providing core implementation of a thread pool to deal with
- *  multi threading tasks
+ * @brief Abstract class providing core implementation of a thread pool to deal
+ *  with multi threading tasks
  */
 template <typename ... TaskArgs>
 class ThreadPool{
@@ -50,14 +50,6 @@ protected:
      */
 	boost::condition_variable cond_;
 
-    /**
-     * @brief Array of flags specifying availability of resource sets
-     *
-     * The ith element of this array correspond to the ith resource for any
-     *  resource set/array
-     */
-    bool *resourceSetAvailable;
-
 public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //
     // ************************************ //
@@ -70,12 +62,8 @@ public:
         pool_size(_pool_size),
         available_(_pool_size)
     {
-        // Allocate
-        resourceSetAvailable = new bool[pool_size];
-
-        // Initialize
+        // Create threads
         for (std::size_t i = 0; i < pool_size; ++i){
-            resourceSetAvailable[i] = true;
             threads_.create_thread(
                 [&] () -> boost::asio::io_context::count_type{
                     return io_service_.run();
@@ -93,33 +81,17 @@ public:
             threads_.join_all();
         }
         catch (const std::exception&) {}
-
-        delete[] resourceSetAvailable;
     }
 
-protected:
+public:
     // ***  M E T H O D S  *** //
     // *********************** //
-	/**
-	 * @brief Obtain the index of an available resource set
-	 * @return Available resource set index
-	 */
-	virtual inline int getAvailableResourceSetIndex() const {
-	    for(size_t i = 0 ; i  < pool_size ; i++){
-	        if(resourceSetAvailable[i]) return i;
-	    }
-	    return -1;
-	}
-
-
-public:
     /**
      * @brief Obtain the thread pool size
      * @return Thread pool size
      * @see ThreadPool::pool_size
      */
     virtual inline std::size_t getPoolSize() const {return pool_size;}
-
 
 	/**
 	 * @brief Run a task when there is an available thread for it
@@ -136,10 +108,6 @@ public:
         // Decrement count, indicating thread is no longer available.
         --available_;
 
-        // Get resource set index
-        int const resourceIdx = getAvailableResourceSetIndex();
-        resourceSetAvailable[resourceIdx] = false;
-
         // Unlock the mutex
         lock.unlock();
 
@@ -148,8 +116,7 @@ public:
             boost::bind(
                 &ThreadPool<TaskArgs ...>::wrap_task,
                 this,
-                boost::function<void(TaskArgs ...)>(task),
-                resourceIdx
+                boost::function<void(TaskArgs ...)>(task)
             )
         );
     }
@@ -169,17 +136,13 @@ protected:
 	 * @brief Wrap a task so that available threads count can be increased
 	 *  once provided task has been completed
 	 * @param task Task to be wrapped
-	 * @param resourceIdx Resource index associated with the task. It is
-	 *  necessary to release associated resources so other tasks can use
-	 *  them later
 	 */
 	virtual void wrap_task(
-	    boost::function<void(TaskArgs ...)> &task,
-	    int const resourceIdx
+	    boost::function<void(TaskArgs ...)> &task
     ){
 		// Run the user supplied task.
 		try{
-			do_task(task, resourceIdx);
+			do_task(task);
 		}
 		// Suppress all exceptions.
 		catch (const std::exception &e) {
@@ -191,18 +154,14 @@ protected:
 		// Task has finished, so increment count of available threads.
 		boost::unique_lock<boost::mutex> lock(mutex_);
 		++available_;
-		resourceSetAvailable[resourceIdx] = true;
 		cond_.notify_one();
 	}
 
 	/**
 	 * @brief Invoke task with corresponding arguments
 	 * @param task Task to be invoked
-	 * @param resourceIdx Index of resources associated with thread invoking
-	 *  the task
 	 */
 	virtual void do_task(
-        boost::function<void(TaskArgs ...)> &task,
-        int const resourceIdx
+        boost::function<void(TaskArgs ...)> &task
     ) = 0;
 };

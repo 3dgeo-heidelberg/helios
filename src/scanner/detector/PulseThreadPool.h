@@ -1,16 +1,15 @@
 #pragma once
 
-#include <ThreadPool.h>
+#include <ResThreadPool.h>
 #include <noise/RandomnessGenerator.h>
 #include <UniformNoiseSource.h>
-#include <logging.hpp>
-#include <sstream>
 
 /**
  * @version 1.0
  * @brief Class implementing a thread pool to deal with pulse tasks
+ * @see ResThreadPool
  */
-class PulseThreadPool : public ThreadPool<
+class PulseThreadPool : public ResThreadPool<
     std::vector<std::vector<double>>&,
     RandomnessGenerator<double>&,
     RandomnessGenerator<double>&,
@@ -52,7 +51,7 @@ public:
         std::size_t const _pool_size,
         double const deviceAccuracy
     ) :
-        ThreadPool<
+        ResThreadPool<
             std::vector<std::vector<double>>&,
             RandomnessGenerator<double>&,
             RandomnessGenerator<double>&,
@@ -80,6 +79,7 @@ public:
     }
 
     virtual ~PulseThreadPool(){
+        // Release memory
         delete[] apMatrices;
         delete[] randGens;
         delete[] randGens2;
@@ -92,7 +92,7 @@ protected:
      * @param task Pulse task
      * @see ThreadPool::do_task
      */
-    inline void do_task(
+    inline void do_res_task(
         boost::function<void(
             std::vector<std::vector<double>>&,
             RandomnessGenerator<double>&,
