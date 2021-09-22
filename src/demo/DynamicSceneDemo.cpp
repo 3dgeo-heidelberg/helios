@@ -4,6 +4,7 @@
 #include <XmlSurveyLoader.h>
 #include <HeliosException.h>
 
+
 using HeliosDemos::DynamicSceneDemo;
 using visualhelios::VHSceneCanvas;
 using std::make_shared;

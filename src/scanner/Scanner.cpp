@@ -184,7 +184,7 @@ string Scanner::toString() {
 }
 
 void Scanner::doSimStep(
-    thread_pool& pool,
+    PulseThreadPool& pool,
     unsigned int const legIndex,
     double currentGpsTime
 ) {
@@ -397,7 +397,7 @@ Rotation Scanner::calcAbsoluteBeamAttitude(){
 
 
 void Scanner::handlePulseComputation(
-    thread_pool& pool,
+    PulseThreadPool& pool,
     unsigned int const legIndex,
     glm::dvec3 &absoluteBeamOrigin,
     Rotation &absoluteBeamAttitude,
