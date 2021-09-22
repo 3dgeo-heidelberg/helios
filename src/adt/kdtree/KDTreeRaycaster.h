@@ -2,11 +2,11 @@
 
 // TODO 4: Merge search_recursive() and search_all_recursive?
 
-#include "Primitive.h"
-#include "Material.h"
-#include "RaySceneIntersection.h"
+#include <Primitive.h>
+#include <Material.h>
+#include <RaySceneIntersection.h>
 
-#include "KDTreeNode.h"
+#include <LightKDTreeNode.h>
 
 /**
  * @brief Class representing a KDTree ray caster
@@ -49,7 +49,7 @@ public:
 	/**
 	 * @brief Shared pointer to the root node of the KDTree
 	 */
-	std::shared_ptr<KDTreeNode> root;
+	std::shared_ptr<LightKDTreeNode> root;
 	/**
 	 * @brief Distance of closest hit. It is numeric_limits<double>::max() by
 	 *  default
@@ -69,7 +69,7 @@ public:
 	 * @brief KDTree ray caster constructor
 	 * @param root Root node of the KDTree
 	 */
-	KDTreeRaycaster(std::shared_ptr<KDTreeNode> root) {this->root = root;}
+	KDTreeRaycaster(std::shared_ptr<LightKDTreeNode> root) {this->root = root;}
 
 	// ***  M E T H O D S  *** //
 	// *********************** //
@@ -129,7 +129,7 @@ public:
 	 *  the recursive search process
 	 * @see KDTreeRaycaster::searchAll
 	 */
-	void searchAll_recursive(KDTreeNode* node, double tmin, double tmax);
+	void searchAll_recursive(LightKDTreeNode* node, double tmin, double tmax);
 	/**
 	 * @brief Recursive search function to assist search function
 	 * @param node KDTree node to be recursively explored
@@ -142,5 +142,9 @@ public:
 	 * @return Return first found intersection
 	 * @see KDTreeRaycaster::search
 	 */
-	Primitive* search_recursive(KDTreeNode* node, double tmin, double tmax);
+	Primitive* search_recursive(
+	    LightKDTreeNode* node,
+	    double tmin,
+	    double tmax
+    );
 };

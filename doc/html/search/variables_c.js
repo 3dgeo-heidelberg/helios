@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['n',['n',['../d6/d03/classXYZPointCloudFileLoader.html#a1da22912742e7ae6c34cff145cc82ff0',1,'XYZPointCloudFileLoader']]],
+  ['n',['n',['../d6/d03/classXYZPointCloudFileLoader.html#a1da22912742e7ae6c34cff145cc82ff0',1,'XYZPointCloudFileLoader::n()'],['../da/d52/classSurfaceInspector_1_1maths_1_1Histogram.html#a4ff9417e72268c1c1f705927573e27fc',1,'SurfaceInspector::maths::Histogram::n()'],['../dc/d41/classSurfaceInspector_1_1maths_1_1permuters_1_1CNRIndexPermuter.html#a3b0c101f282e9543cf09a5181130860e',1,'SurfaceInspector::maths::permuters::CNRIndexPermuter::n()']]],
   ['n_5fblank_5fcharacters',['N_BLANK_CHARACTERS',['../d9/ddf/classVoxelFileParser.html#abd42cccaa9d62653c14f5d4b59b016e1',1,'VoxelFileParser']]],
   ['name',['name',['../de/d97/classAsset.html#aaa7c46a97929723eed3a5f73a3542bb9',1,'Asset::name()'],['../df/df9/classHeliosDemos_1_1BaseDemo.html#af1fb30e039e9b6337e855d79ac1726e5',1,'HeliosDemos::BaseDemo::name()'],['../d6/d7f/classRotationOrder.html#aab9e4d58b800ad95d13d9f8508db086c',1,'RotationOrder::name()'],['../d3/d89/classMaterial.html#affe06990f884293d0fe2f39110f71730',1,'Material::name()'],['../d5/db6/classSurvey.html#ac292404fdf37d7764027ed2d18de8e6f',1,'Survey::name()'],['../d9/d52/classHeliosTests_1_1BaseTest.html#a74362d9571297cece90c469430dab77b',1,'HeliosTests::BaseTest::name()']]],
   ['nanoseconds_5fper_5fsecond',['NANOSECONDS_PER_SECOND',['../d1/d7b/classSimulation.html#a2946fe05bca500ed8859d460475b2b5f',1,'Simulation']]],
@@ -11,8 +11,11 @@ var searchData=
   ['nextinsertindex',['nextInsertIndex',['../d3/dec/classMeasurementsBuffer.html#ad1596f7cb3816be0b44f7d8f2eebceeb',1,'MeasurementsBuffer']]],
   ['nextwaypoint',['nextWaypoint',['../df/d1e/classPlatform.html#aa754cef7d09478c19b37232944316236',1,'Platform']]],
   ['node',['node',['../de/d22/classIterableTreeNode.html#a1fcdfd63d558568ea9cc611b577d04aa',1,'IterableTreeNode']]],
+  ['norm',['norm',['../da/d52/classSurfaceInspector_1_1maths_1_1Histogram.html#ac4d0e7dbd91a6aaca66f4b106cdce92e',1,'SurfaceInspector::maths::Histogram']]],
   ['normal',['normal',['../d2/da0/classVertex.html#ac891db9159da8423d25153b41e099afc',1,'Vertex::normal()'],['../d6/d44/classVoxel.html#a3643a2837fa8a11bf1e2785e03893da2',1,'Voxel::normal()']]],
   ['normaldefcolor',['normalDefColor',['../df/dd2/classvisualhelios_1_1VHNormalsCanvas.html#ab4f8e866b39464e087ef81e25f36b362',1,'visualhelios::VHNormalsCanvas']]],
+  ['normalize',['normalize',['../da/d69/classSurfaceInspector_1_1maths_1_1SingularContextComputer.html#a864e5483582fc81e8f6c585544c6169b',1,'SurfaceInspector::maths::SingularContextComputer']]],
+  ['normalizeflag',['normalizeFlag',['../da/d69/classSurfaceInspector_1_1maths_1_1SingularContextComputer.html#a065b88a9bb890e9743e8f91c73c7d980',1,'SurfaceInspector::maths::SingularContextComputer']]],
   ['normalmagnitude',['normalMagnitude',['../df/dd2/classvisualhelios_1_1VHNormalsCanvas.html#ae44f0d79d7106828e0cc321c20c32ffb',1,'visualhelios::VHNormalsCanvas']]],
   ['normalmode',['normalMode',['../d6/d4f/classDynMotion.html#a438479662acab4be9fb5e338e709b5af',1,'DynMotion']]],
   ['normalmotionqueue',['normalMotionQueue',['../d4/d96/classDynMovingObject.html#a182a69af8fce8333ce2726c8b60cd8be',1,'DynMovingObject']]],

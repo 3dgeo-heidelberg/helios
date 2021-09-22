@@ -1,5 +1,6 @@
 #pragma once
 
+#include <string>
 #include "XmlAssetsLoader.h"
 #include "SpectralLibrary.h"
 #include "Survey.h"

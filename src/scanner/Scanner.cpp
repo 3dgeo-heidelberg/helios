@@ -183,7 +183,11 @@ string Scanner::toString() {
             "Visibility: " + to_string(cfg_device_visibility_km) + " km";
 }
 
-void Scanner::doSimStep(thread_pool& pool, unsigned int const legIndex, double currentGpsTime) {
+void Scanner::doSimStep(
+    thread_pool& pool,
+    unsigned int const legIndex,
+    double currentGpsTime
+) {
     // Update head attitude (we do this even when the scanner is inactive):
     scannerHead->doSimStep(cfg_setting_pulseFreq_Hz);
 

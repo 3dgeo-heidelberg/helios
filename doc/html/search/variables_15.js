@@ -9,6 +9,10 @@ var searchData=
   ['wire_5fguard',['WIRE_GUARD',['../df/d64/classLasSpecification.html#ae04e5b30ee67fa66c89667beff906df5',1,'LasSpecification']]],
   ['wire_5fstructure',['WIRE_STRUCTURE',['../df/d64/classLasSpecification.html#a8d3d2455758b14ac1da2786bb874b645',1,'LasSpecification']]],
   ['work_5f',['work_',['../d3/dce/classthread__pool.html#ab2e015748880f5456428214e29aeb6cb',1,'thread_pool']]],
+  ['worstvectormaxcomponents',['worstVectorMaxComponents',['../d1/db0/classSurfaceInspector_1_1maths_1_1SingularContextDescriptors.html#a38b1d9ac920fb62c50409eee74969f55',1,'SurfaceInspector::maths::SingularContextDescriptors']]],
+  ['worstvectormaxindices',['worstVectorMaxIndices',['../d1/db0/classSurfaceInspector_1_1maths_1_1SingularContextDescriptors.html#ae5fde2884424a87636d0708655cb85d9',1,'SurfaceInspector::maths::SingularContextDescriptors']]],
+  ['worstvectormincomponents',['worstVectorMinComponents',['../d1/db0/classSurfaceInspector_1_1maths_1_1SingularContextDescriptors.html#a53475389730aac217dc34b58e9076297',1,'SurfaceInspector::maths::SingularContextDescriptors']]],
+  ['worstvectorminindices',['worstVectorMinIndices',['../d1/db0/classSurfaceInspector_1_1maths_1_1SingularContextDescriptors.html#a5293b6e2dab8d2b6604a057804d17216',1,'SurfaceInspector::maths::SingularContextDescriptors']]],
   ['writeground',['writeGround',['../d6/d9e/classAbstractPulseRunnable.html#afb0cbbe6296be3c71c0647bab194166d',1,'AbstractPulseRunnable']]],
   ['writenexttrajectory',['writeNextTrajectory',['../df/d1e/classPlatform.html#a79c6568256169bf60219bd4092a11411',1,'Platform']]],
   ['writewaveform',['writeWaveform',['../db/da6/classFullWaveformPulseRunnable.html#a06e7d38a47f7fc76d55ba205fa399b8e',1,'FullWaveformPulseRunnable::writeWaveform()'],['../dc/d42/classScanner.html#aaec9d6c112b1a6f90af5e1582c6f974b',1,'Scanner::writeWaveform()']]]

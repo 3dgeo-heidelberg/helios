@@ -15,5 +15,6 @@ var searchData=
   ['translations',['translations',['../d7/d48/classSceneLoadingSpecification.html#a1908670baeef8991538070804f2712bf',1,'SceneLoadingSpecification']]],
   ['translationsid',['translationsId',['../d7/d48/classSceneLoadingSpecification.html#ad92bf40778b88f0d436bff527015a678',1,'SceneLoadingSpecification']]],
   ['transmission_5ftower',['TRANSMISSION_TOWER',['../df/d64/classLasSpecification.html#a9682a7fa2039c1d8a728ee65d9a41848',1,'LasSpecification']]],
-  ['tstart',['tStart',['../d7/d7d/classTimeWatcher.html#a00375c2ae161f1256962d01980aa5b9f',1,'TimeWatcher']]]
+  ['tstart',['tStart',['../d7/d7d/classTimeWatcher.html#a00375c2ae161f1256962d01980aa5b9f',1,'TimeWatcher']]],
+  ['twicesigmasquare',['twiceSigmaSquare',['../db/dc1/classSurfaceInspector_1_1maths_1_1functions_1_1GaussianFunction.html#ac23c21fcddafeccb2daf42e27d8591e9',1,'SurfaceInspector::maths::functions::GaussianFunction']]]
 ];

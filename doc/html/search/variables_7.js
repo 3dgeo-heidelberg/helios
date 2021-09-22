@@ -9,5 +9,6 @@ var searchData=
   ['high_5fvegetation',['HIGH_VEGETATION',['../df/d64/classLasSpecification.html#ac7b831a00a7d76816624948170bd6839',1,'LasSpecification']]],
   ['hitobjectid',['hitObjectId',['../db/d2e/classMeasurement.html#a303164a152fa5ba6f7f6a0a536a0e4b4',1,'Measurement']]],
   ['hoiattridx',['hoiAttrIdx',['../d2/db3/classLasSyncFileWriter.html#ad3984158dc285ad5660e6d56abbb57fb',1,'LasSyncFileWriter']]],
-  ['hoiattrstart',['hoiAttrStart',['../d2/db3/classLasSyncFileWriter.html#a3022ddbaa4f0269391c28e1387028a2b',1,'LasSyncFileWriter']]]
+  ['hoiattrstart',['hoiAttrStart',['../d2/db3/classLasSyncFileWriter.html#a3022ddbaa4f0269391c28e1387028a2b',1,'LasSyncFileWriter']]],
+  ['horizontality',['horizontality',['../d4/dfa/classSurfaceInspector_1_1maths_1_1DetailedPlane.html#a61b7275a8aad0be7c5149f368d3db4c8',1,'SurfaceInspector::maths::DetailedPlane']]]
 ];

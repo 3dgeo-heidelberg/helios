@@ -30,10 +30,11 @@
 				</param>
 			</filter>
 			<filter type="scale">
-                <param type="double" key="scale" value="0.75" />
+                <param type="double" key="scale" value="0.5" />
             </filter>
 			<filter type="translate">
-				<param type="vec3" key="offset" value="-40.0;-5.0;0" />
+				<param type="integer" key="onGround" value="-1" />
+				<param type="vec3" key="offset" value="-45.0;10.0;10" />
 			</filter>
         </part>
         <part>
@@ -52,6 +53,5 @@
                 <param type="double" key="scale" value="1" />
             </filter>
         </part>
-
     </scene>
 </document>

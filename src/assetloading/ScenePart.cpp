@@ -4,6 +4,7 @@
 #include <ScenePart.h>
 #include <Primitive.h>
 #include <Triangle.h>
+#include <AABB.h>
 #include <WavefrontObj.h>
 #include <util/logger/logging.hpp>
 
@@ -11,6 +12,7 @@
 // ************************************ //
 ScenePart::ScenePart(ScenePart const &sp) {
   this->centroid = sp.centroid;
+  this->bound = sp.bound;
   this->mId = sp.mId;
   this->onRayIntersectionMode = sp.onRayIntersectionMode;
   this->onRayIntersectionArgument = sp.onRayIntersectionArgument;
@@ -18,6 +20,7 @@ ScenePart::ScenePart(ScenePart const &sp) {
   this->mOrigin = glm::dvec3(sp.mOrigin);
   this->mRotation = Rotation(sp.mRotation);
   this->mScale = sp.mScale;
+  this->forceOnGround = forceOnGround;
   this->mCrs = nullptr; // TODO Copy this too
   this->mEnv = nullptr; // TODO Copy this too
 
@@ -36,6 +39,7 @@ ScenePart::ScenePart(ScenePart const &sp) {
 // ******************************* //
 ScenePart &ScenePart::operator=(const ScenePart &rhs) {
   this->centroid = rhs.centroid;
+  this->bound = rhs.bound;
   this->mId = rhs.mId;
   this->onRayIntersectionMode = rhs.onRayIntersectionMode;
   this->onRayIntersectionArgument = rhs.onRayIntersectionArgument;
@@ -43,6 +47,7 @@ ScenePart &ScenePart::operator=(const ScenePart &rhs) {
   this->mOrigin = glm::dvec3(rhs.mOrigin);
   this->mRotation = Rotation(rhs.mRotation);
   this->mScale = rhs.mScale;
+  this->forceOnGround = rhs.forceOnGround;
   this->mCrs = nullptr; // TODO Copy this too
   this->mEnv = nullptr; // TODO Copy this too
 
@@ -181,7 +186,7 @@ bool ScenePart::splitSubparts() {
   return true;
 }
 
-void ScenePart::computeCentroid(){
+void ScenePart::computeCentroid(bool const computeBound){
     // Find centroid coordinates
     double xmin=std::numeric_limits<double>::max();
     double xmax=std::numeric_limits<double>::lowest();
@@ -208,4 +213,11 @@ void ScenePart::computeCentroid(){
         (ymin+ymax)/2.0,
         (zmin+zmax)/2.0,
     }));
+
+    // Build the bound
+    if(computeBound){
+        bound = make_shared<AABB>(
+            xmin, ymin, zmin, xmax, ymax, zmax
+        );
+    }
 }

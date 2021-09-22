@@ -1,7 +1,8 @@
 <map id="KDTreeNode" name="KDTreeNode">
-<area shape="rect" id="node2" href="$d7/d98/classIBinaryTreeNode.html" title="Binary tree node interface that must be implemented by any class providing binary tree node based fun..." alt="" coords="5,184,125,211"/>
-<area shape="rect" id="node3" href="$d2/d1a/classAABB.html" title="Class representing an Axis Aligned Bounding Box (AABB) " alt="" coords="149,184,208,211"/>
-<area shape="rect" id="node4" href="$df/de1/classPrimitive.html" title="Abstract class defining the common behavior for all primitives. " alt="" coords="109,95,182,121"/>
-<area shape="rect" id="node5" href="$d2/da0/classVertex.html" title="Class representing a vertex. " alt="" coords="206,95,266,121"/>
-<area shape="rect" id="node6" href="$db/d02/classColor4f.html" title="Class representing a color with 4 float components: RGBA. " alt="" coords="204,5,268,32"/>
+<area shape="rect" id="node2" href="$dd/d79/classLightKDTreeNode.html" title="Class representing a light KDTree node. It is, the basic representation of a KDTree node with uses le..." alt="" coords="5,185,132,212"/>
+<area shape="rect" id="node3" href="$d7/d98/classIBinaryTreeNode.html" title="Binary tree node interface that must be implemented by any class providing binary tree node based fun..." alt="" coords="9,95,129,121"/>
+<area shape="rect" id="node4" href="$d2/d1a/classAABB.html" title="Class representing an Axis Aligned Bounding Box (AABB) " alt="" coords="210,185,269,212"/>
+<area shape="rect" id="node5" href="$df/de1/classPrimitive.html" title="Abstract class defining the common behavior for all primitives. " alt="" coords="179,95,252,121"/>
+<area shape="rect" id="node6" href="$d2/da0/classVertex.html" title="Class representing a vertex. " alt="" coords="276,95,336,121"/>
+<area shape="rect" id="node7" href="$db/d02/classColor4f.html" title="Class representing a color with 4 float components: RGBA. " alt="" coords="274,5,338,32"/>
 </map>

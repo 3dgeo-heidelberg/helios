@@ -146,9 +146,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../.
 <tr class="memitem:a82912d3e287312e90e622b512a653df0"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/dc4/classScenePart.html#a82912d3e287312e90e622b512a653df0">splitSubparts</a> ()</td></tr>
 <tr class="memdesc:a82912d3e287312e90e622b512a653df0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Split each subpart into a different scene part, with the first one corresponding to this scene part.  <a href="#a82912d3e287312e90e622b512a653df0">More...</a><br /></td></tr>
 <tr class="separator:a82912d3e287312e90e622b512a653df0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a33e9aa7e8940b053e4939e8aacc6fd12"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/dc4/classScenePart.html#a33e9aa7e8940b053e4939e8aacc6fd12">computeCentroid</a> ()</td></tr>
-<tr class="memdesc:a33e9aa7e8940b053e4939e8aacc6fd12"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the default centroid for the scene part as the midrange point.  <a href="#a33e9aa7e8940b053e4939e8aacc6fd12">More...</a><br /></td></tr>
-<tr class="separator:a33e9aa7e8940b053e4939e8aacc6fd12"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8a35be714f874833b84a29841de8fe2b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/dc4/classScenePart.html#a8a35be714f874833b84a29841de8fe2b">computeCentroid</a> (bool const computeBound=false)</td></tr>
+<tr class="memdesc:a8a35be714f874833b84a29841de8fe2b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the default centroid for the scene part as the midrange point and its boundaries too.  <a href="#a8a35be714f874833b84a29841de8fe2b">More...</a><br /></td></tr>
+<tr class="separator:a8a35be714f874833b84a29841de8fe2b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aea61ea007cb84871117666b732f7ce64"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> * &gt; const  &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/dc4/classScenePart.html#aea61ea007cb84871117666b732f7ce64">getPrimitives</a> () const</td></tr>
 <tr class="memdesc:aea61ea007cb84871117666b732f7ce64"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain the primitives of the scene part.  <a href="#aea61ea007cb84871117666b732f7ce64">More...</a><br /></td></tr>
 <tr class="separator:aea61ea007cb84871117666b732f7ce64"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -178,6 +178,10 @@ std::vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive<
 arma::colvec&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/dc4/classScenePart.html#a7317e657208166855f00944ca4f019d9">centroid</a></td></tr>
 <tr class="memdesc:a7317e657208166855f00944ca4f019d9"><td class="mdescLeft">&#160;</td><td class="mdescRight">The centroid of the scene part. <br /></td></tr>
 <tr class="separator:a7317e657208166855f00944ca4f019d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae911f7b66e49dbccbbc85661751e7f9b"><td class="memItemLeft" align="right" valign="top"><a id="ae911f7b66e49dbccbbc85661751e7f9b"></a>
+std::shared_ptr&lt; <a class="el" href="../../d2/d1a/classAABB.html">AABB</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/dc4/classScenePart.html#ae911f7b66e49dbccbbc85661751e7f9b">bound</a> = nullptr</td></tr>
+<tr class="memdesc:ae911f7b66e49dbccbbc85661751e7f9b"><td class="mdescLeft">&#160;</td><td class="mdescRight">The axis aligned bounding box defining scene part boundaries. <br /></td></tr>
+<tr class="separator:ae911f7b66e49dbccbbc85661751e7f9b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aec8d33ac2f3d49bd036659c1eda5166b"><td class="memItemLeft" align="right" valign="top"><a id="aec8d33ac2f3d49bd036659c1eda5166b"></a>
 std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/dc4/classScenePart.html#aec8d33ac2f3d49bd036659c1eda5166b">mId</a> = &quot;&quot;</td></tr>
 <tr class="memdesc:aec8d33ac2f3d49bd036659c1eda5166b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Identifier for the scene part. <br /></td></tr>
@@ -213,6 +217,9 @@ glm::dvec3&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href
 double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/dc4/classScenePart.html#ac24a8aed9151384e58ed415d753916c3">mScale</a> = 1</td></tr>
 <tr class="memdesc:ac24a8aed9151384e58ed415d753916c3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Specify the scale for the scene part. <br /></td></tr>
 <tr class="separator:ac24a8aed9151384e58ed415d753916c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae1d6a1a1b109fd8cc2073a16f15c6f27"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/dc4/classScenePart.html#ae1d6a1a1b109fd8cc2073a16f15c6f27">forceOnGround</a> = 0</td></tr>
+<tr class="memdesc:ae1d6a1a1b109fd8cc2073a16f15c6f27"><td class="mdescLeft">&#160;</td><td class="mdescRight">Force the scene part to be on ground if \(\neq 0\), do nothing if \(= 0\).  <a href="#ae1d6a1a1b109fd8cc2073a16f15c6f27">More...</a><br /></td></tr>
+<tr class="separator:ae1d6a1a1b109fd8cc2073a16f15c6f27"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa1c4a69066372a08f3e4c81647c5f64e"><td class="memItemLeft" align="right" valign="top"><a id="aa1c4a69066372a08f3e4c81647c5f64e"></a>
 OGRSpatialReference *&#160;</td><td class="memItemRight" valign="bottom"><b>mCrs</b> = nullptr</td></tr>
 <tr class="separator:aa1c4a69066372a08f3e4c81647c5f64e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -262,8 +269,8 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>boost::serialization
 
 </div>
 </div>
-<a id="a33e9aa7e8940b053e4939e8aacc6fd12"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a33e9aa7e8940b053e4939e8aacc6fd12">&#9670;&nbsp;</a></span>computeCentroid()</h2>
+<a id="a8a35be714f874833b84a29841de8fe2b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8a35be714f874833b84a29841de8fe2b">&#9670;&nbsp;</a></span>computeCentroid()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -271,18 +278,31 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>boost::serialization
         <tr>
           <td class="memname">void ScenePart::computeCentroid </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
+          <td class="paramtype">bool const&#160;</td>
+          <td class="paramname"><em>computeBound</em> = <code>false</code></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Compute the default centroid for the scene part as the midrange point. </p>
+<p>Compute the default centroid for the scene part as the midrange point and its boundaries too. </p>
 <p>Let \(P = \left\{p_1, \ldots, p_m\right\}\) be the set of points/vertices defining the scene part, where \(\forall p_i \in P,\, p_i=\left(p_{ix}, p_{iy}, p_{iz}\right)\). So \(\vec{p}_{x}\) is the vector containing the \(m\) \(x\)-coordinates, \(\vec{p}_{y}\) is the vector containing the \(m\) \(y\)-coordinates and \(\vec{p}_{z}\) is the vector containing the \(m\) \(z\)-cordinates. Now, let \(o\) be the centroid of the scene part, so it can be defined as</p>
 <p class="formulaDsp">
-\[ o = \frac{1}{2} \left( \min\left(\vec{p}_x\right)+\max\left(\vec{p}_{x}\right), \min\left(\vec{p}_y\right)+\max\left(\vec{p}_{y}\right), \min\left(\vec{p}_z\right)+\max\left(\vec{p}_{z}\right) \right) \]
+\[ \begin{array}{lll} o &amp;=&amp; \frac{1}{2} \left( \min\left(\vec{p}_x\right)+\max\left(\vec{p}_{x}\right), \min\left(\vec{p}_y\right)+\max\left(\vec{p}_{y}\right), \min\left(\vec{p}_z\right)+\max\left(\vec{p}_{z}\right) \right) \\ &amp;=&amp; \frac{1}{2} \left(\frac{a+b}{2}\right) \end{array} \]
 </p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../dd/dc4/classScenePart.html#a7317e657208166855f00944ca4f019d9" title="The centroid of the scene part. ">ScenePart::centroid</a> </dd></dl>
+<p>The boundaries of the scene part are defined as the set of the min and max vertices respectively \(\{a, b\}\) where:</p>
+<p class="formulaDsp">
+\[ \begin{array}{lll} a &amp;=&amp; \left( \min\left(\vec{p}_x\right), \min\left(\vec{p}_y\right), \min\left(\vec{p}_z\right) \right) \\ b &amp;=&amp; \left( \max\left(\vec{p}_x\right), \max\left(\vec{p}_y\right), \max\left(\vec{p}_z\right) \right) \end{array} \]
+</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">computeBound</td><td>True to specify boundaries must be computed, false to avoid it. They are already necessary to compute the centroid, so if they are needed, calling this function with computeBound=true will store them with no extra computations but the ones required to build the <a class="el" href="../../d2/d1a/classAABB.html" title="Class representing an Axis Aligned Bounding Box (AABB) ">AABB</a> object itself</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../dd/dc4/classScenePart.html#a7317e657208166855f00944ca4f019d9" title="The centroid of the scene part. ">ScenePart::centroid</a> </dd>
+<dd>
+<a class="el" href="../../d2/d1a/classAABB.html" title="Class representing an Axis Aligned Bounding Box (AABB) ">AABB</a> </dd></dl>
 
 </div>
 </div>
@@ -573,6 +593,28 @@ template&lt;class Archive &gt; </div>
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
+<a id="ae1d6a1a1b109fd8cc2073a16f15c6f27"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae1d6a1a1b109fd8cc2073a16f15c6f27">&#9670;&nbsp;</a></span>forceOnGround</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int ScenePart::forceOnGround = 0</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Force the scene part to be on ground if \(\neq 0\), do nothing if \(= 0\). </p>
+<p>The force on ground process assumes the ground can be reduced to a plane and uses a search process: <br />
+<b>-1</b> : Force on ground with optimum vertex, it is the one which is closest to the ground plane. Optimum solution with respect to ground plane is guaranteed but it is the most computationally expensive mode <br />
+<b>0</b> : Dont force on ground at all <br />
+<b>1</b> : Uses the minimum \(z\) vertex to calculate to ground translation. It is the least computationally expensive mode <br />
+<b>&gt;1</b> : Uses a search process considering as many search steps as given. It allows to approximate the optimum vertex while maintaining computational cost inside desired boundaries</p>
+<p>NOTICE forceOnGround will not force the object to be on ground if it is a dynamic object which moves around the scene. It only assures the object will be INITIALLY placed at ground level </p>
+
+</div>
+</div>
 <a id="a795698a1dbf63a9f5f9ef8fcae317cbd"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a795698a1dbf63a9f5f9ef8fcae317cbd">&#9670;&nbsp;</a></span>subpartLimit</h2>
 

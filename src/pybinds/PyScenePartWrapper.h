@@ -2,6 +2,7 @@
 
 #ifdef PYTHON_BINDING
 
+#include <string>
 #include <ScenePart.h>
 
 namespace pyhelios{

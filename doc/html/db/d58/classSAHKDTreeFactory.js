@@ -2,7 +2,7 @@ var classSAHKDTreeFactory =
 [
     [ "SAHKDTreeFactory", "db/d58/classSAHKDTreeFactory.html#a1b542136f4c7cbf63ac51ea1005ff544", null ],
     [ "~SAHKDTreeFactory", "db/d58/classSAHKDTreeFactory.html#ad13d9408306fcb50779dcafea70f2e0c", null ],
-    [ "buildChildrenNodes", "db/d58/classSAHKDTreeFactory.html#ae8fea9ed6b51759b86a8bab4a223f9e1", null ],
+    [ "buildChildrenNodes", "db/d58/classSAHKDTreeFactory.html#a3f890774977516b4212e314333cdc7a7", null ],
     [ "computeKDTreeStats", "db/d58/classSAHKDTreeFactory.html#aca4a9fd27edb126bcbc9fc5020ef9f15", null ],
     [ "cumulativeILOT", "db/d58/classSAHKDTreeFactory.html#ade176397ca04cd7460e49eec33f76b91", null ],
     [ "defineSplit", "db/d58/classSAHKDTreeFactory.html#aa22c06947f61f871156922122c41084d", null ],

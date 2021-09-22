@@ -1,9 +1,11 @@
 var searchData=
 [
+  ['m',['m',['../da/d52/classSurfaceInspector_1_1maths_1_1Histogram.html#a5f81e3515073482e88630db65440779e',1,'SurfaceInspector::maths::Histogram']]],
   ['map_5fkd',['map_Kd',['../d3/d89/classMaterial.html#a5d715dbe32345276e9a5391049d000c0',1,'Material']]],
   ['material',['material',['../df/de1/classPrimitive.html#a80fbdabe86c0f08e229c6e388af40140',1,'Primitive']]],
   ['materials',['materials',['../d6/dd2/classAbstractGeometryFilter.html#a32771b4b06f2042cbe3901298f8bab08',1,'AbstractGeometryFilter']]],
   ['matfilepath',['matFilePath',['../d3/d89/classMaterial.html#abbb3d90e26e894b03071d1ef16fad0f3',1,'Material']]],
+  ['max',['max',['../dc/d41/classSurfaceInspector_1_1maths_1_1permuters_1_1CNRIndexPermuter.html#a531c2a96be63e0fd0901244fc3bf9777',1,'SurfaceInspector::maths::permuters::CNRIndexPermuter']]],
   ['maxcolorvalue',['maxColorValue',['../d6/d03/classXYZPointCloudFileLoader.html#a476b6d615c8e46fa5e96a0965326ab68',1,'XYZPointCloudFileLoader']]],
   ['maxfullwaverange_5fns',['maxFullwaveRange_ns',['../d4/dfb/classFWFSettings.html#a7ce48f507beb71a8f4720a2721e68cdb',1,'FWFSettings']]],
   ['maxintensity',['maxIntensity',['../d2/db3/classLasSyncFileWriter.html#a0e4337277576ca4da62661ddb0916057',1,'LasSyncFileWriter']]],
@@ -11,6 +13,7 @@ var searchData=
   ['maxnor',['maxNOR',['../dc/d42/classScanner.html#a4812fca171290ee0af1287f19a0d05ea',1,'Scanner']]],
   ['maxnvoxels',['maxNVoxels',['../d6/d03/classXYZPointCloudFileLoader.html#ae988b41a0ea88d17a33bd6134f54cbe1',1,'XYZPointCloudFileLoader']]],
   ['maxpad',['maxPad',['../d7/d5a/classDetailedVoxel.html#ab2ca0b3b734803285489ea47f788c8e4',1,'DetailedVoxel']]],
+  ['maxsingularvalue',['maxSingularValue',['../d1/db0/classSurfaceInspector_1_1maths_1_1SingularContextDescriptors.html#a1793d5887fd13998586bcdc37f718953',1,'SurfaceInspector::maths::SingularContextDescriptors']]],
   ['maxx',['maxX',['../d6/d03/classXYZPointCloudFileLoader.html#ad0a35fb6cc7c9576b894274f1c29be95',1,'XYZPointCloudFileLoader']]],
   ['maxy',['maxY',['../d6/d03/classXYZPointCloudFileLoader.html#a2c1e0e3c084b2d6c36c280998276786e',1,'XYZPointCloudFileLoader']]],
   ['maxz',['maxZ',['../d6/d03/classXYZPointCloudFileLoader.html#aab5a5955b6825743d60dfa20adad4214',1,'XYZPointCloudFileLoader']]],
@@ -32,11 +35,12 @@ var searchData=
   ['minerror',['MINERROR',['../d1/d2b/classMarquardtFitter.html#a19a3dcaa4a23fc02618ca79108a45b7b',1,'MarquardtFitter']]],
   ['minintensity',['minIntensity',['../d2/db3/classLasSyncFileWriter.html#a8ba94bacf7ca42218f4f45f29534c9cb',1,'LasSyncFileWriter']]],
   ['minpointsforsafenormalestimation',['minPointsForSafeNormalEstimation',['../d6/d03/classXYZPointCloudFileLoader.html#a91ced05590da7be27cbedf2ae268239b',1,'XYZPointCloudFileLoader']]],
+  ['minsingularvalue',['minSingularValue',['../d1/db0/classSurfaceInspector_1_1maths_1_1SingularContextDescriptors.html#a37520870cb73ab86f208eb218f155c96',1,'SurfaceInspector::maths::SingularContextDescriptors']]],
   ['minus_5fi',['MINUS_I',['../d6/d7f/classRotationOrder.html#a23456f84bdc30e881edfb67298c513a2',1,'RotationOrder']]],
   ['minus_5fj',['MINUS_J',['../d6/d7f/classRotationOrder.html#a1c14b6e11777f22ec95f60a0750c4015',1,'RotationOrder']]],
   ['minus_5fk',['MINUS_K',['../d6/d7f/classRotationOrder.html#a05df5e979df291a8bd699a171a08114d',1,'RotationOrder']]],
   ['minx',['minX',['../d6/d03/classXYZPointCloudFileLoader.html#abe0120fdba542c02cc73953f20435f10',1,'XYZPointCloudFileLoader::minX()'],['../d1/d0c/classGeoTiffFileLoader.html#a53734b4dfef85a1008415b5debd2e1db',1,'GeoTiffFileLoader::minx()']]],
-  ['miny',['miny',['../d1/d0c/classGeoTiffFileLoader.html#a557546b2c98cb042f97f4aca6341f6b3',1,'GeoTiffFileLoader::miny()'],['../d6/d03/classXYZPointCloudFileLoader.html#abb89bf517c6e40650d762c8c00363b97',1,'XYZPointCloudFileLoader::minY()']]],
+  ['miny',['minY',['../d6/d03/classXYZPointCloudFileLoader.html#abb89bf517c6e40650d762c8c00363b97',1,'XYZPointCloudFileLoader::minY()'],['../d1/d0c/classGeoTiffFileLoader.html#a557546b2c98cb042f97f4aca6341f6b3',1,'GeoTiffFileLoader::miny()']]],
   ['minz',['minZ',['../d6/d03/classXYZPointCloudFileLoader.html#ab7563727b6194200797fdd6b8b7bbab2',1,'XYZPointCloudFileLoader']]],
   ['mlegstarted',['mLegStarted',['../d6/da1/classSurveyPlayback.html#adf2c22be949c14ca7023a26ef5e3e5c1',1,'SurveyPlayback']]],
   ['mode',['mode',['../dc/d6e/classRandomnessGenerator.html#a7853db34e47c881c941d0c96ebdca77f',1,'RandomnessGenerator']]],
@@ -57,6 +61,7 @@ var searchData=
   ['msurvey',['mSurvey',['../d6/da1/classSurveyPlayback.html#a447c25f4165f1774f4d7b67f84740c61',1,'SurveyPlayback']]],
   ['mtempwaypoint',['mTempWaypoint',['../d7/d94/classGroundVehiclePlatform.html#aff22ab7eb1974df32b7a7dc785d8688b',1,'GroundVehiclePlatform']]],
   ['mturnmode',['mTurnMode',['../d7/d94/classGroundVehiclePlatform.html#a2366e954a693577b361356d57a0349db',1,'GroundVehiclePlatform']]],
+  ['mu',['mu',['../db/dc1/classSurfaceInspector_1_1maths_1_1functions_1_1GaussianFunction.html#a10d8903ba44f92ca17663200ce500867',1,'SurfaceInspector::maths::functions::GaussianFunction']]],
   ['mutex',['mutex',['../d1/d7b/classSimulation.html#a10de3cc2b800d92e80e40fbf61ff5942',1,'Simulation::mutex()'],['../d1/d0e/classSyncFileWriter.html#a79190ae81f92c33e8a5aa4c9956266cc',1,'SyncFileWriter::mutex()']]],
   ['mutex_5f',['mutex_',['../d3/dce/classthread__pool.html#a22b7d252f62f68c3922c18f77620427e',1,'thread_pool']]]
 ];

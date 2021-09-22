@@ -1,5 +1,6 @@
 #pragma once
 
+#include <string>
 #include "BaseTest.h"
 #include <DetailedVoxel.h>
 #include <Scene.h>
@@ -107,10 +108,14 @@ bool SerializationTest::run(){
     for(size_t i = 0 ; i < nRepeats ; i++)
         scene1.primitives.push_back(dv1.clone());
     scene1.primitives.push_back(dv1.clone());
-    scene1.finalizeLoading();
+    scene1.finalizeLoading(true);
+    shared_ptr<KDTreeFactory> kdtf = scene1.getKDTreeFactory();
+    scene1.setKDTreeFactory(nullptr);
     scene1.writeObject(path);
+    scene1.setKDTreeFactory(kdtf);
     Scene *scene2 = Scene::readObject(path);
-    scene2->finalizeLoading();
+    scene2->setKDTreeFactory(kdtf);
+    scene2->finalizeLoading(true);
     if(!validate(dv1, *(DetailedVoxel *) scene2->primitives[0])) return false;
     if(!validate(t1, *(Triangle *) scene2->primitives[1])) return false;
     if(!validate(v1, *(Voxel *) scene2->primitives[2])) return false;

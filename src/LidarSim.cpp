@@ -95,8 +95,8 @@ void printHelp(){
         << "for the scene\n"
         << "\t\t\t\tDefault 1 is for the simple KDTree based on median "
         << " balancing, 2 for \n"
-        << "\t\t\t\t\tthe SAH based KDTree and 3 for the SAH with best axis\n"
-        << "\t\t\t\t\tbased KDTree\n\n"
+        << "\t\t\t\t\tthe SAH based KDTree, 3 for the SAH with best axis\n"
+        << "\t\t\t\t\tbased KDTree and 4 for a fast SAH approximation\n\n"
 
         << "\t\t--sahNodes <integer> : Specify how many nodes must be used by "
         << "the\n"
@@ -104,7 +104,8 @@ void printHelp(){
         << "\t\t\t\tBy default it is 21. More nodes lead to a best search "
         << "process\n"
         << "\t\t\t\t\tto find split position, at the expenses of a\n"
-        << "\t\t\t\t\tgreater computational cost\n\n"
+        << "\t\t\t\t\tgreater computational cost. When using a fast SAH\n"
+        << "\t\t\t\t\tapproximation it is recommended to set this to 32.\n\n"
 
         << "\t\t--disablePlatformNoise : Disable platform noise, no matter\n"
         << "\t\t\twhat is specified on XML files\n"
