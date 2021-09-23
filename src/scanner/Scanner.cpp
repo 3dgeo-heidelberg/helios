@@ -184,7 +184,7 @@ string Scanner::toString() {
 }
 
 void Scanner::doSimStep(
-    thread_pool& pool,
+    PulseThreadPool& pool,
     unsigned int const legIndex,
     double currentGpsTime
 ) {
@@ -397,7 +397,7 @@ Rotation Scanner::calcAbsoluteBeamAttitude(){
 
 
 void Scanner::handlePulseComputation(
-    thread_pool& pool,
+    PulseThreadPool& pool,
     unsigned int const legIndex,
     glm::dvec3 &absoluteBeamOrigin,
     Rotation &absoluteBeamAttitude,
@@ -405,7 +405,7 @@ void Scanner::handlePulseComputation(
 ){
     if(pool.getPoolSize() > 1 ) {
         // Submit pulse computation functor to thread pool
-        pool.run_task(FullWaveformPulseRunnable{
+        pool.run_res_task(FullWaveformPulseRunnable{
             dynamic_pointer_cast<FullWaveformPulseDetector>(detector),
             absoluteBeamOrigin,
             absoluteBeamAttitude,

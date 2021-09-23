@@ -4,6 +4,7 @@
 #include "Survey.h"
 #include <AbstractDetector.h>
 
+
 // ***  CONSTRUCTION / DESTRUCTION  *** //
 // ************************************ //
 Survey::Survey(Survey &survey){

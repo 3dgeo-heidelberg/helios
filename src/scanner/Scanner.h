@@ -5,16 +5,18 @@
 #include <boost/asio/thread_pool.hpp>
 #include <boost/asio/post.hpp>
 
-#include "Asset.h"
-#include "ScannerHead.h"
-#include "AbstractBeamDeflector.h"
+#include <Asset.h>
+#include <ScannerHead.h>
+#include <AbstractBeamDeflector.h>
 class AbstractDetector;
-#include "FWFSettings.h"
-#include "Platform.h"
-#include "maths/Directions.h"
-#include "maths/Rotation.h"
-#include "ThreadPool.h"
-#include "SyncFileWriter.h"
+#include <FWFSettings.h>
+#include <Platform.h>
+#include <maths/Directions.h>
+#include <maths/Rotation.h>
+#include <PulseThreadPool.h>
+#include <RandomnessGenerator.h>
+#include <SyncFileWriter.h>
+
 #ifdef PYTHON_BINDING
 #include <PyBeamDeflectorWrapper.h>
 namespace pyhelios{ class PyDetectorWrapper;};
@@ -29,6 +31,7 @@ using pyhelios::PyNoiseSourceWrapper;
 using pyhelios::PyRandomnessGeneratorWrapper;
 using pyhelios::PyDoubleVector;
 #endif
+
 #include <Measurement.h>
 
 
@@ -370,7 +373,11 @@ public:
 	 * @param legIndex Index of current leg
 	 * @param currentGpsTime GPS time of current pulse
 	 */
-	void doSimStep(thread_pool& pool, unsigned int legIndex, double currentGpsTime);
+	void doSimStep(
+	    PulseThreadPool& pool,
+	    unsigned int legIndex,
+	    double currentGpsTime
+    );
 	/**
 	 * @brief Build a string representation of the scanner
 	 * @return String representing the scanner
@@ -471,7 +478,7 @@ public:
      * @param currentGpsTime Current GPS time (milliseconds)
      */
     void handlePulseComputation(
-        thread_pool& pool,
+        PulseThreadPool& pool,
         unsigned int const legIndex,
         glm::dvec3 &absoluteBeamOrigin,
         Rotation &absoluteBeamAttitude,
