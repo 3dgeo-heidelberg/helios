@@ -157,6 +157,7 @@ bool ScenePart::splitSubparts() {
     newPart->mOrigin = mOrigin;
     newPart->mRotation = mRotation;
     newPart->mScale = mScale;
+    newPart->forceOnGround = forceOnGround;
     for (size_t j = subpartLimit[i - 1]; j < subpartLimit[i]; ++j) {
       newPart->mPrimitives.push_back(mPrimitives[j]);
       mPrimitives[j]->part = newPart;
