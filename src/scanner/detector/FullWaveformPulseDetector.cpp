@@ -65,7 +65,7 @@ void FullWaveformPulseDetector::setOutputFilePath(
 }
 
 void FullWaveformPulseDetector::simulatePulse(
-	thread_pool& pool, 
+	PulseThreadPool& pool,
 	glm::dvec3 absoluteBeamOrigin,
 	Rotation absoluteBeamAttitude, 
 	int state_currentPulseNumber,
@@ -73,7 +73,7 @@ void FullWaveformPulseDetector::simulatePulse(
 ){
 	// Submit pulse computation task to thread pool
 	shared_ptr<FullWaveformPulseDetector> detector(this);
-	pool.run_task(FullWaveformPulseRunnable{
+	pool.run_res_task(FullWaveformPulseRunnable{
 	    detector,
 	    absoluteBeamOrigin,
 	    absoluteBeamAttitude,

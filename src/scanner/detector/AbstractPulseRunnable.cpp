@@ -8,6 +8,7 @@
 
 #include "AbstractDetector.h"
 
+
 // ALS Simplification "Radiometric Calibration..." (Wagner, 2010) Eq. 14
 double AbstractPulseRunnable::calcCrossSection(double f, double Alf, double theta) {
 	return PI_4 * f * Alf * cos(theta);

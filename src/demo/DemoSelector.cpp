@@ -7,6 +7,7 @@
 #include <demo/SimplePrimitivesDemo.h>
 #include <demo/DynamicSceneDemo.h>
 
+
 using HeliosDemos::DemoSelector;
 using std::shared_ptr;
 using std::make_shared;

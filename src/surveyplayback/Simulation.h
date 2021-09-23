@@ -5,7 +5,8 @@
 #include "Scanner.h"
 #include "MeasurementsBuffer.h"
 #include "Color4f.h"
-#include "ThreadPool.h"
+#include <PulseThreadPool.h>
+#include <FullWaveformPulseRunnable.h>
 #include <SimulationCycleCallback.h>
 #ifdef PYTHON_BINDING
 #include <PySimulationCycleCallback.h>
@@ -31,7 +32,7 @@ protected:
 	 * @brief Thread pool
 	 * @see thread_pool
 	 */
-	thread_pool threadPool;
+	PulseThreadPool threadPool;
 
 	/**
 	 * @brief Simulation speed factor

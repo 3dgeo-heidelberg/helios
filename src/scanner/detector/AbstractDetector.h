@@ -6,7 +6,7 @@
 #include <boost/filesystem.hpp>
 namespace fs = boost::filesystem;
 
-#include "Scanner.h"
+#include <Scanner.h>
 #include "ScannerSettings.h"
 
 #include "Measurement.h"
@@ -16,6 +16,7 @@ namespace fs = boost::filesystem;
 #include "Las14SyncFileWriter.h"
 #include "ZipSyncFileWriter.h"
 #include "SyncFileWriterFactory.h"
+
 
 /**
  * @brief Base abstract class for detectors
@@ -53,11 +54,11 @@ public:
 	 * @see AbstractDetector::lasScale
 	 */
 	bool lasOutput;
-        /**
-         * @brief Flag specifying if detect output must be writing in LAS 1.0
-         * (LAS 1.4 is written by default)
-         */
-        bool las10;
+    /**
+     * @brief Flag specifying if detect output must be writing in LAS 1.0
+     * (LAS 1.4 is written by default)
+     */
+    bool las10;
 	/**
 	 * @brief Flag specifying if detector output must be zipped (true)
 	 * or not (false)
@@ -124,16 +125,16 @@ public:
 	 * @brief Write a list of measurements
 	 * @param m List of measurements to be written
 	 */
-        void writeMeasurements(std::list<Measurement*> & m);
-        /**
-         * @brief Choose a type of file writer based on input flags
-         * @return Type of writer to be created
-         */
-        WriterType chooseWriterType();
-        /**
-         * @brief Apply scanner settings to the detector
-         * @param settings Settings to be applied to de detector
-         */
+    void writeMeasurements(std::list<Measurement*> & m);
+    /**
+     * @brief Choose a type of file writer based on input flags
+     * @return Type of writer to be created
+     */
+    WriterType chooseWriterType();
+    /**
+     * @brief Apply scanner settings to the detector
+     * @param settings Settings to be applied to de detector
+     */
 	virtual void applySettings(std::shared_ptr<ScannerSettings> & settings) {};
 
 	/**
@@ -145,7 +146,7 @@ public:
 	 * @param currentGpsTime Current GPS time
 	 */
 	virtual void simulatePulse(
-	    thread_pool & pool,
+	    PulseThreadPool & pool,
 	    glm::dvec3 absoluteBeamOrigin,
 	    Rotation absoluteBeamAttitude,
 	    int state_currentPulseNumber,
