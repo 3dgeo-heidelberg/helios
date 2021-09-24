@@ -205,6 +205,11 @@ private:
         string const &matName,
         ifstream &ifs
     );
+    /**
+     * @brief Load the material for each primitive in a cyclic fashion.
+     * It is, if \f$m\f$ materials are given then the \f$i\f$-th voxel
+     *  is associated with the \f$i \mod m\f$ material.
+     */
     void loadMaterial();
 
     // ***  AUXILIAR PARSING METHODS  *** //

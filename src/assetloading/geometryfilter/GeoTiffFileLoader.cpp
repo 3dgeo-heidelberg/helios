@@ -35,6 +35,7 @@ ScenePart* GeoTiffFileLoader::run() {
         // Fill vertices and build triangles
         fillVertices();
         buildTriangles();
+        loadMaterial();
 
         // Finish primsOut
         primsOut->mEnv = env;
@@ -214,6 +215,19 @@ void GeoTiffFileLoader::fillVertices(){
     }
 }
 
+void GeoTiffFileLoader::loadMaterial(){
+    // Parse material
+    std::vector<std::shared_ptr<Material>> matvec = parseMaterials();
+    std::shared_ptr<Material> mat;
+    if(matvec.empty()) mat = getMaterial("default");
+    else mat = matvec[0];
+
+    // Assign material
+    for(Primitive *primitive : primsOut->mPrimitives){
+        primitive->material = mat;
+    }
+}
+
 void GeoTiffFileLoader::releaseVertices(){
     for(int x = 0 ; x < rasterWidth ; x++){
         for(int y = 0 ; y < rasterHeight ; y++){
@@ -227,8 +241,8 @@ void GeoTiffFileLoader::releaseVertices(){
 void GeoTiffFileLoader::buildTriangles(){
     Triangle *tri1, *tri2;
     Vertex *vert0, *vert1, *vert2, *vert3;
-    for(int x = 0 ; x < rasterWidth -1 ; x++){
-        for(int y = 0 ; y < rasterHeight - 1 ; y++) {
+    for(int x = 0 ; x < rasterWidth -1 ; ++x){
+        for(int y = 0 ; y < rasterHeight - 1 ; ++y) {
             vert0 = vertices[x][y];
             vert1 = vertices[x][y+1];
             vert2 = vertices[x+1][y+1];
@@ -236,13 +250,11 @@ void GeoTiffFileLoader::buildTriangles(){
 
             if(vert0 != nullptr && vert1 != nullptr && vert3 != nullptr){
                 tri1 = new Triangle(*vert0, *vert1, *vert3);
-                tri1->material = getMaterial("default");
                 primsOut->mPrimitives.push_back(tri1);
             }
 
             if(vert1 != nullptr && vert2 != nullptr && vert3 != nullptr){
                 tri2 = new Triangle(*vert1, *vert2, *vert3);
-                tri2->material = getMaterial("default");
                 primsOut->mPrimitives.push_back(tri2);
             }
         }
