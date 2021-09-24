@@ -100,6 +100,7 @@ var hierarchy =
       [ "BinaryTreeFastDepthIterator< NodeType >", "dc/da5/classBinaryTreeFastDepthIterator.html", null ]
     ] ],
     [ "KDTreeFactory", "d5/dd0/classKDTreeFactory.html", [
+      [ "MultiThreadKDTreeFactory", "df/d86/classMultiThreadKDTreeFactory.html", null ],
       [ "SimpleKDTreeFactory", "d6/d96/classSimpleKDTreeFactory.html", [
         [ "SAHKDTreeFactory", "db/d58/classSAHKDTreeFactory.html", [
           [ "AxisSAHKDTreeFactory", "df/d30/classAxisSAHKDTreeFactory.html", null ],
@@ -250,7 +251,13 @@ var hierarchy =
     ] ],
     [ "SyncFileWriterFactory", "da/df6/classSyncFileWriterFactory.html", null ],
     [ "Test", "df/da6/classTest.html", null ],
-    [ "thread_pool", "d3/dce/classthread__pool.html", null ],
+    [ "ThreadPool< TaskArgs >", "dc/de7/classThreadPool.html", null ],
+    [ "ThreadPool< TaskArgs ... >", "dc/de7/classThreadPool.html", [
+      [ "ResThreadPool< TaskArgs >", "d2/dee/classResThreadPool.html", null ],
+      [ "ResThreadPool< std::vector< std::vector< double > > &, RandomnessGenerator< double > &, RandomnessGenerator< double > &, NoiseSource< double > & >", "d2/dee/classResThreadPool.html", [
+        [ "PulseThreadPool", "d6/ddc/classPulseThreadPool.html", null ]
+      ] ]
+    ] ],
     [ "TimeWatcher", "d7/d7d/classTimeWatcher.html", null ],
     [ "Trajectory", "d2/d43/classTrajectory.html", null ],
     [ "Vectorial", "dc/db6/classVectorial.html", null ],

@@ -20,7 +20,7 @@ var searchData=
   ['angularverticality',['angularVerticality',['../d4/dfa/classSurfaceInspector_1_1maths_1_1DetailedPlane.html#a377554f434066c5ab4336682816ef1ce',1,'SurfaceInspector::maths::DetailedPlane']]],
   ['anorm',['aNorm',['../da/d69/classSurfaceInspector_1_1maths_1_1SingularContextComputer.html#a879acb56a7e4f2dc88b515bdbbdc3e11',1,'SurfaceInspector::maths::SingularContextComputer']]],
   ['aperturediameter',['apertureDiameter',['../d4/dfb/classFWFSettings.html#a4e38b213c268b8b55981b1cc4528b2fe',1,'FWFSettings']]],
-  ['apmatrices',['apMatrices',['../d3/dce/classthread__pool.html#a8b0d1b08285857f558324f785811024f',1,'thread_pool']]],
+  ['apmatrices',['apMatrices',['../d6/ddc/classPulseThreadPool.html#a404b97db7fba87a30f6228cff3b74f3e',1,'PulseThreadPool']]],
   ['argc',['argc',['../d7/d5c/classArgumentsParser.html#a19b6e0516fcd660adf425be4b00d5a85',1,'ArgumentsParser']]],
   ['argv',['argv',['../d7/d5c/classArgumentsParser.html#a16605c90819c4407a1c99365aa1860ef',1,'ArgumentsParser']]],
   ['assetsdir',['assetsDir',['../d9/d82/classXmlAssetsLoader.html#a93746ec0dd88588e1ddfafe4a0a850fe',1,'XmlAssetsLoader']]],
@@ -32,7 +32,7 @@ var searchData=
   ['attitudexnoisesource',['attitudeXNoiseSource',['../df/d1e/classPlatform.html#ae62fd8e07125f89d9b977eca93d7a79c',1,'Platform']]],
   ['attitudeynoisesource',['attitudeYNoiseSource',['../df/d1e/classPlatform.html#aa8714ae4bcb24dbec8f5e26cc7b9d211',1,'Platform']]],
   ['attitudeznoisesource',['attitudeZNoiseSource',['../df/d1e/classPlatform.html#ac3c9ea9311a5842f1ce9f3561589790b',1,'Platform']]],
-  ['available_5f',['available_',['../d3/dce/classthread__pool.html#a8341bcc3a61d7887e67660f6e63dc18f',1,'thread_pool']]],
+  ['available_5f',['available_',['../dc/de7/classThreadPool.html#acf984075d64fcc50f43f5b13b7fd7529',1,'ThreadPool']]],
   ['aworst',['aWorst',['../da/d69/classSurfaceInspector_1_1maths_1_1SingularContextComputer.html#a9a3d785c2db6665c183500e0d5e7f0a1',1,'SurfaceInspector::maths::SingularContextComputer']]],
   ['axis',['axis',['../d6/d1f/structKDTreePrimitiveComparator.html#a1c1049507f049f79fc3a37558da29088',1,'KDTreePrimitiveComparator']]]
 ];

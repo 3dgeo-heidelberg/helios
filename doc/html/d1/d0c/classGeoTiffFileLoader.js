@@ -3,6 +3,7 @@ var classGeoTiffFileLoader =
     [ "GeoTiffFileLoader", "d1/d0c/classGeoTiffFileLoader.html#a0efc4e4d300bd9f3445142f4999bf287", null ],
     [ "buildTriangles", "d1/d0c/classGeoTiffFileLoader.html#afad534560fcc31f013898ef077763c8d", null ],
     [ "fillVertices", "d1/d0c/classGeoTiffFileLoader.html#ae0aa226c18579981a1ecad983f0be5ef", null ],
+    [ "loadMaterial", "d1/d0c/classGeoTiffFileLoader.html#ae39eb714623f0b186f92bd1e2c3cb72f", null ],
     [ "obtainCRS", "d1/d0c/classGeoTiffFileLoader.html#a645962120215e257c32f433be6874489", null ],
     [ "obtainEnvelope", "d1/d0c/classGeoTiffFileLoader.html#a50ca13467be50da13183ff5ea4d253b7", null ],
     [ "obtainLayer", "d1/d0c/classGeoTiffFileLoader.html#ad49ae5bec2d030c804de6f4a39fc17d1", null ],

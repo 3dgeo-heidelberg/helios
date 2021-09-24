@@ -2,8 +2,9 @@
 #include "MaterialsFileReader.h"
 #include "UniformNoiseSource.h"
 
-std::shared_ptr<Material> AbstractGeometryFilter::getMaterial(std::string materialName) {
-
+std::shared_ptr<Material> AbstractGeometryFilter::getMaterial(
+    std::string materialName
+){
 	std::map<std::string, Material>::iterator it = materials.find(materialName);
 
 	if (it == materials.end()) {

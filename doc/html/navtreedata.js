@@ -23,19 +23,19 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 ".html",
-"d1/d7b/classSimulation.html#a0ba648397480bb134a0bfbbda499914d",
-"d2/d8f/BinaryTreeDepthIterator_8h_source.html",
-"d4/d02/classBinaryTreeDepthIterator.html#afaf568c2435d977c31f569cbe90dc20d",
-"d5/d3b/classSimplePhysicsPlatform.html",
-"d6/d3c/RaySceneIntersection_8h_source.html",
-"d7/d21/classpyhelios_1_1PyDetailedVoxelWrapper.html#a97883aa15cdbcde94e86be8a3c9cb838",
-"d8/d34/classfluxionum_1_1IterativeMethodHandler.html#ace184deef3ac3b80d2968ec72be2c9b9",
-"d9/dd0/Platform_8h_source.html",
-"db/d0e/classvisualhelios_1_1VHDynSceneAdapter.html#a5129da797d04762272d2628c67e7cab2",
-"db/dc1/classSurfaceInspector_1_1maths_1_1functions_1_1GaussianFunction.html#a690724e9107df1a7d654dc96b79291c0",
-"dc/dea/PyTrajectoryVectorWrapper_8h_source.html",
-"de/dad/classHeliosTests_1_1NoiseTest.html#ae2769cf4ee242db7dfbcaabce9a77dcf",
-"df/dc3/classDirections.html#acdd4e8e3979b368a581cbb10791ff27a"
+"d1/d7b/classSimulation.html",
+"d2/d8a/MinDragger_8hpp_source.html",
+"d4/d33/logging__common_8hpp_source.html",
+"d5/d3b/classSimplePhysicsPlatform.html#aeead429e94b1f65cf0d23f19048ce407",
+"d6/d44/classVoxel.html#a5c7a2b788d03ad489a17c4a21da4c204",
+"d7/d21/classpyhelios_1_1PyDetailedVoxelWrapper.html#a9987a5ce2ce502ee07c0e7e2032414ec",
+"d8/d34/classfluxionum_1_1IterativeMethodHandler.html#ad1875a751c94b4bf856b1de0e7b3f848",
+"d9/ddd/classpyhelios_1_1PyHeliosSimulation.html",
+"db/d0e/classvisualhelios_1_1VHDynSceneAdapter.html#a6d8cb502adf5bf8d10cc3f78f69d65c0",
+"db/dc1/classSurfaceInspector_1_1maths_1_1functions_1_1GaussianFunction.html#ac23c21fcddafeccb2daf42e27d8591e9",
+"dc/de7/classThreadPool.html#a16e49f99edc8408765e51760a753948d",
+"de/d86/PlatformSettings_8h_source.html",
+"df/d9a/classXmlSurveyLoader.html#a382733ca57300e779bc945d4f90f1842"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

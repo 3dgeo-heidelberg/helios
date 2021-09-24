@@ -4,7 +4,7 @@ var searchData=
   ['magnitude',['magnitude',['../d1/dd3/classSurfaceInspector_1_1maths_1_1Vector.html#a385cc0538672406bd3a2d238f94e13f0',1,'SurfaceInspector::maths::Vector']]],
   ['makedefault',['makeDefault',['../d0/da9/logging_8hpp.html#abe503e7a8d4225b50c522708fc4e980c',1,'logging']]],
   ['makefromprimitives',['makeFromPrimitives',['../d5/dd0/classKDTreeFactory.html#a90c0c7761a500d0d0871369ac5f6c4f9',1,'KDTreeFactory']]],
-  ['makefromprimitivesunsafe',['makeFromPrimitivesUnsafe',['../d5/dd0/classKDTreeFactory.html#a06b1ebdfb108a2c5a389ee390f534197',1,'KDTreeFactory::makeFromPrimitivesUnsafe()'],['../d6/d96/classSimpleKDTreeFactory.html#a3252f0348c7fd5d40b84e52dd9144fad',1,'SimpleKDTreeFactory::makeFromPrimitivesUnsafe()']]],
+  ['makefromprimitivesunsafe',['makeFromPrimitivesUnsafe',['../d5/dd0/classKDTreeFactory.html#a06b1ebdfb108a2c5a389ee390f534197',1,'KDTreeFactory::makeFromPrimitivesUnsafe()'],['../df/d86/classMultiThreadKDTreeFactory.html#a42b9fe3abb0cec04d73f3e9be3a422d6',1,'MultiThreadKDTreeFactory::makeFromPrimitivesUnsafe()'],['../d6/d96/classSimpleKDTreeFactory.html#a3252f0348c7fd5d40b84e52dd9144fad',1,'SimpleKDTreeFactory::makeFromPrimitivesUnsafe()']]],
   ['makeglidereflection',['makeGlideReflection',['../d7/da7/classrigidmotion_1_1RigidMotionR2Factory.html#afcb887bd4b6289c82a25ecc2050537a2',1,'rigidmotion::RigidMotionR2Factory::makeGlideReflection(colvec const axis, double const glide) const'],['../d7/da7/classrigidmotion_1_1RigidMotionR2Factory.html#a11a6afaab88cbcae30f175954e3becc2',1,'rigidmotion::RigidMotionR2Factory::makeGlideReflection(double const theta, double const glide) const'],['../dc/df6/classrigidmotion_1_1RigidMotionR3Factory.html#a02e2bc7bb486d4f58168734014a5be51',1,'rigidmotion::RigidMotionR3Factory::makeGlideReflection()']]],
   ['makeglidereflectionfast',['makeGlideReflectionFast',['../dc/df6/classrigidmotion_1_1RigidMotionR3Factory.html#aac1456d1581fd8a2fa10d8bceb6f6655',1,'rigidmotion::RigidMotionR3Factory']]],
   ['makehelical',['makeHelical',['../dc/df6/classrigidmotion_1_1RigidMotionR3Factory.html#a3eeb704e9cfc63ada4fbe1de9cf919b9',1,'rigidmotion::RigidMotionR3Factory']]],
@@ -118,6 +118,7 @@ var searchData=
   ['mtempwaypoint',['mTempWaypoint',['../d7/d94/classGroundVehiclePlatform.html#aff22ab7eb1974df32b7a7dc785d8688b',1,'GroundVehiclePlatform']]],
   ['mturnmode',['mTurnMode',['../d7/d94/classGroundVehiclePlatform.html#a2366e954a693577b361356d57a0349db',1,'GroundVehiclePlatform']]],
   ['mu',['mu',['../db/dc1/classSurfaceInspector_1_1maths_1_1functions_1_1GaussianFunction.html#a10d8903ba44f92ca17663200ce500867',1,'SurfaceInspector::maths::functions::GaussianFunction']]],
+  ['multithreadkdtreefactory',['MultiThreadKDTreeFactory',['../df/d86/classMultiThreadKDTreeFactory.html',1,'MultiThreadKDTreeFactory'],['../df/d86/classMultiThreadKDTreeFactory.html#a5c451155e0667e773366312fff7a503b',1,'MultiThreadKDTreeFactory::MultiThreadKDTreeFactory()']]],
   ['mutex',['mutex',['../d1/d7b/classSimulation.html#a10de3cc2b800d92e80e40fbf61ff5942',1,'Simulation::mutex()'],['../d1/d0e/classSyncFileWriter.html#a79190ae81f92c33e8a5aa4c9956266cc',1,'SyncFileWriter::mutex()']]],
-  ['mutex_5f',['mutex_',['../d3/dce/classthread__pool.html#a22b7d252f62f68c3922c18f77620427e',1,'thread_pool']]]
+  ['mutex_5f',['mutex_',['../dc/de7/classThreadPool.html#ade26079dd6d8fa7fe7ef7e480496e64b',1,'ThreadPool']]]
 ];

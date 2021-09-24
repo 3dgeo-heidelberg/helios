@@ -134,8 +134,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>writeFullWave</b> (st
 <tr class="separator:af01112a22b7b3f8a963d72f2e27b93dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a21c6f2c368b63c34539911250dadf26c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d37/classFullWaveformPulseDetector.html#a21c6f2c368b63c34539911250dadf26c">applySettings</a> (std::shared_ptr&lt; <a class="el" href="../../d0/d23/classScannerSettings.html">ScannerSettings</a> &gt; &amp;settings) override</td></tr>
 <tr class="separator:a21c6f2c368b63c34539911250dadf26c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4104958c1eb7c72576b08d4b70a9c223"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d37/classFullWaveformPulseDetector.html#a4104958c1eb7c72576b08d4b70a9c223">simulatePulse</a> (<a class="el" href="../../d3/dce/classthread__pool.html">thread_pool</a> &amp;pool, glm::dvec3 absoluteBeamOrigin, <a class="el" href="../../d5/dcb/classRotation.html">Rotation</a> absoluteBeamAttitude, int state_currentPulseNumber, double currentGpsTime) override</td></tr>
-<tr class="separator:a4104958c1eb7c72576b08d4b70a9c223"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aae396367536124d3f712d0653e3124f4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d37/classFullWaveformPulseDetector.html#aae396367536124d3f712d0653e3124f4">simulatePulse</a> (<a class="el" href="../../d6/ddc/classPulseThreadPool.html">PulseThreadPool</a> &amp;pool, glm::dvec3 absoluteBeamOrigin, <a class="el" href="../../d5/dcb/classRotation.html">Rotation</a> absoluteBeamAttitude, int state_currentPulseNumber, double currentGpsTime) override</td></tr>
+<tr class="separator:aae396367536124d3f712d0653e3124f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0e0af393c179a27e824c820bda96b3f7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d37/classFullWaveformPulseDetector.html#a0e0af393c179a27e824c820bda96b3f7">setOutputFilePath</a> (std::string path, std::string fname=&quot;fullwave.txt&quot;, bool computeWaveform=true)</td></tr>
 <tr class="memdesc:a0e0af393c179a27e824c820bda96b3f7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the path to output file.  <a href="#a0e0af393c179a27e824c820bda96b3f7">More...</a><br /></td></tr>
 <tr class="separator:a0e0af393c179a27e824c820bda96b3f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -358,8 +358,8 @@ fs::path&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="
 
 </div>
 </div>
-<a id="a4104958c1eb7c72576b08d4b70a9c223"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4104958c1eb7c72576b08d4b70a9c223">&#9670;&nbsp;</a></span>simulatePulse()</h2>
+<a id="aae396367536124d3f712d0653e3124f4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aae396367536124d3f712d0653e3124f4">&#9670;&nbsp;</a></span>simulatePulse()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -370,7 +370,7 @@ fs::path&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="
         <tr>
           <td class="memname">void FullWaveformPulseDetector::simulatePulse </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="../../d3/dce/classthread__pool.html">thread_pool</a> &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="../../d6/ddc/classPulseThreadPool.html">PulseThreadPool</a> &amp;&#160;</td>
           <td class="paramname"><em>pool</em>, </td>
         </tr>
         <tr>
@@ -409,9 +409,9 @@ fs::path&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="
   </tr>
 </table>
 </div><div class="memdoc">
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d8/d6b/classAbstractDetector.html#a6c6784a53a271388ed41836565bb3661" title="Compute pulse simulation. ">AbstractDetector::simulatePulse</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d8/d6b/classAbstractDetector.html#a779587cdcf53095fb15ec33f9683232d" title="Compute pulse simulation. ">AbstractDetector::simulatePulse</a> </dd></dl>
 
-<p>Implements <a class="el" href="../../d8/d6b/classAbstractDetector.html#a6c6784a53a271388ed41836565bb3661">AbstractDetector</a>.</p>
+<p>Implements <a class="el" href="../../d8/d6b/classAbstractDetector.html#a779587cdcf53095fb15ec33f9683232d">AbstractDetector</a>.</p>
 
 </div>
 </div>

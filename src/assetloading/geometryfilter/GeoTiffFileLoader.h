@@ -123,6 +123,13 @@ public:
 	 */
 	void fillVertices();
 	/**
+	 * @brief Load the material for the entire tiff.
+	 * If no materials are given, then the default material is assigned to
+	 *  the entire geometry. In case \f$>0\f$ materials are given, the first
+	 *  one is assigned as the material for the entire geometry
+	 */
+	void loadMaterial();
+	/**
 	 * @brief Release vertices previously obtained through fillVertices
 	 * function
 	 * @see GeoTiffFileLoader::fillVertices
