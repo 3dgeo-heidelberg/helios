@@ -9,5 +9,6 @@ var searchData=
   ['measurementsbuffer',['MeasurementsBuffer',['../d3/dec/classMeasurementsBuffer.html',1,'']]],
   ['mindragger',['MinDragger',['../d6/d26/classSurfaceInspector_1_1util_1_1draggers_1_1MinDragger.html',1,'SurfaceInspector::util::draggers']]],
   ['minimizer',['Minimizer',['../d9/d82/classfluxionum_1_1Minimizer.html',1,'fluxionum']]],
-  ['movingplatform',['MovingPlatform',['../d1/d83/classMovingPlatform.html',1,'']]]
+  ['movingplatform',['MovingPlatform',['../d1/d83/classMovingPlatform.html',1,'']]],
+  ['multithreadkdtreefactory',['MultiThreadKDTreeFactory',['../df/d86/classMultiThreadKDTreeFactory.html',1,'']]]
 ];

@@ -113,12 +113,14 @@ Collaboration diagram for SurveyPlayback:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../d7/d39/classSurveyPlayback__coll__graph.png" border="0" usemap="#SurveyPlayback_coll__map" alt="Collaboration graph"/></div>
 <map name="SurveyPlayback_coll__map" id="SurveyPlayback_coll__map">
-<area shape="rect" id="node2" href="../../d1/d7b/classSimulation.html" title="Class representing a simulation. " alt="" coords="108,525,191,552"/>
-<area shape="rect" id="node3" href="../../d3/dce/classthread__pool.html" title="Class representing a thread pool to deal with multi threading tasks. " alt="" coords="151,436,241,463"/>
-<area shape="rect" id="node4" href="../../d3/d57/classUniformNoiseSource.html" title="UniformNoiseSource\l\&lt; double \&gt;" alt="" coords="237,317,379,359"/>
-<area shape="rect" id="node5" href="../../d4/d38/classRandomNoiseSource.html" title="RandomNoiseSource\&lt;\l double \&gt;" alt="" coords="233,199,388,240"/>
-<area shape="rect" id="node6" href="../../d9/d6b/classNoiseSource.html" title="NoiseSource\&lt; double \&gt;" alt="" coords="255,102,414,129"/>
-<area shape="rect" id="node7" href="../../dc/d6e/classRandomnessGenerator.html" title="RandomnessGenerator\l\&lt; double \&gt;" alt="" coords="75,95,231,136"/>
+<area shape="rect" id="node2" href="../../d1/d7b/classSimulation.html" title="Class representing a simulation. " alt="" coords="1344,181,1427,208"/>
+<area shape="rect" id="node3" href="../../d6/ddc/classPulseThreadPool.html" title="Class implementing a thread pool to deal with pulse tasks. " alt="" coords="1108,137,1229,164"/>
+<area shape="rect" id="node4" href="../../d2/dee/classResThreadPool.html" title="ResThreadPool\&lt; std\l::vector\&lt; std::vector\l\&lt; double \&gt; \&gt; &amp;, RandomnessGenerator\l\&lt; double \&gt; &amp;, RandomnessGenerator\l\&lt; double \&gt; &amp;, NoiseSource\&lt; double \&gt; &amp; \&gt;" alt="" coords="636,73,903,159"/>
+<area shape="rect" id="node5" href="../../dc/de7/classThreadPool.html" title="ThreadPool\&lt; TaskArgs\l ... \&gt;" alt="" coords="368,95,524,137"/>
+<area shape="rect" id="node6" href="../../d3/d57/classUniformNoiseSource.html" title="UniformNoiseSource\l\&lt; double \&gt;" alt="" coords="698,183,841,225"/>
+<area shape="rect" id="node7" href="../../d4/d38/classRandomNoiseSource.html" title="RandomNoiseSource\&lt;\l double \&gt;" alt="" coords="369,183,523,225"/>
+<area shape="rect" id="node8" href="../../d9/d6b/classNoiseSource.html" title="NoiseSource\&lt; double \&gt;" alt="" coords="145,203,304,229"/>
+<area shape="rect" id="node9" href="../../dc/d6e/classRandomnessGenerator.html" title="RandomnessGenerator\l\&lt; double \&gt;" alt="" coords="147,137,303,178"/>
 </map>
 <center><span class="legend">[<a target="top" href="../../graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -347,9 +349,9 @@ Additional Inherited Members</h2></td></tr>
 unsigned&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d7b/classSimulation.html#a88802bddc60d38b9ed7daddfd365f9f7">numSysThreads</a> = std::thread::hardware_concurrency()</td></tr>
 <tr class="memdesc:a88802bddc60d38b9ed7daddfd365f9f7 inherit pro_attribs_classSimulation"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of threads available in the system. <br /></td></tr>
 <tr class="separator:a88802bddc60d38b9ed7daddfd365f9f7 inherit pro_attribs_classSimulation"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8183618f8a53d85edc0433e715e3f00f inherit pro_attribs_classSimulation"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d3/dce/classthread__pool.html">thread_pool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d7b/classSimulation.html#a8183618f8a53d85edc0433e715e3f00f">threadPool</a></td></tr>
-<tr class="memdesc:a8183618f8a53d85edc0433e715e3f00f inherit pro_attribs_classSimulation"><td class="mdescLeft">&#160;</td><td class="mdescRight">Thread pool.  <a href="../../d1/d7b/classSimulation.html#a8183618f8a53d85edc0433e715e3f00f">More...</a><br /></td></tr>
-<tr class="separator:a8183618f8a53d85edc0433e715e3f00f inherit pro_attribs_classSimulation"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a103fbbefc90fc8ecdce6799636445766 inherit pro_attribs_classSimulation"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d6/ddc/classPulseThreadPool.html">PulseThreadPool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d7b/classSimulation.html#a103fbbefc90fc8ecdce6799636445766">threadPool</a></td></tr>
+<tr class="memdesc:a103fbbefc90fc8ecdce6799636445766 inherit pro_attribs_classSimulation"><td class="mdescLeft">&#160;</td><td class="mdescRight">Thread pool.  <a href="../../d1/d7b/classSimulation.html#a103fbbefc90fc8ecdce6799636445766">More...</a><br /></td></tr>
+<tr class="separator:a103fbbefc90fc8ecdce6799636445766 inherit pro_attribs_classSimulation"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8615edf208cfc87018bf12446a29520d inherit pro_attribs_classSimulation"><td class="memItemLeft" align="right" valign="top"><a id="a8615edf208cfc87018bf12446a29520d"></a>
 double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d7b/classSimulation.html#a8615edf208cfc87018bf12446a29520d">mSimSpeedFactor</a> = 1</td></tr>
 <tr class="memdesc:a8615edf208cfc87018bf12446a29520d inherit pro_attribs_classSimulation"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="../../d1/d7b/classSimulation.html" title="Class representing a simulation. ">Simulation</a> speed factor. <br /></td></tr>

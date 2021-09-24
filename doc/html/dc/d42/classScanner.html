@@ -133,9 +133,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a000903d1c58e48f770efc0cb53796ee1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d42/classScanner.html#a000903d1c58e48f770efc0cb53796ee1">applySettingsFWF</a> (<a class="el" href="../../d4/dfb/classFWFSettings.html">FWFSettings</a> settings)</td></tr>
 <tr class="memdesc:a000903d1c58e48f770efc0cb53796ee1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Apply full wave form settings.  <a href="#a000903d1c58e48f770efc0cb53796ee1">More...</a><br /></td></tr>
 <tr class="separator:a000903d1c58e48f770efc0cb53796ee1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ada100233ec389007c79c29a438fe784e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d42/classScanner.html#ada100233ec389007c79c29a438fe784e">doSimStep</a> (<a class="el" href="../../d3/dce/classthread__pool.html">thread_pool</a> &amp;pool, unsigned int legIndex, double currentGpsTime)</td></tr>
-<tr class="memdesc:ada100233ec389007c79c29a438fe784e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform computations for current simulation step.  <a href="#ada100233ec389007c79c29a438fe784e">More...</a><br /></td></tr>
-<tr class="separator:ada100233ec389007c79c29a438fe784e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6beb1624696119ddfbdacdfae6f3c41f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d42/classScanner.html#a6beb1624696119ddfbdacdfae6f3c41f">doSimStep</a> (<a class="el" href="../../d6/ddc/classPulseThreadPool.html">PulseThreadPool</a> &amp;pool, unsigned int legIndex, double currentGpsTime)</td></tr>
+<tr class="memdesc:a6beb1624696119ddfbdacdfae6f3c41f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform computations for current simulation step.  <a href="#a6beb1624696119ddfbdacdfae6f3c41f">More...</a><br /></td></tr>
+<tr class="separator:a6beb1624696119ddfbdacdfae6f3c41f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae6791b56fa79726f07cfa76e8fa20283"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d42/classScanner.html#ae6791b56fa79726f07cfa76e8fa20283">toString</a> ()</td></tr>
 <tr class="memdesc:ae6791b56fa79726f07cfa76e8fa20283"><td class="mdescLeft">&#160;</td><td class="mdescRight">Build a string representation of the scanner.  <a href="#ae6791b56fa79726f07cfa76e8fa20283">More...</a><br /></td></tr>
 <tr class="separator:ae6791b56fa79726f07cfa76e8fa20283"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -167,9 +167,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../.
 <tr class="memitem:a9162783f755f55792d269396ea6a5172"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d42/classScanner.html#a9162783f755f55792d269396ea6a5172">handleSimStepNoise</a> (glm::dvec3 &amp;absoluteBeamOrigin, <a class="el" href="../../d5/dcb/classRotation.html">Rotation</a> &amp;absoluteBeamAttitude)</td></tr>
 <tr class="memdesc:a9162783f755f55792d269396ea6a5172"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle position and attitude noise.  <a href="#a9162783f755f55792d269396ea6a5172">More...</a><br /></td></tr>
 <tr class="separator:a9162783f755f55792d269396ea6a5172"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa6a0870710d84e7da5b6ae627cef9cf5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d42/classScanner.html#aa6a0870710d84e7da5b6ae627cef9cf5">handlePulseComputation</a> (<a class="el" href="../../d3/dce/classthread__pool.html">thread_pool</a> &amp;pool, unsigned int const legIndex, glm::dvec3 &amp;absoluteBeamOrigin, <a class="el" href="../../d5/dcb/classRotation.html">Rotation</a> &amp;absoluteBeamAttitude, double currentGpsTime)</td></tr>
-<tr class="memdesc:aa6a0870710d84e7da5b6ae627cef9cf5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle pulse computation whatever it is single thread based or thread pool based.  <a href="#aa6a0870710d84e7da5b6ae627cef9cf5">More...</a><br /></td></tr>
-<tr class="separator:aa6a0870710d84e7da5b6ae627cef9cf5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0d0d7a4c9f3e99d7f062f8ed139e2107"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d42/classScanner.html#a0d0d7a4c9f3e99d7f062f8ed139e2107">handlePulseComputation</a> (<a class="el" href="../../d6/ddc/classPulseThreadPool.html">PulseThreadPool</a> &amp;pool, unsigned int const legIndex, glm::dvec3 &amp;absoluteBeamOrigin, <a class="el" href="../../d5/dcb/classRotation.html">Rotation</a> &amp;absoluteBeamAttitude, double currentGpsTime)</td></tr>
+<tr class="memdesc:a0d0d7a4c9f3e99d7f062f8ed139e2107"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle pulse computation whatever it is single thread based or thread pool based.  <a href="#a0d0d7a4c9f3e99d7f062f8ed139e2107">More...</a><br /></td></tr>
+<tr class="separator:a0d0d7a4c9f3e99d7f062f8ed139e2107"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa3055bc70b3f94c747320cd617e36547"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d42/classScanner.html#aa3055bc70b3f94c747320cd617e36547">handleTrajectoryOutput</a> (double currentGpsTime)</td></tr>
 <tr class="memdesc:aa3055bc70b3f94c747320cd617e36547"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle trajectory output whatever it is to output file, to all trajectories vector or to cycle trajectories vector.  <a href="#aa3055bc70b3f94c747320cd617e36547">More...</a><br /></td></tr>
 <tr class="separator:aa3055bc70b3f94c747320cd617e36547"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -916,8 +916,8 @@ std::shared_ptr&lt; <a class="el" href="../../d1/d0e/classSyncFileWriter.html">S
 
 </div>
 </div>
-<a id="ada100233ec389007c79c29a438fe784e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ada100233ec389007c79c29a438fe784e">&#9670;&nbsp;</a></span>doSimStep()</h2>
+<a id="a6beb1624696119ddfbdacdfae6f3c41f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6beb1624696119ddfbdacdfae6f3c41f">&#9670;&nbsp;</a></span>doSimStep()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -925,7 +925,7 @@ std::shared_ptr&lt; <a class="el" href="../../d1/d0e/classSyncFileWriter.html">S
         <tr>
           <td class="memname">void Scanner::doSimStep </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="../../d3/dce/classthread__pool.html">thread_pool</a> &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="../../d6/ddc/classPulseThreadPool.html">PulseThreadPool</a> &amp;&#160;</td>
           <td class="paramname"><em>pool</em>, </td>
         </tr>
         <tr>
@@ -1677,8 +1677,8 @@ std::shared_ptr&lt; <a class="el" href="../../d1/d0e/classSyncFileWriter.html">S
 
 </div>
 </div>
-<a id="aa6a0870710d84e7da5b6ae627cef9cf5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa6a0870710d84e7da5b6ae627cef9cf5">&#9670;&nbsp;</a></span>handlePulseComputation()</h2>
+<a id="a0d0d7a4c9f3e99d7f062f8ed139e2107"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0d0d7a4c9f3e99d7f062f8ed139e2107">&#9670;&nbsp;</a></span>handlePulseComputation()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1686,7 +1686,7 @@ std::shared_ptr&lt; <a class="el" href="../../d1/d0e/classSyncFileWriter.html">S
         <tr>
           <td class="memname">void Scanner::handlePulseComputation </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="../../d3/dce/classthread__pool.html">thread_pool</a> &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="../../d6/ddc/classPulseThreadPool.html">PulseThreadPool</a> &amp;&#160;</td>
           <td class="paramname"><em>pool</em>, </td>
         </tr>
         <tr>
