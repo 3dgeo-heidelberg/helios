@@ -8,7 +8,7 @@ var classAbstractDetector =
     [ "clone", "d8/d6b/classAbstractDetector.html#a4a24217d4e34ad86ce1ee0cd2a2dea7f", null ],
     [ "setOutputFilePath", "d8/d6b/classAbstractDetector.html#a9d0e26801126081dc76077cb7a0d0ed6", null ],
     [ "shutdown", "d8/d6b/classAbstractDetector.html#a59f4cb45a1209a3409872b8b69ccd24b", null ],
-    [ "simulatePulse", "d8/d6b/classAbstractDetector.html#a6c6784a53a271388ed41836565bb3661", null ],
+    [ "simulatePulse", "d8/d6b/classAbstractDetector.html#a779587cdcf53095fb15ec33f9683232d", null ],
     [ "writeMeasurement", "d8/d6b/classAbstractDetector.html#a659ba14293ac1704819cd4a9e4b0a09a", null ],
     [ "writeMeasurements", "d8/d6b/classAbstractDetector.html#a859a7f55e0d9e4f13e6398c79535884e", null ],
     [ "cfg_device_accuracy_m", "d8/d6b/classAbstractDetector.html#ae14086d0d232e23911a7ec99dff6299a", null ],

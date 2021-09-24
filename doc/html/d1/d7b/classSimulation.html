@@ -114,11 +114,13 @@ Collaboration diagram for Simulation:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../df/d40/classSimulation__coll__graph.png" border="0" usemap="#Simulation_coll__map" alt="Collaboration graph"/></div>
 <map name="Simulation_coll__map" id="Simulation_coll__map">
-<area shape="rect" id="node2" href="../../d3/dce/classthread__pool.html" title="Class representing a thread pool to deal with multi threading tasks. " alt="" coords="132,436,221,463"/>
-<area shape="rect" id="node3" href="../../d3/d57/classUniformNoiseSource.html" title="UniformNoiseSource\l\&lt; double \&gt;" alt="" coords="17,317,160,359"/>
-<area shape="rect" id="node4" href="../../d4/d38/classRandomNoiseSource.html" title="RandomNoiseSource\&lt;\l double \&gt;" alt="" coords="11,199,166,240"/>
-<area shape="rect" id="node5" href="../../d9/d6b/classNoiseSource.html" title="NoiseSource\&lt; double \&gt;" alt="" coords="5,102,164,129"/>
-<area shape="rect" id="node6" href="../../dc/d6e/classRandomnessGenerator.html" title="RandomnessGenerator\l\&lt; double \&gt;" alt="" coords="188,95,344,136"/>
+<area shape="rect" id="node2" href="../../d6/ddc/classPulseThreadPool.html" title="Class implementing a thread pool to deal with pulse tasks. " alt="" coords="1108,123,1229,149"/>
+<area shape="rect" id="node3" href="../../d2/dee/classResThreadPool.html" title="ResThreadPool\&lt; std\l::vector\&lt; std::vector\l\&lt; double \&gt; \&gt; &amp;, RandomnessGenerator\l\&lt; double \&gt; &amp;, RandomnessGenerator\l\&lt; double \&gt; &amp;, NoiseSource\&lt; double \&gt; &amp; \&gt;" alt="" coords="636,5,903,91"/>
+<area shape="rect" id="node4" href="../../dc/de7/classThreadPool.html" title="ThreadPool\&lt; TaskArgs\l ... \&gt;" alt="" coords="368,27,524,69"/>
+<area shape="rect" id="node5" href="../../d3/d57/classUniformNoiseSource.html" title="UniformNoiseSource\l\&lt; double \&gt;" alt="" coords="698,115,841,157"/>
+<area shape="rect" id="node6" href="../../d4/d38/classRandomNoiseSource.html" title="RandomNoiseSource\&lt;\l double \&gt;" alt="" coords="369,115,523,157"/>
+<area shape="rect" id="node7" href="../../d9/d6b/classNoiseSource.html" title="NoiseSource\&lt; double \&gt;" alt="" coords="145,103,304,129"/>
+<area shape="rect" id="node8" href="../../dc/d6e/classRandomnessGenerator.html" title="RandomnessGenerator\l\&lt; double \&gt;" alt="" coords="147,163,303,205"/>
 </map>
 <center><span class="legend">[<a target="top" href="../../graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -208,9 +210,9 @@ Protected Attributes</h2></td></tr>
 unsigned&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d7b/classSimulation.html#a88802bddc60d38b9ed7daddfd365f9f7">numSysThreads</a> = std::thread::hardware_concurrency()</td></tr>
 <tr class="memdesc:a88802bddc60d38b9ed7daddfd365f9f7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of threads available in the system. <br /></td></tr>
 <tr class="separator:a88802bddc60d38b9ed7daddfd365f9f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8183618f8a53d85edc0433e715e3f00f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d3/dce/classthread__pool.html">thread_pool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d7b/classSimulation.html#a8183618f8a53d85edc0433e715e3f00f">threadPool</a></td></tr>
-<tr class="memdesc:a8183618f8a53d85edc0433e715e3f00f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Thread pool.  <a href="#a8183618f8a53d85edc0433e715e3f00f">More...</a><br /></td></tr>
-<tr class="separator:a8183618f8a53d85edc0433e715e3f00f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a103fbbefc90fc8ecdce6799636445766"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d6/ddc/classPulseThreadPool.html">PulseThreadPool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d7b/classSimulation.html#a103fbbefc90fc8ecdce6799636445766">threadPool</a></td></tr>
+<tr class="memdesc:a103fbbefc90fc8ecdce6799636445766"><td class="mdescLeft">&#160;</td><td class="mdescRight">Thread pool.  <a href="#a103fbbefc90fc8ecdce6799636445766">More...</a><br /></td></tr>
+<tr class="separator:a103fbbefc90fc8ecdce6799636445766"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8615edf208cfc87018bf12446a29520d"><td class="memItemLeft" align="right" valign="top"><a id="a8615edf208cfc87018bf12446a29520d"></a>
 double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d7b/classSimulation.html#a8615edf208cfc87018bf12446a29520d">mSimSpeedFactor</a> = 1</td></tr>
 <tr class="memdesc:a8615edf208cfc87018bf12446a29520d"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="../../d1/d7b/classSimulation.html" title="Class representing a simulation. ">Simulation</a> speed factor. <br /></td></tr>
@@ -659,8 +661,8 @@ static const long&#160;</td><td class="memItemRight" valign="bottom"><a class="e
 
 </div>
 </div>
-<a id="a8183618f8a53d85edc0433e715e3f00f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8183618f8a53d85edc0433e715e3f00f">&#9670;&nbsp;</a></span>threadPool</h2>
+<a id="a103fbbefc90fc8ecdce6799636445766"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a103fbbefc90fc8ecdce6799636445766">&#9670;&nbsp;</a></span>threadPool</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -669,7 +671,7 @@ static const long&#160;</td><td class="memItemRight" valign="bottom"><a class="e
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="../../d3/dce/classthread__pool.html">thread_pool</a> Simulation::threadPool</td>
+          <td class="memname"><a class="el" href="../../d6/ddc/classPulseThreadPool.html">PulseThreadPool</a> Simulation::threadPool</td>
         </tr>
       </table>
   </td>
@@ -680,7 +682,7 @@ static const long&#160;</td><td class="memItemRight" valign="bottom"><a class="e
 </div><div class="memdoc">
 
 <p>Thread pool. </p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d3/dce/classthread__pool.html" title="Class representing a thread pool to deal with multi threading tasks. ">thread_pool</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd>thread_pool </dd></dl>
 
 </div>
 </div>

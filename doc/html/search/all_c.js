@@ -41,7 +41,7 @@ var searchData=
   ['loadfile',['loadFile',['../d9/ddf/classVoxelFileParser.html#a208b6a3c1161a4a2e40d382a77001f79',1,'VoxelFileParser']]],
   ['loadfilters',['loadFilters',['../db/d91/classXmlSceneLoader.html#a0cb34cff4f2d6db9b349cce631d8b0da',1,'XmlSceneLoader']]],
   ['loadladlut',['loadLadlut',['../db/d49/classDetailedVoxelLoader.html#a731bba2b093163c2fc4c0d38f0d75056',1,'DetailedVoxelLoader']]],
-  ['loadmaterial',['loadMaterial',['../db/d49/classDetailedVoxelLoader.html#adf418a73d4f83db7b0c866dd917162e9',1,'DetailedVoxelLoader']]],
+  ['loadmaterial',['loadMaterial',['../db/d49/classDetailedVoxelLoader.html#adf418a73d4f83db7b0c866dd917162e9',1,'DetailedVoxelLoader::loadMaterial()'],['../d1/d0c/classGeoTiffFileLoader.html#ae39eb714623f0b186f92bd1e2c3cb72f',1,'GeoTiffFileLoader::loadMaterial()'],['../d6/d03/classXYZPointCloudFileLoader.html#af161ec1cf95b6fdd8d23139ba677485d',1,'XYZPointCloudFileLoader::loadMaterial()']]],
   ['loadmaterials',['loadMaterials',['../d3/d74/classMaterialsFileReader.html#a7eecb767618c3e50fab2003461640761',1,'MaterialsFileReader']]],
   ['loadobj',['loadObj',['../d9/d15/classWavefrontObjFileLoader.html#a756909f9f8f6bc6d2212947b07770baf',1,'WavefrontObjFileLoader']]],
   ['loadscene',['loadScene',['../df/d9a/classXmlSurveyLoader.html#ac2a16d088fb5c5921cffc8c863a1c9ec',1,'XmlSurveyLoader']]],

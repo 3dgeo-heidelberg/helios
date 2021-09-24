@@ -30,7 +30,7 @@ var searchData=
   ['testrollyawrotations',['testRollYawRotations',['../d6/d96/classHeliosTests_1_1PlatformPhysicsTest.html#afa51c2802025a3cdd19eedf956bab2ae',1,'HeliosTests::PlatformPhysicsTest']]],
   ['testunivariatenewtonraphsonminimization',['testUnivariateNewtonRaphsonMinimization',['../dd/de0/classHeliosTests_1_1FluxionumTest.html#a7616b4a4e1883577c3d575cfef4a9e4d',1,'HeliosTests::FluxionumTest']]],
   ['testyawonlyrotations',['testYawOnlyRotations',['../d6/d96/classHeliosTests_1_1PlatformPhysicsTest.html#ad897157bfc114c83c38d148d6a93a415',1,'HeliosTests::PlatformPhysicsTest']]],
-  ['thread_5fpool',['thread_pool',['../d3/dce/classthread__pool.html#affe08f424467b60453a5f3bf745378e0',1,'thread_pool']]],
+  ['threadpool',['ThreadPool',['../dc/de7/classThreadPool.html#ac74be4568c79a1114820aa63c75d254f',1,'ThreadPool']]],
   ['timestamp',['timestamp',['../d0/da9/logging_8hpp.html#a2955843859a5be7223cbc33fc3264f29',1,'logging']]],
   ['timewatcher',['TimeWatcher',['../d7/d7d/classTimeWatcher.html#ad2ecf27bb2a36c8cf792e013c6576756',1,'TimeWatcher']]],
   ['toangle2d',['toAngle2D',['../d1/dd3/classSurfaceInspector_1_1maths_1_1Vector.html#ab691483a44635f42edebe998726ec882',1,'SurfaceInspector::maths::Vector']]],

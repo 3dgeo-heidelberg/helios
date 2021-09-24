@@ -27,7 +27,9 @@ map<string, Material> MaterialsFileReader::loadMaterials(string filePathString) 
 			if (line.empty() || line == "\r" || line == "\r\n" || line == "\n")
 			    continue;
 			vector<string> lineParts;
-			boost::regex_split(std::back_inserter(lineParts), line, boost::regex("\\s+"));
+			boost::regex_split(
+			    std::back_inserter(lineParts), line, boost::regex("\\s+")
+            );
 
 			// ####### BEGIN Wavefront .mtl standard attributes #########
 			if (lineParts[0] == "newmtl" && lineParts.size() >= 2) {
