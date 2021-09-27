@@ -200,7 +200,7 @@
 			pulseLength_ns     			= "2"
 			rangeMin_m					= "10"
 			scanAngleMax_deg   			= "20"
-			scanAngleEffectiveMax_deg	= "40"
+			scanAngleEffectiveMax_deg	= "20"
 			scanFreqMin_Hz				= "28"
 			scanFreqMax_Hz				= "200"
 			wavelength_nm				= "1064"
