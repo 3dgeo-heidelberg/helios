@@ -4,13 +4,37 @@
 #include <IBinaryTreeNode.h>
 #include <BinaryTreeDepthIterator.h>
 
+// ***  CONSTRUCTION / DESTRUCTION  *** //
+// ************************************ //
+SimpleKDTreeFactory::SimpleKDTreeFactory(){
+    /*
+     * It is safe to call virtual function here.
+     * Calling virtual functions on constructor means derived overrides will
+     *  be ignored. But in this constructor what must be addressed is that
+     *  by default the _buildRecursive member must point to the class
+     *  buildRecursive itself.
+     * All derived classes are responsible of setting the _buildRecursive
+     *  member after calling parent constructor
+     */
+    _buildRecursive =
+        [&](
+            KDTreeNode *parent,
+            bool const left,
+            vector<Primitive *> &primitives,
+            int const depth
+        ) -> KDTreeNode * {
+            return this->buildRecursive(parent, left, primitives, depth);
+        }
+    ;
+}
+
 // ***  SIMPLE KDTREE FACTORY METHODS  *** //
 // *************************************** //
 KDTreeNodeRoot* SimpleKDTreeFactory::makeFromPrimitivesUnsafe(
     vector<Primitive *> &primitives
 ) {
     // Build the KDTree using a modifiable copy of primitives pointers vector
-    KDTreeNodeRoot *root = (KDTreeNodeRoot *) buildRecursive(
+    KDTreeNodeRoot *root = (KDTreeNodeRoot *) _buildRecursive(
         nullptr,        // Parent node
         false,          // Node is not left child, because it is root not child
         primitives,     // Primitives to be contained inside the KDTree
@@ -170,7 +194,7 @@ void SimpleKDTreeFactory::buildChildrenNodes(
         rightPrimitives.size() != primsSize
     ){ // If there are primitives on both partitions, binary split the node
         if(!leftPrimitives.empty()){
-            node->left = buildRecursive(
+            node->left = _buildRecursive(
                 node,
                 true,
                 leftPrimitives,
@@ -178,7 +202,7 @@ void SimpleKDTreeFactory::buildChildrenNodes(
             );
         }
         if(!rightPrimitives.empty()){
-            node->right = buildRecursive(
+            node->right = _buildRecursive(
                 node,
                 false,
                 rightPrimitives,

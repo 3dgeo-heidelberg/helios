@@ -2,6 +2,35 @@
 
 #include <KDTreePrimitiveComparator.h>
 
+// ***  CONSTRUCTION / DESTRUCTION  *** //
+// ************************************ //
+SAHKDTreeFactory::SAHKDTreeFactory (
+    size_t const lossNodes,
+    double const ci,
+    double const cl,
+    double const co
+) :
+    SimpleKDTreeFactory(),
+    lossNodes(21),
+    ci(ci),
+    cl(cl),
+    co(co)
+{
+    /*
+     * See SimpleKDTreeFactory constructor implementation to understand why
+     *  it is safe to call virtual function here.
+     */
+    _buildRecursive =
+        [&](
+            KDTreeNode *parent,
+            bool const left,
+            vector<Primitive *> &primitives,
+            int const depth
+        ) -> KDTreeNode * {
+            return this->buildRecursive(parent, left, primitives, depth);
+        }
+    ;
+}
 // ***  BUILDING METHODS  *** //
 // ************************** //
 void SAHKDTreeFactory::defineSplit(
@@ -64,7 +93,7 @@ void SAHKDTreeFactory::buildChildrenNodes(
     if(ht < this->cacheT){
         toILOTCache(hi, hl, ho, ht);  // Update heuristic ILOT cache
         if(!leftPrimitives.empty()){ // Build left child
-            node->left = buildRecursive(
+            node->left = _buildRecursive(
                 node,
                 true,
                 leftPrimitives,
@@ -72,7 +101,7 @@ void SAHKDTreeFactory::buildChildrenNodes(
             );
         }
         if(!rightPrimitives.empty()){ // Build right child
-            node->right = buildRecursive(
+            node->right = _buildRecursive(
                 node,
                 false,
                 rightPrimitives,

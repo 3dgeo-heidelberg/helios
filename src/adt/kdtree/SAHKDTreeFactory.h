@@ -236,13 +236,7 @@ public:
         double const ci=1,
         double const cl=1,
         double const co=1
-    ) :
-        SimpleKDTreeFactory(),
-        lossNodes(21),
-        ci(ci),
-        cl(cl),
-        co(co)
-    {}
+    );
     virtual ~SAHKDTreeFactory() = default;
 
     // ***  BUILDING METHODS  *** //

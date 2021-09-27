@@ -45,9 +45,7 @@ public:
         double const ci=1,
         double const cl=1,
         double const co=1
-    ) :
-        SAHKDTreeFactory(lossNodes, ci, cl, co)
-    {}
+    );
     virtual ~AxisSAHKDTreeFactory() = default;
 
     // ***  BUILDING METHODS  *** //

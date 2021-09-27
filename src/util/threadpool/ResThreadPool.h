@@ -5,7 +5,7 @@
 
 /**
  * @verison 1.0
- * @brief Absract class extending basic thread pool implementation to provided
+ * @brief Abstract class extending basic thread pool implementation to provide
  *  a basis layer to handle thread associated resources
  * @see ThreadPool
  */
@@ -25,7 +25,7 @@ public:
     // ************************************ //
     /**
      * @brief Resource thread pool constructor
-     * @see ThreadPool::ThreadPool(size_t const)
+     * @see ThreadPool::ThreadPool(std::size_t const)
      */
     explicit ResThreadPool(std::size_t const _pool_size) :
         ThreadPool<TaskArgs ...>(_pool_size)
@@ -110,7 +110,7 @@ protected:
         try{
             do_res_task(task, resourceIdx);
         }
-            // Suppress all exceptions.
+        // Suppress all exceptions.
         catch (const std::exception &e) {
             std::stringstream ss;
             ss << "ResThreadPool::wrap_res_task EXCEPTION: " << e.what();

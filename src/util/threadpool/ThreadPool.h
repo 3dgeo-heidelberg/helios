@@ -10,6 +10,7 @@
  * @version 1.0
  * @brief Abstract class providing core implementation of a thread pool to deal
  *  with multi threading tasks
+ * @tparam TaskArgs The arguments for the task functor
  */
 template <typename ... TaskArgs>
 class ThreadPool{

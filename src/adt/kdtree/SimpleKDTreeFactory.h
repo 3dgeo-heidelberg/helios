@@ -32,13 +32,34 @@ private:
         ar &boost::serialization::base_object<KDTreeFactory>(*this);
     }
 
+protected:
+    // ***  ATTRIBUTES  *** //
+    // ******************** //
+    /**
+     * @brief The member function as attribute used to recursively build
+     *  KDTree nodes. By default it will be assigned to the buildRecursive
+     *  member function but it might be overridden by other implementations.
+     *  For instance, to wrap the buildRecursive behavior to handle parallel
+     *  building of KDTrees
+     * @see SimpleKDTreeFactory::buildRecursive
+     */
+    std::function<KDTreeNode *(
+        KDTreeNode *,
+        bool const,
+        vector<Primitive *> &,
+        int const
+    )> _buildRecursive;
+
 public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //
     // ************************************ //
     /**
-     * @brief SimpleKDTreeFactory default constructor
+     * @brief SimpleKDTreeFactory default constructor.
+     *
+     * The buildRecursive member function is assigned to the _buildRecursive
+     *  function as member attribute
      */
-    SimpleKDTreeFactory() = default;
+    SimpleKDTreeFactory();
     virtual ~SimpleKDTreeFactory() = default;
 
     // ***  SIMPLE KDTREE FACTORY METHODS  *** //

@@ -40,6 +40,11 @@ protected:
      * @brief The KDTreeFactory to be used to build partial trees
      */
     shared_ptr<KDTreeFactory> kdtf;
+    /**
+     * @brief The thread pool to handle concurrency during recursive KDTree
+     *  building
+     */
+    KDTreeFactoryThreadPool tp;
 
 public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //
