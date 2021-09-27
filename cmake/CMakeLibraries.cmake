@@ -68,22 +68,34 @@ else()
     set(Boost_DEBUG 0)
 endif()
 set(Boost_ADDITIONAL_VERSIONS 1.71.0 1.71 1.72.0 1.72)
-set(Boost_USE_STATIC_LIBS ON)
 set(Boost_USE_RELEASE_LIBS ON)
-set(Boost_USE_STATIC_RUNTIME OFF)
+#set(Boost_USE_STATIC_RUNTIME OFF)  # TODO Remove ?
 set(Boost_USE_MULTITHREADED ON)
-set(Boost_NO_SYSTEM_PATHS ON)
 set(Boost_NO_BOOST_CMAKE OFF)
-if(WIN32 OR MSVC)  # Specific boost stuff for Windows
-    set(Boost_THREADAPI win32)
-    set(BOOST_INCLUDEDIR "lib/boost")
-    set(BOOST_LIBRARYDIR "lib/boost/stage/lib")
-    set(BASE_BOOST_COMPONENTS system thread regex filesystem serialization iostreams zlib)
-else()  # Specific boost stuff for Linux
-    #set(Boost_COMPILER "-vc")
-    set(Boost_THREADAPI pthread)
-    set(BOOST_ROOT "lib/boost")
-    set(BASE_BOOST_COMPONENTS system thread regex filesystem serialization iostreams)
+if(${BOOST_DYNAMIC_LIBS})
+    set(Boost_USE_STATIC_LIBS_OFF)
+    if(WIN32 OR MSVC)  # Specific boost stuff for Windows
+        set(Boost_THREADAPI win32)
+        set(BASE_BOOST_COMPONENTS system thread regex filesystem serialization iostreams zlib)
+    else()  # Specific boost stuff for Linux
+        #set(Boost_COMPILER "-vc")
+        set(Boost_THREADAPI pthread)
+        set(BASE_BOOST_COMPONENTS system thread regex filesystem serialization iostreams)
+    endif()
+else()
+    set(Boost_USE_STATIC_LIBS ON)
+    set(Boost_NO_SYSTEM_PATHS ON)
+    if(WIN32 OR MSVC)  # Specific boost stuff for Windows
+        set(Boost_THREADAPI win32)
+        set(BOOST_INCLUDEDIR "lib/boost")
+        set(BOOST_LIBRARYDIR "lib/boost/stage/lib")
+        set(BASE_BOOST_COMPONENTS system thread regex filesystem serialization iostreams zlib)
+    else()  # Specific boost stuff for Linux
+        #set(Boost_COMPILER "-vc")
+        set(Boost_THREADAPI pthread)
+        set(BOOST_ROOT "lib/boost")
+        set(BASE_BOOST_COMPONENTS system thread regex filesystem serialization iostreams)
+    endif()
 endif()
 
 # LASlib
