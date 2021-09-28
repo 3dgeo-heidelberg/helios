@@ -10,20 +10,12 @@ using namespace std;
 
 // ***  CONSTRUCTION / DESTRUCTION  *** //
 // ************************************ //
-KDTreeNode::KDTreeNode(KDTreeNode const &kdtn) : LightKDTreeNode() {
-    left = new KDTreeNode(*(KDTreeNode *)kdtn.left);
-    right = new KDTreeNode(*(KDTreeNode *)kdtn.right);
-    splitPos = kdtn.splitPos;
-    splitAxis = kdtn.splitAxis;
+KDTreeNode::KDTreeNode(KDTreeNode const &kdtn) : LightKDTreeNode(kdtn) {
     bound = kdtn.bound;
     surfaceArea = kdtn.surfaceArea;
 }
 
 KDTreeNode::KDTreeNode(KDTreeNode &&kdtn) : LightKDTreeNode(kdtn){
-    left = new KDTreeNode(*(KDTreeNode *)kdtn.left);
-    right = new KDTreeNode(*(KDTreeNode *)kdtn.right);
-    splitPos = kdtn.splitPos;
-    splitAxis = kdtn.splitAxis;
     bound = kdtn.bound;
     surfaceArea = kdtn.surfaceArea;
 }

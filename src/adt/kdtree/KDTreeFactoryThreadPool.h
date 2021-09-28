@@ -1,7 +1,7 @@
 #pragma once
 
 #include <MDThreadPool.h>
-#include <KDTBuildType.h>
+#include <KDTreeBuildType.h>
 
 
 /**
@@ -13,9 +13,15 @@
  * @see MultiThreadKDTreeFactory
  * @see KDTreeBuildType
  */
-class KDTreeFactoryThreadPool : public ThreadPool<KDTreeBuildType>{
+class KDTreeFactoryThreadPool : public MDThreadPool<
+    KDTreeBuildType,
+    KDTreeNode *,
+    bool const,
+    vector<Primitive*> &,
+    int const
+>{
 public:
-    // ***  CONSTRUCTION / DESTRUCTION  *** //
+// ***  CONSTRUCTION / DESTRUCTION  *** //
     // ************************************ //
     /**
      * @brief KDTree factory thread pool constructor
@@ -24,7 +30,13 @@ public:
     explicit KDTreeFactoryThreadPool(
         std::size_t const _pool_size
     ) :
-        ThreadPool<KDTreeBuildType>(_pool_size)
+        MDThreadPool<
+            KDTreeBuildType,
+            KDTreeNode *,
+            bool const,
+            vector<Primitive*> &,
+            int const
+        >(_pool_size)
     {}
     /**
      * @brief KDTree factory thread pool constructor which uses concurrent
@@ -43,7 +55,12 @@ protected:
      * @see ThreadPool::do_task
      */
     inline void do_md_task(
-        boost::function<void(KDTBuildType)> &task,
+        boost::function<void(
+            KDTreeNode *,
+            bool const,
+            vector<Primitive*> &,
+            int const
+        )> &task,
         KDTreeBuildType &data
     ) override {
         task(

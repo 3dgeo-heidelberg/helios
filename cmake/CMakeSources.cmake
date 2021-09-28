@@ -30,6 +30,7 @@ set(HELIOS_INCLUDE_DIRECTORIES
     "src/surfaceinspector/util/"
     "src/surfaceinspector/util/draggers/"
     "src/util/"
+    "src/util/threadpool/"
     "src/util/serialization/"
     "src/util/logger/"
     "src/test/"

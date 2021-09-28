@@ -10,11 +10,16 @@
  * @author Alberto M. Esmoris Pena
  * @version 1.0
  * @brief Abstract class extending basic thread pool implementation to provide
- *  a basis layer to handle tasks with associated data
+ *  a basis layer to handle tasks with associated data.
+ *
+ * NOTICE available variable from ThreadPool has a different usage in
+ *  MDThreadPool. Instead of counting available threads to deal with tasks,
+ *  it counts pending tasks to be finished
+ *
  * @see ThreadPool
  */
-template <typename MDType>
-class MDThreadPool : public ThreadPool<MDType>{
+template <typename MDType, typename ... TaskArgs>
+class MDThreadPool : public ThreadPool<TaskArgs ...>{
 public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //
     // ************************************ //
@@ -23,9 +28,8 @@ public:
      * @see ThreadPool::ThreadPool(std::size_t const)
      */
     explicit MDThreadPool(std::size_t const _pool_size) :
-        ThreadPool<TaskArgs ...>(_pool_size),
-        localTaskId(0)
-    {}
+        ThreadPool<TaskArgs ...>(_pool_size)
+    {setPendingTasks(0);}
     virtual ~MDThreadPool(){}
 
 
@@ -38,28 +42,33 @@ public:
     template <typename Task>
     void run_md_task(Task task, MDType *data){
         // Lock run task mutex
-        boost::unique_lock<boost::mutex> lock(mutex_);
+        boost::unique_lock<boost::mutex> lock(this->mutex_);
 
-        // If no threads are available, then wait for a thread to finish.
-        if (0 == available_){
-            cond_.wait(lock);
-        }
-
-        // Decrement count, indicating thread is no longer available.
-        --available_;
+        // Increment number of pending tasks
+        increasePendingTasks();
 
         // Unlock run task mutex
         lock.unlock();
 
         // Post a wrapped task into the queue
-        io_service_.post(
+        this->io_service_.post(
             boost::bind(
-                &MDThreadPool<MDType>::wrap_md_task,
+                &MDThreadPool<MDType, TaskArgs ...>::wrap_md_task,
                 this,
-                boost::function<void(MDType)>(task),
+                boost::function<void(TaskArgs ...)>(task),
                 data
             )
         );
+    }
+
+    /**
+     * @brief Lock until all pending threads have finished
+     */
+    void join() override {
+        boost::unique_lock<boost::mutex> lock(this->mutex_);
+        while(getPendingTasks() > 0){
+            this->cond_.wait(lock);
+        }
     }
 
 protected:
@@ -90,9 +99,8 @@ protected:
 
         // Task has finished, so increment count of available threads.
         boost::unique_lock<boost::mutex> lock(this->mutex_);
-        ++(this->available_);
-        this->cond_.notify_one();
-        lock.unlock();
+        decreasePendingTasks();
+        if(getPendingTasks()==0) this->cond_.notify_one();
     }
 
     /**
@@ -100,7 +108,7 @@ protected:
      * @see ThreadPool::do_task
      */
     void do_task(
-        boost::function<void(MDType)> &task
+        boost::function<void(TaskArgs ...)> &task
     ) override {
         throw HeliosException(
             "MDThreadPool::do_task MUST NOT be invoked.\n"
@@ -114,8 +122,30 @@ protected:
      * @param data The data associated with the task
      */
     virtual void do_md_task(
-        boost::function<void(MDType)> &task,
+        boost::function<void(TaskArgs ...)> &task,
         MDType &data
     ) = 0;
 
+public:
+    // ***  GETTERs and SETTERs  *** //
+    // ***************************** //
+    /**
+     * @brief Obtain the number of pending tasks to be computed
+     * @return Number of pending tasks to be computed
+     */
+    virtual inline size_t getPendingTasks() {return this->available_;}
+    /**
+     * @brief Set the number of pending tasks to be computed
+     * @param pendingTasks New number of pendings tasks to be computed
+     */
+    virtual inline void setPendingTasks(size_t const pendingTasks)
+    {this->available_ = pendingTasks;}
+    /**
+     * @brief Unitary increase the number of pending tasks to be computed
+     */
+    virtual inline void increasePendingTasks() {++(this->available_);}
+    /**
+     * @brief Unitary decrease the number of pending tasks to be computed
+     */
+    virtual inline void decreasePendingTasks() {--(this->available_);}
 };

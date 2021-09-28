@@ -40,7 +40,7 @@ public:
      * @brief Default constructor for KDTreeBuildType
      */
     KDTreeBuildType() :
-        node(nullptr),
+        parent(nullptr),
         left(false),
         primitives(0),
         depth(-1)
@@ -48,18 +48,18 @@ public:
 
     /**
      * @brief Constructor for KDTreeBuildType with attributes as arguments
-     * @see KDTreeBuildType::node
+     * @see KDTreeBuildType::parent
      * @see KDTreeBuildType::left
      * @see KDTreeBuildType::primitives
      * @see KDTreeBuildType::depth
      */
     KDTreeBuildType(
-        KDTreeNode *node,
+        KDTreeNode *parent,
         bool const left,
         vector<Primitive *> &primitives,
         int const depth
     ) :
-        node(node),
+        parent(parent),
         left(left),
         primitives(primitives),
         depth(depth)

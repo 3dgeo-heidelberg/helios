@@ -4,6 +4,8 @@
 
 #include <vector>
 
+class MultiThreadKDTreeFactory;
+
 /**
  * @author Alberto M. Esmoris Pena
  * @version 1.0
@@ -13,6 +15,10 @@
  * @see KDTreeFactory
  */
 class SimpleKDTreeFactory : public KDTreeFactory{
+    // ***  FRIENDS  *** //
+    // ***************** //
+    friend class MultiThreadKDTreeFactory;
+
 private:
     // ***  SERIALIZATION  *** //
     // *********************** //
@@ -101,6 +107,14 @@ protected:
      * @param root Root node to compute stats for given KDTreeNodeRoot
      */
     virtual void computeKDTreeStats(KDTreeNodeRoot *root) const;
+    /**
+     * @brief Report KDTree stats of given root node at INFO logging level
+     * @param root Root node which stats must be reported
+     */
+    virtual void reportKDTreeStats(
+        KDTreeNodeRoot *root,
+        vector<Primitive *> const &primitives
+    ) const;
 
     /**
      * @brief Define the split axis and position for current node.

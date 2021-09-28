@@ -40,7 +40,6 @@ KDTreeNodeRoot* SimpleKDTreeFactory::makeFromPrimitivesUnsafe(
         primitives,     // Primitives to be contained inside the KDTree
         0               // Starting depth level (must be 0 for root node)
     );
-    std::stringstream ss;
     if(root == nullptr){
         /*
          * NOTICE building a null KDTree is not necessarily a bug.
@@ -49,27 +48,13 @@ KDTreeNodeRoot* SimpleKDTreeFactory::makeFromPrimitivesUnsafe(
          * This message is not reported at INFO level because it is only
          *  relevant for debugging purposes.
          */
+        std::stringstream ss;
         ss  << "Null KDTree with no primitives was built";
         logging::DEBUG(ss.str());
     }
     else{
         computeKDTreeStats(root);
-        ss  << "KDTree (num. primitives " << primitives.size() << ") :\n\t"
-            << "Max. # primitives in leaf: "
-            << root->stats_maxNumPrimsInLeaf << "\n\t"
-            << "Min. # primitives in leaf: "
-            << root->stats_minNumPrimsInLeaf << "\n\t"
-            << "Max. depth reached: "
-            << root->stats_maxDepthReached << "\n\t"
-            << "KDTree axis-aligned surface area: "
-            << root->surfaceArea << "\n\t"
-            << "Interior nodes: "
-            << root->stats_numInterior << "\n\t"
-            << "Leaf nodes: "
-            << root->stats_numLeaves << "\n\t"
-            << "Total tree cost: "
-            << root->stats_totalCost;
-        logging::INFO(ss.str());
+        reportKDTreeStats(root, primitives);
         if(buildLightNodes) lighten(root);
     }
     return root;
@@ -141,6 +126,30 @@ void SimpleKDTreeFactory::computeKDTreeStats(KDTreeNodeRoot *root) const{
     root->stats_maxDepthReached = maxDepth;
     root->stats_numInterior = numInterior;
     root->stats_numLeaves = numLeaves;
+    root->stats_totalCost = 0.0;
+}
+
+void SimpleKDTreeFactory::reportKDTreeStats(
+    KDTreeNodeRoot *root,
+    vector<Primitive *> const &primitives
+) const {
+    std::stringstream ss;
+    ss  << "KDTree (num. primitives " << primitives.size() << ") :\n\t"
+        << "Max. # primitives in leaf: "
+        << root->stats_maxNumPrimsInLeaf << "\n\t"
+        << "Min. # primitives in leaf: "
+        << root->stats_minNumPrimsInLeaf << "\n\t"
+        << "Max. depth reached: "
+        << root->stats_maxDepthReached << "\n\t"
+        << "KDTree axis-aligned surface area: "
+        << root->surfaceArea << "\n\t"
+        << "Interior nodes: "
+        << root->stats_numInterior << "\n\t"
+        << "Leaf nodes: "
+        << root->stats_numLeaves << "\n\t"
+        << "Total tree cost: "
+        << root->stats_totalCost;
+    logging::INFO(ss.str());
 }
 
 void SimpleKDTreeFactory::defineSplit(

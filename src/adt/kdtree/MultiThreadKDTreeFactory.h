@@ -1,6 +1,7 @@
 #pragma once
 
-#include <KDTreeFactory.h>
+#include <SimpleKDTreeFactory.h>
+#include <KDTreeFactoryThreadPool.h>
 
 using std::shared_ptr;
 
@@ -11,7 +12,7 @@ using std::shared_ptr;
  * @brief Decorator for any KDTree factory which provides support for multi
  *  thread KDTree building
  */
-class MultiThreadKDTreeFactory : public KDTreeFactory{
+class MultiThreadKDTreeFactory : public SimpleKDTreeFactory{
 private:
     // ***  SERIALIZATION  *** //
     // *********************** //
@@ -26,10 +27,10 @@ private:
     void serialize(Archive &ar, unsigned int const version){
         boost::serialization::void_cast_register<
             MultiThreadKDTreeFactory,
-            KDTreeFactory
+            SimpleKDTreeFactory
         >();
 
-        ar &boost::serialization::base_object<KDTreeFactory>(*this);
+        ar &boost::serialization::base_object<SimpleKDTreeFactory>(*this);
         ar &kdtf;
     }
 
@@ -37,9 +38,10 @@ protected:
     // ***  ATTRIBUTES  *** //
     // ******************** //
     /**
-     * @brief The KDTreeFactory to be used to build partial trees
+     * @brief The SimpleKDTreeFactory or derived to be used to build partial
+     *  trees
      */
-    shared_ptr<KDTreeFactory> kdtf;
+    shared_ptr<SimpleKDTreeFactory> kdtf;
     /**
      * @brief The thread pool to handle concurrency during recursive KDTree
      *  building
@@ -53,10 +55,7 @@ public:
      * @brief MultiThreadKDTreeFactory default constructor
      * @param kdtf The factory to be used to build the KDTree
      */
-    MultiThreadKDTreeFactory(shared_ptr<KDTreeFactory> kdtf) :
-        KDTreeFactory(),
-        kdtf(kdtf)
-    {}
+    MultiThreadKDTreeFactory(shared_ptr<SimpleKDTreeFactory> kdtf);
     virtual ~MultiThreadKDTreeFactory() = default;
 
     // ***  MULTI THREAD KDTREE FACTORY METHODS  *** //
@@ -69,5 +68,28 @@ public:
      */
     KDTreeNodeRoot * makeFromPrimitivesUnsafe(
         vector<Primitive *> &primitives
+    ) override;
+
+protected:
+    // ***  BUILDING METHODS  *** //
+    // ************************** //
+    /**
+     * @brief Recursively build a KDTree for given primitives
+     * @param parent The parent node if any. For root nodes, it must be a
+     *  nullptr
+     * @param left True if given node is a left child, false otherwise.
+     *  If the node is a root node, it should be false. If node is not a root
+     *  node and left is true, it means it is a left child. If node is not a
+     *  root node and left is false, it means it is a right child
+     * @param primitives Primitives to build KDTree splitting them
+     * @param depth Current depth at build process. Useful for tracking
+     *  recursion level
+     * @return Built KDTree node
+     */
+    KDTreeNode * buildRecursive(
+        KDTreeNode *parent,
+        bool const left,
+        vector<Primitive*> &primitives,
+        int const depth
     ) override;
 };

@@ -7,6 +7,7 @@
 #include <DetailedVoxelLoader.h>
 #include <scene/dynamic/DynScene.h>
 #include <SimpleKDTreeFactory.h>
+#include <MultiThreadKDTreeFactory.h>
 #include <SAHKDTreeFactory.h>
 #include <AxisSAHKDTreeFactory.h>
 #include <FastSAHKDTreeFactory.h>
@@ -341,7 +342,9 @@ shared_ptr<StaticScene> XmlSceneLoader::makeSceneDynamic(
 shared_ptr<KDTreeFactory> XmlSceneLoader::makeKDTreeFactory(){
     if(kdtFactoryType == 1){
         logging::DEBUG("XmlSceneLoader is using a SimpleKDTreeFactory");
-        return make_shared<SimpleKDTreeFactory>();
+        return make_shared<MultiThreadKDTreeFactory>(
+            make_shared<SimpleKDTreeFactory>()
+        );
     }
     else if(kdtFactoryType == 2){
         logging::DEBUG("XmlSceneLoader is using a SAHKDTreeFactory");
