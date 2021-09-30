@@ -128,9 +128,13 @@ def flight_lines_from_shp(filename):
     lines = []
     for i in range(shapefile.shape[0]):
         coords = list(shapefile.geometry.iloc[i].coords)
+        coords = [list(ele) for ele in coords]
         lines.append(coords)
+    lines = np.array(lines)
+    lines_shape = lines.shape
+    element_count = int(lines_shape[0]*lines_shape[1])
 
-    return lines
+    return np.resize(lines, (element_count, 2))
 
 
 def plot_flight_plan(waypoints):
@@ -150,14 +154,14 @@ def plot_flight_plan(waypoints):
     return plt
 
 
-def export_for_xml(waypoints, altitude, template_id, velocity, trajectory_time_interval=0.05, always_active=False):
+def export_for_xml(waypoints, altitude, template_id, speed, trajectory_time_interval=0.05, always_active=False):
     """
     This function exports a flight plan to a string to use in HELIOS++ survey XML files.
 
     :param waypoints: array of waypoints e.g. [[50, -100], [50, 100], [-50, 100], [-50, -100]]
     :param altitude: z-coordinate of all waypoints (float)
     :param template_id: ID of default scanner settings (defined in survey-XML) which legs should share (string)
-    :param velocity: velocity of the platform in m/s (float)
+    :param speed: velocity of the platform in m/s (float)
     :param trajectory_time_interval: time interval [s] in which trajectory points are written (float); default: 0.05
     :param always_active: flag to specify if the scanner should be always active of alternating between active and
                             inactive (boolean: True or False); default: False
@@ -173,27 +177,27 @@ def export_for_xml(waypoints, altitude, template_id, velocity, trajectory_time_i
             <platformSettings x="{x}" y="{y}" z="{z}" movePerSec_m="{v}" />
             <scannerSettings template="{id}" trajectoryTimeInterval_s="{interval}" />
         </leg>
-            '''.format(x=leg[0], y=leg[1], z=altitude, v=velocity, id=template_id, interval=trajectory_time_interval)
+            '''.format(x=leg[0], y=leg[1], z=altitude, v=speed, id=template_id, interval=trajectory_time_interval)
         elif i % 2 != 0 and always_active is False:
             xml_string += '''
         <leg>
             <platformSettings x="{x}" y="{y}" z="{z}" movePerSec_m="{v}" />
             <scannerSettings template="{id}" active="false" trajectoryTimeInterval_s="{interval}" />
         </leg>
-            '''.format(x=leg[0], y=leg[1], z=altitude, v=velocity, id=template_id, interval=trajectory_time_interval)
+            '''.format(x=leg[0], y=leg[1], z=altitude, v=speed, id=template_id, interval=trajectory_time_interval)
     return xml_string
 
 
 if __name__ == "__main__":
 
     # Usage Demo
-    bbox = [-325, -350, 400, 250]
-    area = (bbox[2] - bbox[0]) * (bbox[3] - bbox[1])
-    print("area: %.2f m^2" % area)
-    wp, c, dist = compute_flight_lines(bbox, spacing=120, rotate_deg=45, flight_pattern="parallel")
+    bbox = [478827.922, 5471949.077, 479011.641, 5472145.427]
+    #area = (bbox[2] - bbox[0]) * (bbox[3] - bbox[1])
+    #print("area: %.2f m^2" % area)
+    wp, c, dist = compute_flight_lines(bbox, spacing=30, rotate_deg=45, flight_pattern="criss-cross")
     plot = plot_flight_plan(wp)
     plot.show()
-    speed = 8.5
+    speed = 5
     print("Flight duration: %.2f min" % (dist / speed / 60))
-    alt = 130
-    print(str(export_for_xml(wp, altitude=alt, template_id="template1", velocity=speed)))
+    alt = 490
+    print(str(export_for_xml(wp, altitude=alt, template_id="uls_template", speed=speed)))
