@@ -30,6 +30,8 @@ SAHKDTreeFactory::SAHKDTreeFactory (
             return this->buildRecursive(parent, left, primitives, depth);
         }
     ;
+    _lockILOT = [] () -> void {return;};
+    _unlockILOT = [] () -> void {return;};
 }
 // ***  BUILDING METHODS  *** //
 // ************************** //
@@ -79,37 +81,34 @@ void SAHKDTreeFactory::buildChildrenNodes(
     vector<Primitive *> &rightPrimitives
 ) {
     if(parent==nullptr){ // Compute parent heuristic (INIT ILOT)
-        initILOT(node, primitives);
+        initILOT(node, primitives); // Lock not need, only sequential
     }
 
     // Compute node as internal
     double hi, hl, ho, ht;
+    _lockILOT(); // Lock ILOT cache
     internalizeILOT(
         hi, hl, ho, ht,
         node, primitives, leftPrimitives, rightPrimitives
     );
 
     // Do partitioning if new cost is smaller than previous one
-    if(ht < this->cacheT){
+    if(ht < getCacheT()){
         toILOTCache(hi, hl, ho, ht);  // Update heuristic ILOT cache
+        _unlockILOT(); // Unlock ILOT cache
         if(!leftPrimitives.empty()){ // Build left child
-            node->left = _buildRecursive(
-                node,
-                true,
-                leftPrimitives,
-                depth + 1
-            );
+            setChild(node->left, _buildRecursive(
+                node, true, leftPrimitives, depth + 1
+            ));
         }
         if(!rightPrimitives.empty()){ // Build right child
-            node->right = _buildRecursive(
-                node,
-                false,
-                rightPrimitives,
-                depth + 1
-            );
+            setChild(node->right, _buildRecursive(
+                node, false, rightPrimitives, depth + 1
+            ));
         }
     }
     else {
+        _unlockILOT(); // Unlock ILOT cache
         // Otherwise, make this node a leaf:
         node->splitAxis = -1;
         node->primitives = std::make_shared<vector<Primitive *>>(primitives);
@@ -191,9 +190,11 @@ double SAHKDTreeFactory::heuristicILOT(
     double const No = (double) primitives.size();
 
     // Compute updates
-    hi = this->cacheI + this->ci*surfaceAreaInterior;
-    hl = this->cacheL + this->cl*surfaceAreaLeaf;
-    ho = this->cacheO + this->co*surfaceAreaLeaf*No;
+    double I, L, O;
+    fromILOCache(I, L, O);
+    hi = I + this->ci*surfaceAreaInterior;
+    hl = L + this->cl*surfaceAreaLeaf;
+    ho = O + this->co*surfaceAreaLeaf*No;
     ht = (hi + hl + ho) / surfaceAreaRoot;
 
     // Return cost
@@ -258,7 +259,7 @@ void SAHKDTreeFactory::initILOT(
     vector<Primitive *> const &primitives
 ){
     double hi, hl, ho, ht;
-    cacheRoot = root; // Cache root node to compute future children's ILOT
+    setCacheRoot(root); // Cache root node to compute future children's ILOT
     toILOTCache(0.0, 0.0, 0.0, 0.0); // Initialize cache to 0
     heuristicILOT(
         hi, hl, ho, ht,         // Output variables

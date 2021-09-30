@@ -2,6 +2,8 @@
 
 #include <SimpleKDTreeFactory.h>
 
+class MultiThreadSAHKDTreeFactory;
+
 /**
  * @author Alberto M. Esmoris Pena
  * @version 1.0
@@ -119,6 +121,10 @@
  * @see AxisSAHKDTreeFactory
  */
 class SAHKDTreeFactory : public SimpleKDTreeFactory{
+    // ***  FRIENDS  *** //
+    // ***************** //
+    friend class MultiThreadSAHKDTreeFactory;
+
 private:
     // ***  SERIALIZATION  *** //
     // *********************** //
@@ -141,7 +147,7 @@ private:
         ar &ci &cl &co;
         ar &lossNodes;
         ar &cacheI &cacheL &cacheO &cacheT;
-
+        ar &cacheRoot;
     }
 
 protected:
@@ -221,6 +227,21 @@ protected:
      * @see SAHKDTreeFactory::fromILOTCache
      */
     double cacheT;
+    /**
+     * @brief Function to lock the ILOT cache on a unique way (no thread but
+     *  locker one must be able to use it). By default it is a void function,
+     *  it must be overridden to provide concurrency handling.
+     * @see MultiThreadSAHKDTreeFactory
+     * @see SAHKDTreeFactory::_unlockILOT
+     */
+    std::function<void(void)> _lockILOT;
+    /**
+     * @brief Function to unlock the ILOT cache. It is the counterpart of the
+     *  _lockILOT function
+     * @see MultiThreadSAHKDTreeFactory
+     * @see SAHKDTreeFactory::_lockILOT
+     */
+    std::function<void(void)> _unlockILOT;
 
 public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //
@@ -529,6 +550,7 @@ protected:
      * @see SAHKDTreeFactory::cacheO
      * @see SAHKDTreeFactory::cacheT
      * @see SAHKDTreeFactory::toILOTCache
+     * @see SAHKDTreeFactory::fromILOCache
      */
     virtual inline void fromILOTCache(
         double &I,
@@ -542,6 +564,27 @@ protected:
         T = cacheT;
     }
     /**
+     * @brief Set references from ILOT cache but only for ILO components
+     * @see SAHKDTreeFactory::cacheI
+     * @see SAHKDTreeFactory::cacheL
+     * @see SAHKDTreeFactory::cacheO
+     * @see SAHKDTreeFactory::fromILOTCache
+     */
+    virtual inline void fromILOCache(
+        double &I,
+        double &L,
+        double &O
+    ) const {
+        I = cacheI;
+        L = cacheL;
+        O = cacheO;
+    }
+    /**
+     * @brief Obtain the T component of ILOT cache
+     * @return T component of ILOT cache
+     */
+    virtual inline double getCacheT() const {return cacheT;}
+    /**
      * @brief Initialize the ILOT cache from given root node
      * @param root Root node to initialize ILOT cache from
      * @param primitives Primitives contained in root node
@@ -550,6 +593,12 @@ protected:
         KDTreeNode *root,
         vector<Primitive *> const &primitives
     );
+    /**
+     * @brief Set the cached root node
+     * @param root The new root node to be cached
+     * @see SAHKDTreeFactory::cacheRoot
+     */
+    virtual inline void setCacheRoot(KDTreeNode *root) {cacheRoot = root;}
 
 public:
     // ***  GETTERs and SETTERs  *** //

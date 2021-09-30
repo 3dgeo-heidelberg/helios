@@ -4,10 +4,12 @@
 // ***  CONSTRUCTION / DESTRUCTION  *** //
 // ************************************ //
 MultiThreadKDTreeFactory::MultiThreadKDTreeFactory(
-    shared_ptr<SimpleKDTreeFactory> kdtf
+    shared_ptr<SimpleKDTreeFactory> const kdtf,
+    size_t const numJobs
 ) :
     SimpleKDTreeFactory(),
-    kdtf(kdtf)
+    kdtf(kdtf),
+    tp(numJobs)
 {
     /*
      * See SimpleKDTreeFactory constructor implementation to understand why
@@ -26,8 +28,8 @@ MultiThreadKDTreeFactory::MultiThreadKDTreeFactory(
     kdtf->_buildRecursive = _buildRecursive;
 }
 
-// ***  MULTI THREAD KDTREE FACTORY METHODS  *** //
-// ********************************************* //
+// ***  KDTREE FACTORY METHODS  *** //
+// ******************************** //
 KDTreeNodeRoot * MultiThreadKDTreeFactory::makeFromPrimitivesUnsafe(
     vector<Primitive *> &primitives
 ){
@@ -67,34 +69,13 @@ KDTreeNode * MultiThreadKDTreeFactory::buildRecursive(
     vector<Primitive*> &primitives,
     int const depth
 ) {
-    // TODO Rethink : Compare left async, right sync VS full async
-    // Left on split task, right on current task
-    if(left){
-        tp.run_md_task(
-            [&] (
-                KDTreeNode *parent,
-                bool const left,
-                vector<Primitive*> &primitives,
-                int const depth
-            ) ->  void {
-                parent->left = this->kdtf->buildRecursive(
-                    parent, left, primitives, depth
-                );
-            },
-            new KDTreeBuildType(
-                parent,
-                left,
-                primitives,
-                depth
-            )
-        );
-        return nullptr;
-    }
-    else{
-        return this->kdtf->buildRecursive(parent, left, primitives, depth);
-    }
-    // Double task split implementation
-    /*tp.run_md_task(
+    KDTreeBuildType *data = new KDTreeBuildType(
+        parent,
+        left,
+        primitives,
+        depth
+    );
+    bool const posted = tp.try_run_md_task(
         [&] (
             KDTreeNode *parent,
             bool const left,
@@ -112,12 +93,14 @@ KDTreeNode * MultiThreadKDTreeFactory::buildRecursive(
                 );
             }
         },
-        new KDTreeBuildType(
-            parent,
-            left,
-            primitives,
-            depth
-        )
+        data
     );
-    return nullptr;*/
+    if(posted){ // Null placeholder
+        primitives.clear(); // Discard primitives, copy passed through data
+        return nullptr;
+    }
+    else{ // Continue execution on current thread
+        delete data; // Release data, it will not be used at all
+        return this->kdtf->buildRecursive(parent, left, primitives, depth);
+    }
 }

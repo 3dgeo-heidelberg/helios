@@ -52,6 +52,7 @@ protected:
     /**
      * @brief Do a recursive build of KDTree node task
      * @param task Recursive build of KDTree node task
+     * @param data It will be deleted after computing the task
      * @see ThreadPool::do_task
      */
     inline void do_md_task(
@@ -61,13 +62,14 @@ protected:
             vector<Primitive*> &,
             int const
         )> &task,
-        KDTreeBuildType &data
+        KDTreeBuildType *data
     ) override {
         task(
-            data.parent,
-            data.left,
-            data.primitives,
-            data.depth
+            data->parent,
+            data->left,
+            data->primitives,
+            data->depth
         );
+        delete data;
     }
 };

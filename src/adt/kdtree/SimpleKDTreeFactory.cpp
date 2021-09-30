@@ -114,6 +114,16 @@ void SimpleKDTreeFactory::computeKDTreeStats(KDTreeNodeRoot *root) const{
         if(node.getDepth() > maxDepth) maxDepth = node.getDepth();
         KDTreeNode * const kdtNode = static_cast<KDTreeNode *>(node.getNode());
         if(kdtNode->isLeafNode()){
+            // TODO Remove section ---
+            if(kdtNode->primitives.get() == nullptr){
+                std::cout   << "splitAxis: " << kdtNode->splitAxis << "\n"
+                            << "splitPos: " << kdtNode->splitPos << "\n"
+                            << "left: " << kdtNode->left << "\n"
+                            << "right: " << kdtNode->right << "\n"
+                            << "---------------------------------------\n"
+                            << std::endl;
+            }
+            // --- TODO Remove section
             int const numPrims = kdtNode->primitives->size();
             if(numPrims > maxNumPrimsInLeaf) maxNumPrimsInLeaf = numPrims;
             if(numPrims < minNumPrimsInLeaf) minNumPrimsInLeaf = numPrims;
@@ -203,20 +213,14 @@ void SimpleKDTreeFactory::buildChildrenNodes(
         rightPrimitives.size() != primsSize
     ){ // If there are primitives on both partitions, binary split the node
         if(!leftPrimitives.empty()){
-            node->left = _buildRecursive(
-                node,
-                true,
-                leftPrimitives,
-                depth + 1
-            );
+            setChild(node->left, _buildRecursive(
+                node, true, leftPrimitives, depth + 1
+            ));
         }
         if(!rightPrimitives.empty()){
-            node->right = _buildRecursive(
-                node,
-                false,
-                rightPrimitives,
-                depth + 1
-            );
+            setChild(node->right, _buildRecursive(
+                node, false, rightPrimitives, depth + 1
+            ));
         }
     }
     else {

@@ -29,9 +29,18 @@ public:
     SceneLoadingSpecification sceneSpec;
     /**
      * @brief Type of KDTree factory to be used to build scene
-     * @see KDTReeFactory
+     * @see KDTreeFactory
      */
     int kdtFactoryType = 1;
+    /**
+     * @brief How many threads must be used to build KDTree
+     * @see KDTreeFactory
+     * @see SimpleKDTreeFactory
+     * @see MultiThreadKDTreeFactory
+     * @see SAHKDTreeFactory
+     * @see MultiThreadSAHKDTreeFactory
+     */
+    size_t kdtNumJobs = 1;
     /**
      * @brief How many loss nodes for the Surface Area Heuristic if using a SAH
      *  like KDTree factory to build the scene

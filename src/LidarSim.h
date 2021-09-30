@@ -37,6 +37,10 @@ public:
      *  angle. True means fixed incidence angle will be used, false implies
      *  it will not
      * @param lasScale Specify LAS format scale factor
+     * @param kdtType Specify the type of KDTree building strategy
+     * @param kdtJobs Specify how many threads use to build the KDTree
+     * @param sahLossNodes Specify the number of nodes used to find the optimal
+     *  split point when SAH or the number of samples if fast SAH is used
      */
     void init(
         std::string surveyPath,
@@ -55,6 +59,7 @@ public:
         bool fixedIncidenceAngle = false,
         double lasScale = 0.0001,
         int kdtType = 1,
+        size_t kdtJobs = 1,
         size_t sahLossNodes = 21
     );
 };

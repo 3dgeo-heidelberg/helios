@@ -2,6 +2,7 @@
 
 #include <SimpleKDTreeFactory.h>
 #include <KDTreeFactoryThreadPool.h>
+#include <boost/thread.hpp>
 
 using std::shared_ptr;
 
@@ -19,9 +20,10 @@ private:
     friend class boost::serialization::access;
     /**
      * @brief Serialize a multi thread KDTree factory to a stream of bytes
-     * @tparam Archive Type of rendeering
+     * @tparam Archive Type of rendering
      * @param ar Specific rendering for the stream of bytes
-     * @param version Version number for the K dimensional tree factory
+     * @param version Version number for the multi thread K dimensional tree
+     *  factory
      */
     template <class Archive>
     void serialize(Archive &ar, unsigned int const version){
@@ -32,6 +34,7 @@ private:
 
         ar &boost::serialization::base_object<SimpleKDTreeFactory>(*this);
         ar &kdtf;
+        //ar &tp; // No need to serialize because default built one is used
     }
 
 protected:
@@ -55,11 +58,14 @@ public:
      * @brief MultiThreadKDTreeFactory default constructor
      * @param kdtf The factory to be used to build the KDTree
      */
-    MultiThreadKDTreeFactory(shared_ptr<SimpleKDTreeFactory> kdtf);
+    MultiThreadKDTreeFactory(
+        shared_ptr<SimpleKDTreeFactory> const kdtf,
+        size_t const numJobs=2
+    );
     virtual ~MultiThreadKDTreeFactory() = default;
 
-    // ***  MULTI THREAD KDTREE FACTORY METHODS  *** //
-    // ********************************************* //
+    // ***  KDTREE FACTORY METHODS  *** //
+    // ******************************** //
     /**
      * @brief Build a KDTree which type depends on current KDTree factory
      *  (MultiThreadKDTreeFactory::kdtf) on a multi thread basis
@@ -71,6 +77,12 @@ public:
     ) override;
 
 protected:
+    /**
+     * @brief Call the lighten method of decorated KDTree factory
+     * @see KDTreeFactory::lighten
+     */
+    inline void lighten(KDTreeNodeRoot *root) override {kdtf->lighten(root);}
+
     // ***  BUILDING METHODS  *** //
     // ************************** //
     /**
@@ -85,6 +97,7 @@ protected:
      * @param depth Current depth at build process. Useful for tracking
      *  recursion level
      * @return Built KDTree node
+     * @see SimpleKDTreeFactory::buildRecursive
      */
     KDTreeNode * buildRecursive(
         KDTreeNode *parent,
@@ -92,4 +105,19 @@ protected:
         vector<Primitive*> &primitives,
         int const depth
     ) override;
+    /**
+     * @brief Call the compute KDTree stats method of decorated KDTree factory
+     * @see SimpleKDTreeFactory::computeKDTreeStats
+     */
+    void computeKDTreeStats(KDTreeNodeRoot *root) const override
+    {kdtf->computeKDTreeStats(root);}
+    /**
+     * @brief Call the report KDTree stats method of decorated KDTree factory
+     * @see SimpleKDTreeFactory::reportKDTreeStats
+     */
+    void reportKDTreeStats(
+        KDTreeNodeRoot *root,
+        vector<Primitive *> const &primitives
+    ) const override
+    {kdtf->reportKDTreeStats(root, primitives);}
 };

@@ -36,8 +36,8 @@ public:
     // ***  M E T H O D S  *** //
     // *********************** //
     /**
-	 * @brief Run a task with associated data when there is an available
-     *  thread for it
+	 * @brief Run a task with associated data without considering limit for
+     *  max pending tasks
 	 */
     template <typename Task>
     void run_md_task(Task task, MDType *data){
@@ -62,6 +62,43 @@ public:
     }
 
     /**
+     * @brief Try to run a task with associated data. If the max limit of
+     *  pending tasks has not been reached, the task will be run asynchronously
+     *  and true will be returned once it has been posted to the asynchronous
+     *  execution service. If the max limit has been reached, then the task
+     *  will not be posted to the asynchronous execution service and false
+     *  will be returned.
+     * @return True if task was posted, false otherwise
+     */
+    template <typename Task>
+    bool try_run_md_task(Task task, MDType *data){
+        // Lock run task mutex
+        boost::unique_lock<boost::mutex> lock(this->mutex_);
+
+        // Check pending tasks does not exceed max limit
+        if(getPendingTasks() >= this->pool_size){
+            return false;
+        }
+
+        // Increment number of pending tasks
+        increasePendingTasks();
+
+        // Unlock run task mutex
+        lock.unlock();
+
+        // Post a wrapped task into the queue
+        this->io_service_.post(
+            boost::bind(
+                &MDThreadPool<MDType, TaskArgs ...>::wrap_md_task,
+                this,
+                boost::function<void(TaskArgs ...)>(task),
+                data
+            )
+        );
+        return true;
+    }
+
+    /**
      * @brief Lock until all pending threads have finished
      */
     void join() override {
@@ -69,15 +106,19 @@ public:
         while(getPendingTasks() > 0){
             this->cond_.wait(lock);
         }
+        this->work_.reset(); // Allow works to finish normally
+        this->threads_.join_all(); // Wait for all threads to finish
     }
 
 protected:
     /**
-     * @brief Wrap a data task so that available threads count can be increased
+     * @brief Wrap a data task so that pending tasks count can be increased
      *  once provided data task has been completed
      * @param task Data task to be wrapped
      * @param data Pointer to data associated with the task. It is necessary
-     *  to handle task arguments and to release data after task execution
+     *  to handle task arguments. If data must be released after computation,
+     *  do it at do_md_task implementation. It is safe to do so because it will
+     *  not be used later by any MDThreadPool stage
      */
     virtual void wrap_md_task(
         boost::function<void(TaskArgs ...)> &task,
@@ -85,7 +126,7 @@ protected:
     ){
         // Run supplied data task
         try{
-            do_md_task(task, *data);
+            do_md_task(task, data);
         }
         // Suppress all exceptions.
         catch (const std::exception &e) {
@@ -94,12 +135,16 @@ protected:
             logging::WARN(ss.str());
         }
 
-        // Release associated resources
-        delete data;
-
         // Task has finished, so increment count of available threads.
         boost::unique_lock<boost::mutex> lock(this->mutex_);
         decreasePendingTasks();
+        // TODO Remove section ---
+        /*std::stringstream ss;
+        ss  << "Pending tasks after decrease: " << getPendingTasks();
+        if(getPendingTasks() == 0) ss << "        ####################";
+        ss  << std::endl;
+        std::cout << ss.str();*/
+        // --- TODO Remove section
         if(getPendingTasks()==0) this->cond_.notify_one();
     }
 
@@ -123,7 +168,7 @@ protected:
      */
     virtual void do_md_task(
         boost::function<void(TaskArgs ...)> &task,
-        MDType &data
+        MDType *data
     ) = 0;
 
 public:

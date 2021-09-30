@@ -18,22 +18,7 @@ FastSAHKDTreeFactory::FastSAHKDTreeFactory(
     double const cl,
     double const co
 ) : SAHKDTreeFactory(lossNodes, ci, cl, co)
-{
-    /*
-     * See SimpleKDTreeFactory constructor implementation to understand why
-     *  it is safe to call virtual function here.
-     */
-    _buildRecursive =
-        [&](
-            KDTreeNode *parent,
-            bool const left,
-            vector<Primitive *> &primitives,
-            int const depth
-        ) -> KDTreeNode * {
-            return this->buildRecursive(parent, left, primitives, depth);
-        }
-    ;
-}
+{}
 
 // ***  SAH UTILS  *** //
 // ******************* //
