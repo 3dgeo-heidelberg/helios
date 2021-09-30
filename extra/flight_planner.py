@@ -188,6 +188,109 @@ def export_for_xml(waypoints, altitude, template_id, speed, trajectory_time_inte
     return xml_string
 
 
+def add_transformation_filters(translation=[0, 0, 0], rotation=[0, 0, 0], scale=1, onGround=0):
+    filter = ""
+    if translation != [0, 0, 0] or onGround != 0:
+        filter += """
+            <filter type="translate">  
+                <param type="integer" key="onGround" value="{onGround}" />
+                <param type="vec3" key="offset" value="{x};{y};{z}" />  
+            </filter>\n""".format(onGround=onGround, x=translation[0], y=translation[1], z=translation[2])
+    if rotation != [0, 0, 0]:
+        filter += """
+            <filter type="rotate">
+                <param key="rotation" type="rotation">  
+                    <rot angle_deg="{x_rot}" axis="x"/>  
+                    <rot angle_deg="{y_rot}" axis="y"/>  
+                    <rot angle_deg="{z_rot}" axis="z"/>  
+                </param>
+            </filter>\n""".format(x_rot=rotation[0], y_rot=rotation[1], z_rot=rotation[2])
+    if scale != 1:
+        filter += """
+            <filter type="scale">
+                <param type="double" key="scale" value="{s}" />
+            </filter>\n""".format(s=scale)
+
+    return filter
+
+
+def create_scenepart_obj(filepath, trafofilter=""):
+    scenepart = """
+        <part>
+            <filter type="objloader">
+                <param type="string" key="filepath" value="{spfile}" />
+            </filter>
+            {filter}
+        </part>""".format(spfile=filepath, filter=trafofilter)
+
+    return scenepart
+
+
+def create_scenepart_tiff(filepath, trafofilter="",
+                          matfile="data\sceneparts\basic\groundplane\groundplane.mtl", matname="None"):
+    scenepart = """
+        <part>
+            <filter type="geotiffloader">
+                <param type="string" key="filepath" value="{spfile}" />
+                <param type="string" key="matfile" value="{matfile}" />
+                <param type="string" key="matname" value="{matname}" />
+            </filter>
+            {filter}
+        </part>""".format(spfile=filepath, matfile=matfile, matname=matname, filter=trafofilter)
+
+    return scenepart
+
+
+def create_scenepart_xyz(filepath, trafofilter="", sep=" ", voxel_size=0.5):
+    scenepart = """
+        <part>
+            <filter type="xyzloader">
+                <param type="string" key="filepath" value="{spfile}" />
+                <param type="string" key="separator" value="{sep}" />
+                <param type="double" key="voxelSize" value="{voxsize}" />
+                <!-- Normal estimation using Singular Value Decomposition (SVD)
+                MODE 1: simple mode / MODE 2: advanced mode for large files, which works in batches -->
+                <param type="int" key="estimateNormals" value="1" />
+                <!-- If less than three points fall into one voxel, it is discarded.
+                To avoid this, a default Normal can be assigned to these voxels with:-->
+                <param type="vec3" key="defaultNormal" value="0;0;1" /> 
+            </filter>
+            {filter}
+        </part>""".format(spfile=filepath, sep=sep, voxsize=voxel_size, filter=trafofilter)
+
+    return scenepart
+
+
+def create_scenepart_vox(filepath, trafofilter="", intersectionMode="transmittive", matfile=None, matname=None):
+    if matfile or matname:
+        mat_def = """\n<param type="string" key="matfile" value="{matfile}" />
+        <param type="string" key="matname" value="{matname}" />""".format(matfile=matfile, matname=matname)
+    else:
+        mat_def=""
+    scenepart = """
+        <part>
+            <filter type="detailedvoxels">
+                <param type="string" key="intersectionMode" value="{intersectionMode}" />
+                <param type="string" key="filepath" value="{spfile}" />{matdef}
+            </filter>
+            {filter}
+        </part>""".format(spfile=filepath, intersectionMode=intersectionMode, filter=trafofilter,
+                  matdef=mat_def)
+
+    return scenepart
+
+
+def build_scene(id, name, sceneparts=None):
+    scene_body = """<?xml version="1.0" encoding="UTF-8"?>
+<document>
+    <scene id="{id}" name="{name}">
+        {parts}
+    </scene>
+</document>""".format(id=id, name=name, parts=sceneparts)
+
+    return scene_body
+
+
 if __name__ == "__main__":
 
     # Usage Demo
@@ -201,3 +304,13 @@ if __name__ == "__main__":
     print("Flight duration: %.2f min" % (dist / speed / 60))
     alt = 490
     print(str(export_for_xml(wp, altitude=alt, template_id="uls_template", speed=speed)))
+
+    filters = add_transformation_filters(translation=[2.0, 5.0, 200.0], rotation=[0, 0, 90], onGround=-1)
+
+    sp = create_scenepart_tiff("data/blah.tif",
+                               trafofilter=filters,
+                               matfile="data\sceneparts\basic\groundplane\groundplane.mtl",
+                               matname="None")
+
+    scene = build_scene("test", "test_scene", sp)
+    print(scene)
