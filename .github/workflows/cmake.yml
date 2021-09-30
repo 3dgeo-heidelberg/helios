@@ -25,7 +25,7 @@ jobs:
       run: sudo apt update    
       
     - name: Install required packages
-      run: sudo apt-get install -y cmake libboost-dev libboost-system-dev libboost-thread-dev libboost-regex-dev libboost-filesystem-dev libboost-iostreams-dev libgdal-dev libglm-dev zip unzip xz-utils
+      run: sudo apt-get install -y cmake libboost-dev libboost-system-dev libboost-thread-dev libboost-regex-dev libboost-filesystem-dev libboost-iostreams-dev libgdal-dev libglm-dev zip unzip xz-utils python3.7-dev
       
     - name: Download armadillo
       run: mkdir armadillo && cd armadillo && wget -O armadillo.tar.xz http://sourceforge.net/projects/arma/files/armadillo-10.6.2.tar.xz && tar xf armadillo.tar.xz && cd ..
@@ -67,7 +67,7 @@ jobs:
     - name: Configure CMake
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
       # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
-      run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DCMAKE_RUNTIME_OUTPUT_DIRECTORY:STRING=${{github.workspace}}/build
+      run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DCMAKE_RUNTIME_OUTPUT_DIRECTORY:STRING=${{github.workspace}}/build -DPYTHON_BINDING=1 -DPYTHON_VERSION=37
 
     - name: Build
       # Build your program with the given configuration
@@ -87,4 +87,4 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
           name: linux-executable
-          path: ${{github.workspace}}/build/helios*
+          path: ${{github.workspace}}/build/*helios*
