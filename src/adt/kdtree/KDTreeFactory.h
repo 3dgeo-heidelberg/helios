@@ -3,6 +3,7 @@
 #include <LightKDTreeNode.h>
 #include <KDTreeNode.h>
 #include <KDTreeNodeRoot.h>
+#include <LightKDTreeNodeBlockAllocator.h>
 
 #include <vector>
 
@@ -46,6 +47,13 @@ protected:
      * @see KDTreeFactory::lighten
      */
     bool buildLightNodes = true;
+    /**
+     * @brief The block allocator to speed-up lighten of KDTree by reducing
+     *  allocation calls when instantiating multiple LightKDTreeNode
+     * @see LightKDTreeNodeBlockAllocator
+     * @see KDTreeFactory::lighten
+     */
+    LightKDTreeNodeBlockAllocator lkdtnBlockAllocator;
 
 public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //

@@ -10,6 +10,7 @@
  * @brief Class implementing a thread pool to deal with multi thread KDTree
  *  building process
  * @see ThreadPool
+ * @see MDThreadPool
  * @see MultiThreadKDTreeFactory
  * @see KDTreeBuildType
  */
@@ -21,15 +22,13 @@ class KDTreeFactoryThreadPool : public MDThreadPool<
     int const
 >{
 public:
-// ***  CONSTRUCTION / DESTRUCTION  *** //
+    // ***  CONSTRUCTION / DESTRUCTION  *** //
     // ************************************ //
     /**
      * @brief KDTree factory thread pool constructor
      * @see ThreadPool::pool_size
      */
-    explicit KDTreeFactoryThreadPool(
-        std::size_t const _pool_size
-    ) :
+    explicit KDTreeFactoryThreadPool(std::size_t const _pool_size) :
         MDThreadPool<
             KDTreeBuildType,
             KDTreeNode *,

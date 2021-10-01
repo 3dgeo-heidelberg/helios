@@ -34,6 +34,7 @@ private:
 
         ar &boost::serialization::base_object<SimpleKDTreeFactory>(*this);
         ar &kdtf;
+        ar &minTaskPrimitives;
         //ar &tp; // No need to serialize because default built one is used
     }
 
@@ -50,6 +51,11 @@ protected:
      *  building
      */
     KDTreeFactoryThreadPool tp;
+    /**
+     * @brief The minimum number of primitives on a given split so a new
+     *  task is started to handle them
+     */
+    size_t minTaskPrimitives;
 
 public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //
@@ -77,16 +83,14 @@ public:
     ) override;
 
 protected:
-    /**
-     * @brief Call the lighten method of decorated KDTree factory
-     * @see KDTreeFactory::lighten
-     */
-    inline void lighten(KDTreeNodeRoot *root) override {kdtf->lighten(root);}
-
     // ***  BUILDING METHODS  *** //
     // ************************** //
     /**
-     * @brief Recursively build a KDTree for given primitives
+     * @brief Recursively build a KDTree for given primitives using given
+     *  KDTreeFactory (kdtf). When the number of primitives for a given split
+     *  is \f$\geq\f$ minTaskPrimitives and there are available threads
+     *  in the thread pool, a new task will be started to handle node building
+     *  in a parallel fashion.
      * @param parent The parent node if any. For root nodes, it must be a
      *  nullptr
      * @param left True if given node is a left child, false otherwise.
@@ -97,6 +101,7 @@ protected:
      * @param depth Current depth at build process. Useful for tracking
      *  recursion level
      * @return Built KDTree node
+     * @see MultiThreadKDTreeFactory::minTaskPrimitives
      * @see SimpleKDTreeFactory::buildRecursive
      */
     KDTreeNode * buildRecursive(

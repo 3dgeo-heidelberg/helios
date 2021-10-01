@@ -138,13 +138,6 @@ protected:
         // Task has finished, so increment count of available threads.
         boost::unique_lock<boost::mutex> lock(this->mutex_);
         decreasePendingTasks();
-        // TODO Remove section ---
-        /*std::stringstream ss;
-        ss  << "Pending tasks after decrease: " << getPendingTasks();
-        if(getPendingTasks() == 0) ss << "        ####################";
-        ss  << std::endl;
-        std::cout << ss.str();*/
-        // --- TODO Remove section
         if(getPendingTasks()==0) this->cond_.notify_one();
     }
 

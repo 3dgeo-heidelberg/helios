@@ -9,7 +9,8 @@ MultiThreadKDTreeFactory::MultiThreadKDTreeFactory(
 ) :
     SimpleKDTreeFactory(),
     kdtf(kdtf),
-    tp(numJobs)
+    tp(numJobs),
+    minTaskPrimitives(32)
 {
     /*
      * See SimpleKDTreeFactory constructor implementation to understand why
@@ -69,32 +70,36 @@ KDTreeNode * MultiThreadKDTreeFactory::buildRecursive(
     vector<Primitive*> &primitives,
     int const depth
 ) {
-    KDTreeBuildType *data = new KDTreeBuildType(
-        parent,
-        left,
-        primitives,
-        depth
-    );
-    bool const posted = tp.try_run_md_task(
-        [&] (
-            KDTreeNode *parent,
-            bool const left,
-            vector<Primitive*> &primitives,
-            int const depth
-        ) ->  void {
-            if(left){
-                parent->left = this->kdtf->buildRecursive(
-                    parent, left, primitives, depth
-                );
-            }
-            else{
-                parent->right = this->kdtf->buildRecursive(
-                    parent, left, primitives, depth
-                );
-            }
-        },
-        data
-    );
+    bool posted = false;
+    KDTreeBuildType *data = nullptr;
+    if(primitives.size() >= minTaskPrimitives){
+        data = new KDTreeBuildType(
+            parent,
+            left,
+            primitives,
+            depth
+        );
+        posted = tp.try_run_md_task(
+            [&] (
+                KDTreeNode *parent,
+                bool const left,
+                vector<Primitive*> &primitives,
+                int const depth
+            ) ->  void {
+                if(left){
+                    parent->left = this->kdtf->buildRecursive(
+                        parent, left, primitives, depth
+                    );
+                }
+                else{
+                    parent->right = this->kdtf->buildRecursive(
+                        parent, left, primitives, depth
+                    );
+                }
+            },
+            data
+        );
+    }
     if(posted){ // Null placeholder
         primitives.clear(); // Discard primitives, copy passed through data
         return nullptr;
