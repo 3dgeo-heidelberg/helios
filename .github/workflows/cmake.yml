@@ -59,8 +59,8 @@ jobs:
     #    platform_version: 18.04
     #    boost_install_dir: ${{github.workspace}}/lib
     - name: Download and install Boost
-      - working-directory: ${{github.workspace}}
-      - run: scripts/build/build_boost.sh
+      working-directory: ${{github.workspace}}
+      run: scripts/build/build_boost.sh
 
     - name: Download and install LASTools
       if: steps.cache-boost-lastools.outputs.cache-hit != 'true'
