@@ -20,12 +20,18 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+
+    - name: Setup python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.7' # Version range or exact version of a Python version to use, using SemVer's version range syntax
+        architecture: 'x64' # optional x64 or x86. Defaults to x64 if not specified
     
     - name: Update package lists
-      run: sudo apt update    
-      
+      run: sudo apt update
+
     - name: Install required packages
-      run: sudo apt-get install -y cmake libboost-dev libboost-system-dev libboost-thread-dev libboost-regex-dev libboost-filesystem-dev libboost-iostreams-dev libgdal-dev libglm-dev zip unzip xz-utils python3.7-dev
+      run: sudo apt-get install -y cmake libboost-dev libboost-system-dev libboost-thread-dev libboost-regex-dev libboost-filesystem-dev libboost-iostreams-dev libgdal-dev libglm-dev zip unzip xz-utils
       
     - name: Download armadillo
       run: mkdir armadillo && cd armadillo && wget -O armadillo.tar.xz http://sourceforge.net/projects/arma/files/armadillo-10.6.2.tar.xz && tar xf armadillo.tar.xz && cd ..
