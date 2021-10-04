@@ -42,8 +42,7 @@ protected:
     // ***  ATTRIBUTES  *** //
     // ******************** //
     /**
-     * @brief The SimpleKDTreeFactory or derived to be used to build partial
-     *  trees
+     * @brief The SimpleKDTreeFactory or derived to be used to build tree nodes
      */
     shared_ptr<SimpleKDTreeFactory> kdtf;
     /**
@@ -125,4 +124,20 @@ protected:
         vector<Primitive *> const &primitives
     ) const override
     {kdtf->reportKDTreeStats(root, primitives);}
+
+public:
+    // *** GETTERs and SETTERs  *** //
+    // **************************** //
+    /**
+     * @brief Obtain the SimpleKDTreeFactory used to build tree nodes
+     * @return SimpleKDTreeFactory used to build tree nodes
+     */
+    virtual inline shared_ptr<SimpleKDTreeFactory> getKdtf() const
+    {return kdtf;}
+    /**
+     * @brief Obtain the pool size of the thread pool (num jobs)
+     * @return Pool size of the thread pool (num jobs)
+     */
+    virtual inline size_t getPoolSize() const
+    {return tp.getPoolSize();}
 };

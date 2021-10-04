@@ -84,32 +84,39 @@ void SAHKDTreeFactory::buildChildrenNodes(
         initILOT(node, primitives); // Lock not need, only sequential
     }
 
-    // Compute node as internal
-    double hi, hl, ho, ht;
-    _lockILOT(); // Lock ILOT cache
-    internalizeILOT(
-        hi, hl, ho, ht,
-        node, primitives, leftPrimitives, rightPrimitives
-    );
+    bool split = primitives.size() >= minSplitPrimitives;
+    if(split){ // If split is possible because there are enough primitives
+        // Compute node as internal
+        double hi, hl, ho, ht;
+        _lockILOT(); // Lock ILOT cache
+        internalizeILOT(
+            hi, hl, ho, ht,
+            node, primitives, leftPrimitives, rightPrimitives
+        );
 
-    // Do partitioning if new cost is smaller than previous one
-    if(ht < getCacheT()){
-        toILOTCache(hi, hl, ho, ht);  // Update heuristic ILOT cache
-        _unlockILOT(); // Unlock ILOT cache
-        if(!leftPrimitives.empty()){ // Build left child
-            setChild(node->left, _buildRecursive(
-                node, true, leftPrimitives, depth + 1
-            ));
+        // Do partitioning if new cost is smaller than previous one
+        if(ht < getCacheT()){
+            toILOTCache(hi, hl, ho, ht);  // Update heuristic ILOT cache
+            _unlockILOT(); // Unlock ILOT cache
+            if(!leftPrimitives.empty()){ // Build left child
+                setChild(node->left, _buildRecursive(
+                    node, true, leftPrimitives, depth + 1
+                ));
+            }
+            if(!rightPrimitives.empty()){ // Build right child
+                setChild(node->right, _buildRecursive(
+                    node, false, rightPrimitives, depth + 1
+                ));
+            }
         }
-        if(!rightPrimitives.empty()){ // Build right child
-            setChild(node->right, _buildRecursive(
-                node, false, rightPrimitives, depth + 1
-            ));
+        else { // But if cost is not smaller than previous one
+            _unlockILOT(); // Unlock ILOT cache if finally not splitted
+            split = false; // Flag as not splitted
         }
     }
-    else {
-        _unlockILOT(); // Unlock ILOT cache
-        // Otherwise, make this node a leaf:
+
+    if(!split){
+        // If no split, then make this node a leaf
         node->splitAxis = -1;
         node->primitives = std::make_shared<vector<Primitive *>>(primitives);
     }

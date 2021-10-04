@@ -6,7 +6,7 @@
 
 // ***  CONSTRUCTION / DESTRUCTION  *** //
 // ************************************ //
-SimpleKDTreeFactory::SimpleKDTreeFactory(){
+SimpleKDTreeFactory::SimpleKDTreeFactory() : minSplitPrimitives(5) {
     /*
      * It is safe to call virtual function here.
      * Calling virtual functions on constructor means derived overrides will
@@ -199,6 +199,7 @@ void SimpleKDTreeFactory::buildChildrenNodes(
 ){
     size_t const primsSize = primitives.size();
     if(
+        primsSize >= minSplitPrimitives &&
         leftPrimitives.size() != primsSize &&
         rightPrimitives.size() != primsSize
     ){ // If there are primitives on both partitions, binary split the node

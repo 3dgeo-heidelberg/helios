@@ -32,7 +32,14 @@ private:
      */
     template <class Archive>
     void serialize(Archive &ar, const unsigned int version) {
+        // Register KDTree node classes
+        ar.template register_type<LightKDTreeNode>();
+        ar.template register_type<KDTreeNode>();
+        ar.template register_type<KDTreeNodeRoot>();
+
+        // Serialization itself
         ar &buildLightNodes;
+        //LightKDTreeNodeBlockAllocator lkdtnBlockAllocator; // No need, deflt.
     }
 
 protected:

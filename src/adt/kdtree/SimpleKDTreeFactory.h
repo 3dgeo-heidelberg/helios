@@ -36,6 +36,7 @@ private:
             KDTreeFactory
         >();
         ar &boost::serialization::base_object<KDTreeFactory>(*this);
+        ar &minSplitPrimitives;
     }
 
 protected:
@@ -55,6 +56,18 @@ protected:
         vector<Primitive *> &,
         int const
     )> _buildRecursive;
+
+    /**
+     * @brief How many primitives are required for a node to be splitted.
+     *
+     * If number of primitives is equal or greater than, then node might be
+     *  splitted if necessary criterion is satisfied. Otherwise, no matter if
+     *  other splitting criterion is satisfied, node will never be splitted.
+     * It is mainly useful to prevent too deep KDTrees which might lead to
+     *  consuming a high amount of memory without significant performance
+     *  improvement.
+     */
+    size_t minSplitPrimitives;
 
 public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //

@@ -83,12 +83,14 @@ XmlSceneLoader::createSceneFromXml(
     logging::INFO(ss.str());
 
     // Set KDTree factory and finish scene loading
-    scene->setKDTreeFactory(makeKDTreeFactory());
+    //scene->setKDTreeFactory(makeKDTreeFactory()); // Not yet, avoid building
+    scene->setKDTreeFactory(nullptr); // Prevent building before serializing
     bool success = scene->finalizeLoading();
     if (!success) {
         logging::ERR("Finalizing the scene failed.");
         exit(-1);
     }
+    scene->setKDTreeFactory(makeKDTreeFactory()); // Better after building
 
     // Store scene type if requested
     if(sceneType != nullptr){
