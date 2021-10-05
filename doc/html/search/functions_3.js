@@ -62,7 +62,7 @@ var searchData=
   ['computedensity',['computeDensity',['../da/d52/classSurfaceInspector_1_1maths_1_1Histogram.html#a6c33c47c870407fb4972fccce6a132bd',1,'SurfaceInspector::maths::Histogram']]],
   ['computeengineforce',['computeEngineForce',['../db/d69/classHelicopterPlatform.html#ab35ce371755b03593b9587b662013085',1,'HelicopterPlatform']]],
   ['computefixedpoints',['computeFixedPoints',['../d2/da8/classrigidmotion_1_1RigidMotionEngine.html#a54565faf4bb040e25967127578e134b0',1,'rigidmotion::RigidMotionEngine']]],
-  ['computekdtreestats',['computeKDTreeStats',['../db/d58/classSAHKDTreeFactory.html#aca4a9fd27edb126bcbc9fc5020ef9f15',1,'SAHKDTreeFactory::computeKDTreeStats()'],['../d6/d96/classSimpleKDTreeFactory.html#a259a3500ce239f33914d5da0c694b427',1,'SimpleKDTreeFactory::computeKDTreeStats()']]],
+  ['computekdtreestats',['computeKDTreeStats',['../df/d86/classMultiThreadKDTreeFactory.html#a52a5bf891500e9e7a4cf264cd8c9580a',1,'MultiThreadKDTreeFactory::computeKDTreeStats()'],['../db/d58/classSAHKDTreeFactory.html#aca4a9fd27edb126bcbc9fc5020ef9f15',1,'SAHKDTreeFactory::computeKDTreeStats()'],['../d6/d96/classSimpleKDTreeFactory.html#a259a3500ce239f33914d5da0c694b427',1,'SimpleKDTreeFactory::computeKDTreeStats()']]],
   ['computeliftsinkrate',['computeLiftSinkRate',['../db/d69/classHelicopterPlatform.html#a0917d3a5dcd2bf0dc91b1fd3403d9fe0',1,'HelicopterPlatform']]],
   ['computenodeboundaries',['computeNodeBoundaries',['../d6/d96/classSimpleKDTreeFactory.html#abbc932ae3ef28f324a656add6c1ac5bd',1,'SimpleKDTreeFactory']]],
   ['computenormaldistribution',['computeNormalDistribution',['../dc/d6e/classRandomnessGenerator.html#a7f06cc0c69a88de5e9ae836ba39b822e',1,'RandomnessGenerator']]],

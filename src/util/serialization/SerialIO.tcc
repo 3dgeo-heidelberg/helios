@@ -35,6 +35,9 @@ void SerialIO::write(
         boost::archive::binary_oarchive oa(compressedOut);
         oa & object;
     }
+    catch(archive_exception &aex){
+        handleArchiveException("SerialIO::write", aex);
+    }
     catch(std::exception& e){
         logging::WARN(e.what());
     }

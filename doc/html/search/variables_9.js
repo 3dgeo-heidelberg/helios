@@ -1,11 +1,22 @@
 var searchData=
 [
-  ['k',['k',['../dc/d41/classSurfaceInspector_1_1maths_1_1permuters_1_1CNRIndexPermuter.html#ad821169df83707b38d1efbb19115df52',1,'SurfaceInspector::maths::permuters::CNRIndexPermuter']]],
-  ['ka',['ka',['../d3/d89/classMaterial.html#a32b90a4464b845b50c3dde3bd0fd92e6',1,'Material']]],
-  ['kd',['kd',['../d3/d89/classMaterial.html#a7f495c475a52f3126f6ecb59ca14efb5',1,'Material']]],
-  ['kdtf',['kdtf',['../df/d86/classMultiThreadKDTreeFactory.html#af63ef37445f56c01733def3956da32fa',1,'MultiThreadKDTreeFactory::kdtf()'],['../d5/d9c/classScene.html#a5b4ca990006db81ed71b4850923b1414',1,'Scene::kdtf()']]],
-  ['kdtfactorytype',['kdtFactoryType',['../db/d91/classXmlSceneLoader.html#a84baf9f46d993828f45c4ee31f368a25',1,'XmlSceneLoader']]],
-  ['kdtree',['kdtree',['../d5/d9c/classScene.html#a4d1d59711628b8599f766b0700a02b2f',1,'Scene']]],
-  ['kdtsahlossnodes',['kdtSAHLossNodes',['../db/d91/classXmlSceneLoader.html#ac76abb33c2f601b4ef5c1e69a39fa593',1,'XmlSceneLoader']]],
-  ['ks',['ks',['../d3/d89/classMaterial.html#ab38c89fe419bca7c72fcce18e929f818',1,'Material']]]
+  ['id',['id',['../de/d97/classAsset.html#ac37173d6b01d7b8caa7bd786b8de2269',1,'Asset::id()'],['../d0/d23/classScannerSettings.html#a1ea4710ab141c2548bb193b29b55107c',1,'ScannerSettings::id()'],['../df/dfa/classDynSequence.html#a5d8e2b91af11934a1f5678927bb7e708',1,'DynSequence::id()']]],
+  ['identifiers',['identifiers',['../d7/d5a/classDetailedVoxel.html#ac5791eb69e0db113aadfcb1b3116ea7e',1,'DetailedVoxel']]],
+  ['ignored_5fground',['IGNORED_GROUND',['../df/d64/classLasSpecification.html#aa9c826365fbe77d2808352882e74780c',1,'LasSpecification']]],
+  ['ilotcachelock',['ilotCacheLock',['../dd/d95/classMultiThreadSAHKDTreeFactory.html#a76fc728b451cae6ec8a6bb843688d511',1,'MultiThreadSAHKDTreeFactory']]],
+  ['ilotcachemutex',['ilotCacheMutex',['../dd/d95/classMultiThreadSAHKDTreeFactory.html#a5cc67dda6cbbf7d3ffa0e2ecbebf622c',1,'MultiThreadSAHKDTreeFactory']]],
+  ['imh',['imh',['../db/d57/classfluxionum_1_1UnivariateNewtonRaphsonMinimizer.html#a041caf921ac2956262f56cb4f64dced7',1,'fluxionum::UnivariateNewtonRaphsonMinimizer']]],
+  ['incidenceangle',['incidenceAngle',['../dc/da3/classRaySceneIntersection.html#ad5b87188865c84aefe07c9ca5734555c',1,'RaySceneIntersection']]],
+  ['indices',['indices',['../dc/d41/classSurfaceInspector_1_1maths_1_1permuters_1_1CNRIndexPermuter.html#ac913cf6600d817ed3ea14ba7ef3d86a4',1,'SurfaceInspector::maths::permuters::CNRIndexPermuter']]],
+  ['initialized',['initialized',['../d6/d26/classSurfaceInspector_1_1util_1_1draggers_1_1MinDragger.html#aae9f7d2e7a8e5e01fb99b05cf6f752ad',1,'SurfaceInspector::util::draggers::MinDragger']]],
+  ['instance',['instance',['../d6/db9/classSerialIO.html#a04a14f46d2374bd1621ae407e32a6619',1,'SerialIO']]],
+  ['intensity',['intensity',['../db/d2e/classMeasurement.html#ac537713b6754711cd47677703bbb632e',1,'Measurement']]],
+  ['intensitycoefficient',['intensityCoefficient',['../d2/db3/classLasSyncFileWriter.html#ae1fad8ae58c17aece13774f036c15bec',1,'LasSyncFileWriter']]],
+  ['intersectionhandlingnoisesource',['intersectionHandlingNoiseSource',['../dc/d42/classScanner.html#ab0d7c2f3cbd4e8811d25958fad4deb4a',1,'Scanner']]],
+  ['intersectionhandlingnoisesources',['intersectionHandlingNoiseSources',['../d6/ddc/classPulseThreadPool.html#a8c8a5e87ca527b9b016ebe58dc8ac366',1,'PulseThreadPool']]],
+  ['intersectionpoint',['intersectionPoint',['../d1/dc8/classIntersectionHandlingResult.html#a9118ea2e7003c044745b537170e30912',1,'IntersectionHandlingResult']]],
+  ['intvalues',['intValues',['../d7/d5a/classDetailedVoxel.html#a38a6cb307025c0535ce8848777be6774',1,'DetailedVoxel']]],
+  ['io_5fservice_5f',['io_service_',['../dc/de7/classThreadPool.html#a5b2814c08d65ed6223303bcde6add26c',1,'ThreadPool']]],
+  ['isground',['isGround',['../d3/d89/classMaterial.html#ab01034a003a0e9798f11971f9af624c3',1,'Material']]],
+  ['iteration',['iteration',['../df/dfa/classDynSequence.html#a42fb87bc94b5e7bbfdb6072d51e1d430',1,'DynSequence']]]
 ];

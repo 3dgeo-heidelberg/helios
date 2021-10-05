@@ -1,3 +1,4 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$df/dc3/classDirections.html" title="Coordinate system convention. " alt="" coords="5,5,87,32"/>
+<area shape="rect" id="node1" href="$d9/d47/classBlockAllocator.html" title="BlockAllocator\&lt; LightKDTree\lNode \&gt;" alt="" coords="5,5,196,47"/>
+<area shape="rect" id="node2" href="$dd/d04/classLightKDTreeNodeBlockAllocator.html" title="Block allocator for LightKDTreeNode instances. " alt="" coords="244,13,455,39"/>
 </map>

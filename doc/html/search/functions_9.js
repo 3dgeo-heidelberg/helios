@@ -1,8 +1,9 @@
 var searchData=
 [
+  ['increasependingtasks',['increasePendingTasks',['../d0/d21/classMDThreadPool.html#a2604acd9240936d50bb203aed8efeba5',1,'MDThreadPool']]],
   ['indexfromcoordinates',['indexFromCoordinates',['../d6/d03/classXYZPointCloudFileLoader.html#a0c3f03060ab2a991450d6b31feb862de',1,'XYZPointCloudFileLoader']]],
   ['info',['INFO',['../d0/da9/logging_8hpp.html#a0d21bd29f2facd645f123ec469c16250',1,'logging']]],
-  ['init',['init',['../d3/d40/classLidarSim.html#a789323d5e91fb3c3655ea0f54d1560ba',1,'LidarSim::init()'],['../da/d69/classSurfaceInspector_1_1maths_1_1SingularContextComputer.html#a08d5397cf54a8b09706395d6c3201de7',1,'SurfaceInspector::maths::SingularContextComputer::init()']]],
+  ['init',['init',['../d3/d40/classLidarSim.html#a1e63342599abc975915c7c054cdd95ef',1,'LidarSim::init()'],['../da/d69/classSurfaceInspector_1_1maths_1_1SingularContextComputer.html#a08d5397cf54a8b09706395d6c3201de7',1,'SurfaceInspector::maths::SingularContextComputer::init()']]],
   ['initialize',['initialize',['../d6/d26/classSurfaceInspector_1_1util_1_1draggers_1_1MinDragger.html#a57ee64e2ce5c006cbfd6d0f51cfbd6df',1,'SurfaceInspector::util::draggers::MinDragger']]],
   ['initializefullwaveform',['initializeFullWaveform',['../db/da6/classFullWaveformPulseRunnable.html#a50b690e9352dfcdc998a35bc222481e9',1,'FullWaveformPulseRunnable']]],
   ['initializeworkspace',['initializeWorkspace',['../d1/d2b/classMarquardtFitter.html#a0c716799a24ec0c8ddc46c92e0f9b7b6',1,'MarquardtFitter']]],

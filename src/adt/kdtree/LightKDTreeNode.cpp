@@ -3,16 +3,20 @@
 // ***  CONSTRUCTION / DESTRUCTION  *** //
 // ************************************ //
 LightKDTreeNode::LightKDTreeNode(LightKDTreeNode const &kdtn){
-    left = new LightKDTreeNode(*kdtn.left);
-    right = new LightKDTreeNode(*kdtn.right);
+    if(kdtn.left == nullptr) left = nullptr;
+    else left = new LightKDTreeNode(*kdtn.left);
+    if(kdtn.right == nullptr) right = nullptr;
+    else right = new LightKDTreeNode(*kdtn.right);
     splitPos = kdtn.splitPos;
     splitAxis = kdtn.splitAxis;
     primitives = kdtn.primitives;
 }
 
 LightKDTreeNode::LightKDTreeNode(LightKDTreeNode &&kdtn){
-    left = new LightKDTreeNode(*kdtn.left);
-    right = new LightKDTreeNode(*kdtn.right);
+    if(kdtn.left == nullptr) left = nullptr;
+    else left = new LightKDTreeNode(*kdtn.left);
+    if(kdtn.right == nullptr) right = nullptr;
+    else right = new LightKDTreeNode(*kdtn.right);
     splitPos = kdtn.splitPos;
     splitAxis = kdtn.splitAxis;
     primitives = kdtn.primitives;

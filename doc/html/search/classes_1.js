@@ -5,5 +5,7 @@ var searchData=
   ['binarytreebreadthiterator',['BinaryTreeBreadthIterator',['../d0/da5/classBinaryTreeBreadthIterator.html',1,'']]],
   ['binarytreedepthiterator',['BinaryTreeDepthIterator',['../d4/d02/classBinaryTreeDepthIterator.html',1,'']]],
   ['binarytreefastbreadthiterator',['BinaryTreeFastBreadthIterator',['../d3/d43/classBinaryTreeFastBreadthIterator.html',1,'']]],
-  ['binarytreefastdepthiterator',['BinaryTreeFastDepthIterator',['../dc/da5/classBinaryTreeFastDepthIterator.html',1,'']]]
+  ['binarytreefastdepthiterator',['BinaryTreeFastDepthIterator',['../dc/da5/classBinaryTreeFastDepthIterator.html',1,'']]],
+  ['blockallocator',['BlockAllocator',['../d9/d47/classBlockAllocator.html',1,'']]],
+  ['blockallocator_3c_20lightkdtreenode_20_3e',['BlockAllocator&lt; LightKDTreeNode &gt;',['../d9/d47/classBlockAllocator.html',1,'']]]
 ];

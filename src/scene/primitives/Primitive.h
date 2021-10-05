@@ -22,6 +22,7 @@ class Vertex;
  * @brief Abstract class defining the common behavior for all primitives
  */
 class Primitive {
+private:
     // ***  SERIALIZATION  *** //
     // *********************** //
 	friend class boost::serialization::access;

@@ -9,6 +9,8 @@ var classKDTreeFactory =
     [ "makeFromPrimitivesUnsafe", "d5/dd0/classKDTreeFactory.html#a06b1ebdfb108a2c5a389ee390f534197", null ],
     [ "serialize", "d5/dd0/classKDTreeFactory.html#a340d5ac604d1f2e62afb2b1177cd4137", null ],
     [ "setBuildingLightNodes", "d5/dd0/classKDTreeFactory.html#a998f586e172af6066c63d3d3a251860e", null ],
+    [ "setChild", "d5/dd0/classKDTreeFactory.html#a794e82f978b631abf55b85f6ac72ea01", null ],
     [ "boost::serialization::access", "d5/dd0/classKDTreeFactory.html#ac98d07dd8f7b70e16ccb9a01abf56b9c", null ],
-    [ "buildLightNodes", "d5/dd0/classKDTreeFactory.html#aa6ede7a422802db8e6cbf537861d5f56", null ]
+    [ "buildLightNodes", "d5/dd0/classKDTreeFactory.html#aa6ede7a422802db8e6cbf537861d5f56", null ],
+    [ "lkdtnBlockAllocator", "d5/dd0/classKDTreeFactory.html#a5316cf17aff5dd178d2a84d31410e213", null ]
 ];

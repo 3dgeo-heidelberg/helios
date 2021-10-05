@@ -274,6 +274,12 @@ shared_ptr<Scene> XmlSurveyLoader::loadScene(
           getAssetByLocation("scene", sceneString, &sceneType)
       );
       SerialSceneWrapper(sceneType, scene.get()).writeScene(sceneObjPath);
+      /*
+       * Build KDTree for Scene after exporting it.
+       * This way memory issues coming from tracking of pointers at serialization
+       * are avoided, as there is more available memory
+       */
+      scene->buildKDTreeWithLog();
     }
   } catch (exception &e) {
     stringstream ss;

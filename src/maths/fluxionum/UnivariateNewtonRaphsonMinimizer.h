@@ -51,7 +51,7 @@ protected:
     /**
      * @brief Iterative method handler for the univariate Newton-Raphson
      *  minimization
-     * @see fluxion::IterativeMethodHandler
+     * @see fluxionum::IterativeMethodHandler
      */
     IterativeMethodHandler<IT, OT> imh;
 

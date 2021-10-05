@@ -43,7 +43,7 @@ public:
     // ************************************ //
     /**
      * @brief Thread pool constructor
-     * @see thread_pool::pool_size
+     * @see ThreadPool::pool_size
      * @param deviceAccuracy Parameter used to handle randomness generation
      *  impact on simulation results
      */
@@ -90,7 +90,7 @@ protected:
     /**
      * @brief Do a pulse task
      * @param task Pulse task
-     * @see ThreadPool::do_task
+     * @see ResThreadPool::do_task
      */
     inline void do_res_task(
         boost::function<void(

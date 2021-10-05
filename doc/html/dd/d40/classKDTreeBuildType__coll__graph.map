@@ -1,0 +1,9 @@
+<map id="KDTreeBuildType" name="KDTreeBuildType">
+<area shape="rect" id="node3" href="$d8/d94/classKDTreeNode.html" title="Class representing a KDTree node. " alt="" coords="168,276,267,303"/>
+<area shape="rect" id="node4" href="$dd/d79/classLightKDTreeNode.html" title="Class representing a light KDTree node. It is, the basic representation of a KDTree node with uses le..." alt="" coords="54,185,181,212"/>
+<area shape="rect" id="node5" href="$d7/d98/classIBinaryTreeNode.html" title="Binary tree node interface that must be implemented by any class providing binary tree node based fun..." alt="" coords="57,95,177,121"/>
+<area shape="rect" id="node6" href="$d2/d1a/classAABB.html" title="Class representing an Axis Aligned Bounding Box (AABB) " alt="" coords="259,185,317,212"/>
+<area shape="rect" id="node7" href="$df/de1/classPrimitive.html" title="Abstract class defining the common behavior for all primitives. " alt="" coords="227,95,301,121"/>
+<area shape="rect" id="node8" href="$d2/da0/classVertex.html" title="Class representing a vertex. " alt="" coords="325,95,385,121"/>
+<area shape="rect" id="node9" href="$db/d02/classColor4f.html" title="Class representing a color with 4 float components: RGBA. " alt="" coords="323,5,387,32"/>
+</map>

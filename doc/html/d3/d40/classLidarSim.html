@@ -101,16 +101,16 @@ $(document).ready(function(){initNavTree('d3/d40/classLidarSim.html','../../');}
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a789323d5e91fb3c3655ea0f54d1560ba"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/d40/classLidarSim.html#a789323d5e91fb3c3655ea0f54d1560ba">init</a> (std::string surveyPath, std::string assetsPath, std::string outputPath, bool writeWaveform=false, bool calcEchowidth=false, size_t njobs=0, bool fullWaveNoise=false, bool platformNoiseDisabled=false, bool legNoiseDisabled=false, bool rebuildScene=false, bool lasOutput=false, bool las10=false, bool zipOutput=false, bool fixedIncidenceAngle=false, double lasScale=0.0001, int kdtType=1, size_t sahLossNodes=21)</td></tr>
-<tr class="memdesc:a789323d5e91fb3c3655ea0f54d1560ba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize a LiDAR simulation.  <a href="#a789323d5e91fb3c3655ea0f54d1560ba">More...</a><br /></td></tr>
-<tr class="separator:a789323d5e91fb3c3655ea0f54d1560ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1e63342599abc975915c7c054cdd95ef"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/d40/classLidarSim.html#a1e63342599abc975915c7c054cdd95ef">init</a> (std::string surveyPath, std::string assetsPath, std::string outputPath, bool writeWaveform=false, bool calcEchowidth=false, size_t njobs=0, bool fullWaveNoise=false, bool platformNoiseDisabled=false, bool legNoiseDisabled=false, bool rebuildScene=false, bool lasOutput=false, bool las10=false, bool zipOutput=false, bool fixedIncidenceAngle=false, double lasScale=0.0001, int kdtType=1, size_t kdtJobs=1, size_t sahLossNodes=21)</td></tr>
+<tr class="memdesc:a1e63342599abc975915c7c054cdd95ef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize a LiDAR simulation.  <a href="#a1e63342599abc975915c7c054cdd95ef">More...</a><br /></td></tr>
+<tr class="separator:a1e63342599abc975915c7c054cdd95ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Lidar simulation class. </p>
 <p>It serves as entry point for Helios++ execution </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a789323d5e91fb3c3655ea0f54d1560ba"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a789323d5e91fb3c3655ea0f54d1560ba">&#9670;&nbsp;</a></span>init()</h2>
+<a id="a1e63342599abc975915c7c054cdd95ef"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1e63342599abc975915c7c054cdd95ef">&#9670;&nbsp;</a></span>init()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -215,6 +215,12 @@ Public Member Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>kdtJobs</em> = <code>1</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
           <td class="paramname"><em>sahLossNodes</em> = <code>21</code>&#160;</td>
         </tr>
         <tr>
@@ -243,6 +249,9 @@ Public Member Functions</h2></td></tr>
     <tr><td class="paramname">zipOutput</td><td>Flag to specify output zipping. True implies output will be zipped, false means it will not </td></tr>
     <tr><td class="paramname">fixedIncidenceAngle</td><td>Flag to specify usage of fixed incidence angle. True means fixed incidence angle will be used, false implies it will not </td></tr>
     <tr><td class="paramname">lasScale</td><td>Specify LAS format scale factor </td></tr>
+    <tr><td class="paramname">kdtType</td><td>Specify the type of KDTree building strategy </td></tr>
+    <tr><td class="paramname">kdtJobs</td><td>Specify how many threads use to build the KDTree </td></tr>
+    <tr><td class="paramname">sahLossNodes</td><td>Specify the number of nodes used to find the optimal split point when SAH or the number of samples if fast SAH is used </td></tr>
   </table>
   </dd>
 </dl>

@@ -174,6 +174,12 @@ int ArgumentsParser::parseKDTreeType(){
     return std::atoi(argv[index+1]);
 }
 
+size_t ArgumentsParser::parseKDTreeJobs(){
+    int index = findIndexOfArgument("--kdtJobs");
+    if(index < 0) return 1;
+    return std::stoul(argv[index+1]);
+}
+
 size_t ArgumentsParser::parseSAHLossNodes(){
     int index = findIndexOfArgument("--sahNodes");
     if(index < 0) return 21;
