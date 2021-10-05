@@ -179,6 +179,7 @@ $(document).ready(function(){initNavTree('functions_func_s.html','');});
 , <a class="el" href="d4/d02/classBinaryTreeDepthIterator.html#a21c45ed6df1b34199e2970602a3d101b">BinaryTreeDepthIterator&lt; NodeType &gt;</a>
 , <a class="el" href="d3/d43/classBinaryTreeFastBreadthIterator.html#ab77875db388092e768c74461b47615b9">BinaryTreeFastBreadthIterator&lt; NodeType &gt;</a>
 , <a class="el" href="dc/da5/classBinaryTreeFastDepthIterator.html#a223537da59084b058350fcc457766271">BinaryTreeFastDepthIterator&lt; NodeType &gt;</a>
+, <a class="el" href="d9/d47/classBlockAllocator.html#aa60a2eef5079c635eb67592a037df3f8">BlockAllocator&lt; Class &gt;</a>
 , <a class="el" href="db/d02/classColor4f.html#a5e8911b8224c9de7ec43b75df5b40815">Color4f</a>
 , <a class="el" href="d6/d4f/classDynMotion.html#ae72baca1f6e73d7c43a90f2ad39db0e4">DynMotion</a>
 , <a class="el" href="d2/d0a/classDynMotionEngine.html#a3569f63fe2b5bd41a5dd423ffa18d0ca">DynMotionEngine</a>
@@ -200,7 +201,9 @@ $(document).ready(function(){initNavTree('functions_func_s.html','');});
 , <a class="el" href="d8/d94/classKDTreeNode.html#a11b2ffaaf7f1b7861fabfd56c288ea7a">KDTreeNode</a>
 , <a class="el" href="d0/d64/classKDTreeNodeRoot.html#a6a597d700fc1da1574837655caeedf7f">KDTreeNodeRoot</a>
 , <a class="el" href="dd/d79/classLightKDTreeNode.html#acfa5527af947f0673cd37e0a4d40c181">LightKDTreeNode</a>
+, <a class="el" href="dd/d04/classLightKDTreeNodeBlockAllocator.html#aeb7a4d37a77a2d34340357d14c136326">LightKDTreeNodeBlockAllocator</a>
 , <a class="el" href="df/d86/classMultiThreadKDTreeFactory.html#a30072d03533c8a5a85d8879d1fb435fc">MultiThreadKDTreeFactory</a>
+, <a class="el" href="dd/d95/classMultiThreadSAHKDTreeFactory.html#a99771e41b780ee4d11b86be1977089bb">MultiThreadSAHKDTreeFactory</a>
 , <a class="el" href="df/de1/classPrimitive.html#a9514a8abc75f6b1f537501b5e5c1177f">Primitive</a>
 , <a class="el" href="d7/d84/classrigidmotion_1_1RigidMotion.html#a95368d084d984bc260b778a0477d04f9">rigidmotion::RigidMotion</a>
 , <a class="el" href="d2/da8/classrigidmotion_1_1RigidMotionEngine.html#aaecfc762505fc89be8c7d05168a95fe1">rigidmotion::RigidMotionEngine</a>
@@ -273,6 +276,9 @@ $(document).ready(function(){initNavTree('functions_func_s.html','');});
 <li>setC()
 : <a class="el" href="d7/d84/classrigidmotion_1_1RigidMotion.html#afee19fb86c47e69c4fa06966c701bd8f">rigidmotion::RigidMotion</a>
 </li>
+<li>setCacheRoot()
+: <a class="el" href="db/d58/classSAHKDTreeFactory.html#afec5d2b00b82b76e07be47619f305646">SAHKDTreeFactory</a>
+</li>
 <li>setCalcEchowidth()
 : <a class="el" href="dc/d42/classScanner.html#ac009bab51b33edd5e56adad9125eaf1f">Scanner</a>
 </li>
@@ -281,6 +287,9 @@ $(document).ready(function(){initNavTree('functions_func_s.html','');});
 </li>
 <li>setCentroid()
 : <a class="el" href="dd/dc4/classScenePart.html#a49668b1b63fac9583c9cd33b4190c532">ScenePart</a>
+</li>
+<li>setChild()
+: <a class="el" href="d5/dd0/classKDTreeFactory.html#a794e82f978b631abf55b85f6ac72ea01">KDTreeFactory</a>
 </li>
 <li>setClipEnabled()
 : <a class="el" href="d9/d6b/classNoiseSource.html#a87ff32595da9ab7e23077b9c7b3247ed">NoiseSource&lt; RealType &gt;</a>
@@ -454,8 +463,11 @@ $(document).ready(function(){initNavTree('functions_func_s.html','');});
 <li>setNext()
 : <a class="el" href="df/dfa/classDynSequence.html#a8103e890ce68180f2bf1c4ae067be109">DynSequence&lt; T &gt;</a>
 </li>
+<li>setNextBlockSize()
+: <a class="el" href="d9/d47/classBlockAllocator.html#a4ba2fd5d94bc0401bb13123e3195d70b">BlockAllocator&lt; Class &gt;</a>
+</li>
 <li>setNode()
-: <a class="el" href="de/d22/classIterableTreeNode.html#a06c6815ed94500215f3d6db532d09c99">IterableTreeNode&lt; NodeType &gt;</a>
+: <a class="el" href="de/d22/classIterableTreeNode.html#afaab991d8cc8ef126807e58e814b69f1">IterableTreeNode&lt; NodeType &gt;</a>
 </li>
 <li>setNormalDefColor()
 : <a class="el" href="df/dd2/classvisualhelios_1_1VHNormalsCanvas.html#aa993131327c3b7bf524590ffefed1fb1">visualhelios::VHNormalsCanvas</a>
@@ -508,6 +520,9 @@ $(document).ready(function(){initNavTree('functions_func_s.html','');});
 </li>
 <li>setPatiencePreserveBest()
 : <a class="el" href="d8/d34/classfluxionum_1_1IterativeMethodHandler.html#a7d46e8e6a8eebeeca01328b3d5e96b35">fluxionum::IterativeMethodHandler&lt; IT, ET &gt;</a>
+</li>
+<li>setPendingTasks()
+: <a class="el" href="d0/d21/classMDThreadPool.html#a601dffa9e67ec14baea9eaf14abd3abb">MDThreadPool&lt; MDType, TaskArgs &gt;</a>
 </li>
 <li>setPlatformNoiseDisabled()
 : <a class="el" href="dc/d42/classScanner.html#ab706f8fdbf4e9d12e851e16c08b0ac2e">Scanner</a>
@@ -613,7 +628,7 @@ $(document).ready(function(){initNavTree('functions_func_s.html','');});
 : <a class="el" href="dc/d42/classScanner.html#a9a23a9a1b6f756411a7455b784eecbd0">Scanner</a>
 </li>
 <li>shortestRotationSign()
-: <a class="el" href="dc/db6/classVectorial.html#af7a9a79a3e8444149d5f2b9e5cba4fc4">Vectorial</a>
+: <a class="el" href="dc/db6/classVectorial.html#ac4271a5e4879edc2334df02bd71aa412">Vectorial</a>
 </li>
 <li>shortestRotationSignXY()
 : <a class="el" href="dc/db6/classVectorial.html#aaeeaf313e7fc60e4374b2b82f027253d">Vectorial</a>
@@ -628,7 +643,7 @@ $(document).ready(function(){initNavTree('functions_func_s.html','');});
 , <a class="el" href="d6/da1/classSurveyPlayback.html#a709f9b2c869a95e9f304aae61776f486">SurveyPlayback</a>
 </li>
 <li>SimpleKDTreeFactory()
-: <a class="el" href="d6/d96/classSimpleKDTreeFactory.html#abd0ddd1777cecd176f94a14da1537bd9">SimpleKDTreeFactory</a>
+: <a class="el" href="d6/d96/classSimpleKDTreeFactory.html#aac0b2d556d61c2e301de1eb2f9bda823">SimpleKDTreeFactory</a>
 </li>
 <li>SimplePhysicsPlatform()
 : <a class="el" href="d5/d3b/classSimplePhysicsPlatform.html#ad2dfa8b3244c05f003573ee506359857">SimplePhysicsPlatform</a>
@@ -650,7 +665,7 @@ $(document).ready(function(){initNavTree('functions_func_s.html','');});
 : <a class="el" href="dc/d7a/classSimulationCycleCallback.html#aa95895ec576ace1b53b0ab3acc3e4959">SimulationCycleCallback</a>
 </li>
 <li>SingularContextComputer()
-: <a class="el" href="da/d69/classSurfaceInspector_1_1maths_1_1SingularContextComputer.html#a419b0061a41e8ab6d109814df6850966">SurfaceInspector::maths::SingularContextComputer&lt; T &gt;</a>
+: <a class="el" href="da/d69/classSurfaceInspector_1_1maths_1_1SingularContextComputer.html#aadc542e51c57b6e3254d0e5390fe84aa">SurfaceInspector::maths::SingularContextComputer&lt; T &gt;</a>
 </li>
 <li>SingularContextDescriptors()
 : <a class="el" href="d1/db0/classSurfaceInspector_1_1maths_1_1SingularContextDescriptors.html#ae072c17fe12fb26a555ec13536c83135">SurfaceInspector::maths::SingularContextDescriptors&lt; T &gt;</a>
@@ -700,13 +715,13 @@ $(document).ready(function(){initNavTree('functions_func_s.html','');});
 : <a class="el" href="d6/da1/classSurveyPlayback.html#a9e85f5b357058d991ea18b84a3b1a1c8">SurveyPlayback</a>
 </li>
 <li>StaticScene()
-: <a class="el" href="dd/d34/classStaticScene.html#a22c7ade286cc51ee7743430fa3da5356">StaticScene</a>
+: <a class="el" href="dd/d34/classStaticScene.html#a6e87ff4627fdc40e76a649684a9804d5">StaticScene</a>
 </li>
 <li>std_out_logger()
 : <a class="el" href="d0/db8/classstd__out__logger.html#a5850c7ab42a24859031f6573361068d0">std_out_logger</a>
 </li>
 <li>stdev()
-: <a class="el" href="da/d24/classSurfaceInspector_1_1maths_1_1Statistics.html#a3daae1cabac9a4d649b1aec9ec39e774">SurfaceInspector::maths::Statistics</a>
+: <a class="el" href="da/d24/classSurfaceInspector_1_1maths_1_1Statistics.html#a9ba0ea2807249d5c83f35b49315d5eb2">SurfaceInspector::maths::Statistics</a>
 </li>
 <li>stop()
 : <a class="el" href="d9/ddd/classpyhelios_1_1PyHeliosSimulation.html#ac5caa892758a92dd8d93bf3aed9aa94f">pyhelios::PyHeliosSimulation</a>

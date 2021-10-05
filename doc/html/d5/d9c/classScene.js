@@ -4,6 +4,8 @@ var classScene =
     [ "~Scene", "d5/d9c/classScene.html#a9990bde99d4f00742ed4de308bf194ae", null ],
     [ "Scene", "d5/d9c/classScene.html#a9eca6af7cda6d6bd8bf5ae19597f9ddc", null ],
     [ "BOOST_SERIALIZATION_SPLIT_MEMBER", "d5/d9c/classScene.html#a362e319a7d418a6905a6aa3b82065a5a", null ],
+    [ "buildKDTree", "d5/d9c/classScene.html#af7059974718edb201526fb4075ec7eb7", null ],
+    [ "buildKDTreeWithLog", "d5/d9c/classScene.html#a2f559623cbaa92f0245162dc90b33769", null ],
     [ "doForceOnGround", "d5/d9c/classScene.html#a3c173e62cd1c1c31cdd05edcafbee0ab", null ],
     [ "finalizeLoading", "d5/d9c/classScene.html#adb8e9900ddf447c30d4ff869e3f0c152", null ],
     [ "findForceOnGroundQ", "d5/d9c/classScene.html#abbd93c3c45cb22ba6fa6c6f7da1dcb01", null ],

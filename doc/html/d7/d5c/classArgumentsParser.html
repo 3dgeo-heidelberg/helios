@@ -185,6 +185,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../.
 <tr class="memitem:a63afc3c3a1e1c948cb1d3b8ef81d9c4b"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d5c/classArgumentsParser.html#a63afc3c3a1e1c948cb1d3b8ef81d9c4b">parseKDTreeType</a> ()</td></tr>
 <tr class="memdesc:a63afc3c3a1e1c948cb1d3b8ef81d9c4b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parse the type of KDTree.  <a href="#a63afc3c3a1e1c948cb1d3b8ef81d9c4b">More...</a><br /></td></tr>
 <tr class="separator:a63afc3c3a1e1c948cb1d3b8ef81d9c4b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaf6e07ac4870778a2164b3307babdd30"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d5c/classArgumentsParser.html#aaf6e07ac4870778a2164b3307babdd30">parseKDTreeJobs</a> ()</td></tr>
+<tr class="memdesc:aaf6e07ac4870778a2164b3307babdd30"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parse how many KDTree jobs must be used to build the KDTree.  <a href="#aaf6e07ac4870778a2164b3307babdd30">More...</a><br /></td></tr>
+<tr class="separator:aaf6e07ac4870778a2164b3307babdd30"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a459d589c14b5dbcefcecd7e320ef92a2"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d5c/classArgumentsParser.html#a459d589c14b5dbcefcecd7e320ef92a2">parseSAHLossNodes</a> ()</td></tr>
 <tr class="memdesc:a459d589c14b5dbcefcecd7e320ef92a2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parse on how many nodes the loss function of the surface area heuristic must be evaluated when building the KDTree.  <a href="#a459d589c14b5dbcefcecd7e320ef92a2">More...</a><br /></td></tr>
 <tr class="separator:a459d589c14b5dbcefcecd7e320ef92a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -486,6 +489,29 @@ Private Attributes</h2></td></tr>
 
 <p>Parse help request argument if any (-h or &ndash;help) </p>
 <dl class="section return"><dt>Returns</dt><dd>true if help was requested, false otherwise. </dd></dl>
+
+</div>
+</div>
+<a id="aaf6e07ac4870778a2164b3307babdd30"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaf6e07ac4870778a2164b3307babdd30">&#9670;&nbsp;</a></span>parseKDTreeJobs()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t ArgumentsParser::parseKDTreeJobs </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Parse how many KDTree jobs must be used to build the KDTree. </p>
+<p>1 (default) : Sequential building</p>
+<p>0 : As many threads as available by the system</p>
+<p>&gt;1 : Exactly this number of threads for parallel building</p>
+<dl class="section return"><dt>Returns</dt><dd>Number of jobs to be used to build the KDTree </dd></dl>
 
 </div>
 </div>
