@@ -189,6 +189,18 @@ def export_for_xml(waypoints, altitude, template_id, speed, trajectory_time_inte
 
 
 def add_transformation_filters(translation=[0, 0, 0], rotation=[0, 0, 0], scale=1, onGround=0):
+    """
+    This function creates a string of transformation filters for a given translation, rotation and scale
+    :param translation: list of translations in x-, y- and z-direction; [t_x, t_y, t_z] (list)
+    :param rotation: list of rotations around the x-, y- and z-axes; [rot_x, rot_y, rot_z] (list)
+    :param scale: value by which to scale the scenepart (float)
+    :param onGround: flag to specifiy whether the scenepart should be translated to the ground (integer)
+                    0  = no ground translation
+                    -1 = find optimal ground translation
+                    1  = find quick ground translation
+                    >1 = specify a depth for the search process
+    :return: transformation filter(s) (string)
+    """
     filter = ""
     if translation != [0, 0, 0] or onGround != 0:
         filter += """
@@ -215,6 +227,13 @@ def add_transformation_filters(translation=[0, 0, 0], rotation=[0, 0, 0], scale=
 
 
 def create_scenepart_obj(filepath, trafofilter=""):
+    """
+    This function creates a scenepart string to load OBJ-files
+    :param filepath: path to the OBJ-file
+    :param trafofilter: transformation filter, surrounded by <filter>-tags (string)
+
+    :return: scenepart (string)
+    """
     scenepart = """
         <part>
             <filter type="objloader">
@@ -228,6 +247,15 @@ def create_scenepart_obj(filepath, trafofilter=""):
 
 def create_scenepart_tiff(filepath, trafofilter="",
                           matfile="data\sceneparts\basic\groundplane\groundplane.mtl", matname="None"):
+    """
+    This function creates a scenepart string to load GeoTIFFs
+    :param filepath: path to the GeoTIFF-file (string)
+    :param trafofilter: transformation filter, surrounded by <filter>-tags (string)
+    :param matfile: path to the material file (string)
+    :param matname: name of the material to use (string)
+
+    :return: scenepart (string)
+    """
     scenepart = """
         <part>
             <filter type="geotiffloader">
@@ -242,6 +270,15 @@ def create_scenepart_tiff(filepath, trafofilter="",
 
 
 def create_scenepart_xyz(filepath, trafofilter="", sep=" ", voxel_size=0.5):
+    """
+    This function creates a scenepart string to load ASCII point clouds in xyz-format
+    :param filepath: path to the ASCII point cloud file (string)
+    :param trafofilter: transformation filter, surrounded by <filter>-tags (string)
+    :param sep: column separator in the ASCII point cloud file; default: " " (string)
+    :param voxel_size: voxel side length for the voxelisation of the point cloud (float)
+
+    :return: scenepart (string)
+    """
     scenepart = """
         <part>
             <filter type="xyzloader">
@@ -262,6 +299,17 @@ def create_scenepart_xyz(filepath, trafofilter="", sep=" ", voxel_size=0.5):
 
 
 def create_scenepart_vox(filepath, trafofilter="", intersectionMode="transmittive", matfile=None, matname=None):
+    """
+    This function creates a scenepart string to load .vox voxel files
+    :param filepath: path to the .vox-file (string)
+    :param trafofilter: transformation filter, surrounded by <filter>-tags (string)
+    :param intersectionMode: intersection mode for voxels (string)
+                    options: "transmittive" (default), "scaled", "fixed"
+    :param matfile: path to the material file (string)
+    :param matname: name of the material to use (string)
+
+    :return: scenepart (string)
+    """
     if matfile or matname:
         mat_def = """\n<param type="string" key="matfile" value="{matfile}" />
         <param type="string" key="matname" value="{matname}" />""".format(matfile=matfile, matname=matname)
@@ -281,14 +329,22 @@ def create_scenepart_vox(filepath, trafofilter="", intersectionMode="transmittiv
 
 
 def build_scene(id, name, sceneparts=None):
-    scene_body = """<?xml version="1.0" encoding="UTF-8"?>
+    """
+    This function creates the content to write to the scene.xml file
+    :param id: ID of the scene (string)
+    :param name: name of the scene (string)
+    :param sceneparts: list of sceneparts to add to the scene (list)
+
+    :return: scene XML content (string)
+    """
+    scene_content = """<?xml version="1.0" encoding="UTF-8"?>
 <document>
     <scene id="{id}" name="{name}">
         {parts}
     </scene>
-</document>""".format(id=id, name=name, parts=sceneparts)
+</document>""".format(id=id, name=name, parts="\n".join(sceneparts))
 
-    return scene_body
+    return scene_content
 
 
 if __name__ == "__main__":
@@ -311,6 +367,7 @@ if __name__ == "__main__":
                                trafofilter=filters,
                                matfile="data\sceneparts\basic\groundplane\groundplane.mtl",
                                matname="None")
+    sp2 = create_scenepart_obj("data/sceneparts/blah.obj")
 
-    scene = build_scene("test", "test_scene", sp)
+    scene = build_scene("test", "test_scene", [sp, sp2])
     print(scene)
