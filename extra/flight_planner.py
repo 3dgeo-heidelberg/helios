@@ -350,24 +350,21 @@ def build_scene(id, name, sceneparts=None):
 if __name__ == "__main__":
 
     # Usage Demo
-    bbox = [478827.922, 5471949.077, 479011.641, 5472145.427]
-    #area = (bbox[2] - bbox[0]) * (bbox[3] - bbox[1])
-    #print("area: %.2f m^2" % area)
+    bbox = [478250, 5473800, 478400, 5473950]
     wp, c, dist = compute_flight_lines(bbox, spacing=30, rotate_deg=45, flight_pattern="criss-cross")
     plot = plot_flight_plan(wp)
     plot.show()
     speed = 5
-    print("Flight duration: %.2f min" % (dist / speed / 60))
+    print("Flight duration: {} min".format(dist/speed/60))
     alt = 490
     print(str(export_for_xml(wp, altitude=alt, template_id="uls_template", speed=speed)))
 
-    filters = add_transformation_filters(translation=[2.0, 5.0, 200.0], rotation=[0, 0, 90], onGround=-1)
+    filters = add_transformation_filters(translation=[478335.125, 5473887.89, 0.0], rotation=[0, 0, 90], onGround=-1)
 
-    sp = create_scenepart_tiff("data/blah.tif",
-                               trafofilter=filters,
+    sp = create_scenepart_tiff("data\sceneparts\tiff\dem_hd.tif",
                                matfile="data\sceneparts\basic\groundplane\groundplane.mtl",
                                matname="None")
-    sp2 = create_scenepart_obj("data/sceneparts/blah.obj")
+    sp2 = create_scenepart_obj("data/sceneparts/arbaro/black_tupelo_low.obj", trafofilter=filters)
 
     scene = build_scene("test", "test_scene", [sp, sp2])
     print(scene)
