@@ -167,6 +167,18 @@ public:
      */
     int parseKDTreeType();
     /**
+     * @brief Parse how many KDTree jobs must be used to build the KDTree
+     *
+     * 1 (default) : Sequential building
+     *
+     * 0 : As many threads as available by the system
+     *
+     * >1 : Exactly this number of threads for parallel building
+     *
+     * @return Number of jobs to be used to build the KDTree
+     */
+    size_t parseKDTreeJobs();
+    /**
      * @brief Parse on how many nodes the loss function of the surface area
      *  heuristic must be evaluated when building the KDTree
      *

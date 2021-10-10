@@ -13,5 +13,5 @@ var classThreadPool =
     [ "mutex_", "dc/de7/classThreadPool.html#ade26079dd6d8fa7fe7ef7e480496e64b", null ],
     [ "pool_size", "dc/de7/classThreadPool.html#a8024981c2df0048b4f6164964bcafffb", null ],
     [ "threads_", "dc/de7/classThreadPool.html#aa52eca7aa7f937f7cd466957385491ad", null ],
-    [ "work_", "dc/de7/classThreadPool.html#a7612ee5971c98a4e7e975c7600e4651c", null ]
+    [ "work_", "dc/de7/classThreadPool.html#a8ba0794faf1a72f7f4a9922b3391a8f2", null ]
 ];

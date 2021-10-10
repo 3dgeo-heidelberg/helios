@@ -1,5 +1,15 @@
 #include <AxisSAHKDTreeFactory.h>
 
+// ***  CONSTRUCTION / DESTRUCTION  *** //
+// ************************************ //
+AxisSAHKDTreeFactory::AxisSAHKDTreeFactory (
+    size_t const lossNodes,
+    double const ci,
+    double const cl,
+    double const co
+) : SAHKDTreeFactory(lossNodes, ci, cl, co)
+{}
+
 // ***  BUILDING METHODS  *** //
 // ************************** //
 void AxisSAHKDTreeFactory::defineSplit(

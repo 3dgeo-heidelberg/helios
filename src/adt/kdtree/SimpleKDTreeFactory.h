@@ -4,6 +4,8 @@
 
 #include <vector>
 
+class MultiThreadKDTreeFactory;
+
 /**
  * @author Alberto M. Esmoris Pena
  * @version 1.0
@@ -13,6 +15,10 @@
  * @see KDTreeFactory
  */
 class SimpleKDTreeFactory : public KDTreeFactory{
+    // ***  FRIENDS  *** //
+    // ***************** //
+    friend class MultiThreadKDTreeFactory;
+
 private:
     // ***  SERIALIZATION  *** //
     // *********************** //
@@ -30,15 +36,49 @@ private:
             KDTreeFactory
         >();
         ar &boost::serialization::base_object<KDTreeFactory>(*this);
+        ar &minSplitPrimitives;
     }
+
+protected:
+    // ***  ATTRIBUTES  *** //
+    // ******************** //
+    /**
+     * @brief The member function as attribute used to recursively build
+     *  KDTree nodes. By default it will be assigned to the buildRecursive
+     *  member function but it might be overridden by other implementations.
+     *  For instance, to wrap the buildRecursive behavior to handle parallel
+     *  building of KDTrees
+     * @see SimpleKDTreeFactory::buildRecursive
+     */
+    std::function<KDTreeNode *(
+        KDTreeNode *,
+        bool const,
+        vector<Primitive *> &,
+        int const
+    )> _buildRecursive;
+
+    /**
+     * @brief How many primitives are required for a node to be splitted.
+     *
+     * If number of primitives is equal or greater than, then node might be
+     *  splitted if necessary criterion is satisfied. Otherwise, no matter if
+     *  other splitting criterion is satisfied, node will never be splitted.
+     * It is mainly useful to prevent too deep KDTrees which might lead to
+     *  consuming a high amount of memory without significant performance
+     *  improvement.
+     */
+    size_t minSplitPrimitives;
 
 public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //
     // ************************************ //
     /**
-     * @brief SimpleKDTreeFactory default constructor
+     * @brief SimpleKDTreeFactory default constructor.
+     *
+     * The buildRecursive member function is assigned to the _buildRecursive
+     *  function as member attribute
      */
-    SimpleKDTreeFactory() = default;
+    SimpleKDTreeFactory();
     virtual ~SimpleKDTreeFactory() = default;
 
     // ***  SIMPLE KDTREE FACTORY METHODS  *** //
@@ -80,6 +120,14 @@ protected:
      * @param root Root node to compute stats for given KDTreeNodeRoot
      */
     virtual void computeKDTreeStats(KDTreeNodeRoot *root) const;
+    /**
+     * @brief Report KDTree stats of given root node at INFO logging level
+     * @param root Root node which stats must be reported
+     */
+    virtual void reportKDTreeStats(
+        KDTreeNodeRoot *root,
+        vector<Primitive *> const &primitives
+    ) const;
 
     /**
      * @brief Define the split axis and position for current node.

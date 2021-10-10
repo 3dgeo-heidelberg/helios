@@ -1,20 +1,14 @@
 var searchData=
 [
-  ['id',['id',['../de/d97/classAsset.html#ac37173d6b01d7b8caa7bd786b8de2269',1,'Asset::id()'],['../d0/d23/classScannerSettings.html#a1ea4710ab141c2548bb193b29b55107c',1,'ScannerSettings::id()'],['../df/dfa/classDynSequence.html#a5d8e2b91af11934a1f5678927bb7e708',1,'DynSequence::id()']]],
-  ['identifiers',['identifiers',['../d7/d5a/classDetailedVoxel.html#ac5791eb69e0db113aadfcb1b3116ea7e',1,'DetailedVoxel']]],
-  ['ignored_5fground',['IGNORED_GROUND',['../df/d64/classLasSpecification.html#aa9c826365fbe77d2808352882e74780c',1,'LasSpecification']]],
-  ['imh',['imh',['../db/d57/classfluxionum_1_1UnivariateNewtonRaphsonMinimizer.html#a041caf921ac2956262f56cb4f64dced7',1,'fluxionum::UnivariateNewtonRaphsonMinimizer']]],
-  ['incidenceangle',['incidenceAngle',['../dc/da3/classRaySceneIntersection.html#ad5b87188865c84aefe07c9ca5734555c',1,'RaySceneIntersection']]],
-  ['indices',['indices',['../dc/d41/classSurfaceInspector_1_1maths_1_1permuters_1_1CNRIndexPermuter.html#ac913cf6600d817ed3ea14ba7ef3d86a4',1,'SurfaceInspector::maths::permuters::CNRIndexPermuter']]],
-  ['initialized',['initialized',['../d6/d26/classSurfaceInspector_1_1util_1_1draggers_1_1MinDragger.html#aae9f7d2e7a8e5e01fb99b05cf6f752ad',1,'SurfaceInspector::util::draggers::MinDragger']]],
-  ['instance',['instance',['../d6/db9/classSerialIO.html#a04a14f46d2374bd1621ae407e32a6619',1,'SerialIO']]],
-  ['intensity',['intensity',['../db/d2e/classMeasurement.html#ac537713b6754711cd47677703bbb632e',1,'Measurement']]],
-  ['intensitycoefficient',['intensityCoefficient',['../d2/db3/classLasSyncFileWriter.html#ae1fad8ae58c17aece13774f036c15bec',1,'LasSyncFileWriter']]],
-  ['intersectionhandlingnoisesource',['intersectionHandlingNoiseSource',['../dc/d42/classScanner.html#ab0d7c2f3cbd4e8811d25958fad4deb4a',1,'Scanner']]],
-  ['intersectionhandlingnoisesources',['intersectionHandlingNoiseSources',['../d6/ddc/classPulseThreadPool.html#a8c8a5e87ca527b9b016ebe58dc8ac366',1,'PulseThreadPool']]],
-  ['intersectionpoint',['intersectionPoint',['../d1/dc8/classIntersectionHandlingResult.html#a9118ea2e7003c044745b537170e30912',1,'IntersectionHandlingResult']]],
-  ['intvalues',['intValues',['../d7/d5a/classDetailedVoxel.html#a38a6cb307025c0535ce8848777be6774',1,'DetailedVoxel']]],
-  ['io_5fservice_5f',['io_service_',['../dc/de7/classThreadPool.html#a5b2814c08d65ed6223303bcde6add26c',1,'ThreadPool']]],
-  ['isground',['isGround',['../d3/d89/classMaterial.html#ab01034a003a0e9798f11971f9af624c3',1,'Material']]],
-  ['iteration',['iteration',['../df/dfa/classDynSequence.html#a42fb87bc94b5e7bbfdb6072d51e1d430',1,'DynSequence']]]
+  ['halfsize',['halfSize',['../d6/d44/classVoxel.html#ab9d383812ebf70210957702b88a86831',1,'Voxel']]],
+  ['headrotatepersec_5frad',['headRotatePerSec_rad',['../d0/d23/classScannerSettings.html#ac58959e3d36c627248ccf922dad63e9f',1,'ScannerSettings']]],
+  ['headrotatestart_5frad',['headRotateStart_rad',['../d0/d23/classScannerSettings.html#a6c67ef78ba16208f85fae4e04fd2d869',1,'ScannerSettings']]],
+  ['headrotatestop_5frad',['headRotateStop_rad',['../d0/d23/classScannerSettings.html#a30fdaba2022b552a10ecc26c31d01e22',1,'ScannerSettings']]],
+  ['height',['height',['../d1/d0c/classGeoTiffFileLoader.html#afa0947ac00405668f994c8fc6404a6d0',1,'GeoTiffFileLoader']]],
+  ['high_5fnoise',['HIGH_NOISE',['../df/d64/classLasSpecification.html#ae7b4d9e56b7626c35d1ee880f5294c24',1,'LasSpecification']]],
+  ['high_5fvegetation',['HIGH_VEGETATION',['../df/d64/classLasSpecification.html#ac7b831a00a7d76816624948170bd6839',1,'LasSpecification']]],
+  ['hitobjectid',['hitObjectId',['../db/d2e/classMeasurement.html#a303164a152fa5ba6f7f6a0a536a0e4b4',1,'Measurement']]],
+  ['hoiattridx',['hoiAttrIdx',['../d2/db3/classLasSyncFileWriter.html#ad3984158dc285ad5660e6d56abbb57fb',1,'LasSyncFileWriter']]],
+  ['hoiattrstart',['hoiAttrStart',['../d2/db3/classLasSyncFileWriter.html#a3022ddbaa4f0269391c28e1387028a2b',1,'LasSyncFileWriter']]],
+  ['horizontality',['horizontality',['../d4/dfa/classSurfaceInspector_1_1maths_1_1DetailedPlane.html#a61b7275a8aad0be7c5149f368d3db4c8',1,'SurfaceInspector::maths::DetailedPlane']]]
 ];

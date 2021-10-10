@@ -98,6 +98,19 @@ void printHelp(){
         << "\t\t\t\t\tthe SAH based KDTree, 3 for the SAH with best axis\n"
         << "\t\t\t\t\tbased KDTree and 4 for a fast SAH approximation\n\n"
 
+        << "\t\t--kdtJobs <integer> : Specify the number of threads to be used"
+           " for building the KDTree.\n"
+           "\t\t\tIf 1, then the KDTree will be built in a sequential fashion"
+           "\n\t\t\tIf >1, then the KDTree will be built in a parallel fashion"
+           "\n\t\t\tIf 0, then the KDTree will be built using as many threads "
+           "as available\n"
+           "\t\t\tThis is not recommended because using more threads than "
+           "required\n"
+           "\t\t\tby scene complexity might easily lead to poor "
+           "performance\n"
+           "\t\t\t\tDefault is 1\n\n"
+
+
         << "\t\t--sahNodes <integer> : Specify how many nodes must be used by "
         << "the\n"
         << "\t\t\tSurface Area Heuristic when building a SAH based KDTree\n"
@@ -233,6 +246,7 @@ int main(int argc, char** argv) {
             ap.parseFixedIncidenceAngle(),
             ap.parseLasScale(),
             ap.parseKDTreeType(),
+            ap.parseKDTreeJobs(),
             ap.parseSAHLossNodes()
         );
     }
@@ -257,6 +271,7 @@ void LidarSim::init(
     bool fixedIncidenceAngle,
     double lasScale,
     int kdtType,
+    size_t kdtJobs,
     size_t sahLossNodes
 ){
     std::stringstream ss;
@@ -274,6 +289,7 @@ void LidarSim::init(
         << "las10: " << las10 << "\n"
 	    << "fixedIncidenceAngle: " << fixedIncidenceAngle << "\n"
 	    << "kdtType: " << kdtType << "\n"
+	    << "kdtJobs: " << kdtJobs << "\n"
 	    << "sahLossNodes: " << sahLossNodes
 	    << std::endl;
     logging::INFO(ss.str());
@@ -283,6 +299,7 @@ void LidarSim::init(
  	    new XmlSurveyLoader(surveyPath, assetsPath)
  	);
  	xmlreader->sceneLoader.kdtFactoryType = kdtType;
+ 	xmlreader->sceneLoader.kdtNumJobs = kdtJobs;
     xmlreader->sceneLoader.kdtSAHLossNodes = sahLossNodes;
 	std::shared_ptr<Survey> survey = xmlreader->load(
 	    legNoiseDisabled,

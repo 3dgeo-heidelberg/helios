@@ -1,6 +1,7 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$dc/de7/classThreadPool.html" title="ThreadPool\&lt; TaskArgs\l ... \&gt;" alt="" coords="5,38,161,79"/>
-<area shape="rect" id="node2" href="$d2/dee/classResThreadPool.html" title="Absract class extending basic thread pool implementation to provided a basis layer to handle thread a..." alt="" coords="247,5,439,32"/>
-<area shape="rect" id="node3" href="$d2/dee/classResThreadPool.html" title="ResThreadPool\&lt; std\l::vector\&lt; std::vector\l\&lt; double \&gt; \&gt; &amp;, RandomnessGenerator\l\&lt; double \&gt; &amp;, RandomnessGenerator\l\&lt; double \&gt; &amp;, NoiseSource\&lt; double \&gt; &amp; \&gt;" alt="" coords="209,56,476,141"/>
-<area shape="rect" id="node4" href="$d6/ddc/classPulseThreadPool.html" title="Class implementing a thread pool to deal with pulse tasks. " alt="" coords="524,85,645,112"/>
+<area shape="rect" id="node1" href="$d1/d0e/classSyncFileWriter.html" title="Abstract class defining common behavior for all synchronous file writers. " alt="" coords="5,31,113,57"/>
+<area shape="rect" id="node2" href="$d2/db3/classLasSyncFileWriter.html" title="SyncFileWriter implementation for LAS format. " alt="" coords="171,5,300,32"/>
+<area shape="rect" id="node4" href="$df/d47/classSimpleSyncFileWriter.html" title="SyncFileWriter implementation for simple text format. " alt="" coords="161,56,309,83"/>
+<area shape="rect" id="node3" href="$dd/d09/classLas14SyncFileWriter.html" title="LasSyncFileWriter implementation for LAS v1.4 format. " alt="" coords="357,5,500,32"/>
+<area shape="rect" id="node5" href="$de/d2a/classZipSyncFileWriter.html" title="ZipSyncFileWriter implementation for zipped text output format. " alt="" coords="365,56,492,83"/>
 </map>

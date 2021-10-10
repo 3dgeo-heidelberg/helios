@@ -89,6 +89,7 @@ $(document).ready(function(){initNavTree('d6/d96/classSimpleKDTreeFactory.html',
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pro-methods">Protected Member Functions</a> &#124;
+<a href="#pro-attribs">Protected Attributes</a> &#124;
 <a href="#pri-methods">Private Member Functions</a> &#124;
 <a href="#friends">Friends</a> &#124;
 <a href="../../de/dc3/classSimpleKDTreeFactory-members.html">List of all members</a>  </div>
@@ -106,10 +107,12 @@ Inheritance diagram for SimpleKDTreeFactory:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../d1/daa/classSimpleKDTreeFactory__inherit__graph.png" border="0" usemap="#SimpleKDTreeFactory_inherit__map" alt="Inheritance graph"/></div>
 <map name="SimpleKDTreeFactory_inherit__map" id="SimpleKDTreeFactory_inherit__map">
-<area shape="rect" id="node3" href="../../db/d58/classSAHKDTreeFactory.html" title="Class providing building methods for k&#45;dimensional trees with surface area heuristic (SAH) ..." alt="" coords="113,155,252,181"/>
-<area shape="rect" id="node2" href="../../d5/dd0/classKDTreeFactory.html" title="Class that must be extended by any class which provides factory methods for k&#45;dimensional trees..." alt="" coords="127,5,238,32"/>
-<area shape="rect" id="node4" href="../../df/d30/classAxisSAHKDTreeFactory.html" title="Class providing building methods for k&#45;dimensional trees with surface area heuristic and greedy selec..." alt="" coords="5,229,171,256"/>
-<area shape="rect" id="node5" href="../../d0/d0e/classFastSAHKDTreeFactory.html" title="Class providing building methods for k&#45;dimensional trees with a fast strategy to approximate Surface ..." alt="" coords="195,229,360,256"/>
+<area shape="rect" id="node3" href="../../df/d86/classMultiThreadKDTreeFactory.html" title="Decorator for any KDTree factory which provides support for multi thread KDTree building. " alt="" coords="34,155,213,181"/>
+<area shape="rect" id="node5" href="../../db/d58/classSAHKDTreeFactory.html" title="Class providing building methods for k&#45;dimensional trees with surface area heuristic (SAH) ..." alt="" coords="250,155,389,181"/>
+<area shape="rect" id="node2" href="../../d5/dd0/classKDTreeFactory.html" title="Class that must be extended by any class which provides factory methods for k&#45;dimensional trees..." alt="" coords="159,5,269,32"/>
+<area shape="rect" id="node4" href="../../dd/d95/classMultiThreadSAHKDTreeFactory.html" title="Decorator for any SAH KDTree which provides support for multi thread KDTree building. " alt="" coords="5,229,212,256"/>
+<area shape="rect" id="node6" href="../../df/d30/classAxisSAHKDTreeFactory.html" title="Class providing building methods for k&#45;dimensional trees with surface area heuristic and greedy selec..." alt="" coords="237,229,402,256"/>
+<area shape="rect" id="node7" href="../../d0/d0e/classFastSAHKDTreeFactory.html" title="Class providing building methods for k&#45;dimensional trees with a fast strategy to approximate Surface ..." alt="" coords="426,229,591,256"/>
 </map>
 <center><span class="legend">[<a target="top" href="../../graph_legend.html">legend</a>]</span></center></div>
 <div class="dynheader">
@@ -117,16 +120,19 @@ Collaboration diagram for SimpleKDTreeFactory:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../db/daf/classSimpleKDTreeFactory__coll__graph.png" border="0" usemap="#SimpleKDTreeFactory_coll__map" alt="Collaboration graph"/></div>
 <map name="SimpleKDTreeFactory_coll__map" id="SimpleKDTreeFactory_coll__map">
-<area shape="rect" id="node2" href="../../d5/dd0/classKDTreeFactory.html" title="Class that must be extended by any class which provides factory methods for k&#45;dimensional trees..." alt="" coords="25,5,136,32"/>
+<area shape="rect" id="node2" href="../../d5/dd0/classKDTreeFactory.html" title="Class that must be extended by any class which provides factory methods for k&#45;dimensional trees..." alt="" coords="189,353,300,380"/>
+<area shape="rect" id="node3" href="../../dd/d04/classLightKDTreeNodeBlockAllocator.html" title="Block allocator for LightKDTreeNode instances. " alt="" coords="139,264,350,291"/>
+<area shape="rect" id="node4" href="../../d9/d47/classBlockAllocator.html" title="BlockAllocator\&lt; LightKDTree\lNode \&gt;" alt="" coords="149,173,340,215"/>
+<area shape="rect" id="node5" href="../../dd/d79/classLightKDTreeNode.html" title="Class representing a light KDTree node. It is, the basic representation of a KDTree node with uses le..." alt="" coords="5,83,132,109"/>
+<area shape="rect" id="node6" href="../../d7/d98/classIBinaryTreeNode.html" title="Binary tree node interface that must be implemented by any class providing binary tree node based fun..." alt="" coords="9,5,129,32"/>
 </map>
 <center><span class="legend">[<a target="top" href="../../graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:abd0ddd1777cecd176f94a14da1537bd9"><td class="memItemLeft" align="right" valign="top"><a id="abd0ddd1777cecd176f94a14da1537bd9"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d96/classSimpleKDTreeFactory.html#abd0ddd1777cecd176f94a14da1537bd9">SimpleKDTreeFactory</a> ()=default</td></tr>
-<tr class="memdesc:abd0ddd1777cecd176f94a14da1537bd9"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="../../d6/d96/classSimpleKDTreeFactory.html" title="Class providing building methods for simple k-dimensional trees. ">SimpleKDTreeFactory</a> default constructor. <br /></td></tr>
-<tr class="separator:abd0ddd1777cecd176f94a14da1537bd9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aac0b2d556d61c2e301de1eb2f9bda823"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d96/classSimpleKDTreeFactory.html#aac0b2d556d61c2e301de1eb2f9bda823">SimpleKDTreeFactory</a> ()</td></tr>
+<tr class="memdesc:aac0b2d556d61c2e301de1eb2f9bda823"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="../../d6/d96/classSimpleKDTreeFactory.html" title="Class providing building methods for simple k-dimensional trees. ">SimpleKDTreeFactory</a> default constructor.  <a href="#aac0b2d556d61c2e301de1eb2f9bda823">More...</a><br /></td></tr>
+<tr class="separator:aac0b2d556d61c2e301de1eb2f9bda823"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3252f0348c7fd5d40b84e52dd9144fad"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d0/d64/classKDTreeNodeRoot.html">KDTreeNodeRoot</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d96/classSimpleKDTreeFactory.html#a3252f0348c7fd5d40b84e52dd9144fad">makeFromPrimitivesUnsafe</a> (vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *&gt; &amp;primitives) override</td></tr>
 <tr class="memdesc:a3252f0348c7fd5d40b84e52dd9144fad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Build a simple KDTree from given primitives.  <a href="#a3252f0348c7fd5d40b84e52dd9144fad">More...</a><br /></td></tr>
 <tr class="separator:a3252f0348c7fd5d40b84e52dd9144fad"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -144,6 +150,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a998f586e172af6066c63d3d3a251860e inherit pub_methods_classKDTreeFactory"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/dd0/classKDTreeFactory.html#a998f586e172af6066c63d3d3a251860e">setBuildingLightNodes</a> (bool const <a class="el" href="../../d5/dd0/classKDTreeFactory.html#aa6ede7a422802db8e6cbf537861d5f56">buildLightNodes</a>)</td></tr>
 <tr class="memdesc:a998f586e172af6066c63d3d3a251860e inherit pub_methods_classKDTreeFactory"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set <a class="el" href="../../d5/dd0/classKDTreeFactory.html" title="Class that must be extended by any class which provides factory methods for k-dimensional trees...">KDTreeFactory</a> so it build light nodes (true) or not (false)  <a href="../../d5/dd0/classKDTreeFactory.html#a998f586e172af6066c63d3d3a251860e">More...</a><br /></td></tr>
 <tr class="separator:a998f586e172af6066c63d3d3a251860e inherit pub_methods_classKDTreeFactory"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a794e82f978b631abf55b85f6ac72ea01 inherit pub_methods_classKDTreeFactory"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/dd0/classKDTreeFactory.html#a794e82f978b631abf55b85f6ac72ea01">setChild</a> (<a class="el" href="../../dd/d79/classLightKDTreeNode.html">LightKDTreeNode</a> *&amp;child, <a class="el" href="../../d8/d94/classKDTreeNode.html">KDTreeNode</a> *node)</td></tr>
+<tr class="memdesc:a794e82f978b631abf55b85f6ac72ea01 inherit pub_methods_classKDTreeFactory"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set child to given node if and only if node is not null. It must be used to assign children nodes in a thread-safe way.  <a href="../../d5/dd0/classKDTreeFactory.html#a794e82f978b631abf55b85f6ac72ea01">More...</a><br /></td></tr>
+<tr class="separator:a794e82f978b631abf55b85f6ac72ea01 inherit pub_methods_classKDTreeFactory"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
@@ -153,6 +162,9 @@ Protected Member Functions</h2></td></tr>
 <tr class="memitem:a259a3500ce239f33914d5da0c694b427"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d96/classSimpleKDTreeFactory.html#a259a3500ce239f33914d5da0c694b427">computeKDTreeStats</a> (<a class="el" href="../../d0/d64/classKDTreeNodeRoot.html">KDTreeNodeRoot</a> *root) const</td></tr>
 <tr class="memdesc:a259a3500ce239f33914d5da0c694b427"><td class="mdescLeft">&#160;</td><td class="mdescRight">Analyze KDTree computing its max depth and the minimum and maximum number of primitives considering all nodes.  <a href="#a259a3500ce239f33914d5da0c694b427">More...</a><br /></td></tr>
 <tr class="separator:a259a3500ce239f33914d5da0c694b427"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0f5466631a7dc4fd2102c338645ff2af"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d96/classSimpleKDTreeFactory.html#a0f5466631a7dc4fd2102c338645ff2af">reportKDTreeStats</a> (<a class="el" href="../../d0/d64/classKDTreeNodeRoot.html">KDTreeNodeRoot</a> *root, vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *&gt; const &amp;primitives) const</td></tr>
+<tr class="memdesc:a0f5466631a7dc4fd2102c338645ff2af"><td class="mdescLeft">&#160;</td><td class="mdescRight">Report KDTree stats of given root node at INFO logging level.  <a href="#a0f5466631a7dc4fd2102c338645ff2af">More...</a><br /></td></tr>
+<tr class="separator:a0f5466631a7dc4fd2102c338645ff2af"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa3ed0e048fd2e9ae62fdd324e32153c5"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d96/classSimpleKDTreeFactory.html#aa3ed0e048fd2e9ae62fdd324e32153c5">defineSplit</a> (<a class="el" href="../../d8/d94/classKDTreeNode.html">KDTreeNode</a> *node, <a class="el" href="../../d8/d94/classKDTreeNode.html">KDTreeNode</a> *parent, vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *&gt; &amp;primitives, int const depth) const</td></tr>
 <tr class="memdesc:aa3ed0e048fd2e9ae62fdd324e32153c5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Define the split axis and position for current node.  <a href="#aa3ed0e048fd2e9ae62fdd324e32153c5">More...</a><br /></td></tr>
 <tr class="separator:aa3ed0e048fd2e9ae62fdd324e32153c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -166,12 +178,28 @@ Protected Member Functions</h2></td></tr>
 <tr class="memdesc:abbc932ae3ef28f324a656add6c1ac5bd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute min and max position and surface area of bounding cuboid for given node.  <a href="#abbc932ae3ef28f324a656add6c1ac5bd">More...</a><br /></td></tr>
 <tr class="separator:abbc932ae3ef28f324a656add6c1ac5bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_methods_classKDTreeFactory"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_classKDTreeFactory')"><img src="../../closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="../../d5/dd0/classKDTreeFactory.html">KDTreeFactory</a></td></tr>
-<tr class="memitem:a837bf89fb39600314e02f9fa9d05ec9b inherit pro_methods_classKDTreeFactory"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/dd0/classKDTreeFactory.html#a837bf89fb39600314e02f9fa9d05ec9b">lighten</a> (<a class="el" href="../../d0/d64/classKDTreeNodeRoot.html">KDTreeNodeRoot</a> *root)</td></tr>
+<tr class="memitem:a837bf89fb39600314e02f9fa9d05ec9b inherit pro_methods_classKDTreeFactory"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/dd0/classKDTreeFactory.html#a837bf89fb39600314e02f9fa9d05ec9b">lighten</a> (<a class="el" href="../../d0/d64/classKDTreeNodeRoot.html">KDTreeNodeRoot</a> *root)</td></tr>
 <tr class="memdesc:a837bf89fb39600314e02f9fa9d05ec9b inherit pro_methods_classKDTreeFactory"><td class="mdescLeft">&#160;</td><td class="mdescRight">Rebuild all children of given root KDTree node as LightKDTeeeNode nodes.  <a href="../../d5/dd0/classKDTreeFactory.html#a837bf89fb39600314e02f9fa9d05ec9b">More...</a><br /></td></tr>
 <tr class="separator:a837bf89fb39600314e02f9fa9d05ec9b inherit pro_methods_classKDTreeFactory"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aad0db942ba81564682211127cc1d21c3 inherit pro_methods_classKDTreeFactory"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../dd/d79/classLightKDTreeNode.html">LightKDTreeNode</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/dd0/classKDTreeFactory.html#aad0db942ba81564682211127cc1d21c3">_lighten</a> (<a class="el" href="../../d8/d94/classKDTreeNode.html">KDTreeNode</a> *node)</td></tr>
+<tr class="memitem:aad0db942ba81564682211127cc1d21c3 inherit pro_methods_classKDTreeFactory"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="../../dd/d79/classLightKDTreeNode.html">LightKDTreeNode</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/dd0/classKDTreeFactory.html#aad0db942ba81564682211127cc1d21c3">_lighten</a> (<a class="el" href="../../d8/d94/classKDTreeNode.html">KDTreeNode</a> *node)</td></tr>
 <tr class="memdesc:aad0db942ba81564682211127cc1d21c3 inherit pro_methods_classKDTreeFactory"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assist <a class="el" href="../../d5/dd0/classKDTreeFactory.html#a837bf89fb39600314e02f9fa9d05ec9b" title="Rebuild all children of given root KDTree node as LightKDTeeeNode nodes. ">KDTreeFactory::lighten</a> function by handling the lighten of a given non-root node.  <a href="../../d5/dd0/classKDTreeFactory.html#aad0db942ba81564682211127cc1d21c3">More...</a><br /></td></tr>
 <tr class="separator:aad0db942ba81564682211127cc1d21c3 inherit pro_methods_classKDTreeFactory"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
+Protected Attributes</h2></td></tr>
+<tr class="memitem:a0d728d4a070ec3235cdbc4988e61ad41"><td class="memItemLeft" align="right" valign="top">std::function&lt; <a class="el" href="../../d8/d94/classKDTreeNode.html">KDTreeNode</a> *(<a class="el" href="../../d8/d94/classKDTreeNode.html">KDTreeNode</a> *, bool const, vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> * &gt; &amp;, int const)&gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d96/classSimpleKDTreeFactory.html#a0d728d4a070ec3235cdbc4988e61ad41">_buildRecursive</a></td></tr>
+<tr class="memdesc:a0d728d4a070ec3235cdbc4988e61ad41"><td class="mdescLeft">&#160;</td><td class="mdescRight">The member function as attribute used to recursively build KDTree nodes. By default it will be assigned to the buildRecursive member function but it might be overridden by other implementations. For instance, to wrap the buildRecursive behavior to handle parallel building of KDTrees.  <a href="#a0d728d4a070ec3235cdbc4988e61ad41">More...</a><br /></td></tr>
+<tr class="separator:a0d728d4a070ec3235cdbc4988e61ad41"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abba2468b2987b4bd93e3e832bdf52f00"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d96/classSimpleKDTreeFactory.html#abba2468b2987b4bd93e3e832bdf52f00">minSplitPrimitives</a></td></tr>
+<tr class="memdesc:abba2468b2987b4bd93e3e832bdf52f00"><td class="mdescLeft">&#160;</td><td class="mdescRight">How many primitives are required for a node to be splitted.  <a href="#abba2468b2987b4bd93e3e832bdf52f00">More...</a><br /></td></tr>
+<tr class="separator:abba2468b2987b4bd93e3e832bdf52f00"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_attribs_classKDTreeFactory"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classKDTreeFactory')"><img src="../../closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="../../d5/dd0/classKDTreeFactory.html">KDTreeFactory</a></td></tr>
+<tr class="memitem:aa6ede7a422802db8e6cbf537861d5f56 inherit pro_attribs_classKDTreeFactory"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/dd0/classKDTreeFactory.html#aa6ede7a422802db8e6cbf537861d5f56">buildLightNodes</a> = true</td></tr>
+<tr class="memdesc:aa6ede7a422802db8e6cbf537861d5f56 inherit pro_attribs_classKDTreeFactory"><td class="mdescLeft">&#160;</td><td class="mdescRight">When it is true, the <a class="el" href="../../d5/dd0/classKDTreeFactory.html" title="Class that must be extended by any class which provides factory methods for k-dimensional trees...">KDTreeFactory</a> is expected to build light nodes. It is, built KDTree must have a KDTreeRootNode which children are all <a class="el" href="../../dd/d79/classLightKDTreeNode.html" title="Class representing a light KDTree node. It is, the basic representation of a KDTree node with uses le...">LightKDTreeNode</a>. When it is false, <a class="el" href="../../d5/dd0/classKDTreeFactory.html" title="Class that must be extended by any class which provides factory methods for k-dimensional trees...">KDTreeFactory</a> is allowed to build KDTree with <a class="el" href="../../d8/d94/classKDTreeNode.html" title="Class representing a KDTree node. ">KDTreeNode</a> children, which might require more memory.  <a href="../../d5/dd0/classKDTreeFactory.html#aa6ede7a422802db8e6cbf537861d5f56">More...</a><br /></td></tr>
+<tr class="separator:aa6ede7a422802db8e6cbf537861d5f56 inherit pro_attribs_classKDTreeFactory"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5316cf17aff5dd178d2a84d31410e213 inherit pro_attribs_classKDTreeFactory"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../dd/d04/classLightKDTreeNodeBlockAllocator.html">LightKDTreeNodeBlockAllocator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/dd0/classKDTreeFactory.html#a5316cf17aff5dd178d2a84d31410e213">lkdtnBlockAllocator</a></td></tr>
+<tr class="memdesc:a5316cf17aff5dd178d2a84d31410e213 inherit pro_attribs_classKDTreeFactory"><td class="mdescLeft">&#160;</td><td class="mdescRight">The block allocator to speed-up lighten of KDTree by reducing allocation calls when instantiating multiple <a class="el" href="../../dd/d79/classLightKDTreeNode.html" title="Class representing a light KDTree node. It is, the basic representation of a KDTree node with uses le...">LightKDTreeNode</a>.  <a href="../../d5/dd0/classKDTreeFactory.html#a5316cf17aff5dd178d2a84d31410e213">More...</a><br /></td></tr>
+<tr class="separator:a5316cf17aff5dd178d2a84d31410e213 inherit pro_attribs_classKDTreeFactory"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
@@ -182,23 +210,40 @@ Private Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="friends"></a>
 Friends</h2></td></tr>
+<tr class="memitem:a2cd36fb2add7c5f0ce882d85379f6087"><td class="memItemLeft" align="right" valign="top"><a id="a2cd36fb2add7c5f0ce882d85379f6087"></a>
+class&#160;</td><td class="memItemRight" valign="bottom"><b>MultiThreadKDTreeFactory</b></td></tr>
+<tr class="separator:a2cd36fb2add7c5f0ce882d85379f6087"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac98d07dd8f7b70e16ccb9a01abf56b9c"><td class="memItemLeft" align="right" valign="top"><a id="ac98d07dd8f7b70e16ccb9a01abf56b9c"></a>
 class&#160;</td><td class="memItemRight" valign="bottom"><b>boost::serialization::access</b></td></tr>
 <tr class="separator:ac98d07dd8f7b70e16ccb9a01abf56b9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
-Additional Inherited Members</h2></td></tr>
-<tr class="inherit_header pro_attribs_classKDTreeFactory"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classKDTreeFactory')"><img src="../../closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="../../d5/dd0/classKDTreeFactory.html">KDTreeFactory</a></td></tr>
-<tr class="memitem:aa6ede7a422802db8e6cbf537861d5f56 inherit pro_attribs_classKDTreeFactory"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/dd0/classKDTreeFactory.html#aa6ede7a422802db8e6cbf537861d5f56">buildLightNodes</a> = true</td></tr>
-<tr class="memdesc:aa6ede7a422802db8e6cbf537861d5f56 inherit pro_attribs_classKDTreeFactory"><td class="mdescLeft">&#160;</td><td class="mdescRight">When it is true, the <a class="el" href="../../d5/dd0/classKDTreeFactory.html" title="Class that must be extended by any class which provides factory methods for k-dimensional trees...">KDTreeFactory</a> is expected to build light nodes. It is, built KDTree must have a KDTreeRootNode which children are all <a class="el" href="../../dd/d79/classLightKDTreeNode.html" title="Class representing a light KDTree node. It is, the basic representation of a KDTree node with uses le...">LightKDTreeNode</a>. When it is false, <a class="el" href="../../d5/dd0/classKDTreeFactory.html" title="Class that must be extended by any class which provides factory methods for k-dimensional trees...">KDTreeFactory</a> is allowed to build KDTree with <a class="el" href="../../d8/d94/classKDTreeNode.html" title="Class representing a KDTree node. ">KDTreeNode</a> children, which might require more memory.  <a href="../../d5/dd0/classKDTreeFactory.html#aa6ede7a422802db8e6cbf537861d5f56">More...</a><br /></td></tr>
-<tr class="separator:aa6ede7a422802db8e6cbf537861d5f56 inherit pro_attribs_classKDTreeFactory"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Class providing building methods for simple k-dimensional trees. </p>
 <dl class="section author"><dt>Author</dt><dd>Alberto M. Esmoris Pena </dd></dl>
 <dl class="section version"><dt>Version</dt><dd>1.0</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d5/dd0/classKDTreeFactory.html" title="Class that must be extended by any class which provides factory methods for k-dimensional trees...">KDTreeFactory</a> </dd></dl>
-</div><h2 class="groupheader">Member Function Documentation</h2>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="aac0b2d556d61c2e301de1eb2f9bda823"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aac0b2d556d61c2e301de1eb2f9bda823">&#9670;&nbsp;</a></span>SimpleKDTreeFactory()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">SimpleKDTreeFactory::SimpleKDTreeFactory </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p><a class="el" href="../../d6/d96/classSimpleKDTreeFactory.html" title="Class providing building methods for simple k-dimensional trees. ">SimpleKDTreeFactory</a> default constructor. </p>
+<p>The buildRecursive member function is assigned to the _buildRecursive function as member attribute </p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
 <a id="ab1f57b35097966c0884d0373a71b382d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab1f57b35097966c0884d0373a71b382d">&#9670;&nbsp;</a></span>buildChildrenNodes()</h2>
 
@@ -332,6 +377,8 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Built KDTree node </dd></dl>
 
+<p>Reimplemented in <a class="el" href="../../df/d86/classMultiThreadKDTreeFactory.html#a2e3a8ea91910658ee9ff6f012e196b11">MultiThreadKDTreeFactory</a>.</p>
+
 </div>
 </div>
 <a id="a259a3500ce239f33914d5da0c694b427"></a>
@@ -366,7 +413,7 @@ Additional Inherited Members</h2></td></tr>
   </dd>
 </dl>
 
-<p>Reimplemented in <a class="el" href="../../db/d58/classSAHKDTreeFactory.html#aca4a9fd27edb126bcbc9fc5020ef9f15">SAHKDTreeFactory</a>.</p>
+<p>Reimplemented in <a class="el" href="../../db/d58/classSAHKDTreeFactory.html#aca4a9fd27edb126bcbc9fc5020ef9f15">SAHKDTreeFactory</a>, and <a class="el" href="../../df/d86/classMultiThreadKDTreeFactory.html#a52a5bf891500e9e7a4cf264cd8c9580a">MultiThreadKDTreeFactory</a>.</p>
 
 </div>
 </div>
@@ -614,6 +661,52 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
+<a id="a0f5466631a7dc4fd2102c338645ff2af"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0f5466631a7dc4fd2102c338645ff2af">&#9670;&nbsp;</a></span>reportKDTreeStats()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SimpleKDTreeFactory::reportKDTreeStats </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="../../d0/d64/classKDTreeNodeRoot.html">KDTreeNodeRoot</a> *&#160;</td>
+          <td class="paramname"><em>root</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *&gt; const &amp;&#160;</td>
+          <td class="paramname"><em>primitives</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Report KDTree stats of given root node at INFO logging level. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">root</td><td>Root node which stats must be reported </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Reimplemented in <a class="el" href="../../df/d86/classMultiThreadKDTreeFactory.html#aaa41155c2cff4d446839bab62dc2bd3a">MultiThreadKDTreeFactory</a>.</p>
+
+</div>
+</div>
 <a id="afebd1f880d9171e68537df4e2485e06c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#afebd1f880d9171e68537df4e2485e06c">&#9670;&nbsp;</a></span>serialize()</h2>
 
@@ -664,6 +757,57 @@ template&lt;typename Archive &gt; </div>
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="a0d728d4a070ec3235cdbc4988e61ad41"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0d728d4a070ec3235cdbc4988e61ad41">&#9670;&nbsp;</a></span>_buildRecursive</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::function&lt;<a class="el" href="../../d8/d94/classKDTreeNode.html">KDTreeNode</a> *( <a class="el" href="../../d8/d94/classKDTreeNode.html">KDTreeNode</a> *, bool const, vector&lt;<a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *&gt; &amp;, int const )&gt; SimpleKDTreeFactory::_buildRecursive</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The member function as attribute used to recursively build KDTree nodes. By default it will be assigned to the buildRecursive member function but it might be overridden by other implementations. For instance, to wrap the buildRecursive behavior to handle parallel building of KDTrees. </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d6/d96/classSimpleKDTreeFactory.html#a07231a87a91c5168efcb91308c60adf8" title="Recursively build a KDTree for given primitives. ">SimpleKDTreeFactory::buildRecursive</a> </dd></dl>
+
+</div>
+</div>
+<a id="abba2468b2987b4bd93e3e832bdf52f00"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abba2468b2987b4bd93e3e832bdf52f00">&#9670;&nbsp;</a></span>minSplitPrimitives</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t SimpleKDTreeFactory::minSplitPrimitives</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>How many primitives are required for a node to be splitted. </p>
+<p>If number of primitives is equal or greater than, then node might be splitted if necessary criterion is satisfied. Otherwise, no matter if other splitting criterion is satisfied, node will never be splitted. It is mainly useful to prevent too deep KDTrees which might lead to consuming a high amount of memory without significant performance improvement. </p>
 
 </div>
 </div>

@@ -107,11 +107,23 @@ Inheritance diagram for KDTreeFactory:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../de/d47/classKDTreeFactory__inherit__graph.png" border="0" usemap="#KDTreeFactory_inherit__map" alt="Inheritance graph"/></div>
 <map name="KDTreeFactory_inherit__map" id="KDTreeFactory_inherit__map">
-<area shape="rect" id="node2" href="../../df/d86/classMultiThreadKDTreeFactory.html" title="Decorator for any KDTree factory which provides support for multi thread KDTree building. " alt="" coords="5,80,184,107"/>
-<area shape="rect" id="node3" href="../../d6/d96/classSimpleKDTreeFactory.html" title="Class providing building methods for simple k&#45;dimensional trees. " alt="" coords="209,80,359,107"/>
-<area shape="rect" id="node4" href="../../db/d58/classSAHKDTreeFactory.html" title="Class providing building methods for k&#45;dimensional trees with surface area heuristic (SAH) ..." alt="" coords="215,155,353,181"/>
-<area shape="rect" id="node5" href="../../df/d30/classAxisSAHKDTreeFactory.html" title="Class providing building methods for k&#45;dimensional trees with surface area heuristic and greedy selec..." alt="" coords="107,229,272,256"/>
-<area shape="rect" id="node6" href="../../d0/d0e/classFastSAHKDTreeFactory.html" title="Class providing building methods for k&#45;dimensional trees with a fast strategy to approximate Surface ..." alt="" coords="296,229,461,256"/>
+<area shape="rect" id="node2" href="../../d6/d96/classSimpleKDTreeFactory.html" title="Class providing building methods for simple k&#45;dimensional trees. " alt="" coords="139,80,289,107"/>
+<area shape="rect" id="node3" href="../../df/d86/classMultiThreadKDTreeFactory.html" title="Decorator for any KDTree factory which provides support for multi thread KDTree building. " alt="" coords="34,155,213,181"/>
+<area shape="rect" id="node5" href="../../db/d58/classSAHKDTreeFactory.html" title="Class providing building methods for k&#45;dimensional trees with surface area heuristic (SAH) ..." alt="" coords="250,155,389,181"/>
+<area shape="rect" id="node4" href="../../dd/d95/classMultiThreadSAHKDTreeFactory.html" title="Decorator for any SAH KDTree which provides support for multi thread KDTree building. " alt="" coords="5,229,212,256"/>
+<area shape="rect" id="node6" href="../../df/d30/classAxisSAHKDTreeFactory.html" title="Class providing building methods for k&#45;dimensional trees with surface area heuristic and greedy selec..." alt="" coords="237,229,402,256"/>
+<area shape="rect" id="node7" href="../../d0/d0e/classFastSAHKDTreeFactory.html" title="Class providing building methods for k&#45;dimensional trees with a fast strategy to approximate Surface ..." alt="" coords="426,229,591,256"/>
+</map>
+<center><span class="legend">[<a target="top" href="../../graph_legend.html">legend</a>]</span></center></div>
+<div class="dynheader">
+Collaboration diagram for KDTreeFactory:</div>
+<div class="dyncontent">
+<div class="center"><img src="../../d7/dbd/classKDTreeFactory__coll__graph.png" border="0" usemap="#KDTreeFactory_coll__map" alt="Collaboration graph"/></div>
+<map name="KDTreeFactory_coll__map" id="KDTreeFactory_coll__map">
+<area shape="rect" id="node2" href="../../dd/d04/classLightKDTreeNodeBlockAllocator.html" title="Block allocator for LightKDTreeNode instances. " alt="" coords="139,264,350,291"/>
+<area shape="rect" id="node3" href="../../d9/d47/classBlockAllocator.html" title="BlockAllocator\&lt; LightKDTree\lNode \&gt;" alt="" coords="149,173,340,215"/>
+<area shape="rect" id="node4" href="../../dd/d79/classLightKDTreeNode.html" title="Class representing a light KDTree node. It is, the basic representation of a KDTree node with uses le..." alt="" coords="5,83,132,109"/>
+<area shape="rect" id="node5" href="../../d7/d98/classIBinaryTreeNode.html" title="Binary tree node interface that must be implemented by any class providing binary tree node based fun..." alt="" coords="9,5,129,32"/>
 </map>
 <center><span class="legend">[<a target="top" href="../../graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -133,13 +145,16 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a998f586e172af6066c63d3d3a251860e"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/dd0/classKDTreeFactory.html#a998f586e172af6066c63d3d3a251860e">setBuildingLightNodes</a> (bool const <a class="el" href="../../d5/dd0/classKDTreeFactory.html#aa6ede7a422802db8e6cbf537861d5f56">buildLightNodes</a>)</td></tr>
 <tr class="memdesc:a998f586e172af6066c63d3d3a251860e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set <a class="el" href="../../d5/dd0/classKDTreeFactory.html" title="Class that must be extended by any class which provides factory methods for k-dimensional trees...">KDTreeFactory</a> so it build light nodes (true) or not (false)  <a href="#a998f586e172af6066c63d3d3a251860e">More...</a><br /></td></tr>
 <tr class="separator:a998f586e172af6066c63d3d3a251860e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a794e82f978b631abf55b85f6ac72ea01"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/dd0/classKDTreeFactory.html#a794e82f978b631abf55b85f6ac72ea01">setChild</a> (<a class="el" href="../../dd/d79/classLightKDTreeNode.html">LightKDTreeNode</a> *&amp;child, <a class="el" href="../../d8/d94/classKDTreeNode.html">KDTreeNode</a> *node)</td></tr>
+<tr class="memdesc:a794e82f978b631abf55b85f6ac72ea01"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set child to given node if and only if node is not null. It must be used to assign children nodes in a thread-safe way.  <a href="#a794e82f978b631abf55b85f6ac72ea01">More...</a><br /></td></tr>
+<tr class="separator:a794e82f978b631abf55b85f6ac72ea01"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
-<tr class="memitem:a837bf89fb39600314e02f9fa9d05ec9b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/dd0/classKDTreeFactory.html#a837bf89fb39600314e02f9fa9d05ec9b">lighten</a> (<a class="el" href="../../d0/d64/classKDTreeNodeRoot.html">KDTreeNodeRoot</a> *root)</td></tr>
+<tr class="memitem:a837bf89fb39600314e02f9fa9d05ec9b"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/dd0/classKDTreeFactory.html#a837bf89fb39600314e02f9fa9d05ec9b">lighten</a> (<a class="el" href="../../d0/d64/classKDTreeNodeRoot.html">KDTreeNodeRoot</a> *root)</td></tr>
 <tr class="memdesc:a837bf89fb39600314e02f9fa9d05ec9b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Rebuild all children of given root KDTree node as LightKDTeeeNode nodes.  <a href="#a837bf89fb39600314e02f9fa9d05ec9b">More...</a><br /></td></tr>
 <tr class="separator:a837bf89fb39600314e02f9fa9d05ec9b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aad0db942ba81564682211127cc1d21c3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../dd/d79/classLightKDTreeNode.html">LightKDTreeNode</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/dd0/classKDTreeFactory.html#aad0db942ba81564682211127cc1d21c3">_lighten</a> (<a class="el" href="../../d8/d94/classKDTreeNode.html">KDTreeNode</a> *node)</td></tr>
+<tr class="memitem:aad0db942ba81564682211127cc1d21c3"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="../../dd/d79/classLightKDTreeNode.html">LightKDTreeNode</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/dd0/classKDTreeFactory.html#aad0db942ba81564682211127cc1d21c3">_lighten</a> (<a class="el" href="../../d8/d94/classKDTreeNode.html">KDTreeNode</a> *node)</td></tr>
 <tr class="memdesc:aad0db942ba81564682211127cc1d21c3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assist <a class="el" href="../../d5/dd0/classKDTreeFactory.html#a837bf89fb39600314e02f9fa9d05ec9b" title="Rebuild all children of given root KDTree node as LightKDTeeeNode nodes. ">KDTreeFactory::lighten</a> function by handling the lighten of a given non-root node.  <a href="#aad0db942ba81564682211127cc1d21c3">More...</a><br /></td></tr>
 <tr class="separator:aad0db942ba81564682211127cc1d21c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -148,6 +163,9 @@ Protected Attributes</h2></td></tr>
 <tr class="memitem:aa6ede7a422802db8e6cbf537861d5f56"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/dd0/classKDTreeFactory.html#aa6ede7a422802db8e6cbf537861d5f56">buildLightNodes</a> = true</td></tr>
 <tr class="memdesc:aa6ede7a422802db8e6cbf537861d5f56"><td class="mdescLeft">&#160;</td><td class="mdescRight">When it is true, the <a class="el" href="../../d5/dd0/classKDTreeFactory.html" title="Class that must be extended by any class which provides factory methods for k-dimensional trees...">KDTreeFactory</a> is expected to build light nodes. It is, built KDTree must have a KDTreeRootNode which children are all <a class="el" href="../../dd/d79/classLightKDTreeNode.html" title="Class representing a light KDTree node. It is, the basic representation of a KDTree node with uses le...">LightKDTreeNode</a>. When it is false, <a class="el" href="../../d5/dd0/classKDTreeFactory.html" title="Class that must be extended by any class which provides factory methods for k-dimensional trees...">KDTreeFactory</a> is allowed to build KDTree with <a class="el" href="../../d8/d94/classKDTreeNode.html" title="Class representing a KDTree node. ">KDTreeNode</a> children, which might require more memory.  <a href="#aa6ede7a422802db8e6cbf537861d5f56">More...</a><br /></td></tr>
 <tr class="separator:aa6ede7a422802db8e6cbf537861d5f56"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5316cf17aff5dd178d2a84d31410e213"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../dd/d04/classLightKDTreeNodeBlockAllocator.html">LightKDTreeNodeBlockAllocator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/dd0/classKDTreeFactory.html#a5316cf17aff5dd178d2a84d31410e213">lkdtnBlockAllocator</a></td></tr>
+<tr class="memdesc:a5316cf17aff5dd178d2a84d31410e213"><td class="mdescLeft">&#160;</td><td class="mdescRight">The block allocator to speed-up lighten of KDTree by reducing allocation calls when instantiating multiple <a class="el" href="../../dd/d79/classLightKDTreeNode.html" title="Class representing a light KDTree node. It is, the basic representation of a KDTree node with uses le...">LightKDTreeNode</a>.  <a href="#a5316cf17aff5dd178d2a84d31410e213">More...</a><br /></td></tr>
+<tr class="separator:a5316cf17aff5dd178d2a84d31410e213"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
@@ -187,7 +205,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>boost::serialization
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -252,7 +270,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>boost::serialization
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -336,7 +354,7 @@ KDTreeRootNode </dd></dl>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Pointer to root node of built KDTree </dd></dl>
 
-<p>Implemented in <a class="el" href="../../df/d86/classMultiThreadKDTreeFactory.html#a42b9fe3abb0cec04d73f3e9be3a422d6">MultiThreadKDTreeFactory</a>, and <a class="el" href="../../d6/d96/classSimpleKDTreeFactory.html#a3252f0348c7fd5d40b84e52dd9144fad">SimpleKDTreeFactory</a>.</p>
+<p>Implemented in <a class="el" href="../../d6/d96/classSimpleKDTreeFactory.html#a3252f0348c7fd5d40b84e52dd9144fad">SimpleKDTreeFactory</a>, and <a class="el" href="../../df/d86/classMultiThreadKDTreeFactory.html#a601cab19125266655d72e67204dce8ae">MultiThreadKDTreeFactory</a>.</p>
 
 </div>
 </div>
@@ -428,6 +446,55 @@ template&lt;class Archive &gt; </div>
 
 </div>
 </div>
+<a id="a794e82f978b631abf55b85f6ac72ea01"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a794e82f978b631abf55b85f6ac72ea01">&#9670;&nbsp;</a></span>setChild()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void KDTreeFactory::setChild </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="../../dd/d79/classLightKDTreeNode.html">LightKDTreeNode</a> *&amp;&#160;</td>
+          <td class="paramname"><em>child</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="../../d8/d94/classKDTreeNode.html">KDTreeNode</a> *&#160;</td>
+          <td class="paramname"><em>node</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Set child to given node if and only if node is not null. It must be used to assign children nodes in a thread-safe way. </p>
+<p>When using a multi thread like KDTree factory, nullptr is used as a place holder for asynchronous node building tasks. But it might happen that built node is assigned before the place holder, so it will be substituted by nullptr and built node will be lost. This setter is specifically designed to prevent this scenario.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">child</td><td>Reference to child pointer to be setted </td></tr>
+    <tr><td class="paramname">node</td><td>New value for the child pointer. If it is nullptr, then no set will be done. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../df/d86/classMultiThreadKDTreeFactory.html" title="Decorator for any KDTree factory which provides support for multi thread KDTree building. ">MultiThreadKDTreeFactory</a> </dd>
+<dd>
+<a class="el" href="../../dd/d95/classMultiThreadSAHKDTreeFactory.html" title="Decorator for any SAH KDTree which provides support for multi thread KDTree building. ">MultiThreadSAHKDTreeFactory</a> </dd></dl>
+
+</div>
+</div>
 <h2 class="groupheader">Member Data Documentation</h2>
 <a id="aa6ede7a422802db8e6cbf537861d5f56"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aa6ede7a422802db8e6cbf537861d5f56">&#9670;&nbsp;</a></span>buildLightNodes</h2>
@@ -451,6 +518,33 @@ template&lt;class Archive &gt; </div>
 
 <p>When it is true, the <a class="el" href="../../d5/dd0/classKDTreeFactory.html" title="Class that must be extended by any class which provides factory methods for k-dimensional trees...">KDTreeFactory</a> is expected to build light nodes. It is, built KDTree must have a KDTreeRootNode which children are all <a class="el" href="../../dd/d79/classLightKDTreeNode.html" title="Class representing a light KDTree node. It is, the basic representation of a KDTree node with uses le...">LightKDTreeNode</a>. When it is false, <a class="el" href="../../d5/dd0/classKDTreeFactory.html" title="Class that must be extended by any class which provides factory methods for k-dimensional trees...">KDTreeFactory</a> is allowed to build KDTree with <a class="el" href="../../d8/d94/classKDTreeNode.html" title="Class representing a KDTree node. ">KDTreeNode</a> children, which might require more memory. </p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d5/dd0/classKDTreeFactory.html#a837bf89fb39600314e02f9fa9d05ec9b" title="Rebuild all children of given root KDTree node as LightKDTeeeNode nodes. ">KDTreeFactory::lighten</a> </dd></dl>
+
+</div>
+</div>
+<a id="a5316cf17aff5dd178d2a84d31410e213"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5316cf17aff5dd178d2a84d31410e213">&#9670;&nbsp;</a></span>lkdtnBlockAllocator</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../dd/d04/classLightKDTreeNodeBlockAllocator.html">LightKDTreeNodeBlockAllocator</a> KDTreeFactory::lkdtnBlockAllocator</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The block allocator to speed-up lighten of KDTree by reducing allocation calls when instantiating multiple <a class="el" href="../../dd/d79/classLightKDTreeNode.html" title="Class representing a light KDTree node. It is, the basic representation of a KDTree node with uses le...">LightKDTreeNode</a>. </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../dd/d04/classLightKDTreeNodeBlockAllocator.html" title="Block allocator for LightKDTreeNode instances. ">LightKDTreeNodeBlockAllocator</a> </dd>
+<dd>
+<a class="el" href="../../d5/dd0/classKDTreeFactory.html#a837bf89fb39600314e02f9fa9d05ec9b" title="Rebuild all children of given root KDTree node as LightKDTeeeNode nodes. ">KDTreeFactory::lighten</a> </dd></dl>
 
 </div>
 </div>

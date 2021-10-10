@@ -139,19 +139,7 @@ bool Scene::finalizeLoading(bool const safe) {
   for(shared_ptr<ScenePart> & part : parts) part->computeCentroid();
 
   // ############# BEGIN Build KD-tree ##################
-  logging::INFO("Building KD-Tree... ");
-
-  TimeWatcher kdtTw;
-  kdtTw.start();
-  kdtree = shared_ptr<KDTreeNodeRoot>(
-      safe ?
-        kdtf->makeFromPrimitives(primitives) :
-        kdtf->makeFromPrimitivesUnsafe(primitives)
-  );
-
-  kdtTw.stop();
-  ss << "KD built in " << kdtTw.getElapsedDecimalSeconds() << "s";
-  logging::INFO(ss.str());
+  if(kdtf != nullptr) buildKDTreeWithLog(safe);
   // ############# END Build KD-tree ##################
 
   return true;
@@ -381,6 +369,25 @@ glm::dvec3 Scene::findForceOnGroundQ(
     }
     // By default searchDepth 1 is assumed, so q=q_*
     return minzv;
+}
+
+void Scene::buildKDTree(bool const safe){
+    kdtree = shared_ptr<KDTreeNodeRoot>(
+        safe ?
+        kdtf->makeFromPrimitives(primitives) :
+        kdtf->makeFromPrimitivesUnsafe(primitives)
+    );
+}
+
+void Scene::buildKDTreeWithLog(bool const safe){
+    logging::INFO("Building KD-Tree... ");
+    TimeWatcher kdtTw;
+    kdtTw.start();
+    buildKDTree(safe);
+    kdtTw.stop();
+    std::stringstream ss;
+    ss << "KD built in " << kdtTw.getElapsedDecimalSeconds() << "s";
+    logging::INFO(ss.str());
 }
 
 // ***  READ/WRITE  *** //

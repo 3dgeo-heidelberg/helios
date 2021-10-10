@@ -10,6 +10,7 @@
  * @version 1.0
  * @brief Abstract class providing core implementation of a thread pool to deal
  *  with multi threading tasks
+ * @tparam TaskArgs The arguments for the task functor
  */
 template <typename ... TaskArgs>
 class ThreadPool{
@@ -22,11 +23,12 @@ protected:
      */
 	boost::asio::io_service io_service_;
 	/**
-	 * @brief Instance of work to report the io service when it has pending
-	 *  tasks
+	 * @brief Instance of work guard to report the io service when it has
+	 *  pending tasks
 	 * @see ThreadPool::io_service_
 	 */
-	boost::asio::io_service::work work_;
+	boost::asio::executor_work_guard<boost::asio::io_service::executor_type>
+	    work_;
 	/**
 	 * @brief Size of thread pool (number of threads)
 	 */
@@ -45,7 +47,7 @@ protected:
 	 */
 	boost::mutex mutex_;
     /**
-     * @brief Condition var to handle tasks dispatching depending on
+     * @brief Condition variable to handle tasks dispatching depending on
      *  available threads
      */
 	boost::condition_variable cond_;
@@ -58,7 +60,7 @@ public:
      * @see ThreadPool::pool_size
      */
     explicit ThreadPool(std::size_t const _pool_size) :
-        work_(io_service_),
+        work_(boost::asio::make_work_guard(io_service_)),
         pool_size(_pool_size),
         available_(_pool_size)
     {
@@ -129,7 +131,7 @@ public:
         while(available_ < pool_size){
             cond_.wait(lock);
         }
-	}
+    }
 
 protected:
 	/**

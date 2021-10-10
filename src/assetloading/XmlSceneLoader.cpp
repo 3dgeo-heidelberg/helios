@@ -7,7 +7,9 @@
 #include <DetailedVoxelLoader.h>
 #include <scene/dynamic/DynScene.h>
 #include <SimpleKDTreeFactory.h>
+#include <MultiThreadKDTreeFactory.h>
 #include <SAHKDTreeFactory.h>
+#include <MultiThreadSAHKDTreeFactory.h>
 #include <AxisSAHKDTreeFactory.h>
 #include <FastSAHKDTreeFactory.h>
 
@@ -81,12 +83,14 @@ XmlSceneLoader::createSceneFromXml(
     logging::INFO(ss.str());
 
     // Set KDTree factory and finish scene loading
-    scene->setKDTreeFactory(makeKDTreeFactory());
+    //scene->setKDTreeFactory(makeKDTreeFactory()); // Not yet, avoid building
+    scene->setKDTreeFactory(nullptr); // Prevent building before serializing
     bool success = scene->finalizeLoading();
     if (!success) {
         logging::ERR("Finalizing the scene failed.");
         exit(-1);
     }
+    scene->setKDTreeFactory(makeKDTreeFactory()); // Better after building
 
     // Store scene type if requested
     if(sceneType != nullptr){
@@ -339,21 +343,52 @@ shared_ptr<StaticScene> XmlSceneLoader::makeSceneDynamic(
 }
 
 shared_ptr<KDTreeFactory> XmlSceneLoader::makeKDTreeFactory(){
-    if(kdtFactoryType == 1){
+    if(kdtNumJobs == 0) kdtNumJobs = std::thread::hardware_concurrency();
+
+    if(kdtFactoryType == 1){ // Simple
         logging::DEBUG("XmlSceneLoader is using a SimpleKDTreeFactory");
-        return make_shared<SimpleKDTreeFactory>();
+        shared_ptr<SimpleKDTreeFactory> factory =
+            make_shared<SimpleKDTreeFactory>();
+        if(kdtNumJobs > 1){
+            return make_shared<MultiThreadKDTreeFactory>(factory, kdtNumJobs);
+        }
+        return factory;
     }
-    else if(kdtFactoryType == 2){
+    else if(kdtFactoryType == 2){ // SAH
         logging::DEBUG("XmlSceneLoader is using a SAHKDTreeFactory");
-        return make_shared<SAHKDTreeFactory>(kdtSAHLossNodes);
+        shared_ptr<SAHKDTreeFactory> factory =
+            make_shared<SAHKDTreeFactory>(kdtSAHLossNodes);
+        if(kdtNumJobs > 1){
+            return make_shared<MultiThreadSAHKDTreeFactory>(
+                factory,
+                kdtNumJobs
+            );
+        }
+        return factory;
     }
-    else if(kdtFactoryType == 3){
+    else if(kdtFactoryType == 3){ // Axis SAH
         logging::DEBUG("XmlSceneLoader is using a AxisSAHKDTreeFactory");
-        return make_shared<AxisSAHKDTreeFactory>(kdtSAHLossNodes);
+        shared_ptr<AxisSAHKDTreeFactory> factory =
+            make_shared<AxisSAHKDTreeFactory>(kdtSAHLossNodes);
+        if(kdtNumJobs > 1){
+            return make_shared<MultiThreadSAHKDTreeFactory>(
+                factory,
+                kdtNumJobs
+            );
+        }
+        return factory;
     }
-    else if(kdtFactoryType == 4){
+    else if(kdtFactoryType == 4){ // Fast SAH
         logging::DEBUG("XmlSceneLoader is using a FastSAHKDTreeFactory");
-        return make_shared<FastSAHKDTreeFactory>(kdtSAHLossNodes);
+        shared_ptr<FastSAHKDTreeFactory> factory =
+            make_shared<FastSAHKDTreeFactory>(kdtSAHLossNodes);
+        if(kdtNumJobs > 1){
+            return make_shared<MultiThreadSAHKDTreeFactory>(
+                factory,
+                kdtNumJobs
+            );
+        }
+        return factory;
     }
     else{
         std::stringstream ss;
