@@ -230,6 +230,12 @@ int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../..
 double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d64/classKDTreeNodeRoot.html#ac04f52fb46af0e5dd01d458cf6a34b47">stats_totalCost</a></td></tr>
 <tr class="memdesc:ac04f52fb46af0e5dd01d458cf6a34b47"><td class="mdescLeft">&#160;</td><td class="mdescRight">Total cost of three. It changes depending on tree building strategy. It might be NaN if tree building strategy is not based on computing any cost. <br /></td></tr>
 <tr class="separator:ac04f52fb46af0e5dd01d458cf6a34b47"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6f6162545e781f00dc2593cb8fd5673d"><td class="memItemLeft" align="right" valign="top">vector&lt; <a class="el" href="../../dd/d79/classLightKDTreeNode.html">LightKDTreeNode</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d64/classKDTreeNodeRoot.html#a6f6162545e781f00dc2593cb8fd5673d">blocks</a></td></tr>
+<tr class="memdesc:a6f6162545e781f00dc2593cb8fd5673d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Vector of pointers to the start of each allocated block of <a class="el" href="../../dd/d79/classLightKDTreeNode.html" title="Class representing a light KDTree node. It is, the basic representation of a KDTree node with uses le...">LightKDTreeNode</a>. If it is empty, it means the tree has not been lightened, thus its allocation is not block based.a.  <a href="#a6f6162545e781f00dc2593cb8fd5673d">More...</a><br /></td></tr>
+<tr class="separator:a6f6162545e781f00dc2593cb8fd5673d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a815a3ea2e381dd3e4d8ebc3a164afcb2"><td class="memItemLeft" align="right" valign="top">vector&lt; size_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d64/classKDTreeNodeRoot.html#a815a3ea2e381dd3e4d8ebc3a164afcb2">blocksSize</a></td></tr>
+<tr class="memdesc:a815a3ea2e381dd3e4d8ebc3a164afcb2"><td class="mdescLeft">&#160;</td><td class="mdescRight">The size (number of nodes) for each allocated block, if any.  <a href="#a815a3ea2e381dd3e4d8ebc3a164afcb2">More...</a><br /></td></tr>
+<tr class="separator:a815a3ea2e381dd3e4d8ebc3a164afcb2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_attribs_classKDTreeNode"><td colspan="2" onclick="javascript:toggleInherit('pub_attribs_classKDTreeNode')"><img src="../../closed.png" alt="-"/>&#160;Public Attributes inherited from <a class="el" href="../../d8/d94/classKDTreeNode.html">KDTreeNode</a></td></tr>
 <tr class="memitem:ab25d385b581fd857a02b370c5d6b0e1a inherit pub_attribs_classKDTreeNode"><td class="memItemLeft" align="right" valign="top"><a id="ab25d385b581fd857a02b370c5d6b0e1a"></a>
 <a class="el" href="../../d2/d1a/classAABB.html">AABB</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d94/classKDTreeNode.html#ab25d385b581fd857a02b370c5d6b0e1a">bound</a></td></tr>
@@ -333,6 +339,41 @@ template&lt;typename Archive &gt; </div>
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="a6f6162545e781f00dc2593cb8fd5673d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6f6162545e781f00dc2593cb8fd5673d">&#9670;&nbsp;</a></span>blocks</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">vector&lt;<a class="el" href="../../dd/d79/classLightKDTreeNode.html">LightKDTreeNode</a> *&gt; KDTreeNodeRoot::blocks</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Vector of pointers to the start of each allocated block of <a class="el" href="../../dd/d79/classLightKDTreeNode.html" title="Class representing a light KDTree node. It is, the basic representation of a KDTree node with uses le...">LightKDTreeNode</a>. If it is empty, it means the tree has not been lightened, thus its allocation is not block based.a. </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d0/d64/classKDTreeNodeRoot.html#a815a3ea2e381dd3e4d8ebc3a164afcb2" title="The size (number of nodes) for each allocated block, if any. ">KDTreeNodeRoot::blocksSize</a> </dd></dl>
+
+</div>
+</div>
+<a id="a815a3ea2e381dd3e4d8ebc3a164afcb2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a815a3ea2e381dd3e4d8ebc3a164afcb2">&#9670;&nbsp;</a></span>blocksSize</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">vector&lt;size_t&gt; KDTreeNodeRoot::blocksSize</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The size (number of nodes) for each allocated block, if any. </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d0/d64/classKDTreeNodeRoot.html#a6f6162545e781f00dc2593cb8fd5673d" title="Vector of pointers to the start of each allocated block of LightKDTreeNode. If it is empty...">KDTreeNodeRoot::blocks</a> </dd></dl>
 
 </div>
 </div>

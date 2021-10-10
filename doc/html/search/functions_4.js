@@ -2,6 +2,7 @@ var searchData=
 [
   ['deallocate',['deallocate',['../d8/d78/classWavefrontObjCache.html#af1f9c092af89f117c3faecf267d8566f',1,'WavefrontObjCache']]],
   ['debug',['DEBUG',['../d0/da9/logging_8hpp.html#acc7cbc688fcbb59f796678f30fca6ab7',1,'logging']]],
+  ['decreasependingtasks',['decreasePendingTasks',['../d0/d21/classMDThreadPool.html#abbddc39ae0996fc43bd43f22c6536d97',1,'MDThreadPool']]],
   ['definesplit',['defineSplit',['../df/d30/classAxisSAHKDTreeFactory.html#a1a938aa8914f624692228217428c157a',1,'AxisSAHKDTreeFactory::defineSplit()'],['../db/d58/classSAHKDTreeFactory.html#aa22c06947f61f871156922122c41084d',1,'SAHKDTreeFactory::defineSplit()'],['../d6/d96/classSimpleKDTreeFactory.html#aa3ed0e048fd2e9ae62fdd324e32153c5',1,'SimpleKDTreeFactory::defineSplit()']]],
   ['degreestoradians',['degreesToRadians',['../df/d22/classMathConverter.html#a9b0216cc0a7a9d3e6ae2adefe2c88c64',1,'MathConverter']]],
   ['demoselector',['DemoSelector',['../df/d3f/classHeliosDemos_1_1DemoSelector.html#a8b4333e776e7b653f9e12767a932f05d',1,'HeliosDemos::DemoSelector']]],
@@ -17,8 +18,9 @@ var searchData=
   ['digestscenepart',['digestScenePart',['../db/d91/classXmlSceneLoader.html#a4f662808bd8f0e04d2b087cfc8061e07',1,'XmlSceneLoader']]],
   ['digestvoxel',['digestVoxel',['../d6/d03/classXYZPointCloudFileLoader.html#a471a7eaa12eced954870e41704df505c',1,'XYZPointCloudFileLoader']]],
   ['directiontoanglexy',['directionToAngleXY',['../dc/db6/classVectorial.html#abb116a2271c4abddd8aa40b4e2c2af12',1,'Vectorial']]],
+  ['do_5fmd_5ftask',['do_md_task',['../d2/dea/classKDTreeFactoryThreadPool.html#a193581cbc141dc0f2352a799acb58c36',1,'KDTreeFactoryThreadPool::do_md_task()'],['../d0/d21/classMDThreadPool.html#aa11daa4dc569281b6b5493951c2adb85',1,'MDThreadPool::do_md_task()']]],
   ['do_5fres_5ftask',['do_res_task',['../d6/ddc/classPulseThreadPool.html#a8c0c207ea93186a0a385a4f4ecc21238',1,'PulseThreadPool::do_res_task()'],['../d2/dee/classResThreadPool.html#ad0b2139c1b82d5b8b40b447aeaecdf56',1,'ResThreadPool::do_res_task()']]],
-  ['do_5ftask',['do_task',['../d2/dee/classResThreadPool.html#ac511f71f65b5c7dc4bbb05ac4d32b721',1,'ResThreadPool::do_task()'],['../dc/de7/classThreadPool.html#ab1035e24e8841701c196d08130d277f5',1,'ThreadPool::do_task()']]],
+  ['do_5ftask',['do_task',['../d0/d21/classMDThreadPool.html#aa50aa5b36e90acd6edf8274945cc9255',1,'MDThreadPool::do_task()'],['../d2/dee/classResThreadPool.html#ac511f71f65b5c7dc4bbb05ac4d32b721',1,'ResThreadPool::do_task()'],['../dc/de7/classThreadPool.html#ab1035e24e8841701c196d08130d277f5',1,'ThreadPool::do_task()']]],
   ['docontrolstep',['doControlStep',['../d7/d94/classGroundVehiclePlatform.html#a96f9e842e62596cc9181e779459ce4d5',1,'GroundVehiclePlatform::doControlStep()'],['../db/d69/classHelicopterPlatform.html#a2670a00626f89431d853297db8220daf',1,'HelicopterPlatform::doControlStep()'],['../d5/d3b/classSimplePhysicsPlatform.html#a1804dc3d3314ec305bd9cebde119a4a3',1,'SimplePhysicsPlatform::doControlStep()']]],
   ['doforceonground',['doForceOnGround',['../d5/d9c/classScene.html#a3c173e62cd1c1c31cdd05edcafbee0ab',1,'Scene']]],
   ['dophysicsstep',['doPhysicsStep',['../d5/d3b/classSimplePhysicsPlatform.html#a536da07e49058f215c38bd1210fe6030',1,'SimplePhysicsPlatform']]],

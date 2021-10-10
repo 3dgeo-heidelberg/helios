@@ -65,6 +65,10 @@ var hierarchy =
       [ "HeliosTests::SurveyCopyTest", "de/d9c/classHeliosTests_1_1SurveyCopyTest.html", null ],
       [ "HeliosTests::VoxelParsingTest", "da/d8d/classHeliosTests_1_1VoxelParsingTest.html", null ]
     ] ],
+    [ "BlockAllocator< Class >", "d9/d47/classBlockAllocator.html", null ],
+    [ "BlockAllocator< LightKDTreeNode >", "d9/d47/classBlockAllocator.html", [
+      [ "LightKDTreeNodeBlockAllocator", "dd/d04/classLightKDTreeNodeBlockAllocator.html", null ]
+    ] ],
     [ "Color4f", "db/d02/classColor4f.html", null ],
     [ "HeliosDemos::DemoSelector", "df/d3f/classHeliosDemos_1_1DemoSelector.html", null ],
     [ "Directions", "df/dc3/classDirections.html", null ],
@@ -99,9 +103,12 @@ var hierarchy =
       [ "BinaryTreeFastBreadthIterator< NodeType >", "d3/d43/classBinaryTreeFastBreadthIterator.html", null ],
       [ "BinaryTreeFastDepthIterator< NodeType >", "dc/da5/classBinaryTreeFastDepthIterator.html", null ]
     ] ],
+    [ "KDTreeBuildType", "d8/d4c/classKDTreeBuildType.html", null ],
     [ "KDTreeFactory", "d5/dd0/classKDTreeFactory.html", [
-      [ "MultiThreadKDTreeFactory", "df/d86/classMultiThreadKDTreeFactory.html", null ],
       [ "SimpleKDTreeFactory", "d6/d96/classSimpleKDTreeFactory.html", [
+        [ "MultiThreadKDTreeFactory", "df/d86/classMultiThreadKDTreeFactory.html", [
+          [ "MultiThreadSAHKDTreeFactory", "dd/d95/classMultiThreadSAHKDTreeFactory.html", null ]
+        ] ],
         [ "SAHKDTreeFactory", "db/d58/classSAHKDTreeFactory.html", [
           [ "AxisSAHKDTreeFactory", "df/d30/classAxisSAHKDTreeFactory.html", null ],
           [ "FastSAHKDTreeFactory", "d0/d0e/classFastSAHKDTreeFactory.html", null ]
@@ -144,6 +151,11 @@ var hierarchy =
         [ "UniformNoiseSource< double >", "d3/d57/classUniformNoiseSource.html", null ]
       ] ]
     ] ],
+    [ "Object", null, [
+      [ "SurfaceInspector::maths::functions::IMathFunction< T, T >", "da/d80/classSurfaceInspector_1_1maths_1_1functions_1_1IMathFunction.html", [
+        [ "SurfaceInspector::maths::functions::GaussianFunction< T >", "db/dc1/classSurfaceInspector_1_1maths_1_1functions_1_1GaussianFunction.html", null ]
+      ] ]
+    ] ],
     [ "SurfaceInspector::util::Object", "d2/df2/classSurfaceInspector_1_1util_1_1Object.html", [
       [ "SurfaceInspector::util::draggers::IDragger< E, vector< E > >", "d1/dd1/classSurfaceInspector_1_1util_1_1draggers_1_1IDragger.html", [
         [ "SurfaceInspector::util::draggers::OptimizationDragger< E >", "d5/d68/classSurfaceInspector_1_1util_1_1draggers_1_1OptimizationDragger.html", [
@@ -169,11 +181,6 @@ var hierarchy =
       [ "SurfaceInspector::maths::Vector< T >", "d1/dd3/classSurfaceInspector_1_1maths_1_1Vector.html", null ],
       [ "SurfaceInspector::util::draggers::IDragger< E, C >", "d1/dd1/classSurfaceInspector_1_1util_1_1draggers_1_1IDragger.html", null ],
       [ "SurfaceInspector::util::SurfaceInspectorException", "df/da8/classSurfaceInspector_1_1util_1_1SurfaceInspectorException.html", null ]
-    ] ],
-    [ "Object", null, [
-      [ "SurfaceInspector::maths::functions::IMathFunction< T, T >", "da/d80/classSurfaceInspector_1_1maths_1_1functions_1_1IMathFunction.html", [
-        [ "SurfaceInspector::maths::functions::GaussianFunction< T >", "db/dc1/classSurfaceInspector_1_1maths_1_1functions_1_1GaussianFunction.html", null ]
-      ] ]
     ] ],
     [ "PlaneFitter", "d6/d51/classPlaneFitter.html", null ],
     [ "Primitive", "df/de1/classPrimitive.html", [
@@ -253,6 +260,10 @@ var hierarchy =
     [ "Test", "df/da6/classTest.html", null ],
     [ "ThreadPool< TaskArgs >", "dc/de7/classThreadPool.html", null ],
     [ "ThreadPool< TaskArgs ... >", "dc/de7/classThreadPool.html", [
+      [ "MDThreadPool< MDType, TaskArgs >", "d0/d21/classMDThreadPool.html", null ],
+      [ "MDThreadPool< KDTreeBuildType, KDTreeNode *, bool const, vector< Primitive *> &, int const >", "d0/d21/classMDThreadPool.html", [
+        [ "KDTreeFactoryThreadPool", "d2/dea/classKDTreeFactoryThreadPool.html", null ]
+      ] ],
       [ "ResThreadPool< TaskArgs >", "d2/dee/classResThreadPool.html", null ],
       [ "ResThreadPool< std::vector< std::vector< double > > &, RandomnessGenerator< double > &, RandomnessGenerator< double > &, NoiseSource< double > & >", "d2/dee/classResThreadPool.html", [
         [ "PulseThreadPool", "d6/ddc/classPulseThreadPool.html", null ]

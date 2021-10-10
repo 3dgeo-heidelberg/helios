@@ -1,6 +1,7 @@
 var searchData=
 [
   ['params',['params',['../d6/dd2/classAbstractGeometryFilter.html#a1340876923d6147fadd1374b6f12de7a',1,'AbstractGeometryFilter']]],
+  ['parent',['parent',['../d8/d4c/classKDTreeBuildType.html#a155141e71593e5761556e9b6c015e9a0',1,'KDTreeBuildType']]],
   ['parse',['parse',['../d6/d03/classXYZPointCloudFileLoader.html#a533ee095a113fabfc4e6b29e70a3b53d',1,'XYZPointCloudFileLoader']]],
   ['parseassetspath',['parseAssetsPath',['../d7/d5c/classArgumentsParser.html#a4099e6b87cbdb2d90f6b2713068ccf18',1,'ArgumentsParser']]],
   ['parsecalcechowidth',['parseCalcEchowidth',['../d7/d5c/classArgumentsParser.html#af8e82dbe3eea1812ffe95a0d28c5c919',1,'ArgumentsParser']]],
@@ -14,6 +15,7 @@ var searchData=
   ['parsefixedincidenceangle',['parseFixedIncidenceAngle',['../d7/d5c/classArgumentsParser.html#a4ff03c5a307080829b7c72477316253c',1,'ArgumentsParser']]],
   ['parsefullwavenoise',['parseFullWaveNoise',['../d7/d5c/classArgumentsParser.html#a01a623c8014d1d0745941e3d41dbd957',1,'ArgumentsParser']]],
   ['parsehelprequest',['parseHelpRequest',['../d7/d5c/classArgumentsParser.html#adfb3a765d1a087d7ce9d1b08613fdaff',1,'ArgumentsParser']]],
+  ['parsekdtreejobs',['parseKDTreeJobs',['../d7/d5c/classArgumentsParser.html#aaf6e07ac4870778a2164b3307babdd30',1,'ArgumentsParser']]],
   ['parsekdtreetype',['parseKDTreeType',['../d7/d5c/classArgumentsParser.html#a63afc3c3a1e1c948cb1d3b8ef81d9c4b',1,'ArgumentsParser']]],
   ['parselas10',['parseLas10',['../d7/d5c/classArgumentsParser.html#af9124496c63acc99a4815099ffd720e4',1,'ArgumentsParser']]],
   ['parselasoutput',['parseLasOutput',['../d7/d5c/classArgumentsParser.html#a713a2349b0f56232c94ac24327f02f19',1,'ArgumentsParser']]],
@@ -57,7 +59,7 @@ var searchData=
   ['plane',['Plane',['../d1/d16/classSurfaceInspector_1_1maths_1_1Plane.html',1,'SurfaceInspector::maths::Plane&lt; T &gt;'],['../d1/d16/classSurfaceInspector_1_1maths_1_1Plane.html#a3709348ce9eeba656f0eebe982ad9313',1,'SurfaceInspector::maths::Plane::Plane()=default'],['../d1/d16/classSurfaceInspector_1_1maths_1_1Plane.html#abfbe1529a1fb6a81830679395d16cdb3',1,'SurfaceInspector::maths::Plane::Plane(vector&lt; T &gt; centroid, vector&lt; T &gt; orthonormal, T scatter=0, T curvature=0)']]],
   ['planefitter',['PlaneFitter',['../df/d21/classSurfaceInspector_1_1maths_1_1PlaneFitter.html',1,'SurfaceInspector::maths::PlaneFitter'],['../d6/d51/classPlaneFitter.html',1,'PlaneFitter']]],
   ['planefittertest',['PlaneFitterTest',['../d6/dda/classHeliosTests_1_1PlaneFitterTest.html',1,'HeliosTests::PlaneFitterTest'],['../d6/dda/classHeliosTests_1_1PlaneFitterTest.html#a6a0aba6929996743b2dc310bac1d3615',1,'HeliosTests::PlaneFitterTest::PlaneFitterTest()']]],
-  ['platform',['Platform',['../df/d1e/classPlatform.html',1,'Platform'],['../df/d1e/classPlatform.html#a6b2ba3089df1d2ed16a8349f0876c100',1,'Platform::Platform()'],['../dc/d42/classScanner.html#ac9aec7ab5f77c83534d1ffc07ff10b49',1,'Scanner::platform()']]],
+  ['platform',['Platform',['../df/d1e/classPlatform.html',1,'Platform'],['../dc/d42/classScanner.html#ac9aec7ab5f77c83534d1ffc07ff10b49',1,'Scanner::platform()'],['../df/d1e/classPlatform.html#a6b2ba3089df1d2ed16a8349f0876c100',1,'Platform::Platform()']]],
   ['platformnoisedisabled',['platformNoiseDisabled',['../dc/d42/classScanner.html#a562836770f89ddd7362b67bb166b7e42',1,'Scanner']]],
   ['platformphysicstest',['PlatformPhysicsTest',['../d6/d96/classHeliosTests_1_1PlatformPhysicsTest.html',1,'HeliosTests::PlatformPhysicsTest'],['../d6/d96/classHeliosTests_1_1PlatformPhysicsTest.html#acb965ec9356d4eabd37390b2df0051c8',1,'HeliosTests::PlatformPhysicsTest::PlatformPhysicsTest()']]],
   ['platformsettings',['PlatformSettings',['../d5/d0c/classPlatformSettings.html',1,'']]],
@@ -87,7 +89,7 @@ var searchData=
   ['prevwrittenpos',['prevWrittenPos',['../df/d1e/classPlatform.html#ab2ff60e61b49f0ef1aacde2025865ac8',1,'Platform']]],
   ['prim',['prim',['../dc/da3/classRaySceneIntersection.html#a1f49d311cf9555983807c0832b12a9db',1,'RaySceneIntersection']]],
   ['primitive',['Primitive',['../df/de1/classPrimitive.html',1,'']]],
-  ['primitives',['primitives',['../dd/d79/classLightKDTreeNode.html#a33e6e3f0baa23be7508d2ad0076ac1dd',1,'LightKDTreeNode::primitives()'],['../d0/d92/classWavefrontObj.html#a038535f47a68a4a42faefef1227b9ada',1,'WavefrontObj::primitives()'],['../d5/d9c/classScene.html#a7006d57329f8e8d8563e9ff54ddcb2fc',1,'Scene::primitives()']]],
+  ['primitives',['primitives',['../d8/d4c/classKDTreeBuildType.html#a3bacdbdf042e1fe77d4d13291e2b0725',1,'KDTreeBuildType::primitives()'],['../dd/d79/classLightKDTreeNode.html#a33e6e3f0baa23be7508d2ad0076ac1dd',1,'LightKDTreeNode::primitives()'],['../d0/d92/classWavefrontObj.html#a038535f47a68a4a42faefef1227b9ada',1,'WavefrontObj::primitives()'],['../d5/d9c/classScene.html#a7006d57329f8e8d8563e9ff54ddcb2fc',1,'Scene::primitives()']]],
   ['primsout',['primsOut',['../d6/dd2/classAbstractGeometryFilter.html#a2cad90f9937927dbb66517fb4bc0205f',1,'AbstractGeometryFilter']]],
   ['printmatrix',['printMatrix',['../d1/d2b/classMarquardtFitter.html#aaefffce84de3814ef259b5897d2498b0',1,'MarquardtFitter::printMatrix()'],['../d1/d2b/classMarquardtFitter.html#aee2a297d40fb3d15afc20f671a6c056f',1,'MarquardtFitter::printMatrix(std::vector&lt; std::vector&lt; double &gt;&gt; &amp;matrix)']]],
   ['produce',['produce',['../d7/deb/classlogger__factory.html#a53ed3dac136023677e6128402ea59dfe',1,'logger_factory']]],

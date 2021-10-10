@@ -3,6 +3,7 @@
 #include <LightKDTreeNode.h>
 #include <KDTreeNode.h>
 #include <KDTreeNodeRoot.h>
+#include <LightKDTreeNodeBlockAllocator.h>
 
 #include <vector>
 
@@ -31,7 +32,14 @@ private:
      */
     template <class Archive>
     void serialize(Archive &ar, const unsigned int version) {
+        // Register KDTree node classes
+        ar.template register_type<LightKDTreeNode>();
+        ar.template register_type<KDTreeNode>();
+        ar.template register_type<KDTreeNodeRoot>();
+
+        // Serialization itself
         ar &buildLightNodes;
+        //LightKDTreeNodeBlockAllocator lkdtnBlockAllocator; // No need, deflt.
     }
 
 protected:
@@ -46,6 +54,13 @@ protected:
      * @see KDTreeFactory::lighten
      */
     bool buildLightNodes = true;
+    /**
+     * @brief The block allocator to speed-up lighten of KDTree by reducing
+     *  allocation calls when instantiating multiple LightKDTreeNode
+     * @see LightKDTreeNodeBlockAllocator
+     * @see KDTreeFactory::lighten
+     */
+    LightKDTreeNodeBlockAllocator lkdtnBlockAllocator;
 
 public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //
@@ -101,6 +116,24 @@ public:
      */
     virtual inline void setBuildingLightNodes(bool const buildLightNodes)
     {this->buildLightNodes = buildLightNodes;}
+    /**
+     * @brief Set child to given node if and only if node is not null. It must
+     *  be used to assign children nodes in a thread-safe way.
+     *
+     * When using a multi thread like KDTree factory, nullptr is used as a
+     *  place holder for asynchronous node building tasks. But it might happen
+     *  that built node is assigned before the place holder, so it will be
+     *  substituted by nullptr and built node will be lost. This setter is
+     *  specifically designed to prevent this scenario.
+     *
+     * @param child Reference to child pointer to be setted
+     * @param node New value for the child pointer. If it is nullptr, then no
+     *  set will be done.
+     * @see MultiThreadKDTreeFactory
+     * @see MultiThreadSAHKDTreeFactory
+     */
+    virtual void setChild(LightKDTreeNode *&child, KDTreeNode *node)
+    {if(node != nullptr) child = node;}
 
 protected:
     // ***  LIGHTEN  *** //
@@ -114,7 +147,7 @@ protected:
      * @see KDTreeNode
      * @see KDTreeRootNode
      */
-    void lighten(KDTreeNodeRoot *root);
+    virtual void lighten(KDTreeNodeRoot *root);
     /**
      * @brief Assist KDTreeFactory::lighten function by handling the lighten
      *  of a given non-root node
@@ -122,5 +155,5 @@ protected:
      * @return Light version of given node
      * @see KDTreeFactory::lighten
      */
-    LightKDTreeNode * _lighten(KDTreeNode *node);
+    virtual LightKDTreeNode * _lighten(KDTreeNode *node);
 };

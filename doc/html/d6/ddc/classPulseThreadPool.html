@@ -200,9 +200,9 @@ Protected Attributes</h2></td></tr>
 boost::asio::io_service&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/de7/classThreadPool.html#a5b2814c08d65ed6223303bcde6add26c">io_service_</a></td></tr>
 <tr class="memdesc:a5b2814c08d65ed6223303bcde6add26c inherit pro_attribs_classThreadPool"><td class="mdescLeft">&#160;</td><td class="mdescRight">Instance of boost input/output service for asynchronous data processing. <br /></td></tr>
 <tr class="separator:a5b2814c08d65ed6223303bcde6add26c inherit pro_attribs_classThreadPool"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7612ee5971c98a4e7e975c7600e4651c inherit pro_attribs_classThreadPool"><td class="memItemLeft" align="right" valign="top">boost::asio::io_service::work&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/de7/classThreadPool.html#a7612ee5971c98a4e7e975c7600e4651c">work_</a></td></tr>
-<tr class="memdesc:a7612ee5971c98a4e7e975c7600e4651c inherit pro_attribs_classThreadPool"><td class="mdescLeft">&#160;</td><td class="mdescRight">Instance of work to report the io service when it has pending tasks.  <a href="../../dc/de7/classThreadPool.html#a7612ee5971c98a4e7e975c7600e4651c">More...</a><br /></td></tr>
-<tr class="separator:a7612ee5971c98a4e7e975c7600e4651c inherit pro_attribs_classThreadPool"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8ba0794faf1a72f7f4a9922b3391a8f2 inherit pro_attribs_classThreadPool"><td class="memItemLeft" align="right" valign="top">boost::asio::executor_work_guard&lt; boost::asio::io_service::executor_type &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/de7/classThreadPool.html#a8ba0794faf1a72f7f4a9922b3391a8f2">work_</a></td></tr>
+<tr class="memdesc:a8ba0794faf1a72f7f4a9922b3391a8f2 inherit pro_attribs_classThreadPool"><td class="mdescLeft">&#160;</td><td class="mdescRight">Instance of work guard to report the io service when it has pending tasks.  <a href="../../dc/de7/classThreadPool.html#a8ba0794faf1a72f7f4a9922b3391a8f2">More...</a><br /></td></tr>
+<tr class="separator:a8ba0794faf1a72f7f4a9922b3391a8f2 inherit pro_attribs_classThreadPool"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8024981c2df0048b4f6164964bcafffb inherit pro_attribs_classThreadPool"><td class="memItemLeft" align="right" valign="top"><a id="a8024981c2df0048b4f6164964bcafffb"></a>
 std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/de7/classThreadPool.html#a8024981c2df0048b4f6164964bcafffb">pool_size</a></td></tr>
 <tr class="memdesc:a8024981c2df0048b4f6164964bcafffb inherit pro_attribs_classThreadPool"><td class="mdescLeft">&#160;</td><td class="mdescRight">Size of thread pool (number of threads) <br /></td></tr>
@@ -221,13 +221,13 @@ boost::mutex&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 <tr class="separator:ade26079dd6d8fa7fe7ef7e480496e64b inherit pro_attribs_classThreadPool"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a16e49f99edc8408765e51760a753948d inherit pro_attribs_classThreadPool"><td class="memItemLeft" align="right" valign="top"><a id="a16e49f99edc8408765e51760a753948d"></a>
 boost::condition_variable&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/de7/classThreadPool.html#a16e49f99edc8408765e51760a753948d">cond_</a></td></tr>
-<tr class="memdesc:a16e49f99edc8408765e51760a753948d inherit pro_attribs_classThreadPool"><td class="mdescLeft">&#160;</td><td class="mdescRight">Condition var to handle tasks dispatching depending on available threads. <br /></td></tr>
+<tr class="memdesc:a16e49f99edc8408765e51760a753948d inherit pro_attribs_classThreadPool"><td class="mdescLeft">&#160;</td><td class="mdescRight">Condition variable to handle tasks dispatching depending on available threads. <br /></td></tr>
 <tr class="separator:a16e49f99edc8408765e51760a753948d inherit pro_attribs_classThreadPool"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Class implementing a thread pool to deal with pulse tasks. </p>
 <dl class="section version"><dt>Version</dt><dd>1.0 </dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d2/dee/classResThreadPool.html" title="Absract class extending basic thread pool implementation to provided a basis layer to handle thread a...">ResThreadPool</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d2/dee/classResThreadPool.html" title="Abstract class extending basic thread pool implementation to provide a basis layer to handle thread a...">ResThreadPool</a> </dd></dl>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a2dd5e8443cc4c66252199a000260d74a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a2dd5e8443cc4c66252199a000260d74a">&#9670;&nbsp;</a></span>PulseThreadPool()</h2>
@@ -264,7 +264,7 @@ boost::condition_variable&#160;</td><td class="memItemRight" valign="bottom"><a 
 </div><div class="memdoc">
 
 <p>Thread pool constructor. </p>
-<dl class="section see"><dt>See also</dt><dd>thread_pool::pool_size </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../dc/de7/classThreadPool.html#a8024981c2df0048b4f6164964bcafffb" title="Size of thread pool (number of threads) ">ThreadPool::pool_size</a> </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">deviceAccuracy</td><td>Parameter used to handle randomness generation impact on simulation results </td></tr>
@@ -305,7 +305,7 @@ boost::condition_variable&#160;</td><td class="memItemRight" valign="bottom"><a 
   </table>
   </dd>
 </dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../dc/de7/classThreadPool.html#ab1035e24e8841701c196d08130d277f5" title="Invoke task with corresponding arguments. ">ThreadPool::do_task</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d2/dee/classResThreadPool.html#ac511f71f65b5c7dc4bbb05ac4d32b721" title="Throw exception when calling non resource do_task. ">ResThreadPool::do_task</a> </dd></dl>
 
 </div>
 </div>

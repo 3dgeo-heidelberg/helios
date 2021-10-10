@@ -3,6 +3,23 @@
 
 using SurfaceInspector::maths::Histogram;
 
+// ***  CONSTRUCTION / DESTRUCTION  *** //
+// ************************************ //
+/**
+ * @brief Fast surface area heuristic KDTree factory default constructor
+ * @param lossNodes How many bins use for the min-max approximation of
+ *  loss function
+ * @see SAHKDTreeFactory::SAHKDTreeFactory
+ * @see FastSAHKDTreeFactory
+ */
+FastSAHKDTreeFactory::FastSAHKDTreeFactory(
+    size_t const lossNodes,
+    double const ci,
+    double const cl,
+    double const co
+) : SAHKDTreeFactory(lossNodes, ci, cl, co)
+{}
+
 // ***  SAH UTILS  *** //
 // ******************* //
 double FastSAHKDTreeFactory::findSplitPositionBySAH(

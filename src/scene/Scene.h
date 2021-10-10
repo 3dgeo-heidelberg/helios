@@ -21,6 +21,8 @@
 #include <SAHKDTreeFactory.h>
 #include <AxisSAHKDTreeFactory.h>
 #include <FastSAHKDTreeFactory.h>
+#include <MultiThreadKDTreeFactory.h>
+#include <MultiThreadSAHKDTreeFactory.h>
 
 #include "RaySceneIntersection.h"
 
@@ -57,6 +59,8 @@ private:
     ar.template register_type<SAHKDTreeFactory>();
     ar.template register_type<AxisSAHKDTreeFactory>();
     ar.template register_type<FastSAHKDTreeFactory>();
+    ar.template register_type<MultiThreadKDTreeFactory>();
+    ar.template register_type<MultiThreadSAHKDTreeFactory>();
 
     // Save the scene itself
     boost::serialization::void_cast_register<Scene, Asset>();
@@ -92,6 +96,8 @@ private:
     ar.template register_type<SAHKDTreeFactory>();
     ar.template register_type<AxisSAHKDTreeFactory>();
     ar.template register_type<FastSAHKDTreeFactory>();
+    ar.template register_type<MultiThreadKDTreeFactory>();
+    ar.template register_type<MultiThreadSAHKDTreeFactory>();
 
     // Load the scene itself
     boost::serialization::void_cast_register<Scene, Asset>();
@@ -351,6 +357,19 @@ public:
       vector<double> const &o,
       vector<double> const &v
   );
+
+  /**
+   * @brief Build the KDTree for the scene, overwriting previous one if any.
+   * @param safe The same safe as the one received by finalizeSceneLoading
+   * @see Scene::finalizeSceneLoading
+  */
+  void buildKDTree(bool const safe=false);
+  /**
+   * @brief Call buildKDTree exporting building information through logging
+   *  system
+   * @see Scene::buildKDTree
+   */
+  void buildKDTreeWithLog(bool const safe=false);
 
   // ***  GETTERs and SETTERs  *** //
   // ***************************** //

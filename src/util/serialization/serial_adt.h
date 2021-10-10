@@ -1,12 +1,14 @@
 #pragma once
 
 #include <IterableTreeNode.h>
+#include <MultiThreadKDTreeFactory.h>
+#include <MultiThreadSAHKDTreeFactory.h>
 
 namespace boost{ namespace serialization{
 
 // ***  ITERABLE TREE NODE SERIALIZATION  *** //
 // ****************************************** //
-template<class Archive, typename NodeType>
+template <class Archive, typename NodeType>
 void save_construct_data(
     Archive &ar,
     IterableTreeNode<NodeType> const *itn,
@@ -17,7 +19,7 @@ void save_construct_data(
     ar << itn->depth;
 }
 
-template<class Archive, typename NodeType>
+template <class Archive, typename NodeType>
 void load_construct_data(
     Archive &ar,
     IterableTreeNode<NodeType> *itn,
@@ -33,4 +35,59 @@ void load_construct_data(
     ::new(itn)IterableTreeNode<NodeType>(node, depth);
 }
 
+// ***  KDTREE FACTORY SERIALIZATION  *** //
+// ************************************** //
+template <class Archive>
+void save_construct_data(
+    Archive &ar,
+    MultiThreadKDTreeFactory const *mtkdtf,
+    unsigned int const version
+){
+    // Save data required to construct instance
+    ar << mtkdtf->getKdtf();
+    ar << mtkdtf->getPoolSize();
+}
+
+template <class Archive>
+void load_construct_data(
+    Archive &ar,
+    MultiThreadKDTreeFactory *mtkdtf,
+    unsigned int const version
+){
+    // Load data from archive required to construct new instance
+    std::shared_ptr<SimpleKDTreeFactory> kdtf;
+    size_t numJobs;
+    ar >> kdtf;
+    ar >> numJobs;
+
+    // Invoke inplace constructor
+    ::new(mtkdtf)MultiThreadKDTreeFactory(kdtf, numJobs);
+}
+
+template <class Archive>
+void save_construct_data(
+    Archive &ar,
+    MultiThreadSAHKDTreeFactory const *mtkdtf,
+    unsigned int const version
+){
+    // Save data required to construct instance
+    ar << mtkdtf->getKdtf();
+    ar << mtkdtf->getPoolSize();
+}
+
+template <class Archive>
+void load_construct_data(
+    Archive &ar,
+    MultiThreadSAHKDTreeFactory *mtkdtf,
+    unsigned int const version
+){
+    // Load data from archive required to construct new instance
+    std::shared_ptr<SimpleKDTreeFactory> kdtf;
+    size_t numJobs;
+    ar >> kdtf;
+    ar >> numJobs;
+
+    // Invoke inplace constructor
+    ::new(mtkdtf)MultiThreadSAHKDTreeFactory(kdtf, numJobs);
+}
 }};
