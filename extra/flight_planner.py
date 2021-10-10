@@ -246,7 +246,7 @@ def create_scenepart_obj(filepath, trafofilter=""):
 
 
 def create_scenepart_tiff(filepath, trafofilter="",
-                          matfile="data\sceneparts\basic\groundplane\groundplane.mtl", matname="None"):
+                          matfile="data/sceneparts/basic/groundplane/groundplane.mtl", matname="None"):
     """
     This function creates a scenepart string to load GeoTIFFs
     :param filepath: path to the GeoTIFF-file (string)
