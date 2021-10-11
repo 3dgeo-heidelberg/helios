@@ -2,7 +2,7 @@
 
 # Author: Alberto M. Esmoris Pena
 #
-# Build the armadillo library
+# Build the armadillo library at CESGA FT2
 
 # ---  PREPARE ENVIRONMENT  --- #
 # ----------------------------- #
@@ -47,6 +47,8 @@ fi
 
 # Build armadillo
 cd "${ARMA_DIR}"
-cmake . -DCMAKE_INSTALL_PREFIX:PATH="${ARMA_DIR}"
+LAP_LIB="${HELIOS_LIB_DIR}"'lapack/install/lib/liblapack.so'
+cmake . -DCMAKE_INSTALL_PREFIX:PATH="${ARMA_DIR}" \
+    -DLAPACK_LIBRARY="${LAP_LIB}"
 make -j${HELIOS_BUILD_NCORES} install
 
