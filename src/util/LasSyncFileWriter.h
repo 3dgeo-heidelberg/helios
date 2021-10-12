@@ -111,6 +111,10 @@ protected:
      */
     I32 hoiAttrIdx;
     /**
+     * @brief Index of helios amplitude attribute in LAS header definition
+     */
+    I32 ampAttrIdx;
+    /**
      * @brief Echo width attribute start (LAS extra bytes format)
      */
     I32 ewAttrStart;
@@ -122,6 +126,10 @@ protected:
      * @brief Hit object ID attribute start (LAS extra bytes format)
      */
     I32 hoiAttrStart;
+    /**
+     * @brief Helios amplitude attribute start (LAS extra bytes format)
+     */
+    I32 ampAttrStart;
 public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //
     // ************************************ //
@@ -217,10 +225,12 @@ public:
       ewAttrIdx = -1;
       fwiAttrIdx = -1;
       hoiAttrIdx = -1;
+      ampAttrIdx = -1;
       try{
         I32 ewType = 9;  // double
         I32 fwiType = 5; // int
         I32 hoiType = 5; // int
+        I32 ampType = 9; // double
         LASattribute ewAttr(
             ewType,
             "echo_width",
@@ -236,9 +246,15 @@ public:
             "hitObjectId",
             "Helios++ hit object ID"
         );
+        LASattribute ampAttr(
+            ampType,
+            "heliosAmplitude",
+            "Helios++ Amplitude"
+        );
         ewAttrIdx = lwHeader.add_attribute(ewAttr);
         fwiAttrIdx = lwHeader.add_attribute(fwiAttr);
         hoiAttrIdx = lwHeader.add_attribute(hoiAttr);
+        ampAttrIdx = lwHeader.add_attribute(ampAttr);
       }
       catch(std::exception &e){
         std::stringstream ss;
@@ -252,6 +268,7 @@ public:
       ewAttrStart = lwHeader.get_attribute_start(ewAttrIdx);
       fwiAttrStart = lwHeader.get_attribute_start(fwiAttrIdx);
       hoiAttrStart = lwHeader.get_attribute_start(hoiAttrIdx);
+      ampAttrStart = lwHeader.get_attribute_start(ampAttrIdx);
     }
 
     /**
@@ -314,6 +331,7 @@ public:
         lp.set_attribute(ewAttrStart, F64(m.echo_width));
         lp.set_attribute(fwiAttrStart, I32(m.fullwaveIndex));
         lp.set_attribute(hoiAttrStart, I32(std::stoi(m.hitObjectId)));
+        lp.set_attribute(ampAttrStart, F64(m.intensity));
 
         // Write and add to inventory
         lw->write_point(&lp);
@@ -370,6 +388,7 @@ public:
         lwHeader.remove_attribute(ewAttrIdx);
         lwHeader.remove_attribute(fwiAttrIdx);
         lwHeader.remove_attribute(hoiAttrIdx);
+        lwHeader.remove_attribute(ampAttrIdx);
         free(lwHeader.attributes);
         free(lwHeader.attribute_starts);
         free(lwHeader.attribute_sizes);
