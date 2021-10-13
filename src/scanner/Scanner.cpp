@@ -184,6 +184,7 @@ string Scanner::toString() {
 }
 
 void Scanner::doSimStep(
+    PulseTaskDropper& dropper,
     PulseThreadPool& pool,
     unsigned int const legIndex,
     double currentGpsTime
@@ -220,6 +221,7 @@ void Scanner::doSimStep(
 
 	// Pulse computation
     handlePulseComputation(
+        dropper,
         pool,
         legIndex,
         absoluteBeamOrigin,
@@ -397,6 +399,7 @@ Rotation Scanner::calcAbsoluteBeamAttitude(){
 
 
 void Scanner::handlePulseComputation(
+    PulseTaskDropper& dropper,
     PulseThreadPool& pool,
     unsigned int const legIndex,
     glm::dvec3 &absoluteBeamOrigin,
@@ -405,7 +408,32 @@ void Scanner::handlePulseComputation(
 ){
     if(pool.getPoolSize() > 1 ) {
         // Submit pulse computation functor to thread pool
-        pool.run_res_task(FullWaveformPulseRunnable{
+        //std::cout << "Scanner::handlePulseComputation" << std::endl; // TODO Remove
+        if(dropper.add(
+            pool,
+            std::make_shared<FullWaveformPulseRunnable>(
+                dynamic_pointer_cast<FullWaveformPulseDetector>(detector),
+                absoluteBeamOrigin,
+                absoluteBeamAttitude,
+                state_currentPulseNumber,
+                currentGpsTime,
+                writeWaveform,
+                calcEchowidth,
+                (allMeasurements == nullptr) ?
+                    nullptr : allMeasurements.get(),
+                (allMeasurementsMutex == nullptr) ?
+                    nullptr : allMeasurementsMutex.get(),
+                (cycleMeasurements == nullptr) ?
+                    nullptr : cycleMeasurements.get(),
+                (cycleMeasurementsMutex == nullptr) ?
+                    nullptr : cycleMeasurementsMutex.get(),
+                legIndex
+            )
+        )){
+            dropper = PulseTaskDropper(dropper.getMaxTasks());
+        };
+        // TODO Remove pool.run_res_task below
+        /*pool.run_res_task(FullWaveformPulseRunnable{
             dynamic_pointer_cast<FullWaveformPulseDetector>(detector),
             absoluteBeamOrigin,
             absoluteBeamAttitude,
@@ -420,7 +448,7 @@ void Scanner::handlePulseComputation(
             (cycleMeasurementsMutex == nullptr) ?
             nullptr : cycleMeasurementsMutex.get(),
             legIndex
-        });
+        });*/
     }
     else {
         if(randGen1 == nullptr){ // Initialize randomness generators if not yet

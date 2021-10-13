@@ -107,6 +107,8 @@ helios <survey_file_path> [OPTIONAL ARGUMENTS]
             Nothing will be reported
         -q OR --quiet
             Only errors will be reported
+        -vt
+            Time and errors will be reported
         -v
             Errors, information and warnings will be reported
         -vv OR -v2

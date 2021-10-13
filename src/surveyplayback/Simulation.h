@@ -5,6 +5,7 @@
 #include "Scanner.h"
 #include "MeasurementsBuffer.h"
 #include "Color4f.h"
+#include <PulseTaskDropper.h>
 #include <PulseThreadPool.h>
 #include <FullWaveformPulseRunnable.h>
 #include <SimulationCycleCallback.h>
@@ -28,9 +29,15 @@ protected:
 	 * @brief Number of threads available in the system
 	 */
 	unsigned numSysThreads = std::thread::hardware_concurrency(); //may return 0 when not able to detect
+
 	/**
-	 * @brief Thread pool
-	 * @see thread_pool
+	 * @brief Pulse task dropper
+	 * @see PulseTaskDropper
+	 */
+	PulseTaskDropper taskDropper;
+	/**
+	 * @brief Pulse thread pool
+	 * @see PulseThreadPool
 	 */
 	PulseThreadPool threadPool;
 

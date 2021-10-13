@@ -27,12 +27,18 @@ void Simulation::doSimStep(){
 	    mScanner->scannerHead->rotateCompleted() &&
 	    getScanner()->platform->waypointReached()
     ){
+	    // TODO Rethink : Drop pending pulse tasks here (seq exec)
 		onLegComplete();
 		return;
 	}
 
 	mScanner->platform->doSimStep(getScanner()->getPulseFreq_Hz());
-	mScanner->doSimStep(threadPool, mCurrentLegIndex, currentGpsTime_ms);
+	mScanner->doSimStep(
+	    taskDropper,
+	    threadPool,
+	    mCurrentLegIndex,
+	    currentGpsTime_ms
+    );
     currentGpsTime_ms += 1000. / ((double)getScanner()->getPulseFreq_Hz());
     if (currentGpsTime_ms > 604800000.) currentGpsTime_ms -= 604800000.;
 

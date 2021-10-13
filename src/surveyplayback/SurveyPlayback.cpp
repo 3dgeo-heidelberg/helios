@@ -160,7 +160,7 @@ void SurveyPlayback::doSimStep() {
 		legProgress = 0;
 		legStartTime_ns = duration_cast<milliseconds>(
 		        system_clock::now().time_since_epoch()
-            ).count();
+        ).count();
 	}
 
 	trackProgress();

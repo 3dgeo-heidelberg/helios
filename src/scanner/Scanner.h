@@ -13,6 +13,7 @@ class AbstractDetector;
 #include <Platform.h>
 #include <maths/Directions.h>
 #include <maths/Rotation.h>
+#include <PulseTaskDropper.h>
 #include <PulseThreadPool.h>
 #include <RandomnessGenerator.h>
 #include <SyncFileWriter.h>
@@ -374,6 +375,7 @@ public:
 	 * @param currentGpsTime GPS time of current pulse
 	 */
 	void doSimStep(
+	    PulseTaskDropper& dropper,
 	    PulseThreadPool& pool,
 	    unsigned int legIndex,
 	    double currentGpsTime
@@ -478,6 +480,7 @@ public:
      * @param currentGpsTime Current GPS time (milliseconds)
      */
     void handlePulseComputation(
+        PulseTaskDropper& dropper,
         PulseThreadPool& pool,
         unsigned int const legIndex,
         glm::dvec3 &absoluteBeamOrigin,
