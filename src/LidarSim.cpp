@@ -28,8 +28,8 @@ void doTests(std::string const & testDir);
 
 // LOGGING FLAGS (DO NOT MODIFY HERE BUT IN logging.hpp makeDefault())
 bool    logging::LOGGING_SHOW_TRACE, logging::LOGGING_SHOW_DEBUG,
-        logging::LOGGING_SHOW_INFO, logging::LOGGING_SHOW_WARN,
-        logging::LOGGING_SHOW_ERR;
+        logging::LOGGING_SHOW_INFO, logging::LOGGING_SHOW_TIME,
+        logging::LOGGING_SHOW_WARN, logging::LOGGING_SHOW_ERR;
 
 void printHelp(){
     std::cout << "helios++ help:\n\n"
@@ -140,6 +140,10 @@ void printHelp(){
 
         << "\t\t-q or --quiet : Specify the verbosity level to errors only\n"
         << "\t\t\tBy default: only information and errors are reported\n\n"
+
+        << "\t\t-vt : Specify the verbosity level to time and errors only\n"
+        << "\t\t\tBy default: only information and errors are reported\n\n"
+
 
         << "\t\t-v : Specify the verbosity level to errors, information and "
         << "warnings\n"

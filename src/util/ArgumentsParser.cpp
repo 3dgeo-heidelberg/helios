@@ -117,9 +117,10 @@ void ArgumentsParser::parseLoggingVerbosity(){
     else if(
         findIndexOfArgument("-v2")>=0 ||
         findIndexOfArgument("-vv")>=0
-        ){
+    ){
         logging::makeVerbose2();
     }
+    else if(findIndexOfArgument("-vt")>=0) logging::makeTime();
     else if(findIndexOfArgument("-v")>=0) logging::makeVerbose();
     else logging::makeDefault();
 }

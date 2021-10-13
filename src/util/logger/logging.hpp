@@ -125,6 +125,7 @@ inline void log(const std::string& message) {
 extern bool LOGGING_SHOW_TRACE;
 extern bool LOGGING_SHOW_DEBUG;
 extern bool LOGGING_SHOW_INFO;
+extern bool LOGGING_SHOW_TIME;
 extern bool LOGGING_SHOW_WARN;
 extern bool LOGGING_SHOW_ERR;
 
@@ -137,6 +138,7 @@ inline void makeQuiet(){
     LOGGING_SHOW_TRACE = false;
     LOGGING_SHOW_DEBUG = false;
     LOGGING_SHOW_INFO = false;
+    LOGGING_SHOW_TIME = false;
     LOGGING_SHOW_WARN = false;
     LOGGING_SHOW_ERR = true;
 }
@@ -148,8 +150,22 @@ inline void makeSilent(){
     LOGGING_SHOW_TRACE = false;
     LOGGING_SHOW_DEBUG = false;
     LOGGING_SHOW_INFO = false;
+    LOGGING_SHOW_TIME = false;
     LOGGING_SHOW_WARN = false;
     LOGGING_SHOW_ERR = false;
+}
+
+/**
+ * @brief Configure logging mode to make it time. Time mode means only error
+ *  and time messages will be shown
+ */
+inline void makeTime(){
+    LOGGING_SHOW_TRACE = false;
+    LOGGING_SHOW_DEBUG = false;
+    LOGGING_SHOW_INFO = false;
+    LOGGING_SHOW_TIME = true;
+    LOGGING_SHOW_WARN = false;
+    LOGGING_SHOW_ERR = true;
 }
 
 /**
@@ -160,6 +176,7 @@ inline void makeDefault(){
     LOGGING_SHOW_TRACE = false;
     LOGGING_SHOW_DEBUG = false;
     LOGGING_SHOW_INFO = true;
+    LOGGING_SHOW_TIME = true;
     LOGGING_SHOW_WARN = false;
     LOGGING_SHOW_ERR = true;
 }
@@ -173,6 +190,7 @@ inline void makeVerbose(){
     LOGGING_SHOW_TRACE = false;
     LOGGING_SHOW_DEBUG = false;
     LOGGING_SHOW_INFO = true;
+    LOGGING_SHOW_TIME = true;
     LOGGING_SHOW_WARN = true;
     LOGGING_SHOW_ERR = true;
 }
@@ -184,6 +202,7 @@ inline void makeVerbose2(){
     LOGGING_SHOW_TRACE = true;
     LOGGING_SHOW_DEBUG = true;
     LOGGING_SHOW_INFO = true;
+    LOGGING_SHOW_TIME = true;
     LOGGING_SHOW_WARN = true;
     LOGGING_SHOW_ERR = true;
 }
@@ -214,6 +233,14 @@ inline void INFO(const std::string& message) {
     if(!LOGGING_SHOW_INFO) return;
     get_logger().log(message, log_level::INFO);
 };
+/**
+ * @brief Default time messages loggin function
+ * @param message Log message
+ */
+inline void TIME(const std::string& message){
+    if(!LOGGING_SHOW_TIME) return;
+    get_logger().log(message, log_level::TIME);
+}
 /**
  * @brief Default warning messages logging function
  * @param message Log message

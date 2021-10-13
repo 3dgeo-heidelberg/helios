@@ -295,7 +295,7 @@ shared_ptr<Scene> XmlSurveyLoader::loadScene(
   tw.stop();
   stringstream ss;
   ss << "Scene loaded in " << tw.getElapsedDecimalSeconds() << "s";
-  logging::INFO(ss.str());
+  logging::TIME(ss.str());
 
   return scene;
 }

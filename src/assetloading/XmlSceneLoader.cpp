@@ -80,7 +80,7 @@ XmlSceneLoader::createSceneFromXml(
     std::stringstream ss;
     ss  << std::to_string(scenePartCounter) << " sceneparts loaded in "
         << tw.getElapsedDecimalSeconds() << "s\n";
-    logging::INFO(ss.str());
+    logging::TIME(ss.str());
 
     // Set KDTree factory and finish scene loading
     //scene->setKDTreeFactory(makeKDTreeFactory()); // Not yet, avoid building

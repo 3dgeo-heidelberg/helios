@@ -153,14 +153,14 @@ void Simulation::start() {
 	ss  << "stepCount = " << stepCount << "\n"
 	    << "Main thread simulation loop finished in "<<seconds<<" sec."<<"\n"
 	    << "Waiting for completion of pulse computation tasks...";
-	logging::INFO(ss.str());
+	logging::TIME(ss.str());
     ss.str("");
 
     // ########## BEGIN Loop that waits for the executor service to complete all tasks ###########
     long timeFinishAll = duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count();
 	long secondsAll = (timeFinishAll - timeStart_ms) / 1000;
 	ss << "Pulse computation tasks finished in " << secondsAll << " sec.";
-	logging::INFO(ss.str());
+	logging::TIME(ss.str());
 	// ########## END Loop that waits for the executor service to complete all tasks ###########
 
 	// Shutdown the simulation (e.g. close all file output streams. Implemented in derived classes.)
