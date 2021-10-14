@@ -129,8 +129,15 @@ public:
      * @param numThreads Number of threads to be used by the simulation
      * @param deviceAccuracy Parameter used to handle randomness generation
      *  impact on simulation results
+     * @param chunkSize The chunk size for the pulse task dropper
+     * @see PulseThreadPool
+     * @see PulseTaskDropper
      */
-    Simulation(unsigned numThreads, double deviceAccuracy);
+    Simulation(
+        unsigned numThreads,
+        double deviceAccuracy,
+        size_t chunkSize=32
+    );
 
     // ***  M E T H O D S  *** //
     // *********************** //

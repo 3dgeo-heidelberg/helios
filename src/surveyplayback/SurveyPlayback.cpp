@@ -24,12 +24,17 @@ SurveyPlayback::SurveyPlayback(
     shared_ptr<Survey> survey,
     const std::string outputPath,
     size_t numThreads,
+    size_t chunkSize,
     bool lasOutput,
     bool las10,
     bool zipOutput,
     bool exportToFile
 ):
-    Simulation(numThreads, survey->scanner->detector->cfg_device_accuracy_m),
+    Simulation(
+        numThreads,
+        survey->scanner->detector->cfg_device_accuracy_m,
+        chunkSize
+    ),
     lasOutput(lasOutput),
     las10(las10),
     zipOutput(zipOutput),
@@ -210,6 +215,9 @@ string SurveyPlayback::getTrajectoryOutputPath(){
 }
 
 void SurveyPlayback::onLegComplete() {
+    // If there is a pending chunk of tasks, sequentially compute it
+    mScanner->seqPulseDrop(taskDropper);
+
 	// Wait for threads to finish
 	threadPool.join();
 

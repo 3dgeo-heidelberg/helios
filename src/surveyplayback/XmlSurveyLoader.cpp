@@ -46,7 +46,7 @@ XmlSurveyLoader::createSurveyFromXml(
     tinyxml2::XMLElement *surveyNode,
     bool legNoiseDisabled, bool rebuildScene
 ) {
-  Survey *survey = new Survey();
+  shared_ptr<Survey> survey = make_shared<Survey>();
 
   survey->name = boost::get<string>(
       XmlUtils::getAttribute(surveyNode, "name", "string", xmlDocFilename));
@@ -211,7 +211,10 @@ XmlSurveyLoader::createSurveyFromXml(
         XmlUtils::createNoiseSource(attitudeZNoise);
   // ### END platform noise (overriding platform.xml spec if necessary) ###
 
-  return shared_ptr<Survey>(survey);
+  // Initialize scanner randomness generators
+  survey->scanner->initializeSequentialGenerators();
+
+  return survey;
 }
 
 shared_ptr<Leg>

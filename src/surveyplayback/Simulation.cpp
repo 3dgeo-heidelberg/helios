@@ -11,11 +11,16 @@ using namespace std::chrono;
 
 using namespace std;
 
-Simulation::Simulation(unsigned numThreads, double deviceAccuracy):
-threadPool(
-    (numThreads == 0) ? numSysThreads : numThreads,
-    deviceAccuracy
-)
+Simulation::Simulation(
+    unsigned numThreads,
+    double deviceAccuracy,
+    size_t chunkSize
+):
+    taskDropper(chunkSize),
+    threadPool(
+        (numThreads == 0) ? numSysThreads : numThreads,
+        deviceAccuracy
+    )
 {
     mbuffer = make_shared<MeasurementsBuffer>();
     currentGpsTime_ms = calcCurrentGpsTime();
@@ -27,11 +32,11 @@ void Simulation::doSimStep(){
 	    mScanner->scannerHead->rotateCompleted() &&
 	    getScanner()->platform->waypointReached()
     ){
-	    // TODO Rethink : Drop pending pulse tasks here (seq exec)
 		onLegComplete();
 		return;
 	}
 
+	// Ordered execution of simulation components
 	mScanner->platform->doSimStep(getScanner()->getPulseFreq_Hz());
 	mScanner->doSimStep(
 	    taskDropper,

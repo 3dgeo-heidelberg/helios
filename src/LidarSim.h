@@ -19,6 +19,8 @@ public:
      * @param calcEchowidth Calc echo width flag. True to enable echo width
      *  computation, false otherwise
      * @param njobs Number of concurrent jobs (0 means as many as possible)
+     * @param chunkSize Chunk size for job distribution in parallel execution
+     *  context
      * @param fullWaveNoise Flag to specify full wave noise usage. True to
      *  enable full wave noise, false otherwise
      * @param platformNoiseDisabled Flag to specify platform noise disabled.
@@ -49,6 +51,7 @@ public:
         bool writeWaveform = false,
         bool calcEchowidth = false,
         size_t njobs = 0,
+        size_t chunkSize = 32,
         bool fullWaveNoise = false,
         bool platformNoiseDisabled = false,
         bool legNoiseDisabled = false,

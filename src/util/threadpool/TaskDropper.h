@@ -37,6 +37,7 @@ protected:
      *  \f$\vert\vec{T}\vert = m\f$ is satisfied
      */
     size_t maxTasks;
+
 public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //
     // ************************************ //

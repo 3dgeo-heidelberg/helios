@@ -87,6 +87,10 @@ void printHelp(){
         << "\n\t\t\tjobs to be used to compute the simulation\n"
         << "\t\t\t\tBy default: all available threads are used\n\n"
 
+        << "\t\t--chunkSize <integer> : Specify the chunk size to be used for"
+        << "\n\t\t\tparallel computing\n"
+        << "\t\t\t\tBy default: 32\n\n"
+
         << "\t\t--rebuildScene : Force scene rebuild even when a previously\n"
         << "\t\t\tbuilt scene is available\n"
         << "\t\t\t\tBy default: previous scene is used if found\n\n"
@@ -240,6 +244,7 @@ int main(int argc, char** argv) {
             ap.parseWriteWaveform(),
             ap.parseCalcEchowidth(),
             ap.parseNJobs(),
+            ap.parseChunkSize(),
             ap.parseFullWaveNoise(),
             ap.parseDisablePlatformNoise(),
             ap.parseDisableLegNoise(),
@@ -265,6 +270,7 @@ void LidarSim::init(
     bool writeWaveform,
     bool calcEchowidth,
     size_t njobs,
+    size_t chunkSize,
     bool fullWaveNoise,
     bool platformNoiseDisabled,
     bool legNoiseDisabled,
@@ -286,6 +292,7 @@ void LidarSim::init(
         << "calcEchowidth: " << calcEchowidth << "\n"
 	    << "fullWaveNoise: " << fullWaveNoise << "\n"
 	    << "njobs: " << njobs << "\n"
+	    << "chunkSize: " << chunkSize << "\n"
 	    << "platformNoiseDisabled: " << platformNoiseDisabled << "\n"
 	    << "legNoiseDisabled: " << legNoiseDisabled << "\n"
 	    << "rebuildScene: " << rebuildScene << "\n"
@@ -327,6 +334,7 @@ void LidarSim::init(
         survey,
         outputPath,
         njobs,
+        chunkSize,
         lasOutput,
         las10,
         zipOutput

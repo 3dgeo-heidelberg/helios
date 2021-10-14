@@ -73,7 +73,6 @@ void FullWaveformPulseDetector::simulatePulse(
 ){
 	// Submit pulse computation task to thread pool
 	shared_ptr<FullWaveformPulseDetector> detector(this);
-    std::cout << "FullWaveformPulseDetector::handlePulseComputation" << std::endl; // TODO Remove
     pool.run_res_task(FullWaveformPulseRunnable{
 	    detector,
 	    absoluteBeamOrigin,

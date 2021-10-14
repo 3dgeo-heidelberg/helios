@@ -61,7 +61,11 @@ Scanner::Scanner(
 	beamWaistRadius = (cfg_device_beamQuality * cfg_device_wavelength_m) /
 	    (M_PI * cfg_device_beamDivergence_rad);
 
-	// Configure misc:
+    /*
+     * Randomness generators must be initialized outside,
+     * because DEFAULT_RG might not be instantiated at construction time
+     */
+    //initializeSequentialGenerators();
 
     // Precompute variables
 	cached_Dr2 = cfg_device_receiverDiameter_m * cfg_device_receiverDiameter_m;
@@ -138,10 +142,6 @@ Scanner::Scanner(Scanner &s){
     this->FWF_settings = FWFSettings(s.FWF_settings);
     this->time_wave = std::vector<double>(s.time_wave);
 
-    this->randGen1 = nullptr;
-    this->randGen2 = nullptr;
-    this->intersectionHandlingNoiseSource = nullptr;
-
     this->cfg_device_headRelativeEmitterPosition = glm::dvec3(
         s.cfg_device_headRelativeEmitterPosition
     );
@@ -151,6 +151,12 @@ Scanner::Scanner(Scanner &s){
     this->cfg_device_supportedPulseFreqs_Hz = std::list<int>(
         s.cfg_device_supportedPulseFreqs_Hz
     );
+
+    /*
+     * Randomness generators must be initialized outside,
+     * because DEFAULT_RG might not be instantiated at construction time
+     */
+    //initializeSequentialGenerators();
 }
 
 // ***  M E T H O D S  *** //
@@ -408,7 +414,6 @@ void Scanner::handlePulseComputation(
 ){
     if(pool.getPoolSize() > 1 ) {
         // Submit pulse computation functor to thread pool
-        //std::cout << "Scanner::handlePulseComputation" << std::endl; // TODO Remove
         if(dropper.add(
             pool,
             std::make_shared<FullWaveformPulseRunnable>(
@@ -432,67 +437,57 @@ void Scanner::handlePulseComputation(
         )){
             dropper = PulseTaskDropper(dropper.getMaxTasks());
         };
-        // TODO Remove pool.run_res_task below
-        /*pool.run_res_task(FullWaveformPulseRunnable{
-            dynamic_pointer_cast<FullWaveformPulseDetector>(detector),
-            absoluteBeamOrigin,
-            absoluteBeamAttitude,
-            state_currentPulseNumber,
-            currentGpsTime,
-            writeWaveform,
-            calcEchowidth,
-            (allMeasurements == nullptr) ? nullptr : allMeasurements.get(),
-            (allMeasurementsMutex == nullptr) ?
-            nullptr : allMeasurementsMutex.get(),
-            (cycleMeasurements == nullptr) ? nullptr : cycleMeasurements.get(),
-            (cycleMeasurementsMutex == nullptr) ?
-            nullptr : cycleMeasurementsMutex.get(),
-            legIndex
-        });*/
     }
     else {
-        if(randGen1 == nullptr){ // Initialize randomness generators if not yet
-            randGen1 = std::make_shared<RandomnessGenerator<double>>(
-                RandomnessGenerator<double>(*DEFAULT_RG));
-            randGen2 = std::make_shared<RandomnessGenerator<double>>(
-                RandomnessGenerator<double>(*DEFAULT_RG));
-            randGen1->computeUniformRealDistribution(0.0, 1.0);
-            randGen1->computeNormalDistribution(
-                0.0,
-                detector->cfg_device_accuracy_m
-            );
-            randGen2->computeNormalDistribution(0.0, 1.0);
-            intersectionHandlingNoiseSource =
-                std::make_shared<UniformNoiseSource<double>>(
-                    *DEFAULT_RG, 0.0, 1.0
-                );
-            intersectionHandlingNoiseSource->configureUniformNoise(0.0, 1.0);
-        }
-        std::vector<std::vector<double>> apMatrix;
-        // Single thread computation
-        FullWaveformPulseRunnable worker = FullWaveformPulseRunnable(
-            dynamic_pointer_cast<FullWaveformPulseDetector>(detector),
+        seqPulseCompute(
+            legIndex,
             absoluteBeamOrigin,
             absoluteBeamAttitude,
-            state_currentPulseNumber,
-            currentGpsTime,
-            writeWaveform,
-            calcEchowidth,
-            (allMeasurements == nullptr) ? nullptr : allMeasurements.get(),
-            (allMeasurementsMutex == nullptr) ?
-            nullptr : allMeasurementsMutex.get(),
-            (cycleMeasurements == nullptr) ? nullptr : cycleMeasurements.get(),
-            (cycleMeasurementsMutex == nullptr) ?
-            nullptr : cycleMeasurementsMutex.get(),
-            legIndex
-        );
-        worker( // call functor
-            apMatrix,
-            *randGen1,
-            *randGen2,
-            *intersectionHandlingNoiseSource
+            currentGpsTime
         );
     }
+}
+
+void Scanner::seqPulseCompute(
+    unsigned int const legIndex,
+    glm::dvec3 &absoluteBeamOrigin,
+    Rotation &absoluteBeamAttitude,
+    double currentGpsTime
+){
+    // Sequential pulse computation
+    std::vector<std::vector<double>> apMatrix;
+    FullWaveformPulseRunnable worker = FullWaveformPulseRunnable(
+        dynamic_pointer_cast<FullWaveformPulseDetector>(detector),
+        absoluteBeamOrigin,
+        absoluteBeamAttitude,
+        state_currentPulseNumber,
+        currentGpsTime,
+        writeWaveform,
+        calcEchowidth,
+        (allMeasurements == nullptr) ? nullptr : allMeasurements.get(),
+        (allMeasurementsMutex == nullptr) ?
+        nullptr : allMeasurementsMutex.get(),
+        (cycleMeasurements == nullptr) ? nullptr : cycleMeasurements.get(),
+        (cycleMeasurementsMutex == nullptr) ?
+        nullptr : cycleMeasurementsMutex.get(),
+        legIndex
+    );
+    worker( // call functor
+        apMatrix,
+        *randGen1,
+        *randGen2,
+        *intersectionHandlingNoiseSource
+    );
+}
+
+void Scanner::seqPulseDrop(PulseTaskDropper &dropper){
+    std::vector<std::vector<double>> apMatrix;
+    dropper.drop(
+        apMatrix,
+        *randGen1,
+        *randGen2,
+        *intersectionHandlingNoiseSource
+    );
 }
 
 void Scanner::handleTrajectoryOutput(double currentGpsTime){
@@ -541,4 +536,22 @@ void Scanner::handleTrajectoryOutput(double currentGpsTime){
 
     // Avoid repeating trajectory for non moving platforms
     if(!platform->canMove()) platform->writeNextTrajectory = false;
+}
+
+void Scanner::initializeSequentialGenerators(){
+    randGen1 = std::make_shared<RandomnessGenerator<double>>(
+        RandomnessGenerator<double>(*DEFAULT_RG));
+    randGen2 = std::make_shared<RandomnessGenerator<double>>(
+        RandomnessGenerator<double>(*DEFAULT_RG));
+    randGen1->computeUniformRealDistribution(0.0, 1.0);
+    randGen1->computeNormalDistribution(
+        0.0,
+        detector->cfg_device_accuracy_m
+    );
+    randGen2->computeNormalDistribution(0.0, 1.0);
+    intersectionHandlingNoiseSource =
+        std::make_shared<UniformNoiseSource<double>>(
+            *DEFAULT_RG, 0.0, 1.0
+        );
+    intersectionHandlingNoiseSource->configureUniformNoise(0.0, 1.0);
 }

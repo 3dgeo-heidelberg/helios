@@ -94,6 +94,12 @@ std::size_t ArgumentsParser::parseNJobs(){
     return std::stoul(argv[index+1]);
 }
 
+std::size_t ArgumentsParser::parseChunkSize(){
+    int index = findIndexOfArgument("--chunkSize");
+    if(index < 0) return 32;
+    return std::stoul(argv[index+1]);
+}
+
 bool ArgumentsParser::parseDisablePlatformNoise(){
     return findIndexOfArgument("--disablePlatformNoise")>=0;
 }

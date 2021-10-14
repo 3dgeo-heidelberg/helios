@@ -89,6 +89,13 @@ public:
      */
     std::size_t parseNJobs();
     /**
+     * @brief Parse the chunk size for the pulse task dropper from invocation
+     *  arguments
+     * @return Parsed chunk size. If no chunk size was specified, 32 will
+     *  be returned as default value
+     */
+    std::size_t parseChunkSize();
+    /**
      * @brief Parse the disable platform noise flag from invocation arguments
      * @return True if disable platform noise flag was specified,
      * False otherwise

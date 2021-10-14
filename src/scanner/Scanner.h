@@ -357,6 +357,11 @@ public:
     // ***  M E T H O D S  *** //
     // *********************** //
     /**
+     * @brief Initialize randomness generators and noise sources that are
+     *  necessary for sequential pulse computations
+     */
+    void initializeSequentialGenerators();
+    /**
      * @brief Apply scanner settings
      * @param settings Scanner settings to be applied
      * @see ScannerSettings
@@ -472,6 +477,7 @@ public:
     /**
      * @brief Handle pulse computation whatever it is single thread based
      * or thread pool based
+     * @param dropper The task dropper used to handle job chunks
      * @param pool Thread pool to be used to handle multi threading pulse
      * computation
      * @param legIndex Index of current leg
@@ -487,6 +493,25 @@ public:
         Rotation &absoluteBeamAttitude,
         double currentGpsTime
     );
+    /**
+     * @brief Handle sequential computation of pulse
+     * @param legIndex Index of current leg
+     * @param absoluteBeamOrigin Absolute position of beam origin
+     * @param absoluteBeamAttitude Beam attitude
+     * @param currentGpsTime Current GPS time (milliseconds)
+     */
+    void seqPulseCompute(
+        unsigned int const legIndex,
+        glm::dvec3 &absoluteBeamOrigin,
+        Rotation &absoluteBeamAttitude,
+        double currentGpsTime
+    );
+    /**
+     * @brief Handle sequential computation of a chunk of pulses through task
+     *  dropper
+     * @param dropper The task dropper used to handle job chunks
+     */
+    void seqPulseDrop(PulseTaskDropper &dropper);
     /**
      * @brief Handle trajectory output whatever it is to output file, to
      * all trajectories vector or to cycle trajectories vector
@@ -901,5 +926,4 @@ public:
         return new PyDoubleVector(time_wave);
     }
 #endif
-
 };

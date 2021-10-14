@@ -45,6 +45,7 @@ public:
 
     // ***  TASK DROPPER METHODS *** //
     // ***************************** //
+    using TaskDropper::drop; // To avoid override hides drop overloads
     /**
      * @brief Like TaskDropper::drop but dropping all pulse tasks through a
      *  pulse thread pool
