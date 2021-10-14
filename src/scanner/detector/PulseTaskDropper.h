@@ -46,15 +46,23 @@ public:
     // ***  TASK DROPPER METHODS *** //
     // ***************************** //
     using TaskDropper::drop; // To avoid override hides drop overloads
+    using TaskDropper::tryDrop; // To avoid override hides tryDrop overloads
     /**
      * @brief Like TaskDropper::drop but dropping all pulse tasks through a
-     *  pulse thread pool
-     * @brief Callback for pulse tasks dropper called through pulse thread
-     *  pool
+     *  pulse thread pool.
      * @param pool Pulse thread pool to be used for parallel execution
      * @see TaskDropper::drop
      * @see PulseThreadPool
      * @see FullWaveformPulseRunnable
      */
-    void drop(PulseThreadPool &pool) override {pool.run_res_task(*this);}
+    inline void drop(PulseThreadPool &pool) override
+    {pool.run_res_task(*this);}
+    /**
+     * @brief Like TaskDropper::tryDrop but dropping all pulse tasks through a
+     *  pulse thread pool in a non-blocking way
+     * @param pool Pulse thread pool to be used for parallel execution
+     * @see TaskDropper::tryDrop
+     */
+    inline bool tryDrop(PulseThreadPool &pool) override
+    {return pool.try_run_res_task(*this);}
 };

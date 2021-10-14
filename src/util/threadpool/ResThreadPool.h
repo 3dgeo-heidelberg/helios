@@ -67,12 +67,12 @@ public:
     void run_res_task(Task task){
         boost::unique_lock<boost::mutex> lock(this->mutex_);
 
-        // If no threads are available, then wait for a thread to finish.
+        // If no threads are available, by default wait for a thread to finish
         if (0 == this->available_){
             this->cond_.wait(lock);
         }
 
-        // Decrement count, indicating thread is no longer available.
+        // Decrement count, indicating thread is no longer available
         --(this->available_);
 
         // Get resource set index
@@ -91,6 +91,45 @@ public:
                 resourceIdx
             )
         );
+    }
+
+    /**
+     * @brief Run a task with associated resources. If there is not even a
+     *  single available thread, then return false so non-blocking behavior
+     *  is possible.
+     * @return True if task was posted for asynchronous execution. False if
+     *  it was not posted because there are not enough available threads to
+     *  accept it
+     */
+    template <typename Task>
+    bool try_run_res_task(Task task){
+        boost::unique_lock<boost::mutex> lock(this->mutex_);
+
+        // If no threads are available, by default return false
+        if (0 == this->available_){
+            return false;
+        }
+
+        // Decrement count, indicating thread is no longer available
+        --(this->available_);
+
+        // Get resource set index
+        int const resourceIdx = getAvailableResourceSetIndex();
+        resourceSetAvailable[resourceIdx] = false;
+
+        // Unlock the mutex
+        lock.unlock();
+
+        // Post a wrapped task into the queue
+        this->io_service_.post(
+            boost::bind(
+                &ResThreadPool<TaskArgs ...>::wrap_res_task,
+                this,
+                boost::function<void(TaskArgs ...)>(task),
+                resourceIdx
+            )
+        );
+        return true;
     }
 
 protected:

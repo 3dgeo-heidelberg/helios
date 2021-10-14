@@ -100,6 +100,24 @@ public:
     }
 
     /**
+     * @brief Like TaskDropper::add(ThreadPoolType &, shared_ptr<TaskType>) but
+     *  supporting non-blocking calls
+     * @return 0 if no drop was necessary, 1 if drop was necessary and
+     *  successfully posted to the thread pool, 2 if drop was necessary but
+     *  was rejected by thread pool in a non-blocking fashion
+     * @see TaskDropper::add(ThreadPoolType &, shared_ptr<TaskType>)
+     * @see TaskDropper::tryDrop(ThreadPoolType &)
+     */
+    virtual inline char tryAdd(ThreadPoolType &pool, shared_ptr<TaskType> task){
+        tasks.push_back(task);
+        if(tasks.size() == maxTasks){
+            if(tryDrop(pool)) return 1;
+            return 2;
+        }
+        return 0;
+    }
+
+    /**
      * @brief Drop all tasks, one after another.
      *
      * Dropped tasks will be executed and then released from tasks vector.
@@ -133,14 +151,30 @@ public:
      * @see TaskDropper::drop
      * @see TaskDropper::add(ThreadPoolType &, shared_ptr<TaskType>)
      * @see ThreadPool
+     * @see TaskDropper::tryDrop(ThreadPoolType &)
      */
     virtual inline void drop(ThreadPoolType &pool){
         throw HeliosException(
-            "TaskDropper::drop(ThreadPoolType &, TaskType &) cannot be used.\n"
+            "TaskDropper::drop(ThreadPoolType &) cannot be used.\n"
             "It must be overridden by any derived class providing parallel "
             "execution through given thread pool."
         );
     };
+
+    /**
+     * @brief Like drop(ThreadPoolType &) but supporting non blocking calls
+     * @return True if the task was successfully posted to the thread pool,
+     *  false if it was rejected in a non-blocking fashion
+     * @see TaskDropper::drop(ThreadPoolType &)
+     * @see TaskDropper::tryAdd(ThreadPoolType &, shared_ptr<TaskType>)
+     */
+    virtual inline bool tryDrop(ThreadPoolType &pool){
+        throw HeliosException(
+            "TaskDropper::tryDrop(ThreadPoolType &) cannot be used.\n"
+            "It must be overridden by any derived class providing parallel "
+            "non-blocking execution through given thread pool."
+        );
+    }
 
 protected:
     // ***  INTERNAL TASK DROPPER METHODS  *** //
@@ -198,5 +232,14 @@ public:
      */
     virtual inline void setMaxTasks(size_t const maxTasks)
     {this->maxTasks = maxTasks;}
+    /**
+     * @brief Pop a task from vector of tasks
+     * @return Popped task from vector of tasks
+     */
+    virtual inline shared_ptr<TaskType> popTask(){
+        shared_ptr<TaskType> task = tasks.back();
+        tasks.pop_back();
+        return task;
+    }
 
 };

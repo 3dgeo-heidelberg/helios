@@ -17,8 +17,8 @@ Simulation::Simulation(
     size_t chunkSize
 ):
     taskDropper(chunkSize),
-    threadPool(
-        (numThreads == 0) ? numSysThreads : numThreads,
+    threadPool( // threads-1 to exclude main thread from thread pool
+        (numThreads == 0) ? numSysThreads-1 : numThreads-1,
         deviceAccuracy
     )
 {

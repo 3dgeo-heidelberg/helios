@@ -412,9 +412,9 @@ void Scanner::handlePulseComputation(
     Rotation &absoluteBeamAttitude,
     double currentGpsTime
 ){
-    if(pool.getPoolSize() > 1 ) {
+    if(pool.getPoolSize() > 0 ) {
         // Submit pulse computation functor to thread pool
-        if(dropper.add(
+        char status = dropper.tryAdd(
             pool,
             std::make_shared<FullWaveformPulseRunnable>(
                 dynamic_pointer_cast<FullWaveformPulseDetector>(detector),
@@ -434,9 +434,19 @@ void Scanner::handlePulseComputation(
                     nullptr : cycleMeasurementsMutex.get(),
                 legIndex
             )
-        )){
-            dropper = PulseTaskDropper(dropper.getMaxTasks());
-        };
+        );
+        if(status==1){ // Dropper successfully posted to thread pool
+            dropper = PulseTaskDropper(dropper.getMaxTasks()); // Reinit
+        }
+        else if(status==2){ // Thread pool is full, seq-do popped task
+            std::vector<std::vector<double>> apMatrix;
+            (*dropper.popTask())(
+                apMatrix,
+                *randGen1,
+                *randGen2,
+                *intersectionHandlingNoiseSource
+            );
+        }
     }
     else {
         seqPulseCompute(
