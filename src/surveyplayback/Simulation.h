@@ -134,9 +134,9 @@ public:
      * @see PulseTaskDropper
      */
     Simulation(
-        unsigned numThreads,
-        double deviceAccuracy,
-        size_t chunkSize=32
+        unsigned const numThreads,
+        double const deviceAccuracy,
+        size_t const chunkSize=32
     );
 
     // ***  M E T H O D S  *** //

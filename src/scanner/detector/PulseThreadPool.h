@@ -3,6 +3,7 @@
 #include <ResThreadPool.h>
 #include <noise/RandomnessGenerator.h>
 #include <UniformNoiseSource.h>
+#include <TimeWatcher.h>
 
 /**
  * @version 1.0
@@ -37,6 +38,20 @@ protected:
 	 * @brief Intersection handling noise sources, one per thread
 	 */
     UniformNoiseSource<double> *intersectionHandlingNoiseSources;
+public:
+    /**
+	 * @brief Time watcher to count the amount of idle time.
+     *
+     * It is started when all threads are occupied as soon as the first thread
+     *  becomes available (finishes its job). It must stopped by the
+     *  asynchronous process at the correct point. This means the idle timer
+     *  is meant to be used with non-blocking task posting, it is when using
+     *  ResThreadPool::try_run_res_task method instead of
+     *  ResThreadPool::run_res_task
+     *
+     * @see ResThreadPool::try_run_res_task
+	 */
+    TimeWatcher idleTimer;
 
 public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //
@@ -107,5 +122,37 @@ protected:
             randGens2[resourceIdx],
             intersectionHandlingNoiseSources[resourceIdx]
         );
+    }
+    /**
+	 * @brief Override task wrapping so when the full thread group is used
+     *  the time at which first occupied thread becomes available is registered
+     * @see PulseThreadPool::firstAvailableTime
+	 */
+    void wrap_res_task(
+        boost::function<void(
+            std::vector<std::vector<double>>&,
+            RandomnessGenerator<double>&,
+            RandomnessGenerator<double>&,
+            NoiseSource<double>&
+        )> &task,
+        int const resourceIdx
+    ) override {
+        // Run the user supplied task.
+        try{
+            do_res_task(task, resourceIdx);
+        }
+        // Suppress all exceptions.
+        catch (const std::exception &e) {
+            std::stringstream ss;
+            ss << "PulseThreadPool::wrap_res_task EXCEPTION: " << e.what();
+            logging::WARN(ss.str());
+        }
+
+        // Task has finished, so increment count of available threads.
+        boost::unique_lock<boost::mutex> lock(this->mutex_);
+        ++(this->available_);
+        resourceSetAvailable[resourceIdx] = true;
+        idleTimer.startIfNull(); // Start time at first idle thread
+        this->cond_.notify_one();
     }
 };

@@ -12,9 +12,9 @@ using namespace std::chrono;
 using namespace std;
 
 Simulation::Simulation(
-    unsigned numThreads,
-    double deviceAccuracy,
-    size_t chunkSize
+    unsigned const numThreads,
+    double const deviceAccuracy,
+    size_t const chunkSize
 ):
     taskDropper(chunkSize),
     threadPool( // threads-1 to exclude main thread from thread pool
@@ -159,6 +159,10 @@ void Simulation::start() {
 	long timeMainLoopFinish = duration_cast<milliseconds>(
 	    system_clock::now().time_since_epoch()).count();
 	long seconds = (timeMainLoopFinish - timeStart_ms) / 1000;
+
+#ifdef BUDDING_METRICS
+	mScanner->ofsBudding.close();
+#endif
 
 	stringstream ss;
 	ss  << "stepCount = " << stepCount << "\n"

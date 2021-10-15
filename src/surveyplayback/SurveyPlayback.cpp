@@ -217,11 +217,16 @@ string SurveyPlayback::getTrajectoryOutputPath(){
 void SurveyPlayback::onLegComplete() {
     // If there is a pending chunk of tasks, sequentially compute it
     mScanner->seqPulseDrop(taskDropper);
+#ifdef BUDDING_METRICS
+    mScanner->ofsBudding.flush();
+#endif
 
 	// Wait for threads to finish
 	threadPool.join();
 
 	// Start next leg
+	threadPool.idleTimer.releaseStart();
+	mScanner->idleTimer.releaseStart();
     elapsedLength += mSurvey->legs.at(mCurrentLegIndex)->getLength();
 	startNextLeg(false);
 }

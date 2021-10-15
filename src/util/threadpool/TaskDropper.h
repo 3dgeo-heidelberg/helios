@@ -46,7 +46,7 @@ public:
      * @param maxTasks Value to initialize maximum tasks limit
      * @see TaskDropper::maxTasks
      */
-    TaskDropper(size_t maxTasks=32) : maxTasks(maxTasks) {}
+    TaskDropper(size_t const maxTasks=32) : maxTasks(maxTasks) {}
     virtual ~TaskDropper() = default;
 
 

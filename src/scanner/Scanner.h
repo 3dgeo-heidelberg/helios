@@ -34,6 +34,7 @@ using pyhelios::PyDoubleVector;
 #endif
 
 #include <Measurement.h>
+#include <TimeWatcher.h>
 
 
 /**
@@ -164,6 +165,23 @@ private:
 	 * @brief Synchronous file writer
 	 */
 	std::shared_ptr<SyncFileWriter> tfw = nullptr;
+
+	/**
+	 * @brief Length in nanoseconds of the last idle thread time interval
+	 */
+	long lastIdleNanos = 0;
+	/*
+	 * @brief Threshold so idle times which are below its value are not
+	 *  considered. Instead, they are discarded as a non trustable measurement.
+	 *  It is given in nanoseconds.
+	 */
+	long const idleTh = 100000;
+	/**
+	 * @brief Tolerance so idle times differences below this threshold will
+	 *  not change sign of budding task dropper and neither last idle time.
+	 *  It is given in nanoseconds.
+	 */
+	long const idleEps = 100000;
 
 public:
     /**
@@ -307,6 +325,17 @@ public:
      * @see Scanner::checkMaxNOR
      */
     int maxNOR = 0;
+
+    /**
+	 * @brief Scan idle timer to work with thread pool idle time
+	 * @see PulseThreadPool::idleTimer
+	 */
+    TimeWatcher idleTimer;
+
+#ifdef BUDDING_METRICS
+    #include <fstream>
+    std::ofstream ofsBudding;
+#endif
 
 public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //
