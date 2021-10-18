@@ -253,9 +253,9 @@ In consequence, here is exposed how to compile helios++ with Armadillo using Sci
 which provides high performance implementations of BLAS and LAPACK.
 Of course, it is possible to use different implementations.
 
-First, we need to download and install [Scilab](https://www.scilab.org). B
+First, we need to download and install [Scilab](https://www.scilab.org).
 In this case we are going to use [Scilab 6.1.0 x64](https://www.scilab.org/download/6.1.0/scilab-6.1.0_x64.exe).
-y default, it is installed at C:\Program Files\scilab-6.1.0. Take note of the installation path.
+By default, it is installed at C:\Program Files\scilab-6.1.0. Take note of the installation path.
 
 Now it is necessary to download [Armadillo](http://arma.sourceforge.net/download.html)
 and decompress it inside *lib/armadillo*.
