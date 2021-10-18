@@ -9,14 +9,15 @@
 #include <ScannerHead.h>
 #include <AbstractBeamDeflector.h>
 class AbstractDetector;
+#include <scanner/ScanningPulseProcess.h>
 #include <FWFSettings.h>
 #include <Platform.h>
 #include <maths/Directions.h>
 #include <maths/Rotation.h>
-#include <PulseTaskDropper.h>
-#include <PulseThreadPool.h>
+#include <UniformNoiseSource.h>
 #include <RandomnessGenerator.h>
 #include <SyncFileWriter.h>
+#include <scanner/BuddingScanningPulseProcess.h>
 
 #ifdef PYTHON_BINDING
 #include <PyBeamDeflectorWrapper.h>
@@ -34,7 +35,6 @@ using pyhelios::PyDoubleVector;
 #endif
 
 #include <Measurement.h>
-#include <TimeWatcher.h>
 
 
 /**
@@ -167,21 +167,11 @@ private:
 	std::shared_ptr<SyncFileWriter> tfw = nullptr;
 
 	/**
-	 * @brief Length in nanoseconds of the last idle thread time interval
+	 * @brief The scanning pulse process used by the scanner
+	 * @see ScanningPulseProcess
 	 */
-	long lastIdleNanos = 0;
-	/*
-	 * @brief Threshold so idle times which are below its value are not
-	 *  considered. Instead, they are discarded as a non trustable measurement.
-	 *  It is given in nanoseconds.
-	 */
-	long const idleTh = 100000;
-	/**
-	 * @brief Tolerance so idle times differences below this threshold will
-	 *  not change sign of budding task dropper and neither last idle time.
-	 *  It is given in nanoseconds.
-	 */
-	long const idleEps = 100000;
+	std::unique_ptr<ScanningPulseProcess> spp = nullptr;
+
 
 public:
     /**
@@ -326,17 +316,6 @@ public:
      */
     int maxNOR = 0;
 
-    /**
-	 * @brief Scan idle timer to work with thread pool idle time
-	 * @see PulseThreadPool::idleTimer
-	 */
-    TimeWatcher idleTimer;
-
-#ifdef BUDDING_METRICS
-    #include <fstream>
-    std::ofstream ofsBudding;
-#endif
-
 public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //
     // ************************************ //
@@ -391,6 +370,19 @@ public:
      */
     void initializeSequentialGenerators();
     /**
+     * @brief Build the scanning pulse process to be used by the scanner
+     *  during simulation
+     * @param dropper Simulation's task dropper
+     * @param pool Simulation's thread pool
+     * @return Built scanning pulse process
+     * @see Simulation::taskDropper
+     * @see Simulation::threadPool
+     */
+    void buildScanningPulseProcess(
+        void *dropper,
+        void *pool
+    );
+    /**
      * @brief Apply scanner settings
      * @param settings Scanner settings to be applied
      * @see ScannerSettings
@@ -404,13 +396,10 @@ public:
 	void applySettingsFWF(FWFSettings settings);
 	/**
 	 * @brief Perform computations for current simulation step
-	 * @param pool Thread pool used to handle concurrent computations
 	 * @param legIndex Index of current leg
 	 * @param currentGpsTime GPS time of current pulse
 	 */
 	void doSimStep(
-	    PulseTaskDropper& dropper,
-	    PulseThreadPool& pool,
 	    unsigned int legIndex,
 	    double currentGpsTime
     );
@@ -504,43 +493,15 @@ public:
         Rotation & absoluteBeamAttitude
     );
     /**
-     * @brief Handle pulse computation whatever it is single thread based
-     * or thread pool based
-     * @param dropper The task dropper used to handle job chunks
-     * @param pool Thread pool to be used to handle multi threading pulse
-     * computation
-     * @param legIndex Index of current leg
-     * @param absoluteBeamOrigin Absolute position of beam origin
-     * @param absoluteBeamAttitude Beam attitude
-     * @param currentGpsTime Current GPS time (milliseconds)
+     * @brief Exposes ScanningPulseProcess:onLegComplete method of the
+     *  scanning pulse process defining this scanner
      */
-    void handlePulseComputation(
-        PulseTaskDropper& dropper,
-        PulseThreadPool& pool,
-        unsigned int const legIndex,
-        glm::dvec3 &absoluteBeamOrigin,
-        Rotation &absoluteBeamAttitude,
-        double currentGpsTime
-    );
+    void inline onLegComplete() {spp->onLegComplete();}
     /**
-     * @brief Handle sequential computation of pulse
-     * @param legIndex Index of current leg
-     * @param absoluteBeamOrigin Absolute position of beam origin
-     * @param absoluteBeamAttitude Beam attitude
-     * @param currentGpsTime Current GPS time (milliseconds)
+     * @brief Exposes ScanningPulseProcess::onSimulationFinished method of the
+     *  scanning pulse process defining this scanner
      */
-    void seqPulseCompute(
-        unsigned int const legIndex,
-        glm::dvec3 &absoluteBeamOrigin,
-        Rotation &absoluteBeamAttitude,
-        double currentGpsTime
-    );
-    /**
-     * @brief Handle sequential computation of a chunk of pulses through task
-     *  dropper
-     * @param dropper The task dropper used to handle job chunks
-     */
-    void seqPulseDrop(PulseTaskDropper &dropper);
+    void inline onSimulationFinished() {spp->onSimulationFinished();}
     /**
      * @brief Handle trajectory output whatever it is to output file, to
      * all trajectories vector or to cycle trajectories vector

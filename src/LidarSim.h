@@ -18,9 +18,12 @@ public:
      *  form, false otherwise
      * @param calcEchowidth Calc echo width flag. True to enable echo width
      *  computation, false otherwise
+     * @param parallelizationStrategy Specify the parallelization strategy
      * @param njobs Number of concurrent jobs (0 means as many as possible)
      * @param chunkSize Chunk size for job distribution in parallel execution
      *  context
+     * @param warehouseFactor Factor defining warehouse size in parallel
+     *  execution context
      * @param fullWaveNoise Flag to specify full wave noise usage. True to
      *  enable full wave noise, false otherwise
      * @param platformNoiseDisabled Flag to specify platform noise disabled.
@@ -50,8 +53,10 @@ public:
         std::string outputPath,
         bool writeWaveform = false,
         bool calcEchowidth = false,
+        int parallelizationStrategy = 0,
         size_t njobs = 0,
-        size_t chunkSize = 32,
+        int chunkSize = 32,
+        int warehouseFactor = 4,
         bool fullWaveNoise = false,
         bool platformNoiseDisabled = false,
         bool legNoiseDisabled = false,

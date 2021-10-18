@@ -7,7 +7,6 @@
 #include <noise/NoiseSource.h>
 
 
-//class PulseTaskDropper; // TODO Remove or Restore ?
 /**
  * @author Alberto M. Esmoris Pena
  * @version 1.0

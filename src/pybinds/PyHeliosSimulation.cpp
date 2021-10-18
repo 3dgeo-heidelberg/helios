@@ -75,7 +75,10 @@ void PyHeliosSimulation::start (){
         new SurveyPlayback(
             survey,
             outputPath,
+            0,
             numThreads,
+            32,
+            4,
             lasOutput,
             las10,
             zipOutput,

@@ -38,6 +38,7 @@ protected:
 	 * @brief Intersection handling noise sources, one per thread
 	 */
     UniformNoiseSource<double> *intersectionHandlingNoiseSources;
+
 public:
     /**
 	 * @brief Time watcher to count the amount of idle time.
@@ -52,6 +53,11 @@ public:
      * @see ResThreadPool::try_run_res_task
 	 */
     TimeWatcher idleTimer;
+    /**
+     * @brief Specify whether the pulse thread pool uses a dynamic chunk size
+     *  strategy (true) or a static one (false)
+     */
+    bool dynamic;
 
 public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //
@@ -64,14 +70,16 @@ public:
      */
     explicit PulseThreadPool(
         std::size_t const _pool_size,
-        double const deviceAccuracy
+        double const deviceAccuracy,
+        bool const dynamic
     ) :
         ResThreadPool<
             std::vector<std::vector<double>>&,
             RandomnessGenerator<double>&,
             RandomnessGenerator<double>&,
             NoiseSource<double>&
-        >(_pool_size)
+        >(_pool_size),
+        dynamic(dynamic)
     {
         // Allocate
         apMatrices = new std::vector<std::vector<double>>[this->pool_size];
@@ -102,6 +110,8 @@ public:
     }
 
 protected:
+    // ***  M E T H O D S  *** //
+    // *********************** //
     /**
      * @brief Do a pulse task
      * @param task Pulse task
@@ -155,4 +165,12 @@ protected:
         idleTimer.startIfNull(); // Start time at first idle thread
         this->cond_.notify_one();
     }
+
+public:
+    /**
+     * @brief Check if the pulse thread pool is operating on dynamic mode
+     *  (true) or not (false)
+     * @return True if dynamic chunk scheduling, false if static
+     */
+    virtual inline bool isDynamic() const {return dynamic;}
 };

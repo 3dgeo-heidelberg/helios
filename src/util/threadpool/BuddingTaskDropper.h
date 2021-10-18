@@ -3,11 +3,69 @@
 #include <util/threadpool/TaskDropper.h>
 
 /**
- * @brief TODO Rethink : Comment if works
- * @tparam BudType
- * @tparam TaskType
- * @tparam ThreadPoolType
- * @tparam TaskArgs
+ * @brief The budding task dropper is a task dropper which implements the
+ *  logic for its own reproduction so buds (children) are modified depending
+ *  on the difference between last idle time length and current idle time
+ *  length.
+ *
+ * The responsibility of measuring idle time lengths lies outside this class
+ *  scope. A budding task dropper implements the logic of how to work with idle
+ *  times, but it does not provide a mechanism to do such measurements.
+ *
+ * To understand how budding task dropper works, let \f$\epsilon\f$ be the
+ *  minimum magnitude of a measurement so any measurement \f$<\epsilon\f$ will
+ *  be discarded. Let \f$\tau\f$ be the threshold defining the significance of
+ *  a measurement and let \f$\Delta_1\f$ and \f$\Delta_2\f$ be the parameters
+ *  defining the behavior of a budding task dropper. Notice the \f$\Delta_1\f$
+ *  of the source budding task dropper (the first one, which has no father)
+ *  will be noted as \f$\Delta_0\f$. Also, let \f$t_a\f$ be the last idle time
+ *  length and \f$t_b\f$ be the current idle time length. Thus, if \f$B_a\f$
+ *  is the parent budding task dropper and \f$B_b\f$ is the child budding task
+ *  dropper, the last can be defined as:
+ *
+ * \f[
+ * B_b \approx \left\{\begin{array}{lll}
+ *   B_a &,&  t_b < \tau \\
+ *   r\left(B_a, {\mathrm{sgn}(t_a-t_b)s}\right) &,&
+ *      t_b \geq \tau \land \left\vert{t_a-t_b}\right\vert > \epsilon \\
+ *   r\left(B_a, s\right) &,&
+ *      t_b \geq \tau \land \left\vert{t_a-t_b}\right\vert \leq \epsilon \\
+ * \end{array}\right.
+ * \f]
+ *
+ * Where \f$B_b \approx B_a\f$ means \f$B_b\f$ is exactly equal to \f$B_a\f$
+ *  except for the vector of tasks. On the other hand, let \f$m\f$ be the chunk
+ *  size (max tasks) and \f$s\f$ be the sign of \f$B_a\f$ so the reproduce
+ *  function \f$r\f$ can be defined as:
+ *
+ * \f[
+ * r\left(B_a, s^{'}\right) = r\left(\left[\begin{array}{c}
+ *  m \\ \Delta_1 \\ \Delta_2 \\ s
+ * \end{array}\right], s^{'}\right) =
+ * B_b = \left[\begin{array}{l}
+ *  m^{'} \\ \Delta_1^{'} \\ \Delta_2^{'} \\ s^{'}
+ * \end{array}\right]
+ * = \left[\begin{array}{c}
+ *  m + s^{'} \delta\left({\Delta_1}, s, s^{'}\right) \\
+ *  \delta\left({\Delta_1}, s, s^{'}\right) \\
+ *  \Delta_2, \\
+ *  s{'}
+ * \end{array}\right]
+ * \f]
+ *
+ * Finally, \f$\delta(\Delta_1, s, s^{'})\f$ works as follows:
+ * \f[
+ * \delta\left({\Delta_1, s, s^{'}}\right) = \left\{\begin{array}{lll}
+ *  \Delta_1 + \Delta_2 &,& s=s^{'} \\
+ *  \Delta_0 &,& s \neq s^{'}
+ * \end{array}\right.
+ * \f]
+ *
+ * @tparam BudType Type of bud. Classes extending budding task dropper should
+ *  specify themselves as the bud type.
+ * @see TaskDropper
+ * @see BuddingTaskDropper::evolve
+ * @see BuddingTaskDropper::reproduce
  */
 template <
     typename BudType,
@@ -77,6 +135,22 @@ public:
         lastSign(lastSign)
     {}
     virtual ~BuddingTaskDropper() = default;
+    // ***  TASK DROPPER METHODS *** //
+    // ***************************** //
+    /**
+     * @brief Do an empty clone of this budding task dropper. It is, an exact
+     *  clone but with an empty tasks vector
+     * @return Empty clone of this budding task dropper
+     */
+    inline BudType emptyClone() const {
+        return BudType(
+            this->maxTasks,
+            delta1,
+            initDelta1,
+            delta2,
+            lastSign
+        );
+    }
 
     // ***  BUDDING METHODS  *** //
     // ************************* //
@@ -118,6 +192,52 @@ public:
             delta2,
             sign
         );
+    }
+
+    /**
+     * @brief Create the bud of current budding task dropper according to the
+     *  defined evolutive criteria
+     * @param lastIdle The last idle time length. It will be modified if a
+     *  significant change occurs so the new last idle time is the one
+     *  given as current idle time.
+     * @param idle Current idle time length, it is the one which comes after
+     *  last idle time length
+     * @param idleTh Threshold defining used to define whether a measurement
+     *  is significant or not
+     * @param idleEps Minimum magnitude of a measurement so those below it
+     *  will be discarded
+     * @return Bud satisfying evolution criteria
+     */
+    virtual BudType evolve(
+#ifdef BUDDING_METRICS
+        bool &debugBuddingMetrics,
+#endif
+        long &lastIdle,
+        long const idle,
+        long const idleTh=100000,
+        long const idleEps=100000
+    ){
+        if(idle < idleTh){ // No significant idle time
+#ifdef BUDDING_METRICS
+            debugBuddingMetrics=false;
+#endif
+            return emptyClone(); // No mutating budding
+        }
+#ifdef BUDDING_METRICS
+        debugBuddingMetrics=true;
+#endif
+
+        // Significant idle time, determine evolving sense (sign)
+        bool const sigChange = std::abs(idle-lastIdle) > idleEps;
+        if(sigChange){ // If significant change
+            char sign = (idle > lastIdle) ? -lastSign : lastSign;
+            if(sign == 0) sign = 1;
+            lastIdle = idle;
+            return reproduce(sign); // Evolve through budding
+        }
+        else{ // If no significant change
+            return reproduce(lastSign);
+        }
     }
 
     // ***  GETTERs and SETTERs  *** //

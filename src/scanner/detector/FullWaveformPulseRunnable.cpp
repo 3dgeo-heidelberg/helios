@@ -25,7 +25,7 @@ void FullWaveformPulseRunnable::operator()(
 	NoiseSource<double> &intersectionHandlingNoiseSource
 ){
     // Retrieve scene
-	shared_ptr<Scene> scene(detector->scanner->platform->scene);
+	shared_ptr<Scene> scene = detector->scanner->platform->scene;
 
 	// Compute beam direction
 	glm::dvec3 beamDir = absoluteBeamAttitude.applyTo(Directions::forward);

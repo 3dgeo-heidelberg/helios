@@ -176,6 +176,15 @@ public:
         );
     }
 
+    /**
+     * @brief Do an empty clone of this task dropper. It is, an exact clone
+     *  but with an empty tasks vector
+     * @return Empty clone of this task dropper
+     */
+    inline TaskDropper emptyClone() const {
+        return TaskDropper(maxTasks);
+    }
+
 protected:
     // ***  INTERNAL TASK DROPPER METHODS  *** //
     // *************************************** //

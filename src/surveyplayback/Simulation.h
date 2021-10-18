@@ -50,7 +50,7 @@ protected:
 	 * @brief Scanner used by the simulation
 	 * @see Scanner
 	 */
-	std::shared_ptr<Scanner> mScanner = NULL;
+	std::shared_ptr<Scanner> mScanner = nullptr;
 
 	/**
 	 * @brief Simulation frequency. If it is 0 then no pause is possible.
@@ -119,7 +119,7 @@ public:
 	 */
     bool finished = false;
 
-	std::shared_ptr<MeasurementsBuffer> mbuffer = NULL;
+	std::shared_ptr<MeasurementsBuffer> mbuffer = nullptr;
     std::shared_ptr<SimulationCycleCallback> callback = nullptr;
 
     // ***  CONSTRUCTION / DESTRUCTION  *** //
@@ -129,14 +129,19 @@ public:
      * @param numThreads Number of threads to be used by the simulation
      * @param deviceAccuracy Parameter used to handle randomness generation
      *  impact on simulation results
+     * @param parallelizationStrategy The parallelization strategy to be used
      * @param chunkSize The chunk size for the pulse task dropper
+     * @param warehouseFactor The factor for the warehouse
      * @see PulseThreadPool
      * @see PulseTaskDropper
+     * TODO Rethink : Add see for warehouse thread pool and task dropper
      */
     Simulation(
         unsigned const numThreads,
         double const deviceAccuracy,
-        size_t const chunkSize=32
+        int const parallelizationStrategy=0,
+        int const chunkSize=32,
+        int const warehouseFactor=4
     );
 
     // ***  M E T H O D S  *** //
@@ -177,6 +182,7 @@ public:
      * @return Current GPS time (milliseconds)
      */
     double calcCurrentGpsTime();
+
 
     // ***  GETTERS and SETTERS  *** //
     // ***************************** //
@@ -237,6 +243,6 @@ public:
 	 * @param simFrequency New simulation frequency (hertz)
 	 * @see Simulation::simFrequency
 	 */
-	void setSimFrequency(size_t simFrequency)
-	    {this->simFrequency = simFrequency;}
+	void setSimFrequency(size_t const simFrequency)
+    {this->simFrequency = simFrequency;}
 };

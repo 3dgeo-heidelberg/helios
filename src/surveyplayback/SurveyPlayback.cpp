@@ -23,8 +23,10 @@ using namespace std;
 SurveyPlayback::SurveyPlayback(
     shared_ptr<Survey> survey,
     const std::string outputPath,
+    int parallelizationStrategy,
     size_t numThreads,
-    size_t chunkSize,
+    int chunkSize,
+    int warehouseFactor,
     bool lasOutput,
     bool las10,
     bool zipOutput,
@@ -33,7 +35,9 @@ SurveyPlayback::SurveyPlayback(
     Simulation(
         numThreads,
         survey->scanner->detector->cfg_device_accuracy_m,
-        chunkSize
+        parallelizationStrategy,
+        chunkSize,
+        warehouseFactor
     ),
     lasOutput(lasOutput),
     las10(las10),
@@ -215,18 +219,13 @@ string SurveyPlayback::getTrajectoryOutputPath(){
 }
 
 void SurveyPlayback::onLegComplete() {
-    // If there is a pending chunk of tasks, sequentially compute it
-    mScanner->seqPulseDrop(taskDropper);
-#ifdef BUDDING_METRICS
-    mScanner->ofsBudding.flush();
-#endif
+    // Do scanning pulse process handling of on leg complete, if any
+    mScanner->onLegComplete();
 
 	// Wait for threads to finish
 	threadPool.join();
 
 	// Start next leg
-	threadPool.idleTimer.releaseStart();
-	mScanner->idleTimer.releaseStart();
     elapsedLength += mSurvey->legs.at(mCurrentLegIndex)->getLength();
 	startNextLeg(false);
 }

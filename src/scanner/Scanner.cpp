@@ -14,6 +14,8 @@ using namespace std::chrono;
 #endif
 
 #include "Scanner.h"
+#include <PulseTaskDropper.h>
+#include <PulseThreadPool.h>
 #include <Trajectory.h>
 
 using namespace std;
@@ -70,12 +72,6 @@ Scanner::Scanner(
     // Precompute variables
 	cached_Dr2 = cfg_device_receiverDiameter_m * cfg_device_receiverDiameter_m;
 	cached_Bt2 = cfg_device_beamDivergence_rad * cfg_device_beamDivergence_rad;
-
-#ifdef BUDDING_METRICS
-	ofsBudding.open("budding_metrics.csv", std::ios_base::out);
-	ofsBudding.setf(std::ios::fixed);
-	ofsBudding.precision(6);
-#endif
 
 	logging::INFO(toString());
 }
@@ -196,8 +192,6 @@ string Scanner::toString() {
 }
 
 void Scanner::doSimStep(
-    PulseTaskDropper& dropper,
-    PulseThreadPool& pool,
     unsigned int const legIndex,
     double currentGpsTime
 ) {
@@ -226,15 +220,11 @@ void Scanner::doSimStep(
     // Handle noise
     handleSimStepNoise(absoluteBeamOrigin, absoluteBeamAttitude);
 
-	// Calculate time of the emitted pulse
-
 	// Handle trajectory output
 	handleTrajectoryOutput(currentGpsTime);
 
 	// Pulse computation
-    handlePulseComputation(
-        dropper,
-        pool,
+    spp->handlePulseComputation(
         legIndex,
         absoluteBeamOrigin,
         absoluteBeamAttitude,
@@ -409,155 +399,6 @@ Rotation Scanner::calcAbsoluteBeamAttitude(){
         .applyTo(beamDeflector->getEmitterRelativeAttitude());
 }
 
-
-void Scanner::handlePulseComputation(
-    PulseTaskDropper& dropper,
-    PulseThreadPool& pool,
-    unsigned int const legIndex,
-    glm::dvec3 &absoluteBeamOrigin,
-    Rotation &absoluteBeamAttitude,
-    double currentGpsTime
-){
-    if(pool.getPoolSize() > 0 ) {
-        // Submit pulse computation functor to thread pool
-        char const status = dropper.tryAdd(
-            pool,
-            std::make_shared<FullWaveformPulseRunnable>(
-                dynamic_pointer_cast<FullWaveformPulseDetector>(detector),
-                absoluteBeamOrigin,
-                absoluteBeamAttitude,
-                state_currentPulseNumber,
-                currentGpsTime,
-                writeWaveform,
-                calcEchowidth,
-                (allMeasurements == nullptr) ?
-                    nullptr : allMeasurements.get(),
-                (allMeasurementsMutex == nullptr) ?
-                    nullptr : allMeasurementsMutex.get(),
-                (cycleMeasurements == nullptr) ?
-                    nullptr : cycleMeasurements.get(),
-                (cycleMeasurementsMutex == nullptr) ?
-                    nullptr : cycleMeasurementsMutex.get(),
-                legIndex
-            )
-        );
-        if(status==1){ // Dropper successfully posted to thread pool
-            if(idleTimer.hasStarted()){
-                long const idleNanos = idleTimer.getElapsedNanos();
-                idleTimer.releaseStart();
-                if(idleNanos < idleTh){ // No significant idle time
-                    dropper = PulseTaskDropper( // No mutating budding
-                        dropper.getMaxTasks(),
-                        dropper.getDelta1(),
-                        dropper.getInitDelta1(),
-                        dropper.getDelta2(),
-                        dropper.getLastSign()
-                    );
-                }
-                else{ // Significant idle time, determine evolving sense (sign)
-                    bool const sigChange = std::abs(idleNanos-lastIdleNanos)
-                        > idleEps;
-                    if(sigChange){ // If significant change
-                        char sign = (idleNanos > lastIdleNanos) ?
-                            -dropper.getLastSign() : dropper.getLastSign();
-                        if(sign == 0) sign = 1;
-                        dropper = dropper.reproduce(sign); // Evolve through budding
-                        lastIdleNanos = idleNanos;
-                    }
-                    else{
-                        dropper = dropper.reproduce(dropper.getLastSign());
-                    }
-#ifdef BUDDING_METRICS
-                    ofsBudding  << idleNanos << ","
-                                << dropper.getMaxTasks() << ","
-                                << dropper.getDelta1() << ","
-                                << dropper.getDelta2() << ","
-                                << (int)dropper.getLastSign() << ","
-                                << idleEps << "\n"
-                        ;
-#endif
-                }
-            }
-            else{
-                dropper = PulseTaskDropper( // No mutating budding
-                    dropper.getMaxTasks(),
-                    dropper.getDelta1(),
-                    dropper.getInitDelta1(),
-                    dropper.getDelta2(),
-                    dropper.getLastSign()
-                );
-            }
-        }
-        else if(status==2){ // Thread pool is full
-            // Compute idle time (time between first idle and full work)
-            if(pool.idleTimer.hasStarted()){
-                pool.idleTimer.stop();
-                idleTimer.synchronize(pool.idleTimer);
-                pool.idleTimer.releaseStart();
-            }
-            // Seq-do popped task
-            std::vector<std::vector<double>> apMatrix;
-            (*dropper.popTask())(
-                apMatrix,
-                *randGen1,
-                *randGen2,
-                *intersectionHandlingNoiseSource
-            );
-        }
-    }
-    else { // No thread pool, thus compute sequentially
-        seqPulseCompute(
-            legIndex,
-            absoluteBeamOrigin,
-            absoluteBeamAttitude,
-            currentGpsTime
-        );
-    }
-}
-
-void Scanner::seqPulseCompute(
-    unsigned int const legIndex,
-    glm::dvec3 &absoluteBeamOrigin,
-    Rotation &absoluteBeamAttitude,
-    double currentGpsTime
-){
-    // Sequential pulse computation
-    std::vector<std::vector<double>> apMatrix;
-    FullWaveformPulseRunnable worker = FullWaveformPulseRunnable(
-        dynamic_pointer_cast<FullWaveformPulseDetector>(detector),
-        absoluteBeamOrigin,
-        absoluteBeamAttitude,
-        state_currentPulseNumber,
-        currentGpsTime,
-        writeWaveform,
-        calcEchowidth,
-        (allMeasurements == nullptr) ? nullptr : allMeasurements.get(),
-        (allMeasurementsMutex == nullptr) ?
-        nullptr : allMeasurementsMutex.get(),
-        (cycleMeasurements == nullptr) ? nullptr : cycleMeasurements.get(),
-        (cycleMeasurementsMutex == nullptr) ?
-        nullptr : cycleMeasurementsMutex.get(),
-        legIndex
-    );
-    worker( // call functor
-        apMatrix,
-        *randGen1,
-        *randGen2,
-        *intersectionHandlingNoiseSource
-    );
-}
-
-void Scanner::seqPulseDrop(PulseTaskDropper &dropper){
-    std::vector<std::vector<double>> apMatrix;
-    // TODO Rethink : Distribute among threads if any available
-    dropper.drop(
-        apMatrix,
-        *randGen1,
-        *randGen2,
-        *intersectionHandlingNoiseSource
-    );
-}
-
 void Scanner::handleTrajectoryOutput(double currentGpsTime){
     // Get out of here if trajectory time interval is 0 (no trajectory output)
     if(trajectoryTimeInterval == 0.0) return;
@@ -622,4 +463,27 @@ void Scanner::initializeSequentialGenerators(){
             *DEFAULT_RG, 0.0, 1.0
         );
     intersectionHandlingNoiseSource->configureUniformNoise(0.0, 1.0);
+}
+
+void Scanner::buildScanningPulseProcess(
+    void * dropper,
+    void * pool
+){
+    spp = std::unique_ptr<ScanningPulseProcess>(
+        new BuddingScanningPulseProcess(
+            detector,
+            state_currentPulseNumber,
+            writeWaveform,
+            calcEchowidth,
+            allMeasurements,
+            allMeasurementsMutex,
+            cycleMeasurements,
+            cycleMeasurementsMutex,
+            *((PulseTaskDropper *)dropper),
+            *((PulseThreadPool *)pool),
+            *randGen1,
+            *randGen2,
+            *intersectionHandlingNoiseSource
+        )
+    );
 }

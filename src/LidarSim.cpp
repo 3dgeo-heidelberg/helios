@@ -83,13 +83,32 @@ void printHelp(){
         << "\t\t--lasScale : Specify the decimal scale factor for LAS output"
         << "\n\n"
 
+        << "\t\t--parallelization <integer> : Specify the parallelization "
+        << "strategy\n"
+        <<  "\t\t\t0 for a static/dynamic chunk based parallelization and 1 "
+        <<  "for a\n\t\t\twarehouse based one."
+        <<  "\n\t\t\t\tBy default: Static/dynamic chunk based strategy is used"
+        <<  "\n\n"
+
         << "\t\t-j or --njobs or --nthreads <integer> : Specify the number of"
         << "\n\t\t\tjobs to be used to compute the simulation\n"
         << "\t\t\t\tBy default: all available threads are used\n\n"
 
         << "\t\t--chunkSize <integer> : Specify the chunk size to be used for"
-        << "\n\t\t\tparallel computing\n"
-        << "\t\t\t\tBy default: 32\n\n"
+        << "\n\t\t\tparallel computing. If a negative number is given, then "
+        << "its"
+        << "\n\t\t\tabsolute value is used as starting size of the dynamic "
+        << "chunk-size strategy."
+        << "\n\t\t\tPositive numbers specify the size for a static chunk-size "
+        << "strategy"
+        << "\n\t\t\t\tBy default: -32\n\n"
+
+        << "\t\t--warehouseFactor <integer> : Specify the warehouse factor."
+        << "\n\t\t\tThe number of tasks in the warehouse would be k times the "
+        << "\n\t\t\tnumber of workers. The greater the factor, the less the "
+        << "\n\t\t\tprobability of idle cores but the greater the memory "
+        << "consumption."
+        << "\n\t\t\t\tBy default: 4\n\n"
 
         << "\t\t--rebuildScene : Force scene rebuild even when a previously\n"
         << "\t\t\tbuilt scene is available\n"
@@ -243,8 +262,10 @@ int main(int argc, char** argv) {
             ap.parseOutputPath(),
             ap.parseWriteWaveform(),
             ap.parseCalcEchowidth(),
+            ap.parseParallelizationStrategy(),
             ap.parseNJobs(),
             ap.parseChunkSize(),
+            ap.parseWarehouseFactor(),
             ap.parseFullWaveNoise(),
             ap.parseDisablePlatformNoise(),
             ap.parseDisableLegNoise(),
@@ -269,8 +290,10 @@ void LidarSim::init(
     std::string outputPath,
     bool writeWaveform,
     bool calcEchowidth,
+    int parallelizationStrategy,
     size_t njobs,
-    size_t chunkSize,
+    int chunkSize,
+    int warehouseFactor,
     bool fullWaveNoise,
     bool platformNoiseDisabled,
     bool legNoiseDisabled,
@@ -291,8 +314,10 @@ void LidarSim::init(
 	    << "writeWaveform: " << writeWaveform << "\n"
         << "calcEchowidth: " << calcEchowidth << "\n"
 	    << "fullWaveNoise: " << fullWaveNoise << "\n"
+	    << "parallelization: " << parallelizationStrategy << "\n"
 	    << "njobs: " << njobs << "\n"
 	    << "chunkSize: " << chunkSize << "\n"
+	    << "warehouseFactor: " << warehouseFactor << "\n"
 	    << "platformNoiseDisabled: " << platformNoiseDisabled << "\n"
 	    << "legNoiseDisabled: " << legNoiseDisabled << "\n"
 	    << "rebuildScene: " << rebuildScene << "\n"
@@ -333,15 +358,16 @@ void LidarSim::init(
 	std::shared_ptr<SurveyPlayback> playback=std::make_shared<SurveyPlayback>(
         survey,
         outputPath,
+        parallelizationStrategy,
         njobs,
         chunkSize,
+        warehouseFactor,
         lasOutput,
         las10,
         zipOutput
 	);
 
     logging::INFO("Running simulation...");
-
 	TimeWatcher tw;
 	tw.start();
 	playback->start();

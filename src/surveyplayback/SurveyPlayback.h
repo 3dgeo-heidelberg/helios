@@ -104,8 +104,11 @@ public:
      * @brief Survey playback constructor
      * @param survey The survey itself
      * @param outputPath Root output path
+     * @param parallelizationStrategy theh parallelization strategy to be used
      * @param numThreads Number of threads to be used
      * @param chunkSize The chunk size for the pulse task dropper
+     * @param warehouseFactor The warehouse factor for the warehouse pulse task
+     *  dropper
      * @param lasOutput Flag to specify LAS format for the output (true) or not
      *  (false)
      * @param las10 Flag to specify if LAS output must be LAS v1.0 (true) or not
@@ -124,8 +127,10 @@ public:
 	SurveyPlayback(
         std::shared_ptr<Survey> survey,
         const std::string outputPath,
+        int parallelizationStrategy,
         size_t numThreads,
-        size_t chunkSize,
+        int chunkSize,
+        int warehouseFactor,
         bool lasOutput,
         bool las10,
         bool zipOutput,

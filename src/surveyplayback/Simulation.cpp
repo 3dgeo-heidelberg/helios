@@ -5,6 +5,7 @@
 using namespace std::chrono;
 
 #include "AbstractDetector.h"
+#include <scanner/BuddingScanningPulseProcess.h>
 
 #include "Simulation.h"
 #include <TimeWatcher.h>
@@ -14,12 +15,15 @@ using namespace std;
 Simulation::Simulation(
     unsigned const numThreads,
     double const deviceAccuracy,
-    size_t const chunkSize
+    int const parallelizationStrategy,
+    int const chunkSize,
+    int const warehouseFactor
 ):
-    taskDropper(chunkSize),
+    taskDropper(std::abs(chunkSize)),
     threadPool( // threads-1 to exclude main thread from thread pool
         (numThreads == 0) ? numSysThreads-1 : numThreads-1,
-        deviceAccuracy
+        deviceAccuracy,
+        chunkSize < 0
     )
 {
     mbuffer = make_shared<MeasurementsBuffer>();
@@ -38,12 +42,7 @@ void Simulation::doSimStep(){
 
 	// Ordered execution of simulation components
 	mScanner->platform->doSimStep(getScanner()->getPulseFreq_Hz());
-	mScanner->doSimStep(
-	    taskDropper,
-	    threadPool,
-	    mCurrentLegIndex,
-	    currentGpsTime_ms
-    );
+	mScanner->doSimStep(mCurrentLegIndex, currentGpsTime_ms);
     currentGpsTime_ms += 1000. / ((double)getScanner()->getPulseFreq_Hz());
     if (currentGpsTime_ms > 604800000.) currentGpsTime_ms -= 604800000.;
 
@@ -99,6 +98,7 @@ double Simulation::calcCurrentGpsTime(){
                                                        // 604800s per week -> resulting time is in ms since start of GPSweek
 }
 
+
 void Simulation::setSimSpeedFactor(double factor) {
 	if (factor <= 0) {
 		factor = 0.0001;
@@ -122,6 +122,9 @@ void Simulation::start() {
     this->mScanner->platform->prepareSimulation(
         this->mScanner->getPulseFreq_Hz()
     );
+
+    // Prepare scanner
+    this->mScanner->buildScanningPulseProcess(&taskDropper, &threadPool);
 
     // Prepare simulation
 	int stepCount = 0;
@@ -160,9 +163,7 @@ void Simulation::start() {
 	    system_clock::now().time_since_epoch()).count();
 	long seconds = (timeMainLoopFinish - timeStart_ms) / 1000;
 
-#ifdef BUDDING_METRICS
-	mScanner->ofsBudding.close();
-#endif
+	mScanner->onSimulationFinished();
 
 	stringstream ss;
 	ss  << "stepCount = " << stepCount << "\n"

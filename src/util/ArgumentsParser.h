@@ -83,6 +83,12 @@ public:
      */
     std::string parseSeed();
     /**
+     * @brief Parse the parallelization strategy from invocation arguments
+     * @return 0 for chunk based parallelization (default), 1 for warehouse
+     *  based parallelization
+     */
+    int parseParallelizationStrategy();
+    /**
      * @brief Parse the number of jobs from invocation arguments
      * @return Parsed number of jobs. If no number of jobs was specified,
      * 0 will be returned.
@@ -91,10 +97,17 @@ public:
     /**
      * @brief Parse the chunk size for the pulse task dropper from invocation
      *  arguments
-     * @return Parsed chunk size. If no chunk size was specified, 32 will
+     * @return Parsed chunk size. If no chunk size was specified, -32 will
      *  be returned as default value
      */
-    std::size_t parseChunkSize();
+    int parseChunkSize();
+    /**
+     * @brief Parse the warehouse factor for the warehouse based
+     *  parallelization strategy from invocation arguments
+     * @return Parsed warehouse factor. If no warehouse factor was specified,
+     *  4 will be returned as default value
+     */
+    int parseWarehouseFactor();
     /**
      * @brief Parse the disable platform noise flag from invocation arguments
      * @return True if disable platform noise flag was specified,
