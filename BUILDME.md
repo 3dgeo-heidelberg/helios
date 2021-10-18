@@ -208,7 +208,7 @@ Then build **Boost C++** using the following command:
 
 ```
 bootstrap.bat
-b2.exe -j6 -sNO_ZLIB=0 -sZLIB_INCLUDE="zlib-1.2.11" -sZLIB_SOURCE="zlib-1.2.11" address-model=64 link=static -python=3.6,3.7,3.8,3.9
+b2.exe -j6 -sNO_ZLIB=0 -sZLIB_INCLUDE="zlib-1.2.11" -sZLIB_SOURCE="zlib-1.2.11" address-model=64 link=static python=3.6,3.7,3.8,3.9
 ```
 
 You can later decide which version to build `pyhelios` for, see [Compiling source](#compiling-source).
