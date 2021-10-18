@@ -215,17 +215,23 @@ You can later decide which version to build `pyhelios` for, see [Compiling sourc
 
 ##### OpenGLM Mathematics
 Simply download the [OpenGLM mathematics library](https://github.com/g-truc/glm/tags)
-and unzip it inside the helios-plusplus lib folder
+and unzip it inside the helios-plusplus lib folder. 
+
+Rename lib/glm-x.x.x.x/ to lib/glm/
 
 
 ##### GDAL with PROJ
 
-First create a folder named gdal inside the lib folder and download a precompiled version of the library,
-for instance from http://download.gisinternals.com/sdk/downloads/release-1900-x64-gdal-3-0-4-mapserver-7-4-3-libs.zip
+First, we need to download GDAL compiled binaries and headers, and the 
+generic installer for the GDAL core components from https://www.gisinternals.com/release.php
 
-Place header files (.h and .hpp) in the directory lib/gdal/include/ and lib files inside lib/gdal/lib/
-
-Finally, rename the lib/gdal/include/boost folder to lib/gdal/include/boost-gdal to avoid
+- Choose the appropriate option matching your compiler and architecture (MSVC2019, x64 for instance) for
+GDAL 3.x.x version. For example, "release-1928-x64-gdal-3-3-2-mapserver-7-6-4"
+- Download the files "release-1928-x64-gdal-3-3-2-mapserver-7-6-4-libs.zip" and
+"gdal-303-1928-x64-core.msi".
+- Create a folder named gdal inside the lib folder (lib/gdal) and extract the contents of the zip file there. lib/gdal/include and lib/gdal/lib must exist after the extraction.
+- Install the .msi file (By default, C:\Program Files\GDAL). Take note of this path.
+- Finally, rename the lib/gdal/include/boost folder to lib/gdal/include/boost-gdal to avoid
 conflicts when building helios++
 
 ##### LAStools library
@@ -315,9 +321,11 @@ If you are using scilab you are going to need linking all scilab dll files.
 By default they are located inside the same directory. But if you have moved them to your own folders,
 remember to include them all.
 
-There are two ways to modify the path:
+**By default, C:\Program Files\GDAL and C:\Program Files\scilab-6.1.0\bin must be added to the PATH.**
 
-**Session path**
+There are two ways to modify the PATH:
+
+#### Session PATH
 
 You can modify the path for the current session, for instance for the active command line.
 This way, changes are not going to be permanent neither for the user nor for the system.
@@ -327,7 +335,7 @@ It can be done with following command:
 set PATH=%PATH%;<path to gdal dll folder>;<path to lapack dll folder>
 ```
 
-**User/System path**
+#### User/System PATH
 
 It is possible to also modify the path at advanced system properties.
 For this right click on This-PC, then go to Properties and find advanced system properties.
