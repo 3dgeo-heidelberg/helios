@@ -230,7 +230,7 @@ GDAL 3.x.x version. For example, "release-1928-x64-gdal-3-3-2-mapserver-7-6-4"
 - Download the files "release-1928-x64-gdal-3-3-2-mapserver-7-6-4-libs.zip" and
 "gdal-303-1928-x64-core.msi".
 - Create a folder named gdal inside the lib folder (lib/gdal) and extract the contents of the zip file there. lib/gdal/include and lib/gdal/lib must exist after the extraction.
-- Install the .msi file (By default, C:\Program Files\GDAL). Take note of this path.
+- Install the .msi file (By default, C:\Program Files\GDAL). Take note of the installation path.
 - Finally, rename the lib/gdal/include/boost folder to lib/gdal/include/boost-gdal to avoid
 conflicts when building helios++
 
@@ -253,8 +253,9 @@ In consequence, here is exposed how to compile helios++ with Armadillo using Sci
 which provides high performance implementations of BLAS and LAPACK.
 Of course, it is possible to use different implementations.
 
-First, we need to download and install [Scilab](https://www.scilab.org).
+First, we need to download and install [Scilab](https://www.scilab.org). B
 In this case we are going to use [Scilab 6.1.0 x64](https://www.scilab.org/download/6.1.0/scilab-6.1.0_x64.exe).
+y default, it is installed at C:\Program Files\scilab-6.1.0. Take note of the installation path.
 
 Now it is necessary to download [Armadillo](http://arma.sourceforge.net/download.html)
 and decompress it inside *lib/armadillo*.
