@@ -106,7 +106,7 @@ IMPORTANT: Remove completely any previous existing Boost installation before con
 - ```cd proj-8.0.0 && ./configure && make && make install```
 
 #### GDAL
-- ```wget https://github.com/OSGeo/gdal/releases/download/v3.2.1/gdal-3.3.0.tar.gz --no-check-certificate ```
+- ```wget https://github.com/OSGeo/gdal/releases/download/v3.3.0/gdal-3.3.0.tar.gz --no-check-certificate ```
 - ```tar -xzvf gdal-3.3.0.tar.gz```
 - ```cd gdal-3.3.0 && ./configure && make && make install```
 
