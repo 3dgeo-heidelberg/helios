@@ -2,19 +2,20 @@
 
 #include <scanner/ScanningPulseProcess.h>
 #include <PulseTaskDropper.h>
-#include <PulseThreadPool.h>
-#include <TimeWatcher.h>
+#include <PulseWarehouseThreadPool.h>
+
+#include <memory>
 
 /**
  * @author Alberto M. Esmoris Pena
  * @version 1.0
  * @brief Class implementing a scanning pulse process which works with a
- *  pulse task dropper based on budding task dropper and a pulse thread pool
- *  based on an asynchronous resource thread pool
+ *  pulse task dropper based on budding task dropper and a pulse warehouse
+ *  thread pool based on an asynchronous warehouse thread pool
  * @see PulseTaskDropper
- * @see PulseThreadPool
+ * @see PulseWarehouseThreadPool
  */
-class BuddingScanningPulseProcess : public ScanningPulseProcess {
+class WarehouseScanningPulseProcess : public ScanningPulseProcess {
 protected:
     // ***  ATTRIBUTES  *** //
     // ******************** //
@@ -26,7 +27,7 @@ protected:
      * @brief Thread pool to be used to handle multi threading pulse
      *  computation
      */
-    PulseThreadPool &pool;
+    PulseWarehouseThreadPool &pool;
     /**
      * @brief Pulse computation handling function. It will be configured at
      *  construction depending on thread pool size to assign sequential or
@@ -58,39 +59,11 @@ protected:
      */
     UniformNoiseSource<double> &intersectionHandlingNoiseSource;
 
-    /**
-	 * @brief Length in nanoseconds of the last idle thread time interval
-	 */
-    long lastIdleNanos = 0;
-    /**
-	 * @brief Threshold so idle times which are below its value are not
-	 *  considered. Instead, they are discarded as a non trustable measurement.
-	 *  It is given in nanoseconds.
-	 */
-    long const idleTh = 100000;
-    /**
-	 * @brief Tolerance so idle times differences below this threshold will
-	 *  not change sign of budding task dropper and neither last idle time.
-	 *  It is given in nanoseconds.
-	 */
-    long const idleEps = 100000;
-
-    /**
-	 * @brief Scan idle timer to work with thread pool idle time
-	 * @see PulseThreadPool::idleTimer
-	 */
-    TimeWatcher idleTimer;
-
-#ifdef BUDDING_METRICS
-#include <fstream>
-    std::ofstream ofsBudding;
-#endif
-
 public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //
     // ************************************ //
     /**
-     * @brief Constructor for budding scanning pulse process
+     * @brief Constructor for warehouse scanning pulse process
      * @param dropper The task dropper used to handle job chunks
      * @param pool Thread pool to be used to handle multi threading pulse
      *  computation
@@ -100,7 +73,7 @@ public:
      *  thread mode
      * @see ScanningPulseProcess::ScanningPulseProcess
      */
-    BuddingScanningPulseProcess(
+    WarehouseScanningPulseProcess(
         std::shared_ptr<AbstractDetector> &detector,
         int &currentPulseNumber,
         bool &writeWaveform,
@@ -110,23 +83,23 @@ public:
         std::shared_ptr<std::vector<Measurement>> &cycleMeasurements,
         std::shared_ptr<std::mutex> &cycleMeasurementsMutex,
         PulseTaskDropper &dropper,
-        PulseThreadPool &pool,
+        PulseWarehouseThreadPool &pool,
         RandomnessGenerator<double> &randGen1,
         RandomnessGenerator<double> &randGen2,
         UniformNoiseSource<double> &intersectionHandlingNoiseSource
     );
-    virtual ~BuddingScanningPulseProcess() = default;
+    virtual ~WarehouseScanningPulseProcess() = default;
 
     // ***  PULSE COMPUTATION  *** //
     // *************************** //
     /**
      * @brief Implementation of handle pulse computation method for the pair
-     *  budding task dropper and pulse thread pool
+     *  budding task dropper and pulse warehouse thread pool
      * @see ScanningPulseProcess::handlePulseComputation
      * @see PulseTaskDropper
-     * @see PulseThreadPool
-     * @see BuddingScanningPulseProcess::handlePulseComputationSequential
-     * @see BuddingScanningPulseProcess::handlePulseComputationParallel
+     * @see PulseWarehouseThreadPool
+     * @see WarehouseScanningPulseProcess::handlePulseComputationSequential
+     * @see WarehouseScanningPulseProcess::handlePulseComputationParallel
      */
     inline void handlePulseComputation(
         unsigned int const legIndex,
@@ -147,9 +120,9 @@ public:
      */
     void onLegComplete() override;
     /**
-     * @brief Handle closing of output file stream for budding metrics when
-     *  it is called with -DBUDDING_METRICS=1
-     * @see ofsBudding
+     * @brief Handle shutdown of warehouse thread pool (final join)
+     * @see WarehouseThreadPool::finish
+     * @see WarehouseThreadPool::finalJoin
      */
     void onSimulationFinished() override;
 
@@ -158,9 +131,8 @@ protected:
     // ********************************* //
     /**
      * @brief Handle sequential computation of scanning pulses
-     * @see BuddingScanningPulseProcess::handlePulseComputation
-     * @see BuddingScanningPulseProcess::handlePulseComputationParallelDynamic
-     * @see BuddingScanningPulseProcess::handlePulseComputationParallelStatic
+     * @see WarehouseScanningPulseProcess::handlePulseComputation
+     * @see WarehouseScanningPulseProcess::handlePulseComputationParallel
      */
     virtual void handlePulseComputationSequential(
         unsigned int const legIndex,
@@ -169,30 +141,15 @@ protected:
         double const currentGpsTime
     );
     /**
-     * @brief Handle parallel computation of scanning pulses using a dynamic
-     *  chunk-size based strategy
-     * @see BuddingScanningPulseProcess::handlePulseComputation
-     * @see BuddingScanningPulseProcess::handlePulseComputationSequential
-     * @see BuddingScanningPulseProcess::handlePulseComputationParallelStatic
+     * @brief Handle parallel computation of scanning pulses using a warehouse
+     *  of task-chunks based strategy
+     * @see WarehouseScanningPulseProcess::handlePulseComputation
+     * @see WarehouseScanningPulseProcess::handlePulseComputationSequential
      */
-    virtual void handlePulseComputationParallelDynamic(
+    virtual void handlePulseComputationParallel(
         unsigned int const legIndex,
         glm::dvec3 &absoluteBeamOrigin,
         Rotation &absoluteBeamAttitude,
         double const currentGpsTime
     );
-    /**
-     * @brief Handle a parallel computation of scanning pulse using a static
-     *  chunk-size based strategy
-     * @see BuddingScanningPulseProcess::handlePulseComputation
-     * @see BuddingScanningPulseProcess::handlePulseComputationSequential
-     * @see BuddingScanningPulseProcess::handlePulseComputationParallelDynamic
-     */
-    virtual void handlePulseComputationParallelStatic(
-        unsigned int const legIndex,
-        glm::dvec3 &absoluteBeamOrigin,
-        Rotation &absoluteBeamAttitude,
-        double const currentGpsTime
-    );
-
 };

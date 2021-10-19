@@ -41,6 +41,7 @@ private:
     bool lasOutput = false;
     bool las10     = false;
     bool zipOutput = false;
+    std::shared_ptr<PulseThreadPoolInterface> pulseThreadPool;
 public:
     bool finalOutput = true;
     bool exportToFile = true;

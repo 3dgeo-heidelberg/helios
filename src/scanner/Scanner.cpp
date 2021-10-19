@@ -469,6 +469,9 @@ void Scanner::buildScanningPulseProcess(
     void * dropper,
     void * pool
 ){
+    std::cout   << "Scanner threadPool address: "
+                << pool
+                << std::endl; // TODO Remove cout
     spp = std::unique_ptr<ScanningPulseProcess>(
         new BuddingScanningPulseProcess(
             detector,

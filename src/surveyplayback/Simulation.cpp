@@ -13,18 +13,11 @@ using namespace std::chrono;
 using namespace std;
 
 Simulation::Simulation(
-    unsigned const numThreads,
-    double const deviceAccuracy,
-    int const parallelizationStrategy,
-    int const chunkSize,
-    int const warehouseFactor
+    PulseThreadPoolInterface &pulseThreadPoolInterface,
+    int chunkSize
 ):
-    taskDropper(std::abs(chunkSize)),
-    threadPool( // threads-1 to exclude main thread from thread pool
-        (numThreads == 0) ? numSysThreads-1 : numThreads-1,
-        deviceAccuracy,
-        chunkSize < 0
-    )
+    threadPool(pulseThreadPoolInterface),
+    taskDropper(chunkSize)
 {
     mbuffer = make_shared<MeasurementsBuffer>();
     currentGpsTime_ms = calcCurrentGpsTime();
@@ -124,7 +117,13 @@ void Simulation::start() {
     );
 
     // Prepare scanner
-    this->mScanner->buildScanningPulseProcess(&taskDropper, &threadPool);
+    std::cout   << "Simulation threadPool address: "
+                << std::addressof(threadPool)
+                << std::endl; // TODO Remove cout
+    this->mScanner->buildScanningPulseProcess(
+        std::addressof(taskDropper),
+        std::addressof(threadPool)
+    );
 
     // Prepare simulation
 	int stepCount = 0;

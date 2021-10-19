@@ -6,7 +6,7 @@
 #include "MeasurementsBuffer.h"
 #include "Color4f.h"
 #include <PulseTaskDropper.h>
-#include <PulseThreadPool.h>
+#include <PulseThreadPoolInterface.h>
 #include <FullWaveformPulseRunnable.h>
 #include <SimulationCycleCallback.h>
 #ifdef PYTHON_BINDING
@@ -26,20 +26,16 @@ protected:
 	static const long NANOSECONDS_PER_SECOND = 1000000000;
 
 	/**
-	 * @brief Number of threads available in the system
-	 */
-	unsigned numSysThreads = std::thread::hardware_concurrency(); //may return 0 when not able to detect
-
-	/**
-	 * @brief Pulse task dropper
-	 * @see PulseTaskDropper
-	 */
-	PulseTaskDropper taskDropper;
-	/**
 	 * @brief Pulse thread pool
 	 * @see PulseThreadPool
+	 * @see PulseWarehouseThreadPool
 	 */
-	PulseThreadPool threadPool;
+	PulseThreadPoolInterface &threadPool;
+    /**
+     * @brief Pulse task dropper
+     * @see PulseTaskDropper
+     */
+    PulseTaskDropper taskDropper;
 
 	/**
 	 * @brief Simulation speed factor
@@ -94,10 +90,6 @@ protected:
      */
     double currentGpsTime_ms = 0;
 
-
-
-
-
 public:
     /**
      * @brief Index of leg at current simulation stage
@@ -126,22 +118,16 @@ public:
     // ************************************ //
     /**
      * @brief Simulation constructor
-     * @param numThreads Number of threads to be used by the simulation
-     * @param deviceAccuracy Parameter used to handle randomness generation
-     *  impact on simulation results
-     * @param parallelizationStrategy The parallelization strategy to be used
-     * @param chunkSize The chunk size for the pulse task dropper
-     * @param warehouseFactor The factor for the warehouse
+     * @param pulseThreadPoolInterface The thread pool to be used for
+     *  parallel computation during simulation
+     * @see PulseThreadPoolInterface
      * @see PulseThreadPool
+     * @see PulseWarehouseThreadPool
      * @see PulseTaskDropper
-     * TODO Rethink : Add see for warehouse thread pool and task dropper
      */
     Simulation(
-        unsigned const numThreads,
-        double const deviceAccuracy,
-        int const parallelizationStrategy=0,
-        int const chunkSize=32,
-        int const warehouseFactor=4
+        PulseThreadPoolInterface &pulseThreadPoolInterface,
+        int const chunkSize
     );
 
     // ***  M E T H O D S  *** //

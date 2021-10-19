@@ -1,8 +1,9 @@
 #pragma once
 
 #include <ResThreadPool.h>
+#include <scanner/detector/PulseThreadPoolInterface.h>
 #include <noise/RandomnessGenerator.h>
-#include <UniformNoiseSource.h>
+#include <noise/UniformNoiseSource.h>
 #include <TimeWatcher.h>
 
 /**
@@ -10,12 +11,15 @@
  * @brief Class implementing a thread pool to deal with pulse tasks
  * @see ResThreadPool
  */
-class PulseThreadPool : public ResThreadPool<
-    std::vector<std::vector<double>>&,
-    RandomnessGenerator<double>&,
-    RandomnessGenerator<double>&,
-    NoiseSource<double>&
->{
+class PulseThreadPool :
+    public ResThreadPool<
+        std::vector<std::vector<double>>&,
+        RandomnessGenerator<double>&,
+        RandomnessGenerator<double>&,
+        NoiseSource<double>&
+    >,
+    public PulseThreadPoolInterface
+{
 protected:
     // ***  ATTRIBUTES  *** //
     // ******************** //
@@ -63,7 +67,7 @@ public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //
     // ************************************ //
     /**
-     * @brief Thread pool constructor
+     * @brief Pulse thread pool constructor
      * @see ThreadPool::pool_size
      * @param deviceAccuracy Parameter used to handle randomness generation
      *  impact on simulation results
@@ -107,6 +111,50 @@ public:
         delete[] randGens;
         delete[] randGens2;
         delete[] intersectionHandlingNoiseSources;
+    }
+
+    // *** PULSE THREAD POOL INTERFACE  *** //
+    // ************************************ //
+    /**
+     * @see PulseThreadPoolInterface::run_pulse_task
+     */
+    inline void run_pulse_task(
+        TaskDropper<
+            PulseTask,
+            PulseThreadPoolInterface,
+            std::vector<std::vector<double>>&,
+            RandomnessGenerator<double>&,
+            RandomnessGenerator<double>&,
+            NoiseSource<double>&
+        > &dropper
+    ) override {
+        run_res_task(dropper);
+    }
+    /**
+     * @see PulseThreadPoolInterface::try_run_pulse_task
+     */
+    inline bool try_run_pulse_task(
+        TaskDropper<
+            PulseTask,
+            PulseThreadPoolInterface,
+            std::vector<std::vector<double>>&,
+            RandomnessGenerator<double>&,
+            RandomnessGenerator<double>&,
+            NoiseSource<double>&
+        > &dropper
+    ) override {
+        return try_run_res_task(dropper);
+    }
+    /**
+     * @see PulseThreadPoolInterface::join
+     */
+    inline void join() override{
+        ResThreadPool<
+            std::vector<std::vector<double>>&,
+            RandomnessGenerator<double>&,
+            RandomnessGenerator<double>&,
+            NoiseSource<double>&
+        >::join();
     }
 
 protected:
@@ -163,6 +211,7 @@ protected:
         ++(this->available_);
         resourceSetAvailable[resourceIdx] = true;
         idleTimer.startIfNull(); // Start time at first idle thread
+        lock.unlock();
         this->cond_.notify_one();
     }
 

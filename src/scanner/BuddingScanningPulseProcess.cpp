@@ -2,7 +2,6 @@
 #include <FullWaveformPulseDetector.h>
 #include <FullWaveformPulseRunnable.h>
 
-#include <memory>
 
 // ***  CONSTRUCTION / DESTRUCTION  *** //
 // ************************************ //
@@ -19,8 +18,7 @@ BuddingScanningPulseProcess::BuddingScanningPulseProcess(
     PulseThreadPool &pool,
     RandomnessGenerator<double> &randGen1,
     RandomnessGenerator<double> &randGen2,
-    UniformNoiseSource<double> &intersectionHandlingNoiseSource,
-    bool const dynamic
+    UniformNoiseSource<double> &intersectionHandlingNoiseSource
 ) :
     ScanningPulseProcess(
         detector,
@@ -70,7 +68,7 @@ BuddingScanningPulseProcess::BuddingScanningPulseProcess(
             };
         }
     }
-    else{
+    else{ // Sequential computation
         handler = [&] (
             unsigned int const legIndex,
             glm::dvec3 &absoluteBeamOrigin,
@@ -96,7 +94,6 @@ BuddingScanningPulseProcess::BuddingScanningPulseProcess(
 // *************************** //
 void BuddingScanningPulseProcess::onLegComplete(){
     // If there is a pending chunk of tasks, sequentially compute it
-    std::vector<std::vector<double>> apMatrix;
     dropper.drop(
         apMatrix,
         randGen1,
@@ -124,7 +121,6 @@ void BuddingScanningPulseProcess::handlePulseComputationSequential(
     double const currentGpsTime
 ){
     // Sequential pulse computation
-    std::vector<std::vector<double>> apMatrix;
     FullWaveformPulseRunnable worker = FullWaveformPulseRunnable(
         std::dynamic_pointer_cast<FullWaveformPulseDetector>(detector),
         absoluteBeamOrigin,
@@ -166,13 +162,13 @@ void BuddingScanningPulseProcess::handlePulseComputationParallelDynamic(
             writeWaveform,
             calcEchowidth,
             (allMeasurements == nullptr) ?
-            nullptr : allMeasurements.get(),
+                nullptr : allMeasurements.get(),
             (allMeasurementsMutex == nullptr) ?
-            nullptr : allMeasurementsMutex.get(),
+                nullptr : allMeasurementsMutex.get(),
             (cycleMeasurements == nullptr) ?
-            nullptr : cycleMeasurements.get(),
+                nullptr : cycleMeasurements.get(),
             (cycleMeasurementsMutex == nullptr) ?
-            nullptr : cycleMeasurementsMutex.get(),
+                nullptr : cycleMeasurementsMutex.get(),
             legIndex
         )
     );
@@ -214,7 +210,6 @@ void BuddingScanningPulseProcess::handlePulseComputationParallelDynamic(
             pool.idleTimer.releaseStart();
         }
         // Seq-do popped task
-        std::vector<std::vector<double>> apMatrix;
         (*dropper.popTask())(
             apMatrix,
             randGen1,
@@ -280,7 +275,6 @@ void BuddingScanningPulseProcess::handlePulseComputationParallelStatic(
         }
 #endif
         // Seq-do popped task
-        std::vector<std::vector<double>> apMatrix;
         (*dropper.popTask())(
             apMatrix,
             randGen1,

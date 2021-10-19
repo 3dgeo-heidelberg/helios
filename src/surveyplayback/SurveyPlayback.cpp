@@ -23,22 +23,14 @@ using namespace std;
 SurveyPlayback::SurveyPlayback(
     shared_ptr<Survey> survey,
     const std::string outputPath,
-    int parallelizationStrategy,
-    size_t numThreads,
-    int chunkSize,
-    int warehouseFactor,
+    PulseThreadPoolInterface &pulseThreadPoolInterface,
+    int const chunkSize,
     bool lasOutput,
     bool las10,
     bool zipOutput,
     bool exportToFile
 ):
-    Simulation(
-        numThreads,
-        survey->scanner->detector->cfg_device_accuracy_m,
-        parallelizationStrategy,
-        chunkSize,
-        warehouseFactor
-    ),
+    Simulation(pulseThreadPoolInterface, chunkSize),
     lasOutput(lasOutput),
     las10(las10),
     zipOutput(zipOutput),

@@ -1,6 +1,6 @@
 #pragma once
 
-#include <ThreadPool.h>
+#include <SimpleThreadPool.h>
 #include <HeliosException.h>
 
 /**
@@ -10,7 +10,7 @@
  * @see ThreadPool
  */
 template <typename ... TaskArgs>
-class ResThreadPool : public ThreadPool<TaskArgs ...>{
+class ResThreadPool : public SimpleThreadPool<TaskArgs ...>{
 protected:
     /**
      * @brief Array of flags specifying availability of resource sets
@@ -28,7 +28,7 @@ public:
      * @see ThreadPool::ThreadPool(std::size_t const)
      */
     explicit ResThreadPool(std::size_t const _pool_size) :
-        ThreadPool<TaskArgs ...>(_pool_size)
+        SimpleThreadPool<TaskArgs ...>(_pool_size)
     {
         // Allocate
         resourceSetAvailable = new bool[this->pool_size];
@@ -160,6 +160,7 @@ protected:
         boost::unique_lock<boost::mutex> lock(this->mutex_);
         ++(this->available_);
         resourceSetAvailable[resourceIdx] = true;
+        lock.unlock();
         this->cond_.notify_one();
     }
 

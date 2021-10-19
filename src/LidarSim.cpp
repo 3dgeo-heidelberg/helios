@@ -12,14 +12,19 @@ namespace fs = boost::filesystem;
 #include "XmlSurveyLoader.h"
 #include "typedef.h"
 #include <ArgumentsParser.h>
-#include <gdal_priv.h>
 #include <noise/RandomnessGenerator.h>
 #include <TimeWatcher.h>
 #include <helios_version.h>
 #include <AbstractDetector.h>
 #include <FileUtils.h>
+#include <scanner/detector/PulseThreadPool.h>
+#include <scanner/detector/PulseWarehouseThreadPool.h>
+
+#include <gdal_priv.h>
 #include <armadillo>
+
 #include <iomanip>
+
 #ifdef PCL_BINDING
 #include <demo/DemoSelector.h>
 #endif
@@ -355,13 +360,40 @@ void LidarSim::init(
 	survey->scanner->detector->zipOutput = zipOutput;
 	survey->scanner->detector->lasScale = lasScale;
 
+	// Build thread pool for parallel computation
+	/*
+     * Number of threads available in the system.
+     * May return 0 when not able to detect
+     */
+    unsigned numSysThreads = std::thread::hardware_concurrency();
+    size_t const poolSize = (njobs == 0) ? numSysThreads-1 : njobs-1;
+    std::shared_ptr<PulseThreadPoolInterface> pulseThreadPool;
+	if(parallelizationStrategy == 0){
+        pulseThreadPool = std::make_shared<PulseThreadPool>(
+            poolSize,
+            survey->scanner->detector->cfg_device_accuracy_m,
+            chunkSize < 0
+        );
+	}
+	else if(parallelizationStrategy == 1){
+        pulseThreadPool = std::make_shared<PulseWarehouseThreadPool>(
+            poolSize,
+            survey->scanner->detector->cfg_device_accuracy_m,
+            poolSize*warehouseFactor
+        );
+    }
+	else{
+	    std::stringstream ss;
+	    ss  << "Unexpected parallelization strategy: "
+	        << parallelizationStrategy;
+	    throw HeliosException(ss.str());
+	}
+
 	std::shared_ptr<SurveyPlayback> playback=std::make_shared<SurveyPlayback>(
         survey,
         outputPath,
-        parallelizationStrategy,
-        njobs,
-        chunkSize,
-        warehouseFactor,
+        *pulseThreadPool,
+        std::abs(chunkSize),
         lasOutput,
         las10,
         zipOutput
