@@ -104,13 +104,20 @@ When building from source, it is mandatory to rename the GLM directory to lib/gl
 - ```cd LAStools && cmake .  && make```
 
 #### Boost
-IMPORTANT: Remove completely any previous existing Boost installation before continue
+
+The linkage against Boost libraries can be performed both statically and dynamically.
 
 - ```wget https://boostorg.jfrog.io/artifactory/main/release/1.76.0/source/boost_1_76_0.tar.gz```
 - ```tar -xzvf boost_1_76_0.tar.gz```
-- ```cd boost_1_76_0```
+- ```mv boost_1_76_0 boost && cd boost```
 - ```./bootstrap.sh --with-python=python3.8```
 - ```./b2 cxxflags=-fPIC```
+
+If you want static linkage, the boost installation ends here.
+
+For allow dynamic linkage, execute the following command ||
+IMPORTANT: Remove completely any previous existing Boost installation before continue.
+
 - ```./b2 install```
 
 #### Proj
