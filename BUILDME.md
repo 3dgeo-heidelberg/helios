@@ -137,7 +137,13 @@ IMPORTANT: Remove completely any previous existing Boost installation before con
 
 Back to the helios root directory, compile:
 
+- Linking Boost statically:
+
 ```cmake -DCMAKE_BUILD_TYPE=Release -DPYTHON_BINDING=1 -DPYTHON_VERSION=38 .```
+
+- Linking Boost dynamically:
+
+```cmake -DCMAKE_BUILD_TYPE=Release -DPYTHON_BINDING=1 -DPYTHON_VERSION=38 -DBOOST_DYNAMIC_LIBS=1```
 
 In order to execute PyHelios scripts, libhelios.so path must be added to PYTHONPATH (default location: helios root directory):
 
