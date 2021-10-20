@@ -135,7 +135,7 @@ IMPORTANT: Remove completely any previous existing Boost installation before con
 
 - ```pip3 install open3d```
 
-Back to the helios root directory, compile:
+Back to the helios root directory, configure the project:
 
 - Linking Boost statically:
 
@@ -144,6 +144,11 @@ Back to the helios root directory, compile:
 - Linking Boost dynamically:
 
 ```cmake -DCMAKE_BUILD_TYPE=Release -DPYTHON_BINDING=1 -DPYTHON_VERSION=38 -DBOOST_DYNAMIC_LIBS=1```
+
+Finally, compile Helios++:
+
+```make -jn``` where ```n``` is the amount of threads to be used in the compilation.
+
 
 In order to execute PyHelios scripts, libhelios.so path must be added to PYTHONPATH (default location: helios root directory):
 
