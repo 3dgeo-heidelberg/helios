@@ -83,6 +83,20 @@ all the libraries must be built from scratch:
 
 - ```apt install cmake make gcc g++ libarmadillo-dev libglm-dev python3 python3-pip libpython3.8-dev unzip```
 
+
+####GLM
+
+Can be installed both by means of a package manager or building from source:
+
+- ```apt install libglm-dev```
+
+or
+
+- ```wget https://github.com/g-truc/glm/releases/download/0.9.9.8/glm-0.9.9.8.zip && unzip glm-0.9.9.8 && rm glm-0.9.9.8.zip```
+- ```cd glm && cmake . && make```
+
+When building from source, it is mandatory to rename the GLM directory to lib/glm
+
 #### LASTools
 
 - ```cd helios/lib```
