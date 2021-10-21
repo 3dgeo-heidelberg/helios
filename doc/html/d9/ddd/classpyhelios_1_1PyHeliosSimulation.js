@@ -51,6 +51,7 @@ var classpyhelios_1_1PyHeliosSimulation =
     [ "outputPath", "d9/ddd/classpyhelios_1_1PyHeliosSimulation.html#a808f1e1254362510e7ace1add25033b1", null ],
     [ "paused", "d9/ddd/classpyhelios_1_1PyHeliosSimulation.html#a8af2392412c0b9dece2d7d62574d6d69", null ],
     [ "playback", "d9/ddd/classpyhelios_1_1PyHeliosSimulation.html#a58bfde234f85cac56869aa111b2cecfa", null ],
+    [ "pulseThreadPool", "d9/ddd/classpyhelios_1_1PyHeliosSimulation.html#ab9195cd9c927e7faf540264a6de6b5d8", null ],
     [ "simFrequency", "d9/ddd/classpyhelios_1_1PyHeliosSimulation.html#a4b3f74469b16268a877411e7c5c468cf", null ],
     [ "started", "d9/ddd/classpyhelios_1_1PyHeliosSimulation.html#a17c21705d7772efca5dc92a3f03e791d", null ],
     [ "stopped", "d9/ddd/classpyhelios_1_1PyHeliosSimulation.html#a577c4d54299831b0bbcd1956a44dc96b", null ],

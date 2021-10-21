@@ -101,16 +101,16 @@ $(document).ready(function(){initNavTree('d3/d40/classLidarSim.html','../../');}
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a1e63342599abc975915c7c054cdd95ef"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/d40/classLidarSim.html#a1e63342599abc975915c7c054cdd95ef">init</a> (std::string surveyPath, std::string assetsPath, std::string outputPath, bool writeWaveform=false, bool calcEchowidth=false, size_t njobs=0, bool fullWaveNoise=false, bool platformNoiseDisabled=false, bool legNoiseDisabled=false, bool rebuildScene=false, bool lasOutput=false, bool las10=false, bool zipOutput=false, bool fixedIncidenceAngle=false, double lasScale=0.0001, int kdtType=1, size_t kdtJobs=1, size_t sahLossNodes=21)</td></tr>
-<tr class="memdesc:a1e63342599abc975915c7c054cdd95ef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize a LiDAR simulation.  <a href="#a1e63342599abc975915c7c054cdd95ef">More...</a><br /></td></tr>
-<tr class="separator:a1e63342599abc975915c7c054cdd95ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2f51233c98f5f0c453bbb50030e11b33"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/d40/classLidarSim.html#a2f51233c98f5f0c453bbb50030e11b33">init</a> (std::string surveyPath, std::string assetsPath, std::string outputPath, bool writeWaveform=false, bool calcEchowidth=false, int parallelizationStrategy=0, size_t njobs=0, int chunkSize=32, int warehouseFactor=4, bool fullWaveNoise=false, bool platformNoiseDisabled=false, bool legNoiseDisabled=false, bool rebuildScene=false, bool lasOutput=false, bool las10=false, bool zipOutput=false, bool fixedIncidenceAngle=false, double lasScale=0.0001, int kdtType=1, size_t kdtJobs=1, size_t sahLossNodes=21)</td></tr>
+<tr class="memdesc:a2f51233c98f5f0c453bbb50030e11b33"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize a LiDAR simulation.  <a href="#a2f51233c98f5f0c453bbb50030e11b33">More...</a><br /></td></tr>
+<tr class="separator:a2f51233c98f5f0c453bbb50030e11b33"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Lidar simulation class. </p>
 <p>It serves as entry point for Helios++ execution </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a1e63342599abc975915c7c054cdd95ef"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1e63342599abc975915c7c054cdd95ef">&#9670;&nbsp;</a></span>init()</h2>
+<a id="a2f51233c98f5f0c453bbb50030e11b33"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2f51233c98f5f0c453bbb50030e11b33">&#9670;&nbsp;</a></span>init()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -148,8 +148,26 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>parallelizationStrategy</em> = <code>0</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
           <td class="paramtype">size_t&#160;</td>
           <td class="paramname"><em>njobs</em> = <code>0</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>chunkSize</em> = <code>32</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>warehouseFactor</em> = <code>4</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -239,7 +257,10 @@ Public Member Functions</h2></td></tr>
     <tr><td class="paramname">outputPath</td><td>Path to the output directory </td></tr>
     <tr><td class="paramname">writeWaveform</td><td>Write wave form flag. True to enable write wave form, false otherwise </td></tr>
     <tr><td class="paramname">calcEchowidth</td><td>Calc echo width flag. True to enable echo width computation, false otherwise </td></tr>
+    <tr><td class="paramname">parallelizationStrategy</td><td>Specify the parallelization strategy </td></tr>
     <tr><td class="paramname">njobs</td><td>Number of concurrent jobs (0 means as many as possible) </td></tr>
+    <tr><td class="paramname">chunkSize</td><td>Chunk size for job distribution in parallel execution context </td></tr>
+    <tr><td class="paramname">warehouseFactor</td><td>Factor defining warehouse size in parallel execution context </td></tr>
     <tr><td class="paramname">fullWaveNoise</td><td>Flag to specify full wave noise usage. True to enable full wave noise, false otherwise </td></tr>
     <tr><td class="paramname">platformNoiseDisabled</td><td>Flag to specify platform noise disabled. True means platform noise is disabled, false means it is enabled </td></tr>
     <tr><td class="paramname">legNoiseDisabled</td><td>Flag to specify leg noise disabled. True means leg noise is disabled, false means it is enabled </td></tr>

@@ -10,6 +10,8 @@ var classLasSyncFileWriter =
     [ "craft", "d2/db3/classLasSyncFileWriter.html#a809ecb0cc1b3b3511c1c64cca4f2daf8", null ],
     [ "createLasWriter", "d2/db3/classLasSyncFileWriter.html#a72ede7cf1922aa8f2da507bf79f2cd3e", null ],
     [ "finish", "d2/db3/classLasSyncFileWriter.html#aed2e463900765fbcaa81ef0ee9830a46", null ],
+    [ "ampAttrIdx", "d2/db3/classLasSyncFileWriter.html#a81c1cdc69e86046dbce25b90bc0abb39", null ],
+    [ "ampAttrStart", "d2/db3/classLasSyncFileWriter.html#aa07f2f15a7754d03e4efe63d51c4d24f", null ],
     [ "CLASSIFICATION_MASK", "d2/db3/classLasSyncFileWriter.html#a4428741a6eaee167d78fa1a9de375f8c", null ],
     [ "deltaIntensity", "d2/db3/classLasSyncFileWriter.html#a9a114f0c53100d830e15d869cf80f203", null ],
     [ "ewAttrIdx", "d2/db3/classLasSyncFileWriter.html#a2fa28b58f858853a0b2d8f0f2dc7a47e", null ],

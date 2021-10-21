@@ -15,7 +15,7 @@ var classFullWaveformPulseRunnable =
     [ "handleSubray", "db/da6/classFullWaveformPulseRunnable.html#a8c04fa7ff3c01fcdc7119d9abd52bbb6", null ],
     [ "initializeFullWaveform", "db/da6/classFullWaveformPulseRunnable.html#a50b690e9352dfcdc998a35bc222481e9", null ],
     [ "operator()", "db/da6/classFullWaveformPulseRunnable.html#a9f311fc2f184a4093d98712105e1582b", null ],
-    [ "operator()", "db/da6/classFullWaveformPulseRunnable.html#adbaf87b4574cf21df3281cdf860790f1", null ],
+    [ "operator()", "db/da6/classFullWaveformPulseRunnable.html#a309b48c537e77a7ee54a19ebe4222a6f", null ],
     [ "populateFullWaveform", "db/da6/classFullWaveformPulseRunnable.html#a741d1b4cc6302ffb1d8df79ed66804f5", null ],
     [ "allMeasurements", "db/da6/classFullWaveformPulseRunnable.html#aeedfb37ebcaa81fb785f4d0ce5b6ce3c", null ],
     [ "allMeasurementsMutex", "db/da6/classFullWaveformPulseRunnable.html#adcaed1b88ed1f08ec6f7a9797ec62fb3", null ],
