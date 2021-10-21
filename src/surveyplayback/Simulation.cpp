@@ -13,9 +13,11 @@ using namespace std::chrono;
 using namespace std;
 
 Simulation::Simulation(
-    PulseThreadPoolInterface &pulseThreadPoolInterface,
+    int const parallelizationStrategy,
+    std::shared_ptr<PulseThreadPoolInterface> pulseThreadPoolInterface,
     int chunkSize
 ):
+    parallelizationStrategy(parallelizationStrategy),
     threadPool(pulseThreadPoolInterface),
     taskDropper(chunkSize)
 {
@@ -117,12 +119,10 @@ void Simulation::start() {
     );
 
     // Prepare scanner
-    std::cout   << "Simulation threadPool address: "
-                << std::addressof(threadPool)
-                << std::endl; // TODO Remove cout
     this->mScanner->buildScanningPulseProcess(
-        std::addressof(taskDropper),
-        std::addressof(threadPool)
+        parallelizationStrategy,
+        taskDropper,
+        threadPool
     );
 
     // Prepare simulation

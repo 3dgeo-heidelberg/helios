@@ -1,26 +1,24 @@
-// TODO 2: Fix scan angle getting out of control under certain (unknown) circumstances
+#include <Scanner.h>
 
 #include <iostream>
-#include <chrono>
-using namespace std::chrono;
 
 #define _USE_MATH_DEFINES
 #include <cmath>
 
 #include <logging.hpp>
-#include "FullWaveformPulseRunnable.h"
 #ifdef PYTHON_BINDING
 #include "PyDetectorWrapper.h"
 #endif
 
-#include "Scanner.h"
+#include <scanner/BuddingScanningPulseProcess.h>
+#include <scanner/WarehouseScanningPulseProcess.h>
 #include <PulseTaskDropper.h>
 #include <PulseThreadPool.h>
 #include <Trajectory.h>
 
 using namespace std;
 
-// ***  COSNTRUCTION / DESTRUCTION  *** //
+// ***  CONSTRUCTION / DESTRUCTION  *** //
 // ************************************ //
 Scanner::Scanner(
     double beamDiv_rad,
@@ -466,27 +464,52 @@ void Scanner::initializeSequentialGenerators(){
 }
 
 void Scanner::buildScanningPulseProcess(
-    void * dropper,
-    void * pool
+    int const parallelizationStrategy,
+    PulseTaskDropper &dropper,
+    std::shared_ptr<PulseThreadPoolInterface> pool
 ){
-    std::cout   << "Scanner threadPool address: "
-                << pool
-                << std::endl; // TODO Remove cout
-    spp = std::unique_ptr<ScanningPulseProcess>(
-        new BuddingScanningPulseProcess(
-            detector,
-            state_currentPulseNumber,
-            writeWaveform,
-            calcEchowidth,
-            allMeasurements,
-            allMeasurementsMutex,
-            cycleMeasurements,
-            cycleMeasurementsMutex,
-            *((PulseTaskDropper *)dropper),
-            *((PulseThreadPool *)pool),
-            *randGen1,
-            *randGen2,
-            *intersectionHandlingNoiseSource
-        )
-    );
+    if(parallelizationStrategy==0){
+        spp = std::unique_ptr<ScanningPulseProcess>(
+            new BuddingScanningPulseProcess(
+                detector,
+                state_currentPulseNumber,
+                writeWaveform,
+                calcEchowidth,
+                allMeasurements,
+                allMeasurementsMutex,
+                cycleMeasurements,
+                cycleMeasurementsMutex,
+                dropper,
+                *(std::static_pointer_cast<PulseThreadPool>(pool)),
+                *randGen1,
+                *randGen2,
+                *intersectionHandlingNoiseSource
+            )
+        );
+    }
+    else if(parallelizationStrategy==1){
+        spp = std::unique_ptr<ScanningPulseProcess>(
+            new WarehouseScanningPulseProcess(
+                detector,
+                state_currentPulseNumber,
+                writeWaveform,
+                calcEchowidth,
+                allMeasurements,
+                allMeasurementsMutex,
+                cycleMeasurements,
+                cycleMeasurementsMutex,
+                dropper,
+                *(std::static_pointer_cast<PulseWarehouseThreadPool>(pool)),
+                *randGen1,
+                *randGen2,
+                *intersectionHandlingNoiseSource
+            )
+        );
+    }
+    else{
+        std::stringstream ss;
+        ss  << "Scanner::buildScanningPulseProcess unexpected parallelization "
+            << "strategy: " << parallelizationStrategy;
+        throw HeliosException(ss.str());
+    }
 }

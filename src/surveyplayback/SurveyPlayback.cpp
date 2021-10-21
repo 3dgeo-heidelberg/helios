@@ -23,14 +23,15 @@ using namespace std;
 SurveyPlayback::SurveyPlayback(
     shared_ptr<Survey> survey,
     const std::string outputPath,
-    PulseThreadPoolInterface &pulseThreadPoolInterface,
+    int const parallelizationStrategy,
+    std::shared_ptr<PulseThreadPoolInterface> pulseThreadPoolInterface,
     int const chunkSize,
     bool lasOutput,
     bool las10,
     bool zipOutput,
     bool exportToFile
 ):
-    Simulation(pulseThreadPoolInterface, chunkSize),
+    Simulation(parallelizationStrategy, pulseThreadPoolInterface, chunkSize),
     lasOutput(lasOutput),
     las10(las10),
     zipOutput(zipOutput),
@@ -213,9 +214,6 @@ string SurveyPlayback::getTrajectoryOutputPath(){
 void SurveyPlayback::onLegComplete() {
     // Do scanning pulse process handling of on leg complete, if any
     mScanner->onLegComplete();
-
-	// Wait for threads to finish
-	threadPool.join();
 
 	// Start next leg
     elapsedLength += mSurvey->legs.at(mCurrentLegIndex)->getLength();

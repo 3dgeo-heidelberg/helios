@@ -105,6 +105,9 @@ void BuddingScanningPulseProcess::onLegComplete(){
 #endif
     pool.idleTimer.releaseStart();
     idleTimer.releaseStart();
+
+    // Wait for threads to finish
+    pool.join();
 }
 void BuddingScanningPulseProcess::onSimulationFinished(){
 #ifdef BUDDING_METRICS

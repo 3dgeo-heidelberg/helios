@@ -26,11 +26,17 @@ protected:
 	static const long NANOSECONDS_PER_SECOND = 1000000000;
 
 	/**
+	 * @brief Specify the parallelization strategy
+	 * @see ArgumentsParser::parseParallelizationStrategy
+	 */
+	int parallelizationStrategy;
+
+	/**
 	 * @brief Pulse thread pool
 	 * @see PulseThreadPool
 	 * @see PulseWarehouseThreadPool
 	 */
-	PulseThreadPoolInterface &threadPool;
+	std::shared_ptr<PulseThreadPoolInterface> threadPool;
     /**
      * @brief Pulse task dropper
      * @see PulseTaskDropper
@@ -126,7 +132,8 @@ public:
      * @see PulseTaskDropper
      */
     Simulation(
-        PulseThreadPoolInterface &pulseThreadPoolInterface,
+        int const parallelizationStrategy,
+        std::shared_ptr<PulseThreadPoolInterface> pulseThreadPoolInterface,
         int const chunkSize
     );
 

@@ -10,6 +10,8 @@
 #include <AbstractBeamDeflector.h>
 class AbstractDetector;
 #include <scanner/ScanningPulseProcess.h>
+#include <scanner/detector/PulseTaskDropper.h>
+#include <scanner/detector/PulseThreadPoolInterface.h>
 #include <FWFSettings.h>
 #include <Platform.h>
 #include <maths/Directions.h>
@@ -17,7 +19,6 @@ class AbstractDetector;
 #include <UniformNoiseSource.h>
 #include <RandomnessGenerator.h>
 #include <SyncFileWriter.h>
-#include <scanner/BuddingScanningPulseProcess.h>
 
 #ifdef PYTHON_BINDING
 #include <PyBeamDeflectorWrapper.h>
@@ -375,12 +376,14 @@ public:
      * @param dropper Simulation's task dropper
      * @param pool Simulation's thread pool
      * @return Built scanning pulse process
+     * @see Simulation::parallelizationStrategy
      * @see Simulation::taskDropper
      * @see Simulation::threadPool
      */
     void buildScanningPulseProcess(
-        void *dropper,
-        void *pool
+        int const parallelizationStrategy,
+        PulseTaskDropper &dropper,
+        std::shared_ptr<PulseThreadPoolInterface> pool
     );
     /**
      * @brief Apply scanner settings

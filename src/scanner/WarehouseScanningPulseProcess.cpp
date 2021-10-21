@@ -67,12 +67,29 @@ WarehouseScanningPulseProcess::WarehouseScanningPulseProcess(
         };
     }
 
+    // Start thread pool threads
+    pool.start();
 }
 
 // ***  PULSE COMPUTATION  *** //
 // *************************** //
 void WarehouseScanningPulseProcess::onLegComplete(){
-    // TODO Rethink : Implement
+    // Consume pending dropper, if any
+    dropper.drop(
+        apMatrix,
+        randGen1,
+        randGen2,
+        intersectionHandlingNoiseSource
+    );
+
+    // Assist thread pool with pending tasks (on WarehouseThreadPool::join atm)
+    shared_ptr<PulseTaskDropper> task;
+    while( (task=pool.get()) != nullptr){
+        (*task)(apMatrix, randGen1, randGen2, intersectionHandlingNoiseSource);
+    }
+
+    // Wait for threads to finish
+    pool.join();
 }
 void WarehouseScanningPulseProcess::onSimulationFinished(){
     pool.finish();
@@ -139,12 +156,19 @@ void WarehouseScanningPulseProcess::handlePulseComputationParallel(
             legIndex
         )
     );
-    pool.notifyAll();
-    if(status==1){
-        dropper = dropper.emptyClone(); // No mutating budding
-    }
-    else if(status==2){ // Thread pool is full
-        // Seq-do task chunk
-        dropper.drop();
+    if(status){
+        pool.notify();
+        if(status==1){
+            dropper = dropper.emptyClone(); // No mutating budding
+        }
+        else if(status==2){ // Thread pool is full
+            // Seq-do task chunk
+            dropper.drop(
+                apMatrix,
+                randGen1,
+                randGen2,
+                intersectionHandlingNoiseSource
+            );
+        }
     }
 }

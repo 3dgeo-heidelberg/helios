@@ -81,7 +81,8 @@ void PyHeliosSimulation::start (){
         new SurveyPlayback(
             survey,
             outputPath,
-            *pulseThreadPool,
+            0,
+            pulseThreadPool,
             32,
             lasOutput,
             las10,

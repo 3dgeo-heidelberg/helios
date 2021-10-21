@@ -392,7 +392,8 @@ void LidarSim::init(
 	std::shared_ptr<SurveyPlayback> playback=std::make_shared<SurveyPlayback>(
         survey,
         outputPath,
-        *pulseThreadPool,
+        parallelizationStrategy,
+        pulseThreadPool,
         std::abs(chunkSize),
         lasOutput,
         las10,

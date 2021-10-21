@@ -36,9 +36,16 @@ using ThreadPool::pool_size;
      */
     bool working;
     /**
-     * @brief Count how many active workers there are
+     * @brief Count how many active workers there are. It is used for final
+     *  join
      */
     int workersCount;
+    /**
+     * @brief Count how many workers with pending tasks there are. It is used
+     *  for join (not final join). It can also be read as working count (not
+     *  workers count) because it counts how many working threads there are.
+     */
+    int pendingCount;
     /**
      * @brief Mutex to handle concurrent access to workers count
      */
@@ -78,7 +85,8 @@ using ThreadPool::pool_size;
         ThreadPool(_pool_size),
         warehouse(maxTasks),
         working(true),
-        workersCount(0)
+        workersCount(0),
+        pendingCount(0)
     {}
     virtual ~WarehouseThreadPool() = default;
 
@@ -98,6 +106,12 @@ public:
     virtual inline bool post(vector<shared_ptr<Task>> &tasks)
     {return warehouse.post(tasks);}
     /**
+     * @brief Expose the warehouse get method
+     * @see TaskWarehouse::get
+     */
+    virtual inline shared_ptr<Task> get()
+    {return warehouse.get();}
+    /**
      * @brief Expose the warehouse notify method
      * @see TaskWarehouse::notify
      */
@@ -115,12 +129,19 @@ public:
      *
      * A non started warehouse thread pool will not compute any posted task
      *  until it is started.
+     * @see WarehouseThreadPool::_start
      */
     virtual void start(){
         // Start threads
         workersCount = pool_size;
         for(size_t tid = 0 ; tid < pool_size ; ++tid){
-            start(tid);
+            io_service_.post(
+                boost::bind(
+                    &WarehouseThreadPool::_start,
+                    this,
+                    tid
+                )
+            );
         }
     }
 
@@ -129,8 +150,8 @@ public:
      */
     virtual void join(){
         boost::unique_lock<boost::mutex> lock(joinMtx);
-        while(warehouse.hasPendingTasks()){
-            condvar.wait(lock);
+        while(pendingCount>0){
+            joinCondvar.wait(lock);
         }
     }
 
@@ -140,8 +161,7 @@ public:
      * @see WarehouseThreadPool::finalJoin
      */
     virtual void finish(){
-        working = false;
-        warehouse.notifyAll();
+        warehouse.notifyAllUpdate(working, false);
         finalJoin();
     }
 
@@ -157,25 +177,38 @@ protected:
      * @param tid Index for thread to be started
      * @see WarehouseThreadPool::warehouse
      * @see WarehouseThreadPool::finish
+     * @see WarehouseThreadPool::start
      */
-    virtual void start(size_t const tid){
+    virtual void _start(size_t const tid){
         shared_ptr<Task> task;
 
         // Standard working mode : Compute tasks and wait for new ones
         while(working){
+            boost::unique_lock<boost::mutex> lockIncrease(joinMtx);
+            ++pendingCount;
+            lockIncrease.unlock();
             while( (task=warehouse.get()) != nullptr){
                 doTask(tid, task);
-                joinCondvar.notify_all();
             }
-            warehouse.wait();
+            boost::unique_lock<boost::mutex> lockDecrease(joinMtx);
+            --pendingCount;
+            lockDecrease.unlock();
+            joinCondvar.notify_one();
+            warehouse.waitIf(working);
         }
 
         // Finishing mode : Consume pending tasks
         if(warehouse.hasPendingTasks()){
+            boost::unique_lock<boost::mutex> lockIncrease(joinMtx);
+            ++pendingCount;
+            lockIncrease.unlock();
             while( (task=warehouse.get()) != nullptr){
                 doTask(tid, task);
-                joinCondvar.notify_all();
             }
+            boost::unique_lock<boost::mutex> lockDecrease(joinMtx);
+            --pendingCount;
+            lockDecrease.unlock();
+            joinCondvar.notify_one();
         }
 
         // Finish : Decrement from workers count

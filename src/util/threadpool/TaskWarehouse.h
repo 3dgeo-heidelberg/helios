@@ -85,7 +85,8 @@ public:
     }
 
     /**
-     * @brief Get task from warehouse, if any
+     * @brief Get task from warehouse, if any. Retrieved task is removed from
+     *  warehouse
      * @return Retrieved task
      */
     virtual shared_ptr<Task> get(){
@@ -122,6 +123,15 @@ public:
         condvar.wait(lock);
     }
     /**
+     * @brief Caller thread waits until notified but only if condition is
+     *  satisfied (true)
+     * @param cond Wait condition
+     */
+    virtual inline void waitIf(bool const &cond){
+        boost::shared_lock<boost::shared_mutex> lock(wmtx);
+        if(cond) condvar.wait(lock);
+    }
+    /**
      * @brief Notify a waiting thread to stop waiting
      */
     virtual inline void notify(){condvar.notify_one();}
@@ -129,6 +139,28 @@ public:
      * @brief Notify all waiting threads to stop waiting
      */
     virtual inline void notifyAll(){condvar.notify_all();}
+    /**
+     * @brief Notify a waiting thread after updating flag with new value in
+     *  a thread-safe way
+     * @param flag Flag to be updated
+     * @param newValue New value for the flag
+     */
+    virtual inline void notifyUpdate(bool &flag, bool const newValue){
+        boost::unique_lock<boost::shared_mutex> lock(wmtx);
+        flag = newValue;
+        condvar.notify_one();
+    }
+    /**
+     * @brief Notify all waiting threads after updating flag with new value in
+     *  a thread-safe way
+     * @param flag Flag to be updated
+     * @param newValue New value for the flag
+     */
+    virtual inline void notifyAllUpdate(bool &flag, bool const newValue){
+        boost::unique_lock<boost::shared_mutex> lock(wmtx);
+        flag = newValue;
+        condvar.notify_all();
+    }
 
     // ***  GETTERs and SETTERs  *** //
     // ***************************** //
