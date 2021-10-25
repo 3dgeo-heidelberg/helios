@@ -3,8 +3,8 @@
 #SBATCH -N 1
 #SBATCH -n 1
 #SBATCH -c 24
-#SBATCH -p thinnodes,cola-corta
-#SBATCH -t 08:00:00
+#SBATCH -p thinnodes
+#SBATCH -t 72:00:00
 #SBATCH --mem 120GB
 #SBATCH --mail-type=begin
 #SBATCH --mail-type=end
@@ -29,37 +29,96 @@ cd "${STORE2}/helios/"
 # FIRST THE M SURVEYS, ASSETS, OUTPUTS and LOGNAMES
 SURVEY=(
     'data/surveys/als_scenario_fixed_250_B_BR05_1_wS1_5.xml'
+    '/mnt/netapp2/Store_uscciaep/helios/data/surveys/als_scenario_scaled_cog_B_BR05_1_wS1_5.xml'
 )
 ASSET=(
+    'assets/'
     'assets/'
 )
 OUTPUT=(
     'output/'
+    'output/'
 )
-LOGNAME=('log/LOG1')
+LOGNAME=('log/LOG_FIXED250')
+LOGNAME=('log/LOG_SCALEDCOG')
 # SECOND THE KDTree-Types and SurfeAreaHeuristic-Nodes
 KDTTYPE=(1 2 3 4)
 SAHNODES=(0 21 21 32)
 # THIRD THE PARALLELIZATION STRATEGY
-PARALLELIZATION=(0 0 1)
-CHUNK_SIZE=(32 -32 32)
-WAREHOUSE_FACTOR=(4 4 4)
+PARALLELIZATION=(
+    0 0 0 0 0 0 0 0 0 0 0 0
+    0 0 0 0 0 0 0 0 0 0 0 0
+    0 0 0 0 0 0 0 0 0 0 0 0
+    0 0 0 0 0 0 0 0 0 0 0 0
+    0 0 0 0 0 0 0 0 0 0 0 0
+    0 0 0 0 0 0 0 0 0 0 0 0
+    0 0 0 0 0 0 0 0 0 0 0 0
+    0 0 0 0 0 0 0 0 0 0 0 0
+    0 0 0 0 0 0 0 0 0 0 0 0
+    0 0 0 0 0 0 0 0 0 0 0 0
+    0 0 0 0 0 0 0 0 0 0 0 0
+    0 0 0 0 0 0 0 0 0 0 0 0
+    1 1 1 1 1 1 1 1 1 1 1 1
+    1 1 1 1 1 1 1 1 1 1 1 1
+    1 1 1 1 1 1 1 1 1 1 1 1
+    1 1 1 1 1 1 1 1 1 1 1 1
+    1 1 1 1 1 1 1 1 1 1 1 1
+    1 1 1 1 1 1 1 1 1 1 1 1
+    1 1 1 1 1 1 1 1 1 1 1 1
+    1 1 1 1 1 1 1 1 1 1 1 1
+    1 1 1 1 1 1 1 1 1 1 1 1
+)
+CHUNK_SIZE=(
+    16 16 16 16 16 16 16 16 16 16 16 16
+    16 16 16 16 16 16 16 16 16 16 16 16
+    32 32 32 32 32 32 32 32 32 32 32 32
+    32 32 32 32 32 32 32 32 32 32 32 32
+    64 64 64 64 64 64 64 64 64 64 64 64
+    64 64 64 64 64 64 64 64 64 64 64 64
+    -16 -16 -16 -16 -16 -16 -16 -16 -16 -16 -16 -16
+    -16 -16 -16 -16 -16 -16 -16 -16 -16 -16 -16 -16
+    -32 -32 -32 -32 -32 -32 -32 -32 -32 -32 -32 -32
+    -32 -32 -32 -32 -32 -32 -32 -32 -32 -32 -32 -32
+    -64 -64 -64 -64 -64 -64 -64 -64 -64 -64 -64 -64
+    -64 -64 -64 -64 -64 -64 -64 -64 -64 -64 -64 -64
+    16 16 16 16 16 16 16 16 16 16 16 16
+    16 16 16 16 16 16 16 16 16 16 16 16
+    16 16 16 16 16 16 16 16 16 16 16 16
+    32 32 32 32 32 32 32 32 32 32 32 32
+    32 32 32 32 32 32 32 32 32 32 32 32
+    32 32 32 32 32 32 32 32 32 32 32 32
+    64 64 64 64 64 64 64 64 64 64 64 64
+    64 64 64 64 64 64 64 64 64 64 64 64
+    64 64 64 64 64 64 64 64 64 64 64 64
+)
+WAREHOUSE_FACTOR=(
+    1 1 1 1 1 1 1 1 1 1 1 1
+    1 1 1 1 1 1 1 1 1 1 1 1
+    1 1 1 1 1 1 1 1 1 1 1 1
+    1 1 1 1 1 1 1 1 1 1 1 1
+    1 1 1 1 1 1 1 1 1 1 1 1
+    1 1 1 1 1 1 1 1 1 1 1 1
+    1 1 1 1 1 1 1 1 1 1 1 1
+    1 1 1 1 1 1 1 1 1 1 1 1
+    1 1 1 1 1 1 1 1 1 1 1 1
+    1 1 1 1 1 1 1 1 1 1 1 1
+    1 1 1 1 1 1 1 1 1 1 1 1
+    1 1 1 1 1 1 1 1 1 1 1 1
+    3 3 3 3 3 3 3 3 3 3 3 3
+    6 6 6 6 6 6 6 6 6 6 6 6
+    9 9 9 9 9 9 9 9 9 9 9 9
+    3 3 3 3 3 3 3 3 3 3 3 3
+    6 6 6 6 6 6 6 6 6 6 6 6
+    9 9 9 9 9 9 9 9 9 9 9 9
+    3 3 3 3 3 3 3 3 3 3 3 3
+    6 6 6 6 6 6 6 6 6 6 6 6
+    9 9 9 9 9 9 9 9 9 9 9 9
+)
+
 
 # FOURTH THE SIMULATION JOBS AND KDT-BUILDING JOBS
 SIMCORES=(1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24)
 KDTCORES=(1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24)
-
-# TODO Remove section ---
-SURVEY=('data/surveys/als_scenario_scaled_cog_B_BR05_1_wS1_5.xml')
-LOGNAME=('log/LOG_COG')
-KDTTYPE=(4)
-SAHNODES=(32)
-PARALLELIZATION=(1 1 1 1)
-CHUNK_SIZE=(16 16 64 64)
-WAREHOUSE_FACTOR=(4 8 4 8)
-SIMCORES=(6 8 10)
-KDTCORES=(6 8 10)
-# --- TODO Remove section
 
 
 # ---  SEQUENCE TASKS  --- #
