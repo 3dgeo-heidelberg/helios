@@ -1,4 +1,5 @@
 #include <Scanner.h>
+#include <scanner/detector/AbstractDetector.h>
 
 #include <iostream>
 
