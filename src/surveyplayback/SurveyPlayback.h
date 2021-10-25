@@ -104,7 +104,6 @@ public:
      * @brief Survey playback constructor
      * @param survey The survey itself
      * @param outputPath Root output path
-     * @param numThreads Number of threads to be used
      * @param lasOutput Flag to specify LAS format for the output (true) or not
      *  (false)
      * @param las10 Flag to specify if LAS output must be LAS v1.0 (true) or not
@@ -118,15 +117,18 @@ public:
      * @see SurveyPlayback::zipOutput
      * @see SurveyPlayback::outputPath
      * @see Survey
+     * @see Simulation::Simulation(unsigned, double, size_t)
      */
 	SurveyPlayback(
         std::shared_ptr<Survey> survey,
         const std::string outputPath,
-        size_t numThreads,
-        bool lasOutput,
-        bool las10,
-        bool zipOutput,
-        bool exportToFile=true
+        int const parallelizationStrategy,
+        std::shared_ptr<PulseThreadPoolInterface> pulseThreadPoolInterface,
+        int const chunkSize,
+        bool const lasOutput,
+        bool const las10,
+        bool const zipOutput,
+        bool const exportToFile=true
     );
 
 

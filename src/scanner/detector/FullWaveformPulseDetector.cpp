@@ -64,31 +64,6 @@ void FullWaveformPulseDetector::setOutputFilePath(
     }
 }
 
-void FullWaveformPulseDetector::simulatePulse(
-	PulseThreadPool& pool,
-	glm::dvec3 absoluteBeamOrigin,
-	Rotation absoluteBeamAttitude, 
-	int state_currentPulseNumber,
-    double currentGpsTime
-){
-	// Submit pulse computation task to thread pool
-	shared_ptr<FullWaveformPulseDetector> detector(this);
-	pool.run_res_task(FullWaveformPulseRunnable{
-	    detector,
-	    absoluteBeamOrigin,
-	    absoluteBeamAttitude,
-	    state_currentPulseNumber,
-	    currentGpsTime,
-	    false,
-	    false,
-        nullptr,
-        nullptr,
-        nullptr,
-        nullptr,
-        std::numeric_limits<unsigned int>::max()
-	});
-}
-
 void FullWaveformPulseDetector::shutdown() {
 	AbstractDetector::shutdown();
 	if(fw_sfw != nullptr) fw_sfw->finish();

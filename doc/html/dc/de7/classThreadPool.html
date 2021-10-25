@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.13"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Helios++: ThreadPool&lt; TaskArgs &gt; Class Template Reference</title>
+<title>Helios++: ThreadPool Class Reference</title>
 <link href="../../tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="../../jquery.js"></script>
 <script type="text/javascript" src="../../dynsections.js"></script>
@@ -88,102 +88,78 @@ $(document).ready(function(){initNavTree('dc/de7/classThreadPool.html','../../')
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="#pro-attribs">Protected Attributes</a> &#124;
 <a href="../../da/d54/classThreadPool-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">ThreadPool&lt; TaskArgs &gt; Class Template Reference<span class="mlabels"><span class="mlabel">abstract</span></span></div>  </div>
+<div class="title">ThreadPool Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>Abstract class providing core implementation of a thread pool to deal with multi threading tasks.  
+<p>Base class providing core implementation of a thread pool to deal with multi threading tasks.  
  <a href="../../dc/de7/classThreadPool.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="../../d3/d43/ThreadPool_8h_source.html">ThreadPool.h</a>&gt;</code></p>
+<div class="dynheader">
+Inheritance diagram for ThreadPool:</div>
+<div class="dyncontent">
+<div class="center"><img src="../../d6/d28/classThreadPool__inherit__graph.png" border="0" usemap="#ThreadPool_inherit__map" alt="Inheritance graph"/></div>
+<map name="ThreadPool_inherit__map" id="ThreadPool_inherit__map">
+<area shape="rect" id="node2" href="../../d2/d1f/classSimpleThreadPool.html" title="Abstract class providing implementation of a simple thread pool which assigns tasks to threads..." alt="" coords="141,107,349,134"/>
+<area shape="rect" id="node3" href="../../d2/d1f/classSimpleThreadPool.html" title="SimpleThreadPool\&lt; TaskArgs\l ... \&gt;" alt="" coords="147,159,343,200"/>
+<area shape="rect" id="node10" href="../../da/d92/classWarehouseThreadPool.html" title="Thread pool which starts thread so they are always waiting for new tasks to be posted to the warehous..." alt="" coords="168,224,323,265"/>
+<area shape="rect" id="node11" href="../../da/d92/classWarehouseThreadPool.html" title="WarehouseThreadPool\l\&lt; PulseTaskDropper \&gt;" alt="" coords="168,304,323,345"/>
+<area shape="rect" id="node4" href="../../d0/d21/classMDThreadPool.html" title="Abstract class extending basic thread pool implementation to provide a basis layer to handle tasks wi..." alt="" coords="443,5,618,47"/>
+<area shape="rect" id="node5" href="../../d0/d21/classMDThreadPool.html" title="MDThreadPool\&lt; KDTreeBuild\lType, KDTreeNode *, bool\l const, vector\&lt; Primitive\l *\&gt; &amp;, int const \&gt;" alt="" coords="433,71,628,141"/>
+<area shape="rect" id="node7" href="../../d2/dee/classResThreadPool.html" title="Abstract class extending basic thread pool implementation to provide a basis layer to handle thread a..." alt="" coords="435,166,627,193"/>
+<area shape="rect" id="node8" href="../../d2/dee/classResThreadPool.html" title="ResThreadPool\&lt; std\l::vector\&lt; std::vector\l\&lt; double \&gt; \&gt; &amp;, RandomnessGenerator\l\&lt; double \&gt; &amp;, RandomnessGenerator\l\&lt; double \&gt; &amp;, NoiseSource\&lt; double \&gt; &amp; \&gt;" alt="" coords="397,217,664,302"/>
+<area shape="rect" id="node6" href="../../d2/dea/classKDTreeFactoryThreadPool.html" title="Class implementing a thread pool to deal with multi thread KDTree building process. " alt="" coords="712,93,889,119"/>
+<area shape="rect" id="node9" href="../../d6/ddc/classPulseThreadPool.html" title="Class implementing a thread pool to deal with pulse tasks. " alt="" coords="740,246,861,273"/>
+<area shape="rect" id="node12" href="../../d7/de7/classPulseWarehouseThreadPool.html" title="Class implementing a warehouse thread pool to deal with pulse tasks. " alt="" coords="437,326,624,353"/>
+</map>
+<center><span class="legend">[<a target="top" href="../../graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ac74be4568c79a1114820aa63c75d254f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/de7/classThreadPool.html#ac74be4568c79a1114820aa63c75d254f">ThreadPool</a> (std::size_t const _pool_size)</td></tr>
-<tr class="memdesc:ac74be4568c79a1114820aa63c75d254f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Thread pool constructor.  <a href="#ac74be4568c79a1114820aa63c75d254f">More...</a><br /></td></tr>
-<tr class="separator:ac74be4568c79a1114820aa63c75d254f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4fb8cb1609006d93c9318ce587ce66d9"><td class="memItemLeft" align="right" valign="top">virtual std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/de7/classThreadPool.html#a4fb8cb1609006d93c9318ce587ce66d9">getPoolSize</a> () const</td></tr>
-<tr class="memdesc:a4fb8cb1609006d93c9318ce587ce66d9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain the thread pool size.  <a href="#a4fb8cb1609006d93c9318ce587ce66d9">More...</a><br /></td></tr>
-<tr class="separator:a4fb8cb1609006d93c9318ce587ce66d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9465e2a756ae9f47ce398e68d752a482"><td class="memTemplParams" colspan="2"><a id="a9465e2a756ae9f47ce398e68d752a482"></a>
-template&lt;typename Task &gt; </td></tr>
-<tr class="memitem:a9465e2a756ae9f47ce398e68d752a482"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../dc/de7/classThreadPool.html#a9465e2a756ae9f47ce398e68d752a482">run_task</a> (Task task)</td></tr>
-<tr class="memdesc:a9465e2a756ae9f47ce398e68d752a482"><td class="mdescLeft">&#160;</td><td class="mdescRight">Run a task when there is an available thread for it. <br /></td></tr>
-<tr class="separator:a9465e2a756ae9f47ce398e68d752a482"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abade95c0f70ccbce3aadb4cdab298cb0"><td class="memItemLeft" align="right" valign="top"><a id="abade95c0f70ccbce3aadb4cdab298cb0"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/de7/classThreadPool.html#abade95c0f70ccbce3aadb4cdab298cb0">join</a> ()</td></tr>
-<tr class="memdesc:abade95c0f70ccbce3aadb4cdab298cb0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Lock until all pending threads have finished. <br /></td></tr>
-<tr class="separator:abade95c0f70ccbce3aadb4cdab298cb0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
-Protected Member Functions</h2></td></tr>
-<tr class="memitem:a6769e63b2dcbba631f0850811576c27c"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/de7/classThreadPool.html#a6769e63b2dcbba631f0850811576c27c">wrap_task</a> (boost::function&lt; void(TaskArgs ...)&gt; &amp;task)</td></tr>
-<tr class="memdesc:a6769e63b2dcbba631f0850811576c27c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wrap a task so that available threads count can be increased once provided task has been completed.  <a href="#a6769e63b2dcbba631f0850811576c27c">More...</a><br /></td></tr>
-<tr class="separator:a6769e63b2dcbba631f0850811576c27c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab1035e24e8841701c196d08130d277f5"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/de7/classThreadPool.html#ab1035e24e8841701c196d08130d277f5">do_task</a> (boost::function&lt; void(TaskArgs ...)&gt; &amp;task)=0</td></tr>
-<tr class="memdesc:ab1035e24e8841701c196d08130d277f5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Invoke task with corresponding arguments.  <a href="#ab1035e24e8841701c196d08130d277f5">More...</a><br /></td></tr>
-<tr class="separator:ab1035e24e8841701c196d08130d277f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2b8ca7a57ba657bad890a99058e01781"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/de7/classThreadPool.html#a2b8ca7a57ba657bad890a99058e01781">ThreadPool</a> (std::size_t const _pool_size)</td></tr>
+<tr class="memdesc:a2b8ca7a57ba657bad890a99058e01781"><td class="mdescLeft">&#160;</td><td class="mdescRight">Thread pool constructor.  <a href="#a2b8ca7a57ba657bad890a99058e01781">More...</a><br /></td></tr>
+<tr class="separator:a2b8ca7a57ba657bad890a99058e01781"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a809e09ddca366e0906c6ff54d174bb0f"><td class="memItemLeft" align="right" valign="top">virtual std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/de7/classThreadPool.html#a809e09ddca366e0906c6ff54d174bb0f">getPoolSize</a> () const</td></tr>
+<tr class="memdesc:a809e09ddca366e0906c6ff54d174bb0f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain the thread pool size.  <a href="#a809e09ddca366e0906c6ff54d174bb0f">More...</a><br /></td></tr>
+<tr class="separator:a809e09ddca366e0906c6ff54d174bb0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
-<tr class="memitem:a5b2814c08d65ed6223303bcde6add26c"><td class="memItemLeft" align="right" valign="top"><a id="a5b2814c08d65ed6223303bcde6add26c"></a>
-boost::asio::io_service&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/de7/classThreadPool.html#a5b2814c08d65ed6223303bcde6add26c">io_service_</a></td></tr>
-<tr class="memdesc:a5b2814c08d65ed6223303bcde6add26c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Instance of boost input/output service for asynchronous data processing. <br /></td></tr>
-<tr class="separator:a5b2814c08d65ed6223303bcde6add26c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8ba0794faf1a72f7f4a9922b3391a8f2"><td class="memItemLeft" align="right" valign="top">boost::asio::executor_work_guard&lt; boost::asio::io_service::executor_type &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/de7/classThreadPool.html#a8ba0794faf1a72f7f4a9922b3391a8f2">work_</a></td></tr>
-<tr class="memdesc:a8ba0794faf1a72f7f4a9922b3391a8f2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Instance of work guard to report the io service when it has pending tasks.  <a href="#a8ba0794faf1a72f7f4a9922b3391a8f2">More...</a><br /></td></tr>
-<tr class="separator:a8ba0794faf1a72f7f4a9922b3391a8f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8024981c2df0048b4f6164964bcafffb"><td class="memItemLeft" align="right" valign="top"><a id="a8024981c2df0048b4f6164964bcafffb"></a>
-std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/de7/classThreadPool.html#a8024981c2df0048b4f6164964bcafffb">pool_size</a></td></tr>
-<tr class="memdesc:a8024981c2df0048b4f6164964bcafffb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Size of thread pool (number of threads) <br /></td></tr>
-<tr class="separator:a8024981c2df0048b4f6164964bcafffb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa52eca7aa7f937f7cd466957385491ad"><td class="memItemLeft" align="right" valign="top"><a id="aa52eca7aa7f937f7cd466957385491ad"></a>
-boost::thread_group&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/de7/classThreadPool.html#aa52eca7aa7f937f7cd466957385491ad">threads_</a></td></tr>
-<tr class="memdesc:aa52eca7aa7f937f7cd466957385491ad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Group of threads. <br /></td></tr>
-<tr class="separator:aa52eca7aa7f937f7cd466957385491ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acf984075d64fcc50f43f5b13b7fd7529"><td class="memItemLeft" align="right" valign="top"><a id="acf984075d64fcc50f43f5b13b7fd7529"></a>
-std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/de7/classThreadPool.html#acf984075d64fcc50f43f5b13b7fd7529">available_</a></td></tr>
-<tr class="memdesc:acf984075d64fcc50f43f5b13b7fd7529"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of available threads, those which are not currently performing a task. <br /></td></tr>
-<tr class="separator:acf984075d64fcc50f43f5b13b7fd7529"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ade26079dd6d8fa7fe7ef7e480496e64b"><td class="memItemLeft" align="right" valign="top"><a id="ade26079dd6d8fa7fe7ef7e480496e64b"></a>
-boost::mutex&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/de7/classThreadPool.html#ade26079dd6d8fa7fe7ef7e480496e64b">mutex_</a></td></tr>
-<tr class="memdesc:ade26079dd6d8fa7fe7ef7e480496e64b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mutex to handle concurrent tasks. <br /></td></tr>
-<tr class="separator:ade26079dd6d8fa7fe7ef7e480496e64b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a16e49f99edc8408765e51760a753948d"><td class="memItemLeft" align="right" valign="top"><a id="a16e49f99edc8408765e51760a753948d"></a>
-boost::condition_variable&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/de7/classThreadPool.html#a16e49f99edc8408765e51760a753948d">cond_</a></td></tr>
-<tr class="memdesc:a16e49f99edc8408765e51760a753948d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Condition variable to handle tasks dispatching depending on available threads. <br /></td></tr>
-<tr class="separator:a16e49f99edc8408765e51760a753948d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3879736968a0b84d751ec595cdd2c6ca"><td class="memItemLeft" align="right" valign="top"><a id="a3879736968a0b84d751ec595cdd2c6ca"></a>
+boost::asio::io_service&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/de7/classThreadPool.html#a3879736968a0b84d751ec595cdd2c6ca">io_service_</a></td></tr>
+<tr class="memdesc:a3879736968a0b84d751ec595cdd2c6ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Instance of boost input/output service for asynchronous data processing. <br /></td></tr>
+<tr class="separator:a3879736968a0b84d751ec595cdd2c6ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae96f31710b6583f1968c28eb26083466"><td class="memItemLeft" align="right" valign="top">boost::asio::executor_work_guard&lt; boost::asio::io_service::executor_type &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/de7/classThreadPool.html#ae96f31710b6583f1968c28eb26083466">work_</a></td></tr>
+<tr class="memdesc:ae96f31710b6583f1968c28eb26083466"><td class="mdescLeft">&#160;</td><td class="mdescRight">Instance of work guard to report the io service when it has pending tasks.  <a href="#ae96f31710b6583f1968c28eb26083466">More...</a><br /></td></tr>
+<tr class="separator:ae96f31710b6583f1968c28eb26083466"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0d1603eed0547e1f3774cafe94256abe"><td class="memItemLeft" align="right" valign="top"><a id="a0d1603eed0547e1f3774cafe94256abe"></a>
+std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/de7/classThreadPool.html#a0d1603eed0547e1f3774cafe94256abe">pool_size</a></td></tr>
+<tr class="memdesc:a0d1603eed0547e1f3774cafe94256abe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Size of thread pool (number of threads) <br /></td></tr>
+<tr class="separator:a0d1603eed0547e1f3774cafe94256abe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a56090e231c048e3a4e9e88261bd7cec5"><td class="memItemLeft" align="right" valign="top"><a id="a56090e231c048e3a4e9e88261bd7cec5"></a>
+boost::thread_group&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/de7/classThreadPool.html#a56090e231c048e3a4e9e88261bd7cec5">threads_</a></td></tr>
+<tr class="memdesc:a56090e231c048e3a4e9e88261bd7cec5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Group of threads. <br /></td></tr>
+<tr class="separator:a56090e231c048e3a4e9e88261bd7cec5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><h3>template&lt;typename ... TaskArgs&gt;<br />
-class ThreadPool&lt; TaskArgs &gt;</h3>
-
-<p>Abstract class providing core implementation of a thread pool to deal with multi threading tasks. </p>
+<div class="textblock"><p>Base class providing core implementation of a thread pool to deal with multi threading tasks. </p>
 <dl class="section version"><dt>Version</dt><dd>1.0 </dd></dl>
-<dl class="tparams"><dt>Template Parameters</dt><dd>
-  <table class="tparams">
-    <tr><td class="paramname">TaskArgs</td><td>The arguments for the task functor </td></tr>
-  </table>
-  </dd>
-</dl>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="ac74be4568c79a1114820aa63c75d254f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac74be4568c79a1114820aa63c75d254f">&#9670;&nbsp;</a></span>ThreadPool()</h2>
+<a id="a2b8ca7a57ba657bad890a99058e01781"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2b8ca7a57ba657bad890a99058e01781">&#9670;&nbsp;</a></span>ThreadPool()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;typename ... TaskArgs&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="../../dc/de7/classThreadPool.html">ThreadPool</a>&lt; TaskArgs &gt;::<a class="el" href="../../dc/de7/classThreadPool.html">ThreadPool</a> </td>
+          <td class="memname">ThreadPool::ThreadPool </td>
           <td>(</td>
           <td class="paramtype">std::size_t const&#160;</td>
           <td class="paramname"><em>_pool_size</em></td><td>)</td>
@@ -198,62 +174,22 @@ template&lt;typename ... TaskArgs&gt; </div>
 </div><div class="memdoc">
 
 <p>Thread pool constructor. </p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../dc/de7/classThreadPool.html#a8024981c2df0048b4f6164964bcafffb" title="Size of thread pool (number of threads) ">ThreadPool::pool_size</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../dc/de7/classThreadPool.html#a0d1603eed0547e1f3774cafe94256abe" title="Size of thread pool (number of threads) ">ThreadPool::pool_size</a> </dd></dl>
 
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="ab1035e24e8841701c196d08130d277f5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab1035e24e8841701c196d08130d277f5">&#9670;&nbsp;</a></span>do_task()</h2>
+<a id="a809e09ddca366e0906c6ff54d174bb0f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a809e09ddca366e0906c6ff54d174bb0f">&#9670;&nbsp;</a></span>getPoolSize()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;typename ... TaskArgs&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual void <a class="el" href="../../dc/de7/classThreadPool.html">ThreadPool</a>&lt; TaskArgs &gt;::do_task </td>
-          <td>(</td>
-          <td class="paramtype">boost::function&lt; void(TaskArgs ...)&gt; &amp;&#160;</td>
-          <td class="paramname"><em>task</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">pure virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Invoke task with corresponding arguments. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">task</td><td>Task to be invoked </td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p>Implemented in <a class="el" href="../../d0/d21/classMDThreadPool.html#aa50aa5b36e90acd6edf8274945cc9255">MDThreadPool&lt; MDType, TaskArgs &gt;</a>, <a class="el" href="../../d0/d21/classMDThreadPool.html#aa50aa5b36e90acd6edf8274945cc9255">MDThreadPool&lt; KDTreeBuildType, KDTreeNode *, bool const, vector&lt; Primitive *&gt; &amp;, int const &gt;</a>, <a class="el" href="../../d2/dee/classResThreadPool.html#ac511f71f65b5c7dc4bbb05ac4d32b721">ResThreadPool&lt; TaskArgs &gt;</a>, and <a class="el" href="../../d2/dee/classResThreadPool.html#ac511f71f65b5c7dc4bbb05ac4d32b721">ResThreadPool&lt; std::vector&lt; std::vector&lt; double &gt; &gt; &amp;, RandomnessGenerator&lt; double &gt; &amp;, RandomnessGenerator&lt; double &gt; &amp;, NoiseSource&lt; double &gt; &amp; &gt;</a>.</p>
-
-</div>
-</div>
-<a id="a4fb8cb1609006d93c9318ce587ce66d9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4fb8cb1609006d93c9318ce587ce66d9">&#9670;&nbsp;</a></span>getPoolSize()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename ... TaskArgs&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual std::size_t <a class="el" href="../../dc/de7/classThreadPool.html">ThreadPool</a>&lt; TaskArgs &gt;::getPoolSize </td>
+          <td class="memname">virtual std::size_t ThreadPool::getPoolSize </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -268,60 +204,22 @@ template&lt;typename ... TaskArgs&gt; </div>
 
 <p>Obtain the thread pool size. </p>
 <dl class="section return"><dt>Returns</dt><dd>Thread pool size </dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../dc/de7/classThreadPool.html#a8024981c2df0048b4f6164964bcafffb" title="Size of thread pool (number of threads) ">ThreadPool::pool_size</a> </dd></dl>
-
-</div>
-</div>
-<a id="a6769e63b2dcbba631f0850811576c27c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6769e63b2dcbba631f0850811576c27c">&#9670;&nbsp;</a></span>wrap_task()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename ... TaskArgs&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual void <a class="el" href="../../dc/de7/classThreadPool.html">ThreadPool</a>&lt; TaskArgs &gt;::wrap_task </td>
-          <td>(</td>
-          <td class="paramtype">boost::function&lt; void(TaskArgs ...)&gt; &amp;&#160;</td>
-          <td class="paramname"><em>task</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Wrap a task so that available threads count can be increased once provided task has been completed. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">task</td><td>Task to be wrapped </td></tr>
-  </table>
-  </dd>
-</dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../dc/de7/classThreadPool.html#a0d1603eed0547e1f3774cafe94256abe" title="Size of thread pool (number of threads) ">ThreadPool::pool_size</a> </dd></dl>
 
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a id="a8ba0794faf1a72f7f4a9922b3391a8f2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8ba0794faf1a72f7f4a9922b3391a8f2">&#9670;&nbsp;</a></span>work_</h2>
+<a id="ae96f31710b6583f1968c28eb26083466"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae96f31710b6583f1968c28eb26083466">&#9670;&nbsp;</a></span>work_</h2>
 
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;typename ... TaskArgs&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">boost::asio::executor_work_guard&lt;boost::asio::io_service::executor_type&gt; <a class="el" href="../../dc/de7/classThreadPool.html">ThreadPool</a>&lt; TaskArgs &gt;::work_</td>
+          <td class="memname">boost::asio::executor_work_guard&lt;boost::asio::io_service::executor_type&gt; ThreadPool::work_</td>
         </tr>
       </table>
   </td>
@@ -332,7 +230,7 @@ template&lt;typename ... TaskArgs&gt; </div>
 </div><div class="memdoc">
 
 <p>Instance of work guard to report the io service when it has pending tasks. </p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../dc/de7/classThreadPool.html#a5b2814c08d65ed6223303bcde6add26c" title="Instance of boost input/output service for asynchronous data processing. ">ThreadPool::io_service_</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../dc/de7/classThreadPool.html#a3879736968a0b84d751ec595cdd2c6ca" title="Instance of boost input/output service for asynchronous data processing. ">ThreadPool::io_service_</a> </dd></dl>
 
 </div>
 </div>

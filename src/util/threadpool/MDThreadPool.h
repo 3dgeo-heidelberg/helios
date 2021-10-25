@@ -1,6 +1,6 @@
 #pragma once
 
-#include <ThreadPool.h>
+#include <SimpleThreadPool.h>
 #include <HeliosException.h>
 
 #include <unordered_map>
@@ -19,7 +19,7 @@
  * @see ThreadPool
  */
 template <typename MDType, typename ... TaskArgs>
-class MDThreadPool : public ThreadPool<TaskArgs ...>{
+class MDThreadPool : public SimpleThreadPool<TaskArgs ...>{
 public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //
     // ************************************ //
@@ -28,7 +28,7 @@ public:
      * @see ThreadPool::ThreadPool(std::size_t const)
      */
     explicit MDThreadPool(std::size_t const _pool_size) :
-        ThreadPool<TaskArgs ...>(_pool_size)
+        SimpleThreadPool<TaskArgs ...>(_pool_size)
     {setPendingTasks(0);}
     virtual ~MDThreadPool(){}
 
@@ -138,7 +138,10 @@ protected:
         // Task has finished, so increment count of available threads.
         boost::unique_lock<boost::mutex> lock(this->mutex_);
         decreasePendingTasks();
-        if(getPendingTasks()==0) this->cond_.notify_one();
+        if(getPendingTasks()==0){
+            lock.unlock();
+            this->cond_.notify_one();
+        }
     }
 
     /**

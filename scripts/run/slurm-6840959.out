@@ -1,0 +1,97 @@
+slurmstepd: info: Setting TMPDIR to /scratch/6840959. Previous errors about TMPDIR can be discarded
+LOGGING (0,0,0,0) to "/mnt/netapp2/Store_uscciaep/helios/log/LOG_COG_KDT4_SAH32_SC1_BC1.log"
+
+
+
+LOGGING (0,0,0,1) to "/mnt/netapp2/Store_uscciaep/helios/log/LOG_COG_KDT4_SAH32_SC1_BC2.log"
+
+
+
+LOGGING (0,0,0,2) to "/mnt/netapp2/Store_uscciaep/helios/log/LOG_COG_KDT4_SAH32_SC1_BC3.log"
+
+
+
+LOGGING (0,0,0,3) to "/mnt/netapp2/Store_uscciaep/helios/log/LOG_COG_KDT4_SAH32_SC1_BC4.log"
+
+
+
+LOGGING (0,0,0,4) to "/mnt/netapp2/Store_uscciaep/helios/log/LOG_COG_KDT4_SAH32_SC1_BC5.log"
+
+
+
+LOGGING (0,0,0,5) to "/mnt/netapp2/Store_uscciaep/helios/log/LOG_COG_KDT4_SAH32_SC1_BC6.log"
+
+
+
+LOGGING (0,0,1,0) to "/mnt/netapp2/Store_uscciaep/helios/log/LOG_COG_KDT4_SAH32_SC2_BC1.log"
+
+
+
+LOGGING (0,0,1,1) to "/mnt/netapp2/Store_uscciaep/helios/log/LOG_COG_KDT4_SAH32_SC2_BC2.log"
+
+
+
+LOGGING (0,0,1,2) to "/mnt/netapp2/Store_uscciaep/helios/log/LOG_COG_KDT4_SAH32_SC2_BC3.log"
+
+
+
+LOGGING (0,0,1,3) to "/mnt/netapp2/Store_uscciaep/helios/log/LOG_COG_KDT4_SAH32_SC2_BC4.log"
+
+
+
+LOGGING (0,0,1,4) to "/mnt/netapp2/Store_uscciaep/helios/log/LOG_COG_KDT4_SAH32_SC2_BC5.log"
+
+
+
+LOGGING (0,0,1,5) to "/mnt/netapp2/Store_uscciaep/helios/log/LOG_COG_KDT4_SAH32_SC2_BC6.log"
+
+
+
+LOGGING (0,0,2,0) to "/mnt/netapp2/Store_uscciaep/helios/log/LOG_COG_KDT4_SAH32_SC4_BC1.log"
+
+
+
+LOGGING (0,0,2,1) to "/mnt/netapp2/Store_uscciaep/helios/log/LOG_COG_KDT4_SAH32_SC4_BC2.log"
+
+
+
+LOGGING (0,0,2,2) to "/mnt/netapp2/Store_uscciaep/helios/log/LOG_COG_KDT4_SAH32_SC4_BC3.log"
+
+
+
+LOGGING (0,0,2,3) to "/mnt/netapp2/Store_uscciaep/helios/log/LOG_COG_KDT4_SAH32_SC4_BC4.log"
+
+
+
+LOGGING (0,0,2,4) to "/mnt/netapp2/Store_uscciaep/helios/log/LOG_COG_KDT4_SAH32_SC4_BC5.log"
+
+
+
+LOGGING (0,0,2,5) to "/mnt/netapp2/Store_uscciaep/helios/log/LOG_COG_KDT4_SAH32_SC4_BC6.log"
+
+
+
+LOGGING (0,0,3,0) to "/mnt/netapp2/Store_uscciaep/helios/log/LOG_COG_KDT4_SAH32_SC6_BC1.log"
+
+
+
+LOGGING (0,0,3,1) to "/mnt/netapp2/Store_uscciaep/helios/log/LOG_COG_KDT4_SAH32_SC6_BC2.log"
+
+
+
+LOGGING (0,0,3,2) to "/mnt/netapp2/Store_uscciaep/helios/log/LOG_COG_KDT4_SAH32_SC6_BC3.log"
+
+
+
+LOGGING (0,0,3,3) to "/mnt/netapp2/Store_uscciaep/helios/log/LOG_COG_KDT4_SAH32_SC6_BC4.log"
+
+
+
+LOGGING (0,0,3,4) to "/mnt/netapp2/Store_uscciaep/helios/log/LOG_COG_KDT4_SAH32_SC6_BC5.log"
+
+
+
+LOGGING (0,0,3,5) to "/mnt/netapp2/Store_uscciaep/helios/log/LOG_COG_KDT4_SAH32_SC6_BC6.log"
+
+
+

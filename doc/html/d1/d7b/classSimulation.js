@@ -1,6 +1,6 @@
 var classSimulation =
 [
-    [ "Simulation", "d1/d7b/classSimulation.html#a546896453568ac7077b9f8e04557b74f", null ],
+    [ "Simulation", "d1/d7b/classSimulation.html#ab556c2cd0a7113e7b8b7f8c6589433a3", null ],
     [ "calcCurrentGpsTime", "d1/d7b/classSimulation.html#afb4772514f61bdcd00f977106e8833ce", null ],
     [ "doSimStep", "d1/d7b/classSimulation.html#a51ff9d2c2c499f8378f9d77fb523ea0d", null ],
     [ "getScanner", "d1/d7b/classSimulation.html#ab97f12ae37a7c2e81e377236175c3cd8", null ],
@@ -11,7 +11,7 @@ var classSimulation =
     [ "onLegComplete", "d1/d7b/classSimulation.html#a8dbf0836b204bb33a31a0fc09c2fbc06", null ],
     [ "pause", "d1/d7b/classSimulation.html#aeac57ace03ce426e470c4552563216b2", null ],
     [ "setScanner", "d1/d7b/classSimulation.html#ad0c799ae7d86b495c4b1a1639198e556", null ],
-    [ "setSimFrequency", "d1/d7b/classSimulation.html#a52ad025ceb300136a63b2de02c49e186", null ],
+    [ "setSimFrequency", "d1/d7b/classSimulation.html#a18701f9e076932c4e2829480626f9f8d", null ],
     [ "setSimSpeedFactor", "d1/d7b/classSimulation.html#a0ba648397480bb134a0bfbbda499914d", null ],
     [ "shutdown", "d1/d7b/classSimulation.html#a171b98c3d0a3a28ae151f7b716537717", null ],
     [ "start", "d1/d7b/classSimulation.html#acf598e815ded8ca12cad5db975ac8849", null ],
@@ -30,9 +30,10 @@ var classSimulation =
     [ "mStopped", "d1/d7b/classSimulation.html#a77302978e40142f4e5e951d4526f2105", null ],
     [ "mutex", "d1/d7b/classSimulation.html#a10de3cc2b800d92e80e40fbf61ff5942", null ],
     [ "NANOSECONDS_PER_SECOND", "d1/d7b/classSimulation.html#a2946fe05bca500ed8859d460475b2b5f", null ],
-    [ "numSysThreads", "d1/d7b/classSimulation.html#a88802bddc60d38b9ed7daddfd365f9f7", null ],
+    [ "parallelizationStrategy", "d1/d7b/classSimulation.html#a48673f2bf8e3917d8a2b55f81fdd7ffc", null ],
     [ "pauseLock", "d1/d7b/classSimulation.html#aa6b4f792c65bc94981b0c565d0dad2b7", null ],
     [ "simFrequency", "d1/d7b/classSimulation.html#a23cb37028a47bc963ce2852e57803d10", null ],
-    [ "threadPool", "d1/d7b/classSimulation.html#a103fbbefc90fc8ecdce6799636445766", null ],
+    [ "taskDropper", "d1/d7b/classSimulation.html#a32f3686c613045b5f96fac6d2b531c86", null ],
+    [ "threadPool", "d1/d7b/classSimulation.html#a46e423ef446467b8f8758a952cddb860", null ],
     [ "timeStart_ms", "d1/d7b/classSimulation.html#abb93b11da9a5fe48f3b4d42ada8ba5d1", null ]
 ];

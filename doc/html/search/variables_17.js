@@ -1,13 +1,23 @@
 var searchData=
 [
-  ['x',['X',['../d9/d22/classLadLut.html#ac1e7516174074a0a860ba655440ad5b4',1,'LadLut::X()'],['../d1/d2b/classMarquardtFitter.html#a9be12e12cf130dd44caccd415c7b52a7',1,'MarquardtFitter::X()'],['../d5/d0c/classPlatformSettings.html#aad7a275c1efb7b8243b7bd3dc4a07ebe',1,'PlatformSettings::x()'],['../d6/d26/classSurfaceInspector_1_1util_1_1draggers_1_1MinDragger.html#a4754d22017e288544eed11c03c5be25d',1,'SurfaceInspector::util::draggers::MinDragger::x()'],['../db/d02/classColor4f.html#a65e31f5d636c6328371e273017874f60',1,'Color4f::x()']]],
-  ['xcoeff',['xCoeff',['../d6/d03/classXYZPointCloudFileLoader.html#a7a1605ef3276baee5fdae6cc162b5c34',1,'XYZPointCloudFileLoader']]],
-  ['xmax',['xmax',['../da/d52/classSurfaceInspector_1_1maths_1_1Histogram.html#ad3ac72b241b871bf7fcd6e14f099e4fb',1,'SurfaceInspector::maths::Histogram']]],
-  ['xmin',['xmin',['../da/d52/classSurfaceInspector_1_1maths_1_1Histogram.html#afe08509813c9fed8bf95386b5c220d28',1,'SurfaceInspector::maths::Histogram']]],
-  ['xmldocfilename',['xmlDocFilename',['../d9/d82/classXmlAssetsLoader.html#a05cabbb720af5497bf9b4b43cd9782f1',1,'XmlAssetsLoader']]],
-  ['xmldocfilepath',['xmlDocFilePath',['../d9/d82/classXmlAssetsLoader.html#a0eb7f1008b1dc5676191ead80a881a01',1,'XmlAssetsLoader']]],
-  ['xyx',['XYX',['../d6/d7f/classRotationOrder.html#a0e72d0664f272895e35172ca50f67363',1,'RotationOrder']]],
-  ['xyz',['XYZ',['../d6/d7f/classRotationOrder.html#a130a32ecc8022dec8e4ca4e71682afaf',1,'RotationOrder']]],
-  ['xzx',['XZX',['../d6/d7f/classRotationOrder.html#a684bcdc01298ba0532187c69ab0d83b6',1,'RotationOrder']]],
-  ['xzy',['XZY',['../d6/d7f/classRotationOrder.html#ad7acec4365037a6afe63bc044382c684',1,'RotationOrder']]]
+  ['w',['w',['../db/d02/classColor4f.html#a9e820b2ace5b886d8e83a420050895ac',1,'Color4f']]],
+  ['warehouse',['warehouse',['../da/d92/classWarehouseThreadPool.html#a6d136e811b23ff8b39c9d1323e75911c',1,'WarehouseThreadPool']]],
+  ['water',['WATER',['../df/d64/classLasSpecification.html#a7af2723918eb49310208190ba225787e',1,'LasSpecification']]],
+  ['wavelength_5fum',['wavelength_um',['../d5/d20/classSpectralLibrary.html#ab7fb8272765a5a20d854c07badad9525',1,'SpectralLibrary']]],
+  ['width',['width',['../d1/d0c/classGeoTiffFileLoader.html#a3d90a45b3a30096500afc8bd30e978a9',1,'GeoTiffFileLoader']]],
+  ['winsize_5fns',['winSize_ns',['../d4/dfb/classFWFSettings.html#a442387fd78aa23137901b18f8d6f639c',1,'FWFSettings']]],
+  ['wire_5fconductor',['WIRE_CONDUCTOR',['../df/d64/classLasSpecification.html#ae8ad8d4cd27de51ec1439498eb9ca988',1,'LasSpecification']]],
+  ['wire_5fguard',['WIRE_GUARD',['../df/d64/classLasSpecification.html#ae04e5b30ee67fa66c89667beff906df5',1,'LasSpecification']]],
+  ['wire_5fstructure',['WIRE_STRUCTURE',['../df/d64/classLasSpecification.html#a8d3d2455758b14ac1da2786bb874b645',1,'LasSpecification']]],
+  ['wmtx',['wmtx',['../d9/d5e/classTaskWarehouse.html#a87305610f1dee5a9d280943fe109b336',1,'TaskWarehouse']]],
+  ['work_5f',['work_',['../dc/de7/classThreadPool.html#ae96f31710b6583f1968c28eb26083466',1,'ThreadPool']]],
+  ['workerscount',['workersCount',['../da/d92/classWarehouseThreadPool.html#add3a38d0067d7829bcb596332c674e21',1,'WarehouseThreadPool']]],
+  ['working',['working',['../da/d92/classWarehouseThreadPool.html#a73443fb65721868adda313fff534c1db',1,'WarehouseThreadPool']]],
+  ['worstvectormaxcomponents',['worstVectorMaxComponents',['../d1/db0/classSurfaceInspector_1_1maths_1_1SingularContextDescriptors.html#a38b1d9ac920fb62c50409eee74969f55',1,'SurfaceInspector::maths::SingularContextDescriptors']]],
+  ['worstvectormaxindices',['worstVectorMaxIndices',['../d1/db0/classSurfaceInspector_1_1maths_1_1SingularContextDescriptors.html#ae5fde2884424a87636d0708655cb85d9',1,'SurfaceInspector::maths::SingularContextDescriptors']]],
+  ['worstvectormincomponents',['worstVectorMinComponents',['../d1/db0/classSurfaceInspector_1_1maths_1_1SingularContextDescriptors.html#a53475389730aac217dc34b58e9076297',1,'SurfaceInspector::maths::SingularContextDescriptors']]],
+  ['worstvectorminindices',['worstVectorMinIndices',['../d1/db0/classSurfaceInspector_1_1maths_1_1SingularContextDescriptors.html#a5293b6e2dab8d2b6604a057804d17216',1,'SurfaceInspector::maths::SingularContextDescriptors']]],
+  ['writeground',['writeGround',['../d6/d9e/classAbstractPulseRunnable.html#afb0cbbe6296be3c71c0647bab194166d',1,'AbstractPulseRunnable']]],
+  ['writenexttrajectory',['writeNextTrajectory',['../df/d1e/classPlatform.html#a79c6568256169bf60219bd4092a11411',1,'Platform']]],
+  ['writewaveform',['writeWaveform',['../db/da6/classFullWaveformPulseRunnable.html#a06e7d38a47f7fc76d55ba205fa399b8e',1,'FullWaveformPulseRunnable::writeWaveform()'],['../dc/d42/classScanner.html#aaec9d6c112b1a6f90af5e1582c6f974b',1,'Scanner::writeWaveform()'],['../db/d85/classScanningPulseProcess.html#af8d8e15c0be842fdb5600395797454f3',1,'ScanningPulseProcess::writeWaveform()']]]
 ];

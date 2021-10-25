@@ -33,6 +33,7 @@ var searchData=
   ['makerotationz',['makeRotationZ',['../dc/df6/classrigidmotion_1_1RigidMotionR3Factory.html#a1ec209a55a9ffe5ecec17a19ce9a77c8',1,'rigidmotion::RigidMotionR3Factory']]],
   ['makescenedynamic',['makeSceneDynamic',['../db/d91/classXmlSceneLoader.html#a50c2f79a71fce7307f4cf1d5a15a79fe',1,'XmlSceneLoader']]],
   ['makesilent',['makeSilent',['../d0/da9/logging_8hpp.html#a46f0f70041004a98f8047cd4065e889a',1,'logging']]],
+  ['maketime',['makeTime',['../d0/da9/logging_8hpp.html#ad4b47a3c936d268b58b3491c80860bff',1,'logging']]],
   ['maketranslation',['makeTranslation',['../dc/d00/classrigidmotion_1_1RigidMotionFactory.html#a81c78af76b9d3fcd1b77f357be7131d0',1,'rigidmotion::RigidMotionFactory::makeTranslation()'],['../d7/da7/classrigidmotion_1_1RigidMotionR2Factory.html#a4673005c488dd0ec757ae16a433a7e1f',1,'rigidmotion::RigidMotionR2Factory::makeTranslation()'],['../dc/df6/classrigidmotion_1_1RigidMotionR3Factory.html#a6f234b49e0d927f161e53ec5c956825b',1,'rigidmotion::RigidMotionR3Factory::makeTranslation()']]],
   ['makeverbose',['makeVerbose',['../d0/da9/logging_8hpp.html#a0d8d83c825f31a8a41f611aeec85eed2',1,'logging']]],
   ['makeverbose2',['makeVerbose2',['../d0/da9/logging_8hpp.html#a21380f97d3f2b3cb38c40a9d92509943',1,'logging']]],
