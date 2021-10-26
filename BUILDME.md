@@ -81,7 +81,21 @@ all the libraries must be built from scratch:
 
 ### Helios Dependencies
 
-- ```apt install cmake make gcc g++ libarmadillo-dev libglm-dev python3 python3-pip libpython3.8-dev unzip```
+- ```apt install cmake make gcc g++ libarmadillo-dev python3 python3-pip libpython3.8-dev unzip```
+
+
+####GLM
+
+Can be installed both by means of a package manager or building from source:
+
+- ```apt install libglm-dev```
+
+or
+
+- ```wget https://github.com/g-truc/glm/releases/download/0.9.9.8/glm-0.9.9.8.zip && unzip glm-0.9.9.8 && rm glm-0.9.9.8.zip```
+- ```cd glm && cmake . && make```
+
+When building from source, it is mandatory to rename the GLM directory to lib/glm
 
 #### LASTools
 
@@ -90,13 +104,20 @@ all the libraries must be built from scratch:
 - ```cd LAStools && cmake .  && make```
 
 #### Boost
-IMPORTANT: Remove completely any previous existing Boost installation before continue
+
+The linkage against Boost libraries can be performed both statically and dynamically.
 
 - ```wget https://boostorg.jfrog.io/artifactory/main/release/1.76.0/source/boost_1_76_0.tar.gz```
 - ```tar -xzvf boost_1_76_0.tar.gz```
-- ```cd boost_1_76_0```
+- ```mv boost_1_76_0 boost && cd boost```
 - ```./bootstrap.sh --with-python=python3.8```
 - ```./b2 cxxflags=-fPIC```
+
+If you want static linkage, the boost installation ends here.
+
+For allow dynamic linkage, execute the following command ||
+IMPORTANT: Remove completely any previous existing Boost installation before continue.
+
 - ```./b2 install```
 
 #### Proj
@@ -114,9 +135,20 @@ IMPORTANT: Remove completely any previous existing Boost installation before con
 
 - ```pip3 install open3d```
 
-Back to the helios root directory, compile:
+Back to the helios root directory, configure the project:
+
+- Linking Boost statically:
 
 ```cmake -DCMAKE_BUILD_TYPE=Release -DPYTHON_BINDING=1 -DPYTHON_VERSION=38 .```
+
+- Linking Boost dynamically:
+
+```cmake -DCMAKE_BUILD_TYPE=Release -DPYTHON_BINDING=1 -DPYTHON_VERSION=38 -DBOOST_DYNAMIC_LIBS=1```
+
+Finally, compile Helios++:
+
+```make -jn``` where ```n``` is the amount of threads to be used in the compilation.
+
 
 In order to execute PyHelios scripts, libhelios.so path must be added to PYTHONPATH (default location: helios root directory):
 
