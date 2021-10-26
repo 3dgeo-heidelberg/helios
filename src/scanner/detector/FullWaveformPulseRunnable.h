@@ -1,14 +1,16 @@
 #pragma once
 
-
+#include <util/HeliosException.h>
 #include "AbstractDetector.h"
 #include "AbstractPulseRunnable.h"
 #include "FullWaveformPulseDetector.h"
 #include "RaySceneIntersection.h"
 #include "ScenePart.h"
 #include <noise/RandomnessGenerator.h>
-#include <vector>
+
 #include <LadLut.h>
+
+#include <vector>
 
 /**
  * @brief Concrete implementation of abstract pulse runnable to compute full
@@ -344,7 +346,11 @@ public:
 	 * due to compatibility reasons.
 	 * @see AbstractPulseRunnable::operator()
 	 */
-	void operator()() override {}
+	void operator()() override {
+	    throw HeliosException(
+	        "FullWaveformPulseRunnable operator()() must not be used"
+        );
+	}
 	/**
 	 * @brief Full waveform pulse runnable functor
 	 * @param apMatrix Reference to matrix to be used to compute Marquardt
@@ -355,10 +361,10 @@ public:
 	 * intersection handling if necessary
 	 * @see AbstractPulseRunnable::operator()()
 	 */
-	void operator()(
+	void operator() (
 	    std::vector<std::vector<double>>& apMatrix,
 	    RandomnessGenerator<double> &randGen,
         RandomnessGenerator<double> &randGen2,
         NoiseSource<double> &intersectionHandlingNoiseSource
-    );
+    ) override;
 };

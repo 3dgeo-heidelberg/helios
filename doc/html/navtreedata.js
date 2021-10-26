@@ -23,20 +23,21 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 ".html",
-"d1/d2f/classpyhelios_1_1PyTrajectoryWrapper.html#a9ba063b438ba2cda5f7f5e7b2a06d9de",
-"d2/d66/Histogram_8hpp_source.html",
-"d4/d02/classBinaryTreeDepthIterator.html",
-"d5/d20/classSpectralLibrary.html#a55d55f2e7ffc8bc086405f636419b5ed",
-"d6/d1f/structKDTreePrimitiveComparator.html#a8349b27d42b80f6552f0b99abc2f48e8",
-"d7/d17/classpyhelios_1_1PySceneWrapper.html",
-"d8/d15/classLinearPathPlatform.html#a4c355612852abdf1069d6e03be18debe",
-"d9/d82/classfluxionum_1_1Minimizer.html#a06b5438e0234d397f265b3d047ff983f",
-"da/d8d/classHeliosTests_1_1VoxelParsingTest.html#a5a44670a18e986c0324180950be4891c",
-"db/d8b/classHeliosTests_1_1RigidMotionTest.html#a8f91e1e80529c1836059666949c3d651",
-"dc/d6e/classRandomnessGenerator.html#abed86caeab308c222fb15d1e9ce3bb7e",
-"de/d22/classIterableTreeNode.html#a06c6815ed94500215f3d6db532d09c99",
-"df/d30/classAxisSAHKDTreeFactory.html#a7dda264583c90bec67f9d65a73abb157",
-"functions_func_h.html"
+"d1/d2f/classpyhelios_1_1PyTrajectoryWrapper.html#a77f6367874d3f04490d597ac85d135ea",
+"d2/d51/classTriangle.html#ac79d935e56291b2e15b8caea406870c0",
+"d3/df0/classSerialSceneWrapper.html",
+"d4/dfd/classOscillatingMirrorBeamDeflector.html#af38ad1e69a823b19755385c1639c8e3e",
+"d6/d03/ScenePart_8h_source.html",
+"d6/da1/classSurveyPlayback.html#aa7556f820dd34560c3040e48bb2b8d83",
+"d7/d84/classrigidmotion_1_1RigidMotion.html#afee19fb86c47e69c4fa06966c701bd8f",
+"d9/d22/classLadLut.html#ab74093b290925c63b85144f390a6ee33",
+"da/d24/classSurfaceInspector_1_1maths_1_1Statistics.html#aa2d37ca457230b7f37d563ed778e4e22",
+"db/d57/classfluxionum_1_1UnivariateNewtonRaphsonMinimizer.html#adba8706a6b811dda5fc11e634a8ee7d3",
+"dc/d34/PulseTaskDropper_8h_source.html",
+"dc/df6/classrigidmotion_1_1RigidMotionR3Factory.html#a4f1e4595f1fedc4df7191f0b8bd24420",
+"de/d97/classAsset.html#ac37173d6b01d7b8caa7bd786b8de2269",
+"df/d86/classMultiThreadKDTreeFactory.html#aaa41155c2cff4d446839bab62dc2bd3a",
+"functions_vars_w.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

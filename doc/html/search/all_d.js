@@ -34,6 +34,7 @@ var searchData=
   ['makerotationz',['makeRotationZ',['../dc/df6/classrigidmotion_1_1RigidMotionR3Factory.html#a1ec209a55a9ffe5ecec17a19ce9a77c8',1,'rigidmotion::RigidMotionR3Factory']]],
   ['makescenedynamic',['makeSceneDynamic',['../db/d91/classXmlSceneLoader.html#a50c2f79a71fce7307f4cf1d5a15a79fe',1,'XmlSceneLoader']]],
   ['makesilent',['makeSilent',['../d0/da9/logging_8hpp.html#a46f0f70041004a98f8047cd4065e889a',1,'logging']]],
+  ['maketime',['makeTime',['../d0/da9/logging_8hpp.html#ad4b47a3c936d268b58b3491c80860bff',1,'logging']]],
   ['maketranslation',['makeTranslation',['../dc/d00/classrigidmotion_1_1RigidMotionFactory.html#a81c78af76b9d3fcd1b77f357be7131d0',1,'rigidmotion::RigidMotionFactory::makeTranslation()'],['../d7/da7/classrigidmotion_1_1RigidMotionR2Factory.html#a4673005c488dd0ec757ae16a433a7e1f',1,'rigidmotion::RigidMotionR2Factory::makeTranslation()'],['../dc/df6/classrigidmotion_1_1RigidMotionR3Factory.html#a6f234b49e0d927f161e53ec5c956825b',1,'rigidmotion::RigidMotionR3Factory::makeTranslation()']]],
   ['makeverbose',['makeVerbose',['../d0/da9/logging_8hpp.html#a0d8d83c825f31a8a41f611aeec85eed2',1,'logging']]],
   ['makeverbose2',['makeVerbose2',['../d0/da9/logging_8hpp.html#a21380f97d3f2b3cb38c40a9d92509943',1,'logging']]],
@@ -59,6 +60,7 @@ var searchData=
   ['maxnvoxels',['maxNVoxels',['../d6/d03/classXYZPointCloudFileLoader.html#ae988b41a0ea88d17a33bd6134f54cbe1',1,'XYZPointCloudFileLoader']]],
   ['maxpad',['maxPad',['../d7/d5a/classDetailedVoxel.html#ab2ca0b3b734803285489ea47f788c8e4',1,'DetailedVoxel']]],
   ['maxsingularvalue',['maxSingularValue',['../d1/db0/classSurfaceInspector_1_1maths_1_1SingularContextDescriptors.html#a1793d5887fd13998586bcdc37f718953',1,'SurfaceInspector::maths::SingularContextDescriptors']]],
+  ['maxtasks',['maxTasks',['../da/d8d/classTaskDropper.html#ad6f7fc213202fb80d95ee8bb77b49218',1,'TaskDropper::maxTasks()'],['../d9/d5e/classTaskWarehouse.html#a815a8d9f2ffef940e7668dd31cbe75ab',1,'TaskWarehouse::maxTasks()']]],
   ['maxx',['maxX',['../d6/d03/classXYZPointCloudFileLoader.html#ad0a35fb6cc7c9576b894274f1c29be95',1,'XYZPointCloudFileLoader']]],
   ['maxy',['maxY',['../d6/d03/classXYZPointCloudFileLoader.html#a2c1e0e3c084b2d6c36c280998276786e',1,'XYZPointCloudFileLoader']]],
   ['maxz',['maxZ',['../d6/d03/classXYZPointCloudFileLoader.html#aab5a5955b6825743d60dfa20adad4214',1,'XYZPointCloudFileLoader']]],
@@ -121,9 +123,10 @@ var searchData=
   ['msurvey',['mSurvey',['../d6/da1/classSurveyPlayback.html#a447c25f4165f1774f4d7b67f84740c61',1,'SurveyPlayback']]],
   ['mtempwaypoint',['mTempWaypoint',['../d7/d94/classGroundVehiclePlatform.html#aff22ab7eb1974df32b7a7dc785d8688b',1,'GroundVehiclePlatform']]],
   ['mturnmode',['mTurnMode',['../d7/d94/classGroundVehiclePlatform.html#a2366e954a693577b361356d57a0349db',1,'GroundVehiclePlatform']]],
+  ['mtx',['mtx',['../d9/d5e/classTaskWarehouse.html#ae931c10cf95d5389fbf77dd46dd6d9c6',1,'TaskWarehouse::mtx()'],['../da/d92/classWarehouseThreadPool.html#a365262973c13d27700e738af4063d1e9',1,'WarehouseThreadPool::mtx()']]],
   ['mu',['mu',['../db/dc1/classSurfaceInspector_1_1maths_1_1functions_1_1GaussianFunction.html#a10d8903ba44f92ca17663200ce500867',1,'SurfaceInspector::maths::functions::GaussianFunction']]],
   ['multithreadkdtreefactory',['MultiThreadKDTreeFactory',['../df/d86/classMultiThreadKDTreeFactory.html',1,'MultiThreadKDTreeFactory'],['../df/d86/classMultiThreadKDTreeFactory.html#ae129faad6fd086084670ff81dd7e2633',1,'MultiThreadKDTreeFactory::MultiThreadKDTreeFactory()']]],
   ['multithreadsahkdtreefactory',['MultiThreadSAHKDTreeFactory',['../dd/d95/classMultiThreadSAHKDTreeFactory.html',1,'MultiThreadSAHKDTreeFactory'],['../dd/d95/classMultiThreadSAHKDTreeFactory.html#abdf55a95bdae97b267f3c5304c8f3a04',1,'MultiThreadSAHKDTreeFactory::MultiThreadSAHKDTreeFactory()']]],
   ['mutex',['mutex',['../d1/d7b/classSimulation.html#a10de3cc2b800d92e80e40fbf61ff5942',1,'Simulation::mutex()'],['../d1/d0e/classSyncFileWriter.html#a79190ae81f92c33e8a5aa4c9956266cc',1,'SyncFileWriter::mutex()']]],
-  ['mutex_5f',['mutex_',['../dc/de7/classThreadPool.html#ade26079dd6d8fa7fe7ef7e480496e64b',1,'ThreadPool']]]
+  ['mutex_5f',['mutex_',['../d2/d1f/classSimpleThreadPool.html#a12ee0fb1dd91a63574329cca341a08ea',1,'SimpleThreadPool']]]
 ];

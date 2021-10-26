@@ -23,13 +23,15 @@ using namespace std;
 SurveyPlayback::SurveyPlayback(
     shared_ptr<Survey> survey,
     const std::string outputPath,
-    size_t numThreads,
+    int const parallelizationStrategy,
+    std::shared_ptr<PulseThreadPoolInterface> pulseThreadPoolInterface,
+    int const chunkSize,
     bool lasOutput,
     bool las10,
     bool zipOutput,
     bool exportToFile
 ):
-    Simulation(numThreads, survey->scanner->detector->cfg_device_accuracy_m),
+    Simulation(parallelizationStrategy, pulseThreadPoolInterface, chunkSize),
     lasOutput(lasOutput),
     las10(las10),
     zipOutput(zipOutput),
@@ -160,7 +162,7 @@ void SurveyPlayback::doSimStep() {
 		legProgress = 0;
 		legStartTime_ns = duration_cast<milliseconds>(
 		        system_clock::now().time_since_epoch()
-            ).count();
+        ).count();
 	}
 
 	trackProgress();
@@ -210,8 +212,8 @@ string SurveyPlayback::getTrajectoryOutputPath(){
 }
 
 void SurveyPlayback::onLegComplete() {
-	// Wait for threads to finish
-	threadPool.join();
+    // Do scanning pulse process handling of on leg complete, if any
+    mScanner->onLegComplete();
 
 	// Start next leg
     elapsedLength += mSurvey->legs.at(mCurrentLegIndex)->getLength();

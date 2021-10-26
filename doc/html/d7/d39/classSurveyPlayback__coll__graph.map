@@ -1,10 +1,6 @@
 <map id="SurveyPlayback" name="SurveyPlayback">
-<area shape="rect" id="node2" href="$d1/d7b/classSimulation.html" title="Class representing a simulation. " alt="" coords="1344,181,1427,208"/>
-<area shape="rect" id="node3" href="$d6/ddc/classPulseThreadPool.html" title="Class implementing a thread pool to deal with pulse tasks. " alt="" coords="1108,137,1229,164"/>
-<area shape="rect" id="node4" href="$d2/dee/classResThreadPool.html" title="ResThreadPool\&lt; std\l::vector\&lt; std::vector\l\&lt; double \&gt; \&gt; &amp;, RandomnessGenerator\l\&lt; double \&gt; &amp;, RandomnessGenerator\l\&lt; double \&gt; &amp;, NoiseSource\&lt; double \&gt; &amp; \&gt;" alt="" coords="636,73,903,159"/>
-<area shape="rect" id="node5" href="$dc/de7/classThreadPool.html" title="ThreadPool\&lt; TaskArgs\l ... \&gt;" alt="" coords="368,95,524,137"/>
-<area shape="rect" id="node6" href="$d3/d57/classUniformNoiseSource.html" title="UniformNoiseSource\l\&lt; double \&gt;" alt="" coords="698,183,841,225"/>
-<area shape="rect" id="node7" href="$d4/d38/classRandomNoiseSource.html" title="RandomNoiseSource\&lt;\l double \&gt;" alt="" coords="369,183,523,225"/>
-<area shape="rect" id="node8" href="$d9/d6b/classNoiseSource.html" title="NoiseSource\&lt; double \&gt;" alt="" coords="145,203,304,229"/>
-<area shape="rect" id="node9" href="$dc/d6e/classRandomnessGenerator.html" title="RandomnessGenerator\l\&lt; double \&gt;" alt="" coords="147,137,303,178"/>
+<area shape="rect" id="node2" href="$d1/d7b/classSimulation.html" title="Class representing a simulation. " alt="" coords="833,49,916,76"/>
+<area shape="rect" id="node3" href="$de/d9a/classPulseTaskDropper.html" title="Class implementing a task dropper to deal with pulse tasks. " alt="" coords="579,49,709,76"/>
+<area shape="rect" id="node4" href="$d5/d2f/classBuddingTaskDropper.html" title="BuddingTaskDropper\l\&lt; PulseTaskDropper,\l PulseTask, PulseThreadPool\lInterface, std::vector\&lt; std\l::vector\&lt; double \&gt; \&gt; &amp;, RandomnessGenerator\l\&lt; double \&gt; &amp;, RandomnessGenerator\&lt; double\l \&gt; &amp;, NoiseSource\&lt; double \&gt; &amp; \&gt;" alt="" coords="235,5,529,120"/>
+<area shape="rect" id="node5" href="$da/d8d/classTaskDropper.html" title="TaskDropper\&lt; PulseTask,\l PulseThreadPoolInterface,\l TaskArgs... \&gt;" alt="" coords="5,35,185,91"/>
 </map>

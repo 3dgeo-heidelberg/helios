@@ -86,12 +86,30 @@ std::string ArgumentsParser::parseSeed(){
     return "";
 }
 
+int ArgumentsParser::parseParallelizationStrategy(){
+    int index = findIndexOfArgument("--parallelization");
+    if(index < 0) return 0;
+    return std::stoi(argv[index+1]);
+}
+
 std::size_t ArgumentsParser::parseNJobs(){
     int index = findIndexOfArgument("-j");
     if(index < 0) index = findIndexOfArgument("--njobs");
     if(index < 0) index = findIndexOfArgument("--nthreads");
     if(index < 0) return 0;
     return std::stoul(argv[index+1]);
+}
+
+int ArgumentsParser::parseChunkSize(){
+    int index = findIndexOfArgument("--chunkSize");
+    if(index < 0) return -32;
+    return std::stoi(argv[index+1]);
+}
+
+int ArgumentsParser::parseWarehouseFactor(){
+    int index = findIndexOfArgument("--warehouseFactor");
+    if(index < 0) return 4;
+    return std::stoi(argv[index+1]);
 }
 
 bool ArgumentsParser::parseDisablePlatformNoise(){
@@ -117,9 +135,10 @@ void ArgumentsParser::parseLoggingVerbosity(){
     else if(
         findIndexOfArgument("-v2")>=0 ||
         findIndexOfArgument("-vv")>=0
-        ){
+    ){
         logging::makeVerbose2();
     }
+    else if(findIndexOfArgument("-vt")>=0) logging::makeTime();
     else if(findIndexOfArgument("-v")>=0) logging::makeVerbose();
     else logging::makeDefault();
 }

@@ -137,22 +137,6 @@ public:
      */
 	virtual void applySettings(std::shared_ptr<ScannerSettings> & settings) {};
 
-	/**
-	 * @brief Compute pulse simulation
-	 * @param pool Thread pool to be used to distribute computational burden
-	 * @param absoluteBeamOrigin Origin of the beam in absolute coordinates
-	 * @param absoluteBeamAttitude Attitude of the beam
-	 * @param state_currentPulseNumber Current pulse number
-	 * @param currentGpsTime Current GPS time
-	 */
-	virtual void simulatePulse(
-	    PulseThreadPool & pool,
-	    glm::dvec3 absoluteBeamOrigin,
-	    Rotation absoluteBeamAttitude,
-	    int state_currentPulseNumber,
-        double currentGpsTime
-    ) = 0;
-
 	// ***  GETTERS and SETTERS  *** //
 	// ***************************** //
     /**

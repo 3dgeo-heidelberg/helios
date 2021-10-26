@@ -19,9 +19,6 @@ var hierarchy =
       [ "WavefrontObjFileLoader", "d9/d15/classWavefrontObjFileLoader.html", null ],
       [ "XYZPointCloudFileLoader", "d6/d03/classXYZPointCloudFileLoader.html", null ]
     ] ],
-    [ "AbstractPulseRunnable", "d6/d9e/classAbstractPulseRunnable.html", [
-      [ "FullWaveformPulseRunnable", "db/da6/classFullWaveformPulseRunnable.html", null ]
-    ] ],
     [ "ArgumentsParser", "d7/d5c/classArgumentsParser.html", null ],
     [ "Asset", "de/d97/classAsset.html", [
       [ "FWFSettings", "d4/dfb/classFWFSettings.html", null ],
@@ -190,6 +187,15 @@ var hierarchy =
         [ "DetailedVoxel", "d7/d5a/classDetailedVoxel.html", null ]
       ] ]
     ] ],
+    [ "PulseTask", "d1/d6e/classPulseTask.html", [
+      [ "AbstractPulseRunnable", "d6/d9e/classAbstractPulseRunnable.html", [
+        [ "FullWaveformPulseRunnable", "db/da6/classFullWaveformPulseRunnable.html", null ]
+      ] ]
+    ] ],
+    [ "PulseThreadPoolInterface", "df/d9c/classPulseThreadPoolInterface.html", [
+      [ "PulseThreadPool", "d6/ddc/classPulseThreadPool.html", null ],
+      [ "PulseWarehouseThreadPool", "d7/de7/classPulseWarehouseThreadPool.html", null ]
+    ] ],
     [ "pyhelios::PyAABBWrapper", "de/df3/classpyhelios_1_1PyAABBWrapper.html", null ],
     [ "pyhelios::PyBeamDeflectorWrapper", "d0/d0e/classpyhelios_1_1PyBeamDeflectorWrapper.html", null ],
     [ "pyhelios::PyDetectorWrapper", "de/ddf/classpyhelios_1_1PyDetectorWrapper.html", null ],
@@ -229,6 +235,10 @@ var hierarchy =
     [ "Rotation", "d5/dcb/classRotation.html", null ],
     [ "RotationOrder", "d6/d7f/classRotationOrder.html", null ],
     [ "ScannerHead", "dc/da7/classScannerHead.html", null ],
+    [ "ScanningPulseProcess", "db/d85/classScanningPulseProcess.html", [
+      [ "BuddingScanningPulseProcess", "d5/d3c/classBuddingScanningPulseProcess.html", null ],
+      [ "WarehouseScanningPulseProcess", "df/ddb/classWarehouseScanningPulseProcess.html", null ]
+    ] ],
     [ "SceneLoadingSpecification", "d7/d48/classSceneLoadingSpecification.html", null ],
     [ "ScenePart", "dd/dc4/classScenePart.html", [
       [ "DynObject", "d5/d6a/classDynObject.html", [
@@ -257,16 +267,33 @@ var hierarchy =
       ] ]
     ] ],
     [ "SyncFileWriterFactory", "da/df6/classSyncFileWriterFactory.html", null ],
+    [ "TaskDropper< TaskType, ThreadPoolType, TaskArgs >", "da/d8d/classTaskDropper.html", null ],
+    [ "TaskDropper< PulseTask, PulseThreadPoolInterface, TaskArgs... >", "da/d8d/classTaskDropper.html", [
+      [ "BuddingTaskDropper< PulseTaskDropper, PulseTask, PulseThreadPoolInterface, std::vector< std::vector< double > > &, RandomnessGenerator< double > &, RandomnessGenerator< double > &, NoiseSource< double > & >", "d5/d2f/classBuddingTaskDropper.html", [
+        [ "PulseTaskDropper", "de/d9a/classPulseTaskDropper.html", null ]
+      ] ]
+    ] ],
+    [ "TaskDropper< TaskType, ThreadPoolType, TaskArgs... >", "da/d8d/classTaskDropper.html", [
+      [ "BuddingTaskDropper< BudType, TaskType, ThreadPoolType, TaskArgs >", "d5/d2f/classBuddingTaskDropper.html", null ]
+    ] ],
+    [ "TaskWarehouse< Task >", "d9/d5e/classTaskWarehouse.html", null ],
+    [ "TaskWarehouse< PulseTaskDropper >", "d9/d5e/classTaskWarehouse.html", null ],
     [ "Test", "df/da6/classTest.html", null ],
-    [ "ThreadPool< TaskArgs >", "dc/de7/classThreadPool.html", null ],
-    [ "ThreadPool< TaskArgs ... >", "dc/de7/classThreadPool.html", [
-      [ "MDThreadPool< MDType, TaskArgs >", "d0/d21/classMDThreadPool.html", null ],
-      [ "MDThreadPool< KDTreeBuildType, KDTreeNode *, bool const, vector< Primitive *> &, int const >", "d0/d21/classMDThreadPool.html", [
-        [ "KDTreeFactoryThreadPool", "d2/dea/classKDTreeFactoryThreadPool.html", null ]
+    [ "ThreadPool", "dc/de7/classThreadPool.html", [
+      [ "SimpleThreadPool< TaskArgs >", "d2/d1f/classSimpleThreadPool.html", null ],
+      [ "SimpleThreadPool< TaskArgs ... >", "d2/d1f/classSimpleThreadPool.html", [
+        [ "MDThreadPool< MDType, TaskArgs >", "d0/d21/classMDThreadPool.html", null ],
+        [ "MDThreadPool< KDTreeBuildType, KDTreeNode *, bool const, vector< Primitive *> &, int const >", "d0/d21/classMDThreadPool.html", [
+          [ "KDTreeFactoryThreadPool", "d2/dea/classKDTreeFactoryThreadPool.html", null ]
+        ] ],
+        [ "ResThreadPool< TaskArgs >", "d2/dee/classResThreadPool.html", null ],
+        [ "ResThreadPool< std::vector< std::vector< double > > &, RandomnessGenerator< double > &, RandomnessGenerator< double > &, NoiseSource< double > & >", "d2/dee/classResThreadPool.html", [
+          [ "PulseThreadPool", "d6/ddc/classPulseThreadPool.html", null ]
+        ] ]
       ] ],
-      [ "ResThreadPool< TaskArgs >", "d2/dee/classResThreadPool.html", null ],
-      [ "ResThreadPool< std::vector< std::vector< double > > &, RandomnessGenerator< double > &, RandomnessGenerator< double > &, NoiseSource< double > & >", "d2/dee/classResThreadPool.html", [
-        [ "PulseThreadPool", "d6/ddc/classPulseThreadPool.html", null ]
+      [ "WarehouseThreadPool< Task >", "da/d92/classWarehouseThreadPool.html", null ],
+      [ "WarehouseThreadPool< PulseTaskDropper >", "da/d92/classWarehouseThreadPool.html", [
+        [ "PulseWarehouseThreadPool", "d7/de7/classPulseWarehouseThreadPool.html", null ]
       ] ]
     ] ],
     [ "TimeWatcher", "d7/d7d/classTimeWatcher.html", null ],

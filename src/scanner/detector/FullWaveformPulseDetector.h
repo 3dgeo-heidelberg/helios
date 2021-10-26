@@ -56,16 +56,6 @@ public:
 	 * @see AbstractDetector::applySettings
 	 */
 	void applySettings(std::shared_ptr<ScannerSettings> & settings) override;
-	/**
-	 * @see AbstractDetector::simulatePulse
-	 */
-	void simulatePulse(
-	    PulseThreadPool & pool,
-	    glm::dvec3 absoluteBeamOrigin,
-	    Rotation absoluteBeamAttitude,
-	    int state_currentPulseNumber,
-        double currentGpsTime
-    ) override;
 
     // ***  GETTERS and SETTERS  *** //
     // ***************************** //
