@@ -140,9 +140,6 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 <tr class="memitem:a78346a126dcb35c991bc9e14ba9a5f6c"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d6b/classAbstractDetector.html#a78346a126dcb35c991bc9e14ba9a5f6c">applySettings</a> (std::shared_ptr&lt; <a class="el" href="../../d0/d23/classScannerSettings.html">ScannerSettings</a> &gt; &amp;settings)</td></tr>
 <tr class="memdesc:a78346a126dcb35c991bc9e14ba9a5f6c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Apply scanner settings to the detector.  <a href="#a78346a126dcb35c991bc9e14ba9a5f6c">More...</a><br /></td></tr>
 <tr class="separator:a78346a126dcb35c991bc9e14ba9a5f6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a779587cdcf53095fb15ec33f9683232d"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d6b/classAbstractDetector.html#a779587cdcf53095fb15ec33f9683232d">simulatePulse</a> (<a class="el" href="../../d6/ddc/classPulseThreadPool.html">PulseThreadPool</a> &amp;pool, glm::dvec3 absoluteBeamOrigin, <a class="el" href="../../d5/dcb/classRotation.html">Rotation</a> absoluteBeamAttitude, int state_currentPulseNumber, double currentGpsTime)=0</td></tr>
-<tr class="memdesc:a779587cdcf53095fb15ec33f9683232d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute pulse simulation.  <a href="#a779587cdcf53095fb15ec33f9683232d">More...</a><br /></td></tr>
-<tr class="separator:a779587cdcf53095fb15ec33f9683232d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9d0e26801126081dc76077cb7a0d0ed6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d6b/classAbstractDetector.html#a9d0e26801126081dc76077cb7a0d0ed6">setOutputFilePath</a> (std::string path)</td></tr>
 <tr class="memdesc:a9d0e26801126081dc76077cb7a0d0ed6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set path to output file.  <a href="#a9d0e26801126081dc76077cb7a0d0ed6">More...</a><br /></td></tr>
 <tr class="separator:a9d0e26801126081dc76077cb7a0d0ed6"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -323,74 +320,6 @@ AbstractDetector::rangeMin_m </dd></dl>
   </table>
   </dd>
 </dl>
-
-</div>
-</div>
-<a id="a779587cdcf53095fb15ec33f9683232d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a779587cdcf53095fb15ec33f9683232d">&#9670;&nbsp;</a></span>simulatePulse()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual void AbstractDetector::simulatePulse </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="../../d6/ddc/classPulseThreadPool.html">PulseThreadPool</a> &amp;&#160;</td>
-          <td class="paramname"><em>pool</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">glm::dvec3&#160;</td>
-          <td class="paramname"><em>absoluteBeamOrigin</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="../../d5/dcb/classRotation.html">Rotation</a>&#160;</td>
-          <td class="paramname"><em>absoluteBeamAttitude</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>state_currentPulseNumber</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>currentGpsTime</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Compute pulse simulation. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">pool</td><td>Thread pool to be used to distribute computational burden </td></tr>
-    <tr><td class="paramname">absoluteBeamOrigin</td><td>Origin of the beam in absolute coordinates </td></tr>
-    <tr><td class="paramname">absoluteBeamAttitude</td><td>Attitude of the beam </td></tr>
-    <tr><td class="paramname">state_currentPulseNumber</td><td>Current pulse number </td></tr>
-    <tr><td class="paramname">currentGpsTime</td><td>Current GPS time </td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p>Implemented in <a class="el" href="../../df/d37/classFullWaveformPulseDetector.html#aae396367536124d3f712d0653e3124f4">FullWaveformPulseDetector</a>.</p>
 
 </div>
 </div>

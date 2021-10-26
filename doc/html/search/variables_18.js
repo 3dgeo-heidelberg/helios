@@ -1,12 +1,13 @@
 var searchData=
 [
-  ['y',['y',['../d5/d0c/classPlatformSettings.html#a7a7e8510ad3cd1e4a3dfe4bffbed3f86',1,'PlatformSettings::y()'],['../db/d02/classColor4f.html#abceca2fffe29ef0cbe01189301ff190b',1,'Color4f::y()'],['../d9/d22/classLadLut.html#a0ebe1c4c037f0bdc3c041ac19981e005',1,'LadLut::Y()']]],
-  ['yaw',['yaw',['../db/d69/classHelicopterPlatform.html#a324eec9527d9ea53b14c183c969cb068',1,'HelicopterPlatform::yaw()'],['../d2/d43/classTrajectory.html#ab8d2ab4029cee86679428a51772987ee',1,'Trajectory::yaw()']]],
-  ['yawatdeparture',['yawAtDeparture',['../d5/d0c/classPlatformSettings.html#ae00efd3cae8ef6c6a8e98b9678b90c43',1,'PlatformSettings']]],
-  ['yawatdeparturespecified',['yawAtDepartureSpecified',['../d5/d0c/classPlatformSettings.html#ac3d7e57a7da4e24e1c3fe60cc916b0e6',1,'PlatformSettings']]],
-  ['ycoeff',['yCoeff',['../d6/d03/classXYZPointCloudFileLoader.html#a47233df63db5755ddc03002c0df0cde7',1,'XYZPointCloudFileLoader']]],
-  ['yxy',['YXY',['../d6/d7f/classRotationOrder.html#aeb56a9289989aee0b0bb81b11924e9c9',1,'RotationOrder']]],
-  ['yxz',['YXZ',['../d6/d7f/classRotationOrder.html#ad0a7a69c4c40b6023d96d63a5c1469f3',1,'RotationOrder']]],
-  ['yzx',['YZX',['../d6/d7f/classRotationOrder.html#aa91e39e2abb4ef395ef093aff225321d',1,'RotationOrder']]],
-  ['yzy',['YZY',['../d6/d7f/classRotationOrder.html#a6e4bea1b7e92bf1966e2aeb142b6eadc',1,'RotationOrder']]]
+  ['x',['X',['../d9/d22/classLadLut.html#ac1e7516174074a0a860ba655440ad5b4',1,'LadLut::X()'],['../d1/d2b/classMarquardtFitter.html#a9be12e12cf130dd44caccd415c7b52a7',1,'MarquardtFitter::X()'],['../d5/d0c/classPlatformSettings.html#aad7a275c1efb7b8243b7bd3dc4a07ebe',1,'PlatformSettings::x()'],['../d6/d26/classSurfaceInspector_1_1util_1_1draggers_1_1MinDragger.html#a4754d22017e288544eed11c03c5be25d',1,'SurfaceInspector::util::draggers::MinDragger::x()'],['../db/d02/classColor4f.html#a65e31f5d636c6328371e273017874f60',1,'Color4f::x()']]],
+  ['xcoeff',['xCoeff',['../d6/d03/classXYZPointCloudFileLoader.html#a7a1605ef3276baee5fdae6cc162b5c34',1,'XYZPointCloudFileLoader']]],
+  ['xmax',['xmax',['../da/d52/classSurfaceInspector_1_1maths_1_1Histogram.html#ad3ac72b241b871bf7fcd6e14f099e4fb',1,'SurfaceInspector::maths::Histogram']]],
+  ['xmin',['xmin',['../da/d52/classSurfaceInspector_1_1maths_1_1Histogram.html#afe08509813c9fed8bf95386b5c220d28',1,'SurfaceInspector::maths::Histogram']]],
+  ['xmldocfilename',['xmlDocFilename',['../d9/d82/classXmlAssetsLoader.html#a05cabbb720af5497bf9b4b43cd9782f1',1,'XmlAssetsLoader']]],
+  ['xmldocfilepath',['xmlDocFilePath',['../d9/d82/classXmlAssetsLoader.html#a0eb7f1008b1dc5676191ead80a881a01',1,'XmlAssetsLoader']]],
+  ['xyx',['XYX',['../d6/d7f/classRotationOrder.html#a0e72d0664f272895e35172ca50f67363',1,'RotationOrder']]],
+  ['xyz',['XYZ',['../d6/d7f/classRotationOrder.html#a130a32ecc8022dec8e4ca4e71682afaf',1,'RotationOrder']]],
+  ['xzx',['XZX',['../d6/d7f/classRotationOrder.html#a684bcdc01298ba0532187c69ab0d83b6',1,'RotationOrder']]],
+  ['xzy',['XZY',['../d6/d7f/classRotationOrder.html#ad7acec4365037a6afe63bc044382c684',1,'RotationOrder']]]
 ];

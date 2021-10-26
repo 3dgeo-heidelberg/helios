@@ -77,11 +77,23 @@ helios <survey_file_path> [OPTIONAL ARGUMENTS]
             Specify the output point cloud and fullwave must be zipped
         --lasScale
             Specify the scale factor used to generate LAS output
+        --parallelization <integer>
+            Specify the parallelization strategy. Where 0 leads to a simple
+            static/dynamic chunk based strategy and 1 leads to a warehouse
+            based strategy
         -j OR --njobs OR --nthreads <integer>
             Specify the number of simultaneous threads to be used to compute
             the simulation
             If it is not specified or it is specified as 0, then all available
             threads will be used to compute the simulation
+        --chunkSize <integer>
+            Specify the chunk size. If it is positive, it will be used as a
+            fixed size but if it is negative the absolute value will be used
+            as starting size of a dynamic chunk-size based strategy.
+        --warehouseFactor <integer>
+            The number of tasks in the warehouse would be k times the number
+            of workers. Greater factor implies less probability of idle cores
+            at expenses of greater memory consumption.
         --rebuildScene
             Force scene rebuild even when a previosly built scene is available
         --kdt <integer>
@@ -107,6 +119,8 @@ helios <survey_file_path> [OPTIONAL ARGUMENTS]
             Nothing will be reported
         -q OR --quiet
             Only errors will be reported
+        -vt
+            Time and errors will be reported
         -v
             Errors, information and warnings will be reported
         -vv OR -v2

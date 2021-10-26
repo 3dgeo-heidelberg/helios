@@ -7,5 +7,8 @@ var searchData=
   ['binarytreefastbreadthiterator',['BinaryTreeFastBreadthIterator',['../d3/d43/classBinaryTreeFastBreadthIterator.html',1,'']]],
   ['binarytreefastdepthiterator',['BinaryTreeFastDepthIterator',['../dc/da5/classBinaryTreeFastDepthIterator.html',1,'']]],
   ['blockallocator',['BlockAllocator',['../d9/d47/classBlockAllocator.html',1,'']]],
-  ['blockallocator_3c_20lightkdtreenode_20_3e',['BlockAllocator&lt; LightKDTreeNode &gt;',['../d9/d47/classBlockAllocator.html',1,'']]]
+  ['blockallocator_3c_20lightkdtreenode_20_3e',['BlockAllocator&lt; LightKDTreeNode &gt;',['../d9/d47/classBlockAllocator.html',1,'']]],
+  ['buddingscanningpulseprocess',['BuddingScanningPulseProcess',['../d5/d3c/classBuddingScanningPulseProcess.html',1,'']]],
+  ['buddingtaskdropper',['BuddingTaskDropper',['../d5/d2f/classBuddingTaskDropper.html',1,'']]],
+  ['buddingtaskdropper_3c_20pulsetaskdropper_2c_20pulsetask_2c_20pulsethreadpoolinterface_2c_20std_3a_3avector_3c_20std_3a_3avector_3c_20double_20_3e_20_3e_20_26_2c_20randomnessgenerator_3c_20double_20_3e_20_26_2c_20randomnessgenerator_3c_20double_20_3e_20_26_2c_20noisesource_3c_20double_20_3e_20_26_20_3e',['BuddingTaskDropper&lt; PulseTaskDropper, PulseTask, PulseThreadPoolInterface, std::vector&lt; std::vector&lt; double &gt; &gt; &amp;, RandomnessGenerator&lt; double &gt; &amp;, RandomnessGenerator&lt; double &gt; &amp;, NoiseSource&lt; double &gt; &amp; &gt;',['../d5/d2f/classBuddingTaskDropper.html',1,'']]]
 ];

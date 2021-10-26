@@ -17,6 +17,8 @@ var searchData=
   ['binom',['binom',['../d6/d68/classSurfaceInspector_1_1maths_1_1Scalar.html#a30864dbc17452edc3f9416dbf56a2d68',1,'SurfaceInspector::maths::Scalar']]],
   ['blockallocator',['BlockAllocator',['../d9/d47/classBlockAllocator.html#accbb9f8283a39178a2c5ae1ff1cea09c',1,'BlockAllocator']]],
   ['bruteparsedetailed',['bruteParseDetailed',['../d9/ddf/classVoxelFileParser.html#ae71162e8c99f8df851732367c12898f9',1,'VoxelFileParser']]],
+  ['buddingscanningpulseprocess',['BuddingScanningPulseProcess',['../d5/d3c/classBuddingScanningPulseProcess.html#a3df2b70b51f1de84dda737805a03286d',1,'BuddingScanningPulseProcess']]],
+  ['buddingtaskdropper',['BuddingTaskDropper',['../d5/d2f/classBuddingTaskDropper.html#a2f2c0e9440e475a0bdd4c866a7723d7b',1,'BuddingTaskDropper']]],
   ['build',['build',['../d9/d6b/classNoiseSource.html#af229b3d574ff1135fbb7b710cb7318a2',1,'NoiseSource']]],
   ['buildaabb',['buildAABB',['../d2/d51/classTriangle.html#a705d5a49b7a0f5a42c30186625804f91',1,'Triangle']]],
   ['buildbreadthiterator',['buildBreadthIterator',['../dd/d79/classLightKDTreeNode.html#a0a538df2540f421cfd0b2e68304962a2',1,'LightKDTreeNode']]],
@@ -34,6 +36,7 @@ var searchData=
   ['buildpolymesh',['buildPolymesh',['../d1/dda/classvisualhelios_1_1VHStaticObjectAdapter.html#a11cdd043b864eb148240e24cd50d4775',1,'visualhelios::VHStaticObjectAdapter']]],
   ['buildprimitivevertex',['buildPrimitiveVertex',['../d9/d15/classWavefrontObjFileLoader.html#ad9e0004c857da9711ae8845c2bb6f659',1,'WavefrontObjFileLoader']]],
   ['buildrecursive',['buildRecursive',['../df/d86/classMultiThreadKDTreeFactory.html#a2e3a8ea91910658ee9ff6f012e196b11',1,'MultiThreadKDTreeFactory::buildRecursive()'],['../d6/d96/classSimpleKDTreeFactory.html#a07231a87a91c5168efcb91308c60adf8',1,'SimpleKDTreeFactory::buildRecursive()']]],
+  ['buildscanningpulseprocess',['buildScanningPulseProcess',['../dc/d42/classScanner.html#a1fb73d798dca372fa2639a715211936b',1,'Scanner']]],
   ['buildstaticstructure',['buildStaticStructure',['../d0/d1c/classHeliosDemos_1_1SimplePrimitivesDemo.html#a77a30ca810bbd9591ec068b54c7be354',1,'HeliosDemos::SimplePrimitivesDemo']]],
   ['buildtriangles',['buildTriangles',['../d1/d0c/classGeoTiffFileLoader.html#afad534560fcc31f013898ef077763c8d',1,'GeoTiffFileLoader']]]
 ];

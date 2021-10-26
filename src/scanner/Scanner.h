@@ -9,11 +9,14 @@
 #include <ScannerHead.h>
 #include <AbstractBeamDeflector.h>
 class AbstractDetector;
+#include <scanner/ScanningPulseProcess.h>
+#include <scanner/detector/PulseTaskDropper.h>
+#include <scanner/detector/PulseThreadPoolInterface.h>
 #include <FWFSettings.h>
 #include <Platform.h>
 #include <maths/Directions.h>
 #include <maths/Rotation.h>
-#include <PulseThreadPool.h>
+#include <UniformNoiseSource.h>
 #include <RandomnessGenerator.h>
 #include <SyncFileWriter.h>
 
@@ -163,6 +166,13 @@ private:
 	 * @brief Synchronous file writer
 	 */
 	std::shared_ptr<SyncFileWriter> tfw = nullptr;
+
+	/**
+	 * @brief The scanning pulse process used by the scanner
+	 * @see ScanningPulseProcess
+	 */
+	std::unique_ptr<ScanningPulseProcess> spp = nullptr;
+
 
 public:
     /**
@@ -356,6 +366,26 @@ public:
     // ***  M E T H O D S  *** //
     // *********************** //
     /**
+     * @brief Initialize randomness generators and noise sources that are
+     *  necessary for sequential pulse computations
+     */
+    void initializeSequentialGenerators();
+    /**
+     * @brief Build the scanning pulse process to be used by the scanner
+     *  during simulation
+     * @param dropper Simulation's task dropper
+     * @param pool Simulation's thread pool
+     * @return Built scanning pulse process
+     * @see Simulation::parallelizationStrategy
+     * @see Simulation::taskDropper
+     * @see Simulation::threadPool
+     */
+    void buildScanningPulseProcess(
+        int const parallelizationStrategy,
+        PulseTaskDropper &dropper,
+        std::shared_ptr<PulseThreadPoolInterface> pool
+    );
+    /**
      * @brief Apply scanner settings
      * @param settings Scanner settings to be applied
      * @see ScannerSettings
@@ -369,12 +399,10 @@ public:
 	void applySettingsFWF(FWFSettings settings);
 	/**
 	 * @brief Perform computations for current simulation step
-	 * @param pool Thread pool used to handle concurrent computations
 	 * @param legIndex Index of current leg
 	 * @param currentGpsTime GPS time of current pulse
 	 */
 	void doSimStep(
-	    PulseThreadPool& pool,
 	    unsigned int legIndex,
 	    double currentGpsTime
     );
@@ -468,22 +496,15 @@ public:
         Rotation & absoluteBeamAttitude
     );
     /**
-     * @brief Handle pulse computation whatever it is single thread based
-     * or thread pool based
-     * @param pool Thread pool to be used to handle multi threading pulse
-     * computation
-     * @param legIndex Index of current leg
-     * @param absoluteBeamOrigin Absolute position of beam origin
-     * @param absoluteBeamAttitude Beam attitude
-     * @param currentGpsTime Current GPS time (milliseconds)
+     * @brief Exposes ScanningPulseProcess:onLegComplete method of the
+     *  scanning pulse process defining this scanner
      */
-    void handlePulseComputation(
-        PulseThreadPool& pool,
-        unsigned int const legIndex,
-        glm::dvec3 &absoluteBeamOrigin,
-        Rotation &absoluteBeamAttitude,
-        double currentGpsTime
-    );
+    void inline onLegComplete() {spp->onLegComplete();}
+    /**
+     * @brief Exposes ScanningPulseProcess::onSimulationFinished method of the
+     *  scanning pulse process defining this scanner
+     */
+    void inline onSimulationFinished() {spp->onSimulationFinished();}
     /**
      * @brief Handle trajectory output whatever it is to output file, to
      * all trajectories vector or to cycle trajectories vector
@@ -898,5 +919,4 @@ public:
         return new PyDoubleVector(time_wave);
     }
 #endif
-
 };

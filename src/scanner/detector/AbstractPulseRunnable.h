@@ -1,5 +1,6 @@
 #pragma once
 
+#include <scanner/detector/PulseTask.h>
 #include "AbstractDetector.h"
 #include <noise/RandomnessGenerator.h>
 class Measurement;
@@ -26,7 +27,7 @@ static const double speedOfLight_mPerPicosec = 0.000299792458;
 /**
  * @brief Base abstract class for pulse runnables
  */
-class AbstractPulseRunnable{
+class AbstractPulseRunnable : public PulseTask{
 public:
     // ***  ATTRIBUTES  *** //
     // ******************** //
@@ -216,9 +217,4 @@ public:
 	    glm::dvec3 &beamDirection
     );
 
-	/**
-	 * @brief Abstract operator. It must be overridden by any implementation
-	 * which concretes AbstractPulseRunnable
-	 */
-	virtual void operator()() = 0;
 };

@@ -1,6 +1,7 @@
 var searchData=
 [
   ['halfsize',['halfSize',['../d6/d44/classVoxel.html#ab9d383812ebf70210957702b88a86831',1,'Voxel']]],
+  ['handler',['handler',['../d5/d3c/classBuddingScanningPulseProcess.html#a75ecfafbbca2d43e53bf5d1d256f72e1',1,'BuddingScanningPulseProcess::handler()'],['../df/ddb/classWarehouseScanningPulseProcess.html#a820ead8c0e09bbb62612a488c1912de1',1,'WarehouseScanningPulseProcess::handler()']]],
   ['headrotatepersec_5frad',['headRotatePerSec_rad',['../d0/d23/classScannerSettings.html#ac58959e3d36c627248ccf922dad63e9f',1,'ScannerSettings']]],
   ['headrotatestart_5frad',['headRotateStart_rad',['../d0/d23/classScannerSettings.html#a6c67ef78ba16208f85fae4e04fd2d869',1,'ScannerSettings']]],
   ['headrotatestop_5frad',['headRotateStop_rad',['../d0/d23/classScannerSettings.html#a30fdaba2022b552a10ecc26c31d01e22',1,'ScannerSettings']]],

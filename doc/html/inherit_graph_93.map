@@ -1,9 +1,5 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$dc/de7/classThreadPool.html" title="ThreadPool\&lt; TaskArgs\l ... \&gt;" alt="" coords="5,123,161,164"/>
-<area shape="rect" id="node2" href="$d0/d21/classMDThreadPool.html" title="Abstract class extending basic thread pool implementation to provide a basis layer to handle tasks wi..." alt="" coords="255,5,430,47"/>
-<area shape="rect" id="node3" href="$d0/d21/classMDThreadPool.html" title="MDThreadPool\&lt; KDTreeBuild\lType, KDTreeNode *, bool\l const, vector\&lt; Primitive\l *\&gt; &amp;, int const \&gt;" alt="" coords="245,71,440,141"/>
-<area shape="rect" id="node5" href="$d2/dee/classResThreadPool.html" title="Abstract class extending basic thread pool implementation to provide a basis layer to handle thread a..." alt="" coords="247,166,439,193"/>
-<area shape="rect" id="node6" href="$d2/dee/classResThreadPool.html" title="ResThreadPool\&lt; std\l::vector\&lt; std::vector\l\&lt; double \&gt; \&gt; &amp;, RandomnessGenerator\l\&lt; double \&gt; &amp;, RandomnessGenerator\l\&lt; double \&gt; &amp;, NoiseSource\&lt; double \&gt; &amp; \&gt;" alt="" coords="209,217,476,302"/>
-<area shape="rect" id="node4" href="$d2/dea/classKDTreeFactoryThreadPool.html" title="Class implementing a thread pool to deal with multi thread KDTree building process. " alt="" coords="524,93,701,119"/>
-<area shape="rect" id="node7" href="$d6/ddc/classPulseThreadPool.html" title="Class implementing a thread pool to deal with pulse tasks. " alt="" coords="552,246,673,273"/>
+<area shape="rect" id="node1" href="$da/d8d/classTaskDropper.html" title="TaskDropper\&lt; PulseTask,\l PulseThreadPoolInterface,\l TaskArgs... \&gt;" alt="" coords="5,35,185,91"/>
+<area shape="rect" id="node2" href="$d5/d2f/classBuddingTaskDropper.html" title="BuddingTaskDropper\l\&lt; PulseTaskDropper,\l PulseTask, PulseThreadPool\lInterface, std::vector\&lt; std\l::vector\&lt; double \&gt; \&gt; &amp;, RandomnessGenerator\l\&lt; double \&gt; &amp;, RandomnessGenerator\&lt; double\l \&gt; &amp;, NoiseSource\&lt; double \&gt; &amp; \&gt;" alt="" coords="233,5,528,120"/>
+<area shape="rect" id="node3" href="$de/d9a/classPulseTaskDropper.html" title="Class implementing a task dropper to deal with pulse tasks. " alt="" coords="576,49,707,76"/>
 </map>

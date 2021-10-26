@@ -387,7 +387,7 @@ void Scene::buildKDTreeWithLog(bool const safe){
     kdtTw.stop();
     std::stringstream ss;
     ss << "KD built in " << kdtTw.getElapsedDecimalSeconds() << "s";
-    logging::INFO(ss.str());
+    logging::TIME(ss.str());
 }
 
 // ***  READ/WRITE  *** //

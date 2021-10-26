@@ -30,6 +30,11 @@ PyHeliosSimulation::PyHeliosSimulation(
     this->outputPath = outputPath;
     this->numThreads = numThreads;
     xmlreader = std::make_shared<XmlSurveyLoader>(surveyPath, assetsPath);
+    pulseThreadPool = std::make_shared<PulseThreadPool>(
+        numThreads-1,
+        survey->scanner->detector->cfg_device_accuracy_m,
+        true
+    );
 }
 PyHeliosSimulation::~PyHeliosSimulation() {
     if(thread != nullptr) delete thread;
@@ -71,11 +76,14 @@ void PyHeliosSimulation::start (){
     survey->scanner->detector->lasOutput = lasOutput;
     survey->scanner->detector->las10 = las10;
     survey->scanner->detector->zipOutput = zipOutput;
+
     playback = std::shared_ptr<SurveyPlayback>(
         new SurveyPlayback(
             survey,
             outputPath,
-            numThreads,
+            0,
+            pulseThreadPool,
+            32,
             lasOutput,
             las10,
             zipOutput,
