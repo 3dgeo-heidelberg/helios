@@ -619,8 +619,8 @@ XmlAssetsLoader::createScannerSettingsFromXml(tinyxml2::XMLElement *node) {
           template1->verticalAngleMax_rad
       ))
   );
-  settings->scanFreq_Hz = boost::get<int>(XmlUtils::getAttribute(
-      node, "scanFreq_hz", "int", template1->scanFreq_Hz
+  settings->scanFreq_Hz = boost::get<double>(XmlUtils::getAttribute(
+      node, "scanFreq_hz", "double", template1->scanFreq_Hz
   ));
 
   settings->trajectoryTimeInterval = boost::get<double>(XmlUtils::getAttribute(

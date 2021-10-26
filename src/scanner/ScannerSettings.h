@@ -65,7 +65,7 @@ public:
     /**
      * @brief Scanning frequency (hertz)
      */
-	int scanFreq_Hz = 0;
+	double scanFreq_Hz = 0;
 	/**
 	 * @brief Beam divergence angle (radians)
 	 */
