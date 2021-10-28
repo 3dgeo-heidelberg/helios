@@ -66,6 +66,13 @@ done
 
 # ---  PLOT DATA  --- #
 # ------------------- #
+if [[ $# -lt 3 ]]; then
+    cat << EOF
+Plots will not be automatically generated because no path was given as third
+argument. Therefore, it is not known where plots must be stored
+EOF
+    exit
+fi
 if ! $(module is-loaded matplotlib/3.3.1-python-3.8.1); then
     module load matplotlib/3.3.1-python-3.8.1
 fi
@@ -75,5 +82,5 @@ fi
 if ! $(module is-loaded numpy/1.18.1-python-3.8.1); then
     module load numpy/1.18.1-python-3.8.1
 fi
-python plot_log_data.py "$2"
+python plot_log_data.py "$2" "$3"
 
