@@ -15,5 +15,6 @@ dependencies:
   - numpy
   - python-pdal
   - ipympl
-  - laspy
+  - pip:
+    - laspy[laszip]
 prefix: C:\Users\wq452\Anaconda3\envs\pyhelios_pdal_env
