@@ -147,7 +147,7 @@ for DF in DFS:
     simSpeedup = [simTime1/x for x in SIM['SimulationTime']]
     fullTime = np.add(kdtTime, simTime)
     fullTime1 = fullTime[0]
-    fullSpeedup = [fullTime1/x for x in SIM['SimulationTime']]
+    fullSpeedup = [fullTime1/x for x in fullTime]
 
     # Debug section BEGIN ---
     print('DF:\n', DF)
