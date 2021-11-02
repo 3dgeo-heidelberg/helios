@@ -14,6 +14,10 @@ import sys
 import os
 
 
+# ---  CONFIGURATION CONSTANTS  --- #
+# --------------------------------- #
+markOptimumTime = False  # If True, plots will mark optimum time point
+
 # ---  PREPARE OUTPUT DIRECTORY  --- #
 # ---------------------------------- #
 if len(sys.argv) < 2:
@@ -246,13 +250,16 @@ for DF in DFS:
     kdtTime = [x for x in KDT['KDTBuildTime']]
     kdtTime1 = KDT['KDTBuildTime'].iloc[0]
     kdtSpeedup = [kdtTime1/x for x in KDT['KDTBuildTime']]
+    kdtTimeOptIdx = np.argmin(kdtTime)
     simCores = [x[5] for x in SIM.index]
     simTime = [x for x in SIM['SimulationTime']]
     simTime1 = SIM['SimulationTime'].iloc[0]
     simSpeedup = [simTime1/x for x in SIM['SimulationTime']]
+    simTimeOptIdx = np.argmin(simTime)
     fullTime = np.add(kdtTime, simTime)
     fullTime1 = fullTime[0]
     fullSpeedup = [fullTime1/x for x in fullTime]
+    fullTimeOptIdx = np.argmin(fullTime)
 
     # Fill summary
     summaryKey = key_from_index(KDT.index[0])
@@ -284,6 +291,16 @@ for DF in DFS:
         color='blue',
         label='KDT building time'
     )
+    if markOptimumTime:
+        ax.scatter(
+            kdtCores[kdtTimeOptIdx],
+            kdtTime[kdtTimeOptIdx],
+            s=64,
+            c='blue',
+            marker='o',
+            edgecolors='black',
+            zorder=4
+        )
     axx = ax.twinx()
     axx.plot(
         kdtCores,
@@ -313,6 +330,16 @@ for DF in DFS:
         color='green',
         label='Simulation time'
     )
+    if markOptimumTime:
+        ax.scatter(
+            simCores[simTimeOptIdx],
+            simTime[simTimeOptIdx],
+            s=64,
+            c='green',
+            marker='o',
+            edgecolors='black',
+            zorder=4
+        )
     axx = ax.twinx()
     axx.plot(
         simCores,
@@ -342,6 +369,16 @@ for DF in DFS:
         color='red',
         label='Total time'
     )
+    if markOptimumTime:
+        ax.scatter(
+            simCores[fullTimeOptIdx],
+            fullTime[fullTimeOptIdx],
+            s=64,
+            c='red',
+            marker='o',
+            edgecolors='black',
+            zorder=4
+        )
     axx = ax.twinx()
     axx.plot(
         simCores,
@@ -387,6 +424,16 @@ for DF in DFS:
         color='red',
         label='Total time'
     )
+    if markOptimumTime:
+        ax.scatter(
+            simCores[fullTimeOptIdx],
+            fullTime[fullTimeOptIdx],
+            s=64,
+            c='red',
+            marker='o',
+            edgecolors='black',
+            zorder=4
+        )
     axx = ax.twinx()
     axx.plot(
         simCores,
