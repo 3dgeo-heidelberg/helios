@@ -5,8 +5,35 @@ if(PYTHON_BINDING)
     if(NOT PYTHON_PATH)
         find_package(PythonLibs)
     else()
+
+        # Gets Major and Minor Python Versions
+        STRING(REGEX REPLACE
+                "([0-9])([0-9])"
+                "\\1;\\2;" VERSION "${PYTHON_VERSION}")
+        list(GET VERSION 0 MAJOR)
+        list(GET VERSION 1 MINOR)
+
+
+        message(${PYTHON_PATH}/include/python${MAJOR}.${MINOR})
+
+        if (WIN32 OR MSVC)
         set(PYTHON_INCLUDE_DIRS ${PYTHON_PATH}/include)
         set(PYTHON_LIBRARIES ${PYTHON_PATH}/libs/python${PYTHON_VERSION}.lib)
+        else()
+
+            if (EXISTS ${PYTHON_PATH}/include/python${MAJOR}.${MINOR}m)
+                set(PYTHON_INCLUDE_DIRS${PYTHON_PATH}/include/python${MAJOR}.${MINOR}m)
+            elseif(EXISTS ${PYTHON_PATH}/include/python${MAJOR}.${MINOR})
+                set(PYTHON_INCLUDE_DIRS${PYTHON_PATH}/include/python${MAJOR}.${MINOR})
+            endif()
+
+            if (EXISTS ${PYTHON_PATH}/lib/libpython${MAJOR}.${MINOR}m.so)
+                set(PYTHON_LIBRARIES ${PYTHON_PATH}/lib/libpython${MAJOR}.${MINOR}m.so)
+            elseif(EXISTS ${PYTHON_PATH}/lib/libpython${MAJOR}.${MINOR}.so)
+                set(PYTHON_LIBRARIES ${PYTHON_PATH}/lib/libpython${MAJOR}.${MINOR}.so)
+            endif()
+
+        endif()
     endif()
     message("INCLUDING '${PYTHON_PATH}'")
     include_directories (${PYTHON_INCLUDE_DIRS})
