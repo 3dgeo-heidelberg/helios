@@ -83,6 +83,12 @@ all the libraries must be built from scratch:
 
 - ```apt install cmake make gcc g++ libarmadillo-dev python3 python3-pip libpython3.8-dev unzip```
 
+#### Armadillo
+
+- ```cd helios/lib```
+- ```wget -O armadillo.tar.xz http://sourceforge.net/projects/arma/files/armadillo-10.6.2.tar.xz && tar xf armadillo.tar.xz```
+- ```mv armadillo-10.6.2 armadillo && cd armadillo```
+- ```./configure && make && sudo make install```
 
 ####GLM
 
@@ -92,6 +98,7 @@ Can be installed both by means of a package manager or building from source:
 
 or
 
+- ```cd helios/lib```
 - ```wget https://github.com/g-truc/glm/releases/download/0.9.9.8/glm-0.9.9.8.zip && unzip glm-0.9.9.8 && rm glm-0.9.9.8.zip```
 - ```cd glm && cmake . && make```
 
