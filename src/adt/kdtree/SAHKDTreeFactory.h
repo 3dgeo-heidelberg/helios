@@ -55,7 +55,7 @@ class MultiThreadSAHKDTreeFactory;
  * Now, let \f$r\f$ be the normalized position of the splitting hyperplane
  *  for node \f$N\f$ so \f$r=0\f$ is the lower limit, \f$r=1\f$ is the upper
  *  limit and \f$r=\frac{1}{2}\f$ is the center. Moreover, let \f$L_r\f$ and
- *  \f$R_r\f$ the left and right parts for the \f$r\f$ split position and
+ *  \f$R_r\f$ be the left and right parts for the \f$r\f$ split position and
  *  \f$N_o(L_r)\f$ and \f$N_o(R_r)\f$ be the number of objects at the left and
  *  right splits respectively. In consequence, following loss function arises:
  *

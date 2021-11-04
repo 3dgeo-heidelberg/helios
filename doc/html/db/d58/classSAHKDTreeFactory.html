@@ -326,7 +326,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>boost::serialization
 \[ C&#39;_T = \frac{ C_i \sum_{i=1}^{N_i}{S_A(i)} + C_l \sum_{l=1}^{N_l}{S_A(l)} + C_o \sum_{o=1}^{N_o}{S_A[S_l(o)]} } {S_A(R)} \]
 </p>
 <p>The main difference between \(C_T\) and \(C&#39;_T\) would be that the second one fits better the case where a ray is not going to intersect multiple times the same object.</p>
-<p>Now, let \(r\) be the normalized position of the splitting hyperplane for node \(N\) so \(r=0\) is the lower limit, \(r=1\) is the upper limit and \(r=\frac{1}{2}\) is the center. Moreover, let \(L_r\) and \(R_r\) the left and right parts for the \(r\) split position and \(N_o(L_r)\) and \(N_o(R_r)\) be the number of objects at the left and right splits respectively. In consequence, following loss function arises:</p>
+<p>Now, let \(r\) be the normalized position of the splitting hyperplane for node \(N\) so \(r=0\) is the lower limit, \(r=1\) is the upper limit and \(r=\frac{1}{2}\) is the center. Moreover, let \(L_r\) and \(R_r\) be the left and right parts for the \(r\) split position and \(N_o(L_r)\) and \(N_o(R_r)\) be the number of objects at the left and right splits respectively. In consequence, following loss function arises:</p>
 <p class="formulaDsp">
 \[ \mathcal{L}(r) = S_A(L_r)N_o(L_r) + S_A(R_r)N_o(R_r) - S_A(N)N_o(N) \]
 </p>
