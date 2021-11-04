@@ -79,7 +79,7 @@ class MultiThreadSAHKDTreeFactory;
  * Differentiating with respect to \f$r\f$ leads to:
  * \f[
  *  \frac{d\mathcal{L}}{dr} =
- *      \left(2N_o(L_r) - N_o(N)\right)\frac{d}{dr}S_A(L_r) +
+ *      \left[2N_o(L_r) - N_o(N)\right]\frac{d}{dr}S_A(L_r) +
  *      \left[
  *          S_A(L_r) - S_A(R_r)
  *      \right]
