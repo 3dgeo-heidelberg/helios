@@ -63,7 +63,7 @@ class MultiThreadSAHKDTreeFactory;
  *  \mathcal{L}(r) = S_A(L_r)N_o(L_r) + S_A(R_r)N_o(R_r) - S_A(N)N_o(N)
  * \f]
  *
- * Alternatively, considering the term \f$-S_A(r)n\f$ is the amount of
+ * Alternatively, considering the term \f$-S_A(N)N_o(N)\f$ is the amount of
  *  work saved by making the node an interior one (so the minus sign), it
  *  can be treated as a constant so for the sake of simplicity it would
  *  lead to:
