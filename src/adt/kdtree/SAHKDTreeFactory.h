@@ -92,10 +92,11 @@ class MultiThreadSAHKDTreeFactory;
  *  consequence, it is possible to analyze different scenarios. First,
  *  consider the case where the median lies somewhere satisfying
  *  \f$r < \frac{1}{2}\f$. Thus, \f$\frac{d}{dr}\mathcal{L}(r) < 0\f$ at
- *  the left side because
- *  \f$N_o(L_r) < \frac{n}{2}\f$ and \f$S_A(L_r) < S_A(R_r)\f$. On the other
- *  hand, \f$\frac{d}{dr}\mathcal{L}(r) > 0\f$ at the right side because
- *  \f$N_o(L_r) < \frac{n}{2}\f$ and \f$S_A(L_r) > S_A(R_r)\f$. So the minimum
+ *  the left side of the object median because
+ *  \f$N_o(L_r) < \frac{N_o(N)}{2}\f$ and \f$S_A(L_r) < S_A(R_r)\f$. On the
+ *  other hand, \f$\frac{d}{dr}\mathcal{L}(r) > 0\f$ at the right side of the
+ *  spatial median because \f$N_o(L_r) < \frac{N_o(N)}{2}\f$
+ *  and \f$S_A(L_r) > S_A(R_r)\f$. So the minimum
  *  must occur between the object median and the spatial median if the
  *  object median is to the left of the spatial median. It is easy to see
  *  that an analogous argument applies for the case where the object median
