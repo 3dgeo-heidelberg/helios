@@ -122,6 +122,8 @@ The linkage against Boost libraries can be performed both statically and dynamic
 
 If you want static linkage, the boost installation ends here.
 
+In order to use a custom Python installation, please see ["Custom Python Installation"](#Custom Python Installation)
+
 For allow dynamic linkage, execute the following command ||
 IMPORTANT: Remove completely any previous existing Boost installation before continue.
 
@@ -164,6 +166,36 @@ In order to execute PyHelios scripts, libhelios.so path must be added to PYTHONP
 Finally, to execute the demo scene using PyHelios:
 
 ```python3 helios/pyhelios_demo/helios.py pyhelios_demo/custom_als_toyblocks.xml```
+
+
+#### Custom Python Installation
+
+Both Helios and Boost depends on Python, and must be compiled accordingly.
+
+##### Boost
+- Create a user-config.jam in your $HOME directory.
+- Add the following lines, adapting the paths to your Python paths and version:
+```
+using python
+	: 3.8
+	: /home/miniconda3/envs/py38/bin/python3.8 # Path to pythonX.Y executable
+	: /home/miniconda3/envs/py38/include/python3.8 # Path to pyconfig.h location
+	: /home/miniconda3/envs/py38/libs # Path to libpythonX.Y.so location
+;
+```
+- Build Boost with the following commands:
+  - ```cd lib/boost```
+  - ``` ./bootstrap.sh --with-python=python3.8```
+  - ``` ./b2 cxxflags=-fPIC python=3.8```
+   
+For allowing dynamic Boost linkage, execute ```sudo ./b2 install```
+
+##### Helios
+- The path to the custom Python root directory must be provided to CMake:
+
+```cmake -DCMAKE_BUILD_TYPE=Release -DPYTHON_BINDING=1 -DPYTHON_VERSION=38 -DPYTHON_PATH=/home/miguelyermo/miniconda3/envs/py38 . ```
+   
+Note that -DPYTHON_VERSION must match the chosen Python installation. If no path is provided, CMake will attempt to use default Python installation.
 
 ### Install on Linux with Visual Debug
 Linux users might compile Helios++ with a visual debug module used mainly for
