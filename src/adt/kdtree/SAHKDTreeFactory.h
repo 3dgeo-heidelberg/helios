@@ -274,8 +274,9 @@ public:
      *  was the other way, then the iterative method would start at \f$M_e\f$
      *  and end at \f$\mu\f$.
      *  Now, if \f$n\f$ is the number of loss nodes, \f$\mathcal{L}_2\f$ is
-     *  the loss function and \f$r = \frac{\phi-a}{b-a} \in [0, 1]\f$ is the
-     *  normalized position of split position \f$\phi\f$. Then, the iterative
+     *  the loss function as defined in SAHKDTreeFactory::splitLoss and
+     *  \f$r = \frac{\phi-a}{b-a} \in [0, 1]\f$ is the normalized position
+     *  of split position \f$\phi\f$. Then, the iterative
      *  method can be defined as:
      *
      * \f[
@@ -284,16 +285,16 @@ public:
      *  \phi_1 &=& \mu \\
      *  \phi_{t>1} &=& \left\{\begin{array}{lll}
      *      \varphi(t)  &,&
-     *          \mathcal{L}_2\left(\varphi(t)\right) <
-     *          \mathcal{L}_2\left(\phi_{t-1}\right) \\
+     *          \mathcal{L}_2\left[(\varphi(t)-a)(b-a)^{-1}\right] <
+     *          \mathcal{L}_2\left[(\phi_{t-1}-a)(b-a)^{-1}\right] \\
      *      \phi_{t-1}  &,&
-     *          \mathcal{L}_2\left(\varphi(t)\right) \geq
-     *          \mathcal{L}_2\left(\phi_{t-1}\right)
+     *          \mathcal{L}_2\left[(\varphi(t)-a)(b-a)^{-1}\right] \geq
+     *          \mathcal{L}_2\left[(\phi_{t-1}-a)(b-a)^{-1}\right]
      *  \end{array}\right.
      *  \end{array}\right.
      * \f]
      *
-     * Finally, \f$\phi_n\f$ is the best found split position.
+     * Finally, \f$r=\phi_n\f$ is the best found split position.
      *
      * Notice that the median is constrained so \f$M_e \in [a, b]\f$. Thus,
      *  in case there are enough objects lying outside node boundaries causing
