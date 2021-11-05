@@ -1,5 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+    <xs:simpleType name="filterType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="objloader" />
+            <xs:enumeration value="geotiffloader" />
+            <xs:enumeration value="xyzloader" />
+            <xs:enumeration value="detailedvoxels" />
+            <xs:enumeration value="translate" />
+            <xs:enumeration value="rotate" />
+            <xs:enumeration value="scale" />
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="axisType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="x" />
+            <xs:enumeration value="y" />
+            <xs:enumeration value="z" />
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="paramkeyType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="filepath" />
+            <xs:enumeration value="efilepath" />
+            <xs:enumeration value="separator" />
+            <xs:enumeration value="voxelSize" />
+            <xs:enumeration value="estimateNormals" />
+            <xs:enumeration value="defaultNormal" />
+            <xs:enumeration value="normalXIndex" />
+            <xs:enumeration value="normalYIndex" />
+            <xs:enumeration value="normalZIndex" />
+            <xs:enumeration value="intersectionMode" />
+            <xs:enumeration value="intersectionArgument" />
+            <xs:enumeration value="randomShift" />
+            <xs:enumeration value="matfile" />
+            <xs:enumeration value="matname" />
+            <xs:enumeration value="randomMaterials" />
+            <xs:enumeration value="randomRange" />
+            <xs:enumeration value="offset" />
+            <xs:enumeration value="onGround" />
+            <xs:enumeration value="rotation" />
+            <xs:enumeration value="scale" />
+        </xs:restriction>
+    </xs:simpleType>
+
     <xs:element name="document">
         <xs:complexType>
             <xs:sequence>
@@ -20,19 +66,19 @@
                                                                         <xs:simpleContent>
                                                                             <xs:extension base="xs:string">
                                                                                 <xs:attribute type="xs:byte" name="angle_deg" use="optional"/>
-                                                                                <xs:attribute type="xs:string" name="axis" use="optional"/>
+                                                                                <xs:attribute type="axisType" name="axis" use="optional"/>
                                                                             </xs:extension>
                                                                         </xs:simpleContent>
                                                                     </xs:complexType>
                                                                 </xs:element>
                                                             </xs:sequence>
                                                             <xs:attribute type="xs:string" name="type" use="required"/>
-                                                            <xs:attribute type="xs:string" name="key" use="required"/>
+                                                            <xs:attribute type="paramkeyType" name="key" use="required"/>
                                                             <xs:attribute type="xs:string" name="value" use="optional"/>
                                                         </xs:complexType>
                                                     </xs:element>
                                                 </xs:sequence>
-                                                <xs:attribute type="xs:string" name="type" use="required"/>
+                                                <xs:attribute type="filterType" name="type" use="required"/>
                                             </xs:complexType>
                                         </xs:element>
                                     </xs:sequence>

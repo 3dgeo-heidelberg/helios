@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
     <xs:element name="document">
         <xs:complexType>
             <xs:sequence>
@@ -46,8 +47,8 @@
                                                     <xs:extension base="xs:string">
                                                         <xs:attribute type="xs:float" name="x" use="required"/>
                                                         <xs:attribute type="xs:float" name="y" use="required"/>
-                                                        <xs:attribute type="xs:float" name="z" use="required"/>
-                                                        <xs:attribute type="xs:float" name="movePerSec_m" use="required"/>
+                                                        <xs:attribute type="xs:float" name="z" use="optional"/>
+                                                        <xs:attribute type="xs:float" name="movePerSec_m" use="optional"/>
                                                         <xs:attribute type="xs:boolean" name="onGround" use="optional"/>
                                                         <xs:attribute type="xs:boolean" name="stopAndTurn" use="optional"/>
                                                         <xs:attribute type="xs:boolean" name="smoothTurn" use="optional"/>
