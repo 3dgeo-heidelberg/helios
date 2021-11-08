@@ -334,7 +334,7 @@ public:
      *  all primitives:
      * \f[
      *  t_0 : \mathrm{ILOT} = C_T = \frac{1}{S_A(R)} \left[
-     *      C_lS_A(R) + C_oS_A(l)N_o(R)
+     *      C_lS_A(R) + C_oS_A(R)N_o(R)
      *  \right]
      * \f]
      *

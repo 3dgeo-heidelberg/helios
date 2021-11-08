@@ -456,7 +456,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>boost::serialization
 
 <p>Build children nodes using \(C_T\) heuristic to handle KDTree in-depth partitioning. </p>
 <p>If root node, then by default assume it is a leaf node containing all primitives: </p><p class="formulaDsp">
-\[ t_0 : \mathrm{ILOT} = C_T = \frac{1}{S_A(R)} \left[ C_lS_A(R) + C_oS_A(l)N_o(R) \right] \]
+\[ t_0 : \mathrm{ILOT} = C_T = \frac{1}{S_A(R)} \left[ C_lS_A(R) + C_oS_A(R)N_o(R) \right] \]
 </p>
 <p>After this, speculate its cost if it is make an interior node with its primitives being splitted into 2 leaf nodes: </p><p class="formulaDsp">
 \[ C_{Sr} = \frac{1}{S_A(R)} \left[ C_i S_A(R) + C_l \sum_{l=1}^{2} {S_A(l)} + C_o \sum_{l=1}^{2} {S_A(l)N_o(l)} \right] \]
