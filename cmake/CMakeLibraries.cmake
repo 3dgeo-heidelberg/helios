@@ -20,11 +20,10 @@ if(PYTHON_BINDING)
         set(PYTHON_INCLUDE_DIRS ${PYTHON_PATH}/include)
         set(PYTHON_LIBRARIES ${PYTHON_PATH}/libs/python${PYTHON_VERSION}.lib)
         else()
-
             if (EXISTS ${PYTHON_PATH}/include/python${MAJOR}.${MINOR}m)
-                set(PYTHON_INCLUDE_DIRS${PYTHON_PATH}/include/python${MAJOR}.${MINOR}m)
+                set(PYTHON_INCLUDE_DIRS ${PYTHON_PATH}/include/python${MAJOR}.${MINOR}m)
             elseif(EXISTS ${PYTHON_PATH}/include/python${MAJOR}.${MINOR})
-                set(PYTHON_INCLUDE_DIRS${PYTHON_PATH}/include/python${MAJOR}.${MINOR})
+                set(PYTHON_INCLUDE_DIRS ${PYTHON_PATH}/include/python${MAJOR}.${MINOR})
             endif()
 
             if (EXISTS ${PYTHON_PATH}/lib/libpython${MAJOR}.${MINOR}m.so)
