@@ -183,7 +183,7 @@ using python
   - ``` ./bootstrap.sh```
   - ``` ./b2 cxxflags=-fPIC python=3.8```
    
-For allowing dynamic Boost linkage, execute ```sudo ./b2 install```
+For allowing dynamic Boost linkage, execute ```sudo ./b2 install python=3.8```
 
 ##### Helios
 - The path to the custom Python root directory must be provided to CMake:
