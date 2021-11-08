@@ -81,7 +81,7 @@ all the libraries must be built from scratch:
 
 ### Helios Dependencies
 
-- ```apt install cmake make gcc g++ libarmadillo-dev python3 python3-pip libpython3.8-dev unzip```
+- ```apt install cmake make gcc g++ python3 python3-pip libpython3.8-dev unzip```
 
 #### Armadillo
 
