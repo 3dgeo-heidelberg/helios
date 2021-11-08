@@ -69,7 +69,7 @@ make
 ```
 Build can be accelerated using multithreading.
 The number of threads can be specified with -j argument.
-For instance, to compil using 6 threads:
+For instance, to compile using 6 threads:
 ```
 make -j 6
 ```
@@ -81,7 +81,7 @@ all the libraries must be built from scratch:
 
 ### Helios Dependencies
 
-- ```apt install cmake make gcc g++ python3 p ython3-pip libpython3.8-dev unzip```
+- ```apt install cmake make gcc g++ python3 python3-pip libpython3.8-dev unzip```
 
 #### Armadillo
 
@@ -117,28 +117,23 @@ The linkage against Boost libraries can be performed both statically and dynamic
 - ```wget https://boostorg.jfrog.io/artifactory/main/release/1.76.0/source/boost_1_76_0.tar.gz```
 - ```tar -xzvf boost_1_76_0.tar.gz```
 - ```mv boost_1_76_0 boost && cd boost```
-- ```./bootstrap.sh --with-python=python3.8```
+- ```./bootstrap.sh --with-python=python3.8``` In order to use a custom Python installation, please see ["Custom Python Installation"](#Custom Python Installation)
 - ```./b2 cxxflags=-fPIC```
 
 If you want static linkage, the boost installation ends here.
-
-In order to use a custom Python installation, please see ["Custom Python Installation"](#Custom Python Installation)
 
 For allow dynamic linkage, execute the following command ||
 IMPORTANT: Remove completely any previous existing Boost installation before continue.
 
 - ```./b2 install```
 
-#### Proj
-- ```apt install pkg-config libsqlite3-dev sqlite3 libtiff5-dev libcurl4-openssl-dev```
-- ```wget http://download.osgeo.org/proj/proj-8.0.0.tar.gz```
-- ```tar -xzvf proj-8.0.0.tar.gz```
-- ```cd proj-8.0.0 && ./configure && make && make install```
-
 #### GDAL
-- ```wget https://github.com/OSGeo/gdal/releases/download/v3.3.0/gdal-3.3.0.tar.gz --no-check-certificate ```
-- ```tar -xzvf gdal-3.3.0.tar.gz```
-- ```cd gdal-3.3.0 && ./configure && make && make install```
+- ```apt install pkg-config libsqlite3-dev sqlite3 libtiff5-dev libcurl4-openssl-dev```
+- ```wget http://download.osgeo.org/proj/proj-8.0.0.tar.gz https://github.com/OSGeo/gdal/releases/download/v3.3.0/gdal-3.3.0.tar.gz --no-check-certificate```
+- ```tar -xzvf proj-8.0.0.tar.gz && tar -xzvf gdal-3.3.0.tar.gz```
+- ```mv gdal-3.3.0 gdal && mv proj-8.0.0 proj```
+- ```cd proj && ./configure --prefix=$PWD/../gdal/projlib && make && make install```
+- ```cd ../gdal && ./configure --prefix=$PWD --with-proj=$PWD/projlib && make && make install```
 
 #### PyHelios Dependencies
 
@@ -185,7 +180,7 @@ using python
 ```
 - Build Boost with the following commands:
   - ```cd lib/boost```
-  - ``` ./bootstrap.sh --with-python=python3.8```
+  - ``` ./bootstrap.sh```
   - ``` ./b2 cxxflags=-fPIC python=3.8```
    
 For allowing dynamic Boost linkage, execute ```sudo ./b2 install```
