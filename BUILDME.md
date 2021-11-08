@@ -81,7 +81,7 @@ all the libraries must be built from scratch:
 
 ### Helios Dependencies
 
-- ```apt install cmake make gcc g++ python3 python3-pip libpython3.8-dev unzip```
+- ```apt install cmake make gcc g++ python3 p ython3-pip libpython3.8-dev unzip```
 
 #### Armadillo
 
@@ -90,7 +90,7 @@ all the libraries must be built from scratch:
 - ```mv armadillo-10.6.2 armadillo && cd armadillo```
 - ```./configure && make && sudo make install```
 
-####GLM
+#### GLM
 
 Can be installed both by means of a package manager or building from source:
 
