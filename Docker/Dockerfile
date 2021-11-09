@@ -4,7 +4,10 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 WORKDIR /home
 RUN apt update && apt install -y gcc g++ cmake make git wget unzip && \
-git clone https://github.com/3dgeo-heidelberg/helios.git
+git clone --branch v1.0.9 https://github.com/3dgeo-heidelberg/helios.git
+
+WORKDIR /home/helios
+RUN git switch -c v1.0.9
 
 WORKDIR /home/helios/lib
 
