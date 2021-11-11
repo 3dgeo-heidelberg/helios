@@ -24,13 +24,13 @@ jobs:
       - name: Update package lists
         run: sudo apt update
 
-#      - name: Cache Armadillo, GDAL, Boost and LASTools
-#        id: cache-boost-lastools-armadillo
-#        uses: actions/cache@v2
-#        with:
-#          path: |
-#            ${{github.workspace}}/lib
-#          key: ${{ runner.os }}-boost.1.71-lastools-armadillo-latest
+      - name: Cache Armadillo, GDAL, Boost and LASTools
+        id: cache-boost-lastools-armadillo
+        uses: actions/cache@v2
+        with:
+          path: |
+            ${{github.workspace}}/lib
+          key: ${{ runner.os }}-boost.1.71-lastools-armadillo-latest
 
 
         ##### ARMADILLO #####
@@ -171,7 +171,10 @@ jobs:
 
       - name: Build
         # Build your program with the given configuration
-        run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
+        run: |
+          ls
+          ls/lib
+          cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
 
 
       - name: ls
