@@ -24,13 +24,13 @@ jobs:
       - name: Update package lists
         run: sudo apt update
 
-      - name: Cache boost and lastools
-        id: cache-boost-lastools-armadillo
-        uses: actions/cache@v2
-        with:
-          path: |
-            ${{github.workspace}}/lib
-          key: ${{ runner.os }}-boost.1.71-lastools-armadillo-latest
+#      - name: Cache boost and lastools
+#        id: cache-boost-lastools-armadillo
+#        uses: actions/cache@v2
+#        with:
+#          path: |
+#            ${{github.workspace}}/lib
+#          key: ${{ runner.os }}-boost.1.71-lastools-armadillo-latest
 
 
         ##### ARMADILLO #####
@@ -38,28 +38,35 @@ jobs:
         if: steps.cache-boost-lastools-armadillo.outputs.cache-hit != 'true'
         run: |
           wget -O armadillo.tar.xz http://sourceforge.net/projects/arma/files/armadillo-10.6.2.tar.xz && tar xf armadillo.tar.xz && mv armadillo-10.6.2 armadillo
-          cd lib/armadillo && ./configure -DCMAKE_INSTALL_PREFIX=. && make && make install
+          cd armadillo && ./configure -DCMAKE_INSTALL_PREFIX=. && make && make install
 
-        ##### Boost #####
-      - name: Build Boost
-        if: steps.cache-boost-lastools-armadillo.outputs.cache-hit != 'true'
-        run: wget https://boostorg.jfrog.io/artifactory/main/release/1.76.0/source/boost_1_76_0.tar.gz && tar -xzvf boost_1_76_0.tar.gz && mv boost_1_76_0 boost && cd boost
-      - name: Boost Bootstrap && Compilation
-        if: steps.cache-boost-lastools-armadillo.outputs.cache-hit != 'true'
-        run: ./bootstrap.sh --with-python=python3.8
-        working-directory: ${{github.workspace}}/lib/boost
-      - name: Boost Compilation
-        if: steps.cache-boost-lastools-armadillo.outputs.cache-hit != 'true'
-        run: ./b2 cxxflags=-fPIC
-        working-directory: ${{github.workspace}}/lib/boost
 
-        ##### LasTools #####
-      - name: Build LASTools
+        ##### GDAL #####
+      - name: Build GDAL
         if: steps.cache-boost-lastools-armadillo.outputs.cache-hit != 'true'
         run: |
-          wget -O LAStools.zip http://lastools.github.io/download/LAStools.zip
-          unzip LAStools.zip -d ${{github.workspace}}/lib
-          cd lib/LAStools && cmake . && make
+          sudo apt install -y pkg-config libsqlite3-dev sqlite3 libtiff5-dev libcurl4-openssl-dev
+          wget http://download.osgeo.org/proj/proj-8.0.0.tar.gz https://github.com/OSGeo/gdal/releases/download/v3.3.0/gdal-3.3.0.tar.gz --no-check-certificate
+          tar -xzvf proj-8.0.0.tar.gz && tar -xzvf gdal-3.3.0.tar.gz
+          mv gdal-3.3.0 gdal && mv proj-8.0.0 proj
+          cd proj && ./configure --prefix=$PWD/../gdal/projlib && make && make install
+          cd gdal && ./configure --prefix=$PWD --with-proj=$PWD/projlib && make && make install
+
+#        ##### Boost #####
+#      - name: Build Boost
+#        if: steps.cache-boost-lastools-armadillo.outputs.cache-hit != 'true'
+#        run: |
+#          wget https://boostorg.jfrog.io/artifactory/main/release/1.76.0/source/boost_1_76_0.tar.gz && tar -xzvf boost_1_76_0.tar.gz && mv boost_1_76_0 boost && cd boost
+#          ./bootstrap.sh --with-python=python3.8
+#          ./b2 cxxflags=-fPIC
+#
+#        ##### LasTools #####
+#      - name: Build LASTools
+#        if: steps.cache-boost-lastools-armadillo.outputs.cache-hit != 'true'
+#        run: |
+#          wget -O LAStools.zip http://lastools.github.io/download/LAStools.zip
+#          unzip LAStools.zip -d ${{github.workspace}}/lib
+#          cd LAStools && cmake . && make
 
 #  compile:
 #    # The CMake configure and build commands are platform agnostic and should work equally
