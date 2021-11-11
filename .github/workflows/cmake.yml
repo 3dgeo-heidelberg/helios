@@ -11,7 +11,6 @@ env:
   BUILD_TYPE: Release
 
 jobs:
-
   build-libs:
     runs-on: ubuntu-latest
 
@@ -33,15 +32,16 @@ jobs:
             ${{github.workspace}}/lib
           key: ${{ runner.os }}-boost.1.71-lastools-armadillo-latest
 
-      - name: Download armadillo
-        if: steps.cache-boost-lastools-armadillo.outputs.cache-hit != 'true'
-        run: wget -O armadillo.tar.xz http://sourceforge.net/projects/arma/files/armadillo-10.6.2.tar.xz && tar xf armadillo.tar.xz && mv armadillo-10.6.2 armadillo
-      - name: Install armadillo
-        if: steps.cache-boost-lastools-armadillo.outputs.cache-hit != 'true'
-        run: ./configure -DCMAKE_INSTALL_PREFIX=. && make && sudo make install
-        working-directory: ${{github.workspace}}/lib/armadillo
 
-      - name: Download and inflate Boost
+        ##### ARMADILLO #####
+      - name: Build Armadillo
+        if: steps.cache-boost-lastools-armadillo.outputs.cache-hit != 'true'
+        run: |
+        wget -O armadillo.tar.xz http://sourceforge.net/projects/arma/files/armadillo-10.6.2.tar.xz && tar xf armadillo.tar.xz && mv armadillo-10.6.2 armadillo
+        cd lib/armadillo && ./configure -DCMAKE_INSTALL_PREFIX=. && make && sudo make install
+
+        ##### Boost #####
+      - name: Build Boost
         if: steps.cache-boost-lastools-armadillo.outputs.cache-hit != 'true'
         run: wget https://boostorg.jfrog.io/artifactory/main/release/1.76.0/source/boost_1_76_0.tar.gz && tar -xzvf boost_1_76_0.tar.gz && mv boost_1_76_0 boost && cd boost
       - name: Boost Bootstrap && Compilation
@@ -53,73 +53,70 @@ jobs:
         run: ./b2 cxxflags=-fPIC
         working-directory: ${{github.workspace}}/lib/boost
 
-      - name: Download and install LASTools
+        ##### LasTools #####
+      - name: Build LASTools
         if: steps.cache-boost-lastools-armadillo.outputs.cache-hit != 'true'
-        run: wget -O LAStools.zip http://lastools.github.io/download/LAStools.zip
-      - name: Unzip LAStools
-        if: steps.cache-boost-lastools-armadillo.outputs.cache-hit != 'true'
-        run: unzip LAStools.zip -d ${{github.workspace}}/lib
-      - name: Build LAStools
-        if: steps.cache-boost-lastools-armadillo.outputs.cache-hit != 'true'
-        working-directory: ${{github.workspace}}/lib/LAStools
-        run: cmake . && make
+        run: |
+        wget -O LAStools.zip http://lastools.github.io/download/LAStools.zip
+        unzip LAStools.zip -d ${{github.workspace}}/lib
+        cd lib/LAStools && cmake . && make
 
-  compile:
-    # The CMake configure and build commands are platform agnostic and should work equally
-    # well on Windows or Mac.  You can convert this to a matrix build if you need
-    # cross-platform coverage.
-    # See: https://docs.github.com/en/free-pro-team@latest/actions/learn-github-actions/managing-complex-workflows#using-a-build-matrix
-
-    needs: [build-libs]
-
-    runs-on: ubuntu-latest
-
-
-    defaults:
-      run:
-        working-directory: ${{github.workspace}}
-
-    steps:
-    - uses: actions/checkout@v2
-    
-    - name: Update package lists
-      run: sudo apt update    
-      
-    - name: Install required packages
-      run: sudo apt-get install -y cmake libgdal-dev libglm-dev zip unzip xz-utils
-
-    - name: Python Libraries
-      run: sudo apt-get install -y libpython3-dev
-
-    - name: Load libraries from cache
-      id: cache-boost-lastools-armadillo
-      uses: actions/cache@v2
-      with:
-        path: |
-          ${{github.workspace}}/lib
-        key: ${{ runner.os }}-boost.1.71-lastools-armadillo-latest
-
-      
-    - name: Configure CMake
-      # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
-      # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
-      run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DPYTHON_BINDING=1 -DPYTHON_VERSION=38 -DCMAKE_RUNTIME_OUTPUT_DIRECTORY:STRING=${{github.workspace}}/build
-
-    - name: Build
-      # Build your program with the given configuration
-      run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
-
-
-    - name: ls
-      run: ls -al .
-      
-    - name: Test
-      # Execute tests defined by the CMake configuration.
-      # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
-      run: ${{github.workspace}}/build/helios --test
-
-    - name: Save compiled executable
-      uses: actions/upload-artifact@v2
-      with:
-          name: linux-executable
-          path: ${{github.workspace}}/build/helios*
+#  compile:
+#    # The CMake configure and build commands are platform agnostic and should work equally
+#    # well on Windows or Mac.  You can convert this to a matrix build if you need
+#    # cross-platform coverage.
+#    # See: https://docs.github.com/en/free-pro-team@latest/actions/learn-github-actions/managing-complex-workflows#using-a-build-matrix
+#
+#    needs: [build-libs]
+#
+#    runs-on: ubuntu-latest
+#
+#
+#    defaults:
+#      run:
+#        working-directory: ${{github.workspace}}
+#
+#    steps:
+#    - uses: actions/checkout@v2
+#
+#    - name: Update package lists
+#      run: sudo apt update
+#
+#    - name: Install required packages
+#      run: sudo apt-get install -y cmake libgdal-dev libglm-dev zip unzip xz-utils
+#
+#    - name: Python Libraries
+#      run: sudo apt-get install -y libpython3-dev
+#
+#    - name: Load libraries from cache
+#      id: cache-boost-lastools-armadillo
+#      uses: actions/cache@v2
+#      with:
+#        path: |
+#          ${{github.workspace}}/lib
+#        key: ${{ runner.os }}-boost.1.71-lastools-armadillo-latest
+#
+#
+#    - name: Configure CMake
+#      # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
+#      # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
+#      run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DPYTHON_BINDING=1 -DPYTHON_VERSION=38 -DCMAKE_RUNTIME_OUTPUT_DIRECTORY:STRING=${{github.workspace}}/build
+#
+#    - name: Build
+#      # Build your program with the given configuration
+#      run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
+#
+#
+#    - name: ls
+#      run: ls -al .
+#
+#    - name: Test
+#      # Execute tests defined by the CMake configuration.
+#      # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
+#      run: ${{github.workspace}}/build/helios --test
+#
+#    - name: Save compiled executable
+#      uses: actions/upload-artifact@v2
+#      with:
+#          name: linux-executable
+#          path: ${{github.workspace}}/build/helios*
