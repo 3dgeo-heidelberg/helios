@@ -2,7 +2,7 @@ name: CMake
 
 on:
   push:
-    branches: [ main, dev ]
+    branches: [ main, dev, pyhelios-CI ]
   pull_request:
     branches: [ main, dev ]
 
