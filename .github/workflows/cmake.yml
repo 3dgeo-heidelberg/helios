@@ -30,7 +30,7 @@ jobs:
         with:
           path: |
             ${{github.workspace}}/lib
-          key: ${{ runner.os }}-boost.1.71-lastools-armadillo-latest
+          key: ${{ runner.os }}-boost.1.76-gdal-lastools-armadillo-latest
 
 
         ##### ARMADILLO #####
@@ -48,9 +48,9 @@ jobs:
           sudo apt install -y pkg-config libsqlite3-dev sqlite3 libtiff5-dev libcurl4-openssl-dev
           wget http://download.osgeo.org/proj/proj-8.0.0.tar.gz https://github.com/OSGeo/gdal/releases/download/v3.3.0/gdal-3.3.0.tar.gz --no-check-certificate
           tar -xzvf proj-8.0.0.tar.gz && tar -xzvf gdal-3.3.0.tar.gz
-          mv gdal-3.3.0 gdal && mv proj-8.0.0 proj
-          cd proj && ./configure --prefix=$PWD/../gdal/projlib && make && make install
-          cd ../gdal && ./configure --prefix=$PWD --with-proj=$PWD/projlib && make && make install
+          mv gdal-3.3.0 ${{github.workspace}}/lib/gdal && mv proj-8.0.0 ${{github.workspace}}/lib/proj
+          cd ${{github.workspace}}/lib/proj && ./configure --prefix=${{github.workspace}}/lib/gdal/projlib && make && make install
+          cd ${{github.workspace}}/lib/gdal && ./configure --prefix=${{github.workspace}}/lib/gdal --with-proj=${{github.workspace}}/lib/gdal/projlib && make && make install
 
         ##### Boost #####
       - name: Build Boost
@@ -100,7 +100,7 @@ jobs:
       with:
         path: |
           ${{github.workspace}}/lib
-        key: ${{ runner.os }}-boost.1.71-lastools-armadillo-latest
+        key: ${{ runner.os }}-boost.1.76-gdal-lastools-armadillo-latest
 
 
     - name: Configure CMake
@@ -159,7 +159,7 @@ jobs:
         with:
           path: |
             ${{github.workspace}}/lib
-          key: ${{ runner.os }}-boost.1.71-lastools-armadillo-latest
+          key: ${{ runner.os }}-boost.1.76-gdal-lastools-armadillo-latest
 
       - name: Install Boost in the system
         run: cd lib/boost && sudo ./b2 install
@@ -167,13 +167,13 @@ jobs:
       - name: Configure CMake
         # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
         # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
-        run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DPYTHON_BINDING=1 -DPYTHON_VERSION=38 -DBOOST_DYNAMIC_LIBS=1 -DCMAKE_RUNTIME_OUTPUT_DIRECTORY:STRING=${{github.workspace}}/build
+        run: |
+          ls ./lib
+          cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DPYTHON_BINDING=1 -DPYTHON_VERSION=38 -DBOOST_DYNAMIC_LIBS=1 -DCMAKE_RUNTIME_OUTPUT_DIRECTORY:STRING=${{github.workspace}}/build
 
       - name: Build
         # Build your program with the given configuration
-        run: |
-          ls
-          ls/lib
+        run:
           cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
 
 
