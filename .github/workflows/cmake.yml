@@ -37,8 +37,8 @@ jobs:
       - name: Build Armadillo
         if: steps.cache-boost-lastools-armadillo.outputs.cache-hit != 'true'
         run: |
-        wget -O armadillo.tar.xz http://sourceforge.net/projects/arma/files/armadillo-10.6.2.tar.xz && tar xf armadillo.tar.xz && mv armadillo-10.6.2 armadillo
-        cd lib/armadillo && ./configure -DCMAKE_INSTALL_PREFIX=. && make && sudo make install
+          wget -O armadillo.tar.xz http://sourceforge.net/projects/arma/files/armadillo-10.6.2.tar.xz && tar xf armadillo.tar.xz && mv armadillo-10.6.2 armadillo
+          cd lib/armadillo && ./configure -DCMAKE_INSTALL_PREFIX=. && make && make install
 
         ##### Boost #####
       - name: Build Boost
@@ -57,9 +57,9 @@ jobs:
       - name: Build LASTools
         if: steps.cache-boost-lastools-armadillo.outputs.cache-hit != 'true'
         run: |
-        wget -O LAStools.zip http://lastools.github.io/download/LAStools.zip
-        unzip LAStools.zip -d ${{github.workspace}}/lib
-        cd lib/LAStools && cmake . && make
+          wget -O LAStools.zip http://lastools.github.io/download/LAStools.zip
+          unzip LAStools.zip -d ${{github.workspace}}/lib
+          cd lib/LAStools && cmake . && make
 
 #  compile:
 #    # The CMake configure and build commands are platform agnostic and should work equally
