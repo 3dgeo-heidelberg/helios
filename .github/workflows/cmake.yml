@@ -24,13 +24,13 @@ jobs:
       - name: Update package lists
         run: sudo apt update
 
-      - name: Cache Armadillo, GDAL, Boost and LASTools
-        id: cache-boost-lastools-armadillo
-        uses: actions/cache@v2
-        with:
-          path: |
-            ${{github.workspace}}/lib
-          key: ${{ runner.os }}-boost.1.71-lastools-armadillo-latest
+#      - name: Cache Armadillo, GDAL, Boost and LASTools
+#        id: cache-boost-lastools-armadillo
+#        uses: actions/cache@v2
+#        with:
+#          path: |
+#            ${{github.workspace}}/lib
+#          key: ${{ runner.os }}-boost.1.71-lastools-armadillo-latest
 
 
         ##### ARMADILLO #####
@@ -161,13 +161,13 @@ jobs:
             ${{github.workspace}}/lib
           key: ${{ runner.os }}-boost.1.71-lastools-armadillo-latest
 
+      - name: Install Boost in the system
+        run: cd lib/boost && sudo ./b2 install
 
       - name: Configure CMake
         # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
         # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
-        run: |
-          cd lib/boost && sudo ./b2 install && cd ../../
-          cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DPYTHON_BINDING=1 -DPYTHON_VERSION=38 -DBOOST_DYNAMIC_LIBS=1 -DCMAKE_RUNTIME_OUTPUT_DIRECTORY:STRING=${{github.workspace}}/build
+        run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DPYTHON_BINDING=1 -DPYTHON_VERSION=38 -DBOOST_DYNAMIC_LIBS=1 -DCMAKE_RUNTIME_OUTPUT_DIRECTORY:STRING=${{github.workspace}}/build
 
       - name: Build
         # Build your program with the given configuration
