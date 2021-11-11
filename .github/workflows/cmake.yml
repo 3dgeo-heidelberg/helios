@@ -20,6 +20,8 @@ jobs:
         working-directory: ${{github.workspace}}/lib
 
     steps:
+      - uses: actions/checkout@v2
+
       - name: Update package lists
         run: sudo apt update
 
@@ -67,7 +69,11 @@ jobs:
     # well on Windows or Mac.  You can convert this to a matrix build if you need
     # cross-platform coverage.
     # See: https://docs.github.com/en/free-pro-team@latest/actions/learn-github-actions/managing-complex-workflows#using-a-build-matrix
+
+    needs: [build-libs]
+
     runs-on: ubuntu-latest
+
 
     defaults:
       run:
