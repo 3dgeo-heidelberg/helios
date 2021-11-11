@@ -18,6 +18,10 @@ jobs:
     # See: https://docs.github.com/en/free-pro-team@latest/actions/learn-github-actions/managing-complex-workflows#using-a-build-matrix
     runs-on: ubuntu-latest
 
+    defaults:
+      run:
+        working-directory: ${{github.workspace}}/lib
+
     steps:
     - uses: actions/checkout@v2
     
@@ -25,42 +29,46 @@ jobs:
       run: sudo apt update    
       
     - name: Install required packages
-      run: sudo apt-get install -y cmake libboost-dev libboost-system-dev libboost-thread-dev libboost-regex-dev libboost-filesystem-dev libboost-iostreams-dev libboost-python-dev libgdal-dev libglm-dev zip unzip xz-utils
-      
-    - name: Download armadillo
-      run: mkdir armadillo && cd armadillo && wget -O armadillo.tar.xz http://sourceforge.net/projects/arma/files/armadillo-10.6.2.tar.xz && tar xf armadillo.tar.xz && cd ..
-    - name: Install armadillo
-      run: ./configure && make && sudo make install
-      working-directory: armadillo/armadillo-10.6.2
+      run: sudo apt-get install -y cmake libgdal-dev libglm-dev zip unzip xz-utils
+
 
     - name: Cache boost and lastools
-      id: cache-boost-lastools
+      id: cache-boost-lastools-armadillo
       uses: actions/cache@v2
       with:
         path: |
           ${{github.workspace}}/lib
-        key: ${{ runner.os }}-boost.1.71-lastools-latest
-   
-    - name: Download and install Boost
-      if: steps.cache-boost-lastools.outputs.cache-hit != 'true'
-      # You may pin to the exact commit or the version.
-      # uses: MarkusJx/install-boost@072e2dd3b37f8652cda1b00bcaca9bcfe06b7278
-      uses: MarkusJx/install-boost@v1.0.1
-      with:
-        # The boost version to install, e.g. "1.73.0"
-        boost_version: 1.76.0
-        # The platform version boost was compiled on, e.g. "18.04". May only be used on linux
-        platform_version: 20.04
-        boost_install_dir: ${{github.workspace}}/lib
-   
+        key: ${{ runner.os }}-boost.1.71-lastools-armadillo-latest
+
+    - name: Download armadillo
+      if: steps.cache-boost-lastools-armadillo.outputs.cache-hit != 'true'
+      run: wget -O armadillo.tar.xz http://sourceforge.net/projects/arma/files/armadillo-10.6.2.tar.xz && tar xf armadillo.tar.xz && mv armadillo-10.6.2 armadillo
+    - name: Install armadillo
+      if: steps.cache-boost-lastools-armadillo.outputs.cache-hit != 'true'
+      run: ./configure -DCMAKE_INSTALL_PREFIX=. && make && sudo make install
+      working-directory: ${{github.workspace}}/lib/armadillo
+
+    - name: Download and inflate Boost
+      if: steps.cache-boost-lastools-armadillo.outputs.cache-hit != 'true'
+      run: wget https://boostorg.jfrog.io/artifactory/main/release/1.76.0/source/boost_1_76_0.tar.gz && tar -xzvf boost_1_76_0.tar.gz && mv boost_1_76_0 boost && cd boost
+    - name: Boost Bootstrap && Compilation
+      if: steps.cache-boost-lastools-armadillo.outputs.cache-hit != 'true'
+      run: ./bootstrap.sh --with-python=python3.8
+      working-directory: ${{github.workspace}}/lib/boost
+    - name: Boost Compilation
+      if: steps.cache-boost-lastools-armadillo.outputs.cache-hit != 'true'
+      run: ./b2 cxxflags=-fPIC
+      working-directory: ${{github.workspace}}/lib/boost
+
+
     - name: Download and install LASTools
-      if: steps.cache-boost-lastools.outputs.cache-hit != 'true'
+      if: steps.cache-boost-lastools-armadillo.outputs.cache-hit != 'true'
       run: wget -O LAStools.zip http://lastools.github.io/download/LAStools.zip
     - name: Unzip LAStools
-      if: steps.cache-boost-lastools.outputs.cache-hit != 'true'
+      if: steps.cache-boost-lastools-armadillo.outputs.cache-hit != 'true'
       run: unzip LAStools.zip -d ${{github.workspace}}/lib
     - name: Build LAStools
-      if: steps.cache-boost-lastools.outputs.cache-hit != 'true'
+      if: steps.cache-boost-lastools-armadillo.outputs.cache-hit != 'true'
       working-directory: ${{github.workspace}}/lib/LAStools
       run: cmake . && make
 
@@ -72,11 +80,14 @@ jobs:
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
       # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
       run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DPYTHON_BINDING=1 -DPYTHON_VERSION=38 -DCMAKE_RUNTIME_OUTPUT_DIRECTORY:STRING=${{github.workspace}}/build
+      working-directory: ${{github.workspace}}
 
     - name: Build
       # Build your program with the given configuration
       run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
-      
+      working-directory: ${{github.workspace}}
+
+
     - name: ls
       working-directory: ${{github.workspace}}
       run: ls -al .
