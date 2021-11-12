@@ -89,7 +89,7 @@ jobs:
       run: sudo apt update
 
     - name: Install required packages
-      run: sudo apt-get install -y cmake libgdal-dev libglm-dev zip unzip xz-utils
+      run: sudo apt-get install -y cmake libglm-dev zip unzip xz-utils
 
     - name: Python Libraries
       run: sudo apt-get install -y libpython3-dev
