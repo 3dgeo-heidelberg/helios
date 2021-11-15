@@ -81,7 +81,21 @@ all the libraries must be built from scratch:
 
 ### Helios Dependencies
 
-- ```apt install cmake make gcc g++ libarmadillo-dev libglm-dev python3 python3-pip libpython3.8-dev unzip```
+- ```apt install cmake make gcc g++ libarmadillo-dev python3 python3-pip libpython3.8-dev unzip```
+
+
+####GLM
+
+Can be installed both by means of a package manager or building from source:
+
+- ```apt install libglm-dev```
+
+or
+
+- ```wget https://github.com/g-truc/glm/releases/download/0.9.9.8/glm-0.9.9.8.zip && unzip glm-0.9.9.8 && rm glm-0.9.9.8.zip```
+- ```cd glm && cmake . && make```
+
+When building from source, it is mandatory to rename the GLM directory to lib/glm
 
 #### LASTools
 
@@ -90,13 +104,20 @@ all the libraries must be built from scratch:
 - ```cd LAStools && cmake .  && make```
 
 #### Boost
-IMPORTANT: Remove completely any previous existing Boost installation before continue
+
+The linkage against Boost libraries can be performed both statically and dynamically.
 
 - ```wget https://boostorg.jfrog.io/artifactory/main/release/1.76.0/source/boost_1_76_0.tar.gz```
 - ```tar -xzvf boost_1_76_0.tar.gz```
-- ```cd boost_1_76_0```
+- ```mv boost_1_76_0 boost && cd boost```
 - ```./bootstrap.sh --with-python=python3.8```
 - ```./b2 cxxflags=-fPIC```
+
+If you want static linkage, the boost installation ends here.
+
+For allow dynamic linkage, execute the following command ||
+IMPORTANT: Remove completely any previous existing Boost installation before continue.
+
 - ```./b2 install```
 
 #### Proj
@@ -106,7 +127,7 @@ IMPORTANT: Remove completely any previous existing Boost installation before con
 - ```cd proj-8.0.0 && ./configure && make && make install```
 
 #### GDAL
-- ```wget https://github.com/OSGeo/gdal/releases/download/v3.2.1/gdal-3.3.0.tar.gz --no-check-certificate ```
+- ```wget https://github.com/OSGeo/gdal/releases/download/v3.3.0/gdal-3.3.0.tar.gz --no-check-certificate ```
 - ```tar -xzvf gdal-3.3.0.tar.gz```
 - ```cd gdal-3.3.0 && ./configure && make && make install```
 
@@ -114,9 +135,20 @@ IMPORTANT: Remove completely any previous existing Boost installation before con
 
 - ```pip3 install open3d```
 
-Back to the helios root directory, compile:
+Back to the helios root directory, configure the project:
+
+- Linking Boost statically:
 
 ```cmake -DCMAKE_BUILD_TYPE=Release -DPYTHON_BINDING=1 -DPYTHON_VERSION=38 .```
+
+- Linking Boost dynamically:
+
+```cmake -DCMAKE_BUILD_TYPE=Release -DPYTHON_BINDING=1 -DPYTHON_VERSION=38 -DBOOST_DYNAMIC_LIBS=1```
+
+Finally, compile Helios++:
+
+```make -jn``` where ```n``` is the amount of threads to be used in the compilation.
+
 
 In order to execute PyHelios scripts, libhelios.so path must be added to PYTHONPATH (default location: helios root directory):
 
@@ -208,24 +240,30 @@ Then build **Boost C++** using the following command:
 
 ```
 bootstrap.bat
-b2.exe -j6 -sNO_ZLIB=0 -sZLIB_INCLUDE="zlib-1.2.11" -sZLIB_SOURCE="zlib-1.2.11" address-model=64 link=static -python=3.6,3.7,3.8,3.9
+b2.exe -j6 -sNO_ZLIB=0 -sZLIB_INCLUDE="zlib-1.2.11" -sZLIB_SOURCE="zlib-1.2.11" address-model=64 link=static python=3.6,3.7,3.8,3.9
 ```
 
 You can later decide which version to build `pyhelios` for, see [Compiling source](#compiling-source).
 
 ##### OpenGLM Mathematics
 Simply download the [OpenGLM mathematics library](https://github.com/g-truc/glm/tags)
-and unzip it inside the helios-plusplus lib folder
+and unzip it inside the helios-plusplus lib folder. 
+
+Rename lib/glm-x.x.x.x/ to lib/glm/
 
 
 ##### GDAL with PROJ
 
-First create a folder named gdal inside the lib folder and download a precompiled version of the library,
-for instance from http://download.gisinternals.com/sdk/downloads/release-1900-x64-gdal-3-0-4-mapserver-7-4-3-libs.zip
+First, we need to download GDAL compiled binaries and headers, and the 
+generic installer for the GDAL core components from https://www.gisinternals.com/release.php
 
-Place header files (.h and .hpp) in the directory lib/gdal/include/ and lib files inside lib/gdal/lib/
-
-Finally, rename the lib/gdal/include/boost folder to lib/gdal/include/boost-gdal to avoid
+- Choose the appropriate option matching your compiler and architecture (MSVC2019, x64 for instance) for
+GDAL 3.x.x version. For example, "release-1928-x64-gdal-3-3-2-mapserver-7-6-4"
+- Download the files "release-1928-x64-gdal-3-3-2-mapserver-7-6-4-libs.zip" and
+"gdal-303-1928-x64-core.msi".
+- Create a folder named gdal inside the lib folder (lib/gdal) and extract the contents of the zip file there. lib/gdal/include and lib/gdal/lib must exist after the extraction.
+- Install the .msi file (By default, C:\Program Files\GDAL). Take note of the installation path.
+- Finally, rename the lib/gdal/include/boost folder to lib/gdal/include/boost-gdal to avoid
 conflicts when building helios++
 
 ##### LAStools library
@@ -249,6 +287,7 @@ Of course, it is possible to use different implementations.
 
 First, we need to download and install [Scilab](https://www.scilab.org).
 In this case we are going to use [Scilab 6.1.0 x64](https://www.scilab.org/download/6.1.0/scilab-6.1.0_x64.exe).
+By default, it is installed at C:\Program Files\scilab-6.1.0. Take note of the installation path.
 
 Now it is necessary to download [Armadillo](http://arma.sourceforge.net/download.html)
 and decompress it inside *lib/armadillo*.
@@ -315,9 +354,11 @@ If you are using scilab you are going to need linking all scilab dll files.
 By default they are located inside the same directory. But if you have moved them to your own folders,
 remember to include them all.
 
-There are two ways to modify the path:
+**By default, C:\Program Files\GDAL and C:\Program Files\scilab-6.1.0\bin must be added to the PATH.**
 
-**Session path**
+There are two ways to modify the PATH:
+
+#### Session PATH
 
 You can modify the path for the current session, for instance for the active command line.
 This way, changes are not going to be permanent neither for the user nor for the system.
@@ -327,7 +368,7 @@ It can be done with following command:
 set PATH=%PATH%;<path to gdal dll folder>;<path to lapack dll folder>
 ```
 
-**User/System path**
+#### User/System PATH
 
 It is possible to also modify the path at advanced system properties.
 For this right click on This-PC, then go to Properties and find advanced system properties.
