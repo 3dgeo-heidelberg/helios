@@ -14,6 +14,10 @@ import sys
 import os
 
 
+# ---  CONFIGURATION CONSTANTS  --- #
+# --------------------------------- #
+markOptimumTime = False  # If True, plots will mark optimum time point
+
 # ---  PREPARE OUTPUT DIRECTORY  --- #
 # ---------------------------------- #
 if len(sys.argv) < 2:
@@ -52,8 +56,35 @@ GDF = DF.groupby(BASE_GROUP_LIST, as_index=True)
 DFS = [GDF.get_group(g) for g in GDF.groups]
 
 
-# ---  PLOT  --- #
-# -------------- #
+# ---  PLOT n SUMMARY --- #
+# ----------------------- #
+def key_from_index(index):
+    kdtNum = index[0]
+    if kdtNum == 1:
+        return "KDT_SIMPLE"
+    elif kdtNum == 2:
+        return "KDT_SAH"
+    elif kdtNum == 3:
+        return "KDT_AXIS_SAH"
+    elif kdtNum == 4:
+        return "KDT_FAST_SAH"
+    else:
+        return "KDT_UNKNOWN"
+
+
+def type_from_index(index):
+    parallelNum = index[2]
+    chunkSize = index[3]
+    if parallelNum == 0:
+        if chunkSize < 0:
+            return "DYNAMIC"
+        return "STATIC"
+    elif parallelNum == 1:
+        return "WAREHOUSE"
+    else:
+        return "UNKNOWN"
+
+
 def title_from_index(index):
     # Extract subindices
     kdtNum = index[0]
@@ -111,6 +142,83 @@ def name_from_index(index):
         )
 
 
+# Function to handle summary of performance measurements
+def handle_summary(
+    summary, summaryKey, summaryType,
+    chunkSize, warehouseFactor, cores,
+    kdtTime, simTime, fullTime,
+    kdtSpeedup, simSpeedup, fullSpeedup
+):
+    minTimeArg = np.argmin(fullTime)
+    minTime = fullTime[minTimeArg]
+    sk = summary.get(summaryKey, None)
+    # If summary key does not exist in summary
+    if sk is None:
+        summary[summaryKey] = {
+            summaryType: {
+                'chunkSize': chunkSize,
+                'warehouseFactor': warehouseFactor,
+                'cores': cores[minTimeArg],
+                'kdtTime': kdtTime[minTimeArg],
+                'simTime': simTime[minTimeArg],
+                'fullTime': fullTime[minTimeArg],
+                'kdtSpeedup': kdtSpeedup[minTimeArg],
+                'simSpeedup': simSpeedup[minTimeArg],
+                'fullSpeedup': fullSpeedup[minTimeArg]
+            }
+        }
+    else:
+        skt = sk.get(summaryType, None)
+        # If summary key does exist in summary but summary type does not
+        # Or if given summary key-type has a smaller full computation time
+        if skt is None or skt['fullTime'] > minTime:
+            sk[summaryType] = {
+                'chunkSize': chunkSize,
+                'warehouseFactor': warehouseFactor,
+                'cores': cores[minTimeArg],
+                'kdtTime': kdtTime[minTimeArg],
+                'simTime': simTime[minTimeArg],
+                'fullTime': fullTime[minTimeArg],
+                'kdtSpeedup': kdtSpeedup[minTimeArg],
+                'simSpeedup': simSpeedup[minTimeArg],
+                'fullSpeedup': fullSpeedup[minTimeArg]
+            }
+
+
+# Function to print summary after it has been built
+def print_summary(summary):
+    print('\n\n\t\tSUMMARY\n\t=======================\n\n')
+    for skey in summary.keys():
+        print('{skey}:'.format(skey=skey))
+        sk = summary[skey]
+        for stype in sk.keys():
+            print('\t{stype}:'.format(stype=stype))
+            skt = sk[stype]
+            print(
+                '\t\tchunkSize: {chunkSize}\n'
+                '\t\twarehouseFactor: {warehouseFactor}\n'
+                '\t\tcores: {cores}\n'
+                '\t\tkdtTime: {kdtTime}\n'
+                '\t\tsimTime: {simTime}\n'
+                '\t\tfullTime: {fullTime}\n'
+                '\t\tkdtSpeedup: {kdtSpeedup}\n'
+                '\t\tsimSpeedup: {simSpeedup}\n'
+                '\t\tfullSpeedup: {fullSpeedup}\n'
+                '\n'
+                .format(
+                    chunkSize=skt['chunkSize'],
+                    warehouseFactor=skt['warehouseFactor'],
+                    cores=skt['cores'],
+                    kdtTime=skt['kdtTime'],
+                    simTime=skt['simTime'],
+                    fullTime=skt['fullTime'],
+                    kdtSpeedup=skt['kdtSpeedup'],
+                    simSpeedup=skt['simSpeedup'],
+                    fullSpeedup=skt['fullSpeedup']
+                )
+            )
+
+
 # Function to configure plots
 def configure_plot(
     ax, xlabel='Cores', ylabel='Seconds',
@@ -128,6 +236,7 @@ def configure_plot(
         axx.autoscale(enable=True, axis='both', tight=True)
 
 
+summary = {}
 for DF in DFS:
     # Extract data for the plot
     KDT = DF.drop('SimulationCores', axis=1).groupby(
@@ -141,18 +250,31 @@ for DF in DFS:
     kdtTime = [x for x in KDT['KDTBuildTime']]
     kdtTime1 = KDT['KDTBuildTime'].iloc[0]
     kdtSpeedup = [kdtTime1/x for x in KDT['KDTBuildTime']]
+    kdtTimeOptIdx = np.argmin(kdtTime)
     simCores = [x[5] for x in SIM.index]
     simTime = [x for x in SIM['SimulationTime']]
     simTime1 = SIM['SimulationTime'].iloc[0]
     simSpeedup = [simTime1/x for x in SIM['SimulationTime']]
+    simTimeOptIdx = np.argmin(simTime)
     fullTime = np.add(kdtTime, simTime)
     fullTime1 = fullTime[0]
-    fullSpeedup = [fullTime1/x for x in SIM['SimulationTime']]
+    fullSpeedup = [fullTime1/x for x in fullTime]
+    fullTimeOptIdx = np.argmin(fullTime)
+
+    # Fill summary
+    summaryKey = key_from_index(KDT.index[0])
+    summaryType = type_from_index(KDT.index[0])
+    handle_summary(
+        summary, summaryKey, summaryType,
+        KDT.index[0][3], KDT.index[0][4], simCores,
+        kdtTime, simTime, fullTime,
+        kdtSpeedup, simSpeedup, fullSpeedup
+    )
 
     # Debug section BEGIN ---
-    print('DF:\n', DF)
-    print('\nKDT:\n', KDT)
-    print('\nSIM:\n', SIM)
+    # print('DF:\n', DF)
+    # print('\nKDT:\n', KDT)
+    # print('\nSIM:\n', SIM)
     # --- Debug section END
 
     # Prepare plot
@@ -169,6 +291,16 @@ for DF in DFS:
         color='blue',
         label='KDT building time'
     )
+    if markOptimumTime:
+        ax.scatter(
+            kdtCores[kdtTimeOptIdx],
+            kdtTime[kdtTimeOptIdx],
+            s=64,
+            c='blue',
+            marker='o',
+            edgecolors='black',
+            zorder=4
+        )
     axx = ax.twinx()
     axx.plot(
         kdtCores,
@@ -198,6 +330,16 @@ for DF in DFS:
         color='green',
         label='Simulation time'
     )
+    if markOptimumTime:
+        ax.scatter(
+            simCores[simTimeOptIdx],
+            simTime[simTimeOptIdx],
+            s=64,
+            c='green',
+            marker='o',
+            edgecolors='black',
+            zorder=4
+        )
     axx = ax.twinx()
     axx.plot(
         simCores,
@@ -227,6 +369,16 @@ for DF in DFS:
         color='red',
         label='Total time'
     )
+    if markOptimumTime:
+        ax.scatter(
+            simCores[fullTimeOptIdx],
+            fullTime[fullTimeOptIdx],
+            s=64,
+            c='red',
+            marker='o',
+            edgecolors='black',
+            zorder=4
+        )
     axx = ax.twinx()
     axx.plot(
         simCores,
@@ -272,6 +424,16 @@ for DF in DFS:
         color='red',
         label='Total time'
     )
+    if markOptimumTime:
+        ax.scatter(
+            simCores[fullTimeOptIdx],
+            fullTime[fullTimeOptIdx],
+            s=64,
+            c='red',
+            marker='o',
+            edgecolors='black',
+            zorder=4
+        )
     axx = ax.twinx()
     axx.plot(
         simCores,
@@ -306,4 +468,5 @@ for DF in DFS:
     plt.close()
     plt.cla()
     plt.clf()
-    # sys.exit(0)  # TODO Rethink : Comment/uncomment based on debugging
+
+print_summary(summary)
