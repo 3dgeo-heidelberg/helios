@@ -154,13 +154,21 @@ jobs:
      - name: Python Libraries
        run: sudo apt-get install -y libpython3-dev
 
-     - name: Load libraries from cache
+     - name: Load LasTools, Armadillo and GDAL from cache
        id: cache-lastools-armadillo-gdal
        uses: actions/cache@v2
        with:
          path: |
            ${{github.workspace}}/lib
          key: ${{ runner.os }}-gdal-lastools-armadillo-latest
+
+     - name: Load Boost from Cache
+       id: cache-boost
+       uses: actions/cache@v2
+       with:
+         path: |
+           ${{github.workspace}}/lib/boost
+         key: ${{ runner.os }}-boost.1.76
 
 
      - name: Configure CMake
