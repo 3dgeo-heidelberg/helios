@@ -66,6 +66,12 @@ jobs:
        - name: Test user-config.jam
          run: cat $USER_CONFIG
 
+       - name: Save user-config.jam to file
+         uses: actions/upload-artifact@v2
+         with:
+           name: Boost-config-file
+           path: $USER_CONFIG
+
 
 #  build-libs:
 #    runs-on: ubuntu-20.04
