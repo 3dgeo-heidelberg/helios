@@ -11,20 +11,25 @@ env:
   BUILD_TYPE: Release
 
 jobs:
-   build-python:
+   build-boost:
      runs-on: ubuntu-20.04
+
+     defaults:
+       run:
+         working-directory: ${{github.workspace}}/lib
+
      strategy:
        matrix:
         python-version: ['3.6', '3.7', '3.8', '3.9']
 
-     steps:
-       - uses: actions/checkout@v2
-       - name: Cache Python
-         id: cache-python
-         uses: actions/cache@v2
-         with:
-           path: /opt/hostedtoolcache/
-           key: ${{ runner.os }}-python
+#     steps:
+#       - uses: actions/checkout@v2
+#       - name: Cache Python
+#         id: cache-python
+#         uses: actions/cache@v2
+#         with:
+#           path: /opt/hostedtoolcache/
+#           key: ${{ runner.os }}-python
 
 
        - name: Set Up Python
@@ -37,21 +42,6 @@ jobs:
          run:  which python
        - name: Enviroment variables saved?
          run: echo $pythonLocation $LD_LIBRARY_PATH
-
-   test-job:
-
-     needs: [build-python]
-     runs-on: ubuntu-20.04
-
-     steps:
-       - uses: actions/checkout@v2
-
-       - name: Python installed?
-         run: ls /opt/hostedtoolcache
-
-
-
-
 
 #  build-libs:
 #    runs-on: ubuntu-20.04
