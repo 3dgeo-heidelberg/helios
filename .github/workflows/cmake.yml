@@ -14,6 +14,9 @@ jobs:
    build-boost:
      runs-on: ubuntu-20.04
 
+     env:
+       USER_CONFIG: ${{github.workspace}}/.github/config/boost/user-config.jam
+
      defaults:
        run:
          working-directory: ${{github.workspace}}/lib
@@ -57,12 +60,11 @@ jobs:
 
        - name: Write Python 3.9 to user-config.jam
          run: |
-           echo "using python:\n\t 3.9\n\t: $pythonLocation/bin/python\n\t: $pythonLocation/include/python\n\t: $pythonLocation/lib"
+           echo "using python:\n\t 3.9\n\t: $pythonLocation/bin/python\n\t: $pythonLocation/include/python\n\t: $pythonLocation/lib" >>
 
 
        - name: Test user-config.jam
-         run: cat ${{github.workspace}}/.github/config/boost/user-config.jam
-
+         run: cat env.USER_CONFIG
 
 
 #  build-libs:
