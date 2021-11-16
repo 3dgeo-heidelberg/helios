@@ -31,7 +31,6 @@ jobs:
           echo "using python:\n\t 3.6\n\t: $pythonLocation/bin/python\n\t: $pythonLocation/include/python\n\t: $pythonLocation/lib"
           ls $pythonLocation
           ls $pythonLocation/include
-          ls $pythonLocation/include/python
 
        - name: Set Up Python 3.7
          uses: actions/setup-python@v2
