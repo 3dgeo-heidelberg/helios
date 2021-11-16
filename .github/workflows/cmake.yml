@@ -19,6 +19,14 @@ jobs:
 
      steps:
        - uses: actions/checkout@v2
+       - name: Cache Python
+         id: cache-python
+         uses: actions/cache@v2
+         with:
+           path: /opt/hostedtoolcache/
+           key: ${{ runner.os }}-python
+
+
        - name: Set Up Python
          uses: actions/setup-python@v2
          with:
@@ -38,8 +46,8 @@ jobs:
      steps:
        - uses: actions/checkout@v2
 
-       - name: Enviroment variables across jobs?
-         run: echo $pythonLocation $LD_LIBRARY_PATH
+       - name: Python installed?
+         run: ls /opt/hostedtoolcache
 
 
 
