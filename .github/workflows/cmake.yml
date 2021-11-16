@@ -37,6 +37,8 @@ jobs:
          uses: actions/setup-python@v2
          with:
            python-version: '3.7'
+
+       - name: Write Python 3.7 to user-config.jam
          run: |
            echo "using python:\n\t 3.7\n\t: $pythonLocation/bin/python\n\t: $pythonLocation/include/python\n\t: $pythonLocation/lib"
 
@@ -44,6 +46,8 @@ jobs:
          uses: actions/setup-python@v2
          with:
            python-version: '3.8'
+
+       - name: Write Python 3.8 to user-config.jam
          run: |
            echo "using python:\n\t 3.8\n\t: $pythonLocation/bin/python\n\t: $pythonLocation/include/python\n\t: $pythonLocation/lib"
 
@@ -51,6 +55,8 @@ jobs:
          uses: actions/setup-python@v2
          with:
            python-version: '3.9'
+
+       - name: Write Python 3.9 to user-config.jam
          run: |
            echo "using python:\n\t 3.9\n\t: $pythonLocation/bin/python\n\t: $pythonLocation/include/python\n\t: $pythonLocation/lib"
 
