@@ -64,7 +64,7 @@ jobs:
 
 
        - name: Test user-config.jam
-         run: cat env.USER_CONFIG
+         run: cat $USER_CONFIG
 
 
 #  build-libs:
