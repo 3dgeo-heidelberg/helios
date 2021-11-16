@@ -22,15 +22,14 @@ jobs:
        matrix:
         python-version: ['3.6', '3.7', '3.8', '3.9']
 
-#     steps:
-#       - uses: actions/checkout@v2
+     steps:
+       - uses: actions/checkout@v2
 #       - name: Cache Python
 #         id: cache-python
 #         uses: actions/cache@v2
 #         with:
 #           path: /opt/hostedtoolcache/
 #           key: ${{ runner.os }}-python
-
 
        - name: Set Up Python
          uses: actions/setup-python@v2
