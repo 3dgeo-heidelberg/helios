@@ -18,60 +18,33 @@ jobs:
        run:
          working-directory: ${{github.workspace}}/lib
 
-#     strategy:
-#       matrix:
-#        python-version: ['3.6', '3.7', '3.8', '3.9']
-
      steps:
        - uses: actions/checkout@v2
-#       - name: Cache Python
-#         id: cache-python
-#         uses: actions/cache@v2
-#         with:
-#           path: /opt/hostedtoolcache/
-#           key: ${{ runner.os }}-python
 
        - name: Set Up Python 3.6
          uses: actions/setup-python@v2
          with:
            python-version: '3.6'
 
-       - name: Enviroment variables saved?
-         run: echo $pythonLocation $LD_LIBRARY_PATH
-       - name: Display Python Version
-         run: python -c "import sys; print(sys.version)"
-
        - name: Set Up Python 3.7
          uses: actions/setup-python@v2
          with:
            python-version: '3.7'
-
-       - name: Enviroment variables saved?
-         run: echo $pythonLocation $LD_LIBRARY_PATH
-       - name: Display Python Version
-         run: python -c "import sys; print(sys.version)"
 
        - name: Set Up Python 3.8
          uses: actions/setup-python@v2
          with:
            python-version: '3.8'
 
-       - name: Enviroment variables saved?
-         run: echo $pythonLocation $LD_LIBRARY_PATH
-       - name: Display Python Version
-         run: python -c "import sys; print(sys.version)"
-
        - name: Set Up Python 3.9
          uses: actions/setup-python@v2
          with:
            python-version: '3.9'
 
-       - name: Display Python Version
-         run: python -c "import sys; print(sys.version)"
-       - name: Display Python bin location
-         run:  which python
-       - name: Enviroment variables saved?
-         run: echo $pythonLocation $LD_LIBRARY_PATH
+
+       - name: Build Boost with every Python version
+         run: ls ${{github.workspace}}/.github/config/boost
+
 
 #  build-libs:
 #    runs-on: ubuntu-20.04
