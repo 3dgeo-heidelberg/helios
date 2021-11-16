@@ -39,80 +39,29 @@ OUTPUT=(
     'output/'
     'output/'
 )
-LOGNAME=('log/LOG_FIXED250')
-LOGNAME=('log/LOG_SCALEDCOG')
+LOGNAME=(
+    'log/LOG_FIXED250'
+    'log/LOG_SCALEDCOG'
+)
 # SECOND THE KDTree-Types and SurfeAreaHeuristic-Nodes
 KDTTYPE=(1 2 3 4)
 SAHNODES=(0 21 21 32)
 # THIRD THE PARALLELIZATION STRATEGY
 PARALLELIZATION=(
-    0 0 0 0 0 0 0 0 0 0 0 0
-    0 0 0 0 0 0 0 0 0 0 0 0
-    0 0 0 0 0 0 0 0 0 0 0 0
-    0 0 0 0 0 0 0 0 0 0 0 0
-    0 0 0 0 0 0 0 0 0 0 0 0
-    0 0 0 0 0 0 0 0 0 0 0 0
-    0 0 0 0 0 0 0 0 0 0 0 0
-    0 0 0 0 0 0 0 0 0 0 0 0
-    0 0 0 0 0 0 0 0 0 0 0 0
-    0 0 0 0 0 0 0 0 0 0 0 0
-    0 0 0 0 0 0 0 0 0 0 0 0
-    0 0 0 0 0 0 0 0 0 0 0 0
-    1 1 1 1 1 1 1 1 1 1 1 1
-    1 1 1 1 1 1 1 1 1 1 1 1
-    1 1 1 1 1 1 1 1 1 1 1 1
-    1 1 1 1 1 1 1 1 1 1 1 1
-    1 1 1 1 1 1 1 1 1 1 1 1
-    1 1 1 1 1 1 1 1 1 1 1 1
-    1 1 1 1 1 1 1 1 1 1 1 1
-    1 1 1 1 1 1 1 1 1 1 1 1
-    1 1 1 1 1 1 1 1 1 1 1 1
+    0 0 0
+    0 0 0
+    1 1 1 1 1 1 1 1 1
 )
 CHUNK_SIZE=(
-    16 16 16 16 16 16 16 16 16 16 16 16
-    16 16 16 16 16 16 16 16 16 16 16 16
-    32 32 32 32 32 32 32 32 32 32 32 32
-    32 32 32 32 32 32 32 32 32 32 32 32
-    64 64 64 64 64 64 64 64 64 64 64 64
-    64 64 64 64 64 64 64 64 64 64 64 64
-    -16 -16 -16 -16 -16 -16 -16 -16 -16 -16 -16 -16
-    -16 -16 -16 -16 -16 -16 -16 -16 -16 -16 -16 -16
-    -32 -32 -32 -32 -32 -32 -32 -32 -32 -32 -32 -32
-    -32 -32 -32 -32 -32 -32 -32 -32 -32 -32 -32 -32
-    -64 -64 -64 -64 -64 -64 -64 -64 -64 -64 -64 -64
-    -64 -64 -64 -64 -64 -64 -64 -64 -64 -64 -64 -64
-    16 16 16 16 16 16 16 16 16 16 16 16
-    16 16 16 16 16 16 16 16 16 16 16 16
-    16 16 16 16 16 16 16 16 16 16 16 16
-    32 32 32 32 32 32 32 32 32 32 32 32
-    32 32 32 32 32 32 32 32 32 32 32 32
-    32 32 32 32 32 32 32 32 32 32 32 32
-    64 64 64 64 64 64 64 64 64 64 64 64
-    64 64 64 64 64 64 64 64 64 64 64 64
-    64 64 64 64 64 64 64 64 64 64 64 64
+    16 32 64
+    -16 -32 -64
+    16 16 16 32 32 32 64 64 64
+
 )
 WAREHOUSE_FACTOR=(
-    1 1 1 1 1 1 1 1 1 1 1 1
-    1 1 1 1 1 1 1 1 1 1 1 1
-    1 1 1 1 1 1 1 1 1 1 1 1
-    1 1 1 1 1 1 1 1 1 1 1 1
-    1 1 1 1 1 1 1 1 1 1 1 1
-    1 1 1 1 1 1 1 1 1 1 1 1
-    1 1 1 1 1 1 1 1 1 1 1 1
-    1 1 1 1 1 1 1 1 1 1 1 1
-    1 1 1 1 1 1 1 1 1 1 1 1
-    1 1 1 1 1 1 1 1 1 1 1 1
-    1 1 1 1 1 1 1 1 1 1 1 1
-    1 1 1 1 1 1 1 1 1 1 1 1
-    3 3 3 3 3 3 3 3 3 3 3 3
-    6 6 6 6 6 6 6 6 6 6 6 6
-    9 9 9 9 9 9 9 9 9 9 9 9
-    3 3 3 3 3 3 3 3 3 3 3 3
-    6 6 6 6 6 6 6 6 6 6 6 6
-    9 9 9 9 9 9 9 9 9 9 9 9
-    3 3 3 3 3 3 3 3 3 3 3 3
-    6 6 6 6 6 6 6 6 6 6 6 6
-    9 9 9 9 9 9 9 9 9 9 9 9
+    1 1 1
+    1 1 1
+    2 4 8 2 4 8 2 4 8
 )
 
 
@@ -124,21 +73,20 @@ KDTCORES=(1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24)
 # ---  SEQUENCE TASKS  --- #
 # ------------------------ #
 for (( i=0 ; i < ${#SURVEY[@]} ; ++i )); do
+    mkdir -p $(dirname "${LOGNAME[$i]}")
     for (( j=0 ; j < ${#KDTTYPE[@]} ; ++j )); do
         for (( p=0 ; p < ${#PARALLELIZATION[@]} ; ++p )); do
             for (( k=0 ; k < ${#SIMCORES[@]} ; ++k )); do
-                for (( l=0 ; l < ${#KDTCORES[@]} ; ++l )); do
-                    logname="$PWD/${LOGNAME[$i]}_KDT${KDTTYPE[$j]}_SAH${SAHNODES[$j]}_"
-                    logname="${logname}PS${PARALLELIZATION[$p]}_CS${CHUNK_SIZE[$p]}_WF${WAREHOUSE_FACTOR[$p]}_"
-                    logname="${logname}SC${SIMCORES[$k]}_BC${KDTCORES[$l]}.log"
-                    echo 'LOGGING ('"$i,$j,$p,$k,$l"') to "'"${logname}"'"'
-                    srun ${HELIOS_BIN} ${SURVEY[$i]} ${ASSET[$i]} ${OUTPUT[$i]} \
-                        --rebuildScene --kdt ${KDTTYPE[$j]} --sahNodes ${SAHNODES[$j]} \
-                        --parallelization ${PARALLELIZATION[$p]} --chunkSize ${CHUNK_SIZE[$p]} \
-                        --warehouseFactor ${WAREHOUSE_FACTOR[$p]} \
-                        -j ${SIMCORES[$k]} --kdtJobs ${KDTCORES[$l]} -vt 2>&1> $logname
-                    echo -e "\n\n"
-                done
+                logname="$PWD/${LOGNAME[$i]}_KDT${KDTTYPE[$j]}_SAH${SAHNODES[$j]}_"
+                logname="${logname}PS${PARALLELIZATION[$p]}_CS${CHUNK_SIZE[$p]}_WF${WAREHOUSE_FACTOR[$p]}_"
+                logname="${logname}SC${SIMCORES[$k]}_BC${KDTCORES[$k]}.log"
+                echo 'LOGGING ('"$i,$j,$p,$k"') to "'"${logname}"'"'
+                srun ${HELIOS_BIN} ${SURVEY[$i]} ${ASSET[$i]} ${OUTPUT[$i]} \
+                    --rebuildScene --kdt ${KDTTYPE[$j]} --sahNodes ${SAHNODES[$j]} \
+                    --parallelization ${PARALLELIZATION[$p]} --chunkSize ${CHUNK_SIZE[$p]} \
+                    --warehouseFactor ${WAREHOUSE_FACTOR[$p]} \
+                    -j ${SIMCORES[$k]} --kdtJobs ${KDTCORES[$k]} -vt 2>&1> $logname
+                echo -e "\n\n"
             done
         done
     done
