@@ -25,6 +25,7 @@ jobs:
          uses: actions/setup-python@v2
          with:
            python-version: '3.6'
+
        - name: Write Python 3.6 config to user-config.jam
          run: |
           echo "using python:\n\t 3.6\n\t: $pythonLocation/bin/python\n\t: $pythonLocation/include/python\n\t: $pythonLocation/lib"
