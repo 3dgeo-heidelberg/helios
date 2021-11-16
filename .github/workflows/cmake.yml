@@ -37,7 +37,7 @@ jobs:
          with:
            python-version: '3.6'
 
-       - name: Write Python 3.6 config to user-config.jam
+       - name: Write Python 3.6 to user-config.jam
          run: |
           echo -e "using python\n\t: 3.6\n\t: $pythonLocation/bin/python\n\t: $pythonLocation/include/python3.6m\n\t: $pythonLocation/lib\n;\n" >> $USER_CONFIG
 
