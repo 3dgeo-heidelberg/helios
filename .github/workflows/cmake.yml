@@ -31,10 +31,14 @@ jobs:
 
        - name: Write Python 3.6 config to user-config.jam
          run: |
-          echo -e "using python\n\t: 3.6\n\t: $pythonLocation/bin/python\n\t: $pythonLocation/include/python\n\t: $pythonLocation/lib" >> $USER_CONFIG
+          echo -e "using python\n\t: 3.6\n\t: $pythonLocation/bin/python\n\t: $pythonLocation/include/python3.6m\n\t: $pythonLocation/lib" >> $USER_CONFIG
           ls $pythonLocation
-          echo -e "******"
+          echo -e "****** BIN"
+          ls $pythonLocation/bin
+          echo -e "***** INCLUDE"
           ls $pythonLocation/include/python3.6m
+          echo -e "***** LIB"
+          ls $pythonLocation/lib
 
        - name: Set Up Python 3.7
          uses: actions/setup-python@v2
@@ -43,7 +47,7 @@ jobs:
 
        - name: Write Python 3.7 to user-config.jam
          run: |
-           echo -e "using python\n\t: 3.7\n\t: $pythonLocation/bin/python\n\t: $pythonLocation/include/python\n\t: $pythonLocation/lib" >> $USER_CONFIG
+           echo -e "using python\n\t: 3.7\n\t: $pythonLocation/bin/python\n\t: $pythonLocation/include/python3.7m\n\t: $pythonLocation/lib" >> $USER_CONFIG
            ls $pythonLocation
            ls $pythonLocation/include
 
@@ -54,7 +58,7 @@ jobs:
 
        - name: Write Python 3.8 to user-config.jam
          run: |
-           echo -e "using python\n\t: 3.8\n\t: $pythonLocation/bin/python\n\t: $pythonLocation/include/python\n\t: $pythonLocation/lib" >> $USER_CONFIG
+           echo -e "using python\n\t: 3.8\n\t: $pythonLocation/bin/python\n\t: $pythonLocation/include/python3.8\n\t: $pythonLocation/lib" >> $USER_CONFIG
            ls $pythonLocation
            ls $pythonLocation/include
 
@@ -65,7 +69,7 @@ jobs:
 
        - name: Write Python 3.9 to user-config.jam
          run: |
-           echo -e "using python\n\t: 3.9\n\t: $pythonLocation/bin/python\n\t: $pythonLocation/include/python\n\t: $pythonLocation/lib" >> $USER_CONFIG
+           echo -e "using python\n\t: 3.9\n\t: $pythonLocation/bin/python\n\t: $pythonLocation/include/python3.9\n\t: $pythonLocation/lib" >> $USER_CONFIG
            ls $pythonLocation
            ls $pythonLocation/include
 
