@@ -28,7 +28,7 @@ jobs:
        - name: Display Python bin location
          run:  which python
        - name: Enviroment variables saved?
-         run: echo $pythonlocation $LD_LIBRARY_PATH
+         run: echo $pythonLocation $LD_LIBRARY_PATH
 
 
 
