@@ -33,6 +33,7 @@ jobs:
          run: |
           echo -e "using python\n\t: 3.6\n\t: $pythonLocation/bin/python\n\t: $pythonLocation/include/python\n\t: $pythonLocation/lib" >> $USER_CONFIG
           ls $pythonLocation
+          echo -e "******"
           ls $pythonLocation/include
 
        - name: Set Up Python 3.7
