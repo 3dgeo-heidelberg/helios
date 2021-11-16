@@ -83,6 +83,7 @@ jobs:
 
 
        - name: Build Boost
+         if: steps.cache-boost.outputs.cache-hit != 'true'
          run: |
            wget https://boostorg.jfrog.io/artifactory/main/release/1.76.0/source/boost_1_76_0.tar.gz && tar -xzvf boost_1_76_0.tar.gz && mv boost_1_76_0 boost && cd boost
            ./bootstrap.sh
