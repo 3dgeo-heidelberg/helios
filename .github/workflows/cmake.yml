@@ -30,6 +30,15 @@ jobs:
        - name: Enviroment variables saved?
          run: echo $pythonLocation $LD_LIBRARY_PATH
 
+   test-job:
+     runs-on: ubuntu-20.04
+
+     steps:
+       - uses: actions/checkout@v2
+
+       - name: Enviroment variables across jobs?
+         run: echo $pythonLocation $LD_LIBRARY_PATH
+
 
 
 
