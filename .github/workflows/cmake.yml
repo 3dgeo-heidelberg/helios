@@ -61,7 +61,7 @@ jobs:
 
 
        - name: Test user-config.jam
-         run: cat ${{github.workspace}}/.github/config/boost
+         run: cat ${{github.workspace}}/.github/config/boost/user-config.jam
 
 
 
