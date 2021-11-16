@@ -18,9 +18,9 @@ jobs:
        run:
          working-directory: ${{github.workspace}}/lib
 
-     strategy:
-       matrix:
-        python-version: ['3.6', '3.7', '3.8', '3.9']
+#     strategy:
+#       matrix:
+#        python-version: ['3.6', '3.7', '3.8', '3.9']
 
      steps:
        - uses: actions/checkout@v2
@@ -31,10 +31,25 @@ jobs:
 #           path: /opt/hostedtoolcache/
 #           key: ${{ runner.os }}-python
 
-       - name: Set Up Python
+       - name: Set Up Python 3.6
          uses: actions/setup-python@v2
          with:
-           python-version: ${{ matrix.python-version }}
+           python-version: '3.6'
+       - name: Set Up Python 3.7
+         uses: actions/setup-python@v2
+         with:
+           python-version: '3.7'
+       - name: Set Up Python 3.8
+         uses: actions/setup-python@v2
+         with:
+           python-version: '3.8'
+       - name: Set Up Python 3.9
+         uses: actions/setup-python@v2
+         with:
+           python-version: '3.9'
+
+
+
        - name: Display Python Version
          run: python -c "import sys; print(sys.version)"
        - name: Display Python bin location
