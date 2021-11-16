@@ -88,10 +88,9 @@ jobs:
            ./bootstrap.sh
            ./b2 --user-config=$USER_CONFIG cxxflags=-fPIC python=3.6,3.7,3.8,3.9
 
-
-       -name: Check Boost installation
-        run: |
-          ls ${{github.workspace}}/lib/boost/stage/lib
+       - name: Check Boost installation
+         run: |
+           ls ${{github.workspace}}/lib/boost/stage/lib
 
        - name: Save user-config.jam to file
          uses: actions/upload-artifact@v2
