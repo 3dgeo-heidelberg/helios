@@ -16,7 +16,7 @@ jobs:
 
      env:
        USER_DIR: ${{github.workspace}}/.github/config/boost
-       USER_CONFIG: ${USER_DIR}/user-config.jam
+       USER_CONFIG: ${{USER_DIR}}/user-config.jam
 
      defaults:
        run:
