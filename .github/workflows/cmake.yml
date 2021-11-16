@@ -60,7 +60,7 @@ jobs:
 
        - name: Write Python 3.9 to user-config.jam
          run: |
-           echo "using python:\n\t 3.9\n\t: $pythonLocation/bin/python\n\t: $pythonLocation/include/python\n\t: $pythonLocation/lib" >>
+           echo "using python:\n\t 3.9\n\t: $pythonLocation/bin/python\n\t: $pythonLocation/include/python\n\t: $pythonLocation/lib"
 
 
        - name: Test user-config.jam
