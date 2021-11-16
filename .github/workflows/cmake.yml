@@ -31,6 +31,8 @@ jobs:
          run: echo $pythonLocation $LD_LIBRARY_PATH
 
    test-job:
+
+     needs: [build-python]
      runs-on: ubuntu-20.04
 
      steps:
