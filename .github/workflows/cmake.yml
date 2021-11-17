@@ -9,13 +9,11 @@ on:
 env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
   BUILD_TYPE: Release
+  USER_CONFIG: ${{github.workspace}}/.github/config/boost/user-config.jam
 
 jobs:
    build-boost:
      runs-on: ubuntu-20.04
-
-     env:
-       USER_CONFIG: ${{github.workspace}}/.github/config/boost/user-config.jam
 
      defaults:
        run:
@@ -30,6 +28,7 @@ jobs:
          with:
            path: |
              ${{github.workspace}}/lib/boost
+             ${{github.workspace}}/.github/config/boost/user-config.jam
            key: ${{ runner.os }}-boost.1.76
 
        - name: Set Up Python 3.6
@@ -245,7 +244,10 @@ jobs:
         run: |
           ls -a lib/boost/stage/lib
           echo "******"
-          cd lib/boost && sudo ./b2 install
+          echo "$USER_CONFIG"
+          ls -a $USER_CONFIG
+          echo "******"
+          cd lib/boost && sudo ./b2 --user-config=$USER_CONFIG python=3.8 install
           echo "******"
           ls -a /usr/local/lib
 
