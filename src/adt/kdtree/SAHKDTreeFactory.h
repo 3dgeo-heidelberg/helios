@@ -55,7 +55,7 @@ class MultiThreadSAHKDTreeFactory;
  * Now, let \f$r\f$ be the normalized position of the splitting hyperplane
  *  for node \f$N\f$ so \f$r=0\f$ is the lower limit, \f$r=1\f$ is the upper
  *  limit and \f$r=\frac{1}{2}\f$ is the center. Moreover, let \f$L_r\f$ and
- *  \f$R_r\f$ the left and right parts for the \f$r\f$ split position and
+ *  \f$R_r\f$ be the left and right parts for the \f$r\f$ split position and
  *  \f$N_o(L_r)\f$ and \f$N_o(R_r)\f$ be the number of objects at the left and
  *  right splits respectively. In consequence, following loss function arises:
  *
@@ -63,7 +63,7 @@ class MultiThreadSAHKDTreeFactory;
  *  \mathcal{L}(r) = S_A(L_r)N_o(L_r) + S_A(R_r)N_o(R_r) - S_A(N)N_o(N)
  * \f]
  *
- * Alternatively, considering the term \f$-S_A(r)n\f$ is the amount of
+ * Alternatively, considering the term \f$-S_A(N)N_o(N)\f$ is the amount of
  *  work saved by making the node an interior one (so the minus sign), it
  *  can be treated as a constant so for the sake of simplicity it would
  *  lead to:
@@ -79,7 +79,7 @@ class MultiThreadSAHKDTreeFactory;
  * Differentiating with respect to \f$r\f$ leads to:
  * \f[
  *  \frac{d\mathcal{L}}{dr} =
- *      \left(2N_o(L_r) - N_o(N)\right)\frac{d}{dr}S_A(L_r) +
+ *      \left[2N_o(L_r) - N_o(N)\right]\frac{d}{dr}S_A(L_r) +
  *      \left[
  *          S_A(L_r) - S_A(R_r)
  *      \right]
@@ -92,10 +92,11 @@ class MultiThreadSAHKDTreeFactory;
  *  consequence, it is possible to analyze different scenarios. First,
  *  consider the case where the median lies somewhere satisfying
  *  \f$r < \frac{1}{2}\f$. Thus, \f$\frac{d}{dr}\mathcal{L}(r) < 0\f$ at
- *  the left side because
- *  \f$N_o(L_r) < \frac{n}{2}\f$ and \f$S_A(L_r) < S_A(R_r)\f$. On the other
- *  hand, \f$\frac{d}{dr}\mathcal{L}(r) > 0\f$ at the right side because
- *  \f$N_o(L_r) < \frac{n}{2}\f$ and \f$S_A(L_r) > S_A(R_r)\f$. So the minimum
+ *  the left side of the object median because
+ *  \f$N_o(L_r) < \frac{N_o(N)}{2}\f$ and \f$S_A(L_r) < S_A(R_r)\f$. On the
+ *  other hand, \f$\frac{d}{dr}\mathcal{L}(r) > 0\f$ at the right side of the
+ *  spatial median because \f$N_o(L_r) < \frac{N_o(N)}{2}\f$
+ *  and \f$S_A(L_r) > S_A(R_r)\f$. So the minimum
  *  must occur between the object median and the spatial median if the
  *  object median is to the left of the spatial median. It is easy to see
  *  that an analogous argument applies for the case where the object median
@@ -273,8 +274,9 @@ public:
      *  was the other way, then the iterative method would start at \f$M_e\f$
      *  and end at \f$\mu\f$.
      *  Now, if \f$n\f$ is the number of loss nodes, \f$\mathcal{L}_2\f$ is
-     *  the loss function and \f$r = \frac{\phi-a}{b-a} \in [0, 1]\f$ is the
-     *  normalized position of split position \f$\phi\f$. Then, the iterative
+     *  the loss function as defined in SAHKDTreeFactory::splitLoss and
+     *  \f$r = \frac{\phi-a}{b-a} \in [0, 1]\f$ is the normalized position
+     *  of split position \f$\phi\f$. Then, the iterative
      *  method can be defined as:
      *
      * \f[
@@ -283,16 +285,16 @@ public:
      *  \phi_1 &=& \mu \\
      *  \phi_{t>1} &=& \left\{\begin{array}{lll}
      *      \varphi(t)  &,&
-     *          \mathcal{L}_2\left(\varphi(t)\right) <
-     *          \mathcal{L}_2\left(\phi_{t-1}\right) \\
+     *          \mathcal{L}_2\left[(\varphi(t)-a)(b-a)^{-1}\right] <
+     *          \mathcal{L}_2\left[(\phi_{t-1}-a)(b-a)^{-1}\right] \\
      *      \phi_{t-1}  &,&
-     *          \mathcal{L}_2\left(\varphi(t)\right) \geq
-     *          \mathcal{L}_2\left(\phi_{t-1}\right)
+     *          \mathcal{L}_2\left[(\varphi(t)-a)(b-a)^{-1}\right] \geq
+     *          \mathcal{L}_2\left[(\phi_{t-1}-a)(b-a)^{-1}\right]
      *  \end{array}\right.
      *  \end{array}\right.
      * \f]
      *
-     * Finally, \f$\phi_n\f$ is the best found split position.
+     * Finally, \f$r=\phi_n\f$ is the best found split position.
      *
      * Notice that the median is constrained so \f$M_e \in [a, b]\f$. Thus,
      *  in case there are enough objects lying outside node boundaries causing
@@ -332,7 +334,7 @@ public:
      *  all primitives:
      * \f[
      *  t_0 : \mathrm{ILOT} = C_T = \frac{1}{S_A(R)} \left[
-     *      C_lS_A(R) + C_oS_A(l)N_o(R)
+     *      C_lS_A(R) + C_oS_A(R)N_o(R)
      *  \right]
      * \f]
      *
