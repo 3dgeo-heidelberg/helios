@@ -130,7 +130,7 @@ jobs:
 
 
    build-helios:
-     needs: [build-libs]
+     needs: [build-libs, build-boost]
      runs-on: ubuntu-20.04
 
      name: 'Helios-PyBinds (Python${{ matrix.python-version}})'
@@ -205,7 +205,7 @@ jobs:
     # well on Windows or Mac.  You can convert this to a matrix build if you need
     # cross-platform coverage.
     # See: https://docs.github.com/en/free-pro-team@latest/actions/learn-github-actions/managing-complex-workflows#using-a-build-matrix
-    needs: [ build-libs ]
+    needs: [ build-libs, build-boost]
 
     runs-on: ubuntu-20.04
 
