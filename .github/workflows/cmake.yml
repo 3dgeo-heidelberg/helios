@@ -133,6 +133,9 @@ jobs:
      needs: [build-libs]
      runs-on: ubuntu-20.04
 
+     name: 'Build Helios with PyBinds (Python v${{ matrix.python-version}})'
+
+
      defaults:
        run:
          working-directory: ${{github.workspace}}
