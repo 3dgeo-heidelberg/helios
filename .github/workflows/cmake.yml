@@ -149,7 +149,7 @@ jobs:
 
        - name: Get Python Version without dot
          run: |
-           export PYTHON_VERSION=${{ matrix.python-version}}
+           export PYTHON_VERSION=$(echo ${{ matrix.python-version }} | sed "s/\.//g")
            echo -e "$PYTHON_VERSION"
 
 #       - name: Update package lists
