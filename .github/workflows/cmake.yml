@@ -242,7 +242,12 @@ jobs:
           key: ${{ runner.os }}-boost.1.76
 
       - name: Install Boost in the system
-        run: cd lib/boost && sudo ./b2 install
+        run: |
+          ls -a lib/boost/stage/lib
+          echo "******"
+          cd lib/boost && sudo ./b2 install
+          echo "******"
+          ls -a /usr/local/lib
 
       - name: Configure CMake
         # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
