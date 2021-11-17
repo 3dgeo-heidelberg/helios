@@ -1,6 +1,43 @@
 import xmlschema
+import sys
+import xml.etree.ElementTree as ET
+import subprocess
+from pathlib import Path
+import os
 
-xmlschema.validate(r'..\data\surveys\demo\tls_arbaro_demo.xml', 'survey.xsd')
-xmlschema.validate(r'..\data\scenes\demo\arbaro_demo.xml', 'scene.xsd')
-xmlschema.validate(r'..\data\scanners_als.xml', 'scanner.xsd')
-xmlschema.validate(r'..\data\platforms.xml', 'platform.xsd')
+# change working directory in case script was not called from helios root directory
+survey_file = Path(sys.argv[1]).resolve()
+xsd_dir = Path(__file__).parent
+survey_file = str(survey_file.relative_to(xsd_dir.parent.resolve()))
+if Path.cwd() != xsd_dir.parent:
+    os.chdir(xsd_dir.parent)
+
+# check where helios.exe is located
+if any("helios.exe" in str(f) for f in Path.cwd().glob('*') if f.is_file()):
+    helios_dir = Path("")
+elif any("helios.exe" in str(f) for f in Path.cwd().glob('run/*') if f.is_file()):
+    helios_dir = Path("run")
+
+survey_schema = xmlschema.XMLSchema('extra\survey.xsd')
+scene_schema = xmlschema.XMLSchema('extra\scene.xsd')
+scanner_schema = xmlschema.XMLSchema('extra\scanner.xsd')
+platform_schema = xmlschema.XMLSchema('extra\platform.xsd')
+
+# get paths of any referenced XML files; assuming they are relative to helios root dir
+try:
+    scene_file = ET.parse(survey_file).find('survey').attrib['scene'].split('#')[0]
+    scanner_file = ET.parse(survey_file).find('survey').attrib['scanner'].split('#')[0]
+    platform_file = ET.parse(survey_file).find('survey').attrib['platform'].split('#')[0]
+except KeyError as e:
+    print("ERROR: Missing 'platform', 'scanner' or 'scene' key in <survey> tag.\n"
+          "Please check your survey file.\n")
+    raise e
+
+# validate XML files
+xmlschema.validate(survey_file, survey_schema)
+xmlschema.validate(scene_file, scene_schema)
+xmlschema.validate(scanner_file, scanner_schema)
+xmlschema.validate(platform_file, platform_schema)
+
+# call HELIOS++
+subprocess.run([helios_dir / "helios.exe", survey_file, *sys.argv[2:]])
