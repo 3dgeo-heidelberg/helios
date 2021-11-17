@@ -197,7 +197,7 @@ jobs:
        - name: Save compiled executable
          uses: actions/upload-artifact@v2
          with:
-             name: ${{ matrix.config.artifact }}
+             name: ${{ runner.os}}-helios-pybinds-${{ matrix.python-version }}
              path: ${{github.workspace}}/build/helios*
 
 #  build-helios-pybinds-dynamic_linking:
