@@ -2,7 +2,7 @@ name: CMake
 
 on:
   push:
-    branches: [ main, dev, CI-versions ]
+    branches: [ main, dev ]
   pull_request:
     branches: [ main, dev ]
 
@@ -244,21 +244,12 @@ jobs:
 
       - name: Install Boost in the system
         run: |
-          ls -a lib/boost/stage/lib
-          echo "******"
-          echo "$USER_CONFIG"
-          ls -a $USER_CONFIG
-          cat $USER_CONFIG
-          echo "******"
           cd lib/boost && sudo ./b2 --user-config=$USER_CONFIG python=3.8 install
-          echo "******"
-          ls -a /usr/local/lib
 
       - name: Configure CMake
         # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
         # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
         run: |
-          ls ./lib
           cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DPYTHON_BINDING=1 -DPYTHON_VERSION=38 -DBOOST_DYNAMIC_LIBS=1 -DCMAKE_RUNTIME_OUTPUT_DIRECTORY:STRING=${{github.workspace}}/build
 
       - name: Build
