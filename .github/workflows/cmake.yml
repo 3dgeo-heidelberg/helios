@@ -246,6 +246,7 @@ jobs:
           echo "******"
           echo "$USER_CONFIG"
           ls -a $USER_CONFIG
+          cat $USER_CONFIG
           echo "******"
           cd lib/boost && sudo ./b2 --user-config=$USER_CONFIG python=3.8 install
           echo "******"
