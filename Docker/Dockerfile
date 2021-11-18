@@ -51,6 +51,9 @@ mv boost_1_76_0 boost && cd boost && \
 # Set PYTHONPATH
 ENV PYTHONPATH=/home/helios
 
+# Install PYHelios dependencies
+RUN apt install -y libglu1-mesa-dev
+
 # Compile Helios with PyBindings active
 WORKDIR /home/helios
 RUN cmake -DPYTHON_BINDING=1 -DPYTHON_VERSION=38 . && make -j 6
