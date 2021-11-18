@@ -30,7 +30,8 @@ RUN cd glm && cmake . && make -j 6
 
 # Install Armadillo
 WORKDIR /home/helios/lib/armadillo
-RUN ./configure -DCMAKE_INSTALL_PREFIX=. && make && make install
+RUN apt install -y liblapack-dev libblas-dev && \
+./configure -DCMAKE_INSTALL_PREFIX=. && make && make install
 
 # Install Proj
 WORKDIR /home/helios/lib
