@@ -28,7 +28,7 @@ jobs:
          with:
            path: |
              ${{github.workspace}}/lib/boost
-             ${{github.workspace}}/.github/config/boost/user-config.jam
+             ${{github.workspace}}/.github/config/boost
            key: ${{ runner.os }}-boost.1.76
 
        - name: Set Up Python 3.6
@@ -169,6 +169,7 @@ jobs:
          with:
            path: |
              ${{github.workspace}}/lib/boost
+             ${{github.workspace}}/.github/config/boost/user-config.jam
            key: ${{ runner.os }}-boost.1.76
 
        - name: Get Python Version without dot
@@ -238,6 +239,7 @@ jobs:
         with:
           path: |
             ${{github.workspace}}/lib/boost
+            ${{github.workspace}}/.github/config/boost
           key: ${{ runner.os }}-boost.1.76
 
       - name: Install Boost in the system
