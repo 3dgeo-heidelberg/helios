@@ -128,7 +128,7 @@ def flight_lines_from_shp(filename):
     lines = []
     for i in range(shapefile.shape[0]):
         coords = list(shapefile.geometry.iloc[i].coords)
-        coords = [list(ele) for ele in coords]
+        coords = [list(ele[:2]) for ele in coords]
         lines.append(coords)
     lines = np.array(lines)
     lines_shape = lines.shape
@@ -170,6 +170,10 @@ def export_for_xml(waypoints, altitude, template_id, speed, trajectory_time_inte
 
     """
     xml_string = ""
+    if always_active is False:
+        active = "false"
+    else:
+        active = "true"
     for i, leg in enumerate(waypoints):
         if i % 2 == 0 or i == 0:
             xml_string += '''
@@ -178,13 +182,13 @@ def export_for_xml(waypoints, altitude, template_id, speed, trajectory_time_inte
             <scannerSettings template="{id}" trajectoryTimeInterval_s="{interval}" />
         </leg>
             '''.format(x=leg[0], y=leg[1], z=altitude, v=speed, id=template_id, interval=trajectory_time_interval)
-        elif i % 2 != 0 and always_active is False:
+        elif i % 2 != 0:
             xml_string += '''
         <leg>
             <platformSettings x="{x}" y="{y}" z="{z}" movePerSec_m="{v}" />
-            <scannerSettings template="{id}" active="false" trajectoryTimeInterval_s="{interval}" />
+            <scannerSettings template="{id}" active="{active}" trajectoryTimeInterval_s="{interval}" />
         </leg>
-            '''.format(x=leg[0], y=leg[1], z=altitude, v=speed, id=template_id, interval=trajectory_time_interval)
+            '''.format(x=leg[0], y=leg[1], z=altitude, v=speed, id=template_id, active=active, interval=trajectory_time_interval)
     return xml_string
 
 
@@ -226,21 +230,25 @@ def add_transformation_filters(translation=[0, 0, 0], rotation=[0, 0, 0], scale=
     return filter
 
 
-def create_scenepart_obj(filepath, trafofilter=""):
+def create_scenepart_obj(filepath, trafofilter="", efilepath=False):
     """
     This function creates a scenepart string to load OBJ-files
     :param filepath: path to the OBJ-file
     :param trafofilter: transformation filter, surrounded by <filter>-tags (string)
-
+    :param efilepath: boolean, whether to use the efilepath option
     :return: scenepart (string)
     """
+    if efilepath is True:
+        key_opt = "efilepath"
+    else:
+        key_opt = "filepath"
     scenepart = """
         <part>
             <filter type="objloader">
-                <param type="string" key="filepath" value="{spfile}" />
+                <param type="string" key="{option}" value="{spfile}" />
             </filter>
             {filter}
-        </part>""".format(spfile=filepath, filter=trafofilter)
+        </part>""".format(option=key_opt, spfile=filepath, filter=trafofilter)
 
     return scenepart
 
