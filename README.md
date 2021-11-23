@@ -22,9 +22,9 @@ Official website: https://uni-heidelberg.de/helios
 
 For scientific and collaboration inquiries please contact the HELIOS++ team at helios@uni-heidelberg.de
 
-We have also published a paper on HELIOS++. If you use HELIOS++ in a scientific context, please cite
+We have also published a [paper](https://doi.org/10.1016/j.rse.2021.112772) on HELIOS++. If you use HELIOS++ in a scientific context, please cite
 
-> Winiwarter, L., Esmorís Pena, A., Weiser, H., Anders, K., Martínez Sanchez, J., Searle, M., Höfle, B. (2021): **Virtual laser scanning with HELIOS++: A novel take on ray tracing-based simulation of topographic 3D laser scanning**. _Remote Sensing of Environment_, 112772, [doi:10.1016/j.rse.2021.112772](https://doi.org/10.1016/j.rse.2021.112772] **[cs.CV]**
+> Winiwarter, L., Esmorís Pena, A., Weiser, H., Anders, K., Martínez Sanchez, J., Searle, M., Höfle, B. (2021): **Virtual laser scanning with HELIOS++: A novel take on ray tracing-based simulation of topographic full-waveform 3D laser scanning**. _Remote Sensing of Environment_, 112772, doi:10.1016/j.rse.2021.112772 **[cs.CV]**
 
 BibTeX:
 ```
@@ -167,7 +167,7 @@ Build instructions for advanced users and developers are available [here](BUILDM
 
 ## 🐍 Running pyhelios
 
-For running pyhelios, we suggest setting up a seperate [conda](https://docs.conda.io/en/latest/miniconda.html) environment. Run 
+For running pyhelios, we suggest setting up a seperate [conda](https://docs.conda.io/en/latest/miniconda.html) environment. After downloading one of the [releases](https://github.com/3dgeo-heidelberg/helios/releases) or building from source, run 
 ```
 conda env create -f conda-environment.yml
 ```

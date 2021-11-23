@@ -69,7 +69,7 @@ make
 ```
 Build can be accelerated using multithreading.
 The number of threads can be specified with -j argument.
-For instance, to compil using 6 threads:
+For instance, to compile using 6 threads:
 ```
 make -j 6
 ```
@@ -81,10 +81,16 @@ all the libraries must be built from scratch:
 
 ### Helios Dependencies
 
-- ```apt install cmake make gcc g++ libarmadillo-dev python3 python3-pip libpython3.8-dev unzip```
+- ```apt install cmake make gcc g++ xz-utils python3 python3-pip libpython3.8-dev unzip```
 
+#### Armadillo
 
-####GLM
+- ```cd helios/lib```
+- ```wget -O armadillo.tar.xz http://sourceforge.net/projects/arma/files/armadillo-10.6.2.tar.xz && tar xf armadillo.tar.xz```
+- ```mv armadillo-10.6.2 armadillo && cd armadillo```
+- ```./configure -DCMAKE_INSTALL_PREFIX=. && make && sudo make install```
+
+#### GLM
 
 Can be installed both by means of a package manager or building from source:
 
@@ -92,6 +98,7 @@ Can be installed both by means of a package manager or building from source:
 
 or
 
+- ```cd helios/lib```
 - ```wget https://github.com/g-truc/glm/releases/download/0.9.9.8/glm-0.9.9.8.zip && unzip glm-0.9.9.8 && rm glm-0.9.9.8.zip```
 - ```cd glm && cmake . && make```
 
@@ -110,7 +117,7 @@ The linkage against Boost libraries can be performed both statically and dynamic
 - ```wget https://boostorg.jfrog.io/artifactory/main/release/1.76.0/source/boost_1_76_0.tar.gz```
 - ```tar -xzvf boost_1_76_0.tar.gz```
 - ```mv boost_1_76_0 boost && cd boost```
-- ```./bootstrap.sh --with-python=python3.8```
+- ```./bootstrap.sh --with-python=python3.8``` In order to use a custom Python installation, please see ["Custom Python Installation"](#Custom Python Installation)
 - ```./b2 cxxflags=-fPIC```
 
 If you want static linkage, the boost installation ends here.
@@ -120,16 +127,13 @@ IMPORTANT: Remove completely any previous existing Boost installation before con
 
 - ```./b2 install```
 
-#### Proj
-- ```apt install pkg-config libsqlite3-dev sqlite3 libtiff5-dev libcurl4-openssl-dev```
-- ```wget http://download.osgeo.org/proj/proj-8.0.0.tar.gz```
-- ```tar -xzvf proj-8.0.0.tar.gz```
-- ```cd proj-8.0.0 && ./configure && make && make install```
-
 #### GDAL
-- ```wget https://github.com/OSGeo/gdal/releases/download/v3.3.0/gdal-3.3.0.tar.gz --no-check-certificate ```
-- ```tar -xzvf gdal-3.3.0.tar.gz```
-- ```cd gdal-3.3.0 && ./configure && make && make install```
+- ```apt install pkg-config libsqlite3-dev sqlite3 libtiff5-dev libcurl4-openssl-dev```
+- ```wget http://download.osgeo.org/proj/proj-8.0.0.tar.gz https://github.com/OSGeo/gdal/releases/download/v3.3.0/gdal-3.3.0.tar.gz --no-check-certificate```
+- ```tar -xzvf proj-8.0.0.tar.gz && tar -xzvf gdal-3.3.0.tar.gz```
+- ```mv gdal-3.3.0 gdal && mv proj-8.0.0 proj```
+- ```cd proj && ./configure --prefix=$PWD/../gdal/projlib && make && make install```
+- ```cd ../gdal && ./configure --prefix=$PWD --with-proj=$PWD/projlib && make && make install```
 
 #### PyHelios Dependencies
 
@@ -157,6 +161,36 @@ In order to execute PyHelios scripts, libhelios.so path must be added to PYTHONP
 Finally, to execute the demo scene using PyHelios:
 
 ```python3 helios/pyhelios_demo/helios.py pyhelios_demo/custom_als_toyblocks.xml```
+
+
+#### Custom Python Installation
+
+Both Helios and Boost depends on Python, and must be compiled accordingly.
+
+##### Boost
+- Create a user-config.jam in your $HOME directory.
+- Add the following lines, adapting the paths to your Python paths and version:
+```
+using python
+	: 3.8
+	: /home/miniconda3/envs/py38/bin/python3.8 # Path to pythonX.Y executable
+	: /home/miniconda3/envs/py38/include/python3.8 # Path to pyconfig.h location
+	: /home/miniconda3/envs/py38/libs # Path to libpythonX.Y.so location
+;
+```
+- Build Boost with the following commands:
+  - ```cd lib/boost```
+  - ``` ./bootstrap.sh```
+  - ``` ./b2 cxxflags=-fPIC python=3.8```
+   
+For allowing dynamic Boost linkage, execute ```sudo ./b2 install python=3.8```
+
+##### Helios
+- The path to the custom Python root directory must be provided to CMake:
+
+```cmake -DCMAKE_BUILD_TYPE=Release -DPYTHON_BINDING=1 -DPYTHON_VERSION=38 -DPYTHON_PATH=/home/miguelyermo/miniconda3/envs/py38 . ```
+   
+Note that -DPYTHON_VERSION must match the chosen Python installation. If no path is provided, CMake will attempt to use default Python installation.
 
 ### Install on Linux with Visual Debug
 Linux users might compile Helios++ with a visual debug module used mainly for
