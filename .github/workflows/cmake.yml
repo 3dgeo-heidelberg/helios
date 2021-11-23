@@ -198,7 +198,10 @@ jobs:
          uses: actions/upload-artifact@v2
          with:
              name: ${{ runner.os}}-helios-pybinds-${{ matrix.python-version }}
-             path: ${{github.workspace}}/build/helios*
+             path: |
+               ${{github.workspace}}/build/helios
+               ${{github.workspace}}/build/libhelios.so
+               ${{github.workspace}}/build/pyhelios.so
 
    build-helios-pybinds-dynamic:
     # The CMake configure and build commands are platform agnostic and should work equally
@@ -256,6 +259,16 @@ jobs:
         # Build your program with the given configuration
         run:
           cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
+
+
+      - name: Save compiled executable
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{ runner.os}}-helios-dynamic-linking
+          path: |
+            ${{github.workspace}}/build/helios
+            ${{github.workspace}}/build/libhelios.so
+            ${{github.workspace}}/build/pyhelios.so
 
       - name: ls
         run: ls -al .
