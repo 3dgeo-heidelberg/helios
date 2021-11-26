@@ -279,7 +279,7 @@ jobs:
         run: ${{github.workspace}}/build/helios --test
 
    run-testcases:
-     needs: 'Helios-PyBinds (Python3.8)'
+     needs: build-helios
      runs-on: ubuntu-20.04
 
      defaults:
