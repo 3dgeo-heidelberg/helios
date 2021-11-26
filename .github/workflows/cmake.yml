@@ -277,3 +277,18 @@ jobs:
         # Execute tests defined by the CMake configuration.
         # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
         run: ${{github.workspace}}/build/helios --test
+
+    run-testcases:
+      needs: 'Helios-PyBinds (Python3.8)'
+      runs-on: ubuntu-20.04
+
+        defaults:
+          run:
+            working-directory: ${{github.workspace}}
+
+        steps:
+          - name: Install pytest
+              run: python -m pip install pytest
+
+          - name: Run pytest
+            run: python ${{github.workspace}}/pytests
