@@ -4,7 +4,7 @@ import subprocess
 from pathlib import Path
 import sys
 
-HELIOS_EXE = str(Path('run') / 'helios')
+HELIOS_EXE = str(Path('build') / 'helios')
 if sys.platform == "win32":
     HELIOS_EXE += ".exe"
 WORKING_DIR = str(Path(__file__).parent.parent)
@@ -30,7 +30,7 @@ def run_helios_executable(survey_path: Path, options=None) -> Path:
     return find_playback_dir(survey_path)
 
 def run_helios_pyhelios(survey_path: Path, options=None) -> Path:
-    sys.path.append(str((Path(WORKING_DIR) / 'run').absolute()))
+    sys.path.append(str((Path(WORKING_DIR) / 'build').absolute()))
     import pyhelios
     sim = pyhelios.Simulation(
         str(survey_path.absolute()),
