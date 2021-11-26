@@ -42,6 +42,8 @@ private:
     bool las10     = false;
     bool zipOutput = false;
     std::shared_ptr<PulseThreadPoolInterface> pulseThreadPool;
+    int parallelizationStrategy = 1;
+    int chunkSize = 32;
 public:
     bool finalOutput = true;
     bool exportToFile = true;
@@ -272,6 +274,12 @@ public:
     );
     void addScaleFilter(double scaleFactor, std::string partId);
     void addTranslateFilter(double x, double y, double z, std::string partId);
+    /**
+     * @brief Build the pulse thread pool to be used by the simulation
+     * @see PyHeliosSimulation::pulseThreadPool
+     * @see Simulation
+     */
+    void buildPulseThreadPool();
 
     // ***  SIMULATION COPY  *** //
     // ************************* //
