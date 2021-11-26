@@ -1,5 +1,8 @@
 var NAVTREEINDEX11 =
 {
+"dc/d30/classSurfaceInspector_1_1maths_1_1Distances.html#aa15bb04921ffd598377ef2846781f092":[1,0,5,0,3,3],
+"dc/d30/classSurfaceInspector_1_1maths_1_1Distances.html#abf880c25d01f1ce23defb34fb7d99f49":[1,0,5,0,3,1],
+"dc/d30/classSurfaceInspector_1_1maths_1_1Distances.html#ad4ca7ec888656afad2fcea6c296b7100":[1,0,5,0,3,4],
 "dc/d34/PulseTaskDropper_8h_source.html":[2,0,0,7,1,7],
 "dc/d35/structVertexKeyHash.html":[1,0,140],
 "dc/d35/structVertexKeyHash.html#a629f42c1db10fabac4d69e7d65bb6d71":[1,0,140,0],
@@ -246,8 +249,5 @@ var NAVTREEINDEX11 =
 "dc/df6/classrigidmotion_1_1RigidMotionR3Factory.html#a12b6d9bfecc1a992fac6fc5491b762b6":[1,0,4,5,5],
 "dc/df6/classrigidmotion_1_1RigidMotionR3Factory.html#a169201557817ceb955161da693380140":[1,0,4,5,6],
 "dc/df6/classrigidmotion_1_1RigidMotionR3Factory.html#a1ec209a55a9ffe5ecec17a19ce9a77c8":[1,0,4,5,27],
-"dc/df6/classrigidmotion_1_1RigidMotionR3Factory.html#a1f2bfdeefefd04487ed7168b3c5a53dc":[1,0,4,5,11],
-"dc/df6/classrigidmotion_1_1RigidMotionR3Factory.html#a32703a3a92f3df58f53019d9353d0f3f":[1,0,4,5,23],
-"dc/df6/classrigidmotion_1_1RigidMotionR3Factory.html#a3eeb704e9cfc63ada4fbe1de9cf919b9":[1,0,4,5,4],
-"dc/df6/classrigidmotion_1_1RigidMotionR3Factory.html#a4c46e108e27c08547126ae6edb21ab39":[1,0,4,5,24]
+"dc/df6/classrigidmotion_1_1RigidMotionR3Factory.html#a1f2bfdeefefd04487ed7168b3c5a53dc":[1,0,4,5,11]
 };
