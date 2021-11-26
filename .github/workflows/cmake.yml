@@ -291,4 +291,4 @@ jobs:
             run: python -m pip install pytest
 
           - name: Run pytest
-            run: python ${{github.workspace}}/pytests
+            run: python ${{github.workspace}}/pytests/test_demo_scenes.py
