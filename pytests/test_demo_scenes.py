@@ -77,34 +77,12 @@ def eval_arbaro_tls(dirname):
     shutil.rmtree(dirname)
 
 def test_tiffloader_als_exe():
-    dirname_exe = run_helios_executable(Path('data') / 'surveys' / 'demo' / 'als_hd_demo_tiff.xml',
+    dirname_exe = run_helios_executable(Path('data') / 'test' / 'als_hd_demo_tiff_min.xml',
                                         options=['--rebuildScene', '--lasOutput', '--seed', '43', '-vt'])
     eval_tiffloader_als(dirname_exe)
 
 def test_tiffloader_als_pyh():
-    dirname_pyh = run_helios_pyhelios(Path('data') / 'surveys' / 'demo' / 'als_hd_demo_tiff.xml')
-    eval_tiffloader_als(dirname_pyh)
-
-def eval_tiffloader_als(dirname):
-    print(dirname / 'leg000_points.las')
-    return
-    assert (dirname / 'leg000_points.las').exists()
-    assert abs((dirname / 'leg000_points.las').stat().st_size - 18_628_011) < 1_024
-    assert (dirname / 'leg001_points.las').exists()
-    assert abs((dirname / 'leg001_points.las').stat().st_size - 12_152_115) < 1_024
-    with open(dirname / 'leg000_trajectory.txt', 'r') as f:
-        line = f.readline()
-        assert line.startswith('1.0000 25.5000 0.0000')
-    # clean up
-    shutil.rmtree(dirname)
-
-def test_tiffloader_als_exe():
-    dirname_exe = run_helios_executable(Path('data') / 'surveys' / 'demo' / 'als_hd_demo_tiff.xml',
-                                        options=['--rebuildScene', '--lasOutput', '--seed', '43', '-vt'])
-    eval_tiffloader_als(dirname_exe)
-
-def test_tiffloader_als_pyh():
-    dirname_pyh = run_helios_pyhelios(Path('data') / 'surveys' / 'demo' / 'als_hd_demo_tiff.xml')
+    dirname_pyh = run_helios_pyhelios(Path('data') / 'test' / 'als_hd_demo_tiff_min.xml')
     eval_tiffloader_als(dirname_pyh)
 
 def eval_tiffloader_als(dirname):
@@ -121,12 +99,12 @@ def eval_tiffloader_als(dirname):
     shutil.rmtree(dirname)
 
 def test_detailedVoxels_uls_exe():
-    dirname_exe = run_helios_executable(Path('data') / 'surveys' / 'voxels' / 'uls_detailedVoxels_mode_comparison.xml',
+    dirname_exe = run_helios_executable(Path('data') / 'test' / 'uls_detailedVoxels_mode_comparison_min.xml',
                                         options=['--rebuildScene', '--lasOutput', '--seed', '43', '-vt'])
     eval_detailedVoxels_uls(dirname_exe)
 
 def test_detailedVoxels_uls_pyh():
-    dirname_pyh = run_helios_pyhelios(Path('data') / 'surveys' / 'demo' / 'uls_detailedVoxels_mode_comparison.xml')
+    dirname_pyh = run_helios_pyhelios(Path('data') / 'test' / 'uls_detailedVoxels_mode_comparison_min.xml')
     eval_detailedVoxels_uls(dirname_pyh)
 
 def eval_detailedVoxels_uls(dirname):
@@ -148,7 +126,7 @@ def test_xyzVoxels_tls_exe():
     eval_xyzVoxels_tls(dirname_exe)
 
 def test_xyzVoxels_tls_pyh():
-    dirname_pyh = run_helios_pyhelios(Path('data') / 'surveys' / 'demo' / 'tls_sphere_xyzloader_rgb_normals.xml')
+    dirname_pyh = run_helios_pyhelios(Path('data') / 'surveys' / 'voxels' / 'tls_sphere_xyzloader_rgb_normals.xml')
     eval_xyzVoxels_tls(dirname_pyh)
 
 def eval_xyzVoxels_tls(dirname):
