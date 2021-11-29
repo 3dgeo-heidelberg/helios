@@ -7,7 +7,7 @@ import sys
 HELIOS_EXE = str(Path('build') / 'helios')
 if sys.platform == "win32":
     HELIOS_EXE += ".exe"
-WORKING_DIR = str(Path(__file__).parent.parent)
+WORKING_DIR = str(Path(__file__).parent.parent.absolute)
 
 def find_playback_dir(survey_path):
     playback = Path(WORKING_DIR) / 'output' / 'Survey Playback'
@@ -36,8 +36,8 @@ def run_helios_pyhelios(survey_path: Path, options=None) -> Path:
     import pyhelios
     sim = pyhelios.Simulation(
         str(survey_path.absolute()),
-        WORKING_DIR.absolute + os.sep + 'assets' + os.sep,
-        WORKING_DIR.absolute + os.sep + 'output' + os.sep,
+        WORKING_DIR + os.sep + 'assets' + os.sep,
+        WORKING_DIR + os.sep + 'output' + os.sep,
         0,  # Num Threads
         1,  # LAS v1.4 output
         0,  # LAS v1.0 output
