@@ -8,17 +8,17 @@
 	
 		<leg>
 			<platformSettings  x="474500" y="5474500" z="1500.000" onGround="false" movePerSec_m="150"/>
-			<scannerSettings template="set" trajectoryTimeInterval_s="0.05"/>
+			<scannerSettings template="set" trajectoryTimeInterval_s="0.005"/>
 		</leg>
 		
 		<leg>
 			<platformSettings  x="474502" y="5474500" z="1500.000" onGround="false" movePerSec_m="150"/>
-			<scannerSettings template="set" trajectoryTimeInterval_s="0.05"/>
+			<scannerSettings template="set" trajectoryTimeInterval_s="0.005"/>
 		</leg>
 
 		<leg>
 			<platformSettings  x="474502" y="5474502" z="1500.000" onGround="false" movePerSec_m="150"/>
-			<scannerSettings template="set" trajectoryTimeInterval_s="0.05"/>
+			<scannerSettings template="set" trajectoryTimeInterval_s="0.005"/>
 		</leg>
 		
 		<leg>

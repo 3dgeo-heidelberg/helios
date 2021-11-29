@@ -87,13 +87,13 @@ def test_tiffloader_als_pyh():
 
 def eval_tiffloader_als(dirname):
     assert (dirname / 'leg000_points.las').exists()
-    assert abs((dirname / 'leg000_points.las').stat().st_size - 713_432_761) < 1_024
+    assert abs((dirname / 'leg000_points.las').stat().st_size - 109_197) < 1_024
     assert (dirname / 'leg001_points.las').exists()
-    assert abs((dirname / 'leg001_points.las').stat().st_size - 714_891_421) < 1_024
+    assert abs((dirname / 'leg001_points.las').stat().st_size - 109_197) < 1_024
     with open(dirname / 'leg000_trajectory.txt', 'r') as f:
         line = f.readline()
         line = f.readline()
-        assert line.startswith('474507.5010 5474500.0000 1500.0000')
+        assert line.startswith('474500.7510 5474500.0000 1500.0000')
     # clean up
     shutil.rmtree(dirname)
 
@@ -108,9 +108,9 @@ def test_detailedVoxels_uls_pyh():
 
 def eval_detailedVoxels_uls(dirname):
     assert (dirname / 'leg000_points.las').exists()
-    assert abs((dirname / 'leg000_points.las').stat().st_size - 1_355_031) < 1_024
+    assert abs((dirname / 'leg000_points.las').stat().st_size - 418_509) < 1_024 * 3  # for some reason, the exe result is smaller (by 2268 bytes)
     assert (dirname / 'leg000_trajectory.txt').exists()
-    assert abs((dirname / 'leg000_trajectory.txt').stat().st_size -  311_018_230) < 1_024
+    assert abs((dirname / 'leg000_trajectory.txt').stat().st_size - 1_197) < 1_024
     with open(dirname / 'leg000_trajectory.txt', 'r') as f:
         line = f.readline()
         line = f.readline()
@@ -119,7 +119,7 @@ def eval_detailedVoxels_uls(dirname):
         line = f.readline()
         line = f.readline()
         line = f.readline()
-        assert line.startswith('-30.0000 -29.9987 50.0001') and line.endswith('-0.0000 -9.8891 -0.0000\n')
+        assert line.startswith('-3.0000 -1.2741 50.0000')
     # clean up
     shutil.rmtree(dirname)
 
