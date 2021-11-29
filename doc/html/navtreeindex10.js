@@ -1,5 +1,8 @@
 var NAVTREEINDEX10 =
 {
+"db/d57/classfluxionum_1_1UnivariateNewtonRaphsonMinimizer.html#a75bb0216e88162c534c1c5d9102fa262":[1,0,0,3,6],
+"db/d57/classfluxionum_1_1UnivariateNewtonRaphsonMinimizer.html#a7b7b6fb5c0323516c12c992cca7783f9":[1,0,0,3,0],
+"db/d57/classfluxionum_1_1UnivariateNewtonRaphsonMinimizer.html#ac98d07dd8f7b70e16ccb9a01abf56b9c":[1,0,0,3,7],
 "db/d57/classfluxionum_1_1UnivariateNewtonRaphsonMinimizer.html#adba8706a6b811dda5fc11e634a8ee7d3":[1,0,0,3,5],
 "db/d58/classSAHKDTreeFactory.html":[1,0,103],
 "db/d58/classSAHKDTreeFactory.html#a0fa181a6c477c5b55b514f9b12a70b31":[1,0,103,10],
@@ -246,8 +249,5 @@ var NAVTREEINDEX10 =
 "dc/d02/SerializationTest_8h_source.html":[2,0,0,11,10],
 "dc/d30/classSurfaceInspector_1_1maths_1_1Distances.html":[1,0,5,0,3],
 "dc/d30/classSurfaceInspector_1_1maths_1_1Distances.html#a4347c5eb5b3eff8eeddf06780fb11d48":[1,0,5,0,3,0],
-"dc/d30/classSurfaceInspector_1_1maths_1_1Distances.html#aa055101f6046f184d3ab93cc5a0096bf":[1,0,5,0,3,2],
-"dc/d30/classSurfaceInspector_1_1maths_1_1Distances.html#aa15bb04921ffd598377ef2846781f092":[1,0,5,0,3,3],
-"dc/d30/classSurfaceInspector_1_1maths_1_1Distances.html#abf880c25d01f1ce23defb34fb7d99f49":[1,0,5,0,3,1],
-"dc/d30/classSurfaceInspector_1_1maths_1_1Distances.html#ad4ca7ec888656afad2fcea6c296b7100":[1,0,5,0,3,4]
+"dc/d30/classSurfaceInspector_1_1maths_1_1Distances.html#aa055101f6046f184d3ab93cc5a0096bf":[1,0,5,0,3,2]
 };

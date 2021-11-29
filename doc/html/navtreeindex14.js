@@ -1,5 +1,8 @@
 var NAVTREEINDEX14 =
 {
+"df/d86/classMultiThreadKDTreeFactory.html#a90a707241e3ba332e1c5aaacb4301e96":[1,0,79,11],
+"df/d86/classMultiThreadKDTreeFactory.html#aa1d8bb9d7b9f810ded3c70a1650cbaa0":[1,0,79,10],
+"df/d86/classMultiThreadKDTreeFactory.html#aa74d73ab61b35806ee0fdefec06dd38b":[1,0,79,5],
 "df/d86/classMultiThreadKDTreeFactory.html#aaa41155c2cff4d446839bab62dc2bd3a":[1,0,79,7],
 "df/d86/classMultiThreadKDTreeFactory.html#abf65b70dee160507ef62f08c934623af":[1,0,79,4],
 "df/d86/classMultiThreadKDTreeFactory.html#ac98d07dd8f7b70e16ccb9a01abf56b9c":[1,0,79,9],
@@ -181,8 +184,8 @@ var NAVTREEINDEX14 =
 "functions_e.html":[1,3,0,5],
 "functions_enum.html":[1,3,3],
 "functions_f.html":[1,3,0,6],
-"functions_func.html":[1,3,1],
 "functions_func.html":[1,3,1,0],
+"functions_func.html":[1,3,1],
 "functions_func_0x7e.html":[1,3,1,26],
 "functions_func_a.html":[1,3,1,1],
 "functions_func_b.html":[1,3,1,2],
@@ -226,8 +229,8 @@ var NAVTREEINDEX14 =
 "functions_t.html":[1,3,0,20],
 "functions_u.html":[1,3,0,21],
 "functions_v.html":[1,3,0,22],
-"functions_vars.html":[1,3,2],
 "functions_vars.html":[1,3,2,0],
+"functions_vars.html":[1,3,2],
 "functions_vars_a.html":[1,3,2,1],
 "functions_vars_b.html":[1,3,2,2],
 "functions_vars_c.html":[1,3,2,3],
@@ -246,8 +249,5 @@ var NAVTREEINDEX14 =
 "functions_vars_p.html":[1,3,2,16],
 "functions_vars_q.html":[1,3,2,17],
 "functions_vars_r.html":[1,3,2,18],
-"functions_vars_s.html":[1,3,2,19],
-"functions_vars_t.html":[1,3,2,20],
-"functions_vars_u.html":[1,3,2,21],
-"functions_vars_v.html":[1,3,2,22]
+"functions_vars_s.html":[1,3,2,19]
 };
