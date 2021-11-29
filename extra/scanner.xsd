@@ -63,32 +63,37 @@
                                 <xs:complexType>
                                     <xs:simpleContent>
                                         <xs:extension base="xs:string">
-                                            <xs:attribute type="xs:byte" name="x" use="optional"/>
-                                            <xs:attribute type="xs:byte" name="y" use="optional"/>
-                                            <xs:attribute type="xs:byte" name="z" use="optional"/>
+                                            <xs:attribute type="xs:float" name="x" use="optional"/>
+                                            <xs:attribute type="xs:float" name="y" use="optional"/>
+                                            <xs:attribute type="xs:float" name="z" use="optional"/>
                                         </xs:extension>
                                     </xs:simpleContent>
                                 </xs:complexType>
                             </xs:element>
                         </xs:sequence>
                         <xs:attribute type="xs:string" name="id" use="required"/>
-                        <xs:attribute type="xs:float" name="accuracy_m" use="required"/>
+                        <xs:attribute type="xs:float" name="accuracy_m" use="optional"/>
                         <xs:attribute type="xs:float" name="beamDivergence_rad" use="optional"/>
-                        <xs:attribute type="xs:float" name="deflectAngle_deg" use="optional"/>
-                        <xs:attribute type="xs:string" name="name" use="required"/>
-                        <xs:attribute type="xs:string" name="optics" use="required"/>
+                        <xs:attribute type="xs:string" name="name" use="optional"/>
+                        <xs:attribute type="opticsType" name="optics" use="required"/>
                         <xs:attribute type="xs:string" name="pulseFreqs_Hz" use="optional"/>
                         <xs:attribute type="xs:float" name="pulseLength_ns" use="optional"/>
                         <xs:attribute type="xs:float" name="rangeMin_m" use="optional"/>
                         <xs:attribute type="xs:float" name="scanAngleMax_deg" use="optional"/>
-                        <xs:attribute type="xs:int" name="scanFreqMin_Hz" use="optional"/>
-                        <xs:attribute type="xs:int" name="scanFreqMax_Hz" use="optional"/>
+                        <xs:attribute type="xs:float" name="scanAngleEffectiveMax_deg" use="optional"/>
+                        <xs:attribute type="xs:float" name="scanFreqMin_Hz" use="optional"/>
+                        <xs:attribute type="xs:float" name="scanFreqMax_Hz" use="optional"/>
                         <xs:attribute type="xs:short" name="maxNOR" use="optional"/>
                         <xs:attribute type="xs:int" name="scanProduct" use="optional"/>
                         <xs:attribute type="xs:int" name="wavelength_nm" use="optional"/>
-                        <xs:attribute type="xs:float" name="scanAngleEffectiveMax_deg" use="optional"/>
                         <xs:attribute type="xs:int" name="rotorFreq1_Hz" use="optional"/>
                         <xs:attribute type="xs:int" name="rotorFreq2_Hz" use="optional"/>
+                        <xs:attribute type="xs:float" name="averagePower_w" use="optional"/>
+                        <xs:attribute type="xs:short" name="numFibers" use="optional"/>
+                        <xs:attribute type="xs:short" name="beamQualityFactor" use="optional"/>
+                        <xs:attribute type="xs:float" name="opticalEfficiency" use="optional"/>
+                        <xs:attribute type="xs:float" name="atmosphericVisibility_km" use="optional"/>
+                        <xs:attribute type="xs:float" name="headRotatePerSecMax_deg" use="optional"/>
                     </xs:complexType>
                 </xs:element>
             </xs:sequence>

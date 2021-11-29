@@ -20,7 +20,7 @@
             <xs:enumeration value="groundvehicle"/>
         </xs:restriction>
     </xs:simpleType>
-    <xs:complexType name="noiseType">
+    <xs:complexType name="noiseSpec">
         <xs:simpleContent>
             <xs:extension base="xs:string">
                 <xs:attribute type="xs:float" name="clipMin"/>
@@ -35,6 +35,12 @@
             </xs:extension>
         </xs:simpleContent>
     </xs:complexType>
+    <xs:simpleType name="noiseType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="NORMAL"/>
+            <xs:enumeration value="UNIFORM"/>
+        </xs:restriction>
+    </xs:simpleType>
     <xs:element name="document">
         <xs:complexType>
             <xs:sequence>
@@ -58,18 +64,18 @@
                                     <xs:attribute type="xs:float" name="x" use="optional"/>
                                     <xs:attribute type="xs:float" name="y" use="optional"/>
                                     <xs:attribute type="xs:float" name="z" use="optional"/>
-                                    <xs:attribute type="xs:string" name="rotations" use="optional"/>
+                                    <xs:attribute type="rotType" name="rotations" use="optional"/>
                                 </xs:complexType>
                             </xs:element>
-                            <xs:element name="positionXNoise" minOccurs="0" type="noiseType"/>
-                            <xs:element name="positionYNoise" minOccurs="0" type="noiseType"/>
-                            <xs:element name="positionZNoise" minOccurs="0" type="noiseType"/>
-                            <xs:element name="attitudeXNoise" minOccurs="0" type="noiseType"/>
-                            <xs:element name="attitudeYNoise" minOccurs="0" type="noiseType"/>
-                            <xs:element name="attitudeZNoise" minOccurs="0" type="noiseType"/>
+                            <xs:element name="positionXNoise" minOccurs="0" type="noiseSpec"/>
+                            <xs:element name="positionYNoise" minOccurs="0" type="noiseSpec"/>
+                            <xs:element name="positionZNoise" minOccurs="0" type="noiseSpec"/>
+                            <xs:element name="attitudeXNoise" minOccurs="0" type="noiseSpec"/>
+                            <xs:element name="attitudeYNoise" minOccurs="0" type="noiseSpec"/>
+                            <xs:element name="attitudeZNoise" minOccurs="0" type="noiseSpec"/>
                         </xs:sequence>
                         <xs:attribute type="xs:string" name="id" use="required"/>
-                        <xs:attribute type="xs:string" name="name" use="required"/>
+                        <xs:attribute type="xs:string" name="name" use="optional"/>
                         <xs:attribute type="platformType" name="type" use="optional"/>
                         <xs:attribute type="xs:float" name="drag" use="optional"/>
                         <xs:attribute type="xs:float" name="engine_max_force" use="optional"/>
