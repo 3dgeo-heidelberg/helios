@@ -7,7 +7,7 @@ import sys
 HELIOS_EXE = str(Path('build') / 'helios')
 if sys.platform == "win32":
     HELIOS_EXE += ".exe"
-WORKING_DIR = str(Path(__file__).parent.parent.absolute)
+WORKING_DIR = str(Path(__file__).parent.parent.absolute())
 
 def find_playback_dir(survey_path):
     playback = Path(WORKING_DIR) / 'output' / 'Survey Playback'
