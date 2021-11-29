@@ -365,6 +365,14 @@ jobs:
             with:
                python-version: 3.8
 
+          - name: Load LasTools, Armadillo and GDAL from cache
+            id: cache-lastools-armadillo-gdal
+            uses: actions/cache@v2
+            with:
+              path: |
+                ${{github.workspace}}/lib
+              key: ${{ runner.os }}-gdal-lastools-armadillo-latest
+
           - name: Load helios++ from cache
             id: cache-helios
             uses: actions/cache@v2
@@ -373,10 +381,9 @@ jobs:
                 ${{github.workspace}}/build
               key: ${{ runner.os }}-helios-build-latest
 
-          - name: ls worskpace
-            run: ls -al ${{github.workspace}}
-          - name: ls worskpace/build
-            run: ls -al ${{github.workspace}}/build
+          - name: Add libaries to LD_LIBRARY_PATH
+            run: |
+              echo "LD_LIBRARY_PATH=${{github.workspace}}/lib/armadillo:${{github.workspace}}/lib/LAStools:${{github.workspace}}/lib/gdal" >> $GITHUB_ENV
 
           - name: Install pytest
             run: python -m pip install pytest
