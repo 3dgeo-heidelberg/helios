@@ -31,6 +31,7 @@ def run_helios_executable(survey_path: Path, options=None) -> Path:
 
 def run_helios_pyhelios(survey_path: Path, options=None) -> Path:
     sys.path.append(str((Path(WORKING_DIR) / 'build').absolute()))
+    print(sys.path)
     import pyhelios
     sim = pyhelios.Simulation(
         str(survey_path.absolute()),
@@ -65,7 +66,6 @@ def test_arbaro_tls_pyh():
     eval_arbaro_tls(dirname_pyh)
 
 def eval_arbaro_tls(dirname):
-    print(dirname / 'leg000_points.las')
     assert (dirname / 'leg000_points.las').exists()
     assert abs((dirname / 'leg000_points.las').stat().st_size - 18_628_011) < 1_024
     assert (dirname / 'leg001_points.las').exists()
@@ -86,15 +86,14 @@ def test_tiffloader_als_pyh():
     eval_tiffloader_als(dirname_pyh)
 
 def eval_tiffloader_als(dirname):
-    print(dirname / 'leg000_points.las')
-    return
     assert (dirname / 'leg000_points.las').exists()
-    assert abs((dirname / 'leg000_points.las').stat().st_size - 18_628_011) < 1_024
+    assert abs((dirname / 'leg000_points.las').stat().st_size - 713_432_761) < 1_024
     assert (dirname / 'leg001_points.las').exists()
-    assert abs((dirname / 'leg001_points.las').stat().st_size - 12_152_115) < 1_024
+    assert abs((dirname / 'leg001_points.las').stat().st_size - 714_891_421) < 1_024
     with open(dirname / 'leg000_trajectory.txt', 'r') as f:
         line = f.readline()
-        assert line.startswith('1.0000 25.5000 0.0000')
+        line = f.readline()
+        assert line.startswith('474507.5010 5474500.0000 1500.0000')
     # clean up
     shutil.rmtree(dirname)
 
@@ -108,15 +107,19 @@ def test_detailedVoxels_uls_pyh():
     eval_detailedVoxels_uls(dirname_pyh)
 
 def eval_detailedVoxels_uls(dirname):
-    print(dirname / 'leg000_points.las')
-    return
     assert (dirname / 'leg000_points.las').exists()
-    assert abs((dirname / 'leg000_points.las').stat().st_size - 18_628_011) < 1_024
-    assert (dirname / 'leg001_points.las').exists()
-    assert abs((dirname / 'leg001_points.las').stat().st_size - 12_152_115) < 1_024
+    assert abs((dirname / 'leg000_points.las').stat().st_size - 1_355_031) < 1_024
+    assert (dirname / 'leg000_trajectory.txt').exists()
+    assert abs((dirname / 'leg000_trajectory.txt').stat().st_size -  311_018_230) < 1_024
     with open(dirname / 'leg000_trajectory.txt', 'r') as f:
         line = f.readline()
-        assert line.startswith('1.0000 25.5000 0.0000')
+        line = f.readline()
+        line = f.readline()
+        line = f.readline()
+        line = f.readline()
+        line = f.readline()
+        line = f.readline()
+        assert line.startswith('-30.0000 -29.9987 50.0001') and line.endswith('-0.0000 -9.8891 -0.0000\n')
     # clean up
     shutil.rmtree(dirname)
 
@@ -130,14 +133,7 @@ def test_xyzVoxels_tls_pyh():
     eval_xyzVoxels_tls(dirname_pyh)
 
 def eval_xyzVoxels_tls(dirname):
-    print(dirname / 'leg000_points.las')
-    return
     assert (dirname / 'leg000_points.las').exists()
-    assert abs((dirname / 'leg000_points.las').stat().st_size - 18_628_011) < 1_024
-    assert (dirname / 'leg001_points.las').exists()
-    assert abs((dirname / 'leg001_points.las').stat().st_size - 12_152_115) < 1_024
-    with open(dirname / 'leg000_trajectory.txt', 'r') as f:
-        line = f.readline()
-        assert line.startswith('1.0000 25.5000 0.0000')
+    assert abs((dirname / 'leg000_points.las').stat().st_size - 16_937_811) < 1_024
     # clean up
     shutil.rmtree(dirname)
