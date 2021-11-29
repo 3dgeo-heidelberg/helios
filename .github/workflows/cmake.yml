@@ -290,6 +290,7 @@ jobs:
        run:
          working-directory: ${{github.workspace}}
 
+
      steps:
        - uses: actions/checkout@v2
        - uses: actions/setup-python@v2
@@ -301,6 +302,14 @@ jobs:
 
        - name: Install required packages
          run: sudo apt-get install -y cmake libglm-dev zip unzip xz-utils
+
+       - name: Cache Helios++
+         id: cache-helios
+         uses: actions/cache@v2
+         with:
+           path: |
+             ${{github.workspace}}/build
+           key: ${{ runner.os }}-helios-build-latest
 
        - name: Load LasTools, Armadillo and GDAL from cache
          id: cache-lastools-armadillo-gdal
@@ -355,6 +364,14 @@ jobs:
           - uses: actions/setup-python@v2
             with:
                python-version: 3.8
+
+          - name: Load helios++ from cache
+            id: cache-helios
+            uses: actions/cache@v2
+            with:
+              path: |
+                ${{github.workspace}}/build
+              key: ${{ runner.os }}-helios-build-latest
 
           - name: ls worskpace
             run: ls -al ${{github.workspace}}
