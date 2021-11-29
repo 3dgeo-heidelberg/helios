@@ -24,6 +24,7 @@ def run_helios_executable(survey_path: Path, options=None) -> Path:
     if options is None:
         options = list()
     command = [HELIOS_EXE, str(survey_path)] + options
+    print(command)
     p = subprocess.Popen(command, cwd=WORKING_DIR, shell=True)
     p.wait()
     assert p.returncode == 0
@@ -35,8 +36,8 @@ def run_helios_pyhelios(survey_path: Path, options=None) -> Path:
     import pyhelios
     sim = pyhelios.Simulation(
         str(survey_path.absolute()),
-        'assets\\',
-        'output\\',
+        WORKING_DIR.absolute + os.sep + 'assets' + os.sep,
+        WORKING_DIR.absolute + os.sep + 'output' + os.sep,
         0,  # Num Threads
         1,  # LAS v1.4 output
         0,  # LAS v1.0 output
