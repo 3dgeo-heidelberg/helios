@@ -277,3 +277,116 @@ jobs:
         # Execute tests defined by the CMake configuration.
         # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
         run: ${{github.workspace}}/build/helios --test
+
+
+   build-helios-38:
+     needs: [ build-libs, build-boost ]
+     runs-on: ubuntu-20.04
+
+     name: 'Helios-PyBinds (Python3.8) - separate'
+
+
+     defaults:
+       run:
+         working-directory: ${{github.workspace}}
+
+
+     steps:
+       - uses: actions/checkout@v2
+       - uses: actions/setup-python@v2
+         with:
+           python-version: 3.8
+
+       - name: Update package lists
+         run: sudo apt update
+
+       - name: Install required packages
+         run: sudo apt-get install -y cmake libglm-dev zip unzip xz-utils
+
+       - name: Cache Helios++
+         id: cache-helios
+         uses: actions/cache@v2
+         with:
+           path: |
+             ${{github.workspace}}/build
+           key: ${{ runner.os }}-helios-build-latest
+
+       - name: Load LasTools, Armadillo and GDAL from cache
+         id: cache-lastools-armadillo-gdal
+         uses: actions/cache@v2
+         with:
+           path: |
+             ${{github.workspace}}/lib
+           key: ${{ runner.os }}-gdal-lastools-armadillo-latest
+
+       - name: Load Boost from Cache
+         id: cache-boost
+         uses: actions/cache@v2
+         with:
+           path: |
+             ${{github.workspace}}/lib/boost
+             ${{github.workspace}}/.github/config/boost
+           key: ${{ runner.os }}-boost.1.76
+
+       - name: Get Python Version without dot
+         run: |
+           echo "PYTHON_VER=$(echo '3.8' | sed "s/\.//g")" >> $GITHUB_ENV
+
+       - name: Configure CMake
+         # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
+         # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
+         run: |
+           cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DPYTHON_BINDING=1 -DPYTHON_VERSION=$PYTHON_VER -DPYTHON_PATH=$pythonLocation -DCMAKE_RUNTIME_OUTPUT_DIRECTORY:STRING=${{github.workspace}}/build
+
+       - name: Build
+         # Build your program with the given configuration
+         run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
+
+       - name: ls
+         run: ls -al .
+
+       - name: Test
+         # Execute tests defined by the CMake configuration.
+         # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
+         run: ${{github.workspace}}/build/helios --test
+
+
+   run-testcases:
+     needs: build-helios-38
+     runs-on: ubuntu-20.04
+
+     defaults:
+         run:
+            working-directory: ${{github.workspace}}
+
+     steps:     
+          - uses: actions/checkout@v2
+          - uses: actions/setup-python@v2
+            with:
+               python-version: 3.8
+
+          - name: Load LasTools, Armadillo and GDAL from cache
+            id: cache-lastools-armadillo-gdal
+            uses: actions/cache@v2
+            with:
+              path: |
+                ${{github.workspace}}/lib
+              key: ${{ runner.os }}-gdal-lastools-armadillo-latest
+
+          - name: Load helios++ from cache
+            id: cache-helios
+            uses: actions/cache@v2
+            with:
+              path: |
+                ${{github.workspace}}/build
+              key: ${{ runner.os }}-helios-build-latest
+
+          - name: Add libaries to LD_LIBRARY_PATH
+            run: |
+              echo "LD_LIBRARY_PATH=${{github.workspace}}/lib/armadillo:${{github.workspace}}/lib/LAStools:${{github.workspace}}/lib/gdal" >> $GITHUB_ENV
+
+          - name: Install pytest
+            run: python -m pip install pytest
+
+          - name: Run pytest
+            run: python -m pytest ${{github.workspace}}/pytests/test_demo_scenes.py
