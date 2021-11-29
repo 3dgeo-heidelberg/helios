@@ -20,6 +20,12 @@
             <xs:enumeration value="groundvehicle"/>
         </xs:restriction>
     </xs:simpleType>
+    <xs:simpleType name="noiseType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="NORMAL"/>
+            <xs:enumeration value="UNIFORM"/>
+        </xs:restriction>
+    </xs:simpleType>
     <xs:complexType name="noiseSpec">
         <xs:simpleContent>
             <xs:extension base="xs:string">
@@ -27,7 +33,7 @@
                 <xs:attribute type="xs:float" name="clipMax"/>
                 <xs:attribute type="xs:boolean" name="clipEnabled"/>
                 <xs:attribute type="xs:short" name="fixedLifespan"/>
-                <xs:attribute type="xs:string" name="type"/>
+                <xs:attribute type="noiseType" name="type"/>
                 <xs:attribute type="xs:float" name="mean"/>
                 <xs:attribute type="xs:float" name="stdev"/>
                 <xs:attribute type="xs:float" name="min"/>
@@ -35,12 +41,6 @@
             </xs:extension>
         </xs:simpleContent>
     </xs:complexType>
-    <xs:simpleType name="noiseType">
-        <xs:restriction base="xs:string">
-            <xs:enumeration value="NORMAL"/>
-            <xs:enumeration value="UNIFORM"/>
-        </xs:restriction>
-    </xs:simpleType>
     <xs:element name="document">
         <xs:complexType>
             <xs:sequence>
