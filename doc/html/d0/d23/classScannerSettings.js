@@ -15,7 +15,7 @@ var classScannerSettings =
     [ "pulseFreq_Hz", "d0/d23/classScannerSettings.html#a4dd555e27c9634222b04ff1aef51a4a8", null ],
     [ "pulseLength_ns", "d0/d23/classScannerSettings.html#a866712ce8ceb590d4d39fd446db829c4", null ],
     [ "scanAngle_rad", "d0/d23/classScannerSettings.html#a1547201eecf0b5b12947f4bdcb69fe3d", null ],
-    [ "scanFreq_Hz", "d0/d23/classScannerSettings.html#a31c72f7d894b9dbca8f7d36e408d9098", null ],
+    [ "scanFreq_Hz", "d0/d23/classScannerSettings.html#af24c361ac908a0d0103302d01c0a328d", null ],
     [ "trajectoryTimeInterval", "d0/d23/classScannerSettings.html#af3ec926873b7a8dbea08384f0241b268", null ],
     [ "verticalAngleMax_rad", "d0/d23/classScannerSettings.html#a62b14d6ee9bb4e4e8f0d4bb866a2b682", null ],
     [ "verticalAngleMin_rad", "d0/d23/classScannerSettings.html#a82f52f986aa9a75dc2a931078fa5fc52", null ]

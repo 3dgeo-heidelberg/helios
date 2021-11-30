@@ -31,13 +31,13 @@ var NAVTREEINDEX =
 "d6/da1/classSurveyPlayback.html#aa7556f820dd34560c3040e48bb2b8d83",
 "d7/d84/classrigidmotion_1_1RigidMotion.html#afee19fb86c47e69c4fa06966c701bd8f",
 "d9/d22/classLadLut.html#ab74093b290925c63b85144f390a6ee33",
-"da/d24/classSurfaceInspector_1_1maths_1_1Statistics.html#aa2d37ca457230b7f37d563ed778e4e22",
-"db/d57/classfluxionum_1_1UnivariateNewtonRaphsonMinimizer.html#adba8706a6b811dda5fc11e634a8ee7d3",
-"dc/d34/PulseTaskDropper_8h_source.html",
-"dc/df6/classrigidmotion_1_1RigidMotionR3Factory.html#a4f1e4595f1fedc4df7191f0b8bd24420",
-"de/d97/classAsset.html#ac37173d6b01d7b8caa7bd786b8de2269",
-"df/d86/classMultiThreadKDTreeFactory.html#aaa41155c2cff4d446839bab62dc2bd3a",
-"functions_vars_w.html"
+"da/d24/classSurfaceInspector_1_1maths_1_1Statistics.html#a8a462c829cc6f1fb36a0c2859b7c2c81",
+"db/d57/classfluxionum_1_1UnivariateNewtonRaphsonMinimizer.html#a75bb0216e88162c534c1c5d9102fa262",
+"dc/d30/classSurfaceInspector_1_1maths_1_1Distances.html#aa15bb04921ffd598377ef2846781f092",
+"dc/df6/classrigidmotion_1_1RigidMotionR3Factory.html#a32703a3a92f3df58f53019d9353d0f3f",
+"de/d97/classAsset.html#a960cf51a784549e96534511da590f343",
+"df/d86/classMultiThreadKDTreeFactory.html#a90a707241e3ba332e1c5aaacb4301e96",
+"functions_vars_t.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

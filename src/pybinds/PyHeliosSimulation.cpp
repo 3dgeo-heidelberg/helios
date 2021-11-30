@@ -7,6 +7,7 @@
 #include <RotateFilter.h>
 #include <PyHeliosOutputWrapper.h>
 #include <chrono>
+#include <PulseWarehouseThreadPool.h>
 
 using pyhelios::PyHeliosSimulation;
 using pyhelios::PyHeliosOutputWrapper;
@@ -28,13 +29,9 @@ PyHeliosSimulation::PyHeliosSimulation(
     this->surveyPath = surveyPath;
     this->assetsPath = assetsPath;
     this->outputPath = outputPath;
-    this->numThreads = numThreads;
+    if(numThreads == 0) this->numThreads = std::thread::hardware_concurrency();
+    else this->numThreads = numThreads;
     xmlreader = std::make_shared<XmlSurveyLoader>(surveyPath, assetsPath);
-    pulseThreadPool = std::make_shared<PulseThreadPool>(
-        numThreads-1,
-        survey->scanner->detector->cfg_device_accuracy_m,
-        true
-    );
 }
 PyHeliosSimulation::~PyHeliosSimulation() {
     if(thread != nullptr) delete thread;
@@ -77,13 +74,14 @@ void PyHeliosSimulation::start (){
     survey->scanner->detector->las10 = las10;
     survey->scanner->detector->zipOutput = zipOutput;
 
+    buildPulseThreadPool();
     playback = std::shared_ptr<SurveyPlayback>(
         new SurveyPlayback(
             survey,
             outputPath,
-            0,
+            parallelizationStrategy,
             pulseThreadPool,
-            32,
+            chunkSize,
             lasOutput,
             las10,
             zipOutput,
@@ -246,6 +244,21 @@ void PyHeliosSimulation::addTranslateFilter(
     tf.localTranslation = glm::dvec3(x, y, z);
     xmlreader->sceneLoader.sceneSpec.translations.push_back(tf);
     xmlreader->sceneLoader.sceneSpec.translationsId.push_back(partId);
+}
+
+void PyHeliosSimulation::buildPulseThreadPool(){
+    // See LidarSim::init function for handling of different pulse thread pools
+    // Configure pulse thread pool
+    parallelizationStrategy = 1;
+    chunkSize = 32;
+    size_t const poolSize = numThreads-1;
+
+    // Build pulse thread pool
+    pulseThreadPool = std::make_shared<PulseWarehouseThreadPool>(
+        poolSize,
+        survey->scanner->detector->cfg_device_accuracy_m,
+        poolSize*4
+    );
 }
 
 // ***  SIMULATION COPY  *** //
