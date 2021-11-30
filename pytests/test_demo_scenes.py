@@ -39,7 +39,7 @@ def run_helios_pyhelios(survey_path: Path, options=None) -> Path:
         str(survey_path.absolute()),
         WORKING_DIR + os.sep + 'assets' + os.sep,
         WORKING_DIR + os.sep + 'output' + os.sep,
-        0,  # Num Threads
+        1,  # Num Threads
         1,  # LAS v1.4 output
         0,  # LAS v1.0 output
         0,  # ZIP output
@@ -60,7 +60,7 @@ def run_helios_pyhelios(survey_path: Path, options=None) -> Path:
 
 def test_arbaro_tls_exe():
     dirname_exe = run_helios_executable(Path('data') / 'surveys' / 'demo' / 'tls_arbaro_demo.xml',
-                                        options=['--rebuildScene', '--lasOutput', '--seed', '43', '-vt'])
+                                        options=['--rebuildScene', '--lasOutput', '--seed', '43', '-vt', '-j', '1'])
     eval_arbaro_tls(dirname_exe)
 
 def test_arbaro_tls_pyh():
@@ -80,7 +80,7 @@ def eval_arbaro_tls(dirname):
 
 def test_tiffloader_als_exe():
     dirname_exe = run_helios_executable(Path('data') / 'test' / 'als_hd_demo_tiff_min.xml',
-                                        options=['--rebuildScene', '--lasOutput', '--seed', '43', '-vt'])
+                                        options=['--rebuildScene', '--lasOutput', '--seed', '43', '-vt', '-j', '1'])
     eval_tiffloader_als(dirname_exe)
 
 def test_tiffloader_als_pyh():
@@ -101,7 +101,7 @@ def eval_tiffloader_als(dirname):
 
 def test_detailedVoxels_uls_exe():
     dirname_exe = run_helios_executable(Path('data') / 'test' / 'uls_detailedVoxels_mode_comparison_min.xml',
-                                        options=['--rebuildScene', '--lasOutput', '--seed', '43', '-vt'])
+                                        options=['--rebuildScene', '--lasOutput', '--seed', '43', '-vt', '-j', '1'])
     eval_detailedVoxels_uls(dirname_exe)
 
 def test_detailedVoxels_uls_pyh():
@@ -110,7 +110,7 @@ def test_detailedVoxels_uls_pyh():
 
 def eval_detailedVoxels_uls(dirname):
     assert (dirname / 'leg000_points.las').exists()
-    assert abs((dirname / 'leg000_points.las').stat().st_size - 418_509) < 1_024 * 3  # for some reason, the exe result is smaller (by 2268 bytes)
+    assert abs((dirname / 'leg000_points.las').stat().st_size - 418_509) < 1_024
     assert (dirname / 'leg000_trajectory.txt').exists()
     assert abs((dirname / 'leg000_trajectory.txt').stat().st_size - 1_197) < 1_024
     with open(dirname / 'leg000_trajectory.txt', 'r') as f:
@@ -127,7 +127,7 @@ def eval_detailedVoxels_uls(dirname):
 
 def test_xyzVoxels_tls_exe():
     dirname_exe = run_helios_executable(Path('data') / 'surveys' / 'voxels' / 'tls_sphere_xyzloader_rgb_normals.xml',
-                                        options=['--rebuildScene', '--lasOutput', '--seed', '43', '-vt'])
+                                        options=['--rebuildScene', '--lasOutput', '--seed', '43', '-vt', '-j', '1'])
     eval_xyzVoxels_tls(dirname_exe)
 
 def test_xyzVoxels_tls_pyh():
