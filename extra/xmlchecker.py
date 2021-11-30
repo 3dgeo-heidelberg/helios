@@ -13,10 +13,16 @@ if Path.cwd() != xsd_dir.parent:
     os.chdir(xsd_dir.parent)
 
 # check where helios.exe is located
-if any("helios.exe" in str(f) for f in Path.cwd().glob('*') if f.is_file()):
-    helios_dir = Path("")
-elif any("helios.exe" in str(f) for f in Path.cwd().glob('run/*') if f.is_file()):
-    helios_dir = Path("run")
+HELIOS_EXE_NAME = "helios"
+if sys.platform == "win32" or sys.platform == "win64":
+    HELIOS_EXE_NAME += ".exe"
+
+if list(Path.cwd().glob(f"*{HELIOS_EXE_NAME}")):
+    HELIOS_EXE = str(list(Path.cwd().glob(f"*{HELIOS_EXE_NAME}"))[0])
+else:
+    HELIOS_EXE = str(list(Path.cwd().glob(f"*/{HELIOS_EXE_NAME}"))[0])
+
+print(f"Found HELIOS++ executable: {HELIOS_EXE}")
 
 survey_schema = xmlschema.XMLSchema('extra\survey.xsd')
 scene_schema = xmlschema.XMLSchema('extra\scene.xsd')
@@ -40,4 +46,4 @@ xmlschema.validate(scanner_file, scanner_schema)
 xmlschema.validate(platform_file, platform_schema)
 
 # call HELIOS++
-subprocess.run([helios_dir / "helios.exe", survey_file, *sys.argv[2:]])
+subprocess.run([HELIOS_EXE, survey_file, *sys.argv[2:]])
