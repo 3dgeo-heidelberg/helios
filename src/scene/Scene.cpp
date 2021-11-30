@@ -67,7 +67,7 @@ bool Scene::finalizeLoading(bool const safe) {
   if (primitives.empty()) return false;
 
   // #####   UPDATE PRIMITIVES ON FINISH LOADING   #####
-  UniformNoiseSource<double> uns(-1, 1);
+  UniformNoiseSource<double> uns(*DEFAULT_RG, -1, 1);
   for (Primitive *p : primitives) {
     p->onFinishLoading(uns);
   }
