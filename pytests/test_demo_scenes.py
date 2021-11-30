@@ -34,6 +34,7 @@ def run_helios_pyhelios(survey_path: Path, options=None) -> Path:
     sys.path.append(str((Path(WORKING_DIR) / 'build').absolute()))
     print(sys.path)
     import pyhelios
+    pyhelios.setDefaultRandomnessGeneratorSeed("43")
     sim = pyhelios.Simulation(
         str(survey_path.absolute()),
         WORKING_DIR + os.sep + 'assets' + os.sep,
