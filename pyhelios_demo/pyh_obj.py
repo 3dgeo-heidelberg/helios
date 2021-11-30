@@ -663,7 +663,10 @@ class Translation:
         Args:
             filter: xml location of translation.
         """
-        self.translation = filter.find('param').attrib['value'].split(';')
+        params = filter.findall('param')
+        for param in params:
+            if param.attrib['type'] == 'vec3' and param.attrib['key'] == 'offset':
+                self.translation = param.attrib['value'].split(';')
 
 
 class Rotation:
