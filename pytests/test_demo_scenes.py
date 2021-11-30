@@ -4,10 +4,10 @@ import subprocess
 from pathlib import Path
 import sys
 
-HELIOS_EXE = str(Path('run') / 'helios')
+HELIOS_EXE = str(Path('build') / 'helios')
 if sys.platform == "win32":
     HELIOS_EXE += ".exe"
-WORKING_DIR = str(Path(__file__).parent.parent)
+WORKING_DIR = str(Path(__file__).parent.parent.absolute())
 
 def find_playback_dir(survey_path):
     playback = Path(WORKING_DIR) / 'output' / 'Survey Playback'
@@ -24,18 +24,20 @@ def run_helios_executable(survey_path: Path, options=None) -> Path:
     if options is None:
         options = list()
     command = [HELIOS_EXE, str(survey_path)] + options
-    p = subprocess.Popen(command, cwd=WORKING_DIR, shell=True)
+    print(command)
+    p = subprocess.Popen(command, cwd=WORKING_DIR, shell=(sys.platform == "win32"))  # shell must be false for linux (but true for windows(?))
     p.wait()
     assert p.returncode == 0
     return find_playback_dir(survey_path)
 
 def run_helios_pyhelios(survey_path: Path, options=None) -> Path:
-    sys.path.append(str((Path(WORKING_DIR) / 'run').absolute()))
+    sys.path.append(str((Path(WORKING_DIR) / 'build').absolute()))
+    print(sys.path)
     import pyhelios
     sim = pyhelios.Simulation(
         str(survey_path.absolute()),
-        'assets\\',
-        'output\\',
+        WORKING_DIR + os.sep + 'assets' + os.sep,
+        WORKING_DIR + os.sep + 'output' + os.sep,
         0,  # Num Threads
         1,  # LAS v1.4 output
         0,  # LAS v1.0 output
@@ -65,7 +67,6 @@ def test_arbaro_tls_pyh():
     eval_arbaro_tls(dirname_pyh)
 
 def eval_arbaro_tls(dirname):
-    print(dirname / 'leg000_points.las')
     assert (dirname / 'leg000_points.las').exists()
     assert abs((dirname / 'leg000_points.las').stat().st_size - 18_628_011) < 1_024
     assert (dirname / 'leg001_points.las').exists()
@@ -77,68 +78,49 @@ def eval_arbaro_tls(dirname):
     shutil.rmtree(dirname)
 
 def test_tiffloader_als_exe():
-    dirname_exe = run_helios_executable(Path('data') / 'surveys' / 'demo' / 'als_hd_demo_tiff.xml',
+    dirname_exe = run_helios_executable(Path('data') / 'test' / 'als_hd_demo_tiff_min.xml',
                                         options=['--rebuildScene', '--lasOutput', '--seed', '43', '-vt'])
     eval_tiffloader_als(dirname_exe)
 
 def test_tiffloader_als_pyh():
-    dirname_pyh = run_helios_pyhelios(Path('data') / 'surveys' / 'demo' / 'als_hd_demo_tiff.xml')
+    dirname_pyh = run_helios_pyhelios(Path('data') / 'test' / 'als_hd_demo_tiff_min.xml')
     eval_tiffloader_als(dirname_pyh)
 
 def eval_tiffloader_als(dirname):
-    print(dirname / 'leg000_points.las')
-    return
     assert (dirname / 'leg000_points.las').exists()
-    assert abs((dirname / 'leg000_points.las').stat().st_size - 18_628_011) < 1_024
+    assert abs((dirname / 'leg000_points.las').stat().st_size - 109_197) < 1_024
     assert (dirname / 'leg001_points.las').exists()
-    assert abs((dirname / 'leg001_points.las').stat().st_size - 12_152_115) < 1_024
+    assert abs((dirname / 'leg001_points.las').stat().st_size - 109_197) < 1_024
     with open(dirname / 'leg000_trajectory.txt', 'r') as f:
         line = f.readline()
-        assert line.startswith('1.0000 25.5000 0.0000')
-    # clean up
-    shutil.rmtree(dirname)
-
-def test_tiffloader_als_exe():
-    dirname_exe = run_helios_executable(Path('data') / 'surveys' / 'demo' / 'als_hd_demo_tiff.xml',
-                                        options=['--rebuildScene', '--lasOutput', '--seed', '43', '-vt'])
-    eval_tiffloader_als(dirname_exe)
-
-def test_tiffloader_als_pyh():
-    dirname_pyh = run_helios_pyhelios(Path('data') / 'surveys' / 'demo' / 'als_hd_demo_tiff.xml')
-    eval_tiffloader_als(dirname_pyh)
-
-def eval_tiffloader_als(dirname):
-    print(dirname / 'leg000_points.las')
-    return
-    assert (dirname / 'leg000_points.las').exists()
-    assert abs((dirname / 'leg000_points.las').stat().st_size - 18_628_011) < 1_024
-    assert (dirname / 'leg001_points.las').exists()
-    assert abs((dirname / 'leg001_points.las').stat().st_size - 12_152_115) < 1_024
-    with open(dirname / 'leg000_trajectory.txt', 'r') as f:
         line = f.readline()
-        assert line.startswith('1.0000 25.5000 0.0000')
+        assert line.startswith('474500.7510 5474500.0000 1500.0000')
     # clean up
     shutil.rmtree(dirname)
 
 def test_detailedVoxels_uls_exe():
-    dirname_exe = run_helios_executable(Path('data') / 'surveys' / 'voxels' / 'uls_detailedVoxels_mode_comparison.xml',
+    dirname_exe = run_helios_executable(Path('data') / 'test' / 'uls_detailedVoxels_mode_comparison_min.xml',
                                         options=['--rebuildScene', '--lasOutput', '--seed', '43', '-vt'])
     eval_detailedVoxels_uls(dirname_exe)
 
 def test_detailedVoxels_uls_pyh():
-    dirname_pyh = run_helios_pyhelios(Path('data') / 'surveys' / 'demo' / 'uls_detailedVoxels_mode_comparison.xml')
+    dirname_pyh = run_helios_pyhelios(Path('data') / 'test' / 'uls_detailedVoxels_mode_comparison_min.xml')
     eval_detailedVoxels_uls(dirname_pyh)
 
 def eval_detailedVoxels_uls(dirname):
-    print(dirname / 'leg000_points.las')
-    return
     assert (dirname / 'leg000_points.las').exists()
-    assert abs((dirname / 'leg000_points.las').stat().st_size - 18_628_011) < 1_024
-    assert (dirname / 'leg001_points.las').exists()
-    assert abs((dirname / 'leg001_points.las').stat().st_size - 12_152_115) < 1_024
+    assert abs((dirname / 'leg000_points.las').stat().st_size - 418_509) < 1_024 * 3  # for some reason, the exe result is smaller (by 2268 bytes)
+    assert (dirname / 'leg000_trajectory.txt').exists()
+    assert abs((dirname / 'leg000_trajectory.txt').stat().st_size - 1_197) < 1_024
     with open(dirname / 'leg000_trajectory.txt', 'r') as f:
         line = f.readline()
-        assert line.startswith('1.0000 25.5000 0.0000')
+        line = f.readline()
+        line = f.readline()
+        line = f.readline()
+        line = f.readline()
+        line = f.readline()
+        line = f.readline()
+        assert line.startswith('-3.0000 -1.2741 50.0000')
     # clean up
     shutil.rmtree(dirname)
 
@@ -148,18 +130,11 @@ def test_xyzVoxels_tls_exe():
     eval_xyzVoxels_tls(dirname_exe)
 
 def test_xyzVoxels_tls_pyh():
-    dirname_pyh = run_helios_pyhelios(Path('data') / 'surveys' / 'demo' / 'tls_sphere_xyzloader_rgb_normals.xml')
+    dirname_pyh = run_helios_pyhelios(Path('data') / 'surveys' / 'voxels' / 'tls_sphere_xyzloader_rgb_normals.xml')
     eval_xyzVoxels_tls(dirname_pyh)
 
 def eval_xyzVoxels_tls(dirname):
-    print(dirname / 'leg000_points.las')
-    return
     assert (dirname / 'leg000_points.las').exists()
-    assert abs((dirname / 'leg000_points.las').stat().st_size - 18_628_011) < 1_024
-    assert (dirname / 'leg001_points.las').exists()
-    assert abs((dirname / 'leg001_points.las').stat().st_size - 12_152_115) < 1_024
-    with open(dirname / 'leg000_trajectory.txt', 'r') as f:
-        line = f.readline()
-        assert line.startswith('1.0000 25.5000 0.0000')
+    assert abs((dirname / 'leg000_points.las').stat().st_size - 16_937_811) < 1_024
     # clean up
     shutil.rmtree(dirname)

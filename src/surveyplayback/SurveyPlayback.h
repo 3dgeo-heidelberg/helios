@@ -26,10 +26,10 @@ public:
 	 *  or not (false)
 	 */
 	bool lasOutput = false;
-        /**
-         * @brief Flag to specify if LAS output must be LAS v1.0.
-         */
-        bool las10 = false;
+    /**
+     * @brief Flag to specify if LAS output must be LAS v1.0.
+     */
+    bool las10 = false;
 	/**
 	 * @brief Flag to specify if output must be zipped (true) or not (false)
 	 */

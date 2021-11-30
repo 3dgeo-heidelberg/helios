@@ -225,6 +225,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>addScaleFilter</b> (d
 <tr class="memitem:aa2d99601b8c92bec11254c83ec920dcf"><td class="memItemLeft" align="right" valign="top"><a id="aa2d99601b8c92bec11254c83ec920dcf"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>addTranslateFilter</b> (double x, double y, double z, std::string partId)</td></tr>
 <tr class="separator:aa2d99601b8c92bec11254c83ec920dcf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a761e40b0106987942bdc084074adb59d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/ddd/classpyhelios_1_1PyHeliosSimulation.html#a761e40b0106987942bdc084074adb59d">buildPulseThreadPool</a> ()</td></tr>
+<tr class="memdesc:a761e40b0106987942bdc084074adb59d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Build the pulse thread pool to be used by the simulation.  <a href="#a761e40b0106987942bdc084074adb59d">More...</a><br /></td></tr>
+<tr class="separator:a761e40b0106987942bdc084074adb59d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae90f2d111ba42be989d2aef49b29286c"><td class="memItemLeft" align="right" valign="top"><a id="ae90f2d111ba42be989d2aef49b29286c"></a>
 <a class="el" href="../../d9/ddd/classpyhelios_1_1PyHeliosSimulation.html">PyHeliosSimulation</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>copy</b> ()</td></tr>
 <tr class="separator:ae90f2d111ba42be989d2aef49b29286c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -294,6 +297,12 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>zipOutput</b> = false
 <tr class="memitem:ab9195cd9c927e7faf540264a6de6b5d8"><td class="memItemLeft" align="right" valign="top"><a id="ab9195cd9c927e7faf540264a6de6b5d8"></a>
 std::shared_ptr&lt; <a class="el" href="../../df/d9c/classPulseThreadPoolInterface.html">PulseThreadPoolInterface</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>pulseThreadPool</b></td></tr>
 <tr class="separator:ab9195cd9c927e7faf540264a6de6b5d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5c00b51de2602f41101650da2e156839"><td class="memItemLeft" align="right" valign="top"><a id="a5c00b51de2602f41101650da2e156839"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>parallelizationStrategy</b> = 1</td></tr>
+<tr class="separator:a5c00b51de2602f41101650da2e156839"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1a51c5d8c44a829bf86cb73ba26266f2"><td class="memItemLeft" align="right" valign="top"><a id="a1a51c5d8c44a829bf86cb73ba26266f2"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>chunkSize</b> = 32</td></tr>
+<tr class="separator:a1a51c5d8c44a829bf86cb73ba26266f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><dl class="section author"><dt>Author</dt><dd>Alberto M. Esmoris Pena </dd></dl>
@@ -369,6 +378,28 @@ std::shared_ptr&lt; <a class="el" href="../../df/d9c/classPulseThreadPoolInterfa
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="a761e40b0106987942bdc084074adb59d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a761e40b0106987942bdc084074adb59d">&#9670;&nbsp;</a></span>buildPulseThreadPool()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void PyHeliosSimulation::buildPulseThreadPool </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Build the pulse thread pool to be used by the simulation. </p>
+<dl class="section see"><dt>See also</dt><dd>PyHeliosSimulation::pulseThreadPool </dd>
+<dd>
+<a class="el" href="../../d1/d7b/classSimulation.html" title="Class representing a simulation. ">Simulation</a> </dd></dl>
+
+</div>
+</div>
 <a id="a075521bb005bc31431a50bc2633a9dbf"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a075521bb005bc31431a50bc2633a9dbf">&#9670;&nbsp;</a></span>getAssetsPath()</h2>
 

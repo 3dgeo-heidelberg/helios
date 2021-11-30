@@ -8,7 +8,7 @@ var searchData=
   ['scalesid',['scalesId',['../d7/d48/classSceneLoadingSpecification.html#afe1c39ec673fbffd057f9fdba088fb4b',1,'SceneLoadingSpecification']]],
   ['scanangle',['scanAngle',['../d4/d57/classRisleyBeamDeflector.html#a090c58f224bc9a884730c2783f8d416e',1,'RisleyBeamDeflector']]],
   ['scanangle_5frad',['scanAngle_rad',['../d0/d23/classScannerSettings.html#a1547201eecf0b5b12947f4bdcb69fe3d',1,'ScannerSettings']]],
-  ['scanfreq_5fhz',['scanFreq_Hz',['../d0/d23/classScannerSettings.html#a31c72f7d894b9dbca8f7d36e408d9098',1,'ScannerSettings']]],
+  ['scanfreq_5fhz',['scanFreq_Hz',['../d0/d23/classScannerSettings.html#af24c361ac908a0d0103302d01c0a328d',1,'ScannerSettings']]],
   ['scanner',['scanner',['../d8/d6b/classAbstractDetector.html#a512ee25b5ab6b8bff4e87eaba5e1996f',1,'AbstractDetector::scanner()'],['../d5/db6/classSurvey.html#aea6c888159a2baca8906aaa8d0377917',1,'Survey::scanner()']]],
   ['scannerefficiency',['scannerEfficiency',['../d4/dfb/classFWFSettings.html#a0013955746fddd21fbb307350e5c776a',1,'FWFSettings']]],
   ['scannerhead',['scannerHead',['../dc/d42/classScanner.html#a44c2e17c2f2a92353667c760040e55a9',1,'Scanner']]],
