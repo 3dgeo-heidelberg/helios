@@ -17,19 +17,15 @@ HELIOS_EXE_NAME = "helios"
 if sys.platform == "win32" or sys.platform == "win64":
     HELIOS_EXE_NAME += ".exe"
 
-if list(Path.cwd().glob(f"*{HELIOS_EXE_NAME}")):
-    HELIOS_EXE = str(list(Path.cwd().glob(f"*{HELIOS_EXE_NAME}"))[0])
-else:
-    HELIOS_EXE = str(list(Path.cwd().glob(f"*/{HELIOS_EXE_NAME}"))[0])
-
+HELIOS_EXE = str(list(Path.cwd().glob(f"**/{HELIOS_EXE_NAME}"))[0])
 print(f"Found HELIOS++ executable: {HELIOS_EXE}")
 
-survey_schema = xmlschema.XMLSchema('extra\survey.xsd')
-scene_schema = xmlschema.XMLSchema('extra\scene.xsd')
-scanner_schema = xmlschema.XMLSchema('extra\scanner.xsd')
-platform_schema = xmlschema.XMLSchema('extra\platform.xsd')
+survey_schema = xmlschema.XMLSchema(r'extra\survey.xsd')
+scene_schema = xmlschema.XMLSchema(r'extra\scene.xsd')
+scanner_schema = xmlschema.XMLSchema(r'extra\scanner.xsd')
+platform_schema = xmlschema.XMLSchema(r'extra\platform.xsd')
 
-# get paths of any referenced XML files; assuming they are relative to helios root dir
+# get paths of any referenced XML files; assuming they are relative to helios root dir or absolute
 try:
     scene_file = ET.parse(survey_file).find('survey').attrib['scene'].split('#')[0]
     scanner_file = ET.parse(survey_file).find('survey').attrib['scanner'].split('#')[0]
