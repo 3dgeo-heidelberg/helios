@@ -198,7 +198,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../.
 <tr class="memdesc:aaf6e07ac4870778a2164b3307babdd30"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parse how many KDTree jobs must be used to build the KDTree.  <a href="#aaf6e07ac4870778a2164b3307babdd30">More...</a><br /></td></tr>
 <tr class="separator:aaf6e07ac4870778a2164b3307babdd30"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a459d589c14b5dbcefcecd7e320ef92a2"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d5c/classArgumentsParser.html#a459d589c14b5dbcefcecd7e320ef92a2">parseSAHLossNodes</a> ()</td></tr>
-<tr class="memdesc:a459d589c14b5dbcefcecd7e320ef92a2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parse on how many nodes the loss function of the surface area heuristic must be evaluated when building the KDTree.  <a href="#a459d589c14b5dbcefcecd7e320ef92a2">More...</a><br /></td></tr>
+<tr class="memdesc:a459d589c14b5dbcefcecd7e320ef92a2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parse on how many nodes the loss function of the surface area heuristic must be evaluated when building the KDTree. For the Fast SAH it is the number of iterations computed to approximate SAH.  <a href="#a459d589c14b5dbcefcecd7e320ef92a2">More...</a><br /></td></tr>
 <tr class="separator:a459d589c14b5dbcefcecd7e320ef92a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
@@ -357,7 +357,7 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Parse the chunk size for the pulse task dropper from invocation arguments. </p>
-<dl class="section return"><dt>Returns</dt><dd>Parsed chunk size. If no chunk size was specified, -32 will be returned as default value </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Parsed chunk size. If no chunk size was specified, 32 will be returned as default value </dd></dl>
 
 </div>
 </div>
@@ -537,8 +537,8 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Parse how many KDTree jobs must be used to build the KDTree. </p>
-<p>1 (default) : Sequential building</p>
-<p>0 : As many threads as available by the system</p>
+<p>1 : Sequential building</p>
+<p>0 (default) : As many threads as available by the system</p>
 <p>&gt;1 : Exactly this number of threads for parallel building</p>
 <dl class="section return"><dt>Returns</dt><dd>Number of jobs to be used to build the KDTree </dd></dl>
 
@@ -560,9 +560,10 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Parse the type of KDTree. </p>
-<p>1 (default) : The simple KDTree built based on balancing through median heuristic</p>
+<p>1 : The simple KDTree built based on balancing through median heuristic</p>
 <p>2 : The SAH KDTree built based on surface area heuristic</p>
 <p>3 : The SAH KDTree built based on surface area heuristic and best axis</p>
+<p>4 (default) : The Fast SAH KDtree built based on a fast iterative approximation of SAH</p>
 <dl class="section return"><dt>Returns</dt><dd>Number identifying the type of KDTree to be built if necessary </dd></dl>
 
 </div>
@@ -703,7 +704,7 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Parse the parallelization strategy from invocation arguments. </p>
-<dl class="section return"><dt>Returns</dt><dd>0 for chunk based parallelization (default), 1 for warehouse based parallelization </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>0 for chunk based parallelization, 1 for warehouse based parallelization (default) </dd></dl>
 
 </div>
 </div>
@@ -742,8 +743,8 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Parse on how many nodes the loss function of the surface area heuristic must be evaluated when building the KDTree. </p>
-<dl class="section return"><dt>Returns</dt><dd>Number of nodes to evaluate loss function when building KDTree with a surface area heuristic approach </dd></dl>
+<p>Parse on how many nodes the loss function of the surface area heuristic must be evaluated when building the KDTree. For the Fast SAH it is the number of iterations computed to approximate SAH. </p>
+<dl class="section return"><dt>Returns</dt><dd>Number of nodes to evaluate loss function when building KDTree with a surface area heuristic approach. Number of iterations to approximate SAH when using Fast SAH strategy </dd></dl>
 
 </div>
 </div>

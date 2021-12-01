@@ -99,9 +99,10 @@ helios <survey_file_path> [OPTIONAL ARGUMENTS]
         --rebuildScene
             Force scene rebuild even when a previosly built scene is available
         --kdt <integer>
-            Specify the type of KDTree to be bulid for the scene.
-            The default 1 is for the simple KDTree based on median balancing,
-            2 for the SAH based KDTree and 3 for the SAH with best axis one
+            Specify the type of KDTree to be built for the scene.
+            Using 1 leads to the simple KDTree based on median balancing,
+            2 to the SAH based KDTree, 3 for the SAH with best axis criteria
+            and 4 (the default) to the fast approximation of SAH
         --kdtJobs <integer>
             Specify the number of threads to be used for building the KDTree.
             Using 1 forces sequential building, 0 as many threads as available
