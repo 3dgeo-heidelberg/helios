@@ -88,7 +88,7 @@ std::string ArgumentsParser::parseSeed(){
 
 int ArgumentsParser::parseParallelizationStrategy(){
     int index = findIndexOfArgument("--parallelization");
-    if(index < 0) return 0;
+    if(index < 0) return 1;
     return std::stoi(argv[index+1]);
 }
 
@@ -102,7 +102,7 @@ std::size_t ArgumentsParser::parseNJobs(){
 
 int ArgumentsParser::parseChunkSize(){
     int index = findIndexOfArgument("--chunkSize");
-    if(index < 0) return -32;
+    if(index < 0) return 32;
     return std::stoi(argv[index+1]);
 }
 
@@ -189,19 +189,19 @@ bool ArgumentsParser::parseFixedIncidenceAngle(){
 
 int ArgumentsParser::parseKDTreeType(){
     int index = findIndexOfArgument("--kdt");
-    if(index < 0) return 1;
+    if(index < 0) return 4;
     return std::atoi(argv[index+1]);
 }
 
 size_t ArgumentsParser::parseKDTreeJobs(){
     int index = findIndexOfArgument("--kdtJobs");
-    if(index < 0) return 1;
+    if(index < 0) return 0;
     return std::stoul(argv[index+1]);
 }
 
 size_t ArgumentsParser::parseSAHLossNodes(){
     int index = findIndexOfArgument("--sahNodes");
-    if(index < 0) return 21;
+    if(index < 0) return 32;
     return std::stoul(argv[index+1]);
 }
 
