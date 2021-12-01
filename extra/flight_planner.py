@@ -2,7 +2,7 @@
 # -- coding: utf-8 --
 #
 # Hannah Weiser, Heidelberg University
-# January 2020
+# January 2021
 # h.weiser@stud.uni-heidelberg.de
 
 """
@@ -11,15 +11,10 @@ This script contains functions to facilitate planning and configuration of HELIO
 
 import numpy as np
 import math
-import matplotlib.pyplot as plt
-import geopandas as gpd
-import glob
 
 
 def rotate_around_point(xy, degrees, origin=(0, 0)):
-    """
-    Rotate a point around a given point.
-
+    """Rotate a point around a given point.
     by Lyle Scott  // lyle@ls3.io (https://gist.github.com/LyleScott/e36e08bfb23b1f87af68c9051f985302)
 
     :param xy: array of point(s) to rotate
@@ -43,8 +38,7 @@ def rotate_around_point(xy, degrees, origin=(0, 0)):
 
 
 def compute_flight_length(waypoints):
-    """
-    This function computed the length of a flight plan.
+    """This function computed the length of a flight plan.
 
     :param waypoints: The waypoints of the flight path e.g. [[50, -100], [50, 100], [-50, 100], [-50, -100]] (list)
 
@@ -60,8 +54,7 @@ def compute_flight_length(waypoints):
 
 
 def compute_flight_lines(bounding_box, spacing, rotate_deg=0.0, flight_pattern="parallel"):
-    """
-    This function creates a flight plan (resembling e.g. DJI flight planner) within a given bounding box
+    """This function creates a flight plan (resembling e.g. DJI flight planner) within a given bounding box
     based on the strip (flight line) spacing, the pattern and a rotation.
 
     :param bounding_box: Bounding box, within which to create the flight lines
@@ -116,35 +109,39 @@ def compute_flight_lines(bounding_box, spacing, rotate_deg=0.0, flight_pattern="
 
 
 def flight_lines_from_shp(filename):
-    """
-    This function reads a shapefile with line features and returns the line coordinates for each feature
+    """This function reads a shapefile with line features and returns the line coordinates for each feature
 
     :param filename: path to shapefile
 
     :return: List of arrays of points of each line geometry
 
     """
-    shapefile = gpd.read_file(filename)
-    lines = []
-    for i in range(shapefile.shape[0]):
-        coords = list(shapefile.geometry.iloc[i].coords)
-        coords = [list(ele) for ele in coords]
-        lines.append(coords)
-    lines = np.array(lines)
-    lines_shape = lines.shape
-    element_count = int(lines_shape[0]*lines_shape[1])
+    import fiona
 
-    return np.resize(lines, (element_count, 2))
+    with fiona.open(filename, "r") as shapefile:
+        coordinates = []
+        for rec in shapefile:
+            # check if type LineString
+            if not rec["geometry"]["type"] == "LineString":
+                raise TypeError(f"Expecting geometries of type 'LineString' in {filename}.")
+            coords = rec["geometry"]["coordinates"]
+            coords = [list(ele[:2]) for ele in coords]
+            coordinates.append(coords)
+    coordinates = np.array(coordinates)
+    coordinates_shape = coordinates.shape
+    element_count = int(coordinates_shape[0]*coordinates_shape[1])
+
+    return np.resize(coordinates, (element_count, 2))
 
 
 def plot_flight_plan(waypoints):
-    """
-    This function plots the flight plan, defined by an array of waypoints.
+    """This function plots the flight plan, defined by an array of waypoints.
 
     :param waypoints: array of waypoints e.g. [[50, -100], [50, 100], [-50, 100], [-50, -100]]
 
     :return: the 2D-plot of the flight plan
     """
+    import matplotlib.pyplot as plt
 
     plt.plot(waypoints[:, 0], waypoints[:, 1])
     plt.xlabel("X")
@@ -154,14 +151,14 @@ def plot_flight_plan(waypoints):
     return plt
 
 
-def export_for_xml(waypoints, altitude, template_id, speed, trajectory_time_interval=0.05, always_active=False):
-    """
-    This function exports a flight plan to a string to use in HELIOS++ survey XML files.
+def export_for_xml(waypoints, altitude, template_id, platform_speed,
+                   trajectory_time_interval=0.05, always_active=False):
+    """This function exports a flight plan to a string to use in HELIOS++ survey XML files.
 
     :param waypoints: array of waypoints e.g. [[50, -100], [50, 100], [-50, 100], [-50, -100]]
     :param altitude: z-coordinate of all waypoints (float)
     :param template_id: ID of default scanner settings (defined in survey-XML) which legs should share (string)
-    :param speed: velocity of the platform in m/s (float)
+    :param platform_speed: speed of the platform in m/s (float)
     :param trajectory_time_interval: time interval [s] in which trajectory points are written (float); default: 0.05
     :param always_active: flag to specify if the scanner should be always active of alternating between active and
                             inactive (boolean: True or False); default: False
@@ -170,85 +167,94 @@ def export_for_xml(waypoints, altitude, template_id, speed, trajectory_time_inte
 
     """
     xml_string = ""
+    active = "true" if always_active else "false"
     for i, leg in enumerate(waypoints):
         if i % 2 == 0 or i == 0:
-            xml_string += '''
+            xml_string += f'''
         <leg>
-            <platformSettings x="{x}" y="{y}" z="{z}" movePerSec_m="{v}" />
-            <scannerSettings template="{id}" trajectoryTimeInterval_s="{interval}" />
+            <platformSettings x="{leg[0]}" y="{leg[1]}" z="{altitude}" movePerSec_m="{platform_speed}" />
+            <scannerSettings template="{template_id}" trajectoryTimeInterval_s="{trajectory_time_interval}" />
         </leg>
-            '''.format(x=leg[0], y=leg[1], z=altitude, v=speed, id=template_id, interval=trajectory_time_interval)
-        elif i % 2 != 0 and always_active is False:
-            xml_string += '''
+            '''
+        elif i % 2 != 0:
+            xml_string += f'''
         <leg>
-            <platformSettings x="{x}" y="{y}" z="{z}" movePerSec_m="{v}" />
-            <scannerSettings template="{id}" active="false" trajectoryTimeInterval_s="{interval}" />
+            <platformSettings x="{leg[0]}" y="{leg[1]}" z="{altitude}" movePerSec_m="{platform_speed}" />
+            <scannerSettings template="{template_id}" active="{active}" trajectoryTimeInterval_s="{trajectory_time_interval}" />
         </leg>
-            '''.format(x=leg[0], y=leg[1], z=altitude, v=speed, id=template_id, interval=trajectory_time_interval)
+            '''
     return xml_string
 
 
-def add_transformation_filters(translation=[0, 0, 0], rotation=[0, 0, 0], scale=1, onGround=0):
-    """
-    This function creates a string of transformation filters for a given translation, rotation and scale
+def add_transformation_filters(translation=None, rotation=None, scale=1, on_ground=0):
+    """This function creates a string of transformation filters for a given translation, rotation and scale
+
     :param translation: list of translations in x-, y- and z-direction; [t_x, t_y, t_z] (list)
     :param rotation: list of rotations around the x-, y- and z-axes; [rot_x, rot_y, rot_z] (list)
     :param scale: value by which to scale the scenepart (float)
-    :param onGround: flag to specifiy whether the scenepart should be translated to the ground (integer)
+    :param on_ground: flag to specifiy whether the scenepart should be translated to the ground (integer)
                     0  = no ground translation
                     -1 = find optimal ground translation
                     1  = find quick ground translation
                     >1 = specify a depth for the search process
     :return: transformation filter(s) (string)
     """
-    filter = ""
-    if translation != [0, 0, 0] or onGround != 0:
-        filter += """
+    if rotation is None:
+        rotation = [0, 0, 0]
+    if translation is None:
+        translation = [0, 0, 0]
+    trafo_filter = ""
+    if translation != [0, 0, 0] or on_ground != 0:
+        trafo_filter += f"""
             <filter type="translate">  
-                <param type="integer" key="onGround" value="{onGround}" />
-                <param type="vec3" key="offset" value="{x};{y};{z}" />  
-            </filter>\n""".format(onGround=onGround, x=translation[0], y=translation[1], z=translation[2])
+                <param type="integer" key="onGround" value="{on_ground}" />
+                <param type="vec3" key="offset" value="{translation[0]};{translation[1]};{translation[2]}" />  
+            </filter>\n"""
     if rotation != [0, 0, 0]:
-        filter += """
+        trafo_filter += f"""
             <filter type="rotate">
                 <param key="rotation" type="rotation">  
-                    <rot angle_deg="{x_rot}" axis="x"/>  
-                    <rot angle_deg="{y_rot}" axis="y"/>  
-                    <rot angle_deg="{z_rot}" axis="z"/>  
+                    <rot angle_deg="{rotation[0]}" axis="x"/>  
+                    <rot angle_deg="{rotation[1]}" axis="y"/>  
+                    <rot angle_deg="{rotation[2]}" axis="z"/>  
                 </param>
-            </filter>\n""".format(x_rot=rotation[0], y_rot=rotation[1], z_rot=rotation[2])
+            </filter>\n"""
     if scale != 1:
-        filter += """
+        trafo_filter += f"""
             <filter type="scale">
-                <param type="double" key="scale" value="{s}" />
-            </filter>\n""".format(s=scale)
+                <param type="double" key="scale" value="{scale}" />
+            </filter>\n"""
 
-    return filter
+    return trafo_filter
 
 
-def create_scenepart_obj(filepath, trafofilter=""):
-    """
-    This function creates a scenepart string to load OBJ-files
+def create_scenepart_obj(filepath, trafofilter="", efilepath=False):
+    """This function creates a scenepart string to load OBJ-files
+
     :param filepath: path to the OBJ-file
     :param trafofilter: transformation filter, surrounded by <filter>-tags (string)
-
+    :param efilepath: boolean, whether to use the efilepath option
     :return: scenepart (string)
     """
-    scenepart = """
+    if efilepath is True:
+        key_opt = "efilepath"
+    else:
+        key_opt = "filepath"
+    scenepart = f"""
         <part>
             <filter type="objloader">
-                <param type="string" key="filepath" value="{spfile}" />
+                <param type="string" key="{key_opt}" value="{filepath}" />
             </filter>
-            {filter}
-        </part>""".format(spfile=filepath, filter=trafofilter)
+            {trafofilter}
+        </part>"""
 
     return scenepart
 
 
 def create_scenepart_tiff(filepath, trafofilter="",
                           matfile="data/sceneparts/basic/groundplane/groundplane.mtl", matname="None"):
-    """
-    This function creates a scenepart string to load GeoTIFFs
+    """This function creates a scenepart string to load GeoTIFFs
+
     :param filepath: path to the GeoTIFF-file (string)
     :param trafofilter: transformation filter, surrounded by <filter>-tags (string)
     :param matfile: path to the material file (string)
@@ -256,22 +262,22 @@ def create_scenepart_tiff(filepath, trafofilter="",
 
     :return: scenepart (string)
     """
-    scenepart = """
+    scenepart = f"""
         <part>
             <filter type="geotiffloader">
-                <param type="string" key="filepath" value="{spfile}" />
+                <param type="string" key="filepath" value="{filepath}" />
                 <param type="string" key="matfile" value="{matfile}" />
                 <param type="string" key="matname" value="{matname}" />
             </filter>
-            {filter}
-        </part>""".format(spfile=filepath, matfile=matfile, matname=matname, filter=trafofilter)
+            {trafofilter}
+        </part>"""
 
     return scenepart
 
 
 def create_scenepart_xyz(filepath, trafofilter="", sep=" ", voxel_size=0.5):
-    """
-    This function creates a scenepart string to load ASCII point clouds in xyz-format
+    """This function creates a scenepart string to load ASCII point clouds in xyz-format
+
     :param filepath: path to the ASCII point cloud file (string)
     :param trafofilter: transformation filter, surrounded by <filter>-tags (string)
     :param sep: column separator in the ASCII point cloud file; default: " " (string)
@@ -279,12 +285,12 @@ def create_scenepart_xyz(filepath, trafofilter="", sep=" ", voxel_size=0.5):
 
     :return: scenepart (string)
     """
-    scenepart = """
+    scenepart = f"""
         <part>
             <filter type="xyzloader">
-                <param type="string" key="filepath" value="{spfile}" />
+                <param type="string" key="filepath" value="{filepath}" />
                 <param type="string" key="separator" value="{sep}" />
-                <param type="double" key="voxelSize" value="{voxsize}" />
+                <param type="double" key="voxelSize" value="{voxel_size}" />
                 <!-- Normal estimation using Singular Value Decomposition (SVD)
                 MODE 1: simple mode / MODE 2: advanced mode for large files, which works in batches -->
                 <param type="int" key="estimateNormals" value="1" />
@@ -292,18 +298,18 @@ def create_scenepart_xyz(filepath, trafofilter="", sep=" ", voxel_size=0.5):
                 To avoid this, a default Normal can be assigned to these voxels with:-->
                 <param type="vec3" key="defaultNormal" value="0;0;1" /> 
             </filter>
-            {filter}
-        </part>""".format(spfile=filepath, sep=sep, voxsize=voxel_size, filter=trafofilter)
+            {trafofilter}
+        </part>"""
 
     return scenepart
 
 
-def create_scenepart_vox(filepath, trafofilter="", intersectionMode="transmittive", matfile=None, matname=None):
-    """
-    This function creates a scenepart string to load .vox voxel files
+def create_scenepart_vox(filepath, trafofilter="", intersection_mode="transmittive", matfile=None, matname=None):
+    """This function creates a scenepart string to load .vox voxel files
+
     :param filepath: path to the .vox-file (string)
     :param trafofilter: transformation filter, surrounded by <filter>-tags (string)
-    :param intersectionMode: intersection mode for voxels (string)
+    :param intersection_mode: intersection mode for voxels (string)
                     options: "transmittive" (default), "scaled", "fixed"
     :param matfile: path to the material file (string)
     :param matname: name of the material to use (string)
@@ -311,38 +317,38 @@ def create_scenepart_vox(filepath, trafofilter="", intersectionMode="transmittiv
     :return: scenepart (string)
     """
     if matfile or matname:
-        mat_def = """\n<param type="string" key="matfile" value="{matfile}" />
-        <param type="string" key="matname" value="{matname}" />""".format(matfile=matfile, matname=matname)
+        mat_def = f"""\n<param type="string" key="matfile" value="{matfile}" />
+        <param type="string" key="matname" value="{matname}" />"""
     else:
-        mat_def=""
-    scenepart = """
+        mat_def = ""
+    scenepart = f"""
         <part>
             <filter type="detailedvoxels">
-                <param type="string" key="intersectionMode" value="{intersectionMode}" />
-                <param type="string" key="filepath" value="{spfile}" />{matdef}
+                <param type="string" key="intersectionMode" value="{intersection_mode}" />
+                <param type="string" key="filepath" value="{filepath}" />{mat_def}
             </filter>
-            {filter}
-        </part>""".format(spfile=filepath, intersectionMode=intersectionMode, filter=trafofilter,
-                  matdef=mat_def)
+            {trafofilter}
+        </part>"""
 
     return scenepart
 
 
-def build_scene(id, name, sceneparts=None):
-    """
-    This function creates the content to write to the scene.xml file
-    :param id: ID of the scene (string)
+def build_scene(scene_id, name, sceneparts=None):
+    """This function creates the content to write to the scene.xml file
+
+    :param scene_id: ID of the scene (string)
     :param name: name of the scene (string)
     :param sceneparts: list of sceneparts to add to the scene (list)
 
     :return: scene XML content (string)
     """
-    scene_content = """<?xml version="1.0" encoding="UTF-8"?>
+    sceneparts = "\n".join(sceneparts)
+    scene_content = f"""<?xml version="1.0" encoding="UTF-8"?>
 <document>
-    <scene id="{id}" name="{name}">
-        {parts}
+    <scene id="{scene_id}" name="{name}">
+        {sceneparts}
     </scene>
-</document>""".format(id=id, name=name, parts="\n".join(sceneparts))
+</document>"""
 
     return scene_content
 
@@ -357,12 +363,12 @@ if __name__ == "__main__":
     speed = 5
     print("Flight duration: {} min".format(dist/speed/60))
     alt = 490
-    print(str(export_for_xml(wp, altitude=alt, template_id="uls_template", speed=speed)))
+    print(str(export_for_xml(wp, altitude=alt, template_id="uls_template", platform_speed=speed)))
 
-    filters = add_transformation_filters(translation=[478335.125, 5473887.89, 0.0], rotation=[0, 0, 90], onGround=-1)
+    filters = add_transformation_filters(translation=[478335.125, 5473887.89, 0.0], rotation=[0, 0, 90], on_ground=-1)
 
-    sp = create_scenepart_tiff("data\sceneparts\tiff\dem_hd.tif",
-                               matfile="data\sceneparts\basic\groundplane\groundplane.mtl",
+    sp = create_scenepart_tiff(r"data\sceneparts\tiff\dem_hd.tif",
+                               matfile=r"data\sceneparts\basic\groundplane\groundplane.mtl",
                                matname="None")
     sp2 = create_scenepart_obj("data/sceneparts/arbaro/black_tupelo_low.obj", trafofilter=filters)
 
