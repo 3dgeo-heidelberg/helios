@@ -84,8 +84,8 @@ public:
     std::string parseSeed();
     /**
      * @brief Parse the parallelization strategy from invocation arguments
-     * @return 0 for chunk based parallelization (default), 1 for warehouse
-     *  based parallelization
+     * @return 0 for chunk based parallelization, 1 for warehouse based
+     *  parallelization (default)
      */
     int parseParallelizationStrategy();
     /**
@@ -97,7 +97,7 @@ public:
     /**
      * @brief Parse the chunk size for the pulse task dropper from invocation
      *  arguments
-     * @return Parsed chunk size. If no chunk size was specified, -32 will
+     * @return Parsed chunk size. If no chunk size was specified, 32 will
      *  be returned as default value
      */
     int parseChunkSize();
@@ -176,12 +176,15 @@ public:
     /**
      * @brief Parse the type of KDTree
      *
-     * 1 (default) : The simple KDTree built based on balancing through median
+     * 1 : The simple KDTree built based on balancing through median
      *  heuristic
      *
      * 2 : The SAH KDTree built based on surface area heuristic
      *
      * 3 : The SAH KDTree built based on surface area heuristic and best axis
+     *
+     * 4 (default) : The Fast SAH KDtree built based on a fast iterative
+     *  approximation of SAH
      *
      * @return Number identifying the type of KDTree to be built if necessary
      */
@@ -189,9 +192,9 @@ public:
     /**
      * @brief Parse how many KDTree jobs must be used to build the KDTree
      *
-     * 1 (default) : Sequential building
+     * 1 : Sequential building
      *
-     * 0 : As many threads as available by the system
+     * 0 (default) : As many threads as available by the system
      *
      * >1 : Exactly this number of threads for parallel building
      *
@@ -200,10 +203,13 @@ public:
     size_t parseKDTreeJobs();
     /**
      * @brief Parse on how many nodes the loss function of the surface area
-     *  heuristic must be evaluated when building the KDTree
+     *  heuristic must be evaluated when building the KDTree.
+     *  For the Fast SAH it is the number of iterations computed to approximate
+     *  SAH
      *
      * @return Number of nodes to evaluate loss function when building KDTree
-     *  with a surface area heuristic approach
+     *  with a surface area heuristic approach. Number of iterations to
+     *  approximate SAH when using Fast SAH strategy
      */
     size_t parseSAHLossNodes();
 
