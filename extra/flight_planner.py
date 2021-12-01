@@ -2,7 +2,7 @@
 # -- coding: utf-8 --
 #
 # Hannah Weiser, Heidelberg University
-# January 2020
+# January 2021
 # h.weiser@stud.uni-heidelberg.de
 
 """
@@ -11,15 +11,10 @@ This script contains functions to facilitate planning and configuration of HELIO
 
 import numpy as np
 import math
-import matplotlib.pyplot as plt
-import geopandas as gpd
-import glob
 
 
 def rotate_around_point(xy, degrees, origin=(0, 0)):
-    """
-    Rotate a point around a given point.
-
+    """Rotate a point around a given point.
     by Lyle Scott  // lyle@ls3.io (https://gist.github.com/LyleScott/e36e08bfb23b1f87af68c9051f985302)
 
     :param xy: array of point(s) to rotate
@@ -43,8 +38,7 @@ def rotate_around_point(xy, degrees, origin=(0, 0)):
 
 
 def compute_flight_length(waypoints):
-    """
-    This function computed the length of a flight plan.
+    """This function computed the length of a flight plan.
 
     :param waypoints: The waypoints of the flight path e.g. [[50, -100], [50, 100], [-50, 100], [-50, -100]] (list)
 
@@ -60,8 +54,7 @@ def compute_flight_length(waypoints):
 
 
 def compute_flight_lines(bounding_box, spacing, rotate_deg=0.0, flight_pattern="parallel"):
-    """
-    This function creates a flight plan (resembling e.g. DJI flight planner) within a given bounding box
+    """This function creates a flight plan (resembling e.g. DJI flight planner) within a given bounding box
     based on the strip (flight line) spacing, the pattern and a rotation.
 
     :param bounding_box: Bounding box, within which to create the flight lines
@@ -116,35 +109,39 @@ def compute_flight_lines(bounding_box, spacing, rotate_deg=0.0, flight_pattern="
 
 
 def flight_lines_from_shp(filename):
-    """
-    This function reads a shapefile with line features and returns the line coordinates for each feature
+    """This function reads a shapefile with line features and returns the line coordinates for each feature
 
     :param filename: path to shapefile
 
     :return: List of arrays of points of each line geometry
 
     """
-    shapefile = gpd.read_file(filename)
-    lines = []
-    for i in range(shapefile.shape[0]):
-        coords = list(shapefile.geometry.iloc[i].coords)
-        coords = [list(ele[:2]) for ele in coords]
-        lines.append(coords)
-    lines = np.array(lines)
-    lines_shape = lines.shape
-    element_count = int(lines_shape[0]*lines_shape[1])
+    import fiona
 
-    return np.resize(lines, (element_count, 2))
+    with fiona.open(filename, "r") as shapefile:
+        coordinates = []
+        for rec in shapefile:
+            # check if type LineString
+            if not rec["geometry"]["type"] == "LineString":
+                raise TypeError(f"Expecting geometries of type 'LineString' in {filename}.")
+            coords = rec["geometry"]["coordinates"]
+            coords = [list(ele[:2]) for ele in coords]
+            coordinates.append(coords)
+    coordinates = np.array(coordinates)
+    coordinates_shape = coordinates.shape
+    element_count = int(coordinates_shape[0]*coordinates_shape[1])
+
+    return np.resize(coordinates, (element_count, 2))
 
 
 def plot_flight_plan(waypoints):
-    """
-    This function plots the flight plan, defined by an array of waypoints.
+    """This function plots the flight plan, defined by an array of waypoints.
 
     :param waypoints: array of waypoints e.g. [[50, -100], [50, 100], [-50, 100], [-50, -100]]
 
     :return: the 2D-plot of the flight plan
     """
+    import matplotlib.pyplot as plt
 
     plt.plot(waypoints[:, 0], waypoints[:, 1])
     plt.xlabel("X")
@@ -155,8 +152,7 @@ def plot_flight_plan(waypoints):
 
 
 def export_for_xml(waypoints, altitude, template_id, speed, trajectory_time_interval=0.05, always_active=False):
-    """
-    This function exports a flight plan to a string to use in HELIOS++ survey XML files.
+    """This function exports a flight plan to a string to use in HELIOS++ survey XML files.
 
     :param waypoints: array of waypoints e.g. [[50, -100], [50, 100], [-50, 100], [-50, -100]]
     :param altitude: z-coordinate of all waypoints (float)
@@ -193,8 +189,8 @@ def export_for_xml(waypoints, altitude, template_id, speed, trajectory_time_inte
 
 
 def add_transformation_filters(translation=[0, 0, 0], rotation=[0, 0, 0], scale=1, onGround=0):
-    """
-    This function creates a string of transformation filters for a given translation, rotation and scale
+    """This function creates a string of transformation filters for a given translation, rotation and scale
+
     :param translation: list of translations in x-, y- and z-direction; [t_x, t_y, t_z] (list)
     :param rotation: list of rotations around the x-, y- and z-axes; [rot_x, rot_y, rot_z] (list)
     :param scale: value by which to scale the scenepart (float)
@@ -231,8 +227,8 @@ def add_transformation_filters(translation=[0, 0, 0], rotation=[0, 0, 0], scale=
 
 
 def create_scenepart_obj(filepath, trafofilter="", efilepath=False):
-    """
-    This function creates a scenepart string to load OBJ-files
+    """This function creates a scenepart string to load OBJ-files
+
     :param filepath: path to the OBJ-file
     :param trafofilter: transformation filter, surrounded by <filter>-tags (string)
     :param efilepath: boolean, whether to use the efilepath option
@@ -255,8 +251,8 @@ def create_scenepart_obj(filepath, trafofilter="", efilepath=False):
 
 def create_scenepart_tiff(filepath, trafofilter="",
                           matfile="data/sceneparts/basic/groundplane/groundplane.mtl", matname="None"):
-    """
-    This function creates a scenepart string to load GeoTIFFs
+    """This function creates a scenepart string to load GeoTIFFs
+
     :param filepath: path to the GeoTIFF-file (string)
     :param trafofilter: transformation filter, surrounded by <filter>-tags (string)
     :param matfile: path to the material file (string)
@@ -278,8 +274,8 @@ def create_scenepart_tiff(filepath, trafofilter="",
 
 
 def create_scenepart_xyz(filepath, trafofilter="", sep=" ", voxel_size=0.5):
-    """
-    This function creates a scenepart string to load ASCII point clouds in xyz-format
+    """This function creates a scenepart string to load ASCII point clouds in xyz-format
+
     :param filepath: path to the ASCII point cloud file (string)
     :param trafofilter: transformation filter, surrounded by <filter>-tags (string)
     :param sep: column separator in the ASCII point cloud file; default: " " (string)
@@ -307,8 +303,8 @@ def create_scenepart_xyz(filepath, trafofilter="", sep=" ", voxel_size=0.5):
 
 
 def create_scenepart_vox(filepath, trafofilter="", intersectionMode="transmittive", matfile=None, matname=None):
-    """
-    This function creates a scenepart string to load .vox voxel files
+    """This function creates a scenepart string to load .vox voxel files
+
     :param filepath: path to the .vox-file (string)
     :param trafofilter: transformation filter, surrounded by <filter>-tags (string)
     :param intersectionMode: intersection mode for voxels (string)
@@ -337,8 +333,8 @@ def create_scenepart_vox(filepath, trafofilter="", intersectionMode="transmittiv
 
 
 def build_scene(id, name, sceneparts=None):
-    """
-    This function creates the content to write to the scene.xml file
+    """This function creates the content to write to the scene.xml file
+
     :param id: ID of the scene (string)
     :param name: name of the scene (string)
     :param sceneparts: list of sceneparts to add to the scene (list)
