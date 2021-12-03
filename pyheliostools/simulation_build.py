@@ -23,7 +23,13 @@ class SimulationBuild:
         lasOutput,
         las10,
         zipOutput,
-        copy=False
+        copy=False,
+        kdtFactory=4,
+        kdtJobs=0,
+        kdtSAHLossNodes=32,
+        parallelizationStrategy=1,
+        chunkSize=32,
+        warehouseFactor=4
     ):
         if copy:
             return
@@ -35,7 +41,13 @@ class SimulationBuild:
             numThreads,
             lasOutput,
             las10,
-            zipOutput
+            zipOutput,
+            kdtFactory,
+            kdtJobs,
+            kdtSAHLossNodes,
+            parallelizationStrategy,
+            chunkSize,
+            warehouseFactor
         )
 
     # ---  CONTROL METHODS  --- #

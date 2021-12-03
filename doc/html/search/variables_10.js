@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['parallelizationstrategy',['parallelizationStrategy',['../d1/d7b/classSimulation.html#a48673f2bf8e3917d8a2b55f81fdd7ffc',1,'Simulation']]],
+  ['parallelizationstrategy',['parallelizationStrategy',['../d5/d85/classPulseThreadPoolFactory.html#ad2101aee4e9e186496090e7289047f8a',1,'PulseThreadPoolFactory::parallelizationStrategy()'],['../d1/d7b/classSimulation.html#a48673f2bf8e3917d8a2b55f81fdd7ffc',1,'Simulation::parallelizationStrategy()']]],
   ['params',['params',['../d6/dd2/classAbstractGeometryFilter.html#a1340876923d6147fadd1374b6f12de7a',1,'AbstractGeometryFilter']]],
   ['parent',['parent',['../d8/d4c/classKDTreeBuildType.html#a155141e71593e5761556e9b6c015e9a0',1,'KDTreeBuildType']]],
   ['part',['part',['../df/de1/classPrimitive.html#a4bbca89195162035f039c332f39e062e',1,'Primitive']]],
@@ -31,6 +31,7 @@ var searchData=
   ['polymesh',['polymesh',['../db/d6f/classvisualhelios_1_1VHStaticObjectXYZAdapter.html#ac16e4e852f1c1cff320b91f9463d619c',1,'visualhelios::VHStaticObjectXYZAdapter::polymesh()'],['../d5/dfc/classvisualhelios_1_1VHStaticObjectXYZRGBAdapter.html#a2dbe5464b2ac3c441fc879c0e9d47ebd',1,'visualhelios::VHStaticObjectXYZRGBAdapter::polymesh()']]],
   ['pool',['pool',['../d5/d3c/classBuddingScanningPulseProcess.html#af8511f241a76b27ab609488fefb25af2',1,'BuddingScanningPulseProcess::pool()'],['../df/ddb/classWarehouseScanningPulseProcess.html#aba0a26cf1b96f8ec0c4c4f9f8ecddb20',1,'WarehouseScanningPulseProcess::pool()']]],
   ['pool_5fsize',['pool_size',['../dc/de7/classThreadPool.html#a0d1603eed0547e1f3774cafe94256abe',1,'ThreadPool']]],
+  ['poolsize',['poolSize',['../d5/d85/classPulseThreadPoolFactory.html#acf5f023cd79a96c0548b5ab2575179b8',1,'PulseThreadPoolFactory']]],
   ['pos',['pos',['../d2/da0/classVertex.html#a523d50ff9ef1afc2018c6e1b4b3c0459',1,'Vertex']]],
   ['position',['position',['../df/d1e/classPlatform.html#a999eac1f4d75351d11eae1944ffb45e6',1,'Platform::position()'],['../db/d2e/classMeasurement.html#adb0c2de8a81b3ad95e90965370b6ed7d',1,'Measurement::position()'],['../d2/d43/classTrajectory.html#a45ac2286c53b0a477c4d80e8d831fe43',1,'Trajectory::position()']]],
   ['positionmotionqueue',['positionMotionQueue',['../d4/d96/classDynMovingObject.html#a0ed9fa3935a3c2f8d0eeb57b70a7bdd0',1,'DynMovingObject']]],
