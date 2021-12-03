@@ -17,8 +17,7 @@ namespace fs = boost::filesystem;
 #include <helios_version.h>
 #include <AbstractDetector.h>
 #include <FileUtils.h>
-#include <scanner/detector/PulseThreadPool.h>
-#include <scanner/detector/PulseWarehouseThreadPool.h>
+#include <scanner/detector/PulseThreadPoolFactory.h>
 
 #include <gdal_priv.h>
 #include <armadillo>
@@ -367,27 +366,15 @@ void LidarSim::init(
      */
     unsigned numSysThreads = std::thread::hardware_concurrency();
     size_t const poolSize = (njobs == 0) ? numSysThreads-1 : njobs-1;
-    std::shared_ptr<PulseThreadPoolInterface> pulseThreadPool;
-	if(parallelizationStrategy == 0){
-        pulseThreadPool = std::make_shared<PulseThreadPool>(
-            poolSize,
-            survey->scanner->detector->cfg_device_accuracy_m,
-            chunkSize < 0
-        );
-	}
-	else if(parallelizationStrategy == 1){
-        pulseThreadPool = std::make_shared<PulseWarehouseThreadPool>(
-            poolSize,
-            survey->scanner->detector->cfg_device_accuracy_m,
-            poolSize*warehouseFactor
-        );
-    }
-	else{
-	    std::stringstream ss;
-	    ss  << "Unexpected parallelization strategy: "
-	        << parallelizationStrategy;
-	    throw HeliosException(ss.str());
-	}
+    PulseThreadPoolFactory ptpf(
+        parallelizationStrategy,
+        poolSize,
+        survey->scanner->detector->cfg_device_accuracy_m,
+        chunkSize,
+        warehouseFactor
+    );
+    std::shared_ptr<PulseThreadPoolInterface> pulseThreadPool =
+        ptpf.makePulseThreadPool();
 
 	std::shared_ptr<SurveyPlayback> playback=std::make_shared<SurveyPlayback>(
         survey,

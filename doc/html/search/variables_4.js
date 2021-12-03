@@ -11,6 +11,7 @@ var searchData=
   ['depth',['depth',['../d8/d4c/classKDTreeBuildType.html#ae50acdc98535b91927f9170a93affcac',1,'KDTreeBuildType::depth()'],['../de/d22/classIterableTreeNode.html#a4b084fc69bcb80bcb2f560089d1b9c4d',1,'IterableTreeNode::depth()']]],
   ['derivatives',['DERIVATIVES',['../d1/d2b/classMarquardtFitter.html#a91c6b6b1e07f2f1b235faeb3838f3941',1,'MarquardtFitter']]],
   ['detector',['detector',['../d6/d9e/classAbstractPulseRunnable.html#a5f89956813516dcb6090715f2aed8631',1,'AbstractPulseRunnable::detector()'],['../dc/d42/classScanner.html#aae0cadd53ad865a242fdf84ef8a03634',1,'Scanner::detector()'],['../db/d85/classScanningPulseProcess.html#a26e6882306a16fae340deb86d2b42a68',1,'ScanningPulseProcess::detector()']]],
+  ['deviceaccuracy',['deviceAccuracy',['../d5/d85/classPulseThreadPoolFactory.html#ad3b6655d9c042c686d130332856994cc',1,'PulseThreadPoolFactory']]],
   ['df',['df',['../d3/d7f/classfluxionum_1_1DiffMinimizer.html#a4b707d922d2749e85a709d4fc73eaf81',1,'fluxionum::DiffMinimizer']]],
   ['dirattitudexy',['dirAttitudeXY',['../db/d69/classHelicopterPlatform.html#ae470b01afb80549302a86df523c9908c',1,'HelicopterPlatform']]],
   ['discardedpointsbynormal',['discardedPointsByNormal',['../d6/d03/classXYZPointCloudFileLoader.html#abff3361070ab282508a018e943faa224',1,'XYZPointCloudFileLoader']]],

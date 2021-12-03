@@ -72,6 +72,21 @@ BOOST_PYTHON_MODULE(pyhelios){
             bool,
             bool
         >())
+        .def(init<
+            std::string,
+            std::string,
+            std::string,
+            size_t,
+            bool,
+            bool,
+            bool,
+            int,
+            size_t,
+            size_t,
+            int,
+            int,
+            int
+        >())
         .def(
             "loadSurvey",
             &PyHeliosSimulation::loadSurvey
@@ -171,6 +186,36 @@ BOOST_PYTHON_MODULE(pyhelios){
             "numThreads",
             &PyHeliosSimulation::getNumThreads,
             &PyHeliosSimulation::setNumThreads
+        )
+        .add_property(
+            "kdtFactory",
+            &PyHeliosSimulation::getKDTFactory,
+            &PyHeliosSimulation::setKDTFactory
+        )
+        .add_property(
+            "kdtJobs",
+            &PyHeliosSimulation::getKDTJobs,
+            &PyHeliosSimulation::setKDTJobs
+        )
+        .add_property(
+            "kdtSAHLossNodes",
+            &PyHeliosSimulation::getKDTSAHLossNodes,
+            &PyHeliosSimulation::setKDTSAHLossNodes
+        )
+        .add_property(
+            "parallelizationStrategy",
+            &PyHeliosSimulation::getParallelizationStrategy,
+            &PyHeliosSimulation::setParallelizationStrategy
+        )
+        .add_property(
+            "chunkSize",
+            &PyHeliosSimulation::getChunkSize,
+            &PyHeliosSimulation::setChunkSize
+        )
+        .add_property(
+            "warehouseFactor",
+            &PyHeliosSimulation::getWarehouseFactor,
+            &PyHeliosSimulation::setWarehouseFactor
         )
         .def(
             "addRotateFilter",
