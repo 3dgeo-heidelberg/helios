@@ -62,18 +62,18 @@ def compute_flight_lines(bounding_box, spacing, rotate_deg=0.0, flight_pattern="
     :param spacing: Spacing between flight lines
     :param rotate_deg: Angle (deg) about which to rotate the generated flight pattern about it's centre point
                     default: 0
-    :param flight_pattern: Flight pattern, either of "parallel", "cross-cross", "zic-zac", "spiral"
+    :param flight_pattern: Flight pattern, either of "parallel", "cross-cross"
                     default: "parallel"
 
-    :return: Ordered array of waypoints for the generated flight plan
-    :return: Centre point of the bounding box (and flight plan)
-    :return: Total distance of the flight plan
+    :return: Ordered array of waypoints for the generated flight plan,
+            Centre point of the bounding box (and flight plan),
+            Total distance of the flight plan
     """
     centre = np.array([(bounding_box[0] + bounding_box[2]) / 2, (bounding_box[1] + bounding_box[3]) / 2])
     bbox_dims = np.array([[bounding_box[2] - bounding_box[0]], [bounding_box[3] - bounding_box[1]]])
     n_flight_lines_x = int(np.floor(bbox_dims[1] / spacing))
     n_flight_lines_y = int(np.floor(bbox_dims[0] / spacing))
-    pattern_options = ["parallel", "criss-cross", "zic-zac", "spiral"]
+    pattern_options = ["parallel", "criss-cross"]
     if flight_pattern not in pattern_options:
         print("WARNING: Specified flight pattern is not available.\n"
               "Possible choices: 'parallel', 'criss-cross'\n"
@@ -157,15 +157,21 @@ def export_for_xml(waypoints, altitude, id, speed,
     """This function exports a flight plan to a string to use in HELIOS++ survey XML files.
 
     :param waypoints: array of waypoints e.g. [[50, -100], [50, 100], [-50, 100], [-50, -100]]
-    :param altitude: z-coordinate of all waypoints (float)
-    :param id: ID of default scanner settings (defined in survey-XML) which legs should share (string)
-    :param speed: speed of the platform in m/s (float)
-    :param trajectory_time_interval: time interval [s] in which trajectory points are written (float); default: 0.05
+    :param altitude: z-coordinate of all waypoints
+    :param id: ID of default scanner settings (defined in survey-XML) which legs should share
+    :param speed: speed of the platform in m/s
+    :param trajectory_time_interval: time interval [s] in which trajectory points are written; default: 0.05
     :param always_active: flag to specify if the scanner should be always active of alternating between active and
                             inactive (boolean: True or False); default: False
+    :type waypoints: tuple
+    :type altitude: float
+    :type id: str
+    :type speed: float
+    :type trajectory_time_interval: float
+    :type always_active: bool
 
     :return: string with all XML leg-tags for a HELIOS++ survey file
-
+    :rtype: str
     """
     xml_string = ""
     active = "true" if always_active else "false"
@@ -176,14 +182,14 @@ def export_for_xml(waypoints, altitude, id, speed,
             <platformSettings x="{leg[0]}" y="{leg[1]}" z="{altitude}" movePerSec_m="{speed}" />
             <scannerSettings template="{id}" trajectoryTimeInterval_s="{trajectory_time_interval}" />
         </leg>
-            '''
+        '''
         elif i % 2 != 0:
             xml_string += f'''
         <leg>
             <platformSettings x="{leg[0]}" y="{leg[1]}" z="{altitude}" movePerSec_m="{speed}" />
             <scannerSettings template="{id}" active="{active}" trajectoryTimeInterval_s="{trajectory_time_interval}" />
         </leg>
-            '''
+        '''
     return xml_string
 
 
@@ -284,7 +290,8 @@ def create_scenepart_xyz(filepath, trafofilter="", sep=" ", voxel_size=0.5):
     :param sep: column separator in the ASCII point cloud file; default: " " (string)
     :param voxel_size: voxel side length for the voxelisation of the point cloud (float)
 
-    :return: scenepart (string)
+    :return: scenepart
+    :rtype: str
     """
     scenepart = f"""
         <part>
@@ -362,7 +369,7 @@ if __name__ == "__main__":
     plot = plot_flight_plan(wp)
     plot.show()
     speed = 5
-    print("Flight duration: {} min".format(dist/speed/60))
+    print(f"Flight duration: {dist / speed / 60} min")
     alt = 490
     print(str(export_for_xml(wp, altitude=alt, id="uls_template", speed=speed)))
 
