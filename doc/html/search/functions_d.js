@@ -1,6 +1,7 @@
 var searchData=
 [
   ['magnitude',['magnitude',['../d1/dd3/classSurfaceInspector_1_1maths_1_1Vector.html#a385cc0538672406bd3a2d238f94e13f0',1,'SurfaceInspector::maths::Vector']]],
+  ['makebasicpulsethreadpool',['makeBasicPulseThreadPool',['../d5/d85/classPulseThreadPoolFactory.html#aa22efeb4ac4decb4cc932b0a6c1812fa',1,'PulseThreadPoolFactory']]],
   ['makedefault',['makeDefault',['../d0/da9/logging_8hpp.html#abe503e7a8d4225b50c522708fc4e980c',1,'logging']]],
   ['makefromprimitives',['makeFromPrimitives',['../d5/dd0/classKDTreeFactory.html#a90c0c7761a500d0d0871369ac5f6c4f9',1,'KDTreeFactory']]],
   ['makefromprimitivesunsafe',['makeFromPrimitivesUnsafe',['../d5/dd0/classKDTreeFactory.html#a06b1ebdfb108a2c5a389ee390f534197',1,'KDTreeFactory::makeFromPrimitivesUnsafe()'],['../df/d86/classMultiThreadKDTreeFactory.html#a601cab19125266655d72e67204dce8ae',1,'MultiThreadKDTreeFactory::makeFromPrimitivesUnsafe()'],['../d6/d96/classSimpleKDTreeFactory.html#a3252f0348c7fd5d40b84e52dd9144fad',1,'SimpleKDTreeFactory::makeFromPrimitivesUnsafe()']]],
@@ -15,6 +16,7 @@ var searchData=
   ['makekdtreefactory',['makeKDTreeFactory',['../db/d91/classXmlSceneLoader.html#ad38181fad7a99fe5c4a4178fd32e9139',1,'XmlSceneLoader']]],
   ['makenormalcounterpart',['makeNormalCounterpart',['../d6/d4f/classDynMotion.html#a62cfddd790dcd3e46cd73bf099089b1d',1,'DynMotion']]],
   ['makenormalcounterpartptr',['makeNormalCounterpartPtr',['../d6/d4f/classDynMotion.html#a0f5bd51dcce3fac001f42e6e16148a9d',1,'DynMotion']]],
+  ['makepulsewarehousethreadpool',['makePulseWarehouseThreadPool',['../d5/d85/classPulseThreadPoolFactory.html#a4198944ce18861076709d394306bae08',1,'PulseThreadPoolFactory']]],
   ['makequiet',['makeQuiet',['../d0/da9/logging_8hpp.html#a692b6f848d37bbe59a72573a8573d6ed',1,'logging']]],
   ['makereflection',['makeReflection',['../d7/da7/classrigidmotion_1_1RigidMotionR2Factory.html#afdf3da31cd903dccd04747e7b47ccb67',1,'rigidmotion::RigidMotionR2Factory::makeReflection(colvec const axis) const'],['../d7/da7/classrigidmotion_1_1RigidMotionR2Factory.html#a665b6141e94a3691d994938235f536c1',1,'rigidmotion::RigidMotionR2Factory::makeReflection(double const theta) const'],['../dc/df6/classrigidmotion_1_1RigidMotionR3Factory.html#a5b8df22c8e498e77d3d25430ed8c667a',1,'rigidmotion::RigidMotionR3Factory::makeReflection()']]],
   ['makereflectionfast',['makeReflectionFast',['../dc/df6/classrigidmotion_1_1RigidMotionR3Factory.html#a1f2bfdeefefd04487ed7168b3c5a53dc',1,'rigidmotion::RigidMotionR3Factory::makeReflectionFast(colvec const orthonormal) const'],['../dc/df6/classrigidmotion_1_1RigidMotionR3Factory.html#adf8d1eff2798ff40c881a2690f68361d',1,'rigidmotion::RigidMotionR3Factory::makeReflectionFast(colvec const u, colvec const alpha, colvec const beta) const']]],

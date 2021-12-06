@@ -2,6 +2,7 @@ var searchData=
 [
   ['w',['w',['../db/d02/classColor4f.html#a9e820b2ace5b886d8e83a420050895ac',1,'Color4f']]],
   ['warehouse',['warehouse',['../da/d92/classWarehouseThreadPool.html#a6d136e811b23ff8b39c9d1323e75911c',1,'WarehouseThreadPool']]],
+  ['warehousefactor',['warehouseFactor',['../d5/d85/classPulseThreadPoolFactory.html#a328402cd797f263e6a7f92c24e991232',1,'PulseThreadPoolFactory']]],
   ['water',['WATER',['../df/d64/classLasSpecification.html#a7af2723918eb49310208190ba225787e',1,'LasSpecification']]],
   ['wavelength_5fum',['wavelength_um',['../d5/d20/classSpectralLibrary.html#ab7fb8272765a5a20d854c07badad9525',1,'SpectralLibrary']]],
   ['width',['width',['../d1/d0c/classGeoTiffFileLoader.html#a3d90a45b3a30096500afc8bd30e978a9',1,'GeoTiffFileLoader']]],
