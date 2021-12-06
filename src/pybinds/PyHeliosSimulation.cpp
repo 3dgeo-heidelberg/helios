@@ -7,7 +7,7 @@
 #include <RotateFilter.h>
 #include <PyHeliosOutputWrapper.h>
 #include <chrono>
-#include <PulseWarehouseThreadPool.h>
+#include <PulseThreadPoolFactory.h>
 
 using pyhelios::PyHeliosSimulation;
 using pyhelios::PyHeliosOutputWrapper;
@@ -21,7 +21,13 @@ PyHeliosSimulation::PyHeliosSimulation(
     size_t numThreads,
     bool lasOutput,
     bool las10,
-    bool zipOutput
+    bool zipOutput,
+    int kdtFactory,
+    size_t kdtJobs,
+    size_t kdtSAHLossNodes,
+    int parallelizationStrategy,
+    int chunkSize,
+    int warehouseFactor
 ){
     this->lasOutput = lasOutput;
     this->las10 = las10;
@@ -31,6 +37,13 @@ PyHeliosSimulation::PyHeliosSimulation(
     this->outputPath = outputPath;
     if(numThreads == 0) this->numThreads = std::thread::hardware_concurrency();
     else this->numThreads = numThreads;
+    this->kdtFactory = kdtFactory;
+    if(kdtJobs == 0) this->kdtJobs = std::thread::hardware_concurrency();
+    else this->kdtJobs = kdtJobs;
+    this->kdtSAHLossNodes = kdtSAHLossNodes;
+    this->parallelizationStrategy = parallelizationStrategy;
+    this->chunkSize = chunkSize;
+    this->warehouseFactor = warehouseFactor;
     xmlreader = std::make_shared<XmlSurveyLoader>(surveyPath, assetsPath);
 }
 PyHeliosSimulation::~PyHeliosSimulation() {
@@ -205,6 +218,9 @@ void PyHeliosSimulation::loadSurvey(
     bool fullWaveNoise,
     bool platformNoiseDisabled
 ){
+    xmlreader->sceneLoader.kdtFactoryType = kdtFactory;
+    xmlreader->sceneLoader.kdtNumJobs = kdtJobs;
+    xmlreader->sceneLoader.kdtSAHLossNodes = kdtSAHLossNodes;
     survey = xmlreader->load(legNoiseDisabled, rebuildScene);
     survey->scanner->setWriteWaveform(writeWaveform);
     survey->scanner->setCalcEchowidth(calcEchowidth);
@@ -247,18 +263,17 @@ void PyHeliosSimulation::addTranslateFilter(
 }
 
 void PyHeliosSimulation::buildPulseThreadPool(){
-    // See LidarSim::init function for handling of different pulse thread pools
-    // Configure pulse thread pool
-    parallelizationStrategy = 1;
-    chunkSize = 32;
-    size_t const poolSize = numThreads-1;
+    // Prepare pulse thread pool factory
+    PulseThreadPoolFactory ptpf(
+        parallelizationStrategy,
+        numThreads-1,
+        survey->scanner->detector->cfg_device_accuracy_m,
+        chunkSize,
+        warehouseFactor
+    );
 
     // Build pulse thread pool
-    pulseThreadPool = std::make_shared<PulseWarehouseThreadPool>(
-        poolSize,
-        survey->scanner->detector->cfg_device_accuracy_m,
-        poolSize*4
-    );
+    pulseThreadPool = ptpf.makePulseThreadPool();
 }
 
 // ***  SIMULATION COPY  *** //

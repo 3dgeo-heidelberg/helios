@@ -194,6 +194,7 @@ var annotated_dup =
     [ "PulseTask", "d1/d6e/classPulseTask.html", "d1/d6e/classPulseTask" ],
     [ "PulseTaskDropper", "de/d9a/classPulseTaskDropper.html", "de/d9a/classPulseTaskDropper" ],
     [ "PulseThreadPool", "d6/ddc/classPulseThreadPool.html", "d6/ddc/classPulseThreadPool" ],
+    [ "PulseThreadPoolFactory", "d5/d85/classPulseThreadPoolFactory.html", "d5/d85/classPulseThreadPoolFactory" ],
     [ "PulseThreadPoolInterface", "df/d9c/classPulseThreadPoolInterface.html", "df/d9c/classPulseThreadPoolInterface" ],
     [ "PulseWarehouseThreadPool", "d7/de7/classPulseWarehouseThreadPool.html", "d7/de7/classPulseWarehouseThreadPool" ],
     [ "RandomnessGenerator", "dc/d6e/classRandomnessGenerator.html", "dc/d6e/classRandomnessGenerator" ],

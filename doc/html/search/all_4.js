@@ -23,6 +23,7 @@ var searchData=
   ['detailedvoxelloader',['DetailedVoxelLoader',['../db/d49/classDetailedVoxelLoader.html',1,'DetailedVoxelLoader'],['../db/d49/classDetailedVoxelLoader.html#a24b9858e16033ec23400c4e3029dcf8e',1,'DetailedVoxelLoader::DetailedVoxelLoader()']]],
   ['detector',['detector',['../d6/d9e/classAbstractPulseRunnable.html#a5f89956813516dcb6090715f2aed8631',1,'AbstractPulseRunnable::detector()'],['../dc/d42/classScanner.html#aae0cadd53ad865a242fdf84ef8a03634',1,'Scanner::detector()'],['../db/d85/classScanningPulseProcess.html#a26e6882306a16fae340deb86d2b42a68',1,'ScanningPulseProcess::detector()']]],
   ['detectpeak',['detectPeak',['../db/da6/classFullWaveformPulseRunnable.html#a4f0587b710f6a2d84b1c8758dd2f7cd0',1,'FullWaveformPulseRunnable']]],
+  ['deviceaccuracy',['deviceAccuracy',['../d5/d85/classPulseThreadPoolFactory.html#ad3b6655d9c042c686d130332856994cc',1,'PulseThreadPoolFactory']]],
   ['df',['df',['../d3/d7f/classfluxionum_1_1DiffMinimizer.html#a4b707d922d2749e85a709d4fc73eaf81',1,'fluxionum::DiffMinimizer']]],
   ['diff',['diff',['../d1/dd3/classSurfaceInspector_1_1maths_1_1Vector.html#a4d39bc7833b08d4fdaa89313e36ca744',1,'SurfaceInspector::maths::Vector']]],
   ['diffminimizer',['DiffMinimizer',['../d3/d7f/classfluxionum_1_1DiffMinimizer.html',1,'fluxionum::DiffMinimizer&lt; IT, OT &gt;'],['../d3/d7f/classfluxionum_1_1DiffMinimizer.html#a09edcd879d77570195010b51d52a1f8c',1,'fluxionum::DiffMinimizer::DiffMinimizer()']]],
