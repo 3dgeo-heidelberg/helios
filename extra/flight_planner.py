@@ -49,6 +49,7 @@ def compute_flight_length(waypoints):
     curr_point = waypoints[-1]
     for point in waypoints[::-1]:
         distance += np.sqrt((curr_point[0] - point[0])**2 + (curr_point[1] - point[1])**2)
+        curr_point = point
 
     return distance
 
