@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['parallelizationstrategy',['parallelizationStrategy',['../d1/d7b/classSimulation.html#a48673f2bf8e3917d8a2b55f81fdd7ffc',1,'Simulation']]],
+  ['parallelizationstrategy',['parallelizationStrategy',['../d5/d85/classPulseThreadPoolFactory.html#ad2101aee4e9e186496090e7289047f8a',1,'PulseThreadPoolFactory::parallelizationStrategy()'],['../d1/d7b/classSimulation.html#a48673f2bf8e3917d8a2b55f81fdd7ffc',1,'Simulation::parallelizationStrategy()']]],
   ['params',['params',['../d6/dd2/classAbstractGeometryFilter.html#a1340876923d6147fadd1374b6f12de7a',1,'AbstractGeometryFilter']]],
   ['parent',['parent',['../d8/d4c/classKDTreeBuildType.html#a155141e71593e5761556e9b6c015e9a0',1,'KDTreeBuildType']]],
   ['parse',['parse',['../d6/d03/classXYZPointCloudFileLoader.html#a533ee095a113fabfc4e6b29e70a3b53d',1,'XYZPointCloudFileLoader']]],
@@ -76,6 +76,7 @@ var searchData=
   ['polymesh',['polymesh',['../db/d6f/classvisualhelios_1_1VHStaticObjectXYZAdapter.html#ac16e4e852f1c1cff320b91f9463d619c',1,'visualhelios::VHStaticObjectXYZAdapter::polymesh()'],['../d5/dfc/classvisualhelios_1_1VHStaticObjectXYZRGBAdapter.html#a2dbe5464b2ac3c441fc879c0e9d47ebd',1,'visualhelios::VHStaticObjectXYZRGBAdapter::polymesh()']]],
   ['pool',['pool',['../d5/d3c/classBuddingScanningPulseProcess.html#af8511f241a76b27ab609488fefb25af2',1,'BuddingScanningPulseProcess::pool()'],['../df/ddb/classWarehouseScanningPulseProcess.html#aba0a26cf1b96f8ec0c4c4f9f8ecddb20',1,'WarehouseScanningPulseProcess::pool()']]],
   ['pool_5fsize',['pool_size',['../dc/de7/classThreadPool.html#a0d1603eed0547e1f3774cafe94256abe',1,'ThreadPool']]],
+  ['poolsize',['poolSize',['../d5/d85/classPulseThreadPoolFactory.html#acf5f023cd79a96c0548b5ab2575179b8',1,'PulseThreadPoolFactory']]],
   ['poptask',['popTask',['../da/d8d/classTaskDropper.html#aa39b12c43987184b28acee4399c35d1e',1,'TaskDropper']]],
   ['populatefullwaveform',['populateFullWaveform',['../db/da6/classFullWaveformPulseRunnable.html#a741d1b4cc6302ffb1d8df79ed66804f5',1,'FullWaveformPulseRunnable']]],
   ['populatesplits',['populateSplits',['../d6/d96/classSimpleKDTreeFactory.html#ab3a2b1d37c6dfe2b97a502a85e6154c5',1,'SimpleKDTreeFactory']]],
@@ -109,6 +110,7 @@ var searchData=
   ['pulsetask',['PulseTask',['../d1/d6e/classPulseTask.html',1,'']]],
   ['pulsetaskdropper',['PulseTaskDropper',['../de/d9a/classPulseTaskDropper.html',1,'PulseTaskDropper'],['../de/d9a/classPulseTaskDropper.html#a1d62788a9f8a65a4c35f2da6bdb8a2e4',1,'PulseTaskDropper::PulseTaskDropper()']]],
   ['pulsethreadpool',['PulseThreadPool',['../d6/ddc/classPulseThreadPool.html',1,'PulseThreadPool'],['../d6/ddc/classPulseThreadPool.html#a74622787d4239092d8903e79ef18c57a',1,'PulseThreadPool::PulseThreadPool()']]],
+  ['pulsethreadpoolfactory',['PulseThreadPoolFactory',['../d5/d85/classPulseThreadPoolFactory.html',1,'PulseThreadPoolFactory'],['../d5/d85/classPulseThreadPoolFactory.html#addaff725cb37481a1403ace079dbde5c',1,'PulseThreadPoolFactory::PulseThreadPoolFactory()']]],
   ['pulsethreadpoolinterface',['PulseThreadPoolInterface',['../df/d9c/classPulseThreadPoolInterface.html',1,'']]],
   ['pulsewarehousethreadpool',['PulseWarehouseThreadPool',['../d7/de7/classPulseWarehouseThreadPool.html',1,'PulseWarehouseThreadPool'],['../d7/de7/classPulseWarehouseThreadPool.html#aa96156d247c4332c340d96066e885608',1,'PulseWarehouseThreadPool::PulseWarehouseThreadPool()']]],
   ['pushnormalmotion',['pushNormalMotion',['../d4/d96/classDynMovingObject.html#a6554aca7eb64bfd55254c456fe557345',1,'DynMovingObject']]],
@@ -120,7 +122,7 @@ var searchData=
   ['pydoublevector',['PyDoubleVector',['../da/dec/classpyhelios_1_1PyDoubleVector.html',1,'pyhelios']]],
   ['pyheliosexception',['PyHeliosException',['../d8/d98/classpyhelios_1_1PyHeliosException.html',1,'pyhelios']]],
   ['pyheliosoutputwrapper',['PyHeliosOutputWrapper',['../d1/d65/classpyhelios_1_1PyHeliosOutputWrapper.html',1,'pyhelios']]],
-  ['pyheliossimulation',['PyHeliosSimulation',['../d9/ddd/classpyhelios_1_1PyHeliosSimulation.html',1,'pyhelios::PyHeliosSimulation'],['../d9/ddd/classpyhelios_1_1PyHeliosSimulation.html#a7c2f3ba2bf2df619c681d5d6e28ec9ae',1,'pyhelios::PyHeliosSimulation::PyHeliosSimulation()']]],
+  ['pyheliossimulation',['PyHeliosSimulation',['../d9/ddd/classpyhelios_1_1PyHeliosSimulation.html',1,'pyhelios::PyHeliosSimulation'],['../d9/ddd/classpyhelios_1_1PyHeliosSimulation.html#a22dd756a642d7acd0e51d54175bb175d',1,'pyhelios::PyHeliosSimulation::PyHeliosSimulation()']]],
   ['pyheliosutils',['PyHeliosUtils',['../dd/d69/classpyhelios_1_1PyHeliosUtils.html',1,'pyhelios']]],
   ['pyintegerlist',['PyIntegerList',['../d8/d83/classpyhelios_1_1PyIntegerList.html',1,'pyhelios']]],
   ['pymeasurementvectorwrapper',['PyMeasurementVectorWrapper',['../d5/dfb/classpyhelios_1_1PyMeasurementVectorWrapper.html',1,'pyhelios']]],

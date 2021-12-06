@@ -42,8 +42,12 @@ private:
     bool las10     = false;
     bool zipOutput = false;
     std::shared_ptr<PulseThreadPoolInterface> pulseThreadPool;
+    int kdtFactory = 4;
+    size_t kdtJobs = 0;
+    size_t kdtSAHLossNodes = 32;
     int parallelizationStrategy = 1;
     int chunkSize = 32;
+    int warehouseFactor = 1;
 public:
     bool finalOutput = true;
     bool exportToFile = true;
@@ -67,7 +71,13 @@ public:
         size_t numThreads = 0,
         bool lasOutput = false,
         bool las10     = false,
-        bool zipOutput = false
+        bool zipOutput = false,
+        int kdtFactory = 4,
+        size_t kdtJobs = 0,
+        size_t kdtSAHLossNodes = 32,
+        int parallelizationStrategy = 1,
+        int chunkSize = 32,
+        int warehouseFactor = 1
     );
     virtual ~PyHeliosSimulation();
 
@@ -205,11 +215,12 @@ public:
 
     double getLas10(){return las10;}
     void setLas10(double las10_){
-    if(started) throw PyHeliosException(
-          "Cannot modify LAS v1.0 output flag for already started simulations."
-      );
-    this->las10 = las10_;
-  }
+        if(started) throw PyHeliosException(
+            "Cannot modify LAS v1.0 output flag for already started "
+            "simulations."
+        );
+        this->las10 = las10_;
+    }
 
     double getZipOutput(){return zipOutput;}
     void setZipOutput(bool zipOutput_){
@@ -218,6 +229,57 @@ public:
         );
         this->zipOutput = zipOutput_;
     }
+
+    int getKDTFactory(){return kdtFactory;}
+    void setKDTFactory(int kdtFactory){
+        if(started) throw PyHeliosException(
+            "Cannot modify KDT factory for already started simulations."
+        );
+        this->kdtFactory = kdtFactory;
+    }
+
+    size_t getKDTJobs(){return kdtJobs;}
+    void setKDTJobs(size_t kdtJobs){
+        if(started) throw PyHeliosException(
+            "Cannot modify KDT jobs for already started simulations."
+        );
+        this->kdtJobs = kdtJobs;
+    }
+
+    size_t getKDTSAHLossNodes(){return kdtSAHLossNodes;}
+    void setKDTSAHLossNodes(size_t kdtSAHLossNodes){
+        if(started) throw PyHeliosException(
+            "Cannot modify KDT SAH loss nodes for already started simulations."
+        );
+        this->kdtSAHLossNodes = kdtSAHLossNodes;
+    }
+
+    int getParallelizationStrategy(){return parallelizationStrategy;}
+    void setParallelizationStrategy(int parallelizationStrategy){
+        if(started) throw PyHeliosException(
+            "Cannot modify parallelization strategy for already started "
+            "simulations."
+        );
+        this->parallelizationStrategy = parallelizationStrategy;
+    }
+
+    int getChunkSize(){return chunkSize;}
+    void setChunkSize(int chunkSize){
+        if(started) throw PyHeliosException(
+            "Cannot modify chunk size for already started simulations."
+        );
+        this->chunkSize = chunkSize;
+    }
+
+    int getWarehouseFactor(){return warehouseFactor;}
+    void setWarehouseFactor(int warehouseFactor){
+        if(started) throw PyHeliosException(
+            "Cannot modify warehouse factor for already started simulations."
+        );
+        this->warehouseFactor = warehouseFactor;
+    }
+
+
 
     // ***  CONTROL FUNCTIONS  *** //
     // *************************** //

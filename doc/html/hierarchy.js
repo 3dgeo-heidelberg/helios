@@ -192,6 +192,7 @@ var hierarchy =
         [ "FullWaveformPulseRunnable", "db/da6/classFullWaveformPulseRunnable.html", null ]
       ] ]
     ] ],
+    [ "PulseThreadPoolFactory", "d5/d85/classPulseThreadPoolFactory.html", null ],
     [ "PulseThreadPoolInterface", "df/d9c/classPulseThreadPoolInterface.html", [
       [ "PulseThreadPool", "d6/ddc/classPulseThreadPool.html", null ],
       [ "PulseWarehouseThreadPool", "d7/de7/classPulseWarehouseThreadPool.html", null ]
