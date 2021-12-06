@@ -151,14 +151,14 @@ def plot_flight_plan(waypoints):
     return plt
 
 
-def export_for_xml(waypoints, altitude, template_id, platform_speed,
+def export_for_xml(waypoints, altitude, id, speed,
                    trajectory_time_interval=0.05, always_active=False):
     """This function exports a flight plan to a string to use in HELIOS++ survey XML files.
 
     :param waypoints: array of waypoints e.g. [[50, -100], [50, 100], [-50, 100], [-50, -100]]
     :param altitude: z-coordinate of all waypoints (float)
-    :param template_id: ID of default scanner settings (defined in survey-XML) which legs should share (string)
-    :param platform_speed: speed of the platform in m/s (float)
+    :param id: ID of default scanner settings (defined in survey-XML) which legs should share (string)
+    :param speed: speed of the platform in m/s (float)
     :param trajectory_time_interval: time interval [s] in which trajectory points are written (float); default: 0.05
     :param always_active: flag to specify if the scanner should be always active of alternating between active and
                             inactive (boolean: True or False); default: False
@@ -172,15 +172,15 @@ def export_for_xml(waypoints, altitude, template_id, platform_speed,
         if i % 2 == 0 or i == 0:
             xml_string += f'''
         <leg>
-            <platformSettings x="{leg[0]}" y="{leg[1]}" z="{altitude}" movePerSec_m="{platform_speed}" />
-            <scannerSettings template="{template_id}" trajectoryTimeInterval_s="{trajectory_time_interval}" />
+            <platformSettings x="{leg[0]}" y="{leg[1]}" z="{altitude}" movePerSec_m="{speed}" />
+            <scannerSettings template="{id}" trajectoryTimeInterval_s="{trajectory_time_interval}" />
         </leg>
             '''
         elif i % 2 != 0:
             xml_string += f'''
         <leg>
-            <platformSettings x="{leg[0]}" y="{leg[1]}" z="{altitude}" movePerSec_m="{platform_speed}" />
-            <scannerSettings template="{template_id}" active="{active}" trajectoryTimeInterval_s="{trajectory_time_interval}" />
+            <platformSettings x="{leg[0]}" y="{leg[1]}" z="{altitude}" movePerSec_m="{speed}" />
+            <scannerSettings template="{id}" active="{active}" trajectoryTimeInterval_s="{trajectory_time_interval}" />
         </leg>
             '''
     return xml_string
@@ -363,7 +363,7 @@ if __name__ == "__main__":
     speed = 5
     print("Flight duration: {} min".format(dist/speed/60))
     alt = 490
-    print(str(export_for_xml(wp, altitude=alt, template_id="uls_template", platform_speed=speed)))
+    print(str(export_for_xml(wp, altitude=alt, id="uls_template", speed=speed)))
 
     filters = add_transformation_filters(translation=[478335.125, 5473887.89, 0.0], rotation=[0, 0, 90], on_ground=-1)
 
