@@ -21,7 +21,11 @@ def rotate_around_point(xy, degrees, origin=(0, 0)):
     :param xy: array of point(s) to rotate
     :param degrees: rotation (clockwise) in degrees
     :param origin: rotation origin; default: O(0, 0)
+    :type xy: array or ndarray
+    :type degrees: float
+    :type origin: tuple or list
     :return: rotated array
+    :rtype: array or ndarray
     """
     # convert degree to radians
     radians = math.radians(degrees)
@@ -42,8 +46,9 @@ def compute_flight_length(waypoints):
     """This function computed the length of a flight plan.
 
     :param waypoints: The waypoints of the flight path e.g. [[50, -100], [50, 100], [-50, 100], [-50, -100]] (list)
-
+    :type waypoints: array or ndarray
     :return: Summed distance of the flight lines
+    :rtype: float
     """
     distance = 0
     curr_point = waypoints[-1]
@@ -64,7 +69,10 @@ def compute_flight_lines(bounding_box, spacing, rotate_deg=0.0, flight_pattern="
                     default: 0
     :param flight_pattern: Flight pattern, either of "parallel", "cross-cross"
                     default: "parallel"
-
+    :type bounding_box: array or ndarray
+    :type spacing: float
+    :type rotate_deg: float
+    :type flight_pattern: str
     :return: Ordered array of waypoints for the generated flight plan,
             Centre point of the bounding box (and flight plan),
             Total distance of the flight plan
@@ -115,9 +123,10 @@ def flight_lines_from_shp(filename: str):
     """This function reads a shapefile with line features and returns the line coordinates for each feature
 
     :param filename: path to shapefile
+    :type filename: str
 
     :return: List of arrays of points of each line geometry
-
+    :rtype: ndarray
     """
     import fiona
 
@@ -141,6 +150,7 @@ def plot_flight_plan(waypoints):
     """This function plots the flight plan, defined by an array of waypoints.
 
     :param waypoints: array of waypoints e.g. [[50, -100], [50, 100], [-50, 100], [-50, -100]]
+    :type: array or ndarray
 
     :return: the 2D-plot of the flight plan
     """
@@ -165,7 +175,7 @@ def export_for_xml(waypoints, altitude, id, speed,
     :param trajectory_time_interval: time interval [s] in which trajectory points are written; default: 0.05
     :param always_active: flag to specify if the scanner should be always active of alternating between active and
                             inactive (boolean: True or False); default: False
-    :type waypoints: tuple or ndarray
+    :type waypoints: array or ndarray
     :type altitude: float
     :type id: str
     :type speed: float
