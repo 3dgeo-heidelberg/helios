@@ -11,6 +11,7 @@ This script contains functions to facilitate planning and configuration of HELIO
 
 import numpy as np
 import math
+import warnings
 
 
 def rotate_around_point(xy, degrees, origin=(0, 0)):
@@ -74,9 +75,9 @@ def compute_flight_lines(bounding_box, spacing, rotate_deg=0.0, flight_pattern="
     n_flight_lines_y = int(np.floor(bbox_dims[0] / spacing))
     pattern_options = ["parallel", "criss-cross"]
     if flight_pattern not in pattern_options:
-        print("WARNING: Specified flight pattern is not available.\n"
-              "Possible choices: 'parallel', 'criss-cross'\n"
-              "Flight pattern will be set to 'parallel'")
+        warnings.warn('WARNING: Specified flight pattern is not available.\n'
+                      'Possible choices: \'parallel\', \'criss-cross\'\n'
+                      'Flight pattern will be set to \'parallel\'')
         flight_pattern = "parallel"
 
     if (flight_pattern == "parallel" and bbox_dims[0] >= bbox_dims[1]) or flight_pattern == "criss-cross":
@@ -108,7 +109,7 @@ def compute_flight_lines(bounding_box, spacing, rotate_deg=0.0, flight_pattern="
     return strips, centre, distance
 
 
-def flight_lines_from_shp(filename):
+def flight_lines_from_shp(filename: str):
     """This function reads a shapefile with line features and returns the line coordinates for each feature
 
     :param filename: path to shapefile
@@ -192,13 +193,16 @@ def export_for_xml(waypoints, altitude, id, speed,
     return xml_string
 
 
-def add_transformation_filters(translation=None, rotation=None, scale=1, on_ground=0):
+def add_transformation_filters(translation: list = None,
+                               rotation: list = None,
+                               scale: float = 1.,
+                               on_ground: int = 0):
     """This function creates a string of transformation filters for a given translation, rotation and scale
 
     :param translation: list of translations in x-, y- and z-direction; [t_x, t_y, t_z]
     :param rotation: list of rotations around the x-, y- and z-axes; [rot_x, rot_y, rot_z]
-    :param scale: value by which to scale the scenepart
-    :param on_ground: flag to specifiy whether the scenepart should be translated to the ground
+    :param scale: value by which to scale the scene part
+    :param on_ground: flag to specify whether the scene part should be translated to the ground
                     0  = no ground translation
                     -1 = find optimal ground translation
                     1  = find quick ground translation
@@ -219,7 +223,7 @@ def add_transformation_filters(translation=None, rotation=None, scale=1, on_grou
         trafo_filter += f"""
             <filter type="translate">  
                 <param type="integer" key="onGround" value="{on_ground}" />
-                <param type="vec3" key="offset" value="{translation[0]};{translation[1]};{translation[2]}" />  
+                <param type="vec3" key="offset" value="{translation[0]};{translation[1]};{translation[2]}" /> 
             </filter>\n"""
     if rotation != [0, 0, 0]:
         trafo_filter += f"""
@@ -230,7 +234,7 @@ def add_transformation_filters(translation=None, rotation=None, scale=1, on_grou
                     <rot angle_deg="{rotation[2]}" axis="z"/>  
                 </param>
             </filter>\n"""
-    if scale != 1:
+    if scale != 1.:
         trafo_filter += f"""
             <filter type="scale">
                 <param type="double" key="scale" value="{scale}" />
@@ -239,13 +243,15 @@ def add_transformation_filters(translation=None, rotation=None, scale=1, on_grou
     return trafo_filter
 
 
-def create_scenepart_obj(filepath, trafofilter="", efilepath=False):
+def create_scenepart_obj(filepath: str, up_axis: str = "z", trafofilter: str = "", efilepath: bool = False):
     """This function creates a scenepart string to load OBJ-files
 
     :param filepath: path to the OBJ-file
+    :param up_axis: axis of the OBJ-file which is pointing upwards
     :param trafofilter: transformation filter, surrounded by <filter>-tags
     :param efilepath: boolean, whether to use the efilepath option
     :type filepath: str
+    :type up_axis: str
     :type trafofilter: str
     :type efilepath: bool
     :return: scenepart
@@ -255,10 +261,11 @@ def create_scenepart_obj(filepath, trafofilter="", efilepath=False):
         key_opt = "efilepath"
     else:
         key_opt = "filepath"
+    assert up_axis in ["x", "y", "z"]
     scenepart = f"""
         <part>
             <filter type="objloader">
-                <param type="string" key="{key_opt}" value="{filepath}" />
+                <param type="string" key="{key_opt}" value="{filepath} up="{up_axis}" />
             </filter>
             {trafofilter}
         </part>"""
@@ -266,8 +273,8 @@ def create_scenepart_obj(filepath, trafofilter="", efilepath=False):
     return scenepart
 
 
-def create_scenepart_tiff(filepath, trafofilter="",
-                          matfile="data/sceneparts/basic/groundplane/groundplane.mtl", matname="None"):
+def create_scenepart_tiff(filepath: str, trafofilter: str = "",
+                          matfile: str = "data/sceneparts/basic/groundplane/groundplane.mtl", matname: str = "None"):
     """This function creates a scenepart string to load GeoTIFFs
 
     :param filepath: path to the GeoTIFF-file
@@ -294,7 +301,7 @@ def create_scenepart_tiff(filepath, trafofilter="",
     return scenepart
 
 
-def create_scenepart_xyz(filepath, trafofilter="", sep=" ", voxel_size=0.5):
+def create_scenepart_xyz(filepath: str, trafofilter: str = "", sep: str = " ", voxel_size: float = 0.5):
     """This function creates a scenepart string to load ASCII point clouds in xyz-format
 
     :param filepath: path to the ASCII point cloud file
