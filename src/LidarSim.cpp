@@ -37,7 +37,7 @@ bool    logging::LOGGING_SHOW_TRACE, logging::LOGGING_SHOW_DEBUG,
 
 void printHelp(){
     std::cout << "helios++ help:\n\n"
-        << "\tSyntax: helios++ <survey_file_path> [OPTIONAL ARGUMENTS]\n\n"
+        << "\tSyntax: helios <survey_file_path> [OPTIONAL ARGUMENTS]\n\n"
         << "\tOPTIONAL ARGUMENTS:\n\n"
 
         << "\t\t-h or --help : Show this help\n\n"
