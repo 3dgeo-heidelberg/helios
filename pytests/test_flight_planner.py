@@ -201,3 +201,7 @@ def test_create_scenepart_obj_invalid_up():
     with pytest.raises(AssertionError) as e:
         flight_planner.create_scenepart_obj(filepath, up_axis=up_axis)
     assert e.type is AssertionError
+
+
+def test_create_scenepart_obj():
+    pass
