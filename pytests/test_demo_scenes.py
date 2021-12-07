@@ -23,7 +23,7 @@ def find_playback_dir(survey_path):
 def run_helios_executable(survey_path: Path, options=None) -> Path:
     if options is None:
         options = list()
-    command = [HELIOS_EXE, str(survey_path)] + options
+    command = [HELIOS_EXE, str(survey_path)] + options + ['--rebuildScene', '--seed', '43', '-vt', '-j', '1']
     print(command)
     p = subprocess.Popen(command, cwd=WORKING_DIR, shell=(sys.platform == "win32"))  # shell must be false for linux (but true for windows(?))
     p.wait()
@@ -32,27 +32,23 @@ def run_helios_executable(survey_path: Path, options=None) -> Path:
 
 def run_helios_pyhelios(survey_path: Path, options=None) -> Path:
     sys.path.append(str((Path(WORKING_DIR) / 'build').absolute()))
-    print(sys.path)
     import pyhelios
     pyhelios.setDefaultRandomnessGeneratorSeed("43")
-    sim = pyhelios.Simulation(
-        str(survey_path.absolute()),
-        WORKING_DIR + os.sep + 'assets' + os.sep,
-        WORKING_DIR + os.sep + 'output' + os.sep,
-        1,  # Num Threads
-        1,  # LAS v1.4 output
-        0,  # LAS v1.0 output
-        0,  # ZIP output
+    from pyheliostools import SimulationBuilder
+
+    simB = SimulationBuilder(
+        surveyPath=str(survey_path.absolute()),
+        assetsDir=WORKING_DIR + os.sep + 'assets' + os.sep,
+        outputDir=WORKING_DIR + os.sep + 'output' + os.sep,
     )
-    # Load the survey file.
-    sim.loadSurvey(
-        1,  # Leg Noise Disabled FLAG
-        1,  # Rebuild Scene FLAG
-        0,  # Write Waveform FLAG
-        0,  # Calculate Echowidth FLAG
-        0,  # Full Wave Noise FLAG
-        1  # Platform Noise Disabled FLAG
-    )
+    simB.lasOutput = True
+    simB.rebuildScene = True
+    simB.numThreads = 1
+    simB.kdtJobs = 1
+
+    sim = simB.build()
+
+    pyhelios.setDefaultRandomnessGeneratorSeed("43")
     sim.start()
     output = sim.join()
     return find_playback_dir(survey_path)
@@ -60,7 +56,7 @@ def run_helios_pyhelios(survey_path: Path, options=None) -> Path:
 
 def test_arbaro_tls_exe():
     dirname_exe = run_helios_executable(Path('data') / 'surveys' / 'demo' / 'tls_arbaro_demo.xml',
-                                        options=['--rebuildScene', '--lasOutput', '--seed', '43', '-vt', '-j', '1'])
+                                        options=['--lasOutput'])
     eval_arbaro_tls(dirname_exe)
 
 def test_arbaro_tls_pyh():
@@ -76,11 +72,11 @@ def eval_arbaro_tls(dirname):
         line = f.readline()
         assert line.startswith('1.0000 25.5000 0.0000')
     # clean up
-    shutil.rmtree(dirname)
+    #shutil.rmtree(dirname)
 
 def test_tiffloader_als_exe():
     dirname_exe = run_helios_executable(Path('data') / 'test' / 'als_hd_demo_tiff_min.xml',
-                                        options=['--rebuildScene', '--lasOutput', '--seed', '43', '-vt', '-j', '1'])
+                                        options=['--lasOutput'])
     eval_tiffloader_als(dirname_exe)
 
 def test_tiffloader_als_pyh():
@@ -97,11 +93,11 @@ def eval_tiffloader_als(dirname):
         line = f.readline()
         assert line.startswith('474500.7510 5474500.0000 1500.0000')
     # clean up
-    shutil.rmtree(dirname)
+    #shutil.rmtree(dirname)
 
 def test_detailedVoxels_uls_exe():
     dirname_exe = run_helios_executable(Path('data') / 'test' / 'uls_detailedVoxels_mode_comparison_min.xml',
-                                        options=['--rebuildScene', '--lasOutput', '--seed', '43', '-vt', '-j', '1'])
+                                        options=['--lasOutput'])
     eval_detailedVoxels_uls(dirname_exe)
 
 def test_detailedVoxels_uls_pyh():
@@ -110,7 +106,7 @@ def test_detailedVoxels_uls_pyh():
 
 def eval_detailedVoxels_uls(dirname):
     assert (dirname / 'leg000_points.las').exists()
-    assert abs((dirname / 'leg000_points.las').stat().st_size - 422_235) < 1_024
+    assert abs((dirname / 'leg000_points.las').stat().st_size - 419_589) < 1_024
     assert (dirname / 'leg000_trajectory.txt').exists()
     assert abs((dirname / 'leg000_trajectory.txt').stat().st_size - 1_197) < 1_024
     with open(dirname / 'leg000_trajectory.txt', 'r') as f:
@@ -123,11 +119,11 @@ def eval_detailedVoxels_uls(dirname):
         line = f.readline()
         assert line.startswith('-3.0000 -1.2741 50.0000')
     # clean up
-    shutil.rmtree(dirname)
+    #shutil.rmtree(dirname)
 
 def test_xyzVoxels_tls_exe():
     dirname_exe = run_helios_executable(Path('data') / 'surveys' / 'voxels' / 'tls_sphere_xyzloader_rgb_normals.xml',
-                                        options=['--rebuildScene', '--lasOutput', '--seed', '43', '-vt', '-j', '1'])
+                                        options=['--lasOutput'])
     eval_xyzVoxels_tls(dirname_exe)
 
 def test_xyzVoxels_tls_pyh():
@@ -138,4 +134,4 @@ def eval_xyzVoxels_tls(dirname):
     assert (dirname / 'leg000_points.las').exists()
     assert abs((dirname / 'leg000_points.las').stat().st_size - 16_937_811) < 1_024
     # clean up
-    shutil.rmtree(dirname)
+    #shutil.rmtree(dirname)
