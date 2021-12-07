@@ -20,7 +20,7 @@ def rotate_around_point(xy, degrees, origin=(0, 0)):
     :param xy: array of point(s) to rotate
     :param degrees: rotation (clockwise) in degrees
     :param origin: rotation origin; default: O(0, 0)
-    :return:
+    :return: rotated array
     """
     # convert degree to radians
     radians = math.radians(degrees)
@@ -43,7 +43,6 @@ def compute_flight_length(waypoints):
     :param waypoints: The waypoints of the flight path e.g. [[50, -100], [50, 100], [-50, 100], [-50, -100]] (list)
 
     :return: Summed distance of the flight lines
-
     """
     distance = 0
     curr_point = waypoints[-1]
@@ -196,15 +195,20 @@ def export_for_xml(waypoints, altitude, id, speed,
 def add_transformation_filters(translation=None, rotation=None, scale=1, on_ground=0):
     """This function creates a string of transformation filters for a given translation, rotation and scale
 
-    :param translation: list of translations in x-, y- and z-direction; [t_x, t_y, t_z] (list)
-    :param rotation: list of rotations around the x-, y- and z-axes; [rot_x, rot_y, rot_z] (list)
-    :param scale: value by which to scale the scenepart (float)
-    :param on_ground: flag to specifiy whether the scenepart should be translated to the ground (integer)
+    :param translation: list of translations in x-, y- and z-direction; [t_x, t_y, t_z]
+    :param rotation: list of rotations around the x-, y- and z-axes; [rot_x, rot_y, rot_z]
+    :param scale: value by which to scale the scenepart
+    :param on_ground: flag to specifiy whether the scenepart should be translated to the ground
                     0  = no ground translation
                     -1 = find optimal ground translation
                     1  = find quick ground translation
                     >1 = specify a depth for the search process
-    :return: transformation filter(s) (string)
+    :type translation: list
+    :type rotation: list
+    :type scale: float
+    :type on_ground: int
+    :return: transformation filter(s)
+    :rtype: str
     """
     if rotation is None:
         rotation = [0, 0, 0]
@@ -239,9 +243,13 @@ def create_scenepart_obj(filepath, trafofilter="", efilepath=False):
     """This function creates a scenepart string to load OBJ-files
 
     :param filepath: path to the OBJ-file
-    :param trafofilter: transformation filter, surrounded by <filter>-tags (string)
+    :param trafofilter: transformation filter, surrounded by <filter>-tags
     :param efilepath: boolean, whether to use the efilepath option
-    :return: scenepart (string)
+    :type filepath: str
+    :type trafofilter: str
+    :type efilepath: bool
+    :return: scenepart
+    :rtype: str
     """
     if efilepath is True:
         key_opt = "efilepath"
@@ -262,12 +270,16 @@ def create_scenepart_tiff(filepath, trafofilter="",
                           matfile="data/sceneparts/basic/groundplane/groundplane.mtl", matname="None"):
     """This function creates a scenepart string to load GeoTIFFs
 
-    :param filepath: path to the GeoTIFF-file (string)
-    :param trafofilter: transformation filter, surrounded by <filter>-tags (string)
-    :param matfile: path to the material file (string)
-    :param matname: name of the material to use (string)
+    :param filepath: path to the GeoTIFF-file
+    :param trafofilter: transformation filter, surrounded by <filter>-tags
+    :param matfile: path to the material file
+    :type filepath: str
+    :type trafofilter: str
+    :type matfile: str
+    :param matname: name of the material to use
 
-    :return: scenepart (string)
+    :return: scenepart
+    :rtype: str
     """
     scenepart = f"""
         <part>
@@ -285,10 +297,14 @@ def create_scenepart_tiff(filepath, trafofilter="",
 def create_scenepart_xyz(filepath, trafofilter="", sep=" ", voxel_size=0.5):
     """This function creates a scenepart string to load ASCII point clouds in xyz-format
 
-    :param filepath: path to the ASCII point cloud file (string)
-    :param trafofilter: transformation filter, surrounded by <filter>-tags (string)
-    :param sep: column separator in the ASCII point cloud file; default: " " (string)
-    :param voxel_size: voxel side length for the voxelisation of the point cloud (float)
+    :param filepath: path to the ASCII point cloud file
+    :param trafofilter: transformation filter, surrounded by <filter>-tags
+    :param sep: column separator in the ASCII point cloud file; default: " "
+    :param voxel_size: voxel side length for the voxelisation of the point cloud
+    :type filepath: str
+    :type trafofilter: str
+    :type sep: str
+    :type voxel_size: float
 
     :return: scenepart
     :rtype: str
@@ -315,14 +331,20 @@ def create_scenepart_xyz(filepath, trafofilter="", sep=" ", voxel_size=0.5):
 def create_scenepart_vox(filepath, trafofilter="", intersection_mode="transmittive", matfile=None, matname=None):
     """This function creates a scenepart string to load .vox voxel files
 
-    :param filepath: path to the .vox-file (string)
-    :param trafofilter: transformation filter, surrounded by <filter>-tags (string)
-    :param intersection_mode: intersection mode for voxels (string)
+    :param filepath: path to the .vox-file
+    :param trafofilter: transformation filter, surrounded by <filter>-tags
+    :param intersection_mode: intersection mode for voxels
                     options: "transmittive" (default), "scaled", "fixed"
-    :param matfile: path to the material file (string)
-    :param matname: name of the material to use (string)
+    :param matfile: path to the material file
+    :param matname: name of the material to use
+    :type filepath: str
+    :type trafofilter: str
+    :type intersection_mode: str
+    :type matfile: str
+    :type matname: str
 
-    :return: scenepart (string)
+    :return: scenepart
+    :rtype: str
     """
     if matfile or matname:
         mat_def = f"""\n<param type="string" key="matfile" value="{matfile}" />
@@ -344,11 +366,15 @@ def create_scenepart_vox(filepath, trafofilter="", intersection_mode="transmitti
 def build_scene(scene_id, name, sceneparts=None):
     """This function creates the content to write to the scene.xml file
 
-    :param scene_id: ID of the scene (string)
-    :param name: name of the scene (string)
-    :param sceneparts: list of sceneparts to add to the scene (list)
+    :param scene_id: ID of the scene
+    :param name: name of the scene
+    :param sceneparts: list of sceneparts to add to the scene
+    :type scene_id: str
+    :type name: str
+    :type sceneparts: list[*str]
 
     :return: scene XML content (string)
+    :rtype: str
     """
     sceneparts = "\n".join(sceneparts)
     scene_content = f"""<?xml version="1.0" encoding="UTF-8"?>
