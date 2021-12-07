@@ -41,14 +41,13 @@ def run_helios_pyhelios(survey_path: Path, options=None) -> Path:
         assetsDir=WORKING_DIR + os.sep + 'assets' + os.sep,
         outputDir=WORKING_DIR + os.sep + 'output' + os.sep,
     )
-    simB.lasOutput = True
-    simB.rebuildScene = True
-    simB.numThreads = 1
-    simB.kdtJobs = 1
+    simB.setLasOutput(True)
+    simB.setRebuildScene(True)
+    simB.setNumThreads(1)
+    simB.setKDTJobs(1)
 
     sim = simB.build()
 
-    pyhelios.setDefaultRandomnessGeneratorSeed("43")
     sim.start()
     output = sim.join()
     return find_playback_dir(survey_path)
