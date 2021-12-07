@@ -2,7 +2,7 @@
 # -- coding: utf-8 --
 #
 # Hannah Weiser, Heidelberg University
-# January 2021
+# December 2021
 # h.weiser@stud.uni-heidelberg.de
 
 """
@@ -53,7 +53,7 @@ def compute_flight_length(waypoints):
     distance = 0
     curr_point = waypoints[-1]
     for point in waypoints[::-1]:
-        distance += np.sqrt((curr_point[0] - point[0])**2 + (curr_point[1] - point[1])**2)
+        distance += np.sqrt((curr_point[0] - point[0]) ** 2 + (curr_point[1] - point[1]) ** 2)
         curr_point = point
 
     return distance
@@ -91,7 +91,7 @@ def compute_flight_lines(bounding_box, spacing, rotate_deg=0.0, flight_pattern="
         flight_pattern = "parallel"
 
     if (flight_pattern == "parallel" and bbox_dims[0] >= bbox_dims[1]) or flight_pattern == "criss-cross":
-        y_start = centre[1] - spacing*(n_flight_lines_x/2)
+        y_start = centre[1] - spacing * (n_flight_lines_x / 2)
         curr_strip = np.array([[bounding_box[0], y_start], [bounding_box[2], y_start]])
         strips = curr_strip[::-1]
         for i in range(int(n_flight_lines_x)):
@@ -100,7 +100,7 @@ def compute_flight_lines(bounding_box, spacing, rotate_deg=0.0, flight_pattern="
             curr_strip = next_strip[::-1]
 
     if flight_pattern == "criss-cross" or (flight_pattern == "parallel" and bbox_dims[1] > bbox_dims[0]):
-        x_start = centre[0] - spacing*(n_flight_lines_y/2)
+        x_start = centre[0] - spacing * (n_flight_lines_y / 2)
         curr_strip = np.array([[x_start, bounding_box[1]], [x_start, bounding_box[3]]])
         if flight_pattern != "criss-cross":
             strips = curr_strip[::-1]
@@ -141,7 +141,7 @@ def flight_lines_from_shp(filename: str):
             coordinates.append(coords)
     coordinates = np.array(coordinates)
     coordinates_shape = coordinates.shape
-    element_count = int(coordinates_shape[0]*coordinates_shape[1])
+    element_count = int(coordinates_shape[0] * coordinates_shape[1])
 
     return np.resize(coordinates, (element_count, 2))
 
@@ -269,15 +269,12 @@ def create_scenepart_obj(filepath: str, up_axis: str = "z", trafofilter: str = "
     :return: scenepart
     :rtype: str
     """
-    if efilepath is True:
-        key_opt = "efilepath"
-    else:
-        key_opt = "filepath"
+    filepath_mode = "efilepath" if efilepath else "filepath"
     assert up_axis in ["x", "y", "z"]
     scenepart = f"""
         <part>
             <filter type="objloader">
-                <param type="string" key="{key_opt}" value="{filepath} up="{up_axis}" />
+                <param type="string" key="{filepath_mode}" value="{filepath} up="{up_axis}" />
             </filter>
             {trafofilter}
         </part>"""
@@ -287,7 +284,7 @@ def create_scenepart_obj(filepath: str, up_axis: str = "z", trafofilter: str = "
 
 def create_scenepart_tiff(filepath: str, trafofilter: str = "",
                           matfile: str = "data/sceneparts/basic/groundplane/groundplane.mtl", matname: str = "None"):
-    """This function creates a scenepart string to load GeoTIFFs
+    """This function creates a scene part string to load GeoTIFFs
 
     :param filepath: path to the GeoTIFF-file
     :param trafofilter: transformation filter, surrounded by <filter>-tags
@@ -297,7 +294,7 @@ def create_scenepart_tiff(filepath: str, trafofilter: str = "",
     :type matfile: str
     :param matname: name of the material to use
 
-    :return: scenepart
+    :return: scene part
     :rtype: str
     """
     scenepart = f"""
@@ -313,25 +310,28 @@ def create_scenepart_tiff(filepath: str, trafofilter: str = "",
     return scenepart
 
 
-def create_scenepart_xyz(filepath: str, trafofilter: str = "", sep: str = " ", voxel_size: float = 0.5):
+def create_scenepart_xyz(filepath: str, trafofilter: str = "", sep: str = " ", voxel_size: float = 0.5,
+                         efilepath: bool = False):
     """This function creates a scenepart string to load ASCII point clouds in xyz-format
 
     :param filepath: path to the ASCII point cloud file
     :param trafofilter: transformation filter, surrounded by <filter>-tags
     :param sep: column separator in the ASCII point cloud file; default: " "
     :param voxel_size: voxel side length for the voxelisation of the point cloud
+    :param efilepath: boolean, whether to use the efilepath option
     :type filepath: str
     :type trafofilter: str
     :type sep: str
     :type voxel_size: float
-
+    :type efilepath: bool
     :return: scenepart
     :rtype: str
     """
+    filepath_mode = "efilepath" if efilepath else "filepath"
     scenepart = f"""
         <part>
             <filter type="xyzloader">
-                <param type="string" key="filepath" value="{filepath}" />
+                <param type="string" key="{filepath_mode}" value="{filepath}" />
                 <param type="string" key="separator" value="{sep}" />
                 <param type="double" key="voxelSize" value="{voxel_size}" />
                 <!-- Normal estimation using Singular Value Decomposition (SVD)
@@ -347,7 +347,8 @@ def create_scenepart_xyz(filepath: str, trafofilter: str = "", sep: str = " ", v
     return scenepart
 
 
-def create_scenepart_vox(filepath, trafofilter="", intersection_mode="transmittive", matfile=None, matname=None):
+def create_scenepart_vox(filepath, trafofilter="", intersection_mode="transmittive", matfile=None, matname=None,
+                         efilepath: bool = False):
     """This function creates a scenepart string to load .vox voxel files
 
     :param filepath: path to the .vox-file
@@ -356,15 +357,18 @@ def create_scenepart_vox(filepath, trafofilter="", intersection_mode="transmitti
                     options: "transmittive" (default), "scaled", "fixed"
     :param matfile: path to the material file
     :param matname: name of the material to use
+    :param efilepath: boolean, whether to use the efilepath option
     :type filepath: str
     :type trafofilter: str
     :type intersection_mode: str
     :type matfile: str
     :type matname: str
+    :type efilepath: bool
 
     :return: scenepart
     :rtype: str
     """
+    filepath_mode = "efilepath" if efilepath else "filepath"
     if matfile or matname:
         mat_def = f"""\n<param type="string" key="matfile" value="{matfile}" />
         <param type="string" key="matname" value="{matname}" />"""
@@ -374,7 +378,7 @@ def create_scenepart_vox(filepath, trafofilter="", intersection_mode="transmitti
         <part>
             <filter type="detailedvoxels">
                 <param type="string" key="intersectionMode" value="{intersection_mode}" />
-                <param type="string" key="filepath" value="{filepath}" />{mat_def}
+                <param type="string" key="{filepath_mode}" value="{filepath}" />{mat_def}
             </filter>
             {trafofilter}
         </part>"""
@@ -392,7 +396,7 @@ def build_scene(scene_id, name, sceneparts=None):
     :type name: str
     :type sceneparts: list[*str]
 
-    :return: scene XML content (string)
+    :return: scene XML content
     :rtype: str
     """
     sceneparts = "\n".join(sceneparts)
@@ -407,7 +411,6 @@ def build_scene(scene_id, name, sceneparts=None):
 
 
 if __name__ == "__main__":
-
     # Usage Demo
     bbox = [478250, 5473800, 478400, 5473950]
     wp, c, dist = compute_flight_lines(bbox, spacing=30, rotate_deg=45, flight_pattern="criss-cross")

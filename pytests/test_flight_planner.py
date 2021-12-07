@@ -54,18 +54,104 @@ def test_flight_length():
 
     distance = flight_planner.compute_flight_length(legs)
 
-    assert expected_distance == distance
+    assert distance == expected_distance
 
 
 def test_flight_lines_criss_cross():
-    pass
+    """Function to test creation of flight lines for criss-cross flight pattern"""
+    # given
+    bounding_box = [-100, -100, 100, 100]
+    strip_spacing = 25
+
+    # expected
+    waypoints_expected = np.array([[100., -100.],
+                                   [-100., -100.],
+                                   [-100., -75.],
+                                   [100., -75.],
+                                   [100., -50.],
+                                   [-100., -50.],
+                                   [-100., -25.],
+                                   [100., -25.],
+                                   [100., 0.],
+                                   [-100., 0.],
+                                   [-100., 25.],
+                                   [100., 25.],
+                                   [100., 50.],
+                                   [-100., 50.],
+                                   [-100., 75.],
+                                   [100., 75.],
+                                   [100., 100.],
+                                   [-100., 100.],
+                                   [-100., 100.],
+                                   [-100., -100.],
+                                   [-75., -100.],
+                                   [-75., 100.],
+                                   [-50., 100.],
+                                   [-50., -100.],
+                                   [-25., -100.],
+                                   [-25., 100.],
+                                   [0., 100.],
+                                   [0., -100.],
+                                   [25., -100.],
+                                   [25., 100.],
+                                   [50., 100.],
+                                   [50., -100.],
+                                   [75., -100.],
+                                   [75., 100.],
+                                   [100., 100.],
+                                   [100., -100.]])
+    centre_expected = np.array([0., 0.])
+    distance_expected = 4000
+
+    waypoints, centre, distance = flight_planner.compute_flight_lines(bounding_box,
+                                                                      spacing=strip_spacing,
+                                                                      rotate_deg=0.0,
+                                                                      flight_pattern="criss-cross")
+    assert np.allclose(waypoints, waypoints_expected)
+    assert np.allclose(centre, centre_expected)
+    assert distance == distance_expected
 
 
 def test_flight_lines_parallel():
-    pass
+    """Function to test creation of flight lines for parallel flight pattern"""
+    # given
+    bounding_box = [-100, -100, 100, 100]
+    strip_spacing = 25
+
+    # expected
+    waypoints_expected = np.array([[100., -100.],
+                                   [-100., -100.],
+                                   [-100., -75.],
+                                   [100., -75.],
+                                   [100., -50.],
+                                   [-100., -50.],
+                                   [-100., -25.],
+                                   [100., -25.],
+                                   [100., 0.],
+                                   [-100., 0.],
+                                   [-100., 25.],
+                                   [100., 25.],
+                                   [100., 50.],
+                                   [-100., 50.],
+                                   [-100., 75.],
+                                   [100., 75.],
+                                   [100., 100.],
+                                   [-100., 100.]])
+    centre_expected = np.array([0., 0.])
+    distance_expected = 2000
+
+    waypoints, centre, distance = flight_planner.compute_flight_lines(bounding_box,
+                                                                      spacing=strip_spacing,
+                                                                      rotate_deg=0.0,
+                                                                      flight_pattern="parallel")
+
+    assert np.allclose(waypoints, waypoints_expected)
+    assert np.allclose(centre, centre_expected)
+    assert distance == distance_expected
 
 
 def test_export_for_xml_not_always_active():
+    """Function to test the export of legs for XML file"""
     # given
     waypoints = np.array([[0, 0],
                           [0, 10],
@@ -139,7 +225,7 @@ def test_add_rotation_filter():
 
 
 def test_add_scale_filter():
-    """Function to test function add_transformation_filters for a translation"""
+    """Function to test function add_transformation_filters for a scaling"""
     # given
     sc = 0.5
 
@@ -202,6 +288,3 @@ def test_create_scenepart_obj_invalid_up():
         flight_planner.create_scenepart_obj(filepath, up_axis=up_axis)
     assert e.type is AssertionError
 
-
-def test_create_scenepart_obj():
-    pass
