@@ -165,7 +165,7 @@ def export_for_xml(waypoints, altitude, id, speed,
     :param trajectory_time_interval: time interval [s] in which trajectory points are written; default: 0.05
     :param always_active: flag to specify if the scanner should be always active of alternating between active and
                             inactive (boolean: True or False); default: False
-    :type waypoints: tuple
+    :type waypoints: tuple or ndarray
     :type altitude: float
     :type id: str
     :type speed: float
