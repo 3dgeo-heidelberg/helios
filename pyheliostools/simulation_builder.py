@@ -86,7 +86,7 @@ class SimulationBuilder:
         self.setLegNoiseDisabled(True)
         self.setRebuildScene(False)
         self.setWriteWaveform(False)
-        self.setCalcEchowidth(True)
+        self.setCalcEchowidth(False)
         self.setFullwaveNoise(False)
         self.setPlatformNoiseDisabled(True)
         self.setExportToFile(True)

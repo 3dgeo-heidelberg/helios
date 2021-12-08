@@ -64,9 +64,9 @@ def test_arbaro_tls_pyh():
 
 def eval_arbaro_tls(dirname):
     assert (dirname / 'leg000_points.las').exists()
-    assert abs((dirname / 'leg000_points.las').stat().st_size - 18_628_011) < 1_024
+    assert abs((dirname / 'leg000_points.las').stat().st_size - 18_628_011) < 32
     assert (dirname / 'leg001_points.las').exists()
-    assert abs((dirname / 'leg001_points.las').stat().st_size - 12_152_115) < 1_024
+    assert abs((dirname / 'leg001_points.las').stat().st_size - 12_152_115) < 32
     with open(dirname / 'leg000_trajectory.txt', 'r') as f:
         line = f.readline()
         assert line.startswith('1.0000 25.5000 0.0000')
@@ -84,9 +84,9 @@ def test_tiffloader_als_pyh():
 
 def eval_tiffloader_als(dirname):
     assert (dirname / 'leg000_points.las').exists()
-    assert abs((dirname / 'leg000_points.las').stat().st_size - 109_197) < 1_024
+    assert abs((dirname / 'leg000_points.las').stat().st_size - 109_197) < 32
     assert (dirname / 'leg001_points.las').exists()
-    assert abs((dirname / 'leg001_points.las').stat().st_size - 109_197) < 1_024
+    assert abs((dirname / 'leg001_points.las').stat().st_size - 109_197) < 32
     with open(dirname / 'leg000_trajectory.txt', 'r') as f:
         line = f.readline()
         line = f.readline()
@@ -105,9 +105,9 @@ def test_detailedVoxels_uls_pyh():
 
 def eval_detailedVoxels_uls(dirname):
     assert (dirname / 'leg000_points.las').exists()
-    assert abs((dirname / 'leg000_points.las').stat().st_size - 420_615) < 1_024
+    assert abs((dirname / 'leg000_points.las').stat().st_size - 419_589) < 32
     assert (dirname / 'leg000_trajectory.txt').exists()
-    assert abs((dirname / 'leg000_trajectory.txt').stat().st_size - 1_197) < 1_024
+    assert abs((dirname / 'leg000_trajectory.txt').stat().st_size - 1_250) < 32
     with open(dirname / 'leg000_trajectory.txt', 'r') as f:
         line = f.readline()
         line = f.readline()
@@ -131,6 +131,6 @@ def test_xyzVoxels_tls_pyh():
 
 def eval_xyzVoxels_tls(dirname):
     assert (dirname / 'leg000_points.las').exists()
-    assert abs((dirname / 'leg000_points.las').stat().st_size - 16_937_811) < 1_024
+    assert abs((dirname / 'leg000_points.las').stat().st_size - 16_937_811) < 32
     # clean up
     shutil.rmtree(dirname)
