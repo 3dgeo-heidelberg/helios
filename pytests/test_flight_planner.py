@@ -1,16 +1,9 @@
 import pytest
-import os
-import shutil
-import subprocess
 import numpy as np
 from pathlib import Path
-import sys
 from extra import flight_planner
 import re
 
-# HELIOS_EXE = str(Path('build') / 'helios')
-# if sys.platform == "win32":
-#    HELIOS_EXE += ".exe"
 WORKING_DIR = str(Path(__file__).parent.parent.absolute())
 
 
@@ -39,6 +32,7 @@ def test_rotate_around_origin():
 
 
 def test_flight_length():
+    """Test computation of flight length vor a given array of waypoints"""
     # given
     legs = np.array([[0, 0],
                      [0, 10],
@@ -58,7 +52,7 @@ def test_flight_length():
 
 
 def test_flight_lines_criss_cross():
-    """Function to test creation of flight lines for criss-cross flight pattern"""
+    """Ttest creation of flight lines for criss-cross flight pattern"""
     # given
     bounding_box = [-100, -100, 100, 100]
     strip_spacing = 25
@@ -113,7 +107,7 @@ def test_flight_lines_criss_cross():
 
 
 def test_flight_lines_parallel():
-    """Function to test creation of flight lines for parallel flight pattern"""
+    """Test creation of flight lines for parallel flight pattern"""
     # given
     bounding_box = [-100, -100, 100, 100]
     strip_spacing = 25
@@ -151,7 +145,7 @@ def test_flight_lines_parallel():
 
 
 def test_export_for_xml_not_always_active():
-    """Function to test the export of legs for XML file"""
+    """Test the export of legs for XML file"""
     # given
     waypoints = np.array([[0, 0],
                           [0, 10],
@@ -160,6 +154,8 @@ def test_export_for_xml_not_always_active():
     altitude = 200
     template_id = "template"
     speed = 50
+
+    # expected
     expected_legs_xml = f'''
         <leg>
             <platformSettings x="{waypoints[0, 0]}" y="{waypoints[0, 1]}" z="{altitude}" movePerSec_m="{speed}" />
@@ -188,7 +184,7 @@ def test_export_for_xml_not_always_active():
 
 
 def test_add_translation_filter():
-    """Function to test function add_transformation_filters for a translation"""
+    """Test the function add_transformation_filters for a translation"""
     # given
     tr = [10, 10, 5]
 
@@ -205,7 +201,7 @@ def test_add_translation_filter():
 
 
 def test_add_rotation_filter():
-    """Function to test function add_transformation_filters for a rotation"""
+    """Test the function add_transformation_filters for a rotation"""
     # given
     rot = [90, 0, 180]
 
@@ -225,7 +221,7 @@ def test_add_rotation_filter():
 
 
 def test_add_scale_filter():
-    """Function to test function add_transformation_filters for a scaling"""
+    """Test the function add_transformation_filters for scaling"""
     # given
     sc = 0.5
 
@@ -241,7 +237,7 @@ def test_add_scale_filter():
 
 
 def test_add_translation_filter_on_ground():
-    """Function to test function add_transformation_filters for a translation onto ground"""
+    """Test the function add_transformation_filters for a translation onto ground"""
     # given
     tr = [10, 10, 5]
     on_gnd = -1
@@ -259,6 +255,7 @@ def test_add_translation_filter_on_ground():
 
 
 def test_create_scenepart_obj_efilepath():
+    """Test the creation of an obj scene part with the 'efilepath' option"""
     # given
     filepath = "data/sceneparts/basic/groundplane/groundplane.obj"
 
@@ -278,6 +275,7 @@ def test_create_scenepart_obj_efilepath():
 
 
 def test_create_scenepart_obj_invalid_up():
+    """Test if an error is raised if an invalid 'up' axis is provided for the objloaer"""
     # given
     filepath = "data/sceneparts/basic/groundplane/groundplane.obj"
     up_axis = "phi"
@@ -287,4 +285,3 @@ def test_create_scenepart_obj_invalid_up():
     with pytest.raises(AssertionError) as e:
         flight_planner.create_scenepart_obj(filepath, up_axis=up_axis)
     assert e.type is AssertionError
-

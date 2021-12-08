@@ -270,7 +270,7 @@ def create_scenepart_obj(filepath: str, up_axis: str = "z", trafofilter: str = "
     :rtype: str
     """
     filepath_mode = "efilepath" if efilepath else "filepath"
-    assert up_axis in ["x", "y", "z"]
+    assert up_axis in ["y", "z"]
     scenepart = f"""
         <part>
             <filter type="objloader">
