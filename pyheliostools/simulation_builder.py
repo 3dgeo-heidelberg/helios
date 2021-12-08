@@ -34,6 +34,12 @@ class SimulationBuilder:
         lasOutput -- LAS output format flag
         las10     -- LAS v1.0 output format flag
         zipOutput -- Zip output format flag (can be unzipped with Helios++)
+        kdtFactory -- The KDT factory to be used (Simple, SAH; AxisSAH, FSAH)
+        kdtJobs -- Number of threads to build KDT
+        kdtSAHLossNodes -- Size of iterative SAH computation or approximation
+        parallelizationStrategy -- Either chunk based or warehosue based
+        chunkSize -- Defualt chunk size
+        warehouseFactor -- Amany tasks as factor times number of threads
         simFrequency -- Simulation control frequency (do not mismatch with
             the simulation operating frequency)
         finalOutput -- Final output (the one obtained after .join) flag
@@ -68,6 +74,12 @@ class SimulationBuilder:
         self.setNumThreads(0)
         self.setLasOutput(False)
         self.setZipOutput(False)
+        self.setKDTFactory(4)
+        self.setKDTJobs(0)
+        self.setKDTSAHLossNodes(32)
+        self.setParallelizationStrategy(1)
+        self.setChunkSize(32)
+        self.setWarehouseFactor(4)
         self.setSimFrequency(0)
         self.setFinalOutput(True)
         self.setLegNoiseDisabled(True)
@@ -168,6 +180,30 @@ class SimulationBuilder:
     def setZipOutput(self, zipOutput):
         self.validateBoolean(zipOutput)
         self.zipOutput = zipOutput
+
+    def setKDTFactory(self, kdtFactory):
+        self.validateKDTFactory(kdtFactory)
+        self.kdtFactory = kdtFactory
+
+    def setKDTJobs(self, kdtJobs):
+        self.validateNumThreads(kdtJobs)
+        self.kdtJobs = kdtJobs
+
+    def setKDTSAHLossNodes(self, sahLossNodes):
+        self.validateNonNegativeInteger(sahLossNodes)
+        self.sahLossNodes = sahLossNodes
+
+    def setParallelizationStrategy(self, parallelizationStrategy):
+        self.validateParallelizationStrategy(parallelizationStrategy)
+        self.parallelizationStrategy = parallelizationStrategy
+
+    def setChunkSize(self, chunkSize):
+        self.validateInteger(chunkSize)
+        self.chunkSize = chunkSize
+
+    def setWarehouseFactor(self, warehouseFactor):
+        self.validateNonNegativeInteger(warehouseFactor)
+        self.warehouseFactor = warehouseFactor
 
     def setSimFrequency(self, freq):
         self.validateSimFrequency(freq)
@@ -299,6 +335,21 @@ class SimulationBuilder:
                 '{b} is not a boolean'.format(b=b)
             )
 
+    def validateInteger(self, i):
+        if type(i) != int:
+            raise PyHeliosToolsException(
+                'SimulationBuilder EXCEPTION!\n\t'
+                '{i} is not integer'.format(i=i)
+            )
+
+    def validateNonNegativeInteger(self, i):
+        self.validateInteger(i)
+        if i < 0:
+            raise PyHeliosToolsException(
+                'SimulationBuilder EXCEPTION!\n\t'
+                '{i} is not a non negative integer'.format(i=i)
+            )
+
     def validateCallback(self, callback):
         if callback is None:
             return
@@ -307,4 +358,19 @@ class SimulationBuilder:
             raise PyHeliosToolsException(
                 'SimulationBuilder EXCEPTION!\n\t'
                 'Callback is NOT callable but it MUST be callable'
+            )
+
+    def validateKDTFactory(self, kdtFactory):
+        if kdtFactory not in (1, 2, 3, 4):
+            raise PyHeliosToolsException(
+                'SimulationBuilder EXCEPTION!\n\t'
+                'Unexpected KDT Factory {kdtf}'.format(kdtf=kdtFactory)
+            )
+
+    def validateParallelizationStrategy(self, parallelizationStrategy):
+        if parallelizationStrategy not in (0, 1):
+            raise PyHeliosToolsException(
+                'SimulationBuilder EXCEPTION!\n\t'
+                'Unexpected parallelization strategy {ps}'
+                .format(ps=parallelizationStrategy)
             )

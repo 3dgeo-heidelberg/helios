@@ -105,9 +105,9 @@ Collaboration diagram for pyhelios::PyHeliosSimulation:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a7c2f3ba2bf2df619c681d5d6e28ec9ae"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/ddd/classpyhelios_1_1PyHeliosSimulation.html#a7c2f3ba2bf2df619c681d5d6e28ec9ae">PyHeliosSimulation</a> (std::string surveyPath, std::string assetsPath=&quot;assets/&quot;, std::string outputPath=&quot;output/&quot;, size_t numThreads=0, bool lasOutput=false, bool las10=false, bool zipOutput=false)</td></tr>
-<tr class="memdesc:a7c2f3ba2bf2df619c681d5d6e28ec9ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Build a <a class="el" href="../../d9/ddd/classpyhelios_1_1PyHeliosSimulation.html">PyHeliosSimulation</a> instance.  <a href="#a7c2f3ba2bf2df619c681d5d6e28ec9ae">More...</a><br /></td></tr>
-<tr class="separator:a7c2f3ba2bf2df619c681d5d6e28ec9ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a22dd756a642d7acd0e51d54175bb175d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/ddd/classpyhelios_1_1PyHeliosSimulation.html#a22dd756a642d7acd0e51d54175bb175d">PyHeliosSimulation</a> (std::string surveyPath, std::string assetsPath=&quot;assets/&quot;, std::string outputPath=&quot;output/&quot;, size_t numThreads=0, bool lasOutput=false, bool las10=false, bool zipOutput=false, int kdtFactory=4, size_t kdtJobs=0, size_t kdtSAHLossNodes=32, int parallelizationStrategy=1, int chunkSize=32)</td></tr>
+<tr class="memdesc:a22dd756a642d7acd0e51d54175bb175d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Build a <a class="el" href="../../d9/ddd/classpyhelios_1_1PyHeliosSimulation.html">PyHeliosSimulation</a> instance.  <a href="#a22dd756a642d7acd0e51d54175bb175d">More...</a><br /></td></tr>
+<tr class="separator:a22dd756a642d7acd0e51d54175bb175d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a19162c9ce6e4c5945e1b34c06f68b6e1"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/ddd/classpyhelios_1_1PyHeliosSimulation.html#a19162c9ce6e4c5945e1b34c06f68b6e1">isStarted</a> ()</td></tr>
 <tr class="memdesc:a19162c9ce6e4c5945e1b34c06f68b6e1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if the simulation has been started or not.  <a href="#a19162c9ce6e4c5945e1b34c06f68b6e1">More...</a><br /></td></tr>
 <tr class="separator:a19162c9ce6e4c5945e1b34c06f68b6e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -193,6 +193,36 @@ double&#160;</td><td class="memItemRight" valign="bottom"><b>getZipOutput</b> ()
 <tr class="memitem:ae490a1ad1ee124bf23f75e226f6ce5a7"><td class="memItemLeft" align="right" valign="top"><a id="ae490a1ad1ee124bf23f75e226f6ce5a7"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>setZipOutput</b> (bool zipOutput_)</td></tr>
 <tr class="separator:ae490a1ad1ee124bf23f75e226f6ce5a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a43f39e3786054b664cd913c10096c467"><td class="memItemLeft" align="right" valign="top"><a id="a43f39e3786054b664cd913c10096c467"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>getKDTFactory</b> ()</td></tr>
+<tr class="separator:a43f39e3786054b664cd913c10096c467"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a53957677131e7a4d747a8ded20b9ff2e"><td class="memItemLeft" align="right" valign="top"><a id="a53957677131e7a4d747a8ded20b9ff2e"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setKDTFactory</b> (int kdtFactory)</td></tr>
+<tr class="separator:a53957677131e7a4d747a8ded20b9ff2e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1aea7681b7d1c0758b54df80a568125c"><td class="memItemLeft" align="right" valign="top"><a id="a1aea7681b7d1c0758b54df80a568125c"></a>
+size_t&#160;</td><td class="memItemRight" valign="bottom"><b>getKDTJobs</b> ()</td></tr>
+<tr class="separator:a1aea7681b7d1c0758b54df80a568125c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeb85ede1eea73b197e713260c334b171"><td class="memItemLeft" align="right" valign="top"><a id="aeb85ede1eea73b197e713260c334b171"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setKDTJobs</b> (size_t kdtJobs)</td></tr>
+<tr class="separator:aeb85ede1eea73b197e713260c334b171"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac001c3e77a32411d1abc0cee91de8b53"><td class="memItemLeft" align="right" valign="top"><a id="ac001c3e77a32411d1abc0cee91de8b53"></a>
+size_t&#160;</td><td class="memItemRight" valign="bottom"><b>getKDTSAHLossNodes</b> ()</td></tr>
+<tr class="separator:ac001c3e77a32411d1abc0cee91de8b53"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8ba52a09fc4462f543fdf972aeebda73"><td class="memItemLeft" align="right" valign="top"><a id="a8ba52a09fc4462f543fdf972aeebda73"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setKDTSAHLossNodes</b> (size_t kdtSAHLossNodes)</td></tr>
+<tr class="separator:a8ba52a09fc4462f543fdf972aeebda73"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab9ed3e6238206eb5eb9d409d3bc6ce27"><td class="memItemLeft" align="right" valign="top"><a id="ab9ed3e6238206eb5eb9d409d3bc6ce27"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>getParallelizationStrategy</b> ()</td></tr>
+<tr class="separator:ab9ed3e6238206eb5eb9d409d3bc6ce27"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7e316047ab7d6868c876aa60367a2830"><td class="memItemLeft" align="right" valign="top"><a id="a7e316047ab7d6868c876aa60367a2830"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setParallelizationStrategy</b> (int parallelizationStrategy)</td></tr>
+<tr class="separator:a7e316047ab7d6868c876aa60367a2830"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6e18f4c555a5ad9bdfcb64a8af9463fa"><td class="memItemLeft" align="right" valign="top"><a id="a6e18f4c555a5ad9bdfcb64a8af9463fa"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>getChunkSize</b> ()</td></tr>
+<tr class="separator:a6e18f4c555a5ad9bdfcb64a8af9463fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9617e14dccc0bf0370c24511d0c94226"><td class="memItemLeft" align="right" valign="top"><a id="a9617e14dccc0bf0370c24511d0c94226"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setChunkSize</b> (int chunkSize)</td></tr>
+<tr class="separator:a9617e14dccc0bf0370c24511d0c94226"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa2716558523a01740748f5b5c8c13f87"><td class="memItemLeft" align="right" valign="top"><a id="aa2716558523a01740748f5b5c8c13f87"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/ddd/classpyhelios_1_1PyHeliosSimulation.html#aa2716558523a01740748f5b5c8c13f87">start</a> ()</td></tr>
 <tr class="memdesc:aa2716558523a01740748f5b5c8c13f87"><td class="mdescLeft">&#160;</td><td class="mdescRight">Start the simulation if possible. Otherwise, <a class="el" href="../../d8/d98/classpyhelios_1_1PyHeliosException.html">PyHeliosException</a> will be thrown. <br /></td></tr>
@@ -297,6 +327,15 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>zipOutput</b> = false
 <tr class="memitem:ab9195cd9c927e7faf540264a6de6b5d8"><td class="memItemLeft" align="right" valign="top"><a id="ab9195cd9c927e7faf540264a6de6b5d8"></a>
 std::shared_ptr&lt; <a class="el" href="../../df/d9c/classPulseThreadPoolInterface.html">PulseThreadPoolInterface</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>pulseThreadPool</b></td></tr>
 <tr class="separator:ab9195cd9c927e7faf540264a6de6b5d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2ff76d92b2416772cb91d7c4c0a959cc"><td class="memItemLeft" align="right" valign="top"><a id="a2ff76d92b2416772cb91d7c4c0a959cc"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>kdtFactory</b> = 4</td></tr>
+<tr class="separator:a2ff76d92b2416772cb91d7c4c0a959cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aacb91106c1cc97b1da61cdd1b6ca7c1f"><td class="memItemLeft" align="right" valign="top"><a id="aacb91106c1cc97b1da61cdd1b6ca7c1f"></a>
+size_t&#160;</td><td class="memItemRight" valign="bottom"><b>kdtJobs</b> = 0</td></tr>
+<tr class="separator:aacb91106c1cc97b1da61cdd1b6ca7c1f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abd40cb466fc3591559594a0803cf1809"><td class="memItemLeft" align="right" valign="top"><a id="abd40cb466fc3591559594a0803cf1809"></a>
+size_t&#160;</td><td class="memItemRight" valign="bottom"><b>kdtSAHLossNodes</b> = 32</td></tr>
+<tr class="separator:abd40cb466fc3591559594a0803cf1809"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5c00b51de2602f41101650da2e156839"><td class="memItemLeft" align="right" valign="top"><a id="a5c00b51de2602f41101650da2e156839"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>parallelizationStrategy</b> = 1</td></tr>
 <tr class="separator:a5c00b51de2602f41101650da2e156839"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -309,8 +348,8 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>chunkSize</b> = 32</td
 <dl class="section version"><dt>Version</dt><dd>1.0</dd></dl>
 <p>Helios++ simulation wrapped to be used from Python </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a7c2f3ba2bf2df619c681d5d6e28ec9ae"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7c2f3ba2bf2df619c681d5d6e28ec9ae">&#9670;&nbsp;</a></span>PyHeliosSimulation()</h2>
+<a id="a22dd756a642d7acd0e51d54175bb175d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a22dd756a642d7acd0e51d54175bb175d">&#9670;&nbsp;</a></span>PyHeliosSimulation()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -355,7 +394,37 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>chunkSize</b> = 32</td
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>zipOutput</em> = <code>false</code>&#160;</td>
+          <td class="paramname"><em>zipOutput</em> = <code>false</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>kdtFactory</em> = <code>4</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>kdtJobs</em> = <code>0</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>kdtSAHLossNodes</em> = <code>32</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>parallelizationStrategy</em> = <code>1</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>chunkSize</em> = <code>32</code>&#160;</td>
         </tr>
         <tr>
           <td></td>

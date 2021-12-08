@@ -20,7 +20,7 @@ def rotate_around_point(xy, degrees, origin=(0, 0)):
     :param xy: array of point(s) to rotate
     :param degrees: rotation (clockwise) in degrees
     :param origin: rotation origin; default: O(0, 0)
-    :return:
+    :return: rotated array
     """
     # convert degree to radians
     radians = math.radians(degrees)
@@ -43,12 +43,12 @@ def compute_flight_length(waypoints):
     :param waypoints: The waypoints of the flight path e.g. [[50, -100], [50, 100], [-50, 100], [-50, -100]] (list)
 
     :return: Summed distance of the flight lines
-
     """
     distance = 0
     curr_point = waypoints[-1]
     for point in waypoints[::-1]:
         distance += np.sqrt((curr_point[0] - point[0])**2 + (curr_point[1] - point[1])**2)
+        curr_point = point
 
     return distance
 
@@ -61,18 +61,18 @@ def compute_flight_lines(bounding_box, spacing, rotate_deg=0.0, flight_pattern="
     :param spacing: Spacing between flight lines
     :param rotate_deg: Angle (deg) about which to rotate the generated flight pattern about it's centre point
                     default: 0
-    :param flight_pattern: Flight pattern, either of "parallel", "cross-cross", "zic-zac", "spiral"
+    :param flight_pattern: Flight pattern, either of "parallel", "cross-cross"
                     default: "parallel"
 
-    :return: Ordered array of waypoints for the generated flight plan
-    :return: Centre point of the bounding box (and flight plan)
-    :return: Total distance of the flight plan
+    :return: Ordered array of waypoints for the generated flight plan,
+            Centre point of the bounding box (and flight plan),
+            Total distance of the flight plan
     """
     centre = np.array([(bounding_box[0] + bounding_box[2]) / 2, (bounding_box[1] + bounding_box[3]) / 2])
     bbox_dims = np.array([[bounding_box[2] - bounding_box[0]], [bounding_box[3] - bounding_box[1]]])
     n_flight_lines_x = int(np.floor(bbox_dims[1] / spacing))
     n_flight_lines_y = int(np.floor(bbox_dims[0] / spacing))
-    pattern_options = ["parallel", "criss-cross", "zic-zac", "spiral"]
+    pattern_options = ["parallel", "criss-cross"]
     if flight_pattern not in pattern_options:
         print("WARNING: Specified flight pattern is not available.\n"
               "Possible choices: 'parallel', 'criss-cross'\n"
@@ -151,20 +151,26 @@ def plot_flight_plan(waypoints):
     return plt
 
 
-def export_for_xml(waypoints, altitude, template_id, platform_speed,
+def export_for_xml(waypoints, altitude, id, speed,
                    trajectory_time_interval=0.05, always_active=False):
     """This function exports a flight plan to a string to use in HELIOS++ survey XML files.
 
     :param waypoints: array of waypoints e.g. [[50, -100], [50, 100], [-50, 100], [-50, -100]]
-    :param altitude: z-coordinate of all waypoints (float)
-    :param template_id: ID of default scanner settings (defined in survey-XML) which legs should share (string)
-    :param platform_speed: speed of the platform in m/s (float)
-    :param trajectory_time_interval: time interval [s] in which trajectory points are written (float); default: 0.05
+    :param altitude: z-coordinate of all waypoints
+    :param id: ID of default scanner settings (defined in survey-XML) which legs should share
+    :param speed: speed of the platform in m/s
+    :param trajectory_time_interval: time interval [s] in which trajectory points are written; default: 0.05
     :param always_active: flag to specify if the scanner should be always active of alternating between active and
                             inactive (boolean: True or False); default: False
+    :type waypoints: tuple
+    :type altitude: float
+    :type id: str
+    :type speed: float
+    :type trajectory_time_interval: float
+    :type always_active: bool
 
     :return: string with all XML leg-tags for a HELIOS++ survey file
-
+    :rtype: str
     """
     xml_string = ""
     active = "true" if always_active else "false"
@@ -172,32 +178,37 @@ def export_for_xml(waypoints, altitude, template_id, platform_speed,
         if i % 2 == 0 or i == 0:
             xml_string += f'''
         <leg>
-            <platformSettings x="{leg[0]}" y="{leg[1]}" z="{altitude}" movePerSec_m="{platform_speed}" />
-            <scannerSettings template="{template_id}" trajectoryTimeInterval_s="{trajectory_time_interval}" />
+            <platformSettings x="{leg[0]}" y="{leg[1]}" z="{altitude}" movePerSec_m="{speed}" />
+            <scannerSettings template="{id}" trajectoryTimeInterval_s="{trajectory_time_interval}" />
         </leg>
-            '''
+        '''
         elif i % 2 != 0:
             xml_string += f'''
         <leg>
-            <platformSettings x="{leg[0]}" y="{leg[1]}" z="{altitude}" movePerSec_m="{platform_speed}" />
-            <scannerSettings template="{template_id}" active="{active}" trajectoryTimeInterval_s="{trajectory_time_interval}" />
+            <platformSettings x="{leg[0]}" y="{leg[1]}" z="{altitude}" movePerSec_m="{speed}" />
+            <scannerSettings template="{id}" active="{active}" trajectoryTimeInterval_s="{trajectory_time_interval}" />
         </leg>
-            '''
+        '''
     return xml_string
 
 
 def add_transformation_filters(translation=None, rotation=None, scale=1, on_ground=0):
     """This function creates a string of transformation filters for a given translation, rotation and scale
 
-    :param translation: list of translations in x-, y- and z-direction; [t_x, t_y, t_z] (list)
-    :param rotation: list of rotations around the x-, y- and z-axes; [rot_x, rot_y, rot_z] (list)
-    :param scale: value by which to scale the scenepart (float)
-    :param on_ground: flag to specifiy whether the scenepart should be translated to the ground (integer)
+    :param translation: list of translations in x-, y- and z-direction; [t_x, t_y, t_z]
+    :param rotation: list of rotations around the x-, y- and z-axes; [rot_x, rot_y, rot_z]
+    :param scale: value by which to scale the scenepart
+    :param on_ground: flag to specifiy whether the scenepart should be translated to the ground
                     0  = no ground translation
                     -1 = find optimal ground translation
                     1  = find quick ground translation
                     >1 = specify a depth for the search process
-    :return: transformation filter(s) (string)
+    :type translation: list
+    :type rotation: list
+    :type scale: float
+    :type on_ground: int
+    :return: transformation filter(s)
+    :rtype: str
     """
     if rotation is None:
         rotation = [0, 0, 0]
@@ -232,9 +243,13 @@ def create_scenepart_obj(filepath, trafofilter="", efilepath=False):
     """This function creates a scenepart string to load OBJ-files
 
     :param filepath: path to the OBJ-file
-    :param trafofilter: transformation filter, surrounded by <filter>-tags (string)
+    :param trafofilter: transformation filter, surrounded by <filter>-tags
     :param efilepath: boolean, whether to use the efilepath option
-    :return: scenepart (string)
+    :type filepath: str
+    :type trafofilter: str
+    :type efilepath: bool
+    :return: scenepart
+    :rtype: str
     """
     if efilepath is True:
         key_opt = "efilepath"
@@ -255,12 +270,16 @@ def create_scenepart_tiff(filepath, trafofilter="",
                           matfile="data/sceneparts/basic/groundplane/groundplane.mtl", matname="None"):
     """This function creates a scenepart string to load GeoTIFFs
 
-    :param filepath: path to the GeoTIFF-file (string)
-    :param trafofilter: transformation filter, surrounded by <filter>-tags (string)
-    :param matfile: path to the material file (string)
-    :param matname: name of the material to use (string)
+    :param filepath: path to the GeoTIFF-file
+    :param trafofilter: transformation filter, surrounded by <filter>-tags
+    :param matfile: path to the material file
+    :type filepath: str
+    :type trafofilter: str
+    :type matfile: str
+    :param matname: name of the material to use
 
-    :return: scenepart (string)
+    :return: scenepart
+    :rtype: str
     """
     scenepart = f"""
         <part>
@@ -278,12 +297,17 @@ def create_scenepart_tiff(filepath, trafofilter="",
 def create_scenepart_xyz(filepath, trafofilter="", sep=" ", voxel_size=0.5):
     """This function creates a scenepart string to load ASCII point clouds in xyz-format
 
-    :param filepath: path to the ASCII point cloud file (string)
-    :param trafofilter: transformation filter, surrounded by <filter>-tags (string)
-    :param sep: column separator in the ASCII point cloud file; default: " " (string)
-    :param voxel_size: voxel side length for the voxelisation of the point cloud (float)
+    :param filepath: path to the ASCII point cloud file
+    :param trafofilter: transformation filter, surrounded by <filter>-tags
+    :param sep: column separator in the ASCII point cloud file; default: " "
+    :param voxel_size: voxel side length for the voxelisation of the point cloud
+    :type filepath: str
+    :type trafofilter: str
+    :type sep: str
+    :type voxel_size: float
 
-    :return: scenepart (string)
+    :return: scenepart
+    :rtype: str
     """
     scenepart = f"""
         <part>
@@ -307,14 +331,20 @@ def create_scenepart_xyz(filepath, trafofilter="", sep=" ", voxel_size=0.5):
 def create_scenepart_vox(filepath, trafofilter="", intersection_mode="transmittive", matfile=None, matname=None):
     """This function creates a scenepart string to load .vox voxel files
 
-    :param filepath: path to the .vox-file (string)
-    :param trafofilter: transformation filter, surrounded by <filter>-tags (string)
-    :param intersection_mode: intersection mode for voxels (string)
+    :param filepath: path to the .vox-file
+    :param trafofilter: transformation filter, surrounded by <filter>-tags
+    :param intersection_mode: intersection mode for voxels
                     options: "transmittive" (default), "scaled", "fixed"
-    :param matfile: path to the material file (string)
-    :param matname: name of the material to use (string)
+    :param matfile: path to the material file
+    :param matname: name of the material to use
+    :type filepath: str
+    :type trafofilter: str
+    :type intersection_mode: str
+    :type matfile: str
+    :type matname: str
 
-    :return: scenepart (string)
+    :return: scenepart
+    :rtype: str
     """
     if matfile or matname:
         mat_def = f"""\n<param type="string" key="matfile" value="{matfile}" />
@@ -336,11 +366,15 @@ def create_scenepart_vox(filepath, trafofilter="", intersection_mode="transmitti
 def build_scene(scene_id, name, sceneparts=None):
     """This function creates the content to write to the scene.xml file
 
-    :param scene_id: ID of the scene (string)
-    :param name: name of the scene (string)
-    :param sceneparts: list of sceneparts to add to the scene (list)
+    :param scene_id: ID of the scene
+    :param name: name of the scene
+    :param sceneparts: list of sceneparts to add to the scene
+    :type scene_id: str
+    :type name: str
+    :type sceneparts: list[*str]
 
     :return: scene XML content (string)
+    :rtype: str
     """
     sceneparts = "\n".join(sceneparts)
     scene_content = f"""<?xml version="1.0" encoding="UTF-8"?>
@@ -361,9 +395,9 @@ if __name__ == "__main__":
     plot = plot_flight_plan(wp)
     plot.show()
     speed = 5
-    print("Flight duration: {} min".format(dist/speed/60))
+    print(f"Flight duration: {dist / speed / 60} min")
     alt = 490
-    print(str(export_for_xml(wp, altitude=alt, template_id="uls_template", platform_speed=speed)))
+    print(str(export_for_xml(wp, altitude=alt, id="uls_template", speed=speed)))
 
     filters = add_transformation_filters(translation=[478335.125, 5473887.89, 0.0], rotation=[0, 0, 90], on_ground=-1)
 
