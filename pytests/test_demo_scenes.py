@@ -34,24 +34,20 @@ def run_helios_pyhelios(survey_path: Path, options=None) -> Path:
     sys.path.append(str((Path(WORKING_DIR) / 'build').absolute()))
     import pyhelios
     pyhelios.setDefaultRandomnessGeneratorSeed("43")
-    sim = pyhelios.Simulation(
-        str(survey_path.absolute()),
-        WORKING_DIR + os.sep + 'assets' + os.sep,
-        WORKING_DIR + os.sep + 'output' + os.sep,
-        1,  # Num Threads
-        1,  # LAS v1.4 output
-        0,  # LAS v1.0 output
-        0,  # ZIP output
+    from pyheliostools import SimulationBuilder
+
+    simB = SimulationBuilder(
+        surveyPath=str(survey_path.absolute()),
+        assetsDir=WORKING_DIR + os.sep + 'assets' + os.sep,
+        outputDir=WORKING_DIR + os.sep + 'output' + os.sep,
     )
-    # Load the survey file.
-    sim.loadSurvey(
-        1,  # Leg Noise Disabled FLAG
-        1,  # Rebuild Scene FLAG
-        0,  # Write Waveform FLAG
-        0,  # Calculate Echowidth FLAG
-        0,  # Full Wave Noise FLAG
-        1  # Platform Noise Disabled FLAG
-    )
+    simB.setLasOutput(True)
+    simB.setRebuildScene(True)
+    simB.setNumThreads(1)
+    simB.setKDTJobs(1)
+
+    sim = simB.build()
+
     sim.start()
     output = sim.join()
     return find_playback_dir(survey_path)

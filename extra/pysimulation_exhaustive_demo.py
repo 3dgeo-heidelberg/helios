@@ -78,7 +78,7 @@ for angle in angles:
     simBuilder.setLegNoiseDisabled(True)
     simBuilder.setRebuildScene(True)
     simBuilder.setWriteWaveform(False)
-    simBuilder.setCalcEchowdith(False)
+    simBuilder.setCalcEchowidth(False)
     simBuilder.setFullwaveNoise(False)
     simBuilder.setPlatformNoiseDisabled(True)
     sim = simBuilder.build()
