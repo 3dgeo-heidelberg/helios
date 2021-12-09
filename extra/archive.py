@@ -2,7 +2,7 @@
 # -- coding: utf-8 --
 # Hannah Weiser 2021, h.weiser@stud.uni-heidelberg.de
 
-"""
+r"""
 This script creates a compressed archive containing all configuration
 XML-files necessary to run the specified survey(s) with the specified helios executable.
 
@@ -15,7 +15,6 @@ e.g. python extra\archive.py run\helios.exe list.txt archive.zip
 The archive additionally contains a text file (version.txt) with the helios version and the DOI to the zenodo release.
 """
 
-
 import sys
 from pathlib import Path
 import zipfile
@@ -26,15 +25,23 @@ import subprocess
 from shutil import rmtree
 import xml.etree.ElementTree as ET
 import itertools
+import warnings
 
 WORKING_DIR = str(Path(__file__).parent.parent.absolute())
+HELIOS_VERSION_LATEST = "1.0.9"
 
 
 class Simulation:
+    """
+
+    """
 
     def __init__(self, survey_file):
         """
         Init constructs all necessary attributes from survey file.
+
+        :param survey_file: Path to survey file
+        :type survey_file: str
         """
         self.survey = survey_file
         self.scene_name = ET.parse(survey_file).find('survey').attrib['scene'].split('#')[1]
@@ -47,16 +54,16 @@ class Simulation:
         with open(self.scene_file, 'r') as f:
             self.scene_content = f.read()
 
-
     def get_sceneparts(self):
-        """"""
+        """
+        Function to collect paths of scene parts from the survey file.
+        These will be written to the lists sp_file and mat_files of the instance
+        """
 
         for scene in self.scene_root.findall('scene'):
             if scene.attrib['id'] == self.scene_name:
                 for scene_part in scene.findall('part'):
                     loader = scene_part.find('filter').attrib['type']
-                    mat_file = None
-                    sp_file = None
                     if loader == "geotiffloader":
                         sp_file = scene_part.find('filter').find('param').attrib['value']
                         self.sp_files.append(sp_file)
@@ -72,12 +79,15 @@ class Simulation:
                                 sp_file = param.attrib['value']
                                 self.sp_files.append(sp_file)
                     elif loader == "objloader":
+                        all_sp_files = []
                         if scene_part.find('filter').find('param').attrib['key'] == 'efilepath':
-                            pattern = sp_path.replace(".*", "*")  # will not work for other regex..
+                            sp_file = scene_part.find('filter').find('param').attrib['value']
+                            pattern = sp_file.replace(".*", "*")  # will not work for other regex..
                             all_sp_files = list(Path('.').glob(pattern))
+                            self.sp_files.extend(all_sp_files)
                         elif scene_part.find('filter').find('param').attrib['key'] == 'filepath':
                             all_sp_files = [scene_part.find('filter').find('param').attrib['value']]
-                        self.sp_files.extend(all_sp_files)
+                            self.sp_files.extend(all_sp_files)
                         for sp_file in all_sp_files:
                             with open(sp_file, "r") as f:
                                 for line in f:
@@ -89,46 +99,65 @@ class Simulation:
 
 
 def get_version_number(helios_executable):
+    """
+    Function to get the version number of HELIOS++ for a given executable
+    :param helios_executable: Path to HELIOS++ executable
+    :type helios_executable: str
+    :return: HELIOS version number (e.g., 1.0.9)
+    :rtype: str
+    """
     try:
+        print("Running helios")
         helios_run = subprocess.run([helios_executable, "--version"], stdout=subprocess.PIPE, text=True)
-    except Exception as e:
-        print("Error. Could not execute helios:")
-        print(e)
+    except FileNotFoundError as exc:
+        warnings.warn("Error. Could not execute helios:")
+        raise exc
     idx1 = helios_run.stdout.find("VERSION ") + len("VERSION ")
     idx2 = helios_run.stdout.find("\n", idx1)
+
     return helios_run.stdout[idx1:idx2]
 
 
 if __name__ == '__main__':
 
     HELIOS_EXE = Path(sys.argv[1])
-    if sys.platform == "win32" and HELIOS_EXE.suffix == "":
-        HELIOS_EXE += ".exe"
+    if platform.system() == 'Windows' and HELIOS_EXE.suffix == '':
+        HELIOS_EXE += '.exe'
     RUN_PATH = HELIOS_EXE.parent
     sys.path.append(RUN_PATH)
 
     survey_path = Path(sys.argv[2])
     outfile = Path(sys.argv[3])
-    allowed_suffixes = [".zip", ".7z", ".rar", ".gz", ".tar"]
+    allowed_suffixes = ['.zip', '.7z', '.rar', '.gz', '.tar']
     if len(set(allowed_suffixes).intersection(outfile.suffixes)) == 0:
-        outfile = outfile.with_suffix(".zip")
+        outfile = outfile.with_suffix('.zip')
 
     try:
-        import pyhelios
-        helios_version = str(pyhelios.getVersion())
-    except Exception as e:
-        helios_version = get_version_number(str(HELIOS_EXE))
-    print("Your HELIOS++ version is %s" % helios_version)
 
-    print("Writing data")
-    if survey_path.suffix == ".txt":
-        with open(survey_path, "r") as inf:
+        import pyhelios
+
+        helios_version = str(pyhelios.getVersion())
+    except ModuleNotFoundError as e:
+        print(e)
+        try:
+            helios_version = get_version_number(str(HELIOS_EXE))
+        except FileNotFoundError:
+            print("No HELIOS++ executable found. Using the latest.")
+            helios_version = HELIOS_VERSION_LATEST
+    print(f'HELIOS++ version is {helios_version}')
+
+    print('Writing data')
+    if survey_path.suffix == '.txt':
+        with open(survey_path, 'r') as inf:
             surveys = inf.readlines()
             surveys = [Path(surveys[i].strip()) for i in range(len(surveys))]
-    elif survey_path.suffix == ".xml":
+    elif survey_path.suffix == '.xml':
         surveys = [Path(survey_path)]
+    else:
+        raise ValueError(f'Survey(s) must be provided in a .txt file or as a single .xml file but '
+                         f'a file with suffix "{survey_path.suffix}" was provided')
 
-    outzip = zipfile.ZipFile(outfile, "w")  # , compression="ZIP_DEFLATED")
+    outzip = zipfile.ZipFile(outfile, 'w')  # , compression="ZIP_DEFLATED")
 
     for survey in surveys:
         sim = Simulation(survey)
@@ -144,11 +173,11 @@ if __name__ == '__main__':
             else:
                 scene_file_new = Path(sim.scene_file)
             outzip.writestr(str(scene_file_new), sim.scene_content)
-            #try:
-            #    scene_path_built = Path(str(scene_path_new).replace(".xml", ".scene"))
-            #    outzip.write(scene_path_built)
-            #except FileNotFoundError:
-            #    continue
+            # try:
+            #     scene_path_built = Path(str(scene_file_new).replace('.xml', '.scene'))
+            #     outzip.write(scene_path_built)
+            # except FileNotFoundError:
+            #     continue
 
         if sim.platform_file not in [Path(file) for file in outzip.namelist()]:
             if Path(sim.platform_file).is_absolute():
@@ -164,9 +193,9 @@ if __name__ == '__main__':
                 scanner_file_new = Path(sim.scanner_file)
             outzip.write(scanner_file_new)
 
-        with open(survey, "r") as survey_file:
-            # replace absolute with relative filepaths
-            content = survey_file.read()
+        with open(survey, "r") as f_survey:
+            # replace absolute with relative file paths
+            content = f_survey.read()
             content = content.replace(str(sim.scene_file), str(scene_file_new))
             content = content.replace(str(sim.platform_file), str(platform_file_new))
             content = content.replace(str(sim.scanner_file), str(scanner_file_new))
@@ -175,30 +204,29 @@ if __name__ == '__main__':
         else:
             outzip.writestr(str(survey), content)
 
-
-    print("Writing assets")
-    assets_path = Path("assets").glob("**/*")
+    print('Writing assets')
+    assets_path = Path('assets').glob('**/*')
     for path in assets_path:
         outzip.write(path)
 
     path = None
-    print("Writing run")
-    run_path = Path("run").glob("*")
+    print('Writing run')
+    run_path = Path('run').glob('*')
     for path in run_path:
-        if path.parts[-1] != "helios.exe":
+        if not path.parts[-1].startswith('helios'):
             outzip.write(path)
     outzip.write(HELIOS_EXE)
     zipurl = None
-    if not Path("run").exists():
-        print("There is no run-folder in your root directory. Downloading run folder from GitHub repository")
-        if platform.system() == "Windows":
-            zipurl = "https://github.com/3dgeo-heidelberg/helios/releases/download/v" + helios_version \
-                     + "/helios-plusplus-win.zip"
-        elif platform.system() == "Linux":
-            zipurl = "https://github.com/3dgeo-heidelberg/helios/releases/download/v" + helios_version \
-                     + "/helios-plusplus-lin.tar.gz"
+    if not Path('run').exists():
+        warnings.warn('There is no run-folder in your root directory. Downloading run folder from GitHub repository')
+        if platform.system() == 'Windows':
+            zipurl = 'https://github.com/3dgeo-heidelberg/helios/releases/download/v' + helios_version \
+                     + '/helios-plusplus-win.zip'
+        elif platform.system() == 'Linux':
+            zipurl = 'https://github.com/3dgeo-heidelberg/helios/releases/download/v' + helios_version \
+                     + '/helios-plusplus-lin.tar.gz'
 
-    release_url = "https://github.com/3dgeo-heidelberg/helios/releases/tag/v" + helios_version
+    release_url = 'https://github.com/3dgeo-heidelberg/helios/releases/tag/v' + helios_version
     try:
         resp = urlopen(release_url)
         search_text = 'https://doi.org/'
@@ -208,25 +236,25 @@ if __name__ == '__main__':
         idx_end = content.find(end_text, idx)
         doi = content[idx:idx_end]
         helios_doi_version = helios_version
-    # except HTTPError or URLError:
-    except Exception as e:
-        doi = "https://doi.org/10.5281/zenodo.4674914"
-        helios_doi_version = "1.0.6"
-
+    except HTTPError or URLError as e:
+        warnings.warn("No release available for your HELIOS++ version. Writing latest DOI to version.txt.")
+        doi = 'https://zenodo.org/record/5564935#.YbHu873MJaQ'
+        helios_doi_version = '1.0.9'
 
     if zipurl is not None:
         try:
             zipresp = urlopen(zipurl)
         except HTTPError or URLError:
-            zipurl = "https://github.com/3dgeo-heidelberg/helios/releases/download/v1.0.6/helios-plusplus-win.zip"
+            warnings.warn("No release available for your HELIOS++ version. Downloading latest release from GitHub.")
+            zipurl = 'https://github.com/3dgeo-heidelberg/helios/releases/download/v1.0.9/helios-plusplus-win.zip'
             zipresp = urlopen(zipurl)
 
-        temp_dir = WORKING_DIR.joinpath("tmp")
+        temp_dir = Path(WORKING_DIR) / 'tmp'
         if not temp_dir.exists():
             temp_dir.mkdir()
-        with open(temp_dir.joinpath("tempfile.zip"), "wb") as tempzip:
+        with open(temp_dir.joinpath('tempfile.zip'), 'wb') as tempzip:
             tempzip.write(zipresp.read())
-        zf = zipfile.ZipFile(temp_dir.joinpath("tempfile.zip"))
+        zf = zipfile.ZipFile(temp_dir.joinpath('tempfile.zip'))
         list_files = zf.namelist()
         for filename in list_files:
             if "run" in Path(filename).parts:
@@ -236,8 +264,8 @@ if __name__ == '__main__':
 
         rmtree(temp_dir.absolute())
 
-    print("Writing version.txt")
-    outzip.writestr("version.txt", "v%s\nDOI: %s (v%s)" % (helios_version, doi, helios_doi_version))
+    print('Writing version.txt')
+    outzip.writestr('version.txt', f'v{helios_version}\nDOI: {doi} (v{helios_doi_version})')
 
     outzip.close()
-    print("Your HELIOS++ archive has been written to %s" % outfile.absolute())
+    print(f'Your HELIOS++ archive has been written to {outfile.absolute()}')
