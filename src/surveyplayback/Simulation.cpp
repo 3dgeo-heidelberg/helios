@@ -64,7 +64,8 @@ void Simulation::shutdown(){
         std::unique_lock<std::mutex> lock(*mScanner->cycleMeasurementsMutex);
         (*callback)(
             *mScanner->cycleMeasurements,
-            *mScanner->cycleTrajectories
+            *mScanner->cycleTrajectories,
+            mScanner->detector->outputFilePath.string()
         );
     }
 }
@@ -148,7 +149,8 @@ void Simulation::start() {
                     *mScanner->cycleMeasurementsMutex);
                 (*callback)(
                     *mScanner->cycleMeasurements,
-                    *mScanner->cycleTrajectories
+                    *mScanner->cycleTrajectories,
+                    mScanner->detector->outputFilePath.string()
                 );
                 mScanner->cycleMeasurements->clear();
                 mScanner->cycleTrajectories->clear();

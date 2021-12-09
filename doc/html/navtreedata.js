@@ -24,20 +24,20 @@ var NAVTREEINDEX =
 [
 ".html",
 "d1/d2f/classpyhelios_1_1PyTrajectoryWrapper.html#a77f6367874d3f04490d597ac85d135ea",
-"d2/d51/classTriangle.html#ac79d935e56291b2e15b8caea406870c0",
-"d3/df0/classSerialSceneWrapper.html",
-"d4/dfd/classOscillatingMirrorBeamDeflector.html#af38ad1e69a823b19755385c1639c8e3e",
-"d5/dfb/classpyhelios_1_1PyMeasurementVectorWrapper.html#a6bae7fac1a44a14857b0250488eca8ab",
-"d6/da1/classSurveyPlayback.html#a716dc6f36c143116fa144bf00d906788",
-"d7/d84/classrigidmotion_1_1RigidMotion.html#aa388856994940d07795aff189ba61fa9",
-"d9/d22/classLadLut.html",
-"d9/ddf/classVoxelFileParser.html#a208b6a3c1161a4a2e40d382a77001f79",
-"db/d2e/classMeasurement.html#a3685fc6dff9547603c0ccab8dc05e118",
-"db/dc1/classSurfaceInspector_1_1maths_1_1functions_1_1GaussianFunction.html#a10d8903ba44f92ca17663200ce500867",
-"dc/da7/classScannerHead.html#af2f65dd5351a9d97c219012c3caf036d",
-"de/d74/classDynScene.html#a1f7bc6839a09b63d00d4cb4f1f749920",
-"df/d64/classLasSpecification.html#a4b5bae56cb202a761cc9f43d3012dba0",
-"functions_s.html"
+"d2/d51/classTriangle.html#abe34580bfc5992cebdfd1b078706e88f",
+"d3/dec/classMeasurementsBuffer.html#ae724179a2fe1328c4488e50026b7ff26",
+"d4/dfd/classOscillatingMirrorBeamDeflector.html#ae3d7f012303bf7d3647d638c8d167c9f",
+"d5/dfb/classpyhelios_1_1PyMeasurementVectorWrapper.html#a5542016d2f13ef7b721a3ec794bb6c41",
+"d6/da1/classSurveyPlayback.html#a709f9b2c869a95e9f304aae61776f486",
+"d7/d84/classrigidmotion_1_1RigidMotion.html#a9f6af528c327231f6ad4565fa9bef21faf91be9dc20587bb991abddccb9ad5a9b",
+"d9/d15/classWavefrontObjFileLoader.html#ad9e0004c857da9711ae8845c2bb6f659",
+"d9/ddf/classVoxelFileParser.html",
+"db/d2e/classMeasurement.html",
+"db/dab/MultiThreadSAHKDTreeFactory_8h_source.html",
+"dc/da7/classScannerHead.html#ab65d307a4d8da9c79bc3a9c4cbac1e05",
+"de/d6b/classLadLutLoader.html#afb8e01f6d005fd50198858b709ad86f6",
+"df/d64/classLasSpecification.html",
+"functions_p.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

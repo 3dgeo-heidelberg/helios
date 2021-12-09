@@ -11,12 +11,13 @@ var NAVTREEINDEX1 =
 "d1/d53/PyMeasurementWrapper_8h_source.html":[2,0,0,6,11],
 "d1/d5d/KDTreeNodeRoot_8h_source.html":[2,0,0,0,1,6],
 "d1/d65/classpyhelios_1_1PyHeliosOutputWrapper.html":[1,0,3,6],
-"d1/d65/classpyhelios_1_1PyHeliosOutputWrapper.html#a066cbe308f959266bebcd96ac32412e9":[1,0,3,6,0],
 "d1/d65/classpyhelios_1_1PyHeliosOutputWrapper.html#a14ee051f72f69d4442b2e58696c65d40":[1,0,3,6,4],
-"d1/d65/classpyhelios_1_1PyHeliosOutputWrapper.html#a8e3a1a210e06ea149a73d8c14ecdbbe0":[1,0,3,6,5],
+"d1/d65/classpyhelios_1_1PyHeliosOutputWrapper.html#a27a797a9155b4951a0e2a6ec7bb41db0":[1,0,3,6,1],
+"d1/d65/classpyhelios_1_1PyHeliosOutputWrapper.html#a52225aef7e8af6701902fe8da29da555":[1,0,3,6,5],
+"d1/d65/classpyhelios_1_1PyHeliosOutputWrapper.html#a8e3a1a210e06ea149a73d8c14ecdbbe0":[1,0,3,6,6],
 "d1/d65/classpyhelios_1_1PyHeliosOutputWrapper.html#a92ab33a9816cd4569cbb3684f8bc1d3d":[1,0,3,6,2],
-"d1/d65/classpyhelios_1_1PyHeliosOutputWrapper.html#a97105f4c9d16cda2554d1fd7b2d4598e":[1,0,3,6,1],
 "d1/d65/classpyhelios_1_1PyHeliosOutputWrapper.html#ad8418db702f158424562e0a381a15b06":[1,0,3,6,3],
+"d1/d65/classpyhelios_1_1PyHeliosOutputWrapper.html#afa16f6bfcf1a321fbd1d3818dc310f5f":[1,0,3,6,0],
 "d1/d6e/classPulseTask.html":[1,0,89],
 "d1/d6e/classPulseTask.html#a009338bde2ce110c5e89d1345ba5d9cd":[1,0,89,0],
 "d1/d6e/classPulseTask.html#a98af88f70ab5a66aeecb2cb07f43c469":[1,0,89,1],
@@ -248,6 +249,5 @@ var NAVTREEINDEX1 =
 "d2/d51/classTriangle.html#aa6acc25b95ca4eb4665943acbb383208":[1,0,136,28],
 "d2/d51/classTriangle.html#ab56f5c902a05c370f16bd73089ec535a":[1,0,136,30],
 "d2/d51/classTriangle.html#aba1a3a9d57fd3d95ca339adc097f8c03":[1,0,136,5],
-"d2/d51/classTriangle.html#abd161623d946fd47b624e9f95b0dcebc":[1,0,136,14],
-"d2/d51/classTriangle.html#abe34580bfc5992cebdfd1b078706e88f":[1,0,136,17]
+"d2/d51/classTriangle.html#abd161623d946fd47b624e9f95b0dcebc":[1,0,136,14]
 };

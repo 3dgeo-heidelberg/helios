@@ -1,5 +1,6 @@
 var NAVTREEINDEX2 =
 {
+"d2/d51/classTriangle.html#abe34580bfc5992cebdfd1b078706e88f":[1,0,136,17],
 "d2/d51/classTriangle.html#ac79d935e56291b2e15b8caea406870c0":[1,0,136,12],
 "d2/d51/classTriangle.html#ac98d07dd8f7b70e16ccb9a01abf56b9c":[1,0,136,23],
 "d2/d51/classTriangle.html#adcd9b0755ba20e03a9c47721ea71b26d":[1,0,136,9],
@@ -248,6 +249,5 @@ var NAVTREEINDEX2 =
 "d3/dec/classMeasurementsBuffer.html#a9124b91dc8e8e51ab9e374708981e005":[1,0,77,0],
 "d3/dec/classMeasurementsBuffer.html#a91670bcec522a4671bc373f5539dc683":[1,0,77,1],
 "d3/dec/classMeasurementsBuffer.html#a945b917dd5cfb885b4452a51bbfd16b3":[1,0,77,2],
-"d3/dec/classMeasurementsBuffer.html#ad1596f7cb3816be0b44f7d8f2eebceeb":[1,0,77,8],
-"d3/dec/classMeasurementsBuffer.html#ae724179a2fe1328c4488e50026b7ff26":[1,0,77,6]
+"d3/dec/classMeasurementsBuffer.html#ad1596f7cb3816be0b44f7d8f2eebceeb":[1,0,77,8]
 };

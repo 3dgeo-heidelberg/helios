@@ -1420,6 +1420,16 @@ BOOST_PYTHON_MODULE(pyhelios){
             &PyHeliosOutputWrapper::finished,
             &PyHeliosOutputWrapper::finished
         )
+        .add_property(
+            "outpath",
+            &PyHeliosOutputWrapper::outpath,
+            &PyHeliosOutputWrapper::outpath
+        )
+        .add_property(
+            "filepath",
+            &PyHeliosOutputWrapper::outpath,
+            &PyHeliosOutputWrapper::outpath
+        )
     ;
 
     // Register PySimulationCycleCallback
