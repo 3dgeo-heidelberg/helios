@@ -309,7 +309,7 @@ jobs:
          with:
            path: |
              ${{github.workspace}}/build
-           key: ${{ runner.os }}-helios-build-latest
+           key: ${{ runner.os }}-helios-build-latest-${CI_COMMIT_SHORT_SHA}
 
        - name: Load LasTools, Armadillo and GDAL from cache
          id: cache-lastools-armadillo-gdal
@@ -379,7 +379,7 @@ jobs:
             with:
               path: |
                 ${{github.workspace}}/build
-              key: ${{ runner.os }}-helios-build-latest
+              key: ${{ runner.os }}-helios-build-latest-${CI_COMMIT_SHORT_SHA}
 
           - name: Add libaries to LD_LIBRARY_PATH
             run: |
