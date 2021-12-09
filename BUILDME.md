@@ -215,34 +215,58 @@ from base Helios building which only requires C++11.
 
 ### Install on Windows
 
+> **Disclaimer: The manual is written asumming the compilation is done with Microsoft Visual Studio 20xx.** Use other compilers at your own risk. 
+
 To obtain the source just clone it from the repository
 ```
 git clone https://github.com/3dgeo-heidelberg/helios.git
 ```
 
+or download the source code for the desired Helios++ version from [here](https://github.com/3dgeo-heidelberg/helios/tags).
+You should know have a directory called `helios` containing the source files.
+
 #### Solving dependencies
 
+Helios++ depends on several libraries, which must be installed one by one.
+
+---
 ##### Boost C++
-First we need to download a version of Boost C++ library greater than or equal to 1.71 from https://www.boost.org/users/download/
 
-Then we need to unzip it inside the lib folder and rename it to boost.
-For windows we also need to download [zlib](https://www.zlib.net) and unzip it inside the boost folder.
-It can be obtained from https://www.zlib.net/zlib1211.zip
+###### Configuring the project
+First we need to download a version of Boost C++ library greater than or equal to 1.71:
+
+[Download Boost](https://www.boost.org/users/history/)
+
+Unzip it inside the `lib` folder and rename it to `boost`.
+
+We also need to download zlib and unzip it inside the `lib/boost` folder.
+
+[Download zlib](https://www.zlib.net/zlib1211.zip)
+
+Open a Command Prompt terminal in `lib/boost` and execute the following command:
+
+```bootstrap.bat```
 
 
-Now we must get into the lib/boost directory and execute following commands
+###### Compiling Boost
+If you are **not planning** to compile with Python Binding support, execute:
+
 ```
-bootstrap.bat
 b2.exe -j6 -sNO_ZLIB=0 -sZLIB_INCLUDE="zlib-1.2.11" -sZLIB_SOURCE="zlib-1.2.11" address-model=64 link=static
 ```
-**REMEMBER** to change the zlib version in above command if you download a different one
+**REMEMBER** to change the zlib version in above command if you downloaded a different one
 
+
+If you are **planning** to compile with Python Bindings support, Boost installation is not over.
+
+---
 ##### Boost C++ with python bindings
-Boost needs to be compiled with support for python if the `HELIOS++` `pyhelios` bindings
-should be compiled. The version of boost-python needs to be adapted to the targeted python version.
-To configure different versions, edit or create a file called `user-config.jam` in the *user home directory*, e.g. `C:\users\yourname\`.
+Boost needs to be compiled with support for Python to be able to use python bindings.
+The version of boost-python needs to be adapted to the targeted python version.
+To configure different versions, edit or create a file called `user-config.jam`
 
-Add the following lines to the file (adapting the paths to your python installations, the example is using [miniconda](https://docs.conda.io/en/latest/miniconda.html)):
+Add the following lines to the file (adapting the paths to your python installations, the example is using [miniconda](https://docs.conda.io/en/latest/miniconda.html).
+For demonstration purposes, several Python versions are included. You can pick just one and continue.
 ```
 using python 
    : 3.6
@@ -270,99 +294,89 @@ using python
    ;
 ```
 
+Save the file in the *user home directory*, e.g. `C:\users\yourname\`.
+If you want to use other location, add `--user-config=/path/to/user-config.jam` with your `user-config.jam` location to the `b2` command below.
 Then build **Boost C++** using the following command:
 
 ```
-bootstrap.bat
 b2.exe -j6 -sNO_ZLIB=0 -sZLIB_INCLUDE="zlib-1.2.11" -sZLIB_SOURCE="zlib-1.2.11" address-model=64 link=static python=3.6,3.7,3.8,3.9
 ```
 
-You can later decide which version to build `pyhelios` for, see [Compiling source](#compiling-source).
+- Remember to change the `zlib` version if you downloaded a different one.
+- Remember to adapt the Python version to the one you included in `user-config.jam`
 
+---
 ##### OpenGLM Mathematics
 Simply download the [OpenGLM mathematics library](https://github.com/g-truc/glm/tags)
-and unzip it inside the helios-plusplus lib folder. 
+and unzip it inside `helios/lib`. 
 
-Rename lib/glm-x.x.x.x/ to lib/glm/
+Rename `lib/glm-x.x.x.x/` to `lib/glm/`
 
-
+---
 ##### GDAL with PROJ
 
 First, we need to download GDAL compiled binaries and headers, and the 
-generic installer for the GDAL core components from https://www.gisinternals.com/release.php
+generic installer for the GDAL core components from [here](https://www.gisinternals.com/release.php)
 
 - Choose the appropriate option matching your compiler and architecture (MSVC2019, x64 for instance) for
-GDAL 3.x.x version. For example, "release-1928-x64-gdal-3-3-2-mapserver-7-6-4"
-- Download the files "release-1928-x64-gdal-3-3-2-mapserver-7-6-4-libs.zip" and
-"gdal-303-1928-x64-core.msi".
-- Create a folder named gdal inside the lib folder (lib/gdal) and extract the contents of the zip file there. lib/gdal/include and lib/gdal/lib must exist after the extraction.
-- Install the .msi file (By default, C:\Program Files\GDAL). Take note of the installation path.
-- Finally, rename the lib/gdal/include/boost folder to lib/gdal/include/boost-gdal to avoid
-conflicts when building helios++
+GDAL 3.x.x version. For example, `release-1928-x64-gdal-3-x-x-mapserver-7-6-4`
+- Download the files `release-1928-x64-gdal-3-x-x-mapserver-7-6-4-libs.zip` and
+`gdal-303-1928-x64-core.msi`.
+- Create a folder named gdal inside the lib folder (lib/gdal) and extract the contents of the zip file there. `lib/gdal/include` and `lib/gdal/lib` must exist after the extraction.
+- Install the .msi file (By default, `C:\Program Files\GDAL`). **Add the installation directory to your PATH**
+- Finally, rename the `lib/gdal/include/boost` folder to `lib/gdal/include/boost-gdal` to avoid conflicts when building helios++
 
+---
 ##### LAStools library
 
-We need to download [LAStools](https://rapidlasso.com/lastools/) and unzip it inside lib folder.
+###### Configuring the project <a name="CMake"></a>
+Download [LAStools](https://rapidlasso.com/lastools/) and unzip it inside lib folder.
 
-Using [CMakeGUI](https://cmake.org/download/) we can configure and generate the LAStools project.
+Using [CMakeGUI](https://cmake.org/download/) we can configure and generate the LAStools project. If you prefer the command line version,
+just execute `cmake .` inside `lib/LAStools` to generate the project. 
 
-Once the project is generated we can compile it using Visual Studio. Just remember to change the
-project mode to Release. If it built successfully we should have a lib file at lib/LAStools/LASlib/lib/Release/
-called LASlib.lib. In case you have used a compiler different than MSVC, you will need to manually place
-the LASlib.lib file at lib/LAStools/LASlib/lib/LASlib.lib or at lib/LAStools/LASlib/lib/Release/LASlib.lib.
+###### Compiling LASTools
+Once the project is generated we can compile it using Visual Studio. 
+Open `LASTools.sln`, change the project mode to *Release* and build. 
+If the build was successful, `lib/LAStools/LASlib/lib/Release/LASlib.lib` must exist.
+
+In case you have used a compiler different than MSVC, you will need to manually place
+the `LASlib.lib` file at `lib/LAStools/LASlib/lib/LASlib.lib` or at `lib/LAStools/LASlib/lib/Release/LASlib.lib`.
 Both locations are supported.
 
+---
 ##### Armadillo
 
 It is recommended to use Armadillo with high performance versions of BLAS and LAPACK.
-In consequence, here is exposed how to compile helios++ with Armadillo using Scilab x64,
+In consequence, here is exposed how to compile Helios++ with Armadillo using Scilab x64,
 which provides high performance implementations of BLAS and LAPACK.
 Of course, it is possible to use different implementations.
 
-First, we need to download and install [Scilab](https://www.scilab.org).
+###### Configuring the project
+
+- Scilab: First, download and install [Scilab](https://www.scilab.org).
 In this case we are going to use [Scilab 6.1.0 x64](https://www.scilab.org/download/6.1.0/scilab-6.1.0_x64.exe).
-By default, it is installed at C:\Program Files\scilab-6.1.0. Take note of the installation path.
-
+By default, it is installed at `C:\Program Files\scilab-6.1.0`. **Add the installation directory to your PATH**
+- Armadillo: 
 Now it is necessary to download [Armadillo](http://arma.sourceforge.net/download.html)
-and decompress it inside *lib/armadillo*.
+and decompress the source files inside *lib/armadillo*.
+In this case we are going to use [Armadillo 10.6.2](http://sourceforge.net/projects/arma/files/armadillo-10.6.2.tar.xz).
 
-Using [Armadillo 10.6.2](http://sourceforge.net/projects/arma/files/armadillo-10.6.2.tar.xz)
-or newer is recommended.
+###### Compiling Armadillo
 
 Once Armadillo has been decompressed it is time to use CMake to configurate and
-generate the project. Then, we need to open *armadillo.sln* with Microsoft
+generate the project like you did [here](#CMake). Then, we need to open `armadillo.sln` with Microsoft
 Visual Studio and compile it in RELEASE mode for x64 architecture.
+If the build was successful, `lib/armadillo/Release/armadillo.lib` must exist.
 
-Finally, we only need to link at helios project. In case of Microsoft Visual
-Studio this can be done in 2 easy steps at helios properties (accessible through
-right click on *helios* at solution explorer and then properties):
-1) At `Linker -> General` it is recommended to add path to the folder where
-scilab dll files are contained.
-For instance: *C:\Program Files\scilab-6.1.0\bin*
-2) At `Linker -> Input` it is necessary to add path to the folder where scilab
-lib files are contained.
-For instance: *C:\Program Files\scilab-6.1.0\bin*
+---
+##### Helios++
 
-<p>
-<b><span style="color:red;">/!\</span>
-WARNING
-<span style="color:red">/!\</span></b>
-Visual studio linking errors might occur. If it is your case, try explicitly
-binding both LAPACK and BLAS at the IDE itself:
-</p>
+###### Configuring the project
 
-```
-scilab-6.1.0/bin/lapack.lib
-scilab-6.1.0/bin/blasplus.lib
-```
+At the `helios` directory, generate the project as you did [here](#CMake).
 
-#### Compiling source
-
-To compile from windows is recommended to use [CMakeGUI](https://cmake.org/download/)
-
-From CMakeGUI specify the path to the helios-plusplus folder and then configure and generate the project.
-
-You can use certain flags together with CMakeGUI to configure the python bindings compilation:
+You can use certain flags together with CMake/CMakeGUI to configure the python bindings compilation:
 
 ```PYTHON_BINDING``` Set it to TRUE or 1 to compile with python bindings support. Set it to FALSE or 0 to ignore python bindings.
 
@@ -371,24 +385,46 @@ python version 37 is considered by default.
 
 ```PYTHON_PATH``` Use it if you need to specify the path to a python installation that is not the system default.
 
-It is also possible to specify the path to desired LAPACK library, so Armadillo will be linked with it:
-
 ```LAPACK_LIB``` Set here the path to custom LAPACK library.
 When specifying LAPACK_LIB it is not necessary to link it at Visual Studio IDE, since it will be already included.
 
 
-Once the project has been generated it can be compiled using visual studio code.
+For example, to compile Helios with Python Bindings support, using `python3.6` located in `D:\Miniconda3\envs\py36\python.exe`:
 
-**NOTICE** when building form visual studio code it is necessary to specify the release configuration,
-otherwise compilation will not work.
+```
+cmake -DCMAKE_BUILD_TYPE=Release -DPYTHON_BINDING=1 -DPYTHON_VERSION=36 -DPYTHON_PATH=D:\Miniconda3\envs\py36 .
+```
 
-#### How to execute
-To execute helios++ (helios.exe binary) it is necessary to have both GDAL dll and LAPACK dll in the path.
+Finally, we only need to link at helios project. Open `helios.sln`, right click on *helios* at solution explorer and then properties:
+1) At `Linker -> General -> Additional Library Directories` add the path to the folder where
+scilab "dll" files are contained.
+For instance: `C:\Program Files\scilab-6.1.0\bin`.
+2) At `Linker -> Input -> Additional Dependencies` it is necessary to add `lapack.lib` and `blasplus.lib` 
+For instance: `C:\Program Files\scilab-6.1.0\bin\lapack.lib` and `C:\Program Files\scilab-6.1.0\bin\blasplus.lib`
+
+Repeat this process for *pyhelios* at solution explorer.
+
+###### Compiling Helios
+
+Once the project is generated we can compile it using Visual Studio. Open `helios.sln`, change the project mode to *Release* and build.
+If the compilation was sucessful, the following files must exist in `helios/Release` directory:
+```
+ - helios.exe 
+ - helios.exp 
+ - helios.lib
+ - pyhelios.exp 
+ - pyhelios.lib
+ ```
+
+
+### How to execute
+To execute Helios++ (helios.exe binary) it is necessary to have both GDAL dll and LAPACK dll in the path. If you followed the instructions, they must be already included in the PATH.
 If you are using scilab you are going to need linking all scilab dll files.
-By default they are located inside the same directory. But if you have moved them to your own folders,
-remember to include them all.
+By default they are located inside the same directory. But if you have moved them to your own folders, remember to include them all.
 
 **By default, C:\Program Files\GDAL and C:\Program Files\scilab-6.1.0\bin must be added to the PATH.**
+
+**IMPORTANT: GDAL and SCiLab share the libcurl.dll dependency. It is mandatory GDAL uses its own libcurl.dll implementation. To achieve this, just be sure that the GDAL path is before the SCILAB path in the PATH. If you are planning to move the shared libraries to another location, be sure that the libcurl.dll version you use is the provided by the GDAL installation.**
 
 There are two ways to modify the PATH:
 
@@ -412,9 +448,10 @@ Or you can modify system variables, so changes will be applied for all users.
 Once you have decided where to make changes, just find the PATH variable and append
 at the end:
 ```
-;<path to gdall dll folder>;<path to lapack dll folder>
+;<path to gdal dll folder>;<path to lapack dll folder>
 ```
 
+---
 ## Usage
 Helios++ can be invoked with following syntax:
 
