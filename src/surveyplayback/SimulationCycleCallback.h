@@ -26,11 +26,13 @@ public:
      * @brief Callback functor which operates over vector of measurements
      * @param measurements Vector of measurements to operate over
      * @param trajectories Vector of trajectories to operate over
+     * @param outpath String representing the path to output file
      * @see Measurement
      * @see Trajectory
      */
     virtual void operator() (
         std::vector<Measurement> &measurements,
-        std::vector<Trajectory> &trajectories
+        std::vector<Trajectory> &trajectories,
+        std::string const &outpath
     ) = 0;
 };

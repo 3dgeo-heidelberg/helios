@@ -1,7 +1,7 @@
 var classpyhelios_1_1PyHeliosSimulation =
 [
     [ "PyHeliosSimulation", "d9/ddd/classpyhelios_1_1PyHeliosSimulation.html#a131f3db32f40820f76d90226ef85a0b2", null ],
-    [ "PyHeliosSimulation", "d9/ddd/classpyhelios_1_1PyHeliosSimulation.html#a22dd756a642d7acd0e51d54175bb175d", null ],
+    [ "PyHeliosSimulation", "d9/ddd/classpyhelios_1_1PyHeliosSimulation.html#ae1ca08924e97c3015125ea2d9597f814", null ],
     [ "~PyHeliosSimulation", "d9/ddd/classpyhelios_1_1PyHeliosSimulation.html#ada1cb7fc9789223287464f3381c911a8", null ],
     [ "addRotateFilter", "d9/ddd/classpyhelios_1_1PyHeliosSimulation.html#a3e374382bd562c461e570920a3beb20b", null ],
     [ "addScaleFilter", "d9/ddd/classpyhelios_1_1PyHeliosSimulation.html#ab4c7d96e405e05d5777e63c7be08aebb", null ],
@@ -26,6 +26,7 @@ var classpyhelios_1_1PyHeliosSimulation =
     [ "getSimFrequency", "d9/ddd/classpyhelios_1_1PyHeliosSimulation.html#ad5ee96243b70a96892a4b5ec9779171c", null ],
     [ "getSurvey", "d9/ddd/classpyhelios_1_1PyHeliosSimulation.html#aba5bdcd1700b55d8a111051c3aea1fda", null ],
     [ "getSurveyPath", "d9/ddd/classpyhelios_1_1PyHeliosSimulation.html#a55e60f239777a1a0e4bacb59070da425", null ],
+    [ "getWarehouseFactor", "d9/ddd/classpyhelios_1_1PyHeliosSimulation.html#a560ac4836e9ef452a425ccaf2f41ba36", null ],
     [ "getZipOutput", "d9/ddd/classpyhelios_1_1PyHeliosSimulation.html#a63aefdfbf8bdb68dbbc47c3096cd4273", null ],
     [ "isFinished", "d9/ddd/classpyhelios_1_1PyHeliosSimulation.html#a5e672e3392cbba32f8182fab64924894", null ],
     [ "isPaused", "d9/ddd/classpyhelios_1_1PyHeliosSimulation.html#a91f7acd4e4f3b81072624830b5e5dbfd", null ],
@@ -48,6 +49,7 @@ var classpyhelios_1_1PyHeliosSimulation =
     [ "setNumThreads", "d9/ddd/classpyhelios_1_1PyHeliosSimulation.html#ae272290ff315852519932adae3711623", null ],
     [ "setParallelizationStrategy", "d9/ddd/classpyhelios_1_1PyHeliosSimulation.html#a7e316047ab7d6868c876aa60367a2830", null ],
     [ "setSimFrequency", "d9/ddd/classpyhelios_1_1PyHeliosSimulation.html#a69a1c4f084d63ad2f47c9d66de1bdfac", null ],
+    [ "setWarehouseFactor", "d9/ddd/classpyhelios_1_1PyHeliosSimulation.html#aa76943340d55014ffba11a363ea0da3e", null ],
     [ "setZipOutput", "d9/ddd/classpyhelios_1_1PyHeliosSimulation.html#ae490a1ad1ee124bf23f75e226f6ce5a7", null ],
     [ "start", "d9/ddd/classpyhelios_1_1PyHeliosSimulation.html#aa2716558523a01740748f5b5c8c13f87", null ],
     [ "stop", "d9/ddd/classpyhelios_1_1PyHeliosSimulation.html#ac5caa892758a92dd8d93bf3aed9aa94f", null ],
@@ -74,6 +76,7 @@ var classpyhelios_1_1PyHeliosSimulation =
     [ "survey", "d9/ddd/classpyhelios_1_1PyHeliosSimulation.html#ac67e768cfa9547aac26ae53cbfbc7c0a", null ],
     [ "surveyPath", "d9/ddd/classpyhelios_1_1PyHeliosSimulation.html#a144f3dd8bf98163b32d8317cec32d8ad", null ],
     [ "thread", "d9/ddd/classpyhelios_1_1PyHeliosSimulation.html#a0009393b2828a2517a4c2dd1f17ab856", null ],
+    [ "warehouseFactor", "d9/ddd/classpyhelios_1_1PyHeliosSimulation.html#ac6059adf5139130fd77aa08a39c981ea", null ],
     [ "xmlreader", "d9/ddd/classpyhelios_1_1PyHeliosSimulation.html#a04c66a5f7177892eb3789a39810f17d3", null ],
     [ "zipOutput", "d9/ddd/classpyhelios_1_1PyHeliosSimulation.html#adf131a4ad580e278365f4060f9bac1d2", null ]
 ];

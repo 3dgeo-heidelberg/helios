@@ -1,5 +1,6 @@
 var NAVTREEINDEX3 =
 {
+"d3/dec/classMeasurementsBuffer.html#ae724179a2fe1328c4488e50026b7ff26":[1,0,77,6],
 "d3/df0/classSerialSceneWrapper.html":[1,0,114],
 "d3/df0/classSerialSceneWrapper.html#a015d5ee8fccaf6cc4232085db9ee12e3":[1,0,114,3],
 "d3/df0/classSerialSceneWrapper.html#a3401c761f58f59c395f6650181e36b80":[1,0,114,8],
@@ -248,6 +249,5 @@ var NAVTREEINDEX3 =
 "d4/dfd/classOscillatingMirrorBeamDeflector.html#ac3501b1f508ea293148d6e7c0df0c722":[1,0,83,9],
 "d4/dfd/classOscillatingMirrorBeamDeflector.html#ac7902f3b583968ff0c4b9c37d8379e36":[1,0,83,14],
 "d4/dfd/classOscillatingMirrorBeamDeflector.html#ad626ac7c0e7d09236d9107d1fa338499":[1,0,83,15],
-"d4/dfd/classOscillatingMirrorBeamDeflector.html#ad874586cc9bac70f8a341db3731fd9f4":[1,0,83,2],
-"d4/dfd/classOscillatingMirrorBeamDeflector.html#ae3d7f012303bf7d3647d638c8d167c9f":[1,0,83,12]
+"d4/dfd/classOscillatingMirrorBeamDeflector.html#ad874586cc9bac70f8a341db3731fd9f4":[1,0,83,2]
 };

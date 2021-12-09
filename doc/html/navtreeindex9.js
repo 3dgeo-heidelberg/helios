@@ -1,5 +1,9 @@
 var NAVTREEINDEX9 =
 {
+"d9/ddf/classVoxelFileParser.html":[1,0,143],
+"d9/ddf/classVoxelFileParser.html#a08f8426398c5b71b60420ad49ee8c963":[1,0,143,12],
+"d9/ddf/classVoxelFileParser.html#a139e8e3bdf5386ad6860c0e155dc2cb4":[1,0,143,8],
+"d9/ddf/classVoxelFileParser.html#a13c71e781e0774f00d00e4d1743370fb":[1,0,143,3],
 "d9/ddf/classVoxelFileParser.html#a208b6a3c1161a4a2e40d382a77001f79":[1,0,143,7],
 "d9/ddf/classVoxelFileParser.html#a4e54fd2f7e08b7b04125ee66ee431aa4":[1,0,143,5],
 "d9/ddf/classVoxelFileParser.html#a6014db45cda99f1fa078a68b4c8edad6":[1,0,143,9],
@@ -245,9 +249,5 @@ var NAVTREEINDEX9 =
 "db/d0f/SurveyPlayback_8h_source.html":[2,0,0,10,4],
 "db/d11/serial_8h_source.html":[2,0,0,12,1,0],
 "db/d14/LidarSim_8h_source.html":[2,0,0,15],
-"db/d2a/TranslateFilter_8h_source.html":[2,0,0,1,0,5],
-"db/d2e/classMeasurement.html":[1,0,76],
-"db/d2e/classMeasurement.html#a016165802eb3e886f35bab0ba1849c68":[1,0,76,3],
-"db/d2e/classMeasurement.html#a07c6e9ca3067967a6c609530bc55373e":[1,0,76,13],
-"db/d2e/classMeasurement.html#a303164a152fa5ba6f7f6a0a536a0e4b4":[1,0,76,10]
+"db/d2a/TranslateFilter_8h_source.html":[2,0,0,1,0,5]
 };
