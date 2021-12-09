@@ -390,3 +390,9 @@ jobs:
 
           - name: Run pytest
             run: python -m pytest ${{github.workspace}}/pytests/test_demo_scenes.py
+
+          - name: Save output files
+            uses: actions/upload-artifact@v2
+            with:
+              name: ${{ runner.os}}-helios-pytests-output
+              path: ${{github.workspace}}/output/*

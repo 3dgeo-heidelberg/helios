@@ -4,6 +4,8 @@ import subprocess
 from pathlib import Path
 import sys
 
+MAX_DIFFERENCE_BYTES = 1024
+DELETE_FILES_AFTER = False
 HELIOS_EXE = str(Path('build') / 'helios')
 if sys.platform == "win32":
     HELIOS_EXE += ".exe"
@@ -64,14 +66,14 @@ def test_arbaro_tls_pyh():
 
 def eval_arbaro_tls(dirname):
     assert (dirname / 'leg000_points.las').exists()
-    assert abs((dirname / 'leg000_points.las').stat().st_size - 18_628_011) < 32
+    assert abs((dirname / 'leg000_points.las').stat().st_size - 18_628_011) < MAX_DIFFERENCE_BYTES
     assert (dirname / 'leg001_points.las').exists()
-    assert abs((dirname / 'leg001_points.las').stat().st_size - 12_152_115) < 32
+    assert abs((dirname / 'leg001_points.las').stat().st_size - 12_152_115) < MAX_DIFFERENCE_BYTES
     with open(dirname / 'leg000_trajectory.txt', 'r') as f:
         line = f.readline()
         assert line.startswith('1.0000 25.5000 0.0000')
     # clean up
-    shutil.rmtree(dirname)
+    if DELETE_FILES_AFTER: shutil.rmtree(dirname)
 
 def test_tiffloader_als_exe():
     dirname_exe = run_helios_executable(Path('data') / 'test' / 'als_hd_demo_tiff_min.xml',
@@ -84,15 +86,15 @@ def test_tiffloader_als_pyh():
 
 def eval_tiffloader_als(dirname):
     assert (dirname / 'leg000_points.las').exists()
-    assert abs((dirname / 'leg000_points.las').stat().st_size - 109_197) < 32
+    assert abs((dirname / 'leg000_points.las').stat().st_size - 109_197) < MAX_DIFFERENCE_BYTES
     assert (dirname / 'leg001_points.las').exists()
-    assert abs((dirname / 'leg001_points.las').stat().st_size - 109_197) < 32
+    assert abs((dirname / 'leg001_points.las').stat().st_size - 109_197) < MAX_DIFFERENCE_BYTES
     with open(dirname / 'leg000_trajectory.txt', 'r') as f:
         line = f.readline()
         line = f.readline()
         assert line.startswith('474500.7510 5474500.0000 1500.0000')
     # clean up
-    shutil.rmtree(dirname)
+    if DELETE_FILES_AFTER: shutil.rmtree(dirname)
 
 def test_detailedVoxels_uls_exe():
     dirname_exe = run_helios_executable(Path('data') / 'test' / 'uls_detailedVoxels_mode_comparison_min.xml',
@@ -105,9 +107,9 @@ def test_detailedVoxels_uls_pyh():
 
 def eval_detailedVoxels_uls(dirname):
     assert (dirname / 'leg000_points.las').exists()
-    assert abs((dirname / 'leg000_points.las').stat().st_size - 419_589) < 32
+    assert abs((dirname / 'leg000_points.las').stat().st_size - 419_589) < MAX_DIFFERENCE_BYTES
     assert (dirname / 'leg000_trajectory.txt').exists()
-    assert abs((dirname / 'leg000_trajectory.txt').stat().st_size - 1_250) < 32
+    assert abs((dirname / 'leg000_trajectory.txt').stat().st_size - 1_250) < MAX_DIFFERENCE_BYTES
     with open(dirname / 'leg000_trajectory.txt', 'r') as f:
         line = f.readline()
         line = f.readline()
@@ -118,7 +120,7 @@ def eval_detailedVoxels_uls(dirname):
         line = f.readline()
         assert line.startswith('-3.0000 -1.2741 50.0000')
     # clean up
-    shutil.rmtree(dirname)
+    if DELETE_FILES_AFTER: shutil.rmtree(dirname)
 
 def test_xyzVoxels_tls_exe():
     dirname_exe = run_helios_executable(Path('data') / 'surveys' / 'voxels' / 'tls_sphere_xyzloader_rgb_normals.xml',
@@ -131,6 +133,6 @@ def test_xyzVoxels_tls_pyh():
 
 def eval_xyzVoxels_tls(dirname):
     assert (dirname / 'leg000_points.las').exists()
-    assert abs((dirname / 'leg000_points.las').stat().st_size - 16_937_811) < 32
+    assert abs((dirname / 'leg000_points.las').stat().st_size - 16_937_811) < MAX_DIFFERENCE_BYTES
     # clean up
-    shutil.rmtree(dirname)
+    if DELETE_FILES_AFTER: shutil.rmtree(dirname)
