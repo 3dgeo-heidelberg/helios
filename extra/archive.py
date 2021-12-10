@@ -28,7 +28,7 @@ import itertools
 import warnings
 
 WORKING_DIR = str(Path(__file__).parent.parent.absolute())
-HELIOS_VERSION_LATEST = "1.0.9"
+HELIOS_DOI = "https://doi.org/10.5281/zenodo.4452870"
 
 
 class Simulation:
@@ -118,6 +118,22 @@ def get_version_number(helios_executable):
     return helios_run.stdout[idx1:idx2]
 
 
+def get_latest_helios_version():
+    try:
+        resp = urlopen(HELIOS_DOI)
+        search_text = 'Version '
+        end_text = ' '
+        html_content = str(resp.read())
+        idx = html_content.find(search_text) + len(search_text)
+        idx_end = html_content.find(end_text, idx)
+        latest_version = html_content[idx:idx_end]
+    except HTTPError or URLError:
+        warnings.warn("Zenodo DOI not available.")
+        latest_version = '1.1.0'
+
+    return latest_version
+
+
 if __name__ == '__main__':
 
     HELIOS_EXE = Path(sys.argv[1])
@@ -131,9 +147,9 @@ if __name__ == '__main__':
     allowed_suffixes = ['.zip', '.7z', '.rar', '.gz', '.tar']
     if len(set(allowed_suffixes).intersection(outfile.suffixes)) == 0:
         outfile = outfile.with_suffix('.zip')
+    helios_version_latest = get_latest_helios_version()
 
     try:
-
         import pyhelios
 
         helios_version = str(pyhelios.getVersion())
@@ -143,7 +159,7 @@ if __name__ == '__main__':
             helios_version = get_version_number(str(HELIOS_EXE))
         except FileNotFoundError:
             print("No HELIOS++ executable found. Using the latest.")
-            helios_version = HELIOS_VERSION_LATEST
+            helios_version = helios_version_latest
     print(f'HELIOS++ version is {helios_version}')
 
     print('Writing data')
@@ -226,27 +242,17 @@ if __name__ == '__main__':
             zipurl = 'https://github.com/3dgeo-heidelberg/helios/releases/download/v' + helios_version \
                      + '/helios-plusplus-lin.tar.gz'
 
-    release_url = 'https://github.com/3dgeo-heidelberg/helios/releases/tag/v' + helios_version
-    try:
-        resp = urlopen(release_url)
-        search_text = 'https://doi.org/'
-        end_text = '"'
-        content = str(resp.read())
-        idx = content.find(search_text)
-        idx_end = content.find(end_text, idx)
-        doi = content[idx:idx_end]
-        helios_doi_version = helios_version
-    except HTTPError or URLError as e:
-        warnings.warn("No release available for your HELIOS++ version. Writing latest DOI to version.txt.")
-        doi = 'https://zenodo.org/record/5564935#.YbHu873MJaQ'
-        helios_doi_version = '1.0.9'
-
     if zipurl is not None:
         try:
             zipresp = urlopen(zipurl)
         except HTTPError or URLError:
             warnings.warn("No release available for your HELIOS++ version. Downloading latest release from GitHub.")
-            zipurl = 'https://github.com/3dgeo-heidelberg/helios/releases/download/v1.0.9/helios-plusplus-win.zip'
+            if platform.system() == 'Windows':
+                zipurl = f'https://github.com/3dgeo-heidelberg/helios/releases/download/v{helios_version_latest}/' \
+                         f'helios-plusplus-win.zip'
+            elif platform.system() == 'Linux':
+                zipurl = f'https://github.com/3dgeo-heidelberg/helios/releases/download/v{helios_version_latest}/' \
+                         f'helios-plusplus-lin.tar.gz'
             zipresp = urlopen(zipurl)
 
         temp_dir = Path(WORKING_DIR) / 'tmp'
@@ -265,7 +271,7 @@ if __name__ == '__main__':
         rmtree(temp_dir.absolute())
 
     print('Writing version.txt')
-    outzip.writestr('version.txt', f'v{helios_version}\nDOI: {doi} (v{helios_doi_version})')
+    outzip.writestr('version.txt', f'v{helios_version}\nDOI: {HELIOS_DOI}')
 
     outzip.close()
     print(f'Your HELIOS++ archive has been written to {outfile.absolute()}')
