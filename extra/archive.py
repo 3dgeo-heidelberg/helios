@@ -33,7 +33,13 @@ HELIOS_DOI = "https://doi.org/10.5281/zenodo.4452870"
 
 class Simulation:
     """
+    Class for a simulation.
 
+    When initiated with a survey XML file, the survey content and paths to other referenced files (platform, scanner,
+    scene) are retrieved.
+    With the **get_sceneparts()** method, the file paths to all scene parts used in the referenced scene file are
+    obtained and stored in lists.
+    This way, the class can be used to retrieve all files necessary to reproduce a given survey.
     """
 
     def __init__(self, survey_file):
