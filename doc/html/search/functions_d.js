@@ -16,6 +16,7 @@ var searchData=
   ['makekdtreefactory',['makeKDTreeFactory',['../db/d91/classXmlSceneLoader.html#ad38181fad7a99fe5c4a4178fd32e9139',1,'XmlSceneLoader']]],
   ['makenormalcounterpart',['makeNormalCounterpart',['../d6/d4f/classDynMotion.html#a62cfddd790dcd3e46cd73bf099089b1d',1,'DynMotion']]],
   ['makenormalcounterpartptr',['makeNormalCounterpartPtr',['../d6/d4f/classDynMotion.html#a0f5bd51dcce3fac001f42e6e16148a9d',1,'DynMotion']]],
+  ['makepulsethreadpool',['makePulseThreadPool',['../d5/d85/classPulseThreadPoolFactory.html#afd5bfcacb14e3a3ae7033123f5981f0f',1,'PulseThreadPoolFactory']]],
   ['makepulsewarehousethreadpool',['makePulseWarehouseThreadPool',['../d5/d85/classPulseThreadPoolFactory.html#a4198944ce18861076709d394306bae08',1,'PulseThreadPoolFactory']]],
   ['makequiet',['makeQuiet',['../d0/da9/logging_8hpp.html#a692b6f848d37bbe59a72573a8573d6ed',1,'logging']]],
   ['makereflection',['makeReflection',['../d7/da7/classrigidmotion_1_1RigidMotionR2Factory.html#afdf3da31cd903dccd04747e7b47ccb67',1,'rigidmotion::RigidMotionR2Factory::makeReflection(colvec const axis) const'],['../d7/da7/classrigidmotion_1_1RigidMotionR2Factory.html#a665b6141e94a3691d994938235f536c1',1,'rigidmotion::RigidMotionR2Factory::makeReflection(double const theta) const'],['../dc/df6/classrigidmotion_1_1RigidMotionR3Factory.html#a5b8df22c8e498e77d3d25430ed8c667a',1,'rigidmotion::RigidMotionR3Factory::makeReflection()']]],

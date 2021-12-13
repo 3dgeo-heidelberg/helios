@@ -1,5 +1,6 @@
 var NAVTREEINDEX4 =
 {
+"d4/dfd/classOscillatingMirrorBeamDeflector.html#ae3d7f012303bf7d3647d638c8d167c9f":[1,0,83,12],
 "d4/dfd/classOscillatingMirrorBeamDeflector.html#af38ad1e69a823b19755385c1639c8e3e":[1,0,83,7],
 "d5/d00/PyIntegerList_8h_source.html":[2,0,0,6,9],
 "d5/d04/LinearPathPlatform_8h_source.html":[2,0,0,5,2],
@@ -248,6 +249,5 @@ var NAVTREEINDEX4 =
 "d5/df8/PyBeamDeflectorWrapper_8h_source.html":[2,0,0,6,1],
 "d5/dfb/classpyhelios_1_1PyMeasurementVectorWrapper.html":[1,0,3,10],
 "d5/dfb/classpyhelios_1_1PyMeasurementVectorWrapper.html#a34fae8e02bf17fc4925db51132d19a70":[1,0,3,10,5],
-"d5/dfb/classpyhelios_1_1PyMeasurementVectorWrapper.html#a414e5bcfaadeeb1467a7335ce357356c":[1,0,3,10,4],
-"d5/dfb/classpyhelios_1_1PyMeasurementVectorWrapper.html#a5542016d2f13ef7b721a3ec794bb6c41":[1,0,3,10,2]
+"d5/dfb/classpyhelios_1_1PyMeasurementVectorWrapper.html#a414e5bcfaadeeb1467a7335ce357356c":[1,0,3,10,4]
 };

@@ -106,8 +106,8 @@ Public Member Functions</h2></td></tr>
 &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d85/classPulseThreadPoolFactory.html#addaff725cb37481a1403ace079dbde5c">PulseThreadPoolFactory</a> (int const <a class="el" href="../../d5/d85/classPulseThreadPoolFactory.html#ad2101aee4e9e186496090e7289047f8a">parallelizationStrategy</a>, std::size_t const <a class="el" href="../../d5/d85/classPulseThreadPoolFactory.html#acf5f023cd79a96c0548b5ab2575179b8">poolSize</a>, double const <a class="el" href="../../d5/d85/classPulseThreadPoolFactory.html#ad3b6655d9c042c686d130332856994cc">deviceAccuracy</a>, int const <a class="el" href="../../d5/d85/classPulseThreadPoolFactory.html#a0e42482c402117ddd733a299520de4a3">chunkSize</a>, int const <a class="el" href="../../d5/d85/classPulseThreadPoolFactory.html#a328402cd797f263e6a7f92c24e991232">warehouseFactor</a>=1)</td></tr>
 <tr class="memdesc:addaff725cb37481a1403ace079dbde5c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor. <br /></td></tr>
 <tr class="separator:addaff725cb37481a1403ace079dbde5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afd5bfcacb14e3a3ae7033123f5981f0f"><td class="memItemLeft" align="right" valign="top"><a id="afd5bfcacb14e3a3ae7033123f5981f0f"></a>
-std::shared_ptr&lt; <a class="el" href="../../df/d9c/classPulseThreadPoolInterface.html">PulseThreadPoolInterface</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>makePulseThreadPool</b> ()</td></tr>
+<tr class="memitem:afd5bfcacb14e3a3ae7033123f5981f0f"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="../../df/d9c/classPulseThreadPoolInterface.html">PulseThreadPoolInterface</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d85/classPulseThreadPoolFactory.html#afd5bfcacb14e3a3ae7033123f5981f0f">makePulseThreadPool</a> ()</td></tr>
+<tr class="memdesc:afd5bfcacb14e3a3ae7033123f5981f0f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Build the pulse thread pool corresponding with current factory configuration/state.  <a href="#afd5bfcacb14e3a3ae7033123f5981f0f">More...</a><br /></td></tr>
 <tr class="separator:afd5bfcacb14e3a3ae7033123f5981f0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa22efeb4ac4decb4cc932b0a6c1812fa"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="../../d6/ddc/classPulseThreadPool.html">PulseThreadPool</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d85/classPulseThreadPoolFactory.html#aa22efeb4ac4decb4cc932b0a6c1812fa">makeBasicPulseThreadPool</a> () const</td></tr>
 <tr class="memdesc:aa22efeb4ac4decb4cc932b0a6c1812fa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Build a basic pulse thread pool.  <a href="#aa22efeb4ac4decb4cc932b0a6c1812fa">More...</a><br /></td></tr>
@@ -170,6 +170,34 @@ Protected Attributes</h2></td></tr>
 <p>Build a basic pulse thread pool. </p>
 <dl class="section return"><dt>Returns</dt><dd>Built basic pulse thread pool </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d6/ddc/classPulseThreadPool.html" title="Class implementing a thread pool to deal with pulse tasks. ">PulseThreadPool</a> </dd></dl>
+
+</div>
+</div>
+<a id="afd5bfcacb14e3a3ae7033123f5981f0f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afd5bfcacb14e3a3ae7033123f5981f0f">&#9670;&nbsp;</a></span>makePulseThreadPool()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::shared_ptr&lt;<a class="el" href="../../df/d9c/classPulseThreadPoolInterface.html">PulseThreadPoolInterface</a>&gt; PulseThreadPoolFactory::makePulseThreadPool </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Build the pulse thread pool corresponding with current factory configuration/state. </p>
+<dl class="section return"><dt>Returns</dt><dd>Built pulse thread pool </dd></dl>
 
 </div>
 </div>

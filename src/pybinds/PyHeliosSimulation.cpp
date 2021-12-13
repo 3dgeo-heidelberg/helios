@@ -88,6 +88,7 @@ void PyHeliosSimulation::start (){
     survey->scanner->detector->zipOutput = zipOutput;
 
     buildPulseThreadPool();
+    std::cout << "SurveyPlayback built with outputpath:\n'"<<outputPath<<"'"<<std::endl;  // TODO Remove
     playback = std::shared_ptr<SurveyPlayback>(
         new SurveyPlayback(
             survey,
@@ -182,6 +183,7 @@ PyHeliosOutputWrapper * PyHeliosSimulation::join(){
             return new PyHeliosOutputWrapper(
                 measurements,
                 trajectories,
+                survey->scanner->detector->outputFilePath.string(),
                 false
             );
         }
@@ -190,6 +192,7 @@ PyHeliosOutputWrapper * PyHeliosSimulation::join(){
             return new PyHeliosOutputWrapper(
                 survey->scanner->allMeasurements,
                 survey->scanner->allTrajectories,
+                survey->scanner->detector->outputFilePath.string(),
                 true
             );
         }
@@ -204,6 +207,7 @@ PyHeliosOutputWrapper * PyHeliosSimulation::join(){
     return new PyHeliosOutputWrapper(
         survey->scanner->allMeasurements,
         survey->scanner->allTrajectories,
+        survey->scanner->detector->outputFilePath.string(),
         true
     );
 }
