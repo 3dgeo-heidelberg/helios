@@ -4,7 +4,7 @@ ADD_EXECUTABLE(helios ${sources} AppIcon.rc)
 
 # HANDLE PYTHON BINDING
 if(PYTHON_BINDING)
-    set(PYTHON_TARGET_LINK ${PYTHON_LIBRARIES})
+    set(PYTHON_TARGET_LINK ${Python3_LIBRARIES})
     if(WIN32)
         ADD_LIBRARY(pyhelios SHARED ${sources} ${pysources})
         set_target_properties(pyhelios PROPERTIES SUFFIX ".pyd")
