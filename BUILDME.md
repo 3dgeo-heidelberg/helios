@@ -144,7 +144,10 @@ If you are using a custom Python installation, we must provide GDAL its executab
 
 #### PyHelios Dependencies
 
+- ```apt install libgl1-mesa-dev```
 - ```pip3 install open3d```
+
+Note: The PyHelios scripts can be executed which whatever version of Python3 you want to use.
 
 ### Helios project configuration and compilation
 
