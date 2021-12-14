@@ -85,6 +85,7 @@ all the libraries must be built from scratch:
 
 #### Armadillo
 
+- ```apt install liblapack-dev```
 - ```cd helios/lib```
 - ```wget -O armadillo.tar.xz http://sourceforge.net/projects/arma/files/armadillo-10.6.2.tar.xz && tar xf armadillo.tar.xz```
 - ```mv armadillo-10.6.2 armadillo && cd armadillo```
