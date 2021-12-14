@@ -114,6 +114,7 @@ When building from source, it is mandatory to rename the GLM directory to lib/gl
 
 The linkage against Boost libraries can be performed both statically and dynamically.
 
+- ```apt install zlib1g```
 - ```wget https://boostorg.jfrog.io/artifactory/main/release/1.76.0/source/boost_1_76_0.tar.gz```
 - ```tar -xzvf boost_1_76_0.tar.gz```
 - ```mv boost_1_76_0 boost && cd boost```
@@ -128,7 +129,7 @@ IMPORTANT: Remove completely any previous existing Boost installation before con
 - ```./b2 install```
 
 #### GDAL
-- ```apt install zlib1g pkg-config libsqlite3-dev sqlite3 libtiff5-dev libcurl4-openssl-dev```
+- ```apt install pkg-config libsqlite3-dev sqlite3 libtiff5-dev libcurl4-openssl-dev```
 - ```wget http://download.osgeo.org/proj/proj-8.0.0.tar.gz https://github.com/OSGeo/gdal/releases/download/v3.3.0/gdal-3.3.0.tar.gz --no-check-certificate```
 - ```tar -xzvf proj-8.0.0.tar.gz && tar -xzvf gdal-3.3.0.tar.gz```
 - ```mv gdal-3.3.0 gdal && mv proj-8.0.0 proj```
