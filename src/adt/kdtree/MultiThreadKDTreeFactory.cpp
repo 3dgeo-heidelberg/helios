@@ -34,6 +34,9 @@ MultiThreadKDTreeFactory::MultiThreadKDTreeFactory(
 KDTreeNodeRoot * MultiThreadKDTreeFactory::makeFromPrimitivesUnsafe(
     vector<Primitive *> &primitives
 ){
+    // Update max geometry depth
+    maxGeometryDepth = (int) std::floor(std::log2(tp.getPoolSize()+1.0));
+
     // Build the KDTree using a modifiable copy of primitives pointers vector
     KDTreeNodeRoot *root = (KDTreeNodeRoot *) kdtf->buildRecursive(
         nullptr,        // Parent node
@@ -70,6 +73,27 @@ KDTreeNode * MultiThreadKDTreeFactory::buildRecursive(
     vector<Primitive*> &primitives,
     int const depth
 ) {
+    if(depth <= maxGeometryDepth)
+        return buildRecursiveGeometryLevel(parent, left, primitives, depth);
+    return buildRecursiveNodeLevel(parent, left, primitives, depth);
+}
+
+KDTreeNode * MultiThreadKDTreeFactory::buildRecursiveGeometryLevel(
+    KDTreeNode *parent,
+    bool const left,
+    vector<Primitive*> &primitives,
+    int const depth
+){
+    // TODO Rethink : Implement geometry level building
+    return buildRecursiveNodeLevel(parent, left, primitives, depth);
+}
+
+KDTreeNode * MultiThreadKDTreeFactory::buildRecursiveNodeLevel(
+    KDTreeNode *parent,
+    bool const left,
+    vector<Primitive*> &primitives,
+    int const depth
+){
     bool posted = false;
     KDTreeBuildType *data = nullptr;
     if(primitives.size() >= minTaskPrimitives){
@@ -108,4 +132,5 @@ KDTreeNode * MultiThreadKDTreeFactory::buildRecursive(
         delete data; // Release data, it will not be used at all
         return this->kdtf->buildRecursive(parent, left, primitives, depth);
     }
+
 }
