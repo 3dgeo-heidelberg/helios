@@ -394,7 +394,7 @@ for DF in DFS:
         color='black',
         lw=1,
         ls='-',
-        label='Simulation speed-up'
+        label='Total speed-up'
     )
     configure_plot(ax, axx=axx)
 
@@ -449,7 +449,7 @@ for DF in DFS:
         color='black',
         lw=1,
         ls='-',
-        label='Simulation speed-up'
+        label='Total speed-up'
     )
     configure_plot(ax, axx=axx)
 

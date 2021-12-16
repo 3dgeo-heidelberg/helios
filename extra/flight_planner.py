@@ -54,6 +54,7 @@ def compute_flight_length(waypoints):
     curr_point = waypoints[-1]
     for point in waypoints[::-1]:
         distance += np.sqrt((curr_point[0] - point[0]) ** 2 + (curr_point[1] - point[1]) ** 2)
+        distance += np.sqrt((curr_point[0] - point[0])**2 + (curr_point[1] - point[1])**2)
         curr_point = point
 
     return distance
@@ -175,7 +176,7 @@ def export_for_xml(waypoints, altitude, id, speed,
     :param trajectory_time_interval: time interval [s] in which trajectory points are written; default: 0.05
     :param always_active: flag to specify if the scanner should be always active of alternating between active and
                             inactive (boolean: True or False); default: False
-    :type waypoints: array or ndarray
+    :type waypoints: tuple
     :type altitude: float
     :type id: str
     :type speed: float
@@ -213,8 +214,8 @@ def add_transformation_filters(translation: list = None,
 
     :param translation: list of translations in x-, y- and z-direction; [t_x, t_y, t_z]
     :param rotation: list of rotations around the x-, y- and z-axes; [rot_x, rot_y, rot_z]
-    :param scale: value by which to scale the scene part
-    :param on_ground: flag to specify whether the scene part should be translated to the ground
+    :param scale: value by which to scale the scenepart
+    :param on_ground: flag to specifiy whether the scenepart should be translated to the ground
                     0  = no ground translation
                     -1 = find optimal ground translation
                     1  = find quick ground translation
@@ -293,8 +294,7 @@ def create_scenepart_tiff(filepath: str, trafofilter: str = "",
     :type trafofilter: str
     :type matfile: str
     :param matname: name of the material to use
-
-    :return: scene part
+    :return: scenepart
     :rtype: str
     """
     scenepart = f"""
@@ -397,6 +397,7 @@ def build_scene(scene_id, name, sceneparts=None):
     :type sceneparts: list[*str]
 
     :return: scene XML content
+    :return: scene XML content (string)
     :rtype: str
     """
     sceneparts = "\n".join(sceneparts)

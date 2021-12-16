@@ -105,9 +105,9 @@ Collaboration diagram for pyhelios::PyHeliosSimulation:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a22dd756a642d7acd0e51d54175bb175d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/ddd/classpyhelios_1_1PyHeliosSimulation.html#a22dd756a642d7acd0e51d54175bb175d">PyHeliosSimulation</a> (std::string surveyPath, std::string assetsPath=&quot;assets/&quot;, std::string outputPath=&quot;output/&quot;, size_t numThreads=0, bool lasOutput=false, bool las10=false, bool zipOutput=false, int kdtFactory=4, size_t kdtJobs=0, size_t kdtSAHLossNodes=32, int parallelizationStrategy=1, int chunkSize=32)</td></tr>
-<tr class="memdesc:a22dd756a642d7acd0e51d54175bb175d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Build a <a class="el" href="../../d9/ddd/classpyhelios_1_1PyHeliosSimulation.html">PyHeliosSimulation</a> instance.  <a href="#a22dd756a642d7acd0e51d54175bb175d">More...</a><br /></td></tr>
-<tr class="separator:a22dd756a642d7acd0e51d54175bb175d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae1ca08924e97c3015125ea2d9597f814"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/ddd/classpyhelios_1_1PyHeliosSimulation.html#ae1ca08924e97c3015125ea2d9597f814">PyHeliosSimulation</a> (std::string surveyPath, std::string assetsPath=&quot;assets/&quot;, std::string outputPath=&quot;output/&quot;, size_t numThreads=0, bool lasOutput=false, bool las10=false, bool zipOutput=false, int kdtFactory=4, size_t kdtJobs=0, size_t kdtSAHLossNodes=32, int parallelizationStrategy=1, int chunkSize=32, int warehouseFactor=1)</td></tr>
+<tr class="memdesc:ae1ca08924e97c3015125ea2d9597f814"><td class="mdescLeft">&#160;</td><td class="mdescRight">Build a <a class="el" href="../../d9/ddd/classpyhelios_1_1PyHeliosSimulation.html">PyHeliosSimulation</a> instance.  <a href="#ae1ca08924e97c3015125ea2d9597f814">More...</a><br /></td></tr>
+<tr class="separator:ae1ca08924e97c3015125ea2d9597f814"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a19162c9ce6e4c5945e1b34c06f68b6e1"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/ddd/classpyhelios_1_1PyHeliosSimulation.html#a19162c9ce6e4c5945e1b34c06f68b6e1">isStarted</a> ()</td></tr>
 <tr class="memdesc:a19162c9ce6e4c5945e1b34c06f68b6e1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if the simulation has been started or not.  <a href="#a19162c9ce6e4c5945e1b34c06f68b6e1">More...</a><br /></td></tr>
 <tr class="separator:a19162c9ce6e4c5945e1b34c06f68b6e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -223,6 +223,12 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>getChunkSize</b> ()</t
 <tr class="memitem:a9617e14dccc0bf0370c24511d0c94226"><td class="memItemLeft" align="right" valign="top"><a id="a9617e14dccc0bf0370c24511d0c94226"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>setChunkSize</b> (int chunkSize)</td></tr>
 <tr class="separator:a9617e14dccc0bf0370c24511d0c94226"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a560ac4836e9ef452a425ccaf2f41ba36"><td class="memItemLeft" align="right" valign="top"><a id="a560ac4836e9ef452a425ccaf2f41ba36"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>getWarehouseFactor</b> ()</td></tr>
+<tr class="separator:a560ac4836e9ef452a425ccaf2f41ba36"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa76943340d55014ffba11a363ea0da3e"><td class="memItemLeft" align="right" valign="top"><a id="aa76943340d55014ffba11a363ea0da3e"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setWarehouseFactor</b> (int warehouseFactor)</td></tr>
+<tr class="separator:aa76943340d55014ffba11a363ea0da3e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa2716558523a01740748f5b5c8c13f87"><td class="memItemLeft" align="right" valign="top"><a id="aa2716558523a01740748f5b5c8c13f87"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/ddd/classpyhelios_1_1PyHeliosSimulation.html#aa2716558523a01740748f5b5c8c13f87">start</a> ()</td></tr>
 <tr class="memdesc:aa2716558523a01740748f5b5c8c13f87"><td class="mdescLeft">&#160;</td><td class="mdescRight">Start the simulation if possible. Otherwise, <a class="el" href="../../d8/d98/classpyhelios_1_1PyHeliosException.html">PyHeliosException</a> will be thrown. <br /></td></tr>
@@ -342,14 +348,17 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>parallelizationStrateg
 <tr class="memitem:a1a51c5d8c44a829bf86cb73ba26266f2"><td class="memItemLeft" align="right" valign="top"><a id="a1a51c5d8c44a829bf86cb73ba26266f2"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>chunkSize</b> = 32</td></tr>
 <tr class="separator:a1a51c5d8c44a829bf86cb73ba26266f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac6059adf5139130fd77aa08a39c981ea"><td class="memItemLeft" align="right" valign="top"><a id="ac6059adf5139130fd77aa08a39c981ea"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>warehouseFactor</b> = 1</td></tr>
+<tr class="separator:ac6059adf5139130fd77aa08a39c981ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><dl class="section author"><dt>Author</dt><dd>Alberto M. Esmoris Pena </dd></dl>
 <dl class="section version"><dt>Version</dt><dd>1.0</dd></dl>
 <p>Helios++ simulation wrapped to be used from Python </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a22dd756a642d7acd0e51d54175bb175d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a22dd756a642d7acd0e51d54175bb175d">&#9670;&nbsp;</a></span>PyHeliosSimulation()</h2>
+<a id="ae1ca08924e97c3015125ea2d9597f814"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae1ca08924e97c3015125ea2d9597f814">&#9670;&nbsp;</a></span>PyHeliosSimulation()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -424,7 +433,13 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>chunkSize</b> = 32</td
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>chunkSize</em> = <code>32</code>&#160;</td>
+          <td class="paramname"><em>chunkSize</em> = <code>32</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>warehouseFactor</em> = <code>1</code>&#160;</td>
         </tr>
         <tr>
           <td></td>

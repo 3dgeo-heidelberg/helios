@@ -73,6 +73,7 @@ class SimulationBuilder:
     def makeDefault(self):
         self.setNumThreads(0)
         self.setLasOutput(False)
+        self.setLas10(False)
         self.setZipOutput(False)
         self.setKDTFactory(4)
         self.setKDTJobs(0)
@@ -83,9 +84,9 @@ class SimulationBuilder:
         self.setSimFrequency(0)
         self.setFinalOutput(True)
         self.setLegNoiseDisabled(True)
-        self.setRebuildScene(True)
-        self.setWriteWaveform(True)
-        self.setCalcEchowdith(True)
+        self.setRebuildScene(False)
+        self.setWriteWaveform(False)
+        self.setCalcEchowidth(False)
         self.setFullwaveNoise(False)
         self.setPlatformNoiseDisabled(True)
         self.setExportToFile(True)
@@ -225,7 +226,7 @@ class SimulationBuilder:
         self.validateBoolean(writeWaveform)
         self.writeWaveform = writeWaveform
 
-    def setCalcEchowdith(self, calcEchowidth):
+    def setCalcEchowidth(self, calcEchowidth):
         self.validateBoolean(calcEchowidth)
         self.calcEchowidth = calcEchowidth
 
