@@ -54,6 +54,7 @@ protected:
         KDTreeNode *,
         bool const,
         vector<Primitive *> &,
+        int const,
         int const
     )> _buildRecursive;
 
@@ -106,13 +107,25 @@ protected:
      * @param primitives Primitives to build KDTree splitting them
      * @param depth Current depth at build process. Useful for tracking
      *  recursion level
+     * @param index The node index inside current depth. Each node can be
+     *  univocally identified by the ordered pair \f$(d, i)\f$ where \f$d\f$
+     *  stands for the depth level and \f$i\f$ for the index. The root node
+     *  is identified by \f$(0, 0)\f$. Any left child node will be
+     *  \f$(d+1, 2i)\f$ and any right child node will be \f$(d+1, 2i+1)\f$,
+     *  where \f$d\f$ and \f$i\f$ are the depth and index for the parent node.
+     *  In consequence, all left nodes will have an even index while all right
+     *  nodes will have an odd one. However, notice that for performance
+     *  reasons it could preferable to check the left flag argument, as it is
+     *  faster than checking if index is even or odd.
      * @return Built KDTree node
      */
     virtual KDTreeNode * buildRecursive(
         KDTreeNode *parent,
         bool const left,
         vector<Primitive*> &primitives,
-        int const depth
+        int const depth,
+        int const index
+
     ) ;
     /**
      * @brief Analyze KDTree computing its max depth and the minimum and
@@ -199,6 +212,7 @@ protected:
         KDTreeNode *parent,
         vector<Primitive *> const &primitives,
         int const depth,
+        int const index,
         vector<Primitive *> &leftPrimitives,
         vector<Primitive *> &rightPrimitives
     );

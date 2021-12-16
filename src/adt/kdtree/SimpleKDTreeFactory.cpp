@@ -21,9 +21,12 @@ SimpleKDTreeFactory::SimpleKDTreeFactory() : minSplitPrimitives(5) {
             KDTreeNode *parent,
             bool const left,
             vector<Primitive *> &primitives,
-            int const depth
+            int const depth,
+            int const index
         ) -> KDTreeNode * {
-            return this->buildRecursive(parent, left, primitives, depth);
+            return this->buildRecursive(
+                parent, left, primitives, depth, index
+            );
         }
     ;
 }
@@ -38,7 +41,8 @@ KDTreeNodeRoot* SimpleKDTreeFactory::makeFromPrimitivesUnsafe(
         nullptr,        // Parent node
         false,          // Node is not left child, because it is root not child
         primitives,     // Primitives to be contained inside the KDTree
-        0               // Starting depth level (must be 0 for root node)
+        0,              // Starting depth level (must be 0 for root node)
+        0               // Starting index at depth 0 (must be 0 for root node)
     );
     if(root == nullptr){
         /*
@@ -64,7 +68,8 @@ KDTreeNode * SimpleKDTreeFactory::buildRecursive(
     KDTreeNode *parent,
     bool const left,
     vector<Primitive*> &primitives,
-    int const depth
+    int const depth,
+    int const index
 ) {
     // If there are no primitives, then KDTree will be null
     if(primitives.empty()) return nullptr;
@@ -94,6 +99,7 @@ KDTreeNode * SimpleKDTreeFactory::buildRecursive(
         parent,
         primitives,
         depth,
+        index,
         leftPrimitives,
         rightPrimitives
     );
@@ -194,6 +200,7 @@ void SimpleKDTreeFactory::buildChildrenNodes(
     KDTreeNode *parent,
     vector<Primitive *> const &primitives,
     int const depth,
+    int const index,
     vector<Primitive *> &leftPrimitives,
     vector<Primitive *> &rightPrimitives
 ){
@@ -205,12 +212,12 @@ void SimpleKDTreeFactory::buildChildrenNodes(
     ){ // If there are primitives on both partitions, binary split the node
         if(!leftPrimitives.empty()){
             setChild(node->left, _buildRecursive(
-                node, true, leftPrimitives, depth + 1
+                node, true, leftPrimitives, depth + 1, 2*index
             ));
         }
         if(!rightPrimitives.empty()){
             setChild(node->right, _buildRecursive(
-                node, false, rightPrimitives, depth + 1
+                node, false, rightPrimitives, depth + 1, 2*index + 1
             ));
         }
     }

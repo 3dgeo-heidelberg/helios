@@ -1,5 +1,8 @@
 #include <MultiThreadKDTreeFactory.h>
 #include <KDTreeBuildType.h>
+#include <surfaceinspector/maths/Scalar.hpp>
+
+using SurfaceInspector::maths::Scalar;
 
 // ***  CONSTRUCTION / DESTRUCTION  *** //
 // ************************************ //
@@ -9,7 +12,7 @@ MultiThreadKDTreeFactory::MultiThreadKDTreeFactory(
 ) :
     SimpleKDTreeFactory(),
     kdtf(kdtf),
-    tp(numJobs),
+    tpNode(numJobs),
     minTaskPrimitives(32)
 {
     /*
@@ -21,9 +24,12 @@ MultiThreadKDTreeFactory::MultiThreadKDTreeFactory(
             KDTreeNode *parent,
             bool const left,
             vector<Primitive *> &primitives,
-            int const depth
+            int const depth,
+            int const index
         ) -> KDTreeNode * {
-            return this->buildRecursive(parent, left, primitives, depth);
+            return this->buildRecursive(
+                parent, left, primitives, depth, index
+            );
         }
     ;
     kdtf->_buildRecursive = _buildRecursive;
@@ -35,16 +41,17 @@ KDTreeNodeRoot * MultiThreadKDTreeFactory::makeFromPrimitivesUnsafe(
     vector<Primitive *> &primitives
 ){
     // Update max geometry depth
-    maxGeometryDepth = (int) std::floor(std::log2(tp.getPoolSize()+1.0));
+    maxGeometryDepth = (int) std::floor(std::log2(tpNode.getPoolSize()+1.0));
 
     // Build the KDTree using a modifiable copy of primitives pointers vector
     KDTreeNodeRoot *root = (KDTreeNodeRoot *) kdtf->buildRecursive(
         nullptr,        // Parent node
         false,          // Node is not left child, because it is root not child
         primitives,     // Primitives to be contained inside the KDTree
-        0               // Starting depth level (must be 0 for root node)
+        0,              // Starting depth level (must be 0 for root node)
+        0               // Starting index at depth 0 (must be 0 for root node)
     );
-    tp.join();
+    tpNode.join();
     if(root == nullptr){
         /*
          * NOTICE building a null KDTree is not necessarily a bug.
@@ -71,28 +78,44 @@ KDTreeNode * MultiThreadKDTreeFactory::buildRecursive(
     KDTreeNode *parent,
     bool const left,
     vector<Primitive*> &primitives,
-    int const depth
-) {
+    int const depth,
+    int const index
+){
     if(depth <= maxGeometryDepth)
-        return buildRecursiveGeometryLevel(parent, left, primitives, depth);
-    return buildRecursiveNodeLevel(parent, left, primitives, depth);
+        return buildRecursiveGeometryLevel(
+            parent, left, primitives, depth, index
+        );
+    return buildRecursiveNodeLevel(parent, left, primitives, depth, index);
 }
 
 KDTreeNode * MultiThreadKDTreeFactory::buildRecursiveGeometryLevel(
     KDTreeNode *parent,
     bool const left,
     vector<Primitive*> &primitives,
-    int const depth
+    int const depth,
+    int const index
 ){
+    // Compute work distribution strategy definition
+    int const k = 0; // TODO Rethink : Replace by total number of threads
+    int const maxSplits = Scalar<int>::pow2(depth);
+    int const alpha = (int) std::floor(k/maxSplits);
+    int const beta = k % maxSplits;
+    bool const excess = index < (maxSplits - beta);
+    int const a = (excess) ? index*alpha : index*(alpha+1) - maxSplits + beta;
+    int const b = (excess) ?
+        alpha*(index+1) - 1 :
+        index*(alpha+1) - maxSplits + beta + alpha;
+
     // TODO Rethink : Implement geometry level building
-    return buildRecursiveNodeLevel(parent, left, primitives, depth);
+    return buildRecursiveNodeLevel(parent, left, primitives, depth, index);
 }
 
 KDTreeNode * MultiThreadKDTreeFactory::buildRecursiveNodeLevel(
     KDTreeNode *parent,
     bool const left,
     vector<Primitive*> &primitives,
-    int const depth
+    int const depth,
+    int const index
 ){
     bool posted = false;
     KDTreeBuildType *data = nullptr;
@@ -103,7 +126,7 @@ KDTreeNode * MultiThreadKDTreeFactory::buildRecursiveNodeLevel(
             primitives,
             depth
         );
-        posted = tp.try_run_md_task(
+        posted = tpNode.try_run_md_task(
             [&] (
                 KDTreeNode *parent,
                 bool const left,
@@ -112,12 +135,12 @@ KDTreeNode * MultiThreadKDTreeFactory::buildRecursiveNodeLevel(
             ) ->  void {
                 if(left){
                     parent->left = this->kdtf->buildRecursive(
-                        parent, left, primitives, depth
+                        parent, left, primitives, depth, 2*index
                     );
                 }
                 else{
                     parent->right = this->kdtf->buildRecursive(
-                        parent, left, primitives, depth
+                        parent, left, primitives, depth, 2*index+1
                     );
                 }
             },
@@ -130,7 +153,9 @@ KDTreeNode * MultiThreadKDTreeFactory::buildRecursiveNodeLevel(
     }
     else{ // Continue execution on current thread
         delete data; // Release data, it will not be used at all
-        return this->kdtf->buildRecursive(parent, left, primitives, depth);
+        return this->kdtf->buildRecursive(
+            parent, left, primitives, depth, 2*index+(left ? 0:1)
+        );
     }
 
 }

@@ -391,6 +391,7 @@ public:
         KDTreeNode *parent,
         vector<Primitive *> const &primitives,
         int const depth,
+        int const index,
         vector<Primitive *> &leftPrimitives,
         vector<Primitive *> &rightPrimitives
     ) override;

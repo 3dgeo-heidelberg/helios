@@ -12,6 +12,21 @@ using std::shared_ptr;
  *
  * @brief Decorator for any KDTree factory which provides support for multi
  *  thread KDTree building
+ *
+ * When combining geometry-level and node-level parallel building strategies,
+ *  both thread pools are assumed to support the same max number of threads.
+ *  To better understand this, let \f$\Phi(t)\f$ be the number of currently
+ *  available threads for the geometry-level thread pool at time \f$t\f$ while
+ *  \f$\Psi(t)\f$ denotes the number of currently available threads for the
+ *  node-level thread pool at time \f$t\f$.
+ * Now, if the maximum number of threads is \f$k\f$, at the beginning it
+ *  would be \f$\Phi(t)=k\f$ and \f$\Psi(t)=0\f$. Once all geometry-level
+ *  splits have been done, then \f$\Phi(t)=0\f$ and \f$\Psi(t)=k\f$. At the
+ *  last depth for geometry-level strategy, always that a split is finished
+ *  involved threads will go from geometry-level thread pool to node-level
+ *  thread pool. At any time, geometry-level and node-level thread pools are
+ *  related by following expresion \f$\Psi(t) = k - \Phi(t)\f$.
+ *
  */
 class MultiThreadKDTreeFactory : public SimpleKDTreeFactory{
 private:
@@ -35,7 +50,8 @@ private:
         ar &boost::serialization::base_object<SimpleKDTreeFactory>(*this);
         ar &kdtf;
         ar &minTaskPrimitives;
-        //ar &tp; // No need to serialize because default built one is used
+        //ar &tpGeom; // No need to serialize because default built one is used
+        //ar &tpNode; // No need to serialize because default built one is used
     }
 
 protected:
@@ -47,9 +63,14 @@ protected:
     shared_ptr<SimpleKDTreeFactory> kdtf;
     /**
      * @brief The thread pool to handle concurrency during recursive KDTree
-     *  building
+     *  buildint at geometry-level
      */
-    KDTreeFactoryThreadPool tp;
+    KDTreeFactoryThreadPool tpGeom;
+    /**
+     * @brief The thread pool to handle concurrency during recursive KDTree
+     *  building at node-level
+     */
+    KDTreeFactoryThreadPool tpNode;
     /**
      * @brief The minimum number of primitives on a given split so a new
      *  task is started to handle them
@@ -106,6 +127,16 @@ protected:
      * @param primitives Primitives to build KDTree splitting them
      * @param depth Current depth at build process. Useful for tracking
      *  recursion level
+     * @param index The node index inside current depth. Each node can be
+     *  univocally identified by the ordered pair \f$(d, i)\f$ where \f$d\f$
+     *  stands for the depth level and \f$i\f$ for the index. The root node
+     *  is identified by \f$(0, 0)\f$. Any left child node will be
+     *  \f$(d+1, 2i)\f$ and any right child node will be \f$(d+1, 2i+1)\f$,
+     *  where \f$d\f$ and \f$i\f$ are the depth and index for the parent node.
+     *  In consequence, all left nodes will have an even index while all right
+     *  nodes will have an odd one. However, notice that for performance
+     *  reasons it could preferable to check the left flag argument, as it is
+     *  faster than checking if index is even or odd.
      * @return Built KDTree node
      * @see MultiThreadKDTreeFactory::buildRecursiveGeometryLevel
      * @see MultiThreadKDTreeFactory::buildRecursiveNodeLevel
@@ -116,7 +147,8 @@ protected:
         KDTreeNode *parent,
         bool const left,
         vector<Primitive*> &primitives,
-        int const depth
+        int const depth,
+        int const index
     ) override;
     /**
      * @brief Recursively build a KDTree for given primitives using given
@@ -212,7 +244,8 @@ protected:
         KDTreeNode *parent,
         bool const left,
         vector<Primitive*> &primitives,
-        int const depth
+        int const depth,
+        int const index
     );
     /**
      * @brief Recursively build a KDTree for given primitives using given
@@ -240,7 +273,8 @@ protected:
         KDTreeNode *parent,
         bool const left,
         vector<Primitive*> &primitives,
-        int const depth
+        int const depth,
+        int const index
     );
     /**
      * @brief Call the compute KDTree stats method of decorated KDTree factory
@@ -272,5 +306,5 @@ public:
      * @return Pool size of the thread pool (num jobs)
      */
     virtual inline size_t getPoolSize() const
-    {return tp.getPoolSize();}
+    {return tpNode.getPoolSize();}
 };

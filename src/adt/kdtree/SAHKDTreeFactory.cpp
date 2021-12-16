@@ -25,9 +25,12 @@ SAHKDTreeFactory::SAHKDTreeFactory (
             KDTreeNode *parent,
             bool const left,
             vector<Primitive *> &primitives,
-            int const depth
+            int const depth,
+            int const index
         ) -> KDTreeNode * {
-            return this->buildRecursive(parent, left, primitives, depth);
+            return this->buildRecursive(
+                parent, left, primitives, depth, index
+            );
         }
     ;
     _lockILOT = [] () -> void {return;};
@@ -77,6 +80,7 @@ void SAHKDTreeFactory::buildChildrenNodes(
     KDTreeNode *parent,
     vector<Primitive *> const &primitives,
     int const depth,
+    int const index,
     vector<Primitive *> &leftPrimitives,
     vector<Primitive *> &rightPrimitives
 ) {
@@ -100,12 +104,12 @@ void SAHKDTreeFactory::buildChildrenNodes(
             _unlockILOT(); // Unlock ILOT cache
             if(!leftPrimitives.empty()){ // Build left child
                 setChild(node->left, _buildRecursive(
-                    node, true, leftPrimitives, depth + 1
+                    node, true, leftPrimitives, depth + 1, 2*index + 1
                 ));
             }
             if(!rightPrimitives.empty()){ // Build right child
                 setChild(node->right, _buildRecursive(
-                    node, false, rightPrimitives, depth + 1
+                    node, false, rightPrimitives, depth + 1, 2*index + 1
                 ));
             }
         }
