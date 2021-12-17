@@ -2,6 +2,9 @@
 # -*- coding: utf-8 -*-
 
 import sys
+from pathlib import Path
+sys.path.append(str(Path(__file__).parent.parent))
+
 from pyhelios import pyhelios_argparser
 from pyhelios.pyh_obj import *
 
