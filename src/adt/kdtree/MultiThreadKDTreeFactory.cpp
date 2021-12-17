@@ -12,7 +12,8 @@ MultiThreadKDTreeFactory::MultiThreadKDTreeFactory(
 ) :
     SimpleKDTreeFactory(),
     kdtf(kdtf),
-    tpNode(numJobs),
+    tpGeom(numJobs),
+    tpNode(0),
     minTaskPrimitives(32)
 {
     /*
@@ -105,6 +106,16 @@ KDTreeNode * MultiThreadKDTreeFactory::buildRecursiveGeometryLevel(
     int const b = (excess) ?
         alpha*(index+1) - 1 :
         index*(alpha+1) - maxSplits + beta + alpha;
+    int const assignedThreads = b-a;
+
+    // Geometry-level parallel processing
+
+    // Post-processing
+    if(depth == maxGeometryDepth){
+        // Move assigned threads from geometry thread pool to node thread pool
+        tpGeom.setAvailable(tpGeom.getAvailable()-assignedThreads);
+        tpNode.setAvailable(tpNode.getAvailable()+assignedThreads);
+    }
 
     // TODO Rethink : Implement geometry level building
     return buildRecursiveNodeLevel(parent, left, primitives, depth, index);
@@ -124,14 +135,16 @@ KDTreeNode * MultiThreadKDTreeFactory::buildRecursiveNodeLevel(
             parent,
             left,
             primitives,
-            depth
+            depth,
+            index
         );
         posted = tpNode.try_run_md_task(
             [&] (
                 KDTreeNode *parent,
                 bool const left,
                 vector<Primitive*> &primitives,
-                int const depth
+                int const depth,
+                int const index
             ) ->  void {
                 if(left){
                     parent->left = this->kdtf->buildRecursive(

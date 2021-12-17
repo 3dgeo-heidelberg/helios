@@ -3,6 +3,8 @@
 #include <KDTreePrimitiveComparator.h>
 #include <IBinaryTreeNode.h>
 #include <BinaryTreeDepthIterator.h>
+#include <SharedTaskSequencer.h>
+#include <SimpleKDTreePopulateSplitsSubTask.h>
 
 // ***  CONSTRUCTION / DESTRUCTION  *** //
 // ************************************ //
@@ -290,4 +292,55 @@ void SimpleKDTreeFactory::computeNodeBoundaries(
             node->bound = AABB(ax, ay, az, bx, by, bz);
         }
     }
+}
+
+// ***  GEOMETRY LEVEL BUILDING  *** //
+// ********************************* //
+void SimpleKDTreeFactory::GEOM_populateSplits(
+    vector<Primitive *> const &primitives,
+    int const splitAxis,
+    double const splitPos,
+    vector<Primitive *> &leftPrimitives,
+    vector<Primitive *> &rightPrimitives,
+    int const startThreadIdx,
+    int const endThreadIdx,
+    int const assignedThreads
+) const {
+    // Distribute workload
+    size_t const numPrimitives = primitives.size();
+    size_t const chunkSize = numPrimitives / ((size_t)assignedThreads);
+    vector<vector<Primitive *>> leftPrims(assignedThreads);
+    vector<vector<Primitive *>> rightPrims(assignedThreads);
+    std::shared_ptr<SharedTaskSequencer> stSequencer = \
+        std::make_shared<SharedTaskSequencer>(assignedThreads);
+    for(int i = 0 ; i <= assignedThreads ; i++){
+        stSequencer->start(std::make_shared<SimpleKDTreePopulateSplitsSubTask>(
+            stSequencer,
+            primitives,
+            splitAxis,
+            splitPos,
+            leftPrims[i],
+            rightPrims[i],
+            i*numPrimitives,
+            (i < assignedThreads) ? (i+1)*numPrimitives : primitives.size()
+        ));
+    }
+
+    // Wait until workload has been consumed
+    stSequencer->joinAll();
+
+    // Reduce left and right primitives into single vector
+    for(int i = 0 ; i <= assignedThreads ; i++){
+        leftPrimitives.insert(
+            leftPrimitives.end(),
+            leftPrims[i].begin(),
+            leftPrims[i].end()
+        );
+        rightPrimitives.insert(
+            rightPrimitives.end(),
+            rightPrims[i].begin(),
+            rightPrims[i].end()
+        );
+    }
+
 }

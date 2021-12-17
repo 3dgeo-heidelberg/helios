@@ -2,6 +2,8 @@
 
 #include <SimpleKDTreeFactory.h>
 #include <KDTreeFactoryThreadPool.h>
+#include <SharedTaskSequencer.h>
+
 #include <boost/thread.hpp>
 
 using std::shared_ptr;
@@ -14,17 +16,17 @@ using std::shared_ptr;
  *  thread KDTree building
  *
  * When combining geometry-level and node-level parallel building strategies,
- *  both thread pools are assumed to support the same max number of threads.
+ *  both are assumed to support the same max number of threads.
  *  To better understand this, let \f$\Phi(t)\f$ be the number of currently
- *  available threads for the geometry-level thread pool at time \f$t\f$ while
+ *  available threads for the geometry-level strategy at time \f$t\f$ while
  *  \f$\Psi(t)\f$ denotes the number of currently available threads for the
  *  node-level thread pool at time \f$t\f$.
  * Now, if the maximum number of threads is \f$k\f$, at the beginning it
  *  would be \f$\Phi(t)=k\f$ and \f$\Psi(t)=0\f$. Once all geometry-level
  *  splits have been done, then \f$\Phi(t)=0\f$ and \f$\Psi(t)=k\f$. At the
  *  last depth for geometry-level strategy, always that a split is finished
- *  involved threads will go from geometry-level thread pool to node-level
- *  thread pool. At any time, geometry-level and node-level thread pools are
+ *  involved threads will go from geometry-level mode to node-level
+ *  thread pool. At any time, threads for geometry-level and node-level are
  *  related by following expresion \f$\Psi(t) = k - \Phi(t)\f$.
  *
  */

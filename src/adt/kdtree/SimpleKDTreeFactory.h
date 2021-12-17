@@ -280,4 +280,21 @@ protected:
         vector<Primitive *> const &primitives
     ) const;
 
+    // ***  GEOMETRY LEVEL BUILDING  *** //
+    // ********************************* //
+    /**
+     * @brief Geometry-level parallel version of the
+     *  SimpleKDTreeFactory::populateSplits function
+     * @see SimpleKDTreeFactory::populateSplits
+     */
+    virtual void GEOM_populateSplits(
+        vector<Primitive *> const &primitives,
+        int const splitAxis,
+        double const splitPos,
+        vector<Primitive *> &leftPrimitives,
+        vector<Primitive *> &rightPrimitives,
+        int const startThreadIdx,
+        int const endThreadIdx,
+        int const assignedThreads
+    ) const;
 };
