@@ -1,0 +1,102 @@
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:simpleType name="axisType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="x"/>
+            <xs:enumeration value="y"/>
+            <xs:enumeration value="z"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="rotType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="global"/>
+            <xs:enumeration value="local"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="opticsType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="rotating"/>
+            <xs:enumeration value="line"/>
+            <xs:enumeration value="oscillating"/>
+            <xs:enumeration value="conic"/>
+            <xs:enumeration value="risley"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:element name="document">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="scanner" maxOccurs="unbounded" minOccurs="1">
+                    <xs:complexType mixed="true">
+                        <xs:sequence>
+                            <xs:element name="FWFSettings" minOccurs="0">
+                                <xs:complexType>
+                                    <xs:simpleContent>
+                                        <xs:extension base="xs:string">
+                                            <xs:attribute type="xs:int" name="beamSampleQuality"/>
+                                            <xs:attribute type="xs:float" name="binSize_ns"/>
+                                            <xs:attribute type="xs:float" name="maxFullwaveRange_ns"/>
+                                            <xs:attribute type="xs:float" name="winSize_ns"/>
+                                        </xs:extension>
+                                    </xs:simpleContent>
+                                </xs:complexType>
+                            </xs:element>
+                            <xs:element name="beamOrigin" minOccurs="0">
+                                <xs:complexType>
+                                    <xs:choice maxOccurs="unbounded" minOccurs="0">
+                                        <xs:element name="rot">
+                                            <xs:complexType>
+                                                <xs:simpleContent>
+                                                    <xs:extension base="xs:string">
+                                                        <xs:attribute type="axisType" name="axis" use="optional"/>
+                                                        <xs:attribute type="xs:float" name="angle_deg" use="optional"/>
+                                                    </xs:extension>
+                                                </xs:simpleContent>
+                                            </xs:complexType>
+                                        </xs:element>
+                                    </xs:choice>
+                                    <xs:attribute type="xs:float" name="x" use="optional"/>
+                                    <xs:attribute type="xs:float" name="y" use="optional"/>
+                                    <xs:attribute type="xs:float" name="z" use="optional"/>
+                                    <xs:attribute type="rotType" name="rotations" use="optional"/>
+                                </xs:complexType>
+                            </xs:element>
+                            <xs:element name="headRotateAxis" minOccurs="0">
+                                <xs:complexType>
+                                    <xs:simpleContent>
+                                        <xs:extension base="xs:string">
+                                            <xs:attribute type="xs:float" name="x" use="optional"/>
+                                            <xs:attribute type="xs:float" name="y" use="optional"/>
+                                            <xs:attribute type="xs:float" name="z" use="optional"/>
+                                        </xs:extension>
+                                    </xs:simpleContent>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                        <xs:attribute type="xs:string" name="id" use="required"/>
+                        <xs:attribute type="xs:float" name="accuracy_m" use="optional"/>
+                        <xs:attribute type="xs:float" name="beamDivergence_rad" use="optional"/>
+                        <xs:attribute type="xs:string" name="name" use="optional"/>
+                        <xs:attribute type="opticsType" name="optics" use="required"/>
+                        <xs:attribute type="xs:string" name="pulseFreqs_Hz" use="optional"/>
+                        <xs:attribute type="xs:float" name="pulseLength_ns" use="optional"/>
+                        <xs:attribute type="xs:float" name="rangeMin_m" use="optional"/>
+                        <xs:attribute type="xs:float" name="scanAngleMax_deg" use="optional"/>
+                        <xs:attribute type="xs:float" name="scanAngleEffectiveMax_deg" use="optional"/>
+                        <xs:attribute type="xs:float" name="scanFreqMin_Hz" use="optional"/>
+                        <xs:attribute type="xs:float" name="scanFreqMax_Hz" use="optional"/>
+                        <xs:attribute type="xs:short" name="maxNOR" use="optional"/>
+                        <xs:attribute type="xs:int" name="scanProduct" use="optional"/>
+                        <xs:attribute type="xs:int" name="wavelength_nm" use="optional"/>
+                        <xs:attribute type="xs:int" name="rotorFreq1_Hz" use="optional"/>
+                        <xs:attribute type="xs:int" name="rotorFreq2_Hz" use="optional"/>
+                        <xs:attribute type="xs:float" name="averagePower_w" use="optional"/>
+                        <xs:attribute type="xs:short" name="numFibers" use="optional"/>
+                        <xs:attribute type="xs:short" name="beamQualityFactor" use="optional"/>
+                        <xs:attribute type="xs:float" name="opticalEfficiency" use="optional"/>
+                        <xs:attribute type="xs:float" name="atmosphericVisibility_km" use="optional"/>
+                        <xs:attribute type="xs:float" name="headRotatePerSecMax_deg" use="optional"/>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>
