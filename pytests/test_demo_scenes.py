@@ -33,10 +33,10 @@ def run_helios_executable(survey_path: Path, options=None) -> Path:
     return find_playback_dir(survey_path)
 
 def run_helios_pyhelios(survey_path: Path, options=None) -> Path:
-    sys.path.append(str((Path(WORKING_DIR) / 'build').absolute()))
+    sys.path.append(WORKING_DIR)
     import pyhelios
     pyhelios.setDefaultRandomnessGeneratorSeed("43")
-    from pyheliostools import SimulationBuilder
+    from pyhelios import SimulationBuilder
 
     simB = SimulationBuilder(
         surveyPath=str(survey_path.absolute()),
