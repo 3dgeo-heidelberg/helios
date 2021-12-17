@@ -2,7 +2,7 @@
 # -- coding: utf-8 --
 #
 # Hannah Weiser, Heidelberg University
-# January 2021
+# December 2021
 # h.weiser@stud.uni-heidelberg.de
 
 """
@@ -11,6 +11,7 @@ This script contains functions to facilitate planning and configuration of HELIO
 
 import numpy as np
 import math
+import warnings
 
 
 def rotate_around_point(xy, degrees, origin=(0, 0)):
@@ -20,7 +21,11 @@ def rotate_around_point(xy, degrees, origin=(0, 0)):
     :param xy: array of point(s) to rotate
     :param degrees: rotation (clockwise) in degrees
     :param origin: rotation origin; default: O(0, 0)
+    :type xy: array or ndarray
+    :type degrees: float
+    :type origin: tuple or list
     :return: rotated array
+    :rtype: array or ndarray
     """
     # convert degree to radians
     radians = math.radians(degrees)
@@ -41,12 +46,14 @@ def compute_flight_length(waypoints):
     """This function computed the length of a flight plan.
 
     :param waypoints: The waypoints of the flight path e.g. [[50, -100], [50, 100], [-50, 100], [-50, -100]] (list)
-
+    :type waypoints: array or ndarray
     :return: Summed distance of the flight lines
+    :rtype: float
     """
     distance = 0
     curr_point = waypoints[-1]
     for point in waypoints[::-1]:
+        distance += np.sqrt((curr_point[0] - point[0]) ** 2 + (curr_point[1] - point[1]) ** 2)
         distance += np.sqrt((curr_point[0] - point[0])**2 + (curr_point[1] - point[1])**2)
         curr_point = point
 
@@ -63,7 +70,10 @@ def compute_flight_lines(bounding_box, spacing, rotate_deg=0.0, flight_pattern="
                     default: 0
     :param flight_pattern: Flight pattern, either of "parallel", "cross-cross"
                     default: "parallel"
-
+    :type bounding_box: array or ndarray
+    :type spacing: float
+    :type rotate_deg: float
+    :type flight_pattern: str
     :return: Ordered array of waypoints for the generated flight plan,
             Centre point of the bounding box (and flight plan),
             Total distance of the flight plan
@@ -74,13 +84,15 @@ def compute_flight_lines(bounding_box, spacing, rotate_deg=0.0, flight_pattern="
     n_flight_lines_y = int(np.floor(bbox_dims[0] / spacing))
     pattern_options = ["parallel", "criss-cross"]
     if flight_pattern not in pattern_options:
-        print("WARNING: Specified flight pattern is not available.\n"
-              "Possible choices: 'parallel', 'criss-cross'\n"
-              "Flight pattern will be set to 'parallel'")
+        warnings.warn("""
+        Specified flight pattern is not available.
+        Possible choices: 'parallel', 'criss-cross'
+        Flight pattern will be set to 'parallel'
+        """)
         flight_pattern = "parallel"
 
     if (flight_pattern == "parallel" and bbox_dims[0] >= bbox_dims[1]) or flight_pattern == "criss-cross":
-        y_start = centre[1] - spacing*(n_flight_lines_x/2)
+        y_start = centre[1] - spacing * (n_flight_lines_x / 2)
         curr_strip = np.array([[bounding_box[0], y_start], [bounding_box[2], y_start]])
         strips = curr_strip[::-1]
         for i in range(int(n_flight_lines_x)):
@@ -89,7 +101,7 @@ def compute_flight_lines(bounding_box, spacing, rotate_deg=0.0, flight_pattern="
             curr_strip = next_strip[::-1]
 
     if flight_pattern == "criss-cross" or (flight_pattern == "parallel" and bbox_dims[1] > bbox_dims[0]):
-        x_start = centre[0] - spacing*(n_flight_lines_y/2)
+        x_start = centre[0] - spacing * (n_flight_lines_y / 2)
         curr_strip = np.array([[x_start, bounding_box[1]], [x_start, bounding_box[3]]])
         if flight_pattern != "criss-cross":
             strips = curr_strip[::-1]
@@ -108,13 +120,14 @@ def compute_flight_lines(bounding_box, spacing, rotate_deg=0.0, flight_pattern="
     return strips, centre, distance
 
 
-def flight_lines_from_shp(filename):
+def flight_lines_from_shp(filename: str):
     """This function reads a shapefile with line features and returns the line coordinates for each feature
 
     :param filename: path to shapefile
+    :type filename: str
 
     :return: List of arrays of points of each line geometry
-
+    :rtype: ndarray
     """
     import fiona
 
@@ -129,7 +142,7 @@ def flight_lines_from_shp(filename):
             coordinates.append(coords)
     coordinates = np.array(coordinates)
     coordinates_shape = coordinates.shape
-    element_count = int(coordinates_shape[0]*coordinates_shape[1])
+    element_count = int(coordinates_shape[0] * coordinates_shape[1])
 
     return np.resize(coordinates, (element_count, 2))
 
@@ -138,6 +151,7 @@ def plot_flight_plan(waypoints):
     """This function plots the flight plan, defined by an array of waypoints.
 
     :param waypoints: array of waypoints e.g. [[50, -100], [50, 100], [-50, 100], [-50, -100]]
+    :type: array or ndarray
 
     :return: the 2D-plot of the flight plan
     """
@@ -192,7 +206,10 @@ def export_for_xml(waypoints, altitude, id, speed,
     return xml_string
 
 
-def add_transformation_filters(translation=None, rotation=None, scale=1, on_ground=0):
+def add_transformation_filters(translation: list = None,
+                               rotation: list = None,
+                               scale: float = 1.,
+                               on_ground: int = 0):
     """This function creates a string of transformation filters for a given translation, rotation and scale
 
     :param translation: list of translations in x-, y- and z-direction; [t_x, t_y, t_z]
@@ -219,7 +236,7 @@ def add_transformation_filters(translation=None, rotation=None, scale=1, on_grou
         trafo_filter += f"""
             <filter type="translate">  
                 <param type="integer" key="onGround" value="{on_ground}" />
-                <param type="vec3" key="offset" value="{translation[0]};{translation[1]};{translation[2]}" />  
+                <param type="vec3" key="offset" value="{translation[0]};{translation[1]};{translation[2]}" /> 
             </filter>\n"""
     if rotation != [0, 0, 0]:
         trafo_filter += f"""
@@ -230,7 +247,7 @@ def add_transformation_filters(translation=None, rotation=None, scale=1, on_grou
                     <rot angle_deg="{rotation[2]}" axis="z"/>  
                 </param>
             </filter>\n"""
-    if scale != 1:
+    if scale != 1.:
         trafo_filter += f"""
             <filter type="scale">
                 <param type="double" key="scale" value="{scale}" />
@@ -239,26 +256,26 @@ def add_transformation_filters(translation=None, rotation=None, scale=1, on_grou
     return trafo_filter
 
 
-def create_scenepart_obj(filepath, trafofilter="", efilepath=False):
+def create_scenepart_obj(filepath: str, up_axis: str = "z", trafofilter: str = "", efilepath: bool = False):
     """This function creates a scenepart string to load OBJ-files
 
     :param filepath: path to the OBJ-file
+    :param up_axis: axis of the OBJ-file which is pointing upwards
     :param trafofilter: transformation filter, surrounded by <filter>-tags
     :param efilepath: boolean, whether to use the efilepath option
     :type filepath: str
+    :type up_axis: str
     :type trafofilter: str
     :type efilepath: bool
     :return: scenepart
     :rtype: str
     """
-    if efilepath is True:
-        key_opt = "efilepath"
-    else:
-        key_opt = "filepath"
+    filepath_mode = "efilepath" if efilepath else "filepath"
+    assert up_axis in ["y", "z"]
     scenepart = f"""
         <part>
             <filter type="objloader">
-                <param type="string" key="{key_opt}" value="{filepath}" />
+                <param type="string" key="{filepath_mode}" value="{filepath} up="{up_axis}" />
             </filter>
             {trafofilter}
         </part>"""
@@ -266,9 +283,9 @@ def create_scenepart_obj(filepath, trafofilter="", efilepath=False):
     return scenepart
 
 
-def create_scenepart_tiff(filepath, trafofilter="",
-                          matfile="data/sceneparts/basic/groundplane/groundplane.mtl", matname="None"):
-    """This function creates a scenepart string to load GeoTIFFs
+def create_scenepart_tiff(filepath: str, trafofilter: str = "",
+                          matfile: str = "data/sceneparts/basic/groundplane/groundplane.mtl", matname: str = "None"):
+    """This function creates a scene part string to load GeoTIFFs
 
     :param filepath: path to the GeoTIFF-file
     :param trafofilter: transformation filter, surrounded by <filter>-tags
@@ -277,7 +294,6 @@ def create_scenepart_tiff(filepath, trafofilter="",
     :type trafofilter: str
     :type matfile: str
     :param matname: name of the material to use
-
     :return: scenepart
     :rtype: str
     """
@@ -294,25 +310,28 @@ def create_scenepart_tiff(filepath, trafofilter="",
     return scenepart
 
 
-def create_scenepart_xyz(filepath, trafofilter="", sep=" ", voxel_size=0.5):
+def create_scenepart_xyz(filepath: str, trafofilter: str = "", sep: str = " ", voxel_size: float = 0.5,
+                         efilepath: bool = False):
     """This function creates a scenepart string to load ASCII point clouds in xyz-format
 
     :param filepath: path to the ASCII point cloud file
     :param trafofilter: transformation filter, surrounded by <filter>-tags
     :param sep: column separator in the ASCII point cloud file; default: " "
     :param voxel_size: voxel side length for the voxelisation of the point cloud
+    :param efilepath: boolean, whether to use the efilepath option
     :type filepath: str
     :type trafofilter: str
     :type sep: str
     :type voxel_size: float
-
+    :type efilepath: bool
     :return: scenepart
     :rtype: str
     """
+    filepath_mode = "efilepath" if efilepath else "filepath"
     scenepart = f"""
         <part>
             <filter type="xyzloader">
-                <param type="string" key="filepath" value="{filepath}" />
+                <param type="string" key="{filepath_mode}" value="{filepath}" />
                 <param type="string" key="separator" value="{sep}" />
                 <param type="double" key="voxelSize" value="{voxel_size}" />
                 <!-- Normal estimation using Singular Value Decomposition (SVD)
@@ -328,7 +347,8 @@ def create_scenepart_xyz(filepath, trafofilter="", sep=" ", voxel_size=0.5):
     return scenepart
 
 
-def create_scenepart_vox(filepath, trafofilter="", intersection_mode="transmittive", matfile=None, matname=None):
+def create_scenepart_vox(filepath, trafofilter="", intersection_mode="transmittive", matfile=None, matname=None,
+                         efilepath: bool = False):
     """This function creates a scenepart string to load .vox voxel files
 
     :param filepath: path to the .vox-file
@@ -337,15 +357,18 @@ def create_scenepart_vox(filepath, trafofilter="", intersection_mode="transmitti
                     options: "transmittive" (default), "scaled", "fixed"
     :param matfile: path to the material file
     :param matname: name of the material to use
+    :param efilepath: boolean, whether to use the efilepath option
     :type filepath: str
     :type trafofilter: str
     :type intersection_mode: str
     :type matfile: str
     :type matname: str
+    :type efilepath: bool
 
     :return: scenepart
     :rtype: str
     """
+    filepath_mode = "efilepath" if efilepath else "filepath"
     if matfile or matname:
         mat_def = f"""\n<param type="string" key="matfile" value="{matfile}" />
         <param type="string" key="matname" value="{matname}" />"""
@@ -355,7 +378,7 @@ def create_scenepart_vox(filepath, trafofilter="", intersection_mode="transmitti
         <part>
             <filter type="detailedvoxels">
                 <param type="string" key="intersectionMode" value="{intersection_mode}" />
-                <param type="string" key="filepath" value="{filepath}" />{mat_def}
+                <param type="string" key="{filepath_mode}" value="{filepath}" />{mat_def}
             </filter>
             {trafofilter}
         </part>"""
@@ -373,6 +396,7 @@ def build_scene(scene_id, name, sceneparts=None):
     :type name: str
     :type sceneparts: list[*str]
 
+    :return: scene XML content
     :return: scene XML content (string)
     :rtype: str
     """
@@ -388,7 +412,6 @@ def build_scene(scene_id, name, sceneparts=None):
 
 
 if __name__ == "__main__":
-
     # Usage Demo
     bbox = [478250, 5473800, 478400, 5473950]
     wp, c, dist = compute_flight_lines(bbox, spacing=30, rotate_deg=45, flight_pattern="criss-cross")
