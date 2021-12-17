@@ -3,7 +3,7 @@
     <scene id="arbaro_demo" name="Arbaro Demo">
         <part>
             <filter type="objloader">
-                <param type="string" key="filepath" value="data/sceneparts/basic/groundplane/groundplane.obj" />
+                <param type="string" key="filepath" value="data/sceneparts/basic/groundplane/groundplane.obj" up="y"/>
             </filter>
             <filter type="scale">
                 <param type="double" key="scale" value="100" />
@@ -11,7 +11,7 @@
         </part>
         <part>
             <filter type="objloader">
-                <param type="string" key="filepath" value="data/sceneparts/arbaro/black_tupelo_low.obj" />
+                <param type="string" key="filepath" value="data/sceneparts/arbaro/black_tupelo_low.obj" up="y" />
             </filter>
             <filter type="rotate">
                 <param type="rotation" key="rotation">
@@ -27,7 +27,7 @@
         </part>
         <part>
             <filter type="objloader">
-                <param type="string" key="filepath" value="data/sceneparts/arbaro/sassafras_low.obj" />
+                <param type="string" key="filepath" value="data/sceneparts/arbaro/sassafras_low.obj" up="y" />
             </filter>
             <filter type="rotate">
                 <param type="rotation" key="rotation">
