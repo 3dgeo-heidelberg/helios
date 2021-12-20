@@ -302,8 +302,6 @@ void SimpleKDTreeFactory::GEOM_populateSplits(
     double const splitPos,
     vector<Primitive *> &leftPrimitives,
     vector<Primitive *> &rightPrimitives,
-    int const startThreadIdx,
-    int const endThreadIdx,
     int const assignedThreads
 ) const {
     // Distribute workload
@@ -311,9 +309,10 @@ void SimpleKDTreeFactory::GEOM_populateSplits(
     size_t const chunkSize = numPrimitives / ((size_t)assignedThreads);
     vector<vector<Primitive *>> leftPrims(assignedThreads);
     vector<vector<Primitive *>> rightPrims(assignedThreads);
+    int const extraThreads = assignedThreads - 1;
     std::shared_ptr<SharedTaskSequencer> stSequencer = \
-        std::make_shared<SharedTaskSequencer>(assignedThreads);
-    for(int i = 0 ; i <= assignedThreads ; i++){
+        std::make_shared<SharedTaskSequencer>(extraThreads);
+    for(int i = 0 ; i < extraThreads ; ++i){
         stSequencer->start(std::make_shared<SimpleKDTreePopulateSplitsSubTask>(
             stSequencer,
             primitives,
@@ -321,16 +320,26 @@ void SimpleKDTreeFactory::GEOM_populateSplits(
             splitPos,
             leftPrims[i],
             rightPrims[i],
-            i*numPrimitives,
-            (i < assignedThreads) ? (i+1)*numPrimitives : primitives.size()
+            i*chunkSize,
+            (i+1)*chunkSize
         ));
     }
+    SimpleKDTreePopulateSplitsSubTask(
+        nullptr,
+        primitives,
+        splitAxis,
+        splitPos,
+        leftPrims[extraThreads],
+        rightPrims[extraThreads],
+        extraThreads*chunkSize,
+        primitives.size()
+    )();
 
     // Wait until workload has been consumed
     stSequencer->joinAll();
 
     // Reduce left and right primitives into single vector
-    for(int i = 0 ; i <= assignedThreads ; i++){
+    for(int i = 0 ; i < assignedThreads ; i++){
         leftPrimitives.insert(
             leftPrimitives.end(),
             leftPrims[i].begin(),
@@ -342,5 +351,4 @@ void SimpleKDTreeFactory::GEOM_populateSplits(
             rightPrims[i].end()
         );
     }
-
 }

@@ -52,7 +52,6 @@ private:
         ar &boost::serialization::base_object<SimpleKDTreeFactory>(*this);
         ar &kdtf;
         ar &minTaskPrimitives;
-        //ar &tpGeom; // No need to serialize because default built one is used
         //ar &tpNode; // No need to serialize because default built one is used
     }
 
@@ -63,11 +62,6 @@ protected:
      * @brief The SimpleKDTreeFactory or derived to be used to build tree nodes
      */
     shared_ptr<SimpleKDTreeFactory> kdtf;
-    /**
-     * @brief The thread pool to handle concurrency during recursive KDTree
-     *  buildint at geometry-level
-     */
-    KDTreeFactoryThreadPool tpGeom;
     /**
      * @brief The thread pool to handle concurrency during recursive KDTree
      *  building at node-level

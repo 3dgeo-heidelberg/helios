@@ -119,30 +119,4 @@ protected:
         boost::function<void(TaskArgs ...)> &task
         ) = 0;
 
-public:
-    // ***  GETTERs and SETTERs  *** //
-    // ***************************** //
-    /**
-     * @brief Obtain the number of available threads
-     * @return Number of available threads
-     * @see SimpleThreadPool::available_
-     * @see SimpleThreadPool::setAvailable
-     */
-    virtual inline size_t getAvailable() {return available_;}
-    /**
-     * @brief Set the number of available threads
-     *
-     * Use this setter with caution and only if you know what you are doing.
-     *
-     * Inproper modification of available threads might ruin simple thread
-     *  pool behavior leading to eternal waiting or other unexpected (and
-     *  probably unwanted) scenarios.
-     *
-     * @param available New number of available threads
-     * @see SimpleThreadPool::available_
-     * @see SimpleThreadPool::getAvailable
-     */
-    virtual inline void setAvailable(size_t const available)
-    {available_ = available;}
-
 };

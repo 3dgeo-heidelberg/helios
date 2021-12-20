@@ -285,6 +285,8 @@ protected:
     /**
      * @brief Geometry-level parallel version of the
      *  SimpleKDTreeFactory::populateSplits function
+     * @param assignedThreads How many threads can be used to parallelize
+     *  computations
      * @see SimpleKDTreeFactory::populateSplits
      */
     virtual void GEOM_populateSplits(
@@ -293,8 +295,6 @@ protected:
         double const splitPos,
         vector<Primitive *> &leftPrimitives,
         vector<Primitive *> &rightPrimitives,
-        int const startThreadIdx,
-        int const endThreadIdx,
         int const assignedThreads
     ) const;
 };

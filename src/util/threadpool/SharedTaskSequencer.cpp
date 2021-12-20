@@ -8,7 +8,7 @@ void SharedTaskSequencer::start(std::shared_ptr<SharedSubTask> subTask){
     if(maxThreads == 0){
         boost::unique_lock<boost::mutex> uniqueLock(mtx);
         startThread(subTask);
-        uniqueLock.release();
+        uniqueLock.unlock();
         return;
     }
 
@@ -20,7 +20,7 @@ void SharedTaskSequencer::start(std::shared_ptr<SharedSubTask> subTask){
     --availableThreads;
     startThread(subTask);
     ++nextSharedSubTaskKey;
-    uniqueLock.release();
+    uniqueLock.unlock();
 }
 
 void SharedTaskSequencer::startThread(std::shared_ptr<SharedSubTask> subTask){
@@ -37,13 +37,14 @@ void SharedTaskSequencer::onSharedSubTaskCompletion(size_t const key){
     if(maxThreads > 0) ++availableThreads;
     std::shared_ptr<SharedSubTask> subTask = subTasks[key];
     subTasks.erase(key);
-    uniqueLock.release();
+    uniqueLock.unlock();
+    condvar.notify_one();
     subTask->postProcess();
 }
 
 void SharedTaskSequencer::joinAll(){
-    unordered_map<size_t, std::shared_ptr<SharedSubTask>>::iterator it;
-    for(it = subTasks.begin() ; it != subTasks.end() ; ++it){
-        it->second->getThread()->join();
+    boost::unique_lock<boost::mutex> uniqueLock(mtx);
+    while(subTasks.size() > 0){
+        condvar.wait(uniqueLock);
     }
 }

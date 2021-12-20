@@ -63,7 +63,7 @@ public:
      */
     virtual inline void operator() (){
         run();
-        ch->onSharedSubTaskCompletion(key);
+        if(ch != nullptr) ch->onSharedSubTaskCompletion(key);
     }
 
     // ***  RUNNABLE SHARED TASK  *** //
