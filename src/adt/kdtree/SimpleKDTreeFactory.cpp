@@ -5,6 +5,7 @@
 #include <BinaryTreeDepthIterator.h>
 #include <SharedTaskSequencer.h>
 #include <SimpleKDTreePopulateSplitsSubTask.h>
+#include <SimpleKDTreeBuildChildrenNodesSubTask.h>
 
 // ***  CONSTRUCTION / DESTRUCTION  *** //
 // ************************************ //
@@ -350,5 +351,55 @@ void SimpleKDTreeFactory::GEOM_populateSplits(
             rightPrims[i].begin(),
             rightPrims[i].end()
         );
+    }
+}
+
+void SimpleKDTreeFactory::GEOM_buildChildrenNodes(
+    KDTreeNode *node,
+    KDTreeNode *parent,
+    vector<Primitive *> const &primitives,
+    int const depth,
+    int const index,
+    vector<Primitive *> &leftPrimitives,
+    vector<Primitive *> &rightPrimitives
+){
+    // TODO Rethink : Prevent duplicated code wrt to buildChildrenNodes
+    size_t const primsSize = primitives.size();
+    if(
+        primsSize >= minSplitPrimitives &&
+        leftPrimitives.size() != primsSize &&
+        rightPrimitives.size() != primsSize
+    ){ // If there are primitives on both partitions, binary split the node
+        std::shared_ptr<SharedTaskSequencer> stSequencer = \
+            std::make_shared<SharedTaskSequencer>(1);
+        bool buildRightNode = !rightPrimitives.empty();
+        if(buildRightNode){
+            stSequencer->start(
+                std::make_shared<SimpleKDTreeBuildChildrenNodesSubTask>(
+                    stSequencer,
+                    node,
+                    rightPrimitives,
+                    depth,
+                    index,
+                    [&] (LightKDTreeNode *&child, KDTreeNode *node) -> void {
+                        this->setChild(child, node);
+                    },
+                    _buildRecursive
+                )
+            );
+        }
+        if(!leftPrimitives.empty()){
+            setChild(node->left, _buildRecursive(
+                node, true, leftPrimitives, depth + 1, 2*index
+            ));
+        }
+        if(buildRightNode){
+            stSequencer->joinAll();
+        }
+    }
+    else {
+        // Otherwise, make this node a leaf:
+        node->splitAxis = -1;
+        node->primitives = std::make_shared<vector<Primitive *>>(primitives);
     }
 }

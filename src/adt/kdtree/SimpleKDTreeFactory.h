@@ -297,4 +297,24 @@ protected:
         vector<Primitive *> &rightPrimitives,
         int const assignedThreads
     ) const;
+    /**
+     * @brief Geometry-level parallel version of the
+     *  SimpleKDTreeFactory:::buildChildrenNodes function
+     *
+     * It is expected that this function is called at any depth before the
+     *  last geometry-level depth. In consequence, the left node is delegated
+     *  upon current thread while right node is delegated upon a new created
+     *  thread for such purpose.
+     *
+     * @see SimpleKDTreeFactory::buildChildrenNodes
+     */
+    virtual void GEOM_buildChildrenNodes(
+        KDTreeNode *node,
+        KDTreeNode *parent,
+        vector<Primitive *> const &primitives,
+        int const depth,
+        int const index,
+        vector<Primitive *> &leftPrimitives,
+        vector<Primitive *> &rightPrimitives
+    );
 };

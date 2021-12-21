@@ -77,8 +77,29 @@ protected:
      *  MultiThreadKDTreeFactory::buildRecursiveGeometryLevel
      * It is updated accordingly always that
      *  MultiThreadKDTreeFactory::makeFromPrimitivesUnsafe is called
+     * @see MultiThreadKDTreeFactory::masters
      */
-     int maxGeometryDepth;
+    int maxGeometryDepth;
+    /**
+     * @brief The maximum number of jobs (threads/workers) that this factory
+     *  is allowed to use.
+     */
+    size_t numJobs;
+    /**
+     * @brief All masters threads (except main thread) are handled by this
+     *  shared task sequencer
+     *
+     * A master thread is any thread that will handle the building of a
+     *  sub-KDTree composing the original KDTree. Master threads are required
+     *  when using a geometry-level parallelization, so each node at max
+     *  geoemtry depth is associated to one master thread.
+     *
+     * The master node at \f$(d^*, 0)\f$ is not handled by this shared task
+     *  sequencer because it is associated to the main thread itself.
+     *
+     * @see MultiThreadKDTreeFactory::maxGeometryDepth
+     */
+    shared_ptr<SharedTaskSequencer> masters;
 
 public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //

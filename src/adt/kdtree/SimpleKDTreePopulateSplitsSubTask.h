@@ -7,11 +7,13 @@
  * @author Alberto M. Esmoris Pena
  * @version 1.0
  * @brief Shared sub-task to populate splits when building a Simple KDTree.
- *  It is meant to be used at geometry-level parallelization context.
+ *  It is meant to be used at geometry-level parallelization context and only
+ *  for right child nodes.
  * @see SharedSubTask
  * @see SimpleKDTreeFactory
+ * @see MultiThreadKDTreeFactory
  *
- * TODO Rethink : Comment attributes and methods
+ * TODO Rethink : Comment attributes, constructor and methods
  */
 class SimpleKDTreePopulateSplitsSubTask : public SharedSubTask{
 protected:

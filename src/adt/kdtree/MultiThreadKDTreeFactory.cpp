@@ -12,16 +12,24 @@ MultiThreadKDTreeFactory::MultiThreadKDTreeFactory(
 ) :
     SimpleKDTreeFactory(),
     kdtf(kdtf),
-    tpNode(numJobs),
-    minTaskPrimitives(32)
+    tpNode(numJobs-1),
+    minTaskPrimitives(32),
+    numJobs(numJobs)
 {
     /*
      * Handle node thread pool start pending tasks so when geometry-level
      * parallelization is used no node-level parallelization occurs before
      * it must (at adequate depth)
      */
-    tpNode.setPendingTasks(numJobs); // TODO Rethink : To MDTP constructor?
-    // TODO Rethink : No to MDTP constructor, handle geometry/node case here
+    tpNode.setPendingTasks(numJobs-1);
+
+    // Determine max geometry depth
+    maxGeometryDepth = (int) std::floor(std::log2(numJobs));
+
+    // Initialize shared task sequencer of master threads
+    masters = std::make_shared<SharedTaskSequencer>(
+        Scalar<int>::pow2(maxGeometryDepth)-1
+    );
 
     /*
      * See SimpleKDTreeFactory constructor implementation to understand why
@@ -48,12 +56,8 @@ MultiThreadKDTreeFactory::MultiThreadKDTreeFactory(
 KDTreeNodeRoot * MultiThreadKDTreeFactory::makeFromPrimitivesUnsafe(
     vector<Primitive *> &primitives
 ){
-    // Update max geometry depth
-    maxGeometryDepth = (int) std::floor(std::log2(tpNode.getPoolSize()+1.0));
-
     // Build the KDTree using a modifiable copy of primitives pointers vector
-    // TODO Rethink : Change call to exploit geometry parallelization at root
-    KDTreeNodeRoot *root = (KDTreeNodeRoot *) kdtf->buildRecursive(
+    KDTreeNodeRoot *root = (KDTreeNodeRoot *) kdtf->_buildRecursive(
         nullptr,        // Parent node
         false,          // Node is not left child, because it is root not child
         primitives,     // Primitives to be contained inside the KDTree
@@ -105,16 +109,27 @@ KDTreeNode * MultiThreadKDTreeFactory::buildRecursiveGeometryLevel(
     int const index
 ){
     // Compute work distribution strategy definition
-    int const k = tpNode.getPoolSize(); // TODO Rethink : Replace by total number of threads
     int const maxSplits = Scalar<int>::pow2(depth);
-    int const alpha = (int) std::floor(k/maxSplits);
-    int const beta = k % maxSplits;
-    bool const excess = index < (maxSplits - beta);
+    int const alpha = (int) std::floor(numJobs/maxSplits);
+    int const beta = numJobs % maxSplits;
+    bool const excess = index < (maxSplits - beta); // True when 1 extra thread
     int const a = (excess) ? index*alpha : index*(alpha+1) - maxSplits + beta;
     int const b = (excess) ?
         alpha*(index+1) - 1 :
         index*(alpha+1) - maxSplits + beta + alpha;
-    int const assignedThreads = 1+b-a;
+    int const auxiliarThreads = b-a; // Subordinated threads
+    int const assignedThreads = 1+auxiliarThreads; // Total threads
+    // TODO Remove section ---
+    std::stringstream ss;
+    ss  << "Depth=" << depth << ", k=" << numJobs << ", 2^d=" << maxSplits
+        << ", index=" << index << ", alpha=" << alpha << ", beta=" << beta
+        << ", a=" << a << ", b=" << b
+        << ", assignedThreads=" << assignedThreads
+        << ", auxiliarThreads=" << auxiliarThreads
+        << "\n--------------------\n" << std::endl
+    ;
+    std::cout << ss.str();
+    // --- TODO Remove section
 
     // Geometry-level parallel processing
     // TODO Rethink : Prevent duplicated code (below is copy of SKDT::buildRec)
@@ -134,23 +149,36 @@ KDTreeNode * MultiThreadKDTreeFactory::buildRecursiveGeometryLevel(
         assignedThreads
     );
 
-    // Post-processing
-    if(depth == maxGeometryDepth){
-        // Move assigned threads from geometry thread pool to node thread pool
-        tpNode.safeSubtractPendingTasks(assignedThreads);
-    }
-
     // TODO Rethink : Implement geometry level building
     //return this->kdtf->buildRecursive(parent, left, primitives, depth, index);
-    kdtf->buildChildrenNodes(
-        node,
-        parent,
-        primitives,
-        depth,
-        index,
-        leftPrimitives,
-        rightPrimitives
-    );
+    if(depth == maxGeometryDepth){
+        // Move auxiliar threads from geometry thread pool to node thread pool
+        if(auxiliarThreads > 0)
+            tpNode.safeSubtractPendingTasks(auxiliarThreads);
+        // Recursively build children nodes
+        kdtf->buildChildrenNodes(
+            node,
+            parent,
+            primitives,
+            depth,
+            index,
+            leftPrimitives,
+            rightPrimitives
+        );
+        // Allow one more thread to node-level pool when master thread finishes
+        tpNode.safeSubtractPendingTasks(1);
+    }
+    else{
+        kdtf->GEOM_buildChildrenNodes(
+            node,
+            parent,
+            primitives,
+            depth,
+            index,
+            leftPrimitives,
+            rightPrimitives
+        );
+    }
     return node;
 }
 
@@ -203,5 +231,4 @@ KDTreeNode * MultiThreadKDTreeFactory::buildRecursiveNodeLevel(
             parent, left, primitives, depth, 2*index+(left ? 0:1)
         );
     }
-
 }
