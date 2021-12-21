@@ -6,11 +6,12 @@ from pathlib import Path
 import os
 
 # change working directory in case script was not called from helios root directory
+xsd_dir = Path(__file__).parent / 'xsd'
+helios_root = Path(__file__).parent.parent.parent
+if Path.cwd() != helios_root:
+    os.chdir(helios_root)
 survey_file = Path(sys.argv[1]).resolve()
-xsd_dir = Path(__file__).parent
-survey_file = str(survey_file.relative_to(xsd_dir.parent.resolve()))
-if Path.cwd() != xsd_dir.parent:
-    os.chdir(xsd_dir.parent)
+survey_file = str(survey_file.relative_to(helios_root))
 
 # check where helios.exe is located
 HELIOS_EXE_NAME = "helios"
@@ -20,10 +21,10 @@ if sys.platform == "win32" or sys.platform == "win64":
 HELIOS_EXE = str(list(Path.cwd().glob(f"**/{HELIOS_EXE_NAME}"))[0])
 print(f"Found HELIOS++ executable: {HELIOS_EXE}")
 
-survey_schema = xmlschema.XMLSchema(str(Path(__file__).parent / 'xsd' / 'survey.xsd')
-scene_schema = xmlschema.XMLSchema(str(Path(__file__).parent / 'xsd' / 'scene.xsd')
-scanner_schema = xmlschema.XMLSchema(str(Path(__file__).parent / 'xsd' / 'scanner.xsd')
-platform_schema = xmlschema.XMLSchema(str(Path(__file__).parent / 'xsd' / 'platform.xsd')
+survey_schema = xmlschema.XMLSchema(str(xsd_dir / 'survey.xsd'))
+scene_schema = xmlschema.XMLSchema(str(xsd_dir / 'scene.xsd'))
+scanner_schema = xmlschema.XMLSchema(str(xsd_dir / 'scanner.xsd'))
+platform_schema = xmlschema.XMLSchema(str(xsd_dir / 'platform.xsd'))
 
 # get paths of any referenced XML files; assuming they are relative to helios root dir or absolute
 try:
