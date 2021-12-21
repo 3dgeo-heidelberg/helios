@@ -5,20 +5,33 @@ import subprocess
 from pathlib import Path
 import os
 
-# change working directory in case script was not called from helios root directory
+
+def handle_relative_path(root, *paths):
+    new_paths = []
+    for path in paths:
+        path = Path(path)
+        # if path is absolute, leave as it is
+        if not path.is_absolute():
+            # check if path is relative to current working directory
+            try:
+                path.resolve(strict=True)
+            except FileNotFoundError:
+                # otherwise, assume that path is relative to helios directory
+                path = str(root / path)
+        new_paths.append(path)
+
+    return new_paths
+
 xsd_dir = Path(__file__).parent / 'xsd'
 helios_root = Path(__file__).parent.parent.parent
-if Path.cwd() != helios_root:
-    os.chdir(helios_root)
-survey_file = Path(sys.argv[1]).resolve()
-survey_file = str(survey_file.relative_to(helios_root))
+survey_file = Path(sys.argv[1])
+survey_file = handle_relative_path(helios_root, survey_file)[0]
 
-# check where helios.exe is located
+# find helios executable
 HELIOS_EXE_NAME = "helios"
 if sys.platform == "win32" or sys.platform == "win64":
     HELIOS_EXE_NAME += ".exe"
-
-HELIOS_EXE = str(list(Path.cwd().glob(f"**/{HELIOS_EXE_NAME}"))[0])
+HELIOS_EXE = str(list(helios_root.glob(f"**/{HELIOS_EXE_NAME}"))[0])
 print(f"Found HELIOS++ executable: {HELIOS_EXE}")
 
 survey_schema = xmlschema.XMLSchema(str(xsd_dir / 'survey.xsd'))
@@ -31,6 +44,7 @@ try:
     scene_file = ET.parse(survey_file).find('survey').attrib['scene'].split('#')[0]
     scanner_file = ET.parse(survey_file).find('survey').attrib['scanner'].split('#')[0]
     platform_file = ET.parse(survey_file).find('survey').attrib['platform'].split('#')[0]
+    scene_file, scanner_file, platform_file = handle_relative_path(helios_root, scene_file, scanner_file, platform_file)
 except KeyError as e:
     print("ERROR: Missing 'platform', 'scanner' or 'scene' key in <survey> tag.\n"
           "Please check your survey file.\n")
