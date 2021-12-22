@@ -1,5 +1,10 @@
 #!/bin/python3
 # -*- coding:utf-8 -*-
+
+# Lukas Winiwarter and Hannah Weiser, Heidelberg University
+# September 2020
+# h.weiser@uni-heidelberg.de
+
 """This script voxelizes a point cloud.
 
 It then writes the voxels to an ASCII voxel format with the extension ".vox", adapted from AMAPVox-software
@@ -28,10 +33,6 @@ Dependencies:
 
 import numpy as np
 
-__author__: "Lukas Winiwarter and Hannah Weiser"
-__email__: "h.weiser@stud.uni-heidelberg.de"
-__date__: "09/2020"
-
 
 class Voxelizer:
     def __init__(self, data, voxel_size=(1, 1, 1)):
@@ -39,7 +40,6 @@ class Voxelizer:
         if type(voxel_size) is not tuple:
             voxel_size = (voxel_size, voxel_size, voxel_size)
         self.voxel_size = voxel_size
-
 
     def voxelize(self, origin=None):
         """
@@ -69,11 +69,9 @@ class Voxelizer:
                              np.floor((self.data[:, 1] - localOrigin[1]) / self.voxel_size[1]),
                              np.floor((self.data[:, 2] - localOrigin[2]) / self.voxel_size[2])]).T
 
-
         # Remove multiple voxels
         idxVoxelUnique, ic = np.unique(idxVoxel, axis=0,
                                        return_inverse=True)  # ic contains "voxel index" for each point
-
 
         # No.of voxel(equal to no.of selected points)
         noVoxel = idxVoxelUnique.shape[0]
@@ -122,20 +120,22 @@ def filter_by_point_count(voxel_idx, pt_idxs_in_voxels, target_count):
     filtered_pt_idxs = pt_idxs_in_voxels[keep][:]
     n_voxels = voxel_idx.shape[0]
     n_voxels_filtered = len(filtered_idx)
-    print("%i voxels contained less than %i points and were removed. %i voxels left." % (n_voxels-n_voxels_filtered, target_count, n_voxels_filtered))
+    print(
+        f"{n_voxels - n_voxels_filtered} voxels contained less than {target_count} points and were removed. "
+        f"{n_voxels_filtered} voxels left.")
     return np.array(filtered_idx), np.array(filtered_pt_idxs)
 
 
-def save_vox(voxel_idx, origin, max, vox_size, fname):
+def save_vox(voxel_idx, origin, max_corner, vox_size, fname):
     print("writing vox...")
     c = 1 / 2 * vox_size
     split = [np.max(voxel_idx[:, 0]), np.max(voxel_idx[:, 1]), np.max(voxel_idx[:, 2])]
     with open(fname, "w") as outfile:
         outfile.write("VOXEL SPACE\n")
-        outfile.write("#min_corner: %f %f %f\n" % (origin[0]-c, origin[1]-c, origin[2]-c))
-        outfile.write("#max_corner: %f %f %f\n" % (max[0], max[1], max[2]))
-        outfile.write("#split: %i %i %i\n" % (split[0]+1, split[1]+1, split[2]+1))
-        outfile.write("#res: %f\n" % vox_size)
+        outfile.write(f"#min_corner: {origin[0]-c:f} {origin[1]-c:f} {origin[2]-c:f}\n")
+        outfile.write(f"#max_corner: {max_corner[0]:f} {max_corner[1]:f} {max_corner[2]:f}\n")
+        outfile.write(f"#split: {split[0] + 1:d} {split[1] + 1:d} {split[2] + 1:d}\n")
+        outfile.write(f"#res: {vox_size:f}\n")
         outfile.write("i j k PadBVTotal angleMean bsEntering bsIntercepted bsPotential ground_distance lMeanTotal lgTotal nbEchos nbSampling transmittance attenuation attenuationBiasCorrection\n")
         arr = np.zeros((voxel_idx.shape[0], 16))
 
@@ -146,10 +146,11 @@ def save_vox(voxel_idx, origin, max, vox_size, fname):
 
         np.savetxt(outfile, arr, delimiter=" ", fmt="%i")
 
+
 if __name__ == '__main__':
     import time
-    import pandas
-    from laspy.file import File as LasFile
+    import pandas as pd
+    import laspy
     import sys
     import os
     import glob
@@ -169,24 +170,24 @@ if __name__ == '__main__':
         source_fname, source_ext = os.path.splitext(source_basename)
 
         if source_ext == ".las" or source_ext == ".laz":
-            inFile = LasFile(source, mode='r')
-            data = np.vstack((inFile.x, inFile.y, inFile.z)).transpose()
+            las = laspy.read(source)
+            pc_data = np.vstack((las.x, las.y, las.z)).transpose()
         elif source_ext == ".txt" or source_ext == ".asc" or source_ext == ".xyz" or source_ext == "csv":
-            data = pandas.read_csv(source, delimiter=' ', skipinitialspace=True, usecols=(0,1,2)).to_numpy(dtype=float)
+            pc_data = pd.read_csv(source, delimiter=' ', skipinitialspace=True, usecols=(0, 1, 2)).to_numpy(dtype=float)
         else:
-            print("Please give a valid LAS or ASCII point cloud.\n"
+            raise ValueError("Please give a valid LAS or ASCII point cloud.\n"
                   "Supported extensions: ['.las'., '.laz', '.txt', '.asc', '.xyt', '.csv']")
-            sys.exit()
-        print(" [done (%.3f s)].\nVoxelizing..." % (time.time() - t), end='')
+        print(f" [done ({time.time() - t:.3f} s)].\nVoxelizing...", end='')
 
         t = time.time()
         vox_size_x = vox_size_y = vox_size_z = float(sys.argv[2])
-        vox = Voxelizer(data, voxel_size=(vox_size_x, vox_size_y, vox_size_z))
-        origin, max, voxel_idx, pt_idxs = vox.voxelize()
-        print(" [done (%.3f s)]." % (time.time() - t))
-        print("Voxelization of %s points with a voxel size of (%s|%s|%s) resulted in %d filled voxels" % (
-            data.shape[0], vox_size_x, vox_size_y, vox_size_z, voxel_idx.shape[0]))
+        vox = Voxelizer(pc_data, voxel_size=(vox_size_x, vox_size_y, vox_size_z))
+        origin, v_max, vox_idx, pt_idxs = vox.voxelize()
+        print(f" [done ({time.time() - t:.3f} s)].")
+        print(
+            f"Voxelization of {pc_data.shape[0]} points with a voxel size of ({vox_size_x}|{vox_size_y}|{vox_size_z}) "
+            f"resulted in {vox_idx.shape[0]:d} filled voxels")
 
-        #filtered_idx, filtered_pt_idxs = filter_by_point_count(voxel_idx, pt_idxs, 4)
-        #save_vox(filtered_idx, origin, max, vox_size_x, os.path.join(out_dir, source_fname + "_" + str(int(vox_size_x*1000)) + ".vox"))
-        save_vox(voxel_idx, origin, max, vox_size_x, os.path.join(out_dir, source_fname + "_" + str(int(vox_size_x*1000)) + ".vox"))
+        # filtered_idx, filtered_pt_idxs = filter_by_point_count(voxel_idx, pt_idxs, 4)
+        # save_vox(filtered_idx, origin, max, vox_size_x, os.path.join(out_dir, source_fname + "_" + str(int(vox_size_x*1000)) + ".vox"))
+        save_vox(vox_idx, origin, v_max, vox_size_x, os.path.join(out_dir, source_fname + "_" + str(int(vox_size_x * 1000)) + ".vox"))

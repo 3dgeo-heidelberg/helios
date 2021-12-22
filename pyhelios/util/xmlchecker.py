@@ -1,9 +1,18 @@
+# Hannah Weiser, Heidelberg University
+# December 2021
+# h.weiser@uni-heidelberg.de
+"""
+This script checks all XML files of a simulation using XML schema definitions (XSDs) and then runs the simulation.
+
+Usage: python xmlchecker.py <path-to-survey> <additional-helios-attributes>
+e.g., python xmlchecker.py data/surveys/demo/als_hd_demo_tiff.xml --lasOutput --zipOutput
+"""
+
 import xmlschema
 import sys
 import xml.etree.ElementTree as ET
 import subprocess
 from pathlib import Path
-import os
 
 
 def handle_relative_path(root, *paths):
@@ -21,6 +30,7 @@ def handle_relative_path(root, *paths):
         new_paths.append(path)
 
     return new_paths
+
 
 xsd_dir = Path(__file__).parent / 'xsd'
 helios_root = Path(__file__).parent.parent.parent
