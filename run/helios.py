@@ -2,16 +2,12 @@
 # -*- coding: utf-8 -*-
 
 import sys
-import pyhelios_argparser
-from pyh_obj import *
+from pathlib import Path
+sys.path.append(str(Path(__file__).parent.parent))
 
-# Configure runpath from within pyhelios.
-helios_run_path = 'run/'
+from pyhelios import pyhelios_argparser
+from pyhelios.pyh_obj import *
 
-# Add run path to python path.
-sys.path.append(helios_run_path)
-
-# PyHelios import only now possible.
 import pyhelios
 
 # Empty list for trajectory values and/or measurement values

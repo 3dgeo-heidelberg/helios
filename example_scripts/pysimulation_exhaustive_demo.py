@@ -7,7 +7,6 @@ import tqdm
 import sys
 import pyhelios
 import matplotlib.pyplot as plt
-import pyheliostools as pht
 scene = """
 <?xml version="1.0" encoding="UTF-8"?>
 <document>
@@ -54,7 +53,7 @@ for angle in angles:
     angle = angle * pi / 180
     dists = []
 
-    simBuilder = pht.SimulationBuilder(
+    simBuilder = pyhelios.SimulationBuilder(
         'pyhelios-data/scenes/plane_survey.xml',
         'pyhelios-assets/',
         'pyhelios-output/'

@@ -6,7 +6,7 @@ import sys
 
 MAX_DIFFERENCE_BYTES = 1024
 DELETE_FILES_AFTER = False
-HELIOS_EXE = str(Path('build') / 'helios')
+HELIOS_EXE = str(Path('run') / 'helios')
 if sys.platform == "win32":
     HELIOS_EXE += ".exe"
 WORKING_DIR = str(Path(__file__).parent.parent.absolute())
@@ -33,10 +33,10 @@ def run_helios_executable(survey_path: Path, options=None) -> Path:
     return find_playback_dir(survey_path)
 
 def run_helios_pyhelios(survey_path: Path, options=None) -> Path:
-    sys.path.append(str((Path(WORKING_DIR) / 'build').absolute()))
+    sys.path.append(WORKING_DIR)
     import pyhelios
     pyhelios.setDefaultRandomnessGeneratorSeed("43")
-    from pyheliostools import SimulationBuilder
+    from pyhelios import SimulationBuilder
 
     simB = SimulationBuilder(
         surveyPath=str(survey_path.absolute()),

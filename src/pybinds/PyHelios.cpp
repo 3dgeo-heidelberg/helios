@@ -14,7 +14,7 @@
 #include <Material.h>
 #include <gdal_priv.h>
 
-BOOST_PYTHON_MODULE(pyhelios){
+BOOST_PYTHON_MODULE(_pyhelios){
     // Namespace must be used locally to prevent conflicts
     using namespace boost::python;
     using namespace pyhelios;

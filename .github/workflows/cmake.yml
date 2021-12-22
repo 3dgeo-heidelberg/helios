@@ -180,7 +180,7 @@ jobs:
          # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
          # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
          run: |
-          cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DPYTHON_BINDING=1 -DPYTHON_VERSION=$PYTHON_VER -DPYTHON_PATH=$pythonLocation -DCMAKE_RUNTIME_OUTPUT_DIRECTORY:STRING=${{github.workspace}}/build
+          cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DPYTHON_BINDING=1 -DPYTHON_VERSION=$PYTHON_VER -DPYTHON_PATH=$pythonLocation -DCMAKE_RUNTIME_OUTPUT_DIRECTORY:STRING=${{github.workspace}}/run  -DCMAKE_LIBRARY_OUTPUT_DIRECTORY:STRING=${{github.workspace}}/run  -DCMAKE_LIBRARY_OUTPUT_DIRECTORY:STRING=${{github.workspace}}/run
 
        - name: Build
          # Build your program with the given configuration
@@ -192,16 +192,16 @@ jobs:
        - name: Test
          # Execute tests defined by the CMake configuration.
          # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
-         run: ${{github.workspace}}/build/helios --test
+         run: ${{github.workspace}}/run/helios --test
 
        - name: Save compiled executable
          uses: actions/upload-artifact@v2
          with:
              name: ${{ runner.os}}-helios-pybinds-${{ matrix.python-version }}
              path: |
-               ${{github.workspace}}/build/helios
-               ${{github.workspace}}/build/libhelios.so
-               ${{github.workspace}}/build/pyhelios.so
+               ${{github.workspace}}/run/helios
+               ${{github.workspace}}/run/libhelios.so
+               ${{github.workspace}}/run/_pyhelios.so
 
    build-helios-pybinds-dynamic:
     # The CMake configure and build commands are platform agnostic and should work equally
@@ -253,7 +253,7 @@ jobs:
         # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
         # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
         run: |
-          cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DPYTHON_BINDING=1 -DPYTHON_VERSION=38 -DBOOST_DYNAMIC_LIBS=1 -DCMAKE_RUNTIME_OUTPUT_DIRECTORY:STRING=${{github.workspace}}/build
+          cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DPYTHON_BINDING=1 -DPYTHON_VERSION=38 -DBOOST_DYNAMIC_LIBS=1 -DCMAKE_RUNTIME_OUTPUT_DIRECTORY:STRING=${{github.workspace}}/run
 
       - name: Build
         # Build your program with the given configuration
@@ -266,9 +266,9 @@ jobs:
         with:
           name: ${{ runner.os}}-helios-dynamic-linking
           path: |
-            ${{github.workspace}}/build/helios
-            ${{github.workspace}}/build/libhelios.so
-            ${{github.workspace}}/build/pyhelios.so
+            ${{github.workspace}}/run/helios
+            ${{github.workspace}}/run/libhelios.so
+            ${{github.workspace}}/run/_pyhelios.so
 
       - name: ls
         run: ls -al .
@@ -276,7 +276,7 @@ jobs:
       - name: Test
         # Execute tests defined by the CMake configuration.
         # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
-        run: ${{github.workspace}}/build/helios --test
+        run: ${{github.workspace}}/run/helios --test
 
 
    build-helios-38:
@@ -308,7 +308,7 @@ jobs:
          uses: actions/cache@v2
          with:
            path: |
-             ${{github.workspace}}/build
+             ${{github.workspace}}/run
            key: ${{ runner.os }}-helios-build-latest-${{ github.sha }}
 
        - name: Load LasTools, Armadillo and GDAL from cache
@@ -336,19 +336,19 @@ jobs:
          # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
          # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
          run: |
-           cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DPYTHON_BINDING=1 -DPYTHON_VERSION=$PYTHON_VER -DPYTHON_PATH=$pythonLocation -DCMAKE_RUNTIME_OUTPUT_DIRECTORY:STRING=${{github.workspace}}/build
+           cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DPYTHON_BINDING=1 -DPYTHON_VERSION=$PYTHON_VER -DPYTHON_PATH=$pythonLocation -DCMAKE_RUNTIME_OUTPUT_DIRECTORY:STRING=${{github.workspace}}/run -DCMAKE_LIBRARY_OUTPUT_DIRECTORY:STRING=${{github.workspace}}/run
 
        - name: Build
          # Build your program with the given configuration
          run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
 
        - name: ls
-         run: ls -al .
+         run: ls -al . && ls -al run && ls -al build
 
        - name: Test
          # Execute tests defined by the CMake configuration.
          # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
-         run: ${{github.workspace}}/build/helios --test
+         run: ${{github.workspace}}/run/helios --test
 
 
    run-testcases:
@@ -378,7 +378,7 @@ jobs:
             uses: actions/cache@v2
             with:
               path: |
-                ${{github.workspace}}/build
+                ${{github.workspace}}/run
               key: ${{ runner.os }}-helios-build-latest-${{ github.sha }}
 
           - name: Add libaries to LD_LIBRARY_PATH

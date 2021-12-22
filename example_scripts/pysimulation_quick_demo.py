@@ -1,6 +1,5 @@
 import pyhelios
 import time
-import pyheliostools as pht
 import numpy as np
 
 cycleMeasurementsCount = 0
@@ -11,7 +10,7 @@ cpn = [0, 0, 0]
 # ---  C A L L B A C K  --- #
 # ------------------------- #
 def callback(output=None):
-    with pht.PYHELIOS_SIMULATION_BUILD_CONDITION_VARIABLE:
+    with pyhelios.PYHELIOS_SIMULATION_BUILD_CONDITION_VARIABLE:
         global cycleMeasurementsCount
         global cp1
         global cpn
@@ -48,7 +47,7 @@ if __name__ == '__main__':
     pyhelios.setDefaultRandomnessGeneratorSeed("123")
 
     # Build a simulation
-    simBuilder = pht.SimulationBuilder(
+    simBuilder = pyhelios.SimulationBuilder(
         'data/surveys/toyblocks/als_toyblocks.xml',
         'assets/',
         'output/'
@@ -103,12 +102,12 @@ if __name__ == '__main__':
         x=cpn[0], y=cpn[1], z=cpn[2]))
 
     # PyHelios Tools
-    npMeasurements, npTrajectories = pht.outputToNumpy(output)
+    npMeasurements, npTrajectories = pyhelios.outputToNumpy(output)
     print('Numpy measurements shape:', np.shape(npMeasurements))
     print('Numpy trajectories shape:', np.shape(npTrajectories))
     coords = npMeasurements[:, 0:3]
-    spher = pht.cartesianToSpherical(coords)
-    cart = pht.sphericalToCartesian(spher)
+    spher = pyhelios.cartesianToSpherical(coords)
+    cart = pyhelios.sphericalToCartesian(spher)
     print(
         'Max precision loss due to coordinate translation:',
         np.max(coords-cart)
