@@ -180,7 +180,7 @@ jobs:
          # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
          # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
          run: |
-          cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DPYTHON_BINDING=1 -DPYTHON_VERSION=$PYTHON_VER -DPYTHON_PATH=$pythonLocation -DCMAKE_RUNTIME_OUTPUT_DIRECTORY:STRING=${{github.workspace}}/run
+          cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DPYTHON_BINDING=1 -DPYTHON_VERSION=$PYTHON_VER -DPYTHON_PATH=$pythonLocation -DCMAKE_RUNTIME_OUTPUT_DIRECTORY:STRING=${{github.workspace}}/run  -DCMAKE_LIBRARY_OUTPUT_DIRECTORY:STRING=${{github.workspace}}/run  -DCMAKE_LIBRARY_OUTPUT_DIRECTORY:STRING=${{github.workspace}}/run
 
        - name: Build
          # Build your program with the given configuration
@@ -336,14 +336,14 @@ jobs:
          # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
          # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
          run: |
-           cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DPYTHON_BINDING=1 -DPYTHON_VERSION=$PYTHON_VER -DPYTHON_PATH=$pythonLocation -DCMAKE_RUNTIME_OUTPUT_DIRECTORY:STRING=${{github.workspace}}/run
+           cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DPYTHON_BINDING=1 -DPYTHON_VERSION=$PYTHON_VER -DPYTHON_PATH=$pythonLocation -DCMAKE_RUNTIME_OUTPUT_DIRECTORY:STRING=${{github.workspace}}/run -DCMAKE_LIBRARY_OUTPUT_DIRECTORY:STRING=${{github.workspace}}/run
 
        - name: Build
          # Build your program with the given configuration
          run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
 
        - name: ls
-         run: ls -al .
+         run: ls -al . && ls -al run && ls -al build
 
        - name: Test
          # Execute tests defined by the CMake configuration.

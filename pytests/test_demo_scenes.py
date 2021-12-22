@@ -6,7 +6,7 @@ import sys
 
 MAX_DIFFERENCE_BYTES = 1024
 DELETE_FILES_AFTER = False
-HELIOS_EXE = str(Path('build') / 'helios')
+HELIOS_EXE = str(Path('run') / 'helios')
 if sys.platform == "win32":
     HELIOS_EXE += ".exe"
 WORKING_DIR = str(Path(__file__).parent.parent.absolute())

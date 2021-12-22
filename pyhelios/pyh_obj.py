@@ -573,7 +573,6 @@ class TiffScenepart(Scenepart):
         """
         if self.logging:
             print('Loading TIF Scenepart...')
-
         from osgeo import gdal
 
         file = self.path
