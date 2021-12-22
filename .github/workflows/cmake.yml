@@ -343,7 +343,7 @@ jobs:
          run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
 
        - name: ls
-         run: ls -al .
+         run: ls -al . && ls -al run && ls -al build
 
        - name: Test
          # Execute tests defined by the CMake configuration.
