@@ -2,15 +2,15 @@
 # -- coding: utf-8 --
 # Hannah Weiser 2021, h.weiser@stud.uni-heidelberg.de
 
-r"""
+"""
 This script creates a compressed archive containing all configuration
 XML-files necessary to run the specified survey(s) with the specified helios executable.
 
-usage: python extra\archive.py <path_to_helios.exe>  <path-to-survey> <path-to-zipped_outfile>
-e.g. python extra\archive.py run\helios.exe data\surveys\toyblocks\als_toyblocks.xml archive.zip
+usage: python pyhelios/util/archive.py <path_to_helios.exe>  <path-to-survey> <path-to-zipped_outfile>
+e.g. python pyhelios/util/archive.py run/helios.exe data/surveys/toyblocks/als_toyblocks.xml archive.zip
 
 instead of a single survey XML-file, a text file can be specified which contains one survey path per line
-e.g. python extra\archive.py run\helios.exe list.txt archive.zip
+e.g. python pyhelios/util/archive.py run/helios.exe list.txt archive.zip
 
 The archive additionally contains a text file (version.txt) with the helios version and the DOI to the zenodo release.
 """
@@ -242,11 +242,11 @@ if __name__ == '__main__':
     if not Path('run').exists():
         warnings.warn('There is no run-folder in your root directory. Downloading run folder from GitHub repository')
         if platform.system() == 'Windows':
-            zipurl = 'https://github.com/3dgeo-heidelberg/helios/releases/download/v' + helios_version \
-                     + '/helios-plusplus-win.zip'
+            zipurl = f'https://github.com/3dgeo-heidelberg/helios/releases/download/' \
+                     f'v{helios_version}/helios-plusplus-win.zip'
         elif platform.system() == 'Linux':
-            zipurl = 'https://github.com/3dgeo-heidelberg/helios/releases/download/v' + helios_version \
-                     + '/helios-plusplus-lin.tar.gz'
+            zipurl = f'https://github.com/3dgeo-heidelberg/helios/releases/download/' \
+                     f'v{helios_version}/helios-plusplus-lin.tar.gz'
 
     if zipurl is not None:
         try:

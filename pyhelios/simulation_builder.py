@@ -1,5 +1,5 @@
-from pyheliostools.pyheliostools_exception import PyHeliosToolsException
-from pyheliostools.simulation_build import SimulationBuild
+from .pyheliostools_exception import PyHeliosToolsException
+from .simulation_build import SimulationBuild
 from collections import namedtuple
 from math import isnan
 import os
