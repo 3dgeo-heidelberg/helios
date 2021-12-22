@@ -1,6 +1,7 @@
 #pragma once
 
 #include <KDTreeFactory.h>
+#include <SharedTaskSequencer.h>
 
 #include <vector>
 
@@ -125,8 +126,7 @@ protected:
         vector<Primitive*> &primitives,
         int const depth,
         int const index
-
-    ) ;
+    );
     /**
      * @brief Analyze KDTree computing its max depth and the minimum and
      *  maximum number of primitives considering all nodes
@@ -186,6 +186,7 @@ protected:
      * @param[out] leftPrimitives Where primitives of left split must be stored
      * @param[out] rightPrimitives Where primitives of right split must be
      *  stored
+     * @see SimpleKDTreeFactory::onPopulateSplitsDigestPrimitive
      */
     virtual void populateSplits(
         vector<Primitive *> const &primitives,
@@ -272,6 +273,9 @@ protected:
      *  node and left is true, it means it is a left child. If node is not a
      *  root node and left is false, it means it is a right child
      * @param primitives Vector of primitives inside given root node
+     * @see SimpleKDTreeFactory::computeMinMaxSAHForChild
+     * @see SimpleKDTreeFactory::onRootBoundariesDigestPrimitive
+     * @see SimpleKDTreeFactory::onComputeNodeBoundariesCalcSAH
      */
     virtual void computeNodeBoundaries(
         KDTreeNode *node,
@@ -280,8 +284,88 @@ protected:
         vector<Primitive *> const &primitives
     ) const;
 
+    /**
+     * @brief Function to assist SimpleKDTreeFactory::populateSplits by
+     *  providing the logic of digesting a primitive
+     * @see SimpleKDTreeFactory::populateSplits
+     */
+    virtual void onPopulateSplitsDigestPrimitive(
+        Primitive *p,
+        int const splitAxis,
+        double const splitPos,
+        vector<Primitive *> &leftPrimitives,
+        vector<Primitive *> &rightPrimitives
+    ) const;
+
+    /**
+     * @brief Function to assist SimpleKDTreeFactory::computeNodeBoundaries
+     *  when computing surface area heuristic and minimum and maximum
+     *  positions for child nodes
+     * @param node The child node itself
+     * @see SimpleKDTreeFactory::computeNodeBoundaries
+     * @see SimpleKDTreeFactory::onRootBoundariesDigestPrimitive
+     * @see SimpleKDTreeFactory::onComputeNodeBoundariesCalcSAH
+     */
+    virtual void computeMinMaxSAHForChild(
+        KDTreeNode *node,
+        KDTreeNode *parent,
+        bool const left,
+        vector<Primitive *> const &primitives
+    ) const;
+
+    /**
+     * @brief Function to assist SimpleKDTreeFactory::computeNodeBoundaries by
+     *  providing the logic of digesting a primitive
+     * @param p Primitive to be digested
+     * @see SimpleKDTreeFactory::computeNodeBoundaries
+     * @see SimpleKDTreeFactory::computeMinMaxSAHForChild
+     * @see SimpleKDTreeFactory::onComputeNodeBoundariesCalcSAH
+     */
+    virtual void onRootBoundariesDigestPrimitive(
+        Primitive *primitive,
+        double &ax,
+        double &ay,
+        double &az,
+        double &bx,
+        double &by,
+        double &bz
+    ) const;
+
+    /**
+     * @brief Function to assist SimpleKDTreeFactory::computeNodeBoundaries
+     *  when computing the SAH for a node
+     * @param[out] node Node which surface area and bound is going to be
+     *  calculated (and setted)
+     * @see SimpleKDTreeFactory::computeNodeBoundaries
+     * @see SimpleKDTreeFactory::computeMinMaxSAHForChild
+     * @see SimpleKDTreeFactory::onRootBoundariesDigestPrimitive
+     */
+    virtual void onComputeNodeBoundariesCalcSAH(
+        KDTreeNode *node,
+        double const ax,
+        double const ay,
+        double const az,
+        double const bx,
+        double const by,
+        double const bz
+    ) const;
+
     // ***  GEOMETRY LEVEL BUILDING  *** //
     // ********************************* //
+    /**
+     * @brief Geometry-level parallel version of the
+     *  SimpleKDTreeFactory::computeNodeBoundaries function
+     * @param assignedThreads How many threads can be used to parallelize
+     *  computations
+     * @see SimpleKDTreeFactory::computeNodeBoundaries
+     */
+    virtual void GEOM_computeNodeBoundaries(
+        KDTreeNode *node,
+        KDTreeNode *parent,
+        bool const left,
+        vector<Primitive *> const &primitives,
+        int const assignedThreads
+    );
     /**
      * @brief Geometry-level parallel version of the
      *  SimpleKDTreeFactory::populateSplits function
@@ -307,6 +391,9 @@ protected:
      *  thread for such purpose.
      *
      * @see SimpleKDTreeFactory::buildChildrenNodes
+     * @return True if a new master thread has been created, false otherwise.
+     *  This method will return when all pending work related to recursively
+     *  building of children nodes and all its descendants has been completed
      */
     virtual void GEOM_buildChildrenNodes(
         KDTreeNode *node,
@@ -315,6 +402,7 @@ protected:
         int const depth,
         int const index,
         vector<Primitive *> &leftPrimitives,
-        vector<Primitive *> &rightPrimitives
+        vector<Primitive *> &rightPrimitives,
+        std::shared_ptr<SharedTaskSequencer> masters
     );
 };

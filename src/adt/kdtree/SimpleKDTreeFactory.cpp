@@ -3,9 +3,12 @@
 #include <KDTreePrimitiveComparator.h>
 #include <IBinaryTreeNode.h>
 #include <BinaryTreeDepthIterator.h>
-#include <SharedTaskSequencer.h>
 #include <SimpleKDTreePopulateSplitsSubTask.h>
 #include <SimpleKDTreeBuildChildrenNodesSubTask.h>
+#include <SimpleKDTreeComputeRootNodeBoundariesSubTask.h>
+#include <surfaceinspector/maths/Vector.hpp>
+
+using SurfaceInspector::maths::Vector;
 
 // ***  CONSTRUCTION / DESTRUCTION  *** //
 // ************************************ //
@@ -192,9 +195,13 @@ void SimpleKDTreeFactory::populateSplits(
     vector<Primitive *> &rightPrimitives
 ) const {
     for(auto p : primitives){
-        AABB *box = p->getAABB();
-        if(box->getMin()[splitAxis] <= splitPos) leftPrimitives.push_back(p);
-        if(box->getMax()[splitAxis] > splitPos) rightPrimitives.push_back(p);
+        onPopulateSplitsDigestPrimitive(
+            p,
+            splitAxis,
+            splitPos,
+            leftPrimitives,
+            rightPrimitives
+        );
     }
 }
 
@@ -246,57 +253,199 @@ void SimpleKDTreeFactory::computeNodeBoundaries(
         double bx = std::numeric_limits<double>::lowest();
         double by=bx, bz=bx;
         for(Primitive *primitive : primitives){
-            Vertex * vertices = primitive->getVertices();
-            size_t const m = primitive->getNumVertices();
-            for(size_t i = 0 ; i < m ; ++i){
-                Vertex *vertex = vertices+i;
-                if(vertex->getX() < ax) ax = vertex->getX();
-                if(vertex->getY() < ay) ay = vertex->getY();
-                if(vertex->getZ() < az) az = vertex->getZ();
-                if(vertex->getX() > bx) bx = vertex->getX();
-                if(vertex->getY() > by) by = vertex->getY();
-                if(vertex->getZ() > bz) bz = vertex->getZ();
-            }
+            onRootBoundariesDigestPrimitive(
+                primitive,
+                ax, ay, az,
+                bx, by, bz
+            );
         }
 
         // Compute surface area
-        double const lx = bx-ax;
-        double const ly = by-ay;
-        double const lz = bz-az;
-        node->surfaceArea = 2*(lx*ly + lx*lz + ly*lz);
-        node->bound = AABB(ax, ay, az, bx, by, bz);
+        onComputeNodeBoundariesCalcSAH(node, ax, ay, az, bx, by, bz);
     }
     // Find surface area and minimum and maximum positions for child node
     else{
-        double const a = parent->bound.getMin()[parent->splitAxis];
-        double const b = parent->bound.getMax()[parent->splitAxis];
-        double const p = parent->splitPos;
-        double const ratio = (p - a) / (b - a);
-        double ax = parent->bound.getMin()[0];
-        double ay = parent->bound.getMin()[1];
-        double az = parent->bound.getMin()[2];
-        double bx = parent->bound.getMax()[0];
-        double by = parent->bound.getMax()[1];
-        double bz = parent->bound.getMax()[2];
-        if(left){ // Left child node
-            if(parent->splitAxis == 0) bx = ax + ratio * (bx-ax);
-            if(parent->splitAxis == 1) by = ay + ratio * (by-ay);
-            if(parent->splitAxis == 2) bz = az + ratio * (bz-az);
-            node->surfaceArea = ratio * parent->surfaceArea;
-            node->bound = AABB(ax, ay, az, bx, by, bz);
-        }
-        else{ // Right child node
-            if(parent->splitAxis == 0) ax = ax + ratio * (bx-ax);
-            if(parent->splitAxis == 1) ay = ay + ratio * (by-ay);
-            if(parent->splitAxis == 2) az = az + ratio * (bz-az);
-            node->surfaceArea = (1.0-ratio) * parent->surfaceArea;
-            node->bound = AABB(ax, ay, az, bx, by, bz);
-        }
+        computeMinMaxSAHForChild(node, parent, left, primitives);
     }
+}
+
+void SimpleKDTreeFactory::onPopulateSplitsDigestPrimitive(
+    Primitive * p,
+    int const splitAxis,
+    double const splitPos,
+    vector<Primitive *> &leftPrimitives,
+    vector<Primitive *> &rightPrimitives
+) const {
+    AABB const *box = p->getAABB();
+    if(box->getMin()[splitAxis] <= splitPos) leftPrimitives.push_back(p);
+    if(box->getMax()[splitAxis] > splitPos) rightPrimitives.push_back(p);
+}
+
+void SimpleKDTreeFactory::computeMinMaxSAHForChild(
+    KDTreeNode *node,
+    KDTreeNode *parent,
+    bool const left,
+    vector<Primitive *> const &primitives
+) const {
+    double const a = parent->bound.getMin()[parent->splitAxis];
+    double const b = parent->bound.getMax()[parent->splitAxis];
+    double const p = parent->splitPos;
+    double const ratio = (p - a) / (b - a);
+    double ax = parent->bound.getMin()[0];
+    double ay = parent->bound.getMin()[1];
+    double az = parent->bound.getMin()[2];
+    double bx = parent->bound.getMax()[0];
+    double by = parent->bound.getMax()[1];
+    double bz = parent->bound.getMax()[2];
+    if(left){ // Left child node
+        if(parent->splitAxis == 0) bx = ax + ratio * (bx-ax);
+        if(parent->splitAxis == 1) by = ay + ratio * (by-ay);
+        if(parent->splitAxis == 2) bz = az + ratio * (bz-az);
+        node->surfaceArea = ratio * parent->surfaceArea;
+        node->bound = AABB(ax, ay, az, bx, by, bz);
+    }
+    else{ // Right child node
+        if(parent->splitAxis == 0) ax = ax + ratio * (bx-ax);
+        if(parent->splitAxis == 1) ay = ay + ratio * (by-ay);
+        if(parent->splitAxis == 2) az = az + ratio * (bz-az);
+        node->surfaceArea = (1.0-ratio) * parent->surfaceArea;
+        node->bound = AABB(ax, ay, az, bx, by, bz);
+    }
+}
+
+void SimpleKDTreeFactory::onRootBoundariesDigestPrimitive(
+    Primitive *primitive,
+    double &ax,
+    double &ay,
+    double &az,
+    double &bx,
+    double &by,
+    double &bz
+) const {
+    Vertex * vertices = primitive->getVertices();
+    size_t const m = primitive->getNumVertices();
+    for(size_t i = 0 ; i < m ; ++i){
+        Vertex *vertex = vertices+i;
+        if(vertex->getX() < ax) ax = vertex->getX();
+        if(vertex->getY() < ay) ay = vertex->getY();
+        if(vertex->getZ() < az) az = vertex->getZ();
+        if(vertex->getX() > bx) bx = vertex->getX();
+        if(vertex->getY() > by) by = vertex->getY();
+        if(vertex->getZ() > bz) bz = vertex->getZ();
+    }
+}
+
+void SimpleKDTreeFactory::onComputeNodeBoundariesCalcSAH(
+    KDTreeNode *node,
+    double const ax,
+    double const ay,
+    double const az,
+    double const bx,
+    double const by,
+    double const bz
+) const {
+    double const lx = bx-ax;
+    double const ly = by-ay;
+    double const lz = bz-az;
+    node->surfaceArea = 2*(lx*ly + lx*lz + ly*lz);
+    node->bound = AABB(ax, ay, az, bx, by, bz);
 }
 
 // ***  GEOMETRY LEVEL BUILDING  *** //
 // ********************************* //
+void SimpleKDTreeFactory::GEOM_computeNodeBoundaries(
+    KDTreeNode *node,
+    KDTreeNode *parent,
+    bool const left,
+    vector<Primitive *> const &primitives,
+    int const assignedThreads
+){
+    // Find surface area and minimum and maximum positions for root node
+    if(parent == nullptr){
+        // Distribute workload
+        size_t const numPrimitives = primitives.size();
+        size_t const chunkSize = numPrimitives / ((size_t)assignedThreads);
+        int const extraThreads = assignedThreads - 1;
+        std::shared_ptr<SharedTaskSequencer> stSequencer = \
+            std::make_shared<SharedTaskSequencer>(extraThreads);
+        vector<double> Ax(assignedThreads, std::numeric_limits<double>::max());
+        vector<double> Ay = Ax, Az = Ax;
+        vector<double> Bx(
+            assignedThreads,
+            std::numeric_limits<double>::lowest()
+        );
+        vector<double> By = Bx, Bz = Bx;
+        for(int i = 0 ; i < extraThreads ; ++i){
+            stSequencer->start(
+                std::make_shared<SimpleKDTreeComputeRootNodeBoundariesSubTask>(
+                    stSequencer,
+                    primitives,
+                    i*chunkSize,
+                    (i+1)*chunkSize,
+                    Ax[i], Ay[i], Az[i],
+                    Bx[i], By[i], Bz[i],
+                    [&] (
+                        Primitive *primitive,
+                        double &ax,
+                        double &ay,
+                        double &az,
+                        double &bx,
+                        double &by,
+                        double &bz
+                    ) -> void {
+                        this->onRootBoundariesDigestPrimitive(
+                            primitive,
+                            ax, ay, az,
+                            bx, by, bz
+                        );
+                    }
+                )
+            );
+        }
+        SimpleKDTreeComputeRootNodeBoundariesSubTask(
+            nullptr,
+            primitives,
+            extraThreads*chunkSize,
+            numPrimitives,
+            Ax[extraThreads], Ay[extraThreads], Az[extraThreads],
+            Bx[extraThreads], By[extraThreads], Bz[extraThreads],
+            [&] (
+                Primitive *primitive,
+                double &ax,
+                double &ay,
+                double &az,
+                double &bx,
+                double &by,
+                double &bz
+            ) -> void {
+                this->onRootBoundariesDigestPrimitive(
+                    primitive,
+                    ax, ay, az,
+                    bx, by, bz
+                );
+            }
+        )();
+
+        // Wait until workload has been consumed
+        stSequencer->joinAll();
+
+        // Reduce (a,b)
+        double const ax = Vector<double>::min(Ax);
+        double const ay = Vector<double>::min(Ay);
+        double const az = Vector<double>::min(Az);
+        double const bx = Vector<double>::max(Bx);
+        double const by = Vector<double>::max(By);
+        double const bz = Vector<double>::max(Bz);
+
+        // Compute surface area
+        onComputeNodeBoundariesCalcSAH(node, ax, ay, az, bx, by, bz);
+    }
+    // Find surface area and minimum and maximum positions for child node
+    else{
+        computeMinMaxSAHForChild(node, parent, left, primitives);
+    }
+}
+
 void SimpleKDTreeFactory::GEOM_populateSplits(
     vector<Primitive *> const &primitives,
     int const splitAxis,
@@ -322,7 +471,22 @@ void SimpleKDTreeFactory::GEOM_populateSplits(
             leftPrims[i],
             rightPrims[i],
             i*chunkSize,
-            (i+1)*chunkSize
+            (i+1)*chunkSize,
+            [&] (
+                Primitive * p,
+                int const splitAxis,
+                double const splitPos,
+                vector<Primitive *> &leftPrimitives,
+                vector<Primitive *> &rightPrimitives
+            ) -> void {
+                this->onPopulateSplitsDigestPrimitive(
+                    p,
+                    splitAxis,
+                    splitPos,
+                    leftPrimitives,
+                    rightPrimitives
+                );
+            }
         ));
     }
     SimpleKDTreePopulateSplitsSubTask(
@@ -333,7 +497,22 @@ void SimpleKDTreeFactory::GEOM_populateSplits(
         leftPrims[extraThreads],
         rightPrims[extraThreads],
         extraThreads*chunkSize,
-        primitives.size()
+        numPrimitives,
+        [&] (
+            Primitive * p,
+            int const splitAxis,
+            double const splitPos,
+            vector<Primitive *> &leftPrimitives,
+            vector<Primitive *> &rightPrimitives
+        ) -> void{
+            this->onPopulateSplitsDigestPrimitive(
+                p,
+                splitAxis,
+                splitPos,
+                leftPrimitives,
+                rightPrimitives
+            );
+        }
     )();
 
     // Wait until workload has been consumed
@@ -361,7 +540,8 @@ void SimpleKDTreeFactory::GEOM_buildChildrenNodes(
     int const depth,
     int const index,
     vector<Primitive *> &leftPrimitives,
-    vector<Primitive *> &rightPrimitives
+    vector<Primitive *> &rightPrimitives,
+    std::shared_ptr<SharedTaskSequencer> masters
 ){
     // TODO Rethink : Prevent duplicated code wrt to buildChildrenNodes
     size_t const primsSize = primitives.size();
@@ -370,31 +550,29 @@ void SimpleKDTreeFactory::GEOM_buildChildrenNodes(
         leftPrimitives.size() != primsSize &&
         rightPrimitives.size() != primsSize
     ){ // If there are primitives on both partitions, binary split the node
-        std::shared_ptr<SharedTaskSequencer> stSequencer = \
-            std::make_shared<SharedTaskSequencer>(1);
+        std::shared_ptr<SimpleKDTreeBuildChildrenNodesSubTask> task = nullptr;
         bool buildRightNode = !rightPrimitives.empty();
-        if(buildRightNode){
-            stSequencer->start(
-                std::make_shared<SimpleKDTreeBuildChildrenNodesSubTask>(
-                    stSequencer,
-                    node,
-                    rightPrimitives,
-                    depth,
-                    index,
-                    [&] (LightKDTreeNode *&child, KDTreeNode *node) -> void {
-                        this->setChild(child, node);
-                    },
-                    _buildRecursive
-                )
+        if(buildRightNode){ // Delegate right child node to another thread
+            task = std::make_shared<SimpleKDTreeBuildChildrenNodesSubTask>(
+                masters,
+                node,
+                rightPrimitives,
+                depth,
+                index,
+                [&] (LightKDTreeNode *&child, KDTreeNode *node) -> void {
+                    this->setChild(child, node);
+                },
+                _buildRecursive
             );
+            masters->start(task);
         }
-        if(!leftPrimitives.empty()){
+        if(!leftPrimitives.empty()){ // Compute left child node
             setChild(node->left, _buildRecursive(
                 node, true, leftPrimitives, depth + 1, 2*index
             ));
         }
-        if(buildRightNode){
-            stSequencer->joinAll();
+        if(buildRightNode){ // Wait until right child node has been built
+            task->getThread()->join();
         }
     }
     else {
