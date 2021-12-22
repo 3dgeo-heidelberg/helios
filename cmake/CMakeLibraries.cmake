@@ -3,9 +3,8 @@
 # Python bindings
 if(PYTHON_BINDING)
     if(NOT PYTHON_PATH)
-        find_package(PythonLibs)
+        find_package(Python3 REQUIRED COMPONENTS Interpreter Development)
     else()
-
         # Gets Major and Minor Python Versions
         STRING(REGEX REPLACE
                 "([0-9])([0-9])"
@@ -13,31 +12,14 @@ if(PYTHON_BINDING)
         list(GET VERSION 0 MAJOR)
         list(GET VERSION 1 MINOR)
 
+        set(Python3_ROOT_DIR ${PYTHON_PATH})
 
-        message(${PYTHON_PATH}/include/python${MAJOR}.${MINOR})
+        find_package(Python3 ${MAJOR}.${MINOR} EXACT REQUIRED COMPONENTS Interpreter Development)
 
-        if (WIN32 OR MSVC)
-        set(PYTHON_INCLUDE_DIRS ${PYTHON_PATH}/include)
-        set(PYTHON_LIBRARIES ${PYTHON_PATH}/libs/python${PYTHON_VERSION}.lib)
-        else()
-            if (EXISTS ${PYTHON_PATH}/include/python${MAJOR}.${MINOR}m)
-                set(PYTHON_INCLUDE_DIRS ${PYTHON_PATH}/include/python${MAJOR}.${MINOR}m)
-            elseif(EXISTS ${PYTHON_PATH}/include/python${MAJOR}.${MINOR})
-                set(PYTHON_INCLUDE_DIRS ${PYTHON_PATH}/include/python${MAJOR}.${MINOR})
-            endif()
-
-            if (EXISTS ${PYTHON_PATH}/lib/libpython${MAJOR}.${MINOR}m.so)
-                set(PYTHON_LIBRARIES ${PYTHON_PATH}/lib/libpython${MAJOR}.${MINOR}m.so)
-            elseif(EXISTS ${PYTHON_PATH}/lib/libpython${MAJOR}.${MINOR}.so)
-                set(PYTHON_LIBRARIES ${PYTHON_PATH}/lib/libpython${MAJOR}.${MINOR}.so)
-            endif()
-
-        endif()
     endif()
-    message("INCLUDING '${PYTHON_PATH}'")
-    include_directories (${PYTHON_INCLUDE_DIRS})
-    message("PYTHON_INCLUDE_DIRS: ${PYTHON_INCLUDE_DIRS}")
-    message("PYTHON_LIBRARIES: ${PYTHON_LIBRARIES}")
+    include_directories (${Python3_INCLUDE_DIRS})
+    message("PYTHON_INCLUDE_DIRS: ${Python3_INCLUDE_DIRS}")
+    message("PYTHON_LIBRARIES: ${Python3_LIBRARIES}")
     include_directories("src/pybinds/")
     file(GLOB_RECURSE pysources CONFIGURE_DEPENDS
         src/pybinds/*.cpp src/pybinds/*.hpp src/pybinds/*.h)
