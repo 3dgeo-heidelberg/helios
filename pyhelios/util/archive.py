@@ -27,7 +27,7 @@ import xml.etree.ElementTree as ET
 import itertools
 import warnings
 
-WORKING_DIR = str(Path(__file__).parent.parent.absolute())
+WORKING_DIR = str(Path(__file__).parent.parent.parent.absolute())
 HELIOS_DOI = "https://doi.org/10.5281/zenodo.4452870"
 
 
@@ -208,14 +208,16 @@ if __name__ == '__main__':
                 platform_file_new = Path(sim.platform_file).relative_to(WORKING_DIR)
             else:
                 platform_file_new = Path(sim.platform_file)
-            outzip.write(platform_file_new)
+            if platform_file_new not in [Path(file) for file in outzip.namelist()]:
+                outzip.write(platform_file_new)
 
         if sim.scanner_file not in [Path(file) for file in outzip.namelist()]:
             if Path(sim.scanner_file).is_absolute():
                 scanner_file_new = Path(sim.scanner_file).relative_to(WORKING_DIR)
             else:
                 scanner_file_new = Path(sim.scanner_file)
-            outzip.write(scanner_file_new)
+            if scanner_file_new not in [Path(file) for file in outzip.namelist()]:
+                outzip.write(scanner_file_new)
 
         with open(survey, "r") as f_survey:
             # replace absolute with relative file paths
@@ -239,7 +241,7 @@ if __name__ == '__main__':
     for path in run_path:
         if not path.parts[-1].startswith('helios'):
             outzip.write(path)
-    outzip.write(HELIOS_EXE)
+    outzip.write(HELIOS_EXE.relative_to(WORKING_DIR))
     zipurl = None
     if not Path('run').exists():
         warnings.warn('There is no run-folder in your root directory. Downloading run folder from GitHub repository')
