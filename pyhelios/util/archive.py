@@ -145,12 +145,11 @@ def get_latest_helios_version():
 
 if __name__ == '__main__':
 
-    HELIOS_EXE = Path(sys.argv[1])
+    HELIOS_EXE = Path(sys.argv[1]).resolve()
     if platform.system() == 'Windows' and HELIOS_EXE.suffix == '':
         HELIOS_EXE += '.exe'
     RUN_PATH = HELIOS_EXE.parent
-    sys.path.append(RUN_PATH)
-
+    sys.path.append(str(RUN_PATH))
     survey_path = Path(sys.argv[2])
     outfile = Path(sys.argv[3])
     allowed_suffixes = ['.zip', '.7z', '.rar', '.gz', '.tar']
