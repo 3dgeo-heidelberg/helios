@@ -133,7 +133,10 @@ def get_latest_helios_version():
         idx = html_content.find(search_text) + len(search_text)
         idx_end = html_content.find(end_text, idx)
         latest_version = html_content[idx:idx_end]
-    except HTTPError or URLError:
+    except URLError:
+        warnings.warn("Zenodo DOI not available.")
+        latest_version = '1.1.0'
+    except HTTPError:
         warnings.warn("Zenodo DOI not available.")
         latest_version = '1.1.0'
 
