@@ -88,7 +88,8 @@ void SAHKDTreeFactory::buildChildrenNodes(
         initILOT(node, primitives); // Lock not need, only sequential
     }
 
-    bool split = primitives.size() >= minSplitPrimitives;
+    bool split = \
+        checkNodeMustSplit(primitives, leftPrimitives, rightPrimitives);
     if(split){ // If split is possible because there are enough primitives
         // Compute node as internal
         double hi, hl, ho, ht;
@@ -121,9 +122,18 @@ void SAHKDTreeFactory::buildChildrenNodes(
 
     if(!split){
         // If no split, then make this node a leaf
-        node->splitAxis = -1;
-        node->primitives = std::make_shared<vector<Primitive *>>(primitives);
+        makeLeaf(node, primitives);
     }
+}
+
+// ***  BUILDING UTILS  *** //
+// ************************ //
+bool SAHKDTreeFactory::checkNodeMustSplit(
+    vector<Primitive *> const &primitives,
+    vector<Primitive *> const &leftPrimitives,
+    vector<Primitive *> const &rightPrimitives
+) const {
+    return primitives.size() >= minSplitPrimitives;
 }
 
 // ***  SAH UTILS  *** //

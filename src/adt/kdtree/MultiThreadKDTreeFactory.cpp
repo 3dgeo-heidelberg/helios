@@ -122,29 +122,83 @@ KDTreeNode * MultiThreadKDTreeFactory::buildRecursiveGeometryLevel(
     int const assignedThreads = 1+auxiliarThreads; // Total threads
 
     // Geometry-level parallel processing
-    // TODO Rethink : Prevent duplicated code (below is copy of SKDT::buildRec)
-    if(primitives.empty()) return nullptr;
-    KDTreeNode *node;
-    if(depth > 0) node = new KDTreeNode();
-    else node = new KDTreeNodeRoot();
-    kdtf->GEOM_computeNodeBoundaries(
-        node,
+    return kdtf->buildRecursiveRecipe(
         parent,
         left,
         primitives,
-        assignedThreads
+        depth,
+        index,
+        [&] (
+            KDTreeNode *node,
+            KDTreeNode *parent,
+            bool const left,
+            vector<Primitive *> const &primitives
+        ) -> void {
+            kdtf->GEOM_computeNodeBoundaries(
+                node,
+                parent,
+                left,
+                primitives,
+                assignedThreads
+            );
+        },
+        [&] (
+            KDTreeNode *node,
+            KDTreeNode *parent,
+            vector<Primitive *> &primitives,
+            int const depth
+        ) -> void {
+            kdtf->defineSplit(node, parent, primitives, depth);
+        },
+        [&] (
+            vector<Primitive *> const &primitives,
+            int const splitAxis,
+            double const splitPos,
+            vector<Primitive *> &leftPrimitives,
+            vector<Primitive *> &rightPrimitives
+        ) -> void {
+            kdtf->GEOM_populateSplits(
+                primitives,
+                splitAxis,
+                splitPos,
+                leftPrimitives,
+                rightPrimitives,
+                assignedThreads
+            );
+        },
+        [&] (
+            KDTreeNode *node,
+            KDTreeNode *parent,
+            vector<Primitive *> const &primitives,
+            int const depth,
+            int const index,
+            vector<Primitive *> &leftPrimitives,
+            vector<Primitive *> &rightPrimitives
+        ) -> void {
+            buildChildrenGeometryLevel(
+                node,
+                parent,
+                primitives,
+                depth,
+                index,
+                leftPrimitives,
+                rightPrimitives,
+                auxiliarThreads
+            );
+        }
     );
-    kdtf->defineSplit(node, parent, primitives, depth);
-    vector<Primitive*> leftPrimitives, rightPrimitives;
-    kdtf->GEOM_populateSplits(
-        primitives,
-        node->splitAxis,
-        node->splitPos,
-        leftPrimitives,
-        rightPrimitives,
-        assignedThreads
-    );
+}
 
+void MultiThreadKDTreeFactory::buildChildrenGeometryLevel(
+    KDTreeNode *node,
+    KDTreeNode *parent,
+    vector<Primitive *> const &primitives,
+    int const depth,
+    int const index,
+    vector<Primitive *> &leftPrimitives,
+    vector<Primitive *> &rightPrimitives,
+    int const auxiliarThreads
+){
     // Geometry-level building of children nodes
     if(depth == maxGeometryDepth){
         // Move auxiliar threads from geometry thread pool to node thread pool
@@ -175,7 +229,6 @@ KDTreeNode * MultiThreadKDTreeFactory::buildRecursiveGeometryLevel(
             masters
         );
     }
-    return node;
 }
 
 KDTreeNode * MultiThreadKDTreeFactory::buildRecursiveNodeLevel(

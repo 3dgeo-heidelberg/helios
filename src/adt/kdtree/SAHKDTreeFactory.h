@@ -397,6 +397,24 @@ public:
     ) override;
 
 protected:
+    // ***  BUILDING UTILS  *** //
+    // ************************ //
+    /**
+     * @brief Check wheter the node must be splitted (true) or not (false)
+     *  depending on its total primitives.
+     *
+     * For a SAH KDT a node must be splitted if there are enough primitives.
+     *
+     * @return True if node must be splitted, false otherwise
+     * @see SimpleKDTreeFactory::checkNodeMustSplit
+     * @see SimpleKDTreeFactory::minSplitPrimitives
+     */
+    bool checkNodeMustSplit(
+        vector<Primitive *> const &primitives,
+        vector<Primitive *> const &leftPrimitives,
+        vector<Primitive *> const &rightPrimitives
+    ) const override;
+
     // ***  SAH UTILS  *** //
     // ******************* //
     /**

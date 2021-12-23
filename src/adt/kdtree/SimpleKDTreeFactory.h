@@ -4,6 +4,7 @@
 #include <SharedTaskSequencer.h>
 
 #include <vector>
+#include <functional>
 
 class MultiThreadKDTreeFactory;
 
@@ -128,6 +129,69 @@ protected:
         int const index
     );
     /**
+     * @brief The recipe to of the recursive building algorithm. It is meant
+     *  to be used by the SimpleKDTreeFactory::buildRecursive but also by
+     *  any alternative implementation which shares the same recipe (global
+     *  logic) but changes the way some parts are computed. For instance, it
+     *  is used by the MultiThreadKDTreeFactory to handle geometry-level
+     *  parallelization
+     *
+     * @param f_computeNodeBoundaries The function to compute node boundaries.
+     *  For the base case it is SimpleKDTreeFactory::buildRecursive
+     * @param f_defineSplit The function to define split axis and position.
+     *  For the base case it is SimpleKDTreeFactory::computeNodeBoundaries
+     * @param f_populateSplits The function to populate left and right splits
+     *  with corresponding primitives. For the base case it is
+     *  SimpleKDTreeFactory::populateSplits
+     * @param f_buildChildrenNodes The function to build the children nodes
+     *  (left and right). For the base case it is
+     *  SimpleKDTreeFactory::buildChildrenNodes
+     *
+     * @see SimpleKDTreeFactory::buildRecursive
+     * @see SimpleKDTreeFactory::computeNodeBoundaries
+     * @see SimpleKDTreeFactory::defineSplit
+     * @see SimpleKDTreeFactory::populateSplits
+     * @see SimpleKDTreeFactory::buildChildrenNodes
+     * @see MultiThreadKDTreeFactory
+     *
+     * @return Built KDTree node
+     */
+    virtual KDTreeNode * buildRecursiveRecipe(
+        KDTreeNode *parent,
+        bool const left,
+        vector<Primitive *> &primitives,
+        int const depth,
+        int const index,
+        std::function<void(
+            KDTreeNode *node,
+            KDTreeNode *parent,
+            bool const left,
+            vector<Primitive *> const &primitives
+        )> f_computeNodeBoundaries,
+        std::function<void(
+            KDTreeNode *node,
+            KDTreeNode *parent,
+            vector<Primitive *> &primitives,
+            int const depth
+        )> f_defineSplit,
+        std::function<void(
+            vector<Primitive *> const &primitives,
+            int const splitAxis,
+            double const splitPos,
+            vector<Primitive *> &leftPrimitives,
+            vector<Primitive *> &rightPrimitives
+        )> f_populateSplits,
+        std::function<void(
+            KDTreeNode *node,
+            KDTreeNode *parent,
+            vector<Primitive *> const &primitives,
+            int const depth,
+            int const index,
+            vector<Primitive *> &leftPrimitives,
+            vector<Primitive *> &rightPrimitives
+        )> f_buildChildrenNodes
+    );
+    /**
      * @brief Analyze KDTree computing its max depth and the minimum and
      *  maximum number of primitives considering all nodes
      * @param root Root node to compute stats for given KDTreeNodeRoot
@@ -205,6 +269,7 @@ protected:
      *  nullptr
      * @param primitives Primitives of the node itself
      * @param depth Depth of current node
+     * @param index Index of current node at current depth
      * @param leftPrimitives Primitives for left child node
      * @param rightPrimitives Primitives for right child node
      */
@@ -348,6 +413,34 @@ protected:
         double const bx,
         double const by,
         double const bz
+    ) const;
+
+    /**
+     * @brief Check wheter the node must be splitted (true) or not (false)
+     *  depending on its total primitives and the ones that would be assigned
+     *  to left and right children.
+     *
+     * For a simple KDT a node must be splitted if there are enough primitives
+     *  and not all of them are contained neither in left nor in right children
+     *  nodes.
+     *
+     * @return True if node must be splitted, false otherwise
+     * @see SimpleKDTreeFactory::minSplitPrimitives
+     */
+    virtual bool checkNodeMustSplit(
+        vector<Primitive *> const &primitives,
+        vector<Primitive *> const &leftPrimitives,
+        vector<Primitive *> const &rightPrimitives
+    ) const;
+
+    /**
+     * @brief Make given node a leaf one
+     * @param[out] node Node to be made a leaf
+     * @param primitives Primitives for the leaf node
+     */
+    virtual void makeLeaf(
+        KDTreeNode *node,
+        vector<Primitive *> const &primitives
     ) const;
 
     // ***  GEOMETRY LEVEL BUILDING  *** //

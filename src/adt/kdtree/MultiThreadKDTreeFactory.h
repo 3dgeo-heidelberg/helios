@@ -251,7 +251,6 @@ protected:
      *  inequation, the last depth label can be defined as
      *  \f$d^* = \left\lfloor{\log_2{k}}\right\rfloor\f$
      *
-     *
      * @return Built KDTree node
      * @see MultiThreadKDTreeFactory::buildRecursive
      * @see MultiThreadKDTreeFactory::buildRecursiveNodeLevel
@@ -263,6 +262,21 @@ protected:
         vector<Primitive*> &primitives,
         int const depth,
         int const index
+    );
+    /**
+     * @brief Provide an alternative implementation for the building of left
+     *  and right children nodes.
+     * @see SimpleKDTreeFactory::buildChildrenNodes
+     */
+    void buildChildrenGeometryLevel(
+        KDTreeNode *node,
+        KDTreeNode *parent,
+        vector<Primitive *> const &primitives,
+        int const depth,
+        int const index,
+        vector<Primitive *> &leftPrimitives,
+        vector<Primitive *> &rightPrimitives,
+        int const auxiliarThreads
     );
     /**
      * @brief Recursively build a KDTree for given primitives using given
