@@ -24,14 +24,15 @@ For scientific and collaboration inquiries please contact the HELIOS++ team at h
 
 We have also published a [paper](https://doi.org/10.1016/j.rse.2021.112772) on HELIOS++. If you use HELIOS++ in a scientific context, please cite
 
-> Winiwarter, L., Esmorís Pena, A., Weiser, H., Anders, K., Martínez Sanchez, J., Searle, M., Höfle, B. (2021): **Virtual laser scanning with HELIOS++: A novel take on ray tracing-based simulation of topographic full-waveform 3D laser scanning**. _Remote Sensing of Environment_, 112772, doi:10.1016/j.rse.2021.112772 **[cs.CV]**
+> Winiwarter, L., Esmorís Pena, A., Weiser, H., Anders, K., Martínez Sanchez, J., Searle, M., Höfle, B. (2022): **Virtual laser scanning with HELIOS++: A novel take on ray tracing-based simulation of topographic full-waveform 3D laser scanning**. _Remote Sensing of Environment_, 269, doi:10.1016/j.rse.2021.112772
 
 BibTeX:
 ```
 article{heliosPlusPlus,
 title = {Virtual laser scanning with HELIOS++: A novel take on ray tracing-based simulation of topographic full-waveform 3D laser scanning},
 journal = {Remote Sensing of Environment},
-year = {2021},
+year = {2022},
+volume = {269},
 issn = {0034-4257},
 doi = {https://doi.org/10.1016/j.rse.2021.112772},
 url = {https://www.sciencedirect.com/science/article/pii/S0034425721004922},
@@ -153,12 +154,12 @@ The demo simulation can be executed as follows:
 
 **LINUX**
 ```
-./helios data/surveys/demo/tls_arbaro_demo.xml
+run/helios data/surveys/demo/tls_arbaro_demo.xml
 ```
 
 **WINDOWS**
 ```
-helios.exe data/surveys/demo/tls_arbaro_demo.xml
+run\helios.exe data/surveys/demo/tls_arbaro_demo.xml
 ```
 
 
