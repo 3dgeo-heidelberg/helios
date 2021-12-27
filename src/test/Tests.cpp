@@ -11,6 +11,7 @@
 #include <test/ScenePartSplitTest.h>
 #include <test/RigidMotionTest.h>
 #include <test/FluxionumTest.h>
+#include <test/HPCTest.h>
 
 #include <boost/filesystem.hpp>
 
@@ -85,6 +86,9 @@ void doTests(std::string const & testDir){
 
     FluxionumTest fluxionumTest;
     fluxionumTest.test(std::cout, TEST_COLOR);
+
+    HPCTest hpcTest;
+    hpcTest.test(std::cout, TEST_COLOR);
 }
 
 
