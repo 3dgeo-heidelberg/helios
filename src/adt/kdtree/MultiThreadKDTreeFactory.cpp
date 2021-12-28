@@ -148,7 +148,9 @@ KDTreeNode * MultiThreadKDTreeFactory::buildRecursiveGeometryLevel(
             vector<Primitive *> &primitives,
             int const depth
         ) -> void {
-            kdtf->defineSplit(node, parent, primitives, depth);
+            kdtf->GEOM_defineSplit(
+                node, parent, primitives, depth, assignedThreads
+            );
         },
         [&] (
             vector<Primitive *> const &primitives,

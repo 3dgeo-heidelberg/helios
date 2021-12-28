@@ -447,6 +447,20 @@ protected:
     // ********************************* //
     /**
      * @brief Geometry-level parallel version of the
+     *  SimpleKDTreeFactory::defineSplit function
+     * @param assignedThreads How many threads can be used to parallelize
+     *  computations
+     * @see SimpleKDTreeFactory::defineSplit
+     */
+    virtual void GEOM_defineSplit(
+        KDTreeNode *node,
+        KDTreeNode *parent,
+        vector<Primitive *> &primitives,
+        int const depth,
+        int const assignedThreads
+    ) const;
+    /**
+     * @brief Geometry-level parallel version of the
      *  SimpleKDTreeFactory::computeNodeBoundaries function
      * @param assignedThreads How many threads can be used to parallelize
      *  computations

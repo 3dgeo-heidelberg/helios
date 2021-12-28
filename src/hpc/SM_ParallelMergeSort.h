@@ -1,4 +1,9 @@
 #ifndef _SM_PARALLEL_MERGE_SORT_H_
+#define _SM_PARALLEL_MERGE_SORT_H_
+
+#include <SharedTaskSequencer.h>
+
+#include <memory>
 
 namespace helios{ namespace hpc {
 
@@ -49,7 +54,13 @@ protected:
      *
      * @see SM_ParallelMergeSort::numThreads
      */
-    size_t maxDepth;
+    int maxDepth;
+    /**
+     * @brief The shared task sequencer to handle concurrent execution of
+     *  multiple threads
+     * @see SharedTaskSequencer
+     */
+    std::shared_ptr<SharedTaskSequencer> stSequencer;
 
 public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //
@@ -157,7 +168,6 @@ public:
 };
 
 #include <hpc/SM_ParallelMergeSort.tpp>
-#define _SM_PARALLEL_MERGE_SORT_H_
 
 }}
 

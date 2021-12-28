@@ -7,7 +7,9 @@
 #include <SimpleKDTreeBuildChildrenNodesSubTask.h>
 #include <SimpleKDTreeComputeRootNodeBoundariesSubTask.h>
 #include <surfaceinspector/maths/Vector.hpp>
+#include <SM_ParallelMergeSort.h>
 
+using helios::hpc::SM_ParallelMergeSort;
 using SurfaceInspector::maths::Vector;
 
 // ***  CONSTRUCTION / DESTRUCTION  *** //
@@ -462,6 +464,35 @@ void SimpleKDTreeFactory::makeLeaf(
 
 // ***  GEOMETRY LEVEL BUILDING  *** //
 // ********************************* //
+void SimpleKDTreeFactory::GEOM_defineSplit(
+    KDTreeNode *node,
+    KDTreeNode *parent,
+    vector<Primitive *> &primitives,
+    int const depth,
+    int const assignedThreads
+) const {
+    // TODO Rethink : Prevent duplicated code wrt to defineSplit (non GEOM)
+    // Find split axis
+    node->splitAxis = depth % 3;
+
+    // Sort faces along split axis:
+    // ATTENTION: Sorting must happen BEFORE splitPos is computed as the median
+    // Sort primitives along split axis:
+    SM_ParallelMergeSort<
+        vector<Primitive *>::iterator,
+        KDTreePrimitiveComparator
+    > sorter(assignedThreads, assignedThreads*2);
+    sorter.sort(
+        primitives.begin(),
+        primitives.end(),
+        KDTreePrimitiveComparator(node->splitAxis)
+    );
+
+    // Compute split position from centroid of median primitive
+    auto p = next(primitives.begin(), primitives.size()/2);
+    node->splitPos = (*p)->getCentroid()[node->splitAxis];
+}
+
 void SimpleKDTreeFactory::GEOM_computeNodeBoundaries(
     KDTreeNode *node,
     KDTreeNode *parent,

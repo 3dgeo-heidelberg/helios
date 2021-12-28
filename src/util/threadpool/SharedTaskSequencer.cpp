@@ -19,16 +19,15 @@ void SharedTaskSequencer::start(std::shared_ptr<SharedSubTask> subTask){
     }
     --availableThreads;
     startThread(subTask);
-    ++nextSharedSubTaskKey;
     uniqueLock.unlock();
 }
 
 void SharedTaskSequencer::startThread(std::shared_ptr<SharedSubTask> subTask){
+    subTask->setKey(nextSharedSubTaskKey);
+    subTasks.emplace(nextSharedSubTaskKey, subTask);
     subTask->setThread(std::make_shared<boost::thread>(
         SmartSharedFunctorContainer<SharedSubTask>(subTask)
     ));
-    subTask->setKey(nextSharedSubTaskKey);
-    subTasks.emplace(nextSharedSubTaskKey, subTask);
     ++nextSharedSubTaskKey;
 }
 

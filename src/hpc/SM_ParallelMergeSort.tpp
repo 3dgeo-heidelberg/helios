@@ -1,13 +1,20 @@
 #ifndef _SM_PARALLEL_MERGE_SORT_H_
+#include <SM_ParallelMergeSort.h>
+#endif
+
+#include <SM_ParallelMergeSortSubTask.h>
 
 #include <algorithm>
 #include <iterator>
+
+using helios::hpc::SM_ParallelMergeSortSubTask;
 
 // ***  CONSTRUCTION / DESTRUCTION  *** //
 // ************************************ //
 template <typename RandomAccessIterator, typename Comparator>
 void SM_ParallelMergeSort<RandomAccessIterator, Comparator>::init(){
     maxDepth = (int) std::floor(std::log2(numThreads)); // d^*
+    stSequencer = std::make_shared<SharedTaskSequencer>(numThreads);
 }
 
 // ***  SORT METHODS  *** //
@@ -18,21 +25,23 @@ void SM_ParallelMergeSort<RandomAccessIterator, Comparator>::trySort(
     RandomAccessIterator end,
     Comparator comparator
 ){
-    // Handle sequential sort cases
-    size_t const numElements = std::distance(begin, end); // m
-    if(numElements < minElements || numThreads==1){
-        std::sort(begin, end, comparator);
-    }
-
-    // TODO Rethink : Implement handling of parallel cases
-    std::sort(begin, end, comparator); // TODO Remove
+    stSequencer->start(std::make_shared<
+        SM_ParallelMergeSortSubTask<RandomAccessIterator, Comparator>
+    >(
+        stSequencer,
+        0,
+        numThreads,
+        minElements,
+        maxDepth,
+        begin,
+        end,
+        comparator
+    ));
 }
 
 // ***  CONTROL METHODS  *** //
 // ************************* //
 template <typename RandomAccessIterator, typename Comparator>
 void SM_ParallelMergeSort<RandomAccessIterator, Comparator>::join(){
-    // TODO Rethink : Implement join mechanism
+    stSequencer->joinAll();
 }
-
-#endif
