@@ -7,7 +7,6 @@
 
 namespace helios{ namespace hpc {
 
-
 /**
  * @author Alberto M. Esmoris Pena
  * @version 1.0

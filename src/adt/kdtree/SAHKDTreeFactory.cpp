@@ -1,6 +1,9 @@
 #include <SAHKDTreeFactory.h>
+#include <SimpleKDTreeBuildChildrenNodesSubTask.h>
+#include <SAHKDTreeComputeLossNodesSubTask.h>
+#include <SM_ParallelMergeSort.h>
 
-#include <KDTreePrimitiveComparator.h>
+using helios::hpc::SM_ParallelMergeSort;
 
 // ***  CONSTRUCTION / DESTRUCTION  *** //
 // ************************************ //
@@ -84,12 +87,58 @@ void SAHKDTreeFactory::buildChildrenNodes(
     vector<Primitive *> &leftPrimitives,
     vector<Primitive *> &rightPrimitives
 ) {
+    // Call recipe to build children nodes
+    buildChildrenNodesRecipe(
+        node,
+        parent,
+        primitives,
+        depth,
+        index,
+        leftPrimitives,
+        rightPrimitives,
+        [&] (
+            KDTreeNode *node,
+            int const depth,
+            int const index,
+            vector<Primitive *> &leftPrimitives,
+            vector<Primitive *> &rightPrimitives
+        ) -> void {
+            if(!leftPrimitives.empty()){ // Build left child
+                setChild(node->left, _buildRecursive(
+                    node, true, leftPrimitives, depth + 1, 2*index
+                ));
+            }
+            if(!rightPrimitives.empty()){ // Build right child
+                setChild(node->right, _buildRecursive(
+                    node, false, rightPrimitives, depth + 1, 2*index + 1
+                    ));
+            }
+        }
+    );
+}
+
+void SAHKDTreeFactory::buildChildrenNodesRecipe(
+    KDTreeNode *node,
+    KDTreeNode *parent,
+    vector<Primitive *> const &primitives,
+    int const depth,
+    int const index,
+    vector<Primitive *> &leftPrimitives,
+    vector<Primitive *> &rightPrimitives,
+    std::function<void(
+        KDTreeNode *node,
+        int const depth,
+        int const index,
+        vector<Primitive *> &leftPrimitives,
+        vector<Primitive *> &rightPrimitives
+    )>f_buildChildrenNodes
+){
     if(parent==nullptr){ // Compute parent heuristic (INIT ILOT)
         initILOT(node, primitives); // Lock not need, only sequential
     }
 
     bool split = \
-        checkNodeMustSplit(primitives, leftPrimitives, rightPrimitives);
+    checkNodeMustSplit(primitives, leftPrimitives, rightPrimitives);
     if(split){ // If split is possible because there are enough primitives
         // Compute node as internal
         double hi, hl, ho, ht;
@@ -103,25 +152,20 @@ void SAHKDTreeFactory::buildChildrenNodes(
         if(ht < getCacheT()){
             toILOTCache(hi, hl, ho, ht);  // Update heuristic ILOT cache
             _unlockILOT(); // Unlock ILOT cache
-            if(!leftPrimitives.empty()){ // Build left child
-                setChild(node->left, _buildRecursive(
-                    node, true, leftPrimitives, depth + 1, 2*index + 1
-                ));
-            }
-            if(!rightPrimitives.empty()){ // Build right child
-                setChild(node->right, _buildRecursive(
-                    node, false, rightPrimitives, depth + 1, 2*index + 1
-                ));
-            }
+            f_buildChildrenNodes(
+                node,
+                depth,
+                index,
+                leftPrimitives,
+                rightPrimitives
+            );
         }
         else { // But if cost is not smaller than previous one
             _unlockILOT(); // Unlock ILOT cache if finally not splitted
             split = false; // Flag as not splitted
         }
     }
-
-    if(!split){
-        // If no split, then make this node a leaf
+    if(!split){ // If no split, then make this node a leaf
         makeLeaf(node, primitives);
     }
 }
@@ -156,12 +200,95 @@ double SAHKDTreeFactory::splitLoss(
     return r*((double)lps) + (1.0-r)*((double)rps);
 }
 
+void SAHKDTreeFactory::computeBestSplit(
+    vector<Primitive *> &primitives,
+    size_t const lossNodes,
+    double const start,
+    double const step,
+    int const splitAxis,
+    double const minBound,
+    double const boundLength,
+    double &loss,
+    double &splitPos
+) const {
+    for(size_t i = 0 ; i < lossNodes ; ++i){
+        double const phi = start + ((double)i)*step;
+        double const newLoss = splitLoss(
+            primitives,
+            splitAxis,
+            phi,
+            (phi-minBound) / boundLength
+        );
+        if(newLoss < loss){
+            loss = newLoss;
+            splitPos = phi;
+        }
+    }
+}
+
 double SAHKDTreeFactory::findSplitPositionBySAH(
     KDTreeNode *node,
     vector<Primitive *> &primitives
 ) const{
+    // Call recipe to find split position by SAH
+    return findSplitPositionBySAHRecipe(
+        node,
+        primitives,
+        [&] (
+            vector<Primitive *>::iterator begin,
+            vector<Primitive *>::iterator end,
+            KDTreePrimitiveComparator comparator
+        ) -> void {
+            std::sort(begin, end, comparator);
+        },
+        [&] (
+            vector<Primitive *> &primitives,
+            size_t const lossNodes,
+            double const start,
+            double const step,
+            int const splitAxis,
+            double const minBound,
+            double const boundLength,
+            double &loss,
+            double &splitPos
+        ) -> void {
+            computeBestSplit(
+                primitives,
+                lossNodes,
+                start,
+                step,
+                splitAxis,
+                minBound,
+                boundLength,
+                loss,
+                node->splitPos
+            );
+        }
+    );
+}
+
+double SAHKDTreeFactory::findSplitPositionBySAHRecipe(
+    KDTreeNode *node,
+    vector<Primitive *> &primitives,
+    std::function<void(
+        vector<Primitive *>::iterator begin,
+        vector<Primitive *>::iterator end,
+        KDTreePrimitiveComparator comparator
+    )> f_sortPrimitives,
+    std::function<void(
+        vector<Primitive *> &primitives,
+        size_t const lossNodes,
+        double const start,
+        double const step,
+        int const splitAxis,
+        double const minBound,
+        double const boundLength,
+        double &loss,
+        double &splitPos
+    )> f_computeLossNodes
+) const {
     // Obtain the object median
-    std::sort(
+    f_sortPrimitives(
         primitives.begin(),
         primitives.end(),
         KDTreePrimitiveComparator(node->splitAxis)
@@ -179,21 +306,17 @@ double SAHKDTreeFactory::findSplitPositionBySAH(
     double const step = (mu>me) ? (mu-me)/((double)(lossNodes-1)) :
                         (me-mu)/((double)(lossNodes-1));
     double loss = std::numeric_limits<double>::max();
-    for(size_t i = 0 ; i < lossNodes ; ++i){
-        double const phi = start + ((double)i)*step;
-        double const newLoss = splitLoss(
-            primitives,
-            node->splitAxis,
-            phi,
-            (phi-a) / length
-        );
-        if(newLoss < loss){
-            loss = newLoss;
-            node->splitPos = phi;
-        }
-    }
-
-    // Store loss if requested
+    f_computeLossNodes(
+        primitives,
+        lossNodes,
+        start,
+        step,
+        node->splitAxis,
+        a,
+        length,
+        loss,
+        node->splitPos
+    );
     return loss;
 }
 
@@ -270,6 +393,188 @@ void SAHKDTreeFactory::internalizeILOT(
             rightSurfaceArea * ((double)rightPrimitives.size())
         ),
         cacheRoot->surfaceArea
+    );
+}
+
+// ***  GEOMETRY LEVEL BUILDING  *** //
+// ********************************* //
+void SAHKDTreeFactory::GEOM_defineSplit(
+    KDTreeNode *node,
+    KDTreeNode *parent,
+    vector<Primitive *> &primitives,
+    int const depth,
+    int const assignedThreads
+) const{
+    // Find split axis
+    node->splitAxis = depth % 3;
+    GEOM_findSplitPositionBySAH(node, primitives, assignedThreads);
+}
+
+double SAHKDTreeFactory::GEOM_findSplitPositionBySAH(
+    KDTreeNode *node,
+    vector<Primitive *> &primitives,
+    int const assignedThreads
+) const{
+    if(assignedThreads < 2){ // Sequential search
+        return findSplitPositionBySAH(node, primitives);
+    }
+    else{ // Parallel search
+        return findSplitPositionBySAHRecipe(
+            node,
+            primitives,
+            [&] (
+                vector<Primitive *>::iterator begin,
+                vector<Primitive *>::iterator end,
+                KDTreePrimitiveComparator comparator
+            ) -> void {
+                SM_ParallelMergeSort<
+                    vector<Primitive *>::iterator,
+                    KDTreePrimitiveComparator
+                > sorter(assignedThreads, assignedThreads*2);
+                sorter.sort(
+                    primitives.begin(),
+                    primitives.end(),
+                    KDTreePrimitiveComparator(node->splitAxis)
+                );
+            },
+            [&] (
+                vector<Primitive *> &primitives,
+                size_t const lossNodes,
+                double const start,
+                double const step,
+                int const splitAxis,
+                double const minBound,
+                double const boundLength,
+                double &loss,
+                double &splitPos
+            ) -> void {
+                // Distribute workload
+                size_t const chunkSize = lossNodes / ((size_t)assignedThreads);
+                int const extraThreads = assignedThreads - 1;
+                std::shared_ptr<SharedTaskSequencer> stSequencer = \
+                    std::make_shared<SharedTaskSequencer>(extraThreads);
+                vector<double> partialLoss(extraThreads, loss);
+                vector<double> partialSplitPos(extraThreads, 0);
+                for(int i = 0 ; i < extraThreads ; ++i){
+                    stSequencer->start(
+                        std::make_shared<SAHKDTreeComputeLossNodesSubTask>(
+                            stSequencer,
+                            primitives,
+                            start,
+                            step,
+                            node->splitAxis,
+                            minBound,
+                            boundLength,
+                            i*chunkSize,
+                            (i+1)*chunkSize,
+                            partialLoss[i],
+                            partialSplitPos[i],
+                            [&] (
+                                vector<Primitive *> const &primitives,
+                                int const splitAxis,
+                                double const splitPos,
+                                double const r
+                            ) -> double {
+                                return this->splitLoss(
+                                    primitives, splitAxis, splitPos, r
+                                );
+                            }
+                        )
+                    );
+                }
+                SAHKDTreeComputeLossNodesSubTask(
+                    nullptr,
+                    primitives,
+                    start,
+                    step,
+                    node->splitAxis,
+                    minBound,
+                    boundLength,
+                    extraThreads*chunkSize,
+                    lossNodes,
+                    partialLoss[extraThreads],
+                    partialSplitPos[extraThreads],
+                    [&] (
+                        vector<Primitive *> const &primitives,
+                        int const splitAxis,
+                        double const splitPos,
+                        double const r
+                    ) -> double {
+                        return this->splitLoss(
+                            primitives, splitAxis, splitPos, r
+                        );
+                    }
+                );
+
+                // Wait until workload has been consumed
+                stSequencer->joinAll();
+
+                // Reduce to best split
+                loss = partialLoss[0];
+                node->splitPos = partialSplitPos[0];
+                for(int i = 1 ; i < extraThreads ; ++i){
+                    if(partialLoss[i] < loss){
+                        loss = partialLoss[i];
+                        node->splitPos = partialSplitPos[i];
+                    }
+                }
+
+            }
+        );
+    }
+}
+
+void SAHKDTreeFactory::GEOM_buildChildrenNodes(
+    KDTreeNode *node,
+    KDTreeNode *parent,
+    vector<Primitive *> const &primitives,
+    int const depth,
+    int const index,
+    vector<Primitive *> &leftPrimitives,
+    vector<Primitive *> &rightPrimitives,
+    std::shared_ptr<SharedTaskSequencer> masters
+) {
+    // Call recipe to build children nodes
+    buildChildrenNodesRecipe(
+        node,
+        parent,
+        primitives,
+        depth,
+        index,
+        leftPrimitives,
+        rightPrimitives,
+        [&] (
+            KDTreeNode *node,
+            int const depth,
+            int const index,
+            vector<Primitive *> &leftPrimitives,
+            vector<Primitive *> &rightPrimitives
+        ) -> void {
+            shared_ptr<SimpleKDTreeBuildChildrenNodesSubTask> task = nullptr;
+            bool buildRightNode = !rightPrimitives.empty();
+            if(buildRightNode){
+                task = std::make_shared<SimpleKDTreeBuildChildrenNodesSubTask>(
+                    masters,
+                    node,
+                    rightPrimitives,
+                    depth,
+                    index,
+                    [&] (LightKDTreeNode *&child, KDTreeNode *node) -> void {
+                        this->setChild(child, node);
+                    },
+                    _buildRecursive
+                );
+                masters->start(task);
+            }
+            if(!leftPrimitives.empty()){ // Build left child
+                setChild(node->left, _buildRecursive(
+                    node, true, leftPrimitives, depth + 1, 2*index
+                ));
+            }
+            if(buildRightNode){ // Wait until right child node has been built
+                task->getThread()->join();
+            }
+        }
     );
 }
 

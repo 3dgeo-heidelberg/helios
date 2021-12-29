@@ -129,7 +129,7 @@ protected:
         int const index
     );
     /**
-     * @brief The recipe to of the recursive building algorithm. It is meant
+     * @brief The recipe of the recursive building algorithm. It is meant
      *  to be used by the SimpleKDTreeFactory::buildRecursive but also by
      *  any alternative implementation which shares the same recipe (global
      *  logic) but changes the way some parts are computed. For instance, it
@@ -490,7 +490,7 @@ protected:
     ) const;
     /**
      * @brief Geometry-level parallel version of the
-     *  SimpleKDTreeFactory:::buildChildrenNodes function
+     *  SimpleKDTreeFactory::buildChildrenNodes function
      *
      * It is expected that this function is called at any depth before the
      *  last geometry-level depth. In consequence, the left node is delegated

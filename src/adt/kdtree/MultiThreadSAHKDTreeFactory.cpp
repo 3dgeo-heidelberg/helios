@@ -19,5 +19,4 @@ MultiThreadSAHKDTreeFactory::MultiThreadSAHKDTreeFactory(
     sahkdtf->_unlockILOT = [&] () -> void {
         this->ilotCacheLock.reset();
     };
-
 }

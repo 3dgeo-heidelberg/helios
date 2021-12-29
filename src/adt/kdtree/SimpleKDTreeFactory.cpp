@@ -471,7 +471,6 @@ void SimpleKDTreeFactory::GEOM_defineSplit(
     int const depth,
     int const assignedThreads
 ) const {
-    // TODO Rethink : Prevent duplicated code wrt to defineSplit (non GEOM)
     // Find split axis
     node->splitAxis = depth % 3;
 
@@ -710,9 +709,7 @@ void SimpleKDTreeFactory::GEOM_buildChildrenNodes(
             task->getThread()->join();
         }
     }
-    else {
-        // Otherwise, make this node a leaf:
-        node->splitAxis = -1;
-        node->primitives = std::make_shared<vector<Primitive *>>(primitives);
+    else { // Otherwise, make this node a leaf:
+        makeLeaf(node, primitives);
     }
 }
