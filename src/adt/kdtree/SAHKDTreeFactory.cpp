@@ -413,7 +413,7 @@ void SAHKDTreeFactory::GEOM_defineSplit(
 double SAHKDTreeFactory::GEOM_findSplitPositionBySAH(
     KDTreeNode *node,
     vector<Primitive *> &primitives,
-    int const assignedThreads
+    int assignedThreads
 ) const{
     if(assignedThreads < 2){ // Sequential search
         return findSplitPositionBySAH(node, primitives);
@@ -449,6 +449,21 @@ double SAHKDTreeFactory::GEOM_findSplitPositionBySAH(
                 double &splitPos
             ) -> void {
                 // Distribute workload
+                /**
+                 * Using assignedThreads = min(assignedThreads, lossNodes) is
+                 *  expected to work properly because each node requires
+                 *  iterating over the entire set of primitives, which during
+                 *  upper tree levels (those handled by
+                 *      geometry-level parallelization) is expected to be high.
+                 * However, if performance problems are diagnosed when using
+                 *  lossNodes >= assignedThreads or even
+                 *  lossNodes+x >= assignedThreads for small values of x,
+                 *  then switching strategy to something like
+                 *  assignedThreads = min(assignedThreads, lossNodes/k),
+                 *  for k > 1, might alleviate the problem with an adequate k.
+                 */
+                if(assignedThreads > (int)lossNodes)
+                    assignedThreads = (int)lossNodes;
                 size_t const chunkSize = lossNodes / ((size_t)assignedThreads);
                 int const extraThreads = assignedThreads - 1;
                 std::shared_ptr<SharedTaskSequencer> stSequencer = \

@@ -471,7 +471,7 @@ protected:
         KDTreeNode *parent,
         bool const left,
         vector<Primitive *> const &primitives,
-        int const assignedThreads
+        int assignedThreads
     );
     /**
      * @brief Geometry-level parallel version of the
@@ -486,7 +486,7 @@ protected:
         double const splitPos,
         vector<Primitive *> &leftPrimitives,
         vector<Primitive *> &rightPrimitives,
-        int const assignedThreads
+        int assignedThreads
     ) const;
     /**
      * @brief Geometry-level parallel version of the

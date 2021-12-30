@@ -1,6 +1,7 @@
 #pragma once
 
 #include <SAHKDTreeFactory.h>
+#include <surfaceinspector/maths/Histogram.hpp>
 
 /**
  * @author Alberto M. Esmoris Pena
@@ -91,5 +92,62 @@ public:
     double findSplitPositionBySAH(
         KDTreeNode *node,
         vector<Primitive *> &primitives
+    ) const override;
+
+    /**
+     * @brief The recipe for finding split position by Fast-SAH algorithm. It
+     *  is meant to be used by the FastSAHKDTreeFactory::findSplitPositionBySAH
+     *  but also by any alternative implementation which shares the same recipe
+     *  (global logic) but changes the way some parts are computed. For
+     *  instance, it is used to handle geometry-level parallelization.
+     *
+     * @param f_extractMinMaxVertices Function to extract min and maximum
+     *  vertices from primitives
+     * @param f_buildHistograms Function to build histograms of min and max
+     *  vertices respectively
+     *
+     * @see FastSAHKDTreeFactory::findSplitPositionBySAH
+     * @see FastSAHKDTreeFactory::GEOM_findSplitPositionBySAH
+     * @see MultiThreadKDTreeFactory
+     *
+     * @return Loss of best split position. The position itself is already
+     *  stored in given node.
+     */
+    virtual double findSplitPositionByFastSAHRecipe(
+        KDTreeNode *node,
+        vector<Primitive *> &primitives,
+        std::function<void(
+            int const splitAxis,
+            double const minp,
+            double const maxp,
+            vector<Primitive *> &primitives,
+            vector<double> &minVerts,
+            vector<double> &maxVerts
+        )> f_extractMinMaxVertices,
+        std::function<void(
+            double const minp,
+            double const maxp,
+            vector<double> &minVerts,
+            vector<double> &maxVerts,
+            int const lossNodes,
+            std::unique_ptr<Histogram<double>> &Hmin,
+            std::unique_ptr<Histogram<double>> &Hmax
+        )> f_buildHistograms
+    ) const;
+
+    // ***  GEOMETRY LEVEL BUILDING  *** //
+    // ********************************* //
+    /**
+     * @brief Geometry-level parallel version of the
+     *  FastSAHKDTreeFactory::findSplitPositionBySAH function
+     *
+     * @param assignedThreads How many threads can be used to parallelize
+     *  computations
+     * @see FastSAHKDTreeFactory::findSplitPositionBySAH
+     */
+    double GEOM_findSplitPositionBySAH(
+        KDTreeNode *node,
+        vector<Primitive *> &primitives,
+        int assignedThreads
     ) const override;
 };

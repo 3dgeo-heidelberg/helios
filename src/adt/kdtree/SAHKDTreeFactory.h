@@ -587,7 +587,7 @@ protected:
         double const surfaceAreaInterior,
         double const surfaceAreaLeaf,
         vector<Primitive *> const &primitives
-    ) const ;
+    ) const;
 
     /**
      * @brief Compute the cumulative of \f$C_T\f$ heuristic ILOT.
@@ -675,7 +675,7 @@ protected:
     ) override;
     /**
      * @brief Geometry-level parallel version of the
-     *  SAHKDTreeFactory::findSplitPositionBySAH
+     *  SAHKDTreeFactory::findSplitPositionBySAH function
      *
      * @param assignedThreads How many threads can be used to parallelize
      *  computations
@@ -684,7 +684,7 @@ protected:
     virtual double GEOM_findSplitPositionBySAH(
         KDTreeNode *node,
         vector<Primitive *> &primitives,
-        int const assignedThreads
+        int assignedThreads
     ) const;
 
     // ***  CACHE UTILS  *** //

@@ -497,12 +497,25 @@ void SimpleKDTreeFactory::GEOM_computeNodeBoundaries(
     KDTreeNode *parent,
     bool const left,
     vector<Primitive *> const &primitives,
-    int const assignedThreads
+    int assignedThreads
 ){
     // Find surface area and minimum and maximum positions for root node
     if(parent == nullptr){
         // Distribute workload
         size_t const numPrimitives = primitives.size();
+        /*
+         * Using assignedThreads = min(assignedThreads, numPrimitives)
+         *  might degrade performance because the overhead of handling thread
+         *  contexts could overcome the improvement from parallelization.
+         * If this is detected, switching strategy to something like
+         *  assignedThreads = min(assignedThreads, numPrimitives/k), for k > 1,
+         *  might alleviate the problem with an adequate k.
+         * However, this is expected to be unlikely because geometry-level
+         *  parallelization is applied on upper tree nodes, where the number
+         *  of primitives stills high.
+         */
+        if(assignedThreads > (int)numPrimitives)
+            assignedThreads = (int)numPrimitives;
         size_t const chunkSize = numPrimitives / ((size_t)assignedThreads);
         int const extraThreads = assignedThreads - 1;
         std::shared_ptr<SharedTaskSequencer> stSequencer = \
@@ -591,10 +604,12 @@ void SimpleKDTreeFactory::GEOM_populateSplits(
     double const splitPos,
     vector<Primitive *> &leftPrimitives,
     vector<Primitive *> &rightPrimitives,
-    int const assignedThreads
+    int assignedThreads
 ) const {
     // Distribute workload
     size_t const numPrimitives = primitives.size();
+    if(assignedThreads > (int)numPrimitives)
+        assignedThreads = (int)numPrimitives;
     size_t const chunkSize = numPrimitives / ((size_t)assignedThreads);
     vector<vector<Primitive *>> leftPrims(assignedThreads);
     vector<vector<Primitive *>> rightPrims(assignedThreads);
