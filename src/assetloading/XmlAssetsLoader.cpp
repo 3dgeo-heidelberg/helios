@@ -509,8 +509,8 @@ XmlAssetsLoader::createScannerSettingsFromXml(tinyxml2::XMLElement *node) {
   template1->headRotateStop_rad = 0;
   template1->pulseFreq_Hz = 0;
   template1->scanAngle_rad = 0;
-  template1->verticalAngleMin_rad = 0;
-  template1->verticalAngleMax_rad = 0;
+  template1->verticalAngleMin_rad = NAN;
+  template1->verticalAngleMax_rad = NAN;
   template1->scanFreq_Hz = 0;
 
   if (node->Attribute("template") != nullptr) {

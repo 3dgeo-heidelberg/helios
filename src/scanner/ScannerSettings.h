@@ -57,11 +57,11 @@ public:
 	/**
 	 * @brief Minimum vertical angle (radians)
 	 */
-    double verticalAngleMin_rad = 0;
+    double verticalAngleMin_rad = NAN;
     /**
      * @brief Maximum vertical angle (radians)
      */
-    double verticalAngleMax_rad = 0;
+    double verticalAngleMax_rad = NAN;
     /**
      * @brief Scanning frequency (hertz)
      */
