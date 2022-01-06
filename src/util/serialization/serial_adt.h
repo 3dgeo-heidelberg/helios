@@ -3,6 +3,7 @@
 #include <IterableTreeNode.h>
 #include <MultiThreadKDTreeFactory.h>
 #include <MultiThreadSAHKDTreeFactory.h>
+#include <SimpleKDTreeGeometricStrategy.h>
 
 namespace boost{ namespace serialization{
 
@@ -61,7 +62,7 @@ void load_construct_data(
     ar >> numJobs;
 
     // Invoke inplace constructor
-    ::new(mtkdtf)MultiThreadKDTreeFactory(kdtf, numJobs);
+    ::new(mtkdtf)MultiThreadKDTreeFactory(kdtf, nullptr, numJobs);
 }
 
 template <class Archive>
@@ -88,6 +89,7 @@ void load_construct_data(
     ar >> numJobs;
 
     // Invoke inplace constructor
-    ::new(mtkdtf)MultiThreadSAHKDTreeFactory(kdtf, numJobs);
+    ::new(mtkdtf)MultiThreadSAHKDTreeFactory(kdtf, nullptr, numJobs);
 }
+
 }};

@@ -8,10 +8,12 @@ using SurfaceInspector::maths::Scalar;
 // ************************************ //
 MultiThreadKDTreeFactory::MultiThreadKDTreeFactory(
     shared_ptr<SimpleKDTreeFactory> const kdtf,
+    shared_ptr<SimpleKDTreeGeometricStrategy> const gs,
     size_t const numJobs
 ) :
     SimpleKDTreeFactory(),
     kdtf(kdtf),
+    gs(gs),
     tpNode(numJobs),
     minTaskPrimitives(32),
     numJobs(numJobs)
@@ -21,15 +23,18 @@ MultiThreadKDTreeFactory::MultiThreadKDTreeFactory(
      * parallelization is used no node-level parallelization occurs before
      * it must (at adequate depth)
      */
-    tpNode.setPendingTasks(numJobs);
+    //tpNode.setPendingTasks(numJobs); // TODO Restore
+    tpNode.setPendingTasks(0); // TODO Remove
 
     // Determine max geometry depth
-    maxGeometryDepth = (int) std::floor(std::log2(numJobs));
+    //maxGeometryDepth = (int) std::floor(std::log2(numJobs)); // TODO Restore
+    maxGeometryDepth = -1; // TODO Remove
 
     // Initialize shared task sequencer of master threads
-    masters = std::make_shared<SharedTaskSequencer>(
+    /*masters = std::make_shared<SharedTaskSequencer>( // TODO Restore
         Scalar<int>::pow2(maxGeometryDepth)-1
-    );
+    );*/
+    masters = nullptr; // TODO Remove
 
     /*
      * See SimpleKDTreeFactory constructor implementation to understand why
@@ -64,7 +69,7 @@ KDTreeNodeRoot * MultiThreadKDTreeFactory::makeFromPrimitivesUnsafe(
         0,              // Starting depth level (must be 0 for root node)
         0               // Starting index at depth 0 (must be 0 for root node)
     );
-    masters->joinAll(); // Join masters threads from geometry-level
+    //masters->joinAll(); // Join masters threads from geometry-level // TODO Restore
     tpNode.join(); // Join auxiliar threads from node-level
     if(root == nullptr){
         /*
@@ -95,10 +100,14 @@ KDTreeNode * MultiThreadKDTreeFactory::buildRecursive(
     int const depth,
     int const index
 ){
-    if(depth <= maxGeometryDepth)
+    if(depth <= maxGeometryDepth){
         return buildRecursiveGeometryLevel(
             parent, left, primitives, depth, index
         );
+    }
+    else if(parent==nullptr){ // TODO Rethink : Preserve this else if?
+        return kdtf->buildRecursive(parent, left, primitives, depth, index);
+    }
     return buildRecursiveNodeLevel(parent, left, primitives, depth, index);
 }
 
@@ -134,7 +143,7 @@ KDTreeNode * MultiThreadKDTreeFactory::buildRecursiveGeometryLevel(
             bool const left,
             vector<Primitive *> const &primitives
         ) -> void {
-            kdtf->GEOM_computeNodeBoundaries(
+            gs->GEOM_computeNodeBoundaries(
                 node,
                 parent,
                 left,
@@ -148,7 +157,7 @@ KDTreeNode * MultiThreadKDTreeFactory::buildRecursiveGeometryLevel(
             vector<Primitive *> &primitives,
             int const depth
         ) -> void {
-            kdtf->GEOM_defineSplit(
+            gs->GEOM_defineSplit(
                 node, parent, primitives, depth, assignedThreads
             );
         },
@@ -159,7 +168,7 @@ KDTreeNode * MultiThreadKDTreeFactory::buildRecursiveGeometryLevel(
             vector<Primitive *> &leftPrimitives,
             vector<Primitive *> &rightPrimitives
         ) -> void {
-            kdtf->GEOM_populateSplits(
+            gs->GEOM_populateSplits(
                 primitives,
                 splitAxis,
                 splitPos,
@@ -220,7 +229,7 @@ void MultiThreadKDTreeFactory::buildChildrenGeometryLevel(
         tpNode.safeSubtractPendingTasks(1);
     }
     else{
-        kdtf->GEOM_buildChildrenNodes(
+        gs->GEOM_buildChildrenNodes(
             node,
             parent,
             primitives,

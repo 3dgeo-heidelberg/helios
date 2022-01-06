@@ -1,7 +1,6 @@
 #pragma once
 
 #include <KDTreeFactory.h>
-#include <SharedTaskSequencer.h>
 
 #include <vector>
 #include <functional>
@@ -20,6 +19,7 @@ class SimpleKDTreeFactory : public KDTreeFactory{
     // ***  FRIENDS  *** //
     // ***************** //
     friend class MultiThreadKDTreeFactory;
+    friend class SimpleKDTreeGeometricStrategy;
 
 private:
     // ***  SERIALIZATION  *** //
@@ -443,73 +443,4 @@ protected:
         vector<Primitive *> const &primitives
     ) const;
 
-    // ***  GEOMETRY LEVEL BUILDING  *** //
-    // ********************************* //
-    /**
-     * @brief Geometry-level parallel version of the
-     *  SimpleKDTreeFactory::defineSplit function
-     * @param assignedThreads How many threads can be used to parallelize
-     *  computations
-     * @see SimpleKDTreeFactory::defineSplit
-     */
-    virtual void GEOM_defineSplit(
-        KDTreeNode *node,
-        KDTreeNode *parent,
-        vector<Primitive *> &primitives,
-        int const depth,
-        int const assignedThreads
-    ) const;
-    /**
-     * @brief Geometry-level parallel version of the
-     *  SimpleKDTreeFactory::computeNodeBoundaries function
-     * @param assignedThreads How many threads can be used to parallelize
-     *  computations
-     * @see SimpleKDTreeFactory::computeNodeBoundaries
-     */
-    virtual void GEOM_computeNodeBoundaries(
-        KDTreeNode *node,
-        KDTreeNode *parent,
-        bool const left,
-        vector<Primitive *> const &primitives,
-        int assignedThreads
-    );
-    /**
-     * @brief Geometry-level parallel version of the
-     *  SimpleKDTreeFactory::populateSplits function
-     * @param assignedThreads How many threads can be used to parallelize
-     *  computations
-     * @see SimpleKDTreeFactory::populateSplits
-     */
-    virtual void GEOM_populateSplits(
-        vector<Primitive *> const &primitives,
-        int const splitAxis,
-        double const splitPos,
-        vector<Primitive *> &leftPrimitives,
-        vector<Primitive *> &rightPrimitives,
-        int assignedThreads
-    ) const;
-    /**
-     * @brief Geometry-level parallel version of the
-     *  SimpleKDTreeFactory::buildChildrenNodes function
-     *
-     * It is expected that this function is called at any depth before the
-     *  last geometry-level depth. In consequence, the left node is delegated
-     *  upon current thread while right node is delegated upon a new created
-     *  thread for such purpose.
-     *
-     * @see SimpleKDTreeFactory::buildChildrenNodes
-     * @return True if a new master thread has been created, false otherwise.
-     *  This method will return when all pending work related to recursively
-     *  building of children nodes and all its descendants has been completed
-     */
-    virtual void GEOM_buildChildrenNodes(
-        KDTreeNode *node,
-        KDTreeNode *parent,
-        vector<Primitive *> const &primitives,
-        int const depth,
-        int const index,
-        vector<Primitive *> &leftPrimitives,
-        vector<Primitive *> &rightPrimitives,
-        std::shared_ptr<SharedTaskSequencer> masters
-    );
 };

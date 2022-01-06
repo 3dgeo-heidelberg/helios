@@ -12,6 +12,10 @@
 #include <MultiThreadSAHKDTreeFactory.h>
 #include <AxisSAHKDTreeFactory.h>
 #include <FastSAHKDTreeFactory.h>
+#include <SimpleKDTreeGeometricStrategy.h>
+#include <SAHKDTreeGeometricStrategy.h>
+#include <AxisSAHKDTreeGeometricStrategy.h>
+#include <FastSAHKDTreeGeometricStrategy.h>
 
 #include <logging.hpp>
 
@@ -350,7 +354,13 @@ shared_ptr<KDTreeFactory> XmlSceneLoader::makeKDTreeFactory(){
         shared_ptr<SimpleKDTreeFactory> factory =
             make_shared<SimpleKDTreeFactory>();
         if(kdtNumJobs > 1){
-            return make_shared<MultiThreadKDTreeFactory>(factory, kdtNumJobs);
+            shared_ptr<SimpleKDTreeGeometricStrategy> gs =
+                make_shared<SimpleKDTreeGeometricStrategy>(*factory);
+            return make_shared<MultiThreadKDTreeFactory>(
+                factory,
+                gs,
+                kdtNumJobs
+            );
         }
         return factory;
     }
@@ -359,8 +369,11 @@ shared_ptr<KDTreeFactory> XmlSceneLoader::makeKDTreeFactory(){
         shared_ptr<SAHKDTreeFactory> factory =
             make_shared<SAHKDTreeFactory>(kdtSAHLossNodes);
         if(kdtNumJobs > 1){
+            shared_ptr<SAHKDTreeGeometricStrategy> gs =
+                make_shared<SAHKDTreeGeometricStrategy>(*factory);
             return make_shared<MultiThreadSAHKDTreeFactory>(
                 factory,
+                gs,
                 kdtNumJobs
             );
         }
@@ -371,8 +384,11 @@ shared_ptr<KDTreeFactory> XmlSceneLoader::makeKDTreeFactory(){
         shared_ptr<AxisSAHKDTreeFactory> factory =
             make_shared<AxisSAHKDTreeFactory>(kdtSAHLossNodes);
         if(kdtNumJobs > 1){
+            shared_ptr<AxisSAHKDTreeGeometricStrategy> gs =
+                make_shared<AxisSAHKDTreeGeometricStrategy>(*factory);
             return make_shared<MultiThreadSAHKDTreeFactory>(
                 factory,
+                gs,
                 kdtNumJobs
             );
         }
@@ -383,8 +399,11 @@ shared_ptr<KDTreeFactory> XmlSceneLoader::makeKDTreeFactory(){
         shared_ptr<FastSAHKDTreeFactory> factory =
             make_shared<FastSAHKDTreeFactory>(kdtSAHLossNodes);
         if(kdtNumJobs > 1){
+            shared_ptr<FastSAHKDTreeGeometricStrategy> gs =
+                make_shared<FastSAHKDTreeGeometricStrategy>(*factory);
             return make_shared<MultiThreadSAHKDTreeFactory>(
                 factory,
+                gs,
                 kdtNumJobs
             );
         }

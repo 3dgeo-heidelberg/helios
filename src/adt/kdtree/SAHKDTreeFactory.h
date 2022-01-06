@@ -4,6 +4,7 @@
 #include <KDTreePrimitiveComparator.h>
 
 class MultiThreadSAHKDTreeFactory;
+class SAHKDTreeGeoemtricStrategy;
 
 /**
  * @author Alberto M. Esmoris Pena
@@ -126,6 +127,7 @@ class SAHKDTreeFactory : public SimpleKDTreeFactory{
     // ***  FRIENDS  *** //
     // ***************** //
     friend class MultiThreadSAHKDTreeFactory;
+    friend class SAHKDTreeGeometricStrategy;
 
 private:
     // ***  SERIALIZATION  *** //
@@ -325,7 +327,8 @@ public:
      * @see SAHKDTreeFactory::defineSplit
      * @see SAHKDTreeFactory::buildChildrenNodes
      */
-    void computeKDTreeStats(KDTreeNodeRoot *root) const override;
+    // TODO Restore below
+    //void computeKDTreeStats(KDTreeNodeRoot *root) const override;
 
     /**
      * @brief Build children nodes using \f$C_T\f$ heuristic to handle KDTree
@@ -639,53 +642,6 @@ protected:
         vector<Primitive *> const &leftPrimitives,
         vector<Primitive *> const &rightPrimitives
     );
-
-    // ***  GEOMETRY LEVEL BUILDING  *** //
-    // ********************************* //
-    /**
-     * @brief Geometry-level parallel version of the
-     *  SAHKDTreeFactory::defineSplit function
-     *
-     * @see SAHKDTreeFactory::defineSplit
-     * @see SimpleKDTreeFactory::GEOM_defineSplit
-     */
-    void GEOM_defineSplit(
-        KDTreeNode *node,
-        KDTreeNode *parent,
-        vector<Primitive *> &primitives,
-        int const depth,
-        int const assignedThreads
-    ) const override;
-    /**
-     * @brief Geometry-level parallel version of the
-     *  SAHKDTreeFactory::buildChildrenNodes
-     *
-     * @see SAHKDTreeFactory::buildChildrenNodes
-     * @see SimpleKDTreeFactory::GEOM_buildChildrenNodes
-     */
-    void GEOM_buildChildrenNodes(
-        KDTreeNode *node,
-        KDTreeNode *parent,
-        vector<Primitive *> const &primitives,
-        int const depth,
-        int const index,
-        vector<Primitive *> &leftPrimitives,
-        vector<Primitive *> &rightPrimitives,
-        std::shared_ptr<SharedTaskSequencer> masters
-    ) override;
-    /**
-     * @brief Geometry-level parallel version of the
-     *  SAHKDTreeFactory::findSplitPositionBySAH function
-     *
-     * @param assignedThreads How many threads can be used to parallelize
-     *  computations
-     * @see SAHKDTreeFactory::findSplitPositionBySAH
-     */
-    virtual double GEOM_findSplitPositionBySAH(
-        KDTreeNode *node,
-        vector<Primitive *> &primitives,
-        int assignedThreads
-    ) const;
 
     // ***  CACHE UTILS  *** //
     // ********************* //

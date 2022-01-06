@@ -82,7 +82,7 @@ SurveyPlayback::SurveyPlayback(
     // TODO Remove section ---
     std::cout   << "EXECUTION FINISHED BECAUSE ONLY KDT BUILDING MUST BE "
                 << "TESTED" << std::endl;
-    //std::exit(7);  // TODO Restore exit for the temporary debug section
+    std::exit(7);  // TODO Restore exit for the temporary debug section
     // --- TODO Remove section
 	// Orientate platform and start first leg
 	startLeg(0, true);

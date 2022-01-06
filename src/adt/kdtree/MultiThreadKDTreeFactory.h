@@ -1,6 +1,7 @@
 #pragma once
 
 #include <SimpleKDTreeFactory.h>
+#include <SimpleKDTreeGeometricStrategy.h>
 #include <KDTreeFactoryThreadPool.h>
 #include <SharedTaskSequencer.h>
 
@@ -63,6 +64,11 @@ protected:
      */
     shared_ptr<SimpleKDTreeFactory> kdtf;
     /**
+     * @brief The SimpleKDTreeGeometricStrategy or derived to be used to handle
+     *  geometry-level parallelization during multi-thread KDTree building
+     */
+    shared_ptr<SimpleKDTreeGeometricStrategy> gs;
+    /**
      * @brief The thread pool to handle concurrency during recursive KDTree
      *  building at node-level
      */
@@ -110,6 +116,7 @@ public:
      */
     MultiThreadKDTreeFactory(
         shared_ptr<SimpleKDTreeFactory> const kdtf,
+        shared_ptr<SimpleKDTreeGeometricStrategy> const gs,
         size_t const numJobs=2
     );
     virtual ~MultiThreadKDTreeFactory() = default;

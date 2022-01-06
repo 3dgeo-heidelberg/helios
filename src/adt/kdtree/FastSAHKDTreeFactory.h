@@ -134,20 +134,4 @@ public:
             std::unique_ptr<Histogram<double>> &Hmax
         )> f_buildHistograms
     ) const;
-
-    // ***  GEOMETRY LEVEL BUILDING  *** //
-    // ********************************* //
-    /**
-     * @brief Geometry-level parallel version of the
-     *  FastSAHKDTreeFactory::findSplitPositionBySAH function
-     *
-     * @param assignedThreads How many threads can be used to parallelize
-     *  computations
-     * @see FastSAHKDTreeFactory::findSplitPositionBySAH
-     */
-    double GEOM_findSplitPositionBySAH(
-        KDTreeNode *node,
-        vector<Primitive *> &primitives,
-        int assignedThreads
-    ) const override;
 };

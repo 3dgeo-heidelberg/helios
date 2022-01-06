@@ -62,19 +62,4 @@ public:
         int const depth
     ) const override;
 
-    // ***  GEOMETRY LEVEL BUILDING  *** //
-    // ********************************* //
-    /**
-     * @brief Extend SAHKDTreeFactory::GEOM_defineSplit to handle greedy
-     *  search of best split axis inside a geometry-level parallelization
-     *  context
-     * @see SAHKDTreeFactory::GEOM_defineSplit
-     */
-    void GEOM_defineSplit(
-        KDTreeNode *node,
-        KDTreeNode *parent,
-        vector<Primitive *> &primitives,
-        int const depth,
-        int const assignedThreads
-    ) const override;
 };
