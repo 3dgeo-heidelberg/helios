@@ -69,8 +69,8 @@ void PolygonMirrorBeamDeflector::doSimStep() {
 bool PolygonMirrorBeamDeflector::lastPulseLeftDevice() {
 
 	return std::fabs(this->state_currentBeamAngle_rad) <=
-	    std::min(this->cfg_device_scanAngleEffective_rad, this->cfg_setting_scanAngle_rad) //&&
-        // this->state_currentBeamAngle_rad > this->cfg_setting_verticalAngleMin_rad &&
-        //this->state_currentBeamAngle_rad <= this->cfg_setting_verticalAngleMax_rad
+	    std::min(this->cfg_device_scanAngleEffective_rad, this->cfg_setting_scanAngle_rad) &&
+        this->state_currentBeamAngle_rad > this->cfg_setting_verticalAngleMin_rad &&
+        this->state_currentBeamAngle_rad <= this->cfg_setting_verticalAngleMax_rad
         ;
 }
