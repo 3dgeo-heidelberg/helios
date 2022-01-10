@@ -135,7 +135,7 @@ void SAHKDTreeFactory::buildChildrenNodesRecipe(
     }
 
     bool split = \
-    checkNodeMustSplit(primitives, leftPrimitives, rightPrimitives);
+        checkNodeMustSplit(primitives, leftPrimitives, rightPrimitives);
     if(split){ // If split is possible because there are enough primitives
         // Compute node as internal
         double hi, hl, ho, ht;

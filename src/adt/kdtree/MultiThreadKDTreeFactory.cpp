@@ -23,18 +23,18 @@ MultiThreadKDTreeFactory::MultiThreadKDTreeFactory(
      * parallelization is used no node-level parallelization occurs before
      * it must (at adequate depth)
      */
-    //tpNode.setPendingTasks(numJobs); // TODO Restore
-    tpNode.setPendingTasks(0); // TODO Remove
+    tpNode.setPendingTasks(numJobs); // TODO Restore
+    //tpNode.setPendingTasks(0); // TODO Remove
 
     // Determine max geometry depth
-    //maxGeometryDepth = (int) std::floor(std::log2(numJobs)); // TODO Restore
-    maxGeometryDepth = -1; // TODO Remove
+    maxGeometryDepth = (int) std::floor(std::log2(numJobs)); // TODO Restore
+    //maxGeometryDepth = -1; // TODO Remove
 
     // Initialize shared task sequencer of master threads
-    /*masters = std::make_shared<SharedTaskSequencer>( // TODO Restore
+    masters = std::make_shared<SharedTaskSequencer>( // TODO Restore
         Scalar<int>::pow2(maxGeometryDepth)-1
-    );*/
-    masters = nullptr; // TODO Remove
+    );
+    //masters = nullptr; // TODO Remove
 
     /*
      * See SimpleKDTreeFactory constructor implementation to understand why
@@ -69,7 +69,7 @@ KDTreeNodeRoot * MultiThreadKDTreeFactory::makeFromPrimitivesUnsafe(
         0,              // Starting depth level (must be 0 for root node)
         0               // Starting index at depth 0 (must be 0 for root node)
     );
-    //masters->joinAll(); // Join masters threads from geometry-level // TODO Restore
+    masters->joinAll(); // Join masters threads from geometry-level // TODO Restore
     tpNode.join(); // Join auxiliar threads from node-level
     if(root == nullptr){
         /*

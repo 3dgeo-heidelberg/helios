@@ -117,21 +117,14 @@ public:
         KDTreeNode *node,
         vector<Primitive *> &primitives,
         std::function<void(
+            vector<Primitive *> &primitives,
             int const splitAxis,
             double const minp,
-            double const maxp,
-            vector<Primitive *> &primitives,
-            vector<double> &minVerts,
-            vector<double> &maxVerts
-        )> f_extractMinMaxVertices,
-        std::function<void(
-            double const minp,
-            double const maxp,
-            vector<double> &minVerts,
-            vector<double> &maxVerts,
-            int const lossNodes,
-            std::unique_ptr<Histogram<double>> &Hmin,
-            std::unique_ptr<Histogram<double>> &Hmax
-        )> f_buildHistograms
+            double const deltap,
+            size_t const lossNodes,
+            size_t const lossCases,
+            vector<size_t> &cForward,
+            vector<size_t> &cBackward
+        )> f_recount
     ) const;
 };

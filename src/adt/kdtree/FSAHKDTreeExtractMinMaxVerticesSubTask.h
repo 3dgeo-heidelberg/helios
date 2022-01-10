@@ -94,11 +94,11 @@ public:
      */
     void run() override{
         for(size_t i = startPrimitive ; i < endPrimitive ; ++i){
-            Primitive *q = primitives[i];
-            double const minq = q->getAABB()->getMin()[splitAxis];
-            double const maxq = q->getAABB()->getMax()[splitAxis];
-            minVerts.push_back((minq < minp) ? minp : minq);
-            maxVerts.push_back((maxq > maxp) ? maxp : maxq);
+            AABB *aabb = primitives[i]->getAABB();
+            double const minq = aabb->getMin()[splitAxis];
+            double const maxq = aabb->getMax()[splitAxis];
+            minVerts[i] = (minq < minp) ? minp : minq;
+            maxVerts[i] = (maxq > maxp) ? maxp : maxq;
         }
     }
 };

@@ -10,8 +10,10 @@ double FastSAHKDTreeGeometricStrategy::GEOM_findSplitPositionBySAH(
     vector<Primitive *> &primitives,
     int assignedThreads
 ) const {
+    return fsahkdtf.findSplitPositionBySAH(node, primitives); // TODO Remove
+    // TODO Restore below
     // Handle cases where sequential execution is preferred
-    if(assignedThreads==1 || ((int)primitives.size()) < 2*assignedThreads){
+    /*if(assignedThreads==1 || ((int)primitives.size()) < 2*assignedThreads){
         return fsahkdtf.findSplitPositionBySAH(node, primitives);
     }
     // Handle multi-thread cases
@@ -28,6 +30,8 @@ double FastSAHKDTreeGeometricStrategy::GEOM_findSplitPositionBySAH(
         ) -> void { // Extract min-max vertices
             // Distribute workload
             size_t const numPrimitives = primitives.size();
+            minVerts.resize(numPrimitives);
+            maxVerts.resize(numPrimitives);
             /*
              * Using assignedThreads = min(assignedThreads, numPrimitives)
              *  might degrade performance because the overhead of handling thread
@@ -39,14 +43,12 @@ double FastSAHKDTreeGeometricStrategy::GEOM_findSplitPositionBySAH(
              *  parallelization is applied on upper tree nodes, where the number
              *  of primitives stills high.
              */
-            if(assignedThreads > (int)numPrimitives)
+            /*if(assignedThreads > (int)numPrimitives)
                 assignedThreads = (int)numPrimitives;
             size_t const chunkSize = numPrimitives / ((size_t)assignedThreads);
             int const extraThreads = assignedThreads - 1;
             std::shared_ptr<SharedTaskSequencer> stSequencer = \
                 std::make_shared<SharedTaskSequencer>(extraThreads);
-            vector<vector<double>> localMinVerts(assignedThreads);
-            vector<vector<double>> localMaxVerts(assignedThreads);
             for(int i = 0 ; i < extraThreads ; ++i){
                 stSequencer->start(
                     std::make_shared<FSAHKDTreeExtractMinMaxVerticesSubTask>(
@@ -55,8 +57,8 @@ double FastSAHKDTreeGeometricStrategy::GEOM_findSplitPositionBySAH(
                         minp,
                         maxp,
                         primitives,
-                        localMinVerts[i],
-                        localMaxVerts[i],
+                        minVerts,
+                        maxVerts,
                         i*chunkSize,
                         (i+1)*chunkSize
                     )
@@ -68,28 +70,14 @@ double FastSAHKDTreeGeometricStrategy::GEOM_findSplitPositionBySAH(
                 minp,
                 maxp,
                 primitives,
-                localMinVerts[extraThreads],
-                localMaxVerts[extraThreads],
+                minVerts,
+                maxVerts,
                 extraThreads*chunkSize,
                 numPrimitives
             )();
 
             // Wait until workload has been consumed
             stSequencer->joinAll();
-
-            // Merge all local vertices together
-            for(int i = 0 ; i < assignedThreads ; ++i){
-                minVerts.insert(
-                    minVerts.end(),
-                    localMinVerts[i].begin(),
-                    localMinVerts[i].end()
-                );
-                maxVerts.insert(
-                    maxVerts.end(),
-                    localMaxVerts[i].begin(),
-                    localMaxVerts[i].end()
-                );
-            }
         },
         [&] (
             double const minp,
@@ -112,6 +100,6 @@ double FastSAHKDTreeGeometricStrategy::GEOM_findSplitPositionBySAH(
             ));
             stSequencer->joinAll();
         }
-    );
+    );*/
     // TODO Rethink : Use std::async for histograms instead of pointer subtask?
 }
