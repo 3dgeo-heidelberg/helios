@@ -9,32 +9,43 @@ using SurfaceInspector::maths::Scalar;
 MultiThreadKDTreeFactory::MultiThreadKDTreeFactory(
     shared_ptr<SimpleKDTreeFactory> const kdtf,
     shared_ptr<SimpleKDTreeGeometricStrategy> const gs,
-    size_t const numJobs
+    size_t const numJobs,
+    size_t const geomJobs
 ) :
     SimpleKDTreeFactory(),
     kdtf(kdtf),
     gs(gs),
     tpNode(numJobs),
     minTaskPrimitives(32),
-    numJobs(numJobs)
+    numJobs(numJobs),
+    geomJobs(geomJobs)
 {
     /*
      * Handle node thread pool start pending tasks so when geometry-level
      * parallelization is used no node-level parallelization occurs before
-     * it must (at adequate depth)
+     * it must (at adequate depth).
+     * Also handle max depth for geometry-level parallelization and initialize
+     * sequencer with masters thread for different nodes if necessary
      */
-    tpNode.setPendingTasks(numJobs); // TODO Restore
-    //tpNode.setPendingTasks(0); // TODO Remove
-
-    // Determine max geometry depth
-    maxGeometryDepth = (int) std::floor(std::log2(numJobs)); // TODO Restore
-    //maxGeometryDepth = -1; // TODO Remove
-
-    // Initialize shared task sequencer of master threads
-    masters = std::make_shared<SharedTaskSequencer>( // TODO Restore
-        Scalar<int>::pow2(maxGeometryDepth)-1
-    );
-    //masters = nullptr; // TODO Remove
+    if(geomJobs == 1){
+        tpNode.setPendingTasks(0);
+        maxGeometryDepth = -1;
+        masters = nullptr;
+    }
+    else if(geomJobs > 1){
+        tpNode.setPendingTasks(geomJobs);
+        maxGeometryDepth = (int) std::floor(std::log2(geomJobs));
+        masters = std::make_shared<SharedTaskSequencer>(
+            Scalar<int>::pow2(maxGeometryDepth)-1
+        );
+    }
+    else{
+        std::stringstream ss;
+        ss  << "MultiThreadKDTreeFactory failed to build because of "
+            << "unexpected number of jobs (" << geomJobs
+            << ") for geometry-level parallelization";
+        throw HeliosException(ss.str());
+    }
 
     /*
      * See SimpleKDTreeFactory constructor implementation to understand why
@@ -59,7 +70,9 @@ MultiThreadKDTreeFactory::MultiThreadKDTreeFactory(
 // ***  KDTREE FACTORY METHODS  *** //
 // ******************************** //
 KDTreeNodeRoot * MultiThreadKDTreeFactory::makeFromPrimitivesUnsafe(
-    vector<Primitive *> &primitives
+    vector<Primitive *> &primitives,
+    bool const computeStats,
+    bool const reportStats
 ){
     // Build the KDTree using a modifiable copy of primitives pointers vector
     KDTreeNodeRoot *root = (KDTreeNodeRoot *) kdtf->_buildRecursive(
@@ -69,7 +82,9 @@ KDTreeNodeRoot * MultiThreadKDTreeFactory::makeFromPrimitivesUnsafe(
         0,              // Starting depth level (must be 0 for root node)
         0               // Starting index at depth 0 (must be 0 for root node)
     );
-    masters->joinAll(); // Join masters threads from geometry-level // TODO Restore
+    if(masters != nullptr){
+        masters->joinAll(); // Join masters threads from geometry-level
+    }
     tpNode.join(); // Join auxiliar threads from node-level
     if(root == nullptr){
         /*
@@ -84,8 +99,10 @@ KDTreeNodeRoot * MultiThreadKDTreeFactory::makeFromPrimitivesUnsafe(
         logging::DEBUG(ss.str());
     }
     else{
-        computeKDTreeStats(root);
-        reportKDTreeStats(root, primitives);
+        if(computeStats){
+            computeKDTreeStats(root);
+            if(reportStats) reportKDTreeStats(root, primitives);
+        }
         if(buildLightNodes) lighten(root);
     }
     return root;
@@ -105,7 +122,7 @@ KDTreeNode * MultiThreadKDTreeFactory::buildRecursive(
             parent, left, primitives, depth, index
         );
     }
-    else if(parent==nullptr){ // TODO Rethink : Preserve this else if?
+    else if(parent==nullptr){
         return kdtf->buildRecursive(parent, left, primitives, depth, index);
     }
     return buildRecursiveNodeLevel(parent, left, primitives, depth, index);
@@ -120,8 +137,8 @@ KDTreeNode * MultiThreadKDTreeFactory::buildRecursiveGeometryLevel(
 ){
     // Compute work distribution strategy definition
     int const maxSplits = Scalar<int>::pow2(depth);
-    int const alpha = (int) std::floor(numJobs/maxSplits);
-    int const beta = numJobs % maxSplits;
+    int const alpha = (int) std::floor(geomJobs/maxSplits);
+    int const beta = geomJobs % maxSplits;
     bool const excess = index < (maxSplits - beta); // True when 1 extra thread
     int const a = (excess) ? index*alpha : index*(alpha+1) - maxSplits + beta;
     int const b = (excess) ?

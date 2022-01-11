@@ -327,8 +327,7 @@ public:
      * @see SAHKDTreeFactory::defineSplit
      * @see SAHKDTreeFactory::buildChildrenNodes
      */
-    // TODO Restore below
-    //void computeKDTreeStats(KDTreeNodeRoot *root) const override;
+    void computeKDTreeStats(KDTreeNodeRoot *root) const override;
 
     /**
      * @brief Build children nodes using \f$C_T\f$ heuristic to handle KDTree

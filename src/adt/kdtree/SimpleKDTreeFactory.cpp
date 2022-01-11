@@ -34,7 +34,9 @@ SimpleKDTreeFactory::SimpleKDTreeFactory() : minSplitPrimitives(5) {
 // ***  SIMPLE KDTREE FACTORY METHODS  *** //
 // *************************************** //
 KDTreeNodeRoot* SimpleKDTreeFactory::makeFromPrimitivesUnsafe(
-    vector<Primitive *> &primitives
+    vector<Primitive *> &primitives,
+    bool const computeStats,
+    bool const reportStats
 ) {
     // Build the KDTree using a modifiable copy of primitives pointers vector
     KDTreeNodeRoot *root = (KDTreeNodeRoot *) _buildRecursive(
@@ -57,8 +59,10 @@ KDTreeNodeRoot* SimpleKDTreeFactory::makeFromPrimitivesUnsafe(
         logging::DEBUG(ss.str());
     }
     else{
-        computeKDTreeStats(root);
-        reportKDTreeStats(root, primitives);
+        if(computeStats){
+            computeKDTreeStats(root);
+            if(reportStats) reportKDTreeStats(root, primitives);
+        }
         if(buildLightNodes) lighten(root);
     }
     return root;

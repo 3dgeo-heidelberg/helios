@@ -48,8 +48,7 @@ void SAHKDTreeFactory::defineSplit(
     findSplitPositionBySAH(node, primitives);
 };
 
-// TODO Restore below
-/*void SAHKDTreeFactory::computeKDTreeStats(KDTreeNodeRoot *root) const{
+void SAHKDTreeFactory::computeKDTreeStats(KDTreeNodeRoot *root) const{
     // Compute basic KDTree stats
     SimpleKDTreeFactory::computeKDTreeStats(root);
 
@@ -73,7 +72,7 @@ void SAHKDTreeFactory::defineSplit(
     }
     root->stats_totalCost =
         (ci*interiorAreaSum + cl*leafAreaSum + co*leafObjectAreaSum) / saRoot;
-}*/
+}
 
 void SAHKDTreeFactory::buildChildrenNodes(
     KDTreeNode *node,

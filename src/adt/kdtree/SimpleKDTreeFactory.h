@@ -92,7 +92,9 @@ public:
      * @return Pointer to root node of built simple KDTree
      */
     KDTreeNodeRoot * makeFromPrimitivesUnsafe(
-        vector<Primitive *> &primitives
+        vector<Primitive *> &primitives,
+        bool const computeStats=false,
+        bool const reportStats=false
     ) override;
 
 protected:

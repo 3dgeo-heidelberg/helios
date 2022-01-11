@@ -54,6 +54,11 @@ private:
         ar &kdtf;
         ar &minTaskPrimitives;
         //ar &tpNode; // No need to serialize because default built one is used
+        //ar &numJobs; // No need to serialize, inplace initialization
+        //ar &geomJobs; // No need to serialize, inplace initialization
+        //ar &gs; // No need to serialize, inplace initialization
+        //ar &maxGeometryDepth; // No need to serialize, inplace initialization
+        //ar &masters; // No need to serialize, inplace initialization
     }
 
 protected:
@@ -92,6 +97,11 @@ protected:
      */
     size_t numJobs;
     /**
+     * @brief The number of jobs (threads/workers) that this factory must use
+     *  when building upper KDTree nodes (geometry-level parallelization)
+     */
+    size_t geomJobs;
+    /**
      * @brief All masters threads (except main thread) are handled by this
      *  shared task sequencer
      *
@@ -117,7 +127,8 @@ public:
     MultiThreadKDTreeFactory(
         shared_ptr<SimpleKDTreeFactory> const kdtf,
         shared_ptr<SimpleKDTreeGeometricStrategy> const gs,
-        size_t const numJobs=2
+        size_t const numJobs=2,
+        size_t const geomJobs=2
     );
     virtual ~MultiThreadKDTreeFactory() = default;
 
@@ -130,7 +141,9 @@ public:
      * @see KDTreeFactory::makeFromPrimitivesUnsafe
      */
     KDTreeNodeRoot * makeFromPrimitivesUnsafe(
-        vector<Primitive *> &primitives
+        vector<Primitive *> &primitives,
+        bool const computeStats=false,
+        bool const reportStats=false
     ) override;
 
 protected:
@@ -345,4 +358,20 @@ public:
      */
     virtual inline size_t getPoolSize() const
     {return tpNode.getPoolSize();}
+    /**
+     * @brief Obtain the number of threads for node-level parallelization
+     * @return Number of threads for node-level parallelization
+     */
+    virtual inline size_t getNumJobs() const {return numJobs;}
+    /**
+     * @brief Obtain the number of threads for geometry-level parallelization
+     * @return Number of threads for geometry-level parallelization
+     */
+    virtual inline size_t getGeomJobs() const {return geomJobs;}
+    /**
+     * @brief Obtain the geometric strategy
+     * @return Geometric strategy
+     */
+    virtual inline shared_ptr<SimpleKDTreeGeometricStrategy> getGS() const
+    {return gs;}
 };

@@ -1,7 +1,6 @@
 #pragma once
 
 #include <SAHKDTreeFactory.h>
-#include <surfaceinspector/maths/Histogram.hpp>
 
 /**
  * @author Alberto M. Esmoris Pena
@@ -101,10 +100,8 @@ public:
      *  (global logic) but changes the way some parts are computed. For
      *  instance, it is used to handle geometry-level parallelization.
      *
-     * @param f_extractMinMaxVertices Function to extract min and maximum
-     *  vertices from primitives
-     * @param f_buildHistograms Function to build histograms of min and max
-     *  vertices respectively
+     * @param f_recount Function to count min and max vertices forward and
+     *  backward from binning
      *
      * @see FastSAHKDTreeFactory::findSplitPositionBySAH
      * @see FastSAHKDTreeFactory::GEOM_findSplitPositionBySAH

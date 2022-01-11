@@ -1,7 +1,5 @@
 #include <FastSAHKDTreeFactory.h>
 
-using SurfaceInspector::maths::Histogram;
-
 // ***  CONSTRUCTION / DESTRUCTION  *** //
 // ************************************ //
 FastSAHKDTreeFactory::FastSAHKDTreeFactory(
@@ -91,7 +89,7 @@ double FastSAHKDTreeFactory::findSplitPositionByFastSAHRecipe(
      *  for the fast SAH
      */
     // If there are not enough primitives, use a more accurate loss computation
-    /*if(primitives.size() <= numBins)
+    /*if(primitives.size() <= numBins)  // nBins = lossNodes
         return SAHKDTreeFactory::findSplitPositionBySAH(node, primitives);*/
 
     // Forward and backward count w.r.t. min and max vertices respectively
@@ -114,19 +112,13 @@ double FastSAHKDTreeFactory::findSplitPositionByFastSAHRecipe(
 
     // Approximated discrete search of optimal splitting plane
     double loss = (double) cBackward[0], newLoss;
-    //node->splitPos = Hmin.a[0]; // TODO Remove
     node->splitPos = minp;
     double const _lossNodes = (double) lossNodes;
     for(size_t i = 1 ; i <= lossNodes ; ++i){
         double const r = ((double)i) / _lossNodes;
-        // TODO Remove section ---
-        /*NoLr += Hmin.c[i-1];
-        NoRr -= Hmax.c[i-1];*/
-        // --- TODO Remove section
         newLoss = r*((double)cForward[i]) + (1.0-r)*((double)cBackward[i]);
         if(newLoss < loss){
             loss = newLoss;
-            //node->splitPos = Hmin.b[i-1]; // TODO Remove
             node->splitPos = (i < lossNodes) ?
                 minp + ((double)i)/_lossNodes * deltap : maxp;
         }
