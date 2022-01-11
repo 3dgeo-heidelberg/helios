@@ -79,7 +79,7 @@ def create_scenepart_obj(filepath: str, up_axis: str = "z", trafofilter: str = "
     scenepart = f"""
         <part>
             <filter type="objloader">
-                <param type="string" key="{filepath_mode}" value="{filepath} up="{up_axis}" />
+                <param type="string" key="{filepath_mode}" value="{filepath}" up="{up_axis}" />
             </filter>
             {trafofilter}
         </part>"""
