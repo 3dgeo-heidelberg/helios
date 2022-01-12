@@ -103,7 +103,19 @@ KDTreeNodeRoot * MultiThreadKDTreeFactory::makeFromPrimitivesUnsafe(
             computeKDTreeStats(root);
             if(reportStats) reportKDTreeStats(root, primitives);
         }
-        if(buildLightNodes) lighten(root);
+        if(buildLightNodes){
+            if(!computeStats){
+                /*
+                 * Efficient lighten requires tree stats (number of interior
+                 * nodes and number of leaf nodes) to be known. Thus, if stats
+                 * have not been computed but lighten is required, then
+                 * SimpleKDTree stats are computed as they are the fastest
+                 * ones which satisfy aforementioned requirements.
+                 */
+                SimpleKDTreeFactory::computeKDTreeStats(root);
+            }
+            lighten(root);
+        }
     }
     return root;
 }

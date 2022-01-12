@@ -112,7 +112,7 @@ private:
     // Build KDTree from primitives
     if(kdtf != nullptr){
       kdtree = std::shared_ptr<KDTreeNodeRoot>(
-        kdtf->makeFromPrimitivesUnsafe(primitives)
+        kdtf->makeFromPrimitivesUnsafe(primitives, true, true)
       );
     }
   }
