@@ -1,6 +1,6 @@
 <map id="SurveyPlayback" name="SurveyPlayback">
-<area shape="rect" id="node2" href="$d1/d7b/classSimulation.html" title="Class representing a simulation. " alt="" coords="833,49,916,76"/>
-<area shape="rect" id="node3" href="$de/d9a/classPulseTaskDropper.html" title="Class implementing a task dropper to deal with pulse tasks. " alt="" coords="579,49,709,76"/>
-<area shape="rect" id="node4" href="$d5/d2f/classBuddingTaskDropper.html" title="BuddingTaskDropper\l\&lt; PulseTaskDropper,\l PulseTask, PulseThreadPool\lInterface, std::vector\&lt; std\l::vector\&lt; double \&gt; \&gt; &amp;, RandomnessGenerator\l\&lt; double \&gt; &amp;, RandomnessGenerator\&lt; double\l \&gt; &amp;, NoiseSource\&lt; double \&gt; &amp; \&gt;" alt="" coords="235,5,529,120"/>
-<area shape="rect" id="node5" href="$da/d8d/classTaskDropper.html" title="TaskDropper\&lt; PulseTask,\l PulseThreadPoolInterface,\l TaskArgs... \&gt;" alt="" coords="5,35,185,91"/>
+<area shape="rect" id="node2" href="$d1/d7b/classSimulation.html" title="Class representing a simulation. " alt="" coords="1004,32,1087,59"/>
+<area shape="rect" id="node3" href="$de/d9a/classPulseTaskDropper.html" title="Class implementing a task dropper to deal with pulse tasks. " alt="" coords="749,71,880,97"/>
+<area shape="rect" id="node4" href="$d5/d2f/classBuddingTaskDropper.html" title="BuddingTaskDropper\l\&lt; PulseTaskDropper,\l PulseTask, PulseThreadPool\lInterface, std::vector\&lt; std\l::vector\&lt; double \&gt; \&gt; &amp;, RandomnessGenerator\l\&lt; double \&gt; &amp;, RandomnessGenerator\&lt; double\l \&gt; &amp;, NoiseSource\&lt; double \&gt; &amp; \&gt;" alt="" coords="405,68,700,183"/>
+<area shape="rect" id="node5" href="$da/d8d/classTaskDropper.html" title="TaskDropper\&lt; PulseTask,\l PulseThreadPoolInterface,\l TaskArgs... \&gt;" alt="" coords="176,67,356,123"/>
 </map>

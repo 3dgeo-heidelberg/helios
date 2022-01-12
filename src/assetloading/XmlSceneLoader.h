@@ -42,6 +42,15 @@ public:
      */
     size_t kdtNumJobs = 1;
     /**
+     * @brief How many threads must be used to build upper nodes of KDTree
+     * @see KDTreeFactory
+     * @see SimpleKDTreeFactory
+     * @see MultiThreadKDTreeFactory
+     * @see SAHKDTreeFactory
+     * @see MultiThreadSAHKDTreeFactory
+     */
+    size_t kdtGeomJobs = 1;
+    /**
      * @brief How many loss nodes for the Surface Area Heuristic if using a SAH
      *  like KDTree factory to build the scene
      */
