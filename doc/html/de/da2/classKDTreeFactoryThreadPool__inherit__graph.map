@@ -1,5 +1,5 @@
 <map id="KDTreeFactoryThreadPool" name="KDTreeFactoryThreadPool">
-<area shape="rect" id="node2" href="$d0/d21/classMDThreadPool.html" title="MDThreadPool\&lt; KDTreeBuild\lType, KDTreeNode *, bool\l const, vector\&lt; Primitive\l *\&gt; &amp;, int const \&gt;" alt="" coords="385,5,580,76"/>
+<area shape="rect" id="node2" href="$d0/d21/classMDThreadPool.html" title="MDThreadPool\&lt; KDTreeBuild\lType, KDTreeNode *, bool\l const, vector\&lt; Primitive\l *\&gt; &amp;, int const, int const \&gt;" alt="" coords="385,5,580,76"/>
 <area shape="rect" id="node3" href="$d2/d1f/classSimpleThreadPool.html" title="SimpleThreadPool\&lt; TaskArgs\l ... \&gt;" alt="" coords="141,20,337,61"/>
 <area shape="rect" id="node4" href="$dc/de7/classThreadPool.html" title="Base class providing core implementation of a thread pool to deal with multi threading tasks..." alt="" coords="5,27,93,54"/>
 </map>

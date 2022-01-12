@@ -10,6 +10,7 @@ var classXmlSceneLoader =
     [ "makeKDTreeFactory", "db/d91/classXmlSceneLoader.html#ad38181fad7a99fe5c4a4178fd32e9139", null ],
     [ "makeSceneDynamic", "db/d91/classXmlSceneLoader.html#a50c2f79a71fce7307f4cf1d5a15a79fe", null ],
     [ "kdtFactoryType", "db/d91/classXmlSceneLoader.html#a84baf9f46d993828f45c4ee31f368a25", null ],
+    [ "kdtGeomJobs", "db/d91/classXmlSceneLoader.html#ab836741a55b243177850a5ae1988921f", null ],
     [ "kdtNumJobs", "db/d91/classXmlSceneLoader.html#ad495e4e39332332bef0c658863eb8051", null ],
     [ "kdtSAHLossNodes", "db/d91/classXmlSceneLoader.html#ac76abb33c2f601b4ef5c1e69a39fa593", null ],
     [ "sceneSpec", "db/d91/classXmlSceneLoader.html#aa61eab0e070251e322dc07d612a80d1b", null ]

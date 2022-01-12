@@ -13,6 +13,7 @@ var classArgumentsParser =
     [ "parseFixedIncidenceAngle", "d7/d5c/classArgumentsParser.html#a4ff03c5a307080829b7c72477316253c", null ],
     [ "parseFullWaveNoise", "d7/d5c/classArgumentsParser.html#a01a623c8014d1d0745941e3d41dbd957", null ],
     [ "parseHelpRequest", "d7/d5c/classArgumentsParser.html#adfb3a765d1a087d7ce9d1b08613fdaff", null ],
+    [ "parseKDTreeGeometricJobs", "d7/d5c/classArgumentsParser.html#a5989d9d58f19cd0b5290a3ae89e7f0cd", null ],
     [ "parseKDTreeJobs", "d7/d5c/classArgumentsParser.html#aaf6e07ac4870778a2164b3307babdd30", null ],
     [ "parseKDTreeType", "d7/d5c/classArgumentsParser.html#a63afc3c3a1e1c948cb1d3b8ef81d9c4b", null ],
     [ "parseLas10", "d7/d5c/classArgumentsParser.html#af9124496c63acc99a4815099ffd720e4", null ],
