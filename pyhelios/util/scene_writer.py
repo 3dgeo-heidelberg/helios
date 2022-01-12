@@ -219,8 +219,8 @@ if __name__ == "__main__":
     # Usage Demo
     filters = add_transformation_filters(translation=[478335.125, 5473887.89, 0.0], rotation=[0, 0, 90], on_ground=-1)
 
-    sp = create_scenepart_tiff(r"data\sceneparts\tiff\dem_hd.tif",
-                               matfile=r"data\sceneparts\basic\groundplane\groundplane.mtl",
+    sp = create_scenepart_tiff("data/sceneparts/tiff/dem_hd.tif",
+                               matfile="data/sceneparts/basic/groundplane/groundplane.mtl",
                                matname="None")
     sp2 = create_scenepart_obj("data/sceneparts/arbaro/black_tupelo_low.obj", trafofilter=filters)
 

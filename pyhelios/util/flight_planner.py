@@ -190,6 +190,7 @@ def write_legs(waypoints, altitude, template_id, speed,
     for i, leg in enumerate(waypoints):
         if i % 2 == 0 or i == 0:
             xml_string += f'''
+        <!-- leg{i:03} -->
         <leg>
             <platformSettings x="{leg[0]}" y="{leg[1]}" z="{altitude}" movePerSec_m="{speed}" />
             <scannerSettings template="{template_id}" trajectoryTimeInterval_s="{trajectory_time_interval}" />
@@ -197,6 +198,7 @@ def write_legs(waypoints, altitude, template_id, speed,
         '''
         elif i % 2 != 0:
             xml_string += f'''
+        <!-- leg{i:03} -->
         <leg>
             <platformSettings x="{leg[0]}" y="{leg[1]}" z="{altitude}" movePerSec_m="{speed}" />
             <scannerSettings template="{template_id}" active="{active}" trajectoryTimeInterval_s="{trajectory_time_interval}" />
