@@ -6,7 +6,7 @@ import sys
 
 MAX_DIFFERENCE_BYTES = 1024
 DELETE_FILES_AFTER = False
-HELIOS_EXE = str(Path('build') / 'helios')
+HELIOS_EXE = str(Path('run') / 'helios')
 if sys.platform == "win32":
     HELIOS_EXE += ".exe"
 WORKING_DIR = str(Path(__file__).parent.parent.absolute())
@@ -33,11 +33,10 @@ def run_helios_executable(survey_path: Path, options=None) -> Path:
     return find_playback_dir(survey_path)
 
 def run_helios_pyhelios(survey_path: Path, options=None) -> Path:
-    sys.path.append(str((Path(WORKING_DIR) / 'build').absolute()))
+    sys.path.append(WORKING_DIR)
     import pyhelios
     pyhelios.setDefaultRandomnessGeneratorSeed("43")
-    from pyheliostools import SimulationBuilder
-
+    from pyhelios import SimulationBuilder
     simB = SimulationBuilder(
         surveyPath=str(survey_path.absolute()),
         assetsDir=WORKING_DIR + os.sep + 'assets' + os.sep,
@@ -123,12 +122,12 @@ def eval_detailedVoxels_uls(dirname):
     if DELETE_FILES_AFTER: shutil.rmtree(dirname)
 
 def test_xyzVoxels_tls_exe():
-    dirname_exe = run_helios_executable(Path('data') / 'surveys' / 'voxels' / 'tls_sphere_xyzloader_rgb_normals.xml',
+    dirname_exe = run_helios_executable(Path('data') / 'surveys' / 'voxels' / 'tls_sphere_xyzloader_normals.xml',
                                         options=['--lasOutput'])
     eval_xyzVoxels_tls(dirname_exe)
 
 def test_xyzVoxels_tls_pyh():
-    dirname_pyh = run_helios_pyhelios(Path('data') / 'surveys' / 'voxels' / 'tls_sphere_xyzloader_rgb_normals.xml')
+    dirname_pyh = run_helios_pyhelios(Path('data') / 'surveys' / 'voxels' / 'tls_sphere_xyzloader_normals.xml')
     eval_xyzVoxels_tls(dirname_pyh)
 
 def eval_xyzVoxels_tls(dirname):

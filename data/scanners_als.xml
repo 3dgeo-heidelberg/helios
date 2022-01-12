@@ -205,8 +205,8 @@
 	>
 				
 		<beamOrigin x="0" y="0.085" z="0.06">			
-			<rot axis="x" angle_deg="0" />			
-			<rot axis="z" angle_deg="0" />			
+			<rot axis="x" angle_deg="0" />
+			<rot axis="z" angle_deg="0" />
 		</beamOrigin>
 		<headRotateAxis x="0" y="0" z="1"/>
 
