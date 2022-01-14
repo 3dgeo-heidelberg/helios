@@ -120,8 +120,8 @@ Collaboration diagram for KDTreeFactory:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../d7/dbd/classKDTreeFactory__coll__graph.png" border="0" usemap="#KDTreeFactory_coll__map" alt="Collaboration graph"/></div>
 <map name="KDTreeFactory_coll__map" id="KDTreeFactory_coll__map">
-<area shape="rect" id="node2" href="../../dd/d04/classLightKDTreeNodeBlockAllocator.html" title="Block allocator for LightKDTreeNode instances. " alt="" coords="199,279,410,305"/>
-<area shape="rect" id="node3" href="../../d9/d47/classBlockAllocator.html" title="BlockAllocator\&lt; LightKDTree\lNode \&gt;" alt="" coords="209,188,400,229"/>
+<area shape="rect" id="node2" href="../../dd/d04/classLightKDTreeNodeBlockAllocator.html" title="Block allocator for LightKDTreeNode instances. " alt="" coords="139,264,350,291"/>
+<area shape="rect" id="node3" href="../../d9/d47/classBlockAllocator.html" title="BlockAllocator\&lt; LightKDTree\lNode \&gt;" alt="" coords="149,173,340,215"/>
 <area shape="rect" id="node4" href="../../dd/d79/classLightKDTreeNode.html" title="Class representing a light KDTree node. It is, the basic representation of a KDTree node with uses le..." alt="" coords="5,83,132,109"/>
 <area shape="rect" id="node5" href="../../d7/d98/classIBinaryTreeNode.html" title="Binary tree node interface that must be implemented by any class providing binary tree node based fun..." alt="" coords="9,5,129,32"/>
 </map>
@@ -133,12 +133,12 @@ Public Member Functions</h2></td></tr>
 &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/dd0/classKDTreeFactory.html#ad905f937a8e13e78f18e659d0732a7a5">KDTreeFactory</a> ()</td></tr>
 <tr class="memdesc:ad905f937a8e13e78f18e659d0732a7a5"><td class="mdescLeft">&#160;</td><td class="mdescRight">K dimensional tree factory default constructor. <br /></td></tr>
 <tr class="separator:ad905f937a8e13e78f18e659d0732a7a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8f36b4bd3d2ec7a1d771a3e3d93b14cd"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="../../d0/d64/classKDTreeNodeRoot.html">KDTreeNodeRoot</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/dd0/classKDTreeFactory.html#a8f36b4bd3d2ec7a1d771a3e3d93b14cd">makeFromPrimitivesUnsafe</a> (vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *&gt; &amp;primitives, bool const computeStats=false, bool const reportStats=false)=0</td></tr>
-<tr class="memdesc:a8f36b4bd3d2ec7a1d771a3e3d93b14cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Build a KDTree from given primitives.  <a href="#a8f36b4bd3d2ec7a1d771a3e3d93b14cd">More...</a><br /></td></tr>
-<tr class="separator:a8f36b4bd3d2ec7a1d771a3e3d93b14cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae3b76b2ff7b83c2074bed4aa01c0c85a"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="../../d0/d64/classKDTreeNodeRoot.html">KDTreeNodeRoot</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/dd0/classKDTreeFactory.html#ae3b76b2ff7b83c2074bed4aa01c0c85a">makeFromPrimitives</a> (vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *&gt; const &amp;primitives, bool const computeStats=false, bool const reportStats=false)</td></tr>
-<tr class="memdesc:ae3b76b2ff7b83c2074bed4aa01c0c85a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Safe wrapper from makeFromPrimitivesUnsafe which handles a copy to make from primitives by default. This function behavior might be overridden by any derived/child class. It is expected that any implementation of makeFromPrimitives provides a way to implement the makeFromPrimitivesUnsafe method without modifying vector of input primitives. Notice this does not mean primitives themselves cannot be modified, that depends on the type of <a class="el" href="../../d5/dd0/classKDTreeFactory.html" title="Class that must be extended by any class which provides factory methods for k-dimensional trees...">KDTreeFactory</a>. It only means that the vector itself will not be modified, for instance due to sorting purposes.  <a href="#ae3b76b2ff7b83c2074bed4aa01c0c85a">More...</a><br /></td></tr>
-<tr class="separator:ae3b76b2ff7b83c2074bed4aa01c0c85a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a06b1ebdfb108a2c5a389ee390f534197"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="../../d0/d64/classKDTreeNodeRoot.html">KDTreeNodeRoot</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/dd0/classKDTreeFactory.html#a06b1ebdfb108a2c5a389ee390f534197">makeFromPrimitivesUnsafe</a> (vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *&gt; &amp;primitives)=0</td></tr>
+<tr class="memdesc:a06b1ebdfb108a2c5a389ee390f534197"><td class="mdescLeft">&#160;</td><td class="mdescRight">Build a KDTree from given primitives.  <a href="#a06b1ebdfb108a2c5a389ee390f534197">More...</a><br /></td></tr>
+<tr class="separator:a06b1ebdfb108a2c5a389ee390f534197"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a90c0c7761a500d0d0871369ac5f6c4f9"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="../../d0/d64/classKDTreeNodeRoot.html">KDTreeNodeRoot</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/dd0/classKDTreeFactory.html#a90c0c7761a500d0d0871369ac5f6c4f9">makeFromPrimitives</a> (vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *&gt; const &amp;primitives)</td></tr>
+<tr class="memdesc:a90c0c7761a500d0d0871369ac5f6c4f9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Safe wrapper from makeFromPrimitivesUnsafe which handles a copy to make from primitives by default. This function behavior might be overridden by any derived/child class. It is expected that any implementation of makeFromPrimitives provides a way to implement the makeFromPrimitivesUnsafe method without modifying vector of input primitives. Notice this does not mean primitives themselves cannot be modified, that depends on the type of <a class="el" href="../../d5/dd0/classKDTreeFactory.html" title="Class that must be extended by any class which provides factory methods for k-dimensional trees...">KDTreeFactory</a>. It only means that the vector itself will not be modified, for instance due to sorting purposes.  <a href="#a90c0c7761a500d0d0871369ac5f6c4f9">More...</a><br /></td></tr>
+<tr class="separator:a90c0c7761a500d0d0871369ac5f6c4f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a07dd08e1de4ceeee1e028df1eb9acc8e"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/dd0/classKDTreeFactory.html#a07dd08e1de4ceeee1e028df1eb9acc8e">isBuildingLightNodes</a> ()</td></tr>
 <tr class="memdesc:a07dd08e1de4ceeee1e028df1eb9acc8e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if <a class="el" href="../../d5/dd0/classKDTreeFactory.html" title="Class that must be extended by any class which provides factory methods for k-dimensional trees...">KDTreeFactory</a> is building light nodes.  <a href="#a07dd08e1de4ceeee1e028df1eb9acc8e">More...</a><br /></td></tr>
 <tr class="separator:a07dd08e1de4ceeee1e028df1eb9acc8e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -292,8 +292,8 @@ KDTreeRootNode </dd></dl>
 
 </div>
 </div>
-<a id="ae3b76b2ff7b83c2074bed4aa01c0c85a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae3b76b2ff7b83c2074bed4aa01c0c85a">&#9670;&nbsp;</a></span>makeFromPrimitives()</h2>
+<a id="a90c0c7761a500d0d0871369ac5f6c4f9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a90c0c7761a500d0d0871369ac5f6c4f9">&#9670;&nbsp;</a></span>makeFromPrimitives()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -305,24 +305,8 @@ KDTreeRootNode </dd></dl>
           <td class="memname">virtual <a class="el" href="../../d0/d64/classKDTreeNodeRoot.html">KDTreeNodeRoot</a>* KDTreeFactory::makeFromPrimitives </td>
           <td>(</td>
           <td class="paramtype">vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *&gt; const &amp;&#160;</td>
-          <td class="paramname"><em>primitives</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramname"><em>primitives</em></td><td>)</td>
           <td></td>
-          <td class="paramtype">bool const&#160;</td>
-          <td class="paramname"><em>computeStats</em> = <code>false</code>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">bool const&#160;</td>
-          <td class="paramname"><em>reportStats</em> = <code>false</code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -333,12 +317,12 @@ KDTreeRootNode </dd></dl>
 </div><div class="memdoc">
 
 <p>Safe wrapper from makeFromPrimitivesUnsafe which handles a copy to make from primitives by default. This function behavior might be overridden by any derived/child class. It is expected that any implementation of makeFromPrimitives provides a way to implement the makeFromPrimitivesUnsafe method without modifying vector of input primitives. Notice this does not mean primitives themselves cannot be modified, that depends on the type of <a class="el" href="../../d5/dd0/classKDTreeFactory.html" title="Class that must be extended by any class which provides factory methods for k-dimensional trees...">KDTreeFactory</a>. It only means that the vector itself will not be modified, for instance due to sorting purposes. </p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d5/dd0/classKDTreeFactory.html#a8f36b4bd3d2ec7a1d771a3e3d93b14cd" title="Build a KDTree from given primitives. ">KDTreeFactory::makeFromPrimitivesUnsafe</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d5/dd0/classKDTreeFactory.html#a06b1ebdfb108a2c5a389ee390f534197" title="Build a KDTree from given primitives. ">KDTreeFactory::makeFromPrimitivesUnsafe</a> </dd></dl>
 
 </div>
 </div>
-<a id="a8f36b4bd3d2ec7a1d771a3e3d93b14cd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8f36b4bd3d2ec7a1d771a3e3d93b14cd">&#9670;&nbsp;</a></span>makeFromPrimitivesUnsafe()</h2>
+<a id="a06b1ebdfb108a2c5a389ee390f534197"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a06b1ebdfb108a2c5a389ee390f534197">&#9670;&nbsp;</a></span>makeFromPrimitivesUnsafe()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -350,24 +334,8 @@ KDTreeRootNode </dd></dl>
           <td class="memname">virtual <a class="el" href="../../d0/d64/classKDTreeNodeRoot.html">KDTreeNodeRoot</a>* KDTreeFactory::makeFromPrimitivesUnsafe </td>
           <td>(</td>
           <td class="paramtype">vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *&gt; &amp;&#160;</td>
-          <td class="paramname"><em>primitives</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramname"><em>primitives</em></td><td>)</td>
           <td></td>
-          <td class="paramtype">bool const&#160;</td>
-          <td class="paramname"><em>computeStats</em> = <code>false</code>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">bool const&#160;</td>
-          <td class="paramname"><em>reportStats</em> = <code>false</code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -381,14 +349,12 @@ KDTreeRootNode </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">primitives</td><td>Primitives to build KDTree splitting them </td></tr>
-    <tr><td class="paramname">computeStats</td><td>If true, KDTree stats will be computed. If false, they will not </td></tr>
-    <tr><td class="paramname">reportStats</td><td>If true, KDTree stats will be reported. If false, they will not. Notice stats can only be reported if computeStats flag is setted to true too. </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Pointer to root node of built KDTree </dd></dl>
 
-<p>Implemented in <a class="el" href="../../df/d86/classMultiThreadKDTreeFactory.html#aa00f670a9c8188ee672684e0f57c2167">MultiThreadKDTreeFactory</a>, and <a class="el" href="../../d6/d96/classSimpleKDTreeFactory.html#a710ca041b66dbc0738fffc61d7dccc6b">SimpleKDTreeFactory</a>.</p>
+<p>Implemented in <a class="el" href="../../d6/d96/classSimpleKDTreeFactory.html#a3252f0348c7fd5d40b84e52dd9144fad">SimpleKDTreeFactory</a>, and <a class="el" href="../../df/d86/classMultiThreadKDTreeFactory.html#a601cab19125266655d72e67204dce8ae">MultiThreadKDTreeFactory</a>.</p>
 
 </div>
 </div>

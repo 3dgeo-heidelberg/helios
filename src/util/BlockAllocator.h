@@ -4,7 +4,7 @@
  * @author Alberto M. Esmoris Pena
  * @version 1.0
  * @brief Class to handle allocation of multiple instances of the same class
- *  by blocks. It is useful to reduce the number of new calls that, when too
+ *  by blocks. It is useful to reduce the number of new calls that when too
  *  high, might cause a performance bottleneck
  * @tparam Class Type of class to be allocated
  */

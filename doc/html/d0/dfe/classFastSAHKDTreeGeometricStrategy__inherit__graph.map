@@ -1,4 +1,0 @@
-<map id="FastSAHKDTreeGeometricStrategy" name="FastSAHKDTreeGeometricStrategy">
-<area shape="rect" id="node2" href="$d9/d31/classSAHKDTreeGeometricStrategy.html" title="Class providing a strategy for geometry&#45;level parallelization of SAH KDTree building. The geometry&#45;level parallelization is the one to be applied on upper tree nodes, where multiple threads work on the building of the same node. " alt="" coords="19,80,223,107"/>
-<area shape="rect" id="node3" href="$d3/de1/classSimpleKDTreeGeometricStrategy.html" title="Class providing a strategy for geometry&#45;level parallelization of Simple KDTree building. The geometry&#45;level parallelization is the one to be applied on upper tree nodes, where multiple threads work on the building of the same node. " alt="" coords="13,5,229,32"/>
-</map>

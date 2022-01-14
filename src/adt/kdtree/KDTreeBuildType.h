@@ -33,11 +33,6 @@ public:
      * @see SimpleKDTreeFactory::buildRecursive
      */
     int depth;
-    /**
-     * @brief Index of node at current depth
-     * @see SimpleKDTreeFactory::buildRecursive
-     */
-    int index;
 
     // ***  CONSTRUCTION / DESTRUCTION  *** //
     // ************************************ //
@@ -48,8 +43,7 @@ public:
         parent(nullptr),
         left(false),
         primitives(0),
-        depth(-1),
-        index(-1)
+        depth(-1)
     {}
 
     /**
@@ -63,14 +57,12 @@ public:
         KDTreeNode *parent,
         bool const left,
         vector<Primitive *> &primitives,
-        int const depth,
-        int const index
+        int const depth
     ) :
         parent(parent),
         left(left),
         primitives(primitives),
-        depth(depth),
-        index(index)
+        depth(depth)
     {}
 
     virtual ~KDTreeBuildType() = default;

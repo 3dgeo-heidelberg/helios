@@ -117,14 +117,5 @@ protected:
 	 */
     virtual void do_task(
         boost::function<void(TaskArgs ...)> &task
-    ) = 0;
-
-public:
-    // ***  EXTERNAL HANDLING  *** //
-    // *************************** //
-    /**
-     * @brief Notify the conditional variable so if there is a waiting thread
-     *  it will wake up
-     */
-    virtual inline void notifyOne(){cond_.notify_one();}
+        ) = 0;
 };

@@ -6,7 +6,7 @@ var searchData=
   ['mathconverter',['MathConverter',['../df/d22/classMathConverter.html',1,'']]],
   ['maxdragger',['MaxDragger',['../d8/d3a/classSurfaceInspector_1_1util_1_1draggers_1_1MaxDragger.html',1,'SurfaceInspector::util::draggers']]],
   ['mdthreadpool',['MDThreadPool',['../d0/d21/classMDThreadPool.html',1,'']]],
-  ['mdthreadpool_3c_20kdtreebuildtype_2c_20kdtreenode_20_2a_2c_20bool_20const_2c_20vector_3c_20primitive_20_2a_3e_20_26_2c_20int_20const_2c_20int_20const_20_3e',['MDThreadPool&lt; KDTreeBuildType, KDTreeNode *, bool const, vector&lt; Primitive *&gt; &amp;, int const, int const &gt;',['../d0/d21/classMDThreadPool.html',1,'']]],
+  ['mdthreadpool_3c_20kdtreebuildtype_2c_20kdtreenode_20_2a_2c_20bool_20const_2c_20vector_3c_20primitive_20_2a_3e_20_26_2c_20int_20const_20_3e',['MDThreadPool&lt; KDTreeBuildType, KDTreeNode *, bool const, vector&lt; Primitive *&gt; &amp;, int const &gt;',['../d0/d21/classMDThreadPool.html',1,'']]],
   ['measurement',['Measurement',['../db/d2e/classMeasurement.html',1,'']]],
   ['measurementsbuffer',['MeasurementsBuffer',['../d3/dec/classMeasurementsBuffer.html',1,'']]],
   ['mindragger',['MinDragger',['../d6/d26/classSurfaceInspector_1_1util_1_1draggers_1_1MinDragger.html',1,'SurfaceInspector::util::draggers']]],
