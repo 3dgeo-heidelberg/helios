@@ -1,16 +1,27 @@
 var classMultiThreadKDTreeFactory =
 [
-    [ "MultiThreadKDTreeFactory", "df/d86/classMultiThreadKDTreeFactory.html#ae129faad6fd086084670ff81dd7e2633", null ],
+    [ "MultiThreadKDTreeFactory", "df/d86/classMultiThreadKDTreeFactory.html#a8a9b7464e9c1d883de16d29ff95deca8", null ],
     [ "~MultiThreadKDTreeFactory", "df/d86/classMultiThreadKDTreeFactory.html#a4984b7e97e7994cd207f3dc44c6bf329", null ],
-    [ "buildRecursive", "df/d86/classMultiThreadKDTreeFactory.html#a2e3a8ea91910658ee9ff6f012e196b11", null ],
+    [ "buildChildrenGeometryLevel", "df/d86/classMultiThreadKDTreeFactory.html#ae04d92ed6c0039baaf4abc7dc7a27d77", null ],
+    [ "buildRecursive", "df/d86/classMultiThreadKDTreeFactory.html#a2c3773e8c50fb78073caeab17b9c4752", null ],
+    [ "buildRecursiveGeometryLevel", "df/d86/classMultiThreadKDTreeFactory.html#a6ceb727cb0ff43afae25d0f87c3d4e17", null ],
+    [ "buildRecursiveNodeLevel", "df/d86/classMultiThreadKDTreeFactory.html#ab7876164f120f8cd81fef78e115300ec", null ],
     [ "computeKDTreeStats", "df/d86/classMultiThreadKDTreeFactory.html#a52a5bf891500e9e7a4cf264cd8c9580a", null ],
+    [ "getGeomJobs", "df/d86/classMultiThreadKDTreeFactory.html#a02be94ffc28d8b61bcc1fbcc66da83af", null ],
+    [ "getGS", "df/d86/classMultiThreadKDTreeFactory.html#ad71cfb0c5a7002bdcd8ade58e10c7d50", null ],
     [ "getKdtf", "df/d86/classMultiThreadKDTreeFactory.html#abf65b70dee160507ef62f08c934623af", null ],
+    [ "getNumJobs", "df/d86/classMultiThreadKDTreeFactory.html#a7eb17faaf9deb4019df570eaa4129ad2", null ],
     [ "getPoolSize", "df/d86/classMultiThreadKDTreeFactory.html#aa74d73ab61b35806ee0fdefec06dd38b", null ],
-    [ "makeFromPrimitivesUnsafe", "df/d86/classMultiThreadKDTreeFactory.html#a601cab19125266655d72e67204dce8ae", null ],
+    [ "makeFromPrimitivesUnsafe", "df/d86/classMultiThreadKDTreeFactory.html#aa00f670a9c8188ee672684e0f57c2167", null ],
     [ "reportKDTreeStats", "df/d86/classMultiThreadKDTreeFactory.html#aaa41155c2cff4d446839bab62dc2bd3a", null ],
     [ "serialize", "df/d86/classMultiThreadKDTreeFactory.html#a30072d03533c8a5a85d8879d1fb435fc", null ],
     [ "boost::serialization::access", "df/d86/classMultiThreadKDTreeFactory.html#ac98d07dd8f7b70e16ccb9a01abf56b9c", null ],
+    [ "geomJobs", "df/d86/classMultiThreadKDTreeFactory.html#ada545be4b00cabeab1f55135794fe684", null ],
+    [ "gs", "df/d86/classMultiThreadKDTreeFactory.html#aa1f35e147dacc5223e95747274dc2519", null ],
     [ "kdtf", "df/d86/classMultiThreadKDTreeFactory.html#aa1d8bb9d7b9f810ded3c70a1650cbaa0", null ],
+    [ "masters", "df/d86/classMultiThreadKDTreeFactory.html#a85d40d21ecf3c1f5ce5e1024e76861e8", null ],
+    [ "maxGeometryDepth", "df/d86/classMultiThreadKDTreeFactory.html#a7257fabc8b3143b685c4fa7643f7828e", null ],
     [ "minTaskPrimitives", "df/d86/classMultiThreadKDTreeFactory.html#a90a707241e3ba332e1c5aaacb4301e96", null ],
-    [ "tp", "df/d86/classMultiThreadKDTreeFactory.html#a164716c0bcef83cf5dad1d8206538b1f", null ]
+    [ "numJobs", "df/d86/classMultiThreadKDTreeFactory.html#a764a83a2d740fdeff7144125e6f2b1b0", null ],
+    [ "tpNode", "df/d86/classMultiThreadKDTreeFactory.html#a96b78efd9c39ea3d71a31c807444318f", null ]
 ];

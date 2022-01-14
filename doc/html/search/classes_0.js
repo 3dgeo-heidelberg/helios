@@ -7,5 +7,6 @@ var searchData=
   ['abstractpulserunnable',['AbstractPulseRunnable',['../d6/d9e/classAbstractPulseRunnable.html',1,'']]],
   ['argumentsparser',['ArgumentsParser',['../d7/d5c/classArgumentsParser.html',1,'']]],
   ['asset',['Asset',['../de/d97/classAsset.html',1,'']]],
-  ['axissahkdtreefactory',['AxisSAHKDTreeFactory',['../df/d30/classAxisSAHKDTreeFactory.html',1,'']]]
+  ['axissahkdtreefactory',['AxisSAHKDTreeFactory',['../df/d30/classAxisSAHKDTreeFactory.html',1,'']]],
+  ['axissahkdtreegeometricstrategy',['AxisSAHKDTreeGeometricStrategy',['../d4/d97/classAxisSAHKDTreeGeometricStrategy.html',1,'']]]
 ];

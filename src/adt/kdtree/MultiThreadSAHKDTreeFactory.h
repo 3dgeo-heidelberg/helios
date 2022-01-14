@@ -68,7 +68,9 @@ public:
      */
     MultiThreadSAHKDTreeFactory(
         shared_ptr<SimpleKDTreeFactory> const kdtf,
-        size_t const numJobs=2
+        shared_ptr<SimpleKDTreeGeometricStrategy> const gs,
+        size_t const numJobs=2,
+        size_t const geomJobs=2
     );
     virtual ~MultiThreadSAHKDTreeFactory() = default;
 

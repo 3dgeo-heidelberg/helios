@@ -1,7 +1,7 @@
 var searchData=
 [
   ['targetwaypoint',['targetWaypoint',['../df/d1e/classPlatform.html#aa5211e32959d0150e24c03e17ca051ce',1,'Platform']]],
-  ['taskdropper',['TaskDropper',['../da/d8d/classTaskDropper.html',1,'TaskDropper&lt; TaskType, ThreadPoolType, TaskArgs &gt;'],['../d1/d7b/classSimulation.html#a32f3686c613045b5f96fac6d2b531c86',1,'Simulation::taskDropper()'],['../da/d8d/classTaskDropper.html#ad4c6cbdab6fa07285b5fb6b1be8cfecd',1,'TaskDropper::TaskDropper()']]],
+  ['taskdropper',['TaskDropper',['../da/d8d/classTaskDropper.html',1,'TaskDropper&lt; TaskType, ThreadPoolType, TaskArgs &gt;'],['../da/d8d/classTaskDropper.html#ad4c6cbdab6fa07285b5fb6b1be8cfecd',1,'TaskDropper::TaskDropper()'],['../d1/d7b/classSimulation.html#a32f3686c613045b5f96fac6d2b531c86',1,'Simulation::taskDropper()']]],
   ['taskdropper_3c_20pulsetask_2c_20pulsethreadpoolinterface_2c_20taskargs_2e_2e_2e_20_3e',['TaskDropper&lt; PulseTask, PulseThreadPoolInterface, TaskArgs... &gt;',['../da/d8d/classTaskDropper.html',1,'']]],
   ['taskdropper_3c_20tasktype_2c_20threadpooltype_2c_20taskargs_2e_2e_2e_20_3e',['TaskDropper&lt; TaskType, ThreadPoolType, TaskArgs... &gt;',['../da/d8d/classTaskDropper.html',1,'']]],
   ['tasks',['tasks',['../da/d8d/classTaskDropper.html#a1a1f2275b9f64e665fba0c29911da941',1,'TaskDropper::tasks()'],['../d9/d5e/classTaskWarehouse.html#a2f9ee5eaa0da26ac6c2cbc7b18322b91',1,'TaskWarehouse::tasks()']]],
@@ -41,8 +41,10 @@ var searchData=
   ['testyawonlyrotations',['testYawOnlyRotations',['../d6/d96/classHeliosTests_1_1PlatformPhysicsTest.html#ad897157bfc114c83c38d148d6a93a415',1,'HeliosTests::PlatformPhysicsTest']]],
   ['texcoords',['texcoords',['../d2/da0/classVertex.html#a2ab4abfcc9a5075480dc778c51e04e90',1,'Vertex']]],
   ['tfw',['tfw',['../dc/d42/classScanner.html#a296541247420ebb603b329301231c9d6',1,'Scanner']]],
-  ['threadpool',['ThreadPool',['../dc/de7/classThreadPool.html',1,'ThreadPool'],['../d1/d7b/classSimulation.html#a46e423ef446467b8f8758a952cddb860',1,'Simulation::threadPool()'],['../dc/de7/classThreadPool.html#a2b8ca7a57ba657bad890a99058e01781',1,'ThreadPool::ThreadPool()']]],
+  ['thread',['thread',['../df/d6f/classSharedSubTask.html#a98248ead49bc05d069e0ad458f926562',1,'SharedSubTask']]],
+  ['threadpool',['ThreadPool',['../dc/de7/classThreadPool.html',1,'ThreadPool'],['../dc/de7/classThreadPool.html#a2b8ca7a57ba657bad890a99058e01781',1,'ThreadPool::ThreadPool()'],['../d1/d7b/classSimulation.html#a46e423ef446467b8f8758a952cddb860',1,'Simulation::threadPool()']]],
   ['threads_5f',['threads_',['../dc/de7/classThreadPool.html#a56090e231c048e3a4e9e88261bd7cec5',1,'ThreadPool']]],
+  ['tidx',['tIdx',['../d7/da6/classhelios_1_1hpc_1_1SM__ParallelMergeSortSubTask.html#aab0b00e121b1d753b3674c9744eceb2d',1,'helios::hpc::SM_ParallelMergeSortSubTask']]],
   ['time',['TIME',['../d0/da9/logging_8hpp.html#a61cd73d6823136f3e6be517f42780f71',1,'logging']]],
   ['time_5fwave',['time_wave',['../dc/d42/classScanner.html#abcc0b361b5a96df1b7edaa9859cd8f2e',1,'Scanner']]],
   ['timebetweenupdates',['timeBetweenUpdates',['../de/dda/classvisualhelios_1_1VHCanvas.html#af33a9595a2e1b21c5b1a37686f979336',1,'visualhelios::VHCanvas']]],
@@ -53,7 +55,7 @@ var searchData=
   ['toangle2d',['toAngle2D',['../d1/dd3/classSurfaceInspector_1_1maths_1_1Vector.html#ab691483a44635f42edebe998726ec882',1,'SurfaceInspector::maths::Vector']]],
   ['toilotcache',['toILOTCache',['../db/d58/classSAHKDTreeFactory.html#abfb53bebdca06fea392f30075915ccdf',1,'SAHKDTreeFactory']]],
   ['tostring',['toString',['../d6/d7f/classRotationOrder.html#adee44a77e3199d0dce485fda80db9579',1,'RotationOrder::toString()'],['../dc/d42/classScanner.html#ae6791b56fa79726f07cfa76e8fa20283',1,'Scanner::toString()'],['../d2/d1a/classAABB.html#a86e5cfc1a5c72b37c95a468d305bb008',1,'AABB::toString()'],['../d2/d51/classTriangle.html#a80a928c3f4254b648b5d31e751c50ec2',1,'Triangle::toString()']]],
-  ['tp',['tp',['../df/d86/classMultiThreadKDTreeFactory.html#a164716c0bcef83cf5dad1d8206538b1f',1,'MultiThreadKDTreeFactory']]],
+  ['tpnode',['tpNode',['../df/d86/classMultiThreadKDTreeFactory.html#a96b78efd9c39ea3d71a31c807444318f',1,'MultiThreadKDTreeFactory']]],
   ['trace',['TRACE',['../d0/da9/logging_8hpp.html#a72b71a1882dd7d417fee5c5ad75fa9c5',1,'logging']]],
   ['trackprogress',['trackProgress',['../d6/da1/classSurveyPlayback.html#a3ba77b5582defa28808c7e5b748eb1c3',1,'SurveyPlayback']]],
   ['trajectory',['Trajectory',['../d2/d43/classTrajectory.html',1,'Trajectory'],['../d2/d43/classTrajectory.html#aeb6134b898517acd09038dcb66ecd913',1,'Trajectory::Trajectory()=default'],['../d2/d43/classTrajectory.html#a222ddf39ff990707dc6af84b39821d74',1,'Trajectory::Trajectory(long gpsTime, glm::dvec3 position, double roll, double pitch, double yaw)']]],
@@ -72,6 +74,7 @@ var searchData=
   ['try_5frun_5fres_5ftask',['try_run_res_task',['../d2/dee/classResThreadPool.html#a547bb2acf59e206da78333f0579f6a83',1,'ResThreadPool']]],
   ['tryadd',['tryAdd',['../da/d8d/classTaskDropper.html#a4e79063a65c9cff8cff4fdbbc83240ce',1,'TaskDropper']]],
   ['trydrop',['tryDrop',['../de/d9a/classPulseTaskDropper.html#ab0b9593b97ab5657f890cefb48ba26f3',1,'PulseTaskDropper::tryDrop()'],['../da/d8d/classTaskDropper.html#a067e3bf1714d730e80a9241246e119d8',1,'TaskDropper::tryDrop()']]],
+  ['trysort',['trySort',['../d8/de4/classhelios_1_1hpc_1_1SM__ParallelMergeSort.html#adeb0840a808e48b0fd421fa848c73606',1,'helios::hpc::SM_ParallelMergeSort']]],
   ['tstart',['tStart',['../d7/d7d/classTimeWatcher.html#a00375c2ae161f1256962d01980aa5b9f',1,'TimeWatcher']]],
   ['twicesigmasquare',['twiceSigmaSquare',['../db/dc1/classSurfaceInspector_1_1maths_1_1functions_1_1GaussianFunction.html#ac23c21fcddafeccb2daf42e27d8591e9',1,'SurfaceInspector::maths::functions::GaussianFunction']]],
   ['type',['Type',['../d7/d84/classrigidmotion_1_1RigidMotion.html#a9f6af528c327231f6ad4565fa9bef21f',1,'rigidmotion::RigidMotion']]]

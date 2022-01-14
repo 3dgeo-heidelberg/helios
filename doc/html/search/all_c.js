@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['ladlut',['LadLut',['../d9/d22/classLadLut.html',1,'LadLut'],['../dd/dc4/classScenePart.html#ab97c85e1d868194353a4274f98d8b5f4',1,'ScenePart::ladlut()'],['../d9/d22/classLadLut.html#ac7dc4bf9857a7076a8fc0460997567ed',1,'LadLut::LadLut()']]],
+  ['ladlut',['LadLut',['../d9/d22/classLadLut.html',1,'LadLut'],['../d9/d22/classLadLut.html#ac7dc4bf9857a7076a8fc0460997567ed',1,'LadLut::LadLut()'],['../dd/dc4/classScenePart.html#ab97c85e1d868194353a4274f98d8b5f4',1,'ScenePart::ladlut()']]],
   ['ladlutloader',['LadLutLoader',['../de/d6b/classLadLutLoader.html',1,'LadLutLoader'],['../de/d6b/classLadLutLoader.html#a0dbdd87478e9ce469a3090ad93cdd25d',1,'LadLutLoader::LadLutLoader()']]],
   ['ladluttest',['LadLutTest',['../dd/df9/classHeliosTests_1_1LadLutTest.html',1,'HeliosTests::LadLutTest'],['../dd/df9/classHeliosTests_1_1LadLutTest.html#ae13b3c0ecb23d9e149aa6b70400deb9c',1,'HeliosTests::LadLutTest::LadLutTest()']]],
   ['lambda',['LAMBDA',['../d1/d2b/classMarquardtFitter.html#a80d09545e15e84af3b566192e63de214',1,'MarquardtFitter']]],
@@ -24,6 +24,7 @@ var searchData=
   ['lasttrajectorytime',['lastTrajectoryTime',['../dc/d42/classScanner.html#acc8e6f98bc56e58cb80670a00585ee98',1,'Scanner']]],
   ['layer',['layer',['../d1/d0c/classGeoTiffFileLoader.html#acc63888f25ed900bf6f410e24938e308',1,'GeoTiffFileLoader']]],
   ['left',['left',['../d8/d4c/classKDTreeBuildType.html#accf535cd3241a306d1364792f8394642',1,'KDTreeBuildType::left()'],['../dd/d79/classLightKDTreeNode.html#aacaf8a7c870c480b735a4998d647a844',1,'LightKDTreeNode::left()']]],
+  ['leftprimitives',['leftPrimitives',['../d1/dc1/classSimpleKDTreePopulateSplitsSubTask.html#a06a2985d44079b6eaa0c72c7d3536a2e',1,'SimpleKDTreePopulateSplitsSubTask']]],
   ['leg',['Leg',['../de/d51/classLeg.html',1,'Leg'],['../de/d51/classLeg.html#ad89abdcd47e0c542525f5cf26fe1925d',1,'Leg::Leg()']]],
   ['legelapsedtime_5fms',['legElapsedTime_ms',['../d6/da1/classSurveyPlayback.html#a78dc2aefd26b2d4f36df137d2744bc00',1,'SurveyPlayback']]],
   ['legindex',['legIndex',['../db/da6/classFullWaveformPulseRunnable.html#a9fe7e3bbd744a5bf3ce57e417b746822',1,'FullWaveformPulseRunnable']]],
@@ -63,7 +64,8 @@ var searchData=
   ['logging_2ehpp',['logging.hpp',['../d0/da9/logging_8hpp.html',1,'']]],
   ['longseed',['longSeed',['../dc/d6e/classRandomnessGenerator.html#aaf792085f6e985e6c88b112c1b616de4',1,'RandomnessGenerator']]],
   ['loop',['loop',['../df/dfa/classDynSequence.html#ae2f4f6ba13798fe53c44687e9b511ce9',1,'DynSequence']]],
-  ['lossnodes',['lossNodes',['../db/d58/classSAHKDTreeFactory.html#aa4bc15caaa3456f80cbcd729434e1d37',1,'SAHKDTreeFactory']]],
+  ['losscases',['lossCases',['../d6/d0d/classFastSAHKDTreeRecountSubTask.html#af120f8937d7b76456b7b7e5d9425e4cc',1,'FastSAHKDTreeRecountSubTask']]],
+  ['lossnodes',['lossNodes',['../d6/d0d/classFastSAHKDTreeRecountSubTask.html#a15fb46b2852a1f56768d52800effe35e',1,'FastSAHKDTreeRecountSubTask::lossNodes()'],['../db/d58/classSAHKDTreeFactory.html#aa4bc15caaa3456f80cbcd729434e1d37',1,'SAHKDTreeFactory::lossNodes()']]],
   ['low_5fpoint',['LOW_POINT',['../df/d64/classLasSpecification.html#a539093079758a0d96c69e91066e96e7a',1,'LasSpecification']]],
   ['low_5fvegetation',['LOW_VEGETATION',['../df/d64/classLasSpecification.html#a0fe080fcf46324f52fdc97e9641db67f',1,'LasSpecification']]],
   ['lp',['lp',['../d2/db3/classLasSyncFileWriter.html#a8d05197fc8c6d6e489ed4ef5856be9f2',1,'LasSyncFileWriter']]],

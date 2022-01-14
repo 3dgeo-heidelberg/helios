@@ -56,6 +56,7 @@ var searchData=
   ['argmin',['argmin',['../d9/d82/classfluxionum_1_1Minimizer.html#aee3b505a8afdaf211098ea86988ad89e',1,'fluxionum::Minimizer::argmin()'],['../db/d57/classfluxionum_1_1UnivariateNewtonRaphsonMinimizer.html#a51b95e942575693b3cf186aeb5c1805f',1,'fluxionum::UnivariateNewtonRaphsonMinimizer::argmin()'],['../d1/dd3/classSurfaceInspector_1_1maths_1_1Vector.html#a23843bdfb51a87089ca7ab8266d106da',1,'SurfaceInspector::maths::Vector::argmin()']]],
   ['argumentsparser',['ArgumentsParser',['../d7/d5c/classArgumentsParser.html',1,'ArgumentsParser'],['../d7/d5c/classArgumentsParser.html#ac17c09e762ec2694ca8e61ec73d3edfb',1,'ArgumentsParser::ArgumentsParser()']]],
   ['argv',['argv',['../d7/d5c/classArgumentsParser.html#a16605c90819c4407a1c99365aa1860ef',1,'ArgumentsParser']]],
+  ['asahkdtf',['asahkdtf',['../d4/d97/classAxisSAHKDTreeGeometricStrategy.html#a49dff50e7e0b282092487c3c510cd1ec',1,'AxisSAHKDTreeGeometricStrategy']]],
   ['asset',['Asset',['../de/d97/classAsset.html',1,'']]],
   ['assetsdir',['assetsDir',['../d9/d82/classXmlAssetsLoader.html#a93746ec0dd88588e1ddfafe4a0a850fe',1,'XmlAssetsLoader']]],
   ['assetspath',['assetsPath',['../d2/d88/classHeliosDemos_1_1SurveyDemo.html#aa34e5d609c4daf4b4263999b3bec88d8',1,'HeliosDemos::SurveyDemo']]],
@@ -67,7 +68,12 @@ var searchData=
   ['attitudeynoisesource',['attitudeYNoiseSource',['../df/d1e/classPlatform.html#aa8714ae4bcb24dbec8f5e26cc7b9d211',1,'Platform']]],
   ['attitudeznoisesource',['attitudeZNoiseSource',['../df/d1e/classPlatform.html#ac3c9ea9311a5842f1ce9f3561589790b',1,'Platform']]],
   ['available_5f',['available_',['../d2/d1f/classSimpleThreadPool.html#aed288649b910b5ba8222484c5ae49bad',1,'SimpleThreadPool']]],
+  ['availablethreads',['availableThreads',['../da/d29/classSharedTaskSequencer.html#acac573d433c467ff7bb047f81fcac644',1,'SharedTaskSequencer']]],
   ['aworst',['aWorst',['../da/d69/classSurfaceInspector_1_1maths_1_1SingularContextComputer.html#a9a3d785c2db6665c183500e0d5e7f0a1',1,'SurfaceInspector::maths::SingularContextComputer']]],
+  ['ax',['ax',['../d1/da6/classSimpleKDTreeComputeRootNodeBoundariesSubTask.html#a81737a2f4114eeeb6c6694f9c7a1bb4e',1,'SimpleKDTreeComputeRootNodeBoundariesSubTask']]],
   ['axis',['axis',['../d6/d1f/structKDTreePrimitiveComparator.html#a1c1049507f049f79fc3a37558da29088',1,'KDTreePrimitiveComparator']]],
-  ['axissahkdtreefactory',['AxisSAHKDTreeFactory',['../df/d30/classAxisSAHKDTreeFactory.html',1,'AxisSAHKDTreeFactory'],['../df/d30/classAxisSAHKDTreeFactory.html#a830a51dc6cdb174357bed9a6fb55e400',1,'AxisSAHKDTreeFactory::AxisSAHKDTreeFactory()']]]
+  ['axissahkdtreefactory',['AxisSAHKDTreeFactory',['../df/d30/classAxisSAHKDTreeFactory.html',1,'AxisSAHKDTreeFactory'],['../df/d30/classAxisSAHKDTreeFactory.html#a830a51dc6cdb174357bed9a6fb55e400',1,'AxisSAHKDTreeFactory::AxisSAHKDTreeFactory()']]],
+  ['axissahkdtreegeometricstrategy',['AxisSAHKDTreeGeometricStrategy',['../d4/d97/classAxisSAHKDTreeGeometricStrategy.html',1,'AxisSAHKDTreeGeometricStrategy'],['../d4/d97/classAxisSAHKDTreeGeometricStrategy.html#afb19c346ad652ae725e037ade338261b',1,'AxisSAHKDTreeGeometricStrategy::AxisSAHKDTreeGeometricStrategy()']]],
+  ['ay',['ay',['../d1/da6/classSimpleKDTreeComputeRootNodeBoundariesSubTask.html#a317a9477b51f2a160c1c73e770518c77',1,'SimpleKDTreeComputeRootNodeBoundariesSubTask']]],
+  ['az',['az',['../d1/da6/classSimpleKDTreeComputeRootNodeBoundariesSubTask.html#afa16842c035d3952358334e5ef66f6da',1,'SimpleKDTreeComputeRootNodeBoundariesSubTask']]]
 ];
