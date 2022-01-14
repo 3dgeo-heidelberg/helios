@@ -2,8 +2,6 @@ var searchData=
 [
   ['factorial',['factorial',['../d6/d68/classSurfaceInspector_1_1maths_1_1Scalar.html#a91e6c4582fd106940af3f76621ff28f1',1,'SurfaceInspector::maths::Scalar']]],
   ['fastsahkdtreefactory',['FastSAHKDTreeFactory',['../d0/d0e/classFastSAHKDTreeFactory.html#ab07f58e9deeaf5a2b748beb0b0fd0e26',1,'FastSAHKDTreeFactory']]],
-  ['fastsahkdtreegeometricstrategy',['FastSAHKDTreeGeometricStrategy',['../d1/ddc/classFastSAHKDTreeGeometricStrategy.html#a23e36304301d1c989c237aeaa32e31b9',1,'FastSAHKDTreeGeometricStrategy']]],
-  ['fastsahkdtreerecountsubtask',['FastSAHKDTreeRecountSubTask',['../d6/d0d/classFastSAHKDTreeRecountSubTask.html#ab9afa7aa560ebd8dfe4bda50488bc4e4',1,'FastSAHKDTreeRecountSubTask']]],
   ['fasttransformtoladlutdomain',['fastTransformToLadLutDomain',['../d9/d22/classLadLut.html#acecee01c2863e541935a952d79a95f2d',1,'LadLut']]],
   ['fiberarraybeamdeflector',['FiberArrayBeamDeflector',['../d7/d20/classFiberArrayBeamDeflector.html#a80b038c6baa5d5c35159b42c60d839ad',1,'FiberArrayBeamDeflector']]],
   ['file_5flogger',['file_logger',['../d8/d63/classfile__logger.html#ab323126b7750b84c2b554c3711ede47c',1,'file_logger']]],
@@ -21,9 +19,7 @@ var searchData=
   ['findorthogonal',['findOrthogonal',['../d1/dd3/classSurfaceInspector_1_1maths_1_1Vector.html#a9ec3c2113c5b9487f63b45dde328980c',1,'SurfaceInspector::maths::Vector']]],
   ['findorthonormal',['findOrthonormal',['../d1/dd3/classSurfaceInspector_1_1maths_1_1Vector.html#ae52430bc6759a745082b6162b3b2532b',1,'SurfaceInspector::maths::Vector']]],
   ['findorthonormals',['findOrthonormals',['../d1/dd3/classSurfaceInspector_1_1maths_1_1Vector.html#a93e412bb0e1d09640d543dfc0ba15301',1,'SurfaceInspector::maths::Vector']]],
-  ['findsplitpositionbyfastsahrecipe',['findSplitPositionByFastSAHRecipe',['../d0/d0e/classFastSAHKDTreeFactory.html#accb22b04fed6a1d800c1939be8e0444d',1,'FastSAHKDTreeFactory']]],
   ['findsplitpositionbysah',['findSplitPositionBySAH',['../d0/d0e/classFastSAHKDTreeFactory.html#a663032609bd4e732db17c073cf7249cb',1,'FastSAHKDTreeFactory::findSplitPositionBySAH()'],['../db/d58/classSAHKDTreeFactory.html#ac123def37ff4bc4598d7d09bcbfff59c',1,'SAHKDTreeFactory::findSplitPositionBySAH()']]],
-  ['findsplitpositionbysahrecipe',['findSplitPositionBySAHRecipe',['../db/d58/classSAHKDTreeFactory.html#afb6c2833576b0f1370195d8d6fbe9d8d',1,'SAHKDTreeFactory']]],
   ['findsupertype',['findSuperType',['../d7/d84/classrigidmotion_1_1RigidMotion.html#a2337a41faab77d6f21612394d9c35def',1,'rigidmotion::RigidMotion']]],
   ['findtrustablemax',['findTrustableMax',['../da/d24/classSurfaceInspector_1_1maths_1_1Statistics.html#ae6f2f4e96739857a66a149252616db6f',1,'SurfaceInspector::maths::Statistics']]],
   ['findtrustablemin',['findTrustableMin',['../da/d24/classSurfaceInspector_1_1maths_1_1Statistics.html#a2718b183ba0c7e358cac57ed9ed8a52c',1,'SurfaceInspector::maths::Statistics']]],

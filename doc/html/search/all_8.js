@@ -41,9 +41,5 @@ var searchData=
   ['hitobjectid',['hitObjectId',['../db/d2e/classMeasurement.html#a303164a152fa5ba6f7f6a0a536a0e4b4',1,'Measurement']]],
   ['hoiattridx',['hoiAttrIdx',['../d2/db3/classLasSyncFileWriter.html#ad3984158dc285ad5660e6d56abbb57fb',1,'LasSyncFileWriter']]],
   ['hoiattrstart',['hoiAttrStart',['../d2/db3/classLasSyncFileWriter.html#a3022ddbaa4f0269391c28e1387028a2b',1,'LasSyncFileWriter']]],
-  ['horizontality',['horizontality',['../d4/dfa/classSurfaceInspector_1_1maths_1_1DetailedPlane.html#a61b7275a8aad0be7c5149f368d3db4c8',1,'SurfaceInspector::maths::DetailedPlane']]],
-  ['hpctest',['HPCTest',['../d4/d0d/classHeliosTests_1_1HPCTest.html',1,'HeliosTests::HPCTest'],['../d4/d0d/classHeliosTests_1_1HPCTest.html#ab195a312ad504c59e911ac2b591af58a',1,'HeliosTests::HPCTest::HPCTest()']]],
-  ['hpctest_5fdoublecomparator',['HPCTest_DoubleComparator',['../dd/d54/structHeliosTests_1_1HPCTest__DoubleComparator.html',1,'HeliosTests']]],
-  ['hpctest_5ffloatcomparator',['HPCTest_FloatComparator',['../d0/df1/structHeliosTests_1_1HPCTest__FloatComparator.html',1,'HeliosTests']]],
-  ['hpctest_5fintcomparator',['HPCTest_IntComparator',['../d8/d51/structHeliosTests_1_1HPCTest__IntComparator.html',1,'HeliosTests']]]
+  ['horizontality',['horizontality',['../d4/dfa/classSurfaceInspector_1_1maths_1_1DetailedPlane.html#a61b7275a8aad0be7c5149f368d3db4c8',1,'SurfaceInspector::maths::DetailedPlane']]]
 ];

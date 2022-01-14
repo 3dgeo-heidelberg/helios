@@ -34,7 +34,6 @@ var searchData=
   ['notify',['notify',['../d9/d5e/classTaskWarehouse.html#a9b9771f1f81139742e8d2da64a44b8c7',1,'TaskWarehouse::notify()'],['../da/d92/classWarehouseThreadPool.html#a49d9c1308df2792a328c0f94e57f7457',1,'WarehouseThreadPool::notify()']]],
   ['notifyall',['notifyAll',['../d9/d5e/classTaskWarehouse.html#aa697859d8502338bc8987bfe18324de9',1,'TaskWarehouse::notifyAll()'],['../da/d92/classWarehouseThreadPool.html#ad2523c5b7d53ddb7d6a08ad9f4eb4302',1,'WarehouseThreadPool::notifyAll()']]],
   ['notifyallupdate',['notifyAllUpdate',['../d9/d5e/classTaskWarehouse.html#a6c6cb8a6dedb90247d03cc4c37548e38',1,'TaskWarehouse']]],
-  ['notifyone',['notifyOne',['../d2/d1f/classSimpleThreadPool.html#a914a442d893a27a6c322a2490fd2a978',1,'SimpleThreadPool']]],
   ['notifyupdate',['notifyUpdate',['../d9/d5e/classTaskWarehouse.html#aef51865346b8259c51120024b5a57cd2',1,'TaskWarehouse']]],
   ['numderivatives',['numDerivatives',['../d3/d7f/classfluxionum_1_1DiffMinimizer.html#a60b0ae56ec06789fcf7edd0bd7c23853',1,'fluxionum::DiffMinimizer']]],
   ['numdynobjects',['numDynObjects',['../de/d74/classDynScene.html#ad0b02cffe3c7e3579ee59f491b302442',1,'DynScene::numDynObjects()'],['../db/d0e/classvisualhelios_1_1VHDynSceneAdapter.html#a6d8cb502adf5bf8d10cc3f78f69d65c0',1,'visualhelios::VHDynSceneAdapter::numDynObjects()']]],

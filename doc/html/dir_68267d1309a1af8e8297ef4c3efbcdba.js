@@ -3,7 +3,6 @@ var dir_68267d1309a1af8e8297ef4c3efbcdba =
     [ "adt", "dir_103da82e8aec8a2d91cafff0b044275b.html", "dir_103da82e8aec8a2d91cafff0b044275b" ],
     [ "assetloading", "dir_7dda38ba3c79667233e5dd64fbbdae1f.html", "dir_7dda38ba3c79667233e5dd64fbbdae1f" ],
     [ "demo", "dir_ea2db1c5c9ef405bfa9ccf9d4f68ec9b.html", "dir_ea2db1c5c9ef405bfa9ccf9d4f68ec9b" ],
-    [ "hpc", "dir_3714ea3daa5e69750e57696acd1d3218.html", "dir_3714ea3daa5e69750e57696acd1d3218" ],
     [ "maths", "dir_faad1d323dbeb8fa5608a69643a716c1.html", "dir_faad1d323dbeb8fa5608a69643a716c1" ],
     [ "noise", "dir_91cf3052f1e869449ba7f0eac2ee4e7b.html", "dir_91cf3052f1e869449ba7f0eac2ee4e7b" ],
     [ "platform", "dir_4b68c2fef3e151b6b93d5e93b14f1857.html", "dir_4b68c2fef3e151b6b93d5e93b14f1857" ],
