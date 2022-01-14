@@ -33,7 +33,7 @@ A clear and concise description of what you expected to happen.
 The actual behaviour and/or the error message that you obtain.
 
 **Your environment (please complete the following information):**
- - OS: [e.g. iOS]
+ - OS: [e.g. Windows 10]
  - HELIOS++/pyhelios version (or Git revision) that exhibits the issue [e.g. 1.1.0]
  - Last HELIOS++/pyhelios version that did not exhibit the issue (if applicable):
  - Further system details (if relevant): [e.g. 32 RAM] 
