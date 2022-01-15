@@ -33,8 +33,8 @@ set(HELIOS_INCLUDE_DIRECTORIES
     "src/util/threadpool/"
     "src/util/serialization/"
     "src/util/logger/"
+    "src/hpc/"
     "src/test/"
-
 )
 # Pyhelios specific include directories
 if(${PYTHON_BINDING})
