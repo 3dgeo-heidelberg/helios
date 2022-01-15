@@ -44,8 +44,6 @@ public:
      * @param lasScale Specify LAS format scale factor
      * @param kdtType Specify the type of KDTree building strategy
      * @param kdtJobs Specify how many threads use to build the KDTree
-     * @param kdtGeomJobs Specify how many threads use to build upper nodes
-     *  of the KDTree
      * @param sahLossNodes Specify the number of nodes used to find the optimal
      *  split point when SAH or the number of samples if fast SAH is used
      */
@@ -70,7 +68,6 @@ public:
         double lasScale = 0.0001,
         int kdtType = 1,
         size_t kdtJobs = 1,
-        size_t kdtGeomJobs = 1,
         size_t sahLossNodes = 21
     );
 };

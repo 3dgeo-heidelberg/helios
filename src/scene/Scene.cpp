@@ -374,8 +374,8 @@ glm::dvec3 Scene::findForceOnGroundQ(
 void Scene::buildKDTree(bool const safe){
     kdtree = shared_ptr<KDTreeNodeRoot>(
         safe ?
-        kdtf->makeFromPrimitives(primitives, true, true) :
-        kdtf->makeFromPrimitivesUnsafe(primitives, true, true)
+        kdtf->makeFromPrimitives(primitives) :
+        kdtf->makeFromPrimitivesUnsafe(primitives)
     );
 }
 

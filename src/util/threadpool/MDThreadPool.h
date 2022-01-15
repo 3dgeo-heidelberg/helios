@@ -77,7 +77,6 @@ public:
 
         // Check pending tasks does not exceed max limit
         if(getPendingTasks() >= this->pool_size){
-            lock.unlock();
             return false;
         }
 
@@ -177,52 +176,11 @@ public:
      */
     virtual inline size_t getPendingTasks() {return this->available_;}
     /**
-     * @brief Obtain the number of pending tasks to be computed in a thread
-     *  safe way. It is, with proper handling of concurrent reading.
-     * @return Number of pending tasks to be computed
-     */
-    virtual inline size_t safeGetPendingTasks() {
-        boost::unique_lock<boost::mutex> lock(this->mutex_);
-        size_t const pTasks = getPendingTasks();
-        lock.unlock();
-        return pTasks;
-    }
-    /**
      * @brief Set the number of pending tasks to be computed
      * @param pendingTasks New number of pendings tasks to be computed
      */
     virtual inline void setPendingTasks(size_t const pendingTasks)
     {this->available_ = pendingTasks;}
-    /**
-     * @brief Set the number of pending tasks to be computed in a thread safe
-     *  way. It is, with proper handling of current writting.
-     * @param pendingTasks New number of pending tasks to be computed
-     */
-    virtual inline void safeSetPendingTasks(size_t const pendingTasks){
-        boost::unique_lock<boost::mutex> lock(this->mutex_);
-        setPendingTasks(pendingTasks);
-        lock.unlock();
-    }
-    /**
-     * @brief Subtract specified amount of pending tasks
-     * \f[
-     *  p_{t+1} = p_{t} - n
-     * \f]
-     * @param amount Amount of pending tasks to be subtracted
-     */
-    virtual inline void subtractPendingTasks(size_t const amount){
-        setPendingTasks(getPendingTasks()-amount);
-    }
-    /**
-     * @brief Subtract pending tasks in a thread safe way. It is, with proper
-     *  handling of concurrency
-     * @see MDThreadPool::subtractPendingTasks
-     */
-    virtual inline void safeSubtractPendingTasks(size_t const amount){
-        boost::unique_lock<boost::mutex> lock(this->mutex_);
-        subtractPendingTasks(amount);
-        lock.unlock();
-    }
     /**
      * @brief Unitary increase the number of pending tasks to be computed
      */

@@ -1,7 +1,7 @@
 <map id="SimpleKDTreeFactory" name="SimpleKDTreeFactory">
-<area shape="rect" id="node2" href="$d5/dd0/classKDTreeFactory.html" title="Class that must be extended by any class which provides factory methods for k&#45;dimensional trees..." alt="" coords="332,368,443,395"/>
-<area shape="rect" id="node3" href="$dd/d04/classLightKDTreeNodeBlockAllocator.html" title="Block allocator for LightKDTreeNode instances. " alt="" coords="242,279,453,305"/>
-<area shape="rect" id="node4" href="$d9/d47/classBlockAllocator.html" title="BlockAllocator\&lt; LightKDTree\lNode \&gt;" alt="" coords="221,188,412,229"/>
+<area shape="rect" id="node2" href="$d5/dd0/classKDTreeFactory.html" title="Class that must be extended by any class which provides factory methods for k&#45;dimensional trees..." alt="" coords="189,353,300,380"/>
+<area shape="rect" id="node3" href="$dd/d04/classLightKDTreeNodeBlockAllocator.html" title="Block allocator for LightKDTreeNode instances. " alt="" coords="139,264,350,291"/>
+<area shape="rect" id="node4" href="$d9/d47/classBlockAllocator.html" title="BlockAllocator\&lt; LightKDTree\lNode \&gt;" alt="" coords="149,173,340,215"/>
 <area shape="rect" id="node5" href="$dd/d79/classLightKDTreeNode.html" title="Class representing a light KDTree node. It is, the basic representation of a KDTree node with uses le..." alt="" coords="5,83,132,109"/>
 <area shape="rect" id="node6" href="$d7/d98/classIBinaryTreeNode.html" title="Binary tree node interface that must be implemented by any class providing binary tree node based fun..." alt="" coords="9,5,129,32"/>
 </map>

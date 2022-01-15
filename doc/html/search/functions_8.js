@@ -29,6 +29,5 @@ var searchData=
   ['helicopterplatform',['HelicopterPlatform',['../db/d69/classHelicopterPlatform.html#a6c3a234e28ae685ea1879d0febd65d87',1,'HelicopterPlatform']]],
   ['heliosexception',['HeliosException',['../d6/dda/classHeliosException.html#af7730c850bb60413d85b2de453b402ed',1,'HeliosException']]],
   ['heuristicilot',['heuristicILOT',['../db/d58/classSAHKDTreeFactory.html#a1c68f728b01e8123c188f9c06b58cbe7',1,'SAHKDTreeFactory']]],
-  ['histogram',['Histogram',['../da/d52/classSurfaceInspector_1_1maths_1_1Histogram.html#a484db7aeb24095b5bbda6c4298387358',1,'SurfaceInspector::maths::Histogram::Histogram(vector&lt; T &gt; x, size_t n=256, bool relative=true, bool density=true)'],['../da/d52/classSurfaceInspector_1_1maths_1_1Histogram.html#aba34bcb87c55dfd74b30592bf75ab30e',1,'SurfaceInspector::maths::Histogram::Histogram(T xmin, T xmax, vector&lt; T &gt; x, size_t n=256, bool relative=true, bool density=true)']]],
-  ['hpctest',['HPCTest',['../d4/d0d/classHeliosTests_1_1HPCTest.html#ab195a312ad504c59e911ac2b591af58a',1,'HeliosTests::HPCTest']]]
+  ['histogram',['Histogram',['../da/d52/classSurfaceInspector_1_1maths_1_1Histogram.html#a484db7aeb24095b5bbda6c4298387358',1,'SurfaceInspector::maths::Histogram::Histogram(vector&lt; T &gt; x, size_t n=256, bool relative=true, bool density=true)'],['../da/d52/classSurfaceInspector_1_1maths_1_1Histogram.html#aba34bcb87c55dfd74b30592bf75ab30e',1,'SurfaceInspector::maths::Histogram::Histogram(T xmin, T xmax, vector&lt; T &gt; x, size_t n=256, bool relative=true, bool density=true)']]]
 ];

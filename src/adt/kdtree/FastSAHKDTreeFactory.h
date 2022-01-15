@@ -92,36 +92,4 @@ public:
         KDTreeNode *node,
         vector<Primitive *> &primitives
     ) const override;
-
-    /**
-     * @brief The recipe for finding split position by Fast-SAH algorithm. It
-     *  is meant to be used by the FastSAHKDTreeFactory::findSplitPositionBySAH
-     *  but also by any alternative implementation which shares the same recipe
-     *  (global logic) but changes the way some parts are computed. For
-     *  instance, it is used to handle geometry-level parallelization.
-     *
-     * @param f_recount Function to count min and max vertices forward and
-     *  backward from binning
-     *
-     * @see FastSAHKDTreeFactory::findSplitPositionBySAH
-     * @see FastSAHKDTreeFactory::GEOM_findSplitPositionBySAH
-     * @see MultiThreadKDTreeFactory
-     *
-     * @return Loss of best split position. The position itself is already
-     *  stored in given node.
-     */
-    virtual double findSplitPositionByFastSAHRecipe(
-        KDTreeNode *node,
-        vector<Primitive *> &primitives,
-        std::function<void(
-            vector<Primitive *> &primitives,
-            int const splitAxis,
-            double const minp,
-            double const deltap,
-            size_t const lossNodes,
-            size_t const lossCases,
-            vector<size_t> &cForward,
-            vector<size_t> &cBackward
-        )> f_recount
-    ) const;
 };

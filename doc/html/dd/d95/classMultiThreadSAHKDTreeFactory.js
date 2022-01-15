@@ -1,6 +1,6 @@
 var classMultiThreadSAHKDTreeFactory =
 [
-    [ "MultiThreadSAHKDTreeFactory", "dd/d95/classMultiThreadSAHKDTreeFactory.html#ac3d0d977e844f34b803086fa23afbf1d", null ],
+    [ "MultiThreadSAHKDTreeFactory", "dd/d95/classMultiThreadSAHKDTreeFactory.html#abdf55a95bdae97b267f3c5304c8f3a04", null ],
     [ "~MultiThreadSAHKDTreeFactory", "dd/d95/classMultiThreadSAHKDTreeFactory.html#ae5cd3f9920571d53b5bda6a911555bd0", null ],
     [ "serialize", "dd/d95/classMultiThreadSAHKDTreeFactory.html#a99771e41b780ee4d11b86be1977089bb", null ],
     [ "boost::serialization::access", "dd/d95/classMultiThreadSAHKDTreeFactory.html#ac98d07dd8f7b70e16ccb9a01abf56b9c", null ],
