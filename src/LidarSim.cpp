@@ -133,13 +133,13 @@ void printHelp(){
            "as available\n\n"
 
        <<   "\t\t--kdtGeomJobs <integer> : Specify the number of threads to "
-            "be used for building the\n\t\t"
+            "be used for building the\n\t\t\t"
             "upper nodes of the KDTree (geometry-level parallelization).\n"
             "\t\t\tIf 1, then there is no geometry-level parallelization"
             "\n\t\t\tIf >1, then geometry-level parallelization uses as many "
             "threads as specified."
             "\n\t\t\tIf 0, then geometry-level parallelization uses as many "
-            "threads as node-level one\n\n"
+            "threads as node-level.\n\n"
 
 
         << "\t\t--sahNodes <integer> : Specify how many nodes must be used by "

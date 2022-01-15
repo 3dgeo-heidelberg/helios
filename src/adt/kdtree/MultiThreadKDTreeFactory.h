@@ -116,6 +116,18 @@ protected:
      * @see MultiThreadKDTreeFactory::maxGeometryDepth
      */
     shared_ptr<SharedTaskSequencer> masters;
+    /**
+     * @brief How many geometry-level jobs have fully finished during current
+     *  KDT building
+     * @see MultiThreadKDTreeFactory::increaseFinishedGeomJobsCount
+     */
+    size_t finishedGeomJobs;
+    /**
+     * @brief Mutex to handle concurrent access to counter of finished
+     *  geometry-level jobs
+     * @see MultiThreadKDTreeFactory::finishedGeomJobs
+     */
+    boost::mutex finishedGeomJobsMutex;
 
 public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //
@@ -343,6 +355,18 @@ protected:
     ) const override
     {kdtf->reportKDTreeStats(root, primitives);}
 
+    // ***  UTIL METHODS  *** //
+    // ********************** //
+    /**
+     * @brief Increase count of finished geometry-level jobs in a thread safe
+     *  way.
+     * @see MultiThreadKDTreeFactory::finishedGeomJobs
+     */
+    virtual inline void increaseFinishedGeomJobsCount(size_t const amount){
+        boost::unique_lock<boost::mutex> lock(finishedGeomJobsMutex);
+        finishedGeomJobs += amount;
+        lock.unlock();
+    }
 public:
     // *** GETTERs and SETTERs  *** //
     // **************************** //

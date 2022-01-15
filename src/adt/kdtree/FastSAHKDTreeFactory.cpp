@@ -54,7 +54,7 @@ double FastSAHKDTreeFactory::findSplitPositionBySAH(
                 cForward[i+1] = cForward[i] + minCount[i];
             }
             for(size_t i = lossNodes ; i > 0 ; --i){
-                cBackward[i-1] = cBackward[i] + maxCount[lossNodes-i];
+                cBackward[i-1] = cBackward[i] + maxCount[i-1];
             }
         }
     );

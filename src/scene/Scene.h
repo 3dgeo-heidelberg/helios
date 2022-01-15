@@ -166,8 +166,7 @@ public:
     kdtf(make_shared<SimpleKDTreeFactory>())
   {}
   ~Scene() override {
-    for (Primitive *p : primitives)
-      delete p;
+    for (Primitive *p : primitives) delete p;
   }
   Scene(Scene &s);
 

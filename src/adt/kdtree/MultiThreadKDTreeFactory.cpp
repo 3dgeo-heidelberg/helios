@@ -75,6 +75,7 @@ KDTreeNodeRoot * MultiThreadKDTreeFactory::makeFromPrimitivesUnsafe(
     bool const reportStats
 ){
     // Build the KDTree using a modifiable copy of primitives pointers vector
+    finishedGeomJobs = 0;
     KDTreeNodeRoot *root = (KDTreeNodeRoot *) kdtf->_buildRecursive(
         nullptr,        // Parent node
         false,          // Node is not left child, because it is root not child
@@ -84,6 +85,10 @@ KDTreeNodeRoot * MultiThreadKDTreeFactory::makeFromPrimitivesUnsafe(
     );
     if(masters != nullptr){
         masters->joinAll(); // Join masters threads from geometry-level
+        size_t geomJobsToBeReleased = geomJobs-finishedGeomJobs;
+        if(geomJobsToBeReleased > 0){
+            tpNode.safeSubtractPendingTasks(geomJobsToBeReleased);
+        }
     }
     tpNode.join(); // Join auxiliar threads from node-level
     if(root == nullptr){
@@ -242,8 +247,10 @@ void MultiThreadKDTreeFactory::buildChildrenGeometryLevel(
     // Geometry-level building of children nodes
     if(depth == maxGeometryDepth){
         // Move auxiliar threads from geometry thread pool to node thread pool
-        if(auxiliarThreads > 0)
+        if(auxiliarThreads > 0){
             tpNode.safeSubtractPendingTasks(auxiliarThreads);
+            increaseFinishedGeomJobsCount(auxiliarThreads);
+        }
         // Recursively build children nodes
         kdtf->buildChildrenNodes(
             node,
@@ -256,6 +263,7 @@ void MultiThreadKDTreeFactory::buildChildrenGeometryLevel(
         );
         // Allow one more thread to node-level pool when master thread finishes
         tpNode.safeSubtractPendingTasks(1);
+        increaseFinishedGeomJobsCount(1);
     }
     else{
         gs->GEOM_buildChildrenNodes(
