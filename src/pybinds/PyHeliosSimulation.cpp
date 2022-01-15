@@ -88,6 +88,7 @@ void PyHeliosSimulation::start (){
     survey->scanner->detector->zipOutput = zipOutput;
 
     buildPulseThreadPool();
+    std::cout << "SurveyPlayback built with outputpath:\n'"<<outputPath<<"'"<<std::endl;  // TODO Remove
     playback = std::shared_ptr<SurveyPlayback>(
         new SurveyPlayback(
             survey,
