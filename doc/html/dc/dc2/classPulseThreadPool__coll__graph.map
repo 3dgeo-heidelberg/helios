@@ -1,11 +1,11 @@
 <map id="PulseThreadPool" name="PulseThreadPool">
-<area shape="rect" id="node2" href="$d2/dee/classResThreadPool.html" title="ResThreadPool\&lt; std\l::vector\&lt; std::vector\l\&lt; double \&gt; \&gt; &amp;, RandomnessGenerator\l\&lt; double \&gt; &amp;, RandomnessGenerator\l\&lt; double \&gt; &amp;, NoiseSource\&lt; double \&gt; &amp; \&gt;" alt="" coords="676,5,943,91"/>
-<area shape="rect" id="node3" href="$d2/d1f/classSimpleThreadPool.html" title="SimpleThreadPool\&lt; TaskArgs\l ... \&gt;" alt="" coords="368,27,564,69"/>
-<area shape="rect" id="node4" href="$dc/de7/classThreadPool.html" title="Base class providing core implementation of a thread pool to deal with multi threading tasks..." alt="" coords="181,35,269,61"/>
-<area shape="rect" id="node5" href="$df/d9c/classPulseThreadPoolInterface.html" title="Interface for thread pools supporting pulse tasks. " alt="" coords="723,115,895,141"/>
-<area shape="rect" id="node6" href="$d7/d7d/classTimeWatcher.html" title="A time watcher can be used to perform and report time measures. " alt="" coords="759,165,859,192"/>
-<area shape="rect" id="node7" href="$d3/d57/classUniformNoiseSource.html" title="UniformNoiseSource\l\&lt; double \&gt;" alt="" coords="738,217,881,258"/>
-<area shape="rect" id="node8" href="$d4/d38/classRandomNoiseSource.html" title="RandomNoiseSource\&lt;\l double \&gt;" alt="" coords="389,217,543,258"/>
-<area shape="rect" id="node9" href="$d9/d6b/classNoiseSource.html" title="NoiseSource\&lt; double \&gt;" alt="" coords="145,204,304,231"/>
-<area shape="rect" id="node10" href="$dc/d6e/classRandomnessGenerator.html" title="RandomnessGenerator\l\&lt; double \&gt;" alt="" coords="147,265,303,306"/>
+<area shape="rect" id="node2" href="$d2/dee/classResThreadPool.html" title="ResThreadPool\&lt; std\l::vector\&lt; std::vector\l\&lt; double \&gt; \&gt; &amp;, RandomnessGenerator\l\&lt; double \&gt; &amp;, RandomnessGenerator\l\&lt; double \&gt; &amp;, NoiseSource\&lt; double \&gt; &amp; \&gt;" alt="" coords="701,5,968,91"/>
+<area shape="rect" id="node3" href="$d2/d1f/classSimpleThreadPool.html" title="SimpleThreadPool\&lt; TaskArgs\l ... \&gt;" alt="" coords="393,27,589,69"/>
+<area shape="rect" id="node4" href="$dc/de7/classThreadPool.html" title="Base class providing core implementation of a thread pool to deal with multi threading tasks..." alt="" coords="206,73,294,100"/>
+<area shape="rect" id="node6" href="$df/d9c/classPulseThreadPoolInterface.html" title="Interface for thread pools supporting pulse tasks. " alt="" coords="749,115,921,141"/>
+<area shape="rect" id="node7" href="$d7/d7d/classTimeWatcher.html" title="A time watcher can be used to perform and report time measures. " alt="" coords="785,165,885,192"/>
+<area shape="rect" id="node8" href="$d3/d57/classUniformNoiseSource.html" title="UniformNoiseSource\l\&lt; double \&gt;" alt="" coords="763,217,906,258"/>
+<area shape="rect" id="node9" href="$d4/d38/classRandomNoiseSource.html" title="RandomNoiseSource\&lt;\l double \&gt;" alt="" coords="414,217,569,258"/>
+<area shape="rect" id="node10" href="$d9/d6b/classNoiseSource.html" title="NoiseSource\&lt; double \&gt;" alt="" coords="171,204,329,231"/>
+<area shape="rect" id="node11" href="$dc/d6e/classRandomnessGenerator.html" title="RandomnessGenerator\l\&lt; double \&gt;" alt="" coords="172,265,328,306"/>
 </map>

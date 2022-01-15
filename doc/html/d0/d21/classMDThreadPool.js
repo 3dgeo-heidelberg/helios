@@ -9,7 +9,11 @@ var classMDThreadPool =
     [ "increasePendingTasks", "d0/d21/classMDThreadPool.html#a2604acd9240936d50bb203aed8efeba5", null ],
     [ "join", "d0/d21/classMDThreadPool.html#a08f243e7fb8180664f0c01bc7956d02d", null ],
     [ "run_md_task", "d0/d21/classMDThreadPool.html#a6689c586615bc2a066244bbdceb376f8", null ],
+    [ "safeGetPendingTasks", "d0/d21/classMDThreadPool.html#a016d37cf90fdb80835c8c13d738d54b9", null ],
+    [ "safeSetPendingTasks", "d0/d21/classMDThreadPool.html#a8dee3afc72876ba9e0ebffe390d49159", null ],
+    [ "safeSubtractPendingTasks", "d0/d21/classMDThreadPool.html#ab860000d48ac358640dc63e83468de34", null ],
     [ "setPendingTasks", "d0/d21/classMDThreadPool.html#a601dffa9e67ec14baea9eaf14abd3abb", null ],
+    [ "subtractPendingTasks", "d0/d21/classMDThreadPool.html#a0c5500eadaf085de340f9860e05ee3c9", null ],
     [ "try_run_md_task", "d0/d21/classMDThreadPool.html#af6fb1810d606515d3a5fd1593dc1afba", null ],
     [ "wrap_md_task", "d0/d21/classMDThreadPool.html#a7e626735d527e5e19fe38d636801fc85", null ]
 ];

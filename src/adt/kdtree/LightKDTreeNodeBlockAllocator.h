@@ -26,7 +26,7 @@ private:
             LightKDTreeNodeBlockAllocator,
             BlockAllocator
         >();
-        ar &boost::serialization::base_object<Primitive>(*this);
+        ar &boost::serialization::base_object<BlockAllocator>(*this);
     }
 
 public:

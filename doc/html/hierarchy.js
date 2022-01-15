@@ -50,6 +50,7 @@ var hierarchy =
     ] ],
     [ "HeliosTests::BaseTest", "d9/d52/classHeliosTests_1_1BaseTest.html", [
       [ "HeliosTests::FluxionumTest", "dd/de0/classHeliosTests_1_1FluxionumTest.html", null ],
+      [ "HeliosTests::HPCTest", "d4/d0d/classHeliosTests_1_1HPCTest.html", null ],
       [ "HeliosTests::LadLutTest", "dd/df9/classHeliosTests_1_1LadLutTest.html", null ],
       [ "HeliosTests::NoiseTest", "de/dad/classHeliosTests_1_1NoiseTest.html", null ],
       [ "HeliosTests::PlaneFitterTest", "d6/dda/classHeliosTests_1_1PlaneFitterTest.html", null ],
@@ -80,6 +81,9 @@ var hierarchy =
       ] ]
     ] ],
     [ "FileUtils", "d5/d4b/classFileUtils.html", null ],
+    [ "HeliosTests::HPCTest_DoubleComparator", "dd/d54/structHeliosTests_1_1HPCTest__DoubleComparator.html", null ],
+    [ "HeliosTests::HPCTest_FloatComparator", "d0/df1/structHeliosTests_1_1HPCTest__FloatComparator.html", null ],
+    [ "HeliosTests::HPCTest_IntComparator", "d8/d51/structHeliosTests_1_1HPCTest__IntComparator.html", null ],
     [ "IBinaryTreeNode", "d7/d98/classIBinaryTreeNode.html", [
       [ "LightKDTreeNode", "dd/d79/classLightKDTreeNode.html", [
         [ "KDTreeNode", "d8/d94/classKDTreeNode.html", [
@@ -112,6 +116,7 @@ var hierarchy =
         ] ]
       ] ]
     ] ],
+    [ "KDTreeFactoryMaker", "d3/db8/classKDTreeFactoryMaker.html", null ],
     [ "KDTreePrimitiveComparator", "d6/d1f/structKDTreePrimitiveComparator.html", null ],
     [ "KDTreeRaycaster", "da/d81/classKDTreeRaycaster.html", null ],
     [ "LadLut", "d9/d22/classLadLut.html", null ],
@@ -249,12 +254,31 @@ var hierarchy =
       ] ]
     ] ],
     [ "SerialIO", "d6/db9/classSerialIO.html", null ],
+    [ "SharedSubTask", "df/d6f/classSharedSubTask.html", [
+      [ "FastSAHKDTreeRecountSubTask", "d6/d0d/classFastSAHKDTreeRecountSubTask.html", null ],
+      [ "helios::hpc::SM_ParallelMergeSortSubTask< RandomAccessIterator, Comparator >", "d7/da6/classhelios_1_1hpc_1_1SM__ParallelMergeSortSubTask.html", null ],
+      [ "SAHKDTreeComputeLossNodesSubTask", "d5/d89/classSAHKDTreeComputeLossNodesSubTask.html", null ],
+      [ "SimpleKDTreeBuildChildrenNodesSubTask", "d5/d80/classSimpleKDTreeBuildChildrenNodesSubTask.html", null ],
+      [ "SimpleKDTreeComputeRootNodeBoundariesSubTask", "d1/da6/classSimpleKDTreeComputeRootNodeBoundariesSubTask.html", null ],
+      [ "SimpleKDTreePopulateSplitsSubTask", "d1/dc1/classSimpleKDTreePopulateSplitsSubTask.html", null ]
+    ] ],
+    [ "SharedSubTaskCompletionHandler", "d6/d25/classSharedSubTaskCompletionHandler.html", [
+      [ "SharedTaskSequencer", "da/d29/classSharedTaskSequencer.html", null ]
+    ] ],
+    [ "SimpleKDTreeGeometricStrategy", "d3/de1/classSimpleKDTreeGeometricStrategy.html", [
+      [ "SAHKDTreeGeometricStrategy", "d9/d31/classSAHKDTreeGeometricStrategy.html", [
+        [ "AxisSAHKDTreeGeometricStrategy", "d4/d97/classAxisSAHKDTreeGeometricStrategy.html", null ],
+        [ "FastSAHKDTreeGeometricStrategy", "d1/ddc/classFastSAHKDTreeGeometricStrategy.html", null ]
+      ] ]
+    ] ],
     [ "Simulation", "d1/d7b/classSimulation.html", [
       [ "SurveyPlayback", "d6/da1/classSurveyPlayback.html", null ]
     ] ],
     [ "SimulationCycleCallback", "dc/d7a/classSimulationCycleCallback.html", [
       [ "pyhelios::PySimulationCycleCallback", "d9/d64/classpyhelios_1_1PySimulationCycleCallback.html", null ]
     ] ],
+    [ "helios::hpc::SM_ParallelMergeSort< RandomAccessIterator, Comparator >", "d8/de4/classhelios_1_1hpc_1_1SM__ParallelMergeSort.html", null ],
+    [ "SmartSharedFunctorContainer< T >", "db/da8/classSmartSharedFunctorContainer.html", null ],
     [ "SpectralLibrary", "d5/d20/classSpectralLibrary.html", null ],
     [ "static_visitor", null, [
       [ "stringVisitor", "d8/df4/structstringVisitor.html", null ]
@@ -284,7 +308,7 @@ var hierarchy =
       [ "SimpleThreadPool< TaskArgs >", "d2/d1f/classSimpleThreadPool.html", null ],
       [ "SimpleThreadPool< TaskArgs ... >", "d2/d1f/classSimpleThreadPool.html", [
         [ "MDThreadPool< MDType, TaskArgs >", "d0/d21/classMDThreadPool.html", null ],
-        [ "MDThreadPool< KDTreeBuildType, KDTreeNode *, bool const, vector< Primitive *> &, int const >", "d0/d21/classMDThreadPool.html", [
+        [ "MDThreadPool< KDTreeBuildType, KDTreeNode *, bool const, vector< Primitive *> &, int const, int const >", "d0/d21/classMDThreadPool.html", [
           [ "KDTreeFactoryThreadPool", "d2/dea/classKDTreeFactoryThreadPool.html", null ]
         ] ],
         [ "ResThreadPool< TaskArgs >", "d2/dee/classResThreadPool.html", null ],

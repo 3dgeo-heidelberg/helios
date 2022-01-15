@@ -52,5 +52,6 @@ var searchData=
   ['try_5frun_5fpulse_5ftask',['try_run_pulse_task',['../d6/ddc/classPulseThreadPool.html#aa383b2b0b24ec1e20b8c0dc9b7635313',1,'PulseThreadPool::try_run_pulse_task()'],['../df/d9c/classPulseThreadPoolInterface.html#ab4c81aee1c3d8327a95278c616960ee7',1,'PulseThreadPoolInterface::try_run_pulse_task()'],['../d7/de7/classPulseWarehouseThreadPool.html#ab9219cd666812efc2754ebaef85a2b8e',1,'PulseWarehouseThreadPool::try_run_pulse_task()']]],
   ['try_5frun_5fres_5ftask',['try_run_res_task',['../d2/dee/classResThreadPool.html#a547bb2acf59e206da78333f0579f6a83',1,'ResThreadPool']]],
   ['tryadd',['tryAdd',['../da/d8d/classTaskDropper.html#a4e79063a65c9cff8cff4fdbbc83240ce',1,'TaskDropper']]],
-  ['trydrop',['tryDrop',['../de/d9a/classPulseTaskDropper.html#ab0b9593b97ab5657f890cefb48ba26f3',1,'PulseTaskDropper::tryDrop()'],['../da/d8d/classTaskDropper.html#a067e3bf1714d730e80a9241246e119d8',1,'TaskDropper::tryDrop()']]]
+  ['trydrop',['tryDrop',['../de/d9a/classPulseTaskDropper.html#ab0b9593b97ab5657f890cefb48ba26f3',1,'PulseTaskDropper::tryDrop()'],['../da/d8d/classTaskDropper.html#a067e3bf1714d730e80a9241246e119d8',1,'TaskDropper::tryDrop()']]],
+  ['trysort',['trySort',['../d8/de4/classhelios_1_1hpc_1_1SM__ParallelMergeSort.html#adeb0840a808e48b0fd421fa848c73606',1,'helios::hpc::SM_ParallelMergeSort']]]
 ];

@@ -26,6 +26,7 @@ var searchData=
   ['apmatrix',['apMatrix',['../d5/d3c/classBuddingScanningPulseProcess.html#a51c3e95c50e55cfa4773a03994e97acb',1,'BuddingScanningPulseProcess::apMatrix()'],['../df/ddb/classWarehouseScanningPulseProcess.html#acc59fe81ae7203882c001353d5b8ea11',1,'WarehouseScanningPulseProcess::apMatrix()']]],
   ['argc',['argc',['../d7/d5c/classArgumentsParser.html#a19b6e0516fcd660adf425be4b00d5a85',1,'ArgumentsParser']]],
   ['argv',['argv',['../d7/d5c/classArgumentsParser.html#a16605c90819c4407a1c99365aa1860ef',1,'ArgumentsParser']]],
+  ['asahkdtf',['asahkdtf',['../d4/d97/classAxisSAHKDTreeGeometricStrategy.html#a49dff50e7e0b282092487c3c510cd1ec',1,'AxisSAHKDTreeGeometricStrategy']]],
   ['assetsdir',['assetsDir',['../d9/d82/classXmlAssetsLoader.html#a93746ec0dd88588e1ddfafe4a0a850fe',1,'XmlAssetsLoader']]],
   ['assetspath',['assetsPath',['../d2/d88/classHeliosDemos_1_1SurveyDemo.html#aa34e5d609c4daf4b4263999b3bec88d8',1,'HeliosDemos::SurveyDemo']]],
   ['assigndefaultnormal',['assignDefaultNormal',['../d6/d03/classXYZPointCloudFileLoader.html#ac555daeba216fe3c5530c3f5769573c8',1,'XYZPointCloudFileLoader']]],
@@ -36,6 +37,10 @@ var searchData=
   ['attitudeynoisesource',['attitudeYNoiseSource',['../df/d1e/classPlatform.html#aa8714ae4bcb24dbec8f5e26cc7b9d211',1,'Platform']]],
   ['attitudeznoisesource',['attitudeZNoiseSource',['../df/d1e/classPlatform.html#ac3c9ea9311a5842f1ce9f3561589790b',1,'Platform']]],
   ['available_5f',['available_',['../d2/d1f/classSimpleThreadPool.html#aed288649b910b5ba8222484c5ae49bad',1,'SimpleThreadPool']]],
+  ['availablethreads',['availableThreads',['../da/d29/classSharedTaskSequencer.html#acac573d433c467ff7bb047f81fcac644',1,'SharedTaskSequencer']]],
   ['aworst',['aWorst',['../da/d69/classSurfaceInspector_1_1maths_1_1SingularContextComputer.html#a9a3d785c2db6665c183500e0d5e7f0a1',1,'SurfaceInspector::maths::SingularContextComputer']]],
-  ['axis',['axis',['../d6/d1f/structKDTreePrimitiveComparator.html#a1c1049507f049f79fc3a37558da29088',1,'KDTreePrimitiveComparator']]]
+  ['ax',['ax',['../d1/da6/classSimpleKDTreeComputeRootNodeBoundariesSubTask.html#a81737a2f4114eeeb6c6694f9c7a1bb4e',1,'SimpleKDTreeComputeRootNodeBoundariesSubTask']]],
+  ['axis',['axis',['../d6/d1f/structKDTreePrimitiveComparator.html#a1c1049507f049f79fc3a37558da29088',1,'KDTreePrimitiveComparator']]],
+  ['ay',['ay',['../d1/da6/classSimpleKDTreeComputeRootNodeBoundariesSubTask.html#a317a9477b51f2a160c1c73e770518c77',1,'SimpleKDTreeComputeRootNodeBoundariesSubTask']]],
+  ['az',['az',['../d1/da6/classSimpleKDTreeComputeRootNodeBoundariesSubTask.html#afa16842c035d3952358334e5ef66f6da',1,'SimpleKDTreeComputeRootNodeBoundariesSubTask']]]
 ];

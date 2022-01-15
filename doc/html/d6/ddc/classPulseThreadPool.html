@@ -117,15 +117,15 @@ Collaboration diagram for PulseThreadPool:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../dc/dc2/classPulseThreadPool__coll__graph.png" border="0" usemap="#PulseThreadPool_coll__map" alt="Collaboration graph"/></div>
 <map name="PulseThreadPool_coll__map" id="PulseThreadPool_coll__map">
-<area shape="rect" id="node2" href="../../d2/dee/classResThreadPool.html" title="ResThreadPool\&lt; std\l::vector\&lt; std::vector\l\&lt; double \&gt; \&gt; &amp;, RandomnessGenerator\l\&lt; double \&gt; &amp;, RandomnessGenerator\l\&lt; double \&gt; &amp;, NoiseSource\&lt; double \&gt; &amp; \&gt;" alt="" coords="676,5,943,91"/>
-<area shape="rect" id="node3" href="../../d2/d1f/classSimpleThreadPool.html" title="SimpleThreadPool\&lt; TaskArgs\l ... \&gt;" alt="" coords="368,27,564,69"/>
-<area shape="rect" id="node4" href="../../dc/de7/classThreadPool.html" title="Base class providing core implementation of a thread pool to deal with multi threading tasks..." alt="" coords="181,35,269,61"/>
-<area shape="rect" id="node5" href="../../df/d9c/classPulseThreadPoolInterface.html" title="Interface for thread pools supporting pulse tasks. " alt="" coords="723,115,895,141"/>
-<area shape="rect" id="node6" href="../../d7/d7d/classTimeWatcher.html" title="A time watcher can be used to perform and report time measures. " alt="" coords="759,165,859,192"/>
-<area shape="rect" id="node7" href="../../d3/d57/classUniformNoiseSource.html" title="UniformNoiseSource\l\&lt; double \&gt;" alt="" coords="738,217,881,258"/>
-<area shape="rect" id="node8" href="../../d4/d38/classRandomNoiseSource.html" title="RandomNoiseSource\&lt;\l double \&gt;" alt="" coords="389,217,543,258"/>
-<area shape="rect" id="node9" href="../../d9/d6b/classNoiseSource.html" title="NoiseSource\&lt; double \&gt;" alt="" coords="145,204,304,231"/>
-<area shape="rect" id="node10" href="../../dc/d6e/classRandomnessGenerator.html" title="RandomnessGenerator\l\&lt; double \&gt;" alt="" coords="147,265,303,306"/>
+<area shape="rect" id="node2" href="../../d2/dee/classResThreadPool.html" title="ResThreadPool\&lt; std\l::vector\&lt; std::vector\l\&lt; double \&gt; \&gt; &amp;, RandomnessGenerator\l\&lt; double \&gt; &amp;, RandomnessGenerator\l\&lt; double \&gt; &amp;, NoiseSource\&lt; double \&gt; &amp; \&gt;" alt="" coords="701,5,968,91"/>
+<area shape="rect" id="node3" href="../../d2/d1f/classSimpleThreadPool.html" title="SimpleThreadPool\&lt; TaskArgs\l ... \&gt;" alt="" coords="393,27,589,69"/>
+<area shape="rect" id="node4" href="../../dc/de7/classThreadPool.html" title="Base class providing core implementation of a thread pool to deal with multi threading tasks..." alt="" coords="206,73,294,100"/>
+<area shape="rect" id="node6" href="../../df/d9c/classPulseThreadPoolInterface.html" title="Interface for thread pools supporting pulse tasks. " alt="" coords="749,115,921,141"/>
+<area shape="rect" id="node7" href="../../d7/d7d/classTimeWatcher.html" title="A time watcher can be used to perform and report time measures. " alt="" coords="785,165,885,192"/>
+<area shape="rect" id="node8" href="../../d3/d57/classUniformNoiseSource.html" title="UniformNoiseSource\l\&lt; double \&gt;" alt="" coords="763,217,906,258"/>
+<area shape="rect" id="node9" href="../../d4/d38/classRandomNoiseSource.html" title="RandomNoiseSource\&lt;\l double \&gt;" alt="" coords="414,217,569,258"/>
+<area shape="rect" id="node10" href="../../d9/d6b/classNoiseSource.html" title="NoiseSource\&lt; double \&gt;" alt="" coords="171,204,329,231"/>
+<area shape="rect" id="node11" href="../../dc/d6e/classRandomnessGenerator.html" title="RandomnessGenerator\l\&lt; double \&gt;" alt="" coords="172,265,328,306"/>
 </map>
 <center><span class="legend">[<a target="top" href="../../graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -162,6 +162,10 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../.
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d1f/classSimpleThreadPool.html#aee0e9d844e4c048b539b6596cf26f3ea">run_task</a> (Task task)</td></tr>
 <tr class="memdesc:aee0e9d844e4c048b539b6596cf26f3ea inherit pub_methods_classSimpleThreadPool"><td class="mdescLeft">&#160;</td><td class="mdescRight">Run a task when there is an available thread for it. <br /></td></tr>
 <tr class="separator:aee0e9d844e4c048b539b6596cf26f3ea inherit pub_methods_classSimpleThreadPool"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a914a442d893a27a6c322a2490fd2a978 inherit pub_methods_classSimpleThreadPool"><td class="memItemLeft" align="right" valign="top"><a id="a914a442d893a27a6c322a2490fd2a978"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d1f/classSimpleThreadPool.html#a914a442d893a27a6c322a2490fd2a978">notifyOne</a> ()</td></tr>
+<tr class="memdesc:a914a442d893a27a6c322a2490fd2a978 inherit pub_methods_classSimpleThreadPool"><td class="mdescLeft">&#160;</td><td class="mdescRight">Notify the conditional variable so if there is a waiting thread it will wake up. <br /></td></tr>
+<tr class="separator:a914a442d893a27a6c322a2490fd2a978 inherit pub_methods_classSimpleThreadPool"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classThreadPool"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classThreadPool')"><img src="../../closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="../../dc/de7/classThreadPool.html">ThreadPool</a></td></tr>
 <tr class="memitem:a2b8ca7a57ba657bad890a99058e01781 inherit pub_methods_classThreadPool"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/de7/classThreadPool.html#a2b8ca7a57ba657bad890a99058e01781">ThreadPool</a> (std::size_t const _pool_size)</td></tr>
 <tr class="memdesc:a2b8ca7a57ba657bad890a99058e01781 inherit pub_methods_classThreadPool"><td class="mdescLeft">&#160;</td><td class="mdescRight">Thread pool constructor.  <a href="../../dc/de7/classThreadPool.html#a2b8ca7a57ba657bad890a99058e01781">More...</a><br /></td></tr>

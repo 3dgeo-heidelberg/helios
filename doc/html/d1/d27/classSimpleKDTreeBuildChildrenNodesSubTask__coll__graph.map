@@ -1,0 +1,10 @@
+<map id="SimpleKDTreeBuildChildrenNodesSubTask" name="SimpleKDTreeBuildChildrenNodesSubTask">
+<area shape="rect" id="node2" href="$df/d6f/classSharedSubTask.html" title="A shared task is said to be a collection of shared sub&#45;tasks. Each shared sub&#45;task can be computed in..." alt="" coords="5,276,120,303"/>
+<area shape="rect" id="node5" href="$d8/d94/classKDTreeNode.html" title="Class representing a KDTree node. " alt="" coords="307,276,405,303"/>
+<area shape="rect" id="node6" href="$dd/d79/classLightKDTreeNode.html" title="Class representing a light KDTree node. It is, the basic representation of a KDTree node with uses le..." alt="" coords="207,185,334,212"/>
+<area shape="rect" id="node7" href="$d7/d98/classIBinaryTreeNode.html" title="Binary tree node interface that must be implemented by any class providing binary tree node based fun..." alt="" coords="211,95,331,121"/>
+<area shape="rect" id="node8" href="$d2/d1a/classAABB.html" title="Class representing an Axis Aligned Bounding Box (AABB) " alt="" coords="412,185,471,212"/>
+<area shape="rect" id="node9" href="$df/de1/classPrimitive.html" title="Abstract class defining the common behavior for all primitives. " alt="" coords="381,95,454,121"/>
+<area shape="rect" id="node10" href="$d2/da0/classVertex.html" title="Class representing a vertex. " alt="" coords="478,95,538,121"/>
+<area shape="rect" id="node11" href="$db/d02/classColor4f.html" title="Class representing a color with 4 float components: RGBA. " alt="" coords="476,5,540,32"/>
+</map>

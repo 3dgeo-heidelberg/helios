@@ -31,5 +31,6 @@ var searchData=
   ['argmax',['argmax',['../d1/dd3/classSurfaceInspector_1_1maths_1_1Vector.html#a909c0e5a73034d3a83692d8e8eb621e2',1,'SurfaceInspector::maths::Vector']]],
   ['argmin',['argmin',['../d9/d82/classfluxionum_1_1Minimizer.html#aee3b505a8afdaf211098ea86988ad89e',1,'fluxionum::Minimizer::argmin()'],['../db/d57/classfluxionum_1_1UnivariateNewtonRaphsonMinimizer.html#a51b95e942575693b3cf186aeb5c1805f',1,'fluxionum::UnivariateNewtonRaphsonMinimizer::argmin()'],['../d1/dd3/classSurfaceInspector_1_1maths_1_1Vector.html#a23843bdfb51a87089ca7ab8266d106da',1,'SurfaceInspector::maths::Vector::argmin()']]],
   ['argumentsparser',['ArgumentsParser',['../d7/d5c/classArgumentsParser.html#ac17c09e762ec2694ca8e61ec73d3edfb',1,'ArgumentsParser']]],
-  ['axissahkdtreefactory',['AxisSAHKDTreeFactory',['../df/d30/classAxisSAHKDTreeFactory.html#a830a51dc6cdb174357bed9a6fb55e400',1,'AxisSAHKDTreeFactory']]]
+  ['axissahkdtreefactory',['AxisSAHKDTreeFactory',['../df/d30/classAxisSAHKDTreeFactory.html#a830a51dc6cdb174357bed9a6fb55e400',1,'AxisSAHKDTreeFactory']]],
+  ['axissahkdtreegeometricstrategy',['AxisSAHKDTreeGeometricStrategy',['../d4/d97/classAxisSAHKDTreeGeometricStrategy.html#afb19c346ad652ae725e037ade338261b',1,'AxisSAHKDTreeGeometricStrategy']]]
 ];
