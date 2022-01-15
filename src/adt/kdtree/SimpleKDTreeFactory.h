@@ -3,7 +3,6 @@
 #include <KDTreeFactory.h>
 
 #include <vector>
-#include <functional>
 
 class MultiThreadKDTreeFactory;
 
@@ -19,7 +18,6 @@ class SimpleKDTreeFactory : public KDTreeFactory{
     // ***  FRIENDS  *** //
     // ***************** //
     friend class MultiThreadKDTreeFactory;
-    friend class SimpleKDTreeGeometricStrategy;
 
 private:
     // ***  SERIALIZATION  *** //
@@ -56,7 +54,6 @@ protected:
         KDTreeNode *,
         bool const,
         vector<Primitive *> &,
-        int const,
         int const
     )> _buildRecursive;
 
@@ -92,9 +89,7 @@ public:
      * @return Pointer to root node of built simple KDTree
      */
     KDTreeNodeRoot * makeFromPrimitivesUnsafe(
-        vector<Primitive *> &primitives,
-        bool const computeStats=false,
-        bool const reportStats=false
+        vector<Primitive *> &primitives
     ) override;
 
 protected:
@@ -111,88 +106,14 @@ protected:
      * @param primitives Primitives to build KDTree splitting them
      * @param depth Current depth at build process. Useful for tracking
      *  recursion level
-     * @param index The node index inside current depth. Each node can be
-     *  univocally identified by the ordered pair \f$(d, i)\f$ where \f$d\f$
-     *  stands for the depth level and \f$i\f$ for the index. The root node
-     *  is identified by \f$(0, 0)\f$. Any left child node will be
-     *  \f$(d+1, 2i)\f$ and any right child node will be \f$(d+1, 2i+1)\f$,
-     *  where \f$d\f$ and \f$i\f$ are the depth and index for the parent node.
-     *  In consequence, all left nodes will have an even index while all right
-     *  nodes will have an odd one. However, notice that for performance
-     *  reasons it could preferable to check the left flag argument, as it is
-     *  faster than checking if index is even or odd.
      * @return Built KDTree node
      */
     virtual KDTreeNode * buildRecursive(
         KDTreeNode *parent,
         bool const left,
         vector<Primitive*> &primitives,
-        int const depth,
-        int const index
-    );
-    /**
-     * @brief The recipe of the recursive building algorithm. It is meant
-     *  to be used by the SimpleKDTreeFactory::buildRecursive but also by
-     *  any alternative implementation which shares the same recipe (global
-     *  logic) but changes the way some parts are computed. For instance, it
-     *  is used by the MultiThreadKDTreeFactory to handle geometry-level
-     *  parallelization
-     *
-     * @param f_computeNodeBoundaries The function to compute node boundaries.
-     *  For the base case it is SimpleKDTreeFactory::buildRecursive
-     * @param f_defineSplit The function to define split axis and position.
-     *  For the base case it is SimpleKDTreeFactory::computeNodeBoundaries
-     * @param f_populateSplits The function to populate left and right splits
-     *  with corresponding primitives. For the base case it is
-     *  SimpleKDTreeFactory::populateSplits
-     * @param f_buildChildrenNodes The function to build the children nodes
-     *  (left and right). For the base case it is
-     *  SimpleKDTreeFactory::buildChildrenNodes
-     *
-     * @see SimpleKDTreeFactory::buildRecursive
-     * @see SimpleKDTreeFactory::computeNodeBoundaries
-     * @see SimpleKDTreeFactory::defineSplit
-     * @see SimpleKDTreeFactory::populateSplits
-     * @see SimpleKDTreeFactory::buildChildrenNodes
-     * @see MultiThreadKDTreeFactory
-     *
-     * @return Built KDTree node
-     */
-    virtual KDTreeNode * buildRecursiveRecipe(
-        KDTreeNode *parent,
-        bool const left,
-        vector<Primitive *> &primitives,
-        int const depth,
-        int const index,
-        std::function<void(
-            KDTreeNode *node,
-            KDTreeNode *parent,
-            bool const left,
-            vector<Primitive *> const &primitives
-        )> f_computeNodeBoundaries,
-        std::function<void(
-            KDTreeNode *node,
-            KDTreeNode *parent,
-            vector<Primitive *> &primitives,
-            int const depth
-        )> f_defineSplit,
-        std::function<void(
-            vector<Primitive *> const &primitives,
-            int const splitAxis,
-            double const splitPos,
-            vector<Primitive *> &leftPrimitives,
-            vector<Primitive *> &rightPrimitives
-        )> f_populateSplits,
-        std::function<void(
-            KDTreeNode *node,
-            KDTreeNode *parent,
-            vector<Primitive *> const &primitives,
-            int const depth,
-            int const index,
-            vector<Primitive *> &leftPrimitives,
-            vector<Primitive *> &rightPrimitives
-        )> f_buildChildrenNodes
-    );
+        int const depth
+    ) ;
     /**
      * @brief Analyze KDTree computing its max depth and the minimum and
      *  maximum number of primitives considering all nodes
@@ -252,7 +173,6 @@ protected:
      * @param[out] leftPrimitives Where primitives of left split must be stored
      * @param[out] rightPrimitives Where primitives of right split must be
      *  stored
-     * @see SimpleKDTreeFactory::onPopulateSplitsDigestPrimitive
      */
     virtual void populateSplits(
         vector<Primitive *> const &primitives,
@@ -271,7 +191,6 @@ protected:
      *  nullptr
      * @param primitives Primitives of the node itself
      * @param depth Depth of current node
-     * @param index Index of current node at current depth
      * @param leftPrimitives Primitives for left child node
      * @param rightPrimitives Primitives for right child node
      */
@@ -280,7 +199,6 @@ protected:
         KDTreeNode *parent,
         vector<Primitive *> const &primitives,
         int const depth,
-        int const index,
         vector<Primitive *> &leftPrimitives,
         vector<Primitive *> &rightPrimitives
     );
@@ -340,108 +258,11 @@ protected:
      *  node and left is true, it means it is a left child. If node is not a
      *  root node and left is false, it means it is a right child
      * @param primitives Vector of primitives inside given root node
-     * @see SimpleKDTreeFactory::computeMinMaxSAHForChild
-     * @see SimpleKDTreeFactory::onRootBoundariesDigestPrimitive
-     * @see SimpleKDTreeFactory::onComputeNodeBoundariesCalcSAH
      */
     virtual void computeNodeBoundaries(
         KDTreeNode *node,
         KDTreeNode *parent,
         bool const left,
-        vector<Primitive *> const &primitives
-    ) const;
-
-    /**
-     * @brief Function to assist SimpleKDTreeFactory::populateSplits by
-     *  providing the logic of digesting a primitive
-     * @see SimpleKDTreeFactory::populateSplits
-     */
-    virtual void onPopulateSplitsDigestPrimitive(
-        Primitive *p,
-        int const splitAxis,
-        double const splitPos,
-        vector<Primitive *> &leftPrimitives,
-        vector<Primitive *> &rightPrimitives
-    ) const;
-
-    /**
-     * @brief Function to assist SimpleKDTreeFactory::computeNodeBoundaries
-     *  when computing surface area heuristic and minimum and maximum
-     *  positions for child nodes
-     * @param node The child node itself
-     * @see SimpleKDTreeFactory::computeNodeBoundaries
-     * @see SimpleKDTreeFactory::onRootBoundariesDigestPrimitive
-     * @see SimpleKDTreeFactory::onComputeNodeBoundariesCalcSAH
-     */
-    virtual void computeMinMaxSAHForChild(
-        KDTreeNode *node,
-        KDTreeNode *parent,
-        bool const left,
-        vector<Primitive *> const &primitives
-    ) const;
-
-    /**
-     * @brief Function to assist SimpleKDTreeFactory::computeNodeBoundaries by
-     *  providing the logic of digesting a primitive
-     * @param p Primitive to be digested
-     * @see SimpleKDTreeFactory::computeNodeBoundaries
-     * @see SimpleKDTreeFactory::computeMinMaxSAHForChild
-     * @see SimpleKDTreeFactory::onComputeNodeBoundariesCalcSAH
-     */
-    virtual void onRootBoundariesDigestPrimitive(
-        Primitive *primitive,
-        double &ax,
-        double &ay,
-        double &az,
-        double &bx,
-        double &by,
-        double &bz
-    ) const;
-
-    /**
-     * @brief Function to assist SimpleKDTreeFactory::computeNodeBoundaries
-     *  when computing the SAH for a node
-     * @param[out] node Node which surface area and bound is going to be
-     *  calculated (and setted)
-     * @see SimpleKDTreeFactory::computeNodeBoundaries
-     * @see SimpleKDTreeFactory::computeMinMaxSAHForChild
-     * @see SimpleKDTreeFactory::onRootBoundariesDigestPrimitive
-     */
-    virtual void onComputeNodeBoundariesCalcSAH(
-        KDTreeNode *node,
-        double const ax,
-        double const ay,
-        double const az,
-        double const bx,
-        double const by,
-        double const bz
-    ) const;
-
-    /**
-     * @brief Check wheter the node must be splitted (true) or not (false)
-     *  depending on its total primitives and the ones that would be assigned
-     *  to left and right children.
-     *
-     * For a simple KDT a node must be splitted if there are enough primitives
-     *  and not all of them are contained neither in left nor in right children
-     *  nodes.
-     *
-     * @return True if node must be splitted, false otherwise
-     * @see SimpleKDTreeFactory::minSplitPrimitives
-     */
-    virtual bool checkNodeMustSplit(
-        vector<Primitive *> const &primitives,
-        vector<Primitive *> const &leftPrimitives,
-        vector<Primitive *> const &rightPrimitives
-    ) const;
-
-    /**
-     * @brief Make given node a leaf one
-     * @param[out] node Node to be made a leaf
-     * @param primitives Primitives for the leaf node
-     */
-    virtual void makeLeaf(
-        KDTreeNode *node,
         vector<Primitive *> const &primitives
     ) const;
 

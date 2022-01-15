@@ -26,7 +26,6 @@ var searchData=
   ['returnnumber',['returnNumber',['../db/d2e/classMeasurement.html#aca68cb91908d7de7822cbf3095a9f659',1,'Measurement']]],
   ['rg',['rg',['../d4/d38/classRandomNoiseSource.html#a49a8432d24fb4e2b3fba3f5c30e8c4d2',1,'RandomNoiseSource']]],
   ['right',['right',['../dd/d79/classLightKDTreeNode.html#a67abdad4253558385d3d3d87573c62bb',1,'LightKDTreeNode::right()'],['../df/dc3/classDirections.html#a90c74fe7a0e9ffb276982fd8659b8105',1,'Directions::right()']]],
-  ['rightprimitives',['rightPrimitives',['../d1/dc1/classSimpleKDTreePopulateSplitsSubTask.html#a730af7491b7addea2a7eaae856441648',1,'SimpleKDTreePopulateSplitsSubTask']]],
   ['rm2f',['rm2f',['../db/d8b/classHeliosTests_1_1RigidMotionTest.html#a5919c7c4b95acef22ce9b082a867a0f5',1,'HeliosTests::RigidMotionTest']]],
   ['rm3f',['rm3f',['../d2/d0a/classDynMotionEngine.html#a68b73280592c9ca0d6187b3c29ba1105',1,'DynMotionEngine::rm3f()'],['../db/d8b/classHeliosTests_1_1RigidMotionTest.html#a57a3eaa06354010505edaea9b9bb0b78',1,'HeliosTests::RigidMotionTest::rm3f()']]],
   ['rme',['rme',['../d2/d0a/classDynMotionEngine.html#afa845bda34bde2bc8f53463fbc2b9cd6',1,'DynMotionEngine::rme()'],['../db/d8b/classHeliosTests_1_1RigidMotionTest.html#a9184d901320e12d1e328761ea82b6660',1,'HeliosTests::RigidMotionTest::rme()']]],

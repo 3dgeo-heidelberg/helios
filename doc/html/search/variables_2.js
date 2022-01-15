@@ -13,8 +13,6 @@ var searchData=
   ['beamorigin',['beamOrigin',['../db/d2e/classMeasurement.html#a7a5aba2a358daac7eab9b03e7d88a756',1,'Measurement']]],
   ['beamsamplequality',['beamSampleQuality',['../d4/dfb/classFWFSettings.html#a2b2df198842e7d4e35bee7d603038eaf',1,'FWFSettings::beamSampleQuality()'],['../d0/d23/classScannerSettings.html#a49acd378422fddc4ab691635d9f90baa',1,'ScannerSettings::beamSampleQuality()']]],
   ['beamwaistradius',['beamWaistRadius',['../dc/d42/classScanner.html#a97d67c4736c5ed3ba23ad96c7048dc43',1,'Scanner']]],
-  ['begin',['begin',['../d7/da6/classhelios_1_1hpc_1_1SM__ParallelMergeSortSubTask.html#a88841419efb7f3b4936d5da770d6c449',1,'helios::hpc::SM_ParallelMergeSortSubTask']]],
-  ['beginprimitive',['beginPrimitive',['../d6/d0d/classFastSAHKDTreeRecountSubTask.html#a9c1fc0a6fe45ed93c363e9a806e17740',1,'FastSAHKDTreeRecountSubTask']]],
   ['bestvectormaxcomponents',['bestVectorMaxComponents',['../d1/db0/classSurfaceInspector_1_1maths_1_1SingularContextDescriptors.html#a9a7cde8557405651172a3aefe0a674ad',1,'SurfaceInspector::maths::SingularContextDescriptors']]],
   ['bestvectormaxindices',['bestVectorMaxIndices',['../d1/db0/classSurfaceInspector_1_1maths_1_1SingularContextDescriptors.html#ad519ffa27dfb1ce6cbd4c7b2150fdd66',1,'SurfaceInspector::maths::SingularContextDescriptors']]],
   ['bestvectormincomponents',['bestVectorMinComponents',['../d1/db0/classSurfaceInspector_1_1maths_1_1SingularContextDescriptors.html#aee987e9e152d927a082578bfb2c89ec2',1,'SurfaceInspector::maths::SingularContextDescriptors']]],
@@ -27,15 +25,10 @@ var searchData=
   ['blockssize',['blocksSize',['../d0/d64/classKDTreeNodeRoot.html#a815a3ea2e381dd3e4d8ebc3a164afcb2',1,'KDTreeNodeRoot']]],
   ['bnorm',['bNorm',['../da/d69/classSurfaceInspector_1_1maths_1_1SingularContextComputer.html#aaedd3d88d439be7e7aed2953d5f612e3',1,'SurfaceInspector::maths::SingularContextComputer']]],
   ['bound',['bound',['../d8/d94/classKDTreeNode.html#ab25d385b581fd857a02b370c5d6b0e1a',1,'KDTreeNode::bound()'],['../dd/dc4/classScenePart.html#ae911f7b66e49dbccbbc85661751e7f9b',1,'ScenePart::bound()']]],
-  ['boundlength',['boundLength',['../d5/d89/classSAHKDTreeComputeLossNodesSubTask.html#a95a0bd94a38c571ca0d1c9571cee8b8e',1,'SAHKDTreeComputeLossNodesSubTask']]],
   ['bounds',['bounds',['../d2/d1a/classAABB.html#af41b9802252d42310200694c104d6499',1,'AABB']]],
   ['bridge_5fdeck',['BRIDGE_DECK',['../df/d64/classLasSpecification.html#aa8dffe5bcb79ae256a49bb1c1f88b08b',1,'LasSpecification']]],
   ['buffer',['buffer',['../d3/dec/classMeasurementsBuffer.html#ae724179a2fe1328c4488e50026b7ff26',1,'MeasurementsBuffer']]],
   ['building',['BUILDING',['../df/d64/classLasSpecification.html#a4d65c2f6897e7a14b20c33ca1a68b33f',1,'LasSpecification']]],
   ['buildlightnodes',['buildLightNodes',['../d5/dd0/classKDTreeFactory.html#aa6ede7a422802db8e6cbf537861d5f56',1,'KDTreeFactory']]],
-  ['buildrecursive',['buildRecursive',['../d5/d80/classSimpleKDTreeBuildChildrenNodesSubTask.html#a115be79e69dfa16a79134c4432c35e5b',1,'SimpleKDTreeBuildChildrenNodesSubTask']]],
-  ['bworst',['bWorst',['../da/d69/classSurfaceInspector_1_1maths_1_1SingularContextComputer.html#abbae3e63dbab20e00650f21aaf6d4223',1,'SurfaceInspector::maths::SingularContextComputer']]],
-  ['bx',['bx',['../d1/da6/classSimpleKDTreeComputeRootNodeBoundariesSubTask.html#a22a3d44141ae92c94119a45d0d9c4e0d',1,'SimpleKDTreeComputeRootNodeBoundariesSubTask']]],
-  ['by',['by',['../d1/da6/classSimpleKDTreeComputeRootNodeBoundariesSubTask.html#a11032fa210bbb47febdaf358834e794b',1,'SimpleKDTreeComputeRootNodeBoundariesSubTask']]],
-  ['bz',['bz',['../d1/da6/classSimpleKDTreeComputeRootNodeBoundariesSubTask.html#a73f7f1731372d485027c0ebed33f0c70',1,'SimpleKDTreeComputeRootNodeBoundariesSubTask']]]
+  ['bworst',['bWorst',['../da/d69/classSurfaceInspector_1_1maths_1_1SingularContextComputer.html#abbae3e63dbab20e00650f21aaf6d4223',1,'SurfaceInspector::maths::SingularContextComputer']]]
 ];

@@ -1,10 +1,8 @@
 #pragma once
 
-#include <serial_adt_utils.h>
 #include <IterableTreeNode.h>
 #include <MultiThreadKDTreeFactory.h>
 #include <MultiThreadSAHKDTreeFactory.h>
-
 
 namespace boost{ namespace serialization{
 
@@ -39,7 +37,6 @@ void load_construct_data(
 
 // ***  KDTREE FACTORY SERIALIZATION  *** //
 // ************************************** //
-
 template <class Archive>
 void save_construct_data(
     Archive &ar,
@@ -48,12 +45,7 @@ void save_construct_data(
 ){
     // Save data required to construct instance
     ar << mtkdtf->getKdtf();
-    ar << mtkdtf->getNumJobs();
-    ar << mtkdtf->getGeomJobs();
-
-    // Save geometric strategy type
-    char gsType = KDTREE_FACTORY_EXTRACT_GSTYPE(mtkdtf);
-    ar << gsType;
+    ar << mtkdtf->getPoolSize();
 }
 
 template <class Archive>
@@ -64,21 +56,12 @@ void load_construct_data(
 ){
     // Load data from archive required to construct new instance
     std::shared_ptr<SimpleKDTreeFactory> kdtf;
-    size_t numJobs, geomJobs;
-    char gsType;
+    size_t numJobs;
     ar >> kdtf;
     ar >> numJobs;
-    ar >> geomJobs;
-    ar >> gsType;
 
-    // Build geometric strategy and invoke factory's inplace constructor
-    KDTREE_FACTORY_INPLACE_CONSTRUCT<MultiThreadKDTreeFactory>(
-        mtkdtf,
-        kdtf,
-        numJobs,
-        geomJobs,
-        gsType
-    );
+    // Invoke inplace constructor
+    ::new(mtkdtf)MultiThreadKDTreeFactory(kdtf, numJobs);
 }
 
 template <class Archive>
@@ -89,12 +72,7 @@ void save_construct_data(
 ){
     // Save data required to construct instance
     ar << mtkdtf->getKdtf();
-    ar << mtkdtf->getNumJobs();
-    ar << mtkdtf->getGeomJobs();
-
-    // Save geometric strategy type
-    char gsType = KDTREE_FACTORY_EXTRACT_GSTYPE(mtkdtf);
-    ar << gsType;
+    ar << mtkdtf->getPoolSize();
 }
 
 template <class Archive>
@@ -105,21 +83,11 @@ void load_construct_data(
 ){
     // Load data from archive required to construct new instance
     std::shared_ptr<SimpleKDTreeFactory> kdtf;
-    size_t numJobs, geomJobs;
-    char gsType;
+    size_t numJobs;
     ar >> kdtf;
     ar >> numJobs;
-    ar >> geomJobs;
-    ar >> gsType;
 
-    // Build geometric strategy and invoke factory's inplace constructor
-    KDTREE_FACTORY_INPLACE_CONSTRUCT<MultiThreadSAHKDTreeFactory>(
-        mtkdtf,
-        kdtf,
-        numJobs,
-        geomJobs,
-        gsType
-    );
+    // Invoke inplace constructor
+    ::new(mtkdtf)MultiThreadSAHKDTreeFactory(kdtf, numJobs);
 }
-
 }};

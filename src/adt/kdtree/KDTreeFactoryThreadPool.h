@@ -19,7 +19,6 @@ class KDTreeFactoryThreadPool : public MDThreadPool<
     KDTreeNode *,
     bool const,
     vector<Primitive*> &,
-    int const,
     int const
 >{
 public:
@@ -35,7 +34,6 @@ public:
             KDTreeNode *,
             bool const,
             vector<Primitive*> &,
-            int const,
             int const
         >(_pool_size)
     {}
@@ -61,7 +59,6 @@ protected:
             KDTreeNode *,
             bool const,
             vector<Primitive*> &,
-            int const,
             int const
         )> &task,
         KDTreeBuildType *data
@@ -70,8 +67,7 @@ protected:
             data->parent,
             data->left,
             data->primitives,
-            data->depth,
-            data->index
+            data->depth
         );
         delete data;
     }

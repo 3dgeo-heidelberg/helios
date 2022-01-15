@@ -23,22 +23,21 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 ".html",
-"d1/d2b/classMarquardtFitter.html#af1764a4025c62f55b8bc107538a2025c",
-"d2/d1f/classSimpleThreadPool.html#a914a442d893a27a6c322a2490fd2a978",
-"d3/d89/classMaterial.html#a4169f17c039083b13187d4a6af6260b6",
-"d4/d9d/classpyhelios_1_1PyPlatformWrapper.html#a47d20fbab9e06c635d6f1d61623ba452",
-"d5/d9c/classScene.html#a2f559623cbaa92f0245162dc90b33769",
-"d6/d44/classVoxel.html#ae1fc849da46321c5d84daf541ee51aca",
-"d7/d21/classpyhelios_1_1PyDetailedVoxelWrapper.html#ab68f8c2af8463457088b400e8f4d359c",
-"d7/dee/classRayUtils.html#ac8b34f1d8aba15cfc05d6d368aa9c9f4",
-"d9/d5f/UnivariateNewtonRaphsonMinimizer_8h_source.html",
-"da/d52/classSurfaceInspector_1_1maths_1_1Histogram.html#a646fd0607913b2fe6080cf2b948d1118",
-"db/d58/classSAHKDTreeFactory.html#a8cfd3132e5cfa427663f3c84b2d93175",
-"dc/d37/classlogger.html#a92c63a0a87392c62b9ed3c00faa9d5df",
-"dc/df6/classrigidmotion_1_1RigidMotionR3Factory.html#a76ccff05613bbeb96b437b1101f93cbb",
-"de/d97/classAsset.html#ac98d07dd8f7b70e16ccb9a01abf56b9c",
-"df/d6f/classSharedSubTask.html#aeff016fc28a328a06ab532d6655bd70f",
-"functions_u.html"
+"d1/d2f/classpyhelios_1_1PyTrajectoryWrapper.html#a77f6367874d3f04490d597ac85d135ea",
+"d2/d51/classTriangle.html#abe34580bfc5992cebdfd1b078706e88f",
+"d3/dec/classMeasurementsBuffer.html#ae724179a2fe1328c4488e50026b7ff26",
+"d4/dfd/classOscillatingMirrorBeamDeflector.html#ae3d7f012303bf7d3647d638c8d167c9f",
+"d5/dfb/classpyhelios_1_1PyMeasurementVectorWrapper.html#a5542016d2f13ef7b721a3ec794bb6c41",
+"d6/da1/classSurveyPlayback.html#a709f9b2c869a95e9f304aae61776f486",
+"d7/d84/classrigidmotion_1_1RigidMotion.html#a9f6af528c327231f6ad4565fa9bef21faf91be9dc20587bb991abddccb9ad5a9b",
+"d9/d15/classWavefrontObjFileLoader.html#ad9e0004c857da9711ae8845c2bb6f659",
+"d9/ddf/classVoxelFileParser.html",
+"db/d2e/classMeasurement.html",
+"db/dab/MultiThreadSAHKDTreeFactory_8h_source.html",
+"dc/da7/classScannerHead.html#ab65d307a4d8da9c79bc3a9c4cbac1e05",
+"de/d6b/classLadLutLoader.html#afb8e01f6d005fd50198858b709ad86f6",
+"df/d64/classLasSpecification.html",
+"functions_p.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

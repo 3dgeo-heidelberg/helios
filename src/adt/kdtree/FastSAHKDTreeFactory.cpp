@@ -1,7 +1,17 @@
 #include <FastSAHKDTreeFactory.h>
+#include <surfaceinspector/maths/Histogram.hpp>
+
+using SurfaceInspector::maths::Histogram;
 
 // ***  CONSTRUCTION / DESTRUCTION  *** //
 // ************************************ //
+/**
+ * @brief Fast surface area heuristic KDTree factory default constructor
+ * @param lossNodes How many bins use for the min-max approximation of
+ *  loss function
+ * @see SAHKDTreeFactory::SAHKDTreeFactory
+ * @see FastSAHKDTreeFactory
+ */
 FastSAHKDTreeFactory::FastSAHKDTreeFactory(
     size_t const lossNodes,
     double const ci,
@@ -15,64 +25,6 @@ FastSAHKDTreeFactory::FastSAHKDTreeFactory(
 double FastSAHKDTreeFactory::findSplitPositionBySAH(
     KDTreeNode *node,
     vector<Primitive *> &primitives
-) const {
-    return findSplitPositionByFastSAHRecipe(
-        node,
-        primitives,
-        [&] (
-            vector<Primitive *> &primitives,
-            int const splitAxis,
-            double const minp,
-            double const deltap,
-            size_t const lossNodes,
-            size_t const lossCases,
-            vector<size_t> &cForward,
-            vector<size_t> &cBackward
-        ) -> void{
-            // Count min and max vertices
-            vector<size_t> minCount(lossNodes, 0);
-            vector<size_t> maxCount(lossNodes, 0);
-            for(Primitive *q : primitives){
-                double const minq = q->getAABB()->getMin()[splitAxis];
-                double const maxq = q->getAABB()->getMax()[splitAxis];
-                ++minCount[
-                    std::min<size_t>(
-                        (size_t)((minq-minp)/deltap * lossNodes),
-                        lossNodes-1
-                    )
-                ];
-                ++maxCount[
-                    std::min<size_t>(
-                        (size_t)((maxq-minp)/deltap * lossNodes),
-                        lossNodes-1
-                    )
-                ];
-            }
-
-            // Accumulate counts
-            for(size_t i = 0 ; i < lossNodes ; ++i){
-                cForward[i+1] = cForward[i] + minCount[i];
-            }
-            for(size_t i = lossNodes ; i > 0 ; --i){
-                cBackward[i-1] = cBackward[i] + maxCount[lossNodes-i];
-            }
-        }
-    );
-}
-
-double FastSAHKDTreeFactory::findSplitPositionByFastSAHRecipe(
-    KDTreeNode *node,
-    vector<Primitive *> &primitives,
-    std::function<void(
-        vector<Primitive *> &primitives,
-        int const splitAxis,
-        double const minp,
-        double const deltap,
-        size_t const lossNodes,
-        size_t const lossCases,
-        vector<size_t> &cForward,
-        vector<size_t> &cBackward
-    )> f_recount
 ) const {
     /*
      * Code below is commented because it might be necessary in the future.
@@ -89,38 +41,36 @@ double FastSAHKDTreeFactory::findSplitPositionByFastSAHRecipe(
      *  for the fast SAH
      */
     // If there are not enough primitives, use a more accurate loss computation
-    /*if(primitives.size() <= numBins)  // nBins = lossNodes
+    /*if(primitives.size() <= numBins)
         return SAHKDTreeFactory::findSplitPositionBySAH(node, primitives);*/
 
-    // Forward and backward count w.r.t. min and max vertices respectively
+    // Extract min and max vertices in the same discrete space
+    vector<double> minVerts, maxVerts;
     double const minp = node->bound.getMin()[node->splitAxis];
     double const maxp = node->bound.getMax()[node->splitAxis];
-    double const deltap = maxp-minp;
-    size_t const lossCases = lossNodes + 1;
-    vector<size_t> cForward(lossCases, 0);
-    vector<size_t> cBackward(lossCases, 0);
-    f_recount(
-        primitives,
-        node->splitAxis,
-        minp,
-        deltap,
-        lossNodes,
-        lossCases,
-        cForward,
-        cBackward
-    );
+    for(Primitive *primitive : primitives){
+        double const minq = primitive->getAABB()->getMin()[node->splitAxis];
+        double const maxq = primitive->getAABB()->getMax()[node->splitAxis];
+        minVerts.push_back((minq < minp) ? minp : minq);
+        maxVerts.push_back((maxq > maxp) ? maxp : maxq);
+    }
+    Histogram<double> Hmin(minp, maxp, minVerts, lossNodes, false, false);
+    Histogram<double> Hmax(minp, maxp, maxVerts, lossNodes, false, false);
 
     // Approximated discrete search of optimal splitting plane
-    double loss = (double) cBackward[0], newLoss;
-    node->splitPos = minp;
-    double const _lossNodes = (double) lossNodes;
+    size_t NoLr = 0;
+    size_t NoRr = primitives.size();
+    double loss = (double) NoRr, newLoss;
+    node->splitPos = Hmin.a[0];
+    double const rDenom = (double) lossNodes;
     for(size_t i = 1 ; i <= lossNodes ; ++i){
-        double const r = ((double)i) / _lossNodes;
-        newLoss = r*((double)cForward[i]) + (1.0-r)*((double)cBackward[i]);
+        double const r = ((double)i) / rDenom;
+        NoLr += Hmin.c[i-1];
+        NoRr -= Hmax.c[i-1];
+        newLoss = r*((double)NoLr) + (1.0-r)*((double)NoRr);
         if(newLoss < loss){
             loss = newLoss;
-            node->splitPos = (i < lossNodes) ?
-                minp + ((double)i)/_lossNodes * deltap : maxp;
+            node->splitPos = Hmin.b[i-1];
         }
     }
 
