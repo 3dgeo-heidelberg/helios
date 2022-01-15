@@ -15,6 +15,7 @@ var searchData=
   ['imathfunction_3c_20t_2c_20t_20_3e',['IMathFunction&lt; T, T &gt;',['../da/d80/classSurfaceInspector_1_1maths_1_1functions_1_1IMathFunction.html',1,'SurfaceInspector::maths::functions']]],
   ['imh',['imh',['../db/d57/classfluxionum_1_1UnivariateNewtonRaphsonMinimizer.html#a041caf921ac2956262f56cb4f64dced7',1,'fluxionum::UnivariateNewtonRaphsonMinimizer']]],
   ['incidenceangle',['incidenceAngle',['../dc/da3/classRaySceneIntersection.html#ad5b87188865c84aefe07c9ca5734555c',1,'RaySceneIntersection']]],
+  ['increasefinishedgeomjobscount',['increaseFinishedGeomJobsCount',['../df/d86/classMultiThreadKDTreeFactory.html#a9f8866c50d14796dad33466e44f97814',1,'MultiThreadKDTreeFactory']]],
   ['increasependingtasks',['increasePendingTasks',['../d0/d21/classMDThreadPool.html#a2604acd9240936d50bb203aed8efeba5',1,'MDThreadPool']]],
   ['index',['index',['../d8/d4c/classKDTreeBuildType.html#a7d5a640ed5627d0e309d1712e49e07dc',1,'KDTreeBuildType::index()'],['../d5/d80/classSimpleKDTreeBuildChildrenNodesSubTask.html#a25932ce29497fa88d8732b7518e76ba4',1,'SimpleKDTreeBuildChildrenNodesSubTask::index()']]],
   ['indexfromcoordinates',['indexFromCoordinates',['../d6/d03/classXYZPointCloudFileLoader.html#a0c3f03060ab2a991450d6b31feb862de',1,'XYZPointCloudFileLoader']]],

@@ -123,10 +123,10 @@ Collaboration diagram for MultiThreadKDTreeFactory:</div>
 <area shape="rect" id="node5" href="../../d9/d47/classBlockAllocator.html" title="BlockAllocator\&lt; LightKDTree\lNode \&gt;" alt="" coords="523,109,713,150"/>
 <area shape="rect" id="node6" href="../../dd/d79/classLightKDTreeNode.html" title="Class representing a light KDTree node. It is, the basic representation of a KDTree node with uses le..." alt="" coords="207,59,333,85"/>
 <area shape="rect" id="node7" href="../../d7/d98/classIBinaryTreeNode.html" title="Binary tree node interface that must be implemented by any class providing binary tree node based fun..." alt="" coords="5,59,125,85"/>
-<area shape="rect" id="node14" href="../../d2/d1f/classSimpleThreadPool.html" title="SimpleThreadPool\&lt; TaskArgs\l ... \&gt;" alt="" coords="770,383,966,425"/>
-<area shape="rect" id="node15" href="../../dc/de7/classThreadPool.html" title="Base class providing core implementation of a thread pool to deal with multi threading tasks..." alt="" coords="574,391,662,417"/>
-<area shape="rect" id="node12" href="../../d2/dea/classKDTreeFactoryThreadPool.html" title="Class implementing a thread pool to deal with multi thread KDTree building process. " alt="" coords="1413,445,1591,472"/>
-<area shape="rect" id="node13" href="../../d0/d21/classMDThreadPool.html" title="MDThreadPool\&lt; KDTreeBuild\lType, KDTreeNode *, bool\l const, vector\&lt; Primitive\l *\&gt; &amp;, int const, int const \&gt;" alt="" coords="1139,403,1333,474"/>
+<area shape="rect" id="node14" href="../../d2/d1f/classSimpleThreadPool.html" title="SimpleThreadPool\&lt; TaskArgs\l ... \&gt;" alt="" coords="770,398,966,439"/>
+<area shape="rect" id="node15" href="../../dc/de7/classThreadPool.html" title="Base class providing core implementation of a thread pool to deal with multi threading tasks..." alt="" coords="574,405,662,432"/>
+<area shape="rect" id="node12" href="../../d2/dea/classKDTreeFactoryThreadPool.html" title="Class implementing a thread pool to deal with multi thread KDTree building process. " alt="" coords="1413,460,1591,487"/>
+<area shape="rect" id="node13" href="../../d0/d21/classMDThreadPool.html" title="MDThreadPool\&lt; KDTreeBuild\lType, KDTreeNode *, bool\l const, vector\&lt; Primitive\l *\&gt; &amp;, int const, int const \&gt;" alt="" coords="1139,418,1333,489"/>
 </map>
 <center><span class="legend">[<a target="top" href="../../graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -198,6 +198,9 @@ Protected Member Functions</h2></td></tr>
 <tr class="memitem:aaa41155c2cff4d446839bab62dc2bd3a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d86/classMultiThreadKDTreeFactory.html#aaa41155c2cff4d446839bab62dc2bd3a">reportKDTreeStats</a> (<a class="el" href="../../d0/d64/classKDTreeNodeRoot.html">KDTreeNodeRoot</a> *root, vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *&gt; const &amp;primitives) const override</td></tr>
 <tr class="memdesc:aaa41155c2cff4d446839bab62dc2bd3a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Call the report KDTree stats method of decorated KDTree factory.  <a href="#aaa41155c2cff4d446839bab62dc2bd3a">More...</a><br /></td></tr>
 <tr class="separator:aaa41155c2cff4d446839bab62dc2bd3a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9f8866c50d14796dad33466e44f97814"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d86/classMultiThreadKDTreeFactory.html#a9f8866c50d14796dad33466e44f97814">increaseFinishedGeomJobsCount</a> (size_t const amount)</td></tr>
+<tr class="memdesc:a9f8866c50d14796dad33466e44f97814"><td class="mdescLeft">&#160;</td><td class="mdescRight">Increase count of finished geometry-level jobs in a thread safe way.  <a href="#a9f8866c50d14796dad33466e44f97814">More...</a><br /></td></tr>
+<tr class="separator:a9f8866c50d14796dad33466e44f97814"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_methods_classSimpleKDTreeFactory"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_classSimpleKDTreeFactory')"><img src="../../closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="../../d6/d96/classSimpleKDTreeFactory.html">SimpleKDTreeFactory</a></td></tr>
 <tr class="memitem:a070315453cd5192e4e41dd2594fec91a inherit pro_methods_classSimpleKDTreeFactory"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="../../d8/d94/classKDTreeNode.html">KDTreeNode</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d96/classSimpleKDTreeFactory.html#a070315453cd5192e4e41dd2594fec91a">buildRecursiveRecipe</a> (<a class="el" href="../../d8/d94/classKDTreeNode.html">KDTreeNode</a> *parent, bool const left, vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *&gt; &amp;primitives, int const depth, int const index, std::function&lt; void(<a class="el" href="../../d8/d94/classKDTreeNode.html">KDTreeNode</a> *node, <a class="el" href="../../d8/d94/classKDTreeNode.html">KDTreeNode</a> *parent, bool const left, vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *&gt; const &amp;primitives)&gt; f_computeNodeBoundaries, std::function&lt; void(<a class="el" href="../../d8/d94/classKDTreeNode.html">KDTreeNode</a> *node, <a class="el" href="../../d8/d94/classKDTreeNode.html">KDTreeNode</a> *parent, vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *&gt; &amp;primitives, int const depth)&gt; f_defineSplit, std::function&lt; void(vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *&gt; const &amp;primitives, int const splitAxis, double const splitPos, vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *&gt; &amp;leftPrimitives, vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *&gt; &amp;rightPrimitives)&gt; f_populateSplits, std::function&lt; void(<a class="el" href="../../d8/d94/classKDTreeNode.html">KDTreeNode</a> *node, <a class="el" href="../../d8/d94/classKDTreeNode.html">KDTreeNode</a> *parent, vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *&gt; const &amp;primitives, int const depth, int const index, vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *&gt; &amp;leftPrimitives, vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *&gt; &amp;rightPrimitives)&gt; f_buildChildrenNodes)</td></tr>
 <tr class="memdesc:a070315453cd5192e4e41dd2594fec91a inherit pro_methods_classSimpleKDTreeFactory"><td class="mdescLeft">&#160;</td><td class="mdescRight">The recipe of the recursive building algorithm. It is meant to be used by the <a class="el" href="../../d6/d96/classSimpleKDTreeFactory.html#a96323d9575182f1bedbd013991a693a6" title="Recursively build a KDTree for given primitives. ">SimpleKDTreeFactory::buildRecursive</a> but also by any alternative implementation which shares the same recipe (global logic) but changes the way some parts are computed. For instance, it is used by the <a class="el" href="../../df/d86/classMultiThreadKDTreeFactory.html" title="Decorator for any KDTree factory which provides support for multi thread KDTree building. ">MultiThreadKDTreeFactory</a> to handle geometry-level parallelization.  <a href="../../d6/d96/classSimpleKDTreeFactory.html#a070315453cd5192e4e41dd2594fec91a">More...</a><br /></td></tr>
@@ -272,6 +275,12 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="..
 <tr class="memitem:a85d40d21ecf3c1f5ce5e1024e76861e8"><td class="memItemLeft" align="right" valign="top">shared_ptr&lt; <a class="el" href="../../da/d29/classSharedTaskSequencer.html">SharedTaskSequencer</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d86/classMultiThreadKDTreeFactory.html#a85d40d21ecf3c1f5ce5e1024e76861e8">masters</a></td></tr>
 <tr class="memdesc:a85d40d21ecf3c1f5ce5e1024e76861e8"><td class="mdescLeft">&#160;</td><td class="mdescRight">All masters threads (except main thread) are handled by this shared task sequencer.  <a href="#a85d40d21ecf3c1f5ce5e1024e76861e8">More...</a><br /></td></tr>
 <tr class="separator:a85d40d21ecf3c1f5ce5e1024e76861e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a366d2f7da2c692b428394b122d60a49e"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d86/classMultiThreadKDTreeFactory.html#a366d2f7da2c692b428394b122d60a49e">finishedGeomJobs</a></td></tr>
+<tr class="memdesc:a366d2f7da2c692b428394b122d60a49e"><td class="mdescLeft">&#160;</td><td class="mdescRight">How many geometry-level jobs have fully finished during current KDT building.  <a href="#a366d2f7da2c692b428394b122d60a49e">More...</a><br /></td></tr>
+<tr class="separator:a366d2f7da2c692b428394b122d60a49e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2484fbf4ee81514b5e3b93e6c20a8d52"><td class="memItemLeft" align="right" valign="top">boost::mutex&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d86/classMultiThreadKDTreeFactory.html#a2484fbf4ee81514b5e3b93e6c20a8d52">finishedGeomJobsMutex</a></td></tr>
+<tr class="memdesc:a2484fbf4ee81514b5e3b93e6c20a8d52"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mutex to handle concurrent access to counter of finished geometry-level jobs.  <a href="#a2484fbf4ee81514b5e3b93e6c20a8d52">More...</a><br /></td></tr>
+<tr class="separator:a2484fbf4ee81514b5e3b93e6c20a8d52"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_attribs_classSimpleKDTreeFactory"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classSimpleKDTreeFactory')"><img src="../../closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="../../d6/d96/classSimpleKDTreeFactory.html">SimpleKDTreeFactory</a></td></tr>
 <tr class="memitem:a4c3213bf294ab8cd890ccc09e1297317 inherit pro_attribs_classSimpleKDTreeFactory"><td class="memItemLeft" align="right" valign="top">std::function&lt; <a class="el" href="../../d8/d94/classKDTreeNode.html">KDTreeNode</a> *(<a class="el" href="../../d8/d94/classKDTreeNode.html">KDTreeNode</a> *, bool const, vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> * &gt; &amp;, int const, int const)&gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d96/classSimpleKDTreeFactory.html#a4c3213bf294ab8cd890ccc09e1297317">_buildRecursive</a></td></tr>
 <tr class="memdesc:a4c3213bf294ab8cd890ccc09e1297317 inherit pro_attribs_classSimpleKDTreeFactory"><td class="mdescLeft">&#160;</td><td class="mdescRight">The member function as attribute used to recursively build KDTree nodes. By default it will be assigned to the buildRecursive member function but it might be overridden by other implementations. For instance, to wrap the buildRecursive behavior to handle parallel building of KDTrees.  <a href="../../d6/d96/classSimpleKDTreeFactory.html#a4c3213bf294ab8cd890ccc09e1297317">More...</a><br /></td></tr>
@@ -812,6 +821,35 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>boost::serialization
 
 </div>
 </div>
+<a id="a9f8866c50d14796dad33466e44f97814"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9f8866c50d14796dad33466e44f97814">&#9670;&nbsp;</a></span>increaseFinishedGeomJobsCount()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void MultiThreadKDTreeFactory::increaseFinishedGeomJobsCount </td>
+          <td>(</td>
+          <td class="paramtype">size_t const&#160;</td>
+          <td class="paramname"><em>amount</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Increase count of finished geometry-level jobs in a thread safe way. </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../df/d86/classMultiThreadKDTreeFactory.html#a366d2f7da2c692b428394b122d60a49e" title="How many geometry-level jobs have fully finished during current KDT building. ">MultiThreadKDTreeFactory::finishedGeomJobs</a> </dd></dl>
+
+</div>
+</div>
 <a id="aa00f670a9c8188ee672684e0f57c2167"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aa00f670a9c8188ee672684e0f57c2167">&#9670;&nbsp;</a></span>makeFromPrimitivesUnsafe()</h2>
 
@@ -956,6 +994,56 @@ template&lt;class Archive &gt; </div>
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
+<a id="a366d2f7da2c692b428394b122d60a49e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a366d2f7da2c692b428394b122d60a49e">&#9670;&nbsp;</a></span>finishedGeomJobs</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t MultiThreadKDTreeFactory::finishedGeomJobs</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>How many geometry-level jobs have fully finished during current KDT building. </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../df/d86/classMultiThreadKDTreeFactory.html#a9f8866c50d14796dad33466e44f97814" title="Increase count of finished geometry-level jobs in a thread safe way. ">MultiThreadKDTreeFactory::increaseFinishedGeomJobsCount</a> </dd></dl>
+
+</div>
+</div>
+<a id="a2484fbf4ee81514b5e3b93e6c20a8d52"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2484fbf4ee81514b5e3b93e6c20a8d52">&#9670;&nbsp;</a></span>finishedGeomJobsMutex</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">boost::mutex MultiThreadKDTreeFactory::finishedGeomJobsMutex</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Mutex to handle concurrent access to counter of finished geometry-level jobs. </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../df/d86/classMultiThreadKDTreeFactory.html#a366d2f7da2c692b428394b122d60a49e" title="How many geometry-level jobs have fully finished during current KDT building. ">MultiThreadKDTreeFactory::finishedGeomJobs</a> </dd></dl>
+
+</div>
+</div>
 <a id="a85d40d21ecf3c1f5ce5e1024e76861e8"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a85d40d21ecf3c1f5ce5e1024e76861e8">&#9670;&nbsp;</a></span>masters</h2>
 
