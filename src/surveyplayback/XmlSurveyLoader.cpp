@@ -15,6 +15,8 @@ namespace fs = boost::filesystem;
 #include <RandomnessGenerator.h>
 #include <SerialSceneWrapper.h>
 
+#include <unordered_set>
+
 
 using namespace glm;
 using namespace std;
@@ -44,7 +46,8 @@ shared_ptr<Survey> XmlSurveyLoader::load(
 shared_ptr<Survey>
 XmlSurveyLoader::createSurveyFromXml(
     tinyxml2::XMLElement *surveyNode,
-    bool legNoiseDisabled, bool rebuildScene
+    bool legNoiseDisabled,
+    bool rebuildScene
 ) {
   shared_ptr<Survey> survey = make_shared<Survey>();
 
@@ -90,19 +93,31 @@ XmlSurveyLoader::createSurveyFromXml(
   survey->simSpeedFactor = 1.0 / speed;
   // ######### END Set initial sim speed factor ##########
   tinyxml2::XMLElement *legNodes = surveyNode->FirstChildElement("leg");
+  std::shared_ptr<ScannerSettings> scannerSettings = \
+    survey->scanner->retrieveCurrentSettings();
   while (legNodes != nullptr) {
     glm::dvec3 origin = glm::dvec3(0, 0, 0);
-    shared_ptr<Leg> leg(createLegFromXML(legNodes));
+    std::unordered_set<std::string> scannerFields;
+    shared_ptr<Leg> leg(createLegFromXML(legNodes, &scannerFields));
     // Add originWaypoint shift to waypoint coordinates:
-    if (leg->mPlatformSettings != NULL /* && originWaypoint != null*/) {
+    if (leg->mPlatformSettings != nullptr /* && originWaypoint != null*/) {
       leg->mPlatformSettings->setPosition(
-          leg->mPlatformSettings->getPosition() + origin);
+          leg->mPlatformSettings->getPosition() + origin
+      );
     }
+    // Cherry-picking of ScannerSettings
+    std::unordered_set<std::string> templateFields = \
+        scannerTemplatesFields[leg->mScannerSettings->baseTemplate->id];
+    leg->mScannerSettings = scannerSettings->cherryPick(
+        leg->mScannerSettings,
+        scannerFields,
+        &templateFields
+    );
     survey->legs.push_back(leg);
     legNodes = legNodes->NextSiblingElement("leg");
   }
 
-  // ############################## END Read waypoints
+    // ############################## END Read waypoints
   // ###########################
 
   // NOTE:
@@ -218,27 +233,35 @@ XmlSurveyLoader::createSurveyFromXml(
 }
 
 shared_ptr<Leg>
-XmlSurveyLoader::createLegFromXML(tinyxml2::XMLElement *legNode) {
-  Leg *leg = new Leg();
+XmlSurveyLoader::createLegFromXML(
+    tinyxml2::XMLElement *legNode,
+    std::unordered_set<std::string> *scannerFields
+){
+  shared_ptr<Leg> leg = make_shared<Leg>();
 
   tinyxml2::XMLElement *platformSettingsNode =
       legNode->FirstChildElement("platformSettings");
 
+  // Platform settings
   if (platformSettingsNode != nullptr) {
     leg->mPlatformSettings =
         createPlatformSettingsFromXml(platformSettingsNode);
   }
 
+  // Scanner settings
   tinyxml2::XMLElement *scannerSettingsNode =
       legNode->FirstChildElement("scannerSettings");
 
   if (scannerSettingsNode != nullptr) {
-    leg->mScannerSettings = createScannerSettingsFromXml(scannerSettingsNode);
-  } else {
+    leg->mScannerSettings = createScannerSettingsFromXml(
+        scannerSettingsNode, scannerFields
+    );
+  }
+  else {
     leg->mScannerSettings = shared_ptr<ScannerSettings>(new ScannerSettings());
   }
 
-  return shared_ptr<Leg>(leg);
+  return leg;
 }
 
 shared_ptr<Scene> XmlSurveyLoader::loadScene(

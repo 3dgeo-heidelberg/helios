@@ -23,22 +23,22 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 ".html",
-"d1/d2b/classMarquardtFitter.html#af1764a4025c62f55b8bc107538a2025c",
-"d2/d1f/classSimpleThreadPool.html#a914a442d893a27a6c322a2490fd2a978",
-"d3/d89/classMaterial.html#a4169f17c039083b13187d4a6af6260b6",
-"d4/d9d/classpyhelios_1_1PyPlatformWrapper.html#a47d20fbab9e06c635d6f1d61623ba452",
-"d5/d9c/classScene.html#a2f559623cbaa92f0245162dc90b33769",
-"d6/d44/classVoxel.html#ae1fc849da46321c5d84daf541ee51aca",
-"d7/d21/classpyhelios_1_1PyDetailedVoxelWrapper.html#ab68f8c2af8463457088b400e8f4d359c",
-"d7/dee/classRayUtils.html#ac8b34f1d8aba15cfc05d6d368aa9c9f4",
-"d9/d5f/UnivariateNewtonRaphsonMinimizer_8h_source.html",
-"da/d52/classSurfaceInspector_1_1maths_1_1Histogram.html#a646fd0607913b2fe6080cf2b948d1118",
-"db/d58/classSAHKDTreeFactory.html#a8cfd3132e5cfa427663f3c84b2d93175",
-"dc/d37/classlogger.html#a92c63a0a87392c62b9ed3c00faa9d5df",
-"dc/df6/classrigidmotion_1_1RigidMotionR3Factory.html#a76ccff05613bbeb96b437b1101f93cbb",
-"de/d97/classAsset.html#ac98d07dd8f7b70e16ccb9a01abf56b9c",
-"df/d6f/classSharedSubTask.html#aeff016fc28a328a06ab532d6655bd70f",
-"functions_rela.html"
+"d1/d2b/classMarquardtFitter.html#aee2a297d40fb3d15afc20f671a6c056f",
+"d2/d1f/classSimpleThreadPool.html#a82a5b7389fd28188b688a92edadb9038",
+"d3/d89/classMaterial.html#a3f190f396e2a4adae7e472a2e19cf52f",
+"d4/d9d/classpyhelios_1_1PyPlatformWrapper.html#a475dee99fe1205375a50e8787cc964a7",
+"d5/d9c/classScene.html#a1ce25df38164ed98cf695bc8042bc6a5",
+"d6/d44/classVoxel.html#ad552f2d9c47b865ede17e6b390f73f10",
+"d7/d21/classpyhelios_1_1PyDetailedVoxelWrapper.html#a8fa561dedc7d48bcaec988bf2fa0d6da",
+"d7/deb/classlogger__factory.html#a53ed3dac136023677e6128402ea59dfe",
+"d9/d5e/classTaskWarehouse.html#ae931c10cf95d5389fbf77dd46dd6d9c6",
+"da/d52/classSurfaceInspector_1_1maths_1_1Histogram.html#a435bcd0ab73fec77928194c6130a6f84",
+"db/d58/classSAHKDTreeFactory.html#a6f3b16fb524bc98106899bbdd7fc246e",
+"dc/d37/classlogger.html",
+"dc/df6/classrigidmotion_1_1RigidMotionR3Factory.html#a4f1e4595f1fedc4df7191f0b8bd24420",
+"de/d97/classAsset.html#a2cdb921599e4fdf8fc2e0ce5dd9266ee",
+"df/d6f/classSharedSubTask.html#a64bdb256d735b0027aa04b84da7589fe",
+"functions_m.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

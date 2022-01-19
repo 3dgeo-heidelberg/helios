@@ -13,7 +13,7 @@ var searchData=
   ['beamdivangle',['beamDivAngle',['../d0/d23/classScannerSettings.html#a7a227c2665d20cb4cf69b7d128abe76e',1,'ScannerSettings']]],
   ['beamdivergence_5frad',['beamDivergence_rad',['../d4/dfb/classFWFSettings.html#a491decbce40b82022cd2d57ad4a21d4a',1,'FWFSettings']]],
   ['beamorigin',['beamOrigin',['../db/d2e/classMeasurement.html#a7a5aba2a358daac7eab9b03e7d88a756',1,'Measurement']]],
-  ['beamsamplequality',['beamSampleQuality',['../d4/dfb/classFWFSettings.html#a2b2df198842e7d4e35bee7d603038eaf',1,'FWFSettings::beamSampleQuality()'],['../d0/d23/classScannerSettings.html#a49acd378422fddc4ab691635d9f90baa',1,'ScannerSettings::beamSampleQuality()']]],
+  ['beamsamplequality',['beamSampleQuality',['../d4/dfb/classFWFSettings.html#a2b2df198842e7d4e35bee7d603038eaf',1,'FWFSettings']]],
   ['beamwaistradius',['beamWaistRadius',['../dc/d42/classScanner.html#a97d67c4736c5ed3ba23ad96c7048dc43',1,'Scanner']]],
   ['begin',['begin',['../d7/da6/classhelios_1_1hpc_1_1SM__ParallelMergeSortSubTask.html#a88841419efb7f3b4936d5da770d6c449',1,'helios::hpc::SM_ParallelMergeSortSubTask::begin()'],['../df/dfa/classDynSequence.html#a8c9c5476a858335a3143c6a31f407816',1,'DynSequence::begin()']]],
   ['beginprimitive',['beginPrimitive',['../d6/d0d/classFastSAHKDTreeRecountSubTask.html#a9c1fc0a6fe45ed93c363e9a806e17740',1,'FastSAHKDTreeRecountSubTask']]],

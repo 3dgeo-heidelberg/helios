@@ -392,6 +392,13 @@ public:
      */
 	void applySettings(std::shared_ptr<ScannerSettings> settings);
 	/**
+	 * @brief Retrieve current scanner settings and build a new ScannerSettings
+	 *  object with them
+	 * @return Newly created ScannerSettings object with current scanner
+	 *  settings
+	 */
+	std::shared_ptr<ScannerSettings> retrieveCurrentSettings();
+	/**
 	 * @brief Apply full wave form settings
 	 * @param settings Full wave form settings to be applied
 	 * @see FWFSettings

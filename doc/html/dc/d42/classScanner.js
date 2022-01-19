@@ -51,6 +51,7 @@ var classScanner =
     [ "onLegComplete", "dc/d42/classScanner.html#aa654d2754946f445ff8faa91822eda25", null ],
     [ "onSimulationFinished", "dc/d42/classScanner.html#a74fb8838bba7b36ea5e3b3df48fb1349", null ],
     [ "prepareDiscretization", "dc/d42/classScanner.html#a9da12b1d23b22b593851c5049852e871", null ],
+    [ "retrieveCurrentSettings", "dc/d42/classScanner.html#acad2e86b93968e873b71aca67ced85c7", null ],
     [ "setActive", "dc/d42/classScanner.html#a0eaa67c7710d2a173210591e8481774c", null ],
     [ "setAtmosphericExtinction", "dc/d42/classScanner.html#a02daf2304f943051db93f1ad6cd90e8f", null ],
     [ "setAveragePower", "dc/d42/classScanner.html#a83bc9f76587200a510c3ab5228682aab", null ],

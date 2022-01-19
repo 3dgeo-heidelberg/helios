@@ -166,11 +166,34 @@ void Scanner::applySettings(shared_ptr<ScannerSettings> settings) {
 	// Configure scanner:
 	this->setPulseFreq_Hz(settings->pulseFreq_Hz);
 	setActive(settings->active);
-
     trajectoryTimeInterval = settings->trajectoryTimeInterval;
+
 	detector->applySettings(settings);
 	scannerHead->applySettings(settings);
 	beamDeflector->applySettings(settings);
+}
+
+std::shared_ptr<ScannerSettings> Scanner::retrieveCurrentSettings(){
+    shared_ptr<ScannerSettings> settings = make_shared<ScannerSettings>();
+    // Settings from Scanner
+    std::stringstream ss;
+    ss << cfg_device_id << "_settings";
+    settings->id = ss.str();
+    settings->pulseFreq_Hz = getPulseFreq_Hz();
+    settings->active = isActive();
+    settings->trajectoryTimeInterval = trajectoryTimeInterval;
+    // Settings from ScannerHead
+    settings->headRotatePerSec_rad = scannerHead->getRotateStart();
+    settings->headRotateStart_rad = scannerHead->getRotateCurrent();
+    settings->headRotateStop_rad = scannerHead->getRotateStop();
+    // Settings from AbstractBeamDeflector
+    settings->scanAngle_rad = beamDeflector->cfg_setting_scanAngle_rad;
+    settings->scanFreq_Hz = beamDeflector->cfg_setting_scanFreq_Hz;
+    settings->verticalAngleMin_rad = \
+        beamDeflector->cfg_setting_verticalAngleMin_rad;
+    settings->verticalAngleMax_rad = \
+        beamDeflector->cfg_setting_verticalAngleMax_rad;
+    return settings;
 }
 
 void Scanner::applySettingsFWF(FWFSettings settings) {

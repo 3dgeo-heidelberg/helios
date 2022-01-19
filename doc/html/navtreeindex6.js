@@ -1,5 +1,8 @@
 var NAVTREEINDEX6 =
 {
+"d6/d44/classVoxel.html#ad552f2d9c47b865ede17e6b390f73f10":[1,0,157,35],
+"d6/d44/classVoxel.html#ad6293802cc84c4f489aed5194a0082e6":[1,0,157,11],
+"d6/d44/classVoxel.html#ad821fdde2b68a37d76e54852cf5db37b":[1,0,157,32],
 "d6/d44/classVoxel.html#ae1fc849da46321c5d84daf541ee51aca":[1,0,157,36],
 "d6/d44/classVoxel.html#ae6aca53cefda119e67a360188f9c0a81":[1,0,157,14],
 "d6/d44/classVoxel.html#aef3f9ac8e8b2ac6d7ae273bd41cdd8c4":[1,0,157,24],
@@ -246,8 +249,5 @@ var NAVTREEINDEX6 =
 "d7/d21/classpyhelios_1_1PyDetailedVoxelWrapper.html#a0e38d1ca76d227a54b9d20eb37edffab":[1,0,4,2,6],
 "d7/d21/classpyhelios_1_1PyDetailedVoxelWrapper.html#a26d2112510f1adda25ef2e396d480c29":[1,0,4,2,7],
 "d7/d21/classpyhelios_1_1PyDetailedVoxelWrapper.html#a31732b6ef73f8190a9583c82fef8701b":[1,0,4,2,10],
-"d7/d21/classpyhelios_1_1PyDetailedVoxelWrapper.html#a538cda586e018d4a701f924d6a964d9b":[1,0,4,2,4],
-"d7/d21/classpyhelios_1_1PyDetailedVoxelWrapper.html#a8fa561dedc7d48bcaec988bf2fa0d6da":[1,0,4,2,8],
-"d7/d21/classpyhelios_1_1PyDetailedVoxelWrapper.html#a97883aa15cdbcde94e86be8a3c9cb838":[1,0,4,2,5],
-"d7/d21/classpyhelios_1_1PyDetailedVoxelWrapper.html#a9987a5ce2ce502ee07c0e7e2032414ec":[1,0,4,2,2]
+"d7/d21/classpyhelios_1_1PyDetailedVoxelWrapper.html#a538cda586e018d4a701f924d6a964d9b":[1,0,4,2,4]
 };

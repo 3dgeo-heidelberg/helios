@@ -252,11 +252,6 @@ BOOST_PYTHON_MODULE(_pyhelios){
             &ScannerSettings::active
         )
         .add_property(
-            "beamSampleQuality",
-            &ScannerSettings::beamSampleQuality,
-            &ScannerSettings::beamSampleQuality
-        )
-        .add_property(
             "headRotatePerSec",
             &ScannerSettings::headRotatePerSec_rad,
             &ScannerSettings::headRotatePerSec_rad
@@ -300,11 +295,6 @@ BOOST_PYTHON_MODULE(_pyhelios){
             "beamDivAngle",
             &ScannerSettings::beamDivAngle,
             &ScannerSettings::beamDivAngle
-        )
-        .add_property(
-            "pulseLength",
-            &ScannerSettings::pulseLength_ns,
-            &ScannerSettings::pulseLength_ns
         )
         .add_property(
             "trajectoryTimeInterval",

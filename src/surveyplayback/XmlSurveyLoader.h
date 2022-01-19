@@ -1,10 +1,12 @@
 #pragma once
 
-#include <string>
 #include "XmlAssetsLoader.h"
 #include "SpectralLibrary.h"
 #include "Survey.h"
 #include "Leg.h"
+
+#include <string>
+#include <unordered_set>
 
 /**
  * @brief Survey loader from XML
@@ -31,10 +33,15 @@ public:
     /**
      * @brief Create a leg from a XML element/node
      * @param legNode XML element/node containing leg data
+     * @param[in] scannerFields Unordered set to track which scanner settings
+     *  have been overloaded
      * @return Created leg
      * @see Leg
      */
-	std::shared_ptr<Leg> createLegFromXML(tinyxml2::XMLElement* legNode);
+	std::shared_ptr<Leg> createLegFromXML(
+	    tinyxml2::XMLElement* legNode,
+	    std::unordered_set<std::string> *scannerFields
+    );
 	/**
 	 * @brief Create a survey form a XML element/node
 	 * @param surveyNode XML element/node containing survey data

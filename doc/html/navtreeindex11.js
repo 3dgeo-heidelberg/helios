@@ -1,5 +1,10 @@
 var NAVTREEINDEX11 =
 {
+"db/d58/classSAHKDTreeFactory.html#a6f3b16fb524bc98106899bbdd7fc246e":[1,0,110,31],
+"db/d58/classSAHKDTreeFactory.html#a7073d3b60fce9cd0f92fcb56deed6e9c":[1,0,110,23],
+"db/d58/classSAHKDTreeFactory.html#a7bbb4cb358a300d406ee3688ccc97d27":[1,0,110,20],
+"db/d58/classSAHKDTreeFactory.html#a80997d3fd5920a2420bd5d6cec3f7f97":[1,0,110,35],
+"db/d58/classSAHKDTreeFactory.html#a8cee7ca7d48bb5c0edfbfef43814c549":[1,0,110,25],
 "db/d58/classSAHKDTreeFactory.html#a8cfd3132e5cfa427663f3c84b2d93175":[1,0,110,15],
 "db/d58/classSAHKDTreeFactory.html#a9276d22252cc81236f52d89cf4ed63db":[1,0,110,34],
 "db/d58/classSAHKDTreeFactory.html#a9650f59fc614fd5694c3630aa95bdb16":[1,0,110,28],
@@ -244,10 +249,5 @@ var NAVTREEINDEX11 =
 "dc/d30/classSurfaceInspector_1_1maths_1_1Distances.html#ad4ca7ec888656afad2fcea6c296b7100":[1,0,6,0,3,4],
 "dc/d34/PulseTaskDropper_8h_source.html":[2,0,0,8,1,7],
 "dc/d35/structVertexKeyHash.html":[1,0,156],
-"dc/d35/structVertexKeyHash.html#a629f42c1db10fabac4d69e7d65bb6d71":[1,0,156,0],
-"dc/d37/classlogger.html":[1,0,74],
-"dc/d37/classlogger.html#a15ebabca1f4caf3cd18b81ef62d4f5e1":[1,0,74,5],
-"dc/d37/classlogger.html#a32f5501b55f82871ec2f8effa64706bc":[1,0,74,3],
-"dc/d37/classlogger.html#a556f9d5ec43c9810401e9fc36045f465":[1,0,74,0],
-"dc/d37/classlogger.html#a7ee4df5e2751ee7c05b8474b36395675":[1,0,74,1]
+"dc/d35/structVertexKeyHash.html#a629f42c1db10fabac4d69e7d65bb6d71":[1,0,156,0]
 };
