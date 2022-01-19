@@ -1,5 +1,6 @@
 var NAVTREEINDEX1 =
 {
+"d1/d2b/classMarquardtFitter.html#aee2a297d40fb3d15afc20f671a6c056f":[1,0,76,15],
 "d1/d2b/classMarquardtFitter.html#af1764a4025c62f55b8bc107538a2025c":[1,0,76,9],
 "d1/d2b/classMarquardtFitter.html#afa86b07552c68ba3d089bfd73753313f":[1,0,76,27],
 "d1/d2f/classpyhelios_1_1PyTrajectoryWrapper.html":[1,0,4,22],
@@ -248,6 +249,5 @@ var NAVTREEINDEX1 =
 "d2/d1f/classSimpleThreadPool.html#a4e7b864843b36d0f86ddfe4626687012":[1,0,132,8],
 "d2/d1f/classSimpleThreadPool.html#a55d04656cbbcf9baeb4423ff3b55493a":[1,0,132,1],
 "d2/d1f/classSimpleThreadPool.html#a560ca3dd08e999903069fb753c81c553":[1,0,132,0],
-"d2/d1f/classSimpleThreadPool.html#a6d8d8e617d7f4df62230e0cbb1359223":[1,0,132,3],
-"d2/d1f/classSimpleThreadPool.html#a82a5b7389fd28188b688a92edadb9038":[1,0,132,6]
+"d2/d1f/classSimpleThreadPool.html#a6d8d8e617d7f4df62230e0cbb1359223":[1,0,132,3]
 };

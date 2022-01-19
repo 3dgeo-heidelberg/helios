@@ -1,5 +1,8 @@
 var NAVTREEINDEX8 =
 {
+"d7/deb/classlogger__factory.html#a53ed3dac136023677e6128402ea59dfe":[1,0,75,1],
+"d7/deb/classlogger__factory.html#aef6b2c9518169bfa46d7bccb04be8aa5":[1,0,75,2],
+"d7/dee/classRayUtils.html":[1,0,103],
 "d7/dee/classRayUtils.html#ac8b34f1d8aba15cfc05d6d368aa9c9f4":[1,0,103,0],
 "d8/d05/RigidMotionR2Factory_8h_source.html":[2,0,0,4,1,4],
 "d8/d0f/DynSequencer_8h_source.html":[2,0,0,9,0,6],
@@ -246,8 +249,5 @@ var NAVTREEINDEX8 =
 "d9/d5e/classTaskWarehouse.html#ac116fc4fe30d9f04eb6d6fc735b5cb98":[1,0,145,11],
 "d9/d5e/classTaskWarehouse.html#ac4aa759af9e5c2d847ab8e429a22111d":[1,0,145,0],
 "d9/d5e/classTaskWarehouse.html#acc6d9af3a4e3fbc460bf2cf35f679f52":[1,0,145,12],
-"d9/d5e/classTaskWarehouse.html#ad16683455a4ca4d5e6ce7d4deb9a8162":[1,0,145,1],
-"d9/d5e/classTaskWarehouse.html#ae931c10cf95d5389fbf77dd46dd6d9c6":[1,0,145,15],
-"d9/d5e/classTaskWarehouse.html#aef51865346b8259c51120024b5a57cd2":[1,0,145,8],
-"d9/d5e/classTaskWarehouse.html#afee2bc00e673d707fe05de238d32e53a":[1,0,145,13]
+"d9/d5e/classTaskWarehouse.html#ad16683455a4ca4d5e6ce7d4deb9a8162":[1,0,145,1]
 };

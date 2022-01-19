@@ -13,6 +13,7 @@ var searchData=
   ['scannerefficiency',['scannerEfficiency',['../d4/dfb/classFWFSettings.html#a0013955746fddd21fbb307350e5c776a',1,'FWFSettings']]],
   ['scannerhead',['scannerHead',['../dc/d42/classScanner.html#a44c2e17c2f2a92353667c760040e55a9',1,'Scanner']]],
   ['scannertemplates',['scannerTemplates',['../d9/d82/classXmlAssetsLoader.html#a000f67d1ce828e0f6809f9cbc972cb51',1,'XmlAssetsLoader']]],
+  ['scannertemplatesfields',['scannerTemplatesFields',['../d9/d82/classXmlAssetsLoader.html#ac8bbc26ae1bba4632882b51ca83b792a',1,'XmlAssetsLoader']]],
   ['scannerwavelength',['scannerWaveLength',['../d4/dfb/classFWFSettings.html#a1d73bad9c9c6c54ba9f92d963a5d9e5a',1,'FWFSettings']]],
   ['scatter',['scatter',['../d1/d16/classSurfaceInspector_1_1maths_1_1Plane.html#a438bbbc3744c8c36a14836849502a430',1,'SurfaceInspector::maths::Plane']]],
   ['scene',['scene',['../df/d1e/classPlatform.html#a2184c0d8f14256725b96d91da91ab7dd',1,'Platform::scene()'],['../d3/df0/classSerialSceneWrapper.html#af4b62cbf2b529d1a3360452b2bae8194',1,'SerialSceneWrapper::scene()']]],

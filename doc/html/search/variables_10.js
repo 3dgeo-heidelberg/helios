@@ -46,6 +46,6 @@ var searchData=
   ['primsout',['primsOut',['../d6/dd2/classAbstractGeometryFilter.html#a2cad90f9937927dbb66517fb4bc0205f',1,'AbstractGeometryFilter']]],
   ['progress',['progress',['../d6/da1/classSurveyPlayback.html#af4d53e6a4430ba53c8551bd483b46d08',1,'SurveyPlayback']]],
   ['pulsefreq_5fhz',['pulseFreq_Hz',['../d0/d23/classScannerSettings.html#a4dd555e27c9634222b04ff1aef51a4a8',1,'ScannerSettings']]],
-  ['pulselength_5fns',['pulseLength_ns',['../d4/dfb/classFWFSettings.html#aa66ec3a7b686cb679b3c4d8dcf401ff8',1,'FWFSettings::pulseLength_ns()'],['../d0/d23/classScannerSettings.html#a866712ce8ceb590d4d39fd446db829c4',1,'ScannerSettings::pulseLength_ns()']]],
+  ['pulselength_5fns',['pulseLength_ns',['../d4/dfb/classFWFSettings.html#aa66ec3a7b686cb679b3c4d8dcf401ff8',1,'FWFSettings']]],
   ['pulsereturnnumber',['pulseReturnNumber',['../db/d2e/classMeasurement.html#a07c6e9ca3067967a6c609530bc55373e',1,'Measurement']]]
 ];

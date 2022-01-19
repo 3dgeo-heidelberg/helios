@@ -1,5 +1,6 @@
 var NAVTREEINDEX3 =
 {
+"d3/d89/classMaterial.html#a3f190f396e2a4adae7e472a2e19cf52f":[1,0,77,43],
 "d3/d89/classMaterial.html#a4169f17c039083b13187d4a6af6260b6":[1,0,77,13],
 "d3/d89/classMaterial.html#a42defa0e9cd9f02431a98c4de77f6a46":[1,0,77,16],
 "d3/d89/classMaterial.html#a4a71711ee2dd2e79d702a79f93cc7c6c":[1,0,77,14],
@@ -248,6 +249,5 @@ var NAVTREEINDEX3 =
 "d4/d9d/classpyhelios_1_1PyPlatformWrapper.html#a2f75b97690aeb7a9fe8318fca1858bae":[1,0,4,13,16],
 "d4/d9d/classpyhelios_1_1PyPlatformWrapper.html#a39252d930aa3b452d2bfc99eb15c109e":[1,0,4,13,3],
 "d4/d9d/classpyhelios_1_1PyPlatformWrapper.html#a3ee1f4719bbc1a3634d7fe7763c6026b":[1,0,4,13,18],
-"d4/d9d/classpyhelios_1_1PyPlatformWrapper.html#a4124284b56821a3a290a02f193d9e284":[1,0,4,13,27],
-"d4/d9d/classpyhelios_1_1PyPlatformWrapper.html#a475dee99fe1205375a50e8787cc964a7":[1,0,4,13,34]
+"d4/d9d/classpyhelios_1_1PyPlatformWrapper.html#a4124284b56821a3a290a02f193d9e284":[1,0,4,13,27]
 };

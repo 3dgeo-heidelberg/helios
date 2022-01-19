@@ -109,7 +109,7 @@ var searchData=
   ['progress',['progress',['../d6/da1/classSurveyPlayback.html#af4d53e6a4430ba53c8551bd483b46d08',1,'SurveyPlayback']]],
   ['project',['project',['../d1/dd3/classSurfaceInspector_1_1maths_1_1Vector.html#ae4dd05aa3bcb1435806e346916726720',1,'SurfaceInspector::maths::Vector::project(vector&lt; T &gt; const v, vector&lt; T &gt; const u)'],['../d1/dd3/classSurfaceInspector_1_1maths_1_1Vector.html#a112847d4af5d8d9e6b18ed64b3dbe1c6',1,'SurfaceInspector::maths::Vector::project(vector&lt; T &gt; const v, vector&lt; vector&lt; T &gt;&gt; const u)']]],
   ['pulsefreq_5fhz',['pulseFreq_Hz',['../d0/d23/classScannerSettings.html#a4dd555e27c9634222b04ff1aef51a4a8',1,'ScannerSettings']]],
-  ['pulselength_5fns',['pulseLength_ns',['../d4/dfb/classFWFSettings.html#aa66ec3a7b686cb679b3c4d8dcf401ff8',1,'FWFSettings::pulseLength_ns()'],['../d0/d23/classScannerSettings.html#a866712ce8ceb590d4d39fd446db829c4',1,'ScannerSettings::pulseLength_ns()']]],
+  ['pulselength_5fns',['pulseLength_ns',['../d4/dfb/classFWFSettings.html#aa66ec3a7b686cb679b3c4d8dcf401ff8',1,'FWFSettings']]],
   ['pulsereturnnumber',['pulseReturnNumber',['../db/d2e/classMeasurement.html#a07c6e9ca3067967a6c609530bc55373e',1,'Measurement']]],
   ['pulsetask',['PulseTask',['../d1/d6e/classPulseTask.html',1,'']]],
   ['pulsetaskdropper',['PulseTaskDropper',['../de/d9a/classPulseTaskDropper.html',1,'PulseTaskDropper'],['../de/d9a/classPulseTaskDropper.html#a1d62788a9f8a65a4c35f2da6bdb8a2e4',1,'PulseTaskDropper::PulseTaskDropper()']]],
