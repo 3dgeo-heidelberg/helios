@@ -130,12 +130,16 @@ void printHelp(){
            "\t\t\tIf 1, then the KDTree will be built in a sequential fashion"
            "\n\t\t\tIf >1, then the KDTree will be built in a parallel fashion"
            "\n\t\t\tIf 0, then the KDTree will be built using as many threads "
-           "as available\n"
-           "\t\t\tThis is not recommended because using more threads than "
-           "required\n"
-           "\t\t\tby scene complexity might easily lead to poor "
-           "performance\n"
-           "\t\t\t\tDefault is 1\n\n"
+           "as available\n\n"
+
+       <<   "\t\t--kdtGeomJobs <integer> : Specify the number of threads to "
+            "be used for building the\n\t\t\t"
+            "upper nodes of the KDTree (geometry-level parallelization).\n"
+            "\t\t\tIf 1, then there is no geometry-level parallelization"
+            "\n\t\t\tIf >1, then geometry-level parallelization uses as many "
+            "threads as specified."
+            "\n\t\t\tIf 0, then geometry-level parallelization uses as many "
+            "threads as node-level.\n\n"
 
 
         << "\t\t--sahNodes <integer> : Specify how many nodes must be used by "
@@ -281,6 +285,7 @@ int main(int argc, char** argv) {
             ap.parseLasScale(),
             ap.parseKDTreeType(),
             ap.parseKDTreeJobs(),
+            ap.parseKDTreeGeometricJobs(),
             ap.parseSAHLossNodes()
         );
     }
@@ -309,6 +314,7 @@ void LidarSim::init(
     double lasScale,
     int kdtType,
     size_t kdtJobs,
+    size_t kdtGeomJobs,
     size_t sahLossNodes
 ){
     std::stringstream ss;
@@ -330,6 +336,7 @@ void LidarSim::init(
 	    << "fixedIncidenceAngle: " << fixedIncidenceAngle << "\n"
 	    << "kdtType: " << kdtType << "\n"
 	    << "kdtJobs: " << kdtJobs << "\n"
+	    << "kdtGeomJobs: " << kdtGeomJobs << "\n"
 	    << "sahLossNodes: " << sahLossNodes
 	    << std::endl;
     logging::INFO(ss.str());
@@ -340,6 +347,7 @@ void LidarSim::init(
  	);
  	xmlreader->sceneLoader.kdtFactoryType = kdtType;
  	xmlreader->sceneLoader.kdtNumJobs = kdtJobs;
+ 	xmlreader->sceneLoader.kdtGeomJobs = kdtGeomJobs;
     xmlreader->sceneLoader.kdtSAHLossNodes = sahLossNodes;
 	std::shared_ptr<Survey> survey = xmlreader->load(
 	    legNoiseDisabled,

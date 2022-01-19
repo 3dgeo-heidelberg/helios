@@ -199,6 +199,12 @@ size_t ArgumentsParser::parseKDTreeJobs(){
     return std::stoul(argv[index+1]);
 }
 
+size_t ArgumentsParser::parseKDTreeGeometricJobs(){
+    int index = findIndexOfArgument("--kdtGeomJobs");
+    if(index < 0) return 0;
+    return std::stoul(argv[index+1]);
+}
+
 size_t ArgumentsParser::parseSAHLossNodes(){
     int index = findIndexOfArgument("--sahNodes");
     if(index < 0) return 32;

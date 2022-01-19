@@ -1,8 +1,10 @@
 #pragma once
 
 #include <SimpleKDTreeFactory.h>
+#include <KDTreePrimitiveComparator.h>
 
 class MultiThreadSAHKDTreeFactory;
+class SAHKDTreeGeoemtricStrategy;
 
 /**
  * @author Alberto M. Esmoris Pena
@@ -125,6 +127,7 @@ class SAHKDTreeFactory : public SimpleKDTreeFactory{
     // ***  FRIENDS  *** //
     // ***************** //
     friend class MultiThreadSAHKDTreeFactory;
+    friend class SAHKDTreeGeometricStrategy;
 
 private:
     // ***  SERIALIZATION  *** //
@@ -391,11 +394,61 @@ public:
         KDTreeNode *parent,
         vector<Primitive *> const &primitives,
         int const depth,
+        int const index,
         vector<Primitive *> &leftPrimitives,
         vector<Primitive *> &rightPrimitives
     ) override;
 
+    /**
+     * @brief The recipe for building of children nodes by SAH algorithm. It is
+     *  meant to be used by the SAHKDTreeFactory::buildChildrenNodes but also
+     *  by any alternative implementation which shared the same recipe (global
+     *  logic) but changes the way some parts are computed. For instance,
+     *  it is used to handle geometry-level parallelization.
+     *
+     * @param f_buildChildrenNodes Function to do the building of the children
+     *  nodes itself
+     *
+     * @see SAHKDTreeFactory::buildChildrenNodes
+     * @see SAHKDTreeFactory::GEOM_buildChildrenNodes
+     * @see MultiThreadKDTreeFactory
+     */
+    virtual void buildChildrenNodesRecipe(
+        KDTreeNode *node,
+        KDTreeNode *parent,
+        vector<Primitive *> const &primitives,
+        int const depth,
+        int const index,
+        vector<Primitive *> &leftPrimitives,
+        vector<Primitive *> &rightPrimitives,
+        std::function<void(
+            KDTreeNode *node,
+            int const depth,
+            int const index,
+            vector<Primitive *> &leftPrimitives,
+            vector<Primitive *> &rightPrimitives
+        )>f_buildChildrenNodes
+    );
+
 protected:
+    // ***  BUILDING UTILS  *** //
+    // ************************ //
+    /**
+     * @brief Check wheter the node must be splitted (true) or not (false)
+     *  depending on its total primitives.
+     *
+     * For a SAH KDT a node must be splitted if there are enough primitives.
+     *
+     * @return True if node must be splitted, false otherwise
+     * @see SimpleKDTreeFactory::checkNodeMustSplit
+     * @see SimpleKDTreeFactory::minSplitPrimitives
+     */
+    bool checkNodeMustSplit(
+        vector<Primitive *> const &primitives,
+        vector<Primitive *> const &leftPrimitives,
+        vector<Primitive *> const &rightPrimitives
+    ) const override;
+
     // ***  SAH UTILS  *** //
     // ******************* //
     /**
@@ -434,6 +487,32 @@ protected:
     ) const ;
 
     /**
+     * @brief Iteratively compute the best split position, it is the one with
+     *  smaller loss.
+     *
+     * @param loss Where initial loss is stored and where best found loss will
+     *  be written
+     * @param splitPos Where initial split position is stored and where best
+     *  found split position will be written
+     *
+     * @see SAHKDTreeFactory::findSplitPositionBySAH
+     * @see SAHKDTreeFactory::GEOM_findSplitPositionBySAH
+     * @see SAHKDTreeFactory::findSplitPositionBySAHRecipe
+     * @see SAHKDTreeFactory::splitLoss
+     */
+    virtual void computeBestSplit(
+        vector<Primitive *> &primitives,
+        size_t const lossNodes,
+        double const start,
+        double const step,
+        int const splitAxis,
+        double const minBound,
+        double const boundLength,
+        double &loss,
+        double &splitPos
+    ) const;
+
+    /**
      * @brief Find the best split position using Surface Area Heuristic (SAH)
      *  as described in SAHKDTreeFactory::defineSplit
      * @return Loss of best split position. The position itself is already
@@ -443,6 +522,45 @@ protected:
     virtual double findSplitPositionBySAH(
         KDTreeNode *node,
         vector<Primitive *> &primitives
+    ) const;
+
+    /**
+     * @brief The recipe for finding split position by SAH algorithm. It is
+     *  meant to be used by the SAHKDTreeFactory::findSplitPositionBySAH but
+     *  also by any alternative implementation which shares the same recipe (
+     *  global logic) but changes the way some parts are computed. For
+     *  instance, it is used to handle geometry-level parallelization.
+     *
+     * @param f_sortPrimitives Function to sort primitives
+     * @param f_computeLossNodes Function to iteratively compute loss nodes and
+     *  find the split position with best loss (the smallest)
+     *
+     * @see SAHKDTreeFactory::findSplitPositionBySAH
+     * @see SAHKDTreeFactory::GEOM_findSplitPositionBySAH
+     * @see MultiThreadKDTreeFactory
+     *
+     * @return Loss of best split position. The position itself is already
+     *  stored in given node
+     */
+    virtual double findSplitPositionBySAHRecipe(
+        KDTreeNode *node,
+        vector<Primitive *> &primitives,
+        std::function<void(
+            vector<Primitive *>::iterator begin,
+            vector<Primitive *>::iterator end,
+            KDTreePrimitiveComparator comparator
+        )> f_sortPrimitives,
+        std::function<void(
+            vector<Primitive *> &primitives,
+            size_t const lossNodes,
+            double const start,
+            double const step,
+            int const splitAxis,
+            double const minBound,
+            double const boundLength,
+            double &loss,
+            double &splitPos
+        )> f_computeLossNodes
     ) const;
 
     /**
@@ -471,7 +589,7 @@ protected:
         double const surfaceAreaInterior,
         double const surfaceAreaLeaf,
         vector<Primitive *> const &primitives
-    ) const ;
+    ) const;
 
     /**
      * @brief Compute the cumulative of \f$C_T\f$ heuristic ILOT.

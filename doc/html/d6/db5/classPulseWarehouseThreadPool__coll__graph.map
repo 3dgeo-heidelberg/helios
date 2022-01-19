@@ -1,10 +1,10 @@
 <map id="PulseWarehouseThreadPool" name="PulseWarehouseThreadPool">
-<area shape="rect" id="node2" href="$da/d92/classWarehouseThreadPool.html" title="WarehouseThreadPool\l\&lt; PulseTaskDropper \&gt;" alt="" coords="713,37,867,78"/>
-<area shape="rect" id="node3" href="$dc/de7/classThreadPool.html" title="Base class providing core implementation of a thread pool to deal with multi threading tasks..." alt="" coords="449,5,537,32"/>
-<area shape="rect" id="node4" href="$d9/d5e/classTaskWarehouse.html" title="TaskWarehouse\&lt; PulseTask\lDropper \&gt;" alt="" coords="397,57,588,98"/>
-<area shape="rect" id="node6" href="$df/d9c/classPulseThreadPoolInterface.html" title="Interface for thread pools supporting pulse tasks. " alt="" coords="704,103,876,129"/>
-<area shape="rect" id="node7" href="$d3/d57/classUniformNoiseSource.html" title="UniformNoiseSource\l\&lt; double \&gt;" alt="" coords="719,154,861,195"/>
-<area shape="rect" id="node8" href="$d4/d38/classRandomNoiseSource.html" title="RandomNoiseSource\&lt;\l double \&gt;" alt="" coords="415,154,570,195"/>
-<area shape="rect" id="node9" href="$d9/d6b/classNoiseSource.html" title="NoiseSource\&lt; double \&gt;" alt="" coords="149,141,308,168"/>
-<area shape="rect" id="node10" href="$dc/d6e/classRandomnessGenerator.html" title="RandomnessGenerator\l\&lt; double \&gt;" alt="" coords="151,202,307,243"/>
+<area shape="rect" id="node2" href="$da/d92/classWarehouseThreadPool.html" title="WarehouseThreadPool\l\&lt; PulseTaskDropper \&gt;" alt="" coords="741,53,895,94"/>
+<area shape="rect" id="node3" href="$dc/de7/classThreadPool.html" title="Base class providing core implementation of a thread pool to deal with multi threading tasks..." alt="" coords="477,5,565,32"/>
+<area shape="rect" id="node5" href="$d9/d5e/classTaskWarehouse.html" title="TaskWarehouse\&lt; PulseTask\lDropper \&gt;" alt="" coords="425,57,616,98"/>
+<area shape="rect" id="node7" href="$df/d9c/classPulseThreadPoolInterface.html" title="Interface for thread pools supporting pulse tasks. " alt="" coords="732,119,904,145"/>
+<area shape="rect" id="node8" href="$d3/d57/classUniformNoiseSource.html" title="UniformNoiseSource\l\&lt; double \&gt;" alt="" coords="747,170,889,211"/>
+<area shape="rect" id="node9" href="$d4/d38/classRandomNoiseSource.html" title="RandomNoiseSource\&lt;\l double \&gt;" alt="" coords="443,170,598,211"/>
+<area shape="rect" id="node10" href="$d9/d6b/classNoiseSource.html" title="NoiseSource\&lt; double \&gt;" alt="" coords="149,157,308,184"/>
+<area shape="rect" id="node11" href="$dc/d6e/classRandomnessGenerator.html" title="RandomnessGenerator\l\&lt; double \&gt;" alt="" coords="151,218,307,259"/>
 </map>

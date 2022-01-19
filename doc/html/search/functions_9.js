@@ -1,9 +1,10 @@
 var searchData=
 [
+  ['increasefinishedgeomjobscount',['increaseFinishedGeomJobsCount',['../df/d86/classMultiThreadKDTreeFactory.html#a9f8866c50d14796dad33466e44f97814',1,'MultiThreadKDTreeFactory']]],
   ['increasependingtasks',['increasePendingTasks',['../d0/d21/classMDThreadPool.html#a2604acd9240936d50bb203aed8efeba5',1,'MDThreadPool']]],
   ['indexfromcoordinates',['indexFromCoordinates',['../d6/d03/classXYZPointCloudFileLoader.html#a0c3f03060ab2a991450d6b31feb862de',1,'XYZPointCloudFileLoader']]],
   ['info',['INFO',['../d0/da9/logging_8hpp.html#a0d21bd29f2facd645f123ec469c16250',1,'logging']]],
-  ['init',['init',['../d3/d40/classLidarSim.html#a2f51233c98f5f0c453bbb50030e11b33',1,'LidarSim::init()'],['../da/d69/classSurfaceInspector_1_1maths_1_1SingularContextComputer.html#a08d5397cf54a8b09706395d6c3201de7',1,'SurfaceInspector::maths::SingularContextComputer::init()']]],
+  ['init',['init',['../d8/de4/classhelios_1_1hpc_1_1SM__ParallelMergeSort.html#a1d1083a70b3b628347692f8afb4263bb',1,'helios::hpc::SM_ParallelMergeSort::init()'],['../d3/d40/classLidarSim.html#a8d7daeb41245bd2ba9f8476e4bd5324d',1,'LidarSim::init()'],['../da/d69/classSurfaceInspector_1_1maths_1_1SingularContextComputer.html#a08d5397cf54a8b09706395d6c3201de7',1,'SurfaceInspector::maths::SingularContextComputer::init()']]],
   ['initialize',['initialize',['../d6/d26/classSurfaceInspector_1_1util_1_1draggers_1_1MinDragger.html#a57ee64e2ce5c006cbfd6d0f51cfbd6df',1,'SurfaceInspector::util::draggers::MinDragger']]],
   ['initializefullwaveform',['initializeFullWaveform',['../db/da6/classFullWaveformPulseRunnable.html#a50b690e9352dfcdc998a35bc222481e9',1,'FullWaveformPulseRunnable']]],
   ['initializesequentialgenerators',['initializeSequentialGenerators',['../dc/d42/classScanner.html#ad2846df5fb586988fd2008170c1a2d82',1,'Scanner']]],
