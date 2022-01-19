@@ -159,12 +159,15 @@ def handle_summary(
                 'chunkSize': chunkSize,
                 'warehouseFactor': warehouseFactor,
                 'cores': cores[minTimeArg],
+                'coresSpace': cores,
                 'kdtTime': kdtTime[minTimeArg],
                 'simTime': simTime[minTimeArg],
                 'fullTime': fullTime[minTimeArg],
+                'fullTimes': fullTime,
                 'kdtSpeedup': kdtSpeedup[minTimeArg],
                 'simSpeedup': simSpeedup[minTimeArg],
-                'fullSpeedup': fullSpeedup[minTimeArg]
+                'fullSpeedup': fullSpeedup[minTimeArg],
+                'fullSpeedups': fullSpeedup
             }
         }
     else:
@@ -176,13 +179,50 @@ def handle_summary(
                 'chunkSize': chunkSize,
                 'warehouseFactor': warehouseFactor,
                 'cores': cores[minTimeArg],
+                'coresSpace': cores,
                 'kdtTime': kdtTime[minTimeArg],
                 'simTime': simTime[minTimeArg],
                 'fullTime': fullTime[minTimeArg],
+                'fullTimes': fullTime,
                 'kdtSpeedup': kdtSpeedup[minTimeArg],
                 'simSpeedup': simSpeedup[minTimeArg],
-                'fullSpeedup': fullSpeedup[minTimeArg]
+                'fullSpeedup': fullSpeedup[minTimeArg],
+                'fullSpeedups': fullSpeedup
             }
+
+
+# Function to find best (KDT, parallelization) pair for given summary entry
+def find_summary_best_parallelization(summary_entry):
+    stat = summary_entry.get('STATIC', None)
+    dyna = summary_entry.get('DYNAMIC', None)
+    ware = summary_entry.get('WAREHOUSE', None)
+    if stat is None and dyna is None and ware is None:
+        raise Exception(
+            'find_summary_best_parallelization received None parallelizations'
+        )
+    entries = [(stat, 'Static'), (dyna, 'Dynamic'), (ware, 'Warehouse')]
+    bestEntry = None
+    bestTime = sys.float_info.max
+    bestType = 'Unknown'
+    for entry_pair in entries:
+        entry = entry_pair[0]
+        if entry is None:
+            continue
+        time = entry['fullTime']
+        if time < bestTime:
+            bestEntry = entry
+            bestTime = time
+            bestType = entry_pair[1]
+    if bestType == 'Static':
+        bestType = 'Static {cs}'.format(cs=bestEntry['chunkSize'])
+    elif bestType == 'Dynamic':
+        bestType = 'Dyamic. {cs}'.format(cs=-bestEntry['chunkSize'])
+    elif bestType == 'Warehouse':
+        bestType = 'Ware. {cs}x{wf}'.format(
+            cs=bestEntry['chunkSize'],
+            wf=bestEntry['warehouseFactor']
+        )
+    return bestEntry, bestType
 
 
 # Function to print summary after it has been built
@@ -217,6 +257,100 @@ def print_summary(summary):
                     fullSpeedup=skt['fullSpeedup']
                 )
             )
+
+
+# Function to generate plot of bests (KDT,Parallelization) cases
+def plot_summary(summary):
+    # Prepare plot
+    fig = plt.figure(figsize=(16, 12))
+    # plt.suptitle('Summary plot')  # Paper subfigure, better no suptitle
+    ax = fig.add_subplot(1, 1, 1)
+    axx = ax.twinx()
+    plots = []
+    timeColors = {
+        'KDT_SIMPLE': 'dodgerblue',
+        'KDT_SAH': 'orange',
+        'KDT_AXIS_SAH': 'firebrick',
+        'KDT_FAST_SAH': 'green'
+    }
+    speedupColors = {
+        'KDT_SIMPLE': 'steelblue',
+        'KDT_SAH': 'darkorange',
+        'KDT_AXIS_SAH': 'maroon',
+        'KDT_FAST_SAH': 'darkgreen'
+    }
+
+    # Plot each summary entry
+    for kdtType in summary.keys():
+        if kdtType == 'KDT_AXIS_SAH':  # Skip AxisSAH, not interesting atm
+            continue
+        kdtTypeStr = 'Unknown'
+        if kdtType == 'KDT_SIMPLE':
+            kdtTypeStr = 'Simple'
+        elif kdtType == 'KDT_SAH':
+            kdtTypeStr = 'SAH'
+        elif kdtType == 'KDT_AXIS_SAH':
+            kdtTypeStr = 'ASAH'
+        elif kdtType == 'KDT_FAST_SAH':
+            kdtTypeStr = 'FSAH'
+        entry, paralleliz = find_summary_best_parallelization(summary[kdtType])
+        plots.append(ax.plot(
+            entry['coresSpace'],
+            entry['fullTimes'],
+            lw=3,
+            ls='-',
+            color=timeColors[kdtType],
+            zorder=3,
+            label='{kdtType} {paralleliz} time'.format(
+                kdtType=kdtTypeStr,
+                paralleliz=paralleliz
+            )
+        )[0])
+        plots.append(axx.plot(
+            entry['coresSpace'],
+            entry['fullSpeedups'],
+            lw=2,
+            ls='--',
+            color=speedupColors[kdtType],
+            zorder=2,
+            label='{kdtType} {paralleliz} speedup'.format(
+                kdtType=kdtTypeStr,
+                paralleliz=paralleliz
+            )
+        )[0])
+
+    # Configure plot
+    labelFontSize = 32
+    tickFontSize = 28
+    legendFontSize = 24
+    ax.set_xlabel('Cores', fontsize=labelFontSize)
+    ax.set_ylabel('Seconds', fontsize=labelFontSize)
+    ax.tick_params(axis='both', which='major', labelsize=tickFontSize)
+    ax.autoscale(enable=True, axis='both', tight=True)
+    ax.grid(True)
+    ax.set_axisbelow(True)
+    # All legends in the same block
+    # labels = [plot.get_label() for plot in plots]
+    # ax.legend(plots, labels, loc='upper center', fontsize=legendFontSize)
+    # Time legend to the left, speedup legend to the right
+    ax.legend(loc='upper left', fontsize=legendFontSize)
+    axx.legend(loc='upper right', fontsize=legendFontSize)
+    axx.set_ylabel('Speedup', fontsize=labelFontSize)
+    axx.tick_params(axis='y', which='major', labelsize=tickFontSize)
+    axx.autoscale(enable=True, axis='both', tight=True)
+    plt.tight_layout()
+
+    # Export plot
+    plt.savefig(
+        fname='{outpath}'.format(outpath='{outdir}summary_plot'
+                                 .format(
+                                    outdir=outdir,
+                                    plotname=name_from_index(KDT.index[0])
+                                 ))
+    )
+    plt.close()
+    plt.cla()
+    plt.clf()
 
 
 # Function to configure plots
@@ -470,3 +604,4 @@ for DF in DFS:
     plt.clf()
 
 print_summary(summary)
+plot_summary(summary)
