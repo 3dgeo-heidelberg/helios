@@ -497,12 +497,17 @@ XmlAssetsLoader::createScannerFromXml(tinyxml2::XMLElement *scannerNode) {
 }
 
 std::shared_ptr<ScannerSettings>
-XmlAssetsLoader::createScannerSettingsFromXml(tinyxml2::XMLElement *node) {
+XmlAssetsLoader::createScannerSettingsFromXml(
+    tinyxml2::XMLElement *node,
+    std::unordered_set<std::string> *fields
+) {
 
   std::shared_ptr<ScannerSettings> settings(new ScannerSettings());
   std::shared_ptr<ScannerSettings> template1(new ScannerSettings());
 
-  template1->id = "DEFAULT_TEMPLATE1_HELIOSCPP";
+  // Default template
+  std::string const DEFAULT_TEMPLATE_ID = "DEFAULT_TEMPLATE1_HELIOSCPP";
+  template1->id = DEFAULT_TEMPLATE_ID;
   template1->active = true;
   template1->headRotatePerSec_rad = 0;
   template1->headRotateStart_rad = 0;
@@ -513,6 +518,7 @@ XmlAssetsLoader::createScannerSettingsFromXml(tinyxml2::XMLElement *node) {
   template1->verticalAngleMax_rad = 0;
   template1->scanFreq_Hz = 0;
 
+  // Load specified template
   if (node->Attribute("template") != nullptr) {
     std::string templateId = node->Attribute("template");
     std::shared_ptr<ScannerSettings> bla = nullptr;
@@ -522,6 +528,11 @@ XmlAssetsLoader::createScannerSettingsFromXml(tinyxml2::XMLElement *node) {
           getAssetByLocation("scannerSettings", node->Attribute("template")));
       bla->id = templateId;
       scannerTemplates.emplace(templateId, bla);
+      std::unordered_set<std::string> templateFields;
+      trackNonDefaultScannerSettings(
+          bla, template1, DEFAULT_TEMPLATE_ID, templateFields
+      );
+      scannerTemplatesFields.emplace(templateId, templateFields);
     } else { // If scanner template has been loaded, then use already loaded
       bla = scannerTemplates[templateId];
     }
@@ -554,12 +565,10 @@ XmlAssetsLoader::createScannerSettingsFromXml(tinyxml2::XMLElement *node) {
     }
   }
 
+  // Ovearload settings themselves
   settings->baseTemplate = template1;
   settings->active = boost::get<bool>(XmlUtils::getAttribute(
       node, "active", "bool", template1->active
-  ));
-  settings->beamSampleQuality = boost::get<int>(XmlUtils::getAttribute(
-      node, "beamSampleQuality", "int", template1->beamSampleQuality
   ));
   settings->headRotatePerSec_rad = MathConverter::degreesToRadians(
       boost::get<double>(XmlUtils::getAttribute(
@@ -589,7 +598,7 @@ XmlAssetsLoader::createScannerSettingsFromXml(tinyxml2::XMLElement *node) {
   }
 
   // Make sure that rotation stop angle is larger than rotation start angle if
-  // rotation speed is positive:
+  // rotation speed is negative:
   if (hrStop_rad > settings->headRotateStart_rad &&
       settings->headRotatePerSec_rad < 0) {
     logging::ERR(
@@ -626,6 +635,13 @@ XmlAssetsLoader::createScannerSettingsFromXml(tinyxml2::XMLElement *node) {
   settings->trajectoryTimeInterval = boost::get<double>(XmlUtils::getAttribute(
     node, "trajectoryTimeInterval_s", "double", 0.0)
   );
+
+  // Track non default values if requested
+  if(fields != nullptr){
+    trackNonDefaultScannerSettings(
+        settings, template1, DEFAULT_TEMPLATE_ID, *fields
+    );
+  }
 
   return settings;
 }
@@ -719,4 +735,34 @@ XmlAssetsLoader::getAssetByLocation(
   if (freeLoader)
     delete loader;
   return asset;
+}
+
+// ***  UTIL METHODS  *** //
+// ********************** //
+void XmlAssetsLoader::trackNonDefaultScannerSettings(
+    std::shared_ptr<ScannerSettings> base,
+    std::shared_ptr<ScannerSettings> ref,
+    std::string const defaultTemplateId,
+    std::unordered_set<std::string> &fields
+){
+    if(ref->id != defaultTemplateId) fields.insert("baseTemplate");
+    if(base->active != ref->active) fields.insert("active");
+    if(base->headRotatePerSec_rad != ref->headRotatePerSec_rad)
+        fields.insert("headRotatePerSec_rad");
+    if(base->headRotateStart_rad != ref->headRotateStart_rad)
+        fields.insert("headRotateStart_rad");
+    if(base->headRotateStop_rad != ref->headRotateStop_rad)
+        fields.insert("headRotateStop_rad");
+    if(base->pulseFreq_Hz != ref->pulseFreq_Hz)
+        fields.insert("pulseFreq_Hz");
+    if(base->scanAngle_rad != ref->scanAngle_rad)
+        fields.insert("scanAngle_rad");
+    if(base->verticalAngleMin_rad != ref->verticalAngleMin_rad)
+        fields.insert("verticalAngleMin_rad");
+    if(base->verticalAngleMax_rad != ref->verticalAngleMax_rad)
+        fields.insert("verticalAngleMax_rad");
+    if(base->scanFreq_Hz != ref->scanFreq_Hz)
+        fields.insert("scanFreq_Hz");
+    if(base->trajectoryTimeInterval != ref->trajectoryTimeInterval)
+        fields.insert("trajectoryTimeInterval");
 }
