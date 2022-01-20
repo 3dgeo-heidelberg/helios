@@ -49,77 +49,19 @@ XmlSurveyLoader::createSurveyFromXml(
     bool legNoiseDisabled,
     bool rebuildScene
 ) {
+  // Prepare survey loading
   reinitLoader();
   shared_ptr<Survey> survey = make_shared<Survey>();
 
-  survey->name = boost::get<string>(
-      XmlUtils::getAttribute(surveyNode, "name", "string", xmlDocFilename));
-  survey->sourceFilePath = xmlDocFilePath;
+  // Load survey core
+  loadSurveyCore(surveyNode, survey);
 
-  string scannerAssetLocation = boost::get<string>(
-      XmlUtils::getAttribute(surveyNode, "scanner", "string", string("")));
-  survey->scanner = dynamic_pointer_cast<Scanner>(
-      getAssetByLocation("scanner", scannerAssetLocation));
-
-  string platformAssetLocation = boost::get<string>(
-      XmlUtils::getAttribute(surveyNode, "platform", "string", string("")));
-  survey->scanner->platform = dynamic_pointer_cast<Platform>(
-      getAssetByLocation("platform", platformAssetLocation));
-
-  // FWF info
-  tinyxml2::XMLElement *scannerFWFSettingsNode =
-      surveyNode->FirstChildElement("FWFSettings");
-  survey->scanner->applySettingsFWF(*createFWFSettingsFromXml(
-      scannerFWFSettingsNode, std::make_shared<FWFSettings>(
-        FWFSettings(survey->scanner->FWF_settings)
-      )
-  ));
-
-  // ##################### BEGIN Read misc parameters ##################
-  // Read number of runs:
-  survey->numRuns =
-      boost::get<int>(XmlUtils::getAttribute(surveyNode, "numRuns", "int", 1));
-
-  // ######### BEGIN Set initial sim speed factor ##########
-  double speed = boost::get<double>(XmlUtils::getAttribute(
-      surveyNode, "simSpeed", "double", 1.0));
-  if (speed <= 0) {
-    std::stringstream ss;
-    ss << "XML Survey Playback Loader: "
-       << "ERROR: Sim speed can't be <= 0. Setting it to 1.";
-    logging::WARN(ss.str());
-    speed = 1.0;
-  }
-
-  survey->simSpeedFactor = 1.0 / speed;
-  // ######### END Set initial sim speed factor ##########
-  tinyxml2::XMLElement *legNodes = surveyNode->FirstChildElement("leg");
-  std::shared_ptr<ScannerSettings> scannerSettings = \
-    survey->scanner->retrieveCurrentSettings();
-  while (legNodes != nullptr) {
-    glm::dvec3 origin = glm::dvec3(0, 0, 0);
-    std::unordered_set<std::string> scannerFields;
-    shared_ptr<Leg> leg(createLegFromXML(legNodes, &scannerFields));
-    // Add originWaypoint shift to waypoint coordinates:
-    if (leg->mPlatformSettings != nullptr /* && originWaypoint != null*/) {
-      leg->mPlatformSettings->setPosition(
-          leg->mPlatformSettings->getPosition() + origin
-      );
-    }
-    // Cherry-picking of ScannerSettings
-    std::unordered_set<std::string> templateFields = \
-        scannerTemplatesFields[leg->mScannerSettings->baseTemplate->id];
-    leg->mScannerSettings = scannerSettings->cherryPick(
-        leg->mScannerSettings,
-        scannerFields,
-        &templateFields
-    );
-    survey->legs.push_back(leg);
-    legNodes = legNodes->NextSiblingElement("leg");
-  }
-
-    // ############################## END Read waypoints
-  // ###########################
+  // Load legs
+  loadLegs(
+    surveyNode->FirstChildElement("leg"),
+    survey->scanner->retrieveCurrentSettings(),
+    survey->legs
+  );
 
   // NOTE:
   // The scene is loaded as the last step, since it takes the longest time.
@@ -128,108 +70,27 @@ XmlSurveyLoader::createSurveyFromXml(
   // need to wait until the scene is loaded, only to learn that something has
   // failed.
 
-  // ########### BEGIN Load scene ############
+  // Load scene
   string sceneString = surveyNode->Attribute("scene");
   survey->scanner->platform->scene = loadScene(sceneString, rebuildScene);
-
   SpectralLibrary spectralLibrary = SpectralLibrary(
       (float)survey->scanner->getWavelength(), assetsDir + "spectra");
   spectralLibrary.readReflectances();
   spectralLibrary.setReflectances(survey->scanner->platform->scene.get());
 
-  // ########### END Load scene ############
+  // Apply scene geometry shift to platform waypoints
+  applySceneShift(surveyNode, legNoiseDisabled, survey);
 
-  // ######## BEGIN Apply scene geometry shift to platform waypoint coordinates
-  // ###########
-  RandomnessGenerator<double> rg(*DEFAULT_RG);
-  bool legRandomOffset = surveyNode->BoolAttribute("legRandomOffset", false);
-  if (legRandomOffset && !legNoiseDisabled) {
-    rg.computeNormalDistribution(
-        surveyNode->DoubleAttribute("legRandomOffsetMean", 0.0),
-        surveyNode->DoubleAttribute("legRandomOffsetStdev", 0.1));
-  }
-  for (std::shared_ptr<Leg> leg : survey->legs) {
-    if (leg->mPlatformSettings != NULL) {
-      glm::dvec3 shift = survey->scanner->platform->scene->getShift();
-      glm::dvec3 platformPos = leg->mPlatformSettings->getPosition();
-      leg->mPlatformSettings->setPosition(platformPos - shift);
+  // Configure default randmoness generator
+  configureDefaultRandomnessGenerator(surveyNode);
 
-      // ############ BEGIN If specified, move waypoint z coordinate to ground
-      // level ###############
-      if (leg->mPlatformSettings->onGround) {
-        glm::dvec3 pos = leg->mPlatformSettings->getPosition();
-        glm::dvec3 ground = survey->scanner->platform->scene->getGroundPointAt(
-            pos
-        );
-        leg->mPlatformSettings->setPosition(glm::dvec3(
-            pos.x, pos.y, ground.z
-        ));
-      }
-      // ############ END If specified, move waypoint z coordinate to ground
-      // level ###############
-
-      // Noise -> add a random offset in x,y,z to the measurements
-      if (legRandomOffset && !legNoiseDisabled) {
-        leg->mPlatformSettings->setPosition(
-            leg->mPlatformSettings->getPosition() +
-            glm::dvec3(rg.normalDistributionNext(), rg.normalDistributionNext(),
-                       rg.normalDistributionNext()));
-      }
-    }
-  }
-  // ######## END Apply scene geometry shift to platform waypoint coordinates
-  // ###########
-
-  if (!DEFAULT_RG_MODIFIED_FLAG) {
-    string seed = boost::get<string>(
-        XmlUtils::getAttribute(surveyNode, "seed", "string", string("AUTO")));
-    if (seed != "AUTO") {
-      stringstream ss;
-      ss << "survey seed: " << seed;
-      logging::INFO(ss.str());
-      DEFAULT_RG = std::unique_ptr<RandomnessGenerator<double>>(
-          new RandomnessGenerator<double>(seed));
-      DEFAULT_RG_MODIFIED_FLAG = true;
-    }
-  }
-
-  // ### BEGIN platform noise (overriding platform.xml spec if necessary) ###
-  tinyxml2::XMLElement *positionXNoise =
-      surveyNode->FirstChildElement("positionXNoise");
-  if (positionXNoise != NULL)
-    survey->scanner->platform->positionXNoiseSource =
-        XmlUtils::createNoiseSource(positionXNoise);
-  tinyxml2::XMLElement *positionYNoise =
-      surveyNode->FirstChildElement("positionYNoise");
-  if (positionYNoise != NULL)
-    survey->scanner->platform->positionYNoiseSource =
-        XmlUtils::createNoiseSource(positionYNoise);
-  tinyxml2::XMLElement *positionZNoise =
-      surveyNode->FirstChildElement("positionZNoise");
-  if (positionZNoise != NULL)
-    survey->scanner->platform->positionZNoiseSource =
-        XmlUtils::createNoiseSource(positionZNoise);
-
-  tinyxml2::XMLElement *attitudeXNoise =
-      surveyNode->FirstChildElement("attitudeXNoise");
-  if (attitudeXNoise != nullptr)
-    survey->scanner->platform->attitudeXNoiseSource =
-        XmlUtils::createNoiseSource(attitudeXNoise);
-  tinyxml2::XMLElement *attitudeYNoise =
-      surveyNode->FirstChildElement("attitudeYNoise");
-  if (attitudeYNoise != nullptr)
-    survey->scanner->platform->attitudeYNoiseSource =
-        XmlUtils::createNoiseSource(attitudeYNoise);
-  tinyxml2::XMLElement *attitudeZNoise =
-      surveyNode->FirstChildElement("attitudeZNoise");
-  if (attitudeZNoise != nullptr)
-    survey->scanner->platform->attitudeZNoiseSource =
-        XmlUtils::createNoiseSource(attitudeZNoise);
-  // ### END platform noise (overriding platform.xml spec if necessary) ###
+  // Load platform noise
+  loadPlatformNoise(surveyNode, survey->scanner->platform);
 
   // Initialize scanner randomness generators
   survey->scanner->initializeSequentialGenerators();
 
+  // Return created survey
   return survey;
 }
 
@@ -351,4 +212,205 @@ shared_ptr<Scene> XmlSurveyLoader::loadScene(
   logging::TIME(ss.str());
 
   return scene;
+}
+
+void XmlSurveyLoader::loadSurveyCore(
+    tinyxml2::XMLElement *surveyNode,
+    std::shared_ptr<Survey> survey
+){
+    // Load survey fields
+    survey->name = boost::get<string>(
+        XmlUtils::getAttribute(surveyNode, "name", "string", xmlDocFilename));
+    survey->sourceFilePath = xmlDocFilePath;
+    // Load scanner
+    string scannerAssetLocation = boost::get<string>(
+        XmlUtils::getAttribute(surveyNode, "scanner", "string", string("")));
+    survey->scanner = dynamic_pointer_cast<Scanner>(
+        getAssetByLocation("scanner", scannerAssetLocation));
+    // Load platform
+    string platformAssetLocation = boost::get<string>(
+        XmlUtils::getAttribute(surveyNode, "platform", "string", string("")));
+    survey->scanner->platform = dynamic_pointer_cast<Platform>(
+        getAssetByLocation("platform", platformAssetLocation));
+    // Load fullwave form
+    tinyxml2::XMLElement *scannerFWFSettingsNode =
+        surveyNode->FirstChildElement("FWFSettings");
+    survey->scanner->applySettingsFWF(*createFWFSettingsFromXml(
+        scannerFWFSettingsNode, std::make_shared<FWFSettings>(
+            FWFSettings(survey->scanner->FWF_settings)
+        )
+    ));
+    // Read number of runs
+    survey->numRuns = boost::get<int>(
+        XmlUtils::getAttribute(surveyNode, "numRuns", "int", 1)
+    );
+    // Load initial simulation speed factor
+    double speed = boost::get<double>(XmlUtils::getAttribute(
+        surveyNode, "simSpeed", "double", 1.0)
+    );
+    if (speed <= 0) {
+        std::stringstream ss;
+        ss << "XMLSurveyLoader::loadSurveyCore "
+           << "ERROR: Sim speed can't be <= 0. Setting it to 1.";
+        logging::WARN(ss.str());
+        speed = 1.0;
+    }
+    survey->simSpeedFactor = 1.0 / speed;
+
+    // Handle overloads of loaded survey core
+    handleCoreOverloading(surveyNode, survey);
+}
+
+void XmlSurveyLoader::handleCoreOverloading(
+    tinyxml2::XMLElement *surveyNode,
+    std::shared_ptr<Survey> survey
+){
+    // Detector overloading
+    AbstractDetector &detector = *(survey->scanner->detector);
+    tinyxml2::XMLElement *dsNode = \
+        surveyNode->FirstChildElement("detectorSettings");
+    if(dsNode!=nullptr){ // If a detector overload is specified, apply it
+        detector.cfg_device_accuracy_m = boost::get<double>(
+            XmlUtils::getAttribute(
+                dsNode, "accuracy_m", "double", detector.cfg_device_accuracy_m
+            )
+        );
+        detector.cfg_device_rangeMin_m = boost::get<double>(
+            XmlUtils::getAttribute(
+                dsNode, "rangeMin_m", "double", detector.cfg_device_rangeMin_m
+            )
+        );
+        detector.cfg_device_rangeMax_m = boost::get<double>(
+            XmlUtils::getAttribute(
+                dsNode, "rangeMax_m", "double", detector.cfg_device_rangeMax_m
+            )
+        );
+    }
+
+}
+
+void XmlSurveyLoader::loadLegs(
+    tinyxml2::XMLElement *legNodes,
+    std::shared_ptr<ScannerSettings> scannerSettings,
+    std::vector<std::shared_ptr<Leg>> &legs
+){
+    // Iterate over XML sibling leg elements
+    while (legNodes != nullptr) {
+        // Prepare leg loading
+        glm::dvec3 origin = glm::dvec3(0, 0, 0);
+        std::unordered_set<std::string> scannerFields;
+        shared_ptr<Leg> leg(createLegFromXML(legNodes, &scannerFields));
+        // Add originWaypoint shift to waypoint coordinates:
+        if (leg->mPlatformSettings != nullptr /* && originWaypoint != null*/) {
+            leg->mPlatformSettings->setPosition(
+                leg->mPlatformSettings->getPosition() + origin
+            );
+        }
+        // Cherry-picking of ScannerSettings
+        std::unordered_set<std::string> templateFields = \
+        scannerTemplatesFields[leg->mScannerSettings->baseTemplate->id];
+        leg->mScannerSettings = scannerSettings->cherryPick(
+            leg->mScannerSettings,
+            scannerFields,
+            &templateFields
+        );
+        // Insert leg and iterate to next ony, if any
+        legs.push_back(leg);
+        legNodes = legNodes->NextSiblingElement("leg");
+    }
+}
+
+void XmlSurveyLoader::applySceneShift(
+    tinyxml2::XMLElement *surveyNode,
+    bool const legNoiseDisabled,
+    std::shared_ptr<Survey> survey
+){
+    // Prepare normal distribution if necessary
+    RandomnessGenerator<double> rg(*DEFAULT_RG);
+    bool legRandomOffset = surveyNode->BoolAttribute("legRandomOffset", false);
+    if(legRandomOffset && !legNoiseDisabled) {
+        rg.computeNormalDistribution(
+          surveyNode->DoubleAttribute("legRandomOffsetMean", 0.0),
+          surveyNode->DoubleAttribute("legRandomOffsetStdev", 0.1)
+        );
+    }
+    // Apply scene shift to each leg
+    for(std::shared_ptr<Leg> leg : survey->legs) {
+      // Shift platform settings, if any
+      if (leg->mPlatformSettings != nullptr) {
+          glm::dvec3 shift = survey->scanner->platform->scene->getShift();
+          glm::dvec3 platformPos = leg->mPlatformSettings->getPosition();
+          leg->mPlatformSettings->setPosition(platformPos - shift);
+
+          // If specified, move waypoint z coordinate to ground level
+          if (leg->mPlatformSettings->onGround) {
+              glm::dvec3 pos = leg->mPlatformSettings->getPosition();
+              glm::dvec3 ground = \
+                survey->scanner->platform->scene->getGroundPointAt(pos);
+              leg->mPlatformSettings->setPosition(glm::dvec3(
+                  pos.x, pos.y, ground.z
+              ));
+          }
+
+          // Noise -> add a random offset in x,y,z to the measurements
+          if (legRandomOffset && !legNoiseDisabled) {
+              leg->mPlatformSettings->setPosition(
+                  leg->mPlatformSettings->getPosition() +
+                    glm::dvec3(rg.normalDistributionNext(),
+                  rg.normalDistributionNext(),
+                  rg.normalDistributionNext())
+              );
+          }
+      }
+   }
+}
+
+void XmlSurveyLoader::configureDefaultRandomnessGenerator(
+    tinyxml2::XMLElement *surveyNode
+){
+  // Handle seed for deafult randomness generator
+  if(!DEFAULT_RG_MODIFIED_FLAG){
+    string seed = boost::get<string>(
+        XmlUtils::getAttribute(surveyNode, "seed", "string", string("AUTO")));
+    if (seed != "AUTO") {
+        stringstream ss;
+        ss << "survey seed: " << seed;
+        logging::INFO(ss.str());
+        DEFAULT_RG = std::unique_ptr<RandomnessGenerator<double>>(
+            new RandomnessGenerator<double>(seed));
+        DEFAULT_RG_MODIFIED_FLAG = true;
+      }
+  }
+}
+void XmlSurveyLoader::loadPlatformNoise(
+    tinyxml2::XMLElement *surveyNode,
+    std::shared_ptr<Platform> platform
+){
+    // Position noise
+    tinyxml2::XMLElement *positionXNoise =
+        surveyNode->FirstChildElement("positionXNoise");
+    if(positionXNoise != nullptr) platform->positionXNoiseSource =
+        XmlUtils::createNoiseSource(positionXNoise);
+    tinyxml2::XMLElement *positionYNoise =
+        surveyNode->FirstChildElement("positionYNoise");
+    if(positionYNoise != nullptr) platform->positionYNoiseSource =
+        XmlUtils::createNoiseSource(positionYNoise);
+    tinyxml2::XMLElement *positionZNoise =
+        surveyNode->FirstChildElement("positionZNoise");
+    if(positionZNoise != nullptr) platform->positionZNoiseSource =
+        XmlUtils::createNoiseSource(positionZNoise);
+
+    // Attitude noise
+    tinyxml2::XMLElement *attitudeXNoise =
+        surveyNode->FirstChildElement("attitudeXNoise");
+    if(attitudeXNoise != nullptr) platform->attitudeXNoiseSource =
+        XmlUtils::createNoiseSource(attitudeXNoise);
+    tinyxml2::XMLElement *attitudeYNoise =
+        surveyNode->FirstChildElement("attitudeYNoise");
+    if(attitudeYNoise != nullptr) platform->attitudeYNoiseSource =
+        XmlUtils::createNoiseSource(attitudeYNoise);
+    tinyxml2::XMLElement *attitudeZNoise =
+       surveyNode->FirstChildElement("attitudeZNoise");
+    if(attitudeZNoise != nullptr) platform->attitudeZNoiseSource =
+        XmlUtils::createNoiseSource(attitudeZNoise);
 }

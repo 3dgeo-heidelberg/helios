@@ -46,6 +46,10 @@ public:
 	 * @brief Minimum range for detector in meters
 	 */
 	double cfg_device_rangeMin_m = 0;
+	/**
+	 * @brief Maximum range for detector in meters
+	 */
+	double cfg_device_rangeMax_m;
 
 	// File output:
 	/**
@@ -96,15 +100,17 @@ public:
 	AbstractDetector(
 	    std::shared_ptr<Scanner> scanner,
 	    double accuracy_m,
-	    double rangeMin_m
+	    double rangeMin_m,
+	    double rangeMax_m=std::numeric_limits<double>::max()
     ){
 	    this->lasOutput = false;
-            this->las10     = false;
+        this->las10     = false;
 	    this->zipOutput = false;
-	    this->lasScale = 0.0001;
-            this->cfg_device_accuracy_m = accuracy_m;
-            this->cfg_device_rangeMin_m = rangeMin_m;
-            this->scanner = std::move(scanner);
+	    this->lasScale  = 0.0001;
+        this->cfg_device_accuracy_m = accuracy_m;
+        this->cfg_device_rangeMin_m = rangeMin_m;
+        this->cfg_device_rangeMax_m = rangeMax_m;
+        this->scanner   = std::move(scanner);
 	}
 	virtual ~AbstractDetector() {}
 	virtual std::shared_ptr<AbstractDetector> clone() = 0;

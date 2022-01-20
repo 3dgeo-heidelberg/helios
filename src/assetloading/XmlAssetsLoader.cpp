@@ -308,7 +308,6 @@ XmlAssetsLoader::createPlatformSettingsFromXml(tinyxml2::XMLElement *node) {
 
 std::shared_ptr<Scanner>
 XmlAssetsLoader::createScannerFromXml(tinyxml2::XMLElement *scannerNode) {
-
   // ############ BEGIN Read emitter position and orientation ############
   glm::dvec3 emitterPosition = glm::dvec3(0, 0, 0);
   Rotation emitterAttitude(glm::dvec3(1.0, 0.0, 0.0), 0.0);
@@ -326,7 +325,6 @@ XmlAssetsLoader::createScannerFromXml(tinyxml2::XMLElement *scannerNode) {
     logging::WARN(std::string("No scanner orientation defined.\n") +
                   "EXCEPTION: " + e.what());
   }
-
   // ############ END Read emitter position and orientation ############
 
   // ########## BEGIN Read supported pulse frequencies ############
@@ -343,7 +341,6 @@ XmlAssetsLoader::createScannerFromXml(tinyxml2::XMLElement *scannerNode) {
     int f = boost::lexical_cast<int>(freq);
     pulseFreqs.push_back(f);
   }
-
   // ########## END Read supported pulse frequencies ############
 
   // ########### BEGIN Read all the rest #############
@@ -486,10 +483,19 @@ XmlAssetsLoader::createScannerFromXml(tinyxml2::XMLElement *scannerNode) {
   // ###############################
   double rangeMin_m = boost::get<double>(
       XmlUtils::getAttribute(scannerNode, "rangeMin_m", "double", 0.0));
+  double rangeMax_m = boost::get<double>(
+      XmlUtils::getAttribute(
+          scannerNode,
+          "rangeMax_m",
+          "double",
+          std::numeric_limits<double>::max()
+      )
+  );
   double accuracy_m = boost::get<double>(
       XmlUtils::getAttribute(scannerNode, "accuracy_m", "double", 0.0));
   scanner->detector = std::make_shared<FullWaveformPulseDetector>(
-      scanner, accuracy_m, rangeMin_m);
+      scanner, accuracy_m, rangeMin_m, rangeMax_m
+  );
   // ############################ END Configure detector
   // ###############################
 

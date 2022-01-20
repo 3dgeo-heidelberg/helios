@@ -153,15 +153,18 @@ void FullWaveformPulseRunnable::handleSubray(
                     );
             }
 
-            // Distance between beam originWaypoint and intersection:
+            // Distance between beam origin and intersection:
             double distance = glm::distance(
                 intersect->point,
                 absoluteBeamOrigin
             );
 
-            if (detector->cfg_device_rangeMin_m > distance) continue;
+            if(
+                detector->cfg_device_rangeMin_m > distance ||
+                detector->cfg_device_rangeMax_m < distance
+            ) continue;
 
-            // Distance between the beam's center line and the intersection point:
+            // Distance between beam's center line and intersection point:
             double radius = sin(divergenceAngle) * distance;
             double targetArea =
                 detector->scanner->calcFootprintArea(distance) /

@@ -2,6 +2,7 @@ var searchData=
 [
   ['hadamardproduct',['hadamardProduct',['../d1/dd3/classSurfaceInspector_1_1maths_1_1Vector.html#aa5f76df9998822c0358b3be9636c242e',1,'SurfaceInspector::maths::Vector']]],
   ['handlearchiveexception',['handleArchiveException',['../d6/db9/classSerialIO.html#ab7bf8f13df6f7577f880bb84ddc7ca7a',1,'SerialIO']]],
+  ['handlecoreoverloading',['handleCoreOverloading',['../df/d9a/classXmlSurveyLoader.html#acc97e3a71248096416bcf00647cd893e',1,'XmlSurveyLoader']]],
   ['handleendofiteration',['handleEndOfIteration',['../d8/d34/classfluxionum_1_1IterativeMethodHandler.html#a88773c07534ce1fd5202d72423f3570e',1,'fluxionum::IterativeMethodHandler']]],
   ['handlefilepath',['handleFilePath',['../d5/d4b/classFileUtils.html#a151552fa50b719b536348308f7b32ee8',1,'FileUtils']]],
   ['handlepulsecomputation',['handlePulseComputation',['../d5/d3c/classBuddingScanningPulseProcess.html#a81e696cb1ec6af65cfcdc9952d0c391e',1,'BuddingScanningPulseProcess::handlePulseComputation()'],['../db/d85/classScanningPulseProcess.html#a5349ba0cce56efe76573b8be6c7cd298',1,'ScanningPulseProcess::handlePulseComputation()'],['../df/ddb/classWarehouseScanningPulseProcess.html#a9cd11e56054d40e74a716298be6569c3',1,'WarehouseScanningPulseProcess::handlePulseComputation()']]],
