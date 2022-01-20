@@ -228,6 +228,7 @@ var annotated_dup =
     [ "ScannerHead", "dc/da7/classScannerHead.html", "dc/da7/classScannerHead" ],
     [ "ScannerSettings", "d0/d23/classScannerSettings.html", "d0/d23/classScannerSettings" ],
     [ "ScanningPulseProcess", "db/d85/classScanningPulseProcess.html", "db/d85/classScanningPulseProcess" ],
+    [ "ScanningStrip", "d4/d31/classScanningStrip.html", "d4/d31/classScanningStrip" ],
     [ "Scene", "d5/d9c/classScene.html", "d5/d9c/classScene" ],
     [ "SceneLoadingSpecification", "d7/d48/classSceneLoadingSpecification.html", "d7/d48/classSceneLoadingSpecification" ],
     [ "ScenePart", "dd/dc4/classScenePart.html", "dd/dc4/classScenePart" ],

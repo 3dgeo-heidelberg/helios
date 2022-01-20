@@ -9,6 +9,7 @@ var searchData=
   ['scannerhead',['ScannerHead',['../dc/da7/classScannerHead.html',1,'']]],
   ['scannersettings',['ScannerSettings',['../d0/d23/classScannerSettings.html',1,'']]],
   ['scanningpulseprocess',['ScanningPulseProcess',['../db/d85/classScanningPulseProcess.html',1,'']]],
+  ['scanningstrip',['ScanningStrip',['../d4/d31/classScanningStrip.html',1,'']]],
   ['scene',['Scene',['../d5/d9c/classScene.html',1,'']]],
   ['sceneloadingspecification',['SceneLoadingSpecification',['../d7/d48/classSceneLoadingSpecification.html',1,'']]],
   ['scenepart',['ScenePart',['../dd/dc4/classScenePart.html',1,'']]],

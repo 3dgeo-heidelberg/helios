@@ -5,6 +5,7 @@ var searchData=
   ['ef_5fxy_5fmax',['ef_xy_max',['../db/d69/classHelicopterPlatform.html#a5d3a118bd4d36e5ed2685189ffbc7a97',1,'HelicopterPlatform']]],
   ['elapsedlength',['elapsedLength',['../d6/da1/classSurveyPlayback.html#a13f60c6bbffd7d924886fad2f5f39aae',1,'SurveyPlayback']]],
   ['elapsedtime_5fms',['elapsedTime_ms',['../d6/da1/classSurveyPlayback.html#a0a961564e496e3a18c89c12734112fe5',1,'SurveyPlayback']]],
+  ['emplace',['emplace',['../d4/d31/classScanningStrip.html#a67ab61e0a7fff3530dc953bae0846cc0',1,'ScanningStrip::emplace(int const serialId, Leg *leg)'],['../d4/d31/classScanningStrip.html#af8bb55ae2bd0f934b4da67e8ebad5d2e',1,'ScanningStrip::emplace(Leg *leg)']]],
   ['empty',['empty',['../d8/d78/classWavefrontObjCache.html#ae0769e1911c305d59e77cab6cc694946',1,'WavefrontObjCache']]],
   ['emptyclone',['emptyClone',['../d5/d2f/classBuddingTaskDropper.html#a413aab607239eb3215733141842b120f',1,'BuddingTaskDropper::emptyClone()'],['../da/d8d/classTaskDropper.html#ae881d4c8f278850343a476dfb2908583',1,'TaskDropper::emptyClone()']]],
   ['enableconvergencecriterion',['enableConvergenceCriterion',['../d8/d34/classfluxionum_1_1IterativeMethodHandler.html#afd84a0cd9595a366dab2a0a047b4c7ac',1,'fluxionum::IterativeMethodHandler']]],

@@ -26,19 +26,19 @@ var NAVTREEINDEX =
 "d1/d2b/classMarquardtFitter.html#aee2a297d40fb3d15afc20f671a6c056f",
 "d2/d1f/classSimpleThreadPool.html#a82a5b7389fd28188b688a92edadb9038",
 "d3/d89/classMaterial.html#a3f190f396e2a4adae7e472a2e19cf52f",
-"d4/d9d/classpyhelios_1_1PyPlatformWrapper.html#a475dee99fe1205375a50e8787cc964a7",
-"d5/d9c/classScene.html#a1ce25df38164ed98cf695bc8042bc6a5",
-"d6/d44/classVoxel.html#ad552f2d9c47b865ede17e6b390f73f10",
-"d7/d21/classpyhelios_1_1PyDetailedVoxelWrapper.html#a8fa561dedc7d48bcaec988bf2fa0d6da",
-"d7/deb/classlogger__factory.html#a53ed3dac136023677e6128402ea59dfe",
-"d9/d5e/classTaskWarehouse.html#ae931c10cf95d5389fbf77dd46dd6d9c6",
-"da/d52/classSurfaceInspector_1_1maths_1_1Histogram.html#a435bcd0ab73fec77928194c6130a6f84",
-"db/d58/classSAHKDTreeFactory.html#a6f3b16fb524bc98106899bbdd7fc246e",
-"dc/d37/classlogger.html",
-"dc/df6/classrigidmotion_1_1RigidMotionR3Factory.html#a4f1e4595f1fedc4df7191f0b8bd24420",
-"de/d97/classAsset.html#a2cdb921599e4fdf8fc2e0ce5dd9266ee",
-"df/d6f/classSharedSubTask.html#a64bdb256d735b0027aa04b84da7589fe",
-"functions_m.html"
+"d4/d97/classAxisSAHKDTreeGeometricStrategy.html#a2cd36fb2add7c5f0ce882d85379f6087",
+"d5/d89/classSAHKDTreeComputeLossNodesSubTask.html#a54ba7cf976bcd0b90c4e0e120f5807ef",
+"d6/d44/classVoxel.html#a7ff6a6433efb6445e5987c35417dfb8a",
+"d7/d17/classpyhelios_1_1PySceneWrapper.html#ae8d6c365a9270573133bf5ec081cfaf4",
+"d7/db4/classConicBeamDeflector.html#abbb7a967ab1561b695bc5e3a289010b8",
+"d9/d5e/classTaskWarehouse.html",
+"da/d27/classvisualhelios_1_1VHDynCanvas.html#aade1e423a929fbfdbec0b6a59f235a9c",
+"db/d57/classfluxionum_1_1UnivariateNewtonRaphsonMinimizer.html#a75bb0216e88162c534c1c5d9102fa262",
+"dc/d00/classrigidmotion_1_1RigidMotionFactory.html",
+"dc/de7/classThreadPool.html#a0d1603eed0547e1f3774cafe94256abe",
+"de/d74/classDynScene.html#a1491f7ade0fbf5732e6cb5ec65d7a0bd",
+"df/d64/classLasSpecification.html#a3ae22f50d0a81d28f1554895088c29ba",
+"functions_func_e.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
