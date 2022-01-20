@@ -65,7 +65,7 @@ public:
 	 *  calling XmlSurveyLoader::reinitLoader
 	 *
 	 * @param surveyNode XML element/node containing survey data
-	 * @param legNoiseDisabled Disable leg noise
+	 * @param legNoiseDisabled Flag to disable leg noise
 	 * @param rebuildScene Flag to specify scene must be rebuild even
 	 *  when a previously built one is found (true) or not (false)
 	 * @return Created survey
@@ -79,7 +79,7 @@ public:
     );
 	/**
 	 * @brief Load a full survey from XML
-	 * @param legNoiseDisabled Disable leg noise
+	 * @param legNoiseDisabled Flag to disable leg noise
 	 * @param rebuildScene Flag to specify scene must be rebuild even
 	 *  when a previously built one is found (true) or not (false)
 	 * @return Fully loaded survey
@@ -113,5 +113,67 @@ protected:
 	std::shared_ptr<Scene> loadScene(
 	    std::string sceneString,
 	    bool rebuildScene=false
+    );
+	/**
+	 * @brief Load the core components of the survey. It is, its name,
+	 *  the source file path, the scanner and the platform
+	 * @param surveyNode XML element/node containing survey data
+	 * @param survey The survey to be loaded
+	 * @see XmlSurveyLoader::handleCoreOverloading
+	 */
+	void loadSurveyCore(
+        tinyxml2::XMLElement *surveyNode,
+        std::shared_ptr<Survey> survey
+    );
+	/**
+	 * @brief Handle overloading of survey's core components.
+	 * @param surveyNode XML element/node containing survey data
+	 * @param survey The survey to be loaded
+	 * @see XmlSurveyLoader::loadSurveyCore
+	 */
+	void handleCoreOverloading(
+	    tinyxml2::XMLElement *surveyNode,
+	    std::shared_ptr<Survey> survey
+    );
+	/**
+	 * @brief Load all legs defining the survey
+	 * @param legNodes First leg node
+	 * @param scannerSettings The scanner settings of the survey scanner itself
+	 * @param legs Vector where loaded legs must be inserted
+	 */
+	void loadLegs(
+	    tinyxml2::XMLElement *legNodes,
+	    std::shared_ptr<ScannerSettings> scannerSettings,
+	    std::vector<std::shared_ptr<Leg>> &legs
+    );
+	/**
+	 * @brief Apply scene geometry shift to platform waypoints
+	 * @param surveyNode XML element/node containing survey data
+	 * @param legNoiseDisabled Flag to disable leg noise
+	 * @sparam survey The survey containing all legs and scene data
+	 */
+    void applySceneShift(
+        tinyxml2::XMLElement *surveyNode,
+        bool const legNoiseDisabled,
+        std::shared_ptr<Survey> survey
+    );
+    /**
+     * @brief Configure the default randomness generador. If a seed was
+     *  specified through XML survey node, then it will replace the
+     *  previous one.
+     * @param surveyNode XML elemetn/node containing survey data
+     */
+    static void configureDefaultRandomnessGenerator(
+        tinyxml2::XMLElement *surveyNode
+    );
+    /**
+     * @brief Load plataform noise, overriding what is specified in
+     *  platform.xml if necessary
+     * @param surveyNode XML element/node containing survey data
+     * @param platform The platform which noise must be loaded
+     */
+	void loadPlatformNoise(
+	    tinyxml2::XMLElement *surveyNode,
+        std::shared_ptr<Platform> platform
     );
 };
