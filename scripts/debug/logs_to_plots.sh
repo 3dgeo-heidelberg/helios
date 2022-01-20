@@ -55,8 +55,8 @@ for logf in $(ls $1'/'*.log); do
     SC=$(sed 's/_.*//' <<< $logname)
     logname=$(sed 's/.*BC//g' <<< $logname)
     BC=$(sed 's/\..*//' <<< $logname)
-    kdt_time=$(grep 'KD built in' "$logf" | sed 's/KD\ built\ in\ //' | sed 's/s//')
-    sim_time=$(grep 'Pulse computation tasks finished in' "$logf")
+    kdt_time=$(grep 'KD built in' "$logf" | sed 's/KD\ built\ in\ //' | sed 's/s//' | tr -d '\r')
+    sim_time=$(grep 'Pulse computation tasks finished in' "$logf" | tr -d '\r')
     sim_time=$(sed 's/.*finished\ in\ //' <<< ${sim_time} | sed 's/\ sec.*//')
     cat << EOF >> $2
 ${KDT},${SAH},${PS},${CS},${WF},${SC},${BC},${kdt_time},${sim_time}
