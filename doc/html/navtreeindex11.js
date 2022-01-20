@@ -1,5 +1,6 @@
 var NAVTREEINDEX11 =
 {
+"db/d57/classfluxionum_1_1UnivariateNewtonRaphsonMinimizer.html#a51b95e942575693b3cf186aeb5c1805f":[1,0,0,3,3],
 "db/d57/classfluxionum_1_1UnivariateNewtonRaphsonMinimizer.html#a75bb0216e88162c534c1c5d9102fa262":[1,0,0,3,6],
 "db/d57/classfluxionum_1_1UnivariateNewtonRaphsonMinimizer.html#a7b7b6fb5c0323516c12c992cca7783f9":[1,0,0,3,0],
 "db/d57/classfluxionum_1_1UnivariateNewtonRaphsonMinimizer.html#ac98d07dd8f7b70e16ccb9a01abf56b9c":[1,0,0,3,7],
@@ -248,6 +249,5 @@ var NAVTREEINDEX11 =
 "db/dc1/classSurfaceInspector_1_1maths_1_1functions_1_1GaussianFunction.html#af48d4d02db7c1f6769d61aef49965b43":[1,0,6,0,0,0,6],
 "db/dcd/classHeliosTests_1_1RandomTest.html":[1,0,3,10],
 "db/dcd/classHeliosTests_1_1RandomTest.html#ac9308188722c3cea715bff71385cdbac":[1,0,3,10,0],
-"db/dcd/classHeliosTests_1_1RandomTest.html#af03476f551c500d5fe45f3f1a20f139e":[1,0,3,10,1],
-"db/dff/PyHeliosException_8h_source.html":[2,0,0,7,5]
+"db/dcd/classHeliosTests_1_1RandomTest.html#af03476f551c500d5fe45f3f1a20f139e":[1,0,3,10,1]
 };

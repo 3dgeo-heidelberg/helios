@@ -1,5 +1,6 @@
 var NAVTREEINDEX10 =
 {
+"da/d27/classvisualhelios_1_1VHDynCanvas.html#a50dd11a7e99e254559af2a9d8013695a":[1,0,7,1,6],
 "da/d27/classvisualhelios_1_1VHDynCanvas.html#aade1e423a929fbfdbec0b6a59f235a9c":[1,0,7,1,4],
 "da/d27/classvisualhelios_1_1VHDynCanvas.html#abf7ce617d73bd82943a3a663581d8b7e":[1,0,7,1,1],
 "da/d27/classvisualhelios_1_1VHDynCanvas.html#afe32cdf6b5039c59846d49244773da8f":[1,0,7,1,5],
@@ -248,6 +249,5 @@ var NAVTREEINDEX10 =
 "db/d57/classfluxionum_1_1UnivariateNewtonRaphsonMinimizer.html#a041caf921ac2956262f56cb4f64dced7":[1,0,0,3,8],
 "db/d57/classfluxionum_1_1UnivariateNewtonRaphsonMinimizer.html#a06e8105c3af6bb5d2480105a6c96c268":[1,0,0,3,1],
 "db/d57/classfluxionum_1_1UnivariateNewtonRaphsonMinimizer.html#a09ec6d08bed02eee61fe25c323eaa45a":[1,0,0,3,2],
-"db/d57/classfluxionum_1_1UnivariateNewtonRaphsonMinimizer.html#a1c235997716c3705ed215ae997185282":[1,0,0,3,4],
-"db/d57/classfluxionum_1_1UnivariateNewtonRaphsonMinimizer.html#a51b95e942575693b3cf186aeb5c1805f":[1,0,0,3,3]
+"db/d57/classfluxionum_1_1UnivariateNewtonRaphsonMinimizer.html#a1c235997716c3705ed215ae997185282":[1,0,0,3,4]
 };

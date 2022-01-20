@@ -54,6 +54,7 @@ var searchData=
   ['cfg_5fdevice_5fid',['cfg_device_id',['../dc/d42/classScanner.html#a0ae429a2ec7064d9b7c57f88184d942d',1,'Scanner']]],
   ['cfg_5fdevice_5fnumfibers',['cfg_device_numFibers',['../d7/d20/classFiberArrayBeamDeflector.html#a4a6509cddae3bbd735979c208cee2abd',1,'FiberArrayBeamDeflector']]],
   ['cfg_5fdevice_5fpulselength_5fns',['cfg_device_pulseLength_ns',['../dc/d42/classScanner.html#a1a7cb2591440280624da410061849bdc',1,'Scanner']]],
+  ['cfg_5fdevice_5frangemax_5fm',['cfg_device_rangeMax_m',['../d8/d6b/classAbstractDetector.html#ad9b1d8aa37cb255f3af99d023e7825ea',1,'AbstractDetector']]],
   ['cfg_5fdevice_5frangemin_5fm',['cfg_device_rangeMin_m',['../d8/d6b/classAbstractDetector.html#a4d47a75b623d9aa1598a4795a748ff84',1,'AbstractDetector']]],
   ['cfg_5fdevice_5freceiverdiameter_5fm',['cfg_device_receiverDiameter_m',['../dc/d42/classScanner.html#af6145dd2295389f3e0ab332747cab46c',1,'Scanner']]],
   ['cfg_5fdevice_5frelativemountattitude',['cfg_device_relativeMountAttitude',['../df/d1e/classPlatform.html#ae50f1076e130728e52598960ada93c05',1,'Platform']]],

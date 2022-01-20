@@ -54,7 +54,7 @@ var searchData=
   ['fromilotcache',['fromILOTCache',['../db/d58/classSAHKDTreeFactory.html#a651693da9d8e1431bfcdc40673471e62',1,'SAHKDTreeFactory']]],
   ['fsahkdtf',['fsahkdtf',['../d1/ddc/classFastSAHKDTreeGeometricStrategy.html#afcae3fea433e744394a4e7c33e6ab6fb',1,'FastSAHKDTreeGeometricStrategy']]],
   ['full_5flogger',['full_logger',['../d2/d65/classfull__logger.html',1,'full_logger'],['../d2/d65/classfull__logger.html#a8757e4f145c6acdd4f1a741d1b8cbb45',1,'full_logger::full_logger()']]],
-  ['fullwaveformpulsedetector',['FullWaveformPulseDetector',['../df/d37/classFullWaveformPulseDetector.html',1,'FullWaveformPulseDetector'],['../df/d37/classFullWaveformPulseDetector.html#a5b0b1f6e2331c9c1e12ce3fd8eab308b',1,'FullWaveformPulseDetector::FullWaveformPulseDetector()']]],
+  ['fullwaveformpulsedetector',['FullWaveformPulseDetector',['../df/d37/classFullWaveformPulseDetector.html',1,'FullWaveformPulseDetector'],['../df/d37/classFullWaveformPulseDetector.html#a9bb3c72050688dcb8d8cabdd1bb8b637',1,'FullWaveformPulseDetector::FullWaveformPulseDetector()']]],
   ['fullwaveformpulserunnable',['FullWaveformPulseRunnable',['../db/da6/classFullWaveformPulseRunnable.html',1,'FullWaveformPulseRunnable'],['../db/da6/classFullWaveformPulseRunnable.html#ab713e4e8c1abbb7279b173672c2eef8c',1,'FullWaveformPulseRunnable::FullWaveformPulseRunnable()']]],
   ['fullwaveindex',['fullwaveIndex',['../db/d2e/classMeasurement.html#a73b5258a21a5220e345597fbe2df8514',1,'Measurement']]],
   ['fullwavenoise',['fullWaveNoise',['../dc/d42/classScanner.html#a2a8724797e67174529b67d2a5c00dad3',1,'Scanner']]],
