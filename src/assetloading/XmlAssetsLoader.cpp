@@ -739,6 +739,11 @@ XmlAssetsLoader::getAssetByLocation(
 
 // ***  UTIL METHODS  *** //
 // ********************** //
+void XmlAssetsLoader::reinitLoader(){
+    scannerTemplates.clear();
+    scannerTemplatesFields.clear();
+}
+
 void XmlAssetsLoader::trackNonDefaultScannerSettings(
     std::shared_ptr<ScannerSettings> base,
     std::shared_ptr<ScannerSettings> ref,

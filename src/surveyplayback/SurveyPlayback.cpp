@@ -17,6 +17,7 @@ namespace fs = boost::filesystem;
 #include "ZipSyncFileWriter.h"
 #include "SimpleSyncFileWriter.h"
 #include "HelicopterPlatform.h"
+#include <ScanningStrip.h>
 
 using namespace std;
 
@@ -186,9 +187,18 @@ int SurveyPlayback::getCurrentLegIndex() {
 }
 
 string SurveyPlayback::getLegOutputPrefix(){
+    std::shared_ptr<Leg> leg = getCurrentLeg();
+    std::shared_ptr<ScanningStrip> strip = leg->getStrip();
     stringstream ss;
-    ss << "points/leg"
-       << boost::str(boost::format(mFormatString) % getCurrentLegIndex());
+    ss << "points/";
+    if(strip != nullptr){ // Handle prefix when leg belongs to a split
+        ss << "strip"
+           << boost::str(boost::format(mFormatString) % strip->getStripId());
+    }
+    else{ // Handle prefix when leg does not belong to a split
+        ss << "leg"
+           << boost::str(boost::format(mFormatString) % leg->getSerialId());
+    }
     return ss.str();
 }
 
@@ -360,9 +370,9 @@ void SurveyPlayback::prepareOutput(){
         dynamic_pointer_cast<FullWaveformPulseDetector>(
             getScanner()->detector
         );
+    // Fullwave prefix
     stringstream ss;
-    ss << "leg"
-       << boost::str(boost::format(mFormatString) % getCurrentLegIndex());
+    ss << getLegOutputPrefix();
     if(zipOutput){
         ss << "_fullwave.bin";
     }
@@ -379,7 +389,7 @@ void SurveyPlayback::prepareOutput(){
                                            getTrajectoryOutputPath();
         mSurvey->scanner->setTrajectoryFileWriter(
             std::make_shared<SimpleSyncFileWriter>(trajectoryOutputPath)
-            );
+        );
     }
 }
 

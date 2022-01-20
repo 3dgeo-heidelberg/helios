@@ -1,5 +1,6 @@
 var searchData=
 [
+  ['emplace',['emplace',['../d4/d31/classScanningStrip.html#a67ab61e0a7fff3530dc953bae0846cc0',1,'ScanningStrip::emplace(int const serialId, Leg *leg)'],['../d4/d31/classScanningStrip.html#af8bb55ae2bd0f934b4da67e8ebad5d2e',1,'ScanningStrip::emplace(Leg *leg)']]],
   ['empty',['empty',['../d8/d78/classWavefrontObjCache.html#ae0769e1911c305d59e77cab6cc694946',1,'WavefrontObjCache']]],
   ['emptyclone',['emptyClone',['../d5/d2f/classBuddingTaskDropper.html#a413aab607239eb3215733141842b120f',1,'BuddingTaskDropper::emptyClone()'],['../da/d8d/classTaskDropper.html#ae881d4c8f278850343a476dfb2908583',1,'TaskDropper::emptyClone()']]],
   ['end',['end',['../df/dfa/classDynSequence.html#a5b8a9682938320055785a5dbb35abff9',1,'DynSequence']]],

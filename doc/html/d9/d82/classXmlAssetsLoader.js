@@ -10,6 +10,7 @@ var classXmlAssetsLoader =
     [ "createScannerSettingsFromXml", "d9/d82/classXmlAssetsLoader.html#a34407577e53737d34803929a936716ad", null ],
     [ "getAssetById", "d9/d82/classXmlAssetsLoader.html#a7e26413b3e1cdd17107cc5e06693e7f5", null ],
     [ "getAssetByLocation", "d9/d82/classXmlAssetsLoader.html#a50f6df27d93e0cec94a7135f71bb88da", null ],
+    [ "reinitLoader", "d9/d82/classXmlAssetsLoader.html#a743d9cc57820f29c7638bfdec03fbd1e", null ],
     [ "trackNonDefaultScannerSettings", "d9/d82/classXmlAssetsLoader.html#aed6e4b27ee8a254a1a52be45adea846e", null ],
     [ "assetsDir", "d9/d82/classXmlAssetsLoader.html#a93746ec0dd88588e1ddfafe4a0a850fe", null ],
     [ "doc", "d9/d82/classXmlAssetsLoader.html#abf34a777d16253c2783d9459446a4776", null ],

@@ -153,11 +153,6 @@ var hierarchy =
         [ "UniformNoiseSource< double >", "d3/d57/classUniformNoiseSource.html", null ]
       ] ]
     ] ],
-    [ "Object", null, [
-      [ "SurfaceInspector::maths::functions::IMathFunction< T, T >", "da/d80/classSurfaceInspector_1_1maths_1_1functions_1_1IMathFunction.html", [
-        [ "SurfaceInspector::maths::functions::GaussianFunction< T >", "db/dc1/classSurfaceInspector_1_1maths_1_1functions_1_1GaussianFunction.html", null ]
-      ] ]
-    ] ],
     [ "SurfaceInspector::util::Object", "d2/df2/classSurfaceInspector_1_1util_1_1Object.html", [
       [ "SurfaceInspector::util::draggers::IDragger< E, vector< E > >", "d1/dd1/classSurfaceInspector_1_1util_1_1draggers_1_1IDragger.html", [
         [ "SurfaceInspector::util::draggers::OptimizationDragger< E >", "d5/d68/classSurfaceInspector_1_1util_1_1draggers_1_1OptimizationDragger.html", [
@@ -183,6 +178,11 @@ var hierarchy =
       [ "SurfaceInspector::maths::Vector< T >", "d1/dd3/classSurfaceInspector_1_1maths_1_1Vector.html", null ],
       [ "SurfaceInspector::util::draggers::IDragger< E, C >", "d1/dd1/classSurfaceInspector_1_1util_1_1draggers_1_1IDragger.html", null ],
       [ "SurfaceInspector::util::SurfaceInspectorException", "df/da8/classSurfaceInspector_1_1util_1_1SurfaceInspectorException.html", null ]
+    ] ],
+    [ "Object", null, [
+      [ "SurfaceInspector::maths::functions::IMathFunction< T, T >", "da/d80/classSurfaceInspector_1_1maths_1_1functions_1_1IMathFunction.html", [
+        [ "SurfaceInspector::maths::functions::GaussianFunction< T >", "db/dc1/classSurfaceInspector_1_1maths_1_1functions_1_1GaussianFunction.html", null ]
+      ] ]
     ] ],
     [ "PlaneFitter", "d6/d51/classPlaneFitter.html", null ],
     [ "Primitive", "df/de1/classPrimitive.html", [
@@ -245,6 +245,7 @@ var hierarchy =
       [ "BuddingScanningPulseProcess", "d5/d3c/classBuddingScanningPulseProcess.html", null ],
       [ "WarehouseScanningPulseProcess", "df/ddb/classWarehouseScanningPulseProcess.html", null ]
     ] ],
+    [ "ScanningStrip", "d4/d31/classScanningStrip.html", null ],
     [ "SceneLoadingSpecification", "d7/d48/classSceneLoadingSpecification.html", null ],
     [ "ScenePart", "dd/dc4/classScenePart.html", [
       [ "DynObject", "d5/d6a/classDynObject.html", [

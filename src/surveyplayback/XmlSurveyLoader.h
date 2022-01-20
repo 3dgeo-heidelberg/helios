@@ -1,12 +1,15 @@
 #pragma once
 
-#include "XmlAssetsLoader.h"
-#include "SpectralLibrary.h"
-#include "Survey.h"
-#include "Leg.h"
+#include <XmlAssetsLoader.h>
+#include <SpectralLibrary.h>
+#include <Survey.h>
+#include <Leg.h>
+#include <ScanningStrip.h>
 
 #include <string>
 #include <unordered_set>
+#include <unordered_map>
+#include <memory>
 
 /**
  * @brief Survey loader from XML
@@ -16,6 +19,19 @@
  * @see XmlAssetsLoader
  */
 class XmlSurveyLoader : public XmlAssetsLoader {
+protected:
+    // ***  ATTRIBUTES  *** //
+    // ******************** //
+    /**
+     * @brief Map of scaning strips
+     * @see ScanningStrip
+     */
+    std::unordered_map<std::string, std::shared_ptr<ScanningStrip>> strips;
+    /**
+     * @brief Serial identifier for last created leg. It is initialized as -1,
+     *  so the first leg has 0 as serial id.
+     */
+    int lastLegSerialId = -1;
 
 public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //
@@ -44,12 +60,17 @@ public:
     );
 	/**
 	 * @brief Create a survey form a XML element/node
+	 *
+	 * Notice that calling this method will reinitialize the loader by
+	 *  calling XmlSurveyLoader::reinitLoader
+	 *
 	 * @param surveyNode XML element/node containing survey data
 	 * @param legNoiseDisabled Disable leg noise
 	 * @param rebuildScene Flag to specify scene must be rebuild even
 	 *  when a previously built one is found (true) or not (false)
 	 * @return Created survey
 	 * @see Survey
+	 * @see XmlSurveyLoader::reinitLoader
 	 */
 	std::shared_ptr<Survey> createSurveyFromXml(
 	    tinyxml2::XMLElement* surveyNode,
@@ -69,7 +90,17 @@ public:
 	    bool rebuildScene=false
     );
 
-private:
+protected:
+    // ***  UTIL METHODS  *** //
+    // ********************** //
+    /**
+     * @brief Call the reinitLoader from XmlAssetsLoader and then also assure
+     *  that the map of scanning strips is empty. The last serial leg
+     *  identifier is also setted to -1.
+     *
+     * @see XmlAssetsLoader::reinitLoader
+     */
+    void reinitLoader() override;
     /**
      * @brief Load scene from XML
      * @param sceneString String from XML scene attribute at survey

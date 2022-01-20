@@ -187,6 +187,11 @@ protected:
 	// ***  UTIL METHODS  *** //
 	// ********************** //
 	/**
+	 * @brief Reinitialize the loader so maps with scanner fields and scanner
+	 *  templates and their fields are empty
+	 */
+	virtual void reinitLoader();
+	/**
 	 * @brief Track non default values at base. It is, those values which are
 	 *  in base distinct than the reference (ref)
 	 * @param base Scanner settings to be tracked

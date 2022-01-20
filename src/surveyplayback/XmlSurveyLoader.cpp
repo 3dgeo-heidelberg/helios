@@ -49,6 +49,7 @@ XmlSurveyLoader::createSurveyFromXml(
     bool legNoiseDisabled,
     bool rebuildScene
 ) {
+  reinitLoader();
   shared_ptr<Survey> survey = make_shared<Survey>();
 
   survey->name = boost::get<string>(
@@ -239,19 +240,36 @@ XmlSurveyLoader::createLegFromXML(
 ){
   shared_ptr<Leg> leg = make_shared<Leg>();
 
-  tinyxml2::XMLElement *platformSettingsNode =
-      legNode->FirstChildElement("platformSettings");
+  // Leg serial ID
+  ++lastLegSerialId;
+  leg->setSerialId(lastLegSerialId);
+
+  // Strip ID
+  std::string stripId = boost::get<string>(XmlUtils::getAttribute(
+      legNode, "stripId", "string", ScanningStrip::NULL_STRIP_ID
+  ));
+  if(stripId != ScanningStrip::NULL_STRIP_ID){ // Handle strip
+      std::shared_ptr<ScanningStrip> strip = nullptr;
+      if(strips.find(stripId) != strips.end()) strip = strips[stripId];
+      else{
+          strip = std::make_shared<ScanningStrip>(stripId);
+          strips.emplace(stripId, strip);
+      }
+      leg->setStrip(strip);
+      strip->emplace(leg.get());
+  }
 
   // Platform settings
+  tinyxml2::XMLElement *platformSettingsNode =
+      legNode->FirstChildElement("platformSettings");
   if (platformSettingsNode != nullptr) {
-    leg->mPlatformSettings =
-        createPlatformSettingsFromXml(platformSettingsNode);
+      leg->mPlatformSettings =
+          createPlatformSettingsFromXml(platformSettingsNode);
   }
 
   // Scanner settings
   tinyxml2::XMLElement *scannerSettingsNode =
       legNode->FirstChildElement("scannerSettings");
-
   if (scannerSettingsNode != nullptr) {
     leg->mScannerSettings = createScannerSettingsFromXml(
         scannerSettingsNode, scannerFields
@@ -261,9 +279,18 @@ XmlSurveyLoader::createLegFromXML(
     leg->mScannerSettings = shared_ptr<ScannerSettings>(new ScannerSettings());
   }
 
+  // Return built leg
   return leg;
 }
 
+
+// ***  UTIL METHODS  *** //
+// ********************** //
+void XmlSurveyLoader::reinitLoader(){
+    XmlAssetsLoader::reinitLoader();
+    lastLegSerialId = -1;
+    strips.clear();
+}
 shared_ptr<Scene> XmlSurveyLoader::loadScene(
     string sceneString,
     bool rebuildScene

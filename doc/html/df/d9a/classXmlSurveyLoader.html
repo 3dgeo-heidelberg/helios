@@ -88,7 +88,8 @@ $(document).ready(function(){initNavTree('df/d9a/classXmlSurveyLoader.html','../
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pri-methods">Private Member Functions</a> &#124;
+<a href="#pro-methods">Protected Member Functions</a> &#124;
+<a href="#pro-attribs">Protected Attributes</a> &#124;
 <a href="../../dd/d50/classXmlSurveyLoader-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">XmlSurveyLoader Class Reference</div>  </div>
@@ -161,27 +162,28 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:aaafc4c34e7203c57d917e75d78a73646 inherit pub_methods_classXmlAssetsLoader"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create FWF settings from given XML element (node)  <a href="../../d9/d82/classXmlAssetsLoader.html#aaafc4c34e7203c57d917e75d78a73646">More...</a><br /></td></tr>
 <tr class="separator:aaafc4c34e7203c57d917e75d78a73646 inherit pub_methods_classXmlAssetsLoader"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
-Private Member Functions</h2></td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
+Protected Member Functions</h2></td></tr>
+<tr class="memitem:aed07eb7b960196ac476f53f33179a677"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d9a/classXmlSurveyLoader.html#aed07eb7b960196ac476f53f33179a677">reinitLoader</a> () override</td></tr>
+<tr class="memdesc:aed07eb7b960196ac476f53f33179a677"><td class="mdescLeft">&#160;</td><td class="mdescRight">Call the reinitLoader from <a class="el" href="../../d9/d82/classXmlAssetsLoader.html" title="Class for asset loading from XML file. ">XmlAssetsLoader</a> and then also assure that the map of scanning strips is empty. The last serial leg identifier is also setted to -1.  <a href="#aed07eb7b960196ac476f53f33179a677">More...</a><br /></td></tr>
+<tr class="separator:aed07eb7b960196ac476f53f33179a677"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac2a16d088fb5c5921cffc8c863a1c9ec"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="../../d5/d9c/classScene.html">Scene</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d9a/classXmlSurveyLoader.html#ac2a16d088fb5c5921cffc8c863a1c9ec">loadScene</a> (std::string sceneString, bool rebuildScene=false)</td></tr>
 <tr class="memdesc:ac2a16d088fb5c5921cffc8c863a1c9ec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load scene from XML.  <a href="#ac2a16d088fb5c5921cffc8c863a1c9ec">More...</a><br /></td></tr>
 <tr class="separator:ac2a16d088fb5c5921cffc8c863a1c9ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
-Additional Inherited Members</h2></td></tr>
-<tr class="inherit_header pub_attribs_classXmlAssetsLoader"><td colspan="2" onclick="javascript:toggleInherit('pub_attribs_classXmlAssetsLoader')"><img src="../../closed.png" alt="-"/>&#160;Public Attributes inherited from <a class="el" href="../../d9/d82/classXmlAssetsLoader.html">XmlAssetsLoader</a></td></tr>
-<tr class="memitem:a1a224706568ac6de1bd59ec83e024979 inherit pub_attribs_classXmlAssetsLoader"><td class="memItemLeft" align="right" valign="top"><a id="a1a224706568ac6de1bd59ec83e024979"></a>
-<a class="el" href="../../db/d91/classXmlSceneLoader.html">XmlSceneLoader</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/d82/classXmlAssetsLoader.html#a1a224706568ac6de1bd59ec83e024979">sceneLoader</a></td></tr>
-<tr class="memdesc:a1a224706568ac6de1bd59ec83e024979 inherit pub_attribs_classXmlAssetsLoader"><td class="mdescLeft">&#160;</td><td class="mdescRight">The scene loader. It is used to load scenes from XML files. <br /></td></tr>
-<tr class="separator:a1a224706568ac6de1bd59ec83e024979 inherit pub_attribs_classXmlAssetsLoader"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abf34a777d16253c2783d9459446a4776 inherit pub_attribs_classXmlAssetsLoader"><td class="memItemLeft" align="right" valign="top"><a id="abf34a777d16253c2783d9459446a4776"></a>
-tinyxml2::XMLDocument&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/d82/classXmlAssetsLoader.html#abf34a777d16253c2783d9459446a4776">doc</a></td></tr>
-<tr class="memdesc:abf34a777d16253c2783d9459446a4776 inherit pub_attribs_classXmlAssetsLoader"><td class="mdescLeft">&#160;</td><td class="mdescRight">XML file through tinyxml2 library. <br /></td></tr>
-<tr class="separator:abf34a777d16253c2783d9459446a4776 inherit pub_attribs_classXmlAssetsLoader"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_methods_classXmlAssetsLoader"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_classXmlAssetsLoader')"><img src="../../closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="../../d9/d82/classXmlAssetsLoader.html">XmlAssetsLoader</a></td></tr>
 <tr class="memitem:aed6e4b27ee8a254a1a52be45adea846e inherit pro_methods_classXmlAssetsLoader"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/d82/classXmlAssetsLoader.html#aed6e4b27ee8a254a1a52be45adea846e">trackNonDefaultScannerSettings</a> (std::shared_ptr&lt; <a class="el" href="../../d0/d23/classScannerSettings.html">ScannerSettings</a> &gt; base, std::shared_ptr&lt; <a class="el" href="../../d0/d23/classScannerSettings.html">ScannerSettings</a> &gt; ref, std::string const defaultTemplateId, std::unordered_set&lt; std::string &gt; &amp;fields)</td></tr>
 <tr class="memdesc:aed6e4b27ee8a254a1a52be45adea846e inherit pro_methods_classXmlAssetsLoader"><td class="mdescLeft">&#160;</td><td class="mdescRight">Track non default values at base. It is, those values which are in base distinct than the reference (ref)  <a href="../../d9/d82/classXmlAssetsLoader.html#aed6e4b27ee8a254a1a52be45adea846e">More...</a><br /></td></tr>
 <tr class="separator:aed6e4b27ee8a254a1a52be45adea846e inherit pro_methods_classXmlAssetsLoader"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
+Protected Attributes</h2></td></tr>
+<tr class="memitem:af2d6fb6fb2f94a6273423a63222df57a"><td class="memItemLeft" align="right" valign="top">std::unordered_map&lt; std::string, std::shared_ptr&lt; <a class="el" href="../../d4/d31/classScanningStrip.html">ScanningStrip</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d9a/classXmlSurveyLoader.html#af2d6fb6fb2f94a6273423a63222df57a">strips</a></td></tr>
+<tr class="memdesc:af2d6fb6fb2f94a6273423a63222df57a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Map of scaning strips.  <a href="#af2d6fb6fb2f94a6273423a63222df57a">More...</a><br /></td></tr>
+<tr class="separator:af2d6fb6fb2f94a6273423a63222df57a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2bd77791c39d3b00abf1b59af88b236c"><td class="memItemLeft" align="right" valign="top"><a id="a2bd77791c39d3b00abf1b59af88b236c"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d9a/classXmlSurveyLoader.html#a2bd77791c39d3b00abf1b59af88b236c">lastLegSerialId</a> = -1</td></tr>
+<tr class="memdesc:a2bd77791c39d3b00abf1b59af88b236c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Serial identifier for last created leg. It is initialized as -1, so the first leg has 0 as serial id. <br /></td></tr>
+<tr class="separator:a2bd77791c39d3b00abf1b59af88b236c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_attribs_classXmlAssetsLoader"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classXmlAssetsLoader')"><img src="../../closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="../../d9/d82/classXmlAssetsLoader.html">XmlAssetsLoader</a></td></tr>
 <tr class="memitem:a93746ec0dd88588e1ddfafe4a0a850fe inherit pro_attribs_classXmlAssetsLoader"><td class="memItemLeft" align="right" valign="top"><a id="a93746ec0dd88588e1ddfafe4a0a850fe"></a>
 std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/d82/classXmlAssetsLoader.html#a93746ec0dd88588e1ddfafe4a0a850fe">assetsDir</a></td></tr>
@@ -201,6 +203,18 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
 <tr class="memitem:ac8bbc26ae1bba4632882b51ca83b792a inherit pro_attribs_classXmlAssetsLoader"><td class="memItemLeft" align="right" valign="top">std::unordered_map&lt; std::string, std::unordered_set&lt; std::string &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/d82/classXmlAssetsLoader.html#ac8bbc26ae1bba4632882b51ca83b792a">scannerTemplatesFields</a></td></tr>
 <tr class="memdesc:ac8bbc26ae1bba4632882b51ca83b792a inherit pro_attribs_classXmlAssetsLoader"><td class="mdescLeft">&#160;</td><td class="mdescRight">Map containing the set of fields that have been overloaded by each scanner template.  <a href="../../d9/d82/classXmlAssetsLoader.html#ac8bbc26ae1bba4632882b51ca83b792a">More...</a><br /></td></tr>
 <tr class="separator:ac8bbc26ae1bba4632882b51ca83b792a inherit pro_attribs_classXmlAssetsLoader"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
+Additional Inherited Members</h2></td></tr>
+<tr class="inherit_header pub_attribs_classXmlAssetsLoader"><td colspan="2" onclick="javascript:toggleInherit('pub_attribs_classXmlAssetsLoader')"><img src="../../closed.png" alt="-"/>&#160;Public Attributes inherited from <a class="el" href="../../d9/d82/classXmlAssetsLoader.html">XmlAssetsLoader</a></td></tr>
+<tr class="memitem:a1a224706568ac6de1bd59ec83e024979 inherit pub_attribs_classXmlAssetsLoader"><td class="memItemLeft" align="right" valign="top"><a id="a1a224706568ac6de1bd59ec83e024979"></a>
+<a class="el" href="../../db/d91/classXmlSceneLoader.html">XmlSceneLoader</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/d82/classXmlAssetsLoader.html#a1a224706568ac6de1bd59ec83e024979">sceneLoader</a></td></tr>
+<tr class="memdesc:a1a224706568ac6de1bd59ec83e024979 inherit pub_attribs_classXmlAssetsLoader"><td class="mdescLeft">&#160;</td><td class="mdescRight">The scene loader. It is used to load scenes from XML files. <br /></td></tr>
+<tr class="separator:a1a224706568ac6de1bd59ec83e024979 inherit pub_attribs_classXmlAssetsLoader"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abf34a777d16253c2783d9459446a4776 inherit pub_attribs_classXmlAssetsLoader"><td class="memItemLeft" align="right" valign="top"><a id="abf34a777d16253c2783d9459446a4776"></a>
+tinyxml2::XMLDocument&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/d82/classXmlAssetsLoader.html#abf34a777d16253c2783d9459446a4776">doc</a></td></tr>
+<tr class="memdesc:abf34a777d16253c2783d9459446a4776 inherit pub_attribs_classXmlAssetsLoader"><td class="mdescLeft">&#160;</td><td class="mdescRight">XML file through tinyxml2 library. <br /></td></tr>
+<tr class="separator:abf34a777d16253c2783d9459446a4776 inherit pub_attribs_classXmlAssetsLoader"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p><a class="el" href="../../d5/db6/classSurvey.html" title="Class representing a Helios++ survey. ">Survey</a> loader from XML. </p>
@@ -325,6 +339,7 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
 </div><div class="memdoc">
 
 <p>Create a survey form a XML element/node. </p>
+<p>Notice that calling this method will reinitialize the loader by calling <a class="el" href="../../df/d9a/classXmlSurveyLoader.html#aed07eb7b960196ac476f53f33179a677" title="Call the reinitLoader from XmlAssetsLoader and then also assure that the map of scanning strips is em...">XmlSurveyLoader::reinitLoader</a></p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">surveyNode</td><td>XML element/node containing survey data </td></tr>
@@ -334,7 +349,9 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Created survey </dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d5/db6/classSurvey.html" title="Class representing a Helios++ survey. ">Survey</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d5/db6/classSurvey.html" title="Class representing a Helios++ survey. ">Survey</a> </dd>
+<dd>
+<a class="el" href="../../df/d9a/classXmlSurveyLoader.html#aed07eb7b960196ac476f53f33179a677" title="Call the reinitLoader from XmlAssetsLoader and then also assure that the map of scanning strips is em...">XmlSurveyLoader::reinitLoader</a> </dd></dl>
 
 </div>
 </div>
@@ -406,7 +423,7 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -421,6 +438,62 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Loaded scene </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d5/d9c/classScene.html" title="Class representing a scene asset. ">Scene</a> </dd></dl>
+
+</div>
+</div>
+<a id="aed07eb7b960196ac476f53f33179a677"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aed07eb7b960196ac476f53f33179a677">&#9670;&nbsp;</a></span>reinitLoader()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void XmlSurveyLoader::reinitLoader </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Call the reinitLoader from <a class="el" href="../../d9/d82/classXmlAssetsLoader.html" title="Class for asset loading from XML file. ">XmlAssetsLoader</a> and then also assure that the map of scanning strips is empty. The last serial leg identifier is also setted to -1. </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d9/d82/classXmlAssetsLoader.html#a743d9cc57820f29c7638bfdec03fbd1e" title="Reinitialize the loader so maps with scanner fields and scanner templates and their fields are empty...">XmlAssetsLoader::reinitLoader</a> </dd></dl>
+
+<p>Reimplemented from <a class="el" href="../../d9/d82/classXmlAssetsLoader.html#a743d9cc57820f29c7638bfdec03fbd1e">XmlAssetsLoader</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="af2d6fb6fb2f94a6273423a63222df57a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af2d6fb6fb2f94a6273423a63222df57a">&#9670;&nbsp;</a></span>strips</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::unordered_map&lt;std::string, std::shared_ptr&lt;<a class="el" href="../../d4/d31/classScanningStrip.html">ScanningStrip</a>&gt; &gt; XmlSurveyLoader::strips</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Map of scaning strips. </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d4/d31/classScanningStrip.html" title="A scanning strip is a set of legs which belong to the same strip. Thus, it is an abstract group of le...">ScanningStrip</a> </dd></dl>
 
 </div>
 </div>

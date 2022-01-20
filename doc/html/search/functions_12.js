@@ -16,6 +16,7 @@ var searchData=
   ['recount',['recount',['../da/d52/classSurfaceInspector_1_1maths_1_1Histogram.html#aafa1135d1a6b895c1bee0c3dd750784c',1,'SurfaceInspector::maths::Histogram']]],
   ['registernormalskeyboardcallback',['registerNormalsKeyboardCallback',['../df/dd2/classvisualhelios_1_1VHNormalsCanvas.html#ab30897d5fbe1822330640928a7600fd2',1,'visualhelios::VHNormalsCanvas']]],
   ['registerparts',['registerParts',['../d5/d9c/classScene.html#a866e2103680b966d076df0121f147e6d',1,'Scene']]],
+  ['reinitloader',['reinitLoader',['../d9/d82/classXmlAssetsLoader.html#a743d9cc57820f29c7638bfdec03fbd1e',1,'XmlAssetsLoader::reinitLoader()'],['../df/d9a/classXmlSurveyLoader.html#aed07eb7b960196ac476f53f33179a677',1,'XmlSurveyLoader::reinitLoader()']]],
   ['releasestart',['releaseStart',['../d7/d7d/classTimeWatcher.html#aa97f41237bc97f4f07adb731817c57a2',1,'TimeWatcher']]],
   ['releasevertices',['releaseVertices',['../d1/d0c/classGeoTiffFileLoader.html#a180c596f369530ea13eab44af4945c78',1,'GeoTiffFileLoader']]],
   ['remove',['remove',['../df/dfa/classDynSequence.html#a4e24c6f863f2fb94ad833cb8c74128db',1,'DynSequence::remove()'],['../db/d6f/classDynSequencer.html#af4437e5809cb29056816d36875258e2e',1,'DynSequencer::remove()']]],

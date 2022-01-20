@@ -39,6 +39,7 @@ var searchData=
   ['reflectancemap',['reflectanceMap',['../d5/d20/classSpectralLibrary.html#ad99c8eced0b7330ee341504b06c7fbe7',1,'SpectralLibrary']]],
   ['registernormalskeyboardcallback',['registerNormalsKeyboardCallback',['../df/dd2/classvisualhelios_1_1VHNormalsCanvas.html#ab30897d5fbe1822330640928a7600fd2',1,'visualhelios::VHNormalsCanvas']]],
   ['registerparts',['registerParts',['../d5/d9c/classScene.html#a866e2103680b966d076df0121f147e6d',1,'Scene']]],
+  ['reinitloader',['reinitLoader',['../d9/d82/classXmlAssetsLoader.html#a743d9cc57820f29c7638bfdec03fbd1e',1,'XmlAssetsLoader::reinitLoader()'],['../df/d9a/classXmlSurveyLoader.html#aed07eb7b960196ac476f53f33179a677',1,'XmlSurveyLoader::reinitLoader()']]],
   ['releasestart',['releaseStart',['../d7/d7d/classTimeWatcher.html#aa97f41237bc97f4f07adb731817c57a2',1,'TimeWatcher']]],
   ['releasevertices',['releaseVertices',['../d1/d0c/classGeoTiffFileLoader.html#a180c596f369530ea13eab44af4945c78',1,'GeoTiffFileLoader']]],
   ['remainingtime_5fms',['remainingTime_ms',['../d6/da1/classSurveyPlayback.html#a44385985d0e2f71e6094e0b59c8d252e',1,'SurveyPlayback']]],
