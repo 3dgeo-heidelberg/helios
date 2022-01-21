@@ -193,6 +193,7 @@ std::shared_ptr<ScannerSettings> Scanner::retrieveCurrentSettings(){
         beamDeflector->cfg_setting_verticalAngleMin_rad;
     settings->verticalAngleMax_rad = \
         beamDeflector->cfg_setting_verticalAngleMax_rad;
+    // Return settings
     return settings;
 }
 

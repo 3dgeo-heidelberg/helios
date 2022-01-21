@@ -24,7 +24,7 @@ public:
      */
     std::string id = "#nullid#";
     /**
-     * @brief Template defining default values which was used to build the
+     * @brief Template defining default values which were used to build the
      *  ScannerSettings object
      */
     std::shared_ptr<ScannerSettings> baseTemplate = nullptr;
@@ -83,18 +83,23 @@ public:
 	 */
 	ScannerSettings() = default;
 
-	//Copy constructor:
+    /**
+     * @brief Copy from pointer constructor
+     * @param other Scanner settings to be copied
+     */
 	ScannerSettings(ScannerSettings* other) {
-		if (other == NULL) return;
+		if (other == nullptr) return;
 
+		this->id = other->id;
+		this->baseTemplate = other->baseTemplate;
 		this->active = other->active;
 		this->headRotatePerSec_rad = other->headRotatePerSec_rad;
 		this->headRotateStart_rad = other->headRotateStart_rad;
 		this->headRotateStop_rad = other->headRotateStop_rad;
-		this->verticalAngleMin_rad = other->verticalAngleMin_rad;
-		this->verticalAngleMax_rad = other->verticalAngleMax_rad;
 		this->pulseFreq_Hz = other->pulseFreq_Hz;
 		this->scanAngle_rad = other->scanAngle_rad;
+        this->verticalAngleMin_rad = other->verticalAngleMin_rad;
+        this->verticalAngleMax_rad = other->verticalAngleMax_rad;
 		this->scanFreq_Hz = other->scanFreq_Hz;
 		this->beamDivAngle = other->beamDivAngle;
 		this->trajectoryTimeInterval = other->trajectoryTimeInterval;
@@ -104,8 +109,8 @@ public:
 	// ************************ //
 	/**
 	 * @brief Build a new scanner settings which by default has the same values
-	 *  than caller scanner (this). Any field specified through fields set
-	 *  will be overloaded from cherries scanner settings.
+	 *  than caller scanner settings (this). Any field specified through fields
+	 *  set will be overloaded from cherries scanner settings.
 	 * @param cherries From where overloaded values are taken
 	 * @param[in] fields Which fields must be overloaded
 	 * @param[in] templateFields Which fields must be overloaded for the
