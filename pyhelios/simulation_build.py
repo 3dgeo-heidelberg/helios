@@ -24,6 +24,7 @@ class SimulationBuild:
         las10,
         zipOutput,
         copy=False,
+        fixedGpsTimeStart="",
         kdtFactory=4,
         kdtJobs=0,
         kdtSAHLossNodes=32,
@@ -49,6 +50,7 @@ class SimulationBuild:
             chunkSize,
             warehouseFactor
         )
+        self.fixedGpsTimeStart = fixedGpsTimeStart
 
     # ---  CONTROL METHODS  --- #
     # ------------------------- #
