@@ -137,6 +137,7 @@ var annotated_dup =
     [ "BuddingTaskDropper", "d5/d2f/classBuddingTaskDropper.html", "d5/d2f/classBuddingTaskDropper" ],
     [ "Color4f", "db/d02/classColor4f.html", "db/d02/classColor4f" ],
     [ "ConicBeamDeflector", "d7/db4/classConicBeamDeflector.html", "d7/db4/classConicBeamDeflector" ],
+    [ "DateTimeUtils", "d2/d15/classDateTimeUtils.html", "d2/d15/classDateTimeUtils" ],
     [ "DetailedVoxel", "d7/d5a/classDetailedVoxel.html", "d7/d5a/classDetailedVoxel" ],
     [ "DetailedVoxelLoader", "db/d49/classDetailedVoxelLoader.html", "db/d49/classDetailedVoxelLoader" ],
     [ "Directions", "df/dc3/classDirections.html", "df/dc3/classDirections" ],

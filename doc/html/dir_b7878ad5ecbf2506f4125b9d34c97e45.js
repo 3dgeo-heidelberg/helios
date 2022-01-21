@@ -6,6 +6,7 @@ var dir_b7878ad5ecbf2506f4125b9d34c97e45 =
     [ "ArgumentsParser.h", "d9/de8/ArgumentsParser_8h_source.html", null ],
     [ "BlockAllocator.h", "d4/d0b/BlockAllocator_8h_source.html", null ],
     [ "Color4f.h", "d6/d0a/Color4f_8h_source.html", null ],
+    [ "DateTimeUtils.h", "d4/d6a/DateTimeUtils_8h_source.html", null ],
     [ "FileUtils.h", "da/df3/FileUtils_8h_source.html", null ],
     [ "HeliosException.h", "d5/ddc/HeliosException_8h_source.html", null ],
     [ "Las14SyncFileWriter.h", "d3/d1f/Las14SyncFileWriter_8h_source.html", null ],

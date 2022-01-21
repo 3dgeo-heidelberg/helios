@@ -24,21 +24,21 @@ var NAVTREEINDEX =
 [
 ".html",
 "d1/d2b/classMarquardtFitter.html#aee2a297d40fb3d15afc20f671a6c056f",
-"d2/d1f/classSimpleThreadPool.html#a82a5b7389fd28188b688a92edadb9038",
-"d3/d89/classMaterial.html#a3f190f396e2a4adae7e472a2e19cf52f",
-"d4/d97/classAxisSAHKDTreeGeometricStrategy.html#a2cd36fb2add7c5f0ce882d85379f6087",
-"d5/d89/classSAHKDTreeComputeLossNodesSubTask.html#a54ba7cf976bcd0b90c4e0e120f5807ef",
-"d6/d44/classVoxel.html#a7ff6a6433efb6445e5987c35417dfb8a",
-"d7/d17/classpyhelios_1_1PySceneWrapper.html#ae8d6c365a9270573133bf5ec081cfaf4",
-"d7/db4/classConicBeamDeflector.html#abbb7a967ab1561b695bc5e3a289010b8",
-"d9/d59/ScenePartSplitTest_8h_source.html",
-"da/d27/classvisualhelios_1_1VHDynCanvas.html#a50dd11a7e99e254559af2a9d8013695a",
-"db/d57/classfluxionum_1_1UnivariateNewtonRaphsonMinimizer.html#a51b95e942575693b3cf186aeb5c1805f",
-"db/dff/PyHeliosException_8h_source.html",
-"dc/de7/classThreadPool.html",
-"de/d74/classDynScene.html#a04412bf425e91cfcc66eb3768d535066",
-"df/d64/classLasSpecification.html#a0fe080fcf46324f52fdc97e9641db67f",
-"functions_func.html"
+"d2/d1f/classSimpleThreadPool.html#a2413ce956d65cc6151abfbc6f02f877e",
+"d3/d89/classMaterial.html#a208703bcc362c4817f3a0daf42e29702",
+"d4/d96/classDynMovingObject.html#aaeec8774c4dd8a8f37adaf0ae9dd3d70",
+"d5/d89/classSAHKDTreeComputeLossNodesSubTask.html",
+"d6/d44/classVoxel.html#a5c7a2b788d03ad489a17c4a21da4c204",
+"d7/d17/classpyhelios_1_1PySceneWrapper.html#a5a846c0b9f99896ec78d07b47a9bed7a",
+"d7/daa/GaussianFunction_8hpp_source.html",
+"d9/d52/classHeliosTests_1_1BaseTest.html",
+"da/d24/classSurfaceInspector_1_1maths_1_1Statistics.html#a9ddc26ae04c11eb669e8bea32955535b",
+"db/d49/classDetailedVoxelLoader.html#a24b9858e16033ec23400c4e3029dcf8e",
+"db/dc1/classSurfaceInspector_1_1maths_1_1functions_1_1GaussianFunction.html#a609b3067b921b73edb59dcfb57da7f4c",
+"dc/da7/classScannerHead.html#af5c82f5d501a1eb047ae56af328e465f",
+"de/d52/classXmlUtils.html#ab0e570e8f0f8d556295fd49ba28f5b06",
+"df/d47/classSimpleSyncFileWriter.html#aee3e23732a9e25e50fbdfd06455dc116",
+"functions.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
