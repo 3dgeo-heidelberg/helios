@@ -78,6 +78,12 @@ void printHelp(){
         << "\n\t\t\tYYYY-mm-DD HH::MM::SS\n"
         << "\t\t\t\tBy default: a random seed is generated\n\n"
 
+        << "\t\t--gpsStartTime <string>: Specify a fixed start time for GPS\n"
+        << "\t\t\tIt can be either a posix timestamp or a"
+           "\"YYYY-MM-DD hh:mm:ss\" date time string\n"
+       <<  "\t\t\t\tBy default: An empty string \"\" is used, which leads to\n"
+       <<  "\t\t\t\t\tusing current system time\n\n"
+
         << "\t\t--lasOutput : Use this flag to generate the output point cloud "
 		   "in LAS format (v 1.4)\n\n"
         << "\t\t--las10: Use this flag to write in LAS format (v 1.0)\n\n"
@@ -282,6 +288,7 @@ int main(int argc, char** argv) {
             ap.parseLas10(),
             ap.parseZipOutput(),
             ap.parseFixedIncidenceAngle(),
+            ap.parseGpsStartTime(),
             ap.parseLasScale(),
             ap.parseKDTreeType(),
             ap.parseKDTreeJobs(),
@@ -311,6 +318,7 @@ void LidarSim::init(
     bool las10,
     bool zipOutput,
     bool fixedIncidenceAngle,
+    std::string gpsStartTime,
     double lasScale,
     int kdtType,
     size_t kdtJobs,
@@ -334,6 +342,7 @@ void LidarSim::init(
 	    << "lasOutput: " << lasOutput << "\n"
         << "las10: " << las10 << "\n"
 	    << "fixedIncidenceAngle: " << fixedIncidenceAngle << "\n"
+	    << "gpsStartTime: " << gpsStartTime << "\n"
 	    << "kdtType: " << kdtType << "\n"
 	    << "kdtJobs: " << kdtJobs << "\n"
 	    << "kdtGeomJobs: " << kdtGeomJobs << "\n"
@@ -390,6 +399,7 @@ void LidarSim::init(
         parallelizationStrategy,
         pulseThreadPool,
         std::abs(chunkSize),
+        gpsStartTime,
         lasOutput,
         las10,
         zipOutput

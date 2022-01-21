@@ -114,7 +114,7 @@ Collaboration diagram for Simulation:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../df/d40/classSimulation__coll__graph.png" border="0" usemap="#Simulation_coll__map" alt="Collaboration graph"/></div>
 <map name="Simulation_coll__map" id="Simulation_coll__map">
-<area shape="rect" id="node2" href="../../de/d9a/classPulseTaskDropper.html" title="Class implementing a task dropper to deal with pulse tasks. " alt="" coords="749,71,880,97"/>
+<area shape="rect" id="node2" href="../../de/d9a/classPulseTaskDropper.html" title="Class implementing a task dropper to deal with pulse tasks. " alt="" coords="749,72,880,99"/>
 <area shape="rect" id="node3" href="../../d5/d2f/classBuddingTaskDropper.html" title="BuddingTaskDropper\l\&lt; PulseTaskDropper,\l PulseTask, PulseThreadPool\lInterface, std::vector\&lt; std\l::vector\&lt; double \&gt; \&gt; &amp;, RandomnessGenerator\l\&lt; double \&gt; &amp;, RandomnessGenerator\&lt; double\l \&gt; &amp;, NoiseSource\&lt; double \&gt; &amp; \&gt;" alt="" coords="405,68,700,183"/>
 <area shape="rect" id="node4" href="../../da/d8d/classTaskDropper.html" title="TaskDropper\&lt; PulseTask,\l PulseThreadPoolInterface,\l TaskArgs... \&gt;" alt="" coords="176,67,356,123"/>
 </map>
@@ -122,9 +122,9 @@ Collaboration diagram for Simulation:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ab556c2cd0a7113e7b8b7f8c6589433a3"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d7b/classSimulation.html#ab556c2cd0a7113e7b8b7f8c6589433a3">Simulation</a> (int const <a class="el" href="../../d1/d7b/classSimulation.html#a48673f2bf8e3917d8a2b55f81fdd7ffc">parallelizationStrategy</a>, std::shared_ptr&lt; <a class="el" href="../../df/d9c/classPulseThreadPoolInterface.html">PulseThreadPoolInterface</a> &gt; pulseThreadPoolInterface, int const chunkSize)</td></tr>
-<tr class="memdesc:ab556c2cd0a7113e7b8b7f8c6589433a3"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="../../d1/d7b/classSimulation.html" title="Class representing a simulation. ">Simulation</a> constructor.  <a href="#ab556c2cd0a7113e7b8b7f8c6589433a3">More...</a><br /></td></tr>
-<tr class="separator:ab556c2cd0a7113e7b8b7f8c6589433a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aed2f6059225008b436289c792a540ca0"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d7b/classSimulation.html#aed2f6059225008b436289c792a540ca0">Simulation</a> (int const <a class="el" href="../../d1/d7b/classSimulation.html#a48673f2bf8e3917d8a2b55f81fdd7ffc">parallelizationStrategy</a>, std::shared_ptr&lt; <a class="el" href="../../df/d9c/classPulseThreadPoolInterface.html">PulseThreadPoolInterface</a> &gt; pulseThreadPoolInterface, int const chunkSize, std::string <a class="el" href="../../d1/d7b/classSimulation.html#ac0b08636aea9fd4109a9e06178537007">fixedGpsTimeStart</a>=&quot;&quot;)</td></tr>
+<tr class="memdesc:aed2f6059225008b436289c792a540ca0"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="../../d1/d7b/classSimulation.html" title="Class representing a simulation. ">Simulation</a> constructor.  <a href="#aed2f6059225008b436289c792a540ca0">More...</a><br /></td></tr>
+<tr class="separator:aed2f6059225008b436289c792a540ca0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a51ff9d2c2c499f8378f9d77fb523ea0d"><td class="memItemLeft" align="right" valign="top"><a id="a51ff9d2c2c499f8378f9d77fb523ea0d"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d7b/classSimulation.html#a51ff9d2c2c499f8378f9d77fb523ea0d">doSimStep</a> ()</td></tr>
 <tr class="memdesc:a51ff9d2c2c499f8378f9d77fb523ea0d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform computations for current simulation step. <br /></td></tr>
@@ -249,6 +249,9 @@ long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../.
 double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d7b/classSimulation.html#a1afafff95801808cecac3eda24bcefbc">currentGpsTime_ms</a> = 0</td></tr>
 <tr class="memdesc:a1afafff95801808cecac3eda24bcefbc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Time corresponding to simulation start (currentGpsTime) <br /></td></tr>
 <tr class="separator:a1afafff95801808cecac3eda24bcefbc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac0b08636aea9fd4109a9e06178537007"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d7b/classSimulation.html#ac0b08636aea9fd4109a9e06178537007">fixedGpsTimeStart</a> = &quot;&quot;</td></tr>
+<tr class="memdesc:ac0b08636aea9fd4109a9e06178537007"><td class="mdescLeft">&#160;</td><td class="mdescRight">Given fixed time start for GPS time as a string.  <a href="#ac0b08636aea9fd4109a9e06178537007">More...</a><br /></td></tr>
+<tr class="separator:ac0b08636aea9fd4109a9e06178537007"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-static-attribs"></a>
 Static Protected Attributes</h2></td></tr>
@@ -260,8 +263,8 @@ static const long&#160;</td><td class="memItemRight" valign="bottom"><a class="e
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Class representing a simulation. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="ab556c2cd0a7113e7b8b7f8c6589433a3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab556c2cd0a7113e7b8b7f8c6589433a3">&#9670;&nbsp;</a></span>Simulation()</h2>
+<a id="aed2f6059225008b436289c792a540ca0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aed2f6059225008b436289c792a540ca0">&#9670;&nbsp;</a></span>Simulation()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -282,7 +285,13 @@ static const long&#160;</td><td class="memItemRight" valign="bottom"><a class="e
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">int const&#160;</td>
-          <td class="paramname"><em>chunkSize</em>&#160;</td>
+          <td class="paramname"><em>chunkSize</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>fixedGpsTimeStart</em> = <code>&quot;&quot;</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -621,6 +630,32 @@ static const long&#160;</td><td class="memItemRight" valign="bottom"><a class="e
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
+<a id="ac0b08636aea9fd4109a9e06178537007"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac0b08636aea9fd4109a9e06178537007">&#9670;&nbsp;</a></span>fixedGpsTimeStart</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string Simulation::fixedGpsTimeStart = &quot;&quot;</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Given fixed time start for GPS time as a string. </p>
+<p>Valid formats are either "YYYY-MM-DD hh:mm:ss" or POSIX timestamp.</p>
+<p>If it is an empty string "", then it means no fixed GPS time start must be considered </p>
+
+</div>
+</div>
 <a id="a31f63ed73543cb7a481574ae41c4edf0"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a31f63ed73543cb7a481574ae41c4edf0">&#9670;&nbsp;</a></span>mScanner</h2>
 

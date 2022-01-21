@@ -168,6 +168,11 @@ BOOST_PYTHON_MODULE(_pyhelios){
         .def("setCallback", &PyHeliosSimulation::setCallback)
         .def("clearCallback", &PyHeliosSimulation::clearCallback)
         .add_property(
+            "fixedGpsTimeStart",
+            &PyHeliosSimulation::getFixedGpsTimeStart,
+            &PyHeliosSimulation::setFixedGpsTimeStart
+        )
+        .add_property(
             "lasOutput",
             &PyHeliosSimulation::getLasOutput,
             &PyHeliosSimulation::setLasOutput

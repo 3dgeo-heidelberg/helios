@@ -29,6 +29,7 @@ PyHeliosSimulation::PyHeliosSimulation(
     int chunkSize,
     int warehouseFactor
 ){
+    this->fixedGpsTimeStart = "";
     this->lasOutput = lasOutput;
     this->las10 = las10;
     this->zipOutput = zipOutput;
@@ -95,6 +96,7 @@ void PyHeliosSimulation::start (){
             parallelizationStrategy,
             pulseThreadPool,
             chunkSize,
+            fixedGpsTimeStart,
             lasOutput,
             las10,
             zipOutput,

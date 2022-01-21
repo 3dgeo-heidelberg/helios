@@ -68,6 +68,7 @@ var hierarchy =
       [ "LightKDTreeNodeBlockAllocator", "dd/d04/classLightKDTreeNodeBlockAllocator.html", null ]
     ] ],
     [ "Color4f", "db/d02/classColor4f.html", null ],
+    [ "DateTimeUtils", "d2/d15/classDateTimeUtils.html", null ],
     [ "HeliosDemos::DemoSelector", "df/d3f/classHeliosDemos_1_1DemoSelector.html", null ],
     [ "Directions", "df/dc3/classDirections.html", null ],
     [ "DynMotionEngine", "d2/d0a/classDynMotionEngine.html", null ],

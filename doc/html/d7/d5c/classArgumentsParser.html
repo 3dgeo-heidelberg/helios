@@ -191,6 +191,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../.
 <tr class="memitem:a4ff03c5a307080829b7c72477316253c"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d5c/classArgumentsParser.html#a4ff03c5a307080829b7c72477316253c">parseFixedIncidenceAngle</a> ()</td></tr>
 <tr class="memdesc:a4ff03c5a307080829b7c72477316253c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parse the fixed incidence angle specification. When fixed incidence angle is requested, incidence angle for all primitives will be exactly 1.0.  <a href="#a4ff03c5a307080829b7c72477316253c">More...</a><br /></td></tr>
 <tr class="separator:a4ff03c5a307080829b7c72477316253c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab07dc8e426acb22b293663b516bff5b4"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d5c/classArgumentsParser.html#ab07dc8e426acb22b293663b516bff5b4">parseGpsStartTime</a> ()</td></tr>
+<tr class="memdesc:ab07dc8e426acb22b293663b516bff5b4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parse the fixed GPS time start for <a class="el" href="../../d1/d7b/classSimulation.html" title="Class representing a simulation. ">Simulation</a>.  <a href="#ab07dc8e426acb22b293663b516bff5b4">More...</a><br /></td></tr>
+<tr class="separator:ab07dc8e426acb22b293663b516bff5b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a63afc3c3a1e1c948cb1d3b8ef81d9c4b"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d5c/classArgumentsParser.html#a63afc3c3a1e1c948cb1d3b8ef81d9c4b">parseKDTreeType</a> ()</td></tr>
 <tr class="memdesc:a63afc3c3a1e1c948cb1d3b8ef81d9c4b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parse the type of KDTree.  <a href="#a63afc3c3a1e1c948cb1d3b8ef81d9c4b">More...</a><br /></td></tr>
 <tr class="separator:a63afc3c3a1e1c948cb1d3b8ef81d9c4b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -501,6 +504,31 @@ Private Attributes</h2></td></tr>
 
 <p>Parse the full wave noise specification. </p>
 <dl class="section return"><dt>Returns</dt><dd>True if full wave noise was setted, False otherwise. </dd></dl>
+
+</div>
+</div>
+<a id="ab07dc8e426acb22b293663b516bff5b4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab07dc8e426acb22b293663b516bff5b4">&#9670;&nbsp;</a></span>parseGpsStartTime()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string ArgumentsParser::parseGpsStartTime </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Parse the fixed GPS time start for <a class="el" href="../../d1/d7b/classSimulation.html" title="Class representing a simulation. ">Simulation</a>. </p>
+<dl class="section return"><dt>Returns</dt><dd>Parsed fixed GPS time start. By default it is an empty string, which leads to use current local time. </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d1/d7b/classSimulation.html#ac0b08636aea9fd4109a9e06178537007" title="Given fixed time start for GPS time as a string. ">Simulation::fixedGpsTimeStart</a> </dd>
+<dd>
+<a class="el" href="../../d1/d7b/classSimulation.html#aed2f6059225008b436289c792a540ca0" title="Simulation constructor. ">Simulation::Simulation</a> </dd>
+<dd>
+<a class="el" href="../../d1/d7b/classSimulation.html" title="Class representing a simulation. ">Simulation</a> </dd></dl>
 
 </div>
 </div>
