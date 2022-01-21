@@ -74,6 +74,11 @@ helios <survey_file_path> [OPTIONAL ARGUMENTS]
             Specify the seed to be used for randomness generation.
             The seed can be an integer number, a decimal number or a timestamp
             string with format "YYYY-mm-DD HH:MM:SS"
+        --gpsStartTime <string>
+            Specify the GPS start time. By default it is an empty string "",
+            which means using current system time.
+            It can be given as both, a posix timestamp as string or a datetime
+            string with format "YYYY-MM-DD hh:mm:ss"
         --lasOutput
             Specify the output point cloud must be generated using LAS format
         --zipOutput
@@ -110,6 +115,14 @@ helios <survey_file_path> [OPTIONAL ARGUMENTS]
             cores and n>1 implies using exactly n threads.
             Using more cores than required might degrade performance due to
             overhead.
+        --kdtGeomJobs <integer>
+            Specify the number of threads to be used for upper levels of
+            KDTree building.
+            By default it is 0, which means as many jobs as --kdtJobs
+            Using 1, means no geometry-level parallelization will be used when
+            building the KDTree
+            Using >1, means exactly n threads will be used at geometry-level
+            KDTree building
         --sahNodes <integer>
             Either how many nodes must be used by the Surface Area Heuristic
             or the number of bins for the fast approximation of SAH
