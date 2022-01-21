@@ -21,7 +21,7 @@ var searchData=
   ['scalefilter',['ScaleFilter',['../d9/d83/classScaleFilter.html#a80317530ad22c2e0c21ac542f4e247ac',1,'ScaleFilter']]],
   ['scanner',['Scanner',['../dc/d42/classScanner.html#a79345016ddc1f955a479ca8a02471574',1,'Scanner']]],
   ['scannerhead',['ScannerHead',['../dc/da7/classScannerHead.html#aba1f4b463e4b5edc599fbd2ccb717fb5',1,'ScannerHead']]],
-  ['scannersettings',['ScannerSettings',['../d0/d23/classScannerSettings.html#ac60cfbaff59eab85f2bac4a73934e162',1,'ScannerSettings']]],
+  ['scannersettings',['ScannerSettings',['../d0/d23/classScannerSettings.html#ac60cfbaff59eab85f2bac4a73934e162',1,'ScannerSettings::ScannerSettings()=default'],['../d0/d23/classScannerSettings.html#a5510f5b3f914ba2aefb546a85283c775',1,'ScannerSettings::ScannerSettings(ScannerSettings *other)']]],
   ['scanningpulseprocess',['ScanningPulseProcess',['../db/d85/classScanningPulseProcess.html#a90aa81188c1840ea5f82cfe93110b01a',1,'ScanningPulseProcess']]],
   ['scanningstrip',['ScanningStrip',['../d4/d31/classScanningStrip.html#acc086f5678d3409ca8eeff7e7c84d88b',1,'ScanningStrip']]],
   ['scene',['Scene',['../d5/d9c/classScene.html#ad10176d75a9cc0da56626f682d083507',1,'Scene']]],

@@ -220,7 +220,7 @@ var searchData=
   ['getsupportedpulsefrequencies',['getSupportedPulseFrequencies',['../dc/d42/classScanner.html#a03a379d6afbb13b9f5f1d171d1e1f152',1,'Scanner']]],
   ['getsurvey',['getSurvey',['../d9/ddd/classpyhelios_1_1PyHeliosSimulation.html#aba5bdcd1700b55d8a111051c3aea1fda',1,'pyhelios::PyHeliosSimulation']]],
   ['getsurveypath',['getSurveyPath',['../d2/d88/classHeliosDemos_1_1SurveyDemo.html#a3fa127add01aaed1e3adb26d6e49fd5e',1,'HeliosDemos::SurveyDemo::getSurveyPath()'],['../d9/ddd/classpyhelios_1_1PyHeliosSimulation.html#a55e60f239777a1a0e4bacb59070da425',1,'pyhelios::PyHeliosSimulation::getSurveyPath()']]],
-  ['gettemplate',['getTemplate',['../d0/d23/classScannerSettings.html#a1fd03e0a409115c15b37d84b1c1d1ec2',1,'ScannerSettings']]],
+  ['gettemplate',['getTemplate',['../d5/d0c/classPlatformSettings.html#abaf96cdfd9639d7269e61d9ce1ea9cb0',1,'PlatformSettings::getTemplate()'],['../d0/d23/classScannerSettings.html#a1fd03e0a409115c15b37d84b1c1d1ec2',1,'ScannerSettings::getTemplate()']]],
   ['getthread',['getThread',['../df/d6f/classSharedSubTask.html#afc6a9dc5da81f51f3b5fc1008c548a12',1,'SharedSubTask']]],
   ['gettimebetweenupdates',['getTimeBetweenUpdates',['../de/dda/classvisualhelios_1_1VHCanvas.html#a5eba83570f14af77387ff33e4e371071',1,'visualhelios::VHCanvas']]],
   ['gettimewave',['getTimeWave',['../dc/d42/classScanner.html#aea7abb871b697faec9607edc72a79bbd',1,'Scanner']]],

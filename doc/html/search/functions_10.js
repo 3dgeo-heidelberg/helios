@@ -45,6 +45,7 @@ var searchData=
   ['planefittertest',['PlaneFitterTest',['../d6/dda/classHeliosTests_1_1PlaneFitterTest.html#a6a0aba6929996743b2dc310bac1d3615',1,'HeliosTests::PlaneFitterTest']]],
   ['platform',['Platform',['../df/d1e/classPlatform.html#a6b2ba3089df1d2ed16a8349f0876c100',1,'Platform']]],
   ['platformphysicstest',['PlatformPhysicsTest',['../d6/d96/classHeliosTests_1_1PlatformPhysicsTest.html#acb965ec9356d4eabd37390b2df0051c8',1,'HeliosTests::PlatformPhysicsTest']]],
+  ['platformsettings',['PlatformSettings',['../d5/d0c/classPlatformSettings.html#a7b9d218f330dc0c6185876ff94584d2d',1,'PlatformSettings::PlatformSettings()=default'],['../d5/d0c/classPlatformSettings.html#a706c06340a17ba5d1d24d0e6855f889c',1,'PlatformSettings::PlatformSettings(PlatformSettings *other)']]],
   ['polygonmirrorbeamdeflector',['PolygonMirrorBeamDeflector',['../db/d7e/classPolygonMirrorBeamDeflector.html#abb2af3da6ec8f8551405d835ba9b1ecf',1,'PolygonMirrorBeamDeflector']]],
   ['poptask',['popTask',['../da/d8d/classTaskDropper.html#aa39b12c43987184b28acee4399c35d1e',1,'TaskDropper']]],
   ['populatefullwaveform',['populateFullWaveform',['../db/da6/classFullWaveformPulseRunnable.html#a741d1b4cc6302ffb1d8df79ed66804f5',1,'FullWaveformPulseRunnable']]],

@@ -26,7 +26,7 @@ var searchData=
   ['haspendingtasks',['hasPendingTasks',['../d9/d5e/classTaskWarehouse.html#a298113617b67302b970722b15d6f4265',1,'TaskWarehouse']]],
   ['hassequences',['hasSequences',['../d4/d48/classDynSequentiableMovingObject.html#ad171f5535e6ce98253cb13419ca7ff41',1,'DynSequentiableMovingObject']]],
   ['hasstarted',['hasStarted',['../d7/d7d/classTimeWatcher.html#a686bc3dfb579ce891aa2f0d1599d9b35',1,'TimeWatcher']]],
-  ['hastemplate',['hasTemplate',['../d0/d23/classScannerSettings.html#afe0319ade625b3b749d274ac26fd9cb6',1,'ScannerSettings']]],
+  ['hastemplate',['hasTemplate',['../d5/d0c/classPlatformSettings.html#a8532325f8a409cee1b4d70dcc52f1aaa',1,'PlatformSettings::hasTemplate()'],['../d0/d23/classScannerSettings.html#afe0319ade625b3b749d274ac26fd9cb6',1,'ScannerSettings::hasTemplate()']]],
   ['helicopterplatform',['HelicopterPlatform',['../db/d69/classHelicopterPlatform.html#a6c3a234e28ae685ea1879d0febd65d87',1,'HelicopterPlatform']]],
   ['heliosexception',['HeliosException',['../d6/dda/classHeliosException.html#af7730c850bb60413d85b2de453b402ed',1,'HeliosException']]],
   ['heuristicilot',['heuristicILOT',['../db/d58/classSAHKDTreeFactory.html#a1c68f728b01e8123c188f9c06b58cbe7',1,'SAHKDTreeFactory']]],

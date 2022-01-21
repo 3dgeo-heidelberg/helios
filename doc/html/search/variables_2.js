@@ -1,7 +1,7 @@
 var searchData=
 [
   ['b',['b',['../d6/d44/classVoxel.html#ad0d8bf678c6a673313f2faad373d2dcf',1,'Voxel::b()'],['../da/d52/classSurfaceInspector_1_1maths_1_1Histogram.html#a6b0b4c4568e58e2505400bed7364ca8f',1,'SurfaceInspector::maths::Histogram::b()'],['../d6/d26/classSurfaceInspector_1_1util_1_1draggers_1_1MinDragger.html#a148744ab8be1cd113d7ece55bc1c1e54',1,'SurfaceInspector::util::draggers::MinDragger::b()']]],
-  ['basetemplate',['baseTemplate',['../d0/d23/classScannerSettings.html#af1984f07114e89c789afd105b3f1f371',1,'ScannerSettings']]],
+  ['basetemplate',['baseTemplate',['../d5/d0c/classPlatformSettings.html#a99f8714a842738ad81c98b468af0e97e',1,'PlatformSettings::baseTemplate()'],['../d0/d23/classScannerSettings.html#af1984f07114e89c789afd105b3f1f371',1,'ScannerSettings::baseTemplate()']]],
   ['batchsize',['batchSize',['../d6/d03/classXYZPointCloudFileLoader.html#a1c651c3912d41261b997c29d00b155a9',1,'XYZPointCloudFileLoader']]],
   ['bbest',['bBest',['../da/d69/classSurfaceInspector_1_1maths_1_1SingularContextComputer.html#a200df06a09c5f0ec0d8cffea8a94104f',1,'SurfaceInspector::maths::SingularContextComputer']]],
   ['bbox',['bbox',['../d6/d44/classVoxel.html#abb6ccf8e56e919d083d282c6d9152530',1,'Voxel::bbox()'],['../d5/d9c/classScene.html#a012be28a1b960338f634d5fec54c5330',1,'Scene::bbox()']]],

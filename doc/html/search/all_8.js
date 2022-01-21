@@ -28,7 +28,7 @@ var searchData=
   ['haspendingtasks',['hasPendingTasks',['../d9/d5e/classTaskWarehouse.html#a298113617b67302b970722b15d6f4265',1,'TaskWarehouse']]],
   ['hassequences',['hasSequences',['../d4/d48/classDynSequentiableMovingObject.html#ad171f5535e6ce98253cb13419ca7ff41',1,'DynSequentiableMovingObject']]],
   ['hasstarted',['hasStarted',['../d7/d7d/classTimeWatcher.html#a686bc3dfb579ce891aa2f0d1599d9b35',1,'TimeWatcher']]],
-  ['hastemplate',['hasTemplate',['../d0/d23/classScannerSettings.html#afe0319ade625b3b749d274ac26fd9cb6',1,'ScannerSettings']]],
+  ['hastemplate',['hasTemplate',['../d5/d0c/classPlatformSettings.html#a8532325f8a409cee1b4d70dcc52f1aaa',1,'PlatformSettings::hasTemplate()'],['../d0/d23/classScannerSettings.html#afe0319ade625b3b749d274ac26fd9cb6',1,'ScannerSettings::hasTemplate()']]],
   ['headrotatepersec_5frad',['headRotatePerSec_rad',['../d0/d23/classScannerSettings.html#ac58959e3d36c627248ccf922dad63e9f',1,'ScannerSettings']]],
   ['headrotatestart_5frad',['headRotateStart_rad',['../d0/d23/classScannerSettings.html#a6c67ef78ba16208f85fae4e04fd2d869',1,'ScannerSettings']]],
   ['headrotatestop_5frad',['headRotateStop_rad',['../d0/d23/classScannerSettings.html#a30fdaba2022b552a10ecc26c31d01e22',1,'ScannerSettings']]],
