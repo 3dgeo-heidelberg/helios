@@ -240,6 +240,13 @@ public:
 	    std::shared_ptr<PlatformSettings> settings,
 	    bool manual
     );
+	/**
+	 * @brief Retrieve current platform settings and build a new
+	 *  PlatformSettings object with them
+	 * @return Newly created PlatformSettings object with current platform
+	 *  settings
+	 */
+	std::shared_ptr<PlatformSettings> retrieveCurrentSettings();
 
 	/**"
 	 * @brief Cache update which only needs to be performed after static

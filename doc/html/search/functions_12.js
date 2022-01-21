@@ -37,7 +37,7 @@ var searchData=
   ['restartinputfilestream',['restartInputFileStream',['../d6/d03/classXYZPointCloudFileLoader.html#a1f040b5b08e0c6eab28f87d8525a6335',1,'XYZPointCloudFileLoader']]],
   ['resthreadpool',['ResThreadPool',['../d2/dee/classResThreadPool.html#aee12779e1ef6d9dcc40782e8688d19b7',1,'ResThreadPool']]],
   ['resume',['resume',['../d9/ddd/classpyhelios_1_1PyHeliosSimulation.html#a191ee19c213ecc1c693d5c3223ac0d31',1,'pyhelios::PyHeliosSimulation']]],
-  ['retrievecurrentsettings',['retrieveCurrentSettings',['../dc/d42/classScanner.html#acad2e86b93968e873b71aca67ced85c7',1,'Scanner']]],
+  ['retrievecurrentsettings',['retrieveCurrentSettings',['../df/d1e/classPlatform.html#abd04d2b777390ddc77648a60daf09093',1,'Platform::retrieveCurrentSettings()'],['../dc/d42/classScanner.html#acad2e86b93968e873b71aca67ced85c7',1,'Scanner::retrieveCurrentSettings()']]],
   ['revert',['revert',['../d5/dcb/classRotation.html#a8ae920f72866cd231100ccbff1c4e88c',1,'Rotation']]],
   ['rigidmotion',['RigidMotion',['../d7/d84/classrigidmotion_1_1RigidMotion.html#acf4e7627472f7afd7593a1b02ad49ac2',1,'rigidmotion::RigidMotion::RigidMotion()=default'],['../d7/d84/classrigidmotion_1_1RigidMotion.html#aa61488d6e23c10f8143c8ba08a1b0ac3',1,'rigidmotion::RigidMotion::RigidMotion(colvec const &amp;C, arma::mat const &amp;A)']]],
   ['rigidmotionengine',['RigidMotionEngine',['../d2/da8/classrigidmotion_1_1RigidMotionEngine.html#a1301ee234a2006cfab2d7d38142941bc',1,'rigidmotion::RigidMotionEngine']]],

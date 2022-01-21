@@ -348,6 +348,11 @@ BOOST_PYTHON_MODULE(_pyhelios){
             &PlatformSettings::slowdownEnabled
         )
         .add_property(
+            "yawAtDepartureSpecified",
+            &PlatformSettings::yawAtDepartureSpecified,
+            &PlatformSettings::yawAtDeparture
+        )
+        .add_property(
             "yawAtDeparture",
             &PlatformSettings::yawAtDeparture,
             &PlatformSettings::yawAtDeparture
@@ -356,6 +361,15 @@ BOOST_PYTHON_MODULE(_pyhelios){
             "smoothTurn",
             &PlatformSettings::smoothTurn,
             &PlatformSettings::smoothTurn
+        )
+        .def(
+            "hasTemplate",
+            &PlatformSettings::hasTemplate
+        )
+        .def(
+            "getTemplate",
+            &PlatformSettings::getTemplate,
+            return_internal_reference<>()
         )
     ;
 

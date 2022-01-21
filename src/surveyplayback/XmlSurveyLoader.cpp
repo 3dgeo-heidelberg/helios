@@ -60,6 +60,7 @@ XmlSurveyLoader::createSurveyFromXml(
   loadLegs(
     surveyNode->FirstChildElement("leg"),
     survey->scanner->retrieveCurrentSettings(),
+    survey->scanner->platform->retrieveCurrentSettings(),
     survey->legs
   );
 
@@ -97,7 +98,9 @@ XmlSurveyLoader::createSurveyFromXml(
 shared_ptr<Leg>
 XmlSurveyLoader::createLegFromXML(
     tinyxml2::XMLElement *legNode,
-    std::unordered_set<std::string> *scannerFields
+    std::unordered_set<std::string> *scannerFields,
+    std::unordered_set<std::string> *platformFields
+
 ){
   shared_ptr<Leg> leg = make_shared<Leg>();
 
@@ -292,6 +295,7 @@ void XmlSurveyLoader::handleCoreOverloading(
 void XmlSurveyLoader::loadLegs(
     tinyxml2::XMLElement *legNodes,
     std::shared_ptr<ScannerSettings> scannerSettings,
+    std::shared_ptr<PlatformSettings> platformSettings,
     std::vector<std::shared_ptr<Leg>> &legs
 ){
     // Iterate over XML sibling leg elements
@@ -299,7 +303,10 @@ void XmlSurveyLoader::loadLegs(
         // Prepare leg loading
         glm::dvec3 origin = glm::dvec3(0, 0, 0);
         std::unordered_set<std::string> scannerFields;
-        shared_ptr<Leg> leg(createLegFromXML(legNodes, &scannerFields));
+        std::unordered_set<std::string> platformFields;
+        shared_ptr<Leg> leg(createLegFromXML(
+            legNodes, &scannerFields, &platformFields
+        ));
         // Add originWaypoint shift to waypoint coordinates:
         if (leg->mPlatformSettings != nullptr /* && originWaypoint != null*/) {
             leg->mPlatformSettings->setPosition(
@@ -308,7 +315,7 @@ void XmlSurveyLoader::loadLegs(
         }
         // Cherry-picking of ScannerSettings
         std::unordered_set<std::string> templateFields = \
-        scannerTemplatesFields[leg->mScannerSettings->baseTemplate->id];
+            scannerTemplatesFields[leg->mScannerSettings->baseTemplate->id];
         leg->mScannerSettings = scannerSettings->cherryPick(
             leg->mScannerSettings,
             scannerFields,

@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['id',['id',['../de/d97/classAsset.html#ac37173d6b01d7b8caa7bd786b8de2269',1,'Asset::id()'],['../d0/d23/classScannerSettings.html#a1ea4710ab141c2548bb193b29b55107c',1,'ScannerSettings::id()'],['../df/dfa/classDynSequence.html#a5d8e2b91af11934a1f5678927bb7e708',1,'DynSequence::id()']]],
+  ['id',['id',['../de/d97/classAsset.html#ac37173d6b01d7b8caa7bd786b8de2269',1,'Asset::id()'],['../d5/d0c/classPlatformSettings.html#a2f159c96a09224d96025646481d7f2ff',1,'PlatformSettings::id()'],['../d0/d23/classScannerSettings.html#a1ea4710ab141c2548bb193b29b55107c',1,'ScannerSettings::id()'],['../df/dfa/classDynSequence.html#a5d8e2b91af11934a1f5678927bb7e708',1,'DynSequence::id()']]],
   ['identifiers',['identifiers',['../d7/d5a/classDetailedVoxel.html#ac5791eb69e0db113aadfcb1b3116ea7e',1,'DetailedVoxel']]],
   ['idleeps',['idleEps',['../d5/d3c/classBuddingScanningPulseProcess.html#a6e775b82887409981240a08c57357b22',1,'BuddingScanningPulseProcess']]],
   ['idleth',['idleTh',['../d5/d3c/classBuddingScanningPulseProcess.html#a04f9392974dbd0bdfc4edcf4a88ef24b',1,'BuddingScanningPulseProcess']]],

@@ -65,7 +65,7 @@ var searchData=
   ['resthreadpool',['ResThreadPool',['../d2/dee/classResThreadPool.html',1,'ResThreadPool&lt; TaskArgs &gt;'],['../d2/dee/classResThreadPool.html#aee12779e1ef6d9dcc40782e8688d19b7',1,'ResThreadPool::ResThreadPool()']]],
   ['resthreadpool_3c_20std_3a_3avector_3c_20std_3a_3avector_3c_20double_20_3e_20_3e_20_26_2c_20randomnessgenerator_3c_20double_20_3e_20_26_2c_20randomnessgenerator_3c_20double_20_3e_20_26_2c_20noisesource_3c_20double_20_3e_20_26_20_3e',['ResThreadPool&lt; std::vector&lt; std::vector&lt; double &gt; &gt; &amp;, RandomnessGenerator&lt; double &gt; &amp;, RandomnessGenerator&lt; double &gt; &amp;, NoiseSource&lt; double &gt; &amp; &gt;',['../d2/dee/classResThreadPool.html',1,'']]],
   ['resume',['resume',['../d9/ddd/classpyhelios_1_1PyHeliosSimulation.html#a191ee19c213ecc1c693d5c3223ac0d31',1,'pyhelios::PyHeliosSimulation']]],
-  ['retrievecurrentsettings',['retrieveCurrentSettings',['../dc/d42/classScanner.html#acad2e86b93968e873b71aca67ced85c7',1,'Scanner']]],
+  ['retrievecurrentsettings',['retrieveCurrentSettings',['../df/d1e/classPlatform.html#abd04d2b777390ddc77648a60daf09093',1,'Platform::retrieveCurrentSettings()'],['../dc/d42/classScanner.html#acad2e86b93968e873b71aca67ced85c7',1,'Scanner::retrieveCurrentSettings()']]],
   ['returnnumber',['returnNumber',['../db/d2e/classMeasurement.html#aca68cb91908d7de7822cbf3095a9f659',1,'Measurement']]],
   ['revert',['revert',['../d5/dcb/classRotation.html#a8ae920f72866cd231100ccbff1c4e88c',1,'Rotation']]],
   ['rg',['rg',['../d4/d38/classRandomNoiseSource.html#a49a8432d24fb4e2b3fba3f5c30e8c4d2',1,'RandomNoiseSource']]],

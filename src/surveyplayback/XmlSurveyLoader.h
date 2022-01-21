@@ -51,12 +51,15 @@ public:
      * @param legNode XML element/node containing leg data
      * @param[in] scannerFields Unordered set to track which scanner settings
      *  have been overloaded
+     * @param[in] platformFields Unordered set to track which platform settings
+     *  have been overloaded
      * @return Created leg
      * @see Leg
      */
 	std::shared_ptr<Leg> createLegFromXML(
 	    tinyxml2::XMLElement* legNode,
-	    std::unordered_set<std::string> *scannerFields
+	    std::unordered_set<std::string> *scannerFields,
+	    std::unordered_set<std::string> *platformFields
     );
 	/**
 	 * @brief Create a survey form a XML element/node
@@ -139,11 +142,14 @@ protected:
 	 * @brief Load all legs defining the survey
 	 * @param legNodes First leg node
 	 * @param scannerSettings The scanner settings of the survey scanner itself
+	 * @param platformSettings The platform settings of the survey platform
+	 *  itself
 	 * @param legs Vector where loaded legs must be inserted
 	 */
 	void loadLegs(
 	    tinyxml2::XMLElement *legNodes,
 	    std::shared_ptr<ScannerSettings> scannerSettings,
+	    std::shared_ptr<PlatformSettings> platformSettings,
 	    std::vector<std::shared_ptr<Leg>> &legs
     );
 	/**

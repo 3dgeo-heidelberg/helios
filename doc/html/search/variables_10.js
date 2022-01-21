@@ -26,6 +26,8 @@ var searchData=
   ['planarity',['planarity',['../d4/dfa/classSurfaceInspector_1_1maths_1_1DetailedPlane.html#a830bc1cd8b69db7a534ffa411c496fdf',1,'SurfaceInspector::maths::DetailedPlane']]],
   ['platform',['platform',['../dc/d42/classScanner.html#ac9aec7ab5f77c83534d1ffc07ff10b49',1,'Scanner']]],
   ['platformnoisedisabled',['platformNoiseDisabled',['../dc/d42/classScanner.html#a562836770f89ddd7362b67bb166b7e42',1,'Scanner']]],
+  ['platformtemplates',['platformTemplates',['../d9/d82/classXmlAssetsLoader.html#aa4f6b548108e4b16ec990ec75b96475e',1,'XmlAssetsLoader']]],
+  ['platformtemplatesfields',['platformTemplatesFields',['../d9/d82/classXmlAssetsLoader.html#af0d456470156c1f478844e043d79cbe6',1,'XmlAssetsLoader']]],
   ['plus_5fi',['PLUS_I',['../d6/d7f/classRotationOrder.html#a2c41edb1f76c0cb8af8cc50d66b562d9',1,'RotationOrder']]],
   ['plus_5fj',['PLUS_J',['../d6/d7f/classRotationOrder.html#ae29b3a41b1cf3f5c07a31d13d1bbe01a',1,'RotationOrder']]],
   ['plus_5fk',['PLUS_K',['../d6/d7f/classRotationOrder.html#aec427823c4bd60ca1a843aaed5d3fc7e',1,'RotationOrder']]],
