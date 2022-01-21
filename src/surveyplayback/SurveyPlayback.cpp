@@ -27,12 +27,18 @@ SurveyPlayback::SurveyPlayback(
     int const parallelizationStrategy,
     std::shared_ptr<PulseThreadPoolInterface> pulseThreadPoolInterface,
     int const chunkSize,
+    std::string fixedGpsTimeStart,
     bool lasOutput,
     bool las10,
     bool zipOutput,
     bool exportToFile
 ):
-    Simulation(parallelizationStrategy, pulseThreadPoolInterface, chunkSize),
+    Simulation(
+        parallelizationStrategy,
+        pulseThreadPoolInterface,
+        chunkSize,
+        fixedGpsTimeStart
+    ),
     lasOutput(lasOutput),
     las10(las10),
     zipOutput(zipOutput),

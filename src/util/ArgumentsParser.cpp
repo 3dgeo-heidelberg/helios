@@ -187,6 +187,12 @@ bool ArgumentsParser::parseFixedIncidenceAngle(){
     return findIndexOfArgument("--fixedIncidenceAngle") >= 0;
 }
 
+std::string ArgumentsParser::parseGpsStartTime(){
+    int index = findIndexOfArgument("--gpsStartTime");
+    if(index >= 0) return argv[index+1];
+    return "";
+}
+
 int ArgumentsParser::parseKDTreeType(){
     int index = findIndexOfArgument("--kdt");
     if(index < 0) return 4;

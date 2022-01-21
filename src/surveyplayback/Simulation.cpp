@@ -9,17 +9,20 @@ using namespace std::chrono;
 
 #include "Simulation.h"
 #include <TimeWatcher.h>
+#include <DateTimeUtils.h>
 
 using namespace std;
 
 Simulation::Simulation(
     int const parallelizationStrategy,
     std::shared_ptr<PulseThreadPoolInterface> pulseThreadPoolInterface,
-    int chunkSize
+    int chunkSize,
+    std::string fixedGpsTimeStart
 ):
     parallelizationStrategy(parallelizationStrategy),
     threadPool(pulseThreadPoolInterface),
-    taskDropper(chunkSize)
+    taskDropper(chunkSize),
+    fixedGpsTimeStart(fixedGpsTimeStart)
 {
     mbuffer = make_shared<MeasurementsBuffer>();
     currentGpsTime_ms = calcCurrentGpsTime();
@@ -87,11 +90,29 @@ void Simulation::setScanner(shared_ptr<Scanner> scanner) {
 
 
 double Simulation::calcCurrentGpsTime(){
-    long now = duration_cast<seconds>(
+    long now;
+
+    // Calc GPS time for fixed start time
+    if(fixedGpsTimeStart != ""){
+        if(fixedGpsTimeStart.find(":") != std::string::npos){
+            // "YYYY-MM-DD hh:mm:ss"
+            now = DateTimeUtils::dateTimeStrToMillis(fixedGpsTimeStart)
+                /1000000000L;
+        }
+        else{
+            now = std::stol(fixedGpsTimeStart);
+        }
+    }
+    else{
+        // Calc GPS time for non fixed start time
+        now = duration_cast<seconds>(
             system_clock::now().time_since_epoch()
-    ).count();
-    return (double)((now - 315964809L) % 604800L) * 1000.; // 315964809s is the difference between 1970-01-01 and 1980-01-06
-                                                       // 604800s per week -> resulting time is in ms since start of GPSweek
+        ).count();
+    }
+
+    // 315964809s is the difference between 1970-01-01 and 1980-01-06
+    // 604800s per week -> resulting time is in ms since start of GPSweek
+    return (double)((now - 315964809L) % 604800L) * 1000.;
 }
 
 
@@ -128,8 +149,9 @@ void Simulation::start() {
 
     // Prepare simulation
 	int stepCount = 0;
-	timeStart_ms = duration_cast<milliseconds>(
-	    system_clock::now().time_since_epoch()).count();
+    timeStart_ms = duration_cast<milliseconds>(
+        system_clock::now().time_since_epoch()
+    ).count();
 
 
 	// ############# BEGIN Main simulation loop ############

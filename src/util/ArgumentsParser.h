@@ -174,6 +174,15 @@ public:
      */
     bool parseFixedIncidenceAngle();
     /**
+     * @brief Parse the fixed GPS time start for Simulation
+     * @return Parsed fixed GPS time start. By default it is an empty string,
+     *  which leads to use current local time.
+     * @see Simulation::fixedGpsTimeStart
+     * @see Simulation::Simulation
+     * @see Simulation
+     */
+    std::string parseGpsStartTime();
+    /**
      * @brief Parse the type of KDTree
      *
      * 1 : The simple KDTree built based on balancing through median
