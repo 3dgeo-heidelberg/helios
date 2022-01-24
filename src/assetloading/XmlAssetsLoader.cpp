@@ -403,9 +403,10 @@ XmlAssetsLoader::createScannerFromXml(tinyxml2::XMLElement *scannerNode) {
   // ########### END Read all the rest #############
 
   std::shared_ptr<Scanner> scanner = std::make_shared<Scanner>(
-      beamDiv_rad, emitterPosition, emitterAttitude, pulseFreqs, pulseLength_ns,
-      id, avgPower, beamQuality, efficiency, receiverDiameter, visibility,
-      wavelength, false);
+      beamDiv_rad, emitterPosition, emitterAttitude, pulseFreqs,
+      pulseLength_ns, id, avgPower, beamQuality, efficiency, receiverDiameter,
+      visibility, wavelength, false
+  );
 
   // Parse max number of returns per pulse
   scanner->maxNOR = boost::get<int>(XmlUtils::getAttribute(
@@ -555,7 +556,7 @@ XmlAssetsLoader::createScannerSettingsFromXml(
   std::string const DEFAULT_TEMPLATE_ID = template1->id;
 
   // Load specified template
-  if (node->Attribute("template") != nullptr) {
+  if(XmlUtils::hasAttribute(node, "template")){
     std::string templateId = node->Attribute("template");
     std::shared_ptr<ScannerSettings> bla = nullptr;
     if (scannerTemplates.find(templateId) == scannerTemplates.end()) {
@@ -569,29 +570,14 @@ XmlAssetsLoader::createScannerSettingsFromXml(
           bla, template1, DEFAULT_TEMPLATE_ID, templateFields
       );
       scannerTemplatesFields.emplace(templateId, templateFields);
-    } else { // If scanner template has been loaded, then use already loaded
+    }
+    else { // If scanner template has been loaded, then use already loaded
       bla = scannerTemplates[templateId];
     }
     if (bla != nullptr) {
       template1 = std::make_shared<ScannerSettings>(*bla);
-      // ATTENTION:
-      // We need to temporarily convert the head rotation settings from radians
-      // back to degrees, since degrees is the unit in which they are read from
-      // the XML, and below, the template settings are used as defaults in case
-      // that a value is not specified in the XML!
-      template1->headRotatePerSec_rad =
-          MathConverter::radiansToDegrees(template1->headRotatePerSec_rad);
-      template1->headRotateStart_rad =
-          MathConverter::radiansToDegrees(template1->headRotateStart_rad);
-      template1->headRotateStop_rad =
-          MathConverter::radiansToDegrees(template1->headRotateStop_rad);
-      template1->scanAngle_rad =
-          MathConverter::radiansToDegrees(template1->scanAngle_rad);
-      template1->verticalAngleMin_rad =
-          MathConverter::radiansToDegrees(template1->scanAngle_rad);
-      template1->verticalAngleMax_rad =
-          MathConverter::radiansToDegrees(template1->scanAngle_rad);
-    } else {
+    }
+    else {
       std::stringstream ss;
       ss << "XML Assets Loader: "
          << "WARNING: Scanner settings template specified in line "
@@ -606,71 +592,97 @@ XmlAssetsLoader::createScannerSettingsFromXml(
   settings->active = boost::get<bool>(XmlUtils::getAttribute(
       node, "active", "bool", template1->active
   ));
-  settings->headRotatePerSec_rad = MathConverter::degreesToRadians(
-      boost::get<double>(XmlUtils::getAttribute(
-          node, "headRotatePerSec_deg", "double",
-          template1->headRotatePerSec_rad
-      ))
-  );
-  settings->headRotateStart_rad = MathConverter::degreesToRadians(
-      boost::get<double>(XmlUtils::getAttribute(
-          node, "headRotateStart_deg", "double", template1->headRotateStart_rad
-          )
-      ));
-
-  double hrStop_rad = MathConverter::degreesToRadians(
-      boost::get<double>(XmlUtils::getAttribute(
-          node, "headRotateStop_deg", "double", template1->headRotateStop_rad
-      )));
-
-  // Make sure that rotation stop angle is larger than rotation start angle if
-  // rotation speed is positive:
-  if (hrStop_rad < settings->headRotateStart_rad &&
-      settings->headRotatePerSec_rad > 0) {
-    logging::ERR(std::string("XML Assets Loader: Error: ") +
-                 "Head Rotation Stop angle must be larger than start angle " +
-                 "if rotation speed is positive!");
-    exit(-1);
+  if(XmlUtils::hasAttribute(node, "headRotatePerSec_deg")){
+    settings->headRotatePerSec_rad = MathConverter::degreesToRadians(
+        boost::get<double>(XmlUtils::getAttribute(
+            node, "headRotatePerSec_deg", "double", 0.0
+        ))
+    );
   }
-
-  // Make sure that rotation stop angle is larger than rotation start angle if
-  // rotation speed is negative:
-  if (hrStop_rad > settings->headRotateStart_rad &&
-      settings->headRotatePerSec_rad < 0) {
-    logging::ERR(
-        std::string("XML Assets Loader: Error: ") +
-        "Head Rotation Stop angle must be smaller than start angle if " +
-        "rotation speed is negative!");
-    exit(-1);
+  else settings->headRotatePerSec_rad = template1->headRotatePerSec_rad;
+  if(XmlUtils::hasAttribute(node, "headRotateStart_deg")){
+    settings->headRotateStart_rad = MathConverter::degreesToRadians(
+        boost::get<double>(XmlUtils::getAttribute(
+            node,
+            "headRotateStart_deg",
+            "double",
+            0.0
+        ))
+    );
   }
+  else settings->headRotateStart_rad = template1->headRotateStart_rad;
 
-  settings->headRotateStop_rad = hrStop_rad;
+  if(XmlUtils::hasAttribute(node, "headRotateStop_deg")){
+    double hrStop_rad = MathConverter::degreesToRadians(
+        boost::get<double>(XmlUtils::getAttribute(
+            node, "headRotateStop_deg", "double", 0.0
+        )));
+
+    // Make sure that rotation stop angle is larger than rotation start angle if
+    // rotation speed is positive:
+    if(hrStop_rad < settings->headRotateStart_rad &&
+        settings->headRotatePerSec_rad > 0
+    ){
+      logging::ERR(std::string("XML Assets Loader: Error: ") +
+                   "Head Rotation Stop angle must be larger than start angle " +
+                   "if rotation speed is positive!");
+      exit(-1);
+    }
+
+    // Make sure that rotation stop angle is larger than rotation start angle if
+    // rotation speed is negative:
+    if (hrStop_rad > settings->headRotateStart_rad &&
+        settings->headRotatePerSec_rad < 0) {
+      logging::ERR(
+          std::string("XML Assets Loader: Error: ") +
+          "Head Rotation Stop angle must be smaller than start angle if " +
+          "rotation speed is negative!");
+      exit(-1);
+    }
+
+    settings->headRotateStop_rad = hrStop_rad;
+  }
+  else settings->headRotateStop_rad = template1->headRotateStop_rad;
   settings->pulseFreq_Hz = boost::get<int>(XmlUtils::getAttribute(
       node, "pulseFreq_hz", "int", template1->pulseFreq_Hz));
-  settings->scanAngle_rad = MathConverter::degreesToRadians(boost::get<double>(
-      XmlUtils::getAttribute(
-          node, "scanAngle_deg", "double", template1->scanAngle_rad
-      )
-  ));
-  settings->verticalAngleMin_rad = MathConverter::degreesToRadians(
-      boost::get<double>(XmlUtils::getAttribute(
-          node, "verticalAngleMin_deg", "double",
-          template1->verticalAngleMin_rad
-      ))
-  );
-  settings->verticalAngleMax_rad = MathConverter::degreesToRadians(
-      boost::get<double>(XmlUtils::getAttribute(
-          node, "verticalAngleMax_deg", "double",
-          template1->verticalAngleMax_rad
-      ))
-  );
+  if(XmlUtils::hasAttribute(node, "scanAngle_deg")){
+      settings->scanAngle_rad = MathConverter::degreesToRadians(
+          boost::get<double>(XmlUtils::getAttribute(
+              node, "scanAngle_deg", "double", 0.0
+          ))
+      );
+  }
+  else settings->scanAngle_rad = template1->scanAngle_rad;
+  if(XmlUtils::hasAttribute(node, "verticalAngleMin_deg")){
+      settings->verticalAngleMin_rad = MathConverter::degreesToRadians(
+          boost::get<double>(XmlUtils::getAttribute(
+              node, "verticalAngleMin_deg", "double", 0.0
+          ))
+      );
+  }
+  else settings->verticalAngleMin_rad = template1->verticalAngleMin_rad;
+  if(XmlUtils::hasAttribute(node, "verticalAngleMax_deg")){
+      settings->verticalAngleMax_rad = MathConverter::degreesToRadians(
+          boost::get<double>(XmlUtils::getAttribute(
+              node, "verticalAngleMax_deg", "double", 0.0
+          ))
+      );
+  }
+  else settings->verticalAngleMax_rad = template1->verticalAngleMax_rad;
   settings->scanFreq_Hz = boost::get<double>(XmlUtils::getAttribute(
       node, "scanFreq_hz", "double", template1->scanFreq_Hz
   ));
 
+  settings->beamDivAngle = boost::get<double>(XmlUtils::getAttribute(
+    node, "beamDivergence_rad", "double", template1->beamDivAngle
+  ));
+
   settings->trajectoryTimeInterval = boost::get<double>(XmlUtils::getAttribute(
-    node, "trajectoryTimeInterval_s", "double", 0.0)
-  );
+    node,
+    "trajectoryTimeInterval_s",
+    "double",
+    template1->trajectoryTimeInterval
+  ));
 
   // Track non default values if requested
   if(fields != nullptr){
@@ -832,6 +844,8 @@ void XmlAssetsLoader::trackNonDefaultScannerSettings(
         fields.insert("verticalAngleMax_rad");
     if(base->scanFreq_Hz != ref->scanFreq_Hz)
         fields.insert("scanFreq_Hz");
+    if(base->beamDivAngle != ref->beamDivAngle)
+        fields.insert("beamDivAngle");
     if(base->trajectoryTimeInterval != ref->trajectoryTimeInterval)
         fields.insert("trajectoryTimeInterval");
 }

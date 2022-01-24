@@ -314,8 +314,12 @@ void XmlSurveyLoader::loadLegs(
             );
         }
         // Cherry-picking of ScannerSettings
-        std::unordered_set<std::string> templateFields = \
-            scannerTemplatesFields[leg->mScannerSettings->baseTemplate->id];
+        std::unordered_set<std::string> templateFields;
+        if(leg->mScannerSettings->baseTemplate != nullptr){
+            templateFields = scannerTemplatesFields[
+                leg->mScannerSettings->baseTemplate->id
+            ];
+        }
         leg->mScannerSettings = scannerSettings->cherryPick(
             leg->mScannerSettings,
             scannerFields,

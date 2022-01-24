@@ -48,6 +48,7 @@ Scanner::Scanner(
 	cfg_device_headRelativeEmitterPosition = beamOrigin;		
 	cfg_device_headRelativeEmitterAttitude = beamOrientation;
 	cfg_device_supportedPulseFreqs_Hz = pulseFreqs;
+	cfg_setting_pulseFreq_Hz = pulseFreqs.front();
 	cfg_device_beamDivergence_rad = beamDiv_rad;
 	cfg_device_pulseLength_ns = pulseLength_ns;
 	cfg_device_id = id;

@@ -156,8 +156,11 @@ public:
             settings->verticalAngleMax_rad = cherries->verticalAngleMax_rad;
         if(hasCherry("scanFreq_Hz"))
             settings->scanFreq_Hz = cherries->scanFreq_Hz;
-        if(hasCherry("trajectoryTimeInterval"))
+        if(hasCherry("beamDivAngle"))
+            settings->beamDivAngle = cherries->beamDivAngle;
+        if(hasCherry("trajectoryTimeInterval")){
             settings->trajectoryTimeInterval=cherries->trajectoryTimeInterval;
+        }
         // Return settings from cherry picking
         return settings;
 	}
