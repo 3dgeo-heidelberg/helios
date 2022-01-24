@@ -325,20 +325,20 @@ class SimulationBuilder:
     def validateFixedGpsTimeStart(self, fgts):
         if fgts == '':
             return
-        if type(fgts) is int:
+        if fgts.isnumeric():
             return
         if len(fgts) == 19 and \
-                type(fgts[0:4]) is int and \
+                fgts[0:4].isnumeric() and \
                 fgts[4] == '-' and \
-                type(fgts[5:7]) is int and \
+                fgts[5:7].isnumeric() and \
                 fgts[7] == '-' and \
-                type(fgts[8:10]) is int and \
+                fgts[8:10].isnumeric() and \
                 fgts[10] == ' ' and \
-                type(fgts[11:13]) is int and \
+                fgts[11:13].isnumeric() and \
                 fgts[13] == ':' and \
-                type(fgts[14:16]) is int and \
+                fgts[14:16].isnumeric() and \
                 fgts[16] == ':' and \
-                type(fgts[17:]) is int:
+                fgts[17:].isnumeric():
             return
         raise PyHeliosToolsException(
             'SimulationBuilder EXCEPTION!\n\t'
