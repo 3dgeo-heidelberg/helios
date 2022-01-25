@@ -12,6 +12,7 @@ var classScanner =
     [ "calcRaysNumber", "dc/d42/classScanner.html#a0175839040b365327e610628653d3ebb", null ],
     [ "calcTimePropagation", "dc/d42/classScanner.html#af91d7818c7f6ac284a15b2ddb3af25c5", null ],
     [ "checkMaxNOR", "dc/d42/classScanner.html#a874f9b75d9279637ff5e2138e36a93a7", null ],
+    [ "configureBeam", "dc/d42/classScanner.html#aaa4a8ce1ee586e544d4ed27d67e2e1fa", null ],
     [ "doSimStep", "dc/d42/classScanner.html#ac993a356e56ade4e52a749b427b4c9cc", null ],
     [ "getAtmosphericExtinction", "dc/d42/classScanner.html#a5e565952ba62f2794ab76571aa52eeac", null ],
     [ "getAveragePower", "dc/d42/classScanner.html#a2e55a47706900d3e233eceece0869549", null ],

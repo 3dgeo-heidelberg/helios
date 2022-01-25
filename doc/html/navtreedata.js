@@ -35,10 +35,10 @@ var NAVTREEINDEX =
 "d9/ddf/classVoxelFileParser.html#af67af078ef3e5ded5c0d32a21cbfa820",
 "db/d2e/classMeasurement.html#a016165802eb3e886f35bab0ba1849c68",
 "db/da6/classFullWaveformPulseRunnable.html#ad8b27665f5d28502e9389f8677b12f7b",
-"dc/da7/classScannerHead.html#a27b63bac89ed530f7c52b2de790e0671",
-"de/d51/classLeg.html#a639d92f98416caed280e3004366eee8b",
-"df/d39/classITreeIterator.html#ac98d07dd8f7b70e16ccb9a01abf56b9c",
-"dir_80f100c934159bed30358739b81d8e77.html"
+"dc/da7/classScannerHead.html#a27170fc0a487628ff4d4c3222dd1ebb2",
+"de/d51/classLeg.html#a44d8eab8385a77fcc2e97feda87fc476",
+"df/d39/classITreeIterator.html#a6fa0c7494f21bddb3098f77c2d29a246",
+"dir_68267d1309a1af8e8297ef4c3efbcdba.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
