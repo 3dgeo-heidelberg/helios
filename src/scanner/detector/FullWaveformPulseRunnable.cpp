@@ -386,12 +386,12 @@ void FullWaveformPulseRunnable::populateFullWaveform(
     vector<double> &time_wave = detector->scanner->time_wave;
     map<double, double>::iterator it;
     for (it = reflections.begin(); it != reflections.end(); it++) {
-        double entryDistance_m = it->first;
+        double const entryDistance_m = it->first;
         if(entryDistance_m > distanceThreshold) continue;
-        double entryIntensity = it->second;
-        double wavePeakTime_ns = entryDistance_m /
+        double const entryIntensity = it->second;
+        double const wavePeakTime_ns = entryDistance_m /
             cfg_speedOfLight_mPerNanosec; // in nanoseconds
-        int binStart = (int)((wavePeakTime_ns-minHitTime_ns) / nsPerBin)
+        int const binStart = (int)((wavePeakTime_ns-minHitTime_ns) / nsPerBin)
             - peakIntensityIndex;
         for (size_t i = 0; i < time_wave.size(); i++) {
             fullwave[binStart + i] += time_wave[i] * entryIntensity;
@@ -443,7 +443,7 @@ void FullWaveformPulseRunnable::digestFullWaveform(
             echo_width = fit.getParameters()[3];
             echo_width = echo_width * nsPerBin;
 
-            if (echo_width < 0.1) {
+            if (echo_width < 0.1) { // TODO Rethink : 0.1 to threshold variable
                 continue;
             }
         }

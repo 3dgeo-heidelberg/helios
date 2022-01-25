@@ -371,6 +371,17 @@ public:
      */
     void initializeSequentialGenerators();
     /**
+     * @brief Configure beam related attributes. It is recommended to
+     *  reconfigure beam attributes always that beam divergence, beam quality
+     *  or wavelength are updated.
+     * @see Scanner::cfg_device_beamDivergence_rad
+     * @see Scanner::cfg_device_beamQuality
+     * @see Scanner::cfg_device_wavelength_m
+     * @see Scanner::beamWaistRadius
+     * @see Scanner::cached_Bt2
+     */
+    void configureBeam();
+    /**
      * @brief Build the scanning pulse process to be used by the scanner
      *  during simulation
      * @param dropper Simulation's task dropper
