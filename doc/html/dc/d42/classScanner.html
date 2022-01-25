@@ -131,6 +131,9 @@ Public Member Functions</h2></td></tr>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d42/classScanner.html#ad2846df5fb586988fd2008170c1a2d82">initializeSequentialGenerators</a> ()</td></tr>
 <tr class="memdesc:ad2846df5fb586988fd2008170c1a2d82"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize randomness generators and noise sources that are necessary for sequential pulse computations. <br /></td></tr>
 <tr class="separator:ad2846df5fb586988fd2008170c1a2d82"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaa4a8ce1ee586e544d4ed27d67e2e1fa"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d42/classScanner.html#aaa4a8ce1ee586e544d4ed27d67e2e1fa">configureBeam</a> ()</td></tr>
+<tr class="memdesc:aaa4a8ce1ee586e544d4ed27d67e2e1fa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Configure beam related attributes. It is recommended to reconfigure beam attributes always that beam divergence, beam quality or wavelength are updated.  <a href="#aaa4a8ce1ee586e544d4ed27d67e2e1fa">More...</a><br /></td></tr>
+<tr class="separator:aaa4a8ce1ee586e544d4ed27d67e2e1fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1fb73d798dca372fa2639a715211936b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d42/classScanner.html#a1fb73d798dca372fa2639a715211936b">buildScanningPulseProcess</a> (int const parallelizationStrategy, <a class="el" href="../../de/d9a/classPulseTaskDropper.html">PulseTaskDropper</a> &amp;dropper, std::shared_ptr&lt; <a class="el" href="../../df/d9c/classPulseThreadPoolInterface.html">PulseThreadPoolInterface</a> &gt; pool)</td></tr>
 <tr class="memdesc:a1fb73d798dca372fa2639a715211936b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Build the scanning pulse process to be used by the scanner during simulation.  <a href="#a1fb73d798dca372fa2639a715211936b">More...</a><br /></td></tr>
 <tr class="separator:a1fb73d798dca372fa2639a715211936b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -980,6 +983,34 @@ std::shared_ptr&lt; <a class="el" href="../../d1/d0e/classSyncFileWriter.html">S
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>True of the check is passed, false otherwise </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="../../dc/d42/classScanner.html#a4812fca171290ee0af1287f19a0d05ea" title="Maximum number of returns per pulse. When 0, it means there is not maximum at all. ">Scanner::maxNOR</a> </dd></dl>
+
+</div>
+</div>
+<a id="aaa4a8ce1ee586e544d4ed27d67e2e1fa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaa4a8ce1ee586e544d4ed27d67e2e1fa">&#9670;&nbsp;</a></span>configureBeam()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Scanner::configureBeam </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Configure beam related attributes. It is recommended to reconfigure beam attributes always that beam divergence, beam quality or wavelength are updated. </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../dc/d42/classScanner.html#a4e58931ddb59368c42a099b669edad69" title="Beam divergence (radians) ">Scanner::cfg_device_beamDivergence_rad</a> </dd>
+<dd>
+<a class="el" href="../../dc/d42/classScanner.html#a5756a8e621e4e8f796b4724aeb0dbbac" title="Beam quality. ">Scanner::cfg_device_beamQuality</a> </dd>
+<dd>
+<a class="el" href="../../dc/d42/classScanner.html#a949734daacefc79252e7f85cc9d59d8d" title="Wave length (meters) ">Scanner::cfg_device_wavelength_m</a> </dd>
+<dd>
+<a class="el" href="../../dc/d42/classScanner.html#a97d67c4736c5ed3ba23ad96c7048dc43" title="Beam waist radius. ">Scanner::beamWaistRadius</a> </dd>
+<dd>
+<a class="el" href="../../dc/d42/classScanner.html#ac4dfcd18602e00ffc6898f807f682a0d" title=" understood as the square of beam divergence ">Scanner::cached_Bt2</a> </dd></dl>
 
 </div>
 </div>

@@ -34,11 +34,11 @@ void Simulation::doSimStep(){
 	    mScanner->scannerHead->rotateCompleted() &&
 	    getScanner()->platform->waypointReached()
     ){
-		onLegComplete();
-		return;
-	}
+	    onLegComplete();
+        return;
+    }
 
-	// Ordered execution of simulation components
+    // Ordered execution of simulation components
 	mScanner->platform->doSimStep(getScanner()->getPulseFreq_Hz());
 	mScanner->doSimStep(mCurrentLegIndex, currentGpsTime_ms);
     currentGpsTime_ms += 1000. / ((double)getScanner()->getPulseFreq_Hz());
