@@ -8,6 +8,7 @@
     3. [Install on Linux with PyHelios Support](#install-on-linux-with-pyhelios-support) 
     4. [Install on Linux with Visual Debug](#install-on-linux-with-visual-debug)
     5. [Install on Windows](#install-on-windows)
+1. [Building the Wiki](#wiki)
 1. [Usage](#usage)
 1. [License](#license)
 
@@ -466,6 +467,20 @@ at the end:
 ```
 ;<path to gdal dll folder>;<path to lapack dll folder>
 ```
+
+---
+## Wiki
+You can build the HELIOS++ Wiki locally as html files using `mkdocs`. For this, the wiki is included as a `git submodule`.
+
+Make sure you have the latest copy of the submodule checked out with `git submodule update --init --recursive`
+
+Then change to the respective directory: `cd wiki-repo`
+
+And run mkdocs (you may need to install it and any required packages using `pip` or other python package managers):
+
+`python -m mkdocs build`
+
+The local wiki build is then generated in the `site` subdirectory.
 
 ---
 ## Usage
