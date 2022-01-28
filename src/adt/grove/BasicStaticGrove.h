@@ -65,6 +65,10 @@ public:
     void removeTrees(
         size_t const startIndex, size_t const endIndex
     ) override;
+    /**
+     * @see StaticGrove::removeAll
+     */
+    void removeAll() override;
 
     // ***  FOR LOOP METHODS  *** //
     // ************************** //

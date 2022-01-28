@@ -5,6 +5,7 @@
 #include <DynGrove.h>
 
 #include <memory>
+#include <unordered_map>
 
 /**
  * @author Alberto M. Esmoris Pena
@@ -18,7 +19,7 @@
  * @see DynGrove
  */
 template <typename Tree, typename Subject, typename SubjectId>
-class BasicDynGrove : public BasicStaticGrove<Tree>, DynGrove<Subject> {
+class BasicDynGrove : public BasicStaticGrove<Tree>, public DynGrove<Subject> {
 protected:
     // ***  ATTRIBUTES  *** //
     // ******************** //

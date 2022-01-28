@@ -16,7 +16,6 @@ class DynGrove{
 public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //
     // ************************************ //
-    DynGrove() = delete;
     virtual ~DynGrove() = default;
 
     // ***  OBSERVER METHODS  *** //

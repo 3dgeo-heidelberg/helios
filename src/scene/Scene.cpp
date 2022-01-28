@@ -216,9 +216,11 @@ Scene::getIntersections(
     return {};
   }
 
-  shared_ptr<KDTreeRaycaster> raycaster(new KDTreeRaycaster(kdtree));
-  return raycaster->searchAll(rayOrigin, rayDir, tMinMax[0], tMinMax[1],
-                              groundOnly);
+  // TODO Rethink : Is it effecient to instantiate raycaster for each check ?
+  KDTreeRaycaster raycaster(kdtree);
+  return raycaster.searchAll(
+      rayOrigin, rayDir, tMinMax[0], tMinMax[1], groundOnly
+  );
 }
 
 glm::dvec3 Scene::getShift() { return this->bbox_crs->getMin(); }

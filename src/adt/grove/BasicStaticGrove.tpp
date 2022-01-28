@@ -29,6 +29,10 @@ void BasicStaticGrove<Tree>::removeTrees(
 ){
     trees.erase(trees.begin() + startIndex, trees.begin() + endIndex);
 }
+template <typename Tree>
+void BasicStaticGrove<Tree>::removeAll(){
+    trees.clear();
+}
 
 // ***  FOR LOOP METHODS  *** //
 // ************************** //
@@ -76,7 +80,7 @@ shared_ptr<Tree> BasicStaticGrove<Tree>::nextTreeShared() {
 template <typename Tree>
 Tree * BasicStaticGrove<Tree>::nextTreePointer() {
     if(whileIter == getNumTrees()) whileIter = 0;
-    Tree *tree = getTreeShared(whileIter);
+    Tree *tree = getTreePointer(whileIter);
     ++whileIter;
     return tree;
 }

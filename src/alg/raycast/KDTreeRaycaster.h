@@ -2,6 +2,7 @@
 
 // TODO 4: Merge search_recursive() and search_all_recursive?
 
+#include <Raycaster.h>
 #include <Primitive.h>
 #include <Material.h>
 #include <RaySceneIntersection.h>
@@ -10,8 +11,10 @@
 
 /**
  * @brief Class representing a KDTree ray caster
+ *
+ * @see Raycaster
  */
-class KDTreeRaycaster {
+class KDTreeRaycaster : public Raycaster {
 public:
     // ***  ATTRIBUTES  *** //
     // ******************** //
@@ -69,66 +72,46 @@ public:
 	 * @brief KDTree ray caster constructor
 	 * @param root Root node of the KDTree
 	 */
-	KDTreeRaycaster(std::shared_ptr<LightKDTreeNode> root) {this->root = root;}
+	KDTreeRaycaster(std::shared_ptr<LightKDTreeNode> root) : root(root) {}
+    virtual ~KDTreeRaycaster() = default;
 
-	// ***  M E T H O D S  *** //
-	// *********************** //
+	// ***  RAYCASTING METHODS  *** //
+	// **************************** //
 	/**
-	 * @brief Search all intersections for specified ray
-	 * @param _rayOrigin Ray origin 3D coordinates
-	 * @param _rayDir Ray 3D director vector
-	 * @param tmin Minimum time to intersection. It is used to prevent
-	 *  considering intersections (capturing points) before this time during
-	 *  the recursive search process
-	 * @param tmax Maximum time to intersection. It is used to prevent
-	 *  considering intersections (capturing points) after this time during
-	 *  the recursive search process
-	 * @param groundOnly Flag to specify if only ground primitives must
-	 *  be considered (true) or not (false)
-	 * @return Return map of collected primitives, each identified by its
-	 *  distance with respect to ray origin
-	 * @see KDTreeRaycaster::searchAll_recursive
+	 * @see Raycaster::searchAll
 	 */
-	std::map<double, Primitive*> searchAll(
-	    glm::dvec3 _rayOrigin,
-	    glm::dvec3 _rayDir,
-	    double tmin,
-	    double tmax,
-	    bool groundOnly
-    );
-	/**
-	 * @brief Search first intersection for specified ray
-	 * @param _rayOrigin Ray origin 3D coordinates
-	 * @param _rayDir Ray 3D director vector
-	 * @param tmin Minimum time to intersection. It is used to prevent
-	 *  considering intersections (capturing points) before this time during
-	 *  the recursive search process
-	 * @param tmax Maximum time to intersection. It is used to prevent
-	 *  considering intersections (capturing points) after this time during
-	 *  the recursive search process
-	 * @param groundOnly Flag to specify if only ground primitives must
-	 *  be considered (true) or not (false)
-	 * @return Return first found intersection
-	 * @see KDTreeRaycaster::search_recursive
-	 */
-	RaySceneIntersection* search(
-	    glm::dvec3 _rayOrigin,
-	    glm::dvec3 _rayDir,
-	    double tmin,
-	    double tmax,
-	    bool groundOnly
-    );
-	/**
-	 * @brief Recursive search function to assist searchAll function
-	 * @param node KDTree node to be recursively explored
-	 * @param tmin Minimum time to intersection. It is used to prevent
-	 *  considering intersections (capturing points) before this time during
-	 *  the recursive search process
-	 * @param tmax Maximum time to intersection. It is used to prevent
-	 *  considering intersections (capturing points) after this time during
-	 *  the recursive search process
-	 * @see KDTreeRaycaster::searchAll
-	 */
+    std::map<double, Primitive*> searchAll(
+        glm::dvec3 _rayOrigin,
+        glm::dvec3 _rayDir,
+        double tmin,
+        double tmax,
+        bool groundOnly
+    ) override;
+    /**
+     * @see Raycaster::search
+     */
+    RaySceneIntersection * search(
+        glm::dvec3 _rayOrigin,
+        glm::dvec3 _rayDir,
+        double tmin,
+        double tmax,
+        bool groundOnly
+    ) override;
+
+protected:
+    // ***  RAYCASTING UTILS  *** //
+    // ************************** //
+    /**
+     * @brief Recursive search function to assist searchAll function
+     * @param node KDTree node to be recursively explored
+     * @param tmin Minimum time to intersection. It is used to prevent
+     *  considering intersections (capturing points) before this time during
+     *  the recursive search process
+     * @param tmax Maximum time to intersection. It is used to prevent
+     *  considering intersections (capturing points) after this time during
+     *  the recursive search process
+     * @see KDTreeRaycaster::searchAll
+     */
 	void searchAll_recursive(LightKDTreeNode* node, double tmin, double tmax);
 	/**
 	 * @brief Recursive search function to assist search function

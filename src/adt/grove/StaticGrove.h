@@ -14,9 +14,9 @@
  * The StaticGrove::hasTrees and StaticGrove::getNumTrees functions allow to
  *  query if the grove has trees and how many.
  *
- * The StaticGrove::addTree, StaticGrove::removeTree and
- *  StaticGrove::removeTrees functions allow to add and remove trees from the
- *  grove.
+ * The StaticGrove::addTree, StaticGrove::removeTree,
+ *  StaticGrove::removeTrees, StaticGrove::removeAll and StaticGrove::clear
+ *  functions allow to add and remove trees from the grove.
  *
  * The StaticGrove::getNumTrees, StaticGrove::getTreeReference,
  *  StaticGrove::getTreeShared, StaticGrove::getTreePointer and
@@ -41,9 +41,21 @@
  * @code
  * ...
  * std::shared_ptr<Tree> tree;
- * grove.toZeroTree(); // Avoid if no previous while stopped before end
+ * grove.toZeroTree(); // Restart while loop state
  * while(grove.hasNextTree()){
  *  tree = grove.nextTreeShared();
+ *  tree.doSomething();
+ * }
+ * ...
+ * @endcode
+ *
+ * The StaticGrove::begind and StaticGrove::end methods support
+ *  for-each loop.
+ *
+ * @code
+ * ...
+ * std::shared_ptr<Tree> tree;
+ * for(shared_ptr<Tree> tree : grove){
  *  tree.doSomething();
  * }
  * ...
@@ -56,7 +68,6 @@ class StaticGrove{
 public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //
     // ************************************ //
-    StaticGrove() = delete;
     virtual ~StaticGrove () = default;
 
     // ***  QUERY METHODS  *** //
@@ -93,6 +104,16 @@ public:
     virtual void removeTrees(
         size_t const startIndex, size_t const endIndex
     ) = 0;
+    /**
+     * @brief Remove all trees from the StaticGrove
+     * @see StaticGrove::clear
+     */
+    virtual void removeAll() = 0;
+    /**
+     * @brief Alias for StaticGrove::removeAll method
+     * @see StaticGrove::removeAll
+     */
+    inline void clear() {removeAll();}
 
     // ***  FOR LOOP METHODS  *** //
     // ************************** //
@@ -160,24 +181,12 @@ public:
      * @brief Obtain the first element of a for-each loop over trees
      * @return First element of a for-each loop over trees
      */
-    virtual GroveTreeWrapper<Tree> begin() const
+    virtual GroveTreeWrapper<Tree> begin()
         {return GroveTreeWrapper<Tree>(*this, 0);}
     /**
      * @brief Obtaint the last element of a for-each loop over trees
      * @return Last element of a for-each loop over trees
      */
-    virtual GroveTreeWrapper<Tree> end() const
-        {return GroveTreeWrapper<Tree>(*this, getNumTrees()-1);}
-    /**
-     * @brief The const version of StaticGrove::begin
-     * @see StaticGrove::begin
-     */
-    virtual GroveTreeWrapper<Tree> cbegin() const
-        {return GroveTreeWrapper<Tree>(*this, 0);}
-    /**
-     * @brief The const version of StaticGrove::end
-     * @see StaticGrove::end
-     */
-    virtual GroveTreeWrapper<Tree> cend() const
-        {return GroveTreeWrapper<Tree>(*this, getNumTrees()-1);}
+    virtual GroveTreeWrapper<Tree> end()
+        {return GroveTreeWrapper<Tree>(*this, getNumTrees());}
 };
