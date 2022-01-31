@@ -3,9 +3,10 @@
 
 #include <BasicStaticGrove.h>
 #include <DynGrove.h>
+#include <BasicDynGroveSubject.h>
 
 #include <memory>
-#include <unordered_map>
+#include <vector>
 
 /**
  * @author Alberto M. Esmoris Pena
@@ -18,18 +19,26 @@
  * @see BasicStaticGrove
  * @see DynGrove
  */
-template <typename Tree, typename Subject, typename SubjectId>
+template <typename Tree, typename Subject>
 class BasicDynGrove : public BasicStaticGrove<Tree>, public DynGrove<Subject> {
 protected:
+    using BasicStaticGrove<Tree>::trees;
     // ***  ATTRIBUTES  *** //
     // ******************** //
     /**
-     * @brief Map associating each subject with its corresponding tree.
+     * @brief Vector with pointers to subjects.
      *
-     * It is a one-to-one relationship, so each subject can be mapped to at
-     *  most one tree.
+     * The typical observer pattern does not require the observer
+     *  (BasicDynGrove) to be aware of all subjects, just to handle their
+     *  notifications. Nonetheless, to avoid using a map to know to which
+     *  sub-observer (Tree) each subjects is associated, this vector is used.
+     *  In consequence, all subjects are handled by the BasicDynGrove to
+     *  have their indices corresponding with vector indices. This reduces the
+     *  computational cost of calculating the key-value for a map always that
+     *  a subject notifies to the observer (which happens too frequently
+     *  during simulation).
      */
-    std::unordered_map<SubjectId, std::shared_ptr<Tree>> observersMap;
+    std::vector<BasicDynGroveSubject *> subjects;
 
 public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //
@@ -46,6 +55,30 @@ public:
      * @see DynGrove::update
      */
     void update(Subject &s) override;
+    /**
+     * @brief Add a new subject which identifier is automatically and
+     *  internally computed.
+     *
+     * Notice when adding a subject, its identifier will be updated
+     *  through the BasicDynGroveSubject::setGroveSubjectId method
+     *
+     * @param subject Reference to the subject itself
+     * @param tree Tree associated to new subject
+     */
+    virtual void addSubject(
+        BasicDynGroveSubject *subject,
+        std::shared_ptr<Tree> tree
+    );
+    /**
+     * @brief Remove subject with given identifier from the grove.
+     *
+     * Notice when removing a subject, all other subject which
+     *  identifier needs to be updated will be automatically updated.
+     * (Through BasicDynGroveSubject::setGroveSubjectId method)
+     *
+     * @param id Identifier of the subject to be removed
+     */
+    virtual void removeSubject(BasicDynGroveSubject *subject);
 
 };
 

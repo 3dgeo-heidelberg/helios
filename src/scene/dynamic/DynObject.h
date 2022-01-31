@@ -332,4 +332,12 @@ protected:
         std::function<void(Vertex *, arma::colvec const &)> set,
         arma::mat const &X
     );
+
+public:
+    // ***  GETTERs and SETTERs  *** //
+    // ***************************** //
+    /**
+     * @see ScenePart::getType
+     */
+    ObjectType getType() override {return ObjectType::DYN_OBJECT;}
 };

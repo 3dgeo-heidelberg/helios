@@ -44,6 +44,17 @@ class ScenePart {
 		ar & forceOnGround;
     }
 public:
+    // ***  TYPE ENUM  *** //
+    // ******************** //
+    /**
+     * @brief Specify the type of scene part / object.
+     * By default, the ScenePart is a static object.
+     */
+    enum ObjectType{
+	    STATIC_OBJECT,
+	    DYN_OBJECT,
+	    DYN_MOVING_OBJECT
+	};
     // ***  ATTRIBUTES  *** //
     // ******************** //
     /**
@@ -272,4 +283,10 @@ public:
      * @see ScenePart::id
      */
     inline void setId(const std::string &id) {this->mId = id;}
+    /**
+     * @brief Obtain the object type of the scene part
+     * @return Object type of the scene part
+     * @see ScenePart::ObjectType
+     */
+    virtual ObjectType getType() {return ObjectType::STATIC_OBJECT;}
 };

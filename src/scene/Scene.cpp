@@ -374,11 +374,36 @@ glm::dvec3 Scene::findForceOnGroundQ(
 }
 
 void Scene::buildKDTree(bool const safe){
-    kdtree = shared_ptr<KDTreeNodeRoot>(
+    // TODO Rethink : Implementation
+    /*kdtree = shared_ptr<KDTreeNodeRoot>(
         safe ?
         kdtf->makeFromPrimitives(primitives, true, true) :
         kdtf->makeFromPrimitivesUnsafe(primitives, true, true)
+    );*/
+    kdgrove = KDGroveFactory(kdtf).makeFromSceneParts(
+        parts,  // Scene parts
+        true,   // Safe
+        true,   // Compute KDGrove stats
+        true,   // Report KDGrove stats
+        true,   // Compute KDTree stats
+        true    // Report KDTree stats
     );
+    /*kdgrove = std::make_shared<KDGrove>();
+    for(shared_ptr<ScenePart> &part : parts){
+        shared_ptr<KDTreeNodeRoot> kdtree = shared_ptr<KDTreeNodeRoot>(
+            safe ?
+            kdtf->makeFromPrimitives(part->mPrimitives, true, true) :
+            kdtf->makeFromPrimitivesUnsafe(part->mPrimitives, true, true)
+        );
+        BasicDynGroveSubject *subject = nullptr;
+        if(part->getType()==ScenePart::ObjectType::DYN_MOVING_OBJECT){
+            subject = (DynMovingObject *) part.get();
+        }
+        kdgrove->addSubject(
+            subject,
+            make_shared<GroveKDTreeRaycaster>(kdtree)
+        );
+    }*/
 }
 
 void Scene::buildKDTreeWithLog(bool const safe){
@@ -390,6 +415,7 @@ void Scene::buildKDTreeWithLog(bool const safe){
     std::stringstream ss;
     ss << "KDT built in " << kdtTw.getElapsedDecimalSeconds() << "s";
     logging::TIME(ss.str());
+    std::exit(7); // TODO Remove
 }
 
 // ***  READ/WRITE  *** //

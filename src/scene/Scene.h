@@ -8,23 +8,27 @@
 #include <glm/glm.hpp>
 #include <serial.h>
 
-#include "AABB.h"
-#include "Asset.h"
-#include "DetailedVoxel.h"
-#include "Triangle.h"
-#include "Vertex.h"
-#include "Voxel.h"
+#include <AABB.h>
+#include <Asset.h>
+#include <DetailedVoxel.h>
+#include <Triangle.h>
+#include <Vertex.h>
+#include <Voxel.h>
 
-#include "KDTreeNodeRoot.h"
+#include <KDTreeNodeRoot.h>
 #include <KDTreeFactory.h>
+// TODO Rethink : Clean includes (already in KDGroveFactory) ---
 #include <SimpleKDTreeFactory.h>
 #include <SAHKDTreeFactory.h>
 #include <AxisSAHKDTreeFactory.h>
 #include <FastSAHKDTreeFactory.h>
 #include <MultiThreadKDTreeFactory.h>
 #include <MultiThreadSAHKDTreeFactory.h>
+// --- TODO Rethink : Clean includes (already in KDGroveFactory)
+#include <KDGroveFactory.h>
+#include <KDGrove.h>
 
-#include "RaySceneIntersection.h"
+#include <RaySceneIntersection.h>
 
 /**
  * @brief Class representing a scene asset
@@ -66,7 +70,7 @@ private:
     boost::serialization::void_cast_register<Scene, Asset>();
     ar &boost::serialization::base_object<Asset>(*this);
     ar &kdtf;
-    //ar &kdtree; // KDTree not saved because it might be too deep
+    //ar &kdgrove; // KDTree not saved because it might be too deep
     ar &bbox;
     ar &bbox_crs;
     ar &primitives;
@@ -103,7 +107,7 @@ private:
     boost::serialization::void_cast_register<Scene, Asset>();
     ar &boost::serialization::base_object<Asset>(*this);
     ar &kdtf;
-    //ar &kdtree; // KDTree not loaded because it might be too deep
+    //ar &kdgrove; // KDTree not loaded because it might be too deep
     ar &bbox;
     ar &bbox_crs;
     ar &primitives;
@@ -132,6 +136,11 @@ protected:
    *  computations
    */
   std::shared_ptr<KDTreeNodeRoot> kdtree;
+  /**
+   * @brief KDGrove containing a KDTree for each scene part to speed-up
+   *    ray-primitive intersection check computations
+   */
+  std::shared_ptr<KDGrove> kdgrove;
   /**
    * @brief Axis aligned bounding box defining scene boundaries
    */

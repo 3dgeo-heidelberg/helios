@@ -1,8 +1,9 @@
 #pragma once
 
-#include <RaycasterGroveTree.h>
-#include <KDTreeRaycaster.h>
+#include <LightKDTreeNode.h>
 #include <DynObject.h>
+#include <KDTreeRaycaster.h>
+#include <RaycasterGroveTree.h>
 
 /**
  * @author Alberto M. Esmoris Pena

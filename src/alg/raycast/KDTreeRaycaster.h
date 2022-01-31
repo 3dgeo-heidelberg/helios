@@ -6,7 +6,6 @@
 #include <Primitive.h>
 #include <Material.h>
 #include <RaySceneIntersection.h>
-
 #include <LightKDTreeNode.h>
 
 /**
