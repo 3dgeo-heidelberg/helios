@@ -59,8 +59,8 @@ public:
 	 * @see Raycaster::search_recursive
 	 */
     virtual RaySceneIntersection * search(
-        glm::dvec3 _rayOrigin,
-        glm::dvec3 _rayDir,
+        glm::dvec3 rayOrigin,
+        glm::dvec3 rayDir,
         double tmin,
         double tmax,
         bool groundOnly

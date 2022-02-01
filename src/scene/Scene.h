@@ -27,6 +27,7 @@
 // --- TODO Rethink : Clean includes (already in KDGroveFactory)
 #include <KDGroveFactory.h>
 #include <KDGrove.h>
+#include <KDGroveRaycaster.h>
 
 #include <RaySceneIntersection.h>
 
@@ -115,9 +116,15 @@ private:
 
     // Build KDTree from primitives
     if(kdtf != nullptr){
-      kdtree = std::shared_ptr<KDTreeNodeRoot>(
-        kdtf->makeFromPrimitivesUnsafe(primitives, true, true)
+      kdgrove = KDGroveFactory(kdtf).makeFromSceneParts(
+        parts,  // Scene parts
+        true,   // Safe
+        true,   // Compute KDGrove stats
+        true,   // Report KDGrove stats
+        true,   // Compute KDTree stats
+        true    // Report KDTree stats
       );
+      raycaster = std::make_shared<KDGroveRaycaster>(kdgrove);
     }
   }
   BOOST_SERIALIZATION_SPLIT_MEMBER();
@@ -132,11 +139,6 @@ protected:
    */
   std::shared_ptr<KDTreeFactory> kdtf;
   /**
-   * @brief KDTree splitting scene points/vertices to speed-up intersection
-   *  computations
-   */
-  std::shared_ptr<KDTreeNodeRoot> kdtree;
-  /**
    * @brief KDGrove containing a KDTree for each scene part to speed-up
    *    ray-primitive intersection check computations
    */
@@ -150,6 +152,13 @@ protected:
    *  before centering it
    */
   std::shared_ptr<AABB> bbox_crs;
+  /**
+   * @brief The raycaster based on KDGrove
+   * @see Scene::kdgrove
+   * @see Scene::getIntersection
+   * @see Scene::getIntersections
+   */
+  std::shared_ptr<KDGroveRaycaster> raycaster;
 
 public:
   /**
@@ -367,17 +376,18 @@ public:
   );
 
   /**
-   * @brief Build the KDTree for the scene, overwriting previous one if any.
+   * @brief Build the KDGrove for the scene, overwriting previous one if any.
    * @param safe The same safe as the one received by finalizeSceneLoading
    * @see Scene::finalizeSceneLoading
+   * @see Scene::buildKDGroveWithLog
   */
-  void buildKDTree(bool const safe=false);
+  void buildKDGrove(bool const safe=false);
   /**
-   * @brief Call buildKDTree exporting building information through logging
+   * @brief Call buildKDGrove exporting building information through logging
    *  system
-   * @see Scene::buildKDTree
+   * @see Scene::buildKDGrove
    */
-  void buildKDTreeWithLog(bool const safe=false);
+  void buildKDGroveWithLog(bool const safe=false);
 
   // ***  GETTERs and SETTERs  *** //
   // ***************************** //
@@ -398,19 +408,19 @@ public:
   )
   {this->kdtf = kdtf;}
   /**
-   * @brief Obtain the KDTree used by the scene
-   * @return KDTree used by the scene
-   * @see Scene::kdtree
+   * @brief Obtain the KDGrove used by the scene
+   * @return KDGrove used by the scene
+   * @see Scene::kdgrove
    */
-  virtual inline std::shared_ptr<KDTreeNodeRoot> getKDTree() const
-  {return kdtree;}
+  virtual inline std::shared_ptr<KDGrove> getKDGrove() const
+  {return kdgrove;}
   /**
-   * @brief Set the KDTree to be used by the scene
-   * @param kdtree New KDTree to be used by the scene
+   * @brief Set the KDGrove to be used by the scene
+   * @param kdgrove New KDGrove to be used by the scene
    * @see Scene::kdtree
    */
-  virtual inline void setKDTree(std::shared_ptr<KDTreeNodeRoot> const kdtree)
-  {this->kdtree = kdtree;}
+  virtual inline void setKDGrove(std::shared_ptr<KDGrove> const kdgrove)
+  {this->kdgrove = kdgrove;}
 
   /**
    * @brief Obtain the scene's bounding box

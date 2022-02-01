@@ -62,6 +62,9 @@ public:
     /**
      * @brief Bulid a KDGrove from given scene parts
      * @param parts Scene parts to build KDGrove from
+     * @param mergeNonMoving If true, all primitives from non moving objects
+     *  will be merged to build a single static KDTree. If false, then one
+     *  KDTree will be built for each static object.
      * @param computeKDGroveStats If true, KDGrove stats will be computed. If
      *  false, they will not
      * @param reportKDGroveStats If true, KDGrove stats will be reported. If
@@ -72,9 +75,12 @@ public:
      *  reported. If false, they will not
      * @return Build KDGrove
      * @see KDGrove
+     * @see KDGroveFactory::makeFull
+     * @see KDGroveFactory::makeMergeNonMoving
      */
     virtual shared_ptr<KDGrove> makeFromSceneParts(
         vector<shared_ptr<ScenePart>> parts,
+        bool const mergeNonMoving=false,
         bool const safe=false,
         bool const computeKDGroveStats=false,
         bool const reportKDGroveStats=false,
@@ -94,4 +100,49 @@ public:
         shared_ptr<KDGrove> kdgrove,
         vector<double> &buildingTimes
     );
+
+protected:
+    // ***  UTIL BUILDING METHODS  *** //
+    // ******************************* //
+    /**
+     * @brief The common implementation of building a KDGrove. It handles
+     *  the common building process for both full and merge non-moving modes.
+     * @see KDGroveFactory::makeFromSceneParts
+     * @see KDGroveFactory::makeFull
+     * @see KDGroveFactory::makeMergeNonMoving
+     */
+    virtual shared_ptr<KDGrove> makeCommon(
+        vector<shared_ptr<ScenePart>> parts,
+        bool const safe,
+        bool const computeKDGroveStats,
+        bool const reportKDGroveStats,
+        bool const computeKDTreeStats,
+        bool const reportKDTreeStats
+    );
+    /**
+     * @brief Build a KDGrove on a KDTree per ScenePart basis
+     * @see KDGroveFactory::makeFromSceneParts
+     */
+    virtual shared_ptr<KDGrove> makeFull(
+        vector<shared_ptr<ScenePart>> parts,
+        bool const safe,
+        bool const computeKDGroveStats,
+        bool const reportKDGroveStats,
+        bool const computeKDTreeStats,
+        bool const reportKDTreeStats
+    );
+    /**
+     * @brief Build a KDGrove where all non moving scene parts are merged
+     *  to build a single KDTree
+     * @see KDGroveFactory::makeFromSceneParts
+     */
+    virtual shared_ptr<KDGrove> makeMergeNonMoving(
+        vector<shared_ptr<ScenePart>> parts,
+        bool const safe,
+        bool const computeKDGroveStats,
+        bool const reportKDGroveStats,
+        bool const computeKDTreeStats,
+        bool const reportKDTreeStats
+    );
+
 };

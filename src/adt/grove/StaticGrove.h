@@ -15,7 +15,8 @@
  *  query if the grove has trees and how many.
  *
  * The StaticGrove::addTree, StaticGrove::removeTree,
- *  StaticGrove::removeTrees, StaticGrove::removeAll and StaticGrove::clear
+ *  StaticGrove::removeTrees, StaticGrove::removeAll, StaticGrove::clear,
+ *  StaticGrove::replaceTree and StaticGrove::setTree
  *  functions allow to add and remove trees from the grove.
  *
  * The StaticGrove::getNumTrees, StaticGrove::getTreeReference,
@@ -114,6 +115,21 @@ public:
      * @see StaticGrove::removeAll
      */
     inline void clear() {removeAll();}
+    /**
+     * @brief Replace tree at given index by given tree
+     * @param index Index of tree to be replaced
+     * @param tree New tree
+     */
+    virtual void replaceTree(
+        size_t const index,
+        std::shared_ptr<Tree> tree
+    ) = 0;
+    /**
+     * @brief Alias for StaticGrove::replaceTree
+     * @see StaticGrove::replaceTree
+     */
+    inline void setTree(size_t const index, std::shared_ptr<Tree> tree)
+    {replaceTree(index, tree);}
 
     // ***  FOR LOOP METHODS  *** //
     // ************************** //

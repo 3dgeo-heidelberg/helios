@@ -62,13 +62,12 @@ public:
     /**
      * @see StaticGrove::removeTrees
      */
-    void removeTrees(
-        size_t const startIndex, size_t const endIndex
-    ) override;
+    void removeTrees(size_t const startIndex, size_t const endIndex) override;
     /**
      * @see StaticGrove::removeAll
      */
     void removeAll() override;
+    void replaceTree(size_t const index, std::shared_ptr<Tree> tree) override;
 
     // ***  FOR LOOP METHODS  *** //
     // ************************** //

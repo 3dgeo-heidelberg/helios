@@ -52,6 +52,13 @@ template <typename Tree>
 Tree * BasicStaticGrove<Tree>::getTreePointer(size_t const index) const{
     return trees[index].get();
 }
+template <typename Tree>
+void BasicStaticGrove<Tree>::replaceTree(
+    size_t const index,
+    std::shared_ptr<Tree> tree
+){
+    trees[index] = tree;
+}
 
 // ***  WHILE LOOP METHODS  *** //
 // **************************** //

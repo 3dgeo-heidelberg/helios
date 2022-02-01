@@ -55,8 +55,13 @@ Scene::Scene(Scene &s) {
   }
 
   this->kdtf = s.kdtf;
-  this->kdtree = shared_ptr<KDTreeNodeRoot>(
-      kdtf->makeFromPrimitivesUnsafe(this->primitives)
+  kdgrove = KDGroveFactory(kdtf).makeFromSceneParts(
+    this->parts,  // Scene parts
+    true,   // Safe
+    true,   // Compute KDGrove stats
+    true,   // Report KDGrove stats
+    true,   // Compute KDTree stats
+    true    // Report KDTree stats
   );
   registerParts();
 }
@@ -138,9 +143,8 @@ bool Scene::finalizeLoading(bool const safe) {
   // Compute each part centroid wrt to scene
   for(shared_ptr<ScenePart> & part : parts) part->computeCentroid();
 
-  // ############# BEGIN Build KD-tree ##################
-  if(kdtf != nullptr) buildKDTreeWithLog(safe);
-  // ############# END Build KD-tree ##################
+  // Build KDGrove
+  if(kdtf != nullptr) buildKDGroveWithLog(safe);
 
   return true;
 }
@@ -195,8 +199,8 @@ Scene::getIntersection(
   shared_ptr<RaySceneIntersection> result;
 
   if (!bruteForce) {
-    KDTreeRaycaster raycaster(kdtree);
-    result = shared_ptr<RaySceneIntersection>(raycaster.search(
+    // TODO Rethink : Prevent instantiating raycaster each time?
+    result = shared_ptr<RaySceneIntersection>(raycaster->search(
         rayOrigin, rayDir, tMinMax[0], tMinMax[1], groundOnly));
   }
 
@@ -217,8 +221,7 @@ Scene::getIntersections(
   }
 
   // TODO Rethink : Is it effecient to instantiate raycaster for each check ?
-  KDTreeRaycaster raycaster(kdtree);
-  return raycaster.searchAll(
+  return raycaster->searchAll(
       rayOrigin, rayDir, tMinMax[0], tMinMax[1], groundOnly
   );
 }
@@ -373,7 +376,7 @@ glm::dvec3 Scene::findForceOnGroundQ(
     return minzv;
 }
 
-void Scene::buildKDTree(bool const safe){
+void Scene::buildKDGrove(bool const safe){
     // TODO Rethink : Implementation
     /*kdtree = shared_ptr<KDTreeNodeRoot>(
         safe ?
@@ -382,12 +385,14 @@ void Scene::buildKDTree(bool const safe){
     );*/
     kdgrove = KDGroveFactory(kdtf).makeFromSceneParts(
         parts,  // Scene parts
+        true,   // Merge non moving
         true,   // Safe
         true,   // Compute KDGrove stats
         true,   // Report KDGrove stats
         true,   // Compute KDTree stats
         true    // Report KDTree stats
     );
+    raycaster = std::make_shared<KDGroveRaycaster>(kdgrove);
     /*kdgrove = std::make_shared<KDGrove>();
     for(shared_ptr<ScenePart> &part : parts){
         shared_ptr<KDTreeNodeRoot> kdtree = shared_ptr<KDTreeNodeRoot>(
@@ -406,16 +411,16 @@ void Scene::buildKDTree(bool const safe){
     }*/
 }
 
-void Scene::buildKDTreeWithLog(bool const safe){
+void Scene::buildKDGroveWithLog(bool const safe){
     logging::INFO("Building KD-Tree... ");
     TimeWatcher kdtTw;
     kdtTw.start();
-    buildKDTree(safe);
+    buildKDGrove(safe);
     kdtTw.stop();
     std::stringstream ss;
     ss << "KDT built in " << kdtTw.getElapsedDecimalSeconds() << "s";
     logging::TIME(ss.str());
-    std::exit(7); // TODO Remove
+    //std::exit(7); // TODO Remove
 }
 
 // ***  READ/WRITE  *** //
