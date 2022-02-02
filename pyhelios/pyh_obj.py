@@ -109,6 +109,7 @@ class Scene:
         # Add measurement and trajectory geoms to visualizer.
         self.visualizer.add_geometry(self.measurement)
         self.visualizer.add_geometry(self.trajectory)
+        self.visualizer.get_render_option().mesh_show_back_face = True
 
         if self.logging:
             print("Adding sceneparts to visualisation...\n")
