@@ -55,14 +55,19 @@ Scene::Scene(Scene &s) {
   }
 
   this->kdtf = s.kdtf;
-  kdgrove = KDGroveFactory(kdtf).makeFromSceneParts(
-    this->parts,  // Scene parts
-    true,   // Safe
-    true,   // Compute KDGrove stats
-    true,   // Report KDGrove stats
-    true,   // Compute KDTree stats
-    true    // Report KDTree stats
-  );
+  if(s.parts.empty()){
+      kdgrove = nullptr;
+  }
+  else{
+      kdgrove = KDGroveFactory(kdtf).makeFromSceneParts(
+          this->parts,  // Scene parts
+          true,   // Safe
+          true,   // Compute KDGrove stats
+          true,   // Report KDGrove stats
+          true,   // Compute KDTree stats
+          true    // Report KDTree stats
+      );
+  }
   registerParts();
 }
 
@@ -199,7 +204,6 @@ Scene::getIntersection(
   shared_ptr<RaySceneIntersection> result;
 
   if (!bruteForce) {
-    // TODO Rethink : Prevent instantiating raycaster each time?
     result = shared_ptr<RaySceneIntersection>(raycaster->search(
         rayOrigin, rayDir, tMinMax[0], tMinMax[1], groundOnly));
   }
@@ -220,7 +224,6 @@ Scene::getIntersections(
     return {};
   }
 
-  // TODO Rethink : Is it effecient to instantiate raycaster for each check ?
   return raycaster->searchAll(
       rayOrigin, rayDir, tMinMax[0], tMinMax[1], groundOnly
   );
@@ -377,12 +380,6 @@ glm::dvec3 Scene::findForceOnGroundQ(
 }
 
 void Scene::buildKDGrove(bool const safe){
-    // TODO Rethink : Implementation
-    /*kdtree = shared_ptr<KDTreeNodeRoot>(
-        safe ?
-        kdtf->makeFromPrimitives(primitives, true, true) :
-        kdtf->makeFromPrimitivesUnsafe(primitives, true, true)
-    );*/
     kdgrove = KDGroveFactory(kdtf).makeFromSceneParts(
         parts,  // Scene parts
         true,   // Merge non moving
@@ -393,22 +390,6 @@ void Scene::buildKDGrove(bool const safe){
         true    // Report KDTree stats
     );
     raycaster = std::make_shared<KDGroveRaycaster>(kdgrove);
-    /*kdgrove = std::make_shared<KDGrove>();
-    for(shared_ptr<ScenePart> &part : parts){
-        shared_ptr<KDTreeNodeRoot> kdtree = shared_ptr<KDTreeNodeRoot>(
-            safe ?
-            kdtf->makeFromPrimitives(part->mPrimitives, true, true) :
-            kdtf->makeFromPrimitivesUnsafe(part->mPrimitives, true, true)
-        );
-        BasicDynGroveSubject *subject = nullptr;
-        if(part->getType()==ScenePart::ObjectType::DYN_MOVING_OBJECT){
-            subject = (DynMovingObject *) part.get();
-        }
-        kdgrove->addSubject(
-            subject,
-            make_shared<GroveKDTreeRaycaster>(kdtree)
-        );
-    }*/
 }
 
 void Scene::buildKDGroveWithLog(bool const safe){

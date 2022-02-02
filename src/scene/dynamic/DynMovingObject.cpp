@@ -51,6 +51,11 @@ bool DynMovingObject::doStep(){
         }
     );
 
+    // Notify observer if modified
+    if(modified && kdGroveObserver != nullptr){
+        kdGroveObserver->update(*this);
+    }
+
     // Return modifications control flag
     return modified;
 }
@@ -89,18 +94,17 @@ void DynMovingObject::registerObserverGrove(
     std::shared_ptr<KDGrove> kdGroveObserver
 ){
     // Check there is no previous observer (probably undesired register then)
-    if(kdGroveObserver != nullptr){
+    if(this->kdGroveObserver != nullptr){
         // Exception to prevent unexpected overwriting of kdGroveObserver
         throw HeliosException(
             "DynMovingObject::registerObserverGrove failed because it has "
-            "been registered before.\n"
+            "been registered before.\n\t"
             "Call DynMovingObject::unregisterObserverGrove before registering "
             "a new observer grove."
         );
     }
     // Register observer
     this->kdGroveObserver = kdGroveObserver;
-    kdGroveObserver->addSubject(this, nullptr); // TODO Rethink : KDT here
 }
 void DynMovingObject::unregisterObserverGrove(){
     // Check there is a observer to unregister
@@ -108,7 +112,7 @@ void DynMovingObject::unregisterObserverGrove(){
         // Exception to prevent unmatched pairs of register-unregister calls
         throw HeliosException(
             "DynMovingObject::unregisterObserverGrove failed because it has "
-            "not a registered observer.\n"
+            "not a registered observer.\n\t"
             "Call DynMovingObject::registerObserverGrove before unregistering "
             "current observer."
         );

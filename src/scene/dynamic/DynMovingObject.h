@@ -7,7 +7,7 @@
 #include <scene/dynamic/DynMotion.h>
 #include <rigidmotion/RigidMotionEngine.h>
 #include <scene/dynamic/DynMotionEngine.h>
-#include <adt/grove/BasicDynGroveSubject.h>
+#include <adt/grove/KDGroveSubject.h>
 
 using std::shared_ptr;
 using std::make_shared;
@@ -35,7 +35,7 @@ class KDGrove;
  * @see rigidmotion::RigidMotionR2Factory
  * @see rigidmotion::RigidMotionR3Factory
  */
-class DynMovingObject : public DynObject, public BasicDynGroveSubject{
+class DynMovingObject : public DynObject, public KDGroveSubject{
 private:
     // ***  SERIALIZATION  *** //
     // *********************** //
@@ -267,12 +267,14 @@ public:
     /**
      * @brief Register given grove as a observer for the dynamic moving object
      * @param kdGroveObserver Grove to be registered as a observer
+     * @see KDGroveSubject::registerObserverGrove
      */
-    void registerObserverGrove(std::shared_ptr<KDGrove> kdGroveObserver);
+    void registerObserverGrove(shared_ptr<KDGrove> kdGroveObserver) override;
     /**
      * @brief Unregister current grove observer
+     * @see KDGroveSubject::unregisterObserverGrove
      */
-    void unregisterObserverGrove();
+    void unregisterObserverGrove() override;
     /**
      * @see BasicDynGroveSubject::setGroveSubjectId
      */
@@ -281,4 +283,11 @@ public:
      * @see BasicDynGroveSubject::getGroveSubjectId
      */
     std::size_t getGroveSubjectId() override;
+
+    // ***  GETTERs and SETTERs  *** //
+    // ***************************** //
+    /**
+     * @see ScenePart::getType
+     */
+    ObjectType getType() override {return ObjectType::DYN_MOVING_OBJECT;}
 };

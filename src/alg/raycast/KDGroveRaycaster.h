@@ -28,21 +28,11 @@ protected:
 public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //
     // ************************************ //
-    // TODO Rethink : Solve the construction rebuild issue
     /**
      * @bried KDGrove ray caster constructor
      * @param grove The KDGrove for the ray casting
      */
     KDGroveRaycaster(std::shared_ptr<KDGrove> grove) : grove(grove) {}
-    /*KDGroveRaycaster(std::shared_ptr<KDGrove> grove) : grove(nullptr) {
-        this->grove = std::make_shared<KDGrove>(*grove);
-        size_t const m = this->grove->getNumTrees();
-        for(size_t i = 0 ; i < m ; ++i){
-            this->grove->setTree(i, std::make_shared<GroveKDTreeRaycaster>(
-                grove->getTreeReference(i)
-            ));
-        }
-    }*/
     virtual ~KDGroveRaycaster() = default;
 
     // ***  RAYCASTING METHODS  *** //

@@ -95,10 +95,13 @@ public:
      *  and the KDGrove itself have been created
      * @param kdgrove The KDGrove which stats must be computed
      * @param buildingTimes The building time for each tree inside the KDGrove
+     * @param treePrimitives The number of primitives for each tree inside
+     *  the KDGrove
      */
     void handleKDGroveStats(
         shared_ptr<KDGrove> kdgrove,
-        vector<double> &buildingTimes
+        vector<double> &buildingTimes,
+        vector<int> &treePrimitives
     );
 
 protected:

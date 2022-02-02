@@ -121,8 +121,9 @@ public:
      * @see DynScene::dynamicSpaceInterval
      * @see DynScene::currentStep
      * @see DynScene::doStep
+     * @see Scene::doSimStep
      */
-    bool doSimStep();
+    bool doSimStep() override;
     /**
      * @brief Dynamic behavior computation itself.
      *

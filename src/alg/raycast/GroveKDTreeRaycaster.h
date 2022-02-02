@@ -35,25 +35,25 @@ public:
 	 * @see Raycaster::searchAll
 	 */
     std::map<double, Primitive*> searchAll(
-        glm::dvec3 _rayOrigin,
-        glm::dvec3 _rayDir,
+        glm::dvec3 rayOrigin,
+        glm::dvec3 rayDir,
         double tmin,
         double tmax,
         bool groundOnly
     ) override {return KDTreeRaycaster::searchAll(
-        _rayOrigin, _rayDir, tmin, tmax, groundOnly
+        rayOrigin, rayDir, tmin, tmax, groundOnly
     );}
     /**
      * @see Raycaster::search
      */
     RaySceneIntersection * search(
-        glm::dvec3 _rayOrigin,
-        glm::dvec3 _rayDir,
+        glm::dvec3 rayOrigin,
+        glm::dvec3 rayDir,
         double tmin,
         double tmax,
         bool groundOnly
     ) override {return KDTreeRaycaster::search(
-        _rayOrigin, _rayDir, tmin, tmax, groundOnly
+        rayOrigin, rayDir, tmin, tmax, groundOnly
     );}
 
     // ***  GROVE DYNAMIC TREE METHODS  *** //

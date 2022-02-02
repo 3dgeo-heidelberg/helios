@@ -59,6 +59,46 @@ public:
      */
     double stdevBuildingTime;
     /**
+     * @brief The total number of primitives among all KDTrees (summation)
+     * @see KDGroveStats::minTreePrimitives
+     * @see KDGroveStats::maxTreePrimitives
+     * @see KDGroveStats::meanTreePrimitives
+     * @see KDGroveStats::stdevTreePrimitives
+     */
+    int totalTreePrimitives;
+    /**
+     * @brief The minimum number of primitives among all KDTrees
+     * @see KDGroveStats::totalTreePrimitives
+     * @see KDGroveStats::maxTreePrimitives
+     * @see KDGroveStats::meanTreePrimitives
+     * @see KDGroveStats::stdevTreePrimitives
+     */
+    int minTreePrimitives;
+    /**
+     * @brief The maximum number of primitives among all KDTrees
+     * @see KDGroveStats::totalTreePrimitives
+     * @see KDGroveStats::minTreePrimitives
+     * @see KDGroveStats::meanTreePrimitives
+     * @see KDGroveStats::stdevTreePrimitives
+     */
+    int maxTreePrimitives;
+    /**
+     * @brief The mean number of primitives among all KDTrees
+     * @see KDGroveStats::totalTreePrimitives
+     * @see KDGroveStats::minTreePrimitives
+     * @see KDGroveStats::maxTreePrimitives
+     * @see KDGroveStats::stdevTreePrimitives
+     */
+    double meanTreePrimitives;
+    /**
+     * @brief The standard deviation of number of primitives among all KDTrees
+     * @see KDGroveStats::totalTreePrimitives
+     * @see KDGroveStats::minTreePrimitives
+     * @see KDGroveStats::maxTreePrimitives
+     * @see KDGroveStats::meanTreePrimitives
+     */
+    double stdevTreePrimitives;
+    /**
      * @brief The total maximum number of primitives among all
      *  leaves for each KDTree (summation)
      * @see KDTreeNodeRoot::stats_maxNumPrimsInLeaf
@@ -203,6 +243,47 @@ public:
      * @see KDGroveStats::meanMaxDepth
      */
     double stdevMaxDepth;
+    /**
+     * @brief The total axis-aligned surface area among all KDTrees (summation)
+     * @see KDGroveStats::minSurfaceArea
+     * @see KDGroveStats::maxSurfaceArea
+     * @see KDGroveStats::meanSurfaceArea
+     * @see KDGroveStats::stdevSurfaceArea
+     */
+    double totalSurfaceArea;
+    /**
+     * @brief The minimum axis-aligned surface area among all KDTrees
+     * @see KDGroveStats::totalSurfaceArea
+     * @see KDGroveStats::maxSurfaceArea
+     * @see KDGroveStats::meanSurfaceArea
+     * @see KDGroveStats::stdevSurfaceArea
+     */
+    double minSurfaceArea;
+    /**
+     * @brief The maximum axis-aligned surface area among all KDTrees
+     * @see KDGroveStats::totalSurfaceArea
+     * @see KDGroveStats::minSurfaceArea
+     * @see KDGroveStats::meanSurfaceArea
+     * @see KDGroveStats::stdevSurfaceArea
+     */
+    double maxSurfaceArea;
+    /**
+     * @brief The mean axis-aligned surface area among all KDTrees
+     * @see KDGroveStats::totalSurfaceArea
+     * @see KDGroveStats::minSurfaceArea
+     * @see KDGroveStats::maxSurfaceArea
+     * @see KDGroveStats::stdevSurfaceArea
+     */
+    double meanSurfaceArea;
+    /**
+     * @brief The standard deviation of  axis-aligned surface area among all
+     *  KDTrees
+     * @see KDGroveStats::totalSurfaceArea
+     * @see KDGroveStats::minSurfaceArea
+     * @see KDGroveStats::maxSurfaceArea
+     * @see KDGroveStats::meanSurfaceArea
+     */
+    double stdevSurfaceArea;
     /**
      * @brief The total number of interior nodes among all KDTrees (summation)
      * @see KDTreeNodeRoot::stats_numInterior
@@ -394,6 +475,8 @@ public:
      */
     string toString() const {
         stringstream ss;
+        ss.flags(std::ios_base::fixed);
+        ss.precision(4);
         ss  << "KDGrove stats:\n"
             << "\tNumber of trees: " << numTrees << "\n"
             << "\tNumber of static trees: " << numStaticTrees << "\n"
@@ -405,6 +488,12 @@ public:
                 << totalBuildingTime << ", "
                 << meanBuildingTime << ", "
                 << stdevBuildingTime << ")\n"
+            << "\t\tTree primitives: ("
+                << minTreePrimitives << ", "
+                << maxTreePrimitives << ", "
+                << totalTreePrimitives << ", "
+                << meanTreePrimitives << ", "
+                << stdevTreePrimitives << ")\n"
             << "\t\tMax primitives in leaf: ("
                 << minMaxPrimsInLeaf << ", "
                 << maxMaxPrimsInLeaf << ", "
@@ -423,6 +512,12 @@ public:
                 << totalMaxDepth << ", "
                 << meanMaxDepth << ", "
                 << stdevMaxDepth << ")\n"
+            << "\t\tAxis-aligned surface area: ("
+                << minSurfaceArea << ", "
+                << maxSurfaceArea << ", "
+                << totalSurfaceArea << ", "
+                << meanSurfaceArea << ", "
+                << stdevSurfaceArea << ")\n"
             << "\t\tNumber of interior nodes: ("
                 << minNumInterior << ", "
                 << maxNumInterior << ", "

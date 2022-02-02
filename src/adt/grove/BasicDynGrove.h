@@ -3,10 +3,12 @@
 
 #include <BasicStaticGrove.h>
 #include <DynGrove.h>
-#include <BasicDynGroveSubject.h>
 
 #include <memory>
 #include <vector>
+
+template <typename Tree, typename Subject>
+class BasicDynGroveSubject;
 
 /**
  * @author Alberto M. Esmoris Pena
@@ -15,7 +17,8 @@
  * @brief Basic implementation of a DynGrove which extends BasicStaticGrove
  *  to provided dynamic funcionalities
  *
- * @tparam Tree Tyhe type of the tree to be handled
+ * @tparam Tree The type of the tree to be handled
+ * @tparam Subject The type of the subject that can be observed
  * @see BasicStaticGrove
  * @see DynGrove
  */
@@ -38,7 +41,7 @@ protected:
      *  a subject notifies to the observer (which happens too frequently
      *  during simulation).
      */
-    std::vector<BasicDynGroveSubject *> subjects;
+    std::vector<BasicDynGroveSubject<Tree, Subject> *> subjects;
 
 public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //
@@ -66,7 +69,7 @@ public:
      * @param tree Tree associated to new subject
      */
     virtual void addSubject(
-        BasicDynGroveSubject *subject,
+        BasicDynGroveSubject<Tree, Subject> *subject,
         std::shared_ptr<Tree> tree
     );
     /**
@@ -78,7 +81,7 @@ public:
      *
      * @param id Identifier of the subject to be removed
      */
-    virtual void removeSubject(BasicDynGroveSubject *subject);
+    virtual void removeSubject(BasicDynGroveSubject<Tree, Subject> *subject);
 
 };
 

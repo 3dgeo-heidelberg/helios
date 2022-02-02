@@ -462,4 +462,18 @@ public:
    * @return Imported scene
    */
   static Scene *readObject(std::string path);
+
+  // ***  SIMULATION STEP  *** //
+  // ************************* //
+  /**
+   * @brief Support simulation step handling from scene side.
+   *
+   * For basic scenes and static scenes, there is nothing to do. However,
+   *   dynamic scenes are expected to override this method to provide
+   *   simulation level dynamism.
+   *
+   * @return True if scene was updated, false otherwise
+   * @see DynScene::doSimStep
+   */
+  virtual bool doSimStep() {return false;}
 };

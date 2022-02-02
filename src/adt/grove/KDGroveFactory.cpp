@@ -1,5 +1,6 @@
 #include <KDGroveFactory.h>
 #include <KDGroveStats.h>
+#include <KDGroveSubject.h>
 #include <TimeWatcher.h>
 
 
@@ -40,7 +41,8 @@ shared_ptr<KDGrove> KDGroveFactory::makeFromSceneParts(
 // **************************** //
 void KDGroveFactory::handleKDGroveStats(
     shared_ptr<KDGrove> kdgrove,
-    vector<double> &buildingTimes
+    vector<double> &buildingTimes,
+    vector<int> &treePrimitives
 ){
     size_t const numTrees = kdgrove->getNumTrees();
     KDGroveStats &stats = *kdgrove->getStats();
@@ -55,12 +57,16 @@ void KDGroveFactory::handleKDGroveStats(
         if(i==0){ // Init value for min/max
             stats.minBuildingTime = buildingTimes[i];
             stats.maxBuildingTime = buildingTimes[i];
+            stats.minTreePrimitives = treePrimitives[i];
+            stats.maxTreePrimitives = treePrimitives[i];
             stats.minMaxPrimsInLeaf = root->stats_maxNumPrimsInLeaf;
             stats.maxMaxPrimsInLeaf = root->stats_maxNumPrimsInLeaf;
             stats.minMinPrimsInLeaf = root->stats_minNumPrimsInLeaf;
             stats.maxMinPrimsInLeaf = root->stats_minNumPrimsInLeaf;
             stats.minMaxDepth = root->stats_maxDepthReached;
             stats.maxMaxDepth = root->stats_maxDepthReached;
+            stats.minSurfaceArea = root->surfaceArea;
+            stats.maxSurfaceArea = root->surfaceArea;
             stats.minNumInterior = root->stats_numInterior;
             stats.maxNumInterior = root->stats_numInterior;
             stats.minNumLeaves = root->stats_numLeaves;
@@ -69,11 +75,17 @@ void KDGroveFactory::handleKDGroveStats(
             stats.maxCost = root->stats_totalCost;
         }
         else{ // Update value for min/max
-            stats.minBuildingTime = std::min<int>(
+            stats.minBuildingTime = std::min<double>(
                 stats.minBuildingTime, buildingTimes[i]
             );
-            stats.maxBuildingTime = std::max<int>(
+            stats.maxBuildingTime = std::max<double>(
                 stats.maxBuildingTime, buildingTimes[i]
+            );
+            stats.minTreePrimitives = std::min<int>(
+                stats.minTreePrimitives, treePrimitives[i]
+            );
+            stats.maxTreePrimitives = std::max<int>(
+                stats.maxTreePrimitives, treePrimitives[i]
             );
             stats.minMaxPrimsInLeaf = std::min<int>(
                 stats.minMaxPrimsInLeaf, root->stats_maxNumPrimsInLeaf
@@ -93,6 +105,12 @@ void KDGroveFactory::handleKDGroveStats(
             stats.maxMaxDepth = std::max<int>(
                 stats.maxMaxDepth, root->stats_maxDepthReached
             );
+            stats.minSurfaceArea = std::min<double>(
+                stats.minSurfaceArea, root->surfaceArea
+            );
+            stats.maxSurfaceArea = std::max<double>(
+                stats.maxSurfaceArea, root->surfaceArea
+            );
             stats.minNumInterior = std::min<int>(
                 stats.minNumInterior, root->stats_numInterior
             );
@@ -105,18 +123,20 @@ void KDGroveFactory::handleKDGroveStats(
             stats.maxNumLeaves = std::max<int>(
                 stats.maxNumLeaves, root->stats_numLeaves
             );
-            stats.minCost = std::min<int>(
+            stats.minCost = std::min<double>(
                 stats.minCost, root->stats_totalCost
             );
-            stats.maxCost = std::max<int>(
+            stats.maxCost = std::max<double>(
                 stats.maxCost, root->stats_totalCost
             );
         }
         // Handle total statistics
         stats.totalBuildingTime += buildingTimes[i];
+        stats.totalTreePrimitives += treePrimitives[i];
         stats.totalMaxPrimsInLeaf += root->stats_maxNumPrimsInLeaf;
         stats.totalMinPrimsInLeaf += root->stats_minNumPrimsInLeaf;
         stats.totalMaxDepth += root->stats_maxDepthReached;
+        stats.totalSurfaceArea += root->surfaceArea;
         stats.totalNumInterior += root->stats_numInterior;
         stats.totalNumLeaves += root->stats_numLeaves;
         stats.totalCost += root->stats_totalCost;
@@ -124,9 +144,11 @@ void KDGroveFactory::handleKDGroveStats(
     // Handle mean statistics
     double const n = (double) stats.numTrees;
     stats.meanBuildingTime = stats.totalBuildingTime / n;
+    stats.meanTreePrimitives = stats.totalTreePrimitives / n;
     stats.meanMaxPrimsInLeaf = stats.totalMaxPrimsInLeaf / n;
     stats.meanMinPrimsInLeaf = stats.totalMinPrimsInLeaf / n;
     stats.meanMaxDepth = stats.totalMaxDepth / n;
+    stats.meanSurfaceArea = stats.totalSurfaceArea / n;
     stats.meanNumInterior = stats.totalNumInterior / n;
     stats.meanNumLeaves = stats.totalNumLeaves / n;
     stats.meanCost = stats.totalCost / n;
@@ -138,6 +160,9 @@ void KDGroveFactory::handleKDGroveStats(
         stats.stdevBuildingTime += std::pow(
             buildingTimes[i]-stats.meanBuildingTime, 2
         );
+        stats.stdevTreePrimitives += std::pow(
+            treePrimitives[i]-stats.meanTreePrimitives, 2
+        );
         stats.stdevMaxPrimsInLeaf = std::pow(
             root->stats_maxNumPrimsInLeaf-stats.meanMaxPrimsInLeaf, 2
         );
@@ -146,6 +171,9 @@ void KDGroveFactory::handleKDGroveStats(
         );
         stats.stdevMaxDepth = std::pow(
             root->stats_maxDepthReached-stats.meanMaxDepth, 2
+        );
+        stats.stdevSurfaceArea = std::pow(
+            root->surfaceArea-stats.meanSurfaceArea, 2
         );
         stats.stdevNumInterior = std::pow(
             root->stats_numInterior-stats.meanNumInterior, 2
@@ -158,9 +186,11 @@ void KDGroveFactory::handleKDGroveStats(
         );
     }
     stats.stdevBuildingTime = std::sqrt(stats.stdevBuildingTime)/n;
+    stats.stdevTreePrimitives = std::sqrt(stats.stdevTreePrimitives)/n;
     stats.stdevMaxPrimsInLeaf = std::sqrt(stats.stdevMaxPrimsInLeaf)/n;
     stats.stdevMinPrimsInLeaf = std::sqrt(stats.stdevMinPrimsInLeaf)/n;
     stats.stdevMaxDepth = std::sqrt(stats.stdevMaxDepth)/n;
+    stats.stdevSurfaceArea = std::sqrt(stats.stdevSurfaceArea)/n;
     stats.stdevNumInterior = std::sqrt(stats.stdevNumInterior)/n;
     stats.stdevNumLeaves = std::sqrt(stats.stdevNumLeaves)/n;
     stats.stdevCost = std::sqrt(stats.stdevCost)/n;
@@ -181,15 +211,12 @@ shared_ptr<KDGrove> KDGroveFactory::makeCommon(
         computeKDGroveStats ? make_shared<KDGroveStats>() : nullptr
     );
     vector<double> buildingTimes;
+    vector<int> numPrimitives;
 
     // Build each KDTree
     for(shared_ptr<ScenePart> &part : parts){
         TimeWatcher tw;
         tw.start();
-        BasicDynGroveSubject *subject = nullptr;
-        if(part->getType()==ScenePart::ObjectType::DYN_MOVING_OBJECT){
-            subject = (DynMovingObject *) part.get();
-        }
         shared_ptr<KDTreeNodeRoot> kdtree = shared_ptr<KDTreeNodeRoot>(
             safe ?
             kdtf->makeFromPrimitives(
@@ -199,17 +226,23 @@ shared_ptr<KDGrove> KDGroveFactory::makeCommon(
                 part->mPrimitives, computeKDTreeStats, reportKDTreeStats
             )
         );
+        KDGroveSubject *subject = nullptr;
+        if(part->getType()==ScenePart::ObjectType::DYN_MOVING_OBJECT){
+            subject = (DynMovingObject *) part.get();
+            subject->registerObserverGrove(kdgrove);
+        }
         kdgrove->addSubject(
             subject,
             make_shared<GroveKDTreeRaycaster>(kdtree)
         );
         tw.stop();
         buildingTimes.push_back(tw.getElapsedDecimalSeconds());
+        numPrimitives.push_back(part->getPrimitives().size());
     }
 
     // Compute and report KDGrove stats (if requested)
     if(computeKDGroveStats){
-        handleKDGroveStats(kdgrove, buildingTimes);
+        handleKDGroveStats(kdgrove, buildingTimes, numPrimitives);
         if(reportKDGroveStats) logging::INFO(kdgrove->getStats()->toString());
     }
 

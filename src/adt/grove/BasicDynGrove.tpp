@@ -1,4 +1,5 @@
 #include <BasicDynGrove.h>
+#include <BasicDynGroveSubject.h>
 
 // ***  OBSERVER METHODS  *** //
 // ************************** //
@@ -9,7 +10,7 @@ void BasicDynGrove<Tree, Subject>::update(Subject &s){
 
 template <typename Tree, typename Subject>
 void BasicDynGrove<Tree, Subject>::addSubject(
-    BasicDynGroveSubject *subject,
+    BasicDynGroveSubject<Tree, Subject> *subject,
     std::shared_ptr<Tree> tree
 ){
     // Handle non-subject trees, if any (fill with nullptr)
@@ -25,7 +26,7 @@ void BasicDynGrove<Tree, Subject>::addSubject(
 
 template <typename Tree, typename Subject>
 void BasicDynGrove<Tree, Subject>::removeSubject(
-    BasicDynGroveSubject *subject
+    BasicDynGroveSubject<Tree, Subject> *subject
 ){
     // Remove subject from grove
     size_t const id = subject->getGroveSubjectId();
@@ -33,7 +34,7 @@ void BasicDynGrove<Tree, Subject>::removeSubject(
     subjects.erase(subjects.begin() + id);
 
     // Update identifier of remaining subjects
-    BasicDynGroveSubject *s;
+    BasicDynGroveSubject<Tree, Subject> *s;
     for(size_t i = id ; i < subjects.size() ; ++i){
         s = subjects[i];
         if(s!=nullptr) s->setGroveSubjectId(i);
