@@ -168,6 +168,11 @@ BOOST_PYTHON_MODULE(_pyhelios){
         .def("setCallback", &PyHeliosSimulation::setCallback)
         .def("clearCallback", &PyHeliosSimulation::clearCallback)
         .add_property(
+            "fixedGpsTimeStart",
+            &PyHeliosSimulation::getFixedGpsTimeStart,
+            &PyHeliosSimulation::setFixedGpsTimeStart
+        )
+        .add_property(
             "lasOutput",
             &PyHeliosSimulation::getLasOutput,
             &PyHeliosSimulation::setLasOutput
@@ -252,11 +257,6 @@ BOOST_PYTHON_MODULE(_pyhelios){
             &ScannerSettings::active
         )
         .add_property(
-            "beamSampleQuality",
-            &ScannerSettings::beamSampleQuality,
-            &ScannerSettings::beamSampleQuality
-        )
-        .add_property(
             "headRotatePerSec",
             &ScannerSettings::headRotatePerSec_rad,
             &ScannerSettings::headRotatePerSec_rad
@@ -300,11 +300,6 @@ BOOST_PYTHON_MODULE(_pyhelios){
             "beamDivAngle",
             &ScannerSettings::beamDivAngle,
             &ScannerSettings::beamDivAngle
-        )
-        .add_property(
-            "pulseLength",
-            &ScannerSettings::pulseLength_ns,
-            &ScannerSettings::pulseLength_ns
         )
         .add_property(
             "trajectoryTimeInterval",
@@ -353,6 +348,11 @@ BOOST_PYTHON_MODULE(_pyhelios){
             &PlatformSettings::slowdownEnabled
         )
         .add_property(
+            "yawAtDepartureSpecified",
+            &PlatformSettings::yawAtDepartureSpecified,
+            &PlatformSettings::yawAtDeparture
+        )
+        .add_property(
             "yawAtDeparture",
             &PlatformSettings::yawAtDeparture,
             &PlatformSettings::yawAtDeparture
@@ -361,6 +361,15 @@ BOOST_PYTHON_MODULE(_pyhelios){
             "smoothTurn",
             &PlatformSettings::smoothTurn,
             &PlatformSettings::smoothTurn
+        )
+        .def(
+            "hasTemplate",
+            &PlatformSettings::hasTemplate
+        )
+        .def(
+            "getTemplate",
+            &PlatformSettings::getTemplate,
+            return_internal_reference<>()
         )
     ;
 

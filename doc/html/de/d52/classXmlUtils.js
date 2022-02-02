@@ -7,5 +7,6 @@ var classXmlUtils =
     [ "createParamsFromXml", "de/d52/classXmlUtils.html#a981fdb92dcce0f0032a71d8bb1a4fa40", null ],
     [ "createRotationFromXml", "de/d52/classXmlUtils.html#ac273fd5a04de36ba5d9d8a0cd0aaa34c", null ],
     [ "createVec3dFromXml", "de/d52/classXmlUtils.html#a4cb23b72ac06cb169da01937f79bbc59", null ],
-    [ "getAttribute", "de/d52/classXmlUtils.html#ab0e570e8f0f8d556295fd49ba28f5b06", null ]
+    [ "getAttribute", "de/d52/classXmlUtils.html#ab0e570e8f0f8d556295fd49ba28f5b06", null ],
+    [ "hasAttribute", "de/d52/classXmlUtils.html#a9acdd5bdee4f3fbc9e13f3360996bc8d", null ]
 ];

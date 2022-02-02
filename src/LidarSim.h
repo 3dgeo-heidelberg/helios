@@ -41,9 +41,12 @@ public:
      * @param fixedIncidenceAngle Flag to specify usage of fixed incidence
      *  angle. True means fixed incidence angle will be used, false implies
      *  it will not
+     * @param gpsStartTime Specify the fixed GPS start time
      * @param lasScale Specify LAS format scale factor
      * @param kdtType Specify the type of KDTree building strategy
      * @param kdtJobs Specify how many threads use to build the KDTree
+     * @param kdtGeomJobs Specify how many threads use to build upper nodes
+     *  of the KDTree
      * @param sahLossNodes Specify the number of nodes used to find the optimal
      *  split point when SAH or the number of samples if fast SAH is used
      */
@@ -65,9 +68,11 @@ public:
         bool las10 = false,
         bool zipOutput = false,
         bool fixedIncidenceAngle = false,
+        std::string gpsStartTime = "",
         double lasScale = 0.0001,
         int kdtType = 1,
         size_t kdtJobs = 1,
+        size_t kdtGeomJobs = 1,
         size_t sahLossNodes = 21
     );
 };

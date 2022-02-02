@@ -38,6 +38,7 @@ private:
     std::shared_ptr<SurveyPlayback> playback = nullptr;
     boost::thread * thread = nullptr;
     std::shared_ptr<PySimulationCycleCallback> callback = nullptr;
+    std::string fixedGpsTimeStart = "";
     bool lasOutput = false;
     bool las10     = false;
     bool zipOutput = false;
@@ -205,6 +206,9 @@ public:
         survey->scanner->cycleMeasurements = nullptr;
         survey->scanner->cycleMeasurementsMutex = nullptr;
     }
+    std::string getFixedGpsTimeStart(){return fixedGpsTimeStart;}
+    void setFixedGpsTimeStart(std::string const fixedGpsTimeStart)
+    {this->fixedGpsTimeStart = fixedGpsTimeStart;}
     double getLasOutput(){return lasOutput;}
     void setLasOutput(double lasOutput_){
         if(started) throw PyHeliosException(

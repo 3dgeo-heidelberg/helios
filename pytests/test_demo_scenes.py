@@ -37,7 +37,6 @@ def run_helios_pyhelios(survey_path: Path, options=None) -> Path:
     import pyhelios
     pyhelios.setDefaultRandomnessGeneratorSeed("43")
     from pyhelios import SimulationBuilder
-
     simB = SimulationBuilder(
         surveyPath=str(survey_path.absolute()),
         assetsDir=WORKING_DIR + os.sep + 'assets' + os.sep,
@@ -123,12 +122,12 @@ def eval_detailedVoxels_uls(dirname):
     if DELETE_FILES_AFTER: shutil.rmtree(dirname)
 
 def test_xyzVoxels_tls_exe():
-    dirname_exe = run_helios_executable(Path('data') / 'surveys' / 'voxels' / 'tls_sphere_xyzloader_rgb_normals.xml',
+    dirname_exe = run_helios_executable(Path('data') / 'surveys' / 'voxels' / 'tls_sphere_xyzloader_normals.xml',
                                         options=['--lasOutput'])
     eval_xyzVoxels_tls(dirname_exe)
 
 def test_xyzVoxels_tls_pyh():
-    dirname_pyh = run_helios_pyhelios(Path('data') / 'surveys' / 'voxels' / 'tls_sphere_xyzloader_rgb_normals.xml')
+    dirname_pyh = run_helios_pyhelios(Path('data') / 'surveys' / 'voxels' / 'tls_sphere_xyzloader_normals.xml')
     eval_xyzVoxels_tls(dirname_pyh)
 
 def eval_xyzVoxels_tls(dirname):

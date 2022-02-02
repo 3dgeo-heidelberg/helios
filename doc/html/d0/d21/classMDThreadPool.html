@@ -113,8 +113,8 @@ Collaboration diagram for MDThreadPool&lt; MDType, TaskArgs &gt;:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../d1/d11/classMDThreadPool__coll__graph.png" border="0" usemap="#MDThreadPool_3_01MDType_00_01TaskArgs_01_4_coll__map" alt="Collaboration graph"/></div>
 <map name="MDThreadPool_3_01MDType_00_01TaskArgs_01_4_coll__map" id="MDThreadPool_3_01MDType_00_01TaskArgs_01_4_coll__map">
-<area shape="rect" id="node2" href="../../d2/d1f/classSimpleThreadPool.html" title="SimpleThreadPool\&lt; TaskArgs\l ... \&gt;" alt="" coords="5,80,201,121"/>
-<area shape="rect" id="node3" href="../../dc/de7/classThreadPool.html" title="Base class providing core implementation of a thread pool to deal with multi threading tasks..." alt="" coords="59,5,147,32"/>
+<area shape="rect" id="node2" href="../../d2/d1f/classSimpleThreadPool.html" title="SimpleThreadPool\&lt; TaskArgs\l ... \&gt;" alt="" coords="5,171,201,212"/>
+<area shape="rect" id="node3" href="../../dc/de7/classThreadPool.html" title="Base class providing core implementation of a thread pool to deal with multi threading tasks..." alt="" coords="150,95,238,121"/>
 </map>
 <center><span class="legend">[<a target="top" href="../../graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -139,9 +139,24 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../.
 <tr class="memitem:af68266b6293444a6b3af4c094654bafd"><td class="memItemLeft" align="right" valign="top">virtual size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d21/classMDThreadPool.html#af68266b6293444a6b3af4c094654bafd">getPendingTasks</a> ()</td></tr>
 <tr class="memdesc:af68266b6293444a6b3af4c094654bafd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain the number of pending tasks to be computed.  <a href="#af68266b6293444a6b3af4c094654bafd">More...</a><br /></td></tr>
 <tr class="separator:af68266b6293444a6b3af4c094654bafd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a016d37cf90fdb80835c8c13d738d54b9"><td class="memItemLeft" align="right" valign="top">virtual size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d21/classMDThreadPool.html#a016d37cf90fdb80835c8c13d738d54b9">safeGetPendingTasks</a> ()</td></tr>
+<tr class="memdesc:a016d37cf90fdb80835c8c13d738d54b9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain the number of pending tasks to be computed in a thread safe way. It is, with proper handling of concurrent reading.  <a href="#a016d37cf90fdb80835c8c13d738d54b9">More...</a><br /></td></tr>
+<tr class="separator:a016d37cf90fdb80835c8c13d738d54b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a601dffa9e67ec14baea9eaf14abd3abb"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d21/classMDThreadPool.html#a601dffa9e67ec14baea9eaf14abd3abb">setPendingTasks</a> (size_t const pendingTasks)</td></tr>
 <tr class="memdesc:a601dffa9e67ec14baea9eaf14abd3abb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the number of pending tasks to be computed.  <a href="#a601dffa9e67ec14baea9eaf14abd3abb">More...</a><br /></td></tr>
 <tr class="separator:a601dffa9e67ec14baea9eaf14abd3abb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8dee3afc72876ba9e0ebffe390d49159"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d21/classMDThreadPool.html#a8dee3afc72876ba9e0ebffe390d49159">safeSetPendingTasks</a> (size_t const pendingTasks)</td></tr>
+<tr class="memdesc:a8dee3afc72876ba9e0ebffe390d49159"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the number of pending tasks to be computed in a thread safe way. It is, with proper handling of current writting.  <a href="#a8dee3afc72876ba9e0ebffe390d49159">More...</a><br /></td></tr>
+<tr class="separator:a8dee3afc72876ba9e0ebffe390d49159"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0c5500eadaf085de340f9860e05ee3c9"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d21/classMDThreadPool.html#a0c5500eadaf085de340f9860e05ee3c9">subtractPendingTasks</a> (size_t const amount)</td></tr>
+<tr class="memdesc:a0c5500eadaf085de340f9860e05ee3c9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Subtract specified amount of pending tasks </p><p class="formulaDsp">
+\[ p_{t+1} = p_{t} - n \]
+</p>
+<p>.  <a href="#a0c5500eadaf085de340f9860e05ee3c9">More...</a><br /></td></tr>
+<tr class="separator:a0c5500eadaf085de340f9860e05ee3c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab860000d48ac358640dc63e83468de34"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d21/classMDThreadPool.html#ab860000d48ac358640dc63e83468de34">safeSubtractPendingTasks</a> (size_t const amount)</td></tr>
+<tr class="memdesc:ab860000d48ac358640dc63e83468de34"><td class="mdescLeft">&#160;</td><td class="mdescRight">Subtract pending tasks in a thread safe way. It is, with proper handling of concurrency.  <a href="#ab860000d48ac358640dc63e83468de34">More...</a><br /></td></tr>
+<tr class="separator:ab860000d48ac358640dc63e83468de34"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2604acd9240936d50bb203aed8efeba5"><td class="memItemLeft" align="right" valign="top"><a id="a2604acd9240936d50bb203aed8efeba5"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d21/classMDThreadPool.html#a2604acd9240936d50bb203aed8efeba5">increasePendingTasks</a> ()</td></tr>
 <tr class="memdesc:a2604acd9240936d50bb203aed8efeba5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unitary increase the number of pending tasks to be computed. <br /></td></tr>
@@ -158,6 +173,10 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d1f/classSimpleThreadPool.html#aee0e9d844e4c048b539b6596cf26f3ea">run_task</a> (Task task)</td></tr>
 <tr class="memdesc:aee0e9d844e4c048b539b6596cf26f3ea inherit pub_methods_classSimpleThreadPool"><td class="mdescLeft">&#160;</td><td class="mdescRight">Run a task when there is an available thread for it. <br /></td></tr>
 <tr class="separator:aee0e9d844e4c048b539b6596cf26f3ea inherit pub_methods_classSimpleThreadPool"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a914a442d893a27a6c322a2490fd2a978 inherit pub_methods_classSimpleThreadPool"><td class="memItemLeft" align="right" valign="top"><a id="a914a442d893a27a6c322a2490fd2a978"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d1f/classSimpleThreadPool.html#a914a442d893a27a6c322a2490fd2a978">notifyOne</a> ()</td></tr>
+<tr class="memdesc:a914a442d893a27a6c322a2490fd2a978 inherit pub_methods_classSimpleThreadPool"><td class="mdescLeft">&#160;</td><td class="mdescRight">Notify the conditional variable so if there is a waiting thread it will wake up. <br /></td></tr>
+<tr class="separator:a914a442d893a27a6c322a2490fd2a978 inherit pub_methods_classSimpleThreadPool"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classThreadPool"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classThreadPool')"><img src="../../closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="../../dc/de7/classThreadPool.html">ThreadPool</a></td></tr>
 <tr class="memitem:a2b8ca7a57ba657bad890a99058e01781 inherit pub_methods_classThreadPool"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/de7/classThreadPool.html#a2b8ca7a57ba657bad890a99058e01781">ThreadPool</a> (std::size_t const _pool_size)</td></tr>
 <tr class="memdesc:a2b8ca7a57ba657bad890a99058e01781 inherit pub_methods_classThreadPool"><td class="mdescLeft">&#160;</td><td class="mdescRight">Thread pool constructor.  <a href="../../dc/de7/classThreadPool.html#a2b8ca7a57ba657bad890a99058e01781">More...</a><br /></td></tr>
@@ -365,6 +384,103 @@ template&lt;typename MDType, typename ... TaskArgs&gt; </div>
 
 </div>
 </div>
+<a id="a016d37cf90fdb80835c8c13d738d54b9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a016d37cf90fdb80835c8c13d738d54b9">&#9670;&nbsp;</a></span>safeGetPendingTasks()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename MDType, typename ... TaskArgs&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual size_t <a class="el" href="../../d0/d21/classMDThreadPool.html">MDThreadPool</a>&lt; MDType, TaskArgs &gt;::safeGetPendingTasks </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Obtain the number of pending tasks to be computed in a thread safe way. It is, with proper handling of concurrent reading. </p>
+<dl class="section return"><dt>Returns</dt><dd>Number of pending tasks to be computed </dd></dl>
+
+</div>
+</div>
+<a id="a8dee3afc72876ba9e0ebffe390d49159"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8dee3afc72876ba9e0ebffe390d49159">&#9670;&nbsp;</a></span>safeSetPendingTasks()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename MDType, typename ... TaskArgs&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void <a class="el" href="../../d0/d21/classMDThreadPool.html">MDThreadPool</a>&lt; MDType, TaskArgs &gt;::safeSetPendingTasks </td>
+          <td>(</td>
+          <td class="paramtype">size_t const&#160;</td>
+          <td class="paramname"><em>pendingTasks</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Set the number of pending tasks to be computed in a thread safe way. It is, with proper handling of current writting. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">pendingTasks</td><td>New number of pending tasks to be computed </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ab860000d48ac358640dc63e83468de34"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab860000d48ac358640dc63e83468de34">&#9670;&nbsp;</a></span>safeSubtractPendingTasks()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename MDType, typename ... TaskArgs&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void <a class="el" href="../../d0/d21/classMDThreadPool.html">MDThreadPool</a>&lt; MDType, TaskArgs &gt;::safeSubtractPendingTasks </td>
+          <td>(</td>
+          <td class="paramtype">size_t const&#160;</td>
+          <td class="paramname"><em>amount</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Subtract pending tasks in a thread safe way. It is, with proper handling of concurrency. </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d0/d21/classMDThreadPool.html#a0c5500eadaf085de340f9860e05ee3c9" title="Subtract specified amount of pending tasks . ">MDThreadPool::subtractPendingTasks</a> </dd></dl>
+
+</div>
+</div>
 <a id="a601dffa9e67ec14baea9eaf14abd3abb"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a601dffa9e67ec14baea9eaf14abd3abb">&#9670;&nbsp;</a></span>setPendingTasks()</h2>
 
@@ -395,6 +511,45 @@ template&lt;typename MDType, typename ... TaskArgs&gt; </div>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">pendingTasks</td><td>New number of pendings tasks to be computed </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a0c5500eadaf085de340f9860e05ee3c9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0c5500eadaf085de340f9860e05ee3c9">&#9670;&nbsp;</a></span>subtractPendingTasks()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename MDType, typename ... TaskArgs&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void <a class="el" href="../../d0/d21/classMDThreadPool.html">MDThreadPool</a>&lt; MDType, TaskArgs &gt;::subtractPendingTasks </td>
+          <td>(</td>
+          <td class="paramtype">size_t const&#160;</td>
+          <td class="paramname"><em>amount</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Subtract specified amount of pending tasks </p><p class="formulaDsp">
+\[ p_{t+1} = p_{t} - n \]
+</p>
+<p>. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">amount</td><td>Amount of pending tasks to be subtracted </td></tr>
   </table>
   </dd>
 </dl>

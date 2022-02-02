@@ -95,6 +95,15 @@ protected:
      * @brief Time corresponding to simulation start (currentGpsTime)
      */
     double currentGpsTime_ms = 0;
+    /**
+     * @brief Given fixed time start for GPS time as a string.
+     *
+     * Valid formats are either "YYYY-MM-DD hh:mm:ss" or POSIX timestamp.
+     *
+     * If it is an empty string "", then it means no fixed GPS time start must
+     *  be considered
+     */
+    std::string fixedGpsTimeStart = "";
 
 public:
     /**
@@ -134,7 +143,8 @@ public:
     Simulation(
         int const parallelizationStrategy,
         std::shared_ptr<PulseThreadPoolInterface> pulseThreadPoolInterface,
-        int const chunkSize
+        int const chunkSize,
+        std::string fixedGpsTimeStart=""
     );
 
     // ***  M E T H O D S  *** //

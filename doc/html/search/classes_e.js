@@ -1,7 +1,7 @@
 var searchData=
 [
   ['plane',['Plane',['../d1/d16/classSurfaceInspector_1_1maths_1_1Plane.html',1,'SurfaceInspector::maths']]],
-  ['planefitter',['PlaneFitter',['../df/d21/classSurfaceInspector_1_1maths_1_1PlaneFitter.html',1,'SurfaceInspector::maths::PlaneFitter'],['../d6/d51/classPlaneFitter.html',1,'PlaneFitter']]],
+  ['planefitter',['PlaneFitter',['../d6/d51/classPlaneFitter.html',1,'PlaneFitter'],['../df/d21/classSurfaceInspector_1_1maths_1_1PlaneFitter.html',1,'SurfaceInspector::maths::PlaneFitter']]],
   ['planefittertest',['PlaneFitterTest',['../d6/dda/classHeliosTests_1_1PlaneFitterTest.html',1,'HeliosTests']]],
   ['platform',['Platform',['../df/d1e/classPlatform.html',1,'']]],
   ['platformphysicstest',['PlatformPhysicsTest',['../d6/d96/classHeliosTests_1_1PlatformPhysicsTest.html',1,'HeliosTests']]],

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+
+    <survey name="tls_sphere_xyzloader_normals" scene="data/scenes/voxels/sphere_xyzloader.xml#sphere_xyzloader_normals_demo" platform="data/platforms.xml#tripod" scanner="data/scanners_tls.xml#riegl_vz400">
+		<leg>
+            <platformSettings  x="40" y="-10" z="0" onGround="true"/>
+            <scannerSettings active="true" pulseFreq_hz="100000" verticalAngleMin_deg="-40.0" verticalAngleMax_deg="60.0" scanFreq_hz="120" headRotatePerSec_deg="10.00" headRotateStart_deg="250.0" headRotateStop_deg="380.0" />
+        </leg>
+    </survey>
+</document>

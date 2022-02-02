@@ -187,6 +187,12 @@ bool ArgumentsParser::parseFixedIncidenceAngle(){
     return findIndexOfArgument("--fixedIncidenceAngle") >= 0;
 }
 
+std::string ArgumentsParser::parseGpsStartTime(){
+    int index = findIndexOfArgument("--gpsStartTime");
+    if(index >= 0) return argv[index+1];
+    return "";
+}
+
 int ArgumentsParser::parseKDTreeType(){
     int index = findIndexOfArgument("--kdt");
     if(index < 0) return 4;
@@ -195,6 +201,12 @@ int ArgumentsParser::parseKDTreeType(){
 
 size_t ArgumentsParser::parseKDTreeJobs(){
     int index = findIndexOfArgument("--kdtJobs");
+    if(index < 0) return 0;
+    return std::stoul(argv[index+1]);
+}
+
+size_t ArgumentsParser::parseKDTreeGeometricJobs(){
+    int index = findIndexOfArgument("--kdtGeomJobs");
     if(index < 0) return 0;
     return std::stoul(argv[index+1]);
 }

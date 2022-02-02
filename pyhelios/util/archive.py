@@ -27,7 +27,7 @@ import xml.etree.ElementTree as ET
 import itertools
 import warnings
 
-WORKING_DIR = str(Path(__file__).parent.parent.absolute())
+WORKING_DIR = str(Path(__file__).parent.parent.parent.absolute())
 HELIOS_DOI = "https://doi.org/10.5281/zenodo.4452870"
 
 
@@ -133,7 +133,10 @@ def get_latest_helios_version():
         idx = html_content.find(search_text) + len(search_text)
         idx_end = html_content.find(end_text, idx)
         latest_version = html_content[idx:idx_end]
-    except HTTPError or URLError:
+    except URLError:
+        warnings.warn("Zenodo DOI not available.")
+        latest_version = '1.1.0'
+    except HTTPError:
         warnings.warn("Zenodo DOI not available.")
         latest_version = '1.1.0'
 
@@ -142,12 +145,11 @@ def get_latest_helios_version():
 
 if __name__ == '__main__':
 
-    HELIOS_EXE = Path(sys.argv[1])
+    HELIOS_EXE = Path(sys.argv[1]).resolve()
     if platform.system() == 'Windows' and HELIOS_EXE.suffix == '':
         HELIOS_EXE += '.exe'
     RUN_PATH = HELIOS_EXE.parent
-    sys.path.append(RUN_PATH)
-
+    sys.path.append(str(RUN_PATH))
     survey_path = Path(sys.argv[2])
     outfile = Path(sys.argv[3])
     allowed_suffixes = ['.zip', '.7z', '.rar', '.gz', '.tar']
@@ -206,14 +208,16 @@ if __name__ == '__main__':
                 platform_file_new = Path(sim.platform_file).relative_to(WORKING_DIR)
             else:
                 platform_file_new = Path(sim.platform_file)
-            outzip.write(platform_file_new)
+            if platform_file_new not in [Path(file) for file in outzip.namelist()]:
+                outzip.write(platform_file_new)
 
         if sim.scanner_file not in [Path(file) for file in outzip.namelist()]:
             if Path(sim.scanner_file).is_absolute():
                 scanner_file_new = Path(sim.scanner_file).relative_to(WORKING_DIR)
             else:
                 scanner_file_new = Path(sim.scanner_file)
-            outzip.write(scanner_file_new)
+            if scanner_file_new not in [Path(file) for file in outzip.namelist()]:
+                outzip.write(scanner_file_new)
 
         with open(survey, "r") as f_survey:
             # replace absolute with relative file paths
@@ -237,7 +241,7 @@ if __name__ == '__main__':
     for path in run_path:
         if not path.parts[-1].startswith('helios'):
             outzip.write(path)
-    outzip.write(HELIOS_EXE)
+    outzip.write(HELIOS_EXE.relative_to(WORKING_DIR))
     zipurl = None
     if not Path('run').exists():
         warnings.warn('There is no run-folder in your root directory. Downloading run folder from GitHub repository')

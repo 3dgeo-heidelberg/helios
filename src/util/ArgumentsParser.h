@@ -174,6 +174,15 @@ public:
      */
     bool parseFixedIncidenceAngle();
     /**
+     * @brief Parse the fixed GPS time start for Simulation
+     * @return Parsed fixed GPS time start. By default it is an empty string,
+     *  which leads to use current local time.
+     * @see Simulation::fixedGpsTimeStart
+     * @see Simulation::Simulation
+     * @see Simulation
+     */
+    std::string parseGpsStartTime();
+    /**
      * @brief Parse the type of KDTree
      *
      * 1 : The simple KDTree built based on balancing through median
@@ -201,6 +210,21 @@ public:
      * @return Number of jobs to be used to build the KDTree
      */
     size_t parseKDTreeJobs();
+    /**
+     * @brief Parse how many KDTree geometry-level jobs must be used to build
+     *  the KDTree upper nodes
+     *
+     * 1 : Only node-level parallelization, which corresponds with only 1
+     *  node at geometry-level parallelization
+     *
+     * 0 (default) : As many threads as KDTree jobs
+     *
+     * >1 : Exactly this number of threads for geometry-level parallel building
+     *
+     * @return Number of jobs to be used at geometry-level parallelization
+     *  of KDTree building
+     */
+    size_t parseKDTreeGeometricJobs();
     /**
      * @brief Parse on how many nodes the loss function of the surface area
      *  heuristic must be evaluated when building the KDTree.

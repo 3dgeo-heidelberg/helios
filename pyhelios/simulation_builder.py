@@ -31,6 +31,8 @@ class SimulationBuilder:
         assetsDir -- Path to assets directory
         outputDir -- Path to output directory
         numThreads -- Number of threads (0 means as many as possible)
+        fixedGpsTimeStart -- If it is a non empty string, it specify a fixed
+            GPS start time, either as posix timestamp or "YYYY-MM-DD hh:mm:ss"
         lasOutput -- LAS output format flag
         las10     -- LAS v1.0 output format flag
         zipOutput -- Zip output format flag (can be unzipped with Helios++)
@@ -39,7 +41,7 @@ class SimulationBuilder:
         kdtSAHLossNodes -- Size of iterative SAH computation or approximation
         parallelizationStrategy -- Either chunk based or warehosue based
         chunkSize -- Defualt chunk size
-        warehouseFactor -- Amany tasks as factor times number of threads
+        warehouseFactor -- As many tasks as factor times number of threads
         simFrequency -- Simulation control frequency (do not mismatch with
             the simulation operating frequency)
         finalOutput -- Final output (the one obtained after .join) flag
@@ -72,6 +74,7 @@ class SimulationBuilder:
     # ----------------------- #
     def makeDefault(self):
         self.setNumThreads(0)
+        self.setFixedGpsTimeStart("")
         self.setLasOutput(False)
         self.setLas10(False)
         self.setZipOutput(False)
@@ -107,7 +110,8 @@ class SimulationBuilder:
             self.numThreads,
             self.lasOutput,
             self.las10,
-            self.zipOutput
+            self.zipOutput,
+            fixedGpsTimeStart=self.fixedGpsTimeStart
         )
         build.sim.simFrequency = self.simFrequency
         build.sim.finalOutput = self.finalOutput
@@ -169,6 +173,10 @@ class SimulationBuilder:
     def setNumThreads(self, numThreads):
         self.validateNumThreads(numThreads)
         self.numThreads = numThreads
+
+    def setFixedGpsTimeStart(self, fixedGpsTimeStart):
+        self.validateFixedGpsTimeStart(fixedGpsTimeStart)
+        self.fixedGpsTimeStart = fixedGpsTimeStart
 
     def setLasOutput(self, lasOutput):
         self.validateBoolean(lasOutput)
@@ -313,6 +321,31 @@ class SimulationBuilder:
                     n=numThreads
                 )
             )
+
+    def validateFixedGpsTimeStart(self, fgts):
+        if fgts == '':
+            return
+        if fgts.isnumeric():
+            return
+        if len(fgts) == 19 and \
+                fgts[0:4].isnumeric() and \
+                fgts[4] == '-' and \
+                fgts[5:7].isnumeric() and \
+                fgts[7] == '-' and \
+                fgts[8:10].isnumeric() and \
+                fgts[10] == ' ' and \
+                fgts[11:13].isnumeric() and \
+                fgts[13] == ':' and \
+                fgts[14:16].isnumeric() and \
+                fgts[16] == ':' and \
+                fgts[17:].isnumeric():
+            return
+        raise PyHeliosToolsException(
+            'SimulationBuilder EXCEPTION!\n\t'
+            'Given fixed GPS time start "{fgts}" is not allowed'.format(
+                fgts=fgts
+            )
+        )
 
     def validateSimFrequency(self, freq):
         if isnan(freq):

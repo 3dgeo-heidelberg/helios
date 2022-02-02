@@ -136,6 +136,9 @@ static T&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="
 <tr class="memitem:afff79b10d9af901e52825b890ac1fc07"><td class="memItemLeft" align="right" valign="top">static T&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d68/classSurfaceInspector_1_1maths_1_1Scalar.html#afff79b10d9af901e52825b890ac1fc07">variationsRepetition</a> (T const n, T const k)</td></tr>
 <tr class="memdesc:afff79b10d9af901e52825b890ac1fc07"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute variations (order does matter) of \(n\) elements considering \(k\) with repetitions.  <a href="#afff79b10d9af901e52825b890ac1fc07">More...</a><br /></td></tr>
 <tr class="separator:afff79b10d9af901e52825b890ac1fc07"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af2f412e4bf9b6c4c2767f14183aca937"><td class="memItemLeft" align="right" valign="top">static T&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d68/classSurfaceInspector_1_1maths_1_1Scalar.html#af2f412e4bf9b6c4c2767f14183aca937">pow2</a> (T const k)</td></tr>
+<tr class="memdesc:af2f412e4bf9b6c4c2767f14183aca937"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the base \(2\) power \(2^k\) in a fast way. Notice this method only works with \(k \geq 0\) exponents and integer numerical types.  <a href="#af2f412e4bf9b6c4c2767f14183aca937">More...</a><br /></td></tr>
+<tr class="separator:af2f412e4bf9b6c4c2767f14183aca937"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><h3>template&lt;typename T&gt;<br />
@@ -269,6 +272,48 @@ template&lt;typename T &gt; </div>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Factorial of \(n\) ( \(n!\)) </dd></dl>
+
+</div>
+</div>
+<a id="af2f412e4bf9b6c4c2767f14183aca937"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af2f412e4bf9b6c4c2767f14183aca937">&#9670;&nbsp;</a></span>pow2()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static T <a class="el" href="../../d6/d68/classSurfaceInspector_1_1maths_1_1Scalar.html">SurfaceInspector::maths::Scalar</a>&lt; T &gt;::pow2 </td>
+          <td>(</td>
+          <td class="paramtype">T const&#160;</td>
+          <td class="paramname"><em>k</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Compute the base \(2\) power \(2^k\) in a fast way. Notice this method only works with \(k \geq 0\) exponents and integer numerical types. </p>
+<p>If a power has base \(2\), then it can be computed exploiting bit shift operations as illustrated below:</p>
+<p class="formulaDsp">
+\[ \left\{\begin{array}{lllll} 2^0 &amp;=&amp; 1 &amp;=&amp; 1 \ll 0 \\ 2^1 &amp;=&amp; 2 &amp;=&amp; 1 \ll 1 \\ 2^2 &amp;=&amp; 4 &amp;=&amp; 1 \ll 2 \\ 2^3 &amp;=&amp; 8 &amp;=&amp; 1 \ll 3 \\ \vdots &amp;\vdots&amp; \vdots &amp;\vdots&amp; \vdots \\ 2^k &amp;=&amp; \prod_{i=1}^{k}2 &amp;=&amp; 1 \ll k \end{array}\right. \]
+</p>
+<p>The bit shift operation \(\ll k\) means shifting the binary representation of the number to the left, padding with \(0\). Thus, the number \(4 = 0100_2\) could be easily obtained from number \(1 = 0001_2\) simply by \(1 \ll 2 = 0001_2 \ll 2 = 0100_2 = 2\).</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">k</td><td>The \(k \geq 0\) integer exponent </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Computed power \(2^k \in \mathbb{Z}_{\geq 0}\) </dd></dl>
 
 </div>
 </div>

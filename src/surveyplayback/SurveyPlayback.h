@@ -125,6 +125,7 @@ public:
         int const parallelizationStrategy,
         std::shared_ptr<PulseThreadPoolInterface> pulseThreadPoolInterface,
         int const chunkSize,
+        std::string fixedGpsTimeStart,
         bool const lasOutput,
         bool const las10,
         bool const zipOutput,

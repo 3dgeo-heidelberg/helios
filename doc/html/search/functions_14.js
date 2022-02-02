@@ -38,8 +38,10 @@ var searchData=
   ['timewatcher',['TimeWatcher',['../d7/d7d/classTimeWatcher.html#ad2ecf27bb2a36c8cf792e013c6576756',1,'TimeWatcher']]],
   ['toangle2d',['toAngle2D',['../d1/dd3/classSurfaceInspector_1_1maths_1_1Vector.html#ab691483a44635f42edebe998726ec882',1,'SurfaceInspector::maths::Vector']]],
   ['toilotcache',['toILOTCache',['../db/d58/classSAHKDTreeFactory.html#abfb53bebdca06fea392f30075915ccdf',1,'SAHKDTreeFactory']]],
-  ['tostring',['toString',['../d6/d7f/classRotationOrder.html#adee44a77e3199d0dce485fda80db9579',1,'RotationOrder::toString()'],['../dc/d42/classScanner.html#ae6791b56fa79726f07cfa76e8fa20283',1,'Scanner::toString()'],['../d2/d1a/classAABB.html#a86e5cfc1a5c72b37c95a468d305bb008',1,'AABB::toString()'],['../d2/d51/classTriangle.html#a80a928c3f4254b648b5d31e751c50ec2',1,'Triangle::toString()']]],
+  ['tostring',['toString',['../d6/d7f/classRotationOrder.html#adee44a77e3199d0dce485fda80db9579',1,'RotationOrder::toString()'],['../d5/d0c/classPlatformSettings.html#a72819735dc7a403489c6df3fce8c2e8e',1,'PlatformSettings::toString()'],['../d4/dfb/classFWFSettings.html#a8220711797a8424de63199529e4cf123',1,'FWFSettings::toString()'],['../dc/d42/classScanner.html#ae6791b56fa79726f07cfa76e8fa20283',1,'Scanner::toString()'],['../d0/d23/classScannerSettings.html#a49233cb19704197f3834395685a881af',1,'ScannerSettings::toString()'],['../d2/d1a/classAABB.html#a86e5cfc1a5c72b37c95a468d305bb008',1,'AABB::toString()'],['../d2/d51/classTriangle.html#a80a928c3f4254b648b5d31e751c50ec2',1,'Triangle::toString()']]],
   ['trace',['TRACE',['../d0/da9/logging_8hpp.html#a72b71a1882dd7d417fee5c5ad75fa9c5',1,'logging']]],
+  ['tracknondefaultplatformsettings',['trackNonDefaultPlatformSettings',['../d9/d82/classXmlAssetsLoader.html#a4352c4c3294277afc035ecc8aecf41fe',1,'XmlAssetsLoader']]],
+  ['tracknondefaultscannersettings',['trackNonDefaultScannerSettings',['../d9/d82/classXmlAssetsLoader.html#aed6e4b27ee8a254a1a52be45adea846e',1,'XmlAssetsLoader']]],
   ['trackprogress',['trackProgress',['../d6/da1/classSurveyPlayback.html#a3ba77b5582defa28808c7e5b748eb1c3',1,'SurveyPlayback']]],
   ['trajectory',['Trajectory',['../d2/d43/classTrajectory.html#aeb6134b898517acd09038dcb66ecd913',1,'Trajectory::Trajectory()=default'],['../d2/d43/classTrajectory.html#a222ddf39ff990707dc6af84b39821d74',1,'Trajectory::Trajectory(long gpsTime, glm::dvec3 position, double roll, double pitch, double yaw)']]],
   ['trajectorytostring',['trajectoryToString',['../df/d47/classSimpleSyncFileWriter.html#aee3e23732a9e25e50fbdfd06455dc116',1,'SimpleSyncFileWriter']]],
@@ -52,5 +54,6 @@ var searchData=
   ['try_5frun_5fpulse_5ftask',['try_run_pulse_task',['../d6/ddc/classPulseThreadPool.html#aa383b2b0b24ec1e20b8c0dc9b7635313',1,'PulseThreadPool::try_run_pulse_task()'],['../df/d9c/classPulseThreadPoolInterface.html#ab4c81aee1c3d8327a95278c616960ee7',1,'PulseThreadPoolInterface::try_run_pulse_task()'],['../d7/de7/classPulseWarehouseThreadPool.html#ab9219cd666812efc2754ebaef85a2b8e',1,'PulseWarehouseThreadPool::try_run_pulse_task()']]],
   ['try_5frun_5fres_5ftask',['try_run_res_task',['../d2/dee/classResThreadPool.html#a547bb2acf59e206da78333f0579f6a83',1,'ResThreadPool']]],
   ['tryadd',['tryAdd',['../da/d8d/classTaskDropper.html#a4e79063a65c9cff8cff4fdbbc83240ce',1,'TaskDropper']]],
-  ['trydrop',['tryDrop',['../de/d9a/classPulseTaskDropper.html#ab0b9593b97ab5657f890cefb48ba26f3',1,'PulseTaskDropper::tryDrop()'],['../da/d8d/classTaskDropper.html#a067e3bf1714d730e80a9241246e119d8',1,'TaskDropper::tryDrop()']]]
+  ['trydrop',['tryDrop',['../de/d9a/classPulseTaskDropper.html#ab0b9593b97ab5657f890cefb48ba26f3',1,'PulseTaskDropper::tryDrop()'],['../da/d8d/classTaskDropper.html#a067e3bf1714d730e80a9241246e119d8',1,'TaskDropper::tryDrop()']]],
+  ['trysort',['trySort',['../d8/de4/classhelios_1_1hpc_1_1SM__ParallelMergeSort.html#adeb0840a808e48b0fd421fa848c73606',1,'helios::hpc::SM_ParallelMergeSort']]]
 ];

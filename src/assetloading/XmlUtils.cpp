@@ -236,6 +236,13 @@ ObjectT XmlUtils::getAttribute(
     return result;
 }
 
+bool XmlUtils::hasAttribute(
+    tinyxml2::XMLElement *element,
+    std::string attrName
+){
+    return element->Attribute(attrName.c_str()) != nullptr;
+}
+
 std::vector<std::shared_ptr<DynMotion>> XmlUtils::createDynMotionsVector(
         tinyxml2::XMLElement *element
 ){

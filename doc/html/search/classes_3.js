@@ -1,5 +1,6 @@
 var searchData=
 [
+  ['datetimeutils',['DateTimeUtils',['../d2/d15/classDateTimeUtils.html',1,'']]],
   ['demoselector',['DemoSelector',['../df/d3f/classHeliosDemos_1_1DemoSelector.html',1,'HeliosDemos']]],
   ['detailedplane',['DetailedPlane',['../d4/dfa/classSurfaceInspector_1_1maths_1_1DetailedPlane.html',1,'SurfaceInspector::maths']]],
   ['detailedvoxel',['DetailedVoxel',['../d7/d5a/classDetailedVoxel.html',1,'']]],

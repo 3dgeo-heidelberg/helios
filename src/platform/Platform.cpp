@@ -65,12 +65,25 @@ void Platform::_clone(std::shared_ptr<Platform> p){
 
 // ***  M E T H O D S  *** //
 // *********************** //
-void Platform::applySettings(std::shared_ptr<PlatformSettings> settings, bool manual) {
+void Platform::applySettings(
+    std::shared_ptr<PlatformSettings> settings,
+    bool manual
+){
     cfg_settings_movePerSec_m = settings->movePerSec_m;
     onGround = settings->onGround;
 
     // Set platform position:
     setPosition(settings->getPosition());
+}
+shared_ptr<PlatformSettings> Platform::retrieveCurrentSettings(){
+    shared_ptr<PlatformSettings> settings = make_shared<PlatformSettings>();
+    // Settings from Platform
+    settings->movePerSec_m = cfg_settings_movePerSec_m;
+    settings->onGround = onGround;
+    settings->setPosition(getPosition());
+    // Return settings
+    return settings;
+
 }
 
 void Platform::setAttitude(Rotation attitude) {

@@ -48,6 +48,7 @@ Scanner::Scanner(
 	cfg_device_headRelativeEmitterPosition = beamOrigin;		
 	cfg_device_headRelativeEmitterAttitude = beamOrientation;
 	cfg_device_supportedPulseFreqs_Hz = pulseFreqs;
+	cfg_setting_pulseFreq_Hz = pulseFreqs.front();
 	cfg_device_beamDivergence_rad = beamDiv_rad;
 	cfg_device_pulseLength_ns = pulseLength_ns;
 	cfg_device_id = id;
@@ -57,10 +58,9 @@ Scanner::Scanner(
 	cfg_device_receiverDiameter_m = receiverDiameter;
 	cfg_device_visibility_km = atmosphericVisibility;
 	cfg_device_wavelength_m = wavelength / 1000000000.0;
+	configureBeam();
 
 	atmosphericExtinction = calcAtmosphericAttenuation();
-	beamWaistRadius = (cfg_device_beamQuality * cfg_device_wavelength_m) /
-	    (M_PI * cfg_device_beamDivergence_rad);
 
     /*
      * Randomness generators must be initialized outside,
@@ -70,7 +70,6 @@ Scanner::Scanner(
 
     // Precompute variables
 	cached_Dr2 = cfg_device_receiverDiameter_m * cfg_device_receiverDiameter_m;
-	cached_Bt2 = cfg_device_beamDivergence_rad * cfg_device_beamDivergence_rad;
 
 	logging::INFO(toString());
 }
@@ -162,15 +161,47 @@ Scanner::Scanner(Scanner &s){
 
 // ***  M E T H O D S  *** //
 // *********************** //
+void Scanner::configureBeam(){
+    cached_Bt2 = cfg_device_beamDivergence_rad * cfg_device_beamDivergence_rad;
+    beamWaistRadius = (cfg_device_beamQuality * cfg_device_wavelength_m) /
+                      (M_PI * cfg_device_beamDivergence_rad);
+}
 void Scanner::applySettings(shared_ptr<ScannerSettings> settings) {
 	// Configure scanner:
 	this->setPulseFreq_Hz(settings->pulseFreq_Hz);
 	setActive(settings->active);
-
+	this->cfg_device_beamDivergence_rad = settings->beamDivAngle;
     trajectoryTimeInterval = settings->trajectoryTimeInterval;
+    configureBeam();
+
 	detector->applySettings(settings);
 	scannerHead->applySettings(settings);
 	beamDeflector->applySettings(settings);
+}
+
+std::shared_ptr<ScannerSettings> Scanner::retrieveCurrentSettings(){
+    shared_ptr<ScannerSettings> settings = make_shared<ScannerSettings>();
+    // Settings from Scanner
+    std::stringstream ss;
+    ss << cfg_device_id << "_settings";
+    settings->id = ss.str();
+    settings->pulseFreq_Hz = getPulseFreq_Hz();
+    settings->active = isActive();
+    settings->beamDivAngle = getBeamDivergence();
+    settings->trajectoryTimeInterval = trajectoryTimeInterval;
+    // Settings from ScannerHead
+    settings->headRotatePerSec_rad = scannerHead->getRotateStart();
+    settings->headRotateStart_rad = scannerHead->getRotateCurrent();
+    settings->headRotateStop_rad = scannerHead->getRotateStop();
+    // Settings from AbstractBeamDeflector
+    settings->scanAngle_rad = beamDeflector->cfg_setting_scanAngle_rad;
+    settings->scanFreq_Hz = beamDeflector->cfg_setting_scanFreq_Hz;
+    settings->verticalAngleMin_rad = \
+        beamDeflector->cfg_setting_verticalAngleMin_rad;
+    settings->verticalAngleMax_rad = \
+        beamDeflector->cfg_setting_verticalAngleMax_rad;
+    // Return settings
+    return settings;
 }
 
 void Scanner::applySettingsFWF(FWFSettings settings) {
@@ -253,8 +284,8 @@ void Scanner::prepareDiscretization(){
 }
 
 int Scanner::calcTimePropagation(vector<double> & timeWave, int numBins){
-    double step = FWF_settings.binSize_ns;
-    double tau = (cfg_device_pulseLength_ns * 0.5) / 3.5;
+    double const step = FWF_settings.binSize_ns;
+    double const tau = (cfg_device_pulseLength_ns * 0.5) / 3.5;
     double t = 0;
     double t_tau = 0;
     double pt = 0;

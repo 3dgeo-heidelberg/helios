@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['id',['id',['../de/d97/classAsset.html#ac37173d6b01d7b8caa7bd786b8de2269',1,'Asset::id()'],['../d0/d23/classScannerSettings.html#a1ea4710ab141c2548bb193b29b55107c',1,'ScannerSettings::id()'],['../df/dfa/classDynSequence.html#a5d8e2b91af11934a1f5678927bb7e708',1,'DynSequence::id()']]],
+  ['id',['id',['../de/d97/classAsset.html#ac37173d6b01d7b8caa7bd786b8de2269',1,'Asset::id()'],['../d5/d0c/classPlatformSettings.html#a2f159c96a09224d96025646481d7f2ff',1,'PlatformSettings::id()'],['../d0/d23/classScannerSettings.html#a1ea4710ab141c2548bb193b29b55107c',1,'ScannerSettings::id()'],['../df/dfa/classDynSequence.html#a5d8e2b91af11934a1f5678927bb7e708',1,'DynSequence::id()']]],
   ['identifiers',['identifiers',['../d7/d5a/classDetailedVoxel.html#ac5791eb69e0db113aadfcb1b3116ea7e',1,'DetailedVoxel']]],
   ['idleeps',['idleEps',['../d5/d3c/classBuddingScanningPulseProcess.html#a6e775b82887409981240a08c57357b22',1,'BuddingScanningPulseProcess']]],
   ['idleth',['idleTh',['../d5/d3c/classBuddingScanningPulseProcess.html#a04f9392974dbd0bdfc4edcf4a88ef24b',1,'BuddingScanningPulseProcess']]],
@@ -10,6 +10,7 @@ var searchData=
   ['ilotcachemutex',['ilotCacheMutex',['../dd/d95/classMultiThreadSAHKDTreeFactory.html#a5cc67dda6cbbf7d3ffa0e2ecbebf622c',1,'MultiThreadSAHKDTreeFactory']]],
   ['imh',['imh',['../db/d57/classfluxionum_1_1UnivariateNewtonRaphsonMinimizer.html#a041caf921ac2956262f56cb4f64dced7',1,'fluxionum::UnivariateNewtonRaphsonMinimizer']]],
   ['incidenceangle',['incidenceAngle',['../dc/da3/classRaySceneIntersection.html#ad5b87188865c84aefe07c9ca5734555c',1,'RaySceneIntersection']]],
+  ['index',['index',['../d8/d4c/classKDTreeBuildType.html#a7d5a640ed5627d0e309d1712e49e07dc',1,'KDTreeBuildType::index()'],['../d5/d80/classSimpleKDTreeBuildChildrenNodesSubTask.html#a25932ce29497fa88d8732b7518e76ba4',1,'SimpleKDTreeBuildChildrenNodesSubTask::index()']]],
   ['indices',['indices',['../dc/d41/classSurfaceInspector_1_1maths_1_1permuters_1_1CNRIndexPermuter.html#ac913cf6600d817ed3ea14ba7ef3d86a4',1,'SurfaceInspector::maths::permuters::CNRIndexPermuter']]],
   ['initdelta1',['initDelta1',['../d5/d2f/classBuddingTaskDropper.html#afe5c7c280319ade42cf7dd740a6e9e0b',1,'BuddingTaskDropper']]],
   ['initialized',['initialized',['../d6/d26/classSurfaceInspector_1_1util_1_1draggers_1_1MinDragger.html#aae9f7d2e7a8e5e01fb99b05cf6f752ad',1,'SurfaceInspector::util::draggers::MinDragger']]],
