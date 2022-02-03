@@ -42,7 +42,7 @@ jobs:
 
       - name: Write Python 3.6 to user-config.jam
         run: |
-          echo "using python\n\t: 3.6\n\t: ${{pythonLocation}}\\bin\\python.exe\n\t: ${{pythonLocation}}\\include\n\t: ${{pythonLocation}}\\libs\n;\n" >> ${{USER_CONFIG}}
+          echo "using python\n\t: 3.6\n\t: ${{env.pythonLocation}}\\bin\\python.exe\n\t: ${{env.pythonLocation}}\\include\n\t: ${{env.pythonLocation}}\\libs\n;\n" >> ${{env.USER_CONFIG}}
 
       - name: Set Up Python 3.7
         uses: actions/setup-python@v2
@@ -51,7 +51,7 @@ jobs:
 
       - name: Write Python 3.7 to user-config.jam
         run: |
-          echo "using python\n\t: 3.7\n\t: ${{pythonLocation}}\\bin\\python.exe\n\t: ${{pythonLocation}}\\include\n\t: ${{pythonLocation}}\\libs\n;\n" >> ${{USER_CONFIG}}
+          echo "using python\n\t: 3.7\n\t: ${{env.pythonLocation}}\\bin\\python.exe\n\t: ${{env.pythonLocation}}\\include\n\t: ${{env.pythonLocation}}\\libs\n;\n" >> ${{env.USER_CONFIG}}
 
       - name: Set Up Python 3.8
         uses: actions/setup-python@v2
@@ -60,7 +60,7 @@ jobs:
 
       - name: Write Python 3.8 to user-config.jam
         run: |
-          echo "using python\n\t: 3.8\n\t: ${{pythonLocation}}\\bin\\python.exe\n\t: ${{pythonLocation}}\\include\n\t: ${{pythonLocation}}\\libs\n;\n" >> ${{USER_CONFIG}}
+          echo "using python\n\t: 3.8\n\t: ${{env.pythonLocation}}\\bin\\python.exe\n\t: ${{env.pythonLocation}}\\include\n\t: ${{env.pythonLocation}}\\libs\n;\n" >> ${{env.USER_CONFIG}}
 
       - name: Set Up Python 3.9
         uses: actions/setup-python@v2
@@ -69,7 +69,7 @@ jobs:
 
       - name: Write Python 3.9 to user-config.jam
         run: |
-          echo "using python\n\t: 3.9\n\t: ${{pythonLocation}}\\bin\\python.exe\n\t: ${{pythonLocation}}\\include\n\t: ${{pythonLocation}}\\libs\n;\n" >> ${{USER_CONFIG}}
+          echo "using python\n\t: 3.9\n\t: ${{env.pythonLocation}}\\bin\\python.exe\n\t: ${{env.pythonLocation}}\\include\n\t: ${{env.pythonLocation}}\\libs\n;\n" >> ${{env.USER_CONFIG}}
 
 
       - uses: suisei-cn/actions-download-file@v1
@@ -89,7 +89,7 @@ jobs:
       - name: Debug output
         id: output
         run: |
-          Get-Content ${{USER_CONFIG}}
+          Get-Content ${{env.USER_CONFIG}}
           tree .
 
       - name: Build Boost
