@@ -88,9 +88,9 @@ jobs:
 
       - name: Debug output
         id: output
-        run:
-          - Get-Content ${USER_CONFIG}
-          - tree .
+        run: |
+          Get-Content ${USER_CONFIG}
+          tree .
 
       - name: Build Boost
         if: steps.cache-boost.outputs.cache-hit != 'true'
