@@ -716,6 +716,11 @@ BOOST_PYTHON_MODULE(_pyhelios){
             &PyDetectorWrapper::setRangeMin
         )
         .add_property(
+            "rangeMax",
+            &PyDetectorWrapper::getRangeMax,
+            &PyDetectorWrapper::setRangeMax
+        )
+        .add_property(
             "lasScale",
             &PyDetectorWrapper::getLasScale,
             &PyDetectorWrapper::setLasScale
