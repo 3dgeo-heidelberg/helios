@@ -79,10 +79,21 @@ jobs:
           url: "https://boostorg.jfrog.io/artifactory/main/release/1.78.0/source/boost_1_78_0.zip"
           target: lib/boost/boost_1_78_0.zip
 
+      - uses: suisei-cn/actions-download-file@v1
+        id: downloadzlib
+        name: Download zlib
+        with:
+          url: "https://www.zlib.net/zlib1211.zip"
+          target: lib/boost/zlib1211.zip
+
       - name: Build Boost
         if: steps.cache-boost.outputs.cache-hit != 'true'
         run: |
-          7z x lib/boost/boost_1_78_0.zip && mv lib/boost/boost_1_78_0 lib/boost/boost && cd lib/boost/boost
-          ./bootstrap.bat
-          ./b2.exe --user-config=$USER_CONFIG cxxflags=-fPIC python=3.6,3.7,3.8,3.9
+          7z x lib/boost/boost_1_78_0.zip 
+          move lib/boost/boost_1_78_0 lib/boost/boost 
+          cd lib/boost
+          7z x lib/boost/zlib1211.zip          
+          cd boost
+          cmd.exe /c 'bootstrap.bat'
+          ./b2.exe --user-config=$USER_CONFIG -j6 -sNO_ZLIB=0 -sZLIB_INCLUDE="zlib-1.2.11" -sZLIB_SOURCE="zlib-1.2.11" address-model=64 link=static python=3.6,3.7,3.8,3.9
           cd .. && del boost_1_78_0.zip
