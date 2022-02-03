@@ -43,7 +43,6 @@ void SimplePhysicsPlatform::doPhysicsStep(int simFrequency_hz) {
         glm::dvec3 velocity = glm::normalize(new_velocity) * velocity_magnitude;
         setVelocity(velocity);
 
-	setVelocity(getVelocity() + delta_v);
 	// NOTE: Update of position happens in Platform base class
 }
 
