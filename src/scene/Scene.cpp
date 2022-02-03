@@ -15,10 +15,10 @@ using namespace std;
 #include <glm/gtx/string_cast.hpp>
 using namespace glm;
 
-#include "KDTreeRaycaster.h"
+#include <KDTreeRaycaster.h>
 
-#include "Scene.h"
-#include "TimeWatcher.h"
+#include <Scene.h>
+#include <TimeWatcher.h>
 #include <UniformNoiseSource.h>
 #include <surfaceinspector/maths/Plane.hpp>
 #include <surfaceinspector/maths/PlaneFitter.hpp>
@@ -54,21 +54,14 @@ Scene::Scene(Scene &s) {
     this->primitives.push_back(p->clone());
   }
 
-  this->kdtf = s.kdtf;
+  registerParts();
+  this->kdgf = s.kdgf;
   if(s.parts.empty()){
       kdgrove = nullptr;
   }
   else{
-      kdgrove = KDGroveFactory(kdtf).makeFromSceneParts(
-          this->parts,  // Scene parts
-          true,   // Safe
-          true,   // Compute KDGrove stats
-          true,   // Report KDGrove stats
-          true,   // Compute KDTree stats
-          true    // Report KDTree stats
-      );
+      buildKDGrove(true);
   }
-  registerParts();
 }
 
 // ***  M E T H O D S  *** //
@@ -149,7 +142,7 @@ bool Scene::finalizeLoading(bool const safe) {
   for(shared_ptr<ScenePart> & part : parts) part->computeCentroid();
 
   // Build KDGrove
-  if(kdtf != nullptr) buildKDGroveWithLog(safe);
+  if(kdgf != nullptr) buildKDGroveWithLog(safe);
 
   return true;
 }
@@ -159,7 +152,7 @@ void Scene::registerParts(){
     for(Primitive *primitive : primitives)
         if(primitive->part != nullptr)
             partsSet.insert(primitive->part);
-    parts = vector<shared_ptr<ScenePart>>(partsSet.begin(), partsSet.end());
+    parts.insert(parts.end(), partsSet.begin(), partsSet.end());
 }
 
 shared_ptr<AABB> Scene::getAABB() { return this->bbox; }
@@ -191,7 +184,7 @@ shared_ptr<RaySceneIntersection>
 Scene::getIntersection(
     glm::dvec3 &rayOrigin,
     glm::dvec3 &rayDir,
-    bool groundOnly
+    bool const groundOnly
 ){
   vector<double> tMinMax = bbox->getRayIntersection(rayOrigin, rayDir);
   if (tMinMax.empty()) {
@@ -199,7 +192,7 @@ Scene::getIntersection(
     return nullptr;
   }
 
-  // TODO test without kdtree
+  // TODO test without using kdtree / kdgrove
   bool bruteForce = false;
   shared_ptr<RaySceneIntersection> result;
 
@@ -215,7 +208,7 @@ map<double, Primitive *>
 Scene::getIntersections(
     glm::dvec3 &rayOrigin,
     glm::dvec3 &rayDir,
-    bool groundOnly
+    bool const groundOnly
 ){
 
   vector<double> tMinMax = bbox->getRayIntersection(rayOrigin, rayDir);
@@ -380,10 +373,10 @@ glm::dvec3 Scene::findForceOnGroundQ(
 }
 
 void Scene::buildKDGrove(bool const safe){
-    kdgrove = KDGroveFactory(kdtf).makeFromSceneParts(
+    kdgrove = kdgf->makeFromSceneParts(
         parts,  // Scene parts
         true,   // Merge non moving
-        true,   // Safe
+        safe,   // Safe
         true,   // Compute KDGrove stats
         true,   // Report KDGrove stats
         true,   // Compute KDTree stats
@@ -393,15 +386,14 @@ void Scene::buildKDGrove(bool const safe){
 }
 
 void Scene::buildKDGroveWithLog(bool const safe){
-    logging::INFO("Building KD-Tree... ");
-    TimeWatcher kdtTw;
-    kdtTw.start();
+    logging::INFO("Building KD-Grove... ");
+    TimeWatcher kdgTw;
+    kdgTw.start();
     buildKDGrove(safe);
-    kdtTw.stop();
+    kdgTw.stop();
     std::stringstream ss;
-    ss << "KDT built in " << kdtTw.getElapsedDecimalSeconds() << "s";
+    ss << "KDG built in " << kdgTw.getElapsedDecimalSeconds() << "s";
     logging::TIME(ss.str());
-    //std::exit(7); // TODO Remove
 }
 
 // ***  READ/WRITE  *** //

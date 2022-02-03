@@ -83,6 +83,14 @@ public:
      */
     virtual void removeSubject(BasicDynGroveSubject<Tree, Subject> *subject);
 
+    // ***  GETTERs and SETTERs  *** //
+    // ***************************** //
+    /**
+     * @brief Obtain a read-only reference to vector of subjects
+     * @return Read-only reference to vector of subjects
+     */
+    virtual std::vector<BasicDynGroveSubject<Tree, Subject> *> const&
+    getSubjects(){return subjects;}
 };
 
 #include <BasicDynGrove.tpp>

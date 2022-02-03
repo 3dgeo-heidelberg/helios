@@ -4,6 +4,7 @@
 #include <GroveKDTreeRaycaster.h>
 #include <DynMovingObject.h>
 #include <KDGroveStats.h>
+#include <KDGroveSubject.h>
 
 #include <string>
 #include <memory>
@@ -37,6 +38,37 @@ public:
         stats(nullptr)
     {}
     virtual ~KDGrove() = default;
+
+    // ***  OBSERVER METHODS  *** //
+    // ************************** //
+    /**
+     * @brief Workaround to redirect calls from
+     *  KDGrove::addSubject(KDGroveSubject *, shared_ptr<GroveKDTreeRaycaster>)
+     *  to BasicDynGrove::addSubject
+     * @see BasicDynGrove::addSubject
+     */
+    inline void addSubject(
+        KDGroveSubject *subject,
+        std::shared_ptr<GroveKDTreeRaycaster> tree
+    ){
+        BasicDynGrove::addSubject(
+            (BasicDynGroveSubject<GroveKDTreeRaycaster, DynMovingObject> *)
+                subject,
+            tree
+        );
+    }
+    /**
+     * @brief Workaround to redirect calls from
+     *  KDGrove::removeSubject(KDGroveSubject *) to
+     *  BasicDynGrove::removeSubject
+     * @see BasicDynGrove::removeSubject
+     */
+    inline void removeSubject(KDGroveSubject *subject){
+        BasicDynGrove::removeSubject(
+            (BasicDynGroveSubject<GroveKDTreeRaycaster, DynMovingObject> *)
+                subject
+        );
+    }
 
     // ***  GETTERs and SETTERs  *** //
     // ***************************** //

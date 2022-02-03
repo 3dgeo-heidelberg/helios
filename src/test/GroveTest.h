@@ -63,6 +63,11 @@ protected:
      * @return True if passed, false otherwise
      */
     bool testLoops();
+    /**
+     * @brief Test observer pattern mechanics are working as expected
+     * @return True if passed, false otherwise
+     */
+    bool testObserving();
 
     // ***  UTILS  *** //
     // *************** //
@@ -93,6 +98,7 @@ bool GroveTest::run(){
 
     // Do tests
     if(!testLoops()) return false;
+    if(!testObserving()) return false;
 
     // All tests were successful
     return true;
@@ -136,6 +142,33 @@ bool GroveTest::testLoops(){
     if(i!=m) return false;
 
     // Loop tests passed
+    return true;
+}
+
+bool GroveTest::testObserving(){
+    // Prepare
+    std::shared_ptr<GroveKDTreeRaycaster> tree = kdg.getTreeShared(0);
+    DynMovingObject dmo1("dmo1");
+    DynMovingObject dmo2("dmo2");
+
+    // Add dmo1, dmo2 and validate
+    kdg.addSubject(&dmo1, tree);
+    kdg.addSubject(&dmo2, tree);
+    if(((DynMovingObject *)kdg.getSubjects()[4])->getId() != "dmo1")
+        return false;
+    if(((DynMovingObject *)kdg.getSubjects()[5])->getId() != "dmo2")
+        return false;
+
+    // Remove dmo1 and validate
+    kdg.removeSubject(&dmo1);
+    if(((DynMovingObject *)kdg.getSubjects()[4])->getId() != "dmo2")
+        return false;
+
+    // Remove dmo2 and validate
+    kdg.removeSubject(&dmo2);
+    if(kdg.getSubjects().size() > 4) return false;
+
+    // Observing test passed
     return true;
 }
 

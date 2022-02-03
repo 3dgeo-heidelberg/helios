@@ -28,16 +28,8 @@ private:
      */
     template <class Archive>
     void serialize(Archive &ar, const unsigned int version){
-        // Register KDTree factories
-        ar.template register_type<SimpleKDTreeFactory>();
-        ar.template register_type<SAHKDTreeFactory>();
-        ar.template register_type<AxisSAHKDTreeFactory>();
-        ar.template register_type<FastSAHKDTreeFactory>();
-        ar.template register_type<MultiThreadKDTreeFactory>();
-        ar.template register_type<MultiThreadSAHKDTreeFactory>();
-
         // Serialization itself
-        // TODO Rethink serialization
+        //ar &kdtf; // Not necessary, already handled with inplace constructor
     }
 
 protected:
@@ -147,5 +139,21 @@ protected:
         bool const computeKDTreeStats,
         bool const reportKDTreeStats
     );
+
+public:
+    // ***  GETTERs and SETTERs  *** //
+    // ***************************** //
+    /**
+     * @brief Obtain the KDTreeFactory used by the KDGroveFactory
+     * @return KDTreeFactory used by the KDGroveFactory
+     * @see KDGroveFactory::kdtf
+     */
+    inline shared_ptr<KDTreeFactory> getKdtf() const {return kdtf;}
+    /**
+     * @brief Set the KDTreeFactory to be used by the KDGroveFactory
+     * @param kdtf New KDTreeFactory to be used by the KDGroveFactory
+     * @see KDGroveFactory::kdtf
+     */
+    inline void setKdtf(shared_ptr<KDTreeFactory> kdtf) {this->kdtf = kdtf;}
 
 };

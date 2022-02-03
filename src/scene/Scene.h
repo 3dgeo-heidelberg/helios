@@ -16,15 +16,6 @@
 #include <Voxel.h>
 
 #include <KDTreeNodeRoot.h>
-#include <KDTreeFactory.h>
-// TODO Rethink : Clean includes (already in KDGroveFactory) ---
-#include <SimpleKDTreeFactory.h>
-#include <SAHKDTreeFactory.h>
-#include <AxisSAHKDTreeFactory.h>
-#include <FastSAHKDTreeFactory.h>
-#include <MultiThreadKDTreeFactory.h>
-#include <MultiThreadSAHKDTreeFactory.h>
-// --- TODO Rethink : Clean includes (already in KDGroveFactory)
 #include <KDGroveFactory.h>
 #include <KDGrove.h>
 #include <KDGroveRaycaster.h>
@@ -59,19 +50,11 @@ private:
     ar.template register_type<Voxel>();
     ar.template register_type<DetailedVoxel>();
 
-    // Register KDTree factories
-    ar.template register_type<SimpleKDTreeFactory>();
-    ar.template register_type<SAHKDTreeFactory>();
-    ar.template register_type<AxisSAHKDTreeFactory>();
-    ar.template register_type<FastSAHKDTreeFactory>();
-    ar.template register_type<MultiThreadKDTreeFactory>();
-    ar.template register_type<MultiThreadSAHKDTreeFactory>();
-
     // Save the scene itself
     boost::serialization::void_cast_register<Scene, Asset>();
     ar &boost::serialization::base_object<Asset>(*this);
-    ar &kdtf;
-    //ar &kdgrove; // KDTree not saved because it might be too deep
+    ar &kdgf;
+    //ar &kdgrove; // KDGrove not saved because trees might be too deep
     ar &bbox;
     ar &bbox_crs;
     ar &primitives;
@@ -96,18 +79,10 @@ private:
     ar.template register_type<Voxel>();
     ar.template register_type<DetailedVoxel>();
 
-    // Register KDTree factories
-    ar.template register_type<SimpleKDTreeFactory>();
-    ar.template register_type<SAHKDTreeFactory>();
-    ar.template register_type<AxisSAHKDTreeFactory>();
-    ar.template register_type<FastSAHKDTreeFactory>();
-    ar.template register_type<MultiThreadKDTreeFactory>();
-    ar.template register_type<MultiThreadSAHKDTreeFactory>();
-
     // Load the scene itself
     boost::serialization::void_cast_register<Scene, Asset>();
     ar &boost::serialization::base_object<Asset>(*this);
-    ar &kdtf;
+    ar &kdgf;
     //ar &kdgrove; // KDTree not loaded because it might be too deep
     ar &bbox;
     ar &bbox_crs;
@@ -115,17 +90,7 @@ private:
     ar &parts;
 
     // Build KDTree from primitives
-    if(kdtf != nullptr){
-      kdgrove = KDGroveFactory(kdtf).makeFromSceneParts(
-        parts,  // Scene parts
-        true,   // Safe
-        true,   // Compute KDGrove stats
-        true,   // Report KDGrove stats
-        true,   // Compute KDTree stats
-        true    // Report KDTree stats
-      );
-      raycaster = std::make_shared<KDGroveRaycaster>(kdgrove);
-    }
+    if(kdgf != nullptr) buildKDGroveWithLog(true);
   }
   BOOST_SERIALIZATION_SPLIT_MEMBER();
 
@@ -133,11 +98,11 @@ protected:
   // ***  ATTRIBUTES  *** //
   // ******************** //
   /**
-   * @brief The KDTree factory used to build the scene KDTree
-   * @see KDTreeFactory
-   * @see Scene::kdtree
+   * @brief The KDGrove factory used to build the scene KDGrove
+   * @see KDGroveFactory
+   * @see Scene::kdgrove
    */
-  std::shared_ptr<KDTreeFactory> kdtf;
+  std::shared_ptr<KDGroveFactory> kdgf;
   /**
    * @brief KDGrove containing a KDTree for each scene part to speed-up
    *    ray-primitive intersection check computations
@@ -181,7 +146,7 @@ public:
    * @brief Scene default constructor
    */
   Scene() :
-    kdtf(make_shared<SimpleKDTreeFactory>())
+    kdgf(make_shared<KDGroveFactory>(make_shared<SimpleKDTreeFactory>()))
   {}
   ~Scene() override {
     for (Primitive *p : primitives) delete p;
@@ -234,8 +199,11 @@ public:
    * @see KDTreeRaycaster
    * @see KDTreeRaycaster::search
    */
-  std::shared_ptr<RaySceneIntersection>
-  getIntersection(glm::dvec3 &rayOrigin, glm::dvec3 &rayDir, bool groundOnly);
+  std::shared_ptr<RaySceneIntersection> getIntersection(
+      glm::dvec3 &rayOrigin,
+      glm::dvec3 &rayDir,
+      bool const groundOnly
+  );
   /**
    * @brief Obtain all intersections between the ray and the scene, if any
    * @param rayOrigin Ray origin 3D coordinates
@@ -248,8 +216,11 @@ public:
    * @see KDTreeRaycaster
    * @see KDTreeRaycaster::searchAll
    */
-  std::map<double, Primitive *>
-  getIntersections(glm::dvec3 &rayOrigin, glm::dvec3 &rayDir, bool groundOnly);
+  std::map<double, Primitive *> getIntersections(
+      glm::dvec3 &rayOrigin,
+      glm::dvec3 &rayDir,
+      bool const groundOnly
+  );
 
   /**
    * @brief Obtain the minimum boundaries of the original axis aligned
@@ -392,21 +363,21 @@ public:
   // ***  GETTERs and SETTERs  *** //
   // ***************************** //
   /**
-   * @brief Obtain the KDTree factory used by the scene
-   * @return KDTree factory used by the scene
-   * @see Scene::kdtf
+   * @brief Obtain the KDGrove factory used by the scene
+   * @return KDGrove factory used by the scene
+   * @see Scene::kdgf
    */
-  virtual inline std::shared_ptr<KDTreeFactory> getKDTreeFactory() const
-  {return kdtf;}
+  virtual inline std::shared_ptr<KDGroveFactory> getKDGroveFactory() const
+  {return kdgf;}
   /**
-   * @brief Set the KDTree factory to be used by the scene
-   * @param kdtf New KDTree factory to be used by the scene
-   * @see Scene::kdtf
+   * @brief Set the KDGrove factory to be used by the scene
+   * @param kdgf New KDGrove factory to be used by the scene
+   * @see Scene::kdgf
    */
-  virtual inline void setKDTreeFactory(
-      std::shared_ptr<KDTreeFactory> const kdtf
+  virtual inline void setKDGroveFactory(
+      std::shared_ptr<KDGroveFactory> const kdgf
   )
-  {this->kdtf = kdtf;}
+  {this->kdgf = kdgf;}
   /**
    * @brief Obtain the KDGrove used by the scene
    * @return KDGrove used by the scene
