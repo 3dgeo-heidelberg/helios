@@ -59,10 +59,12 @@ void HelicopterPlatform::prepareSimulation(int simFrequency_hz){
     cfg_slowdownFactor = 1.0 - cfg_slowdown_magnitude / simFrequency_hz;
     cfg_speedupFactor = 1.0 + cfg_speedup_magnitude / simFrequency_hz;
     Platform::prepareSimulation(simFrequency_hz);
+    MovingPlatform::prepareSimulation(simFrequency_hz);
 }
 void HelicopterPlatform::initLegManual(){
     // Set directional attitude
     try{
+        std::cout << "\n**** Init leg manual ****\n";
         glm::dvec3 targetDirXY = cached_vectorToTarget_xy /
             cached_distanceToTarget_xy;
         dirAttitudeXY = attitude;
@@ -226,6 +228,7 @@ void HelicopterPlatform::computeXYSpeed(int simFrequency_hz){
 
     // Limit engine power
     if (glm::l2Norm(speed_xy) > ef_xy_max) {
+        if (not engineLimitReached) engineLimitReached = true;
         speed_xy = glm::normalize(speed_xy) * ef_xy_max;
         cache_speedUpFinished = true;
     }
