@@ -227,7 +227,7 @@ void HelicopterPlatform::computeXYSpeed(int simFrequency_hz){
 
     // Limit engine power
     if (glm::l2Norm(speed_xy) > ef_xy_max) {
-        if (not engineLimitReached) engineLimitReached = true;
+        if (!engineLimitReached) engineLimitReached = true;
         speed_xy = glm::normalize(speed_xy) * ef_xy_max;
         cache_speedUpFinished = true;
     }
