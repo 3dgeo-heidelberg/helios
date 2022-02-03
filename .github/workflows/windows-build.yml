@@ -76,9 +76,8 @@ jobs:
         id: downloadboost
         name: Download boost
         with:
-          url: https://boostorg.jfrog.io/artifactory/main/release/1.78.0/source/boost_1_78_0.zip
+          url: "https://boostorg.jfrog.io/artifactory/main/release/1.78.0/source/boost_1_78_0.zip"
           target: lib/boost/boost_1_78_0.zip
-          auto-match: true
 
       - name: Build Boost
         if: steps.cache-boost.outputs.cache-hit != 'true'
