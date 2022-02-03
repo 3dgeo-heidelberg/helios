@@ -1,0 +1,89 @@
+name: win-build
+
+on:
+  push:
+    branches: [ main, dev ]
+  pull_request:
+    branches: [ main, dev ]
+
+env:
+  # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
+  BUILD_TYPE: Release
+  USER_CONFIG: ${{github.workspace}}/.github/config/boost/user-config.jam
+
+jobs:
+  build-boost:
+    runs-on: windows-2019
+
+    defaults:
+      run:
+        working-directory: ${{github.workspace}}/lib
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Add MSBuild to PATH
+        uses: microsoft/setup-msbuild@v1.0.2
+
+      - name: Cache Boost
+        id: cache-boost
+        uses: actions/cache@v2
+        with:
+          path: |
+            ${{github.workspace}}/lib/boost
+            ${{github.workspace}}/.github/config/boost
+          key: ${{ runner.os }}-boost.1.78
+
+
+      - name: Set Up Python 3.6
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.6'
+
+      - name: Write Python 3.6 to user-config.jam
+        run: |
+          echo -e "using python\n\t: 3.6\n\t: $pythonLocation/bin/python\n\t: $pythonLocation/include/python3.6m\n\t: $pythonLocation/lib\n;\n" >> $USER_CONFIG
+
+      - name: Set Up Python 3.7
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.7'
+
+      - name: Write Python 3.7 to user-config.jam
+        run: |
+          echo -e "using python\n\t: 3.7\n\t: $pythonLocation/bin/python\n\t: $pythonLocation/include/python3.7m\n\t: $pythonLocation/lib\n;\n" >> $USER_CONFIG
+
+      - name: Set Up Python 3.8
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.8'
+
+      - name: Write Python 3.8 to user-config.jam
+        run: |
+          echo -e "using python\n\t: 3.8\n\t: $pythonLocation/bin/python\n\t: $pythonLocation/include/python3.8\n\t: $pythonLocation/lib\n;\n" >> $USER_CONFIG
+
+      - name: Set Up Python 3.9
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.9'
+
+      - name: Write Python 3.9 to user-config.jam
+        run: |
+          echo -e "using python\n\t: 3.9\n\t: $pythonLocation/bin/python\n\t: $pythonLocation/include/python3.9\n\t: $pythonLocation/lib\n;\n" >> $USER_CONFIG
+
+
+      - uses: suisei-cn/actions-download-file@v1
+        id: downloadboost
+        name: Download boost
+        with:
+          url: https://boostorg.jfrog.io/artifactory/main/release/1.78.0/source/boost_1_78_0.zip
+          target: lib/boost/boost_1_78_0.zip
+          auto-match: true
+
+      - name: Build Boost
+        if: steps.cache-boost.outputs.cache-hit != 'true'
+        run: |
+          7z x lib/boost/boost_1_78_0.zip && mv lib/boost/boost_1_78_0 lib/boost/boost && cd lib/boost/boost
+          ./bootstrap.bat
+          ./b2.exe --user-config=$USER_CONFIG cxxflags=-fPIC python=3.6,3.7,3.8,3.9
+          cd .. && del boost_1_78_0.zip
