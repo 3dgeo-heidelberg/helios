@@ -656,7 +656,7 @@ XmlAssetsLoader::createScannerSettingsFromXml(
   if(XmlUtils::hasAttribute(node, "verticalAngleMin_deg")){
       settings->verticalAngleMin_rad = MathConverter::degreesToRadians(
           boost::get<double>(XmlUtils::getAttribute(
-              node, "verticalAngleMin_deg", "double", 0.0
+              node, "verticalAngleMin_deg", "double", NAN
           ))
       );
   }
@@ -664,7 +664,7 @@ XmlAssetsLoader::createScannerSettingsFromXml(
   if(XmlUtils::hasAttribute(node, "verticalAngleMax_deg")){
       settings->verticalAngleMax_rad = MathConverter::degreesToRadians(
           boost::get<double>(XmlUtils::getAttribute(
-              node, "verticalAngleMax_deg", "double", 0.0
+              node, "verticalAngleMax_deg", "double", NAN
           ))
       );
   }
@@ -803,8 +803,8 @@ void XmlAssetsLoader::makeDefaultTemplates(){
     defaultScannerTemplate->headRotateStop_rad = 0;
     defaultScannerTemplate->pulseFreq_Hz = 0;
     defaultScannerTemplate->scanAngle_rad = 0;
-    defaultScannerTemplate->verticalAngleMin_rad = 0;
-    defaultScannerTemplate->verticalAngleMax_rad = 0;
+    defaultScannerTemplate->verticalAngleMin_rad = NAN;
+    defaultScannerTemplate->verticalAngleMax_rad = NAN;
     defaultScannerTemplate->scanFreq_Hz = 0;
 
     // Make default platform settings template
