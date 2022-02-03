@@ -42,7 +42,7 @@ jobs:
 
       - name: Write Python 3.6 to user-config.jam
         run: |
-          echo "using python\n\t: 3.6\n\t: ${pythonLocation}\\bin\\python.exe\n\t: ${pythonLocation}\\include\n\t: ${pythonLocation}\\libs\n;\n" >> ${USER_CONFIG}
+          echo "using python\n\t: 3.6\n\t: ${{pythonLocation}}\\bin\\python.exe\n\t: ${{pythonLocation}}\\include\n\t: ${{pythonLocation}}\\libs\n;\n" >> ${{USER_CONFIG}}
 
       - name: Set Up Python 3.7
         uses: actions/setup-python@v2
@@ -51,7 +51,7 @@ jobs:
 
       - name: Write Python 3.7 to user-config.jam
         run: |
-          echo "using python\n\t: 3.7\n\t: ${pythonLocation}\\bin\\python.exe\n\t: ${pythonLocation}\\include\n\t: ${pythonLocation}\\libs\n;\n" >> ${USER_CONFIG}
+          echo "using python\n\t: 3.7\n\t: ${{pythonLocation}}\\bin\\python.exe\n\t: ${{pythonLocation}}\\include\n\t: ${{pythonLocation}}\\libs\n;\n" >> ${{USER_CONFIG}}
 
       - name: Set Up Python 3.8
         uses: actions/setup-python@v2
@@ -60,7 +60,7 @@ jobs:
 
       - name: Write Python 3.8 to user-config.jam
         run: |
-          echo "using python\n\t: 3.8\n\t: ${pythonLocation}\\bin\\python.exe\n\t: ${pythonLocation}\\include\n\t: ${pythonLocation}\\libs\n;\n" >> ${USER_CONFIG}
+          echo "using python\n\t: 3.8\n\t: ${{pythonLocation}}\\bin\\python.exe\n\t: ${{pythonLocation}}\\include\n\t: ${{pythonLocation}}\\libs\n;\n" >> ${{USER_CONFIG}}
 
       - name: Set Up Python 3.9
         uses: actions/setup-python@v2
@@ -69,7 +69,7 @@ jobs:
 
       - name: Write Python 3.9 to user-config.jam
         run: |
-          echo "using python\n\t: 3.9\n\t: ${pythonLocation}\\bin\\python.exe\n\t: ${pythonLocation}\\include\n\t: ${pythonLocation}\\libs\n;\n" >> ${USER_CONFIG}
+          echo "using python\n\t: 3.9\n\t: ${{pythonLocation}}\\bin\\python.exe\n\t: ${{pythonLocation}}\\include\n\t: ${{pythonLocation}}\\libs\n;\n" >> ${{USER_CONFIG}}
 
 
       - uses: suisei-cn/actions-download-file@v1
@@ -89,7 +89,7 @@ jobs:
       - name: Debug output
         id: output
         run: |
-          Get-Content ${USER_CONFIG}
+          Get-Content ${{USER_CONFIG}}
           tree .
 
       - name: Build Boost
@@ -103,3 +103,56 @@ jobs:
           cmd.exe /c 'bootstrap.bat'
           ./b2.exe --user-config=$USER_CONFIG -j6 -sNO_ZLIB=0 -sZLIB_INCLUDE="zlib-1.2.11" -sZLIB_SOURCE="zlib-1.2.11" address-model=64 link=static python=3.6,3.7,3.8,3.9
           cd .. && del boost_1_78_0.zip
+          
+
+      - uses: suisei-cn/actions-download-file@v1
+        id: downloadglm
+        name: Download GLM
+        with:
+          url: "https://github.com/g-truc/glm/releases/download/0.9.9.8/glm-0.9.9.8.zip"
+          target: lib/glm-0.9.9.8.zip
+
+      - name: Extract GLM
+        run: |
+          7z x lib/glm-0.9.9.8.zip
+          move lib/glm-0.9.9.8 lib/glm
+          
+
+      - uses: suisei-cn/actions-download-file@v1
+        id: downloadgdal1
+        name: Download GDAL (1/2)
+        with:
+          url: "https://download.gisinternals.com/sdk/downloads/release-1928-x64-gdal-3-4-1-mapserver-7-6-4-libs.zip"
+          target: lib/gdal/gdal.zip
+
+
+      - uses: suisei-cn/actions-download-file@v1
+        id: downloadgdal2
+        name: Download GDAL (2/2)
+        with:
+          url: "https://download.gisinternals.com/sdk/downloads/release-1928-x64-gdal-3-4-1-mapserver-7-6-4/gdal-304-1928-x64-core.msi"
+          target: lib/gdal.msi
+
+      - name: Extract GDAL
+        run: |
+          cd lib/gdal
+          7z x gdal.zip
+          move include/boost /include/boost-gdal
+          cd ..
+          msiexec.exe /i lib/gdal.msi
+
+      - uses: suisei-cn/actions-download-file@v1
+        id: downloadlastools
+        name: Download LAStools
+        with:
+          url: "https://lastools.github.io/download/LAStools.zip"
+          target: lib/LAStools.zip
+
+      - name: Extract LAStools
+        run: |
+          cd lib
+          7z x LAStools.zip
+          cd LAStools
+          cmake .
+          msbuild.exe LAStools.sln
+          
