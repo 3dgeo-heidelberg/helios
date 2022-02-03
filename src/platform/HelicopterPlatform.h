@@ -17,22 +17,22 @@ public:
      * @brief Distance threshold to start slowdown process when not in
      * smooth turn mode
      */
-	double cfg_slowdown_dist_xy = 5.0;
-	/**
-	 * @brief Slowdown step magnitude
-	 */
-	double cfg_slowdown_magnitude = 2.0;
-	/**
-	 * @brief Speedup step magnitude
-	 */
-	double cfg_speedup_magnitude = 2.0;
-	/**
-	 * @brief Max engine force over XY plane
-	 */
-	double ef_xy_max = 0.1;
-	/**
-	 * @brief Helicopter yaw angle
-	 */
+    double cfg_slowdown_dist_xy = 5.0;
+    /**
+     * @brief Slowdown step magnitude
+     */
+    double cfg_slowdown_magnitude = 2.0;
+    /**
+     * @brief Speedup step magnitude
+     */
+    double cfg_speedup_magnitude = 2.0;
+    /**
+     * @brief Max engine force over XY plane
+     */
+    double ef_xy_max = 0.1;
+    /**
+     * @brief Helicopter yaw angle
+     */
     double yaw = 0.0;
     /**
      * @brief Helicopter roll angle
@@ -133,28 +133,26 @@ public:
     /**
      * @brief Helicopter speed vector over xy plane
      */
-	glm::dvec3 speed_xy = glm::dvec3(0, 0, 0);
-	/**
-	 * @brief Helicopter speed vector over xy plane from previous simulation
-	 * step
-	 */
-	glm::dvec3 lastSpeed_xy = glm::dvec3(0, 0, 0);
-
-	/**
-	 * @brief Rotation instance to assist helicopter rotation computation
-	 */
-	Rotation r = Rotation(glm::dvec3(1, 0, 0), 0);
-	/**
-	 * @brief Directional attitude over XY plane for HelicopterPlatform
-	 * @see HelicopterPlatform::getDirectionalAttitude
-	 */
-	Rotation dirAttitudeXY = Rotation(Directions::up, 0);
-
-	// ***  CACHE ATTRIBUTES  *** //
-	// ************************** //
-	/**
-	 * @brief Count of turn iterations
-	 */
+    glm::dvec3 speed_xy = glm::dvec3(0, 0, 0);
+    /**
+     * @brief Helicopter speed vector over xy plane from previous simulation
+     * step
+     */
+    glm::dvec3 lastSpeed_xy = glm::dvec3(0, 0, 0);
+    /**
+     * @brief Rotation instance to assist helicopter rotation computation
+     */
+    Rotation r = Rotation(glm::dvec3(1, 0, 0), 0);
+    /**
+     * @brief Directional attitude over XY plane for HelicopterPlatform
+     * @see HelicopterPlatform::getDirectionalAttitude
+     */
+    Rotation dirAttitudeXY = Rotation(Directions::up, 0);
+    // ***  CACHE ATTRIBUTES  *** //
+    // ************************** //
+    /**
+     * @brief Count of turn iterations
+     */
     int cache_turnIterations = 0;
     /**
      * @brief Flag specifying if helicopter is currently turning (true)
@@ -234,8 +232,6 @@ public:
      * @return Reference to rotation assistance r
      */
     Rotation & getRotationByReference(){return r;}
-
-
     /**
      * @brief Directional attitude for HelicopterPlatform considers only the
      * XY direction

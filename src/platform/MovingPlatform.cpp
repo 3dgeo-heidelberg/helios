@@ -29,7 +29,7 @@ void MovingPlatform::applySettings(
     std::shared_ptr<PlatformSettings> settings,
     bool manual
 ){
-	cfg_settings_movePerSec_m = settings->movePerSec_m;
+    cfg_settings_movePerSec_m = settings->movePerSec_m;
     stopAndTurn = settings->stopAndTurn;
     smoothTurn = settings->smoothTurn;
     slowdownEnabled = settings->slowdownEnabled;
@@ -44,6 +44,11 @@ void MovingPlatform::doSimStep(int simFrequency_hz) {
 	if (l2Norm(velocity) > 0) {
 	    setPosition(position + velocity);
 	}
+}
+
+void MovingPlatform::prepareSimulation(int simFrequency_hz) {
+  movePerSec_m_stepMagnitude =
+      cfg_settings_movePerSec_m / (double)simFrequency_hz;
 }
 
 void MovingPlatform::initLegManual() {
@@ -103,9 +108,31 @@ void MovingPlatform::initLegManualIterative(){
 }
 
 bool MovingPlatform::waypointReached() {
-	// velocity is in m/cycle
-	// m / (m/cycle) => cycles left to reach waypoint
-	bool result = (glm::l2Norm(cached_vectorToTarget) / glm::l2Norm(velocity)) < 1.0;
-	if (result) logging::INFO("Waypoint reached!");
-	return result;
+  // velocity is in m/cycle
+  // m / (m/cycle) => cycles left to reach waypoint
+  bool result =
+      (glm::l2Norm(cached_vectorToTarget) / glm::l2Norm(velocity)) < 1.0;
+  if (result) {
+    if (not engineLimitReached) {
+      if (userSpeedLimitReached) {
+        logging::INFO("User speed (movePerSec_m) reached. It can be increased");
+      } else {
+        logging::INFO("Leg is too short to achieve "
+                      "the desired (movePerSec_m) speed");
+      }
+    } else {
+      if (userSpeedLimitReached) {
+        logging::INFO(
+            "User speed (movePerSec_m) not reached due to engine limitations. "
+            "Consider increase the variable engine_max_force in your platform "
+            "settings");
+      } else {
+        logging::INFO("User speed (movePerSec_m) reached at engine max force");
+      }
+    }
+
+    engineLimitReached = false;
+    userSpeedLimitReached = false;
+    logging::INFO("Waypoint reached!");
+  } return result;
 }

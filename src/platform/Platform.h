@@ -87,7 +87,7 @@ public:
 	 * @brief How meters per seconds the platform moves. NOTICE this behavior
 	 * must be overridden by platforms implementing its own physics model.
 	 */
-	double cfg_settings_movePerSec_m = 0;
+	double cfg_settings_movePerSec_m = 0; // Suggestion: Consider moving this to MovingPlatform
 	/**
 	 * @brief Origin waypoint
 	 */

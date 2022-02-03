@@ -415,5 +415,3 @@ void SurveyPlayback::clearPointcloudFile(){
     }
     ofs.close();
 }
-
-
