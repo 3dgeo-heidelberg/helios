@@ -1,3 +1,5 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$d8/de4/classhelios_1_1hpc_1_1SM__ParallelMergeSort.html" title="Class providing a shared memory sorting algorithm based on merge sort. " alt="" coords="5,5,237,61"/>
+<area shape="rect" id="node1" href="$d9/d82/classfluxionum_1_1Minimizer.html" title="Base abstract class providing basic structure for minimization optimization of a given function..." alt="" coords="5,5,148,47"/>
+<area shape="rect" id="node2" href="$d3/d7f/classfluxionum_1_1DiffMinimizer.html" title="Base abstract class providing basic structure for minimization optimization of a given function based..." alt="" coords="196,5,359,47"/>
+<area shape="rect" id="node3" href="$db/d57/classfluxionum_1_1UnivariateNewtonRaphsonMinimizer.html" title="Implementation of univariate Newton&#45;Raphson minimizer. " alt="" coords="407,5,599,47"/>
 </map>

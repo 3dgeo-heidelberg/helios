@@ -50,6 +50,7 @@ var hierarchy =
     ] ],
     [ "HeliosTests::BaseTest", "d9/d52/classHeliosTests_1_1BaseTest.html", [
       [ "HeliosTests::FluxionumTest", "dd/de0/classHeliosTests_1_1FluxionumTest.html", null ],
+      [ "HeliosTests::GroveTest", "d0/d01/classHeliosTests_1_1GroveTest.html", null ],
       [ "HeliosTests::HPCTest", "d4/d0d/classHeliosTests_1_1HPCTest.html", null ],
       [ "HeliosTests::LadLutTest", "dd/df9/classHeliosTests_1_1LadLutTest.html", null ],
       [ "HeliosTests::NoiseTest", "de/dad/classHeliosTests_1_1NoiseTest.html", null ],
@@ -63,6 +64,14 @@ var hierarchy =
       [ "HeliosTests::SurveyCopyTest", "de/d9c/classHeliosTests_1_1SurveyCopyTest.html", null ],
       [ "HeliosTests::VoxelParsingTest", "da/d8d/classHeliosTests_1_1VoxelParsingTest.html", null ]
     ] ],
+    [ "BasicDynGroveSubject< Tree, Subject >", "d2/d33/classBasicDynGroveSubject.html", null ],
+    [ "BasicDynGroveSubject< GroveKDTreeRaycaster, DynMovingObject >", "d2/d33/classBasicDynGroveSubject.html", [
+      [ "KDGroveSubject", "dc/dbb/classKDGroveSubject.html", [
+        [ "DynMovingObject", "d4/d96/classDynMovingObject.html", [
+          [ "DynSequentiableMovingObject", "d4/d48/classDynSequentiableMovingObject.html", null ]
+        ] ]
+      ] ]
+    ] ],
     [ "BlockAllocator< Class >", "d9/d47/classBlockAllocator.html", null ],
     [ "BlockAllocator< LightKDTreeNode >", "d9/d47/classBlockAllocator.html", [
       [ "LightKDTreeNodeBlockAllocator", "dd/d04/classLightKDTreeNodeBlockAllocator.html", null ]
@@ -71,6 +80,14 @@ var hierarchy =
     [ "DateTimeUtils", "d2/d15/classDateTimeUtils.html", null ],
     [ "HeliosDemos::DemoSelector", "df/d3f/classHeliosDemos_1_1DemoSelector.html", null ],
     [ "Directions", "df/dc3/classDirections.html", null ],
+    [ "DynGrove< Subject >", "dc/d2c/classDynGrove.html", [
+      [ "BasicDynGrove< Tree, Subject >", "d1/d0a/classBasicDynGrove.html", null ]
+    ] ],
+    [ "DynGrove< DynMovingObject >", "dc/d2c/classDynGrove.html", [
+      [ "BasicDynGrove< GroveKDTreeRaycaster, DynMovingObject >", "d1/d0a/classBasicDynGrove.html", [
+        [ "KDGrove", "d9/d76/classKDGrove.html", null ]
+      ] ]
+    ] ],
     [ "DynMotionEngine", "d2/d0a/classDynMotionEngine.html", null ],
     [ "DynSequence< T >", "df/dfa/classDynSequence.html", null ],
     [ "DynSequencer< T >", "db/d6f/classDynSequencer.html", null ],
@@ -82,6 +99,7 @@ var hierarchy =
       ] ]
     ] ],
     [ "FileUtils", "d5/d4b/classFileUtils.html", null ],
+    [ "GroveTreeWrapper< Tree >", "d1/d1e/classGroveTreeWrapper.html", null ],
     [ "HeliosTests::HPCTest_DoubleComparator", "dd/d54/structHeliosTests_1_1HPCTest__DoubleComparator.html", null ],
     [ "HeliosTests::HPCTest_FloatComparator", "d0/df1/structHeliosTests_1_1HPCTest__FloatComparator.html", null ],
     [ "HeliosTests::HPCTest_IntComparator", "d8/d51/structHeliosTests_1_1HPCTest__IntComparator.html", null ],
@@ -105,6 +123,8 @@ var hierarchy =
       [ "BinaryTreeFastBreadthIterator< NodeType >", "d3/d43/classBinaryTreeFastBreadthIterator.html", null ],
       [ "BinaryTreeFastDepthIterator< NodeType >", "dc/da5/classBinaryTreeFastDepthIterator.html", null ]
     ] ],
+    [ "KDGroveFactory", "de/d89/classKDGroveFactory.html", null ],
+    [ "KDGroveStats", "de/d29/classKDGroveStats.html", null ],
     [ "KDTreeBuildType", "d8/d4c/classKDTreeBuildType.html", null ],
     [ "KDTreeFactory", "d5/dd0/classKDTreeFactory.html", [
       [ "SimpleKDTreeFactory", "d6/d96/classSimpleKDTreeFactory.html", [
@@ -119,7 +139,7 @@ var hierarchy =
     ] ],
     [ "KDTreeFactoryMaker", "d3/db8/classKDTreeFactoryMaker.html", null ],
     [ "KDTreePrimitiveComparator", "d6/d1f/structKDTreePrimitiveComparator.html", null ],
-    [ "KDTreeRaycaster", "da/d81/classKDTreeRaycaster.html", null ],
+    [ "KDTreeRaycaster::KDTreeRaycasterSearch", "de/d7f/classKDTreeRaycaster_1_1KDTreeRaycasterSearch.html", null ],
     [ "LadLut", "d9/d22/classLadLut.html", null ],
     [ "LadLutLoader", "de/d6b/classLadLutLoader.html", null ],
     [ "LasSpecification", "df/d64/classLasSpecification.html", null ],
@@ -154,6 +174,11 @@ var hierarchy =
         [ "UniformNoiseSource< double >", "d3/d57/classUniformNoiseSource.html", null ]
       ] ]
     ] ],
+    [ "Object", null, [
+      [ "SurfaceInspector::maths::functions::IMathFunction< T, T >", "da/d80/classSurfaceInspector_1_1maths_1_1functions_1_1IMathFunction.html", [
+        [ "SurfaceInspector::maths::functions::GaussianFunction< T >", "db/dc1/classSurfaceInspector_1_1maths_1_1functions_1_1GaussianFunction.html", null ]
+      ] ]
+    ] ],
     [ "SurfaceInspector::util::Object", "d2/df2/classSurfaceInspector_1_1util_1_1Object.html", [
       [ "SurfaceInspector::util::draggers::IDragger< E, vector< E > >", "d1/dd1/classSurfaceInspector_1_1util_1_1draggers_1_1IDragger.html", [
         [ "SurfaceInspector::util::draggers::OptimizationDragger< E >", "d5/d68/classSurfaceInspector_1_1util_1_1draggers_1_1OptimizationDragger.html", [
@@ -179,11 +204,6 @@ var hierarchy =
       [ "SurfaceInspector::maths::Vector< T >", "d1/dd3/classSurfaceInspector_1_1maths_1_1Vector.html", null ],
       [ "SurfaceInspector::util::draggers::IDragger< E, C >", "d1/dd1/classSurfaceInspector_1_1util_1_1draggers_1_1IDragger.html", null ],
       [ "SurfaceInspector::util::SurfaceInspectorException", "df/da8/classSurfaceInspector_1_1util_1_1SurfaceInspectorException.html", null ]
-    ] ],
-    [ "Object", null, [
-      [ "SurfaceInspector::maths::functions::IMathFunction< T, T >", "da/d80/classSurfaceInspector_1_1maths_1_1functions_1_1IMathFunction.html", [
-        [ "SurfaceInspector::maths::functions::GaussianFunction< T >", "db/dc1/classSurfaceInspector_1_1maths_1_1functions_1_1GaussianFunction.html", null ]
-      ] ]
     ] ],
     [ "PlaneFitter", "d6/d51/classPlaneFitter.html", null ],
     [ "Primitive", "df/de1/classPrimitive.html", [
@@ -229,6 +249,16 @@ var hierarchy =
     [ "pyhelios::PyVertexWrapper", "d6/d95/classpyhelios_1_1PyVertexWrapper.html", null ],
     [ "RandomnessGenerator< RealType >", "dc/d6e/classRandomnessGenerator.html", null ],
     [ "RandomnessGenerator< double >", "dc/d6e/classRandomnessGenerator.html", null ],
+    [ "Raycaster", "d7/df4/classRaycaster.html", [
+      [ "KDGroveRaycaster", "df/d01/classKDGroveRaycaster.html", null ],
+      [ "KDTreeRaycaster", "da/d81/classKDTreeRaycaster.html", [
+        [ "GroveKDTreeRaycaster", "d6/dba/classGroveKDTreeRaycaster.html", null ]
+      ] ],
+      [ "RaycasterGroveTree< Subject >", "d9/db1/classRaycasterGroveTree.html", null ],
+      [ "RaycasterGroveTree< DynObject >", "d9/db1/classRaycasterGroveTree.html", [
+        [ "GroveKDTreeRaycaster", "d6/dba/classGroveKDTreeRaycaster.html", null ]
+      ] ]
+    ] ],
     [ "RaySceneIntersection", "dc/da3/classRaySceneIntersection.html", null ],
     [ "RayUtils", "d7/dee/classRayUtils.html", null ],
     [ "rigidmotion::RigidMotion", "d7/d84/classrigidmotion_1_1RigidMotion.html", [
@@ -250,9 +280,7 @@ var hierarchy =
     [ "SceneLoadingSpecification", "d7/d48/classSceneLoadingSpecification.html", null ],
     [ "ScenePart", "dd/dc4/classScenePart.html", [
       [ "DynObject", "d5/d6a/classDynObject.html", [
-        [ "DynMovingObject", "d4/d96/classDynMovingObject.html", [
-          [ "DynSequentiableMovingObject", "d4/d48/classDynSequentiableMovingObject.html", null ]
-        ] ]
+        [ "DynMovingObject", "d4/d96/classDynMovingObject.html", null ]
       ] ]
     ] ],
     [ "SerialIO", "d6/db9/classSerialIO.html", null ],
@@ -284,6 +312,16 @@ var hierarchy =
     [ "SpectralLibrary", "d5/d20/classSpectralLibrary.html", null ],
     [ "static_visitor", null, [
       [ "stringVisitor", "d8/df4/structstringVisitor.html", null ]
+    ] ],
+    [ "StaticGrove< Tree >", "d8/da0/classStaticGrove.html", [
+      [ "BasicStaticGrove< Tree >", "d9/dcd/classBasicStaticGrove.html", [
+        [ "BasicDynGrove< Tree, Subject >", "d1/d0a/classBasicDynGrove.html", null ]
+      ] ]
+    ] ],
+    [ "StaticGrove< GroveKDTreeRaycaster >", "d8/da0/classStaticGrove.html", [
+      [ "BasicStaticGrove< GroveKDTreeRaycaster >", "d9/dcd/classBasicStaticGrove.html", [
+        [ "BasicDynGrove< GroveKDTreeRaycaster, DynMovingObject >", "d1/d0a/classBasicDynGrove.html", null ]
+      ] ]
     ] ],
     [ "SyncFileWriter", "d1/d0e/classSyncFileWriter.html", [
       [ "LasSyncFileWriter", "d2/db3/classLasSyncFileWriter.html", [

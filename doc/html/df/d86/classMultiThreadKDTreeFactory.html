@@ -198,6 +198,9 @@ Protected Member Functions</h2></td></tr>
 <tr class="memitem:aaa41155c2cff4d446839bab62dc2bd3a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d86/classMultiThreadKDTreeFactory.html#aaa41155c2cff4d446839bab62dc2bd3a">reportKDTreeStats</a> (<a class="el" href="../../d0/d64/classKDTreeNodeRoot.html">KDTreeNodeRoot</a> *root, vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *&gt; const &amp;primitives) const override</td></tr>
 <tr class="memdesc:aaa41155c2cff4d446839bab62dc2bd3a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Call the report KDTree stats method of decorated KDTree factory.  <a href="#aaa41155c2cff4d446839bab62dc2bd3a">More...</a><br /></td></tr>
 <tr class="separator:aaa41155c2cff4d446839bab62dc2bd3a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a29186783483d298b6fb376e4909b0352"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d86/classMultiThreadKDTreeFactory.html#a29186783483d298b6fb376e4909b0352">prepareToMake</a> ()</td></tr>
+<tr class="memdesc:a29186783483d298b6fb376e4909b0352"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prepare the <a class="el" href="../../df/d86/classMultiThreadKDTreeFactory.html" title="Decorator for any KDTree factory which provides support for multi thread KDTree building. ">MultiThreadKDTreeFactory</a> so it is ready to start making a new KDTree.  <a href="#a29186783483d298b6fb376e4909b0352">More...</a><br /></td></tr>
+<tr class="separator:a29186783483d298b6fb376e4909b0352"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9f8866c50d14796dad33466e44f97814"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d86/classMultiThreadKDTreeFactory.html#a9f8866c50d14796dad33466e44f97814">increaseFinishedGeomJobsCount</a> (size_t const amount)</td></tr>
 <tr class="memdesc:a9f8866c50d14796dad33466e44f97814"><td class="mdescLeft">&#160;</td><td class="mdescRight">Increase count of finished geometry-level jobs in a thread safe way.  <a href="#a9f8866c50d14796dad33466e44f97814">More...</a><br /></td></tr>
 <tr class="separator:a9f8866c50d14796dad33466e44f97814"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -896,6 +899,34 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>boost::serialization
 <a class="el" href="../../d5/dd0/classKDTreeFactory.html#a8f36b4bd3d2ec7a1d771a3e3d93b14cd" title="Build a KDTree from given primitives. ">KDTreeFactory::makeFromPrimitivesUnsafe</a> </dd></dl>
 
 <p>Implements <a class="el" href="../../d5/dd0/classKDTreeFactory.html#a8f36b4bd3d2ec7a1d771a3e3d93b14cd">KDTreeFactory</a>.</p>
+
+</div>
+</div>
+<a id="a29186783483d298b6fb376e4909b0352"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a29186783483d298b6fb376e4909b0352">&#9670;&nbsp;</a></span>prepareToMake()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void MultiThreadKDTreeFactory::prepareToMake </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Prepare the <a class="el" href="../../df/d86/classMultiThreadKDTreeFactory.html" title="Decorator for any KDTree factory which provides support for multi thread KDTree building. ">MultiThreadKDTreeFactory</a> so it is ready to start making a new KDTree. </p>
+<p>This implies handling the number of start pending tasks for node thread pool so, when geometry-level parallelization is used, no node-level parallelization occurs before it must (at adequate depth). Besides, the maximum depth for geometry-level parallelization is properly handled. Also, the sequencer is initialized with masters threads for differents nodes if necessary. Finally, the count of finished geometry-level jobs is set to 0. </p>
 
 </div>
 </div>

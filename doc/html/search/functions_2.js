@@ -2,7 +2,9 @@ var searchData=
 [
   ['basedemo',['BaseDemo',['../df/df9/classHeliosDemos_1_1BaseDemo.html#ab2d78b15fec928c3ea154e56949c473d',1,'HeliosDemos::BaseDemo']]],
   ['basetest',['BaseTest',['../d9/d52/classHeliosTests_1_1BaseTest.html#ad4389cad0216026e48543cdb4095efbf',1,'HeliosTests::BaseTest']]],
-  ['begin',['begin',['../df/dfa/classDynSequence.html#a8c9c5476a858335a3143c6a31f407816',1,'DynSequence']]],
+  ['basicdyngrove',['BasicDynGrove',['../d1/d0a/classBasicDynGrove.html#a2c83c0f1d2e1d67fdeaa00203bc261b3',1,'BasicDynGrove']]],
+  ['basicstaticgrove',['BasicStaticGrove',['../d9/dcd/classBasicStaticGrove.html#a3c5a1734f5e0ea4d2f718b2bf327edca',1,'BasicStaticGrove']]],
+  ['begin',['begin',['../d8/da0/classStaticGrove.html#a773c0394e64bd235f320f8c5cc40332b',1,'StaticGrove::begin()'],['../df/dfa/classDynSequence.html#a8c9c5476a858335a3143c6a31f407816',1,'DynSequence::begin()']]],
   ['bestfittingdetailedplanepca',['bestFittingDetailedPlanePCA',['../df/d21/classSurfaceInspector_1_1maths_1_1PlaneFitter.html#a4a67f023fdbb7579880aad1fa63df138',1,'SurfaceInspector::maths::PlaneFitter']]],
   ['bestfittingdetailedplanesvd',['bestFittingDetailedPlaneSVD',['../df/d21/classSurfaceInspector_1_1maths_1_1PlaneFitter.html#a731b8774d7bb362bc16655bfe0acbf59',1,'SurfaceInspector::maths::PlaneFitter']]],
   ['bestfittingplanefromcovariances',['bestFittingPlaneFromCovariances',['../df/d21/classSurfaceInspector_1_1maths_1_1PlaneFitter.html#aad27cd80082d4ff9033524f93e7c526f',1,'SurfaceInspector::maths::PlaneFitter']]],
@@ -31,11 +33,13 @@ var searchData=
   ['buildfastdepthiterator',['buildFastDepthIterator',['../dd/d79/classLightKDTreeNode.html#a51d48765b7f827aa3c1cc9cdba107986',1,'LightKDTreeNode']]],
   ['buildfixedstructure',['buildFixedStructure',['../d0/d1c/classHeliosDemos_1_1SimplePrimitivesDemo.html#a044a27424671f1a73683f217bbb14747',1,'HeliosDemos::SimplePrimitivesDemo']]],
   ['buildgroundstructure',['buildGroundStructure',['../d0/d1c/classHeliosDemos_1_1SimplePrimitivesDemo.html#a6dc26c56a164822ab09741dba934472e',1,'HeliosDemos::SimplePrimitivesDemo']]],
+  ['buildgrove',['buildGrove',['../d0/d01/classHeliosTests_1_1GroveTest.html#a8fa9dc3fff505534601f5b97b84cc42c',1,'HeliosTests::GroveTest']]],
   ['buildhelicalstructure',['buildHelicalStructure',['../d0/d1c/classHeliosDemos_1_1SimplePrimitivesDemo.html#ae3987f55ff64b592a544ed629458b4f4',1,'HeliosDemos::SimplePrimitivesDemo']]],
-  ['buildkdtree',['buildKDTree',['../d5/d9c/classScene.html#af7059974718edb201526fb4075ec7eb7',1,'Scene']]],
-  ['buildkdtreewithlog',['buildKDTreeWithLog',['../d5/d9c/classScene.html#a2f559623cbaa92f0245162dc90b33769',1,'Scene']]],
+  ['buildkdgrove',['buildKDGrove',['../d5/d9c/classScene.html#a3ffef7046522c356bef106522079e353',1,'Scene']]],
+  ['buildkdgrovewithlog',['buildKDGroveWithLog',['../d5/d9c/classScene.html#ad4937809abfcb355f7a36b207a82a755',1,'Scene']]],
   ['buildmobilestructure',['buildMobileStructure',['../d0/d1c/classHeliosDemos_1_1SimplePrimitivesDemo.html#a19a51b2cc4b03b1947800c96330ddce0',1,'HeliosDemos::SimplePrimitivesDemo']]],
   ['buildpolymesh',['buildPolymesh',['../d1/dda/classvisualhelios_1_1VHStaticObjectAdapter.html#a11cdd043b864eb148240e24cd50d4775',1,'visualhelios::VHStaticObjectAdapter']]],
+  ['buildprimitives',['buildPrimitives',['../d0/d01/classHeliosTests_1_1GroveTest.html#a33bcd3fa7b06e263b89fd2653ae1a174',1,'HeliosTests::GroveTest']]],
   ['buildprimitivevertex',['buildPrimitiveVertex',['../d9/d15/classWavefrontObjFileLoader.html#ad9e0004c857da9711ae8845c2bb6f659',1,'WavefrontObjFileLoader']]],
   ['buildpulsethreadpool',['buildPulseThreadPool',['../d9/ddd/classpyhelios_1_1PyHeliosSimulation.html#a761e40b0106987942bdc084074adb59d',1,'pyhelios::PyHeliosSimulation']]],
   ['buildrecursive',['buildRecursive',['../df/d86/classMultiThreadKDTreeFactory.html#a2c3773e8c50fb78073caeab17b9c4752',1,'MultiThreadKDTreeFactory::buildRecursive()'],['../d6/d96/classSimpleKDTreeFactory.html#a96323d9575182f1bedbd013991a693a6',1,'SimpleKDTreeFactory::buildRecursive()']]],
@@ -44,5 +48,6 @@ var searchData=
   ['buildrecursiverecipe',['buildRecursiveRecipe',['../d6/d96/classSimpleKDTreeFactory.html#a070315453cd5192e4e41dd2594fec91a',1,'SimpleKDTreeFactory']]],
   ['buildscanningpulseprocess',['buildScanningPulseProcess',['../dc/d42/classScanner.html#a1fb73d798dca372fa2639a715211936b',1,'Scanner']]],
   ['buildstaticstructure',['buildStaticStructure',['../d0/d1c/classHeliosDemos_1_1SimplePrimitivesDemo.html#a77a30ca810bbd9591ec068b54c7be354',1,'HeliosDemos::SimplePrimitivesDemo']]],
+  ['buildtrees',['buildTrees',['../d0/d01/classHeliosTests_1_1GroveTest.html#aa0349c5afdec5a7e65ea981e0ed525a1',1,'HeliosTests::GroveTest']]],
   ['buildtriangles',['buildTriangles',['../d1/d0c/classGeoTiffFileLoader.html#afad534560fcc31f013898ef077763c8d',1,'GeoTiffFileLoader']]]
 ];

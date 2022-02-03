@@ -172,6 +172,8 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a85885c7da0fdb84f80785ae91ad325e3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d6a/classDynObject.html#a85885c7da0fdb84f80785ae91ad325e3">updatePrimitivesNormalFromMatrix</a> (size_t const m, arma::mat const &amp;X)</td></tr>
 <tr class="memdesc:a85885c7da0fdb84f80785ae91ad325e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Like <a class="el" href="../../d5/d6a/classDynObject.html#a0000b9944193085372ffd75212009513" title="Update the normal of each primitive with given matrix. ">updatePrimitivesNormalFromMatrix(arma::mat const &amp;)</a> but receiving the total number of vertices beforehand.  <a href="#a85885c7da0fdb84f80785ae91ad325e3">More...</a><br /></td></tr>
 <tr class="separator:a85885c7da0fdb84f80785ae91ad325e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5af87358f9a690000fd493c547aadabc"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../dd/dc4/classScenePart.html#abb04a8637137f4873ccb216573a5d6a5">ObjectType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d6a/classDynObject.html#a5af87358f9a690000fd493c547aadabc">getType</a> () override</td></tr>
+<tr class="separator:a5af87358f9a690000fd493c547aadabc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classScenePart"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classScenePart')"><img src="../../closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="../../dd/dc4/classScenePart.html">ScenePart</a></td></tr>
 <tr class="memitem:ad08313c2aed966def11c0f507a116666 inherit pub_methods_classScenePart"><td class="memItemLeft" align="right" valign="top"><a id="ad08313c2aed966def11c0f507a116666"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/dc4/classScenePart.html#ad08313c2aed966def11c0f507a116666">ScenePart</a> ()=default</td></tr>
@@ -249,6 +251,13 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>boost::serialization
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
+<tr class="inherit_header pub_types_classScenePart"><td colspan="2" onclick="javascript:toggleInherit('pub_types_classScenePart')"><img src="../../closed.png" alt="-"/>&#160;Public Types inherited from <a class="el" href="../../dd/dc4/classScenePart.html">ScenePart</a></td></tr>
+<tr class="memitem:abb04a8637137f4873ccb216573a5d6a5 inherit pub_types_classScenePart"><td class="memItemLeft" align="right" valign="top"><a id="abb04a8637137f4873ccb216573a5d6a5"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/dc4/classScenePart.html#abb04a8637137f4873ccb216573a5d6a5">ObjectType</a> { <b>STATIC_OBJECT</b>, 
+<b>DYN_OBJECT</b>, 
+<b>DYN_MOVING_OBJECT</b>
+ }<tr class="memdesc:abb04a8637137f4873ccb216573a5d6a5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Specify the type of scene part / object. By default, the <a class="el" href="../../dd/dc4/classScenePart.html" title="Class representing a scene part. ">ScenePart</a> is a static object. <br /></td></tr>
+</td></tr>
+<tr class="separator:abb04a8637137f4873ccb216573a5d6a5 inherit pub_types_classScenePart"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_attribs_classScenePart"><td colspan="2" onclick="javascript:toggleInherit('pub_attribs_classScenePart')"><img src="../../closed.png" alt="-"/>&#160;Public Attributes inherited from <a class="el" href="../../dd/dc4/classScenePart.html">ScenePart</a></td></tr>
 <tr class="memitem:a116a4b9d5c153b000349ad6397009859 inherit pub_attribs_classScenePart"><td class="memItemLeft" align="right" valign="top"><a id="a116a4b9d5c153b000349ad6397009859"></a>
 std::vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/dc4/classScenePart.html#a116a4b9d5c153b000349ad6397009859">mPrimitives</a></td></tr>
@@ -520,6 +529,34 @@ DynObject::primitives </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d5/d6a/classDynObject.html#ad3708a4115b39e1936c4a96c622faea7" title="Alias for DynObject::doStep method so it can be used as a functor. ">DynObject::operator()()</a> </dd></dl>
 
 <p>Implemented in <a class="el" href="../../d4/d96/classDynMovingObject.html#a813d8a76e64b24b059959998520325ff">DynMovingObject</a>, and <a class="el" href="../../d4/d48/classDynSequentiableMovingObject.html#acbf48b570e4ba4339f63d1b00f615636">DynSequentiableMovingObject</a>.</p>
+
+</div>
+</div>
+<a id="a5af87358f9a690000fd493c547aadabc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5af87358f9a690000fd493c547aadabc">&#9670;&nbsp;</a></span>getType()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../dd/dc4/classScenePart.html#abb04a8637137f4873ccb216573a5d6a5">ObjectType</a> DynObject::getType </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../dd/dc4/classScenePart.html#ad5ed6cfcf03cbb2113df59c4550daef0" title="Obtain the object type of the scene part. ">ScenePart::getType</a> </dd></dl>
+
+<p>Reimplemented from <a class="el" href="../../dd/dc4/classScenePart.html#ad5ed6cfcf03cbb2113df59c4550daef0">ScenePart</a>.</p>
 
 </div>
 </div>

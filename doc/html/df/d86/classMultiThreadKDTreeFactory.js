@@ -14,6 +14,7 @@ var classMultiThreadKDTreeFactory =
     [ "getPoolSize", "df/d86/classMultiThreadKDTreeFactory.html#aa74d73ab61b35806ee0fdefec06dd38b", null ],
     [ "increaseFinishedGeomJobsCount", "df/d86/classMultiThreadKDTreeFactory.html#a9f8866c50d14796dad33466e44f97814", null ],
     [ "makeFromPrimitivesUnsafe", "df/d86/classMultiThreadKDTreeFactory.html#aa00f670a9c8188ee672684e0f57c2167", null ],
+    [ "prepareToMake", "df/d86/classMultiThreadKDTreeFactory.html#a29186783483d298b6fb376e4909b0352", null ],
     [ "reportKDTreeStats", "df/d86/classMultiThreadKDTreeFactory.html#aaa41155c2cff4d446839bab62dc2bd3a", null ],
     [ "serialize", "df/d86/classMultiThreadKDTreeFactory.html#a30072d03533c8a5a85d8879d1fb435fc", null ],
     [ "boost::serialization::access", "df/d86/classMultiThreadKDTreeFactory.html#ac98d07dd8f7b70e16ccb9a01abf56b9c", null ],
