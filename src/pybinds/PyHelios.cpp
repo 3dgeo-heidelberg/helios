@@ -567,7 +567,6 @@ BOOST_PYTHON_MODULE(_pyhelios){
             &Scanner::getDeviceId,
             &Scanner::setDeviceId
         )
-        .def("toString", &Scanner::toString)
     ;
 
     // Register FWFSettings
@@ -632,10 +631,7 @@ BOOST_PYTHON_MODULE(_pyhelios){
             &FWFSettings::maxFullwaveRange_ns,
             &FWFSettings::maxFullwaveRange_ns
         )
-        .def(
-            "toString",
-            &FWFSettings::toString
-        )
+        .def("toString", &FWFSettings::toString)
     ;
 
     // Register DVec3 (glm::dvec3 wrapper)
