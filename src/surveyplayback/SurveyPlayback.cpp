@@ -400,8 +400,11 @@ void SurveyPlayback::prepareOutput(){
 }
 
 void SurveyPlayback::clearPointcloudFile(){
+    // Dont clear strip file, it would overwrite previous point cloud content
+    if(getCurrentLeg()->isContainedInAStrip()) return;
+
     // Clear point cloud file for current leg
-    string outputPath = this->outputPath + mOutputFilePathString +
+    string outputPath = mOutputFilePathString +
                         getCurrentOutputPath();
     ostringstream s;s << "outputPath=" << outputPath << endl;
     logging::INFO(s.str());
