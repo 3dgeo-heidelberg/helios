@@ -320,10 +320,15 @@ BOOST_PYTHON_MODULE(_pyhelios){
             &ScannerSettings::getTemplate,
             return_internal_reference<>()
         )
+        .def(
+            "toString",
+            &ScannerSettings::toString
+        )
     ;
 
     // Register PlatformSettings
     class_<PlatformSettings>("PlatformSettings", no_init)
+        .add_property("id", &PlatformSettings::id, &PlatformSettings::id)
         .add_property("x", &PlatformSettings::x, &PlatformSettings::x)
         .add_property("y", &PlatformSettings::y, &PlatformSettings::y)
         .add_property("z", &PlatformSettings::z, &PlatformSettings::z)
@@ -370,6 +375,10 @@ BOOST_PYTHON_MODULE(_pyhelios){
             "getTemplate",
             &PlatformSettings::getTemplate,
             return_internal_reference<>()
+        )
+        .def(
+            "toString",
+            &PlatformSettings::toString
         )
     ;
 
@@ -558,6 +567,7 @@ BOOST_PYTHON_MODULE(_pyhelios){
             &Scanner::getDeviceId,
             &Scanner::setDeviceId
         )
+        .def("toString", &Scanner::toString)
     ;
 
     // Register FWFSettings
@@ -566,6 +576,46 @@ BOOST_PYTHON_MODULE(_pyhelios){
             "binSize_ns",
             &FWFSettings::binSize_ns,
             &FWFSettings::binSize_ns
+        )
+        .add_property(
+            "minEchoWidth",
+            &FWFSettings::minEchoWidth,
+            &FWFSettings::minEchoWidth
+        )
+        .add_property(
+            "peakEnergy",
+            &FWFSettings::peakEnergy,
+            &FWFSettings::peakEnergy
+        )
+        .add_property(
+            "apertureDiameter",
+            &FWFSettings::apertureDiameter,
+            &FWFSettings::apertureDiameter
+        )
+        .add_property(
+            "scannerEfficiency",
+            &FWFSettings::scannerEfficiency,
+            &FWFSettings::scannerEfficiency
+        )
+        .add_property(
+            "atmosphericVisiblity",
+            &FWFSettings::atmosphericVisibility,
+            &FWFSettings::atmosphericVisibility
+        )
+        .add_property(
+            "scannerWaveLength",
+            &FWFSettings::scannerWaveLength,
+            &FWFSettings::scannerWaveLength
+        )
+        .add_property(
+            "beamDivergence",
+            &FWFSettings::beamDivergence_rad,
+            &FWFSettings::beamDivergence_rad
+        )
+        .add_property(
+            "pulseLength_ns",
+            &FWFSettings::pulseLength_ns,
+            &FWFSettings::pulseLength_ns
         )
         .add_property(
             "beamSampleQuality",
@@ -581,6 +631,10 @@ BOOST_PYTHON_MODULE(_pyhelios){
             "maxFullwaveRange_ns",
             &FWFSettings::maxFullwaveRange_ns,
             &FWFSettings::maxFullwaveRange_ns
+        )
+        .def(
+            "toString",
+            &FWFSettings::toString
         )
     ;
 
@@ -714,6 +768,11 @@ BOOST_PYTHON_MODULE(_pyhelios){
             "rangeMin",
             &PyDetectorWrapper::getRangeMin,
             &PyDetectorWrapper::setRangeMin
+        )
+        .add_property(
+            "rangeMax",
+            &PyDetectorWrapper::getRangeMax,
+            &PyDetectorWrapper::setRangeMax
         )
         .add_property(
             "lasScale",
@@ -1193,6 +1252,10 @@ BOOST_PYTHON_MODULE(_pyhelios){
             &PyAABBWrapper::getMaxVertex,
             return_value_policy<manage_new_object>()
         )
+        .def(
+            "toString",
+            &PyAABBWrapper::toString
+        )
     ;
 
     // Register Vertex
@@ -1216,6 +1279,10 @@ BOOST_PYTHON_MODULE(_pyhelios){
             "getFaceNormal",
             &PyTriangleWrapper::getFaceNormal,
             return_value_policy<manage_new_object>()
+        )
+        .def(
+            "toString",
+            &PyTriangleWrapper::toString
         )
     ;
 
