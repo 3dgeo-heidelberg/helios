@@ -11,6 +11,7 @@ using namespace std;
 #include "maths/Directions.h"
 #include "MathConverter.h"
 
+
 // ***  CONSTRUCTION / DESTRUCTION  *** //
 // ************************************ //
 std::shared_ptr<AbstractBeamDeflector> OscillatingMirrorBeamDeflector::clone(){
@@ -32,86 +33,180 @@ void OscillatingMirrorBeamDeflector::_clone(
     AbstractBeamDeflector::_clone(abd);
     OscillatingMirrorBeamDeflector *ombd = (OscillatingMirrorBeamDeflector *)
         abd.get();
+    ombd->cfg_setting_scanAngle_rad = cfg_setting_scanAngle_rad;
     ombd->cfg_device_scanProduct = cfg_device_scanProduct;
     ombd->currentScanLinePulse = currentScanLinePulse;
     ombd->cfg_device_turningPulses = cfg_device_turningPulses;
     ombd->cached_pulsesPerScanline = cached_pulsesPerScanline;
-    ombd->cached_thresholdPulse = cached_thresholdPulse;
+    ombd->cached_halfScanlinePulse = cached_halfScanlinePulse;
+    ombd->cached_firstAccelerateScanlinePulse =
+        cached_firstAccelerateScanlinePulse;
+    ombd->cached_firstLinearScanlinePulse = cached_firstLinearScanlinePulse;
+    ombd->cached_firstDecelerateScanlinePulse =
+        cached_firstDecelerateScanlinePulse;
+    ombd->cached_secondAccelerateScanlinePulse =
+        cached_secondAccelerateScanlinePulse;
+    ombd->cached_secondLinearScanlinePulse = cached_secondLinearScanlinePulse;
+    ombd->cached_secondDecelerateScanlinePulse =
+        cached_secondDecelerateScanlinePulse;
 }
 
 // ***  M E T H O D S  *** //
 // *********************** //
 void OscillatingMirrorBeamDeflector::applySettings(std::shared_ptr<ScannerSettings> settings) {
 	AbstractBeamDeflector::applySettings(settings);
-	cached_angleBetweenPulses_rad = (double)
-	    (this->cfg_setting_scanFreq_Hz * this->cfg_setting_scanAngle_rad * 4) /
-	    settings->pulseFreq_Hz;
 	cached_pulsesPerScanline = (int)
 	    (((double)settings->pulseFreq_Hz) / this->cfg_setting_scanFreq_Hz);
-	cached_thresholdPulse = cached_pulsesPerScanline -
-	    cfg_device_turningPulses;
-	cached_halfTurningPulses = ((double)cfg_device_turningPulses)/2.0;
-    cached_halfThresholdPulse = cached_pulsesPerScanline/2;
-	cached_aHalfThresholdPulse = cached_halfThresholdPulse -
-	    cfg_device_turningPulses;
-	cached_bHalfThresholdPulse = cached_halfThresholdPulse +
-	    cfg_device_turningPulses;
-	cached_offsetScaleFactor = cached_halfTurningPulses *
-	    cached_angleBetweenPulses_rad;
+	cached_halfScanlinePulse = cached_pulsesPerScanline / 2;
+	cached_firstAccelerateScanlinePulse = 0;
+	cached_firstLinearScanlinePulse = cfg_device_turningPulses / 2;
+	cached_firstDecelerateScanlinePulse = cached_halfScanlinePulse -
+	    cfg_device_turningPulses / 2;
+	cached_secondAccelerateScanlinePulse = cached_halfScanlinePulse + 1;
+	cached_secondLinearScanlinePulse = cached_secondAccelerateScanlinePulse +
+	    cfg_device_turningPulses / 2;
+	cached_secondDecelerateScanlinePulse = cached_pulsesPerScanline -
+	    cfg_device_turningPulses / 2;
+    cached_angleBetweenPulses_rad = 2.0 * cfg_setting_scanAngle_rad / (
+        (
+            (double)(
+                cached_firstDecelerateScanlinePulse -
+                cached_firstLinearScanlinePulse
+            )
+        ) + (
+            (double)(
+                cached_firstLinearScanlinePulse +
+                cached_secondAccelerateScanlinePulse -
+                cached_firstDecelerateScanlinePulse - 1
+            )
+        ) / 2.0
+    );
 }
 
 void OscillatingMirrorBeamDeflector::doSimStep() {
-	currentScanLinePulse++;
-
+    // Determine pulse number inside current scanline
 	if (currentScanLinePulse == cached_pulsesPerScanline) {
 		currentScanLinePulse = 0;
 	}
 
-	// Update beam angle:
-    int bla = std::min(currentScanLinePulse, cached_pulsesPerScanline / 2) -
-              std::max(0, currentScanLinePulse - cached_pulsesPerScanline / 2);
-	state_currentBeamAngle_rad = -this->cfg_setting_scanAngle_rad +
-        cached_angleBetweenPulses_rad * bla + computeTurningVelocityOffset();
+	// Update beam angle
+	updateBeamAngle();
 
-	// Rotate to current position:
+    // Rotate to current position:
 	this->cached_emitterRelativeAttitude = Rotation(Directions::right, state_currentBeamAngle_rad);
 
+    // To next scanline pulse
+    currentScanLinePulse++;
 }
 
-double OscillatingMirrorBeamDeflector::computeTurningVelocityOffset(){
-    double offset = 0.0;
-    if(currentScanLinePulse >= cached_thresholdPulse){
-        // Down to bottom peak
-        double x = (double) (cached_pulsesPerScanline - currentScanLinePulse);
-        offset = std::pow(1.0 - x/cfg_device_turningPulsesf, 2) *
-            cached_offsetScaleFactor;
+
+// ***  UTIL METHODS  *** //
+// **********************
+void OscillatingMirrorBeamDeflector::updateBeamAngle(){
+    // TODO Rethink : Use as many caches as necessary to improve performance
+    if(currentScanLinePulse == 0){ // gamma=-theta
+        state_currentBeamAngle_rad = -cfg_setting_scanAngle_rad;
     }
-    else if(currentScanLinePulse < cfg_device_turningPulses){
-        // Up from bottom peak
-        double x = (double) currentScanLinePulse;
-        offset = std::pow(1.0 - x/cfg_device_turningPulsesf, 2) *
-            cached_offsetScaleFactor;
+    else if(currentScanLinePulse == cached_halfScanlinePulse){ // gamma=+theta
+        state_currentBeamAngle_rad = cfg_setting_scanAngle_rad;
     }
-    else if(
-        currentScanLinePulse >= cached_aHalfThresholdPulse &&
-        currentScanLinePulse < cached_halfThresholdPulse
+    else if( // Positive monotonic accelerate (first accelerate)
+        currentScanLinePulse >= cached_firstAccelerateScanlinePulse &&
+        currentScanLinePulse < cached_firstLinearScanlinePulse
     ){
-        // Up to top peak
-        double x = (double)(currentScanLinePulse - cached_aHalfThresholdPulse);
-        offset = -std::pow(x/cfg_device_turningPulsesf, 2) *
-            cached_offsetScaleFactor;
+        accelerateBeamAngle(
+            currentScanLinePulse,
+            cached_firstAccelerateScanlinePulse,
+            cached_firstLinearScanlinePulse,
+            1.0
+        );
     }
-    else if(
-        currentScanLinePulse >= cached_halfThresholdPulse &&
-        currentScanLinePulse < cached_bHalfThresholdPulse
+    else if( // Positive monotonic linear (first linear)
+        currentScanLinePulse >= cached_firstLinearScanlinePulse &&
+        currentScanLinePulse < cached_firstDecelerateScanlinePulse
     ){
-        // Down from top peak
-        double x = (double)(cached_bHalfThresholdPulse - currentScanLinePulse);
-        offset = -std::pow(x/cfg_device_turningPulsesf, 2) *
-             cached_offsetScaleFactor;
+        linearBeamAngle(
+            currentScanLinePulse,
+            cached_firstLinearScanlinePulse,
+            cached_firstDecelerateScanlinePulse,
+            1.0
+        );
     }
-    return offset;
+    else if( // Positive monotonic decelerate (first decelerate)
+        currentScanLinePulse >= cached_firstDecelerateScanlinePulse &&
+        currentScanLinePulse < cached_halfScanlinePulse
+    ){
+        decelerateBeamAngle(
+            currentScanLinePulse,
+            cached_firstDecelerateScanlinePulse,
+            cached_halfScanlinePulse,
+            1.0
+        );
+    }
+    else if( // Negative monotonic accelerate (second accelerate)
+        currentScanLinePulse >= cached_secondAccelerateScanlinePulse &&
+        currentScanLinePulse < cached_secondLinearScanlinePulse
+    ){
+        accelerateBeamAngle(
+            currentScanLinePulse,
+            cached_secondAccelerateScanlinePulse,
+            cached_secondLinearScanlinePulse,
+            -1.0
+        );
+    }
+    else if( // Negative monotonic linear (second linear)
+        currentScanLinePulse >= cached_secondLinearScanlinePulse &&
+        currentScanLinePulse < cached_secondDecelerateScanlinePulse
+    ){
+        linearBeamAngle(
+            currentScanLinePulse,
+            cached_secondLinearScanlinePulse,
+            cached_secondDecelerateScanlinePulse,
+            -1.0
+        );
+    }
+    else if( // Negative monotonic decelerate (second decelerate)
+        currentScanLinePulse >= cached_secondDecelerateScanlinePulse
+    ){
+        decelerateBeamAngle(
+            currentScanLinePulse,
+            cached_secondDecelerateScanlinePulse + 1.9, // Vs. 1.570796 = pi/2,
+            cached_pulsesPerScanline,
+            -1.0
+        );
+    }
+
 }
+void OscillatingMirrorBeamDeflector::accelerateBeamAngle(
+    double const p,
+    double const pa,
+    double const pb,
+    double const sign
+){
+    state_currentBeamAngle_rad += sign * cached_angleBetweenPulses_rad *
+        (p-pa) / (pb-pa)
+    ;
+}
+void OscillatingMirrorBeamDeflector::linearBeamAngle(
+    double const p,
+    double const pa,
+    double const pb,
+    double const sign
+){
+    state_currentBeamAngle_rad += sign * cached_angleBetweenPulses_rad;
+}
+void OscillatingMirrorBeamDeflector::decelerateBeamAngle(
+    double const p,
+    double const pa,
+    double const pb,
+    double const sign
+){
+    state_currentBeamAngle_rad += sign * cached_angleBetweenPulses_rad *
+        (pb-p) / (pb-pa)
+    ;
+}
+
+
 
 // ***  GETTERS and SETTERS  *** //
 // ***************************** //

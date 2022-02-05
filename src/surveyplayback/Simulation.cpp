@@ -13,6 +13,12 @@ using namespace std::chrono;
 
 using namespace std;
 
+// TODO Remove section ---
+#include <fstream>
+ofstream DBGOUT("/home/uadmin/git/tmp/beam_divangle_100c.csv", ofstream::out);
+#include <OscillatingMirrorBeamDeflector.h>
+// --- TODO Remove section
+
 Simulation::Simulation(
     int const parallelizationStrategy,
     std::shared_ptr<PulseThreadPoolInterface> pulseThreadPoolInterface,
@@ -43,7 +49,6 @@ void Simulation::doSimStep(){
 	mScanner->doSimStep(mCurrentLegIndex, currentGpsTime_ms);
     currentGpsTime_ms += 1000. / ((double)getScanner()->getPulseFreq_Hz());
     if (currentGpsTime_ms > 604800000.) currentGpsTime_ms -= 604800000.;
-
 }
 
 
@@ -162,7 +167,18 @@ void Simulation::start() {
 	    }
 
 		doSimStep();
-		stepCount++;
+        // TODO Remove section ---
+        std::shared_ptr<OscillatingMirrorBeamDeflector> ombd =
+            static_pointer_cast<OscillatingMirrorBeamDeflector>(
+                mScanner->beamDeflector
+            );
+        DBGOUT  << ((double)stepCount)/((double)mScanner->getPulseFreq_Hz()) << ","
+                << ombd->currentScanLinePulse << ","
+                << ombd->state_currentBeamAngle_rad << ","
+                << ombd->currentScanLinePulse
+                << std::endl;
+        // --- TODO Remove section
+        stepCount++;
 
 		iter++;
 		if(iter-1 == simFrequency){
@@ -181,6 +197,7 @@ void Simulation::start() {
 		    condvar.notify_all();
 		}
 	}
+	DBGOUT.close(); // TODO Remove
 
 	long timeMainLoopFinish = duration_cast<milliseconds>(
 	    system_clock::now().time_since_epoch()).count();

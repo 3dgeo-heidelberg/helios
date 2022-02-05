@@ -22,15 +22,13 @@ public:
 
     /**
      * @brief How many pulses are required for the turning around
-     * @see OscillatingMirrorBeamDeflector::computeTurningVelocityOffset
-     * @see OscillatingMirrorBeamDeflector::cfg_device_turningPulsesf
+     *
+     * <b><span style="color:red">CAUTION</span></b> If number of turning
+     *  pulses \f$>\f$ number of pulses per scan line, then the oscillating
+     *  mirror beam deflector will not work properly. Because there is not
+     *  enough time to complete both necessary turnings per scanline.
      */
     int cfg_device_turningPulses = 100;
-    /**
-     * @brief Decimal encoding of cfg_device_turningPulses
-     * @see OscillatingMirrorBeamDeflector::cfg_device_turningPulses
-     */
-    double cfg_device_turningPulsesf = 100.0f;
 
     // ***  CACHE ATTRIBUTES  *** //
     // ************************** //
@@ -39,50 +37,46 @@ public:
      */
     int cached_pulsesPerScanline = 0;
     /**
-     * @brief At which pulse step the turning around must be computed.
-     * cached_threshold_pulse =
-     *  cached_pulsesPerScanline - cfg_device_turningPulses
-     * @see OscillatingMirrorBeamDeflector::computeTurningVelocityOffset
-     * @see OscillatingMirrorBeamDeflector::cached_pulsesPerScanline
-     * @see OscillatingMirrorBeamDeflector::cfg_device_turningPulses
+     * @brief The number of the pulse at the half of the scanline
      */
-    int cached_thresholdPulse = -1;
+    int cached_halfScanlinePulse;
+    /**
+     * @brief The number of the scanline pulse where the first accelerate
+     *  operation starts. The first accelerate operation occurs during the
+     *  positive monotonic region of the bitonic scanline.
+     */
+    int cached_firstAccelerateScanlinePulse;
+    /**
+     * @brief The number of the scanline pulse where the first constant linear
+     *  operation starts. The first linear operation occurs during the positive
+     *  monotonic region of the bitonic scanline.
+     */
+    int cached_firstLinearScanlinePulse;
+    /**
+     * @brief The number of the scanline pulse where the first decelerate
+     *  operation starts. The first decelerate operation occurs during the
+     *  positive monotonic region of the bitonic scanline.
+     */
+    int cached_firstDecelerateScanlinePulse;
+    /**
+     * @brief The number of scanline pulse where the second accelerate
+     *  operation starts. The second accelerate operation occurs duting the
+     *  negative monotonic region of the bitonic scanline.
+     */
+    int cached_secondAccelerateScanlinePulse;
+    /**
+     * @brief The number of scanline pulse where the second constant linear
+     *  operation starts. The second linear operation occurs during the
+     *  negative monotonic region of the bitonic scanline.
+     */
+    int cached_secondLinearScanlinePulse;
+    /**
+     * @brief The number of the scanline pulse where the second decelerate
+     *  operation starts. The second decelerate operation occurs during the
+     *  negative monotonic region of the bitonic scanline.
+     */
+    int cached_secondDecelerateScanlinePulse;
 
-    /**
-     * @brief The starting point for first turning around stage on top peak
-     * @see OscillatingMirrorBeamDeflector::cached_thresholdPulse
-     * @see OscillatingMirrorBeamDeflector::computeTurningVelocityOffset
-     */
-    int cached_aHalfThresholdPulse = -1;
-    /**
-     * @brief The starting point for second turning around stage on top peak
-     * @see OscillatingMirrorBeamDeflector::cached_thresholdPulse
-     * @see OscillatingMirrorBeamDeflector::computeTurningVelocityOffset
-     */
-    int cached_halfThresholdPulse = -1;
-    /**
-     * @brief The ending point for second turning around stage on top peak
-     * @see OscillatingMirrorBeamDeflector::cached_thresholdPulse
-     * @see OscillatingMirrorBeamDeflector::computeTurningVelocityOffset
-     */
-    int cached_bHalfThresholdPulse = -1;
-
-    /**
-     * @brief Half of the turning pulses, because they are required to compute
-     *  turning velocity offset
-     * @see OscillatingMirrorBeamDeflector::computeTurningVelocityOffset
-     */
-    double cached_halfTurningPulses = -1.0;
-
-    /**
-     * @brief Offset scale factor used to speed-up turning velocity offset
-     *  computations.
-     * cached_offsetScaleFactor =
-     *  cached_halfTurningPulses * cached_angleBetweenPulses_rad
-     * @see OscillatingMirrorBeamDeflector::cached_halfTurningPulses
-     * @see OscillatingMirrorBeamDeflector::cached_angleBetweenPulses_rad
-     */
-    double cached_offsetScaleFactor = -1.0;
 
     // ***  CONSTRUCTION / DESTRUCTION  *** //
     // ************************************ //
@@ -108,8 +102,8 @@ public:
     std::shared_ptr<AbstractBeamDeflector> clone() override;
     void _clone(std::shared_ptr<AbstractBeamDeflector> abd) override;
 
-    // ***  M E T H O D S  *** //
-    // *********************** //
+    // ***  MAIN METHODS  *** //
+    // ********************** //
     /**
      * @see AbstractBeamDeflector::applySettings
      */
@@ -119,62 +113,56 @@ public:
 	 */
 	void doSimStep() override;
 
+	// ***  UTIL METHODS  *** //
+	// ********************** //
 	/**
-	 * @brief Compute the turning velocity offset.
-	 *
-	 * The turning velocity offset can be expressed as a set of 4 equations.
-	 * For this purpose, let \f$l\f$ be the number of pulses per scan line,
-	 *  \f$c\f$ the current scan line pulse, \f$n\f$ the number of pulses
-	 *  the turning around takes, \f$\Delta\f$ the angle between pulses in
-	 *  radians and \f$\epsilon_{n}(x)\f$ the function corresponding to
-	 *  turning velocity offset.
-	 *
-	 * Equation for down to bottom peak offset:
-	 * \f[
-	 * \left\{\begin{array}{lll}
-	 *  x & = & l - c \\
-	 *  \epsilon_{n}(x) & = &
-	 *      \frac{n\Delta}{2}
-	 *      \left(1 - \frac{x}{n}\right)^2
-	 * \end{array}\right.
-	 * \f]
-	 *
-	 * Equation for up from bottom peak offset:
-	 * \f[
-	 * \left\{\begin{array}{lll}
-	 *  x & = & c \\
-	 *  \epsilon_{n}(x) & = &
-	 *      \frac{n\Delta}{2}
-	 *      \left(1 - \frac{x}{n}\right)^2
-	 * \end{array}\right.
-	 * \f]
-	 *
-	 * Equation for up to top peak offset:
-	 * \f[
-	 * \left\{\begin{array}{lll}
-	 *  x & = & c - \frac{l}{2} + n \\
-	 *  \epsilon_{n}(x) & = &
-	 *      - \frac{n\Delta}{2}
-	 *      \left(\frac{x}{n}\right)^2
-	 * \end{array}\right.
-	 * \f]
-	 *
-	 * Equation for down from top peak offset:
-	 * \f[
-	 * \left\{\begin{array}{lll}
-	 *  x & = & \frac{l}{2} + n - c \\
-	 *  \epsilon_{n}(x) & = &
-	 *      - \frac{n\Delta}{2}
-	 *      \left(\frac{x}{n}\right)^2
-	 * \end{array}\right.
-	 * \f]
-	 *
-	 * The function behavior of oscillating mirror velocity has been taken
-	 * from:
-     *  "The geometry of Airborne Laser Scanning in a Kinematical Framework"
-     *      by Andreas Roncat. See pages 54 to 56 for more information.
+	 * @brief Update the current beam angle at each simulation step
 	 */
-	double computeTurningVelocityOffset();
+	void updateBeamAngle();
+	/**
+	 * @brief Compute the beam angle acceleration
+	 * @param p Current pulse
+	 * @param pa Start pulse of the acceleration stage (inclusive)
+	 * @param pb End pulse of the acceleration stage (exclusive)
+	 * @param sign Specify whether the beam angle is increasing (positive, 1)
+	 *  or decreasing (negative, -1)
+	 * @return
+	 */
+	void accelerateBeamAngle(
+	    double const p,
+	    double const pa,
+	    double const pb,
+        double const sign
+    );
+	/**
+	 * @brief Compute the beam angle linear behavior
+	 * @param p Current pulse
+	 * @param pa Start pulse of the linear stage (inclusive)
+	 * @param pb End pulse of the linear stage (exclusive)
+	 * @param sign Specify whether the beam angle is increasing (positive, 1)
+	 *  or decreasing (negative, -1)
+	 */
+	void linearBeamAngle(
+	    double const p,
+	    double const pa,
+	    double const pb,
+	    double const sign
+    );
+	/**
+	 * @brief Compute the beam angle deceleration
+	 * @param p Current pulse
+	 * @param pa Start pulse of the deceleration stage (inclusive)
+	 * @param pb End pulse of the deceleration stage (exclusive)
+	 * @param sign Specify whether the beam angle is increasing (positive, 1)
+	 *  or decreasing (negative, -1)
+	 */
+	void decelerateBeamAngle(
+	    double const p,
+	    double const pa,
+	    double const pb,
+	    double const sign
+    );
+
 
 	// ***  GETTERS and SETTERS  *** //
 	// ***************************** //
