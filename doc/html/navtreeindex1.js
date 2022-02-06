@@ -118,6 +118,7 @@ var NAVTREEINDEX1 =
 "d1/dbf/classpyhelios_1_1PyTriangleWrapper.html#a2b5bd61bfcba1465dc3b0109491b0b47":[1,0,4,23,0],
 "d1/dbf/classpyhelios_1_1PyTriangleWrapper.html#a519ffaf42309bf39488326e2fed23c8f":[1,0,4,23,2],
 "d1/dbf/classpyhelios_1_1PyTriangleWrapper.html#aad33470362d64d07946285510cfce5af":[1,0,4,23,1],
+"d1/dbf/classpyhelios_1_1PyTriangleWrapper.html#ab9b5c43d501135b843998bd7f2488ac0":[1,0,4,23,3],
 "d1/dc1/classSimpleKDTreePopulateSplitsSubTask.html":[1,0,131],
 "d1/dc1/classSimpleKDTreePopulateSplitsSubTask.html#a06a2985d44079b6eaa0c72c7d3536a2e":[1,0,131,4],
 "d1/dc1/classSimpleKDTreePopulateSplitsSubTask.html#a2552db1279d2e2423806c9ba4eb075ea":[1,0,131,5],
@@ -248,6 +249,5 @@ var NAVTREEINDEX1 =
 "d2/d1a/classAABB.html#ae8d1af23f1efb35b9c401ea3305e8828":[1,0,8,11],
 "d2/d1a/classAABB.html#aec244c3c8787feb3a18006ab9e1e50ee":[1,0,8,14],
 "d2/d1a/classAABB.html#af41b9802252d42310200694c104d6499":[1,0,8,23],
-"d2/d1f/classSimpleThreadPool.html":[1,0,134],
-"d2/d1f/classSimpleThreadPool.html#a12ee0fb1dd91a63574329cca341a08ea":[1,0,134,9]
+"d2/d1f/classSimpleThreadPool.html":[1,0,134]
 };

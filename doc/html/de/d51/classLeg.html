@@ -137,6 +137,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aab614c7652b9157f76576a75fce61ac1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/d51/classLeg.html#aab614c7652b9157f76576a75fce61ac1">setStrip</a> (std::shared_ptr&lt; <a class="el" href="../../d4/d31/classScanningStrip.html">ScanningStrip</a> &gt; <a class="el" href="../../de/d51/classLeg.html#a143ae516c64ec8591c7b527c4fc13656">strip</a>)</td></tr>
 <tr class="memdesc:aab614c7652b9157f76576a75fce61ac1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the leg scanning strip.  <a href="#aab614c7652b9157f76576a75fce61ac1">More...</a><br /></td></tr>
 <tr class="separator:aab614c7652b9157f76576a75fce61ac1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af35867cfcdda534e188f7199f57feebc"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/d51/classLeg.html#af35867cfcdda534e188f7199f57feebc">isContainedInAStrip</a> () const</td></tr>
+<tr class="memdesc:af35867cfcdda534e188f7199f57feebc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check whether the leg belongs to a strip (true) or not (false)  <a href="#af35867cfcdda534e188f7199f57feebc">More...</a><br /></td></tr>
+<tr class="separator:af35867cfcdda534e188f7199f57feebc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -377,6 +380,34 @@ std::shared_ptr&lt; <a class="el" href="../../d4/d31/classScanningStrip.html">Sc
 <p>Obtain the scanning strip of the leg. </p>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="../../de/d51/classLeg.html" title="Class representing a survey leg. ">Leg</a> scanning strip </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="../../de/d51/classLeg.html#a143ae516c64ec8591c7b527c4fc13656" title="The strip the leg belongs to. It is a nullptr if the leg does not belong to any strip at all...">Leg::strip</a> </dd></dl>
+
+</div>
+</div>
+<a id="af35867cfcdda534e188f7199f57feebc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af35867cfcdda534e188f7199f57feebc">&#9670;&nbsp;</a></span>isContainedInAStrip()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Leg::isContainedInAStrip </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Check whether the leg belongs to a strip (true) or not (false) </p>
+<dl class="section return"><dt>Returns</dt><dd>True if the leg belongs to a strip, false otherwise </dd></dl>
 
 </div>
 </div>
