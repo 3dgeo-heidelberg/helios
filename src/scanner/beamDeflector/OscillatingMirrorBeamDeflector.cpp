@@ -49,6 +49,9 @@ void OscillatingMirrorBeamDeflector::_clone(
     ombd->cached_secondLinearScanlinePulse = cached_secondLinearScanlinePulse;
     ombd->cached_secondDecelerateScanlinePulse =
         cached_secondDecelerateScanlinePulse;
+    ombd->cached_angleBetweenPulses_rad = cached_angleBetweenPulses_rad;
+    ombd->cached_middleNorm = cached_middleNorm;
+    ombd->cached_extremeNorm = cached_extremeNorm;
 }
 
 // ***  M E T H O D S  *** //
@@ -58,7 +61,7 @@ void OscillatingMirrorBeamDeflector::applySettings(std::shared_ptr<ScannerSettin
 	cached_pulsesPerScanline = (int)
 	    (((double)settings->pulseFreq_Hz) / this->cfg_setting_scanFreq_Hz);
 	cached_halfScanlinePulse = cached_pulsesPerScanline / 2;
-	cached_firstAccelerateScanlinePulse = 0;
+	cached_firstAccelerateScanlinePulse = 1;
 	cached_firstLinearScanlinePulse = cfg_device_turningPulses / 2;
 	cached_firstDecelerateScanlinePulse = cached_halfScanlinePulse -
 	    cfg_device_turningPulses / 2;
@@ -66,7 +69,7 @@ void OscillatingMirrorBeamDeflector::applySettings(std::shared_ptr<ScannerSettin
 	cached_secondLinearScanlinePulse = cached_secondAccelerateScanlinePulse +
 	    cfg_device_turningPulses / 2;
 	cached_secondDecelerateScanlinePulse = cached_pulsesPerScanline -
-	    cfg_device_turningPulses / 2;
+	    cfg_device_turningPulses / 2 + 1;
     cached_angleBetweenPulses_rad = 2.0 * cfg_setting_scanAngle_rad / (
         (
             (double)(
@@ -75,12 +78,15 @@ void OscillatingMirrorBeamDeflector::applySettings(std::shared_ptr<ScannerSettin
             )
         ) + (
             (double)(
-                cached_firstLinearScanlinePulse +
+                cached_firstLinearScanlinePulse -
+                cached_firstAccelerateScanlinePulse +
                 cached_secondAccelerateScanlinePulse -
                 cached_firstDecelerateScanlinePulse - 1
             )
         ) / 2.0
     );
+    cached_middleNorm = std::floor(((double)cfg_device_turningPulses) / 2.0);
+    cached_extremeNorm = cached_middleNorm - 1.0;
 }
 
 void OscillatingMirrorBeamDeflector::doSimStep() {
@@ -101,9 +107,8 @@ void OscillatingMirrorBeamDeflector::doSimStep() {
 
 
 // ***  UTIL METHODS  *** //
-// **********************
+// ********************** //
 void OscillatingMirrorBeamDeflector::updateBeamAngle(){
-    // TODO Rethink : Use as many caches as necessary to improve performance
     if(currentScanLinePulse == 0){ // gamma=-theta
         state_currentBeamAngle_rad = -cfg_setting_scanAngle_rad;
     }
@@ -117,7 +122,7 @@ void OscillatingMirrorBeamDeflector::updateBeamAngle(){
         accelerateBeamAngle(
             currentScanLinePulse,
             cached_firstAccelerateScanlinePulse,
-            cached_firstLinearScanlinePulse,
+            cached_extremeNorm,
             1.0
         );
     }
@@ -125,12 +130,7 @@ void OscillatingMirrorBeamDeflector::updateBeamAngle(){
         currentScanLinePulse >= cached_firstLinearScanlinePulse &&
         currentScanLinePulse < cached_firstDecelerateScanlinePulse
     ){
-        linearBeamAngle(
-            currentScanLinePulse,
-            cached_firstLinearScanlinePulse,
-            cached_firstDecelerateScanlinePulse,
-            1.0
-        );
+        linearBeamAngle(1.0);
     }
     else if( // Positive monotonic decelerate (first decelerate)
         currentScanLinePulse >= cached_firstDecelerateScanlinePulse &&
@@ -138,8 +138,8 @@ void OscillatingMirrorBeamDeflector::updateBeamAngle(){
     ){
         decelerateBeamAngle(
             currentScanLinePulse,
-            cached_firstDecelerateScanlinePulse,
             cached_halfScanlinePulse,
+            cached_middleNorm,
             1.0
         );
     }
@@ -150,7 +150,7 @@ void OscillatingMirrorBeamDeflector::updateBeamAngle(){
         accelerateBeamAngle(
             currentScanLinePulse,
             cached_secondAccelerateScanlinePulse,
-            cached_secondLinearScanlinePulse,
+            cached_middleNorm,
             -1.0
         );
     }
@@ -158,20 +158,15 @@ void OscillatingMirrorBeamDeflector::updateBeamAngle(){
         currentScanLinePulse >= cached_secondLinearScanlinePulse &&
         currentScanLinePulse < cached_secondDecelerateScanlinePulse
     ){
-        linearBeamAngle(
-            currentScanLinePulse,
-            cached_secondLinearScanlinePulse,
-            cached_secondDecelerateScanlinePulse,
-            -1.0
-        );
+        linearBeamAngle(-1.0);
     }
     else if( // Negative monotonic decelerate (second decelerate)
         currentScanLinePulse >= cached_secondDecelerateScanlinePulse
     ){
         decelerateBeamAngle(
             currentScanLinePulse,
-            cached_secondDecelerateScanlinePulse + 1.9, // Vs. 1.570796 = pi/2,
             cached_pulsesPerScanline,
+            cached_extremeNorm,
             -1.0
         );
     }
@@ -180,29 +175,24 @@ void OscillatingMirrorBeamDeflector::updateBeamAngle(){
 void OscillatingMirrorBeamDeflector::accelerateBeamAngle(
     double const p,
     double const pa,
-    double const pb,
+    double const norm,
     double const sign
 ){
     state_currentBeamAngle_rad += sign * cached_angleBetweenPulses_rad *
-        (p-pa) / (pb-pa)
+        (p-pa) / norm;
     ;
 }
-void OscillatingMirrorBeamDeflector::linearBeamAngle(
-    double const p,
-    double const pa,
-    double const pb,
-    double const sign
-){
+void OscillatingMirrorBeamDeflector::linearBeamAngle(double const sign){
     state_currentBeamAngle_rad += sign * cached_angleBetweenPulses_rad;
 }
 void OscillatingMirrorBeamDeflector::decelerateBeamAngle(
     double const p,
-    double const pa,
     double const pb,
+    double const norm,
     double const sign
 ){
     state_currentBeamAngle_rad += sign * cached_angleBetweenPulses_rad *
-        (pb-p) / (pb-pa)
+        (pb-p) / norm
     ;
 }
 
