@@ -204,6 +204,7 @@ jobs:
           dir
           7z x armadillo.tar.xz
           dir
+          move armadillo-10.6.2 armadillo
           cd armadillo
           cmake -DCMAKE_BUILD_TYPE=Release .
           msbuild.exe armadillo.sln
