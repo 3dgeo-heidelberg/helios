@@ -208,7 +208,7 @@ jobs:
           move armadillo-10.6.2 armadillo
           cd armadillo
           cmake -DCMAKE_BUILD_TYPE=Release .
-          msbuild.exe armadillo.sln
+          msbuild.exe armadillo.sln /property:Configuration=Release
           
       - name: Build HELIOS++
         working-directory: ${{env.GITHUB_WORKSPACE}}
