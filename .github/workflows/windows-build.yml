@@ -184,7 +184,7 @@ jobs:
 
       - name: Install scilab
         run: |
-          scilab-6.1.0_x64.exe
+          .\scilab-6.1.0_x64.exe
           
 
       - uses: suisei-cn/actions-download-file@v1
@@ -192,12 +192,12 @@ jobs:
         name: Download Armadillo
         with:
           url: "http://sourceforge.net/projects/arma/files/armadillo-10.6.2.tar.xz"
-          target: lib/armadillo.tar.xz
+          target: lib/armadillo-10.6.2.tar.xz
 
       - name: Install Armadillo
         run: |
           cd lib
-          7z x armadillo.tar.xz
+          7z x armadillo-10.6.2.tar.xz
           cd armadillo
           cmake -DCMAKE_BUILD_TYPE=Release .
           msbuild.exe LAStools.sln
