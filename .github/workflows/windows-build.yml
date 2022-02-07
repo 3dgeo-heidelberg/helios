@@ -91,14 +91,15 @@ jobs:
         run: |
           Get-Content ${{env.USER_CONFIG}}
           tree .
+          pwd
 
       - name: Build Boost
         if: steps.cache-boost.outputs.cache-hit != 'true'
         run: |
-          7z x lib\boost\boost_1_78_0.zip 
-          move lib\boost\boost_1_78_0 lib\boost\boost 
-          cd lib\boost
-          7z x lib\boost\zlib1211.zip          
+          7z x boost\boost_1_78_0.zip 
+          move boost\boost_1_78_0 boost\boost 
+          cd boost
+          7z x boost\zlib1211.zip          
           cd boost
           cmd.exe /c 'bootstrap.bat'
           .\b2.exe --user-config=$USER_CONFIG -j6 -sNO_ZLIB=0 -sZLIB_INCLUDE="zlib-1.2.11" -sZLIB_SOURCE="zlib-1.2.11" address-model=64 link=static python=3.6,3.7,3.8,3.9
