@@ -77,7 +77,16 @@ jobs:
         name: Download boost
         with:
           url: "https://boostorg.jfrog.io/artifactory/main/release/1.78.0/source/boost_1_78_0.zip"
-          target: lib/boost/boost_1_78_0.zip
+          target: lib/boost_1_78_0.zip
+
+      - name: Extract boost
+        if: steps.cache-boost.outputs.cache-hit != 'true'
+        working-directory: ${{env.GITHUB_WORKSPACE}}
+        run: |
+          7z x lib/boost_1_78_0.zip -olib/boost
+          tree .
+          pwd 
+      
 
       - uses: suisei-cn/actions-download-file@v1
         id: downloadzlib
@@ -95,20 +104,14 @@ jobs:
 
       - name: Build Boost
         if: steps.cache-boost.outputs.cache-hit != 'true'
+        working-directory: ${{env.GITHUB_WORKSPACE}}
         run: |
-          7z x boost\boost_1_78_0.zip -oboost
-          
-          tree .
-          pwd
-          
-          move boost\boost_1_78_0 boost\boost 
           cd boost
           7z x boost\zlib1211.zip -o.          
           cd boost
           cmd.exe /c 'bootstrap.bat'
           .\b2.exe --user-config=$USER_CONFIG -j6 -sNO_ZLIB=0 -sZLIB_INCLUDE="zlib-1.2.11" -sZLIB_SOURCE="zlib-1.2.11" address-model=64 link=static python=3.6,3.7,3.8,3.9
           cd .. 
-          del boost_1_78_0.zip
           
 
       - uses: suisei-cn/actions-download-file@v1
