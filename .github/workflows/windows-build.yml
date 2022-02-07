@@ -125,7 +125,7 @@ jobs:
       - name: Extract GLM
         working-directory: ${{env.GITHUB_WORKSPACE}}
         run: |
-          7z x lib/glm-0.9.9.8.zip -olib/glm-0.9.9.8
+          7z x lib/glm-0.9.9.8.zip -olib
           dir lib
           move lib/glm-0.9.9.8 lib/glm
           
