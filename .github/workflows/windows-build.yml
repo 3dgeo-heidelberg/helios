@@ -156,7 +156,8 @@ jobs:
       - name: Install GDAL
         working-directory: ${{env.GITHUB_WORKSPACE}}
         run: |
-          msiexec.exe /i lib\gdal.msi
+          dir lib
+          msiexec.exe /i lib/gdal.msi
 
       - uses: suisei-cn/actions-download-file@v1
         id: downloadlastools
@@ -180,11 +181,12 @@ jobs:
         name: Download SciLab
         with:
           url: "https://www.scilab.org/download/6.1.0/scilab-6.1.0_x64.exe"
-          target: scilab-6.1.0_x64.exe
+          target: scilab.exe
 
       - name: Install scilab
         run: |
-          .\scilab-6.1.0_x64.exe
+          dir
+          .\scilab.exe
           
 
       - uses: suisei-cn/actions-download-file@v1
@@ -192,12 +194,13 @@ jobs:
         name: Download Armadillo
         with:
           url: "http://sourceforge.net/projects/arma/files/armadillo-10.6.2.tar.xz"
-          target: lib/armadillo-10.6.2.tar.xz
+          target: lib/armadillo.tar.xz
 
       - name: Install Armadillo
         run: |
           cd lib
-          7z x armadillo-10.6.2.tar.xz
+          dir
+          7z x armadillo.tar.xz
           cd armadillo
           cmake -DCMAKE_BUILD_TYPE=Release .
           msbuild.exe LAStools.sln
