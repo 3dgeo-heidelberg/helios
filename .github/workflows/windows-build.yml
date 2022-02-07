@@ -203,6 +203,7 @@ jobs:
           cd lib
           dir
           7z x armadillo.tar.xz
+          7z x armadillo-10.6.2.tar
           dir
           move armadillo-10.6.2 armadillo
           cd armadillo
