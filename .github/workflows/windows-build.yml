@@ -203,9 +203,10 @@ jobs:
           cd lib
           dir
           7z x armadillo.tar.xz
+          dir
           cd armadillo
           cmake -DCMAKE_BUILD_TYPE=Release .
-          msbuild.exe LAStools.sln
+          msbuild.exe armadillo.sln
           
       - name: Build HELIOS++
         working-directory: ${{env.GITHUB_WORKSPACE}}
