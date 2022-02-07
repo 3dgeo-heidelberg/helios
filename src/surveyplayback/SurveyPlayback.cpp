@@ -185,7 +185,12 @@ shared_ptr<Leg> SurveyPlayback::getCurrentLeg() {
 	}
 	// NOTE: This should never happen:
 	logging::ERR("ERROR getting current leg: Index out of bounds");
-	return NULL;
+	return nullptr;
+}
+
+shared_ptr<Leg> SurveyPlayback::getPreviousLeg(){
+    if(mCurrentLegIndex == 0) return nullptr;
+    return mSurvey->legs.at(mCurrentLegIndex - 1);
 }
 
 int SurveyPlayback::getCurrentLegIndex() {
@@ -300,6 +305,13 @@ void SurveyPlayback::startLeg(unsigned int legIndex, bool manual) {
 
 		// ################ END Set platform destination ##################
 	}
+
+	// Restart deflector if previous leg was not active
+	shared_ptr<Leg> previousLeg = getPreviousLeg();
+	if(previousLeg != nullptr && !previousLeg->mScannerSettings->active){
+        mSurvey->scanner->beamDeflector->restartDeflector();
+	}
+
 
 	if(exportToFile) prepareOutput();
     platform->writeNextTrajectory = true;

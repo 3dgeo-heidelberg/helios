@@ -89,6 +89,11 @@ void OscillatingMirrorBeamDeflector::applySettings(std::shared_ptr<ScannerSettin
     cached_extremeNorm = cached_middleNorm - 1.0;
 }
 
+void OscillatingMirrorBeamDeflector::restartDeflector(){
+    AbstractBeamDeflector::restartDeflector();
+    currentScanLinePulse = 0;
+};
+
 void OscillatingMirrorBeamDeflector::doSimStep() {
     // Determine pulse number inside current scanline
 	if (currentScanLinePulse == cached_pulsesPerScanline) {

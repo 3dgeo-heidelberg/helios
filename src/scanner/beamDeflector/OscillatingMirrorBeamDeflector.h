@@ -236,8 +236,12 @@ public:
 	 * @see AbstractBeamDeflector::doSimStep
 	 */
 	void doSimStep() override;
+	/**
+	 * @see AbstractBeamDeflector::restartDeflector
+	 */
+    void restartDeflector() override;
 
-	// ***  UTIL METHODS  *** //
+    // ***  UTIL METHODS  *** //
 	// ********************** //
 	/**
 	 * @brief Update the current beam angle at each simulation step

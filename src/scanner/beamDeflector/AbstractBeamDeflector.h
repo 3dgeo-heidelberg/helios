@@ -104,6 +104,12 @@ public:
 	 */
     virtual bool lastPulseLeftDevice();
     /**
+     * @brief Restart the deflector.
+     * This method is meant to be invoked whenever the deflector needs to be
+     *  restarted. Which generally occurs when the previous leg was inactive.
+     */
+    virtual void restartDeflector() {}
+    /**
      * @brief Perform computations for current simulation step
      */
     virtual void doSimStep() = 0;
