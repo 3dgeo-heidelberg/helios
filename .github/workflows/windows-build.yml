@@ -153,7 +153,7 @@ jobs:
           dir gdal
           move gdal/include/boost gdal/include/boost-gdal
           cd ..
-          msiexec.exe /i lib/gdal.msi
+          msiexec.exe /i gdal.msi
 
       - uses: suisei-cn/actions-download-file@v1
         id: downloadlastools
@@ -166,7 +166,7 @@ jobs:
         working-directory: ${{env.GITHUB_WORKSPACE}}
         run: |
           cd lib
-          7z x LAStools.zip -o.
+          7z x LAStools.zip
           cd LAStools
           cmake -DCMAKE_BUILD_TYPE=Release .
           msbuild.exe LAStools.sln
