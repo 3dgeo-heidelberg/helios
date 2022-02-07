@@ -198,6 +198,7 @@ jobs:
           target: lib/armadillo.tar.xz
 
       - name: Install Armadillo
+        working-directory: ${{env.GITHUB_WORKSPACE}}
         run: |
           cd lib
           dir
@@ -205,3 +206,10 @@ jobs:
           cd armadillo
           cmake -DCMAKE_BUILD_TYPE=Release .
           msbuild.exe LAStools.sln
+          
+      - name: Build HELIOS++
+        working-directory: ${{env.GITHUB_WORKSPACE}}
+        run: |
+          make -DCMAKE_BUILD_TYPE=Release -DPYTHON_BINDING=1 -DPYTHON_VERSION=39 -DPYTHON_PATH=D:\Miniconda3\envs\py39 .
+          msbuild.exe helios.sln /p:IncludePath="C:\Program Files\scilab-6.1.0\bin" /p:AdditionalDependencies="C:\Program Files\scilab-6.1.0\bin\lapack.lib;C:\Program Files\scilab-6.1.0\bin\blasplus.lib"
+          
