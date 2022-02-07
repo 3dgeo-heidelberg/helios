@@ -1,5 +1,7 @@
 var NAVTREEINDEX3 =
 {
+"d3/d89/classMaterial.html#a179e16d6a1bd4a0f039b8e4cbf2ade30":[1,0,78,2],
+"d3/d89/classMaterial.html#a1959b3ab772a8389826c368875efaab9":[1,0,78,4],
 "d3/d89/classMaterial.html#a208703bcc362c4817f3a0daf42e29702":[1,0,78,19],
 "d3/d89/classMaterial.html#a2455e6f519001aa0a8679e826476f29f":[1,0,78,39],
 "d3/d89/classMaterial.html#a2e914ad2451987e0067d620163a1662c":[1,0,78,12],
@@ -123,13 +125,13 @@ var NAVTREEINDEX3 =
 "d4/d0d/classHeliosTests_1_1HPCTest.html#a86229ef51f318d97ac04d4fb9ce3de4f":[1,0,3,2,2],
 "d4/d0d/classHeliosTests_1_1HPCTest.html#ab195a312ad504c59e911ac2b591af58a":[1,0,3,2,0],
 "d4/d0e/FluxionumTest_8h_source.html":[2,0,0,12,1],
-"d4/d2c/classpyhelios_1_1PyTrajectoryVectorWrapper.html":[1,0,4,21],
-"d4/d2c/classpyhelios_1_1PyTrajectoryVectorWrapper.html#a04f499aa724b16837dbd3a4f51041fc3":[1,0,4,21,2],
-"d4/d2c/classpyhelios_1_1PyTrajectoryVectorWrapper.html#a240e13600604a60e020e8903a3efba79":[1,0,4,21,3],
-"d4/d2c/classpyhelios_1_1PyTrajectoryVectorWrapper.html#a762849a26ecdc3efe23c50c632320c3b":[1,0,4,21,4],
-"d4/d2c/classpyhelios_1_1PyTrajectoryVectorWrapper.html#a9b49c02192b4ebfafbc94ba150cdc53c":[1,0,4,21,1],
-"d4/d2c/classpyhelios_1_1PyTrajectoryVectorWrapper.html#aa9d50d888b4b4b3c8c35d26d4ebaae0e":[1,0,4,21,5],
-"d4/d2c/classpyhelios_1_1PyTrajectoryVectorWrapper.html#adb171c5ca20074f113a95c7acadba65b":[1,0,4,21,0],
+"d4/d2c/classpyhelios_1_1PyTrajectoryVectorWrapper.html":[1,0,4,22],
+"d4/d2c/classpyhelios_1_1PyTrajectoryVectorWrapper.html#a04f499aa724b16837dbd3a4f51041fc3":[1,0,4,22,2],
+"d4/d2c/classpyhelios_1_1PyTrajectoryVectorWrapper.html#a240e13600604a60e020e8903a3efba79":[1,0,4,22,3],
+"d4/d2c/classpyhelios_1_1PyTrajectoryVectorWrapper.html#a762849a26ecdc3efe23c50c632320c3b":[1,0,4,22,4],
+"d4/d2c/classpyhelios_1_1PyTrajectoryVectorWrapper.html#a9b49c02192b4ebfafbc94ba150cdc53c":[1,0,4,22,1],
+"d4/d2c/classpyhelios_1_1PyTrajectoryVectorWrapper.html#aa9d50d888b4b4b3c8c35d26d4ebaae0e":[1,0,4,22,5],
+"d4/d2c/classpyhelios_1_1PyTrajectoryVectorWrapper.html#adb171c5ca20074f113a95c7acadba65b":[1,0,4,22,0],
 "d4/d31/classScanningStrip.html":[1,0,118],
 "d4/d31/classScanningStrip.html#a1b6a96a034f45065859d70b0d2845332":[1,0,118,7],
 "d4/d31/classScanningStrip.html#a67ab61e0a7fff3530dc953bae0846cc0":[1,0,118,2],
@@ -247,7 +249,5 @@ var NAVTREEINDEX3 =
 "d4/d96/classDynMovingObject.html#a65ac283baf363b2e62d2f0834b86169e":[1,0,32,5],
 "d4/d96/classDynMovingObject.html#a6961083f013274c591d2e861b9b4e467":[1,0,32,8],
 "d4/d96/classDynMovingObject.html#a6b8f56370703b93fb839c8dc25b11771":[1,0,32,9],
-"d4/d96/classDynMovingObject.html#a813d8a76e64b24b059959998520325ff":[1,0,32,10],
-"d4/d96/classDynMovingObject.html#a894ff48d42b78b9932d5abb5e30ffc46":[1,0,32,4],
-"d4/d96/classDynMovingObject.html#aa0efc61f2082b5309b9c5973e2f718b3":[1,0,32,17]
+"d4/d96/classDynMovingObject.html#a813d8a76e64b24b059959998520325ff":[1,0,32,10]
 };

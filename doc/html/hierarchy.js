@@ -223,6 +223,7 @@ var hierarchy =
     [ "pyhelios::PyRaySceneIntersectionWrapper", "da/db0/classpyhelios_1_1PyRaySceneIntersectionWrapper.html", null ],
     [ "pyhelios::PyScenePartWrapper", "df/d28/classpyhelios_1_1PyScenePartWrapper.html", null ],
     [ "pyhelios::PySceneWrapper", "d7/d17/classpyhelios_1_1PySceneWrapper.html", null ],
+    [ "pyhelios::PyStringVector", "dc/d5f/classpyhelios_1_1PyStringVector.html", null ],
     [ "pyhelios::PythonDVec3", "dd/d8f/classpyhelios_1_1PythonDVec3.html", null ],
     [ "pyhelios::PyTrajectoryVectorWrapper", "d4/d2c/classpyhelios_1_1PyTrajectoryVectorWrapper.html", null ],
     [ "pyhelios::PyTrajectoryWrapper", "d1/d2f/classpyhelios_1_1PyTrajectoryWrapper.html", null ],

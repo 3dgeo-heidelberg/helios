@@ -34,6 +34,7 @@ var searchData=
   ['reportseconds',['reportSeconds',['../d7/d7d/classTimeWatcher.html#a6f6f32b75e98653557015df6d7c90188',1,'TimeWatcher']]],
   ['reproduce',['reproduce',['../d5/d2f/classBuddingTaskDropper.html#ae15fd343c58cfd896a9742c6f879dfce',1,'BuddingTaskDropper']]],
   ['restart',['restart',['../df/dfa/classDynSequence.html#ace4dd65fd08601941a923faa7dad0afc',1,'DynSequence']]],
+  ['restartdeflector',['restartDeflector',['../d7/d92/classAbstractBeamDeflector.html#af3200a0bcbeacfe62a3c083f2e22c136',1,'AbstractBeamDeflector::restartDeflector()'],['../d4/dfd/classOscillatingMirrorBeamDeflector.html#ad81e0b5d9009b73598cb3c59b172d7c8',1,'OscillatingMirrorBeamDeflector::restartDeflector()']]],
   ['restartinputfilestream',['restartInputFileStream',['../d6/d03/classXYZPointCloudFileLoader.html#a1f040b5b08e0c6eab28f87d8525a6335',1,'XYZPointCloudFileLoader']]],
   ['resthreadpool',['ResThreadPool',['../d2/dee/classResThreadPool.html#aee12779e1ef6d9dcc40782e8688d19b7',1,'ResThreadPool']]],
   ['resume',['resume',['../d9/ddd/classpyhelios_1_1PyHeliosSimulation.html#a191ee19c213ecc1c693d5c3223ac0d31',1,'pyhelios::PyHeliosSimulation']]],

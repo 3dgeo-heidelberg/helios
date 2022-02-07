@@ -223,8 +223,16 @@ public:
      * @brief Obtain current leg
      * @return Current leg
      * @see Leg
+     * @see SurveyPlayback::getPreviousLeg
      */
 	std::shared_ptr<Leg> getCurrentLeg();
+	/**
+	 * @brief Obtain the previous leg, if any
+	 * @return Previous leg, nullptr if there is no previous leg
+	 * @see Leg
+	 * @see SurveyPlayback::getCurrentLeg
+	 */
+	std::shared_ptr<Leg> getPreviousLeg();
 	/**
 	 * @brief Obtain current leg index
 	 * @return Current leg index

@@ -5,7 +5,7 @@ var searchData=
   ['defaultplatformtemplate',['defaultPlatformTemplate',['../d9/d82/classXmlAssetsLoader.html#acf7309962281ab8336cf704a86f72d79',1,'XmlAssetsLoader']]],
   ['defaultreflectance',['defaultReflectance',['../d5/d20/classSpectralLibrary.html#a55d55f2e7ffc8bc086405f636419b5ed',1,'SpectralLibrary']]],
   ['defaultscannertemplate',['defaultScannerTemplate',['../d9/d82/classXmlAssetsLoader.html#a13431b8af32cf022f71fdd44b1d06259',1,'XmlAssetsLoader']]],
-  ['delta',['delta',['../da/d52/classSurfaceInspector_1_1maths_1_1Histogram.html#a435bcd0ab73fec77928194c6130a6f84',1,'SurfaceInspector::maths::Histogram::delta()'],['../d1/d2b/classMarquardtFitter.html#a49990a2f2852a17231d6b081fb3bb110',1,'MarquardtFitter::DELTA()']]],
+  ['delta',['DELTA',['../d1/d2b/classMarquardtFitter.html#a49990a2f2852a17231d6b081fb3bb110',1,'MarquardtFitter::DELTA()'],['../da/d52/classSurfaceInspector_1_1maths_1_1Histogram.html#a435bcd0ab73fec77928194c6130a6f84',1,'SurfaceInspector::maths::Histogram::delta()']]],
   ['delta1',['delta1',['../d5/d2f/classBuddingTaskDropper.html#a5b503f0abb73816bf34b8311edb42a1f',1,'BuddingTaskDropper']]],
   ['delta2',['delta2',['../d5/d2f/classBuddingTaskDropper.html#a98e11ea1f8567fee4dbafd389229edbf',1,'BuddingTaskDropper']]],
   ['deltaintensity',['deltaIntensity',['../d2/db3/classLasSyncFileWriter.html#a9a114f0c53100d830e15d869cf80f203',1,'LasSyncFileWriter']]],

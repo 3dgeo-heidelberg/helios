@@ -142,6 +142,7 @@ var searchData=
   ['pyscenepartwrapper',['PyScenePartWrapper',['../df/d28/classpyhelios_1_1PyScenePartWrapper.html',1,'pyhelios']]],
   ['pyscenewrapper',['PySceneWrapper',['../d7/d17/classpyhelios_1_1PySceneWrapper.html',1,'pyhelios']]],
   ['pysimulationcyclecallback',['PySimulationCycleCallback',['../d9/d64/classpyhelios_1_1PySimulationCycleCallback.html',1,'pyhelios']]],
+  ['pystringvector',['PyStringVector',['../dc/d5f/classpyhelios_1_1PyStringVector.html',1,'pyhelios']]],
   ['pythondvec3',['PythonDVec3',['../dd/d8f/classpyhelios_1_1PythonDVec3.html',1,'pyhelios']]],
   ['pytrajectoryvectorwrapper',['PyTrajectoryVectorWrapper',['../d4/d2c/classpyhelios_1_1PyTrajectoryVectorWrapper.html',1,'pyhelios']]],
   ['pytrajectorywrapper',['PyTrajectoryWrapper',['../d1/d2f/classpyhelios_1_1PyTrajectoryWrapper.html',1,'pyhelios']]],

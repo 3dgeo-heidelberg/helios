@@ -185,7 +185,12 @@ shared_ptr<Leg> SurveyPlayback::getCurrentLeg() {
 	}
 	// NOTE: This should never happen:
 	logging::ERR("ERROR getting current leg: Index out of bounds");
-	return NULL;
+	return nullptr;
+}
+
+shared_ptr<Leg> SurveyPlayback::getPreviousLeg(){
+    if(mCurrentLegIndex == 0) return nullptr;
+    return mSurvey->legs.at(mCurrentLegIndex - 1);
 }
 
 int SurveyPlayback::getCurrentLegIndex() {
@@ -301,6 +306,16 @@ void SurveyPlayback::startLeg(unsigned int legIndex, bool manual) {
 		// ################ END Set platform destination ##################
 	}
 
+	// Restart deflector if previous leg was not active
+	shared_ptr<Leg> previousLeg = getPreviousLeg();
+    if(
+	    previousLeg != nullptr && !previousLeg->mScannerSettings->active &&
+	    leg->mScannerSettings->active
+    ){
+        mSurvey->scanner->beamDeflector->restartDeflector();
+	}
+
+
 	if(exportToFile) prepareOutput();
     platform->writeNextTrajectory = true;
 }
@@ -376,18 +391,23 @@ void SurveyPlayback::prepareOutput(){
         dynamic_pointer_cast<FullWaveformPulseDetector>(
             getScanner()->detector
         );
+
     // Fullwave prefix
     stringstream ss;
     ss << getLegOutputPrefix();
-    if(zipOutput){
-        ss << "_fullwave.bin";
-    }
+    if(zipOutput) ss << "_fullwave.bin";
     else ss << "_fullwave.txt";
+
+    // Set output path
+    std::string const path = mOutputFilePathString + getCurrentOutputPath();
     fwf_detector->setOutputFilePath(
-        mOutputFilePathString + getCurrentOutputPath(),
+        path,
         ss.str(),
         getScanner()->isWriteWaveform()
     );
+
+    // Handle historical tracking of output paths
+    getScanner()->trackOutputPath(path);
 
     // Trajectory writer
     if(mSurvey->scanner->trajectoryTimeInterval != 0.0){
@@ -400,8 +420,11 @@ void SurveyPlayback::prepareOutput(){
 }
 
 void SurveyPlayback::clearPointcloudFile(){
+    // Dont clear strip file, it would overwrite previous point cloud content
+    if(getCurrentLeg()->isContainedInAStrip()) return;
+
     // Clear point cloud file for current leg
-    string outputPath = this->outputPath + mOutputFilePathString +
+    string outputPath = mOutputFilePathString +
                         getCurrentOutputPath();
     ostringstream s;s << "outputPath=" << outputPath << endl;
     logging::INFO(s.str());

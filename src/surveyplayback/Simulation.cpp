@@ -13,6 +13,7 @@ using namespace std::chrono;
 
 using namespace std;
 
+
 Simulation::Simulation(
     int const parallelizationStrategy,
     std::shared_ptr<PulseThreadPoolInterface> pulseThreadPoolInterface,
@@ -43,7 +44,6 @@ void Simulation::doSimStep(){
 	mScanner->doSimStep(mCurrentLegIndex, currentGpsTime_ms);
     currentGpsTime_ms += 1000. / ((double)getScanner()->getPulseFreq_Hz());
     if (currentGpsTime_ms > 604800000.) currentGpsTime_ms -= 604800000.;
-
 }
 
 
@@ -162,7 +162,7 @@ void Simulation::start() {
 	    }
 
 		doSimStep();
-		stepCount++;
+        stepCount++;
 
 		iter++;
 		if(iter-1 == simFrequency){
