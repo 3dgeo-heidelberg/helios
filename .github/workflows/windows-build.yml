@@ -97,6 +97,10 @@ jobs:
         if: steps.cache-boost.outputs.cache-hit != 'true'
         run: |
           7z x boost\boost_1_78_0.zip -oboost
+          
+          tree .
+          pwd
+          
           move boost\boost_1_78_0 boost\boost 
           cd boost
           7z x boost\zlib1211.zip -o.          
