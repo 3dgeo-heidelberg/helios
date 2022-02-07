@@ -157,7 +157,7 @@ jobs:
         working-directory: ${{env.GITHUB_WORKSPACE}}
         run: |
           dir lib
-          msiexec.exe /i lib\gdal.msi /qn
+          Start-Process -FilePath C:\Windows\System32\msiexec.exe -ArgumentList "/i lib\gdal.msi /qn"
 
       - uses: suisei-cn/actions-download-file@v1
         id: downloadlastools
@@ -187,7 +187,7 @@ jobs:
         working-directory: ${{env.GITHUB_WORKSPACE}}
         run: |
           dir
-          .\scilab.exe
+          Start-Process scilab.exe
           
 
       - uses: suisei-cn/actions-download-file@v1
