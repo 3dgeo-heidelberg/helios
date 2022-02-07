@@ -83,9 +83,8 @@ jobs:
         if: steps.cache-boost.outputs.cache-hit != 'true'
         working-directory: ${{env.GITHUB_WORKSPACE}}
         run: |
-          7z x lib/boost_1_78_0.zip -olib/boost
-          tree .
-          pwd 
+          7z x lib/boost_1_78_0.zip -olib
+          move lib/boost_1_78_0 lib/boost
       
 
       - uses: suisei-cn/actions-download-file@v1
@@ -96,6 +95,7 @@ jobs:
           target: lib/boost/zlib1211.zip
 
       - name: Debug output
+        working-directory: ${{env.GITHUB_WORKSPACE}}
         id: output
         run: |
           Get-Content ${{env.USER_CONFIG}}
@@ -122,9 +122,10 @@ jobs:
           target: lib/glm-0.9.9.8.zip
 
       - name: Extract GLM
+        working-directory: ${{env.GITHUB_WORKSPACE}}
         run: |
-          7z x glm-0.9.9.8.zip -o.
-          move glm-0.9.9.8 glm
+          7z x lib/glm-0.9.9.8.zip -olib
+          move lib/glm-0.9.9.8 lib/glm
           
 
       - uses: suisei-cn/actions-download-file@v1
@@ -132,7 +133,7 @@ jobs:
         name: Download GDAL (1/2)
         with:
           url: "https://download.gisinternals.com/sdk/downloads/release-1928-x64-gdal-3-4-1-mapserver-7-6-4-libs.zip"
-          target: lib/gdal/gdal.zip
+          target: lib/gdal.zip
 
 
       - uses: suisei-cn/actions-download-file@v1
@@ -143,9 +144,10 @@ jobs:
           target: lib/gdal.msi
 
       - name: Extract GDAL
+        working-directory: ${{env.GITHUB_WORKSPACE}}
         run: |
-          cd lib/gdal
-          7z x gdal.zip -o.
+          cd lib
+          7z x gdal.zip -ogdal
           move include/boost /include/boost-gdal
           cd ..
           msiexec.exe /i lib/gdal.msi
@@ -158,9 +160,10 @@ jobs:
           target: lib/LAStools.zip
 
       - name: Extract LAStools
+        working-directory: ${{env.GITHUB_WORKSPACE}}
         run: |
           cd lib
-          7z x LAStools.zip
+          7z x LAStools.zip -o.
           cd LAStools
           cmake -DCMAKE_BUILD_TYPE=Release .
           msbuild.exe LAStools.sln
