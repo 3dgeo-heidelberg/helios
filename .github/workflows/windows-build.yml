@@ -214,5 +214,5 @@ jobs:
         working-directory: ${{env.GITHUB_WORKSPACE}}
         run: |
           cmake -DCMAKE_BUILD_TYPE=Release -DPYTHON_BINDING=1 -DPYTHON_VERSION=39 -DPYTHON_PATH=${{env.pythonLocation}} .
-          msbuild.exe helios.sln /p:AdditionalDependencies="C:\Program Files\scilab-6.1.0\bin\blasplus.lib;C:\Program Files\scilab-6.1.0\bin\lapack.lib"  /p:IncludePath="C:\Program Files\scilab-6.1.0\bin"
+          msbuild.exe helios.sln /p:AdditionalDependencies='"C:\Program Files\scilab-6.1.0\bin\blasplus.lib;C:\Program Files\scilab-6.1.0\bin\lapack.lib"'  /p:IncludePath="C:\Program Files\scilab-6.1.0\bin"
           
