@@ -173,7 +173,7 @@ jobs:
           7z x LAStools.zip
           cd LAStools
           cmake -DCMAKE_BUILD_TYPE=Release .
-          msbuild.exe LAStools.sln
+          msbuild.exe LAStools.sln /p:Configuration=Release
           
 
       - uses: suisei-cn/actions-download-file@v1
@@ -208,11 +208,11 @@ jobs:
           move armadillo-10.6.2 armadillo
           cd armadillo
           cmake -DCMAKE_BUILD_TYPE=Release .
-          msbuild.exe armadillo.sln /property:Configuration=Release
+          msbuild.exe armadillo.sln /p:Configuration=Release
           
       - name: Build HELIOS++
         working-directory: ${{env.GITHUB_WORKSPACE}}
         run: |
           cmake -DCMAKE_BUILD_TYPE=Release -DPYTHON_BINDING=1 -DPYTHON_VERSION=39 -DPYTHON_PATH=${{env.pythonLocation}} .
-          msbuild.exe helios.sln /p:AdditionalDependencies='"C:\Program Files\scilab-6.1.0\bin\blasplus.lib;C:\Program Files\scilab-6.1.0\bin\lapack.lib"'  /p:IncludePath="C:\Program Files\scilab-6.1.0\bin"
+          msbuild.exe helios.sln /p:AdditionalDependencies='"C:\Program Files\scilab-6.1.0\bin\blasplus.lib;C:\Program Files\scilab-6.1.0\bin\lapack.lib"'  /p:IncludePath="C:\Program Files\scilab-6.1.0\bin" /p:Configuration=Release
           
