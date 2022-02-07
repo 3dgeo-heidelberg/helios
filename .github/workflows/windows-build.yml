@@ -152,8 +152,11 @@ jobs:
           dir .
           dir gdal
           move gdal/include/boost gdal/include/boost-gdal
-          cd ..
-          msiexec.exe /i gdal.msi
+
+      - name: Install GDAL
+        working-directory: ${{env.GITHUB_WORKSPACE}}
+        run: |
+          msiexec.exe /i lib\gdal.msi
 
       - uses: suisei-cn/actions-download-file@v1
         id: downloadlastools
@@ -177,11 +180,11 @@ jobs:
         name: Download SciLab
         with:
           url: "https://www.scilab.org/download/6.1.0/scilab-6.1.0_x64.exe"
-          target: scilab.exe
+          target: scilab-6.1.0_x64.exe
 
       - name: Install scilab
         run: |
-          scilab.exe
+          scilab-6.1.0_x64.exe
           
 
       - uses: suisei-cn/actions-download-file@v1
