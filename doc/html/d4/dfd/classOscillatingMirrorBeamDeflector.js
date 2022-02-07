@@ -8,6 +8,7 @@ var classOscillatingMirrorBeamDeflector =
     [ "decelerateBeamAngle", "d4/dfd/classOscillatingMirrorBeamDeflector.html#a74d9cce57f3a6d24890a82d7f3932a4a", null ],
     [ "doSimStep", "d4/dfd/classOscillatingMirrorBeamDeflector.html#a5f4656b37019afef7a2477ae8ef1a587", null ],
     [ "linearBeamAngle", "d4/dfd/classOscillatingMirrorBeamDeflector.html#a5433995afb43956606ad470432dd2b08", null ],
+    [ "restartDeflector", "d4/dfd/classOscillatingMirrorBeamDeflector.html#ad81e0b5d9009b73598cb3c59b172d7c8", null ],
     [ "setScanAngle_rad", "d4/dfd/classOscillatingMirrorBeamDeflector.html#aa394ab40e0133c9c11cd81ffe9dacbf8", null ],
     [ "setScanFreq_Hz", "d4/dfd/classOscillatingMirrorBeamDeflector.html#af38ad1e69a823b19755385c1639c8e3e", null ],
     [ "updateBeamAngle", "d4/dfd/classOscillatingMirrorBeamDeflector.html#ad8b546ef082d93b5549189f0f6440c47", null ],

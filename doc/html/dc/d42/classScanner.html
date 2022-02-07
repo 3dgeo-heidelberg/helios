@@ -191,6 +191,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../.
 <tr class="memitem:aa3055bc70b3f94c747320cd617e36547"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d42/classScanner.html#aa3055bc70b3f94c747320cd617e36547">handleTrajectoryOutput</a> (double currentGpsTime)</td></tr>
 <tr class="memdesc:aa3055bc70b3f94c747320cd617e36547"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle trajectory output whatever it is to output file, to all trajectories vector or to cycle trajectories vector.  <a href="#aa3055bc70b3f94c747320cd617e36547">More...</a><br /></td></tr>
 <tr class="separator:aa3055bc70b3f94c747320cd617e36547"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a76ba598a20f198125336d0da7a2956da"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d42/classScanner.html#a76ba598a20f198125336d0da7a2956da">trackOutputPath</a> (std::string const path)</td></tr>
+<tr class="memdesc:a76ba598a20f198125336d0da7a2956da"><td class="mdescLeft">&#160;</td><td class="mdescRight">Track given output path in a thread safe way.  <a href="#a76ba598a20f198125336d0da7a2956da">More...</a><br /></td></tr>
+<tr class="separator:a76ba598a20f198125336d0da7a2956da"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8fbd614f591d9b0b645a4880ace1c8fd"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d42/classScanner.html#a8fbd614f591d9b0b645a4880ace1c8fd">getNumRays</a> ()</td></tr>
 <tr class="memdesc:a8fbd614f591d9b0b645a4880ace1c8fd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain the number of rays.  <a href="#a8fbd614f591d9b0b645a4880ace1c8fd">More...</a><br /></td></tr>
 <tr class="separator:a8fbd614f591d9b0b645a4880ace1c8fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -375,6 +378,9 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:aae0cadd53ad865a242fdf84ef8a03634"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="../../d8/d6b/classAbstractDetector.html">AbstractDetector</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d42/classScanner.html#aae0cadd53ad865a242fdf84ef8a03634">detector</a></td></tr>
 <tr class="memdesc:aae0cadd53ad865a242fdf84ef8a03634"><td class="mdescLeft">&#160;</td><td class="mdescRight">Detector composing the scanner.  <a href="#aae0cadd53ad865a242fdf84ef8a03634">More...</a><br /></td></tr>
 <tr class="separator:aae0cadd53ad865a242fdf84ef8a03634"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7492c090b0fdb4f7314f481d2334b1f2"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; std::vector&lt; std::string &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d42/classScanner.html#a7492c090b0fdb4f7314f481d2334b1f2">allOutputPaths</a> = nullptr</td></tr>
+<tr class="memdesc:a7492c090b0fdb4f7314f481d2334b1f2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Historical vector of all output paths where scanner measurements were written.  <a href="#a7492c090b0fdb4f7314f481d2334b1f2">More...</a><br /></td></tr>
+<tr class="separator:a7492c090b0fdb4f7314f481d2334b1f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa6c767c57bf01a1e16fbec89fa0f6c3c"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; std::vector&lt; <a class="el" href="../../db/d2e/classMeasurement.html">Measurement</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d42/classScanner.html#aa6c767c57bf01a1e16fbec89fa0f6c3c">allMeasurements</a> = nullptr</td></tr>
 <tr class="memdesc:aa6c767c57bf01a1e16fbec89fa0f6c3c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Historical vector of all measurements performed by the scanner.  <a href="#aa6c767c57bf01a1e16fbec89fa0f6c3c">More...</a><br /></td></tr>
 <tr class="separator:aa6c767c57bf01a1e16fbec89fa0f6c3c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2890,6 +2896,33 @@ std::shared_ptr&lt; <a class="el" href="../../d1/d0e/classSyncFileWriter.html">S
 
 </div>
 </div>
+<a id="a76ba598a20f198125336d0da7a2956da"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a76ba598a20f198125336d0da7a2956da">&#9670;&nbsp;</a></span>trackOutputPath()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Scanner::trackOutputPath </td>
+          <td>(</td>
+          <td class="paramtype">std::string const&#160;</td>
+          <td class="paramname"><em>path</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Track given output path in a thread safe way. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">path</td><td>Output path to be tracked </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../dc/d42/classScanner.html#a7492c090b0fdb4f7314f481d2334b1f2" title="Historical vector of all output paths where scanner measurements were written. ">Scanner::allOutputPaths</a> </dd></dl>
+
+</div>
+</div>
 <h2 class="groupheader">Member Data Documentation</h2>
 <a id="aa6c767c57bf01a1e16fbec89fa0f6c3c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aa6c767c57bf01a1e16fbec89fa0f6c3c">&#9670;&nbsp;</a></span>allMeasurements</h2>
@@ -2924,6 +2957,23 @@ std::shared_ptr&lt; <a class="el" href="../../d1/d0e/classSyncFileWriter.html">S
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="../../dc/d42/classScanner.html#aa6c767c57bf01a1e16fbec89fa0f6c3c" title="Historical vector of all measurements performed by the scanner. ">Scanner::allMeasurements</a> </dd>
 <dd>
 Scanner::alTrajectories </dd></dl>
+
+</div>
+</div>
+<a id="a7492c090b0fdb4f7314f481d2334b1f2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7492c090b0fdb4f7314f481d2334b1f2">&#9670;&nbsp;</a></span>allOutputPaths</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::shared_ptr&lt;std::vector&lt;std::string&gt; &gt; Scanner::allOutputPaths = nullptr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Historical vector of all output paths where scanner measurements were written. </p>
+<p>It can be nullptr when no historical tracking of all output paths is requested </p>
 
 </div>
 </div>

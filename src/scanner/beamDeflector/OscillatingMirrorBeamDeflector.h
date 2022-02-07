@@ -73,13 +73,13 @@
  *
  * \f[
  * \begin{split}
- *  \frac{d}{dp}f(p) \approx&\, \frac{\Delta^{1}_{1}[f]}{1} =&\,
+ *  \frac{d}{dp}f(p) \approx&\, \frac{\Delta^{1}_{1}[f](p)}{1} =&\,
  *      \frac{f(p+1)-f(p)}{1} =&\,
  *      \omega \\
- *  \frac{d}{dp}g(p) \approx&\, \frac{\Delta^{1}_{1}[g]}{1} =&\,
+ *  \frac{d}{dp}g(p) \approx&\, \frac{\Delta^{1}_{1}[g](p)}{1} =&\,
  *      \frac{g(p+1)-g(p)}{1} =&\,
  *      \frac{p+1-a}{b-a} \omega \\
- *  \frac{d}{dp}h(p) \approx&\, \frac{\Delta^{1}_1[h]}{1} =&\,
+ *  \frac{d}{dp}h(p) \approx&\, \frac{\Delta^{1}_1[h](p)}{1} =&\,
  *      \frac{h(p+1)-h(p)}{1} =&\,
  *      \frac{b-p-1}{b-a} \omega
  * \end{split}

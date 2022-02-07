@@ -20,6 +20,7 @@ var dir_d070cf0d69b492364e22332565a6126b =
     [ "PyScenePartWrapper.h", "d0/dd2/PyScenePartWrapper_8h_source.html", null ],
     [ "PySceneWrapper.h", "d8/d43/PySceneWrapper_8h_source.html", null ],
     [ "PySimulationCycleCallback.h", "dc/d3f/PySimulationCycleCallback_8h_source.html", null ],
+    [ "PyStringVector.h", "d7/dc8/PyStringVector_8h_source.html", null ],
     [ "PythonDVec3.h", "dd/d40/PythonDVec3_8h_source.html", null ],
     [ "PyTrajectoryVectorWrapper.h", "dc/dea/PyTrajectoryVectorWrapper_8h_source.html", null ],
     [ "PyTrajectoryWrapper.h", "d3/d71/PyTrajectoryWrapper_8h_source.html", null ],

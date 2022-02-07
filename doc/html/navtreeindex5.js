@@ -1,5 +1,7 @@
 var NAVTREEINDEX5 =
 {
+"d5/d80/classSimpleKDTreeBuildChildrenNodesSubTask.html#a3057e3e652388285c707305486221fab":[1,0,127,8],
+"d5/d80/classSimpleKDTreeBuildChildrenNodesSubTask.html#a8afff0f0f1654df59ffcde0234b5b97e":[1,0,127,0],
 "d5/d80/classSimpleKDTreeBuildChildrenNodesSubTask.html#aa2bf9fc38d69330fe8873d3607c7b61f":[1,0,127,2],
 "d5/d80/classSimpleKDTreeBuildChildrenNodesSubTask.html#ad1270fb56b9b5c668ce68921b635e932":[1,0,127,6],
 "d5/d80/classSimpleKDTreeBuildChildrenNodesSubTask.html#ad80f0f1d8e62911f0bbc1c99bc5f1475":[1,0,127,1],
@@ -247,7 +249,5 @@ var NAVTREEINDEX5 =
 "d6/d26/classSurfaceInspector_1_1util_1_1draggers_1_1MinDragger.html#a051fb6d86b223c25647d9ad1acf70d96":[1,0,6,1,0,2,2],
 "d6/d26/classSurfaceInspector_1_1util_1_1draggers_1_1MinDragger.html#a0ff7315d820d011772edafd23d08fe95":[1,0,6,1,0,2,11],
 "d6/d26/classSurfaceInspector_1_1util_1_1draggers_1_1MinDragger.html#a148744ab8be1cd113d7ece55bc1c1e54":[1,0,6,1,0,2,8],
-"d6/d26/classSurfaceInspector_1_1util_1_1draggers_1_1MinDragger.html#a1796f636dbc2af173f19f4fccd1b52f7":[1,0,6,1,0,2,4],
-"d6/d26/classSurfaceInspector_1_1util_1_1draggers_1_1MinDragger.html#a4754d22017e288544eed11c03c5be25d":[1,0,6,1,0,2,12],
-"d6/d26/classSurfaceInspector_1_1util_1_1draggers_1_1MinDragger.html#a57ee64e2ce5c006cbfd6d0f51cfbd6df":[1,0,6,1,0,2,3]
+"d6/d26/classSurfaceInspector_1_1util_1_1draggers_1_1MinDragger.html#a1796f636dbc2af173f19f4fccd1b52f7":[1,0,6,1,0,2,4]
 };

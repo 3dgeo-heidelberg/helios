@@ -164,6 +164,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../.
 <tr class="memitem:a1c11c633a722976134b39a5f521d2bb3"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="../../de/d51/classLeg.html">Leg</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/da1/classSurveyPlayback.html#a1c11c633a722976134b39a5f521d2bb3">getCurrentLeg</a> ()</td></tr>
 <tr class="memdesc:a1c11c633a722976134b39a5f521d2bb3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain current leg.  <a href="#a1c11c633a722976134b39a5f521d2bb3">More...</a><br /></td></tr>
 <tr class="separator:a1c11c633a722976134b39a5f521d2bb3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae0a99a024583de818484f9b4427b2420"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="../../de/d51/classLeg.html">Leg</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/da1/classSurveyPlayback.html#ae0a99a024583de818484f9b4427b2420">getPreviousLeg</a> ()</td></tr>
+<tr class="memdesc:ae0a99a024583de818484f9b4427b2420"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain the previous leg, if any.  <a href="#ae0a99a024583de818484f9b4427b2420">More...</a><br /></td></tr>
+<tr class="separator:ae0a99a024583de818484f9b4427b2420"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afab006b6ace6eb6b21cb417a0bed78a2"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/da1/classSurveyPlayback.html#afab006b6ace6eb6b21cb417a0bed78a2">getCurrentLegIndex</a> ()</td></tr>
 <tr class="memdesc:afab006b6ace6eb6b21cb417a0bed78a2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain current leg index.  <a href="#afab006b6ace6eb6b21cb417a0bed78a2">More...</a><br /></td></tr>
 <tr class="separator:afab006b6ace6eb6b21cb417a0bed78a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -564,7 +567,9 @@ Simulation::Simulation(unsigned, double, size_t) </dd></dl>
 
 <p>Obtain current leg. </p>
 <dl class="section return"><dt>Returns</dt><dd>Current leg </dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../de/d51/classLeg.html" title="Class representing a survey leg. ">Leg</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../de/d51/classLeg.html" title="Class representing a survey leg. ">Leg</a> </dd>
+<dd>
+<a class="el" href="../../d6/da1/classSurveyPlayback.html#ae0a99a024583de818484f9b4427b2420" title="Obtain the previous leg, if any. ">SurveyPlayback::getPreviousLeg</a> </dd></dl>
 
 </div>
 </div>
@@ -765,6 +770,29 @@ Simulation::Simulation(unsigned, double, size_t) </dd></dl>
 
 <p>Obtain the number of effective legs. </p>
 <dl class="section return"><dt>Returns</dt><dd>Number of effective legs </dd></dl>
+
+</div>
+</div>
+<a id="ae0a99a024583de818484f9b4427b2420"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae0a99a024583de818484f9b4427b2420">&#9670;&nbsp;</a></span>getPreviousLeg()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">shared_ptr&lt; <a class="el" href="../../de/d51/classLeg.html">Leg</a> &gt; SurveyPlayback::getPreviousLeg </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Obtain the previous leg, if any. </p>
+<dl class="section return"><dt>Returns</dt><dd>Previous leg, nullptr if there is no previous leg </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../de/d51/classLeg.html" title="Class representing a survey leg. ">Leg</a> </dd>
+<dd>
+<a class="el" href="../../d6/da1/classSurveyPlayback.html#a1c11c633a722976134b39a5f521d2bb3" title="Obtain current leg. ">SurveyPlayback::getCurrentLeg</a> </dd></dl>
 
 </div>
 </div>

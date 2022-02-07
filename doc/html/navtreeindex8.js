@@ -1,5 +1,9 @@
 var NAVTREEINDEX8 =
 {
+"d7/da6/classhelios_1_1hpc_1_1SM__ParallelMergeSortSubTask.html#a4d1abf4686585677a0b9f3539a9f9ba8":[1,0,1,0,1,9],
+"d7/da6/classhelios_1_1hpc_1_1SM__ParallelMergeSortSubTask.html#a70e77d291c932e9cac51b28764637522":[1,0,1,0,1,6],
+"d7/da6/classhelios_1_1hpc_1_1SM__ParallelMergeSortSubTask.html#a88841419efb7f3b4936d5da770d6c449":[1,0,1,0,1,3],
+"d7/da6/classhelios_1_1hpc_1_1SM__ParallelMergeSortSubTask.html#aab0b00e121b1d753b3674c9744eceb2d":[1,0,1,0,1,10],
 "d7/da6/classhelios_1_1hpc_1_1SM__ParallelMergeSortSubTask.html#ad149bec44bbfadddc6340b882be8ac60":[1,0,1,0,1,7],
 "d7/da6/classhelios_1_1hpc_1_1SM__ParallelMergeSortSubTask.html#adc5af095ba57c46c33487dacb47d142c":[1,0,1,0,1,2],
 "d7/da6/classhelios_1_1hpc_1_1SM__ParallelMergeSortSubTask.html#ae27a77739eee386a15722188a8a8de6a":[1,0,1,0,1,4],
@@ -25,6 +29,7 @@ var NAVTREEINDEX8 =
 "d7/db4/classConicBeamDeflector.html#abb9ac1c214553c9aea03394182ebe7f3":[1,0,25,4],
 "d7/db4/classConicBeamDeflector.html#abbb7a967ab1561b695bc5e3a289010b8":[1,0,25,2],
 "d7/db7/Trajectory_8h_source.html":[2,0,0,8,9],
+"d7/dc8/PyStringVector_8h_source.html":[2,0,0,7,20],
 "d7/dcc/PlaneFitterTest_8h_source.html":[2,0,0,12,5],
 "d7/de7/classPulseWarehouseThreadPool.html":[1,0,100],
 "d7/de7/classPulseWarehouseThreadPool.html#a063a50f4247effbcfc3ae473f2fd2aa8":[1,0,100,9],
@@ -244,10 +249,5 @@ var NAVTREEINDEX8 =
 "d9/d22/classLadLut.html#ae3d291c2ea48993baded5157a030b103":[1,0,65,18],
 "d9/d24/IBinaryTreeNode_8h_source.html":[2,0,0,0,0,4],
 "d9/d2d/Vertex_8h_source.html":[2,0,0,9,1,4],
-"d9/d31/classSAHKDTreeGeometricStrategy.html":[1,0,112],
-"d9/d31/classSAHKDTreeGeometricStrategy.html#a014ccc1b94d27d1a666e038220494844":[1,0,112,4],
-"d9/d31/classSAHKDTreeGeometricStrategy.html#a0f5e178b9397744e5ee18195103ddb74":[1,0,112,6],
-"d9/d31/classSAHKDTreeGeometricStrategy.html#a2cd36fb2add7c5f0ce882d85379f6087":[1,0,112,5],
-"d9/d31/classSAHKDTreeGeometricStrategy.html#a3639e14d8f61bf56f00fd5b442d811d8":[1,0,112,2],
-"d9/d31/classSAHKDTreeGeometricStrategy.html#a4f69ebe40cc8a6f69f14f5edfae8c544":[1,0,112,1]
+"d9/d31/classSAHKDTreeGeometricStrategy.html":[1,0,112]
 };

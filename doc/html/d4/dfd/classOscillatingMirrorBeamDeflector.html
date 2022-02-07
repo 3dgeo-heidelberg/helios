@@ -132,6 +132,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>_clone</b> (std::shar
 <tr class="separator:ad874586cc9bac70f8a341db3731fd9f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5f4656b37019afef7a2477ae8ef1a587"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/dfd/classOscillatingMirrorBeamDeflector.html#a5f4656b37019afef7a2477ae8ef1a587">doSimStep</a> () override</td></tr>
 <tr class="separator:a5f4656b37019afef7a2477ae8ef1a587"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad81e0b5d9009b73598cb3c59b172d7c8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/dfd/classOscillatingMirrorBeamDeflector.html#ad81e0b5d9009b73598cb3c59b172d7c8">restartDeflector</a> () override</td></tr>
+<tr class="separator:ad81e0b5d9009b73598cb3c59b172d7c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad8b546ef082d93b5549189f0f6440c47"><td class="memItemLeft" align="right" valign="top"><a id="ad8b546ef082d93b5549189f0f6440c47"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/dfd/classOscillatingMirrorBeamDeflector.html#ad8b546ef082d93b5549189f0f6440c47">updateBeamAngle</a> ()</td></tr>
 <tr class="memdesc:ad8b546ef082d93b5549189f0f6440c47"><td class="mdescLeft">&#160;</td><td class="mdescRight">Update the current beam angle at each simulation step. <br /></td></tr>
@@ -277,7 +279,7 @@ double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="..
 </p>
 <p>Considering the step between pulses is \(1\), the derivatives with respect to simulation steps of the previous functions can be defined using forward finite differences as follows. Where \(a\) and \(b\) denote the first and last pulse of the current acceleration/linear/deceleration stage, respectively:</p>
 <p class="formulaDsp">
-\[ \begin{split} \frac{d}{dp}f(p) \approx&amp;\, \frac{\Delta^{1}_{1}[f]}{1} =&amp;\, \frac{f(p+1)-f(p)}{1} =&amp;\, \omega \\ \frac{d}{dp}g(p) \approx&amp;\, \frac{\Delta^{1}_{1}[g]}{1} =&amp;\, \frac{g(p+1)-g(p)}{1} =&amp;\, \frac{p+1-a}{b-a} \omega \\ \frac{d}{dp}h(p) \approx&amp;\, \frac{\Delta^{1}_1[h]}{1} =&amp;\, \frac{h(p+1)-h(p)}{1} =&amp;\, \frac{b-p-1}{b-a} \omega \end{split} \]
+\[ \begin{split} \frac{d}{dp}f(p) \approx&amp;\, \frac{\Delta^{1}_{1}[f](p)}{1} =&amp;\, \frac{f(p+1)-f(p)}{1} =&amp;\, \omega \\ \frac{d}{dp}g(p) \approx&amp;\, \frac{\Delta^{1}_{1}[g](p)}{1} =&amp;\, \frac{g(p+1)-g(p)}{1} =&amp;\, \frac{p+1-a}{b-a} \omega \\ \frac{d}{dp}h(p) \approx&amp;\, \frac{\Delta^{1}_1[h](p)}{1} =&amp;\, \frac{h(p+1)-h(p)}{1} =&amp;\, \frac{b-p-1}{b-a} \omega \end{split} \]
 </p>
 <p>Finally, notice that solving this model reduces to finding the angle between pulses \(\omega\) that makes the model satisfy its frontiers. It is, solving below expression for \(\omega\):</p>
 <p class="formulaDsp">
@@ -523,6 +525,34 @@ double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="..
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="ad81e0b5d9009b73598cb3c59b172d7c8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad81e0b5d9009b73598cb3c59b172d7c8">&#9670;&nbsp;</a></span>restartDeflector()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void OscillatingMirrorBeamDeflector::restartDeflector </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d7/d92/classAbstractBeamDeflector.html#af3200a0bcbeacfe62a3c083f2e22c136" title="Restart the deflector. This method is meant to be invoked whenever the deflector needs to be restarte...">AbstractBeamDeflector::restartDeflector</a> </dd></dl>
+
+<p>Reimplemented from <a class="el" href="../../d7/d92/classAbstractBeamDeflector.html#af3200a0bcbeacfe62a3c083f2e22c136">AbstractBeamDeflector</a>.</p>
 
 </div>
 </div>

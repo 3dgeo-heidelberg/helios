@@ -13,7 +13,7 @@ var searchData=
   ['defaultscannertemplate',['defaultScannerTemplate',['../d9/d82/classXmlAssetsLoader.html#a13431b8af32cf022f71fdd44b1d06259',1,'XmlAssetsLoader']]],
   ['definesplit',['defineSplit',['../df/d30/classAxisSAHKDTreeFactory.html#a1a938aa8914f624692228217428c157a',1,'AxisSAHKDTreeFactory::defineSplit()'],['../db/d58/classSAHKDTreeFactory.html#aa22c06947f61f871156922122c41084d',1,'SAHKDTreeFactory::defineSplit()'],['../d6/d96/classSimpleKDTreeFactory.html#aa3ed0e048fd2e9ae62fdd324e32153c5',1,'SimpleKDTreeFactory::defineSplit()']]],
   ['degreestoradians',['degreesToRadians',['../df/d22/classMathConverter.html#a9b0216cc0a7a9d3e6ae2adefe2c88c64',1,'MathConverter']]],
-  ['delta',['delta',['../da/d52/classSurfaceInspector_1_1maths_1_1Histogram.html#a435bcd0ab73fec77928194c6130a6f84',1,'SurfaceInspector::maths::Histogram::delta()'],['../d1/d2b/classMarquardtFitter.html#a49990a2f2852a17231d6b081fb3bb110',1,'MarquardtFitter::DELTA()']]],
+  ['delta',['DELTA',['../d1/d2b/classMarquardtFitter.html#a49990a2f2852a17231d6b081fb3bb110',1,'MarquardtFitter::DELTA()'],['../da/d52/classSurfaceInspector_1_1maths_1_1Histogram.html#a435bcd0ab73fec77928194c6130a6f84',1,'SurfaceInspector::maths::Histogram::delta()']]],
   ['delta1',['delta1',['../d5/d2f/classBuddingTaskDropper.html#a5b503f0abb73816bf34b8311edb42a1f',1,'BuddingTaskDropper']]],
   ['delta2',['delta2',['../d5/d2f/classBuddingTaskDropper.html#a98e11ea1f8567fee4dbafd389229edbf',1,'BuddingTaskDropper']]],
   ['deltaintensity',['deltaIntensity',['../d2/db3/classLasSyncFileWriter.html#a9a114f0c53100d830e15d869cf80f203',1,'LasSyncFileWriter']]],
