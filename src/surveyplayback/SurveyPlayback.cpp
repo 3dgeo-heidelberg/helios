@@ -308,7 +308,10 @@ void SurveyPlayback::startLeg(unsigned int legIndex, bool manual) {
 
 	// Restart deflector if previous leg was not active
 	shared_ptr<Leg> previousLeg = getPreviousLeg();
-	if(previousLeg != nullptr && !previousLeg->mScannerSettings->active){
+    if(
+	    previousLeg != nullptr && !previousLeg->mScannerSettings->active &&
+	    leg->mScannerSettings->active
+    ){
         mSurvey->scanner->beamDeflector->restartDeflector();
 	}
 
