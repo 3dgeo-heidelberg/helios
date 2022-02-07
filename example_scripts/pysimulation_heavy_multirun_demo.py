@@ -57,6 +57,7 @@ if __name__ == '__main__':
         'output/',
         0,          # Num Threads
         False,      # LAS output FLAG
+        False,      # LAS 10 output FLAG
         False       # Zip output FLAG
     )
     sim0.simFrequency = 10
