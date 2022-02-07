@@ -388,18 +388,23 @@ void SurveyPlayback::prepareOutput(){
         dynamic_pointer_cast<FullWaveformPulseDetector>(
             getScanner()->detector
         );
+
     // Fullwave prefix
     stringstream ss;
     ss << getLegOutputPrefix();
-    if(zipOutput){
-        ss << "_fullwave.bin";
-    }
+    if(zipOutput) ss << "_fullwave.bin";
     else ss << "_fullwave.txt";
+
+    // Set output path
+    std::string const path = mOutputFilePathString + getCurrentOutputPath();
     fwf_detector->setOutputFilePath(
-        mOutputFilePathString + getCurrentOutputPath(),
+        path,
         ss.str(),
         getScanner()->isWriteWaveform()
     );
+
+    // Handle historical tracking of output paths
+    getScanner()->trackOutputPath(path);
 
     // Trajectory writer
     if(mSurvey->scanner->trajectoryTimeInterval != 0.0){

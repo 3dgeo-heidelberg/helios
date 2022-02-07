@@ -849,12 +849,48 @@ BOOST_PYTHON_MODULE(_pyhelios){
         )
     ;
 
+    // Register vector<string>
+    class_<PyStringVector>("StringVector", no_init)
+        .def(
+            "__getitem__",
+            &PyStringVector::get
+        )
+        .def(
+            "__setitem__",
+            &PyStringVector::set
+        )
+        .def(
+            "__len__",
+            &PyStringVector::length
+        )
+        .def(
+            "get",
+            &PyStringVector::get
+        )
+        .def(
+            "set",
+            &PyStringVector::set
+        )
+        .def(
+            "insert",
+            &PyStringVector::insert
+        )
+        .def(
+            "erase",
+            &PyStringVector::erase
+        )
+        .def(
+            "length",
+            &PyStringVector::length
+        )
+    ;
+
     // Register NoiseSource
     class_<PyNoiseSourceWrapper>("NoiseSource", no_init)
-    .add_property(
-    "clipMin",
-    &PyNoiseSourceWrapper::getClipMin,
-    &PyNoiseSourceWrapper::setClipMin
+        .add_property(
+            "clipMin",
+            &PyNoiseSourceWrapper::getClipMin,
+            &PyNoiseSourceWrapper::setClipMin
         )
         .add_property(
             "clipMax",
@@ -1501,6 +1537,16 @@ BOOST_PYTHON_MODULE(_pyhelios){
             "filepath",
             &PyHeliosOutputWrapper::outpath,
             &PyHeliosOutputWrapper::outpath
+        )
+        .add_property(
+            "outpaths",
+            &PyHeliosOutputWrapper::outpaths,
+            &PyHeliosOutputWrapper::outpaths
+        )
+        .add_property(
+            "filepaths",
+            &PyHeliosOutputWrapper::outpaths,
+            &PyHeliosOutputWrapper::outpaths
         )
     ;
 
