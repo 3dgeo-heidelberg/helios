@@ -127,7 +127,6 @@ jobs:
         run: |
           7z x lib/glm-0.9.9.8.zip -olib
           dir lib
-          move lib/glm-0.9.9.8 lib/glm
           
 
       - uses: suisei-cn/actions-download-file@v1
@@ -150,7 +149,9 @@ jobs:
         run: |
           cd lib
           7z x gdal.zip -ogdal
-          move include/boost /include/boost-gdal
+          dir .
+          dir gdal
+          move gdal/include/boost gdal/include/boost-gdal
           cd ..
           msiexec.exe /i lib/gdal.msi
 
