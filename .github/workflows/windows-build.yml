@@ -106,9 +106,8 @@ jobs:
         if: steps.cache-boost.outputs.cache-hit != 'true'
         working-directory: ${{env.GITHUB_WORKSPACE}}
         run: |
-          cd boost
-          7z x boost\zlib1211.zip -o.          
-          cd boost
+          cd lib/boost
+          7z x zlib1211.zip -o.          
           cmd.exe /c 'bootstrap.bat'
           .\b2.exe --user-config=$USER_CONFIG -j6 -sNO_ZLIB=0 -sZLIB_INCLUDE="zlib-1.2.11" -sZLIB_SOURCE="zlib-1.2.11" address-model=64 link=static python=3.6,3.7,3.8,3.9
           cd .. 
