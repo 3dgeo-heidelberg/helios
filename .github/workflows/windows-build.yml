@@ -157,7 +157,7 @@ jobs:
         working-directory: ${{env.GITHUB_WORKSPACE}}
         run: |
           dir lib
-          msiexec.exe /i lib/gdal.msi
+          msiexec.exe /i lib\gdal.msi /qn
 
       - uses: suisei-cn/actions-download-file@v1
         id: downloadlastools
@@ -184,6 +184,7 @@ jobs:
           target: scilab.exe
 
       - name: Install scilab
+        working-directory: ${{env.GITHUB_WORKSPACE}}
         run: |
           dir
           .\scilab.exe
