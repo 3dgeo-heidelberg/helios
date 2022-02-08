@@ -181,13 +181,12 @@ jobs:
         name: Download SciLab
         with:
           url: "https://www.scilab.org/download/6.1.0/scilab-6.1.0_x64.exe"
-          target: scilab.exe
 
       - name: Install scilab
         working-directory: ${{env.GITHUB_WORKSPACE}}
         run: |
           dir
-          D:\a\helios\helios\scilab.exe /VERYSILENT /NORESTART
+          .\scilab-6.1.0_x64.exe /VERYSILENT /NORESTART
           dir C:\          
 
       - uses: suisei-cn/actions-download-file@v1
