@@ -157,7 +157,7 @@ jobs:
         working-directory: ${{env.GITHUB_WORKSPACE}}
         run: |
           dir lib
-          Start-Process -FilePath C:\Windows\System32\msiexec.exe -ArgumentList "/i lib\gdal.msi /qn"
+          Start-Process -FilePath C:\Windows\System32\msiexec.exe -ArgumentList "/i lib\gdal.msi /qn"  -Wait
 
       - uses: suisei-cn/actions-download-file@v1
         id: downloadlastools
@@ -187,10 +187,8 @@ jobs:
         working-directory: ${{env.GITHUB_WORKSPACE}}
         run: |
           dir
-          Start-Process -FilePath scilab.exe -ArgumentList "/VERYSILENT"
-          dir C:\scilab-6.1.0
-          tree C:\scilab-6.1.0
-          
+          Start-Process -FilePath scilab.exe -ArgumentList "/VERYSILENT /NORESTART" -Wait
+          dir C:\          
 
       - uses: suisei-cn/actions-download-file@v1
         id: downloadarmadillo
@@ -216,6 +214,7 @@ jobs:
       - name: Build HELIOS++
         working-directory: ${{env.GITHUB_WORKSPACE}}
         run: |
+          ((Get-Content -path src\helios_version.cpp -Raw) -replace '(^const char \* HELIOS_VERSION = ")(.*)(";)','$1$2 - ${{ github.head_ref }}.${{ github.sha }}$3') | Set-Content -Path src\helios_version.cpp
           cmake -DCMAKE_BUILD_TYPE=Release -DPYTHON_BINDING=1 -DPYTHON_VERSION=39 -DPYTHON_PATH=${{env.pythonLocation}} .
           msbuild.exe helios.sln /p:AdditionalDependencies='"C:\Program Files\scilab-6.1.0\bin\blasplus.lib;C:\Program Files\scilab-6.1.0\bin\lapack.lib"'  /p:IncludePath="C:\Program Files\scilab-6.1.0\bin" /p:Configuration=Release
           
