@@ -187,7 +187,7 @@ jobs:
         working-directory: ${{env.GITHUB_WORKSPACE}}
         run: |
           dir
-          ${{env.GITHUB_WORKSPACE}}\scilab.exe /VERYSILENT /NORESTART
+          D:\a\helios\helios\scilab.exe /VERYSILENT /NORESTART
           dir C:\          
 
       - uses: suisei-cn/actions-download-file@v1
