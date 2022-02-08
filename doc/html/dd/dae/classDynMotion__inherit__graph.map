@@ -1,3 +1,4 @@
 <map id="DynMotion" name="DynMotion">
-<area shape="rect" id="node2" href="$d7/d84/classrigidmotion_1_1RigidMotion.html" title="Interface that must be implemented by any class which represents a specific rigid motions..." alt="" coords="5,5,168,32"/>
+<area shape="rect" id="node1" title="Class which wraps the RigidMotion class to implement extra features such as the self mode control mec..." alt="" coords="50,80,143,107"/>
+<area shape="rect" id="node2" href="$d7/d84/classrigidmotion_1_1RigidMotion.html" title="Interface that must be implemented by any class which represents a specific rigid motions." alt="" coords="5,5,188,32"/>
 </map>

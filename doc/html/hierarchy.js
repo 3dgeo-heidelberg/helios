@@ -93,7 +93,7 @@ var hierarchy =
     [ "DynSequencer< T >", "db/d6f/classDynSequencer.html", null ],
     [ "DynSequencer< DynMotion >", "db/d6f/classDynSequencer.html", null ],
     [ "enum_hasher", "da/ded/structenum__hasher.html", null ],
-    [ "exception", null, [
+    [ "std::exception", null, [
       [ "HeliosException", "d6/dda/classHeliosException.html", [
         [ "pyhelios::PyHeliosException", "d8/d98/classpyhelios_1_1PyHeliosException.html", null ]
       ] ]
@@ -119,7 +119,7 @@ var hierarchy =
       [ "BinaryTreeBreadthIterator< NodeType >", "d0/da5/classBinaryTreeBreadthIterator.html", null ],
       [ "BinaryTreeDepthIterator< NodeType >", "d4/d02/classBinaryTreeDepthIterator.html", null ]
     ] ],
-    [ "ITreeIterator< NodeType *>", "df/d39/classITreeIterator.html", [
+    [ "ITreeIterator< NodeType * >", "df/d39/classITreeIterator.html", [
       [ "BinaryTreeFastBreadthIterator< NodeType >", "d3/d43/classBinaryTreeFastBreadthIterator.html", null ],
       [ "BinaryTreeFastDepthIterator< NodeType >", "dc/da5/classBinaryTreeFastDepthIterator.html", null ]
     ] ],
@@ -188,11 +188,7 @@ var hierarchy =
         ] ]
       ] ],
       [ "SurfaceInspector::maths::Distances", "dc/d30/classSurfaceInspector_1_1maths_1_1Distances.html", null ],
-      [ "SurfaceInspector::maths::functions::IMathFunction< Tin, Tout >", "da/d80/classSurfaceInspector_1_1maths_1_1functions_1_1IMathFunction.html", null ],
       [ "SurfaceInspector::maths::Histogram< T >", "da/d52/classSurfaceInspector_1_1maths_1_1Histogram.html", null ],
-      [ "SurfaceInspector::maths::permuters::IPermuter< T >", "d2/daf/classSurfaceInspector_1_1maths_1_1permuters_1_1IPermuter.html", [
-        [ "SurfaceInspector::maths::permuters::CNRIndexPermuter< T >", "dc/d41/classSurfaceInspector_1_1maths_1_1permuters_1_1CNRIndexPermuter.html", null ]
-      ] ],
       [ "SurfaceInspector::maths::Plane< T >", "d1/d16/classSurfaceInspector_1_1maths_1_1Plane.html", [
         [ "SurfaceInspector::maths::DetailedPlane< T >", "d4/dfa/classSurfaceInspector_1_1maths_1_1DetailedPlane.html", null ]
       ] ],
@@ -202,8 +198,12 @@ var hierarchy =
       [ "SurfaceInspector::maths::SingularContextDescriptors< T >", "d1/db0/classSurfaceInspector_1_1maths_1_1SingularContextDescriptors.html", null ],
       [ "SurfaceInspector::maths::Statistics", "da/d24/classSurfaceInspector_1_1maths_1_1Statistics.html", null ],
       [ "SurfaceInspector::maths::Vector< T >", "d1/dd3/classSurfaceInspector_1_1maths_1_1Vector.html", null ],
-      [ "SurfaceInspector::util::draggers::IDragger< E, C >", "d1/dd1/classSurfaceInspector_1_1util_1_1draggers_1_1IDragger.html", null ],
-      [ "SurfaceInspector::util::SurfaceInspectorException", "df/da8/classSurfaceInspector_1_1util_1_1SurfaceInspectorException.html", null ]
+      [ "SurfaceInspector::maths::functions::IMathFunction< Tin, Tout >", "da/d80/classSurfaceInspector_1_1maths_1_1functions_1_1IMathFunction.html", null ],
+      [ "SurfaceInspector::maths::permuters::IPermuter< T >", "d2/daf/classSurfaceInspector_1_1maths_1_1permuters_1_1IPermuter.html", [
+        [ "SurfaceInspector::maths::permuters::CNRIndexPermuter< T >", "dc/d41/classSurfaceInspector_1_1maths_1_1permuters_1_1CNRIndexPermuter.html", null ]
+      ] ],
+      [ "SurfaceInspector::util::SurfaceInspectorException", "df/da8/classSurfaceInspector_1_1util_1_1SurfaceInspectorException.html", null ],
+      [ "SurfaceInspector::util::draggers::IDragger< E, C >", "d1/dd1/classSurfaceInspector_1_1util_1_1draggers_1_1IDragger.html", null ]
     ] ],
     [ "PlaneFitter", "d6/d51/classPlaneFitter.html", null ],
     [ "Primitive", "df/de1/classPrimitive.html", [
@@ -251,14 +251,14 @@ var hierarchy =
     [ "RandomnessGenerator< RealType >", "dc/d6e/classRandomnessGenerator.html", null ],
     [ "RandomnessGenerator< double >", "dc/d6e/classRandomnessGenerator.html", null ],
     [ "Raycaster", "d7/df4/classRaycaster.html", [
+      [ "RaycasterGroveTree< DynObject >", "d9/db1/classRaycasterGroveTree.html", [
+        [ "GroveKDTreeRaycaster", "d6/dba/classGroveKDTreeRaycaster.html", null ]
+      ] ],
       [ "KDGroveRaycaster", "df/d01/classKDGroveRaycaster.html", null ],
       [ "KDTreeRaycaster", "da/d81/classKDTreeRaycaster.html", [
         [ "GroveKDTreeRaycaster", "d6/dba/classGroveKDTreeRaycaster.html", null ]
       ] ],
-      [ "RaycasterGroveTree< Subject >", "d9/db1/classRaycasterGroveTree.html", null ],
-      [ "RaycasterGroveTree< DynObject >", "d9/db1/classRaycasterGroveTree.html", [
-        [ "GroveKDTreeRaycaster", "d6/dba/classGroveKDTreeRaycaster.html", null ]
-      ] ]
+      [ "RaycasterGroveTree< Subject >", "d9/db1/classRaycasterGroveTree.html", null ]
     ] ],
     [ "RaySceneIntersection", "dc/da3/classRaySceneIntersection.html", null ],
     [ "RayUtils", "d7/dee/classRayUtils.html", null ],
@@ -287,11 +287,11 @@ var hierarchy =
     [ "SerialIO", "d6/db9/classSerialIO.html", null ],
     [ "SharedSubTask", "df/d6f/classSharedSubTask.html", [
       [ "FastSAHKDTreeRecountSubTask", "d6/d0d/classFastSAHKDTreeRecountSubTask.html", null ],
-      [ "helios::hpc::SM_ParallelMergeSortSubTask< RandomAccessIterator, Comparator >", "d7/da6/classhelios_1_1hpc_1_1SM__ParallelMergeSortSubTask.html", null ],
       [ "SAHKDTreeComputeLossNodesSubTask", "d5/d89/classSAHKDTreeComputeLossNodesSubTask.html", null ],
       [ "SimpleKDTreeBuildChildrenNodesSubTask", "d5/d80/classSimpleKDTreeBuildChildrenNodesSubTask.html", null ],
       [ "SimpleKDTreeComputeRootNodeBoundariesSubTask", "d1/da6/classSimpleKDTreeComputeRootNodeBoundariesSubTask.html", null ],
-      [ "SimpleKDTreePopulateSplitsSubTask", "d1/dc1/classSimpleKDTreePopulateSplitsSubTask.html", null ]
+      [ "SimpleKDTreePopulateSplitsSubTask", "d1/dc1/classSimpleKDTreePopulateSplitsSubTask.html", null ],
+      [ "helios::hpc::SM_ParallelMergeSortSubTask< RandomAccessIterator, Comparator >", "d7/da6/classhelios_1_1hpc_1_1SM__ParallelMergeSortSubTask.html", null ]
     ] ],
     [ "SharedSubTaskCompletionHandler", "d6/d25/classSharedSubTaskCompletionHandler.html", [
       [ "SharedTaskSequencer", "da/d29/classSharedTaskSequencer.html", null ]
@@ -311,7 +311,7 @@ var hierarchy =
     [ "helios::hpc::SM_ParallelMergeSort< RandomAccessIterator, Comparator >", "d8/de4/classhelios_1_1hpc_1_1SM__ParallelMergeSort.html", null ],
     [ "SmartSharedFunctorContainer< T >", "db/da8/classSmartSharedFunctorContainer.html", null ],
     [ "SpectralLibrary", "d5/d20/classSpectralLibrary.html", null ],
-    [ "static_visitor", null, [
+    [ "boost::static_visitor", null, [
       [ "stringVisitor", "d8/df4/structstringVisitor.html", null ]
     ] ],
     [ "StaticGrove< Tree >", "d8/da0/classStaticGrove.html", [
@@ -346,21 +346,21 @@ var hierarchy =
     [ "TaskWarehouse< PulseTaskDropper >", "d9/d5e/classTaskWarehouse.html", null ],
     [ "Test", "df/da6/classTest.html", null ],
     [ "ThreadPool", "dc/de7/classThreadPool.html", [
-      [ "SimpleThreadPool< TaskArgs >", "d2/d1f/classSimpleThreadPool.html", null ],
       [ "SimpleThreadPool< TaskArgs ... >", "d2/d1f/classSimpleThreadPool.html", [
-        [ "MDThreadPool< MDType, TaskArgs >", "d0/d21/classMDThreadPool.html", null ],
-        [ "MDThreadPool< KDTreeBuildType, KDTreeNode *, bool const, vector< Primitive *> &, int const, int const >", "d0/d21/classMDThreadPool.html", [
+        [ "MDThreadPool< KDTreeBuildType, KDTreeNode *, bool const, vector< Primitive * > &, int const, int const >", "d0/d21/classMDThreadPool.html", [
           [ "KDTreeFactoryThreadPool", "d2/dea/classKDTreeFactoryThreadPool.html", null ]
         ] ],
-        [ "ResThreadPool< TaskArgs >", "d2/dee/classResThreadPool.html", null ],
         [ "ResThreadPool< std::vector< std::vector< double > > &, RandomnessGenerator< double > &, RandomnessGenerator< double > &, NoiseSource< double > & >", "d2/dee/classResThreadPool.html", [
           [ "PulseThreadPool", "d6/ddc/classPulseThreadPool.html", null ]
-        ] ]
+        ] ],
+        [ "MDThreadPool< MDType, TaskArgs >", "d0/d21/classMDThreadPool.html", null ],
+        [ "ResThreadPool< TaskArgs >", "d2/dee/classResThreadPool.html", null ]
       ] ],
-      [ "WarehouseThreadPool< Task >", "da/d92/classWarehouseThreadPool.html", null ],
       [ "WarehouseThreadPool< PulseTaskDropper >", "da/d92/classWarehouseThreadPool.html", [
         [ "PulseWarehouseThreadPool", "d7/de7/classPulseWarehouseThreadPool.html", null ]
-      ] ]
+      ] ],
+      [ "SimpleThreadPool< TaskArgs >", "d2/d1f/classSimpleThreadPool.html", null ],
+      [ "WarehouseThreadPool< Task >", "da/d92/classWarehouseThreadPool.html", null ]
     ] ],
     [ "TimeWatcher", "d7/d7d/classTimeWatcher.html", null ],
     [ "Trajectory", "d2/d43/classTrajectory.html", null ],
@@ -399,7 +399,7 @@ var hierarchy =
     [ "XmlSceneLoader", "db/d91/classXmlSceneLoader.html", null ],
     [ "XmlUtils", "de/d52/classXmlUtils.html", null ],
     [ "runtime_error", null, [
-      [ "rigidmotion::RigidMotionException", "dd/db6/classrigidmotion_1_1RigidMotionException.html", null ],
-      [ "SurfaceInspector::util::SurfaceInspectorException", "df/da8/classSurfaceInspector_1_1util_1_1SurfaceInspectorException.html", null ]
+      [ "SurfaceInspector::util::SurfaceInspectorException", "df/da8/classSurfaceInspector_1_1util_1_1SurfaceInspectorException.html", null ],
+      [ "rigidmotion::RigidMotionException", "dd/db6/classrigidmotion_1_1RigidMotionException.html", null ]
     ] ]
 ];

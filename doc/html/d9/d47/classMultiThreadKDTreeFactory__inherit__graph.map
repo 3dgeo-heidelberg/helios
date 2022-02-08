@@ -1,5 +1,6 @@
 <map id="MultiThreadKDTreeFactory" name="MultiThreadKDTreeFactory">
-<area shape="rect" id="node4" href="$dd/d95/classMultiThreadSAHKDTreeFactory.html" title="Decorator for any SAH KDTree which provides support for multi thread KDTree building. " alt="" coords="5,229,212,256"/>
-<area shape="rect" id="node2" href="$d6/d96/classSimpleKDTreeFactory.html" title="Class providing building methods for simple k&#45;dimensional trees. " alt="" coords="33,80,184,107"/>
-<area shape="rect" id="node3" href="$d5/dd0/classKDTreeFactory.html" title="Class that must be extended by any class which provides factory methods for k&#45;dimensional trees..." alt="" coords="53,5,164,32"/>
+<area shape="rect" id="node1" title="Decorator for any KDTree factory which provides support for multi thread KDTree building." alt="" coords="19,155,214,181"/>
+<area shape="rect" id="node4" href="$dd/d95/classMultiThreadSAHKDTreeFactory.html" title="Decorator for any SAH KDTree which provides support for multi thread KDTree building." alt="" coords="5,229,228,256"/>
+<area shape="rect" id="node2" href="$d6/d96/classSimpleKDTreeFactory.html" title="Class providing building methods for simple k&#45;dimensional trees." alt="" coords="36,80,197,107"/>
+<area shape="rect" id="node3" href="$d5/dd0/classKDTreeFactory.html" title="Class that must be extended by any class which provides factory methods for k&#45;dimensional trees...." alt="" coords="59,5,175,32"/>
 </map>

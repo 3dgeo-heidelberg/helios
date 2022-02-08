@@ -1,5 +1,6 @@
 <map id="FullWaveformPulseRunnable" name="FullWaveformPulseRunnable">
-<area shape="rect" id="node2" href="$d6/d9e/classAbstractPulseRunnable.html" title="Base abstract class for pulse runnables. " alt="" coords="21,95,180,121"/>
-<area shape="rect" id="node3" href="$d1/d6e/classPulseTask.html" title="Pulse task interface. " alt="" coords="8,5,92,32"/>
-<area shape="rect" id="node4" href="$d5/dcb/classRotation.html" title="Rotation" alt="" coords="116,5,187,32"/>
+<area shape="rect" id="node1" title="Concrete implementation of abstract pulse runnable to compute full waveform pulses." alt="" coords="5,171,215,197"/>
+<area shape="rect" id="node2" href="$d6/d9e/classAbstractPulseRunnable.html" title="Base abstract class for pulse runnables." alt="" coords="24,95,196,121"/>
+<area shape="rect" id="node3" href="$d1/d6e/classPulseTask.html" title="Pulse task interface." alt="" coords="13,5,100,32"/>
+<area shape="rect" id="node4" href="$d5/dcb/classRotation.html" title=" " alt="" coords="125,5,202,32"/>
 </map>

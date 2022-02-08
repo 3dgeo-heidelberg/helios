@@ -1,5 +1,8 @@
 <map id="XmlSurveyLoader" name="XmlSurveyLoader">
-<area shape="rect" id="node2" href="$d9/d82/classXmlAssetsLoader.html" title="Class for asset loading from XML file. " alt="" coords="99,243,225,269"/>
-<area shape="rect" id="node3" href="$db/d91/classXmlSceneLoader.html" title="Class for scene loading from XML file. " alt="" coords="45,124,167,151"/>
-<area shape="rect" id="node5" href="$d7/d48/classSceneLoadingSpecification.html" title="Manually specify scene transformation filters to apply when loading a scene. " alt="" coords="89,5,267,32"/>
+<area shape="rect" id="node1" title="Survey loader from XML." alt="" coords="39,319,177,345"/>
+<area shape="rect" id="node2" href="$d9/d82/classXmlAssetsLoader.html" title="Class for asset loading from XML file." alt="" coords="41,243,175,269"/>
+<area shape="rect" id="node3" title=" " alt="" coords="9,124,68,151"/>
+<area shape="rect" id="node4" href="$db/d91/classXmlSceneLoader.html" title="Class for scene loading from XML file." alt="" coords="113,124,244,151"/>
+<area shape="rect" id="node5" href="$d7/d48/classSceneLoadingSpecification.html" title="Manually specify scene transformation filters to apply when loading a scene." alt="" coords="5,5,200,32"/>
+<area shape="rect" id="node6" title=" " alt="" coords="225,5,285,32"/>
 </map>

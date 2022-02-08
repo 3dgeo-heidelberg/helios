@@ -1,7 +1,6 @@
 var classSAHKDTreeComputeLossNodesSubTask =
 [
-    [ "SAHKDTreeComputeLossNodesSubTask", "d5/d89/classSAHKDTreeComputeLossNodesSubTask.html#a05ee4b4b4d616717d3ba4f5e545c070c", null ],
-    [ "~SAHKDTreeComputeLossNodesSubTask", "d5/d89/classSAHKDTreeComputeLossNodesSubTask.html#a7792c639553aa2667fdb4da0510afa40", null ],
+    [ "SAHKDTreeComputeLossNodesSubTask", "d5/d89/classSAHKDTreeComputeLossNodesSubTask.html#af7c318171804b38f288e745dcaa45ba9", null ],
     [ "run", "d5/d89/classSAHKDTreeComputeLossNodesSubTask.html#a78eee3840519d0cd2d5c239c255402d7", null ],
     [ "boundLength", "d5/d89/classSAHKDTreeComputeLossNodesSubTask.html#a95a0bd94a38c571ca0d1c9571cee8b8e", null ],
     [ "endNode", "d5/d89/classSAHKDTreeComputeLossNodesSubTask.html#a8ad32b15b87b071840e3869872af2faa", null ],

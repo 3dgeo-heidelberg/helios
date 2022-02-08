@@ -1,7 +1,8 @@
 <map id="SimplePhysicsPlatform" name="SimplePhysicsPlatform">
-<area shape="rect" id="node5" href="$d7/d94/classGroundVehiclePlatform.html" title="Class representing a ground vehicle platform. " alt="" coords="5,304,161,331"/>
-<area shape="rect" id="node6" href="$db/d69/classHelicopterPlatform.html" title="Class representing a helicopter platform. " alt="" coords="186,304,317,331"/>
-<area shape="rect" id="node2" href="$d1/d83/classMovingPlatform.html" title="Class representing a moving platform. " alt="" coords="111,155,224,181"/>
-<area shape="rect" id="node3" href="$df/d1e/classPlatform.html" title="Class representing a platform asset. " alt="" coords="132,80,203,107"/>
-<area shape="rect" id="node4" href="$de/d97/classAsset.html" title="Base class for all assets. " alt="" coords="139,5,195,32"/>
+<area shape="rect" id="node1" title="Class representing a simple phyiscs platform." alt="" coords="98,229,270,256"/>
+<area shape="rect" id="node5" href="$d7/d94/classGroundVehiclePlatform.html" title="Class representing a ground vehicle platform." alt="" coords="5,304,179,331"/>
+<area shape="rect" id="node6" href="$db/d69/classHelicopterPlatform.html" title="Class representing a helicopter platform." alt="" coords="203,304,349,331"/>
+<area shape="rect" id="node2" href="$d1/d83/classMovingPlatform.html" title="Class representing a moving platform." alt="" coords="121,155,247,181"/>
+<area shape="rect" id="node3" href="$df/d1e/classPlatform.html" title="Class representing a platform asset." alt="" coords="145,80,223,107"/>
+<area shape="rect" id="node4" href="$de/d97/classAsset.html" title="Base class for all assets." alt="" coords="155,5,213,32"/>
 </map>

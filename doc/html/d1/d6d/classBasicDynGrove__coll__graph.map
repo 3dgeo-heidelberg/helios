@@ -1,5 +1,7 @@
 <map id="BasicDynGrove&lt; Tree, Subject &gt;" name="BasicDynGrove&lt; Tree, Subject &gt;">
-<area shape="rect" id="node2" href="$d9/dcd/classBasicStaticGrove.html" title="Basic implementation of a StaticGrove. " alt="" coords="50,95,225,121"/>
-<area shape="rect" id="node3" href="$d8/da0/classStaticGrove.html" title="A StaticGrove is an abstract class which declares methods to handle a set of trees. " alt="" coords="5,5,147,32"/>
-<area shape="rect" id="node5" href="$dc/d2c/classDynGrove.html" title="A DynGrove is an interface which declares observer&#45;like functionality so dynamic subjects can notify ..." alt="" coords="249,95,399,121"/>
+<area shape="rect" id="node1" title="Basic implementation of a DynGrove which extends BasicStaticGrove to provided dynamic funcionalities." alt="" coords="165,171,333,212"/>
+<area shape="rect" id="node2" href="$d9/dcd/classBasicStaticGrove.html" title="Basic implementation of a StaticGrove." alt="" coords="53,95,243,121"/>
+<area shape="rect" id="node3" href="$d8/da0/classStaticGrove.html" title="A StaticGrove is an abstract class which declares methods to handle a set of trees." alt="" coords="5,5,160,32"/>
+<area shape="rect" id="node4" title=" " alt="" coords="185,5,245,32"/>
+<area shape="rect" id="node5" href="$dc/d2c/classDynGrove.html" title="A DynGrove is an interface which declares observer&#45;like functionality so dynamic subjects can notify ..." alt="" coords="268,95,433,121"/>
 </map>

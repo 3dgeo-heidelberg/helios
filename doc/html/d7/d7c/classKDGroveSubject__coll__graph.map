@@ -1,3 +1,4 @@
 <map id="KDGroveSubject" name="KDGroveSubject">
-<area shape="rect" id="node2" href="$d2/d33/classBasicDynGroveSubject.html" title="BasicDynGroveSubject\l\&lt; GroveKDTreeRaycaster,\l DynMovingObject \&gt;" alt="" coords="5,5,184,61"/>
+<area shape="rect" id="node1" title="Interface defining the behaviors that must be supported by any object that can notify to a KDGrove." alt="" coords="37,109,165,136"/>
+<area shape="rect" id="node2" href="$d2/d33/classBasicDynGroveSubject.html" title=" " alt="" coords="5,5,196,61"/>
 </map>

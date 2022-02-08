@@ -1,7 +1,5 @@
 var classHeliosTests_1_1GroveTest =
 [
-    [ "GroveTest", "d0/d01/classHeliosTests_1_1GroveTest.html#ac96c1189db625edd545bc030dab8f592", null ],
-    [ "~GroveTest", "d0/d01/classHeliosTests_1_1GroveTest.html#a21db0aa7541169143be648ae6442be51", null ],
     [ "buildGrove", "d0/d01/classHeliosTests_1_1GroveTest.html#a8fa9dc3fff505534601f5b97b84cc42c", null ],
     [ "buildPrimitives", "d0/d01/classHeliosTests_1_1GroveTest.html#a33bcd3fa7b06e263b89fd2653ae1a174", null ],
     [ "buildTrees", "d0/d01/classHeliosTests_1_1GroveTest.html#aa0349c5afdec5a7e65ea981e0ed525a1", null ],

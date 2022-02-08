@@ -1,6 +1,7 @@
 <map id="visualhelios::VHCanvas" name="visualhelios::VHCanvas">
-<area shape="rect" id="node2" href="$da/d27/classvisualhelios_1_1VHDynCanvas.html" title="Visual Helios Dynamic Canvas is a class which provides the basis layer to deal with dynamic objects r..." alt="" coords="123,80,310,107"/>
-<area shape="rect" id="node3" href="$df/dd2/classvisualhelios_1_1VHNormalsCanvas.html" title="Abstract class providing some behaviors and defining the interface for all canvas which deal with nor..." alt="" coords="111,155,322,181"/>
-<area shape="rect" id="node4" href="$d3/d71/classvisualhelios_1_1VHSceneCanvas.html" title="Visual Helios Scene Canvas is a class which supports rendering a dynamic scene. " alt="" coords="5,229,204,256"/>
-<area shape="rect" id="node5" href="$d9/dc5/classvisualhelios_1_1VHSimpleCanvas.html" title="Visual Helios Simple Canvas is a class which supports rendering polygon meshes which are updated over..." alt="" coords="229,229,431,256"/>
+<area shape="rect" id="node1" title="Visual Helios Canvas is a class which provides the base mechanisms to implement Helios visualizations..." alt="" coords="145,5,320,32"/>
+<area shape="rect" id="node2" href="$da/d27/classvisualhelios_1_1VHDynCanvas.html" title="Visual Helios Dynamic Canvas is a class which provides the basis layer to deal with dynamic objects r..." alt="" coords="132,80,333,107"/>
+<area shape="rect" id="node3" href="$df/dd2/classvisualhelios_1_1VHNormalsCanvas.html" title="Abstract class providing some behaviors and defining the interface for all canvas which deal with nor..." alt="" coords="117,155,348,181"/>
+<area shape="rect" id="node4" href="$d3/d71/classvisualhelios_1_1VHSceneCanvas.html" title="Visual Helios Scene Canvas is a class which supports rendering a dynamic scene." alt="" coords="5,229,220,256"/>
+<area shape="rect" id="node5" href="$d9/dc5/classvisualhelios_1_1VHSimpleCanvas.html" title="Visual Helios Simple Canvas is a class which supports rendering polygon meshes which are updated over..." alt="" coords="244,229,464,256"/>
 </map>

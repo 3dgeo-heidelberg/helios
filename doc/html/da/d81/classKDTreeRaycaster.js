@@ -2,7 +2,6 @@ var classKDTreeRaycaster =
 [
     [ "KDTreeRaycasterSearch", "de/d7f/classKDTreeRaycaster_1_1KDTreeRaycasterSearch.html", "de/d7f/classKDTreeRaycaster_1_1KDTreeRaycasterSearch" ],
     [ "KDTreeRaycaster", "da/d81/classKDTreeRaycaster.html#a8a78b68e65bc40f36a6dedab308af668", null ],
-    [ "~KDTreeRaycaster", "da/d81/classKDTreeRaycaster.html#a965c038c35516b20e6d1de54e4d0f608", null ],
     [ "search", "da/d81/classKDTreeRaycaster.html#aac2bc3f3bd12f1b334496e4b2cc260ee", null ],
     [ "search_recursive", "da/d81/classKDTreeRaycaster.html#aeec9d69cdcbd7c2be66f7882439430a8", null ],
     [ "searchAll", "da/d81/classKDTreeRaycaster.html#a0dfe186a398e4131f4a11963cf8d3224", null ],
