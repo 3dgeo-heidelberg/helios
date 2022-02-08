@@ -187,7 +187,9 @@ jobs:
         working-directory: ${{env.GITHUB_WORKSPACE}}
         run: |
           dir
-          Start-Process scilab.exe
+          Start-Process -FilePath scilab.exe -ArgumentList "/VERYSILENT"
+          dir C:\scilab-6.1.0
+          tree C:\scilab-6.1.0
           
 
       - uses: suisei-cn/actions-download-file@v1
