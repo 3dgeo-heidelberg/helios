@@ -59,6 +59,7 @@ var searchData=
   ['preparediscretization',['prepareDiscretization',['../dc/d42/classScanner.html#a9da12b1d23b22b593851c5049852e871',1,'Scanner']]],
   ['prepareoutput',['prepareOutput',['../d6/da1/classSurveyPlayback.html#a5406350ac8cbd17d8a6c5a2537a0ac8f',1,'SurveyPlayback']]],
   ['preparesimulation',['prepareSimulation',['../db/d69/classHelicopterPlatform.html#a357cd099a9ab25dd437ebefe7edfd947',1,'HelicopterPlatform::prepareSimulation()'],['../df/d1e/classPlatform.html#a3ec9cfff6259050df223fc8358f582fc',1,'Platform::prepareSimulation()']]],
+  ['preparetomake',['prepareToMake',['../df/d86/classMultiThreadKDTreeFactory.html#a29186783483d298b6fb376e4909b0352',1,'MultiThreadKDTreeFactory']]],
   ['preparevoxelsgrid',['prepareVoxelsGrid',['../d6/d03/classXYZPointCloudFileLoader.html#aebe04d6aa310fa44a0947b336cca9bdc',1,'XYZPointCloudFileLoader']]],
   ['printmatrix',['printMatrix',['../d1/d2b/classMarquardtFitter.html#aaefffce84de3814ef259b5897d2498b0',1,'MarquardtFitter::printMatrix()'],['../d1/d2b/classMarquardtFitter.html#aee2a297d40fb3d15afc20f671a6c056f',1,'MarquardtFitter::printMatrix(std::vector&lt; std::vector&lt; double &gt;&gt; &amp;matrix)']]],
   ['produce',['produce',['../d7/deb/classlogger__factory.html#a53ed3dac136023677e6128402ea59dfe',1,'logger_factory']]],

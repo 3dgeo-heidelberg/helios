@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['a',['a',['../da/d52/classSurfaceInspector_1_1maths_1_1Histogram.html#a64e07e5f83715dc1a095912230c309b8',1,'SurfaceInspector::maths::Histogram::a()'],['../d6/d26/classSurfaceInspector_1_1util_1_1draggers_1_1MinDragger.html#a666b09efc5b3e457a0483abbe8734587',1,'SurfaceInspector::util::draggers::MinDragger::a()'],['../d7/d84/classrigidmotion_1_1RigidMotion.html#af809d870aad52d3bd417b4832498c676',1,'rigidmotion::RigidMotion::A()'],['../d1/d2b/classMarquardtFitter.html#aaba141f675faab660d793e3b0e7cb4f8',1,'MarquardtFitter::A()']]],
+  ['a',['A',['../d7/d84/classrigidmotion_1_1RigidMotion.html#af809d870aad52d3bd417b4832498c676',1,'rigidmotion::RigidMotion::A()'],['../d1/d2b/classMarquardtFitter.html#aaba141f675faab660d793e3b0e7cb4f8',1,'MarquardtFitter::A()'],['../da/d52/classSurfaceInspector_1_1maths_1_1Histogram.html#a64e07e5f83715dc1a095912230c309b8',1,'SurfaceInspector::maths::Histogram::a()'],['../d6/d26/classSurfaceInspector_1_1util_1_1draggers_1_1MinDragger.html#a666b09efc5b3e457a0483abbe8734587',1,'SurfaceInspector::util::draggers::MinDragger::a()']]],
   ['a1',['a1',['../d6/d7f/classRotationOrder.html#ae1e79a9be04701a8498ff9d0d0ffbda5',1,'RotationOrder']]],
   ['a2',['a2',['../d6/d7f/classRotationOrder.html#a94e6d412fb6ea94d460e9215c84d6442',1,'RotationOrder']]],
   ['a3',['a3',['../d6/d7f/classRotationOrder.html#a1e279094daf5b6381ecfa9b38b66f89f',1,'RotationOrder']]],
@@ -26,6 +26,8 @@ var searchData=
   ['addobj',['addObj',['../dd/dc4/classScenePart.html#ad77755e3d5bf661ef5a69ca848de833d',1,'ScenePart']]],
   ['addobjecttoviewer',['addObjectToViewer',['../d3/d71/classvisualhelios_1_1VHSceneCanvas.html#a124e9090f2e53462fc62faf33ee1172a',1,'visualhelios::VHSceneCanvas']]],
   ['addsequence',['addSequence',['../d4/d48/classDynSequentiableMovingObject.html#a77a0f7b168184e8da6117543e555984c',1,'DynSequentiableMovingObject']]],
+  ['addsubject',['addSubject',['../d1/d0a/classBasicDynGrove.html#a5eefe170f972ad3a275c227e579b80f7',1,'BasicDynGrove::addSubject()'],['../d9/d76/classKDGrove.html#aaa8940bf01a498ae77d32f3e51ad5fd6',1,'KDGrove::addSubject()']]],
+  ['addtree',['addTree',['../d9/dcd/classBasicStaticGrove.html#a2a887801e9c97d6d2c19c2a0955c0c3a',1,'BasicStaticGrove::addTree()'],['../d8/da0/classStaticGrove.html#a9f4ab227ef238058d486127c08daf3e1',1,'StaticGrove::addTree()']]],
   ['allmeasurements',['allMeasurements',['../db/da6/classFullWaveformPulseRunnable.html#aeedfb37ebcaa81fb785f4d0ce5b6ce3c',1,'FullWaveformPulseRunnable::allMeasurements()'],['../dc/d42/classScanner.html#aa6c767c57bf01a1e16fbec89fa0f6c3c',1,'Scanner::allMeasurements()'],['../db/d85/classScanningPulseProcess.html#aea2d0b2959ed1729e4520159bdd2e618',1,'ScanningPulseProcess::allMeasurements()']]],
   ['allmeasurementsmutex',['allMeasurementsMutex',['../db/da6/classFullWaveformPulseRunnable.html#adcaed1b88ed1f08ec6f7a9797ec62fb3',1,'FullWaveformPulseRunnable::allMeasurementsMutex()'],['../dc/d42/classScanner.html#a8cb71381e2e99cc7294c39fdfc7cb554',1,'Scanner::allMeasurementsMutex()'],['../db/d85/classScanningPulseProcess.html#aad7dd7577c3eb70d5faca1b2b3f67372',1,'ScanningPulseProcess::allMeasurementsMutex()']]],
   ['alloutputpaths',['allOutputPaths',['../dc/d42/classScanner.html#a7492c090b0fdb4f7314f481d2334b1f2',1,'Scanner']]],

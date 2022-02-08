@@ -4,79 +4,73 @@
 using namespace std;
 
 map<double, Primitive*> KDTreeRaycaster::searchAll(
-    glm::dvec3 _rayOrigin,
-    glm::dvec3 _rayDir,
-    double tmin,
-    double tmax,
-    bool groundOnly
+    glm::dvec3 const rayOrigin,
+    glm::dvec3 const rayDir,
+    double const tmin,
+    double const tmax,
+    bool const groundOnly
 ) {
-	rayDirArray.push_back(_rayDir.x);
-	rayDirArray.push_back(_rayDir.y);
-	rayDirArray.push_back(_rayDir.z);
-	rayOriginArray.push_back(_rayOrigin.x);
-	rayOriginArray.push_back(_rayOrigin.y);
-	rayOriginArray.push_back(_rayOrigin.z);
+    // Prepare search
+    KDTreeRaycasterSearch search(rayDir, rayOrigin, groundOnly);
+	search.rayDirArray.push_back(rayDir.x);
+	search.rayDirArray.push_back(rayDir.y);
+    search.rayDirArray.push_back(rayDir.z);
+	search.rayOriginArray.push_back(rayOrigin.x);
+	search.rayOriginArray.push_back(rayOrigin.y);
+	search.rayOriginArray.push_back(rayOrigin.z);
 
-	this->rayOrigin = _rayOrigin;
-	this->rayDir = _rayDir;
+	// Do recursive search
+	this->searchAll_recursive(this->root.get(), tmin, tmax, search);
 
-	this->groundOnly = groundOnly;
-
-	this->collectedPoints.clear();
-	this->closestHitDistance = numeric_limits<double>::max();
-
-	this->searchAll_recursive(this->root.get(), tmin, tmax);
-
-	return collectedPoints;
+	// Handle search output
+	return search.collectedPoints;
 }
 
 RaySceneIntersection* KDTreeRaycaster::search(
-    glm::dvec3 _rayOrigin,
-    glm::dvec3 _rayDir,
-    double tmin,
-    double tmax,
-    bool groundOnly
+    glm::dvec3 const rayOrigin,
+    glm::dvec3 const rayDir,
+    double const tmin,
+    double const tmax,
+    bool const groundOnly
 ){
-	rayDirArray.push_back(_rayDir.x);
-	rayDirArray.push_back(_rayDir.y);
-	rayDirArray.push_back(_rayDir.z);
-	rayOriginArray.push_back(_rayOrigin.x);
-	rayOriginArray.push_back(_rayOrigin.y);
-	rayOriginArray.push_back(_rayOrigin.z);
+    // Prepare search
+    KDTreeRaycasterSearch search(rayDir, rayOrigin, groundOnly);
+	search.rayDirArray.push_back(rayDir.x);
+	search.rayDirArray.push_back(rayDir.y);
+	search.rayDirArray.push_back(rayDir.z);
+	search.rayOriginArray.push_back(rayOrigin.x);
+	search.rayOriginArray.push_back(rayOrigin.y);
+	search.rayOriginArray.push_back(rayOrigin.z);
 
-	this->rayOrigin = _rayOrigin;
-	this->rayDir = _rayDir;
-
-	this->groundOnly = groundOnly;
-
-	this->closestHitDistance = numeric_limits<double>::max();
-
+	// Do recursive search
 	Primitive* prim = this->search_recursive(
 	    this->root.get(),
 	    tmin-epsilon,
-	    tmax+epsilon
+	    tmax+epsilon,
+	    search
     );
-	if (prim == nullptr) return nullptr;
 
+	// Handle search output
+	if (prim == nullptr) return nullptr;
 	RaySceneIntersection* result = new RaySceneIntersection();
 	result->prim = prim;
-	result->point = rayOrigin + (rayDir * closestHitDistance);
-
+	result->point = rayOrigin + (rayDir * search.closestHitDistance);
 	return result;
-
 }
 
 void KDTreeRaycaster::searchAll_recursive(
     LightKDTreeNode* node,
-    double tmin,
-    double tmax
+    double const tmin,
+    double const tmax,
+    KDTreeRaycasterSearch &search
 ){
 
 	// ######### BEGIN If node is a leaf, perform ray-primitive intersection on all primitives in the leaf's bucket ###########
 	if (node->splitAxis == -1) {
 		for (auto prim : *node->primitives) {
-
-			vector<double> tMinMax = prim->getRayIntersection(rayOrigin, rayDir);
+			vector<double> tMinMax = prim->getRayIntersection(
+			    search.rayOrigin, search.rayDir
+            );
 			if (tMinMax.empty()) {
 				logging::DEBUG("searchAll_recursive: tMinMax is empty");
 				continue;
@@ -98,10 +92,10 @@ void KDTreeRaycaster::searchAll_recursive(
 			    (newDistance >= tmin-epsilon && newDistance <= tmax+epsilon)
             ){
 				if(
-				    !groundOnly ||
+				    !search.groundOnly ||
 				    (prim->material != nullptr && prim->material->isGround)
                 ){
-					collectedPoints.insert(pair<double, Primitive*>(
+					search.collectedPoints.insert(pair<double, Primitive*>(
 					    newDistance,
 					    prim)
                     );
@@ -121,23 +115,27 @@ void KDTreeRaycaster::searchAll_recursive(
 		// ############ BEGIN Check ray direction to figure out through which sides the ray passes in which order ###########
 
 		// Case 1: Ray goes in positive direction - it passes through the left side first, then through the right:
-		if (rayDirArray[a] > 0) {
+		if (search.rayDirArray[a] > 0) {
 			first = node->left;
 			second = node->right;
 
-			thit = (node->splitPos - this->rayOriginArray[a]) / rayDirArray[a];
+			thit = (node->splitPos - search.rayOriginArray[a]) /
+			    search.rayDirArray[a];
 		}
 		// Case 2: Ray goes in negative direction - it passes through the right side first, then through the left:
-		else if (rayDirArray[a] < 0) {
+		else if (search.rayDirArray[a] < 0) {
 			first = node->right;
 			second = node->left;
 
-			thit = (node->splitPos - this->rayOriginArray[a]) / rayDirArray[a];
+			thit = (node->splitPos - search.rayOriginArray[a]) /
+                search.rayDirArray[a];
 		}
 		// Case 3: Ray goes parallel to the split plane - it passes through only one side, depending on it's originWaypoint:
 		else {
-			first = (rayOriginArray[a] < node->splitPos) ? node->left : node->right;
-			second = (rayOriginArray[a] < node->splitPos) ? node->right : node->left;
+			first = (search.rayOriginArray[a] < node->splitPos) ?
+			    node->left : node->right;
+			second = (search.rayOriginArray[a] < node->splitPos) ?
+			    node->right : node->left;
 		}
 		// ############ END Check ray direction to figure out thorugh which sides the ray passes in which order ###########
 
@@ -146,20 +144,20 @@ void KDTreeRaycaster::searchAll_recursive(
 		// thit >= tmax means that the ray crosses the split plane *after it has already left the volume*.
 		// In this case, it never enters the second half.
 		if (thit >= tmax) {
-			searchAll_recursive(first, tmin, tmax);
+			searchAll_recursive(first, tmin, tmax, search);
 		}
 
 		// thit <= tmin means that the ray crosses the split plane *before it enters the volume*.
 		// In this case, it never enters the first half:
 		else if (thit <= tmin) {
-			searchAll_recursive(second, tmin, tmax);
+			searchAll_recursive(second, tmin, tmax, search);
 		}
 
 		// Otherwise, the ray crosses the split plane within the volume.
 		// This means that it passes through both sides:
 		else {
-			searchAll_recursive(first, tmin, thit);
-			searchAll_recursive(second, thit, tmax);
+			searchAll_recursive(first, tmin, thit, search);
+			searchAll_recursive(second, thit, tmax, search);
 		}
 		// ########### END Check where the ray crosses the split plane to figure out which sides we need to stop into at all ###########
 	}
@@ -168,9 +166,10 @@ void KDTreeRaycaster::searchAll_recursive(
 
 Primitive* KDTreeRaycaster::search_recursive(
     LightKDTreeNode* node,
-    double tmin,
-    double tmax
-){
+    double const tmin,
+    double const tmax,
+    KDTreeRaycasterSearch &search
+) const {
     if(node==nullptr) return nullptr; // Null nodes cannot contain primitives
 	Primitive* hitPrim = nullptr;
 
@@ -178,8 +177,9 @@ Primitive* KDTreeRaycaster::search_recursive(
 	if (node->splitAxis == -1) {
 		//logging::DEBUG("leaf node:");
 		for (auto prim : *node->primitives) {
-			double newDistance =
-			    prim->getRayIntersectionDistance(rayOrigin, rayDir);
+			double const newDistance = prim->getRayIntersectionDistance(
+			    search.rayOrigin, search.rayDir
+            );
 
 			// NOTE:
 			// Checking for tmin <= newDistance <= tmax here is REQUIRED
@@ -199,14 +199,14 @@ Primitive* KDTreeRaycaster::search_recursive(
 			// would be wrong.
 
 			if(
-			    (newDistance > 0 && newDistance < closestHitDistance) &&
+			    (newDistance > 0 && newDistance < search.closestHitDistance) &&
 			    (newDistance >= tmin && newDistance <= tmax)
             ){
 				if(
-				    !groundOnly ||
+				    !search.groundOnly ||
 				    (prim->material != nullptr && prim->material->isGround)
                 ){
-					closestHitDistance = newDistance;
+					search.closestHitDistance = newDistance;
 					hitPrim = prim;
 				}
 			}
@@ -217,7 +217,7 @@ Primitive* KDTreeRaycaster::search_recursive(
 	// ######### BEGIN If node is not a leaf, figure out which child node(s) to traverse next, in which order #############
 	else {
 
-		int a = node->splitAxis;
+		int const a = node->splitAxis;
 
 		double thit = numeric_limits<double>::infinity();
 
@@ -227,24 +227,26 @@ Primitive* KDTreeRaycaster::search_recursive(
 		// ############ BEGIN Check ray direction to figure out thorugh which sides the ray passes in which order ###########
 
 		// Case 1: Ray goes in positive direction - it passes through the left side first, then through the right:
-		if (rayDirArray[a] > 0) {
+		if (search.rayDirArray[a] > 0) {
 			first = node->left;
 			second = node->right;
 
-			thit = (node->splitPos - this->rayOriginArray[a]) / rayDirArray[a];
+			thit = (node->splitPos - search.rayOriginArray[a]) /
+			    search.rayDirArray[a];
 		}
 		// Case 2: Ray goes in negative direction - it passes through the right side first, then through the left:
-		else if (rayDirArray[a] < 0) {
+		else if (search.rayDirArray[a] < 0) {
 			first = node->right;
 			second = node->left;
 
-			thit = (node->splitPos - this->rayOriginArray[a]) / rayDirArray[a];
+			thit = (node->splitPos - search.rayOriginArray[a]) /
+			    search.rayDirArray[a];
 		}
 		// Case 3: Ray goes parallel to the split plane - it passes through only one side, depending on it's originWaypoint:
 		else {
-			first = (rayOriginArray[a] < node->splitPos) ?
+			first = (search.rayOriginArray[a] < node->splitPos) ?
 			    node->left : node->right;
-			second = (rayOriginArray[a] < node->splitPos) ?
+			second = (search.rayOriginArray[a] < node->splitPos) ?
 			    node->right : node->left;
 		}
 		// ############ END Check ray direction to figure out thorugh which sides the ray passes in which order ###########
@@ -254,22 +256,22 @@ Primitive* KDTreeRaycaster::search_recursive(
 		// thit >= tmax means that the ray crosses the split plane *after it has already left the volume*.
 		// In this case, it never enters the second half.
 		if (thit >= tmax) {
-			hitPrim = search_recursive(first, tmin, tmax);
+			hitPrim = search_recursive(first, tmin, tmax, search);
 		}
 
 		// thit <= tmin means that the ray crosses the split plane *before it enters the volume*.
 		// In this case, it never enters the first half:
 		else if (thit <= tmin) {
-			hitPrim = search_recursive(second, tmin, tmax);
+			hitPrim = search_recursive(second, tmin, tmax, search);
 		}
 
 		// Otherwise, the ray crosses the split plane within the volume.
 		// This means that it passes through both sides:
 		else {
-			hitPrim = search_recursive(first, tmin, thit+epsilon);
+			hitPrim = search_recursive(first, tmin, thit+epsilon, search);
 
 			if (hitPrim == nullptr) {
-				hitPrim = search_recursive(second, thit-epsilon, tmax);
+				hitPrim = search_recursive(second, thit-epsilon, tmax, search);
 			}
 		}
 

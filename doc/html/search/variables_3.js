@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['c',['c',['../da/d52/classSurfaceInspector_1_1maths_1_1Histogram.html#ab2dbc24fff56c1616a35771050a142fd',1,'SurfaceInspector::maths::Histogram::c()'],['../d6/d26/classSurfaceInspector_1_1util_1_1draggers_1_1MinDragger.html#a6d1fb91194ff6b82373d18bf9c5da977',1,'SurfaceInspector::util::draggers::MinDragger::c()'],['../d7/d84/classrigidmotion_1_1RigidMotion.html#aa5c886a5a11975a809580318ba5cdc42',1,'rigidmotion::RigidMotion::C()']]],
+  ['c',['C',['../d7/d84/classrigidmotion_1_1RigidMotion.html#aa5c886a5a11975a809580318ba5cdc42',1,'rigidmotion::RigidMotion::C()'],['../da/d52/classSurfaceInspector_1_1maths_1_1Histogram.html#ab2dbc24fff56c1616a35771050a142fd',1,'SurfaceInspector::maths::Histogram::c()'],['../d6/d26/classSurfaceInspector_1_1util_1_1draggers_1_1MinDragger.html#a6d1fb91194ff6b82373d18bf9c5da977',1,'SurfaceInspector::util::draggers::MinDragger::c()']]],
   ['cache_5faligning',['cache_aligning',['../db/d69/classHelicopterPlatform.html#a08d6a1486365bc4bab38844c69dd728f',1,'HelicopterPlatform']]],
   ['cache_5fspeedupfinished',['cache_speedUpFinished',['../db/d69/classHelicopterPlatform.html#a482a28380f0869ba415ff7b394d0d4a3',1,'HelicopterPlatform']]],
   ['cache_5fturning',['cache_turning',['../db/d69/classHelicopterPlatform.html#ac0e16b0d3f3bb4f086487b2070f946da',1,'HelicopterPlatform']]],
@@ -110,9 +110,9 @@ var searchData=
   ['clipenabled',['clipEnabled',['../d9/d6b/classNoiseSource.html#ac20d82b7c758cfad7c59b504d998bb66',1,'NoiseSource']]],
   ['clipmax',['clipMax',['../d9/d6b/classNoiseSource.html#ae4a19059c61de46de2fc10f71d4279b0',1,'NoiseSource']]],
   ['clipmin',['clipMin',['../d9/d6b/classNoiseSource.html#a91cc7639fe34320e3fe09ffa1b31003b',1,'NoiseSource']]],
-  ['closesthitdistance',['closestHitDistance',['../da/d81/classKDTreeRaycaster.html#af8e34cc7a55655e52ef2d6c18e47dda2',1,'KDTreeRaycaster']]],
+  ['closesthitdistance',['closestHitDistance',['../de/d7f/classKDTreeRaycaster_1_1KDTreeRaycasterSearch.html#a0008cdb5c57dc3c27970e77f975248cc',1,'KDTreeRaycaster::KDTreeRaycasterSearch']]],
   ['co',['co',['../db/d58/classSAHKDTreeFactory.html#a142e8bb1c4a2d1ed9adf95f71712199b',1,'SAHKDTreeFactory']]],
-  ['collectedpoints',['collectedPoints',['../da/d81/classKDTreeRaycaster.html#a1992ad18d4f4da22374c6e7571b2114e',1,'KDTreeRaycaster']]],
+  ['collectedpoints',['collectedPoints',['../de/d7f/classKDTreeRaycaster_1_1KDTreeRaycasterSearch.html#a6e057da75904b217f4fc625ad153673b',1,'KDTreeRaycaster::KDTreeRaycasterSearch']]],
   ['color',['color',['../d2/da0/classVertex.html#a3d29ca6eaf5e3cb2a60ddec3501e2792',1,'Vertex::color()'],['../d6/d44/classVoxel.html#af6f40e39870b22f4745bbd3988d3f7dd',1,'Voxel::color()']]],
   ['comparator',['comparator',['../d7/da6/classhelios_1_1hpc_1_1SM__ParallelMergeSortSubTask.html#ae27a77739eee386a15722188a8a8de6a',1,'helios::hpc::SM_ParallelMergeSortSubTask']]],
   ['compressedout',['compressedOut',['../de/d2a/classZipSyncFileWriter.html#aaa1abee9aaad69b62b31371fbfe5c380',1,'ZipSyncFileWriter']]],

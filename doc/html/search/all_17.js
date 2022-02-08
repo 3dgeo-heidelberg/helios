@@ -16,6 +16,7 @@ var searchData=
   ['wavelength_5fum',['wavelength_um',['../d5/d20/classSpectralLibrary.html#ab7fb8272765a5a20d854c07badad9525',1,'SpectralLibrary']]],
   ['waypointreached',['waypointReached',['../db/d69/classHelicopterPlatform.html#aa38dae421ed8973576c4f155cdf99362',1,'HelicopterPlatform::waypointReached()'],['../d1/d83/classMovingPlatform.html#a3138be155ac4d12834761c924657a050',1,'MovingPlatform::waypointReached()'],['../df/d1e/classPlatform.html#aa658baef39962956c290b9b22d943ef1',1,'Platform::waypointReached()']]],
   ['what',['what',['../d6/dda/classHeliosException.html#af7b16e482747a982846b1d0d0f78f81a',1,'HeliosException']]],
+  ['whileiter',['whileIter',['../d9/dcd/classBasicStaticGrove.html#a5c82f2d3b8dc97e27dce2420f957fb5e',1,'BasicStaticGrove']]],
   ['width',['width',['../d1/d0c/classGeoTiffFileLoader.html#a3d90a45b3a30096500afc8bd30e978a9',1,'GeoTiffFileLoader']]],
   ['winsize_5fns',['winSize_ns',['../d4/dfb/classFWFSettings.html#a442387fd78aa23137901b18f8d6f639c',1,'FWFSettings']]],
   ['wire_5fconductor',['WIRE_CONDUCTOR',['../df/d64/classLasSpecification.html#ae8ad8d4cd27de51ec1439498eb9ca988',1,'LasSpecification']]],

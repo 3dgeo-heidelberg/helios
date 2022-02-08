@@ -12,7 +12,6 @@ var dir_aa6f3dc7e51ca6284b695d1d6a0a824d =
     [ "KDTreeNode.h", "d5/d76/KDTreeNode_8h_source.html", null ],
     [ "KDTreeNodeRoot.h", "d1/d5d/KDTreeNodeRoot_8h_source.html", null ],
     [ "KDTreePrimitiveComparator.h", "df/d5f/KDTreePrimitiveComparator_8h_source.html", null ],
-    [ "KDTreeRaycaster.h", "da/d8b/KDTreeRaycaster_8h_source.html", null ],
     [ "LightKDTreeNode.h", "dc/da4/LightKDTreeNode_8h_source.html", null ],
     [ "LightKDTreeNodeBlockAllocator.h", "dd/d70/LightKDTreeNodeBlockAllocator_8h_source.html", null ],
     [ "MultiThreadKDTreeFactory.h", "dd/d2e/MultiThreadKDTreeFactory_8h_source.html", null ],

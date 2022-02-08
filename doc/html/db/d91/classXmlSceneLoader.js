@@ -7,6 +7,7 @@ var classXmlSceneLoader =
     [ "loadDynMotions", "db/d91/classXmlSceneLoader.html#ad056faf76ae7216553c42cd17188ee07", null ],
     [ "loadFilters", "db/d91/classXmlSceneLoader.html#a0cb34cff4f2d6db9b349cce631d8b0da", null ],
     [ "loadScenePartId", "db/d91/classXmlSceneLoader.html#a748bdf72dddd3ab52bc6784f536d1927", null ],
+    [ "makeKDGroveFactory", "db/d91/classXmlSceneLoader.html#ae6b2f82be7683d40de9240ec0dfe9617", null ],
     [ "makeKDTreeFactory", "db/d91/classXmlSceneLoader.html#ad38181fad7a99fe5c4a4178fd32e9139", null ],
     [ "makeSceneDynamic", "db/d91/classXmlSceneLoader.html#a50c2f79a71fce7307f4cf1d5a15a79fe", null ],
     [ "kdtFactoryType", "db/d91/classXmlSceneLoader.html#a84baf9f46d993828f45c4ee31f368a25", null ],

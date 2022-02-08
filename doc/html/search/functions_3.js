@@ -39,7 +39,7 @@ var searchData=
   ['choosewritertype',['chooseWriterType',['../d8/d6b/classAbstractDetector.html#a501903d7acaa7c90b7f5541df2c64043',1,'AbstractDetector']]],
   ['cleanline',['cleanLine',['../d9/ddf/classVoxelFileParser.html#a97a44af6b94377f4802273ee22511afe',1,'VoxelFileParser']]],
   ['cleanlines',['cleanLines',['../d9/ddf/classVoxelFileParser.html#a13c71e781e0774f00d00e4d1743370fb',1,'VoxelFileParser']]],
-  ['clear',['clear',['../df/dfa/classDynSequence.html#a78f90a4b46c5eea85f0694b55d9d57b8',1,'DynSequence::clear()'],['../db/d6f/classDynSequencer.html#a96c9f49607153231a196165b7ed18b67',1,'DynSequencer::clear()']]],
+  ['clear',['clear',['../d8/da0/classStaticGrove.html#a82f00abb7cd4f58d95d97fd1d82dad2c',1,'StaticGrove::clear()'],['../df/dfa/classDynSequence.html#a78f90a4b46c5eea85f0694b55d9d57b8',1,'DynSequence::clear()'],['../db/d6f/classDynSequencer.html#a96c9f49607153231a196165b7ed18b67',1,'DynSequencer::clear()']]],
   ['clearcallback',['clearCallback',['../d9/ddd/classpyhelios_1_1PyHeliosSimulation.html#ab2f864c5dcca8503746e7dc042ec64f3',1,'pyhelios::PyHeliosSimulation']]],
   ['cleardynobjects',['clearDynObjects',['../de/d74/classDynScene.html#a1491f7ade0fbf5732e6cb5ec65d7a0bd',1,'DynScene']]],
   ['cleardynobjs',['clearDynObjs',['../d9/dc5/classvisualhelios_1_1VHSimpleCanvas.html#ad60e431590e0d7624297655677a6c7e8',1,'visualhelios::VHSimpleCanvas']]],

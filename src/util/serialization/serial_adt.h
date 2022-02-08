@@ -4,6 +4,7 @@
 #include <IterableTreeNode.h>
 #include <MultiThreadKDTreeFactory.h>
 #include <MultiThreadSAHKDTreeFactory.h>
+#include <KDGroveFactory.h>
 
 
 namespace boost{ namespace serialization{
@@ -37,9 +38,9 @@ void load_construct_data(
     ::new(itn)IterableTreeNode<NodeType>(node, depth);
 }
 
+
 // ***  KDTREE FACTORY SERIALIZATION  *** //
 // ************************************** //
-
 template <class Archive>
 void save_construct_data(
     Archive &ar,
@@ -120,6 +121,49 @@ void load_construct_data(
         geomJobs,
         gsType
     );
+}
+
+
+// ***  KDGROVE FACTORY SERIALIZATION  *** //
+// *************************************** //
+template <class Archive>
+void save_construct_data(
+    Archive &ar,
+    KDGroveFactory const *kdgf,
+    unsigned int const version
+){
+    // Register KDTree factories
+    ar.template register_type<SimpleKDTreeFactory>();
+    ar.template register_type<SAHKDTreeFactory>();
+    ar.template register_type<AxisSAHKDTreeFactory>();
+    ar.template register_type<FastSAHKDTreeFactory>();
+    ar.template register_type<MultiThreadKDTreeFactory>();
+    ar.template register_type<MultiThreadSAHKDTreeFactory>();
+
+    // Save data required to construct instance
+    ar << kdgf->getKdtf();
+}
+
+template <class Archive>
+void load_construct_data(
+    Archive &ar,
+    KDGroveFactory *kdgf,
+    unsigned int const version
+){
+    // Register KDTree factories
+    ar.template register_type<SimpleKDTreeFactory>();
+    ar.template register_type<SAHKDTreeFactory>();
+    ar.template register_type<AxisSAHKDTreeFactory>();
+    ar.template register_type<FastSAHKDTreeFactory>();
+    ar.template register_type<MultiThreadKDTreeFactory>();
+    ar.template register_type<MultiThreadSAHKDTreeFactory>();
+
+    // Load data from archive required to construct new instance
+    std::shared_ptr<KDTreeFactory> kdtf;
+    ar >> kdtf;
+
+    // Build KDGroveFactory through inplace constructor
+    ::new(kdgf)KDGroveFactory(kdtf);
 }
 
 }};

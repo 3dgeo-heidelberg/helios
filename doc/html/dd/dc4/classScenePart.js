@@ -1,5 +1,10 @@
 var classScenePart =
 [
+    [ "ObjectType", "dd/dc4/classScenePart.html#abb04a8637137f4873ccb216573a5d6a5", [
+      [ "STATIC_OBJECT", "dd/dc4/classScenePart.html#abb04a8637137f4873ccb216573a5d6a5a4d8e5ffb946861bf2e930a94ae1f29bb", null ],
+      [ "DYN_OBJECT", "dd/dc4/classScenePart.html#abb04a8637137f4873ccb216573a5d6a5ae84483e961dcc343968a7f9a70001b99", null ],
+      [ "DYN_MOVING_OBJECT", "dd/dc4/classScenePart.html#abb04a8637137f4873ccb216573a5d6a5aa022da7b153a2562f58cbdfe1085ef5b", null ]
+    ] ],
     [ "ScenePart", "dd/dc4/classScenePart.html#ad08313c2aed966def11c0f507a116666", null ],
     [ "ScenePart", "dd/dc4/classScenePart.html#a573c9469b4865af254d50200a7d7972b", null ],
     [ "~ScenePart", "dd/dc4/classScenePart.html#aa43c74be32c643475b246e21345c7256", null ],
@@ -9,6 +14,7 @@ var classScenePart =
     [ "getCentroid", "dd/dc4/classScenePart.html#ac08adff13b3dca6df68d1f6114367d99", null ],
     [ "getId", "dd/dc4/classScenePart.html#a9c2c908872ec82fde8a4885c0e68e933", null ],
     [ "getPrimitives", "dd/dc4/classScenePart.html#aea61ea007cb84871117666b732f7ce64", null ],
+    [ "getType", "dd/dc4/classScenePart.html#ad5ed6cfcf03cbb2113df59c4550daef0", null ],
     [ "operator=", "dd/dc4/classScenePart.html#a0e4fe89589057061c7917b1476d268ee", null ],
     [ "serialize", "dd/dc4/classScenePart.html#ac8d1c1199b07fbaca54f50c09c931f77", null ],
     [ "setCentroid", "dd/dc4/classScenePart.html#a49668b1b63fac9583c9cd33b4190c532", null ],

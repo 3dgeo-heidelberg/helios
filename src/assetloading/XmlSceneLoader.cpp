@@ -77,15 +77,14 @@ XmlSceneLoader::createSceneFromXml(
         << tw.getElapsedDecimalSeconds() << "s\n";
     logging::TIME(ss.str());
 
-    // Set KDTree factory and finish scene loading
-    //scene->setKDTreeFactory(makeKDTreeFactory()); // Not yet, avoid building
-    scene->setKDTreeFactory(nullptr); // Prevent building before serializing
+    // Set KDGrove factory and finish scene loading
+    scene->setKDGroveFactory(nullptr); // Prevent building before serializing
     bool success = scene->finalizeLoading();
     if (!success) {
         logging::ERR("Finalizing the scene failed.");
         exit(-1);
     }
-    scene->setKDTreeFactory(makeKDTreeFactory()); // Better after building
+    scene->setKDGroveFactory(makeKDGroveFactory()); // Better after building
 
     // Store scene type if requested
     if(sceneType != nullptr){
@@ -384,4 +383,8 @@ shared_ptr<KDTreeFactory> XmlSceneLoader::makeKDTreeFactory(){
             << kdtFactoryType;
         throw HeliosException(ss.str());
     }
+}
+
+shared_ptr<KDGroveFactory> XmlSceneLoader::makeKDGroveFactory(){
+    return make_shared<KDGroveFactory>(makeKDTreeFactory());
 }

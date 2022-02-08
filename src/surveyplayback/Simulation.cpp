@@ -42,6 +42,7 @@ void Simulation::doSimStep(){
     // Ordered execution of simulation components
 	mScanner->platform->doSimStep(getScanner()->getPulseFreq_Hz());
 	mScanner->doSimStep(mCurrentLegIndex, currentGpsTime_ms);
+	mScanner->platform->scene->doSimStep();
     currentGpsTime_ms += 1000. / ((double)getScanner()->getPulseFreq_Hz());
     if (currentGpsTime_ms > 604800000.) currentGpsTime_ms -= 604800000.;
 }
