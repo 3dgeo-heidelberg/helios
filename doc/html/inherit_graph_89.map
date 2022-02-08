@@ -1,5 +1,5 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$dc/d00/classrigidmotion_1_1RigidMotionFactory.html" title="Class that must be extended by any class which provides factory methods for rigid motions..." alt="" coords="5,39,168,80"/>
-<area shape="rect" id="node2" href="$d7/da7/classrigidmotion_1_1RigidMotionR2Factory.html" title="Class providing building methods for rigid motions in . " alt="" coords="216,5,379,47"/>
-<area shape="rect" id="node3" href="$dc/df6/classrigidmotion_1_1RigidMotionR3Factory.html" title="Class providing building methods for rigid motions in . " alt="" coords="216,71,379,112"/>
+<area shape="rect" id="node1" href="$db/d85/classScanningPulseProcess.html" title="Class defining the scanning pulse process interface. " alt="" coords="5,31,163,57"/>
+<area shape="rect" id="node2" href="$d5/d3c/classBuddingScanningPulseProcess.html" title="Class implementing a scanning pulse process which works with a pulse task dropper based on budding ta..." alt="" coords="220,5,424,32"/>
+<area shape="rect" id="node3" href="$df/ddb/classWarehouseScanningPulseProcess.html" title="Class implementing a scanning pulse process which works with a pulse task dropper based on budding ta..." alt="" coords="211,56,433,83"/>
 </map>

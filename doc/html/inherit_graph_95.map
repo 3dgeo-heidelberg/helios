@@ -1,3 +1,4 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$d7/d48/classSceneLoadingSpecification.html" title="Manually specify scene transformation filters to apply when loading a scene. " alt="" coords="5,5,184,32"/>
+<area shape="rect" id="node1" href="$d6/d25/classSharedSubTaskCompletionHandler.html" title="Interface declaring behaviors that must be implemented by any class capable of handling completion of..." alt="" coords="5,5,232,32"/>
+<area shape="rect" id="node2" href="$da/d29/classSharedTaskSequencer.html" title="Class providing core implementation of a shared task sequencer. It is a sequencer which launches shar..." alt="" coords="280,5,435,32"/>
 </map>

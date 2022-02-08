@@ -1,3 +1,6 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$dc/da7/classScannerHead.html" title="ScannerHead" alt="" coords="5,5,107,32"/>
+<area shape="rect" id="node1" href="$dd/dc4/classScenePart.html" title="Class representing a scene part. " alt="" coords="5,5,88,32"/>
+<area shape="rect" id="node2" href="$d5/d6a/classDynObject.html" title="Dynamic object base implementation. " alt="" coords="136,5,220,32"/>
+<area shape="rect" id="node3" href="$d4/d96/classDynMovingObject.html" title="Implementation of a dynamic object which supports dynamic motions (extended rigid motions) ..." alt="" coords="268,5,395,32"/>
+<area shape="rect" id="node4" href="$d4/d48/classDynSequentiableMovingObject.html" title="Implementation of a dynamic object which supports sequentiable dynamic motions. " alt="" coords="443,5,644,32"/>
 </map>

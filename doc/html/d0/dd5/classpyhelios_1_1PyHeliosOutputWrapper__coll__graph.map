@@ -1,4 +1,5 @@
 <map id="pyhelios::PyHeliosOutputWrapper" name="pyhelios::PyHeliosOutputWrapper">
-<area shape="rect" id="node2" href="$d4/d2c/classpyhelios_1_1PyTrajectoryVectorWrapper.html" title="Python wrapper for helios trajectory. " alt="" coords="5,5,196,47"/>
-<area shape="rect" id="node3" href="$d5/dfb/classpyhelios_1_1PyMeasurementVectorWrapper.html" title="Wrapper for std::vector&lt;Measurement&gt; class. " alt="" coords="221,5,431,47"/>
+<area shape="rect" id="node2" href="$d4/d2c/classpyhelios_1_1PyTrajectoryVectorWrapper.html" title="Python wrapper for helios trajectory. " alt="" coords="15,5,206,47"/>
+<area shape="rect" id="node3" href="$d5/dfb/classpyhelios_1_1PyMeasurementVectorWrapper.html" title="Wrapper for std::vector&lt;Measurement&gt; class. " alt="" coords="5,71,216,112"/>
+<area shape="rect" id="node5" href="$dc/d5f/classpyhelios_1_1PyStringVector.html" title="pyhelios::PyStringVector" alt="" coords="27,187,194,214"/>
 </map>

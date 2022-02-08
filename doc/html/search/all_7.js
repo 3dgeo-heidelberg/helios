@@ -173,6 +173,7 @@ var searchData=
   ['getpolymesh',['getPolymesh',['../db/d6f/classvisualhelios_1_1VHStaticObjectXYZAdapter.html#af55f3a91c9f0aaa57e8c7b0668429a93',1,'visualhelios::VHStaticObjectXYZAdapter::getPolymesh()'],['../d5/dfc/classvisualhelios_1_1VHStaticObjectXYZRGBAdapter.html#afa7818197e3960188a6410b32e74f6c3',1,'visualhelios::VHStaticObjectXYZRGBAdapter::getPolymesh()']]],
   ['getpoolsize',['getPoolSize',['../df/d86/classMultiThreadKDTreeFactory.html#aa74d73ab61b35806ee0fdefec06dd38b',1,'MultiThreadKDTreeFactory::getPoolSize()'],['../dc/de7/classThreadPool.html#a809e09ddca366e0906c6ff54d174bb0f',1,'ThreadPool::getPoolSize()']]],
   ['getposition',['getPosition',['../df/d1e/classPlatform.html#a3b433931b25f161791cf90ad096a2356',1,'Platform::getPosition()'],['../d5/d0c/classPlatformSettings.html#abbf30f0c2e94bef9d94d0002f770dd9d',1,'PlatformSettings::getPosition()']]],
+  ['getpreviousleg',['getPreviousLeg',['../d6/da1/classSurveyPlayback.html#ae0a99a024583de818484f9b4427b2420',1,'SurveyPlayback']]],
   ['getprimitives',['getPrimitives',['../dd/dc4/classScenePart.html#aea61ea007cb84871117666b732f7ce64',1,'ScenePart']]],
   ['getprogress',['getProgress',['../d6/da1/classSurveyPlayback.html#aa7556f820dd34560c3040e48bb2b8d83',1,'SurveyPlayback']]],
   ['getpulsefreq_5fhz',['getPulseFreq_Hz',['../dc/d42/classScanner.html#a1a13507a7644437249c9b63e3f2d75d6',1,'Scanner']]],

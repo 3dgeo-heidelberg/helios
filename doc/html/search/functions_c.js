@@ -10,6 +10,7 @@ var searchData=
   ['lighten',['lighten',['../d5/dd0/classKDTreeFactory.html#a837bf89fb39600314e02f9fa9d05ec9b',1,'KDTreeFactory']]],
   ['lightkdtreenode',['LightKDTreeNode',['../dd/d79/classLightKDTreeNode.html#a4374e3eca5211c178ceb70f2fd3c1fe9',1,'LightKDTreeNode::LightKDTreeNode()=default'],['../dd/d79/classLightKDTreeNode.html#ae67232053b487e3331048b179eac3c4c',1,'LightKDTreeNode::LightKDTreeNode(LightKDTreeNode const &amp;kdtn)'],['../dd/d79/classLightKDTreeNode.html#a7c0c5c1e5d3a8e59c378184c3733286a',1,'LightKDTreeNode::LightKDTreeNode(LightKDTreeNode &amp;&amp;kdtn)']]],
   ['lightkdtreenodeblockallocator',['LightKDTreeNodeBlockAllocator',['../dd/d04/classLightKDTreeNodeBlockAllocator.html#a101af024970a8c3a3b51220ed2d46d99',1,'LightKDTreeNodeBlockAllocator']]],
+  ['linearbeamangle',['linearBeamAngle',['../d4/dfd/classOscillatingMirrorBeamDeflector.html#a5433995afb43956606ad470432dd2b08',1,'OscillatingMirrorBeamDeflector']]],
   ['linearpathplatform',['LinearPathPlatform',['../d8/d15/classLinearPathPlatform.html#a948780944f25b2ffcd45a870ce42676b',1,'LinearPathPlatform']]],
   ['load',['load',['../de/d6b/classLadLutLoader.html#a3b025b466513ba567bcdd3ce17a68eb2',1,'LadLutLoader::load()'],['../d5/d9c/classScene.html#ac68d340293560035fb043da042a26e85',1,'Scene::load()'],['../df/d9a/classXmlSurveyLoader.html#a942b31f81c152d4fe2669a99bee187c6',1,'XmlSurveyLoader::load()']]],
   ['loaddv',['loadDv',['../db/d49/classDetailedVoxelLoader.html#a3be6804f5bcc7bb58edab7ba9dbf4730',1,'DetailedVoxelLoader']]],

@@ -5,6 +5,7 @@ var searchData=
   ['datetimeutils',['DateTimeUtils',['../d2/d15/classDateTimeUtils.html',1,'']]],
   ['deallocate',['deallocate',['../d8/d78/classWavefrontObjCache.html#af1f9c092af89f117c3faecf267d8566f',1,'WavefrontObjCache']]],
   ['debug',['DEBUG',['../d0/da9/logging_8hpp.html#acc7cbc688fcbb59f796678f30fca6ab7',1,'logging']]],
+  ['deceleratebeamangle',['decelerateBeamAngle',['../d4/dfd/classOscillatingMirrorBeamDeflector.html#a74d9cce57f3a6d24890a82d7f3932a4a',1,'OscillatingMirrorBeamDeflector']]],
   ['decreasependingtasks',['decreasePendingTasks',['../d0/d21/classMDThreadPool.html#abbddc39ae0996fc43bd43f22c6536d97',1,'MDThreadPool']]],
   ['defaultnormal',['defaultNormal',['../d6/d03/classXYZPointCloudFileLoader.html#aa4abebcf0131e85079d6848209bf8c8d',1,'XYZPointCloudFileLoader']]],
   ['defaultplatformtemplate',['defaultPlatformTemplate',['../d9/d82/classXmlAssetsLoader.html#acf7309962281ab8336cf704a86f72d79',1,'XmlAssetsLoader']]],

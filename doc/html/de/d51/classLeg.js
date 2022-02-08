@@ -9,6 +9,7 @@ var classLeg =
     [ "getScannerSettings", "de/d51/classLeg.html#a2efcea05a4248b1240fed67ac214c744", null ],
     [ "getSerialId", "de/d51/classLeg.html#a1075640398e9af749c47b6fad0d8c5c8", null ],
     [ "getStrip", "de/d51/classLeg.html#a6cac8a8a2596fb52837e290452912bf2", null ],
+    [ "isContainedInAStrip", "de/d51/classLeg.html#af35867cfcdda534e188f7199f57feebc", null ],
     [ "setLength", "de/d51/classLeg.html#a67408efb60d81a2f58a827d0321a2b0f", null ],
     [ "setSerialId", "de/d51/classLeg.html#a43f687abb52c40c25ea68ec2e315efa3", null ],
     [ "setStrip", "de/d51/classLeg.html#aab614c7652b9157f76576a75fce61ac1", null ],

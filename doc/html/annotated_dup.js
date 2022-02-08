@@ -60,6 +60,7 @@ var annotated_dup =
       [ "PyScenePartWrapper", "df/d28/classpyhelios_1_1PyScenePartWrapper.html", "df/d28/classpyhelios_1_1PyScenePartWrapper" ],
       [ "PySceneWrapper", "d7/d17/classpyhelios_1_1PySceneWrapper.html", "d7/d17/classpyhelios_1_1PySceneWrapper" ],
       [ "PySimulationCycleCallback", "d9/d64/classpyhelios_1_1PySimulationCycleCallback.html", "d9/d64/classpyhelios_1_1PySimulationCycleCallback" ],
+      [ "PyStringVector", "dc/d5f/classpyhelios_1_1PyStringVector.html", "dc/d5f/classpyhelios_1_1PyStringVector" ],
       [ "PythonDVec3", "dd/d8f/classpyhelios_1_1PythonDVec3.html", "dd/d8f/classpyhelios_1_1PythonDVec3" ],
       [ "PyTrajectoryVectorWrapper", "d4/d2c/classpyhelios_1_1PyTrajectoryVectorWrapper.html", "d4/d2c/classpyhelios_1_1PyTrajectoryVectorWrapper" ],
       [ "PyTrajectoryWrapper", "d1/d2f/classpyhelios_1_1PyTrajectoryWrapper.html", "d1/d2f/classpyhelios_1_1PyTrajectoryWrapper" ],
