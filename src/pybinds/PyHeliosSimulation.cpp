@@ -73,6 +73,10 @@ void PyHeliosSimulation::start (){
     );
 
     if(finalOutput){
+        survey->scanner->allOutputPaths =
+            std::make_shared<std::vector<std::string>>(
+                std::vector<std::string>(0)
+            );
         survey->scanner->allMeasurements =
             std::make_shared<std::vector<Measurement>>(
                 std::vector<Measurement>(0)
@@ -185,6 +189,9 @@ PyHeliosOutputWrapper * PyHeliosSimulation::join(){
                 measurements,
                 trajectories,
                 survey->scanner->detector->outputFilePath.string(),
+                std::vector<std::string>{
+                    survey->scanner->detector->outputFilePath.string(),
+                },
                 false
             );
         }
@@ -194,6 +201,7 @@ PyHeliosOutputWrapper * PyHeliosSimulation::join(){
                 survey->scanner->allMeasurements,
                 survey->scanner->allTrajectories,
                 survey->scanner->detector->outputFilePath.string(),
+                survey->scanner->allOutputPaths,
                 true
             );
         }
@@ -209,6 +217,7 @@ PyHeliosOutputWrapper * PyHeliosSimulation::join(){
         survey->scanner->allMeasurements,
         survey->scanner->allTrajectories,
         survey->scanner->detector->outputFilePath.string(),
+        survey->scanner->allOutputPaths,
         true
     );
 }

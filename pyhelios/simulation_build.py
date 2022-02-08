@@ -50,7 +50,7 @@ class SimulationBuild:
             chunkSize,
             warehouseFactor
         )
-        self.fixedGpsTimeStart = fixedGpsTimeStart
+        self.sim.fixedGpsTimeStart = fixedGpsTimeStart
 
     # ---  CONTROL METHODS  --- #
     # ------------------------- #
