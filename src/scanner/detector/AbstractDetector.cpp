@@ -47,16 +47,25 @@ void AbstractDetector::setOutputFilePath(string path) {
     fs::create_directories(outputFilePath.parent_path());
 
     WriterType wt = chooseWriterType();
+
     // Create the Writer
-    sfw = SyncFileWriterFactory::makeWriter(
-        wt,
-        path,                                   // Output path
-        zipOutput,                              // Zip flag
-        lasScale,                               // Scale factor
-        scanner->platform->scene->getShift(),   // Offset
-        0.0,                                    // Min intensity
-        1000000.0                               // Delta intensity
-    );
+    if (!fs::exists(path))
+    {
+      sfw = SyncFileWriterFactory::makeWriter(
+          wt,
+          path,                                   // Output path
+          zipOutput,                              // Zip flag
+          lasScale,                               // Scale factor
+          scanner->platform->scene->getShift(),   // Offset
+          0.0,                                    // Min intensity
+          1000000.0                               // Delta intensity
+      );
+      writers[path] = sfw;
+    }
+    else
+    {
+      sfw = writers[path];
+    }
   } catch (std::exception &e) {
     logging::WARN(e.what());
   }
