@@ -207,6 +207,7 @@ jobs:
           dir
           move armadillo-10.6.2 armadillo
           cd armadillo
+          $env:Path += ';C:\Program Files\scilab-6.1.0\bin'
           cmake -DCMAKE_BUILD_TYPE=Release .
           msbuild.exe armadillo.sln /p:Configuration=Release
           
