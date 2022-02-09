@@ -187,7 +187,7 @@ jobs:
         run: |
           dir
           .\scilab-6.1.0_x64.exe /VERYSILENT /NORESTART /DIR="C:\Program Files\scilab-6.1.0"
-          dir C:\          
+          dir C:\Program Files\scilab-6.1.0\bin      
 
       - uses: suisei-cn/actions-download-file@v1
         id: downloadarmadillo
