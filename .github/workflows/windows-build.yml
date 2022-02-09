@@ -25,6 +25,43 @@ jobs:
       - name: Add MSBuild to PATH
         uses: microsoft/setup-msbuild@v1.0.2
 
+
+
+      - uses: suisei-cn/actions-download-file@v1
+        id: downloadscilab
+        name: Download SciLab
+        with:
+          url: "https://www.scilab.org/download/6.1.0/scilab-6.1.0_x64.exe"
+
+      - name: Install scilab
+        working-directory: ${{env.GITHUB_WORKSPACE}}
+        run: |
+          dir
+          .\scilab-6.1.0_x64.exe /VERYSILENT /NORESTART /DIR="C:\Program Files\scilab-6.1.0"
+          dir "C:\Program Files\scilab-6.1.0"
+
+      - uses: suisei-cn/actions-download-file@v1
+        id: downloadarmadillo
+        name: Download Armadillo
+        with:
+          url: "http://sourceforge.net/projects/arma/files/armadillo-10.6.2.tar.xz"
+          target: lib/armadillo.tar.xz
+
+      - name: Install Armadillo
+        working-directory: ${{env.GITHUB_WORKSPACE}}
+        run: |
+          cd lib
+          dir
+          7z x armadillo.tar.xz
+          7z x armadillo-10.6.2.tar
+          dir
+          move armadillo-10.6.2 armadillo
+          cd armadillo
+          $env:Path += ';C:\Program Files\scilab-6.1.0\bin'
+          cmake -DCMAKE_BUILD_TYPE=Release -DLAPACK_LIBRARY="C:\Program Files\scilab-6.1.0\bin\lapack.lib" -DBLAS_LIBRARY="C:\Program Files\scilab-6.1.0\bin\blasplus.lib" .
+          msbuild.exe armadillo.sln /p:Configuration=Release
+          
+
       - name: Cache Boost
         id: cache-boost
         uses: actions/cache@v2
@@ -174,41 +211,6 @@ jobs:
           cd LAStools
           cmake -DCMAKE_BUILD_TYPE=Release .
           msbuild.exe LAStools.sln /p:Configuration=Release
-          
-
-      - uses: suisei-cn/actions-download-file@v1
-        id: downloadscilab
-        name: Download SciLab
-        with:
-          url: "https://www.scilab.org/download/6.1.0/scilab-6.1.0_x64.exe"
-
-      - name: Install scilab
-        working-directory: ${{env.GITHUB_WORKSPACE}}
-        run: |
-          dir
-          .\scilab-6.1.0_x64.exe /VERYSILENT /NORESTART /DIR="C:\Program Files\scilab-6.1.0"
-          dir "C:\Program Files\scilab-6.1.0\bin"
-
-      - uses: suisei-cn/actions-download-file@v1
-        id: downloadarmadillo
-        name: Download Armadillo
-        with:
-          url: "http://sourceforge.net/projects/arma/files/armadillo-10.6.2.tar.xz"
-          target: lib/armadillo.tar.xz
-
-      - name: Install Armadillo
-        working-directory: ${{env.GITHUB_WORKSPACE}}
-        run: |
-          cd lib
-          dir
-          7z x armadillo.tar.xz
-          7z x armadillo-10.6.2.tar
-          dir
-          move armadillo-10.6.2 armadillo
-          cd armadillo
-          $env:Path += ';C:\Program Files\scilab-6.1.0\bin'
-          cmake -DCMAKE_BUILD_TYPE=Release -DLAPACK_LIBRARY="C:\Program Files\scilab-6.1.0\bin\lapack.lib" -DBLAS_LIBRARY="C:\Program Files\scilab-6.1.0\bin\blasplus.lib" .
-          msbuild.exe armadillo.sln /p:Configuration=Release
           
       - name: Build HELIOS++
         working-directory: ${{env.GITHUB_WORKSPACE}}
