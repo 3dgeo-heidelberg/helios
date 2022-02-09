@@ -1,67 +1,67 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document>
 
-    <survey name="uls_detailed_voxel_modes" seed="42" scene="data/scenes/voxels/detailedVoxels_mode_comparison.xml#F_BR08" platform="data/platforms.xml#quadcopter" scanner="data/scanners_als.xml#riegl_vux-1uav">
+    <survey name="uls_detailed_voxel_modes" seed="42" scene="data/scenes/voxels/detailedVoxels_mode_comparison.xml#F_BR08" platform="data/platforms.xml#copter_linearpath" scanner="data/scanners_als.xml#riegl_vux-1uav">
 	<FWFSettings beamSampleQuality="3" binSize_ns="0.25" maxFullwaveRange_ns="100" winSize_ns="1"/>
-		<!-- platform: Quadcopter (stop and turn mode), deflector: rotating -->
+		<!-- platform: copter_linearpath, deflector: rotating -->
 		
 		<leg>
-			<platformSettings  x="-30" y="-30" z="50" onGround="false" movePerSec_m="5" stopAndTurn="true"/>
+			<platformSettings  x="-30" y="-30" z="50" onGround="false" movePerSec_m="5"/>
 			<scannerSettings  active="true" pulseFreq_hz="100000" scanAngle_deg="90" scanFreq_hz="50" headRotatePerSec_deg="0.00" trajectoryTimeInterval_s="0.01"/>
 		</leg>
 		
 		<leg>
-			<platformSettings  x="-30" y="30" z="50" onGround="false" movePerSec_m="5" stopAndTurn="true"/>
+			<platformSettings  x="-30" y="30" z="50" onGround="false" movePerSec_m="5"/>
 			<scannerSettings  active="false" pulseFreq_hz="100000" scanAngle_deg="90" scanFreq_hz="50" headRotatePerSec_deg="0.00" trajectoryTimeInterval_s="0.01"/>
 		</leg>
 		
 		<leg>
-			<platformSettings  x="0" y="30" z="50" onGround="false" movePerSec_m="5" stopAndTurn="true"/>
+			<platformSettings  x="0" y="30" z="50" onGround="false" movePerSec_m="5"/>
 			<scannerSettings  active="true" pulseFreq_hz="100000" scanAngle_deg="90" scanFreq_hz="50" headRotatePerSec_deg="0.00" trajectoryTimeInterval_s="0.01"/>
 		</leg>
 		
 		<leg>
-			<platformSettings  x="0" y="-30" z="50" onGround="false" movePerSec_m="5" stopAndTurn="true"/>
+			<platformSettings  x="0" y="-30" z="50" onGround="false" movePerSec_m="5"/>
 			<scannerSettings  active="false" pulseFreq_hz="100000" scanAngle_deg="90" scanFreq_hz="50" headRotatePerSec_deg="0.00" trajectoryTimeInterval_s="0.01"/>
 		</leg>
 		
 		<leg>
-			<platformSettings  x="30" y="-30" z="50" onGround="false" movePerSec_m="5"  stopAndTurn="true"/>
+			<platformSettings  x="30" y="-30" z="50" onGround="false" movePerSec_m="5" />
 			<scannerSettings  active="true" pulseFreq_hz="100000" scanAngle_deg="90" scanFreq_hz="50" headRotatePerSec_deg="0.00" trajectoryTimeInterval_s="0.01"/>
 		</leg>
 		
 		<leg>
-			<platformSettings  x="30" y="30" z="50" onGround="false" movePerSec_m="5"  stopAndTurn="true"/>
+			<platformSettings  x="30" y="30" z="50" onGround="false" movePerSec_m="5" />
 			<scannerSettings  active="false" pulseFreq_hz="100000" scanAngle_deg="90" scanFreq_hz="50" headRotatePerSec_deg="0.00" trajectoryTimeInterval_s="0.01"/>
 		</leg>
 		
 		<leg>
-			<platformSettings  x="30" y="30" z="50" onGround="false" movePerSec_m="5"  stopAndTurn="true"/>
+			<platformSettings  x="30" y="30" z="50" onGround="false" movePerSec_m="5" />
 			<scannerSettings  active="true" pulseFreq_hz="100000" scanAngle_deg="90" scanFreq_hz="50" headRotatePerSec_deg="0.00" trajectoryTimeInterval_s="0.01"/>
 		</leg>
 		
 		<leg>
-			<platformSettings  x="-30" y="30" z="50" onGround="false" movePerSec_m="5"  stopAndTurn="true"/>
+			<platformSettings  x="-30" y="30" z="50" onGround="false" movePerSec_m="5" />
 			<scannerSettings  active="false" pulseFreq_hz="100000" scanAngle_deg="90" scanFreq_hz="50" headRotatePerSec_deg="0.00" trajectoryTimeInterval_s="0.01"/>
 		</leg>
 		
 		<leg>
-			<platformSettings  x="-30" y="0" z="50" onGround="false" movePerSec_m="5"  stopAndTurn="true"/>
+			<platformSettings  x="-30" y="0" z="50" onGround="false" movePerSec_m="5" />
 			<scannerSettings  active="true" pulseFreq_hz="100000" scanAngle_deg="90" scanFreq_hz="50" headRotatePerSec_deg="0.00" trajectoryTimeInterval_s="0.01"/>
 		</leg>
 		
 		<leg>
-			<platformSettings  x="30" y="0" z="50" onGround="false" movePerSec_m="5"  stopAndTurn="true"/>
+			<platformSettings  x="30" y="0" z="50" onGround="false" movePerSec_m="5" />
 			<scannerSettings  active="false" pulseFreq_hz="100000" scanAngle_deg="90" scanFreq_hz="50" headRotatePerSec_deg="0.00" trajectoryTimeInterval_s="0.01"/>
 		</leg>
 		
 		<leg>
-			<platformSettings  x="30" y="-30" z="50" onGround="false" movePerSec_m="5"  stopAndTurn="true"/>
+			<platformSettings  x="30" y="-30" z="50" onGround="false" movePerSec_m="5" />
 			<scannerSettings  active="true" pulseFreq_hz="100000" scanAngle_deg="90" scanFreq_hz="50" headRotatePerSec_deg="0.00" trajectoryTimeInterval_s="0.01"/>
 		</leg>
 		
 		<leg>
-			<platformSettings  x="-30" y="-30" z="50" onGround="false" movePerSec_m="5"  stopAndTurn="true"/>
+			<platformSettings  x="-30" y="-30" z="50" onGround="false" movePerSec_m="5" />
 			<scannerSettings  active="false" pulseFreq_hz="100000" scanAngle_deg="90" scanFreq_hz="50" headRotatePerSec_deg="0.00" trajectoryTimeInterval_s="0.01"/>
 		</leg>
 

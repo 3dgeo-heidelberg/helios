@@ -132,6 +132,9 @@ Public Member Functions</h2></td></tr>
 &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d64/classKDTreeNodeRoot.html#adcea65fa6661fa292b6d517998a816c7">KDTreeNodeRoot</a> ()</td></tr>
 <tr class="memdesc:adcea65fa6661fa292b6d517998a816c7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor for KDTree root node. <br /></td></tr>
 <tr class="separator:adcea65fa6661fa292b6d517998a816c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0547ad91ff563f80f708493366c5d77e"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d64/classKDTreeNodeRoot.html#a0547ad91ff563f80f708493366c5d77e">isDynamic</a> () const</td></tr>
+<tr class="memdesc:a0547ad91ff563f80f708493366c5d77e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check whether the KDTree is dynamic (true) or not (false)  <a href="#a0547ad91ff563f80f708493366c5d77e">More...</a><br /></td></tr>
+<tr class="separator:a0547ad91ff563f80f708493366c5d77e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classKDTreeNode"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classKDTreeNode')"><img src="../../closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="../../d8/d94/classKDTreeNode.html">KDTreeNode</a></td></tr>
 <tr class="memitem:a4544cbb2399baf6d14b1a7d696ccf529 inherit pub_methods_classKDTreeNode"><td class="memItemLeft" align="right" valign="top"><a id="a4544cbb2399baf6d14b1a7d696ccf529"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d94/classKDTreeNode.html#a4544cbb2399baf6d14b1a7d696ccf529">KDTreeNode</a> ()</td></tr>
@@ -228,7 +231,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../..
 <tr class="separator:a741391242d427a292a96ddafea4adbb2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac04f52fb46af0e5dd01d458cf6a34b47"><td class="memItemLeft" align="right" valign="top"><a id="ac04f52fb46af0e5dd01d458cf6a34b47"></a>
 double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d64/classKDTreeNodeRoot.html#ac04f52fb46af0e5dd01d458cf6a34b47">stats_totalCost</a></td></tr>
-<tr class="memdesc:ac04f52fb46af0e5dd01d458cf6a34b47"><td class="mdescLeft">&#160;</td><td class="mdescRight">Total cost of three. It changes depending on tree building strategy. It might be NaN if tree building strategy is not based on computing any cost. <br /></td></tr>
+<tr class="memdesc:ac04f52fb46af0e5dd01d458cf6a34b47"><td class="mdescLeft">&#160;</td><td class="mdescRight">The total cost of the tree. It changes depending on tree building strategy. It might be NaN if tree building strategy is not based on computing any cost. <br /></td></tr>
 <tr class="separator:ac04f52fb46af0e5dd01d458cf6a34b47"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6f6162545e781f00dc2593cb8fd5673d"><td class="memItemLeft" align="right" valign="top">vector&lt; <a class="el" href="../../dd/d79/classLightKDTreeNode.html">LightKDTreeNode</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d64/classKDTreeNodeRoot.html#a6f6162545e781f00dc2593cb8fd5673d">blocks</a></td></tr>
 <tr class="memdesc:a6f6162545e781f00dc2593cb8fd5673d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Vector of pointers to the start of each allocated block of <a class="el" href="../../dd/d79/classLightKDTreeNode.html" title="Class representing a light KDTree node. It is, the basic representation of a KDTree node with uses le...">LightKDTreeNode</a>. If it is empty, it means the tree has not been lightened, thus its allocation is not block based.a.  <a href="#a6f6162545e781f00dc2593cb8fd5673d">More...</a><br /></td></tr>
@@ -289,6 +292,34 @@ Additional Inherited Members</h2></td></tr>
 <div class="textblock"><p>Class representing the root node of a KDTree. </p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d8/d94/classKDTreeNode.html" title="Class representing a KDTree node. ">KDTreeNode</a> </dd></dl>
 </div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="a0547ad91ff563f80f708493366c5d77e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0547ad91ff563f80f708493366c5d77e">&#9670;&nbsp;</a></span>isDynamic()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual bool KDTreeNodeRoot::isDynamic </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Check whether the KDTree is dynamic (true) or not (false) </p>
+<dl class="section return"><dt>Returns</dt><dd>True if KDTree is dynamic, false otherwise </dd></dl>
+
+</div>
+</div>
 <a id="a6a597d700fc1da1574837655caeedf7f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a6a597d700fc1da1574837655caeedf7f">&#9670;&nbsp;</a></span>serialize()</h2>
 

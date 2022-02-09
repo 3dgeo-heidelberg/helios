@@ -8,6 +8,8 @@
 #include <SerialSceneWrapper.h>
 #include <SceneLoadingSpecification.h>
 #include <scene/dynamic/DynSequentiableMovingObject.h>
+#include <KDTreeFactory.h>
+#include <KDGroveFactory.h>
 
 /**
  * @brief Class for scene loading from XML file.
@@ -41,6 +43,15 @@ public:
      * @see MultiThreadSAHKDTreeFactory
      */
     size_t kdtNumJobs = 1;
+    /**
+     * @brief How many threads must be used to build upper nodes of KDTree
+     * @see KDTreeFactory
+     * @see SimpleKDTreeFactory
+     * @see MultiThreadKDTreeFactory
+     * @see SAHKDTreeFactory
+     * @see MultiThreadSAHKDTreeFactory
+     */
+    size_t kdtGeomJobs = 1;
     /**
      * @brief How many loss nodes for the Surface Area Heuristic if using a SAH
      *  like KDTree factory to build the scene
@@ -176,9 +187,18 @@ public:
      * @brief Build the KDTree factory from loader's kdtFactoryType and
      *  kdtSAHLossNodes attributes
      * @return Built KDTree factory
-     * @see XmlSceneLoader::kdtFactoryTypr
+     * @see XmlSceneLoader::kdtFactoryType
      * @see XmlSceneLoader::kdtSAHLossNodes
      * @see KDTreeFactory
      */
     shared_ptr<KDTreeFactory> makeKDTreeFactory();
+
+    /**
+     * @brief Build the KDGrove factory from loader's KDTree factory
+     *  specification
+     * @return Build KDGrove factory
+     * @see XmlSceneLoader::makeKDTreeFactory
+     * @see KDGroveFactory
+     */
+    shared_ptr<KDGroveFactory> makeKDGroveFactory();
 };

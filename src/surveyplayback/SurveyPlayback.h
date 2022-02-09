@@ -26,10 +26,10 @@ public:
 	 *  or not (false)
 	 */
 	bool lasOutput = false;
-        /**
-         * @brief Flag to specify if LAS output must be LAS v1.0.
-         */
-        bool las10 = false;
+    /**
+     * @brief Flag to specify if LAS output must be LAS v1.0.
+     */
+    bool las10 = false;
 	/**
 	 * @brief Flag to specify if output must be zipped (true) or not (false)
 	 */
@@ -104,7 +104,6 @@ public:
      * @brief Survey playback constructor
      * @param survey The survey itself
      * @param outputPath Root output path
-     * @param numThreads Number of threads to be used
      * @param lasOutput Flag to specify LAS format for the output (true) or not
      *  (false)
      * @param las10 Flag to specify if LAS output must be LAS v1.0 (true) or not
@@ -118,15 +117,19 @@ public:
      * @see SurveyPlayback::zipOutput
      * @see SurveyPlayback::outputPath
      * @see Survey
+     * @see Simulation::Simulation(unsigned, double, size_t)
      */
 	SurveyPlayback(
         std::shared_ptr<Survey> survey,
         const std::string outputPath,
-        size_t numThreads,
-        bool lasOutput,
-        bool las10,
-        bool zipOutput,
-        bool exportToFile=true
+        int const parallelizationStrategy,
+        std::shared_ptr<PulseThreadPoolInterface> pulseThreadPoolInterface,
+        int const chunkSize,
+        std::string fixedGpsTimeStart,
+        bool const lasOutput,
+        bool const las10,
+        bool const zipOutput,
+        bool const exportToFile=true
     );
 
 
@@ -220,8 +223,16 @@ public:
      * @brief Obtain current leg
      * @return Current leg
      * @see Leg
+     * @see SurveyPlayback::getPreviousLeg
      */
 	std::shared_ptr<Leg> getCurrentLeg();
+	/**
+	 * @brief Obtain the previous leg, if any
+	 * @return Previous leg, nullptr if there is no previous leg
+	 * @see Leg
+	 * @see SurveyPlayback::getCurrentLeg
+	 */
+	std::shared_ptr<Leg> getPreviousLeg();
 	/**
 	 * @brief Obtain current leg index
 	 * @return Current leg index

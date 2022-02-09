@@ -104,7 +104,7 @@ Collaboration diagram for XmlSceneLoader:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../df/d90/classXmlSceneLoader__coll__graph.png" border="0" usemap="#XmlSceneLoader_coll__map" alt="Collaboration graph"/></div>
 <map name="XmlSceneLoader_coll__map" id="XmlSceneLoader_coll__map">
-<area shape="rect" id="node2" href="../../d7/d48/classSceneLoadingSpecification.html" title="Manually specify scene transformation filters to apply when loading a scene. " alt="" coords="5,5,184,32"/>
+<area shape="rect" id="node3" href="../../d7/d48/classSceneLoadingSpecification.html" title="Manually specify scene transformation filters to apply when loading a scene. " alt="" coords="89,5,267,32"/>
 </map>
 <center><span class="legend">[<a target="top" href="../../graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -135,6 +135,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ad38181fad7a99fe5c4a4178fd32e9139"><td class="memItemLeft" align="right" valign="top">shared_ptr&lt; <a class="el" href="../../d5/dd0/classKDTreeFactory.html">KDTreeFactory</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d91/classXmlSceneLoader.html#ad38181fad7a99fe5c4a4178fd32e9139">makeKDTreeFactory</a> ()</td></tr>
 <tr class="memdesc:ad38181fad7a99fe5c4a4178fd32e9139"><td class="mdescLeft">&#160;</td><td class="mdescRight">Build the KDTree factory from loader's kdtFactoryType and kdtSAHLossNodes attributes.  <a href="#ad38181fad7a99fe5c4a4178fd32e9139">More...</a><br /></td></tr>
 <tr class="separator:ad38181fad7a99fe5c4a4178fd32e9139"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae6b2f82be7683d40de9240ec0dfe9617"><td class="memItemLeft" align="right" valign="top">shared_ptr&lt; <a class="el" href="../../de/d89/classKDGroveFactory.html">KDGroveFactory</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d91/classXmlSceneLoader.html#ae6b2f82be7683d40de9240ec0dfe9617">makeKDGroveFactory</a> ()</td></tr>
+<tr class="memdesc:ae6b2f82be7683d40de9240ec0dfe9617"><td class="mdescLeft">&#160;</td><td class="mdescRight">Build the <a class="el" href="../../d9/d76/classKDGrove.html" title="Grove of KDTrees. It supports both static and dynamic KDTrees, handling each accordingly. ">KDGrove</a> factory from loader's KDTree factory specification.  <a href="#ae6b2f82be7683d40de9240ec0dfe9617">More...</a><br /></td></tr>
+<tr class="separator:ae6b2f82be7683d40de9240ec0dfe9617"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -147,6 +150,9 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:ad495e4e39332332bef0c658863eb8051"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d91/classXmlSceneLoader.html#ad495e4e39332332bef0c658863eb8051">kdtNumJobs</a> = 1</td></tr>
 <tr class="memdesc:ad495e4e39332332bef0c658863eb8051"><td class="mdescLeft">&#160;</td><td class="mdescRight">How many threads must be used to build KDTree.  <a href="#ad495e4e39332332bef0c658863eb8051">More...</a><br /></td></tr>
 <tr class="separator:ad495e4e39332332bef0c658863eb8051"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab836741a55b243177850a5ae1988921f"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d91/classXmlSceneLoader.html#ab836741a55b243177850a5ae1988921f">kdtGeomJobs</a> = 1</td></tr>
+<tr class="memdesc:ab836741a55b243177850a5ae1988921f"><td class="mdescLeft">&#160;</td><td class="mdescRight">How many threads must be used to build upper nodes of KDTree.  <a href="#ab836741a55b243177850a5ae1988921f">More...</a><br /></td></tr>
+<tr class="separator:ab836741a55b243177850a5ae1988921f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac76abb33c2f601b4ef5c1e69a39fa593"><td class="memItemLeft" align="right" valign="top"><a id="ac76abb33c2f601b4ef5c1e69a39fa593"></a>
 size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d91/classXmlSceneLoader.html#ac76abb33c2f601b4ef5c1e69a39fa593">kdtSAHLossNodes</a> = 21</td></tr>
 <tr class="memdesc:ac76abb33c2f601b4ef5c1e69a39fa593"><td class="mdescLeft">&#160;</td><td class="mdescRight">How many loss nodes for the Surface Area Heuristic if using a SAH like KDTree factory to build the scene. <br /></td></tr>
@@ -401,6 +407,29 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="..
 
 </div>
 </div>
+<a id="ae6b2f82be7683d40de9240ec0dfe9617"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae6b2f82be7683d40de9240ec0dfe9617">&#9670;&nbsp;</a></span>makeKDGroveFactory()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">shared_ptr&lt; <a class="el" href="../../de/d89/classKDGroveFactory.html">KDGroveFactory</a> &gt; XmlSceneLoader::makeKDGroveFactory </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Build the <a class="el" href="../../d9/d76/classKDGrove.html" title="Grove of KDTrees. It supports both static and dynamic KDTrees, handling each accordingly. ">KDGrove</a> factory from loader's KDTree factory specification. </p>
+<dl class="section return"><dt>Returns</dt><dd>Build <a class="el" href="../../d9/d76/classKDGrove.html" title="Grove of KDTrees. It supports both static and dynamic KDTrees, handling each accordingly. ">KDGrove</a> factory </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../db/d91/classXmlSceneLoader.html#ad38181fad7a99fe5c4a4178fd32e9139" title="Build the KDTree factory from loader&#39;s kdtFactoryType and kdtSAHLossNodes attributes. ">XmlSceneLoader::makeKDTreeFactory</a> </dd>
+<dd>
+<a class="el" href="../../de/d89/classKDGroveFactory.html">KDGroveFactory</a> </dd></dl>
+
+</div>
+</div>
 <a id="ad38181fad7a99fe5c4a4178fd32e9139"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad38181fad7a99fe5c4a4178fd32e9139">&#9670;&nbsp;</a></span>makeKDTreeFactory()</h2>
 
@@ -418,7 +447,7 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="..
 
 <p>Build the KDTree factory from loader's kdtFactoryType and kdtSAHLossNodes attributes. </p>
 <dl class="section return"><dt>Returns</dt><dd>Built KDTree factory </dd></dl>
-<dl class="section see"><dt>See also</dt><dd>XmlSceneLoader::kdtFactoryTypr </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../db/d91/classXmlSceneLoader.html#a84baf9f46d993828f45c4ee31f368a25" title="Type of KDTree factory to be used to build scene. ">XmlSceneLoader::kdtFactoryType</a> </dd>
 <dd>
 <a class="el" href="../../db/d91/classXmlSceneLoader.html#ac76abb33c2f601b4ef5c1e69a39fa593" title="How many loss nodes for the Surface Area Heuristic if using a SAH like KDTree factory to build the sc...">XmlSceneLoader::kdtSAHLossNodes</a> </dd>
 <dd>
@@ -472,6 +501,31 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="..
 
 <p>Type of KDTree factory to be used to build scene. </p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d5/dd0/classKDTreeFactory.html" title="Class that must be extended by any class which provides factory methods for k-dimensional trees...">KDTreeFactory</a> </dd></dl>
+
+</div>
+</div>
+<a id="ab836741a55b243177850a5ae1988921f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab836741a55b243177850a5ae1988921f">&#9670;&nbsp;</a></span>kdtGeomJobs</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t XmlSceneLoader::kdtGeomJobs = 1</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>How many threads must be used to build upper nodes of KDTree. </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d5/dd0/classKDTreeFactory.html" title="Class that must be extended by any class which provides factory methods for k-dimensional trees...">KDTreeFactory</a> </dd>
+<dd>
+<a class="el" href="../../d6/d96/classSimpleKDTreeFactory.html" title="Class providing building methods for simple k-dimensional trees. ">SimpleKDTreeFactory</a> </dd>
+<dd>
+<a class="el" href="../../df/d86/classMultiThreadKDTreeFactory.html" title="Decorator for any KDTree factory which provides support for multi thread KDTree building. ">MultiThreadKDTreeFactory</a> </dd>
+<dd>
+<a class="el" href="../../db/d58/classSAHKDTreeFactory.html" title="Class providing building methods for k-dimensional trees with surface area heuristic (SAH) ...">SAHKDTreeFactory</a> </dd>
+<dd>
+<a class="el" href="../../dd/d95/classMultiThreadSAHKDTreeFactory.html" title="Decorator for any SAH KDTree which provides support for multi thread KDTree building. ">MultiThreadSAHKDTreeFactory</a> </dd></dl>
 
 </div>
 </div>

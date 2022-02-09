@@ -7,12 +7,15 @@
 #include <scene/dynamic/DynMotion.h>
 #include <rigidmotion/RigidMotionEngine.h>
 #include <scene/dynamic/DynMotionEngine.h>
+#include <adt/grove/KDGroveSubject.h>
 
 using std::shared_ptr;
 using std::make_shared;
 using std::deque;
 
 using rigidmotion::RigidMotionEngine;
+
+class KDGrove;
 
 /**
  * @author Alberto M. Esmoris Pena
@@ -32,7 +35,7 @@ using rigidmotion::RigidMotionEngine;
  * @see rigidmotion::RigidMotionR2Factory
  * @see rigidmotion::RigidMotionR3Factory
  */
-class DynMovingObject : public DynObject{
+class DynMovingObject : public DynObject, public KDGroveSubject{
 private:
     // ***  SERIALIZATION  *** //
     // *********************** //
@@ -79,6 +82,19 @@ protected:
      * @see DynMotionEngine
      */
     DynMotionEngine dme;
+    /**
+     * @brief The observer grove to which the dynamic moving object is
+     *  registered
+     * @see BasicDynGrove
+     * @see KDGrove
+     */
+    std::shared_ptr<KDGrove> kdGroveObserver;
+    /**
+     * @brief The identifier of the dynamic moving object as subject of a
+     *  KDGrove
+     * @see DynMovingObject::kdGroveObserver
+     */
+    size_t groveSubjectId;
 
 public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //
@@ -90,22 +106,30 @@ public:
     /**
      * @see DynObject::DynObject(ScenePart const &)
      */
-    DynMovingObject(ScenePart const &sp) : DynObject(sp) {}
+    DynMovingObject(ScenePart const &sp) :
+        DynObject(sp),
+        kdGroveObserver(nullptr)
+    {}
     /**
      * @see DynObject::DynObject(string const)
      */
-    DynMovingObject(string const id) : DynObject(id) {}
+    DynMovingObject(string const id) :
+        DynObject(id),
+        kdGroveObserver(nullptr)
+    {}
     /**
      * @see DynObject::DynObject(vector<Primitive *> const &)
      */
     DynMovingObject(vector<Primitive *> const &primitives) :
-        DynObject(primitives)
+        DynObject(primitives),
+        kdGroveObserver(nullptr)
     {}
     /**
      * @see DynObject::DynObject(string const, vector<Primitive *> const &)
      */
     DynMovingObject(string const id, vector<Primitive *> const &primitives) :
-        DynObject(id, primitives)
+        DynObject(id, primitives),
+        kdGroveObserver(nullptr)
     {}
     virtual ~DynMovingObject() = default;
 
@@ -236,4 +260,34 @@ protected:
      * @return First dynamic motion in the given queue
      */
     shared_ptr<DynMotion> _next(deque<shared_ptr<DynMotion>> &deck);
+
+public:
+    // ***  GROVE SUBSCRIBER METHODS  *** //
+    // ********************************** //
+    /**
+     * @brief Register given grove as a observer for the dynamic moving object
+     * @param kdGroveObserver Grove to be registered as a observer
+     * @see KDGroveSubject::registerObserverGrove
+     */
+    void registerObserverGrove(shared_ptr<KDGrove> kdGroveObserver) override;
+    /**
+     * @brief Unregister current grove observer
+     * @see KDGroveSubject::unregisterObserverGrove
+     */
+    void unregisterObserverGrove() override;
+    /**
+     * @see BasicDynGroveSubject::setGroveSubjectId
+     */
+    void setGroveSubjectId(std::size_t const id) override;
+    /**
+     * @see BasicDynGroveSubject::getGroveSubjectId
+     */
+    std::size_t getGroveSubjectId() override;
+
+    // ***  GETTERs and SETTERs  *** //
+    // ***************************** //
+    /**
+     * @see ScenePart::getType
+     */
+    ObjectType getType() override {return ObjectType::DYN_MOVING_OBJECT;}
 };

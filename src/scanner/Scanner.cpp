@@ -1,24 +1,25 @@
-// TODO 2: Fix scan angle getting out of control under certain (unknown) circumstances
+#include <Scanner.h>
+#include <scanner/detector/AbstractDetector.h>
 
 #include <iostream>
-#include <chrono>
-using namespace std::chrono;
 
 #define _USE_MATH_DEFINES
 #include <cmath>
 
 #include <logging.hpp>
-#include "FullWaveformPulseRunnable.h"
 #ifdef PYTHON_BINDING
 #include "PyDetectorWrapper.h"
 #endif
 
-#include "Scanner.h"
+#include <scanner/BuddingScanningPulseProcess.h>
+#include <scanner/WarehouseScanningPulseProcess.h>
+#include <PulseTaskDropper.h>
+#include <PulseThreadPool.h>
 #include <Trajectory.h>
 
 using namespace std;
 
-// ***  COSNTRUCTION / DESTRUCTION  *** //
+// ***  CONSTRUCTION / DESTRUCTION  *** //
 // ************************************ //
 Scanner::Scanner(
     double beamDiv_rad,
@@ -47,6 +48,7 @@ Scanner::Scanner(
 	cfg_device_headRelativeEmitterPosition = beamOrigin;		
 	cfg_device_headRelativeEmitterAttitude = beamOrientation;
 	cfg_device_supportedPulseFreqs_Hz = pulseFreqs;
+	cfg_setting_pulseFreq_Hz = pulseFreqs.front();
 	cfg_device_beamDivergence_rad = beamDiv_rad;
 	cfg_device_pulseLength_ns = pulseLength_ns;
 	cfg_device_id = id;
@@ -56,16 +58,18 @@ Scanner::Scanner(
 	cfg_device_receiverDiameter_m = receiverDiameter;
 	cfg_device_visibility_km = atmosphericVisibility;
 	cfg_device_wavelength_m = wavelength / 1000000000.0;
+	configureBeam();
 
 	atmosphericExtinction = calcAtmosphericAttenuation();
-	beamWaistRadius = (cfg_device_beamQuality * cfg_device_wavelength_m) /
-	    (M_PI * cfg_device_beamDivergence_rad);
 
-	// Configure misc:
+    /*
+     * Randomness generators must be initialized outside,
+     * because DEFAULT_RG might not be instantiated at construction time
+     */
+    //initializeSequentialGenerators();
 
     // Precompute variables
 	cached_Dr2 = cfg_device_receiverDiameter_m * cfg_device_receiverDiameter_m;
-	cached_Bt2 = cfg_device_beamDivergence_rad * cfg_device_beamDivergence_rad;
 
 	logging::INFO(toString());
 }
@@ -105,6 +109,12 @@ Scanner::Scanner(Scanner &s){
     if(s.detector == nullptr) this->detector = nullptr;
     else this->detector = s.detector->clone();
 
+    if(s.allOutputPaths == nullptr) this->allOutputPaths = nullptr;
+    else{
+        this->allOutputPaths = std::make_shared<std::vector<std::string>>(
+            *s.allOutputPaths
+        );
+    }
     if(s.allMeasurements == nullptr) this->allMeasurements = nullptr;
     else {
         this->allMeasurements = std::make_shared<std::vector<Measurement>>(
@@ -138,10 +148,6 @@ Scanner::Scanner(Scanner &s){
     this->FWF_settings = FWFSettings(s.FWF_settings);
     this->time_wave = std::vector<double>(s.time_wave);
 
-    this->randGen1 = nullptr;
-    this->randGen2 = nullptr;
-    this->intersectionHandlingNoiseSource = nullptr;
-
     this->cfg_device_headRelativeEmitterPosition = glm::dvec3(
         s.cfg_device_headRelativeEmitterPosition
     );
@@ -151,19 +157,57 @@ Scanner::Scanner(Scanner &s){
     this->cfg_device_supportedPulseFreqs_Hz = std::list<int>(
         s.cfg_device_supportedPulseFreqs_Hz
     );
+
+    /*
+     * Randomness generators must be initialized outside,
+     * because DEFAULT_RG might not be instantiated at construction time
+     */
+    //initializeSequentialGenerators();
 }
 
 // ***  M E T H O D S  *** //
 // *********************** //
+void Scanner::configureBeam(){
+    cached_Bt2 = cfg_device_beamDivergence_rad * cfg_device_beamDivergence_rad;
+    beamWaistRadius = (cfg_device_beamQuality * cfg_device_wavelength_m) /
+                      (M_PI * cfg_device_beamDivergence_rad);
+}
 void Scanner::applySettings(shared_ptr<ScannerSettings> settings) {
 	// Configure scanner:
 	this->setPulseFreq_Hz(settings->pulseFreq_Hz);
 	setActive(settings->active);
-
+	this->cfg_device_beamDivergence_rad = settings->beamDivAngle;
     trajectoryTimeInterval = settings->trajectoryTimeInterval;
+    configureBeam();
+
 	detector->applySettings(settings);
 	scannerHead->applySettings(settings);
 	beamDeflector->applySettings(settings);
+}
+
+std::shared_ptr<ScannerSettings> Scanner::retrieveCurrentSettings(){
+    shared_ptr<ScannerSettings> settings = make_shared<ScannerSettings>();
+    // Settings from Scanner
+    std::stringstream ss;
+    ss << cfg_device_id << "_settings";
+    settings->id = ss.str();
+    settings->pulseFreq_Hz = getPulseFreq_Hz();
+    settings->active = isActive();
+    settings->beamDivAngle = getBeamDivergence();
+    settings->trajectoryTimeInterval = trajectoryTimeInterval;
+    // Settings from ScannerHead
+    settings->headRotatePerSec_rad = scannerHead->getRotateStart();
+    settings->headRotateStart_rad = scannerHead->getRotateCurrent();
+    settings->headRotateStop_rad = scannerHead->getRotateStop();
+    // Settings from AbstractBeamDeflector
+    settings->scanAngle_rad = beamDeflector->cfg_setting_scanAngle_rad;
+    settings->scanFreq_Hz = beamDeflector->cfg_setting_scanFreq_Hz;
+    settings->verticalAngleMin_rad = \
+        beamDeflector->cfg_setting_verticalAngleMin_rad;
+    settings->verticalAngleMax_rad = \
+        beamDeflector->cfg_setting_verticalAngleMax_rad;
+    // Return settings
+    return settings;
 }
 
 void Scanner::applySettingsFWF(FWFSettings settings) {
@@ -184,7 +228,6 @@ string Scanner::toString() {
 }
 
 void Scanner::doSimStep(
-    PulseThreadPool& pool,
     unsigned int const legIndex,
     double currentGpsTime
 ) {
@@ -213,14 +256,11 @@ void Scanner::doSimStep(
     // Handle noise
     handleSimStepNoise(absoluteBeamOrigin, absoluteBeamAttitude);
 
-	// Calculate time of the emitted pulse
-
 	// Handle trajectory output
 	handleTrajectoryOutput(currentGpsTime);
 
 	// Pulse computation
-    handlePulseComputation(
-        pool,
+    spp->handlePulseComputation(
         legIndex,
         absoluteBeamOrigin,
         absoluteBeamAttitude,
@@ -250,8 +290,8 @@ void Scanner::prepareDiscretization(){
 }
 
 int Scanner::calcTimePropagation(vector<double> & timeWave, int numBins){
-    double step = FWF_settings.binSize_ns;
-    double tau = (cfg_device_pulseLength_ns * 0.5) / 3.5;
+    double const step = FWF_settings.binSize_ns;
+    double const tau = (cfg_device_pulseLength_ns * 0.5) / 3.5;
     double t = 0;
     double t_tau = 0;
     double pt = 0;
@@ -395,78 +435,6 @@ Rotation Scanner::calcAbsoluteBeamAttitude(){
         .applyTo(beamDeflector->getEmitterRelativeAttitude());
 }
 
-
-void Scanner::handlePulseComputation(
-    PulseThreadPool& pool,
-    unsigned int const legIndex,
-    glm::dvec3 &absoluteBeamOrigin,
-    Rotation &absoluteBeamAttitude,
-    double currentGpsTime
-){
-    if(pool.getPoolSize() > 1 ) {
-        // Submit pulse computation functor to thread pool
-        pool.run_res_task(FullWaveformPulseRunnable{
-            dynamic_pointer_cast<FullWaveformPulseDetector>(detector),
-            absoluteBeamOrigin,
-            absoluteBeamAttitude,
-            state_currentPulseNumber,
-            currentGpsTime,
-            writeWaveform,
-            calcEchowidth,
-            (allMeasurements == nullptr) ? nullptr : allMeasurements.get(),
-            (allMeasurementsMutex == nullptr) ?
-            nullptr : allMeasurementsMutex.get(),
-            (cycleMeasurements == nullptr) ? nullptr : cycleMeasurements.get(),
-            (cycleMeasurementsMutex == nullptr) ?
-            nullptr : cycleMeasurementsMutex.get(),
-            legIndex
-        });
-    }
-    else {
-        if(randGen1 == nullptr){ // Initialize randomness generators if not yet
-            randGen1 = std::make_shared<RandomnessGenerator<double>>(
-                RandomnessGenerator<double>(*DEFAULT_RG));
-            randGen2 = std::make_shared<RandomnessGenerator<double>>(
-                RandomnessGenerator<double>(*DEFAULT_RG));
-            randGen1->computeUniformRealDistribution(0.0, 1.0);
-            randGen1->computeNormalDistribution(
-                0.0,
-                detector->cfg_device_accuracy_m
-            );
-            randGen2->computeNormalDistribution(0.0, 1.0);
-            intersectionHandlingNoiseSource =
-                std::make_shared<UniformNoiseSource<double>>(
-                    *DEFAULT_RG, 0.0, 1.0
-                );
-            intersectionHandlingNoiseSource->configureUniformNoise(0.0, 1.0);
-        }
-        std::vector<std::vector<double>> apMatrix;
-        // Single thread computation
-        FullWaveformPulseRunnable worker = FullWaveformPulseRunnable(
-            dynamic_pointer_cast<FullWaveformPulseDetector>(detector),
-            absoluteBeamOrigin,
-            absoluteBeamAttitude,
-            state_currentPulseNumber,
-            currentGpsTime,
-            writeWaveform,
-            calcEchowidth,
-            (allMeasurements == nullptr) ? nullptr : allMeasurements.get(),
-            (allMeasurementsMutex == nullptr) ?
-            nullptr : allMeasurementsMutex.get(),
-            (cycleMeasurements == nullptr) ? nullptr : cycleMeasurements.get(),
-            (cycleMeasurementsMutex == nullptr) ?
-            nullptr : cycleMeasurementsMutex.get(),
-            legIndex
-        );
-        worker( // call functor
-            apMatrix,
-            *randGen1,
-            *randGen2,
-            *intersectionHandlingNoiseSource
-        );
-    }
-}
-
 void Scanner::handleTrajectoryOutput(double currentGpsTime){
     // Get out of here if trajectory time interval is 0 (no trajectory output)
     if(trajectoryTimeInterval == 0.0) return;
@@ -513,4 +481,80 @@ void Scanner::handleTrajectoryOutput(double currentGpsTime){
 
     // Avoid repeating trajectory for non moving platforms
     if(!platform->canMove()) platform->writeNextTrajectory = false;
+}
+
+void Scanner::trackOutputPath(std::string const path){
+    if(allOutputPaths != nullptr){
+        std::unique_lock<std::mutex> lock(*allMeasurementsMutex);
+        allOutputPaths->push_back(path);
+    }
+}
+
+void Scanner::initializeSequentialGenerators(){
+    randGen1 = std::make_shared<RandomnessGenerator<double>>(
+        RandomnessGenerator<double>(*DEFAULT_RG));
+    randGen2 = std::make_shared<RandomnessGenerator<double>>(
+        RandomnessGenerator<double>(*DEFAULT_RG));
+    randGen1->computeUniformRealDistribution(0.0, 1.0);
+    randGen1->computeNormalDistribution(
+        0.0,
+        detector->cfg_device_accuracy_m
+    );
+    randGen2->computeNormalDistribution(0.0, 1.0);
+    intersectionHandlingNoiseSource =
+        std::make_shared<UniformNoiseSource<double>>(
+            *DEFAULT_RG, 0.0, 1.0
+        );
+    intersectionHandlingNoiseSource->configureUniformNoise(0.0, 1.0);
+}
+
+void Scanner::buildScanningPulseProcess(
+    int const parallelizationStrategy,
+    PulseTaskDropper &dropper,
+    std::shared_ptr<PulseThreadPoolInterface> pool
+){
+    if(parallelizationStrategy==0){
+        spp = std::unique_ptr<ScanningPulseProcess>(
+            new BuddingScanningPulseProcess(
+                detector,
+                state_currentPulseNumber,
+                writeWaveform,
+                calcEchowidth,
+                allMeasurements,
+                allMeasurementsMutex,
+                cycleMeasurements,
+                cycleMeasurementsMutex,
+                dropper,
+                *(std::static_pointer_cast<PulseThreadPool>(pool)),
+                *randGen1,
+                *randGen2,
+                *intersectionHandlingNoiseSource
+            )
+        );
+    }
+    else if(parallelizationStrategy==1){
+        spp = std::unique_ptr<ScanningPulseProcess>(
+            new WarehouseScanningPulseProcess(
+                detector,
+                state_currentPulseNumber,
+                writeWaveform,
+                calcEchowidth,
+                allMeasurements,
+                allMeasurementsMutex,
+                cycleMeasurements,
+                cycleMeasurementsMutex,
+                dropper,
+                *(std::static_pointer_cast<PulseWarehouseThreadPool>(pool)),
+                *randGen1,
+                *randGen2,
+                *intersectionHandlingNoiseSource
+            )
+        );
+    }
+    else{
+        std::stringstream ss;
+        ss  << "Scanner::buildScanningPulseProcess unexpected parallelization "
+            << "strategy: " << parallelizationStrategy;
+        throw HeliosException(ss.str());
+    }
 }

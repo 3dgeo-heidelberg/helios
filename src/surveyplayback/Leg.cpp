@@ -1,7 +1,20 @@
-#include "Leg.h"
+#include <Leg.h>
+#include <ScanningStrip.h>
 
 // ***  CONSTRUCTION / DESTRUCTION  *** //
 // ************************************ //
+Leg::Leg(
+    double const length,
+    int const serialId,
+    std::shared_ptr<ScanningStrip> strip
+):
+    length(length),
+    serialId(serialId),
+    strip(strip)
+{
+    if(strip != nullptr) strip->safeEmplace(serialId, this);
+}
+
 Leg::Leg(Leg &leg){
     this->length = leg.length;
     if(leg.mScannerSettings == nullptr) this->mScannerSettings = nullptr;
@@ -12,4 +25,7 @@ Leg::Leg(Leg &leg){
     else this->mPlatformSettings = std::make_shared<PlatformSettings>(
         *leg.mPlatformSettings
     );
+    serialId = leg.serialId;
+    strip = leg.strip;
 }
+

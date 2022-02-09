@@ -23,8 +23,11 @@ public:
 
     // ***  GETTERS and SETTERS  *** //
     // ***************************** //
-    PythonDVec3 * getFaceNormal()
+    inline PythonDVec3 * getFaceNormal()
         {return new PythonDVec3( ((Triangle *) prim)->getFaceNormal() ); }
+    // ***  TO STRING  *** //
+    // ******************* //
+    inline std::string toString(){return ((Triangle *) prim)->toString();}
 };
 
 }

@@ -1,19 +1,19 @@
 #pragma once
 
-#include <memory>
-#include <string>
-#include <unordered_map>
-
-#include <tinyxml2.h>
-
 #include "typedef.h"
-
 #include "Asset.h"
 #include "Color4f.h"
 #include "Platform.h"
 #include "PlatformSettings.h"
 #include "Scanner.h"
 #include <XmlSceneLoader.h>
+
+#include <tinyxml2.h>
+
+#include <memory>
+#include <string>
+#include <unordered_map>
+#include <unordered_set>
 
 /**
  * @brief Class for asset loading from XML file.
@@ -42,6 +42,15 @@ protected:
 	std::string xmlDocFilePath = "";
 
 	/**
+	 * @brief The default scanner settings template
+	 */
+	std::shared_ptr<ScannerSettings> defaultScannerTemplate;
+	/**
+	 * @brief The default platform settings template
+	 */
+	std::shared_ptr<PlatformSettings> defaultPlatformTemplate;
+
+	/**
 	 * @brief Map containing all scanner templates that were loading while
 	 *  building from XML file. No repetitions, each template appears only
 	 *  one time.
@@ -51,6 +60,36 @@ protected:
 	 */
 	std::unordered_map<std::string, std::shared_ptr<ScannerSettings>>
 	    scannerTemplates;
+	/**
+	 * @brief Map containing all platform templates that were loading while
+	 *  building from XML file. No repetitions, each template appears only
+	 *  one time.
+	 *
+	 * The id of the template is used as the key, while the template itself
+	 *  is the value (PlatformSettings object)
+	 */
+	std::unordered_map<std::string, std::shared_ptr<PlatformSettings>>
+	    platformTemplates;
+	/**
+	 * @brief Map containing the set of fields that have been overloaded by
+	 *  each scanner template
+	 *
+	 * The id of the template is used as the key, while the set of fields
+	 *  itself is the value
+	 * @see XmlAssetsLoader::scannerTemplates
+	 */
+	std::unordered_map<std::string, std::unordered_set<std::string>>
+	    scannerTemplatesFields;
+	/**
+	 * @brief Map containing the set of fields that have been overloaded by
+	 *  each platform template
+	 *
+	 * The id of the template is used as the key, while the set of fields
+	 *  itself is the value
+	 * @see XmlAssetsLoader::platformTemplates
+	 */
+	std::unordered_map<std::string, std::unordered_set<std::string>>
+	    platformTemplatesFields;
 
 public:
     /**
@@ -103,7 +142,6 @@ public:
 	    void *extraOutput=nullptr
     );
 
-public:
     // ***  CREATION METHODS  *** //
     // ************************** //
     /**
@@ -138,7 +176,8 @@ public:
 	 * @see PlatformSettings
 	 */
 	std::shared_ptr<PlatformSettings> createPlatformSettingsFromXml(
-	    tinyxml2::XMLElement* node
+	    tinyxml2::XMLElement* node,
+	    std::unordered_set<std::string> *fields=nullptr
     );
 	/**
 	 * @brief Create scanner from given XML element (node)
@@ -152,11 +191,14 @@ public:
 	/**
 	 * @brief Create scanner settings from given XML element (node)
 	 * @param node XML element (node) containing scanner settings data
+	 * @param[out] fields When it is not a nullptr, names of read values will
+	 *  be stored here
 	 * @return Shared pointer to created scanner settings
 	 * @see ScannerSettings
 	 */
 	std::shared_ptr<ScannerSettings> createScannerSettingsFromXml(
-	    tinyxml2::XMLElement* node
+	    tinyxml2::XMLElement* node,
+	    std::unordered_set<std::string> *fields=nullptr
     );
 	/**
 	 * @brief Create FWF settings from given XML element (node)
@@ -169,5 +211,48 @@ public:
 	std::shared_ptr<FWFSettings> createFWFSettingsFromXml(
 	    tinyxml2::XMLElement* node,
 	    std::shared_ptr<FWFSettings> settings = nullptr
+    );
+
+protected:
+	// ***  UTIL METHODS  *** //
+	// ********************** //
+	/**
+	 * @brief Reinitialize the loader so maps with scanner fields and scanner
+	 *  templates and their fields are empty
+	 */
+	virtual void reinitLoader();
+	/**
+	 * @brief
+	 * @see XmlAssetsLoader::defaultScannerTemplate
+	 * @see XmlAssetsLoader::defaultPlatformTemplate
+	 */
+	void makeDefaultTemplates();
+	/**
+	 * @brief Track non default values at base. It is, those values which are
+	 *  in base distinct than the reference (ref)
+	 * @param base Scanner settings to be tracked
+	 * @param ref Reference scanner settings defining default values
+	 * @param defaultTemplateId The identifier of reference/default template
+	 * @param fields Where tracked non default values must be stored
+	 */
+	void trackNonDefaultScannerSettings(
+	    std::shared_ptr<ScannerSettings> base,
+	    std::shared_ptr<ScannerSettings> ref,
+        std::string const defaultTemplateId,
+	    std::unordered_set<std::string> &fields
+    );
+	/**
+	 * @brief Track non default values at base. It is, those values which are
+	 *  in base distinct than the reference (ref)
+	 * @param base Platform settings to be tracked
+	 * @param ref Reference platform settings defining default values
+	 * @param defaultTemplateId The identifier of reference/default template
+	 * @param fields Where tracked non default values must be stored
+	 */
+	void trackNonDefaultPlatformSettings(
+        std::shared_ptr<PlatformSettings> base,
+        std::shared_ptr<PlatformSettings> ref,
+        std::string const defaultTemplateId,
+        std::unordered_set<std::string> &fields
     );
 };

@@ -23,20 +23,22 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 ".html",
-"d1/d2f/classpyhelios_1_1PyTrajectoryWrapper.html#a9ba063b438ba2cda5f7f5e7b2a06d9de",
-"d2/d66/Histogram_8hpp_source.html",
-"d4/d02/classBinaryTreeDepthIterator.html",
-"d5/d20/classSpectralLibrary.html#a55d55f2e7ffc8bc086405f636419b5ed",
-"d6/d1f/structKDTreePrimitiveComparator.html#a8349b27d42b80f6552f0b99abc2f48e8",
-"d7/d17/classpyhelios_1_1PySceneWrapper.html",
-"d8/d15/classLinearPathPlatform.html#a4c355612852abdf1069d6e03be18debe",
-"d9/d82/classfluxionum_1_1Minimizer.html#a06b5438e0234d397f265b3d047ff983f",
-"da/d8d/classHeliosTests_1_1VoxelParsingTest.html#a5a44670a18e986c0324180950be4891c",
-"db/d8b/classHeliosTests_1_1RigidMotionTest.html#a8f91e1e80529c1836059666949c3d651",
-"dc/d6e/classRandomnessGenerator.html#abed86caeab308c222fb15d1e9ce3bb7e",
-"de/d22/classIterableTreeNode.html#a06c6815ed94500215f3d6db532d09c99",
-"df/d30/classAxisSAHKDTreeFactory.html#a7dda264583c90bec67f9d65a73abb157",
-"functions_func_h.html"
+"d1/d2b/classMarquardtFitter.html#aee2a297d40fb3d15afc20f671a6c056f",
+"d2/d1f/classSimpleThreadPool.html",
+"d3/d89/classMaterial.html#a179e16d6a1bd4a0f039b8e4cbf2ade30",
+"d4/d96/classDynMovingObject.html#a894ff48d42b78b9932d5abb5e30ffc46",
+"d5/d80/classSimpleKDTreeBuildChildrenNodesSubTask.html#a3057e3e652388285c707305486221fab",
+"d6/d26/classSurfaceInspector_1_1util_1_1draggers_1_1MinDragger.html#a4754d22017e288544eed11c03c5be25d",
+"d6/ddc/classPulseThreadPool.html#a404b97db7fba87a30f6228cff3b74f3e",
+"d7/da6/classhelios_1_1hpc_1_1SM__ParallelMergeSortSubTask.html#a4d1abf4686585677a0b9f3539a9f9ba8",
+"d9/d31/classSAHKDTreeGeometricStrategy.html#a014ccc1b94d27d1a666e038220494844",
+"d9/ddf/classVoxelFileParser.html#a208b6a3c1161a4a2e40d382a77001f79",
+"db/d0e/classvisualhelios_1_1VHDynSceneAdapter.html#a94e99471f69c34a87f7d704cc199289a",
+"db/da6/classFullWaveformPulseRunnable.html#a741d1b4cc6302ffb1d8df79ed66804f5",
+"dc/da3/classRaySceneIntersection.html#a1f49d311cf9555983807c0832b12a9db",
+"de/d22/classIterableTreeNode.html#afaab991d8cc8ef126807e58e814b69f1",
+"df/d28/classpyhelios_1_1PyScenePartWrapper.html#a5e6d5d9373607d33844ce7ccfa549a7f",
+"df/dfa/classDynSequence.html#abf83f847d7919b0c557e29005570b663"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

@@ -5,7 +5,8 @@
 #include "Scanner.h"
 #include "MeasurementsBuffer.h"
 #include "Color4f.h"
-#include <PulseThreadPool.h>
+#include <PulseTaskDropper.h>
+#include <PulseThreadPoolInterface.h>
 #include <FullWaveformPulseRunnable.h>
 #include <SimulationCycleCallback.h>
 #ifdef PYTHON_BINDING
@@ -25,14 +26,22 @@ protected:
 	static const long NANOSECONDS_PER_SECOND = 1000000000;
 
 	/**
-	 * @brief Number of threads available in the system
+	 * @brief Specify the parallelization strategy
+	 * @see ArgumentsParser::parseParallelizationStrategy
 	 */
-	unsigned numSysThreads = std::thread::hardware_concurrency(); //may return 0 when not able to detect
+	int parallelizationStrategy;
+
 	/**
-	 * @brief Thread pool
-	 * @see thread_pool
+	 * @brief Pulse thread pool
+	 * @see PulseThreadPool
+	 * @see PulseWarehouseThreadPool
 	 */
-	PulseThreadPool threadPool;
+	std::shared_ptr<PulseThreadPoolInterface> threadPool;
+    /**
+     * @brief Pulse task dropper
+     * @see PulseTaskDropper
+     */
+    PulseTaskDropper taskDropper;
 
 	/**
 	 * @brief Simulation speed factor
@@ -43,7 +52,7 @@ protected:
 	 * @brief Scanner used by the simulation
 	 * @see Scanner
 	 */
-	std::shared_ptr<Scanner> mScanner = NULL;
+	std::shared_ptr<Scanner> mScanner = nullptr;
 
 	/**
 	 * @brief Simulation frequency. If it is 0 then no pause is possible.
@@ -86,10 +95,15 @@ protected:
      * @brief Time corresponding to simulation start (currentGpsTime)
      */
     double currentGpsTime_ms = 0;
-
-
-
-
+    /**
+     * @brief Given fixed time start for GPS time as a string.
+     *
+     * Valid formats are either "YYYY-MM-DD hh:mm:ss" or POSIX timestamp.
+     *
+     * If it is an empty string "", then it means no fixed GPS time start must
+     *  be considered
+     */
+    std::string fixedGpsTimeStart = "";
 
 public:
     /**
@@ -112,18 +126,26 @@ public:
 	 */
     bool finished = false;
 
-	std::shared_ptr<MeasurementsBuffer> mbuffer = NULL;
+	std::shared_ptr<MeasurementsBuffer> mbuffer = nullptr;
     std::shared_ptr<SimulationCycleCallback> callback = nullptr;
 
     // ***  CONSTRUCTION / DESTRUCTION  *** //
     // ************************************ //
     /**
      * @brief Simulation constructor
-     * @param numThreads Number of threads to be used by the simulation
-     * @param deviceAccuracy Parameter used to handle randomness generation
-     *  impact on simulation results
+     * @param pulseThreadPoolInterface The thread pool to be used for
+     *  parallel computation during simulation
+     * @see PulseThreadPoolInterface
+     * @see PulseThreadPool
+     * @see PulseWarehouseThreadPool
+     * @see PulseTaskDropper
      */
-    Simulation(unsigned numThreads, double deviceAccuracy);
+    Simulation(
+        int const parallelizationStrategy,
+        std::shared_ptr<PulseThreadPoolInterface> pulseThreadPoolInterface,
+        int const chunkSize,
+        std::string fixedGpsTimeStart=""
+    );
 
     // ***  M E T H O D S  *** //
     // *********************** //
@@ -163,6 +185,7 @@ public:
      * @return Current GPS time (milliseconds)
      */
     double calcCurrentGpsTime();
+
 
     // ***  GETTERS and SETTERS  *** //
     // ***************************** //
@@ -223,6 +246,6 @@ public:
 	 * @param simFrequency New simulation frequency (hertz)
 	 * @see Simulation::simFrequency
 	 */
-	void setSimFrequency(size_t simFrequency)
-	    {this->simFrequency = simFrequency;}
+	void setSimFrequency(size_t const simFrequency)
+    {this->simFrequency = simFrequency;}
 };

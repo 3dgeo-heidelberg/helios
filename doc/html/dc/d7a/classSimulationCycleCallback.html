@@ -113,9 +113,9 @@ Public Member Functions</h2></td></tr>
 &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d7a/classSimulationCycleCallback.html#aa95895ec576ace1b53b0ab3acc3e4959">SimulationCycleCallback</a> ()</td></tr>
 <tr class="memdesc:aa95895ec576ace1b53b0ab3acc3e4959"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="../../d1/d7b/classSimulation.html" title="Class representing a simulation. ">Simulation</a> cycle callback default constructor. <br /></td></tr>
 <tr class="separator:aa95895ec576ace1b53b0ab3acc3e4959"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af8465cc1d2f65679482ca9bc634cf74e"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d7a/classSimulationCycleCallback.html#af8465cc1d2f65679482ca9bc634cf74e">operator()</a> (std::vector&lt; <a class="el" href="../../db/d2e/classMeasurement.html">Measurement</a> &gt; &amp;measurements, std::vector&lt; <a class="el" href="../../d2/d43/classTrajectory.html">Trajectory</a> &gt; &amp;trajectories)=0</td></tr>
-<tr class="memdesc:af8465cc1d2f65679482ca9bc634cf74e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Callback functor which operates over vector of measurements.  <a href="#af8465cc1d2f65679482ca9bc634cf74e">More...</a><br /></td></tr>
-<tr class="separator:af8465cc1d2f65679482ca9bc634cf74e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5d8e075651721ffba64695364bdd6456"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d7a/classSimulationCycleCallback.html#a5d8e075651721ffba64695364bdd6456">operator()</a> (std::vector&lt; <a class="el" href="../../db/d2e/classMeasurement.html">Measurement</a> &gt; &amp;measurements, std::vector&lt; <a class="el" href="../../d2/d43/classTrajectory.html">Trajectory</a> &gt; &amp;trajectories, std::string const &amp;outpath)=0</td></tr>
+<tr class="memdesc:a5d8e075651721ffba64695364bdd6456"><td class="mdescLeft">&#160;</td><td class="mdescRight">Callback functor which operates over vector of measurements.  <a href="#a5d8e075651721ffba64695364bdd6456">More...</a><br /></td></tr>
+<tr class="separator:a5d8e075651721ffba64695364bdd6456"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Abstract class to handle simulation cycle callbacks. </p>
@@ -123,8 +123,8 @@ Public Member Functions</h2></td></tr>
 <dl class="section version"><dt>Version</dt><dd>1.0</dd></dl>
 <p>A <a class="el" href="../../d1/d7b/classSimulation.html" title="Class representing a simulation. ">Simulation</a> cycle is considered to end after simFrequency iterations has elapsed. Once it finish, the callback function is invoked. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="af8465cc1d2f65679482ca9bc634cf74e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af8465cc1d2f65679482ca9bc634cf74e">&#9670;&nbsp;</a></span>operator()()</h2>
+<a id="a5d8e075651721ffba64695364bdd6456"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5d8e075651721ffba64695364bdd6456">&#9670;&nbsp;</a></span>operator()()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -142,7 +142,13 @@ Public Member Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">std::vector&lt; <a class="el" href="../../d2/d43/classTrajectory.html">Trajectory</a> &gt; &amp;&#160;</td>
-          <td class="paramname"><em>trajectories</em>&#160;</td>
+          <td class="paramname"><em>trajectories</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::string const &amp;&#160;</td>
+          <td class="paramname"><em>outpath</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -162,6 +168,7 @@ Public Member Functions</h2></td></tr>
   <table class="params">
     <tr><td class="paramname">measurements</td><td>Vector of measurements to operate over </td></tr>
     <tr><td class="paramname">trajectories</td><td>Vector of trajectories to operate over </td></tr>
+    <tr><td class="paramname">outpath</td><td>String representing the path to output file </td></tr>
   </table>
   </dd>
 </dl>
@@ -169,7 +176,7 @@ Public Member Functions</h2></td></tr>
 <dd>
 <a class="el" href="../../d2/d43/classTrajectory.html" title="Class representing a concrete trajectory definition. ">Trajectory</a> </dd></dl>
 
-<p>Implemented in <a class="el" href="../../d9/d64/classpyhelios_1_1PySimulationCycleCallback.html#a9a61f9899c8c59c874bc4ae9727b88c8">pyhelios::PySimulationCycleCallback</a>.</p>
+<p>Implemented in <a class="el" href="../../d9/d64/classpyhelios_1_1PySimulationCycleCallback.html#a2f1040788244ffb625ebcbcf5d7caa91">pyhelios::PySimulationCycleCallback</a>.</p>
 
 </div>
 </div>

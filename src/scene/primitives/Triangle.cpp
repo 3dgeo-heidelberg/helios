@@ -95,36 +95,25 @@ inline glm::dvec3 Triangle::crossProductNaive(
  */
 std::vector<double> Triangle::getRayIntersection(const glm::dvec3 &rayOrigin,
                                                  const glm::dvec3 &rayDir) {
-  glm::dvec3 e1 = this->verts[1].pos - this->verts[0].pos;
-  glm::dvec3 e2 = this->verts[2].pos - this->verts[0].pos;
-  glm::dvec3 h = crossProductNaive(rayDir, e2);
-  double a = dotProductNaive(e1, h);
+  glm::dvec3 const h = crossProductNaive(rayDir, e2);
+  double const a = dotProductNaive(e1, h);
 
-  if (a > -eps && a < eps) {
-    return std::vector<double>{-1};
-  }
+  if (a > -eps && a < eps)return std::vector<double>{-1};
 
-  double f = 1.0 / a;
-  glm::dvec3 s = rayOrigin - this->verts[0].pos;
-  double u = f * dotProductNaive(s, h);
+  double const f = 1.0 / a;
+  glm::dvec3 const s = rayOrigin - this->verts[0].pos;
+  double const u = f * dotProductNaive(s, h);
 
-  if (u < 0.0 || u > 1.0) {
-    return std::vector<double>{-1};
-  }
+  if (u < 0.0 || u > 1.0) return std::vector<double>{-1};
 
-  glm::dvec3 q = crossProductNaive(s, e1);
-  double v = f * dotProductNaive(rayDir, q);
+  glm::dvec3 const q = crossProductNaive(s, e1);
+  double const v = f * dotProductNaive(rayDir, q);
 
-  if (v < 0.0 || u + v > 1.0) {
-    return std::vector<double>{-1};
-  }
+  if (v < 0.0 || u + v > 1.0) return std::vector<double>{-1};
 
-  double t = f * dotProductNaive(e2, q);
+  double const t = f * dotProductNaive(e2, q);
 
-  if (t > eps) {
-    return std::vector<double>{t};
-  }
-
+  if (t > eps) return std::vector<double>{t};
   return std::vector<double>{-1};
 }
 
@@ -137,8 +126,7 @@ double Triangle::getRayIntersectionDistance(const glm::dvec3 &rayOrigin,
 
   // a = <h, e1>
   const double a = hx * e1.x + hy * e1.y + hz * e1.z;
-  if (a > -eps && a < eps)
-    return -1.0;
+  if (a > -eps && a < eps) return -1.0;
 
   // s = rayOrigin - v0
   const double sx = rayOrigin.x - v0.x;
@@ -147,8 +135,7 @@ double Triangle::getRayIntersectionDistance(const glm::dvec3 &rayOrigin,
 
   // u = <s, h> / a
   const double u = (sx * hx + sy * hy + sz * hz) / a;
-  if (u < 0.0 || u > 1.0)
-    return -1.0;
+  if (u < 0.0 || u > 1.0) return -1.0;
 
   // q = s x e1 (cross product)
   const double qx = sy * e1.z - sz * e1.y;
@@ -157,14 +144,12 @@ double Triangle::getRayIntersectionDistance(const glm::dvec3 &rayOrigin,
 
   // v = <Rd, q> / a
   const double v = (rayDir.x * qx + rayDir.y * qy + rayDir.z * qz) / a;
-  if (v < 0.0 || (u + v) > 1.0)
-    return -1.0;
+  if (v < 0.0 || (u + v) > 1.0) return -1.0;
 
   // t = <e2, q> / a
   const double t = (e2.x * qx + e2.y * qy + e2.z * qz) / a;
 
-  if (t > eps)
-    return t;
+  if (t > eps) return t;
   return -1.0;
 }
 

@@ -1,4 +1,4 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$d9/d82/classXmlAssetsLoader.html" title="Class for asset loading from XML file. " alt="" coords="5,5,131,32"/>
-<area shape="rect" id="node2" href="$df/d9a/classXmlSurveyLoader.html" title="Survey loader from XML. " alt="" coords="179,5,304,32"/>
+<area shape="rect" id="node1" href="$da/d8d/classTaskDropper.html" title="TaskDropper\&lt; TaskType,\l ThreadPoolType, TaskArgs... \&gt;" alt="" coords="5,13,215,54"/>
+<area shape="rect" id="node2" href="$d5/d2f/classBuddingTaskDropper.html" title="The budding task dropper is a task dropper which implements the logic for its own reproduction so bud..." alt="" coords="263,5,460,61"/>
 </map>
