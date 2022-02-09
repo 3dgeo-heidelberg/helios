@@ -186,7 +186,7 @@ jobs:
         working-directory: ${{env.GITHUB_WORKSPACE}}
         run: |
           dir
-          .\scilab-6.1.0_x64.exe /VERYSILENT /NORESTART
+          .\scilab-6.1.0_x64.exe /VERYSILENT /NORESTART /DIR="C:\Program Files\scilab-6.1.0"
           dir C:\          
 
       - uses: suisei-cn/actions-download-file@v1
