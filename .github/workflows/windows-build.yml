@@ -187,7 +187,7 @@ jobs:
         run: |
           dir
           .\scilab-6.1.0_x64.exe /VERYSILENT /NORESTART /DIR="C:\Program Files\scilab-6.1.0"
-          dir C:\Program Files\scilab-6.1.0\bin      
+          dir "C:\Program Files\scilab-6.1.0\bin"
 
       - uses: suisei-cn/actions-download-file@v1
         id: downloadarmadillo
@@ -207,7 +207,7 @@ jobs:
           move armadillo-10.6.2 armadillo
           cd armadillo
           $env:Path += ';C:\Program Files\scilab-6.1.0\bin'
-          cmake -DCMAKE_BUILD_TYPE=Release .
+          cmake -DCMAKE_BUILD_TYPE=Release -DLAPACK_LIBRARY="C:\Program Files\scilab-6.1.0\bin\lapack.lib" -DBLAS_LIBRARY="C:\Program Files\scilab-6.1.0\bin\blasplus.lib" .
           msbuild.exe armadillo.sln /p:Configuration=Release
           
       - name: Build HELIOS++
