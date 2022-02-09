@@ -9,12 +9,15 @@
 # To compile later use:
 #   cmake -DPYTHON_BINDING=1 -DPCL_BINDING=0 -DBOOST_DYNAMIC_LIBS=1 \
 <<<<<<< HEAD
+<<<<<<< HEAD
 #       -DPYTHON_VERSION=38 -DLAPACK_LIB="lib/lapack/install/lib/liblapack.so"
 # And:
 #   make -j12
 # To run tests and check everything is working:
 #   LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:lib/lapack/install/lib/ ./helios --test
 =======
+=======
+>>>>>>> 5ae05540cc097d063467cb631243c0a9329e0963
 #       -DPYTHON_VERSION=38 -DLAPACK_LIB="${HELIOS_LIB_DIR}/lapack/install/lib/liblapack.so"
 # And:
 #   make -j12
@@ -24,6 +27,9 @@
 #   scripts/run/helios_cesga --test --testDir ${HELIOS_DIR}data/test/
 # Also, if environment is loaded:
 #   ${HELIOS_CESGA} --test --testDir ${HELIOS_DIR}data/test/
+<<<<<<< HEAD
+>>>>>>> 5ae05540cc097d063467cb631243c0a9329e0963
+=======
 >>>>>>> 5ae05540cc097d063467cb631243c0a9329e0963
 
 # ---  PREPARE ENVIRONMENT  --- #
