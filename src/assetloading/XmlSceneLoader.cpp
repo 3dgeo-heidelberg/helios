@@ -311,6 +311,11 @@ void XmlSceneLoader::digestScenePart(
         size_t partIndexOffset = scenePart->subpartLimit.size() - 1;
         if (scenePart->splitSubparts()) partIndex += partIndexOffset;
     }
+
+    // Infer type of primitive for the scene part
+    size_t const numVertices = scenePart->mPrimitives[0]->getNumVertices();
+    if(numVertices == 3) scenePart->primitiveType = ScenePart::TRIANGLE;
+    else scenePart->primitiveType = ScenePart::VOXEL;
 }
 
 shared_ptr<StaticScene> XmlSceneLoader::makeSceneDynamic(

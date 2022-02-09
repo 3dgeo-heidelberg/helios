@@ -211,8 +211,8 @@ public:
      *
      * @return True if voxel has a valid normal, false otherwise
      */
-    bool hasNormal()
-        {return normal[0]!=0.0 || normal[1]!=0.0 || normal[2]!=0.0;}
+    bool inline hasNormal() const
+    {return normal[0]!=0.0 || normal[1]!=0.0 || normal[2]!=0.0;}
 
 
     // ***  TRANSFORMATIONS  *** //

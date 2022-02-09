@@ -30,7 +30,7 @@ public:
 	explicit SimpleSyncFileWriter(
 	    const std::string& path,
 	    std::ios_base::openmode om = std::ios_base::app
-	    ) :
+    ) :
 	    SyncFileWriter(path)
     {
 		// Open file for writing ...
@@ -45,6 +45,9 @@ public:
      */
     void _write(Measurement const &m, glm::dvec3 const & shift) override{
         ofs << measurementToString(m, shift);
+        // TODO Remove section ---
+        ofs.flush();
+        // --- TODO Remove section
     }
 
     /**

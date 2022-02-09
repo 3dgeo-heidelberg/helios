@@ -25,7 +25,7 @@ Simulation::Simulation(
     taskDropper(chunkSize),
     fixedGpsTimeStart(fixedGpsTimeStart)
 {
-    mbuffer = make_shared<MeasurementsBuffer>();
+    mBuffer = make_shared<MeasurementsBuffer>();
     currentGpsTime_ms = calcCurrentGpsTime();
 }
 
@@ -85,7 +85,7 @@ void Simulation::setScanner(shared_ptr<Scanner> scanner) {
 
     // Connect measurements buffer:
     if (this->mScanner != nullptr) {
-        this->mScanner->detector->mBuffer = this->mbuffer;
+        this->mScanner->detector->mBuffer = this->mBuffer;
     }
 }
 

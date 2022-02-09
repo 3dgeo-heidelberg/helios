@@ -48,14 +48,15 @@ double Voxel::getIncidenceAngle_rad(
     const glm::dvec3& intersectionPoint
 ){
     // If there is no valid normal, use closest face strategy
-    if(!hasNormal()){
+    //if(!hasNormal()){ // TODO Restore
         return getIncidenceAngleClosestFace_rad(
             rayOrigin,
             rayDir,
             intersectionPoint
         );
-    }
+    //}  // TODO Restore
 
+    std::cout << "VOXEL HAS NORMAL!" << std::endl; // TODO Remove
     // Determine incidence angle considering voxel normal
     return M_PI - glm::angle(normal, rayDir);
 }

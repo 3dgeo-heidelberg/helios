@@ -1,3 +1,5 @@
+// TODO Rethink : This implementation is calling scanner setLastPulseWasHit
+// Is this thread safe?
 #include "FullWaveformPulseRunnable.h"
 
 #include "logging.hpp"
@@ -15,6 +17,16 @@ using namespace std;
 // ***  CONSTANTS  *** //
 // ******************* //
 const double FullWaveformPulseRunnable::eps = 0.001;
+unsigned long HELIOSPP_RANGE_PULSE_FILTER_COUNT = 0; // TODO Remove
+unsigned long HELIOSPP_HIT_DISTANCE_FILTER_COUNT = 0; // TODO Remove
+unsigned long HELIOSPP_RAY_CONTINUE_COUNT = 0; // TODO Remove
+unsigned long HELIOSPP_RAY_INTERSECTION_COUNT = 0; // TODO Remove
+unsigned long HELIOSPP_ABOVE_Z_INTERSECTION_COUNT = 0; // TODO Remove
+unsigned long HELIOSPP_ABOVE_Z_CAPTURE_COUNT = 0; // TODO Remove
+double const HELIOSPP_ZTH = 30.0; // TODO Remove
+unsigned long HELIOSPP_FWF_INIT_DISCARD_COUNT = 0; // TODO Remove
+unsigned long HELIOSPP_GENERATED_MEASUREMENTS_COUNT = 0; // TODO Remove
+unsigned long HELIOSPP_FULLWAVE_DISTANCE_FILTER_COUNT = 0; // TODO Remove
 
 // ***  O P E R A T O R  *** //
 // ************************* //
@@ -52,6 +64,18 @@ void FullWaveformPulseRunnable::operator()(
 	    reflections,
 	    intersects
     );
+	// TODO Remove section ---
+	bool aboveZCase = false;
+	for(RaySceneIntersection &rsi : intersects){
+	    if(rsi.prim->getAABB()->getMax().z >= HELIOSPP_ZTH){
+	        ++HELIOSPP_ABOVE_Z_INTERSECTION_COUNT;
+	        aboveZCase = true;
+	    }
+	}
+	if((HELIOSPP_ABOVE_Z_INTERSECTION_COUNT % 100)==0 && aboveZCase){
+	    std::cout << "Number of intersections at z>="<<HELIOSPP_ZTH<<": "<<HELIOSPP_ABOVE_Z_INTERSECTION_COUNT<<std::endl;
+	}
+	// --- TODO Remove section
 
 	// Digest intersections
 	digestIntersections(
@@ -143,6 +167,14 @@ void FullWaveformPulseRunnable::handleSubray(
             );
 
         if (intersect != nullptr && intersect->prim != nullptr) {
+            // TODO Remove section ---
+            /*if(intersect->prim->getAABB()->getMax().z >= 32.5){
+                ++HELIOSPP_ABOVE_Z_INTERSECTION_COUNT;
+                if((HELIOSPP_ABOVE_Z_INTERSECTION_COUNT % 100)==0){
+                    std::cout << "Intersections above z: " << HELIOSPP_ABOVE_Z_INTERSECTION_COUNT << std::endl;
+                }
+            }*/
+            // --- TODO Remove section
             // Incidence angle:
             if(!detector->scanner->isFixedIncidenceAngle()) {
                 incidenceAngle =
@@ -158,6 +190,17 @@ void FullWaveformPulseRunnable::handleSubray(
                 intersect->point,
                 absoluteBeamOrigin
             );
+            // TODO Remove section ---
+            if(
+                detector->cfg_device_rangeMin_m > distance ||
+                detector->cfg_device_rangeMax_m < distance
+            ){
+                ++HELIOSPP_RANGE_PULSE_FILTER_COUNT; // TODO Remove
+                if((HELIOSPP_RANGE_PULSE_FILTER_COUNT % 1000)==0){
+                    std::cout << "Filtered pulses by range: " << HELIOSPP_RANGE_PULSE_FILTER_COUNT << std::endl;
+                }
+            }
+            // --- TODO Remove section
 
             if(
                 detector->cfg_device_rangeMin_m > distance ||
@@ -166,7 +209,7 @@ void FullWaveformPulseRunnable::handleSubray(
 
             // Distance between beam's center line and intersection point:
             double radius = sin(divergenceAngle) * distance;
-            double targetArea =
+            double const targetArea =
                 detector->scanner->calcFootprintArea(distance) /
                 (double) detector->scanner->getNumRays();
             double intensity = 0.0;
@@ -213,6 +256,12 @@ void FullWaveformPulseRunnable::handleSubray(
                     subrayOrigin = outsideIntersectionPoint +
                                    0.00001 * subrayDirection;
                     rayContinues = true;
+                    // TODO Remove section ---
+                    ++HELIOSPP_RAY_CONTINUE_COUNT;
+                    if((HELIOSPP_RAY_CONTINUE_COUNT % 10)==0){
+                        std::cout << "Ray continues: " << HELIOSPP_RAY_CONTINUE_COUNT << std::endl;
+                    }
+                    // --- TODO Remove section
                 }
                 else{ // Update distance considering noise
                     distance = glm::distance(
@@ -227,6 +276,12 @@ void FullWaveformPulseRunnable::handleSubray(
                     pair<double, double>(distance, intensity)
                 );
                 intersects.push_back(*intersect);
+                // TODO Remove section ---
+                ++HELIOSPP_RAY_INTERSECTION_COUNT;
+                if((HELIOSPP_RAY_INTERSECTION_COUNT % 1000000)==0){
+                    std::cout << "Ray intersections: " << HELIOSPP_RAY_INTERSECTION_COUNT << std::endl;
+                }
+                // --- TODO Remove section
             }
         }
     }
@@ -247,6 +302,12 @@ void FullWaveformPulseRunnable::digestIntersections(
     // If nothing was hit, get out of here
     if (maxHitDist_m < 0) {
         detector->scanner->setLastPulseWasHit(false);
+        // TODO Remove section ---
+        ++HELIOSPP_HIT_DISTANCE_FILTER_COUNT; // TODO Remove
+        if((HELIOSPP_HIT_DISTANCE_FILTER_COUNT % 100000)==0){
+            std::cout << "Filtered pulses by hit distance: " << HELIOSPP_HIT_DISTANCE_FILTER_COUNT << std::endl;
+        }
+        // --- TODO Remove section
         return;
     }
 
@@ -290,6 +351,14 @@ void FullWaveformPulseRunnable::digestIntersections(
         peakIntensityIndex,
         minHitTime_ns
     );
+    // TODO Remove section ---
+    if(pointsMeasurement.size() > 0){
+        HELIOSPP_GENERATED_MEASUREMENTS_COUNT += pointsMeasurement.size();
+        if((HELIOSPP_GENERATED_MEASUREMENTS_COUNT%10000)==0){
+            std::cout << "Generated measurements: " << HELIOSPP_GENERATED_MEASUREMENTS_COUNT << std::endl;
+        }
+    }
+    // --- TODO Remove section
 
     // Export measurements and full waveform data
     exportOutput(
@@ -362,8 +431,16 @@ bool FullWaveformPulseRunnable::initializeFullWaveform(
     }
 
     // Check if full wave is possible
-    if ((detector->cfg_device_rangeMin_m / cfg_speedOfLight_mPerNanosec)
-        > minHitTime_ns) {
+    if(
+        (detector->cfg_device_rangeMin_m / cfg_speedOfLight_mPerNanosec)
+        > minHitTime_ns
+    ) {
+        // TODO Remove section ---
+        ++HELIOSPP_FWF_INIT_DISCARD_COUNT;
+        if((HELIOSPP_FWF_INIT_DISCARD_COUNT%10)==0){
+            std::cout << "Fullwave initialization discards: " << HELIOSPP_FWF_INIT_DISCARD_COUNT << std::endl;
+        }
+        // --- TODO Remove section
         return false;
     }
 
@@ -374,19 +451,27 @@ bool FullWaveformPulseRunnable::initializeFullWaveform(
 }
 
 void FullWaveformPulseRunnable::populateFullWaveform(
-    std::map<double, double> &reflections,
+    std::map<double, double> const &reflections,
     std::vector<double> &fullwave,
-    double distanceThreshold,
-    double minHitTime_ns,
-    double nsPerBin,
-    int peakIntensityIndex
+    double const distanceThreshold,
+    double const minHitTime_ns,
+    double const nsPerBin,
+    int const peakIntensityIndex
 ){
     // Multiply each sub-beam intensity with time_wave and
     // add to the full waveform
-    vector<double> &time_wave = detector->scanner->time_wave;
-    map<double, double>::iterator it;
+    vector<double> const &time_wave = detector->scanner->time_wave;
+    map<double, double>::const_iterator it;
     for (it = reflections.begin(); it != reflections.end(); it++) {
         double const entryDistance_m = it->first;
+        // TODO Remove section ---
+        if(entryDistance_m > distanceThreshold){
+            ++HELIOSPP_FULLWAVE_DISTANCE_FILTER_COUNT;
+            if((HELIOSPP_FULLWAVE_DISTANCE_FILTER_COUNT%100)==0){
+                std::cout << "Fullwave distance filter cases: " << HELIOSPP_FULLWAVE_DISTANCE_FILTER_COUNT << std::endl;
+            }
+        }
+        // --- TODO Remove section
         if(entryDistance_m > distanceThreshold) continue;
         double const entryIntensity = it->second;
         double const wavePeakTime_ns = entryDistance_m /
@@ -403,13 +488,13 @@ void FullWaveformPulseRunnable::digestFullWaveform(
     std::vector<Measurement> &pointsMeasurement,
     int &numReturns,
     std::vector<std::vector<double>>& apMatrix,
-    std::vector<double> &fullwave,
-    vector<RaySceneIntersection> &intersects,
-    glm::dvec3 &beamDir,
-    double nsPerBin,
-    int numFullwaveBins,
-    int peakIntensityIndex,
-    double minHitTime_ns
+    std::vector<double> const &fullwave,
+    vector<RaySceneIntersection> const &intersects,
+    glm::dvec3 const &beamDir,
+    double const nsPerBin,
+    int const numFullwaveBins,
+    int const peakIntensityIndex,
+    double const minHitTime_ns
 ){
     // Extract points from waveform data via Gaussian decomposition
     numReturns = 0;
@@ -454,7 +539,7 @@ void FullWaveformPulseRunnable::digestFullWaveform(
 
         // Build list of objects that produced this return
         double minDifference = numeric_limits<double>::max();
-        shared_ptr<RaySceneIntersection> closestIntersection;
+        shared_ptr<RaySceneIntersection> closestIntersection = nullptr;
 
         for (RaySceneIntersection intersect : intersects) {
             double intersectDist = glm::distance(
@@ -511,6 +596,15 @@ void FullWaveformPulseRunnable::exportOutput(
     if (numReturns > 0) {
         for (Measurement & pm : pointsMeasurement) {
             pm.pulseReturnNumber = numReturns;
+            // TODO Remove section ---
+            double const z = (pm.beamOrigin + pm.beamDirection * pm.distance).z;
+            if(z >= HELIOSPP_ZTH){
+                ++HELIOSPP_ABOVE_Z_CAPTURE_COUNT;
+                if((HELIOSPP_ABOVE_Z_CAPTURE_COUNT % 100)==0){
+                    std::cout << "Number of captures at z>="<<HELIOSPP_ZTH<<" after digest: "<<HELIOSPP_ABOVE_Z_CAPTURE_COUNT<<std::endl;
+                }
+            }
+            // --- TODO Remove section
             capturePoint(
                 pm,
                 randGen,
@@ -545,16 +639,16 @@ void FullWaveformPulseRunnable::exportOutput(
 // **************************** //
 // Space distribution equation to calculate the beam energy decreasing the further away from the center (Carlsson et al., 2001)
 double FullWaveformPulseRunnable::calcEmmitedPower(double radius, double targetRange) {
-    double I0 = detector->scanner->getAveragePower();
-    double lambda = detector->scanner->getWavelength();
-    double R = targetRange;
-    double R0 = detector->cfg_device_rangeMin_m;
-    double r = radius;
-    double w0 = detector->scanner->getBeamWaistRadius();
-    double denom = M_PI * w0 * w0;
-    double omega = (lambda * R) / denom;
-    double omega0 = (lambda * R0) / denom;
-    double w = w0 * sqrt(omega0 * omega0 + omega * omega);
+    double const I0 = detector->scanner->getAveragePower();
+    double const lambda = detector->scanner->getWavelength();
+    double const R = targetRange;
+    double const R0 = detector->cfg_device_rangeMin_m;
+    double const r = radius;
+    double const w0 = detector->scanner->getBeamWaistRadius();
+    double const denom = M_PI * w0 * w0;
+    double const omega = (lambda * R) / denom;
+    double const omega0 = (lambda * R0) / denom;
+    double const w = w0 * sqrt(omega0 * omega0 + omega * omega);
 
     return I0 * exp((-2 * r * r) / (w * w));
 }
@@ -629,9 +723,9 @@ void FullWaveformPulseRunnable::captureFullWave(
 }
 
 bool FullWaveformPulseRunnable::detectPeak(
-    int i,
-    int win_size,
-    vector<double> &fullwave
+    int const i,
+    int const win_size,
+    vector<double> const &fullwave
 ){
     for (int j = std::max(0, i - 1); j > std::max(0, i - win_size); j--) {
         if (fullwave[j] < eps || fullwave[j] >= fullwave[i]) {

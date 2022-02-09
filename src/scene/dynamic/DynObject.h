@@ -339,5 +339,5 @@ public:
     /**
      * @see ScenePart::getType
      */
-    ObjectType getType() override {return ObjectType::DYN_OBJECT;}
+    ObjectType getType() const override {return ObjectType::DYN_OBJECT;}
 };
