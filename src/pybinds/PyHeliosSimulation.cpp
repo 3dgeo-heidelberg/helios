@@ -7,6 +7,7 @@
 #include <RotateFilter.h>
 #include <PyHeliosOutputWrapper.h>
 #include <chrono>
+#include <PulseThreadPoolFactory.h>
 
 using pyhelios::PyHeliosSimulation;
 using pyhelios::PyHeliosOutputWrapper;
@@ -20,15 +21,30 @@ PyHeliosSimulation::PyHeliosSimulation(
     size_t numThreads,
     bool lasOutput,
     bool las10,
-    bool zipOutput
+    bool zipOutput,
+    int kdtFactory,
+    size_t kdtJobs,
+    size_t kdtSAHLossNodes,
+    int parallelizationStrategy,
+    int chunkSize,
+    int warehouseFactor
 ){
+    this->fixedGpsTimeStart = "";
     this->lasOutput = lasOutput;
     this->las10 = las10;
     this->zipOutput = zipOutput;
     this->surveyPath = surveyPath;
     this->assetsPath = assetsPath;
     this->outputPath = outputPath;
-    this->numThreads = numThreads;
+    if(numThreads == 0) this->numThreads = std::thread::hardware_concurrency();
+    else this->numThreads = numThreads;
+    this->kdtFactory = kdtFactory;
+    if(kdtJobs == 0) this->kdtJobs = std::thread::hardware_concurrency();
+    else this->kdtJobs = kdtJobs;
+    this->kdtSAHLossNodes = kdtSAHLossNodes;
+    this->parallelizationStrategy = parallelizationStrategy;
+    this->chunkSize = chunkSize;
+    this->warehouseFactor = warehouseFactor;
     xmlreader = std::make_shared<XmlSurveyLoader>(surveyPath, assetsPath);
 }
 PyHeliosSimulation::~PyHeliosSimulation() {
@@ -57,6 +73,10 @@ void PyHeliosSimulation::start (){
     );
 
     if(finalOutput){
+        survey->scanner->allOutputPaths =
+            std::make_shared<std::vector<std::string>>(
+                std::vector<std::string>(0)
+            );
         survey->scanner->allMeasurements =
             std::make_shared<std::vector<Measurement>>(
                 std::vector<Measurement>(0)
@@ -71,11 +91,16 @@ void PyHeliosSimulation::start (){
     survey->scanner->detector->lasOutput = lasOutput;
     survey->scanner->detector->las10 = las10;
     survey->scanner->detector->zipOutput = zipOutput;
+
+    buildPulseThreadPool();
     playback = std::shared_ptr<SurveyPlayback>(
         new SurveyPlayback(
             survey,
             outputPath,
-            numThreads,
+            parallelizationStrategy,
+            pulseThreadPool,
+            chunkSize,
+            fixedGpsTimeStart,
             lasOutput,
             las10,
             zipOutput,
@@ -163,6 +188,10 @@ PyHeliosOutputWrapper * PyHeliosSimulation::join(){
             return new PyHeliosOutputWrapper(
                 measurements,
                 trajectories,
+                survey->scanner->detector->outputFilePath.string(),
+                std::vector<std::string>{
+                    survey->scanner->detector->outputFilePath.string(),
+                },
                 false
             );
         }
@@ -171,6 +200,8 @@ PyHeliosOutputWrapper * PyHeliosSimulation::join(){
             return new PyHeliosOutputWrapper(
                 survey->scanner->allMeasurements,
                 survey->scanner->allTrajectories,
+                survey->scanner->detector->outputFilePath.string(),
+                survey->scanner->allOutputPaths,
                 true
             );
         }
@@ -185,6 +216,8 @@ PyHeliosOutputWrapper * PyHeliosSimulation::join(){
     return new PyHeliosOutputWrapper(
         survey->scanner->allMeasurements,
         survey->scanner->allTrajectories,
+        survey->scanner->detector->outputFilePath.string(),
+        survey->scanner->allOutputPaths,
         true
     );
 }
@@ -199,6 +232,9 @@ void PyHeliosSimulation::loadSurvey(
     bool fullWaveNoise,
     bool platformNoiseDisabled
 ){
+    xmlreader->sceneLoader.kdtFactoryType = kdtFactory;
+    xmlreader->sceneLoader.kdtNumJobs = kdtJobs;
+    xmlreader->sceneLoader.kdtSAHLossNodes = kdtSAHLossNodes;
     survey = xmlreader->load(legNoiseDisabled, rebuildScene);
     survey->scanner->setWriteWaveform(writeWaveform);
     survey->scanner->setCalcEchowidth(calcEchowidth);
@@ -238,6 +274,20 @@ void PyHeliosSimulation::addTranslateFilter(
     tf.localTranslation = glm::dvec3(x, y, z);
     xmlreader->sceneLoader.sceneSpec.translations.push_back(tf);
     xmlreader->sceneLoader.sceneSpec.translationsId.push_back(partId);
+}
+
+void PyHeliosSimulation::buildPulseThreadPool(){
+    // Prepare pulse thread pool factory
+    PulseThreadPoolFactory ptpf(
+        parallelizationStrategy,
+        numThreads-1,
+        survey->scanner->detector->cfg_device_accuracy_m,
+        chunkSize,
+        warehouseFactor
+    );
+
+    // Build pulse thread pool
+    pulseThreadPool = ptpf.makePulseThreadPool();
 }
 
 // ***  SIMULATION COPY  *** //

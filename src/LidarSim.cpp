@@ -12,14 +12,18 @@ namespace fs = boost::filesystem;
 #include "XmlSurveyLoader.h"
 #include "typedef.h"
 #include <ArgumentsParser.h>
-#include <gdal_priv.h>
 #include <noise/RandomnessGenerator.h>
 #include <TimeWatcher.h>
 #include <helios_version.h>
 #include <AbstractDetector.h>
 #include <FileUtils.h>
+#include <scanner/detector/PulseThreadPoolFactory.h>
+
+#include <gdal_priv.h>
 #include <armadillo>
+
 #include <iomanip>
+
 #ifdef PCL_BINDING
 #include <demo/DemoSelector.h>
 #endif
@@ -28,12 +32,12 @@ void doTests(std::string const & testDir);
 
 // LOGGING FLAGS (DO NOT MODIFY HERE BUT IN logging.hpp makeDefault())
 bool    logging::LOGGING_SHOW_TRACE, logging::LOGGING_SHOW_DEBUG,
-        logging::LOGGING_SHOW_INFO, logging::LOGGING_SHOW_WARN,
-        logging::LOGGING_SHOW_ERR;
+        logging::LOGGING_SHOW_INFO, logging::LOGGING_SHOW_TIME,
+        logging::LOGGING_SHOW_WARN, logging::LOGGING_SHOW_ERR;
 
 void printHelp(){
     std::cout << "helios++ help:\n\n"
-        << "\tSyntax: helios++ <survey_file_path> [OPTIONAL ARGUMENTS]\n\n"
+        << "\tSyntax: helios <survey_file_path> [OPTIONAL ARGUMENTS]\n\n"
         << "\tOPTIONAL ARGUMENTS:\n\n"
 
         << "\t\t-h or --help : Show this help\n\n"
@@ -74,6 +78,12 @@ void printHelp(){
         << "\n\t\t\tYYYY-mm-DD HH::MM::SS\n"
         << "\t\t\t\tBy default: a random seed is generated\n\n"
 
+        << "\t\t--gpsStartTime <string>: Specify a fixed start time for GPS\n"
+        << "\t\t\tIt can be either a posix timestamp or a"
+           "\"YYYY-MM-DD hh:mm:ss\" date time string\n"
+       <<  "\t\t\t\tBy default: An empty string \"\" is used, which leads to\n"
+       <<  "\t\t\t\t\tusing current system time\n\n"
+
         << "\t\t--lasOutput : Use this flag to generate the output point cloud "
 		   "in LAS format (v 1.4)\n\n"
         << "\t\t--las10: Use this flag to write in LAS format (v 1.0)\n\n"
@@ -83,9 +93,32 @@ void printHelp(){
         << "\t\t--lasScale : Specify the decimal scale factor for LAS output"
         << "\n\n"
 
+        << "\t\t--parallelization <integer> : Specify the parallelization "
+        << "strategy\n"
+        <<  "\t\t\t0 for a static/dynamic chunk based parallelization and 1 "
+        <<  "for a\n\t\t\twarehouse based one."
+        <<  "\n\t\t\t\tBy default: Static/dynamic chunk based strategy is used"
+        <<  "\n\n"
+
         << "\t\t-j or --njobs or --nthreads <integer> : Specify the number of"
         << "\n\t\t\tjobs to be used to compute the simulation\n"
         << "\t\t\t\tBy default: all available threads are used\n\n"
+
+        << "\t\t--chunkSize <integer> : Specify the chunk size to be used for"
+        << "\n\t\t\tparallel computing. If a negative number is given, then "
+        << "its"
+        << "\n\t\t\tabsolute value is used as starting size of the dynamic "
+        << "chunk-size strategy."
+        << "\n\t\t\tPositive numbers specify the size for a static chunk-size "
+        << "strategy"
+        << "\n\t\t\t\tBy default: -32\n\n"
+
+        << "\t\t--warehouseFactor <integer> : Specify the warehouse factor."
+        << "\n\t\t\tThe number of tasks in the warehouse would be k times the "
+        << "\n\t\t\tnumber of workers. The greater the factor, the less the "
+        << "\n\t\t\tprobability of idle cores but the greater the memory "
+        << "consumption."
+        << "\n\t\t\t\tBy default: 4\n\n"
 
         << "\t\t--rebuildScene : Force scene rebuild even when a previously\n"
         << "\t\t\tbuilt scene is available\n"
@@ -103,12 +136,16 @@ void printHelp(){
            "\t\t\tIf 1, then the KDTree will be built in a sequential fashion"
            "\n\t\t\tIf >1, then the KDTree will be built in a parallel fashion"
            "\n\t\t\tIf 0, then the KDTree will be built using as many threads "
-           "as available\n"
-           "\t\t\tThis is not recommended because using more threads than "
-           "required\n"
-           "\t\t\tby scene complexity might easily lead to poor "
-           "performance\n"
-           "\t\t\t\tDefault is 1\n\n"
+           "as available\n\n"
+
+       <<   "\t\t--kdtGeomJobs <integer> : Specify the number of threads to "
+            "be used for building the\n\t\t\t"
+            "upper nodes of the KDTree (geometry-level parallelization).\n"
+            "\t\t\tIf 1, then there is no geometry-level parallelization"
+            "\n\t\t\tIf >1, then geometry-level parallelization uses as many "
+            "threads as specified."
+            "\n\t\t\tIf 0, then geometry-level parallelization uses as many "
+            "threads as node-level.\n\n"
 
 
         << "\t\t--sahNodes <integer> : Specify how many nodes must be used by "
@@ -140,6 +177,10 @@ void printHelp(){
 
         << "\t\t-q or --quiet : Specify the verbosity level to errors only\n"
         << "\t\t\tBy default: only information and errors are reported\n\n"
+
+        << "\t\t-vt : Specify the verbosity level to time and errors only\n"
+        << "\t\t\tBy default: only information and errors are reported\n\n"
+
 
         << "\t\t-v : Specify the verbosity level to errors, information and "
         << "warnings\n"
@@ -235,7 +276,10 @@ int main(int argc, char** argv) {
             ap.parseOutputPath(),
             ap.parseWriteWaveform(),
             ap.parseCalcEchowidth(),
+            ap.parseParallelizationStrategy(),
             ap.parseNJobs(),
+            ap.parseChunkSize(),
+            ap.parseWarehouseFactor(),
             ap.parseFullWaveNoise(),
             ap.parseDisablePlatformNoise(),
             ap.parseDisableLegNoise(),
@@ -244,9 +288,11 @@ int main(int argc, char** argv) {
             ap.parseLas10(),
             ap.parseZipOutput(),
             ap.parseFixedIncidenceAngle(),
+            ap.parseGpsStartTime(),
             ap.parseLasScale(),
             ap.parseKDTreeType(),
             ap.parseKDTreeJobs(),
+            ap.parseKDTreeGeometricJobs(),
             ap.parseSAHLossNodes()
         );
     }
@@ -260,7 +306,10 @@ void LidarSim::init(
     std::string outputPath,
     bool writeWaveform,
     bool calcEchowidth,
+    int parallelizationStrategy,
     size_t njobs,
+    int chunkSize,
+    int warehouseFactor,
     bool fullWaveNoise,
     bool platformNoiseDisabled,
     bool legNoiseDisabled,
@@ -269,9 +318,11 @@ void LidarSim::init(
     bool las10,
     bool zipOutput,
     bool fixedIncidenceAngle,
+    std::string gpsStartTime,
     double lasScale,
     int kdtType,
     size_t kdtJobs,
+    size_t kdtGeomJobs,
     size_t sahLossNodes
 ){
     std::stringstream ss;
@@ -281,15 +332,20 @@ void LidarSim::init(
 	    << "writeWaveform: " << writeWaveform << "\n"
         << "calcEchowidth: " << calcEchowidth << "\n"
 	    << "fullWaveNoise: " << fullWaveNoise << "\n"
+	    << "parallelization: " << parallelizationStrategy << "\n"
 	    << "njobs: " << njobs << "\n"
+	    << "chunkSize: " << chunkSize << "\n"
+	    << "warehouseFactor: " << warehouseFactor << "\n"
 	    << "platformNoiseDisabled: " << platformNoiseDisabled << "\n"
 	    << "legNoiseDisabled: " << legNoiseDisabled << "\n"
 	    << "rebuildScene: " << rebuildScene << "\n"
 	    << "lasOutput: " << lasOutput << "\n"
         << "las10: " << las10 << "\n"
 	    << "fixedIncidenceAngle: " << fixedIncidenceAngle << "\n"
+	    << "gpsStartTime: " << gpsStartTime << "\n"
 	    << "kdtType: " << kdtType << "\n"
 	    << "kdtJobs: " << kdtJobs << "\n"
+	    << "kdtGeomJobs: " << kdtGeomJobs << "\n"
 	    << "sahLossNodes: " << sahLossNodes
 	    << std::endl;
     logging::INFO(ss.str());
@@ -300,6 +356,7 @@ void LidarSim::init(
  	);
  	xmlreader->sceneLoader.kdtFactoryType = kdtType;
  	xmlreader->sceneLoader.kdtNumJobs = kdtJobs;
+ 	xmlreader->sceneLoader.kdtGeomJobs = kdtGeomJobs;
     xmlreader->sceneLoader.kdtSAHLossNodes = sahLossNodes;
 	std::shared_ptr<Survey> survey = xmlreader->load(
 	    legNoiseDisabled,
@@ -319,17 +376,36 @@ void LidarSim::init(
 	survey->scanner->detector->zipOutput = zipOutput;
 	survey->scanner->detector->lasScale = lasScale;
 
+	// Build thread pool for parallel computation
+	/*
+     * Number of threads available in the system.
+     * May return 0 when not able to detect
+     */
+    unsigned numSysThreads = std::thread::hardware_concurrency();
+    size_t const poolSize = (njobs == 0) ? numSysThreads-1 : njobs-1;
+    PulseThreadPoolFactory ptpf(
+        parallelizationStrategy,
+        poolSize,
+        survey->scanner->detector->cfg_device_accuracy_m,
+        chunkSize,
+        warehouseFactor
+    );
+    std::shared_ptr<PulseThreadPoolInterface> pulseThreadPool =
+        ptpf.makePulseThreadPool();
+
 	std::shared_ptr<SurveyPlayback> playback=std::make_shared<SurveyPlayback>(
         survey,
         outputPath,
-        njobs,
+        parallelizationStrategy,
+        pulseThreadPool,
+        std::abs(chunkSize),
+        gpsStartTime,
         lasOutput,
         las10,
         zipOutput
 	);
 
     logging::INFO("Running simulation...");
-
 	TimeWatcher tw;
 	tw.start();
 	playback->start();

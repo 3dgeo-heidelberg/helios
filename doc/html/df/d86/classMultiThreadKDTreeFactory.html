@@ -117,47 +117,57 @@ Collaboration diagram for MultiThreadKDTreeFactory:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../d5/dac/classMultiThreadKDTreeFactory__coll__graph.png" border="0" usemap="#MultiThreadKDTreeFactory_coll__map" alt="Collaboration graph"/></div>
 <map name="MultiThreadKDTreeFactory_coll__map" id="MultiThreadKDTreeFactory_coll__map">
-<area shape="rect" id="node2" href="../../d6/d96/classSimpleKDTreeFactory.html" title="Class providing building methods for simple k&#45;dimensional trees. " alt="" coords="1347,92,1497,119"/>
-<area shape="rect" id="node3" href="../../d5/dd0/classKDTreeFactory.html" title="Class that must be extended by any class which provides factory methods for k&#45;dimensional trees..." alt="" coords="1130,87,1241,113"/>
-<area shape="rect" id="node4" href="../../dd/d04/classLightKDTreeNodeBlockAllocator.html" title="Block allocator for LightKDTreeNode instances. " alt="" coords="712,87,923,113"/>
-<area shape="rect" id="node5" href="../../d9/d47/classBlockAllocator.html" title="BlockAllocator\&lt; LightKDTree\lNode \&gt;" alt="" coords="472,79,663,121"/>
+<area shape="rect" id="node2" href="../../d6/d96/classSimpleKDTreeFactory.html" title="Class providing building methods for simple k&#45;dimensional trees. " alt="" coords="1427,213,1577,240"/>
+<area shape="rect" id="node3" href="../../d5/dd0/classKDTreeFactory.html" title="Class that must be extended by any class which provides factory methods for k&#45;dimensional trees..." alt="" coords="1181,163,1291,189"/>
+<area shape="rect" id="node4" href="../../dd/d04/classLightKDTreeNodeBlockAllocator.html" title="Block allocator for LightKDTreeNode instances. " alt="" coords="763,136,973,163"/>
+<area shape="rect" id="node5" href="../../d9/d47/classBlockAllocator.html" title="BlockAllocator\&lt; LightKDTree\lNode \&gt;" alt="" coords="523,109,713,150"/>
 <area shape="rect" id="node6" href="../../dd/d79/classLightKDTreeNode.html" title="Class representing a light KDTree node. It is, the basic representation of a KDTree node with uses le..." alt="" coords="207,59,333,85"/>
 <area shape="rect" id="node7" href="../../d7/d98/classIBinaryTreeNode.html" title="Binary tree node interface that must be implemented by any class providing binary tree node based fun..." alt="" coords="5,59,125,85"/>
-<area shape="rect" id="node9" href="../../d2/dea/classKDTreeFactoryThreadPool.html" title="Class implementing a thread pool to deal with multi thread KDTree building process. " alt="" coords="1333,153,1511,180"/>
-<area shape="rect" id="node10" href="../../d0/d21/classMDThreadPool.html" title="MDThreadPool\&lt; KDTreeBuild\lType, KDTreeNode *, bool\l const, vector\&lt; Primitive\l *\&gt; &amp;, int const \&gt;" alt="" coords="1088,138,1283,209"/>
-<area shape="rect" id="node11" href="../../dc/de7/classThreadPool.html" title="ThreadPool\&lt; TaskArgs\l ... \&gt;" alt="" coords="739,153,895,194"/>
+<area shape="rect" id="node14" href="../../d2/d1f/classSimpleThreadPool.html" title="SimpleThreadPool\&lt; TaskArgs\l ... \&gt;" alt="" coords="770,398,966,439"/>
+<area shape="rect" id="node15" href="../../dc/de7/classThreadPool.html" title="Base class providing core implementation of a thread pool to deal with multi threading tasks..." alt="" coords="574,405,662,432"/>
+<area shape="rect" id="node12" href="../../d2/dea/classKDTreeFactoryThreadPool.html" title="Class implementing a thread pool to deal with multi thread KDTree building process. " alt="" coords="1413,460,1591,487"/>
+<area shape="rect" id="node13" href="../../d0/d21/classMDThreadPool.html" title="MDThreadPool\&lt; KDTreeBuild\lType, KDTreeNode *, bool\l const, vector\&lt; Primitive\l *\&gt; &amp;, int const, int const \&gt;" alt="" coords="1139,418,1333,489"/>
 </map>
 <center><span class="legend">[<a target="top" href="../../graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ae129faad6fd086084670ff81dd7e2633"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d86/classMultiThreadKDTreeFactory.html#ae129faad6fd086084670ff81dd7e2633">MultiThreadKDTreeFactory</a> (shared_ptr&lt; <a class="el" href="../../d6/d96/classSimpleKDTreeFactory.html">SimpleKDTreeFactory</a> &gt; const <a class="el" href="../../df/d86/classMultiThreadKDTreeFactory.html#aa1d8bb9d7b9f810ded3c70a1650cbaa0">kdtf</a>, size_t const numJobs=2)</td></tr>
-<tr class="memdesc:ae129faad6fd086084670ff81dd7e2633"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="../../df/d86/classMultiThreadKDTreeFactory.html" title="Decorator for any KDTree factory which provides support for multi thread KDTree building. ">MultiThreadKDTreeFactory</a> default constructor.  <a href="#ae129faad6fd086084670ff81dd7e2633">More...</a><br /></td></tr>
-<tr class="separator:ae129faad6fd086084670ff81dd7e2633"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a601cab19125266655d72e67204dce8ae"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d0/d64/classKDTreeNodeRoot.html">KDTreeNodeRoot</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d86/classMultiThreadKDTreeFactory.html#a601cab19125266655d72e67204dce8ae">makeFromPrimitivesUnsafe</a> (vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *&gt; &amp;primitives) override</td></tr>
-<tr class="memdesc:a601cab19125266655d72e67204dce8ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Build a KDTree which type depends on current KDTree factory (<a class="el" href="../../df/d86/classMultiThreadKDTreeFactory.html#aa1d8bb9d7b9f810ded3c70a1650cbaa0" title="The SimpleKDTreeFactory or derived to be used to build tree nodes. ">MultiThreadKDTreeFactory::kdtf</a>) on a multi thread basis.  <a href="#a601cab19125266655d72e67204dce8ae">More...</a><br /></td></tr>
-<tr class="separator:a601cab19125266655d72e67204dce8ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8a9b7464e9c1d883de16d29ff95deca8"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d86/classMultiThreadKDTreeFactory.html#a8a9b7464e9c1d883de16d29ff95deca8">MultiThreadKDTreeFactory</a> (shared_ptr&lt; <a class="el" href="../../d6/d96/classSimpleKDTreeFactory.html">SimpleKDTreeFactory</a> &gt; const <a class="el" href="../../df/d86/classMultiThreadKDTreeFactory.html#aa1d8bb9d7b9f810ded3c70a1650cbaa0">kdtf</a>, shared_ptr&lt; <a class="el" href="../../d3/de1/classSimpleKDTreeGeometricStrategy.html">SimpleKDTreeGeometricStrategy</a> &gt; const <a class="el" href="../../df/d86/classMultiThreadKDTreeFactory.html#aa1f35e147dacc5223e95747274dc2519">gs</a>, size_t const <a class="el" href="../../df/d86/classMultiThreadKDTreeFactory.html#a764a83a2d740fdeff7144125e6f2b1b0">numJobs</a>=2, size_t const <a class="el" href="../../df/d86/classMultiThreadKDTreeFactory.html#ada545be4b00cabeab1f55135794fe684">geomJobs</a>=2)</td></tr>
+<tr class="memdesc:a8a9b7464e9c1d883de16d29ff95deca8"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="../../df/d86/classMultiThreadKDTreeFactory.html" title="Decorator for any KDTree factory which provides support for multi thread KDTree building. ">MultiThreadKDTreeFactory</a> default constructor.  <a href="#a8a9b7464e9c1d883de16d29ff95deca8">More...</a><br /></td></tr>
+<tr class="separator:a8a9b7464e9c1d883de16d29ff95deca8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa00f670a9c8188ee672684e0f57c2167"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d0/d64/classKDTreeNodeRoot.html">KDTreeNodeRoot</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d86/classMultiThreadKDTreeFactory.html#aa00f670a9c8188ee672684e0f57c2167">makeFromPrimitivesUnsafe</a> (vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *&gt; &amp;primitives, bool const computeStats=false, bool const reportStats=false) override</td></tr>
+<tr class="memdesc:aa00f670a9c8188ee672684e0f57c2167"><td class="mdescLeft">&#160;</td><td class="mdescRight">Build a KDTree which type depends on current KDTree factory (<a class="el" href="../../df/d86/classMultiThreadKDTreeFactory.html#aa1d8bb9d7b9f810ded3c70a1650cbaa0" title="The SimpleKDTreeFactory or derived to be used to build tree nodes. ">MultiThreadKDTreeFactory::kdtf</a>) on a multi thread basis.  <a href="#aa00f670a9c8188ee672684e0f57c2167">More...</a><br /></td></tr>
+<tr class="separator:aa00f670a9c8188ee672684e0f57c2167"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abf65b70dee160507ef62f08c934623af"><td class="memItemLeft" align="right" valign="top">virtual shared_ptr&lt; <a class="el" href="../../d6/d96/classSimpleKDTreeFactory.html">SimpleKDTreeFactory</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d86/classMultiThreadKDTreeFactory.html#abf65b70dee160507ef62f08c934623af">getKdtf</a> () const</td></tr>
 <tr class="memdesc:abf65b70dee160507ef62f08c934623af"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain the <a class="el" href="../../d6/d96/classSimpleKDTreeFactory.html" title="Class providing building methods for simple k-dimensional trees. ">SimpleKDTreeFactory</a> used to build tree nodes.  <a href="#abf65b70dee160507ef62f08c934623af">More...</a><br /></td></tr>
 <tr class="separator:abf65b70dee160507ef62f08c934623af"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa74d73ab61b35806ee0fdefec06dd38b"><td class="memItemLeft" align="right" valign="top">virtual size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d86/classMultiThreadKDTreeFactory.html#aa74d73ab61b35806ee0fdefec06dd38b">getPoolSize</a> () const</td></tr>
 <tr class="memdesc:aa74d73ab61b35806ee0fdefec06dd38b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain the pool size of the thread pool (num jobs)  <a href="#aa74d73ab61b35806ee0fdefec06dd38b">More...</a><br /></td></tr>
 <tr class="separator:aa74d73ab61b35806ee0fdefec06dd38b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7eb17faaf9deb4019df570eaa4129ad2"><td class="memItemLeft" align="right" valign="top">virtual size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d86/classMultiThreadKDTreeFactory.html#a7eb17faaf9deb4019df570eaa4129ad2">getNumJobs</a> () const</td></tr>
+<tr class="memdesc:a7eb17faaf9deb4019df570eaa4129ad2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain the number of threads for node-level parallelization.  <a href="#a7eb17faaf9deb4019df570eaa4129ad2">More...</a><br /></td></tr>
+<tr class="separator:a7eb17faaf9deb4019df570eaa4129ad2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a02be94ffc28d8b61bcc1fbcc66da83af"><td class="memItemLeft" align="right" valign="top">virtual size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d86/classMultiThreadKDTreeFactory.html#a02be94ffc28d8b61bcc1fbcc66da83af">getGeomJobs</a> () const</td></tr>
+<tr class="memdesc:a02be94ffc28d8b61bcc1fbcc66da83af"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain the number of threads for geometry-level parallelization.  <a href="#a02be94ffc28d8b61bcc1fbcc66da83af">More...</a><br /></td></tr>
+<tr class="separator:a02be94ffc28d8b61bcc1fbcc66da83af"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad71cfb0c5a7002bdcd8ade58e10c7d50"><td class="memItemLeft" align="right" valign="top">virtual shared_ptr&lt; <a class="el" href="../../d3/de1/classSimpleKDTreeGeometricStrategy.html">SimpleKDTreeGeometricStrategy</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d86/classMultiThreadKDTreeFactory.html#ad71cfb0c5a7002bdcd8ade58e10c7d50">getGS</a> () const</td></tr>
+<tr class="memdesc:ad71cfb0c5a7002bdcd8ade58e10c7d50"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain the geometric strategy.  <a href="#ad71cfb0c5a7002bdcd8ade58e10c7d50">More...</a><br /></td></tr>
+<tr class="separator:ad71cfb0c5a7002bdcd8ade58e10c7d50"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classSimpleKDTreeFactory"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classSimpleKDTreeFactory')"><img src="../../closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="../../d6/d96/classSimpleKDTreeFactory.html">SimpleKDTreeFactory</a></td></tr>
 <tr class="memitem:aac0b2d556d61c2e301de1eb2f9bda823 inherit pub_methods_classSimpleKDTreeFactory"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d96/classSimpleKDTreeFactory.html#aac0b2d556d61c2e301de1eb2f9bda823">SimpleKDTreeFactory</a> ()</td></tr>
 <tr class="memdesc:aac0b2d556d61c2e301de1eb2f9bda823 inherit pub_methods_classSimpleKDTreeFactory"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="../../d6/d96/classSimpleKDTreeFactory.html" title="Class providing building methods for simple k-dimensional trees. ">SimpleKDTreeFactory</a> default constructor.  <a href="../../d6/d96/classSimpleKDTreeFactory.html#aac0b2d556d61c2e301de1eb2f9bda823">More...</a><br /></td></tr>
 <tr class="separator:aac0b2d556d61c2e301de1eb2f9bda823 inherit pub_methods_classSimpleKDTreeFactory"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3252f0348c7fd5d40b84e52dd9144fad inherit pub_methods_classSimpleKDTreeFactory"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d0/d64/classKDTreeNodeRoot.html">KDTreeNodeRoot</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d96/classSimpleKDTreeFactory.html#a3252f0348c7fd5d40b84e52dd9144fad">makeFromPrimitivesUnsafe</a> (vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *&gt; &amp;primitives) override</td></tr>
-<tr class="memdesc:a3252f0348c7fd5d40b84e52dd9144fad inherit pub_methods_classSimpleKDTreeFactory"><td class="mdescLeft">&#160;</td><td class="mdescRight">Build a simple KDTree from given primitives.  <a href="../../d6/d96/classSimpleKDTreeFactory.html#a3252f0348c7fd5d40b84e52dd9144fad">More...</a><br /></td></tr>
-<tr class="separator:a3252f0348c7fd5d40b84e52dd9144fad inherit pub_methods_classSimpleKDTreeFactory"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a710ca041b66dbc0738fffc61d7dccc6b inherit pub_methods_classSimpleKDTreeFactory"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d0/d64/classKDTreeNodeRoot.html">KDTreeNodeRoot</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d96/classSimpleKDTreeFactory.html#a710ca041b66dbc0738fffc61d7dccc6b">makeFromPrimitivesUnsafe</a> (vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *&gt; &amp;primitives, bool const computeStats=false, bool const reportStats=false) override</td></tr>
+<tr class="memdesc:a710ca041b66dbc0738fffc61d7dccc6b inherit pub_methods_classSimpleKDTreeFactory"><td class="mdescLeft">&#160;</td><td class="mdescRight">Build a simple KDTree from given primitives.  <a href="../../d6/d96/classSimpleKDTreeFactory.html#a710ca041b66dbc0738fffc61d7dccc6b">More...</a><br /></td></tr>
+<tr class="separator:a710ca041b66dbc0738fffc61d7dccc6b inherit pub_methods_classSimpleKDTreeFactory"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classKDTreeFactory"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classKDTreeFactory')"><img src="../../closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="../../d5/dd0/classKDTreeFactory.html">KDTreeFactory</a></td></tr>
 <tr class="memitem:ad905f937a8e13e78f18e659d0732a7a5 inherit pub_methods_classKDTreeFactory"><td class="memItemLeft" align="right" valign="top"><a id="ad905f937a8e13e78f18e659d0732a7a5"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/dd0/classKDTreeFactory.html#ad905f937a8e13e78f18e659d0732a7a5">KDTreeFactory</a> ()</td></tr>
 <tr class="memdesc:ad905f937a8e13e78f18e659d0732a7a5 inherit pub_methods_classKDTreeFactory"><td class="mdescLeft">&#160;</td><td class="mdescRight">K dimensional tree factory default constructor. <br /></td></tr>
 <tr class="separator:ad905f937a8e13e78f18e659d0732a7a5 inherit pub_methods_classKDTreeFactory"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a90c0c7761a500d0d0871369ac5f6c4f9 inherit pub_methods_classKDTreeFactory"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="../../d0/d64/classKDTreeNodeRoot.html">KDTreeNodeRoot</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/dd0/classKDTreeFactory.html#a90c0c7761a500d0d0871369ac5f6c4f9">makeFromPrimitives</a> (vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *&gt; const &amp;primitives)</td></tr>
-<tr class="memdesc:a90c0c7761a500d0d0871369ac5f6c4f9 inherit pub_methods_classKDTreeFactory"><td class="mdescLeft">&#160;</td><td class="mdescRight">Safe wrapper from makeFromPrimitivesUnsafe which handles a copy to make from primitives by default. This function behavior might be overridden by any derived/child class. It is expected that any implementation of makeFromPrimitives provides a way to implement the makeFromPrimitivesUnsafe method without modifying vector of input primitives. Notice this does not mean primitives themselves cannot be modified, that depends on the type of <a class="el" href="../../d5/dd0/classKDTreeFactory.html" title="Class that must be extended by any class which provides factory methods for k-dimensional trees...">KDTreeFactory</a>. It only means that the vector itself will not be modified, for instance due to sorting purposes.  <a href="../../d5/dd0/classKDTreeFactory.html#a90c0c7761a500d0d0871369ac5f6c4f9">More...</a><br /></td></tr>
-<tr class="separator:a90c0c7761a500d0d0871369ac5f6c4f9 inherit pub_methods_classKDTreeFactory"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae3b76b2ff7b83c2074bed4aa01c0c85a inherit pub_methods_classKDTreeFactory"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="../../d0/d64/classKDTreeNodeRoot.html">KDTreeNodeRoot</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/dd0/classKDTreeFactory.html#ae3b76b2ff7b83c2074bed4aa01c0c85a">makeFromPrimitives</a> (vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *&gt; const &amp;primitives, bool const computeStats=false, bool const reportStats=false)</td></tr>
+<tr class="memdesc:ae3b76b2ff7b83c2074bed4aa01c0c85a inherit pub_methods_classKDTreeFactory"><td class="mdescLeft">&#160;</td><td class="mdescRight">Safe wrapper from makeFromPrimitivesUnsafe which handles a copy to make from primitives by default. This function behavior might be overridden by any derived/child class. It is expected that any implementation of makeFromPrimitives provides a way to implement the makeFromPrimitivesUnsafe method without modifying vector of input primitives. Notice this does not mean primitives themselves cannot be modified, that depends on the type of <a class="el" href="../../d5/dd0/classKDTreeFactory.html" title="Class that must be extended by any class which provides factory methods for k-dimensional trees...">KDTreeFactory</a>. It only means that the vector itself will not be modified, for instance due to sorting purposes.  <a href="../../d5/dd0/classKDTreeFactory.html#ae3b76b2ff7b83c2074bed4aa01c0c85a">More...</a><br /></td></tr>
+<tr class="separator:ae3b76b2ff7b83c2074bed4aa01c0c85a inherit pub_methods_classKDTreeFactory"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a07dd08e1de4ceeee1e028df1eb9acc8e inherit pub_methods_classKDTreeFactory"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/dd0/classKDTreeFactory.html#a07dd08e1de4ceeee1e028df1eb9acc8e">isBuildingLightNodes</a> ()</td></tr>
 <tr class="memdesc:a07dd08e1de4ceeee1e028df1eb9acc8e inherit pub_methods_classKDTreeFactory"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if <a class="el" href="../../d5/dd0/classKDTreeFactory.html" title="Class that must be extended by any class which provides factory methods for k-dimensional trees...">KDTreeFactory</a> is building light nodes.  <a href="../../d5/dd0/classKDTreeFactory.html#a07dd08e1de4ceeee1e028df1eb9acc8e">More...</a><br /></td></tr>
 <tr class="separator:a07dd08e1de4ceeee1e028df1eb9acc8e inherit pub_methods_classKDTreeFactory"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -170,28 +180,64 @@ Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
-<tr class="memitem:a2e3a8ea91910658ee9ff6f012e196b11"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d8/d94/classKDTreeNode.html">KDTreeNode</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d86/classMultiThreadKDTreeFactory.html#a2e3a8ea91910658ee9ff6f012e196b11">buildRecursive</a> (<a class="el" href="../../d8/d94/classKDTreeNode.html">KDTreeNode</a> *parent, bool const left, vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *&gt; &amp;primitives, int const depth) override</td></tr>
-<tr class="memdesc:a2e3a8ea91910658ee9ff6f012e196b11"><td class="mdescLeft">&#160;</td><td class="mdescRight">Recursively build a KDTree for given primitives using given <a class="el" href="../../d5/dd0/classKDTreeFactory.html" title="Class that must be extended by any class which provides factory methods for k-dimensional trees...">KDTreeFactory</a> (kdtf). When the number of primitives for a given split is \(\geq\) minTaskPrimitives and there are available threads in the thread pool, a new task will be started to handle node building in a parallel fashion.  <a href="#a2e3a8ea91910658ee9ff6f012e196b11">More...</a><br /></td></tr>
-<tr class="separator:a2e3a8ea91910658ee9ff6f012e196b11"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2c3773e8c50fb78073caeab17b9c4752"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d8/d94/classKDTreeNode.html">KDTreeNode</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d86/classMultiThreadKDTreeFactory.html#a2c3773e8c50fb78073caeab17b9c4752">buildRecursive</a> (<a class="el" href="../../d8/d94/classKDTreeNode.html">KDTreeNode</a> *parent, bool const left, vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *&gt; &amp;primitives, int const depth, int const index) override</td></tr>
+<tr class="memdesc:a2c3773e8c50fb78073caeab17b9c4752"><td class="mdescLeft">&#160;</td><td class="mdescRight">Recursively build a KDTree for given primitives using given <a class="el" href="../../d5/dd0/classKDTreeFactory.html" title="Class that must be extended by any class which provides factory methods for k-dimensional trees...">KDTreeFactory</a> (kdtf). The building of upper nodes is delegated to the <a class="el" href="../../df/d86/classMultiThreadKDTreeFactory.html#a6ceb727cb0ff43afae25d0f87c3d4e17" title="Recursively build a KDTree for given primitives using given KDTreeFactory (kdtf) in a geometry-level ...">MultiThreadKDTreeFactory::buildRecursiveGeometryLevel</a> method, while the building of middle and lower nodes is assumed by the <a class="el" href="../../df/d86/classMultiThreadKDTreeFactory.html#ab7876164f120f8cd81fef78e115300ec" title="Recursively build a KDTree for given primitives using given KDTreeFactory (kdtf) in a node-level para...">MultiThreadKDTreeFactory::buildRecursiveNodeLevel</a> method.  <a href="#a2c3773e8c50fb78073caeab17b9c4752">More...</a><br /></td></tr>
+<tr class="separator:a2c3773e8c50fb78073caeab17b9c4752"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6ceb727cb0ff43afae25d0f87c3d4e17"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d8/d94/classKDTreeNode.html">KDTreeNode</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d86/classMultiThreadKDTreeFactory.html#a6ceb727cb0ff43afae25d0f87c3d4e17">buildRecursiveGeometryLevel</a> (<a class="el" href="../../d8/d94/classKDTreeNode.html">KDTreeNode</a> *parent, bool const left, vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *&gt; &amp;primitives, int const depth, int const index)</td></tr>
+<tr class="memdesc:a6ceb727cb0ff43afae25d0f87c3d4e17"><td class="mdescLeft">&#160;</td><td class="mdescRight">Recursively build a KDTree for given primitives using given <a class="el" href="../../d5/dd0/classKDTreeFactory.html" title="Class that must be extended by any class which provides factory methods for k-dimensional trees...">KDTreeFactory</a> (kdtf) in a geometry-level parallelization context. The geometry-level parallelization implies distributing threads among splits as uniform as possible, while satisfying the constraint that any split must have at least one associated thread. It is the way to go for building the upper levels of the KDTree. For the sake of understanding, let \(P_i\left[a, b\right]\) note the \(i\)-th split associated to threads from \(a\)-th (inclusive) to \(b\)-th (inclusive). Thus, if \(d\) is said to be the tree depth and \(k\) is the number of threads, then it is possible to modellize the behavior of the geometry level parallel building process as follows:  <a href="#a6ceb727cb0ff43afae25d0f87c3d4e17">More...</a><br /></td></tr>
+<tr class="separator:a6ceb727cb0ff43afae25d0f87c3d4e17"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae04d92ed6c0039baaf4abc7dc7a27d77"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d86/classMultiThreadKDTreeFactory.html#ae04d92ed6c0039baaf4abc7dc7a27d77">buildChildrenGeometryLevel</a> (<a class="el" href="../../d8/d94/classKDTreeNode.html">KDTreeNode</a> *node, <a class="el" href="../../d8/d94/classKDTreeNode.html">KDTreeNode</a> *parent, vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *&gt; const &amp;primitives, int const depth, int const index, vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *&gt; &amp;leftPrimitives, vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *&gt; &amp;rightPrimitives, int const auxiliarThreads)</td></tr>
+<tr class="memdesc:ae04d92ed6c0039baaf4abc7dc7a27d77"><td class="mdescLeft">&#160;</td><td class="mdescRight">Provide an alternative implementation for the building of left and right children nodes.  <a href="#ae04d92ed6c0039baaf4abc7dc7a27d77">More...</a><br /></td></tr>
+<tr class="separator:ae04d92ed6c0039baaf4abc7dc7a27d77"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab7876164f120f8cd81fef78e115300ec"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d8/d94/classKDTreeNode.html">KDTreeNode</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d86/classMultiThreadKDTreeFactory.html#ab7876164f120f8cd81fef78e115300ec">buildRecursiveNodeLevel</a> (<a class="el" href="../../d8/d94/classKDTreeNode.html">KDTreeNode</a> *parent, bool const left, vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *&gt; &amp;primitives, int const depth, int const index)</td></tr>
+<tr class="memdesc:ab7876164f120f8cd81fef78e115300ec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Recursively build a KDTree for given primitives using given <a class="el" href="../../d5/dd0/classKDTreeFactory.html" title="Class that must be extended by any class which provides factory methods for k-dimensional trees...">KDTreeFactory</a> (kdtf) in a node-level parallelization context. The node-level parallelization implies a one thread per node distribution. While it can be used to build the entire KDTree, at the upper levels it leads to idle threads. This problem is easy to see at the first node (root node), because there is only one node and thus only one thread can be working on it. The same would apply for the second node if the number of threads is \(&gt;2\), because there would be only two working threads while the others will remain idle. However, this is inefficient and can be solved by delegating upper nodes to a geometry-level parallelization strategy instead of a node-level one.  <a href="#ab7876164f120f8cd81fef78e115300ec">More...</a><br /></td></tr>
+<tr class="separator:ab7876164f120f8cd81fef78e115300ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a52a5bf891500e9e7a4cf264cd8c9580a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d86/classMultiThreadKDTreeFactory.html#a52a5bf891500e9e7a4cf264cd8c9580a">computeKDTreeStats</a> (<a class="el" href="../../d0/d64/classKDTreeNodeRoot.html">KDTreeNodeRoot</a> *root) const override</td></tr>
 <tr class="memdesc:a52a5bf891500e9e7a4cf264cd8c9580a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Call the compute KDTree stats method of decorated KDTree factory.  <a href="#a52a5bf891500e9e7a4cf264cd8c9580a">More...</a><br /></td></tr>
 <tr class="separator:a52a5bf891500e9e7a4cf264cd8c9580a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaa41155c2cff4d446839bab62dc2bd3a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d86/classMultiThreadKDTreeFactory.html#aaa41155c2cff4d446839bab62dc2bd3a">reportKDTreeStats</a> (<a class="el" href="../../d0/d64/classKDTreeNodeRoot.html">KDTreeNodeRoot</a> *root, vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *&gt; const &amp;primitives) const override</td></tr>
 <tr class="memdesc:aaa41155c2cff4d446839bab62dc2bd3a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Call the report KDTree stats method of decorated KDTree factory.  <a href="#aaa41155c2cff4d446839bab62dc2bd3a">More...</a><br /></td></tr>
 <tr class="separator:aaa41155c2cff4d446839bab62dc2bd3a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a29186783483d298b6fb376e4909b0352"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d86/classMultiThreadKDTreeFactory.html#a29186783483d298b6fb376e4909b0352">prepareToMake</a> ()</td></tr>
+<tr class="memdesc:a29186783483d298b6fb376e4909b0352"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prepare the <a class="el" href="../../df/d86/classMultiThreadKDTreeFactory.html" title="Decorator for any KDTree factory which provides support for multi thread KDTree building. ">MultiThreadKDTreeFactory</a> so it is ready to start making a new KDTree.  <a href="#a29186783483d298b6fb376e4909b0352">More...</a><br /></td></tr>
+<tr class="separator:a29186783483d298b6fb376e4909b0352"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9f8866c50d14796dad33466e44f97814"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d86/classMultiThreadKDTreeFactory.html#a9f8866c50d14796dad33466e44f97814">increaseFinishedGeomJobsCount</a> (size_t const amount)</td></tr>
+<tr class="memdesc:a9f8866c50d14796dad33466e44f97814"><td class="mdescLeft">&#160;</td><td class="mdescRight">Increase count of finished geometry-level jobs in a thread safe way.  <a href="#a9f8866c50d14796dad33466e44f97814">More...</a><br /></td></tr>
+<tr class="separator:a9f8866c50d14796dad33466e44f97814"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_methods_classSimpleKDTreeFactory"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_classSimpleKDTreeFactory')"><img src="../../closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="../../d6/d96/classSimpleKDTreeFactory.html">SimpleKDTreeFactory</a></td></tr>
+<tr class="memitem:a070315453cd5192e4e41dd2594fec91a inherit pro_methods_classSimpleKDTreeFactory"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="../../d8/d94/classKDTreeNode.html">KDTreeNode</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d96/classSimpleKDTreeFactory.html#a070315453cd5192e4e41dd2594fec91a">buildRecursiveRecipe</a> (<a class="el" href="../../d8/d94/classKDTreeNode.html">KDTreeNode</a> *parent, bool const left, vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *&gt; &amp;primitives, int const depth, int const index, std::function&lt; void(<a class="el" href="../../d8/d94/classKDTreeNode.html">KDTreeNode</a> *node, <a class="el" href="../../d8/d94/classKDTreeNode.html">KDTreeNode</a> *parent, bool const left, vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *&gt; const &amp;primitives)&gt; f_computeNodeBoundaries, std::function&lt; void(<a class="el" href="../../d8/d94/classKDTreeNode.html">KDTreeNode</a> *node, <a class="el" href="../../d8/d94/classKDTreeNode.html">KDTreeNode</a> *parent, vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *&gt; &amp;primitives, int const depth)&gt; f_defineSplit, std::function&lt; void(vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *&gt; const &amp;primitives, int const splitAxis, double const splitPos, vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *&gt; &amp;leftPrimitives, vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *&gt; &amp;rightPrimitives)&gt; f_populateSplits, std::function&lt; void(<a class="el" href="../../d8/d94/classKDTreeNode.html">KDTreeNode</a> *node, <a class="el" href="../../d8/d94/classKDTreeNode.html">KDTreeNode</a> *parent, vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *&gt; const &amp;primitives, int const depth, int const index, vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *&gt; &amp;leftPrimitives, vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *&gt; &amp;rightPrimitives)&gt; f_buildChildrenNodes)</td></tr>
+<tr class="memdesc:a070315453cd5192e4e41dd2594fec91a inherit pro_methods_classSimpleKDTreeFactory"><td class="mdescLeft">&#160;</td><td class="mdescRight">The recipe of the recursive building algorithm. It is meant to be used by the <a class="el" href="../../d6/d96/classSimpleKDTreeFactory.html#a96323d9575182f1bedbd013991a693a6" title="Recursively build a KDTree for given primitives. ">SimpleKDTreeFactory::buildRecursive</a> but also by any alternative implementation which shares the same recipe (global logic) but changes the way some parts are computed. For instance, it is used by the <a class="el" href="../../df/d86/classMultiThreadKDTreeFactory.html" title="Decorator for any KDTree factory which provides support for multi thread KDTree building. ">MultiThreadKDTreeFactory</a> to handle geometry-level parallelization.  <a href="../../d6/d96/classSimpleKDTreeFactory.html#a070315453cd5192e4e41dd2594fec91a">More...</a><br /></td></tr>
+<tr class="separator:a070315453cd5192e4e41dd2594fec91a inherit pro_methods_classSimpleKDTreeFactory"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa3ed0e048fd2e9ae62fdd324e32153c5 inherit pro_methods_classSimpleKDTreeFactory"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d96/classSimpleKDTreeFactory.html#aa3ed0e048fd2e9ae62fdd324e32153c5">defineSplit</a> (<a class="el" href="../../d8/d94/classKDTreeNode.html">KDTreeNode</a> *node, <a class="el" href="../../d8/d94/classKDTreeNode.html">KDTreeNode</a> *parent, vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *&gt; &amp;primitives, int const depth) const</td></tr>
 <tr class="memdesc:aa3ed0e048fd2e9ae62fdd324e32153c5 inherit pro_methods_classSimpleKDTreeFactory"><td class="mdescLeft">&#160;</td><td class="mdescRight">Define the split axis and position for current node.  <a href="../../d6/d96/classSimpleKDTreeFactory.html#aa3ed0e048fd2e9ae62fdd324e32153c5">More...</a><br /></td></tr>
 <tr class="separator:aa3ed0e048fd2e9ae62fdd324e32153c5 inherit pro_methods_classSimpleKDTreeFactory"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab3a2b1d37c6dfe2b97a502a85e6154c5 inherit pro_methods_classSimpleKDTreeFactory"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d96/classSimpleKDTreeFactory.html#ab3a2b1d37c6dfe2b97a502a85e6154c5">populateSplits</a> (vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *&gt; const &amp;primitives, int const splitAxis, double const splitPos, vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *&gt; &amp;leftPrimitives, vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *&gt; &amp;rightPrimitives) const</td></tr>
 <tr class="memdesc:ab3a2b1d37c6dfe2b97a502a85e6154c5 inherit pro_methods_classSimpleKDTreeFactory"><td class="mdescLeft">&#160;</td><td class="mdescRight">Populate list of primitives for left and right splits from given primitives of node being splitted.  <a href="../../d6/d96/classSimpleKDTreeFactory.html#ab3a2b1d37c6dfe2b97a502a85e6154c5">More...</a><br /></td></tr>
 <tr class="separator:ab3a2b1d37c6dfe2b97a502a85e6154c5 inherit pro_methods_classSimpleKDTreeFactory"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab1f57b35097966c0884d0373a71b382d inherit pro_methods_classSimpleKDTreeFactory"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d96/classSimpleKDTreeFactory.html#ab1f57b35097966c0884d0373a71b382d">buildChildrenNodes</a> (<a class="el" href="../../d8/d94/classKDTreeNode.html">KDTreeNode</a> *node, <a class="el" href="../../d8/d94/classKDTreeNode.html">KDTreeNode</a> *parent, vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *&gt; const &amp;primitives, int const depth, vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *&gt; &amp;leftPrimitives, vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *&gt; &amp;rightPrimitives)</td></tr>
-<tr class="memdesc:ab1f57b35097966c0884d0373a71b382d inherit pro_methods_classSimpleKDTreeFactory"><td class="mdescLeft">&#160;</td><td class="mdescRight">Build children nodes for given node. If no children nodes must be built, then the node is configured as a leaf node.  <a href="../../d6/d96/classSimpleKDTreeFactory.html#ab1f57b35097966c0884d0373a71b382d">More...</a><br /></td></tr>
-<tr class="separator:ab1f57b35097966c0884d0373a71b382d inherit pro_methods_classSimpleKDTreeFactory"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9c77a23429fcf72e7f5c46429e72f7af inherit pro_methods_classSimpleKDTreeFactory"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d96/classSimpleKDTreeFactory.html#a9c77a23429fcf72e7f5c46429e72f7af">buildChildrenNodes</a> (<a class="el" href="../../d8/d94/classKDTreeNode.html">KDTreeNode</a> *node, <a class="el" href="../../d8/d94/classKDTreeNode.html">KDTreeNode</a> *parent, vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *&gt; const &amp;primitives, int const depth, int const index, vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *&gt; &amp;leftPrimitives, vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *&gt; &amp;rightPrimitives)</td></tr>
+<tr class="memdesc:a9c77a23429fcf72e7f5c46429e72f7af inherit pro_methods_classSimpleKDTreeFactory"><td class="mdescLeft">&#160;</td><td class="mdescRight">Build children nodes for given node. If no children nodes must be built, then the node is configured as a leaf node.  <a href="../../d6/d96/classSimpleKDTreeFactory.html#a9c77a23429fcf72e7f5c46429e72f7af">More...</a><br /></td></tr>
+<tr class="separator:a9c77a23429fcf72e7f5c46429e72f7af inherit pro_methods_classSimpleKDTreeFactory"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abbc932ae3ef28f324a656add6c1ac5bd inherit pro_methods_classSimpleKDTreeFactory"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d96/classSimpleKDTreeFactory.html#abbc932ae3ef28f324a656add6c1ac5bd">computeNodeBoundaries</a> (<a class="el" href="../../d8/d94/classKDTreeNode.html">KDTreeNode</a> *node, <a class="el" href="../../d8/d94/classKDTreeNode.html">KDTreeNode</a> *parent, bool const left, vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *&gt; const &amp;primitives) const</td></tr>
 <tr class="memdesc:abbc932ae3ef28f324a656add6c1ac5bd inherit pro_methods_classSimpleKDTreeFactory"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute min and max position and surface area of bounding cuboid for given node.  <a href="../../d6/d96/classSimpleKDTreeFactory.html#abbc932ae3ef28f324a656add6c1ac5bd">More...</a><br /></td></tr>
 <tr class="separator:abbc932ae3ef28f324a656add6c1ac5bd inherit pro_methods_classSimpleKDTreeFactory"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa4da1338fe0cb580a4b08af270c5a16b inherit pro_methods_classSimpleKDTreeFactory"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d96/classSimpleKDTreeFactory.html#aa4da1338fe0cb580a4b08af270c5a16b">onPopulateSplitsDigestPrimitive</a> (<a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *p, int const splitAxis, double const splitPos, vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *&gt; &amp;leftPrimitives, vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *&gt; &amp;rightPrimitives) const</td></tr>
+<tr class="memdesc:aa4da1338fe0cb580a4b08af270c5a16b inherit pro_methods_classSimpleKDTreeFactory"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function to assist <a class="el" href="../../d6/d96/classSimpleKDTreeFactory.html#ab3a2b1d37c6dfe2b97a502a85e6154c5" title="Populate list of primitives for left and right splits from given primitives of node being splitted...">SimpleKDTreeFactory::populateSplits</a> by providing the logic of digesting a primitive.  <a href="../../d6/d96/classSimpleKDTreeFactory.html#aa4da1338fe0cb580a4b08af270c5a16b">More...</a><br /></td></tr>
+<tr class="separator:aa4da1338fe0cb580a4b08af270c5a16b inherit pro_methods_classSimpleKDTreeFactory"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac6c59136d3519ec54eb3ac911fd3c5e2 inherit pro_methods_classSimpleKDTreeFactory"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d96/classSimpleKDTreeFactory.html#ac6c59136d3519ec54eb3ac911fd3c5e2">computeMinMaxSAHForChild</a> (<a class="el" href="../../d8/d94/classKDTreeNode.html">KDTreeNode</a> *node, <a class="el" href="../../d8/d94/classKDTreeNode.html">KDTreeNode</a> *parent, bool const left, vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *&gt; const &amp;primitives) const</td></tr>
+<tr class="memdesc:ac6c59136d3519ec54eb3ac911fd3c5e2 inherit pro_methods_classSimpleKDTreeFactory"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function to assist <a class="el" href="../../d6/d96/classSimpleKDTreeFactory.html#abbc932ae3ef28f324a656add6c1ac5bd" title="Compute min and max position and surface area of bounding cuboid for given node. ">SimpleKDTreeFactory::computeNodeBoundaries</a> when computing surface area heuristic and minimum and maximum positions for child nodes.  <a href="../../d6/d96/classSimpleKDTreeFactory.html#ac6c59136d3519ec54eb3ac911fd3c5e2">More...</a><br /></td></tr>
+<tr class="separator:ac6c59136d3519ec54eb3ac911fd3c5e2 inherit pro_methods_classSimpleKDTreeFactory"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9d40a5c71953a134e8c8edcb6564a8d1 inherit pro_methods_classSimpleKDTreeFactory"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d96/classSimpleKDTreeFactory.html#a9d40a5c71953a134e8c8edcb6564a8d1">onRootBoundariesDigestPrimitive</a> (<a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *primitive, double &amp;ax, double &amp;ay, double &amp;az, double &amp;bx, double &amp;by, double &amp;bz) const</td></tr>
+<tr class="memdesc:a9d40a5c71953a134e8c8edcb6564a8d1 inherit pro_methods_classSimpleKDTreeFactory"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function to assist <a class="el" href="../../d6/d96/classSimpleKDTreeFactory.html#abbc932ae3ef28f324a656add6c1ac5bd" title="Compute min and max position and surface area of bounding cuboid for given node. ">SimpleKDTreeFactory::computeNodeBoundaries</a> by providing the logic of digesting a primitive.  <a href="../../d6/d96/classSimpleKDTreeFactory.html#a9d40a5c71953a134e8c8edcb6564a8d1">More...</a><br /></td></tr>
+<tr class="separator:a9d40a5c71953a134e8c8edcb6564a8d1 inherit pro_methods_classSimpleKDTreeFactory"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a94faad23b678f0df745f0e5bf9284b52 inherit pro_methods_classSimpleKDTreeFactory"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d96/classSimpleKDTreeFactory.html#a94faad23b678f0df745f0e5bf9284b52">onComputeNodeBoundariesCalcSAH</a> (<a class="el" href="../../d8/d94/classKDTreeNode.html">KDTreeNode</a> *node, double const ax, double const ay, double const az, double const bx, double const by, double const bz) const</td></tr>
+<tr class="memdesc:a94faad23b678f0df745f0e5bf9284b52 inherit pro_methods_classSimpleKDTreeFactory"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function to assist <a class="el" href="../../d6/d96/classSimpleKDTreeFactory.html#abbc932ae3ef28f324a656add6c1ac5bd" title="Compute min and max position and surface area of bounding cuboid for given node. ">SimpleKDTreeFactory::computeNodeBoundaries</a> when computing the SAH for a node.  <a href="../../d6/d96/classSimpleKDTreeFactory.html#a94faad23b678f0df745f0e5bf9284b52">More...</a><br /></td></tr>
+<tr class="separator:a94faad23b678f0df745f0e5bf9284b52 inherit pro_methods_classSimpleKDTreeFactory"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a34143864d77d79ef1677a06bd5b938f6 inherit pro_methods_classSimpleKDTreeFactory"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d96/classSimpleKDTreeFactory.html#a34143864d77d79ef1677a06bd5b938f6">checkNodeMustSplit</a> (vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *&gt; const &amp;primitives, vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *&gt; const &amp;leftPrimitives, vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *&gt; const &amp;rightPrimitives) const</td></tr>
+<tr class="memdesc:a34143864d77d79ef1677a06bd5b938f6 inherit pro_methods_classSimpleKDTreeFactory"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check wheter the node must be splitted (true) or not (false) depending on its total primitives and the ones that would be assigned to left and right children.  <a href="../../d6/d96/classSimpleKDTreeFactory.html#a34143864d77d79ef1677a06bd5b938f6">More...</a><br /></td></tr>
+<tr class="separator:a34143864d77d79ef1677a06bd5b938f6 inherit pro_methods_classSimpleKDTreeFactory"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6d890b27a27a5afb79ca3babfc270961 inherit pro_methods_classSimpleKDTreeFactory"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d96/classSimpleKDTreeFactory.html#a6d890b27a27a5afb79ca3babfc270961">makeLeaf</a> (<a class="el" href="../../d8/d94/classKDTreeNode.html">KDTreeNode</a> *node, vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *&gt; const &amp;primitives) const</td></tr>
+<tr class="memdesc:a6d890b27a27a5afb79ca3babfc270961 inherit pro_methods_classSimpleKDTreeFactory"><td class="mdescLeft">&#160;</td><td class="mdescRight">Make given node a leaf one.  <a href="../../d6/d96/classSimpleKDTreeFactory.html#a6d890b27a27a5afb79ca3babfc270961">More...</a><br /></td></tr>
+<tr class="separator:a6d890b27a27a5afb79ca3babfc270961 inherit pro_methods_classSimpleKDTreeFactory"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_methods_classKDTreeFactory"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_classKDTreeFactory')"><img src="../../closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="../../d5/dd0/classKDTreeFactory.html">KDTreeFactory</a></td></tr>
 <tr class="memitem:a837bf89fb39600314e02f9fa9d05ec9b inherit pro_methods_classKDTreeFactory"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/dd0/classKDTreeFactory.html#a837bf89fb39600314e02f9fa9d05ec9b">lighten</a> (<a class="el" href="../../d0/d64/classKDTreeNodeRoot.html">KDTreeNodeRoot</a> *root)</td></tr>
 <tr class="memdesc:a837bf89fb39600314e02f9fa9d05ec9b inherit pro_methods_classKDTreeFactory"><td class="mdescLeft">&#160;</td><td class="mdescRight">Rebuild all children of given root KDTree node as LightKDTeeeNode nodes.  <a href="../../d5/dd0/classKDTreeFactory.html#a837bf89fb39600314e02f9fa9d05ec9b">More...</a><br /></td></tr>
@@ -206,18 +252,42 @@ Protected Attributes</h2></td></tr>
 shared_ptr&lt; <a class="el" href="../../d6/d96/classSimpleKDTreeFactory.html">SimpleKDTreeFactory</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d86/classMultiThreadKDTreeFactory.html#aa1d8bb9d7b9f810ded3c70a1650cbaa0">kdtf</a></td></tr>
 <tr class="memdesc:aa1d8bb9d7b9f810ded3c70a1650cbaa0"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="../../d6/d96/classSimpleKDTreeFactory.html" title="Class providing building methods for simple k-dimensional trees. ">SimpleKDTreeFactory</a> or derived to be used to build tree nodes. <br /></td></tr>
 <tr class="separator:aa1d8bb9d7b9f810ded3c70a1650cbaa0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a164716c0bcef83cf5dad1d8206538b1f"><td class="memItemLeft" align="right" valign="top"><a id="a164716c0bcef83cf5dad1d8206538b1f"></a>
-<a class="el" href="../../d2/dea/classKDTreeFactoryThreadPool.html">KDTreeFactoryThreadPool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d86/classMultiThreadKDTreeFactory.html#a164716c0bcef83cf5dad1d8206538b1f">tp</a></td></tr>
-<tr class="memdesc:a164716c0bcef83cf5dad1d8206538b1f"><td class="mdescLeft">&#160;</td><td class="mdescRight">The thread pool to handle concurrency during recursive KDTree building. <br /></td></tr>
-<tr class="separator:a164716c0bcef83cf5dad1d8206538b1f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa1f35e147dacc5223e95747274dc2519"><td class="memItemLeft" align="right" valign="top"><a id="aa1f35e147dacc5223e95747274dc2519"></a>
+shared_ptr&lt; <a class="el" href="../../d3/de1/classSimpleKDTreeGeometricStrategy.html">SimpleKDTreeGeometricStrategy</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d86/classMultiThreadKDTreeFactory.html#aa1f35e147dacc5223e95747274dc2519">gs</a></td></tr>
+<tr class="memdesc:aa1f35e147dacc5223e95747274dc2519"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="../../d3/de1/classSimpleKDTreeGeometricStrategy.html" title="Class providing a strategy for geometry-level parallelization of Simple KDTree building. The geometry-level parallelization is the one to be applied on upper tree nodes, where multiple threads work on the building of the same node. ">SimpleKDTreeGeometricStrategy</a> or derived to be used to handle geometry-level parallelization during multi-thread KDTree building. <br /></td></tr>
+<tr class="separator:aa1f35e147dacc5223e95747274dc2519"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a96b78efd9c39ea3d71a31c807444318f"><td class="memItemLeft" align="right" valign="top"><a id="a96b78efd9c39ea3d71a31c807444318f"></a>
+<a class="el" href="../../d2/dea/classKDTreeFactoryThreadPool.html">KDTreeFactoryThreadPool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d86/classMultiThreadKDTreeFactory.html#a96b78efd9c39ea3d71a31c807444318f">tpNode</a></td></tr>
+<tr class="memdesc:a96b78efd9c39ea3d71a31c807444318f"><td class="mdescLeft">&#160;</td><td class="mdescRight">The thread pool to handle concurrency during recursive KDTree building at node-level. <br /></td></tr>
+<tr class="separator:a96b78efd9c39ea3d71a31c807444318f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a90a707241e3ba332e1c5aaacb4301e96"><td class="memItemLeft" align="right" valign="top"><a id="a90a707241e3ba332e1c5aaacb4301e96"></a>
 size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d86/classMultiThreadKDTreeFactory.html#a90a707241e3ba332e1c5aaacb4301e96">minTaskPrimitives</a></td></tr>
 <tr class="memdesc:a90a707241e3ba332e1c5aaacb4301e96"><td class="mdescLeft">&#160;</td><td class="mdescRight">The minimum number of primitives on a given split so a new task is started to handle them. <br /></td></tr>
 <tr class="separator:a90a707241e3ba332e1c5aaacb4301e96"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7257fabc8b3143b685c4fa7643f7828e"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d86/classMultiThreadKDTreeFactory.html#a7257fabc8b3143b685c4fa7643f7828e">maxGeometryDepth</a></td></tr>
+<tr class="memdesc:a7257fabc8b3143b685c4fa7643f7828e"><td class="mdescLeft">&#160;</td><td class="mdescRight">The maximum geometry depth level \(d^*\) as explained in the <a class="el" href="../../df/d86/classMultiThreadKDTreeFactory.html#a6ceb727cb0ff43afae25d0f87c3d4e17" title="Recursively build a KDTree for given primitives using given KDTreeFactory (kdtf) in a geometry-level ...">MultiThreadKDTreeFactory::buildRecursiveGeometryLevel</a> It is updated accordingly always that <a class="el" href="../../df/d86/classMultiThreadKDTreeFactory.html#aa00f670a9c8188ee672684e0f57c2167" title="Build a KDTree which type depends on current KDTree factory (MultiThreadKDTreeFactory::kdtf) on a mul...">MultiThreadKDTreeFactory::makeFromPrimitivesUnsafe</a> is called.  <a href="#a7257fabc8b3143b685c4fa7643f7828e">More...</a><br /></td></tr>
+<tr class="separator:a7257fabc8b3143b685c4fa7643f7828e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a764a83a2d740fdeff7144125e6f2b1b0"><td class="memItemLeft" align="right" valign="top"><a id="a764a83a2d740fdeff7144125e6f2b1b0"></a>
+size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d86/classMultiThreadKDTreeFactory.html#a764a83a2d740fdeff7144125e6f2b1b0">numJobs</a></td></tr>
+<tr class="memdesc:a764a83a2d740fdeff7144125e6f2b1b0"><td class="mdescLeft">&#160;</td><td class="mdescRight">The maximum number of jobs (threads/workers) that this factory is allowed to use. <br /></td></tr>
+<tr class="separator:a764a83a2d740fdeff7144125e6f2b1b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ada545be4b00cabeab1f55135794fe684"><td class="memItemLeft" align="right" valign="top"><a id="ada545be4b00cabeab1f55135794fe684"></a>
+size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d86/classMultiThreadKDTreeFactory.html#ada545be4b00cabeab1f55135794fe684">geomJobs</a></td></tr>
+<tr class="memdesc:ada545be4b00cabeab1f55135794fe684"><td class="mdescLeft">&#160;</td><td class="mdescRight">The number of jobs (threads/workers) that this factory must use when building upper KDTree nodes (geometry-level parallelization) <br /></td></tr>
+<tr class="separator:ada545be4b00cabeab1f55135794fe684"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a85d40d21ecf3c1f5ce5e1024e76861e8"><td class="memItemLeft" align="right" valign="top">shared_ptr&lt; <a class="el" href="../../da/d29/classSharedTaskSequencer.html">SharedTaskSequencer</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d86/classMultiThreadKDTreeFactory.html#a85d40d21ecf3c1f5ce5e1024e76861e8">masters</a></td></tr>
+<tr class="memdesc:a85d40d21ecf3c1f5ce5e1024e76861e8"><td class="mdescLeft">&#160;</td><td class="mdescRight">All masters threads (except main thread) are handled by this shared task sequencer.  <a href="#a85d40d21ecf3c1f5ce5e1024e76861e8">More...</a><br /></td></tr>
+<tr class="separator:a85d40d21ecf3c1f5ce5e1024e76861e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a366d2f7da2c692b428394b122d60a49e"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d86/classMultiThreadKDTreeFactory.html#a366d2f7da2c692b428394b122d60a49e">finishedGeomJobs</a></td></tr>
+<tr class="memdesc:a366d2f7da2c692b428394b122d60a49e"><td class="mdescLeft">&#160;</td><td class="mdescRight">How many geometry-level jobs have fully finished during current KDT building.  <a href="#a366d2f7da2c692b428394b122d60a49e">More...</a><br /></td></tr>
+<tr class="separator:a366d2f7da2c692b428394b122d60a49e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2484fbf4ee81514b5e3b93e6c20a8d52"><td class="memItemLeft" align="right" valign="top">boost::mutex&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d86/classMultiThreadKDTreeFactory.html#a2484fbf4ee81514b5e3b93e6c20a8d52">finishedGeomJobsMutex</a></td></tr>
+<tr class="memdesc:a2484fbf4ee81514b5e3b93e6c20a8d52"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mutex to handle concurrent access to counter of finished geometry-level jobs.  <a href="#a2484fbf4ee81514b5e3b93e6c20a8d52">More...</a><br /></td></tr>
+<tr class="separator:a2484fbf4ee81514b5e3b93e6c20a8d52"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_attribs_classSimpleKDTreeFactory"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classSimpleKDTreeFactory')"><img src="../../closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="../../d6/d96/classSimpleKDTreeFactory.html">SimpleKDTreeFactory</a></td></tr>
-<tr class="memitem:a0d728d4a070ec3235cdbc4988e61ad41 inherit pro_attribs_classSimpleKDTreeFactory"><td class="memItemLeft" align="right" valign="top">std::function&lt; <a class="el" href="../../d8/d94/classKDTreeNode.html">KDTreeNode</a> *(<a class="el" href="../../d8/d94/classKDTreeNode.html">KDTreeNode</a> *, bool const, vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> * &gt; &amp;, int const)&gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d96/classSimpleKDTreeFactory.html#a0d728d4a070ec3235cdbc4988e61ad41">_buildRecursive</a></td></tr>
-<tr class="memdesc:a0d728d4a070ec3235cdbc4988e61ad41 inherit pro_attribs_classSimpleKDTreeFactory"><td class="mdescLeft">&#160;</td><td class="mdescRight">The member function as attribute used to recursively build KDTree nodes. By default it will be assigned to the buildRecursive member function but it might be overridden by other implementations. For instance, to wrap the buildRecursive behavior to handle parallel building of KDTrees.  <a href="../../d6/d96/classSimpleKDTreeFactory.html#a0d728d4a070ec3235cdbc4988e61ad41">More...</a><br /></td></tr>
-<tr class="separator:a0d728d4a070ec3235cdbc4988e61ad41 inherit pro_attribs_classSimpleKDTreeFactory"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4c3213bf294ab8cd890ccc09e1297317 inherit pro_attribs_classSimpleKDTreeFactory"><td class="memItemLeft" align="right" valign="top">std::function&lt; <a class="el" href="../../d8/d94/classKDTreeNode.html">KDTreeNode</a> *(<a class="el" href="../../d8/d94/classKDTreeNode.html">KDTreeNode</a> *, bool const, vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> * &gt; &amp;, int const, int const)&gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d96/classSimpleKDTreeFactory.html#a4c3213bf294ab8cd890ccc09e1297317">_buildRecursive</a></td></tr>
+<tr class="memdesc:a4c3213bf294ab8cd890ccc09e1297317 inherit pro_attribs_classSimpleKDTreeFactory"><td class="mdescLeft">&#160;</td><td class="mdescRight">The member function as attribute used to recursively build KDTree nodes. By default it will be assigned to the buildRecursive member function but it might be overridden by other implementations. For instance, to wrap the buildRecursive behavior to handle parallel building of KDTrees.  <a href="../../d6/d96/classSimpleKDTreeFactory.html#a4c3213bf294ab8cd890ccc09e1297317">More...</a><br /></td></tr>
+<tr class="separator:a4c3213bf294ab8cd890ccc09e1297317 inherit pro_attribs_classSimpleKDTreeFactory"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abba2468b2987b4bd93e3e832bdf52f00 inherit pro_attribs_classSimpleKDTreeFactory"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d96/classSimpleKDTreeFactory.html#abba2468b2987b4bd93e3e832bdf52f00">minSplitPrimitives</a></td></tr>
 <tr class="memdesc:abba2468b2987b4bd93e3e832bdf52f00 inherit pro_attribs_classSimpleKDTreeFactory"><td class="mdescLeft">&#160;</td><td class="mdescRight">How many primitives are required for a node to be splitted.  <a href="../../d6/d96/classSimpleKDTreeFactory.html#abba2468b2987b4bd93e3e832bdf52f00">More...</a><br /></td></tr>
 <tr class="separator:abba2468b2987b4bd93e3e832bdf52f00 inherit pro_attribs_classSimpleKDTreeFactory"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -245,10 +315,11 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>boost::serialization
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Decorator for any KDTree factory which provides support for multi thread KDTree building. </p>
 <dl class="section author"><dt>Author</dt><dd>Alberto M. Esmoris Pena </dd></dl>
-<dl class="section version"><dt>Version</dt><dd>1.0 </dd></dl>
+<dl class="section version"><dt>Version</dt><dd>1.0</dd></dl>
+<p>When combining geometry-level and node-level parallel building strategies, both are assumed to support the same max number of threads. To better understand this, let \(\Phi(t)\) be the number of currently available threads for the geometry-level strategy at time \(t\) while \(\Psi(t)\) denotes the number of currently available threads for the node-level thread pool at time \(t\). Now, if the maximum number of threads is \(k\), at the beginning it would be \(\Phi(t)=k\) and \(\Psi(t)=0\). Once all geometry-level splits have been done, then \(\Phi(t)=0\) and \(\Psi(t)=k\). At the last depth for geometry-level strategy, always that a split is finished involved threads will go from geometry-level mode to node-level thread pool. At any time, threads for geometry-level and node-level are related by following expresion \(\Psi(t) = k - \Phi(t)\). </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="ae129faad6fd086084670ff81dd7e2633"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae129faad6fd086084670ff81dd7e2633">&#9670;&nbsp;</a></span>MultiThreadKDTreeFactory()</h2>
+<a id="a8a9b7464e9c1d883de16d29ff95deca8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8a9b7464e9c1d883de16d29ff95deca8">&#9670;&nbsp;</a></span>MultiThreadKDTreeFactory()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -262,8 +333,20 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>boost::serialization
         <tr>
           <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">shared_ptr&lt; <a class="el" href="../../d3/de1/classSimpleKDTreeGeometricStrategy.html">SimpleKDTreeGeometricStrategy</a> &gt; const&#160;</td>
+          <td class="paramname"><em>gs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
           <td class="paramtype">size_t const&#160;</td>
-          <td class="paramname"><em>numJobs</em> = <code>2</code>&#160;</td>
+          <td class="paramname"><em>numJobs</em> = <code>2</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t const&#160;</td>
+          <td class="paramname"><em>geomJobs</em> = <code>2</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -284,8 +367,83 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>boost::serialization
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a2e3a8ea91910658ee9ff6f012e196b11"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2e3a8ea91910658ee9ff6f012e196b11">&#9670;&nbsp;</a></span>buildRecursive()</h2>
+<a id="ae04d92ed6c0039baaf4abc7dc7a27d77"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae04d92ed6c0039baaf4abc7dc7a27d77">&#9670;&nbsp;</a></span>buildChildrenGeometryLevel()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void MultiThreadKDTreeFactory::buildChildrenGeometryLevel </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="../../d8/d94/classKDTreeNode.html">KDTreeNode</a> *&#160;</td>
+          <td class="paramname"><em>node</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="../../d8/d94/classKDTreeNode.html">KDTreeNode</a> *&#160;</td>
+          <td class="paramname"><em>parent</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *&gt; const &amp;&#160;</td>
+          <td class="paramname"><em>primitives</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int const&#160;</td>
+          <td class="paramname"><em>depth</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int const&#160;</td>
+          <td class="paramname"><em>index</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *&gt; &amp;&#160;</td>
+          <td class="paramname"><em>leftPrimitives</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *&gt; &amp;&#160;</td>
+          <td class="paramname"><em>rightPrimitives</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int const&#160;</td>
+          <td class="paramname"><em>auxiliarThreads</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Provide an alternative implementation for the building of left and right children nodes. </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d6/d96/classSimpleKDTreeFactory.html#a9c77a23429fcf72e7f5c46429e72f7af" title="Build children nodes for given node. If no children nodes must be built, then the node is configured ...">SimpleKDTreeFactory::buildChildrenNodes</a> </dd></dl>
+
+</div>
+</div>
+<a id="a2c3773e8c50fb78073caeab17b9c4752"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2c3773e8c50fb78073caeab17b9c4752">&#9670;&nbsp;</a></span>buildRecursive()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -315,7 +473,13 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>boost::serialization
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">int const&#160;</td>
-          <td class="paramname"><em>depth</em>&#160;</td>
+          <td class="paramname"><em>depth</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int const&#160;</td>
+          <td class="paramname"><em>index</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -330,22 +494,162 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>boost::serialization
 </table>
 </div><div class="memdoc">
 
-<p>Recursively build a KDTree for given primitives using given <a class="el" href="../../d5/dd0/classKDTreeFactory.html" title="Class that must be extended by any class which provides factory methods for k-dimensional trees...">KDTreeFactory</a> (kdtf). When the number of primitives for a given split is \(\geq\) minTaskPrimitives and there are available threads in the thread pool, a new task will be started to handle node building in a parallel fashion. </p>
+<p>Recursively build a KDTree for given primitives using given <a class="el" href="../../d5/dd0/classKDTreeFactory.html" title="Class that must be extended by any class which provides factory methods for k-dimensional trees...">KDTreeFactory</a> (kdtf). The building of upper nodes is delegated to the <a class="el" href="../../df/d86/classMultiThreadKDTreeFactory.html#a6ceb727cb0ff43afae25d0f87c3d4e17" title="Recursively build a KDTree for given primitives using given KDTreeFactory (kdtf) in a geometry-level ...">MultiThreadKDTreeFactory::buildRecursiveGeometryLevel</a> method, while the building of middle and lower nodes is assumed by the <a class="el" href="../../df/d86/classMultiThreadKDTreeFactory.html#ab7876164f120f8cd81fef78e115300ec" title="Recursively build a KDTree for given primitives using given KDTreeFactory (kdtf) in a node-level para...">MultiThreadKDTreeFactory::buildRecursiveNodeLevel</a> method. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">parent</td><td>The parent node if any. For root nodes, it must be a nullptr </td></tr>
     <tr><td class="paramname">left</td><td>True if given node is a left child, false otherwise. If the node is a root node, it should be false. If node is not a root node and left is true, it means it is a left child. If node is not a root node and left is false, it means it is a right child </td></tr>
     <tr><td class="paramname">primitives</td><td>Primitives to build KDTree splitting them </td></tr>
     <tr><td class="paramname">depth</td><td>Current depth at build process. Useful for tracking recursion level </td></tr>
+    <tr><td class="paramname">index</td><td>The node index inside current depth. Each node can be univocally identified by the ordered pair \((d, i)\) where \(d\) stands for the depth level and \(i\) for the index. The root node is identified by \((0, 0)\). Any left child node will be \((d+1, 2i)\) and any right child node will be \((d+1, 2i+1)\), where \(d\) and \(i\) are the depth and index for the parent node. In consequence, all left nodes will have an even index while all right nodes will have an odd one. However, notice that for performance reasons it could preferable to check the left flag argument, as it is faster than checking if index is even or odd. </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Built KDTree node </dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../df/d86/classMultiThreadKDTreeFactory.html#a90a707241e3ba332e1c5aaacb4301e96" title="The minimum number of primitives on a given split so a new task is started to handle them...">MultiThreadKDTreeFactory::minTaskPrimitives</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../df/d86/classMultiThreadKDTreeFactory.html#a6ceb727cb0ff43afae25d0f87c3d4e17" title="Recursively build a KDTree for given primitives using given KDTreeFactory (kdtf) in a geometry-level ...">MultiThreadKDTreeFactory::buildRecursiveGeometryLevel</a> </dd>
 <dd>
-<a class="el" href="../../d6/d96/classSimpleKDTreeFactory.html#a07231a87a91c5168efcb91308c60adf8" title="Recursively build a KDTree for given primitives. ">SimpleKDTreeFactory::buildRecursive</a> </dd></dl>
+<a class="el" href="../../df/d86/classMultiThreadKDTreeFactory.html#ab7876164f120f8cd81fef78e115300ec" title="Recursively build a KDTree for given primitives using given KDTreeFactory (kdtf) in a node-level para...">MultiThreadKDTreeFactory::buildRecursiveNodeLevel</a> </dd>
+<dd>
+<a class="el" href="../../df/d86/classMultiThreadKDTreeFactory.html#a90a707241e3ba332e1c5aaacb4301e96" title="The minimum number of primitives on a given split so a new task is started to handle them...">MultiThreadKDTreeFactory::minTaskPrimitives</a> </dd>
+<dd>
+<a class="el" href="../../d6/d96/classSimpleKDTreeFactory.html#a96323d9575182f1bedbd013991a693a6" title="Recursively build a KDTree for given primitives. ">SimpleKDTreeFactory::buildRecursive</a> </dd></dl>
 
-<p>Reimplemented from <a class="el" href="../../d6/d96/classSimpleKDTreeFactory.html#a07231a87a91c5168efcb91308c60adf8">SimpleKDTreeFactory</a>.</p>
+<p>Reimplemented from <a class="el" href="../../d6/d96/classSimpleKDTreeFactory.html#a96323d9575182f1bedbd013991a693a6">SimpleKDTreeFactory</a>.</p>
+
+</div>
+</div>
+<a id="a6ceb727cb0ff43afae25d0f87c3d4e17"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6ceb727cb0ff43afae25d0f87c3d4e17">&#9670;&nbsp;</a></span>buildRecursiveGeometryLevel()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../d8/d94/classKDTreeNode.html">KDTreeNode</a> * MultiThreadKDTreeFactory::buildRecursiveGeometryLevel </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="../../d8/d94/classKDTreeNode.html">KDTreeNode</a> *&#160;</td>
+          <td class="paramname"><em>parent</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool const&#160;</td>
+          <td class="paramname"><em>left</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *&gt; &amp;&#160;</td>
+          <td class="paramname"><em>primitives</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int const&#160;</td>
+          <td class="paramname"><em>depth</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int const&#160;</td>
+          <td class="paramname"><em>index</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Recursively build a KDTree for given primitives using given <a class="el" href="../../d5/dd0/classKDTreeFactory.html" title="Class that must be extended by any class which provides factory methods for k-dimensional trees...">KDTreeFactory</a> (kdtf) in a geometry-level parallelization context. The geometry-level parallelization implies distributing threads among splits as uniform as possible, while satisfying the constraint that any split must have at least one associated thread. It is the way to go for building the upper levels of the KDTree. For the sake of understanding, let \(P_i\left[a, b\right]\) note the \(i\)-th split associated to threads from \(a\)-th (inclusive) to \(b\)-th (inclusive). Thus, if \(d\) is said to be the tree depth and \(k\) is the number of threads, then it is possible to modellize the behavior of the geometry level parallel building process as follows: </p>
+<p class="formulaDsp">
+\[ \left\{\begin{array}{ccc} d = 0 &amp;:&amp; \left\{ P_0[a_0, b_0] \right\} \\ d = 1 &amp;:&amp; \left\{ P_0\left[a_0, b_0\right], P_1\left[a_1, b_1\right] \right\} \\ d = 2 &amp;:&amp; \left\{ P_0\left[a_0, b_0\right], P_1\left[a_1, b_1\right], P_2\left[a_2, b_2\right], P_3\left[a_3, b_3\right] \right\} \\ \vdots &amp; \vdots &amp; \vdots \end{array}\right. \]
+</p>
+<p>It is worth to mention that \(a_{i+1} = b_{i}+1\). Now, for generalization purposes let \(\alpha=\left\lfloor{\frac{k}{2^d}}\right\rfloor\) and \(\beta \equiv k \mod 2^d\). In consequence, at any depth level \(d\) it is possible to define \(\forall i,\; P_i = [a_i, b_i]\) where:</p>
+<p class="formulaDsp">
+\[ a_i = \left\{\begin{array}{lll} i\alpha &amp;,&amp; i &lt; 2^d - \beta \\ i(\alpha+1) - 2^d + \beta &amp;,&amp; i \geq 2^d - \beta \end{array}\right. \]
+</p>
+<p class="formulaDsp">
+\[ b_i = \left\{\begin{array}{lll} \alpha(i+1)-1 &amp;,&amp; i &lt; 2^d - \beta \\ i(\alpha+1)-2^d+\beta+\alpha &amp;,&amp; i \geq 2^d - \beta \end{array}\right. \]
+</p>
+<p>It can be seen that the maximum (also assumed as expected here) number of splits at a given depth is given by \(2^d\). Therefore, geometry level building process is guaranteed to be applicable at least while \(k \geq 2^d\) is satisfied. Moreover, any split can be understood as a set of primitives \(P_i = \left\{ p_j \in \mathbb{R}^{n \times 3} : j \in [\phi \geq 1, \psi \leq m] \right\}\), so the total number of primitives is \(m\) (which is the cardinality of \(P_0\) at \(d=0\)) and each primitive is itself a set of \(n\) points in \(\mathbb{R}^3\). Of course, this is a simplification since different types of primitives are supported by Helios. However, it is not necessary to get into that level of detail to understand this algorithm. Just notice that \(P_i\) at \(d = x\) is distinct that \(P_i\) at \(d = y\) as long as \(x \neq y\) is satisfied. It is because once a node is splitted, it is understood as destroyed in this context so it is simply replaced by its children at next depth level.</p>
+<p>Finally, the last depth at which geometry level parallelization applies can be deduced from the fact that the number of threads for a parallel algorithm is going to satisfy \(k&gt;1\). For then it follows that \(\log_2{k} \geq 0\). Notice this would stand even for the sequential case because \(\log_2{1} = 0\). In consequence, it is known that \(k \geq 2^d \iff \log_2{k} \geq d\), because the logarithm will not change the sign. But, from aforementioned inequation, the last depth label can be defined as \(d^* = \left\lfloor{\log_2{k}}\right\rfloor\)</p>
+<dl class="section return"><dt>Returns</dt><dd>Built KDTree node </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../df/d86/classMultiThreadKDTreeFactory.html#a2c3773e8c50fb78073caeab17b9c4752" title="Recursively build a KDTree for given primitives using given KDTreeFactory (kdtf). The building of upp...">MultiThreadKDTreeFactory::buildRecursive</a> </dd>
+<dd>
+<a class="el" href="../../df/d86/classMultiThreadKDTreeFactory.html#ab7876164f120f8cd81fef78e115300ec" title="Recursively build a KDTree for given primitives using given KDTreeFactory (kdtf) in a node-level para...">MultiThreadKDTreeFactory::buildRecursiveNodeLevel</a> </dd>
+<dd>
+<a class="el" href="../../df/d86/classMultiThreadKDTreeFactory.html#a7257fabc8b3143b685c4fa7643f7828e" title="The maximum geometry depth level  as explained in the MultiThreadKDTreeFactory::buildRecursiveGeometr...">MultiThreadKDTreeFactory::maxGeometryDepth</a> </dd></dl>
+
+</div>
+</div>
+<a id="ab7876164f120f8cd81fef78e115300ec"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab7876164f120f8cd81fef78e115300ec">&#9670;&nbsp;</a></span>buildRecursiveNodeLevel()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../d8/d94/classKDTreeNode.html">KDTreeNode</a> * MultiThreadKDTreeFactory::buildRecursiveNodeLevel </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="../../d8/d94/classKDTreeNode.html">KDTreeNode</a> *&#160;</td>
+          <td class="paramname"><em>parent</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool const&#160;</td>
+          <td class="paramname"><em>left</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *&gt; &amp;&#160;</td>
+          <td class="paramname"><em>primitives</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int const&#160;</td>
+          <td class="paramname"><em>depth</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int const&#160;</td>
+          <td class="paramname"><em>index</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Recursively build a KDTree for given primitives using given <a class="el" href="../../d5/dd0/classKDTreeFactory.html" title="Class that must be extended by any class which provides factory methods for k-dimensional trees...">KDTreeFactory</a> (kdtf) in a node-level parallelization context. The node-level parallelization implies a one thread per node distribution. While it can be used to build the entire KDTree, at the upper levels it leads to idle threads. This problem is easy to see at the first node (root node), because there is only one node and thus only one thread can be working on it. The same would apply for the second node if the number of threads is \(&gt;2\), because there would be only two working threads while the others will remain idle. However, this is inefficient and can be solved by delegating upper nodes to a geometry-level parallelization strategy instead of a node-level one. </p>
+<p>When using a node-level parallelization if the number of primitives for a given split is \(\geq\) minTaskPrimitives and there are available threads in the thread pool, a new task will be started to handle node building in a parallel fashion.</p>
+<dl class="section return"><dt>Returns</dt><dd>Built KDTree node </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../df/d86/classMultiThreadKDTreeFactory.html#a2c3773e8c50fb78073caeab17b9c4752" title="Recursively build a KDTree for given primitives using given KDTreeFactory (kdtf). The building of upp...">MultiThreadKDTreeFactory::buildRecursive</a> </dd>
+<dd>
+<a class="el" href="../../df/d86/classMultiThreadKDTreeFactory.html#a6ceb727cb0ff43afae25d0f87c3d4e17" title="Recursively build a KDTree for given primitives using given KDTreeFactory (kdtf) in a geometry-level ...">MultiThreadKDTreeFactory::buildRecursiveGeometryLevel</a> </dd></dl>
 
 </div>
 </div>
@@ -380,6 +684,62 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>boost::serialization
 
 </div>
 </div>
+<a id="a02be94ffc28d8b61bcc1fbcc66da83af"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a02be94ffc28d8b61bcc1fbcc66da83af">&#9670;&nbsp;</a></span>getGeomJobs()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual size_t MultiThreadKDTreeFactory::getGeomJobs </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Obtain the number of threads for geometry-level parallelization. </p>
+<dl class="section return"><dt>Returns</dt><dd>Number of threads for geometry-level parallelization </dd></dl>
+
+</div>
+</div>
+<a id="ad71cfb0c5a7002bdcd8ade58e10c7d50"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad71cfb0c5a7002bdcd8ade58e10c7d50">&#9670;&nbsp;</a></span>getGS()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual shared_ptr&lt;<a class="el" href="../../d3/de1/classSimpleKDTreeGeometricStrategy.html">SimpleKDTreeGeometricStrategy</a>&gt; MultiThreadKDTreeFactory::getGS </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Obtain the geometric strategy. </p>
+<dl class="section return"><dt>Returns</dt><dd>Geometric strategy </dd></dl>
+
+</div>
+</div>
 <a id="abf65b70dee160507ef62f08c934623af"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#abf65b70dee160507ef62f08c934623af">&#9670;&nbsp;</a></span>getKdtf()</h2>
 
@@ -405,6 +765,34 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>boost::serialization
 
 <p>Obtain the <a class="el" href="../../d6/d96/classSimpleKDTreeFactory.html" title="Class providing building methods for simple k-dimensional trees. ">SimpleKDTreeFactory</a> used to build tree nodes. </p>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="../../d6/d96/classSimpleKDTreeFactory.html" title="Class providing building methods for simple k-dimensional trees. ">SimpleKDTreeFactory</a> used to build tree nodes </dd></dl>
+
+</div>
+</div>
+<a id="a7eb17faaf9deb4019df570eaa4129ad2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7eb17faaf9deb4019df570eaa4129ad2">&#9670;&nbsp;</a></span>getNumJobs()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual size_t MultiThreadKDTreeFactory::getNumJobs </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Obtain the number of threads for node-level parallelization. </p>
+<dl class="section return"><dt>Returns</dt><dd>Number of threads for node-level parallelization </dd></dl>
 
 </div>
 </div>
@@ -436,8 +824,37 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>boost::serialization
 
 </div>
 </div>
-<a id="a601cab19125266655d72e67204dce8ae"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a601cab19125266655d72e67204dce8ae">&#9670;&nbsp;</a></span>makeFromPrimitivesUnsafe()</h2>
+<a id="a9f8866c50d14796dad33466e44f97814"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9f8866c50d14796dad33466e44f97814">&#9670;&nbsp;</a></span>increaseFinishedGeomJobsCount()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void MultiThreadKDTreeFactory::increaseFinishedGeomJobsCount </td>
+          <td>(</td>
+          <td class="paramtype">size_t const&#160;</td>
+          <td class="paramname"><em>amount</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Increase count of finished geometry-level jobs in a thread safe way. </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../df/d86/classMultiThreadKDTreeFactory.html#a366d2f7da2c692b428394b122d60a49e" title="How many geometry-level jobs have fully finished during current KDT building. ">MultiThreadKDTreeFactory::finishedGeomJobs</a> </dd></dl>
+
+</div>
+</div>
+<a id="aa00f670a9c8188ee672684e0f57c2167"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa00f670a9c8188ee672684e0f57c2167">&#9670;&nbsp;</a></span>makeFromPrimitivesUnsafe()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -449,8 +866,24 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>boost::serialization
           <td class="memname"><a class="el" href="../../d0/d64/classKDTreeNodeRoot.html">KDTreeNodeRoot</a> * MultiThreadKDTreeFactory::makeFromPrimitivesUnsafe </td>
           <td>(</td>
           <td class="paramtype">vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *&gt; &amp;&#160;</td>
-          <td class="paramname"><em>primitives</em></td><td>)</td>
+          <td class="paramname"><em>primitives</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">bool const&#160;</td>
+          <td class="paramname"><em>computeStats</em> = <code>false</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool const&#160;</td>
+          <td class="paramname"><em>reportStats</em> = <code>false</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -463,9 +896,37 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>boost::serialization
 <p>Build a KDTree which type depends on current KDTree factory (<a class="el" href="../../df/d86/classMultiThreadKDTreeFactory.html#aa1d8bb9d7b9f810ded3c70a1650cbaa0" title="The SimpleKDTreeFactory or derived to be used to build tree nodes. ">MultiThreadKDTreeFactory::kdtf</a>) on a multi thread basis. </p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="../../df/d86/classMultiThreadKDTreeFactory.html#aa1d8bb9d7b9f810ded3c70a1650cbaa0" title="The SimpleKDTreeFactory or derived to be used to build tree nodes. ">MultiThreadKDTreeFactory::kdtf</a> </dd>
 <dd>
-<a class="el" href="../../d5/dd0/classKDTreeFactory.html#a06b1ebdfb108a2c5a389ee390f534197" title="Build a KDTree from given primitives. ">KDTreeFactory::makeFromPrimitivesUnsafe</a> </dd></dl>
+<a class="el" href="../../d5/dd0/classKDTreeFactory.html#a8f36b4bd3d2ec7a1d771a3e3d93b14cd" title="Build a KDTree from given primitives. ">KDTreeFactory::makeFromPrimitivesUnsafe</a> </dd></dl>
 
-<p>Implements <a class="el" href="../../d5/dd0/classKDTreeFactory.html#a06b1ebdfb108a2c5a389ee390f534197">KDTreeFactory</a>.</p>
+<p>Implements <a class="el" href="../../d5/dd0/classKDTreeFactory.html#a8f36b4bd3d2ec7a1d771a3e3d93b14cd">KDTreeFactory</a>.</p>
+
+</div>
+</div>
+<a id="a29186783483d298b6fb376e4909b0352"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a29186783483d298b6fb376e4909b0352">&#9670;&nbsp;</a></span>prepareToMake()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void MultiThreadKDTreeFactory::prepareToMake </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Prepare the <a class="el" href="../../df/d86/classMultiThreadKDTreeFactory.html" title="Decorator for any KDTree factory which provides support for multi thread KDTree building. ">MultiThreadKDTreeFactory</a> so it is ready to start making a new KDTree. </p>
+<p>This implies handling the number of start pending tasks for node thread pool so, when geometry-level parallelization is used, no node-level parallelization occurs before it must (at adequate depth). Besides, the maximum depth for geometry-level parallelization is properly handled. Also, the sequencer is initialized with masters threads for differents nodes if necessary. Finally, the count of finished geometry-level jobs is set to 0. </p>
 
 </div>
 </div>
@@ -560,6 +1021,109 @@ template&lt;class Archive &gt; </div>
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="a366d2f7da2c692b428394b122d60a49e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a366d2f7da2c692b428394b122d60a49e">&#9670;&nbsp;</a></span>finishedGeomJobs</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t MultiThreadKDTreeFactory::finishedGeomJobs</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>How many geometry-level jobs have fully finished during current KDT building. </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../df/d86/classMultiThreadKDTreeFactory.html#a9f8866c50d14796dad33466e44f97814" title="Increase count of finished geometry-level jobs in a thread safe way. ">MultiThreadKDTreeFactory::increaseFinishedGeomJobsCount</a> </dd></dl>
+
+</div>
+</div>
+<a id="a2484fbf4ee81514b5e3b93e6c20a8d52"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2484fbf4ee81514b5e3b93e6c20a8d52">&#9670;&nbsp;</a></span>finishedGeomJobsMutex</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">boost::mutex MultiThreadKDTreeFactory::finishedGeomJobsMutex</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Mutex to handle concurrent access to counter of finished geometry-level jobs. </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../df/d86/classMultiThreadKDTreeFactory.html#a366d2f7da2c692b428394b122d60a49e" title="How many geometry-level jobs have fully finished during current KDT building. ">MultiThreadKDTreeFactory::finishedGeomJobs</a> </dd></dl>
+
+</div>
+</div>
+<a id="a85d40d21ecf3c1f5ce5e1024e76861e8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a85d40d21ecf3c1f5ce5e1024e76861e8">&#9670;&nbsp;</a></span>masters</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">shared_ptr&lt;<a class="el" href="../../da/d29/classSharedTaskSequencer.html">SharedTaskSequencer</a>&gt; MultiThreadKDTreeFactory::masters</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>All masters threads (except main thread) are handled by this shared task sequencer. </p>
+<p>A master thread is any thread that will handle the building of a sub-KDTree composing the original KDTree. Master threads are required when using a geometry-level parallelization, so each node at max geoemtry depth is associated to one master thread.</p>
+<p>The master node at \((d^*, 0)\) is not handled by this shared task sequencer because it is associated to the main thread itself.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../df/d86/classMultiThreadKDTreeFactory.html#a7257fabc8b3143b685c4fa7643f7828e" title="The maximum geometry depth level  as explained in the MultiThreadKDTreeFactory::buildRecursiveGeometr...">MultiThreadKDTreeFactory::maxGeometryDepth</a> </dd></dl>
+
+</div>
+</div>
+<a id="a7257fabc8b3143b685c4fa7643f7828e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7257fabc8b3143b685c4fa7643f7828e">&#9670;&nbsp;</a></span>maxGeometryDepth</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int MultiThreadKDTreeFactory::maxGeometryDepth</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The maximum geometry depth level \(d^*\) as explained in the <a class="el" href="../../df/d86/classMultiThreadKDTreeFactory.html#a6ceb727cb0ff43afae25d0f87c3d4e17" title="Recursively build a KDTree for given primitives using given KDTreeFactory (kdtf) in a geometry-level ...">MultiThreadKDTreeFactory::buildRecursiveGeometryLevel</a> It is updated accordingly always that <a class="el" href="../../df/d86/classMultiThreadKDTreeFactory.html#aa00f670a9c8188ee672684e0f57c2167" title="Build a KDTree which type depends on current KDTree factory (MultiThreadKDTreeFactory::kdtf) on a mul...">MultiThreadKDTreeFactory::makeFromPrimitivesUnsafe</a> is called. </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../df/d86/classMultiThreadKDTreeFactory.html#a85d40d21ecf3c1f5ce5e1024e76861e8" title="All masters threads (except main thread) are handled by this shared task sequencer. ">MultiThreadKDTreeFactory::masters</a> </dd></dl>
 
 </div>
 </div>

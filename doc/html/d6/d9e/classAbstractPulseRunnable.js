@@ -8,7 +8,6 @@ var classAbstractPulseRunnable =
     [ "calcReceivedPower", "d6/d9e/classAbstractPulseRunnable.html#aa3148cfc57abaa6f3a5e1da516b2b42a", null ],
     [ "calcReceivedPower", "d6/d9e/classAbstractPulseRunnable.html#aa301e9d85726ee8cde52111cf4bee489", null ],
     [ "capturePoint", "d6/d9e/classAbstractPulseRunnable.html#a238c5879265bb80396351182a6779ec8", null ],
-    [ "operator()", "d6/d9e/classAbstractPulseRunnable.html#a77b20582e18ec03cafe5c885e60aa626", null ],
     [ "phongBDRF", "d6/d9e/classAbstractPulseRunnable.html#a46b7718ac32f6b1574aca2b21aaba916", null ],
     [ "absoluteBeamAttitude", "d6/d9e/classAbstractPulseRunnable.html#a5431be620a94c48f0b13bdb4627b9f54", null ],
     [ "absoluteBeamOrigin", "d6/d9e/classAbstractPulseRunnable.html#aa7f3f0ea66414823b4bd1e4ebd12295f", null ],

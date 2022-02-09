@@ -16,7 +16,6 @@ export HELIOS_SCRIPTS_DIR=${HELIOS_DIR}'scripts/'
 # Path to the libraries directory
 export HELIOS_LIB_DIR=${HELIOS_DIR}'lib/'
 
-
 # Load utils
 source "${HELIOS_SCRIPTS_DIR}"'build/build_utils.sh'
 
@@ -37,6 +36,14 @@ for mod in ${HC_MODULES[@]}; do
     ${cmd}
     echo -ne "\n"
 done
+
+# Configure LD library path
+export LD_LIBRARY_PATH=\
+"${LD_LIBRARY_PATH}:${HELIOS_LIB_DIR}lapack/install/lib/"
+# Path to helios binary
+export HELIOS_BIN=${HELIOS_DIR}'helios'
+# Helios CESGA script
+export HELIOS_CESGA="${HELIOS_SCRIPTS_DIR}run/helios_cesga.sh"
 
 # Warn Helios environment has been loaded
 echo 'Helios CESGA environment has been successfully loaded!'

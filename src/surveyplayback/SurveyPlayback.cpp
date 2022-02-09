@@ -17,19 +17,28 @@ namespace fs = boost::filesystem;
 #include "ZipSyncFileWriter.h"
 #include "SimpleSyncFileWriter.h"
 #include "HelicopterPlatform.h"
+#include <ScanningStrip.h>
 
 using namespace std;
 
 SurveyPlayback::SurveyPlayback(
     shared_ptr<Survey> survey,
     const std::string outputPath,
-    size_t numThreads,
+    int const parallelizationStrategy,
+    std::shared_ptr<PulseThreadPoolInterface> pulseThreadPoolInterface,
+    int const chunkSize,
+    std::string fixedGpsTimeStart,
     bool lasOutput,
     bool las10,
     bool zipOutput,
     bool exportToFile
 ):
-    Simulation(numThreads, survey->scanner->detector->cfg_device_accuracy_m),
+    Simulation(
+        parallelizationStrategy,
+        pulseThreadPoolInterface,
+        chunkSize,
+        fixedGpsTimeStart
+    ),
     lasOutput(lasOutput),
     las10(las10),
     zipOutput(zipOutput),
@@ -160,7 +169,7 @@ void SurveyPlayback::doSimStep() {
 		legProgress = 0;
 		legStartTime_ns = duration_cast<milliseconds>(
 		        system_clock::now().time_since_epoch()
-            ).count();
+        ).count();
 	}
 
 	trackProgress();
@@ -176,7 +185,12 @@ shared_ptr<Leg> SurveyPlayback::getCurrentLeg() {
 	}
 	// NOTE: This should never happen:
 	logging::ERR("ERROR getting current leg: Index out of bounds");
-	return NULL;
+	return nullptr;
+}
+
+shared_ptr<Leg> SurveyPlayback::getPreviousLeg(){
+    if(mCurrentLegIndex == 0) return nullptr;
+    return mSurvey->legs.at(mCurrentLegIndex - 1);
 }
 
 int SurveyPlayback::getCurrentLegIndex() {
@@ -184,9 +198,18 @@ int SurveyPlayback::getCurrentLegIndex() {
 }
 
 string SurveyPlayback::getLegOutputPrefix(){
+    std::shared_ptr<Leg> leg = getCurrentLeg();
+    std::shared_ptr<ScanningStrip> strip = leg->getStrip();
     stringstream ss;
-    ss << "points/leg"
-       << boost::str(boost::format(mFormatString) % getCurrentLegIndex());
+    ss << "points/";
+    if(strip != nullptr){ // Handle prefix when leg belongs to a split
+        ss << "strip"
+           << boost::str(boost::format(mFormatString) % strip->getStripId());
+    }
+    else{ // Handle prefix when leg does not belong to a split
+        ss << "leg"
+           << boost::str(boost::format(mFormatString) % leg->getSerialId());
+    }
     return ss.str();
 }
 
@@ -210,8 +233,8 @@ string SurveyPlayback::getTrajectoryOutputPath(){
 }
 
 void SurveyPlayback::onLegComplete() {
-	// Wait for threads to finish
-	threadPool.join();
+    // Do scanning pulse process handling of on leg complete, if any
+    mScanner->onLegComplete();
 
 	// Start next leg
     elapsedLength += mSurvey->legs.at(mCurrentLegIndex)->getLength();
@@ -282,6 +305,16 @@ void SurveyPlayback::startLeg(unsigned int legIndex, bool manual) {
 
 		// ################ END Set platform destination ##################
 	}
+
+	// Restart deflector if previous leg was not active
+	shared_ptr<Leg> previousLeg = getPreviousLeg();
+    if(
+	    previousLeg != nullptr && !previousLeg->mScannerSettings->active &&
+	    leg->mScannerSettings->active
+    ){
+        mSurvey->scanner->beamDeflector->restartDeflector();
+	}
+
 
 	if(exportToFile) prepareOutput();
     platform->writeNextTrajectory = true;
@@ -358,18 +391,23 @@ void SurveyPlayback::prepareOutput(){
         dynamic_pointer_cast<FullWaveformPulseDetector>(
             getScanner()->detector
         );
+
+    // Fullwave prefix
     stringstream ss;
-    ss << "leg"
-       << boost::str(boost::format(mFormatString) % getCurrentLegIndex());
-    if(zipOutput){
-        ss << "_fullwave.bin";
-    }
+    ss << getLegOutputPrefix();
+    if(zipOutput) ss << "_fullwave.bin";
     else ss << "_fullwave.txt";
+
+    // Set output path
+    std::string const path = mOutputFilePathString + getCurrentOutputPath();
     fwf_detector->setOutputFilePath(
-        mOutputFilePathString + getCurrentOutputPath(),
+        path,
         ss.str(),
         getScanner()->isWriteWaveform()
     );
+
+    // Handle historical tracking of output paths
+    getScanner()->trackOutputPath(path);
 
     // Trajectory writer
     if(mSurvey->scanner->trajectoryTimeInterval != 0.0){
@@ -377,13 +415,16 @@ void SurveyPlayback::prepareOutput(){
                                            getTrajectoryOutputPath();
         mSurvey->scanner->setTrajectoryFileWriter(
             std::make_shared<SimpleSyncFileWriter>(trajectoryOutputPath)
-            );
+        );
     }
 }
 
 void SurveyPlayback::clearPointcloudFile(){
+    // Dont clear strip file, it would overwrite previous point cloud content
+    if(getCurrentLeg()->isContainedInAStrip()) return;
+
     // Clear point cloud file for current leg
-    string outputPath = this->outputPath + mOutputFilePathString +
+    string outputPath = mOutputFilePathString +
                         getCurrentOutputPath();
     ostringstream s;s << "outputPath=" << outputPath << endl;
     logging::INFO(s.str());

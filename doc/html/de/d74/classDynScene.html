@@ -138,9 +138,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a6d188660429d707e323f5904d8f0ccb2"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/d74/classDynScene.html#a6d188660429d707e323f5904d8f0ccb2">DynScene</a> (<a class="el" href="../../dd/d34/classStaticScene.html">StaticScene</a> &amp;ss)</td></tr>
 <tr class="memdesc:a6d188660429d707e323f5904d8f0ccb2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Build a dynamic scene using given static scene as basis.  <a href="#a6d188660429d707e323f5904d8f0ccb2">More...</a><br /></td></tr>
 <tr class="separator:a6d188660429d707e323f5904d8f0ccb2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acce19474e6a0ea94f0e9fe50c0b79be1"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/d74/classDynScene.html#acce19474e6a0ea94f0e9fe50c0b79be1">doSimStep</a> ()</td></tr>
-<tr class="memdesc:acce19474e6a0ea94f0e9fe50c0b79be1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Do corresponding computations for the dynamic scene at current simulation step if proceeds.  <a href="#acce19474e6a0ea94f0e9fe50c0b79be1">More...</a><br /></td></tr>
-<tr class="separator:acce19474e6a0ea94f0e9fe50c0b79be1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a192d62758850392937ae69532ff0c462"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/d74/classDynScene.html#a192d62758850392937ae69532ff0c462">doSimStep</a> () override</td></tr>
+<tr class="memdesc:a192d62758850392937ae69532ff0c462"><td class="mdescLeft">&#160;</td><td class="mdescRight">Do corresponding computations for the dynamic scene at current simulation step if proceeds.  <a href="#a192d62758850392937ae69532ff0c462">More...</a><br /></td></tr>
+<tr class="separator:a192d62758850392937ae69532ff0c462"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad36b5d7ee42ffd3403e40b1f5e568943"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/d74/classDynScene.html#ad36b5d7ee42ffd3403e40b1f5e568943">doStep</a> ()</td></tr>
 <tr class="memdesc:ad36b5d7ee42ffd3403e40b1f5e568943"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dynamic behavior computation itself.  <a href="#ad36b5d7ee42ffd3403e40b1f5e568943">More...</a><br /></td></tr>
 <tr class="separator:ad36b5d7ee42ffd3403e40b1f5e568943"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -222,12 +222,12 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../.
 <tr class="memitem:a3f056f98c3ab727a98cb7c4ff0f4a754 inherit pub_methods_classScene"><td class="memItemLeft" align="right" valign="top">glm::dvec3&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d9c/classScene.html#a3f056f98c3ab727a98cb7c4ff0f4a754">getGroundPointAt</a> (glm::dvec3 point)</td></tr>
 <tr class="memdesc:a3f056f98c3ab727a98cb7c4ff0f4a754 inherit pub_methods_classScene"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain the ground point at specified XY coordinates.  <a href="../../d5/d9c/classScene.html#a3f056f98c3ab727a98cb7c4ff0f4a754">More...</a><br /></td></tr>
 <tr class="separator:a3f056f98c3ab727a98cb7c4ff0f4a754 inherit pub_methods_classScene"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4780b1867590175d6e48f2550b4ccdf4 inherit pub_methods_classScene"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="../../dc/da3/classRaySceneIntersection.html">RaySceneIntersection</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d9c/classScene.html#a4780b1867590175d6e48f2550b4ccdf4">getIntersection</a> (glm::dvec3 &amp;rayOrigin, glm::dvec3 &amp;rayDir, bool groundOnly)</td></tr>
-<tr class="memdesc:a4780b1867590175d6e48f2550b4ccdf4 inherit pub_methods_classScene"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain the intersection between the ray and the scene, if any.  <a href="../../d5/d9c/classScene.html#a4780b1867590175d6e48f2550b4ccdf4">More...</a><br /></td></tr>
-<tr class="separator:a4780b1867590175d6e48f2550b4ccdf4 inherit pub_methods_classScene"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0493bdc9aa66ed4143dac01d3ceeda4e inherit pub_methods_classScene"><td class="memItemLeft" align="right" valign="top">std::map&lt; double, <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d9c/classScene.html#a0493bdc9aa66ed4143dac01d3ceeda4e">getIntersections</a> (glm::dvec3 &amp;rayOrigin, glm::dvec3 &amp;rayDir, bool groundOnly)</td></tr>
-<tr class="memdesc:a0493bdc9aa66ed4143dac01d3ceeda4e inherit pub_methods_classScene"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain all intersections between the ray and the scene, if any.  <a href="../../d5/d9c/classScene.html#a0493bdc9aa66ed4143dac01d3ceeda4e">More...</a><br /></td></tr>
-<tr class="separator:a0493bdc9aa66ed4143dac01d3ceeda4e inherit pub_methods_classScene"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a37f2e60785ec5944773d1fd272104284 inherit pub_methods_classScene"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="../../dc/da3/classRaySceneIntersection.html">RaySceneIntersection</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d9c/classScene.html#a37f2e60785ec5944773d1fd272104284">getIntersection</a> (glm::dvec3 &amp;rayOrigin, glm::dvec3 &amp;rayDir, bool const groundOnly)</td></tr>
+<tr class="memdesc:a37f2e60785ec5944773d1fd272104284 inherit pub_methods_classScene"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain the intersection between the ray and the scene, if any.  <a href="../../d5/d9c/classScene.html#a37f2e60785ec5944773d1fd272104284">More...</a><br /></td></tr>
+<tr class="separator:a37f2e60785ec5944773d1fd272104284 inherit pub_methods_classScene"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4ba5957daaf3ae372e54807cf372ac35 inherit pub_methods_classScene"><td class="memItemLeft" align="right" valign="top">std::map&lt; double, <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d9c/classScene.html#a4ba5957daaf3ae372e54807cf372ac35">getIntersections</a> (glm::dvec3 &amp;rayOrigin, glm::dvec3 &amp;rayDir, bool const groundOnly)</td></tr>
+<tr class="memdesc:a4ba5957daaf3ae372e54807cf372ac35 inherit pub_methods_classScene"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain all intersections between the ray and the scene, if any.  <a href="../../d5/d9c/classScene.html#a4ba5957daaf3ae372e54807cf372ac35">More...</a><br /></td></tr>
+<tr class="separator:a4ba5957daaf3ae372e54807cf372ac35 inherit pub_methods_classScene"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1efb5df7a0b3c59c2a6d0d85c6485a84 inherit pub_methods_classScene"><td class="memItemLeft" align="right" valign="top">glm::dvec3&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d9c/classScene.html#a1efb5df7a0b3c59c2a6d0d85c6485a84">getShift</a> ()</td></tr>
 <tr class="memdesc:a1efb5df7a0b3c59c2a6d0d85c6485a84 inherit pub_methods_classScene"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain the minimum boundaries of the original axis aligned bounding box containing the scene, before it was centered so (0, 0, 0) became its new minimum boundaries.  <a href="../../d5/d9c/classScene.html#a1efb5df7a0b3c59c2a6d0d85c6485a84">More...</a><br /></td></tr>
 <tr class="separator:a1efb5df7a0b3c59c2a6d0d85c6485a84 inherit pub_methods_classScene"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -240,24 +240,24 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../.
 <tr class="memitem:abbd93c3c45cb22ba6fa6c6f7da1dcb01 inherit pub_methods_classScene"><td class="memItemLeft" align="right" valign="top">glm::dvec3&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d9c/classScene.html#abbd93c3c45cb22ba6fa6c6f7da1dcb01">findForceOnGroundQ</a> (int const searchDepth, glm::dvec3 const minzv, vector&lt; <a class="el" href="../../d2/da0/classVertex.html">Vertex</a> *&gt; &amp;vertices, vector&lt; double &gt; const &amp;o, vector&lt; double &gt; const &amp;v)</td></tr>
 <tr class="memdesc:abbd93c3c45cb22ba6fa6c6f7da1dcb01 inherit pub_methods_classScene"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assist doForceOnGround function to find an adequate \(q\) for step 4.  <a href="../../d5/d9c/classScene.html#abbd93c3c45cb22ba6fa6c6f7da1dcb01">More...</a><br /></td></tr>
 <tr class="separator:abbd93c3c45cb22ba6fa6c6f7da1dcb01 inherit pub_methods_classScene"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af7059974718edb201526fb4075ec7eb7 inherit pub_methods_classScene"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d9c/classScene.html#af7059974718edb201526fb4075ec7eb7">buildKDTree</a> (bool const safe=false)</td></tr>
-<tr class="memdesc:af7059974718edb201526fb4075ec7eb7 inherit pub_methods_classScene"><td class="mdescLeft">&#160;</td><td class="mdescRight">Build the KDTree for the scene, overwriting previous one if any.  <a href="../../d5/d9c/classScene.html#af7059974718edb201526fb4075ec7eb7">More...</a><br /></td></tr>
-<tr class="separator:af7059974718edb201526fb4075ec7eb7 inherit pub_methods_classScene"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2f559623cbaa92f0245162dc90b33769 inherit pub_methods_classScene"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d9c/classScene.html#a2f559623cbaa92f0245162dc90b33769">buildKDTreeWithLog</a> (bool const safe=false)</td></tr>
-<tr class="memdesc:a2f559623cbaa92f0245162dc90b33769 inherit pub_methods_classScene"><td class="mdescLeft">&#160;</td><td class="mdescRight">Call buildKDTree exporting building information through logging system.  <a href="../../d5/d9c/classScene.html#a2f559623cbaa92f0245162dc90b33769">More...</a><br /></td></tr>
-<tr class="separator:a2f559623cbaa92f0245162dc90b33769 inherit pub_methods_classScene"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac283c25701a6addafe99071740a15058 inherit pub_methods_classScene"><td class="memItemLeft" align="right" valign="top">virtual std::shared_ptr&lt; <a class="el" href="../../d5/dd0/classKDTreeFactory.html">KDTreeFactory</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d9c/classScene.html#ac283c25701a6addafe99071740a15058">getKDTreeFactory</a> () const</td></tr>
-<tr class="memdesc:ac283c25701a6addafe99071740a15058 inherit pub_methods_classScene"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain the KDTree factory used by the scene.  <a href="../../d5/d9c/classScene.html#ac283c25701a6addafe99071740a15058">More...</a><br /></td></tr>
-<tr class="separator:ac283c25701a6addafe99071740a15058 inherit pub_methods_classScene"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aed9fc8b80b0e0841421549f1b752f2c9 inherit pub_methods_classScene"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d9c/classScene.html#aed9fc8b80b0e0841421549f1b752f2c9">setKDTreeFactory</a> (std::shared_ptr&lt; <a class="el" href="../../d5/dd0/classKDTreeFactory.html">KDTreeFactory</a> &gt; const <a class="el" href="../../d5/d9c/classScene.html#a5b4ca990006db81ed71b4850923b1414">kdtf</a>)</td></tr>
-<tr class="memdesc:aed9fc8b80b0e0841421549f1b752f2c9 inherit pub_methods_classScene"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the KDTree factory to be used by the scene.  <a href="../../d5/d9c/classScene.html#aed9fc8b80b0e0841421549f1b752f2c9">More...</a><br /></td></tr>
-<tr class="separator:aed9fc8b80b0e0841421549f1b752f2c9 inherit pub_methods_classScene"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2c95521ec543d494b99f44be0c9042ac inherit pub_methods_classScene"><td class="memItemLeft" align="right" valign="top">virtual std::shared_ptr&lt; <a class="el" href="../../d0/d64/classKDTreeNodeRoot.html">KDTreeNodeRoot</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d9c/classScene.html#a2c95521ec543d494b99f44be0c9042ac">getKDTree</a> () const</td></tr>
-<tr class="memdesc:a2c95521ec543d494b99f44be0c9042ac inherit pub_methods_classScene"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain the KDTree used by the scene.  <a href="../../d5/d9c/classScene.html#a2c95521ec543d494b99f44be0c9042ac">More...</a><br /></td></tr>
-<tr class="separator:a2c95521ec543d494b99f44be0c9042ac inherit pub_methods_classScene"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4f4ea56f0bda2d033133cb02b8f38888 inherit pub_methods_classScene"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d9c/classScene.html#a4f4ea56f0bda2d033133cb02b8f38888">setKDTree</a> (std::shared_ptr&lt; <a class="el" href="../../d0/d64/classKDTreeNodeRoot.html">KDTreeNodeRoot</a> &gt; const <a class="el" href="../../d5/d9c/classScene.html#a4d1d59711628b8599f766b0700a02b2f">kdtree</a>)</td></tr>
-<tr class="memdesc:a4f4ea56f0bda2d033133cb02b8f38888 inherit pub_methods_classScene"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the KDTree to be used by the scene.  <a href="../../d5/d9c/classScene.html#a4f4ea56f0bda2d033133cb02b8f38888">More...</a><br /></td></tr>
-<tr class="separator:a4f4ea56f0bda2d033133cb02b8f38888 inherit pub_methods_classScene"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3ffef7046522c356bef106522079e353 inherit pub_methods_classScene"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d9c/classScene.html#a3ffef7046522c356bef106522079e353">buildKDGrove</a> (bool const safe=false)</td></tr>
+<tr class="memdesc:a3ffef7046522c356bef106522079e353 inherit pub_methods_classScene"><td class="mdescLeft">&#160;</td><td class="mdescRight">Build the <a class="el" href="../../d9/d76/classKDGrove.html" title="Grove of KDTrees. It supports both static and dynamic KDTrees, handling each accordingly. ">KDGrove</a> for the scene, overwriting previous one if any.  <a href="../../d5/d9c/classScene.html#a3ffef7046522c356bef106522079e353">More...</a><br /></td></tr>
+<tr class="separator:a3ffef7046522c356bef106522079e353 inherit pub_methods_classScene"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad4937809abfcb355f7a36b207a82a755 inherit pub_methods_classScene"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d9c/classScene.html#ad4937809abfcb355f7a36b207a82a755">buildKDGroveWithLog</a> (bool const safe=false)</td></tr>
+<tr class="memdesc:ad4937809abfcb355f7a36b207a82a755 inherit pub_methods_classScene"><td class="mdescLeft">&#160;</td><td class="mdescRight">Call buildKDGrove exporting building information through logging system.  <a href="../../d5/d9c/classScene.html#ad4937809abfcb355f7a36b207a82a755">More...</a><br /></td></tr>
+<tr class="separator:ad4937809abfcb355f7a36b207a82a755 inherit pub_methods_classScene"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a96110a189ae4bbb60855ecc14afd3138 inherit pub_methods_classScene"><td class="memItemLeft" align="right" valign="top">virtual std::shared_ptr&lt; <a class="el" href="../../de/d89/classKDGroveFactory.html">KDGroveFactory</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d9c/classScene.html#a96110a189ae4bbb60855ecc14afd3138">getKDGroveFactory</a> () const</td></tr>
+<tr class="memdesc:a96110a189ae4bbb60855ecc14afd3138 inherit pub_methods_classScene"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain the <a class="el" href="../../d9/d76/classKDGrove.html" title="Grove of KDTrees. It supports both static and dynamic KDTrees, handling each accordingly. ">KDGrove</a> factory used by the scene.  <a href="../../d5/d9c/classScene.html#a96110a189ae4bbb60855ecc14afd3138">More...</a><br /></td></tr>
+<tr class="separator:a96110a189ae4bbb60855ecc14afd3138 inherit pub_methods_classScene"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1b11a57368136ed5373c6362da5f732c inherit pub_methods_classScene"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d9c/classScene.html#a1b11a57368136ed5373c6362da5f732c">setKDGroveFactory</a> (std::shared_ptr&lt; <a class="el" href="../../de/d89/classKDGroveFactory.html">KDGroveFactory</a> &gt; const <a class="el" href="../../d5/d9c/classScene.html#a3468275e1f969eea9aceae7962123483">kdgf</a>)</td></tr>
+<tr class="memdesc:a1b11a57368136ed5373c6362da5f732c inherit pub_methods_classScene"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the <a class="el" href="../../d9/d76/classKDGrove.html" title="Grove of KDTrees. It supports both static and dynamic KDTrees, handling each accordingly. ">KDGrove</a> factory to be used by the scene.  <a href="../../d5/d9c/classScene.html#a1b11a57368136ed5373c6362da5f732c">More...</a><br /></td></tr>
+<tr class="separator:a1b11a57368136ed5373c6362da5f732c inherit pub_methods_classScene"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1aaf897197924c7a5c6affeeccc0c83c inherit pub_methods_classScene"><td class="memItemLeft" align="right" valign="top">virtual std::shared_ptr&lt; <a class="el" href="../../d9/d76/classKDGrove.html">KDGrove</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d9c/classScene.html#a1aaf897197924c7a5c6affeeccc0c83c">getKDGrove</a> () const</td></tr>
+<tr class="memdesc:a1aaf897197924c7a5c6affeeccc0c83c inherit pub_methods_classScene"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain the <a class="el" href="../../d9/d76/classKDGrove.html" title="Grove of KDTrees. It supports both static and dynamic KDTrees, handling each accordingly. ">KDGrove</a> used by the scene.  <a href="../../d5/d9c/classScene.html#a1aaf897197924c7a5c6affeeccc0c83c">More...</a><br /></td></tr>
+<tr class="separator:a1aaf897197924c7a5c6affeeccc0c83c inherit pub_methods_classScene"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa6c3368fd1ebce8848b9480ce39bfd2d inherit pub_methods_classScene"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d9c/classScene.html#aa6c3368fd1ebce8848b9480ce39bfd2d">setKDGrove</a> (std::shared_ptr&lt; <a class="el" href="../../d9/d76/classKDGrove.html">KDGrove</a> &gt; const <a class="el" href="../../d5/d9c/classScene.html#a7cf88b807d54fc552db7551a3ab0aae4">kdgrove</a>)</td></tr>
+<tr class="memdesc:aa6c3368fd1ebce8848b9480ce39bfd2d inherit pub_methods_classScene"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the <a class="el" href="../../d9/d76/classKDGrove.html" title="Grove of KDTrees. It supports both static and dynamic KDTrees, handling each accordingly. ">KDGrove</a> to be used by the scene.  <a href="../../d5/d9c/classScene.html#aa6c3368fd1ebce8848b9480ce39bfd2d">More...</a><br /></td></tr>
+<tr class="separator:aa6c3368fd1ebce8848b9480ce39bfd2d inherit pub_methods_classScene"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a18592eb6dd32e43dd35cd95f22cbbb11 inherit pub_methods_classScene"><td class="memItemLeft" align="right" valign="top">virtual std::shared_ptr&lt; <a class="el" href="../../d2/d1a/classAABB.html">AABB</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d9c/classScene.html#a18592eb6dd32e43dd35cd95f22cbbb11">getBBox</a> () const</td></tr>
 <tr class="memdesc:a18592eb6dd32e43dd35cd95f22cbbb11 inherit pub_methods_classScene"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain the scene's bounding box.  <a href="../../d5/d9c/classScene.html#a18592eb6dd32e43dd35cd95f22cbbb11">More...</a><br /></td></tr>
 <tr class="separator:a18592eb6dd32e43dd35cd95f22cbbb11 inherit pub_methods_classScene"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -311,13 +311,13 @@ vector&lt; shared_ptr&lt; <a class="el" href="../../dd/dc4/classScenePart.html">
 <tr class="memdesc:a9d2e21ba9eae6afd676eba3499e356f7 inherit pro_attribs_classStaticScene"><td class="mdescLeft">&#160;</td><td class="mdescRight">Static objects composing the scene. <br /></td></tr>
 <tr class="separator:a9d2e21ba9eae6afd676eba3499e356f7 inherit pro_attribs_classStaticScene"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_attribs_classScene"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classScene')"><img src="../../closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="../../d5/d9c/classScene.html">Scene</a></td></tr>
-<tr class="memitem:a5b4ca990006db81ed71b4850923b1414 inherit pro_attribs_classScene"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="../../d5/dd0/classKDTreeFactory.html">KDTreeFactory</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d9c/classScene.html#a5b4ca990006db81ed71b4850923b1414">kdtf</a></td></tr>
-<tr class="memdesc:a5b4ca990006db81ed71b4850923b1414 inherit pro_attribs_classScene"><td class="mdescLeft">&#160;</td><td class="mdescRight">The KDTree factory used to build the scene KDTree.  <a href="../../d5/d9c/classScene.html#a5b4ca990006db81ed71b4850923b1414">More...</a><br /></td></tr>
-<tr class="separator:a5b4ca990006db81ed71b4850923b1414 inherit pro_attribs_classScene"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4d1d59711628b8599f766b0700a02b2f inherit pro_attribs_classScene"><td class="memItemLeft" align="right" valign="top"><a id="a4d1d59711628b8599f766b0700a02b2f"></a>
-std::shared_ptr&lt; <a class="el" href="../../d0/d64/classKDTreeNodeRoot.html">KDTreeNodeRoot</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d9c/classScene.html#a4d1d59711628b8599f766b0700a02b2f">kdtree</a></td></tr>
-<tr class="memdesc:a4d1d59711628b8599f766b0700a02b2f inherit pro_attribs_classScene"><td class="mdescLeft">&#160;</td><td class="mdescRight">KDTree splitting scene points/vertices to speed-up intersection computations. <br /></td></tr>
-<tr class="separator:a4d1d59711628b8599f766b0700a02b2f inherit pro_attribs_classScene"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3468275e1f969eea9aceae7962123483 inherit pro_attribs_classScene"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="../../de/d89/classKDGroveFactory.html">KDGroveFactory</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d9c/classScene.html#a3468275e1f969eea9aceae7962123483">kdgf</a></td></tr>
+<tr class="memdesc:a3468275e1f969eea9aceae7962123483 inherit pro_attribs_classScene"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="../../d9/d76/classKDGrove.html" title="Grove of KDTrees. It supports both static and dynamic KDTrees, handling each accordingly. ">KDGrove</a> factory used to build the scene <a class="el" href="../../d9/d76/classKDGrove.html" title="Grove of KDTrees. It supports both static and dynamic KDTrees, handling each accordingly. ">KDGrove</a>.  <a href="../../d5/d9c/classScene.html#a3468275e1f969eea9aceae7962123483">More...</a><br /></td></tr>
+<tr class="separator:a3468275e1f969eea9aceae7962123483 inherit pro_attribs_classScene"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7cf88b807d54fc552db7551a3ab0aae4 inherit pro_attribs_classScene"><td class="memItemLeft" align="right" valign="top"><a id="a7cf88b807d54fc552db7551a3ab0aae4"></a>
+std::shared_ptr&lt; <a class="el" href="../../d9/d76/classKDGrove.html">KDGrove</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d9c/classScene.html#a7cf88b807d54fc552db7551a3ab0aae4">kdgrove</a></td></tr>
+<tr class="memdesc:a7cf88b807d54fc552db7551a3ab0aae4 inherit pro_attribs_classScene"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="../../d9/d76/classKDGrove.html" title="Grove of KDTrees. It supports both static and dynamic KDTrees, handling each accordingly. ">KDGrove</a> containing a KDTree for each scene part to speed-up ray-primitive intersection check computations. <br /></td></tr>
+<tr class="separator:a7cf88b807d54fc552db7551a3ab0aae4 inherit pro_attribs_classScene"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a012be28a1b960338f634d5fec54c5330 inherit pro_attribs_classScene"><td class="memItemLeft" align="right" valign="top"><a id="a012be28a1b960338f634d5fec54c5330"></a>
 std::shared_ptr&lt; <a class="el" href="../../d2/d1a/classAABB.html">AABB</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d9c/classScene.html#a012be28a1b960338f634d5fec54c5330">bbox</a></td></tr>
 <tr class="memdesc:a012be28a1b960338f634d5fec54c5330 inherit pro_attribs_classScene"><td class="mdescLeft">&#160;</td><td class="mdescRight">Axis aligned bounding box defining scene boundaries. <br /></td></tr>
@@ -326,6 +326,9 @@ std::shared_ptr&lt; <a class="el" href="../../d2/d1a/classAABB.html">AABB</a> &g
 std::shared_ptr&lt; <a class="el" href="../../d2/d1a/classAABB.html">AABB</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d9c/classScene.html#a6443452016957950e3a7260dcc0076f1">bbox_crs</a></td></tr>
 <tr class="memdesc:a6443452016957950e3a7260dcc0076f1 inherit pro_attribs_classScene"><td class="mdescLeft">&#160;</td><td class="mdescRight">Original axis aligned bounding box defining scene boundaries before centering it. <br /></td></tr>
 <tr class="separator:a6443452016957950e3a7260dcc0076f1 inherit pro_attribs_classScene"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aac4d9a2ecbfe18318a5953905fa57fb9 inherit pro_attribs_classScene"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="../../df/d01/classKDGroveRaycaster.html">KDGroveRaycaster</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d9c/classScene.html#aac4d9a2ecbfe18318a5953905fa57fb9">raycaster</a></td></tr>
+<tr class="memdesc:aac4d9a2ecbfe18318a5953905fa57fb9 inherit pro_attribs_classScene"><td class="mdescLeft">&#160;</td><td class="mdescRight">The raycaster based on <a class="el" href="../../d9/d76/classKDGrove.html" title="Grove of KDTrees. It supports both static and dynamic KDTrees, handling each accordingly. ">KDGrove</a>.  <a href="../../d5/d9c/classScene.html#aac4d9a2ecbfe18318a5953905fa57fb9">More...</a><br /></td></tr>
+<tr class="separator:aac4d9a2ecbfe18318a5953905fa57fb9 inherit pro_attribs_classScene"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
@@ -503,11 +506,14 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
 
 </div>
 </div>
-<a id="acce19474e6a0ea94f0e9fe50c0b79be1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acce19474e6a0ea94f0e9fe50c0b79be1">&#9670;&nbsp;</a></span>doSimStep()</h2>
+<a id="a192d62758850392937ae69532ff0c462"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a192d62758850392937ae69532ff0c462">&#9670;&nbsp;</a></span>doSimStep()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">bool DynScene::doSimStep </td>
@@ -516,6 +522,11 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
           <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Do corresponding computations for the dynamic scene at current simulation step if proceeds. </p>
@@ -527,7 +538,11 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
 <dd>
 <a class="el" href="../../de/d74/classDynScene.html#a23c81da32e63f48e03b1e36e779684ca" title="Stores the current simulation step. ">DynScene::currentStep</a> </dd>
 <dd>
-<a class="el" href="../../de/d74/classDynScene.html#ad36b5d7ee42ffd3403e40b1f5e568943" title="Dynamic behavior computation itself. ">DynScene::doStep</a> </dd></dl>
+<a class="el" href="../../de/d74/classDynScene.html#ad36b5d7ee42ffd3403e40b1f5e568943" title="Dynamic behavior computation itself. ">DynScene::doStep</a> </dd>
+<dd>
+<a class="el" href="../../d5/d9c/classScene.html#ae788ef988fdebee152a06adb3974da6a" title="Support simulation step handling from scene side. ">Scene::doSimStep</a> </dd></dl>
+
+<p>Reimplemented from <a class="el" href="../../d5/d9c/classScene.html#ae788ef988fdebee152a06adb3974da6a">Scene</a>.</p>
 
 </div>
 </div>
@@ -549,7 +564,7 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
 <p>Dynamic behavior computation itself. </p>
 <p>This function is invoked by doSimStep when necessary.</p>
 <dl class="section return"><dt>Returns</dt><dd>True if any dynamic object was udpated, false otherwise </dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../de/d74/classDynScene.html#acce19474e6a0ea94f0e9fe50c0b79be1" title="Do corresponding computations for the dynamic scene at current simulation step if proceeds...">DynScene::doSimStep</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../de/d74/classDynScene.html#a192d62758850392937ae69532ff0c462" title="Do corresponding computations for the dynamic scene at current simulation step if proceeds...">DynScene::doSimStep</a> </dd></dl>
 
 </div>
 </div>

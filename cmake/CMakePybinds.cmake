@@ -4,7 +4,7 @@ if(${PYTHON_BINDING})
     # Set PYTHON_BINDING to compile boost with python binding support
     find_package(Boost 1.71.0 REQUIRED COMPONENTS
         ${BASE_BOOST_COMPONENTS} python${PYTHON_VERSION}
-        )
+    )
     # Add PYTHON_BINDING define to compile binding code
     add_definitions(-DPYTHON_BINDING)
     add_definitions(-DBOOST_PYTHON_STATIC_LIB)

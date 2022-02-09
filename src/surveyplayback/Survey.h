@@ -1,9 +1,9 @@
 #pragma once
 
-#include "Asset.h"
-#include "Scanner.h"
-#include "AbstractDetector.h"
-#include "Leg.h"
+#include <Asset.h>
+#include <Scanner.h>
+#include <AbstractDetector.h>
+#include <Leg.h>
 
 /**
  * @brief Class representing a Helios++ survey

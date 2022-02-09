@@ -286,12 +286,12 @@ void XYZPointCloudFileLoader::fillVoxelsGrid(
     string const &filePathString
 ){
     // Retrieve voxel grid parameters
-    size_t rgbRIndex = 3;
-    size_t rgbGIndex = 4;
-    size_t rgbBIndex = 5;
-    size_t normalXIndex = 6;
-    size_t normalYIndex = 7;
-    size_t normalZIndex = 8;
+    size_t rgbRIndex = 6;
+    size_t rgbGIndex = 7;
+    size_t rgbBIndex = 8;
+    size_t normalXIndex = 3;
+    size_t normalYIndex = 4;
+    size_t normalZIndex = 5;
     if(params.find("rgbRIndex") != params.end()){
         rgbRIndex = (size_t) boost::get<int>(params["rgbRIndex"]);
         rgbGIndex = (size_t) boost::get<int>(params["rgbGIndex"]);

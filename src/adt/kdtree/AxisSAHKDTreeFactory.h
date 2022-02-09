@@ -61,4 +61,5 @@ public:
         vector<Primitive *> &primitives,
         int const depth
     ) const override;
+
 };

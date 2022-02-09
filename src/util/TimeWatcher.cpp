@@ -19,12 +19,29 @@ void TimeWatcher::start(){
         )
     );
 }
+void TimeWatcher::startIfNull(){
+    if(tStart == nullptr) start();
+}
+void TimeWatcher::releaseStart(){
+    tStart = nullptr;
+}
+bool TimeWatcher::hasStarted() const{
+    return tStart!=nullptr;
+}
+
 void TimeWatcher::stop(){
     tEnd  = std::unique_ptr<std::chrono::high_resolution_clock::time_point>(
         new std::chrono::high_resolution_clock::time_point(
             std::chrono::high_resolution_clock::now()
         )
     );
+}
+
+void TimeWatcher::saveStart(){
+    syncTimePoints(savedStart, tStart);
+}
+void TimeWatcher::loadStart(){
+    syncTimePoints(tStart, savedStart);
 }
 
 std::shared_ptr<std::chrono::high_resolution_clock::duration>
@@ -87,9 +104,32 @@ void TimeWatcher::reportFormat(std::string msg){
     logging::INFO(ss.str());
 }
 
+void TimeWatcher::synchronize(TimeWatcher const &source){
+    syncTimePoints(tStart, source.tStart);
+    syncTimePoints(tEnd, source.tEnd);
+    syncTimePoints(savedStart, source.savedStart);
+}
+
 // *** PRIVATE METHODS *** //
 // ********************** //
 bool TimeWatcher::hasNulls(){
     return tStart == nullptr || tEnd == nullptr;
 }
 
+void TimeWatcher::syncTimePoints(
+    std::unique_ptr<std::chrono::high_resolution_clock::time_point>
+        &p,
+    std::unique_ptr<std::chrono::high_resolution_clock::time_point> const
+        &q
+){
+    if(q==nullptr) p = nullptr;
+    else{
+        if(p==nullptr){
+            p = std::unique_ptr<std::chrono::high_resolution_clock::time_point>
+            (
+                new std::chrono::high_resolution_clock::time_point()
+            );
+        }
+        *p = *q;
+    }
+}

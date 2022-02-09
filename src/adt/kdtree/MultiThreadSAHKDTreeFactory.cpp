@@ -4,8 +4,10 @@
 // ************************************ //
 MultiThreadSAHKDTreeFactory::MultiThreadSAHKDTreeFactory(
     shared_ptr<SimpleKDTreeFactory> const kdtf,
-    size_t const numJobs
-) : MultiThreadKDTreeFactory(kdtf, numJobs)
+    shared_ptr<SimpleKDTreeGeometricStrategy> const gs,
+    size_t const numJobs,
+    size_t const geomJobs
+) : MultiThreadKDTreeFactory(kdtf, gs, numJobs, geomJobs)
 {
     // sahkdtf by casting kdtf
     sahkdtf = std::static_pointer_cast<SAHKDTreeFactory>(kdtf);
@@ -19,5 +21,4 @@ MultiThreadSAHKDTreeFactory::MultiThreadSAHKDTreeFactory(
     sahkdtf->_unlockILOT = [&] () -> void {
         this->ilotCacheLock.reset();
     };
-
 }

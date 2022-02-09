@@ -6,12 +6,7 @@
 #include <XYZPointCloudFileLoader.h>
 #include <DetailedVoxelLoader.h>
 #include <scene/dynamic/DynScene.h>
-#include <SimpleKDTreeFactory.h>
-#include <MultiThreadKDTreeFactory.h>
-#include <SAHKDTreeFactory.h>
-#include <MultiThreadSAHKDTreeFactory.h>
-#include <AxisSAHKDTreeFactory.h>
-#include <FastSAHKDTreeFactory.h>
+#include <KDTreeFactoryMaker.h>
 
 #include <logging.hpp>
 
@@ -80,17 +75,16 @@ XmlSceneLoader::createSceneFromXml(
     std::stringstream ss;
     ss  << std::to_string(scenePartCounter) << " sceneparts loaded in "
         << tw.getElapsedDecimalSeconds() << "s\n";
-    logging::INFO(ss.str());
+    logging::TIME(ss.str());
 
-    // Set KDTree factory and finish scene loading
-    //scene->setKDTreeFactory(makeKDTreeFactory()); // Not yet, avoid building
-    scene->setKDTreeFactory(nullptr); // Prevent building before serializing
+    // Set KDGrove factory and finish scene loading
+    scene->setKDGroveFactory(nullptr); // Prevent building before serializing
     bool success = scene->finalizeLoading();
     if (!success) {
         logging::ERR("Finalizing the scene failed.");
         exit(-1);
     }
-    scene->setKDTreeFactory(makeKDTreeFactory()); // Better after building
+    scene->setKDGroveFactory(makeKDGroveFactory()); // Better after building
 
     // Store scene type if requested
     if(sceneType != nullptr){
@@ -344,51 +338,43 @@ shared_ptr<StaticScene> XmlSceneLoader::makeSceneDynamic(
 
 shared_ptr<KDTreeFactory> XmlSceneLoader::makeKDTreeFactory(){
     if(kdtNumJobs == 0) kdtNumJobs = std::thread::hardware_concurrency();
+    if(kdtGeomJobs == 0) kdtGeomJobs = kdtNumJobs;
 
     if(kdtFactoryType == 1){ // Simple
         logging::DEBUG("XmlSceneLoader is using a SimpleKDTreeFactory");
-        shared_ptr<SimpleKDTreeFactory> factory =
-            make_shared<SimpleKDTreeFactory>();
         if(kdtNumJobs > 1){
-            return make_shared<MultiThreadKDTreeFactory>(factory, kdtNumJobs);
+            return KDTreeFactoryMaker::makeSimpleMultiThread(
+                kdtNumJobs, kdtGeomJobs
+            );
         }
-        return factory;
+        return KDTreeFactoryMaker::makeSimple();
     }
     else if(kdtFactoryType == 2){ // SAH
         logging::DEBUG("XmlSceneLoader is using a SAHKDTreeFactory");
-        shared_ptr<SAHKDTreeFactory> factory =
-            make_shared<SAHKDTreeFactory>(kdtSAHLossNodes);
         if(kdtNumJobs > 1){
-            return make_shared<MultiThreadSAHKDTreeFactory>(
-                factory,
-                kdtNumJobs
+            return KDTreeFactoryMaker::makeSAHMultiThread(
+                kdtSAHLossNodes, kdtNumJobs, kdtGeomJobs
             );
         }
-        return factory;
+        return KDTreeFactoryMaker::makeSAH(kdtSAHLossNodes);
     }
     else if(kdtFactoryType == 3){ // Axis SAH
         logging::DEBUG("XmlSceneLoader is using a AxisSAHKDTreeFactory");
-        shared_ptr<AxisSAHKDTreeFactory> factory =
-            make_shared<AxisSAHKDTreeFactory>(kdtSAHLossNodes);
         if(kdtNumJobs > 1){
-            return make_shared<MultiThreadSAHKDTreeFactory>(
-                factory,
-                kdtNumJobs
+            return KDTreeFactoryMaker::makeAxisSAHMultiThread(
+                kdtSAHLossNodes, kdtNumJobs, kdtGeomJobs
             );
         }
-        return factory;
+        return KDTreeFactoryMaker::makeAxisSAH(kdtSAHLossNodes);
     }
     else if(kdtFactoryType == 4){ // Fast SAH
         logging::DEBUG("XmlSceneLoader is using a FastSAHKDTreeFactory");
-        shared_ptr<FastSAHKDTreeFactory> factory =
-            make_shared<FastSAHKDTreeFactory>(kdtSAHLossNodes);
         if(kdtNumJobs > 1){
-            return make_shared<MultiThreadSAHKDTreeFactory>(
-                factory,
-                kdtNumJobs
+            return KDTreeFactoryMaker::makeFastSAHMultiThread(
+                kdtSAHLossNodes, kdtNumJobs, kdtGeomJobs
             );
         }
-        return factory;
+        return KDTreeFactoryMaker::makeFastSAH(kdtSAHLossNodes);
     }
     else{
         std::stringstream ss;
@@ -397,4 +383,8 @@ shared_ptr<KDTreeFactory> XmlSceneLoader::makeKDTreeFactory(){
             << kdtFactoryType;
         throw HeliosException(ss.str());
     }
+}
+
+shared_ptr<KDGroveFactory> XmlSceneLoader::makeKDGroveFactory(){
+    return make_shared<KDGroveFactory>(makeKDTreeFactory());
 }
