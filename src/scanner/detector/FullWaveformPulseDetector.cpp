@@ -37,9 +37,10 @@ void FullWaveformPulseDetector::applySettings(shared_ptr<ScannerSettings> & sett
 void FullWaveformPulseDetector::setOutputFilePath(
     std::string path,
     std::string fname,
-    bool computeWaveform
+    bool computeWaveform,
+    bool lastLegInStrip
 ) {
-	AbstractDetector::setOutputFilePath(path);
+	AbstractDetector::setOutputFilePath(path, lastLegInStrip);
 
 	if(computeWaveform) {
         try {

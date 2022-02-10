@@ -40,7 +40,7 @@ WriterType AbstractDetector::chooseWriterType() {
 }
 // ATTENTION: This method needs to be synchronized since multiple threads are
 // writing to the output file!
-void AbstractDetector::setOutputFilePath(string path) {
+void AbstractDetector::setOutputFilePath(string path, bool lastLegInStrip) {
   this->outputFilePath = path;
   logging::WARN("outputFilePath=" + path);
   try {
@@ -66,6 +66,13 @@ void AbstractDetector::setOutputFilePath(string path) {
     {
       sfw = writers[path];
     }
+
+    // Remove writer from writers hashmap if it is the last leg in strip
+    // to allow the sfw destructor to be called when sfw is replaced in the
+    // next leg
+    if (lastLegInStrip)
+      writers.erase(path);
+
   } catch (std::exception &e) {
     logging::WARN(e.what());
   }

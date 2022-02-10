@@ -155,5 +155,5 @@ public:
      * @brief Set path to output file
      * @param path New path to output file
      */
-     void setOutputFilePath(std::string path);
+     void setOutputFilePath(std::string path, const bool lastLegInStrip);
 };
