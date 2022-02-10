@@ -120,33 +120,33 @@ shared_ptr<ScenePart> XmlSceneLoader::loadFilters(
             filter = new ScaleFilter(scenePart);
         }
 
-            // Read GeoTiff file:
+        // Read GeoTiff file:
         else if (filterType == "geotiffloader") {
             filter = new GeoTiffFileLoader();
         }
 
-            // Read Wavefront Object file:
+        // Read Wavefront Object file:
         else if (filterType == "objloader") {
             filter = new WavefrontObjFileLoader();
         }
 
-            // Apply rotation filter:
+        // Apply rotation filter:
         else if (filterType == "rotate") {
             filter = new RotateFilter(scenePart);
         }
 
-            // Apply translate transformation:
+        // Apply translate transformation:
         else if (filterType == "translate") {
             filter = new TranslateFilter(scenePart);
         }
 
-            // Read xyz ASCII point cloud file:
+        // Read xyz ASCII point cloud file:
         else if (filterType == "xyzloader") {
             filter = new XYZPointCloudFileLoader();
             holistic = true;
         }
 
-            // Read detailed voxels file
+        // Read detailed voxels file
         else if (filterType == "detailedvoxels") {
             filter = new DetailedVoxelLoader();
         }

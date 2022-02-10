@@ -45,9 +45,6 @@ public:
      */
     void _write(Measurement const &m, glm::dvec3 const & shift) override{
         ofs << measurementToString(m, shift);
-        // TODO Remove section ---
-        ofs.flush();
-        // --- TODO Remove section
     }
 
     /**

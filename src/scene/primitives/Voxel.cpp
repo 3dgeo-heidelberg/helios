@@ -48,17 +48,17 @@ double Voxel::getIncidenceAngle_rad(
     const glm::dvec3& intersectionPoint
 ){
     // If there is no valid normal, use closest face strategy
-    //if(!hasNormal()){ // TODO Restore
+    if(!hasNormal()){
         return getIncidenceAngleClosestFace_rad(
             rayOrigin,
             rayDir,
             intersectionPoint
         );
-    //}  // TODO Restore
+    }
 
-    std::cout << "VOXEL HAS NORMAL!" << std::endl; // TODO Remove
     // Determine incidence angle considering voxel normal
-    return M_PI - glm::angle(normal, rayDir);
+    // TODO Rethink : Computing incidence angle here fails
+    return M_PI - glm::angle(v.normal, rayDir);
 }
 
 double Voxel::getIncidenceAngleClosestFace_rad(
@@ -66,6 +66,7 @@ double Voxel::getIncidenceAngleClosestFace_rad(
     const glm::dvec3& rayDir,
     const glm::dvec3& intersectionPoint
 ){
+    // TODO Rethink : Use dot^2 instead of distance should be more efficient
     // Determine normal of closest face to compute incidence angle
     glm::dvec3 normal(1, 0, 0);
     glm::dvec3 fc = v.pos + glm::dvec3(halfSize, 0, 0);

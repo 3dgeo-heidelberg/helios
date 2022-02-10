@@ -100,7 +100,6 @@ void AbstractPulseRunnable::capturePoint(
     std::mutex *cycleMeasurementsMutex
 ) {
 	if (!writeGround && m.classification == LasSpecification::GROUND) {
-	    std::cout << "DISCARDED CAPTURE OF GROUND POINT!" << std::endl; // TODO Remove
 		return;
 	}
 
@@ -108,7 +107,6 @@ void AbstractPulseRunnable::capturePoint(
 	// TODO Rethink : This check is already done in FullWaveformPulseRunnable
 	// What is the point on repeating it?
 	if (m.distance < detector->cfg_device_rangeMin_m) {
-	    std::cout << "DISCARDED CAPTURE BECAUSE OF MIN DISTANCE!" << std::endl; // TODO Remove
 		return;
 	}
 	// ########## BEGIN Apply gaussian range accuracy error ###########
