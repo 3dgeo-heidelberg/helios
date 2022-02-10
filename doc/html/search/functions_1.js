@@ -18,6 +18,8 @@ var searchData=
   ['addsequence',['addSequence',['../d4/d48/classDynSequentiableMovingObject.html#a77a0f7b168184e8da6117543e555984c',1,'DynSequentiableMovingObject']]],
   ['addsubject',['addSubject',['../d1/d0a/classBasicDynGrove.html#a5eefe170f972ad3a275c227e579b80f7',1,'BasicDynGrove::addSubject()'],['../d9/d76/classKDGrove.html#aaa8940bf01a498ae77d32f3e51ad5fd6',1,'KDGrove::addSubject()']]],
   ['addtree',['addTree',['../d9/dcd/classBasicStaticGrove.html#a2a887801e9c97d6d2c19c2a0955c0c3a',1,'BasicStaticGrove::addTree()'],['../d8/da0/classStaticGrove.html#a9f4ab227ef238058d486127c08daf3e1',1,'StaticGrove::addTree()']]],
+  ['addtriangletopolymesh',['addTriangleToPolymesh',['../d1/dda/classvisualhelios_1_1VHStaticObjectAdapter.html#aeb46f8cd8ea161b117e11b88511667af',1,'visualhelios::VHStaticObjectAdapter']]],
+  ['addvoxeltopolymesh',['addVoxelToPolymesh',['../d1/dda/classvisualhelios_1_1VHStaticObjectAdapter.html#aec9218512bc10ba21966eb5e9ebd13f3',1,'visualhelios::VHStaticObjectAdapter']]],
   ['alpha',['alpha',['../da/d69/classSurfaceInspector_1_1maths_1_1SingularContextComputer.html#aeed6782c8a1c27b34e2f82515a9ba797',1,'SurfaceInspector::maths::SingularContextComputer']]],
   ['angle',['angle',['../d1/dd3/classSurfaceInspector_1_1maths_1_1Vector.html#ad1dcec6c7e5d184eefc89287e8999919',1,'SurfaceInspector::maths::Vector']]],
   ['append',['append',['../df/dfa/classDynSequence.html#a679dc2ef8981c4f67b41c99753394d83',1,'DynSequence::append(shared_ptr&lt; T &gt; element)'],['../df/dfa/classDynSequence.html#adacef17320c6ad3da70312ecd479c9ae',1,'DynSequence::append(vector&lt; shared_ptr&lt; T &gt;&gt; elements)']]],

@@ -9,6 +9,7 @@ var searchData=
   ['warehousethreadpool',['WarehouseThreadPool',['../da/d92/classWarehouseThreadPool.html',1,'WarehouseThreadPool&lt; Task &gt;'],['../da/d92/classWarehouseThreadPool.html#a575db94e0ab1ef84aa35adb3529a20fe',1,'WarehouseThreadPool::WarehouseThreadPool()']]],
   ['warehousethreadpool_3c_20pulsetaskdropper_20_3e',['WarehouseThreadPool&lt; PulseTaskDropper &gt;',['../da/d92/classWarehouseThreadPool.html',1,'']]],
   ['warn',['WARN',['../d0/da9/logging_8hpp.html#ab5be34e04f22d7b85bcfff4de30d5c45',1,'logging']]],
+  ['warnaboutpotentialerrors',['warnAboutPotentialErrors',['../d6/d03/classXYZPointCloudFileLoader.html#abf4534992108adb294711716766d8097',1,'XYZPointCloudFileLoader']]],
   ['water',['WATER',['../df/d64/classLasSpecification.html#a7af2723918eb49310208190ba225787e',1,'LasSpecification']]],
   ['wavefrontobj',['WavefrontObj',['../d0/d92/classWavefrontObj.html',1,'']]],
   ['wavefrontobjcache',['WavefrontObjCache',['../d8/d78/classWavefrontObjCache.html',1,'WavefrontObjCache'],['../d8/d78/classWavefrontObjCache.html#a3e6ba1aa2237e9d77a84dd3d73dcd7a9',1,'WavefrontObjCache::WavefrontObjCache()']]],

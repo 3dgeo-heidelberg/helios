@@ -12,7 +12,7 @@ var classDynMovingObject =
     [ "clearPositionMotionQueue", "d4/d96/classDynMovingObject.html#a6b8f56370703b93fb839c8dc25b11771", null ],
     [ "doStep", "d4/d96/classDynMovingObject.html#a813d8a76e64b24b059959998520325ff", null ],
     [ "getGroveSubjectId", "d4/d96/classDynMovingObject.html#a0bb16e14bd98167e4115f8953708f92d", null ],
-    [ "getType", "d4/d96/classDynMovingObject.html#a66d98f023402645e9378b213d8de562d", null ],
+    [ "getType", "d4/d96/classDynMovingObject.html#afcd644a50ed99c57d06f9e460de5106b", null ],
     [ "nextNormalMotion", "d4/d96/classDynMovingObject.html#a5eeb7fdf653b0e74ff683d1ca6ac47a4", null ],
     [ "nextPositionMotion", "d4/d96/classDynMovingObject.html#a23ff3e5058ef2aee45d59975d85f723e", null ],
     [ "normalMotionQueueHasNext", "d4/d96/classDynMovingObject.html#a10bab66c89b9b5ce4a71756eac4c1225", null ],
