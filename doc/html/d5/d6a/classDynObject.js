@@ -8,7 +8,7 @@ var classDynObject =
     [ "~DynObject", "d5/d6a/classDynObject.html#a299e91cee8725c4477e093e0a8df77f3", null ],
     [ "countVertices", "d5/d6a/classDynObject.html#a05b39e06de27e49717a1f30a18f43b45", null ],
     [ "doStep", "d5/d6a/classDynObject.html#ae3308d5d877a37e6880749925e6e3d8c", null ],
-    [ "getType", "d5/d6a/classDynObject.html#a5af87358f9a690000fd493c547aadabc", null ],
+    [ "getType", "d5/d6a/classDynObject.html#ac25dacf5b1c0268fd0c91dd2eecb44f3", null ],
     [ "matrixFromPrimitives", "d5/d6a/classDynObject.html#acf0f5821c7c6f8ab9d3c0548768c5014", null ],
     [ "matrixFromPrimitives", "d5/d6a/classDynObject.html#afcae1d2b28ef4dce137e741f423d7a6e", null ],
     [ "matrixToPrimitives", "d5/d6a/classDynObject.html#ad2414442009a1d0e7dcfa160f02df9a7", null ],

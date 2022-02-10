@@ -227,12 +227,12 @@ private:
      * @see FullWaveformPulseRunnable::initializeFullWaveform
      */
     void populateFullWaveform(
-        std::map<double, double> &reflections,
+        std::map<double, double> const &reflections,
         std::vector<double> &fullwave,
-        double distanceThreshold,
-        double minHitTime_ns,
-        double nsPerBin,
-        int peakIntensityIndex
+        double const distanceThreshold,
+        double const minHitTime_ns,
+        double const nsPerBin,
+        int const peakIntensityIndex
     );
     /**
      * @brief Digest a previously populated full waveform vector,
@@ -249,13 +249,13 @@ private:
         std::vector<Measurement> &pointsMeasurement,
         int &numReturns,
         std::vector<std::vector<double>>& apMatrix,
-        std::vector<double> &fullwave,
-        vector<RaySceneIntersection> &intersects,
-        glm::dvec3 &beamDir,
-        double nsPerBin,
-        int numFullwaveBins,
-        int peakIntensityIndex,
-        double minHitTime_ns
+        std::vector<double> const &fullwave,
+        vector<RaySceneIntersection> const &intersects,
+        glm::dvec3 const &beamDir,
+        double const nsPerBin,
+        int const numFullwaveBins,
+        int const peakIntensityIndex,
+        double const minHitTime_ns
     );
     /**
      * @brief Export measurements and full waveform data
@@ -280,14 +280,14 @@ private:
      * @brief Detect full waveform peaks
      */
     bool detectPeak(
-        int i,
-        int win_size,
-        vector<double> &fullwave
+        int const i,
+        int const win_size,
+        vector<double> const &fullwave
     );
 
     /**
-     * @brief Compute the space distribution equation to calculate the beam energy
-     * decreasing the further away from the center
+     * @brief Compute the space distribution equation to calculate the beam
+     * energy decreasing the further away from the center
      */
 	double calcEmmitedPower(double radius, double targetRange);
 	/**
@@ -318,7 +318,9 @@ private:
 
 public:
     /**
-     * @brief Compute intensity
+     * @brief Compute intensity. It is, the strength of the laser going back
+     *  to the detector considering the emmited power as computed by
+     *  FullWaveformPulseRannaable::calcEmmitedPower
      */
 	double calcIntensity(
 	    double incidenceAngle,
@@ -331,7 +333,9 @@ public:
     );
 
 	/**
-	 * @brief Compute intensity
+	 * @brief Compute intensity through scaling
+	 *  AbstractPulseRunnable::calcReceivedPower, which is computed considering
+	 *  FullWaveformPulseRunnable::calcEmmitedPower
 	 */
 	double calcIntensity(
         double targetRange,

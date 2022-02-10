@@ -24,7 +24,7 @@ var searchData=
   ['iscalcechowidth',['isCalcEchowidth',['../dc/d42/classScanner.html#ae0cf9cf8014498ea6a997106498ea714',1,'Scanner']]],
   ['isclipenabled',['isClipEnabled',['../d9/d6b/classNoiseSource.html#ad5fa6dcbd1331472337d34359a9be38d',1,'NoiseSource']]],
   ['iscontainedinastrip',['isContainedInAStrip',['../de/d51/classLeg.html#af35867cfcdda534e188f7199f57feebc',1,'Leg']]],
-  ['isdynamic',['isDynamic',['../d6/ddc/classPulseThreadPool.html#a76167fc2ab296f2e759a1fcba37bafba',1,'PulseThreadPool']]],
+  ['isdynamic',['isDynamic',['../d0/d64/classKDTreeNodeRoot.html#a0547ad91ff563f80f708493366c5d77e',1,'KDTreeNodeRoot::isDynamic()'],['../d6/ddc/classPulseThreadPool.html#a76167fc2ab296f2e759a1fcba37bafba',1,'PulseThreadPool::isDynamic()']]],
   ['isdynobjectrenderingnormals',['isDynObjectRenderingNormals',['../db/d0e/classvisualhelios_1_1VHDynSceneAdapter.html#a2bbc64cbd58972a928f1660423af150d',1,'visualhelios::VHDynSceneAdapter']]],
   ['isdynobjectupdated',['isDynObjectUpdated',['../de/d74/classDynScene.html#ae8c4abef7c395a2b7b7a7a3ba033968c',1,'DynScene::isDynObjectUpdated()'],['../db/d0e/classvisualhelios_1_1VHDynSceneAdapter.html#a08c66ed06618bcf91394c9ed8a3560de',1,'visualhelios::VHDynSceneAdapter::isDynObjectUpdated()']]],
   ['isfinished',['isFinished',['../d9/ddd/classpyhelios_1_1PyHeliosSimulation.html#a5e672e3392cbba32f8182fab64924894',1,'pyhelios::PyHeliosSimulation']]],

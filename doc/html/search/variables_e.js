@@ -13,7 +13,7 @@ var searchData=
   ['nextwaypoint',['nextWaypoint',['../df/d1e/classPlatform.html#aa754cef7d09478c19b37232944316236',1,'Platform']]],
   ['node',['node',['../d5/d80/classSimpleKDTreeBuildChildrenNodesSubTask.html#ad1270fb56b9b5c668ce68921b635e932',1,'SimpleKDTreeBuildChildrenNodesSubTask::node()'],['../de/d22/classIterableTreeNode.html#a1fcdfd63d558568ea9cc611b577d04aa',1,'IterableTreeNode::node()']]],
   ['norm',['norm',['../da/d52/classSurfaceInspector_1_1maths_1_1Histogram.html#ac4d0e7dbd91a6aaca66f4b106cdce92e',1,'SurfaceInspector::maths::Histogram']]],
-  ['normal',['normal',['../d2/da0/classVertex.html#ac891db9159da8423d25153b41e099afc',1,'Vertex::normal()'],['../d6/d44/classVoxel.html#a3643a2837fa8a11bf1e2785e03893da2',1,'Voxel::normal()']]],
+  ['normal',['normal',['../d2/da0/classVertex.html#ac891db9159da8423d25153b41e099afc',1,'Vertex']]],
   ['normaldefcolor',['normalDefColor',['../df/dd2/classvisualhelios_1_1VHNormalsCanvas.html#ab4f8e866b39464e087ef81e25f36b362',1,'visualhelios::VHNormalsCanvas']]],
   ['normalize',['normalize',['../da/d69/classSurfaceInspector_1_1maths_1_1SingularContextComputer.html#a864e5483582fc81e8f6c585544c6169b',1,'SurfaceInspector::maths::SingularContextComputer']]],
   ['normalizeflag',['normalizeFlag',['../da/d69/classSurfaceInspector_1_1maths_1_1SingularContextComputer.html#a065b88a9bb890e9743e8f91c73c7d980',1,'SurfaceInspector::maths::SingularContextComputer']]],

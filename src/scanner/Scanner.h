@@ -504,7 +504,7 @@ public:
      *  is passed (true is returned). Otherwise, it is not passed (false is
      *  returned).
      * @param nor Current number of return
-     * @return True of the check is passed, false otherwise
+     * @return True if the check is passed, false otherwise
      * @see Scanner::maxNOR
      */
     inline bool checkMaxNOR(int nor) {return maxNOR==0 || nor < maxNOR;}

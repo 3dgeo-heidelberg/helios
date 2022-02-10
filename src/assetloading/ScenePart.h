@@ -20,29 +20,29 @@ class WavefrontObj;
 class ScenePart {
     // ***  SERIALIZATION  *** //
     // *********************** //
-	friend class boost::serialization::access;
-	/**
+    friend class boost::serialization::access;
+    /**
 	 * @brief Serialize a ScenePart to a stream of bytes
 	 * @tparam Archive Type of rendering
 	 * @param ar Specific rendering for the stream of bytes
 	 * @param version Version number for the ScenePart
 	 */
-	template<class Archive>
-	void serialize(Archive &ar, const unsigned int version){
-		ar & mPrimitives;
-        ar & centroid;
-        ar & bound;
-		ar & mId;
-        ar & subpartLimit;
-        ar & onRayIntersectionMode;
-        ar & onRayIntersectionArgument;
-        ar & randomShift;
-        ar & ladlut;
-		ar & mOrigin;
-        ar & mRotation;
-		ar & mScale;
-		ar & forceOnGround;
-    }
+    template<class Archive>
+        void serialize(Archive &ar, const unsigned int version){
+            ar & mPrimitives;
+            ar & centroid;
+            ar & bound;
+            ar & mId;
+            ar & subpartLimit;
+            ar & onRayIntersectionMode;
+            ar & onRayIntersectionArgument;
+            ar & randomShift;
+            ar & ladlut;
+            ar & mOrigin;
+            ar & mRotation;
+            ar & mScale;
+            ar & forceOnGround;
+        }
 public:
     // ***  TYPE ENUM  *** //
     // ******************** //
@@ -51,17 +51,32 @@ public:
      * By default, the ScenePart is a static object.
      */
     enum ObjectType{
-	    STATIC_OBJECT,
-	    DYN_OBJECT,
-	    DYN_MOVING_OBJECT
-	};
+        STATIC_OBJECT,
+        DYN_OBJECT,
+        DYN_MOVING_OBJECT
+    };
+    /**
+     * @brief Specify the type of primitive used to build the scene part
+     * By default, the ScenePart is not build from primitives (None)
+     * @see ScenePart::primitiveType
+     */
+    enum PrimitiveType{
+        NONE,
+        TRIANGLE,
+        VOXEL
+    };
     // ***  ATTRIBUTES  *** //
     // ******************** //
     /**
+     * @brief The type of primitive used to build the scene part
+     * @see ScenePart::PrimitiveType
+     */
+    PrimitiveType primitiveType;
+    /**
      * @brief Vector of pointers to primitives used by this scene part
      */
-	std::vector<Primitive*> mPrimitives;
-	/**
+    std::vector<Primitive*> mPrimitives;
+    /**
 	 * @brief The centroid of the scene part
 	 */
     arma::colvec centroid;
@@ -70,11 +85,11 @@ public:
      */
     std::shared_ptr<AABB> bound = nullptr;
 
-	/**
+    /**
 	 * @brief Identifier for the scene part
 	 */
-	std::string mId = "";
-	/**
+    std::string mId = "";
+    /**
 	 * @brief Vector specifying the limit of a subpart as the index of first
 	 *  element of next subpart.
 	 *
@@ -86,40 +101,40 @@ public:
 	 *  is defined as \f$[0, u[i])\f$
 	 * Having \f$|u| = 1\f$ means there is only one scene part
 	 */
-	std::vector<size_t> subpartLimit;
-	/**
+    std::vector<size_t> subpartLimit;
+    /**
 	 * @brief Specify the handling mode for ray intersections
 	 */
-	std::string onRayIntersectionMode = "";
-	/**
+    std::string onRayIntersectionMode = "";
+    /**
 	 * @brief Specify the extra value to be used for ray intersection handling
 	 * computation, when needed (depends on mode).
 	 */
-	double onRayIntersectionArgument = 0.0;
-	/**
+    double onRayIntersectionArgument = 0.0;
+    /**
 	 * @brief Specify if apply random shift to the scene part (true)
 	 * or not (false, by default)
 	 */
-	bool randomShift = false;
+    bool randomShift = false;
 
-	/**
+    /**
 	 * @brief Look-up table for leaf angle distribution
 	 */
-	std::shared_ptr<LadLut> ladlut = nullptr;
+    std::shared_ptr<LadLut> ladlut = nullptr;
 
-	/**
+    /**
 	 * @brief Specify the origin for the scene part
 	 */
-	glm::dvec3 mOrigin = glm::dvec3(0, 0, 0);
-	/**
+    glm::dvec3 mOrigin = glm::dvec3(0, 0, 0);
+    /**
 	 * @brief Specify the rotation for the scene part
 	 */
-	Rotation mRotation = Rotation(glm::dvec3(1, 0, 0), 0);
-	/**
+    Rotation mRotation = Rotation(glm::dvec3(1, 0, 0), 0);
+    /**
 	 * @brief Specify the scale for the scene part
 	 */
-	double mScale = 1;
-	/**
+    double mScale = 1;
+    /**
 	 * @brief Force the scene part to be on ground if \f$\neq 0\f$, do nothing
 	 *  if \f$= 0\f$.
 	 *
@@ -140,18 +155,20 @@ public:
 	 *  is a dynamic object which moves around the scene. It only assures the
 	 *  object will be INITIALLY placed at ground level
 	 */
-	int forceOnGround = 0;
+    int forceOnGround = 0;
 
 
-	OGRSpatialReference *mCrs = nullptr;
-	OGREnvelope *mEnv = nullptr;
+    OGRSpatialReference *mCrs = nullptr;
+    OGREnvelope *mEnv = nullptr;
 
-	// ***  CONSTRUCTION / DESTRUCTION  *** //
-	// ************************************ //
-	/**
+    // ***  CONSTRUCTION / DESTRUCTION  *** //
+    // ************************************ //
+    /**
 	 * @brief Default constructor for a scene part
 	 */
-	ScenePart() = default;
+    ScenePart() :
+        primitiveType(PrimitiveType::NONE)
+    {}
 	ScenePart(ScenePart const &sp);
 	virtual ~ScenePart() {}
 
@@ -288,5 +305,8 @@ public:
      * @return Object type of the scene part
      * @see ScenePart::ObjectType
      */
-    virtual ObjectType getType() {return ObjectType::STATIC_OBJECT;}
+    virtual ObjectType getType() const {return ObjectType::STATIC_OBJECT;}
+    virtual PrimitiveType getPrimitiveType() const {return primitiveType;}
+
+
 };
