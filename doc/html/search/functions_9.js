@@ -1,11 +1,13 @@
 var searchData=
 [
+  ['increasefinishedgeomjobscount',['increaseFinishedGeomJobsCount',['../df/d86/classMultiThreadKDTreeFactory.html#a9f8866c50d14796dad33466e44f97814',1,'MultiThreadKDTreeFactory']]],
   ['increasependingtasks',['increasePendingTasks',['../d0/d21/classMDThreadPool.html#a2604acd9240936d50bb203aed8efeba5',1,'MDThreadPool']]],
   ['indexfromcoordinates',['indexFromCoordinates',['../d6/d03/classXYZPointCloudFileLoader.html#a0c3f03060ab2a991450d6b31feb862de',1,'XYZPointCloudFileLoader']]],
   ['info',['INFO',['../d0/da9/logging_8hpp.html#a0d21bd29f2facd645f123ec469c16250',1,'logging']]],
-  ['init',['init',['../d3/d40/classLidarSim.html#a1e63342599abc975915c7c054cdd95ef',1,'LidarSim::init()'],['../da/d69/classSurfaceInspector_1_1maths_1_1SingularContextComputer.html#a08d5397cf54a8b09706395d6c3201de7',1,'SurfaceInspector::maths::SingularContextComputer::init()']]],
+  ['init',['init',['../d8/de4/classhelios_1_1hpc_1_1SM__ParallelMergeSort.html#a1d1083a70b3b628347692f8afb4263bb',1,'helios::hpc::SM_ParallelMergeSort::init()'],['../d3/d40/classLidarSim.html#ab4cb5bc89947239f58d950aa94348674',1,'LidarSim::init()'],['../da/d69/classSurfaceInspector_1_1maths_1_1SingularContextComputer.html#a08d5397cf54a8b09706395d6c3201de7',1,'SurfaceInspector::maths::SingularContextComputer::init()']]],
   ['initialize',['initialize',['../d6/d26/classSurfaceInspector_1_1util_1_1draggers_1_1MinDragger.html#a57ee64e2ce5c006cbfd6d0f51cfbd6df',1,'SurfaceInspector::util::draggers::MinDragger']]],
   ['initializefullwaveform',['initializeFullWaveform',['../db/da6/classFullWaveformPulseRunnable.html#a50b690e9352dfcdc998a35bc222481e9',1,'FullWaveformPulseRunnable']]],
+  ['initializesequentialgenerators',['initializeSequentialGenerators',['../dc/d42/classScanner.html#ad2846df5fb586988fd2008170c1a2d82',1,'Scanner']]],
   ['initializeworkspace',['initializeWorkspace',['../d1/d2b/classMarquardtFitter.html#a0c716799a24ec0c8ddc46c92e0f9b7b6',1,'MarquardtFitter']]],
   ['initilot',['initILOT',['../db/d58/classSAHKDTreeFactory.html#a4f058348ffc9432e614672e0ce4b6e80',1,'SAHKDTreeFactory']]],
   ['initleg',['initLeg',['../db/d69/classHelicopterPlatform.html#a00c394dda049f912d65cf1057e2c30db',1,'HelicopterPlatform::initLeg()'],['../df/d1e/classPlatform.html#a51b430d256fa91cd335b858d39aa5adf',1,'Platform::initLeg()']]],
@@ -21,6 +23,8 @@ var searchData=
   ['isbuildinglightnodes',['isBuildingLightNodes',['../d5/dd0/classKDTreeFactory.html#a07dd08e1de4ceeee1e028df1eb9acc8e',1,'KDTreeFactory']]],
   ['iscalcechowidth',['isCalcEchowidth',['../dc/d42/classScanner.html#ae0cf9cf8014498ea6a997106498ea714',1,'Scanner']]],
   ['isclipenabled',['isClipEnabled',['../d9/d6b/classNoiseSource.html#ad5fa6dcbd1331472337d34359a9be38d',1,'NoiseSource']]],
+  ['iscontainedinastrip',['isContainedInAStrip',['../de/d51/classLeg.html#af35867cfcdda534e188f7199f57feebc',1,'Leg']]],
+  ['isdynamic',['isDynamic',['../d0/d64/classKDTreeNodeRoot.html#a0547ad91ff563f80f708493366c5d77e',1,'KDTreeNodeRoot::isDynamic()'],['../d6/ddc/classPulseThreadPool.html#a76167fc2ab296f2e759a1fcba37bafba',1,'PulseThreadPool::isDynamic()']]],
   ['isdynobjectrenderingnormals',['isDynObjectRenderingNormals',['../db/d0e/classvisualhelios_1_1VHDynSceneAdapter.html#a2bbc64cbd58972a928f1660423af150d',1,'visualhelios::VHDynSceneAdapter']]],
   ['isdynobjectupdated',['isDynObjectUpdated',['../de/d74/classDynScene.html#ae8c4abef7c395a2b7b7a7a3ba033968c',1,'DynScene::isDynObjectUpdated()'],['../db/d0e/classvisualhelios_1_1VHDynSceneAdapter.html#a08c66ed06618bcf91394c9ed8a3560de',1,'visualhelios::VHDynSceneAdapter::isDynObjectUpdated()']]],
   ['isfinished',['isFinished',['../d9/ddd/classpyhelios_1_1PyHeliosSimulation.html#a5e672e3392cbba32f8182fab64924894',1,'pyhelios::PyHeliosSimulation']]],

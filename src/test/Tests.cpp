@@ -3,6 +3,7 @@
 #include <test/NoiseTest.h>
 #include <test/VoxelParsingTest.h>
 #include <test/RayIntersectionTest.h>
+#include <test/GroveTest.h>
 #include <test/SerializationTest.h>
 #include <test/SurveyCopyTest.h>
 #include <test/PlaneFitterTest.h>
@@ -11,6 +12,7 @@
 #include <test/ScenePartSplitTest.h>
 #include <test/RigidMotionTest.h>
 #include <test/FluxionumTest.h>
+#include <test/HPCTest.h>
 
 #include <boost/filesystem.hpp>
 
@@ -62,6 +64,9 @@ void doTests(std::string const & testDir){
     RayIntersectionTest rayIntersectionTest;
     rayIntersectionTest.test(std::cout, TEST_COLOR);
 
+    GroveTest groveTest;
+    groveTest.test(std::cout, TEST_COLOR);
+
     SerializationTest serializationTest;
     serializationTest.test(std::cout, TEST_COLOR);
 
@@ -85,6 +90,9 @@ void doTests(std::string const & testDir){
 
     FluxionumTest fluxionumTest;
     fluxionumTest.test(std::cout, TEST_COLOR);
+
+    HPCTest hpcTest;
+    hpcTest.test(std::cout, TEST_COLOR);
 }
 
 

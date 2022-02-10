@@ -23,20 +23,23 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 ".html",
-"d1/d2f/classpyhelios_1_1PyTrajectoryWrapper.html#a9ba063b438ba2cda5f7f5e7b2a06d9de",
-"d2/d66/Histogram_8hpp_source.html",
-"d4/d02/classBinaryTreeDepthIterator.html",
-"d5/d20/classSpectralLibrary.html#a55d55f2e7ffc8bc086405f636419b5ed",
-"d6/d1f/structKDTreePrimitiveComparator.html#a8349b27d42b80f6552f0b99abc2f48e8",
-"d7/d17/classpyhelios_1_1PySceneWrapper.html",
-"d8/d15/classLinearPathPlatform.html#a4c355612852abdf1069d6e03be18debe",
-"d9/d82/classfluxionum_1_1Minimizer.html#a06b5438e0234d397f265b3d047ff983f",
-"da/d8d/classHeliosTests_1_1VoxelParsingTest.html#a5a44670a18e986c0324180950be4891c",
-"db/d8b/classHeliosTests_1_1RigidMotionTest.html#a8f91e1e80529c1836059666949c3d651",
-"dc/d6e/classRandomnessGenerator.html#abed86caeab308c222fb15d1e9ce3bb7e",
-"de/d22/classIterableTreeNode.html#a06c6815ed94500215f3d6db532d09c99",
-"df/d30/classAxisSAHKDTreeFactory.html#a7dda264583c90bec67f9d65a73abb157",
-"functions_func_h.html"
+"d1/d1e/classGroveTreeWrapper.html#ab8b03985b77b27f6bd79b47a23cbf0b5",
+"d2/d0a/classDynMotionEngine.html#a68b73280592c9ca0d6187b3c29ba1105",
+"d3/d57/classUniformNoiseSource.html#a9e07e2def6a5bf3cdaabe3cb2a32793a",
+"d4/d55/classpyhelios_1_1PyNoiseSourceWrapper.html#a77e7ab430b7aa38f1fafcab6e9d57bc9",
+"d5/d3c/classBuddingScanningPulseProcess.html#a75db14537b48487b170a4661f3b8df8e",
+"d6/d03/classXYZPointCloudFileLoader.html#a88d68a5b9fd557be9ade1b092323e454",
+"d6/da1/classSurveyPlayback.html#a98c2e5f5d4c674ef3e67c75dfb247de7",
+"d7/d84/classrigidmotion_1_1RigidMotion.html#a9f6af528c327231f6ad4565fa9bef21fadd09ab9b14df40946ebc65f7d98efccb",
+"d8/d94/classKDTreeNode.html#af66b3e82f5718f38dac46d86d90900ee",
+"d9/dc5/classvisualhelios_1_1VHSimpleCanvas.html#a4fdab84566224acd45e3aea2c5944d8c",
+"da/d81/classKDTreeRaycaster.html",
+"db/d69/classHelicopterPlatform.html#aef5a02ea1be3bf929cb4eefee1322de0",
+"dc/d42/classScanner.html#a7228d0d132ba72c152eb30766fbdca12",
+"dd/d40/PythonDVec3_8h_source.html",
+"de/d74/classDynScene.html#a529a2939ee6a7fb973ad19cc298d6ff1",
+"df/d3f/classHeliosDemos_1_1DemoSelector.html",
+"dir_68267d1309a1af8e8297ef4c3efbcdba.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

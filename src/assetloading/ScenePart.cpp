@@ -24,6 +24,7 @@ ScenePart::ScenePart(ScenePart const &sp) {
   this->mCrs = nullptr; // TODO Copy this too
   this->mEnv = nullptr; // TODO Copy this too
 
+  this->primitiveType = sp.primitiveType;
   this->mPrimitives = std::vector<Primitive *>(0);
   Primitive *p;
   for (size_t i = 0; i < sp.mPrimitives.size(); i++) {

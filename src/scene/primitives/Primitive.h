@@ -38,8 +38,11 @@ private:
 	    ar.template register_type<DynMovingObject>();
 	    ar.template register_type<DynSequentiableMovingObject>();
 
-        std::string partId = "#NULLID#";
-        if(part!=nullptr) partId = part->getId();
+	    // Debugging purposes ---
+        /*std::string partId = "#NULLID#";
+        if(part!=nullptr) partId = part->getId();*/
+        // --- Debugging purposes
+
 		ar & part;
         ar & material;
 	}

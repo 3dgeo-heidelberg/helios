@@ -87,6 +87,18 @@ public:
     );
 
     /**
+     * @brief Check whether XML node contains an attribute with given name
+     *  (true) or not (false)
+     * @param element XML node to which children must be checked
+     * @param attrName Name of the element to be checked
+     * @return True if attribute is contained in XML node, false otherwise
+     */
+    static bool hasAttribute(
+        tinyxml2::XMLElement *element,
+        std::string attrName
+    );
+
+    /**
      * @brief Obtain a dynamic sequence of dynamic motions from given XML
      *  element.
      *

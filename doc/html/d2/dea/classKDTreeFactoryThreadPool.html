@@ -104,8 +104,9 @@ Inheritance diagram for KDTreeFactoryThreadPool:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../de/da2/classKDTreeFactoryThreadPool__inherit__graph.png" border="0" usemap="#KDTreeFactoryThreadPool_inherit__map" alt="Inheritance graph"/></div>
 <map name="KDTreeFactoryThreadPool_inherit__map" id="KDTreeFactoryThreadPool_inherit__map">
-<area shape="rect" id="node2" href="../../d0/d21/classMDThreadPool.html" title="MDThreadPool\&lt; KDTreeBuild\lType, KDTreeNode *, bool\l const, vector\&lt; Primitive\l *\&gt; &amp;, int const \&gt;" alt="" coords="209,5,404,76"/>
-<area shape="rect" id="node3" href="../../dc/de7/classThreadPool.html" title="ThreadPool\&lt; TaskArgs\l ... \&gt;" alt="" coords="5,20,161,61"/>
+<area shape="rect" id="node2" href="../../d0/d21/classMDThreadPool.html" title="MDThreadPool\&lt; KDTreeBuild\lType, KDTreeNode *, bool\l const, vector\&lt; Primitive\l *\&gt; &amp;, int const, int const \&gt;" alt="" coords="385,5,580,76"/>
+<area shape="rect" id="node3" href="../../d2/d1f/classSimpleThreadPool.html" title="SimpleThreadPool\&lt; TaskArgs\l ... \&gt;" alt="" coords="141,20,337,61"/>
+<area shape="rect" id="node4" href="../../dc/de7/classThreadPool.html" title="Base class providing core implementation of a thread pool to deal with multi threading tasks..." alt="" coords="5,27,93,54"/>
 </map>
 <center><span class="legend">[<a target="top" href="../../graph_legend.html">legend</a>]</span></center></div>
 <div class="dynheader">
@@ -113,8 +114,9 @@ Collaboration diagram for KDTreeFactoryThreadPool:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../d4/d8e/classKDTreeFactoryThreadPool__coll__graph.png" border="0" usemap="#KDTreeFactoryThreadPool_coll__map" alt="Collaboration graph"/></div>
 <map name="KDTreeFactoryThreadPool_coll__map" id="KDTreeFactoryThreadPool_coll__map">
-<area shape="rect" id="node2" href="../../d0/d21/classMDThreadPool.html" title="MDThreadPool\&lt; KDTreeBuild\lType, KDTreeNode *, bool\l const, vector\&lt; Primitive\l *\&gt; &amp;, int const \&gt;" alt="" coords="209,5,404,76"/>
-<area shape="rect" id="node3" href="../../dc/de7/classThreadPool.html" title="ThreadPool\&lt; TaskArgs\l ... \&gt;" alt="" coords="5,20,161,61"/>
+<area shape="rect" id="node2" href="../../d0/d21/classMDThreadPool.html" title="MDThreadPool\&lt; KDTreeBuild\lType, KDTreeNode *, bool\l const, vector\&lt; Primitive\l *\&gt; &amp;, int const, int const \&gt;" alt="" coords="553,5,748,76"/>
+<area shape="rect" id="node3" href="../../d2/d1f/classSimpleThreadPool.html" title="SimpleThreadPool\&lt; TaskArgs\l ... \&gt;" alt="" coords="308,20,504,61"/>
+<area shape="rect" id="node4" href="../../dc/de7/classThreadPool.html" title="Base class providing core implementation of a thread pool to deal with multi threading tasks..." alt="" coords="171,58,259,85"/>
 </map>
 <center><span class="legend">[<a target="top" href="../../graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -126,7 +128,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a99ecde966a7fbc4623072c904f487baf"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/dea/classKDTreeFactoryThreadPool.html#a99ecde966a7fbc4623072c904f487baf">KDTreeFactoryThreadPool</a> ()</td></tr>
 <tr class="memdesc:a99ecde966a7fbc4623072c904f487baf"><td class="mdescLeft">&#160;</td><td class="mdescRight">KDTree factory thread pool constructor which uses concurrent threads supported by the system as the default pool size.  <a href="#a99ecde966a7fbc4623072c904f487baf">More...</a><br /></td></tr>
 <tr class="separator:a99ecde966a7fbc4623072c904f487baf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pub_methods_classMDThreadPool"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classMDThreadPool')"><img src="../../closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="../../d0/d21/classMDThreadPool.html">MDThreadPool&lt; KDTreeBuildType, KDTreeNode *, bool const, vector&lt; Primitive *&gt; &amp;, int const &gt;</a></td></tr>
+<tr class="inherit_header pub_methods_classMDThreadPool"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classMDThreadPool')"><img src="../../closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="../../d0/d21/classMDThreadPool.html">MDThreadPool&lt; KDTreeBuildType, KDTreeNode *, bool const, vector&lt; Primitive *&gt; &amp;, int const, int const &gt;</a></td></tr>
 <tr class="memitem:adeaf7c214f363a25714c34f764953429 inherit pub_methods_classMDThreadPool"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d21/classMDThreadPool.html#adeaf7c214f363a25714c34f764953429">MDThreadPool</a> (std::size_t const _pool_size)</td></tr>
 <tr class="memdesc:adeaf7c214f363a25714c34f764953429 inherit pub_methods_classMDThreadPool"><td class="mdescLeft">&#160;</td><td class="mdescRight">Multiple data thread pool constructor.  <a href="../../d0/d21/classMDThreadPool.html#adeaf7c214f363a25714c34f764953429">More...</a><br /></td></tr>
 <tr class="separator:adeaf7c214f363a25714c34f764953429 inherit pub_methods_classMDThreadPool"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -144,9 +146,24 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../.
 <tr class="memitem:af68266b6293444a6b3af4c094654bafd inherit pub_methods_classMDThreadPool"><td class="memItemLeft" align="right" valign="top">virtual size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d21/classMDThreadPool.html#af68266b6293444a6b3af4c094654bafd">getPendingTasks</a> ()</td></tr>
 <tr class="memdesc:af68266b6293444a6b3af4c094654bafd inherit pub_methods_classMDThreadPool"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain the number of pending tasks to be computed.  <a href="../../d0/d21/classMDThreadPool.html#af68266b6293444a6b3af4c094654bafd">More...</a><br /></td></tr>
 <tr class="separator:af68266b6293444a6b3af4c094654bafd inherit pub_methods_classMDThreadPool"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a016d37cf90fdb80835c8c13d738d54b9 inherit pub_methods_classMDThreadPool"><td class="memItemLeft" align="right" valign="top">virtual size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d21/classMDThreadPool.html#a016d37cf90fdb80835c8c13d738d54b9">safeGetPendingTasks</a> ()</td></tr>
+<tr class="memdesc:a016d37cf90fdb80835c8c13d738d54b9 inherit pub_methods_classMDThreadPool"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain the number of pending tasks to be computed in a thread safe way. It is, with proper handling of concurrent reading.  <a href="../../d0/d21/classMDThreadPool.html#a016d37cf90fdb80835c8c13d738d54b9">More...</a><br /></td></tr>
+<tr class="separator:a016d37cf90fdb80835c8c13d738d54b9 inherit pub_methods_classMDThreadPool"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a601dffa9e67ec14baea9eaf14abd3abb inherit pub_methods_classMDThreadPool"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d21/classMDThreadPool.html#a601dffa9e67ec14baea9eaf14abd3abb">setPendingTasks</a> (size_t const pendingTasks)</td></tr>
 <tr class="memdesc:a601dffa9e67ec14baea9eaf14abd3abb inherit pub_methods_classMDThreadPool"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the number of pending tasks to be computed.  <a href="../../d0/d21/classMDThreadPool.html#a601dffa9e67ec14baea9eaf14abd3abb">More...</a><br /></td></tr>
 <tr class="separator:a601dffa9e67ec14baea9eaf14abd3abb inherit pub_methods_classMDThreadPool"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8dee3afc72876ba9e0ebffe390d49159 inherit pub_methods_classMDThreadPool"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d21/classMDThreadPool.html#a8dee3afc72876ba9e0ebffe390d49159">safeSetPendingTasks</a> (size_t const pendingTasks)</td></tr>
+<tr class="memdesc:a8dee3afc72876ba9e0ebffe390d49159 inherit pub_methods_classMDThreadPool"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the number of pending tasks to be computed in a thread safe way. It is, with proper handling of current writting.  <a href="../../d0/d21/classMDThreadPool.html#a8dee3afc72876ba9e0ebffe390d49159">More...</a><br /></td></tr>
+<tr class="separator:a8dee3afc72876ba9e0ebffe390d49159 inherit pub_methods_classMDThreadPool"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0c5500eadaf085de340f9860e05ee3c9 inherit pub_methods_classMDThreadPool"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d21/classMDThreadPool.html#a0c5500eadaf085de340f9860e05ee3c9">subtractPendingTasks</a> (size_t const amount)</td></tr>
+<tr class="memdesc:a0c5500eadaf085de340f9860e05ee3c9 inherit pub_methods_classMDThreadPool"><td class="mdescLeft">&#160;</td><td class="mdescRight">Subtract specified amount of pending tasks </p><p class="formulaDsp">
+\[ p_{t+1} = p_{t} - n \]
+</p>
+<p>.  <a href="../../d0/d21/classMDThreadPool.html#a0c5500eadaf085de340f9860e05ee3c9">More...</a><br /></td></tr>
+<tr class="separator:a0c5500eadaf085de340f9860e05ee3c9 inherit pub_methods_classMDThreadPool"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab860000d48ac358640dc63e83468de34 inherit pub_methods_classMDThreadPool"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d21/classMDThreadPool.html#ab860000d48ac358640dc63e83468de34">safeSubtractPendingTasks</a> (size_t const amount)</td></tr>
+<tr class="memdesc:ab860000d48ac358640dc63e83468de34 inherit pub_methods_classMDThreadPool"><td class="mdescLeft">&#160;</td><td class="mdescRight">Subtract pending tasks in a thread safe way. It is, with proper handling of concurrency.  <a href="../../d0/d21/classMDThreadPool.html#ab860000d48ac358640dc63e83468de34">More...</a><br /></td></tr>
+<tr class="separator:ab860000d48ac358640dc63e83468de34 inherit pub_methods_classMDThreadPool"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2604acd9240936d50bb203aed8efeba5 inherit pub_methods_classMDThreadPool"><td class="memItemLeft" align="right" valign="top"><a id="a2604acd9240936d50bb203aed8efeba5"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d21/classMDThreadPool.html#a2604acd9240936d50bb203aed8efeba5">increasePendingTasks</a> ()</td></tr>
 <tr class="memdesc:a2604acd9240936d50bb203aed8efeba5 inherit pub_methods_classMDThreadPool"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unitary increase the number of pending tasks to be computed. <br /></td></tr>
@@ -155,24 +172,32 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d21/classMDThreadPool.html#abbddc39ae0996fc43bd43f22c6536d97">decreasePendingTasks</a> ()</td></tr>
 <tr class="memdesc:abbddc39ae0996fc43bd43f22c6536d97 inherit pub_methods_classMDThreadPool"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unitary decrease the number of pending tasks to be computed. <br /></td></tr>
 <tr class="separator:abbddc39ae0996fc43bd43f22c6536d97 inherit pub_methods_classMDThreadPool"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pub_methods_classThreadPool"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classThreadPool')"><img src="../../closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="../../dc/de7/classThreadPool.html">ThreadPool&lt; TaskArgs ... &gt;</a></td></tr>
-<tr class="memitem:ac74be4568c79a1114820aa63c75d254f inherit pub_methods_classThreadPool"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/de7/classThreadPool.html#ac74be4568c79a1114820aa63c75d254f">ThreadPool</a> (std::size_t const _pool_size)</td></tr>
-<tr class="memdesc:ac74be4568c79a1114820aa63c75d254f inherit pub_methods_classThreadPool"><td class="mdescLeft">&#160;</td><td class="mdescRight">Thread pool constructor.  <a href="../../dc/de7/classThreadPool.html#ac74be4568c79a1114820aa63c75d254f">More...</a><br /></td></tr>
-<tr class="separator:ac74be4568c79a1114820aa63c75d254f inherit pub_methods_classThreadPool"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4fb8cb1609006d93c9318ce587ce66d9 inherit pub_methods_classThreadPool"><td class="memItemLeft" align="right" valign="top">virtual std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/de7/classThreadPool.html#a4fb8cb1609006d93c9318ce587ce66d9">getPoolSize</a> () const</td></tr>
-<tr class="memdesc:a4fb8cb1609006d93c9318ce587ce66d9 inherit pub_methods_classThreadPool"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain the thread pool size.  <a href="../../dc/de7/classThreadPool.html#a4fb8cb1609006d93c9318ce587ce66d9">More...</a><br /></td></tr>
-<tr class="separator:a4fb8cb1609006d93c9318ce587ce66d9 inherit pub_methods_classThreadPool"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9465e2a756ae9f47ce398e68d752a482 inherit pub_methods_classThreadPool"><td class="memItemLeft" align="right" valign="top"><a id="a9465e2a756ae9f47ce398e68d752a482"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/de7/classThreadPool.html#a9465e2a756ae9f47ce398e68d752a482">run_task</a> (Task task)</td></tr>
-<tr class="memdesc:a9465e2a756ae9f47ce398e68d752a482 inherit pub_methods_classThreadPool"><td class="mdescLeft">&#160;</td><td class="mdescRight">Run a task when there is an available thread for it. <br /></td></tr>
-<tr class="separator:a9465e2a756ae9f47ce398e68d752a482 inherit pub_methods_classThreadPool"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_classSimpleThreadPool"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classSimpleThreadPool')"><img src="../../closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="../../d2/d1f/classSimpleThreadPool.html">SimpleThreadPool&lt; TaskArgs ... &gt;</a></td></tr>
+<tr class="memitem:a560ca3dd08e999903069fb753c81c553 inherit pub_methods_classSimpleThreadPool"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d1f/classSimpleThreadPool.html#a560ca3dd08e999903069fb753c81c553">SimpleThreadPool</a> (std::size_t const _pool_size)</td></tr>
+<tr class="memdesc:a560ca3dd08e999903069fb753c81c553 inherit pub_methods_classSimpleThreadPool"><td class="mdescLeft">&#160;</td><td class="mdescRight">Simple thread pool constructor.  <a href="../../d2/d1f/classSimpleThreadPool.html#a560ca3dd08e999903069fb753c81c553">More...</a><br /></td></tr>
+<tr class="separator:a560ca3dd08e999903069fb753c81c553 inherit pub_methods_classSimpleThreadPool"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aee0e9d844e4c048b539b6596cf26f3ea inherit pub_methods_classSimpleThreadPool"><td class="memItemLeft" align="right" valign="top"><a id="aee0e9d844e4c048b539b6596cf26f3ea"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d1f/classSimpleThreadPool.html#aee0e9d844e4c048b539b6596cf26f3ea">run_task</a> (Task task)</td></tr>
+<tr class="memdesc:aee0e9d844e4c048b539b6596cf26f3ea inherit pub_methods_classSimpleThreadPool"><td class="mdescLeft">&#160;</td><td class="mdescRight">Run a task when there is an available thread for it. <br /></td></tr>
+<tr class="separator:aee0e9d844e4c048b539b6596cf26f3ea inherit pub_methods_classSimpleThreadPool"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a914a442d893a27a6c322a2490fd2a978 inherit pub_methods_classSimpleThreadPool"><td class="memItemLeft" align="right" valign="top"><a id="a914a442d893a27a6c322a2490fd2a978"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d1f/classSimpleThreadPool.html#a914a442d893a27a6c322a2490fd2a978">notifyOne</a> ()</td></tr>
+<tr class="memdesc:a914a442d893a27a6c322a2490fd2a978 inherit pub_methods_classSimpleThreadPool"><td class="mdescLeft">&#160;</td><td class="mdescRight">Notify the conditional variable so if there is a waiting thread it will wake up. <br /></td></tr>
+<tr class="separator:a914a442d893a27a6c322a2490fd2a978 inherit pub_methods_classSimpleThreadPool"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_classThreadPool"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classThreadPool')"><img src="../../closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="../../dc/de7/classThreadPool.html">ThreadPool</a></td></tr>
+<tr class="memitem:a2b8ca7a57ba657bad890a99058e01781 inherit pub_methods_classThreadPool"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/de7/classThreadPool.html#a2b8ca7a57ba657bad890a99058e01781">ThreadPool</a> (std::size_t const _pool_size)</td></tr>
+<tr class="memdesc:a2b8ca7a57ba657bad890a99058e01781 inherit pub_methods_classThreadPool"><td class="mdescLeft">&#160;</td><td class="mdescRight">Thread pool constructor.  <a href="../../dc/de7/classThreadPool.html#a2b8ca7a57ba657bad890a99058e01781">More...</a><br /></td></tr>
+<tr class="separator:a2b8ca7a57ba657bad890a99058e01781 inherit pub_methods_classThreadPool"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a809e09ddca366e0906c6ff54d174bb0f inherit pub_methods_classThreadPool"><td class="memItemLeft" align="right" valign="top">virtual std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/de7/classThreadPool.html#a809e09ddca366e0906c6ff54d174bb0f">getPoolSize</a> () const</td></tr>
+<tr class="memdesc:a809e09ddca366e0906c6ff54d174bb0f inherit pub_methods_classThreadPool"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain the thread pool size.  <a href="../../dc/de7/classThreadPool.html#a809e09ddca366e0906c6ff54d174bb0f">More...</a><br /></td></tr>
+<tr class="separator:a809e09ddca366e0906c6ff54d174bb0f inherit pub_methods_classThreadPool"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
-<tr class="memitem:a193581cbc141dc0f2352a799acb58c36"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/dea/classKDTreeFactoryThreadPool.html#a193581cbc141dc0f2352a799acb58c36">do_md_task</a> (boost::function&lt; void(<a class="el" href="../../d8/d94/classKDTreeNode.html">KDTreeNode</a> *, bool const, vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *&gt; &amp;, int const)&gt; &amp;task, <a class="el" href="../../d8/d4c/classKDTreeBuildType.html">KDTreeBuildType</a> *data) override</td></tr>
-<tr class="memdesc:a193581cbc141dc0f2352a799acb58c36"><td class="mdescLeft">&#160;</td><td class="mdescRight">Do a recursive build of KDTree node task.  <a href="#a193581cbc141dc0f2352a799acb58c36">More...</a><br /></td></tr>
-<tr class="separator:a193581cbc141dc0f2352a799acb58c36"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pro_methods_classMDThreadPool"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_classMDThreadPool')"><img src="../../closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="../../d0/d21/classMDThreadPool.html">MDThreadPool&lt; KDTreeBuildType, KDTreeNode *, bool const, vector&lt; Primitive *&gt; &amp;, int const &gt;</a></td></tr>
+<tr class="memitem:aa44e781d4d6ab1be879a1f921c4bb3b1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/dea/classKDTreeFactoryThreadPool.html#aa44e781d4d6ab1be879a1f921c4bb3b1">do_md_task</a> (boost::function&lt; void(<a class="el" href="../../d8/d94/classKDTreeNode.html">KDTreeNode</a> *, bool const, vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *&gt; &amp;, int const, int const)&gt; &amp;task, <a class="el" href="../../d8/d4c/classKDTreeBuildType.html">KDTreeBuildType</a> *data) override</td></tr>
+<tr class="memdesc:aa44e781d4d6ab1be879a1f921c4bb3b1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Do a recursive build of KDTree node task.  <a href="#aa44e781d4d6ab1be879a1f921c4bb3b1">More...</a><br /></td></tr>
+<tr class="separator:aa44e781d4d6ab1be879a1f921c4bb3b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_methods_classMDThreadPool"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_classMDThreadPool')"><img src="../../closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="../../d0/d21/classMDThreadPool.html">MDThreadPool&lt; KDTreeBuildType, KDTreeNode *, bool const, vector&lt; Primitive *&gt; &amp;, int const, int const &gt;</a></td></tr>
 <tr class="memitem:a7e626735d527e5e19fe38d636801fc85 inherit pro_methods_classMDThreadPool"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d21/classMDThreadPool.html#a7e626735d527e5e19fe38d636801fc85">wrap_md_task</a> (boost::function&lt; void(TaskArgs ...)&gt; &amp;task, <a class="el" href="../../d8/d4c/classKDTreeBuildType.html">KDTreeBuildType</a> *data)</td></tr>
 <tr class="memdesc:a7e626735d527e5e19fe38d636801fc85 inherit pro_methods_classMDThreadPool"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wrap a data task so that pending tasks count can be increased once provided data task has been completed.  <a href="../../d0/d21/classMDThreadPool.html#a7e626735d527e5e19fe38d636801fc85">More...</a><br /></td></tr>
 <tr class="separator:a7e626735d527e5e19fe38d636801fc85 inherit pro_methods_classMDThreadPool"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -182,47 +207,48 @@ Protected Member Functions</h2></td></tr>
 <tr class="memitem:aa11daa4dc569281b6b5493951c2adb85 inherit pro_methods_classMDThreadPool"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d21/classMDThreadPool.html#aa11daa4dc569281b6b5493951c2adb85">do_md_task</a> (boost::function&lt; void(TaskArgs ...)&gt; &amp;task, <a class="el" href="../../d8/d4c/classKDTreeBuildType.html">KDTreeBuildType</a> *data)=0</td></tr>
 <tr class="memdesc:aa11daa4dc569281b6b5493951c2adb85 inherit pro_methods_classMDThreadPool"><td class="mdescLeft">&#160;</td><td class="mdescRight">Invoke task with associated data.  <a href="../../d0/d21/classMDThreadPool.html#aa11daa4dc569281b6b5493951c2adb85">More...</a><br /></td></tr>
 <tr class="separator:aa11daa4dc569281b6b5493951c2adb85 inherit pro_methods_classMDThreadPool"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pro_methods_classThreadPool"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_classThreadPool')"><img src="../../closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="../../dc/de7/classThreadPool.html">ThreadPool&lt; TaskArgs ... &gt;</a></td></tr>
-<tr class="memitem:a6769e63b2dcbba631f0850811576c27c inherit pro_methods_classThreadPool"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/de7/classThreadPool.html#a6769e63b2dcbba631f0850811576c27c">wrap_task</a> (boost::function&lt; void(TaskArgs ...)&gt; &amp;task)</td></tr>
-<tr class="memdesc:a6769e63b2dcbba631f0850811576c27c inherit pro_methods_classThreadPool"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wrap a task so that available threads count can be increased once provided task has been completed.  <a href="../../dc/de7/classThreadPool.html#a6769e63b2dcbba631f0850811576c27c">More...</a><br /></td></tr>
-<tr class="separator:a6769e63b2dcbba631f0850811576c27c inherit pro_methods_classThreadPool"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_methods_classSimpleThreadPool"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_classSimpleThreadPool')"><img src="../../closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="../../d2/d1f/classSimpleThreadPool.html">SimpleThreadPool&lt; TaskArgs ... &gt;</a></td></tr>
+<tr class="memitem:a82a5b7389fd28188b688a92edadb9038 inherit pro_methods_classSimpleThreadPool"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d1f/classSimpleThreadPool.html#a82a5b7389fd28188b688a92edadb9038">wrap_task</a> (boost::function&lt; void(TaskArgs ...)&gt; &amp;task)</td></tr>
+<tr class="memdesc:a82a5b7389fd28188b688a92edadb9038 inherit pro_methods_classSimpleThreadPool"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wrap a task so that available threads count can be increased once provided task has been completed.  <a href="../../d2/d1f/classSimpleThreadPool.html#a82a5b7389fd28188b688a92edadb9038">More...</a><br /></td></tr>
+<tr class="separator:a82a5b7389fd28188b688a92edadb9038 inherit pro_methods_classSimpleThreadPool"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
-<tr class="inherit_header pro_attribs_classThreadPool"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classThreadPool')"><img src="../../closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="../../dc/de7/classThreadPool.html">ThreadPool&lt; TaskArgs ... &gt;</a></td></tr>
-<tr class="memitem:a5b2814c08d65ed6223303bcde6add26c inherit pro_attribs_classThreadPool"><td class="memItemLeft" align="right" valign="top"><a id="a5b2814c08d65ed6223303bcde6add26c"></a>
-boost::asio::io_service&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/de7/classThreadPool.html#a5b2814c08d65ed6223303bcde6add26c">io_service_</a></td></tr>
-<tr class="memdesc:a5b2814c08d65ed6223303bcde6add26c inherit pro_attribs_classThreadPool"><td class="mdescLeft">&#160;</td><td class="mdescRight">Instance of boost input/output service for asynchronous data processing. <br /></td></tr>
-<tr class="separator:a5b2814c08d65ed6223303bcde6add26c inherit pro_attribs_classThreadPool"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8ba0794faf1a72f7f4a9922b3391a8f2 inherit pro_attribs_classThreadPool"><td class="memItemLeft" align="right" valign="top">boost::asio::executor_work_guard&lt; boost::asio::io_service::executor_type &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/de7/classThreadPool.html#a8ba0794faf1a72f7f4a9922b3391a8f2">work_</a></td></tr>
-<tr class="memdesc:a8ba0794faf1a72f7f4a9922b3391a8f2 inherit pro_attribs_classThreadPool"><td class="mdescLeft">&#160;</td><td class="mdescRight">Instance of work guard to report the io service when it has pending tasks.  <a href="../../dc/de7/classThreadPool.html#a8ba0794faf1a72f7f4a9922b3391a8f2">More...</a><br /></td></tr>
-<tr class="separator:a8ba0794faf1a72f7f4a9922b3391a8f2 inherit pro_attribs_classThreadPool"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8024981c2df0048b4f6164964bcafffb inherit pro_attribs_classThreadPool"><td class="memItemLeft" align="right" valign="top"><a id="a8024981c2df0048b4f6164964bcafffb"></a>
-std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/de7/classThreadPool.html#a8024981c2df0048b4f6164964bcafffb">pool_size</a></td></tr>
-<tr class="memdesc:a8024981c2df0048b4f6164964bcafffb inherit pro_attribs_classThreadPool"><td class="mdescLeft">&#160;</td><td class="mdescRight">Size of thread pool (number of threads) <br /></td></tr>
-<tr class="separator:a8024981c2df0048b4f6164964bcafffb inherit pro_attribs_classThreadPool"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa52eca7aa7f937f7cd466957385491ad inherit pro_attribs_classThreadPool"><td class="memItemLeft" align="right" valign="top"><a id="aa52eca7aa7f937f7cd466957385491ad"></a>
-boost::thread_group&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/de7/classThreadPool.html#aa52eca7aa7f937f7cd466957385491ad">threads_</a></td></tr>
-<tr class="memdesc:aa52eca7aa7f937f7cd466957385491ad inherit pro_attribs_classThreadPool"><td class="mdescLeft">&#160;</td><td class="mdescRight">Group of threads. <br /></td></tr>
-<tr class="separator:aa52eca7aa7f937f7cd466957385491ad inherit pro_attribs_classThreadPool"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acf984075d64fcc50f43f5b13b7fd7529 inherit pro_attribs_classThreadPool"><td class="memItemLeft" align="right" valign="top"><a id="acf984075d64fcc50f43f5b13b7fd7529"></a>
-std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/de7/classThreadPool.html#acf984075d64fcc50f43f5b13b7fd7529">available_</a></td></tr>
-<tr class="memdesc:acf984075d64fcc50f43f5b13b7fd7529 inherit pro_attribs_classThreadPool"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of available threads, those which are not currently performing a task. <br /></td></tr>
-<tr class="separator:acf984075d64fcc50f43f5b13b7fd7529 inherit pro_attribs_classThreadPool"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ade26079dd6d8fa7fe7ef7e480496e64b inherit pro_attribs_classThreadPool"><td class="memItemLeft" align="right" valign="top"><a id="ade26079dd6d8fa7fe7ef7e480496e64b"></a>
-boost::mutex&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/de7/classThreadPool.html#ade26079dd6d8fa7fe7ef7e480496e64b">mutex_</a></td></tr>
-<tr class="memdesc:ade26079dd6d8fa7fe7ef7e480496e64b inherit pro_attribs_classThreadPool"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mutex to handle concurrent tasks. <br /></td></tr>
-<tr class="separator:ade26079dd6d8fa7fe7ef7e480496e64b inherit pro_attribs_classThreadPool"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a16e49f99edc8408765e51760a753948d inherit pro_attribs_classThreadPool"><td class="memItemLeft" align="right" valign="top"><a id="a16e49f99edc8408765e51760a753948d"></a>
-boost::condition_variable&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/de7/classThreadPool.html#a16e49f99edc8408765e51760a753948d">cond_</a></td></tr>
-<tr class="memdesc:a16e49f99edc8408765e51760a753948d inherit pro_attribs_classThreadPool"><td class="mdescLeft">&#160;</td><td class="mdescRight">Condition variable to handle tasks dispatching depending on available threads. <br /></td></tr>
-<tr class="separator:a16e49f99edc8408765e51760a753948d inherit pro_attribs_classThreadPool"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_attribs_classSimpleThreadPool"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classSimpleThreadPool')"><img src="../../closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="../../d2/d1f/classSimpleThreadPool.html">SimpleThreadPool&lt; TaskArgs ... &gt;</a></td></tr>
+<tr class="memitem:aed288649b910b5ba8222484c5ae49bad inherit pro_attribs_classSimpleThreadPool"><td class="memItemLeft" align="right" valign="top"><a id="aed288649b910b5ba8222484c5ae49bad"></a>
+std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d1f/classSimpleThreadPool.html#aed288649b910b5ba8222484c5ae49bad">available_</a></td></tr>
+<tr class="memdesc:aed288649b910b5ba8222484c5ae49bad inherit pro_attribs_classSimpleThreadPool"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of available threads, those which are not currently performing a task. <br /></td></tr>
+<tr class="separator:aed288649b910b5ba8222484c5ae49bad inherit pro_attribs_classSimpleThreadPool"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a12ee0fb1dd91a63574329cca341a08ea inherit pro_attribs_classSimpleThreadPool"><td class="memItemLeft" align="right" valign="top"><a id="a12ee0fb1dd91a63574329cca341a08ea"></a>
+boost::mutex&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d1f/classSimpleThreadPool.html#a12ee0fb1dd91a63574329cca341a08ea">mutex_</a></td></tr>
+<tr class="memdesc:a12ee0fb1dd91a63574329cca341a08ea inherit pro_attribs_classSimpleThreadPool"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mutex to handle concurrent tasks. <br /></td></tr>
+<tr class="separator:a12ee0fb1dd91a63574329cca341a08ea inherit pro_attribs_classSimpleThreadPool"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4e7b864843b36d0f86ddfe4626687012 inherit pro_attribs_classSimpleThreadPool"><td class="memItemLeft" align="right" valign="top"><a id="a4e7b864843b36d0f86ddfe4626687012"></a>
+boost::condition_variable&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d1f/classSimpleThreadPool.html#a4e7b864843b36d0f86ddfe4626687012">cond_</a></td></tr>
+<tr class="memdesc:a4e7b864843b36d0f86ddfe4626687012 inherit pro_attribs_classSimpleThreadPool"><td class="mdescLeft">&#160;</td><td class="mdescRight">Condition variable to handle tasks dispatching depending on available threads. <br /></td></tr>
+<tr class="separator:a4e7b864843b36d0f86ddfe4626687012 inherit pro_attribs_classSimpleThreadPool"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_attribs_classThreadPool"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classThreadPool')"><img src="../../closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="../../dc/de7/classThreadPool.html">ThreadPool</a></td></tr>
+<tr class="memitem:a3879736968a0b84d751ec595cdd2c6ca inherit pro_attribs_classThreadPool"><td class="memItemLeft" align="right" valign="top"><a id="a3879736968a0b84d751ec595cdd2c6ca"></a>
+boost::asio::io_service&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/de7/classThreadPool.html#a3879736968a0b84d751ec595cdd2c6ca">io_service_</a></td></tr>
+<tr class="memdesc:a3879736968a0b84d751ec595cdd2c6ca inherit pro_attribs_classThreadPool"><td class="mdescLeft">&#160;</td><td class="mdescRight">Instance of boost input/output service for asynchronous data processing. <br /></td></tr>
+<tr class="separator:a3879736968a0b84d751ec595cdd2c6ca inherit pro_attribs_classThreadPool"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae96f31710b6583f1968c28eb26083466 inherit pro_attribs_classThreadPool"><td class="memItemLeft" align="right" valign="top">boost::asio::executor_work_guard&lt; boost::asio::io_service::executor_type &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/de7/classThreadPool.html#ae96f31710b6583f1968c28eb26083466">work_</a></td></tr>
+<tr class="memdesc:ae96f31710b6583f1968c28eb26083466 inherit pro_attribs_classThreadPool"><td class="mdescLeft">&#160;</td><td class="mdescRight">Instance of work guard to report the io service when it has pending tasks.  <a href="../../dc/de7/classThreadPool.html#ae96f31710b6583f1968c28eb26083466">More...</a><br /></td></tr>
+<tr class="separator:ae96f31710b6583f1968c28eb26083466 inherit pro_attribs_classThreadPool"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0d1603eed0547e1f3774cafe94256abe inherit pro_attribs_classThreadPool"><td class="memItemLeft" align="right" valign="top"><a id="a0d1603eed0547e1f3774cafe94256abe"></a>
+std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/de7/classThreadPool.html#a0d1603eed0547e1f3774cafe94256abe">pool_size</a></td></tr>
+<tr class="memdesc:a0d1603eed0547e1f3774cafe94256abe inherit pro_attribs_classThreadPool"><td class="mdescLeft">&#160;</td><td class="mdescRight">Size of thread pool (number of threads) <br /></td></tr>
+<tr class="separator:a0d1603eed0547e1f3774cafe94256abe inherit pro_attribs_classThreadPool"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a56090e231c048e3a4e9e88261bd7cec5 inherit pro_attribs_classThreadPool"><td class="memItemLeft" align="right" valign="top"><a id="a56090e231c048e3a4e9e88261bd7cec5"></a>
+boost::thread_group&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/de7/classThreadPool.html#a56090e231c048e3a4e9e88261bd7cec5">threads_</a></td></tr>
+<tr class="memdesc:a56090e231c048e3a4e9e88261bd7cec5 inherit pro_attribs_classThreadPool"><td class="mdescLeft">&#160;</td><td class="mdescRight">Group of threads. <br /></td></tr>
+<tr class="separator:a56090e231c048e3a4e9e88261bd7cec5 inherit pro_attribs_classThreadPool"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Class implementing a thread pool to deal with multi thread KDTree building process. </p>
 <dl class="section author"><dt>Author</dt><dd>Alberto M. Esmoris Pena </dd></dl>
 <dl class="section version"><dt>Version</dt><dd>1.0 </dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../dc/de7/classThreadPool.html" title="Abstract class providing core implementation of a thread pool to deal with multi threading tasks...">ThreadPool</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../dc/de7/classThreadPool.html" title="Base class providing core implementation of a thread pool to deal with multi threading tasks...">ThreadPool</a> </dd>
 <dd>
 <a class="el" href="../../d0/d21/classMDThreadPool.html" title="Abstract class extending basic thread pool implementation to provide a basis layer to handle tasks wi...">MDThreadPool</a> </dd>
 <dd>
@@ -255,7 +281,7 @@ boost::condition_variable&#160;</td><td class="memItemRight" valign="bottom"><a 
 </div><div class="memdoc">
 
 <p>KDTree factory thread pool constructor. </p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../dc/de7/classThreadPool.html#a8024981c2df0048b4f6164964bcafffb" title="Size of thread pool (number of threads) ">ThreadPool::pool_size</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../dc/de7/classThreadPool.html#a0d1603eed0547e1f3774cafe94256abe" title="Size of thread pool (number of threads) ">ThreadPool::pool_size</a> </dd></dl>
 
 </div>
 </div>
@@ -288,8 +314,8 @@ boost::condition_variable&#160;</td><td class="memItemRight" valign="bottom"><a 
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a193581cbc141dc0f2352a799acb58c36"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a193581cbc141dc0f2352a799acb58c36">&#9670;&nbsp;</a></span>do_md_task()</h2>
+<a id="aa44e781d4d6ab1be879a1f921c4bb3b1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa44e781d4d6ab1be879a1f921c4bb3b1">&#9670;&nbsp;</a></span>do_md_task()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -300,7 +326,7 @@ boost::condition_variable&#160;</td><td class="memItemRight" valign="bottom"><a 
         <tr>
           <td class="memname">void KDTreeFactoryThreadPool::do_md_task </td>
           <td>(</td>
-          <td class="paramtype">boost::function&lt; void(<a class="el" href="../../d8/d94/classKDTreeNode.html">KDTreeNode</a> *, bool const, vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *&gt; &amp;, int const)&gt; &amp;&#160;</td>
+          <td class="paramtype">boost::function&lt; void(<a class="el" href="../../d8/d94/classKDTreeNode.html">KDTreeNode</a> *, bool const, vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *&gt; &amp;, int const, int const)&gt; &amp;&#160;</td>
           <td class="paramname"><em>task</em>, </td>
         </tr>
         <tr>
@@ -330,7 +356,7 @@ boost::condition_variable&#160;</td><td class="memItemRight" valign="bottom"><a 
   </table>
   </dd>
 </dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../dc/de7/classThreadPool.html#ab1035e24e8841701c196d08130d277f5" title="Invoke task with corresponding arguments. ">ThreadPool::do_task</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd>ThreadPool::do_task </dd></dl>
 
 </div>
 </div>

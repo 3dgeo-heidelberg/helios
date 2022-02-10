@@ -19,9 +19,6 @@ var hierarchy =
       [ "WavefrontObjFileLoader", "d9/d15/classWavefrontObjFileLoader.html", null ],
       [ "XYZPointCloudFileLoader", "d6/d03/classXYZPointCloudFileLoader.html", null ]
     ] ],
-    [ "AbstractPulseRunnable", "d6/d9e/classAbstractPulseRunnable.html", [
-      [ "FullWaveformPulseRunnable", "db/da6/classFullWaveformPulseRunnable.html", null ]
-    ] ],
     [ "ArgumentsParser", "d7/d5c/classArgumentsParser.html", null ],
     [ "Asset", "de/d97/classAsset.html", [
       [ "FWFSettings", "d4/dfb/classFWFSettings.html", null ],
@@ -53,6 +50,8 @@ var hierarchy =
     ] ],
     [ "HeliosTests::BaseTest", "d9/d52/classHeliosTests_1_1BaseTest.html", [
       [ "HeliosTests::FluxionumTest", "dd/de0/classHeliosTests_1_1FluxionumTest.html", null ],
+      [ "HeliosTests::GroveTest", "d0/d01/classHeliosTests_1_1GroveTest.html", null ],
+      [ "HeliosTests::HPCTest", "d4/d0d/classHeliosTests_1_1HPCTest.html", null ],
       [ "HeliosTests::LadLutTest", "dd/df9/classHeliosTests_1_1LadLutTest.html", null ],
       [ "HeliosTests::NoiseTest", "de/dad/classHeliosTests_1_1NoiseTest.html", null ],
       [ "HeliosTests::PlaneFitterTest", "d6/dda/classHeliosTests_1_1PlaneFitterTest.html", null ],
@@ -65,13 +64,30 @@ var hierarchy =
       [ "HeliosTests::SurveyCopyTest", "de/d9c/classHeliosTests_1_1SurveyCopyTest.html", null ],
       [ "HeliosTests::VoxelParsingTest", "da/d8d/classHeliosTests_1_1VoxelParsingTest.html", null ]
     ] ],
+    [ "BasicDynGroveSubject< Tree, Subject >", "d2/d33/classBasicDynGroveSubject.html", null ],
+    [ "BasicDynGroveSubject< GroveKDTreeRaycaster, DynMovingObject >", "d2/d33/classBasicDynGroveSubject.html", [
+      [ "KDGroveSubject", "dc/dbb/classKDGroveSubject.html", [
+        [ "DynMovingObject", "d4/d96/classDynMovingObject.html", [
+          [ "DynSequentiableMovingObject", "d4/d48/classDynSequentiableMovingObject.html", null ]
+        ] ]
+      ] ]
+    ] ],
     [ "BlockAllocator< Class >", "d9/d47/classBlockAllocator.html", null ],
     [ "BlockAllocator< LightKDTreeNode >", "d9/d47/classBlockAllocator.html", [
       [ "LightKDTreeNodeBlockAllocator", "dd/d04/classLightKDTreeNodeBlockAllocator.html", null ]
     ] ],
     [ "Color4f", "db/d02/classColor4f.html", null ],
+    [ "DateTimeUtils", "d2/d15/classDateTimeUtils.html", null ],
     [ "HeliosDemos::DemoSelector", "df/d3f/classHeliosDemos_1_1DemoSelector.html", null ],
     [ "Directions", "df/dc3/classDirections.html", null ],
+    [ "DynGrove< Subject >", "dc/d2c/classDynGrove.html", [
+      [ "BasicDynGrove< Tree, Subject >", "d1/d0a/classBasicDynGrove.html", null ]
+    ] ],
+    [ "DynGrove< DynMovingObject >", "dc/d2c/classDynGrove.html", [
+      [ "BasicDynGrove< GroveKDTreeRaycaster, DynMovingObject >", "d1/d0a/classBasicDynGrove.html", [
+        [ "KDGrove", "d9/d76/classKDGrove.html", null ]
+      ] ]
+    ] ],
     [ "DynMotionEngine", "d2/d0a/classDynMotionEngine.html", null ],
     [ "DynSequence< T >", "df/dfa/classDynSequence.html", null ],
     [ "DynSequencer< T >", "db/d6f/classDynSequencer.html", null ],
@@ -83,6 +99,10 @@ var hierarchy =
       ] ]
     ] ],
     [ "FileUtils", "d5/d4b/classFileUtils.html", null ],
+    [ "GroveTreeWrapper< Tree >", "d1/d1e/classGroveTreeWrapper.html", null ],
+    [ "HeliosTests::HPCTest_DoubleComparator", "dd/d54/structHeliosTests_1_1HPCTest__DoubleComparator.html", null ],
+    [ "HeliosTests::HPCTest_FloatComparator", "d0/df1/structHeliosTests_1_1HPCTest__FloatComparator.html", null ],
+    [ "HeliosTests::HPCTest_IntComparator", "d8/d51/structHeliosTests_1_1HPCTest__IntComparator.html", null ],
     [ "IBinaryTreeNode", "d7/d98/classIBinaryTreeNode.html", [
       [ "LightKDTreeNode", "dd/d79/classLightKDTreeNode.html", [
         [ "KDTreeNode", "d8/d94/classKDTreeNode.html", [
@@ -103,6 +123,8 @@ var hierarchy =
       [ "BinaryTreeFastBreadthIterator< NodeType >", "d3/d43/classBinaryTreeFastBreadthIterator.html", null ],
       [ "BinaryTreeFastDepthIterator< NodeType >", "dc/da5/classBinaryTreeFastDepthIterator.html", null ]
     ] ],
+    [ "KDGroveFactory", "de/d89/classKDGroveFactory.html", null ],
+    [ "KDGroveStats", "de/d29/classKDGroveStats.html", null ],
     [ "KDTreeBuildType", "d8/d4c/classKDTreeBuildType.html", null ],
     [ "KDTreeFactory", "d5/dd0/classKDTreeFactory.html", [
       [ "SimpleKDTreeFactory", "d6/d96/classSimpleKDTreeFactory.html", [
@@ -115,8 +137,9 @@ var hierarchy =
         ] ]
       ] ]
     ] ],
+    [ "KDTreeFactoryMaker", "d3/db8/classKDTreeFactoryMaker.html", null ],
     [ "KDTreePrimitiveComparator", "d6/d1f/structKDTreePrimitiveComparator.html", null ],
-    [ "KDTreeRaycaster", "da/d81/classKDTreeRaycaster.html", null ],
+    [ "KDTreeRaycaster::KDTreeRaycasterSearch", "de/d7f/classKDTreeRaycaster_1_1KDTreeRaycasterSearch.html", null ],
     [ "LadLut", "d9/d22/classLadLut.html", null ],
     [ "LadLutLoader", "de/d6b/classLadLutLoader.html", null ],
     [ "LasSpecification", "df/d64/classLasSpecification.html", null ],
@@ -190,6 +213,16 @@ var hierarchy =
         [ "DetailedVoxel", "d7/d5a/classDetailedVoxel.html", null ]
       ] ]
     ] ],
+    [ "PulseTask", "d1/d6e/classPulseTask.html", [
+      [ "AbstractPulseRunnable", "d6/d9e/classAbstractPulseRunnable.html", [
+        [ "FullWaveformPulseRunnable", "db/da6/classFullWaveformPulseRunnable.html", null ]
+      ] ]
+    ] ],
+    [ "PulseThreadPoolFactory", "d5/d85/classPulseThreadPoolFactory.html", null ],
+    [ "PulseThreadPoolInterface", "df/d9c/classPulseThreadPoolInterface.html", [
+      [ "PulseThreadPool", "d6/ddc/classPulseThreadPool.html", null ],
+      [ "PulseWarehouseThreadPool", "d7/de7/classPulseWarehouseThreadPool.html", null ]
+    ] ],
     [ "pyhelios::PyAABBWrapper", "de/df3/classpyhelios_1_1PyAABBWrapper.html", null ],
     [ "pyhelios::PyBeamDeflectorWrapper", "d0/d0e/classpyhelios_1_1PyBeamDeflectorWrapper.html", null ],
     [ "pyhelios::PyDetectorWrapper", "de/ddf/classpyhelios_1_1PyDetectorWrapper.html", null ],
@@ -210,12 +243,23 @@ var hierarchy =
     [ "pyhelios::PyRaySceneIntersectionWrapper", "da/db0/classpyhelios_1_1PyRaySceneIntersectionWrapper.html", null ],
     [ "pyhelios::PyScenePartWrapper", "df/d28/classpyhelios_1_1PyScenePartWrapper.html", null ],
     [ "pyhelios::PySceneWrapper", "d7/d17/classpyhelios_1_1PySceneWrapper.html", null ],
+    [ "pyhelios::PyStringVector", "dc/d5f/classpyhelios_1_1PyStringVector.html", null ],
     [ "pyhelios::PythonDVec3", "dd/d8f/classpyhelios_1_1PythonDVec3.html", null ],
     [ "pyhelios::PyTrajectoryVectorWrapper", "d4/d2c/classpyhelios_1_1PyTrajectoryVectorWrapper.html", null ],
     [ "pyhelios::PyTrajectoryWrapper", "d1/d2f/classpyhelios_1_1PyTrajectoryWrapper.html", null ],
     [ "pyhelios::PyVertexWrapper", "d6/d95/classpyhelios_1_1PyVertexWrapper.html", null ],
     [ "RandomnessGenerator< RealType >", "dc/d6e/classRandomnessGenerator.html", null ],
     [ "RandomnessGenerator< double >", "dc/d6e/classRandomnessGenerator.html", null ],
+    [ "Raycaster", "d7/df4/classRaycaster.html", [
+      [ "KDGroveRaycaster", "df/d01/classKDGroveRaycaster.html", null ],
+      [ "KDTreeRaycaster", "da/d81/classKDTreeRaycaster.html", [
+        [ "GroveKDTreeRaycaster", "d6/dba/classGroveKDTreeRaycaster.html", null ]
+      ] ],
+      [ "RaycasterGroveTree< Subject >", "d9/db1/classRaycasterGroveTree.html", null ],
+      [ "RaycasterGroveTree< DynObject >", "d9/db1/classRaycasterGroveTree.html", [
+        [ "GroveKDTreeRaycaster", "d6/dba/classGroveKDTreeRaycaster.html", null ]
+      ] ]
+    ] ],
     [ "RaySceneIntersection", "dc/da3/classRaySceneIntersection.html", null ],
     [ "RayUtils", "d7/dee/classRayUtils.html", null ],
     [ "rigidmotion::RigidMotion", "d7/d84/classrigidmotion_1_1RigidMotion.html", [
@@ -229,24 +273,56 @@ var hierarchy =
     [ "Rotation", "d5/dcb/classRotation.html", null ],
     [ "RotationOrder", "d6/d7f/classRotationOrder.html", null ],
     [ "ScannerHead", "dc/da7/classScannerHead.html", null ],
+    [ "ScanningPulseProcess", "db/d85/classScanningPulseProcess.html", [
+      [ "BuddingScanningPulseProcess", "d5/d3c/classBuddingScanningPulseProcess.html", null ],
+      [ "WarehouseScanningPulseProcess", "df/ddb/classWarehouseScanningPulseProcess.html", null ]
+    ] ],
+    [ "ScanningStrip", "d4/d31/classScanningStrip.html", null ],
     [ "SceneLoadingSpecification", "d7/d48/classSceneLoadingSpecification.html", null ],
     [ "ScenePart", "dd/dc4/classScenePart.html", [
       [ "DynObject", "d5/d6a/classDynObject.html", [
-        [ "DynMovingObject", "d4/d96/classDynMovingObject.html", [
-          [ "DynSequentiableMovingObject", "d4/d48/classDynSequentiableMovingObject.html", null ]
-        ] ]
+        [ "DynMovingObject", "d4/d96/classDynMovingObject.html", null ]
       ] ]
     ] ],
     [ "SerialIO", "d6/db9/classSerialIO.html", null ],
+    [ "SharedSubTask", "df/d6f/classSharedSubTask.html", [
+      [ "FastSAHKDTreeRecountSubTask", "d6/d0d/classFastSAHKDTreeRecountSubTask.html", null ],
+      [ "helios::hpc::SM_ParallelMergeSortSubTask< RandomAccessIterator, Comparator >", "d7/da6/classhelios_1_1hpc_1_1SM__ParallelMergeSortSubTask.html", null ],
+      [ "SAHKDTreeComputeLossNodesSubTask", "d5/d89/classSAHKDTreeComputeLossNodesSubTask.html", null ],
+      [ "SimpleKDTreeBuildChildrenNodesSubTask", "d5/d80/classSimpleKDTreeBuildChildrenNodesSubTask.html", null ],
+      [ "SimpleKDTreeComputeRootNodeBoundariesSubTask", "d1/da6/classSimpleKDTreeComputeRootNodeBoundariesSubTask.html", null ],
+      [ "SimpleKDTreePopulateSplitsSubTask", "d1/dc1/classSimpleKDTreePopulateSplitsSubTask.html", null ]
+    ] ],
+    [ "SharedSubTaskCompletionHandler", "d6/d25/classSharedSubTaskCompletionHandler.html", [
+      [ "SharedTaskSequencer", "da/d29/classSharedTaskSequencer.html", null ]
+    ] ],
+    [ "SimpleKDTreeGeometricStrategy", "d3/de1/classSimpleKDTreeGeometricStrategy.html", [
+      [ "SAHKDTreeGeometricStrategy", "d9/d31/classSAHKDTreeGeometricStrategy.html", [
+        [ "AxisSAHKDTreeGeometricStrategy", "d4/d97/classAxisSAHKDTreeGeometricStrategy.html", null ],
+        [ "FastSAHKDTreeGeometricStrategy", "d1/ddc/classFastSAHKDTreeGeometricStrategy.html", null ]
+      ] ]
+    ] ],
     [ "Simulation", "d1/d7b/classSimulation.html", [
       [ "SurveyPlayback", "d6/da1/classSurveyPlayback.html", null ]
     ] ],
     [ "SimulationCycleCallback", "dc/d7a/classSimulationCycleCallback.html", [
       [ "pyhelios::PySimulationCycleCallback", "d9/d64/classpyhelios_1_1PySimulationCycleCallback.html", null ]
     ] ],
+    [ "helios::hpc::SM_ParallelMergeSort< RandomAccessIterator, Comparator >", "d8/de4/classhelios_1_1hpc_1_1SM__ParallelMergeSort.html", null ],
+    [ "SmartSharedFunctorContainer< T >", "db/da8/classSmartSharedFunctorContainer.html", null ],
     [ "SpectralLibrary", "d5/d20/classSpectralLibrary.html", null ],
     [ "static_visitor", null, [
       [ "stringVisitor", "d8/df4/structstringVisitor.html", null ]
+    ] ],
+    [ "StaticGrove< Tree >", "d8/da0/classStaticGrove.html", [
+      [ "BasicStaticGrove< Tree >", "d9/dcd/classBasicStaticGrove.html", [
+        [ "BasicDynGrove< Tree, Subject >", "d1/d0a/classBasicDynGrove.html", null ]
+      ] ]
+    ] ],
+    [ "StaticGrove< GroveKDTreeRaycaster >", "d8/da0/classStaticGrove.html", [
+      [ "BasicStaticGrove< GroveKDTreeRaycaster >", "d9/dcd/classBasicStaticGrove.html", [
+        [ "BasicDynGrove< GroveKDTreeRaycaster, DynMovingObject >", "d1/d0a/classBasicDynGrove.html", null ]
+      ] ]
     ] ],
     [ "SyncFileWriter", "d1/d0e/classSyncFileWriter.html", [
       [ "LasSyncFileWriter", "d2/db3/classLasSyncFileWriter.html", [
@@ -257,16 +333,33 @@ var hierarchy =
       ] ]
     ] ],
     [ "SyncFileWriterFactory", "da/df6/classSyncFileWriterFactory.html", null ],
+    [ "TaskDropper< TaskType, ThreadPoolType, TaskArgs >", "da/d8d/classTaskDropper.html", null ],
+    [ "TaskDropper< PulseTask, PulseThreadPoolInterface, TaskArgs... >", "da/d8d/classTaskDropper.html", [
+      [ "BuddingTaskDropper< PulseTaskDropper, PulseTask, PulseThreadPoolInterface, std::vector< std::vector< double > > &, RandomnessGenerator< double > &, RandomnessGenerator< double > &, NoiseSource< double > & >", "d5/d2f/classBuddingTaskDropper.html", [
+        [ "PulseTaskDropper", "de/d9a/classPulseTaskDropper.html", null ]
+      ] ]
+    ] ],
+    [ "TaskDropper< TaskType, ThreadPoolType, TaskArgs... >", "da/d8d/classTaskDropper.html", [
+      [ "BuddingTaskDropper< BudType, TaskType, ThreadPoolType, TaskArgs >", "d5/d2f/classBuddingTaskDropper.html", null ]
+    ] ],
+    [ "TaskWarehouse< Task >", "d9/d5e/classTaskWarehouse.html", null ],
+    [ "TaskWarehouse< PulseTaskDropper >", "d9/d5e/classTaskWarehouse.html", null ],
     [ "Test", "df/da6/classTest.html", null ],
-    [ "ThreadPool< TaskArgs >", "dc/de7/classThreadPool.html", null ],
-    [ "ThreadPool< TaskArgs ... >", "dc/de7/classThreadPool.html", [
-      [ "MDThreadPool< MDType, TaskArgs >", "d0/d21/classMDThreadPool.html", null ],
-      [ "MDThreadPool< KDTreeBuildType, KDTreeNode *, bool const, vector< Primitive *> &, int const >", "d0/d21/classMDThreadPool.html", [
-        [ "KDTreeFactoryThreadPool", "d2/dea/classKDTreeFactoryThreadPool.html", null ]
+    [ "ThreadPool", "dc/de7/classThreadPool.html", [
+      [ "SimpleThreadPool< TaskArgs >", "d2/d1f/classSimpleThreadPool.html", null ],
+      [ "SimpleThreadPool< TaskArgs ... >", "d2/d1f/classSimpleThreadPool.html", [
+        [ "MDThreadPool< MDType, TaskArgs >", "d0/d21/classMDThreadPool.html", null ],
+        [ "MDThreadPool< KDTreeBuildType, KDTreeNode *, bool const, vector< Primitive *> &, int const, int const >", "d0/d21/classMDThreadPool.html", [
+          [ "KDTreeFactoryThreadPool", "d2/dea/classKDTreeFactoryThreadPool.html", null ]
+        ] ],
+        [ "ResThreadPool< TaskArgs >", "d2/dee/classResThreadPool.html", null ],
+        [ "ResThreadPool< std::vector< std::vector< double > > &, RandomnessGenerator< double > &, RandomnessGenerator< double > &, NoiseSource< double > & >", "d2/dee/classResThreadPool.html", [
+          [ "PulseThreadPool", "d6/ddc/classPulseThreadPool.html", null ]
+        ] ]
       ] ],
-      [ "ResThreadPool< TaskArgs >", "d2/dee/classResThreadPool.html", null ],
-      [ "ResThreadPool< std::vector< std::vector< double > > &, RandomnessGenerator< double > &, RandomnessGenerator< double > &, NoiseSource< double > & >", "d2/dee/classResThreadPool.html", [
-        [ "PulseThreadPool", "d6/ddc/classPulseThreadPool.html", null ]
+      [ "WarehouseThreadPool< Task >", "da/d92/classWarehouseThreadPool.html", null ],
+      [ "WarehouseThreadPool< PulseTaskDropper >", "da/d92/classWarehouseThreadPool.html", [
+        [ "PulseWarehouseThreadPool", "d7/de7/classPulseWarehouseThreadPool.html", null ]
       ] ]
     ] ],
     [ "TimeWatcher", "d7/d7d/classTimeWatcher.html", null ],
