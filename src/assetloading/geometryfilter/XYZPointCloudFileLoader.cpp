@@ -207,6 +207,9 @@ void XYZPointCloudFileLoader::secondPass(
     // Fill voxels grid
     fillVoxelsGrid(ifs, estimateNormals, halfVoxelSize, filePathString);
 
+    // Warning about potential specification errors
+    warnAboutPotentialErrors(filePathString);
+
     // Post-processing of voxels
     postProcess(matName, estimateNormals);
 
@@ -455,6 +458,32 @@ void XYZPointCloudFileLoader::digestVoxel(
         }
     }
 
+}
+
+void XYZPointCloudFileLoader::warnAboutPotentialErrors(string const &filePathString){
+    // Iterate over voxels to check them
+    Voxel *voxel;
+    bool nonUnitaryNormals = false;
+    for(size_t i = 0 ; i < maxNVoxels ; ++i){
+        voxel = voxels[i].voxel;
+        if(voxel == nullptr) continue; // Ignore non occupied voxels
+        if(
+            voxel->v.normal.x < -1.0 || voxel->v.normal.x > 1.0 ||
+            voxel->v.normal.y < -1.0 || voxel->v.normal.y > 1.0 ||
+            voxel->v.normal.z < -1.0 || voxel->v.normal.z > 1.0
+        ){
+            nonUnitaryNormals = true;
+            break; // If more checks are added in the future, remove this break
+        }
+    }
+
+    // Report checks
+    if(nonUnitaryNormals){
+        std::stringstream ss;
+        ss  << "Non unitary normals were found in point cloud loaded from "
+            << "file:\n\t\"" << filePathString << "\"";
+        logging::WARN(ss.str());
+    }
 }
 
 void XYZPointCloudFileLoader::postProcess(
