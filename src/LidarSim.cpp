@@ -111,7 +111,7 @@ void printHelp(){
         << "chunk-size strategy."
         << "\n\t\t\tPositive numbers specify the size for a static chunk-size "
         << "strategy"
-        << "\n\t\t\t\tBy default: -32\n\n"
+        << "\n\t\t\t\tBy default: 32\n\n"
 
         << "\t\t--warehouseFactor <integer> : Specify the warehouse factor."
         << "\n\t\t\tThe number of tasks in the warehouse would be k times the "
@@ -126,10 +126,11 @@ void printHelp(){
 
         << "\t\t--kdt <integer> : Specify the type of KDTree to be built for "
         << "for the scene\n"
-        << "\t\t\t\tDefault 1 is for the simple KDTree based on median "
+        << "\t\t\t\tUsing 1 is for the simple KDTree based on median "
         << " balancing, 2 for \n"
         << "\t\t\t\t\tthe SAH based KDTree, 3 for the SAH with best axis\n"
-        << "\t\t\t\t\tbased KDTree and 4 for a fast SAH approximation\n\n"
+        << "\t\t\t\t\tbased KDTree and 4 (default) for a fast SAH "
+        << "approximation\n\n"
 
         << "\t\t--kdtJobs <integer> : Specify the number of threads to be used"
            " for building the KDTree.\n"
@@ -138,14 +139,14 @@ void printHelp(){
            "\n\t\t\tIf 0, then the KDTree will be built using as many threads "
            "as available\n\n"
 
-       <<   "\t\t--kdtGeomJobs <integer> : Specify the number of threads to "
-            "be used for building the\n\t\t\t"
-            "upper nodes of the KDTree (geometry-level parallelization).\n"
-            "\t\t\tIf 1, then there is no geometry-level parallelization"
-            "\n\t\t\tIf >1, then geometry-level parallelization uses as many "
-            "threads as specified."
-            "\n\t\t\tIf 0, then geometry-level parallelization uses as many "
-            "threads as node-level.\n\n"
+        << "\t\t--kdtGeomJobs <integer> : Specify the number of threads to "
+           "be used for building the\n\t\t\t"
+           "upper nodes of the KDTree (geometry-level parallelization).\n"
+           "\t\t\tIf 1, then there is no geometry-level parallelization"
+           "\n\t\t\tIf >1, then geometry-level parallelization uses as many "
+           "threads as specified."
+           "\n\t\t\tIf 0 (default), then geometry-level parallelization uses"
+           "\n\t\t\tas many threads as node-level.\n\n"
 
 
         << "\t\t--sahNodes <integer> : Specify how many nodes must be used by "
