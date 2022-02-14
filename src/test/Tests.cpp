@@ -1,6 +1,7 @@
 #include <test/BaseTest.h>
 #include <test/RandomTest.h>
 #include <test/NoiseTest.h>
+#include <test/DiscreteTimeTest.h>
 #include <test/VoxelParsingTest.h>
 #include <test/RayIntersectionTest.h>
 #include <test/GroveTest.h>
@@ -57,6 +58,9 @@ void doTests(std::string const & testDir){
 
     NoiseTest noiseTest;
     noiseTest.test(std::cout, TEST_COLOR);
+
+    DiscreteTimeTest discreteTimeTest;
+    discreteTimeTest.test(std::cout, TEST_COLOR);
 
     VoxelParsingTest voxelParsingTest(testDir);
     voxelParsingTest.test(std::cout, TEST_COLOR);

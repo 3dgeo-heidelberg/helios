@@ -6,6 +6,7 @@
 #include <scene/Scene.h>
 #include <scene/StaticScene.h>
 #include <scene/dynamic/DynObject.h>
+#include <sim/tools/NonVoidStepLoop.h>
 
 using std::vector;
 using std::shared_ptr;
@@ -42,8 +43,7 @@ private:
         ar &boost::serialization::base_object<StaticScene>(*this);
         ar &dynObjs;
         ar &updated;
-        ar &dynamicSpaceInterval;
-        ar &currentStep;
+        //ar &stepLoop; // TODO Rethink : Handle through save/load construct
     }
 protected:
     // ***  ATTRIBUTES  *** //
@@ -62,23 +62,10 @@ protected:
      */
     vector<bool> updated;
     /**
-     * @brief Specify how many simulation steps must elapse between each
-     *  simulation step computation for the dynamic scene
+     * @brief The step loop for the dynamic scene
+     * @see StepLoop
      */
-    int dynamicSpaceInterval = 1;
-    /**
-     * @brief Stores the current simulation step.
-     *
-     * Let \f$\delta\f$ be the dynamic space frequency and \f$s_t\f$ the step
-     *  at \f$t\f$ instant. Thus, the current step update behavior can be
-     *  defined as follows:
-     *
-     * \f[
-     *   s_{t+1} = \left(s_{t} + 1\right) \mod \delta
-     * \f]
-     * @see DynScene::dynamicSpaceInterval
-     */
-    int currentStep = 0;
+    NonVoidStepLoop<bool> stepLoop;
 
 public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //
@@ -86,7 +73,9 @@ public:
     /**
      * @brief Dynamic scene default constructor
      */
-    DynScene() = default;
+    DynScene(int const stepInterval=10) :
+        stepLoop(stepInterval, [&] () -> bool{return doStep();})
+    {}
     ~DynScene() override {}
     /**
      * @brief Copy constructor for dynamic scene
@@ -97,31 +86,41 @@ public:
      * @brief Build a dynamic scene using given scene as basis
      * @param s Basis scene for dynamic scene
      */
-    DynScene(Scene &s) : StaticScene(s) {}
+    DynScene(Scene &s, int const stepInterval=10) :
+        StaticScene(s),
+        stepLoop(stepInterval, [&] () -> bool{return doStep();})
+    {}
     /**
      * @brief Build a dynamic scene using given static scene as basis
      * @param ss Basis static scene for dynamic scene
      */
-    DynScene(StaticScene &ss) : StaticScene(ss) {}
+    DynScene(StaticScene &ss, int const stepInterval=10) :
+        StaticScene(ss),
+        stepLoop(stepInterval, [&] () -> bool{return doStep();})
+    {}
 
     // ***  SIMULATION STEP  *** //
     // ************************* //
     /**
      * @brief Do corresponding computations for the dynamic scene at current
-     *  simulation step if proceeds.
+     *  simulation step, if any.
      *
      * Computations only occur for simulation steps which satisfy:
      * \f[
-     *  s_{t} \equiv 0 \mod \delta
+     *  s_{t} \equiv 0 \mod \Delta
      * \f]
      *
-     * Where \f$\delta\f$ is the dynamic space frequency and \f$s_{t}\f$ is the
+     * Where \f$\Delta\f$ is the step interval and \f$s_{t}\f$ is the
      *  current step at instant \f$t\f$.
+     *
+     * Notice handling of this loop is done through StepLoop class
+     *
      * @return True if any dynamic object was udpated, false otherwise
-     * @see DynScene::dynamicSpaceInterval
+     * @see DynScene::stepInterval
      * @see DynScene::currentStep
      * @see DynScene::doStep
      * @see Scene::doSimStep
+     * @see StepLoop
      */
     bool doSimStep() override;
     /**
@@ -133,6 +132,13 @@ public:
      * @see DynScene::doSimStep
      */
     bool doStep();
+    /**
+     * @brief Build the step loop with given step interval for the dynamic
+     *  scene
+     * @param stepInterval Step interval for the step loop to be built
+     * @see StepLoop
+     */
+    virtual void makeStepLoop(int const stepInterval);
 
     // ***  GETTERs and SETTERs  *** //
     // ***************************** //

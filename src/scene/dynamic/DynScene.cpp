@@ -6,26 +6,31 @@ using std::stringstream;
 
 // ***  CONSTRUCTION / DESTRUCTION  *** //
 // ************************************ //
-DynScene::DynScene(DynScene &ds) :
-    DynScene(static_cast<StaticScene&>(ds))
-{
+DynScene::DynScene(DynScene &ds) : DynScene(static_cast<StaticScene&>(ds)) {
     for(shared_ptr<DynObject> dynObj : ds.dynObjs){
         dynObjs.push_back(dynObj);
         updated.push_back(true);
     }
-    dynamicSpaceInterval = ds.dynamicSpaceInterval;
-    currentStep = ds.currentStep;
+    makeStepLoop(ds.stepLoop.getStepInterval());
+    stepLoop.setCurrentStep(ds.stepLoop.getCurrentStep());
 }
 
 // ***  SIMULATION STEP  *** //
 // ************************* //
 bool DynScene::doSimStep(){
-    currentStep = (currentStep + 1) % dynamicSpaceInterval;
-    if(currentStep == (dynamicSpaceInterval-1)) return doStep();
+    std::cout   << "DynScene step " << (stepLoop.getCurrentStep()+1) << " / "
+                << stepLoop.getStepInterval() << std::endl; // TODO Remove
+    // TODO Rethink : Discard old implementation if new works
+    /*currentStep = (currentStep + 1) % stepInterval;
+    if(currentStep == (stepInterval-1)) return doStep();
+    return false;*/
+    // TODO Rethink : Use new implementation
+    if(stepLoop.doStep()) return stepLoop.retrieveOutput();
     return false;
 }
 
 bool DynScene::doStep(){
+    //std::cout << "DynScene updated!" << std::endl; // TODO Remove
     bool updateFlag = false;
     size_t const n = numDynObjects();
     for(size_t i = 0 ; i < n ; ++i){
@@ -34,6 +39,13 @@ bool DynScene::doStep(){
     }
     return updateFlag;
 }
+
+void DynScene::makeStepLoop(int const stepInterval){
+    this->stepLoop = NonVoidStepLoop<bool>(
+        stepInterval, [&] () -> bool{return doStep();}
+    );
+}
+
 
 // ***   READ/WRITE  *** //
 // ********************* //

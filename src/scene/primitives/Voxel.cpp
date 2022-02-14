@@ -57,7 +57,6 @@ double Voxel::getIncidenceAngle_rad(
     }
 
     // Determine incidence angle considering voxel normal
-    // TODO Rethink : Computing incidence angle here fails
     return M_PI - glm::angle(v.normal, rayDir);
 }
 
