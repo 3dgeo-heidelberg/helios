@@ -83,7 +83,8 @@ public:
         tinyxml2::XMLElement* element,
         std::string attrName,
         std::string type,
-        ObjectT defaultVal
+        ObjectT defaultVal,
+        std::string const defaultMsg="Using default value for attribute"
     );
 
     /**
