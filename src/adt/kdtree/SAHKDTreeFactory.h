@@ -264,6 +264,17 @@ public:
     );
     virtual ~SAHKDTreeFactory() = default;
 
+    // ***  CLONE  *** //
+    // *************** //
+    /**
+     * @see KDTreeFactory::clone
+     */
+    KDTreeFactory * clone() const override;
+    /**
+     * @brief Assign attributes from SAHKDTreeFactory to its clone
+     */
+    void _clone(KDTreeFactory *kdtf) const override;
+
     // ***  BUILDING METHODS  *** //
     // ************************** //
     /**

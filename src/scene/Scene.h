@@ -420,6 +420,19 @@ public:
   virtual inline void setBBoxCRS(std::shared_ptr<AABB> const bbox)
   {this->bbox_crs = bbox;}
 
+  /**
+   * @brief Checke whether the scene contains at least one moving object
+   *  (true) or not (false)
+   * @return True if scene hast at least one moving objects, false otherwise
+   */
+  virtual inline bool hasMovingObjects() const{
+      for(std::shared_ptr<ScenePart> part : parts){
+          if(part->getType()==ScenePart::ObjectType::DYN_MOVING_OBJECT)
+              return true;
+      }
+      return false;
+  }
+
   // ***   READ/WRITE  *** //
   // ********************* //
   /**

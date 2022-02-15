@@ -43,6 +43,17 @@ public:
     {}
     virtual ~AxisSAHKDTreeGeometricStrategy() = default;
 
+    // ***  CLONE  *** //
+    // *************** //
+    /**
+     * @brief Create a clone of the AxisSAHKDTreeGeometricStrategy
+     * @param kdtf The KDTreeFactory to be referenced by the clone
+     * @return Clone of the AxisSAHKDTreeGeometricStrategy
+     */
+    SimpleKDTreeGeometricStrategy * clone(
+        SimpleKDTreeFactory *kdtf
+    ) const override;
+
 protected:
     // ***  GEOMETRY LEVEL BUILDING  *** //
     // ********************************* //

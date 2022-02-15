@@ -233,7 +233,10 @@ shared_ptr<KDGrove> KDGroveFactory::makeCommon(
         }
         kdgrove->addSubject(
             subject,
-            make_shared<GroveKDTreeRaycaster>(kdtree)
+            make_shared<GroveKDTreeRaycaster>(
+                kdtree,
+                shared_ptr<KDTreeFactory>(kdtf->clone())
+            )
         );
         tw.stop();
         buildingTimes.push_back(tw.getElapsedDecimalSeconds());

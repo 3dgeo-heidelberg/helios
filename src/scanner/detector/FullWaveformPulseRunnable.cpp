@@ -27,9 +27,6 @@ void FullWaveformPulseRunnable::operator()(
 	RandomnessGenerator<double> &randGen2,
 	NoiseSource<double> &intersectionHandlingNoiseSource
 ){
-    // Retrieve scene
-	shared_ptr<Scene> scene = detector->scanner->platform->scene;
-
 	// Compute beam direction
 	glm::dvec3 beamDir = absoluteBeamAttitude.applyTo(Directions::forward);
 
@@ -39,7 +36,7 @@ void FullWaveformPulseRunnable::operator()(
 	// performance optimization, so we should keep it nevertheless. sbecht 2016-04-24
 
 	// Early abort if central axis of the beam does not intersect with the scene:
-	vector<double> tMinMax = scene->getAABB()->getRayIntersection(absoluteBeamOrigin, beamDir);
+	vector<double> tMinMax = scene.getAABB()->getRayIntersection(absoluteBeamOrigin, beamDir);
 	if (tMinMax.empty()) {
 		logging::DEBUG("Early abort - beam does not intersect with the scene");
 		detector->scanner->setLastPulseWasHit(false);
@@ -50,7 +47,6 @@ void FullWaveformPulseRunnable::operator()(
 	map<double, double> reflections;
 	vector<RaySceneIntersection> intersects;
 	computeSubrays(
-	    *scene,
 	    intersectionHandlingNoiseSource,
 	    reflections,
 	    intersects
@@ -73,7 +69,6 @@ void FullWaveformPulseRunnable::operator()(
 // ***  OPERATOR METHODS  *** //
 // ************************** //
 void FullWaveformPulseRunnable::computeSubrays(
-    Scene &scene,
     NoiseSource<double> &intersectionHandlingNoiseSource,
     std::map<double, double> &reflections,
     vector<RaySceneIntersection> &intersects
@@ -105,7 +100,6 @@ void FullWaveformPulseRunnable::computeSubrays(
                 circleStep,
                 circleStep_rad,
                 r1,
-                scene,
                 subrayDivergenceAngle_rad,
                 intersectionHandlingNoiseSource,
                 reflections,
@@ -119,7 +113,6 @@ void FullWaveformPulseRunnable::handleSubray(
     int circleStep,
     double circleStep_rad,
     Rotation &r1,
-    Scene &scene,
     double divergenceAngle,
     NoiseSource<double> &intersectionHandlingNoiseSource,
     map<double, double> &reflections,

@@ -35,6 +35,27 @@ SAHKDTreeFactory::SAHKDTreeFactory (
     _lockILOT = [] () -> void {return;};
     _unlockILOT = [] () -> void {return;};
 }
+
+// ***  CLONE  *** //
+// *************** //
+KDTreeFactory * SAHKDTreeFactory::clone() const{
+    SAHKDTreeFactory *kdtf = new SAHKDTreeFactory(
+        lossNodes, ci, cl, co
+    );
+    _clone(kdtf);
+    return kdtf;
+}
+
+void SAHKDTreeFactory::_clone(KDTreeFactory *_kdtf) const{
+    SimpleKDTreeFactory::_clone(_kdtf);
+    SAHKDTreeFactory *kdtf = (SAHKDTreeFactory *) _kdtf;
+    kdtf->cacheRoot = cacheRoot;
+    kdtf->cacheI = cacheI;
+    kdtf->cacheL = cacheL;
+    kdtf->cacheO = cacheO;
+    kdtf->cacheT = cacheT;
+}
+
 // ***  BUILDING METHODS  *** //
 // ************************** //
 void SAHKDTreeFactory::defineSplit(

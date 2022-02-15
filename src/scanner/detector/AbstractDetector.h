@@ -7,7 +7,7 @@
 namespace fs = boost::filesystem;
 
 #include <Scanner.h>
-#include "ScannerSettings.h"
+#include <ScannerSettings.h>
 
 #include "Measurement.h"
 #include "MeasurementsBuffer.h"

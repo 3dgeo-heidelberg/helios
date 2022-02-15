@@ -39,6 +39,17 @@ public:
     {}
     virtual ~SimpleKDTreeGeometricStrategy() = default;
 
+    // ***  CLONE  *** //
+    // *************** //
+    /**
+     * @brief Create a clone of the SimpleKDTreeGeometricStrategy
+     * @param kdtf The KDTreeFactory to be referenced by the clone
+     * @return Clone of the SimpleKDTreeGeometricStrategy
+     */
+    virtual SimpleKDTreeGeometricStrategy * clone(
+        SimpleKDTreeFactory *kdtf
+    ) const;
+
 protected:
     // ***  GEOMETRY LEVEL BUILDING  *** //
     // ********************************* //

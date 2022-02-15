@@ -4,5 +4,8 @@
 // ************************************ //
 void GroveKDTreeRaycaster::update(DynObject &dynObj){
     // TODO Rethink : Implement
-    //std::cout << "DynObject was updated!" << std::endl; // TODO Remove
+    root = shared_ptr<LightKDTreeNode>(
+        kdtf->makeFromPrimitives(dynObj.mPrimitives, true, false)
+    );
+    std::cout << "DynObject was updated!" << std::endl; // TODO Remove
 }

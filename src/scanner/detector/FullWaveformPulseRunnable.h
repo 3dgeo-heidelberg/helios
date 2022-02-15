@@ -61,6 +61,10 @@ private:
      * @brief Flag to specify if calc echo width (true) or not (false)
      */
     bool calcEchowidth;
+    /**
+     * @brief Reference to the scene that is being scanned
+     */
+    Scene &scene;
 
 public:
     /**
@@ -113,7 +117,8 @@ public:
 			absoluteBeamAttitude, 
 			currentPulseNum, 
 			currentGpsTime
-        )
+        ),
+        scene(*(detector->scanner->platform->scene))
 	{
 		fwDetector = detector;
 		this->writeWaveform = writeWaveform;
@@ -140,7 +145,6 @@ private:
      * @see FullWaveformPulseRunnable::handleSubray
      */
     void computeSubrays(
-        Scene &scene,
         NoiseSource<double> &intersectionHandlingNoiseSource,
         std::map<double, double> &reflections,
         vector<RaySceneIntersection> &intersects
@@ -158,7 +162,6 @@ private:
         int circleStep,
         double circleStep_rad,
         Rotation &r1,
-        Scene &scene,
         double divergenceAngle,
         NoiseSource<double> &intersectionHandlingNoiseSource,
         std::map<double, double> &reflections,

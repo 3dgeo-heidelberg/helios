@@ -40,6 +40,26 @@ MultiThreadKDTreeFactory::MultiThreadKDTreeFactory(
     kdtf->_buildRecursive = _buildRecursive;
 }
 
+// ***  CLONE  *** //
+// *************** //
+KDTreeFactory * MultiThreadKDTreeFactory::clone() const{
+    shared_ptr<SimpleKDTreeFactory> skdtf(
+        (SimpleKDTreeFactory *) kdtf->clone()
+    );
+    MultiThreadKDTreeFactory * mtkdtf = new MultiThreadKDTreeFactory(
+        skdtf,
+        shared_ptr<SimpleKDTreeGeometricStrategy>(gs->clone(skdtf.get())),
+        numJobs,
+        geomJobs
+    );
+    _clone(mtkdtf);
+    return mtkdtf;
+}
+
+void MultiThreadKDTreeFactory::_clone(KDTreeFactory *kdtf) const{
+    SimpleKDTreeFactory::_clone(kdtf);
+}
+
 // ***  KDTREE FACTORY METHODS  *** //
 // ******************************** //
 KDTreeNodeRoot * MultiThreadKDTreeFactory::makeFromPrimitivesUnsafe(
