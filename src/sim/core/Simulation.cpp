@@ -23,10 +23,32 @@ Simulation::Simulation(
     parallelizationStrategy(parallelizationStrategy),
     threadPool(pulseThreadPoolInterface),
     taskDropper(chunkSize),
+    stepLoop([&] () -> void{doSimStep();}),
     fixedGpsTimeStart(fixedGpsTimeStart)
 {
     mBuffer = make_shared<MeasurementsBuffer>();
     currentGpsTime_ms = calcCurrentGpsTime();
+}
+
+void Simulation::prepareSimulation(int simFrequency_hz){
+    // Mark as not finished
+    finished = false;
+
+    // Prepare platform to work with scanner
+    this->mScanner->platform->prepareSimulation(
+        this->mScanner->getPulseFreq_Hz()
+    );
+
+    // Prepare scanner
+    this->mScanner->buildScanningPulseProcess(
+        parallelizationStrategy,
+        taskDropper,
+        threadPool
+    );
+
+    // Prepare simulation
+    setSimFrequency(this->mScanner->getPulseFreq_Hz());
+    stepLoop.setCurrentStep(0);
 }
 
 void Simulation::doSimStep(){
@@ -64,7 +86,7 @@ void Simulation::pause(bool pause) {
 
 void Simulation::shutdown(){
     finished = true;
-    if(callback != nullptr && simFrequency > 0){
+    if(callback != nullptr && getCallbackFrequency() > 0){
         std::unique_lock<std::mutex> lock(*mScanner->cycleMeasurementsMutex);
         (*callback)(
             *mScanner->cycleMeasurements,
@@ -134,39 +156,23 @@ void Simulation::setSimSpeedFactor(double factor) {
 }
 
 void Simulation::start() {
-    finished = false;
-
-    // Prepare platform to work with scanner
-    this->mScanner->platform->prepareSimulation(
-        this->mScanner->getPulseFreq_Hz()
-    );
-
-    // Prepare scanner
-    this->mScanner->buildScanningPulseProcess(
-        parallelizationStrategy,
-        taskDropper,
-        threadPool
-    );
-
-    // Prepare simulation
-	int stepCount = 0;
+    // Prepare to execute the main loop of simulation
+    prepareSimulation(mScanner->getPulseFreq_Hz());
+    size_t iter = 1;
     timeStart_ms = duration_cast<milliseconds>(
         system_clock::now().time_since_epoch()
     ).count();
 
-
-	// ############# BEGIN Main simulation loop ############
-	size_t iter = 1;
+    // Execute the main loop of the simulation
 	while (!isStopped()) {
 	    if(iter==1){
 	        std::unique_lock<std::mutex> lock(mutex);
 	    }
 
-		doSimStep();
-        stepCount++;
+	    stepLoop.doStep();
 
 		iter++;
-		if(iter-1 == simFrequency){
+		if(iter-1 == getCallbackFrequency()){
 		    if(callback != nullptr){
                 std::unique_lock<std::mutex> lock(
                     *mScanner->cycleMeasurementsMutex);
@@ -183,25 +189,24 @@ void Simulation::start() {
 		}
 	}
 
+	// Finish the main loop of the simulation
 	long timeMainLoopFinish = duration_cast<milliseconds>(
 	    system_clock::now().time_since_epoch()).count();
-	long seconds = (timeMainLoopFinish - timeStart_ms) / 1000;
-
+	double seconds = ((double)(timeMainLoopFinish - timeStart_ms)) / 1000.0;
 	mScanner->onSimulationFinished();
 
+	// Report information about simulation main loop
 	stringstream ss;
-	ss  << "stepCount = " << stepCount << "\n"
+	ss  << "Elapsed simulation steps = " << stepLoop.getCurrentStep() << "\n"
+	    << "Elapsed virtual time = " << stepLoop.getCurrentTime() << " sec.\n"
 	    << "Main thread simulation loop finished in "<<seconds<<" sec."<<"\n"
 	    << "Waiting for completion of pulse computation tasks...";
 	logging::TIME(ss.str());
     ss.str("");
-
-    // ########## BEGIN Loop that waits for the executor service to complete all tasks ###########
     long timeFinishAll = duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count();
-	long secondsAll = (timeFinishAll - timeStart_ms) / 1000;
+	double secondsAll = ((double)(timeFinishAll - timeStart_ms)) / 1000.0;
 	ss << "Pulse computation tasks finished in " << secondsAll << " sec.";
 	logging::TIME(ss.str());
-	// ########## END Loop that waits for the executor service to complete all tasks ###########
 
 	// Shutdown the simulation (e.g. close all file output streams. Implemented in derived classes.)
 	shutdown();

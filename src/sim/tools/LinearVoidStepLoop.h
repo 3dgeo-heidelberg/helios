@@ -11,7 +11,9 @@
  * @see VoidStepLoop
  */
 template <typename ... StepInput>
-class LinearVoidStepLoop : public StepLoop<StepInput ...>{
+class LinearVoidStepLoop : public VoidStepLoop<StepInput ...>{
+using StepLoop<StepInput ...>::currentStep;
+using StepLoop<StepInput ...>::handleStep;
 public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //
     // ************************************ //
@@ -22,13 +24,23 @@ public:
     LinearVoidStepLoop(
         std::function<void(StepInput ...)> f
     ) :
-        VoidStepLoop<StepInput ...>(0),
-        f(f)
+        VoidStepLoop<StepInput ...>(0, f)
     {}
-    virtual ~VoidStepLoop() = default;
+    virtual ~LinearVoidStepLoop() = default;
 
     // ***  LOOP METHODS  *** //
     // ********************** //
+    /**
+     * @brief Handle current loop iteration and advances to next one without
+     *  cyclic behavior
+     * @return True always, because it always compute
+     * @see StepLoop::doStep
+     */
+    bool doStep(StepInput ... input) override{
+        handleStep(input ...);
+        nextStep();
+        return true;
+    }
     /**
      * @brief Advances to current loop iteration without cyclic behavior
      * @see StepLoop::nextStep

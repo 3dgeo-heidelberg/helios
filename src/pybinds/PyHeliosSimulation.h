@@ -30,7 +30,7 @@ private:
     bool stopped = false;
     bool finished = false;
     size_t numThreads = 0;
-    size_t simFrequency = 0;
+    size_t callbackFrequency = 0;
     std::string surveyPath = "NULL";
     std::string assetsPath = "NULL";
     std::string outputPath = "NULL";
@@ -174,11 +174,11 @@ public:
      */
     Leg & newLeg(int index);
     /**
-     * @brief Obtain simulation frequency
+     * @brief Obtain callback frequency
      *
-     * @return Simulation frequency
+     * @return Callback frequency
      */
-    size_t getSimFrequency() {return simFrequency;}
+    size_t getCallbackFrequency() {return callbackFrequency;}
     /**
      * @brief Obtain the number of threads
      *
@@ -190,10 +190,10 @@ public:
      */
     void setNumThreads(size_t numThreads) {this->numThreads = numThreads;}
     /**
-     * @brief Set the simulation frequency
+     * @brief Set the callback frequency
      */
-    void setSimFrequency(size_t simFrequency)
-        {this->simFrequency = simFrequency;}
+    void setCallbackFrequency(size_t const callbackFrequency)
+    {this->callbackFrequency = callbackFrequency;}
     /**
      * @brief Set the simulation callback to specified python object functor
      */

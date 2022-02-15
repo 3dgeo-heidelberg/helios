@@ -80,7 +80,10 @@ public:
      * @brief The main constructor for DiscreteTime
      * @see DiscreteTime:frequency
      */
-    DiscreteTime(std::size_t const frequency, double const periodScale=1.0);
+    DiscreteTime(
+        std::size_t const frequency,
+        double const periodScale=1.0
+    );
     virtual ~DiscreteTime() = default;
 
     // ***  TRANSFORMS  *** //

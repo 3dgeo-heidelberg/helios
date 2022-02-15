@@ -143,8 +143,8 @@ BOOST_PYTHON_MODULE(_pyhelios){
         )
         .add_property(
             "simFrequency",
-            &PyHeliosSimulation::getSimFrequency,
-            &PyHeliosSimulation::setSimFrequency
+            &PyHeliosSimulation::getCallbackFrequency,
+            &PyHeliosSimulation::setCallbackFrequency
         )
         .add_property(
             "finalOutput",

@@ -18,8 +18,8 @@ DynScene::DynScene(DynScene &ds) : DynScene(static_cast<StaticScene&>(ds)) {
 // ***  SIMULATION STEP  *** //
 // ************************* //
 bool DynScene::doSimStep(){
-    std::cout   << "DynScene step " << (stepLoop.getCurrentStep()+1) << " / "
-                << stepLoop.getStepInterval() << std::endl; // TODO Remove
+    /*std::cout   << "DynScene step " << (stepLoop.getCurrentStep()+1) << " / "
+                << stepLoop.getStepInterval() << std::endl;*/ // TODO Remove
     // TODO Rethink : Discard old implementation if new works
     /*currentStep = (currentStep + 1) % stepInterval;
     if(currentStep == (stepInterval-1)) return doStep();

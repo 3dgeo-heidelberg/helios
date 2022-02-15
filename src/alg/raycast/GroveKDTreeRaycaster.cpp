@@ -4,5 +4,5 @@
 // ************************************ //
 void GroveKDTreeRaycaster::update(DynObject &dynObj){
     // TODO Rethink : Implement
-    std::cout << "DynObject was updated!" << std::endl; // TODO Remove
+    //std::cout << "DynObject was updated!" << std::endl; // TODO Remove
 }
