@@ -17,7 +17,7 @@ jobs:
 
     defaults:
       run:
-        working-directory: ${{github.workspace}}/lib
+        working-directory: ${{github.workspace}}
 
     steps:
       - name: Add MSBuild to PATH
@@ -115,7 +115,7 @@ jobs:
 
     defaults:
       run:
-        working-directory: ${{github.workspace}}/lib
+        working-directory: ${{github.workspace}}
 
     steps:
 
@@ -266,7 +266,7 @@ jobs:
     needs: [build-boost, build-libs]
     defaults:
       run:
-        working-directory: ${{github.workspace}}/lib
+        working-directory: ${{github.workspace}}
         
         
     strategy:
@@ -277,6 +277,7 @@ jobs:
     
       - name: Add MSBuild to PATH
         uses: microsoft/setup-msbuild@v1.0.2
+        
       - uses: actions/checkout@v2            
       
       - name: Set Up Python
