@@ -250,7 +250,7 @@ jobs:
         working-directory: ${{env.GITHUB_WORKSPACE}}
         run: |
           dir
-          Start-Process -FilePath .\scilab-6.1.0_x64.exe -ArgumentList "/SILENT /NORESTART /DIR=\"C:\Program Files\scilab-6.1.0\"" -Wait
+          Start-Process -FilePath .\scilab-6.1.0_x64.exe -ArgumentList "/SILENT /NORESTART /DIR=`"C:\Program Files\scilab-6.1.0\`"" -Wait
           dir "C:\Program Files"
           dir "C:\Program Files\scilab-6.1.0"
 
