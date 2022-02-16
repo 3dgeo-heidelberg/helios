@@ -119,6 +119,9 @@ jobs:
 
     steps:
 
+      - name: Add MSBuild to PATH
+        uses: microsoft/setup-msbuild@v1.0.2
+        
       - name: Create folder structure
         run: |
           mkdir ${{github.workspace}}/lib
@@ -271,6 +274,9 @@ jobs:
         python-version: ['3.6', '3.7', '3.8', '3.9']
        
     steps:
+    
+      - name: Add MSBuild to PATH
+        uses: microsoft/setup-msbuild@v1.0.2
       - uses: actions/checkout@v2            
       
       - name: Set Up Python
