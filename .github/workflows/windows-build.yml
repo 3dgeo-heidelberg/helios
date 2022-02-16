@@ -291,6 +291,7 @@ jobs:
         with:
           path: |
             ${{github.workspace}}/lib
+            "C:\Program Files\scilab-6.1.0\bin"
           key: ${{ runner.os }}-gdal-lastools-armadillo-latest
           restore-keys: |
             Windows-gdal-lastools-armadillo-latest
