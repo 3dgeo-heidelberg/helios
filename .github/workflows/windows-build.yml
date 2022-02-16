@@ -133,9 +133,9 @@ jobs:
         with:
           path: |
             ${{github.workspace}}/lib
-            "C:\Program Files\scilab-6.1.0\bin"
+            C:\Program Files\scilab-6.1.0\bin
             
-          key: ${{ runner.os }}-gdal-lastools-armadillo-latest
+          key: ${{ runner.os }}-gdal-lastools-armadillo-latest2
 
       - uses: suisei-cn/actions-download-file@v1
         if: steps.cache-lastools-armadillo-gdal.outputs.cache-hit != 'true'
@@ -291,8 +291,8 @@ jobs:
         with:
           path: |
             ${{github.workspace}}/lib
-            "C:\Program Files\scilab-6.1.0\bin"
-          key: ${{ runner.os }}-gdal-lastools-armadillo-latest
+            C:\Program Files\scilab-6.1.0\bin
+          key: ${{ runner.os }}-gdal-lastools-armadillo-latest2
           restore-keys: |
             Windows-gdal-lastools-armadillo-latest
       
@@ -313,7 +313,7 @@ jobs:
           cmake -DCMAKE_BUILD_TYPE=Release -DPYTHON_BINDING=1 -DPYTHON_VERSION=(${{ matrix.python-version }} -replace '.','')  -DPYTHON_PATH=${{env.pythonLocation}} -DLAPACK_LIB="C:\Program Files\scilab-6.1.0\bin\lapack.lib;C:\Program Files\scilab-6.1.0\bin\blasplus.lib" .
           msbuild.exe helios.sln /p:AdditionalDependencies='"C:\Program Files\scilab-6.1.0\bin\blasplus.lib;C:\Program Files\scilab-6.1.0\bin\lapack.lib"' /p:AdditionalLibraryDirectories='"C:\Program Files\scilab-6.1.0\bin"' /p:Configuration=Release
           copy ${{github.workspace}}/Release/helios.exe ${{github.workspace}}/run/helios.exe
-          copy ${{github.workspace}}/Release/_pyhelios.pyd ${{github.workspace}}/run/_pyhelios.cpython-(${{ matrix.python-version }} -replace '.','').pyd
+          copy ${{github.workspace}}/Release/_pyhelios.pyd ${{github.workspace}}/run/_pyhelios.cpython-$(${{ matrix.python-version }} -replace '.','').pyd
           
       - name: Save compiled executable
         uses: actions/upload-artifact@v2
