@@ -1,4 +1,5 @@
 <map id="pyhelios::PyRaySceneIntersectionWrapper" name="pyhelios::PyRaySceneIntersectionWrapper">
-<area shape="rect" id="node2" href="$dc/da3/classRaySceneIntersection.html" title="Class representing a the intersection of a ray over a scene made of primitives. " alt="" coords="41,95,192,121"/>
-<area shape="rect" id="node3" href="$df/de1/classPrimitive.html" title="Abstract class defining the common behavior for all primitives. " alt="" coords="80,5,153,32"/>
+<area shape="rect" id="node1" title="Wrapper for RaySceneIntersection." alt="" coords="5,184,248,225"/>
+<area shape="rect" id="node2" href="$dc/da3/classRaySceneIntersection.html" title="Class representing a the intersection of a ray over a scene made of primitives." alt="" coords="45,95,208,121"/>
+<area shape="rect" id="node3" href="$df/de1/classPrimitive.html" title="Abstract class defining the common behavior for all primitives." alt="" coords="86,5,167,32"/>
 </map>

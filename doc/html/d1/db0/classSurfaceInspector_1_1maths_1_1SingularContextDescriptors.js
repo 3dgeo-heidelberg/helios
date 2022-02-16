@@ -1,7 +1,6 @@
 var classSurfaceInspector_1_1maths_1_1SingularContextDescriptors =
 [
     [ "SingularContextDescriptors", "d1/db0/classSurfaceInspector_1_1maths_1_1SingularContextDescriptors.html#ae072c17fe12fb26a555ec13536c83135", null ],
-    [ "~SingularContextDescriptors", "d1/db0/classSurfaceInspector_1_1maths_1_1SingularContextDescriptors.html#ac8fb9e878d691cdae5de6270f4496cab", null ],
     [ "bestVectorMaxComponents", "d1/db0/classSurfaceInspector_1_1maths_1_1SingularContextDescriptors.html#a9a7cde8557405651172a3aefe0a674ad", null ],
     [ "bestVectorMaxIndices", "d1/db0/classSurfaceInspector_1_1maths_1_1SingularContextDescriptors.html#ad519ffa27dfb1ce6cbd4c7b2150fdd66", null ],
     [ "bestVectorMinComponents", "d1/db0/classSurfaceInspector_1_1maths_1_1SingularContextDescriptors.html#aee987e9e152d927a082578bfb2c89ec2", null ],

@@ -1,5 +1,7 @@
 <map id="RotateFilter" name="RotateFilter">
-<area shape="rect" id="node2" href="$d6/dd2/classAbstractGeometryFilter.html" title="Abstract class defining asset loading filters common behavior. " alt="" coords="72,199,229,225"/>
-<area shape="rect" id="node3" href="$dd/dc4/classScenePart.html" title="Class representing a scene part. " alt="" coords="109,109,192,136"/>
-<area shape="rect" id="node4" href="$d5/dcb/classRotation.html" title="Rotation" alt="" coords="21,5,91,32"/>
+<area shape="rect" id="node1" title="Rotate transform filter." alt="" coords="202,275,299,301"/>
+<area shape="rect" id="node2" href="$d6/dd2/classAbstractGeometryFilter.html" title="Abstract class defining asset loading filters common behavior." alt="" coords="103,199,276,225"/>
+<area shape="rect" id="node3" href="$dd/dc4/classScenePart.html" title="Class representing a scene part." alt="" coords="146,109,233,136"/>
+<area shape="rect" id="node4" title=" " alt="" coords="5,5,64,32"/>
+<area shape="rect" id="node5" href="$d5/dcb/classRotation.html" title=" " alt="" coords="228,5,305,32"/>
 </map>

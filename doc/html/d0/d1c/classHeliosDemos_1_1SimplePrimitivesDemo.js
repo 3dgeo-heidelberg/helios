@@ -1,7 +1,6 @@
 var classHeliosDemos_1_1SimplePrimitivesDemo =
 [
     [ "SimplePrimitivesDemo", "d0/d1c/classHeliosDemos_1_1SimplePrimitivesDemo.html#a587e53ca085606ba4572b8c5cd9308d8", null ],
-    [ "~SimplePrimitivesDemo", "d0/d1c/classHeliosDemos_1_1SimplePrimitivesDemo.html#a600c38eafe349c78ceecedcb585634aa", null ],
     [ "buildFixedStructure", "d0/d1c/classHeliosDemos_1_1SimplePrimitivesDemo.html#a044a27424671f1a73683f217bbb14747", null ],
     [ "buildGroundStructure", "d0/d1c/classHeliosDemos_1_1SimplePrimitivesDemo.html#a6dc26c56a164822ab09741dba934472e", null ],
     [ "buildHelicalStructure", "d0/d1c/classHeliosDemos_1_1SimplePrimitivesDemo.html#ae3987f55ff64b592a544ed629458b4f4", null ],

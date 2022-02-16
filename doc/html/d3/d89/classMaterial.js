@@ -1,8 +1,6 @@
 var classMaterial =
 [
     [ "Material", "d3/d89/classMaterial.html#a6059ec72855855b11672ff25962e9336", null ],
-    [ "Material", "d3/d89/classMaterial.html#ae4bb0bf882949a452e8f10cb956642a8", null ],
-    [ "~Material", "d3/d89/classMaterial.html#a179e16d6a1bd4a0f039b8e4cbf2ade30", null ],
     [ "getKa0", "d3/d89/classMaterial.html#a0da3768af0d50c6889fb56aff82faf77", null ],
     [ "getKa1", "d3/d89/classMaterial.html#a1959b3ab772a8389826c368875efaab9", null ],
     [ "getKa2", "d3/d89/classMaterial.html#ae0b90e93ac007cf8d1200827d85a9f91", null ],
@@ -16,7 +14,6 @@ var classMaterial =
     [ "getKs1", "d3/d89/classMaterial.html#a4169f17c039083b13187d4a6af6260b6", null ],
     [ "getKs2", "d3/d89/classMaterial.html#a4a71711ee2dd2e79d702a79f93cc7c6c", null ],
     [ "getKs3", "d3/d89/classMaterial.html#ab083dabda9c5c16095bdf13da4c3b160", null ],
-    [ "serialize", "d3/d89/classMaterial.html#a42defa0e9cd9f02431a98c4de77f6a46", null ],
     [ "setKa0", "d3/d89/classMaterial.html#a6004a25511574c93957130f49a27e0d5", null ],
     [ "setKa1", "d3/d89/classMaterial.html#ae1e15551e126dbe9a96459b1d6663e42", null ],
     [ "setKa2", "d3/d89/classMaterial.html#a208703bcc362c4817f3a0daf42e29702", null ],
@@ -30,7 +27,6 @@ var classMaterial =
     [ "setKs2", "d3/d89/classMaterial.html#a699943e272e394e094ce84d91f5fc47f", null ],
     [ "setKs3", "d3/d89/classMaterial.html#ab9c42b71d7821c81a062a552a8506be1", null ],
     [ "setSpecularity", "d3/d89/classMaterial.html#a0164709639038ed6d4ac7d47b9e6db6c", null ],
-    [ "boost::serialization::access", "d3/d89/classMaterial.html#ac98d07dd8f7b70e16ccb9a01abf56b9c", null ],
     [ "classification", "d3/d89/classMaterial.html#aa5219b90ed20989248c2698cb7b74b4c", null ],
     [ "isGround", "d3/d89/classMaterial.html#ab01034a003a0e9798f11971f9af624c3", null ],
     [ "ka", "d3/d89/classMaterial.html#a32b90a4464b845b50c3dde3bd0fd92e6", null ],

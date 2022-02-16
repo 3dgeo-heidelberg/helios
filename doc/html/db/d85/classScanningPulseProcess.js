@@ -1,7 +1,6 @@
 var classScanningPulseProcess =
 [
-    [ "ScanningPulseProcess", "db/d85/classScanningPulseProcess.html#a90aa81188c1840ea5f82cfe93110b01a", null ],
-    [ "~ScanningPulseProcess", "db/d85/classScanningPulseProcess.html#a1e44af6f83ee1ef300966437810da124", null ],
+    [ "ScanningPulseProcess", "db/d85/classScanningPulseProcess.html#a4b97456207f8a42bdd50d9e16a619d7f", null ],
     [ "handlePulseComputation", "db/d85/classScanningPulseProcess.html#a5349ba0cce56efe76573b8be6c7cd298", null ],
     [ "onLegComplete", "db/d85/classScanningPulseProcess.html#aada8ba033b4764e33da070a613ba01df", null ],
     [ "onSimulationFinished", "db/d85/classScanningPulseProcess.html#a8e3cb6388ace9c320fdbb32955bf9d8a", null ],

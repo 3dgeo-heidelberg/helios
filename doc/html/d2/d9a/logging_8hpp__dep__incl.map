@@ -1,51 +1,52 @@
 <map id="src/util/logger/logging.hpp" name="src/util/logger/logging.hpp">
-<area shape="rect" id="node2" href="$dd/da4/VoxelFileParser_8h_source.html" title="src/assetloading/VoxelFile\lParser.h" alt="" coords="10,80,185,121"/>
-<area shape="rect" id="node4" href="$d9/de8/ArgumentsParser_8h_source.html" title="src/util/ArgumentsParser.h" alt="" coords="209,87,386,114"/>
-<area shape="rect" id="node5" href="$d3/d43/ThreadPool_8h_source.html" title="src/util/threadpool\l/ThreadPool.h" alt="" coords="411,80,536,121"/>
-<area shape="rect" id="node3" href="$d2/dc4/VoxelParsingTest_8h_source.html" title="src/test/VoxelParsingTest.h" alt="" coords="5,177,189,203"/>
-<area shape="rect" id="node6" href="$d6/dd9/SimpleThreadPool_8h_source.html" title="src/util/threadpool\l/SimpleThreadPool.h" alt="" coords="547,169,690,211"/>
-<area shape="rect" id="node47" href="$d9/dc9/TaskDropper_8h_source.html" title="src/util/threadpool\l/TaskDropper.h" alt="" coords="411,705,536,747"/>
-<area shape="rect" id="node50" href="$dd/d3a/WarehouseThreadPool_8h_source.html" title="src/util/threadpool\l/WarehouseThreadPool.h" alt="" coords="207,259,377,300"/>
-<area shape="rect" id="node7" href="$d8/d19/MDThreadPool_8h_source.html" title="src/util/threadpool\l/MDThreadPool.h" alt="" coords="908,259,1033,300"/>
-<area shape="rect" id="node40" href="$d3/d5b/ResThreadPool_8h_source.html" title="src/util/threadpool\l/ResThreadPool.h" alt="" coords="555,348,682,389"/>
-<area shape="rect" id="node8" href="$dc/d66/KDTreeFactoryThreadPool_8h_source.html" title="src/adt/kdtree/KDTreeFactory\lThreadPool.h" alt="" coords="1127,348,1321,389"/>
-<area shape="rect" id="node9" href="$dd/d2e/MultiThreadKDTreeFactory_8h_source.html" title="src/adt/kdtree/MultiThread\lKDTreeFactory.h" alt="" coords="1742,437,1917,479"/>
-<area shape="rect" id="node10" href="$d7/dc7/KDGroveFactory_8h_source.html" title="src/adt/grove/KDGroveFactory.h" alt="" coords="1527,623,1737,650"/>
-<area shape="rect" id="node35" href="$d9/d64/serial__adt_8h_source.html" title="src/util/serialization\l/serial_adt.h" alt="" coords="1977,705,2111,747"/>
-<area shape="rect" id="node37" href="$d8/d79/KDTreeFactoryMaker_8h_source.html" title="src/adt/kdtree/KDTreeFactory\lMaker.h" alt="" coords="1812,616,2007,657"/>
-<area shape="rect" id="node38" href="$db/dab/MultiThreadSAHKDTreeFactory_8h_source.html" title="src/adt/kdtree/MultiThread\lSAHKDTreeFactory.h" alt="" coords="1679,527,1854,568"/>
-<area shape="rect" id="node39" href="$d5/d7b/serial__adt__utils_8h_source.html" title="src/util/serialization\l/serial_adt_utils.h" alt="" coords="1930,527,2065,568"/>
-<area shape="rect" id="node11" href="$d5/d5f/XmlSceneLoader_8h_source.html" title="src/assetloading/XmlScene\lLoader.h" alt="" coords="1852,1241,2033,1283"/>
-<area shape="rect" id="node15" href="$d5/d2d/Scene_8h_source.html" title="src/scene/Scene.h" alt="" coords="2021,891,2152,918"/>
-<area shape="rect" id="node12" href="$d0/d0e/XmlAssetsLoader_8h_source.html" title="src/assetloading/XmlAssets\lLoader.h" alt="" coords="1973,1331,2158,1372"/>
-<area shape="rect" id="node13" href="$d1/da7/XmlSurveyLoader_8h_source.html" title="src/surveyplayback\l/XmlSurveyLoader.h" alt="" coords="1995,1420,2135,1461"/>
-<area shape="rect" id="node14" href="$d1/d94/PyHeliosSimulation_8h_source.html" title="src/pybinds/PyHeliosSimulation.h" alt="" coords="1956,1599,2175,1625"/>
-<area shape="rect" id="node16" href="$d1/dd6/SpectralLibrary_8h_source.html" title="src/assetloading/Spectral\lLibrary.h" alt="" coords="2289,1152,2458,1193"/>
-<area shape="rect" id="node17" href="$d9/dd0/Platform_8h_source.html" title="src/platform/Platform.h" alt="" coords="1947,981,2101,1007"/>
-<area shape="rect" id="node30" href="$d8/d43/PySceneWrapper_8h_source.html" title="src/pybinds/PySceneWrapper.h" alt="" coords="2277,1517,2483,1543"/>
-<area shape="rect" id="node31" href="$d5/d37/DynScene_8h_source.html" title="src/scene/dynamic/DynScene.h" alt="" coords="1581,1070,1789,1097"/>
-<area shape="rect" id="node32" href="$d8/de1/SerialSceneWrapper_8h_source.html" title="src/util/serialization\l/SerialSceneWrapper.h" alt="" coords="1865,1152,2021,1193"/>
-<area shape="rect" id="node33" href="$d3/d0d/StaticScene_8h_source.html" title="src/scene/StaticScene.h" alt="" coords="1756,981,1921,1007"/>
-<area shape="rect" id="node34" href="$dc/d02/SerializationTest_8h_source.html" title="src/test/SerializationTest.h" alt="" coords="2339,981,2517,1007"/>
-<area shape="rect" id="node18" href="$dd/dcf/MovingPlatform_8h_source.html" title="src/platform/MovingPlatform.h" alt="" coords="1915,1070,2112,1097"/>
-<area shape="rect" id="node19" href="$da/d62/Scanner_8h_source.html" title="src/scanner/Scanner.h" alt="" coords="1182,1070,1335,1097"/>
-<area shape="rect" id="node20" href="$d3/d6f/AbstractDetector_8h_source.html" title="src/scanner/detector\l/AbstractDetector.h" alt="" coords="1188,1152,1329,1193"/>
-<area shape="rect" id="node23" href="$db/db8/Simulation_8h_source.html" title="src/surveyplayback\l/Simulation.h" alt="" coords="794,1420,929,1461"/>
-<area shape="rect" id="node28" href="$d6/d02/Survey_8h_source.html" title="src/surveyplayback\l/Survey.h" alt="" coords="1642,1241,1777,1283"/>
-<area shape="rect" id="node21" href="$d0/db5/PyDetectorWrapper_8h_source.html" title="src/pybinds/PyDetectorWrapper.h" alt="" coords="1149,1249,1368,1275"/>
-<area shape="rect" id="node22" href="$d9/d65/FullWaveformPulseRunnable_8h_source.html" title="src/scanner/detector\l/FullWaveformPulseRunnable.h" alt="" coords="954,1331,1161,1372"/>
-<area shape="rect" id="node25" href="$d8/d9e/AbstractPulseRunnable_8h_source.html" title="src/scanner/detector\l/AbstractPulseRunnable.h" alt="" coords="899,1241,1074,1283"/>
-<area shape="rect" id="node26" href="$d3/dbe/FullWaveformPulseDetector_8h_source.html" title="src/scanner/detector\l/FullWaveformPulseDetector.h" alt="" coords="1417,1241,1618,1283"/>
-<area shape="rect" id="node24" href="$db/d0f/SurveyPlayback_8h_source.html" title="src/surveyplayback\l/SurveyPlayback.h" alt="" coords="1577,1509,1711,1551"/>
-<area shape="rect" id="node27" href="$d5/d6c/SurveyCopyTest_8h_source.html" title="src/test/SurveyCopyTest.h" alt="" coords="1428,1338,1607,1365"/>
-<area shape="rect" id="node29" href="$d9/db5/DynamicSceneDemo_8h_source.html" title="src/demo/DynamicSceneDemo.h" alt="" coords="1682,1338,1897,1365"/>
-<area shape="rect" id="node36" href="$db/d11/serial_8h_source.html" title="src/util/serialization\l/serial.h" alt="" coords="1991,795,2126,836"/>
-<area shape="rect" id="node41" href="$df/dba/PulseThreadPool_8h_source.html" title="src/scanner/detector\l/PulseThreadPool.h" alt="" coords="495,884,636,925"/>
-<area shape="rect" id="node42" href="$d6/dd9/BuddingScanningPulseProcess_8h_source.html" title="src/scanner/BuddingScanning\lPulseProcess.h" alt="" coords="552,1063,747,1104"/>
-<area shape="rect" id="node43" href="$dc/d34/PulseTaskDropper_8h_source.html" title="src/scanner/detector\l/PulseTaskDropper.h" alt="" coords="603,973,749,1015"/>
-<area shape="rect" id="node45" href="$dc/ddc/PulseThreadPoolFactory_8h_source.html" title="src/scanner/detector\l/PulseThreadPoolFactory.h" alt="" coords="286,1152,466,1193"/>
-<area shape="rect" id="node44" href="$d5/dab/PulseWarehouseThreadPool_8h_source.html" title="src/scanner/detector\l/PulseWarehouseThreadPool.h" alt="" coords="275,1063,477,1104"/>
-<area shape="rect" id="node46" href="$de/d10/WarehouseScanningPulseProcess_8h_source.html" title="src/scanner/WarehouseScanning\lPulseProcess.h" alt="" coords="535,1152,750,1193"/>
-<area shape="rect" id="node48" href="$d6/d0a/PulseThreadPoolInterface_8h_source.html" title="src/scanner/detector\l/PulseThreadPoolInterface.h" alt="" coords="344,795,531,836"/>
-<area shape="rect" id="node49" href="$db/d7e/BuddingTaskDropper_8h_source.html" title="src/util/threadpool\l/BuddingTaskDropper.h" alt="" coords="825,884,983,925"/>
+<area shape="rect" id="node1" title=" " alt="" coords="1839,5,2030,32"/>
+<area shape="rect" id="node2" href="$dd/da4/VoxelFileParser_8h_source.html" title=" " alt="" coords="1624,80,1813,121"/>
+<area shape="rect" id="node4" href="$d9/de8/ArgumentsParser_8h_source.html" title=" " alt="" coords="1837,87,2032,114"/>
+<area shape="rect" id="node5" href="$d3/d43/ThreadPool_8h_source.html" title=" " alt="" coords="2057,80,2197,121"/>
+<area shape="rect" id="node3" href="$d2/dc4/VoxelParsingTest_8h_source.html" title=" " alt="" coords="1621,177,1816,203"/>
+<area shape="rect" id="node6" href="$d6/dd9/SimpleThreadPool_8h_source.html" title=" " alt="" coords="1895,169,2051,211"/>
+<area shape="rect" id="node47" href="$d9/dc9/TaskDropper_8h_source.html" title=" " alt="" coords="2057,705,2197,747"/>
+<area shape="rect" id="node50" href="$dd/d3a/WarehouseThreadPool_8h_source.html" title=" " alt="" coords="2169,259,2353,300"/>
+<area shape="rect" id="node7" href="$d8/d19/MDThreadPool_8h_source.html" title=" " alt="" coords="1750,259,1890,300"/>
+<area shape="rect" id="node40" href="$d3/d5b/ResThreadPool_8h_source.html" title=" " alt="" coords="1903,348,2043,389"/>
+<area shape="rect" id="node8" href="$dc/d66/KDTreeFactoryThreadPool_8h_source.html" title=" " alt="" coords="1117,348,1328,389"/>
+<area shape="rect" id="node9" href="$dd/d2e/MultiThreadKDTreeFactory_8h_source.html" title=" " alt="" coords="435,437,629,479"/>
+<area shape="rect" id="node10" href="$d7/dc7/KDGroveFactory_8h_source.html" title=" " alt="" coords="608,623,835,650"/>
+<area shape="rect" id="node35" href="$d9/d64/serial__adt_8h_source.html" title=" " alt="" coords="427,705,578,747"/>
+<area shape="rect" id="node37" href="$d8/d79/KDTreeFactoryMaker_8h_source.html" title=" " alt="" coords="255,616,465,657"/>
+<area shape="rect" id="node38" href="$db/dab/MultiThreadSAHKDTreeFactory_8h_source.html" title=" " alt="" coords="368,527,563,568"/>
+<area shape="rect" id="node39" href="$d5/d7b/serial__adt__utils_8h_source.html" title=" " alt="" coords="142,527,293,568"/>
+<area shape="rect" id="node11" href="$d5/d5f/XmlSceneLoader_8h_source.html" title=" " alt="" coords="329,1241,527,1283"/>
+<area shape="rect" id="node15" href="$d5/d2d/Scene_8h_source.html" title=" " alt="" coords="392,891,531,918"/>
+<area shape="rect" id="node12" href="$d0/d0e/XmlAssetsLoader_8h_source.html" title=" " alt="" coords="654,1331,855,1372"/>
+<area shape="rect" id="node13" href="$d1/da7/XmlSurveyLoader_8h_source.html" title=" " alt="" coords="803,1420,957,1461"/>
+<area shape="rect" id="node14" href="$d1/d94/PyHeliosSimulation_8h_source.html" title=" " alt="" coords="761,1599,999,1625"/>
+<area shape="rect" id="node16" href="$d1/dd6/SpectralLibrary_8h_source.html" title=" " alt="" coords="881,1152,1066,1193"/>
+<area shape="rect" id="node17" href="$d9/dd0/Platform_8h_source.html" title=" " alt="" coords="763,981,936,1007"/>
+<area shape="rect" id="node30" href="$d8/d43/PySceneWrapper_8h_source.html" title=" " alt="" coords="258,1517,481,1543"/>
+<area shape="rect" id="node31" href="$d3/d0d/StaticScene_8h_source.html" title=" " alt="" coords="193,981,367,1007"/>
+<area shape="rect" id="node32" href="$d5/d37/DynScene_8h_source.html" title=" " alt="" coords="43,1070,267,1097"/>
+<area shape="rect" id="node33" href="$d8/de1/SerialSceneWrapper_8h_source.html" title=" " alt="" coords="282,1152,451,1193"/>
+<area shape="rect" id="node34" href="$dc/d02/SerializationTest_8h_source.html" title=" " alt="" coords="494,981,687,1007"/>
+<area shape="rect" id="node18" href="$dd/dcf/MovingPlatform_8h_source.html" title=" " alt="" coords="591,1070,812,1097"/>
+<area shape="rect" id="node19" href="$da/d62/Scanner_8h_source.html" title=" " alt="" coords="1385,1070,1549,1097"/>
+<area shape="rect" id="node20" href="$d3/d6f/AbstractDetector_8h_source.html" title=" " alt="" coords="1389,1152,1544,1193"/>
+<area shape="rect" id="node24" href="$db/db8/Simulation_8h_source.html" title=" " alt="" coords="1837,1420,1985,1461"/>
+<area shape="rect" id="node28" href="$d6/d02/Survey_8h_source.html" title=" " alt="" coords="931,1241,1079,1283"/>
+<area shape="rect" id="node21" href="$d0/db5/PyDetectorWrapper_8h_source.html" title=" " alt="" coords="1347,1249,1586,1275"/>
+<area shape="rect" id="node22" href="$d8/d9e/AbstractPulseRunnable_8h_source.html" title=" " alt="" coords="1634,1241,1822,1283"/>
+<area shape="rect" id="node23" href="$d9/d65/FullWaveformPulseRunnable_8h_source.html" title=" " alt="" coords="1633,1331,1858,1372"/>
+<area shape="rect" id="node26" href="$d3/dbe/FullWaveformPulseDetector_8h_source.html" title=" " alt="" coords="1103,1241,1323,1283"/>
+<area shape="rect" id="node25" href="$db/d0f/SurveyPlayback_8h_source.html" title=" " alt="" coords="921,1509,1069,1551"/>
+<area shape="rect" id="node27" href="$d5/d6c/SurveyCopyTest_8h_source.html" title=" " alt="" coords="1291,1338,1482,1365"/>
+<area shape="rect" id="node29" href="$d9/db5/DynamicSceneDemo_8h_source.html" title=" " alt="" coords="1032,1338,1267,1365"/>
+<area shape="rect" id="node36" href="$db/d11/serial_8h_source.html" title=" " alt="" coords="394,795,545,836"/>
+<area shape="rect" id="node41" href="$df/dba/PulseThreadPool_8h_source.html" title=" " alt="" coords="2035,884,2189,925"/>
+<area shape="rect" id="node42" href="$d6/dd9/BuddingScanningPulseProcess_8h_source.html" title=" " alt="" coords="1927,1063,2139,1104"/>
+<area shape="rect" id="node43" href="$dc/d34/PulseTaskDropper_8h_source.html" title=" " alt="" coords="1840,973,1995,1015"/>
+<area shape="rect" id="node46" href="$dc/ddc/PulseThreadPoolFactory_8h_source.html" title=" " alt="" coords="2469,1152,2661,1193"/>
+<area shape="rect" id="node44" href="$de/d10/WarehouseScanningPulseProcess_8h_source.html" title=" " alt="" coords="2213,1152,2445,1193"/>
+<area shape="rect" id="node45" href="$d5/dab/PulseWarehouseThreadPool_8h_source.html" title=" " alt="" coords="2264,1063,2483,1104"/>
+<area shape="rect" id="node48" href="$d6/d0a/PulseThreadPoolInterface_8h_source.html" title=" " alt="" coords="2062,795,2266,836"/>
+<area shape="rect" id="node49" href="$db/d7e/BuddingTaskDropper_8h_source.html" title=" " alt="" coords="1787,884,1959,925"/>
 </map>

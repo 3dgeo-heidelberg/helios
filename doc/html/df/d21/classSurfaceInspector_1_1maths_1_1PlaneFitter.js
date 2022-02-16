@@ -1,12 +1,12 @@
 var classSurfaceInspector_1_1maths_1_1PlaneFitter =
 [
-    [ "bestFittingDetailedPlanePCA", "df/d21/classSurfaceInspector_1_1maths_1_1PlaneFitter.html#a4a67f023fdbb7579880aad1fa63df138", null ],
-    [ "bestFittingDetailedPlaneSVD", "df/d21/classSurfaceInspector_1_1maths_1_1PlaneFitter.html#a731b8774d7bb362bc16655bfe0acbf59", null ],
-    [ "bestFittingPlaneFromCovariances", "df/d21/classSurfaceInspector_1_1maths_1_1PlaneFitter.html#aad27cd80082d4ff9033524f93e7c526f", null ],
-    [ "bestFittingPlanePCA", "df/d21/classSurfaceInspector_1_1maths_1_1PlaneFitter.html#ac301144298dce6893f1714209ec53bd2", null ],
-    [ "bestFittingPlaneSVD", "df/d21/classSurfaceInspector_1_1maths_1_1PlaneFitter.html#aa78ba3d4f29ebb5f71167f6b8a180e07", null ],
-    [ "centerCoordinatesMatrix", "df/d21/classSurfaceInspector_1_1maths_1_1PlaneFitter.html#aa10c9f8584f307155936d103fac0a6b1", null ],
+    [ "bestFittingDetailedPlanePCA", "df/d21/classSurfaceInspector_1_1maths_1_1PlaneFitter.html#ac2f6ebfdf69bacdce748a9c97cacf894", null ],
+    [ "bestFittingDetailedPlaneSVD", "df/d21/classSurfaceInspector_1_1maths_1_1PlaneFitter.html#aff09c48b2932ae2225b13331019ba440", null ],
+    [ "bestFittingPlaneFromCovariances", "df/d21/classSurfaceInspector_1_1maths_1_1PlaneFitter.html#abf8a7d97a1d1e9ef8125fd4a524aefef", null ],
+    [ "bestFittingPlanePCA", "df/d21/classSurfaceInspector_1_1maths_1_1PlaneFitter.html#a3d9c34644c37fcd9bec19cb4d1117d39", null ],
+    [ "bestFittingPlaneSVD", "df/d21/classSurfaceInspector_1_1maths_1_1PlaneFitter.html#adbde7f626c5ce1927191920bbcf5c0c9", null ],
+    [ "centerCoordinatesMatrix", "df/d21/classSurfaceInspector_1_1maths_1_1PlaneFitter.html#a36d9d5b4dfe5158ff0d378ed1e631aca", null ],
     [ "extractCommonPlaneComponents", "df/d21/classSurfaceInspector_1_1maths_1_1PlaneFitter.html#ad37bc6bd62654ae93e1afd6e72360c7c", null ],
     [ "extractDetailedPlaneComponents", "df/d21/classSurfaceInspector_1_1maths_1_1PlaneFitter.html#a71c5116526ebecdc2e3d24900542a0f0", null ],
-    [ "translateToOrigin", "df/d21/classSurfaceInspector_1_1maths_1_1PlaneFitter.html#a61e8564386709321198a0c6d9e638678", null ]
+    [ "translateToOrigin", "df/d21/classSurfaceInspector_1_1maths_1_1PlaneFitter.html#a4615038c81e464b4f296b61740db4025", null ]
 ];

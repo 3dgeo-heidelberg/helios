@@ -200,6 +200,10 @@ int SurveyPlayback::getCurrentLegIndex() {
 string SurveyPlayback::getLegOutputPrefix(){
     std::shared_ptr<Leg> leg = getCurrentLeg();
     std::shared_ptr<ScanningStrip> strip = leg->getStrip();
+
+    // Mark leg as processed
+    leg->wasProcessed = true;
+
     stringstream ss;
     ss << "points/";
     if(strip != nullptr){ // Handle prefix when leg belongs to a split
@@ -398,12 +402,22 @@ void SurveyPlayback::prepareOutput(){
     if(zipOutput) ss << "_fullwave.bin";
     else ss << "_fullwave.txt";
 
+    // Check if all the legs in the strip were processed
+    std::shared_ptr<Leg> leg = getCurrentLeg();
+    std::shared_ptr<ScanningStrip> strip = leg->getStrip();
+    bool lastLegInStrip{};
+    if (strip != nullptr)
+      lastLegInStrip = getCurrentLeg()->getStrip()->isLastLegInStrip();
+    else // Current leg does not belong to a strip so it goes to its own file.
+      lastLegInStrip = true;
+
     // Set output path
     std::string const path = mOutputFilePathString + getCurrentOutputPath();
     fwf_detector->setOutputFilePath(
         path,
         ss.str(),
-        getScanner()->isWriteWaveform()
+        getScanner()->isWriteWaveform(),
+        lastLegInStrip
     );
 
     // Handle historical tracking of output paths

@@ -1,7 +1,10 @@
 <map id="VoxelGridCell" name="VoxelGridCell">
-<area shape="rect" id="node3" href="$d6/d44/classVoxel.html" title="Class representing a voxel primitive. " alt="" coords="137,273,191,300"/>
-<area shape="rect" id="node4" href="$df/de1/classPrimitive.html" title="Abstract class defining the common behavior for all primitives. " alt="" coords="29,95,102,121"/>
-<area shape="rect" id="node5" href="$d2/d1a/classAABB.html" title="Class representing an Axis Aligned Bounding Box (AABB) " alt="" coords="89,184,148,211"/>
-<area shape="rect" id="node6" href="$d2/da0/classVertex.html" title="Class representing a vertex. " alt="" coords="147,95,207,121"/>
-<area shape="rect" id="node7" href="$db/d02/classColor4f.html" title="Class representing a color with 4 float components: RGBA. " alt="" coords="180,5,244,32"/>
+<area shape="rect" id="node1" title="VoxelGridCell is used to build and fill all necessary voxels to represent input point cloud." alt="" coords="213,363,322,389"/>
+<area shape="rect" id="node2" href="$d6/d44/classVoxel.html" title="Class representing a voxel primitive." alt="" coords="125,273,183,300"/>
+<area shape="rect" id="node3" href="$df/de1/classPrimitive.html" title="Abstract class defining the common behavior for all primitives." alt="" coords="5,95,87,121"/>
+<area shape="rect" id="node6" href="$d2/d1a/classAABB.html" title="Class representing an Axis Aligned Bounding Box (AABB)" alt="" coords="77,184,135,211"/>
+<area shape="rect" id="node4" href="$d2/da0/classVertex.html" title="Class representing a vertex." alt="" coords="131,95,196,121"/>
+<area shape="rect" id="node5" href="$db/d02/classColor4f.html" title="Class representing a color with 4 float components: RGBA." alt="" coords="163,5,233,32"/>
+<area shape="rect" id="node7" title=" " alt="" coords="207,273,328,300"/>
+<area shape="rect" id="node8" title=" " alt="" coords="352,273,412,300"/>
 </map>
