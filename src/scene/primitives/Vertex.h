@@ -40,7 +40,7 @@ public:
 	/**
 	 * @brief Vertex normal vector
 	 */
-	glm::dvec3 normal;
+	glm::dvec3 normal = glm::dvec3(0, 0, 0);
 	/**
 	 * @brief Vertex texture coordinates
 	 */

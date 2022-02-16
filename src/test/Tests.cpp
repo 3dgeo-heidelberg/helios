@@ -3,6 +3,7 @@
 #include <test/NoiseTest.h>
 #include <test/VoxelParsingTest.h>
 #include <test/RayIntersectionTest.h>
+#include <test/GroveTest.h>
 #include <test/SerializationTest.h>
 #include <test/SurveyCopyTest.h>
 #include <test/PlaneFitterTest.h>
@@ -62,6 +63,9 @@ void doTests(std::string const & testDir){
 
     RayIntersectionTest rayIntersectionTest;
     rayIntersectionTest.test(std::cout, TEST_COLOR);
+
+    GroveTest groveTest;
+    groveTest.test(std::cout, TEST_COLOR);
 
     SerializationTest serializationTest;
     serializationTest.test(std::cout, TEST_COLOR);

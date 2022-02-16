@@ -25,6 +25,10 @@ public:
 	 */
 	std::shared_ptr<PlatformSettings> mPlatformSettings;
 
+  /**
+   * @brief Boolean flag to store whether the leg was already processed.
+   */
+  bool wasProcessed{};
 private:
     /**
      * @brief Distance to the next leg
@@ -128,4 +132,9 @@ public:
 	 */
 	inline void setStrip(std::shared_ptr<ScanningStrip> strip)
 	{this->strip = strip;}
+	/**
+	 * @brief Check whether the leg belongs to a strip (true) or not (false)
+	 * @return True if the leg belongs to a strip, false otherwise
+	 */
+	inline bool isContainedInAStrip() const {return strip!=nullptr;}
 };

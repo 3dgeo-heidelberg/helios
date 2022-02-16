@@ -1,4 +1,6 @@
 <map id="SerialSceneWrapper" name="SerialSceneWrapper">
-<area shape="rect" id="node2" href="$de/d97/classAsset.html" title="Base class for all assets. " alt="" coords="43,124,99,151"/>
-<area shape="rect" id="node4" href="$d5/d9c/classScene.html" title="Class representing a scene asset. " alt="" coords="92,200,151,227"/>
+<area shape="rect" id="node1" title="Wrapper for scenes which assists read and write serialization operations depending on the type of sce..." alt="" coords="5,289,159,316"/>
+<area shape="rect" id="node2" href="$de/d97/classAsset.html" title="Base class for all assets." alt="" coords="47,124,106,151"/>
+<area shape="rect" id="node4" href="$d5/d9c/classScene.html" title="Class representing a scene asset." alt="" coords="98,200,159,227"/>
+<area shape="rect" id="node3" title=" " alt="" coords="47,5,106,32"/>
 </map>

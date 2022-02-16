@@ -30,7 +30,7 @@ public:
 	explicit SimpleSyncFileWriter(
 	    const std::string& path,
 	    std::ios_base::openmode om = std::ios_base::app
-	    ) :
+    ) :
 	    SyncFileWriter(path)
     {
 		// Open file for writing ...

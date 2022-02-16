@@ -185,7 +185,12 @@ shared_ptr<Leg> SurveyPlayback::getCurrentLeg() {
 	}
 	// NOTE: This should never happen:
 	logging::ERR("ERROR getting current leg: Index out of bounds");
-	return NULL;
+	return nullptr;
+}
+
+shared_ptr<Leg> SurveyPlayback::getPreviousLeg(){
+    if(mCurrentLegIndex == 0) return nullptr;
+    return mSurvey->legs.at(mCurrentLegIndex - 1);
 }
 
 int SurveyPlayback::getCurrentLegIndex() {
@@ -195,6 +200,10 @@ int SurveyPlayback::getCurrentLegIndex() {
 string SurveyPlayback::getLegOutputPrefix(){
     std::shared_ptr<Leg> leg = getCurrentLeg();
     std::shared_ptr<ScanningStrip> strip = leg->getStrip();
+
+    // Mark leg as processed
+    leg->wasProcessed = true;
+
     stringstream ss;
     ss << "points/";
     if(strip != nullptr){ // Handle prefix when leg belongs to a split
@@ -301,6 +310,16 @@ void SurveyPlayback::startLeg(unsigned int legIndex, bool manual) {
 		// ################ END Set platform destination ##################
 	}
 
+	// Restart deflector if previous leg was not active
+	shared_ptr<Leg> previousLeg = getPreviousLeg();
+    if(
+	    previousLeg != nullptr && !previousLeg->mScannerSettings->active &&
+	    leg->mScannerSettings->active
+    ){
+        mSurvey->scanner->beamDeflector->restartDeflector();
+	}
+
+
 	if(exportToFile) prepareOutput();
     platform->writeNextTrajectory = true;
 }
@@ -376,18 +395,33 @@ void SurveyPlayback::prepareOutput(){
         dynamic_pointer_cast<FullWaveformPulseDetector>(
             getScanner()->detector
         );
+
     // Fullwave prefix
     stringstream ss;
     ss << getLegOutputPrefix();
-    if(zipOutput){
-        ss << "_fullwave.bin";
-    }
+    if(zipOutput) ss << "_fullwave.bin";
     else ss << "_fullwave.txt";
+
+    // Check if all the legs in the strip were processed
+    std::shared_ptr<Leg> leg = getCurrentLeg();
+    std::shared_ptr<ScanningStrip> strip = leg->getStrip();
+    bool lastLegInStrip{};
+    if (strip != nullptr)
+      lastLegInStrip = getCurrentLeg()->getStrip()->isLastLegInStrip();
+    else // Current leg does not belong to a strip so it goes to its own file.
+      lastLegInStrip = true;
+
+    // Set output path
+    std::string const path = mOutputFilePathString + getCurrentOutputPath();
     fwf_detector->setOutputFilePath(
-        mOutputFilePathString + getCurrentOutputPath(),
+        path,
         ss.str(),
-        getScanner()->isWriteWaveform()
+        getScanner()->isWriteWaveform(),
+        lastLegInStrip
     );
+
+    // Handle historical tracking of output paths
+    getScanner()->trackOutputPath(path);
 
     // Trajectory writer
     if(mSurvey->scanner->trajectoryTimeInterval != 0.0){
@@ -400,8 +434,11 @@ void SurveyPlayback::prepareOutput(){
 }
 
 void SurveyPlayback::clearPointcloudFile(){
+    // Dont clear strip file, it would overwrite previous point cloud content
+    if(getCurrentLeg()->isContainedInAStrip()) return;
+
     // Clear point cloud file for current leg
-    string outputPath = this->outputPath + mOutputFilePathString +
+    string outputPath = mOutputFilePathString +
                         getCurrentOutputPath();
     ostringstream s;s << "outputPath=" << outputPath << endl;
     logging::INFO(s.str());

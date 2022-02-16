@@ -1,3 +1,4 @@
 <map id="Vertex" name="Vertex">
-<area shape="rect" id="node2" href="$db/d02/classColor4f.html" title="Class representing a color with 4 float components: RGBA. " alt="" coords="5,5,69,32"/>
+<area shape="rect" id="node1" title="Class representing a vertex." alt="" coords="7,95,73,121"/>
+<area shape="rect" id="node2" href="$db/d02/classColor4f.html" title="Class representing a color with 4 float components: RGBA." alt="" coords="5,5,75,32"/>
 </map>

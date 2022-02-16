@@ -1,4 +1,5 @@
 <map id="pyhelios::PyPrimitiveWrapper" name="pyhelios::PyPrimitiveWrapper">
-<area shape="rect" id="node2" href="$d7/d21/classpyhelios_1_1PyDetailedVoxelWrapper.html" title="Wrapper for DetailedVoxel class. " alt="" coords="5,80,180,121"/>
-<area shape="rect" id="node3" href="$d1/dbf/classpyhelios_1_1PyTriangleWrapper.html" title="Wrapper for Triangle class. " alt="" coords="205,87,394,114"/>
+<area shape="rect" id="node1" title="Wrapper for Primitive class." alt="" coords="105,5,320,32"/>
+<area shape="rect" id="node2" href="$d7/d21/classpyhelios_1_1PyDetailedVoxelWrapper.html" title="Wrapper for DetailedVoxel class." alt="" coords="5,80,196,121"/>
+<area shape="rect" id="node3" href="$d1/dbf/classpyhelios_1_1PyTriangleWrapper.html" title="Wrapper for Triangle class." alt="" coords="221,87,429,114"/>
 </map>

@@ -1,7 +1,6 @@
 var classBuddingScanningPulseProcess =
 [
-    [ "BuddingScanningPulseProcess", "d5/d3c/classBuddingScanningPulseProcess.html#a3df2b70b51f1de84dda737805a03286d", null ],
-    [ "~BuddingScanningPulseProcess", "d5/d3c/classBuddingScanningPulseProcess.html#a774a39d01b34e10ebf3bdf947335f8d3", null ],
+    [ "BuddingScanningPulseProcess", "d5/d3c/classBuddingScanningPulseProcess.html#abd54d7f78cea3c67c3d126a9970ab50c", null ],
     [ "handlePulseComputation", "d5/d3c/classBuddingScanningPulseProcess.html#a81e696cb1ec6af65cfcdc9952d0c391e", null ],
     [ "handlePulseComputationParallelDynamic", "d5/d3c/classBuddingScanningPulseProcess.html#a1aaabdd7bc85f8115189c92a6e3cba95", null ],
     [ "handlePulseComputationParallelStatic", "d5/d3c/classBuddingScanningPulseProcess.html#a75db14537b48487b170a4661f3b8df8e", null ],

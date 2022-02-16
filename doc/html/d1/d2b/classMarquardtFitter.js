@@ -1,6 +1,6 @@
 var classMarquardtFitter =
 [
-    [ "MarquardtFitter", "d1/d2b/classMarquardtFitter.html#ad1e970a2c178928cd165f0bb112bd659", null ],
+    [ "MarquardtFitter", "d1/d2b/classMarquardtFitter.html#a30bb0a2ce9e872e44b5bc033ca929c0e", null ],
     [ "calculateDerivative", "d1/d2b/classMarquardtFitter.html#a5799869d89f441ce3098bed2744b99ee", null ],
     [ "calculateDerivativeFast", "d1/d2b/classMarquardtFitter.html#ae67ad07c0d94b5e5c804d5e06ab688d9", null ],
     [ "calculateDerivatives", "d1/d2b/classMarquardtFitter.html#a723aa10c9ee0e6449e27e122a878f003", null ],
@@ -10,12 +10,12 @@ var classMarquardtFitter =
     [ "createBetaMatrix", "d1/d2b/classMarquardtFitter.html#aec776ccdefdd42e5cce957b14ec58a54", null ],
     [ "evaluate", "d1/d2b/classMarquardtFitter.html#aad5c9395d80c3002e871978a04e0c1d6", null ],
     [ "fitData", "d1/d2b/classMarquardtFitter.html#af1764a4025c62f55b8bc107538a2025c", null ],
-    [ "getMatrix", "d1/d2b/classMarquardtFitter.html#a8a77a250a611cfe811464f0b60cbd379", null ],
+    [ "getMatrix", "d1/d2b/classMarquardtFitter.html#a0be397ef79b0bd729e2fe0db07a02cc4", null ],
     [ "getParameters", "d1/d2b/classMarquardtFitter.html#abb7e18911bef2e0f37cc800c352e6089", null ],
     [ "initializeWorkspace", "d1/d2b/classMarquardtFitter.html#a0c716799a24ec0c8ddc46c92e0f9b7b6", null ],
     [ "iterateValues", "d1/d2b/classMarquardtFitter.html#ae2940cc922ad5fb396da1cf598a3a93a", null ],
     [ "printMatrix", "d1/d2b/classMarquardtFitter.html#aaefffce84de3814ef259b5897d2498b0", null ],
-    [ "printMatrix", "d1/d2b/classMarquardtFitter.html#aee2a297d40fb3d15afc20f671a6c056f", null ],
+    [ "printMatrix", "d1/d2b/classMarquardtFitter.html#a6e19fbf7a3d20d4d1a484f9fc902cbf3", null ],
     [ "setData", "d1/d2b/classMarquardtFitter.html#a4e65523596cb5541100e385b2477580f", null ],
     [ "setParameters", "d1/d2b/classMarquardtFitter.html#a880bcace3a4345d91f21c911c9d66309", null ],
     [ "updateLambda", "d1/d2b/classMarquardtFitter.html#a79336673faa98f451c77300da61037b1", null ],

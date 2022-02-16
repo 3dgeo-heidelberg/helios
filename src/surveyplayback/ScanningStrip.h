@@ -122,4 +122,16 @@ public:
     inline Leg * getLeg(int const serialId) {
         return has(serialId) ? legs[serialId] : nullptr;
     }
+    /**
+     * @ brief Checks if all the legs in the strip were processed in order
+     * to know if the associated SyncFileWriter can be destroyed.
+     * @return
+     */
+    inline bool isLastLegInStrip() const
+    {
+      for (const auto & it : legs)
+        if (!it.second->wasProcessed)
+          return false;
+      return true;
+    }
 };

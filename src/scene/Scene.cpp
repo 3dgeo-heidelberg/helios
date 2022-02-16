@@ -15,10 +15,10 @@ using namespace std;
 #include <glm/gtx/string_cast.hpp>
 using namespace glm;
 
-#include "KDTreeRaycaster.h"
+#include <KDTreeRaycaster.h>
 
-#include "Scene.h"
-#include "TimeWatcher.h"
+#include <Scene.h>
+#include <TimeWatcher.h>
 #include <UniformNoiseSource.h>
 #include <surfaceinspector/maths/Plane.hpp>
 #include <surfaceinspector/maths/PlaneFitter.hpp>
@@ -54,11 +54,14 @@ Scene::Scene(Scene &s) {
     this->primitives.push_back(p->clone());
   }
 
-  this->kdtf = s.kdtf;
-  this->kdtree = shared_ptr<KDTreeNodeRoot>(
-      kdtf->makeFromPrimitivesUnsafe(this->primitives)
-  );
   registerParts();
+  this->kdgf = s.kdgf;
+  if(s.parts.empty()){
+      kdgrove = nullptr;
+  }
+  else{
+      buildKDGrove(true);
+  }
 }
 
 // ***  M E T H O D S  *** //
@@ -138,9 +141,8 @@ bool Scene::finalizeLoading(bool const safe) {
   // Compute each part centroid wrt to scene
   for(shared_ptr<ScenePart> & part : parts) part->computeCentroid();
 
-  // ############# BEGIN Build KD-tree ##################
-  if(kdtf != nullptr) buildKDTreeWithLog(safe);
-  // ############# END Build KD-tree ##################
+  // Build KDGrove
+  if(kdgf != nullptr) buildKDGroveWithLog(safe);
 
   return true;
 }
@@ -150,7 +152,7 @@ void Scene::registerParts(){
     for(Primitive *primitive : primitives)
         if(primitive->part != nullptr)
             partsSet.insert(primitive->part);
-    parts = vector<shared_ptr<ScenePart>>(partsSet.begin(), partsSet.end());
+    parts.insert(parts.end(), partsSet.begin(), partsSet.end());
 }
 
 shared_ptr<AABB> Scene::getAABB() { return this->bbox; }
@@ -182,7 +184,7 @@ shared_ptr<RaySceneIntersection>
 Scene::getIntersection(
     glm::dvec3 &rayOrigin,
     glm::dvec3 &rayDir,
-    bool groundOnly
+    bool const groundOnly
 ){
   vector<double> tMinMax = bbox->getRayIntersection(rayOrigin, rayDir);
   if (tMinMax.empty()) {
@@ -190,13 +192,12 @@ Scene::getIntersection(
     return nullptr;
   }
 
-  // TODO test without kdtree
+  // TODO test without using kdtree / kdgrove
   bool bruteForce = false;
   shared_ptr<RaySceneIntersection> result;
 
   if (!bruteForce) {
-    KDTreeRaycaster raycaster(kdtree);
-    result = shared_ptr<RaySceneIntersection>(raycaster.search(
+    result = shared_ptr<RaySceneIntersection>(raycaster->search(
         rayOrigin, rayDir, tMinMax[0], tMinMax[1], groundOnly));
   }
 
@@ -207,7 +208,7 @@ map<double, Primitive *>
 Scene::getIntersections(
     glm::dvec3 &rayOrigin,
     glm::dvec3 &rayDir,
-    bool groundOnly
+    bool const groundOnly
 ){
 
   vector<double> tMinMax = bbox->getRayIntersection(rayOrigin, rayDir);
@@ -216,9 +217,9 @@ Scene::getIntersections(
     return {};
   }
 
-  shared_ptr<KDTreeRaycaster> raycaster(new KDTreeRaycaster(kdtree));
-  return raycaster->searchAll(rayOrigin, rayDir, tMinMax[0], tMinMax[1],
-                              groundOnly);
+  return raycaster->searchAll(
+      rayOrigin, rayDir, tMinMax[0], tMinMax[1], groundOnly
+  );
 }
 
 glm::dvec3 Scene::getShift() { return this->bbox_crs->getMin(); }
@@ -371,22 +372,27 @@ glm::dvec3 Scene::findForceOnGroundQ(
     return minzv;
 }
 
-void Scene::buildKDTree(bool const safe){
-    kdtree = shared_ptr<KDTreeNodeRoot>(
-        safe ?
-        kdtf->makeFromPrimitives(primitives, true, true) :
-        kdtf->makeFromPrimitivesUnsafe(primitives, true, true)
+void Scene::buildKDGrove(bool const safe){
+    kdgrove = kdgf->makeFromSceneParts(
+        parts,  // Scene parts
+        true,   // Merge non moving
+        safe,   // Safe
+        true,   // Compute KDGrove stats
+        true,   // Report KDGrove stats
+        true,   // Compute KDTree stats
+        true    // Report KDTree stats
     );
+    raycaster = std::make_shared<KDGroveRaycaster>(kdgrove);
 }
 
-void Scene::buildKDTreeWithLog(bool const safe){
-    logging::INFO("Building KD-Tree... ");
-    TimeWatcher kdtTw;
-    kdtTw.start();
-    buildKDTree(safe);
-    kdtTw.stop();
+void Scene::buildKDGroveWithLog(bool const safe){
+    logging::INFO("Building KD-Grove... ");
+    TimeWatcher kdgTw;
+    kdgTw.start();
+    buildKDGrove(safe);
+    kdgTw.stop();
     std::stringstream ss;
-    ss << "KDT built in " << kdtTw.getElapsedDecimalSeconds() << "s";
+    ss << "KDG built in " << kdgTw.getElapsedDecimalSeconds() << "s";
     logging::TIME(ss.str());
 }
 
