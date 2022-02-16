@@ -281,7 +281,6 @@ jobs:
       - uses: actions/checkout@v2            
       
       - name: Set Up Python
-        if: steps.cache-boost.outputs.cache-hit != 'true'
         uses: actions/setup-python@v2
         with:
           python-version: ${{ matrix.python-version }}
@@ -293,7 +292,9 @@ jobs:
           path: |
             ${{github.workspace}}/lib
           key: ${{ runner.os }}-gdal-lastools-armadillo-latest
-
+          restore-keys: |
+            Windows-gdal-lastools-armadillo-latest
+      
       - name: Load Boost from Cache
         id: cache-boost
         uses: actions/cache@v2
