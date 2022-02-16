@@ -137,7 +137,8 @@ private:
     // ************************** //
     /**
      * @brief Perform ray casting to find intersections
-     * @param[in] scene Reference to the scene to perform ray casting over
+     * @param[in] tMinMax Minimum and maximum time to intersection with respect
+     *  to the axis aligned bounding box that bounds the scene
      * @param[out] reflections Where reflections must be stored when a hit is
      *  registered
      * @param[out] intersects Where intersections must be stored when a hit is
@@ -145,12 +146,15 @@ private:
      * @see FullWaveformPulseRunnable::handleSubray
      */
     void computeSubrays(
+        vector<double> const &tMinMax,
         NoiseSource<double> &intersectionHandlingNoiseSource,
         std::map<double, double> &reflections,
         vector<RaySceneIntersection> &intersects
     );
     /**
      * @brief Handle sub-rays along the circle
+     * @param[in] tMinMax Minimum and maximum time to intersection with respect
+     *  to the axis aligned bounding box that bounds the scene
      * @param[in] circleStep The iteration along the circle
      * @param[in] circleStep_rad Angle in radians corresponding to the
      *  iteration
@@ -159,6 +163,7 @@ private:
      * @see FullWaveformPulseRunnable::computeSubrays
      */
     void handleSubray(
+        vector<double> const &tMinMax,
         int circleStep,
         double circleStep_rad,
         Rotation &r1,
@@ -279,6 +284,19 @@ private:
 
     // ***  ASSISTANCE METHODS  *** //
     // **************************** //
+    /**
+     * @brief Find the intersection between the scene and given ray, if any
+     * @param[in] tMinMax Minimum and maximum time to intersection with respect
+     *  to the axis aligned bounding box that bounds the scene
+     * @param o The ray origin
+     * @param v The ray director vector
+     * @return Intersection between the scene and given ray
+     */
+    virtual shared_ptr<RaySceneIntersection> findIntersection(
+        vector<double> const &tMinMax,
+        glm::dvec3 const &o,
+        glm::dvec3 const &v
+    ) const;
     /**
      * @brief Detect full waveform peaks
      */

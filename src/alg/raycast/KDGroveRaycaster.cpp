@@ -38,3 +38,9 @@ RaySceneIntersection * KDGroveRaycaster::search(
     }
     return rsi;
 }
+
+// ***  KDGROVE RELATED METHODS  *** //
+// ********************************* //
+std::shared_ptr<KDGroveRaycaster> KDGroveRaycaster::makeTemporalClone() const{
+    return std::make_shared<KDGroveRaycaster>(grove);
+}

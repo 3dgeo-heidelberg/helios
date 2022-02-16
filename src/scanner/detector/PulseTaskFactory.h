@@ -15,7 +15,6 @@ using std::make_shared;
  * @version 1.0
  * @brief Factory to make the adequate pulse task depending on the simulation
  * @see PulseTask
- * @see PulseTaskFactoryInput
  * @see FullWaveformPulseRunnable
  * @see DynFullWaveformPulseRunnable
  */
@@ -58,7 +57,6 @@ public:
     /**
      * @brief The main build method of the factory. It is the method that must
      *  be called to automatically build the adequate type of PulseTask
-     * @param input The input to build the pulse task
      * @return Built pulse task
      * @see PulseTask
      */
@@ -74,8 +72,7 @@ public:
 
 protected:
     /**
-     * @brief Build a FullWaveformPulseRunnable from given
-     *  PulseTaskFactoryInput
+     * @brief Build a FullWaveformPulseRunnable from given arguments
      * @see PulseTaskFactory::build
      */
     shared_ptr<PulseTask> buildFullWaveformPulseRunnable(
@@ -86,8 +83,7 @@ protected:
         double const currentGpsTime
     ) const;
     /**
-     * @brief Build a DynFullWaveformPulseRunnable from given
-     *  PulseTaskFactoryInput
+     * @brief Build a DynFullWaveformPulseRunnable from given arguments
      * @see PulseTaskFactory::build
      */
     shared_ptr<PulseTask> buildDynFullWaveformPulseRunnable(

@@ -9,3 +9,8 @@ void GroveKDTreeRaycaster::update(DynObject &dynObj){
     );
     std::cout << "DynObject was updated!" << std::endl; // TODO Remove
 }
+
+std::shared_ptr<GroveKDTreeRaycaster> GroveKDTreeRaycaster::makeTemporalClone()
+const{
+    return std::make_shared<GroveKDTreeRaycaster>(root);
+}

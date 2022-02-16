@@ -63,7 +63,12 @@ public:
     /**
      * @brief Default constructor for XML scene loader
      */
-    XmlSceneLoader() = default;
+    XmlSceneLoader() :
+        kdtFactoryType(1),
+        kdtNumJobs(1),
+        kdtGeomJobs(1),
+        kdtSAHLossNodes(21)
+    {}
     virtual ~XmlSceneLoader() {}
 
     // ***  SCENE CREATION  *** //

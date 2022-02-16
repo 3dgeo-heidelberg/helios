@@ -77,4 +77,16 @@ public:
      * @see RaycasterGroveTree::update
      */
     void update(DynObject &dynObj) override;
+
+    /**
+     * @brief Make a temporal clone of the GroveKDTreeRaycaster
+     *
+     * The temporal clone is meant to produce a temporal copy of the tree. If
+     *  the original tree is updated, then the temporal copy should not be
+     *  updated.
+     *
+     * @return Temporal clone of the GroveKDTreeRaycaster
+     * @see KDGrove::makeTemporalClone
+     */
+    virtual std::shared_ptr<GroveKDTreeRaycaster> makeTemporalClone() const;
 };

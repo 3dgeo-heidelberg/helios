@@ -7,7 +7,9 @@ using std::size_t;
 DiscreteTime::DiscreteTime(
     std::size_t const frequency,
     double const periodScale
-){
+) :
+    periodScale(periodScale)
+{
     setFrequency(frequency);
     setPeriodScale(periodScale);
 }

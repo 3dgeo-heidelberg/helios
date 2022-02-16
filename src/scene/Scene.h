@@ -200,10 +200,24 @@ public:
    * @see KDTreeRaycaster::search
    */
   std::shared_ptr<RaySceneIntersection> getIntersection(
-      glm::dvec3 &rayOrigin,
-      glm::dvec3 &rayDir,
+      glm::dvec3 const &rayOrigin,
+      glm::dvec3 const &rayDir,
       bool const groundOnly
-  );
+  ) const;
+    /**
+     * @brief Like Scene::getIntersection(dvec3 const, dvec3 const, bool const)
+     *  but receiving precomputed minimum and maximum intersection times
+     *  with respect to the axis aligned bounding box that bounds the scene.
+     *
+     * @param tMinMax The minimum and maximum intersection times
+     * @see Scene::getIntersection(dvec3 const, dvec3 const, bool const)
+     */
+    std::shared_ptr<RaySceneIntersection> getIntersection(
+        vector<double> const &tMinMax,
+        glm::dvec3 const &rayOrigin,
+        glm::dvec3 const &rayDir,
+        bool const groundOnly
+    ) const ;
   /**
    * @brief Obtain all intersections between the ray and the scene, if any
    * @param rayOrigin Ray origin 3D coordinates
@@ -362,6 +376,8 @@ public:
 
   // ***  GETTERs and SETTERs  *** //
   // ***************************** //
+  virtual inline std::shared_ptr<KDGroveRaycaster> const &getRaycaster() const
+  {return raycaster;}
   /**
    * @brief Obtain the KDGrove factory used by the scene
    * @return KDGrove factory used by the scene

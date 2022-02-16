@@ -1,5 +1,6 @@
 #include <PulseTaskFactory.h>
 #include <FullWaveformPulseRunnable.h>
+#include <DynFullWaveformPulseRunnable.h>
 
 using std::dynamic_pointer_cast;
 
@@ -43,8 +44,22 @@ shared_ptr<PulseTask> PulseTaskFactory::buildDynFullWaveformPulseRunnable(
     Rotation &absoluteBeamAttitude,
     double const currentGpsTime
 ) const {
-    // TODO Rethink : Implement
-    return nullptr;
+    return make_shared<DynFullWaveformPulseRunnable>(
+        spp.getDetector()->scanner->platform->scene->getRaycaster()\
+            ->makeTemporalClone(),
+        dynamic_pointer_cast<FullWaveformPulseDetector>(spp.getDetector()),
+        absoluteBeamOrigin,
+        absoluteBeamAttitude,
+        spp.getCurrentPulseNumber(),
+        currentGpsTime,
+        spp.isWriteWaveform(),
+        spp.isCalcEchowidth(),
+        spp.getAllMeasurements().get(),
+        spp.getAllMeasurementsMutex().get(),
+        spp.getCycleMeasurements().get(),
+        spp.getCycleMeasurementsMutex().get(),
+        legIndex
+    );
 }
 
 void PulseTaskFactory::configureBuildMethod(){
