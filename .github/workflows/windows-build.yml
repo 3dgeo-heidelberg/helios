@@ -302,7 +302,7 @@ jobs:
           $py_no_dot="${{ matrix.python-version }}"
           $py_no_dot=$py_no_dot.Replace(".", "")
           ((Get-Content -path src\helios_version.cpp -Raw) -replace '(^const char \* HELIOS_VERSION = ")(.*)(";)','$1$2 - ${{ github.head_ref }}.${{ github.sha }}$3') | Set-Content -Path src\helios_version.cpp
-          cmake -DCMAKE_BUILD_TYPE=Release -DPYTHON_BINDING=1 -DPYTHON_VERSION="$(${{ matrix.python-version }} -replace '.','')"  -DPYTHON_PATH=${{env.pythonLocation}} -DLAPACK_LIB="C:\Program Files\scilab-6.1.0\bin\lapack.lib;C:\Program Files\scilab-6.1.0\bin\blasplus.lib" .
+          cmake -DCMAKE_BUILD_TYPE=Release -DPYTHON_BINDING=1 -DPYTHON_VERSION=$py_no_dot  -DPYTHON_PATH=${{env.pythonLocation}} -DLAPACK_LIB="C:\Program Files\scilab-6.1.0\bin\lapack.lib;C:\Program Files\scilab-6.1.0\bin\blasplus.lib" .
           msbuild.exe helios.sln /p:AdditionalDependencies='"C:\Program Files\scilab-6.1.0\bin\blasplus.lib;C:\Program Files\scilab-6.1.0\bin\lapack.lib"' /p:AdditionalLibraryDirectories='"C:\Program Files\scilab-6.1.0\bin"' /p:Configuration=Release
           copy ${{github.workspace}}/Release/helios.exe ${{github.workspace}}/run/helios.exe
           copy ${{github.workspace}}/Release/_pyhelios.pyd ${{github.workspace}}/run/_pyhelios.cpython-$py_no_dot.pyd
