@@ -104,6 +104,7 @@ jobs:
         if: steps.cache-boost.outputs.cache-hit != 'true'
         working-directory: ${{env.GITHUB_WORKSPACE}}
         run: |
+          Get-Content ${{env.USER_CONFIG}}
           cd lib/boost
           7z x zlib1211.zip   
           cmd.exe /c 'bootstrap.bat'
@@ -186,7 +187,6 @@ jobs:
         working-directory: ${{env.GITHUB_WORKSPACE}}
         id: output
         run: |
-          Get-Content ${{env.USER_CONFIG}}
           tree .
           pwd
 
