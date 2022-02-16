@@ -250,8 +250,9 @@ jobs:
         working-directory: ${{env.GITHUB_WORKSPACE}}
         run: |
           dir
-          .\scilab-6.1.0_x64.exe /VERYSILENT /NORESTART /DIR="C:\Program Files\scilab-6.1.0"
+          Start-Process -FilePath .\scilab-6.1.0_x64.exe -ArgumentList "/SILENT /NORESTART /DIR=\"C:\Program Files\scilab-6.1.0\"" -Wait
           dir "C:\Program Files"
+          dir "C:\Program Files\scilab-6.1.0"
 
       - uses: suisei-cn/actions-download-file@v1
         if: false
@@ -299,7 +300,7 @@ jobs:
         run: |
           dir "C:\Program Files\scilab-6.1.0\bin"
           ((Get-Content -path src\helios_version.cpp -Raw) -replace '(^const char \* HELIOS_VERSION = ")(.*)(";)','$1$2 - ${{ github.head_ref }}.${{ github.sha }}$3') | Set-Content -Path src\helios_version.cpp
-          cmake -DCMAKE_BUILD_TYPE=Release -DPYTHON_BINDING=1 -DPYTHON_VERSION=(${{ matrix.python-version }} -replace '.','')  -DPYTHON_PATH=${{env.pythonLocation}} -DLAPACK_LIB="C:\Program Files\scilab-6.1.0\bin\lapack.lib;C:\Program Files\scilab-6.1.0\bin\blasplus.lib" .
+          cmake -DCMAKE_BUILD_TYPE=Release -DPYTHON_BINDING=1 -DPYTHON_VERSION=$(${{ matrix.python-version }} -replace '.','')  -DPYTHON_PATH=${{env.pythonLocation}} -DLAPACK_LIB="C:\Program Files\scilab-6.1.0\bin\lapack.lib;C:\Program Files\scilab-6.1.0\bin\blasplus.lib" .
           msbuild.exe helios.sln /p:AdditionalDependencies='"C:\Program Files\scilab-6.1.0\bin\blasplus.lib;C:\Program Files\scilab-6.1.0\bin\lapack.lib"' /p:AdditionalLibraryDirectories='"C:\Program Files\scilab-6.1.0\bin"' /p:Configuration=Release
           copy ${{github.workspace}}/Release/helios.exe ${{github.workspace}}/run/helios.exe
           copy ${{github.workspace}}/Release/_pyhelios.pyd ${{github.workspace}}/run/_pyhelios.cpython-$(${{ matrix.python-version }} -replace '.','').pyd
