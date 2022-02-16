@@ -132,25 +132,8 @@ jobs:
         uses: actions/cache@v2
         with:
           path: |
-            ${{github.workspace}}/lib
-            C:\Program Files\scilab-6.1.0\bin
-            
-          key: ${{ runner.os }}-gdal-lastools-armadillo-latest2
-
-      - uses: suisei-cn/actions-download-file@v1
-        if: steps.cache-lastools-armadillo-gdal.outputs.cache-hit != 'true'
-        id: downloadscilab
-        name: Download SciLab
-        with:
-          url: "https://www.scilab.org/download/6.1.0/scilab-6.1.0_x64.exe"
-
-      - name: Install scilab
-        if: steps.cache-lastools-armadillo-gdal.outputs.cache-hit != 'true'
-        working-directory: ${{env.GITHUB_WORKSPACE}}
-        run: |
-          dir
-          .\scilab-6.1.0_x64.exe /VERYSILENT /NORESTART /DIR="C:\Program Files\scilab-6.1.0"
-          dir "C:\Program Files"
+            ${{github.workspace}}/lib            
+          key: ${{ runner.os }}-gdal-lastools-armadillo-latest3
 
       - uses: suisei-cn/actions-download-file@v1
         if: steps.cache-lastools-armadillo-gdal.outputs.cache-hit != 'true'
@@ -183,14 +166,6 @@ jobs:
           url: "https://www.zlib.net/zlib1211.zip"
           target: lib/boost/zlib1211.zip
 
-      - name: Debug output
-        working-directory: ${{env.GITHUB_WORKSPACE}}
-        id: output
-        run: |
-          tree .
-          pwd
-
-
       - uses: suisei-cn/actions-download-file@v1
         if: steps.cache-lastools-armadillo-gdal.outputs.cache-hit != 'true'
         id: downloadglm
@@ -216,13 +191,6 @@ jobs:
           target: lib/gdal.zip
 
 
-      - uses: suisei-cn/actions-download-file@v1
-        if: steps.cache-lastools-armadillo-gdal.outputs.cache-hit != 'true'
-        id: downloadgdal2
-        name: Download GDAL (2/2)
-        with:
-          url: "https://download.gisinternals.com/sdk/downloads/release-1928-x64-gdal-3-4-1-mapserver-7-6-4/gdal-304-1928-x64-core.msi"
-          target: lib/gdal.msi
 
       - name: Extract GDAL
         if: steps.cache-lastools-armadillo-gdal.outputs.cache-hit != 'true'
@@ -234,12 +202,6 @@ jobs:
           dir gdal
           move gdal/include/boost gdal/include/boost-gdal
 
-      - name: Install GDAL
-        if: steps.cache-lastools-armadillo-gdal.outputs.cache-hit != 'true'
-        working-directory: ${{env.GITHUB_WORKSPACE}}
-        run: |
-          dir lib
-          Start-Process -FilePath C:\Windows\System32\msiexec.exe -ArgumentList "/i lib\gdal.msi /qn"  -Wait
 
       - uses: suisei-cn/actions-download-file@v1
         if: steps.cache-lastools-armadillo-gdal.outputs.cache-hit != 'true'
@@ -278,6 +240,34 @@ jobs:
       - name: Add MSBuild to PATH
         uses: microsoft/setup-msbuild@v1.0.2
         
+      - uses: suisei-cn/actions-download-file@v1
+        id: downloadscilab
+        name: Download SciLab
+        with:
+          url: "https://www.scilab.org/download/6.1.0/scilab-6.1.0_x64.exe"
+
+      - name: Install scilab
+        working-directory: ${{env.GITHUB_WORKSPACE}}
+        run: |
+          dir
+          .\scilab-6.1.0_x64.exe /VERYSILENT /NORESTART /DIR="C:\Program Files\scilab-6.1.0"
+          dir "C:\Program Files"
+
+      - uses: suisei-cn/actions-download-file@v1
+        if: false
+        id: downloadgdal2
+        name: Download GDAL (2/2)
+        with:
+          url: "https://download.gisinternals.com/sdk/downloads/release-1928-x64-gdal-3-4-1-mapserver-7-6-4/gdal-304-1928-x64-core.msi"
+          target: lib/gdal.msi
+          
+      - name: Install GDAL
+        if: false
+        working-directory: ${{env.GITHUB_WORKSPACE}}
+        run: |
+          dir lib
+          Start-Process -FilePath C:\Windows\System32\msiexec.exe -ArgumentList "/i lib\gdal.msi /qn"  -Wait
+        
       - uses: actions/checkout@v2            
       
       - name: Set Up Python
@@ -291,8 +281,7 @@ jobs:
         with:
           path: |
             ${{github.workspace}}/lib
-            C:\Program Files\scilab-6.1.0\bin
-          key: ${{ runner.os }}-gdal-lastools-armadillo-latest2
+          key: ${{ runner.os }}-gdal-lastools-armadillo-latest3
           restore-keys: |
             Windows-gdal-lastools-armadillo-latest
       
