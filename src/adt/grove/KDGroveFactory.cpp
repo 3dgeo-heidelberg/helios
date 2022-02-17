@@ -295,10 +295,13 @@ shared_ptr<KDGrove> KDGroveFactory::makeMergeNonMoving(
             partPrimitives.cend()
         );
     }
-    // Insert merged scene part
-    shared_ptr<ScenePart> mergedPart = make_shared<ScenePart>();
-    mergedPart->setPrimitives(mergedPrimitives);
-    parts.push_back(mergedPart);
+
+    // Insert merged scene part, if any
+    if(mergedPrimitives.size() > 0){
+        shared_ptr<ScenePart> mergedPart = make_shared<ScenePart>();
+        mergedPart->setPrimitives(mergedPrimitives);
+        parts.push_back(mergedPart);
+    }
 
     // Common make
     return makeCommon(

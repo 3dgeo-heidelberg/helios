@@ -179,9 +179,11 @@ shared_ptr<DynSequentiableMovingObject> XmlSceneLoader::loadDynMotions(
         scenePartNode->FirstChildElement("dmotion");
     if(dmotionNode == nullptr) return nullptr; // No dmotion found
 
-    // Build dynamic sequential moving object from XML
+    // Build the basis of dynamic sequential moving object from scene part
     shared_ptr<DynSequentiableMovingObject> dsmo =
-        make_shared<DynSequentiableMovingObject>(*scenePart);
+        make_shared<DynSequentiableMovingObject>(*scenePart, true);
+
+    // Complete building of dynamic sequential moving object from XML
     while(dmotionNode != nullptr){
         // Optional attributes
         std::string nextId = "";
@@ -223,6 +225,7 @@ shared_ptr<DynSequentiableMovingObject> XmlSceneLoader::loadDynMotions(
         dmotionNode = dmotionNode->NextSiblingElement("dmotion");
     }
 
+    // Update scene part for each primitive so it is the new DMO
     for(Primitive *primitive : dsmo->mPrimitives){
         primitive->part = dsmo;
     }

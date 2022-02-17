@@ -18,7 +18,8 @@ MultiThreadKDTreeFactory::MultiThreadKDTreeFactory(
     tpNode(numJobs),
     minTaskPrimitives(32),
     numJobs(numJobs),
-    geomJobs(geomJobs)
+    geomJobs(geomJobs),
+    notUsed(true)
 {
     /*
      * See SimpleKDTreeFactory constructor implementation to understand why
@@ -58,6 +59,8 @@ KDTreeFactory * MultiThreadKDTreeFactory::clone() const{
 
 void MultiThreadKDTreeFactory::_clone(KDTreeFactory *kdtf) const{
     SimpleKDTreeFactory::_clone(kdtf);
+    MultiThreadKDTreeFactory * mtkdtf = (MultiThreadKDTreeFactory *) kdtf;
+    mtkdtf->notUsed = notUsed;
 }
 
 // ***  KDTREE FACTORY METHODS  *** //
@@ -327,8 +330,14 @@ KDTreeNode * MultiThreadKDTreeFactory::buildRecursiveNodeLevel(
 // ***  UTIL METHODS  *** //
 // ********************** //
 void MultiThreadKDTreeFactory::prepareToMake(){
-    // Initialize node-level parallelization thread pool
-    new (&tpNode) KDTreeFactoryThreadPool(numJobs);
+    // If first use, mark it as already used for future cases
+    if(notUsed) notUsed = false;
+    else{ // If it has been used before
+        // Destroy old thread pool in place
+        tpNode.KDTreeFactoryThreadPool::~KDTreeFactoryThreadPool();
+        // Initialize node-level parallelization thread pool in place
+        new (&tpNode) KDTreeFactoryThreadPool(numJobs);
+    }
 
     // Prepare parallelization strategies (see header doc for more info)
     if(geomJobs == 1){

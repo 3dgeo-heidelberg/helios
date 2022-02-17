@@ -46,8 +46,11 @@ public:
     /**
      * @brief Build the dynamic object from given scene part
      * @param sp Scene part as basis for dynamic object
+     * @see ScenePart::ScenePart(ScenePart const &, bool const)
      */
-    DynObject(ScenePart const &sp) : ScenePart(sp) {}
+    DynObject(ScenePart const &sp, bool const shallowPrimitives=false) :
+        ScenePart(sp, shallowPrimitives)
+    {}
     /**
      * @brief Dynamic object constructor with id as argument
      * @param id The id for the dynamic object

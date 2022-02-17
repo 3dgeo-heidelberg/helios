@@ -128,6 +128,10 @@ protected:
      * @see MultiThreadKDTreeFactory::finishedGeomJobs
      */
     boost::mutex finishedGeomJobsMutex;
+    /**
+     * @brief True if the factory has not been used before, false otherwise
+     */
+    bool notUsed;
 
 public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //

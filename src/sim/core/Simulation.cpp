@@ -116,21 +116,33 @@ double Simulation::calcCurrentGpsTime(){
     long now;
 
     // Calc GPS time for fixed start time
-    if(fixedGpsTimeStart != ""){
-        if(fixedGpsTimeStart.find(":") != std::string::npos){
-            // "YYYY-MM-DD hh:mm:ss"
-            now = DateTimeUtils::dateTimeStrToMillis(fixedGpsTimeStart)
-                /1000000000L;
+    try{
+        if(fixedGpsTimeStart != ""){
+            if(fixedGpsTimeStart.find(":") != std::string::npos){
+                // "YYYY-MM-DD hh:mm:ss"
+                now = DateTimeUtils::dateTimeStrToMillis(fixedGpsTimeStart)
+                    /1000000000L;
+            }
+            else{
+                now = std::stol(fixedGpsTimeStart);
+            }
         }
         else{
-            now = std::stol(fixedGpsTimeStart);
+            // Calc GPS time for non fixed start time
+            now = duration_cast<seconds>(
+                system_clock::now().time_since_epoch()
+            ).count();
         }
     }
-    else{
-        // Calc GPS time for non fixed start time
-        now = duration_cast<seconds>(
-            system_clock::now().time_since_epoch()
-        ).count();
+    catch(std::exception &ex){
+        std::stringstream ss;
+        ss  << "Provided GPS start time was \"" << fixedGpsTimeStart << "\"\n"
+            << "Please, ensure the format is either a POSIX timestamp, an "
+            << "empty string \n"
+            << "or a datetime with EXACT format: \"YYYY-MM-DD hh:mm:ss\" "
+            << "(Don't forget the quotes)";
+        logging::ERR(ss.str());
+        throw ex;
     }
 
     // 315964809s is the difference between 1970-01-01 and 1980-01-06

@@ -58,9 +58,12 @@ public:
      */
     DynSequentiableMovingObject() = default;
     /**
-     * @see DynMovingObject::DynMovingObject(ScenePart const &sp)
+     * @see DynMovingObject::DynMovingObject(ScenePart const &sp, bool const)
      */
-    DynSequentiableMovingObject(ScenePart const &sp) : DynMovingObject(sp) {}
+    DynSequentiableMovingObject(
+        ScenePart const &sp,
+        bool const shallowPrimitives=false
+    ) : DynMovingObject(sp, shallowPrimitives) {}
     /**
      * @see DynMovingObject::DynMovingObject(string const)
      */

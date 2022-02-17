@@ -18,19 +18,11 @@ DynScene::DynScene(DynScene &ds) : DynScene(static_cast<StaticScene&>(ds)) {
 // ***  SIMULATION STEP  *** //
 // ************************* //
 bool DynScene::doSimStep(){
-    /*std::cout   << "DynScene step " << (stepLoop.getCurrentStep()+1) << " / "
-                << stepLoop.getStepInterval() << std::endl;*/ // TODO Remove
-    // TODO Rethink : Discard old implementation if new works
-    /*currentStep = (currentStep + 1) % stepInterval;
-    if(currentStep == (stepInterval-1)) return doStep();
-    return false;*/
-    // TODO Rethink : Use new implementation
     if(stepLoop.doStep()) return stepLoop.retrieveOutput();
     return false;
 }
 
 bool DynScene::doStep(){
-    //std::cout << "DynScene updated!" << std::endl; // TODO Remove
     bool updateFlag = false;
     size_t const n = numDynObjects();
     for(size_t i = 0 ; i < n ; ++i){

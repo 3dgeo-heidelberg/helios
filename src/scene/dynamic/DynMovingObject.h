@@ -104,10 +104,10 @@ public:
      */
     DynMovingObject() = default;
     /**
-     * @see DynObject::DynObject(ScenePart const &)
+     * @see DynObject::DynObject(ScenePart const &, bool const)
      */
-    DynMovingObject(ScenePart const &sp) :
-        DynObject(sp),
+    DynMovingObject(ScenePart const &sp, bool const shallowPrimitives=false) :
+        DynObject(sp, shallowPrimitives),
         kdGroveObserver(nullptr)
     {}
     /**
