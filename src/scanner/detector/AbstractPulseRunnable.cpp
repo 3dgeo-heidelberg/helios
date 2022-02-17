@@ -114,7 +114,7 @@ void AbstractPulseRunnable::capturePoint(
 	// ########## END Apply gaussian range accuracy error ###########
 
 	// Calculate final recorded point coordinates:
-	// TODO Rethink : Is it necessary to compute posotion again? Notice it is
+	// TODO Rethink : Is it necessary to compute position again? Notice it is
     // known from ray intersection point at FullWaveformPulseRunnable
 	m.position = m.beamOrigin + m.beamDirection * m.distance;
     if(allMeasurements != nullptr){

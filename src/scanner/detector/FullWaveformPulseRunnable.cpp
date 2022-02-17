@@ -395,15 +395,23 @@ void FullWaveformPulseRunnable::populateFullWaveform(
         double const entryIntensity = it->second;
         double const wavePeakTime_ns = entryDistance_m /
             cfg_speedOfLight_mPerNanosec; // in nanoseconds
-        int const binStart = (int)((wavePeakTime_ns-minHitTime_ns) / nsPerBin)
-            - peakIntensityIndex;
+        // TODO Rethink : Below is previous implementation (wrong index shift)
+        /*int const binStart = (int)((wavePeakTime_ns-minHitTime_ns) / nsPerBin)
+            - peakIntensityIndex;*/
+        // TODO Rethink : Below is new implementation
+        int const binStart = (
+            (int)std::ceil(
+            ((wavePeakTime_ns-minHitTime_ns) / nsPerBin))
+        ) - peakIntensityIndex;
+        //int const binStart = 0;
         for (size_t i = 0; i < time_wave.size(); ++i) {
             // TODO Remove section ---
-            if((binStart +i) >= fullwave.size()){
+            /*if((binStart +i) >= fullwave.size()){
                 std::cout   << "fullwave index is " << (binStart + i) << " "
-                            << "but max index is " << fullwave.size()
+                            << "but max index is " << fullwave.size() << "    "
+                            << "(binStart = " << binStart << ")"
                             << std::endl;
-            }
+            }*/
             // --- TODO Remove section
             fullwave[binStart + i] += time_wave[i] * entryIntensity;
         }
