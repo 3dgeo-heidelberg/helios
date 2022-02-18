@@ -22,8 +22,27 @@ void SimplePhysicsPlatform::doPhysicsStep(int simFrequency_hz) {
 	glm::dvec3 drag_accel = getVelocity() * (mCfg_drag * simFrequency_hz);
 	glm::dvec3 accel = mCfg_g_accel + mEngineForce - drag_accel;
 	glm::dvec3 delta_v = accel * (1.0 / simFrequency_hz);
+        glm::dvec3 new_velocity = getVelocity() + delta_v;
 
-	setVelocity(getVelocity() + delta_v);
+        double velocity_magnitude = glm::length(new_velocity);
+        double max_velocity_magnitude{};
+
+        if (cfg_settings_movePerSec_m > 0.0) {
+          max_velocity_magnitude = movePerSec_m_stepMagnitude;
+        }
+        else { // If cfg_settings_moverPerSec is not provided by the user
+          max_velocity_magnitude = std::numeric_limits<double>::max();
+        }
+
+        velocity_magnitude = std::min(velocity_magnitude, max_velocity_magnitude);
+        if (!userSpeedLimitReached
+            && simFrequency_hz*(max_velocity_magnitude - velocity_magnitude) <= 0.0001) {
+          userSpeedLimitReached = true;
+        }
+
+        glm::dvec3 velocity = glm::normalize(new_velocity) * velocity_magnitude;
+        setVelocity(velocity);
+
 	// NOTE: Update of position happens in Platform base class
 }
 
