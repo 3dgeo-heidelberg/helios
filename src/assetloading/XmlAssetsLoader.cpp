@@ -33,6 +33,12 @@ namespace fs = boost::filesystem;
 #include "MathConverter.h"
 #include "TimeWatcher.h"
 
+// ***  CONSTANTS  *** //
+// ******************* //
+std::string const XmlAssetsLoader::defaultScannerSettingsMsg =
+    "Using scanner default value for attribute";
+std::string const XmlAssetsLoader::defaultPlatformSettingsMsg =
+    "Using platform default value for attribute";
 
 
 // ***  CONSTRUCTION / DESTRUCTION  *** //
@@ -292,23 +298,34 @@ XmlAssetsLoader::createPlatformSettingsFromXml(
   // Overload settings themselves
   settings->baseTemplate = template1;
   settings->x = boost::get<double>(XmlUtils::getAttribute(
-      node, "x", "double", template1->x));
+      node, "x", "double", template1->x, defaultPlatformSettingsMsg));
   settings->y = boost::get<double>(XmlUtils::getAttribute(
-      node, "y", "double", template1->y));
+      node, "y", "double", template1->y, defaultPlatformSettingsMsg));
   settings->z = boost::get<double>(XmlUtils::getAttribute(
-      node, "z", "double", template1->z));
+      node, "z", "double", template1->z, defaultPlatformSettingsMsg));
 
   // Read if platform should be put on ground, ignoring z coordinate:
-  settings->onGround = boost::get<bool>(
-      XmlUtils::getAttribute(node, "onGround", "bool", template1->onGround));
+  settings->onGround = boost::get<bool>(XmlUtils::getAttribute(
+      node, "onGround", "bool", template1->onGround, defaultPlatformSettingsMsg
+  ));
 
   // Read if platform must use stop and turn mechanics or not
   settings->stopAndTurn = boost::get<bool>(XmlUtils::getAttribute(
-      node, "stopAndTurn", "bool", template1->stopAndTurn));
+    node,
+    "stopAndTurn",
+    "bool",
+    template1->stopAndTurn,
+    defaultPlatformSettingsMsg
+  ));
 
   // Read if platform must use smooth turn mechanics or not
   settings->smoothTurn = boost::get<bool>(XmlUtils::getAttribute(
-      node, "smoothTurn", "bool", template1->smoothTurn));
+    node,
+    "smoothTurn",
+    "bool",
+    template1->smoothTurn,
+    defaultPlatformSettingsMsg
+  ));
 
   if (settings->stopAndTurn && settings->smoothTurn) {
     logging::INFO("Both stopAndTurn and smoothTurn have been set to true. "
@@ -318,17 +335,31 @@ XmlAssetsLoader::createPlatformSettingsFromXml(
 
   // Read if platform must be able to slowdown (true) or not (false)
   settings->slowdownEnabled = boost::get<bool>(XmlUtils::getAttribute(
-      node, "slowdownEnabled", "bool", template1->slowdownEnabled));
+      node,
+      "slowdownEnabled",
+      "bool",
+      template1->slowdownEnabled,
+      defaultPlatformSettingsMsg
+  ));
 
   // Read platform speed:
   settings->movePerSec_m = boost::get<double>(XmlUtils::getAttribute(
-      node, "movePerSec_m", "double", template1->movePerSec_m));
+    node,
+    "movePerSec_m",
+    "double",
+    template1->movePerSec_m,
+    defaultPlatformSettingsMsg
+  ));
 
   if (node->FindAttribute("yawAtDeparture_deg") != nullptr) {
     settings->yawAtDepartureSpecified = true;
     settings->yawAtDeparture = MathConverter::degreesToRadians(
         boost::get<double>(XmlUtils::getAttribute(
-            node, "yawAtDeparture_deg", "double", template1->yawAtDeparture
+            node,
+            "yawAtDeparture_deg",
+            "double",
+            template1->yawAtDeparture,
+            defaultPlatformSettingsMsg
         ))
     );
   }
@@ -590,12 +621,16 @@ XmlAssetsLoader::createScannerSettingsFromXml(
   // Ovearload settings themselves
   settings->baseTemplate = template1;
   settings->active = boost::get<bool>(XmlUtils::getAttribute(
-      node, "active", "bool", template1->active
+      node, "active", "bool", template1->active, defaultScannerSettingsMsg
   ));
   if(XmlUtils::hasAttribute(node, "headRotatePerSec_deg")){
     settings->headRotatePerSec_rad = MathConverter::degreesToRadians(
         boost::get<double>(XmlUtils::getAttribute(
-            node, "headRotatePerSec_deg", "double", 0.0
+            node,
+            "headRotatePerSec_deg",
+            "double",
+            0.0,
+            defaultScannerSettingsMsg
         ))
     );
   }
@@ -606,7 +641,8 @@ XmlAssetsLoader::createScannerSettingsFromXml(
             node,
             "headRotateStart_deg",
             "double",
-            0.0
+            0.0,
+            defaultScannerSettingsMsg
         ))
     );
   }
@@ -615,7 +651,11 @@ XmlAssetsLoader::createScannerSettingsFromXml(
   if(XmlUtils::hasAttribute(node, "headRotateStop_deg")){
     double hrStop_rad = MathConverter::degreesToRadians(
         boost::get<double>(XmlUtils::getAttribute(
-            node, "headRotateStop_deg", "double", 0.0
+            node,
+            "headRotateStop_deg",
+            "double",
+            0.0,
+            defaultScannerSettingsMsg
         )));
 
     // Make sure that rotation stop angle is larger than rotation start angle if
@@ -644,11 +684,16 @@ XmlAssetsLoader::createScannerSettingsFromXml(
   }
   else settings->headRotateStop_rad = template1->headRotateStop_rad;
   settings->pulseFreq_Hz = boost::get<int>(XmlUtils::getAttribute(
-      node, "pulseFreq_hz", "int", template1->pulseFreq_Hz));
+      node,
+      "pulseFreq_hz",
+      "int",
+      template1->pulseFreq_Hz,
+      defaultScannerSettingsMsg
+  ));
   if(XmlUtils::hasAttribute(node, "scanAngle_deg")){
       settings->scanAngle_rad = MathConverter::degreesToRadians(
           boost::get<double>(XmlUtils::getAttribute(
-              node, "scanAngle_deg", "double", 0.0
+              node, "scanAngle_deg", "double", 0.0, defaultScannerSettingsMsg
           ))
       );
   }
@@ -656,7 +701,11 @@ XmlAssetsLoader::createScannerSettingsFromXml(
   if(XmlUtils::hasAttribute(node, "verticalAngleMin_deg")){
       settings->verticalAngleMin_rad = MathConverter::degreesToRadians(
           boost::get<double>(XmlUtils::getAttribute(
-              node, "verticalAngleMin_deg", "double", 0.0
+              node,
+              "verticalAngleMin_deg",
+              "double",
+              0.0,
+              defaultScannerSettingsMsg
           ))
       );
   }
@@ -664,24 +713,37 @@ XmlAssetsLoader::createScannerSettingsFromXml(
   if(XmlUtils::hasAttribute(node, "verticalAngleMax_deg")){
       settings->verticalAngleMax_rad = MathConverter::degreesToRadians(
           boost::get<double>(XmlUtils::getAttribute(
-              node, "verticalAngleMax_deg", "double", 0.0
+              node,
+              "verticalAngleMax_deg",
+              "double",
+              0.0,
+              defaultScannerSettingsMsg
           ))
       );
   }
   else settings->verticalAngleMax_rad = template1->verticalAngleMax_rad;
   settings->scanFreq_Hz = boost::get<double>(XmlUtils::getAttribute(
-      node, "scanFreq_hz", "double", template1->scanFreq_Hz
+      node,
+      "scanFreq_hz",
+      "double",
+      template1->scanFreq_Hz,
+      defaultScannerSettingsMsg
   ));
 
   settings->beamDivAngle = boost::get<double>(XmlUtils::getAttribute(
-    node, "beamDivergence_rad", "double", template1->beamDivAngle
+    node,
+    "beamDivergence_rad",
+    "double",
+    template1->beamDivAngle,
+    defaultScannerSettingsMsg
   ));
 
   settings->trajectoryTimeInterval = boost::get<double>(XmlUtils::getAttribute(
     node,
     "trajectoryTimeInterval_s",
     "double",
-    template1->trajectoryTimeInterval
+    template1->trajectoryTimeInterval,
+    defaultScannerSettingsMsg
   ));
 
   // Track non default values if requested

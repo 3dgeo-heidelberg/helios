@@ -1,7 +1,6 @@
 var classSimpleKDTreeBuildChildrenNodesSubTask =
 [
-    [ "SimpleKDTreeBuildChildrenNodesSubTask", "d5/d80/classSimpleKDTreeBuildChildrenNodesSubTask.html#a8afff0f0f1654df59ffcde0234b5b97e", null ],
-    [ "~SimpleKDTreeBuildChildrenNodesSubTask", "d5/d80/classSimpleKDTreeBuildChildrenNodesSubTask.html#ad80f0f1d8e62911f0bbc1c99bc5f1475", null ],
+    [ "SimpleKDTreeBuildChildrenNodesSubTask", "d5/d80/classSimpleKDTreeBuildChildrenNodesSubTask.html#a5cc50c6856186bbb121f330f1d6f91e5", null ],
     [ "run", "d5/d80/classSimpleKDTreeBuildChildrenNodesSubTask.html#aa2bf9fc38d69330fe8873d3607c7b61f", null ],
     [ "buildRecursive", "d5/d80/classSimpleKDTreeBuildChildrenNodesSubTask.html#a115be79e69dfa16a79134c4432c35e5b", null ],
     [ "depth", "d5/d80/classSimpleKDTreeBuildChildrenNodesSubTask.html#af6a07f5045996e02a46b3eb801322ea4", null ],

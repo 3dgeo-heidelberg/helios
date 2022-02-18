@@ -1,8 +1,6 @@
 var classLasSyncFileWriter =
 [
-    [ "LasSyncFileWriter", "d2/db3/classLasSyncFileWriter.html#aac5d611d187b513ac8aac1007017cda6", null ],
     [ "LasSyncFileWriter", "d2/db3/classLasSyncFileWriter.html#ab143baea4bee69cdc5c2c97c47bcc48e", null ],
-    [ "~LasSyncFileWriter", "d2/db3/classLasSyncFileWriter.html#adf126739e6c2549a04a2d7c12f74c65e", null ],
     [ "_write", "d2/db3/classLasSyncFileWriter.html#aff4a39a81182b79fa06ee27b85230db1", null ],
     [ "_write", "d2/db3/classLasSyncFileWriter.html#ae31728d59d0e041ec3287f6d6fd566aa", null ],
     [ "_write", "d2/db3/classLasSyncFileWriter.html#ad082f28355379b7af94b13f0b6f62438", null ],

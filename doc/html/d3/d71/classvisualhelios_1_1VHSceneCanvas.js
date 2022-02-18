@@ -2,7 +2,6 @@ var classvisualhelios_1_1VHSceneCanvas =
 [
     [ "VHSceneCanvas", "d3/d71/classvisualhelios_1_1VHSceneCanvas.html#ad44e7a43443723c10298f839d25e48f6", null ],
     [ "VHSceneCanvas", "d3/d71/classvisualhelios_1_1VHSceneCanvas.html#a77743ded11d3775817591711f2002450", null ],
-    [ "~VHSceneCanvas", "d3/d71/classvisualhelios_1_1VHSceneCanvas.html#a1688c7527d0acaa0bfd54b3835680dbe", null ],
     [ "addObjectToViewer", "d3/d71/classvisualhelios_1_1VHSceneCanvas.html#a124e9090f2e53462fc62faf33ee1172a", null ],
     [ "cameraFromScene", "d3/d71/classvisualhelios_1_1VHSceneCanvas.html#a07777a005e40fdd5fba6e102f1ff5d6b", null ],
     [ "configure", "d3/d71/classvisualhelios_1_1VHSceneCanvas.html#aadbdf266161bf382ac38476cdff3c4b6", null ],

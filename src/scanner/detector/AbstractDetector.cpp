@@ -40,23 +40,39 @@ WriterType AbstractDetector::chooseWriterType() {
 }
 // ATTENTION: This method needs to be synchronized since multiple threads are
 // writing to the output file!
-void AbstractDetector::setOutputFilePath(string path) {
+void AbstractDetector::setOutputFilePath(string path, bool lastLegInStrip) {
   this->outputFilePath = path;
   logging::WARN("outputFilePath=" + path);
   try {
     fs::create_directories(outputFilePath.parent_path());
 
     WriterType wt = chooseWriterType();
+
     // Create the Writer
-    sfw = SyncFileWriterFactory::makeWriter(
-        wt,
-        path,                                   // Output path
-        zipOutput,                              // Zip flag
-        lasScale,                               // Scale factor
-        scanner->platform->scene->getShift(),   // Offset
-        0.0,                                    // Min intensity
-        1000000.0                               // Delta intensity
-    );
+    if (!fs::exists(path))
+    {
+      sfw = SyncFileWriterFactory::makeWriter(
+          wt,
+          path,                                   // Output path
+          zipOutput,                              // Zip flag
+          lasScale,                               // Scale factor
+          scanner->platform->scene->getShift(),   // Offset
+          0.0,                                    // Min intensity
+          1000000.0                               // Delta intensity
+      );
+      writers[path] = sfw;
+    }
+    else
+    {
+      sfw = writers[path];
+    }
+
+    // Remove writer from writers hashmap if it is the last leg in strip
+    // to allow the sfw destructor to be called when sfw is replaced in the
+    // next leg
+    if (lastLegInStrip)
+      writers.erase(path);
+
   } catch (std::exception &e) {
     logging::WARN(e.what());
   }

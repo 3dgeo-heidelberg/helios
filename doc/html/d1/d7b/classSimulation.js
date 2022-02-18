@@ -23,7 +23,7 @@ var classSimulation =
     [ "exportToFile", "d1/d7b/classSimulation.html#a920742a7e2a07fef6f4c953423886495", null ],
     [ "finished", "d1/d7b/classSimulation.html#ae26650389687bae4ae945f8c7cb5c9ea", null ],
     [ "fixedGpsTimeStart", "d1/d7b/classSimulation.html#ac0b08636aea9fd4109a9e06178537007", null ],
-    [ "mbuffer", "d1/d7b/classSimulation.html#adb008ca9df4edfaadccafb95e2835fa4", null ],
+    [ "mBuffer", "d1/d7b/classSimulation.html#ab95d7b5c9a5227d35d0a7fe220dda51d", null ],
     [ "mCurrentLegIndex", "d1/d7b/classSimulation.html#a7100d62b7b3869956ff08dc5bf7954b1", null ],
     [ "mPaused", "d1/d7b/classSimulation.html#a789ad5755f19fa068bf3317afc96209a", null ],
     [ "mScanner", "d1/d7b/classSimulation.html#a31f63ed73543cb7a481574ae41c4edf0", null ],

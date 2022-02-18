@@ -1,15 +1,18 @@
 <map id="SAHKDTreeGeometricStrategy" name="SAHKDTreeGeometricStrategy">
-<area shape="rect" id="node2" href="$d3/de1/classSimpleKDTreeGeometricStrategy.html" title="Class providing a strategy for geometry&#45;level parallelization of Simple KDTree building. The geometry&#45;level parallelization is the one to be applied on upper tree nodes, where multiple threads work on the building of the same node. " alt="" coords="5,636,221,663"/>
-<area shape="rect" id="node3" href="$d6/d96/classSimpleKDTreeFactory.html" title="Class providing building methods for simple k&#45;dimensional trees. " alt="" coords="103,547,254,573"/>
-<area shape="rect" id="node11" href="$db/d58/classSAHKDTreeFactory.html" title="Class providing building methods for k&#45;dimensional trees with surface area heuristic (SAH) ..." alt="" coords="245,636,384,663"/>
-<area shape="rect" id="node4" href="$d5/dd0/classKDTreeFactory.html" title="Class that must be extended by any class which provides factory methods for k&#45;dimensional trees..." alt="" coords="154,471,265,497"/>
-<area shape="rect" id="node5" href="$dd/d04/classLightKDTreeNodeBlockAllocator.html" title="Block allocator for LightKDTreeNode instances. " alt="" coords="348,381,559,408"/>
-<area shape="rect" id="node6" href="$d9/d47/classBlockAllocator.html" title="BlockAllocator\&lt; LightKDTree\lNode \&gt;" alt="" coords="383,291,574,332"/>
-<area shape="rect" id="node7" href="$dd/d79/classLightKDTreeNode.html" title="Class representing a light KDTree node. It is, the basic representation of a KDTree node with uses le..." alt="" coords="595,185,722,212"/>
-<area shape="rect" id="node12" href="$d8/d94/classKDTreeNode.html" title="Class representing a KDTree node. " alt="" coords="609,298,708,325"/>
-<area shape="rect" id="node8" href="$d7/d98/classIBinaryTreeNode.html" title="Binary tree node interface that must be implemented by any class providing binary tree node based fun..." alt="" coords="599,95,719,121"/>
-<area shape="rect" id="node13" href="$d2/d1a/classAABB.html" title="Class representing an Axis Aligned Bounding Box (AABB) " alt="" coords="800,185,859,212"/>
-<area shape="rect" id="node14" href="$df/de1/classPrimitive.html" title="Abstract class defining the common behavior for all primitives. " alt="" coords="855,95,929,121"/>
-<area shape="rect" id="node15" href="$d2/da0/classVertex.html" title="Class representing a vertex. " alt="" coords="771,95,831,121"/>
-<area shape="rect" id="node16" href="$db/d02/classColor4f.html" title="Class representing a color with 4 float components: RGBA. " alt="" coords="769,5,833,32"/>
+<area shape="rect" id="node1" title="Class providing a strategy for geometry&#45;level parallelization of SAH KDTree building...." alt="" coords="121,649,339,676"/>
+<area shape="rect" id="node2" href="$d3/de1/classSimpleKDTreeGeometricStrategy.html" title="Class providing a strategy for geometry&#45;level parallelization of Simple KDTree building...." alt="" coords="5,560,241,587"/>
+<area shape="rect" id="node3" href="$d6/d96/classSimpleKDTreeFactory.html" title="Class providing building methods for simple k&#45;dimensional trees." alt="" coords="172,471,333,497"/>
+<area shape="rect" id="node11" href="$db/d58/classSAHKDTreeFactory.html" title="Class providing building methods for k&#45;dimensional trees with surface area heuristic (SAH)" alt="" coords="266,560,410,587"/>
+<area shape="rect" id="node4" href="$d5/dd0/classKDTreeFactory.html" title="Class that must be extended by any class which provides factory methods for k&#45;dimensional trees...." alt="" coords="253,381,369,408"/>
+<area shape="rect" id="node5" href="$dd/d04/classLightKDTreeNodeBlockAllocator.html" title="Block allocator for LightKDTreeNode instances." alt="" coords="323,292,551,319"/>
+<area shape="rect" id="node6" href="$d9/d47/classBlockAllocator.html" title=" " alt="" coords="332,188,541,229"/>
+<area shape="rect" id="node7" title=" " alt="" coords="143,83,203,109"/>
+<area shape="rect" id="node8" title=" " alt="" coords="329,83,545,109"/>
+<area shape="rect" id="node9" href="$dd/d79/classLightKDTreeNode.html" title="Class representing a light KDTree node. It is, the basic representation of a KDTree node with uses le..." alt="" coords="621,83,756,109"/>
+<area shape="rect" id="node12" href="$d8/d94/classKDTreeNode.html" title="Class representing a KDTree node." alt="" coords="613,471,716,497"/>
+<area shape="rect" id="node10" href="$d7/d98/classIBinaryTreeNode.html" title="Binary tree node interface that must be implemented by any class providing binary tree node based fun..." alt="" coords="624,5,753,32"/>
+<area shape="rect" id="node13" href="$d2/d1a/classAABB.html" title="Class representing an Axis Aligned Bounding Box (AABB)" alt="" coords="635,381,694,408"/>
+<area shape="rect" id="node14" href="$df/de1/classPrimitive.html" title="Abstract class defining the common behavior for all primitives." alt="" coords="664,292,745,319"/>
+<area shape="rect" id="node15" href="$d2/da0/classVertex.html" title="Class representing a vertex." alt="" coords="575,292,640,319"/>
+<area shape="rect" id="node16" href="$db/d02/classColor4f.html" title="Class representing a color with 4 float components: RGBA." alt="" coords="573,195,642,222"/>
 </map>

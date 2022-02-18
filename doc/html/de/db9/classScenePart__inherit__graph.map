@@ -1,5 +1,6 @@
 <map id="ScenePart" name="ScenePart">
-<area shape="rect" id="node2" href="$d5/d6a/classDynObject.html" title="Dynamic object base implementation. " alt="" coords="64,80,148,107"/>
-<area shape="rect" id="node3" href="$d4/d96/classDynMovingObject.html" title="Implementation of a dynamic object which supports dynamic motions (extended rigid motions) ..." alt="" coords="43,155,169,181"/>
-<area shape="rect" id="node4" href="$d4/d48/classDynSequentiableMovingObject.html" title="Implementation of a dynamic object which supports sequentiable dynamic motions. " alt="" coords="5,229,207,256"/>
+<area shape="rect" id="node1" title="Class representing a scene part." alt="" coords="73,5,160,32"/>
+<area shape="rect" id="node2" href="$d5/d6a/classDynObject.html" title="Dynamic object base implementation." alt="" coords="71,80,162,107"/>
+<area shape="rect" id="node3" href="$d4/d96/classDynMovingObject.html" title="Implementation of a dynamic object which supports dynamic motions (extended rigid motions)" alt="" coords="47,155,186,181"/>
+<area shape="rect" id="node4" href="$d4/d48/classDynSequentiableMovingObject.html" title="Implementation of a dynamic object which supports sequentiable dynamic motions." alt="" coords="5,229,228,256"/>
 </map>

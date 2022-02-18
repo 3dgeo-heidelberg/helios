@@ -2,10 +2,9 @@ var classvisualhelios_1_1VHNormalsCanvas =
 [
     [ "VHNormalsCanvas", "df/dd2/classvisualhelios_1_1VHNormalsCanvas.html#adc5e2bb53e077b8372664b45941e2130", null ],
     [ "VHNormalsCanvas", "df/dd2/classvisualhelios_1_1VHNormalsCanvas.html#a211ce4e7aaf240532f10c615594afc1c", null ],
-    [ "~VHNormalsCanvas", "df/dd2/classvisualhelios_1_1VHNormalsCanvas.html#afb89a37ce53603a4c5d7d9152fb1012a", null ],
     [ "addKeyboardCallbackUsageText", "df/dd2/classvisualhelios_1_1VHNormalsCanvas.html#a9d144e1004c2229b04c7f69acca30e63", null ],
     [ "configure", "df/dd2/classvisualhelios_1_1VHNormalsCanvas.html#aff7bbac419168786eca72bbe19a43811", null ],
-    [ "getNormalDefColor", "df/dd2/classvisualhelios_1_1VHNormalsCanvas.html#ab9c55c9787d7276618d85bc2ff476286", null ],
+    [ "getNormalDefColor", "df/dd2/classvisualhelios_1_1VHNormalsCanvas.html#a90ee20380ef27797ca3e160104ff4501", null ],
     [ "getNormalMagnitude", "df/dd2/classvisualhelios_1_1VHNormalsCanvas.html#a755cbb3ea9beb0a60ec85d3bc8fde9be", null ],
     [ "isNormalsKeyboardCallbackEnabled", "df/dd2/classvisualhelios_1_1VHNormalsCanvas.html#a87e32ff212658c5e42618429527ce1a4", null ],
     [ "isNormalsUsageTextEnabled", "df/dd2/classvisualhelios_1_1VHNormalsCanvas.html#a49949200cc6b6be909c00664bd1ec231", null ],

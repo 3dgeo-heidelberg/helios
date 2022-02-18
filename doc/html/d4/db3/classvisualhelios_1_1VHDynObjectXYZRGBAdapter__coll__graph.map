@@ -1,7 +1,10 @@
 <map id="visualhelios::VHDynObjectXYZRGBAdapter" name="visualhelios::VHDynObjectXYZRGBAdapter">
-<area shape="rect" id="node2" href="$d5/dfc/classvisualhelios_1_1VHStaticObjectXYZRGBAdapter.html" title="visualhelios::VHStaticObject\lXYZRGBAdapter" alt="" coords="5,289,195,331"/>
-<area shape="rect" id="node3" href="$d1/dda/classvisualhelios_1_1VHStaticObjectAdapter.html" title="Abstract class defining core mechanisms to adapt static objects to the visual Helios context based on..." alt="" coords="108,199,297,240"/>
-<area shape="rect" id="node8" href="$d5/dc4/classvisualhelios_1_1VHDynObjectAdapter.html" title="Abstract class defining core mechanisms to adapt dynamic objects to the visual Helios context based o..." alt="" coords="219,289,397,331"/>
-<area shape="rect" id="node4" href="$dd/dc4/classScenePart.html" title="Class representing a scene part. " alt="" coords="64,109,147,136"/>
-<area shape="rect" id="node5" href="$d5/dcb/classRotation.html" title="Rotation" alt="" coords="22,5,93,32"/>
+<area shape="rect" id="node1" title="Class providing concrete implementation of a VHDynObjectAdapter for a simple XYZ visualization with R..." alt="" coords="123,380,318,421"/>
+<area shape="rect" id="node2" href="$d5/dfc/classvisualhelios_1_1VHStaticObjectXYZRGBAdapter.html" title=" " alt="" coords="5,289,212,331"/>
+<area shape="rect" id="node3" href="$d1/dda/classvisualhelios_1_1VHStaticObjectAdapter.html" title="Abstract class defining core mechanisms to adapt static objects to the visual Helios context based on..." alt="" coords="117,199,324,240"/>
+<area shape="rect" id="node8" href="$d5/dc4/classvisualhelios_1_1VHDynObjectAdapter.html" title="Abstract class defining core mechanisms to adapt dynamic objects to the visual Helios context based o..." alt="" coords="237,289,431,331"/>
+<area shape="rect" id="node4" href="$dd/dc4/classScenePart.html" title="Class representing a scene part." alt="" coords="100,109,187,136"/>
+<area shape="rect" id="node5" title=" " alt="" coords="22,5,81,32"/>
+<area shape="rect" id="node6" href="$d5/dcb/classRotation.html" title=" " alt="" coords="198,5,275,32"/>
+<area shape="rect" id="node7" title=" " alt="" coords="211,109,385,136"/>
 </map>

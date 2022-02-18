@@ -1,3 +1,4 @@
 <map id="rigidmotion::RigidMotion" name="rigidmotion::RigidMotion">
-<area shape="rect" id="node2" href="$d6/d4f/classDynMotion.html" title="Class which wraps the RigidMotion class to implement extra features such as the self mode control mec..." alt="" coords="44,80,129,107"/>
+<area shape="rect" id="node1" title="Interface that must be implemented by any class which represents a specific rigid motions." alt="" coords="5,5,188,32"/>
+<area shape="rect" id="node2" href="$d6/d4f/classDynMotion.html" title="Class which wraps the RigidMotion class to implement extra features such as the self mode control mec..." alt="" coords="50,80,143,107"/>
 </map>

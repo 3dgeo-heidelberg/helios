@@ -109,6 +109,12 @@ Scanner::Scanner(Scanner &s){
     if(s.detector == nullptr) this->detector = nullptr;
     else this->detector = s.detector->clone();
 
+    if(s.allOutputPaths == nullptr) this->allOutputPaths = nullptr;
+    else{
+        this->allOutputPaths = std::make_shared<std::vector<std::string>>(
+            *s.allOutputPaths
+        );
+    }
     if(s.allMeasurements == nullptr) this->allMeasurements = nullptr;
     else {
         this->allMeasurements = std::make_shared<std::vector<Measurement>>(
@@ -475,6 +481,13 @@ void Scanner::handleTrajectoryOutput(double currentGpsTime){
 
     // Avoid repeating trajectory for non moving platforms
     if(!platform->canMove()) platform->writeNextTrajectory = false;
+}
+
+void Scanner::trackOutputPath(std::string const path){
+    if(allOutputPaths != nullptr){
+        std::unique_lock<std::mutex> lock(*allMeasurementsMutex);
+        allOutputPaths->push_back(path);
+    }
 }
 
 void Scanner::initializeSequentialGenerators(){

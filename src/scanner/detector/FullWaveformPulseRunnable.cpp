@@ -1,3 +1,5 @@
+// TODO Rethink : This implementation is calling scanner setLastPulseWasHit
+// Is this thread safe?
 #include "FullWaveformPulseRunnable.h"
 
 #include "logging.hpp"
@@ -15,6 +17,7 @@ using namespace std;
 // ***  CONSTANTS  *** //
 // ******************* //
 const double FullWaveformPulseRunnable::eps = 0.001;
+
 
 // ***  O P E R A T O R  *** //
 // ************************* //
@@ -166,7 +169,7 @@ void FullWaveformPulseRunnable::handleSubray(
 
             // Distance between beam's center line and intersection point:
             double radius = sin(divergenceAngle) * distance;
-            double targetArea =
+            double const targetArea =
                 detector->scanner->calcFootprintArea(distance) /
                 (double) detector->scanner->getNumRays();
             double intensity = 0.0;
@@ -362,8 +365,10 @@ bool FullWaveformPulseRunnable::initializeFullWaveform(
     }
 
     // Check if full wave is possible
-    if ((detector->cfg_device_rangeMin_m / cfg_speedOfLight_mPerNanosec)
-        > minHitTime_ns) {
+    if(
+        (detector->cfg_device_rangeMin_m / cfg_speedOfLight_mPerNanosec)
+        > minHitTime_ns
+    ) {
         return false;
     }
 
@@ -374,17 +379,17 @@ bool FullWaveformPulseRunnable::initializeFullWaveform(
 }
 
 void FullWaveformPulseRunnable::populateFullWaveform(
-    std::map<double, double> &reflections,
+    std::map<double, double> const &reflections,
     std::vector<double> &fullwave,
-    double distanceThreshold,
-    double minHitTime_ns,
-    double nsPerBin,
-    int peakIntensityIndex
+    double const distanceThreshold,
+    double const minHitTime_ns,
+    double const nsPerBin,
+    int const peakIntensityIndex
 ){
     // Multiply each sub-beam intensity with time_wave and
     // add to the full waveform
-    vector<double> &time_wave = detector->scanner->time_wave;
-    map<double, double>::iterator it;
+    vector<double> const &time_wave = detector->scanner->time_wave;
+    map<double, double>::const_iterator it;
     for (it = reflections.begin(); it != reflections.end(); it++) {
         double const entryDistance_m = it->first;
         if(entryDistance_m > distanceThreshold) continue;
@@ -403,13 +408,13 @@ void FullWaveformPulseRunnable::digestFullWaveform(
     std::vector<Measurement> &pointsMeasurement,
     int &numReturns,
     std::vector<std::vector<double>>& apMatrix,
-    std::vector<double> &fullwave,
-    vector<RaySceneIntersection> &intersects,
-    glm::dvec3 &beamDir,
-    double nsPerBin,
-    int numFullwaveBins,
-    int peakIntensityIndex,
-    double minHitTime_ns
+    std::vector<double> const &fullwave,
+    vector<RaySceneIntersection> const &intersects,
+    glm::dvec3 const &beamDir,
+    double const nsPerBin,
+    int const numFullwaveBins,
+    int const peakIntensityIndex,
+    double const minHitTime_ns
 ){
     // Extract points from waveform data via Gaussian decomposition
     numReturns = 0;
@@ -454,7 +459,7 @@ void FullWaveformPulseRunnable::digestFullWaveform(
 
         // Build list of objects that produced this return
         double minDifference = numeric_limits<double>::max();
-        shared_ptr<RaySceneIntersection> closestIntersection;
+        shared_ptr<RaySceneIntersection> closestIntersection = nullptr;
 
         for (RaySceneIntersection intersect : intersects) {
             double intersectDist = glm::distance(
@@ -545,16 +550,16 @@ void FullWaveformPulseRunnable::exportOutput(
 // **************************** //
 // Space distribution equation to calculate the beam energy decreasing the further away from the center (Carlsson et al., 2001)
 double FullWaveformPulseRunnable::calcEmmitedPower(double radius, double targetRange) {
-    double I0 = detector->scanner->getAveragePower();
-    double lambda = detector->scanner->getWavelength();
-    double R = targetRange;
-    double R0 = detector->cfg_device_rangeMin_m;
-    double r = radius;
-    double w0 = detector->scanner->getBeamWaistRadius();
-    double denom = M_PI * w0 * w0;
-    double omega = (lambda * R) / denom;
-    double omega0 = (lambda * R0) / denom;
-    double w = w0 * sqrt(omega0 * omega0 + omega * omega);
+    double const I0 = detector->scanner->getAveragePower();
+    double const lambda = detector->scanner->getWavelength();
+    double const R = targetRange;
+    double const R0 = detector->cfg_device_rangeMin_m;
+    double const r = radius;
+    double const w0 = detector->scanner->getBeamWaistRadius();
+    double const denom = M_PI * w0 * w0;
+    double const omega = (lambda * R) / denom;
+    double const omega0 = (lambda * R0) / denom;
+    double const w = w0 * sqrt(omega0 * omega0 + omega * omega);
 
     return I0 * exp((-2 * r * r) / (w * w));
 }
@@ -629,9 +634,9 @@ void FullWaveformPulseRunnable::captureFullWave(
 }
 
 bool FullWaveformPulseRunnable::detectPeak(
-    int i,
-    int win_size,
-    vector<double> &fullwave
+    int const i,
+    int const win_size,
+    vector<double> const &fullwave
 ){
     for (int j = std::max(0, i - 1); j > std::max(0, i - win_size); j--) {
         if (fullwave[j] < eps || fullwave[j] >= fullwave[i]) {
