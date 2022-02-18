@@ -13,11 +13,13 @@
 #ifdef PYTHON_BINDING
 #include <PySimulationCycleCallback.h>
 #endif
+#include <SimulationReporter.h>
 
 /**
  * @brief Class representing a simulation
  */
 class Simulation {
+friend class SimulationReporter;
 protected:
     // ***  ATTRIBUTES  *** //
     // ******************** //
@@ -113,6 +115,11 @@ protected:
      *  be considered
      */
     std::string fixedGpsTimeStart = "";
+    /**
+     * @brief The report to generate reports about simulation
+     * @see SimulationReporter
+     */
+    SimulationReporter reporter;
 
 public:
     /**
@@ -158,8 +165,8 @@ public:
         std::string fixedGpsTimeStart=""
     );
 
-    // ***  M E T H O D S  *** //
-    // *********************** //
+    // ***  SIMULATION METHODS  *** //
+    // **************************** //
     /**
      * @brief Prepare the simulation before starting its main loop
      * @param simFrequency_hz The simulation frequency in hertz
@@ -196,6 +203,9 @@ public:
 	 */
 	void shutdown();
 
+
+	// ***  UTIL METHODS  *** //
+	// ********************** //
     /**
      * @brief Compute the current GPS time (milliseconds)
      * @return Current GPS time (milliseconds)

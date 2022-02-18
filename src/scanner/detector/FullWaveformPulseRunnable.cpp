@@ -372,7 +372,12 @@ bool FullWaveformPulseRunnable::initializeFullWaveform(
     }
 
     // Compute fullwave variables
-    numFullwaveBins = (int)(hitTimeDelta_ns / nsPerBin);
+    numFullwaveBins = ((int)std::ceil(maxHitTime_ns/nsPerBin)) -
+        ((int)ceil(minHitTime_ns/nsPerBin));
+
+    // update maxHitTime to fit the discretized fullwave bins
+    // minus 1 is necessary as the minimum is in bin #0
+    maxHitTime_ns = minHitTime_ns + (numFullwaveBins - 1) * nsPerBin;
 
     return true;
 }

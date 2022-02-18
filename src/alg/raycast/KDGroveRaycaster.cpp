@@ -29,7 +29,8 @@ RaySceneIntersection * KDGroveRaycaster::search(
 ){
     std::map<double, Primitive *> out;
     size_t const m = grove->getNumTrees();
-    RaySceneIntersection *rsi = nullptr;
+    RaySceneIntersection /*bestRsi = nullptr,*/ *rsi = nullptr;
+    // TODO Rethink : Update algorithm to return bestRsi as closest hit
     for(size_t i = 0 ; i < m ; ++i){
         rsi = grove->getTreeShared(i)->search(
             rayOrigin, rayDir, tmin, tmax, groundOnly
@@ -42,5 +43,5 @@ RaySceneIntersection * KDGroveRaycaster::search(
 // ***  KDGROVE RELATED METHODS  *** //
 // ********************************* //
 std::shared_ptr<KDGroveRaycaster> KDGroveRaycaster::makeTemporalClone() const{
-    return std::make_shared<KDGroveRaycaster>(grove);
+    return std::make_shared<KDGroveRaycaster>(grove->makeTemporalClone());
 }

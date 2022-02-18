@@ -1,13 +1,26 @@
 #include <GroveKDTreeRaycaster.h>
+#include <Primitive.h>
+
+#include <vector>
+
+using std::vector;
 
 // ***  GROVE DYNAMIC TREE METHODS  *** //
 // ************************************ //
 void GroveKDTreeRaycaster::update(DynObject &dynObj){
-    // TODO Rethink : Implement
+    // Copy primitives
+    vector<Primitive *> prims;
+    for(Primitive * prim : dynObj.mPrimitives){
+        Primitive * clone = prim->clone();
+        clone->part = prim->part;
+        prims.push_back(clone);
+    }
+
+    // Make new tree with its independent set of primitives
+    // To prevent they from being updated by other threads when raycasting
     root = shared_ptr<LightKDTreeNode>(
-        kdtf->makeFromPrimitives(dynObj.mPrimitives, true, false)
+        kdtf->makeFromPrimitives(prims, true, false)
     );
-    std::cout << "DynObject was updated!" << std::endl; // TODO Remove
 }
 
 std::shared_ptr<GroveKDTreeRaycaster> GroveKDTreeRaycaster::makeTemporalClone()

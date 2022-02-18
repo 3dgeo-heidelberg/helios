@@ -73,7 +73,7 @@ public:
     /**
      * @brief Dynamic scene default constructor
      */
-    DynScene(int const stepInterval=1000) :
+    DynScene(int const stepInterval=100) :
         stepLoop(stepInterval, [&] () -> bool{return doStep();})
     {}
     ~DynScene() override {}
@@ -86,7 +86,7 @@ public:
      * @brief Build a dynamic scene using given scene as basis
      * @param s Basis scene for dynamic scene
      */
-    DynScene(Scene &s, int const stepInterval=1000) :
+    DynScene(Scene &s, int const stepInterval=100) :
         StaticScene(s),
         stepLoop(stepInterval, [&] () -> bool{return doStep();})
     {}
@@ -94,7 +94,7 @@ public:
      * @brief Build a dynamic scene using given static scene as basis
      * @param ss Basis static scene for dynamic scene
      */
-    DynScene(StaticScene &ss, int const stepInterval=1000) :
+    DynScene(StaticScene &ss, int const stepInterval=100) :
         StaticScene(ss),
         stepLoop(stepInterval, [&] () -> bool{return doStep();})
     {}

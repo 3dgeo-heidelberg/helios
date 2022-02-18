@@ -51,6 +51,9 @@ bool DynMovingObject::doStep(){
         }
     );
 
+    // Update primitives
+    for(Primitive *prim : mPrimitives) prim->update();
+
     // Notify observer if modified
     if(modified && kdGroveObserver != nullptr){
         kdGroveObserver->update(*this);

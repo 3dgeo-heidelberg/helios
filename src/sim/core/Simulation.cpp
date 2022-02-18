@@ -13,7 +13,8 @@ using namespace std::chrono;
 
 using namespace std;
 
-
+// ***  CONSTRUCTION / DESTRUCTION  *** //
+// ************************************ //
 Simulation::Simulation(
     int const parallelizationStrategy,
     std::shared_ptr<PulseThreadPoolInterface> pulseThreadPoolInterface,
@@ -24,12 +25,17 @@ Simulation::Simulation(
     threadPool(pulseThreadPoolInterface),
     taskDropper(chunkSize),
     stepLoop([&] () -> void{doSimStep();}),
-    fixedGpsTimeStart(fixedGpsTimeStart)
+    fixedGpsTimeStart(fixedGpsTimeStart),
+    reporter(*this)
+
 {
     mBuffer = make_shared<MeasurementsBuffer>();
     currentGpsTime_ms = calcCurrentGpsTime();
 }
 
+
+// ***  SIMULATION METHODS  *** //
+// **************************** //
 void Simulation::prepareSimulation(int simFrequency_hz){
     // Mark as not finished
     finished = false;
@@ -96,22 +102,69 @@ void Simulation::shutdown(){
     }
 }
 
-void Simulation::setScanner(shared_ptr<Scanner> scanner) {
-    if (scanner == mScanner) {
-        return;
-    }
 
-    logging::INFO("Simulation: Scanner changed!");
+void Simulation::start() {
+    // Report before starting simulation
+    reporter.preStartReport();
 
-    this->mScanner = shared_ptr<Scanner>(scanner);
+    // Prepare to execute the main loop of simulation
+    prepareSimulation(mScanner->getPulseFreq_Hz());
+    size_t iter = 1;
+    timeStart_ms = duration_cast<milliseconds>(
+        system_clock::now().time_since_epoch()
+    ).count();
 
-    // Connect measurements buffer:
-    if (this->mScanner != nullptr) {
-        this->mScanner->detector->mBuffer = this->mBuffer;
-    }
+
+    // Execute the main loop of the simulation
+	while (!isStopped()) {
+	    if(iter==1){
+	        std::unique_lock<std::mutex> lock(mutex);
+	    }
+
+	    stepLoop.doStep();
+
+		iter++;
+		if(iter-1 == getCallbackFrequency()){
+		    if(callback != nullptr){
+                std::unique_lock<std::mutex> lock(
+                    *mScanner->cycleMeasurementsMutex);
+                (*callback)(
+                    *mScanner->cycleMeasurements,
+                    *mScanner->cycleTrajectories,
+                    mScanner->detector->outputFilePath.string()
+                );
+                mScanner->cycleMeasurements->clear();
+                mScanner->cycleTrajectories->clear();
+		    }
+		    iter = 1;
+		    condvar.notify_all();
+		}
+	}
+
+	// Finish the main loop of the simulation
+	long const timeMainLoopFinish = duration_cast<milliseconds>(
+	    system_clock::now().time_since_epoch()
+    ).count();
+	double const seconds = ((double)(timeMainLoopFinish - timeStart_ms))
+        / 1000.0;
+	reporter.preFinishReport(seconds);
+	mScanner->onSimulationFinished();
+
+    // End of simulation report
+    long const timeFinishAll = duration_cast<milliseconds>(
+        system_clock::now().time_since_epoch()
+    ).count();
+    double const secondsAll = ((double)(timeFinishAll - timeStart_ms))
+                              / 1000.0;
+    reporter.postFinishReport(secondsAll);
+
+	// Shutdown the simulation (e.g. close all file output streams. Implemented in derived classes.)
+	shutdown();
 }
 
 
+// ***  UTIL METHODS  *** //
+// ********************** //
 double Simulation::calcCurrentGpsTime(){
     long now;
 
@@ -121,7 +174,7 @@ double Simulation::calcCurrentGpsTime(){
             if(fixedGpsTimeStart.find(":") != std::string::npos){
                 // "YYYY-MM-DD hh:mm:ss"
                 now = DateTimeUtils::dateTimeStrToMillis(fixedGpsTimeStart)
-                    /1000000000L;
+                      /1000000000L;
             }
             else{
                 now = std::stol(fixedGpsTimeStart);
@@ -151,75 +204,35 @@ double Simulation::calcCurrentGpsTime(){
 }
 
 
+// ***  GETTERs and SETTERs  *** //
+// ***************************** //
 void Simulation::setSimSpeedFactor(double factor) {
-	if (factor <= 0) {
-		factor = 0.0001;
-	}
+    if (factor <= 0) {
+        factor = 0.0001;
+    }
 
-	if (factor > 10000) {
-		factor = 10000;
-	}
+    if (factor > 10000) {
+        factor = 10000;
+    }
 
-	this->mSimSpeedFactor = factor;
+    this->mSimSpeedFactor = factor;
 
-	stringstream ss;
-	ss << "Simulation speed set to " << mSimSpeedFactor;
-	logging::INFO(ss.str());
+    stringstream ss;
+    ss << "Simulation speed set to " << mSimSpeedFactor;
+    logging::INFO(ss.str());
 }
 
-void Simulation::start() {
-    // Prepare to execute the main loop of simulation
-    prepareSimulation(mScanner->getPulseFreq_Hz());
-    size_t iter = 1;
-    timeStart_ms = duration_cast<milliseconds>(
-        system_clock::now().time_since_epoch()
-    ).count();
+void Simulation::setScanner(shared_ptr<Scanner> scanner) {
+    if (scanner == mScanner) {
+        return;
+    }
 
-    // Execute the main loop of the simulation
-	while (!isStopped()) {
-	    if(iter==1){
-	        std::unique_lock<std::mutex> lock(mutex);
-	    }
+    logging::INFO("Simulation: Scanner changed!");
 
-	    stepLoop.doStep();
+    this->mScanner = shared_ptr<Scanner>(scanner);
 
-		iter++;
-		if(iter-1 == getCallbackFrequency()){
-		    if(callback != nullptr){
-                std::unique_lock<std::mutex> lock(
-                    *mScanner->cycleMeasurementsMutex);
-                (*callback)(
-                    *mScanner->cycleMeasurements,
-                    *mScanner->cycleTrajectories,
-                    mScanner->detector->outputFilePath.string()
-                );
-                mScanner->cycleMeasurements->clear();
-                mScanner->cycleTrajectories->clear();
-		    }
-		    iter = 1;
-		    condvar.notify_all();
-		}
-	}
-
-	// Finish the main loop of the simulation
-	long timeMainLoopFinish = duration_cast<milliseconds>(
-	    system_clock::now().time_since_epoch()).count();
-	double seconds = ((double)(timeMainLoopFinish - timeStart_ms)) / 1000.0;
-	mScanner->onSimulationFinished();
-
-	// Report information about simulation main loop
-	stringstream ss;
-	ss  << "Elapsed simulation steps = " << stepLoop.getCurrentStep() << "\n"
-	    << "Elapsed virtual time = " << stepLoop.getCurrentTime() << " sec.\n"
-	    << "Main thread simulation loop finished in "<<seconds<<" sec."<<"\n"
-	    << "Waiting for completion of pulse computation tasks...";
-	logging::TIME(ss.str());
-    ss.str("");
-    long timeFinishAll = duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count();
-	double secondsAll = ((double)(timeFinishAll - timeStart_ms)) / 1000.0;
-	ss << "Pulse computation tasks finished in " << secondsAll << " sec.";
-	logging::TIME(ss.str());
-
-	// Shutdown the simulation (e.g. close all file output streams. Implemented in derived classes.)
-	shutdown();
+    // Connect measurements buffer:
+    if (this->mScanner != nullptr) {
+        this->mScanner->detector->mBuffer = this->mBuffer;
+    }
 }

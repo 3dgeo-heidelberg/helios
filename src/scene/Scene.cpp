@@ -148,10 +148,15 @@ bool Scene::finalizeLoading(bool const safe) {
 }
 
 void Scene::registerParts(){
+    // Find scene parts from primitives
     unordered_set<shared_ptr<ScenePart>> partsSet;
     for(Primitive *primitive : primitives)
         if(primitive->part != nullptr)
             partsSet.insert(primitive->part);
+    // Remove already registered scene parts
+    unordered_set<shared_ptr<ScenePart>>::iterator it;
+    for(shared_ptr<ScenePart> part : parts) partsSet.erase(part);
+    // Register all new scene parts
     parts.insert(parts.end(), partsSet.begin(), partsSet.end());
 }
 

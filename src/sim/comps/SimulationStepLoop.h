@@ -64,7 +64,7 @@ public:
      * @return Virtual time (simulation time) that elapsed to reach current
      *  step
      */
-    inline double getCurrentTime()
+    inline double getCurrentTime() const
     {return dt.toContinuous(getCurrentStep());}
 
 };
