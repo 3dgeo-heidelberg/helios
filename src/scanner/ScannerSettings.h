@@ -8,6 +8,7 @@
 #include <ostream>
 #include <unordered_set>
 #include <functional>
+#include <cmath>
 
 /**
  * @brief Scanner settings class
