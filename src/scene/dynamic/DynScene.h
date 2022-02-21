@@ -36,15 +36,42 @@ private:
      * @tparam Archive Type of rendering
      * @param ar Specific rendering for the stream of bytes
      * @param version Version number for the DynScene
+     * @see DynScene::save(Archive &, const unsigned int)
+     * @see DynScene::load(Archive &, const unsigned int)
      */
     template <class Archive>
     void serialize(Archive &ar, const unsigned int version){
+        boost::serialization::split_member(ar, *this, version);
+    }
+    /**
+     * @brief Save a serialized DynScene to a stream of bytes
+     * @see DynScene::serialize(Archive &, const unsigned int)
+     * @see DynScene::load(Archive &, const unsigned int)
+     */
+    template <class Archive>
+    void save(Archive &ar, const unsigned int version) const {
         boost::serialization::void_cast_register<DynScene, StaticScene>();
         ar &boost::serialization::base_object<StaticScene>(*this);
         ar &dynObjs;
         ar &updated;
-        //ar &stepLoop; // TODO Rethink : Handle through save/load construct
+        ar &stepLoop.getStepInterval();
     }
+    /**
+     * @brief Load a serialized DynScene from a stream of bytes
+     * @see DynScene::serialize(Archive &, const unsigned int)
+     * @see DynScene::save(Archive &, const unsigned int)
+     */
+    template <class Archive>
+    void load(Archive &ar, const unsigned int version){
+        boost::serialization::void_cast_register<DynScene, StaticScene>();
+        ar &boost::serialization::base_object<StaticScene>(*this);
+        ar &dynObjs;
+        ar &updated;
+        int stepInterval;
+        ar &stepInterval;
+        stepLoop.setStepInterval(stepInterval);
+    }
+
 protected:
     // ***  ATTRIBUTES  *** //
     // ******************** //
