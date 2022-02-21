@@ -1,9 +1,7 @@
 var classHelicopterPlatform =
 [
     [ "HelicopterPlatform", "db/d69/classHelicopterPlatform.html#a6c3a234e28ae685ea1879d0febd65d87", null ],
-    [ "_clone", "db/d69/classHelicopterPlatform.html#ae094160c7754044df3d16058ab334e43", null ],
     [ "canStopAndTurn", "db/d69/classHelicopterPlatform.html#aef615151ed945fb6baf2421fa3b64aaf", null ],
-    [ "clone", "db/d69/classHelicopterPlatform.html#a99ffc82dd04bf0f0832f23185241e4b6", null ],
     [ "computeAlignmentAngles", "db/d69/classHelicopterPlatform.html#a1ca633d895758f0731ae33d9e9978bce", null ],
     [ "computeEngineForce", "db/d69/classHelicopterPlatform.html#ab35ce371755b03593b9587b662013085", null ],
     [ "computeLiftSinkRate", "db/d69/classHelicopterPlatform.html#a0917d3a5dcd2bf0dc91b1fd3403d9fe0", null ],
@@ -17,8 +15,8 @@ var classHelicopterPlatform =
     [ "getCurrentDirection", "db/d69/classHelicopterPlatform.html#ad013f0a6433b9cf3dbef5a95f4b8dde0", null ],
     [ "getDirectionalAttitude", "db/d69/classHelicopterPlatform.html#a10d48f4db2d10ad5c174e82a05af4b06", null ],
     [ "getHeadingRad", "db/d69/classHelicopterPlatform.html#a0299f8b80d65f474838f3a40b74350ec", null ],
-    [ "getRotationByReference", "db/d69/classHelicopterPlatform.html#a3bc9da261f208ae96e73a3069d95b2e0", null ],
-    [ "getSpeedXyByReference", "db/d69/classHelicopterPlatform.html#a700bec0013883d5c25ef524a93453599", null ],
+    [ "getRotationByReference", "db/d69/classHelicopterPlatform.html#a56ecfaf9f0e995a7a49b8583a1fd3aae", null ],
+    [ "getSpeedXyByReference", "db/d69/classHelicopterPlatform.html#a4a61f85fd2b20e0f0476b50e2750e965", null ],
     [ "handleRoute", "db/d69/classHelicopterPlatform.html#a5db6362a800f7c95618ff98255fe5488", null ],
     [ "initLeg", "db/d69/classHelicopterPlatform.html#a00c394dda049f912d65cf1057e2c30db", null ],
     [ "initLegManual", "db/d69/classHelicopterPlatform.html#a4eb1504235476903a4dbdc9224842cf0", null ],

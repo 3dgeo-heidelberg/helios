@@ -26,10 +26,14 @@ public:
 
     // ***  GETTERS and SETTERS  *** //
     // ***************************** //
-    PyVertexWrapper * getMinVertex()
+    inline PyVertexWrapper * getMinVertex()
         {return new PyVertexWrapper(aabb->vertices);}
-    PyVertexWrapper * getMaxVertex()
+    inline PyVertexWrapper * getMaxVertex()
         {return new PyVertexWrapper(aabb->vertices + 1);}
+
+    // ***  TO STRING  *** //
+    // ******************* //
+    inline std::string toString(){return aabb->toString();}
 };
 
 }

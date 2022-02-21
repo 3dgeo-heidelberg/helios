@@ -87,6 +87,7 @@ $(document).ready(function(){initNavTree('dd/dc4/classScenePart.html','../../');
 
 <div class="header">
   <div class="summary">
+<a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="#pri-methods">Private Member Functions</a> &#124;
@@ -120,12 +121,27 @@ Collaboration diagram for ScenePart:</div>
 </map>
 <center><span class="legend">[<a target="top" href="../../graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
+Public Types</h2></td></tr>
+<tr class="memitem:abb04a8637137f4873ccb216573a5d6a5"><td class="memItemLeft" align="right" valign="top"><a id="abb04a8637137f4873ccb216573a5d6a5"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/dc4/classScenePart.html#abb04a8637137f4873ccb216573a5d6a5">ObjectType</a> { <b>STATIC_OBJECT</b>, 
+<b>DYN_OBJECT</b>, 
+<b>DYN_MOVING_OBJECT</b>
+ }<tr class="memdesc:abb04a8637137f4873ccb216573a5d6a5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Specify the type of scene part / object. By default, the <a class="el" href="../../dd/dc4/classScenePart.html" title="Class representing a scene part. ">ScenePart</a> is a static object. <br /></td></tr>
+</td></tr>
+<tr class="separator:abb04a8637137f4873ccb216573a5d6a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5c843c2ed1df9e417540d14d01036c12"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/dc4/classScenePart.html#a5c843c2ed1df9e417540d14d01036c12">PrimitiveType</a> { <b>NONE</b>, 
+<b>TRIANGLE</b>, 
+<b>VOXEL</b>
+ }<tr class="memdesc:a5c843c2ed1df9e417540d14d01036c12"><td class="mdescLeft">&#160;</td><td class="mdescRight">Specify the type of primitive used to build the scene part By default, the <a class="el" href="../../dd/dc4/classScenePart.html" title="Class representing a scene part. ">ScenePart</a> is not build from primitives (None)  <a href="../../dd/dc4/classScenePart.html#a5c843c2ed1df9e417540d14d01036c12">More...</a><br /></td></tr>
+</td></tr>
+<tr class="separator:a5c843c2ed1df9e417540d14d01036c12"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ad08313c2aed966def11c0f507a116666"><td class="memItemLeft" align="right" valign="top"><a id="ad08313c2aed966def11c0f507a116666"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/dc4/classScenePart.html#ad08313c2aed966def11c0f507a116666">ScenePart</a> ()=default</td></tr>
-<tr class="memdesc:ad08313c2aed966def11c0f507a116666"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor for a scene part. <br /></td></tr>
-<tr class="separator:ad08313c2aed966def11c0f507a116666"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae138cbe8db0cd435091aaaa42513b444"><td class="memItemLeft" align="right" valign="top"><a id="ae138cbe8db0cd435091aaaa42513b444"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/dc4/classScenePart.html#ae138cbe8db0cd435091aaaa42513b444">ScenePart</a> ()</td></tr>
+<tr class="memdesc:ae138cbe8db0cd435091aaaa42513b444"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor for a scene part. <br /></td></tr>
+<tr class="separator:ae138cbe8db0cd435091aaaa42513b444"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a573c9469b4865af254d50200a7d7972b"><td class="memItemLeft" align="right" valign="top"><a id="a573c9469b4865af254d50200a7d7972b"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>ScenePart</b> (<a class="el" href="../../dd/dc4/classScenePart.html">ScenePart</a> const &amp;sp)</td></tr>
 <tr class="separator:a573c9469b4865af254d50200a7d7972b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -167,9 +183,18 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../.
 <tr class="memitem:a015f2bac94d9e0b65cc7706073164b7a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/dc4/classScenePart.html#a015f2bac94d9e0b65cc7706073164b7a">setId</a> (const std::string &amp;id)</td></tr>
 <tr class="memdesc:a015f2bac94d9e0b65cc7706073164b7a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the ID of the scene part.  <a href="#a015f2bac94d9e0b65cc7706073164b7a">More...</a><br /></td></tr>
 <tr class="separator:a015f2bac94d9e0b65cc7706073164b7a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a57ecd7294b724ad3c229aed7f13d0453"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="../../dd/dc4/classScenePart.html#abb04a8637137f4873ccb216573a5d6a5">ObjectType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/dc4/classScenePart.html#a57ecd7294b724ad3c229aed7f13d0453">getType</a> () const</td></tr>
+<tr class="memdesc:a57ecd7294b724ad3c229aed7f13d0453"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain the object type of the scene part.  <a href="#a57ecd7294b724ad3c229aed7f13d0453">More...</a><br /></td></tr>
+<tr class="separator:a57ecd7294b724ad3c229aed7f13d0453"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad41b49e850af8a489523274328f33d84"><td class="memItemLeft" align="right" valign="top"><a id="ad41b49e850af8a489523274328f33d84"></a>
+virtual <a class="el" href="../../dd/dc4/classScenePart.html#a5c843c2ed1df9e417540d14d01036c12">PrimitiveType</a>&#160;</td><td class="memItemRight" valign="bottom"><b>getPrimitiveType</b> () const</td></tr>
+<tr class="separator:ad41b49e850af8a489523274328f33d84"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
+<tr class="memitem:ad383e51370b014948843fdebad0e8f19"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../dd/dc4/classScenePart.html#a5c843c2ed1df9e417540d14d01036c12">PrimitiveType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/dc4/classScenePart.html#ad383e51370b014948843fdebad0e8f19">primitiveType</a></td></tr>
+<tr class="memdesc:ad383e51370b014948843fdebad0e8f19"><td class="mdescLeft">&#160;</td><td class="mdescRight">The type of primitive used to build the scene part.  <a href="#ad383e51370b014948843fdebad0e8f19">More...</a><br /></td></tr>
+<tr class="separator:ad383e51370b014948843fdebad0e8f19"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a116a4b9d5c153b000349ad6397009859"><td class="memItemLeft" align="right" valign="top"><a id="a116a4b9d5c153b000349ad6397009859"></a>
 std::vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/dc4/classScenePart.html#a116a4b9d5c153b000349ad6397009859">mPrimitives</a></td></tr>
 <tr class="memdesc:a116a4b9d5c153b000349ad6397009859"><td class="mdescLeft">&#160;</td><td class="mdescRight">Vector of pointers to primitives used by this scene part. <br /></td></tr>
@@ -242,7 +267,25 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>boost::serialization
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Class representing a scene part. </p>
-</div><h2 class="groupheader">Member Function Documentation</h2>
+</div><h2 class="groupheader">Member Enumeration Documentation</h2>
+<a id="a5c843c2ed1df9e417540d14d01036c12"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5c843c2ed1df9e417540d14d01036c12">&#9670;&nbsp;</a></span>PrimitiveType</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="../../dd/dc4/classScenePart.html#a5c843c2ed1df9e417540d14d01036c12">ScenePart::PrimitiveType</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Specify the type of primitive used to build the scene part By default, the <a class="el" href="../../dd/dc4/classScenePart.html" title="Class representing a scene part. ">ScenePart</a> is not build from primitives (None) </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../dd/dc4/classScenePart.html#ad383e51370b014948843fdebad0e8f19" title="The type of primitive used to build the scene part. ">ScenePart::primitiveType</a> </dd></dl>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
 <a id="ad77755e3d5bf661ef5a69ca848de833d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad77755e3d5bf661ef5a69ca848de833d">&#9670;&nbsp;</a></span>addObj()</h2>
 
@@ -410,6 +453,37 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>boost::serialization
 <p>Obtain the primitives of the scene part. </p>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="../../d5/d9c/classScene.html" title="Class representing a scene asset. ">Scene</a> part primitives </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="../../dd/dc4/classScenePart.html#a116a4b9d5c153b000349ad6397009859" title="Vector of pointers to primitives used by this scene part. ">ScenePart::mPrimitives</a> </dd></dl>
+
+</div>
+</div>
+<a id="a57ecd7294b724ad3c229aed7f13d0453"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a57ecd7294b724ad3c229aed7f13d0453">&#9670;&nbsp;</a></span>getType()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual <a class="el" href="../../dd/dc4/classScenePart.html#abb04a8637137f4873ccb216573a5d6a5">ObjectType</a> ScenePart::getType </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Obtain the object type of the scene part. </p>
+<dl class="section return"><dt>Returns</dt><dd>Object type of the scene part </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../dd/dc4/classScenePart.html#abb04a8637137f4873ccb216573a5d6a5" title="Specify the type of scene part / object. By default, the ScenePart is a static object. ">ScenePart::ObjectType</a> </dd></dl>
+
+<p>Reimplemented in <a class="el" href="../../d5/d6a/classDynObject.html#ac25dacf5b1c0268fd0c91dd2eecb44f3">DynObject</a>, and <a class="el" href="../../d4/d96/classDynMovingObject.html#afcd644a50ed99c57d06f9e460de5106b">DynMovingObject</a>.</p>
 
 </div>
 </div>
@@ -612,6 +686,23 @@ template&lt;class Archive &gt; </div>
 <b>1</b> : Uses the minimum \(z\) vertex to calculate to ground translation. It is the least computationally expensive mode <br />
 <b>&gt;1</b> : Uses a search process considering as many search steps as given. It allows to approximate the optimum vertex while maintaining computational cost inside desired boundaries</p>
 <p>NOTICE forceOnGround will not force the object to be on ground if it is a dynamic object which moves around the scene. It only assures the object will be INITIALLY placed at ground level </p>
+
+</div>
+</div>
+<a id="ad383e51370b014948843fdebad0e8f19"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad383e51370b014948843fdebad0e8f19">&#9670;&nbsp;</a></span>primitiveType</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../dd/dc4/classScenePart.html#a5c843c2ed1df9e417540d14d01036c12">PrimitiveType</a> ScenePart::primitiveType</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The type of primitive used to build the scene part. </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../dd/dc4/classScenePart.html#a5c843c2ed1df9e417540d14d01036c12" title="Specify the type of primitive used to build the scene part By default, the ScenePart is not build fro...">ScenePart::PrimitiveType</a> </dd></dl>
 
 </div>
 </div>

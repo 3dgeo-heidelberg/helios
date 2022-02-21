@@ -119,8 +119,7 @@ double FastSAHKDTreeFactory::findSplitPositionByFastSAHRecipe(
         newLoss = r*((double)cForward[i]) + (1.0-r)*((double)cBackward[i]);
         if(newLoss < loss){
             loss = newLoss;
-            node->splitPos = (i < lossNodes) ?
-                minp + ((double)i)/_lossNodes * deltap : maxp;
+            node->splitPos = (i < lossNodes) ? minp + r * deltap : maxp;
         }
     }
 

@@ -1,6 +1,9 @@
 <map id="SurfaceInspector::util::draggers::MaxDragger&lt; E &gt;" name="SurfaceInspector::util::draggers::MaxDragger&lt; E &gt;">
-<area shape="rect" id="node2" href="$d6/d26/classSurfaceInspector_1_1util_1_1draggers_1_1MinDragger.html" title="Min dragger drags the minimum element. The first time next is called the minimum element is returned..." alt="" coords="221,349,409,391"/>
-<area shape="rect" id="node3" href="$d5/d68/classSurfaceInspector_1_1util_1_1draggers_1_1OptimizationDragger.html" title="Optimization dragger interface provide methods expanding dragger definition to become a optimization ..." alt="" coords="5,201,245,243"/>
-<area shape="rect" id="node4" href="$d1/dd1/classSurfaceInspector_1_1util_1_1draggers_1_1IDragger.html" title="SurfaceInspector::util\l::draggers::IDragger\&lt;\l E, vector\&lt; E \&gt; \&gt;" alt="" coords="52,96,199,152"/>
-<area shape="rect" id="node5" href="$d2/df2/classSurfaceInspector_1_1util_1_1Object.html" title="Class representing an object. All surface inspector classes must extend Object. " alt="" coords="52,5,199,47"/>
+<area shape="rect" id="node1" title="Max dragger drags the maximum element. The first time next is called the maximum element is returned,..." alt="" coords="243,440,456,481"/>
+<area shape="rect" id="node2" href="$d6/d26/classSurfaceInspector_1_1util_1_1draggers_1_1MinDragger.html" title="Min dragger drags the minimum element. The first time next is called the minimum element is returned,..." alt="" coords="245,349,454,391"/>
+<area shape="rect" id="node3" href="$d5/d68/classSurfaceInspector_1_1util_1_1draggers_1_1OptimizationDragger.html" title="Optimization dragger interface provide methods expanding dragger definition to become a optimization ..." alt="" coords="5,201,275,243"/>
+<area shape="rect" id="node4" href="$d1/dd1/classSurfaceInspector_1_1util_1_1draggers_1_1IDragger.html" title=" " alt="" coords="59,96,221,152"/>
+<area shape="rect" id="node5" href="$d2/df2/classSurfaceInspector_1_1util_1_1Object.html" title="Class representing an object. All surface inspector classes must extend Object." alt="" coords="60,5,220,47"/>
+<area shape="rect" id="node6" title=" " alt="" coords="299,209,400,235"/>
+<area shape="rect" id="node7" title=" " alt="" coords="425,209,485,235"/>
 </map>

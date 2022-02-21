@@ -13,6 +13,7 @@ var classSurveyPlayback =
     [ "getLegProgress", "d6/da1/classSurveyPlayback.html#a9081b0d9937a7076540d81e108711169", null ],
     [ "getLegRemainingTime", "d6/da1/classSurveyPlayback.html#aec0dabde539225f6121a5eecffa27396", null ],
     [ "getNumEffectiveLegs", "d6/da1/classSurveyPlayback.html#abdd95862bd2d2a7ef2498ac37bb68fc2", null ],
+    [ "getPreviousLeg", "d6/da1/classSurveyPlayback.html#ae0a99a024583de818484f9b4427b2420", null ],
     [ "getProgress", "d6/da1/classSurveyPlayback.html#aa7556f820dd34560c3040e48bb2b8d83", null ],
     [ "getRemainingTime", "d6/da1/classSurveyPlayback.html#a3df69c6b0e2c8df21d8009f6e80f980b", null ],
     [ "getTrajectoryOutputPath", "d6/da1/classSurveyPlayback.html#ab2a9bb88a92ea8e6c3a4bcf95abce254", null ],

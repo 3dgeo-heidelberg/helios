@@ -72,6 +72,7 @@ public:
     void setOutputFilePath(
         std::string path,
         std::string fname="fullwave.txt",
-        bool computeWaveform=true
+        bool computeWaveform=true,
+        bool lastLegInStrip=false
     );
 };

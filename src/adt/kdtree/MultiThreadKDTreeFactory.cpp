@@ -21,33 +21,6 @@ MultiThreadKDTreeFactory::MultiThreadKDTreeFactory(
     geomJobs(geomJobs)
 {
     /*
-     * Handle node thread pool start pending tasks so when geometry-level
-     * parallelization is used no node-level parallelization occurs before
-     * it must (at adequate depth).
-     * Also handle max depth for geometry-level parallelization and initialize
-     * sequencer with masters thread for different nodes if necessary
-     */
-    if(geomJobs == 1){
-        tpNode.setPendingTasks(0);
-        maxGeometryDepth = -1;
-        masters = nullptr;
-    }
-    else if(geomJobs > 1){
-        tpNode.setPendingTasks(geomJobs);
-        maxGeometryDepth = (int) std::floor(std::log2(geomJobs));
-        masters = std::make_shared<SharedTaskSequencer>(
-            Scalar<int>::pow2(maxGeometryDepth)-1
-        );
-    }
-    else{
-        std::stringstream ss;
-        ss  << "MultiThreadKDTreeFactory failed to build because of "
-            << "unexpected number of jobs (" << geomJobs
-            << ") for geometry-level parallelization";
-        throw HeliosException(ss.str());
-    }
-
-    /*
      * See SimpleKDTreeFactory constructor implementation to understand why
      *  it is safe to call virtual function here.
      */
@@ -74,8 +47,8 @@ KDTreeNodeRoot * MultiThreadKDTreeFactory::makeFromPrimitivesUnsafe(
     bool const computeStats,
     bool const reportStats
 ){
-    // Build the KDTree using a modifiable copy of primitives pointers vector
-    finishedGeomJobs = 0;
+    // Build the KDTree using a modifiable vector of primitives pointers
+    prepareToMake();
     KDTreeNodeRoot *root = (KDTreeNodeRoot *) kdtf->_buildRecursive(
         nullptr,        // Parent node
         false,          // Node is not left child, because it is root not child
@@ -328,4 +301,36 @@ KDTreeNode * MultiThreadKDTreeFactory::buildRecursiveNodeLevel(
             parent, left, primitives, depth, 2*index+(left ? 0:1)
         );
     }
+}
+
+
+// ***  UTIL METHODS  *** //
+// ********************** //
+void MultiThreadKDTreeFactory::prepareToMake(){
+    // Initialize node-level parallelization thread pool
+    new (&tpNode) KDTreeFactoryThreadPool(numJobs);
+
+    // Prepare parallelization strategies (see header doc for more info)
+    if(geomJobs == 1){
+        tpNode.setPendingTasks(0);
+        maxGeometryDepth = -1;
+        masters = nullptr;
+    }
+    else if(geomJobs > 1){
+        tpNode.setPendingTasks(geomJobs);
+        maxGeometryDepth = (int) std::floor(std::log2(geomJobs));
+        masters = std::make_shared<SharedTaskSequencer>(
+            Scalar<int>::pow2(maxGeometryDepth)-1
+        );
+    }
+    else{
+        std::stringstream ss;
+        ss  << "MultiThreadKDTreeFactory failed to build because of "
+            << "unexpected number of jobs (" << geomJobs
+            << ") for geometry-level parallelization";
+        throw HeliosException(ss.str());
+    }
+
+    // Set count of finished geometry-level jobs to 0
+    finishedGeomJobs = 0;
 }

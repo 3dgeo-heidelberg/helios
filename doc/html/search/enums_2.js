@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['type',['Type',['../d7/d84/classrigidmotion_1_1RigidMotion.html#a9f6af528c327231f6ad4565fa9bef21f',1,'rigidmotion::RigidMotion']]]
+  ['primitivetype',['PrimitiveType',['../dd/dc4/classScenePart.html#a5c843c2ed1df9e417540d14d01036c12',1,'ScenePart']]]
 ];

@@ -178,12 +178,15 @@ ObjectT XmlUtils::getAttribute(
     tinyxml2::XMLElement* element,
     std::string attrName,
     std::string type,
-    ObjectT defaultVal
+    ObjectT defaultVal,
+    std::string const defaultMsg
 ){
     ObjectT result;
     try {
         if (!element->Attribute(attrName.c_str())) {
-            throw HeliosException("Attribute '" + attrName + "' does not exist!");
+            throw HeliosException(
+                "Attribute '" + attrName + "' does not exist!"
+            );
         }
         std::string attrVal = element->Attribute(attrName.c_str());
         if (type == "bool") {
@@ -209,7 +212,6 @@ ObjectT XmlUtils::getAttribute(
             logging::ERR("ERROR: unknown type " + type);
         }
     }
-
     catch (std::exception &e) {
         std::stringstream ss;
         ss << "XML Assets Loader: Could not find attribute '" << attrName
@@ -221,10 +223,11 @@ ObjectT XmlUtils::getAttribute(
 
         if (!defaultVal.empty()) {
             result = defaultVal;
-            ss << "Using default value for attribute '" << attrName
+            ss << defaultMsg << " '" << attrName
                << "' : " << boost::apply_visitor(stringVisitor{}, defaultVal);
             logging::INFO(ss.str());
-        } else {
+        }
+        else {
             ss << "Exception:\n" << e.what() << "\n";
             ss << "ERROR: No default value specified for attribute '" << attrName
             << "'. Aborting.";

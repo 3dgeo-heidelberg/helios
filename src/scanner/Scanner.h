@@ -196,6 +196,14 @@ public:
 	 */
 	std::shared_ptr<AbstractDetector> detector;
 	/**
+	 * @brief Historical vector of all output paths where scanner measurements
+	 *  were written
+	 *
+	 * It can be nullptr when no historical tracking of all output paths is
+	 *  requested
+	 */
+    std::shared_ptr<std::vector<std::string>> allOutputPaths = nullptr;
+	/**
 	 * @brief Historical vector of all measurements performed by the scanner
 	 *
 	 * It can be nullptr when no historical tracking of all measurements is
@@ -496,7 +504,7 @@ public:
      *  is passed (true is returned). Otherwise, it is not passed (false is
      *  returned).
      * @param nor Current number of return
-     * @return True of the check is passed, false otherwise
+     * @return True if the check is passed, false otherwise
      * @see Scanner::maxNOR
      */
     inline bool checkMaxNOR(int nor) {return maxNOR==0 || nor < maxNOR;}
@@ -531,6 +539,12 @@ public:
      * @see Scanner::cycleTrajectories
      */
     void handleTrajectoryOutput(double currentGpsTime);
+    /**
+     * @brief Track given output path in a thread safe way
+     * @param path Output path to be tracked
+     * @see Scanner::allOutputPaths
+     */
+    void trackOutputPath(std::string const path);
 
 	// *** GETTERs and SETTERs *** //
 	// *************************** //

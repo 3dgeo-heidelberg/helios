@@ -1,7 +1,6 @@
 var classResThreadPool =
 [
     [ "ResThreadPool", "d2/dee/classResThreadPool.html#aee12779e1ef6d9dcc40782e8688d19b7", null ],
-    [ "~ResThreadPool", "d2/dee/classResThreadPool.html#a279df032c3384bc74a20ae990632e2da", null ],
     [ "do_res_task", "d2/dee/classResThreadPool.html#ad0b2139c1b82d5b8b40b447aeaecdf56", null ],
     [ "do_task", "d2/dee/classResThreadPool.html#ac511f71f65b5c7dc4bbb05ac4d32b721", null ],
     [ "getAvailableResourceSetIndex", "d2/dee/classResThreadPool.html#a674ea045de260dc667e814c099543ce4", null ],

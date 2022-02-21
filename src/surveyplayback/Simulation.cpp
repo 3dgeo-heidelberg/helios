@@ -13,6 +13,7 @@ using namespace std::chrono;
 
 using namespace std;
 
+
 Simulation::Simulation(
     int const parallelizationStrategy,
     std::shared_ptr<PulseThreadPoolInterface> pulseThreadPoolInterface,
@@ -24,7 +25,7 @@ Simulation::Simulation(
     taskDropper(chunkSize),
     fixedGpsTimeStart(fixedGpsTimeStart)
 {
-    mbuffer = make_shared<MeasurementsBuffer>();
+    mBuffer = make_shared<MeasurementsBuffer>();
     currentGpsTime_ms = calcCurrentGpsTime();
 }
 
@@ -41,9 +42,9 @@ void Simulation::doSimStep(){
     // Ordered execution of simulation components
 	mScanner->platform->doSimStep(getScanner()->getPulseFreq_Hz());
 	mScanner->doSimStep(mCurrentLegIndex, currentGpsTime_ms);
+	mScanner->platform->scene->doSimStep();
     currentGpsTime_ms += 1000. / ((double)getScanner()->getPulseFreq_Hz());
     if (currentGpsTime_ms > 604800000.) currentGpsTime_ms -= 604800000.;
-
 }
 
 
@@ -84,7 +85,7 @@ void Simulation::setScanner(shared_ptr<Scanner> scanner) {
 
     // Connect measurements buffer:
     if (this->mScanner != nullptr) {
-        this->mScanner->detector->mBuffer = this->mbuffer;
+        this->mScanner->detector->mBuffer = this->mBuffer;
     }
 }
 
@@ -162,7 +163,7 @@ void Simulation::start() {
 	    }
 
 		doSimStep();
-		stepCount++;
+        stepCount++;
 
 		iter++;
 		if(iter-1 == simFrequency){

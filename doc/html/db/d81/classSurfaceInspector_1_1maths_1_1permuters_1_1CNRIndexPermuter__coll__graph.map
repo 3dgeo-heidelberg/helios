@@ -1,4 +1,6 @@
 <map id="SurfaceInspector::maths::permuters::CNRIndexPermuter&lt; T &gt;" name="SurfaceInspector::maths::permuters::CNRIndexPermuter&lt; T &gt;">
-<area shape="rect" id="node2" href="$d2/daf/classSurfaceInspector_1_1maths_1_1permuters_1_1IPermuter.html" title="Permuter interface provides methods to iterate over different permutation configurations. It is an interface, which means it cannot be directly instantiated. It must be implemented by concrete classes which implement its functions depending on the type of desired permutations. " alt="" coords="5,96,191,137"/>
-<area shape="rect" id="node3" href="$d2/df2/classSurfaceInspector_1_1util_1_1Object.html" title="Class representing an object. All surface inspector classes must extend Object. " alt="" coords="25,5,171,47"/>
+<area shape="rect" id="node1" title="Permuter of Combinations with No Repetition (CNR) for indices." alt="" coords="65,200,331,241"/>
+<area shape="rect" id="node2" href="$d2/daf/classSurfaceInspector_1_1maths_1_1permuters_1_1IPermuter.html" title="Permuter interface provides methods to iterate over different permutation configurations...." alt="" coords="5,96,212,137"/>
+<area shape="rect" id="node3" href="$d2/df2/classSurfaceInspector_1_1util_1_1Object.html" title="Class representing an object. All surface inspector classes must extend Object." alt="" coords="29,5,189,47"/>
+<area shape="rect" id="node4" title=" " alt="" coords="237,103,338,130"/>
 </map>

@@ -1,7 +1,6 @@
 var classTriangle =
 [
     [ "Triangle", "d2/d51/classTriangle.html#a1cac6fbfed4e04a03a8dd1b838b38907", null ],
-    [ "~Triangle", "d2/d51/classTriangle.html#aeef66ab40f8aefd49e46cfae065f4d30", null ],
     [ "_clone", "d2/d51/classTriangle.html#a1bacec74b9ed85a44a676fea3318a763", null ],
     [ "buildAABB", "d2/d51/classTriangle.html#a705d5a49b7a0f5a42c30186625804f91", null ],
     [ "calcArea2D", "d2/d51/classTriangle.html#afd63e3d15de8c60d454459cd4927dcc3", null ],
@@ -23,14 +22,10 @@ var classTriangle =
     [ "setAllVertexNormalsFromFace", "d2/d51/classTriangle.html#a10a167adac697a8b7837f25741582b52", null ],
     [ "toString", "d2/d51/classTriangle.html#a80a928c3f4254b648b5d31e751c50ec2", null ],
     [ "update", "d2/d51/classTriangle.html#a929a9cf4f00e5c8603953195867acd22", null ],
-    [ "boost::serialization::access", "d2/d51/classTriangle.html#ac98d07dd8f7b70e16ccb9a01abf56b9c", null ],
-    [ "operator<<", "d2/d51/classTriangle.html#a65ab5c9007813b829f3e101e5fbc0448", null ],
     [ "aabb", "d2/d51/classTriangle.html#a615369f02f0886e30a3c78d9e03cf450", null ],
     [ "e1", "d2/d51/classTriangle.html#a65143dd180b5a531b31dbcece6e793c2", null ],
-    [ "e2", "d2/d51/classTriangle.html#a8bbc0595d12cd743382563df74c87108", null ],
     [ "eps", "d2/d51/classTriangle.html#aa6acc25b95ca4eb4665943acbb383208", null ],
     [ "faceNormal", "d2/d51/classTriangle.html#a3658a5bff29b9881b6e46c594ba06b3b", null ],
     [ "faceNormalSet", "d2/d51/classTriangle.html#ab56f5c902a05c370f16bd73089ec535a", null ],
-    [ "v0", "d2/d51/classTriangle.html#a5c178572e3eb8a80950461e2c03a734c", null ],
     [ "verts", "d2/d51/classTriangle.html#a0537cb4c881d44091046a4d149302be7", null ]
 ];

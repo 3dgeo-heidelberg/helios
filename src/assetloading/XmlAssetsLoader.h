@@ -25,9 +25,22 @@
  * @see XmlUtils
  */
 class XmlAssetsLoader {
+protected:
+    // ***  CONSTANTS  *** //
+    // ******************* //
+    /**
+     * @brief The message to be shown when default value is loaded for scanner
+     *  settings
+     */
+    static std::string const defaultScannerSettingsMsg;
+    /**
+     * @brief The message to be shown when default value is loaded for platform
+     *  settings
+     */
+    static std::string const defaultPlatformSettingsMsg;
+
     // ***  ATTRIBUTES  *** //
     // ******************** //
-protected:
     /**
      * @brief Assets directory
      */

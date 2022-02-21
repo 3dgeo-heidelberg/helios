@@ -1,2 +1,4 @@
 <map id="ScanningStrip" name="ScanningStrip">
+<area shape="rect" id="node1" title="A scanning strip is a set of legs which belong to the same strip. Thus, it is an abstract group of le..." alt="" coords="5,95,116,121"/>
+<area shape="rect" id="node2" title=" " alt="" coords="31,5,90,32"/>
 </map>

@@ -8,6 +8,8 @@
 #include <SerialSceneWrapper.h>
 #include <SceneLoadingSpecification.h>
 #include <scene/dynamic/DynSequentiableMovingObject.h>
+#include <KDTreeFactory.h>
+#include <KDGroveFactory.h>
 
 /**
  * @brief Class for scene loading from XML file.
@@ -185,9 +187,18 @@ public:
      * @brief Build the KDTree factory from loader's kdtFactoryType and
      *  kdtSAHLossNodes attributes
      * @return Built KDTree factory
-     * @see XmlSceneLoader::kdtFactoryTypr
+     * @see XmlSceneLoader::kdtFactoryType
      * @see XmlSceneLoader::kdtSAHLossNodes
      * @see KDTreeFactory
      */
     shared_ptr<KDTreeFactory> makeKDTreeFactory();
+
+    /**
+     * @brief Build the KDGrove factory from loader's KDTree factory
+     *  specification
+     * @return Build KDGrove factory
+     * @see XmlSceneLoader::makeKDTreeFactory
+     * @see KDGroveFactory
+     */
+    shared_ptr<KDGroveFactory> makeKDGroveFactory();
 };
