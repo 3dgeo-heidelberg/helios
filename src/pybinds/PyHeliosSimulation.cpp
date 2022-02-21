@@ -335,4 +335,19 @@ void PyHeliosSimulation::setCallback(PyObject * pyCallback){
     }
 }
 
+// ***  INTERNAL USE  *** //
+// ********************** //
+std::shared_ptr<DynScene> PyHeliosSimulation::_getDynScene(){
+    try{
+        return std::dynamic_pointer_cast<DynScene>(
+            survey->scanner->platform->scene
+        );
+    }
+    catch(std::exception &ex){
+        throw PyHeliosException(
+            "Failed to obtain dynamic scene. Current scene is not dynamic."
+        );
+    }
+}
+
 #endif

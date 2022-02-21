@@ -180,6 +180,17 @@ public:
      */
     size_t getCallbackFrequency() {return callbackFrequency;}
     /**
+     * @brief Obtain simulation frequency
+     * @return Simulation frequenc
+     */
+    size_t getSimFrequency() {return playback->getSimFrequency();}
+    /**
+     * @brief Get the step interval for the dynamic scene. Notice this method
+     *  will throw an exception if the scene is not dynamic.
+     */
+    size_t getDynSceneStep()
+    {return _getDynScene()->getStepInterval();}
+    /**
      * @brief Obtain the number of threads
      *
      * @return Number of threads
@@ -194,6 +205,17 @@ public:
      */
     void setCallbackFrequency(size_t const callbackFrequency)
     {this->callbackFrequency = callbackFrequency;}
+    /**
+     * @brief Set the simulation frequency
+     */
+    void setSimFrequency(size_t const simFrequency)
+    {playback->setSimFrequency(simFrequency);}
+    /**
+     * @brief Set the step interval for the dynamic scene. Notice this method
+     *  will throw an exception if the scene is not dynamic.
+     */
+    void setDynSceneStep(size_t const stepInterval)
+    {return _getDynScene()->setStepInterval(stepInterval);}
     /**
      * @brief Set the simulation callback to specified python object functor
      */
@@ -350,6 +372,13 @@ public:
     // ***  SIMULATION COPY  *** //
     // ************************* //
     PyHeliosSimulation * copy();
+
+    // ***  INTERNAL USE  *** //
+    // ********************** //
+    /**
+     * @brief Obtain scene as DynScene if possible
+     */
+    std::shared_ptr<DynScene> _getDynScene();
 };
 
 }
