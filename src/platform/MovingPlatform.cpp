@@ -112,7 +112,7 @@ bool MovingPlatform::waypointReached() {
 	// m / (m/cycle) => cycles left to reach waypoint
 	bool result = (glm::l2Norm(cached_vectorToTarget) / glm::l2Norm(velocity)) < 1.0;
         if (result) {
-            if (not engineLimitReached) {
+            if (!engineLimitReached) {
                 if (userSpeedLimitReached) {
                     logging::INFO("User speed (movePerSec_m) reached.");
               } else {
