@@ -73,7 +73,7 @@ public:
     /**
      * @brief Dynamic scene default constructor
      */
-    DynScene(int const stepInterval=100) :
+    DynScene(int const stepInterval=1) :
         stepLoop(stepInterval, [&] () -> bool{return doStep();})
     {}
     ~DynScene() override {}
@@ -86,7 +86,7 @@ public:
      * @brief Build a dynamic scene using given scene as basis
      * @param s Basis scene for dynamic scene
      */
-    DynScene(Scene &s, int const stepInterval=100) :
+    DynScene(Scene &s, int const stepInterval=1) :
         StaticScene(s),
         stepLoop(stepInterval, [&] () -> bool{return doStep();})
     {}
@@ -94,7 +94,7 @@ public:
      * @brief Build a dynamic scene using given static scene as basis
      * @param ss Basis static scene for dynamic scene
      */
-    DynScene(StaticScene &ss, int const stepInterval=100) :
+    DynScene(StaticScene &ss, int const stepInterval=1) :
         StaticScene(ss),
         stepLoop(stepInterval, [&] () -> bool{return doStep();})
     {}
@@ -193,6 +193,22 @@ public:
      */
     inline bool isDynObjectUpdated(size_t const index) const
     {return updated[index];}
+    /**
+     * @brief Obtain the current step interval for the dynamic scene
+     * @return Current step interval for the dynamic scene
+     * @see DynScene::stepLoop
+     */
+    inline int getStepInterval() const
+    {return stepLoop.getStepInterval();}
+    /**
+     * @brief Set the step interval for the dynamic scene
+     * @param stepInterval The new step interval for the dynamic scene
+     * @see DynScene::stepLoop
+     */
+    inline void setStepInterval(int const stepInterval)
+    {stepLoop.setStepInterval(stepInterval);}
+
+
 
 
     // ***   READ/WRITE  *** //

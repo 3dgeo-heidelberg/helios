@@ -53,50 +53,53 @@ void doTests(std::string const & testDir){
 
     // ***  T E S T S  *** //
     // ******************* //
+    bool passed = true;
     RandomTest randomTest;
-    randomTest.test(std::cout, TEST_COLOR);
+    passed &= randomTest.test(std::cout, TEST_COLOR);
 
     NoiseTest noiseTest;
-    noiseTest.test(std::cout, TEST_COLOR);
+    passed &= noiseTest.test(std::cout, TEST_COLOR);
 
     DiscreteTimeTest discreteTimeTest;
-    discreteTimeTest.test(std::cout, TEST_COLOR);
+    passed &= discreteTimeTest.test(std::cout, TEST_COLOR);
 
     VoxelParsingTest voxelParsingTest(testDir);
-    voxelParsingTest.test(std::cout, TEST_COLOR);
+    passed &= voxelParsingTest.test(std::cout, TEST_COLOR);
 
     RayIntersectionTest rayIntersectionTest;
-    rayIntersectionTest.test(std::cout, TEST_COLOR);
+    passed &= rayIntersectionTest.test(std::cout, TEST_COLOR);
 
     GroveTest groveTest;
-    groveTest.test(std::cout, TEST_COLOR);
+    passed &= groveTest.test(std::cout, TEST_COLOR);
 
     SerializationTest serializationTest;
-    serializationTest.test(std::cout, TEST_COLOR);
+    passed &= serializationTest.test(std::cout, TEST_COLOR);
 
     SurveyCopyTest surveyCopyTest;
-    surveyCopyTest.test(std::cout, TEST_COLOR);
+    passed &= surveyCopyTest.test(std::cout, TEST_COLOR);
 
     PlaneFitterTest planeFitterTest;
-    planeFitterTest.test(std::cout, TEST_COLOR);
+    passed &= planeFitterTest.test(std::cout, TEST_COLOR);
 
     LadLutTest ladLutTest(testDir);
-    ladLutTest.test(std::cout, TEST_COLOR);
+    passed &= ladLutTest.test(std::cout, TEST_COLOR);
 
     PlatformPhysicsTest platformPhysicsTest;
-    platformPhysicsTest.test(std::cout, TEST_COLOR);
+    passed &= platformPhysicsTest.test(std::cout, TEST_COLOR);
 
     ScenePartSplitTest scenePartSplitTest;
-    scenePartSplitTest.test(std::cout, TEST_COLOR);
+    passed &= scenePartSplitTest.test(std::cout, TEST_COLOR);
 
     RigidMotionTest rigidMotionTest;
-    rigidMotionTest.test(std::cout, TEST_COLOR);
+    passed &= rigidMotionTest.test(std::cout, TEST_COLOR);
 
     FluxionumTest fluxionumTest;
-    fluxionumTest.test(std::cout, TEST_COLOR);
+    passed &= fluxionumTest.test(std::cout, TEST_COLOR);
 
     HPCTest hpcTest;
-    hpcTest.test(std::cout, TEST_COLOR);
+    passed &= hpcTest.test(std::cout, TEST_COLOR);
+
+    if(!passed) std::exit(3);
 }
 
 

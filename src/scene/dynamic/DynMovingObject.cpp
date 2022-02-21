@@ -15,7 +15,7 @@ shared_ptr<DynMotion> DynMovingObject::_next(
 
 // ***  DYNAMIC BEHAVIOR  *** //
 // ************************** //
-bool DynMovingObject::doStep(){
+bool DynMovingObject::doSimStep(){
     // Flag to control whether the dynamic object has been modified or not
     bool modified = false;
 
@@ -56,12 +56,18 @@ bool DynMovingObject::doStep(){
 
     // Notify observer if modified
     if(modified && kdGroveObserver != nullptr){
-        kdGroveObserver->update(*this);
+        observerStepLoop.doStep();
     }
 
     // Return modifications control flag
     return modified;
 }
+
+void DynMovingObject::doObserverUpdate(){
+    // Notify observer that it has been updated by this dynamic moving object
+    kdGroveObserver->update(*this);
+}
+
 bool DynMovingObject::applyDynMotionQueue(
     std::function<arma::mat()> matrixFromPrimitives,
     std::function<void(arma::mat const &X)> matrixToPrimitives,

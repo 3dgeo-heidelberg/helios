@@ -92,6 +92,14 @@ XmlSceneLoader::createSceneFromXml(
         else *sceneType = SerialSceneWrapper::SceneType::STATIC_SCENE;
     }
 
+    // Handle dynamic scene attributes
+    if(dynScene){
+        handleDynamicSceneAttributes(
+            sceneNode,
+            std::static_pointer_cast<DynScene>(scene)
+        );
+    }
+
     // Return built scene
     return scene;
 }
@@ -168,75 +176,6 @@ shared_ptr<ScenePart> XmlSceneLoader::loadFilters(
     }
     // ############## END Loop over filter nodes ##################
     return shared_ptr<ScenePart>(scenePart);
-}
-
-shared_ptr<DynSequentiableMovingObject> XmlSceneLoader::loadDynMotions(
-    tinyxml2::XMLElement *scenePartNode,
-    shared_ptr<ScenePart> scenePart
-){
-    // Find first dmotion node
-    tinyxml2::XMLElement *dmotionNode =
-        scenePartNode->FirstChildElement("dmotion");
-    if(dmotionNode == nullptr) return nullptr; // No dmotion found
-
-    // Build the basis of dynamic sequential moving object from scene part
-    shared_ptr<DynSequentiableMovingObject> dsmo =
-        make_shared<DynSequentiableMovingObject>(*scenePart, true);
-
-    // Complete building of dynamic sequential moving object from XML
-    while(dmotionNode != nullptr){
-        // Optional attributes
-        std::string nextId = "";
-        tinyxml2::XMLAttribute const *nextIdAttr =
-            dmotionNode->FindAttribute("next");
-        if(nextIdAttr != nullptr) nextId = nextIdAttr->Value();
-
-        // Mandatory attributes
-        tinyxml2::XMLAttribute const *idAttr =
-            dmotionNode->FindAttribute("id");
-        if(idAttr == nullptr) throw HeliosException(
-            "XmlSceneLoader::loadDynMotions found a dmotion element with "
-            "no id"
-        );
-        tinyxml2::XMLAttribute const *loopAttr =
-            dmotionNode->FindAttribute("loop");
-        if(loopAttr == nullptr) throw HeliosException(
-            "XmlSceneLoader::loadDynMotions found a dmotion element with "
-            "no loop"
-        );
-
-        // Add dynamic motion sequence
-        shared_ptr<DynSequence<DynMotion>> dmSequence =
-            make_shared<DynSequence<DynMotion>>(
-                idAttr->Value(),
-                nextId,
-                loopAttr->Int64Value()
-            );
-        dmSequence->append(XmlUtils::createDynMotionsVector(dmotionNode));
-        if(dmSequence == nullptr){  // Check dmSequence is not null
-            throw HeliosException(
-                "XmlSceneLoader::loadDynMotions found a dmotion element with"
-                " no motions. This is not allowed."
-            );
-        }
-        dsmo->addSequence(dmSequence);
-
-        // Next dynamic motion sequence
-        dmotionNode = dmotionNode->NextSiblingElement("dmotion");
-    }
-
-    // Update scene part for each primitive so it is the new DMO
-    for(Primitive *primitive : dsmo->mPrimitives){
-        primitive->part = dsmo;
-    }
-
-    // Use scene part ID to build dynamic dynamic sequentiable moving object ID
-    std::stringstream ss;
-    ss << "DSMO_" << scenePart->mId;
-    dsmo->setId(ss.str());
-
-    // Return
-    return dsmo;
 }
 
 bool XmlSceneLoader::loadScenePartId(
@@ -321,29 +260,6 @@ void XmlSceneLoader::digestScenePart(
     else scenePart->primitiveType = ScenePart::VOXEL;
 }
 
-shared_ptr<StaticScene> XmlSceneLoader::makeSceneDynamic(
-    shared_ptr<StaticScene> scene
-){
-    // Upgrade static scene to dynamic scene
-    std::shared_ptr<StaticScene> newScene =
-        std::static_pointer_cast<StaticScene>(make_shared<DynScene>(*scene));
-
-    // Primitives were automatically updated at scene level
-    // Now, update them at static object level
-    // It is as simple as rebuilding the static objects because at this point
-    // there is no dynamic object in the scene yet, since it didnt support them
-    newScene->clearStaticObjects();
-    std::set<shared_ptr<ScenePart>> parts; // Scene parts with no repeats
-    std::vector<Primitive *> const primitives = newScene->primitives;
-    for(Primitive *primitive : primitives)
-        if(primitive->part != nullptr) parts.insert(primitive->part);
-    for(shared_ptr<ScenePart> part : parts)
-        newScene->appendStaticObject(part);
-
-    // Return upgraded scene
-    return newScene;
-}
-
 shared_ptr<KDTreeFactory> XmlSceneLoader::makeKDTreeFactory(){
     if(kdtNumJobs == 0) kdtNumJobs = std::thread::hardware_concurrency();
     if(kdtGeomJobs == 0) kdtGeomJobs = kdtNumJobs;
@@ -395,4 +311,119 @@ shared_ptr<KDTreeFactory> XmlSceneLoader::makeKDTreeFactory(){
 
 shared_ptr<KDGroveFactory> XmlSceneLoader::makeKDGroveFactory(){
     return make_shared<KDGroveFactory>(makeKDTreeFactory());
+}
+
+// ***  DYNAMIC SCENE LOADINGMETHODS  *** //
+// ************************************** //
+shared_ptr<DynSequentiableMovingObject> XmlSceneLoader::loadDynMotions(
+    tinyxml2::XMLElement *scenePartNode,
+    shared_ptr<ScenePart> scenePart
+){
+    // Find first dmotion node
+    tinyxml2::XMLElement *dmotionNode =
+        scenePartNode->FirstChildElement("dmotion");
+    if(dmotionNode == nullptr) return nullptr; // No dmotion found
+
+    // Build the basis of dynamic sequential moving object from scene part
+    shared_ptr<DynSequentiableMovingObject> dsmo =
+        make_shared<DynSequentiableMovingObject>(*scenePart, true);
+
+    // Complete building of dynamic sequential moving object from XML
+    while(dmotionNode != nullptr){
+        // Optional attributes
+        std::string nextId = "";
+        tinyxml2::XMLAttribute const *nextIdAttr =
+            dmotionNode->FindAttribute("next");
+        if(nextIdAttr != nullptr) nextId = nextIdAttr->Value();
+
+        // Mandatory attributes
+        tinyxml2::XMLAttribute const *idAttr =
+            dmotionNode->FindAttribute("id");
+        if(idAttr == nullptr) throw HeliosException(
+                "XmlSceneLoader::loadDynMotions found a dmotion element with "
+                "no id"
+            );
+        tinyxml2::XMLAttribute const *loopAttr =
+            dmotionNode->FindAttribute("loop");
+        if(loopAttr == nullptr) throw HeliosException(
+                "XmlSceneLoader::loadDynMotions found a dmotion element with "
+                "no loop"
+            );
+
+        // Add dynamic motion sequence
+        shared_ptr<DynSequence<DynMotion>> dmSequence =
+            make_shared<DynSequence<DynMotion>>(
+                idAttr->Value(),
+                nextId,
+                loopAttr->Int64Value()
+            );
+        dmSequence->append(XmlUtils::createDynMotionsVector(dmotionNode));
+        if(dmSequence == nullptr){  // Check dmSequence is not null
+            throw HeliosException(
+                "XmlSceneLoader::loadDynMotions found a dmotion element with"
+                " no motions. This is not allowed."
+            );
+        }
+        dsmo->addSequence(dmSequence);
+
+        // Next dynamic motion sequence
+        dmotionNode = dmotionNode->NextSiblingElement("dmotion");
+    }
+
+    // Update scene part for each primitive so it is the new DMO
+    for(Primitive *primitive : dsmo->mPrimitives){
+        primitive->part = dsmo;
+    }
+
+    // Use scene part ID to build dynamic dynamic sequentiable moving object ID
+    std::stringstream ss;
+    ss << "DSMO_" << scenePart->mId;
+    dsmo->setId(ss.str());
+
+    // Configure the step interval for the dynamic object and its observer
+    dsmo->setStepInterval(
+        boost::get<int>(XmlUtils::getAttribute(
+            scenePartNode, "dynStep", "int", 1
+        ))
+    );
+    dsmo->setObserverStepInterval(
+        boost::get<int>(XmlUtils::getAttribute(
+            scenePartNode, "kdtDynStep", "int", 1
+        ))
+    );
+
+    // Return
+    return dsmo;
+}
+
+shared_ptr<StaticScene> XmlSceneLoader::makeSceneDynamic(
+    shared_ptr<StaticScene> scene
+){
+    // Upgrade static scene to dynamic scene
+    std::shared_ptr<StaticScene> newScene =
+        std::static_pointer_cast<StaticScene>(make_shared<DynScene>(*scene));
+
+    // Primitives were automatically updated at scene level
+    // Now, update them at static object level
+    // It is as simple as rebuilding the static objects because at this point
+    // there is no dynamic object in the scene yet, since it didnt support them
+    newScene->clearStaticObjects();
+    std::set<shared_ptr<ScenePart>> parts; // Scene parts with no repeats
+    std::vector<Primitive *> const primitives = newScene->primitives;
+    for(Primitive *primitive : primitives)
+        if(primitive->part != nullptr) parts.insert(primitive->part);
+    for(shared_ptr<ScenePart> part : parts)
+        newScene->appendStaticObject(part);
+
+    // Return upgraded scene
+    return newScene;
+}
+
+void XmlSceneLoader::handleDynamicSceneAttributes(
+    tinyxml2::XMLElement *sceneNode,
+    shared_ptr<DynScene> scene
+){
+    scene->setStepInterval(
+        boost::get<int>(XmlUtils::getAttribute(sceneNode, "dynStep", "int", 1))
+    );
 }

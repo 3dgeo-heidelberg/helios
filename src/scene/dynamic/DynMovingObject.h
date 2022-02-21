@@ -8,6 +8,7 @@
 #include <rigidmotion/RigidMotionEngine.h>
 #include <scene/dynamic/DynMotionEngine.h>
 #include <adt/grove/KDGroveSubject.h>
+#include <sim/tools/VoidStepLoop.h>
 
 using std::shared_ptr;
 using std::make_shared;
@@ -95,6 +96,15 @@ protected:
      * @see DynMovingObject::kdGroveObserver
      */
     size_t groveSubjectId;
+    /**
+     * @brief Handle how many consecutive updates must elapse so the
+     *  observer is notified
+     * @see DynMovingObject::kdGroveObserver
+     * @see DynMovingObject::doObserverUpdate
+     * @see DynMovingObject::getObserverStepInterval
+     * @see DynMovingObject::setObserverStepInterval
+     */
+    VoidStepLoop<> observerStepLoop;
 
 public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //
@@ -102,34 +112,41 @@ public:
     /**
      * @see DynObject::DynObject
      */
-    DynMovingObject() = default;
+    DynMovingObject() :
+        DynObject(),
+        observerStepLoop(1, [&] () -> void {doObserverUpdate();})
+    {}
     /**
      * @see DynObject::DynObject(ScenePart const &, bool const)
      */
     DynMovingObject(ScenePart const &sp, bool const shallowPrimitives=false) :
         DynObject(sp, shallowPrimitives),
-        kdGroveObserver(nullptr)
+        kdGroveObserver(nullptr),
+        observerStepLoop(1, [&] () -> void {doObserverUpdate();})
     {}
     /**
      * @see DynObject::DynObject(string const)
      */
     DynMovingObject(string const id) :
         DynObject(id),
-        kdGroveObserver(nullptr)
+        kdGroveObserver(nullptr),
+        observerStepLoop(1, [&] () -> void {doObserverUpdate();})
     {}
     /**
      * @see DynObject::DynObject(vector<Primitive *> const &)
      */
     DynMovingObject(vector<Primitive *> const &primitives) :
         DynObject(primitives),
-        kdGroveObserver(nullptr)
+        kdGroveObserver(nullptr),
+        observerStepLoop(1, [&] () -> void {doObserverUpdate();})
     {}
     /**
      * @see DynObject::DynObject(string const, vector<Primitive *> const &)
      */
     DynMovingObject(string const id, vector<Primitive *> const &primitives) :
         DynObject(id, primitives),
-        kdGroveObserver(nullptr)
+        kdGroveObserver(nullptr),
+        observerStepLoop(1, [&] () -> void {doObserverUpdate();})
     {}
     virtual ~DynMovingObject() = default;
 
@@ -165,7 +182,17 @@ public:
      * @see DynMovingObject::positionMotionQueue
      * @see DynMovingObject::normalMotionQueue
      */
-    bool doStep() override;
+    virtual bool doSimStep();
+    /**
+     * @brief Handle update notifications to the subscribed observer. It is,
+     *  notify the observer that it has been updated by the dynamic moving
+     *  object.
+     * @see DynMovingObject::observerStepLoop
+     * @see DynMovingObject::kdGroveObserver
+     * @see DynMovingObject::getObserverStepInterval
+     * @see DynMovingObject::setObserverStepInterval
+     */
+    virtual void doObserverUpdate();
 
 protected:
     /**
@@ -290,4 +317,28 @@ public:
      * @see ScenePart::getType
      */
     ObjectType getType() const override {return ObjectType::DYN_MOVING_OBJECT;}
+    /**
+     * @brief Set the step interval between consecutive observer update
+     *  notifications
+     * @param stepInterval The new step interval between consecutive observer
+     *  update notifications
+     * @see DynMovingObject::observerStepLoop
+     * @see DynMovingObject::kdGroveObserver
+     * @see DynMovingObject::doObserverUpdate
+     * @see DynMovingObject::getObserverStepInterval
+     */
+    inline void setObserverStepInterval(int const stepInterval)
+    {observerStepLoop.setStepInterval(stepInterval);}
+    /**
+     * @brief Get the step interval between consecutive observer update
+     *  notifications
+     * @return The step interval between consecutive observer update
+     *  notifications
+     * @see DynMovingObject::observerStepLoop
+     * @see DynMovingObject::kdGroveObserver
+     * @see DynMovingObject::doObserverUpdate
+     * @see DynMovingObject::setObserverStepInterval
+     */
+    inline int getObserverStepInterval() const
+    {return observerStepLoop.getStepInterval();}
 };

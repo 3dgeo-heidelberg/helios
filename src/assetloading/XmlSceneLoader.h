@@ -105,35 +105,6 @@ public:
     );
 
     /**
-     * @brief Build a dynamic sequentiable moving object which is composed of
-     *  dynamic motions.
-     *
-     * It is mandatory that dmotion elements contained in the part element
-     *  also contain an id attribute specifying the unique identifier for the
-     *  sequence in its context. The loop attribute is also mandatory, where
-     *  \f$0\f$ means infinity loop and \f$n > 0\f$ specifies how many times
-     *  the sequence will be repeated until proceeding to next sequence. Next
-     *  sequence can be specified through the next attribute, which may contain
-     *  the identifier of the next sequence. If no next attribute is given,
-     *  then it is assumed that there is no next sequence.
-     *
-     * @param scenePartNode XML part node defining the scene part
-     * @param scenePart The scene part object where the dynamic sequentiable
-     *  moving object belongs to
-     * @return Built dynamic sequentiable moving object composed of dynamic
-     *  motions specified in the XML
-     * @see DynSequencer
-     * @see DynSequence
-     * @see rigidmotion::RigidMotion
-     * @see DynMotion
-     * @see XmlUtils::createDynMotionsVector
-     */
-    shared_ptr<DynSequentiableMovingObject> loadDynMotions(
-        tinyxml2::XMLElement *scenePartNode,
-        shared_ptr<ScenePart> scenePart
-    );
-
-    /**
      * @brief Load the scene part identifier
      * @param scenePartNode XML part node where the identifier might be
      *  explicitly specified
@@ -176,19 +147,6 @@ public:
     );
 
     /**
-     * @brief Build a dynamic scene based on given static scene.
-     *
-     * NOTICE for this method to work properly given scene MUST be of
-     *  StaticScene type or unexpected behaviors might occur. Use with caution.
-     *
-     * @param scene Static scene to be used to build a dynamic scene
-     * @return Built dynamic scene based on given static scene
-     * @see StaticScene
-     * @see DynScene
-     */
-    shared_ptr<StaticScene> makeSceneDynamic(shared_ptr<StaticScene> scene);
-
-    /**
      * @brief Build the KDTree factory from loader's kdtFactoryType and
      *  kdtSAHLossNodes attributes
      * @return Built KDTree factory
@@ -206,4 +164,58 @@ public:
      * @see KDGroveFactory
      */
     shared_ptr<KDGroveFactory> makeKDGroveFactory();
+
+    // ***  DYNAMIC SCENE LOADING METHODS  *** //
+    // *************************************** //
+    /**
+     * @brief Build a dynamic sequentiable moving object which is composed of
+     *  dynamic motions.
+     *
+     * It is mandatory that dmotion elements contained in the part element
+     *  also contain an id attribute specifying the unique identifier for the
+     *  sequence in its context. The loop attribute is also mandatory, where
+     *  \f$0\f$ means infinity loop and \f$n > 0\f$ specifies how many times
+     *  the sequence will be repeated until proceeding to next sequence. Next
+     *  sequence can be specified through the next attribute, which may contain
+     *  the identifier of the next sequence. If no next attribute is given,
+     *  then it is assumed that there is no next sequence.
+     *
+     * @param scenePartNode XML part node defining the scene part
+     * @param scenePart The scene part object where the dynamic sequentiable
+     *  moving object belongs to
+     * @return Built dynamic sequentiable moving object composed of dynamic
+     *  motions specified in the XML
+     * @see DynSequencer
+     * @see DynSequence
+     * @see rigidmotion::RigidMotion
+     * @see DynMotion
+     * @see XmlUtils::createDynMotionsVector
+     */
+    shared_ptr<DynSequentiableMovingObject> loadDynMotions(
+        tinyxml2::XMLElement *scenePartNode,
+        shared_ptr<ScenePart> scenePart
+    );
+
+    /**
+     * @brief Build a dynamic scene based on given static scene.
+     *
+     * NOTICE for this method to work properly given scene MUST be of
+     *  StaticScene type or unexpected behaviors might occur. Use with caution.
+     *
+     * @param scene Static scene to be used to build a dynamic scene
+     * @return Built dynamic scene based on given static scene
+     * @see StaticScene
+     * @see DynScene
+     */
+    shared_ptr<StaticScene> makeSceneDynamic(shared_ptr<StaticScene> scene);
+
+    /**
+     * @brief Handle the loading of dynamic scene attributes
+     * @param sceneNode The XML node defining the dynamic scene
+     * @param scene Dynamic scene which attributes must be configured
+     */
+    void handleDynamicSceneAttributes(
+        tinyxml2::XMLElement *sceneNode,
+        shared_ptr<DynScene> scene
+    );
 };
