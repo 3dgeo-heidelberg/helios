@@ -142,7 +142,7 @@ public:
 	 */
     bool finished = false;
 
-    // TODO Rethink : If measurements buffer is not used, remove it.
+    // TODO Pending : If measurements buffer is not used, remove it.
     // The same applies for AbstractDetector mBuffer
 	std::shared_ptr<MeasurementsBuffer> mBuffer = nullptr;
     std::shared_ptr<SimulationCycleCallback> callback = nullptr;

@@ -21,6 +21,8 @@ void GroveKDTreeRaycaster::update(DynObject &dynObj){
     root = shared_ptr<LightKDTreeNode>(
         kdtf->makeFromPrimitives(prims, true, false)
     );
+    // TODO Pending : Be careful how many threads kdtf is using because this
+    // method is called during simulation, when other threads might be running
 }
 
 std::shared_ptr<GroveKDTreeRaycaster> GroveKDTreeRaycaster::makeTemporalClone()

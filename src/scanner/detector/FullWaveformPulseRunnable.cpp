@@ -1,4 +1,4 @@
-// TODO Rethink : This implementation is calling scanner setLastPulseWasHit
+// TODO Pending : This implementation is calling scanner setLastPulseWasHit
 // Is this thread safe?
 #include "FullWaveformPulseRunnable.h"
 
@@ -458,7 +458,7 @@ void FullWaveformPulseRunnable::digestFullWaveform(
             echo_width = fit.getParameters()[3];
             echo_width = echo_width * nsPerBin;
 
-            if (echo_width < 0.1) { // TODO Rethink : 0.1 to threshold variable
+            if (echo_width < 0.1) { // TODO Pending : 0.1 to threshold variable
                 continue;
             }
         }
