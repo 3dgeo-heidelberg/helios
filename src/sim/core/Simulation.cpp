@@ -114,7 +114,6 @@ void Simulation::start() {
         system_clock::now().time_since_epoch()
     ).count();
 
-
     // Execute the main loop of the simulation
 	while (!isStopped()) {
 	    if(iter==1){

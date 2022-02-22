@@ -735,6 +735,21 @@ public:
     // ***  GETTERs and SETTERs  *** //
     // ***************************** //
     /**
+     * @brief Obtain the loss nodes used to compute the Surface Area Heuristic
+     * @return Nmber of loss nodes used to compute the Surface Area Heuristic
+     * @see SAHKDTreeFactory::lossNodes
+     */
+    virtual inline size_t getLossNodes() const {return lossNodes;}
+    /**
+     * @brief Set the number loss nodes used to compute the Surface Area
+     *  Heuristic
+     * @param lossNodes New number of loss nodes to compute the Surface Area
+     *  Heuristic
+     * @see SAHKDTreeFactory::lossNodes
+     */
+    virtual inline void setLossNodes(size_t const lossNodes)
+    {this->lossNodes = lossNodes;}
+    /**
      * @brief Obtain the cost-weight of interior nodes
      * @return Cost-weight of interior nodes
      * @see SAHKDTreeFactory::ci

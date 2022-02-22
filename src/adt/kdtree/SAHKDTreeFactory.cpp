@@ -10,7 +10,7 @@ SAHKDTreeFactory::SAHKDTreeFactory (
     double const co
 ) :
     SimpleKDTreeFactory(),
-    lossNodes(21),
+    lossNodes(lossNodes),
     ci(ci),
     cl(cl),
     co(co)
@@ -49,6 +49,7 @@ KDTreeFactory * SAHKDTreeFactory::clone() const{
 void SAHKDTreeFactory::_clone(KDTreeFactory *_kdtf) const{
     SimpleKDTreeFactory::_clone(_kdtf);
     SAHKDTreeFactory *kdtf = (SAHKDTreeFactory *) _kdtf;
+    kdtf->lossNodes = lossNodes;
     kdtf->cacheRoot = cacheRoot;
     kdtf->cacheI = cacheI;
     kdtf->cacheL = cacheL;
