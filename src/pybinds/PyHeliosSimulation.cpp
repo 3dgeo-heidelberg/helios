@@ -300,13 +300,14 @@ PyHeliosSimulation * PyHeliosSimulation::copy(){
     phs->outputPath = this->outputPath;
     phs->numThreads = this->numThreads;
     phs->finalOutput = this->finalOutput;
-    phs->survey = std::make_shared<Survey>(*survey);
     phs->callback = this->callback;
     phs->lasOutput = this->lasOutput;
     phs->las10     = this->las10;
     phs->zipOutput = this->zipOutput;
     phs->exportToFile = this->exportToFile;
     phs->setCallbackFrequency(getCallbackFrequency());
+    phs->survey = std::make_shared<Survey>(*survey);
+    phs->survey->scanner->initializeSequentialGenerators();
     return phs;
 }
 
