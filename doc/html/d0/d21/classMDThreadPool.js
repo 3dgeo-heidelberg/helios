@@ -1,7 +1,6 @@
 var classMDThreadPool =
 [
     [ "MDThreadPool", "d0/d21/classMDThreadPool.html#adeaf7c214f363a25714c34f764953429", null ],
-    [ "~MDThreadPool", "d0/d21/classMDThreadPool.html#aa0a6d9eefa64d684b3ab2956a99b37c8", null ],
     [ "decreasePendingTasks", "d0/d21/classMDThreadPool.html#abbddc39ae0996fc43bd43f22c6536d97", null ],
     [ "do_md_task", "d0/d21/classMDThreadPool.html#aa11daa4dc569281b6b5493951c2adb85", null ],
     [ "do_task", "d0/d21/classMDThreadPool.html#aa50aa5b36e90acd6edf8274945cc9255", null ],

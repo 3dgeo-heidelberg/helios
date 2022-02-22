@@ -1,5 +1,9 @@
 <map id="fluxionum::UnivariateNewtonRaphsonMinimizer&lt; IT, OT &gt;" name="fluxionum::UnivariateNewtonRaphsonMinimizer&lt; IT, OT &gt;">
-<area shape="rect" id="node2" href="$d3/d7f/classfluxionum_1_1DiffMinimizer.html" title="Base abstract class providing basic structure for minimization optimization of a given function based..." alt="" coords="129,243,291,284"/>
-<area shape="rect" id="node3" href="$d9/d82/classfluxionum_1_1Minimizer.html" title="Base abstract class providing basic structure for minimization optimization of a given function..." alt="" coords="5,95,148,136"/>
-<area shape="rect" id="node6" href="$d8/d34/classfluxionum_1_1IterativeMethodHandler.html" title="fluxionum::IterativeMethod\lHandler\&lt; IT, OT \&gt;" alt="" coords="315,243,491,284"/>
+<area shape="rect" id="node1" title="Implementation of univariate Newton&#45;Raphson minimizer." alt="" coords="232,347,445,388"/>
+<area shape="rect" id="node2" href="$d3/d7f/classfluxionum_1_1DiffMinimizer.html" title="Base abstract class providing basic structure for minimization optimization of a given function based..." alt="" coords="141,243,323,284"/>
+<area shape="rect" id="node3" href="$d9/d82/classfluxionum_1_1Minimizer.html" title="Base abstract class providing basic structure for minimization optimization of a given function." alt="" coords="5,95,165,136"/>
+<area shape="rect" id="node4" title=" " alt="" coords="15,5,156,32"/>
+<area shape="rect" id="node5" title=" " alt="" coords="190,95,354,136"/>
+<area shape="rect" id="node6" href="$d8/d34/classfluxionum_1_1IterativeMethodHandler.html" title=" " alt="" coords="347,243,546,284"/>
+<area shape="rect" id="node7" title=" " alt="" coords="417,102,477,129"/>
 </map>

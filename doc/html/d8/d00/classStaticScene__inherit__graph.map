@@ -1,5 +1,6 @@
 <map id="StaticScene" name="StaticScene">
-<area shape="rect" id="node4" href="$de/d74/classDynScene.html" title="Dynamic scene base implementation. " alt="" coords="11,229,93,256"/>
-<area shape="rect" id="node2" href="$d5/d9c/classScene.html" title="Class representing a scene asset. " alt="" coords="23,80,81,107"/>
-<area shape="rect" id="node3" href="$de/d97/classAsset.html" title="Base class for all assets. " alt="" coords="24,5,80,32"/>
+<area shape="rect" id="node1" title="Static scene basic implementation." alt="" coords="5,155,104,181"/>
+<area shape="rect" id="node4" href="$de/d74/classDynScene.html" title="Dynamic scene base implementation." alt="" coords="11,229,98,256"/>
+<area shape="rect" id="node2" href="$d5/d9c/classScene.html" title="Class representing a scene asset." alt="" coords="24,80,85,107"/>
+<area shape="rect" id="node3" href="$de/d97/classAsset.html" title="Base class for all assets." alt="" coords="25,5,84,32"/>
 </map>

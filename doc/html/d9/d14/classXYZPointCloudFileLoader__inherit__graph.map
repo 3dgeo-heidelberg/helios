@@ -1,3 +1,4 @@
 <map id="XYZPointCloudFileLoader" name="XYZPointCloudFileLoader">
-<area shape="rect" id="node2" href="$d6/dd2/classAbstractGeometryFilter.html" title="Abstract class defining asset loading filters common behavior. " alt="" coords="13,5,170,32"/>
+<area shape="rect" id="node1" title="Import point cloud files abstracting them to a set of voxels." alt="" coords="5,80,189,107"/>
+<area shape="rect" id="node2" href="$d6/dd2/classAbstractGeometryFilter.html" title="Abstract class defining asset loading filters common behavior." alt="" coords="11,5,184,32"/>
 </map>

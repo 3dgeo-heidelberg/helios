@@ -2,7 +2,6 @@ var classhelios_1_1hpc_1_1SM__ParallelMergeSort =
 [
     [ "SM_ParallelMergeSort", "d8/de4/classhelios_1_1hpc_1_1SM__ParallelMergeSort.html#a0b050f043f090eca9294183b86923bc0", null ],
     [ "SM_ParallelMergeSort", "d8/de4/classhelios_1_1hpc_1_1SM__ParallelMergeSort.html#a827798b1f5dbc25214e9fb963f61d426", null ],
-    [ "~SM_ParallelMergeSort", "d8/de4/classhelios_1_1hpc_1_1SM__ParallelMergeSort.html#a1ee807056e738f027d077303f543f494", null ],
     [ "getMinElements", "d8/de4/classhelios_1_1hpc_1_1SM__ParallelMergeSort.html#a2c2ce7691be5bcf9f302dc98dbf1eb8c", null ],
     [ "getNumThreads", "d8/de4/classhelios_1_1hpc_1_1SM__ParallelMergeSort.html#a1667f8f7310885628da9d166c2f2a81a", null ],
     [ "init", "d8/de4/classhelios_1_1hpc_1_1SM__ParallelMergeSort.html#a1d1083a70b3b628347692f8afb4263bb", null ],

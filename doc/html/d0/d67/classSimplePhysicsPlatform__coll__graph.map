@@ -1,6 +1,8 @@
 <map id="SimplePhysicsPlatform" name="SimplePhysicsPlatform">
-<area shape="rect" id="node2" href="$d1/d83/classMovingPlatform.html" title="Class representing a moving platform. " alt="" coords="28,319,141,345"/>
-<area shape="rect" id="node3" href="$df/d1e/classPlatform.html" title="Class representing a platform asset. " alt="" coords="49,243,120,269"/>
-<area shape="rect" id="node4" href="$de/d97/classAsset.html" title="Base class for all assets. " alt="" coords="13,124,69,151"/>
-<area shape="rect" id="node6" href="$d5/dcb/classRotation.html" title="Rotation" alt="" coords="93,124,164,151"/>
+<area shape="rect" id="node1" title="Class representing a simple phyiscs platform." alt="" coords="17,395,189,421"/>
+<area shape="rect" id="node2" href="$d1/d83/classMovingPlatform.html" title="Class representing a moving platform." alt="" coords="39,319,166,345"/>
+<area shape="rect" id="node3" href="$df/d1e/classPlatform.html" title="Class representing a platform asset." alt="" coords="63,243,142,269"/>
+<area shape="rect" id="node4" href="$de/d97/classAsset.html" title="Base class for all assets." alt="" coords="5,124,64,151"/>
+<area shape="rect" id="node5" title=" " alt="" coords="5,5,64,32"/>
+<area shape="rect" id="node6" href="$d5/dcb/classRotation.html" title=" " alt="" coords="88,124,165,151"/>
 </map>

@@ -1,8 +1,6 @@
 var classSurvey =
 [
     [ "Survey", "d5/db6/classSurvey.html#ac33ba53172b11ee85148f41adecc6112", null ],
-    [ "Survey", "d5/db6/classSurvey.html#ad502d4e803f765aad84d253bad0755a7", null ],
-    [ "~Survey", "d5/db6/classSurvey.html#a02f55d275966fcc4e83d6e708ee9e572", null ],
     [ "addLeg", "d5/db6/classSurvey.html#a088718323fe8013b2e5eb5145cead976", null ],
     [ "calculateLength", "d5/db6/classSurvey.html#a5ad9641bc348c3ef54009afd1f6fc655", null ],
     [ "getLength", "d5/db6/classSurvey.html#a216064ca2a8723fe582ba66515dcaf29", null ],

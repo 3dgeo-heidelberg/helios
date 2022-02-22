@@ -1,4 +1,5 @@
 <map id="RisleyBeamDeflector" name="RisleyBeamDeflector">
-<area shape="rect" id="node2" href="$d7/d92/classAbstractBeamDeflector.html" title="Base abstract class for beam deflectors. " alt="" coords="5,95,164,121"/>
-<area shape="rect" id="node3" href="$d5/dcb/classRotation.html" title="Rotation" alt="" coords="49,5,120,32"/>
+<area shape="rect" id="node1" title="Class representing a risley prisms beam deflector." alt="" coords="13,171,171,197"/>
+<area shape="rect" id="node2" href="$d7/d92/classAbstractBeamDeflector.html" title="Base abstract class for beam deflectors." alt="" coords="5,95,179,121"/>
+<area shape="rect" id="node3" href="$d5/dcb/classRotation.html" title=" " alt="" coords="53,5,131,32"/>
 </map>

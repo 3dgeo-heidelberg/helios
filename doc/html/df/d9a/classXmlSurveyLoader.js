@@ -7,7 +7,7 @@ var classXmlSurveyLoader =
     [ "createSurveyFromXml", "df/d9a/classXmlSurveyLoader.html#af16899a9740eb1da95e25ac8199b23b1", null ],
     [ "handleCoreOverloading", "df/d9a/classXmlSurveyLoader.html#acc97e3a71248096416bcf00647cd893e", null ],
     [ "load", "df/d9a/classXmlSurveyLoader.html#a942b31f81c152d4fe2669a99bee187c6", null ],
-    [ "loadLegs", "df/d9a/classXmlSurveyLoader.html#a3e291854f9af608bd0fb393761362168", null ],
+    [ "loadLegs", "df/d9a/classXmlSurveyLoader.html#a4380a8b9a9d51032e4a72fc3ccbed531", null ],
     [ "loadPlatformNoise", "df/d9a/classXmlSurveyLoader.html#afec504a70390a8cfe68b13beaa3baefe", null ],
     [ "loadScene", "df/d9a/classXmlSurveyLoader.html#ac2a16d088fb5c5921cffc8c863a1c9ec", null ],
     [ "loadSurveyCore", "df/d9a/classXmlSurveyLoader.html#a8a3cd78bfc47476754e2e3849a7c4b93", null ],

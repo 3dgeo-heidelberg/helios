@@ -1,3 +1,5 @@
 <map id="WarehouseThreadPool&lt; Task &gt;" name="WarehouseThreadPool&lt; Task &gt;">
-<area shape="rect" id="node2" href="$dc/de7/classThreadPool.html" title="Base class providing core implementation of a thread pool to deal with multi threading tasks..." alt="" coords="39,95,127,121"/>
+<area shape="rect" id="node1" title="Thread pool which starts thread so they are always waiting for new tasks to be posted to the warehous..." alt="" coords="5,171,173,212"/>
+<area shape="rect" id="node2" href="$dc/de7/classThreadPool.html" title="Base class providing core implementation of a thread pool to deal with multi threading tasks." alt="" coords="42,95,137,121"/>
+<area shape="rect" id="node3" title=" " alt="" coords="59,5,119,32"/>
 </map>

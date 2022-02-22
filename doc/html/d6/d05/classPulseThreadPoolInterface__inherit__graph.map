@@ -1,4 +1,5 @@
 <map id="PulseThreadPoolInterface" name="PulseThreadPoolInterface">
-<area shape="rect" id="node2" href="$d6/ddc/classPulseThreadPool.html" title="Class implementing a thread pool to deal with pulse tasks. " alt="" coords="5,80,127,107"/>
-<area shape="rect" id="node3" href="$d7/de7/classPulseWarehouseThreadPool.html" title="Class implementing a warehouse thread pool to deal with pulse tasks. " alt="" coords="151,80,338,107"/>
+<area shape="rect" id="node1" title="Interface for thread pools supporting pulse tasks." alt="" coords="71,5,259,32"/>
+<area shape="rect" id="node2" href="$d6/ddc/classPulseThreadPool.html" title="Class implementing a thread pool to deal with pulse tasks." alt="" coords="5,80,136,107"/>
+<area shape="rect" id="node3" href="$d7/de7/classPulseWarehouseThreadPool.html" title="Class implementing a warehouse thread pool to deal with pulse tasks." alt="" coords="160,80,363,107"/>
 </map>

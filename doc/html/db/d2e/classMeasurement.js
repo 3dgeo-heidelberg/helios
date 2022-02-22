@@ -1,8 +1,6 @@
 var classMeasurement =
 [
     [ "Measurement", "db/d2e/classMeasurement.html#a3685fc6dff9547603c0ccab8dc05e118", null ],
-    [ "Measurement", "db/d2e/classMeasurement.html#adb4592d8d9a9e10d858138d06c6e764b", null ],
-    [ "operator<<", "db/d2e/classMeasurement.html#a7c0dc557a14b5442b274739a0913f28d", null ],
     [ "beamDirection", "db/d2e/classMeasurement.html#a016165802eb3e886f35bab0ba1849c68", null ],
     [ "beamOrigin", "db/d2e/classMeasurement.html#a7a5aba2a358daac7eab9b03e7d88a756", null ],
     [ "classification", "db/d2e/classMeasurement.html#ad37412ea24b57192dd6b5bdef11a2c3c", null ],

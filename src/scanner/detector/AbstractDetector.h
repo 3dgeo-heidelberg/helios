@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <unordered_map>
 #include <boost/asio/thread_pool.hpp>
 #include <boost/asio/post.hpp>
 #include <boost/filesystem.hpp>
@@ -88,6 +89,11 @@ public:
 	 * @brief Path to output file
 	 */
 	fs::path outputFilePath;
+  /**
+   * @brief Map of writers. This map allows to reuse writers for legs grouped
+   * in the same strip.
+   */
+   std::unordered_map<std::string, std::shared_ptr<SyncFileWriter>> writers{};
 
 	// ***  CONSTRUCTION / DESTRUCTION  *** //
 	// ************************************ //
@@ -141,13 +147,13 @@ public:
      * @brief Apply scanner settings to the detector
      * @param settings Settings to be applied to de detector
      */
-	virtual void applySettings(std::shared_ptr<ScannerSettings> & settings) {};
+     virtual void applySettings(std::shared_ptr<ScannerSettings> & settings) {};
 
-	// ***  GETTERS and SETTERS  *** //
-	// ***************************** //
+     // ***  GETTERS and SETTERS  *** //
+     // ***************************** //
     /**
      * @brief Set path to output file
      * @param path New path to output file
      */
-    void setOutputFilePath(std::string path);
+     void setOutputFilePath(std::string path, const bool lastLegInStrip);
 };

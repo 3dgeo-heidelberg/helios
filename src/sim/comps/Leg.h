@@ -25,6 +25,10 @@ public:
 	 */
 	std::shared_ptr<PlatformSettings> mPlatformSettings;
 
+  /**
+   * @brief Boolean flag to store whether the leg was already processed.
+   */
+  bool wasProcessed{};
 private:
     /**
      * @brief Distance to the next leg
