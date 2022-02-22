@@ -116,14 +116,14 @@ void Simulation::start() {
 
     // Execute the main loop of the simulation
 	while (!isStopped()) {
-	    if(iter==1){
+	    if(iter==1){ // TODO Pending : Does this lock make sense?
 	        std::unique_lock<std::mutex> lock(mutex);
 	    }
 
 	    stepLoop.doStep();
 
 		iter++;
-		if(iter-1 == getCallbackFrequency()){
+		if(iter-1 == getCallbackFrequency()){ // TODO Pending : iter-1 by iter?
 		    if(callback != nullptr){
                 std::unique_lock<std::mutex> lock(
                     *mScanner->cycleMeasurementsMutex);

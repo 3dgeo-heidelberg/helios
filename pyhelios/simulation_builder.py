@@ -42,7 +42,7 @@ class SimulationBuilder:
         parallelizationStrategy -- Either chunk based or warehosue based
         chunkSize -- Defualt chunk size
         warehouseFactor -- As many tasks as factor times number of threads
-        simFrequency -- Simulation control frequency (do not mismatch with
+        callbackFrequency -- Simulation control frequency (do not mismatch with
             the simulation operating frequency)
         finalOutput -- Final output (the one obtained after .join) flag
         legNoiseDisabled -- Leg noise disabling flag
@@ -52,8 +52,8 @@ class SimulationBuilder:
         fullwaveNoise -- Compute fullwave noise enabling flag
         platformNoiseDisabled -- Platform noise disabling flag
         exportToFile -- Export to file enabling flag
-        callback -- Callback function to be used when simFrequency is greater
-            than 0. It can be None, then no callbacks will occur
+        callback -- Callback function to be used when callbackFrequency is
+            greater than 0. It can be None, then no callbacks will occur
         rotateFilters -- List of rotate filters to apply
         scaleFilters --  List of scale filters to apply
         translateFilters -- List of translate filters to apply
@@ -84,7 +84,7 @@ class SimulationBuilder:
         self.setParallelizationStrategy(1)
         self.setChunkSize(32)
         self.setWarehouseFactor(4)
-        self.setSimFrequency(0)
+        self.setCallbackFrequency(0)
         self.setFinalOutput(True)
         self.setLegNoiseDisabled(True)
         self.setRebuildScene(False)
@@ -113,7 +113,7 @@ class SimulationBuilder:
             self.zipOutput,
             fixedGpsTimeStart=self.fixedGpsTimeStart
         )
-        build.sim.simFrequency = self.simFrequency
+        build.sim.callbackFrequency = self.callbackFrequency
         build.sim.finalOutput = self.finalOutput
         build.sim.exportToFile = self.exportToFile
         build.sim.loadSurvey(
@@ -214,9 +214,9 @@ class SimulationBuilder:
         self.validateNonNegativeInteger(warehouseFactor)
         self.warehouseFactor = warehouseFactor
 
-    def setSimFrequency(self, freq):
-        self.validateSimFrequency(freq)
-        self.simFrequency = freq
+    def setCallbackFrequency(self, freq):
+        self.validateCallbackFrequency(freq)
+        self.callbackFrequency = freq
 
     def setFinalOutput(self, finalOutput):
         self.validateBoolean(finalOutput)
@@ -347,7 +347,7 @@ class SimulationBuilder:
             )
         )
 
-    def validateSimFrequency(self, freq):
+    def validateCallbackFrequency(self, freq):
         if isnan(freq):
             raise PyHeliosToolsException(
                 'SimulationBuilder EXCEPTION!\n\t'
