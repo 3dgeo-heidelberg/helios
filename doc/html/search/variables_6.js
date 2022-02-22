@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['f',['f',['../d9/d82/classfluxionum_1_1Minimizer.html#a2be2dea186372f88d7da36cebaef0038',1,'fluxionum::Minimizer::f()'],['../db/da8/classSmartSharedFunctorContainer.html#ac146f416718589aeed1f1a1ce0a47214',1,'SmartSharedFunctorContainer::f()']]],
+  ['f',['f',['../d9/d82/classfluxionum_1_1Minimizer.html#a2be2dea186372f88d7da36cebaef0038',1,'fluxionum::Minimizer::f()'],['../d8/dac/classNonVoidStepLoop.html#a1ac6e434d91980453d0448603e476251',1,'NonVoidStepLoop::f()'],['../dd/d96/classVoidStepLoop.html#a3f9b06ef35094c8045795925ec97c649',1,'VoidStepLoop::f()'],['../db/da8/classSmartSharedFunctorContainer.html#ac146f416718589aeed1f1a1ce0a47214',1,'SmartSharedFunctorContainer::f()']]],
   ['facenormal',['faceNormal',['../d2/d51/classTriangle.html#a3658a5bff29b9881b6e46c594ba06b3b',1,'Triangle']]],
   ['facenormalset',['faceNormalSet',['../d2/d51/classTriangle.html#ab56f5c902a05c370f16bd73089ec535a',1,'Triangle']]],
   ['file',['file',['../d8/d63/classfile__logger.html#ad599fb152c18d306fbff7310327d155e',1,'file_logger']]],
@@ -17,6 +17,9 @@ var searchData=
   ['forceonground',['forceOnGround',['../dd/dc4/classScenePart.html#ae1d6a1a1b109fd8cc2073a16f15c6f27',1,'ScenePart']]],
   ['forceredraw',['forceRedraw',['../de/dda/classvisualhelios_1_1VHCanvas.html#a4a8464cb985c7f24f3bb7dc75b050707',1,'visualhelios::VHCanvas']]],
   ['forward',['forward',['../df/dc3/classDirections.html#a9ae98fab6f1cd875e069ba3044355e90',1,'Directions']]],
+  ['freq',['freq',['../dd/de3/classDiscreteTime.html#ac5ec94b5343419f58c172604062ab39b',1,'DiscreteTime']]],
+  ['freqscale',['freqScale',['../dd/de3/classDiscreteTime.html#a91a3e09efb646cf05ba4a3baf099b12a',1,'DiscreteTime']]],
+  ['frequency',['frequency',['../dd/de3/classDiscreteTime.html#adbc321326e054c466cf7d0d5cddb5ea9',1,'DiscreteTime']]],
   ['fsahkdtf',['fsahkdtf',['../d1/ddc/classFastSAHKDTreeGeometricStrategy.html#afcae3fea433e744394a4e7c33e6ab6fb',1,'FastSAHKDTreeGeometricStrategy']]],
   ['fullwaveindex',['fullwaveIndex',['../db/d2e/classMeasurement.html#a73b5258a21a5220e345597fbe2df8514',1,'Measurement']]],
   ['fullwavenoise',['fullWaveNoise',['../dc/d42/classScanner.html#a2a8724797e67174529b67d2a5c00dad3',1,'Scanner']]],

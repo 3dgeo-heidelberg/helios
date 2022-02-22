@@ -143,9 +143,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a3f056f98c3ab727a98cb7c4ff0f4a754"><td class="memItemLeft" align="right" valign="top">glm::dvec3&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d9c/classScene.html#a3f056f98c3ab727a98cb7c4ff0f4a754">getGroundPointAt</a> (glm::dvec3 point)</td></tr>
 <tr class="memdesc:a3f056f98c3ab727a98cb7c4ff0f4a754"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain the ground point at specified XY coordinates.  <a href="#a3f056f98c3ab727a98cb7c4ff0f4a754">More...</a><br /></td></tr>
 <tr class="separator:a3f056f98c3ab727a98cb7c4ff0f4a754"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a37f2e60785ec5944773d1fd272104284"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="../../dc/da3/classRaySceneIntersection.html">RaySceneIntersection</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d9c/classScene.html#a37f2e60785ec5944773d1fd272104284">getIntersection</a> (glm::dvec3 &amp;rayOrigin, glm::dvec3 &amp;rayDir, bool const groundOnly)</td></tr>
-<tr class="memdesc:a37f2e60785ec5944773d1fd272104284"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain the intersection between the ray and the scene, if any.  <a href="#a37f2e60785ec5944773d1fd272104284">More...</a><br /></td></tr>
-<tr class="separator:a37f2e60785ec5944773d1fd272104284"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a25064cb65a0d92828fbf4299e847233f"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="../../dc/da3/classRaySceneIntersection.html">RaySceneIntersection</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d9c/classScene.html#a25064cb65a0d92828fbf4299e847233f">getIntersection</a> (glm::dvec3 const &amp;rayOrigin, glm::dvec3 const &amp;rayDir, bool const groundOnly) const</td></tr>
+<tr class="memdesc:a25064cb65a0d92828fbf4299e847233f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain the intersection between the ray and the scene, if any.  <a href="#a25064cb65a0d92828fbf4299e847233f">More...</a><br /></td></tr>
+<tr class="separator:a25064cb65a0d92828fbf4299e847233f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad1c2a985f4963cd63c708cdb0b58a038"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="../../dc/da3/classRaySceneIntersection.html">RaySceneIntersection</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d9c/classScene.html#ad1c2a985f4963cd63c708cdb0b58a038">getIntersection</a> (vector&lt; double &gt; const &amp;tMinMax, glm::dvec3 const &amp;rayOrigin, glm::dvec3 const &amp;rayDir, bool const groundOnly) const</td></tr>
+<tr class="memdesc:ad1c2a985f4963cd63c708cdb0b58a038"><td class="mdescLeft">&#160;</td><td class="mdescRight">Like Scene::getIntersection(dvec3 const, dvec3 const, bool const) but receiving precomputed minimum and maximum intersection times with respect to the axis aligned bounding box that bounds the scene.  <a href="#ad1c2a985f4963cd63c708cdb0b58a038">More...</a><br /></td></tr>
+<tr class="separator:ad1c2a985f4963cd63c708cdb0b58a038"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4ba5957daaf3ae372e54807cf372ac35"><td class="memItemLeft" align="right" valign="top">std::map&lt; double, <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d9c/classScene.html#a4ba5957daaf3ae372e54807cf372ac35">getIntersections</a> (glm::dvec3 &amp;rayOrigin, glm::dvec3 &amp;rayDir, bool const groundOnly)</td></tr>
 <tr class="memdesc:a4ba5957daaf3ae372e54807cf372ac35"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain all intersections between the ray and the scene, if any.  <a href="#a4ba5957daaf3ae372e54807cf372ac35">More...</a><br /></td></tr>
 <tr class="separator:a4ba5957daaf3ae372e54807cf372ac35"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -167,6 +170,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ad4937809abfcb355f7a36b207a82a755"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d9c/classScene.html#ad4937809abfcb355f7a36b207a82a755">buildKDGroveWithLog</a> (bool const safe=false)</td></tr>
 <tr class="memdesc:ad4937809abfcb355f7a36b207a82a755"><td class="mdescLeft">&#160;</td><td class="mdescRight">Call buildKDGrove exporting building information through logging system.  <a href="#ad4937809abfcb355f7a36b207a82a755">More...</a><br /></td></tr>
 <tr class="separator:ad4937809abfcb355f7a36b207a82a755"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5f14821f45985670b2323dc010357d46"><td class="memItemLeft" align="right" valign="top"><a id="a5f14821f45985670b2323dc010357d46"></a>
+virtual std::shared_ptr&lt; <a class="el" href="../../df/d01/classKDGroveRaycaster.html">KDGroveRaycaster</a> &gt; const  &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getRaycaster</b> () const</td></tr>
+<tr class="separator:a5f14821f45985670b2323dc010357d46"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a96110a189ae4bbb60855ecc14afd3138"><td class="memItemLeft" align="right" valign="top">virtual std::shared_ptr&lt; <a class="el" href="../../de/d89/classKDGroveFactory.html">KDGroveFactory</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d9c/classScene.html#a96110a189ae4bbb60855ecc14afd3138">getKDGroveFactory</a> () const</td></tr>
 <tr class="memdesc:a96110a189ae4bbb60855ecc14afd3138"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain the <a class="el" href="../../d9/d76/classKDGrove.html" title="Grove of KDTrees. It supports both static and dynamic KDTrees, handling each accordingly. ">KDGrove</a> factory used by the scene.  <a href="#a96110a189ae4bbb60855ecc14afd3138">More...</a><br /></td></tr>
 <tr class="separator:a96110a189ae4bbb60855ecc14afd3138"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -191,6 +197,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:af4c42cb5df37ce7340ef497e84e9eacb"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d9c/classScene.html#af4c42cb5df37ce7340ef497e84e9eacb">setBBoxCRS</a> (std::shared_ptr&lt; <a class="el" href="../../d2/d1a/classAABB.html">AABB</a> &gt; const <a class="el" href="../../d5/d9c/classScene.html#a012be28a1b960338f634d5fec54c5330">bbox</a>)</td></tr>
 <tr class="memdesc:af4c42cb5df37ce7340ef497e84e9eacb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the scene's coordinate reference system bounding box.  <a href="#af4c42cb5df37ce7340ef497e84e9eacb">More...</a><br /></td></tr>
 <tr class="separator:af4c42cb5df37ce7340ef497e84e9eacb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afd8798b09857e4df7adf05dea25210ab"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d9c/classScene.html#afd8798b09857e4df7adf05dea25210ab">hasMovingObjects</a> () const</td></tr>
+<tr class="memdesc:afd8798b09857e4df7adf05dea25210ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checke whether the scene contains at least one moving object (true) or not (false)  <a href="#afd8798b09857e4df7adf05dea25210ab">More...</a><br /></td></tr>
+<tr class="separator:afd8798b09857e4df7adf05dea25210ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a782302f4dc1703617d5292251bda044e"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d9c/classScene.html#a782302f4dc1703617d5292251bda044e">writeObject</a> (std::string path)</td></tr>
 <tr class="memdesc:a782302f4dc1703617d5292251bda044e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Serialize the scene and write it to given output file.  <a href="#a782302f4dc1703617d5292251bda044e">More...</a><br /></td></tr>
 <tr class="separator:a782302f4dc1703617d5292251bda044e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -396,7 +405,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>boost::serialization
 <p>Support simulation step handling from scene side. </p>
 <p>For basic scenes and static scenes, there is nothing to do. However, dynamic scenes are expected to override this method to provide simulation level dynamism.</p>
 <dl class="section return"><dt>Returns</dt><dd>True if scene was updated, false otherwise </dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../de/d74/classDynScene.html#a192d62758850392937ae69532ff0c462" title="Do corresponding computations for the dynamic scene at current simulation step if proceeds...">DynScene::doSimStep</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../de/d74/classDynScene.html#a192d62758850392937ae69532ff0c462" title="Do corresponding computations for the dynamic scene at current simulation step, if any...">DynScene::doSimStep</a> </dd></dl>
 
 <p>Reimplemented in <a class="el" href="../../de/d74/classDynScene.html#a192d62758850392937ae69532ff0c462">DynScene</a>.</p>
 
@@ -619,8 +628,8 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>boost::serialization
 
 </div>
 </div>
-<a id="a37f2e60785ec5944773d1fd272104284"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a37f2e60785ec5944773d1fd272104284">&#9670;&nbsp;</a></span>getIntersection()</h2>
+<a id="a25064cb65a0d92828fbf4299e847233f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a25064cb65a0d92828fbf4299e847233f">&#9670;&nbsp;</a></span>getIntersection() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -628,13 +637,13 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>boost::serialization
         <tr>
           <td class="memname">shared_ptr&lt; <a class="el" href="../../dc/da3/classRaySceneIntersection.html">RaySceneIntersection</a> &gt; Scene::getIntersection </td>
           <td>(</td>
-          <td class="paramtype">glm::dvec3 &amp;&#160;</td>
+          <td class="paramtype">glm::dvec3 const &amp;&#160;</td>
           <td class="paramname"><em>rayOrigin</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">glm::dvec3 &amp;&#160;</td>
+          <td class="paramtype">glm::dvec3 const &amp;&#160;</td>
           <td class="paramname"><em>rayDir</em>, </td>
         </tr>
         <tr>
@@ -646,7 +655,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>boost::serialization
         <tr>
           <td></td>
           <td>)</td>
-          <td></td><td></td>
+          <td></td><td> const</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -666,6 +675,55 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>boost::serialization
 <a class="el" href="../../da/d81/classKDTreeRaycaster.html" title="Class representing a KDTree ray caster. ">KDTreeRaycaster</a> </dd>
 <dd>
 <a class="el" href="../../da/d81/classKDTreeRaycaster.html#aac2bc3f3bd12f1b334496e4b2cc260ee">KDTreeRaycaster::search</a> </dd></dl>
+
+</div>
+</div>
+<a id="ad1c2a985f4963cd63c708cdb0b58a038"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad1c2a985f4963cd63c708cdb0b58a038">&#9670;&nbsp;</a></span>getIntersection() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::shared_ptr&lt; <a class="el" href="../../dc/da3/classRaySceneIntersection.html">RaySceneIntersection</a> &gt; Scene::getIntersection </td>
+          <td>(</td>
+          <td class="paramtype">vector&lt; double &gt; const &amp;&#160;</td>
+          <td class="paramname"><em>tMinMax</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">glm::dvec3 const &amp;&#160;</td>
+          <td class="paramname"><em>rayOrigin</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">glm::dvec3 const &amp;&#160;</td>
+          <td class="paramname"><em>rayDir</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool const&#160;</td>
+          <td class="paramname"><em>groundOnly</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Like Scene::getIntersection(dvec3 const, dvec3 const, bool const) but receiving precomputed minimum and maximum intersection times with respect to the axis aligned bounding box that bounds the scene. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">tMinMax</td><td>The minimum and maximum intersection times </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section see"><dt>See also</dt><dd>Scene::getIntersection(dvec3 const, dvec3 const, bool const) </dd></dl>
 
 </div>
 </div>
@@ -794,6 +852,34 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>boost::serialization
 
 <p>Obtain the minimum boundaries of the original axis aligned bounding box containing the scene, before it was centered so (0, 0, 0) became its new minimum boundaries. </p>
 <dl class="section return"><dt>Returns</dt><dd>Minimum boundaries of the original axis aligned bounding box, before translating to (0, 0, 0) </dd></dl>
+
+</div>
+</div>
+<a id="afd8798b09857e4df7adf05dea25210ab"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afd8798b09857e4df7adf05dea25210ab">&#9670;&nbsp;</a></span>hasMovingObjects()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual bool Scene::hasMovingObjects </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Checke whether the scene contains at least one moving object (true) or not (false) </p>
+<dl class="section return"><dt>Returns</dt><dd>True if scene hast at least one moving objects, false otherwise </dd></dl>
 
 </div>
 </div>
@@ -1205,7 +1291,7 @@ template&lt;class Archive &gt; </div>
 <p>The raycaster based on <a class="el" href="../../d9/d76/classKDGrove.html" title="Grove of KDTrees. It supports both static and dynamic KDTrees, handling each accordingly. ">KDGrove</a>. </p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d5/d9c/classScene.html#a7cf88b807d54fc552db7551a3ab0aae4" title="KDGrove containing a KDTree for each scene part to speed-up ray-primitive intersection check computat...">Scene::kdgrove</a> </dd>
 <dd>
-<a class="el" href="../../d5/d9c/classScene.html#a37f2e60785ec5944773d1fd272104284" title="Obtain the intersection between the ray and the scene, if any. ">Scene::getIntersection</a> </dd>
+<a class="el" href="../../d5/d9c/classScene.html#a25064cb65a0d92828fbf4299e847233f" title="Obtain the intersection between the ray and the scene, if any. ">Scene::getIntersection</a> </dd>
 <dd>
 <a class="el" href="../../d5/d9c/classScene.html#a4ba5957daaf3ae372e54807cf372ac35" title="Obtain all intersections between the ray and the scene, if any. ">Scene::getIntersections</a> </dd></dl>
 

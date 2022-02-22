@@ -133,6 +133,9 @@ Public Member Functions</h2></td></tr>
 &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/dd0/classKDTreeFactory.html#ad905f937a8e13e78f18e659d0732a7a5">KDTreeFactory</a> ()</td></tr>
 <tr class="memdesc:ad905f937a8e13e78f18e659d0732a7a5"><td class="mdescLeft">&#160;</td><td class="mdescRight">K dimensional tree factory default constructor. <br /></td></tr>
 <tr class="separator:ad905f937a8e13e78f18e659d0732a7a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3a2a71fba695ba9d7d5c940d441e728c"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="../../d5/dd0/classKDTreeFactory.html">KDTreeFactory</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/dd0/classKDTreeFactory.html#a3a2a71fba695ba9d7d5c940d441e728c">clone</a> () const =0</td></tr>
+<tr class="memdesc:a3a2a71fba695ba9d7d5c940d441e728c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a clone of the <a class="el" href="../../d5/dd0/classKDTreeFactory.html" title="Class that must be extended by any class which provides factory methods for k-dimensional trees...">KDTreeFactory</a>.  <a href="#a3a2a71fba695ba9d7d5c940d441e728c">More...</a><br /></td></tr>
+<tr class="separator:a3a2a71fba695ba9d7d5c940d441e728c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8f36b4bd3d2ec7a1d771a3e3d93b14cd"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="../../d0/d64/classKDTreeNodeRoot.html">KDTreeNodeRoot</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/dd0/classKDTreeFactory.html#a8f36b4bd3d2ec7a1d771a3e3d93b14cd">makeFromPrimitivesUnsafe</a> (vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *&gt; &amp;primitives, bool const computeStats=false, bool const reportStats=false)=0</td></tr>
 <tr class="memdesc:a8f36b4bd3d2ec7a1d771a3e3d93b14cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Build a KDTree from given primitives.  <a href="#a8f36b4bd3d2ec7a1d771a3e3d93b14cd">More...</a><br /></td></tr>
 <tr class="separator:a8f36b4bd3d2ec7a1d771a3e3d93b14cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -219,6 +222,36 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>boost::serialization
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Light version of given node </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d5/dd0/classKDTreeFactory.html#a837bf89fb39600314e02f9fa9d05ec9b" title="Rebuild all children of given root KDTree node as LightKDTeeeNode nodes. ">KDTreeFactory::lighten</a> </dd></dl>
+
+</div>
+</div>
+<a id="a3a2a71fba695ba9d7d5c940d441e728c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3a2a71fba695ba9d7d5c940d441e728c">&#9670;&nbsp;</a></span>clone()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual <a class="el" href="../../d5/dd0/classKDTreeFactory.html">KDTreeFactory</a>* KDTreeFactory::clone </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Create a clone of the <a class="el" href="../../d5/dd0/classKDTreeFactory.html" title="Class that must be extended by any class which provides factory methods for k-dimensional trees...">KDTreeFactory</a>. </p>
+<dl class="section return"><dt>Returns</dt><dd>Clone of the <a class="el" href="../../d5/dd0/classKDTreeFactory.html" title="Class that must be extended by any class which provides factory methods for k-dimensional trees...">KDTreeFactory</a> </dd></dl>
+
+<p>Implemented in <a class="el" href="../../db/d58/classSAHKDTreeFactory.html#a007aafd2b0c7bcb957f0ab612a8a3926">SAHKDTreeFactory</a>, <a class="el" href="../../df/d86/classMultiThreadKDTreeFactory.html#af42a3adba3a95e60b225e9a61ece980b">MultiThreadKDTreeFactory</a>, <a class="el" href="../../d6/d96/classSimpleKDTreeFactory.html#af26864527e1e6021277f19b797446559">SimpleKDTreeFactory</a>, <a class="el" href="../../d0/d0e/classFastSAHKDTreeFactory.html#aace4c6a4d41edc1f1045a7fa0fe0bfe8">FastSAHKDTreeFactory</a>, <a class="el" href="../../dd/d95/classMultiThreadSAHKDTreeFactory.html#a7a732cd676db4c37b280cc729a1fa60f">MultiThreadSAHKDTreeFactory</a>, and <a class="el" href="../../df/d30/classAxisSAHKDTreeFactory.html#a97e8fb60ee2859ea53cc4d66f5630e88">AxisSAHKDTreeFactory</a>.</p>
 
 </div>
 </div>

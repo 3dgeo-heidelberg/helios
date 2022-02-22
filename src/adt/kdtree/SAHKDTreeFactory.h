@@ -97,7 +97,7 @@ class SAHKDTreeGeoemtricStrategy;
  *  the left side of the object median because
  *  \f$N_o(L_r) < \frac{N_o(N)}{2}\f$ and \f$S_A(L_r) < S_A(R_r)\f$. On the
  *  other hand, \f$\frac{d}{dr}\mathcal{L}(r) > 0\f$ at the right side of the
- *  spatial median because \f$N_o(L_r) < \frac{N_o(N)}{2}\f$
+ *  spatial median because \f$N_o(L_r) > \frac{N_o(N)}{2}\f$
  *  and \f$S_A(L_r) > S_A(R_r)\f$. So the minimum
  *  must occur between the object median and the spatial median if the
  *  object median is to the left of the spatial median. It is easy to see

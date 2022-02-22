@@ -137,6 +137,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a1b542136f4c7cbf63ac51ea1005ff544"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d58/classSAHKDTreeFactory.html#a1b542136f4c7cbf63ac51ea1005ff544">SAHKDTreeFactory</a> (size_t const <a class="el" href="../../db/d58/classSAHKDTreeFactory.html#aa4bc15caaa3456f80cbcd729434e1d37">lossNodes</a>=21, double const <a class="el" href="../../db/d58/classSAHKDTreeFactory.html#a6c4924bf2b271633b2faeb94bb09ab7d">ci</a>=1, double const <a class="el" href="../../db/d58/classSAHKDTreeFactory.html#acafa7895196056285055f316cd8daf3a">cl</a>=1, double const <a class="el" href="../../db/d58/classSAHKDTreeFactory.html#a142e8bb1c4a2d1ed9adf95f71712199b">co</a>=1)</td></tr>
 <tr class="memdesc:a1b542136f4c7cbf63ac51ea1005ff544"><td class="mdescLeft">&#160;</td><td class="mdescRight">Surface area heuristic KDTree factory default constructor.  <a href="#a1b542136f4c7cbf63ac51ea1005ff544">More...</a><br /></td></tr>
 <tr class="separator:a1b542136f4c7cbf63ac51ea1005ff544"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a007aafd2b0c7bcb957f0ab612a8a3926"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d5/dd0/classKDTreeFactory.html">KDTreeFactory</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d58/classSAHKDTreeFactory.html#a007aafd2b0c7bcb957f0ab612a8a3926">clone</a> () const override</td></tr>
+<tr class="separator:a007aafd2b0c7bcb957f0ab612a8a3926"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a06516d63667958267e309d93fdcffd72"><td class="memItemLeft" align="right" valign="top"><a id="a06516d63667958267e309d93fdcffd72"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d58/classSAHKDTreeFactory.html#a06516d63667958267e309d93fdcffd72">_clone</a> (<a class="el" href="../../d5/dd0/classKDTreeFactory.html">KDTreeFactory</a> *kdtf) const override</td></tr>
+<tr class="memdesc:a06516d63667958267e309d93fdcffd72"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assign attributes from <a class="el" href="../../db/d58/classSAHKDTreeFactory.html" title="Class providing building methods for k-dimensional trees with surface area heuristic (SAH) ...">SAHKDTreeFactory</a> to its clone. <br /></td></tr>
+<tr class="separator:a06516d63667958267e309d93fdcffd72"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa22c06947f61f871156922122c41084d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d58/classSAHKDTreeFactory.html#aa22c06947f61f871156922122c41084d">defineSplit</a> (<a class="el" href="../../d8/d94/classKDTreeNode.html">KDTreeNode</a> *node, <a class="el" href="../../d8/d94/classKDTreeNode.html">KDTreeNode</a> *parent, vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *&gt; &amp;primitives, int const depth) const override</td></tr>
 <tr class="memdesc:aa22c06947f61f871156922122c41084d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Define the split axis and position for current node.  <a href="#aa22c06947f61f871156922122c41084d">More...</a><br /></td></tr>
 <tr class="separator:aa22c06947f61f871156922122c41084d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -149,6 +155,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ab6ca93261853fe9d6929ccee7f62ca46"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d58/classSAHKDTreeFactory.html#ab6ca93261853fe9d6929ccee7f62ca46">buildChildrenNodesRecipe</a> (<a class="el" href="../../d8/d94/classKDTreeNode.html">KDTreeNode</a> *node, <a class="el" href="../../d8/d94/classKDTreeNode.html">KDTreeNode</a> *parent, vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *&gt; const &amp;primitives, int const depth, int const index, vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *&gt; &amp;leftPrimitives, vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *&gt; &amp;rightPrimitives, std::function&lt; void(<a class="el" href="../../d8/d94/classKDTreeNode.html">KDTreeNode</a> *node, int const depth, int const index, vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *&gt; &amp;leftPrimitives, vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *&gt; &amp;rightPrimitives)&gt;f_buildChildrenNodes)</td></tr>
 <tr class="memdesc:ab6ca93261853fe9d6929ccee7f62ca46"><td class="mdescLeft">&#160;</td><td class="mdescRight">The recipe for building of children nodes by SAH algorithm. It is meant to be used by the <a class="el" href="../../db/d58/classSAHKDTreeFactory.html#a1ce94a7548b00220c2970becba91ff8b" title="Build children nodes using  heuristic to handle KDTree in-depth partitioning. ">SAHKDTreeFactory::buildChildrenNodes</a> but also by any alternative implementation which shared the same recipe (global logic) but changes the way some parts are computed. For instance, it is used to handle geometry-level parallelization.  <a href="#ab6ca93261853fe9d6929ccee7f62ca46">More...</a><br /></td></tr>
 <tr class="separator:ab6ca93261853fe9d6929ccee7f62ca46"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2873e22ff6738323bd248c061631e083"><td class="memItemLeft" align="right" valign="top">virtual size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d58/classSAHKDTreeFactory.html#a2873e22ff6738323bd248c061631e083">getLossNodes</a> () const</td></tr>
+<tr class="memdesc:a2873e22ff6738323bd248c061631e083"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain the loss nodes used to compute the Surface Area Heuristic.  <a href="#a2873e22ff6738323bd248c061631e083">More...</a><br /></td></tr>
+<tr class="separator:a2873e22ff6738323bd248c061631e083"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac047ee9ce6daf44c5f04dce309e6fa03"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d58/classSAHKDTreeFactory.html#ac047ee9ce6daf44c5f04dce309e6fa03">setLossNodes</a> (size_t const <a class="el" href="../../db/d58/classSAHKDTreeFactory.html#aa4bc15caaa3456f80cbcd729434e1d37">lossNodes</a>)</td></tr>
+<tr class="memdesc:ac047ee9ce6daf44c5f04dce309e6fa03"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the number loss nodes used to compute the Surface Area Heuristic.  <a href="#ac047ee9ce6daf44c5f04dce309e6fa03">More...</a><br /></td></tr>
+<tr class="separator:ac047ee9ce6daf44c5f04dce309e6fa03"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0fa181a6c477c5b55b514f9b12a70b31"><td class="memItemLeft" align="right" valign="top">virtual double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d58/classSAHKDTreeFactory.html#a0fa181a6c477c5b55b514f9b12a70b31">getInteriorCost</a> () const</td></tr>
 <tr class="memdesc:a0fa181a6c477c5b55b514f9b12a70b31"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain the cost-weight of interior nodes.  <a href="#a0fa181a6c477c5b55b514f9b12a70b31">More...</a><br /></td></tr>
 <tr class="separator:a0fa181a6c477c5b55b514f9b12a70b31"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -171,6 +183,8 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aac0b2d556d61c2e301de1eb2f9bda823 inherit pub_methods_classSimpleKDTreeFactory"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d96/classSimpleKDTreeFactory.html#aac0b2d556d61c2e301de1eb2f9bda823">SimpleKDTreeFactory</a> ()</td></tr>
 <tr class="memdesc:aac0b2d556d61c2e301de1eb2f9bda823 inherit pub_methods_classSimpleKDTreeFactory"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="../../d6/d96/classSimpleKDTreeFactory.html" title="Class providing building methods for simple k-dimensional trees. ">SimpleKDTreeFactory</a> default constructor.  <a href="../../d6/d96/classSimpleKDTreeFactory.html#aac0b2d556d61c2e301de1eb2f9bda823">More...</a><br /></td></tr>
 <tr class="separator:aac0b2d556d61c2e301de1eb2f9bda823 inherit pub_methods_classSimpleKDTreeFactory"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af26864527e1e6021277f19b797446559 inherit pub_methods_classSimpleKDTreeFactory"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d5/dd0/classKDTreeFactory.html">KDTreeFactory</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d96/classSimpleKDTreeFactory.html#af26864527e1e6021277f19b797446559">clone</a> () const override</td></tr>
+<tr class="separator:af26864527e1e6021277f19b797446559 inherit pub_methods_classSimpleKDTreeFactory"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a710ca041b66dbc0738fffc61d7dccc6b inherit pub_methods_classSimpleKDTreeFactory"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d0/d64/classKDTreeNodeRoot.html">KDTreeNodeRoot</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d96/classSimpleKDTreeFactory.html#a710ca041b66dbc0738fffc61d7dccc6b">makeFromPrimitivesUnsafe</a> (vector&lt; <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *&gt; &amp;primitives, bool const computeStats=false, bool const reportStats=false) override</td></tr>
 <tr class="memdesc:a710ca041b66dbc0738fffc61d7dccc6b inherit pub_methods_classSimpleKDTreeFactory"><td class="mdescLeft">&#160;</td><td class="mdescRight">Build a simple KDTree from given primitives.  <a href="../../d6/d96/classSimpleKDTreeFactory.html#a710ca041b66dbc0738fffc61d7dccc6b">More...</a><br /></td></tr>
 <tr class="separator:a710ca041b66dbc0738fffc61d7dccc6b inherit pub_methods_classSimpleKDTreeFactory"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -370,7 +384,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>boost::serialization
 <p>Differentiating with respect to \(r\) leads to: </p><p class="formulaDsp">
 \[ \frac{d\mathcal{L}}{dr} = \left[2N_o(L_r) - N_o(N)\right]\frac{d}{dr}S_A(L_r) + \left[ S_A(L_r) - S_A(R_r) \right] \frac{d}{dr}N_o(L_r) \]
 </p>
-<p>Although \(N_o(L_r)\) is a discontinuous function, which implies \(\frac{d}{dr}N_o(L_r)\) is not defined, it is known that is always nonnegative which is enough to define a valid minimization criteria. In consequence, it is possible to analyze different scenarios. First, consider the case where the median lies somewhere satisfying \(r &lt; \frac{1}{2}\). Thus, \(\frac{d}{dr}\mathcal{L}(r) &lt; 0\) at the left side of the object median because \(N_o(L_r) &lt; \frac{N_o(N)}{2}\) and \(S_A(L_r) &lt; S_A(R_r)\). On the other hand, \(\frac{d}{dr}\mathcal{L}(r) &gt; 0\) at the right side of the spatial median because \(N_o(L_r) &lt; \frac{N_o(N)}{2}\) and \(S_A(L_r) &gt; S_A(R_r)\). So the minimum must occur between the object median and the spatial median if the object median is to the left of the spatial median. It is easy to see that an analogous argument applies for the case where the object median is to the right of the spatial median. Then, the optimum split must lie between the object median and the spatial median (center).</p>
+<p>Although \(N_o(L_r)\) is a discontinuous function, which implies \(\frac{d}{dr}N_o(L_r)\) is not defined, it is known that is always nonnegative which is enough to define a valid minimization criteria. In consequence, it is possible to analyze different scenarios. First, consider the case where the median lies somewhere satisfying \(r &lt; \frac{1}{2}\). Thus, \(\frac{d}{dr}\mathcal{L}(r) &lt; 0\) at the left side of the object median because \(N_o(L_r) &lt; \frac{N_o(N)}{2}\) and \(S_A(L_r) &lt; S_A(R_r)\). On the other hand, \(\frac{d}{dr}\mathcal{L}(r) &gt; 0\) at the right side of the spatial median because \(N_o(L_r) &gt; \frac{N_o(N)}{2}\) and \(S_A(L_r) &gt; S_A(R_r)\). So the minimum must occur between the object median and the spatial median if the object median is to the left of the spatial median. It is easy to see that an analogous argument applies for the case where the object median is to the right of the spatial median. Then, the optimum split must lie between the object median and the spatial median (center).</p>
 <p>To clarify, the object median is understood as related to the splitting plane that places one half of the objects on each side of the plane. While the spatial median \(\mu\) for a given KDTree node in \(\mathbb{R}^{n}\) with \(a = (a_1, \ldots, a_n)\) as minimum vertex and \(b = (b_1, \ldots, b_n)\) as maximum vertex is:</p>
 <p class="formulaDsp">
 \[ \mu = \frac{a+b}{2} = \left(\frac{a_1+b_1}{2}, \ldots, \frac{a_n+b_n}{2}\right) \]
@@ -652,6 +666,34 @@ SAHKDTreeFactory::GEOM_buildChildrenNodes </dd>
 <a class="el" href="../../d6/d96/classSimpleKDTreeFactory.html#abba2468b2987b4bd93e3e832bdf52f00" title="How many primitives are required for a node to be splitted. ">SimpleKDTreeFactory::minSplitPrimitives</a> </dd></dl>
 
 <p>Reimplemented from <a class="el" href="../../d6/d96/classSimpleKDTreeFactory.html#a34143864d77d79ef1677a06bd5b938f6">SimpleKDTreeFactory</a>.</p>
+
+</div>
+</div>
+<a id="a007aafd2b0c7bcb957f0ab612a8a3926"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a007aafd2b0c7bcb957f0ab612a8a3926">&#9670;&nbsp;</a></span>clone()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../d5/dd0/classKDTreeFactory.html">KDTreeFactory</a> * SAHKDTreeFactory::clone </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d5/dd0/classKDTreeFactory.html#a3a2a71fba695ba9d7d5c940d441e728c" title="Create a clone of the KDTreeFactory. ">KDTreeFactory::clone</a> </dd></dl>
+
+<p>Implements <a class="el" href="../../d5/dd0/classKDTreeFactory.html#a3a2a71fba695ba9d7d5c940d441e728c">KDTreeFactory</a>.</p>
 
 </div>
 </div>
@@ -1246,6 +1288,35 @@ SAHKDTreeFactory::GEOM_findSplitPositionBySAH </dd>
 
 </div>
 </div>
+<a id="a2873e22ff6738323bd248c061631e083"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2873e22ff6738323bd248c061631e083">&#9670;&nbsp;</a></span>getLossNodes()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual size_t SAHKDTreeFactory::getLossNodes </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Obtain the loss nodes used to compute the Surface Area Heuristic. </p>
+<dl class="section return"><dt>Returns</dt><dd>Nmber of loss nodes used to compute the Surface Area Heuristic </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../db/d58/classSAHKDTreeFactory.html#aa4bc15caaa3456f80cbcd729434e1d37" title="How many loss nodes must be computed when optimizing the loss function  to determine the best split p...">SAHKDTreeFactory::lossNodes</a> </dd></dl>
+
+</div>
+</div>
 <a id="a57ba0e95461b489801cb085937f030a6"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a57ba0e95461b489801cb085937f030a6">&#9670;&nbsp;</a></span>getObjectCost()</h2>
 
@@ -1651,6 +1722,41 @@ template&lt;typename Archive &gt; </div>
   </dd>
 </dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="../../db/d58/classSAHKDTreeFactory.html#acafa7895196056285055f316cd8daf3a" title="Cost-weight for traversing leaf nodes. ">SAHKDTreeFactory::cl</a> </dd></dl>
+
+</div>
+</div>
+<a id="ac047ee9ce6daf44c5f04dce309e6fa03"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac047ee9ce6daf44c5f04dce309e6fa03">&#9670;&nbsp;</a></span>setLossNodes()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void SAHKDTreeFactory::setLossNodes </td>
+          <td>(</td>
+          <td class="paramtype">size_t const&#160;</td>
+          <td class="paramname"><em>lossNodes</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Set the number loss nodes used to compute the Surface Area Heuristic. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">lossNodes</td><td>New number of loss nodes to compute the Surface Area Heuristic </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../db/d58/classSAHKDTreeFactory.html#aa4bc15caaa3456f80cbcd729434e1d37" title="How many loss nodes must be computed when optimizing the loss function  to determine the best split p...">SAHKDTreeFactory::lossNodes</a> </dd></dl>
 
 </div>
 </div>

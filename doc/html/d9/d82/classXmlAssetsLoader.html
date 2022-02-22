@@ -91,6 +91,7 @@ $(document).ready(function(){initNavTree('d9/d82/classXmlAssetsLoader.html','../
 <a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="#pro-attribs">Protected Attributes</a> &#124;
+<a href="#pro-static-attribs">Static Protected Attributes</a> &#124;
 <a href="../../d1/df7/classXmlAssetsLoader-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">XmlAssetsLoader Class Reference</div>  </div>
@@ -209,6 +210,15 @@ std::shared_ptr&lt; <a class="el" href="../../d5/d0c/classPlatformSettings.html"
 <tr class="memitem:af0d456470156c1f478844e043d79cbe6"><td class="memItemLeft" align="right" valign="top">std::unordered_map&lt; std::string, std::unordered_set&lt; std::string &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/d82/classXmlAssetsLoader.html#af0d456470156c1f478844e043d79cbe6">platformTemplatesFields</a></td></tr>
 <tr class="memdesc:af0d456470156c1f478844e043d79cbe6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Map containing the set of fields that have been overloaded by each platform template.  <a href="#af0d456470156c1f478844e043d79cbe6">More...</a><br /></td></tr>
 <tr class="separator:af0d456470156c1f478844e043d79cbe6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-static-attribs"></a>
+Static Protected Attributes</h2></td></tr>
+<tr class="memitem:afcf856f87becf60736117133e56fee25"><td class="memItemLeft" align="right" valign="top">static std::string const&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/d82/classXmlAssetsLoader.html#afcf856f87becf60736117133e56fee25">defaultScannerSettingsMsg</a></td></tr>
+<tr class="memdesc:afcf856f87becf60736117133e56fee25"><td class="mdescLeft">&#160;</td><td class="mdescRight">The message to be shown when default value is loaded for scanner settings.  <a href="#afcf856f87becf60736117133e56fee25">More...</a><br /></td></tr>
+<tr class="separator:afcf856f87becf60736117133e56fee25"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a47f16b2fa179eb22ff0cf69a75883b83"><td class="memItemLeft" align="right" valign="top">static std::string const&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/d82/classXmlAssetsLoader.html#a47f16b2fa179eb22ff0cf69a75883b83">defaultPlatformSettingsMsg</a></td></tr>
+<tr class="memdesc:a47f16b2fa179eb22ff0cf69a75883b83"><td class="mdescLeft">&#160;</td><td class="mdescRight">The message to be shown when default value is loaded for platform settings.  <a href="#a47f16b2fa179eb22ff0cf69a75883b83">More...</a><br /></td></tr>
+<tr class="separator:a47f16b2fa179eb22ff0cf69a75883b83"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Class for asset loading from XML file. </p>
@@ -710,6 +720,54 @@ std::shared_ptr&lt; <a class="el" href="../../d5/d0c/classPlatformSettings.html"
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
+<a id="a47f16b2fa179eb22ff0cf69a75883b83"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a47f16b2fa179eb22ff0cf69a75883b83">&#9670;&nbsp;</a></span>defaultPlatformSettingsMsg</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string const XmlAssetsLoader::defaultPlatformSettingsMsg</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">=</div><div class="line">    <span class="stringliteral">&quot;Using platform default value for attribute&quot;</span></div></div><!-- fragment -->
+<p>The message to be shown when default value is loaded for platform settings. </p>
+
+</div>
+</div>
+<a id="afcf856f87becf60736117133e56fee25"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afcf856f87becf60736117133e56fee25">&#9670;&nbsp;</a></span>defaultScannerSettingsMsg</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string const XmlAssetsLoader::defaultScannerSettingsMsg</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">=</div><div class="line">    <span class="stringliteral">&quot;Using scanner default value for attribute&quot;</span></div></div><!-- fragment -->
+<p>The message to be shown when default value is loaded for scanner settings. </p>
+
+</div>
+</div>
 <a id="aa4f6b548108e4b16ec990ec75b96475e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aa4f6b548108e4b16ec990ec75b96475e">&#9670;&nbsp;</a></span>platformTemplates</h2>
 

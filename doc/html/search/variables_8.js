@@ -8,6 +8,7 @@ var searchData=
   ['height',['height',['../d1/d0c/classGeoTiffFileLoader.html#afa0947ac00405668f994c8fc6404a6d0',1,'GeoTiffFileLoader']]],
   ['high_5fnoise',['HIGH_NOISE',['../df/d64/classLasSpecification.html#ae7b4d9e56b7626c35d1ee880f5294c24',1,'LasSpecification']]],
   ['high_5fvegetation',['HIGH_VEGETATION',['../df/d64/classLasSpecification.html#ac7b831a00a7d76816624948170bd6839',1,'LasSpecification']]],
+  ['hitdistance',['hitDistance',['../dc/da3/classRaySceneIntersection.html#a68229eb7b466684393445ccc3bc78c65',1,'RaySceneIntersection']]],
   ['hitobjectid',['hitObjectId',['../db/d2e/classMeasurement.html#a303164a152fa5ba6f7f6a0a536a0e4b4',1,'Measurement']]],
   ['hoiattridx',['hoiAttrIdx',['../d2/db3/classLasSyncFileWriter.html#ad3984158dc285ad5660e6d56abbb57fb',1,'LasSyncFileWriter']]],
   ['hoiattrstart',['hoiAttrStart',['../d2/db3/classLasSyncFileWriter.html#a3022ddbaa4f0269391c28e1387028a2b',1,'LasSyncFileWriter']]],

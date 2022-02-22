@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['f',['f',['../d9/d82/classfluxionum_1_1Minimizer.html#a2be2dea186372f88d7da36cebaef0038',1,'fluxionum::Minimizer::f()'],['../db/da8/classSmartSharedFunctorContainer.html#ac146f416718589aeed1f1a1ce0a47214',1,'SmartSharedFunctorContainer::f()']]],
+  ['f',['f',['../d9/d82/classfluxionum_1_1Minimizer.html#a2be2dea186372f88d7da36cebaef0038',1,'fluxionum::Minimizer::f()'],['../d8/dac/classNonVoidStepLoop.html#a1ac6e434d91980453d0448603e476251',1,'NonVoidStepLoop::f()'],['../dd/d96/classVoidStepLoop.html#a3f9b06ef35094c8045795925ec97c649',1,'VoidStepLoop::f()'],['../db/da8/classSmartSharedFunctorContainer.html#ac146f416718589aeed1f1a1ce0a47214',1,'SmartSharedFunctorContainer::f()']]],
   ['facenormal',['faceNormal',['../d2/d51/classTriangle.html#a3658a5bff29b9881b6e46c594ba06b3b',1,'Triangle']]],
   ['facenormalset',['faceNormalSet',['../d2/d51/classTriangle.html#ab56f5c902a05c370f16bd73089ec535a',1,'Triangle']]],
   ['factorial',['factorial',['../d6/d68/classSurfaceInspector_1_1maths_1_1Scalar.html#a91e6c4582fd106940af3f76621ff28f1',1,'SurfaceInspector::maths::Scalar']]],
@@ -23,6 +23,7 @@ var searchData=
   ['findenvelopmentdirections',['findEnvelopmentDirections',['../d9/d22/classLadLut.html#a50d3618b2cea0f4f9961b806e03a46d0',1,'LadLut']]],
   ['findforceongroundq',['findForceOnGroundQ',['../d5/d9c/classScene.html#abbd93c3c45cb22ba6fa6c6f7da1dcb01',1,'Scene']]],
   ['findindexofargument',['findIndexOfArgument',['../d7/d5c/classArgumentsParser.html#a6f5548d30a46011bdfcac0c6638d6ee4',1,'ArgumentsParser']]],
+  ['findintersection',['findIntersection',['../da/d0b/classDynFullWaveformPulseRunnable.html#a8992fefd6a8d370fa0ae7aefc654b081',1,'DynFullWaveformPulseRunnable::findIntersection()'],['../db/da6/classFullWaveformPulseRunnable.html#a9662d90c284c19bd93d88f81ccb65aec',1,'FullWaveformPulseRunnable::findIntersection()']]],
   ['findinvariantdimensionality',['findInvariantDimensionality',['../d7/d84/classrigidmotion_1_1RigidMotion.html#ac8c8ccf506a652cbafd87f715ec3f392',1,'rigidmotion::RigidMotion']]],
   ['findmaxminhitdistances',['findMaxMinHitDistances',['../db/da6/classFullWaveformPulseRunnable.html#a994cbfe3d1adad4c083fb61cac8df033',1,'FullWaveformPulseRunnable']]],
   ['findorthogonal',['findOrthogonal',['../d1/dd3/classSurfaceInspector_1_1maths_1_1Vector.html#a9ec3c2113c5b9487f63b45dde328980c',1,'SurfaceInspector::maths::Vector']]],
@@ -51,6 +52,9 @@ var searchData=
   ['forceonground',['forceOnGround',['../dd/dc4/classScenePart.html#ae1d6a1a1b109fd8cc2073a16f15c6f27',1,'ScenePart']]],
   ['forceredraw',['forceRedraw',['../de/dda/classvisualhelios_1_1VHCanvas.html#a4a8464cb985c7f24f3bb7dc75b050707',1,'visualhelios::VHCanvas']]],
   ['forward',['forward',['../df/dc3/classDirections.html#a9ae98fab6f1cd875e069ba3044355e90',1,'Directions']]],
+  ['freq',['freq',['../dd/de3/classDiscreteTime.html#ac5ec94b5343419f58c172604062ab39b',1,'DiscreteTime']]],
+  ['freqscale',['freqScale',['../dd/de3/classDiscreteTime.html#a91a3e09efb646cf05ba4a3baf099b12a',1,'DiscreteTime']]],
+  ['frequency',['frequency',['../dd/de3/classDiscreteTime.html#adbc321326e054c466cf7d0d5cddb5ea9',1,'DiscreteTime']]],
   ['fromilocache',['fromILOCache',['../db/d58/classSAHKDTreeFactory.html#a9ba7534ee95ef054eb9727921becb196',1,'SAHKDTreeFactory']]],
   ['fromilotcache',['fromILOTCache',['../db/d58/classSAHKDTreeFactory.html#a651693da9d8e1431bfcdc40673471e62',1,'SAHKDTreeFactory']]],
   ['fsahkdtf',['fsahkdtf',['../d1/ddc/classFastSAHKDTreeGeometricStrategy.html#afcae3fea433e744394a4e7c33e6ab6fb',1,'FastSAHKDTreeGeometricStrategy']]],

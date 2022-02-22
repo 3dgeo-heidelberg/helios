@@ -10,6 +10,7 @@ var searchData=
   ['primitive',['Primitive',['../df/de1/classPrimitive.html',1,'']]],
   ['pulsetask',['PulseTask',['../d1/d6e/classPulseTask.html',1,'']]],
   ['pulsetaskdropper',['PulseTaskDropper',['../de/d9a/classPulseTaskDropper.html',1,'']]],
+  ['pulsetaskfactory',['PulseTaskFactory',['../da/dfd/classPulseTaskFactory.html',1,'']]],
   ['pulsethreadpool',['PulseThreadPool',['../d6/ddc/classPulseThreadPool.html',1,'']]],
   ['pulsethreadpoolfactory',['PulseThreadPoolFactory',['../d5/d85/classPulseThreadPoolFactory.html',1,'']]],
   ['pulsethreadpoolinterface',['PulseThreadPoolInterface',['../df/d9c/classPulseThreadPoolInterface.html',1,'']]],

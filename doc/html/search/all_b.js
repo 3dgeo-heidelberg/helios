@@ -11,7 +11,7 @@ var searchData=
   ['kdgroveraycaster',['KDGroveRaycaster',['../df/d01/classKDGroveRaycaster.html',1,'KDGroveRaycaster'],['../df/d01/classKDGroveRaycaster.html#a2b5cde375b74c883a52262274a6bf13d',1,'KDGroveRaycaster::KDGroveRaycaster()']]],
   ['kdgrovestats',['KDGroveStats',['../de/d29/classKDGroveStats.html',1,'KDGroveStats'],['../de/d29/classKDGroveStats.html#a7a5cd6ff46ba3f518a2df3ba82a75d8b',1,'KDGroveStats::KDGroveStats()']]],
   ['kdgrovesubject',['KDGroveSubject',['../dc/dbb/classKDGroveSubject.html',1,'']]],
-  ['kdtf',['kdtf',['../de/d89/classKDGroveFactory.html#a2e44276a9f7bd1da8741a507a2db9c8c',1,'KDGroveFactory::kdtf()'],['../df/d86/classMultiThreadKDTreeFactory.html#aa1d8bb9d7b9f810ded3c70a1650cbaa0',1,'MultiThreadKDTreeFactory::kdtf()'],['../d3/de1/classSimpleKDTreeGeometricStrategy.html#ae85ebca31792379adea5fa0e143b3fce',1,'SimpleKDTreeGeometricStrategy::kdtf()']]],
+  ['kdtf',['kdtf',['../de/d89/classKDGroveFactory.html#a2e44276a9f7bd1da8741a507a2db9c8c',1,'KDGroveFactory::kdtf()'],['../df/d86/classMultiThreadKDTreeFactory.html#aa1d8bb9d7b9f810ded3c70a1650cbaa0',1,'MultiThreadKDTreeFactory::kdtf()'],['../d3/de1/classSimpleKDTreeGeometricStrategy.html#ae85ebca31792379adea5fa0e143b3fce',1,'SimpleKDTreeGeometricStrategy::kdtf()'],['../d6/dba/classGroveKDTreeRaycaster.html#a7686935963f9a622349b16d83b9caa8f',1,'GroveKDTreeRaycaster::kdtf()']]],
   ['kdtfactorytype',['kdtFactoryType',['../db/d91/classXmlSceneLoader.html#a84baf9f46d993828f45c4ee31f368a25',1,'XmlSceneLoader']]],
   ['kdtgeomjobs',['kdtGeomJobs',['../db/d91/classXmlSceneLoader.html#ab836741a55b243177850a5ae1988921f',1,'XmlSceneLoader']]],
   ['kdtnumjobs',['kdtNumJobs',['../db/d91/classXmlSceneLoader.html#ad495e4e39332332bef0c658863eb8051',1,'XmlSceneLoader']]],

@@ -1,3 +1,6 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$d5/d85/classPulseThreadPoolFactory.html" title="Factory to build different types of pulse thread pools. " alt="" coords="5,5,171,32"/>
+<area shape="rect" id="node1" href="$d1/d6e/classPulseTask.html" title="Pulse task interface. " alt="" coords="5,5,89,32"/>
+<area shape="rect" id="node2" href="$d6/d9e/classAbstractPulseRunnable.html" title="Base abstract class for pulse runnables. " alt="" coords="137,5,296,32"/>
+<area shape="rect" id="node3" href="$db/da6/classFullWaveformPulseRunnable.html" title="Concrete implementation of abstract pulse runnable to compute full waveform pulses. " alt="" coords="344,5,535,32"/>
+<area shape="rect" id="node4" href="$da/d0b/classDynFullWaveformPulseRunnable.html" title="Derived class extending FullWaveFormPulseRunnable to handle dynamic moving objects. " alt="" coords="583,5,797,32"/>
 </map>
