@@ -35,7 +35,8 @@ jobs:
             ${{github.workspace}}/lib/boost
             ${{github.workspace}}/.github/config/boost
           key: ${{ runner.os }}-boost.1.78
-
+          
+      - uses: actions/checkout@v2
 
       - name: Set Up Python 3.6
         if: steps.cache-boost.outputs.cache-hit != 'true'
