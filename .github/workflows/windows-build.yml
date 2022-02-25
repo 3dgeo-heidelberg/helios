@@ -108,10 +108,10 @@ jobs:
           url: "https://www.zlib.net/zlib1211.zip"
           target: lib/boost/zlib1211.zip
 
-        - name: Extract zlib
-          working-directory: ${{env.GITHUB_WORKSPACE}}
-          run: |
-            7z x lib/boost/zlib1211.zip -olib/boost
+      - name: Extract zlib
+        working-directory: ${{env.GITHUB_WORKSPACE}}
+        run: |
+          7z x lib/boost/zlib1211.zip -olib/boost
 
       - name: Build Boost
         if: steps.cache-boost.outputs.cache-hit != 'true'
