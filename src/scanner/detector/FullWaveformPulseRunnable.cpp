@@ -116,7 +116,7 @@ void FullWaveformPulseRunnable::computeSubrays(
 }
 
 void FullWaveformPulseRunnable::handleSubray(
-    vector<double> const &tMinMax,
+    vector<double> const &_tMinMax,
     int circleStep,
     double circleStep_rad,
     Rotation &r1,
@@ -126,6 +126,7 @@ void FullWaveformPulseRunnable::handleSubray(
     vector<RaySceneIntersection> &intersects
 ){
     // Rotate around the circle:
+    vector<double> tMinMax = _tMinMax;
     Rotation r2 = Rotation(Directions::forward, circleStep_rad * circleStep);
     r2 = r2.applyTo(r1);
 
@@ -161,6 +162,7 @@ void FullWaveformPulseRunnable::handleSubray(
                 absoluteBeamOrigin
             );
 
+            // Distance must be inside [rangeMin, rangeMax] interval
             if(
                 detector->cfg_device_rangeMin_m > distance ||
                 detector->cfg_device_rangeMax_m < distance
@@ -211,9 +213,13 @@ void FullWaveformPulseRunnable::handleSubray(
                         intensity
                     );
                 if (ihr.canRayContinue()) { // Subray can continue
-                    // Move subray originWaypoint outside primitive
+                    // Move subray origin outside primitive and update tMinMax
                     subrayOrigin = outsideIntersectionPoint +
                                    0.00001 * subrayDirection;
+                    tMinMax = scene.getAABB()->getRayIntersection(
+                        subrayOrigin,
+                        subrayDirection
+                    );
                     rayContinues = true;
                 }
                 else{ // Update distance considering noise
