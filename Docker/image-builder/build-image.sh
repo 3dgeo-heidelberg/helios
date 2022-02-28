@@ -60,11 +60,12 @@ fi
 # MAIN PROGRAM
 
 # Get Opts
-while getopts "v:b:y:h" arg; do
+while getopts "v:b:h" arg; do
     case "$arg" in
         v) python_version=$OPTARG;;
         b) branch=$OPTARG;;
         h) helpPanel;;
+        *) echo -e "${redColour}Invalid flag${endColour}"
     esac
 done
 
