@@ -138,13 +138,12 @@ Public Types</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ae138cbe8db0cd435091aaaa42513b444"><td class="memItemLeft" align="right" valign="top"><a id="ae138cbe8db0cd435091aaaa42513b444"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/dc4/classScenePart.html#ae138cbe8db0cd435091aaaa42513b444">ScenePart</a> ()</td></tr>
-<tr class="memdesc:ae138cbe8db0cd435091aaaa42513b444"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor for a scene part. <br /></td></tr>
+<tr class="memitem:ae138cbe8db0cd435091aaaa42513b444"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/dc4/classScenePart.html#ae138cbe8db0cd435091aaaa42513b444">ScenePart</a> ()</td></tr>
+<tr class="memdesc:ae138cbe8db0cd435091aaaa42513b444"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor for a scene part.  <a href="#ae138cbe8db0cd435091aaaa42513b444">More...</a><br /></td></tr>
 <tr class="separator:ae138cbe8db0cd435091aaaa42513b444"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a573c9469b4865af254d50200a7d7972b"><td class="memItemLeft" align="right" valign="top"><a id="a573c9469b4865af254d50200a7d7972b"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>ScenePart</b> (<a class="el" href="../../dd/dc4/classScenePart.html">ScenePart</a> const &amp;sp)</td></tr>
-<tr class="separator:a573c9469b4865af254d50200a7d7972b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a17d9907142cde0ed81a4a51c54b4566f"><td class="memItemLeft" align="right" valign="top"><a id="a17d9907142cde0ed81a4a51c54b4566f"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>ScenePart</b> (<a class="el" href="../../dd/dc4/classScenePart.html">ScenePart</a> const &amp;sp, bool const shallowPrimitives=false)</td></tr>
+<tr class="separator:a17d9907142cde0ed81a4a51c54b4566f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0e4fe89589057061c7917b1476d268ee"><td class="memItemLeft" align="right" valign="top"><a id="a0e4fe89589057061c7917b1476d268ee"></a>
 <a class="el" href="../../dd/dc4/classScenePart.html">ScenePart</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/dc4/classScenePart.html#a0e4fe89589057061c7917b1476d268ee">operator=</a> (const <a class="el" href="../../dd/dc4/classScenePart.html">ScenePart</a> &amp;rhs)</td></tr>
 <tr class="memdesc:a0e4fe89589057061c7917b1476d268ee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy assigment operator. <br /></td></tr>
@@ -282,6 +281,40 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>boost::serialization
 
 <p>Specify the type of primitive used to build the scene part By default, the <a class="el" href="../../dd/dc4/classScenePart.html" title="Class representing a scene part. ">ScenePart</a> is not build from primitives (None) </p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="../../dd/dc4/classScenePart.html#ad383e51370b014948843fdebad0e8f19" title="The type of primitive used to build the scene part. ">ScenePart::primitiveType</a> </dd></dl>
+
+</div>
+</div>
+<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="ae138cbe8db0cd435091aaaa42513b444"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae138cbe8db0cd435091aaaa42513b444">&#9670;&nbsp;</a></span>ScenePart()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">ScenePart::ScenePart </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Default constructor for a scene part. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">shallowPrimitives</td><td>If true, primitives pointers will be the same for the copy and for the source. If false, then primitives for the copy will be cloned so they are at different memory regions. Notice that a shallow copy of the primitives implies that the primitives in the copy will have the source as their reference scene part. Use this mode (true) with caution. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

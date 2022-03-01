@@ -1,7 +1,16 @@
 var classScanningPulseProcess =
 [
-    [ "ScanningPulseProcess", "db/d85/classScanningPulseProcess.html#a4b97456207f8a42bdd50d9e16a619d7f", null ],
+    [ "ScanningPulseProcess", "db/d85/classScanningPulseProcess.html#a90aa81188c1840ea5f82cfe93110b01a", null ],
+    [ "~ScanningPulseProcess", "db/d85/classScanningPulseProcess.html#a1e44af6f83ee1ef300966437810da124", null ],
+    [ "getAllMeasurements", "db/d85/classScanningPulseProcess.html#a7e3ff1192ced44b3873546934bd93d09", null ],
+    [ "getAllMeasurementsMutex", "db/d85/classScanningPulseProcess.html#ad323593ccd9a12112035c43778f5994f", null ],
+    [ "getCurrentPulseNumber", "db/d85/classScanningPulseProcess.html#a0f54689b34bbf46bafe753b163a9130e", null ],
+    [ "getCycleMeasurements", "db/d85/classScanningPulseProcess.html#a2d406b636fc39cac2d9376e3a97bfd97", null ],
+    [ "getCycleMeasurementsMutex", "db/d85/classScanningPulseProcess.html#a5b16f473148bb5f9dee17615c5398e3a", null ],
+    [ "getDetector", "db/d85/classScanningPulseProcess.html#a802cfc799d3c344e0c8a2e55ed2e097c", null ],
     [ "handlePulseComputation", "db/d85/classScanningPulseProcess.html#a5349ba0cce56efe76573b8be6c7cd298", null ],
+    [ "isCalcEchowidth", "db/d85/classScanningPulseProcess.html#aeb5eafba680411953233e864f70bd25e", null ],
+    [ "isWriteWaveform", "db/d85/classScanningPulseProcess.html#aa24a1a239dfbe7f5ece35ff7226a2ce5", null ],
     [ "onLegComplete", "db/d85/classScanningPulseProcess.html#aada8ba033b4764e33da070a613ba01df", null ],
     [ "onSimulationFinished", "db/d85/classScanningPulseProcess.html#a8e3cb6388ace9c320fdbb32955bf9d8a", null ],
     [ "allMeasurements", "db/d85/classScanningPulseProcess.html#aea2d0b2959ed1729e4520159bdd2e618", null ],
@@ -11,5 +20,6 @@ var classScanningPulseProcess =
     [ "cycleMeasurements", "db/d85/classScanningPulseProcess.html#ac2da1c14b037548e5871f6d7a948b74c", null ],
     [ "cycleMeasurementsMutex", "db/d85/classScanningPulseProcess.html#a0671ed427321bc0972a1238774c897c6", null ],
     [ "detector", "db/d85/classScanningPulseProcess.html#a26e6882306a16fae340deb86d2b42a68", null ],
+    [ "ptf", "db/d85/classScanningPulseProcess.html#a36794f689c75b9053fbe424667d01715", null ],
     [ "writeWaveform", "db/d85/classScanningPulseProcess.html#af8d8e15c0be842fdb5600395797454f3", null ]
 ];

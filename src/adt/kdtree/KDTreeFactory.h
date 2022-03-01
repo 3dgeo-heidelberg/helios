@@ -71,6 +71,14 @@ public:
     KDTreeFactory() : buildLightNodes(true) {}
     virtual ~KDTreeFactory() = default;
 
+    // ***  CLONE  *** //
+    // *************** //
+    /**
+     * @brief Create a clone of the KDTreeFactory
+     * @return Clone of the KDTreeFactory
+     */
+    virtual KDTreeFactory * clone() const = 0;
+
     // ***  K-DIMENSIONAL TREE FACTORY METHODS  *** //
     // **********************+********************* //
     /**

@@ -97,7 +97,7 @@ class SAHKDTreeGeoemtricStrategy;
  *  the left side of the object median because
  *  \f$N_o(L_r) < \frac{N_o(N)}{2}\f$ and \f$S_A(L_r) < S_A(R_r)\f$. On the
  *  other hand, \f$\frac{d}{dr}\mathcal{L}(r) > 0\f$ at the right side of the
- *  spatial median because \f$N_o(L_r) < \frac{N_o(N)}{2}\f$
+ *  spatial median because \f$N_o(L_r) > \frac{N_o(N)}{2}\f$
  *  and \f$S_A(L_r) > S_A(R_r)\f$. So the minimum
  *  must occur between the object median and the spatial median if the
  *  object median is to the left of the spatial median. It is easy to see
@@ -263,6 +263,17 @@ public:
         double const co=1
     );
     virtual ~SAHKDTreeFactory() = default;
+
+    // ***  CLONE  *** //
+    // *************** //
+    /**
+     * @see KDTreeFactory::clone
+     */
+    KDTreeFactory * clone() const override;
+    /**
+     * @brief Assign attributes from SAHKDTreeFactory to its clone
+     */
+    void _clone(KDTreeFactory *kdtf) const override;
 
     // ***  BUILDING METHODS  *** //
     // ************************** //
@@ -723,6 +734,21 @@ protected:
 public:
     // ***  GETTERs and SETTERs  *** //
     // ***************************** //
+    /**
+     * @brief Obtain the loss nodes used to compute the Surface Area Heuristic
+     * @return Nmber of loss nodes used to compute the Surface Area Heuristic
+     * @see SAHKDTreeFactory::lossNodes
+     */
+    virtual inline size_t getLossNodes() const {return lossNodes;}
+    /**
+     * @brief Set the number loss nodes used to compute the Surface Area
+     *  Heuristic
+     * @param lossNodes New number of loss nodes to compute the Surface Area
+     *  Heuristic
+     * @see SAHKDTreeFactory::lossNodes
+     */
+    virtual inline void setLossNodes(size_t const lossNodes)
+    {this->lossNodes = lossNodes;}
     /**
      * @brief Obtain the cost-weight of interior nodes
      * @return Cost-weight of interior nodes

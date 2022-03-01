@@ -1,19 +1,19 @@
 <map id="BuddingScanningPulseProcess" name="BuddingScanningPulseProcess">
-<area shape="rect" id="node1" title="Class implementing a scanning pulse process which works with a pulse task dropper based on budding ta..." alt="" coords="1680,144,1899,171"/>
-<area shape="rect" id="node2" href="$db/d85/classScanningPulseProcess.html" title="Class defining the scanning pulse process interface." alt="" coords="1427,5,1593,32"/>
-<area shape="rect" id="node3" href="$de/d9a/classPulseTaskDropper.html" title="Class implementing a task dropper to deal with pulse tasks." alt="" coords="1239,445,1378,472"/>
-<area shape="rect" id="node4" href="$d5/d2f/classBuddingTaskDropper.html" title=" " alt="" coords="444,399,775,513"/>
-<area shape="rect" id="node5" href="$da/d8d/classTaskDropper.html" title=" " alt="" coords="183,408,379,464"/>
-<area shape="rect" id="node6" title=" " alt="" coords="5,344,65,371"/>
-<area shape="rect" id="node9" href="$d2/d1f/classSimpleThreadPool.html" title=" " alt="" coords="503,285,716,326"/>
-<area shape="rect" id="node10" href="$dc/de7/classThreadPool.html" title="Base class providing core implementation of a thread pool to deal with multi threading tasks." alt="" coords="233,292,328,319"/>
-<area shape="rect" id="node7" href="$d6/ddc/classPulseThreadPool.html" title="Class implementing a thread pool to deal with pulse tasks." alt="" coords="1445,236,1575,263"/>
-<area shape="rect" id="node8" href="$d2/dee/classResThreadPool.html" title=" " alt="" coords="893,235,1196,320"/>
-<area shape="rect" id="node11" href="$df/d9c/classPulseThreadPoolInterface.html" title="Interface for thread pools supporting pulse tasks." alt="" coords="951,344,1139,371"/>
-<area shape="rect" id="node12" href="$dc/d6e/classRandomnessGenerator.html" title=" " alt="" coords="195,110,366,151"/>
-<area shape="rect" id="node15" href="$d4/d38/classRandomNoiseSource.html" title=" " alt="" coords="525,169,693,210"/>
-<area shape="rect" id="node13" title=" " alt="" coords="6,117,65,144"/>
-<area shape="rect" id="node14" href="$d3/d57/classUniformNoiseSource.html" title=" " alt="" coords="967,169,1123,210"/>
-<area shape="rect" id="node16" href="$d9/d6b/classNoiseSource.html" title=" " alt="" coords="192,196,369,223"/>
-<area shape="rect" id="node17" href="$d7/d7d/classTimeWatcher.html" title="A time watcher can be used to perform and report time measures." alt="" coords="991,395,1099,421"/>
+<area shape="rect" id="node2" href="$db/d85/classScanningPulseProcess.html" title="Class defining the scanning pulse process interface. " alt="" coords="1325,32,1483,59"/>
+<area shape="rect" id="node3" href="$da/dfd/classPulseTaskFactory.html" title="Factory to make the adequate pulse task depending on the simulation. " alt="" coords="923,17,1051,44"/>
+<area shape="rect" id="node4" href="$d5/d9c/classScene.html" title="Class representing a scene asset. " alt="" coords="565,8,623,35"/>
+<area shape="rect" id="node5" href="$de/d97/classAsset.html" title="Base class for all assets. " alt="" coords="265,8,321,35"/>
+<area shape="rect" id="node20" href="$dc/d6e/classRandomnessGenerator.html" title="RandomnessGenerator\l\&lt; double \&gt;" alt="" coords="215,118,371,159"/>
+<area shape="rect" id="node7" href="$d7/d7d/classTimeWatcher.html" title="A time watcher can be used to perform and report time measures. " alt="" coords="937,433,1037,460"/>
+<area shape="rect" id="node12" href="$d6/ddc/classPulseThreadPool.html" title="Class implementing a thread pool to deal with pulse tasks. " alt="" coords="1343,257,1465,284"/>
+<area shape="rect" id="node8" href="$de/d9a/classPulseTaskDropper.html" title="Class implementing a task dropper to deal with pulse tasks. " alt="" coords="1157,483,1288,509"/>
+<area shape="rect" id="node9" href="$d5/d2f/classBuddingTaskDropper.html" title="BuddingTaskDropper\l\&lt; PulseTaskDropper,\l PulseTask, PulseThreadPool\lInterface, std::vector\&lt; std\l::vector\&lt; double \&gt; \&gt; &amp;, RandomnessGenerator\l\&lt; double \&gt; &amp;, RandomnessGenerator\&lt; double\l \&gt; &amp;, NoiseSource\&lt; double \&gt; &amp; \&gt;" alt="" coords="447,439,741,553"/>
+<area shape="rect" id="node10" href="$da/d8d/classTaskDropper.html" title="TaskDropper\&lt; PulseTask,\l PulseThreadPoolInterface,\l TaskArgs... \&gt;" alt="" coords="203,467,383,523"/>
+<area shape="rect" id="node14" href="$d2/d1f/classSimpleThreadPool.html" title="SimpleThreadPool\&lt; TaskArgs\l ... \&gt;" alt="" coords="496,346,692,387"/>
+<area shape="rect" id="node15" href="$dc/de7/classThreadPool.html" title="Base class providing core implementation of a thread pool to deal with multi threading tasks..." alt="" coords="249,353,337,380"/>
+<area shape="rect" id="node13" href="$d2/dee/classResThreadPool.html" title="ResThreadPool\&lt; std\l::vector\&lt; std::vector\l\&lt; double \&gt; \&gt; &amp;, RandomnessGenerator\l\&lt; double \&gt; &amp;, RandomnessGenerator\l\&lt; double \&gt; &amp;, NoiseSource\&lt; double \&gt; &amp; \&gt;" alt="" coords="853,324,1120,409"/>
+<area shape="rect" id="node16" href="$df/d9c/classPulseThreadPoolInterface.html" title="Interface for thread pools supporting pulse tasks. " alt="" coords="901,223,1073,249"/>
+<area shape="rect" id="node17" href="$d3/d57/classUniformNoiseSource.html" title="UniformNoiseSource\l\&lt; double \&gt;" alt="" coords="915,150,1058,191"/>
+<area shape="rect" id="node18" href="$d4/d38/classRandomNoiseSource.html" title="RandomNoiseSource\&lt;\l double \&gt;" alt="" coords="517,139,671,181"/>
+<area shape="rect" id="node19" href="$d9/d6b/classNoiseSource.html" title="NoiseSource\&lt; double \&gt;" alt="" coords="213,59,372,85"/>
 </map>

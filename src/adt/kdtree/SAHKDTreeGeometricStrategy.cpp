@@ -5,6 +5,13 @@
 
 using helios::hpc::SM_ParallelMergeSort;
 
+// ***  CLONE  *** //
+// *************** //
+SimpleKDTreeGeometricStrategy * SAHKDTreeGeometricStrategy::clone(
+    SimpleKDTreeFactory *kdtf
+) const {
+    return new SAHKDTreeGeometricStrategy(*((SAHKDTreeFactory *)kdtf));
+}
 
 // ***  GEOMETRY LEVEL BUILDING  *** //
 // ********************************* //

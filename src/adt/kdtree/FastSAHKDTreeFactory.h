@@ -40,6 +40,10 @@
 */
 
 class FastSAHKDTreeFactory : public SAHKDTreeFactory {
+using SAHKDTreeFactory::lossNodes;
+using SAHKDTreeFactory::ci;
+using SAHKDTreeFactory::cl;
+using SAHKDTreeFactory::co;
 private:
     // ***  SERIALIZATION  *** //
     // *********************** //
@@ -77,6 +81,17 @@ public:
         double const co=1
     );
     virtual ~FastSAHKDTreeFactory () = default;
+
+    // ***  CLONE  *** //
+    // *************** //
+    /**
+     * @see KDTreeFactory::clone
+     */
+    KDTreeFactory * clone() const override;
+    /**
+     * @brief Assign attributes from FastSAHKDTreeFactory to its clone
+     */
+    void _clone(KDTreeFactory *kdtf) const override;
 
     // ***  SAH UTILS  *** //
     // ******************* //

@@ -11,7 +11,7 @@ var classScenePart =
       [ "VOXEL", "dd/dc4/classScenePart.html#a5c843c2ed1df9e417540d14d01036c12a2b3b7153feedc244ae1c3caddfd53690", null ]
     ] ],
     [ "ScenePart", "dd/dc4/classScenePart.html#ae138cbe8db0cd435091aaaa42513b444", null ],
-    [ "ScenePart", "dd/dc4/classScenePart.html#a573c9469b4865af254d50200a7d7972b", null ],
+    [ "ScenePart", "dd/dc4/classScenePart.html#a17d9907142cde0ed81a4a51c54b4566f", null ],
     [ "~ScenePart", "dd/dc4/classScenePart.html#aa43c74be32c643475b246e21345c7256", null ],
     [ "addObj", "dd/dc4/classScenePart.html#ad77755e3d5bf661ef5a69ca848de833d", null ],
     [ "computeCentroid", "dd/dc4/classScenePart.html#a8a35be714f874833b84a29841de8fe2b", null ],

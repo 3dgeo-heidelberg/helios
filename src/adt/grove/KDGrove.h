@@ -70,6 +70,32 @@ public:
         );
     }
 
+    // ***  KDGROVE METHODS  *** //
+    // ************************* //
+    /**
+     * @brief Make a temporal clone of the KDGrove.
+     *
+     * The temporal clone preserves all static trees but holds its own copy
+     *  for each dynamic tree. Therefore, source KDGrove can be updated, which
+     *  means its dynamic trees can change, while the dynamic trees at the
+     *  temporal clone are not affected by those changes.
+     *
+     * It is called a temporal clone because it clones the KDGrove at a certain
+     *  time. Considering the KDGrove mutates over time. It is not a typical
+     *  clone because it avoids cloning whatever components that do not change
+     *  over time.
+     *
+     * Notice stats are not cloned. Only the main components, it is the trees.
+     *  The subjects are neither updated. The temporal clone should not be
+     *  updated. It must be understood simply as a way of holding the state of
+     *  a KDGrove at a certain time, not as a new fully operating KDGrove.
+     *
+     * @return Temporal clone of the KDGrove
+     * @see GroveKDTreeRaycaster::makeTemporalClone
+     * @see KDGroveRaycaster::makeTemporalClone
+     */
+    virtual std::shared_ptr<KDGrove> makeTemporalClone() const;
+
     // ***  GETTERs and SETTERs  *** //
     // ***************************** //
     /**

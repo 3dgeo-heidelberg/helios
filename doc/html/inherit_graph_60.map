@@ -1,5 +1,6 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" title=" " alt="" coords="5,20,69,47"/>
-<area shape="rect" id="node2" href="$da/d80/classSurfaceInspector_1_1maths_1_1functions_1_1IMathFunction.html" title=" " alt="" coords="117,5,308,61"/>
-<area shape="rect" id="node3" href="$db/dc1/classSurfaceInspector_1_1maths_1_1functions_1_1GaussianFunction.html" title="Implementation of a gaussian function." alt="" coords="356,13,607,54"/>
+<area shape="rect" id="node1" href="$d1/d6e/classPulseTask.html" title="Pulse task interface. " alt="" coords="5,5,89,32"/>
+<area shape="rect" id="node2" href="$d6/d9e/classAbstractPulseRunnable.html" title="Base abstract class for pulse runnables. " alt="" coords="137,5,296,32"/>
+<area shape="rect" id="node3" href="$db/da6/classFullWaveformPulseRunnable.html" title="Concrete implementation of abstract pulse runnable to compute full waveform pulses. " alt="" coords="344,5,535,32"/>
+<area shape="rect" id="node4" href="$da/d0b/classDynFullWaveformPulseRunnable.html" title="Derived class extending FullWaveFormPulseRunnable to handle dynamic moving objects. " alt="" coords="583,5,797,32"/>
 </map>

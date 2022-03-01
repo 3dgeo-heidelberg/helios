@@ -43,7 +43,7 @@ void Triangle::_clone(Primitive *p){
 }
 
 // ***    M E T H O D S    *** //
-// *********************** //
+// *************************** //
 AABB *Triangle::getAABB() {
     if (aabb == nullptr)
         buildAABB();

@@ -1,9 +1,12 @@
 <map id="SurveyPlayback" name="SurveyPlayback">
-<area shape="rect" id="node1" title="Survey playback class, used to extend simulation functionalities so it can be controlled." alt="" coords="1316,124,1443,151"/>
-<area shape="rect" id="node2" href="$d1/d7b/classSimulation.html" title="Class representing a simulation." alt="" coords="1147,73,1239,100"/>
-<area shape="rect" id="node3" href="$de/d9a/classPulseTaskDropper.html" title="Class implementing a task dropper to deal with pulse tasks." alt="" coords="808,72,947,99"/>
-<area shape="rect" id="node4" href="$d5/d2f/classBuddingTaskDropper.html" title=" " alt="" coords="428,68,759,183"/>
-<area shape="rect" id="node5" href="$da/d8d/classTaskDropper.html" title=" " alt="" coords="183,67,379,123"/>
-<area shape="rect" id="node6" title=" " alt="" coords="5,39,65,65"/>
-<area shape="rect" id="node7" title=" " alt="" coords="848,132,907,159"/>
+<area shape="rect" id="node2" href="$d1/d7b/classSimulation.html" title="Class representing a simulation. " alt="" coords="1296,168,1379,195"/>
+<area shape="rect" id="node7" href="$da/dd6/classSimulationReporter.html" title="Class to handle reports related to simulation. " alt="" coords="1501,161,1635,188"/>
+<area shape="rect" id="node3" href="$de/d9a/classPulseTaskDropper.html" title="Class implementing a task dropper to deal with pulse tasks. " alt="" coords="975,115,1105,141"/>
+<area shape="rect" id="node4" href="$d5/d2f/classBuddingTaskDropper.html" title="BuddingTaskDropper\l\&lt; PulseTaskDropper,\l PulseTask, PulseThreadPool\lInterface, std::vector\&lt; std\l::vector\&lt; double \&gt; \&gt; &amp;, RandomnessGenerator\l\&lt; double \&gt; &amp;, RandomnessGenerator\&lt; double\l \&gt; &amp;, NoiseSource\&lt; double \&gt; &amp; \&gt;" alt="" coords="627,68,921,183"/>
+<area shape="rect" id="node5" href="$da/d8d/classTaskDropper.html" title="TaskDropper\&lt; PulseTask,\l PulseThreadPoolInterface,\l TaskArgs... \&gt;" alt="" coords="299,97,479,153"/>
+<area shape="rect" id="node13" href="$dd/de3/classDiscreteTime.html" title="Class to handle discrete time. It supports transforming from continuous time to discrete time and als..." alt="" coords="503,200,603,227"/>
+<area shape="rect" id="node9" href="$d6/d8c/classSimulationStepLoop.html" title="Class extending LinearVoidStepLoop to support main simulation loop. " alt="" coords="971,207,1109,233"/>
+<area shape="rect" id="node10" href="$df/dd6/classLinearVoidStepLoop.html" title="LinearVoidStepLoop\&lt;\&gt;" alt="" coords="697,269,851,296"/>
+<area shape="rect" id="node11" href="$dd/d96/classVoidStepLoop.html" title="VoidStepLoop\&lt; StepInput\l ... \&gt;" alt="" coords="303,262,474,303"/>
+<area shape="rect" id="node12" href="$dd/dcc/classStepLoop.html" title="StepLoop\&lt; StepInput\l ... \&gt;" alt="" coords="5,262,151,303"/>
 </map>
