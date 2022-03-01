@@ -63,6 +63,10 @@ void AbstractBeamDeflector::setScanAngle_rad(double scanAngle_rad) {
 	else if (scanAngle_rad > cfg_device_scanAngleMax_rad) {
 		scanAngle_rad = cfg_device_scanAngleMax_rad;
 	}
+    // scanAngle of 0 would mean that no points are recorded - set to scanAngleMax instead
+    if (scanAngle_rad == 0) {
+        scanAngle_rad = cfg_device_scanAngleMax_rad;
+    }
 	this->cfg_setting_scanAngle_rad = scanAngle_rad;
 	stringstream ss;
 	ss << "Scan angle set to " << MathConverter::radiansToDegrees(
