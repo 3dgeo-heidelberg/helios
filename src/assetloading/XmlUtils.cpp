@@ -282,8 +282,15 @@ std::vector<std::shared_ptr<DynMotion>> XmlUtils::createDynMotionsVector(
             selfMode = true;
         }
 
+        // Handle identity
+        if(type=="identity"){
+            dms.push_back(std::make_shared<DynMotion>(
+                rm3f.makeIdentity(),
+                selfMode
+            ));
+        }
         // Handle translation
-        if(type=="translation"){
+        else if(type=="translation"){
             motionAttr = xmlMotion->FindAttribute("vec");
             if(motionAttr == nullptr){
                 throw HeliosException(

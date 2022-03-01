@@ -10,5 +10,6 @@ var dir_7dda38ba3c79667233e5dd64fbbdae1f =
     [ "VoxelFileParser.h", "dd/da4/VoxelFileParser_8h_source.html", null ],
     [ "XmlAssetsLoader.h", "d0/d0e/XmlAssetsLoader_8h_source.html", null ],
     [ "XmlSceneLoader.h", "d5/d5f/XmlSceneLoader_8h_source.html", null ],
+    [ "XmlSurveyLoader.h", "d1/da7/XmlSurveyLoader_8h_source.html", null ],
     [ "XmlUtils.h", "d9/db6/XmlUtils_8h_source.html", null ]
 ];

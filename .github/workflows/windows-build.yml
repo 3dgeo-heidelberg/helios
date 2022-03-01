@@ -34,8 +34,9 @@ jobs:
           path: |
             ${{github.workspace}}/lib/boost
             ${{github.workspace}}/.github/config/boost
-          key: ${{ runner.os }}-boost.1.78
-
+          key: ${{ runner.os }}-boost.1.78-1
+          
+      - uses: actions/checkout@v2
 
       - name: Set Up Python 3.6
         if: steps.cache-boost.outputs.cache-hit != 'true'
@@ -99,7 +100,19 @@ jobs:
         run: |
           7z x lib/boost_1_78_0.zip -olib
           move lib/boost_1_78_0 lib/boost
-      
+
+      - uses: suisei-cn/actions-download-file@v1
+        id: downloadzlib
+        name: Download zlib
+        with:
+          url: "https://www.zlib.net/zlib1211.zip"
+          target: lib/boost/zlib1211.zip
+
+      - name: Extract zlib
+        working-directory: ${{env.GITHUB_WORKSPACE}}
+        run: |
+          7z x lib/boost/zlib1211.zip -olib/boost
+
       - name: Build Boost
         if: steps.cache-boost.outputs.cache-hit != 'true'
         working-directory: ${{env.GITHUB_WORKSPACE}}
@@ -157,14 +170,6 @@ jobs:
           $env:Path += ';"C:\Program Files\scilab-6.1.0\bin"'
           cmake -DCMAKE_BUILD_TYPE=Release -DLAPACK_LIBRARY="C:\Program Files\scilab-6.1.0\bin\lapack.lib" -DBLAS_LIBRARY="C:\Program Files\scilab-6.1.0\bin\blasplus.lib" .
           msbuild.exe armadillo.sln /p:Configuration=Release
-          
-      - uses: suisei-cn/actions-download-file@v1
-        if: steps.cache-lastools-armadillo-gdal.outputs.cache-hit != 'true'
-        id: downloadzlib
-        name: Download zlib
-        with:
-          url: "https://www.zlib.net/zlib1211.zip"
-          target: lib/boost/zlib1211.zip
 
       - uses: suisei-cn/actions-download-file@v1
         if: steps.cache-lastools-armadillo-gdal.outputs.cache-hit != 'true'
@@ -293,7 +298,7 @@ jobs:
           path: |
             ${{github.workspace}}/lib/boost
             ${{github.workspace}}/.github/config/boost
-          key: ${{ runner.os }}-boost.1.78
+          key: ${{ runner.os }}-boost.1.78-1
            
       - name: Build HELIOS++
         working-directory: ${{env.GITHUB_WORKSPACE}}

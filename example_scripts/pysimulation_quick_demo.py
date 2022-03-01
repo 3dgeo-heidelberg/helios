@@ -34,7 +34,7 @@ def callback(output=None):
             cpn[2] = pos.z
 
         # Notify for conditional variable
-        pht.PYHELIOS_SIMULATION_BUILD_CONDITION_VARIABLE.notify()
+        pyhelios.PYHELIOS_SIMULATION_BUILD_CONDITION_VARIABLE.notify()
 
 
 # ---  M A I N  --- #
@@ -42,8 +42,8 @@ def callback(output=None):
 if __name__ == '__main__':
     # Configure simulation context
     pyhelios.loggingVerbose()
-    #pyhelios.loggingVerbose2()
-	#pyhelios.loggingQuiet()
+    # pyhelios.loggingVerbose2()
+    # pyhelios.loggingQuiet()
     pyhelios.setDefaultRandomnessGeneratorSeed("123")
 
     # Build a simulation
@@ -57,7 +57,7 @@ if __name__ == '__main__':
     simBuilder.setZipOutput(False)
     # Sim frequency 0 means the simulation will start and run until it is
     # finished with no interleaved work (no callbacks)
-    simBuilder.setSimFrequency(10)
+    simBuilder.setCallbackFrequency(10)
     simBuilder.setFinalOutput(True)
     simBuilder.setLegNoiseDisabled(True)
     simBuilder.setRebuildScene(True)

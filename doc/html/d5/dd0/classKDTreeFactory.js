@@ -2,6 +2,7 @@ var classKDTreeFactory =
 [
     [ "KDTreeFactory", "d5/dd0/classKDTreeFactory.html#ad905f937a8e13e78f18e659d0732a7a5", null ],
     [ "_lighten", "d5/dd0/classKDTreeFactory.html#aad0db942ba81564682211127cc1d21c3", null ],
+    [ "clone", "d5/dd0/classKDTreeFactory.html#a3a2a71fba695ba9d7d5c940d441e728c", null ],
     [ "isBuildingLightNodes", "d5/dd0/classKDTreeFactory.html#a07dd08e1de4ceeee1e028df1eb9acc8e", null ],
     [ "lighten", "d5/dd0/classKDTreeFactory.html#a837bf89fb39600314e02f9fa9d05ec9b", null ],
     [ "makeFromPrimitives", "d5/dd0/classKDTreeFactory.html#a8edde59f828bf71de1eb27486141887a", null ],

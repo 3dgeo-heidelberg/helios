@@ -2,9 +2,10 @@
 #include <boost/asio/thread_pool.hpp>
 #include <boost/asio/post.hpp>
 
-#include "Scanner.h"
-#include "MeasurementsBuffer.h"
-#include "Color4f.h"
+#include <Scanner.h>
+#include <MeasurementsBuffer.h>
+#include <Color4f.h>
+#include <SimulationStepLoop.h>
 #include <PulseTaskDropper.h>
 #include <PulseThreadPoolInterface.h>
 #include <FullWaveformPulseRunnable.h>
@@ -12,11 +13,13 @@
 #ifdef PYTHON_BINDING
 #include <PySimulationCycleCallback.h>
 #endif
+#include <SimulationReporter.h>
 
 /**
  * @brief Class representing a simulation
  */
 class Simulation {
+friend class SimulationReporter;
 protected:
     // ***  ATTRIBUTES  *** //
     // ******************** //
@@ -55,9 +58,17 @@ protected:
 	std::shared_ptr<Scanner> mScanner = nullptr;
 
 	/**
-	 * @brief Simulation frequency. If it is 0 then no pause is possible.
+	 * @brief The handler for simulation steps, it also contains the discrete
+	 *  time object that hanldes simulation frequency and time
 	 */
-	size_t simFrequency = 0;
+	SimulationStepLoop stepLoop;
+
+	/**
+	 * @brief The callback frequency. It specifies how many steps must elapse
+	 *  between consecutive callbacks
+	 */
+	size_t callbackFrequency = 0;
+
 	/**
 	 * @brief Mutex to handle simulation pause and iterations on a
 	 *  multi threading context
@@ -104,6 +115,11 @@ protected:
      *  be considered
      */
     std::string fixedGpsTimeStart = "";
+    /**
+     * @brief The report to generate reports about simulation
+     * @see SimulationReporter
+     */
+    SimulationReporter reporter;
 
 public:
     /**
@@ -126,7 +142,7 @@ public:
 	 */
     bool finished = false;
 
-    // TODO Rethink : If measurements buffer is not used, remove it.
+    // TODO Pending : If measurements buffer is not used, remove it.
     // The same applies for AbstractDetector mBuffer
 	std::shared_ptr<MeasurementsBuffer> mBuffer = nullptr;
     std::shared_ptr<SimulationCycleCallback> callback = nullptr;
@@ -149,8 +165,13 @@ public:
         std::string fixedGpsTimeStart=""
     );
 
-    // ***  M E T H O D S  *** //
-    // *********************** //
+    // ***  SIMULATION METHODS  *** //
+    // **************************** //
+    /**
+     * @brief Prepare the simulation before starting its main loop
+     * @param simFrequency_hz The simulation frequency in hertz
+     */
+    virtual void prepareSimulation(int simFrequency_hz);
     /**
      * @brief Perform computations for current simulation step
      */
@@ -182,6 +203,9 @@ public:
 	 */
 	void shutdown();
 
+
+	// ***  UTIL METHODS  *** //
+	// ********************** //
     /**
      * @brief Compute the current GPS time (milliseconds)
      * @return Current GPS time (milliseconds)
@@ -209,7 +233,7 @@ public:
      * @return Simulation speed factor
      * @see Simulation::mSimSpeedFactor
      */
-    double getSimSpeedFactor() {return this->mSimSpeedFactor;}
+    inline double getSimSpeedFactor() const {return this->mSimSpeedFactor;}
 
 	/**
 	 * @brief Set scanner for the simulation
@@ -222,7 +246,7 @@ public:
 	 * @return Simulation scanner
 	 * @see Simulation::mScanner
 	 */
-	std::shared_ptr<Scanner> getScanner() {return this->mScanner;}
+	inline std::shared_ptr<Scanner> getScanner() {return this->mScanner;}
 
 
 	/**
@@ -230,24 +254,41 @@ public:
 	 * @return True if simulation is paused, false otherwise
 	 * @see Simulation::mPaused
 	 */
-	bool isPaused() {return this->mPaused;}
+	inline bool isPaused() const {return this->mPaused;}
 	/**
 	 * @brief Check if simulation is stopped (true) or not (false)
 	 * @return True if simulation is stopped, false otherwise
 	 * @see Simulation::mStopped
 	 */
-	bool isStopped() {return this->mStopped;}
+	inline bool isStopped() const {return this->mStopped;}
 	/**
 	 * @brief Obtain simulation frequency
 	 * @return Simulation frequency (hertz)
-	 * @see Simulation::simFrequency
+	 * @see Simulation::stepLoop
 	 */
-	size_t getSimFrequency() {return simFrequency;}
+	inline size_t getSimFrequency() const {return stepLoop.getFrequency();}
 	/**
 	 * @brief Set simulation frequency
 	 * @param simFrequency New simulation frequency (hertz)
-	 * @see Simulation::simFrequency
+	 * @see Simulation::stepLoop
 	 */
-	void setSimFrequency(size_t const simFrequency)
-    {this->simFrequency = simFrequency;}
+	inline void setSimFrequency(size_t const simFrequency)
+    {stepLoop.setFrequency(simFrequency);}
+    /**
+     * @brief Get the callback frequency. It is, how many steps must elapse
+     *  between consecutive callbacks
+     * @return Callback frequency
+     * @see Simulation::callbackFrequency
+     * @see Simulation::setCallbackFrequency
+     */
+    inline size_t getCallbackFrequency() const
+    {return callbackFrequency;}
+    /**
+     * @brief Set the new callback frequency
+     * @param callbackFrequency New callback frequency
+     * @see Simulation::callbackFrequency
+     * @see Simulation::getCallbackFrequency
+     */
+    inline void setCallbackFrequency(size_t const callbackFrequency)
+    {this->callbackFrequency = callbackFrequency;}
 };

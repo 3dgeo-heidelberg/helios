@@ -704,7 +704,7 @@ XmlAssetsLoader::createScannerSettingsFromXml(
               node,
               "verticalAngleMin_deg",
               "double",
-              0.0,
+              NAN,
               defaultScannerSettingsMsg
           ))
       );
@@ -716,7 +716,7 @@ XmlAssetsLoader::createScannerSettingsFromXml(
               node,
               "verticalAngleMax_deg",
               "double",
-              0.0,
+              NAN,
               defaultScannerSettingsMsg
           ))
       );
@@ -865,8 +865,8 @@ void XmlAssetsLoader::makeDefaultTemplates(){
     defaultScannerTemplate->headRotateStop_rad = 0;
     defaultScannerTemplate->pulseFreq_Hz = 0;
     defaultScannerTemplate->scanAngle_rad = 0;
-    defaultScannerTemplate->verticalAngleMin_rad = 0;
-    defaultScannerTemplate->verticalAngleMax_rad = 0;
+    defaultScannerTemplate->verticalAngleMin_rad = NAN;
+    defaultScannerTemplate->verticalAngleMax_rad = NAN;
     defaultScannerTemplate->scanFreq_Hz = 0;
 
     // Make default platform settings template

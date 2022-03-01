@@ -9,6 +9,13 @@
 using SurfaceInspector::maths::Vector;
 using helios::hpc::SM_ParallelMergeSort;
 
+// ***  CLONE  *** //
+// *************** //
+SimpleKDTreeGeometricStrategy * SimpleKDTreeGeometricStrategy::clone(
+    SimpleKDTreeFactory *kdtf
+) const {
+    return new SimpleKDTreeGeometricStrategy(*kdtf);
+}
 
 // ***  GEOMETRY LEVEL BUILDING  *** //
 // ********************************* //

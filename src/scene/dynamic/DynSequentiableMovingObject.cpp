@@ -6,12 +6,12 @@ using std::vector;
 
 // ***  DYNAMIC BEHAVIOR  *** //
 // ************************** //
-bool DynSequentiableMovingObject::doStep(){
+bool DynSequentiableMovingObject::doSimStep(){
     // Fill motion queues from sequencer
     fillMotionQueues();
 
     // Return DynMovingObject output
-    return DynMovingObject::doStep();
+    return DynMovingObject::doSimStep();
 }
 
 void DynSequentiableMovingObject::fillMotionQueues(){
