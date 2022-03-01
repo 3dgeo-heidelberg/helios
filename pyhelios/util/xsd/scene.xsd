@@ -50,6 +50,7 @@
             <xs:enumeration value="onGround" />
             <xs:enumeration value="rotation" />
             <xs:enumeration value="scale" />
+            <xs:enumeration value="up" />
         </xs:restriction>
     </xs:simpleType>
 
@@ -82,7 +83,6 @@
                                                             <xs:attribute type="xs:string" name="type" use="required"/>
                                                             <xs:attribute type="paramkeyType" name="key" use="required"/>
                                                             <xs:attribute type="xs:string" name="value" use="optional"/>
-                                                            <xs:attribute type="axisYZType" name="up" use="optional"/>
                                                         </xs:complexType>
                                                     </xs:element>
                                                 </xs:sequence>
