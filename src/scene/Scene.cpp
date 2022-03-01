@@ -148,10 +148,15 @@ bool Scene::finalizeLoading(bool const safe) {
 }
 
 void Scene::registerParts(){
+    // Find scene parts from primitives
     unordered_set<shared_ptr<ScenePart>> partsSet;
     for(Primitive *primitive : primitives)
         if(primitive->part != nullptr)
             partsSet.insert(primitive->part);
+    // Remove already registered scene parts
+    unordered_set<shared_ptr<ScenePart>>::iterator it;
+    for(shared_ptr<ScenePart> part : parts) partsSet.erase(part);
+    // Register all new scene parts
     parts.insert(parts.end(), partsSet.begin(), partsSet.end());
 }
 
@@ -182,26 +187,27 @@ glm::dvec3 Scene::getGroundPointAt(glm::dvec3 point) {
 
 shared_ptr<RaySceneIntersection>
 Scene::getIntersection(
-    glm::dvec3 &rayOrigin,
-    glm::dvec3 &rayDir,
+    glm::dvec3 const &rayOrigin,
+    glm::dvec3 const &rayDir,
     bool const groundOnly
-){
-  vector<double> tMinMax = bbox->getRayIntersection(rayOrigin, rayDir);
-  if (tMinMax.empty()) {
-    logging::DEBUG("tMinMax is empty");
-    return nullptr;
-  }
+) const {
+    vector<double> tMinMax = bbox->getRayIntersection(rayOrigin, rayDir);
+    return getIntersection(tMinMax, rayOrigin, rayDir, groundOnly);
+}
 
-  // TODO test without using kdtree / kdgrove
-  bool bruteForce = false;
-  shared_ptr<RaySceneIntersection> result;
-
-  if (!bruteForce) {
-    result = shared_ptr<RaySceneIntersection>(raycaster->search(
-        rayOrigin, rayDir, tMinMax[0], tMinMax[1], groundOnly));
-  }
-
-  return result;
+std::shared_ptr<RaySceneIntersection> Scene::getIntersection(
+    vector<double> const &tMinMax,
+    glm::dvec3 const &rayOrigin,
+    glm::dvec3 const &rayDir,
+    bool const groundOnly
+) const{
+    if (tMinMax.empty()) {
+        logging::DEBUG("tMinMax is empty");
+        return nullptr;
+    }
+    return shared_ptr<RaySceneIntersection>(raycaster->search(
+        rayOrigin, rayDir, tMinMax[0], tMinMax[1], groundOnly
+    ));
 }
 
 map<double, Primitive *>

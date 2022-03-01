@@ -4,6 +4,7 @@
 #include <DynObject.h>
 #include <KDTreeRaycaster.h>
 #include <RaycasterGroveTree.h>
+#include <KDTreeFactory.h>
 
 /**
  * @author Alberto M. Esmoris Pena
@@ -17,6 +18,14 @@ class GroveKDTreeRaycaster :
     public RaycasterGroveTree<DynObject>,
     public KDTreeRaycaster
 {
+protected:
+    // ***  ATTRIBUTES  *** //
+    // ******************** //
+    /**
+     * @brief The KDTreeFactory to be used to rebuild the KDTree if necessary
+     */
+    std::shared_ptr<KDTreeFactory> kdtf;
+
 public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //
     // ************************************ //
@@ -24,8 +33,12 @@ public:
      * @brief Default Grove KDTree ray caster constructor
      * @param root Root node of the KDTree
      */
-    GroveKDTreeRaycaster(std::shared_ptr<LightKDTreeNode> root) :
-        KDTreeRaycaster(root)
+    GroveKDTreeRaycaster(
+        std::shared_ptr<LightKDTreeNode> root,
+        std::shared_ptr<KDTreeFactory> kdtf=nullptr
+    ) :
+        KDTreeRaycaster(root),
+        kdtf(kdtf)
     {}
     virtual ~GroveKDTreeRaycaster() = default;
 
@@ -64,4 +77,16 @@ public:
      * @see RaycasterGroveTree::update
      */
     void update(DynObject &dynObj) override;
+
+    /**
+     * @brief Make a temporal clone of the GroveKDTreeRaycaster
+     *
+     * The temporal clone is meant to produce a temporal copy of the tree. If
+     *  the original tree is updated, then the temporal copy should not be
+     *  updated.
+     *
+     * @return Temporal clone of the GroveKDTreeRaycaster
+     * @see KDGrove::makeTemporalClone
+     */
+    virtual std::shared_ptr<GroveKDTreeRaycaster> makeTemporalClone() const;
 };

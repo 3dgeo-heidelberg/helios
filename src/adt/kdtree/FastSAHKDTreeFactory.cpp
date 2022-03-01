@@ -10,6 +10,20 @@ FastSAHKDTreeFactory::FastSAHKDTreeFactory(
 ) : SAHKDTreeFactory(lossNodes, ci, cl, co)
 {}
 
+// ***  CLONE  *** //
+// *************** //
+KDTreeFactory * FastSAHKDTreeFactory::clone() const{
+    FastSAHKDTreeFactory *kdtf = new FastSAHKDTreeFactory(
+        lossNodes, ci, cl, co
+    );
+    _clone(kdtf);
+    return kdtf;
+}
+
+void FastSAHKDTreeFactory::_clone(KDTreeFactory *kdtf) const{
+    SAHKDTreeFactory::_clone(kdtf);
+}
+
 // ***  SAH UTILS  *** //
 // ******************* //
 double FastSAHKDTreeFactory::findSplitPositionBySAH(

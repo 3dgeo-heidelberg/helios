@@ -1,5 +1,12 @@
 #include <AxisSAHKDTreeGeometricStrategy.h>
 
+// ***  CLONE  *** //
+// *************** //
+SimpleKDTreeGeometricStrategy * AxisSAHKDTreeGeometricStrategy::clone(
+    SimpleKDTreeFactory *kdtf
+) const{
+    return new AxisSAHKDTreeGeometricStrategy(*((AxisSAHKDTreeFactory *)kdtf));
+}
 
 // ***  GEOMETRY LEVEL BUILDING  *** //
 // ********************************* //

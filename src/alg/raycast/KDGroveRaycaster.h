@@ -57,4 +57,18 @@ public:
         double tmax,
         bool groundOnly
     ) override;
+
+    // ***  KDGROVE RELATED METHODS  *** //
+    // ********************************* //
+    /**
+     * @brief Make a temporal clone of the KDGroveRaycaster
+     *
+     * The temporal clone is meant to produce a temporal copy of the raycaster.
+     *  If the original raycaster is updated, then the temporal copy should not
+     *  be updated.
+     *
+     * @return Temporal clone of the KDGroveRaycaster
+     * @see KDGrove::makeTemporalClone
+     */
+    virtual std::shared_ptr<KDGroveRaycaster> makeTemporalClone() const;
 };

@@ -108,7 +108,7 @@ void PyHeliosSimulation::start (){
         )
     );
     playback->callback = callback;
-    playback->setSimFrequency(simFrequency);
+    playback->setCallbackFrequency(callbackFrequency);
     thread = new boost::thread(
         boost::bind(&SurveyPlayback::start, &(*playback))
     );
@@ -181,7 +181,7 @@ PyHeliosOutputWrapper * PyHeliosSimulation::join(){
     );
 
     // Callback concurrency handling (NON BLOCKING MODE)
-    if(simFrequency != 0 && callback != nullptr){
+    if(callbackFrequency != 0 && callback != nullptr){
         if(!playback->finished) {
             std::vector<Measurement> measurements(0);
             std::vector<Trajectory> trajectories(0);
@@ -300,13 +300,14 @@ PyHeliosSimulation * PyHeliosSimulation::copy(){
     phs->outputPath = this->outputPath;
     phs->numThreads = this->numThreads;
     phs->finalOutput = this->finalOutput;
-    phs->survey = std::make_shared<Survey>(*survey);
     phs->callback = this->callback;
     phs->lasOutput = this->lasOutput;
     phs->las10     = this->las10;
     phs->zipOutput = this->zipOutput;
     phs->exportToFile = this->exportToFile;
-    phs->setSimFrequency(getSimFrequency());
+    phs->setCallbackFrequency(getCallbackFrequency());
+    phs->survey = std::make_shared<Survey>(*survey);
+    phs->survey->scanner->initializeSequentialGenerators();
     return phs;
 }
 
@@ -332,6 +333,21 @@ void PyHeliosSimulation::setCallback(PyObject * pyCallback){
     if(survey->scanner->cycleMeasurementsMutex == nullptr){
         survey->scanner->cycleMeasurementsMutex =
             std::make_shared<std::mutex>();
+    }
+}
+
+// ***  INTERNAL USE  *** //
+// ********************** //
+std::shared_ptr<DynScene> PyHeliosSimulation::_getDynScene(){
+    try{
+        return std::dynamic_pointer_cast<DynScene>(
+            survey->scanner->platform->scene
+        );
+    }
+    catch(std::exception &ex){
+        throw PyHeliosException(
+            "Failed to obtain dynamic scene. Current scene is not dynamic."
+        );
     }
 }
 

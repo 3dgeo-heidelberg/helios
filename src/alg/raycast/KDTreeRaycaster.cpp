@@ -55,6 +55,7 @@ RaySceneIntersection* KDTreeRaycaster::search(
 	RaySceneIntersection* result = new RaySceneIntersection();
 	result->prim = prim;
 	result->point = rayOrigin + (rayDir * search.closestHitDistance);
+	result->hitDistance = search.closestHitDistance;
 	return result;
 }
 

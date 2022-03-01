@@ -20,6 +20,8 @@ var searchData=
   ['peakintensityindex',['peakIntensityIndex',['../dc/d42/classScanner.html#aa88f7c100b678d59ca16376a15074546',1,'Scanner']]],
   ['pendingcount',['pendingCount',['../da/d92/classWarehouseThreadPool.html#aca83ee3987dd55e7fa7a0f97de765936',1,'WarehouseThreadPool']]],
   ['pendingnodes',['pendingNodes',['../d0/da5/classBinaryTreeBreadthIterator.html#a9dfe9e4197cde906fa73bbdc2a4fa5d3',1,'BinaryTreeBreadthIterator::pendingNodes()'],['../d4/d02/classBinaryTreeDepthIterator.html#ac66f47a11f85ed9c6ba145c14170efb8',1,'BinaryTreeDepthIterator::pendingNodes()'],['../d3/d43/classBinaryTreeFastBreadthIterator.html#a049d07d55c3fe96d92fe2ea1395d42aa',1,'BinaryTreeFastBreadthIterator::pendingNodes()'],['../dc/da5/classBinaryTreeFastDepthIterator.html#ac2f9ae2f5acbd23bd656b21e3721d6a3',1,'BinaryTreeFastDepthIterator::pendingNodes()']]],
+  ['period',['period',['../dd/de3/classDiscreteTime.html#a139f5f004ad63f4fd1066fb562d4fba1',1,'DiscreteTime']]],
+  ['periodscale',['periodScale',['../dd/de3/classDiscreteTime.html#a14dda6c129033962755f76bf1f7781b3',1,'DiscreteTime']]],
   ['pitch',['pitch',['../db/d69/classHelicopterPlatform.html#a3bd69e2c2b40d56ef5f76e5aa289e46f',1,'HelicopterPlatform::pitch()'],['../d2/d43/classTrajectory.html#a22bebd0f8076cc699eec3aaa30bafdef',1,'Trajectory::pitch()']]],
   ['pixelheight',['pixelHeight',['../d1/d0c/classGeoTiffFileLoader.html#a0f7c8e001803c4752b838abbea8c7c95',1,'GeoTiffFileLoader']]],
   ['pixelwidth',['pixelWidth',['../d1/d0c/classGeoTiffFileLoader.html#a5867cae1d221fbe9d36fdbba960684ea',1,'GeoTiffFileLoader']]],
@@ -48,6 +50,7 @@ var searchData=
   ['primitivetype',['primitiveType',['../dd/dc4/classScenePart.html#ad383e51370b014948843fdebad0e8f19',1,'ScenePart']]],
   ['primsout',['primsOut',['../d6/dd2/classAbstractGeometryFilter.html#a2cad90f9937927dbb66517fb4bc0205f',1,'AbstractGeometryFilter']]],
   ['progress',['progress',['../d6/da1/classSurveyPlayback.html#af4d53e6a4430ba53c8551bd483b46d08',1,'SurveyPlayback']]],
+  ['ptf',['ptf',['../db/d85/classScanningPulseProcess.html#a36794f689c75b9053fbe424667d01715',1,'ScanningPulseProcess']]],
   ['pulsefreq_5fhz',['pulseFreq_Hz',['../d0/d23/classScannerSettings.html#a4dd555e27c9634222b04ff1aef51a4a8',1,'ScannerSettings']]],
   ['pulselength_5fns',['pulseLength_ns',['../d4/dfb/classFWFSettings.html#aa66ec3a7b686cb679b3c4d8dcf401ff8',1,'FWFSettings']]],
   ['pulsereturnnumber',['pulseReturnNumber',['../db/d2e/classMeasurement.html#a07c6e9ca3067967a6c609530bc55373e',1,'Measurement']]]

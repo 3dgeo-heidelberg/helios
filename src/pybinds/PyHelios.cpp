@@ -142,9 +142,19 @@ BOOST_PYTHON_MODULE(_pyhelios){
             return_internal_reference<>()
         )
         .add_property(
-            "simFrequency",
+            "simulationFrequency",
             &PyHeliosSimulation::getSimFrequency,
             &PyHeliosSimulation::setSimFrequency
+        )
+        .add_property(
+            "dynSceneStep",
+            &PyHeliosSimulation::getDynSceneStep,
+            &PyHeliosSimulation::setDynSceneStep
+        )
+        .add_property(
+            "callbackFrequency",
+            &PyHeliosSimulation::getCallbackFrequency,
+            &PyHeliosSimulation::setCallbackFrequency
         )
         .add_property(
             "finalOutput",
@@ -1223,6 +1233,20 @@ BOOST_PYTHON_MODULE(_pyhelios){
             &PyScenePartWrapper::getScale,
             &PyScenePartWrapper::setScale
         )
+        .def(
+            "isDynamicMovingObject",
+            &PyScenePartWrapper::isDynamicMovingObject
+        )
+        .add_property(
+            "dynObjectStep",
+            &PyScenePartWrapper::getDynObjectStep,
+            &PyScenePartWrapper::setDynObjectStep
+        )
+        .add_property(
+            "observerStep",
+            &PyScenePartWrapper::getObserverStep,
+            &PyScenePartWrapper::setObserverStep
+        )
     ;
 
     // Register Scene
@@ -1269,6 +1293,20 @@ BOOST_PYTHON_MODULE(_pyhelios){
         .def(
             "writeObject",
             &PySceneWrapper::writeObject
+        )
+        .def(
+            "getNumSceneParts",
+            &PySceneWrapper::getNumSceneParts
+        )
+        .def(
+            "getScenePart",
+            &PySceneWrapper::getScenePart,
+            return_value_policy<manage_new_object>()
+        )
+        .add_property(
+            "dynSceneStep",
+            &PySceneWrapper::getDynSceneStep,
+            &PySceneWrapper::setDynSceneStep
         )
     ;
 

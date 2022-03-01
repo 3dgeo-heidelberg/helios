@@ -34,7 +34,6 @@ public:
 	 *  be considered (true) or not (false)
 	 * @return Return map of collected primitives, each identified by its
 	 *  distance with respect to ray origin
-	 * @see Raycaster::searchAll_recursive
 	 */
     virtual std::map<double, Primitive*> searchAll(
         glm::dvec3 rayOrigin,
@@ -56,7 +55,6 @@ public:
 	 * @param groundOnly Flag to specify if only ground primitives must
 	 *  be considered (true) or not (false)
 	 * @return Return first found intersection
-	 * @see Raycaster::search_recursive
 	 */
     virtual RaySceneIntersection * search(
         glm::dvec3 rayOrigin,

@@ -1,6 +1,13 @@
 #include <scene/dynamic/DynObject.h>
 #include <scene/primitives/Primitive.h>
 
+// ***  DYNAMIC BEHAVIOR  *** //
+// ************************** //
+bool DynObject::doStep(){
+    if(stepLoop.doStep()) return stepLoop.retrieveOutput();
+    return false;
+}
+
 // ***  U T I L  *** //
 // ***************** //
 size_t DynObject::countVertices() const {

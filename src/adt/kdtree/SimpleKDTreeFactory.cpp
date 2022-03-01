@@ -31,6 +31,19 @@ SimpleKDTreeFactory::SimpleKDTreeFactory() : minSplitPrimitives(5) {
     ;
 }
 
+// ***  CLONE  *** //
+// *************** //
+KDTreeFactory * SimpleKDTreeFactory::clone() const{
+    SimpleKDTreeFactory *kdtf = new SimpleKDTreeFactory();
+    _clone(kdtf);
+    return kdtf;
+}
+
+void SimpleKDTreeFactory::_clone(KDTreeFactory *_kdtf) const{
+    SimpleKDTreeFactory *kdtf = (SimpleKDTreeFactory *) _kdtf;
+    kdtf->minSplitPrimitives = minSplitPrimitives;
+}
+
 // ***  SIMPLE KDTREE FACTORY METHODS  *** //
 // *************************************** //
 KDTreeNodeRoot* SimpleKDTreeFactory::makeFromPrimitivesUnsafe(
