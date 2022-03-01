@@ -84,6 +84,17 @@ public:
     SimpleKDTreeFactory();
     virtual ~SimpleKDTreeFactory() = default;
 
+    // ***  CLONE  *** //
+    // *************** //
+    /**
+     * @see KDTreeFactory::clone
+     */
+    KDTreeFactory * clone() const override;
+    /**
+     * @brief Assign attributes from soruce SimpleKDTreeFactory to its clone
+     */
+    virtual void _clone(KDTreeFactory *kdtf) const;
+
     // ***  SIMPLE KDTREE FACTORY METHODS  *** //
     // *************************************** //
     /**

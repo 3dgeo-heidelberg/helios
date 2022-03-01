@@ -1,4 +1,4 @@
-// TODO Rethink : This implementation is calling scanner setLastPulseWasHit
+// TODO Pending : This implementation is calling scanner setLastPulseWasHit
 // Is this thread safe?
 #include "FullWaveformPulseRunnable.h"
 
@@ -27,9 +27,6 @@ void FullWaveformPulseRunnable::operator()(
 	RandomnessGenerator<double> &randGen2,
 	NoiseSource<double> &intersectionHandlingNoiseSource
 ){
-    // Retrieve scene
-	shared_ptr<Scene> scene = detector->scanner->platform->scene;
-
 	// Compute beam direction
 	glm::dvec3 beamDir = absoluteBeamAttitude.applyTo(Directions::forward);
 
@@ -39,7 +36,10 @@ void FullWaveformPulseRunnable::operator()(
 	// performance optimization, so we should keep it nevertheless. sbecht 2016-04-24
 
 	// Early abort if central axis of the beam does not intersect with the scene:
-	vector<double> tMinMax = scene->getAABB()->getRayIntersection(absoluteBeamOrigin, beamDir);
+	vector<double> tMinMax = scene.getAABB()->getRayIntersection(
+	    absoluteBeamOrigin,
+	    beamDir
+    );
 	if (tMinMax.empty()) {
 		logging::DEBUG("Early abort - beam does not intersect with the scene");
 		detector->scanner->setLastPulseWasHit(false);
@@ -50,7 +50,7 @@ void FullWaveformPulseRunnable::operator()(
 	map<double, double> reflections;
 	vector<RaySceneIntersection> intersects;
 	computeSubrays(
-	    *scene,
+	    tMinMax,
 	    intersectionHandlingNoiseSource,
 	    reflections,
 	    intersects
@@ -73,7 +73,7 @@ void FullWaveformPulseRunnable::operator()(
 // ***  OPERATOR METHODS  *** //
 // ************************** //
 void FullWaveformPulseRunnable::computeSubrays(
-    Scene &scene,
+    vector<double> const &tMinMax,
     NoiseSource<double> &intersectionHandlingNoiseSource,
     std::map<double, double> &reflections,
     vector<RaySceneIntersection> &intersects
@@ -102,10 +102,10 @@ void FullWaveformPulseRunnable::computeSubrays(
         // # Loop over sub-rays along the circle
         for (int circleStep = 0; circleStep < circleSteps; circleStep++){
             handleSubray(
+                tMinMax,
                 circleStep,
                 circleStep_rad,
                 r1,
-                scene,
                 subrayDivergenceAngle_rad,
                 intersectionHandlingNoiseSource,
                 reflections,
@@ -116,16 +116,17 @@ void FullWaveformPulseRunnable::computeSubrays(
 }
 
 void FullWaveformPulseRunnable::handleSubray(
+    vector<double> const &_tMinMax,
     int circleStep,
     double circleStep_rad,
     Rotation &r1,
-    Scene &scene,
     double divergenceAngle,
     NoiseSource<double> &intersectionHandlingNoiseSource,
     map<double, double> &reflections,
     vector<RaySceneIntersection> &intersects
 ){
     // Rotate around the circle:
+    vector<double> tMinMax = _tMinMax;
     Rotation r2 = Rotation(Directions::forward, circleStep_rad * circleStep);
     r2 = r2.applyTo(r1);
 
@@ -138,12 +139,11 @@ void FullWaveformPulseRunnable::handleSubray(
     double incidenceAngle = 0.0;
     while(rayContinues) {
         rayContinues = false;
-        shared_ptr<RaySceneIntersection> intersect =
-            scene.getIntersection(
-                subrayOrigin,
-                subrayDirection,
-                false
-            );
+        shared_ptr<RaySceneIntersection> intersect = findIntersection(
+            tMinMax,
+            subrayOrigin,
+            subrayDirection
+        );
 
         if (intersect != nullptr && intersect->prim != nullptr) {
             // Incidence angle:
@@ -162,6 +162,7 @@ void FullWaveformPulseRunnable::handleSubray(
                 absoluteBeamOrigin
             );
 
+            // Distance must be inside [rangeMin, rangeMax] interval
             if(
                 detector->cfg_device_rangeMin_m > distance ||
                 detector->cfg_device_rangeMax_m < distance
@@ -212,9 +213,13 @@ void FullWaveformPulseRunnable::handleSubray(
                         intensity
                     );
                 if (ihr.canRayContinue()) { // Subray can continue
-                    // Move subray originWaypoint outside primitive
+                    // Move subray origin outside primitive and update tMinMax
                     subrayOrigin = outsideIntersectionPoint +
                                    0.00001 * subrayDirection;
+                    tMinMax = scene.getAABB()->getRayIntersection(
+                        subrayOrigin,
+                        subrayDirection
+                    );
                     rayContinues = true;
                 }
                 else{ // Update distance considering noise
@@ -373,7 +378,12 @@ bool FullWaveformPulseRunnable::initializeFullWaveform(
     }
 
     // Compute fullwave variables
-    numFullwaveBins = (int)(hitTimeDelta_ns / nsPerBin);
+    numFullwaveBins = ((int)std::ceil(maxHitTime_ns/nsPerBin)) -
+        ((int)ceil(minHitTime_ns/nsPerBin));
+
+    // update maxHitTime to fit the discretized fullwave bins
+    // minus 1 is necessary as the minimum is in bin #0
+    maxHitTime_ns = minHitTime_ns + (numFullwaveBins - 1) * nsPerBin;
 
     return true;
 }
@@ -390,15 +400,21 @@ void FullWaveformPulseRunnable::populateFullWaveform(
     // add to the full waveform
     vector<double> const &time_wave = detector->scanner->time_wave;
     map<double, double>::const_iterator it;
-    for (it = reflections.begin(); it != reflections.end(); it++) {
+    for (it = reflections.begin(); it != reflections.end(); ++it) {
         double const entryDistance_m = it->first;
         if(entryDistance_m > distanceThreshold) continue;
         double const entryIntensity = it->second;
         double const wavePeakTime_ns = entryDistance_m /
             cfg_speedOfLight_mPerNanosec; // in nanoseconds
-        int const binStart = (int)((wavePeakTime_ns-minHitTime_ns) / nsPerBin)
-            - peakIntensityIndex;
-        for (size_t i = 0; i < time_wave.size(); i++) {
+        int const binStart = std::max(
+            (
+                (
+                    (int) ((wavePeakTime_ns-minHitTime_ns) / nsPerBin)
+                ) - peakIntensityIndex
+            ),
+            0
+        );
+        for (size_t i = 0; i < time_wave.size(); ++i) {
             fullwave[binStart + i] += time_wave[i] * entryIntensity;
         }
     }
@@ -448,7 +464,7 @@ void FullWaveformPulseRunnable::digestFullWaveform(
             echo_width = fit.getParameters()[3];
             echo_width = echo_width * nsPerBin;
 
-            if (echo_width < 0.1) { // TODO Rethink : 0.1 to threshold variable
+            if (echo_width < 0.1) { // TODO Pending : 0.1 to threshold variable
                 continue;
             }
         }
@@ -548,6 +564,14 @@ void FullWaveformPulseRunnable::exportOutput(
 
 // ***  ASSISTANCE METHODS  *** //
 // **************************** //
+shared_ptr<RaySceneIntersection> FullWaveformPulseRunnable::findIntersection(
+    vector<double> const &tMinMax,
+    glm::dvec3 const &o,
+    glm::dvec3 const &v
+) const {
+    return scene.getIntersection(tMinMax, o, v, false);
+}
+
 // Space distribution equation to calculate the beam energy decreasing the further away from the center (Carlsson et al., 2001)
 double FullWaveformPulseRunnable::calcEmmitedPower(double radius, double targetRange) {
     double const I0 = detector->scanner->getAveragePower();

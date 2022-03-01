@@ -39,6 +39,7 @@ void SharedTaskSequencer::onSharedSubTaskCompletion(size_t const key){
     uniqueLock.unlock();
     condvar.notify_one();
     subTask->postProcess();
+    subTask->getThread()->detach();
 }
 
 void SharedTaskSequencer::joinAll(){

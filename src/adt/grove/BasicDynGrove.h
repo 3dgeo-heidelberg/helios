@@ -24,8 +24,8 @@ class BasicDynGroveSubject;
  */
 template <typename Tree, typename Subject>
 class BasicDynGrove : public BasicStaticGrove<Tree>, public DynGrove<Subject> {
+using BasicStaticGrove<Tree>::trees;
 protected:
-    using BasicStaticGrove<Tree>::trees;
     // ***  ATTRIBUTES  *** //
     // ******************** //
     /**
@@ -90,7 +90,7 @@ public:
      * @return Read-only reference to vector of subjects
      */
     virtual std::vector<BasicDynGroveSubject<Tree, Subject> *> const&
-    getSubjects(){return subjects;}
+    getSubjects() const {return subjects;}
 };
 
 #include <BasicDynGrove.tpp>

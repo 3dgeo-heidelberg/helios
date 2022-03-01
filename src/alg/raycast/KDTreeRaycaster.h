@@ -121,6 +121,7 @@ public:
 	// **************************** //
 	/**
 	 * @see Raycaster::searchAll
+	 * @see KDTreeRaycaster::searchAll_recursive
 	 */
     std::map<double, Primitive*> searchAll(
         glm::dvec3 const rayOrigin,
@@ -131,6 +132,7 @@ public:
     ) override;
     /**
      * @see Raycaster::search
+     * @see KDTreeRaycaster::search_recursive
      */
     RaySceneIntersection * search(
         glm::dvec3 const rayOrigin,

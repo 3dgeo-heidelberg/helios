@@ -128,6 +128,10 @@ protected:
      * @see MultiThreadKDTreeFactory::finishedGeomJobs
      */
     boost::mutex finishedGeomJobsMutex;
+    /**
+     * @brief True if the factory has not been used before, false otherwise
+     */
+    bool notUsed;
 
 public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //
@@ -143,6 +147,18 @@ public:
         size_t const geomJobs=2
     );
     virtual ~MultiThreadKDTreeFactory() = default;
+
+    // ***  CLONE  *** //
+    // *************** //
+    /**
+     * @see KDTreeFactory::clone
+     */
+    KDTreeFactory * clone() const override;
+    /**
+     *
+     * @brief Assign attributes from MultiThreadKDTreeFactory to its clone
+     */
+    void _clone(KDTreeFactory *kdtf) const override;
 
     // ***  KDTREE FACTORY METHODS  *** //
     // ******************************** //

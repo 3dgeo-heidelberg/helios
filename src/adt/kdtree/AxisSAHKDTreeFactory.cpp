@@ -10,6 +10,20 @@ AxisSAHKDTreeFactory::AxisSAHKDTreeFactory (
 ) : SAHKDTreeFactory(lossNodes, ci, cl, co)
 {}
 
+// ***  CLONE  *** //
+// *************** //
+KDTreeFactory * AxisSAHKDTreeFactory::clone() const{
+    AxisSAHKDTreeFactory *kdtf = new AxisSAHKDTreeFactory(
+        lossNodes, ci, cl, co
+    );
+    _clone(kdtf);
+    return kdtf;
+}
+
+void AxisSAHKDTreeFactory::_clone(KDTreeFactory *kdtf) const{
+    SAHKDTreeFactory::_clone(kdtf);
+}
+
 // ***  BUILDING METHODS  *** //
 // ************************** //
 void AxisSAHKDTreeFactory::defineSplit(

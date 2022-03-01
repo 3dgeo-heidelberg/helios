@@ -1,6 +1,13 @@
 #include <FastSAHKDTreeGeometricStrategy.h>
 #include <FastSAHKDTreeRecountSubTask.h>
 
+// ***  CLONE  *** //
+// *************** //
+SimpleKDTreeGeometricStrategy * FastSAHKDTreeGeometricStrategy::clone(
+    SimpleKDTreeFactory *kdtf
+) const {
+    return new FastSAHKDTreeGeometricStrategy(*((FastSAHKDTreeFactory *)kdtf));
+}
 
 // ***  GEOMETRY LEVEL BUILDING  *** //
 // ********************************* //

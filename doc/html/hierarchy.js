@@ -49,6 +49,7 @@ var hierarchy =
       ] ]
     ] ],
     [ "HeliosTests::BaseTest", "d9/d52/classHeliosTests_1_1BaseTest.html", [
+      [ "HeliosTests::DiscreteTimeTest", "d6/d7f/classHeliosTests_1_1DiscreteTimeTest.html", null ],
       [ "HeliosTests::FluxionumTest", "dd/de0/classHeliosTests_1_1FluxionumTest.html", null ],
       [ "HeliosTests::GroveTest", "d0/d01/classHeliosTests_1_1GroveTest.html", null ],
       [ "HeliosTests::HPCTest", "d4/d0d/classHeliosTests_1_1HPCTest.html", null ],
@@ -80,6 +81,7 @@ var hierarchy =
     [ "DateTimeUtils", "d2/d15/classDateTimeUtils.html", null ],
     [ "HeliosDemos::DemoSelector", "df/d3f/classHeliosDemos_1_1DemoSelector.html", null ],
     [ "Directions", "df/dc3/classDirections.html", null ],
+    [ "DiscreteTime", "dd/de3/classDiscreteTime.html", null ],
     [ "DynGrove< Subject >", "dc/d2c/classDynGrove.html", [
       [ "BasicDynGrove< Tree, Subject >", "d1/d0a/classBasicDynGrove.html", null ]
     ] ],
@@ -215,9 +217,12 @@ var hierarchy =
     ] ],
     [ "PulseTask", "d1/d6e/classPulseTask.html", [
       [ "AbstractPulseRunnable", "d6/d9e/classAbstractPulseRunnable.html", [
-        [ "FullWaveformPulseRunnable", "db/da6/classFullWaveformPulseRunnable.html", null ]
+        [ "FullWaveformPulseRunnable", "db/da6/classFullWaveformPulseRunnable.html", [
+          [ "DynFullWaveformPulseRunnable", "da/d0b/classDynFullWaveformPulseRunnable.html", null ]
+        ] ]
       ] ]
     ] ],
+    [ "PulseTaskFactory", "da/dfd/classPulseTaskFactory.html", null ],
     [ "PulseThreadPoolFactory", "d5/d85/classPulseThreadPoolFactory.html", null ],
     [ "PulseThreadPoolInterface", "df/d9c/classPulseThreadPoolInterface.html", [
       [ "PulseThreadPool", "d6/ddc/classPulseThreadPool.html", null ],
@@ -308,6 +313,7 @@ var hierarchy =
     [ "SimulationCycleCallback", "dc/d7a/classSimulationCycleCallback.html", [
       [ "pyhelios::PySimulationCycleCallback", "d9/d64/classpyhelios_1_1PySimulationCycleCallback.html", null ]
     ] ],
+    [ "SimulationReporter", "da/dd6/classSimulationReporter.html", null ],
     [ "helios::hpc::SM_ParallelMergeSort< RandomAccessIterator, Comparator >", "d8/de4/classhelios_1_1hpc_1_1SM__ParallelMergeSort.html", null ],
     [ "SmartSharedFunctorContainer< T >", "db/da8/classSmartSharedFunctorContainer.html", null ],
     [ "SpectralLibrary", "d5/d20/classSpectralLibrary.html", null ],
@@ -322,6 +328,18 @@ var hierarchy =
     [ "StaticGrove< GroveKDTreeRaycaster >", "d8/da0/classStaticGrove.html", [
       [ "BasicStaticGrove< GroveKDTreeRaycaster >", "d9/dcd/classBasicStaticGrove.html", [
         [ "BasicDynGrove< GroveKDTreeRaycaster, DynMovingObject >", "d1/d0a/classBasicDynGrove.html", null ]
+      ] ]
+    ] ],
+    [ "StepLoop< StepInput >", "dd/dcc/classStepLoop.html", null ],
+    [ "StepLoop< StepInput ... >", "dd/dcc/classStepLoop.html", [
+      [ "NonVoidStepLoop< StepOutput, StepInput >", "d8/dac/classNonVoidStepLoop.html", null ],
+      [ "NonVoidStepLoop< bool >", "d8/dac/classNonVoidStepLoop.html", null ],
+      [ "VoidStepLoop< StepInput >", "dd/d96/classVoidStepLoop.html", null ],
+      [ "VoidStepLoop< StepInput ... >", "dd/d96/classVoidStepLoop.html", [
+        [ "LinearVoidStepLoop< StepInput >", "df/dd6/classLinearVoidStepLoop.html", null ],
+        [ "LinearVoidStepLoop<>", "df/dd6/classLinearVoidStepLoop.html", [
+          [ "SimulationStepLoop", "d6/d8c/classSimulationStepLoop.html", null ]
+        ] ]
       ] ]
     ] ],
     [ "SyncFileWriter", "d1/d0e/classSyncFileWriter.html", [

@@ -165,11 +165,17 @@ public:
     // ************************************ //
     /**
 	 * @brief Default constructor for a scene part
+     * @param shallowPrimitives If true, primitives pointers will be the same
+     *  for the copy and for the source. If false, then primitives for the
+     *  copy will be cloned so they are at different memory regions. Notice
+     *  that a shallow copy of the primitives implies that the primitives in
+     *  the copy will have the source as their reference scene part. Use this
+     *  mode (true) with caution.
 	 */
     ScenePart() :
         primitiveType(PrimitiveType::NONE)
     {}
-	ScenePart(ScenePart const &sp);
+	ScenePart(ScenePart const &sp, bool const shallowPrimitives=false);
 	virtual ~ScenePart() {}
 
 	// ***  COPY / MOVE OPERATORS  *** //
