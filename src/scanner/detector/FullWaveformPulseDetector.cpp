@@ -40,18 +40,17 @@ void FullWaveformPulseDetector::setOutputFilePath(
     bool computeWaveform,
     bool lastLegInStrip
 ) {
-	AbstractDetector::setOutputFilePath(path, lastLegInStrip);
+    fms->write.setMeasurementWriterOutputFilePath(path, lastLegInStrip);
 
 	if(computeWaveform) {
         try {
             std::string fw_path =
-                AbstractDetector::outputFilePath.parent_path().parent_path()
-                    .string() + "/" + fname;
+                fms->write.getMeasurementWriterOutputFilePath()
+                .parent_path().parent_path()
+                .string() + "/" + fname;
             logging::INFO("fw_path="+fw_path);
-            if(zipOutput){
-                this->fw_sfw = std::make_shared<ZipSyncFileWriter>(
-                    fw_path
-                );
+            if(fms->write.isMeasurementWriterZipOutput()){
+                this->fw_sfw = std::make_shared<ZipSyncFileWriter>(fw_path);
             }
             else {
                 this->fw_sfw = std::make_shared<SimpleSyncFileWriter>(

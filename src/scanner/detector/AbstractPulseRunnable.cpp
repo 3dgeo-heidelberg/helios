@@ -129,7 +129,7 @@ void AbstractPulseRunnable::capturePoint(
         (cycleMeasurements->end() - 1)->position +=
             detector->scanner->platform->scene->getShift();
     }
-    detector->writeMeasurement(m);
+    detector->fms->write.writeMeasurement(m);
 	detector->mBuffer->add(m);
 }
 

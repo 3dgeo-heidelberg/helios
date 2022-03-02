@@ -36,6 +36,7 @@ using pyhelios::PyDoubleVector;
 #endif
 
 #include <Measurement.h>
+using namespace helios::filems;
 
 
 /**

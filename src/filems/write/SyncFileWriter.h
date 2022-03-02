@@ -1,9 +1,15 @@
 #pragma once
 
 #include <Measurement.h>
+#include <Trajectory.h>
+#include <util/logger/logging.hpp>
+
 #include <mutex>
 #include <string>
-#include <Trajectory.h>
+#include <vector>
+#include <sstream>
+
+namespace helios { namespace filems{
 
 /**
  * @author Alberto M. Esmoris Pena
@@ -176,3 +182,5 @@ public:
      */
     inline std::string getPath(){return path;}
 };
+
+}}

@@ -63,10 +63,13 @@ shared_ptr<Survey> DynamicSceneDemo::loadSurvey(){
     survey->scanner->setFullWaveNoise(false);
     survey->scanner->setPlatformNoiseDisabled(false);
     survey->scanner->setFixedIncidenceAngle(false);
-    survey->scanner->detector->lasOutput = false;
-    survey->scanner->detector->las10 = false;
-    survey->scanner->detector->zipOutput = false;
-    survey->scanner->detector->lasScale = 1.0;
+    // TODO Rethink : Implement main package with building methods for FMS ...
+    // ... and other components
+    FMSWriteFacade &fmsWrite = survey->scanner->detector->fms->write;
+    fmsWrite.setMeasurementWriterLasOutput(false);
+    fmsWrite.setMeasurementWriterLas10(false);
+    fmsWrite.setMeasurementWriterZipOutput(false);
+    fmsWrite.setMeasurementWriterLasScale(1.0);
     return survey;
 }
 

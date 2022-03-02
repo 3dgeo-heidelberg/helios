@@ -1,12 +1,19 @@
 #pragma once
 
 #include <SyncFileWriter.h>
+#include <helios_version.h>
+#include <util/HeliosException.h>
+
+#include <laswriter.hpp>
+#include <glm/glm.hpp>
+
 #include <mutex>
 #include <string>
 #include <ctime>
-#include <laswriter.hpp>
-#include <helios_version.h>
-#include <glm/glm.hpp>
+
+
+namespace helios { namespace filems {
+
 
 /**
  * @author Alberto M. Esmoris Pena
@@ -398,3 +405,5 @@ public:
         finished = true;
     };
 };
+
+}}

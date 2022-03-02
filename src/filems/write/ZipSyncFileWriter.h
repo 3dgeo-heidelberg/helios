@@ -6,6 +6,12 @@
 #include <boost/iostreams/filter/zlib.hpp>
 #include <boost/archive/binary_oarchive.hpp>
 
+namespace helios { namespace filems {
+
+using ::std::string;
+using ::std::unique_ptr;
+using ::std::ios_base;
+
 /**
  * @author Alberto M. Esmoris Pena
  * @version 1.0
@@ -26,7 +32,7 @@ protected:
     /**
      * @brief Binary output archive
      */
-    std::unique_ptr<boost::archive::binary_oarchive> oa;
+    unique_ptr<boost::archive::binary_oarchive> oa;
 
 public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //
@@ -38,10 +44,10 @@ public:
      * Use boost::iostreams::zlib::best_compression to reduce size at most.
      */
     explicit ZipSyncFileWriter(
-        const std::string &path,
+        const string &path,
         int compressionMode = boost::iostreams::zlib::best_compression
     ) :
-        SimpleSyncFileWriter(path, std::ios_base::out | std::ios_base::binary)
+        SimpleSyncFileWriter(path, ios_base::out | ios_base::binary)
     {
         zp = boost::iostreams::zlib_params(compressionMode);
         compressedOut.push(boost::iostreams::zlib_compressor(zp));
@@ -100,3 +106,5 @@ public:
         (*oa) << trajectoryToString(t);
     }
 };
+
+}}

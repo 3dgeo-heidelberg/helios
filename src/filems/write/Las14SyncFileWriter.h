@@ -4,7 +4,7 @@
 #include <string>
 #include "LasSyncFileWriter.h"
 
-
+namespace helios { namespace filems {
 
 /**
  * @author Miguel Yermo García
@@ -69,3 +69,5 @@ public:
 
 
 };
+
+}}

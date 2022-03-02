@@ -2,6 +2,9 @@
 
 #include <string>
 
+namespace helios { namespace main{
+
+
 /**
  * @brief Lidar simulation class
  *
@@ -76,3 +79,5 @@ public:
         size_t sahLossNodes = 21
     );
 };
+
+}}

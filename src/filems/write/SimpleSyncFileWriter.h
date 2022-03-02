@@ -1,9 +1,15 @@
 #pragma once
 
-#include <string>
 #include <SyncFileWriter.h>
+#include <MathConverter.h>
+
 #include <fstream>
-#include "MathConverter.h"
+#include <string>
+#include <iomanip>
+#include <ostream>
+#include <iterator>
+
+namespace helios { namespace filems{
 
 /**
  * @author Alberto M. Esmoris Pena
@@ -177,3 +183,5 @@ protected:
         return ss.str();
     }
 };
+
+}}
