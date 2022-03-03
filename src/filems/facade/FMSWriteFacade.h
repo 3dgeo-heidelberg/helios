@@ -1,14 +1,20 @@
 #pragma once
 
 #include <filems/write/MeasurementWriter.h>
+#include <filems/write/TrajectoryWriter.h>
+#include <filems/write/FullWaveformWriter.h>
 
+#include <glm/glm.hpp>
+
+#include <vector>
 #include <string>
 #include <memory>
 
 namespace helios { namespace filems {
 
-using ::std::string;
-using ::std::shared_ptr;
+using std::vector;
+using std::string;
+using std::shared_ptr;
 
 /**
  * @author Alberto M. Esmoris Pena
@@ -21,8 +27,19 @@ protected:
     // ******************** //
     /**
      * @brief The writer for measurements
+     * @see filems::MeasurementWriter
      */
     shared_ptr<MeasurementWriter> mw = nullptr;
+    /**
+     * @brief The writer for trajectories
+     * @see filems::TrajectoryWriter
+     */
+    shared_ptr<TrajectoryWriter> tw = nullptr;
+    /**
+     * @brief The writer for full waveform
+     * @see filems::FullWaveformWriter
+     */
+    shared_ptr<FullWaveformWriter> fww = nullptr;
 
 public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //
@@ -33,17 +50,38 @@ public:
     FMSWriteFacade() = default;
     virtual ~FMSWriteFacade() = default;
 
+    // ***  FACADE WRITE METHODS  *** //
+    // ****************************** //
+    /**
+     * @brief Configure the output path for all writers in the facade
+     * @param parent Path to output directory for measurements, trajectories
+     *  and full waveform files
+     * @param prefix Prefix for the name of the output file
+     * @param computeWaveform Flag to specify if waveform must be computed
+     *  (true) or not (false)
+     * @param lastLegInStrip Specify whether the last leg belonged to a strip
+     *  (true) or not (false)
+     */
+    void configure(
+        string const &parent,
+        string const &prefix,
+        bool const computeWaveform,
+        bool const lastLegInStrip
+    );
+
     // ***  FACADE MEASUREMENT WRITE METHODS  *** //
     // ****************************************** //
     /**
      * @brief Obtain the measurement writer of the write facade
      * @return The measurement writer of the write facade
+     * @see FMSWriteFacade::mw
      */
     inline shared_ptr<MeasurementWriter> getMeasurementWriter() const
     {return this->mw;}
     /**
      * @brief Set the measurement writer of the write facade
      * @param mw New measurement writer for the write facade
+     * @see FMSWriteFacade::mw
      */
     inline void setMeasurementWriter(shared_ptr<MeasurementWriter> mw)
     {this->mw = mw;}
@@ -68,11 +106,11 @@ public:
     /**
      * @see filems::MeasurementWriter::getOutputFilePath
      */
-    fs::path getMeasurementWriterOutputFilePath();
+    fs::path getMeasurementWriterOutputPath();
     /**
      * @see filems::MeasurementWriter::setOutputFilePath
      */
-    void setMeasurementWriterOutputFilePath(
+    void setMeasurementWriterOutputPath(
         std::string path,
         const bool lastLegInStrip
     );
@@ -108,6 +146,86 @@ public:
      * @see filems::MeasurementWriter::setLasScale
      */
     void setMeasurementWriterLasScale(double const lasScale);
+
+
+    // ***  FACADE TRAJECTORY WRITE METHODS  *** //
+    // ***************************************** //
+    /**
+     * @brief Obtain the trajectory writer of the write facade
+     * @return The trajectory writer of the write facade
+     * @see FMSWriteFacade::tw
+     */
+    inline shared_ptr<TrajectoryWriter> getTrajectoryWriter() const
+    {return this->tw;}
+    /**
+     * @brief Set the trajectory writer of the write facade
+     * @param tw New trajectory writer for the write facade
+     * @see FMSWriteFacade::tw
+     */
+    inline void setTrajectoryWriter(shared_ptr<TrajectoryWriter> tw)
+    {this->tw = tw;}
+    /**
+     * @brief Validate the trajectory writer of the facade is valid to support
+     *  write methods. If it is not valid, an adequate exception will be
+     *  thrown.
+     * @see FMSWriteFacade::tw
+     */
+    void validateTrajectoryWriter(
+        string const &callerName="FMSWriteFacade::validateTrajectoryWriter",
+        string const &errorMsg="could not accesss TrajectoryWriter"
+    ) const;
+    /**
+     * @see TrajectoryWriter::writeTrajectory
+     */
+    void writeTrajectory(Trajectory &t);
+    /**
+     * @see filems::TrajectoryWriter::getOutputFilePath
+     */
+    fs::path getTrajectoryWriterOutputPath();
+    /**
+     * @see filems::TrajectoryWriter::setOutputFilePath
+     */
+    void setTrajectoryWriterOutputPath(string const &path);
+
+
+    // ***  FACADE FULL WAVEFORM WRITE METHODS  *** //
+    // ******************************************** //
+    /**
+     * @brief Obtain the full waveform writer of the write facade
+     * @return The full waveform writer of the write facade
+     * @see FMSWriteFacade::fww
+     */
+    inline shared_ptr<FullWaveformWriter> getFullWaveformWriter() const
+    {return this->fww;}
+    /**
+     * @brief Set the full waveform writer of the write facade
+     * @param fww New full waveform writer for the write facade
+     * @see FMSWriteFacade::fww
+     */
+    inline void setFullWaveformWriter(shared_ptr<FullWaveformWriter> fww)
+    {this->fww = fww;}
+    /**
+     * @brief Validate the full waveform writer of the facade is valid to
+     *  support write methods. If it is not valid, an adequate exception will
+     *  be thrown.
+     * @see FMSWriteFacade::fww
+     */
+    void validateFullWaveformWriter(
+        string const &callerName="FMSWriteFacade::validateFullWaveformWriter",
+        string const &errorMsg="could not accesss FullWaveformWriter"
+    ) const;
+    /**
+     * @see FullWaveformWritter::writeFullWaveform
+     */
+    void writeFullWaveform(
+        vector<double> const &fullwave,
+        int const fullwaveIndex,
+        double const minTime,
+        double const maxTime,
+        glm::dvec3 const &beamOrigin,
+        glm::dvec3 const &beamDir,
+        double const gpsTime
+    );
 };
 
-}}
+    }}

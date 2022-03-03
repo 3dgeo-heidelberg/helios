@@ -1,12 +1,29 @@
 #include <filems/write/MeasurementWriter.h>
 #include <util/HeliosException.h>
 
+#include <sstream>
+
 using namespace helios::filems;
 
 using std::stringstream;
 
 // ***   M E T H O D S   *** //
 // ************************* //
+void MeasurementWriter::configure(
+    string const &parent,
+    string const &prefix,
+    bool const lastLegInStrip
+){
+    stringstream ss;
+    ss << parent << prefix;
+    if(isLasOutput()){
+        if(isZipOutput()) ss << "_points.laz";
+        else ss << "_points.las";
+    }
+    else if(isZipOutput()) ss << "_points.bin";
+    else ss << "_points.xyz";
+    setOutputFilePath(ss.str(), lastLegInStrip);
+}
 void MeasurementWriter::writeMeasurement(Measurement & m){
     // Check there is a sync file writer
     if(sfw == nullptr){
@@ -78,11 +95,13 @@ void MeasurementWriter::finish(){
 // ***************************** //
 // ATTENTION: This method needs to be synchronized since multiple threads are
 // writing to the output file!
-void MeasurementWriter::setOutputFilePath(string path, bool lastLegInStrip){
-    outputFilePath = path;
+void MeasurementWriter::setOutputFilePath(
+    string const &path,
+    bool const lastLegInStrip
+){
     logging::WARN("outputFilePath=" + path);
     try {
-        fs::create_directories(outputFilePath.parent_path());
+        fs::create_directories(fs::path(path).parent_path());
         WriterType wt = chooseWriterType();
 
         // Create the Writer
@@ -90,8 +109,8 @@ void MeasurementWriter::setOutputFilePath(string path, bool lastLegInStrip){
             sfw = SyncFileWriterFactory::makeWriter(
                 wt,
                 path,                                   // Output path
-                zipOutput,                              // Zip flag
-                lasScale,                               // Scale factor
+                isZipOutput(),                          // Zip flag
+                getLasScale(),                          // Scale factor
                 scanner->platform->scene->getShift(),   // Offset
                 0.0,                                    // Min intensity
                 1000000.0                               // Delta intensity

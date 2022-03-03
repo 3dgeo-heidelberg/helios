@@ -1,4 +1,5 @@
 #include <scanner/detector/AbstractDetector.h>
+#include <filems/facade/FMSFacade.h>
 #include <logging.hpp>
 
 // ***  CONSTRUCTION / DESTRUCTION  *** //

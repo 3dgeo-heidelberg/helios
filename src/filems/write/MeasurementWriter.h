@@ -1,6 +1,6 @@
 #pragma once
 
-#include <filems/write/SyncFileWriter.h>
+#include <filems/write/HeliosWriter.h>
 #include <filems/factory/SyncFileWriterFactory.h>
 #include <scanner/Measurement.h>
 #include <scanner/Scanner.h>
@@ -18,10 +18,10 @@ namespace helios { namespace filems {
 
 
 
-using ::std::string;
-using ::std::shared_ptr;
-using ::std::unordered_map;
-using ::std::list;
+using std::string;
+using std::shared_ptr;
+using std::unordered_map;
+using std::list;
 
 
 /**
@@ -30,57 +30,15 @@ using ::std::list;
  * @brief Class to handle writing of measurements to generate HELIOS++ output
  *  virtual point clouds
  */
-class MeasurementWriter{
+class MeasurementWriter : public HeliosWriter{
 protected:
     // ***  ATTRIBUTES  *** //
     // ******************** //
-    /**
-	 * @brief Synchronous file writer
-     * @see filems::SyncFileWriter
-	 */
-    shared_ptr<SyncFileWriter> sfw = nullptr;
-
     /**
      * @brief The scanner that generates the measurements to be written
      */
     shared_ptr<Scanner> scanner = nullptr;
 
-    /**
-	 * @brief Flag specifying if detector output must be written in LAS
-	 * format (true) or not (false)
-	 * @see helios::filems::MeasurementWriter::lasScale
-	 */
-    bool lasOutput = false;
-    /**
-     * @brief Flag specifying if detect output must be writing in LAS 1.0
-     * (LAS 1.4 is written by default)
-     */
-    bool las10 = false;
-    /**
-	 * @brief Flag specifying if detector output must be zipped (true)
-	 * or not (false)
-	 */
-    bool zipOutput = false;
-    /**
-	 * @brief Scale factor specification to be used when LAS output format
-	 * specified
-	 * @see helios::filems::MeasurementWriter::lasOutput
-	 */
-    double lasScale = 0.0001;
-
-    /**
-	 * @brief Format string for output file line
-	 *
-	 * No longer used since synchronous file writers are now responsible of
-	 * handling output writing
-	 */
-    string outputFileLineFormatString =
-        "%.3f %.3f %.3f %.4f %.4f %d %d %d %s %d";
-
-    /**
-	 * @brief Path to output file
-	 */
-    fs::path outputFilePath;
     /**
      * @brief Map of writers. This map allows to reuse writers for legs grouped
      * in the same strip.
@@ -98,6 +56,18 @@ public:
 
     // ***   M E T H O D S   *** //
     // ************************* //
+    /**
+     * @brief Configure the output path for the measurement writer
+     * @param parent Path to output directory for measurements files
+     * @param prefix Prefix for the name of the output file
+     * @param lastLegInStrip Specify whether the last leg belonged to a strip
+     *  (true) or not (false)
+     */
+    void configure(
+        string const &parent,
+        string const &prefix,
+        bool const lastLegInStrip
+    );
     /**
 	 * @brief Write a measurement
 	 * @param m Measurement to be written
@@ -122,57 +92,10 @@ public:
     // ***  GETTERs and SETTERs  *** //
     // ***************************** //
     /**
-     * @brief Get the path to the output file
-     * @return The path to the output file
-     */
-    inline fs::path getOutputFilePath() const {return outputFilePath;}
-    /**
      * @brief Set path to output file
      * @param path New path to output file
      */
-    void setOutputFilePath(string path, const bool lastLegInStrip);
-    /**
-     * @brief Get the LAS output flag
-     * @see filems::MeasurementWriter::lasOutput
-     */
-    inline bool isLasOutput() const {return lasOutput;}
-    /**
-     * @brief Set the LAS output flag
-     * @see filems::MeasurementWriter::lasOutput
-     */
-    inline void setLasOutput(bool const lasOutput) {this->lasOutput = lasOutput;}
-    /**
-     * @brief Get the LAS 10 specification flag
-     * @see filems::MeasurementWriter::las10
-     */
-    inline bool isLas10() const {return las10;}
-    /**
-     * @brief Set the LAS output flag
-     * @see filems::MeasurementWriter::las10
-     */
-    inline void setLas10(bool const las10) {this->las10 = las10;}
-    /**
-     * @brief Get the zip output flag
-     * @see filems::MeasurementWriter::zipOutput
-     */
-    inline bool isZipOutput() const {return zipOutput;}
-    /**
-     * @brief Set the zip output flag
-     * @see filems::MeasurementWriter::zipOutput
-     */
-    inline void setZipOutput(bool const zipOutput)
-    {this->zipOutput = zipOutput;}
-    /**
-     * @brief Obtain the LAS scale of the measurement writer
-     * @see filems::MeasurementWriter::lasScale
-     */
-    inline double getLasScale() const {return lasScale;}
-    /**
-     * @brief Set the LAS scale of the measurement writer
-     * @see filems::MeasurementWriter::lasScale
-     */
-    inline void setLasScale(double const lasScale)
-    {this->lasScale = lasScale;}
+    void setOutputFilePath(string const &path, bool const lastLegInStrip);
     /**
      * @brief Obtain the scanner associated with the measurement writer
      * @see filems::MeasurementWriter::scanner

@@ -1,10 +1,34 @@
 #include <FMSWriteFacade.h>
 
+#include <boost/filesystem.hpp>
+
 #include <sstream>
 
 using namespace helios::filems;
 
+namespace fs=boost::filesystem;
+
 using std::stringstream;
+
+
+// ***  FACADE WRITE METHODS  *** //
+// ****************************** //
+void FMSWriteFacade::configure(
+    string const &parent,
+    string const &prefix,
+    bool const computeWaveform,
+    bool const lastLegInStrip
+){
+    // Configure measurement output path
+    getMeasurementWriter()->configure(parent, prefix, lastLegInStrip);
+
+    // Configure trajectory output path
+    getTrajectoryWriter()->configure(parent, prefix);
+
+    // Configure full waveform output path
+    getFullWaveformWriter()->configure(parent, prefix, computeWaveform);
+
+}
 
 // ***  FACADE MEASUREMENT WRITE METHODS  *** //
 // ****************************************** //
@@ -40,22 +64,22 @@ void FMSWriteFacade::finishMeasurementWriter(){
     mw->finish();
 }
 
-fs::path FMSWriteFacade::getMeasurementWriterOutputFilePath(){
+fs::path FMSWriteFacade::getMeasurementWriterOutputPath(){
     // Check it is possible to do the operation
     validateMeasurementWriter(
-        "FMSWriteFacade::getMeasurementWriterOutputFilePath",
+        "FMSWriteFacade::getMeasurementWriterOutputPath",
         "could not get MeasurementWriter output file path"
     );
     // Get the output file path
     return mw->getOutputFilePath();
 }
-void FMSWriteFacade::setMeasurementWriterOutputFilePath(
+void FMSWriteFacade::setMeasurementWriterOutputPath(
     std::string path,
     const bool lastLegInStrip
 ){
     // Check it is possible to do the operation
     validateMeasurementWriter(
-        "FMSWriteFacade::setMeasurementWriterOutputFilePath",
+        "FMSWriteFacade::setMeasurementWriterOutputPath",
         "could not set MeasurementWriter output file path"
     );
     // Set the output file path
@@ -140,4 +164,87 @@ void FMSWriteFacade::setMeasurementWriterLasScale(double const lasScale){
     );
     // Set LAS scale
     return mw->setLasScale(lasScale);
+}
+
+
+// ***  FACADE TRAJECTORY WRITE METHODS  *** //
+// ***************************************** //
+void FMSWriteFacade::validateTrajectoryWriter(
+    string const &callerName,
+    string const &errorMsg
+) const{
+    // Check trajectory writer does exist
+    if(tw==nullptr){
+        stringstream ss;
+        ss  << callerName << " " << errorMsg << " because it does not exist";
+        throw HeliosException(ss.str());
+    }
+}
+void FMSWriteFacade::writeTrajectory(Trajectory &t){
+    // Check it is possible to do the operation
+    validateTrajectoryWriter(
+        "FMSWriteFacade::writeTrajectory",
+        "could not write trajectory"
+    );
+    // Write the trajectory
+    tw->writeTrajectory(t);
+}
+
+fs::path FMSWriteFacade::getTrajectoryWriterOutputPath(){
+    // Check it is possible to do the operation
+    validateTrajectoryWriter(
+        "FMSWriteFacade::getTrajectoryWriterOutputPath",
+        "could not get TrajectoryWriter output file path"
+    );
+    // Get the output file path
+    return tw->getOutputFilePath();
+}
+
+void FMSWriteFacade::setTrajectoryWriterOutputPath(string const &path){
+    // Check it is possible to do the operation
+    validateMeasurementWriter(
+        "FMSWriteFacade::setTrajectoryWriterOutputPath",
+        "could not set TrajectoryWriter output file path"
+    );
+    // Set the output file path
+    tw->setOutputFilePath(path);
+}
+
+// ***  FACADE FULL WAVEFORM WRITE METHODS  *** //
+// ******************************************** //
+void FMSWriteFacade::validateFullWaveformWriter(
+    string const &callerName,
+    string const &errorMsg
+) const{
+    // Check full waveform writer does exist
+    if(fww==nullptr){
+        stringstream ss;
+        ss  << callerName << " " << errorMsg << " because it does not exist";
+        throw HeliosException(ss.str());
+    }
+}
+void FMSWriteFacade::writeFullWaveform(
+    vector<double> const &fullwave,
+    int const fullwaveIndex,
+    double const minTime,
+    double const maxTime,
+    glm::dvec3 const &beamOrigin,
+    glm::dvec3 const &beamDir,
+    double const gpsTime
+){
+    // Check it is possible to do the operation
+    validateFullWaveformWriter(
+        "FMSWriteFacade::writeFullWaveform",
+        "could not write full waveform"
+    );
+    // Write the full waveform data
+    fww->writeFullWaveform(
+        fullwave,
+        fullwaveIndex,
+        minTime,
+        maxTime,
+        beamOrigin,
+        beamDir,
+        gpsTime
+    );
 }

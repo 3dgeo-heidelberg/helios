@@ -7,6 +7,7 @@
 #include <glm/glm.hpp>
 
 #include "AbstractDetector.h"
+#include <filems/facade/FMSFacade.h>
 
 
 // ALS Simplification "Radiometric Calibration..." (Wagner, 2010) Eq. 14

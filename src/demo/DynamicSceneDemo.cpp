@@ -3,10 +3,13 @@
 #include <demo/DynamicSceneDemo.h>
 #include <XmlSurveyLoader.h>
 #include <HeliosException.h>
+#include <filems/facade/FMSFacade.h>
+#include <filems/facade/FMSWriteFacade.h>
 
 
 using HeliosDemos::DynamicSceneDemo;
 using visualhelios::VHSceneCanvas;
+using helios::filems::FMSWriteFacade;
 using std::make_shared;
 using std::static_pointer_cast;
 

@@ -1,6 +1,5 @@
 #pragma once
 
-#include <filems/facade/FMSFacade.h>
 #include <scanner/detector/PulseTask.h>
 #include "AbstractDetector.h"
 #include <noise/RandomnessGenerator.h>

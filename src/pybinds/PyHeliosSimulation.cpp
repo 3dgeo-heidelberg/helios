@@ -8,6 +8,10 @@
 #include <PyHeliosOutputWrapper.h>
 #include <chrono>
 #include <PulseThreadPoolFactory.h>
+#include <filems/facade/FMSFacade.h>
+#include <filems/facade/FMSWriteFacade.h>
+
+using helios::filems::FMSWriteFacade;
 
 using pyhelios::PyHeliosSimulation;
 using pyhelios::PyHeliosOutputWrapper;
@@ -92,12 +96,13 @@ void PyHeliosSimulation::start (){
     fmsWrite.setMeasurementWriterLasOutput(lasOutput);
     fmsWrite.setMeasurementWriterLas10(las10);
     fmsWrite.setMeasurementWriterZipOutput(zipOutput);
+    // TODO Rethink : Use outputPath variable to define FMS root directory
 
     buildPulseThreadPool();
     playback = std::shared_ptr<SurveyPlayback>(
         new SurveyPlayback(
             survey,
-            outputPath,
+            survey->scanner->detector->fms,
             parallelizationStrategy,
             pulseThreadPool,
             chunkSize,
@@ -190,10 +195,10 @@ PyHeliosOutputWrapper * PyHeliosSimulation::join(){
                 measurements,
                 trajectories,
                 survey->scanner->detector->fms->write
-                    .getMeasurementWriterOutputFilePath().string(),
+                    .getMeasurementWriterOutputPath().string(),
                 std::vector<std::string>{
                     survey->scanner->detector->fms->write
-                        .getMeasurementWriterOutputFilePath().string()
+                        .getMeasurementWriterOutputPath().string()
                 },
                 false
             );
@@ -204,7 +209,7 @@ PyHeliosOutputWrapper * PyHeliosSimulation::join(){
                 survey->scanner->allMeasurements,
                 survey->scanner->allTrajectories,
                 survey->scanner->detector->fms->write
-                    .getMeasurementWriterOutputFilePath().string(),
+                    .getMeasurementWriterOutputPath().string(),
                 survey->scanner->allOutputPaths,
                 true
             );
@@ -221,7 +226,7 @@ PyHeliosOutputWrapper * PyHeliosSimulation::join(){
         survey->scanner->allMeasurements,
         survey->scanner->allTrajectories,
         survey->scanner->detector->fms->write
-            .getMeasurementWriterOutputFilePath().string(),
+            .getMeasurementWriterOutputPath().string(),
         survey->scanner->allOutputPaths,
         true
     );

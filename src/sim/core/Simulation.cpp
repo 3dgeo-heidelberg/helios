@@ -10,6 +10,7 @@ using namespace std::chrono;
 #include "Simulation.h"
 #include <TimeWatcher.h>
 #include <DateTimeUtils.h>
+#include <filems/facade/FMSFacade.h>
 
 using namespace std;
 
@@ -98,7 +99,7 @@ void Simulation::shutdown(){
             *mScanner->cycleMeasurements,
             *mScanner->cycleTrajectories,
             mScanner->detector->fms->write
-                .getMeasurementWriterOutputFilePath().string()
+                .getMeasurementWriterOutputPath().string()
         );
     }
 }
@@ -132,7 +133,7 @@ void Simulation::start() {
                     *mScanner->cycleMeasurements,
                     *mScanner->cycleTrajectories,
                     mScanner->detector->fms->write
-                        .getMeasurementWriterOutputFilePath().string()
+                        .getMeasurementWriterOutputPath().string()
                 );
                 mScanner->cycleMeasurements->clear();
                 mScanner->cycleTrajectories->clear();

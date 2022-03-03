@@ -3,8 +3,12 @@
 #ifdef PYTHON_BINDING
 
 #include <PyDetectorWrapper.h>
+#include <filems/facade/FMSFacade.h>
+using helios::filems::FMSFacade;
 #include <AbstractDetector.h>
+
 #include <memory>
+
 
 namespace pyhelios{
 

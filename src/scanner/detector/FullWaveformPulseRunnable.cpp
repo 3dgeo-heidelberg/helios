@@ -11,6 +11,7 @@
 #include "MarquardtFitter.h"
 #include <TimeWatcher.h>
 #include <maths/RayUtils.h>
+#include <filems/facade/FMSFacade.h>
 
 using namespace std;
 
@@ -646,7 +647,7 @@ void FullWaveformPulseRunnable::captureFullWave(
     }
 
     // Write full wave
-    fwDetector->writeFullWave(
+    fwDetector->fms->write.writeFullWaveform(
         fullwave,
         fullwaveIndex,
         min_time,

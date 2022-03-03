@@ -7,8 +7,6 @@
 
 #include <Scanner.h>
 #include <ScannerSettings.h>
-#include <filems/facade/FMSFacade.h>
-
 #include "Measurement.h"
 #include "MeasurementsBuffer.h"
 #include "SimpleSyncFileWriter.h"
@@ -16,8 +14,9 @@
 #include "Las14SyncFileWriter.h"
 #include "ZipSyncFileWriter.h"
 #include "SyncFileWriterFactory.h"
+namespace helios { namespace filems { class FMSFacade; }}
+using helios::filems::FMSFacade;
 
-namespace fms = helios::filems;
 
 /**
  * @brief Base abstract class for detectors
@@ -37,7 +36,7 @@ public:
 	/**
 	 * @brief Main facade to file management system
 	 */
-	std::shared_ptr<fms::FMSFacade> fms;
+	std::shared_ptr<FMSFacade> fms;
 
 	/**
 	 * @brief Detector accuracy in meters

@@ -7,6 +7,9 @@
 #include "Survey.h"
 #include "typedef.h"
 
+namespace helios { namespace filems{ class FMSFacade;}}
+using helios::filems::FMSFacade;
+
 /**
  * @brief Survey playback class, used to extend simulation functionalities
  *  so it can be controlled
@@ -21,6 +24,7 @@ public:
      * @brief Flag to specify if leg has been started (true) or not (false)
      */
 	bool mLegStarted = false;
+	// TODO Rethink : are LAS and zip flags needed when using FMS ?
 	/**
 	 * @brief Flag to specify if LAS format must be used for the output (true)
 	 *  or not (false)
@@ -46,18 +50,15 @@ public:
 	 */
 	std::string mOutputFilePathString = "";
 	/**
-	 * @brief Output format string. It is not used at the moment and might be
-	 *  removed in the future.
-	 *
-	 * @deprecated mFormatString can be considered as deprecated
+	 * @brief Main facade to file management system
 	 */
-	std::string mFormatString = "%03d";
+	shared_ptr<FMSFacade> fms = nullptr;
 
 private:
     /**
      * @brief Root output path
      */
-    const std::string outputPath;
+    const std::string outputPath; // TODO Rethink : Move to FMS
 
     /**
      * @brief Number of effective legs
@@ -103,7 +104,7 @@ public:
     /**
      * @brief Survey playback constructor
      * @param survey The survey itself
-     * @param outputPath Root output path
+     * @param fms The main facade of file management system
      * @param lasOutput Flag to specify LAS format for the output (true) or not
      *  (false)
      * @param las10 Flag to specify if LAS output must be LAS v1.0 (true) or not
@@ -121,7 +122,7 @@ public:
      */
 	SurveyPlayback(
         std::shared_ptr<Survey> survey,
-        const std::string outputPath,
+        std::shared_ptr<FMSFacade> fms,
         int const parallelizationStrategy,
         std::shared_ptr<PulseThreadPoolInterface> pulseThreadPoolInterface,
         int const chunkSize,
@@ -240,19 +241,11 @@ public:
 	int getCurrentLegIndex();
 	/**
 	 * @brief Obtain current leg output prefix
+	 * @param format The integer format string to handle how many digits use
+	 *  to numerate both strip and leg prefixes
 	 * @return Current leg output prefix
 	 */
-	std::string getLegOutputPrefix();
-	/**
-	 * @brief Obtain current output path
-	 * @return Current output path
-	 */
-	std::string getCurrentOutputPath();
-	/**
-	 * @brief Obtain current trajectory output path
-	 * @return Current trajectory output path
-	 */
-	std::string getTrajectoryOutputPath();
+	std::string getLegOutputPrefix(std::string format="%03d");
 
 	/**
 	 * @brief Obtain simulation progress

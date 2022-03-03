@@ -2,13 +2,19 @@
 #include <exception>
 #include <boost/format.hpp>
 #include <boost/filesystem.hpp>
-#include <logging.hpp>
 namespace fs = boost::filesystem;
 
 #include "FullWaveformPulseRunnable.h"
 #include "FullWaveformPulseDetector.h"
+#include <filems/facade/FMSFacade.h>
+#include <filems/write/ZipSyncFileWriter.h>
+#include <logging.hpp>
+
+using helios::filems::ZipSyncFileWriter;
+using helios::filems::SimpleSyncFileWriter;
 
 using namespace std;
+
 
 // ***  CONSTRUCTION / DESTRUCTION  *** //
 // ************************************ //
@@ -34,59 +40,7 @@ void FullWaveformPulseDetector::applySettings(shared_ptr<ScannerSettings> & sett
 	AbstractDetector::applySettings(settings); // calls empty function
 }
 
-void FullWaveformPulseDetector::setOutputFilePath(
-    std::string path,
-    std::string fname,
-    bool computeWaveform,
-    bool lastLegInStrip
-) {
-    fms->write.setMeasurementWriterOutputFilePath(path, lastLegInStrip);
-
-	if(computeWaveform) {
-        try {
-            std::string fw_path =
-                fms->write.getMeasurementWriterOutputFilePath()
-                .parent_path().parent_path()
-                .string() + "/" + fname;
-            logging::INFO("fw_path="+fw_path);
-            if(fms->write.isMeasurementWriterZipOutput()){
-                this->fw_sfw = std::make_shared<ZipSyncFileWriter>(fw_path);
-            }
-            else {
-                this->fw_sfw = std::make_shared<SimpleSyncFileWriter>(
-                    fw_path
-                );
-            }
-        }
-        catch (std::exception &e) {
-            logging::INFO(e.what());
-        }
-    }
-}
-
 void FullWaveformPulseDetector::shutdown() {
 	AbstractDetector::shutdown();
-	if(fw_sfw != nullptr) fw_sfw->finish();
-}
-
-void FullWaveformPulseDetector::writeFullWave(
-	vector<double> & fullwave, 
-	int fullwave_index, 
-	double min_time, 
-	double max_time, 
-	glm::dvec3& beamOrigin,
-	glm::dvec3& beamDir,
-    double gpstime
-){
-    if(fw_sfw != nullptr) {
-        fw_sfw->write(
-            fullwave,
-            fullwave_index,
-            min_time,
-            max_time,
-            beamOrigin,
-            beamDir,
-            gpstime
-        );
-    }
+	if(fw_sfw != nullptr) fw_sfw->finish(); // TODO Rethink : To FMS
 }

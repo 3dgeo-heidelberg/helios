@@ -8,15 +8,18 @@
 #include "SurveyPlayback.h"
 #include "XmlSurveyLoader.h"
 #include <TimeWatcher.h>
-#include <AbstractDetector.h>
 #include <scanner/detector/PulseThreadPoolFactory.h>
+#include <filems/facade/FMSFacade.h>
+#include <filems/write/MeasurementWriter.h>
+#include <filems/write/TrajectoryWriter.h>
 
 
+namespace fms = helios::filems;
 
 namespace helios { namespace main{
 
 
-
+using std::make_shared;
 
 
 
@@ -96,15 +99,19 @@ void LidarSim::init(
 	survey->scanner->setFixedIncidenceAngle(fixedIncidenceAngle);
 	// TODO Rethink : Implement main package with building methods for FMS ...
 	// ... and other components
-	shared_ptr<FMSFacade> fms = make_shared<FMSFacade>();
+	shared_ptr<fms::FMSFacade> fms = make_shared<fms::FMSFacade>();
+	survey->scanner->fms = fms;
 	survey->scanner->detector->fms = fms;
-	FMSWriteFacade &fmsWrite = fms->write;
-	fmsWrite.setMeasurementWriter(std::make_shared<MeasurementWriter>());
+	fms::FMSWriteFacade &fmsWrite = fms->write;
+	fmsWrite.setMeasurementWriter(make_shared<fms::MeasurementWriter>());
 	fmsWrite.getMeasurementWriter()->setScanner(survey->scanner);
 	fmsWrite.setMeasurementWriterLasOutput(lasOutput);
     fmsWrite.setMeasurementWriterLas10(las10);
     fmsWrite.setMeasurementWriterZipOutput(zipOutput);
     fmsWrite.setMeasurementWriterLasScale(lasScale);
+    fmsWrite.setTrajectoryWriter(make_shared<fms::TrajectoryWriter>());
+    fmsWrite.setFullWaveformWriter(make_shared<fms::FullWaveformWriter>());
+    // TODO Rethink : Use outputPath variable to define FMS root directory
 
 	// Build thread pool for parallel computation
 	/*
@@ -125,7 +132,7 @@ void LidarSim::init(
 
 	std::shared_ptr<SurveyPlayback> playback=std::make_shared<SurveyPlayback>(
         survey,
-        outputPath,
+        fms,
         parallelizationStrategy,
         pulseThreadPool,
         std::abs(chunkSize),
