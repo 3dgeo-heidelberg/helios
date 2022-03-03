@@ -18,4 +18,3 @@ dependencies:
   - pyyaml
   - pip:
     - laspy[laszip]
-prefix: C:\Users\wq452\Anaconda3\envs\pyhelios_pdal_env
