@@ -347,16 +347,16 @@ jobs:
           if: steps.cache-DLL.outputs.cache-hit != 'true'
           working-directory: ${{env.GITHUB_WORKSPACE}}
           run: >-
-            7z x release-1928-x64-gdal-3-4-1-mapserver-7-6-4.zip
-            $source1 = "${{env.GITHUB_WORKSPACE}}\bin"
-            $destination = "${{env.GITHUB_WORKSPACE}}\run"
-            $file_list = Get-Content "${{env.GITHUB_WORKSPACE}}\run\dependencies.txt"
+            7z x release-1928-x64-gdal-3-4-1-mapserver-7-6-4.zip;
+            $source1 = "${{env.GITHUB_WORKSPACE}}\bin";
+            $destination = "${{env.GITHUB_WORKSPACE}}\run";
+            $file_list = Get-Content "${{env.GITHUB_WORKSPACE}}\run\dependencies.txt";
             foreach ($file in $file_list)
             {
-              $source = $source1 + "\$file"
+              $source = $source1 + "\$file";
               try { Copy-Item $source $destination }
               catch { 
-                  Write-Host "An error occurred:"
+                  Write-Host "An error occurred:";
                   Write-Host $_ 
               }
             }
