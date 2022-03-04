@@ -326,7 +326,9 @@ jobs:
               ${{github.workspace}}/run/_pyhelios.cpython-*.pyd
 
   prepare-package:
-     runs-on: windows-2019
+    needs:
+      - build-libs
+    runs-on: windows-2019
      defaults:
         run:
           working-directory: ${{github.workspace}}
