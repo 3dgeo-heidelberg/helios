@@ -337,14 +337,14 @@ jobs:
             key: ${{ runner.os }}-DLLs-1
 
         - uses: suisei-cn/actions-download-file@v1
-          if: steps.cache-DLL.outputs.cache-hit != 'true'
+          #if: steps.cache-DLL.outputs.cache-hit != 'true'
           id: downloadgisinternals
           name: Download GISInternals
           with:
             url: "https://download.gisinternals.com/sdk/downloads/release-1928-x64-gdal-3-4-1-mapserver-7-6-4.zip"
 
         - name: Extract & copy DLLs
-          if: steps.cache-DLL.outputs.cache-hit != 'true'
+          #if: steps.cache-DLL.outputs.cache-hit != 'true'
           working-directory: ${{env.GITHUB_WORKSPACE}}
           run: >-
             7z x release-1928-x64-gdal-3-4-1-mapserver-7-6-4.zip;
