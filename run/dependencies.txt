@@ -12,7 +12,6 @@ core_f.dll
 core_gw.dll
 coverage.dll
 data_structures.dll
-dependencies.txt
 differential_equations.dll
 differential_equations_f.dll
 differential_equations_gw.dll
@@ -29,7 +28,6 @@ fileio.dll
 fileio_gw.dll
 freexl.dll
 functions_manager.dll
-gdal300.dll
 gdal304.dll
 geos.dll
 geos_c.dll
@@ -74,10 +72,7 @@ pcre.dll
 polynomials.dll
 polynomials_f.dll
 preferences.dll
-proj_6_3.dll
 proj_7_2.dll
-python38.dll
-python39.dll
 scicommons.dll
 scicompletion.dll
 sciconsole.dll
@@ -109,3 +104,6 @@ xerces-c_3_2.dll
 xml.dll
 zlib1.dll
 zstd.dll
+libexpat.dll
+tiff.dll
+zlib.dll
