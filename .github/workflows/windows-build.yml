@@ -339,7 +339,7 @@ jobs:
           with:
             path: |
               ${{github.workspace}}/run
-            key: ${{ runner.os }}-DLLs-1
+            key: ${{ runner.os }}-DLLs-2
 
         - uses: suisei-cn/actions-download-file@v1
           #if: steps.cache-DLL.outputs.cache-hit != 'true'
@@ -387,7 +387,7 @@ jobs:
           #if: steps.cache-DLL.outputs.cache-hit != 'true'
           working-directory: ${{env.GITHUB_WORKSPACE}}
           run: >-
-            $source1 = "C:\Program Files\scilab-6.1.0";
+            $source1 = "C:\Program Files\scilab-6.1.0\bin";
             $destination = "run";
             $file_list = Get-Content "run\dependencies.txt";
             foreach ($file in $file_list)
@@ -418,7 +418,7 @@ jobs:
         with:
           path: |
             ${{github.workspace}}/run
-          key: ${{ runner.os }}-DLLs-1
+          key: ${{ runner.os }}-DLLs-2
           restore-keys: |
             Windows-DLLs
 
