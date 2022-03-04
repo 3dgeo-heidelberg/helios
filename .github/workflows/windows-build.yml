@@ -147,8 +147,17 @@ jobs:
         with:
           path: |
             ${{github.workspace}}/lib
-            "C:\Program Files\scilab-6.1.0"
           key: ${{ runner.os }}-gdal-lastools-armadillo-latest4
+
+      - name: Cache scilab
+        id: cache-scilab
+        uses: actions/cache@v2
+        with:
+          path: |
+            "C:\Program Files\scilab-6.1.0"
+          key: ${{ runner.os }}-scilab
+          restore-keys: |
+            Windows-scilab
 
       - uses: suisei-cn/actions-download-file@v1
         if: steps.cache-lastools-armadillo-gdal.outputs.cache-hit != 'true'
@@ -230,12 +239,14 @@ jobs:
 
 
       - uses: suisei-cn/actions-download-file@v1
+        if: steps.cache-scilab.outputs.cache-hit != 'true'
         id: downloadscilab
         name: Download SciLab
         with:
           url: "https://www.scilab.org/download/6.1.0/scilab-6.1.0_x64.exe"
 
       - name: Install scilab
+        if: steps.cache-scilab.outputs.cache-hit != 'true'
         working-directory: ${{env.GITHUB_WORKSPACE}}
         run: |
           dir
@@ -295,7 +306,17 @@ jobs:
           key: ${{ runner.os }}-gdal-lastools-armadillo-latest4
           restore-keys: |
             Windows-gdal-lastools-armadillo-latest
-      
+
+      - name: Load scilab from cache
+        id: cache-scilab
+        uses: actions/cache@v2
+        with:
+          path: |
+            "C:\Program Files\scilab-6.1.0"
+          key: ${{ runner.os }}-scilab
+          restore-keys: |
+            Windows-scilab
+
       - name: Load Boost from Cache
         id: cache-boost
         uses: actions/cache@v2
@@ -366,17 +387,15 @@ jobs:
               }
             }
 
-        - name: Load LasTools, Armadillo and GDAL from cache
-          #if: steps.cache-DLL.outputs.cache-hit != 'true'
-          id: cache-lastools-armadillo-gdal
+        - name: Load scilab from cache
+          id: cache-scilab
           uses: actions/cache@v2
           with:
             path: |
-              ${{github.workspace}}/lib
               "C:\Program Files\scilab-6.1.0"
-            key: ${{ runner.os }}-gdal-lastools-armadillo-latest4
+            key: ${{ runner.os }}-scilab
             restore-keys: |
-              Windows-gdal-lastools-armadillo-latest
+              Windows-scilab
 
         - name: Copy DLLs from scilab
           #if: steps.cache-DLL.outputs.cache-hit != 'true'
