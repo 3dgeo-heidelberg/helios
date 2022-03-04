@@ -391,6 +391,7 @@ jobs:
 
       - name: Load artifact
         uses: actions/download-artifact@v3
+        with:
           name: ${{ runner.os}}-helios-pybinds-${{ matrix.python-version }}
           path: ${{github.workspace}}/run/
 
