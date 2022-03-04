@@ -334,7 +334,7 @@ jobs:
           with:
             path: |
               ${{github.workspace}}/run
-            key: ${{ runner.os }}-DLLs
+            key: ${{ runner.os }}-DLLs-1
 
         - uses: suisei-cn/actions-download-file@v1
           if: steps.cache-DLL.outputs.cache-hit != 'true'
@@ -348,7 +348,8 @@ jobs:
           working-directory: ${{env.GITHUB_WORKSPACE}}
           run: >-
             7z x release-1928-x64-gdal-3-4-1-mapserver-7-6-4.zip;
-            $source1 = "bin";
+            dir;
+            $source1 = "release-1928-x64-gdal-3-4-1-mapserver-7-6-4\bin";
             $destination = "run";
             $file_list = Get-Content "run\dependencies.txt";
             foreach ($file in $file_list)
@@ -380,7 +381,7 @@ jobs:
         with:
           path: |
             ${{github.workspace}}/run
-          key: ${{ runner.os }}-DLLs
+          key: ${{ runner.os }}-DLLs-1
           restore-keys: |
             Windows-DLLs
 
