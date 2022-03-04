@@ -147,7 +147,7 @@ jobs:
         with:
           path: |
             ${{github.workspace}}/lib
-            "C:\Pro"gram Files\scilab-6.1.0"
+            "C:\Program Files\scilab-6.1.0"
           key: ${{ runner.os }}-gdal-lastools-armadillo-latest4
 
       - uses: suisei-cn/actions-download-file@v1
@@ -291,7 +291,7 @@ jobs:
         with:
           path: |
             ${{github.workspace}}/lib
-            C:\Program Files\scilab-6.1.0
+            "C:\Program Files\scilab-6.1.0"
           key: ${{ runner.os }}-gdal-lastools-armadillo-latest4
           restore-keys: |
             Windows-gdal-lastools-armadillo-latest
