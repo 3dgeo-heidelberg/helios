@@ -244,7 +244,7 @@ jobs:
     
       - name: Add MSBuild to PATH
         uses: microsoft/setup-msbuild@v1.0.2
-        
+
       - uses: suisei-cn/actions-download-file@v1
         id: downloadscilab
         name: Download SciLab
@@ -320,6 +320,80 @@ jobs:
               ${{github.workspace}}/run/helios.exe
               ${{github.workspace}}/run/_pyhelios.cpython-*.pyd
 
-      - name: Test
-        if: false
-        run: ${{github.workspace}}/run/helios.exe --test
+  prepare-package:
+     runs-on: windows-2019
+     defaults:
+        run:
+          working-directory: ${{github.workspace}}
+     steps:
+        - uses: actions/checkout@v2
+
+        - name: Cache DLLs
+          id: cache-DLL
+          uses: actions/cache@v2
+          with:
+            path: |
+              ${{github.workspace}}/run
+            key: ${{ runner.os }}-DLLs
+
+          - uses: suisei-cn/actions-download-file@v1
+            if: steps.cache-DLL.outputs.cache-hit != 'true'
+            id: downloadgisinternals
+            name: Download GISInternals
+            with:
+              url: "https://download.gisinternals.com/sdk/downloads/release-1928-x64-gdal-3-4-1-mapserver-7-6-4.zip"
+
+          - name: Extract & copy DLLs
+            if: steps.cache-DLL.outputs.cache-hit != 'true'
+            working-directory: ${{env.GITHUB_WORKSPACE}}
+            run: |
+              7z x release-1928-x64-gdal-3-4-1-mapserver-7-6-4.zip
+              $source1 = "${{env.GITHUB_WORKSPACE}}\bin"
+              $destination = "${{env.GITHUB_WORKSPACE}}\run"
+              $file_list = Get-Content "${{env.GITHUB_WORKSPACE}}\run\dependencies.txt"
+              foreach ($file in $file_list)
+              {
+                $source = $source1 + "\$file"
+                try { Copy-Item $source $destination }
+                catch { 
+                    Write-Host "An error occurred:"
+                    Write-Host $_ 
+                }
+              }
+            shell: run
+
+  test-helios:
+    runs-on: windows-2019
+    needs: [build-helios, prepare-package]
+    defaults:
+      run:
+        working-directory: ${{github.workspace}}
+
+
+    strategy:
+      matrix:
+        python-version: ['3.6', '3.7', '3.8', '3.9']
+
+    steps:
+      - name: Load DLLs
+        id: cache-DLL
+        uses: actions/cache@v2
+        with:
+          path: |
+            ${{github.workspace}}/run
+          key: ${{ runner.os }}-DLLs
+          restore-keys: |
+            Windows-DLLs
+
+        - name: Set Up Python
+          uses: actions/setup-python@v2
+          with:
+            python-version: ${{ matrix.python-version }}
+
+        - name: Load artifact
+          uses: actions/download-artifact@v3
+            name: ${{ runner.os}}-helios-pybinds-${{ matrix.python-version }}
+            path: ${{github.workspace}}/run/
+
+        - name: Test
+          run: ${{github.workspace}}/run/helios.exe --test
