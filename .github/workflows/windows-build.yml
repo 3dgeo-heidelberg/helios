@@ -384,15 +384,15 @@ jobs:
           restore-keys: |
             Windows-DLLs
 
-        - name: Set Up Python
-          uses: actions/setup-python@v2
-          with:
-            python-version: ${{ matrix.python-version }}
+      - name: Set Up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
 
-        - name: Load artifact
-          uses: actions/download-artifact@v3
-            name: ${{ runner.os}}-helios-pybinds-${{ matrix.python-version }}
-            path: ${{github.workspace}}/run/
+      - name: Load artifact
+        uses: actions/download-artifact@v3
+          name: ${{ runner.os}}-helios-pybinds-${{ matrix.python-version }}
+          path: ${{github.workspace}}/run/
 
-        - name: Test
-          run: ${{github.workspace}}/run/helios.exe --test
+      - name: Test
+        run: ${{github.workspace}}/run/helios.exe --test
