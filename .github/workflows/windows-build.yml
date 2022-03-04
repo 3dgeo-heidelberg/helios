@@ -348,8 +348,8 @@ jobs:
           working-directory: ${{env.GITHUB_WORKSPACE}}
           run: >-
             7z x release-1928-x64-gdal-3-4-1-mapserver-7-6-4.zip;
-            dir;
-            $source1 = "release-1928-x64-gdal-3-4-1-mapserver-7-6-4\bin";
+            dir bin;
+            $source1 = "bin";
             $destination = "run";
             $file_list = Get-Content "run\dependencies.txt";
             foreach ($file in $file_list)
