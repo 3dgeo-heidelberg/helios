@@ -1,8 +1,8 @@
 #pragma once
 
-#include <filems/write/MeasurementWriter.h>
-#include <filems/write/TrajectoryWriter.h>
-#include <filems/write/FullWaveformWriter.h>
+#include <filems/write/core/MeasurementWriter.h>
+#include <filems/write/core/TrajectoryWriter.h>
+#include <filems/write/core/FullWaveformWriter.h>
 
 #include <glm/glm.hpp>
 
@@ -11,6 +11,8 @@
 #include <memory>
 
 namespace helios { namespace filems {
+
+class FMSFacadeFactory;
 
 using std::vector;
 using std::string;
@@ -22,6 +24,7 @@ using std::shared_ptr;
  * @brief The facade for FMS writing
  */
 class FMSWriteFacade{
+friend class FMSFacadeFactory;
 protected:
     // ***  ATTRIBUTES  *** //
     // ******************** //
@@ -40,6 +43,10 @@ protected:
      * @see filems::FullWaveformWriter
      */
     shared_ptr<FullWaveformWriter> fww = nullptr;
+    /**
+     * @brief The root directory for output files
+     */
+    string rootDir = "./";
 
 public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //
@@ -54,8 +61,6 @@ public:
     // ****************************** //
     /**
      * @brief Configure the output path for all writers in the facade
-     * @param parent Path to output directory for measurements, trajectories
-     *  and full waveform files
      * @param prefix Prefix for the name of the output file
      * @param computeWaveform Flag to specify if waveform must be computed
      *  (true) or not (false)
@@ -63,7 +68,6 @@ public:
      *  (true) or not (false)
      */
     void configure(
-        string const &parent,
         string const &prefix,
         bool const computeWaveform,
         bool const lastLegInStrip
@@ -100,7 +104,11 @@ public:
      */
     void writeMeasurement(Measurement &m);
     /**
-     * @see filems::MeasurementWriter::finish
+     * @see MeasurementWriter::clearPointcloudFile
+     */
+    void clearPointcloudFile();
+    /**
+     * @see filems::HeliosWriter::finish
      */
     void finishMeasurementWriter();
     /**
@@ -179,6 +187,10 @@ public:
      */
     void writeTrajectory(Trajectory &t);
     /**
+     * @see filems::HeliosWriter::finish
+     */
+    void finishTrajectoryWriter();
+    /**
      * @see filems::TrajectoryWriter::getOutputFilePath
      */
     fs::path getTrajectoryWriterOutputPath();
@@ -226,6 +238,10 @@ public:
         glm::dvec3 const &beamDir,
         double const gpsTime
     );
+    /**
+     * @see filems::HeliosWriter::finish
+     */
+    void finishFullWaveformWriter();
 };
 
     }}

@@ -1,6 +1,6 @@
 #pragma once
 
-#include <filems/write/HeliosWriter.h>
+#include <filems/write/core/HeliosWriter.h>
 #include <filems/factory/SyncFileWriterFactory.h>
 #include <scanner/Measurement.h>
 #include <scanner/Scanner.h>
@@ -30,7 +30,9 @@ using std::list;
  * @brief Class to handle writing of measurements to generate HELIOS++ output
  *  virtual point clouds
  */
-class MeasurementWriter : public HeliosWriter{
+class MeasurementWriter :
+    public HeliosWriter<Measurement const&, glm::dvec3 const>
+{
 protected:
     // ***  ATTRIBUTES  *** //
     // ******************** //
@@ -43,7 +45,9 @@ protected:
      * @brief Map of writers. This map allows to reuse writers for legs grouped
      * in the same strip.
      */
-    unordered_map<string, shared_ptr<SyncFileWriter>> writers{};
+    unordered_map<string, shared_ptr<SyncFileWriter<
+        Measurement const&, glm::dvec3 const
+    >>> writers{};
 
 public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //
@@ -84,10 +88,9 @@ public:
      */
     WriterType chooseWriterType() const;
     /**
-     * @brief Finish the measurement writer
-     * @see filems::SyncFileWriter::finish
+     * @brief Clear point cloud file for current leg
      */
-    void finish();
+    void clearPointcloudFile();
 
     // ***  GETTERs and SETTERs  *** //
     // ***************************** //

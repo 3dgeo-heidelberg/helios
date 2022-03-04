@@ -3,6 +3,7 @@
 #include <SyncFileWriter.h>
 #include <helios_version.h>
 #include <util/HeliosException.h>
+#include <Measurement.h>
 
 #include <laswriter.hpp>
 #include <glm/glm.hpp>

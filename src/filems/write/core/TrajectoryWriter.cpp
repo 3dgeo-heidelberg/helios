@@ -1,4 +1,4 @@
-#include <filems/write/TrajectoryWriter.h>
+#include <filems/write/core/TrajectoryWriter.h>
 
 #include <sstream>
 

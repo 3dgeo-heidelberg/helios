@@ -1,6 +1,7 @@
-#pragma once
+#ifndef _HELIOS_FILEMS_HELIOS_WRITER_H_
+#define _HELIOS_FILEMS_HELIOS_WRITER_H_
 
-#include <filems/write/SyncFileWriter.h>
+#include <filems/write/comps/SyncFileWriter.h>
 
 #include <boost/filesystem.hpp>
 
@@ -20,6 +21,7 @@ using std::shared_ptr;
  * @brief Base class providing the core for writers of different HELIOS++
  *  outputs (measurements, trajectory, full waveform)
  */
+template <typename ... WriteArgs>
 class HeliosWriter{
 protected:
     // ***  ATTRIBUTES  *** //
@@ -28,7 +30,7 @@ protected:
 	 * @brief Synchronous file writer
      * @see filems::SyncFileWriter
 	 */
-    shared_ptr<SyncFileWriter> sfw = nullptr;
+    shared_ptr<SyncFileWriter<WriteArgs ...>> sfw = nullptr;
 
     /**
 	 * @brief Flag specifying if detector output must be written in LAS
@@ -61,6 +63,14 @@ public:
      */
     HeliosWriter() = default;
     virtual ~HeliosWriter() = default;
+
+    // ***  HELIOS WRITER METHODS  *** //
+    // ******************************* //
+    /**
+     * @brief Finish the sync file writer
+     * @see filems::SyncFileWriter::finish
+     */
+    void finish();
 
     // ***  GETTERs and SETTERs  *** //
     // ***************************** //
@@ -120,4 +130,8 @@ public:
     {this->lasScale = lasScale;}
 };
 
+#include <filems/write/core/HeliosWriter.tpp>
+
 }}
+
+#endif

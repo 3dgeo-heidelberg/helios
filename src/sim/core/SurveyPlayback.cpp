@@ -30,9 +30,6 @@ SurveyPlayback::SurveyPlayback(
     std::shared_ptr<PulseThreadPoolInterface> pulseThreadPoolInterface,
     int const chunkSize,
     std::string fixedGpsTimeStart,
-    bool lasOutput,
-    bool las10,
-    bool zipOutput,
     bool exportToFile
 ):
     Simulation(
@@ -41,26 +38,11 @@ SurveyPlayback::SurveyPlayback(
         chunkSize,
         fixedGpsTimeStart
     ),
-    lasOutput(lasOutput),
-    las10(las10),
-    zipOutput(zipOutput),
     fms(fms)
 {
     this->mSurvey = survey;
 	this->exitAtEnd = true;
 	this->exportToFile = exportToFile;
-
-	// ######## BEGIN Create part of the leg point cloud file path #######
-	auto t = std::time(nullptr);
-	auto tm = std::localtime(&t);
-	auto mDateString = std::put_time(tm, "%Y-%m-%d_%H-%M-%S");
-	ostringstream oss;
-	oss << outputPath << "Survey Playback/" << mSurvey->name << "/"
-	    << mDateString << "/";
-	mOutputFilePathString = oss.str();
-	logging::INFO(mOutputFilePathString);
-
-	// ######## END Create part of the leg point cloud file path #######
 	this->setScanner(mSurvey->scanner);
 
 	// ############### BEGIN If the leg has no survey defined, create a default one ################
@@ -68,12 +50,13 @@ SurveyPlayback::SurveyPlayback(
 		shared_ptr<Leg> leg(new Leg());
 
 		// Set leg scanner settings:
-		leg->mScannerSettings = shared_ptr<ScannerSettings>(new ScannerSettings());
+		leg->mScannerSettings = make_shared<ScannerSettings>();
 
 		// Set leg position to the center of the scene:
-		shared_ptr<PlatformSettings> ps(new PlatformSettings());
-		ps->setPosition(mSurvey->scanner->platform->scene->getAABB()->getCentroid());
-
+		shared_ptr<PlatformSettings> ps = make_shared<PlatformSettings>();
+		ps->setPosition(
+		    mSurvey->scanner->platform->scene->getAABB()->getCentroid()
+        );
 		leg->mPlatformSettings = ps;
 
 		// Add leg to survey:
@@ -385,7 +368,6 @@ void SurveyPlayback::prepareOutput(){
 
     // Configure output paths
     fms->write.configure(
-        mOutputFilePathString,
         getLegOutputPrefix(),
         getScanner()->isWriteWaveform(),
         lastLegInStrip
@@ -396,28 +378,12 @@ void SurveyPlayback::prepareOutput(){
     getScanner()->trackOutputPath(
         fms->write.getMeasurementWriterOutputPath().string()
     );
-
 }
 
 void SurveyPlayback::clearPointcloudFile(){
-    // TODO Rethink : Method to FMS ?
     // Dont clear strip file, it would overwrite previous point cloud content
     if(getCurrentLeg()->isContainedInAStrip()) return;
-
-    // Clear point cloud file for current leg
-    string outputPath = mOutputFilePathString +
-                        fms->write.getMeasurementWriterOutputPath().string();
-    ostringstream s;s << "outputPath=" << outputPath << endl;
-    logging::INFO(s.str());
-
-    ofstream ofs;
-    try {
-        ofs.open(outputPath, ofstream::out | ofstream::trunc);
-    }
-    catch (std::exception &e) {
-        logging::ERR(e.what());
-    }
-    ofs.close();
+    fms->write.clearPointcloudFile();
 }
 
 

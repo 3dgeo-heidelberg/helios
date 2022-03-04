@@ -14,19 +14,18 @@ using std::stringstream;
 // ***  FACADE WRITE METHODS  *** //
 // ****************************** //
 void FMSWriteFacade::configure(
-    string const &parent,
     string const &prefix,
     bool const computeWaveform,
     bool const lastLegInStrip
 ){
     // Configure measurement output path
-    getMeasurementWriter()->configure(parent, prefix, lastLegInStrip);
+    getMeasurementWriter()->configure(rootDir, prefix, lastLegInStrip);
 
     // Configure trajectory output path
-    getTrajectoryWriter()->configure(parent, prefix);
+    getTrajectoryWriter()->configure(rootDir, prefix);
 
     // Configure full waveform output path
-    getFullWaveformWriter()->configure(parent, prefix, computeWaveform);
+    getFullWaveformWriter()->configure(rootDir, prefix, computeWaveform);
 
 }
 
@@ -52,6 +51,16 @@ void FMSWriteFacade::writeMeasurement(Measurement &m){
     );
     // Write the measurement
     mw->writeMeasurement(m);
+}
+
+void FMSWriteFacade::clearPointcloudFile(){
+    // Check it is possible to do the operation
+    validateMeasurementWriter(
+        "FMSWriteFacade::clearPointcloudFile",
+        "could not clear pointcloud file"
+    );
+    // Clear the pointcloud file
+    mw->clearPointcloudFile();
 }
 
 void FMSWriteFacade::finishMeasurementWriter(){
@@ -190,6 +199,16 @@ void FMSWriteFacade::writeTrajectory(Trajectory &t){
     tw->writeTrajectory(t);
 }
 
+void FMSWriteFacade::finishTrajectoryWriter(){
+    // Check it is possible to do the operation
+    validateMeasurementWriter(
+        "FMSWriteFacade::finishTrajectoryWriter",
+        "could not finish TrajectoryWriter"
+    );
+    // Check there is a trajectory writer to finish
+    tw->finish();
+}
+
 fs::path FMSWriteFacade::getTrajectoryWriterOutputPath(){
     // Check it is possible to do the operation
     validateTrajectoryWriter(
@@ -247,4 +266,14 @@ void FMSWriteFacade::writeFullWaveform(
         beamDir,
         gpsTime
     );
+}
+
+void FMSWriteFacade::finishFullWaveformWriter(){
+    // Check it is possible to do the operation
+    validateMeasurementWriter(
+        "FMSWriteFacade::finishFullWaveformWriter",
+        "could not finish FullWaveformWriter"
+    );
+    // Check there is a full waveform writer to finish
+    fww->finish();
 }

@@ -1,7 +1,6 @@
 #pragma once
 
 #include <AbstractDetector.h>
-#include <filems/write/SyncFileWriter.h>
 
 #include <boost/asio/thread_pool.hpp>
 #include <boost/asio/post.hpp>
@@ -9,7 +8,6 @@
 #include <limits>
 #include <string>
 
-using helios::filems::SyncFileWriter;
 
 /**
  * @brief Concrete implementation of abstract detector to compute full
@@ -20,11 +18,6 @@ using helios::filems::SyncFileWriter;
 class FullWaveformPulseDetector : public AbstractDetector {
     // ***  ATTRIBUTES  *** //
     // ******************** //
-    /**
-     * @brief Synchronous file writer used to handle output
-     * @see SyncFileWriter
-     */
-	std::shared_ptr<SyncFileWriter> fw_sfw;
 
 public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //

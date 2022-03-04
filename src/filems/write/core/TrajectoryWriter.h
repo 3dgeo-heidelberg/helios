@@ -1,7 +1,7 @@
 #pragma once
 
-#include <filems/write/HeliosWriter.h>
-#include <filems/write/SimpleSyncFileWriter.h>
+#include <filems/write/core/HeliosWriter.h>
+#include <filems/write/comps/SimpleSyncFileWriter.h>
 #include <scanner/Trajectory.h>
 
 #include <boost/filesystem.hpp>
@@ -22,11 +22,7 @@ using std::string;
  * @brief Class to handle writing of trajectories to generate HELIOS++ output
  *  virtual trajectories
  */
-class TrajectoryWriter : public HeliosWriter{
-protected:
-    // ***  ATTRIBUTES  *** //
-    // ******************** //
-
+class TrajectoryWriter : public HeliosWriter<Trajectory const &>{
 public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //
     // ************************************ //
@@ -57,20 +53,25 @@ public:
      * @param sfw Synchronous file writer to be used to write trajectory
      * @see filems::TrajectoryWriter::sfw
      */
-    inline void setSyncFileWriter(shared_ptr<SyncFileWriter> sfw){
+    inline void setSyncFileWriter(
+        shared_ptr<SyncFileWriter<Trajectory const&>> sfw
+    ){
         this->sfw = sfw;
     }
     /**
      * @brief Get the synchronous file writer used to write trajectories
      * @see filems::TrajectoryWriter::sfw
      */
-    inline shared_ptr<SyncFileWriter> getSyncFileWriter() const {return sfw;}
+    inline shared_ptr<SyncFileWriter<Trajectory const&>> getSyncFileWriter()
+    const {return sfw;}
     /**
      * @brief Set path to output file
      * @param path New path to output file
      */
     inline void setOutputFilePath(string const &path)
-    {setSyncFileWriter(make_shared<SimpleSyncFileWriter>(path));}
+    {setSyncFileWriter(
+        make_shared<SimpleSyncFileWriter<Trajectory const&>>(path)
+    );}
     /**
      * @brief Get the path to the output file
      * @return The path to the output file

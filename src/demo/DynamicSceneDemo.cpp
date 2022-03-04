@@ -5,11 +5,13 @@
 #include <HeliosException.h>
 #include <filems/facade/FMSFacade.h>
 #include <filems/facade/FMSWriteFacade.h>
+#include <filems/factory/FMSFacadeFactory.h>
 
 
 using HeliosDemos::DynamicSceneDemo;
 using visualhelios::VHSceneCanvas;
-using helios::filems::FMSWriteFacade;
+using helios::filems::FMSFacadeFactory;
+using helios::filems::FMSFacade;
 using std::make_shared;
 using std::static_pointer_cast;
 
@@ -51,6 +53,7 @@ void DynamicSceneDemo::validatePaths(){
     }
 }
 shared_ptr<Survey> DynamicSceneDemo::loadSurvey(){
+    // Load survey
     shared_ptr<XmlSurveyLoader> xmlreader(
         new XmlSurveyLoader(surveyPath, assetsPath)
     );
@@ -61,18 +64,21 @@ shared_ptr<Survey> DynamicSceneDemo::loadSurvey(){
             << surveyPath << "\"";
         throw HeliosException(ss.str());
     }
+    // Configure Scanner
     survey->scanner->setWriteWaveform(false);
     survey->scanner->setCalcEchowidth(false);
     survey->scanner->setFullWaveNoise(false);
     survey->scanner->setPlatformNoiseDisabled(false);
     survey->scanner->setFixedIncidenceAngle(false);
-    // TODO Rethink : Implement main package with building methods for FMS ...
-    // ... and other components
-    FMSWriteFacade &fmsWrite = survey->scanner->detector->fms->write;
-    fmsWrite.setMeasurementWriterLasOutput(false);
-    fmsWrite.setMeasurementWriterLas10(false);
-    fmsWrite.setMeasurementWriterZipOutput(false);
-    fmsWrite.setMeasurementWriterLasScale(1.0);
+    // Build main facade for File Management System
+    std::shared_ptr<FMSFacade> fms = FMSFacadeFactory().buildFacade(
+        "demo_output",  // Output directory
+        1.0,            // LAS scale
+        false,          // LAS output flag
+        false,          // LAS10 format flag
+        false,          // Zip output flag
+        *survey         // Associated survey
+    );
     return survey;
 }
 

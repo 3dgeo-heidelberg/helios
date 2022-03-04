@@ -198,6 +198,11 @@ BOOST_PYTHON_MODULE(_pyhelios){
             &PyHeliosSimulation::setZipOutput
         )
         .add_property(
+            "lasScale",
+            &PyHeliosSimulation::getLasScale,
+            &PyHeliosSimulation::setLasScale
+        )
+        .add_property(
             "numThreads",
             &PyHeliosSimulation::getNumThreads,
             &PyHeliosSimulation::setNumThreads

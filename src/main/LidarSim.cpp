@@ -10,8 +10,7 @@
 #include <TimeWatcher.h>
 #include <scanner/detector/PulseThreadPoolFactory.h>
 #include <filems/facade/FMSFacade.h>
-#include <filems/write/MeasurementWriter.h>
-#include <filems/write/TrajectoryWriter.h>
+#include <filems/factory/FMSFacadeFactory.h>
 
 
 namespace fms = helios::filems;
@@ -97,21 +96,16 @@ void LidarSim::init(
 	survey->scanner->setFullWaveNoise(fullWaveNoise);
 	survey->scanner->setPlatformNoiseDisabled(platformNoiseDisabled);
 	survey->scanner->setFixedIncidenceAngle(fixedIncidenceAngle);
-	// TODO Rethink : Implement main package with building methods for FMS ...
-	// ... and other components
-	shared_ptr<fms::FMSFacade> fms = make_shared<fms::FMSFacade>();
-	survey->scanner->fms = fms;
-	survey->scanner->detector->fms = fms;
-	fms::FMSWriteFacade &fmsWrite = fms->write;
-	fmsWrite.setMeasurementWriter(make_shared<fms::MeasurementWriter>());
-	fmsWrite.getMeasurementWriter()->setScanner(survey->scanner);
-	fmsWrite.setMeasurementWriterLasOutput(lasOutput);
-    fmsWrite.setMeasurementWriterLas10(las10);
-    fmsWrite.setMeasurementWriterZipOutput(zipOutput);
-    fmsWrite.setMeasurementWriterLasScale(lasScale);
-    fmsWrite.setTrajectoryWriter(make_shared<fms::TrajectoryWriter>());
-    fmsWrite.setFullWaveformWriter(make_shared<fms::FullWaveformWriter>());
-    // TODO Rethink : Use outputPath variable to define FMS root directory
+
+	// Build main facade for File Management System, associated to the survey
+    std::shared_ptr<fms::FMSFacade> fms = fms::FMSFacadeFactory().buildFacade(
+        outputPath,
+        lasScale,
+        lasOutput,
+        las10,
+        zipOutput,
+        *survey
+    );
 
 	// Build thread pool for parallel computation
 	/*
@@ -130,18 +124,17 @@ void LidarSim::init(
     std::shared_ptr<PulseThreadPoolInterface> pulseThreadPool =
         ptpf.makePulseThreadPool();
 
+    // Build the survey playback simulation itself
 	std::shared_ptr<SurveyPlayback> playback=std::make_shared<SurveyPlayback>(
         survey,
         fms,
         parallelizationStrategy,
         pulseThreadPool,
         std::abs(chunkSize),
-        gpsStartTime,
-        lasOutput,
-        las10,
-        zipOutput
+        gpsStartTime
 	);
 
+	// Start simulation
     logging::INFO("Running simulation...");
 	TimeWatcher tw;
 	tw.start();

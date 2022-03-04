@@ -1,8 +1,8 @@
 #pragma once
 
-#include <filems/write/HeliosWriter.h>
-#include <filems/write/SimpleSyncFileWriter.h>
-#include <filems/write/ZipSyncFileWriter.h>
+#include <filems/write/core/HeliosWriter.h>
+#include <filems/write/comps/SimpleSyncFileWriter.h>
+#include <filems/write/comps/ZipSyncFileWriter.h>
 
 #include <boost/filesystem.hpp>
 #include <glm/glm.hpp>
@@ -25,11 +25,15 @@ using std::vector;
  * @brief Class to handle writing of full waveform to generate HELIOS++ output
  *  virtual full waveform
  */
-class FullWaveformWriter : public HeliosWriter {
-protected:
-    // ***  ATTRIBUTES  *** //
-    // ******************** //
-
+class FullWaveformWriter : public HeliosWriter<
+    std::vector<double> const &,
+    int const,
+    double const,
+    double const,
+    glm::dvec3 const&,
+    glm::dvec3 const&,
+    long const
+>{
 public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //
     // ************************************ //

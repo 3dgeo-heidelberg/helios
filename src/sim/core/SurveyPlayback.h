@@ -24,42 +24,18 @@ public:
      * @brief Flag to specify if leg has been started (true) or not (false)
      */
 	bool mLegStarted = false;
-	// TODO Rethink : are LAS and zip flags needed when using FMS ?
-	/**
-	 * @brief Flag to specify if LAS format must be used for the output (true)
-	 *  or not (false)
-	 */
-	bool lasOutput = false;
-    /**
-     * @brief Flag to specify if LAS output must be LAS v1.0.
-     */
-    bool las10 = false;
-	/**
-	 * @brief Flag to specify if output must be zipped (true) or not (false)
-	 */
-	bool zipOutput = false;
 
 	/**
 	 * @brief The survey itself
 	 * @see Survey
 	 */
 	std::shared_ptr<Survey> mSurvey;
-
-	/**
-	 * @brief Path to output file
-	 */
-	std::string mOutputFilePathString = "";
 	/**
 	 * @brief Main facade to file management system
 	 */
 	shared_ptr<FMSFacade> fms = nullptr;
 
 private:
-    /**
-     * @brief Root output path
-     */
-    const std::string outputPath; // TODO Rethink : Move to FMS
-
     /**
      * @brief Number of effective legs
      */
@@ -105,18 +81,8 @@ public:
      * @brief Survey playback constructor
      * @param survey The survey itself
      * @param fms The main facade of file management system
-     * @param lasOutput Flag to specify LAS format for the output (true) or not
-     *  (false)
-     * @param las10 Flag to specify if LAS output must be LAS v1.0 (true) or not
-     * (false).
-     * @param zipOutput Flag to specify if output must be zipped (true) or not
-     *  (false)
      * @param exportToFile Flag to specify if output must be written to a file
      *  (true) or not (false)
-     * @see SurveyPlayback::lasOutput
-     * @see SurveyPlayback::las10
-     * @see SurveyPlayback::zipOutput
-     * @see SurveyPlayback::outputPath
      * @see Survey
      * @see Simulation::Simulation(unsigned, double, size_t)
      */
@@ -127,9 +93,6 @@ public:
         std::shared_ptr<PulseThreadPoolInterface> pulseThreadPoolInterface,
         int const chunkSize,
         std::string fixedGpsTimeStart,
-        bool const lasOutput,
-        bool const las10,
-        bool const zipOutput,
         bool const exportToFile=true
     );
 

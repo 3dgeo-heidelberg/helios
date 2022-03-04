@@ -1,11 +1,13 @@
-#include <filems/write/MeasurementWriter.h>
+#include <filems/write/core/MeasurementWriter.h>
 #include <util/HeliosException.h>
 
 #include <sstream>
+#include <fstream>
 
 using namespace helios::filems;
 
 using std::stringstream;
+using std::ofstream;
 
 // ***   M E T H O D S   *** //
 // ************************* //
@@ -78,16 +80,17 @@ WriterType MeasurementWriter::chooseWriterType() const {
     return wt;
 }
 
-void MeasurementWriter::finish(){
-    // If there is no sync file writer to finish, throw an exception
-    if(sfw == nullptr){
-        throw HeliosException(
-            "MeasurementWriter::finish had not sync file writer (sfw) to "
-            "finish"
-        );
+void MeasurementWriter::clearPointcloudFile(){
+    string outputPath = getOutputPath();
+    logging::INFO("Clearing point cloud: \""+outputPath+"\"");
+    ofstream ofs;
+    try{
+        ofs.open(outputPath, ofstream::out | ofstream::trunc);
     }
-    // Finish sync file writer, if any
-    sfw->finish();
+    catch(std::exception &ex){
+        logging::ERR(ex.what());
+    }
+    ofs.close();
 }
 
 

@@ -1,4 +1,6 @@
-#include <filems/write/FullWaveformWriter.h>
+#include <filems/write/core/FullWaveformWriter.h>
+#include <filems/write/comps/SimpleSyncFileFullWaveformWriter.h>
+#include <filems/write/comps/ZipSyncFileFullWaveformWriter.h>
 
 #include <string>
 #include <sstream>
@@ -55,6 +57,6 @@ void FullWaveformWriter::writeFullWaveform(
 // ***************************** //
 void FullWaveformWriter::setOutputFilePath(string const &path){
     logging::INFO("fw_path=" + path);
-    if(isZipOutput()) sfw = make_shared<ZipSyncFileWriter>(path);
-    else sfw = make_shared<SimpleSyncFileWriter>(path);
+    if(isZipOutput()) sfw = make_shared<ZipSyncFileFullWaveformWriter>(path);
+    else sfw = make_shared<SimpleSyncFileFullWaveformWriter>(path);
 }

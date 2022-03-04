@@ -19,9 +19,9 @@
 
 #include <filems/write/Las14SyncFileWriter.h>
 #include <filems/write/LasSyncFileWriter.h>
-#include <filems/write/SimpleSyncFileWriter.h>
-#include <filems/write/SyncFileWriter.h>
-#include <filems/write/ZipSyncFileWriter.h>
+#include <filems/write/comps/SimpleSyncFileWriter.h>
+#include <filems/write/comps/SyncFileWriter.h>
+#include <filems/write/comps/ZipSyncFileWriter.h>
 #include <util/HeliosException.h>
 
 #include <string>
@@ -30,10 +30,10 @@
 
 namespace helios { namespace filems{
 
-using ::std::string;
-using ::std::stringstream;
-using ::std::shared_ptr;
-using ::std::make_shared;
+using std::string;
+using std::stringstream;
+using std::shared_ptr;
+using std::make_shared;
 
 // ** Types of writers ** //
 

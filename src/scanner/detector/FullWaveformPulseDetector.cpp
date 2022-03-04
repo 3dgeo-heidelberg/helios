@@ -1,10 +1,6 @@
-#include <iostream>
-#include <exception>
-#include <boost/format.hpp>
 #include <boost/filesystem.hpp>
 namespace fs = boost::filesystem;
 
-#include "FullWaveformPulseRunnable.h"
 #include "FullWaveformPulseDetector.h"
 #include <filems/facade/FMSFacade.h>
 #include <filems/write/ZipSyncFileWriter.h>
@@ -31,7 +27,6 @@ std::shared_ptr<AbstractDetector> FullWaveformPulseDetector::clone(){
 void FullWaveformPulseDetector::_clone(std::shared_ptr<AbstractDetector> ad){
     AbstractDetector::_clone(ad);
     FullWaveformPulseDetector *fwpd = (FullWaveformPulseDetector *) ad.get();
-    fwpd->fw_sfw = fw_sfw;
 }
 
 // ***  M E T H O D S  *** //
@@ -42,5 +37,5 @@ void FullWaveformPulseDetector::applySettings(shared_ptr<ScannerSettings> & sett
 
 void FullWaveformPulseDetector::shutdown() {
 	AbstractDetector::shutdown();
-	if(fw_sfw != nullptr) fw_sfw->finish(); // TODO Rethink : To FMS
+	if(scanner->isWriteWaveform()) fms->write.finishFullWaveformWriter();
 }

@@ -7,13 +7,8 @@
 
 #include <Scanner.h>
 #include <ScannerSettings.h>
-#include "Measurement.h"
-#include "MeasurementsBuffer.h"
-#include "SimpleSyncFileWriter.h"
-#include "LasSyncFileWriter.h"
-#include "Las14SyncFileWriter.h"
-#include "ZipSyncFileWriter.h"
-#include "SyncFileWriterFactory.h"
+#include <Measurement.h>
+#include <MeasurementsBuffer.h>
 namespace helios { namespace filems { class FMSFacade; }}
 using helios::filems::FMSFacade;
 
