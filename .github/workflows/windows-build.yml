@@ -422,6 +422,31 @@ jobs:
           restore-keys: |
             Windows-DLLs
 
+      - uses: suisei-cn/actions-download-file@v1
+        if: steps.cache-scilab.outputs.cache-hit != 'true'
+        id: downloadDll
+        name: Download remaining DLLs (from taken from osgeo4w)
+        with:
+          url: "https://heibox.uni-heidelberg.de/f/a96bc746e6d64438ba2a/?dl=1"
+
+      - name: Extract & copy DLLs
+        #if: steps.cache-DLL.outputs.cache-hit != 'true'
+        working-directory: ${{env.GITHUB_WORKSPACE}}
+        run: >-
+          7z x missingDLLs.zip;
+          dir;
+          $source1 = ".";
+          $destination = "run";
+          $file_list = Get-Content "run\dependencies.txt";
+          foreach ($file in $file_list)
+          {
+            $source = $source1 + "\$file";
+            try { Copy-Item $source $destination }
+            catch { 
+                Write-Host $_ 
+            }
+          }
+
       - name: Set Up Python
         uses: actions/setup-python@v2
         with:
