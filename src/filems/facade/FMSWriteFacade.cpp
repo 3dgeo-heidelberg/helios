@@ -229,6 +229,26 @@ void FMSWriteFacade::setTrajectoryWriterOutputPath(string const &path){
     tw->setOutputFilePath(path);
 }
 
+bool FMSWriteFacade::isTrajectoryWriterZipOutput() const{
+    // Check if it possible to do the operation
+    validateTrajectoryWriter(
+        "FMSWriteFacade::isTrajectoryWriterZipOutput",
+        "could not get TrajectoryWriter zip output flag"
+    );
+    // Get the zip output flag
+    return tw->isZipOutput();
+}
+
+void FMSWriteFacade::setTrajectoryWriterZipOutput(bool const zipOutput){
+    // Check it is possible to do the operation
+    validateTrajectoryWriter(
+        "FMSWriteFacade::setTrajectoryWriterZipOutput",
+        "could not set TrajectoryWriter zip output flag"
+    );
+    // Set the zip output flag
+    tw->setZipOutput(zipOutput);
+}
+
 // ***  FACADE FULL WAVEFORM WRITE METHODS  *** //
 // ******************************************** //
 void FMSWriteFacade::validateFullWaveformWriter(
@@ -276,4 +296,24 @@ void FMSWriteFacade::finishFullWaveformWriter(){
     );
     // Check there is a full waveform writer to finish
     fww->finish();
+}
+
+bool FMSWriteFacade::isFullWaveformWriterZipOutput() const{
+    // Check if it possible to do the operation
+    validateTrajectoryWriter(
+        "FMSWriteFacade::isFullWaveformWriterZipOutput",
+        "could not get FullWaveformWriter zip output flag"
+    );
+    // Get the zip output flag
+    return fww->isZipOutput();
+}
+
+void FMSWriteFacade::setFullWaveformWriterZipOutput(bool const zipOutput){
+    // Check it is possible to do the operation
+    validateTrajectoryWriter(
+        "FMSWriteFacade::setFullWaveformWriterZipOutput",
+        "could not set FullWaveformWriter zip output flag"
+    );
+    // Set the zip output flag
+    fww->setZipOutput(zipOutput);
 }

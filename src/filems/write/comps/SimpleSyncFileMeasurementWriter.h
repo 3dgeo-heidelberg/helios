@@ -20,7 +20,7 @@ using std::make_shared;
  * @see Measurement
  */
 class SimpleSyncFileMeasurementWriter :
-    public SimpleSyncFileWriter<Measurement const &, glm::dvec3 const>
+    public SimpleSyncFileWriter<Measurement const &, glm::dvec3 const &>
 {
 
 public:
@@ -34,7 +34,7 @@ public:
         const std::string& path,
         std::ios_base::openmode om = std::ios_base::app
     ) :
-        SimpleSyncFileWriter<Measurement const&, glm::dvec3 const>(path, om)
+        SimpleSyncFileWriter<Measurement const&, glm::dvec3 const &>(path, om)
     {
         this->writeStrategy = make_shared<DirectMeasurementWriteStrategy>(
             this->ofs

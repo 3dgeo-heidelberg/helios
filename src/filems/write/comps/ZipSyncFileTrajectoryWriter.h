@@ -1,7 +1,7 @@
 #pragma once
 
-#include <filems/write/comps/ZipSyncFileWriter.h
-#include <filems/write/strategies/ZipTrajectoryWriteStrategy.h
+#include <filems/write/comps/ZipSyncFileWriter.h>
+#include <filems/write/strategies/ZipTrajectoryWriteStrategy.h>
 
 #include <memory>
 
@@ -32,12 +32,12 @@ public:
      ) :
         ZipSyncFileWriter<Trajectory const &>(path, compressionMode)
     {
-        this->writeStrategy = make_shared<ZipTrajectoryWriteStrategy(
+        this->writeStrategy = make_shared<ZipTrajectoryWriteStrategy>(
             this->ofs,
             *(this->oa)
         );
     }
-    virtual ZipSyncFileTrajectoryWriter = default;
+    virtual ~ZipSyncFileTrajectoryWriter() = default;
 };
 
 }}

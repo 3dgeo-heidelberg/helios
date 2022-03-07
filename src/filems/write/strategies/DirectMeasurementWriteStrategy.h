@@ -19,7 +19,7 @@ namespace helios { namespace filems{
  * @see filems::SimpleSyncFileMeasurementWriter
  */
 class DirectMeasurementWriteStrategy :
-    public WriteStrategy<Measurement const &, glm::dvec3 const>
+    public WriteStrategy<Measurement const &, glm::dvec3 const &>
 {
 protected:
     // ***  ATTRIBUTES  *** //

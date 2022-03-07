@@ -1,7 +1,8 @@
 #pragma once
 
+#include <util/HeliosException.h>
 #include <filems/write/core/HeliosWriter.h>
-#include <filems/factory/SyncFileWriterFactory.h>
+#include <filems/factory/SyncFileMeasurementWriterFactory.h>
 #include <scanner/Measurement.h>
 #include <scanner/Scanner.h>
 
@@ -31,7 +32,7 @@ using std::list;
  *  virtual point clouds
  */
 class MeasurementWriter :
-    public HeliosWriter<Measurement const&, glm::dvec3 const>
+    public HeliosWriter<Measurement const&, glm::dvec3 const&>
 {
 protected:
     // ***  ATTRIBUTES  *** //
@@ -46,7 +47,7 @@ protected:
      * in the same strip.
      */
     unordered_map<string, shared_ptr<SyncFileWriter<
-        Measurement const&, glm::dvec3 const
+        Measurement const&, glm::dvec3 const&
     >>> writers{};
 
 public:

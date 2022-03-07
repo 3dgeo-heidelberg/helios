@@ -72,6 +72,17 @@ public:
         bool const computeWaveform,
         bool const lastLegInStrip
     );
+    /**
+     * @brief Obtain the root directory of the write facade
+     * @see filems::FMSWriteFacade::rootDir
+     */
+    inline string getRootDir() const {return rootDir;}
+    /**
+     * @brief Set the root directory of the write facade
+     * @param rootDir The new root directory for the write facade
+     * @see filems::FMSWriteFacade:rootDir
+     */
+    inline void setRootDir(string const &rootDir) {this->rootDir = rootDir;}
 
     // ***  FACADE MEASUREMENT WRITE METHODS  *** //
     // ****************************************** //
@@ -198,6 +209,14 @@ public:
      * @see filems::TrajectoryWriter::setOutputFilePath
      */
     void setTrajectoryWriterOutputPath(string const &path);
+    /**
+     * @see filems::TrajectoryWriter::isZipOutput
+     */
+    bool isTrajectoryWriterZipOutput() const;
+    /**
+     * @see filems::TrajectoryWriter::setZipOutput
+     */
+    void setTrajectoryWriterZipOutput(bool const zipOutput);
 
 
     // ***  FACADE FULL WAVEFORM WRITE METHODS  *** //
@@ -242,6 +261,14 @@ public:
      * @see filems::HeliosWriter::finish
      */
     void finishFullWaveformWriter();
+    /**
+     * @see filems::FullWaveformWriter::isZipOutput
+     */
+    bool isFullWaveformWriterZipOutput() const;
+    /**
+     * @see filems::FullWaveformWriter::setZipOutput
+     */
+    void setFullWaveformWriterZipOutput(bool const zipOutput);
 };
 
     }}

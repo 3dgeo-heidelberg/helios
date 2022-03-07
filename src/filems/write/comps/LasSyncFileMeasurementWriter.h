@@ -1,6 +1,7 @@
 #pragma once
 
-#include <SyncFileWriter.h>
+#include <filems/write/comps/SyncFileWriter.h>
+#include <filems/write/strategies/LasMeasurementWriteStrategy.h>
 #include <helios_version.h>
 #include <util/HeliosException.h>
 #include <Measurement.h>
@@ -8,6 +9,7 @@
 #include <laswriter.hpp>
 #include <glm/glm.hpp>
 
+#include <memory>
 #include <mutex>
 #include <string>
 #include <ctime>
@@ -15,20 +17,16 @@
 
 namespace helios { namespace filems {
 
+using std::make_shared;
 
 /**
  * @author Alberto M. Esmoris Pena
  * @version 1.0
  * @brief SyncFileWriter implementation for LAS format
  */
-class LasSyncFileWriter : public SyncFileWriter{
-public:
-    // ***  CONSTANTS  *** //
-    // ******************* //
-    /**
-     * @brief Classification mask constant for LAS format
-     */
-    static const U8 CLASSIFICATION_MASK = 31;
+class LasSyncFileMeasurementWriter :
+    public SyncFileWriter<Measurement const &, glm::dvec3 const &>
+{
 protected:
     // ***  ATTRIBUTES  *** //
     // ******************** //
@@ -141,7 +139,7 @@ protected:
 public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //
     // ************************************ //
-    LasSyncFileWriter() : SyncFileWriter() {};
+    LasSyncFileMeasurementWriter() : SyncFileWriter() {};
     /**
      * @brief Synchronous LAS file writer constructor
      * @see SyncFileWriter::path
@@ -152,13 +150,14 @@ public:
      * @see LasSyncFileWriter::minIntensity
      * @see LasSyncFileWriter::deltaIntensity
      */
-    explicit LasSyncFileWriter(
+    explicit LasSyncFileMeasurementWriter(
         const std::string &path,
-        bool compress = false,
-        double scaleFactor = 0.0001,
-        glm::dvec3 offset = glm::dvec3(0, 0, 0),
-        double minIntensity = 0.0,
-        double deltaIntensity = 1000000.0
+        bool const compress = false,
+        double const scaleFactor = 0.0001,
+        glm::dvec3 const offset = glm::dvec3(0, 0, 0),
+        double const minIntensity = 0.0,
+        double const deltaIntensity = 1000000.0,
+        bool const createWriter = true
 
     ) :
         SyncFileWriter(path),
@@ -168,25 +167,43 @@ public:
         deltaIntensity(deltaIntensity),
         finished(false)
     {
-        // Craft header and point format
-        craft();
+        // If construct must create the writer
+        if(createWriter){
+            // Craft header and point format
+            craft();
 
-        // Add extra attributes
-        addExtraAttributes();
+            // Add extra attributes
+            addExtraAttributes();
 
-        // Create LASWriter
-        createLasWriter(path, compress);
+            // Create LASWriter
+            createLasWriter(path, compress);
 
+            // Write strategy
+            this->writeStrategy = make_shared<LasMeasurementWriteStrategy>(
+                *lw,
+                lp,
+                scaleFactorInverse,
+                this->offset,
+                this->minIntensity,
+                maxIntensity,
+                intensityCoefficient,
+                ewAttrStart,
+                fwiAttrStart,
+                hoiAttrStart,
+                ampAttrStart
+            );
+        }
     }
 
-    ~LasSyncFileWriter() override {LasSyncFileWriter::finish();}
+    ~LasSyncFileMeasurementWriter() override
+    {LasSyncFileMeasurementWriter::finish();}
 
-    // *** CRAFTING *** //
+    // ***  CRAFTING  *** //
+    // ****************** //
     /**
      * @brief Crafting of header of the LAS File for version 1.0
      */
-    void craft()
-    {
+    void craft(){
       // Prepare
       std::stringstream ss;
       scaleFactorInverse = 1.0 / scaleFactor;
@@ -223,7 +240,8 @@ public:
       lwHeader.global_encoding = 0;
     }
 
-    // *** EXTRA ATTRIBUTES *** //
+    // ***  EXTRA ATTRIBUTES  *** //
+    // ************************** //
     /**
      * @brief Creation of extra attributes to be added to each record
      */
@@ -300,82 +318,6 @@ public:
       if(compress) lwOpener.set_format(LAS_TOOLS_FORMAT_LAZ);
       else lwOpener.set_format(LAS_TOOLS_FORMAT_LAS);
       lw = std::shared_ptr<LASwriter>(lwOpener.open(&lwHeader));
-    }
-
-    // ***  W R I T E  *** //
-    // ******************* //
-    /**
-     * @brief Write measurement to LAS file
-     * @see SyncFileWriter::_write(Measurement const &, glm::dvec3 const &)
-     */
-    void _write(Measurement const &m, glm::dvec3 const & shift) override{
-        // Compute shifted position
-        glm::dvec3 shifted = m.position + shift - offset;
-
-        // Populate LAS point (base attributes)
-        lp.set_X(I32(shifted.x * scaleFactorInverse));
-        lp.set_Y(I32(shifted.y * scaleFactorInverse));
-        lp.set_Z(I32(shifted.z * scaleFactorInverse));
-        double intensityf = m.intensity;
-        if(intensityf < minIntensity) intensityf = minIntensity;
-        if(intensityf > maxIntensity) intensityf = maxIntensity;
-        U16 intensity = U16(
-            intensityCoefficient * (intensityf - minIntensity)
-        );
-        lp.set_intensity(intensity);
-
-        lp.set_return_number(U8(m.returnNumber));
-        lp.set_extended_return_number(U8(m.returnNumber));
-
-        lp.set_number_of_returns(U8(m.pulseReturnNumber));
-        lp.set_extended_number_of_returns(U8(m.pulseReturnNumber));
-
-        lp.set_classification(U8(m.classification) & CLASSIFICATION_MASK);
-        lp.set_extended_classification(U8(m.classification) & CLASSIFICATION_MASK);
-
-        lp.set_gps_time(F64(((double)m.gpsTime)/1000.0));
-
-        // Populate LAS point (extra bytes attributes)
-        lp.set_attribute(ewAttrStart, F64(m.echo_width));
-        lp.set_attribute(fwiAttrStart, I32(m.fullwaveIndex));
-        lp.set_attribute(hoiAttrStart, I32(std::stoi(m.hitObjectId)));
-        lp.set_attribute(ampAttrStart, F64(m.intensity));
-
-        // Write and add to inventory
-        lw->write_point(&lp);
-        lw->update_inventory(&lp);
-    }
-
-    /**
-     * @brief Write fullwave to LAS file
-     * @see SyncFileWriter::_write(std::vector
-     */
-    void _write(
-        std::vector<double> const &fullwave,
-        int fullwaveIndex,
-        double minTime,
-        double maxTime,
-        glm::dvec3 const & beamOrigin,
-        glm::dvec3 const & beamDir,
-        long gpsTime
-    ) override {
-        throw HeliosException(
-            "LasSyncFileWriter does NOT support fullwave writing"
-        );
-    }
-
-    /**
-     * @brief Write trajectory to compressed file
-     * @see SimpleSyncFileWriter::_write(
-     *  long,
-     *  double, double, double,
-     *  double, double, double
-     * )
-     */
-    void _write(Trajectory const &t) override {
-        throw HeliosException(
-            "LasSyncFileWriter does NOT support trajectory writing"
-        );
     }
 
     // ***  F I N I S H  *** //

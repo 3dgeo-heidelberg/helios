@@ -3,7 +3,7 @@ namespace fs = boost::filesystem;
 
 #include "FullWaveformPulseDetector.h"
 #include <filems/facade/FMSFacade.h>
-#include <filems/write/ZipSyncFileWriter.h>
+#include <filems/write/comps/ZipSyncFileWriter.h>
 #include <logging.hpp>
 
 using helios::filems::ZipSyncFileWriter;
@@ -26,7 +26,8 @@ std::shared_ptr<AbstractDetector> FullWaveformPulseDetector::clone(){
 }
 void FullWaveformPulseDetector::_clone(std::shared_ptr<AbstractDetector> ad){
     AbstractDetector::_clone(ad);
-    FullWaveformPulseDetector *fwpd = (FullWaveformPulseDetector *) ad.get();
+    // Below not used atm because class was modified when implementing filems
+    //FullWaveformPulseDetector *fwpd = (FullWaveformPulseDetector *) ad.get();
 }
 
 // ***  M E T H O D S  *** //

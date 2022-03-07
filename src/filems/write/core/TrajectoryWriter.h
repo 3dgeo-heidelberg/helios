@@ -68,10 +68,7 @@ public:
      * @brief Set path to output file
      * @param path New path to output file
      */
-    inline void setOutputFilePath(string const &path)
-    {setSyncFileWriter(
-        make_shared<SimpleSyncFileWriter<Trajectory const&>>(path)
-    );}
+    void setOutputFilePath(string const &path);
     /**
      * @brief Get the path to the output file
      * @return The path to the output file

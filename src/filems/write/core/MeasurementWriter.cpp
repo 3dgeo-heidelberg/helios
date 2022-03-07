@@ -104,12 +104,11 @@ void MeasurementWriter::setOutputFilePath(
 ){
     logging::WARN("outputFilePath=" + path);
     try {
-        fs::create_directories(fs::path(path).parent_path());
         WriterType wt = chooseWriterType();
 
         // Create the Writer
         if(!fs::exists(path)){
-            sfw = SyncFileWriterFactory::makeWriter(
+            sfw = SyncFileMeasurementWriterFactory::makeWriter(
                 wt,
                 path,                                   // Output path
                 isZipOutput(),                          // Zip flag

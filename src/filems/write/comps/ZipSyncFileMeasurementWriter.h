@@ -1,7 +1,7 @@
 #pragma once
 
 #include <filems/write/comps/ZipSyncFileWriter.h>
-#include <filems/write/strategies/ZipMeasurementWriteStrategy.h
+#include <filems/write/strategies/ZipMeasurementWriteStrategy.h>
 
 #include <memory>
 
@@ -20,7 +20,7 @@ using std::make_shared;
  * @see Measurement
  */
 class ZipSyncFileMeasurementWriter :
-    public ZipSyncFileMeasurementWriter<Measurement const&, glm::dvec3 const>
+    public ZipSyncFileWriter<Measurement const&, glm::dvec3 const&>
 {
 
 public:
@@ -34,7 +34,7 @@ public:
         const string &path,
         int compressionMode = boost::iostreams::zlib::best_compression
     ) :
-        ZipSyncFileWriter<Measurement const&, glm::dvec3 const>(
+        ZipSyncFileWriter<Measurement const&, glm::dvec3 const&>(
             path, compressionMode
         )
     {
@@ -43,7 +43,7 @@ public:
             *(this->oa)
         );
     }
-    virtual ZipSyncFileMeasurementWriter() = default;
+    virtual ~ZipSyncFileMeasurementWriter() = default;
 };
 
 }}

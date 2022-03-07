@@ -25,21 +25,6 @@ shared_ptr<FMSFacade> FMSFacadeFactory::buildFacade(
     bool const zipOutput,
     Survey &survey
 ){
-    // Create FMS facade
-    shared_ptr<FMSFacade> fms = make_shared<FMSFacade>();
-    // Assign facade to interested survey components
-    survey.scanner->fms = fms;
-    survey.scanner->detector->fms = fms;
-
-    // Configure write facade
-    FMSWriteFacade &fmsWrite = fms->write;
-    fmsWrite.setMeasurementWriter(make_shared<MeasurementWriter>());
-    fmsWrite.getMeasurementWriter()->setScanner(survey.scanner);
-    fmsWrite.setMeasurementWriterLasOutput(lasOutput);
-    fmsWrite.setMeasurementWriterLas10(las10);
-    fmsWrite.setMeasurementWriterZipOutput(zipOutput);
-    fmsWrite.setMeasurementWriterLasScale(lasScale);
-
     // Determine root directory for output files, create it if necessary
     time_t t = std::time(nullptr);
     struct tm * tm = std::localtime(&t);
@@ -48,15 +33,35 @@ shared_ptr<FMSFacade> FMSFacadeFactory::buildFacade(
         << survey.name << fs::path::preferred_separator
         << std::put_time(tm, "%Y-%m-%d_%H-%M-%S")
         << fs::path::preferred_separator;
-    fmsWrite.rootDir = ss.str();
-    fs::create_directories(fmsWrite.rootDir);
-    logging::INFO("Output directory: \""+fmsWrite.rootDir+"\"");
+    string rootDir = ss.str();
+    fs::create_directories(rootDir);
+    logging::INFO("Output directory: \""+rootDir+"\"");
 
-    // Configure trajectory facade
+    // Create FMS facade
+    shared_ptr<FMSFacade> fms = make_shared<FMSFacade>();
+    // Assign facade to interested survey components
+    survey.scanner->fms = fms;
+    survey.scanner->detector->fms = fms;
+
+    // Configure write facade
+    FMSWriteFacade &fmsWrite = fms->write;
+    fmsWrite.setRootDir(rootDir);
+
+    // Configure measurement writer
+    fmsWrite.setMeasurementWriter(make_shared<MeasurementWriter>());
+    fmsWrite.getMeasurementWriter()->setScanner(survey.scanner);
+    fmsWrite.setMeasurementWriterLasOutput(lasOutput);
+    fmsWrite.setMeasurementWriterLas10(las10);
+    fmsWrite.setMeasurementWriterZipOutput(zipOutput);
+    fmsWrite.setMeasurementWriterLasScale(lasScale);
+
+    // Configure trajectory writer
     fmsWrite.setTrajectoryWriter(make_shared<TrajectoryWriter>());
+    fmsWrite.setTrajectoryWriterZipOutput(zipOutput);
 
-    // Configure full waveform facade
+    // Configure full waveform writer
     fmsWrite.setFullWaveformWriter(make_shared<FullWaveformWriter>());
+    fmsWrite.setFullWaveformWriterZipOutput(zipOutput);
 
     // Return
     return fms;

@@ -34,10 +34,10 @@ public:
         const std::string& path,
         std::ios_base::openmode om = std::ios_base::app
     ) :
-        SimpleSyncFileWriter<Trajectory const&>(path, om),
+        SimpleSyncFileWriter<Trajectory const&>(path, om)
     {
-        this->writeStrategy = make_shared<DirectTrajectoryWriteStrategy(
-            this->ofs;
+        this->writeStrategy = make_shared<DirectTrajectoryWriteStrategy>(
+            this->ofs
         );
     }
     virtual ~SimpleSyncFileTrajectoryWriter() = default;

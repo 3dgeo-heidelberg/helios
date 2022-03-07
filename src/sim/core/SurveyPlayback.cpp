@@ -17,7 +17,7 @@ namespace fs = boost::filesystem;
 #include "HelicopterPlatform.h"
 #include <ScanningStrip.h>
 #include <filems/facade/FMSFacade.h>
-#include <filems/write/SimpleSyncFileWriter.h>
+#include <filems/write/comps/SimpleSyncFileWriter.h>
 
 using helios::filems::SimpleSyncFileWriter;
 
