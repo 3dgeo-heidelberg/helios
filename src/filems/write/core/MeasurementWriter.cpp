@@ -26,7 +26,7 @@ void MeasurementWriter::configure(
     else ss << "_points.xyz";
     setOutputFilePath(ss.str(), lastLegInStrip);
 }
-void MeasurementWriter::writeMeasurement(Measurement & m){
+void MeasurementWriter::writeMeasurement(Measurement const &m){
     // Check there is a sync file writer
     if(sfw == nullptr){
         throw HeliosException(
@@ -44,10 +44,12 @@ void MeasurementWriter::writeMeasurement(Measurement & m){
     }
 
     // Write measured point to output file
-    sfw->write(m, scanner->platform->scene->getShift());
+    sfw->write(m, shift);
 }
 
-void MeasurementWriter::writeMeasurements(list<Measurement*> & measurements){
+void MeasurementWriter::writeMeasurements(
+    list<Measurement*> const &measurements
+){
     // Check that there is an available writer
     if(sfw == nullptr){
         throw HeliosException(
@@ -65,7 +67,7 @@ void MeasurementWriter::writeMeasurements(list<Measurement*> & measurements){
 
     // Write measured point to output file
     for (const Measurement* m : measurements) {
-        sfw->write(*m, scanner->platform->scene->getShift());
+        sfw->write(*m, shift);
     }
 }
 
@@ -106,6 +108,9 @@ void MeasurementWriter::setOutputFilePath(
     try {
         WriterType wt = chooseWriterType();
 
+        // Finish previous writer properly, if any
+        if(sfw != nullptr) sfw->finish();
+
         // Create the Writer
         if(!fs::exists(path)){
             sfw = SyncFileMeasurementWriterFactory::makeWriter(
@@ -113,7 +118,7 @@ void MeasurementWriter::setOutputFilePath(
                 path,                                   // Output path
                 isZipOutput(),                          // Zip flag
                 getLasScale(),                          // Scale factor
-                scanner->platform->scene->getShift(),   // Offset
+                shift,                                  // Offset
                 0.0,                                    // Min intensity
                 1000000.0                               // Delta intensity
             );

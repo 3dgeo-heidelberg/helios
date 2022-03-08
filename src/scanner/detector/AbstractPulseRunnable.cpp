@@ -130,8 +130,7 @@ void AbstractPulseRunnable::capturePoint(
         (cycleMeasurements->end() - 1)->position +=
             detector->scanner->platform->scene->getShift();
     }
-    detector->fms->write.writeMeasurement(m);
-	detector->mBuffer->add(m);
+    detector->fms->write.writeMeasurementUnsafe(m);
 }
 
 void AbstractPulseRunnable::applyMeasurementError(

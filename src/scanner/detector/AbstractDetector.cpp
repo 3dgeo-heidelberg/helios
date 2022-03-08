@@ -6,8 +6,6 @@
 // ************************************ //
 void AbstractDetector::_clone(std::shared_ptr<AbstractDetector> ad){
     ad->scanner = scanner; // Reference pointer => copy pointer, not object
-	if(mBuffer == nullptr) ad->mBuffer = nullptr;
-    else ad->mBuffer = std::make_shared<MeasurementsBuffer>(*mBuffer);
     ad->cfg_device_accuracy_m = cfg_device_accuracy_m;
     ad->cfg_device_rangeMin_m = cfg_device_rangeMin_m;
     ad->fms = fms;

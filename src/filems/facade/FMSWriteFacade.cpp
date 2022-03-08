@@ -43,7 +43,7 @@ void FMSWriteFacade::validateMeasurementWriter(
     }
 }
 
-void FMSWriteFacade::writeMeasurement(Measurement &m){
+void FMSWriteFacade::writeMeasurement(Measurement const &m){
     // Check it is possible to do the operation
     validateMeasurementWriter(
         "FMSWriteFacade::writeMeasurement",
@@ -189,7 +189,7 @@ void FMSWriteFacade::validateTrajectoryWriter(
         throw HeliosException(ss.str());
     }
 }
-void FMSWriteFacade::writeTrajectory(Trajectory &t){
+void FMSWriteFacade::writeTrajectory(Trajectory const &t){
     // Check it is possible to do the operation
     validateTrajectoryWriter(
         "FMSWriteFacade::writeTrajectory",

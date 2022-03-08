@@ -44,7 +44,14 @@ public:
      * @brief Write a trajectory point
      * @param t Trajectory point to be written
      */
-    void writeTrajectory(Trajectory & t);
+    void writeTrajectory(Trajectory const &t);
+    /**
+     * @brief Like filems::TrajectoryWriter::writeTrajectory but faster
+     *  because there is no validation
+     * @see filems::TrajectoryWriter::writeTrajectory
+     */
+    inline void writeTrajectoryUnsafe(Trajectory const &t) const
+    {sfw->write(t);}
 
     // ***  GETTERs and SETTERs  *** //
     // ***************************** //

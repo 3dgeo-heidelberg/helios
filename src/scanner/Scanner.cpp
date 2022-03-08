@@ -470,7 +470,7 @@ void Scanner::handleTrajectoryOutput(double currentGpsTime){
     Trajectory trajectory(currentGpsTime, pos, roll, pitch, yaw);
 
     // Write trajectory output
-    fms->write.writeTrajectory(trajectory);
+    fms->write.writeTrajectoryUnsafe(trajectory);
 
     // Add trajectory to all trajectories vector
     if(allTrajectories != nullptr){

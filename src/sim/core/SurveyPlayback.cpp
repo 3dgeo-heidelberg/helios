@@ -383,6 +383,9 @@ void SurveyPlayback::prepareOutput(){
 void SurveyPlayback::clearPointcloudFile(){
     // Dont clear strip file, it would overwrite previous point cloud content
     if(getCurrentLeg()->isContainedInAStrip()) return;
+    // Dont clear pcloud file, if leg is not active there is nothing to clear
+    // Otherwise, WATCHOUT because last active leg might be overwriten
+    if(!getCurrentLeg()->mScannerSettings->active) return;
     fms->write.clearPointcloudFile();
 }
 

@@ -3,7 +3,6 @@
 #include <boost/asio/post.hpp>
 
 #include <Scanner.h>
-#include <MeasurementsBuffer.h>
 #include <Color4f.h>
 #include <SimulationStepLoop.h>
 #include <PulseTaskDropper.h>
@@ -23,11 +22,6 @@ friend class SimulationReporter;
 protected:
     // ***  ATTRIBUTES  *** //
     // ******************** //
-    /**
-     * @brief How many nanoseconds there are in a second
-     */
-	static const long NANOSECONDS_PER_SECOND = 1000000000;
-
 	/**
 	 * @brief Specify the parallelization strategy
 	 * @see ArgumentsParser::parseParallelizationStrategy
@@ -142,9 +136,6 @@ public:
 	 */
     bool finished = false;
 
-    // TODO Pending : If measurements buffer is not used, remove it.
-    // The same applies for AbstractDetector mBuffer
-	std::shared_ptr<MeasurementsBuffer> mBuffer = nullptr;
     std::shared_ptr<SimulationCycleCallback> callback = nullptr;
 
     // ***  CONSTRUCTION / DESTRUCTION  *** //

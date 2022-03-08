@@ -69,6 +69,31 @@ public:
         glm::dvec3 const &beamDir,
         double const gpsTime
     );
+    /**
+     * @brief Like filems::FullWaveformWriter::writeFullWaveform but faster
+     *  because there is no validation
+     * @see filems::FullWaveformWriter::writeFullWaveform
+     */
+    inline void writeFullWaveformUnsafe(
+        vector<double> const &fullwave,
+        int const fullwaveIndex,
+        double const minTime,
+        double const maxTime,
+        glm::dvec3 const &beamOrigin,
+        glm::dvec3 const &beamDir,
+        double const gpsTime
+    ) const
+    {
+        sfw->write(
+            fullwave,
+            fullwaveIndex,
+            minTime,
+            maxTime,
+            beamOrigin,
+            beamDir,
+            gpsTime
+        );
+    }
 
     // ***  GETTERs and SETTERs  *** //
     // ***************************** //

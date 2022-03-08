@@ -54,7 +54,7 @@ public:
      * writing operations are guaranteed to be done after the instance has
      * been destroyed.
      */
-    void finish() override {};
+    void finish() override {ofs.close();};
 };
 
 }}

@@ -113,7 +113,14 @@ public:
     /**
      * @see MeasurementWriter::writeMeasurement
      */
-    void writeMeasurement(Measurement &m);
+    void writeMeasurement(Measurement const &m);
+    /**
+     * @brief Write the measurement without validations (it is faster than its
+     *  non unsafe counterpart)
+     * @see MeasurementWriter::writeMeasurement
+     */
+    inline void writeMeasurementUnsafe(Measurement const &m) const
+    {mw->writeMeasurementUnsafe(m);}
     /**
      * @see MeasurementWriter::clearPointcloudFile
      */
@@ -196,7 +203,14 @@ public:
     /**
      * @see TrajectoryWriter::writeTrajectory
      */
-    void writeTrajectory(Trajectory &t);
+    void writeTrajectory(Trajectory const &t);
+    /**
+     * @brief Write the trajectory without validations (it is faster than its
+     *  non unsafe counterpart)
+     * @see TrajectoryWriter::writeTrajectory
+     */
+    inline void writeTrajectoryUnsafe(Trajectory const &t) const
+    {tw->writeTrajectoryUnsafe(t);}
     /**
      * @see filems::HeliosWriter::finish
      */
@@ -257,6 +271,30 @@ public:
         glm::dvec3 const &beamDir,
         double const gpsTime
     );
+    /**
+     * @brief Write the full waveform without validations (it is faster than
+     *  its non unsafe counterpart)
+     * @see FullWaveformWriter::writeFullWaveformUnsafe
+     */
+    inline void writeFullWaveformUnsafe(
+        vector<double> const &fullwave,
+        int const fullwaveIndex,
+        double const minTime,
+        double const maxTime,
+        glm::dvec3 const &beamOrigin,
+        glm::dvec3 const &beamDir,
+        double const gpsTime
+    ) const{
+        fww->writeFullWaveformUnsafe(
+            fullwave,
+            fullwaveIndex,
+            minTime,
+            maxTime,
+            beamOrigin,
+            beamDir,
+            gpsTime
+        );
+    }
     /**
      * @see filems::HeliosWriter::finish
      */

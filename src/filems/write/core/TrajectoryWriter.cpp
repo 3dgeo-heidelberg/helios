@@ -22,7 +22,7 @@ void TrajectoryWriter::configure(
     else ss << ".txt";
     setOutputFilePath(ss.str());
 }
-void TrajectoryWriter::writeTrajectory(Trajectory &t){
+void TrajectoryWriter::writeTrajectory(Trajectory const &t){
     sfw->write(t);
 }
 

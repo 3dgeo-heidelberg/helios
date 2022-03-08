@@ -30,7 +30,6 @@ Simulation::Simulation(
     reporter(*this)
 
 {
-    mBuffer = make_shared<MeasurementsBuffer>();
     currentGpsTime_ms = calcCurrentGpsTime();
 }
 
@@ -232,9 +231,4 @@ void Simulation::setScanner(shared_ptr<Scanner> scanner) {
     logging::INFO("Simulation: Scanner changed!");
 
     this->mScanner = shared_ptr<Scanner>(scanner);
-
-    // Connect measurements buffer:
-    if (this->mScanner != nullptr) {
-        this->mScanner->detector->mBuffer = this->mBuffer;
-    }
 }

@@ -8,7 +8,6 @@
 #include <Scanner.h>
 #include <ScannerSettings.h>
 #include <Measurement.h>
-#include <MeasurementsBuffer.h>
 namespace helios { namespace filems { class FMSFacade; }}
 using helios::filems::FMSFacade;
 
@@ -24,10 +23,6 @@ public:
      * @brief Scanner which the detector belongs to
      */
 	std::shared_ptr<Scanner> scanner;
-	/**
-	 * @brief Buffer to store measurements
-	 */
-	std::shared_ptr<MeasurementsBuffer> mBuffer; // TODO Pending : Is it used?
 	/**
 	 * @brief Main facade to file management system
 	 */

@@ -769,7 +769,7 @@ public:
 	 * @param active New scanner active status
 	 * @see Scanner::state_isActive
 	 */
-	inline void setActive(bool active) {this->state_isActive = active;}
+	inline void setActive(bool const active) {this->state_isActive = active;}
 
 	/**
 	 * @brief Check if scanner is configured to write wave form (true) or not

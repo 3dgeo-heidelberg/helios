@@ -647,7 +647,7 @@ void FullWaveformPulseRunnable::captureFullWave(
     }
 
     // Write full wave
-    fwDetector->fms->write.writeFullWaveform(
+    fwDetector->fms->write.writeFullWaveformUnsafe(
         fullwave,
         fullwaveIndex,
         min_time,
