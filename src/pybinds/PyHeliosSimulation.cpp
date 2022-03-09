@@ -195,10 +195,10 @@ PyHeliosOutputWrapper * PyHeliosSimulation::join(){
             return new PyHeliosOutputWrapper(
                 measurements,
                 trajectories,
-                survey->scanner->detector->fms->write
+                survey->scanner->detector->getFMS()->write
                     .getMeasurementWriterOutputPath().string(),
                 std::vector<std::string>{
-                    survey->scanner->detector->fms->write
+                    survey->scanner->detector->getFMS()->write
                         .getMeasurementWriterOutputPath().string()
                 },
                 false
@@ -209,7 +209,7 @@ PyHeliosOutputWrapper * PyHeliosSimulation::join(){
             return new PyHeliosOutputWrapper(
                 survey->scanner->allMeasurements,
                 survey->scanner->allTrajectories,
-                survey->scanner->detector->fms->write
+                survey->scanner->detector->getFMS()->write
                     .getMeasurementWriterOutputPath().string(),
                 survey->scanner->allOutputPaths,
                 true
@@ -226,7 +226,7 @@ PyHeliosOutputWrapper * PyHeliosSimulation::join(){
     return new PyHeliosOutputWrapper(
         survey->scanner->allMeasurements,
         survey->scanner->allTrajectories,
-        survey->scanner->detector->fms->write
+        survey->scanner->detector->getFMS()->write
             .getMeasurementWriterOutputPath().string(),
         survey->scanner->allOutputPaths,
         true

@@ -4,10 +4,12 @@
 #include <filems/write/strategies/DirectMeasurementWriteStrategy.h>
 
 #include <memory>
+#include <vector>
 
 namespace helios { namespace filems{
 
 using std::make_shared;
+using std::vector;
 
 /**
  * @author Alberto M. Esmoris Pena
@@ -22,7 +24,6 @@ using std::make_shared;
 class SimpleSyncFileMeasurementWriter :
     public SimpleSyncFileWriter<Measurement const &, glm::dvec3 const &>
 {
-
 public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //
     // ************************************ //

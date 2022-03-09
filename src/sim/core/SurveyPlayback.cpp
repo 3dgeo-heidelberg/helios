@@ -11,7 +11,6 @@ using namespace std::chrono;
 namespace fs = boost::filesystem;
 
 #include "AbstractDetector.h"
-#include "FullWaveformPulseDetector.h"
 #include "SurveyPlayback.h"
 #include <glm/gtx/vector_angle.hpp>
 #include "HelicopterPlatform.h"
@@ -204,6 +203,9 @@ string SurveyPlayback::getLegOutputPrefix(std::string format){
 void SurveyPlayback::onLegComplete() {
     // Do scanning pulse process handling of on leg complete, if any
     mScanner->onLegComplete();
+
+    // Notify detector about leg completion
+    mScanner->detector->onLegComplete();
 
 	// Start next leg
     elapsedLength += mSurvey->legs.at(mCurrentLegIndex)->getLength();

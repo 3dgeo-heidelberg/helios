@@ -49,9 +49,9 @@ public:
     inline void setRangeMax(double const rangeMax)
         {detector.cfg_device_rangeMax_m = rangeMax;}
     inline double getLasScale()
-        {return detector.fms->write.getMeasurementWriterLasScale();}
+        {return detector.getFMS()->write.getMeasurementWriterLasScale();}
     inline void setLasScale(double const lasScale)
-        {detector.fms->write.setMeasurementWriterLasScale(lasScale);}
+        {detector.getFMS()->write.setMeasurementWriterLasScale(lasScale);}
 };
 
 }

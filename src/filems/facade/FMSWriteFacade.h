@@ -1,6 +1,6 @@
 #pragma once
 
-#include <filems/write/core/MeasurementWriter.h>
+#include <filems/write/core/VectorialMeasurementWriter.h>
 #include <filems/write/core/TrajectoryWriter.h>
 #include <filems/write/core/FullWaveformWriter.h>
 
@@ -9,6 +9,7 @@
 #include <vector>
 #include <string>
 #include <memory>
+#include <list>
 
 namespace helios { namespace filems {
 
@@ -17,6 +18,7 @@ class FMSFacadeFactory;
 using std::vector;
 using std::string;
 using std::shared_ptr;
+using std::list;
 
 /**
  * @author Alberto M. Esmoris Pena
@@ -29,10 +31,10 @@ protected:
     // ***  ATTRIBUTES  *** //
     // ******************** //
     /**
-     * @brief The writer for measurements
-     * @see filems::MeasurementWriter
+     * @brief The vectorial writer for measurements
+     * @see filems::VectorialMeasurementWriter
      */
-    shared_ptr<MeasurementWriter> mw = nullptr;
+    shared_ptr<VectorialMeasurementWriter> mw = nullptr;
     /**
      * @brief The writer for trajectories
      * @see filems::TrajectoryWriter
@@ -91,14 +93,14 @@ public:
      * @return The measurement writer of the write facade
      * @see FMSWriteFacade::mw
      */
-    inline shared_ptr<MeasurementWriter> getMeasurementWriter() const
+    inline shared_ptr<VectorialMeasurementWriter> getMeasurementWriter() const
     {return this->mw;}
     /**
      * @brief Set the measurement writer of the write facade
      * @param mw New measurement writer for the write facade
      * @see FMSWriteFacade::mw
      */
-    inline void setMeasurementWriter(shared_ptr<MeasurementWriter> mw)
+    inline void setMeasurementWriter(shared_ptr<VectorialMeasurementWriter> mw)
     {this->mw = mw;}
     /**
      * @brief Validate the measurement writer of the facade is valid to
@@ -111,16 +113,17 @@ public:
         string const &errorMsg="could not access MeasurementWriter"
     ) const;
     /**
-     * @see MeasurementWriter::writeMeasurement
+     * @bsee VectorialMeasurementWritter::writeMeasurements
      */
-    void writeMeasurement(Measurement const &m);
+    void writeMeasurements(vector<Measurement> const &measurements);
     /**
-     * @brief Write the measurement without validations (it is faster than its
-     *  non unsafe counterpart)
-     * @see MeasurementWriter::writeMeasurement
+     * @brief Write the vector of measurements without validations (it is
+     *  faster than its non unsafe counterpart)
+     * @see VectorialMeasurementWritter::writeMeasurementsUnsafe
      */
-    inline void writeMeasurementUnsafe(Measurement const &m) const
-    {mw->writeMeasurementUnsafe(m);}
+    inline void writeMeasurementsUnsafe(
+        vector<Measurement> const &measurements
+    ) const{mw->writeMeasurementsUnsafe(measurements);}
     /**
      * @see MeasurementWriter::clearPointcloudFile
      */

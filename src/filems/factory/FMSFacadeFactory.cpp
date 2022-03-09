@@ -41,14 +41,14 @@ shared_ptr<FMSFacade> FMSFacadeFactory::buildFacade(
     shared_ptr<FMSFacade> fms = make_shared<FMSFacade>();
     // Assign facade to interested survey components
     survey.scanner->fms = fms;
-    survey.scanner->detector->fms = fms;
+    survey.scanner->detector->setFMS(fms);
 
     // Configure write facade
     FMSWriteFacade &fmsWrite = fms->write;
     fmsWrite.setRootDir(rootDir);
 
     // Configure measurement writer
-    fmsWrite.setMeasurementWriter(make_shared<MeasurementWriter>());
+    fmsWrite.setMeasurementWriter(make_shared<VectorialMeasurementWriter>());
     fmsWrite.getMeasurementWriter()->setScanner(survey.scanner);
     fmsWrite.setMeasurementWriterLasOutput(lasOutput);
     fmsWrite.setMeasurementWriterLas10(las10);

@@ -17,6 +17,7 @@ namespace helios { namespace filems{
  *  measurements to a file.
  * @see filems::WriteStrategy
  * @see filems::SimpleSyncFileMeasurementWriter
+ * @see filems::VectorialMeasurementWriteStrategy
  */
 class DirectMeasurementWriteStrategy :
     public WriteStrategy<Measurement const &, glm::dvec3 const &>

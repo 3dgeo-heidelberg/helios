@@ -97,7 +97,7 @@ void Simulation::shutdown(){
         (*callback)(
             *mScanner->cycleMeasurements,
             *mScanner->cycleTrajectories,
-            mScanner->detector->fms->write
+            mScanner->detector->getFMS()->write
                 .getMeasurementWriterOutputPath().string()
         );
     }
@@ -131,7 +131,7 @@ void Simulation::start() {
                 (*callback)(
                     *mScanner->cycleMeasurements,
                     *mScanner->cycleTrajectories,
-                    mScanner->detector->fms->write
+                    mScanner->detector->getFMS()->write
                         .getMeasurementWriterOutputPath().string()
                 );
                 mScanner->cycleMeasurements->clear();

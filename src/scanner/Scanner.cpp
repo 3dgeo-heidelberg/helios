@@ -399,7 +399,6 @@ void Scanner::handleSimStepNoise(
     glm::dvec3 & absoluteBeamOrigin,
     Rotation & absoluteBeamAttitude
 ){
-
     // Apply noise to beam origin
     if(!platformNoiseDisabled){
         if (platform->positionXNoiseSource != nullptr){ // Add X position noise

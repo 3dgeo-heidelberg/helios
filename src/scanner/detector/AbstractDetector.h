@@ -8,6 +8,8 @@
 #include <Scanner.h>
 #include <ScannerSettings.h>
 #include <Measurement.h>
+#include <util/PointcloudYielder.h>
+
 namespace helios { namespace filems { class FMSFacade; }}
 using helios::filems::FMSFacade;
 
@@ -22,11 +24,20 @@ public:
     /**
      * @brief Scanner which the detector belongs to
      */
-	std::shared_ptr<Scanner> scanner;
+	std::shared_ptr<Scanner> scanner = nullptr;
+
+protected:
 	/**
 	 * @brief Main facade to file management system
 	 */
-	std::shared_ptr<FMSFacade> fms;
+	std::shared_ptr<FMSFacade> fms = nullptr;
+
+public:
+	/**
+	 * @brief The point cloud yielder which handles point cloud building from
+	 *  measurements
+	 */
+	std::shared_ptr<PointcloudYielder> pcloudYielder = nullptr;
 
 	/**
 	 * @brief Detector accuracy in meters
@@ -74,5 +85,26 @@ public:
      * @brief Apply scanner settings to the detector
      * @param settings Settings to be applied to de detector
      */
-     virtual void applySettings(std::shared_ptr<ScannerSettings> & settings) {};
+    virtual void applySettings(std::shared_ptr<ScannerSettings> & settings) {};
+    /**
+     * @brief Handle detector behavior when leg has been completed.
+     *
+     * It mainly forces yielded point cloud to be flushed
+     */
+    virtual void onLegComplete();
+
+    // ***  GETTERs and SETTERs  *** //
+    // ***************************** //
+    /**
+     * @brief Obtain the main facade to file management system
+     * @return The main facade to file management system
+     */
+    inline std::shared_ptr<FMSFacade> getFMS() const {return fms;}
+    /**
+     * @brief Set the main facade to file management system that will be used
+     *  by the detector
+     * @param fms The new main facade to file management system for the
+     *  detector
+     */
+    void setFMS(std::shared_ptr<FMSFacade> fms);
 };

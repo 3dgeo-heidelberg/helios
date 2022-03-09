@@ -9,6 +9,7 @@ using namespace helios::filems;
 namespace fs=boost::filesystem;
 
 using std::stringstream;
+using std::list;
 
 
 // ***  FACADE WRITE METHODS  *** //
@@ -43,14 +44,16 @@ void FMSWriteFacade::validateMeasurementWriter(
     }
 }
 
-void FMSWriteFacade::writeMeasurement(Measurement const &m){
+void FMSWriteFacade::writeMeasurements(
+    vector<Measurement> const &measurements
+){
     // Check it is possible to do the operation
     validateMeasurementWriter(
-        "FMSWriteFacade::writeMeasurement",
-        "could not write measurement"
+        "FMSWriteFacade::writeMeasurements",
+        "could not write measurements"
     );
-    // Write the measurement
-    mw->writeMeasurement(m);
+    // Write the measurements
+    mw->writeMeasurementsUnsafe(measurements);
 }
 
 void FMSWriteFacade::clearPointcloudFile(){

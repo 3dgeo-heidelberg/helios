@@ -11,9 +11,21 @@ void AbstractDetector::_clone(std::shared_ptr<AbstractDetector> ad){
     ad->fms = fms;
 }
 
+
 // ***  M E T H O D S  *** //
 // *********************** //
-
 void AbstractDetector::shutdown() {
     fms->write.finishMeasurementWriter();
+}
+void AbstractDetector::onLegComplete(){
+    pcloudYielder->yield();
+}
+
+// ***  GETTERs and SETTERs  *** //
+// ***************************** //
+void AbstractDetector::setFMS(std::shared_ptr<FMSFacade> fms) {
+    this->fms = fms;
+    if(fms != nullptr){
+        pcloudYielder = std::make_shared<PointcloudYielder>(fms->write);
+    }
 }
