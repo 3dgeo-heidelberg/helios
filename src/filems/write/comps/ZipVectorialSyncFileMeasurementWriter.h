@@ -64,6 +64,7 @@ public:
             glm::dvec3 const &
         >>(zmws);
     }
+    virtual ~ZipVectorialSyncFileMeasurementWriter() = default;
 };
 
 }}

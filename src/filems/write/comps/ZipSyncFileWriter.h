@@ -64,6 +64,20 @@ public:
     }
     virtual ~ZipSyncFileWriter() = default;
 
+    // ***  F I N I S H  *** //
+    // ********************* //
+    /**
+     * @brief ZipSyncFileWriter finishes the binary output archive instead of
+     *  calling its parent finish method. This is necessary to prevent
+     *  malfunctions coming from interaction between output archive closing
+     *  and output stream closing
+     * @see SimpleSyncFileWriter::finish
+     */
+    void finish() override {
+        oa = nullptr;
+        //SimpleSyncFileWriter<WriteArgs...>::finish();  // Must not be called
+    }
+
 };
 
 }}

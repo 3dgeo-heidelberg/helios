@@ -76,8 +76,8 @@ public:
         return SyncFileMeasurementWriterFactory::makeWriter(
             type,                   // Writer type
             path,                   // Output path
-            isZipOutput(),          // Zip flag
-            getLasScale(),          // Scale factor
+            zipOutput,              // Zip flag
+            lasScale,               // Scale factor
             shift,                  // Offset
             0.0,                    // Min intensity
             1000000.0               // Delta intensity
