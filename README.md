@@ -23,7 +23,7 @@ Es lohnt sich definitiv, dabei zu sein. Wir freuen uns auf euch! :grinning:
 
 ## 💻 Download
 
-Precompiled versions for Windows and Linux are available under [releases](https://github.com/3dgeo-heidelberg/helios/releases).
+Precompiled versions for Windows and Ubuntu (other Debian might also work, but you need to install dependencies manually) are available under [releases](https://github.com/3dgeo-heidelberg/helios/releases).
 
 ## ℹ Documentation
 
