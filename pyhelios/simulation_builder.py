@@ -167,7 +167,8 @@ class SimulationBuilder:
         self.assetsDir = assetsDir
 
     def setOutputDir(self, outputDir):
-        self.validateDir(outputDir)
+        # self.validateDir(outputDir)  # note: the output dir does not have to exist at this point
+        #                                      as it can be created by (py)helios when running it
         self.outputDir = outputDir
 
     def setNumThreads(self, numThreads):
