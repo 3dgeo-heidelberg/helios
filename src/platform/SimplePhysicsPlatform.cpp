@@ -17,6 +17,34 @@ void SimplePhysicsPlatform::_clone(std::shared_ptr<Platform> p){
 
 // ***  M E T H O D S  *** //
 // *********************** //
+void SimplePhysicsPlatform::prepareSimulation(int simFrequency_hz) {
+  movePerSec_m_stepMagnitude =
+    cfg_settings_movePerSec_m / (double)simFrequency_hz;
+}
+
+void SimplePhysicsPlatform::checkSpeedLimit()
+{
+  if (!engineLimitReached) {
+    if (userSpeedLimitReached) {
+      logging::INFO("User speed (movePerSec_m) reached.");
+    } else {
+      logging::INFO("Leg is too short to achieve "
+                    "the desired (movePerSec_m) speed.");
+    }
+  } else {
+    if (userSpeedLimitReached) {
+      logging::INFO("User speed (movePerSec_m) reached.");
+    } else {
+      logging::INFO("User speed (movePerSec_m) not reached "
+                    "due to engine limitations. "
+                    "Consider increasing the variable "
+                    "engine_max_force in your "
+                    "platform settings."); }
+  }
+  engineLimitReached = false;
+  userSpeedLimitReached = false;
+}
+
 void SimplePhysicsPlatform::doPhysicsStep(int simFrequency_hz) {
 	// ############## BEGIN Update vehicle position #################
 	glm::dvec3 drag_accel = getVelocity() * (mCfg_drag * simFrequency_hz);
