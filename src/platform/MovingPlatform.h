@@ -15,22 +15,6 @@ private:
      */
 	glm::dvec3 velocity = glm::dvec3(0, 0, 0);
 
-protected:
-    /**
-     * @brief How many meter does the platform move in each simulation step
-    */
-        double movePerSec_m_stepMagnitude = 0.0;
-    /**
-     * @brief Flag to store if the engine max thrust was reached in a given leg.
-    The value is reset en each leg.
-    */
-        bool engineLimitReached = false;
-    /**
-     * @brief Flag to store if the user-provided movePerSec_m speed was achieved
-     for a given leg.
-    */
-        bool userSpeedLimitReached = false;
-
 public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //
     // ************************************ //
@@ -68,10 +52,10 @@ public:
 	 * @see Platform::waypointReached
 	 */
 	bool waypointReached() override;
-        /**
-         * @see Platform::prepareSimulation
-         */
-        void prepareSimulation(int simFrequency_hz) override;
+//        /**
+//         * @see Platform::prepareSimulation
+//         */
+//        void prepareSimulation(int simFrequency_hz) override;
 	/**
 	 * @see Platform::getVelocity
 	 */
