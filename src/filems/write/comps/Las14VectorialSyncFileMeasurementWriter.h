@@ -10,7 +10,6 @@
 #include <memory>
 #include <string>
 
-// TODO Rethink : Use this class through Vectorial FMS factory methods
 
 namespace helios{ namespace filems{
 

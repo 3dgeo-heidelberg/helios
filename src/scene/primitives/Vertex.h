@@ -72,7 +72,7 @@ public:
 	 * @brief Copy the vertex
 	 * @return Copy of vertex
 	 */
-	Vertex copy();
+	inline Vertex copy() const {return Vertex(*this);}
 	/**
 	 * @brief Matrix x Vector multiplication
 	 * @param mat Matrix to multiply
