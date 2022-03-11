@@ -46,10 +46,10 @@ void MovingPlatform::doSimStep(int simFrequency_hz) {
 	}
 }
 
-void MovingPlatform::prepareSimulation(int simFrequency_hz) {
-  movePerSec_m_stepMagnitude =
-      cfg_settings_movePerSec_m / (double)simFrequency_hz;
-}
+//void MovingPlatform::prepareSimulation(int simFrequency_hz) {
+//  movePerSec_m_stepMagnitude =
+//      cfg_settings_movePerSec_m / (double)simFrequency_hz;
+//}
 
 void MovingPlatform::initLegManual() {
 	// Set Platform Orientation towards destination
@@ -112,25 +112,6 @@ bool MovingPlatform::waypointReached() {
 	// m / (m/cycle) => cycles left to reach waypoint
 	bool result = (glm::l2Norm(cached_vectorToTarget) / glm::l2Norm(velocity)) < 1.0;
         if (result) {
-            if (!engineLimitReached) {
-                if (userSpeedLimitReached) {
-                    logging::INFO("User speed (movePerSec_m) reached.");
-              } else {
-                    logging::INFO("Leg is too short to achieve "
-                            "the desired (movePerSec_m) speed.");
-              }
-            } else {
-                  if (userSpeedLimitReached) {
-                      logging::INFO("User speed (movePerSec_m) reached.");
-                } else {
-                      logging::INFO("User speed (movePerSec_m) not reached "
-                                    "due to engine limitations. "
-                                    "Consider increasing the variable "
-                                    "engine_max_force in your "
-                                    "platform settings."); }
-          }
-          engineLimitReached = false;
-          userSpeedLimitReached = false;
           logging::INFO("Waypoint reached!");
         }
 	return result;

@@ -117,5 +117,5 @@ void GroundVehiclePlatform::setDestination(glm::dvec3 dest) {
 }
 
 void GroundVehiclePlatform::prepareSimulation(int simFrequency_hz) {
-  MovingPlatform::prepareSimulation(simFrequency_hz);
+  SimplePhysicsPlatform::prepareSimulation(simFrequency_hz);
 }
