@@ -48,6 +48,9 @@ SurveyPlayback::SurveyPlayback(
 	this->exitAtEnd = true;
 	this->exportToFile = exportToFile;
 
+  // Activate lasOutput if only --las10 (and not --lasOutput) flag is passed.
+  if (!this->lasOutput && this->las10) this->lasOutput = true;
+
 	// ######## BEGIN Create part of the leg point cloud file path #######
 	auto t = std::time(nullptr);
 	auto tm = std::localtime(&t);
