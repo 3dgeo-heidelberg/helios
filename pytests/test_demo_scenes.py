@@ -12,7 +12,7 @@ if sys.platform == "win32":
 WORKING_DIR = str(Path(__file__).parent.parent.absolute())
 
 def find_playback_dir(survey_path):
-    playback = Path(WORKING_DIR) / 'output' / 'Survey Playback'
+    playback = Path(WORKING_DIR) / 'output'
     with open(Path(WORKING_DIR) / survey_path, 'r') as sf:
         for line in sf:
             if '<survey name' in line:
