@@ -67,7 +67,7 @@ void PolygonMirrorBeamDeflector::applySettings(std::shared_ptr<ScannerSettings> 
                                                     cfg_setting_scanAngle_rad);
 
         ss << "\n -- verticalAngleMax not set, using the value of " << MathConverter::radiansToDegrees(
-                cfg_setting_verticalAngleMin_rad
+                cfg_setting_verticalAngleMax_rad
         ) << " degrees";
     }
     state_currentBeamAngle_rad = 0;
