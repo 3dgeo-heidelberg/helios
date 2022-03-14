@@ -87,7 +87,8 @@ def test_create_scenepart_obj_efilepath():
     obj_filter_expected = f'''
             <part>
                 <filter type="objloader">
-                    <param type="string" key="efilepath" value="{filepath} up="z" />
+                    <param type="string" key="efilepath" value="{filepath}" />
+                    <param type="string" key="up" value="z" />
                 </filter>
 
             </part>'''

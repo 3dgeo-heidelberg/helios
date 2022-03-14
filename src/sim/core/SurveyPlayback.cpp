@@ -39,7 +39,7 @@ SurveyPlayback::SurveyPlayback(
     ),
     fms(fms)
 {
-    this->mSurvey = survey;
+  this->mSurvey = survey;
 	this->exitAtEnd = true;
 	this->exportToFile = exportToFile;
 	this->setScanner(mSurvey->scanner);
