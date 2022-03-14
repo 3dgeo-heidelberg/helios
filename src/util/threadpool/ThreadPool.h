@@ -1,6 +1,15 @@
 #pragma once
 
+// Include boost ASIO preventing windows conflicts ---
+#if defined(_WIN32) || defined(_WIN64)  // If using windows
+#include <SDKDDKVer.h>
 #include <boost/asio.hpp>
+
+#else // If not using windows
+#include <boost/asio.hpp>
+
+#endif
+// --- Include boost ASIO preventing windows conflicts
 #include <boost/thread.hpp>
 #include <boost/function.hpp>
 #include <logging.hpp>
