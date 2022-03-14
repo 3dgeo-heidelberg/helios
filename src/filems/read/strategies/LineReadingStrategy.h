@@ -53,7 +53,7 @@ public:
         buffer = new char[maxCharsPerLine];
     }
     virtual ~LineReadingStrategy(){
-        delete buffer;
+        delete[] buffer;
     }
 
     // ***  READING STRATEGY METHODS  *** //

@@ -275,119 +275,118 @@ WavefrontObj *WavefrontObjFileLoader::loadObj(
     std::string const &pathString,
     bool const yIsUp
 ){
-  stringstream ss;
+    stringstream ss;
 
-  WavefrontObj *loadedObj = new WavefrontObj();
+    WavefrontObj *loadedObj = new WavefrontObj();
 
-  ss << "Reading 3D model from .obj file '" << pathString << "'...";
-  logging::DEBUG(ss.str());
-  ss.str("");
-
-  fs::path filePath(pathString);
-  if (!fs::exists(filePath)) {
-    ss << "File not found: " << pathString << endl;
-    logging::ERR(ss.str());
-    exit(1);
-  }
-
-  // TODO Rethink : Catch ifstream exception for pathString when opening reader
-  BufferedLineFileReader lfr(pathString);
-
-  vector<Vertex> vertices;
-  vector<glm::dvec3> normals;
-  vector<glm::dvec2> texcoords;
-
-  string currentMat = "default";
-
-  Material mat;
-  mat.useVertexColors = true;
-  mat.matFilePath = filePath.string();
-  materials.insert(std::pair<string, Material>(currentMat, mat));
-
-  string line;
-  try {
-      while (true) { // Loop until lfr.read() throws EndOfReadingException
-          line = lfr.read();
-
-          if (line.empty() || line == "\r" || line.substr(0, 1) == "#") {
-              continue;
-          }
-
-          boost::algorithm::trim(line);
-          vector<string> lineParts;
-          boost::regex_split(std::back_inserter(lineParts), line,
-                             boost::regex("\\s+"));
-
-          // ########## BEGIN Read vertex ##########
-          if (lineParts[0] == "v" && lineParts.size() >= 4) {
-              // Add vertex to vertex list:
-              vertices.push_back(WavefrontObjFileLoader::readVertex(
-                  lineParts, yIsUp
-              ));
-          }
-          // ########## END Read vertex ##########
-
-          // ############ BEGIN Read normal vector ##############
-          else if (lineParts[0] == "vn" && lineParts.size() >= 4) {
-              normals.push_back(
-                WavefrontObjFileLoader::readNormalVector(lineParts, yIsUp)
-              );
-          }
-          // ############ END Read normal vector ##############
-
-          // ############ BEGIN Read texture coordinates ############
-          else if (lineParts[0] == "vt" && lineParts.size() >= 3) {
-              texcoords.push_back(
-                    glm::dvec2(
-                      boost::lexical_cast<double>(lineParts[1]),
-                      boost::lexical_cast<double>(lineParts[2])
-                  )
-              );
-          }
-          // ############ END Read texture coordinates ############
-
-          // Read face:
-          else if (lineParts[0] == "f") {
-              // ######### BEGIN Read triangle or quad ##############
-              WavefrontObjFileLoader::readPrimitive(
-                  loadedObj, lineParts, vertices,
-                  texcoords, normals, currentMat,
-                  pathString
-              );
-              // ######### END Read triangle or quad ##############
-          }
-
-          // ######### BEGIN Load materials from materials file ########
-          else if (lineParts[0] == "mtllib") {
-              string s = filePath.parent_path().string() + "/" + lineParts[1];
-              map<string, Material> mats = MaterialsFileReader::loadMaterials(s);
-              materials.insert(mats.begin(), mats.end());
-          }
-          // ######### END Load materials from materials file ########
-
-          else if (lineParts[0] == "usemtl") {
-              currentMat = lineParts[1];
-          }
-
-          else if (lineParts[0] == "s") {
-              // TODO 4: What?
-          }
-
-          else {
-              ss << "Unknown line '" << line << "'";
-              logging::DEBUG(ss.str());
-              ss.str("");
-          }
-      }
-  } catch(EndOfReadingException &eorex){
-    // This exception is okay, since it means the reader has finished
-  } catch (std::exception &e) {
-    ss << "Error reading primitives.\nEXCEPTION: " << e.what();
-    logging::WARN(ss.str());
+    ss << "Reading 3D model from .obj file '" << pathString << "'...";
+    logging::DEBUG(ss.str());
     ss.str("");
-  }
 
-  return loadedObj;
+    fs::path filePath(pathString);
+    if (!fs::exists(filePath)) {
+        ss << "File not found: " << pathString << endl;
+        logging::ERR(ss.str());
+        exit(1);
+    }
+    try{
+        BufferedLineFileReader lfr(pathString);
+        vector<Vertex> vertices;
+        vector<glm::dvec3> normals;
+        vector<glm::dvec2> texcoords;
+        string currentMat = "default";
+        Material mat;
+        mat.useVertexColors = true;
+        mat.matFilePath = filePath.string();
+        materials.insert(std::pair<string, Material>(currentMat, mat));
+        string line;
+        try {
+            while (true) { // Loop until EndOfReadingException
+                line = lfr.read();
+                if (line.empty() || line == "\r" || line.substr(0, 1) == "#") {
+                    continue;
+                }
+                boost::algorithm::trim(line);
+                vector<string> lineParts;
+                boost::regex_split(std::back_inserter(lineParts), line,
+                                   boost::regex("\\s+"));
+
+                // Read vertex
+                if (lineParts[0] == "v" && lineParts.size() >= 4) {
+                    // Add vertex to vertex list:
+                    vertices.push_back(WavefrontObjFileLoader::readVertex(
+                        lineParts, yIsUp
+                        ));
+                }
+
+                // Read normal vector
+                else if (lineParts[0] == "vn" && lineParts.size() >= 4) {
+                    normals.push_back(WavefrontObjFileLoader::readNormalVector(
+                        lineParts, yIsUp
+                    ));
+                }
+
+                // Read texture coordinates
+                else if (lineParts[0] == "vt" && lineParts.size() >= 3) {
+                    texcoords.push_back(
+                        glm::dvec2(
+                            boost::lexical_cast<double>(lineParts[1]),
+                            boost::lexical_cast<double>(lineParts[2])
+                        )
+                    );
+                }
+
+                // Read face
+                else if (lineParts[0] == "f") {
+                    WavefrontObjFileLoader::readPrimitive(
+                        loadedObj, lineParts, vertices,
+                        texcoords, normals, currentMat,
+                        pathString
+                    );
+                }
+
+                // Read materials
+                else if (lineParts[0] == "mtllib") {
+                    string s =  filePath.parent_path().string() + "/" +
+                                lineParts[1];
+                    map<string, Material> mats = \
+                        MaterialsFileReader::loadMaterials(s);
+                    materials.insert(mats.begin(), mats.end());
+                }
+
+                // Read material specification
+                else if (lineParts[0] == "usemtl") {
+                    currentMat = lineParts[1];
+                }
+
+                else if (lineParts[0] == "s") {
+                    // TODO 4: What?
+                }
+
+                else {
+                    ss << "Unknown line '" << line << "'";
+                    logging::DEBUG(ss.str());
+                    ss.str("");
+                }
+            }
+        } catch(EndOfReadingException &eorex){
+            // This exception is okay, since it means the reader has finished
+        } catch (std::exception &e) {
+            ss << "Error reading primitives.\nEXCEPTION: " << e.what();
+            logging::WARN(ss.str());
+            ss.str("");
+        }
+
+        return loadedObj;
+    }
+    catch(std::exception &ex){
+        ss  << "Unexpected exception when trying to read:\n\""
+            << pathString << "\"\n\t" << ex.what()
+        ;
+        logging::ERR(ss.str());
+        ss.str("");
+        throw ex;
+    }
 }
 
 // ***  ASSIST METHODS  *** //

@@ -139,8 +139,11 @@ void LidarSim::init(
 	TimeWatcher tw;
 	tw.start();
 	playback->start();
-	tw.stop();
+    tw.stop();
 	tw.reportFormat("Total simulation time: ");
+
+	// Disconnect FMS
+    fms->disconnect();
 }
 
 }}

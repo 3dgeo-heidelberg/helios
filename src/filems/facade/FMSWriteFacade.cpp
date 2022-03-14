@@ -14,6 +14,9 @@ using std::list;
 
 // ***  FACADE WRITE METHODS  *** //
 // ****************************** //
+void FMSWriteFacade::disconnect(){
+    mw->setScanner(nullptr); // Disconnect from scanner
+}
 void FMSWriteFacade::configure(
     string const &prefix,
     bool const computeWaveform,

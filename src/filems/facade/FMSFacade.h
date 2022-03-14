@@ -45,6 +45,16 @@ public:
      */
     FMSFacade() = default;
     virtual ~FMSFacade() = default;
+
+    // ***  FACADE LIFECYCLE METHODS  *** //
+    // ********************************** //
+    /**
+     * @brief Disconnects all connected components from the main facade
+     * @see filems::FMSFacade::disconnect
+     */
+    virtual void disconnect(){
+        write.disconnect();
+    }
 };
 
 

@@ -62,6 +62,11 @@ public:
     // ***  FACADE WRITE METHODS  *** //
     // ****************************** //
     /**
+     * @brief Disconnect all components from the write facade
+     * @see filems::FMSFacade::disconnect
+     */
+    virtual void disconnect();
+    /**
      * @brief Configure the output path for all writers in the facade
      * @param prefix Prefix for the name of the output file
      * @param computeWaveform Flag to specify if waveform must be computed

@@ -133,7 +133,9 @@ public:
      */
     inline void setScanner(shared_ptr<Scanner> scanner){
         this->scanner = scanner;
-        this->shift = this->scanner->platform->scene->getShift();
+        if(scanner != nullptr){
+            this->shift = this->scanner->platform->scene->getShift();
+        }
     }
 };
 

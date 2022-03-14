@@ -376,7 +376,6 @@ void SurveyPlayback::prepareOutput(){
     );
 
     // Handle historical tracking of output paths
-    // TODO Rethink : Move this to FMS ?
     getScanner()->trackOutputPath(
         fms->write.getMeasurementWriterOutputPath().string()
     );
