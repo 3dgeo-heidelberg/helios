@@ -1,6 +1,7 @@
 var classXmlAssetsLoader =
 [
     [ "XmlAssetsLoader", "d9/d82/classXmlAssetsLoader.html#ab05a3221c932ac16673676f671879b7a", null ],
+    [ "~XmlAssetsLoader", "d9/d82/classXmlAssetsLoader.html#a39f29e7dfa3e2f51751fc01fcdb9768e", null ],
     [ "createAssetFromXml", "d9/d82/classXmlAssetsLoader.html#a63d75245f7448ec41018f3d61dd6173e", null ],
     [ "createFWFSettingsFromXml", "d9/d82/classXmlAssetsLoader.html#aaafc4c34e7203c57d917e75d78a73646", null ],
     [ "createPlatformFromXml", "d9/d82/classXmlAssetsLoader.html#aec671d3d36b1907196582a183a0bbd2d", null ],

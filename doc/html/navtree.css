@@ -87,7 +87,6 @@
   position: absolute;
   left: 0px;
   width: 250px;
-  overflow : hidden;
 }
 
 .ui-resizable .ui-resizable-handle {
@@ -97,7 +96,7 @@
 .ui-resizable-e {
   background-image:url("splitbar.png");
   background-size:100%;
-  background-repeat:repeat-y;
+  background-repeat:no-repeat;
   background-attachment: scroll;
   cursor:ew-resize;
   height:100%;

@@ -1,3 +1,5 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$de/df3/classpyhelios_1_1PyAABBWrapper.html" title="Wrapper for AABB class. " alt="" coords="5,5,184,32"/>
+<area shape="rect" id="node1" href="$df/d39/classITreeIterator.html" title="ITreeIterator\&lt; IterableTree\lNode\&lt; IBinaryTreeNode \&gt; \&gt;" alt="" coords="5,39,192,80"/>
+<area shape="rect" id="node2" href="$d0/da5/classBinaryTreeBreadthIterator.html" title="Like fast breadth first iterator but wrapping tree nodes inside a IterableTreeNode instance..." alt="" coords="240,5,411,47"/>
+<area shape="rect" id="node3" href="$d4/d02/classBinaryTreeDepthIterator.html" title="Like fast depth first iterator but wrapping tree nodes inside a IterableTreeNode instance. " alt="" coords="245,71,406,112"/>
 </map>

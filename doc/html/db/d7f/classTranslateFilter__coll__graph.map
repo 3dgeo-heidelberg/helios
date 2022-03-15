@@ -1,7 +1,5 @@
 <map id="TranslateFilter" name="TranslateFilter">
-<area shape="rect" id="node1" title="Translate transform filter." alt="" coords="69,275,184,301"/>
-<area shape="rect" id="node2" href="$d6/dd2/classAbstractGeometryFilter.html" title="Abstract class defining asset loading filters common behavior." alt="" coords="40,199,213,225"/>
-<area shape="rect" id="node3" href="$dd/dc4/classScenePart.html" title="Class representing a scene part." alt="" coords="83,109,170,136"/>
-<area shape="rect" id="node4" title=" " alt="" coords="5,5,64,32"/>
-<area shape="rect" id="node5" href="$d5/dcb/classRotation.html" title=" " alt="" coords="181,5,259,32"/>
+<area shape="rect" id="node2" href="$d6/dd2/classAbstractGeometryFilter.html" title="Abstract class defining asset loading filters common behavior. " alt="" coords="10,199,167,225"/>
+<area shape="rect" id="node3" href="$dd/dc4/classScenePart.html" title="Class representing a scene part. " alt="" coords="47,109,130,136"/>
+<area shape="rect" id="node4" href="$d5/dcb/classRotation.html" title="Rotation" alt="" coords="5,5,76,32"/>
 </map>

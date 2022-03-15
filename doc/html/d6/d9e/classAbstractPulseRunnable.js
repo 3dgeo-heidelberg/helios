@@ -1,6 +1,6 @@
 var classAbstractPulseRunnable =
 [
-    [ "AbstractPulseRunnable", "d6/d9e/classAbstractPulseRunnable.html#adb9bdc1d395240bbad4a5de192f44e0f", null ],
+    [ "AbstractPulseRunnable", "d6/d9e/classAbstractPulseRunnable.html#a9ebe8a4afc41a1b0e28f86885c547965", null ],
     [ "_calcReceivedPower", "d6/d9e/classAbstractPulseRunnable.html#a0243bc3aad2b13d732bade2203e8543a", null ],
     [ "applyMeasurementError", "d6/d9e/classAbstractPulseRunnable.html#ad1ef3d2f2b751388bd1a5a44aa89b1d4", null ],
     [ "calcAtmosphericFactor", "d6/d9e/classAbstractPulseRunnable.html#a31e75f22114fee386bb54a492e4fc572", null ],

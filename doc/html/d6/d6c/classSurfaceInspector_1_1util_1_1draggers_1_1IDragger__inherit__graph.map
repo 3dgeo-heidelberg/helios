@@ -1,4 +1,3 @@
 <map id="SurfaceInspector::util::draggers::IDragger&lt; E, C &gt;" name="SurfaceInspector::util::draggers::IDragger&lt; E, C &gt;">
-<area shape="rect" id="node1" title="Dragger interface provide methods to drag elements from a given collection following a certain order...." alt="" coords="5,95,168,151"/>
-<area shape="rect" id="node2" href="$d2/df2/classSurfaceInspector_1_1util_1_1Object.html" title="Class representing an object. All surface inspector classes must extend Object." alt="" coords="7,5,167,47"/>
+<area shape="rect" id="node2" href="$d2/df2/classSurfaceInspector_1_1util_1_1Object.html" title="Class representing an object. All surface inspector classes must extend Object. " alt="" coords="5,5,152,47"/>
 </map>

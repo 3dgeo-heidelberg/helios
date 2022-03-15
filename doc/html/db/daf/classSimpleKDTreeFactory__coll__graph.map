@@ -1,10 +1,7 @@
 <map id="SimpleKDTreeFactory" name="SimpleKDTreeFactory">
-<area shape="rect" id="node1" title="Class providing building methods for simple k&#45;dimensional trees." alt="" coords="5,444,167,471"/>
-<area shape="rect" id="node2" href="$d5/dd0/classKDTreeFactory.html" title="Class that must be extended by any class which provides factory methods for k&#45;dimensional trees...." alt="" coords="155,368,271,395"/>
-<area shape="rect" id="node3" href="$dd/d04/classLightKDTreeNodeBlockAllocator.html" title="Block allocator for LightKDTreeNode instances." alt="" coords="183,279,411,305"/>
-<area shape="rect" id="node4" href="$d9/d47/classBlockAllocator.html" title=" " alt="" coords="176,188,385,229"/>
-<area shape="rect" id="node5" title=" " alt="" coords="67,83,127,109"/>
-<area shape="rect" id="node6" title=" " alt="" coords="167,83,383,109"/>
-<area shape="rect" id="node7" href="$dd/d79/classLightKDTreeNode.html" title="Class representing a light KDTree node. It is, the basic representation of a KDTree node with uses le..." alt="" coords="408,83,543,109"/>
-<area shape="rect" id="node8" href="$d7/d98/classIBinaryTreeNode.html" title="Binary tree node interface that must be implemented by any class providing binary tree node based fun..." alt="" coords="411,5,540,32"/>
+<area shape="rect" id="node2" href="$d5/dd0/classKDTreeFactory.html" title="Class that must be extended by any class which provides factory methods for k&#45;dimensional trees..." alt="" coords="332,368,443,395"/>
+<area shape="rect" id="node3" href="$dd/d04/classLightKDTreeNodeBlockAllocator.html" title="Block allocator for LightKDTreeNode instances. " alt="" coords="242,279,453,305"/>
+<area shape="rect" id="node4" href="$d9/d47/classBlockAllocator.html" title="BlockAllocator\&lt; LightKDTree\lNode \&gt;" alt="" coords="221,188,412,229"/>
+<area shape="rect" id="node5" href="$dd/d79/classLightKDTreeNode.html" title="Class representing a light KDTree node. It is, the basic representation of a KDTree node with uses le..." alt="" coords="5,83,132,109"/>
+<area shape="rect" id="node6" href="$d7/d98/classIBinaryTreeNode.html" title="Binary tree node interface that must be implemented by any class providing binary tree node based fun..." alt="" coords="9,5,129,32"/>
 </map>

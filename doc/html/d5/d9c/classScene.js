@@ -22,6 +22,7 @@ var classScene =
     [ "getKDGroveFactory", "d5/d9c/classScene.html#a96110a189ae4bbb60855ecc14afd3138", null ],
     [ "getRaycaster", "d5/d9c/classScene.html#a5f14821f45985670b2323dc010357d46", null ],
     [ "getShift", "d5/d9c/classScene.html#a1efb5df7a0b3c59c2a6d0d85c6485a84", null ],
+    [ "getShiftRef", "d5/d9c/classScene.html#a4da8f4527d42c258d28ec94dea031481", null ],
     [ "hasMovingObjects", "d5/d9c/classScene.html#afd8798b09857e4df7adf05dea25210ab", null ],
     [ "load", "d5/d9c/classScene.html#ac68d340293560035fb043da042a26e85", null ],
     [ "readObject", "d5/d9c/classScene.html#a1ce25df38164ed98cf695bc8042bc6a5", null ],

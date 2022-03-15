@@ -1,6 +1,7 @@
 var classSharedTaskSequencer =
 [
     [ "SharedTaskSequencer", "da/d29/classSharedTaskSequencer.html#a420dd71429e5e3928f59e0c2623624ec", null ],
+    [ "~SharedTaskSequencer", "da/d29/classSharedTaskSequencer.html#af6419ae2b4274fbdd1fa6058e2f187e1", null ],
     [ "joinAll", "da/d29/classSharedTaskSequencer.html#a786c7454d71b53ae9bcf07c28ea258da", null ],
     [ "onSharedSubTaskCompletion", "da/d29/classSharedTaskSequencer.html#aedcc36f0f09480d13f0de206d1add9d7", null ],
     [ "start", "da/d29/classSharedTaskSequencer.html#a51945ce66c73852996e5d8021ce673a5", null ],

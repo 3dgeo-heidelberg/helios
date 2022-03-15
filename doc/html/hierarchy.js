@@ -95,13 +95,57 @@ var hierarchy =
     [ "DynSequencer< T >", "db/d6f/classDynSequencer.html", null ],
     [ "DynSequencer< DynMotion >", "db/d6f/classDynSequencer.html", null ],
     [ "enum_hasher", "da/ded/structenum__hasher.html", null ],
-    [ "std::exception", null, [
+    [ "exception", null, [
       [ "HeliosException", "d6/dda/classHeliosException.html", [
+        [ "helios::filems::EndOfReadingException", "d4/dbc/classhelios_1_1filems_1_1EndOfReadingException.html", null ],
         [ "pyhelios::PyHeliosException", "d8/d98/classpyhelios_1_1PyHeliosException.html", null ]
       ] ]
     ] ],
+    [ "helios::filems::FileReader< ReadType >", "d4/d5e/classhelios_1_1filems_1_1FileReader.html", null ],
+    [ "helios::filems::FileReader< char >", "d4/d5e/classhelios_1_1filems_1_1FileReader.html", [
+      [ "helios::filems::SimpleFileReader< char >", "de/d6c/classhelios_1_1filems_1_1SimpleFileReader.html", [
+        [ "helios::filems::CharFileReader", "d9/dcf/classhelios_1_1filems_1_1CharFileReader.html", null ]
+      ] ]
+    ] ],
+    [ "helios::filems::FileReader< int >", "d4/d5e/classhelios_1_1filems_1_1FileReader.html", [
+      [ "helios::filems::SimpleFileReader< int >", "de/d6c/classhelios_1_1filems_1_1SimpleFileReader.html", [
+        [ "helios::filems::BinaryFileReader", "d9/dab/classhelios_1_1filems_1_1BinaryFileReader.html", null ]
+      ] ]
+    ] ],
+    [ "helios::filems::FileReader< ReadArg >", "d4/d5e/classhelios_1_1filems_1_1FileReader.html", [
+      [ "helios::filems::SimpleFileReader< ReadArg >", "de/d6c/classhelios_1_1filems_1_1SimpleFileReader.html", null ]
+    ] ],
+    [ "helios::filems::FileReader< string >", "d4/d5e/classhelios_1_1filems_1_1FileReader.html", [
+      [ "helios::filems::SimpleFileReader< string >", "de/d6c/classhelios_1_1filems_1_1SimpleFileReader.html", [
+        [ "helios::filems::LineFileReader", "de/d57/classhelios_1_1filems_1_1LineFileReader.html", [
+          [ "helios::filems::BufferedLineFileReader", "d0/d01/classhelios_1_1filems_1_1BufferedLineFileReader.html", null ]
+        ] ]
+      ] ]
+    ] ],
     [ "FileUtils", "d5/d4b/classFileUtils.html", null ],
+    [ "helios::filems::FMSFacade", "db/daa/classhelios_1_1filems_1_1FMSFacade.html", null ],
+    [ "helios::filems::FMSFacadeFactory", "dd/dd0/classhelios_1_1filems_1_1FMSFacadeFactory.html", null ],
+    [ "helios::filems::FMSFactoryFacade", "d5/d6b/classhelios_1_1filems_1_1FMSFactoryFacade.html", null ],
+    [ "helios::filems::FMSReadFacade", "dd/dc0/classhelios_1_1filems_1_1FMSReadFacade.html", null ],
+    [ "helios::filems::FMSSerializationFacade", "d9/d56/classhelios_1_1filems_1_1FMSSerializationFacade.html", null ],
+    [ "helios::filems::FMSWriteFacade", "df/d31/classhelios_1_1filems_1_1FMSWriteFacade.html", null ],
     [ "GroveTreeWrapper< Tree >", "d1/d1e/classGroveTreeWrapper.html", null ],
+    [ "helios::filems::HeliosWriter< WriteArgs >", "d1/d3b/classhelios_1_1filems_1_1HeliosWriter.html", null ],
+    [ "helios::filems::HeliosWriter< std::vector< double > const &, int const, double const, double const, glm::dvec3 const &, glm::dvec3 const &, long const >", "d1/d3b/classhelios_1_1filems_1_1HeliosWriter.html", [
+      [ "helios::filems::FullWaveformWriter", "d0/db3/classhelios_1_1filems_1_1FullWaveformWriter.html", null ]
+    ] ],
+    [ "helios::filems::HeliosWriter< Trajectory const &>", "d1/d3b/classhelios_1_1filems_1_1HeliosWriter.html", [
+      [ "helios::filems::TrajectoryWriter", "dd/dd8/classhelios_1_1filems_1_1TrajectoryWriter.html", null ]
+    ] ],
+    [ "helios::filems::HeliosWriter< WriteArgs ... >", "d1/d3b/classhelios_1_1filems_1_1HeliosWriter.html", [
+      [ "helios::filems::BaseMeasurementWriter< Measurement const &, glm::dvec3 const &>", "d7/d1a/classhelios_1_1filems_1_1BaseMeasurementWriter.html", [
+        [ "helios::filems::MeasurementWriter", "dd/d66/classhelios_1_1filems_1_1MeasurementWriter.html", null ]
+      ] ],
+      [ "helios::filems::BaseMeasurementWriter< vector< Measurement > const &, glm::dvec3 const &>", "d7/d1a/classhelios_1_1filems_1_1BaseMeasurementWriter.html", [
+        [ "helios::filems::VectorialMeasurementWriter", "d5/ded/classhelios_1_1filems_1_1VectorialMeasurementWriter.html", null ]
+      ] ],
+      [ "helios::filems::BaseMeasurementWriter< WriteArgs >", "d7/d1a/classhelios_1_1filems_1_1BaseMeasurementWriter.html", null ]
+    ] ],
     [ "HeliosTests::HPCTest_DoubleComparator", "dd/d54/structHeliosTests_1_1HPCTest__DoubleComparator.html", null ],
     [ "HeliosTests::HPCTest_FloatComparator", "d0/df1/structHeliosTests_1_1HPCTest__FloatComparator.html", null ],
     [ "HeliosTests::HPCTest_IntComparator", "d8/d51/structHeliosTests_1_1HPCTest__IntComparator.html", null ],
@@ -121,7 +165,7 @@ var hierarchy =
       [ "BinaryTreeBreadthIterator< NodeType >", "d0/da5/classBinaryTreeBreadthIterator.html", null ],
       [ "BinaryTreeDepthIterator< NodeType >", "d4/d02/classBinaryTreeDepthIterator.html", null ]
     ] ],
-    [ "ITreeIterator< NodeType * >", "df/d39/classITreeIterator.html", [
+    [ "ITreeIterator< NodeType *>", "df/d39/classITreeIterator.html", [
       [ "BinaryTreeFastBreadthIterator< NodeType >", "d3/d43/classBinaryTreeFastBreadthIterator.html", null ],
       [ "BinaryTreeFastDepthIterator< NodeType >", "dc/da5/classBinaryTreeFastDepthIterator.html", null ]
     ] ],
@@ -146,7 +190,7 @@ var hierarchy =
     [ "LadLutLoader", "de/d6b/classLadLutLoader.html", null ],
     [ "LasSpecification", "df/d64/classLasSpecification.html", null ],
     [ "Leg", "de/d51/classLeg.html", null ],
-    [ "LidarSim", "d3/d40/classLidarSim.html", null ],
+    [ "helios::main::LidarSim", "d7/d6c/classhelios_1_1main_1_1LidarSim.html", null ],
     [ "logger", "dc/d37/classlogger.html", [
       [ "file_logger", "d8/d63/classfile__logger.html", [
         [ "full_logger", "d2/d65/classfull__logger.html", null ]
@@ -159,7 +203,6 @@ var hierarchy =
     [ "MaterialsFileReader", "d3/d74/classMaterialsFileReader.html", null ],
     [ "MathConverter", "df/d22/classMathConverter.html", null ],
     [ "Measurement", "db/d2e/classMeasurement.html", null ],
-    [ "MeasurementsBuffer", "d3/dec/classMeasurementsBuffer.html", null ],
     [ "fluxionum::Minimizer< IT, OT >", "d9/d82/classfluxionum_1_1Minimizer.html", [
       [ "fluxionum::DiffMinimizer< IT, OT >", "d3/d7f/classfluxionum_1_1DiffMinimizer.html", [
         [ "fluxionum::UnivariateNewtonRaphsonMinimizer< IT, OT >", "db/d57/classfluxionum_1_1UnivariateNewtonRaphsonMinimizer.html", null ]
@@ -176,11 +219,6 @@ var hierarchy =
         [ "UniformNoiseSource< double >", "d3/d57/classUniformNoiseSource.html", null ]
       ] ]
     ] ],
-    [ "Object", null, [
-      [ "SurfaceInspector::maths::functions::IMathFunction< T, T >", "da/d80/classSurfaceInspector_1_1maths_1_1functions_1_1IMathFunction.html", [
-        [ "SurfaceInspector::maths::functions::GaussianFunction< T >", "db/dc1/classSurfaceInspector_1_1maths_1_1functions_1_1GaussianFunction.html", null ]
-      ] ]
-    ] ],
     [ "SurfaceInspector::util::Object", "d2/df2/classSurfaceInspector_1_1util_1_1Object.html", [
       [ "SurfaceInspector::util::draggers::IDragger< E, vector< E > >", "d1/dd1/classSurfaceInspector_1_1util_1_1draggers_1_1IDragger.html", [
         [ "SurfaceInspector::util::draggers::OptimizationDragger< E >", "d5/d68/classSurfaceInspector_1_1util_1_1draggers_1_1OptimizationDragger.html", [
@@ -190,7 +228,11 @@ var hierarchy =
         ] ]
       ] ],
       [ "SurfaceInspector::maths::Distances", "dc/d30/classSurfaceInspector_1_1maths_1_1Distances.html", null ],
+      [ "SurfaceInspector::maths::functions::IMathFunction< Tin, Tout >", "da/d80/classSurfaceInspector_1_1maths_1_1functions_1_1IMathFunction.html", null ],
       [ "SurfaceInspector::maths::Histogram< T >", "da/d52/classSurfaceInspector_1_1maths_1_1Histogram.html", null ],
+      [ "SurfaceInspector::maths::permuters::IPermuter< T >", "d2/daf/classSurfaceInspector_1_1maths_1_1permuters_1_1IPermuter.html", [
+        [ "SurfaceInspector::maths::permuters::CNRIndexPermuter< T >", "dc/d41/classSurfaceInspector_1_1maths_1_1permuters_1_1CNRIndexPermuter.html", null ]
+      ] ],
       [ "SurfaceInspector::maths::Plane< T >", "d1/d16/classSurfaceInspector_1_1maths_1_1Plane.html", [
         [ "SurfaceInspector::maths::DetailedPlane< T >", "d4/dfa/classSurfaceInspector_1_1maths_1_1DetailedPlane.html", null ]
       ] ],
@@ -200,14 +242,16 @@ var hierarchy =
       [ "SurfaceInspector::maths::SingularContextDescriptors< T >", "d1/db0/classSurfaceInspector_1_1maths_1_1SingularContextDescriptors.html", null ],
       [ "SurfaceInspector::maths::Statistics", "da/d24/classSurfaceInspector_1_1maths_1_1Statistics.html", null ],
       [ "SurfaceInspector::maths::Vector< T >", "d1/dd3/classSurfaceInspector_1_1maths_1_1Vector.html", null ],
-      [ "SurfaceInspector::maths::functions::IMathFunction< Tin, Tout >", "da/d80/classSurfaceInspector_1_1maths_1_1functions_1_1IMathFunction.html", null ],
-      [ "SurfaceInspector::maths::permuters::IPermuter< T >", "d2/daf/classSurfaceInspector_1_1maths_1_1permuters_1_1IPermuter.html", [
-        [ "SurfaceInspector::maths::permuters::CNRIndexPermuter< T >", "dc/d41/classSurfaceInspector_1_1maths_1_1permuters_1_1CNRIndexPermuter.html", null ]
-      ] ],
-      [ "SurfaceInspector::util::SurfaceInspectorException", "df/da8/classSurfaceInspector_1_1util_1_1SurfaceInspectorException.html", null ],
-      [ "SurfaceInspector::util::draggers::IDragger< E, C >", "d1/dd1/classSurfaceInspector_1_1util_1_1draggers_1_1IDragger.html", null ]
+      [ "SurfaceInspector::util::draggers::IDragger< E, C >", "d1/dd1/classSurfaceInspector_1_1util_1_1draggers_1_1IDragger.html", null ],
+      [ "SurfaceInspector::util::SurfaceInspectorException", "df/da8/classSurfaceInspector_1_1util_1_1SurfaceInspectorException.html", null ]
+    ] ],
+    [ "Object", null, [
+      [ "SurfaceInspector::maths::functions::IMathFunction< T, T >", "da/d80/classSurfaceInspector_1_1maths_1_1functions_1_1IMathFunction.html", [
+        [ "SurfaceInspector::maths::functions::GaussianFunction< T >", "db/dc1/classSurfaceInspector_1_1maths_1_1functions_1_1GaussianFunction.html", null ]
+      ] ]
     ] ],
     [ "PlaneFitter", "d6/d51/classPlaneFitter.html", null ],
+    [ "PointcloudYielder", "d6/d61/classPointcloudYielder.html", null ],
     [ "Primitive", "df/de1/classPrimitive.html", [
       [ "AABB", "d2/d1a/classAABB.html", null ],
       [ "Triangle", "d2/d51/classTriangle.html", null ],
@@ -256,17 +300,37 @@ var hierarchy =
     [ "RandomnessGenerator< RealType >", "dc/d6e/classRandomnessGenerator.html", null ],
     [ "RandomnessGenerator< double >", "dc/d6e/classRandomnessGenerator.html", null ],
     [ "Raycaster", "d7/df4/classRaycaster.html", [
-      [ "RaycasterGroveTree< DynObject >", "d9/db1/classRaycasterGroveTree.html", [
-        [ "GroveKDTreeRaycaster", "d6/dba/classGroveKDTreeRaycaster.html", null ]
-      ] ],
       [ "KDGroveRaycaster", "df/d01/classKDGroveRaycaster.html", null ],
       [ "KDTreeRaycaster", "da/d81/classKDTreeRaycaster.html", [
         [ "GroveKDTreeRaycaster", "d6/dba/classGroveKDTreeRaycaster.html", null ]
       ] ],
-      [ "RaycasterGroveTree< Subject >", "d9/db1/classRaycasterGroveTree.html", null ]
+      [ "RaycasterGroveTree< Subject >", "d9/db1/classRaycasterGroveTree.html", null ],
+      [ "RaycasterGroveTree< DynObject >", "d9/db1/classRaycasterGroveTree.html", [
+        [ "GroveKDTreeRaycaster", "d6/dba/classGroveKDTreeRaycaster.html", null ]
+      ] ]
     ] ],
     [ "RaySceneIntersection", "dc/da3/classRaySceneIntersection.html", null ],
     [ "RayUtils", "d7/dee/classRayUtils.html", null ],
+    [ "helios::filems::ReadingStrategy< ReadType >", "df/dc7/classhelios_1_1filems_1_1ReadingStrategy.html", null ],
+    [ "helios::filems::ReadingStrategy< char >", "df/dc7/classhelios_1_1filems_1_1ReadingStrategy.html", [
+      [ "helios::filems::SimpleReadingStrategy< char >", "da/d24/classhelios_1_1filems_1_1SimpleReadingStrategy.html", [
+        [ "helios::filems::CharReadingStrategy", "d5/db9/classhelios_1_1filems_1_1CharReadingStrategy.html", null ]
+      ] ]
+    ] ],
+    [ "helios::filems::ReadingStrategy< int >", "df/dc7/classhelios_1_1filems_1_1ReadingStrategy.html", [
+      [ "helios::filems::SimpleReadingStrategy< int >", "da/d24/classhelios_1_1filems_1_1SimpleReadingStrategy.html", [
+        [ "helios::filems::BinaryReadingStrategy", "de/d7a/classhelios_1_1filems_1_1BinaryReadingStrategy.html", null ]
+      ] ]
+    ] ],
+    [ "helios::filems::ReadingStrategy< ReadArg >", "df/dc7/classhelios_1_1filems_1_1ReadingStrategy.html", [
+      [ "helios::filems::BufferedReadingStrategy< ReadArg >", "d0/dd8/classhelios_1_1filems_1_1BufferedReadingStrategy.html", null ],
+      [ "helios::filems::SimpleReadingStrategy< ReadArg >", "da/d24/classhelios_1_1filems_1_1SimpleReadingStrategy.html", null ]
+    ] ],
+    [ "helios::filems::ReadingStrategy< string >", "df/dc7/classhelios_1_1filems_1_1ReadingStrategy.html", [
+      [ "helios::filems::SimpleReadingStrategy< string >", "da/d24/classhelios_1_1filems_1_1SimpleReadingStrategy.html", [
+        [ "helios::filems::LineReadingStrategy", "de/d50/classhelios_1_1filems_1_1LineReadingStrategy.html", null ]
+      ] ]
+    ] ],
     [ "rigidmotion::RigidMotion", "d7/d84/classrigidmotion_1_1RigidMotion.html", [
       [ "DynMotion", "d6/d4f/classDynMotion.html", null ]
     ] ],
@@ -292,11 +356,11 @@ var hierarchy =
     [ "SerialIO", "d6/db9/classSerialIO.html", null ],
     [ "SharedSubTask", "df/d6f/classSharedSubTask.html", [
       [ "FastSAHKDTreeRecountSubTask", "d6/d0d/classFastSAHKDTreeRecountSubTask.html", null ],
+      [ "helios::hpc::SM_ParallelMergeSortSubTask< RandomAccessIterator, Comparator >", "d7/da6/classhelios_1_1hpc_1_1SM__ParallelMergeSortSubTask.html", null ],
       [ "SAHKDTreeComputeLossNodesSubTask", "d5/d89/classSAHKDTreeComputeLossNodesSubTask.html", null ],
       [ "SimpleKDTreeBuildChildrenNodesSubTask", "d5/d80/classSimpleKDTreeBuildChildrenNodesSubTask.html", null ],
       [ "SimpleKDTreeComputeRootNodeBoundariesSubTask", "d1/da6/classSimpleKDTreeComputeRootNodeBoundariesSubTask.html", null ],
-      [ "SimpleKDTreePopulateSplitsSubTask", "d1/dc1/classSimpleKDTreePopulateSplitsSubTask.html", null ],
-      [ "helios::hpc::SM_ParallelMergeSortSubTask< RandomAccessIterator, Comparator >", "d7/da6/classhelios_1_1hpc_1_1SM__ParallelMergeSortSubTask.html", null ]
+      [ "SimpleKDTreePopulateSplitsSubTask", "d1/dc1/classSimpleKDTreePopulateSplitsSubTask.html", null ]
     ] ],
     [ "SharedSubTaskCompletionHandler", "d6/d25/classSharedSubTaskCompletionHandler.html", [
       [ "SharedTaskSequencer", "da/d29/classSharedTaskSequencer.html", null ]
@@ -317,7 +381,7 @@ var hierarchy =
     [ "helios::hpc::SM_ParallelMergeSort< RandomAccessIterator, Comparator >", "d8/de4/classhelios_1_1hpc_1_1SM__ParallelMergeSort.html", null ],
     [ "SmartSharedFunctorContainer< T >", "db/da8/classSmartSharedFunctorContainer.html", null ],
     [ "SpectralLibrary", "d5/d20/classSpectralLibrary.html", null ],
-    [ "boost::static_visitor", null, [
+    [ "static_visitor", null, [
       [ "stringVisitor", "d8/df4/structstringVisitor.html", null ]
     ] ],
     [ "StaticGrove< Tree >", "d8/da0/classStaticGrove.html", [
@@ -342,15 +406,48 @@ var hierarchy =
         ] ]
       ] ]
     ] ],
-    [ "SyncFileWriter", "d1/d0e/classSyncFileWriter.html", [
-      [ "LasSyncFileWriter", "d2/db3/classLasSyncFileWriter.html", [
-        [ "Las14SyncFileWriter", "dd/d09/classLas14SyncFileWriter.html", null ]
+    [ "helios::filems::SyncFileMeasurementWriterFactory", "dc/d39/classhelios_1_1filems_1_1SyncFileMeasurementWriterFactory.html", null ],
+    [ "helios::filems::SyncFileWriter< WriteArgs >", "da/d4c/classhelios_1_1filems_1_1SyncFileWriter.html", null ],
+    [ "helios::filems::SyncFileWriter< WriteArgs ... >", "da/d4c/classhelios_1_1filems_1_1SyncFileWriter.html", [
+      [ "helios::filems::LasSyncFileWriter< WriteArgs >", "d7/d5b/classhelios_1_1filems_1_1LasSyncFileWriter.html", null ],
+      [ "helios::filems::SimpleSyncFileWriter< WriteArgs >", "d1/db6/classhelios_1_1filems_1_1SimpleSyncFileWriter.html", null ],
+      [ "helios::filems::LasSyncFileWriter< Measurement const &, glm::dvec3 const &>", "d7/d5b/classhelios_1_1filems_1_1LasSyncFileWriter.html", [
+        [ "helios::filems::LasSyncFileMeasurementWriter", "d5/d76/classhelios_1_1filems_1_1LasSyncFileMeasurementWriter.html", [
+          [ "helios::filems::Las14SyncFileMeasurementWriter", "d6/d97/classhelios_1_1filems_1_1Las14SyncFileMeasurementWriter.html", null ]
+        ] ]
       ] ],
-      [ "SimpleSyncFileWriter", "df/d47/classSimpleSyncFileWriter.html", [
-        [ "ZipSyncFileWriter", "de/d2a/classZipSyncFileWriter.html", null ]
+      [ "helios::filems::LasSyncFileWriter< vector< Measurement > const &, glm::dvec3 const & >", "d7/d5b/classhelios_1_1filems_1_1LasSyncFileWriter.html", [
+        [ "helios::filems::Las14VectorialSyncFileMeasurementWriter", "d6/de6/classhelios_1_1filems_1_1Las14VectorialSyncFileMeasurementWriter.html", null ],
+        [ "helios::filems::LasVectorialSyncFileMeasurementWriter", "d6/dfd/classhelios_1_1filems_1_1LasVectorialSyncFileMeasurementWriter.html", null ]
+      ] ],
+      [ "helios::filems::SimpleSyncFileWriter< Measurement const &, glm::dvec3 const &>", "d1/db6/classhelios_1_1filems_1_1SimpleSyncFileWriter.html", [
+        [ "helios::filems::SimpleSyncFileMeasurementWriter", "d1/dd1/classhelios_1_1filems_1_1SimpleSyncFileMeasurementWriter.html", null ]
+      ] ],
+      [ "helios::filems::SimpleSyncFileWriter< std::vector< double > const &, int const, double const, double const, glm::dvec3 const &, glm::dvec3 const &, long const >", "d1/db6/classhelios_1_1filems_1_1SimpleSyncFileWriter.html", [
+        [ "helios::filems::SimpleSyncFileFullWaveformWriter", "df/d8e/classhelios_1_1filems_1_1SimpleSyncFileFullWaveformWriter.html", null ]
+      ] ],
+      [ "helios::filems::SimpleSyncFileWriter< Trajectory const &>", "d1/db6/classhelios_1_1filems_1_1SimpleSyncFileWriter.html", [
+        [ "helios::filems::SimpleSyncFileTrajectoryWriter", "d0/dc9/classhelios_1_1filems_1_1SimpleSyncFileTrajectoryWriter.html", null ]
+      ] ],
+      [ "helios::filems::SimpleSyncFileWriter< vector< Measurement > const &, glm::dvec3 const & >", "d1/db6/classhelios_1_1filems_1_1SimpleSyncFileWriter.html", [
+        [ "helios::filems::SimpleVectorialSyncFileMeasurementWriter", "db/d36/classhelios_1_1filems_1_1SimpleVectorialSyncFileMeasurementWriter.html", null ]
+      ] ],
+      [ "helios::filems::SimpleSyncFileWriter< WriteArgs... >", "d1/db6/classhelios_1_1filems_1_1SimpleSyncFileWriter.html", [
+        [ "helios::filems::ZipSyncFileWriter< WriteArgs >", "d9/d45/classhelios_1_1filems_1_1ZipSyncFileWriter.html", null ],
+        [ "helios::filems::ZipSyncFileWriter< Measurement const &, glm::dvec3 const &>", "d9/d45/classhelios_1_1filems_1_1ZipSyncFileWriter.html", [
+          [ "helios::filems::ZipSyncFileMeasurementWriter", "df/d63/classhelios_1_1filems_1_1ZipSyncFileMeasurementWriter.html", null ]
+        ] ],
+        [ "helios::filems::ZipSyncFileWriter< std::vector< double > const &, int const, double const, double const, glm::dvec3 const &, glm::dvec3 const &, long const >", "d9/d45/classhelios_1_1filems_1_1ZipSyncFileWriter.html", [
+          [ "helios::filems::ZipSyncFileFullWaveformWriter", "db/dbf/classhelios_1_1filems_1_1ZipSyncFileFullWaveformWriter.html", null ]
+        ] ],
+        [ "helios::filems::ZipSyncFileWriter< Trajectory const &>", "d9/d45/classhelios_1_1filems_1_1ZipSyncFileWriter.html", [
+          [ "helios::filems::ZipSyncFileTrajectoryWriter", "d8/d74/classhelios_1_1filems_1_1ZipSyncFileTrajectoryWriter.html", null ]
+        ] ],
+        [ "helios::filems::ZipSyncFileWriter< vector< Measurement > const &, glm::dvec3 const & >", "d9/d45/classhelios_1_1filems_1_1ZipSyncFileWriter.html", [
+          [ "helios::filems::ZipVectorialSyncFileMeasurementWriter", "d8/d56/classhelios_1_1filems_1_1ZipVectorialSyncFileMeasurementWriter.html", null ]
+        ] ]
       ] ]
     ] ],
-    [ "SyncFileWriterFactory", "da/df6/classSyncFileWriterFactory.html", null ],
     [ "TaskDropper< TaskType, ThreadPoolType, TaskArgs >", "da/d8d/classTaskDropper.html", null ],
     [ "TaskDropper< PulseTask, PulseThreadPoolInterface, TaskArgs... >", "da/d8d/classTaskDropper.html", [
       [ "BuddingTaskDropper< PulseTaskDropper, PulseTask, PulseThreadPoolInterface, std::vector< std::vector< double > > &, RandomnessGenerator< double > &, RandomnessGenerator< double > &, NoiseSource< double > & >", "d5/d2f/classBuddingTaskDropper.html", [
@@ -364,21 +461,21 @@ var hierarchy =
     [ "TaskWarehouse< PulseTaskDropper >", "d9/d5e/classTaskWarehouse.html", null ],
     [ "Test", "df/da6/classTest.html", null ],
     [ "ThreadPool", "dc/de7/classThreadPool.html", [
+      [ "SimpleThreadPool< TaskArgs >", "d2/d1f/classSimpleThreadPool.html", null ],
       [ "SimpleThreadPool< TaskArgs ... >", "d2/d1f/classSimpleThreadPool.html", [
-        [ "MDThreadPool< KDTreeBuildType, KDTreeNode *, bool const, vector< Primitive * > &, int const, int const >", "d0/d21/classMDThreadPool.html", [
+        [ "MDThreadPool< MDType, TaskArgs >", "d0/d21/classMDThreadPool.html", null ],
+        [ "MDThreadPool< KDTreeBuildType, KDTreeNode *, bool const, vector< Primitive *> &, int const, int const >", "d0/d21/classMDThreadPool.html", [
           [ "KDTreeFactoryThreadPool", "d2/dea/classKDTreeFactoryThreadPool.html", null ]
         ] ],
+        [ "ResThreadPool< TaskArgs >", "d2/dee/classResThreadPool.html", null ],
         [ "ResThreadPool< std::vector< std::vector< double > > &, RandomnessGenerator< double > &, RandomnessGenerator< double > &, NoiseSource< double > & >", "d2/dee/classResThreadPool.html", [
           [ "PulseThreadPool", "d6/ddc/classPulseThreadPool.html", null ]
-        ] ],
-        [ "MDThreadPool< MDType, TaskArgs >", "d0/d21/classMDThreadPool.html", null ],
-        [ "ResThreadPool< TaskArgs >", "d2/dee/classResThreadPool.html", null ]
+        ] ]
       ] ],
+      [ "WarehouseThreadPool< Task >", "da/d92/classWarehouseThreadPool.html", null ],
       [ "WarehouseThreadPool< PulseTaskDropper >", "da/d92/classWarehouseThreadPool.html", [
         [ "PulseWarehouseThreadPool", "d7/de7/classPulseWarehouseThreadPool.html", null ]
-      ] ],
-      [ "SimpleThreadPool< TaskArgs >", "d2/d1f/classSimpleThreadPool.html", null ],
-      [ "WarehouseThreadPool< Task >", "da/d92/classWarehouseThreadPool.html", null ]
+      ] ]
     ] ],
     [ "TimeWatcher", "d7/d7d/classTimeWatcher.html", null ],
     [ "Trajectory", "d2/d43/classTrajectory.html", null ],
@@ -411,13 +508,34 @@ var hierarchy =
     [ "VoxelGridCell", "d5/df6/structVoxelGridCell.html", null ],
     [ "WavefrontObj", "d0/d92/classWavefrontObj.html", null ],
     [ "WavefrontObjCache", "d8/d78/classWavefrontObjCache.html", null ],
+    [ "helios::filems::WriteStrategy< WriteArgs >", "de/dd3/classhelios_1_1filems_1_1WriteStrategy.html", null ],
+    [ "helios::filems::WriteStrategy< Measurement const &, glm::dvec3 const &>", "de/dd3/classhelios_1_1filems_1_1WriteStrategy.html", [
+      [ "helios::filems::DirectMeasurementWriteStrategy", "de/d6d/classhelios_1_1filems_1_1DirectMeasurementWriteStrategy.html", [
+        [ "helios::filems::ZipMeasurementWriteStrategy", "df/d31/classhelios_1_1filems_1_1ZipMeasurementWriteStrategy.html", null ]
+      ] ],
+      [ "helios::filems::LasMeasurementWriteStrategy", "da/d35/classhelios_1_1filems_1_1LasMeasurementWriteStrategy.html", null ]
+    ] ],
+    [ "helios::filems::WriteStrategy< std::vector< double > const &, int const, double const, double const, glm::dvec3 const &, glm::dvec3 const &, long const >", "de/dd3/classhelios_1_1filems_1_1WriteStrategy.html", [
+      [ "helios::filems::DirectFullWaveformWriteStrategy", "d8/df7/classhelios_1_1filems_1_1DirectFullWaveformWriteStrategy.html", [
+        [ "helios::filems::ZipFullWaveformWriteStrategy", "d6/d70/classhelios_1_1filems_1_1ZipFullWaveformWriteStrategy.html", null ]
+      ] ]
+    ] ],
+    [ "helios::filems::WriteStrategy< Trajectory const &>", "de/dd3/classhelios_1_1filems_1_1WriteStrategy.html", [
+      [ "helios::filems::DirectTrajectoryWriteStrategy", "d0/de5/classhelios_1_1filems_1_1DirectTrajectoryWriteStrategy.html", [
+        [ "helios::filems::ZipTrajectoryWriteStrategy", "d3/d91/classhelios_1_1filems_1_1ZipTrajectoryWriteStrategy.html", null ]
+      ] ]
+    ] ],
+    [ "helios::filems::WriteStrategy< vector< WriteArg > const &, BiasType ... >", "de/dd3/classhelios_1_1filems_1_1WriteStrategy.html", [
+      [ "helios::filems::VectorialWriteStrategy< WriteArg, BiasType >", "da/dca/classhelios_1_1filems_1_1VectorialWriteStrategy.html", null ]
+    ] ],
+    [ "helios::filems::WriteStrategy< WriteArg const &, BiasType ... >", "de/dd3/classhelios_1_1filems_1_1WriteStrategy.html", null ],
     [ "XmlAssetsLoader", "d9/d82/classXmlAssetsLoader.html", [
       [ "XmlSurveyLoader", "df/d9a/classXmlSurveyLoader.html", null ]
     ] ],
     [ "XmlSceneLoader", "db/d91/classXmlSceneLoader.html", null ],
     [ "XmlUtils", "de/d52/classXmlUtils.html", null ],
     [ "runtime_error", null, [
-      [ "SurfaceInspector::util::SurfaceInspectorException", "df/da8/classSurfaceInspector_1_1util_1_1SurfaceInspectorException.html", null ],
-      [ "rigidmotion::RigidMotionException", "dd/db6/classrigidmotion_1_1RigidMotionException.html", null ]
+      [ "rigidmotion::RigidMotionException", "dd/db6/classrigidmotion_1_1RigidMotionException.html", null ],
+      [ "SurfaceInspector::util::SurfaceInspectorException", "df/da8/classSurfaceInspector_1_1util_1_1SurfaceInspectorException.html", null ]
     ] ]
 ];

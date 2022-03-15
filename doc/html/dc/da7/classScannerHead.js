@@ -1,10 +1,11 @@
 var classScannerHead =
 [
     [ "ScannerHead", "dc/da7/classScannerHead.html#aba1f4b463e4b5edc599fbd2ccb717fb5", null ],
+    [ "~ScannerHead", "dc/da7/classScannerHead.html#ab08f143fbeafd506d5a81763c216ecea", null ],
     [ "applySettings", "dc/da7/classScannerHead.html#a2ffd55a8170c89da01d06c357d3c6de4", null ],
     [ "doSimStep", "dc/da7/classScannerHead.html#aa28cf1422b4f9192a518180f4dbc25bd", null ],
     [ "getMountRelativeAttitude", "dc/da7/classScannerHead.html#a073da2dcec8c2ad6c2886d5da214b78d", null ],
-    [ "getMountRelativeAttitudeByReference", "dc/da7/classScannerHead.html#ad3ba6daca5d86584af13ce5fbfb9d5cc", null ],
+    [ "getMountRelativeAttitudeByReference", "dc/da7/classScannerHead.html#aa4a9fde367b9495c861806d8947d527e", null ],
     [ "getRotateCurrent", "dc/da7/classScannerHead.html#a063b6d10c0c2f9fcf735788a24ffb25a", null ],
     [ "getRotatePerSec_rad", "dc/da7/classScannerHead.html#af5c82f5d501a1eb047ae56af328e465f", null ],
     [ "getRotatePerSecMax", "dc/da7/classScannerHead.html#a003f8ad0e3281e45e68ca3159fffcd0e", null ],

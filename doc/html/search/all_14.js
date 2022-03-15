@@ -42,7 +42,6 @@ var searchData=
   ['testunivariatenewtonraphsonminimization',['testUnivariateNewtonRaphsonMinimization',['../dd/de0/classHeliosTests_1_1FluxionumTest.html#a7616b4a4e1883577c3d575cfef4a9e4d',1,'HeliosTests::FluxionumTest']]],
   ['testyawonlyrotations',['testYawOnlyRotations',['../d6/d96/classHeliosTests_1_1PlatformPhysicsTest.html#ad897157bfc114c83c38d148d6a93a415',1,'HeliosTests::PlatformPhysicsTest']]],
   ['texcoords',['texcoords',['../d2/da0/classVertex.html#a2ab4abfcc9a5075480dc778c51e04e90',1,'Vertex']]],
-  ['tfw',['tfw',['../dc/d42/classScanner.html#a296541247420ebb603b329301231c9d6',1,'Scanner']]],
   ['thread',['thread',['../df/d6f/classSharedSubTask.html#a98248ead49bc05d069e0ad458f926562',1,'SharedSubTask']]],
   ['threadpool',['ThreadPool',['../dc/de7/classThreadPool.html',1,'ThreadPool'],['../d1/d7b/classSimulation.html#a46e423ef446467b8f8758a952cddb860',1,'Simulation::threadPool()'],['../dc/de7/classThreadPool.html#a2b8ca7a57ba657bad890a99058e01781',1,'ThreadPool::ThreadPool()']]],
   ['threads_5f',['threads_',['../dc/de7/classThreadPool.html#a56090e231c048e3a4e9e88261bd7cec5',1,'ThreadPool']]],
@@ -75,7 +74,8 @@ var searchData=
   ['trackprogress',['trackProgress',['../d6/da1/classSurveyPlayback.html#a3ba77b5582defa28808c7e5b748eb1c3',1,'SurveyPlayback']]],
   ['trajectory',['Trajectory',['../d2/d43/classTrajectory.html',1,'Trajectory'],['../d2/d43/classTrajectory.html#aeb6134b898517acd09038dcb66ecd913',1,'Trajectory::Trajectory()=default'],['../d2/d43/classTrajectory.html#a222ddf39ff990707dc6af84b39821d74',1,'Trajectory::Trajectory(long gpsTime, glm::dvec3 position, double roll, double pitch, double yaw)']]],
   ['trajectorytimeinterval',['trajectoryTimeInterval',['../dc/d42/classScanner.html#a38df4b3a19cfe45839004991c74b253c',1,'Scanner::trajectoryTimeInterval()'],['../d0/d23/classScannerSettings.html#af3ec926873b7a8dbea08384f0241b268',1,'ScannerSettings::trajectoryTimeInterval()']]],
-  ['trajectorytostring',['trajectoryToString',['../df/d47/classSimpleSyncFileWriter.html#aee3e23732a9e25e50fbdfd06455dc116',1,'SimpleSyncFileWriter']]],
+  ['trajectorytostring',['trajectoryToString',['../d0/de5/classhelios_1_1filems_1_1DirectTrajectoryWriteStrategy.html#a422b250b53761fb8b6074e8ac86d9689',1,'helios::filems::DirectTrajectoryWriteStrategy']]],
+  ['trajectorywriter',['TrajectoryWriter',['../dd/dd8/classhelios_1_1filems_1_1TrajectoryWriter.html',1,'helios::filems::TrajectoryWriter'],['../dd/dd8/classhelios_1_1filems_1_1TrajectoryWriter.html#a42b44a045665a83588b103eed068f615',1,'helios::filems::TrajectoryWriter::TrajectoryWriter()']]],
   ['transformtoladlutdomain',['transformToLadLutDomain',['../d9/d22/classLadLut.html#ac5655e6c899f0a1ad0fc5c136d739e3d',1,'LadLut']]],
   ['translate',['translate',['../df/de1/classPrimitive.html#a3f6d32a30c09a7b3f987f02a76f28d50',1,'Primitive::translate()'],['../d6/d44/classVoxel.html#abb0024b8af71b8422059cb71da9339ad',1,'Voxel::translate()']]],
   ['translatefilter',['TranslateFilter',['../df/d5a/classTranslateFilter.html',1,'TranslateFilter'],['../df/d5a/classTranslateFilter.html#ad2873f3b3d9b815e3f0c9eee086504af',1,'TranslateFilter::TranslateFilter()']]],
@@ -92,6 +92,7 @@ var searchData=
   ['trydrop',['tryDrop',['../de/d9a/classPulseTaskDropper.html#ab0b9593b97ab5657f890cefb48ba26f3',1,'PulseTaskDropper::tryDrop()'],['../da/d8d/classTaskDropper.html#a067e3bf1714d730e80a9241246e119d8',1,'TaskDropper::tryDrop()']]],
   ['trysort',['trySort',['../d8/de4/classhelios_1_1hpc_1_1SM__ParallelMergeSort.html#adeb0840a808e48b0fd421fa848c73606',1,'helios::hpc::SM_ParallelMergeSort']]],
   ['tstart',['tStart',['../d7/d7d/classTimeWatcher.html#a00375c2ae161f1256962d01980aa5b9f',1,'TimeWatcher']]],
+  ['tw',['tw',['../df/d31/classhelios_1_1filems_1_1FMSWriteFacade.html#ab0503f81762304969ab7002405056e3a',1,'helios::filems::FMSWriteFacade']]],
   ['twicesigmasquare',['twiceSigmaSquare',['../db/dc1/classSurfaceInspector_1_1maths_1_1functions_1_1GaussianFunction.html#ac23c21fcddafeccb2daf42e27d8591e9',1,'SurfaceInspector::maths::functions::GaussianFunction']]],
   ['type',['Type',['../d7/d84/classrigidmotion_1_1RigidMotion.html#a9f6af528c327231f6ad4565fa9bef21f',1,'rigidmotion::RigidMotion']]]
 ];

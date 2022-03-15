@@ -7,6 +7,7 @@ var classfluxionum_1_1IterativeMethodHandler =
       [ "CONTINUE", "d8/d34/classfluxionum_1_1IterativeMethodHandler.html#a68da247395386266539ad156c606aacda0bdc94489a2bcf0f448901a4f1223c91", null ]
     ] ],
     [ "IterativeMethodHandler", "d8/d34/classfluxionum_1_1IterativeMethodHandler.html#ad1875a751c94b4bf856b1de0e7b3f848", null ],
+    [ "~IterativeMethodHandler", "d8/d34/classfluxionum_1_1IterativeMethodHandler.html#a29a6e882b2d06143c58a78a125239b87", null ],
     [ "getCurrentIter", "d8/d34/classfluxionum_1_1IterativeMethodHandler.html#a5afe8e16e43b06d500e369c2da9cbd02", null ],
     [ "getMaxIters", "d8/d34/classfluxionum_1_1IterativeMethodHandler.html#a548bd9d4ba8941a0aba4302af3cbbf37", null ],
     [ "getPatience", "d8/d34/classfluxionum_1_1IterativeMethodHandler.html#affeca4c212268c3e046ff2df03344cd0", null ],
@@ -25,6 +26,7 @@ var classfluxionum_1_1IterativeMethodHandler =
     [ "setPatienceCount", "d8/d34/classfluxionum_1_1IterativeMethodHandler.html#a4d6769c620f9645dcdf7985ee63f2c0c", null ],
     [ "setPatienceEps", "d8/d34/classfluxionum_1_1IterativeMethodHandler.html#af02ff1e50ee23ae894069ce22fa79fe2", null ],
     [ "setPatiencePreserveBest", "d8/d34/classfluxionum_1_1IterativeMethodHandler.html#a7d46e8e6a8eebeeca01328b3d5e96b35", null ],
+    [ "boost::serialization::access", "d8/d34/classfluxionum_1_1IterativeMethodHandler.html#ac98d07dd8f7b70e16ccb9a01abf56b9c", null ],
     [ "convergenceEps", "d8/d34/classfluxionum_1_1IterativeMethodHandler.html#aaf42f26a645a9d701d7651cfd8fb1b44", null ],
     [ "currentIter", "d8/d34/classfluxionum_1_1IterativeMethodHandler.html#a86c310e2fec9b8c2d5dfd0df06df4051", null ],
     [ "enableConvergenceCriterion", "d8/d34/classfluxionum_1_1IterativeMethodHandler.html#afd84a0cd9595a366dab2a0a047b4c7ac", null ],

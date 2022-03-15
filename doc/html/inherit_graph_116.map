@@ -1,7 +1,8 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$d1/d0e/classSyncFileWriter.html" title="Abstract class defining common behavior for all synchronous file writers. " alt="" coords="5,31,113,57"/>
-<area shape="rect" id="node2" href="$d2/db3/classLasSyncFileWriter.html" title="SyncFileWriter implementation for LAS format. " alt="" coords="171,5,300,32"/>
-<area shape="rect" id="node4" href="$df/d47/classSimpleSyncFileWriter.html" title="SyncFileWriter implementation for simple text format. " alt="" coords="161,56,309,83"/>
-<area shape="rect" id="node3" href="$dd/d09/classLas14SyncFileWriter.html" title="LasSyncFileWriter implementation for LAS v1.4 format. " alt="" coords="357,5,500,32"/>
-<area shape="rect" id="node5" href="$de/d2a/classZipSyncFileWriter.html" title="ZipSyncFileWriter implementation for zipped text output format. " alt="" coords="365,56,492,83"/>
+<area shape="rect" id="node1" href="$d7/df4/classRaycaster.html" title="Raycaster interface declaring raycasting operations. " alt="" coords="5,85,88,112"/>
+<area shape="rect" id="node2" href="$df/d01/classKDGroveRaycaster.html" title="Class representing a KDGrove ray caster. " alt="" coords="139,5,275,32"/>
+<area shape="rect" id="node3" href="$da/d81/classKDTreeRaycaster.html" title="Class representing a KDTree ray caster. " alt="" coords="144,56,271,83"/>
+<area shape="rect" id="node5" href="$d9/db1/classRaycasterGroveTree.html" title="Define a Raycaster derived interface to make it compatible with groves. " alt="" coords="136,107,279,149"/>
+<area shape="rect" id="node6" href="$d9/db1/classRaycasterGroveTree.html" title="RaycasterGroveTree\l\&lt; DynObject \&gt;" alt="" coords="136,173,279,214"/>
+<area shape="rect" id="node4" href="$d6/dba/classGroveKDTreeRaycaster.html" title="Grove KDTree Raycaster extends KDTreeRaycaster to make it compatible with groves by implementing the ..." alt="" coords="327,119,489,145"/>
 </map>
