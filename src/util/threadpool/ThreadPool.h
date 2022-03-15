@@ -2,10 +2,10 @@
 
 // Include boost ASIO preventing windows conflicts ---
 #if defined(_WIN32) || defined(_WIN64)  // If using windows
-#define WIN32_LEAN_AND_MEAN
+/*#define WIN32_LEAN_AND_MEAN
 #include <boost/asio.hpp>
 #include <SDKDDKVer.h>
-#include <windows.h>
+#include <windows.h>*/
 
 #else // If not using windows
 #include <boost/asio.hpp>
