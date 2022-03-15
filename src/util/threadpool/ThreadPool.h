@@ -1,8 +1,12 @@
 #pragma once
 
+
 // Include boost ASIO preventing windows conflicts ---
 #if defined(_WIN32) || defined(_WIN64)  // If using windows
-#define BOOST_ASIO_NO_WIN32_LEAN_AND_MEAN
+// Check WIN32 LEAN AND MEAN is specified, error otherwise
+#ifndef WIN32_LEAN_AND_MEAN
+#error WIN32 LEAN AND MEAN MACRO WAS NOT DEFINED
+#endif
 #include <SDKDDKVer.h>
 #include <boost/asio.hpp>
 
