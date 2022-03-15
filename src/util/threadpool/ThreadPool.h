@@ -3,7 +3,6 @@
 // Include boost ASIO preventing windows conflicts ---
 #if defined(_WIN32) || defined(_WIN64)  // If using windows
 #include <SDKDDKVer.h>
-#include <winsock2.h>
 #include <boost/asio.hpp>
 #include <windows.h>
 
