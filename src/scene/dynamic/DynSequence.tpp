@@ -1,6 +1,6 @@
 #ifndef _DYN_SEQUENCE_H_
 
-#include <HeliosException.h>
+#include <util/HeliosException.h>
 
 #include <sstream>
 

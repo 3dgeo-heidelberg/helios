@@ -1,7 +1,6 @@
 var NAVTREE =
 [
   [ "Helios++", "index.html", [
-    [ "Deprecated List", "da/d58/deprecated.html", null ],
     [ "Classes", "annotated.html", [
       [ "Class List", "annotated.html", "annotated_dup" ],
       [ "Class Index", "classes.html", null ],
@@ -23,24 +22,25 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 ".html",
-"d1/d1e/classGroveTreeWrapper.html#a77349ecb62946f265d445cab118a303a",
-"d1/ddc/classFastSAHKDTreeGeometricStrategy.html#af42716c08770735cbbc075695141fff7",
-"d3/d43/classBinaryTreeFastBreadthIterator.html#aefd883a8b65f7fefac5dfaa0d27ea90d",
-"d4/d48/classDynSequentiableMovingObject.html#ab86ca8704381f575efe6e3888871e302",
-"d5/d3b/classSimplePhysicsPlatform.html",
-"d5/dfc/classvisualhelios_1_1VHStaticObjectXYZRGBAdapter.html#a2dbe5464b2ac3c441fc879c0e9d47ebd",
-"d6/d96/classSimpleKDTreeFactory.html#ac98d07dd8f7b70e16ccb9a01abf56b9c",
-"d7/d5c/classArgumentsParser.html#aff117df61e13435f7eec3cefdd6ca665",
-"d8/d6b/classAbstractDetector.html#a4a24217d4e34ad86ce1ee0cd2a2dea7f",
-"d9/d82/classXmlAssetsLoader.html#a1a224706568ac6de1bd59ec83e024979",
-"da/d29/classSharedTaskSequencer.html#af6419ae2b4274fbdd1fa6058e2f187e1",
-"db/d57/classfluxionum_1_1UnivariateNewtonRaphsonMinimizer.html#adba8706a6b811dda5fc11e634a8ee7d3",
-"db/dc1/classSurfaceInspector_1_1maths_1_1functions_1_1GaussianFunction.html#a0318c2b3aa1f98b58f248641a1f5d347",
-"dc/da7/classScannerHead.html#a063b6d10c0c2f9fcf735788a24ffb25a",
-"dd/de3/classDiscreteTime.html#ac5ec94b5343419f58c172604062ab39b",
-"de/df3/classpyhelios_1_1PyAABBWrapper.html#a927ebfa167e7c03ba1cd285a8967b2e2",
-"df/d9a/classXmlSurveyLoader.html",
-"functions_vars_e.html"
+"d1/d0c/classGeoTiffFileLoader.html#a180c596f369530ea13eab44af4945c78",
+"d1/dd3/classSurfaceInspector_1_1maths_1_1Vector.html#a043fe59241e476b661623aea20ffbbf0",
+"d2/dee/classResThreadPool.html",
+"d4/d45/classpyhelios_1_1PyMeasurementWrapper.html#a710c16a33bb55bf0cc3d3565669114d5",
+"d5/d0c/classPlatformSettings.html#a8532325f8a409cee1b4d70dcc52f1aaa",
+"d5/dcb/classRotation.html#a4792fcbfbd8a9504001b4aff514eabf1",
+"d6/d7f/classRotationOrder.html#a02d0910755b6f6ec9a5d504e87dc877e",
+"d7/d21/classpyhelios_1_1PyDetailedVoxelWrapper.html",
+"d7/da6/classhelios_1_1hpc_1_1SM__ParallelMergeSortSubTask.html#ad149bec44bbfadddc6340b882be8ac60",
+"d8/df4/structstringVisitor.html#aea671d7ac074a56c8bbc38daad8857c4",
+"d9/dcd/classBasicStaticGrove.html#a7eb1e2d8298b2eb790b238c4ecfbfff4",
+"da/d69/classSurfaceInspector_1_1maths_1_1SingularContextComputer.html#a879acb56a7e4f2dc88b515bdbbdc3e11",
+"db/d58/classSAHKDTreeFactory.html#aebfc278ecd4db90c08c79099e48d5dd3",
+"dc/d30/classSurfaceInspector_1_1maths_1_1Distances.html#aa15bb04921ffd598377ef2846781f092",
+"dc/db5/DynObject_8h_source.html",
+"dd/de3/classDiscreteTime.html#adbc321326e054c466cf7d0d5cddb5ea9",
+"de/dda/classvisualhelios_1_1VHCanvas.html#a8a8b43caac7acf12d4d9800fa683b7cc",
+"df/d63/classhelios_1_1filems_1_1ZipSyncFileMeasurementWriter.html",
+"dir_4cad3cb90c206324673a3a6a764b0986.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

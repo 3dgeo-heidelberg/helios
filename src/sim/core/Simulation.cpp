@@ -10,6 +10,7 @@ using namespace std::chrono;
 #include "Simulation.h"
 #include <TimeWatcher.h>
 #include <DateTimeUtils.h>
+#include <filems/facade/FMSFacade.h>
 
 using namespace std;
 
@@ -29,7 +30,6 @@ Simulation::Simulation(
     reporter(*this)
 
 {
-    mBuffer = make_shared<MeasurementsBuffer>();
     currentGpsTime_ms = calcCurrentGpsTime();
 }
 
@@ -97,7 +97,8 @@ void Simulation::shutdown(){
         (*callback)(
             *mScanner->cycleMeasurements,
             *mScanner->cycleTrajectories,
-            mScanner->detector->outputFilePath.string()
+            mScanner->detector->getFMS()->write
+                .getMeasurementWriterOutputPath().string()
         );
     }
 }
@@ -130,7 +131,8 @@ void Simulation::start() {
                 (*callback)(
                     *mScanner->cycleMeasurements,
                     *mScanner->cycleTrajectories,
-                    mScanner->detector->outputFilePath.string()
+                    mScanner->detector->getFMS()->write
+                        .getMeasurementWriterOutputPath().string()
                 );
                 mScanner->cycleMeasurements->clear();
                 mScanner->cycleTrajectories->clear();
@@ -229,9 +231,4 @@ void Simulation::setScanner(shared_ptr<Scanner> scanner) {
     logging::INFO("Simulation: Scanner changed!");
 
     this->mScanner = shared_ptr<Scanner>(scanner);
-
-    // Connect measurements buffer:
-    if (this->mScanner != nullptr) {
-        this->mScanner->detector->mBuffer = this->mBuffer;
-    }
 }

@@ -1,4 +1,3 @@
 <map id="SimpleThreadPool&lt; TaskArgs &gt;" name="SimpleThreadPool&lt; TaskArgs &gt;">
-<area shape="rect" id="node1" title="Abstract class providing implementation of a simple thread pool which assigns tasks to threads." alt="" coords="5,80,233,107"/>
-<area shape="rect" id="node2" href="$dc/de7/classThreadPool.html" title="Base class providing core implementation of a thread pool to deal with multi threading tasks." alt="" coords="72,5,167,32"/>
+<area shape="rect" id="node2" href="$dc/de7/classThreadPool.html" title="Base class providing core implementation of a thread pool to deal with multi threading tasks..." alt="" coords="65,5,153,32"/>
 </map>

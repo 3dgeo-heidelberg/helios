@@ -1,6 +1,7 @@
 var classhelios_1_1hpc_1_1SM__ParallelMergeSortSubTask =
 [
     [ "SM_ParallelMergeSortSubTask", "d7/da6/classhelios_1_1hpc_1_1SM__ParallelMergeSortSubTask.html#a3da71de1ca41833b870229f018fb70ea", null ],
+    [ "~SM_ParallelMergeSortSubTask", "d7/da6/classhelios_1_1hpc_1_1SM__ParallelMergeSortSubTask.html#aeeebbb46268aff83f0373999593403cd", null ],
     [ "run", "d7/da6/classhelios_1_1hpc_1_1SM__ParallelMergeSortSubTask.html#adc5af095ba57c46c33487dacb47d142c", null ],
     [ "begin", "d7/da6/classhelios_1_1hpc_1_1SM__ParallelMergeSortSubTask.html#a88841419efb7f3b4936d5da770d6c449", null ],
     [ "comparator", "d7/da6/classhelios_1_1hpc_1_1SM__ParallelMergeSortSubTask.html#ae27a77739eee386a15722188a8a8de6a", null ],

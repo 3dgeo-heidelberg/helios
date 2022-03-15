@@ -1,8 +1,9 @@
 var classKDGroveStats =
 [
     [ "KDGroveStats", "de/d29/classKDGroveStats.html#a7a5cd6ff46ba3f518a2df3ba82a75d8b", null ],
+    [ "~KDGroveStats", "de/d29/classKDGroveStats.html#ae5d3b0d320bc7197db4af345fc357e65", null ],
     [ "toString", "de/d29/classKDGroveStats.html#a38928167e8e9aacddea8c066a38d754a", null ],
-    [ "operator<<", "de/d29/classKDGroveStats.html#ad2604f569f3245efe4874276be485e39", null ],
+    [ "operator<<", "de/d29/classKDGroveStats.html#a3fbb18e94f50da668b975451f78c1eb2", null ],
     [ "maxBuildingTime", "de/d29/classKDGroveStats.html#a22639452db6e9a3806b8ab0f6b9b66c6", null ],
     [ "maxCost", "de/d29/classKDGroveStats.html#a85afec8f6d82bc8dbadb5fa8a992f1a3", null ],
     [ "maxMaxDepth", "de/d29/classKDGroveStats.html#a29d6ce36da13b0544bdad1a679486816", null ],

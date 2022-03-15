@@ -26,7 +26,8 @@ public:
      * @param msg Helios exception message
      * @see HeliosException::msg
      */
-    HeliosException(std::string const msg = "") : msg(msg){}
+    HeliosException(std::string const &msg = "") : msg(msg){}
+    virtual ~HeliosException() = default;
 
     /**
      * @brief Helios exception overriding of what method

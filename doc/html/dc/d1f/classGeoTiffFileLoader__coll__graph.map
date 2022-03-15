@@ -1,9 +1,7 @@
 <map id="GeoTiffFileLoader" name="GeoTiffFileLoader">
-<area shape="rect" id="node1" title="Loader for tiff files." alt="" coords="130,288,265,315"/>
-<area shape="rect" id="node2" href="$d6/dd2/classAbstractGeometryFilter.html" title="Abstract class defining asset loading filters common behavior." alt="" coords="40,199,213,225"/>
-<area shape="rect" id="node3" href="$dd/dc4/classScenePart.html" title="Class representing a scene part." alt="" coords="83,109,170,136"/>
-<area shape="rect" id="node4" title=" " alt="" coords="5,5,64,32"/>
-<area shape="rect" id="node5" href="$d5/dcb/classRotation.html" title=" " alt="" coords="181,5,259,32"/>
-<area shape="rect" id="node6" href="$d2/da0/classVertex.html" title="Class representing a vertex." alt="" coords="238,199,303,225"/>
-<area shape="rect" id="node7" href="$db/d02/classColor4f.html" title="Class representing a color with 4 float components: RGBA." alt="" coords="236,109,305,136"/>
+<area shape="rect" id="node2" href="$d6/dd2/classAbstractGeometryFilter.html" title="Abstract class defining asset loading filters common behavior. " alt="" coords="10,199,167,225"/>
+<area shape="rect" id="node3" href="$dd/dc4/classScenePart.html" title="Class representing a scene part. " alt="" coords="47,109,130,136"/>
+<area shape="rect" id="node4" href="$d5/dcb/classRotation.html" title="Rotation" alt="" coords="5,5,76,32"/>
+<area shape="rect" id="node6" href="$d2/da0/classVertex.html" title="Class representing a vertex. " alt="" coords="192,199,252,225"/>
+<area shape="rect" id="node7" href="$db/d02/classColor4f.html" title="Class representing a color with 4 float components: RGBA. " alt="" coords="190,109,254,136"/>
 </map>

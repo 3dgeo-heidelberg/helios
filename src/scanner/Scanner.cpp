@@ -1,5 +1,6 @@
 #include <Scanner.h>
 #include <scanner/detector/AbstractDetector.h>
+#include <filems/facade/FMSFacade.h>
 
 #include <iostream>
 
@@ -100,6 +101,7 @@ Scanner::Scanner(Scanner &s){
     this->numTimeBins = s.numTimeBins;
     this->peakIntensityIndex = s.peakIntensityIndex;
 
+    s.fms = this->fms;
     if(s.scannerHead == nullptr) this->scannerHead = nullptr;
     else this->scannerHead = std::make_shared<ScannerHead>(*s.scannerHead);
     if(s.beamDeflector == nullptr) this->beamDeflector = nullptr;
@@ -270,13 +272,18 @@ void Scanner::doSimStep(
 
 
 void Scanner::calcRaysNumber() {
+    // Count circle steps
 	int count = 1;
-
-	for (int radiusStep = 0; radiusStep < FWF_settings.beamSampleQuality; radiusStep++) {
+	for (
+	    int radiusStep = 0;
+	    radiusStep < FWF_settings.beamSampleQuality;
+	    radiusStep++
+    ) {
 		int circleSteps = (int)(2 * M_PI) * radiusStep;
 		count += circleSteps;
 	}
 
+	// Update number of rays
 	numRays = count;
 	std::stringstream ss;
 	ss << "Number of subsampling rays: " << numRays;
@@ -392,7 +399,6 @@ void Scanner::handleSimStepNoise(
     glm::dvec3 & absoluteBeamOrigin,
     Rotation & absoluteBeamAttitude
 ){
-
     // Apply noise to beam origin
     if(!platformNoiseDisabled){
         if (platform->positionXNoiseSource != nullptr){ // Add X position noise
@@ -463,9 +469,7 @@ void Scanner::handleTrajectoryOutput(double currentGpsTime){
     Trajectory trajectory(currentGpsTime, pos, roll, pitch, yaw);
 
     // Write trajectory output
-    if(tfw != nullptr) {
-        tfw->write(trajectory);
-    }
+    fms->write.writeTrajectoryUnsafe(trajectory);
 
     // Add trajectory to all trajectories vector
     if(allTrajectories != nullptr){

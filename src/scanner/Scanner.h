@@ -2,9 +2,6 @@
 
 #include <memory>
 
-#include <boost/asio/thread_pool.hpp>
-#include <boost/asio/post.hpp>
-
 #include <Asset.h>
 #include <ScannerHead.h>
 #include <AbstractBeamDeflector.h>
@@ -18,7 +15,10 @@ class AbstractDetector;
 #include <maths/Rotation.h>
 #include <UniformNoiseSource.h>
 #include <RandomnessGenerator.h>
-#include <SyncFileWriter.h>
+#include <scanner/Trajectory.h>
+#include <scanner/Measurement.h>
+namespace helios { namespace filems { class FMSFacade; }}
+using helios::filems::FMSFacade;
 
 #ifdef PYTHON_BINDING
 #include <PyBeamDeflectorWrapper.h>
@@ -35,7 +35,6 @@ using pyhelios::PyRandomnessGeneratorWrapper;
 using pyhelios::PyDoubleVector;
 #endif
 
-#include <Measurement.h>
 
 
 /**
@@ -161,12 +160,6 @@ private:
 	 */
 	double cached_Bt2;
 
-	// Trajectory writer
-	/**
-	 * @brief Synchronous file writer
-	 */
-	std::shared_ptr<SyncFileWriter> tfw = nullptr;
-
 	/**
 	 * @brief The scanning pulse process used by the scanner
 	 * @see ScanningPulseProcess
@@ -175,6 +168,10 @@ private:
 
 
 public:
+    /**
+	 * @brief Main facade to file management system
+	 */
+    std::shared_ptr<FMSFacade> fms;
     /**
      * @brief Scanner head composing the scanner
      * @see ScannerHead
@@ -525,7 +522,7 @@ public:
      * @brief Exposes ScanningPulseProcess:onLegComplete method of the
      *  scanning pulse process defining this scanner
      */
-    void inline onLegComplete() {spp->onLegComplete();}
+    inline void onLegComplete() {spp->onLegComplete();}
     /**
      * @brief Exposes ScanningPulseProcess::onSimulationFinished method of the
      *  scanning pulse process defining this scanner
@@ -769,7 +766,7 @@ public:
 	 * @param active New scanner active status
 	 * @see Scanner::state_isActive
 	 */
-	inline void setActive(bool active) {this->state_isActive = active;}
+	inline void setActive(bool const active) {this->state_isActive = active;}
 
 	/**
 	 * @brief Check if scanner is configured to write wave form (true) or not
@@ -851,14 +848,6 @@ public:
     inline void setFixedIncidenceAngle(bool fixedIncidenceAngle)
         {this->fixedIncidenceAngle = fixedIncidenceAngle;}
 
-    /**
-     * @brief Set synchronous file writer for trajectory
-     * @param tfw Synchronous file writer to be used to write trajectory
-     * @see Scanner::tfw
-     */
-    inline void setTrajectoryFileWriter(std::shared_ptr<SyncFileWriter> tfw){
-        this->tfw = tfw;
-	}
 
 	/**
 	 * @brief Obtain scanner device identifier

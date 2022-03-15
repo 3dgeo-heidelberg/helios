@@ -1,6 +1,7 @@
 var classTaskDropper =
 [
     [ "TaskDropper", "da/d8d/classTaskDropper.html#ad4c6cbdab6fa07285b5fb6b1be8cfecd", null ],
+    [ "~TaskDropper", "da/d8d/classTaskDropper.html#ac06e2840eb0d70a2cf89986b53956c1c", null ],
     [ "add", "da/d8d/classTaskDropper.html#a91e6384d85f7aaa2156db59909d0c8cd", null ],
     [ "add", "da/d8d/classTaskDropper.html#a44aa1feb3f6ef76da5c02b61b5cee30a", null ],
     [ "add", "da/d8d/classTaskDropper.html#a6401445757ce03ab1ff60f7e6c05b663", null ],
@@ -13,7 +14,7 @@ var classTaskDropper =
     [ "getMaxTasks", "da/d8d/classTaskDropper.html#a65b3b0c1755a88d8dbc76174d017ab2a", null ],
     [ "operator()", "da/d8d/classTaskDropper.html#ade7951d747e259b0231d97790a6ab7b3", null ],
     [ "operator()", "da/d8d/classTaskDropper.html#a8d8bf04f38604556a3402d2ac0d47425", null ],
-    [ "popTask", "da/d8d/classTaskDropper.html#a83f3e6e29929da16b281d4758e0277d2", null ],
+    [ "popTask", "da/d8d/classTaskDropper.html#aa39b12c43987184b28acee4399c35d1e", null ],
     [ "setMaxTasks", "da/d8d/classTaskDropper.html#a95540174a8913facf0d7a6a7b237777f", null ],
     [ "tryAdd", "da/d8d/classTaskDropper.html#a4e79063a65c9cff8cff4fdbbc83240ce", null ],
     [ "tryDrop", "da/d8d/classTaskDropper.html#a067e3bf1714d730e80a9241246e119d8", null ],

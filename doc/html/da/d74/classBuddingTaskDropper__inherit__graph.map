@@ -1,4 +1,3 @@
 <map id="BuddingTaskDropper&lt; BudType, TaskType, ThreadPoolType, TaskArgs &gt;" name="BuddingTaskDropper&lt; BudType, TaskType, ThreadPoolType, TaskArgs &gt;">
-<area shape="rect" id="node1" title="The budding task dropper is a task dropper which implements the logic for its own reproduction so bud..." alt="" coords="11,95,222,151"/>
-<area shape="rect" id="node2" href="$da/d8d/classTaskDropper.html" title=" " alt="" coords="5,5,228,47"/>
+<area shape="rect" id="node2" href="$da/d8d/classTaskDropper.html" title="TaskDropper\&lt; TaskType,\l ThreadPoolType, TaskArgs... \&gt;" alt="" coords="5,5,215,47"/>
 </map>

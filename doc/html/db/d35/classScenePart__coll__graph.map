@@ -1,5 +1,3 @@
 <map id="ScenePart" name="ScenePart">
-<area shape="rect" id="node1" title="Class representing a scene part." alt="" coords="83,109,170,136"/>
-<area shape="rect" id="node2" title=" " alt="" coords="5,5,64,32"/>
-<area shape="rect" id="node3" href="$d5/dcb/classRotation.html" title=" " alt="" coords="181,5,259,32"/>
+<area shape="rect" id="node2" href="$d5/dcb/classRotation.html" title="Rotation" alt="" coords="5,5,76,32"/>
 </map>

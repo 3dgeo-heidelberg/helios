@@ -1,8 +1,6 @@
 <map id="KDGrove" name="KDGrove">
-<area shape="rect" id="node1" title="Grove of KDTrees. It supports both static and dynamic KDTrees, handling each accordingly." alt="" coords="269,291,349,317"/>
-<area shape="rect" id="node2" href="$d1/d0a/classBasicDynGrove.html" title=" " alt="" coords="195,200,422,241"/>
-<area shape="rect" id="node3" href="$d9/dcd/classBasicStaticGrove.html" title=" " alt="" coords="64,109,297,151"/>
-<area shape="rect" id="node4" href="$d8/da0/classStaticGrove.html" title=" " alt="" coords="5,5,204,47"/>
-<area shape="rect" id="node5" title=" " alt="" coords="228,13,288,39"/>
-<area shape="rect" id="node6" href="$dc/d2c/classDynGrove.html" title=" " alt="" coords="321,117,555,143"/>
+<area shape="rect" id="node2" href="$d1/d0a/classBasicDynGrove.html" title="BasicDynGrove\&lt; GroveKDTree\lRaycaster, DynMovingObject \&gt;" alt="" coords="184,200,391,241"/>
+<area shape="rect" id="node3" href="$d9/dcd/classBasicStaticGrove.html" title="BasicStaticGrove\&lt; GroveKDTree\lRaycaster \&gt;" alt="" coords="61,109,277,151"/>
+<area shape="rect" id="node4" href="$d8/da0/classStaticGrove.html" title="StaticGrove\&lt; GroveKDTree\lRaycaster \&gt;" alt="" coords="5,5,188,47"/>
+<area shape="rect" id="node6" href="$dc/d2c/classDynGrove.html" title="DynGrove\&lt; DynMovingObject \&gt;" alt="" coords="301,117,511,143"/>
 </map>

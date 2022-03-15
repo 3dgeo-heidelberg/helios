@@ -1,6 +1,3 @@
 <map id="SAHKDTreeComputeLossNodesSubTask" name="SAHKDTreeComputeLossNodesSubTask">
-<area shape="rect" id="node1" title="Shared sub&#45;task to compute loss nodes when finding the split position during SAH KDTree building...." alt="" coords="51,187,276,228"/>
-<area shape="rect" id="node2" href="$df/d6f/classSharedSubTask.html" title="A shared task is said to be a collection of shared sub&#45;tasks. Each shared sub&#45;task can be computed in..." alt="" coords="103,96,223,123"/>
-<area shape="rect" id="node3" title=" " alt="" coords="5,5,65,32"/>
-<area shape="rect" id="node4" title=" " alt="" coords="247,96,410,123"/>
+<area shape="rect" id="node2" href="$df/d6f/classSharedSubTask.html" title="A shared task is said to be a collection of shared sub&#45;tasks. Each shared sub&#45;task can be computed in..." alt="" coords="98,96,213,123"/>
 </map>

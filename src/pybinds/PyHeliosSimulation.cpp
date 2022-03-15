@@ -8,9 +8,16 @@
 #include <PyHeliosOutputWrapper.h>
 #include <chrono>
 #include <PulseThreadPoolFactory.h>
+#include <filems/facade/FMSFacade.h>
+#include <filems/facade/FMSWriteFacade.h>
+#include <filems/factory/FMSFacadeFactory.h>
+
+using helios::filems::FMSWriteFacade;
 
 using pyhelios::PyHeliosSimulation;
 using pyhelios::PyHeliosOutputWrapper;
+
+namespace fms = helios::filems;
 
 // ***  CONSTRUCTION / DESTRUCTION  *** //
 // ************************************ //
@@ -88,24 +95,24 @@ void PyHeliosSimulation::start (){
         survey->scanner->allMeasurementsMutex = std::make_shared<std::mutex>();
     }
 
-    survey->scanner->detector->lasOutput = lasOutput;
-    survey->scanner->detector->las10 = las10;
-    survey->scanner->detector->zipOutput = zipOutput;
+    std::shared_ptr<fms::FMSFacade> fms = fms::FMSFacadeFactory().buildFacade(
+        outputPath,
+        lasScale,
+        lasOutput,
+        las10,
+        zipOutput,
+        *survey
+    );
 
     buildPulseThreadPool();
-    playback = std::shared_ptr<SurveyPlayback>(
-        new SurveyPlayback(
-            survey,
-            outputPath,
-            parallelizationStrategy,
-            pulseThreadPool,
-            chunkSize,
-            fixedGpsTimeStart,
-            lasOutput,
-            las10,
-            zipOutput,
-            exportToFile
-        )
+    playback = std::make_shared<SurveyPlayback>(
+        survey,
+        fms,
+        parallelizationStrategy,
+        pulseThreadPool,
+        chunkSize,
+        fixedGpsTimeStart,
+        exportToFile
     );
     playback->callback = callback;
     playback->setCallbackFrequency(callbackFrequency);
@@ -188,9 +195,11 @@ PyHeliosOutputWrapper * PyHeliosSimulation::join(){
             return new PyHeliosOutputWrapper(
                 measurements,
                 trajectories,
-                survey->scanner->detector->outputFilePath.string(),
+                survey->scanner->detector->getFMS()->write
+                    .getMeasurementWriterOutputPath().string(),
                 std::vector<std::string>{
-                    survey->scanner->detector->outputFilePath.string(),
+                    survey->scanner->detector->getFMS()->write
+                        .getMeasurementWriterOutputPath().string()
                 },
                 false
             );
@@ -200,7 +209,8 @@ PyHeliosOutputWrapper * PyHeliosSimulation::join(){
             return new PyHeliosOutputWrapper(
                 survey->scanner->allMeasurements,
                 survey->scanner->allTrajectories,
-                survey->scanner->detector->outputFilePath.string(),
+                survey->scanner->detector->getFMS()->write
+                    .getMeasurementWriterOutputPath().string(),
                 survey->scanner->allOutputPaths,
                 true
             );
@@ -216,7 +226,8 @@ PyHeliosOutputWrapper * PyHeliosSimulation::join(){
     return new PyHeliosOutputWrapper(
         survey->scanner->allMeasurements,
         survey->scanner->allTrajectories,
-        survey->scanner->detector->outputFilePath.string(),
+        survey->scanner->detector->getFMS()->write
+            .getMeasurementWriterOutputPath().string(),
         survey->scanner->allOutputPaths,
         true
     );

@@ -6,7 +6,6 @@ var dir_301d63b9b6ded08ad7d6ea2644dcadef =
     [ "FullWaveformPulseDetector.h", "d3/dbe/FullWaveformPulseDetector_8h_source.html", null ],
     [ "FullWaveformPulseRunnable.h", "d9/d65/FullWaveformPulseRunnable_8h_source.html", null ],
     [ "MarquardtFitter.h", "dd/d01/MarquardtFitter_8h_source.html", null ],
-    [ "MeasurementsBuffer.h", "d8/d36/MeasurementsBuffer_8h_source.html", null ],
     [ "PulseTask.h", "db/d5f/PulseTask_8h_source.html", null ],
     [ "PulseTaskDropper.h", "dc/d34/PulseTaskDropper_8h_source.html", null ],
     [ "PulseTaskFactory.h", "dc/d42/PulseTaskFactory_8h_source.html", null ],

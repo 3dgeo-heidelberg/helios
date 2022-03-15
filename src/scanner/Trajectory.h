@@ -2,6 +2,8 @@
 
 #include <glm/glm.hpp>
 
+#include <ostream>
+
 /**
  * @brief Class representing a concrete trajectory definition
  */

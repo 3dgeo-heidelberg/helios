@@ -2,9 +2,10 @@ var classvisualhelios_1_1VHCanvas =
 [
     [ "VHCanvas", "de/dda/classvisualhelios_1_1VHCanvas.html#a093c23c9a6ec7a53fd30bc49eb915be0", null ],
     [ "VHCanvas", "de/dda/classvisualhelios_1_1VHCanvas.html#a66944abf757dfef6c6547c45b39d3af9", null ],
+    [ "~VHCanvas", "de/dda/classvisualhelios_1_1VHCanvas.html#a12d268eb5ff3086def1ce37be0d564fe", null ],
     [ "configure", "de/dda/classvisualhelios_1_1VHCanvas.html#afa52051d9908184d1f6849775ac0fb9d", null ],
     [ "getTimeBetweenUpdates", "de/dda/classvisualhelios_1_1VHCanvas.html#a5eba83570f14af77387ff33e4e371071", null ],
-    [ "getTitle", "de/dda/classvisualhelios_1_1VHCanvas.html#aeb9abae1329fd3d1a55dfc1c2624a081", null ],
+    [ "getTitle", "de/dda/classvisualhelios_1_1VHCanvas.html#abc185b65c30bc6c69f1c42930c789ae5", null ],
     [ "isForceRedraw", "de/dda/classvisualhelios_1_1VHCanvas.html#a5d3556d969232357a5b2fc5d2472be66", null ],
     [ "onStop", "de/dda/classvisualhelios_1_1VHCanvas.html#a8a8b43caac7acf12d4d9800fa683b7cc", null ],
     [ "postUpdate", "de/dda/classvisualhelios_1_1VHCanvas.html#ab1b12d6d85607736d724032d1c3cc7a8", null ],

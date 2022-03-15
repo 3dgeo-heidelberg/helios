@@ -1,0 +1,8 @@
+<map id="helios::filems::ZipVectorialSyncFileMeasurementWriter" name="helios::filems::ZipVectorialSyncFileMeasurementWriter">
+<area shape="rect" id="node2" href="$d9/d45/classhelios_1_1filems_1_1ZipSyncFileWriter.html" title="helios::filems::ZipSyncFile\lWriter\&lt; vector\&lt; Measurement\l \&gt; const &amp;, glm::dvec3 const &amp; \&gt;" alt="" coords="665,59,881,115"/>
+<area shape="rect" id="node3" href="$d1/db6/classhelios_1_1filems_1_1SimpleSyncFileWriter.html" title="helios::filems::SimpleSync\lFileWriter\&lt; WriteArgs... \&gt;" alt="" coords="399,5,577,47"/>
+<area shape="rect" id="node4" href="$da/d4c/classhelios_1_1filems_1_1SyncFileWriter.html" title="helios::filems::SyncFile\lWriter\&lt; WriteArgs ... \&gt;" alt="" coords="153,5,312,47"/>
+<area shape="rect" id="node7" href="$df/d31/classhelios_1_1filems_1_1ZipMeasurementWriteStrategy.html" title="Like DirectMeasurementWriteStrategy but zipping the output. " alt="" coords="671,140,875,181"/>
+<area shape="rect" id="node8" href="$de/d6d/classhelios_1_1filems_1_1DirectMeasurementWriteStrategy.html" title="Concrete class specializing WriteStrategy to directly write measurements to a file. " alt="" coords="377,140,599,181"/>
+<area shape="rect" id="node9" href="$de/dd3/classhelios_1_1filems_1_1WriteStrategy.html" title="helios::filems::WriteStrategy\l\&lt; Measurement const &amp;, glm\l::dvec3 const &amp;\&gt;" alt="" coords="137,133,328,189"/>
+</map>

@@ -42,6 +42,7 @@ private:
     bool lasOutput = false;
     bool las10     = false;
     bool zipOutput = false;
+    double lasScale = 1.0;
     std::shared_ptr<PulseThreadPoolInterface> pulseThreadPool;
     int kdtFactory = 4;
     size_t kdtJobs = 0;
@@ -231,7 +232,7 @@ public:
     std::string getFixedGpsTimeStart(){return fixedGpsTimeStart;}
     void setFixedGpsTimeStart(std::string const fixedGpsTimeStart)
     {this->fixedGpsTimeStart = fixedGpsTimeStart;}
-    double getLasOutput(){return lasOutput;}
+    bool getLasOutput(){return lasOutput;}
     void setLasOutput(double lasOutput_){
         if(started) throw PyHeliosException(
             "Cannot modify LAS output flag for already started simulations."
@@ -239,7 +240,7 @@ public:
         this->lasOutput = lasOutput_;
     }
 
-    double getLas10(){return las10;}
+    bool getLas10(){return las10;}
     void setLas10(double las10_){
         if(started) throw PyHeliosException(
             "Cannot modify LAS v1.0 output flag for already started "
@@ -248,12 +249,20 @@ public:
         this->las10 = las10_;
     }
 
-    double getZipOutput(){return zipOutput;}
+    bool getZipOutput(){return zipOutput;}
     void setZipOutput(bool zipOutput_){
         if(started) throw PyHeliosException(
             "Cannot modify ZIP output flag for already started simulations."
         );
         this->zipOutput = zipOutput_;
+    }
+
+    bool getLasScale(){return lasScale;}
+    void setLasScale(double const lasScale){
+        if(started) throw PyHeliosException(
+            "Cannot modify LAS scale for already started simulations."
+        );
+        this->lasScale = lasScale;
     }
 
     int getKDTFactory(){return kdtFactory;}
