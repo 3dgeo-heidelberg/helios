@@ -2,9 +2,6 @@
 
 #include <memory>
 
-#include <boost/asio/thread_pool.hpp>
-#include <boost/asio/post.hpp>
-
 #include <Asset.h>
 #include <ScannerHead.h>
 #include <AbstractBeamDeflector.h>

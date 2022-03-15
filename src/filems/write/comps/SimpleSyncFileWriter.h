@@ -45,7 +45,7 @@ public:
 		// Open file for writing ...
 		ofs.open(path, om);
 	}
-	virtual ~SimpleSyncFileWriter() = default;
+	virtual ~SimpleSyncFileWriter() {finish();}
 
     // ***  F I N I S H  *** //
     // ********************* //

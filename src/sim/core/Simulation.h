@@ -1,6 +1,4 @@
 #pragma once
-#include <boost/asio/thread_pool.hpp>
-#include <boost/asio/post.hpp>
 
 #include <Scanner.h>
 #include <Color4f.h>

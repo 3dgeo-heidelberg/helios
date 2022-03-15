@@ -2,8 +2,6 @@
 
 #include <string>
 #include <unordered_map>
-#include <boost/asio/thread_pool.hpp>
-#include <boost/asio/post.hpp>
 
 #include <Scanner.h>
 #include <ScannerSettings.h>

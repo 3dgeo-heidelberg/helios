@@ -38,7 +38,7 @@ public:
      * @see DirectMeasurementWriteStrategy::ofs
      */
     DirectMeasurementWriteStrategy(std::ofstream &ofs) : ofs(ofs) {}
-    virtual ~DirectMeasurementWriteStrategy() = default;
+    virtual ~DirectMeasurementWriteStrategy() {}
 
     // ***  WRITE STRATEGY INTERFACE *** //
     // ********************************* //
