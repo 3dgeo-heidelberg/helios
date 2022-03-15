@@ -25,6 +25,10 @@ public:
 	 * @brief Intersection incidence angle
 	 */
 	double incidenceAngle = 0;
+	/**
+	 * @brief The distance traversed by the ray until intersection
+	 */
+	double hitDistance = 0;
 
 	// ***  O P E R A T O R S  *** //
 	// *************************** //

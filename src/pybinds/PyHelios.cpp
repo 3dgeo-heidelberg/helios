@@ -14,7 +14,7 @@
 #include <Material.h>
 #include <gdal_priv.h>
 
-BOOST_PYTHON_MODULE(pyhelios){
+BOOST_PYTHON_MODULE(_pyhelios){
     // Namespace must be used locally to prevent conflicts
     using namespace boost::python;
     using namespace pyhelios;
@@ -72,6 +72,21 @@ BOOST_PYTHON_MODULE(pyhelios){
             bool,
             bool
         >())
+        .def(init<
+            std::string,
+            std::string,
+            std::string,
+            size_t,
+            bool,
+            bool,
+            bool,
+            int,
+            size_t,
+            size_t,
+            int,
+            int,
+            int
+        >())
         .def(
             "loadSurvey",
             &PyHeliosSimulation::loadSurvey
@@ -127,9 +142,19 @@ BOOST_PYTHON_MODULE(pyhelios){
             return_internal_reference<>()
         )
         .add_property(
-            "simFrequency",
+            "simulationFrequency",
             &PyHeliosSimulation::getSimFrequency,
             &PyHeliosSimulation::setSimFrequency
+        )
+        .add_property(
+            "dynSceneStep",
+            &PyHeliosSimulation::getDynSceneStep,
+            &PyHeliosSimulation::setDynSceneStep
+        )
+        .add_property(
+            "callbackFrequency",
+            &PyHeliosSimulation::getCallbackFrequency,
+            &PyHeliosSimulation::setCallbackFrequency
         )
         .add_property(
             "finalOutput",
@@ -153,6 +178,11 @@ BOOST_PYTHON_MODULE(pyhelios){
         .def("setCallback", &PyHeliosSimulation::setCallback)
         .def("clearCallback", &PyHeliosSimulation::clearCallback)
         .add_property(
+            "fixedGpsTimeStart",
+            &PyHeliosSimulation::getFixedGpsTimeStart,
+            &PyHeliosSimulation::setFixedGpsTimeStart
+        )
+        .add_property(
             "lasOutput",
             &PyHeliosSimulation::getLasOutput,
             &PyHeliosSimulation::setLasOutput
@@ -171,6 +201,36 @@ BOOST_PYTHON_MODULE(pyhelios){
             "numThreads",
             &PyHeliosSimulation::getNumThreads,
             &PyHeliosSimulation::setNumThreads
+        )
+        .add_property(
+            "kdtFactory",
+            &PyHeliosSimulation::getKDTFactory,
+            &PyHeliosSimulation::setKDTFactory
+        )
+        .add_property(
+            "kdtJobs",
+            &PyHeliosSimulation::getKDTJobs,
+            &PyHeliosSimulation::setKDTJobs
+        )
+        .add_property(
+            "kdtSAHLossNodes",
+            &PyHeliosSimulation::getKDTSAHLossNodes,
+            &PyHeliosSimulation::setKDTSAHLossNodes
+        )
+        .add_property(
+            "parallelizationStrategy",
+            &PyHeliosSimulation::getParallelizationStrategy,
+            &PyHeliosSimulation::setParallelizationStrategy
+        )
+        .add_property(
+            "chunkSize",
+            &PyHeliosSimulation::getChunkSize,
+            &PyHeliosSimulation::setChunkSize
+        )
+        .add_property(
+            "warehouseFactor",
+            &PyHeliosSimulation::getWarehouseFactor,
+            &PyHeliosSimulation::setWarehouseFactor
         )
         .def(
             "addRotateFilter",
@@ -205,11 +265,6 @@ BOOST_PYTHON_MODULE(pyhelios){
             "active",
             &ScannerSettings::active,
             &ScannerSettings::active
-        )
-        .add_property(
-            "beamSampleQuality",
-            &ScannerSettings::beamSampleQuality,
-            &ScannerSettings::beamSampleQuality
         )
         .add_property(
             "headRotatePerSec",
@@ -257,11 +312,6 @@ BOOST_PYTHON_MODULE(pyhelios){
             &ScannerSettings::beamDivAngle
         )
         .add_property(
-            "pulseLength",
-            &ScannerSettings::pulseLength_ns,
-            &ScannerSettings::pulseLength_ns
-        )
-        .add_property(
             "trajectoryTimeInterval",
             &ScannerSettings::trajectoryTimeInterval,
             &ScannerSettings::trajectoryTimeInterval
@@ -280,10 +330,15 @@ BOOST_PYTHON_MODULE(pyhelios){
             &ScannerSettings::getTemplate,
             return_internal_reference<>()
         )
+        .def(
+            "toString",
+            &ScannerSettings::toString
+        )
     ;
 
     // Register PlatformSettings
     class_<PlatformSettings>("PlatformSettings", no_init)
+        .add_property("id", &PlatformSettings::id, &PlatformSettings::id)
         .add_property("x", &PlatformSettings::x, &PlatformSettings::x)
         .add_property("y", &PlatformSettings::y, &PlatformSettings::y)
         .add_property("z", &PlatformSettings::z, &PlatformSettings::z)
@@ -308,6 +363,11 @@ BOOST_PYTHON_MODULE(pyhelios){
             &PlatformSettings::slowdownEnabled
         )
         .add_property(
+            "yawAtDepartureSpecified",
+            &PlatformSettings::yawAtDepartureSpecified,
+            &PlatformSettings::yawAtDeparture
+        )
+        .add_property(
             "yawAtDeparture",
             &PlatformSettings::yawAtDeparture,
             &PlatformSettings::yawAtDeparture
@@ -316,6 +376,19 @@ BOOST_PYTHON_MODULE(pyhelios){
             "smoothTurn",
             &PlatformSettings::smoothTurn,
             &PlatformSettings::smoothTurn
+        )
+        .def(
+            "hasTemplate",
+            &PlatformSettings::hasTemplate
+        )
+        .def(
+            "getTemplate",
+            &PlatformSettings::getTemplate,
+            return_internal_reference<>()
+        )
+        .def(
+            "toString",
+            &PlatformSettings::toString
         )
     ;
 
@@ -514,6 +587,46 @@ BOOST_PYTHON_MODULE(pyhelios){
             &FWFSettings::binSize_ns
         )
         .add_property(
+            "minEchoWidth",
+            &FWFSettings::minEchoWidth,
+            &FWFSettings::minEchoWidth
+        )
+        .add_property(
+            "peakEnergy",
+            &FWFSettings::peakEnergy,
+            &FWFSettings::peakEnergy
+        )
+        .add_property(
+            "apertureDiameter",
+            &FWFSettings::apertureDiameter,
+            &FWFSettings::apertureDiameter
+        )
+        .add_property(
+            "scannerEfficiency",
+            &FWFSettings::scannerEfficiency,
+            &FWFSettings::scannerEfficiency
+        )
+        .add_property(
+            "atmosphericVisiblity",
+            &FWFSettings::atmosphericVisibility,
+            &FWFSettings::atmosphericVisibility
+        )
+        .add_property(
+            "scannerWaveLength",
+            &FWFSettings::scannerWaveLength,
+            &FWFSettings::scannerWaveLength
+        )
+        .add_property(
+            "beamDivergence",
+            &FWFSettings::beamDivergence_rad,
+            &FWFSettings::beamDivergence_rad
+        )
+        .add_property(
+            "pulseLength_ns",
+            &FWFSettings::pulseLength_ns,
+            &FWFSettings::pulseLength_ns
+        )
+        .add_property(
             "beamSampleQuality",
             &FWFSettings::beamSampleQuality,
             &FWFSettings::beamSampleQuality
@@ -528,6 +641,7 @@ BOOST_PYTHON_MODULE(pyhelios){
             &FWFSettings::maxFullwaveRange_ns,
             &FWFSettings::maxFullwaveRange_ns
         )
+        .def("toString", &FWFSettings::toString)
     ;
 
     // Register DVec3 (glm::dvec3 wrapper)
@@ -662,6 +776,11 @@ BOOST_PYTHON_MODULE(pyhelios){
             &PyDetectorWrapper::setRangeMin
         )
         .add_property(
+            "rangeMax",
+            &PyDetectorWrapper::getRangeMax,
+            &PyDetectorWrapper::setRangeMax
+        )
+        .add_property(
             "lasScale",
             &PyDetectorWrapper::getLasScale,
             &PyDetectorWrapper::setLasScale
@@ -740,12 +859,48 @@ BOOST_PYTHON_MODULE(pyhelios){
         )
     ;
 
+    // Register vector<string>
+    class_<PyStringVector>("StringVector", no_init)
+        .def(
+            "__getitem__",
+            &PyStringVector::get
+        )
+        .def(
+            "__setitem__",
+            &PyStringVector::set
+        )
+        .def(
+            "__len__",
+            &PyStringVector::length
+        )
+        .def(
+            "get",
+            &PyStringVector::get
+        )
+        .def(
+            "set",
+            &PyStringVector::set
+        )
+        .def(
+            "insert",
+            &PyStringVector::insert
+        )
+        .def(
+            "erase",
+            &PyStringVector::erase
+        )
+        .def(
+            "length",
+            &PyStringVector::length
+        )
+    ;
+
     // Register NoiseSource
     class_<PyNoiseSourceWrapper>("NoiseSource", no_init)
-    .add_property(
-    "clipMin",
-    &PyNoiseSourceWrapper::getClipMin,
-    &PyNoiseSourceWrapper::setClipMin
+        .add_property(
+            "clipMin",
+            &PyNoiseSourceWrapper::getClipMin,
+            &PyNoiseSourceWrapper::setClipMin
         )
         .add_property(
             "clipMax",
@@ -1078,6 +1233,20 @@ BOOST_PYTHON_MODULE(pyhelios){
             &PyScenePartWrapper::getScale,
             &PyScenePartWrapper::setScale
         )
+        .def(
+            "isDynamicMovingObject",
+            &PyScenePartWrapper::isDynamicMovingObject
+        )
+        .add_property(
+            "dynObjectStep",
+            &PyScenePartWrapper::getDynObjectStep,
+            &PyScenePartWrapper::setDynObjectStep
+        )
+        .add_property(
+            "observerStep",
+            &PyScenePartWrapper::getObserverStep,
+            &PyScenePartWrapper::setObserverStep
+        )
     ;
 
     // Register Scene
@@ -1125,6 +1294,20 @@ BOOST_PYTHON_MODULE(pyhelios){
             "writeObject",
             &PySceneWrapper::writeObject
         )
+        .def(
+            "getNumSceneParts",
+            &PySceneWrapper::getNumSceneParts
+        )
+        .def(
+            "getScenePart",
+            &PySceneWrapper::getScenePart,
+            return_value_policy<manage_new_object>()
+        )
+        .add_property(
+            "dynSceneStep",
+            &PySceneWrapper::getDynSceneStep,
+            &PySceneWrapper::setDynSceneStep
+        )
     ;
 
     // Register AABB
@@ -1138,6 +1321,10 @@ BOOST_PYTHON_MODULE(pyhelios){
             "getMaxVertex",
             &PyAABBWrapper::getMaxVertex,
             return_value_policy<manage_new_object>()
+        )
+        .def(
+            "toString",
+            &PyAABBWrapper::toString
         )
     ;
 
@@ -1162,6 +1349,10 @@ BOOST_PYTHON_MODULE(pyhelios){
             "getFaceNormal",
             &PyTriangleWrapper::getFaceNormal,
             return_value_policy<manage_new_object>()
+        )
+        .def(
+            "toString",
+            &PyTriangleWrapper::toString
         )
     ;
 
@@ -1374,6 +1565,26 @@ BOOST_PYTHON_MODULE(pyhelios){
             "finished",
             &PyHeliosOutputWrapper::finished,
             &PyHeliosOutputWrapper::finished
+        )
+        .add_property(
+            "outpath",
+            &PyHeliosOutputWrapper::outpath,
+            &PyHeliosOutputWrapper::outpath
+        )
+        .add_property(
+            "filepath",
+            &PyHeliosOutputWrapper::outpath,
+            &PyHeliosOutputWrapper::outpath
+        )
+        .add_property(
+            "outpaths",
+            &PyHeliosOutputWrapper::outpaths,
+            &PyHeliosOutputWrapper::outpaths
+        )
+        .add_property(
+            "filepaths",
+            &PyHeliosOutputWrapper::outpaths,
+            &PyHeliosOutputWrapper::outpaths
         )
     ;
 

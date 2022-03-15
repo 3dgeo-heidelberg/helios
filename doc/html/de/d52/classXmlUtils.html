@@ -116,9 +116,12 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a00527014fcd9d96c6711126812a01ae4"><td class="memItemLeft" align="right" valign="top">static std::shared_ptr&lt; <a class="el" href="../../d9/d6b/classNoiseSource.html">NoiseSource</a>&lt; double &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/d52/classXmlUtils.html#a00527014fcd9d96c6711126812a01ae4">createNoiseSource</a> (tinyxml2::XMLElement *noise)</td></tr>
 <tr class="memdesc:a00527014fcd9d96c6711126812a01ae4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a noise source from given XML element (node)  <a href="#a00527014fcd9d96c6711126812a01ae4">More...</a><br /></td></tr>
 <tr class="separator:a00527014fcd9d96c6711126812a01ae4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab0e570e8f0f8d556295fd49ba28f5b06"><td class="memItemLeft" align="right" valign="top">static ObjectT&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/d52/classXmlUtils.html#ab0e570e8f0f8d556295fd49ba28f5b06">getAttribute</a> (tinyxml2::XMLElement *element, std::string attrName, std::string type, ObjectT defaultVal)</td></tr>
-<tr class="memdesc:ab0e570e8f0f8d556295fd49ba28f5b06"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain attribute from XML.  <a href="#ab0e570e8f0f8d556295fd49ba28f5b06">More...</a><br /></td></tr>
-<tr class="separator:ab0e570e8f0f8d556295fd49ba28f5b06"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a110d1d2cfab4a6171dc9fd5d2df8fd44"><td class="memItemLeft" align="right" valign="top">static ObjectT&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/d52/classXmlUtils.html#a110d1d2cfab4a6171dc9fd5d2df8fd44">getAttribute</a> (tinyxml2::XMLElement *element, std::string attrName, std::string type, ObjectT defaultVal, std::string const defaultMsg=&quot;Using default value for attribute&quot;)</td></tr>
+<tr class="memdesc:a110d1d2cfab4a6171dc9fd5d2df8fd44"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain attribute from XML.  <a href="#a110d1d2cfab4a6171dc9fd5d2df8fd44">More...</a><br /></td></tr>
+<tr class="separator:a110d1d2cfab4a6171dc9fd5d2df8fd44"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9acdd5bdee4f3fbc9e13f3360996bc8d"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/d52/classXmlUtils.html#a9acdd5bdee4f3fbc9e13f3360996bc8d">hasAttribute</a> (tinyxml2::XMLElement *element, std::string attrName)</td></tr>
+<tr class="memdesc:a9acdd5bdee4f3fbc9e13f3360996bc8d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check whether XML node contains an attribute with given name (true) or not (false)  <a href="#a9acdd5bdee4f3fbc9e13f3360996bc8d">More...</a><br /></td></tr>
+<tr class="separator:a9acdd5bdee4f3fbc9e13f3360996bc8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8af100a5fe8140c61a05a2fc7f57facb"><td class="memItemLeft" align="right" valign="top">static std::vector&lt; std::shared_ptr&lt; <a class="el" href="../../d6/d4f/classDynMotion.html">DynMotion</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/d52/classXmlUtils.html#a8af100a5fe8140c61a05a2fc7f57facb">createDynMotionsVector</a> (tinyxml2::XMLElement *element)</td></tr>
 <tr class="memdesc:a8af100a5fe8140c61a05a2fc7f57facb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain a dynamic sequence of dynamic motions from given XML element.  <a href="#a8af100a5fe8140c61a05a2fc7f57facb">More...</a><br /></td></tr>
 <tr class="separator:a8af100a5fe8140c61a05a2fc7f57facb"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -359,8 +362,8 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="ab0e570e8f0f8d556295fd49ba28f5b06"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab0e570e8f0f8d556295fd49ba28f5b06">&#9670;&nbsp;</a></span>getAttribute()</h2>
+<a id="a110d1d2cfab4a6171dc9fd5d2df8fd44"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a110d1d2cfab4a6171dc9fd5d2df8fd44">&#9670;&nbsp;</a></span>getAttribute()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -390,7 +393,13 @@ Static Public Member Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">ObjectT&#160;</td>
-          <td class="paramname"><em>defaultVal</em>&#160;</td>
+          <td class="paramname"><em>defaultVal</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::string const&#160;</td>
+          <td class="paramname"><em>defaultMsg</em> = <code>&quot;Using&#160;default&#160;value&#160;for&#160;attribute&quot;</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -416,6 +425,52 @@ Static Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Obtained attribute or default value if attribute was not found </dd></dl>
+
+</div>
+</div>
+<a id="a9acdd5bdee4f3fbc9e13f3360996bc8d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9acdd5bdee4f3fbc9e13f3360996bc8d">&#9670;&nbsp;</a></span>hasAttribute()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool XmlUtils::hasAttribute </td>
+          <td>(</td>
+          <td class="paramtype">tinyxml2::XMLElement *&#160;</td>
+          <td class="paramname"><em>element</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>attrName</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Check whether XML node contains an attribute with given name (true) or not (false) </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">element</td><td>XML node to which children must be checked </td></tr>
+    <tr><td class="paramname">attrName</td><td>Name of the element to be checked </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>True if attribute is contained in XML node, false otherwise </dd></dl>
 
 </div>
 </div>

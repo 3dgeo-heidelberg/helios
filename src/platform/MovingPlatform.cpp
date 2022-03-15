@@ -46,6 +46,11 @@ void MovingPlatform::doSimStep(int simFrequency_hz) {
 	}
 }
 
+//void MovingPlatform::prepareSimulation(int simFrequency_hz) {
+//  movePerSec_m_stepMagnitude =
+//      cfg_settings_movePerSec_m / (double)simFrequency_hz;
+//}
+
 void MovingPlatform::initLegManual() {
 	// Set Platform Orientation towards destination
 	double const eps = 0.025;
@@ -106,6 +111,8 @@ bool MovingPlatform::waypointReached() {
 	// velocity is in m/cycle
 	// m / (m/cycle) => cycles left to reach waypoint
 	bool result = (glm::l2Norm(cached_vectorToTarget) / glm::l2Norm(velocity)) < 1.0;
-	if (result) logging::INFO("Waypoint reached!");
+        if (result) {
+          logging::INFO("Waypoint reached!");
+        }
 	return result;
 }

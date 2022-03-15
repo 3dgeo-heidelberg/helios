@@ -1,0 +1,5 @@
+<map id="FastSAHKDTreeGeometricStrategy" name="FastSAHKDTreeGeometricStrategy">
+<area shape="rect" id="node1" title="Class providing a strategy for geometry&#45;level parallelization of Fast SAH KDTree building...." alt="" coords="5,155,252,181"/>
+<area shape="rect" id="node2" href="$d9/d31/classSAHKDTreeGeometricStrategy.html" title="Class providing a strategy for geometry&#45;level parallelization of SAH KDTree building...." alt="" coords="19,80,238,107"/>
+<area shape="rect" id="node3" href="$d3/de1/classSimpleKDTreeGeometricStrategy.html" title="Class providing a strategy for geometry&#45;level parallelization of Simple KDTree building...." alt="" coords="11,5,247,32"/>
+</map>

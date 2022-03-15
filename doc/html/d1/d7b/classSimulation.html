@@ -91,6 +91,7 @@ $(document).ready(function(){initNavTree('d1/d7b/classSimulation.html','../../')
 <a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="#pro-attribs">Protected Attributes</a> &#124;
 <a href="#pro-static-attribs">Static Protected Attributes</a> &#124;
+<a href="#friends">Friends</a> &#124;
 <a href="../../d5/dc5/classSimulation-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">Simulation Class Reference<span class="mlabels"><span class="mlabel">abstract</span></span></div>  </div>
@@ -114,21 +115,26 @@ Collaboration diagram for Simulation:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../df/d40/classSimulation__coll__graph.png" border="0" usemap="#Simulation_coll__map" alt="Collaboration graph"/></div>
 <map name="Simulation_coll__map" id="Simulation_coll__map">
-<area shape="rect" id="node2" href="../../d6/ddc/classPulseThreadPool.html" title="Class implementing a thread pool to deal with pulse tasks. " alt="" coords="1108,123,1229,149"/>
-<area shape="rect" id="node3" href="../../d2/dee/classResThreadPool.html" title="ResThreadPool\&lt; std\l::vector\&lt; std::vector\l\&lt; double \&gt; \&gt; &amp;, RandomnessGenerator\l\&lt; double \&gt; &amp;, RandomnessGenerator\l\&lt; double \&gt; &amp;, NoiseSource\&lt; double \&gt; &amp; \&gt;" alt="" coords="636,5,903,91"/>
-<area shape="rect" id="node4" href="../../dc/de7/classThreadPool.html" title="ThreadPool\&lt; TaskArgs\l ... \&gt;" alt="" coords="368,27,524,69"/>
-<area shape="rect" id="node5" href="../../d3/d57/classUniformNoiseSource.html" title="UniformNoiseSource\l\&lt; double \&gt;" alt="" coords="698,115,841,157"/>
-<area shape="rect" id="node6" href="../../d4/d38/classRandomNoiseSource.html" title="RandomNoiseSource\&lt;\l double \&gt;" alt="" coords="369,115,523,157"/>
-<area shape="rect" id="node7" href="../../d9/d6b/classNoiseSource.html" title="NoiseSource\&lt; double \&gt;" alt="" coords="145,103,304,129"/>
-<area shape="rect" id="node8" href="../../dc/d6e/classRandomnessGenerator.html" title="RandomnessGenerator\l\&lt; double \&gt;" alt="" coords="147,163,303,205"/>
+<area shape="rect" id="node6" href="../../da/dd6/classSimulationReporter.html" title="Class to handle reports related to simulation. " alt="" coords="1451,164,1584,191"/>
+<area shape="rect" id="node2" href="../../de/d9a/classPulseTaskDropper.html" title="Class implementing a task dropper to deal with pulse tasks. " alt="" coords="975,139,1105,165"/>
+<area shape="rect" id="node3" href="../../d5/d2f/classBuddingTaskDropper.html" title="BuddingTaskDropper\l\&lt; PulseTaskDropper,\l PulseTask, PulseThreadPool\lInterface, std::vector\&lt; std\l::vector\&lt; double \&gt; \&gt; &amp;, RandomnessGenerator\l\&lt; double \&gt; &amp;, RandomnessGenerator\&lt; double\l \&gt; &amp;, NoiseSource\&lt; double \&gt; &amp; \&gt;" alt="" coords="627,68,921,183"/>
+<area shape="rect" id="node4" href="../../da/d8d/classTaskDropper.html" title="TaskDropper\&lt; PulseTask,\l PulseThreadPoolInterface,\l TaskArgs... \&gt;" alt="" coords="299,97,479,153"/>
+<area shape="rect" id="node12" href="../../dd/de3/classDiscreteTime.html" title="Class to handle discrete time. It supports transforming from continuous time to discrete time and als..." alt="" coords="503,200,603,227"/>
+<area shape="rect" id="node8" href="../../d6/d8c/classSimulationStepLoop.html" title="Class extending LinearVoidStepLoop to support main simulation loop. " alt="" coords="971,207,1109,233"/>
+<area shape="rect" id="node9" href="../../df/dd6/classLinearVoidStepLoop.html" title="LinearVoidStepLoop\&lt;\&gt;" alt="" coords="697,269,851,296"/>
+<area shape="rect" id="node10" href="../../dd/d96/classVoidStepLoop.html" title="VoidStepLoop\&lt; StepInput\l ... \&gt;" alt="" coords="303,262,474,303"/>
+<area shape="rect" id="node11" href="../../dd/dcc/classStepLoop.html" title="StepLoop\&lt; StepInput\l ... \&gt;" alt="" coords="5,262,151,303"/>
 </map>
 <center><span class="legend">[<a target="top" href="../../graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a546896453568ac7077b9f8e04557b74f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d7b/classSimulation.html#a546896453568ac7077b9f8e04557b74f">Simulation</a> (unsigned numThreads, double deviceAccuracy)</td></tr>
-<tr class="memdesc:a546896453568ac7077b9f8e04557b74f"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="../../d1/d7b/classSimulation.html" title="Class representing a simulation. ">Simulation</a> constructor.  <a href="#a546896453568ac7077b9f8e04557b74f">More...</a><br /></td></tr>
-<tr class="separator:a546896453568ac7077b9f8e04557b74f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aed2f6059225008b436289c792a540ca0"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d7b/classSimulation.html#aed2f6059225008b436289c792a540ca0">Simulation</a> (int const <a class="el" href="../../d1/d7b/classSimulation.html#a48673f2bf8e3917d8a2b55f81fdd7ffc">parallelizationStrategy</a>, std::shared_ptr&lt; <a class="el" href="../../df/d9c/classPulseThreadPoolInterface.html">PulseThreadPoolInterface</a> &gt; pulseThreadPoolInterface, int const chunkSize, std::string <a class="el" href="../../d1/d7b/classSimulation.html#ac0b08636aea9fd4109a9e06178537007">fixedGpsTimeStart</a>=&quot;&quot;)</td></tr>
+<tr class="memdesc:aed2f6059225008b436289c792a540ca0"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="../../d1/d7b/classSimulation.html" title="Class representing a simulation. ">Simulation</a> constructor.  <a href="#aed2f6059225008b436289c792a540ca0">More...</a><br /></td></tr>
+<tr class="separator:aed2f6059225008b436289c792a540ca0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1e75978f218fb7a9138b2852584bf40d"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d7b/classSimulation.html#a1e75978f218fb7a9138b2852584bf40d">prepareSimulation</a> (int simFrequency_hz)</td></tr>
+<tr class="memdesc:a1e75978f218fb7a9138b2852584bf40d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prepare the simulation before starting its main loop.  <a href="#a1e75978f218fb7a9138b2852584bf40d">More...</a><br /></td></tr>
+<tr class="separator:a1e75978f218fb7a9138b2852584bf40d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a51ff9d2c2c499f8378f9d77fb523ea0d"><td class="memItemLeft" align="right" valign="top"><a id="a51ff9d2c2c499f8378f9d77fb523ea0d"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d7b/classSimulation.html#a51ff9d2c2c499f8378f9d77fb523ea0d">doSimStep</a> ()</td></tr>
 <tr class="memdesc:a51ff9d2c2c499f8378f9d77fb523ea0d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform computations for current simulation step. <br /></td></tr>
@@ -157,27 +163,33 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../.
 <tr class="memitem:a0ba648397480bb134a0bfbbda499914d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d7b/classSimulation.html#a0ba648397480bb134a0bfbbda499914d">setSimSpeedFactor</a> (double factor)</td></tr>
 <tr class="memdesc:a0ba648397480bb134a0bfbbda499914d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the simulation speed factor.  <a href="#a0ba648397480bb134a0bfbbda499914d">More...</a><br /></td></tr>
 <tr class="separator:a0ba648397480bb134a0bfbbda499914d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a140e29dd277773a477c89863d31cda8d"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d7b/classSimulation.html#a140e29dd277773a477c89863d31cda8d">getSimSpeedFactor</a> ()</td></tr>
-<tr class="memdesc:a140e29dd277773a477c89863d31cda8d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain simulation speed factor.  <a href="#a140e29dd277773a477c89863d31cda8d">More...</a><br /></td></tr>
-<tr class="separator:a140e29dd277773a477c89863d31cda8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acc98b51f4bc9b99c2050e45792e92f49"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d7b/classSimulation.html#acc98b51f4bc9b99c2050e45792e92f49">getSimSpeedFactor</a> () const</td></tr>
+<tr class="memdesc:acc98b51f4bc9b99c2050e45792e92f49"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain simulation speed factor.  <a href="#acc98b51f4bc9b99c2050e45792e92f49">More...</a><br /></td></tr>
+<tr class="separator:acc98b51f4bc9b99c2050e45792e92f49"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad0c799ae7d86b495c4b1a1639198e556"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d7b/classSimulation.html#ad0c799ae7d86b495c4b1a1639198e556">setScanner</a> (std::shared_ptr&lt; <a class="el" href="../../dc/d42/classScanner.html">Scanner</a> &gt; scanner)</td></tr>
 <tr class="memdesc:ad0c799ae7d86b495c4b1a1639198e556"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set scanner for the simulation.  <a href="#ad0c799ae7d86b495c4b1a1639198e556">More...</a><br /></td></tr>
 <tr class="separator:ad0c799ae7d86b495c4b1a1639198e556"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab97f12ae37a7c2e81e377236175c3cd8"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="../../dc/d42/classScanner.html">Scanner</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d7b/classSimulation.html#ab97f12ae37a7c2e81e377236175c3cd8">getScanner</a> ()</td></tr>
 <tr class="memdesc:ab97f12ae37a7c2e81e377236175c3cd8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain simulation scanner.  <a href="#ab97f12ae37a7c2e81e377236175c3cd8">More...</a><br /></td></tr>
 <tr class="separator:ab97f12ae37a7c2e81e377236175c3cd8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abfb774d5e1aae1b8a081c2d5c355077e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d7b/classSimulation.html#abfb774d5e1aae1b8a081c2d5c355077e">isPaused</a> ()</td></tr>
-<tr class="memdesc:abfb774d5e1aae1b8a081c2d5c355077e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if simulation is paused (true) or not (false)  <a href="#abfb774d5e1aae1b8a081c2d5c355077e">More...</a><br /></td></tr>
-<tr class="separator:abfb774d5e1aae1b8a081c2d5c355077e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8f55cc0ab14c095fdae0823acc57e423"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d7b/classSimulation.html#a8f55cc0ab14c095fdae0823acc57e423">isStopped</a> ()</td></tr>
-<tr class="memdesc:a8f55cc0ab14c095fdae0823acc57e423"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if simulation is stopped (true) or not (false)  <a href="#a8f55cc0ab14c095fdae0823acc57e423">More...</a><br /></td></tr>
-<tr class="separator:a8f55cc0ab14c095fdae0823acc57e423"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6ba03b4690e762a3ff5ac07c3dc25b36"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d7b/classSimulation.html#a6ba03b4690e762a3ff5ac07c3dc25b36">getSimFrequency</a> ()</td></tr>
-<tr class="memdesc:a6ba03b4690e762a3ff5ac07c3dc25b36"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain simulation frequency.  <a href="#a6ba03b4690e762a3ff5ac07c3dc25b36">More...</a><br /></td></tr>
-<tr class="separator:a6ba03b4690e762a3ff5ac07c3dc25b36"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a52ad025ceb300136a63b2de02c49e186"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d7b/classSimulation.html#a52ad025ceb300136a63b2de02c49e186">setSimFrequency</a> (size_t <a class="el" href="../../d1/d7b/classSimulation.html#a23cb37028a47bc963ce2852e57803d10">simFrequency</a>)</td></tr>
-<tr class="memdesc:a52ad025ceb300136a63b2de02c49e186"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set simulation frequency.  <a href="#a52ad025ceb300136a63b2de02c49e186">More...</a><br /></td></tr>
-<tr class="separator:a52ad025ceb300136a63b2de02c49e186"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8b812b809ab0e65bcab85c151e3f4894"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d7b/classSimulation.html#a8b812b809ab0e65bcab85c151e3f4894">isPaused</a> () const</td></tr>
+<tr class="memdesc:a8b812b809ab0e65bcab85c151e3f4894"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if simulation is paused (true) or not (false)  <a href="#a8b812b809ab0e65bcab85c151e3f4894">More...</a><br /></td></tr>
+<tr class="separator:a8b812b809ab0e65bcab85c151e3f4894"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9f62759686a1333be92bd4b6dd63b17f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d7b/classSimulation.html#a9f62759686a1333be92bd4b6dd63b17f">isStopped</a> () const</td></tr>
+<tr class="memdesc:a9f62759686a1333be92bd4b6dd63b17f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if simulation is stopped (true) or not (false)  <a href="#a9f62759686a1333be92bd4b6dd63b17f">More...</a><br /></td></tr>
+<tr class="separator:a9f62759686a1333be92bd4b6dd63b17f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a927cda6f36a2be2778ae11826856e3ea"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d7b/classSimulation.html#a927cda6f36a2be2778ae11826856e3ea">getSimFrequency</a> () const</td></tr>
+<tr class="memdesc:a927cda6f36a2be2778ae11826856e3ea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain simulation frequency.  <a href="#a927cda6f36a2be2778ae11826856e3ea">More...</a><br /></td></tr>
+<tr class="separator:a927cda6f36a2be2778ae11826856e3ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a18701f9e076932c4e2829480626f9f8d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d7b/classSimulation.html#a18701f9e076932c4e2829480626f9f8d">setSimFrequency</a> (size_t const simFrequency)</td></tr>
+<tr class="memdesc:a18701f9e076932c4e2829480626f9f8d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set simulation frequency.  <a href="#a18701f9e076932c4e2829480626f9f8d">More...</a><br /></td></tr>
+<tr class="separator:a18701f9e076932c4e2829480626f9f8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a10acf4042655408d4f5e3fc3a85bcca9"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d7b/classSimulation.html#a10acf4042655408d4f5e3fc3a85bcca9">getCallbackFrequency</a> () const</td></tr>
+<tr class="memdesc:a10acf4042655408d4f5e3fc3a85bcca9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the callback frequency. It is, how many steps must elapse between consecutive callbacks.  <a href="#a10acf4042655408d4f5e3fc3a85bcca9">More...</a><br /></td></tr>
+<tr class="separator:a10acf4042655408d4f5e3fc3a85bcca9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa286c140e1c7fa44ee30adf175cea649"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d7b/classSimulation.html#aa286c140e1c7fa44ee30adf175cea649">setCallbackFrequency</a> (size_t const <a class="el" href="../../d1/d7b/classSimulation.html#a8443eec8cae6ae1c587e375bf25f7eb0">callbackFrequency</a>)</td></tr>
+<tr class="memdesc:aa286c140e1c7fa44ee30adf175cea649"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the new callback frequency.  <a href="#aa286c140e1c7fa44ee30adf175cea649">More...</a><br /></td></tr>
+<tr class="separator:aa286c140e1c7fa44ee30adf175cea649"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -197,33 +209,39 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../.
 bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d7b/classSimulation.html#ae26650389687bae4ae945f8c7cb5c9ea">finished</a> = false</td></tr>
 <tr class="memdesc:ae26650389687bae4ae945f8c7cb5c9ea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flag specifying if simulation has finished (true) or not (false) <br /></td></tr>
 <tr class="separator:ae26650389687bae4ae945f8c7cb5c9ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adb008ca9df4edfaadccafb95e2835fa4"><td class="memItemLeft" align="right" valign="top"><a id="adb008ca9df4edfaadccafb95e2835fa4"></a>
-std::shared_ptr&lt; <a class="el" href="../../d3/dec/classMeasurementsBuffer.html">MeasurementsBuffer</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>mbuffer</b> = NULL</td></tr>
-<tr class="separator:adb008ca9df4edfaadccafb95e2835fa4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab95d7b5c9a5227d35d0a7fe220dda51d"><td class="memItemLeft" align="right" valign="top"><a id="ab95d7b5c9a5227d35d0a7fe220dda51d"></a>
+std::shared_ptr&lt; <a class="el" href="../../d3/dec/classMeasurementsBuffer.html">MeasurementsBuffer</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>mBuffer</b> = nullptr</td></tr>
+<tr class="separator:ab95d7b5c9a5227d35d0a7fe220dda51d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:accc8e53b18f149f9588e44e4316ff032"><td class="memItemLeft" align="right" valign="top"><a id="accc8e53b18f149f9588e44e4316ff032"></a>
 std::shared_ptr&lt; <a class="el" href="../../dc/d7a/classSimulationCycleCallback.html">SimulationCycleCallback</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>callback</b> = nullptr</td></tr>
 <tr class="separator:accc8e53b18f149f9588e44e4316ff032"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
-<tr class="memitem:a88802bddc60d38b9ed7daddfd365f9f7"><td class="memItemLeft" align="right" valign="top"><a id="a88802bddc60d38b9ed7daddfd365f9f7"></a>
-unsigned&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d7b/classSimulation.html#a88802bddc60d38b9ed7daddfd365f9f7">numSysThreads</a> = std::thread::hardware_concurrency()</td></tr>
-<tr class="memdesc:a88802bddc60d38b9ed7daddfd365f9f7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of threads available in the system. <br /></td></tr>
-<tr class="separator:a88802bddc60d38b9ed7daddfd365f9f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a103fbbefc90fc8ecdce6799636445766"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d6/ddc/classPulseThreadPool.html">PulseThreadPool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d7b/classSimulation.html#a103fbbefc90fc8ecdce6799636445766">threadPool</a></td></tr>
-<tr class="memdesc:a103fbbefc90fc8ecdce6799636445766"><td class="mdescLeft">&#160;</td><td class="mdescRight">Thread pool.  <a href="#a103fbbefc90fc8ecdce6799636445766">More...</a><br /></td></tr>
-<tr class="separator:a103fbbefc90fc8ecdce6799636445766"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a48673f2bf8e3917d8a2b55f81fdd7ffc"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d7b/classSimulation.html#a48673f2bf8e3917d8a2b55f81fdd7ffc">parallelizationStrategy</a></td></tr>
+<tr class="memdesc:a48673f2bf8e3917d8a2b55f81fdd7ffc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Specify the parallelization strategy.  <a href="#a48673f2bf8e3917d8a2b55f81fdd7ffc">More...</a><br /></td></tr>
+<tr class="separator:a48673f2bf8e3917d8a2b55f81fdd7ffc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a46e423ef446467b8f8758a952cddb860"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="../../df/d9c/classPulseThreadPoolInterface.html">PulseThreadPoolInterface</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d7b/classSimulation.html#a46e423ef446467b8f8758a952cddb860">threadPool</a></td></tr>
+<tr class="memdesc:a46e423ef446467b8f8758a952cddb860"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pulse thread pool.  <a href="#a46e423ef446467b8f8758a952cddb860">More...</a><br /></td></tr>
+<tr class="separator:a46e423ef446467b8f8758a952cddb860"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a32f3686c613045b5f96fac6d2b531c86"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../de/d9a/classPulseTaskDropper.html">PulseTaskDropper</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d7b/classSimulation.html#a32f3686c613045b5f96fac6d2b531c86">taskDropper</a></td></tr>
+<tr class="memdesc:a32f3686c613045b5f96fac6d2b531c86"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pulse task dropper.  <a href="#a32f3686c613045b5f96fac6d2b531c86">More...</a><br /></td></tr>
+<tr class="separator:a32f3686c613045b5f96fac6d2b531c86"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8615edf208cfc87018bf12446a29520d"><td class="memItemLeft" align="right" valign="top"><a id="a8615edf208cfc87018bf12446a29520d"></a>
 double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d7b/classSimulation.html#a8615edf208cfc87018bf12446a29520d">mSimSpeedFactor</a> = 1</td></tr>
 <tr class="memdesc:a8615edf208cfc87018bf12446a29520d"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="../../d1/d7b/classSimulation.html" title="Class representing a simulation. ">Simulation</a> speed factor. <br /></td></tr>
 <tr class="separator:a8615edf208cfc87018bf12446a29520d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a31f63ed73543cb7a481574ae41c4edf0"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="../../dc/d42/classScanner.html">Scanner</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d7b/classSimulation.html#a31f63ed73543cb7a481574ae41c4edf0">mScanner</a> = NULL</td></tr>
+<tr class="memitem:a31f63ed73543cb7a481574ae41c4edf0"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="../../dc/d42/classScanner.html">Scanner</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d7b/classSimulation.html#a31f63ed73543cb7a481574ae41c4edf0">mScanner</a> = nullptr</td></tr>
 <tr class="memdesc:a31f63ed73543cb7a481574ae41c4edf0"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="../../dc/d42/classScanner.html" title="Class representing a scanner asset. ">Scanner</a> used by the simulation.  <a href="#a31f63ed73543cb7a481574ae41c4edf0">More...</a><br /></td></tr>
 <tr class="separator:a31f63ed73543cb7a481574ae41c4edf0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a23cb37028a47bc963ce2852e57803d10"><td class="memItemLeft" align="right" valign="top"><a id="a23cb37028a47bc963ce2852e57803d10"></a>
-size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d7b/classSimulation.html#a23cb37028a47bc963ce2852e57803d10">simFrequency</a> = 0</td></tr>
-<tr class="memdesc:a23cb37028a47bc963ce2852e57803d10"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="../../d1/d7b/classSimulation.html" title="Class representing a simulation. ">Simulation</a> frequency. If it is 0 then no pause is possible. <br /></td></tr>
-<tr class="separator:a23cb37028a47bc963ce2852e57803d10"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8ca72fd59e5d0285a05eb05768261a11"><td class="memItemLeft" align="right" valign="top"><a id="a8ca72fd59e5d0285a05eb05768261a11"></a>
+<a class="el" href="../../d6/d8c/classSimulationStepLoop.html">SimulationStepLoop</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d7b/classSimulation.html#a8ca72fd59e5d0285a05eb05768261a11">stepLoop</a></td></tr>
+<tr class="memdesc:a8ca72fd59e5d0285a05eb05768261a11"><td class="mdescLeft">&#160;</td><td class="mdescRight">The handler for simulation steps, it also contains the discrete time object that hanldes simulation frequency and time. <br /></td></tr>
+<tr class="separator:a8ca72fd59e5d0285a05eb05768261a11"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8443eec8cae6ae1c587e375bf25f7eb0"><td class="memItemLeft" align="right" valign="top"><a id="a8443eec8cae6ae1c587e375bf25f7eb0"></a>
+size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d7b/classSimulation.html#a8443eec8cae6ae1c587e375bf25f7eb0">callbackFrequency</a> = 0</td></tr>
+<tr class="memdesc:a8443eec8cae6ae1c587e375bf25f7eb0"><td class="mdescLeft">&#160;</td><td class="mdescRight">The callback frequency. It specifies how many steps must elapse between consecutive callbacks. <br /></td></tr>
+<tr class="separator:a8443eec8cae6ae1c587e375bf25f7eb0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a10de3cc2b800d92e80e40fbf61ff5942"><td class="memItemLeft" align="right" valign="top"><a id="a10de3cc2b800d92e80e40fbf61ff5942"></a>
 std::mutex&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d7b/classSimulation.html#a10de3cc2b800d92e80e40fbf61ff5942">mutex</a></td></tr>
 <tr class="memdesc:a10de3cc2b800d92e80e40fbf61ff5942"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mutex to handle simulation pause and iterations on a multi threading context. <br /></td></tr>
@@ -251,6 +269,12 @@ long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../.
 double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d7b/classSimulation.html#a1afafff95801808cecac3eda24bcefbc">currentGpsTime_ms</a> = 0</td></tr>
 <tr class="memdesc:a1afafff95801808cecac3eda24bcefbc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Time corresponding to simulation start (currentGpsTime) <br /></td></tr>
 <tr class="separator:a1afafff95801808cecac3eda24bcefbc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac0b08636aea9fd4109a9e06178537007"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d7b/classSimulation.html#ac0b08636aea9fd4109a9e06178537007">fixedGpsTimeStart</a> = &quot;&quot;</td></tr>
+<tr class="memdesc:ac0b08636aea9fd4109a9e06178537007"><td class="mdescLeft">&#160;</td><td class="mdescRight">Given fixed time start for GPS time as a string.  <a href="#ac0b08636aea9fd4109a9e06178537007">More...</a><br /></td></tr>
+<tr class="separator:ac0b08636aea9fd4109a9e06178537007"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac910ddb5727e766aeb6ae3895ad3d16b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../da/dd6/classSimulationReporter.html">SimulationReporter</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d7b/classSimulation.html#ac910ddb5727e766aeb6ae3895ad3d16b">reporter</a></td></tr>
+<tr class="memdesc:ac910ddb5727e766aeb6ae3895ad3d16b"><td class="mdescLeft">&#160;</td><td class="mdescRight">The report to generate reports about simulation.  <a href="#ac910ddb5727e766aeb6ae3895ad3d16b">More...</a><br /></td></tr>
+<tr class="separator:ac910ddb5727e766aeb6ae3895ad3d16b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-static-attribs"></a>
 Static Protected Attributes</h2></td></tr>
@@ -258,12 +282,18 @@ Static Protected Attributes</h2></td></tr>
 static const long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d7b/classSimulation.html#a2946fe05bca500ed8859d460475b2b5f">NANOSECONDS_PER_SECOND</a> = 1000000000</td></tr>
 <tr class="memdesc:a2946fe05bca500ed8859d460475b2b5f"><td class="mdescLeft">&#160;</td><td class="mdescRight">How many nanoseconds there are in a second. <br /></td></tr>
 <tr class="separator:a2946fe05bca500ed8859d460475b2b5f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="friends"></a>
+Friends</h2></td></tr>
+<tr class="memitem:ac69d2da83d1f97a05a2c73f685dc1261"><td class="memItemLeft" align="right" valign="top"><a id="ac69d2da83d1f97a05a2c73f685dc1261"></a>
+class&#160;</td><td class="memItemRight" valign="bottom"><b>SimulationReporter</b></td></tr>
+<tr class="separator:ac69d2da83d1f97a05a2c73f685dc1261"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Class representing a simulation. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a546896453568ac7077b9f8e04557b74f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a546896453568ac7077b9f8e04557b74f">&#9670;&nbsp;</a></span>Simulation()</h2>
+<a id="aed2f6059225008b436289c792a540ca0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aed2f6059225008b436289c792a540ca0">&#9670;&nbsp;</a></span>Simulation()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -271,14 +301,26 @@ static const long&#160;</td><td class="memItemRight" valign="bottom"><a class="e
         <tr>
           <td class="memname">Simulation::Simulation </td>
           <td>(</td>
-          <td class="paramtype">unsigned&#160;</td>
-          <td class="paramname"><em>numThreads</em>, </td>
+          <td class="paramtype">int const&#160;</td>
+          <td class="paramname"><em>parallelizationStrategy</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>deviceAccuracy</em>&#160;</td>
+          <td class="paramtype">std::shared_ptr&lt; <a class="el" href="../../df/d9c/classPulseThreadPoolInterface.html">PulseThreadPoolInterface</a> &gt;&#160;</td>
+          <td class="paramname"><em>pulseThreadPoolInterface</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int const&#160;</td>
+          <td class="paramname"><em>chunkSize</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>fixedGpsTimeStart</em> = <code>&quot;&quot;</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -291,11 +333,17 @@ static const long&#160;</td><td class="memItemRight" valign="bottom"><a class="e
 <p><a class="el" href="../../d1/d7b/classSimulation.html" title="Class representing a simulation. ">Simulation</a> constructor. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">numThreads</td><td>Number of threads to be used by the simulation </td></tr>
-    <tr><td class="paramname">deviceAccuracy</td><td>Parameter used to handle randomness generation impact on simulation results </td></tr>
+    <tr><td class="paramname">pulseThreadPoolInterface</td><td>The thread pool to be used for parallel computation during simulation </td></tr>
   </table>
   </dd>
 </dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../df/d9c/classPulseThreadPoolInterface.html" title="Interface for thread pools supporting pulse tasks. ">PulseThreadPoolInterface</a> </dd>
+<dd>
+<a class="el" href="../../d6/ddc/classPulseThreadPool.html" title="Class implementing a thread pool to deal with pulse tasks. ">PulseThreadPool</a> </dd>
+<dd>
+<a class="el" href="../../d7/de7/classPulseWarehouseThreadPool.html" title="Class implementing a warehouse thread pool to deal with pulse tasks. ">PulseWarehouseThreadPool</a> </dd>
+<dd>
+<a class="el" href="../../de/d9a/classPulseTaskDropper.html" title="Class implementing a task dropper to deal with pulse tasks. ">PulseTaskDropper</a> </dd></dl>
 
 </div>
 </div>
@@ -317,6 +365,37 @@ static const long&#160;</td><td class="memItemRight" valign="bottom"><a class="e
 
 <p>Compute the current GPS time (milliseconds) </p>
 <dl class="section return"><dt>Returns</dt><dd>Current GPS time (milliseconds) </dd></dl>
+
+</div>
+</div>
+<a id="a10acf4042655408d4f5e3fc3a85bcca9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a10acf4042655408d4f5e3fc3a85bcca9">&#9670;&nbsp;</a></span>getCallbackFrequency()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t Simulation::getCallbackFrequency </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the callback frequency. It is, how many steps must elapse between consecutive callbacks. </p>
+<dl class="section return"><dt>Returns</dt><dd>Callback frequency </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d1/d7b/classSimulation.html#a8443eec8cae6ae1c587e375bf25f7eb0" title="The callback frequency. It specifies how many steps must elapse between consecutive callbacks...">Simulation::callbackFrequency</a> </dd>
+<dd>
+<a class="el" href="../../d1/d7b/classSimulation.html#aa286c140e1c7fa44ee30adf175cea649" title="Set the new callback frequency. ">Simulation::setCallbackFrequency</a> </dd></dl>
 
 </div>
 </div>
@@ -349,8 +428,8 @@ static const long&#160;</td><td class="memItemRight" valign="bottom"><a class="e
 
 </div>
 </div>
-<a id="a6ba03b4690e762a3ff5ac07c3dc25b36"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6ba03b4690e762a3ff5ac07c3dc25b36">&#9670;&nbsp;</a></span>getSimFrequency()</h2>
+<a id="a927cda6f36a2be2778ae11826856e3ea"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a927cda6f36a2be2778ae11826856e3ea">&#9670;&nbsp;</a></span>getSimFrequency()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -362,7 +441,7 @@ static const long&#160;</td><td class="memItemRight" valign="bottom"><a class="e
           <td class="memname">size_t Simulation::getSimFrequency </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
-          <td></td>
+          <td> const</td>
         </tr>
       </table>
   </td>
@@ -374,12 +453,12 @@ static const long&#160;</td><td class="memItemRight" valign="bottom"><a class="e
 
 <p>Obtain simulation frequency. </p>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="../../d1/d7b/classSimulation.html" title="Class representing a simulation. ">Simulation</a> frequency (hertz) </dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d1/d7b/classSimulation.html#a23cb37028a47bc963ce2852e57803d10" title="Simulation frequency. If it is 0 then no pause is possible. ">Simulation::simFrequency</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d1/d7b/classSimulation.html#a8ca72fd59e5d0285a05eb05768261a11" title="The handler for simulation steps, it also contains the discrete time object that hanldes simulation f...">Simulation::stepLoop</a> </dd></dl>
 
 </div>
 </div>
-<a id="a140e29dd277773a477c89863d31cda8d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a140e29dd277773a477c89863d31cda8d">&#9670;&nbsp;</a></span>getSimSpeedFactor()</h2>
+<a id="acc98b51f4bc9b99c2050e45792e92f49"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acc98b51f4bc9b99c2050e45792e92f49">&#9670;&nbsp;</a></span>getSimSpeedFactor()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -391,7 +470,7 @@ static const long&#160;</td><td class="memItemRight" valign="bottom"><a class="e
           <td class="memname">double Simulation::getSimSpeedFactor </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
-          <td></td>
+          <td> const</td>
         </tr>
       </table>
   </td>
@@ -407,8 +486,8 @@ static const long&#160;</td><td class="memItemRight" valign="bottom"><a class="e
 
 </div>
 </div>
-<a id="abfb774d5e1aae1b8a081c2d5c355077e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abfb774d5e1aae1b8a081c2d5c355077e">&#9670;&nbsp;</a></span>isPaused()</h2>
+<a id="a8b812b809ab0e65bcab85c151e3f4894"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8b812b809ab0e65bcab85c151e3f4894">&#9670;&nbsp;</a></span>isPaused()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -420,7 +499,7 @@ static const long&#160;</td><td class="memItemRight" valign="bottom"><a class="e
           <td class="memname">bool Simulation::isPaused </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
-          <td></td>
+          <td> const</td>
         </tr>
       </table>
   </td>
@@ -436,8 +515,8 @@ static const long&#160;</td><td class="memItemRight" valign="bottom"><a class="e
 
 </div>
 </div>
-<a id="a8f55cc0ab14c095fdae0823acc57e423"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8f55cc0ab14c095fdae0823acc57e423">&#9670;&nbsp;</a></span>isStopped()</h2>
+<a id="a9f62759686a1333be92bd4b6dd63b17f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9f62759686a1333be92bd4b6dd63b17f">&#9670;&nbsp;</a></span>isStopped()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -449,7 +528,7 @@ static const long&#160;</td><td class="memItemRight" valign="bottom"><a class="e
           <td class="memname">bool Simulation::isStopped </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
-          <td></td>
+          <td> const</td>
         </tr>
       </table>
   </td>
@@ -491,6 +570,77 @@ static const long&#160;</td><td class="memItemRight" valign="bottom"><a class="e
 
 </div>
 </div>
+<a id="a1e75978f218fb7a9138b2852584bf40d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1e75978f218fb7a9138b2852584bf40d">&#9670;&nbsp;</a></span>prepareSimulation()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Simulation::prepareSimulation </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>simFrequency_hz</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Prepare the simulation before starting its main loop. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">simFrequency_hz</td><td>The simulation frequency in hertz </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="aa286c140e1c7fa44ee30adf175cea649"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa286c140e1c7fa44ee30adf175cea649">&#9670;&nbsp;</a></span>setCallbackFrequency()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Simulation::setCallbackFrequency </td>
+          <td>(</td>
+          <td class="paramtype">size_t const&#160;</td>
+          <td class="paramname"><em>callbackFrequency</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Set the new callback frequency. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">callbackFrequency</td><td>New callback frequency </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d1/d7b/classSimulation.html#a8443eec8cae6ae1c587e375bf25f7eb0" title="The callback frequency. It specifies how many steps must elapse between consecutive callbacks...">Simulation::callbackFrequency</a> </dd>
+<dd>
+<a class="el" href="../../d1/d7b/classSimulation.html#a10acf4042655408d4f5e3fc3a85bcca9" title="Get the callback frequency. It is, how many steps must elapse between consecutive callbacks...">Simulation::getCallbackFrequency</a> </dd></dl>
+
+</div>
+</div>
 <a id="ad0c799ae7d86b495c4b1a1639198e556"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad0c799ae7d86b495c4b1a1639198e556">&#9670;&nbsp;</a></span>setScanner()</h2>
 
@@ -518,8 +668,8 @@ static const long&#160;</td><td class="memItemRight" valign="bottom"><a class="e
 
 </div>
 </div>
-<a id="a52ad025ceb300136a63b2de02c49e186"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a52ad025ceb300136a63b2de02c49e186">&#9670;&nbsp;</a></span>setSimFrequency()</h2>
+<a id="a18701f9e076932c4e2829480626f9f8d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a18701f9e076932c4e2829480626f9f8d">&#9670;&nbsp;</a></span>setSimFrequency()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -530,7 +680,7 @@ static const long&#160;</td><td class="memItemRight" valign="bottom"><a class="e
         <tr>
           <td class="memname">void Simulation::setSimFrequency </td>
           <td>(</td>
-          <td class="paramtype">size_t&#160;</td>
+          <td class="paramtype">size_t const&#160;</td>
           <td class="paramname"><em>simFrequency</em></td><td>)</td>
           <td></td>
         </tr>
@@ -549,7 +699,7 @@ static const long&#160;</td><td class="memItemRight" valign="bottom"><a class="e
   </table>
   </dd>
 </dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d1/d7b/classSimulation.html#a23cb37028a47bc963ce2852e57803d10" title="Simulation frequency. If it is 0 then no pause is possible. ">Simulation::simFrequency</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d1/d7b/classSimulation.html#a8ca72fd59e5d0285a05eb05768261a11" title="The handler for simulation steps, it also contains the discrete time object that hanldes simulation f...">Simulation::stepLoop</a> </dd></dl>
 
 </div>
 </div>
@@ -611,6 +761,32 @@ static const long&#160;</td><td class="memItemRight" valign="bottom"><a class="e
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
+<a id="ac0b08636aea9fd4109a9e06178537007"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac0b08636aea9fd4109a9e06178537007">&#9670;&nbsp;</a></span>fixedGpsTimeStart</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string Simulation::fixedGpsTimeStart = &quot;&quot;</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Given fixed time start for GPS time as a string. </p>
+<p>Valid formats are either "YYYY-MM-DD hh:mm:ss" or POSIX timestamp.</p>
+<p>If it is an empty string "", then it means no fixed GPS time start must be considered </p>
+
+</div>
+</div>
 <a id="a31f63ed73543cb7a481574ae41c4edf0"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a31f63ed73543cb7a481574ae41c4edf0">&#9670;&nbsp;</a></span>mScanner</h2>
 
@@ -621,7 +797,7 @@ static const long&#160;</td><td class="memItemRight" valign="bottom"><a class="e
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::shared_ptr&lt;<a class="el" href="../../dc/d42/classScanner.html">Scanner</a>&gt; Simulation::mScanner = NULL</td>
+          <td class="memname">std::shared_ptr&lt;<a class="el" href="../../dc/d42/classScanner.html">Scanner</a>&gt; Simulation::mScanner = nullptr</td>
         </tr>
       </table>
   </td>
@@ -633,6 +809,31 @@ static const long&#160;</td><td class="memItemRight" valign="bottom"><a class="e
 
 <p><a class="el" href="../../dc/d42/classScanner.html" title="Class representing a scanner asset. ">Scanner</a> used by the simulation. </p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="../../dc/d42/classScanner.html" title="Class representing a scanner asset. ">Scanner</a> </dd></dl>
+
+</div>
+</div>
+<a id="a48673f2bf8e3917d8a2b55f81fdd7ffc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a48673f2bf8e3917d8a2b55f81fdd7ffc">&#9670;&nbsp;</a></span>parallelizationStrategy</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Simulation::parallelizationStrategy</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Specify the parallelization strategy. </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d7/d5c/classArgumentsParser.html#acdc236fbafe1a50022d9505b01a18766" title="Parse the parallelization strategy from invocation arguments. ">ArgumentsParser::parseParallelizationStrategy</a> </dd></dl>
 
 </div>
 </div>
@@ -661,8 +862,8 @@ static const long&#160;</td><td class="memItemRight" valign="bottom"><a class="e
 
 </div>
 </div>
-<a id="a103fbbefc90fc8ecdce6799636445766"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a103fbbefc90fc8ecdce6799636445766">&#9670;&nbsp;</a></span>threadPool</h2>
+<a id="ac910ddb5727e766aeb6ae3895ad3d16b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac910ddb5727e766aeb6ae3895ad3d16b">&#9670;&nbsp;</a></span>reporter</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -671,7 +872,7 @@ static const long&#160;</td><td class="memItemRight" valign="bottom"><a class="e
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="../../d6/ddc/classPulseThreadPool.html">PulseThreadPool</a> Simulation::threadPool</td>
+          <td class="memname"><a class="el" href="../../da/dd6/classSimulationReporter.html">SimulationReporter</a> Simulation::reporter</td>
         </tr>
       </table>
   </td>
@@ -681,14 +882,66 @@ static const long&#160;</td><td class="memItemRight" valign="bottom"><a class="e
 </table>
 </div><div class="memdoc">
 
-<p>Thread pool. </p>
-<dl class="section see"><dt>See also</dt><dd>thread_pool </dd></dl>
+<p>The report to generate reports about simulation. </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../da/dd6/classSimulationReporter.html" title="Class to handle reports related to simulation. ">SimulationReporter</a> </dd></dl>
+
+</div>
+</div>
+<a id="a32f3686c613045b5f96fac6d2b531c86"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a32f3686c613045b5f96fac6d2b531c86">&#9670;&nbsp;</a></span>taskDropper</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../de/d9a/classPulseTaskDropper.html">PulseTaskDropper</a> Simulation::taskDropper</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Pulse task dropper. </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../de/d9a/classPulseTaskDropper.html" title="Class implementing a task dropper to deal with pulse tasks. ">PulseTaskDropper</a> </dd></dl>
+
+</div>
+</div>
+<a id="a46e423ef446467b8f8758a952cddb860"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a46e423ef446467b8f8758a952cddb860">&#9670;&nbsp;</a></span>threadPool</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::shared_ptr&lt;<a class="el" href="../../df/d9c/classPulseThreadPoolInterface.html">PulseThreadPoolInterface</a>&gt; Simulation::threadPool</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Pulse thread pool. </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d6/ddc/classPulseThreadPool.html" title="Class implementing a thread pool to deal with pulse tasks. ">PulseThreadPool</a> </dd>
+<dd>
+<a class="el" href="../../d7/de7/classPulseWarehouseThreadPool.html" title="Class implementing a warehouse thread pool to deal with pulse tasks. ">PulseWarehouseThreadPool</a> </dd></dl>
 
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>src/surveyplayback/<a class="el" href="../../db/db8/Simulation_8h_source.html">Simulation.h</a></li>
-<li>src/surveyplayback/Simulation.cpp</li>
+<li>src/sim/core/<a class="el" href="../../db/db8/Simulation_8h_source.html">Simulation.h</a></li>
+<li>src/sim/core/Simulation.cpp</li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

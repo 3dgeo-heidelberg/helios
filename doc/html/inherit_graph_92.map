@@ -1,3 +1,5 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$df/da6/classTest.html" title="Test" alt="" coords="5,5,53,32"/>
+<area shape="rect" id="node1" href="$dc/d00/classrigidmotion_1_1RigidMotionFactory.html" title="Class that must be extended by any class which provides factory methods for rigid motions..." alt="" coords="5,39,168,80"/>
+<area shape="rect" id="node2" href="$d7/da7/classrigidmotion_1_1RigidMotionR2Factory.html" title="Class providing building methods for rigid motions in . " alt="" coords="216,5,379,47"/>
+<area shape="rect" id="node3" href="$dc/df6/classrigidmotion_1_1RigidMotionR3Factory.html" title="Class providing building methods for rigid motions in . " alt="" coords="216,71,379,112"/>
 </map>

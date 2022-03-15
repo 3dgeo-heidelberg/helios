@@ -37,14 +37,15 @@ void FullWaveformPulseDetector::applySettings(shared_ptr<ScannerSettings> & sett
 void FullWaveformPulseDetector::setOutputFilePath(
     std::string path,
     std::string fname,
-    bool computeWaveform
+    bool computeWaveform,
+    bool lastLegInStrip
 ) {
-	AbstractDetector::setOutputFilePath(path);
+	AbstractDetector::setOutputFilePath(path, lastLegInStrip);
 
 	if(computeWaveform) {
         try {
             std::string fw_path =
-                AbstractDetector::outputFilePath.parent_path()
+                AbstractDetector::outputFilePath.parent_path().parent_path()
                     .string() + "/" + fname;
             logging::INFO("fw_path="+fw_path);
             if(zipOutput){
@@ -62,31 +63,6 @@ void FullWaveformPulseDetector::setOutputFilePath(
             logging::INFO(e.what());
         }
     }
-}
-
-void FullWaveformPulseDetector::simulatePulse(
-	PulseThreadPool& pool,
-	glm::dvec3 absoluteBeamOrigin,
-	Rotation absoluteBeamAttitude, 
-	int state_currentPulseNumber,
-    double currentGpsTime
-){
-	// Submit pulse computation task to thread pool
-	shared_ptr<FullWaveformPulseDetector> detector(this);
-	pool.run_res_task(FullWaveformPulseRunnable{
-	    detector,
-	    absoluteBeamOrigin,
-	    absoluteBeamAttitude,
-	    state_currentPulseNumber,
-	    currentGpsTime,
-	    false,
-	    false,
-        nullptr,
-        nullptr,
-        nullptr,
-        nullptr,
-        std::numeric_limits<unsigned int>::max()
-	});
 }
 
 void FullWaveformPulseDetector::shutdown() {

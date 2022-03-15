@@ -1,10 +1,12 @@
 #pragma once
 
-#include <string>
+#include <AbstractDetector.h>
+
 #include <boost/asio/thread_pool.hpp>
 #include <boost/asio/post.hpp>
 
-#include "AbstractDetector.h"
+#include <limits>
+#include <string>
 
 /**
  * @brief Concrete implementation of abstract detector to compute full
@@ -32,8 +34,9 @@ public:
 	FullWaveformPulseDetector(
 	    std::shared_ptr<Scanner> scanner,
 	    double accuracy_m,
-	    double range_min
-    ) : AbstractDetector(scanner, accuracy_m, range_min) {}
+	    double range_min,
+	    double range_max=std::numeric_limits<double>::max()
+    ) : AbstractDetector(scanner, accuracy_m, range_min, range_max) {}
     std::shared_ptr<AbstractDetector> clone() override;
     void _clone(std::shared_ptr<AbstractDetector> ad) override;
 
@@ -56,16 +59,6 @@ public:
 	 * @see AbstractDetector::applySettings
 	 */
 	void applySettings(std::shared_ptr<ScannerSettings> & settings) override;
-	/**
-	 * @see AbstractDetector::simulatePulse
-	 */
-	void simulatePulse(
-	    PulseThreadPool & pool,
-	    glm::dvec3 absoluteBeamOrigin,
-	    Rotation absoluteBeamAttitude,
-	    int state_currentPulseNumber,
-        double currentGpsTime
-    ) override;
 
     // ***  GETTERS and SETTERS  *** //
     // ***************************** //
@@ -79,6 +72,7 @@ public:
     void setOutputFilePath(
         std::string path,
         std::string fname="fullwave.txt",
-        bool computeWaveform=true
+        bool computeWaveform=true,
+        bool lastLegInStrip=false
     );
 };

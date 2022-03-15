@@ -1,14 +1,16 @@
 #pragma once
 
-
+#include <util/HeliosException.h>
 #include "AbstractDetector.h"
 #include "AbstractPulseRunnable.h"
 #include "FullWaveformPulseDetector.h"
 #include "RaySceneIntersection.h"
 #include "ScenePart.h"
 #include <noise/RandomnessGenerator.h>
-#include <vector>
+
 #include <LadLut.h>
+
+#include <vector>
 
 /**
  * @brief Concrete implementation of abstract pulse runnable to compute full
@@ -59,6 +61,10 @@ private:
      * @brief Flag to specify if calc echo width (true) or not (false)
      */
     bool calcEchowidth;
+    /**
+     * @brief Reference to the scene that is being scanned
+     */
+    Scene &scene;
 
 public:
     /**
@@ -111,7 +117,8 @@ public:
 			absoluteBeamAttitude, 
 			currentPulseNum, 
 			currentGpsTime
-        )
+        ),
+        scene(*(detector->scanner->platform->scene))
 	{
 		fwDetector = detector;
 		this->writeWaveform = writeWaveform;
@@ -130,7 +137,8 @@ private:
     // ************************** //
     /**
      * @brief Perform ray casting to find intersections
-     * @param[in] scene Reference to the scene to perform ray casting over
+     * @param[in] tMinMax Minimum and maximum time to intersection with respect
+     *  to the axis aligned bounding box that bounds the scene
      * @param[out] reflections Where reflections must be stored when a hit is
      *  registered
      * @param[out] intersects Where intersections must be stored when a hit is
@@ -138,13 +146,15 @@ private:
      * @see FullWaveformPulseRunnable::handleSubray
      */
     void computeSubrays(
-        Scene &scene,
+        vector<double> const &tMinMax,
         NoiseSource<double> &intersectionHandlingNoiseSource,
         std::map<double, double> &reflections,
         vector<RaySceneIntersection> &intersects
     );
     /**
      * @brief Handle sub-rays along the circle
+     * @param[in] tMinMax Minimum and maximum time to intersection with respect
+     *  to the axis aligned bounding box that bounds the scene
      * @param[in] circleStep The iteration along the circle
      * @param[in] circleStep_rad Angle in radians corresponding to the
      *  iteration
@@ -153,10 +163,10 @@ private:
      * @see FullWaveformPulseRunnable::computeSubrays
      */
     void handleSubray(
+        vector<double> const &tMinMax,
         int circleStep,
         double circleStep_rad,
         Rotation &r1,
-        Scene &scene,
         double divergenceAngle,
         NoiseSource<double> &intersectionHandlingNoiseSource,
         std::map<double, double> &reflections,
@@ -225,12 +235,12 @@ private:
      * @see FullWaveformPulseRunnable::initializeFullWaveform
      */
     void populateFullWaveform(
-        std::map<double, double> &reflections,
+        std::map<double, double> const &reflections,
         std::vector<double> &fullwave,
-        double distanceThreshold,
-        double minHitTime_ns,
-        double nsPerBin,
-        int peakIntensityIndex
+        double const distanceThreshold,
+        double const minHitTime_ns,
+        double const nsPerBin,
+        int const peakIntensityIndex
     );
     /**
      * @brief Digest a previously populated full waveform vector,
@@ -247,13 +257,13 @@ private:
         std::vector<Measurement> &pointsMeasurement,
         int &numReturns,
         std::vector<std::vector<double>>& apMatrix,
-        std::vector<double> &fullwave,
-        vector<RaySceneIntersection> &intersects,
-        glm::dvec3 &beamDir,
-        double nsPerBin,
-        int numFullwaveBins,
-        int peakIntensityIndex,
-        double minHitTime_ns
+        std::vector<double> const &fullwave,
+        vector<RaySceneIntersection> const &intersects,
+        glm::dvec3 const &beamDir,
+        double const nsPerBin,
+        int const numFullwaveBins,
+        int const peakIntensityIndex,
+        double const minHitTime_ns
     );
     /**
      * @brief Export measurements and full waveform data
@@ -275,17 +285,30 @@ private:
     // ***  ASSISTANCE METHODS  *** //
     // **************************** //
     /**
+     * @brief Find the intersection between the scene and given ray, if any
+     * @param[in] tMinMax Minimum and maximum time to intersection with respect
+     *  to the axis aligned bounding box that bounds the scene
+     * @param o The ray origin
+     * @param v The ray director vector
+     * @return Intersection between the scene and given ray
+     */
+    virtual shared_ptr<RaySceneIntersection> findIntersection(
+        vector<double> const &tMinMax,
+        glm::dvec3 const &o,
+        glm::dvec3 const &v
+    ) const;
+    /**
      * @brief Detect full waveform peaks
      */
     bool detectPeak(
-        int i,
-        int win_size,
-        vector<double> &fullwave
+        int const i,
+        int const win_size,
+        vector<double> const &fullwave
     );
 
     /**
-     * @brief Compute the space distribution equation to calculate the beam energy
-     * decreasing the further away from the center
+     * @brief Compute the space distribution equation to calculate the beam
+     * energy decreasing the further away from the center
      */
 	double calcEmmitedPower(double radius, double targetRange);
 	/**
@@ -316,7 +339,9 @@ private:
 
 public:
     /**
-     * @brief Compute intensity
+     * @brief Compute intensity. It is, the strength of the laser going back
+     *  to the detector considering the emmited power as computed by
+     *  FullWaveformPulseRannaable::calcEmmitedPower
      */
 	double calcIntensity(
 	    double incidenceAngle,
@@ -329,7 +354,9 @@ public:
     );
 
 	/**
-	 * @brief Compute intensity
+	 * @brief Compute intensity through scaling
+	 *  AbstractPulseRunnable::calcReceivedPower, which is computed considering
+	 *  FullWaveformPulseRunnable::calcEmmitedPower
 	 */
 	double calcIntensity(
         double targetRange,
@@ -344,7 +371,11 @@ public:
 	 * due to compatibility reasons.
 	 * @see AbstractPulseRunnable::operator()
 	 */
-	void operator()() override {}
+	void operator()() override {
+	    throw HeliosException(
+	        "FullWaveformPulseRunnable operator()() must not be used"
+        );
+	}
 	/**
 	 * @brief Full waveform pulse runnable functor
 	 * @param apMatrix Reference to matrix to be used to compute Marquardt
@@ -355,10 +386,10 @@ public:
 	 * intersection handling if necessary
 	 * @see AbstractPulseRunnable::operator()()
 	 */
-	void operator()(
+	void operator() (
 	    std::vector<std::vector<double>>& apMatrix,
 	    RandomnessGenerator<double> &randGen,
         RandomnessGenerator<double> &randGen2,
         NoiseSource<double> &intersectionHandlingNoiseSource
-    );
+    ) override;
 };

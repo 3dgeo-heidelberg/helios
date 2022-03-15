@@ -1,0 +1,4 @@
+<map id="SharedSubTaskCompletionHandler" name="SharedSubTaskCompletionHandler">
+<area shape="rect" id="node1" title="Interface declaring behaviors that must be implemented by any class capable of handling completion of..." alt="" coords="5,5,252,32"/>
+<area shape="rect" id="node2" href="$da/d29/classSharedTaskSequencer.html" title="Class providing core implementation of a shared task sequencer. It is a sequencer which launches shar..." alt="" coords="47,80,211,107"/>
+</map>

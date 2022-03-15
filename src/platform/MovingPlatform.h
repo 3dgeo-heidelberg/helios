@@ -52,7 +52,10 @@ public:
 	 * @see Platform::waypointReached
 	 */
 	bool waypointReached() override;
-
+//        /**
+//         * @see Platform::prepareSimulation
+//         */
+//        void prepareSimulation(int simFrequency_hz) override;
 	/**
 	 * @see Platform::getVelocity
 	 */
@@ -69,5 +72,5 @@ public:
 	/**
 	 * @see Platform::canMove
 	 */
-    bool canMove() override {return true;}
+        bool canMove() override {return true;}
 };

@@ -1,6 +1,12 @@
 #include "PolygonMirrorBeamDeflector.h"
 
+#include <iostream>
+#include <sstream>
+#include <logging.hpp>
 #include "maths/Directions.h"
+#define _USE_MATH_DEFINES
+#include <math.h>
+#include "MathConverter.h"
 
 // ***  CONSTRUCTION / DESTRUCTION  *** //
 // ************************************ //
@@ -32,25 +38,46 @@ void PolygonMirrorBeamDeflector::_clone(
 // *********************** //
 
 void PolygonMirrorBeamDeflector::applySettings(std::shared_ptr<ScannerSettings> settings) {
+
+
     setScanAngle_rad(settings->scanAngle_rad);
     setScanFreq_Hz(settings->scanFreq_Hz);
+
+    // get the verticalAngle settings (suggested for TLS)
     cfg_setting_verticalAngleMin_rad = settings->verticalAngleMin_rad;
     cfg_setting_verticalAngleMax_rad = settings->verticalAngleMax_rad;
+
+
+    std::stringstream ss;
+    ss << "Applying settings for PolygonMirrorBeamDeflector...";
+    ss << "Vertical angle min/max " << cfg_setting_verticalAngleMin_rad << "/" << cfg_setting_verticalAngleMax_rad;
+
+
+    // if not set, use the ones from the scanAngleEffectiveMax or scanAngle (whichever is lower)
+    if(std::isnan(cfg_setting_verticalAngleMin_rad)){
+        cfg_setting_verticalAngleMin_rad = -1. * std::min(cfg_device_scanAngleEffectiveMax_rad,
+                                                          cfg_setting_scanAngle_rad);
+
+        ss << "\n -- verticalAngleMin not set, using the value of " << MathConverter::radiansToDegrees(
+                cfg_setting_verticalAngleMin_rad
+        ) << " degrees";
+    }
+    if(std::isnan(cfg_setting_verticalAngleMax_rad)){
+        cfg_setting_verticalAngleMax_rad = std::min(cfg_device_scanAngleEffectiveMax_rad,
+                                                    cfg_setting_scanAngle_rad);
+
+        ss << "\n -- verticalAngleMax not set, using the value of " << MathConverter::radiansToDegrees(
+                cfg_setting_verticalAngleMax_rad
+        ) << " degrees";
+    }
     state_currentBeamAngle_rad = 0;
+    logging::INFO(ss.str());
+
+    // For calculating the spacing between subsequent shots:
     double angleMax = cfg_device_scanAngleMax_rad;
     double angleMin = -cfg_device_scanAngleMax_rad;
-    if(angleMax == 0.0){
-        angleMax = cfg_setting_verticalAngleMax_rad;
-        angleMin = cfg_setting_verticalAngleMin_rad;
-    }
-    else{
-        cfg_setting_verticalAngleMin_rad = angleMin;
-        cfg_setting_verticalAngleMax_rad = angleMax;
-    }
+
     state_angleDiff_rad = angleMax-angleMin;
-    if(cfg_setting_scanAngle_rad == 0.0) {
-        cfg_setting_scanAngle_rad = state_angleDiff_rad / 2.0;
-    }
     cached_angleBetweenPulses_rad = (double)(this->cfg_setting_scanFreq_Hz *
                                              state_angleDiff_rad) / settings->pulseFreq_Hz;
 }
@@ -59,8 +86,8 @@ void PolygonMirrorBeamDeflector::doSimStep() {
 	// Update beam angle:
 	state_currentBeamAngle_rad += cached_angleBetweenPulses_rad;
 
-	if(state_currentBeamAngle_rad >= cfg_setting_verticalAngleMax_rad){
-	    state_currentBeamAngle_rad = cfg_setting_verticalAngleMin_rad;
+	if(state_currentBeamAngle_rad >= cfg_device_scanAngleMax_rad){
+	     state_currentBeamAngle_rad = -cfg_device_scanAngleMax_rad;
 	}
 
 
@@ -71,6 +98,15 @@ void PolygonMirrorBeamDeflector::doSimStep() {
 }
 
 bool PolygonMirrorBeamDeflector::lastPulseLeftDevice() {
-	return std::fabs(this->state_currentBeamAngle_rad) <=
-	    std::min(this->cfg_device_scanAngleEffective_rad, this->cfg_setting_scanAngle_rad);
+    // four conditions for the beam to return an echo:
+    // 1) abs(currentAngle) <= scanAngleEffectiveMax
+    // 2) abs(currentAngle) <= scanAngle (if it is set to something smaller)
+    // 3) currentAngle > verticalAngleMin
+    // 4) currentAngle <= verticalAngleMax
+
+	return std::fabs(this->state_currentBeamAngle_rad) <= this->cfg_device_scanAngleEffectiveMax_rad &&
+           std::fabs(this->state_currentBeamAngle_rad) <= this->cfg_setting_scanAngle_rad &&
+        this->state_currentBeamAngle_rad > this->cfg_setting_verticalAngleMin_rad &&
+        this->state_currentBeamAngle_rad <= this->cfg_setting_verticalAngleMax_rad
+        ;
 }

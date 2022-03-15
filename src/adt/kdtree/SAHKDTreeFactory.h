@@ -1,8 +1,10 @@
 #pragma once
 
 #include <SimpleKDTreeFactory.h>
+#include <KDTreePrimitiveComparator.h>
 
 class MultiThreadSAHKDTreeFactory;
+class SAHKDTreeGeoemtricStrategy;
 
 /**
  * @author Alberto M. Esmoris Pena
@@ -55,7 +57,7 @@ class MultiThreadSAHKDTreeFactory;
  * Now, let \f$r\f$ be the normalized position of the splitting hyperplane
  *  for node \f$N\f$ so \f$r=0\f$ is the lower limit, \f$r=1\f$ is the upper
  *  limit and \f$r=\frac{1}{2}\f$ is the center. Moreover, let \f$L_r\f$ and
- *  \f$R_r\f$ the left and right parts for the \f$r\f$ split position and
+ *  \f$R_r\f$ be the left and right parts for the \f$r\f$ split position and
  *  \f$N_o(L_r)\f$ and \f$N_o(R_r)\f$ be the number of objects at the left and
  *  right splits respectively. In consequence, following loss function arises:
  *
@@ -63,7 +65,7 @@ class MultiThreadSAHKDTreeFactory;
  *  \mathcal{L}(r) = S_A(L_r)N_o(L_r) + S_A(R_r)N_o(R_r) - S_A(N)N_o(N)
  * \f]
  *
- * Alternatively, considering the term \f$-S_A(r)n\f$ is the amount of
+ * Alternatively, considering the term \f$-S_A(N)N_o(N)\f$ is the amount of
  *  work saved by making the node an interior one (so the minus sign), it
  *  can be treated as a constant so for the sake of simplicity it would
  *  lead to:
@@ -79,7 +81,7 @@ class MultiThreadSAHKDTreeFactory;
  * Differentiating with respect to \f$r\f$ leads to:
  * \f[
  *  \frac{d\mathcal{L}}{dr} =
- *      \left(2N_o(L_r) - N_o(N)\right)\frac{d}{dr}S_A(L_r) +
+ *      \left[2N_o(L_r) - N_o(N)\right]\frac{d}{dr}S_A(L_r) +
  *      \left[
  *          S_A(L_r) - S_A(R_r)
  *      \right]
@@ -92,10 +94,11 @@ class MultiThreadSAHKDTreeFactory;
  *  consequence, it is possible to analyze different scenarios. First,
  *  consider the case where the median lies somewhere satisfying
  *  \f$r < \frac{1}{2}\f$. Thus, \f$\frac{d}{dr}\mathcal{L}(r) < 0\f$ at
- *  the left side because
- *  \f$N_o(L_r) < \frac{n}{2}\f$ and \f$S_A(L_r) < S_A(R_r)\f$. On the other
- *  hand, \f$\frac{d}{dr}\mathcal{L}(r) > 0\f$ at the right side because
- *  \f$N_o(L_r) < \frac{n}{2}\f$ and \f$S_A(L_r) > S_A(R_r)\f$. So the minimum
+ *  the left side of the object median because
+ *  \f$N_o(L_r) < \frac{N_o(N)}{2}\f$ and \f$S_A(L_r) < S_A(R_r)\f$. On the
+ *  other hand, \f$\frac{d}{dr}\mathcal{L}(r) > 0\f$ at the right side of the
+ *  spatial median because \f$N_o(L_r) > \frac{N_o(N)}{2}\f$
+ *  and \f$S_A(L_r) > S_A(R_r)\f$. So the minimum
  *  must occur between the object median and the spatial median if the
  *  object median is to the left of the spatial median. It is easy to see
  *  that an analogous argument applies for the case where the object median
@@ -124,6 +127,7 @@ class SAHKDTreeFactory : public SimpleKDTreeFactory{
     // ***  FRIENDS  *** //
     // ***************** //
     friend class MultiThreadSAHKDTreeFactory;
+    friend class SAHKDTreeGeometricStrategy;
 
 private:
     // ***  SERIALIZATION  *** //
@@ -260,6 +264,17 @@ public:
     );
     virtual ~SAHKDTreeFactory() = default;
 
+    // ***  CLONE  *** //
+    // *************** //
+    /**
+     * @see KDTreeFactory::clone
+     */
+    KDTreeFactory * clone() const override;
+    /**
+     * @brief Assign attributes from SAHKDTreeFactory to its clone
+     */
+    void _clone(KDTreeFactory *kdtf) const override;
+
     // ***  BUILDING METHODS  *** //
     // ************************** //
     /**
@@ -273,8 +288,9 @@ public:
      *  was the other way, then the iterative method would start at \f$M_e\f$
      *  and end at \f$\mu\f$.
      *  Now, if \f$n\f$ is the number of loss nodes, \f$\mathcal{L}_2\f$ is
-     *  the loss function and \f$r = \frac{\phi-a}{b-a} \in [0, 1]\f$ is the
-     *  normalized position of split position \f$\phi\f$. Then, the iterative
+     *  the loss function as defined in SAHKDTreeFactory::splitLoss and
+     *  \f$r = \frac{\phi-a}{b-a} \in [0, 1]\f$ is the normalized position
+     *  of split position \f$\phi\f$. Then, the iterative
      *  method can be defined as:
      *
      * \f[
@@ -283,16 +299,16 @@ public:
      *  \phi_1 &=& \mu \\
      *  \phi_{t>1} &=& \left\{\begin{array}{lll}
      *      \varphi(t)  &,&
-     *          \mathcal{L}_2\left(\varphi(t)\right) <
-     *          \mathcal{L}_2\left(\phi_{t-1}\right) \\
+     *          \mathcal{L}_2\left[(\varphi(t)-a)(b-a)^{-1}\right] <
+     *          \mathcal{L}_2\left[(\phi_{t-1}-a)(b-a)^{-1}\right] \\
      *      \phi_{t-1}  &,&
-     *          \mathcal{L}_2\left(\varphi(t)\right) \geq
-     *          \mathcal{L}_2\left(\phi_{t-1}\right)
+     *          \mathcal{L}_2\left[(\varphi(t)-a)(b-a)^{-1}\right] \geq
+     *          \mathcal{L}_2\left[(\phi_{t-1}-a)(b-a)^{-1}\right]
      *  \end{array}\right.
      *  \end{array}\right.
      * \f]
      *
-     * Finally, \f$\phi_n\f$ is the best found split position.
+     * Finally, \f$r=\phi_n\f$ is the best found split position.
      *
      * Notice that the median is constrained so \f$M_e \in [a, b]\f$. Thus,
      *  in case there are enough objects lying outside node boundaries causing
@@ -332,7 +348,7 @@ public:
      *  all primitives:
      * \f[
      *  t_0 : \mathrm{ILOT} = C_T = \frac{1}{S_A(R)} \left[
-     *      C_lS_A(R) + C_oS_A(l)N_o(R)
+     *      C_lS_A(R) + C_oS_A(R)N_o(R)
      *  \right]
      * \f]
      *
@@ -389,11 +405,61 @@ public:
         KDTreeNode *parent,
         vector<Primitive *> const &primitives,
         int const depth,
+        int const index,
         vector<Primitive *> &leftPrimitives,
         vector<Primitive *> &rightPrimitives
     ) override;
 
+    /**
+     * @brief The recipe for building of children nodes by SAH algorithm. It is
+     *  meant to be used by the SAHKDTreeFactory::buildChildrenNodes but also
+     *  by any alternative implementation which shared the same recipe (global
+     *  logic) but changes the way some parts are computed. For instance,
+     *  it is used to handle geometry-level parallelization.
+     *
+     * @param f_buildChildrenNodes Function to do the building of the children
+     *  nodes itself
+     *
+     * @see SAHKDTreeFactory::buildChildrenNodes
+     * @see SAHKDTreeFactory::GEOM_buildChildrenNodes
+     * @see MultiThreadKDTreeFactory
+     */
+    virtual void buildChildrenNodesRecipe(
+        KDTreeNode *node,
+        KDTreeNode *parent,
+        vector<Primitive *> const &primitives,
+        int const depth,
+        int const index,
+        vector<Primitive *> &leftPrimitives,
+        vector<Primitive *> &rightPrimitives,
+        std::function<void(
+            KDTreeNode *node,
+            int const depth,
+            int const index,
+            vector<Primitive *> &leftPrimitives,
+            vector<Primitive *> &rightPrimitives
+        )>f_buildChildrenNodes
+    );
+
 protected:
+    // ***  BUILDING UTILS  *** //
+    // ************************ //
+    /**
+     * @brief Check wheter the node must be splitted (true) or not (false)
+     *  depending on its total primitives.
+     *
+     * For a SAH KDT a node must be splitted if there are enough primitives.
+     *
+     * @return True if node must be splitted, false otherwise
+     * @see SimpleKDTreeFactory::checkNodeMustSplit
+     * @see SimpleKDTreeFactory::minSplitPrimitives
+     */
+    bool checkNodeMustSplit(
+        vector<Primitive *> const &primitives,
+        vector<Primitive *> const &leftPrimitives,
+        vector<Primitive *> const &rightPrimitives
+    ) const override;
+
     // ***  SAH UTILS  *** //
     // ******************* //
     /**
@@ -432,6 +498,32 @@ protected:
     ) const ;
 
     /**
+     * @brief Iteratively compute the best split position, it is the one with
+     *  smaller loss.
+     *
+     * @param loss Where initial loss is stored and where best found loss will
+     *  be written
+     * @param splitPos Where initial split position is stored and where best
+     *  found split position will be written
+     *
+     * @see SAHKDTreeFactory::findSplitPositionBySAH
+     * @see SAHKDTreeFactory::GEOM_findSplitPositionBySAH
+     * @see SAHKDTreeFactory::findSplitPositionBySAHRecipe
+     * @see SAHKDTreeFactory::splitLoss
+     */
+    virtual void computeBestSplit(
+        vector<Primitive *> &primitives,
+        size_t const lossNodes,
+        double const start,
+        double const step,
+        int const splitAxis,
+        double const minBound,
+        double const boundLength,
+        double &loss,
+        double &splitPos
+    ) const;
+
+    /**
      * @brief Find the best split position using Surface Area Heuristic (SAH)
      *  as described in SAHKDTreeFactory::defineSplit
      * @return Loss of best split position. The position itself is already
@@ -441,6 +533,45 @@ protected:
     virtual double findSplitPositionBySAH(
         KDTreeNode *node,
         vector<Primitive *> &primitives
+    ) const;
+
+    /**
+     * @brief The recipe for finding split position by SAH algorithm. It is
+     *  meant to be used by the SAHKDTreeFactory::findSplitPositionBySAH but
+     *  also by any alternative implementation which shares the same recipe (
+     *  global logic) but changes the way some parts are computed. For
+     *  instance, it is used to handle geometry-level parallelization.
+     *
+     * @param f_sortPrimitives Function to sort primitives
+     * @param f_computeLossNodes Function to iteratively compute loss nodes and
+     *  find the split position with best loss (the smallest)
+     *
+     * @see SAHKDTreeFactory::findSplitPositionBySAH
+     * @see SAHKDTreeFactory::GEOM_findSplitPositionBySAH
+     * @see MultiThreadKDTreeFactory
+     *
+     * @return Loss of best split position. The position itself is already
+     *  stored in given node
+     */
+    virtual double findSplitPositionBySAHRecipe(
+        KDTreeNode *node,
+        vector<Primitive *> &primitives,
+        std::function<void(
+            vector<Primitive *>::iterator begin,
+            vector<Primitive *>::iterator end,
+            KDTreePrimitiveComparator comparator
+        )> f_sortPrimitives,
+        std::function<void(
+            vector<Primitive *> &primitives,
+            size_t const lossNodes,
+            double const start,
+            double const step,
+            int const splitAxis,
+            double const minBound,
+            double const boundLength,
+            double &loss,
+            double &splitPos
+        )> f_computeLossNodes
     ) const;
 
     /**
@@ -469,7 +600,7 @@ protected:
         double const surfaceAreaInterior,
         double const surfaceAreaLeaf,
         vector<Primitive *> const &primitives
-    ) const ;
+    ) const;
 
     /**
      * @brief Compute the cumulative of \f$C_T\f$ heuristic ILOT.
@@ -603,6 +734,21 @@ protected:
 public:
     // ***  GETTERs and SETTERs  *** //
     // ***************************** //
+    /**
+     * @brief Obtain the loss nodes used to compute the Surface Area Heuristic
+     * @return Nmber of loss nodes used to compute the Surface Area Heuristic
+     * @see SAHKDTreeFactory::lossNodes
+     */
+    virtual inline size_t getLossNodes() const {return lossNodes;}
+    /**
+     * @brief Set the number loss nodes used to compute the Surface Area
+     *  Heuristic
+     * @param lossNodes New number of loss nodes to compute the Surface Area
+     *  Heuristic
+     * @see SAHKDTreeFactory::lossNodes
+     */
+    virtual inline void setLossNodes(size_t const lossNodes)
+    {this->lossNodes = lossNodes;}
     /**
      * @brief Obtain the cost-weight of interior nodes
      * @return Cost-weight of interior nodes

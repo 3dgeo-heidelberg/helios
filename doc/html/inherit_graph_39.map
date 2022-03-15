@@ -1,3 +1,9 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$d7/deb/classlogger__factory.html" title="Logger factory class can be used to build loggers. " alt="" coords="5,5,109,32"/>
+<area shape="rect" id="node1" href="$d5/dd0/classKDTreeFactory.html" title="Class that must be extended by any class which provides factory methods for k&#45;dimensional trees..." alt="" coords="5,31,116,57"/>
+<area shape="rect" id="node2" href="$d6/d96/classSimpleKDTreeFactory.html" title="Class providing building methods for simple k&#45;dimensional trees. " alt="" coords="164,31,315,57"/>
+<area shape="rect" id="node3" href="$df/d86/classMultiThreadKDTreeFactory.html" title="Decorator for any KDTree factory which provides support for multi thread KDTree building. " alt="" coords="363,5,541,32"/>
+<area shape="rect" id="node5" href="$db/d58/classSAHKDTreeFactory.html" title="Class providing building methods for k&#45;dimensional trees with surface area heuristic (SAH) ..." alt="" coords="383,56,521,83"/>
+<area shape="rect" id="node4" href="$dd/d95/classMultiThreadSAHKDTreeFactory.html" title="Decorator for any SAH KDTree which provides support for multi thread KDTree building. " alt="" coords="589,5,796,32"/>
+<area shape="rect" id="node6" href="$df/d30/classAxisSAHKDTreeFactory.html" title="Class providing building methods for k&#45;dimensional trees with surface area heuristic and greedy selec..." alt="" coords="610,56,775,83"/>
+<area shape="rect" id="node7" href="$d0/d0e/classFastSAHKDTreeFactory.html" title="Class providing building methods for k&#45;dimensional trees with a fast strategy to approximate Surface ..." alt="" coords="610,107,775,133"/>
 </map>

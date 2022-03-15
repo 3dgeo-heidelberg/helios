@@ -23,20 +23,24 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 ".html",
-"d1/d2f/classpyhelios_1_1PyTrajectoryWrapper.html#a9ba063b438ba2cda5f7f5e7b2a06d9de",
-"d2/d66/Histogram_8hpp_source.html",
-"d4/d02/classBinaryTreeDepthIterator.html",
-"d5/d20/classSpectralLibrary.html#a55d55f2e7ffc8bc086405f636419b5ed",
-"d6/d1f/structKDTreePrimitiveComparator.html#a8349b27d42b80f6552f0b99abc2f48e8",
-"d7/d17/classpyhelios_1_1PySceneWrapper.html",
-"d8/d15/classLinearPathPlatform.html#a4c355612852abdf1069d6e03be18debe",
-"d9/d82/classfluxionum_1_1Minimizer.html#a06b5438e0234d397f265b3d047ff983f",
-"da/d8d/classHeliosTests_1_1VoxelParsingTest.html#a5a44670a18e986c0324180950be4891c",
-"db/d8b/classHeliosTests_1_1RigidMotionTest.html#a8f91e1e80529c1836059666949c3d651",
-"dc/d6e/classRandomnessGenerator.html#abed86caeab308c222fb15d1e9ce3bb7e",
-"de/d22/classIterableTreeNode.html#a06c6815ed94500215f3d6db532d09c99",
-"df/d30/classAxisSAHKDTreeFactory.html#a7dda264583c90bec67f9d65a73abb157",
-"functions_func_h.html"
+"d1/d1e/classGroveTreeWrapper.html#a77349ecb62946f265d445cab118a303a",
+"d1/ddc/classFastSAHKDTreeGeometricStrategy.html#af42716c08770735cbbc075695141fff7",
+"d3/d43/classBinaryTreeFastBreadthIterator.html#aefd883a8b65f7fefac5dfaa0d27ea90d",
+"d4/d48/classDynSequentiableMovingObject.html#ab86ca8704381f575efe6e3888871e302",
+"d5/d3b/classSimplePhysicsPlatform.html",
+"d5/dfc/classvisualhelios_1_1VHStaticObjectXYZRGBAdapter.html#a2dbe5464b2ac3c441fc879c0e9d47ebd",
+"d6/d96/classSimpleKDTreeFactory.html#ac98d07dd8f7b70e16ccb9a01abf56b9c",
+"d7/d5c/classArgumentsParser.html#aff117df61e13435f7eec3cefdd6ca665",
+"d8/d6b/classAbstractDetector.html#a4a24217d4e34ad86ce1ee0cd2a2dea7f",
+"d9/d82/classXmlAssetsLoader.html#a1a224706568ac6de1bd59ec83e024979",
+"da/d29/classSharedTaskSequencer.html#af6419ae2b4274fbdd1fa6058e2f187e1",
+"db/d57/classfluxionum_1_1UnivariateNewtonRaphsonMinimizer.html#adba8706a6b811dda5fc11e634a8ee7d3",
+"db/dc1/classSurfaceInspector_1_1maths_1_1functions_1_1GaussianFunction.html#a0318c2b3aa1f98b58f248641a1f5d347",
+"dc/da7/classScannerHead.html#a063b6d10c0c2f9fcf735788a24ffb25a",
+"dd/de3/classDiscreteTime.html#ac5ec94b5343419f58c172604062ab39b",
+"de/df3/classpyhelios_1_1PyAABBWrapper.html#a927ebfa167e7c03ba1cd285a8967b2e2",
+"df/d9a/classXmlSurveyLoader.html",
+"functions_vars_e.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

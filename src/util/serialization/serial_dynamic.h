@@ -34,4 +34,5 @@ void load_construct_data(
     ::new(dm)DynMotion(C, A);
 }
 
+
 }}

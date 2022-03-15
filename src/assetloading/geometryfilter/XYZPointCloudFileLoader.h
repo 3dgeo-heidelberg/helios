@@ -271,6 +271,17 @@ private:
     );
 
     /**
+     * @brief Some issues with normals might be solved during post processing.
+     *  This function is called before XYZPointCloudFileLoader::postProcess
+     *  to find possible errors and report them before they are automatically
+     *  treated during post processing.
+     * @param filePathString The path to the file where XYZ points are
+     *  specified
+     * @see XYZPointCloudFileLoader::postProcess
+     */
+    void warnAboutPotentialErrors(string const &filePathString);
+
+    /**
      * @brief Post process already filled voxels grid
      * @param estimateNormals Used to specify if normals must be estimated (>0)
      * or not (0)

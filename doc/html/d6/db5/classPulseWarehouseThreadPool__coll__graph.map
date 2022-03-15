@@ -1,0 +1,14 @@
+<map id="PulseWarehouseThreadPool" name="PulseWarehouseThreadPool">
+<area shape="rect" id="node1" title="Class implementing a warehouse thread pool to deal with pulse tasks." alt="" coords="1193,144,1396,171"/>
+<area shape="rect" id="node2" href="$da/d92/classWarehouseThreadPool.html" title=" " alt="" coords="790,53,958,94"/>
+<area shape="rect" id="node3" href="$dc/de7/classThreadPool.html" title="Base class providing core implementation of a thread pool to deal with multi threading tasks." alt="" coords="507,5,602,32"/>
+<area shape="rect" id="node4" title=" " alt="" coords="215,21,275,48"/>
+<area shape="rect" id="node5" href="$d9/d5e/classTaskWarehouse.html" title=" " alt="" coords="453,57,656,98"/>
+<area shape="rect" id="node6" title=" " alt="" coords="153,89,336,130"/>
+<area shape="rect" id="node7" href="$df/d9c/classPulseThreadPoolInterface.html" title="Interface for thread pools supporting pulse tasks." alt="" coords="780,119,968,145"/>
+<area shape="rect" id="node8" href="$dc/d6e/classRandomnessGenerator.html" title=" " alt="" coords="159,218,330,259"/>
+<area shape="rect" id="node11" href="$d4/d38/classRandomNoiseSource.html" title=" " alt="" coords="471,170,639,211"/>
+<area shape="rect" id="node9" title=" " alt="" coords="5,225,64,252"/>
+<area shape="rect" id="node10" href="$d3/d57/classUniformNoiseSource.html" title=" " alt="" coords="796,170,952,211"/>
+<area shape="rect" id="node12" href="$d9/d6b/classNoiseSource.html" title=" " alt="" coords="156,157,333,184"/>
+</map>

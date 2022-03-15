@@ -1,3 +1,5 @@
 <map id="PlatformSettings" name="PlatformSettings">
-<area shape="rect" id="node2" href="$de/d97/classAsset.html" title="Base class for all assets. " alt="" coords="37,124,93,151"/>
+<area shape="rect" id="node1" title="Class representing platform settings." alt="" coords="5,200,136,227"/>
+<area shape="rect" id="node2" href="$de/d97/classAsset.html" title="Base class for all assets." alt="" coords="87,124,145,151"/>
+<area shape="rect" id="node3" title=" " alt="" coords="37,5,96,32"/>
 </map>

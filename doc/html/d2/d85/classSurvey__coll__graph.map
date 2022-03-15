@@ -1,3 +1,5 @@
 <map id="Survey" name="Survey">
-<area shape="rect" id="node2" href="$de/d97/classAsset.html" title="Base class for all assets. " alt="" coords="73,124,129,151"/>
+<area shape="rect" id="node1" title="Class representing a Helios++ survey." alt="" coords="12,200,79,227"/>
+<area shape="rect" id="node2" href="$de/d97/classAsset.html" title="Base class for all assets." alt="" coords="79,124,137,151"/>
+<area shape="rect" id="node3" title=" " alt="" coords="5,5,64,32"/>
 </map>

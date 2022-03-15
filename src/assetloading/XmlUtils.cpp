@@ -178,12 +178,15 @@ ObjectT XmlUtils::getAttribute(
     tinyxml2::XMLElement* element,
     std::string attrName,
     std::string type,
-    ObjectT defaultVal
+    ObjectT defaultVal,
+    std::string const defaultMsg
 ){
     ObjectT result;
     try {
         if (!element->Attribute(attrName.c_str())) {
-            throw HeliosException("Attribute '" + attrName + "' does not exist!");
+            throw HeliosException(
+                "Attribute '" + attrName + "' does not exist!"
+            );
         }
         std::string attrVal = element->Attribute(attrName.c_str());
         if (type == "bool") {
@@ -209,7 +212,6 @@ ObjectT XmlUtils::getAttribute(
             logging::ERR("ERROR: unknown type " + type);
         }
     }
-
     catch (std::exception &e) {
         std::stringstream ss;
         ss << "XML Assets Loader: Could not find attribute '" << attrName
@@ -221,10 +223,11 @@ ObjectT XmlUtils::getAttribute(
 
         if (!defaultVal.empty()) {
             result = defaultVal;
-            ss << "Using default value for attribute '" << attrName
+            ss << defaultMsg << " '" << attrName
                << "' : " << boost::apply_visitor(stringVisitor{}, defaultVal);
             logging::INFO(ss.str());
-        } else {
+        }
+        else {
             ss << "Exception:\n" << e.what() << "\n";
             ss << "ERROR: No default value specified for attribute '" << attrName
             << "'. Aborting.";
@@ -234,6 +237,13 @@ ObjectT XmlUtils::getAttribute(
     }
 
     return result;
+}
+
+bool XmlUtils::hasAttribute(
+    tinyxml2::XMLElement *element,
+    std::string attrName
+){
+    return element->Attribute(attrName.c_str()) != nullptr;
 }
 
 std::vector<std::shared_ptr<DynMotion>> XmlUtils::createDynMotionsVector(
@@ -272,8 +282,15 @@ std::vector<std::shared_ptr<DynMotion>> XmlUtils::createDynMotionsVector(
             selfMode = true;
         }
 
+        // Handle identity
+        if(type=="identity"){
+            dms.push_back(std::make_shared<DynMotion>(
+                rm3f.makeIdentity(),
+                selfMode
+            ));
+        }
         // Handle translation
-        if(type=="translation"){
+        else if(type=="translation"){
             motionAttr = xmlMotion->FindAttribute("vec");
             if(motionAttr == nullptr){
                 throw HeliosException(

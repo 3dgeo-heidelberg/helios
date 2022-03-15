@@ -19,9 +19,14 @@ include(cmake/CMakeLibraries.cmake)
 message("Libraries loaded!\n\n")
 
 # Python bindings
-message("Configuring python bindings ....")
+message("Configuring python bindings ...")
 include(cmake/CMakePybinds.cmake)
 message("Python bindings configured!\n\n")
+
+# Custom debug flags
+message("Handling debug flags (if any) ...")
+include(cmake/CMakeDebugFlags.cmake)
+message("Debug flags handled!\n\n")
 
 # Build executable
 message("Building Helios++ ...")

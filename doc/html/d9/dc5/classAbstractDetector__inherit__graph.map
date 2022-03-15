@@ -1,3 +1,4 @@
 <map id="AbstractDetector" name="AbstractDetector">
-<area shape="rect" id="node2" href="$df/d37/classFullWaveformPulseDetector.html" title="Concrete implementation of abstract detector to compute full waveform pulses. " alt="" coords="5,80,192,107"/>
+<area shape="rect" id="node1" title="Base abstract class for detectors." alt="" coords="41,5,173,32"/>
+<area shape="rect" id="node2" href="$df/d37/classFullWaveformPulseDetector.html" title="Concrete implementation of abstract detector to compute full waveform pulses." alt="" coords="5,80,209,107"/>
 </map>

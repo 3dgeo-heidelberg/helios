@@ -1,0 +1,11 @@
+<map id="SimpleKDTreeGeometricStrategy" name="SimpleKDTreeGeometricStrategy">
+<area shape="rect" id="node1" title="Class providing a strategy for geometry&#45;level parallelization of Simple KDTree building...." alt="" coords="5,533,241,560"/>
+<area shape="rect" id="node2" href="$d6/d96/classSimpleKDTreeFactory.html" title="Class providing building methods for simple k&#45;dimensional trees." alt="" coords="43,444,204,471"/>
+<area shape="rect" id="node3" href="$d5/dd0/classKDTreeFactory.html" title="Class that must be extended by any class which provides factory methods for k&#45;dimensional trees...." alt="" coords="192,368,308,395"/>
+<area shape="rect" id="node4" href="$dd/d04/classLightKDTreeNodeBlockAllocator.html" title="Block allocator for LightKDTreeNode instances." alt="" coords="220,279,448,305"/>
+<area shape="rect" id="node5" href="$d9/d47/classBlockAllocator.html" title=" " alt="" coords="213,188,423,229"/>
+<area shape="rect" id="node6" title=" " alt="" coords="104,83,164,109"/>
+<area shape="rect" id="node7" title=" " alt="" coords="205,83,421,109"/>
+<area shape="rect" id="node8" href="$dd/d79/classLightKDTreeNode.html" title="Class representing a light KDTree node. It is, the basic representation of a KDTree node with uses le..." alt="" coords="445,83,580,109"/>
+<area shape="rect" id="node9" href="$d7/d98/classIBinaryTreeNode.html" title="Binary tree node interface that must be implemented by any class providing binary tree node based fun..." alt="" coords="448,5,577,32"/>
+</map>

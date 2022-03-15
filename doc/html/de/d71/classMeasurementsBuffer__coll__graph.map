@@ -1,3 +1,5 @@
 <map id="MeasurementsBuffer" name="MeasurementsBuffer">
-<area shape="rect" id="node2" href="$db/d2e/classMeasurement.html" title="Class representing a measurement. " alt="" coords="26,95,127,121"/>
+<area shape="rect" id="node1" title="Class abstracting a buffer of measurements." alt="" coords="5,184,164,211"/>
+<area shape="rect" id="node2" href="$db/d2e/classMeasurement.html" title="Class representing a measurement." alt="" coords="29,95,141,121"/>
+<area shape="rect" id="node3" title=" " alt="" coords="55,5,114,32"/>
 </map>

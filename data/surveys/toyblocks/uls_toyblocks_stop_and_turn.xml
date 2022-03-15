@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <document>
-	<survey name="toyblocks_uls_stopturn" platform="data/platforms.xml#quadcopter" scanner="data/scanners_als.xml#riegl_vux-1uav" scene="data/scenes/toyblocks/toyblocks_scene.xml#toyblocks_scene">
-	<!-- platform: quadcopter, deflector: rotating, stop and turn-mode -->
+	<survey name="toyblocks_uls_stopturn" platform="data/platforms.xml#copter_linearpath" scanner="data/scanners_als.xml#riegl_vux-1uav" scene="data/scenes/toyblocks/toyblocks_scene.xml#toyblocks_scene">
+	<!-- Note: "quadcopter" platform has issues, workaround is using "copter_linearpath" until problems are fixed -->
 		<leg>
 			<platformSettings  x="-80.0" y="-50.0" z="35.000" onGround="false" movePerSec_m="5" stopAndTurn="true"/>
 			<scannerSettings  active="true" pulseFreq_hz="100000" scanAngle_deg="90" scanFreq_hz="50" headRotatePerSec_deg="0.00" headRotateStart_deg="0.00" headRotateStop_deg="0.00" trajectoryTimeInterval_s="0.05"/>

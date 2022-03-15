@@ -10,6 +10,9 @@ set(HELIOS_INCLUDE_DIRECTORIES
     "src/adt/tree/"
     "src/adt/bintree/"
     "src/adt/kdtree/"
+    "src/adt/grove/"
+    "src/alg/"
+    "src/alg/raycast/"
     "src/assetloading/"
     "src/assetloading/geometryfilter/"
     "src/platform/"
@@ -19,7 +22,9 @@ set(HELIOS_INCLUDE_DIRECTORIES
     "src/scene/"
     "src/scene/primitives/"
     "src/scene/dynamic/"
-    "src/surveyplayback/"
+    "src/sim/comps/"
+    "src/sim/core/"
+    "src/sim/tools/"
     "src/noise/"
     "src/maths/"
     "src/maths/rigidmotion/"
@@ -33,8 +38,8 @@ set(HELIOS_INCLUDE_DIRECTORIES
     "src/util/threadpool/"
     "src/util/serialization/"
     "src/util/logger/"
+    "src/hpc/"
     "src/test/"
-
 )
 # Pyhelios specific include directories
 if(${PYTHON_BINDING})

@@ -1,5 +1,18 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$df/d39/classITreeIterator.html" title="ITreeIterator\&lt; IterableTree\lNode\&lt; IBinaryTreeNode \&gt; \&gt;" alt="" coords="5,39,192,80"/>
-<area shape="rect" id="node2" href="$d0/da5/classBinaryTreeBreadthIterator.html" title="Like fast breadth first iterator but wrapping tree nodes inside a IterableTreeNode instance..." alt="" coords="240,5,411,47"/>
-<area shape="rect" id="node3" href="$d4/d02/classBinaryTreeDepthIterator.html" title="Like fast depth first iterator but wrapping tree nodes inside a IterableTreeNode instance. " alt="" coords="245,71,406,112"/>
+<area shape="rect" id="node1" href="$d9/d52/classHeliosTests_1_1BaseTest.html" title="BaseTest class. " alt="" coords="5,360,161,387"/>
+<area shape="rect" id="node2" href="$d6/d7f/classHeliosTests_1_1DiscreteTimeTest.html" title="Test discrete time handling. " alt="" coords="219,5,423,32"/>
+<area shape="rect" id="node3" href="$dd/de0/classHeliosTests_1_1FluxionumTest.html" title="Fluxionum test. " alt="" coords="227,56,414,83"/>
+<area shape="rect" id="node4" href="$d0/d01/classHeliosTests_1_1GroveTest.html" title="Test for grove of trees. " alt="" coords="240,107,401,133"/>
+<area shape="rect" id="node5" href="$d4/d0d/classHeliosTests_1_1HPCTest.html" title="High performance computing components test. " alt="" coords="243,157,398,184"/>
+<area shape="rect" id="node6" href="$dd/df9/classHeliosTests_1_1LadLutTest.html" title="Test look&#45;up table for leaf angle distribution. " alt="" coords="238,208,403,235"/>
+<area shape="rect" id="node7" href="$de/dad/classHeliosTests_1_1NoiseTest.html" title="Test for noise generation. " alt="" coords="241,259,401,285"/>
+<area shape="rect" id="node8" href="$d6/dda/classHeliosTests_1_1PlaneFitterTest.html" title="Test plane fitter operations. " alt="" coords="226,309,415,336"/>
+<area shape="rect" id="node9" href="$d6/d96/classHeliosTests_1_1PlatformPhysicsTest.html" title="Platform physics test. " alt="" coords="209,360,432,387"/>
+<area shape="rect" id="node10" href="$db/dcd/classHeliosTests_1_1RandomTest.html" title="Test for randomness generation. " alt="" coords="233,411,408,437"/>
+<area shape="rect" id="node11" href="$d4/dba/classHeliosTests_1_1RayIntersectionTest.html" title="Test for ray intersection and corresponding handling (if any) " alt="" coords="211,461,430,488"/>
+<area shape="rect" id="node12" href="$db/d8b/classHeliosTests_1_1RigidMotionTest.html" title="Rigid motion test. " alt="" coords="223,512,418,539"/>
+<area shape="rect" id="node13" href="$d5/d2a/classHeliosTests_1_1ScenePartSplitTest.html" title="Scene part split test. " alt="" coords="214,563,427,589"/>
+<area shape="rect" id="node14" href="$df/da1/classHeliosTests_1_1SerializationTest.html" title="Test serialization. " alt="" coords="222,613,419,640"/>
+<area shape="rect" id="node15" href="$de/d9c/classHeliosTests_1_1SurveyCopyTest.html" title="Test survey copy. " alt="" coords="221,664,420,691"/>
+<area shape="rect" id="node16" href="$da/d8d/classHeliosTests_1_1VoxelParsingTest.html" title="Test for voxel parsing. " alt="" coords="219,715,422,741"/>
 </map>
