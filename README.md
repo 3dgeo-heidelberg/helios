@@ -9,18 +9,6 @@
 HELIOS++ is a general-purpose software package for simulation of terrestrial, mobile and airborne laser scanning surveys written in C++11. 
 It is developed and maintained by the [3DGeo Research Group](https://uni-heidelberg.de/3dgeo) at Heidelberg University.
 
-## :loudspeaker: Announcements
-
-<img src="https://user-images.githubusercontent.com/41050948/151771579-e369fb16-2609-47be-a8c3-c3495fa76491.png" width="140"> **For German-speaking users:** 
-
-Wir werden HELIOS++ bei der [FOSSGIS-Konferenz 2022](https://fossgis-konferenz.de/2022/programm/#) (9.-12. März) präsentieren! 
-
-* Freitag, 11. März 2022, 9:00-9:55: [Simulation von Laserscanning mit AEOS, dem QGIS Plugin für HELIOS++ ](https://pretalx.com/fossgis2022/talk/JPEZDH/): Präsentation des neuen QGIS Plugins in einer **Demo-Session**
-* Freitag, 11. März 2022, 11:00-12:30: [Laserscanning simulieren mit HELIOS++ - Eine praktische Einführung](https://pretalx.com/fossgis2022/talk/TBXHHY/): 90-minütiger **Workshop**. **Wichtig**: Anmeldung nötig.
-
-Die gesamte Konferenz findet online statt. [Hier](https://fossgis-konferenz.de/2022/anmeldung/) geht es zur Anmeldung (regulär Preis: 90 €). Für Studierende, Schüler:innen, etc. gilt ein reduzierter Preis, FOSSGIS-, OpenStreetMap- und OSGeo-Aktive sowie Helfer:innen können sogar umsonst teilnehmen. Vergesst nicht, den Workshop extra zu buchen! :wink: 
-Es lohnt sich definitiv, dabei zu sein. Wir freuen uns auf euch! :grinning: 
-
 ## 💻 Download
 
 Precompiled versions for Windows and Ubuntu (other Debian might also work, but you need to install dependencies manually) are available under [releases](https://github.com/3dgeo-heidelberg/helios/releases).
