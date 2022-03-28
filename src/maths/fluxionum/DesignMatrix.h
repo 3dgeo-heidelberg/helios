@@ -35,8 +35,12 @@ using std::string;
  * @see fluxionum::IndexedDesignMatrix
  */
 template <typename T>
-class DesignMatrix : AbstractDesignMatrix<T>{
+class DesignMatrix : public AbstractDesignMatrix<T>{
 protected:
+    // ***  USING  *** //
+    // *************** //
+    using AbstractDesignMatrix<T>::translateColumnNameToIndex;
+
     // ***  ATTRIBUTES  *** //
     // ******************** //
     /**
@@ -71,7 +75,7 @@ public:
         X(X)
     {}
     /**
-     * @biref Build a DesignMatrix from data in file at given path
+     * @brief Build a DesignMatrix from data in file at given path
      * @param path Path to the file containing the data for the DesignMatrix
      * @param columnNames The default column names to be used if no column
      *  names are read from file at given path
@@ -98,7 +102,7 @@ public:
      * @see AbstractDesignMatrix::operator()(size_t const, size_t const)
      */
     inline T& operator() (size_t const i, size_t const j) override
-    {return X.at(row, column);}
+    {return X.at(i, j);}
 
 
     // ***  GETTERs and SETTERs  *** //
@@ -144,7 +148,7 @@ public:
      * @see fluxionum::DesignMatrix::X
      */
     inline arma::Col<T> const & getColumn(size_t const j) const
-    {retunr X.col(j);}
+    {return X.col(j);}
     /**
      * @brief Like the fluxionum::DesignMatrix::getColumn(size_t const) method
      *  but specifying the column by name

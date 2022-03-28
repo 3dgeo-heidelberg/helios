@@ -3,6 +3,7 @@
 #include <fluxionum/FluxionumException.h>
 #include <fluxionum/AbstractDesignMatrix.h>
 #include <fluxionum/TemporalDesignMatrix.h>
+#include <fluxionum/FluxionumTypes.h>
 
 #include <armadillo>
 
@@ -41,7 +42,7 @@ using std::string;
  *  the DiffDesignMatrix. There is also a time vector available, such that
  *  for the \f$m\f$ points (matrix rows) there are also \f$m\f$ associated time
  *  values \f$\vec{t} = \left(t_1, \ldots, t_m\right)\f$. Thus, for each
- *  \f$t_i\f$ there exists a vector \f$\vec{x_i} \in \mathbb{R}^{n}\f$ which
+ *  \f$t_i\f$ there exists a vector \f$\vec{x_i'} \in \mathbb{R}^{n}\f$ which
  *  defines the values that the attributes took at time \f$t_i\f$. From now on,
  *  it will be assumed that \f$\forall i, t_{i+1} > t_{i}\f$. It is, the
  *  indices of time values and their associated vectors are sorted in time with
@@ -125,47 +126,67 @@ using std::string;
  *  \f$T \in \mathbb{R}^{(m-2) \times (k_{j}+1)}\f$ matrix has one less row and
  *  its values come from the first \f$m-2\f$ values of vector
  *  \f$\vec{\tau} \in \mathbb{R}^{m-1}\f$ instead of the first \f$m-1\f$ values
- *  of the time vector \f$\vec{t} \in \mathbb{R}^{m}\f$.
+ *  of the time vector \f$\vec{t} \in \mathbb{R}^{m}\f$. The second step is to
+ *  compute the matrix \f$\frac{\delta X}{\delta T}\f$ as:
+ * \f[
+ *  \frac{DX}{DT} = \frac{\delta X}{\delta T} = \left[\begin{array}{ccc}
+ *      \frac{x_{31}' - x_{11}'}{2(\tau_2 - \tau_1)} &
+ *          \ldots &
+ *          \frac{x_{3n}' - x_{1n}'}{2(\tau_2 - \tau_1)} \\
+ *      \vdots & \ddots & \vdots \\
+ *      \frac{x_{m1}' - x_{m-2,1}'}{2(\tau_{m-1} - \tau_{m-2})} &
+ *          \ldots &
+ *          \frac{x_{mn}' - x_{m-2,n}'}{2(\tau_{m-1} - \tau_{m-2})}
+ *  \end{array}\right] = \left[\begin{array}{ccc}
+ *      \frac{x_{31}' - x_{11}'}{t_3 - t_1} &
+ *          \ldots &
+ *          \frac{x_{3n}' - x_{1n}'}{t_3 - t_1} \\
+ *      \vdots & \ddots & \vdots \\
+ *      \frac{x_{m1}' - x_{m-2,1}'}{t_m - t_{m-2}} &
+ *          \ldots &
+ *          \frac{x_{mn}' - x_{m-2,n}'}{t_m - t_{m-2}}
+ *  \end{array}\right]
+ * \f]
+ *
  *
  * The fitting example for central finite differences would be exactly as
  *  described before, but now the approximation would be based on
- *  \f$\vec{\tau}\f$ instead of \f$\vec{t}\f$. It is, the function \f$f_j(t)\f$
- *  is fitted from
- *  \f$f_j(\tau_{i}) = \sum_{k=0}^{k_j}{\omega_{jk}\tau_i^k} \approx a_{ij}\f$.
+ *  \f$\vec{\tau}\f$ and \f$A=\frac{\delta X}{\delta T}\f$ instead of
+ *  \f$\vec{t}\f$ and \f$A=\frac{\Delta X}{\Delta T}\f$.
+ *  It is, the function \f$f_j(t)\f$ is fitted from
+ *  \f$f_j(\tau_{i}) =
+ *      \sum_{k=0}^{k_j}{\omega_{jk}\tau_i^k} \approx
+ *      a_{ij}\f$.
  *
  * @tparam TimeType The time's domain
  * @tparam VarType The non time's domain (basic DesignMatrix domain)
  * @see fluxionum::AbstractDesignMatrix
  * @see fluxionum::TemporalDesignMatrix
+ * @see fluxionum::DiffDesignMatrixType
  */
 template <typename TimeType, typename VarType>
-class DiffDesignMatrix : AbstractDesitnMatrix<VarType>{
+class DiffDesignMatrix : AbstractDesignMatrix<VarType>{
 public:
-    // ***  ENUMERATIONS  *** //
-    // ********************** //
-    /**
-     * @brief Potential differential types of any fluxionum::DiffDesignMatrix
-     */
-    enum DiffType {
-        FORWARD_FINITE_DIFFERENCES,
-        CENTRAL_FINITE_DIFFERENCES
-    };
+    // ***  USING  *** //
+    // *************** //
+    using AbstractDesignMatrix<VarType>::getColumnNames;
+
 protected:
     // ***  ATTRIBUTES  *** //
     // ******************** //
     /**
      * @brief Specify the type of differential of the DiffDesignMatrix
-     * @see fluxionum::DiffDesignMatrix::DiffType
+     * @see fluxionum::DiffDesignMatrixType
      */
-    enum DiffType diffType;
+    enum DiffDesignMatrixType diffType;
     /**
      * @brief The starting value for differential time interval, \f$t_a\f$
      */
-    T ta;
+    TimeType ta;
     /**
      * @brief The end value for the differential time interval, \f$t_b\f$
      */
-    T tb;
+    TimeType tb;
     /**
      * @brief The sorted series of time values so
      *  \f$\forall i, t_{i+1} > t_{i}\f$ is strictly satisfied and the
@@ -206,9 +227,11 @@ public:
      *  there are no names
      */
     DiffDesignMatrix(
-        vector<string> const &columnNames=vector<string>(0)
+        vector<string> const &columnNames=vector<string>(0),
+        DiffDesignMatrixType diffType=DiffDesignMatrixType::UNKNOWN
     ) :
-        AbstractDesignMatrix<VarType>(columnNames)
+        AbstractDesignMatrix<VarType>(columnNames),
+        diffType(diffType)
     {}
     /**
      * @brief Build a DiffDesignMatrix from given armadillo column vector of
@@ -222,9 +245,13 @@ public:
     DiffDesignMatrix(
         arma::Col<TimeType> const &t,
         arma::Mat<VarType> const &A,
-        vector<string> const &columnNames=vector<string>(0)
+        vector<string> const &columnNames=vector<string>(0),
+        DiffDesignMatrixType diffType=DiffDesignMatrixType::UNKNOWN
     ) :
         AbstractDesignMatrix<VarType>(columnNames),
+        diffType(diffType),
+        ta(arma::min(t)),
+        tb(arma::max(t)),
         t(t),
         A(A)
     {}
@@ -237,9 +264,11 @@ public:
      */
     DiffDesignMatrix(
         string const &path,
-        vector<string> const &columnNames=vector<string>(0)
+        vector<string> const &columnNames=vector<string>(0),
+        DiffDesignMatrixType const diffType=DiffDesignMatrixType::UNKNOWN
     ) :
-        AbstractDesignMatrix<T>(columnNames)
+        AbstractDesignMatrix<VarType>(columnNames),
+        diffType(diffType)
     {
         // TODO Rethink : Implement
     }
@@ -251,30 +280,40 @@ public:
      */
     DiffDesignMatrix(
         TemporalDesignMatrix<TimeType, VarType> const &tdm,
-        DiffType const diffType
+        DiffDesignMatrixType const diffType
     ) :
-        AbstractDesignMatrix<T>(tdm.getColumnNames())
+        AbstractDesignMatrix<VarType>(tdm.getColumnNames())
     {
         switch (diffType) {
-            case FORWARD_FINITE_DIFFERENCES:
+            case DiffDesignMatrixType::FORWARD_FINITE_DIFFERENCES:{
                 arma::Col<TimeType> const &t = tdm.getTimeVector();
                 arma::Col<TimeType> DT(t.subvec(0, t.n_elem-1));
-                arma::Col<VarType> DXDT = arma::diff(tdm.getX(), 1, 0);
-                DXDT.each_col() /= DT;
-                // TODO Rethink : Implement as read and swap
-                DiffDesignMatrix ddm(DT, DXDT);
+                arma::Mat<VarType> DXDT = arma::diff(tdm.getX(), 1, 0);
+                DXDT.each_col() /= arma::diff(t, 1);
+                *this = DiffDesignMatrix(DT, DXDT, getColumnNames(), diffType);
                 break;
-            case CENTRAL_FINITE_DIFFERENCES:
-                // TODO Rethink : Implement central finite differences
+            }
+            case DiffDesignMatrixType::CENTRAL_FINITE_DIFFERENCES:{
+                arma::Mat<VarType> const &X = tdm.getX();
+                arma::Col<TimeType> const &t = tdm.getTimeVector();
+                arma::Col<TimeType> DT(
+                    (t.subvec(0, t.n_elem-1) + t.subvec(1, t.n_elem))
+                );
+                arma::Mat<VarType> DXDT(
+                    (X.rows(2, X.n_rows) - X.rows(0, X.n_rows-2))
+                );
+                DXDT.each_col() /= arma::diff(DT, 1);
+                DT = DT.subvec(0, DT.n_elem-1) / 2.0;
+                *this = DiffDesignMatrix(DT, DXDT, getColumnNames(), diffType);
                 break;
-            default:
+            }
+            default:{
                 std::stringstream ss;
                 ss  << "DiffDesignMatrix::DiffDesignMatrix("
                        "TemporalDesignMatrix const &, DiffType const) failed."
                        "\n\tUnexpected differential type";
                 throw FluxionumException(ss.str());
-        }
-
+            }
         }
     }
 };

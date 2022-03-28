@@ -90,7 +90,7 @@ public:
      * @see AbstractDesignMatrix::operator()(size_t const, size_t const)
      */
     inline T& operator() (size_t const i, string const columnName)
-    {return operator()(row, translateColumnNameToIndex(columnName));}
+    {return operator()(i, translateColumnNameToIndex(columnName));}
 
 
     // ***  GETTERs and SETTERs  *** //

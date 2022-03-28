@@ -1,7 +1,8 @@
-#pragma once
+#ifndef _FLUXIONUM_INDEXED_DESIGN_MATRIX_H_
 
 #include <fluxionum/DesignMatrix.h>
 #include <fluxionum/TemporalDesignMatrix.h>
+#include <fluxionum/FluxionumTypes.h>
 
 #include <vector>
 #include <memory>
@@ -38,8 +39,12 @@ using std::make_shared;
  * @see fluxionum::DesignMatrix
  */
 template <typename IndexType, typename VarType>
-class IndexedDesignMatrix : public DesignMatrix<T> {
+class IndexedDesignMatrix : public DesignMatrix<VarType> {
 protected:
+    // ***  USING  *** //
+    // *************** //
+    using DesignMatrix<VarType>::X;
+
     // ***  ATTRIBUTES  *** //
     // ******************** //
     /**
@@ -61,6 +66,12 @@ protected:
      *  the time step between consecutive indices.
      */
     vector<IndexType> indices;
+    /**
+     * @brief The name of the index field in the original DesignMatrix
+     *
+     * By default, it is "index"
+     */
+    string indexName;
 
 
 public:
@@ -99,18 +110,19 @@ public:
     IndexedDesignMatrix(
         DesignMatrix<VarType> const &designMatrix,
         size_t const indicesColumnIndex,
-        string const indexName="index"
+        string const indexName="index",
+        vector<string> const &columnNames=vector<string>(0)
     ) :
         DesignMatrix<VarType>(
-            TemporalDesignMatrix<VarType>::extractNonTimeMatrix(
+            TemporalDesignMatrix<double, VarType>::extractNonTimeMatrix(
                 designMatrix.getX(), indicesColumnIndex
             )
         ),
         indices(extractIndices(designMatrix.getX(), indicesColumnIndex)),
         indexName(
             designMatrix.hasColumnNames() ?
-                designMatrix.getColumnName(timeColumnIndex) :
-                timeName
+                designMatrix.getColumnName(indicesColumnIndex) :
+                indexName
         )
     {}
     /**
@@ -123,9 +135,10 @@ public:
     IndexedDesignMatrix(
         DesignMatrix<VarType> const &designMatrix,
         vector<IndexType> const &indices,
-        string const indexName="index"
+        string const indexName="index",
+        vector<string> const &columnNames=vector<string>(0)
     ) :
-        DesignMatrix(designMatrix),
+        DesignMatrix<VarType>(designMatrix),
         indices(indices),
         indexName(indexName)
     {}
@@ -139,14 +152,16 @@ public:
     IndexedDesignMatrix(
         arma::Mat<VarType> const &X,
         size_t const indicesColumnIndex,
-        string const indexName="index"
+        string const indexName="index",
+        vector<string> const &columnNames=vector<string>(0)
     ) :
         DesignMatrix<VarType>(
-            TemporalDesignMatrix<VarType>::extractNonTimeMatrix(
+            TemporalDesignMatrix<double, VarType>::extractNonTimeMatrix(
                 X, indicesColumnIndex
-            )
+            ),
+            columnNames
         ),
-        t(extractIndices(X, indicesColumnIndex)),
+        indices(extractIndices(X, indicesColumnIndex)),
         indexName(indexName)
     {}
     /**
@@ -159,9 +174,10 @@ public:
     IndexedDesignMatrix(
         arma::Mat<VarType> const &X,
         vector<IndexType> const &indices,
-        string const indexName="index"
+        string const indexName="index",
+        vector<string> const &columnNames=vector<string>(0)
     ) :
-        DesignMatrix<VarType>(X),
+        DesignMatrix<VarType>(X, columnNames),
         indices(indices),
         indexName(indexName)
     {}
@@ -177,9 +193,10 @@ public:
     IndexedDesignMatrix(
         string const &path,
         size_t const indicesColumnIndex,
-        string const indexName="index"
+        string const indexName="index",
+        vector<string> const &columnNames=vector<string>(0)
     ) :
-        TemporalDesignMatrix(
+        IndexedDesignMatrix(
             DesignMatrix<VarType>(path),
             indicesColumnIndex,
             indexName
@@ -202,7 +219,6 @@ public:
 
     // ***  METHODS  *** //
     // ***************** //
-    // TODO Rethink : Implement toDiffDesignMatrix methods like TemporalDesignMatrix does
     /**
      * @brief Build a DiffDesignMatrix from the IndexedDesignMatrix assuming
      *  that the index 0 lies at \f$t_a\f$ while the maximum index lies at
@@ -211,29 +227,30 @@ public:
      *
      * @param ta The start time
      * @param tb The end time
+     * @param diffType The type of differential to be used
      * @return DiffDesignMatrix built from IndexedDesignMatrix
-     * @see toLinearTimeDiffDesignMatrixPointer(double const, double const)
+     * @see IndexedDesignMatrix::toLinearTimeDiffDesignMatrixPointer
      * @see fluxionum::DiffDesignMatrix
      */
-    DiffDesignMatrix toLinearTimeDiffDesignMatrix(
+    DiffDesignMatrix<double, VarType> toLinearTimeDiffDesignMatrix(
         double const ta=0.0,
-        double const tb=1.0
-    ) const {
-        return DiffDesignMatrix(
-            TemporalDesignMatrix(
-                getX(),
-            )
-        )
-    }
+        double const tb=1.0,
+        DiffDesignMatrixType diffType = \
+            DiffDesignMatrixType::FORWARD_FINITE_DIFFERENCES
+    ) const;
     /**
-     * @see Like toLinearTimeDiffDesignMatrix(double const, double const)
+     * @see Like toLinearTimeDiffDesignMatrix(double const, double const) but
+     *  returning a pointer to the object
      * @return Pointer to the DiffDesignMatrix built from IndexedDesignMatrix
-     * @see toLinearTimeDiffDesignMatrix(double const, double const)
+     * @see IndexedDesignMatrix::toLinearTimeDiffDesignMatrix
      * @see fluxionum::DiffDesignMatrix
      */
-    shared_ptr<DiffDesignMatrix> toLinearTimeDiffDesignMatrixPointer(
+    shared_ptr<DiffDesignMatrix<double, VarType>>
+    toLinearTimeDiffDesignMatrixPointer(
         double const ta=0.0,
-        double const tb=1.0
+        double const tb=1.0,
+        DiffDesignMatrixType diffType = \
+            DiffDesignMatrixType::FORWARD_FINITE_DIFFERENCES
     ) const;
 
 
@@ -246,6 +263,24 @@ public:
      * @see fluxionum::IndexedDesignMatrix::indices
      */
     inline vector<IndexType> const & getIndices() const {return indices;}
+    /**
+     * @brief Obtain the name of the index attribute
+     * @return The name of the index attribute
+     * @see fluxionum::IndexedDesignMatrix::indexName
+     */
+    inline string const getIndexName() const {return indexName;}
+    /**
+     * @brief Set the name of the index attribute
+     * @param indexName The new name for the index attribute
+     * @see fluxionum::IndexedDesignMatrix::indexName
+     */
+    inline void setIndexName(string const &indexName)
+    {this->indexName = indexName;}
 };
 
+
 }
+
+#define _FLUXIONUM_INDEXED_DESIGN_MATRIX_H_
+#include <fluxionum/IndexedDesignMatrix.tpp>
+#endif

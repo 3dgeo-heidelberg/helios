@@ -1,11 +1,13 @@
-#pragma once
+#ifndef _FLUXIONUM_TEMPORAL_DESIGN_MATRIX_H_
 
 #include <fluxionum/DesignMatrix.h>
-#include <fluxionum/DiffDesignMatrix.h>
+#include <fluxionum/FluxionumTypes.h>
 
 #include <memory>
 
 namespace fluxionum {
+
+template <typename TimeType, typename VarType> class DiffDesignMatrix;
 
 using std::string;
 using std::shared_ptr;
@@ -100,7 +102,7 @@ public:
         arma::Mat<VarType> const &X, size_t const timeColumnIndex
     ){
         arma::Mat<VarType> Y(X);
-        Y.shed_col()(tileColumnIndex);
+        Y.shed_col(timeColumnIndex);
         return Y;
     }
     /**
@@ -114,7 +116,7 @@ public:
     static inline arma::Col<TimeType> extractTimeVector(
         arma::Mat<VarType> const &X, size_t const timeColumnIndex
     ){
-        return arma::Col<TimeType> t(X.col(timeColumnIndex));
+        return arma::Col<TimeType>(X.col(timeColumnIndex));
     }
 
 
@@ -132,11 +134,12 @@ public:
     TemporalDesignMatrix(
         DesignMatrix<VarType> const &designMatrix,
         size_t const timeColumnIndex,
-        string const timeName="time"
+        string const timeName="time",
+        vector<string> const &columnNames=vector<string>(0)
     ) :
-        DesignMatrix(extractNonTimeMatrix(
+        DesignMatrix<VarType>(extractNonTimeMatrix(
             designMatrix.getX(), timeColumnIndex
-        )),
+        ), columnNames),
         t(extractTimeVector(designMatrix.getX(), timeColumnIndex)),
         timeName(
             designMatrix.hasColumnNames() ?
@@ -156,7 +159,7 @@ public:
         arma::Col<TimeType> const &timeVector,
         string const timeName="time"
     ) :
-        DesignMatrix(designMatrix),
+        DesignMatrix<VarType>(designMatrix),
         t(timeVector),
         timeName(timeName)
     {}
@@ -170,11 +173,12 @@ public:
     TemporalDesignMatrix(
         arma::Mat<VarType> const &X,
         size_t const timeColumnIndex,
-        string const timeName="time"
+        string const timeName="time",
+        vector<string> const &columnNames=vector<string>(0)
     ) :
         DesignMatrix<VarType>(extractNonTimeMatrix(
             X, timeColumnIndex
-        )),
+        ), columnNames),
         t(extractTimeVector(X, timeColumnIndex)),
         timeName(timeName)
     {}
@@ -188,9 +192,10 @@ public:
     TemporalDesignMatrix(
         arma::Mat<VarType> const &X,
         arma::Col<TimeType> const &t,
-        string const timeName="time"
+        string const timeName="time",
+        vector<string> const &columnNames=vector<string>(0)
     ) :
-        DesignMatrix<VarType>(X),
+        DesignMatrix<VarType>(X, columnNames),
         t(t),
         timeName(timeName)
     {}
@@ -207,12 +212,14 @@ public:
     TemporalDesignMatrix(
         string const &path,
         size_t const timeColumnIndex,
-        string const timeName="time"
+        string const timeName="time",
+        vector<string> const &columnNames=vector<string>(0)
     ) :
         TemporalDesignMatrix(
             DesignMatrix<VarType>(path),
             timeColumnIndex,
-            timeName
+            timeName,
+            columnNames
         )
     {
         // TODO Rethink : Implement as read and swap
@@ -240,13 +247,13 @@ public:
      * @param diffType The type of differential to be used
      * @return DiffDesignMatrix built from TemporalDesignMatrix
      * @see fluxionum::TemporalDesignMatrix::toDiffDesignMatrixPointer
-     * @see fluxionum::DiffDesignMatrix::DiffType
+     * @see fluxionum::DiffDesignMatrixType
      * @see fluxionum::DiffDesignMatrix
      */
     DiffDesignMatrix<TimeType, VarType> toDiffDesignMatrix(
-        DiffDesignMatrix<TimeType, VarType>::DiffType diffType =
-            FORWARD_FINITE_DIFFERENCES
-    ) const {return DiffDesignMatrix<TimeType, VarType>(*this, diffType);}
+        DiffDesignMatrixType diffType = \
+            DiffDesignMatrixType::FORWARD_FINITE_DIFFERENCES
+    ) const;
     /**
      * @brief Like fluxionum::TemporalDesignMatrix::toDiffDesignMatrix but
      *  returning a pointer to the object
@@ -254,11 +261,10 @@ public:
      * @see fluxionum::TemporalDesignMatrix::toDiffDesignMatrix
      * @see fluxionum::DiffDesignMatrix
      */
-    shared_ptr<DiffDesignMatrix> toDiffDesignMatrixPointer(
-        DiffDesignMatrix<TimeType, VarType>::DiffType diffType =
-            FORWARD_FINITE_DIFFERENCES
-    ) const
-    {return make_shared<DiffDesignMatrix<TimeType, VarType>>(*this, diffType);}
+    shared_ptr<DiffDesignMatrix<TimeType, VarType>> toDiffDesignMatrixPointer(
+        DiffDesignMatrixType diffType = \
+            DiffDesignMatrixType::FORWARD_FINITE_DIFFERENCES
+    ) const;
 
 
     // ***  GETTERs and SETTERs  *** //
@@ -269,6 +275,24 @@ public:
      * @see fluxionum::TemporalDesignMatrix::t
      */
     inline arma::Col<TimeType> const & getTimeVector() const {return t;}
+    /**
+     * @brief Obtain the name of the time attribute
+     * @return The name of the time attribute
+     * @see fluxionum::TemporalDesignMatrix::timeName
+     */
+    inline string const & getTimeName() const {return timeName;}
+    /**
+     * @brief Set the name of the time attribute
+     * @param timeName The new name for the time attribute
+     * @see fluxionum::TemporalDesignMatrix::timeName
+     */
+    inline void setTimeName(string const &timeName)
+    {this->timeName = timeName;}
 };
 
+
 }
+
+#define _FLUXIONUM_TEMPORAL_DESIGN_MATRIX_H_
+#include <fluxionum/TemporalDesignMatrix.tpp>
+#endif
