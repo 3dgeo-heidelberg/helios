@@ -4,6 +4,7 @@
 #include <fluxionum/FluxionumTypes.h>
 
 #include <memory>
+#include <unordered_map>
 
 namespace fluxionum {
 
@@ -12,6 +13,7 @@ template <typename TimeType, typename VarType> class DiffDesignMatrix;
 using std::string;
 using std::shared_ptr;
 using std::make_shared;
+using std::unordered_map;
 
 /**
  * @author Alberto M. Esmoris Pena
@@ -106,6 +108,26 @@ public:
         return Y;
     }
     /**
+     * @brief Do a copy of the names of the DesignMatrix but discarding the
+     *  name of the time column
+     * @param names The names of the DesignMatrix to be copied
+     * @param timeColumnIndex The index of the time column
+     * @return Copy of the names of given DesignMatrix but discarding the name
+     *  of the time column
+     * @see fluxionum::AbstractDesignMatrix::columnNames
+     */
+    static inline vector<string> extractNonTimeNames(
+        vector<string> const &names, size_t const timeColumnIndex
+    ){
+        vector<string> newNames;
+        size_t numNames = names.size();
+        for(size_t i = 0 ; i < numNames ; ++i){
+            if(i==timeColumnIndex) continue;
+            newNames.push_back(names[i]);
+        }
+        return newNames;
+    }
+    /**
      * @brief Do a copy of the time column from given DesignMatrix \f$X\f$
      * @param X The DesignMatrix \f$X\f$ containing a time column
      * @param timeColumnIndex The index of the time column in given
@@ -137,9 +159,16 @@ public:
         string const timeName="time",
         vector<string> const &columnNames=vector<string>(0)
     ) :
-        DesignMatrix<VarType>(extractNonTimeMatrix(
-            designMatrix.getX(), timeColumnIndex
-        ), columnNames),
+        DesignMatrix<VarType>(
+            extractNonTimeMatrix(
+                designMatrix.getX(), timeColumnIndex
+            ),
+            designMatrix.hasColumnNames() ?
+                extractNonTimeNames(
+                    designMatrix.getColumnNames(),
+                    timeColumnIndex
+                ) : columnNames
+        ),
         t(extractTimeVector(designMatrix.getX(), timeColumnIndex)),
         timeName(
             designMatrix.hasColumnNames() ?
@@ -204,25 +233,22 @@ public:
      *  specified time column
      * @param path Path to the file containing both the data and the time
      *  vector
-     * @param timeColumnIndex Index of the column containing time values
      * @param timeName The default name for the time attribute to be used in
      *  case the read DesignMatrix does not specify a column name for its time
      *  column
      */
-    TemporalDesignMatrix(
-        string const &path,
-        size_t const timeColumnIndex,
-        string const timeName="time",
-        vector<string> const &columnNames=vector<string>(0)
-    ) :
-        TemporalDesignMatrix(
-            DesignMatrix<VarType>(path),
-            timeColumnIndex,
-            timeName,
-            columnNames
-        )
-    {
-        // TODO Rethink : Implement as read and swap
+    TemporalDesignMatrix(string const &path, string const &timeName="time"){
+        helios::filems::DesignMatrixReader<VarType> reader(path);
+        std::unordered_map<string, string> kv;
+        DesignMatrix<VarType> const dm = reader.read(&kv);
+        size_t const tCol = (size_t) std::strtoul(
+            kv.at("TIME_COLUMN").c_str(), nullptr, 10
+        );
+        *this = TemporalDesignMatrix<TimeType, VarType>(
+            dm,
+            tCol,
+            dm.hasColumnNames() ? dm.getColumnName(tCol) : timeName
+        );
     }
     virtual ~TemporalDesignMatrix() = default;
 

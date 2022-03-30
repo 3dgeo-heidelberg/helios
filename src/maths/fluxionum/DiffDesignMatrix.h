@@ -269,9 +269,7 @@ public:
     ) :
         AbstractDesignMatrix<VarType>(columnNames),
         diffType(diffType)
-    {
-        // TODO Rethink : Implement
-    }
+    {}
     /**
      * @brief Build a DiffDesignMatrix from given TemporalDesignMatrix
      * @param tdm The TemporalDesignMatrix to be used to build the

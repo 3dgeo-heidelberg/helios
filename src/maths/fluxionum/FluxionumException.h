@@ -5,6 +5,8 @@
 
 namespace fluxionum {
 
+using std::runtime_error;
+
 /**
  * @author Alberto M. Esmoris Pena
  * @version 1.0

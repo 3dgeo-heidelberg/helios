@@ -2,6 +2,7 @@
 
 #include <filems/read/comps/FileReader.h>
 
+#include <sstream>
 #include <fstream>
 #include <memory>
 
@@ -56,7 +57,16 @@ public:
         FileReader<ReadArg>(path),
         ifs(path, openMode),
         openMode(openMode)
-    {}
+    {
+        if(!ifs.is_open()){
+            std::stringstream ss;
+            ss  << "SimpleFileReader::SimpleFileReader("
+                << "string const &, ios__base::openmode"
+                << ") failed to open file at path:\n\""
+                << path << "\"";
+            throw std::ios_base::failure(ss.str());
+        }
+    }
     virtual ~SimpleFileReader() = default;
 
     // ***  READ METHODS  *** //

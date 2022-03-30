@@ -42,11 +42,14 @@ public:
     LineFileReader(
         string const &path,
         std::ios_base::openmode openMode = std::ios_base::in,
-        long const maxCharsPerLine = 8192
+        long const maxCharsPerLine = 8192,
+        bool const constructStrategy = true
     ) :
         SimpleFileReader<string>(path, openMode),
         maxCharsPerLine(maxCharsPerLine)
-    {makeStrategy();}
+    {
+        if(constructStrategy)makeStrategy();
+    }
     virtual ~LineFileReader() = default;
 
 protected:

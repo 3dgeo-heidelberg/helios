@@ -29,13 +29,20 @@ public:
      * @brief Decimal precision for validation purposes
      */
     double const eps = 0.00001;
+    /**
+     * @brief The directory where test files are located
+     */
+    std::string testDir;
 
     // ***  CONSTRUCTOR  *** //
     // ********************* //
     /**
      * @brief Fluxionum test constructor
      */
-    FluxionumTest() : BaseTest("Fluxionum test") {}
+    FluxionumTest(std::string testDir) :
+        BaseTest("Fluxionum test"),
+        testDir(testDir)
+    {}
 
     // ***  R U N  *** //
     // *************** //
@@ -219,12 +226,55 @@ bool FluxionumTest::testDesignMatrixBuilding(){
     )) return false;
 
     // Design matrix from file
+    vector<string> hf1({"x", "y", "z"}); // Header
+    arma::Mat<double> Xf1( // Matrix
+        "0 0 0;"
+        "0 0.1 0;"
+        "0.1 0.1 0;"
+        "0.1 0.2 0;"
+        "0.2 0.2 0;"
+        "0.2 0.2 0.1;"
+        "0.2 0.3 0.1;"
+        "0.3 0.3 0.1;"
+        "0.3 0.3 0.2"
+    );
+    string const dmf1Path = testDir + "design_matrix_header.txt";
+    DesignMatrix<double> dmf1(dmf1Path);
+    if(!validateDesignMatrix(dmf1, hf1, Xf1)) return false;
+    string const dmf2Path = testDir + "design_matrix_nonheader.txt";
+    DesignMatrix<double> dmf2(dmf2Path);
+    if(!validateDesignMatrix(dmf2, vector<string>(0), Xf1)) return false;
 
     // Temporal design matrix from file
+    vector<string> htf1({"x", "y"}); // Header
+    arma::Mat<double> Xtf1( // Matrix
+        "0 0;"
+        "0 0.1;"
+        "0.1 0.1;"
+        "0.1 0.2;"
+        "0.2 0.2;"
+        "0.2 0.2;"
+        "0.2 0.3;"
+        "0.3 0.3;"
+        "0.3 0.3"
+    );
+    arma::Col<double> ttf1("0 0.1 0.2 0.3 0.4 0.5 0.6 0.8 1.0");
+    string const tdmf1Path = testDir + "temporal_design_matrix_header.txt";
+    TemporalDesignMatrix<double, double> tdmf1(tdmf1Path);
+    if(!validateTemporalDesignMatrix(tdmf1, "t", htf1, ttf1, Xtf1))
+        return false;
+    string const tdmf2Path = testDir + "temporal_design_matrix_nonheader.txt";
+    TemporalDesignMatrix<double, double> tdmf2(tdmf2Path);
+    if(!validateTemporalDesignMatrix(
+        tdmf2, "time", vector<string>(0), ttf1, Xtf1
+    )) return false;
 
     // Indexed design matrix from file
+    // TODO Rethink : Test header
+    // TODO Rethink : Test nonheader
 
     // On passed return true
+    // TODO Rethink : Valgrind
     return true;
 }
 

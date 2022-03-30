@@ -93,7 +93,7 @@ void doTests(std::string const & testDir){
     RigidMotionTest rigidMotionTest;
     passed &= rigidMotionTest.test(std::cout, TEST_COLOR);
 
-    FluxionumTest fluxionumTest;
+    FluxionumTest fluxionumTest(testDir);
     passed &= fluxionumTest.test(std::cout, TEST_COLOR);
 
     HPCTest hpcTest;

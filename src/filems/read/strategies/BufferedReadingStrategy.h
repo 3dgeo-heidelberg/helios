@@ -44,10 +44,6 @@ protected:
      *  admissible index for the current state of the buffer
      */
     size_t cachedMaxIndex = 0;
-    /**
-     * @brief A cached exception for reads that
-     */
-    std::exception cachedException;
 
 public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //
@@ -92,12 +88,10 @@ public:
                 ++cachedMaxIndex;
             }
         }
-        catch(std::exception &ex){ // Delay exception until buffer is consumed
-            cachedException = ex;
-        }
+        catch(EndOfReadingException &eorex){} // Handle EndOfReadingExceptions
         // If buffer stills empty after trying to populate it
-        if(isBufferEmpty()){ // Throw cached exception
-            throw cachedException;
+        if(isBufferEmpty()){ // Throw EndOfReadingException
+            throw EndOfReadingException();
         }
         // If not, return next from buffer
         cachedIndex = 1;

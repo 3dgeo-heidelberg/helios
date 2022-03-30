@@ -1,6 +1,7 @@
 #pragma once
 
 #include <fluxionum/AbstractDesignMatrix.h>
+#include <filems/read/core/DesignMatrixReader.h>
 
 #include <armadillo>
 
@@ -8,6 +9,8 @@
 #include <string>
 
 namespace fluxionum {
+
+using namespace helios::filems;
 
 using std::vector;
 using std::string;
@@ -80,13 +83,11 @@ public:
      * @param columnNames The default column names to be used if no column
      *  names are read from file at given path
      */
-    DesignMatrix(
-        string const &path,
-        vector<string> const &columnNames=vector<string>(0)
-    ) :
-        AbstractDesignMatrix<T>(columnNames)
+    DesignMatrix(string const &path) :
+        AbstractDesignMatrix<T>()
     {
-        // TODO Rethink : Implement
+        helios::filems::DesignMatrixReader<T> reader(path);
+        *this = reader.read();
     }
     virtual ~DesignMatrix() = default;
 

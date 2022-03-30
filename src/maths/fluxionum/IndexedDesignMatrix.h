@@ -116,7 +116,12 @@ public:
         DesignMatrix<VarType>(
             TemporalDesignMatrix<double, VarType>::extractNonTimeMatrix(
                 designMatrix.getX(), indicesColumnIndex
-            )
+            ),
+            designMatrix.hasColumnNames() ?
+                TemporalDesignMatrix<double, VarType>::extractNonTimeNames(
+                    designMatrix.getColumnNames(),
+                    indicesColumnIndex
+                ) : columnNames
         ),
         indices(extractIndices(designMatrix.getX(), indicesColumnIndex)),
         indexName(
@@ -185,23 +190,14 @@ public:
      * @brief Build an IndexedDesignMatrix from data in file at given path and
      *  specified index column
      * @param path Path to the file containing both the data and the indices
-     * @param indicesColumnIndex Index of the column containing indices
      * @param indexName The default name for the index attribute to be used in
      *  case the read DesignMatrix does not specify a column name for its
      *  indices column
      */
     IndexedDesignMatrix(
         string const &path,
-        size_t const indicesColumnIndex,
-        string const indexName="index",
-        vector<string> const &columnNames=vector<string>(0)
-    ) :
-        IndexedDesignMatrix(
-            DesignMatrix<VarType>(path),
-            indicesColumnIndex,
-            indexName
-        )
-    {
+        string const indexName="index"
+    ){
         // TODO Rethink : Implement as read and swap
     }
     virtual ~IndexedDesignMatrix() = default;
