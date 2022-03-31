@@ -198,7 +198,17 @@ public:
         string const &path,
         string const indexName="index"
     ){
-        // TODO Rethink : Implement as read and swap
+        helios::filems::DesignMatrixReader<VarType> reader(path);
+        std::unordered_map<string, string> kv;
+        DesignMatrix<VarType> const dm = reader.read(&kv);
+        size_t const idxCol = (size_t) std::strtoul(
+            kv.at("INDEX_COLUMN").c_str(), nullptr, 10
+        );
+        *this = IndexedDesignMatrix<IndexType, VarType>(
+            dm,
+            idxCol,
+            dm.hasColumnNames() ? dm.getColumnName(idxCol) : indexName
+        );
     }
     virtual ~IndexedDesignMatrix() = default;
 
