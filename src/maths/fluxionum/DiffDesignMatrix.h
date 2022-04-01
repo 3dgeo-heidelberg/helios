@@ -218,7 +218,12 @@ protected:
      *  finite differences or from central finite differences.
      */
     arma::Mat<VarType> A;
-    // TODO Rethink : Implement timeName attribute
+    /**
+     * @brief The name of the time field.
+     *
+     * By default, it is "time"
+     */
+    string timeName;
 
 public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //
@@ -230,10 +235,12 @@ public:
      */
     DiffDesignMatrix(
         vector<string> const &columnNames=vector<string>(0),
+        string const timeName="time",
         DiffDesignMatrixType diffType=DiffDesignMatrixType::UNKNOWN
     ) :
         AbstractDesignMatrix<VarType>(columnNames),
-        diffType(diffType)
+        diffType(diffType),
+        timeName(timeName)
     {}
     /**
      * @brief Build a DiffDesignMatrix from given armadillo column vector of
@@ -247,6 +254,7 @@ public:
     DiffDesignMatrix(
         arma::Col<TimeType> const &t,
         arma::Mat<VarType> const &A,
+        string const &timeName="time",
         vector<string> const &columnNames=vector<string>(0),
         DiffDesignMatrixType diffType=DiffDesignMatrixType::UNKNOWN
     ) :
@@ -255,7 +263,8 @@ public:
         ta(arma::min(t)),
         tb(arma::max(t)),
         t(t),
-        A(A)
+        A(A),
+        timeName(timeName)
     {}
     /**
      * @brief Build a DiffDesignMatrix from data in file at given path
@@ -302,6 +311,7 @@ public:
             TemporalDesignMatrix<TimeType, VarType>::extractNonTimeMatrix(
                 dm.getX(), tCol
             ),
+            dm.hasColumnNames() ? dm.getColumnName(tCol) : timeName,
             TemporalDesignMatrix<TimeType, VarType>::extractNonTimeNames(
                 dm.getColumnNames(), tCol
             ),
@@ -328,7 +338,13 @@ public:
                 arma::Col<TimeType> const DT(t.subvec(0, t.n_elem-1));
                 arma::Mat<VarType> DXDT = arma::diff(X, 1, 0);
                 DXDT.each_col() /= arma::diff(t, 1);
-                *this = DiffDesignMatrix(DT, DXDT, getColumnNames(), diffType);
+                *this = DiffDesignMatrix(
+                    DT,
+                    DXDT,
+                    tdm.getTimeName(),
+                    getColumnNames(),
+                    diffType
+                );
                 break;
             }
             case DiffDesignMatrixType::CENTRAL_FINITE_DIFFERENCES:{
@@ -343,7 +359,13 @@ public:
                 );
                 DXDT.each_col() /= arma::diff(DT, 1);
                 DT = DT.subvec(0, DT.n_elem-1) / 2.0;
-                *this = DiffDesignMatrix(DT, DXDT, getColumnNames(), diffType);
+                *this = DiffDesignMatrix(
+                    DT,
+                    DXDT,
+                    tdm.getTimeName(),
+                    getColumnNames(),
+                    diffType
+                );
                 break;
             }
             default:{
@@ -410,6 +432,12 @@ public:
      * @see fluxionum::DiffDesignMatrix::diffType
      */
     inline DiffDesignMatrixType getDiffType() const {return diffType;}
+    /**
+     * @brief Obtain the name of the time attribute
+     * @return The name of the time attribute
+     * @see fluxionum::TemporalDesignMatrix::timeName
+     */
+    inline string const & getTimeName() const {return timeName;}
 };
 
 }

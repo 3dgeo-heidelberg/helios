@@ -338,7 +338,10 @@ bool FluxionumTest::testDiffDesignMatrix(){
             }
         }
         if(diffType != ddm.getDiffType()) return false;
-        // TODO Rethink : Implement (similar to validateTemporalDesignMatrix)
+        if(ddm.getTimeName() != timeName) return false;
+        for(size_t i = 0 ; i < nRows ; ++i){ // Check time
+            if(std::fabs(ddm[i]-t[i]) > 0.00001) return false;
+        }
         return true;
     };
 
@@ -431,9 +434,6 @@ bool FluxionumTest::testDiffDesignMatrix(){
         ddmf2, EtimeName2, vector<string>(0), Et3, EA3,
         DiffDesignMatrixType::CENTRAL_FINITE_DIFFERENCES
     )) return false;
-
-    // Validate load diff design matrix
-    // TODO Rethink : Implement
 
     // On passed return true
     return true;
