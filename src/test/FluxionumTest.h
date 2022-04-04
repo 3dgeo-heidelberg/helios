@@ -5,6 +5,9 @@
 #include <fluxionum/TemporalDesignMatrix.h>
 #include <fluxionum/IndexedDesignMatrix.h>
 #include <fluxionum/DiffDesignMatrix.h>
+#include <fluxionum/DiffDesignMatrixInterpolator.h>
+#include <fluxionum/LinearPiecesFunction.h>
+#include <fluxionum/ParametricLinearPiecesFunction.h>
 
 #include <armadillo>
 
@@ -68,6 +71,11 @@ public:
      * @return True if passed, false otherwise
      */
     bool testDiffDesignMatrix();
+    /**
+     * @brief Test functions from design matrices
+     * @return True if passed, false otherwise
+     */
+    bool testDesignFunctions();
 };
 
 // ***  R U N  *** //
@@ -77,6 +85,7 @@ bool FluxionumTest::run(){
     if(!testUnivariateNewtonRaphsonMinimization()) return false;
     if(!testDesignMatrixBuilding()) return false;
     if(!testDiffDesignMatrix()) return false;
+    if(!testDesignFunctions()) return false;
     return true;
 }
 
@@ -116,7 +125,7 @@ bool FluxionumTest::testDesignMatrixBuilding(){
         else if(!colNames.empty()) return false;
         for(size_t i = 0 ; i < nRows ; ++i){ // Check values
             for(size_t j = 0 ; j < nCols ; ++j){
-                if(std::fabs(dm(i, j)-X(i, j)) > 0.00001) return false;
+                if(std::fabs(dm(i, j)-X(i, j)) > eps) return false;
             }
         }
         return true;
@@ -137,7 +146,7 @@ bool FluxionumTest::testDesignMatrixBuilding(){
         size_t const nRows = tdm.getNumRows();
         if(tdm.getTimeName() != timeName) return false;
         for(size_t i = 0 ; i < nRows ; ++i){ // Check time
-            if(std::fabs(tdm[i]-t[i]) > 0.00001) return false;
+            if(std::fabs(tdm[i]-t[i]) > eps) return false;
         }
         return true;
     };
@@ -322,6 +331,7 @@ bool FluxionumTest::testDiffDesignMatrix(){
             DiffDesignMatrixType diffType
         ) -> bool
     {
+        if(ddm.getA().n_rows != ddm.getTimeVector().n_rows) return false;
         size_t const nRows = ddm.getNumRows();
         size_t const nCols = ddm.getNumColumns();
         if(A.n_rows != nRows || A.n_cols != nCols) return false;
@@ -334,13 +344,13 @@ bool FluxionumTest::testDiffDesignMatrix(){
         else if(!colNames.empty()) return false;
         for(size_t i = 0 ; i < nRows ; ++i){
             for(size_t j = 0 ; j < nCols ; ++j){
-                if(std::fabs(ddm(i, j)-A(i, j)) > 0.00001) return false;
+                if(std::fabs(ddm(i, j)-A(i, j)) > eps) return false;
             }
         }
         if(diffType != ddm.getDiffType()) return false;
         if(ddm.getTimeName() != timeName) return false;
         for(size_t i = 0 ; i < nRows ; ++i){ // Check time
-            if(std::fabs(ddm[i]-t[i]) > 0.00001) return false;
+            if(std::fabs(ddm[i]-t[i]) > eps) return false;
         }
         return true;
     };
@@ -434,6 +444,86 @@ bool FluxionumTest::testDiffDesignMatrix(){
         ddmf2, EtimeName2, vector<string>(0), Et3, EA3,
         DiffDesignMatrixType::CENTRAL_FINITE_DIFFERENCES
     )) return false;
+
+    // On passed return true
+    return true;
+}
+
+bool FluxionumTest::testDesignFunctions(){
+    // Prepare data
+    TemporalDesignMatrix<double, double> tdm1(
+        arma::Mat<double>(
+            "0 0;"
+            "2 2;"
+            "4 3;"
+            "6 3;"
+            "9 4;"
+        ),
+        0
+    );
+    TemporalDesignMatrix<double, double> tdm2(
+        arma::Mat<double>(
+            "0 0 3;"
+            "2 2 4;"
+            "4 3 3;"
+            "6 3 6;"
+            "9 4 5;"
+        ),
+        0
+    );
+    DiffDesignMatrix<double, double> ffd1 = tdm1.toDiffDesignMatrix(
+        DiffDesignMatrixType::FORWARD_FINITE_DIFFERENCES
+    );
+    DiffDesignMatrix<double, double> ffd2 = tdm2.toDiffDesignMatrix(
+        DiffDesignMatrixType::FORWARD_FINITE_DIFFERENCES
+    );
+
+    // Validate LinearPiecesFunction
+    LinearPiecesFunction<double, double> lpf1 = \
+    DiffDesignMatrixInterpolator::makeLinearPiecesFunction(
+        ffd1,
+        arma::Col<double>(tdm1.getColumnCopy(0).subvec(0, tdm1.getNumRows()-2)),
+        0
+    );
+    LinearPiecesFunction<double, double> lpf2 = \
+    DiffDesignMatrixInterpolator::makeLinearPiecesFunction(ffd1, tdm1);
+    arma::Col<double> lpf1t("-1 0 1 2 3 4 5 6 7.5 9");
+    arma::Col<double> lpf1E("-1 0 1 2 2.5 3 3 3 3.5 4");
+    for(size_t i = 0 ; i < lpf1t.n_elem ; ++i){
+        if(std::fabs(lpf1(lpf1t.at(i)) - lpf1E.at(i)) > eps) return false;
+        if(std::fabs(lpf2(lpf1t.at(i)) - lpf1E.at(i)) > eps) return false;
+    }
+
+    // Validate ParametricLinearPiecesFunction
+    ParametricLinearPiecesFunction<double, double> plpf1 = \
+    DiffDesignMatrixInterpolator::makeParametricLinearPiecesFunction(
+        ffd2,
+        arma::Mat<double>(tdm2.getX().rows(0, tdm2.getNumRows()-2))
+    );
+    ParametricLinearPiecesFunction<double, double> plpf2 = \
+    DiffDesignMatrixInterpolator::makeParametricLinearPiecesFunction(
+        ffd2, tdm2
+    );
+    arma::Mat<double> plpf1E(
+        "-1 2.5;"
+        "0 3;"
+        "1 3.5;"
+        "2 4;"
+        "2.5 3.5;"
+        "3 3;"
+        "3 4.5;"
+        "3 6;"
+        "3.5 5.5;"
+        "4 5"
+    );
+    for(size_t i = 0 ; i < lpf1t.n_elem ; ++i){
+        arma::Col<double> plpf1y = plpf1(lpf1t.at(i));
+        arma::Col<double> plpf2y = plpf2(lpf1t.at(i));
+        for(size_t j = 0 ; j < 2 ; ++j){
+            if(std::fabs(plpf1y.at(j) - plpf1E.at(i, j)) > eps) return false;
+            if(std::fabs(plpf2y.at(j) - plpf1E.at(i, j)) > eps) return false;
+        }
+    }
 
     // On passed return true
     return true;

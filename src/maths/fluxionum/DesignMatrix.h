@@ -141,23 +141,46 @@ public:
      * @return The \f$i\f$-th row of the DesignMatrix \f$X\f$
      * @see fluxionum::DesignMatrix::X
      */
-    inline arma::Row<T> const & getRow(size_t const i) const {return X.row(i);}
+    inline arma::subview_row<T> const getRow(size_t const i) const
+    {return X.row(i);}
+    /**
+     * @brief Like DesignMatrix::getRow(size_t const) but returning a copy by
+     *  value instead of a view-like reference
+     * @see fluxionum::DesignMatrix::getRow(size_t const)
+     */
+    inline arma::Row<T> getRowCopy(size_t const i) const {return getRow(i);}
     /**
      * @brief Obtain the \f$j\f$-th column of the DesignMatrix \f$X\f$
      * @param j Index of the column to be obtained
      * @return The \f$j\f$-th column of the DesignMatrix \f$X\f$X
      * @see fluxionum::DesignMatrix::X
      */
-    inline arma::Col<T> const & getColumn(size_t const j) const
+    inline arma::subview_col<T> const getColumn(size_t const j) const
     {return X.col(j);}
+    /**
+     * @brief Like DesignMatrix::getColumn(size_t const) but returning a copy
+     *  by value instead of a view-like reference
+     * @see fluxionum::DesignMatrix::getColumn(size_t const)
+     */
+    inline arma::Col<T> getColumnCopy(size_t const j) const
+    {return getColumn(j);}
     /**
      * @brief Like the fluxionum::DesignMatrix::getColumn(size_t const) method
      *  but specifying the column by name
      * @param columnName The name of the column to be obtained
      * @see fluxionum::DesignMatrix::getColumn(size_t const)
      */
-    inline arma::Col<T> const & getColumn(string const &columnName) const
+    inline arma::subview_col<T> const  getColumn(
+        string const &columnName
+    ) const
     {return getColumn(translateColumnNameToIndex(columnName));}
+    /**
+     * @brief Like DesignMatrix::getColumn(string const &) but returning a copy
+     *  by value instead of a view-like reference
+     * @see fluxionum::DesignMatrix::getColumn(string const &)
+     */
+    inline arma::Col<T> getColumnCopy(string const &columnName) const
+    {return getColumn(columnName);}
 
 };
 

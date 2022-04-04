@@ -335,11 +335,10 @@ public:
                 arma::uvec const tSort = arma::sort_index(tdm.getTimeVector());
                 arma::Col<TimeType> const t = tdm.getTimeVector()(tSort);
                 arma::Mat<VarType> const X = tdm.getX().rows(tSort);
-                arma::Col<TimeType> const DT(t.subvec(0, t.n_elem-1));
                 arma::Mat<VarType> DXDT = arma::diff(X, 1, 0);
                 DXDT.each_col() /= arma::diff(t, 1);
                 *this = DiffDesignMatrix(
-                    DT,
+                    t.subvec(0, t.n_elem-2),
                     DXDT,
                     tdm.getTimeName(),
                     getColumnNames(),
@@ -351,16 +350,16 @@ public:
                 arma::uvec const tSort = arma::sort_index(tdm.getTimeVector());
                 arma::Col<TimeType> const t = tdm.getTimeVector()(tSort);
                 arma::Mat<VarType> const X = tdm.getX().rows(tSort);
-                arma::Col<TimeType> DT(
+                arma::Col<TimeType> T(
                     (t.subvec(0, t.n_elem-2) + t.subvec(1, t.n_elem-1))
                 );
                 arma::Mat<VarType> DXDT(
                     (X.rows(2, X.n_rows-1) - X.rows(0, X.n_rows-3))
                 );
-                DXDT.each_col() /= arma::diff(DT, 1);
-                DT = DT.subvec(0, DT.n_elem-1) / 2.0;
+                DXDT.each_col() /= arma::diff(T, 1);
+                T = T.subvec(0, T.n_elem-2) / 2.0;
                 *this = DiffDesignMatrix(
-                    DT,
+                    T,
                     DXDT,
                     tdm.getTimeName(),
                     getColumnNames(),
@@ -438,6 +437,18 @@ public:
      * @see fluxionum::TemporalDesignMatrix::timeName
      */
     inline string const & getTimeName() const {return timeName;}
+    /**
+     * @brief Obtain the sorted series of time values DiffDesignMatrix::t
+     * @return The sorted series of time values DiffDesignMatrix::t
+     * @see fluxionum::DiffDesignMatrix::t
+     */
+    inline arma::Col<TimeType> const & getTimeVector() const {return t;}
+    /**
+     * @brief Obtain a constant/read reference to the \f$A\f$ matrix
+     * @return Constant/read reference to the \f$A\f$ matrix
+     * @see fluxionum::DiffDesignMatrix::A
+     */
+    inline arma::Mat<VarType> const & getA() const {return A;}
 };
 
 }
