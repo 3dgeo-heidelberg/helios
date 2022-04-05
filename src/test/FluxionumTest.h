@@ -8,6 +8,10 @@
 #include <fluxionum/DiffDesignMatrixInterpolator.h>
 #include <fluxionum/LinearPiecesFunction.h>
 #include <fluxionum/ParametricLinearPiecesFunction.h>
+#include <fluxionum/FixedIterativeEulerMethod.h>
+#include <fluxionum/FixedParametricIterativeEulerMethod.h>
+#include <fluxionum/ClosestLesserSampleFunction.h>
+#include <fluxionum/ParametricClosestLesserSampleFunction.h>
 
 #include <armadillo>
 
@@ -482,7 +486,7 @@ bool FluxionumTest::testDesignFunctions(){
     LinearPiecesFunction<double, double> lpf1 = \
     DiffDesignMatrixInterpolator::makeLinearPiecesFunction(
         ffd1,
-        arma::Col<double>(tdm1.getColumnCopy(0).subvec(0, tdm1.getNumRows()-2)),
+        arma::Col<double>(tdm1.getColumnCopy(0).subvec(0,tdm1.getNumRows()-2)),
         0
     );
     LinearPiecesFunction<double, double> lpf2 = \
@@ -524,6 +528,79 @@ bool FluxionumTest::testDesignFunctions(){
             if(std::fabs(plpf2y.at(j) - plpf1E.at(i, j)) > eps) return false;
         }
     }
+
+    // Validate FixedIterativeEulerMethod
+    arma::Col<double> fiem1t("0 1 2 3 4 5 6 7.5 9");
+    arma::Col<double> fiem1E("0 1 2 2.5 3 3 3 3.5 4");
+    arma::Col<double> ySamples1(
+        tdm1.getColumnCopy(0).subvec(0, tdm1.getNumRows()-2)
+    );
+    arma::Col<double> ySamples2;
+    arma::Col<double> dydtSamples1( // Vector of known derivative samples
+        ffd1.getA().col(0)
+    );
+    arma::Col<double> dydtSamples2;
+    ClosestLesserSampleFunction<double, double> clsf1(
+        ffd1.getTimeVector(),
+        dydtSamples1,
+        0
+    );
+    ClosestLesserSampleFunction<double, double> clsf2 = clsf1;
+    FixedIterativeEulerMethod<double, double> fiem1 = \
+    DiffDesignMatrixInterpolator::makeFixedIterativeEulerMethod(
+        ffd1,
+        ySamples1,
+        clsf1
+    );
+    FixedIterativeEulerMethod<double, double> fiem2 = \
+    DiffDesignMatrixInterpolator::makeFixedIterativeEulerMethod(
+        ffd1,
+        tdm1,
+        0,
+        &ySamples2,
+        &clsf2,
+        &dydtSamples2
+    );
+    for(size_t i = 0 ; i < fiem1t.n_elem ; ++i){
+        double const h = (i==0) ? 0 : fiem1t.at(i) - fiem1t.at(i-1);
+        if(std::fabs(fiem1(h) - fiem1E.at(i)) > eps) return false;
+        if(std::fabs(fiem2(h) - fiem1E.at(i)) > eps) return false;
+    }
+
+    // Validate ParametricFixedIterativeEulerMethod
+    arma::Mat<double> pfiem1E(
+        "0 3;"
+        "1 3.5;"
+        "2 4;"
+        "2.5 3.5;"
+        "3 3;"
+        "3 4.5;"
+        "3 6;"
+        "3.5 5.5;"
+        "4 5"
+    );
+    arma::Mat<double> const &pySamples1 = tdm2.getX();
+    arma::Mat<double> const &pdydtSamples1 = ffd2.getA();
+    ParametricClosestLesserSampleFunction<double, double> pclsf1(
+        ffd2.getTimeVector(),
+        pdydtSamples1,
+        0
+    );
+    FixedParametricIterativeEulerMethod<double, double> fpiem1 = \
+    DiffDesignMatrixInterpolator::makeFixedParametricIterativeEulerMethod(
+        ffd1,
+        pySamples1,
+        pclsf1
+    );
+
+    for(size_t i = 0 ; i < fiem1t.n_elem ; ++i){
+        double const h = (i==0) ? 0 : fiem1t.at(i) - fiem1t.at(i-1);
+        if(arma::any(arma::abs(fpiem1(h) - pfiem1E.at(i)) > eps)) return false;
+        //if(std::fabs(fpiem2(h) - pfiem1E.at(i)) > eps) return false; // TODO Restore
+    }
+
+    // TODO Rethink : Implementing manual extraction ...
+    // TODO Rethink : Implement automatic extraction
 
     // On passed return true
     return true;
