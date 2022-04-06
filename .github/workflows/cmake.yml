@@ -29,7 +29,7 @@ jobs:
            path: |
              ${{github.workspace}}/lib/boost
              ${{github.workspace}}/.github/config/boost
-           key: ${{ runner.os }}-boost.1.76
+           key: ${{ runner.os }}-boost.1.76-new
 
        - name: Set Up Python 3.6
          uses: actions/setup-python@v2
@@ -179,7 +179,7 @@ jobs:
            path: |
              ${{github.workspace}}/lib/boost
              ${{github.workspace}}/.github/config/boost
-           key: ${{ runner.os }}-boost.1.76
+           key: ${{ runner.os }}-boost.1.76-new
 
        - name: Configure CMake
          # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
@@ -248,7 +248,7 @@ jobs:
           path: |
             ${{github.workspace}}/lib/boost
             ${{github.workspace}}/.github/config/boost
-          key: ${{ runner.os }}-boost.1.76
+          key: ${{ runner.os }}-boost.1.76-new
 
       - name: Install Boost in the system
         run: |
@@ -331,7 +331,7 @@ jobs:
            path: |
              ${{github.workspace}}/lib/boost
              ${{github.workspace}}/.github/config/boost
-           key: ${{ runner.os }}-boost.1.76
+           key: ${{ runner.os }}-boost.1.76-new
 
        - name: Configure CMake
          # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
