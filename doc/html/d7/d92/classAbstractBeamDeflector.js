@@ -1,10 +1,13 @@
 var classAbstractBeamDeflector =
 [
     [ "AbstractBeamDeflector", "d7/d92/classAbstractBeamDeflector.html#a1eba6f027b964c01653685dca48daf5d", null ],
+    [ "~AbstractBeamDeflector", "d7/d92/classAbstractBeamDeflector.html#ad2c1cb7e92823d0b251227282d2fa192", null ],
+    [ "_clone", "d7/d92/classAbstractBeamDeflector.html#a570c774fe04466eafce94bfcdcbe6e51", null ],
     [ "applySettings", "d7/d92/classAbstractBeamDeflector.html#a9ec50f9f8279b097b4ec91f9dc0b2b32", null ],
+    [ "clone", "d7/d92/classAbstractBeamDeflector.html#ac8a66d6384e379184028bed50d3b4063", null ],
     [ "doSimStep", "d7/d92/classAbstractBeamDeflector.html#aacc1f2048736091dc9cc7ee18caaae23", null ],
     [ "getEmitterRelativeAttitude", "d7/d92/classAbstractBeamDeflector.html#ae65d89b6a449aa58656a0416e1fd2fbc", null ],
-    [ "getEmitterRelativeAttitudeByReference", "d7/d92/classAbstractBeamDeflector.html#a680c5cbd39b179343a2dec089c4d960f", null ],
+    [ "getEmitterRelativeAttitudeByReference", "d7/d92/classAbstractBeamDeflector.html#a050489b7abe89c6758b6fa7737fe883e", null ],
     [ "lastPulseLeftDevice", "d7/d92/classAbstractBeamDeflector.html#ae45b6eb2f3596a65b5b278521610b0c9", null ],
     [ "restartDeflector", "d7/d92/classAbstractBeamDeflector.html#af3200a0bcbeacfe62a3c083f2e22c136", null ],
     [ "setScanAngle_rad", "d7/d92/classAbstractBeamDeflector.html#a0746a01290e62c1ed4c60c3638a94374", null ],

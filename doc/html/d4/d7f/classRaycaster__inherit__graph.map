@@ -1,8 +1,7 @@
 <map id="Raycaster" name="Raycaster">
-<area shape="rect" id="node1" title="Raycaster interface declaring raycasting operations." alt="" coords="5,97,92,123"/>
-<area shape="rect" id="node2" href="$d9/db1/classRaycasterGroveTree.html" title=" " alt="" coords="140,5,293,47"/>
-<area shape="rect" id="node4" href="$df/d01/classKDGroveRaycaster.html" title="Class representing a KDGrove ray caster." alt="" coords="144,71,289,98"/>
-<area shape="rect" id="node5" href="$da/d81/classKDTreeRaycaster.html" title="Class representing a KDTree ray caster." alt="" coords="150,122,283,149"/>
-<area shape="rect" id="node6" href="$d9/db1/classRaycasterGroveTree.html" title="Define a Raycaster derived interface to make it compatible with groves." alt="" coords="140,173,293,215"/>
-<area shape="rect" id="node3" href="$d6/dba/classGroveKDTreeRaycaster.html" title="Grove KDTree Raycaster extends KDTreeRaycaster to make it compatible with groves by implementing the ..." alt="" coords="341,67,513,94"/>
+<area shape="rect" id="node2" href="$df/d01/classKDGroveRaycaster.html" title="Class representing a KDGrove ray caster. " alt="" coords="139,5,275,32"/>
+<area shape="rect" id="node3" href="$da/d81/classKDTreeRaycaster.html" title="Class representing a KDTree ray caster. " alt="" coords="144,56,271,83"/>
+<area shape="rect" id="node5" href="$d9/db1/classRaycasterGroveTree.html" title="Define a Raycaster derived interface to make it compatible with groves. " alt="" coords="136,107,279,149"/>
+<area shape="rect" id="node6" href="$d9/db1/classRaycasterGroveTree.html" title="RaycasterGroveTree\l\&lt; DynObject \&gt;" alt="" coords="136,173,279,214"/>
+<area shape="rect" id="node4" href="$d6/dba/classGroveKDTreeRaycaster.html" title="Grove KDTree Raycaster extends KDTreeRaycaster to make it compatible with groves by implementing the ..." alt="" coords="327,119,489,145"/>
 </map>

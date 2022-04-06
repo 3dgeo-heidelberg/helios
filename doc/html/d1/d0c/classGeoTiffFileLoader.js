@@ -11,6 +11,7 @@ var classGeoTiffFileLoader =
     [ "releaseVertices", "d1/d0c/classGeoTiffFileLoader.html#a180c596f369530ea13eab44af4945c78", null ],
     [ "run", "d1/d0c/classGeoTiffFileLoader.html#a906114c4923aa06411d5692049480386", null ],
     [ "env", "d1/d0c/classGeoTiffFileLoader.html#a2030c3acd5fa5d2c29fa888fe5716ecb", null ],
+    [ "eps", "d1/d0c/classGeoTiffFileLoader.html#a87349e7fe0d47f28b91373d9ec6abc8a", null ],
     [ "height", "d1/d0c/classGeoTiffFileLoader.html#afa0947ac00405668f994c8fc6404a6d0", null ],
     [ "layer", "d1/d0c/classGeoTiffFileLoader.html#acc63888f25ed900bf6f410e24938e308", null ],
     [ "minx", "d1/d0c/classGeoTiffFileLoader.html#a53734b4dfef85a1008415b5debd2e1db", null ],

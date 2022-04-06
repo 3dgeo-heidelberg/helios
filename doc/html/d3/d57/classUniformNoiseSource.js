@@ -8,9 +8,9 @@ var classUniformNoiseSource =
     [ "getMin", "d3/d57/classUniformNoiseSource.html#a7cd752c26ef26d55983161bcb6e3d74c", null ],
     [ "getRandomNoiseType", "d3/d57/classUniformNoiseSource.html#a942001e13bad7502b7f0e0c5495894b6", null ],
     [ "noiseFunction", "d3/d57/classUniformNoiseSource.html#a089b932288c2c50a829e70ebf222dae1", null ],
-    [ "setMax", "d3/d57/classUniformNoiseSource.html#a856a0397830a567f931b1c7758b8cda4", null ],
-    [ "setMin", "d3/d57/classUniformNoiseSource.html#a0bf8c1fa32a8910926415ac14bf022a2", null ],
-    [ "operator<<", "d3/d57/classUniformNoiseSource.html#a0b3aaf94eb6308984167f35d5100506f", null ],
+    [ "setMax", "d3/d57/classUniformNoiseSource.html#a0fc8a2e995411c5bf65e68a3ceabe1d3", null ],
+    [ "setMin", "d3/d57/classUniformNoiseSource.html#ac935ef1818ddea9aba4590906f01da42", null ],
+    [ "operator<<", "d3/d57/classUniformNoiseSource.html#a2d026bd767e1c3b58bd3fbac044d0df3", null ],
     [ "uniformNoiseMax", "d3/d57/classUniformNoiseSource.html#a379670d2c25c5c224ff2007f9ea20cee", null ],
     [ "uniformNoiseMin", "d3/d57/classUniformNoiseSource.html#aae440b0a488eab1d1355d4bbb8337c40", null ]
 ];

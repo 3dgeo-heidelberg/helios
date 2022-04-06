@@ -155,6 +155,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a1efb5df7a0b3c59c2a6d0d85c6485a84"><td class="memItemLeft" align="right" valign="top">glm::dvec3&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d9c/classScene.html#a1efb5df7a0b3c59c2a6d0d85c6485a84">getShift</a> ()</td></tr>
 <tr class="memdesc:a1efb5df7a0b3c59c2a6d0d85c6485a84"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain the minimum boundaries of the original axis aligned bounding box containing the scene, before it was centered so (0, 0, 0) became its new minimum boundaries.  <a href="#a1efb5df7a0b3c59c2a6d0d85c6485a84">More...</a><br /></td></tr>
 <tr class="separator:a1efb5df7a0b3c59c2a6d0d85c6485a84"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4da8f4527d42c258d28ec94dea031481"><td class="memItemLeft" align="right" valign="top">glm::dvec3 const  &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d9c/classScene.html#a4da8f4527d42c258d28ec94dea031481">getShiftRef</a> () const</td></tr>
+<tr class="memdesc:a4da8f4527d42c258d28ec94dea031481"><td class="mdescLeft">&#160;</td><td class="mdescRight">Like <a class="el" href="../../d5/d9c/classScene.html#a1efb5df7a0b3c59c2a6d0d85c6485a84" title="Obtain the minimum boundaries of the original axis aligned bounding box containing the scene...">Scene::getShift</a> but returning a const reference instead of a copy.  <a href="#a4da8f4527d42c258d28ec94dea031481">More...</a><br /></td></tr>
+<tr class="separator:a4da8f4527d42c258d28ec94dea031481"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af46ce55bcb11ce26343b4b72066e0cf5"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="../../d2/da0/classVertex.html">Vertex</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d9c/classScene.html#af46ce55bcb11ce26343b4b72066e0cf5">getAllVertices</a> ()</td></tr>
 <tr class="memdesc:af46ce55bcb11ce26343b4b72066e0cf5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain all vertices (without repetitions) composing the scene.  <a href="#af46ce55bcb11ce26343b4b72066e0cf5">More...</a><br /></td></tr>
 <tr class="separator:af46ce55bcb11ce26343b4b72066e0cf5"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -852,6 +855,34 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>boost::serialization
 
 <p>Obtain the minimum boundaries of the original axis aligned bounding box containing the scene, before it was centered so (0, 0, 0) became its new minimum boundaries. </p>
 <dl class="section return"><dt>Returns</dt><dd>Minimum boundaries of the original axis aligned bounding box, before translating to (0, 0, 0) </dd></dl>
+
+</div>
+</div>
+<a id="a4da8f4527d42c258d28ec94dea031481"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4da8f4527d42c258d28ec94dea031481">&#9670;&nbsp;</a></span>getShiftRef()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">glm::dvec3 const&amp; Scene::getShiftRef </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Like <a class="el" href="../../d5/d9c/classScene.html#a1efb5df7a0b3c59c2a6d0d85c6485a84" title="Obtain the minimum boundaries of the original axis aligned bounding box containing the scene...">Scene::getShift</a> but returning a const reference instead of a copy. </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d5/d9c/classScene.html#a1efb5df7a0b3c59c2a6d0d85c6485a84" title="Obtain the minimum boundaries of the original axis aligned bounding box containing the scene...">Scene::getShift</a> </dd></dl>
 
 </div>
 </div>

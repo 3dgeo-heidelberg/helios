@@ -99,17 +99,17 @@ public:
      */
     FullWaveformPulseRunnable(
         std::shared_ptr<FullWaveformPulseDetector> detector,
-        glm::dvec3 absoluteBeamOrigin,
-        Rotation absoluteBeamAttitude,
-        int currentPulseNum,
-        double currentGpsTime,
-        bool writeWaveform,
-        bool calcEchowidth,
+        glm::dvec3 const absoluteBeamOrigin,
+        Rotation const absoluteBeamAttitude,
+        int const currentPulseNum,
+        double const currentGpsTime,
+        bool const writeWaveform,
+        bool const calcEchowidth,
         std::vector<Measurement> * allMeasurements,
         std::mutex * allMeasurementsMutex,
         std::vector<Measurement> * cycleMeasurements,
         std::mutex * cycleMeasurementsMutex,
-        unsigned int legIndex
+        unsigned int const legIndex
     ) :
         AbstractPulseRunnable(
 			detector,

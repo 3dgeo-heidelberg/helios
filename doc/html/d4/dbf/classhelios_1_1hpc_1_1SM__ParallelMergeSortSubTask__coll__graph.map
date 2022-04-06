@@ -1,5 +1,3 @@
 <map id="helios::hpc::SM_ParallelMergeSortSubTask&lt; RandomAccessIterator, Comparator &gt;" name="helios::hpc::SM_ParallelMergeSortSubTask&lt; RandomAccessIterator, Comparator &gt;">
-<area shape="rect" id="node1" title="Shared sub&#45;task to sort a sequence using a parallel mergesort like algorithm for shared memory contex..." alt="" coords="5,188,261,244"/>
-<area shape="rect" id="node2" href="$df/d6f/classSharedSubTask.html" title="A shared task is said to be a collection of shared sub&#45;tasks. Each shared sub&#45;task can be computed in..." alt="" coords="196,103,316,130"/>
-<area shape="rect" id="node3" title=" " alt="" coords="73,5,133,32"/>
+<area shape="rect" id="node2" href="$df/d6f/classSharedSubTask.html" title="A shared task is said to be a collection of shared sub&#45;tasks. Each shared sub&#45;task can be computed in..." alt="" coords="178,103,293,130"/>
 </map>

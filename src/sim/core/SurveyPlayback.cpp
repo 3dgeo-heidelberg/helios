@@ -11,26 +11,24 @@ using namespace std::chrono;
 namespace fs = boost::filesystem;
 
 #include "AbstractDetector.h"
-#include "FullWaveformPulseDetector.h"
 #include "SurveyPlayback.h"
 #include <glm/gtx/vector_angle.hpp>
-#include "ZipSyncFileWriter.h"
-#include "SimpleSyncFileWriter.h"
 #include "HelicopterPlatform.h"
 #include <ScanningStrip.h>
+#include <filems/facade/FMSFacade.h>
+#include <filems/write/comps/SimpleSyncFileWriter.h>
+
+using helios::filems::SimpleSyncFileWriter;
 
 using namespace std;
 
 SurveyPlayback::SurveyPlayback(
     shared_ptr<Survey> survey,
-    const std::string outputPath,
+    shared_ptr<FMSFacade> fms,
     int const parallelizationStrategy,
     std::shared_ptr<PulseThreadPoolInterface> pulseThreadPoolInterface,
     int const chunkSize,
     std::string fixedGpsTimeStart,
-    bool lasOutput,
-    bool las10,
-    bool zipOutput,
     bool exportToFile
 ):
     Simulation(
@@ -39,26 +37,11 @@ SurveyPlayback::SurveyPlayback(
         chunkSize,
         fixedGpsTimeStart
     ),
-    lasOutput(lasOutput),
-    las10(las10),
-    zipOutput(zipOutput),
-    outputPath(outputPath)
+    fms(fms)
 {
-    this->mSurvey = survey;
+  this->mSurvey = survey;
 	this->exitAtEnd = true;
 	this->exportToFile = exportToFile;
-
-	// ######## BEGIN Create part of the leg point cloud file path #######
-	auto t = std::time(nullptr);
-	auto tm = std::localtime(&t);
-	auto mDateString = std::put_time(tm, "%Y-%m-%d_%H-%M-%S");
-	ostringstream oss;
-	oss << outputPath << "Survey Playback/" << mSurvey->name << "/"
-	    << mDateString << "/";
-	mOutputFilePathString = oss.str();
-	logging::INFO(mOutputFilePathString);
-
-	// ######## END Create part of the leg point cloud file path #######
 	this->setScanner(mSurvey->scanner);
 
 	// ############### BEGIN If the leg has no survey defined, create a default one ################
@@ -66,12 +49,13 @@ SurveyPlayback::SurveyPlayback(
 		shared_ptr<Leg> leg(new Leg());
 
 		// Set leg scanner settings:
-		leg->mScannerSettings = shared_ptr<ScannerSettings>(new ScannerSettings());
+		leg->mScannerSettings = make_shared<ScannerSettings>();
 
 		// Set leg position to the center of the scene:
-		shared_ptr<PlatformSettings> ps(new PlatformSettings());
-		ps->setPosition(mSurvey->scanner->platform->scene->getAABB()->getCentroid());
-
+		shared_ptr<PlatformSettings> ps = make_shared<PlatformSettings>();
+		ps->setPosition(
+		    mSurvey->scanner->platform->scene->getAABB()->getCentroid()
+        );
 		leg->mPlatformSettings = ps;
 
 		// Add leg to survey:
@@ -197,7 +181,7 @@ int SurveyPlayback::getCurrentLegIndex() {
 	return mCurrentLegIndex;
 }
 
-string SurveyPlayback::getLegOutputPrefix(){
+string SurveyPlayback::getLegOutputPrefix(std::string format){
     std::shared_ptr<Leg> leg = getCurrentLeg();
     std::shared_ptr<ScanningStrip> strip = leg->getStrip();
 
@@ -205,40 +189,23 @@ string SurveyPlayback::getLegOutputPrefix(){
     leg->wasProcessed = true;
 
     stringstream ss;
-    ss << "points/";
     if(strip != nullptr){ // Handle prefix when leg belongs to a split
         ss << "strip"
-           << boost::str(boost::format(mFormatString) % strip->getStripId());
+           << boost::str(boost::format(format) % strip->getStripId());
     }
     else{ // Handle prefix when leg does not belong to a split
         ss << "leg"
-           << boost::str(boost::format(mFormatString) % leg->getSerialId());
+           << boost::str(boost::format(format) % leg->getSerialId());
     }
-    return ss.str();
-}
-
-string SurveyPlayback::getCurrentOutputPath() {
-    stringstream ss;
-    ss << getLegOutputPrefix();
-	if(lasOutput){
-	    if(zipOutput) ss << "_point.laz";
-	    else ss << "_points.las";
-	}
-	else if(zipOutput) ss << "_points.bin";
-	else ss << "_points.xyz";
-	return ss.str();
-}
-
-string SurveyPlayback::getTrajectoryOutputPath(){
-    stringstream ss;
-    ss << getLegOutputPrefix();
-    ss << "_trajectory.txt";
     return ss.str();
 }
 
 void SurveyPlayback::onLegComplete() {
     // Do scanning pulse process handling of on leg complete, if any
     mScanner->onLegComplete();
+
+    // Notify detector about leg completion
+    mScanner->detector->onLegComplete();
 
 	// Start next leg
     elapsedLength += mSurvey->legs.at(mCurrentLegIndex)->getLength();
@@ -390,67 +357,37 @@ void SurveyPlayback::stopAndTurn(
 }
 
 void SurveyPlayback::prepareOutput(){
-    // Specify output file:
-    shared_ptr<FullWaveformPulseDetector> fwf_detector =
-        dynamic_pointer_cast<FullWaveformPulseDetector>(
-            getScanner()->detector
-        );
-
-    // Fullwave prefix
-    stringstream ss;
-    ss << getLegOutputPrefix();
-    if(zipOutput) ss << "_fullwave.bin";
-    else ss << "_fullwave.txt";
-
-    // Check if all the legs in the strip were processed
+    // Check leg is active, otherwise there is no output to prepare
     std::shared_ptr<Leg> leg = getCurrentLeg();
-    std::shared_ptr<ScanningStrip> strip = leg->getStrip();
-    bool lastLegInStrip{};
-    if (strip != nullptr)
-      lastLegInStrip = getCurrentLeg()->getStrip()->isLastLegInStrip();
-    else // Current leg does not belong to a strip so it goes to its own file.
-      lastLegInStrip = true;
+    if(!leg->getScannerSettings().active) return;
 
-    // Set output path
-    std::string const path = mOutputFilePathString + getCurrentOutputPath();
-    fwf_detector->setOutputFilePath(
-        path,
-        ss.str(),
+    // Check if all the legs in the rip were processed
+    std::shared_ptr<ScanningStrip> strip = leg->getStrip();
+    bool lastLegInStrip = true;
+    if(strip != nullptr){
+        lastLegInStrip = getCurrentLeg()->getStrip()->isLastLegInStrip();
+    }
+
+    // Configure output paths
+    fms->write.configure(
+        getLegOutputPrefix(),
         getScanner()->isWriteWaveform(),
         lastLegInStrip
     );
 
     // Handle historical tracking of output paths
-    getScanner()->trackOutputPath(path);
-
-    // Trajectory writer
-    if(mSurvey->scanner->trajectoryTimeInterval != 0.0){
-        std::string trajectoryOutputPath = mOutputFilePathString +
-                                           getTrajectoryOutputPath();
-        mSurvey->scanner->setTrajectoryFileWriter(
-            std::make_shared<SimpleSyncFileWriter>(trajectoryOutputPath)
-        );
-    }
+    getScanner()->trackOutputPath(
+        fms->write.getMeasurementWriterOutputPath().string()
+    );
 }
 
 void SurveyPlayback::clearPointcloudFile(){
     // Dont clear strip file, it would overwrite previous point cloud content
     if(getCurrentLeg()->isContainedInAStrip()) return;
-
-    // Clear point cloud file for current leg
-    string outputPath = mOutputFilePathString +
-                        getCurrentOutputPath();
-    ostringstream s;s << "outputPath=" << outputPath << endl;
-    logging::INFO(s.str());
-
-    ofstream ofs;
-    try {
-        ofs.open(outputPath, ofstream::out | ofstream::trunc);
-    }
-    catch (std::exception &e) {
-        logging::ERR(e.what());
-    }
-    ofs.close();
+    // Dont clear pcloud file, if leg is not active there is nothing to clear
+    // Otherwise, WATCHOUT because last active leg might be overwriten
+    if(!getCurrentLeg()->mScannerSettings->active) return;
+    fms->write.clearPointcloudFile();
 }
 
 

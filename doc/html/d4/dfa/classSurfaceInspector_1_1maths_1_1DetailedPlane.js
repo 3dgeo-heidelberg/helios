@@ -3,6 +3,7 @@ var classSurfaceInspector_1_1maths_1_1DetailedPlane =
     [ "DetailedPlane", "d4/dfa/classSurfaceInspector_1_1maths_1_1DetailedPlane.html#a8d769afa48de35a520bbbf023991a6f3", null ],
     [ "DetailedPlane", "d4/dfa/classSurfaceInspector_1_1maths_1_1DetailedPlane.html#af849a8f1bd464bee502a3cc7ccef34f5", null ],
     [ "DetailedPlane", "d4/dfa/classSurfaceInspector_1_1maths_1_1DetailedPlane.html#a13065d8028fe5ae528d3179806cd2d2d", null ],
+    [ "~DetailedPlane", "d4/dfa/classSurfaceInspector_1_1maths_1_1DetailedPlane.html#a4b36d825ae3530edc22072aa53fdee10", null ],
     [ "absoluteMoments", "d4/dfa/classSurfaceInspector_1_1maths_1_1DetailedPlane.html#adff291a6df01cface031c4a3008ea77b", null ],
     [ "angularVerticality", "d4/dfa/classSurfaceInspector_1_1maths_1_1DetailedPlane.html#a377554f434066c5ab4336682816ef1ce", null ],
     [ "entropy", "d4/dfa/classSurfaceInspector_1_1maths_1_1DetailedPlane.html#ae4a51389d5f724e6eabcae3cb4752fc7", null ],

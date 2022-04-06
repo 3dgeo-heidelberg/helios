@@ -1,8 +1,9 @@
 var classSharedSubTask =
 [
     [ "SharedSubTask", "df/d6f/classSharedSubTask.html#aeff016fc28a328a06ab532d6655bd70f", null ],
+    [ "~SharedSubTask", "df/d6f/classSharedSubTask.html#a5125a6921de41869c6ece64786467d6c", null ],
     [ "getKey", "df/d6f/classSharedSubTask.html#aab7a2393458e77a90569cc9608fca5a4", null ],
-    [ "getThread", "df/d6f/classSharedSubTask.html#aa4e77ba1d3f0376b672512be384fbd42", null ],
+    [ "getThread", "df/d6f/classSharedSubTask.html#afc6a9dc5da81f51f3b5fc1008c548a12", null ],
     [ "operator()", "df/d6f/classSharedSubTask.html#aa7c72110a82f3e62ea5a8679c031cfd3", null ],
     [ "postProcess", "df/d6f/classSharedSubTask.html#a64bdb256d735b0027aa04b84da7589fe", null ],
     [ "run", "df/d6f/classSharedSubTask.html#aed575dbe6e3de43c3d74228b0518f79f", null ],

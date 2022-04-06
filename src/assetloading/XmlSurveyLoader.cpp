@@ -37,7 +37,7 @@ shared_ptr<Survey> XmlSurveyLoader::load(
     ss << "XML Survey playback loader: "
        << "ERROR: No survey elements found in file " << this->xmlDocFilename;
     logging::WARN(ss.str());
-    return NULL;
+    return nullptr;
   }
 
   return createSurveyFromXml(surveyNodes, legNoiseDisabled, rebuildScene);

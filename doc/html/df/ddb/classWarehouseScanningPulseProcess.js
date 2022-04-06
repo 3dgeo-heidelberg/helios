@@ -1,6 +1,7 @@
 var classWarehouseScanningPulseProcess =
 [
-    [ "WarehouseScanningPulseProcess", "df/ddb/classWarehouseScanningPulseProcess.html#a60ff18524bcd4120634ecab7c7c71a7d", null ],
+    [ "WarehouseScanningPulseProcess", "df/ddb/classWarehouseScanningPulseProcess.html#a476636a1082a422691aa4cb906618264", null ],
+    [ "~WarehouseScanningPulseProcess", "df/ddb/classWarehouseScanningPulseProcess.html#aa07845405e0b9bdd9be19cac07411a74", null ],
     [ "handlePulseComputation", "df/ddb/classWarehouseScanningPulseProcess.html#a9cd11e56054d40e74a716298be6569c3", null ],
     [ "handlePulseComputationParallel", "df/ddb/classWarehouseScanningPulseProcess.html#add370cfcae00854b555a2966d682ab42", null ],
     [ "handlePulseComputationSequential", "df/ddb/classWarehouseScanningPulseProcess.html#a39373daea64d1205e9254ce1675f87e7", null ],

@@ -18,6 +18,8 @@ var searchData=
   ['raydirarray',['rayDirArray',['../de/d7f/classKDTreeRaycaster_1_1KDTreeRaycasterSearch.html#a519d9e87d5b52fdf0e5b1961260189e3',1,'KDTreeRaycaster::KDTreeRaycasterSearch']]],
   ['rayorigin',['rayOrigin',['../de/d7f/classKDTreeRaycaster_1_1KDTreeRaycasterSearch.html#ad78f7bc111c3b3a6dce4c5ec3bdfcd09',1,'KDTreeRaycaster::KDTreeRaycasterSearch']]],
   ['rayoriginarray',['rayOriginArray',['../de/d7f/classKDTreeRaycaster_1_1KDTreeRaycasterSearch.html#a074820fb76db042477f844fd1bab888f',1,'KDTreeRaycaster::KDTreeRaycasterSearch']]],
+  ['read',['read',['../db/daa/classhelios_1_1filems_1_1FMSFacade.html#ac4be4c2eda5b5de6b90ca773cbf322e5',1,'helios::filems::FMSFacade']]],
+  ['readingstrategy',['readingStrategy',['../d4/d5e/classhelios_1_1filems_1_1FileReader.html#aa2fa3ed2ebb1690b8d13b4fa49981c0a',1,'helios::filems::FileReader::readingStrategy()'],['../d0/dd8/classhelios_1_1filems_1_1BufferedReadingStrategy.html#a63022a4c6f2072ee6902fb87e04e25c3',1,'helios::filems::BufferedReadingStrategy::readingStrategy()']]],
   ['reflectance',['reflectance',['../d3/d89/classMaterial.html#a2455e6f519001aa0a8679e826476f29f',1,'Material']]],
   ['reflectancemap',['reflectanceMap',['../d5/d20/classSpectralLibrary.html#ad99c8eced0b7330ee341504b06c7fbe7',1,'SpectralLibrary']]],
   ['remainingtime_5fms',['remainingTime_ms',['../d6/da1/classSurveyPlayback.html#a44385985d0e2f71e6094e0b59c8d252e',1,'SurveyPlayback']]],
@@ -35,6 +37,7 @@ var searchData=
   ['road',['ROAD',['../df/d64/classLasSpecification.html#a5148aba8d9ab7690f19f8a916e1418a7',1,'LasSpecification']]],
   ['roll',['roll',['../db/d69/classHelicopterPlatform.html#a0a4e8ceaa8a560b672d5d943bfbfb38d',1,'HelicopterPlatform::roll()'],['../d2/d43/classTrajectory.html#a3f056dc847ef640fd31a7207b4610794',1,'Trajectory::roll()']]],
   ['root',['root',['../da/d81/classKDTreeRaycaster.html#a6be5609184429cd100b63fcca6bd0186',1,'KDTreeRaycaster']]],
+  ['rootdir',['rootDir',['../df/d31/classhelios_1_1filems_1_1FMSWriteFacade.html#aed235ee49bcf9a699db68f46523dd881',1,'helios::filems::FMSWriteFacade']]],
   ['rotations',['rotations',['../d7/d48/classSceneLoadingSpecification.html#ad149a5903c18422af67f45564bf70c8d',1,'SceneLoadingSpecification']]],
   ['rotationsid',['rotationsId',['../d7/d48/classSceneLoadingSpecification.html#afd5cea5208f892ba4b3f50276f567ee7',1,'SceneLoadingSpecification']]]
 ];

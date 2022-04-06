@@ -3,8 +3,12 @@
 #ifdef PYTHON_BINDING
 
 #include <PyDetectorWrapper.h>
+#include <filems/facade/FMSFacade.h>
+using helios::filems::FMSFacade;
 #include <AbstractDetector.h>
+
 #include <memory>
+
 
 namespace pyhelios{
 
@@ -45,9 +49,9 @@ public:
     inline void setRangeMax(double const rangeMax)
         {detector.cfg_device_rangeMax_m = rangeMax;}
     inline double getLasScale()
-        {return detector.lasScale;}
+        {return detector.getFMS()->write.getMeasurementWriterLasScale();}
     inline void setLasScale(double const lasScale)
-        {detector.lasScale = lasScale;}
+        {detector.getFMS()->write.setMeasurementWriterLasScale(lasScale);}
 };
 
 }

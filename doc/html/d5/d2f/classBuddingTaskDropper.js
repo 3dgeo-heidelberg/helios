@@ -1,6 +1,7 @@
 var classBuddingTaskDropper =
 [
     [ "BuddingTaskDropper", "d5/d2f/classBuddingTaskDropper.html#a2f2c0e9440e475a0bdd4c866a7723d7b", null ],
+    [ "~BuddingTaskDropper", "d5/d2f/classBuddingTaskDropper.html#aa725aaf9a3c9b0a08b7fe743071ea29c", null ],
     [ "emptyClone", "d5/d2f/classBuddingTaskDropper.html#a413aab607239eb3215733141842b120f", null ],
     [ "evolve", "d5/d2f/classBuddingTaskDropper.html#a54f480ea26caac293504c03d6cf762c7", null ],
     [ "getDelta1", "d5/d2f/classBuddingTaskDropper.html#a66a9615c9977ff9af9ca685c75e89414", null ],

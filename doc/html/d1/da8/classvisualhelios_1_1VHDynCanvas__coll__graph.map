@@ -1,5 +1,3 @@
 <map id="visualhelios::VHDynCanvas" name="visualhelios::VHDynCanvas">
-<area shape="rect" id="node1" title="Visual Helios Dynamic Canvas is a class which provides the basis layer to deal with dynamic objects r..." alt="" coords="5,171,207,197"/>
-<area shape="rect" id="node2" href="$de/dda/classvisualhelios_1_1VHCanvas.html" title="Visual Helios Canvas is a class which provides the base mechanisms to implement Helios visualizations..." alt="" coords="19,95,193,121"/>
-<area shape="rect" id="node3" title=" " alt="" coords="77,5,135,32"/>
+<area shape="rect" id="node2" href="$de/dda/classvisualhelios_1_1VHCanvas.html" title="Visual Helios Canvas is a class which provides the base mechanisms to implement Helios visualizations..." alt="" coords="17,95,180,121"/>
 </map>

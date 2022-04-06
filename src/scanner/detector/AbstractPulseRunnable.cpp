@@ -7,6 +7,7 @@
 #include <glm/glm.hpp>
 
 #include "AbstractDetector.h"
+#include <filems/facade/FMSFacade.h>
 
 
 // ALS Simplification "Radiometric Calibration..." (Wagner, 2010) Eq. 14
@@ -129,8 +130,7 @@ void AbstractPulseRunnable::capturePoint(
         (cycleMeasurements->end() - 1)->position +=
             detector->scanner->platform->scene->getShift();
     }
-    detector->writeMeasurement(m);
-	detector->mBuffer->add(m);
+    detector->pcloudYielder->push(m);
 }
 
 void AbstractPulseRunnable::applyMeasurementError(

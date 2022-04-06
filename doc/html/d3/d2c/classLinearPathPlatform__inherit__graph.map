@@ -1,6 +1,5 @@
 <map id="LinearPathPlatform" name="LinearPathPlatform">
-<area shape="rect" id="node1" title="Class representing a linear path platform." alt="" coords="5,229,152,256"/>
-<area shape="rect" id="node2" href="$d1/d83/classMovingPlatform.html" title="Class representing a moving platform." alt="" coords="15,155,142,181"/>
-<area shape="rect" id="node3" href="$df/d1e/classPlatform.html" title="Class representing a platform asset." alt="" coords="39,80,118,107"/>
-<area shape="rect" id="node4" href="$de/d97/classAsset.html" title="Base class for all assets." alt="" coords="49,5,108,32"/>
+<area shape="rect" id="node2" href="$d1/d83/classMovingPlatform.html" title="Class representing a moving platform. " alt="" coords="15,155,129,181"/>
+<area shape="rect" id="node3" href="$df/d1e/classPlatform.html" title="Class representing a platform asset. " alt="" coords="37,80,107,107"/>
+<area shape="rect" id="node4" href="$de/d97/classAsset.html" title="Base class for all assets. " alt="" coords="44,5,100,32"/>
 </map>
