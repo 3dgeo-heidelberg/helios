@@ -131,9 +131,8 @@ jobs:
         run: |
           Get-Content ${{env.USER_CONFIG}}
           cd lib/boost
-          7z x zlib1212.zip   
           cmd.exe /c 'bootstrap.bat'
-          .\b2.exe --user-config=${{env.USER_CONFIG}} -j6 -sNO_ZLIB=0 -sZLIB_INCLUDE="zlib-1.2.12" -sZLIB_SOURCE="zlib-1.2.12" address-model=64 link=static python=3.6,3.7,3.8,3.9,3.10
+          .\b2.exe --user-config=${{env.USER_CONFIG}} -j6 -sNO_ZLIB=0 -sZLIB_INCLUDE="zlib-1.2.12" -sZLIB_SOURCE="zlib-1.2.12" address-model=64 link=static python="3.6","3.7","3.8","3.9","3.10"
           
 
   build-libs:
