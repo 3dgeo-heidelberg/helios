@@ -21,9 +21,8 @@ void LinearPathPlatform::doSimStep(int simFrequency_hz) {
 
 	if (glm::l2Norm(getVectorToTarget()) > 0 && cfg_settings_movePerSec_m > 0) {
         // Set Velocity:
-        double speed = cfg_settings_movePerSec_m / simFrequency_hz;
+        double const speed = cfg_settings_movePerSec_m / simFrequency_hz;
         this->setVelocity(glm::normalize(getVectorToTarget()) * speed);
-
     }
 }
 

@@ -33,8 +33,8 @@ protected:
     // ******************** //
     /**
      * @brief The \f$m\f$ frontiers such that
-     *  \f$\forall i,\, t_i \in [a_i, a_{i+1})\f$.
-     * For the last case it is \f$t_i \in [a_{m}, \infty)\f$.
+     *  \f$\forall t,\, \exists i \ni t \in [a_i, a_{i+1})\f$.
+     * For the last frontier, the interval is \f$[a_{m}, \infty)\f$.
      */
     arma::Col<A> const &ta;
     /**
