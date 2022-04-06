@@ -7,7 +7,7 @@ if(PYTHON_BINDING)
     else()
         # Gets Major and Minor Python Versions
         STRING(REGEX REPLACE
-                "([0-9]).?([0-9])"
+                "([0-9]).?([0-9]*)"
                 "\\1;\\2;" VERSION "${PYTHON_VERSION}")
         list(GET VERSION 0 MAJOR)
         list(GET VERSION 1 MINOR)
