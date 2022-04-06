@@ -259,6 +259,22 @@ jobs:
       - name: Add MSBuild to PATH
         uses: microsoft/setup-msbuild@v1.0.2
 
+      - uses: suisei-cn/actions-download-file@v1
+        if: steps.cache-scilab.outputs.cache-hit != 'true'
+        id: downloadscilab
+        name: Download SciLab
+        with:
+          url: "https://www.scilab.org/download/6.1.0/scilab-6.1.0_x64.exe"
+
+      - name: Install scilab
+        if: steps.cache-scilab.outputs.cache-hit != 'true'
+        working-directory: ${{env.GITHUB_WORKSPACE}}
+        run: |
+          dir
+          Start-Process -FilePath .\scilab-6.1.0_x64.exe -ArgumentList "/SILENT /NORESTART /DIR=`"C:\Program Files\scilab-6.1.0\`"" -Wait
+          dir "C:\Program Files"
+          dir "C:\Program Files\scilab-6.1.0"
+          
       - uses: actions/checkout@v2            
       
       - name: Set Up Python
