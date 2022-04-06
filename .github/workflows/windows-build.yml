@@ -86,6 +86,18 @@ jobs:
           $pythonString = "using python `n`t: 3.9 `n`t: ${{env.pythonLocation}}\bin\python.exe `n`t: ${{env.pythonLocation}}\include `n`t: ${{env.pythonLocation}}\libs `n;" 
           echo $pythonString.replace("\", "\\") >> ${{env.USER_CONFIG}}
 
+      - name: Set Up Python 3.10
+        if: steps.cache-boost.outputs.cache-hit != 'true'
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.10'
+
+      - name: Write Python 3.10 to user-config.jam
+        if: steps.cache-boost.outputs.cache-hit != 'true'
+        run: |
+          $pythonString = "using python `n`t: 3.10 `n`t: ${{env.pythonLocation}}\bin\python.exe `n`t: ${{env.pythonLocation}}\include `n`t: ${{env.pythonLocation}}\libs `n;" 
+          echo $pythonString.replace("\", "\\") >> ${{env.USER_CONFIG}}
+
       - uses: suisei-cn/actions-download-file@v1
         if: steps.cache-boost.outputs.cache-hit != 'true'
         id: downloadboost
@@ -105,13 +117,13 @@ jobs:
         id: downloadzlib
         name: Download zlib
         with:
-          url: "https://www.zlib.net/zlib1211.zip"
-          target: lib/boost/zlib1211.zip
+          url: "https://www.zlib.net/zlib1212.zip"
+          target: lib/boost/zlib1212.zip
 
       - name: Extract zlib
         working-directory: ${{env.GITHUB_WORKSPACE}}
         run: |
-          7z x lib/boost/zlib1211.zip -olib/boost
+          7z x lib/boost/zlib1212.zip -olib/boost
 
       - name: Build Boost
         if: steps.cache-boost.outputs.cache-hit != 'true'
@@ -119,9 +131,9 @@ jobs:
         run: |
           Get-Content ${{env.USER_CONFIG}}
           cd lib/boost
-          7z x zlib1211.zip   
+          7z x zlib1212.zip   
           cmd.exe /c 'bootstrap.bat'
-          .\b2.exe --user-config=${{env.USER_CONFIG}} -j6 -sNO_ZLIB=0 -sZLIB_INCLUDE="zlib-1.2.11" -sZLIB_SOURCE="zlib-1.2.11" address-model=64 link=static python=3.6,3.7,3.8,3.9
+          .\b2.exe --user-config=${{env.USER_CONFIG}} -j6 -sNO_ZLIB=0 -sZLIB_INCLUDE="zlib-1.2.12" -sZLIB_SOURCE="zlib-1.2.12" address-model=64 link=static python=3.6,3.7,3.8,3.9,3.10
           
 
   build-libs:
@@ -238,7 +250,7 @@ jobs:
         
     strategy:
       matrix:
-        python-version: ['3.6', '3.7', '3.8', '3.9']
+        python-version: ['3.6', '3.7', '3.8', '3.9', '3.10']
        
     steps:
     
@@ -259,20 +271,6 @@ jobs:
           dir "C:\Program Files"
           dir "C:\Program Files\scilab-6.1.0"
 
-      - uses: suisei-cn/actions-download-file@v1
-        if: false
-        id: downloadgdal2
-        name: Download GDAL (2/2)
-        with:
-          url: "https://download.gisinternals.com/sdk/downloads/release-1928-x64-gdal-3-4-1-mapserver-7-6-4/gdal-304-1928-x64-core.msi"
-          target: lib/gdal.msi
-          
-      - name: Install GDAL
-        if: false
-        working-directory: ${{env.GITHUB_WORKSPACE}}
-        run: |
-          dir lib
-          Start-Process -FilePath C:\Windows\System32\msiexec.exe -ArgumentList "/i lib\gdal.msi /qn"  -Wait
         
       - uses: actions/checkout@v2            
       
@@ -307,7 +305,7 @@ jobs:
           $py_no_dot="${{ matrix.python-version }}"
           $py_no_dot=$py_no_dot.Replace(".", "")
           ((Get-Content -path src\main\helios_version.cpp -Raw) -replace '(^const char \* HELIOS_VERSION = ")(.*)(";)','$1$2 - ${{ github.head_ref }}.${{ github.sha }}$3') | Set-Content -Path src\main\helios_version.cpp
-          cmake -DCMAKE_BUILD_TYPE=Release -DPYTHON_BINDING=1 "-DPYTHON_VERSION=$py_no_dot"  -DPYTHON_PATH=${{env.pythonLocation}} -DLAPACK_LIB="C:\Program Files\scilab-6.1.0\bin\lapack.lib;C:\Program Files\scilab-6.1.0\bin\blasplus.lib" .
+          cmake -DCMAKE_BUILD_TYPE=Release -DPYTHON_BINDING=1 "-DPYTHON_VERSION=${{ matrix.python-version }}" -DPYTHON_PATH=${{env.pythonLocation}} -DLAPACK_LIB="C:\Program Files\scilab-6.1.0\bin\lapack.lib;C:\Program Files\scilab-6.1.0\bin\blasplus.lib" .
           msbuild.exe helios.sln /p:AdditionalDependencies='"C:\Program Files\scilab-6.1.0\bin\blasplus.lib;C:\Program Files\scilab-6.1.0\bin\lapack.lib"' /p:AdditionalLibraryDirectories='"C:\Program Files\scilab-6.1.0\bin"' /p:Configuration=Release
           copy ${{github.workspace}}/Release/helios.exe ${{github.workspace}}/run/helios.exe
           copy ${{github.workspace}}/Release/_pyhelios.pyd "${{github.workspace}}/run/_pyhelios.cpython-$py_no_dot.pyd"
