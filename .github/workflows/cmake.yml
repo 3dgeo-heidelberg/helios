@@ -181,15 +181,11 @@ jobs:
              ${{github.workspace}}/.github/config/boost
            key: ${{ runner.os }}-boost.1.76
 
-       - name: Get Python Version without dot
-         run: |
-           echo "PYTHON_VER=$(echo ${{ matrix.python-version }} | sed "s/\.//g")" >> $GITHUB_ENV
-
        - name: Configure CMake
          # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
          # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
          run: |
-          cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DPYTHON_BINDING=1 -DPYTHON_VERSION=$PYTHON_VER -DPYTHON_PATH=$pythonLocation -DCMAKE_RUNTIME_OUTPUT_DIRECTORY:STRING=${{github.workspace}}/run  -DCMAKE_LIBRARY_OUTPUT_DIRECTORY:STRING=${{github.workspace}}/run  -DCMAKE_LIBRARY_OUTPUT_DIRECTORY:STRING=${{github.workspace}}/run
+          cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DPYTHON_BINDING=1 -DPYTHON_VERSION=${{ matrix.python-version }} -DPYTHON_PATH=$pythonLocation -DCMAKE_RUNTIME_OUTPUT_DIRECTORY:STRING=${{github.workspace}}/run  -DCMAKE_LIBRARY_OUTPUT_DIRECTORY:STRING=${{github.workspace}}/run  -DCMAKE_LIBRARY_OUTPUT_DIRECTORY:STRING=${{github.workspace}}/run
 
        - name: Build
          # Build your program with the given configuration
@@ -337,15 +333,11 @@ jobs:
              ${{github.workspace}}/.github/config/boost
            key: ${{ runner.os }}-boost.1.76
 
-       - name: Get Python Version without dot
-         run: |
-           echo "PYTHON_VER=$(echo '3.8' | sed "s/\.//g")" >> $GITHUB_ENV
-
        - name: Configure CMake
          # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
          # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
          run: |
-           cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DPYTHON_BINDING=1 -DPYTHON_VERSION=$PYTHON_VER -DPYTHON_PATH=$pythonLocation -DCMAKE_RUNTIME_OUTPUT_DIRECTORY:STRING=${{github.workspace}}/run -DCMAKE_LIBRARY_OUTPUT_DIRECTORY:STRING=${{github.workspace}}/run
+           cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DPYTHON_BINDING=1 -DPYTHON_VERSION=3.8 -DPYTHON_PATH=$pythonLocation -DCMAKE_RUNTIME_OUTPUT_DIRECTORY:STRING=${{github.workspace}}/run -DCMAKE_LIBRARY_OUTPUT_DIRECTORY:STRING=${{github.workspace}}/run
 
        - name: Build
          # Build your program with the given configuration
