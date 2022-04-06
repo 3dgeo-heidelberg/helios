@@ -74,7 +74,7 @@ jobs:
 
        - name: Write Python 3.10 to user-config.jam
          run: |
-           echo -e "using python\n\t: 3.10\n\t: $pythonLocation/bin/python\n\t: $pythonLocation/include/python3.9\n\t: $pythonLocation/lib\n;\n" >> $USER_CONFIG
+           echo -e "using python\n\t: 3.10\n\t: $pythonLocation/bin/python\n\t: $pythonLocation/include/python3.10\n\t: $pythonLocation/lib\n;\n" >> $USER_CONFIG
 
        - name: Build Boost
          if: steps.cache-boost.outputs.cache-hit != 'true'
