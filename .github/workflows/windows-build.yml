@@ -35,7 +35,7 @@ jobs:
           path: |
             ${{github.workspace}}/lib/boost
             ${{github.workspace}}/.github/config/boost
-          key: ${{ runner.os }}-boost.1.78-1
+          key: ${{ runner.os }}-boost.1.78-2
           
       - uses: actions/checkout@v2
 
@@ -304,7 +304,7 @@ jobs:
           path: |
             ${{github.workspace}}/lib/boost
             ${{github.workspace}}/.github/config/boost
-          key: ${{ runner.os }}-boost.1.78-1
+          key: ${{ runner.os }}-boost.1.78-2
            
       - name: Build HELIOS++
         working-directory: ${{env.GITHUB_WORKSPACE}}
