@@ -83,8 +83,8 @@ public:
     // ************************** //
     /**
      * @brief Find the sample with closest lesser domain with respect to given
-     *  \f$t\f$ and return its known \f$y_i\f$ image
-     * @param t The domain value which closest lesser sample must be found
+     *  \f$t\f$ and return its known image \f$y_i\f$
+     * @param tx The domain value which closest lesser sample must be found
      * @return \f$y_i\f$, it is the known image of the closest lesser sample
      */
     B eval(A const &tx) override{

@@ -6,6 +6,7 @@
 #include <fluxionum/FixedIterativeEulerMethod.h>
 #include <fluxionum/FixedParametricIterativeEulerMethod.h>
 #include <fluxionum/ClosestLesserSampleFunction.h>
+#include <fluxionum/ParametricClosestLesserSampleFunction.h>
 #include <fluxionum/FluxionumException.h>
 
 #include <armadillo>
@@ -210,6 +211,18 @@ FixedIterativeEulerMethod<A, B> makeFixedIterativeEulerMethod(
     }
 }
 
+/**
+ * @brief Obtain a function representing a fixed parametric iterative Euler
+ *  method from given DiffDesignMatrix, known values and parametric derivative
+ *  function
+ * @param ddm The DiffDesignMatrix itself
+ * @param[in] y The matrix of known values such that
+ *  \f$\vec{y}(t_i) = \vec{y_i}\f$a
+ * @param dydt The parametric derivative function
+ * @tparam A The time's domain
+ * @tparam B The non time's domain
+ * @return FixedParametricIterativeEulerMethod from given arguments
+ */
 template <typename A, typename B>
 FixedParametricIterativeEulerMethod<A, B>
 makeFixedParametricIterativeEulerMethod(
@@ -225,6 +238,51 @@ makeFixedParametricIterativeEulerMethod(
         y,
         0
     );
+}
+
+/**
+ * @brief Like
+ *  DiffDesignMatrixInterpolator::makeFixedParametricIterativeEulerMethod but
+ *  automatically generating the matrix of known values, the parametric
+ *  derivative and the samples of the derivative from given DiffDesignMatrix
+ *  and DesignMatrix
+ * @see DiffDesignMatrixInterpolator::makeFixedParametricIterativeEulerMethod
+ */
+template <typename A, typename B>
+FixedParametricIterativeEulerMethod<A, B>
+makeFixedParametricIterativeEulerMethod(
+    DiffDesignMatrix<A, B> const &ddm,
+    DesignMatrix<B> const &dm,
+    ParametricClosestLesserSampleFunction<A, B> *dydt
+){
+    *dydt = ParametricClosestLesserSampleFunction<A, B>(
+        ddm.getTimeVector(),
+        ddm.getA(),
+        0
+    );
+    switch(ddm.getDiffType()){
+        case DiffDesignMatrixType::FORWARD_FINITE_DIFFERENCES:{
+            return makeFixedParametricIterativeEulerMethod(
+                ddm,
+                dm.getX(),
+                *dydt
+            );
+        }
+        case DiffDesignMatrixType::CENTRAL_FINITE_DIFFERENCES:{
+            throw FluxionumException(
+                "DiffDesignMatrixInterpolator::"
+                "makeFixedParametricIterativeEulerMethod:\n"
+                "\tCentral finite differences not supported"
+            );
+        }
+        default:{
+            throw FluxionumException(
+                "DiffDesignMatrixInterpolator::"
+                "makeFixedParametricIterativeEulerMethod:\n"
+                "\tUnexpected differential type"
+            );
+        }
+    }
 }
 
 

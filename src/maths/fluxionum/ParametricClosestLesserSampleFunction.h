@@ -66,6 +66,13 @@ public:
 
     // ***  FUNCTION METHODS  *** //
     // ************************** //
+    /**
+     * @brief Find the sample with closest lesser domain with respect to given
+     *  \f$t\f$ and return its known vector image \f$\vec{y_i}\f$
+     * @param tx The domain value which closest lesser sample must be found
+     * @return \f$\vec{y_i}\f$, it is the known vector image of the closest
+     *  lesser sample
+     */
     arma::Col<B> eval(A const &tx) override{
         // Update index if necessary
         if((i < (t.n_elem)-1) && (tx >= t.at(i+1) || tx < t.at(i))){

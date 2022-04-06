@@ -588,19 +588,25 @@ bool FluxionumTest::testDesignFunctions(){
     );
     FixedParametricIterativeEulerMethod<double, double> fpiem1 = \
     DiffDesignMatrixInterpolator::makeFixedParametricIterativeEulerMethod(
-        ffd1,
+        ffd2,
         pySamples1,
         pclsf1
+    );
+    ParametricClosestLesserSampleFunction<double, double> pclfs2(pclsf1);
+    FixedParametricIterativeEulerMethod<double, double> fpiem2 = \
+    DiffDesignMatrixInterpolator::makeFixedParametricIterativeEulerMethod(
+        ffd2,
+        tdm2,
+        &pclfs2
     );
 
     for(size_t i = 0 ; i < fiem1t.n_elem ; ++i){
         double const h = (i==0) ? 0 : fiem1t.at(i) - fiem1t.at(i-1);
-        if(arma::any(arma::abs(fpiem1(h) - pfiem1E.at(i)) > eps)) return false;
-        //if(std::fabs(fpiem2(h) - pfiem1E.at(i)) > eps) return false; // TODO Restore
+        if(arma::any(arma::abs(fpiem1(h) - pfiem1E.row(i).as_col()) > eps))
+            return false;
+        if(arma::any(arma::abs(fpiem2(h) - pfiem1E.row(i).as_col()) > eps))
+            return false;
     }
-
-    // TODO Rethink : Implementing manual extraction ...
-    // TODO Rethink : Implement automatic extraction
 
     // On passed return true
     return true;

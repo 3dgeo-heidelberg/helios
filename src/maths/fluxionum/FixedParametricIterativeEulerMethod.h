@@ -99,7 +99,7 @@ public:
                 if(th >= ta.at(j)){
                     tdiff = h-(ta.at(j)-t);
                     t = ta.at(j);
-                    y = ya.row(j);
+                    y = ya.row(j).as_col();
                     i = j;
                     break;
                 }
