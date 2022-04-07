@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+	<!-- Default scanner settings: -->
+    <scannerSettings id="scaset" active="true" pulseFreq_hz="70000" scanAngle_deg="60" scanFreq_hz="50" />
+    <survey name="interpolated_trajectory_als" scene="data/scenes/demo/interpolated_trajectory.xml#interpolated_trajectory_demo" platform="interpolated" scanner="data/scanners_als.xml#leica_als50-ii">
+        <FWFSettings beamSampleQuality="3" binSize_ns="0.25" winSize_ns="1"/>
+		<!-- Leg which interpolates full trajectory -->
+        <leg>
+            <platformSettings trajectory="data/trajectories/cycloid.trj" tIndex="0" xIndex="4" yIndex="5" zIndex="6" rollIndex="1" pitchIndex="2" yawIndex="3"/>
+            <scannerSettings template="scaset" trajectoryTimeInterval_s="0.054"/>
+        </leg>
+		<!-- Leg which interpolates trajectory for all t in [4.78, 6.94] -->
+		<leg>
+            <platformSettings trajectory="data/trajectories/cycloid.trj" tStart="4.78" tEnd="6.94"/>
+            <scannerSettings template="scaset" trajectoryTimeInterval_s="0.054"/>
+        </leg>
+		<!-- Leg which interpolates trajectory for all t in [8.02, tb] where tb is the final time -->
+		<leg>
+            <platformSettings trajectory="data/trajectories/cycloid.trj" tStart="8.02"/>
+            <scannerSettings template="scaset" trajectoryTimeInterval_s="0.054"/>
+        </leg>
+		<!-- Leg which interpolates trajectory for all t in [ta, 6.508] where ta is the start time --> 
+		<leg>
+            <platformSettings trajectory="data/trajectories/cycloid.trj" tEnd="6.508"/>
+            <scannerSettings template="scaset" trajectoryTimeInterval_s="0.054"/>
+        </leg>
+    </survey>
+</document>

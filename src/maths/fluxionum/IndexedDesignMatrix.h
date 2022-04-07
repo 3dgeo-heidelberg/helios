@@ -260,6 +260,21 @@ public:
     ) const;
 
 
+    /**
+     * @brief Extend DesignMatrix::mergeInPlace method so the indices are also
+     *  merged
+     * @param dm The IndexedDesignMatrix to be merged
+     */
+    void mergeInPlace(DesignMatrix<VarType> const &dm) override{
+        DesignMatrix<VarType>::mergeInPlace(dm);
+        IndexedDesignMatrix const &idm = static_cast<
+            IndexedDesignMatrix<IndexType, VarType> const&
+        >(dm);
+        indices.insert(
+            indices.end(), idm.getIndices().begin(), idm.getIndices().end()
+        );
+    }
+
 
     // ***  GETTERs and SETTERs  *** //
     // ***************************** //

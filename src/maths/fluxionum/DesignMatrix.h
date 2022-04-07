@@ -106,6 +106,21 @@ public:
     {return X.at(i, j);}
 
 
+    // ***  METHODS  *** //
+    // ***************** //
+    /**
+     * @brief Merge given DesignMatrix into this DesignMatrix
+     *
+     * After merging, the values of this DesignMatrix will be the union
+     *  of the previous values and the new ones from the given DesignMatrix dm
+     *
+     * @param dm DesignMatrix to be merged into this
+     */
+    virtual void mergeInPlace(DesignMatrix const &dm){
+        X.insert_rows(X.n_rows, dm.getX());
+    }
+
+
     // ***  GETTERs and SETTERs  *** //
     // ***************************** //
     /**

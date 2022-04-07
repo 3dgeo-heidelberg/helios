@@ -172,6 +172,17 @@ public:
 	    tinyxml2::XMLElement* assetNode,
 	    void *extraOutput=nullptr
     );
+	/**
+	 * @brief Like XmlAssetsLoader::createAssetFromXml but creating the asset
+	 *  procedurally instead of simply loading it
+	 * @see XmlAssetsLoader::createAssetFromXml
+	 * @see XmlAssetsLoader::isProceduralAsset
+	 */
+	std::shared_ptr<Asset> createProceduralAssetFromXml(
+	    std::string const &type,
+	    std::string const &id,
+	    void *extraOutput=nullptr
+    );
 
 	/**
 	 * @brief Create a platform from given XML element (node)
@@ -192,6 +203,27 @@ public:
 	    tinyxml2::XMLElement* node,
 	    std::unordered_set<std::string> *fields=nullptr
     );
+	/**
+	 * @brief Procedurally create the platform from given XML specification
+	 * @param type Asset type
+	 * @param id Identifier of the asset
+	 * @return Shared pointer to created platform
+	 * @see Platform
+	 * @see InterpolatedMovingPlatform
+	 * @see XmlAssetsLoader::createInterpolatedMovingPlatform
+	 */
+	std::shared_ptr<Platform> procedurallyCreatePlatformFromXml(
+	    string const &type,
+	    string const &id
+    );
+	/**
+	 * @brief Procedurally create an InterpolatedMovingPlatform
+	 * @return Procedurally created InterpolatedMovingPlatform
+	 * @see XmlAssetsLoader::procedurallyCreatePlatformFromXml
+	 * @see InterpolatedMovingPlatform
+	 */
+	std::shared_ptr<Platform> createInterpolatedMovingPlatform();
+
 	/**
 	 * @brief Create scanner from given XML element (node)
 	 * @param scannerNode XML element (node) containing scanner data
@@ -267,5 +299,27 @@ protected:
         std::shared_ptr<PlatformSettings> ref,
         std::string const defaultTemplateId,
         std::unordered_set<std::string> &fields
+    );
+
+public:
+    // ***  STATIC METHODS  *** //
+    // ************************ //
+    /**
+     * @brief Check whether the given asset is a procedural asset or not
+     *
+     * A procedural asset is said to be an asset which is generated during
+     *  execution. While it can be based in input data, it is not fully defined
+     *  by that data. An example of procedural asset would be the
+     *  InterpolatedMovingPlatform which is specified through the type
+     *  "platform" and the id "interpolated"
+     *
+     * @param type Type of the asset
+     * @param id Identifier of the asset
+     * @return True if the asset is a procedural one, false otherwise
+     * @see InterpolatedMovingPlatform
+     */
+    static bool isProceduralAsset(
+        std::string const &type,
+        std::string const &id
     );
 };

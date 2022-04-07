@@ -15,9 +15,12 @@ namespace fs = boost::filesystem;
 #include "typedef.h"
 #include <XmlUtils.h>
 
+#include <fluxionum/TemporalDesignMatrix.h>
+
 #include "GroundVehiclePlatform.h"
 #include "HelicopterPlatform.h"
 #include "LinearPathPlatform.h"
+#include "InterpolatedMovingPlatformEgg.h"
 
 #include "ConicBeamDeflector.h"
 #include "FiberArrayBeamDeflector.h"
@@ -75,7 +78,7 @@ XmlAssetsLoader::createAssetFromXml(
     exit(-1);
   }
 
-  std::shared_ptr<Asset> result;
+  std::shared_ptr<Asset> result = nullptr;
   if (type == "platform") {
     result = std::dynamic_pointer_cast<Asset>(
         createPlatformFromXml(assetNode)
@@ -114,6 +117,26 @@ XmlAssetsLoader::createAssetFromXml(
   return result;
 }
 
+std::shared_ptr<Asset> XmlAssetsLoader::createProceduralAssetFromXml(
+    std::string const &type,
+    std::string const &id,
+    void *extraOutput
+){
+    std::shared_ptr<Asset> result = nullptr;
+    if(type == "platform"){
+        result = std::dynamic_pointer_cast<Asset>(
+            procedurallyCreatePlatformFromXml(type, id)
+        );
+    }
+    else{
+        logging::ERR(
+            "ERROR: Unknown procedurally created asset type: " + type
+        );
+        exit(-1);
+    }
+    return result;
+}
+
 std::shared_ptr<Platform>
 XmlAssetsLoader::createPlatformFromXml(tinyxml2::XMLElement *platformNode) {
   std::shared_ptr<Platform> platform(new Platform());
@@ -135,7 +158,7 @@ XmlAssetsLoader::createPlatformFromXml(tinyxml2::XMLElement *platformNode) {
   // Read SimplePhysicsPlatform related stuff
   SimplePhysicsPlatform *spp =
       dynamic_cast<SimplePhysicsPlatform *>(platform.get());
-  if (spp != NULL) {
+  if (spp != nullptr) {
     spp->mCfg_drag = platformNode->DoubleAttribute("drag", 1.0);
   }
 
@@ -373,6 +396,88 @@ XmlAssetsLoader::createPlatformSettingsFromXml(
 
   // Return platform settings
   return settings;
+}
+
+std::shared_ptr<Platform> XmlAssetsLoader::procedurallyCreatePlatformFromXml(
+    std::string const &type,
+    std::string const &id
+){
+    if(id == "interpolated") return createInterpolatedMovingPlatform();
+    else{
+        logging::ERR(
+            "Unexpected procedurally creatable platform type: " + type
+        );
+        std::exit(-1);
+    }
+}
+std::shared_ptr<Platform> XmlAssetsLoader::createInterpolatedMovingPlatform(){
+    // TODO Rethink : Implement
+    std::cout << "Creating interpolated moving platform ... " << std::endl; // TODO Remove
+    // Prepare egg building
+    std::shared_ptr<InterpolatedMovingPlatformEgg> platform =
+        std::make_shared<InterpolatedMovingPlatformEgg>();
+    tinyxml2::XMLElement *survey = doc.FirstChildElement()
+        ->FirstChildElement("survey");
+    tinyxml2::XMLElement *leg = survey->FirstChildElement("leg");
+    std::unordered_set<std::string> trajectoryFiles;
+    std::cout << "Pre if(leg==nullptr){...}" << std::endl; // TODO Remove
+    if(leg==nullptr){
+        logging::ERR(
+            "XmlAssetsLoader::createInterpolatedMovingPlatform failed\n"
+            "There is no leg in the Survey XML document"
+        );
+        std::exit(-1);
+    }
+    // Iterate over legs to fulfill egg
+    while(leg!=nullptr){
+        // Obtain platform settings
+        tinyxml2::XMLElement *ps = leg->FirstChildElement(
+            "platformSettings"
+        );
+        // Validate platform settings
+        if(ps==nullptr){
+            logging::ERR(
+                "XmlAssetsLoader::createInterpolatedMovingPlatform failed\n"
+                "There is no platformSettings in the leg"
+            );
+            std::exit(-1);
+        }
+        if(!XmlUtils::hasAttribute(ps, "trajectory")){
+            logging::ERR(
+                "XmlAssetsLoader::craeteInterpolatedMovingPlatform failed\n"
+                "The platformSettings element has no trajectory attribute"
+            );
+            std::exit(-1);
+        }
+        // Handle platform settings
+        string const trajectoryPath = ps->Attribute("trajectory");
+        bool const alreadyLoaded =
+            trajectoryFiles.find(trajectoryPath) != trajectoryFiles.end();
+        if(!alreadyLoaded){ // Load trajectory data if not already loaded
+            if(platform->tdm == nullptr){ // First loaded trajectory
+                platform->tdm = std::make_shared<
+                    TemporalDesignMatrix<double, double>
+                >(
+                    trajectoryPath
+                );
+            }
+            else{ // Not first loaded, so merge with previous data
+                platform->tdm->mergeInPlace(
+                    TemporalDesignMatrix<double, double>(trajectoryPath)
+                );
+            }
+            trajectoryFiles.emplace(trajectoryPath);
+        }
+        // TODO Rethink : Implement loading of metadata
+
+
+        // Prepare next iteration
+        leg = leg->NextSiblingElement("leg");
+    }
+    // Differentiate temporal matrix through FORWARD FINITE DIFFERENCES
+    platform->ddm = platform->tdm->toDiffDesignMatrixPointer();
+
+    return platform;
 }
 
 std::shared_ptr<Scanner>
@@ -791,7 +896,11 @@ std::shared_ptr<Asset> XmlAssetsLoader::getAssetById(
     tinyxml2::XMLElement *assetNodes =
         doc.FirstChild()->NextSibling()->FirstChildElement(type.c_str());
 
-    while (assetNodes != nullptr) {
+    if(isProceduralAsset(type, id )){ // Generate procedural assets
+        return createProceduralAssetFromXml(type, id, extraOutput);
+    }
+
+    while (assetNodes != nullptr) { // Load standard assets
       std::string str(assetNodes->Attribute("id"));
       if (str.compare(id) == 0) {
         return createAssetFromXml(type, assetNodes, extraOutput);
@@ -932,4 +1041,15 @@ void XmlAssetsLoader::trackNonDefaultPlatformSettings(
     if(base->slowdownEnabled != ref->slowdownEnabled)
         fields.insert("slowdownEnabled");
     if(base->movePerSec_m != ref->movePerSec_m) fields.insert("movePerSec_m");
+}
+// ***  STATIC METHODS  *** //
+// ************************ //
+bool XmlAssetsLoader::isProceduralAsset(
+    std::string const &type,
+    std::string const &id
+){
+    if(type=="platform"){
+        if(id=="interpolated") return true;
+    }
+    return false;
 }

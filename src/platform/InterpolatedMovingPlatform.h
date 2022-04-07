@@ -35,7 +35,7 @@ protected:
     // ***  ATTRIBUTES  *** //
     // ******************** //
     /**
-     * @brief Referencec to the SimulationStepLoop defining the Simulation
+     * @brief Reference to the SimulationStepLoop defining the Simulation
      * @see SimulationStepLopp
      * @see Simulation
      * @see Simulation::stepLoop

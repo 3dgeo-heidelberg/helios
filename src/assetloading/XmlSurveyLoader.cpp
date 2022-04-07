@@ -56,6 +56,7 @@ XmlSurveyLoader::createSurveyFromXml(
   // Load survey core
   loadSurveyCore(surveyNode, survey);
 
+  // TODO Rethink : Load legs when using InterpolatedMovingPlatform ?
   // Load legs
   loadLegs(
     surveyNode->FirstChildElement("leg"),

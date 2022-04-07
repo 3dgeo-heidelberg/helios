@@ -292,6 +292,19 @@ public:
             DiffDesignMatrixType::FORWARD_FINITE_DIFFERENCES
     ) const;
 
+    /**
+     * @brief Extend DesignMatrix::mergeInPlace method so the time values are
+     *  also merged
+     * @param dm The TemporalDesignMatrix to be merged
+     */
+    void mergeInPlace(DesignMatrix<VarType> const &dm) override{
+        DesignMatrix<VarType>::mergeInPlace(dm);
+        TemporalDesignMatrix const &tdm = static_cast<
+            TemporalDesignMatrix<TimeType, VarType> const&
+        >(dm);
+        t.insert_rows(t.n_rows, tdm.getTimeVector());
+    }
+
 
     // ***  GETTERs and SETTERs  *** //
     // ***************************** //

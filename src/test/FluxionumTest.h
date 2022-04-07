@@ -314,9 +314,9 @@ bool FluxionumTest::testDesignMatrixBuilding(){
         idmf2, "index", vector<string>(0), iif1, Xif1
     )) return false;
 
-
     // On passed return true
     return true;
+    // TODO Rethink : Add some testing for mergeInPlace method for dm, tdm, idm
 }
 
 bool FluxionumTest::testDiffDesignMatrix(){

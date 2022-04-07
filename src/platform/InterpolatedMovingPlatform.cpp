@@ -46,12 +46,12 @@ InterpolatedMovingPlatform::InterpolatedMovingPlatform(
         case InterpolationScope::POSITION_AND_ATTITUDE:
             doStepUpdates = [&] (double const t) -> void{
                 arma::Col<double> const x = tf->eval(t); //x,y,z,roll,pitch,yaw
-                setPosition(glm::dvec3(x[0], x[1], x[2]));
+                setPosition(glm::dvec3(x[3], x[4], x[5]));
                 setAttitude(
-                    Rotation(Directions::right, x[3]).applyTo(
-                        Rotation(Directions::forward, x[4])
+                    Rotation(Directions::right, x[0]).applyTo(
+                        Rotation(Directions::forward, x[1])
                     ).applyTo(
-                        Rotation(Directions::up, x[5])
+                        Rotation(Directions::up, x[2])
                     )
                 );
             };
