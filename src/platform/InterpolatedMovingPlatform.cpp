@@ -1,8 +1,6 @@
 #include <platform/InterpolatedMovingPlatform.h>
 #include <maths/Directions.h>
-#include <platform/trajectory/PositionTrajectoryFunction.h>
-#include <platform/trajectory/AttitudeTrajectoryFunction.h>
-#include <platform/trajectory/PositionAttitudeTrajectoryFunction.h>
+#include <platform/trajectory/DesignTrajectoryFunction.h>
 
 
 // ***  CONSTRUCTION / DESTRUCTION  *** //
@@ -16,30 +14,24 @@ InterpolatedMovingPlatform::InterpolatedMovingPlatform(
     stepLoop(stepLoop),
     scope(scope),
     timeFrontiers(ddm.getTimeVector()),
-    frontierValues(tdm.getX()),
+    frontierValues(tdm.getX().rows(0, tdm.getX().n_rows-2)),
     frontierDerivatives(ddm.getA())
 {
+    // Build DesignTrajectoryFunction
+    tf = std::make_shared<DesignTrajectoryFunction>(
+        timeFrontiers,
+        frontierValues,
+        frontierDerivatives
+    );
+    // Configure update function to be computed once at each sim step
     switch(scope){
         case InterpolationScope::POSITION:
-            tf = std::make_shared<PositionTrajectoryFunction>(
-                timeFrontiers,
-                frontierValues,
-                frontierDerivatives,
-                0,                      // xIdx
-                1,                      // yIdx
-                2                       // zIdx
-            );
             doStepUpdates = [&] (double const t) -> void{
                 arma::Col<double> const x = tf->eval(t); // x,y,z
                 setPosition(glm::dvec3(x[0], x[1], x[2]));
             };
             break;
         case InterpolationScope::ATTITUDE:
-            // TODO Rethink : Construct tf adequately
-            /*tf = std::make_shared<AttitudeTrajectoryFunction>(
-
-            );*/ // TODO Restore
-            tf = nullptr; // TODO Remove
             doStepUpdates = [&] (double const t) -> void{
                 arma::Col<double> const x = tf->eval(t); // roll,pitch,yaw
                 setAttitude(
@@ -52,11 +44,6 @@ InterpolatedMovingPlatform::InterpolatedMovingPlatform(
             };
             break;
         case InterpolationScope::POSITION_AND_ATTITUDE:
-            // TODO Rethink : Construct tf adequately
-            /*tf = std::make_shared<PositionAttitudeTrajectoryFunction>(
-
-            );*/ // TODO Restore
-            tf = nullptr; // TODO Remove
             doStepUpdates = [&] (double const t) -> void{
                 arma::Col<double> const x = tf->eval(t); //x,y,z,roll,pitch,yaw
                 setPosition(glm::dvec3(x[0], x[1], x[2]));
