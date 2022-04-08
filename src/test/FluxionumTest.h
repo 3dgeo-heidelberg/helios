@@ -71,6 +71,11 @@ public:
      */
     bool testDesignMatrixBuilding();
     /**
+     * @brief Test the methods of DesignMatrix
+     * @return True if passed, false otherwise
+     */
+    bool testDesignMatrixMethods();
+    /**
      * @brief Test the generation of differential design matrices
      * @return True if passed, false otherwise
      */
@@ -88,6 +93,7 @@ bool FluxionumTest::run(){
     // Run tests
     if(!testUnivariateNewtonRaphsonMinimization()) return false;
     if(!testDesignMatrixBuilding()) return false;
+    if(!testDesignMatrixMethods()) return false;
     if(!testDiffDesignMatrix()) return false;
     if(!testDesignFunctions()) return false;
     return true;
@@ -316,7 +322,134 @@ bool FluxionumTest::testDesignMatrixBuilding(){
 
     // On passed return true
     return true;
-    // TODO Rethink : Add some testing for mergeInPlace method for dm, tdm, idm
+}
+
+bool FluxionumTest::testDesignMatrixMethods(){
+    // Prepare data for tests
+    DesignMatrix<double> dm1(
+        arma::Mat<double>(
+            "0 1 2 3 4;"
+            "0 1 2 3 4;"
+            "0 1 2 3 4;"
+        )
+    );
+    DesignMatrix<double> dm2(
+        arma::Mat<double>(
+            "5 6 7 8 9;"
+            "5 6 7 8 9;"
+            "5 6 7 8 9;"
+        )
+    );
+    TemporalDesignMatrix<double, double> tdm1(
+        arma::Mat<double>(
+            "1 2 3;"
+            "1 2 3;"
+            "1 2 3;"
+        ),
+        arma::Col<double>("0.0 0.1 0.2")
+    );
+    TemporalDesignMatrix<double, double> tdm2(
+        arma::Mat<double>(
+            "4 5 6;"
+            "4 5 6;"
+            "4 5 6;"
+        ),
+        arma::Col<double>("0.3 0.4 0.5")
+    );
+    IndexedDesignMatrix<int, double> idm1(
+        arma::Mat<double>(
+            "0.1 0.2 0.3;"
+            "0.2 0.3 0.4;"
+            "0.3 0.4 0.5;"
+        ),
+        vector<int>({1, 3, 5})
+    );
+    IndexedDesignMatrix<int, double> idm2(
+        arma::Mat<double>(
+            "0.4 0.5 0.6;"
+            "0.5 0.6 0.7;"
+            "0.7 0.8 0.9;"
+        ),
+        vector<int>({6, 8, 10})
+    );
+
+    // Validate mergeInPlace
+    DesignMatrix<double> dm(dm1);
+    dm.mergeInPlace(dm2);
+    arma::Mat<double> em( // Expected matrix
+        "0 1 2 3 4;"
+        "0 1 2 3 4;"
+        "0 1 2 3 4;"
+        "5 6 7 8 9;"
+        "5 6 7 8 9;"
+        "5 6 7 8 9;"
+    );
+    if(arma::any(arma::vectorise(arma::abs(dm.getX()-em)) > eps)) return false;
+    TemporalDesignMatrix<double, double> tdm(tdm1);
+    tdm.mergeInPlace(tdm2);
+    em = arma::Mat<double>(
+        "1 2 3;"
+        "1 2 3;"
+        "1 2 3;"
+        "4 5 6;"
+        "4 5 6;"
+        "4 5 6;"
+    );
+    arma::Col<double> et({ // Expected time
+        0.0, 0.1, 0.2, 0.3, 0.4, 0.5
+    });
+    if(arma::any(arma::vectorise(arma::abs(tdm.getX()-em)) > eps))
+        return false;
+    if(arma::any((tdm.getTimeVector()-et) >eps)) return false;
+    IndexedDesignMatrix<int, double> idm(idm1);
+    idm.mergeInPlace(idm2);
+    em = arma::Mat<double>(
+        "0.1 0.2 0.3;"
+        "0.2 0.3 0.4;"
+        "0.3 0.4 0.5;"
+        "0.4 0.5 0.6;"
+        "0.5 0.6 0.7;"
+        "0.7 0.8 0.9;"
+    );
+    vector<int> ei({ // Expected indices
+        1, 3, 5, 6, 8, 10
+    });
+    if(arma::any(arma::vectorise(arma::abs(idm.getX()-em)) > eps))
+        return false;
+    for(size_t i = 0 ; i < ei.size() ; ++i){
+        if(std::fabs(ei[i]-idm.getIndices()[i]) > eps) return false;
+    }
+
+    // Validate swapColumns
+    dm = dm1;
+    dm.swapColumns(arma::uvec({0, 2, 4, 1, 3}));
+    em = arma::Mat<double>(
+        "0 2 4 1 3;"
+        "0 2 4 1 3;"
+        "0 2 4 1 3;"
+    );
+    if(arma::any(arma::vectorise(arma::abs(dm.getX()-em)) > eps)) return false;
+    tdm = tdm1;
+    tdm.swapColumns(arma::uvec({1, 2, 0}));
+    em = arma::Mat<double>(
+        "2 3 1;"
+        "2 3 1;"
+        "2 3 1;"
+    );
+    if(arma::any(arma::vectorise(arma::abs(tdm.getX()-em)) > eps))
+        return false;
+    idm = idm1;
+    idm.swapColumns(arma::uvec({2, 1, 0}));
+    em = arma::Mat<double>(
+        "0.3 0.2 0.1;"
+        "0.4 0.3 0.2;"
+        "0.5 0.4 0.3;"
+    );
+    if(arma::any(arma::vectorise(arma::abs(idm.getX()-em)) > eps))
+        return false;
+
+    // On passed return true
+    return true;
 }
 
 bool FluxionumTest::testDiffDesignMatrix(){

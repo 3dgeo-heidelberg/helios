@@ -36,6 +36,8 @@ namespace fs = boost::filesystem;
 #include "MathConverter.h"
 #include "TimeWatcher.h"
 
+using std::unique_ptr;
+
 // ***  CONSTANTS  *** //
 // ******************* //
 std::string const XmlAssetsLoader::defaultScannerSettingsMsg =
@@ -411,8 +413,6 @@ std::shared_ptr<Platform> XmlAssetsLoader::procedurallyCreatePlatformFromXml(
     }
 }
 std::shared_ptr<Platform> XmlAssetsLoader::createInterpolatedMovingPlatform(){
-    // TODO Rethink : Implement
-    std::cout << "Creating interpolated moving platform ... " << std::endl; // TODO Remove
     // Prepare egg building
     std::shared_ptr<InterpolatedMovingPlatformEgg> platform =
         std::make_shared<InterpolatedMovingPlatformEgg>();
@@ -420,7 +420,7 @@ std::shared_ptr<Platform> XmlAssetsLoader::createInterpolatedMovingPlatform(){
         ->FirstChildElement("survey");
     tinyxml2::XMLElement *leg = survey->FirstChildElement("leg");
     std::unordered_set<std::string> trajectoryFiles;
-    std::cout << "Pre if(leg==nullptr){...}" << std::endl; // TODO Remove
+    std::unordered_map<std::string, vector<size_t>> indices; // t, RPY, XYZ
     if(leg==nullptr){
         logging::ERR(
             "XmlAssetsLoader::createInterpolatedMovingPlatform failed\n"
@@ -428,7 +428,7 @@ std::shared_ptr<Platform> XmlAssetsLoader::createInterpolatedMovingPlatform(){
         );
         std::exit(-1);
     }
-    // Iterate over legs to fulfill egg
+    // Iterate over legs, to obtain indices
     while(leg!=nullptr){
         // Obtain platform settings
         tinyxml2::XMLElement *ps = leg->FirstChildElement(
@@ -444,39 +444,108 @@ std::shared_ptr<Platform> XmlAssetsLoader::createInterpolatedMovingPlatform(){
         }
         if(!XmlUtils::hasAttribute(ps, "trajectory")){
             logging::ERR(
-                "XmlAssetsLoader::craeteInterpolatedMovingPlatform failed\n"
+                "XmlAssetsLoader::createInterpolatedMovingPlatform failed\n"
                 "The platformSettings element has no trajectory attribute"
             );
             std::exit(-1);
         }
-        // Handle platform settings
+        // Get the trajectory path
+        string const trajectoryPath = ps->Attribute("trajectory");
+        // Handle trajectory metadata : indices
+        if(
+            XmlUtils::hasAttribute(ps, "tIndex") ||
+            XmlUtils::hasAttribute(ps, "rollIndex") ||
+            XmlUtils::hasAttribute(ps, "pitchIndex") ||
+            XmlUtils::hasAttribute(ps, "yawIndex") ||
+            XmlUtils::hasAttribute(ps, "xIndex") ||
+            XmlUtils::hasAttribute(ps, "yIndex") ||
+            XmlUtils::hasAttribute(ps, "zIndex")
+        ){
+            if(indices.find(trajectoryPath) != indices.end()){
+                logging::ERR(
+                    "XmlAssetsLoader::createInterpolatedMovingPlatform failed."
+                    "\nIndices were specified more than once for the same "
+                    "trajectory:\n\"" + trajectoryPath + "\""
+                );
+                std::exit(-1);
+            }
+            indices.emplace(
+                trajectoryPath,
+                vector<size_t>({
+                    (size_t)ps->IntAttribute("tIndex",      0),
+                    (size_t)ps->IntAttribute("rollIndex",   1),
+                    (size_t)ps->IntAttribute("pitchIndex",  2),
+                    (size_t)ps->IntAttribute("yawIndex",    3),
+                    (size_t)ps->IntAttribute("xIndex",      4),
+                    (size_t)ps->IntAttribute("yIndex",      5),
+                    (size_t)ps->IntAttribute("zIndex",      6)
+                })
+            );
+        }
+
+        // Prepare next iteration
+        leg = leg->NextSiblingElement("leg");
+    }
+    // Iterate over legs again, to fulfill egg
+    leg = survey->FirstChildElement("leg");
+    while(leg!=nullptr){
+        // Obtain platform settings
+        tinyxml2::XMLElement *ps = leg->FirstChildElement(
+            "platformSettings"
+        );
+        // Handle trajectory itself
         string const trajectoryPath = ps->Attribute("trajectory");
         bool const alreadyLoaded =
             trajectoryFiles.find(trajectoryPath) != trajectoryFiles.end();
         if(!alreadyLoaded){ // Load trajectory data if not already loaded
             if(platform->tdm == nullptr){ // First loaded trajectory
-                platform->tdm = std::make_shared<
-                    TemporalDesignMatrix<double, double>
-                >(
-                    trajectoryPath
-                );
+                if(indices.find(trajectoryPath) != indices.end()){ // XML inds
+                    DesignMatrix<double> dm(trajectoryPath);
+                    dm.swapColumns(indices[trajectoryPath]);
+                    platform->tdm =
+                    std::make_shared<TemporalDesignMatrix<double, double>>(
+                        dm, indices[trajectoryPath][0]
+                    );
+                }
+                else{ // Trajectory file indices
+                    platform->tdm = std::make_shared<
+                        TemporalDesignMatrix<double, double>
+                    >(
+                        trajectoryPath
+                    );
+                }
             }
             else{ // Not first loaded, so merge with previous data
-                platform->tdm->mergeInPlace(
-                    TemporalDesignMatrix<double, double>(trajectoryPath)
-                );
+                std::unique_ptr<TemporalDesignMatrix<double, double>> tdm;
+                if(indices.find(trajectoryPath) != indices.end()){ // XML inds
+                    DesignMatrix<double> dm(trajectoryPath);
+                    dm.swapColumns(indices[trajectoryPath]);
+                    tdm = unique_ptr<TemporalDesignMatrix<double, double>>(
+                        new TemporalDesignMatrix<double, double>(
+                            dm, indices[trajectoryPath][0]
+                        )
+                    );
+                }
+                else{  // Trajectory file indices
+                    tdm = unique_ptr<TemporalDesignMatrix<double, double>>(
+                        new TemporalDesignMatrix<double, double>(
+                            trajectoryPath
+                        )
+                    );
+                }
+                platform->tdm->mergeInPlace(*tdm);
             }
             trajectoryFiles.emplace(trajectoryPath);
         }
-        // TODO Rethink : Implement loading of metadata
-
 
         // Prepare next iteration
         leg = leg->NextSiblingElement("leg");
     }
+
     // Differentiate temporal matrix through FORWARD FINITE DIFFERENCES
     platform->ddm = platform->tdm->toDiffDesignMatrixPointer();
 
+    // Return egg
     return platform;
 }
 
@@ -882,6 +951,27 @@ std::shared_ptr<FWFSettings> XmlAssetsLoader::createFWFSettingsFromXml(
   }
 
   return settings;
+}
+
+std::shared_ptr<TrajectorySettings>
+XmlAssetsLoader::createTrajectorySettingsFromXml(
+    tinyxml2::XMLElement *legNode,
+    std::shared_ptr<TrajectorySettings> settings
+){
+    // Create settings if not given
+    if(settings == nullptr){
+        settings = std::make_shared<TrajectorySettings>();
+    }
+
+    // Load start and end times from XML, if any
+    tinyxml2::XMLElement *ps = legNode->FirstChildElement("platformSettings");
+    if(ps!=nullptr){ // If PlatformSettings were specified
+        settings->tStart = ps->DoubleAttribute("tStart", settings->tStart);
+        settings->tEnd = ps->DoubleAttribute("tEnd", settings->tEnd);
+    }
+
+    // Return loaded settings
+    return settings;
 }
 
 // ***  GETTERS and SETTERS  *** //

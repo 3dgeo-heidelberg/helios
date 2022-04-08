@@ -5,6 +5,8 @@
 #include <AbstractDetector.h>
 #include <Leg.h>
 
+class SurveyPlayback;
+
 /**
  * @brief Class representing a Helios++ survey
  */
@@ -78,4 +80,10 @@ public:
 	 * @see Survey::length
 	 */
 	double getLength();
+	/**
+	 * @brief Hatch all pending eggs
+	 * @see EggAsset
+	 * @see InterpolatedMovingPlatformEgg
+	 */
+	void hatch(SurveyPlayback &sp);
 };

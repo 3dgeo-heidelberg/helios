@@ -1,6 +1,7 @@
 #pragma once
 
 #include <fluxionum/Function.h>
+#include <fluxionum/LinearPiecesFunction.h>
 
 #include <armadillo>
 

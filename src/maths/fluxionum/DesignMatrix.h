@@ -119,6 +119,33 @@ public:
     virtual void mergeInPlace(DesignMatrix const &dm){
         X.insert_rows(X.n_rows, dm.getX());
     }
+    /**
+     * @see DesignMatrix::swapColumns(arma::uvec const &)
+     */
+    inline void swapColumns(vector<size_t> const& indices){
+        return swapColumns(
+            vector<unsigned long long>(indices.begin(), indices.end())
+        );
+    }
+    /**
+     * @see DesignMatrix::swapColumns(arma::uvec const &)
+     */
+    inline void swapColumns(vector<unsigned long long> const &indices)
+    {return swapColumns(arma::uvec(indices));}
+    /**
+     * @brief Swap the columns of the DesignMatrix
+     *
+     * Let \f$\vec{u} = (u_1, \ldots, u_n)\f$ be the vector of indices for the
+     *  \f$n\f$ columns of the matrix \f$X \in \mathbb{R}^{m \times n}\f$.
+     *  Thus, the new matrix \f$X' \in \mathbb{R}^{m \times n}\f$ can be
+     *  obtained from the \f$X\f$ matrix simply by assuming that the \f$i\f$-th
+     *  column of the \f$X'\f$ matrix is the \f$u_i\f$-th column of the \f$X\f$
+     *  matrix
+     *
+     * @param indices The vector of indices \f$\vec{u} = (u_1, \ldots, u_n)\f$
+     */
+    inline void swapColumns(arma::uvec const& indices)
+    {X = X.cols(indices);}
 
 
     // ***  GETTERs and SETTERs  *** //

@@ -113,6 +113,10 @@ public:
      * @see Platform::doSimStep
      */
     void doSimStep(int simFrequency_hz) override;
+    /**
+	 * @see Platform::waypointReached
+	 */
+    bool waypointReached() override;
 
     // ***  GETTERs and SETTERs  *** //
     // ***************************** //

@@ -142,14 +142,13 @@ protected:
 	 * @brief Load all legs defining the survey
 	 * @param legNodes First leg node
 	 * @param scannerSettings The scanner settings of the survey scanner itself
-	 * @param platformSettings The platform settings of the survey platform
-	 *  itself
+	 * @param platform The platform of the survey itself
 	 * @param legs Vector where loaded legs must be inserted
 	 */
 	void loadLegs(
 	    tinyxml2::XMLElement *legNodes,
 	    std::shared_ptr<ScannerSettings> scannerSettings,
-	    std::shared_ptr<PlatformSettings> platformSettings,
+	    std::shared_ptr<Platform> platform,
 	    std::vector<std::shared_ptr<Leg>> &legs
     );
 	/**

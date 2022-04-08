@@ -5,6 +5,7 @@
 #include "Color4f.h"
 #include "Platform.h"
 #include "PlatformSettings.h"
+#include <platform/trajectory/TrajectorySettings.h>
 #include "Scanner.h"
 #include <XmlSceneLoader.h>
 
@@ -256,6 +257,20 @@ public:
 	std::shared_ptr<FWFSettings> createFWFSettingsFromXml(
 	    tinyxml2::XMLElement* node,
 	    std::shared_ptr<FWFSettings> settings = nullptr
+    );
+	/**
+	 * @brief Create TrajectorySettings from given XML element (node)
+	 * @param legNode XML element (node) containing the Leg specification to
+	 *  build TrajectorySettings from
+	 * @param settings Specify the TrajectorySettings instance to use as
+	 *  output. If nullptr is specified, then a new instance of
+	 *  TrajectorySettings is used
+	 * @return Shared pointer to created TrajectorySettings
+	 * @see TrajectorySettings
+	 */
+	std::shared_ptr<TrajectorySettings> createTrajectorySettingsFromXml(
+	    tinyxml2::XMLElement *legNode,
+        std::shared_ptr<TrajectorySettings> settings = nullptr
     );
 
 protected:

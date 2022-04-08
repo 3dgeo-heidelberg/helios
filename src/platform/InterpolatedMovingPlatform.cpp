@@ -2,6 +2,7 @@
 #include <maths/Directions.h>
 #include <platform/trajectory/DesignTrajectoryFunction.h>
 
+#include <glm/gtx/norm.hpp>
 
 // ***  CONSTRUCTION / DESTRUCTION  *** //
 // ************************************ //
@@ -11,6 +12,7 @@ InterpolatedMovingPlatform::InterpolatedMovingPlatform(
     DiffDesignMatrix<double, double> const &ddm,
     InterpolationScope scope
 ) :
+    MovingPlatform(),
     stepLoop(stepLoop),
     scope(scope),
     timeFrontiers(ddm.getTimeVector()),
@@ -45,7 +47,7 @@ InterpolatedMovingPlatform::InterpolatedMovingPlatform(
             break;
         case InterpolationScope::POSITION_AND_ATTITUDE:
             doStepUpdates = [&] (double const t) -> void{
-                arma::Col<double> const x = tf->eval(t); //x,y,z,roll,pitch,yaw
+                arma::Col<double> const x = tf->eval(t); //roll,pitch,yaw,x,y,z
                 setPosition(glm::dvec3(x[3], x[4], x[5]));
                 setAttitude(
                     Rotation(Directions::right, x[0]).applyTo(
@@ -68,4 +70,8 @@ InterpolatedMovingPlatform::InterpolatedMovingPlatform(
 // *********************** //
 void InterpolatedMovingPlatform::doSimStep(int simFrequency_hz){
     doStepUpdates(stepLoop.getCurrentTime());
+}
+bool InterpolatedMovingPlatform::waypointReached(){
+    // Waypoint reached if distance(platform, waypoint) < 1cm
+    return glm::l2Norm(cached_vectorToTarget) < 0.01;
 }

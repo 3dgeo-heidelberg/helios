@@ -14,6 +14,9 @@ namespace fs = boost::filesystem;
 #include "XmlSurveyLoader.h"
 #include <RandomnessGenerator.h>
 #include <SerialSceneWrapper.h>
+#include <platform/InterpolatedMovingPlatformEgg.h>
+#include <fluxionum/ParametricLinearPiecesFunction.h>
+#include <fluxionum/DiffDesignMatrixInterpolator.h>
 
 #include <unordered_set>
 
@@ -56,12 +59,11 @@ XmlSurveyLoader::createSurveyFromXml(
   // Load survey core
   loadSurveyCore(surveyNode, survey);
 
-  // TODO Rethink : Load legs when using InterpolatedMovingPlatform ?
   // Load legs
   loadLegs(
     surveyNode->FirstChildElement("leg"),
     survey->scanner->retrieveCurrentSettings(),
-    survey->scanner->platform->retrieveCurrentSettings(),
+    survey->scanner->platform,
     survey->legs
   );
 
@@ -141,8 +143,18 @@ XmlSurveyLoader::createLegFromXML(
     );
   }
   else {
-    leg->mScannerSettings = shared_ptr<ScannerSettings>(new ScannerSettings());
+    leg->mScannerSettings = make_shared<ScannerSettings>();
   }
+
+  // Trajectory settings
+  platformSettingsNode = legNode->FirstChildElement("platformSettings");
+  if(
+      platformSettingsNode != nullptr &&
+      XmlUtils::hasAttribute(platformSettingsNode, "trajectory")
+  ){
+    leg->mTrajectorySettings = createTrajectorySettingsFromXml(legNode);
+  }
+  else leg->mTrajectorySettings = nullptr;
 
   // Return built leg
   return leg;
@@ -296,9 +308,25 @@ void XmlSurveyLoader::handleCoreOverloading(
 void XmlSurveyLoader::loadLegs(
     tinyxml2::XMLElement *legNodes,
     std::shared_ptr<ScannerSettings> scannerSettings,
-    std::shared_ptr<PlatformSettings> platformSettings,
+    std::shared_ptr<Platform> platform,
     std::vector<std::shared_ptr<Leg>> &legs
 ){
+    // Obtain platform settings
+    std::shared_ptr<PlatformSettings> platformSettings =
+        platform->retrieveCurrentSettings();
+    // Obtain trajectory interpolator, if any
+    std::shared_ptr<ParametricLinearPiecesFunction<double, double>>
+        trajInterp = nullptr;
+    std::shared_ptr<InterpolatedMovingPlatformEgg> ip = nullptr;
+    try{
+        ip = dynamic_pointer_cast<InterpolatedMovingPlatformEgg>(platform);
+        trajInterp =
+        std::make_shared<ParametricLinearPiecesFunction<double, double>>(
+        DiffDesignMatrixInterpolator::makeParametricLinearPiecesFunction(
+            *(ip->ddm), *(ip->tdm)
+        ));
+    }catch(std::exception &ex){}
+
     // Iterate over XML sibling leg elements
     while (legNodes != nullptr) {
         // Prepare leg loading
@@ -326,10 +354,54 @@ void XmlSurveyLoader::loadLegs(
             scannerFields,
             &templateFields
         );
-        // Insert leg and iterate to next ony, if any
+        // Insert leg
         legs.push_back(leg);
+        // Configure waypoints for interpolated legs
+        if(trajInterp != nullptr){
+            // Validate leg
+            if(leg->mTrajectorySettings == nullptr){
+                logging::ERR(
+                    "XmlSurveyLoader::loadLegs failed because a leg without "
+                    "trajectory settings could not be interpolated"
+                );
+                std::exit(-1);
+            }
+            // Configure start
+            arma::Col<double> xStart;
+            if(leg->mTrajectorySettings->hasStartTime()){
+                xStart = (*trajInterp)(leg->mTrajectorySettings->tStart);
+            }
+            else{
+                xStart = (*trajInterp)(0);
+            }
+            leg->mPlatformSettings->x = xStart[3];
+            leg->mPlatformSettings->y = xStart[4];
+            leg->mPlatformSettings->z = xStart[5];
+            // Configure end
+            arma::Col<double> xEnd;
+            if(leg->mTrajectorySettings->hasEndTime()){
+                xEnd = (*trajInterp)(leg->mTrajectorySettings->tEnd);
+            }
+            else{
+                xEnd = (*trajInterp)(arma::max(ip->tdm->getTimeVector()));
+            }
+            std::shared_ptr<Leg> stopLeg = std::make_shared<Leg>(*leg);
+            stopLeg->mScannerSettings = std::make_shared<ScannerSettings>(
+                *leg->mScannerSettings
+            );
+            stopLeg->mScannerSettings->active = false;
+            stopLeg->mPlatformSettings = std::make_shared<PlatformSettings>(
+                *leg->mPlatformSettings
+            );
+            stopLeg->mPlatformSettings->x = xEnd[3];
+            stopLeg->mPlatformSettings->x = xEnd[4];
+            stopLeg->mPlatformSettings->x = xEnd[5];
+            legs.push_back(stopLeg);
+        }
+        // Iterate to next leg
         legNodes = legNodes->NextSiblingElement("leg");
     }
+
 }
 
 void XmlSurveyLoader::applySceneShift(

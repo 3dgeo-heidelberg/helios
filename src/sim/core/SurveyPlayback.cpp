@@ -39,7 +39,8 @@ SurveyPlayback::SurveyPlayback(
     ),
     fms(fms)
 {
-  this->mSurvey = survey;
+    this->mSurvey = survey;
+    this->mSurvey->hatch(*this);
 	this->exitAtEnd = true;
 	this->exportToFile = exportToFile;
 	this->setScanner(mSurvey->scanner);
@@ -79,7 +80,7 @@ SurveyPlayback::SurveyPlayback(
 		mSurvey->calculateLength();
 		numEffectiveLegs--;
 	}
-    this->mSurvey = survey;
+    this->mSurvey = survey; // TODO Rethink : Is this necessary?
 }
 
 

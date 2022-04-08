@@ -19,7 +19,7 @@ void LinearPathPlatform::_clone(std::shared_ptr<Platform> p){
 void LinearPathPlatform::doSimStep(int simFrequency_hz) {
 	MovingPlatform::doSimStep(simFrequency_hz);
 
-	if (glm::l2Norm(getVectorToTarget()) > 0 && cfg_settings_movePerSec_m > 0) {
+	if (glm::l2Norm(getVectorToTarget()) > 0 && cfg_settings_movePerSec_m > 0){
         // Set Velocity:
         double const speed = cfg_settings_movePerSec_m / simFrequency_hz;
         this->setVelocity(glm::normalize(getVectorToTarget()) * speed);
