@@ -146,6 +146,13 @@ public:
      */
     inline void swapColumns(arma::uvec const& indices)
     {X = X.cols(indices);}
+    /**
+     * @brief Add \f$x\f$ to all elements of \f$j\f$-th column
+     * @param colIdx The index (\f$j\f$) of the column to be modified
+     * @param x The value to be added to each element of given column
+     */
+    inline void addToColumn(size_t const colIdx, T const x)
+    {X.col(colIdx) += x;}
 
 
     // ***  GETTERs and SETTERs  *** //

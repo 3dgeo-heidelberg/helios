@@ -401,6 +401,23 @@ public:
      */
     inline TimeType& operator[] (size_t const i) {return t.at(i);}
 
+    // ***  METHODS  *** //
+    // ***************** //
+    /**
+     * @brief Add given time \f$x\f$ to all time values in vector \f$\vec{t}\f$
+     *
+     * \vec{t'} = \vec{t} + x = \left[\begin{array}{c}
+     *  t_1 + x \\
+     *  \vdots
+     *  t_m + x
+     * \end{array}\right.
+     *
+     * @param x The time shift for each time component
+     */
+    virtual void shiftTime(TimeType const x){
+        t += x;
+    }
+
 
     // ***  GETTERs and SETTERs  *** //
     // ***************************** //

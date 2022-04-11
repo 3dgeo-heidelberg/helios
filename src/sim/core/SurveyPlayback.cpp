@@ -14,6 +14,7 @@ namespace fs = boost::filesystem;
 #include "SurveyPlayback.h"
 #include <glm/gtx/vector_angle.hpp>
 #include "HelicopterPlatform.h"
+#include <platform/InterpolatedMovingPlatform.h>
 #include <ScanningStrip.h>
 #include <filems/facade/FMSFacade.h>
 #include <filems/write/comps/SimpleSyncFileWriter.h>
@@ -80,7 +81,6 @@ SurveyPlayback::SurveyPlayback(
 		mSurvey->calculateLength();
 		numEffectiveLegs--;
 	}
-    this->mSurvey = survey; // TODO Rethink : Is this necessary?
 }
 
 
@@ -241,10 +241,32 @@ void SurveyPlayback::startLeg(unsigned int legIndex, bool manual) {
 		if (nextLegIndex < mSurvey->legs.size()) {
 			// Set destination to position of next leg:
 			shared_ptr<Leg> nextLeg = mSurvey->legs.at(nextLegIndex);
-			platform->setOrigin(leg->mPlatformSettings->getPosition());
-            platform->setDestination(
-                nextLeg->mPlatformSettings->getPosition()
-            );
+            if(leg->mTrajectorySettings->teleportToStart){
+                platform->setPosition(
+                    nextLeg->mPlatformSettings->getPosition()
+                );
+                platform->setOrigin(
+                    nextLeg->mPlatformSettings->getPosition()
+                );
+                platform->setDestination(
+                    nextLeg->mPlatformSettings->getPosition()
+                );
+            }
+            else{
+                platform->setOrigin(leg->mPlatformSettings->getPosition());
+                if(nextLeg->mTrajectorySettings->teleportToStart){
+                    // If next leg teleports to start, current leg is stop leg
+                    // Thus, set stop origin and destination to the same point
+                    platform->setDestination(
+                        leg->mPlatformSettings->getPosition()
+                    );
+                }
+                else{
+                    platform->setDestination(
+                        nextLeg->mPlatformSettings->getPosition()
+                    );
+                }
+            }
             if(nextLegIndex + 1 < mSurvey->legs.size()){
                 platform->setAfterDestination(
                     mSurvey->legs.at(nextLegIndex + 1)
@@ -274,6 +296,13 @@ void SurveyPlayback::startLeg(unsigned int legIndex, bool manual) {
             stopAndTurn(legIndex, leg);
 		else if(manual) platform->initLegManual();
         else platform->initLeg();
+        try{
+            if(leg->mTrajectorySettings->hasStartTime()){
+                std::shared_ptr<InterpolatedMovingPlatform> imp =
+                    dynamic_pointer_cast<InterpolatedMovingPlatform>(platform);
+                imp->toTrajectoryTime(leg->mTrajectorySettings->tStart);
+            }
+        }catch(...) {}
 
 		// ################ END Set platform destination ##################
 	}

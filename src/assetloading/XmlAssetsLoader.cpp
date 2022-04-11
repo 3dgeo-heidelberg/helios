@@ -542,6 +542,14 @@ std::shared_ptr<Platform> XmlAssetsLoader::createInterpolatedMovingPlatform(){
         leg = leg->NextSiblingElement("leg");
     }
 
+    // Sort by time
+    platform->tdm->sortByTime();
+
+    // Subtract min time so time starts at t0=0
+    double const timeShift = -arma::min(platform->tdm->getTimeVector());
+    platform->timeShift = timeShift;
+    platform->tdm->shiftTime(timeShift);
+
     // Differentiate temporal matrix through FORWARD FINITE DIFFERENCES
     platform->ddm = platform->tdm->toDiffDesignMatrixPointer();
 
@@ -968,6 +976,9 @@ XmlAssetsLoader::createTrajectorySettingsFromXml(
     if(ps!=nullptr){ // If PlatformSettings were specified
         settings->tStart = ps->DoubleAttribute("tStart", settings->tStart);
         settings->tEnd = ps->DoubleAttribute("tEnd", settings->tEnd);
+        settings->teleportToStart = ps->BoolAttribute(
+            "teleportToStart", settings->teleportToStart
+        );
     }
 
     // Return loaded settings

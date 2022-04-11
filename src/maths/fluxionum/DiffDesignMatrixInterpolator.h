@@ -26,8 +26,9 @@ namespace DiffDesignMatrixInterpolator{
  * @brief Obtain a linear pieces function from given DiffDesignMatrix and
  *  known values
  * @param ddm The DiffDesignMatrix itself
- * @param y The vector of known values such that \f$y(t_i) = y_i\f$
- * @param colIdx The index of the column to generate LinearPiecesFunction from
+ * @param slope The vector of known derivatives (line slopes)
+ *  \f$\frac{dy}{dt}(t_i)\f$
+ * @param intercept The vector of known values such that \f$y(t_i) = y_i\f$
  * @tparam A The time's domain
  * @tparam B The non time's domain
  * @return LinearPiecesFunction from given arguments
@@ -35,13 +36,13 @@ namespace DiffDesignMatrixInterpolator{
 template <typename A, typename B>
 LinearPiecesFunction<A, B> makeLinearPiecesFunction(
     DiffDesignMatrix<A, B> const &ddm,
-    arma::Col<B> const &y,
-    size_t const colIdx=0
+    arma::Col<B> const &slope,
+    arma::Col<B> const &intercept
 ){
     return LinearPiecesFunction<A, B>(
         ddm.getTimeVector(),
-        ddm.getA().col(colIdx),
-        y
+        slope,
+        intercept
     );
 }
 
@@ -54,16 +55,18 @@ template <typename A, typename B>
 LinearPiecesFunction<A, B> makeLinearPiecesFunction(
     DiffDesignMatrix<A, B> const &ddm,
     DesignMatrix<B> const &dm,
-    size_t const colIdx=0
+    size_t const colIdx,
+    arma::Col<B> *intercept,
+    arma::Col<B> *slope
 ){
     switch(ddm.getDiffType()){
         case DiffDesignMatrixType::FORWARD_FINITE_DIFFERENCES:{
+            *intercept = dm.getColumnCopy(colIdx).subvec(0, dm.getNumRows()-2);
+            *slope = ddm.getA().col(colIdx);
             return makeLinearPiecesFunction(
                 ddm,
-                arma::Col<double>(
-                    dm.getColumnCopy(colIdx).subvec(0, dm.getNumRows()-2)
-                ),
-                colIdx
+                *slope,
+                *intercept
             );
         }
         case DiffDesignMatrixType::CENTRAL_FINITE_DIFFERENCES:{
@@ -85,9 +88,8 @@ LinearPiecesFunction<A, B> makeLinearPiecesFunction(
  * @brief Obtain a parametric linear pieces function from given
  *  DiffDesignMatrix and known values
  * @param ddm  The DiffDesignMatrix itself
- * @param y The matrix of known values such that \f$y_j(t_i) = y_{ij}\f$
- * @param colIdx The index of the column to generate
- *  ParametricVectorialLinearPiecesFunction from
+ * @param intercepts The matrix of known values such that
+ *  \f$y_j(t_i) = y_{ij}\f$
  * @tparam A The time's domain
  * @tparam B The non time's domain
  * @return ParametricVectorialLinearPiecesFunction from given arguments
@@ -95,12 +97,12 @@ LinearPiecesFunction<A, B> makeLinearPiecesFunction(
 template <typename A, typename B>
 ParametricLinearPiecesFunction<A, B> makeParametricLinearPiecesFunction(
     DiffDesignMatrix<A, B> const &ddm,
-    arma::Mat<B> const &y
+    arma::Mat<B> const &intercepts
 ){
     return ParametricLinearPiecesFunction<A, B>(
         ddm.getTimeVector(),
         ddm.getA(),
-        y
+        intercepts
     );
 }
 
@@ -118,7 +120,7 @@ ParametricLinearPiecesFunction<A, B> makeParametricLinearPiecesFunction(
         case DiffDesignMatrixType::FORWARD_FINITE_DIFFERENCES:{
             return makeParametricLinearPiecesFunction(
                 ddm,
-                arma::Mat<double>(dm.getX().rows(0, dm.getNumRows()-2))
+                dm.getX()
             );
         }
         case DiffDesignMatrixType::CENTRAL_FINITE_DIFFERENCES:{

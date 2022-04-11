@@ -14,7 +14,6 @@ using namespace std::chrono;
 #include <DateTimeUtils.h>
 #include <filems/facade/FMSFacade.h>
 
-#include <glm/gtx/norm.hpp> // TODO Remove
 
 using namespace std;
 
@@ -73,13 +72,6 @@ void Simulation::doSimStep(){
 
     // Ordered execution of simulation components
 	mScanner->platform->doSimStep(getScanner()->getPulseFreq_Hz());
-	std::cout   << "platform: (t, x, y, z, d) = (" // TODO Remove cout
-	            << stepLoop.getCurrentTime() << ", "
-	            << mScanner->platform->getPosition().x << ", "
-                << mScanner->platform->getPosition().y << ", "
-                << mScanner->platform->getPosition().z << ", "
-                << glm::l2Norm(mScanner->platform->cached_vectorToTarget)<<")"
-                << std::endl;
     mScanner->doSimStep(mCurrentLegIndex, currentGpsTime_ms);
 	mScanner->platform->scene->doSimStep();
     currentGpsTime_ms += 1000. / ((double)getScanner()->getPulseFreq_Hz());

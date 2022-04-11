@@ -40,17 +40,17 @@ protected:
      * @brief The set \f$S\f$ of \f$m\f$ sorted start points
      * @see fluxionum::LinearPiecesFunction::start
      */
-    arma::Col<A> start;
+    arma::Col<A> const &start;
     /**
      * @brief The slope for each piece so \f$a_{ij}\f$ is the slope of the
      *  \f$j\f$-th variable at the \f$i\f$-th interval
      */
-    arma::Mat<B> slope;
+    arma::Mat<B> const &slope;
     /**
      * @brief The intercept for each piece so \f$b_{ij}\f$ is the intercept of
      *  the \f$j\f$-th variable at the \f$i\f$-th interval
      */
-    arma::Mat<B> intercept;
+    arma::Mat<B> const &intercept;
 
 public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //

@@ -354,6 +354,15 @@ void XmlSurveyLoader::loadLegs(
             scannerFields,
             &templateFields
         );
+        // Translate TrajectorySettings to simulation time
+        if(leg->mTrajectorySettings != nullptr){
+            if(leg->mTrajectorySettings->hasStartTime()){ // Translate tStart
+                leg->mTrajectorySettings->tStart += ip->timeShift;
+            }
+            if(leg->mTrajectorySettings->hasEndTime()){ // Translate tEnd
+                leg->mTrajectorySettings->tEnd += ip->timeShift;
+            }
+        }
         // Insert leg
         legs.push_back(leg);
         // Configure waypoints for interpolated legs
@@ -385,6 +394,7 @@ void XmlSurveyLoader::loadLegs(
             else{
                 xEnd = (*trajInterp)(arma::max(ip->tdm->getTimeVector()));
             }
+            // Insert stop leg
             std::shared_ptr<Leg> stopLeg = std::make_shared<Leg>(*leg);
             stopLeg->mScannerSettings = std::make_shared<ScannerSettings>(
                 *leg->mScannerSettings
@@ -394,9 +404,20 @@ void XmlSurveyLoader::loadLegs(
                 *leg->mPlatformSettings
             );
             stopLeg->mPlatformSettings->x = xEnd[3];
-            stopLeg->mPlatformSettings->x = xEnd[4];
-            stopLeg->mPlatformSettings->x = xEnd[5];
+            stopLeg->mPlatformSettings->y = xEnd[4];
+            stopLeg->mPlatformSettings->z = xEnd[5];
+            stopLeg->mTrajectorySettings = make_shared<TrajectorySettings>();
             legs.push_back(stopLeg);
+            // Insert teleport to start leg (after stop leg), if requested
+            if(leg->mTrajectorySettings->teleportToStart){
+                std::shared_ptr<Leg> startLeg = make_shared<Leg>(*stopLeg);
+                startLeg->mPlatformSettings->x = leg->mPlatformSettings->x;
+                startLeg->mPlatformSettings->y = leg->mPlatformSettings->y;
+                startLeg->mPlatformSettings->z = leg->mPlatformSettings->z;
+                startLeg->mTrajectorySettings->teleportToStart = true;
+                leg->mTrajectorySettings->teleportToStart = false;
+                legs.insert(legs.end()-2, startLeg);
+            }
         }
         // Iterate to next leg
         legNodes = legNodes->NextSiblingElement("leg");
@@ -409,6 +430,8 @@ void XmlSurveyLoader::applySceneShift(
     bool const legNoiseDisabled,
     std::shared_ptr<Survey> survey
 ){
+    // Obtain scene shift
+    glm::dvec3 shift = survey->scanner->platform->scene->getShift();
     // Prepare normal distribution if necessary
     RandomnessGenerator<double> rg(*DEFAULT_RG);
     bool legRandomOffset = surveyNode->BoolAttribute("legRandomOffset", false);
@@ -418,11 +441,21 @@ void XmlSurveyLoader::applySceneShift(
           surveyNode->DoubleAttribute("legRandomOffsetStdev", 0.1)
         );
     }
+    // Apply scene shift to interpolated trajectory, if any
+    try{
+        std::shared_ptr<InterpolatedMovingPlatformEgg> pe =
+            dynamic_pointer_cast<InterpolatedMovingPlatformEgg>(
+                survey->scanner->platform
+            );
+        pe->tdm->addToColumn(3, -shift.x);
+        pe->tdm->addToColumn(4, -shift.y);
+        pe->tdm->addToColumn(5, -shift.z);
+    }
+    catch(...) {}
     // Apply scene shift to each leg
     for(std::shared_ptr<Leg> leg : survey->legs) {
       // Shift platform settings, if any
       if (leg->mPlatformSettings != nullptr) {
-          glm::dvec3 shift = survey->scanner->platform->scene->getShift();
           glm::dvec3 platformPos = leg->mPlatformSettings->getPosition();
           leg->mPlatformSettings->setPosition(platformPos - shift);
 

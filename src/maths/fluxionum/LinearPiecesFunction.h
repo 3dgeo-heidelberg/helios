@@ -33,15 +33,15 @@ protected:
      * @brief The set \f$S\f$ of \f$m\f$ sorted start points
      * @see fluxionum::ParametricLinearPiecesFunction::start
      */
-    arma::Col<A> start;
+    arma::Col<A> const &start;
     /**
      * @brief The slopes for each piece \f$a_1, \ldots, a_m\f$
      */
-    arma::Col<B> slope;
+    arma::Col<B> const &slope;
     /**
      * @brief The intercepts for each piece \f$b_1, \ldots, b_m\f$
      */
-    arma::Col<B> intercept;
+    arma::Col<B> const &intercept;
 
 public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //

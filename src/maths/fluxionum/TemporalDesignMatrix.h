@@ -73,6 +73,10 @@ using std::unordered_map;
 template <typename TimeType, typename VarType>
 class TemporalDesignMatrix : public DesignMatrix<VarType> {
 protected:
+    // ***  USING  *** //
+    // *************** //
+    using DesignMatrix<VarType>::X;
+
     // ***  ATTRIBUTES  *** //
     // ******************** //
     /**
@@ -303,6 +307,31 @@ public:
             TemporalDesignMatrix<TimeType, VarType> const&
         >(dm);
         t.insert_rows(t.n_rows, tdm.getTimeVector());
+    }
+
+    /**
+     * @brief Add given time \f$x\f$ to all time values in vector \f$\vec{t}\f$
+     *
+     * \vec{t'} = \vec{t} + x = \left[\begin{array}{c}
+     *  t_1 + x \\
+     *  \vdots
+     *  t_m + x
+     * \end{array}\right.
+     *
+     * @param x The time shift for each time component
+     */
+    virtual void shiftTime(TimeType const x){
+        t += x;
+    }
+    /**
+     * @brief Sort all rows of \f$X\f$ matrix and all components of
+     *  \f$\vec{t}\f$ vector so \f$t_{i+1} > t_{i}\f$ \f$vec{t}\f$, considering
+     *  the row \f$X(i,:)\f$ is associated with the time component \f$t_i\f$
+     */
+    virtual void sortByTime(){
+        arma::uvec const tSort = arma::sort_index(getTimeVector());
+        t = t(tSort);
+        X = X.rows(tSort);
     }
 
 

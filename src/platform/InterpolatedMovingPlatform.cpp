@@ -75,3 +75,15 @@ bool InterpolatedMovingPlatform::waypointReached(){
     // Waypoint reached if distance(platform, waypoint) < 1cm
     return glm::l2Norm(cached_vectorToTarget) < 0.01;
 }
+void InterpolatedMovingPlatform::toTrajectoryTime(double const t){
+    double h = t - tf->getFpiem().getT();
+    if(h >= 0){ // Advance to next tStart
+        tf->getFpiem().eval(h);
+    }
+    else{ // Restart and advance to next tStart
+        tf->getFpiem().restart();
+        tf->getPclsf().restart();
+        h = t - tf->getFpiem().getT();
+        tf->getFpiem().eval(h);
+    }
+}

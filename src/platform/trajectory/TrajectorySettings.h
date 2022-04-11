@@ -36,6 +36,12 @@ public:
      *  end time is the last known time
      */
     double tEnd;
+    /**
+     * @brief When true, the platform will be teleported to the start point
+     *  of the next leg's trajectory when starting the leg. When false
+     *  (default), the platform will continue from its last position.
+     */
+    bool teleportToStart;
 
     // ***  CONSTRUCTION / DESTRUCTION  *** //
     // ************************************ //
@@ -44,7 +50,8 @@ public:
      */
     TrajectorySettings() :
         tStart(std::numeric_limits<double>::lowest()),
-        tEnd(std::numeric_limits<double>::max())
+        tEnd(std::numeric_limits<double>::max()),
+        teleportToStart(false)
     {}
     virtual ~TrajectorySettings() = default;
 

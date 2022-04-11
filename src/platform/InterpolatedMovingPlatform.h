@@ -1,7 +1,7 @@
 #pragma once
 
 #include <platform/MovingPlatform.h>
-#include <platform/trajectory/TrajectoryFunction.h>
+#include <platform/trajectory/DesignTrajectoryFunction.h>
 #include <fluxionum/TemporalDesignMatrix.h>
 #include <fluxionum/DiffDesignMatrix.h>
 #include <SimulationStepLoop.h>
@@ -50,7 +50,7 @@ protected:
      * @brief The trajectory function defining the platform's motion
      * @see TrajectoryFunction
      */
-    std::shared_ptr<TrajectoryFunction> tf = nullptr;
+    std::shared_ptr<DesignTrajectoryFunction> tf = nullptr;
     /**
      * @brief The \f$m\f$ time frontiers \f$a_1, \ldots, a_m\f$ such that
      *  \f$\forall t,\, \exists i \ni t \in [a_i, a_{i+1})\f$.
@@ -117,6 +117,14 @@ public:
 	 * @see Platform::waypointReached
 	 */
     bool waypointReached() override;
+    /**
+     * @brief Configures the iterative method of the trajectory function so
+     *  the current iteration is considered to be at given time \f$t\f$.
+     *
+     * The step \f$h\f$ will be applied in consequence to reach \f$t+h\f$ for
+     *  the new \f$t\f$
+     */
+    virtual void toTrajectoryTime(double const t);
 
     // ***  GETTERs and SETTERs  *** //
     // ***************************** //
@@ -142,14 +150,16 @@ public:
      * @brief Obtain the TrajectoryFunction
      * @see InterpolatedMovingPlatform::tf
      */
-    inline std::shared_ptr<TrajectoryFunction> getTrajectoryFunction() const
-        {return tf;}
+    inline std::shared_ptr<DesignTrajectoryFunction>
+    getTrajectoryFunction() const
+    {return tf;}
     /**
      * @brief Set the TrajectoryFunction
      * @see InterpolatedMovingPlatform::tf
      */
-    inline void setTrajectoryFunction(std::shared_ptr<TrajectoryFunction> tf)
-        {this->tf = tf;}
+    inline void setTrajectoryFunction(
+        std::shared_ptr<DesignTrajectoryFunction> tf
+    ) {this->tf = tf;}
     /**
      * @brief Obtain the time frontiers
      * @see InterpolatedMovingPlatform::timeFrontiers

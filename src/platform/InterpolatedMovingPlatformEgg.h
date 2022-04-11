@@ -27,6 +27,7 @@ public:
         InterpolatedMovingPlatform::InterpolationScope::POSITION_AND_ATTITUDE;
     std::shared_ptr<TemporalDesignMatrix<double, double>> tdm;
     std::shared_ptr<DiffDesignMatrix<double, double>> ddm;
+    double timeShift; // Compute +timeShift to translate to simulation time
 
     // ***  CONSTRUCTION / DESTRUCTION  *** //
     // ************************************ //

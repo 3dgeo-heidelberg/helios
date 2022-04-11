@@ -6,7 +6,6 @@
 
 #include <armadillo>
 
-
 /**
  * @author Alberto M. Esmoris Pena
  * @version 1.0
@@ -36,7 +35,7 @@ protected:
      *  \right)
      * \f]
      */
-    ParametricClosestLesserSampleFunction<double, double> pclsf;
+    fluxionum::ParametricClosestLesserSampleFunction<double, double> pclsf;
     /**
      * @brief The function solving the Euler method to estimate the parametric
      *  function
@@ -44,7 +43,7 @@ protected:
      *  \vec{x}(t+h) = \vec{x}(t) + h \frac{d\vec{x}}{dt}
      * \f]
      */
-    FixedParametricIterativeEulerMethod<double, double> fpiem;
+    fluxionum::FixedParametricIterativeEulerMethod<double, double> fpiem;
     /**
      * @brief The last time value evaluated by this function. By default, it is
      *  0
@@ -91,5 +90,40 @@ public:
         lastTime = t;
         return fpiem(h);
     }
+
+    // ***  GETTERs and SETTERs  *** //
+    // ***************************** //
+    /**
+     * @brief Obtain the parametric closest lesser sample function used to
+     *  compute the design trajectory function
+     * @return The parametric closest lesser sample function used to compute
+     *  the design trajectory function
+     * @see DesignTrajectoryFunction::pclsf
+     * @see fluxionum::ParametricClosestLesserSampleFunction
+     */
+    fluxionum::ParametricClosestLesserSampleFunction<double, double> &
+    getPclsf() {return pclsf;}
+    /**
+     * @brief Obtain the fixed parametric iterative Euler method used to
+     *  compute the design trajectory function
+     * @return The fixed parametric iterative Euler method used to compute the
+     *  design trajectory function
+     * @see DesignTrajectoryFunction::fpiem
+     * @see fluxionum::FixedParametricIterativeEulerMethod
+     */
+    inline fluxionum::FixedParametricIterativeEulerMethod<double, double> &
+    getFpiem() {return fpiem;}
+    /**
+     * @brief Obtain the last time evaluated by this function
+     * @return The last time evaluated by this function
+     * @see DesignTrajectoryFunction::lastTime
+     */
+    inline double getLastTime() const {return lastTime;}
+    /**
+     * @brief Set the last time evaluated by this function
+     * @param lastTime The last time evaluated by this function
+     * @see DesignTrajectoryFunction::lastTime
+     */
+    inline void setLastTime(double const lastTime) {this->lastTime = lastTime;}
 
 };

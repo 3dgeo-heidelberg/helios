@@ -105,6 +105,12 @@ public:
         return y.at(i);
     }
 
+    /**
+     * @brief Restart the ClosestLesserSampleFunction so it is at its
+     *  initial state again (it is, at the first sample)
+     */
+    virtual void restart(){setCurrentSampleIndex(0);}
+
     // ***  GETTERs and SETTERs  *** //
     // ***************************** //
     /**

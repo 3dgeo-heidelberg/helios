@@ -108,6 +108,27 @@ public:
         // Compute iterative Euler method
         return ParametricIterativeEulerMethod<A, B>::eval(tdiff);
     }
+
+    /**
+     * @see ParametricIterativeEulerMethod::restart
+     */
+    void restart() override{
+        ParametricIterativeEulerMethod<A, B>::restart();
+        setCurrentPieceIndex(0);
+    }
+
+    // ***  GETTERs and SETTERs  *** //
+    // ***************************** //
+    /**
+     * @brief Obtain the index identifying the current piece
+     * @see fluxionum::FixedParametricIterativeEulerMethod::i
+     */
+    inline size_t getCurrentPieceIndex() const {return i;}
+    /**
+     * @brief Set the index identifying the current piece
+     * @see fluxionum::FixedParametricIterativeEulerMethod::i
+     */
+    inline void setCurrentPieceIndex(size_t const i) {this->i = i;}
 };
 
 }

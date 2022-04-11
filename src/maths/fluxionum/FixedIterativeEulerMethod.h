@@ -106,6 +106,14 @@ public:
         return IterativeEulerMethod<A, B>::eval(tdiff);
     }
 
+    /**
+     * @see IterativeEulerMethod::restart
+     */
+    void restart() override{
+        IterativeEulerMethod<A, B>::restart();
+        setCurrentPieceIndex(0);
+    }
+
     // ***  GETTERs and SETTERs  *** //
     // ***************************** //
     /**

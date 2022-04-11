@@ -356,6 +356,14 @@ bool FluxionumTest::testDesignMatrixMethods(){
         ),
         arma::Col<double>("0.3 0.4 0.5")
     );
+    TemporalDesignMatrix<double, double> tdm3(
+        arma::Mat<double>(
+            "4 5 6;"
+            "4 5 6;"
+            "4 5 6;"
+        ),
+        arma::Col<double>("0.4 0.5 0.3")
+    );
     IndexedDesignMatrix<int, double> idm1(
         arma::Mat<double>(
             "0.1 0.2 0.3;"
@@ -447,6 +455,16 @@ bool FluxionumTest::testDesignMatrixMethods(){
     );
     if(arma::any(arma::vectorise(arma::abs(idm.getX()-em)) > eps))
         return false;
+
+    // Validate sortByTime
+    tdm3.sortByTime();
+    if(arma::any((tdm3.getTimeVector()-tdm2.getTimeVector()) > eps))
+        return false;
+
+    // Validate shiftTime
+    et = tdm3.getTimeVector() + 13.37;
+    tdm3.shiftTime(13.37);
+    if(arma::any((tdm3.getTimeVector()-et) > eps)) return false;
 
     // On passed return true
     return true;
@@ -616,14 +634,20 @@ bool FluxionumTest::testDesignFunctions(){
     );
 
     // Validate LinearPiecesFunction
+    arma::Col<double> intercept(
+        tdm1.getColumnCopy(0).subvec(0,tdm1.getNumRows()-2)
+    );
+    arma::Col<double> slope = ffd1.getA().col(0);
     LinearPiecesFunction<double, double> lpf1 = \
     DiffDesignMatrixInterpolator::makeLinearPiecesFunction(
         ffd1,
-        arma::Col<double>(tdm1.getColumnCopy(0).subvec(0,tdm1.getNumRows()-2)),
-        0
+        slope,
+        intercept
     );
     LinearPiecesFunction<double, double> lpf2 = \
-    DiffDesignMatrixInterpolator::makeLinearPiecesFunction(ffd1, tdm1);
+    DiffDesignMatrixInterpolator::makeLinearPiecesFunction(
+        ffd1, tdm1, 0, &intercept, &slope
+    );
     arma::Col<double> lpf1t("-1 0 1 2 3 4 5 6 7.5 9");
     arma::Col<double> lpf1E("-1 0 1 2 2.5 3 3 3 3.5 4");
     for(size_t i = 0 ; i < lpf1t.n_elem ; ++i){
@@ -635,7 +659,7 @@ bool FluxionumTest::testDesignFunctions(){
     ParametricLinearPiecesFunction<double, double> plpf1 = \
     DiffDesignMatrixInterpolator::makeParametricLinearPiecesFunction(
         ffd2,
-        arma::Mat<double>(tdm2.getX().rows(0, tdm2.getNumRows()-2))
+        tdm2.getX()
     );
     ParametricLinearPiecesFunction<double, double> plpf2 = \
     DiffDesignMatrixInterpolator::makeParametricLinearPiecesFunction(

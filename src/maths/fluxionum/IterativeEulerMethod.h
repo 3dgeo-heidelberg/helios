@@ -103,6 +103,15 @@ public:
         return y;
     }
 
+    /**
+     * @brief Restart the IterativeEulerMethod so it is at its
+     *  initial state again \f$y(t_0) = y_0\f$
+     */
+    virtual void restart(){
+        setT(getT0());
+        setY(getY0());
+    }
+
     // ***  GETTERs and SETTERs  *** //
     // ***************************** //
     /**
@@ -114,6 +123,10 @@ public:
      */
     inline A getT() const {return t;};
     /**
+     * @see fluxionum::IterativeEulerMethod::t
+     */
+    inline void setT(A const t) {this->t = t;}
+    /**
      * @see fluxionum::IterativeEulerMethod::t0
      */
     inline A getT0() const {return t0;}
@@ -121,6 +134,10 @@ public:
      * @see fluxionum::IterativeEulerMethod::y
      */
     inline B getY() const {return y;}
+    /**
+     * @see fluxionum::IterativeEulerMethod::y
+     */
+    inline void setY(B const y) {this->y = y;}
     /**
      * @see fluxionum::IterativeEulerMethod::y0
      */

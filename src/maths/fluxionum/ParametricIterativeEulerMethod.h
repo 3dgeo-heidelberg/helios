@@ -105,6 +105,15 @@ public:
         return y;
     }
 
+    /**
+     * @brief Restart the ParametricIterativeEulerMethod so it is at its
+     *  initial state again \f$y(t_0) = y_0\f$
+     */
+    virtual void restart(){
+        setT(getT0());
+        setY(getY0());
+    }
+
     // ***  GETTERs and SETTERs  *** //
     // ***************************** //
     /**
@@ -116,17 +125,25 @@ public:
      */
     inline A getT() const {return t;};
     /**
+     * @see fluxionum::ParametricIterativeEulerMethod::t
+     */
+    inline void setT(A const t) {this->t = t;}
+    /**
      * @see fluxionum::ParametricIterativeEulerMethod::t0
      */
     inline A getT0() const {return t0;}
     /**
      * @see fluxionum::ParametricIterativeEulerMethod::y
      */
-    inline B getY() const {return y;}
+    inline arma::Col<B> getY() const {return y;}
+    /**
+     * @see fluxionum::ParametricIterativeEulerMethod::y
+     */
+    inline void setY(arma::Col<B> const y) {this->y = y;}
     /**
      * @see fluxionum::ParametricIterativeEulerMethod::y0
      */
-    inline B getY0() const {return y0;}
+    inline arma::Col<B> getY0() const {return y0;}
 };
 
 }
