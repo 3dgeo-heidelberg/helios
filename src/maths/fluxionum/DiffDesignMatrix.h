@@ -322,19 +322,29 @@ public:
      * @brief Build a DiffDesignMatrix from given TemporalDesignMatrix
      * @param tdm The TemporalDesignMatrix to be used to build the
      *  DiffDesignMatrix
+     * @param sort When true, the DiffDesignMatrix construction will lead to an
+     *  expensive sort operation to assure the finite differences
+     *  computation makes sense.
+     *  When false, the expensive sort computation will be skipped as it is
+     *  expected that the TemporalDesignMatrix is already sorted
      * @param diffType The type of differencing method
+     * @see TemporalDesignMatrix::toDiffDesignMatrix
      */
     DiffDesignMatrix(
         TemporalDesignMatrix<TimeType, VarType> const &tdm,
-        DiffDesignMatrixType const diffType
+        DiffDesignMatrixType const diffType,
+        bool const sort=true
     ) :
         AbstractDesignMatrix<VarType>(tdm.getColumnNames())
     {
         switch (diffType) {
             case DiffDesignMatrixType::FORWARD_FINITE_DIFFERENCES:{
-                arma::uvec const tSort = arma::sort_index(tdm.getTimeVector());
-                arma::Col<TimeType> const t = tdm.getTimeVector()(tSort);
-                arma::Mat<VarType> const X = tdm.getX().rows(tSort);
+                arma::uvec const tSort = (sort) ?
+                    arma::sort_index(tdm.getTimeVector()) : arma::uvec();
+                arma::Col<TimeType> const t = (sort) ?
+                    tdm.getTimeVector()(tSort) : tdm.getTimeVector();
+                arma::Mat<VarType> const X = (sort) ?
+                    tdm.getX().rows(tSort) : tdm.getX();
                 arma::Mat<VarType> DXDT = arma::diff(X, 1, 0);
                 DXDT.each_col() /= arma::diff(t, 1);
                 *this = DiffDesignMatrix(
@@ -347,9 +357,12 @@ public:
                 break;
             }
             case DiffDesignMatrixType::CENTRAL_FINITE_DIFFERENCES:{
-                arma::uvec const tSort = arma::sort_index(tdm.getTimeVector());
-                arma::Col<TimeType> const t = tdm.getTimeVector()(tSort);
-                arma::Mat<VarType> const X = tdm.getX().rows(tSort);
+                arma::uvec const tSort = (sort) ?
+                    arma::sort_index(tdm.getTimeVector()) : arma::uvec();
+                arma::Col<TimeType> const t = (sort) ?
+                    tdm.getTimeVector()(tSort) : tdm.getTimeVector();
+                arma::Mat<VarType> const X = (sort) ?
+                    tdm.getX().rows(tSort) : tdm.getX();
                 arma::Col<TimeType> T(
                     (t.subvec(0, t.n_elem-2) + t.subvec(1, t.n_elem-1))
                 );

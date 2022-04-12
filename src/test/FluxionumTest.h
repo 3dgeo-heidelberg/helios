@@ -364,6 +364,22 @@ bool FluxionumTest::testDesignMatrixMethods(){
         ),
         arma::Col<double>("0.4 0.5 0.3")
     );
+    TemporalDesignMatrix<double, double> tdm4(
+        arma::Mat<double>(
+            "-2     -2      1;"
+            "0      0       1;"
+            "2      2       1;"
+            "4      4       1;"
+            "4      4       1;"
+            "4      4       1;"
+            "4      4       1;"
+            "4      4       1;"
+            "3      3       1;"
+            "2      2       1;"
+            "1      1       1;"
+        ),
+        arma::Col<double>("-5 -4 -3 -2 -1 0 1 2 3 4 5")
+    );
     IndexedDesignMatrix<int, double> idm1(
         arma::Mat<double>(
             "0.1 0.2 0.3;"
@@ -465,6 +481,19 @@ bool FluxionumTest::testDesignMatrixMethods(){
     et = tdm3.getTimeVector() + 13.37;
     tdm3.shiftTime(13.37);
     if(arma::any((tdm3.getTimeVector()-et) > eps)) return false;
+
+    // Validate slopeFilter
+    et = arma::Col<double>("-5 -2 2 5");
+    em = arma::Mat<double>(
+        "-2     -2      1;"
+        "4      4       1;"
+        "4      4       1;"
+        "1      1       1;"
+    );
+    if(tdm4.slopeFilter(0.01) != 7) return false;
+    if(arma::any(arma::abs(tdm4.getTimeVector()-et) > eps)) return false;
+    if(arma::any(arma::abs(arma::vectorise(tdm4.getX()-em)) > eps))
+        return false;
 
     // On passed return true
     return true;

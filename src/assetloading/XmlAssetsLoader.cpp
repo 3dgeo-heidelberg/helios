@@ -421,6 +421,8 @@ std::shared_ptr<Platform> XmlAssetsLoader::createInterpolatedMovingPlatform(){
     tinyxml2::XMLElement *leg = survey->FirstChildElement("leg");
     std::unordered_set<std::string> trajectoryFiles;
     std::unordered_map<std::string, vector<size_t>> indices; // t, RPY, XYZ
+    std::string interpDom = "position_and_attitude";
+    bool firstInterpDom = true;
     if(leg==nullptr){
         logging::ERR(
             "XmlAssetsLoader::createInterpolatedMovingPlatform failed\n"
@@ -451,6 +453,39 @@ std::shared_ptr<Platform> XmlAssetsLoader::createInterpolatedMovingPlatform(){
         }
         // Get the trajectory path
         string const trajectoryPath = ps->Attribute("trajectory");
+        // Handle interpolation domain
+        string const interpolationDomain =
+            (XmlUtils::hasAttribute(ps, "interpolationDomain")) ?
+                ps->Attribute("interpolationDomain") : "";
+        if(!interpolationDomain.empty()){
+            if(firstInterpDom){
+                if(
+                    interpolationDomain != "position" &&
+                    interpolationDomain != "position_and_attitude"
+                ){
+                    std::stringstream ss;
+                    ss  << "XmlAssetsLoader::createInterpolatedMovingPlatform "
+                        << "failed.\n"
+                        << "Unexpected interpolation domain: \""
+                        << interpolationDomain << "\"";
+                    logging::ERR(ss.str());
+                    std::exit(-1);
+                }
+                interpDom = interpolationDomain;
+            }
+            else if(interpDom != interpolationDomain){
+                std::stringstream ss;
+                ss  << "XmlAssetsLoader::createInterpolatedMovingPlatform "
+                    << "failed.\n"
+                    << "Interpolation domain \"" << interpDom << "\" "
+                    << "was first specified.\n"
+                    << "But then, interpolation domain \""
+                    << interpolationDomain << "\" was given.";
+                logging::ERR(ss.str());
+                std::exit(-1);
+            }
+            firstInterpDom = false;
+        }
         // Handle trajectory metadata : indices
         if(
             XmlUtils::hasAttribute(ps, "tIndex") ||
@@ -486,6 +521,16 @@ std::shared_ptr<Platform> XmlAssetsLoader::createInterpolatedMovingPlatform(){
         // Prepare next iteration
         leg = leg->NextSiblingElement("leg");
     }
+
+    // Correct indices for POSITION scope
+    if(interpDom == "position"){ // Position indices
+        std::unordered_map<std::string, std::vector<std::size_t>>::iterator it;
+        for(it = indices.begin() ; it != indices.end() ; ++it){
+            std::vector<std::size_t> &inds = it->second;
+            inds.erase(inds.begin()+1, inds.begin()+4);
+        }
+    }
+
     // Iterate over legs again, to fulfill egg
     leg = survey->FirstChildElement("leg");
     while(leg!=nullptr){
@@ -513,6 +558,72 @@ std::shared_ptr<Platform> XmlAssetsLoader::createInterpolatedMovingPlatform(){
                     >(
                         trajectoryPath
                     );
+                    if(interpDom == "position"){ // t, x, y, z from header
+                        vector<unsigned long long>inds({0, 1, 2});
+                        vector<string> const &names =
+                            platform->tdm->getColumnNames();
+                        for(size_t i = 0 ; i < names.size() ; ++i){
+                            if(names[i]=="x") inds[0] = i;
+                            else if(names[i]=="y") inds[1] = i;
+                            else if(names[i]=="z") inds[2] = i;
+                            else if(
+                                names[i]=="roll" ||
+                                names[i]=="pitch" ||
+                                names[i]=="yaw"
+                            ); // Ignore roll pitch yaw in position mode
+                            else{
+                                logging::ERR(
+                                    "XmlAssetsLoader::createInterpolated"
+                                    "MovingPlatform failed\n"
+                                    "Unexpected column \""+names[i]+"\""
+                                );
+                                std::exit(-1);
+                            }
+                        }
+                        platform->tdm->swapColumns(inds);
+                    }
+                    else{ // t, roll, pitch, yaw, x, y, z from header
+                        vector<unsigned long long>inds({0, 1, 2, 3, 4, 5});
+                        vector<string> const &names =
+                            platform->tdm->getColumnNames();
+                        for(size_t i = 0 ; i < names.size() ; ++i){
+                            if(names[i]=="roll") inds[0] = i;
+                            else if(names[i]=="pitch") inds[1] = i;
+                            else if(names[i]=="yaw") inds[2] = i;
+                            else if(names[i]=="x") inds[3] = i;
+                            else if(names[i]=="y") inds[4] = i;
+                            else if(names[i]=="z") inds[5] = i;
+                            else{
+                                logging::ERR(
+                                    "XmlAssetsLoader::createInterpolated"
+                                    "MovingPlatform failed\n"
+                                    "Unexpected column \""+names[i]+"\""
+                                );
+                                std::exit(-1);
+                            }
+                        }
+                        platform->tdm->swapColumns(inds);
+                    }
+                }
+                // Drop columns, if necessary
+                if(
+                    interpDom == "position" &&
+                    platform->tdm->getNumColumns() > 3
+                ){
+                    platform->tdm->dropColumns(vector<size_t>({0, 1, 2}));
+                }
+                // Apply slope filter, if requested
+                double const slopeFilterThreshold = ps->DoubleAttribute(
+                    "slopeFilterThreshold", 0.0
+                );
+                if(slopeFilterThreshold > 0.0){
+                    platform->tdm->sortByTime();
+                    size_t const filteredPoints =
+                        platform->tdm->slopeFilter(slopeFilterThreshold);
+                    std::stringstream ss;
+                    ss  << "Slope filter removed " << filteredPoints << " "
+                        << "points from \""+trajectoryPath+"\"";
+                    logging::DEBUG(ss.str());
                 }
             }
             else{ // Not first loaded, so merge with previous data
@@ -532,7 +643,59 @@ std::shared_ptr<Platform> XmlAssetsLoader::createInterpolatedMovingPlatform(){
                             trajectoryPath
                         )
                     );
+                    if(interpDom == "position"){ // t, x, y, z from header
+                        vector<unsigned long long>inds({0, 1, 2});
+                        vector<string> const &names = tdm->getColumnNames();
+                        for(size_t i = 0 ; i < names.size() ; ++i){
+                            if(names[i]=="x") inds[0] = i;
+                            else if(names[i]=="y") inds[1] = i;
+                            else if(names[i]=="z") inds[2] = i;
+                            else if(
+                                names[i]=="roll" ||
+                                names[i]=="pitch" ||
+                                names[i]=="yaw"
+                            ); // Ignore roll pitch yaw in position mode
+                            else{
+                                logging::ERR(
+                                    "XmlAssetsLoader::createInterpolated"
+                                    "MovingPlatform failed\n"
+                                    "Unexpected column \""+names[i]+"\""
+                                );
+                                std::exit(-1);
+                            }
+                        }
+                        tdm->swapColumns(inds);
+                    }
+                    else{ // t, roll, pitch, yaw, x, y, z from header
+                        vector<unsigned long long>inds({0, 1, 2, 3, 4, 5});
+                        vector<string> const &names = tdm->getColumnNames();
+                        for(size_t i = 0 ; i < names.size() ; ++i){
+                            if(names[i]=="roll") inds[0] = i;
+                            else if(names[i]=="pitch") inds[1] = i;
+                            else if(names[i]=="yaw") inds[2] = i;
+                            else if(names[i]=="x") inds[3] = i;
+                            else if(names[i]=="y") inds[4] = i;
+                            else if(names[i]=="z") inds[5] = i;
+                            else{
+                                logging::ERR(
+                                    "XmlAssetsLoader::createInterpolated"
+                                    "MovingPlatform failed\n"
+                                    "Unexpected column \""+names[i]+"\""
+                                );
+                                std::exit(-1);
+                            }
+                        }
+                        tdm->swapColumns(inds);
+                    }
                 }
+                // Drop columns, if necessary
+                if(
+                    interpDom == "position" &&
+                    tdm->getNumColumns() > 3
+                ){
+                    tdm->dropColumns(vector<size_t>({0, 1, 2}));
+                }
+                // Merge with previously loaded data
                 platform->tdm->mergeInPlace(*tdm);
             }
             trajectoryFiles.emplace(trajectoryPath);
@@ -551,7 +714,16 @@ std::shared_ptr<Platform> XmlAssetsLoader::createInterpolatedMovingPlatform(){
     platform->tdm->shiftTime(timeShift);
 
     // Differentiate temporal matrix through FORWARD FINITE DIFFERENCES
-    platform->ddm = platform->tdm->toDiffDesignMatrixPointer();
+    platform->ddm = platform->tdm->toDiffDesignMatrixPointer(
+        DiffDesignMatrixType::FORWARD_FINITE_DIFFERENCES,
+        false
+    );
+
+    // Configure interpolation scope
+    if(interpDom == "position"){
+        platform->scope =
+            InterpolatedMovingPlatform::InterpolationScope::POSITION;
+    }
 
     // Return egg
     return platform;
@@ -997,7 +1169,7 @@ std::shared_ptr<Asset> XmlAssetsLoader::getAssetById(
     tinyxml2::XMLElement *assetNodes =
         doc.FirstChild()->NextSibling()->FirstChildElement(type.c_str());
 
-    if(isProceduralAsset(type, id )){ // Generate procedural assets
+    if(isProceduralAsset(type, id)){ // Generate procedural assets
         return createProceduralAssetFromXml(type, id, extraOutput);
     }
 
@@ -1029,7 +1201,6 @@ std::shared_ptr<Asset> XmlAssetsLoader::getAssetById(
   }
 
   throw HeliosException(errorMsg);
-  return nullptr;
 }
 
 std::shared_ptr<Asset>

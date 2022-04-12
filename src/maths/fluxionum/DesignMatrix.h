@@ -147,6 +147,60 @@ public:
     inline void swapColumns(arma::uvec const& indices)
     {X = X.cols(indices);}
     /**
+     * @see DesignMatrix::dropColumns(arma::uvec const &)
+     */
+    inline void dropColumns(vector<size_t> const &indices){
+        return dropColumns(
+            vector<unsigned long long>(indices.begin(), indices.end())
+        );
+    }
+    /**
+     * @see DesignMatrix::dropColumns(arma::uvec const &)
+     */
+    inline void dropColumns(vector<unsigned long long> const &indices)
+    {return dropColumns(arma::uvec(indices));}
+    /**
+     * @brief Remove the columns from the DesignMatrix
+     *
+     * Let \f$\vec{u} = (u_1, \ldots, u_k)\f$ be the vector of indices for the
+     *  \f$k \leq n\f$ columns to be removed from the matrix
+     *  \f$X \in \mathbb{R}^{m \times n}\f$.
+     *  Thus, the new matrix \f$X' \in \mathbb{R}^{m \times (n-k)}\f$ can be
+     *  obtained from the \f$X\f$ matrix simply by removing all the columns
+     *  which index is the \f$u_i\f$ component of vector \f$\vec{u}\f$
+     *
+     * @param indices The vector of indices \f$vec{u} = (u_1, \ldots, u_n)\f$
+     */
+    inline void dropColumns(arma::uvec const& indices)
+    {X.shed_cols(indices);}
+    /**
+     * @see DesignMatrix::dropRows(arma::uvec const &)
+     */
+    inline void dropRows(vector<size_t> const &indices){
+        return dropRows(
+            vector<unsigned long long>(indices.begin(), indices.end())
+        );
+    }
+    /**
+     * @see DesignMatrix::dropRows(arma::uvec const &)
+     */
+    inline void dropRows(vector<unsigned long long> const &indices)
+    {return dropRows(arma::uvec(indices));}
+    /**
+     * @brief Remove the rows from the DesignMatrix
+     *
+     * Let \f$\vec{u} = (u_1, \ldots, u_k)\f$ be the vector of indices for the
+     *  \f$k \leq m\f$ rows to be removed from the matrix
+     *  \f$X \in \mathbb{R}^{m \times n}\f$.
+     *  Thus, the new matrix \f$X' \in \mathbb{R}^{(m-k) \times n}\f$ can be
+     *  obtained from the \f$X\f$ matrix simply by removing all the rows which
+     *  index if the \f$u_i\f$ component of vector \f$\vec{u}\f$
+     *
+     * @param indices The vector of indices \f${u} = (u_1, \ldots, u_n)\f$
+     */
+    virtual void dropRows(arma::uvec const &indices)
+    {X.shed_rows(indices);}
+    /**
      * @brief Add \f$x\f$ to all elements of \f$j\f$-th column
      * @param colIdx The index (\f$j\f$) of the column to be modified
      * @param x The value to be added to each element of given column

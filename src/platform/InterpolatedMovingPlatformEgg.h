@@ -33,6 +33,10 @@ public:
     // ************************************ //
     InterpolatedMovingPlatformEgg() :
         EggAsset(),
+        scope(
+            InterpolatedMovingPlatform::\
+                InterpolationScope::POSITION_AND_ATTITUDE
+        ),
         tdm(nullptr),
         ddm(nullptr)
     {}

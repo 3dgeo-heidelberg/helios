@@ -10,16 +10,20 @@ using namespace fluxionum;
 template <typename TimeType, typename VarType>
 DiffDesignMatrix<TimeType, VarType>
 TemporalDesignMatrix<TimeType, VarType>::toDiffDesignMatrix(
-    DiffDesignMatrixType diffType
+    DiffDesignMatrixType diffType,
+    bool const sort
 ) const {
-    return DiffDesignMatrix<TimeType, VarType>(*this, diffType);
+    return DiffDesignMatrix<TimeType, VarType>(*this, diffType, sort);
 }
 
 template <typename TimeType, typename VarType>
 shared_ptr<DiffDesignMatrix<TimeType, VarType>>
 TemporalDesignMatrix<TimeType, VarType>::toDiffDesignMatrixPointer(
-    DiffDesignMatrixType diffType
+    DiffDesignMatrixType diffType,
+    bool const sort
 ) const {
-    return make_shared<DiffDesignMatrix<TimeType, VarType>>(*this, diffType);
+    return make_shared<DiffDesignMatrix<TimeType, VarType>>(
+        *this, diffType, sort
+    );
 }
 

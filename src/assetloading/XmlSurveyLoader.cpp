@@ -314,6 +314,7 @@ void XmlSurveyLoader::loadLegs(
     // Obtain platform settings
     std::shared_ptr<PlatformSettings> platformSettings =
         platform->retrieveCurrentSettings();
+    size_t xIdx = 3, yIdx = 4, zIdx = 5;
     // Obtain trajectory interpolator, if any
     std::shared_ptr<ParametricLinearPiecesFunction<double, double>>
         trajInterp = nullptr;
@@ -325,6 +326,12 @@ void XmlSurveyLoader::loadLegs(
         DiffDesignMatrixInterpolator::makeParametricLinearPiecesFunction(
             *(ip->ddm), *(ip->tdm)
         ));
+        if(
+            ip->scope ==
+            InterpolatedMovingPlatform::InterpolationScope::POSITION
+        ){
+            xIdx = 0;       yIdx = 1;       zIdx = 2;
+        }
     }catch(std::exception &ex){}
 
     // Iterate over XML sibling leg elements
@@ -383,9 +390,9 @@ void XmlSurveyLoader::loadLegs(
             else{
                 xStart = (*trajInterp)(0);
             }
-            leg->mPlatformSettings->x = xStart[3];
-            leg->mPlatformSettings->y = xStart[4];
-            leg->mPlatformSettings->z = xStart[5];
+            leg->mPlatformSettings->x = xStart[xIdx];
+            leg->mPlatformSettings->y = xStart[yIdx];
+            leg->mPlatformSettings->z = xStart[zIdx];
             // Configure end
             arma::Col<double> xEnd;
             if(leg->mTrajectorySettings->hasEndTime()){
@@ -403,9 +410,9 @@ void XmlSurveyLoader::loadLegs(
             stopLeg->mPlatformSettings = std::make_shared<PlatformSettings>(
                 *leg->mPlatformSettings
             );
-            stopLeg->mPlatformSettings->x = xEnd[3];
-            stopLeg->mPlatformSettings->y = xEnd[4];
-            stopLeg->mPlatformSettings->z = xEnd[5];
+            stopLeg->mPlatformSettings->x = xEnd[xIdx];
+            stopLeg->mPlatformSettings->y = xEnd[yIdx];
+            stopLeg->mPlatformSettings->z = xEnd[zIdx];
             stopLeg->mTrajectorySettings = make_shared<TrajectorySettings>();
             legs.push_back(stopLeg);
             // Insert teleport to start leg (after stop leg), if requested
@@ -422,7 +429,6 @@ void XmlSurveyLoader::loadLegs(
         // Iterate to next leg
         legNodes = legNodes->NextSiblingElement("leg");
     }
-
 }
 
 void XmlSurveyLoader::applySceneShift(
@@ -447,9 +453,16 @@ void XmlSurveyLoader::applySceneShift(
             dynamic_pointer_cast<InterpolatedMovingPlatformEgg>(
                 survey->scanner->platform
             );
-        pe->tdm->addToColumn(3, -shift.x);
-        pe->tdm->addToColumn(4, -shift.y);
-        pe->tdm->addToColumn(5, -shift.z);
+        size_t xIdx = 3, yIdx = 4, zIdx = 5;
+        if(
+            pe->scope ==
+            InterpolatedMovingPlatform::InterpolationScope::POSITION
+        ){
+            xIdx = 0;       yIdx = 1;       zIdx = 2;
+        }
+        pe->tdm->addToColumn(xIdx, -shift.x);
+        pe->tdm->addToColumn(yIdx, -shift.y);
+        pe->tdm->addToColumn(zIdx, -shift.z);
     }
     catch(...) {}
     // Apply scene shift to each leg

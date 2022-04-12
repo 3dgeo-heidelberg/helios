@@ -275,6 +275,11 @@ public:
     /**
      * @brief Build a DiffDesignMatrix from the TemporalDesignMatrix
      * @param diffType The type of differential to be used
+     * @param sort When true, the DiffDesignMatrix construction will lead to an
+     *  expensive sort operation to assure the finite differences
+     *  computation makes sense.
+     *  When false, the expensive sort computation will be skipped as it is
+     *  expected that the TemporalDesignMatrix is already sorted
      * @return DiffDesignMatrix built from TemporalDesignMatrix
      * @see fluxionum::TemporalDesignMatrix::toDiffDesignMatrixPointer
      * @see fluxionum::DiffDesignMatrixType
@@ -282,7 +287,8 @@ public:
      */
     DiffDesignMatrix<TimeType, VarType> toDiffDesignMatrix(
         DiffDesignMatrixType diffType = \
-            DiffDesignMatrixType::FORWARD_FINITE_DIFFERENCES
+            DiffDesignMatrixType::FORWARD_FINITE_DIFFERENCES,
+        bool const sort=true
     ) const;
     /**
      * @brief Like fluxionum::TemporalDesignMatrix::toDiffDesignMatrix but
@@ -293,7 +299,8 @@ public:
      */
     shared_ptr<DiffDesignMatrix<TimeType, VarType>> toDiffDesignMatrixPointer(
         DiffDesignMatrixType diffType = \
-            DiffDesignMatrixType::FORWARD_FINITE_DIFFERENCES
+            DiffDesignMatrixType::FORWARD_FINITE_DIFFERENCES,
+        bool const sort=true
     ) const;
 
     /**
@@ -307,6 +314,15 @@ public:
             TemporalDesignMatrix<TimeType, VarType> const&
         >(dm);
         t.insert_rows(t.n_rows, tdm.getTimeVector());
+    }
+    /**
+     * @brief Extend DesignMatrix::dropRows(arma::uvec const &) method so the
+     *  time values are also dropped
+     * @param indices Indices of the rows to be dropped
+     */
+    inline void dropRows(arma::uvec const &indices) override{
+        DesignMatrix<VarType>::dropRows(indices);
+        t.template shed_rows(indices);
     }
 
     /**
@@ -332,6 +348,59 @@ public:
         arma::uvec const tSort = arma::sort_index(getTimeVector());
         t = t(tSort);
         X = X.rows(tSort);
+    }
+
+    /**
+     * @brief Apply a filter based on the first derivative understood as the
+     *  slope.
+     *
+     * Let \f$X \in \mathbb{R}^{m \times n}\f$ such that
+     * \f$x_j(t_i) = X(i,j) = x_{ij}\f$, so it is possible to approximate the
+     * derivative as follows:
+     * \f[
+     *  \frac{\Delta x_j}{\Delta t}(t_i) =
+     *  \frac{x_j(t_{i+1}) - x_j(t_i)}{t_{i+1} - t_i}
+     * \f]
+     *
+     * But then, the differences between consecutive derivatives can be
+     *  calculated as shown below:
+     * \f[
+     *  Dx_j(t_i) = \frac{\Delta x_j}{\Delta t}(t_{i+1}) -
+     *      \frac{\Delta x_j}{\Delta t}(t_i)
+     * \f]
+     *
+     * Therefore, the vector
+     * \f$DX(t_i) = \left(Dx_1(t_i), \ldots, Dx_n(t_i)\right)\f$ arises.
+     *  And the maximum slope difference at time \f$t_i\f$ can be defined as
+     *  the maximum absolute component from the vector \f$DX(t_i)\f$ such that
+     *  \f$d_i^* = \max_{1 \leq j \leq n} \vert{Dx_j(t_i)}\vert\f$.
+     *
+     * Finally, let \f$\tau\f$ be the slope difference threshold. Thus, always
+     *  that \f$d_i^* > \tau\f$ the \f$i+1\f$ row/point will be removed from
+     *  matrix \f$X\f$ as it is considered that it does not bring useful enough
+     *  information.
+     *
+     * @param tau The threshold \f$\tau\f$ to decide whether to preserver or
+     *  to discard a row/point
+     * @return The number of discarded rows/points
+     */
+    virtual size_t slopeFilter(VarType const tau){
+        // Obtain DX
+        arma::Mat<VarType> DX = arma::diff(this->getX());
+        DX.each_col() /= arma::diff(getTimeVector());
+        DX = arma::diff(DX);
+        // Filter by DX
+        size_t const m = DX.n_rows;
+        arma::Row<VarType> S(DX.n_cols, arma::fill::zeros);
+        vector<unsigned long long> remove;
+        for(size_t i = 0 ; i < m ; ++i){
+            S += DX.row(i);
+            VarType const maxDiff = arma::max(arma::abs(S));
+            if(maxDiff > tau) S = arma::zeros<arma::Row<VarType>>(DX.n_cols);
+            else remove.push_back(i+1);
+        }
+        dropRows(remove);
+        return remove.size();
     }
 
 
