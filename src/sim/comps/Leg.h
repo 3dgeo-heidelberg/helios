@@ -4,6 +4,7 @@
 
 #include "ScannerSettings.h"
 #include "PlatformSettings.h"
+#include <platform/trajectory/TrajectorySettings.h>
 
 class ScanningStrip;
 
@@ -24,6 +25,11 @@ public:
 	 * @see PlatformSettings
 	 */
 	std::shared_ptr<PlatformSettings> mPlatformSettings;
+	/**
+	 * @brief Trajectory settings for the leg
+	 * @see TrajectorySettings
+	 */
+	std::shared_ptr<TrajectorySettings> mTrajectorySettings = nullptr;
 
   /**
    * @brief Boolean flag to store whether the leg was already processed.
@@ -112,7 +118,7 @@ public:
 	 * @return Leg serial identifier
 	 * @see Leg::serialId
 	 */
-	inline int getSerialId() {return serialId;} const
+	inline int getSerialId() const {return serialId;}
 	/**
 	 * @brief Set the leg serial identifier
 	 * @param serialId New serial identifier for the leg

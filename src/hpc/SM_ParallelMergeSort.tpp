@@ -7,6 +7,7 @@
 #include <algorithm>
 #include <iterator>
 
+using helios::hpc::SM_ParallelMergeSort;
 using helios::hpc::SM_ParallelMergeSortSubTask;
 
 // ***  CONSTRUCTION / DESTRUCTION  *** //

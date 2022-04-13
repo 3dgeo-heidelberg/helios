@@ -55,6 +55,7 @@ var searchData=
   ['bound',['bound',['../d8/d94/classKDTreeNode.html#ab25d385b581fd857a02b370c5d6b0e1a',1,'KDTreeNode::bound()'],['../dd/dc4/classScenePart.html#ae911f7b66e49dbccbbc85661751e7f9b',1,'ScenePart::bound()']]],
   ['boundlength',['boundLength',['../d5/d89/classSAHKDTreeComputeLossNodesSubTask.html#a95a0bd94a38c571ca0d1c9571cee8b8e',1,'SAHKDTreeComputeLossNodesSubTask']]],
   ['bounds',['bounds',['../d2/d1a/classAABB.html#af41b9802252d42310200694c104d6499',1,'AABB']]],
+  ['br',['br',['../da/da4/classhelios_1_1filems_1_1DesignMatrixReader.html#a1875c37c65f12904f0fc6faf656c32f0',1,'helios::filems::DesignMatrixReader']]],
   ['bridge_5fdeck',['BRIDGE_DECK',['../df/d64/classLasSpecification.html#aa8dffe5bcb79ae256a49bb1c1f88b08b',1,'LasSpecification']]],
   ['bruteparsedetailed',['bruteParseDetailed',['../d9/ddf/classVoxelFileParser.html#ae71162e8c99f8df851732367c12898f9',1,'VoxelFileParser']]],
   ['buddingscanningpulseprocess',['BuddingScanningPulseProcess',['../d5/d3c/classBuddingScanningPulseProcess.html',1,'BuddingScanningPulseProcess'],['../d5/d3c/classBuddingScanningPulseProcess.html#a3df2b70b51f1de84dda737805a03286d',1,'BuddingScanningPulseProcess::BuddingScanningPulseProcess()']]],

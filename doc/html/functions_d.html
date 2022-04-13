@@ -165,6 +165,15 @@ $(document).ready(function(){initNavTree('functions_d.html','');});
 <li>describe()
 : <a class="el" href="da/d69/classSurfaceInspector_1_1maths_1_1SingularContextComputer.html#a5a0ef2ca64e470182abe074fe0003f3e">SurfaceInspector::maths::SingularContextComputer&lt; T &gt;</a>
 </li>
+<li>DesignMatrix()
+: <a class="el" href="d7/d0d/classfluxionum_1_1DesignMatrix.html#a42a3f06350b30a6a3024f2775d14a595">fluxionum::DesignMatrix&lt; T &gt;</a>
+</li>
+<li>DesignMatrixReader()
+: <a class="el" href="da/da4/classhelios_1_1filems_1_1DesignMatrixReader.html#a1816bd2d9de423b2540f95deee662ece">helios::filems::DesignMatrixReader&lt; VarType &gt;</a>
+</li>
+<li>DesignTrajectoryFunction()
+: <a class="el" href="d4/dc7/classDesignTrajectoryFunction.html#a7626790b064b695d1c710ab521366cf5">DesignTrajectoryFunction</a>
+</li>
 <li>DetailedPlane()
 : <a class="el" href="d4/dfa/classSurfaceInspector_1_1maths_1_1DetailedPlane.html#a8d769afa48de35a520bbbf023991a6f3">SurfaceInspector::maths::DetailedPlane&lt; T &gt;</a>
 </li>
@@ -191,8 +200,14 @@ $(document).ready(function(){initNavTree('functions_d.html','');});
 <li>diff()
 : <a class="el" href="d1/dd3/classSurfaceInspector_1_1maths_1_1Vector.html#a4d39bc7833b08d4fdaa89313e36ca744">SurfaceInspector::maths::Vector&lt; T &gt;</a>
 </li>
+<li>DiffDesignMatrix()
+: <a class="el" href="d9/d49/classfluxionum_1_1DiffDesignMatrix.html#a6f10e22f240b7474624cec9fbfcd4407">fluxionum::DiffDesignMatrix&lt; TimeType, VarType &gt;</a>
+</li>
 <li>DiffMinimizer()
 : <a class="el" href="d3/d7f/classfluxionum_1_1DiffMinimizer.html#a09edcd879d77570195010b51d52a1f8c">fluxionum::DiffMinimizer&lt; IT, OT &gt;</a>
+</li>
+<li>diffType
+: <a class="el" href="d9/d49/classfluxionum_1_1DiffDesignMatrix.html#a953fd433652eea3f77669da8d7714656">fluxionum::DiffDesignMatrix&lt; TimeType, VarType &gt;</a>
 </li>
 <li>digestFullWaveform()
 : <a class="el" href="db/da6/classFullWaveformPulseRunnable.html#a78817455965590a3df30dd0dff75497a">FullWaveformPulseRunnable</a>
@@ -282,6 +297,7 @@ $(document).ready(function(){initNavTree('functions_d.html','');});
 , <a class="el" href="de/d74/classDynScene.html#a192d62758850392937ae69532ff0c462">DynScene</a>
 , <a class="el" href="d4/d48/classDynSequentiableMovingObject.html#ad132eae143f72d15ce46a62af41a59e1">DynSequentiableMovingObject</a>
 , <a class="el" href="d7/d20/classFiberArrayBeamDeflector.html#a8656ca9eeb62b83f09c79c5e2d42b957">FiberArrayBeamDeflector</a>
+, <a class="el" href="dc/d97/classInterpolatedMovingPlatform.html#aecf2f263f98fcd23ac2dfcbc803a05be">InterpolatedMovingPlatform</a>
 , <a class="el" href="d8/d15/classLinearPathPlatform.html#ad33431ecfa9461ce2866ce7d39190e2c">LinearPathPlatform</a>
 , <a class="el" href="d1/d83/classMovingPlatform.html#a32ae10a0bfa375b9d0feada4b70ebe68">MovingPlatform</a>
 , <a class="el" href="d4/dfd/classOscillatingMirrorBeamDeflector.html#a5f4656b37019afef7a2477ae8ef1a587">OscillatingMirrorBeamDeflector</a>
@@ -303,6 +319,9 @@ $(document).ready(function(){initNavTree('functions_d.html','');});
 , <a class="el" href="d5/dc4/classvisualhelios_1_1VHDynObjectAdapter.html#ac19928d9374e3d316d73e5e6aae91703">visualhelios::VHDynObjectAdapter</a>
 , <a class="el" href="db/d0e/classvisualhelios_1_1VHDynSceneAdapter.html#a7f81c4491265d352a9bbe7a635c4afd6">visualhelios::VHDynSceneAdapter&lt; ST, DT &gt;</a>
 </li>
+<li>doStepUpdates
+: <a class="el" href="dc/d97/classInterpolatedMovingPlatform.html#a44bdb1cb040e26bbc2ac8c57f8c20e51">InterpolatedMovingPlatform</a>
+</li>
 <li>doTask()
 : <a class="el" href="d7/de7/classPulseWarehouseThreadPool.html#a09cf73042a57c0dc83c1d7b0da074b27">PulseWarehouseThreadPool</a>
 , <a class="el" href="da/d8d/classTaskDropper.html#a2a9ac4a90993e1d64467fe19a25096fe">TaskDropper&lt; TaskType, ThreadPoolType, TaskArgs &gt;</a>
@@ -322,11 +341,18 @@ $(document).ready(function(){initNavTree('functions_d.html','');});
 </li>
 <li>drop()
 : <a class="el" href="de/d9a/classPulseTaskDropper.html#aecfee884ca5041a94490d8c03e80c3b3">PulseTaskDropper</a>
-, <a class="el" href="da/d8d/classTaskDropper.html#a714ff80fd4dbad25f266fdd4b4b59816">TaskDropper&lt; TaskType, ThreadPoolType, TaskArgs &gt;</a>
+, <a class="el" href="da/d8d/classTaskDropper.html#a0990e3c5f7cce4e518c6a7a073902ce3">TaskDropper&lt; TaskType, ThreadPoolType, TaskArgs &gt;</a>
+</li>
+<li>dropColumns()
+: <a class="el" href="d7/d0d/classfluxionum_1_1DesignMatrix.html#a5c487aaa476f2a0da44a11bef737f8c3">fluxionum::DesignMatrix&lt; T &gt;</a>
 </li>
 <li>dropper
 : <a class="el" href="d5/d3c/classBuddingScanningPulseProcess.html#a8d8e2ab759933cb65d31628f6b02a935">BuddingScanningPulseProcess</a>
 , <a class="el" href="df/ddb/classWarehouseScanningPulseProcess.html#a5cc71d713b9aa410df024873721e9a52">WarehouseScanningPulseProcess</a>
+</li>
+<li>dropRows()
+: <a class="el" href="d7/d0d/classfluxionum_1_1DesignMatrix.html#a8bb0b783de97c37c953f61ea247be9a4">fluxionum::DesignMatrix&lt; T &gt;</a>
+, <a class="el" href="db/d9b/classfluxionum_1_1TemporalDesignMatrix.html#a70c85e8c9e2d233a4f35361861fd2385">fluxionum::TemporalDesignMatrix&lt; TimeType, VarType &gt;</a>
 </li>
 <li>ds
 : <a class="el" href="df/d3f/classHeliosDemos_1_1DemoSelector.html#a2a327b9119f0e06742da6e44fbef4f46">HeliosDemos::DemoSelector</a>
@@ -336,6 +362,10 @@ $(document).ready(function(){initNavTree('functions_d.html','');});
 </li>
 <li>dt
 : <a class="el" href="d6/d8c/classSimulationStepLoop.html#a4898fe3013c04c7e707548931aebc11e">SimulationStepLoop</a>
+</li>
+<li>dydt
+: <a class="el" href="d6/df0/classfluxionum_1_1IterativeEulerMethod.html#a5c649e9c905f0a1214bb9a1fba44edb6">fluxionum::IterativeEulerMethod&lt; A, B &gt;</a>
+, <a class="el" href="d4/de0/classfluxionum_1_1ParametricIterativeEulerMethod.html#a8f195e12e3f06af9f65f5fc8c4dfe628">fluxionum::ParametricIterativeEulerMethod&lt; A, B &gt;</a>
 </li>
 <li>dynamic
 : <a class="el" href="d6/ddc/classPulseThreadPool.html#a42944acae9bfdb8bfd849aa6c53ea652">PulseThreadPool</a>
@@ -356,10 +386,10 @@ $(document).ready(function(){initNavTree('functions_d.html','');});
 : <a class="el" href="d2/d0a/classDynMotionEngine.html#a016dcc3e16e8c61776b5c5c903cfc408">DynMotionEngine</a>
 </li>
 <li>DynMovingObject()
-: <a class="el" href="d4/d96/classDynMovingObject.html#a35a2683fada060bf42e76075095aa0ff">DynMovingObject</a>
+: <a class="el" href="d4/d96/classDynMovingObject.html#af5594b3207df57640cd6ac61cbbcd251">DynMovingObject</a>
 </li>
 <li>DynObject()
-: <a class="el" href="d5/d6a/classDynObject.html#ab0345cae03b5477ee4a1fcfd533c6210">DynObject</a>
+: <a class="el" href="d5/d6a/classDynObject.html#a45090e1e59a3ab35dc5b09f8b54fa6d2">DynObject</a>
 </li>
 <li>dynObjs
 : <a class="el" href="de/d74/classDynScene.html#ac530f28d0b6f19fe26d7fe35e829fce3">DynScene</a>
@@ -377,13 +407,13 @@ $(document).ready(function(){initNavTree('functions_d.html','');});
 : <a class="el" href="db/d6f/classDynSequencer.html#a9e1845e028addf46999699f70d30cd84">DynSequencer&lt; T &gt;</a>
 </li>
 <li>DynSequence()
-: <a class="el" href="df/dfa/classDynSequence.html#a78611043c59f0ca091d20495f3c6aba4">DynSequence&lt; T &gt;</a>
+: <a class="el" href="df/dfa/classDynSequence.html#a375c62d6fce2c04b420e49ae8dc60307">DynSequence&lt; T &gt;</a>
 </li>
 <li>DynSequencer()
 : <a class="el" href="db/d6f/classDynSequencer.html#a8e3ec0caa7c5d438aa7b6e54cbd381d2">DynSequencer&lt; T &gt;</a>
 </li>
 <li>DynSequentiableMovingObject()
-: <a class="el" href="d4/d48/classDynSequentiableMovingObject.html#ac6fdfe73bcb84324a4bc9e1c178107f8">DynSequentiableMovingObject</a>
+: <a class="el" href="d4/d48/classDynSequentiableMovingObject.html#afcb0241f1344b848ffb0980c55605fc7">DynSequentiableMovingObject</a>
 </li>
 </ul>
 </div><!-- contents -->

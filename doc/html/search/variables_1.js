@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['a',['A',['../d7/d84/classrigidmotion_1_1RigidMotion.html#af809d870aad52d3bd417b4832498c676',1,'rigidmotion::RigidMotion::A()'],['../d1/d2b/classMarquardtFitter.html#aaba141f675faab660d793e3b0e7cb4f8',1,'MarquardtFitter::A()'],['../da/d52/classSurfaceInspector_1_1maths_1_1Histogram.html#a64e07e5f83715dc1a095912230c309b8',1,'SurfaceInspector::maths::Histogram::a()'],['../d6/d26/classSurfaceInspector_1_1util_1_1draggers_1_1MinDragger.html#a666b09efc5b3e457a0483abbe8734587',1,'SurfaceInspector::util::draggers::MinDragger::a()']]],
+  ['a',['A',['../d9/d49/classfluxionum_1_1DiffDesignMatrix.html#aa443abb5785759d4e59359c516145db7',1,'fluxionum::DiffDesignMatrix::A()'],['../d7/d84/classrigidmotion_1_1RigidMotion.html#af809d870aad52d3bd417b4832498c676',1,'rigidmotion::RigidMotion::A()'],['../d1/d2b/classMarquardtFitter.html#aaba141f675faab660d793e3b0e7cb4f8',1,'MarquardtFitter::A()'],['../da/d52/classSurfaceInspector_1_1maths_1_1Histogram.html#a64e07e5f83715dc1a095912230c309b8',1,'SurfaceInspector::maths::Histogram::a()'],['../d6/d26/classSurfaceInspector_1_1util_1_1draggers_1_1MinDragger.html#a666b09efc5b3e457a0483abbe8734587',1,'SurfaceInspector::util::draggers::MinDragger::a()']]],
   ['a1',['a1',['../d6/d7f/classRotationOrder.html#ae1e79a9be04701a8498ff9d0d0ffbda5',1,'RotationOrder']]],
   ['a2',['a2',['../d6/d7f/classRotationOrder.html#a94e6d412fb6ea94d460e9215c84d6442',1,'RotationOrder']]],
   ['a3',['a3',['../d6/d7f/classRotationOrder.html#a1e279094daf5b6381ecfa9b38b66f89f',1,'RotationOrder']]],

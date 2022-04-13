@@ -17,6 +17,7 @@ var searchData=
   ['lightkdtreenode',['LightKDTreeNode',['../dd/d79/classLightKDTreeNode.html',1,'']]],
   ['lightkdtreenodeblockallocator',['LightKDTreeNodeBlockAllocator',['../dd/d04/classLightKDTreeNodeBlockAllocator.html',1,'']]],
   ['linearpathplatform',['LinearPathPlatform',['../d8/d15/classLinearPathPlatform.html',1,'']]],
+  ['linearpiecesfunction',['LinearPiecesFunction',['../dd/d40/classfluxionum_1_1LinearPiecesFunction.html',1,'fluxionum']]],
   ['linearvoidsteploop',['LinearVoidStepLoop',['../df/dd6/classLinearVoidStepLoop.html',1,'']]],
   ['linearvoidsteploop_3c_3e',['LinearVoidStepLoop&lt;&gt;',['../df/dd6/classLinearVoidStepLoop.html',1,'']]],
   ['linefilereader',['LineFileReader',['../de/d57/classhelios_1_1filems_1_1LineFileReader.html',1,'helios::filems']]],

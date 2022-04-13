@@ -1,0 +1,9 @@
+<map id="helios::filems::DesignMatrixReader&lt; VarType &gt;" name="helios::filems::DesignMatrixReader&lt; VarType &gt;">
+<area shape="rect" id="node6" href="$d4/d5e/classhelios_1_1filems_1_1FileReader.html" title="helios::filems::FileReader\l\&lt; string \&gt;" alt="" coords="337,73,507,114"/>
+<area shape="rect" id="node3" href="$d0/d01/classhelios_1_1filems_1_1BufferedLineFileReader.html" title="helios::filems::Buffered\lLineFileReader" alt="" coords="1149,126,1305,167"/>
+<area shape="rect" id="node4" href="$de/d57/classhelios_1_1filems_1_1LineFileReader.html" title="Class supporting line by line reading of text files. " alt="" coords="872,79,1024,121"/>
+<area shape="rect" id="node5" href="$de/d6c/classhelios_1_1filems_1_1SimpleFileReader.html" title="helios::filems::SimpleFile\lReader\&lt; string \&gt;" alt="" coords="604,79,772,121"/>
+<area shape="rect" id="node10" href="$da/d24/classhelios_1_1filems_1_1SimpleReadingStrategy.html" title="helios::filems::SimpleReading\lStrategy\&lt; string \&gt;" alt="" coords="591,150,785,191"/>
+<area shape="rect" id="node9" href="$de/d50/classhelios_1_1filems_1_1LineReadingStrategy.html" title="Class defining the strategy to read line by line from a file input stream. " alt="" coords="859,145,1037,186"/>
+<area shape="rect" id="node11" href="$df/dc7/classhelios_1_1filems_1_1ReadingStrategy.html" title="helios::filems::ReadingStrategy\l\&lt; string \&gt;" alt="" coords="320,194,524,235"/>
+</map>

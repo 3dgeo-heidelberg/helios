@@ -27,6 +27,7 @@ set(HELIOS_INCLUDE_DIRECTORIES
     "src/filems/write/strategies/"
     "src/main/"
     "src/platform/"
+    "src/platform/trajectory/"
     "src/scanner/"
     "src/scanner/beamDeflector/"
     "src/scanner/detector/"

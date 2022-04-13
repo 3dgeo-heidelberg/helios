@@ -15,6 +15,7 @@ var searchData=
   ['lastnumvoxels',['lastNumVoxels',['../d6/d03/classXYZPointCloudFileLoader.html#a46ea40e1e3eeb38dc55f3780deb2d9d2',1,'XYZPointCloudFileLoader']]],
   ['lastsign',['lastSign',['../db/d69/classHelicopterPlatform.html#a2dcfe4799486ac1e7e1b4fac1d25431e',1,'HelicopterPlatform::lastSign()'],['../d5/d2f/classBuddingTaskDropper.html#a61c9fb8f999377b8cfd650a301f7d5a3',1,'BuddingTaskDropper::lastSign()']]],
   ['lastspeed_5fxy',['lastSpeed_xy',['../db/d69/classHelicopterPlatform.html#ad8b9b0fd16bd572afe964682a2be7c73',1,'HelicopterPlatform']]],
+  ['lasttime',['lastTime',['../d4/dc7/classDesignTrajectoryFunction.html#a4e56f270ee0435aa01489d1affc4488c',1,'DesignTrajectoryFunction']]],
   ['lasttrajectorytime',['lastTrajectoryTime',['../dc/d42/classScanner.html#acc8e6f98bc56e58cb80670a00585ee98',1,'Scanner']]],
   ['layer',['layer',['../d1/d0c/classGeoTiffFileLoader.html#acc63888f25ed900bf6f410e24938e308',1,'GeoTiffFileLoader']]],
   ['left',['left',['../d8/d4c/classKDTreeBuildType.html#accf535cd3241a306d1364792f8394642',1,'KDTreeBuildType::left()'],['../dd/d79/classLightKDTreeNode.html#aacaf8a7c870c480b735a4998d647a844',1,'LightKDTreeNode::left()']]],

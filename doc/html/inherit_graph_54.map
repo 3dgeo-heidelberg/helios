@@ -1,3 +1,4 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$df/d3f/classHeliosDemos_1_1DemoSelector.html" title="Simple class to handle demo selection. " alt="" coords="5,5,197,32"/>
+<area shape="rect" id="node1" href="$de/dd3/classhelios_1_1filems_1_1WriteStrategy.html" title="helios::filems::WriteStrategy\l\&lt; vector\&lt; WriteArg \&gt; const\l &amp;, BiasType ... \&gt;" alt="" coords="5,5,192,61"/>
+<area shape="rect" id="node2" href="$da/dca/classhelios_1_1filems_1_1VectorialWriteStrategy.html" title="Concrete class specializing WriteStrategy to make any other write strategy operate over a vector..." alt="" coords="240,5,409,61"/>
 </map>

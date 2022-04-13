@@ -34,7 +34,7 @@ public:
      * @brief Method to adapt dynamic object computations over time to visual
      *  Helios
      *
-     * @parma forceStep True to specify that underlying dynamic object must be
+     * @param forceStep True to specify that underlying dynamic object must be
      *  forced to execute its doStep method, false otherwise. Forcing step
      *  might be useful to force dynamic object step computation when it does
      *  not belong to a dynamic scene which handles doStep calls.

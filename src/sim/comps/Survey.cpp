@@ -3,6 +3,9 @@
 
 #include "Survey.h"
 #include <AbstractDetector.h>
+#include <SurveyPlayback.h>
+#include <Simulation.h>
+#include <platform/InterpolatedMovingPlatformEgg.h>
 
 
 // ***  CONSTRUCTION / DESTRUCTION  *** //
@@ -54,4 +57,13 @@ void Survey::calculateLength() {
 
 double Survey::getLength() {
 	return this->length;
+}
+
+void Survey::hatch(SurveyPlayback &sp){
+    if(scanner->platform->isEgg()){
+        scanner->platform =
+            std::static_pointer_cast<InterpolatedMovingPlatformEgg>(
+                scanner->platform
+            )->smartHatch(sp.getStepLoop());
+    }
 }

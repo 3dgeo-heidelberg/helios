@@ -7,6 +7,16 @@ var hierarchy =
       [ "PolygonMirrorBeamDeflector", "db/d7e/classPolygonMirrorBeamDeflector.html", null ],
       [ "RisleyBeamDeflector", "d4/d57/classRisleyBeamDeflector.html", null ]
     ] ],
+    [ "fluxionum::AbstractDesignMatrix< T >", "da/d40/classfluxionum_1_1AbstractDesignMatrix.html", [
+      [ "fluxionum::DesignMatrix< T >", "d7/d0d/classfluxionum_1_1DesignMatrix.html", null ]
+    ] ],
+    [ "fluxionum::AbstractDesignMatrix< VarType >", "da/d40/classfluxionum_1_1AbstractDesignMatrix.html", [
+      [ "fluxionum::DesignMatrix< VarType >", "d7/d0d/classfluxionum_1_1DesignMatrix.html", [
+        [ "fluxionum::IndexedDesignMatrix< IndexType, VarType >", "dc/da5/classfluxionum_1_1IndexedDesignMatrix.html", null ],
+        [ "fluxionum::TemporalDesignMatrix< TimeType, VarType >", "db/d9b/classfluxionum_1_1TemporalDesignMatrix.html", null ]
+      ] ],
+      [ "fluxionum::DiffDesignMatrix< TimeType, VarType >", "d9/d49/classfluxionum_1_1DiffDesignMatrix.html", null ]
+    ] ],
     [ "AbstractDetector", "d8/d6b/classAbstractDetector.html", [
       [ "FullWaveformPulseDetector", "df/d37/classFullWaveformPulseDetector.html", null ]
     ] ],
@@ -21,9 +31,15 @@ var hierarchy =
     ] ],
     [ "ArgumentsParser", "d7/d5c/classArgumentsParser.html", null ],
     [ "Asset", "de/d97/classAsset.html", [
+      [ "EggAsset< FullClass, HatchArgs >", "da/dea/classEggAsset.html", null ],
+      [ "EggAsset< InterpolatedMovingPlatform, SimulationStepLoop & >", "da/dea/classEggAsset.html", [
+        [ "InterpolatedMovingPlatformEgg", "d6/dd9/classInterpolatedMovingPlatformEgg.html", null ]
+      ] ],
       [ "FWFSettings", "d4/dfb/classFWFSettings.html", null ],
       [ "Platform", "df/d1e/classPlatform.html", [
         [ "MovingPlatform", "d1/d83/classMovingPlatform.html", [
+          [ "InterpolatedMovingPlatform", "dc/d97/classInterpolatedMovingPlatform.html", null ],
+          [ "InterpolatedMovingPlatformEgg", "d6/dd9/classInterpolatedMovingPlatformEgg.html", null ],
           [ "LinearPathPlatform", "d8/d15/classLinearPathPlatform.html", null ],
           [ "SimplePhysicsPlatform", "d5/d3b/classSimplePhysicsPlatform.html", [
             [ "GroundVehiclePlatform", "d7/d94/classGroundVehiclePlatform.html", null ],
@@ -40,7 +56,8 @@ var hierarchy =
         ] ]
       ] ],
       [ "SerialSceneWrapper", "d3/df0/classSerialSceneWrapper.html", null ],
-      [ "Survey", "d5/db6/classSurvey.html", null ]
+      [ "Survey", "d5/db6/classSurvey.html", null ],
+      [ "TrajectorySettings", "d7/d6d/classTrajectorySettings.html", null ]
     ] ],
     [ "HeliosDemos::BaseDemo", "df/df9/classHeliosDemos_1_1BaseDemo.html", [
       [ "HeliosDemos::SimplePrimitivesDemo", "d0/d1c/classHeliosDemos_1_1SimplePrimitivesDemo.html", null ],
@@ -51,6 +68,7 @@ var hierarchy =
     [ "HeliosTests::BaseTest", "d9/d52/classHeliosTests_1_1BaseTest.html", [
       [ "HeliosTests::DiscreteTimeTest", "d6/d7f/classHeliosTests_1_1DiscreteTimeTest.html", null ],
       [ "HeliosTests::FluxionumTest", "dd/de0/classHeliosTests_1_1FluxionumTest.html", null ],
+      [ "HeliosTests::FunctionalPlatformTest", "d4/dbf/classHeliosTests_1_1FunctionalPlatformTest.html", null ],
       [ "HeliosTests::GroveTest", "d0/d01/classHeliosTests_1_1GroveTest.html", null ],
       [ "HeliosTests::HPCTest", "d4/d0d/classHeliosTests_1_1HPCTest.html", null ],
       [ "HeliosTests::LadLutTest", "dd/df9/classHeliosTests_1_1LadLutTest.html", null ],
@@ -80,6 +98,7 @@ var hierarchy =
     [ "Color4f", "db/d02/classColor4f.html", null ],
     [ "DateTimeUtils", "d2/d15/classDateTimeUtils.html", null ],
     [ "HeliosDemos::DemoSelector", "df/d3f/classHeliosDemos_1_1DemoSelector.html", null ],
+    [ "helios::filems::DesignMatrixReader< VarType >", "da/da4/classhelios_1_1filems_1_1DesignMatrixReader.html", null ],
     [ "Directions", "df/dc3/classDirections.html", null ],
     [ "DiscreteTime", "dd/de3/classDiscreteTime.html", null ],
     [ "DynGrove< Subject >", "dc/d2c/classDynGrove.html", [
@@ -129,6 +148,30 @@ var hierarchy =
     [ "helios::filems::FMSReadFacade", "dd/dc0/classhelios_1_1filems_1_1FMSReadFacade.html", null ],
     [ "helios::filems::FMSSerializationFacade", "d9/d56/classhelios_1_1filems_1_1FMSSerializationFacade.html", null ],
     [ "helios::filems::FMSWriteFacade", "df/d31/classhelios_1_1filems_1_1FMSWriteFacade.html", null ],
+    [ "fluxionum::Function< A, B >", "d4/d73/classfluxionum_1_1Function.html", [
+      [ "fluxionum::ClosestLesserSampleFunction< A, B >", "d8/d7e/classfluxionum_1_1ClosestLesserSampleFunction.html", null ],
+      [ "fluxionum::IterativeEulerMethod< A, B >", "d6/df0/classfluxionum_1_1IterativeEulerMethod.html", [
+        [ "fluxionum::FixedIterativeEulerMethod< A, B >", "d0/d52/classfluxionum_1_1FixedIterativeEulerMethod.html", null ]
+      ] ],
+      [ "fluxionum::LinearPiecesFunction< A, B >", "dd/d40/classfluxionum_1_1LinearPiecesFunction.html", null ],
+      [ "fluxionum::SimpleLinearFunction< A, B >", "db/d81/classfluxionum_1_1SimpleLinearFunction.html", null ]
+    ] ],
+    [ "fluxionum::Function< A, arma::Col< B > >", "d4/d73/classfluxionum_1_1Function.html", [
+      [ "fluxionum::ParametricClosestLesserSampleFunction< A, B >", "d5/d9a/classfluxionum_1_1ParametricClosestLesserSampleFunction.html", null ],
+      [ "fluxionum::ParametricIterativeEulerMethod< A, B >", "d4/de0/classfluxionum_1_1ParametricIterativeEulerMethod.html", [
+        [ "fluxionum::FixedParametricIterativeEulerMethod< A, B >", "dc/d03/classfluxionum_1_1FixedParametricIterativeEulerMethod.html", null ]
+      ] ],
+      [ "fluxionum::ParametricLinearPiecesFunction< A, B >", "de/db0/classfluxionum_1_1ParametricLinearPiecesFunction.html", null ]
+    ] ],
+    [ "fluxionum::Function< double, arma::Col< double > >", "d4/d73/classfluxionum_1_1Function.html", [
+      [ "fluxionum::ParametricClosestLesserSampleFunction< double, double >", "d5/d9a/classfluxionum_1_1ParametricClosestLesserSampleFunction.html", null ],
+      [ "fluxionum::ParametricIterativeEulerMethod< double, double >", "d4/de0/classfluxionum_1_1ParametricIterativeEulerMethod.html", [
+        [ "fluxionum::FixedParametricIterativeEulerMethod< double, double >", "dc/d03/classfluxionum_1_1FixedParametricIterativeEulerMethod.html", null ]
+      ] ],
+      [ "TrajectoryFunction", "d9/de4/classTrajectoryFunction.html", [
+        [ "DesignTrajectoryFunction", "d4/dc7/classDesignTrajectoryFunction.html", null ]
+      ] ]
+    ] ],
     [ "GroveTreeWrapper< Tree >", "d1/d1e/classGroveTreeWrapper.html", null ],
     [ "helios::filems::HeliosWriter< WriteArgs >", "d1/d3b/classhelios_1_1filems_1_1HeliosWriter.html", null ],
     [ "helios::filems::HeliosWriter< std::vector< double > const &, int const, double const, double const, glm::dvec3 const &, glm::dvec3 const &, long const >", "d1/d3b/classhelios_1_1filems_1_1HeliosWriter.html", [
@@ -535,6 +578,7 @@ var hierarchy =
     [ "XmlSceneLoader", "db/d91/classXmlSceneLoader.html", null ],
     [ "XmlUtils", "de/d52/classXmlUtils.html", null ],
     [ "runtime_error", null, [
+      [ "fluxionum::FluxionumException", "d3/dd9/classfluxionum_1_1FluxionumException.html", null ],
       [ "rigidmotion::RigidMotionException", "dd/db6/classrigidmotion_1_1RigidMotionException.html", null ],
       [ "SurfaceInspector::util::SurfaceInspectorException", "df/da8/classSurfaceInspector_1_1util_1_1SurfaceInspectorException.html", null ]
     ] ]

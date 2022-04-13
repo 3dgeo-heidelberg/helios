@@ -138,10 +138,16 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a216064ca2a8723fe582ba66515dcaf29"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/db6/classSurvey.html#a216064ca2a8723fe582ba66515dcaf29">getLength</a> ()</td></tr>
 <tr class="memdesc:a216064ca2a8723fe582ba66515dcaf29"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain survey length (distance passing through all legs)  <a href="#a216064ca2a8723fe582ba66515dcaf29">More...</a><br /></td></tr>
 <tr class="separator:a216064ca2a8723fe582ba66515dcaf29"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aac82a3043baab19e4e6d49fdd5833a5c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/db6/classSurvey.html#aac82a3043baab19e4e6d49fdd5833a5c">hatch</a> (<a class="el" href="../../d6/da1/classSurveyPlayback.html">SurveyPlayback</a> &amp;sp)</td></tr>
+<tr class="memdesc:aac82a3043baab19e4e6d49fdd5833a5c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Hatch all pending eggs.  <a href="#aac82a3043baab19e4e6d49fdd5833a5c">More...</a><br /></td></tr>
+<tr class="separator:aac82a3043baab19e4e6d49fdd5833a5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classAsset"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classAsset')"><img src="../../closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="../../de/d97/classAsset.html">Asset</a></td></tr>
 <tr class="memitem:a9ad0c79df694d3f079daba3eedf0284c inherit pub_methods_classAsset"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/d97/classAsset.html#a9ad0c79df694d3f079daba3eedf0284c">getLocationString</a> ()</td></tr>
 <tr class="memdesc:a9ad0c79df694d3f079daba3eedf0284c inherit pub_methods_classAsset"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain asset location string.  <a href="../../de/d97/classAsset.html#a9ad0c79df694d3f079daba3eedf0284c">More...</a><br /></td></tr>
 <tr class="separator:a9ad0c79df694d3f079daba3eedf0284c inherit pub_methods_classAsset"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adadfa6f04f5d8a5a7411a53399f2cb32 inherit pub_methods_classAsset"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/d97/classAsset.html#adadfa6f04f5d8a5a7411a53399f2cb32">isEgg</a> () const</td></tr>
+<tr class="memdesc:adadfa6f04f5d8a5a7411a53399f2cb32 inherit pub_methods_classAsset"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check whether the asset is an <a class="el" href="../../da/dea/classEggAsset.html" title="An EggAsset is an asset that can hatch to its full class. ">EggAsset</a> or not.  <a href="../../de/d97/classAsset.html#adadfa6f04f5d8a5a7411a53399f2cb32">More...</a><br /></td></tr>
+<tr class="separator:adadfa6f04f5d8a5a7411a53399f2cb32 inherit pub_methods_classAsset"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -263,6 +269,29 @@ double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="..
 <p>Obtain survey length (distance passing through all legs) </p>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="../../d5/db6/classSurvey.html" title="Class representing a Helios++ survey. ">Survey</a> length </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d5/db6/classSurvey.html#aaf10cb05857106d44ce898ebd74059d2" title="Distance passing through all legs. ">Survey::length</a> </dd></dl>
+
+</div>
+</div>
+<a id="aac82a3043baab19e4e6d49fdd5833a5c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aac82a3043baab19e4e6d49fdd5833a5c">&#9670;&nbsp;</a></span>hatch()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Survey::hatch </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="../../d6/da1/classSurveyPlayback.html">SurveyPlayback</a> &amp;&#160;</td>
+          <td class="paramname"><em>sp</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Hatch all pending eggs. </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../da/dea/classEggAsset.html" title="An EggAsset is an asset that can hatch to its full class. ">EggAsset</a> </dd>
+<dd>
+<a class="el" href="../../d6/dd9/classInterpolatedMovingPlatformEgg.html" title="Egg class that can hatch to a full InterpolatedMovingPlatform class. ">InterpolatedMovingPlatformEgg</a> </dd></dl>
 
 </div>
 </div>

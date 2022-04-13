@@ -1,0 +1,11 @@
+<map id="InterpolatedMovingPlatform" name="InterpolatedMovingPlatform">
+<area shape="rect" id="node2" href="$d1/d83/classMovingPlatform.html" title="Class representing a moving platform. " alt="" coords="105,361,218,388"/>
+<area shape="rect" id="node3" href="$df/d1e/classPlatform.html" title="Class representing a platform asset. " alt="" coords="86,272,157,299"/>
+<area shape="rect" id="node4" href="$de/d97/classAsset.html" title="Base class for all assets. " alt="" coords="5,146,61,173"/>
+<area shape="rect" id="node6" href="$d5/dcb/classRotation.html" title="Rotation" alt="" coords="86,146,157,173"/>
+<area shape="rect" id="node7" href="$d6/d8c/classSimulationStepLoop.html" title="Class extending LinearVoidStepLoop to support main simulation loop. " alt="" coords="259,361,397,388"/>
+<area shape="rect" id="node8" href="$df/dd6/classLinearVoidStepLoop.html" title="LinearVoidStepLoop\&lt;\&gt;" alt="" coords="251,272,405,299"/>
+<area shape="rect" id="node9" href="$dd/d96/classVoidStepLoop.html" title="VoidStepLoop\&lt; StepInput\l ... \&gt;" alt="" coords="249,139,420,180"/>
+<area shape="rect" id="node10" href="$dd/dcc/classStepLoop.html" title="StepLoop\&lt; StepInput\l ... \&gt;" alt="" coords="262,5,407,47"/>
+<area shape="rect" id="node11" href="$dd/de3/classDiscreteTime.html" title="Class to handle discrete time. It supports transforming from continuous time to discrete time and als..." alt="" coords="430,272,530,299"/>
+</map>

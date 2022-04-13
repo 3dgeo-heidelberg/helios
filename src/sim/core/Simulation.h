@@ -280,4 +280,12 @@ public:
      */
     inline void setCallbackFrequency(size_t const callbackFrequency)
     {this->callbackFrequency = callbackFrequency;}
+    /**
+     * @brief Get the simulation step loop of the simulation
+     * @return The simulation's step loop
+     * @see Simulation:stepLoop
+     * @see SimulationStepLoop
+     */
+    SimulationStepLoop & getStepLoop()
+    {return stepLoop;}
 };

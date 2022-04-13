@@ -29,6 +29,7 @@ var searchData=
   ['simplekdtreefactory',['SimpleKDTreeFactory',['../d6/d96/classSimpleKDTreeFactory.html',1,'']]],
   ['simplekdtreegeometricstrategy',['SimpleKDTreeGeometricStrategy',['../d3/de1/classSimpleKDTreeGeometricStrategy.html',1,'']]],
   ['simplekdtreepopulatesplitssubtask',['SimpleKDTreePopulateSplitsSubTask',['../d1/dc1/classSimpleKDTreePopulateSplitsSubTask.html',1,'']]],
+  ['simplelinearfunction',['SimpleLinearFunction',['../db/d81/classfluxionum_1_1SimpleLinearFunction.html',1,'fluxionum']]],
   ['simplephysicsplatform',['SimplePhysicsPlatform',['../d5/d3b/classSimplePhysicsPlatform.html',1,'']]],
   ['simpleprimitivesdemo',['SimplePrimitivesDemo',['../d0/d1c/classHeliosDemos_1_1SimplePrimitivesDemo.html',1,'HeliosDemos']]],
   ['simplereadingstrategy',['SimpleReadingStrategy',['../da/d24/classhelios_1_1filems_1_1SimpleReadingStrategy.html',1,'helios::filems']]],

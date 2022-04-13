@@ -16,7 +16,7 @@ using std::string;
  * @version 1.0
  * @brief Class defining the strategy to read line by line from a file input
  *  stream
- * @filems::SimpleReadingStrategy
+ * @see filems::SimpleReadingStrategy
  */
 class LineReadingStrategy : public SimpleReadingStrategy<string> {
 protected:

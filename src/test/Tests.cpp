@@ -10,6 +10,7 @@
 #include <test/PlaneFitterTest.h>
 #include <test/LadLutTest.h>
 #include <test/PlatformPhysicsTest.h>
+#include <test/FunctionalPlatformTest.h>
 #include <test/ScenePartSplitTest.h>
 #include <test/RigidMotionTest.h>
 #include <test/FluxionumTest.h>
@@ -87,13 +88,16 @@ void doTests(std::string const & testDir){
     PlatformPhysicsTest platformPhysicsTest;
     passed &= platformPhysicsTest.test(std::cout, TEST_COLOR);
 
+    FunctionalPlatformTest functionalPlatformTest;
+    passed &= functionalPlatformTest.test(std::cout, TEST_COLOR);
+
     ScenePartSplitTest scenePartSplitTest;
     passed &= scenePartSplitTest.test(std::cout, TEST_COLOR);
 
     RigidMotionTest rigidMotionTest;
     passed &= rigidMotionTest.test(std::cout, TEST_COLOR);
 
-    FluxionumTest fluxionumTest;
+    FluxionumTest fluxionumTest(testDir);
     passed &= fluxionumTest.test(std::cout, TEST_COLOR);
 
     HPCTest hpcTest;
