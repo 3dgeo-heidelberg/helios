@@ -122,7 +122,7 @@ public:
     /**
      * @see DesignMatrix::swapColumns(arma::uvec const &)
      */
-    inline void swapColumns(vector<size_t> const& indices){
+    inline void swapColumns(vector<long unsigned int> const& indices){
         return swapColumns(
             vector<unsigned long long>(indices.begin(), indices.end())
         );
@@ -149,7 +149,7 @@ public:
     /**
      * @see DesignMatrix::dropColumns(arma::uvec const &)
      */
-    inline void dropColumns(vector<size_t> const &indices){
+    inline void dropColumns(vector<long unsigned int> const &indices){
         return dropColumns(
             vector<unsigned long long>(indices.begin(), indices.end())
         );
@@ -176,7 +176,7 @@ public:
     /**
      * @see DesignMatrix::dropRows(arma::uvec const &)
      */
-    inline void dropRows(vector<size_t> const &indices){
+    inline void dropRows(vector<long unsigned int> const &indices){
         return dropRows(
             vector<unsigned long long>(indices.begin(), indices.end())
         );
