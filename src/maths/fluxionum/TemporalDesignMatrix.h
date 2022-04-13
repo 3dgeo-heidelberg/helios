@@ -322,7 +322,7 @@ public:
      */
     inline void dropRows(arma::uvec const &indices) override{
         DesignMatrix<VarType>::dropRows(indices);
-        t.template shed_rows(indices);
+        t.shed_rows(indices);
     }
 
     /**

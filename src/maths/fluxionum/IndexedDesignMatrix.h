@@ -3,6 +3,7 @@
 #include <fluxionum/DesignMatrix.h>
 #include <fluxionum/TemporalDesignMatrix.h>
 #include <fluxionum/FluxionumTypes.h>
+#include <filems/read/core/DesignMatrixReader.h>
 
 #include <vector>
 #include <memory>
