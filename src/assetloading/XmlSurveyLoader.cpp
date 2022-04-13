@@ -321,16 +321,18 @@ void XmlSurveyLoader::loadLegs(
     std::shared_ptr<InterpolatedMovingPlatformEgg> ip = nullptr;
     try{
         ip = dynamic_pointer_cast<InterpolatedMovingPlatformEgg>(platform);
-        trajInterp =
-        std::make_shared<ParametricLinearPiecesFunction<double, double>>(
-        DiffDesignMatrixInterpolator::makeParametricLinearPiecesFunction(
-            *(ip->ddm), *(ip->tdm)
-        ));
-        if(
-            ip->scope ==
-            InterpolatedMovingPlatform::InterpolationScope::POSITION
-        ){
-            xIdx = 0;       yIdx = 1;       zIdx = 2;
+        if(ip!=nullptr){
+            trajInterp =
+            std::make_shared<ParametricLinearPiecesFunction<double, double>>(
+            DiffDesignMatrixInterpolator::makeParametricLinearPiecesFunction(
+                *(ip->ddm), *(ip->tdm)
+            ));
+            if(
+                ip->scope ==
+                InterpolatedMovingPlatform::InterpolationScope::POSITION
+            ){
+                xIdx = 0;       yIdx = 1;       zIdx = 2;
+            }
         }
     }catch(std::exception &ex){}
 
@@ -453,16 +455,18 @@ void XmlSurveyLoader::applySceneShift(
             dynamic_pointer_cast<InterpolatedMovingPlatformEgg>(
                 survey->scanner->platform
             );
-        size_t xIdx = 3, yIdx = 4, zIdx = 5;
-        if(
-            pe->scope ==
-            InterpolatedMovingPlatform::InterpolationScope::POSITION
-        ){
-            xIdx = 0;       yIdx = 1;       zIdx = 2;
+        if(pe != nullptr){
+            size_t xIdx = 3, yIdx = 4, zIdx = 5;
+            if(
+                pe->scope ==
+                InterpolatedMovingPlatform::InterpolationScope::POSITION
+                ){
+                xIdx = 0;       yIdx = 1;       zIdx = 2;
+            }
+            pe->tdm->addToColumn(xIdx, -shift.x);
+            pe->tdm->addToColumn(yIdx, -shift.y);
+            pe->tdm->addToColumn(zIdx, -shift.z);
         }
-        pe->tdm->addToColumn(xIdx, -shift.x);
-        pe->tdm->addToColumn(yIdx, -shift.y);
-        pe->tdm->addToColumn(zIdx, -shift.z);
     }
     catch(...) {}
     // Apply scene shift to each leg

@@ -241,7 +241,10 @@ void SurveyPlayback::startLeg(unsigned int legIndex, bool manual) {
 		if (nextLegIndex < mSurvey->legs.size()) {
 			// Set destination to position of next leg:
 			shared_ptr<Leg> nextLeg = mSurvey->legs.at(nextLegIndex);
-            if(leg->mTrajectorySettings->teleportToStart){
+            if(
+                leg->mTrajectorySettings != nullptr &&
+                leg->mTrajectorySettings->teleportToStart
+            ){
                 platform->setPosition(
                     nextLeg->mPlatformSettings->getPosition()
                 );
@@ -254,7 +257,10 @@ void SurveyPlayback::startLeg(unsigned int legIndex, bool manual) {
             }
             else{
                 platform->setOrigin(leg->mPlatformSettings->getPosition());
-                if(nextLeg->mTrajectorySettings->teleportToStart){
+                if(
+                    nextLeg->mTrajectorySettings != nullptr &&
+                    nextLeg->mTrajectorySettings->teleportToStart
+                ){
                     // If next leg teleports to start, current leg is stop leg
                     // Thus, set stop origin and destination to the same point
                     platform->setDestination(
@@ -296,8 +302,11 @@ void SurveyPlayback::startLeg(unsigned int legIndex, bool manual) {
             stopAndTurn(legIndex, leg);
 		else if(manual) platform->initLegManual();
         else platform->initLeg();
-        try{
-            if(leg->mTrajectorySettings->hasStartTime()){
+        try{ // Transform trajectory time (if any) to simulation time
+            if(
+                leg->mTrajectorySettings != nullptr &&
+                leg->mTrajectorySettings->hasStartTime()
+            ){
                 std::shared_ptr<InterpolatedMovingPlatform> imp =
                     dynamic_pointer_cast<InterpolatedMovingPlatform>(platform);
                 imp->toTrajectoryTime(leg->mTrajectorySettings->tStart);
