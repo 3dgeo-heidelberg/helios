@@ -29,7 +29,7 @@ jobs:
            path: |
              ${{github.workspace}}/lib/boost
              ${{github.workspace}}/.github/config/boost
-           key: ${{ runner.os }}-boost.1.76
+           key: ${{ runner.os }}-boost.1.76-new
 
        - name: Set Up Python 3.6
          uses: actions/setup-python@v2
@@ -67,12 +67,21 @@ jobs:
          run: |
            echo -e "using python\n\t: 3.9\n\t: $pythonLocation/bin/python\n\t: $pythonLocation/include/python3.9\n\t: $pythonLocation/lib\n;\n" >> $USER_CONFIG
 
+       - name: Set Up Python 3.10
+         uses: actions/setup-python@v2
+         with:
+           python-version: '3.10'
+
+       - name: Write Python 3.10 to user-config.jam
+         run: |
+           echo -e "using python\n\t: 3.10\n\t: $pythonLocation/bin/python\n\t: $pythonLocation/include/python3.10\n\t: $pythonLocation/lib\n;\n" >> $USER_CONFIG
+
        - name: Build Boost
          if: steps.cache-boost.outputs.cache-hit != 'true'
          run: |
            wget https://boostorg.jfrog.io/artifactory/main/release/1.76.0/source/boost_1_76_0.tar.gz && tar -xzvf boost_1_76_0.tar.gz && mv boost_1_76_0 boost && cd boost
            ./bootstrap.sh
-           ./b2 --user-config=$USER_CONFIG cxxflags=-fPIC python=3.6,3.7,3.8,3.9
+           ./b2 --user-config=$USER_CONFIG cxxflags=-fPIC python=3.6,3.7,3.8,3.9,3.10
            cd .. && rm boost_1_76_0.tar.gz
 
    build-libs:
@@ -141,7 +150,7 @@ jobs:
 
      strategy:
        matrix:
-         python-version: ['3.6', '3.7', '3.8', '3.9']
+         python-version: ['3.6', '3.7', '3.8', '3.9', '3.10']
 
      steps:
        - uses: actions/checkout@v2
@@ -170,17 +179,13 @@ jobs:
            path: |
              ${{github.workspace}}/lib/boost
              ${{github.workspace}}/.github/config/boost
-           key: ${{ runner.os }}-boost.1.76
-
-       - name: Get Python Version without dot
-         run: |
-           echo "PYTHON_VER=$(echo ${{ matrix.python-version }} | sed "s/\.//g")" >> $GITHUB_ENV
+           key: ${{ runner.os }}-boost.1.76-new
 
        - name: Configure CMake
          # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
          # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
          run: |
-          cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DPYTHON_BINDING=1 -DPYTHON_VERSION=$PYTHON_VER -DPYTHON_PATH=$pythonLocation -DCMAKE_RUNTIME_OUTPUT_DIRECTORY:STRING=${{github.workspace}}/run  -DCMAKE_LIBRARY_OUTPUT_DIRECTORY:STRING=${{github.workspace}}/run  -DCMAKE_LIBRARY_OUTPUT_DIRECTORY:STRING=${{github.workspace}}/run
+          cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DPYTHON_BINDING=1 -DPYTHON_VERSION=${{ matrix.python-version }} -DPYTHON_PATH=$pythonLocation -DCMAKE_RUNTIME_OUTPUT_DIRECTORY:STRING=${{github.workspace}}/run  -DCMAKE_LIBRARY_OUTPUT_DIRECTORY:STRING=${{github.workspace}}/run  -DCMAKE_LIBRARY_OUTPUT_DIRECTORY:STRING=${{github.workspace}}/run
 
        - name: Build
          # Build your program with the given configuration
@@ -243,7 +248,7 @@ jobs:
           path: |
             ${{github.workspace}}/lib/boost
             ${{github.workspace}}/.github/config/boost
-          key: ${{ runner.os }}-boost.1.76
+          key: ${{ runner.os }}-boost.1.76-new
 
       - name: Install Boost in the system
         run: |
@@ -326,17 +331,13 @@ jobs:
            path: |
              ${{github.workspace}}/lib/boost
              ${{github.workspace}}/.github/config/boost
-           key: ${{ runner.os }}-boost.1.76
-
-       - name: Get Python Version without dot
-         run: |
-           echo "PYTHON_VER=$(echo '3.8' | sed "s/\.//g")" >> $GITHUB_ENV
+           key: ${{ runner.os }}-boost.1.76-new
 
        - name: Configure CMake
          # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
          # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
          run: |
-           cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DPYTHON_BINDING=1 -DPYTHON_VERSION=$PYTHON_VER -DPYTHON_PATH=$pythonLocation -DCMAKE_RUNTIME_OUTPUT_DIRECTORY:STRING=${{github.workspace}}/run -DCMAKE_LIBRARY_OUTPUT_DIRECTORY:STRING=${{github.workspace}}/run
+           cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DPYTHON_BINDING=1 -DPYTHON_VERSION=3.8 -DPYTHON_PATH=$pythonLocation -DCMAKE_RUNTIME_OUTPUT_DIRECTORY:STRING=${{github.workspace}}/run -DCMAKE_LIBRARY_OUTPUT_DIRECTORY:STRING=${{github.workspace}}/run
 
        - name: Build
          # Build your program with the given configuration
