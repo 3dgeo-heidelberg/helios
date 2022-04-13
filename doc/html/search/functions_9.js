@@ -2,6 +2,7 @@ var searchData=
 [
   ['increasefinishedgeomjobscount',['increaseFinishedGeomJobsCount',['../df/d86/classMultiThreadKDTreeFactory.html#a9f8866c50d14796dad33466e44f97814',1,'MultiThreadKDTreeFactory']]],
   ['increasependingtasks',['increasePendingTasks',['../d0/d21/classMDThreadPool.html#a2604acd9240936d50bb203aed8efeba5',1,'MDThreadPool']]],
+  ['indexeddesignmatrix',['IndexedDesignMatrix',['../dc/da5/classfluxionum_1_1IndexedDesignMatrix.html#a7689eaecc4ed525308bdf668223f78f0',1,'fluxionum::IndexedDesignMatrix::IndexedDesignMatrix(DesignMatrix&lt; VarType &gt; const &amp;designMatrix, size_t const indicesColumnIndex, string const indexName=&quot;index&quot;, vector&lt; string &gt; const &amp;columnNames=vector&lt; string &gt;(0))'],['../dc/da5/classfluxionum_1_1IndexedDesignMatrix.html#a296afd0dddeadcb6e440ff2893de071c',1,'fluxionum::IndexedDesignMatrix::IndexedDesignMatrix(DesignMatrix&lt; VarType &gt; const &amp;designMatrix, vector&lt; IndexType &gt; const &amp;indices, string const indexName=&quot;index&quot;, vector&lt; string &gt; const &amp;columnNames=vector&lt; string &gt;(0))'],['../dc/da5/classfluxionum_1_1IndexedDesignMatrix.html#a9754a37ffd6f88ddcec4a797617d5fb9',1,'fluxionum::IndexedDesignMatrix::IndexedDesignMatrix(arma::Mat&lt; VarType &gt; const &amp;X, size_t const indicesColumnIndex, string const indexName=&quot;index&quot;, vector&lt; string &gt; const &amp;columnNames=vector&lt; string &gt;(0))'],['../dc/da5/classfluxionum_1_1IndexedDesignMatrix.html#a21f5405f66b281f174d83b94c411e2dd',1,'fluxionum::IndexedDesignMatrix::IndexedDesignMatrix(arma::Mat&lt; VarType &gt; const &amp;X, vector&lt; IndexType &gt; const &amp;indices, string const indexName=&quot;index&quot;, vector&lt; string &gt; const &amp;columnNames=vector&lt; string &gt;(0))'],['../dc/da5/classfluxionum_1_1IndexedDesignMatrix.html#ab87f7cfee942517785bd929eae22a3fe',1,'fluxionum::IndexedDesignMatrix::IndexedDesignMatrix(string const &amp;path, string const indexName=&quot;index&quot;)']]],
   ['indexfromcoordinates',['indexFromCoordinates',['../d6/d03/classXYZPointCloudFileLoader.html#a0c3f03060ab2a991450d6b31feb862de',1,'XYZPointCloudFileLoader']]],
   ['info',['INFO',['../d0/da9/logging_8hpp.html#a0d21bd29f2facd645f123ec469c16250',1,'logging']]],
   ['init',['init',['../d8/de4/classhelios_1_1hpc_1_1SM__ParallelMergeSort.html#a1d1083a70b3b628347692f8afb4263bb',1,'helios::hpc::SM_ParallelMergeSort::init()'],['../d7/d6c/classhelios_1_1main_1_1LidarSim.html#abda8b8cf5a3a7de340ee5819960ad28e',1,'helios::main::LidarSim::init()'],['../da/d69/classSurfaceInspector_1_1maths_1_1SingularContextComputer.html#a08d5397cf54a8b09706395d6c3201de7',1,'SurfaceInspector::maths::SingularContextComputer::init()']]],
@@ -16,6 +17,7 @@ var searchData=
   ['insert',['insert',['../d8/d78/classWavefrontObjCache.html#adc29febcba42f5388fccd0b31ac4b3b3',1,'WavefrontObjCache']]],
   ['internalizeilot',['internalizeILOT',['../db/d58/classSAHKDTreeFactory.html#a9a64d58b146834e8fb804d25dc66a92a',1,'SAHKDTreeFactory']]],
   ['interpolate',['interpolate',['../d9/d22/classLadLut.html#a494f946ed0ac28a1a75bc697404a5d42',1,'LadLut::interpolate(glm::dvec3 direction)'],['../d9/d22/classLadLut.html#a94b5d53af84441fb24148a056ca966a1',1,'LadLut::interpolate(double x, double y, double z)']]],
+  ['interpolatedmovingplatform',['InterpolatedMovingPlatform',['../dc/d97/classInterpolatedMovingPlatform.html#a61b2acbc89226ab17cb0cef03c9810a8',1,'InterpolatedMovingPlatform']]],
   ['interpolatereflectance',['interpolateReflectance',['../d5/d20/classSpectralLibrary.html#a1ec5b902ba49ea819d3f45cc2d233f95',1,'SpectralLibrary']]],
   ['intersectionhandlingresult',['IntersectionHandlingResult',['../d1/dc8/classIntersectionHandlingResult.html#aaf520476ad02e96a3515193d27abc3ff',1,'IntersectionHandlingResult']]],
   ['isactive',['isActive',['../dc/d42/classScanner.html#afb359f3478a852ca34f97ced347892eb',1,'Scanner']]],
@@ -28,6 +30,7 @@ var searchData=
   ['isdynamic',['isDynamic',['../d0/d64/classKDTreeNodeRoot.html#a0547ad91ff563f80f708493366c5d77e',1,'KDTreeNodeRoot::isDynamic()'],['../d6/ddc/classPulseThreadPool.html#a76167fc2ab296f2e759a1fcba37bafba',1,'PulseThreadPool::isDynamic()']]],
   ['isdynobjectrenderingnormals',['isDynObjectRenderingNormals',['../db/d0e/classvisualhelios_1_1VHDynSceneAdapter.html#a2bbc64cbd58972a928f1660423af150d',1,'visualhelios::VHDynSceneAdapter']]],
   ['isdynobjectupdated',['isDynObjectUpdated',['../de/d74/classDynScene.html#ae8c4abef7c395a2b7b7a7a3ba033968c',1,'DynScene::isDynObjectUpdated()'],['../db/d0e/classvisualhelios_1_1VHDynSceneAdapter.html#a08c66ed06618bcf91394c9ed8a3560de',1,'visualhelios::VHDynSceneAdapter::isDynObjectUpdated()']]],
+  ['isegg',['isEgg',['../de/d97/classAsset.html#adadfa6f04f5d8a5a7411a53399f2cb32',1,'Asset::isEgg()'],['../da/dea/classEggAsset.html#ae7e6effb77c1aab5d1600403330d3bed',1,'EggAsset::isEgg()'],['../d6/dd9/classInterpolatedMovingPlatformEgg.html#a718b7c59b1590bd6db2662c6964aee76',1,'InterpolatedMovingPlatformEgg::isEgg()']]],
   ['isfinished',['isFinished',['../d9/ddd/classpyhelios_1_1PyHeliosSimulation.html#a5e672e3392cbba32f8182fab64924894',1,'pyhelios::PyHeliosSimulation']]],
   ['isfixedincidenceangle',['isFixedIncidenceAngle',['../dc/d42/classScanner.html#a1ee06c00b4ed28f0a487722229385c5c',1,'Scanner']]],
   ['isfixedvalueenabled',['isFixedValueEnabled',['../d9/d6b/classNoiseSource.html#a40405e51526c82cd853143c113887eb1',1,'NoiseSource']]],
@@ -50,9 +53,11 @@ var searchData=
   ['ispatiencepreservingbest',['isPatiencePreservingBest',['../d8/d34/classfluxionum_1_1IterativeMethodHandler.html#a846f147f440042c770ccf1921e213b3d',1,'fluxionum::IterativeMethodHandler']]],
   ['ispaused',['isPaused',['../d9/ddd/classpyhelios_1_1PyHeliosSimulation.html#a91f7acd4e4f3b81072624830b5e5dbfd',1,'pyhelios::PyHeliosSimulation::isPaused()'],['../d1/d7b/classSimulation.html#a8b812b809ab0e65bcab85c151e3f4894',1,'Simulation::isPaused()']]],
   ['isplatformnoisedisabled',['isPlatformNoiseDisabled',['../dc/d42/classScanner.html#a893596be90d7c1b16a4d538701ed828d',1,'Scanner']]],
+  ['isproceduralasset',['isProceduralAsset',['../d9/d82/classXmlAssetsLoader.html#a105cbaf6c3f351447c57802fcecba06e',1,'XmlAssetsLoader']]],
   ['isrenderingnormals',['isRenderingNormals',['../d1/dda/classvisualhelios_1_1VHStaticObjectAdapter.html#acfca6612d21a9652c1b00e21a1d482e8',1,'visualhelios::VHStaticObjectAdapter::isRenderingNormals()'],['../df/dd2/classvisualhelios_1_1VHNormalsCanvas.html#a78f8e62047a4749341c70af337b1ace5',1,'visualhelios::VHNormalsCanvas::isRenderingNormals()']]],
   ['isrunning',['isRunning',['../d9/ddd/classpyhelios_1_1PyHeliosSimulation.html#a5ea671ee6798940be60a10fe90018bbf',1,'pyhelios::PyHeliosSimulation']]],
   ['isselfmode',['isSelfMode',['../d6/d4f/classDynMotion.html#a1f7b2cd4c10e14b327e36308329e759e',1,'DynMotion']]],
+  ['isspeccomment',['isSpecComment',['../da/da4/classhelios_1_1filems_1_1DesignMatrixReader.html#a696e525641824d0109ec03735d821faa',1,'helios::filems::DesignMatrixReader']]],
   ['isstarted',['isStarted',['../d9/ddd/classpyhelios_1_1PyHeliosSimulation.html#a19162c9ce6e4c5945e1b34c06f68b6e1',1,'pyhelios::PyHeliosSimulation']]],
   ['isstaticobjectrenderingnormals',['isStaticObjectRenderingNormals',['../db/d0e/classvisualhelios_1_1VHDynSceneAdapter.html#a0a3bca16f57e29e21afe85ae4970bc8f',1,'visualhelios::VHDynSceneAdapter']]],
   ['isstopped',['isStopped',['../d9/ddd/classpyhelios_1_1PyHeliosSimulation.html#a1abce8f49c437f329187859ba8392905',1,'pyhelios::PyHeliosSimulation::isStopped()'],['../d1/d7b/classSimulation.html#a9f62759686a1333be92bd4b6dd63b17f',1,'Simulation::isStopped()']]],
@@ -61,6 +66,7 @@ var searchData=
   ['iszipoutput',['isZipOutput',['../d1/d3b/classhelios_1_1filems_1_1HeliosWriter.html#a1dba61798fc4d6194b8d8e357aac7908',1,'helios::filems::HeliosWriter']]],
   ['iterabletreenode',['IterableTreeNode',['../de/d22/classIterableTreeNode.html#a0af2bb59da8bf572dfae4d7da1cfdcd4',1,'IterableTreeNode']]],
   ['iteratevalues',['iterateValues',['../d1/d2b/classMarquardtFitter.html#ae2940cc922ad5fb396da1cf598a3a93a',1,'MarquardtFitter']]],
+  ['iterativeeulermethod',['IterativeEulerMethod',['../d6/df0/classfluxionum_1_1IterativeEulerMethod.html#afaaeb9f55539d24892419ed2f006d5db',1,'fluxionum::IterativeEulerMethod']]],
   ['iterativemethodhandler',['IterativeMethodHandler',['../d8/d34/classfluxionum_1_1IterativeMethodHandler.html#ad1875a751c94b4bf856b1de0e7b3f848',1,'fluxionum::IterativeMethodHandler']]],
   ['itreeiterator',['ITreeIterator',['../df/d39/classITreeIterator.html#a38e252afdf8e77292d65263ab2125d0d',1,'ITreeIterator']]]
 ];

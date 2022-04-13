@@ -88,6 +88,7 @@ $(document).ready(function(){initNavTree('d9/d82/classXmlAssetsLoader.html','../
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="#pro-attribs">Protected Attributes</a> &#124;
@@ -134,12 +135,21 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a63d75245f7448ec41018f3d61dd6173e"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="../../de/d97/classAsset.html">Asset</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/d82/classXmlAssetsLoader.html#a63d75245f7448ec41018f3d61dd6173e">createAssetFromXml</a> (std::string type, tinyxml2::XMLElement *assetNode, void *extraOutput=nullptr)</td></tr>
 <tr class="memdesc:a63d75245f7448ec41018f3d61dd6173e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create an asset from given XML element (node)  <a href="#a63d75245f7448ec41018f3d61dd6173e">More...</a><br /></td></tr>
 <tr class="separator:a63d75245f7448ec41018f3d61dd6173e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a884bdba02300e3fdb0a5968f0d800fb4"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="../../de/d97/classAsset.html">Asset</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/d82/classXmlAssetsLoader.html#a884bdba02300e3fdb0a5968f0d800fb4">createProceduralAssetFromXml</a> (std::string const &amp;type, std::string const &amp;id, void *extraOutput=nullptr)</td></tr>
+<tr class="memdesc:a884bdba02300e3fdb0a5968f0d800fb4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Like <a class="el" href="../../d9/d82/classXmlAssetsLoader.html#a63d75245f7448ec41018f3d61dd6173e" title="Create an asset from given XML element (node) ">XmlAssetsLoader::createAssetFromXml</a> but creating the asset procedurally instead of simply loading it.  <a href="#a884bdba02300e3fdb0a5968f0d800fb4">More...</a><br /></td></tr>
+<tr class="separator:a884bdba02300e3fdb0a5968f0d800fb4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aec671d3d36b1907196582a183a0bbd2d"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="../../df/d1e/classPlatform.html">Platform</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/d82/classXmlAssetsLoader.html#aec671d3d36b1907196582a183a0bbd2d">createPlatformFromXml</a> (tinyxml2::XMLElement *platformNode)</td></tr>
 <tr class="memdesc:aec671d3d36b1907196582a183a0bbd2d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a platform from given XML element (node)  <a href="#aec671d3d36b1907196582a183a0bbd2d">More...</a><br /></td></tr>
 <tr class="separator:aec671d3d36b1907196582a183a0bbd2d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0b7aa183a1519e44b81c8909c8423389"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="../../d5/d0c/classPlatformSettings.html">PlatformSettings</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/d82/classXmlAssetsLoader.html#a0b7aa183a1519e44b81c8909c8423389">createPlatformSettingsFromXml</a> (tinyxml2::XMLElement *node, std::unordered_set&lt; std::string &gt; *fields=nullptr)</td></tr>
 <tr class="memdesc:a0b7aa183a1519e44b81c8909c8423389"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create platform settings from given XML element (node)  <a href="#a0b7aa183a1519e44b81c8909c8423389">More...</a><br /></td></tr>
 <tr class="separator:a0b7aa183a1519e44b81c8909c8423389"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a39b5dfacda624aba13cb36b182601cd9"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="../../df/d1e/classPlatform.html">Platform</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/d82/classXmlAssetsLoader.html#a39b5dfacda624aba13cb36b182601cd9">procedurallyCreatePlatformFromXml</a> (string const &amp;type, string const &amp;id)</td></tr>
+<tr class="memdesc:a39b5dfacda624aba13cb36b182601cd9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Procedurally create the platform from given XML specification.  <a href="#a39b5dfacda624aba13cb36b182601cd9">More...</a><br /></td></tr>
+<tr class="separator:a39b5dfacda624aba13cb36b182601cd9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5c3255fdd9bc858c84baba1ce4df1df5"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="../../df/d1e/classPlatform.html">Platform</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/d82/classXmlAssetsLoader.html#a5c3255fdd9bc858c84baba1ce4df1df5">createInterpolatedMovingPlatform</a> ()</td></tr>
+<tr class="memdesc:a5c3255fdd9bc858c84baba1ce4df1df5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Procedurally create an <a class="el" href="../../dc/d97/classInterpolatedMovingPlatform.html" title="Class representing a MovingPlatform which position is defined by a function interpolated from a Desig...">InterpolatedMovingPlatform</a>.  <a href="#a5c3255fdd9bc858c84baba1ce4df1df5">More...</a><br /></td></tr>
+<tr class="separator:a5c3255fdd9bc858c84baba1ce4df1df5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a02363e87fb6308162af5863a2f40022c"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="../../dc/d42/classScanner.html">Scanner</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/d82/classXmlAssetsLoader.html#a02363e87fb6308162af5863a2f40022c">createScannerFromXml</a> (tinyxml2::XMLElement *scannerNode)</td></tr>
 <tr class="memdesc:a02363e87fb6308162af5863a2f40022c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create scanner from given XML element (node)  <a href="#a02363e87fb6308162af5863a2f40022c">More...</a><br /></td></tr>
 <tr class="separator:a02363e87fb6308162af5863a2f40022c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -149,6 +159,15 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aaafc4c34e7203c57d917e75d78a73646"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="../../d4/dfb/classFWFSettings.html">FWFSettings</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/d82/classXmlAssetsLoader.html#aaafc4c34e7203c57d917e75d78a73646">createFWFSettingsFromXml</a> (tinyxml2::XMLElement *node, std::shared_ptr&lt; <a class="el" href="../../d4/dfb/classFWFSettings.html">FWFSettings</a> &gt; settings=nullptr)</td></tr>
 <tr class="memdesc:aaafc4c34e7203c57d917e75d78a73646"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create FWF settings from given XML element (node)  <a href="#aaafc4c34e7203c57d917e75d78a73646">More...</a><br /></td></tr>
 <tr class="separator:aaafc4c34e7203c57d917e75d78a73646"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a383a893a770ffb5403fb8c36ac184f89"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="../../d7/d6d/classTrajectorySettings.html">TrajectorySettings</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/d82/classXmlAssetsLoader.html#a383a893a770ffb5403fb8c36ac184f89">createTrajectorySettingsFromXml</a> (tinyxml2::XMLElement *legNode, std::shared_ptr&lt; <a class="el" href="../../d7/d6d/classTrajectorySettings.html">TrajectorySettings</a> &gt; settings=nullptr)</td></tr>
+<tr class="memdesc:a383a893a770ffb5403fb8c36ac184f89"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create <a class="el" href="../../d7/d6d/classTrajectorySettings.html" title="Class representing trajectory settings. ">TrajectorySettings</a> from given XML element (node)  <a href="#a383a893a770ffb5403fb8c36ac184f89">More...</a><br /></td></tr>
+<tr class="separator:a383a893a770ffb5403fb8c36ac184f89"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:a105cbaf6c3f351447c57802fcecba06e"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/d82/classXmlAssetsLoader.html#a105cbaf6c3f351447c57802fcecba06e">isProceduralAsset</a> (std::string const &amp;type, std::string const &amp;id)</td></tr>
+<tr class="memdesc:a105cbaf6c3f351447c57802fcecba06e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check whether the given asset is a procedural asset or not.  <a href="#a105cbaf6c3f351447c57802fcecba06e">More...</a><br /></td></tr>
+<tr class="separator:a105cbaf6c3f351447c57802fcecba06e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -350,6 +369,29 @@ Static Protected Attributes</h2></td></tr>
 
 </div>
 </div>
+<a id="a5c3255fdd9bc858c84baba1ce4df1df5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5c3255fdd9bc858c84baba1ce4df1df5">&#9670;&nbsp;</a></span>createInterpolatedMovingPlatform()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::shared_ptr&lt; <a class="el" href="../../df/d1e/classPlatform.html">Platform</a> &gt; XmlAssetsLoader::createInterpolatedMovingPlatform </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Procedurally create an <a class="el" href="../../dc/d97/classInterpolatedMovingPlatform.html" title="Class representing a MovingPlatform which position is defined by a function interpolated from a Desig...">InterpolatedMovingPlatform</a>. </p>
+<dl class="section return"><dt>Returns</dt><dd>Procedurally created <a class="el" href="../../dc/d97/classInterpolatedMovingPlatform.html" title="Class representing a MovingPlatform which position is defined by a function interpolated from a Desig...">InterpolatedMovingPlatform</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d9/d82/classXmlAssetsLoader.html#a39b5dfacda624aba13cb36b182601cd9" title="Procedurally create the platform from given XML specification. ">XmlAssetsLoader::procedurallyCreatePlatformFromXml</a> </dd>
+<dd>
+<a class="el" href="../../dc/d97/classInterpolatedMovingPlatform.html" title="Class representing a MovingPlatform which position is defined by a function interpolated from a Desig...">InterpolatedMovingPlatform</a> </dd></dl>
+
+</div>
+</div>
 <a id="aec671d3d36b1907196582a183a0bbd2d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aec671d3d36b1907196582a183a0bbd2d">&#9670;&nbsp;</a></span>createPlatformFromXml()</h2>
 
@@ -413,6 +455,45 @@ Static Protected Attributes</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Shared pointer to created platform settings </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d5/d0c/classPlatformSettings.html" title="Class representing platform settings. ">PlatformSettings</a> </dd></dl>
+
+</div>
+</div>
+<a id="a884bdba02300e3fdb0a5968f0d800fb4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a884bdba02300e3fdb0a5968f0d800fb4">&#9670;&nbsp;</a></span>createProceduralAssetFromXml()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::shared_ptr&lt; <a class="el" href="../../de/d97/classAsset.html">Asset</a> &gt; XmlAssetsLoader::createProceduralAssetFromXml </td>
+          <td>(</td>
+          <td class="paramtype">std::string const &amp;&#160;</td>
+          <td class="paramname"><em>type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::string const &amp;&#160;</td>
+          <td class="paramname"><em>id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>extraOutput</em> = <code>nullptr</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Like <a class="el" href="../../d9/d82/classXmlAssetsLoader.html#a63d75245f7448ec41018f3d61dd6173e" title="Create an asset from given XML element (node) ">XmlAssetsLoader::createAssetFromXml</a> but creating the asset procedurally instead of simply loading it. </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d9/d82/classXmlAssetsLoader.html#a63d75245f7448ec41018f3d61dd6173e" title="Create an asset from given XML element (node) ">XmlAssetsLoader::createAssetFromXml</a> </dd>
+<dd>
+<a class="el" href="../../d9/d82/classXmlAssetsLoader.html#a105cbaf6c3f351447c57802fcecba06e" title="Check whether the given asset is a procedural asset or not. ">XmlAssetsLoader::isProceduralAsset</a> </dd></dl>
 
 </div>
 </div>
@@ -480,6 +561,45 @@ Static Protected Attributes</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Shared pointer to created scanner settings </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d0/d23/classScannerSettings.html" title="Scanner settings class. ">ScannerSettings</a> </dd></dl>
+
+</div>
+</div>
+<a id="a383a893a770ffb5403fb8c36ac184f89"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a383a893a770ffb5403fb8c36ac184f89">&#9670;&nbsp;</a></span>createTrajectorySettingsFromXml()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::shared_ptr&lt; <a class="el" href="../../d7/d6d/classTrajectorySettings.html">TrajectorySettings</a> &gt; XmlAssetsLoader::createTrajectorySettingsFromXml </td>
+          <td>(</td>
+          <td class="paramtype">tinyxml2::XMLElement *&#160;</td>
+          <td class="paramname"><em>legNode</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::shared_ptr&lt; <a class="el" href="../../d7/d6d/classTrajectorySettings.html">TrajectorySettings</a> &gt;&#160;</td>
+          <td class="paramname"><em>settings</em> = <code>nullptr</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Create <a class="el" href="../../d7/d6d/classTrajectorySettings.html" title="Class representing trajectory settings. ">TrajectorySettings</a> from given XML element (node) </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">legNode</td><td>XML element (node) containing the <a class="el" href="../../de/d51/classLeg.html" title="Class representing a survey leg. ">Leg</a> specification to build <a class="el" href="../../d7/d6d/classTrajectorySettings.html" title="Class representing trajectory settings. ">TrajectorySettings</a> from </td></tr>
+    <tr><td class="paramname">settings</td><td>Specify the <a class="el" href="../../d7/d6d/classTrajectorySettings.html" title="Class representing trajectory settings. ">TrajectorySettings</a> instance to use as output. If nullptr is specified, then a new instance of <a class="el" href="../../d7/d6d/classTrajectorySettings.html" title="Class representing trajectory settings. ">TrajectorySettings</a> is used </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Shared pointer to created <a class="el" href="../../d7/d6d/classTrajectorySettings.html" title="Class representing trajectory settings. ">TrajectorySettings</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d7/d6d/classTrajectorySettings.html" title="Class representing trajectory settings. ">TrajectorySettings</a> </dd></dl>
 
 </div>
 </div>
@@ -573,6 +693,54 @@ Static Protected Attributes</h2></td></tr>
 
 </div>
 </div>
+<a id="a105cbaf6c3f351447c57802fcecba06e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a105cbaf6c3f351447c57802fcecba06e">&#9670;&nbsp;</a></span>isProceduralAsset()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool XmlAssetsLoader::isProceduralAsset </td>
+          <td>(</td>
+          <td class="paramtype">std::string const &amp;&#160;</td>
+          <td class="paramname"><em>type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::string const &amp;&#160;</td>
+          <td class="paramname"><em>id</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Check whether the given asset is a procedural asset or not. </p>
+<p>A procedural asset is said to be an asset which is generated during execution. While it can be based in input data, it is not fully defined by that data. An example of procedural asset would be the <a class="el" href="../../dc/d97/classInterpolatedMovingPlatform.html" title="Class representing a MovingPlatform which position is defined by a function interpolated from a Desig...">InterpolatedMovingPlatform</a> which is specified through the type "platform" and the id "interpolated"</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">type</td><td>Type of the asset </td></tr>
+    <tr><td class="paramname">id</td><td>Identifier of the asset </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>True if the asset is a procedural one, false otherwise </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../dc/d97/classInterpolatedMovingPlatform.html" title="Class representing a MovingPlatform which position is defined by a function interpolated from a Desig...">InterpolatedMovingPlatform</a> </dd></dl>
+
+</div>
+</div>
 <a id="a5584c1c5246b6a376a2d580d6c911d55"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a5584c1c5246b6a376a2d580d6c911d55">&#9670;&nbsp;</a></span>makeDefaultTemplates()</h2>
 
@@ -598,6 +766,49 @@ Static Protected Attributes</h2></td></tr>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d9/d82/classXmlAssetsLoader.html#a13431b8af32cf022f71fdd44b1d06259" title="The default scanner settings template. ">XmlAssetsLoader::defaultScannerTemplate</a> </dd>
 <dd>
 <a class="el" href="../../d9/d82/classXmlAssetsLoader.html#acf7309962281ab8336cf704a86f72d79" title="The default platform settings template. ">XmlAssetsLoader::defaultPlatformTemplate</a> </dd></dl>
+
+</div>
+</div>
+<a id="a39b5dfacda624aba13cb36b182601cd9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a39b5dfacda624aba13cb36b182601cd9">&#9670;&nbsp;</a></span>procedurallyCreatePlatformFromXml()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::shared_ptr&lt; <a class="el" href="../../df/d1e/classPlatform.html">Platform</a> &gt; XmlAssetsLoader::procedurallyCreatePlatformFromXml </td>
+          <td>(</td>
+          <td class="paramtype">string const &amp;&#160;</td>
+          <td class="paramname"><em>type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">string const &amp;&#160;</td>
+          <td class="paramname"><em>id</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Procedurally create the platform from given XML specification. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">type</td><td><a class="el" href="../../de/d97/classAsset.html" title="Base class for all assets. ">Asset</a> type </td></tr>
+    <tr><td class="paramname">id</td><td>Identifier of the asset </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Shared pointer to created platform </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../df/d1e/classPlatform.html" title="Class representing a platform asset. ">Platform</a> </dd>
+<dd>
+<a class="el" href="../../dc/d97/classInterpolatedMovingPlatform.html" title="Class representing a MovingPlatform which position is defined by a function interpolated from a Desig...">InterpolatedMovingPlatform</a> </dd>
+<dd>
+<a class="el" href="../../d9/d82/classXmlAssetsLoader.html#a5c3255fdd9bc858c84baba1ce4df1df5" title="Procedurally create an InterpolatedMovingPlatform. ">XmlAssetsLoader::createInterpolatedMovingPlatform</a> </dd></dl>
 
 </div>
 </div>

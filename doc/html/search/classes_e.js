@@ -1,5 +1,10 @@
 var searchData=
 [
+  ['parametricclosestlessersamplefunction',['ParametricClosestLesserSampleFunction',['../d5/d9a/classfluxionum_1_1ParametricClosestLesserSampleFunction.html',1,'fluxionum']]],
+  ['parametricclosestlessersamplefunction_3c_20double_2c_20double_20_3e',['ParametricClosestLesserSampleFunction&lt; double, double &gt;',['../d5/d9a/classfluxionum_1_1ParametricClosestLesserSampleFunction.html',1,'fluxionum']]],
+  ['parametriciterativeeulermethod',['ParametricIterativeEulerMethod',['../d4/de0/classfluxionum_1_1ParametricIterativeEulerMethod.html',1,'fluxionum']]],
+  ['parametriciterativeeulermethod_3c_20double_2c_20double_20_3e',['ParametricIterativeEulerMethod&lt; double, double &gt;',['../d4/de0/classfluxionum_1_1ParametricIterativeEulerMethod.html',1,'fluxionum']]],
+  ['parametriclinearpiecesfunction',['ParametricLinearPiecesFunction',['../de/db0/classfluxionum_1_1ParametricLinearPiecesFunction.html',1,'fluxionum']]],
   ['plane',['Plane',['../d1/d16/classSurfaceInspector_1_1maths_1_1Plane.html',1,'SurfaceInspector::maths']]],
   ['planefitter',['PlaneFitter',['../df/d21/classSurfaceInspector_1_1maths_1_1PlaneFitter.html',1,'SurfaceInspector::maths::PlaneFitter'],['../d6/d51/classPlaneFitter.html',1,'PlaneFitter']]],
   ['planefittertest',['PlaneFitterTest',['../d6/dda/classHeliosTests_1_1PlaneFitterTest.html',1,'HeliosTests']]],

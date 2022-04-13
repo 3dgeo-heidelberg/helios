@@ -104,12 +104,14 @@ Inheritance diagram for MovingPlatform:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../d2/ddf/classMovingPlatform__inherit__graph.png" border="0" usemap="#MovingPlatform_inherit__map" alt="Inheritance graph"/></div>
 <map name="MovingPlatform_inherit__map" id="MovingPlatform_inherit__map">
-<area shape="rect" id="node4" href="../../d8/d15/classLinearPathPlatform.html" title="Class representing a linear path platform. " alt="" coords="5,229,139,256"/>
-<area shape="rect" id="node5" href="../../d5/d3b/classSimplePhysicsPlatform.html" title="Class representing a simple phyiscs platform. " alt="" coords="163,229,322,256"/>
-<area shape="rect" id="node2" href="../../df/d1e/classPlatform.html" title="Class representing a platform asset. " alt="" coords="122,80,193,107"/>
-<area shape="rect" id="node3" href="../../de/d97/classAsset.html" title="Base class for all assets. " alt="" coords="129,5,185,32"/>
-<area shape="rect" id="node6" href="../../d7/d94/classGroundVehiclePlatform.html" title="Class representing a ground vehicle platform. " alt="" coords="81,304,237,331"/>
-<area shape="rect" id="node7" href="../../db/d69/classHelicopterPlatform.html" title="Class representing a helicopter platform. " alt="" coords="261,304,392,331"/>
+<area shape="rect" id="node4" href="../../dc/d97/classInterpolatedMovingPlatform.html" title="Class representing a MovingPlatform which position is defined by a function interpolated from a Desig..." alt="" coords="401,5,582,32"/>
+<area shape="rect" id="node5" href="../../d6/dd9/classInterpolatedMovingPlatformEgg.html" title="Egg class that can hatch to a full InterpolatedMovingPlatform class. " alt="" coords="389,56,593,83"/>
+<area shape="rect" id="node6" href="../../d8/d15/classLinearPathPlatform.html" title="Class representing a linear path platform. " alt="" coords="425,107,558,133"/>
+<area shape="rect" id="node7" href="../../d5/d3b/classSimplePhysicsPlatform.html" title="Class representing a simple phyiscs platform. " alt="" coords="412,157,571,184"/>
+<area shape="rect" id="node2" href="../../df/d1e/classPlatform.html" title="Class representing a platform asset. " alt="" coords="109,81,180,108"/>
+<area shape="rect" id="node3" href="../../de/d97/classAsset.html" title="Base class for all assets. " alt="" coords="5,81,61,108"/>
+<area shape="rect" id="node8" href="../../d7/d94/classGroundVehiclePlatform.html" title="Class representing a ground vehicle platform. " alt="" coords="641,132,797,159"/>
+<area shape="rect" id="node9" href="../../db/d69/classHelicopterPlatform.html" title="Class representing a helicopter platform. " alt="" coords="654,183,785,209"/>
 </map>
 <center><span class="legend">[<a target="top" href="../../graph_legend.html">legend</a>]</span></center></div>
 <div class="dynheader">
@@ -230,6 +232,9 @@ virtual glm::dvec3&#160;</td><td class="memItemRight" valign="bottom"><a class="
 <tr class="memitem:a9ad0c79df694d3f079daba3eedf0284c inherit pub_methods_classAsset"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/d97/classAsset.html#a9ad0c79df694d3f079daba3eedf0284c">getLocationString</a> ()</td></tr>
 <tr class="memdesc:a9ad0c79df694d3f079daba3eedf0284c inherit pub_methods_classAsset"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain asset location string.  <a href="../../de/d97/classAsset.html#a9ad0c79df694d3f079daba3eedf0284c">More...</a><br /></td></tr>
 <tr class="separator:a9ad0c79df694d3f079daba3eedf0284c inherit pub_methods_classAsset"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adadfa6f04f5d8a5a7411a53399f2cb32 inherit pub_methods_classAsset"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/d97/classAsset.html#adadfa6f04f5d8a5a7411a53399f2cb32">isEgg</a> () const</td></tr>
+<tr class="memdesc:adadfa6f04f5d8a5a7411a53399f2cb32 inherit pub_methods_classAsset"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check whether the asset is an <a class="el" href="../../da/dea/classEggAsset.html" title="An EggAsset is an asset that can hatch to its full class. ">EggAsset</a> or not.  <a href="../../de/d97/classAsset.html#adadfa6f04f5d8a5a7411a53399f2cb32">More...</a><br /></td></tr>
+<tr class="separator:adadfa6f04f5d8a5a7411a53399f2cb32 inherit pub_methods_classAsset"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
 Private Attributes</h2></td></tr>

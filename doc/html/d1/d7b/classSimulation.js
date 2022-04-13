@@ -7,6 +7,7 @@ var classSimulation =
     [ "getScanner", "d1/d7b/classSimulation.html#ab97f12ae37a7c2e81e377236175c3cd8", null ],
     [ "getSimFrequency", "d1/d7b/classSimulation.html#a927cda6f36a2be2778ae11826856e3ea", null ],
     [ "getSimSpeedFactor", "d1/d7b/classSimulation.html#acc98b51f4bc9b99c2050e45792e92f49", null ],
+    [ "getStepLoop", "d1/d7b/classSimulation.html#aa3e66ca269d023207ee9f2c76311c112", null ],
     [ "isPaused", "d1/d7b/classSimulation.html#a8b812b809ab0e65bcab85c151e3f4894", null ],
     [ "isStopped", "d1/d7b/classSimulation.html#a9f62759686a1333be92bd4b6dd63b17f", null ],
     [ "onLegComplete", "d1/d7b/classSimulation.html#a8dbf0836b204bb33a31a0fc09c2fbc06", null ],

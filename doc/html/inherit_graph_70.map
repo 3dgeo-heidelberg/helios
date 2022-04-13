@@ -1,3 +1,5 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$d3/db8/classKDTreeFactoryMaker.html" title="Collection of static methods to simplify making of different KDTree factories. " alt="" coords="5,5,152,32"/>
+<area shape="rect" id="node1" href="$df/d39/classITreeIterator.html" title="ITreeIterator\&lt; NodeType *\&gt;" alt="" coords="5,46,188,73"/>
+<area shape="rect" id="node2" href="$d3/d43/classBinaryTreeFastBreadthIterator.html" title="Fast breadth first iterator for binary tree like nodes. " alt="" coords="236,5,433,47"/>
+<area shape="rect" id="node3" href="$dc/da5/classBinaryTreeFastDepthIterator.html" title="Fast depth first iterator for binary tree like nodes. " alt="" coords="241,71,428,112"/>
 </map>

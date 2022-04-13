@@ -1,3 +1,8 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$d1/d1e/classGroveTreeWrapper.html" title="Wrapper for trees belonging to a StaticGrove so for&#45;each loop can be used. " alt="" coords="5,5,188,32"/>
+<area shape="rect" id="node1" href="$d4/d73/classfluxionum_1_1Function.html" title="Abstract class representing a function. " alt="" coords="5,104,141,145"/>
+<area shape="rect" id="node2" href="$d8/d7e/classfluxionum_1_1ClosestLesserSampleFunction.html" title="Closest lesser sample function. " alt="" coords="209,5,380,47"/>
+<area shape="rect" id="node3" href="$d6/df0/classfluxionum_1_1IterativeEulerMethod.html" title="Iterative Euler method. " alt="" coords="213,71,376,112"/>
+<area shape="rect" id="node5" href="$dd/d40/classfluxionum_1_1LinearPiecesFunction.html" title="Linear pieces function. " alt="" coords="189,136,400,177"/>
+<area shape="rect" id="node6" href="$db/d81/classfluxionum_1_1SimpleLinearFunction.html" title="Simple linear function. " alt="" coords="189,201,400,243"/>
+<area shape="rect" id="node4" href="$d0/d52/classfluxionum_1_1FixedIterativeEulerMethod.html" title="Fixed iterative Euler method. " alt="" coords="448,71,613,112"/>
 </map>

@@ -122,9 +122,9 @@ Collaboration diagram for helios::filems::LineFileReader:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ada5e3804ac71e0c778ce4f9713399adc"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/d57/classhelios_1_1filems_1_1LineFileReader.html#ada5e3804ac71e0c778ce4f9713399adc">LineFileReader</a> (string const &amp;<a class="el" href="../../d4/d5e/classhelios_1_1filems_1_1FileReader.html#aae314c671cc56d7cc93f952e85191455">path</a>, std::ios_base::openmode <a class="el" href="../../de/d6c/classhelios_1_1filems_1_1SimpleFileReader.html#afdf971fd55b8bd952efc019a8e4b0ff2">openMode</a>=std::ios_base::in, long const <a class="el" href="../../de/d57/classhelios_1_1filems_1_1LineFileReader.html#a1d63094406c47abca1073cac9d0844d6">maxCharsPerLine</a>=8192)</td></tr>
-<tr class="memdesc:ada5e3804ac71e0c778ce4f9713399adc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor for line file reader.  <a href="#ada5e3804ac71e0c778ce4f9713399adc">More...</a><br /></td></tr>
-<tr class="separator:ada5e3804ac71e0c778ce4f9713399adc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad1c004ec6d34ad56cf9ba0d7fefc995c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/d57/classhelios_1_1filems_1_1LineFileReader.html#ad1c004ec6d34ad56cf9ba0d7fefc995c">LineFileReader</a> (string const &amp;<a class="el" href="../../d4/d5e/classhelios_1_1filems_1_1FileReader.html#aae314c671cc56d7cc93f952e85191455">path</a>, std::ios_base::openmode <a class="el" href="../../de/d6c/classhelios_1_1filems_1_1SimpleFileReader.html#afdf971fd55b8bd952efc019a8e4b0ff2">openMode</a>=std::ios_base::in, long const <a class="el" href="../../de/d57/classhelios_1_1filems_1_1LineFileReader.html#a1d63094406c47abca1073cac9d0844d6">maxCharsPerLine</a>=8192, bool const constructStrategy=true)</td></tr>
+<tr class="memdesc:ad1c004ec6d34ad56cf9ba0d7fefc995c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor for line file reader.  <a href="#ad1c004ec6d34ad56cf9ba0d7fefc995c">More...</a><br /></td></tr>
+<tr class="separator:ad1c004ec6d34ad56cf9ba0d7fefc995c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af11cf690063efa743b543d203b41b155"><td class="memItemLeft" align="right" valign="top">virtual long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/d57/classhelios_1_1filems_1_1LineFileReader.html#af11cf690063efa743b543d203b41b155">getMaxCharsPerLine</a> ()</td></tr>
 <tr class="memdesc:af11cf690063efa743b543d203b41b155"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain the maximum number of characters per line.  <a href="#af11cf690063efa743b543d203b41b155">More...</a><br /></td></tr>
 <tr class="separator:af11cf690063efa743b543d203b41b155"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -183,10 +183,10 @@ string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="..
 <dl class="section version"><dt>Version</dt><dd>1.0 </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="../../de/d6c/classhelios_1_1filems_1_1SimpleFileReader.html" title="Abstract class defining the fundamental of any file reader that uses standard file input stream as re...">filems::SimpleFileReader</a> </dd>
 <dd>
-<a class="el" href="../../de/d50/classhelios_1_1filems_1_1LineReadingStrategy.html" title="Class defining the strategy to read line by line from a file input stream ::SimpleReadingStrategy. ">filems::LineReadingStrategy</a> </dd></dl>
+<a class="el" href="../../de/d50/classhelios_1_1filems_1_1LineReadingStrategy.html" title="Class defining the strategy to read line by line from a file input stream. ">filems::LineReadingStrategy</a> </dd></dl>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="ada5e3804ac71e0c778ce4f9713399adc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ada5e3804ac71e0c778ce4f9713399adc">&#9670;&nbsp;</a></span>LineFileReader()</h2>
+<a id="ad1c004ec6d34ad56cf9ba0d7fefc995c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad1c004ec6d34ad56cf9ba0d7fefc995c">&#9670;&nbsp;</a></span>LineFileReader()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -210,7 +210,13 @@ string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="..
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">long const&#160;</td>
-          <td class="paramname"><em>maxCharsPerLine</em> = <code>8192</code>&#160;</td>
+          <td class="paramname"><em>maxCharsPerLine</em> = <code>8192</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool const&#160;</td>
+          <td class="paramname"><em>constructStrategy</em> = <code>true</code>&#160;</td>
         </tr>
         <tr>
           <td></td>

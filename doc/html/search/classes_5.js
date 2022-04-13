@@ -11,6 +11,10 @@ var searchData=
   ['filereader_3c_20readarg_20_3e',['FileReader&lt; ReadArg &gt;',['../d4/d5e/classhelios_1_1filems_1_1FileReader.html',1,'helios::filems']]],
   ['filereader_3c_20string_20_3e',['FileReader&lt; string &gt;',['../d4/d5e/classhelios_1_1filems_1_1FileReader.html',1,'helios::filems']]],
   ['fileutils',['FileUtils',['../d5/d4b/classFileUtils.html',1,'']]],
+  ['fixediterativeeulermethod',['FixedIterativeEulerMethod',['../d0/d52/classfluxionum_1_1FixedIterativeEulerMethod.html',1,'fluxionum']]],
+  ['fixedparametriciterativeeulermethod',['FixedParametricIterativeEulerMethod',['../dc/d03/classfluxionum_1_1FixedParametricIterativeEulerMethod.html',1,'fluxionum']]],
+  ['fixedparametriciterativeeulermethod_3c_20double_2c_20double_20_3e',['FixedParametricIterativeEulerMethod&lt; double, double &gt;',['../dc/d03/classfluxionum_1_1FixedParametricIterativeEulerMethod.html',1,'fluxionum']]],
+  ['fluxionumexception',['FluxionumException',['../d3/dd9/classfluxionum_1_1FluxionumException.html',1,'fluxionum']]],
   ['fluxionumtest',['FluxionumTest',['../dd/de0/classHeliosTests_1_1FluxionumTest.html',1,'HeliosTests']]],
   ['fmsfacade',['FMSFacade',['../db/daa/classhelios_1_1filems_1_1FMSFacade.html',1,'helios::filems']]],
   ['fmsfacadefactory',['FMSFacadeFactory',['../dd/dd0/classhelios_1_1filems_1_1FMSFacadeFactory.html',1,'helios::filems']]],
@@ -22,5 +26,9 @@ var searchData=
   ['fullwaveformpulsedetector',['FullWaveformPulseDetector',['../df/d37/classFullWaveformPulseDetector.html',1,'']]],
   ['fullwaveformpulserunnable',['FullWaveformPulseRunnable',['../db/da6/classFullWaveformPulseRunnable.html',1,'']]],
   ['fullwaveformwriter',['FullWaveformWriter',['../d0/db3/classhelios_1_1filems_1_1FullWaveformWriter.html',1,'helios::filems']]],
+  ['function',['Function',['../d4/d73/classfluxionum_1_1Function.html',1,'fluxionum']]],
+  ['function_3c_20a_2c_20arma_3a_3acol_3c_20b_20_3e_20_3e',['Function&lt; A, arma::Col&lt; B &gt; &gt;',['../d4/d73/classfluxionum_1_1Function.html',1,'fluxionum']]],
+  ['function_3c_20double_2c_20arma_3a_3acol_3c_20double_20_3e_20_3e',['Function&lt; double, arma::Col&lt; double &gt; &gt;',['../d4/d73/classfluxionum_1_1Function.html',1,'fluxionum']]],
+  ['functionalplatformtest',['FunctionalPlatformTest',['../d4/dbf/classHeliosTests_1_1FunctionalPlatformTest.html',1,'HeliosTests']]],
   ['fwfsettings',['FWFSettings',['../d4/dfb/classFWFSettings.html',1,'']]]
 ];
