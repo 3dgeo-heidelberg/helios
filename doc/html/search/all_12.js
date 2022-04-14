@@ -4,7 +4,7 @@ var searchData=
   ['r1',['r1',['../d7/db4/classConicBeamDeflector.html#aafd4b43d63d67063597dc3a345ac9060',1,'ConicBeamDeflector']]],
   ['r2x',['R2X',['../db/d8b/classHeliosTests_1_1RigidMotionTest.html#a8f91e1e80529c1836059666949c3d651',1,'HeliosTests::RigidMotionTest']]],
   ['r3x',['R3X',['../db/d8b/classHeliosTests_1_1RigidMotionTest.html#a3a644169e5f080e4fa4c77c7cd7533d8',1,'HeliosTests::RigidMotionTest']]],
-  ['radianstodegrees',['radiansToDegrees',['../df/d22/classMathConverter.html#aed4c9dcf289380c3be4ed2f7bcbedff5',1,'MathConverter']]],
+  ['radianstodegrees',['radiansToDegrees',['../df/d22/classMathConverter.html#a477c843662c076de58486a4a1184b8fa',1,'MathConverter']]],
   ['rail',['RAIL',['../df/d64/classLasSpecification.html#a7cae5672cdaa100fee4c68006274f1af',1,'LasSpecification']]],
   ['randgen1',['randGen1',['../d5/d3c/classBuddingScanningPulseProcess.html#a6e74fa0c13678a2d7d70c00be73c5ccf',1,'BuddingScanningPulseProcess::randGen1()'],['../dc/d42/classScanner.html#a2a41e7cd79db232b9e591d8f365c73e1',1,'Scanner::randGen1()'],['../df/ddb/classWarehouseScanningPulseProcess.html#af8ab6457d5dc9a3f727ace90abf7f539',1,'WarehouseScanningPulseProcess::randGen1()']]],
   ['randgen2',['randGen2',['../d5/d3c/classBuddingScanningPulseProcess.html#a7f8a05f28fb2e7fde96bff8ba8696eea',1,'BuddingScanningPulseProcess::randGen2()'],['../dc/d42/classScanner.html#a57e43006f8c86d513a3668625b7363f5',1,'Scanner::randGen2()'],['../df/ddb/classWarehouseScanningPulseProcess.html#a2e7d2db7b161d90aa071a6a713ebac57',1,'WarehouseScanningPulseProcess::randGen2()']]],

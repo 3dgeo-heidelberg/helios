@@ -1,5 +1,8 @@
 var NAVTREEINDEX14 =
 {
+"db/d69/classHelicopterPlatform.html#a3bd69e2c2b40d56ef5f76e5aa289e46f":[1,0,61,53],
+"db/d69/classHelicopterPlatform.html#a46ec9a804fbf47f5e35a53629fdf24f3":[1,0,61,34],
+"db/d69/classHelicopterPlatform.html#a47a1f6c6dcf89a0a0599da7dd328c63f":[1,0,61,46],
 "db/d69/classHelicopterPlatform.html#a482a28380f0869ba415ff7b394d0d4a3":[1,0,61,28],
 "db/d69/classHelicopterPlatform.html#a4c55829e268f237712196e55f9919a4f":[1,0,61,25],
 "db/d69/classHelicopterPlatform.html#a4eb1504235476903a4dbdc9224842cf0":[1,0,61,21],
@@ -246,8 +249,5 @@ var NAVTREEINDEX14 =
 "db/dff/PyHeliosException_8h_source.html":[2,0,0,10,5],
 "dc/d00/classrigidmotion_1_1RigidMotionFactory.html":[1,0,5,3],
 "dc/d00/classrigidmotion_1_1RigidMotionFactory.html#a00a6e79e3d7dbe4c2859b00241c7e4ae":[1,0,5,3,2],
-"dc/d00/classrigidmotion_1_1RigidMotionFactory.html#a328e56dda7414eb61cba24b6f05eb75f":[1,0,5,3,0],
-"dc/d00/classrigidmotion_1_1RigidMotionFactory.html#a81c78af76b9d3fcd1b77f357be7131d0":[1,0,5,3,3],
-"dc/d00/classrigidmotion_1_1RigidMotionFactory.html#aaa74b5d14466d92f61a56bbc45bee5fb":[1,0,5,3,1],
-"dc/d00/classrigidmotion_1_1RigidMotionFactory.html#ac98d07dd8f7b70e16ccb9a01abf56b9c":[1,0,5,3,5]
+"dc/d00/classrigidmotion_1_1RigidMotionFactory.html#a328e56dda7414eb61cba24b6f05eb75f":[1,0,5,3,0]
 };

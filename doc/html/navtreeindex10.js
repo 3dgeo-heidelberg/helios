@@ -1,5 +1,8 @@
 var NAVTREEINDEX10 =
 {
+"d8/d3a/classSurfaceInspector_1_1util_1_1draggers_1_1MaxDragger.html#a8209697d8ca52711597e0d95dcf0cd52":[1,0,6,1,0,1,0],
+"d8/d3a/classSurfaceInspector_1_1util_1_1draggers_1_1MaxDragger.html#afa0adc0b79de5c3498c9a7baa759f4c2":[1,0,6,1,0,1,2],
+"d8/d3c/VHDynObjectXYZAdapter_8h_source.html":[2,0,0,17,0,1],
 "d8/d43/PySceneWrapper_8h_source.html":[2,0,0,10,18],
 "d8/d4b/ZipSyncFileMeasurementWriter_8h_source.html":[2,0,0,4,5,0,12],
 "d8/d4c/classKDTreeBuildType.html":[1,0,74],
@@ -246,8 +249,5 @@ var NAVTREEINDEX10 =
 "d9/d49/classfluxionum_1_1DiffDesignMatrix.html#a85325c13a7f8fadc7804b6c7ae99d3c0":[1,0,0,3,4],
 "d9/d49/classfluxionum_1_1DiffDesignMatrix.html#a8eb11cce6da3a7aa10390328c109952e":[1,0,0,3,16],
 "d9/d49/classfluxionum_1_1DiffDesignMatrix.html#a953fd433652eea3f77669da8d7714656":[1,0,0,3,15],
-"d9/d49/classfluxionum_1_1DiffDesignMatrix.html#a9b5c56020340634f5213385e4102cb23":[1,0,0,3,10],
-"d9/d49/classfluxionum_1_1DiffDesignMatrix.html#a9ef9dc43ee7076cafa62dabc69ee8da5":[1,0,0,3,3],
-"d9/d49/classfluxionum_1_1DiffDesignMatrix.html#aa443abb5785759d4e59359c516145db7":[1,0,0,3,14],
-"d9/d49/classfluxionum_1_1DiffDesignMatrix.html#aa9158de3751845f7fe8bb31ad5072289":[1,0,0,3,7]
+"d9/d49/classfluxionum_1_1DiffDesignMatrix.html#a9b5c56020340634f5213385e4102cb23":[1,0,0,3,10]
 };

@@ -1,5 +1,8 @@
 var NAVTREEINDEX13 =
 {
+"da/d8d/classTaskDropper.html#a0990e3c5f7cce4e518c6a7a073902ce3":[1,0,166,8],
+"da/d8d/classTaskDropper.html#a1a1f2275b9f64e665fba0c29911da941":[1,0,166,19],
+"da/d8d/classTaskDropper.html#a2a9ac4a90993e1d64467fe19a25096fe":[1,0,166,5],
 "da/d8d/classTaskDropper.html#a3417fd3299f3340d545009f699b1a311":[1,0,166,6],
 "da/d8d/classTaskDropper.html#a44aa1feb3f6ef76da5c02b61b5cee30a":[1,0,166,3],
 "da/d8d/classTaskDropper.html#a4e79063a65c9cff8cff4fdbbc83240ce":[1,0,166,16],
@@ -246,8 +249,5 @@ var NAVTREEINDEX13 =
 "db/d69/classHelicopterPlatform.html#a318c5b67ec884e279060287b95aa0d91":[1,0,61,38],
 "db/d69/classHelicopterPlatform.html#a324eec9527d9ea53b14c183c969cb068":[1,0,61,57],
 "db/d69/classHelicopterPlatform.html#a357cd099a9ab25dd437ebefe7edfd947":[1,0,61,22],
-"db/d69/classHelicopterPlatform.html#a3bc9da261f208ae96e73a3069d95b2e0":[1,0,61,17],
-"db/d69/classHelicopterPlatform.html#a3bd69e2c2b40d56ef5f76e5aa289e46f":[1,0,61,53],
-"db/d69/classHelicopterPlatform.html#a46ec9a804fbf47f5e35a53629fdf24f3":[1,0,61,34],
-"db/d69/classHelicopterPlatform.html#a47a1f6c6dcf89a0a0599da7dd328c63f":[1,0,61,46]
+"db/d69/classHelicopterPlatform.html#a3bc9da261f208ae96e73a3069d95b2e0":[1,0,61,17]
 };

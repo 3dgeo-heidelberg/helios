@@ -138,9 +138,9 @@ Public Types</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a61b2acbc89226ab17cb0cef03c9810a8"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d97/classInterpolatedMovingPlatform.html#a61b2acbc89226ab17cb0cef03c9810a8">InterpolatedMovingPlatform</a> (<a class="el" href="../../d6/d8c/classSimulationStepLoop.html">SimulationStepLoop</a> &amp;<a class="el" href="../../dc/d97/classInterpolatedMovingPlatform.html#acec3f23182a2a5c78f24a4487bd79d4e">stepLoop</a>, TemporalDesignMatrix&lt; double, double &gt; const &amp;tdm, DiffDesignMatrix&lt; double, double &gt; const &amp;ddm, <a class="el" href="../../dc/d97/classInterpolatedMovingPlatform.html#a0f2d77711abb5dbdb5a99d3c4436a1d8">InterpolationScope</a> <a class="el" href="../../dc/d97/classInterpolatedMovingPlatform.html#a0e62d7778f89fd881d5cda69ee67809e">scope</a>)</td></tr>
-<tr class="memdesc:a61b2acbc89226ab17cb0cef03c9810a8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Build an <a class="el" href="../../dc/d97/classInterpolatedMovingPlatform.html" title="Class representing a MovingPlatform which position is defined by a function interpolated from a Desig...">InterpolatedMovingPlatform</a> from given values and differentials. Note that the DiffDesignMatrix must define the derivatives for the same functions which values over time are described by the TemporalDesignMatrix.  <a href="#a61b2acbc89226ab17cb0cef03c9810a8">More...</a><br /></td></tr>
-<tr class="separator:a61b2acbc89226ab17cb0cef03c9810a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0b0882b33c5b7ec5ade27c012ef42795"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d97/classInterpolatedMovingPlatform.html#a0b0882b33c5b7ec5ade27c012ef42795">InterpolatedMovingPlatform</a> (<a class="el" href="../../d6/d8c/classSimulationStepLoop.html">SimulationStepLoop</a> &amp;<a class="el" href="../../dc/d97/classInterpolatedMovingPlatform.html#acec3f23182a2a5c78f24a4487bd79d4e">stepLoop</a>, TemporalDesignMatrix&lt; double, double &gt; const &amp;tdm, DiffDesignMatrix&lt; double, double &gt; const &amp;ddm, <a class="el" href="../../dc/d97/classInterpolatedMovingPlatform.html#a0f2d77711abb5dbdb5a99d3c4436a1d8">InterpolationScope</a> <a class="el" href="../../dc/d97/classInterpolatedMovingPlatform.html#a0e62d7778f89fd881d5cda69ee67809e">scope</a>, bool const <a class="el" href="../../dc/d97/classInterpolatedMovingPlatform.html#ae64b40a9ec1e8f8f20c34692088349ec">syncGPSTime</a>, double const <a class="el" href="../../dc/d97/classInterpolatedMovingPlatform.html#ab3bc200146684a07a4e36ee4596f11bf">startTime</a>)</td></tr>
+<tr class="memdesc:a0b0882b33c5b7ec5ade27c012ef42795"><td class="mdescLeft">&#160;</td><td class="mdescRight">Build an <a class="el" href="../../dc/d97/classInterpolatedMovingPlatform.html" title="Class representing a MovingPlatform which position is defined by a function interpolated from a Desig...">InterpolatedMovingPlatform</a> from given values and differentials. Note that the DiffDesignMatrix must define the derivatives for the same functions which values over time are described by the TemporalDesignMatrix.  <a href="#a0b0882b33c5b7ec5ade27c012ef42795">More...</a><br /></td></tr>
+<tr class="separator:a0b0882b33c5b7ec5ade27c012ef42795"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aecf2f263f98fcd23ac2dfcbc803a05be"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d97/classInterpolatedMovingPlatform.html#aecf2f263f98fcd23ac2dfcbc803a05be">doSimStep</a> (int simFrequency_hz) override</td></tr>
 <tr class="separator:aecf2f263f98fcd23ac2dfcbc803a05be"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a99efe7276d509d753bc2b305f126458d"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d97/classInterpolatedMovingPlatform.html#a99efe7276d509d753bc2b305f126458d">waypointReached</a> () override</td></tr>
@@ -181,6 +181,18 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:af4cd2862e184babbd6c2965c8e974ad8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d97/classInterpolatedMovingPlatform.html#af4cd2862e184babbd6c2965c8e974ad8">setFrontierDerivatives</a> (arma::Mat&lt; double &gt; const &amp;<a class="el" href="../../dc/d97/classInterpolatedMovingPlatform.html#a2a9dbe1566975f02ab87deb6f89c94eb">frontierDerivatives</a>)</td></tr>
 <tr class="memdesc:af4cd2862e184babbd6c2965c8e974ad8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the derivatives at the frontier points.  <a href="#af4cd2862e184babbd6c2965c8e974ad8">More...</a><br /></td></tr>
 <tr class="separator:af4cd2862e184babbd6c2965c8e974ad8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aff24436a84fb7ac3d2c2315c289f2845"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d97/classInterpolatedMovingPlatform.html#aff24436a84fb7ac3d2c2315c289f2845">isSyncGPSTime</a> () const</td></tr>
+<tr class="memdesc:aff24436a84fb7ac3d2c2315c289f2845"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check whether the GPS time is requested to be synchronized with platform's start time (true) or not (false)  <a href="#aff24436a84fb7ac3d2c2315c289f2845">More...</a><br /></td></tr>
+<tr class="separator:aff24436a84fb7ac3d2c2315c289f2845"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3c5ca4e1bee7c090d6ecb899e8973800"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d97/classInterpolatedMovingPlatform.html#a3c5ca4e1bee7c090d6ecb899e8973800">setSyncGPSTime</a> (bool const <a class="el" href="../../dc/d97/classInterpolatedMovingPlatform.html#ae64b40a9ec1e8f8f20c34692088349ec">syncGPSTime</a>)</td></tr>
+<tr class="memdesc:a3c5ca4e1bee7c090d6ecb899e8973800"><td class="mdescLeft">&#160;</td><td class="mdescRight">Either enable (true) or disable (false) the synchronization of GPS time with platform's start time.  <a href="#a3c5ca4e1bee7c090d6ecb899e8973800">More...</a><br /></td></tr>
+<tr class="separator:a3c5ca4e1bee7c090d6ecb899e8973800"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6d3a5ba0b80769b6c9cfbb173f5fb0ab"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d97/classInterpolatedMovingPlatform.html#a6d3a5ba0b80769b6c9cfbb173f5fb0ab">getStartTime</a> () const</td></tr>
+<tr class="memdesc:a6d3a5ba0b80769b6c9cfbb173f5fb0ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain the start time.  <a href="#a6d3a5ba0b80769b6c9cfbb173f5fb0ab">More...</a><br /></td></tr>
+<tr class="separator:a6d3a5ba0b80769b6c9cfbb173f5fb0ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a28ea097df9fb781cdd976ba27ec57022"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d97/classInterpolatedMovingPlatform.html#a28ea097df9fb781cdd976ba27ec57022">setStartTime</a> (double const <a class="el" href="../../dc/d97/classInterpolatedMovingPlatform.html#ab3bc200146684a07a4e36ee4596f11bf">startTime</a>)</td></tr>
+<tr class="memdesc:a28ea097df9fb781cdd976ba27ec57022"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the start time.  <a href="#a28ea097df9fb781cdd976ba27ec57022">More...</a><br /></td></tr>
+<tr class="separator:a28ea097df9fb781cdd976ba27ec57022"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classMovingPlatform"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classMovingPlatform')"><img src="../../closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="../../d1/d83/classMovingPlatform.html">MovingPlatform</a></td></tr>
 <tr class="memitem:a1fda311a499f27b3dc449dc13b2aeaed inherit pub_methods_classMovingPlatform"><td class="memItemLeft" align="right" valign="top"><a id="a1fda311a499f27b3dc449dc13b2aeaed"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d83/classMovingPlatform.html#a1fda311a499f27b3dc449dc13b2aeaed">MovingPlatform</a> ()=default</td></tr>
@@ -314,6 +326,12 @@ Protected Attributes</h2></td></tr>
 <tr class="memitem:a44bdb1cb040e26bbc2ac8c57f8c20e51"><td class="memItemLeft" align="right" valign="top">std::function&lt; void(double const t)&gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d97/classInterpolatedMovingPlatform.html#a44bdb1cb040e26bbc2ac8c57f8c20e51">doStepUpdates</a></td></tr>
 <tr class="memdesc:a44bdb1cb040e26bbc2ac8c57f8c20e51"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function which handles the update of components belonging to interpolation scope at each simulation step.  <a href="#a44bdb1cb040e26bbc2ac8c57f8c20e51">More...</a><br /></td></tr>
 <tr class="separator:a44bdb1cb040e26bbc2ac8c57f8c20e51"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae64b40a9ec1e8f8f20c34692088349ec"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d97/classInterpolatedMovingPlatform.html#ae64b40a9ec1e8f8f20c34692088349ec">syncGPSTime</a></td></tr>
+<tr class="memdesc:ae64b40a9ec1e8f8f20c34692088349ec"><td class="mdescLeft">&#160;</td><td class="mdescRight">If true, the GPS time will be synchronized with the start time of the <a class="el" href="../../dc/d97/classInterpolatedMovingPlatform.html" title="Class representing a MovingPlatform which position is defined by a function interpolated from a Desig...">InterpolatedMovingPlatform</a>. If false, nothing will be done.  <a href="#ae64b40a9ec1e8f8f20c34692088349ec">More...</a><br /></td></tr>
+<tr class="separator:ae64b40a9ec1e8f8f20c34692088349ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab3bc200146684a07a4e36ee4596f11bf"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d97/classInterpolatedMovingPlatform.html#ab3bc200146684a07a4e36ee4596f11bf">startTime</a></td></tr>
+<tr class="memdesc:ab3bc200146684a07a4e36ee4596f11bf"><td class="mdescLeft">&#160;</td><td class="mdescRight">The start time for the GPS time (in seconds).  <a href="#ab3bc200146684a07a4e36ee4596f11bf">More...</a><br /></td></tr>
+<tr class="separator:ab3bc200146684a07a4e36ee4596f11bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
@@ -490,8 +508,8 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
 <dl class="section version"><dt>Version</dt><dd>1.0</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d1/d83/classMovingPlatform.html" title="Class representing a moving platform. ">MovingPlatform</a> </dd></dl>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a61b2acbc89226ab17cb0cef03c9810a8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a61b2acbc89226ab17cb0cef03c9810a8">&#9670;&nbsp;</a></span>InterpolatedMovingPlatform()</h2>
+<a id="a0b0882b33c5b7ec5ade27c012ef42795"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0b0882b33c5b7ec5ade27c012ef42795">&#9670;&nbsp;</a></span>InterpolatedMovingPlatform()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -518,7 +536,19 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype"><a class="el" href="../../dc/d97/classInterpolatedMovingPlatform.html#a0f2d77711abb5dbdb5a99d3c4436a1d8">InterpolationScope</a>&#160;</td>
-          <td class="paramname"><em>scope</em>&#160;</td>
+          <td class="paramname"><em>scope</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool const&#160;</td>
+          <td class="paramname"><em>syncGPSTime</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double const&#160;</td>
+          <td class="paramname"><em>startTime</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -535,6 +565,8 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
     <tr><td class="paramname">tdm</td><td>The matrix of values over time time </td></tr>
     <tr><td class="paramname">ddm</td><td>The matrix of derivatives over time such that the \(i\)-th derivative associated with the \(i\)-th value at the \(i\)-th time </td></tr>
     <tr><td class="paramname">scope</td><td>Specify the interpolation scope. </td></tr>
+    <tr><td class="paramname">syncGPSTime</td><td>Specify if GPS time must be synchronized (True) or not (false) </td></tr>
+    <tr><td class="paramname">startTime</td><td>The minimum time in the original time domain (the one used by the data source), it is given in seconds </td></tr>
   </table>
   </dd>
 </dl>
@@ -658,6 +690,34 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
 
 </div>
 </div>
+<a id="a6d3a5ba0b80769b6c9cfbb173f5fb0ab"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6d3a5ba0b80769b6c9cfbb173f5fb0ab">&#9670;&nbsp;</a></span>getStartTime()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double InterpolatedMovingPlatform::getStartTime </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Obtain the start time. </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../dc/d97/classInterpolatedMovingPlatform.html#ab3bc200146684a07a4e36ee4596f11bf" title="The start time for the GPS time (in seconds). ">InterpolatedMovingPlatform::startTime</a> </dd></dl>
+
+</div>
+</div>
 <a id="ab99e1982aa3c4d69144cc2387bf6222a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab99e1982aa3c4d69144cc2387bf6222a">&#9670;&nbsp;</a></span>getStepLoop()</h2>
 
@@ -739,6 +799,34 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
 
 <p>Obtain the <a class="el" href="../../d9/de4/classTrajectoryFunction.html" title="Abstract class representing a trajectory function . ">TrajectoryFunction</a>. </p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="../../dc/d97/classInterpolatedMovingPlatform.html#a12206bb74e6153d7b18d32421120730c" title="The trajectory function defining the platform&#39;s motion. ">InterpolatedMovingPlatform::tf</a> </dd></dl>
+
+</div>
+</div>
+<a id="aff24436a84fb7ac3d2c2315c289f2845"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aff24436a84fb7ac3d2c2315c289f2845">&#9670;&nbsp;</a></span>isSyncGPSTime()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool InterpolatedMovingPlatform::isSyncGPSTime </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Check whether the GPS time is requested to be synchronized with platform's start time (true) or not (false) </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../dc/d97/classInterpolatedMovingPlatform.html#ae64b40a9ec1e8f8f20c34692088349ec" title="If true, the GPS time will be synchronized with the start time of the InterpolatedMovingPlatform. If false, nothing will be done. ">InterpolatedMovingPlatform::syncGPSTime</a> </dd></dl>
 
 </div>
 </div>
@@ -826,6 +914,64 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
 
 <p>Set the InterpolationScope. </p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="../../dc/d97/classInterpolatedMovingPlatform.html#a0e62d7778f89fd881d5cda69ee67809e" title="Specify the scope of the interpolation. ">InterpolatedMovingPlatform::scope</a> </dd></dl>
+
+</div>
+</div>
+<a id="a28ea097df9fb781cdd976ba27ec57022"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a28ea097df9fb781cdd976ba27ec57022">&#9670;&nbsp;</a></span>setStartTime()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void InterpolatedMovingPlatform::setStartTime </td>
+          <td>(</td>
+          <td class="paramtype">double const&#160;</td>
+          <td class="paramname"><em>startTime</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Set the start time. </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../dc/d97/classInterpolatedMovingPlatform.html#ab3bc200146684a07a4e36ee4596f11bf" title="The start time for the GPS time (in seconds). ">InterpolatedMovingPlatform::startTime</a> </dd></dl>
+
+</div>
+</div>
+<a id="a3c5ca4e1bee7c090d6ecb899e8973800"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3c5ca4e1bee7c090d6ecb899e8973800">&#9670;&nbsp;</a></span>setSyncGPSTime()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void InterpolatedMovingPlatform::setSyncGPSTime </td>
+          <td>(</td>
+          <td class="paramtype">bool const&#160;</td>
+          <td class="paramname"><em>syncGPSTime</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Either enable (true) or disable (false) the synchronization of GPS time with platform's start time. </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../dc/d97/classInterpolatedMovingPlatform.html#ae64b40a9ec1e8f8f20c34692088349ec" title="If true, the GPS time will be synchronized with the start time of the InterpolatedMovingPlatform. If false, nothing will be done. ">InterpolatedMovingPlatform::syncGPSTime</a> </dd></dl>
 
 </div>
 </div>
@@ -1049,6 +1195,32 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
 
 </div>
 </div>
+<a id="ab3bc200146684a07a4e36ee4596f11bf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab3bc200146684a07a4e36ee4596f11bf">&#9670;&nbsp;</a></span>startTime</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double InterpolatedMovingPlatform::startTime</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The start time for the GPS time (in seconds). </p>
+<p>For the typical case, it is the smallest time value in the original time domain. It is, the smallest time value in the original data source before it was aligned to start at \(t_0 = 0\).</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../dc/d97/classInterpolatedMovingPlatform.html#ae64b40a9ec1e8f8f20c34692088349ec" title="If true, the GPS time will be synchronized with the start time of the InterpolatedMovingPlatform. If false, nothing will be done. ">InterpolatedMovingPlatform::syncGPSTime</a> </dd></dl>
+
+</div>
+</div>
 <a id="acec3f23182a2a5c78f24a4487bd79d4e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#acec3f23182a2a5c78f24a4487bd79d4e">&#9670;&nbsp;</a></span>stepLoop</h2>
 
@@ -1075,6 +1247,31 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
 <a class="el" href="../../d1/d7b/classSimulation.html" title="Class representing a simulation. ">Simulation</a> </dd>
 <dd>
 <a class="el" href="../../d1/d7b/classSimulation.html#a8ca72fd59e5d0285a05eb05768261a11" title="The handler for simulation steps, it also contains the discrete time object that hanldes simulation f...">Simulation::stepLoop</a> </dd></dl>
+
+</div>
+</div>
+<a id="ae64b40a9ec1e8f8f20c34692088349ec"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae64b40a9ec1e8f8f20c34692088349ec">&#9670;&nbsp;</a></span>syncGPSTime</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool InterpolatedMovingPlatform::syncGPSTime</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>If true, the GPS time will be synchronized with the start time of the <a class="el" href="../../dc/d97/classInterpolatedMovingPlatform.html" title="Class representing a MovingPlatform which position is defined by a function interpolated from a Desig...">InterpolatedMovingPlatform</a>. If false, nothing will be done. </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../dc/d97/classInterpolatedMovingPlatform.html#ab3bc200146684a07a4e36ee4596f11bf" title="The start time for the GPS time (in seconds). ">InterpolatedMovingPlatform::startTime</a> </dd></dl>
 
 </div>
 </div>
