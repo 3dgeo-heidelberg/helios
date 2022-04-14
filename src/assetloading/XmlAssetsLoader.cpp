@@ -713,6 +713,16 @@ std::shared_ptr<Platform> XmlAssetsLoader::createInterpolatedMovingPlatform(){
     platform->timeShift = timeShift;
     platform->tdm->shiftTime(timeShift);
 
+    // Angle to radians, if angles are given
+    if(interpDom == "position_and_attitude"){
+        for(size_t j = 0 ; j < 3 ; ++j){
+            platform->tdm->setColumn(
+                j,
+                platform->tdm->getColumn(j) * PI_OVER_180
+            );
+        }
+    }
+
     // Differentiate temporal matrix through FORWARD FINITE DIFFERENCES
     platform->ddm = platform->tdm->toDiffDesignMatrixPointer(
         DiffDesignMatrixType::FORWARD_FINITE_DIFFERENCES,

@@ -218,6 +218,17 @@ public:
      */
     inline arma::Mat<T> const & getX() const {return X;}
     /**
+     * @brief Obtain a writable reference to the \f$X\f$ matrix
+     *
+     * <span style="color: red"><b>WARNING</b></span> use this method only if
+     *  you know how to manipulate underlying data structures of armadillo
+     *  library
+     *
+     * @return Writable reference to the \f$X\f$ matrix
+     * @see fluxionum::DesignMatrix::X
+     */
+    inline arma::Mat<T> & getWritableX() {return X;}
+    /**
      * @brief Obtain the number of rows of the DesignMatrix \f$X\f$
      * @return The number of rows of the DesignMatrix \f$X\f$
      * @see fluxionum::DesignMatrix::X
@@ -284,6 +295,14 @@ public:
      */
     inline arma::Col<T> getColumnCopy(string const &columnName) const
     {return getColumn(columnName);}
+    /**
+     * @brief Set the \f$j\f$-th column of the DesignMatrix \f$X\f$
+     * @param j Index of the column to be setted
+     * @param col New values for the column to be setted
+     * @see fluxionum::DesignMatrix::X
+     */
+    inline void setColumn(size_t const j, arma::Col<T> const &col)
+    {X.col(j) = col;}
 
 };
 
