@@ -6,7 +6,11 @@
         <FWFSettings beamSampleQuality="3" binSize_ns="0.25" winSize_ns="1"/>
 		<!-- Leg which interpolates the full trajectory -->
         <leg>
-            <platformSettings trajectory="data/trajectories/cycloid.trj" tIndex="0" xIndex="4" yIndex="5" zIndex="6" rollIndex="1" pitchIndex="2" yawIndex="3" slopeFilterThreshold="0.0" toRadians="true"/>
+            <platformSettings 
+				trajectory="data/trajectories/cycloid.trj"
+				tIndex="0" xIndex="4" yIndex="5" zIndex="6" rollIndex="1" pitchIndex="2" yawIndex="3"
+				slopeFilterThreshold="0.0" toRadians="true" syncGPSTime="false"
+			/>
             <scannerSettings template="scaset" trajectoryTimeInterval_s="0.054"/>
         </leg>
 		<!-- Leg which interpolates the trajectory for all t in [4.78, 6.94] -->

@@ -27,7 +27,11 @@ public:
         InterpolatedMovingPlatform::InterpolationScope::POSITION_AND_ATTITUDE;
     std::shared_ptr<TemporalDesignMatrix<double, double>> tdm;
     std::shared_ptr<DiffDesignMatrix<double, double>> ddm;
-    double timeShift; // Compute +timeShift to translate to simulation time
+    bool syncGPSTime;   // If true, set start GPS time to first time from data
+    double startTime;   // To be used when syncGPSTime is true and also to
+                        // translate to simulation time s.t. -startTime
+                        // It is given in seconds, not milliseconds
+
 
     // ***  CONSTRUCTION / DESTRUCTION  *** //
     // ************************************ //
@@ -38,7 +42,9 @@ public:
                 InterpolationScope::POSITION_AND_ATTITUDE
         ),
         tdm(nullptr),
-        ddm(nullptr)
+        ddm(nullptr),
+        syncGPSTime(false),
+        startTime(0)
     {}
     virtual ~InterpolatedMovingPlatformEgg() = default;
 
@@ -49,7 +55,9 @@ public:
             stepLoop,
             *tdm,
             *ddm,
-            scope
+            scope,
+            syncGPSTime,
+            startTime
         );
         fulfillPlatform(imp);
         return imp;
@@ -62,7 +70,9 @@ public:
             stepLoop,
             *tdm,
             *ddm,
-            scope
+            scope,
+            syncGPSTime,
+            startTime
         );
         fulfillPlatform(*imp);
         return imp;

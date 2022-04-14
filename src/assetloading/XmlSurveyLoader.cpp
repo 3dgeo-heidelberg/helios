@@ -366,10 +366,10 @@ void XmlSurveyLoader::loadLegs(
         // Translate TrajectorySettings to simulation time
         if(leg->mTrajectorySettings != nullptr){
             if(leg->mTrajectorySettings->hasStartTime()){ // Translate tStart
-                leg->mTrajectorySettings->tStart += ip->timeShift;
+                leg->mTrajectorySettings->tStart -= ip->startTime;
             }
             if(leg->mTrajectorySettings->hasEndTime()){ // Translate tEnd
-                leg->mTrajectorySettings->tEnd += ip->timeShift;
+                leg->mTrajectorySettings->tEnd -= ip->startTime;
             }
         }
         // Insert leg

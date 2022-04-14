@@ -82,6 +82,22 @@ protected:
      * @see InterpolatedMovingPlatform::doSimStep
      */
     std::function<void(double const t)> doStepUpdates;
+    /**
+     * @brief If true, the GPS time will be synchronized with the start time
+     *  of the InterpolatedMovingPlatform. If false, nothing will be done.
+     * @see InterpolatedMovingPlatform::startTime
+     */
+    bool syncGPSTime;
+    /**
+     * @brief The start time for the GPS time (in seconds).
+     *
+     * For the typical case, it is the smallest time value in the original time
+     *  domain. It is, the smallest time value in the original data source
+     *  before it was aligned to start at \f$t_0 = 0\f$.
+     *
+     * @see InterpolatedMovingPlatform::syncGPSTime
+     */
+    double startTime;
 
 public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //
@@ -96,6 +112,10 @@ public:
      * @param ddm The matrix of derivatives over time such that the \f$i\f$-th
      *  derivative associated with the \f$i\f$-th value at the \f$i\f$-th time
      * @param scope Specify the interpolation scope.
+     * @param syncGPSTime Specify if GPS time must be synchronized (True) or
+     *  not (false)
+     * @param startTime The minimum time in the original time domain (the one
+     *  used by the data source), it is given in seconds
      * @see InterpolatedMovingPlatform::InterpolationScope
      * @see InterpolatedMovingPlatform::stepLoop
      */
@@ -103,7 +123,9 @@ public:
         SimulationStepLoop &stepLoop,
         TemporalDesignMatrix<double, double> const &tdm,
         DiffDesignMatrix<double, double> const &ddm,
-        InterpolationScope scope
+        InterpolationScope scope,
+        bool const syncGPSTime,
+        double const startTime
     );
     virtual ~InterpolatedMovingPlatform() = default;
 
@@ -197,4 +219,28 @@ public:
     inline void setFrontierDerivatives(
         arma::Mat<double> const &frontierDerivatives
     ) {this->frontierDerivatives = frontierDerivatives;}
+    /**
+     * @brief Check whether the GPS time is requested to be synchronized with
+     *  platform's start time (true) or not (false)
+     * @see InterpolatedMovingPlatform::syncGPSTime
+     */
+    inline bool isSyncGPSTime() const {return syncGPSTime;}
+    /**
+     * @brief Either enable (true) or disable (false) the synchronization of
+     *  GPS time with platform's start time
+     * @see InterpolatedMovingPlatform::syncGPSTime
+     */
+    inline void setSyncGPSTime(bool const syncGPSTime)
+    {this->syncGPSTime = syncGPSTime;}
+    /**
+     * @brief Obtain the start time
+     * @see InterpolatedMovingPlatform::startTime
+     */
+    inline double getStartTime() const {return startTime;}
+    /**
+     * @brief Set the start time
+     * @see InterpolatedMovingPlatform::startTime
+     */
+    inline void setStartTime(double const startTime)
+    {this->startTime = startTime;}
 };
