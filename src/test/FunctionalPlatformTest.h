@@ -82,7 +82,9 @@ bool FunctionalPlatformTest::testInterpolatedMovingPlatform(){
         stepLoop,
         tdm,
         ddm,
-        InterpolatedMovingPlatform::InterpolationScope::POSITION
+        InterpolatedMovingPlatform::InterpolationScope::POSITION,
+        false,
+        0.0
     );
 
     // Validate InterpolatedMovingPlatform

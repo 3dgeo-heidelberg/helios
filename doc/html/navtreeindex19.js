@@ -1,5 +1,14 @@
 var NAVTREEINDEX19 =
 {
+"df/d22/classMathConverter.html#a5f38933253e4b98bd9ec9a171cb780b5":[1,0,95,0],
+"df/d28/classpyhelios_1_1PyScenePartWrapper.html":[1,0,4,17],
+"df/d28/classpyhelios_1_1PyScenePartWrapper.html#a049f070632b0ead3d24fdbec750ad699":[1,0,4,17,1],
+"df/d28/classpyhelios_1_1PyScenePartWrapper.html#a0b1d8768deb1cfce4429514c42e57bea":[1,0,4,17,7],
+"df/d28/classpyhelios_1_1PyScenePartWrapper.html#a1324cca798a7a5a69250836ddbf3636d":[1,0,4,17,13],
+"df/d28/classpyhelios_1_1PyScenePartWrapper.html#a2ad6d1ab7a5ed0bf46ee2ce73fbcce7b":[1,0,4,17,11],
+"df/d28/classpyhelios_1_1PyScenePartWrapper.html#a3454d275b23e260feca03c0aa5ac9545":[1,0,4,17,14],
+"df/d28/classpyhelios_1_1PyScenePartWrapper.html#a3902220375a50da8e68ad4020172bf97":[1,0,4,17,3],
+"df/d28/classpyhelios_1_1PyScenePartWrapper.html#a3fac6c86a8fc9bb3778d718013ece1f1":[1,0,4,17,2],
 "df/d28/classpyhelios_1_1PyScenePartWrapper.html#a47f57f61797d2fb90901012c83b45c09":[1,0,4,17,4],
 "df/d28/classpyhelios_1_1PyScenePartWrapper.html#a5e6d5d9373607d33844ce7ccfa549a7f":[1,0,4,17,5],
 "df/d28/classpyhelios_1_1PyScenePartWrapper.html#a6b14c112db92e59191eb2c76c4b35c3f":[1,0,4,17,12],
@@ -240,14 +249,5 @@ var NAVTREEINDEX19 =
 "df/dd2/classvisualhelios_1_1VHNormalsCanvas.html#ab897c81b2fc63709cf912fbeab262c2b":[1,0,7,6,16],
 "df/dd2/classvisualhelios_1_1VHNormalsCanvas.html#ab9c55c9787d7276618d85bc2ff476286":[1,0,7,6,5],
 "df/dd2/classvisualhelios_1_1VHNormalsCanvas.html#adc5e2bb53e077b8372664b45941e2130":[1,0,7,6,0],
-"df/dd2/classvisualhelios_1_1VHNormalsCanvas.html#ae44f0d79d7106828e0cc321c20c32ffb":[1,0,7,6,19],
-"df/dd2/classvisualhelios_1_1VHNormalsCanvas.html#ae8df34806f6c1b19c62bd25b0116756c":[1,0,7,6,21],
-"df/dd2/classvisualhelios_1_1VHNormalsCanvas.html#aed05f2d960293083c0e47d406dad4edd":[1,0,7,6,11],
-"df/dd2/classvisualhelios_1_1VHNormalsCanvas.html#afb89a37ce53603a4c5d7d9152fb1012a":[1,0,7,6,2],
-"df/dd2/classvisualhelios_1_1VHNormalsCanvas.html#aff7bbac419168786eca72bbe19a43811":[1,0,7,6,4],
-"df/dd6/classLinearVoidStepLoop.html":[1,0,89],
-"df/dd6/classLinearVoidStepLoop.html#a02a25dbb2a0e03bc61b58680b37556d9":[1,0,89,1],
-"df/dd6/classLinearVoidStepLoop.html#a1309c0ad0e9cce0c8c2bf0093c7454f9":[1,0,89,3],
-"df/dd6/classLinearVoidStepLoop.html#a8000e062d40bd0f24c6471573620f4ad":[1,0,89,0],
-"df/dd6/classLinearVoidStepLoop.html#aa5d76d9f25046a6ae6f058227d592eaa":[1,0,89,2]
+"df/dd2/classvisualhelios_1_1VHNormalsCanvas.html#ae44f0d79d7106828e0cc321c20c32ffb":[1,0,7,6,19]
 };

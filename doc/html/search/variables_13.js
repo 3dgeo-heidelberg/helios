@@ -57,6 +57,7 @@ var searchData=
   ['start',['start',['../d5/d89/classSAHKDTreeComputeLossNodesSubTask.html#a0ea77294ce4d2a70962f87cdf3dd87f8',1,'SAHKDTreeComputeLossNodesSubTask::start()'],['../dd/d40/classfluxionum_1_1LinearPiecesFunction.html#a178e11a8d1c9eee3213156ce6b03888e',1,'fluxionum::LinearPiecesFunction::start()'],['../de/db0/classfluxionum_1_1ParametricLinearPiecesFunction.html#a0b4cfc1e5029f9902e74e8f88a345a78',1,'fluxionum::ParametricLinearPiecesFunction::start()'],['../db/d6f/classDynSequencer.html#a515171c16a93a1e81af4bd18dc8d3284',1,'DynSequencer::start()']]],
   ['startnode',['startNode',['../d5/d89/classSAHKDTreeComputeLossNodesSubTask.html#aa9142297b91c5184b4772cff3747dc3c',1,'SAHKDTreeComputeLossNodesSubTask']]],
   ['startprimitive',['startPrimitive',['../d1/da6/classSimpleKDTreeComputeRootNodeBoundariesSubTask.html#a61d49f51371cc7adb8657c7cff76a7eb',1,'SimpleKDTreeComputeRootNodeBoundariesSubTask::startPrimitive()'],['../d1/dc1/classSimpleKDTreePopulateSplitsSubTask.html#af373c95a2d78777e07429c96663b3f23',1,'SimpleKDTreePopulateSplitsSubTask::startPrimitive()']]],
+  ['starttime',['startTime',['../dc/d97/classInterpolatedMovingPlatform.html#ab3bc200146684a07a4e36ee4596f11bf',1,'InterpolatedMovingPlatform']]],
   ['state_5fanglediff_5frad',['state_angleDiff_rad',['../d7/d92/classAbstractBeamDeflector.html#a979d832c05bbd6b7ccb83867d64d7602',1,'AbstractBeamDeflector']]],
   ['state_5fcurrentbeamangle_5frad',['state_currentBeamAngle_rad',['../d7/d92/classAbstractBeamDeflector.html#a85625bbb1b1120b8a1b64b731ab56e8b',1,'AbstractBeamDeflector']]],
   ['state_5fcurrentfiber',['state_currentFiber',['../d7/d20/classFiberArrayBeamDeflector.html#a67b28238730683072def4defc4cff705',1,'FiberArrayBeamDeflector']]],
@@ -98,5 +99,6 @@ var searchData=
   ['sum',['sum',['../d4/dfa/classSurfaceInspector_1_1maths_1_1DetailedPlane.html#a227562e7c7d5d7f24f2caa40f3b3c8a3',1,'SurfaceInspector::maths::DetailedPlane']]],
   ['surfacearea',['surfaceArea',['../d8/d94/classKDTreeNode.html#add966965b18e1e08a806b9ef6c8936c1',1,'KDTreeNode']]],
   ['surveypath',['surveyPath',['../d2/d88/classHeliosDemos_1_1SurveyDemo.html#ae57d454327109d6fb48a52e438976f5d',1,'HeliosDemos::SurveyDemo']]],
+  ['syncgpstime',['syncGPSTime',['../dc/d97/classInterpolatedMovingPlatform.html#ae64b40a9ec1e8f8f20c34692088349ec',1,'InterpolatedMovingPlatform']]],
   ['systhreads',['sysThreads',['../d3/db8/classKDTreeFactoryMaker.html#a6011161e2813d30705e125e39a154d9c',1,'KDTreeFactoryMaker']]]
 ];

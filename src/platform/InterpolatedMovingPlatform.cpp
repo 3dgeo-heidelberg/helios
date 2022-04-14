@@ -10,14 +10,18 @@ InterpolatedMovingPlatform::InterpolatedMovingPlatform(
     SimulationStepLoop &stepLoop,
     TemporalDesignMatrix<double, double> const &tdm,
     DiffDesignMatrix<double, double> const &ddm,
-    InterpolationScope scope
+    InterpolationScope scope,
+    bool const syncGPSTime,
+    double const startTime
 ) :
     MovingPlatform(),
     stepLoop(stepLoop),
     scope(scope),
     timeFrontiers(ddm.getTimeVector()),
     frontierValues(tdm.getX().rows(0, tdm.getX().n_rows-2)),
-    frontierDerivatives(ddm.getA())
+    frontierDerivatives(ddm.getA()),
+    syncGPSTime(syncGPSTime),
+    startTime(startTime)
 {
     // Build DesignTrajectoryFunction
     tf = std::make_shared<DesignTrajectoryFunction>(

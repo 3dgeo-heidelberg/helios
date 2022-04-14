@@ -72,6 +72,15 @@ SurveyPlayback::SurveyPlayback(
         );
     }
 
+    // If platform is interpolated from data, sync GPS time if requested
+    shared_ptr<InterpolatedMovingPlatform> imp =
+        dynamic_pointer_cast<InterpolatedMovingPlatform>(
+            getScanner()->platform
+        );
+    if(imp != nullptr && imp->isSyncGPSTime()){
+        this->currentGpsTime_ms = imp->getStartTime() * 1000.0;
+    }
+
 	// Orientate platform and start first leg
 	startLeg(0, true);
 

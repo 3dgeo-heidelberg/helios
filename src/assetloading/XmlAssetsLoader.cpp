@@ -423,6 +423,9 @@ std::shared_ptr<Platform> XmlAssetsLoader::createInterpolatedMovingPlatform(){
     std::unordered_map<std::string, vector<size_t>> indices; // t, RPY, XYZ
     std::string interpDom = "position_and_attitude";
     bool firstInterpDom = true;
+    bool toRadians = true;
+    double startTime = 0.0;
+    bool syncGPSTime = false;
     if(leg==nullptr){
         logging::ERR(
             "XmlAssetsLoader::createInterpolatedMovingPlatform failed\n"
@@ -453,6 +456,10 @@ std::shared_ptr<Platform> XmlAssetsLoader::createInterpolatedMovingPlatform(){
         }
         // Get the trajectory path
         string const trajectoryPath = ps->Attribute("trajectory");
+        // Check if input is given either as radians or as degrees
+        toRadians &= ps->BoolAttribute("toRadians", true);
+        // Check if either GPS time must be synchronized or not
+        syncGPSTime |= ps->BoolAttribute("syncGPSTime", false);
         // Handle interpolation domain
         string const interpolationDomain =
             (XmlUtils::hasAttribute(ps, "interpolationDomain")) ?
@@ -708,10 +715,21 @@ std::shared_ptr<Platform> XmlAssetsLoader::createInterpolatedMovingPlatform(){
     // Sort by time
     platform->tdm->sortByTime();
 
-    // Subtract min time so time starts at t0=0
-    double const timeShift = -arma::min(platform->tdm->getTimeVector());
-    platform->timeShift = timeShift;
-    platform->tdm->shiftTime(timeShift);
+    // Subtract min time so time starts at t0=0, also handle sync GPS time flag
+    startTime = arma::min(platform->tdm->getTimeVector());
+    platform->startTime = startTime;
+    platform->tdm->shiftTime(-startTime);
+    platform->syncGPSTime = syncGPSTime;
+
+    // Angle to radians, if angles are given
+    if(interpDom == "position_and_attitude" && toRadians){
+        for(size_t j = 0 ; j < 3 ; ++j){
+            platform->tdm->setColumn(
+                j,
+                platform->tdm->getColumn(j) * PI_OVER_180
+            );
+        }
+    }
 
     // Differentiate temporal matrix through FORWARD FINITE DIFFERENCES
     platform->ddm = platform->tdm->toDiffDesignMatrixPointer(

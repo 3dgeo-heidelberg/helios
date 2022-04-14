@@ -8,6 +8,7 @@ var classInterpolatedMovingPlatformEgg =
     [ "smartHatch", "d6/dd9/classInterpolatedMovingPlatformEgg.html#a703fdd486e1a92041103d60d4167c471", null ],
     [ "ddm", "d6/dd9/classInterpolatedMovingPlatformEgg.html#af20c43198ee503205238ee085b946f5a", null ],
     [ "scope", "d6/dd9/classInterpolatedMovingPlatformEgg.html#ab29adde2563d9a79d3a2ff5373ded319", null ],
-    [ "tdm", "d6/dd9/classInterpolatedMovingPlatformEgg.html#a362c534eb23ea7ad9f02262d6a749c0a", null ],
-    [ "timeShift", "d6/dd9/classInterpolatedMovingPlatformEgg.html#a03ea0426eebd093d66ad8e31fe144867", null ]
+    [ "startTime", "d6/dd9/classInterpolatedMovingPlatformEgg.html#ad31345ac4f0626684e5316066e21ae63", null ],
+    [ "syncGPSTime", "d6/dd9/classInterpolatedMovingPlatformEgg.html#a354d49e6a570d219a149aecc35408e64", null ],
+    [ "tdm", "d6/dd9/classInterpolatedMovingPlatformEgg.html#a362c534eb23ea7ad9f02262d6a749c0a", null ]
 ];
