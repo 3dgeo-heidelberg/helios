@@ -423,6 +423,7 @@ std::shared_ptr<Platform> XmlAssetsLoader::createInterpolatedMovingPlatform(){
     std::unordered_map<std::string, vector<size_t>> indices; // t, RPY, XYZ
     std::string interpDom = "position_and_attitude";
     bool firstInterpDom = true;
+    bool toRadians = true;
     if(leg==nullptr){
         logging::ERR(
             "XmlAssetsLoader::createInterpolatedMovingPlatform failed\n"
@@ -453,6 +454,8 @@ std::shared_ptr<Platform> XmlAssetsLoader::createInterpolatedMovingPlatform(){
         }
         // Get the trajectory path
         string const trajectoryPath = ps->Attribute("trajectory");
+        // Check if input is given either as radians or as degrees
+        toRadians &= ps->BoolAttribute("toRadians", true);
         // Handle interpolation domain
         string const interpolationDomain =
             (XmlUtils::hasAttribute(ps, "interpolationDomain")) ?
@@ -714,7 +717,7 @@ std::shared_ptr<Platform> XmlAssetsLoader::createInterpolatedMovingPlatform(){
     platform->tdm->shiftTime(timeShift);
 
     // Angle to radians, if angles are given
-    if(interpDom == "position_and_attitude"){
+    if(interpDom == "position_and_attitude" && toRadians){
         for(size_t j = 0 ; j < 3 ; ++j){
             platform->tdm->setColumn(
                 j,
