@@ -115,7 +115,7 @@ bool validateTestsPrecondition(std::string const & testDir){
     });
     for(std::string &expectedFile : EXPECTED_FILES){
         std::stringstream ss;
-        char const pathsep = boost::filesystem::path::preferred_separator;
+        char const pathsep = '/';
         ss  << testDir
             << pathsep
             << expectedFile;

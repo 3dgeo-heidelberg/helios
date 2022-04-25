@@ -28,7 +28,7 @@ shared_ptr<FMSFacade> FMSFacadeFactory::buildFacade(
     // Determine root directory for output files, create it if necessary
     time_t t = std::time(nullptr);
     struct tm * tm = std::localtime(&t);
-    char const pathsep = (char) fs::path::preferred_separator;
+    char const pathsep = '/';
     stringstream ss;
     ss  << outdir << pathsep
         << survey.name << pathsep
