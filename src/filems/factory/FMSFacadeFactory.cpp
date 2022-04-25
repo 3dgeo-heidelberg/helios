@@ -28,11 +28,12 @@ shared_ptr<FMSFacade> FMSFacadeFactory::buildFacade(
     // Determine root directory for output files, create it if necessary
     time_t t = std::time(nullptr);
     struct tm * tm = std::localtime(&t);
+    char const pathsep = (char) fs::path::preferred_separator;
     stringstream ss;
-    ss  << outdir << fs::path::preferred_separator
-        << survey.name << fs::path::preferred_separator
+    ss  << outdir << pathsep
+        << survey.name << pathsep
         << std::put_time(tm, "%Y-%m-%d_%H-%M-%S")
-        << fs::path::preferred_separator;
+        << pathsep;
     string rootDir = ss.str();
     fs::create_directories(rootDir);
     logging::INFO("Output directory: \""+rootDir+"\"");
@@ -57,7 +58,8 @@ shared_ptr<FMSFacade> FMSFacadeFactory::buildFacade(
 
     // Configure trajectory writer
     fmsWrite.setTrajectoryWriter(make_shared<TrajectoryWriter>());
-    fmsWrite.setTrajectoryWriterZipOutput(zipOutput);
+    //fmsWrite.setTrajectoryWriterZipOutput(zipOutput); // Zip if requested
+    fmsWrite.setTrajectoryWriterZipOutput(false); // Never zip
 
     // Configure full waveform writer
     fmsWrite.setFullWaveformWriter(make_shared<FullWaveformWriter>());
