@@ -3,6 +3,7 @@ import shutil
 import subprocess
 import sys
 from pathlib import Path
+# import pytest
 
 MAX_DIFFERENCE_BYTES = 1024
 DELETE_FILES_AFTER = False
@@ -36,7 +37,7 @@ def run_helios_executable(survey_path: Path, options=None) -> Path:
     return find_playback_dir(survey_path)
 
 
-def run_helios_pyhelios(survey_path: Path, options=None) -> Path:
+def run_helios_pyhelios(survey_path: Path, zip_output=False) -> Path:
     sys.path.append(WORKING_DIR)
     import pyhelios
     pyhelios.setDefaultRandomnessGeneratorSeed("43")
@@ -48,6 +49,7 @@ def run_helios_pyhelios(survey_path: Path, options=None) -> Path:
     )
     simB.setLasOutput(True)
     simB.setRebuildScene(True)
+    simB.setZipOutput(zip_output)
     simB.setNumThreads(1)
     simB.setKDTJobs(1)
 
@@ -147,6 +149,27 @@ def test_xyzVoxels_tls_pyh():
 def eval_xyzVoxels_tls(dirname):
     assert (dirname / 'leg000_points.las').exists()
     assert abs((dirname / 'leg000_points.las').stat().st_size - 13_555_681) < MAX_DIFFERENCE_BYTES
+    # clean up
+    if DELETE_FILES_AFTER:
+        shutil.rmtree(dirname)
+
+
+def test_interpolated_traj_exe():
+    dirname_exe = run_helios_executable(Path('data') / 'surveys' / 'voxels' / 'tls_sphere_xyzloader_normals.xml',
+                                        options=['--lasOutput', '--zipOutput'])
+    eval_interpolated_traj(dirname_exe)
+
+
+def test_interpolated_traj_pyh():
+    dirname_pyh = run_helios_pyhelios(Path('data') / 'surveys' / 'voxels' / 'als_interpolated_trajectory.xml',
+                                      zip_output=True)
+    eval_xyzVoxels_tls(dirname_pyh)
+
+
+def eval_interpolated_traj(dirname):
+    assert (dirname / 'leg000_points.laz').exists()
+    assert (dirname / 'leg000_trajectory.txt').exists()
+    # assert abs((dirname / 'leg000_points.las').stat().st_size - 13_555_681) < MAX_DIFFERENCE_BYTES
     # clean up
     if DELETE_FILES_AFTER:
         shutil.rmtree(dirname)
