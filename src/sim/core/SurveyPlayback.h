@@ -233,17 +233,27 @@ public:
 	 * @return Elapsed time (milliseconds)
 	 */
 	long long getElapsedTime() {return this->elapsedTime_ms;}
+	/**
+	 * @brief Obtain elapsed length
+	 * @return The elapsed length
+	 * @see SurveyPlayback::elapsedLength
+	 */
+    double getElapsedLength() {return this->elapsedLength;}
 
 	/**
 	 * @brief Obtain expected remaining time
 	 * @return Expected remaining time (milliseconds)
 	 */
 	long getRemainingTime() {return this->remainingTime_ms;}
-
 	/**
-	 * @brief Obtain current leg elapsed time
-	 * @return Current leg elapsed time (milliseconds)
+	 * @brief Obtain the leg start time in nanoseconds
+	 * @return The leg start time (nanoseconds)
 	 */
+    long getLegStartTime() {return this->legStartTime_ns;}
+    /**
+     * @brief Obtain current leg elapsed time
+     * @return Current leg elapsed time (milliseconds)
+     */
 	long long getLegElapsedTime() {return this->legElapsedTime_ms;}
 	/**
 	 * @brief Obtain current leg expected remaining time
