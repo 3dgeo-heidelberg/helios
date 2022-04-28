@@ -216,7 +216,7 @@ def find_summary_best_parallelization(summary_entry):
     if bestType == 'Static':
         bestType = 'Static {cs}'.format(cs=bestEntry['chunkSize'])
     elif bestType == 'Dynamic':
-        bestType = 'Dyamic. {cs}'.format(cs=-bestEntry['chunkSize'])
+        bestType = 'Dynamic. {cs}'.format(cs=-bestEntry['chunkSize'])
     elif bestType == 'Warehouse':
         bestType = 'Ware. {cs}x{wf}'.format(
             cs=bestEntry['chunkSize'],
