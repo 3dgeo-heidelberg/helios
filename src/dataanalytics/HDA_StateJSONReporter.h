@@ -2,9 +2,15 @@
 
 #include <filems/write/comps/SimpleSyncFileStringWriter.h>
 #include <maths/Rotation.h>
+#include <scanner/FWFSettings.h>
 class SurveyPlayback;
+#include <assetloading/ScenePart.h>
+
+#include <armadillo>
 
 #include <string>
+#include <vector>
+#include <list>
 
 namespace helios { namespace analytics {
 
@@ -88,6 +94,22 @@ protected:
      * @brief Add platform data to the report
      */
     virtual void reportPlatform();
+    /**
+     * @brief Add scanner data to the report
+     */
+    virtual void reportScanner();
+    /**
+     * @brief Add deflector data to the report
+     */
+    virtual void reportDeflector();
+    /**
+     * @brief Add detector data to the report
+     */
+    virtual void reportDetector();
+    /**
+     * @brief Add scene data to the report
+     */
+    virtual void reportScene();
 
     // ***  UTIL METHODS  *** //
     // ********************** //
@@ -131,6 +153,60 @@ protected:
         bool const asString=false,
         bool const last=false
     );
+    /**
+     * @brief Overload HDA_StateJSONReporter::craftEntry to support std::vector
+     */
+    template <typename T>
+    std::string craftEntry(
+        std::string const &key,
+        std::vector<T> const &u,
+        int const depth=0,
+        bool const asString=false,
+        bool const last=false
+    );
+    /**
+     * @brief Overload HDA_StateJSONReporter::craftEntry to support std::list
+     */
+    template <typename T>
+    std::string craftEntry(
+        std::string const &key,
+        std::list<T> const &u,
+        int const depth=0,
+        bool const asString=false,
+        bool const last=false
+    );
+    /**
+     * @brief Overload HDA_StateJSONReporter::craftEntry to support FWFSettings
+     */
+    std::string craftEntry(
+        std::string const &key,
+        FWFSettings const &fs,
+        int const depth=0,
+        bool const asString=false,
+        bool const last=false
+    );
+    /**
+     * @brief Overload HDA_StateJSONReporter::craftEntry to support ScenePart
+     */
+    std::string craftEntry(
+        std::string const &key,
+        ScenePart const &sp,
+        int const depth=0,
+        bool const asString=false,
+        bool const last=false
+    );
+    /**
+     * @brief Overload HDA_StateJSONReporter::craftEntry to support armadillo
+     *  column vectors
+     */
+    std::string craftEntry(
+        std::string const &key,
+        arma::colvec const &centroid,
+        int const depth=0,
+        bool const asString=false,
+        bool const last=false
+    );
+
     /**
      * @brief Open an entry with given key. If the entry is requested to be
      *  an object

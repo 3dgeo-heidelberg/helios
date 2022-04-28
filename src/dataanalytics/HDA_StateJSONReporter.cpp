@@ -4,9 +4,11 @@
 #include <filems/facade/FMSFacade.h>
 
 #include <sstream>
+#include <memory>
 
 using namespace helios::analytics;
 using namespace helios::filems;
+using std::shared_ptr;
 
 // ***  MAIN REPORT METHODS  *** //
 // ***************************** //
@@ -25,9 +27,11 @@ void HDA_StateJSONReporter::report(){
     reportSimulation();
     reportSurvey();
     reportFilems();
-    reportPlatform(); // TODO Restore
-    //reportScanner(); // TODO Restore
-    //reportScene(); // TODO Restore
+    reportPlatform();
+    reportScanner();
+    reportDeflector();
+    reportDetector();
+    reportScene(); // TODO Restore
     //reportLegs(); // TODO Restore
 
     // Write end of report
@@ -216,6 +220,136 @@ void HDA_StateJSONReporter::reportPlatform(){
     writer.write(ss.str());
 }
 
+void HDA_StateJSONReporter::reportScanner(){
+    Scanner *sc = sp->mSurvey->scanner.get();
+    std::stringstream ss;
+    ss  << openEntry("scanner", 3, EntryType::OBJECT)
+        << craftEntry("writeWaveform", sc->isWriteWaveform(), 4)
+        << craftEntry("calcEchowidth", sc->isCalcEchowidth(), 4)
+        << craftEntry("fullWaveNoise", sc->isFullWaveNoise(), 4)
+        << craftEntry(
+            "platformNoiseDisabled", sc->isPlatformNoiseDisabled(), 4
+            )
+        << craftEntry("numRays", sc->getNumRays(), 4)
+        << craftEntry("fixedIncidenceAngle", sc->isFixedIncidenceAngle(), 4)
+        << craftEntry("beamDivergence_rad", sc->getBeamDivergence(), 4)
+        << craftEntry("pulseLength_ns", sc->getPulseLength_ns(), 4)
+        << craftEntry("pulseFreq_Hz", sc->getPulseFreq_Hz(), 4)
+        << craftEntry("deviceID", sc->getDeviceId(), 4, true)
+        << craftEntry("averagePower_w", sc->getAveragePower(), 4)
+        << craftEntry("beamQuality", sc->getBeamQuality(), 4)
+        << craftEntry("efficiency", sc->getEfficiency(), 4)
+        << craftEntry("receiverDiameter_m", sc->getReceiverDiameter(), 4)
+        << craftEntry("visibility_km", sc->getVisibility(), 4)
+        << craftEntry("wavelength_m", sc->getWavelength(), 4)
+        << craftEntry(
+            "atmosphericExtinction", sc->getAtmosphericExtinction(), 4
+            )
+        << craftEntry("beamWaistRadius", sc->getBeamWaistRadius(), 4)
+        << craftEntry("currentPulseNumber", sc->getCurrentPulseNumber(), 4)
+        << craftEntry("lastPulseWasHit", sc->lastPulseWasHit(), 4)
+        << craftEntry("active", sc->isActive(), 4)
+        << craftEntry("cached_Dr2", sc->getDr2(), 4)
+        << craftEntry("cached_Bt2", sc->getBt2(), 4)
+        << craftEntry("trajectoryTimeInterval", sc->trajectoryTimeInterval, 4)
+        << craftEntry("lastTrajectoryTime", sc->lastTrajectoryTime, 4)
+        << craftEntry("FWFSettings", sc->FWF_settings, 4)
+        << craftEntry("numTimeBins", sc->numTimeBins, 4)
+        << craftEntry("peakIntensityIndex", sc->peakIntensityIndex, 4)
+        << craftEntry("timeWave", sc->time_wave, 4)
+        << craftEntry(
+            "headRelativeEmitterPosition",
+            sc->cfg_device_headRelativeEmitterPosition,
+            4
+            )
+        << craftEntry(
+            "headRelativeEmitterAttitude",
+            sc->cfg_device_headRelativeEmitterAttitude,
+            4
+            )
+        << craftEntry(
+            "supportedPulseFreqs_Hz",
+            sc->cfg_device_supportedPulseFreqs_Hz,
+            4
+            )
+        << craftEntry("maxNOR", sc->maxNOR, 4, false, true)
+        << closeEntry(3, false, EntryType::OBJECT) // Close scanner
+    ;
+    writer.write(ss.str());
+}
+
+void HDA_StateJSONReporter::reportDeflector(){
+    AbstractBeamDeflector *bd = sp->mSurvey->scanner->beamDeflector.get();
+    std::stringstream ss;
+    ss  << openEntry("deflector", 3, EntryType::OBJECT)
+        << craftEntry("scanFreqMax_Hz", bd->cfg_device_scanFreqMax_Hz, 4)
+        << craftEntry("scanFreqMin_Hz", bd->cfg_device_scanFreqMin_Hz, 4)
+        << craftEntry("scanAngleMax_rad", bd->cfg_device_scanAngleMax_rad, 4)
+        << craftEntry("scanFreq_Hz", bd->cfg_setting_scanFreq_Hz, 4)
+        << craftEntry("scanAngle_rad", bd->cfg_setting_scanAngle_rad, 4)
+        << craftEntry(
+            "verticalAngleMin_rad", bd->cfg_setting_verticalAngleMin_rad, 4
+           )
+        << craftEntry(
+            "verticalAngleMax_rad", bd->cfg_setting_verticalAngleMax_rad, 4
+           )
+        << craftEntry(
+            "currentBeamAngle_rad", bd->state_currentBeamAngle_rad, 4
+           )
+        << craftEntry("angleDiff_rad", bd->state_angleDiff_rad, 4)
+        << craftEntry(
+            "angleBetweenPulses_rad", bd->cached_angleBetweenPulses_rad, 4
+           )
+        << craftEntry(
+            "emitterRelativeAttitude",
+            bd->cached_emitterRelativeAttitude,
+            4,
+            false,
+            true
+           )
+        << closeEntry(3, false, EntryType::OBJECT) // Close deflector
+    ;
+    writer.write(ss.str());
+}
+
+void HDA_StateJSONReporter::reportDetector(){
+    AbstractDetector *ad = sp->mSurvey->scanner->detector.get();
+    std::stringstream ss;
+    ss  << openEntry("detector", 3, EntryType::OBJECT)
+        << craftEntry("accuracy_m", ad->cfg_device_accuracy_m, 4)
+        << craftEntry("rangeMin_m", ad->cfg_device_rangeMin_m, 4)
+        << craftEntry("rangeMax_m", ad->cfg_device_rangeMax_m, 4, false, true)
+        << closeEntry(3, false, EntryType::OBJECT) // Close detector
+        ;
+    writer.write(ss.str());
+}
+
+void HDA_StateJSONReporter::reportScene(){
+    Scene *sc = sp->mScanner->platform->scene.get();
+    std::stringstream ss;
+    ss  << openEntry("scene", 3, EntryType::OBJECT)
+        << craftEntry("bbox_min", sc->getBBox()->getMin(), 4)
+        << craftEntry("bbox_max", sc->getBBox()->getMax(), 4)
+        << craftEntry("bbox_crs_min", sc->getBBoxCRS()->getMin(), 4)
+        << craftEntry("bbox_crs_max", sc->getBBoxCRS()->getMax(), 4)
+        << craftEntry("numPrimitives", sc->primitives.size(), 4)
+        << openEntry("parts", 4, EntryType::OBJECT)
+    ;
+    for(size_t i = 0 ; i < sc->parts.size() ; ++i){
+        std::stringstream ssKey;
+        ssKey << "part_" << i;
+        ss << craftEntry(ssKey.str(), *(sc->parts[i]), 4);
+    }
+    ss  << closeEntry(4, false, EntryType::OBJECT)  // Close parts
+        << craftEntry("numVertices", sc->getAllVertices().size(), 4)
+        << craftEntry(
+            "hasMovingObjects", sc->hasMovingObjects(), 4, false, true
+           )
+        << closeEntry(3, false, EntryType::OBJECT)  // Close scene
+    ;
+    writer.write(ss.str());
+}
+
 // ***  UTIL METHODS  *** //
 // ********************** //
 template <typename ValType>
@@ -258,6 +392,131 @@ std::string HDA_StateJSONReporter::craftEntry(
     std::stringstream ss;
     ss  << "[" << r.getQ0() << ", " << r.getQ1() << ", " << r.getQ2()
         << ", " << r.getQ3() << "]";
+    return craftEntry(key, ss.str(), depth, asString, last);
+}
+
+template <typename T>
+std::string HDA_StateJSONReporter::craftEntry(
+    std::string const &key,
+    std::vector<T> const &u,
+    int const depth,
+    bool const asString,
+    bool const last
+){
+    std::stringstream ss;
+    ss  << "[";
+    size_t const m = u.size()-1;
+    for(size_t i = 0 ; i < m ; ++i){
+        ss << u[i] << ", ";
+    }
+    ss  << u[m] << "]";
+    return craftEntry(key, ss.str(), depth, asString, last);
+}
+
+template <typename T>
+std::string HDA_StateJSONReporter::craftEntry(
+    std::string const &key,
+    std::list<T> const &u,
+    int const depth,
+    bool const asString,
+    bool const last
+){
+    std::stringstream ss;
+    ss  << "[";
+    typename std::list<T>::const_iterator it = u.begin();
+    typename std::list<T>::const_iterator itprelast = --u.end();
+    for(it = u.begin() ; it != itprelast ; ++it){
+        ss << *it << ", ";
+    }
+    ss  << *itprelast << "]";
+    return craftEntry(key, ss.str(), depth, asString, last);
+}
+
+std::string HDA_StateJSONReporter::craftEntry(
+    std::string const &key,
+    FWFSettings const &fs,
+    int const depth,
+    bool const asString,
+    bool const last
+){
+    std::stringstream ss;
+    int const d2 = depth+1;
+    ss  << openEntry(key, depth, EntryType::OBJECT)
+        << craftEntry("binSize_ns", fs.binSize_ns, d2)
+        << craftEntry("minEchoWidth", fs.minEchoWidth, d2)
+        << craftEntry("peakEntry", fs.peakEnergy, d2)
+        << craftEntry("apertureDiameter", fs.apertureDiameter, d2)
+        << craftEntry("scannerEfficiency", fs.scannerEfficiency, d2)
+        << craftEntry("atmosphericVisibility", fs.atmosphericVisibility, d2)
+        << craftEntry("scannerWaveLength", fs.scannerWaveLength, d2)
+        << craftEntry("beamDivergence_rad", fs.beamDivergence_rad, d2)
+        << craftEntry("pulseLength_ns", fs.pulseLength_ns, d2)
+        << craftEntry("beamSampleQuality", fs.beamSampleQuality, d2)
+        << craftEntry("winSize_ns", fs.winSize_ns, d2)
+        << craftEntry(
+            "maxFullwaveRange_ns", fs.maxFullwaveRange_ns, d2, false, true
+           )
+        << closeEntry(depth, last, EntryType::OBJECT) // Close FWFSettings
+    ;
+    return ss.str();
+}
+
+std::string HDA_StateJSONReporter::craftEntry(
+    std::string const &key,
+    ScenePart const &sp,
+    int const depth,
+    bool const asString,
+    bool const last
+){
+    std::stringstream ss;
+    int const d2 = depth+1;
+    std::shared_ptr<AABB> bound = sp.bound;
+    glm::dvec3 boundMin = (bound == nullptr) ?
+        glm::dvec3(0, 0, 0) : sp.bound->getMin();
+    glm::dvec3 boundMax = (bound == nullptr) ?
+        glm::dvec3(0, 0, 0) : sp.bound->getMax();
+    ss  << openEntry(key, depth, EntryType::OBJECT)
+        << craftEntry("ID", sp.mId, d2, true)
+        << craftEntry("primitiveType", sp.primitiveType, d2)
+        << craftEntry("numPrimitives", sp.mPrimitives.size(), d2)
+        << craftEntry("numVertices", sp.getAllVertices().size(), d2)
+        << craftEntry("centroid", sp.centroid, d2)
+        << craftEntry("bound_min", boundMin, d2)
+        << craftEntry("bound_max", boundMax, d2)
+        << craftEntry("subpartLimit", sp.subpartLimit, d2)
+        << craftEntry(
+            "onRayIntersectionMode", sp.onRayIntersectionMode, d2, true
+           )
+        << craftEntry(
+            "onRayIntersectionArgument", sp.onRayIntersectionArgument, d2, true
+           )
+        << craftEntry("randomShift", sp.randomShift, d2)
+        << craftEntry("hasLadlut", sp.ladlut != nullptr, d2)
+        << craftEntry("origin", sp.mOrigin, d2)
+        << craftEntry("rotation", sp.mRotation, d2)
+        << craftEntry("scale", sp.mScale, d2)
+        << craftEntry("forceOnGround", sp.forceOnGround, d2)
+        << craftEntry("objectType", sp.getType(), d2)
+        << craftEntry("primitiveType", sp.getPrimitiveType(), d2, false, true)
+        << closeEntry(depth, last, EntryType::OBJECT)
+    ;
+    return ss.str();
+}
+
+std::string HDA_StateJSONReporter::craftEntry(
+    std::string const &key,
+    arma::colvec const &u,
+    int const depth,
+    bool const asString,
+    bool const last
+){
+    std::stringstream ss;
+    ss  << "[";
+    size_t const m = u.n_elem-1;
+    for(size_t i = 0 ; i < m ; ++i){
+        ss << u[i] << ", ";
+    }
+    ss  << u[m] << "]";
     return craftEntry(key, ss.str(), depth, asString, last);
 }
 

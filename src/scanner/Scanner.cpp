@@ -487,7 +487,7 @@ void Scanner::handleTrajectoryOutput(double currentGpsTime){
     if(!platform->canMove()) platform->writeNextTrajectory = false;
 }
 
-void Scanner::trackOutputPath(std::string const path){
+void Scanner::trackOutputPath(std::string const &path){
     if(allOutputPaths != nullptr){
         std::unique_lock<std::mutex> lock(*allMeasurementsMutex);
         allOutputPaths->push_back(path);
