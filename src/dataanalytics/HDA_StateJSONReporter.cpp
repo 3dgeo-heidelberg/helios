@@ -31,8 +31,8 @@ void HDA_StateJSONReporter::report(){
     reportScanner();
     reportDeflector();
     reportDetector();
-    reportScene(); // TODO Restore
-    //reportLegs(); // TODO Restore
+    reportScene();
+    reportLegs();
 
     // Write end of report
     ss  << closeEntry(2, true, EntryType::OBJECT)  // Close state entry
@@ -333,20 +333,43 @@ void HDA_StateJSONReporter::reportScene(){
         << craftEntry("bbox_crs_min", sc->getBBoxCRS()->getMin(), 4)
         << craftEntry("bbox_crs_max", sc->getBBoxCRS()->getMax(), 4)
         << craftEntry("numPrimitives", sc->primitives.size(), 4)
-        << openEntry("parts", 4, EntryType::OBJECT)
+        << openEntry("parts", 4, EntryType::ARRAY)
     ;
-    for(size_t i = 0 ; i < sc->parts.size() ; ++i){
+    size_t const m = sc->parts.size() - 1;
+    for(size_t i = 0 ; i < m ; ++i){
         std::stringstream ssKey;
         ssKey << "part_" << i;
-        ss << craftEntry(ssKey.str(), *(sc->parts[i]), 4);
+        ss << craftEntry(ssKey.str(), *(sc->parts[i]), 5);
     }
-    ss  << closeEntry(4, false, EntryType::OBJECT)  // Close parts
+    std::stringstream ssKey;
+    ssKey << "part_" << m;
+    ss  << craftEntry(ssKey.str(), *(sc->parts[m]), 5, false, true);
+    ss  << closeEntry(4, false, EntryType::ARRAY)  // Close parts
         << craftEntry("numVertices", sc->getAllVertices().size(), 4)
         << craftEntry(
             "hasMovingObjects", sc->hasMovingObjects(), 4, false, true
            )
         << closeEntry(3, false, EntryType::OBJECT)  // Close scene
     ;
+    writer.write(ss.str());
+}
+
+void HDA_StateJSONReporter::reportLegs(){
+    std::vector<std::shared_ptr<Leg>> legs = sp->mSurvey->legs;
+    size_t const m = legs.size()-1;
+    std::stringstream ss;
+    ss << openEntry("legs", 3, EntryType::ARRAY);
+    for(size_t i = 0 ; i < m ; ++i){
+        Leg *leg = legs[i].get();
+        std::stringstream ssKey;
+        ssKey << leg->getSerialId();
+        ss << craftEntry(ssKey.str(), *leg, 4, false, false);
+    }
+    Leg *leg = legs[m].get();
+    std::stringstream ssKey;
+    ssKey << leg->getSerialId();
+    ss << craftEntry(ssKey.str(), *leg, 4, false, true);
+    ss << closeEntry(3, true, EntryType::ARRAY); // Close legs
     writer.write(ss.str());
 }
 
@@ -370,6 +393,18 @@ std::string HDA_StateJSONReporter::craftEntry(
     return ss.str();
 }
 
+std::string HDA_StateJSONReporter::craftEntry(
+    std::string const &key,
+    double const &val,
+    int const depth,
+    bool const asString,
+    bool const last
+){
+    std::stringstream ss;
+    if(std::isnan(val)) ss << "null";
+    else ss << val;
+    return craftEntry(key, ss.str(), depth, asString, last);
+}
 std::string HDA_StateJSONReporter::craftEntry(
     std::string const &key,
     glm::dvec3 const &u,
@@ -475,7 +510,8 @@ std::string HDA_StateJSONReporter::craftEntry(
         glm::dvec3(0, 0, 0) : sp.bound->getMin();
     glm::dvec3 boundMax = (bound == nullptr) ?
         glm::dvec3(0, 0, 0) : sp.bound->getMax();
-    ss  << openEntry(key, depth, EntryType::OBJECT)
+    ss  << openEntry(depth, EntryType::OBJECT)
+        << craftEntry("ScenePartKey", key, d2, true)
         << craftEntry("ID", sp.mId, d2, true)
         << craftEntry("primitiveType", sp.primitiveType, d2)
         << craftEntry("numPrimitives", sp.mPrimitives.size(), d2)
@@ -520,6 +556,116 @@ std::string HDA_StateJSONReporter::craftEntry(
     return craftEntry(key, ss.str(), depth, asString, last);
 }
 
+std::string HDA_StateJSONReporter::craftEntry(
+    std::string const &key,
+    ScannerSettings const &ss,
+    int const depth,
+    bool const asString,
+    bool const last
+){
+    int const d2 = depth+1;
+    std::stringstream s;
+    s   << openEntry(key, depth, EntryType::OBJECT)
+        << craftEntry("id", ss.id, d2, true)
+        << craftEntry("active", ss.active, d2)
+        << craftEntry("headRotatePerSec_rad", ss.headRotatePerSec_rad, d2)
+        << craftEntry("headRotateStart_rad", ss.headRotateStart_rad, d2)
+        << craftEntry("headRotateStop_rad", ss.headRotateStop_rad, d2)
+        << craftEntry("pulseFreq_Hz", ss.pulseFreq_Hz, d2)
+        << craftEntry("scanAngle_rad", ss.scanAngle_rad, d2)
+        << craftEntry("verticalAngleMin_rad", ss.verticalAngleMin_rad, d2)
+        << craftEntry("verticalAngleMax_rad", ss.verticalAngleMax_rad, d2)
+        << craftEntry("scanFreq_Hz", ss.scanFreq_Hz, d2)
+        << craftEntry("beamDivAngle", ss.beamDivAngle, d2)
+        << craftEntry(
+            "trajectoryTimeInterval",
+            ss.trajectoryTimeInterval,
+            d2,
+            false,
+            true
+           )
+        << closeEntry(depth, last, EntryType::OBJECT)
+    ;
+    return s.str();
+}
+
+std::string HDA_StateJSONReporter::craftEntry(
+    std::string const &key,
+    PlatformSettings const &ps,
+    int const depth,
+    bool const asString,
+    bool const last
+){
+    int const d2 = depth+1;
+    std::stringstream ss;
+    ss  << openEntry(key, depth, EntryType::OBJECT)
+        << craftEntry("id", ps.id, d2, true)
+        << craftEntry("x", ps.x, d2)
+        << craftEntry("y", ps.y, d2)
+        << craftEntry("z", ps.z, d2)
+        << craftEntry(
+            "yawAtDepartureSpecified", ps.yawAtDepartureSpecified, d2
+           )
+        << craftEntry("yawAtDeparture", ps.yawAtDeparture, d2)
+        << craftEntry("onGround", ps.onGround, d2)
+        << craftEntry("stopAndTurn", ps.stopAndTurn, d2)
+        << craftEntry("smoothTurn", ps.smoothTurn, d2)
+        << craftEntry("slowdownEnabled", ps.slowdownEnabled, d2)
+        << craftEntry("movePerSec_m", ps.movePerSec_m, d2, false, true)
+        << closeEntry(depth, last, EntryType::OBJECT)
+    ;
+    return ss.str();
+}
+
+std::string HDA_StateJSONReporter::craftEntry(
+    std::string const &key,
+    TrajectorySettings const &ts,
+    int const depth,
+    bool const asString,
+    bool const last
+){
+    int const d2 = depth+1;
+    std::stringstream ss;
+    ss  << openEntry(key, depth, EntryType::OBJECT)
+        << craftEntry("tStart", ts.tStart, d2)
+        << craftEntry("tEnd", ts.tEnd, d2)
+        << craftEntry("teleportToStart", ts.teleportToStart, d2, false, true)
+        << closeEntry(depth, last, EntryType::OBJECT)
+    ;
+    return ss.str();
+}
+
+std::string HDA_StateJSONReporter::craftEntry(
+    std::string const &key,
+    Leg const &leg,
+    int const depth,
+    bool const asString,
+    bool const last
+){
+    int const d2 = depth+1;
+    std::stringstream ss;
+    ss  << openEntry(depth, EntryType::OBJECT)
+        << craftEntry ("LegKey", key, d2, true)
+        << craftEntry("length", leg.getLength(), d2)
+        << craftEntry("belongToStrip", leg.getStrip() != nullptr, d2)
+        << craftEntry("wasProcessed", leg.wasProcessed, d2)
+        << craftEntry("scannerSettings", *(leg.mScannerSettings), d2)
+        << craftEntry("platformSettings", *(leg.mPlatformSettings), d2)
+    ;
+    if(leg.mTrajectorySettings == nullptr)
+        ss << craftEntry("trajectorySettings", 0, d2, false, true);
+    else
+        ss << craftEntry(
+            "trajectorySettings",
+            *(leg.mTrajectorySettings),
+            d2,
+            false,
+            true
+        );
+    ss  << closeEntry(depth, last, EntryType::OBJECT); // Close leg
+    return ss.str();
+}
+
 std::string HDA_StateJSONReporter::openEntry(
     std::string const &key,
     int const depth,
@@ -528,6 +674,20 @@ std::string HDA_StateJSONReporter::openEntry(
     std::stringstream ss;
     for(int i = 0 ; i < depth ; ++i) ss << "\t";
     ss << "\"" << key << "\": ";
+    if(entryType==EntryType::OBJECT){
+        ss << "{\n";
+    }
+    else if(entryType==EntryType::ARRAY){
+        ss << "[\n";
+    }
+    return ss.str();
+}
+std::string HDA_StateJSONReporter::openEntry(
+    int const depth,
+    EntryType const entryType
+){
+    std::stringstream ss;
+    for(int i = 0 ; i < depth ; ++i) ss << "\t";
     if(entryType==EntryType::OBJECT){
         ss << "{\n";
     }

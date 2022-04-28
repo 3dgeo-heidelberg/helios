@@ -5,6 +5,10 @@
 #include <scanner/FWFSettings.h>
 class SurveyPlayback;
 #include <assetloading/ScenePart.h>
+#include <platform/PlatformSettings.h>
+#include <scanner/ScannerSettings.h>
+#include <platform/trajectory/TrajectorySettings.h>
+#include <sim/comps/Leg.h>
 
 #include <armadillo>
 
@@ -110,6 +114,10 @@ protected:
      * @brief Add scene data to the report
      */
     virtual void reportScene();
+    /**
+     * @brief Add legs data to the report
+     */
+    virtual void reportLegs();
 
     // ***  UTIL METHODS  *** //
     // ********************** //
@@ -129,6 +137,16 @@ protected:
     std::string craftEntry(
         std::string const &key,
         ValType const &val,
+        int const depth=0,
+        bool const asString=false,
+        bool const last=false
+    );
+    /**
+     * @brief Overload HDA_StateJSONReporter::craftEntry to support double
+     */
+    std::string craftEntry(
+        std::string const &key,
+        double const &val,
         int const depth=0,
         bool const asString=false,
         bool const last=false
@@ -206,10 +224,52 @@ protected:
         bool const asString=false,
         bool const last=false
     );
+    /**
+     * @brief Overload HDA_StateJSONReporter::craftEntry to support
+     *  ScannerSettings
+     */
+    std::string craftEntry(
+        std::string const &key,
+        ScannerSettings const &ss,
+        int const depth=0,
+        bool const asString=false,
+        bool const last=false
+    );
+    /**
+     * @brief Overload HDA_StateJSONReporter::craftEntry to support
+     *  PlatformSettings
+     */
+    std::string craftEntry(
+        std::string const &key,
+        PlatformSettings const &ps,
+        int const depth=0,
+        bool const asString=false,
+        bool const last=false
+    );
+    /**
+     * @brief Overload HDA_StateJSONReporter::craftEntry to support
+     *  TrajectorySettings
+     */
+    std::string craftEntry(
+        std::string const &key,
+        TrajectorySettings const &ts,
+        int const depth=0,
+        bool const asString=false,
+        bool const last=false
+    );
+    /**
+     * @brief Overload HDA_StateJSONReporter::craftEntry to support Leg
+     */
+    std::string craftEntry(
+        std::string const &key,
+        Leg const &leg,
+        int const depth=0,
+        bool const asString=false,
+        bool const last=false
+    );
 
     /**
-     * @brief Open an entry with given key. If the entry is requested to be
-     *  an object
+     * @brief Open an entry with given key.
      * @param key The key for the entry
      * @param depth The depth level at which the entry belongs to.
      * @param entryType Specify the type of the entry being opened
@@ -217,6 +277,14 @@ protected:
      */
     std::string openEntry(
         std::string const &key,
+        int const depth=0,
+        EntryType const entryType=EntryType::VALUE
+    );
+    /**
+     * @brief Open an entry without key.
+     * @see openEntry(std::string, int const, EntryType const)
+     */
+    std::string openEntry(
         int const depth=0,
         EntryType const entryType=EntryType::VALUE
     );
