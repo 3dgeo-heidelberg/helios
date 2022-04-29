@@ -1,3 +1,4 @@
+#ifdef DATA_ANALYTICS
 #include <dataanalytics/HDA_StateJSONReporter.h>
 #include <sim/core/SurveyPlayback.h>
 #include <main/helios_version.h>
@@ -714,3 +715,4 @@ std::string HDA_StateJSONReporter::closeEntry(
     }
     return ss.str();
 }
+#endif

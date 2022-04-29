@@ -122,11 +122,8 @@ void Simulation::start() {
         system_clock::now().time_since_epoch()
     ).count();
 #ifdef DATA_ANALYTICS
-    std::cout << "DATA ANALYTICS ..." << std::endl;
     HDA_StateJSONReporter sjr((SurveyPlayback *) this, "helios_state.json");
     sjr.report();
-    std::cout << "DATA ANALYTICS!" << std::endl;
-    std::exit(7);
 #endif
 
     // Execute the main loop of the simulation

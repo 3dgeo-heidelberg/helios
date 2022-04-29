@@ -1,3 +1,4 @@
+#ifdef DATA_ANALYTICS
 #pragma once
 
 #include <filems/write/comps/SimpleSyncFileStringWriter.h>
@@ -304,3 +305,4 @@ protected:
 };
 
 }}
+#endif
