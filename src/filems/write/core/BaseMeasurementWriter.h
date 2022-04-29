@@ -137,6 +137,11 @@ public:
             this->shift = this->scanner->platform->scene->getShift();
         }
     }
+    /**
+     * @brief Obtain the shift applied by the base measurement writer
+     * @see filems::BaseMeasurementWriter::shift
+     */
+    inline glm::dvec3 const& getShift(){return shift;}
 };
 
 #include <filems/write/core/BaseMeasurementWriter.tpp>

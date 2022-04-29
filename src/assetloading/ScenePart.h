@@ -196,7 +196,7 @@ public:
 	 * @brief Obtain all vertices in the scene part
 	 * @return All vertices in the scene part
 	 */
-	std::vector<Vertex*> getAllVertices();
+	std::vector<Vertex*> getAllVertices() const;
 
 	/**
 	 * @brief Smooth normals for each vertex computing the mean for each

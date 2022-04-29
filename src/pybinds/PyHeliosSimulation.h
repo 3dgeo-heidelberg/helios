@@ -42,7 +42,7 @@ private:
     bool lasOutput = false;
     bool las10     = false;
     bool zipOutput = false;
-    double lasScale = 1.0;
+    double lasScale = 0.0001;
     std::shared_ptr<PulseThreadPoolInterface> pulseThreadPool;
     int kdtFactory = 4;
     size_t kdtJobs = 0;

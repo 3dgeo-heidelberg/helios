@@ -8,6 +8,10 @@ using namespace std::chrono;
 #include <scanner/BuddingScanningPulseProcess.h>
 #include <platform/InterpolatedMovingPlatformEgg.h>
 #include <platform/InterpolatedMovingPlatform.h>
+#ifdef DATA_ANALYTICS
+#include <dataanalytics/HDA_StateJSONReporter.h>
+using helios::analytics::HDA_StateJSONReporter;
+#endif
 
 #include "Simulation.h"
 #include <TimeWatcher.h>
@@ -117,6 +121,10 @@ void Simulation::start() {
     timeStart_ms = duration_cast<milliseconds>(
         system_clock::now().time_since_epoch()
     ).count();
+#ifdef DATA_ANALYTICS
+    HDA_StateJSONReporter sjr((SurveyPlayback *) this, "helios_state.json");
+    sjr.report();
+#endif
 
     // Execute the main loop of the simulation
 	while (!isStopped()) {

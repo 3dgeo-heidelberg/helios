@@ -541,10 +541,16 @@ public:
      * @param path Output path to be tracked
      * @see Scanner::allOutputPaths
      */
-    void trackOutputPath(std::string const path);
+    void trackOutputPath(std::string const &path);
 
 	// *** GETTERs and SETTERs *** //
 	// *************************** //
+	/**
+	 * @brief Obtain the current pulse number
+	 * @return The current pulse number
+	 * @see Scanner::state_currentPulseNumber
+	 */
+	inline int getCurrentPulseNumber() const {return state_currentPulseNumber;}
 	/**
 	 * @brief Obtain the number of rays
 	 * @return Number of rays

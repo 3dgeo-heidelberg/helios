@@ -112,14 +112,14 @@ public:
 	 * @brief Get the scalar coordinate of the quaternion.
 	 * @return scalar coordinate of the quaternion
 	 */
-	double getQ0() {return q0;}
+	double getQ0() const {return q0;}
 	void setQ0(double q0) {this->q0 = q0;}
 
 	/**
 	 * @brief Get the first coordinate of the vectorial part of the quaternion.
 	 * @return first coordinate of the vectorial part of the quaternion
 	 */
-	double getQ1() {return q1;}
+	double getQ1() const {return q1;}
 	void setQ1(double q1) {this->q1 = q1;}
 
 	/**
@@ -127,14 +127,14 @@ public:
 	 * quaternion.
 	 * @return second coordinate of the vectorial part of the quaternion
 	 */
-	double getQ2() {return q2;}
+	double getQ2() const {return q2;}
 	void setQ2(double q2) {this->q2 = q2;}
 
 	/**
 	 * @brief Get the third coordinate of the vectorial part of the quaternion.
 	 * @return third coordinate of the vectorial part of the quaternion
 	 */
-	double getQ3() {return q3;}
+	double getQ3() const {return q3;}
 	void setQ3(double q3) {this->q3 = q3;}
 
 	// ***  M E T H O D S  *** //

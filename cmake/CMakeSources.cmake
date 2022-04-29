@@ -57,6 +57,10 @@ set(HELIOS_INCLUDE_DIRECTORIES
 if(${PYTHON_BINDING})
     list(APPEND HELIOS_INCLUDE_DIRECTORIES "src/pybinds/")
 endif()
+# Data analytics include directories
+if(${DATA_ANALYTICS})
+    list(APPEND HELIOS_INCLUDE_DIRECTORIES "src/dataanalytics/")
+endif()
 # PCL specific include directories
 if(${PCL_BINDING})
     list(APPEND HELIOS_INCLUDE_DIRECTORIES

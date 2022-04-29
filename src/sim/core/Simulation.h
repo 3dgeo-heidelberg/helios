@@ -10,6 +10,9 @@
 #ifdef PYTHON_BINDING
 #include <PySimulationCycleCallback.h>
 #endif
+#ifdef DATA_ANALYTICS
+#include <dataanalytics/HDA_StateJSONReporter.h>
+#endif
 #include <SimulationReporter.h>
 
 /**
@@ -17,6 +20,9 @@
  */
 class Simulation {
 friend class SimulationReporter;
+#ifdef DATA_ANALYTICS
+friend class helios::analytics::HDA_StateJSONReporter;
+#endif
 protected:
     // ***  ATTRIBUTES  *** //
     // ******************** //
