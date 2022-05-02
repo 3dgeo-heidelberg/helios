@@ -100,10 +100,10 @@ def test_tiffloader_als_pyh():
 
 
 def eval_tiffloader_als(dirname):
-    assert (dirname / 'leg000_points.laz').exists()
-    assert abs((dirname / 'leg000_points.laz').stat().st_size - 105_049) < MAX_DIFFERENCE_BYTES
-    assert (dirname / 'leg001_points.laz').exists()
-    assert abs((dirname / 'leg001_points.laz').stat().st_size - 105_049) < MAX_DIFFERENCE_BYTES
+    assert (dirname / 'leg000_points.las').exists()
+    assert abs((dirname / 'leg000_points.las').stat().st_size - 105_049) < MAX_DIFFERENCE_BYTES
+    assert (dirname / 'leg001_points.las').exists()
+    assert abs((dirname / 'leg001_points.las').stat().st_size - 105_049) < MAX_DIFFERENCE_BYTES
     with open(dirname / 'leg000_trajectory.txt', 'r') as f:
         next(f)
         line = f.readline()
@@ -180,6 +180,11 @@ def eval_interpolated_traj(dirname):
     assert (dirname / 'leg000_points.laz').exists()
     assert (dirname / 'leg000_trajectory.txt').exists()
     assert abs((dirname / 'leg000_points.laz').stat().st_size - 104_616) < MAX_DIFFERENCE_BYTES
+    with open(dirname / 'leg000_trajectory.txt', 'r') as f:
+        for _ in range(3):
+            next(f)
+        line = f.readline()
+        assert line.startswith('13.4766 1.7424 400.0000')
     # clean up
     if DELETE_FILES_AFTER:
         shutil.rmtree(dirname)
