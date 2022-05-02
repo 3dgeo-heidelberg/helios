@@ -574,7 +574,10 @@ shared_ptr<RaySceneIntersection> FullWaveformPulseRunnable::findIntersection(
 }
 
 // Space distribution equation to calculate the beam energy decreasing the further away from the center (Carlsson et al., 2001)
-double FullWaveformPulseRunnable::calcEmmitedPower(double radius, double targetRange) {
+double FullWaveformPulseRunnable::calcEmmitedPower(
+    double const radius,
+    double const targetRange
+) const {
     double const I0 = detector->scanner->getAveragePower();
     double const lambda = detector->scanner->getWavelength();
     double const R = targetRange;
@@ -591,16 +594,16 @@ double FullWaveformPulseRunnable::calcEmmitedPower(double radius, double targetR
 
 // Calculate the strength of the laser going back to the detector
 double FullWaveformPulseRunnable::calcIntensity(
-    double incidenceAngle,
-    double targetRange,
-    double targetReflectivity,
-    double targetSpecularity,
-    double targetSpecularExponent,
-    double targetArea,
-    double radius
-){
-    double emmitedPower = calcEmmitedPower(radius, targetRange);
-    double intensity = AbstractPulseRunnable::calcReceivedPower(
+    double const incidenceAngle,
+    double const targetRange,
+    double const targetReflectivity,
+    double const targetSpecularity,
+    double const targetSpecularExponent,
+    double const targetArea,
+    double const radius
+) const {
+    double const emmitedPower = calcEmmitedPower(radius, targetRange);
+    double const intensity = AbstractPulseRunnable::calcReceivedPower(
         emmitedPower,
         targetRange,
         incidenceAngle,
@@ -613,12 +616,12 @@ double FullWaveformPulseRunnable::calcIntensity(
 }
 
 double FullWaveformPulseRunnable::calcIntensity(
-    double targetRange,
-    double radius,
-    double sigma
-){
-    double emmitedPower = calcEmmitedPower(radius, targetRange);
-    double intensity = AbstractPulseRunnable::calcReceivedPower(
+    double const targetRange,
+    double const radius,
+    double const sigma
+) const {
+    double const emmitedPower = calcEmmitedPower(radius, targetRange);
+    double const intensity = AbstractPulseRunnable::calcReceivedPower(
         emmitedPower,
         targetRange,
         sigma
@@ -629,13 +632,13 @@ double FullWaveformPulseRunnable::calcIntensity(
 
 void FullWaveformPulseRunnable::captureFullWave(
     vector<double> & fullwave,
-    int fullwaveIndex,
-    double min_time,
-    double max_time,
-    glm::dvec3 & beamOrigin,
-    glm::dvec3 & beamDir,
-    double gpstime,
-    bool fullWaveNoise,
+    int const fullwaveIndex,
+    double const min_time,
+    double const max_time,
+    glm::dvec3 const &beamOrigin,
+    glm::dvec3 const &beamDir,
+    double const gpstime,
+    bool const fullWaveNoise,
     RandomnessGenerator<double> &rg2
 ){
     // Add noise to the fullwave

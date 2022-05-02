@@ -165,7 +165,7 @@ protected:
         lp.set_classification(U8(m.classification) & CLASSIFICATION_MASK);
         lp.set_extended_classification(U8(m.classification) & CLASSIFICATION_MASK);
 
-        lp.set_gps_time(F64(((double)m.gpsTime)/1000.0));
+        lp.set_gps_time(F64((m.gpsTime)/1000000000.0));
 
         // Populate LAS point (extra bytes attributes)
         lp.set_attribute(ewAttrStart, F64(m.echo_width));

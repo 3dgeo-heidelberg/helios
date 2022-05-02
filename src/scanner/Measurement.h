@@ -62,7 +62,7 @@ public:
 	/**
 	 * @brief Measurement GPS time
 	 */
-	long gpsTime;
+	double gpsTime;
 
 	// ***  CONSTRUCTION / DESTRUCTION  *** //
 	// ************************************ //

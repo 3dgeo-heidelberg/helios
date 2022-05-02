@@ -96,14 +96,20 @@ protected:
 	bool mPaused = false;
 
     /**
-     * @brief Time corresponding to simulation start (milliseconds)
+     * @brief Time corresponding to simulation start (nanoseconds)
      */
-    long timeStart_ms = 0;
+    long timeStart_ns = 0;
 
     /**
-     * @brief Time corresponding to simulation start (currentGpsTime)
+     * @brief Time corresponding to simulation start (currentGpsTime in
+     *  nanoseconds)
      */
-    double currentGpsTime_ms = 0;
+    double currentGpsTime_ns = 0;
+    /**
+     * @brief The time step for GPS time (in nanoseconds)
+     * @see Simulation::currentGpsTime_ns
+     */
+    double stepGpsTime_ns = 0;
     /**
      * @brief Given fixed time start for GPS time as a string.
      *
@@ -202,8 +208,8 @@ public:
 	// ***  UTIL METHODS  *** //
 	// ********************** //
     /**
-     * @brief Compute the current GPS time (milliseconds)
-     * @return Current GPS time (milliseconds)
+     * @brief Compute the current GPS time (nanoseconds)
+     * @return Current GPS time (nanoseconds)
      */
     double calcCurrentGpsTime();
 

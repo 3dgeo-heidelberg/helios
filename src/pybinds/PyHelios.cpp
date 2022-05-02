@@ -572,10 +572,15 @@ BOOST_PYTHON_MODULE(_pyhelios){
             &Scanner::isFixedIncidenceAngle,
             &Scanner::setFixedIncidenceAngle
         )
-        .add_property(
+        .add_property( // It was not in ns before, but in seconds
             "trajectoryTimeInterval",
-            &Scanner::trajectoryTimeInterval,
-            &Scanner::trajectoryTimeInterval
+            &Scanner::trajectoryTimeInterval_ns,
+            &Scanner::trajectoryTimeInterval_ns
+        )
+        .add_property(
+            "trajectoryTimeInterval_ns",
+            &Scanner::trajectoryTimeInterval_ns,
+            &Scanner::trajectoryTimeInterval_ns
         )
         .add_property(
             "deviceId",

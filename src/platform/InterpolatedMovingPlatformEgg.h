@@ -30,7 +30,7 @@ public:
     bool syncGPSTime;   // If true, set start GPS time to first time from data
     double startTime;   // To be used when syncGPSTime is true and also to
                         // translate to simulation time s.t. -startTime
-                        // It is given in seconds, not milliseconds
+                        // It is given in seconds, not nanoseconds
 
 
     // ***  CONSTRUCTION / DESTRUCTION  *** //

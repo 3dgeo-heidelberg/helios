@@ -99,11 +99,11 @@ protected:
         double const maxTime,
         glm::dvec3 const & beamOrigin,
         glm::dvec3 const & beamDir,
-        long const gpsTime
+        double const gpsTime
     ){
         std::stringstream ss;
-        ss << std::setprecision(4) << std::fixed;
-        ss << fullwaveIndex << " "
+        ss << std::setprecision(4) << std::fixed
+           << fullwaveIndex << " "
            << beamOrigin.x << " "
            << beamOrigin.y << " "
            << beamOrigin.z << " "
@@ -112,7 +112,8 @@ protected:
            << beamDir.z << " "
            << minTime << " "
            << maxTime << " "
-           << ((double)gpsTime)/1000.0 << " ";
+           << std::setprecision(9) << std::fixed
+           << gpsTime/1000000000.0 << " ";
 
         std::copy(
             fullwave.begin(),

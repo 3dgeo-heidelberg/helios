@@ -51,9 +51,9 @@ public:
 	 */
 	int currentPulseNum;
 	/**
-	 * @brief Current GPS time in milliseconds
+	 * @brief Current GPS time in nanoseconds
 	 */
-    double currentGpsTime; // In milliseconds
+    double currentGpsTime; // In nanoseconds
 
 	/**
 	 * @brief Flag to specify if ground points must be captured (true) or not
@@ -76,7 +76,7 @@ public:
 		glm::dvec3 const absoluteBeamOrigin,
 		Rotation const absoluteBeamAttitude,
 		int const pulseNumber,
-		long const gpsTime
+		double const gpsTime
 	){
 		this->detector = detector;
 		this->absoluteBeamAttitude = absoluteBeamAttitude;
@@ -99,7 +99,11 @@ public:
 	 *
 	 * @return Cross section
 	 */
-	double calcCrossSection(double f, double Alf, double theta);
+	double calcCrossSection(
+	    double const f,
+	    double const Alf,
+	    double const theta
+    ) const;
 	/**
 	 * @brief Compute the phong model
 	 *
@@ -110,10 +114,10 @@ public:
 	 * Paper authors: B. Jutzi, H. Gross
 	 */
 	double phongBDRF(
-	    double incidenceAngle,
-	    double targetSpecularity,
-	    double targetSpecularExponent
-    );
+	    double const incidenceAngle,
+	    double const targetSpecularity,
+	    double const targetSpecularExponent
+    ) const;
 	/**
 	 * @brief Compute atmospheric factor \f$f\f$, understood as the energy left
 	 * after attenuation by air particles in range \f$[0, 1]\f$
@@ -126,7 +130,7 @@ public:
 	 *
 	 * @return \f$f\f$
 	 */
-	inline double calcAtmosphericFactor(double targetRange);
+	inline double calcAtmosphericFactor(double const targetRange) const;
 	/**
 	 * @brief Solve the laser radar equation
 	 *
@@ -137,14 +141,14 @@ public:
 	 * Report authors: Tomas Carlsson, Ove Steinvall and Dietmar Letalick
 	 */
 	double calcReceivedPower(
-		double emittedPower,
-		double targetRange,
-		double incidenceAngle,
-		double targetReflectivity,
-		double targetSpecularity,
-		double targetSpecularExponent,
-		double targetArea
-	);
+		double const emittedPower,
+		double const targetRange,
+		double const incidenceAngle,
+		double const targetReflectivity,
+		double const targetSpecularity,
+		double const targetSpecularExponent,
+		double const targetArea
+	) const;
 	/**
 	 * @brief Alternative received power computation method
 	 *
@@ -159,10 +163,10 @@ public:
 	 * @see AbstractPulseRunnable::_calcReceivedPower
 	 */
 	double calcReceivedPower(
-	    double emittedPower,
-	    double targetRange,
-	    double sigma
-    );
+	    double const emittedPower,
+	    double const targetRange,
+	    double const sigma
+    ) const ;
 	/**
 	 * @brief Compute received power \f$P_{r}\f$
 	 *
@@ -172,13 +176,13 @@ public:
 	 * \f]
 	 */
 	static inline double _calcReceivedPower(
-	    double Pt,
-	    double Dr2,
-	    double R,
-	    double Bt2,
-	    double etaSys,
-	    double etaAtm,
-	    double sigma
+	    double const Pt,
+	    double const Dr2,
+	    double const R,
+	    double const Bt2,
+	    double const etaSys,
+	    double const etaAtm,
+	    double const sigma
     );
 	/**
 	 * @brief Capture point if proceed and write it

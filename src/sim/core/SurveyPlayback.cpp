@@ -78,7 +78,7 @@ SurveyPlayback::SurveyPlayback(
             getScanner()->platform
         );
     if(imp != nullptr && imp->isSyncGPSTime()){
-        this->currentGpsTime_ms = imp->getStartTime() * 1000.0;
+        this->currentGpsTime_ns = imp->getStartTime() * 1000000000.0;
     }
 
 	// Orientate platform and start first leg
@@ -93,15 +93,19 @@ SurveyPlayback::SurveyPlayback(
 }
 
 
-void SurveyPlayback::estimateTime(int legCurrentProgress, bool onGround, double legElapsedLength) {
+void SurveyPlayback::estimateTime(
+    int legCurrentProgress,
+    bool onGround,
+    double legElapsedLength
+){
     if (legCurrentProgress > legProgress) {	// Do stuff only if leg progress incremented at least 1%
 		legProgress = (double) legCurrentProgress;
 
-		long currentTime = duration_cast<milliseconds>(
+		long currentTime = duration_cast<nanoseconds>(
 		    system_clock::now().time_since_epoch()).count();
-		legElapsedTime_ms = currentTime - legStartTime_ns;
-		legRemainingTime_ms = (long)((100 - legProgress) / legProgress
-		    * legElapsedTime_ms);
+		legElapsedTime_ns = currentTime - legStartTime_ns;
+		legRemainingTime_ns = (long)((100 - legProgress) / legProgress
+		    * legElapsedTime_ns);
 
 		if (!getScanner()->platform->canMove()) {
 			progress = ((mCurrentLegIndex * 100) + legProgress) /
@@ -111,9 +115,9 @@ void SurveyPlayback::estimateTime(int legCurrentProgress, bool onGround, double 
 			progress = (elapsedLength + legElapsedLength) * 100
 			    / (double) mSurvey->getLength();
 		}
-		elapsedTime_ms = currentTime - timeStart_ms;
-		remainingTime_ms = (long)((100 - progress) /
-		    progress * elapsedTime_ms);
+		elapsedTime_ns = currentTime - timeStart_ns;
+		remainingTime_ns = (long)((100 - progress) /
+		    progress * elapsedTime_ns);
 
         if(legProgress == 99){
             std::stringstream ss;
@@ -125,12 +129,12 @@ void SurveyPlayback::estimateTime(int legCurrentProgress, bool onGround, double 
         ostringstream oss;
         oss << std::fixed << std::setprecision(2);
         oss << "Survey " << progress << "%\tElapsed "
-            << milliToString(elapsedTime_ms) <<
-            " Remaining " << milliToString(remainingTime_ms) << endl;
+            << milliToString(elapsedTime_ns/1000000.0) <<
+            " Remaining " << milliToString(remainingTime_ns/1000000.0) << endl;
         oss << "Leg" << (mCurrentLegIndex+1) << "/" << (numEffectiveLegs)
             << " " << legProgress << "%\tElapsed "
-            << milliToString(legElapsedTime_ms) << " Remaining "
-            << milliToString(legRemainingTime_ms);
+            << milliToString(legElapsedTime_ns/1000000.0) << " Remaining "
+            << milliToString(legRemainingTime_ns/1000000.0);
         logging::INFO(oss.str());
 	}
 }
@@ -161,7 +165,7 @@ void SurveyPlayback::doSimStep() {
 		if(exportToFile) clearPointcloudFile();
 
 		legProgress = 0;
-		legStartTime_ns = duration_cast<milliseconds>(
+		legStartTime_ns = duration_cast<nanoseconds>(
 		        system_clock::now().time_since_epoch()
         ).count();
 	}
