@@ -3,7 +3,7 @@ import shutil
 import subprocess
 import sys
 from pathlib import Path
-# import pytest
+import pytest
 
 MAX_DIFFERENCE_BYTES = 1024
 DELETE_FILES_AFTER = False
@@ -56,16 +56,18 @@ def run_helios_pyhelios(survey_path: Path, zip_output=False) -> Path:
     sim = simB.build()
 
     sim.start()
-    # output = sim.join()
+    sim.join()
     return find_playback_dir(survey_path)
 
 
+@pytest.mark.exe
 def test_arbaro_tls_exe():
     dirname_exe = run_helios_executable(Path('data') / 'surveys' / 'demo' / 'tls_arbaro_demo.xml',
                                         options=['--lasOutput'])
     eval_arbaro_tls(dirname_exe)
 
 
+@pytest.mark.pyh
 def test_arbaro_tls_pyh():
     dirname_pyh = run_helios_pyhelios(Path('data') / 'surveys' / 'demo' / 'tls_arbaro_demo.xml')
     eval_arbaro_tls(dirname_pyh)
@@ -84,22 +86,24 @@ def eval_arbaro_tls(dirname):
         shutil.rmtree(dirname)
 
 
+@pytest.mark.exe
 def test_tiffloader_als_exe():
     dirname_exe = run_helios_executable(Path('data') / 'test' / 'als_hd_demo_tiff_min.xml',
                                         options=['--lasOutput'])
     eval_tiffloader_als(dirname_exe)
 
 
+@pytest.mark.pyh
 def test_tiffloader_als_pyh():
     dirname_pyh = run_helios_pyhelios(Path('data') / 'test' / 'als_hd_demo_tiff_min.xml')
     eval_tiffloader_als(dirname_pyh)
 
 
 def eval_tiffloader_als(dirname):
-    assert (dirname / 'leg000_points.las').exists()
-    assert abs((dirname / 'leg000_points.las').stat().st_size - 105_049) < MAX_DIFFERENCE_BYTES
-    assert (dirname / 'leg001_points.las').exists()
-    assert abs((dirname / 'leg001_points.las').stat().st_size - 105_049) < MAX_DIFFERENCE_BYTES
+    assert (dirname / 'leg000_points.laz').exists()
+    assert abs((dirname / 'leg000_points.laz').stat().st_size - 105_049) < MAX_DIFFERENCE_BYTES
+    assert (dirname / 'leg001_points.laz').exists()
+    assert abs((dirname / 'leg001_points.laz').stat().st_size - 105_049) < MAX_DIFFERENCE_BYTES
     with open(dirname / 'leg000_trajectory.txt', 'r') as f:
         next(f)
         line = f.readline()
@@ -109,12 +113,14 @@ def eval_tiffloader_als(dirname):
         shutil.rmtree(dirname)
 
 
+@pytest.mark.exe
 def test_detailedVoxels_uls_exe():
     dirname_exe = run_helios_executable(Path('data') / 'test' / 'uls_detailedVoxels_mode_comparison_min.xml',
                                         options=['--lasOutput'])
     eval_detailedVoxels_uls(dirname_exe)
 
 
+@pytest.mark.pyh
 def test_detailedVoxels_uls_pyh():
     dirname_pyh = run_helios_pyhelios(Path('data') / 'test' / 'uls_detailedVoxels_mode_comparison_min.xml')
     eval_detailedVoxels_uls(dirname_pyh)
@@ -135,12 +141,14 @@ def eval_detailedVoxels_uls(dirname):
         shutil.rmtree(dirname)
 
 
+@pytest.mark.exe
 def test_xyzVoxels_tls_exe():
     dirname_exe = run_helios_executable(Path('data') / 'surveys' / 'voxels' / 'tls_sphere_xyzloader_normals.xml',
                                         options=['--lasOutput'])
     eval_xyzVoxels_tls(dirname_exe)
 
 
+@pytest.mark.pyh
 def test_xyzVoxels_tls_pyh():
     dirname_pyh = run_helios_pyhelios(Path('data') / 'surveys' / 'voxels' / 'tls_sphere_xyzloader_normals.xml')
     eval_xyzVoxels_tls(dirname_pyh)
@@ -154,22 +162,24 @@ def eval_xyzVoxels_tls(dirname):
         shutil.rmtree(dirname)
 
 
+@pytest.mark.exe
 def test_interpolated_traj_exe():
-    dirname_exe = run_helios_executable(Path('data') / 'surveys' / 'voxels' / 'tls_sphere_xyzloader_normals.xml',
+    dirname_exe = run_helios_executable(Path('data') / 'surveys' / 'demo' / 'als_interpolated_trajectory.xml',
                                         options=['--lasOutput', '--zipOutput'])
     eval_interpolated_traj(dirname_exe)
 
 
+@pytest.mark.pyh
 def test_interpolated_traj_pyh():
-    dirname_pyh = run_helios_pyhelios(Path('data') / 'surveys' / 'voxels' / 'als_interpolated_trajectory.xml',
+    dirname_pyh = run_helios_pyhelios(Path('data') / 'surveys' / 'demo' / 'als_interpolated_trajectory.xml',
                                       zip_output=True)
-    eval_xyzVoxels_tls(dirname_pyh)
+    eval_interpolated_traj(dirname_pyh)
 
 
 def eval_interpolated_traj(dirname):
     assert (dirname / 'leg000_points.laz').exists()
     assert (dirname / 'leg000_trajectory.txt').exists()
-    # assert abs((dirname / 'leg000_points.las').stat().st_size - 13_555_681) < MAX_DIFFERENCE_BYTES
+    assert abs((dirname / 'leg000_points.laz').stat().st_size - 104_616) < MAX_DIFFERENCE_BYTES
     # clean up
     if DELETE_FILES_AFTER:
         shutil.rmtree(dirname)
