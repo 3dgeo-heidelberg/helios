@@ -184,7 +184,7 @@ def eval_interpolated_traj(dirname):
         for _ in range(3):
             next(f)
         line = f.readline()
-        assert line.startswith('13.4766 1.7424 400.0000')
+        assert line.startswith('13.4764 1.7423 400.0000')
     # clean up
     if DELETE_FILES_AFTER:
         shutil.rmtree(dirname)
