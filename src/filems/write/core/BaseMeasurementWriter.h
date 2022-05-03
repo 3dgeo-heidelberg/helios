@@ -63,7 +63,7 @@ public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //
     // ************************************ //
     /**
-     * @bried Default constructor for base measurement writer
+     * @brief Default constructor for base measurement writer
      */
     BaseMeasurementWriter() = default;
     virtual ~BaseMeasurementWriter() = default;

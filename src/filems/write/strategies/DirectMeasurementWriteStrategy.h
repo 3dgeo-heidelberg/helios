@@ -65,7 +65,7 @@ protected:
         Measurement const &m,
         glm::dvec3 const & shift
     ){
-        glm::dvec3 shifted = m.position + shift;
+        glm::dvec3 const shifted = m.position + shift;
         std::stringstream ss;
         ss << std::setprecision(4) << std::fixed;
         ss  << shifted.x << " "
@@ -78,8 +78,8 @@ protected:
             << m.fullwaveIndex << " "
             << m.hitObjectId << " "
             << m.classification << " "
-            << std::setprecision(4) << std::fixed
-            << ((double)m.gpsTime) / 1000.0 << std::endl;
+            << std::setprecision(9) << std::fixed
+            << m.gpsTime / 1000000000.0 << std::endl;
         return ss.str();
     }
 };

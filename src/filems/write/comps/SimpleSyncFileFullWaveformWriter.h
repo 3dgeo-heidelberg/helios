@@ -20,15 +20,7 @@ using std::make_shared;
  * @see filems::DirectFullWaveformWriteStrategy
  */
 class SimpleSyncFileFullWaveformWriter :
-    public SimpleSyncFileWriter<
-        std::vector<double> const &,
-        int const,
-        double const,
-        double const,
-        glm::dvec3 const&,
-        glm::dvec3 const&,
-        long const
-    >
+    public SimpleSyncFileWriter<FullWaveform const &>
 {
 
 public:
@@ -42,15 +34,7 @@ public:
         const std::string& path,
         std::ios_base::openmode om = std::ios_base::app
     ) :
-        SimpleSyncFileWriter<
-            std::vector<double> const&,
-            int const,
-            double const,
-            double const,
-            glm::dvec3 const&,
-            glm::dvec3 const&,
-            long const
-        >(path, om)
+        SimpleSyncFileWriter<FullWaveform const &>(path, om)
     {
         this->writeStrategy = make_shared<DirectFullWaveformWriteStrategy>(
             this->ofs
