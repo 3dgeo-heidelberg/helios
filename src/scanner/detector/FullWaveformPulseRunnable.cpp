@@ -12,6 +12,7 @@
 #include <TimeWatcher.h>
 #include <maths/RayUtils.h>
 #include <filems/facade/FMSFacade.h>
+#include <scanner/detector/FullWaveform.h>
 
 using namespace std;
 
@@ -650,7 +651,7 @@ void FullWaveformPulseRunnable::captureFullWave(
     }
 
     // Write full wave
-    fwDetector->getFMS()->write.writeFullWaveformUnsafe(
+    fwDetector->fwfYielder->push(FullWaveform(
         fullwave,
         fullwaveIndex,
         min_time,
@@ -658,7 +659,7 @@ void FullWaveformPulseRunnable::captureFullWave(
         beamOrigin,
         beamDir,
         gpstime
-    );
+    ));
 }
 
 bool FullWaveformPulseRunnable::detectPeak(

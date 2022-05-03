@@ -84,6 +84,7 @@ public:
 	    classification = m.classification;
 	    gpsTime = m.gpsTime;
 	}
+	virtual ~Measurement() = default;
 
 	// ***  O P E R A T O R S  *** //
 	// *************************** //

@@ -268,14 +268,8 @@ void FMSWriteFacade::validateFullWaveformWriter(
         throw HeliosException(ss.str());
     }
 }
-void FMSWriteFacade::writeFullWaveform(
-    vector<double> const &fullwave,
-    int const fullwaveIndex,
-    double const minTime,
-    double const maxTime,
-    glm::dvec3 const &beamOrigin,
-    glm::dvec3 const &beamDir,
-    double const gpsTime
+void FMSWriteFacade::writeFullWaveforms(
+    vector<FullWaveform> const &fullWaveforms
 ){
     // Check it is possible to do the operation
     validateFullWaveformWriter(
@@ -283,15 +277,7 @@ void FMSWriteFacade::writeFullWaveform(
         "could not write full waveform"
     );
     // Write the full waveform data
-    fww->writeFullWaveform(
-        fullwave,
-        fullwaveIndex,
-        minTime,
-        maxTime,
-        beamOrigin,
-        beamDir,
-        gpsTime
-    );
+    fww->writeFullWaveformsUnsafe(fullWaveforms);
 }
 
 void FMSWriteFacade::finishFullWaveformWriter(){

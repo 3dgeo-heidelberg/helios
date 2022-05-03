@@ -129,12 +129,12 @@ void SurveyPlayback::estimateTime(
         ostringstream oss;
         oss << std::fixed << std::setprecision(2);
         oss << "Survey " << progress << "%\tElapsed "
-            << milliToString(elapsedTime_ns/1000000.0) <<
-            " Remaining " << milliToString(remainingTime_ns/1000000.0) << endl;
+            << milliToString(elapsedTime_ns/1000000L) <<
+            " Remaining " << milliToString(remainingTime_ns/1000000L) << endl;
         oss << "Leg" << (mCurrentLegIndex+1) << "/" << (numEffectiveLegs)
             << " " << legProgress << "%\tElapsed "
-            << milliToString(legElapsedTime_ns/1000000.0) << " Remaining "
-            << milliToString(legRemainingTime_ns/1000000.0);
+            << milliToString(legElapsedTime_ns/1000000L) << " Remaining "
+            << milliToString(legRemainingTime_ns/1000000L);
         logging::INFO(oss.str());
 	}
 }

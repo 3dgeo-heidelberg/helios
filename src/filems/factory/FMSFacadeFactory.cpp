@@ -62,7 +62,7 @@ shared_ptr<FMSFacade> FMSFacadeFactory::buildFacade(
     fmsWrite.setTrajectoryWriterZipOutput(false); // Never zip
 
     // Configure full waveform writer
-    fmsWrite.setFullWaveformWriter(make_shared<FullWaveformWriter>());
+    fmsWrite.setFullWaveformWriter(make_shared<VectorialFullWaveformWriter>());
     fmsWrite.setFullWaveformWriterZipOutput(zipOutput);
 
     // Return

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <filems/write/strategies/WriteStrategy.h>
+#include <scanner/detector/FullWaveform.h>
 
 #include <vector>
 #include <fstream>
@@ -17,15 +18,7 @@ namespace helios { namespace filems {
  * @see filems::SimpleSyncFileFullWaveformWriter
  */
 class DirectFullWaveformWriteStrategy :
-    public WriteStrategy<
-        std::vector<double> const&,
-        int const,
-        double const,
-        double const,
-        glm::dvec3 const&,
-        glm::dvec3 const&,
-        long const
-    >
+    public WriteStrategy<FullWaveform const &>
 {
 protected:
     // ***  ATTRIBUTES  *** //
@@ -49,33 +42,11 @@ public:
     // ********************************** //
     /**
      * @brief Write full waveform data to file
-     * @param fullwave Fullwave data
-     * @param fullwaveIndex Fullwave index
-     * @param minTime Min hit time for the fullwave (ns)
-     * @param maxTime Max hit time for the fullwave (ns)
-     * @param beamOrigin Origin for the beam
-     * @param beamDir Director vector for the beam
-     * @param gpsTime GPS time
+     * @param fullwaveForm The full waveform to be written
      * @see SyncFileWriter::_write
      */
-    void write(
-        std::vector<double> const &fullwave,
-        int const fullwaveIndex,
-        double const minTime,
-        double const maxTime,
-        glm::dvec3 const & beamOrigin,
-        glm::dvec3 const & beamDir,
-        long const gpsTime
-    ) override {
-        ofs << fullwaveToString(
-            fullwave,
-            fullwaveIndex,
-            minTime,
-            maxTime,
-            beamOrigin,
-            beamDir,
-            gpsTime
-        );
+    void write(FullWaveform const &fullWaveform) override {
+        ofs << fullWaveformToString(fullWaveform);
     }
 
 protected:
@@ -83,44 +54,30 @@ protected:
     // *************** //
     /**
      * @brief Build a string from fullwave data
-     * @param fullwave Fullwave data
-     * @param fullwaveIndex Fullwave index
-     * @param minTime Min hit time for the fullwave (ns)
-     * @param maxTime Max hit time for the fullwave (ns)
-     * @param beamOrigin Origin for the beam
-     * @param beamDir Director vector for the beam
-     * @param gpsTime GPS time
-     * @return String with fullwave data
+     * @param fw The full waveform data itself
+     * @return String with full waveform data
      */
-    virtual std::string fullwaveToString(
-        std::vector<double> const &fullwave,
-        int const fullwaveIndex,
-        double const minTime,
-        double const maxTime,
-        glm::dvec3 const & beamOrigin,
-        glm::dvec3 const & beamDir,
-        double const gpsTime
-    ){
+    virtual std::string fullWaveformToString(FullWaveform const &fw){
         std::stringstream ss;
         ss << std::setprecision(4) << std::fixed
-           << fullwaveIndex << " "
-           << beamOrigin.x << " "
-           << beamOrigin.y << " "
-           << beamOrigin.z << " "
-           << beamDir.x << " "
-           << beamDir.y << " "
-           << beamDir.z << " "
-           << minTime << " "
-           << maxTime << " "
+           << fw.fullwaveIndex << " "
+           << fw.beamOrigin.x << " "
+           << fw.beamOrigin.y << " "
+           << fw.beamOrigin.z << " "
+           << fw.beamDir.x << " "
+           << fw.beamDir.y << " "
+           << fw.beamDir.z << " "
+           << fw.minTime << " "
+           << fw.maxTime << " "
            << std::setprecision(9) << std::fixed
-           << gpsTime/1000000000.0 << " ";
+           << fw.gpsTime/1000000000.0 << " ";
 
         std::copy(
-            fullwave.begin(),
-            fullwave.end()-1,
+            fw.fullwave.begin(),
+            fw.fullwave.end()-1,
             std::ostream_iterator<double>(ss, " ")
         );
-        ss << fullwave.back();
+        ss << fw.fullwave.back();
         ss << "\n";
         return ss.str();
     }
