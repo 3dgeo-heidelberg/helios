@@ -22,7 +22,7 @@ using std::vector;
  * @see filems::SimpleSyncFileWriter
  * @see filems::DirectMeasurementWriteStrategy
  * @see Measurement
- * @see SimpleSyncFileMeasurementWriter
+ * @see filems::SimpleSyncFileMeasurementWriter
  */
 class SimpleVectorialSyncFileMeasurementWriter :
     public SimpleSyncFileWriter<

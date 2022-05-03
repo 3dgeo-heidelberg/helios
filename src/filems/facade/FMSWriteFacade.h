@@ -2,7 +2,8 @@
 
 #include <filems/write/core/VectorialMeasurementWriter.h>
 #include <filems/write/core/TrajectoryWriter.h>
-#include <filems/write/core/FullWaveformWriter.h>
+#include <filems/write/core/VectorialFullWaveformWriter.h>
+#include <scanner/detector/FullWaveform.h>
 
 #include <glm/glm.hpp>
 
@@ -44,7 +45,7 @@ protected:
      * @brief The writer for full waveform
      * @see filems::FullWaveformWriter
      */
-    shared_ptr<FullWaveformWriter> fww = nullptr;
+    shared_ptr<VectorialFullWaveformWriter> fww = nullptr;
     /**
      * @brief The root directory for output files
      */
@@ -248,15 +249,16 @@ public:
      * @return The full waveform writer of the write facade
      * @see FMSWriteFacade::fww
      */
-    inline shared_ptr<FullWaveformWriter> getFullWaveformWriter() const
-    {return this->fww;}
+    inline shared_ptr<VectorialFullWaveformWriter> getFullWaveformWriter()
+    const {return this->fww;}
     /**
      * @brief Set the full waveform writer of the write facade
      * @param fww New full waveform writer for the write facade
      * @see FMSWriteFacade::fww
      */
-    inline void setFullWaveformWriter(shared_ptr<FullWaveformWriter> fww)
-    {this->fww = fww;}
+    inline void setFullWaveformWriter(
+        shared_ptr<VectorialFullWaveformWriter> fww
+    ) {this->fww = fww;}
     /**
      * @brief Validate the full waveform writer of the facade is valid to
      *  support write methods. If it is not valid, an adequate exception will
@@ -270,39 +272,17 @@ public:
     /**
      * @see FullWaveformWritter::writeFullWaveform
      */
-    void writeFullWaveform(
-        vector<double> const &fullwave,
-        int const fullwaveIndex,
-        double const minTime,
-        double const maxTime,
-        glm::dvec3 const &beamOrigin,
-        glm::dvec3 const &beamDir,
-        double const gpsTime
+    void writeFullWaveforms(
+        vector<FullWaveform> const &fullWaveforms
     );
     /**
      * @brief Write the full waveform without validations (it is faster than
      *  its non unsafe counterpart)
      * @see FullWaveformWriter::writeFullWaveformUnsafe
      */
-    inline void writeFullWaveformUnsafe(
-        vector<double> const &fullwave,
-        int const fullwaveIndex,
-        double const minTime,
-        double const maxTime,
-        glm::dvec3 const &beamOrigin,
-        glm::dvec3 const &beamDir,
-        double const gpsTime
-    ) const{
-        fww->writeFullWaveformUnsafe(
-            fullwave,
-            fullwaveIndex,
-            minTime,
-            maxTime,
-            beamOrigin,
-            beamDir,
-            gpsTime
-        );
-    }
+    inline void writeFullWaveformsUnsafe(
+        vector<FullWaveform> const &fullWaveforms
+    ) const{fww->writeFullWaveformsUnsafe(fullWaveforms);}
     /**
      * @see filems::HeliosWriter::finish
      */

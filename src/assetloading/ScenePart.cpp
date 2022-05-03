@@ -93,7 +93,7 @@ void ScenePart::addObj(WavefrontObj *obj) {
   logging::DEBUG(ss.str());
 }
 
-std::vector<Vertex *> ScenePart::getAllVertices() {
+std::vector<Vertex *> ScenePart::getAllVertices() const {
   std::vector<Vertex *> allPos;
   for (Primitive *p : mPrimitives) {
     for (size_t i = 0; i < p->getNumVertices(); i++) {

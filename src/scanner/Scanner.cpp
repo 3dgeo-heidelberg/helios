@@ -179,7 +179,7 @@ void Scanner::applySettings(shared_ptr<ScannerSettings> settings) {
 	this->setPulseFreq_Hz(settings->pulseFreq_Hz);
 	setActive(settings->active);
 	this->cfg_device_beamDivergence_rad = settings->beamDivAngle;
-    trajectoryTimeInterval = settings->trajectoryTimeInterval;
+    trajectoryTimeInterval_ns = settings->trajectoryTimeInterval*1000000000.0;
     configureBeam();
 
 	detector->applySettings(settings);
@@ -196,7 +196,7 @@ std::shared_ptr<ScannerSettings> Scanner::retrieveCurrentSettings(){
     settings->pulseFreq_Hz = getPulseFreq_Hz();
     settings->active = isActive();
     settings->beamDivAngle = getBeamDivergence();
-    settings->trajectoryTimeInterval = trajectoryTimeInterval;
+    settings->trajectoryTimeInterval = trajectoryTimeInterval_ns/1000000000.0;
     // Settings from ScannerHead
     settings->headRotatePerSec_rad = scannerHead->getRotateStart();
     settings->headRotateStart_rad = scannerHead->getRotateCurrent();
@@ -441,16 +441,15 @@ Rotation Scanner::calcAbsoluteBeamAttitude(){
         .applyTo(beamDeflector->getEmitterRelativeAttitude());
 }
 
-void Scanner::handleTrajectoryOutput(double currentGpsTime){
+void Scanner::handleTrajectoryOutput(double const currentGpsTime){
     // Get out of here if trajectory time interval is 0 (no trajectory output)
-    if(trajectoryTimeInterval == 0.0) return;
+    if(trajectoryTimeInterval_ns == 0.0) return;
     // Get out of here it it has been explicitly specified to dont write
     if(!platform->writeNextTrajectory) return;
 
     // Check elapsed time
-    double elapsedTime = ((double)(currentGpsTime-lastTrajectoryTime)) /
-        1000.0;
-    if(lastTrajectoryTime != 0L && elapsedTime < trajectoryTimeInterval)
+    double const elapsedTime = currentGpsTime-lastTrajectoryTime;
+    if(lastTrajectoryTime != 0L && elapsedTime < trajectoryTimeInterval_ns)
         return;
 
     // Update last trajectory time
@@ -487,7 +486,7 @@ void Scanner::handleTrajectoryOutput(double currentGpsTime){
     if(!platform->canMove()) platform->writeNextTrajectory = false;
 }
 
-void Scanner::trackOutputPath(std::string const path){
+void Scanner::trackOutputPath(std::string const &path){
     if(allOutputPaths != nullptr){
         std::unique_lock<std::mutex> lock(*allMeasurementsMutex);
         allOutputPaths->push_back(path);

@@ -91,7 +91,7 @@ public:
      * @param legIndex Index of current leg
      * @param absoluteBeamOrigin Absolute position of beam origin
      * @param absoluteBeamAttitude Beam attitude
-     * @param currentGpsTime Current GPS time (milliseconds)
+     * @param currentGpsTime Current GPS time (nanoseconds)
      */
     virtual void handlePulseComputation(
         unsigned int const legIndex,

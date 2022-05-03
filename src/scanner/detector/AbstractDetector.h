@@ -7,6 +7,7 @@
 #include <ScannerSettings.h>
 #include <Measurement.h>
 #include <util/PointcloudYielder.h>
+#include <util/FullWaveformYielder.h>
 
 namespace helios { namespace filems { class FMSFacade; }}
 using helios::filems::FMSFacade;
@@ -36,6 +37,11 @@ public:
 	 *  measurements
 	 */
 	std::shared_ptr<PointcloudYielder> pcloudYielder = nullptr;
+	/**
+	 * @brief The full waveform yielder which handles full waveform building
+	 *  from full waveform data
+	 */
+	std::shared_ptr<FullWaveformYielder> fwfYielder = nullptr;
 
 	/**
 	 * @brief Detector accuracy in meters

@@ -2,6 +2,7 @@
 
 #include <filems/write/comps/ZipSyncFileWriter.h>
 #include <filems/write/strategies/ZipFullWaveformWriteStrategy.h>
+#include <scanner/detector/FullWaveform.h>
 
 #include <memory>
 #include <vector>
@@ -20,15 +21,7 @@ using std::make_shared;
  * @see filems::ZipFullWaveformWriteStrategy
  */
 class ZipSyncFileFullWaveformWriter :
-    public ZipSyncFileWriter<
-        std::vector<double> const &,
-        int const,
-        double const,
-        double const,
-        glm::dvec3 const&,
-        glm::dvec3 const&,
-        long const
-    >
+    public ZipSyncFileWriter<FullWaveform const &>
 {
 
 public:
@@ -42,15 +35,7 @@ public:
         string const &path,
         int compressionMode = boost::iostreams::zlib::best_compression
     ) :
-        ZipSyncFileWriter<
-            std::vector<double> const&,
-            int const,
-            double const,
-            double const,
-            glm::dvec3 const&,
-            glm::dvec3 const&,
-            long const
-        >(path, compressionMode)
+        ZipSyncFileWriter<FullWaveform const &>(path, compressionMode)
     {
         this->writeStrategy = make_shared<ZipFullWaveformWriteStrategy>(
             this->ofs,

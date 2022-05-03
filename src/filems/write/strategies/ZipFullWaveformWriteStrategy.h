@@ -46,24 +46,8 @@ public:
      * @brief Write full waveform to compressed file
      * @see DirectFullWaveformWriteStrategy::write
      */
-    void write(
-        std::vector<double> const &fullwave,
-        int const fullwaveIndex,
-        double const minTime,
-        double const maxTime,
-        glm::dvec3 const & beamOrigin,
-        glm::dvec3 const & beamDir,
-        long const gpsTime
-    ) override{
-        oa << fullwaveToString(
-            fullwave,
-            fullwaveIndex,
-            minTime,
-            maxTime,
-            beamOrigin,
-            beamDir,
-            gpsTime
-        );
+    void write(FullWaveform const &fullWaveform) override{
+        oa << fullWaveformToString(fullWaveform);
     }
 };
 

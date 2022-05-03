@@ -31,7 +31,6 @@ protected:
     // *************** //
 using BaseMeasurementWriter<Measurement const&, glm::dvec3 const&>::scanner;
 using BaseMeasurementWriter<Measurement const&, glm::dvec3 const&>::shift;
-using BaseMeasurementWriter<Measurement const&, glm::dvec3 const&>::writers;
 
 public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //

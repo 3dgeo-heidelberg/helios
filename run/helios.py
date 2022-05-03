@@ -85,26 +85,28 @@ if __name__ == '__main__':
     if args.randomness_seed:
         pyhelios.setDefaultRandomnessGeneratorSeed(args.randomness_seed)
 
-    # Initiate a simulation. Parameters: (surveyPath, assetsPath, outputPath, ...).
-    sim = pyhelios.Simulation(
+    # Build a simulation
+    simBuilder = pyhelios.SimulationBuilder(
         args.survey_file,
         args.assets_path,
-        args.output_path,
-        args.number_of_threads,  # Num Threads
-        args.las_output_flag,  # LAS v1.4 output
-        args.las10_output_flag,# LAS v1.0 output
-        args.zip_output_flag,  # ZIP output
+        args.output_path
     )
 
-    # Load the survey file.
-    sim.loadSurvey(
-        args.leg_noise_disabled_flag,  # Leg Noise Disabled FLAG
-        args.rebuild_scene_flag,  # Rebuild Scene FLAG
-        args.write_waveform_flag,  # Write Waveform FLAG
-        args.calc_echowidth_flag,  # Calculate Echowidth FLAG
-        args.fullwave_noise_flag,  # Full Wave Noise FLAG
-        args.platform_noise_disabled_flag  # Platform Noise Disabled FLAG
-    )
+    # Configure sim
+    simBuilder.setNumThreads(args.number_of_threads)
+    simBuilder.setLasOutput(args.las_output_flag)
+    simBuilder.setZipOutput(args.zip_output_flag)
+    simBuilder.setCallbackFrequency(1)
+    simBuilder.setLegNoiseDisabled(args.leg_noise_disabled_flag)
+    simBuilder.setRebuildScene(args.rebuild_scene_flag)
+    simBuilder.setWriteWaveform(args.write_waveform_flag)
+    simBuilder.setCalcEchowidth(args.calc_echowidth_flag)
+    simBuilder.setFullwaveNoise(args.fullwave_noise_flag)
+    simBuilder.setPlatformNoiseDisabled(args.platform_noise_disabled_flag)
+    simBuilder.setCallback(callback)
+
+    # Build sim
+    sim = simBuilder.build()
 
     if not args.open3d:
         sim.start()
@@ -116,10 +118,6 @@ if __name__ == '__main__':
         import time
         import matplotlib.pyplot as plt
         import xml.etree.ElementTree as ET
-
-        # Set callback function which retrieves measurement values.
-        sim.setCallback(callback)
-        sim.simFrequency = 1
 
         # Create instance of Scene class, generate scene, print scene (if logging v2), and visualize.
         scene = Scene(args.survey_file, args.loggingv2)
