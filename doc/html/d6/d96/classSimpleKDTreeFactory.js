@@ -2,10 +2,12 @@ var classSimpleKDTreeFactory =
 [
     [ "SimpleKDTreeFactory", "d6/d96/classSimpleKDTreeFactory.html#aac0b2d556d61c2e301de1eb2f9bda823", null ],
     [ "~SimpleKDTreeFactory", "d6/d96/classSimpleKDTreeFactory.html#ae819d3c03d5de0dac6dc78e91fecd8b3", null ],
+    [ "_clone", "d6/d96/classSimpleKDTreeFactory.html#ae9e5e09b96a90d44a57dbd66f34fd40d", null ],
     [ "buildChildrenNodes", "d6/d96/classSimpleKDTreeFactory.html#a9c77a23429fcf72e7f5c46429e72f7af", null ],
     [ "buildRecursive", "d6/d96/classSimpleKDTreeFactory.html#a96323d9575182f1bedbd013991a693a6", null ],
     [ "buildRecursiveRecipe", "d6/d96/classSimpleKDTreeFactory.html#a070315453cd5192e4e41dd2594fec91a", null ],
     [ "checkNodeMustSplit", "d6/d96/classSimpleKDTreeFactory.html#a34143864d77d79ef1677a06bd5b938f6", null ],
+    [ "clone", "d6/d96/classSimpleKDTreeFactory.html#af26864527e1e6021277f19b797446559", null ],
     [ "computeKDTreeStats", "d6/d96/classSimpleKDTreeFactory.html#a259a3500ce239f33914d5da0c694b427", null ],
     [ "computeMinMaxSAHForChild", "d6/d96/classSimpleKDTreeFactory.html#ac6c59136d3519ec54eb3ac911fd3c5e2", null ],
     [ "computeNodeBoundaries", "d6/d96/classSimpleKDTreeFactory.html#abbc932ae3ef28f324a656add6c1ac5bd", null ],

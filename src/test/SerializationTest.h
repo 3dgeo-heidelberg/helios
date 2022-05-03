@@ -80,6 +80,7 @@ bool SerializationTest::run(){
         std::vector<double>({1.0, 1.5, 2.0, 2.5, 3.0})
     );
     dv1.part = std::make_shared<ScenePart>();
+    dv1.part->mPrimitives.push_back(&dv1);
     dv1.part->onRayIntersectionMode = "TRANSMITTIVE";
     dv1.material = std::make_shared<Material>();
     dv1.material->ka[0] = 1.0;
@@ -107,14 +108,18 @@ bool SerializationTest::run(){
     scene1.primitives.push_back(box1.clone());
     for(size_t i = 0 ; i < nRepeats ; i++)
         scene1.primitives.push_back(dv1.clone());
-    scene1.primitives.push_back(dv1.clone());
+    shared_ptr<ScenePart> part = make_shared<ScenePart>();
+    for(Primitive *prim : scene1.primitives){
+        prim->part = part;
+        part->mPrimitives.push_back(prim);
+    }
     scene1.finalizeLoading(true);
-    shared_ptr<KDTreeFactory> kdtf = scene1.getKDTreeFactory();
-    scene1.setKDTreeFactory(nullptr);
+    shared_ptr<KDGroveFactory> kdgf = scene1.getKDGroveFactory();
+    scene1.setKDGroveFactory(nullptr);
     scene1.writeObject(path);
-    scene1.setKDTreeFactory(kdtf);
+    scene1.setKDGroveFactory(kdgf);
     Scene *scene2 = Scene::readObject(path);
-    scene2->setKDTreeFactory(kdtf);
+    scene2->setKDGroveFactory(kdgf);
     scene2->finalizeLoading(true);
     if(!validate(dv1, *(DetailedVoxel *) scene2->primitives[0])) return false;
     if(!validate(t1, *(Triangle *) scene2->primitives[1])) return false;

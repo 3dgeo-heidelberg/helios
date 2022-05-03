@@ -123,9 +123,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a2cd575cac73be8dba0f87dfc38fe20e7"><td class="memItemLeft" align="right" valign="top"><a id="a2cd575cac73be8dba0f87dfc38fe20e7"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>Vertex</b> (const <a class="el" href="../../d2/da0/classVertex.html">Vertex</a> &amp;v)</td></tr>
 <tr class="separator:a2cd575cac73be8dba0f87dfc38fe20e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a37d10a2452cee437861e511f5f271c60"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d2/da0/classVertex.html">Vertex</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/da0/classVertex.html#a37d10a2452cee437861e511f5f271c60">copy</a> ()</td></tr>
-<tr class="memdesc:a37d10a2452cee437861e511f5f271c60"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy the vertex.  <a href="#a37d10a2452cee437861e511f5f271c60">More...</a><br /></td></tr>
-<tr class="separator:a37d10a2452cee437861e511f5f271c60"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5d427f809bb3303a63225b7dee83b76c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d2/da0/classVertex.html">Vertex</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/da0/classVertex.html#a5d427f809bb3303a63225b7dee83b76c">copy</a> () const</td></tr>
+<tr class="memdesc:a5d427f809bb3303a63225b7dee83b76c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy the vertex.  <a href="#a5d427f809bb3303a63225b7dee83b76c">More...</a><br /></td></tr>
+<tr class="separator:a5d427f809bb3303a63225b7dee83b76c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa59c664e53950a29584bdecae1948eea"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/da0/classVertex.html#aa59c664e53950a29584bdecae1948eea">getX</a> () const</td></tr>
 <tr class="memdesc:aa59c664e53950a29584bdecae1948eea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the X coordinate of vertex position.  <a href="#aa59c664e53950a29584bdecae1948eea">More...</a><br /></td></tr>
 <tr class="separator:aa59c664e53950a29584bdecae1948eea"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -155,7 +155,7 @@ glm::dvec3&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href
 <tr class="memdesc:a523d50ff9ef1afc2018c6e1b4b3c0459"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="../../d2/da0/classVertex.html" title="Class representing a vertex. ">Vertex</a> 3D position. <br /></td></tr>
 <tr class="separator:a523d50ff9ef1afc2018c6e1b4b3c0459"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac891db9159da8423d25153b41e099afc"><td class="memItemLeft" align="right" valign="top"><a id="ac891db9159da8423d25153b41e099afc"></a>
-glm::dvec3&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/da0/classVertex.html#ac891db9159da8423d25153b41e099afc">normal</a></td></tr>
+glm::dvec3&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/da0/classVertex.html#ac891db9159da8423d25153b41e099afc">normal</a> = glm::dvec3(0, 0, 0)</td></tr>
 <tr class="memdesc:ac891db9159da8423d25153b41e099afc"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="../../d2/da0/classVertex.html" title="Class representing a vertex. ">Vertex</a> normal vector. <br /></td></tr>
 <tr class="separator:ac891db9159da8423d25153b41e099afc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2ab4abfcc9a5075480dc778c51e04e90"><td class="memItemLeft" align="right" valign="top"><a id="a2ab4abfcc9a5075480dc778c51e04e90"></a>
@@ -238,19 +238,27 @@ std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operato
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a37d10a2452cee437861e511f5f271c60"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a37d10a2452cee437861e511f5f271c60">&#9670;&nbsp;</a></span>copy()</h2>
+<a id="a5d427f809bb3303a63225b7dee83b76c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5d427f809bb3303a63225b7dee83b76c">&#9670;&nbsp;</a></span>copy()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname"><a class="el" href="../../d2/da0/classVertex.html">Vertex</a> Vertex::copy </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
-          <td></td>
+          <td> const</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Copy the vertex. </p>

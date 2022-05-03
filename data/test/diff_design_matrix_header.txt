@@ -1,0 +1,9 @@
+#HEADER: "t", "f1", "f2"
+#DIFF_TYPE: 	FORWARD_FINITE_DIFFERENCES
+#TIME_COLUMN: 0
+-3, 0.1, -0.5
+-2, 0.1,  	-0.3
+-1, 	0.1, -0.1
+ 	0, 0.1, 0.1
+1, 0.1, 0.3
+2, 0.1, 0.5

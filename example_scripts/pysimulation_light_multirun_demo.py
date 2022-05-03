@@ -58,10 +58,11 @@ if __name__ == '__main__':
         'output/',
         0,          # Num Threads
         False,      # LAS output FLAG
+        False,      # LAS 10 output FLAG
         False       # Zip output FLAG
     )
-    sim0.simFrequency = 10
-    # Sim frequency has to be setted
+    sim0.callbackFrequency = 10
+    # Callback frequency has to be setted
     # It is 0 by default and with 0 sim frequency it is not possible
     # to pause nor have callbacks
     # Sim frequency 0 means the simulation will start and run until it is
@@ -80,12 +81,12 @@ if __name__ == '__main__':
 
     for i in range(1, nSimulations):  # Copies of first simulation
         sim = sim0.copy()
-        sim.simFrequency += i+1
+        sim.callbackFrequency += i+1
         sims.append(sim)
 
     print('>> Simulation frequencies = [ ', end='')
     for sim in sims:
-        print('{f} '.format(f=sim.simFrequency), end='')
+        print('{f} '.format(f=sim.callbackFrequency), end='')
     print(']')
 
     print('>> Running {n} simulations\n'.format(n=len(sims)))

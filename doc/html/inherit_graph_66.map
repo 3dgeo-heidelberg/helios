@@ -1,3 +1,6 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$d4/d45/classpyhelios_1_1PyMeasurementWrapper.html" title="Wrapper for Measurement class. " alt="" coords="5,5,228,32"/>
+<area shape="rect" id="node1" href="$d7/d98/classIBinaryTreeNode.html" title="Binary tree node interface that must be implemented by any class providing binary tree node based fun..." alt="" coords="5,5,125,32"/>
+<area shape="rect" id="node2" href="$dd/d79/classLightKDTreeNode.html" title="Class representing a light KDTree node. It is, the basic representation of a KDTree node with uses le..." alt="" coords="173,5,300,32"/>
+<area shape="rect" id="node3" href="$d8/d94/classKDTreeNode.html" title="Class representing a KDTree node. " alt="" coords="348,5,447,32"/>
+<area shape="rect" id="node4" href="$d0/d64/classKDTreeNodeRoot.html" title="Class representing the root node of a KDTree. " alt="" coords="495,5,621,32"/>
 </map>

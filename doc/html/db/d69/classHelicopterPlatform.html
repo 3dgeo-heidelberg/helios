@@ -213,11 +213,16 @@ std::shared_ptr&lt; <a class="el" href="../../df/d1e/classPlatform.html">Platfor
 <tr class="memitem:a693f94121bc31b9921ab2985c3e5ba36 inherit pub_methods_classSimplePhysicsPlatform"><td class="memItemLeft" align="right" valign="top"><a id="a693f94121bc31b9921ab2985c3e5ba36"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>_clone</b> (std::shared_ptr&lt; <a class="el" href="../../df/d1e/classPlatform.html">Platform</a> &gt; p) override</td></tr>
 <tr class="separator:a693f94121bc31b9921ab2985c3e5ba36 inherit pub_methods_classSimplePhysicsPlatform"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a60d03d7a0b9fd0175b40c96752502ee1 inherit pub_methods_classSimplePhysicsPlatform"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d3b/classSimplePhysicsPlatform.html#a60d03d7a0b9fd0175b40c96752502ee1">prepareSimulation</a> (int simFrequency_hz) override</td></tr>
+<tr class="separator:a60d03d7a0b9fd0175b40c96752502ee1 inherit pub_methods_classSimplePhysicsPlatform"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a536da07e49058f215c38bd1210fe6030 inherit pub_methods_classSimplePhysicsPlatform"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d3b/classSimplePhysicsPlatform.html#a536da07e49058f215c38bd1210fe6030">doPhysicsStep</a> (int simFrequency_hz)</td></tr>
 <tr class="memdesc:a536da07e49058f215c38bd1210fe6030 inherit pub_methods_classSimplePhysicsPlatform"><td class="mdescLeft">&#160;</td><td class="mdescRight">Phyisics step for simple phyisics platform simulation.  <a href="../../d5/d3b/classSimplePhysicsPlatform.html#a536da07e49058f215c38bd1210fe6030">More...</a><br /></td></tr>
 <tr class="separator:a536da07e49058f215c38bd1210fe6030 inherit pub_methods_classSimplePhysicsPlatform"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a58ffa73c531948eedb71fcf154c1adac inherit pub_methods_classSimplePhysicsPlatform"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d3b/classSimplePhysicsPlatform.html#a58ffa73c531948eedb71fcf154c1adac">doSimStep</a> (int simFrequency_hz) override</td></tr>
 <tr class="separator:a58ffa73c531948eedb71fcf154c1adac inherit pub_methods_classSimplePhysicsPlatform"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abcd0224108963a78add690288b74fbc7 inherit pub_methods_classSimplePhysicsPlatform"><td class="memItemLeft" align="right" valign="top"><a id="abcd0224108963a78add690288b74fbc7"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>checkSpeedLimit</b> ()</td></tr>
+<tr class="separator:abcd0224108963a78add690288b74fbc7 inherit pub_methods_classSimplePhysicsPlatform"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classMovingPlatform"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classMovingPlatform')"><img src="../../closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="../../d1/d83/classMovingPlatform.html">MovingPlatform</a></td></tr>
 <tr class="memitem:a1fda311a499f27b3dc449dc13b2aeaed inherit pub_methods_classMovingPlatform"><td class="memItemLeft" align="right" valign="top"><a id="a1fda311a499f27b3dc449dc13b2aeaed"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d83/classMovingPlatform.html#a1fda311a499f27b3dc449dc13b2aeaed">MovingPlatform</a> ()=default</td></tr>
@@ -290,6 +295,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>_clone</b> (std::shar
 <tr class="memitem:a9ad0c79df694d3f079daba3eedf0284c inherit pub_methods_classAsset"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/d97/classAsset.html#a9ad0c79df694d3f079daba3eedf0284c">getLocationString</a> ()</td></tr>
 <tr class="memdesc:a9ad0c79df694d3f079daba3eedf0284c inherit pub_methods_classAsset"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain asset location string.  <a href="../../de/d97/classAsset.html#a9ad0c79df694d3f079daba3eedf0284c">More...</a><br /></td></tr>
 <tr class="separator:a9ad0c79df694d3f079daba3eedf0284c inherit pub_methods_classAsset"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adadfa6f04f5d8a5a7411a53399f2cb32 inherit pub_methods_classAsset"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/d97/classAsset.html#adadfa6f04f5d8a5a7411a53399f2cb32">isEgg</a> () const</td></tr>
+<tr class="memdesc:adadfa6f04f5d8a5a7411a53399f2cb32 inherit pub_methods_classAsset"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check whether the asset is an <a class="el" href="../../da/dea/classEggAsset.html" title="An EggAsset is an asset that can hatch to its full class. ">EggAsset</a> or not.  <a href="../../de/d97/classAsset.html#adadfa6f04f5d8a5a7411a53399f2cb32">More...</a><br /></td></tr>
+<tr class="separator:adadfa6f04f5d8a5a7411a53399f2cb32 inherit pub_methods_classAsset"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -592,6 +600,18 @@ glm::dvec3&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href
 glm::dvec3&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d3b/classSimplePhysicsPlatform.html#a487d43370335ef7cd402b59ee8976505">mCfg_g_accel</a> = glm::dvec3(0, 0, -9.81)</td></tr>
 <tr class="memdesc:a487d43370335ef7cd402b59ee8976505 inherit pro_attribs_classSimplePhysicsPlatform"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gravity acceleration vector. <br /></td></tr>
 <tr class="separator:a487d43370335ef7cd402b59ee8976505 inherit pro_attribs_classSimplePhysicsPlatform"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0c810ebe57ef2d98952baffada87c579 inherit pro_attribs_classSimplePhysicsPlatform"><td class="memItemLeft" align="right" valign="top"><a id="a0c810ebe57ef2d98952baffada87c579"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d3b/classSimplePhysicsPlatform.html#a0c810ebe57ef2d98952baffada87c579">movePerSec_m_stepMagnitude</a> = 0.0</td></tr>
+<tr class="memdesc:a0c810ebe57ef2d98952baffada87c579 inherit pro_attribs_classSimplePhysicsPlatform"><td class="mdescLeft">&#160;</td><td class="mdescRight">How many meter does the platform move in each simulation step. <br /></td></tr>
+<tr class="separator:a0c810ebe57ef2d98952baffada87c579 inherit pro_attribs_classSimplePhysicsPlatform"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6008c5e10eb25cbffae259ce8d72fecd inherit pro_attribs_classSimplePhysicsPlatform"><td class="memItemLeft" align="right" valign="top"><a id="a6008c5e10eb25cbffae259ce8d72fecd"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d3b/classSimplePhysicsPlatform.html#a6008c5e10eb25cbffae259ce8d72fecd">engineLimitReached</a> = false</td></tr>
+<tr class="memdesc:a6008c5e10eb25cbffae259ce8d72fecd inherit pro_attribs_classSimplePhysicsPlatform"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flag to store if the engine max thrust was reached in a given leg. The value is reset en each leg. <br /></td></tr>
+<tr class="separator:a6008c5e10eb25cbffae259ce8d72fecd inherit pro_attribs_classSimplePhysicsPlatform"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6730961af507c6c457c0cf5c7212be39 inherit pro_attribs_classSimplePhysicsPlatform"><td class="memItemLeft" align="right" valign="top"><a id="a6730961af507c6c457c0cf5c7212be39"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d3b/classSimplePhysicsPlatform.html#a6730961af507c6c457c0cf5c7212be39">userSpeedLimitReached</a> = false</td></tr>
+<tr class="memdesc:a6730961af507c6c457c0cf5c7212be39 inherit pro_attribs_classSimplePhysicsPlatform"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flag to store if the user-provided movePerSec_m speed was achieved for a given leg. <br /></td></tr>
+<tr class="separator:a6730961af507c6c457c0cf5c7212be39 inherit pro_attribs_classSimplePhysicsPlatform"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Class representing a helicopter platform. </p>

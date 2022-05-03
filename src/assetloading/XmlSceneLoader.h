@@ -8,6 +8,8 @@
 #include <SerialSceneWrapper.h>
 #include <SceneLoadingSpecification.h>
 #include <scene/dynamic/DynSequentiableMovingObject.h>
+#include <KDTreeFactory.h>
+#include <KDGroveFactory.h>
 
 /**
  * @brief Class for scene loading from XML file.
@@ -61,7 +63,12 @@ public:
     /**
      * @brief Default constructor for XML scene loader
      */
-    XmlSceneLoader() = default;
+    XmlSceneLoader() :
+        kdtFactoryType(1),
+        kdtNumJobs(1),
+        kdtGeomJobs(1),
+        kdtSAHLossNodes(21)
+    {}
     virtual ~XmlSceneLoader() {}
 
     // ***  SCENE CREATION  *** //
@@ -95,35 +102,6 @@ public:
     shared_ptr<ScenePart> loadFilters(
         tinyxml2::XMLElement *scenePartNode,
         bool &holistic
-    );
-
-    /**
-     * @brief Build a dynamic sequentiable moving object which is composed of
-     *  dynamic motions.
-     *
-     * It is mandatory that dmotion elements contained in the part element
-     *  also contain an id attribute specifying the unique identifier for the
-     *  sequence in its context. The loop attribute is also mandatory, where
-     *  \f$0\f$ means infinity loop and \f$n > 0\f$ specifies how many times
-     *  the sequence will be repeated until proceeding to next sequence. Next
-     *  sequence can be specified through the next attribute, which may contain
-     *  the identifier of the next sequence. If no next attribute is given,
-     *  then it is assumed that there is no next sequence.
-     *
-     * @param scenePartNode XML part node defining the scene part
-     * @param scenePart The scene part object where the dynamic sequentiable
-     *  moving object belongs to
-     * @return Built dynamic sequentiable moving object composed of dynamic
-     *  motions specified in the XML
-     * @see DynSequencer
-     * @see DynSequence
-     * @see rigidmotion::RigidMotion
-     * @see DynMotion
-     * @see XmlUtils::createDynMotionsVector
-     */
-    shared_ptr<DynSequentiableMovingObject> loadDynMotions(
-        tinyxml2::XMLElement *scenePartNode,
-        shared_ptr<ScenePart> scenePart
     );
 
     /**
@@ -169,6 +147,56 @@ public:
     );
 
     /**
+     * @brief Build the KDTree factory from loader's kdtFactoryType and
+     *  kdtSAHLossNodes attributes
+     * @return Built KDTree factory
+     * @see XmlSceneLoader::kdtFactoryType
+     * @see XmlSceneLoader::kdtSAHLossNodes
+     * @see KDTreeFactory
+     */
+    shared_ptr<KDTreeFactory> makeKDTreeFactory();
+
+    /**
+     * @brief Build the KDGrove factory from loader's KDTree factory
+     *  specification
+     * @return Build KDGrove factory
+     * @see XmlSceneLoader::makeKDTreeFactory
+     * @see KDGroveFactory
+     */
+    shared_ptr<KDGroveFactory> makeKDGroveFactory();
+
+    // ***  DYNAMIC SCENE LOADING METHODS  *** //
+    // *************************************** //
+    /**
+     * @brief Build a dynamic sequentiable moving object which is composed of
+     *  dynamic motions.
+     *
+     * It is mandatory that dmotion elements contained in the part element
+     *  also contain an id attribute specifying the unique identifier for the
+     *  sequence in its context. The loop attribute is also mandatory, where
+     *  \f$0\f$ means infinity loop and \f$n > 0\f$ specifies how many times
+     *  the sequence will be repeated until proceeding to next sequence. Next
+     *  sequence can be specified through the next attribute, which may contain
+     *  the identifier of the next sequence. If no next attribute is given,
+     *  then it is assumed that there is no next sequence.
+     *
+     * @param scenePartNode XML part node defining the scene part
+     * @param scenePart The scene part object where the dynamic sequentiable
+     *  moving object belongs to
+     * @return Built dynamic sequentiable moving object composed of dynamic
+     *  motions specified in the XML
+     * @see DynSequencer
+     * @see DynSequence
+     * @see rigidmotion::RigidMotion
+     * @see DynMotion
+     * @see XmlUtils::createDynMotionsVector
+     */
+    shared_ptr<DynSequentiableMovingObject> loadDynMotions(
+        tinyxml2::XMLElement *scenePartNode,
+        shared_ptr<ScenePart> scenePart
+    );
+
+    /**
      * @brief Build a dynamic scene based on given static scene.
      *
      * NOTICE for this method to work properly given scene MUST be of
@@ -182,12 +210,12 @@ public:
     shared_ptr<StaticScene> makeSceneDynamic(shared_ptr<StaticScene> scene);
 
     /**
-     * @brief Build the KDTree factory from loader's kdtFactoryType and
-     *  kdtSAHLossNodes attributes
-     * @return Built KDTree factory
-     * @see XmlSceneLoader::kdtFactoryTypr
-     * @see XmlSceneLoader::kdtSAHLossNodes
-     * @see KDTreeFactory
+     * @brief Handle the loading of dynamic scene attributes
+     * @param sceneNode The XML node defining the dynamic scene
+     * @param scene Dynamic scene which attributes must be configured
      */
-    shared_ptr<KDTreeFactory> makeKDTreeFactory();
+    void handleDynamicSceneAttributes(
+        tinyxml2::XMLElement *sceneNode,
+        shared_ptr<DynScene> scene
+    );
 };

@@ -2,9 +2,9 @@ var searchData=
 [
   ['ladlut',['ladlut',['../dd/dc4/classScenePart.html#ab97c85e1d868194353a4274f98d8b5f4',1,'ScenePart']]],
   ['lambda',['LAMBDA',['../d1/d2b/classMarquardtFitter.html#a80d09545e15e84af3b566192e63de214',1,'MarquardtFitter']]],
-  ['las10',['las10',['../d8/d6b/classAbstractDetector.html#aac5016e7d73d63069610604156837a76',1,'AbstractDetector::las10()'],['../d6/da1/classSurveyPlayback.html#a8923c803b7e38d0d99272a03aa886888',1,'SurveyPlayback::las10()']]],
-  ['lasoutput',['lasOutput',['../d8/d6b/classAbstractDetector.html#a70d7c482e01b01231e6d1d6af7c69774',1,'AbstractDetector::lasOutput()'],['../d6/da1/classSurveyPlayback.html#a1b2a23d061084f30108d2115cbfe313e',1,'SurveyPlayback::lasOutput()']]],
-  ['lasscale',['lasScale',['../d8/d6b/classAbstractDetector.html#aae600568ef0e70601193f2a0006b93c3',1,'AbstractDetector']]],
+  ['las10',['las10',['../d1/d3b/classhelios_1_1filems_1_1HeliosWriter.html#a9b4ab73d3ac4af17f48d66f487461b9a',1,'helios::filems::HeliosWriter']]],
+  ['lasoutput',['lasOutput',['../d1/d3b/classhelios_1_1filems_1_1HeliosWriter.html#a92a5103b1b8607411dc068b4bba782ea',1,'helios::filems::HeliosWriter']]],
+  ['lasscale',['lasScale',['../d1/d3b/classhelios_1_1filems_1_1HeliosWriter.html#aa955cdb062d97332822dc3fe445002b0',1,'helios::filems::HeliosWriter']]],
   ['last_5freopen',['last_reopen',['../d8/d63/classfile__logger.html#a5dc97d5b89f897216e9ae5b881265685',1,'file_logger']]],
   ['lastblock',['lastBlock',['../d9/d47/classBlockAllocator.html#a2125bf13cde4808afb68e6a74decced8',1,'BlockAllocator']]],
   ['lastblockelements',['lastBlockElements',['../d9/d47/classBlockAllocator.html#ab2eb4f0ae60791f01063abf2313f71e0',1,'BlockAllocator']]],
@@ -15,6 +15,7 @@ var searchData=
   ['lastnumvoxels',['lastNumVoxels',['../d6/d03/classXYZPointCloudFileLoader.html#a46ea40e1e3eeb38dc55f3780deb2d9d2',1,'XYZPointCloudFileLoader']]],
   ['lastsign',['lastSign',['../db/d69/classHelicopterPlatform.html#a2dcfe4799486ac1e7e1b4fac1d25431e',1,'HelicopterPlatform::lastSign()'],['../d5/d2f/classBuddingTaskDropper.html#a61c9fb8f999377b8cfd650a301f7d5a3',1,'BuddingTaskDropper::lastSign()']]],
   ['lastspeed_5fxy',['lastSpeed_xy',['../db/d69/classHelicopterPlatform.html#ad8b9b0fd16bd572afe964682a2be7c73',1,'HelicopterPlatform']]],
+  ['lasttime',['lastTime',['../d4/dc7/classDesignTrajectoryFunction.html#a4e56f270ee0435aa01489d1affc4488c',1,'DesignTrajectoryFunction']]],
   ['lasttrajectorytime',['lastTrajectoryTime',['../dc/d42/classScanner.html#acc8e6f98bc56e58cb80670a00585ee98',1,'Scanner']]],
   ['layer',['layer',['../d1/d0c/classGeoTiffFileLoader.html#acc63888f25ed900bf6f410e24938e308',1,'GeoTiffFileLoader']]],
   ['left',['left',['../d8/d4c/classKDTreeBuildType.html#accf535cd3241a306d1364792f8394642',1,'KDTreeBuildType::left()'],['../dd/d79/classLightKDTreeNode.html#aacaf8a7c870c480b735a4998d647a844',1,'LightKDTreeNode::left()']]],
@@ -29,6 +30,7 @@ var searchData=
   ['levels',['levels',['../d0/db8/classstd__out__logger.html#a070a0594ff657399c29acc5a286e1557',1,'std_out_logger']]],
   ['linearity',['linearity',['../d4/dfa/classSurfaceInspector_1_1maths_1_1DetailedPlane.html#a9e4cec2356a97ced339e37fb61c1c0ea',1,'SurfaceInspector::maths::DetailedPlane']]],
   ['lkdtnblockallocator',['lkdtnBlockAllocator',['../d5/dd0/classKDTreeFactory.html#a5316cf17aff5dd178d2a84d31410e213',1,'KDTreeFactory']]],
+  ['lmws',['lmws',['../d6/de6/classhelios_1_1filems_1_1Las14VectorialSyncFileMeasurementWriter.html#abe7cd5aebc13a0e58319808a5fbbdaf3',1,'helios::filems::Las14VectorialSyncFileMeasurementWriter::lmws()'],['../d6/dfd/classhelios_1_1filems_1_1LasVectorialSyncFileMeasurementWriter.html#ac85b6b47fdad4d9ad9aa9fb774852ced',1,'helios::filems::LasVectorialSyncFileMeasurementWriter::lmws()']]],
   ['localrotation',['localRotation',['../de/de4/classRotateFilter.html#a80583da7571d8216b283aeec230ec6e4',1,'RotateFilter']]],
   ['localscalefactor',['localScaleFactor',['../d9/d83/classScaleFilter.html#a241840ef9a21faa8b7acdf053d93c359',1,'ScaleFilter']]],
   ['localtranslation',['localTranslation',['../df/d5a/classTranslateFilter.html#a0a672ad28c5f7c8acdf63c5e8dd2ff72',1,'TranslateFilter']]],
@@ -39,8 +41,9 @@ var searchData=
   ['lossnodes',['lossNodes',['../d6/d0d/classFastSAHKDTreeRecountSubTask.html#a15fb46b2852a1f56768d52800effe35e',1,'FastSAHKDTreeRecountSubTask::lossNodes()'],['../db/d58/classSAHKDTreeFactory.html#aa4bc15caaa3456f80cbcd729434e1d37',1,'SAHKDTreeFactory::lossNodes()']]],
   ['low_5fpoint',['LOW_POINT',['../df/d64/classLasSpecification.html#a539093079758a0d96c69e91066e96e7a',1,'LasSpecification']]],
   ['low_5fvegetation',['LOW_VEGETATION',['../df/d64/classLasSpecification.html#a0fe080fcf46324f52fdc97e9641db67f',1,'LasSpecification']]],
-  ['lp',['lp',['../d2/db3/classLasSyncFileWriter.html#a8d05197fc8c6d6e489ed4ef5856be9f2',1,'LasSyncFileWriter']]],
-  ['lw',['lw',['../d2/db3/classLasSyncFileWriter.html#af36c72b98748d0e2be97001a6096bd2e',1,'LasSyncFileWriter']]],
-  ['lwheader',['lwHeader',['../d2/db3/classLasSyncFileWriter.html#a8686a8f16b15af64294cc2a416697607',1,'LasSyncFileWriter']]],
-  ['lwopener',['lwOpener',['../d2/db3/classLasSyncFileWriter.html#a548b6aae0345921f72c7a7059d351f0d',1,'LasSyncFileWriter']]]
+  ['lp',['lp',['../d7/d5b/classhelios_1_1filems_1_1LasSyncFileWriter.html#afeb08dde0d3ee2f41d13eb759331ffc7',1,'helios::filems::LasSyncFileWriter::lp()'],['../da/d35/classhelios_1_1filems_1_1LasMeasurementWriteStrategy.html#ad49619c47c269a0742ec04951747ec2a',1,'helios::filems::LasMeasurementWriteStrategy::lp()']]],
+  ['lrs',['lrs',['../d0/d01/classhelios_1_1filems_1_1BufferedLineFileReader.html#af7e4670ddd95c606f3e5d81f324c155a',1,'helios::filems::BufferedLineFileReader']]],
+  ['lw',['lw',['../d7/d5b/classhelios_1_1filems_1_1LasSyncFileWriter.html#a3bd9a79c80431331a46cd6971e41b6a3',1,'helios::filems::LasSyncFileWriter::lw()'],['../da/d35/classhelios_1_1filems_1_1LasMeasurementWriteStrategy.html#a77c3544b598f2cea7335acab7bb63c2c',1,'helios::filems::LasMeasurementWriteStrategy::lw()']]],
+  ['lwheader',['lwHeader',['../d7/d5b/classhelios_1_1filems_1_1LasSyncFileWriter.html#a04e9cd36a1308a13c3f1286f3655676b',1,'helios::filems::LasSyncFileWriter']]],
+  ['lwopener',['lwOpener',['../d7/d5b/classhelios_1_1filems_1_1LasSyncFileWriter.html#a0668ace0da5cee5e27a7a10e2e7f1fb0',1,'helios::filems::LasSyncFileWriter']]]
 ];

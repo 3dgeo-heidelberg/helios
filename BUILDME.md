@@ -171,7 +171,7 @@ Finally, compile Helios++:
 ```make -jn``` where ```n``` is the amount of threads to be used in the compilation.
 
 
-In order to execute PyHelios scripts, libhelios.so path must be added to PYTHONPATH (default location: helios root directory):
+In order to execute PyHelios scripts, `_pyhelios.so` path must be added to PYTHONPATH (default location: helios root directory):
 
 ```export PYTHONPATH=$PYTHONPATH:/path/to/helios```
 
@@ -429,9 +429,16 @@ If the compilation was sucessful, the following files must exist in `helios/Rele
  - helios.exe 
  - helios.exp 
  - helios.lib
- - pyhelios.exp 
- - pyhelios.lib
- ```
+ - _pyhelios.exp 
+ - _pyhelios.lib
+ - _pyhelios.pyd
+```
+
+Finally, to execute PyHelios scripts, `_pyhelios.pyd` path must be added to PYTHONPATH (default location: helios/Release directory):
+
+```export PYTHONPATH=$PYTHONPATH:/path/to/helios```
+
+Another alternative is to copy the `_pyhelios.pyd` into the `run` directory, where `helios.py` is located.
 
 
 ### How to execute

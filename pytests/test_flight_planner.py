@@ -156,21 +156,25 @@ def test_write_legs_not_always_active():
 
     # expected
     expected_legs_xml = f'''
+        <!-- leg000 -->
         <leg>
             <platformSettings x="{waypoints[0, 0]}" y="{waypoints[0, 1]}" z="{altitude}" movePerSec_m="{speed}" />
             <scannerSettings template="{template_id}" trajectoryTimeInterval_s="0.05" />
         </leg>
         
+        <!-- leg001 -->
         <leg>
             <platformSettings x="{waypoints[1, 0]}" y="{waypoints[1, 1]}" z="{altitude}" movePerSec_m="{speed}" />
             <scannerSettings template="{template_id}" active="false" trajectoryTimeInterval_s="0.05" />
         </leg>
         
+        <!-- leg002 -->
         <leg>
             <platformSettings x="{waypoints[2, 0]}" y="{waypoints[2, 1]}" z="{altitude}" movePerSec_m="{speed}" />
             <scannerSettings template="{template_id}" trajectoryTimeInterval_s="0.05" />
         </leg>
         
+        <!-- leg003 -->
         <leg>
             <platformSettings x="{waypoints[3, 0]}" y="{waypoints[3, 1]}" z="{altitude}" movePerSec_m="{speed}" />
             <scannerSettings template="{template_id}" active="false" trajectoryTimeInterval_s="0.05" />

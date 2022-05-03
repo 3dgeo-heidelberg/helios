@@ -8,9 +8,16 @@
 #include <PyHeliosOutputWrapper.h>
 #include <chrono>
 #include <PulseThreadPoolFactory.h>
+#include <filems/facade/FMSFacade.h>
+#include <filems/facade/FMSWriteFacade.h>
+#include <filems/factory/FMSFacadeFactory.h>
+
+using helios::filems::FMSWriteFacade;
 
 using pyhelios::PyHeliosSimulation;
 using pyhelios::PyHeliosOutputWrapper;
+
+namespace fms = helios::filems;
 
 // ***  CONSTRUCTION / DESTRUCTION  *** //
 // ************************************ //
@@ -73,6 +80,10 @@ void PyHeliosSimulation::start (){
     );
 
     if(finalOutput){
+        survey->scanner->allOutputPaths =
+            std::make_shared<std::vector<std::string>>(
+                std::vector<std::string>(0)
+            );
         survey->scanner->allMeasurements =
             std::make_shared<std::vector<Measurement>>(
                 std::vector<Measurement>(0)
@@ -84,27 +95,27 @@ void PyHeliosSimulation::start (){
         survey->scanner->allMeasurementsMutex = std::make_shared<std::mutex>();
     }
 
-    survey->scanner->detector->lasOutput = lasOutput;
-    survey->scanner->detector->las10 = las10;
-    survey->scanner->detector->zipOutput = zipOutput;
+    std::shared_ptr<fms::FMSFacade> fms = fms::FMSFacadeFactory().buildFacade(
+        outputPath,
+        lasScale,
+        lasOutput,
+        las10,
+        zipOutput,
+        *survey
+    );
 
     buildPulseThreadPool();
-    playback = std::shared_ptr<SurveyPlayback>(
-        new SurveyPlayback(
-            survey,
-            outputPath,
-            parallelizationStrategy,
-            pulseThreadPool,
-            chunkSize,
-            fixedGpsTimeStart,
-            lasOutput,
-            las10,
-            zipOutput,
-            exportToFile
-        )
+    playback = std::make_shared<SurveyPlayback>(
+        survey,
+        fms,
+        parallelizationStrategy,
+        pulseThreadPool,
+        chunkSize,
+        fixedGpsTimeStart,
+        exportToFile
     );
     playback->callback = callback;
-    playback->setSimFrequency(simFrequency);
+    playback->setCallbackFrequency(callbackFrequency);
     thread = new boost::thread(
         boost::bind(&SurveyPlayback::start, &(*playback))
     );
@@ -177,14 +188,19 @@ PyHeliosOutputWrapper * PyHeliosSimulation::join(){
     );
 
     // Callback concurrency handling (NON BLOCKING MODE)
-    if(simFrequency != 0 && callback != nullptr){
+    if(callbackFrequency != 0 && callback != nullptr){
         if(!playback->finished) {
             std::vector<Measurement> measurements(0);
             std::vector<Trajectory> trajectories(0);
             return new PyHeliosOutputWrapper(
                 measurements,
                 trajectories,
-                survey->scanner->detector->outputFilePath.string(),
+                survey->scanner->detector->getFMS()->write
+                    .getMeasurementWriterOutputPath().string(),
+                std::vector<std::string>{
+                    survey->scanner->detector->getFMS()->write
+                        .getMeasurementWriterOutputPath().string()
+                },
                 false
             );
         }
@@ -193,7 +209,9 @@ PyHeliosOutputWrapper * PyHeliosSimulation::join(){
             return new PyHeliosOutputWrapper(
                 survey->scanner->allMeasurements,
                 survey->scanner->allTrajectories,
-                survey->scanner->detector->outputFilePath.string(),
+                survey->scanner->detector->getFMS()->write
+                    .getMeasurementWriterOutputPath().string(),
+                survey->scanner->allOutputPaths,
                 true
             );
         }
@@ -208,7 +226,9 @@ PyHeliosOutputWrapper * PyHeliosSimulation::join(){
     return new PyHeliosOutputWrapper(
         survey->scanner->allMeasurements,
         survey->scanner->allTrajectories,
-        survey->scanner->detector->outputFilePath.string(),
+        survey->scanner->detector->getFMS()->write
+            .getMeasurementWriterOutputPath().string(),
+        survey->scanner->allOutputPaths,
         true
     );
 }
@@ -291,13 +311,14 @@ PyHeliosSimulation * PyHeliosSimulation::copy(){
     phs->outputPath = this->outputPath;
     phs->numThreads = this->numThreads;
     phs->finalOutput = this->finalOutput;
-    phs->survey = std::make_shared<Survey>(*survey);
     phs->callback = this->callback;
     phs->lasOutput = this->lasOutput;
     phs->las10     = this->las10;
     phs->zipOutput = this->zipOutput;
     phs->exportToFile = this->exportToFile;
-    phs->setSimFrequency(getSimFrequency());
+    phs->setCallbackFrequency(getCallbackFrequency());
+    phs->survey = std::make_shared<Survey>(*survey);
+    phs->survey->scanner->initializeSequentialGenerators();
     return phs;
 }
 
@@ -323,6 +344,21 @@ void PyHeliosSimulation::setCallback(PyObject * pyCallback){
     if(survey->scanner->cycleMeasurementsMutex == nullptr){
         survey->scanner->cycleMeasurementsMutex =
             std::make_shared<std::mutex>();
+    }
+}
+
+// ***  INTERNAL USE  *** //
+// ********************** //
+std::shared_ptr<DynScene> PyHeliosSimulation::_getDynScene(){
+    try{
+        return std::dynamic_pointer_cast<DynScene>(
+            survey->scanner->platform->scene
+        );
+    }
+    catch(std::exception &ex){
+        throw PyHeliosException(
+            "Failed to obtain dynamic scene. Current scene is not dynamic."
+        );
     }
 }
 

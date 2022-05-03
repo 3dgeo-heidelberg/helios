@@ -2,6 +2,8 @@ var classvisualhelios_1_1VHStaticObjectAdapter =
 [
     [ "VHStaticObjectAdapter", "d1/dda/classvisualhelios_1_1VHStaticObjectAdapter.html#abaed9920241678b097673d575b04c0c7", null ],
     [ "~VHStaticObjectAdapter", "d1/dda/classvisualhelios_1_1VHStaticObjectAdapter.html#ae8fee31bad540d9190c89fa15039e225", null ],
+    [ "addTriangleToPolymesh", "d1/dda/classvisualhelios_1_1VHStaticObjectAdapter.html#aeb46f8cd8ea161b117e11b88511667af", null ],
+    [ "addVoxelToPolymesh", "d1/dda/classvisualhelios_1_1VHStaticObjectAdapter.html#aec9218512bc10ba21966eb5e9ebd13f3", null ],
     [ "buildPolymesh", "d1/dda/classvisualhelios_1_1VHStaticObjectAdapter.html#a11cdd043b864eb148240e24cd50d4775", null ],
     [ "constructPolymesh", "d1/dda/classvisualhelios_1_1VHStaticObjectAdapter.html#af4403b8cbe176a08b8741d4b9a02cabe", null ],
     [ "getId", "d1/dda/classvisualhelios_1_1VHStaticObjectAdapter.html#aa29fd14b908d56e5dee853c6d7050f13", null ],

@@ -1,4 +1,6 @@
 <map id="Las14SyncFileWriter" name="Las14SyncFileWriter">
-<area shape="rect" id="node2" href="$d2/db3/classLasSyncFileWriter.html" title="SyncFileWriter implementation for LAS format. " alt="" coords="12,171,141,197"/>
-<area shape="rect" id="node3" href="$d1/d0e/classSyncFileWriter.html" title="Abstract class defining common behavior for all synchronous file writers. " alt="" coords="23,95,131,121"/>
+<area shape="rect" id="node1" title="LasSyncFileWriter implementation for LAS v1.4 format." alt="" coords="5,247,159,273"/>
+<area shape="rect" id="node2" href="$d2/db3/classLasSyncFileWriter.html" title="SyncFileWriter implementation for LAS format." alt="" coords="13,171,151,197"/>
+<area shape="rect" id="node3" href="$d1/d0e/classSyncFileWriter.html" title="Abstract class defining common behavior for all synchronous file writers." alt="" coords="25,95,139,121"/>
+<area shape="rect" id="node4" title=" " alt="" coords="53,5,111,32"/>
 </map>

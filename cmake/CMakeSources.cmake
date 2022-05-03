@@ -10,16 +10,33 @@ set(HELIOS_INCLUDE_DIRECTORIES
     "src/adt/tree/"
     "src/adt/bintree/"
     "src/adt/kdtree/"
+    "src/adt/grove/"
+    "src/alg/"
+    "src/alg/raycast/"
     "src/assetloading/"
     "src/assetloading/geometryfilter/"
+    "src/filems/"
+    "src/filems/facade/"
+    "src/filems/factory/"
+    "src/filems/read/"
+    "src/filems/serialization/"
+    "src/filems/util/"
+    "src/filems/write/"
+    "src/filems/write/core/"
+    "src/filems/write/comps/"
+    "src/filems/write/strategies/"
+    "src/main/"
     "src/platform/"
+    "src/platform/trajectory/"
     "src/scanner/"
     "src/scanner/beamDeflector/"
     "src/scanner/detector/"
     "src/scene/"
     "src/scene/primitives/"
     "src/scene/dynamic/"
-    "src/surveyplayback/"
+    "src/sim/comps/"
+    "src/sim/core/"
+    "src/sim/tools/"
     "src/noise/"
     "src/maths/"
     "src/maths/rigidmotion/"
@@ -39,6 +56,10 @@ set(HELIOS_INCLUDE_DIRECTORIES
 # Pyhelios specific include directories
 if(${PYTHON_BINDING})
     list(APPEND HELIOS_INCLUDE_DIRECTORIES "src/pybinds/")
+endif()
+# Data analytics include directories
+if(${DATA_ANALYTICS})
+    list(APPEND HELIOS_INCLUDE_DIRECTORIES "src/dataanalytics/")
 endif()
 # PCL specific include directories
 if(${PCL_BINDING})

@@ -15,9 +15,12 @@ namespace fs = boost::filesystem;
 #include "typedef.h"
 #include <XmlUtils.h>
 
+#include <fluxionum/TemporalDesignMatrix.h>
+
 #include "GroundVehiclePlatform.h"
 #include "HelicopterPlatform.h"
 #include "LinearPathPlatform.h"
+#include "InterpolatedMovingPlatformEgg.h"
 
 #include "ConicBeamDeflector.h"
 #include "FiberArrayBeamDeflector.h"
@@ -33,6 +36,14 @@ namespace fs = boost::filesystem;
 #include "MathConverter.h"
 #include "TimeWatcher.h"
 
+using std::unique_ptr;
+
+// ***  CONSTANTS  *** //
+// ******************* //
+std::string const XmlAssetsLoader::defaultScannerSettingsMsg =
+    "Using scanner default value for attribute";
+std::string const XmlAssetsLoader::defaultPlatformSettingsMsg =
+    "Using platform default value for attribute";
 
 
 // ***  CONSTRUCTION / DESTRUCTION  *** //
@@ -69,7 +80,7 @@ XmlAssetsLoader::createAssetFromXml(
     exit(-1);
   }
 
-  std::shared_ptr<Asset> result;
+  std::shared_ptr<Asset> result = nullptr;
   if (type == "platform") {
     result = std::dynamic_pointer_cast<Asset>(
         createPlatformFromXml(assetNode)
@@ -108,6 +119,26 @@ XmlAssetsLoader::createAssetFromXml(
   return result;
 }
 
+std::shared_ptr<Asset> XmlAssetsLoader::createProceduralAssetFromXml(
+    std::string const &type,
+    std::string const &id,
+    void *extraOutput
+){
+    std::shared_ptr<Asset> result = nullptr;
+    if(type == "platform"){
+        result = std::dynamic_pointer_cast<Asset>(
+            procedurallyCreatePlatformFromXml(type, id)
+        );
+    }
+    else{
+        logging::ERR(
+            "ERROR: Unknown procedurally created asset type: " + type
+        );
+        exit(-1);
+    }
+    return result;
+}
+
 std::shared_ptr<Platform>
 XmlAssetsLoader::createPlatformFromXml(tinyxml2::XMLElement *platformNode) {
   std::shared_ptr<Platform> platform(new Platform());
@@ -129,7 +160,7 @@ XmlAssetsLoader::createPlatformFromXml(tinyxml2::XMLElement *platformNode) {
   // Read SimplePhysicsPlatform related stuff
   SimplePhysicsPlatform *spp =
       dynamic_cast<SimplePhysicsPlatform *>(platform.get());
-  if (spp != NULL) {
+  if (spp != nullptr) {
     spp->mCfg_drag = platformNode->DoubleAttribute("drag", 1.0);
   }
 
@@ -292,23 +323,34 @@ XmlAssetsLoader::createPlatformSettingsFromXml(
   // Overload settings themselves
   settings->baseTemplate = template1;
   settings->x = boost::get<double>(XmlUtils::getAttribute(
-      node, "x", "double", template1->x));
+      node, "x", "double", template1->x, defaultPlatformSettingsMsg));
   settings->y = boost::get<double>(XmlUtils::getAttribute(
-      node, "y", "double", template1->y));
+      node, "y", "double", template1->y, defaultPlatformSettingsMsg));
   settings->z = boost::get<double>(XmlUtils::getAttribute(
-      node, "z", "double", template1->z));
+      node, "z", "double", template1->z, defaultPlatformSettingsMsg));
 
   // Read if platform should be put on ground, ignoring z coordinate:
-  settings->onGround = boost::get<bool>(
-      XmlUtils::getAttribute(node, "onGround", "bool", template1->onGround));
+  settings->onGround = boost::get<bool>(XmlUtils::getAttribute(
+      node, "onGround", "bool", template1->onGround, defaultPlatformSettingsMsg
+  ));
 
   // Read if platform must use stop and turn mechanics or not
   settings->stopAndTurn = boost::get<bool>(XmlUtils::getAttribute(
-      node, "stopAndTurn", "bool", template1->stopAndTurn));
+    node,
+    "stopAndTurn",
+    "bool",
+    template1->stopAndTurn,
+    defaultPlatformSettingsMsg
+  ));
 
   // Read if platform must use smooth turn mechanics or not
   settings->smoothTurn = boost::get<bool>(XmlUtils::getAttribute(
-      node, "smoothTurn", "bool", template1->smoothTurn));
+    node,
+    "smoothTurn",
+    "bool",
+    template1->smoothTurn,
+    defaultPlatformSettingsMsg
+  ));
 
   if (settings->stopAndTurn && settings->smoothTurn) {
     logging::INFO("Both stopAndTurn and smoothTurn have been set to true. "
@@ -318,17 +360,31 @@ XmlAssetsLoader::createPlatformSettingsFromXml(
 
   // Read if platform must be able to slowdown (true) or not (false)
   settings->slowdownEnabled = boost::get<bool>(XmlUtils::getAttribute(
-      node, "slowdownEnabled", "bool", template1->slowdownEnabled));
+      node,
+      "slowdownEnabled",
+      "bool",
+      template1->slowdownEnabled,
+      defaultPlatformSettingsMsg
+  ));
 
   // Read platform speed:
   settings->movePerSec_m = boost::get<double>(XmlUtils::getAttribute(
-      node, "movePerSec_m", "double", template1->movePerSec_m));
+    node,
+    "movePerSec_m",
+    "double",
+    template1->movePerSec_m,
+    defaultPlatformSettingsMsg
+  ));
 
   if (node->FindAttribute("yawAtDeparture_deg") != nullptr) {
     settings->yawAtDepartureSpecified = true;
     settings->yawAtDeparture = MathConverter::degreesToRadians(
         boost::get<double>(XmlUtils::getAttribute(
-            node, "yawAtDeparture_deg", "double", template1->yawAtDeparture
+            node,
+            "yawAtDeparture_deg",
+            "double",
+            template1->yawAtDeparture,
+            defaultPlatformSettingsMsg
         ))
     );
   }
@@ -342,6 +398,353 @@ XmlAssetsLoader::createPlatformSettingsFromXml(
 
   // Return platform settings
   return settings;
+}
+
+std::shared_ptr<Platform> XmlAssetsLoader::procedurallyCreatePlatformFromXml(
+    std::string const &type,
+    std::string const &id
+){
+    if(id == "interpolated") return createInterpolatedMovingPlatform();
+    else{
+        logging::ERR(
+            "Unexpected procedurally creatable platform type: " + type
+        );
+        std::exit(-1);
+    }
+}
+std::shared_ptr<Platform> XmlAssetsLoader::createInterpolatedMovingPlatform(){
+    // Prepare egg building
+    std::shared_ptr<InterpolatedMovingPlatformEgg> platform =
+        std::make_shared<InterpolatedMovingPlatformEgg>();
+    tinyxml2::XMLElement *survey = doc.FirstChildElement()
+        ->FirstChildElement("survey");
+    tinyxml2::XMLElement *leg = survey->FirstChildElement("leg");
+    std::unordered_set<std::string> trajectoryFiles;
+    std::unordered_map<std::string, vector<size_t>> indices; // t, RPY, XYZ
+    std::string interpDom = "position_and_attitude";
+    bool firstInterpDom = true;
+    bool toRadians = true;
+    double startTime = 0.0;
+    bool syncGPSTime = false;
+    if(leg==nullptr){
+        logging::ERR(
+            "XmlAssetsLoader::createInterpolatedMovingPlatform failed\n"
+            "There is no leg in the Survey XML document"
+        );
+        std::exit(-1);
+    }
+    // Iterate over legs, to obtain indices
+    while(leg!=nullptr){
+        // Obtain platform settings
+        tinyxml2::XMLElement *ps = leg->FirstChildElement(
+            "platformSettings"
+        );
+        // Validate platform settings
+        if(ps==nullptr){
+            logging::ERR(
+                "XmlAssetsLoader::createInterpolatedMovingPlatform failed\n"
+                "There is no platformSettings in the leg"
+            );
+            std::exit(-1);
+        }
+        if(!XmlUtils::hasAttribute(ps, "trajectory")){
+            logging::ERR(
+                "XmlAssetsLoader::createInterpolatedMovingPlatform failed\n"
+                "The platformSettings element has no trajectory attribute"
+            );
+            std::exit(-1);
+        }
+        // Get the trajectory path
+        string const trajectoryPath = ps->Attribute("trajectory");
+        // Check if input is given either as radians or as degrees
+        toRadians &= ps->BoolAttribute("toRadians", true);
+        // Check if either GPS time must be synchronized or not
+        syncGPSTime |= ps->BoolAttribute("syncGPSTime", false);
+        // Handle interpolation domain
+        string const interpolationDomain =
+            (XmlUtils::hasAttribute(ps, "interpolationDomain")) ?
+                ps->Attribute("interpolationDomain") : "";
+        if(!interpolationDomain.empty()){
+            if(firstInterpDom){
+                if(
+                    interpolationDomain != "position" &&
+                    interpolationDomain != "position_and_attitude"
+                ){
+                    std::stringstream ss;
+                    ss  << "XmlAssetsLoader::createInterpolatedMovingPlatform "
+                        << "failed.\n"
+                        << "Unexpected interpolation domain: \""
+                        << interpolationDomain << "\"";
+                    logging::ERR(ss.str());
+                    std::exit(-1);
+                }
+                interpDom = interpolationDomain;
+            }
+            else if(interpDom != interpolationDomain){
+                std::stringstream ss;
+                ss  << "XmlAssetsLoader::createInterpolatedMovingPlatform "
+                    << "failed.\n"
+                    << "Interpolation domain \"" << interpDom << "\" "
+                    << "was first specified.\n"
+                    << "But then, interpolation domain \""
+                    << interpolationDomain << "\" was given.";
+                logging::ERR(ss.str());
+                std::exit(-1);
+            }
+            firstInterpDom = false;
+        }
+        // Handle trajectory metadata : indices
+        if(
+            XmlUtils::hasAttribute(ps, "tIndex") ||
+            XmlUtils::hasAttribute(ps, "rollIndex") ||
+            XmlUtils::hasAttribute(ps, "pitchIndex") ||
+            XmlUtils::hasAttribute(ps, "yawIndex") ||
+            XmlUtils::hasAttribute(ps, "xIndex") ||
+            XmlUtils::hasAttribute(ps, "yIndex") ||
+            XmlUtils::hasAttribute(ps, "zIndex")
+        ){
+            if(indices.find(trajectoryPath) != indices.end()){
+                logging::ERR(
+                    "XmlAssetsLoader::createInterpolatedMovingPlatform failed."
+                    "\nIndices were specified more than once for the same "
+                    "trajectory:\n\"" + trajectoryPath + "\""
+                );
+                std::exit(-1);
+            }
+            indices.emplace(
+                trajectoryPath,
+                vector<size_t>({
+                    (size_t)ps->IntAttribute("tIndex",      0),
+                    (size_t)ps->IntAttribute("rollIndex",   1),
+                    (size_t)ps->IntAttribute("pitchIndex",  2),
+                    (size_t)ps->IntAttribute("yawIndex",    3),
+                    (size_t)ps->IntAttribute("xIndex",      4),
+                    (size_t)ps->IntAttribute("yIndex",      5),
+                    (size_t)ps->IntAttribute("zIndex",      6)
+                })
+            );
+        }
+
+        // Prepare next iteration
+        leg = leg->NextSiblingElement("leg");
+    }
+
+    // Correct indices for POSITION scope
+    if(interpDom == "position"){ // Position indices
+        std::unordered_map<std::string, std::vector<std::size_t>>::iterator it;
+        for(it = indices.begin() ; it != indices.end() ; ++it){
+            std::vector<std::size_t> &inds = it->second;
+            inds.erase(inds.begin()+1, inds.begin()+4);
+        }
+    }
+
+    // Iterate over legs again, to fulfill egg
+    leg = survey->FirstChildElement("leg");
+    while(leg!=nullptr){
+        // Obtain platform settings
+        tinyxml2::XMLElement *ps = leg->FirstChildElement(
+            "platformSettings"
+        );
+        // Handle trajectory itself
+        string const trajectoryPath = ps->Attribute("trajectory");
+        bool const alreadyLoaded =
+            trajectoryFiles.find(trajectoryPath) != trajectoryFiles.end();
+        if(!alreadyLoaded){ // Load trajectory data if not already loaded
+            if(platform->tdm == nullptr){ // First loaded trajectory
+                if(indices.find(trajectoryPath) != indices.end()){ // XML inds
+                    DesignMatrix<double> dm(trajectoryPath);
+                    dm.swapColumns(indices[trajectoryPath]);
+                    platform->tdm =
+                    std::make_shared<TemporalDesignMatrix<double, double>>(
+                        dm, indices[trajectoryPath][0]
+                    );
+                }
+                else{ // Trajectory file indices
+                    platform->tdm = std::make_shared<
+                        TemporalDesignMatrix<double, double>
+                    >(
+                        trajectoryPath
+                    );
+                    if(interpDom == "position"){ // t, x, y, z from header
+                        vector<unsigned long long>inds({0, 1, 2});
+                        vector<string> const &names =
+                            platform->tdm->getColumnNames();
+                        for(size_t i = 0 ; i < names.size() ; ++i){
+                            if(names[i]=="x") inds[0] = i;
+                            else if(names[i]=="y") inds[1] = i;
+                            else if(names[i]=="z") inds[2] = i;
+                            else if(
+                                names[i]=="roll" ||
+                                names[i]=="pitch" ||
+                                names[i]=="yaw"
+                            ); // Ignore roll pitch yaw in position mode
+                            else{
+                                logging::ERR(
+                                    "XmlAssetsLoader::createInterpolated"
+                                    "MovingPlatform failed\n"
+                                    "Unexpected column \""+names[i]+"\""
+                                );
+                                std::exit(-1);
+                            }
+                        }
+                        platform->tdm->swapColumns(inds);
+                    }
+                    else{ // t, roll, pitch, yaw, x, y, z from header
+                        vector<unsigned long long>inds({0, 1, 2, 3, 4, 5});
+                        vector<string> const &names =
+                            platform->tdm->getColumnNames();
+                        for(size_t i = 0 ; i < names.size() ; ++i){
+                            if(names[i]=="roll") inds[0] = i;
+                            else if(names[i]=="pitch") inds[1] = i;
+                            else if(names[i]=="yaw") inds[2] = i;
+                            else if(names[i]=="x") inds[3] = i;
+                            else if(names[i]=="y") inds[4] = i;
+                            else if(names[i]=="z") inds[5] = i;
+                            else{
+                                logging::ERR(
+                                    "XmlAssetsLoader::createInterpolated"
+                                    "MovingPlatform failed\n"
+                                    "Unexpected column \""+names[i]+"\""
+                                );
+                                std::exit(-1);
+                            }
+                        }
+                        platform->tdm->swapColumns(inds);
+                    }
+                }
+                // Drop columns, if necessary
+                if(
+                    interpDom == "position" &&
+                    platform->tdm->getNumColumns() > 3
+                ){
+                    platform->tdm->dropColumns(vector<size_t>({0, 1, 2}));
+                }
+                // Apply slope filter, if requested
+                double const slopeFilterThreshold = ps->DoubleAttribute(
+                    "slopeFilterThreshold", 0.0
+                );
+                if(slopeFilterThreshold > 0.0){
+                    platform->tdm->sortByTime();
+                    size_t const filteredPoints =
+                        platform->tdm->slopeFilter(slopeFilterThreshold);
+                    std::stringstream ss;
+                    ss  << "Slope filter removed " << filteredPoints << " "
+                        << "points from \""+trajectoryPath+"\"";
+                    logging::DEBUG(ss.str());
+                }
+            }
+            else{ // Not first loaded, so merge with previous data
+                std::unique_ptr<TemporalDesignMatrix<double, double>> tdm;
+                if(indices.find(trajectoryPath) != indices.end()){ // XML inds
+                    DesignMatrix<double> dm(trajectoryPath);
+                    dm.swapColumns(indices[trajectoryPath]);
+                    tdm = unique_ptr<TemporalDesignMatrix<double, double>>(
+                        new TemporalDesignMatrix<double, double>(
+                            dm, indices[trajectoryPath][0]
+                        )
+                    );
+                }
+                else{  // Trajectory file indices
+                    tdm = unique_ptr<TemporalDesignMatrix<double, double>>(
+                        new TemporalDesignMatrix<double, double>(
+                            trajectoryPath
+                        )
+                    );
+                    if(interpDom == "position"){ // t, x, y, z from header
+                        vector<unsigned long long>inds({0, 1, 2});
+                        vector<string> const &names = tdm->getColumnNames();
+                        for(size_t i = 0 ; i < names.size() ; ++i){
+                            if(names[i]=="x") inds[0] = i;
+                            else if(names[i]=="y") inds[1] = i;
+                            else if(names[i]=="z") inds[2] = i;
+                            else if(
+                                names[i]=="roll" ||
+                                names[i]=="pitch" ||
+                                names[i]=="yaw"
+                            ); // Ignore roll pitch yaw in position mode
+                            else{
+                                logging::ERR(
+                                    "XmlAssetsLoader::createInterpolated"
+                                    "MovingPlatform failed\n"
+                                    "Unexpected column \""+names[i]+"\""
+                                );
+                                std::exit(-1);
+                            }
+                        }
+                        tdm->swapColumns(inds);
+                    }
+                    else{ // t, roll, pitch, yaw, x, y, z from header
+                        vector<unsigned long long>inds({0, 1, 2, 3, 4, 5});
+                        vector<string> const &names = tdm->getColumnNames();
+                        for(size_t i = 0 ; i < names.size() ; ++i){
+                            if(names[i]=="roll") inds[0] = i;
+                            else if(names[i]=="pitch") inds[1] = i;
+                            else if(names[i]=="yaw") inds[2] = i;
+                            else if(names[i]=="x") inds[3] = i;
+                            else if(names[i]=="y") inds[4] = i;
+                            else if(names[i]=="z") inds[5] = i;
+                            else{
+                                logging::ERR(
+                                    "XmlAssetsLoader::createInterpolated"
+                                    "MovingPlatform failed\n"
+                                    "Unexpected column \""+names[i]+"\""
+                                );
+                                std::exit(-1);
+                            }
+                        }
+                        tdm->swapColumns(inds);
+                    }
+                }
+                // Drop columns, if necessary
+                if(
+                    interpDom == "position" &&
+                    tdm->getNumColumns() > 3
+                ){
+                    tdm->dropColumns(vector<size_t>({0, 1, 2}));
+                }
+                // Merge with previously loaded data
+                platform->tdm->mergeInPlace(*tdm);
+            }
+            trajectoryFiles.emplace(trajectoryPath);
+        }
+
+        // Prepare next iteration
+        leg = leg->NextSiblingElement("leg");
+    }
+
+    // Sort by time
+    platform->tdm->sortByTime();
+
+    // Subtract min time so time starts at t0=0, also handle sync GPS time flag
+    startTime = arma::min(platform->tdm->getTimeVector());
+    platform->startTime = startTime;
+    platform->tdm->shiftTime(-startTime);
+    platform->syncGPSTime = syncGPSTime;
+
+    // Angle to radians, if angles are given
+    if(interpDom == "position_and_attitude" && toRadians){
+        for(size_t j = 0 ; j < 3 ; ++j){
+            platform->tdm->setColumn(
+                j,
+                platform->tdm->getColumn(j) * PI_OVER_180
+            );
+        }
+    }
+
+    // Differentiate temporal matrix through FORWARD FINITE DIFFERENCES
+    platform->ddm = platform->tdm->toDiffDesignMatrixPointer(
+        DiffDesignMatrixType::FORWARD_FINITE_DIFFERENCES,
+        false
+    );
+
+    // Configure interpolation scope
+    if(interpDom == "position"){
+        platform->scope =
+            InterpolatedMovingPlatform::InterpolationScope::POSITION;
+    }
+
+    // Return egg
+    return platform;
 }
 
 std::shared_ptr<Scanner>
@@ -590,12 +993,16 @@ XmlAssetsLoader::createScannerSettingsFromXml(
   // Ovearload settings themselves
   settings->baseTemplate = template1;
   settings->active = boost::get<bool>(XmlUtils::getAttribute(
-      node, "active", "bool", template1->active
+      node, "active", "bool", template1->active, defaultScannerSettingsMsg
   ));
   if(XmlUtils::hasAttribute(node, "headRotatePerSec_deg")){
     settings->headRotatePerSec_rad = MathConverter::degreesToRadians(
         boost::get<double>(XmlUtils::getAttribute(
-            node, "headRotatePerSec_deg", "double", 0.0
+            node,
+            "headRotatePerSec_deg",
+            "double",
+            0.0,
+            defaultScannerSettingsMsg
         ))
     );
   }
@@ -606,7 +1013,8 @@ XmlAssetsLoader::createScannerSettingsFromXml(
             node,
             "headRotateStart_deg",
             "double",
-            0.0
+            0.0,
+            defaultScannerSettingsMsg
         ))
     );
   }
@@ -615,7 +1023,11 @@ XmlAssetsLoader::createScannerSettingsFromXml(
   if(XmlUtils::hasAttribute(node, "headRotateStop_deg")){
     double hrStop_rad = MathConverter::degreesToRadians(
         boost::get<double>(XmlUtils::getAttribute(
-            node, "headRotateStop_deg", "double", 0.0
+            node,
+            "headRotateStop_deg",
+            "double",
+            0.0,
+            defaultScannerSettingsMsg
         )));
 
     // Make sure that rotation stop angle is larger than rotation start angle if
@@ -644,11 +1056,16 @@ XmlAssetsLoader::createScannerSettingsFromXml(
   }
   else settings->headRotateStop_rad = template1->headRotateStop_rad;
   settings->pulseFreq_Hz = boost::get<int>(XmlUtils::getAttribute(
-      node, "pulseFreq_hz", "int", template1->pulseFreq_Hz));
+      node,
+      "pulseFreq_hz",
+      "int",
+      template1->pulseFreq_Hz,
+      defaultScannerSettingsMsg
+  ));
   if(XmlUtils::hasAttribute(node, "scanAngle_deg")){
       settings->scanAngle_rad = MathConverter::degreesToRadians(
           boost::get<double>(XmlUtils::getAttribute(
-              node, "scanAngle_deg", "double", 0.0
+              node, "scanAngle_deg", "double", 0.0, defaultScannerSettingsMsg
           ))
       );
   }
@@ -656,7 +1073,11 @@ XmlAssetsLoader::createScannerSettingsFromXml(
   if(XmlUtils::hasAttribute(node, "verticalAngleMin_deg")){
       settings->verticalAngleMin_rad = MathConverter::degreesToRadians(
           boost::get<double>(XmlUtils::getAttribute(
-              node, "verticalAngleMin_deg", "double", 0.0
+              node,
+              "verticalAngleMin_deg",
+              "double",
+              NAN,
+              defaultScannerSettingsMsg
           ))
       );
   }
@@ -664,24 +1085,37 @@ XmlAssetsLoader::createScannerSettingsFromXml(
   if(XmlUtils::hasAttribute(node, "verticalAngleMax_deg")){
       settings->verticalAngleMax_rad = MathConverter::degreesToRadians(
           boost::get<double>(XmlUtils::getAttribute(
-              node, "verticalAngleMax_deg", "double", 0.0
+              node,
+              "verticalAngleMax_deg",
+              "double",
+              NAN,
+              defaultScannerSettingsMsg
           ))
       );
   }
   else settings->verticalAngleMax_rad = template1->verticalAngleMax_rad;
   settings->scanFreq_Hz = boost::get<double>(XmlUtils::getAttribute(
-      node, "scanFreq_hz", "double", template1->scanFreq_Hz
+      node,
+      "scanFreq_hz",
+      "double",
+      template1->scanFreq_Hz,
+      defaultScannerSettingsMsg
   ));
 
   settings->beamDivAngle = boost::get<double>(XmlUtils::getAttribute(
-    node, "beamDivergence_rad", "double", template1->beamDivAngle
+    node,
+    "beamDivergence_rad",
+    "double",
+    template1->beamDivAngle,
+    defaultScannerSettingsMsg
   ));
 
   settings->trajectoryTimeInterval = boost::get<double>(XmlUtils::getAttribute(
     node,
     "trajectoryTimeInterval_s",
     "double",
-    template1->trajectoryTimeInterval
+    template1->trajectoryTimeInterval,
+    defaultScannerSettingsMsg
   ));
 
   // Track non default values if requested
@@ -717,6 +1151,30 @@ std::shared_ptr<FWFSettings> XmlAssetsLoader::createFWFSettingsFromXml(
   return settings;
 }
 
+std::shared_ptr<TrajectorySettings>
+XmlAssetsLoader::createTrajectorySettingsFromXml(
+    tinyxml2::XMLElement *legNode,
+    std::shared_ptr<TrajectorySettings> settings
+){
+    // Create settings if not given
+    if(settings == nullptr){
+        settings = std::make_shared<TrajectorySettings>();
+    }
+
+    // Load start and end times from XML, if any
+    tinyxml2::XMLElement *ps = legNode->FirstChildElement("platformSettings");
+    if(ps!=nullptr){ // If PlatformSettings were specified
+        settings->tStart = ps->DoubleAttribute("tStart", settings->tStart);
+        settings->tEnd = ps->DoubleAttribute("tEnd", settings->tEnd);
+        settings->teleportToStart = ps->BoolAttribute(
+            "teleportToStart", settings->teleportToStart
+        );
+    }
+
+    // Return loaded settings
+    return settings;
+}
+
 // ***  GETTERS and SETTERS  *** //
 // ***************************** //
 std::shared_ptr<Asset> XmlAssetsLoader::getAssetById(
@@ -729,7 +1187,11 @@ std::shared_ptr<Asset> XmlAssetsLoader::getAssetById(
     tinyxml2::XMLElement *assetNodes =
         doc.FirstChild()->NextSibling()->FirstChildElement(type.c_str());
 
-    while (assetNodes != nullptr) {
+    if(isProceduralAsset(type, id)){ // Generate procedural assets
+        return createProceduralAssetFromXml(type, id, extraOutput);
+    }
+
+    while (assetNodes != nullptr) { // Load standard assets
       std::string str(assetNodes->Attribute("id"));
       if (str.compare(id) == 0) {
         return createAssetFromXml(type, assetNodes, extraOutput);
@@ -757,7 +1219,6 @@ std::shared_ptr<Asset> XmlAssetsLoader::getAssetById(
   }
 
   throw HeliosException(errorMsg);
-  return nullptr;
 }
 
 std::shared_ptr<Asset>
@@ -803,8 +1264,8 @@ void XmlAssetsLoader::makeDefaultTemplates(){
     defaultScannerTemplate->headRotateStop_rad = 0;
     defaultScannerTemplate->pulseFreq_Hz = 0;
     defaultScannerTemplate->scanAngle_rad = 0;
-    defaultScannerTemplate->verticalAngleMin_rad = 0;
-    defaultScannerTemplate->verticalAngleMax_rad = 0;
+    defaultScannerTemplate->verticalAngleMin_rad = NAN;
+    defaultScannerTemplate->verticalAngleMax_rad = NAN;
     defaultScannerTemplate->scanFreq_Hz = 0;
 
     // Make default platform settings template
@@ -870,4 +1331,15 @@ void XmlAssetsLoader::trackNonDefaultPlatformSettings(
     if(base->slowdownEnabled != ref->slowdownEnabled)
         fields.insert("slowdownEnabled");
     if(base->movePerSec_m != ref->movePerSec_m) fields.insert("movePerSec_m");
+}
+// ***  STATIC METHODS  *** //
+// ************************ //
+bool XmlAssetsLoader::isProceduralAsset(
+    std::string const &type,
+    std::string const &id
+){
+    if(type=="platform"){
+        if(id=="interpolated") return true;
+    }
+    return false;
 }

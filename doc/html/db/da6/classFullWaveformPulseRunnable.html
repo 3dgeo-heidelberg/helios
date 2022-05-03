@@ -107,8 +107,9 @@ Inheritance diagram for FullWaveformPulseRunnable:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../d9/d22/classFullWaveformPulseRunnable__inherit__graph.png" border="0" usemap="#FullWaveformPulseRunnable_inherit__map" alt="Inheritance graph"/></div>
 <map name="FullWaveformPulseRunnable_inherit__map" id="FullWaveformPulseRunnable_inherit__map">
-<area shape="rect" id="node2" href="../../d6/d9e/classAbstractPulseRunnable.html" title="Base abstract class for pulse runnables. " alt="" coords="21,80,180,107"/>
-<area shape="rect" id="node3" href="../../d1/d6e/classPulseTask.html" title="Pulse task interface. " alt="" coords="59,5,143,32"/>
+<area shape="rect" id="node4" href="../../da/d0b/classDynFullWaveformPulseRunnable.html" title="Derived class extending FullWaveFormPulseRunnable to handle dynamic moving objects. " alt="" coords="5,229,220,256"/>
+<area shape="rect" id="node2" href="../../d6/d9e/classAbstractPulseRunnable.html" title="Base abstract class for pulse runnables. " alt="" coords="33,80,192,107"/>
+<area shape="rect" id="node3" href="../../d1/d6e/classPulseTask.html" title="Pulse task interface. " alt="" coords="71,5,155,32"/>
 </map>
 <center><span class="legend">[<a target="top" href="../../graph_legend.html">legend</a>]</span></center></div>
 <div class="dynheader">
@@ -116,24 +117,26 @@ Collaboration diagram for FullWaveformPulseRunnable:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../d4/dc4/classFullWaveformPulseRunnable__coll__graph.png" border="0" usemap="#FullWaveformPulseRunnable_coll__map" alt="Collaboration graph"/></div>
 <map name="FullWaveformPulseRunnable_coll__map" id="FullWaveformPulseRunnable_coll__map">
-<area shape="rect" id="node2" href="../../d6/d9e/classAbstractPulseRunnable.html" title="Base abstract class for pulse runnables. " alt="" coords="21,95,180,121"/>
-<area shape="rect" id="node3" href="../../d1/d6e/classPulseTask.html" title="Pulse task interface. " alt="" coords="8,5,92,32"/>
-<area shape="rect" id="node4" href="../../d5/dcb/classRotation.html" title="Rotation" alt="" coords="116,5,187,32"/>
+<area shape="rect" id="node2" href="../../d6/d9e/classAbstractPulseRunnable.html" title="Base abstract class for pulse runnables. " alt="" coords="69,213,228,240"/>
+<area shape="rect" id="node3" href="../../d1/d6e/classPulseTask.html" title="Pulse task interface. " alt="" coords="5,124,89,151"/>
+<area shape="rect" id="node4" href="../../d5/dcb/classRotation.html" title="Rotation" alt="" coords="113,124,184,151"/>
+<area shape="rect" id="node5" href="../../d5/d9c/classScene.html" title="Class representing a scene asset. " alt="" coords="262,213,321,240"/>
+<area shape="rect" id="node6" href="../../de/d97/classAsset.html" title="Base class for all assets. " alt="" coords="274,124,330,151"/>
 </map>
 <center><span class="legend">[<a target="top" href="../../graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ab713e4e8c1abbb7279b173672c2eef8c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/da6/classFullWaveformPulseRunnable.html#ab713e4e8c1abbb7279b173672c2eef8c">FullWaveformPulseRunnable</a> (std::shared_ptr&lt; <a class="el" href="../../df/d37/classFullWaveformPulseDetector.html">FullWaveformPulseDetector</a> &gt; <a class="el" href="../../d6/d9e/classAbstractPulseRunnable.html#a5f89956813516dcb6090715f2aed8631">detector</a>, glm::dvec3 <a class="el" href="../../d6/d9e/classAbstractPulseRunnable.html#aa7f3f0ea66414823b4bd1e4ebd12295f">absoluteBeamOrigin</a>, <a class="el" href="../../d5/dcb/classRotation.html">Rotation</a> <a class="el" href="../../d6/d9e/classAbstractPulseRunnable.html#a5431be620a94c48f0b13bdb4627b9f54">absoluteBeamAttitude</a>, int <a class="el" href="../../d6/d9e/classAbstractPulseRunnable.html#ac5d3bcb0892688c12fe36b128d07c395">currentPulseNum</a>, double <a class="el" href="../../d6/d9e/classAbstractPulseRunnable.html#a9e6215211c94b37b40f9d0e724c053fd">currentGpsTime</a>, bool <a class="el" href="../../db/da6/classFullWaveformPulseRunnable.html#a06e7d38a47f7fc76d55ba205fa399b8e">writeWaveform</a>, bool <a class="el" href="../../db/da6/classFullWaveformPulseRunnable.html#ab817063a50399ea3b1ba7b9cb4a3165b">calcEchowidth</a>, std::vector&lt; <a class="el" href="../../db/d2e/classMeasurement.html">Measurement</a> &gt; *<a class="el" href="../../db/da6/classFullWaveformPulseRunnable.html#aeedfb37ebcaa81fb785f4d0ce5b6ce3c">allMeasurements</a>, std::mutex *<a class="el" href="../../db/da6/classFullWaveformPulseRunnable.html#adcaed1b88ed1f08ec6f7a9797ec62fb3">allMeasurementsMutex</a>, std::vector&lt; <a class="el" href="../../db/d2e/classMeasurement.html">Measurement</a> &gt; *<a class="el" href="../../db/da6/classFullWaveformPulseRunnable.html#a77ea04182b4e55b08a7b216eb73ff47a">cycleMeasurements</a>, std::mutex *<a class="el" href="../../db/da6/classFullWaveformPulseRunnable.html#a07e49f4388cb3ff37a7b1b929f87ab75">cycleMeasurementsMutex</a>, unsigned int <a class="el" href="../../db/da6/classFullWaveformPulseRunnable.html#a9fe7e3bbd744a5bf3ce57e417b746822">legIndex</a>)</td></tr>
-<tr class="memdesc:ab713e4e8c1abbb7279b173672c2eef8c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Base constructor for full waveform pulse runnable.  <a href="#ab713e4e8c1abbb7279b173672c2eef8c">More...</a><br /></td></tr>
-<tr class="separator:ab713e4e8c1abbb7279b173672c2eef8c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af21f75719cfd04252c91c2c9e40ccdf6"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/da6/classFullWaveformPulseRunnable.html#af21f75719cfd04252c91c2c9e40ccdf6">FullWaveformPulseRunnable</a> (std::shared_ptr&lt; <a class="el" href="../../df/d37/classFullWaveformPulseDetector.html">FullWaveformPulseDetector</a> &gt; <a class="el" href="../../d6/d9e/classAbstractPulseRunnable.html#a5f89956813516dcb6090715f2aed8631">detector</a>, glm::dvec3 const <a class="el" href="../../d6/d9e/classAbstractPulseRunnable.html#aa7f3f0ea66414823b4bd1e4ebd12295f">absoluteBeamOrigin</a>, <a class="el" href="../../d5/dcb/classRotation.html">Rotation</a> const <a class="el" href="../../d6/d9e/classAbstractPulseRunnable.html#a5431be620a94c48f0b13bdb4627b9f54">absoluteBeamAttitude</a>, int const <a class="el" href="../../d6/d9e/classAbstractPulseRunnable.html#ac5d3bcb0892688c12fe36b128d07c395">currentPulseNum</a>, double const <a class="el" href="../../d6/d9e/classAbstractPulseRunnable.html#a9e6215211c94b37b40f9d0e724c053fd">currentGpsTime</a>, bool const <a class="el" href="../../db/da6/classFullWaveformPulseRunnable.html#a06e7d38a47f7fc76d55ba205fa399b8e">writeWaveform</a>, bool const <a class="el" href="../../db/da6/classFullWaveformPulseRunnable.html#ab817063a50399ea3b1ba7b9cb4a3165b">calcEchowidth</a>, std::vector&lt; <a class="el" href="../../db/d2e/classMeasurement.html">Measurement</a> &gt; *<a class="el" href="../../db/da6/classFullWaveformPulseRunnable.html#aeedfb37ebcaa81fb785f4d0ce5b6ce3c">allMeasurements</a>, std::mutex *<a class="el" href="../../db/da6/classFullWaveformPulseRunnable.html#adcaed1b88ed1f08ec6f7a9797ec62fb3">allMeasurementsMutex</a>, std::vector&lt; <a class="el" href="../../db/d2e/classMeasurement.html">Measurement</a> &gt; *<a class="el" href="../../db/da6/classFullWaveformPulseRunnable.html#a77ea04182b4e55b08a7b216eb73ff47a">cycleMeasurements</a>, std::mutex *<a class="el" href="../../db/da6/classFullWaveformPulseRunnable.html#a07e49f4388cb3ff37a7b1b929f87ab75">cycleMeasurementsMutex</a>, unsigned int const <a class="el" href="../../db/da6/classFullWaveformPulseRunnable.html#a9fe7e3bbd744a5bf3ce57e417b746822">legIndex</a>)</td></tr>
+<tr class="memdesc:af21f75719cfd04252c91c2c9e40ccdf6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Base constructor for full waveform pulse runnable.  <a href="#af21f75719cfd04252c91c2c9e40ccdf6">More...</a><br /></td></tr>
+<tr class="separator:af21f75719cfd04252c91c2c9e40ccdf6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a82e687f44dac1934cf355758de926f82"><td class="memItemLeft" align="right" valign="top"><a id="a82e687f44dac1934cf355758de926f82"></a>
 double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/da6/classFullWaveformPulseRunnable.html#a82e687f44dac1934cf355758de926f82">calcIntensity</a> (double incidenceAngle, double targetRange, double targetReflectivity, double targetSpecularity, double targetSpecularExponent, double targetArea, double radius)</td></tr>
-<tr class="memdesc:a82e687f44dac1934cf355758de926f82"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute intensity. <br /></td></tr>
+<tr class="memdesc:a82e687f44dac1934cf355758de926f82"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute intensity. It is, the strength of the laser going back to the detector considering the emmited power as computed by FullWaveformPulseRannaable::calcEmmitedPower. <br /></td></tr>
 <tr class="separator:a82e687f44dac1934cf355758de926f82"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa694228f11e3aedb909b5fb04fe697ed"><td class="memItemLeft" align="right" valign="top"><a id="aa694228f11e3aedb909b5fb04fe697ed"></a>
 double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/da6/classFullWaveformPulseRunnable.html#aa694228f11e3aedb909b5fb04fe697ed">calcIntensity</a> (double targetRange, double radius, double sigma)</td></tr>
-<tr class="memdesc:aa694228f11e3aedb909b5fb04fe697ed"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute intensity. <br /></td></tr>
+<tr class="memdesc:aa694228f11e3aedb909b5fb04fe697ed"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute intensity through scaling <a class="el" href="../../d6/d9e/classAbstractPulseRunnable.html#aa3148cfc57abaa6f3a5e1da516b2b42a" title="Solve the laser radar equation. ">AbstractPulseRunnable::calcReceivedPower</a>, which is computed considering <a class="el" href="../../db/da6/classFullWaveformPulseRunnable.html#ad8b27665f5d28502e9389f8677b12f7b" title="Compute the space distribution equation to calculate the beam energy decreasing the further away from...">FullWaveformPulseRunnable::calcEmmitedPower</a>. <br /></td></tr>
 <tr class="separator:aa694228f11e3aedb909b5fb04fe697ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9f311fc2f184a4093d98712105e1582b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/da6/classFullWaveformPulseRunnable.html#a9f311fc2f184a4093d98712105e1582b">operator()</a> () override</td></tr>
 <tr class="memdesc:a9f311fc2f184a4093d98712105e1582b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Full waveform pulse runnable void functor. It is necessary due to compatibility reasons.  <a href="#a9f311fc2f184a4093d98712105e1582b">More...</a><br /></td></tr>
@@ -142,9 +145,9 @@ double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="..
 <tr class="memdesc:a309b48c537e77a7ee54a19ebe4222a6f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Full waveform pulse runnable functor.  <a href="#a309b48c537e77a7ee54a19ebe4222a6f">More...</a><br /></td></tr>
 <tr class="separator:a309b48c537e77a7ee54a19ebe4222a6f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classAbstractPulseRunnable"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classAbstractPulseRunnable')"><img src="../../closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="../../d6/d9e/classAbstractPulseRunnable.html">AbstractPulseRunnable</a></td></tr>
-<tr class="memitem:adb9bdc1d395240bbad4a5de192f44e0f inherit pub_methods_classAbstractPulseRunnable"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d9e/classAbstractPulseRunnable.html#adb9bdc1d395240bbad4a5de192f44e0f">AbstractPulseRunnable</a> (std::shared_ptr&lt; <a class="el" href="../../d8/d6b/classAbstractDetector.html">AbstractDetector</a> &gt; <a class="el" href="../../d6/d9e/classAbstractPulseRunnable.html#a5f89956813516dcb6090715f2aed8631">detector</a>, glm::dvec3 <a class="el" href="../../d6/d9e/classAbstractPulseRunnable.html#aa7f3f0ea66414823b4bd1e4ebd12295f">absoluteBeamOrigin</a>, <a class="el" href="../../d5/dcb/classRotation.html">Rotation</a> <a class="el" href="../../d6/d9e/classAbstractPulseRunnable.html#a5431be620a94c48f0b13bdb4627b9f54">absoluteBeamAttitude</a>, int pulseNumber, long gpsTime)</td></tr>
-<tr class="memdesc:adb9bdc1d395240bbad4a5de192f44e0f inherit pub_methods_classAbstractPulseRunnable"><td class="mdescLeft">&#160;</td><td class="mdescRight">Base constructor for pulse runnables.  <a href="../../d6/d9e/classAbstractPulseRunnable.html#adb9bdc1d395240bbad4a5de192f44e0f">More...</a><br /></td></tr>
-<tr class="separator:adb9bdc1d395240bbad4a5de192f44e0f inherit pub_methods_classAbstractPulseRunnable"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9ebe8a4afc41a1b0e28f86885c547965 inherit pub_methods_classAbstractPulseRunnable"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d9e/classAbstractPulseRunnable.html#a9ebe8a4afc41a1b0e28f86885c547965">AbstractPulseRunnable</a> (std::shared_ptr&lt; <a class="el" href="../../d8/d6b/classAbstractDetector.html">AbstractDetector</a> &gt; const <a class="el" href="../../d6/d9e/classAbstractPulseRunnable.html#a5f89956813516dcb6090715f2aed8631">detector</a>, glm::dvec3 const <a class="el" href="../../d6/d9e/classAbstractPulseRunnable.html#aa7f3f0ea66414823b4bd1e4ebd12295f">absoluteBeamOrigin</a>, <a class="el" href="../../d5/dcb/classRotation.html">Rotation</a> const <a class="el" href="../../d6/d9e/classAbstractPulseRunnable.html#a5431be620a94c48f0b13bdb4627b9f54">absoluteBeamAttitude</a>, int const pulseNumber, long const gpsTime)</td></tr>
+<tr class="memdesc:a9ebe8a4afc41a1b0e28f86885c547965 inherit pub_methods_classAbstractPulseRunnable"><td class="mdescLeft">&#160;</td><td class="mdescRight">Base constructor for pulse runnables.  <a href="../../d6/d9e/classAbstractPulseRunnable.html#a9ebe8a4afc41a1b0e28f86885c547965">More...</a><br /></td></tr>
+<tr class="separator:a9ebe8a4afc41a1b0e28f86885c547965 inherit pub_methods_classAbstractPulseRunnable"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8e0d4e44fcbeecdc520f67edbc565350 inherit pub_methods_classAbstractPulseRunnable"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d9e/classAbstractPulseRunnable.html#a8e0d4e44fcbeecdc520f67edbc565350">calcCrossSection</a> (double f, double Alf, double theta)</td></tr>
 <tr class="memdesc:a8e0d4e44fcbeecdc520f67edbc565350 inherit pub_methods_classAbstractPulseRunnable"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute cross section.  <a href="../../d6/d9e/classAbstractPulseRunnable.html#a8e0d4e44fcbeecdc520f67edbc565350">More...</a><br /></td></tr>
 <tr class="separator:a8e0d4e44fcbeecdc520f67edbc565350 inherit pub_methods_classAbstractPulseRunnable"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -207,12 +210,12 @@ static const double&#160;</td><td class="memItemRight" valign="bottom"><a class=
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
-<tr class="memitem:a39859571a66d2da2aa0bfaf1585c83b1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/da6/classFullWaveformPulseRunnable.html#a39859571a66d2da2aa0bfaf1585c83b1">computeSubrays</a> (<a class="el" href="../../d5/d9c/classScene.html">Scene</a> &amp;scene, <a class="el" href="../../d9/d6b/classNoiseSource.html">NoiseSource</a>&lt; double &gt; &amp;intersectionHandlingNoiseSource, std::map&lt; double, double &gt; &amp;reflections, vector&lt; <a class="el" href="../../dc/da3/classRaySceneIntersection.html">RaySceneIntersection</a> &gt; &amp;intersects)</td></tr>
-<tr class="memdesc:a39859571a66d2da2aa0bfaf1585c83b1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform ray casting to find intersections.  <a href="#a39859571a66d2da2aa0bfaf1585c83b1">More...</a><br /></td></tr>
-<tr class="separator:a39859571a66d2da2aa0bfaf1585c83b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8c04fa7ff3c01fcdc7119d9abd52bbb6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/da6/classFullWaveformPulseRunnable.html#a8c04fa7ff3c01fcdc7119d9abd52bbb6">handleSubray</a> (int circleStep, double circleStep_rad, <a class="el" href="../../d5/dcb/classRotation.html">Rotation</a> &amp;r1, <a class="el" href="../../d5/d9c/classScene.html">Scene</a> &amp;scene, double divergenceAngle, <a class="el" href="../../d9/d6b/classNoiseSource.html">NoiseSource</a>&lt; double &gt; &amp;intersectionHandlingNoiseSource, std::map&lt; double, double &gt; &amp;reflections, vector&lt; <a class="el" href="../../dc/da3/classRaySceneIntersection.html">RaySceneIntersection</a> &gt; &amp;intersects)</td></tr>
-<tr class="memdesc:a8c04fa7ff3c01fcdc7119d9abd52bbb6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle sub-rays along the circle.  <a href="#a8c04fa7ff3c01fcdc7119d9abd52bbb6">More...</a><br /></td></tr>
-<tr class="separator:a8c04fa7ff3c01fcdc7119d9abd52bbb6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a59ff222472831f7dd01536cf092726a8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/da6/classFullWaveformPulseRunnable.html#a59ff222472831f7dd01536cf092726a8">computeSubrays</a> (vector&lt; double &gt; const &amp;tMinMax, <a class="el" href="../../d9/d6b/classNoiseSource.html">NoiseSource</a>&lt; double &gt; &amp;intersectionHandlingNoiseSource, std::map&lt; double, double &gt; &amp;reflections, vector&lt; <a class="el" href="../../dc/da3/classRaySceneIntersection.html">RaySceneIntersection</a> &gt; &amp;intersects)</td></tr>
+<tr class="memdesc:a59ff222472831f7dd01536cf092726a8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform ray casting to find intersections.  <a href="#a59ff222472831f7dd01536cf092726a8">More...</a><br /></td></tr>
+<tr class="separator:a59ff222472831f7dd01536cf092726a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aba1c11f6e422d0b6a17222ebebaa2ba0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/da6/classFullWaveformPulseRunnable.html#aba1c11f6e422d0b6a17222ebebaa2ba0">handleSubray</a> (vector&lt; double &gt; const &amp;tMinMax, int circleStep, double circleStep_rad, <a class="el" href="../../d5/dcb/classRotation.html">Rotation</a> &amp;r1, double divergenceAngle, <a class="el" href="../../d9/d6b/classNoiseSource.html">NoiseSource</a>&lt; double &gt; &amp;intersectionHandlingNoiseSource, std::map&lt; double, double &gt; &amp;reflections, vector&lt; <a class="el" href="../../dc/da3/classRaySceneIntersection.html">RaySceneIntersection</a> &gt; &amp;intersects)</td></tr>
+<tr class="memdesc:aba1c11f6e422d0b6a17222ebebaa2ba0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle sub-rays along the circle.  <a href="#aba1c11f6e422d0b6a17222ebebaa2ba0">More...</a><br /></td></tr>
+<tr class="separator:aba1c11f6e422d0b6a17222ebebaa2ba0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afdef1f81c235056a04beb60f40c2492d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/da6/classFullWaveformPulseRunnable.html#afdef1f81c235056a04beb60f40c2492d">digestIntersections</a> (std::vector&lt; std::vector&lt; double &gt;&gt; &amp;apMatrix, <a class="el" href="../../dc/d6e/classRandomnessGenerator.html">RandomnessGenerator</a>&lt; double &gt; &amp;randGen, <a class="el" href="../../dc/d6e/classRandomnessGenerator.html">RandomnessGenerator</a>&lt; double &gt; &amp;randGen2, glm::dvec3 &amp;beamDir, std::map&lt; double, double &gt; &amp;reflections, vector&lt; <a class="el" href="../../dc/da3/classRaySceneIntersection.html">RaySceneIntersection</a> &gt; &amp;intersects)</td></tr>
 <tr class="memdesc:afdef1f81c235056a04beb60f40c2492d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Digest intersections found through ray casting.  <a href="#afdef1f81c235056a04beb60f40c2492d">More...</a><br /></td></tr>
 <tr class="separator:afdef1f81c235056a04beb60f40c2492d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -222,19 +225,22 @@ Private Member Functions</h2></td></tr>
 <tr class="memitem:a50b690e9352dfcdc998a35bc222481e9"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/da6/classFullWaveformPulseRunnable.html#a50b690e9352dfcdc998a35bc222481e9">initializeFullWaveform</a> (double minHitDist_m, double maxHitDist_m, double &amp;minHitTime_ns, double &amp;maxHitTime_ns, double &amp;nsPerBin, double &amp;distanceThreshold, int &amp;peakIntensityIndex, int &amp;numFullwaveBins)</td></tr>
 <tr class="memdesc:a50b690e9352dfcdc998a35bc222481e9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize full waveform While the vector is not strictly initialized in this function, necessary variables are computed here.  <a href="#a50b690e9352dfcdc998a35bc222481e9">More...</a><br /></td></tr>
 <tr class="separator:a50b690e9352dfcdc998a35bc222481e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a741d1b4cc6302ffb1d8df79ed66804f5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/da6/classFullWaveformPulseRunnable.html#a741d1b4cc6302ffb1d8df79ed66804f5">populateFullWaveform</a> (std::map&lt; double, double &gt; &amp;reflections, std::vector&lt; double &gt; &amp;fullwave, double distanceThreshold, double minHitTime_ns, double nsPerBin, int peakIntensityIndex)</td></tr>
-<tr class="memdesc:a741d1b4cc6302ffb1d8df79ed66804f5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Populate a previously initialized full waveform vector.  <a href="#a741d1b4cc6302ffb1d8df79ed66804f5">More...</a><br /></td></tr>
-<tr class="separator:a741d1b4cc6302ffb1d8df79ed66804f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af44d7312cdd43ccc9a34bc1db5e9d3ba"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/da6/classFullWaveformPulseRunnable.html#af44d7312cdd43ccc9a34bc1db5e9d3ba">digestFullWaveform</a> (std::vector&lt; <a class="el" href="../../db/d2e/classMeasurement.html">Measurement</a> &gt; &amp;pointsMeasurement, int &amp;numReturns, std::vector&lt; std::vector&lt; double &gt;&gt; &amp;apMatrix, std::vector&lt; double &gt; &amp;fullwave, vector&lt; <a class="el" href="../../dc/da3/classRaySceneIntersection.html">RaySceneIntersection</a> &gt; &amp;intersects, glm::dvec3 &amp;beamDir, double nsPerBin, int numFullwaveBins, int peakIntensityIndex, double minHitTime_ns)</td></tr>
-<tr class="memdesc:af44d7312cdd43ccc9a34bc1db5e9d3ba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Digest a previously populated full waveform vector, generating measurements.  <a href="#af44d7312cdd43ccc9a34bc1db5e9d3ba">More...</a><br /></td></tr>
-<tr class="separator:af44d7312cdd43ccc9a34bc1db5e9d3ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abc0bce6d9e156c6366458d1b6942f783"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/da6/classFullWaveformPulseRunnable.html#abc0bce6d9e156c6366458d1b6942f783">populateFullWaveform</a> (std::map&lt; double, double &gt; const &amp;reflections, std::vector&lt; double &gt; &amp;fullwave, double const distanceThreshold, double const minHitTime_ns, double const nsPerBin, int const peakIntensityIndex)</td></tr>
+<tr class="memdesc:abc0bce6d9e156c6366458d1b6942f783"><td class="mdescLeft">&#160;</td><td class="mdescRight">Populate a previously initialized full waveform vector.  <a href="#abc0bce6d9e156c6366458d1b6942f783">More...</a><br /></td></tr>
+<tr class="separator:abc0bce6d9e156c6366458d1b6942f783"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a78817455965590a3df30dd0dff75497a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/da6/classFullWaveformPulseRunnable.html#a78817455965590a3df30dd0dff75497a">digestFullWaveform</a> (std::vector&lt; <a class="el" href="../../db/d2e/classMeasurement.html">Measurement</a> &gt; &amp;pointsMeasurement, int &amp;numReturns, std::vector&lt; std::vector&lt; double &gt;&gt; &amp;apMatrix, std::vector&lt; double &gt; const &amp;fullwave, vector&lt; <a class="el" href="../../dc/da3/classRaySceneIntersection.html">RaySceneIntersection</a> &gt; const &amp;intersects, glm::dvec3 const &amp;beamDir, double const nsPerBin, int const numFullwaveBins, int const peakIntensityIndex, double const minHitTime_ns)</td></tr>
+<tr class="memdesc:a78817455965590a3df30dd0dff75497a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Digest a previously populated full waveform vector, generating measurements.  <a href="#a78817455965590a3df30dd0dff75497a">More...</a><br /></td></tr>
+<tr class="separator:a78817455965590a3df30dd0dff75497a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6519f26018edf7b5e601364154bb3fed"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/da6/classFullWaveformPulseRunnable.html#a6519f26018edf7b5e601364154bb3fed">exportOutput</a> (std::vector&lt; double &gt; &amp;fullwave, int &amp;numReturns, std::vector&lt; <a class="el" href="../../db/d2e/classMeasurement.html">Measurement</a> &gt; &amp;pointsMeasurement, glm::dvec3 &amp;beamDir, double minHitTime_ns, double maxHitTime_ns, <a class="el" href="../../dc/d6e/classRandomnessGenerator.html">RandomnessGenerator</a>&lt; double &gt; &amp;randGen, <a class="el" href="../../dc/d6e/classRandomnessGenerator.html">RandomnessGenerator</a>&lt; double &gt; &amp;randGen2)</td></tr>
 <tr class="memdesc:a6519f26018edf7b5e601364154bb3fed"><td class="mdescLeft">&#160;</td><td class="mdescRight">Export measurements and full waveform data.  <a href="#a6519f26018edf7b5e601364154bb3fed">More...</a><br /></td></tr>
 <tr class="separator:a6519f26018edf7b5e601364154bb3fed"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4f0587b710f6a2d84b1c8758dd2f7cd0"><td class="memItemLeft" align="right" valign="top"><a id="a4f0587b710f6a2d84b1c8758dd2f7cd0"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/da6/classFullWaveformPulseRunnable.html#a4f0587b710f6a2d84b1c8758dd2f7cd0">detectPeak</a> (int i, int win_size, vector&lt; double &gt; &amp;fullwave)</td></tr>
-<tr class="memdesc:a4f0587b710f6a2d84b1c8758dd2f7cd0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Detect full waveform peaks. <br /></td></tr>
-<tr class="separator:a4f0587b710f6a2d84b1c8758dd2f7cd0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9662d90c284c19bd93d88f81ccb65aec"><td class="memItemLeft" align="right" valign="top">virtual shared_ptr&lt; <a class="el" href="../../dc/da3/classRaySceneIntersection.html">RaySceneIntersection</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/da6/classFullWaveformPulseRunnable.html#a9662d90c284c19bd93d88f81ccb65aec">findIntersection</a> (vector&lt; double &gt; const &amp;tMinMax, glm::dvec3 const &amp;o, glm::dvec3 const &amp;v) const</td></tr>
+<tr class="memdesc:a9662d90c284c19bd93d88f81ccb65aec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Find the intersection between the scene and given ray, if any.  <a href="#a9662d90c284c19bd93d88f81ccb65aec">More...</a><br /></td></tr>
+<tr class="separator:a9662d90c284c19bd93d88f81ccb65aec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a46f7eccc59025e6f668c73ff26b212c8"><td class="memItemLeft" align="right" valign="top"><a id="a46f7eccc59025e6f668c73ff26b212c8"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/da6/classFullWaveformPulseRunnable.html#a46f7eccc59025e6f668c73ff26b212c8">detectPeak</a> (int const i, int const win_size, vector&lt; double &gt; const &amp;fullwave)</td></tr>
+<tr class="memdesc:a46f7eccc59025e6f668c73ff26b212c8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Detect full waveform peaks. <br /></td></tr>
+<tr class="separator:a46f7eccc59025e6f668c73ff26b212c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad8b27665f5d28502e9389f8677b12f7b"><td class="memItemLeft" align="right" valign="top"><a id="ad8b27665f5d28502e9389f8677b12f7b"></a>
 double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/da6/classFullWaveformPulseRunnable.html#ad8b27665f5d28502e9389f8677b12f7b">calcEmmitedPower</a> (double radius, double targetRange)</td></tr>
 <tr class="memdesc:ad8b27665f5d28502e9389f8677b12f7b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the space distribution equation to calculate the beam energy decreasing the further away from the center. <br /></td></tr>
@@ -273,6 +279,10 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../.
 bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/da6/classFullWaveformPulseRunnable.html#ab817063a50399ea3b1ba7b9cb4a3165b">calcEchowidth</a></td></tr>
 <tr class="memdesc:ab817063a50399ea3b1ba7b9cb4a3165b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flag to specify if calc echo width (true) or not (false) <br /></td></tr>
 <tr class="separator:ab817063a50399ea3b1ba7b9cb4a3165b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0e5198ccd6779267766849dc4de5fa47"><td class="memItemLeft" align="right" valign="top"><a id="a0e5198ccd6779267766849dc4de5fa47"></a>
+<a class="el" href="../../d5/d9c/classScene.html">Scene</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/da6/classFullWaveformPulseRunnable.html#a0e5198ccd6779267766849dc4de5fa47">scene</a></td></tr>
+<tr class="memdesc:a0e5198ccd6779267766849dc4de5fa47"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reference to the scene that is being scanned. <br /></td></tr>
+<tr class="separator:a0e5198ccd6779267766849dc4de5fa47"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
@@ -285,8 +295,8 @@ Additional Inherited Members</h2></td></tr>
 <div class="textblock"><p>Concrete implementation of abstract pulse runnable to compute full waveform pulses. </p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d6/d9e/classAbstractPulseRunnable.html" title="Base abstract class for pulse runnables. ">AbstractPulseRunnable</a> </dd></dl>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="ab713e4e8c1abbb7279b173672c2eef8c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab713e4e8c1abbb7279b173672c2eef8c">&#9670;&nbsp;</a></span>FullWaveformPulseRunnable()</h2>
+<a id="af21f75719cfd04252c91c2c9e40ccdf6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af21f75719cfd04252c91c2c9e40ccdf6">&#9670;&nbsp;</a></span>FullWaveformPulseRunnable()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -303,37 +313,37 @@ Additional Inherited Members</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">glm::dvec3&#160;</td>
+          <td class="paramtype">glm::dvec3 const&#160;</td>
           <td class="paramname"><em>absoluteBeamOrigin</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="../../d5/dcb/classRotation.html">Rotation</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="../../d5/dcb/classRotation.html">Rotation</a> const&#160;</td>
           <td class="paramname"><em>absoluteBeamAttitude</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">int&#160;</td>
+          <td class="paramtype">int const&#160;</td>
           <td class="paramname"><em>currentPulseNum</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">double&#160;</td>
+          <td class="paramtype">double const&#160;</td>
           <td class="paramname"><em>currentGpsTime</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">bool&#160;</td>
+          <td class="paramtype">bool const&#160;</td>
           <td class="paramname"><em>writeWaveform</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">bool&#160;</td>
+          <td class="paramtype">bool const&#160;</td>
           <td class="paramname"><em>calcEchowidth</em>, </td>
         </tr>
         <tr>
@@ -363,7 +373,7 @@ Additional Inherited Members</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramtype">unsigned int const&#160;</td>
           <td class="paramname"><em>legIndex</em>&#160;</td>
         </tr>
         <tr>
@@ -380,7 +390,7 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Base constructor for full waveform pulse runnable. </p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d6/d9e/classAbstractPulseRunnable.html#adb9bdc1d395240bbad4a5de192f44e0f" title="Base constructor for pulse runnables. ">AbstractPulseRunnable::AbstractPulseRunnable</a>( std::shared_ptr&lt;AbstractDetector&gt;, glm::dvec3, <a class="el" href="../../d5/dcb/classRotation.html">Rotation</a>, int, long) </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d6/d9e/classAbstractPulseRunnable.html#a9ebe8a4afc41a1b0e28f86885c547965" title="Base constructor for pulse runnables. ">AbstractPulseRunnable::AbstractPulseRunnable</a>( std::shared_ptr&lt;AbstractDetector&gt;, glm::dvec3, <a class="el" href="../../d5/dcb/classRotation.html">Rotation</a>, int, long) </dd>
 <dd>
 <a class="el" href="../../db/da6/classFullWaveformPulseRunnable.html#a06e7d38a47f7fc76d55ba205fa399b8e" title="Flag to specify if write waveform (true) or not (false) ">FullWaveformPulseRunnable::writeWaveform</a> </dd>
 <dd>
@@ -493,8 +503,8 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a id="a39859571a66d2da2aa0bfaf1585c83b1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a39859571a66d2da2aa0bfaf1585c83b1">&#9670;&nbsp;</a></span>computeSubrays()</h2>
+<a id="a59ff222472831f7dd01536cf092726a8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a59ff222472831f7dd01536cf092726a8">&#9670;&nbsp;</a></span>computeSubrays()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -505,8 +515,8 @@ Additional Inherited Members</h2></td></tr>
         <tr>
           <td class="memname">void FullWaveformPulseRunnable::computeSubrays </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="../../d5/d9c/classScene.html">Scene</a> &amp;&#160;</td>
-          <td class="paramname"><em>scene</em>, </td>
+          <td class="paramtype">vector&lt; double &gt; const &amp;&#160;</td>
+          <td class="paramname"><em>tMinMax</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -542,18 +552,18 @@ Additional Inherited Members</h2></td></tr>
 <p>Perform ray casting to find intersections. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">scene</td><td>Reference to the scene to perform ray casting over </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">tMinMax</td><td>Minimum and maximum time to intersection with respect to the axis aligned bounding box that bounds the scene </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">reflections</td><td>Where reflections must be stored when a hit is registered </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">intersects</td><td>Where intersections must be stored when a hit is registered </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../db/da6/classFullWaveformPulseRunnable.html#a8c04fa7ff3c01fcdc7119d9abd52bbb6" title="Handle sub-rays along the circle. ">FullWaveformPulseRunnable::handleSubray</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../db/da6/classFullWaveformPulseRunnable.html#aba1c11f6e422d0b6a17222ebebaa2ba0" title="Handle sub-rays along the circle. ">FullWaveformPulseRunnable::handleSubray</a> </dd></dl>
 
 </div>
 </div>
-<a id="af44d7312cdd43ccc9a34bc1db5e9d3ba"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af44d7312cdd43ccc9a34bc1db5e9d3ba">&#9670;&nbsp;</a></span>digestFullWaveform()</h2>
+<a id="a78817455965590a3df30dd0dff75497a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a78817455965590a3df30dd0dff75497a">&#9670;&nbsp;</a></span>digestFullWaveform()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -582,43 +592,43 @@ Additional Inherited Members</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">std::vector&lt; double &gt; &amp;&#160;</td>
+          <td class="paramtype">std::vector&lt; double &gt; const &amp;&#160;</td>
           <td class="paramname"><em>fullwave</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">vector&lt; <a class="el" href="../../dc/da3/classRaySceneIntersection.html">RaySceneIntersection</a> &gt; &amp;&#160;</td>
+          <td class="paramtype">vector&lt; <a class="el" href="../../dc/da3/classRaySceneIntersection.html">RaySceneIntersection</a> &gt; const &amp;&#160;</td>
           <td class="paramname"><em>intersects</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">glm::dvec3 &amp;&#160;</td>
+          <td class="paramtype">glm::dvec3 const &amp;&#160;</td>
           <td class="paramname"><em>beamDir</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">double&#160;</td>
+          <td class="paramtype">double const&#160;</td>
           <td class="paramname"><em>nsPerBin</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">int&#160;</td>
+          <td class="paramtype">int const&#160;</td>
           <td class="paramname"><em>numFullwaveBins</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">int&#160;</td>
+          <td class="paramtype">int const&#160;</td>
           <td class="paramname"><em>peakIntensityIndex</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">double&#160;</td>
+          <td class="paramtype">double const&#160;</td>
           <td class="paramname"><em>minHitTime_ns</em>&#160;</td>
         </tr>
         <tr>
@@ -645,7 +655,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="../../db/da6/classFullWaveformPulseRunnable.html#afdef1f81c235056a04beb60f40c2492d" title="Digest intersections found through ray casting. ">FullWaveformPulseRunnable::digestIntersections</a> </dd>
 <dd>
-<a class="el" href="../../db/da6/classFullWaveformPulseRunnable.html#a741d1b4cc6302ffb1d8df79ed66804f5" title="Populate a previously initialized full waveform vector. ">FullWaveformPulseRunnable::populateFullWaveform</a> </dd>
+<a class="el" href="../../db/da6/classFullWaveformPulseRunnable.html#abc0bce6d9e156c6366458d1b6942f783" title="Populate a previously initialized full waveform vector. ">FullWaveformPulseRunnable::populateFullWaveform</a> </dd>
 <dd>
 <a class="el" href="../../db/d2e/classMeasurement.html" title="Class representing a measurement. ">Measurement</a> </dd></dl>
 
@@ -718,15 +728,15 @@ Additional Inherited Members</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../db/da6/classFullWaveformPulseRunnable.html#a39859571a66d2da2aa0bfaf1585c83b1" title="Perform ray casting to find intersections. ">FullWaveformPulseRunnable::computeSubrays</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../db/da6/classFullWaveformPulseRunnable.html#a59ff222472831f7dd01536cf092726a8" title="Perform ray casting to find intersections. ">FullWaveformPulseRunnable::computeSubrays</a> </dd>
 <dd>
 <a class="el" href="../../db/da6/classFullWaveformPulseRunnable.html#a994cbfe3d1adad4c083fb61cac8df033" title="Find min and max hit distances in meters. ">FullWaveformPulseRunnable::findMaxMinHitDistances</a> </dd>
 <dd>
 <a class="el" href="../../db/da6/classFullWaveformPulseRunnable.html#a50b690e9352dfcdc998a35bc222481e9" title="Initialize full waveform While the vector is not strictly initialized in this function, necessary variables are computed here. ">FullWaveformPulseRunnable::initializeFullWaveform</a> </dd>
 <dd>
-<a class="el" href="../../db/da6/classFullWaveformPulseRunnable.html#a741d1b4cc6302ffb1d8df79ed66804f5" title="Populate a previously initialized full waveform vector. ">FullWaveformPulseRunnable::populateFullWaveform</a> </dd>
+<a class="el" href="../../db/da6/classFullWaveformPulseRunnable.html#abc0bce6d9e156c6366458d1b6942f783" title="Populate a previously initialized full waveform vector. ">FullWaveformPulseRunnable::populateFullWaveform</a> </dd>
 <dd>
-<a class="el" href="../../db/da6/classFullWaveformPulseRunnable.html#af44d7312cdd43ccc9a34bc1db5e9d3ba" title="Digest a previously populated full waveform vector, generating measurements. ">FullWaveformPulseRunnable::digestFullWaveform</a> </dd>
+<a class="el" href="../../db/da6/classFullWaveformPulseRunnable.html#a78817455965590a3df30dd0dff75497a" title="Digest a previously populated full waveform vector, generating measurements. ">FullWaveformPulseRunnable::digestFullWaveform</a> </dd>
 <dd>
 <a class="el" href="../../db/da6/classFullWaveformPulseRunnable.html#a6519f26018edf7b5e601364154bb3fed" title="Export measurements and full waveform data. ">FullWaveformPulseRunnable::exportOutput</a> </dd></dl>
 
@@ -814,6 +824,61 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
+<a id="a9662d90c284c19bd93d88f81ccb65aec"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9662d90c284c19bd93d88f81ccb65aec">&#9670;&nbsp;</a></span>findIntersection()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">shared_ptr&lt; <a class="el" href="../../dc/da3/classRaySceneIntersection.html">RaySceneIntersection</a> &gt; FullWaveformPulseRunnable::findIntersection </td>
+          <td>(</td>
+          <td class="paramtype">vector&lt; double &gt; const &amp;&#160;</td>
+          <td class="paramname"><em>tMinMax</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">glm::dvec3 const &amp;&#160;</td>
+          <td class="paramname"><em>o</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">glm::dvec3 const &amp;&#160;</td>
+          <td class="paramname"><em>v</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Find the intersection between the scene and given ray, if any. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">tMinMax</td><td>Minimum and maximum time to intersection with respect to the axis aligned bounding box that bounds the scene </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">o</td><td>The ray origin </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">v</td><td>The ray director vector </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Intersection between the scene and given ray </dd></dl>
+
+<p>Reimplemented in <a class="el" href="../../da/d0b/classDynFullWaveformPulseRunnable.html#a8992fefd6a8d370fa0ae7aefc654b081">DynFullWaveformPulseRunnable</a>.</p>
+
+</div>
+</div>
 <a id="a994cbfe3d1adad4c083fb61cac8df033"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a994cbfe3d1adad4c083fb61cac8df033">&#9670;&nbsp;</a></span>findMaxMinHitDistances()</h2>
 
@@ -866,8 +931,8 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a id="a8c04fa7ff3c01fcdc7119d9abd52bbb6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8c04fa7ff3c01fcdc7119d9abd52bbb6">&#9670;&nbsp;</a></span>handleSubray()</h2>
+<a id="aba1c11f6e422d0b6a17222ebebaa2ba0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aba1c11f6e422d0b6a17222ebebaa2ba0">&#9670;&nbsp;</a></span>handleSubray()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -878,6 +943,12 @@ Additional Inherited Members</h2></td></tr>
         <tr>
           <td class="memname">void FullWaveformPulseRunnable::handleSubray </td>
           <td>(</td>
+          <td class="paramtype">vector&lt; double &gt; const &amp;&#160;</td>
+          <td class="paramname"><em>tMinMax</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
           <td class="paramtype">int&#160;</td>
           <td class="paramname"><em>circleStep</em>, </td>
         </tr>
@@ -892,12 +963,6 @@ Additional Inherited Members</h2></td></tr>
           <td></td>
           <td class="paramtype"><a class="el" href="../../d5/dcb/classRotation.html">Rotation</a> &amp;&#160;</td>
           <td class="paramname"><em>r1</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="../../d5/d9c/classScene.html">Scene</a> &amp;&#160;</td>
-          <td class="paramname"><em>scene</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -939,6 +1004,7 @@ Additional Inherited Members</h2></td></tr>
 <p>Handle sub-rays along the circle. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">tMinMax</td><td>Minimum and maximum time to intersection with respect to the axis aligned bounding box that bounds the scene </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">circleStep</td><td>The iteration along the circle </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">circleStep_rad</td><td>Angle in radians corresponding to the iteration </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">r1</td><td>Sub-beam rotation into divergence step </td></tr>
@@ -946,7 +1012,7 @@ Additional Inherited Members</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../db/da6/classFullWaveformPulseRunnable.html#a39859571a66d2da2aa0bfaf1585c83b1" title="Perform ray casting to find intersections. ">FullWaveformPulseRunnable::computeSubrays</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../db/da6/classFullWaveformPulseRunnable.html#a59ff222472831f7dd01536cf092726a8" title="Perform ray casting to find intersections. ">FullWaveformPulseRunnable::computeSubrays</a> </dd></dl>
 
 </div>
 </div>
@@ -1127,8 +1193,8 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a id="a741d1b4cc6302ffb1d8df79ed66804f5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a741d1b4cc6302ffb1d8df79ed66804f5">&#9670;&nbsp;</a></span>populateFullWaveform()</h2>
+<a id="abc0bce6d9e156c6366458d1b6942f783"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abc0bce6d9e156c6366458d1b6942f783">&#9670;&nbsp;</a></span>populateFullWaveform()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1139,7 +1205,7 @@ Additional Inherited Members</h2></td></tr>
         <tr>
           <td class="memname">void FullWaveformPulseRunnable::populateFullWaveform </td>
           <td>(</td>
-          <td class="paramtype">std::map&lt; double, double &gt; &amp;&#160;</td>
+          <td class="paramtype">std::map&lt; double, double &gt; const &amp;&#160;</td>
           <td class="paramname"><em>reflections</em>, </td>
         </tr>
         <tr>
@@ -1151,25 +1217,25 @@ Additional Inherited Members</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">double&#160;</td>
+          <td class="paramtype">double const&#160;</td>
           <td class="paramname"><em>distanceThreshold</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">double&#160;</td>
+          <td class="paramtype">double const&#160;</td>
           <td class="paramname"><em>minHitTime_ns</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">double&#160;</td>
+          <td class="paramtype">double const&#160;</td>
           <td class="paramname"><em>nsPerBin</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">int&#160;</td>
+          <td class="paramtype">int const&#160;</td>
           <td class="paramname"><em>peakIntensityIndex</em>&#160;</td>
         </tr>
         <tr>

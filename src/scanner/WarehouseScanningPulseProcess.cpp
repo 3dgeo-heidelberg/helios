@@ -1,6 +1,4 @@
 #include <scanner/WarehouseScanningPulseProcess.h>
-#include <FullWaveformPulseDetector.h>
-#include <FullWaveformPulseRunnable.h>
 
 
 // ***  CONSTRUCTION / DESTRUCTION  *** //
@@ -104,23 +102,14 @@ void WarehouseScanningPulseProcess::handlePulseComputationSequential(
     double const currentGpsTime
 ){
     // Sequential pulse computation
-    FullWaveformPulseRunnable worker = FullWaveformPulseRunnable(
-        std::dynamic_pointer_cast<FullWaveformPulseDetector>(detector),
+    shared_ptr<PulseTask> worker = ptf.build(
+        *this,
+        legIndex,
         absoluteBeamOrigin,
         absoluteBeamAttitude,
-        currentPulseNumber,
-        currentGpsTime,
-        writeWaveform,
-        calcEchowidth,
-        (allMeasurements == nullptr) ? nullptr : allMeasurements.get(),
-        (allMeasurementsMutex == nullptr) ?
-            nullptr : allMeasurementsMutex.get(),
-        (cycleMeasurements == nullptr) ? nullptr : cycleMeasurements.get(),
-        (cycleMeasurementsMutex == nullptr) ?
-            nullptr : cycleMeasurementsMutex.get(),
-        legIndex
+        currentGpsTime
     );
-    worker( // call functor
+    (*worker)( // call functor
         apMatrix,
         randGen1,
         randGen2,
@@ -137,23 +126,12 @@ void WarehouseScanningPulseProcess::handlePulseComputationParallel(
     // Submit pulse computation functor to thread pool
     char const status = dropper.tryAdd(
         pool,
-        std::make_shared<FullWaveformPulseRunnable>(
-            std::dynamic_pointer_cast<FullWaveformPulseDetector>(detector),
+        ptf.build(
+            *this,
+            legIndex,
             absoluteBeamOrigin,
             absoluteBeamAttitude,
-            currentPulseNumber,
-            currentGpsTime,
-            writeWaveform,
-            calcEchowidth,
-            (allMeasurements == nullptr) ?
-                nullptr : allMeasurements.get(),
-            (allMeasurementsMutex == nullptr) ?
-                nullptr : allMeasurementsMutex.get(),
-            (cycleMeasurements == nullptr) ?
-                nullptr : cycleMeasurements.get(),
-            (cycleMeasurementsMutex == nullptr) ?
-                nullptr : cycleMeasurementsMutex.get(),
-            legIndex
+            currentGpsTime
         )
     );
     if(status){

@@ -105,8 +105,9 @@ Inheritance diagram for AbstractPulseRunnable:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../d9/dce/classAbstractPulseRunnable__inherit__graph.png" border="0" usemap="#AbstractPulseRunnable_inherit__map" alt="Inheritance graph"/></div>
 <map name="AbstractPulseRunnable_inherit__map" id="AbstractPulseRunnable_inherit__map">
-<area shape="rect" id="node3" href="../../db/da6/classFullWaveformPulseRunnable.html" title="Concrete implementation of abstract pulse runnable to compute full waveform pulses. " alt="" coords="5,155,196,181"/>
-<area shape="rect" id="node2" href="../../d1/d6e/classPulseTask.html" title="Pulse task interface. " alt="" coords="59,5,143,32"/>
+<area shape="rect" id="node3" href="../../db/da6/classFullWaveformPulseRunnable.html" title="Concrete implementation of abstract pulse runnable to compute full waveform pulses. " alt="" coords="17,155,208,181"/>
+<area shape="rect" id="node2" href="../../d1/d6e/classPulseTask.html" title="Pulse task interface. " alt="" coords="71,5,155,32"/>
+<area shape="rect" id="node4" href="../../da/d0b/classDynFullWaveformPulseRunnable.html" title="Derived class extending FullWaveFormPulseRunnable to handle dynamic moving objects. " alt="" coords="5,229,220,256"/>
 </map>
 <center><span class="legend">[<a target="top" href="../../graph_legend.html">legend</a>]</span></center></div>
 <div class="dynheader">
@@ -114,16 +115,17 @@ Collaboration diagram for AbstractPulseRunnable:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../d0/db6/classAbstractPulseRunnable__coll__graph.png" border="0" usemap="#AbstractPulseRunnable_coll__map" alt="Collaboration graph"/></div>
 <map name="AbstractPulseRunnable_coll__map" id="AbstractPulseRunnable_coll__map">
-<area shape="rect" id="node2" href="../../d1/d6e/classPulseTask.html" title="Pulse task interface. " alt="" coords="5,5,89,32"/>
-<area shape="rect" id="node3" href="../../d5/dcb/classRotation.html" title="Rotation" alt="" coords="113,5,184,32"/>
+<area shape="rect" id="node1" title="Base abstract class for pulse runnables." alt="" coords="16,95,188,121"/>
+<area shape="rect" id="node2" href="../../d1/d6e/classPulseTask.html" title="Pulse task interface." alt="" coords="5,5,92,32"/>
+<area shape="rect" id="node3" href="../../d5/dcb/classRotation.html" title=" " alt="" coords="117,5,194,32"/>
 </map>
 <center><span class="legend">[<a target="top" href="../../graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:adb9bdc1d395240bbad4a5de192f44e0f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d9e/classAbstractPulseRunnable.html#adb9bdc1d395240bbad4a5de192f44e0f">AbstractPulseRunnable</a> (std::shared_ptr&lt; <a class="el" href="../../d8/d6b/classAbstractDetector.html">AbstractDetector</a> &gt; <a class="el" href="../../d6/d9e/classAbstractPulseRunnable.html#a5f89956813516dcb6090715f2aed8631">detector</a>, glm::dvec3 <a class="el" href="../../d6/d9e/classAbstractPulseRunnable.html#aa7f3f0ea66414823b4bd1e4ebd12295f">absoluteBeamOrigin</a>, <a class="el" href="../../d5/dcb/classRotation.html">Rotation</a> <a class="el" href="../../d6/d9e/classAbstractPulseRunnable.html#a5431be620a94c48f0b13bdb4627b9f54">absoluteBeamAttitude</a>, int pulseNumber, long gpsTime)</td></tr>
-<tr class="memdesc:adb9bdc1d395240bbad4a5de192f44e0f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Base constructor for pulse runnables.  <a href="#adb9bdc1d395240bbad4a5de192f44e0f">More...</a><br /></td></tr>
-<tr class="separator:adb9bdc1d395240bbad4a5de192f44e0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9ebe8a4afc41a1b0e28f86885c547965"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d9e/classAbstractPulseRunnable.html#a9ebe8a4afc41a1b0e28f86885c547965">AbstractPulseRunnable</a> (std::shared_ptr&lt; <a class="el" href="../../d8/d6b/classAbstractDetector.html">AbstractDetector</a> &gt; const <a class="el" href="../../d6/d9e/classAbstractPulseRunnable.html#a5f89956813516dcb6090715f2aed8631">detector</a>, glm::dvec3 const <a class="el" href="../../d6/d9e/classAbstractPulseRunnable.html#aa7f3f0ea66414823b4bd1e4ebd12295f">absoluteBeamOrigin</a>, <a class="el" href="../../d5/dcb/classRotation.html">Rotation</a> const <a class="el" href="../../d6/d9e/classAbstractPulseRunnable.html#a5431be620a94c48f0b13bdb4627b9f54">absoluteBeamAttitude</a>, int const pulseNumber, long const gpsTime)</td></tr>
+<tr class="memdesc:a9ebe8a4afc41a1b0e28f86885c547965"><td class="mdescLeft">&#160;</td><td class="mdescRight">Base constructor for pulse runnables.  <a href="#a9ebe8a4afc41a1b0e28f86885c547965">More...</a><br /></td></tr>
+<tr class="separator:a9ebe8a4afc41a1b0e28f86885c547965"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8e0d4e44fcbeecdc520f67edbc565350"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d9e/classAbstractPulseRunnable.html#a8e0d4e44fcbeecdc520f67edbc565350">calcCrossSection</a> (double f, double Alf, double theta)</td></tr>
 <tr class="memdesc:a8e0d4e44fcbeecdc520f67edbc565350"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute cross section.  <a href="#a8e0d4e44fcbeecdc520f67edbc565350">More...</a><br /></td></tr>
 <tr class="separator:a8e0d4e44fcbeecdc520f67edbc565350"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -190,8 +192,8 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../.
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Base abstract class for pulse runnables. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="adb9bdc1d395240bbad4a5de192f44e0f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adb9bdc1d395240bbad4a5de192f44e0f">&#9670;&nbsp;</a></span>AbstractPulseRunnable()</h2>
+<a id="a9ebe8a4afc41a1b0e28f86885c547965"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9ebe8a4afc41a1b0e28f86885c547965">&#9670;&nbsp;</a></span>AbstractPulseRunnable()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -202,31 +204,31 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../.
         <tr>
           <td class="memname">AbstractPulseRunnable::AbstractPulseRunnable </td>
           <td>(</td>
-          <td class="paramtype">std::shared_ptr&lt; <a class="el" href="../../d8/d6b/classAbstractDetector.html">AbstractDetector</a> &gt;&#160;</td>
+          <td class="paramtype">std::shared_ptr&lt; <a class="el" href="../../d8/d6b/classAbstractDetector.html">AbstractDetector</a> &gt; const&#160;</td>
           <td class="paramname"><em>detector</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">glm::dvec3&#160;</td>
+          <td class="paramtype">glm::dvec3 const&#160;</td>
           <td class="paramname"><em>absoluteBeamOrigin</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="../../d5/dcb/classRotation.html">Rotation</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="../../d5/dcb/classRotation.html">Rotation</a> const&#160;</td>
           <td class="paramname"><em>absoluteBeamAttitude</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">int&#160;</td>
+          <td class="paramtype">int const&#160;</td>
           <td class="paramname"><em>pulseNumber</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">long&#160;</td>
+          <td class="paramtype">long const&#160;</td>
           <td class="paramname"><em>gpsTime</em>&#160;</td>
         </tr>
         <tr>

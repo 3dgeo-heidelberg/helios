@@ -3,7 +3,7 @@ var classVertex =
     [ "Vertex", "d2/da0/classVertex.html#ae2152b82b92f1522812a1e2bb8c32ba5", null ],
     [ "Vertex", "d2/da0/classVertex.html#a4380b481411653af70ac6a7d87dc8f4d", null ],
     [ "Vertex", "d2/da0/classVertex.html#a2cd575cac73be8dba0f87dfc38fe20e7", null ],
-    [ "copy", "d2/da0/classVertex.html#a37d10a2452cee437861e511f5f271c60", null ],
+    [ "copy", "d2/da0/classVertex.html#a5d427f809bb3303a63225b7dee83b76c", null ],
     [ "getX", "d2/da0/classVertex.html#aa59c664e53950a29584bdecae1948eea", null ],
     [ "getY", "d2/da0/classVertex.html#afeb7021ae37432206c83f35b52eca970", null ],
     [ "getZ", "d2/da0/classVertex.html#aad6d52e492c4a5b62393c05b8346264a", null ],

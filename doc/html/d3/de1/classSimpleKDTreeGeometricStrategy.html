@@ -130,6 +130,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:adeb98cf421cdf0f7b5b37c1e6ae204fc"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/de1/classSimpleKDTreeGeometricStrategy.html#adeb98cf421cdf0f7b5b37c1e6ae204fc">SimpleKDTreeGeometricStrategy</a> (<a class="el" href="../../d6/d96/classSimpleKDTreeFactory.html">SimpleKDTreeFactory</a> &amp;<a class="el" href="../../d3/de1/classSimpleKDTreeGeometricStrategy.html#ae85ebca31792379adea5fa0e143b3fce">kdtf</a>)</td></tr>
 <tr class="memdesc:adeb98cf421cdf0f7b5b37c1e6ae204fc"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="../../d3/de1/classSimpleKDTreeGeometricStrategy.html" title="Class providing a strategy for geometry-level parallelization of Simple KDTree building. The geometry-level parallelization is the one to be applied on upper tree nodes, where multiple threads work on the building of the same node. ">SimpleKDTreeGeometricStrategy</a> default constructor.  <a href="#adeb98cf421cdf0f7b5b37c1e6ae204fc">More...</a><br /></td></tr>
 <tr class="separator:adeb98cf421cdf0f7b5b37c1e6ae204fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad2a8c7c3c1dfeadc4ec0005f4ac3812e"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="../../d3/de1/classSimpleKDTreeGeometricStrategy.html">SimpleKDTreeGeometricStrategy</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/de1/classSimpleKDTreeGeometricStrategy.html#ad2a8c7c3c1dfeadc4ec0005f4ac3812e">clone</a> (<a class="el" href="../../d6/d96/classSimpleKDTreeFactory.html">SimpleKDTreeFactory</a> *<a class="el" href="../../d3/de1/classSimpleKDTreeGeometricStrategy.html#ae85ebca31792379adea5fa0e143b3fce">kdtf</a>) const</td></tr>
+<tr class="memdesc:ad2a8c7c3c1dfeadc4ec0005f4ac3812e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a clone of the <a class="el" href="../../d3/de1/classSimpleKDTreeGeometricStrategy.html" title="Class providing a strategy for geometry-level parallelization of Simple KDTree building. The geometry-level parallelization is the one to be applied on upper tree nodes, where multiple threads work on the building of the same node. ">SimpleKDTreeGeometricStrategy</a>.  <a href="#ad2a8c7c3c1dfeadc4ec0005f4ac3812e">More...</a><br /></td></tr>
+<tr class="separator:ad2a8c7c3c1dfeadc4ec0005f4ac3812e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
@@ -194,6 +197,43 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>MultiThreadKDTreeFac
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="ad2a8c7c3c1dfeadc4ec0005f4ac3812e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad2a8c7c3c1dfeadc4ec0005f4ac3812e">&#9670;&nbsp;</a></span>clone()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../d3/de1/classSimpleKDTreeGeometricStrategy.html">SimpleKDTreeGeometricStrategy</a> * SimpleKDTreeGeometricStrategy::clone </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="../../d6/d96/classSimpleKDTreeFactory.html">SimpleKDTreeFactory</a> *&#160;</td>
+          <td class="paramname"><em>kdtf</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Create a clone of the <a class="el" href="../../d3/de1/classSimpleKDTreeGeometricStrategy.html" title="Class providing a strategy for geometry-level parallelization of Simple KDTree building. The geometry-level parallelization is the one to be applied on upper tree nodes, where multiple threads work on the building of the same node. ">SimpleKDTreeGeometricStrategy</a>. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">kdtf</td><td>The <a class="el" href="../../d5/dd0/classKDTreeFactory.html" title="Class that must be extended by any class which provides factory methods for k-dimensional trees...">KDTreeFactory</a> to be referenced by the clone </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Clone of the <a class="el" href="../../d3/de1/classSimpleKDTreeGeometricStrategy.html" title="Class providing a strategy for geometry-level parallelization of Simple KDTree building. The geometry-level parallelization is the one to be applied on upper tree nodes, where multiple threads work on the building of the same node. ">SimpleKDTreeGeometricStrategy</a> </dd></dl>
+
+<p>Reimplemented in <a class="el" href="../../d4/d97/classAxisSAHKDTreeGeometricStrategy.html#a7cd3777c57a5a1ff3a2d821d2f2c85f8">AxisSAHKDTreeGeometricStrategy</a>, <a class="el" href="../../d1/ddc/classFastSAHKDTreeGeometricStrategy.html#a87f840065c2bebfa16871967ce1d1c34">FastSAHKDTreeGeometricStrategy</a>, and <a class="el" href="../../d9/d31/classSAHKDTreeGeometricStrategy.html#abfd298cd9abe1fcef7e39630ef05b250">SAHKDTreeGeometricStrategy</a>.</p>
+
+</div>
+</div>
 <a id="ad537d7e39a2e0d97bc711b3dd3747440"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad537d7e39a2e0d97bc711b3dd3747440">&#9670;&nbsp;</a></span>GEOM_buildChildrenNodes()</h2>
 

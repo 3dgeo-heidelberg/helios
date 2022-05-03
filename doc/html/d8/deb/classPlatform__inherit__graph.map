@@ -1,8 +1,10 @@
 <map id="Platform" name="Platform">
-<area shape="rect" id="node3" href="$d1/d83/classMovingPlatform.html" title="Class representing a moving platform. " alt="" coords="101,155,214,181"/>
-<area shape="rect" id="node2" href="$de/d97/classAsset.html" title="Base class for all assets. " alt="" coords="129,5,185,32"/>
-<area shape="rect" id="node4" href="$d8/d15/classLinearPathPlatform.html" title="Class representing a linear path platform. " alt="" coords="5,229,139,256"/>
-<area shape="rect" id="node5" href="$d5/d3b/classSimplePhysicsPlatform.html" title="Class representing a simple phyiscs platform. " alt="" coords="163,229,322,256"/>
-<area shape="rect" id="node6" href="$d7/d94/classGroundVehiclePlatform.html" title="Class representing a ground vehicle platform. " alt="" coords="81,304,237,331"/>
-<area shape="rect" id="node7" href="$db/d69/classHelicopterPlatform.html" title="Class representing a helicopter platform. " alt="" coords="261,304,392,331"/>
+<area shape="rect" id="node3" href="$d1/d83/classMovingPlatform.html" title="Class representing a moving platform. " alt="" coords="228,81,341,108"/>
+<area shape="rect" id="node2" href="$de/d97/classAsset.html" title="Base class for all assets. " alt="" coords="5,81,61,108"/>
+<area shape="rect" id="node4" href="$dc/d97/classInterpolatedMovingPlatform.html" title="Class representing a MovingPlatform which position is defined by a function interpolated from a Desig..." alt="" coords="401,5,582,32"/>
+<area shape="rect" id="node5" href="$d6/dd9/classInterpolatedMovingPlatformEgg.html" title="Egg class that can hatch to a full InterpolatedMovingPlatform class. " alt="" coords="389,56,593,83"/>
+<area shape="rect" id="node6" href="$d8/d15/classLinearPathPlatform.html" title="Class representing a linear path platform. " alt="" coords="425,107,558,133"/>
+<area shape="rect" id="node7" href="$d5/d3b/classSimplePhysicsPlatform.html" title="Class representing a simple phyiscs platform. " alt="" coords="412,157,571,184"/>
+<area shape="rect" id="node8" href="$d7/d94/classGroundVehiclePlatform.html" title="Class representing a ground vehicle platform. " alt="" coords="641,132,797,159"/>
+<area shape="rect" id="node9" href="$db/d69/classHelicopterPlatform.html" title="Class representing a helicopter platform. " alt="" coords="654,183,785,209"/>
 </map>

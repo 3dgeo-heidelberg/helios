@@ -3,8 +3,12 @@
 #ifdef PYTHON_BINDING
 
 #include <PyDetectorWrapper.h>
+#include <filems/facade/FMSFacade.h>
+using helios::filems::FMSFacade;
 #include <AbstractDetector.h>
+
 #include <memory>
+
 
 namespace pyhelios{
 
@@ -34,16 +38,20 @@ public:
     // ***************************** //
     inline double getAccuracy()
         {return detector.cfg_device_accuracy_m;}
-    inline void setAccuracy(double accuracy)
+    inline void setAccuracy(double const accuracy)
         {detector.cfg_device_accuracy_m = accuracy;}
     inline double getRangeMin()
         {return detector.cfg_device_rangeMin_m;}
-    inline void setRangeMin(double rangeMin)
+    inline void setRangeMin(double const rangeMin)
         {detector.cfg_device_rangeMin_m = rangeMin;}
+    inline double getRangeMax()
+        {return detector.cfg_device_rangeMax_m;}
+    inline void setRangeMax(double const rangeMax)
+        {detector.cfg_device_rangeMax_m = rangeMax;}
     inline double getLasScale()
-        {return detector.lasScale;}
-    inline void setLasScale(double lasScale)
-        {detector.lasScale = lasScale;}
+        {return detector.getFMS()->write.getMeasurementWriterLasScale();}
+    inline void setLasScale(double const lasScale)
+        {detector.getFMS()->write.setMeasurementWriterLasScale(lasScale);}
 };
 
 }

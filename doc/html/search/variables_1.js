@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['a',['a',['../da/d52/classSurfaceInspector_1_1maths_1_1Histogram.html#a64e07e5f83715dc1a095912230c309b8',1,'SurfaceInspector::maths::Histogram::a()'],['../d6/d26/classSurfaceInspector_1_1util_1_1draggers_1_1MinDragger.html#a666b09efc5b3e457a0483abbe8734587',1,'SurfaceInspector::util::draggers::MinDragger::a()'],['../d7/d84/classrigidmotion_1_1RigidMotion.html#af809d870aad52d3bd417b4832498c676',1,'rigidmotion::RigidMotion::A()'],['../d1/d2b/classMarquardtFitter.html#aaba141f675faab660d793e3b0e7cb4f8',1,'MarquardtFitter::A()']]],
+  ['a',['A',['../d9/d49/classfluxionum_1_1DiffDesignMatrix.html#aa443abb5785759d4e59359c516145db7',1,'fluxionum::DiffDesignMatrix::A()'],['../d7/d84/classrigidmotion_1_1RigidMotion.html#af809d870aad52d3bd417b4832498c676',1,'rigidmotion::RigidMotion::A()'],['../d1/d2b/classMarquardtFitter.html#aaba141f675faab660d793e3b0e7cb4f8',1,'MarquardtFitter::A()'],['../da/d52/classSurfaceInspector_1_1maths_1_1Histogram.html#a64e07e5f83715dc1a095912230c309b8',1,'SurfaceInspector::maths::Histogram::a()'],['../d6/d26/classSurfaceInspector_1_1util_1_1draggers_1_1MinDragger.html#a666b09efc5b3e457a0483abbe8734587',1,'SurfaceInspector::util::draggers::MinDragger::a()']]],
   ['a1',['a1',['../d6/d7f/classRotationOrder.html#ae1e79a9be04701a8498ff9d0d0ffbda5',1,'RotationOrder']]],
   ['a2',['a2',['../d6/d7f/classRotationOrder.html#a94e6d412fb6ea94d460e9215c84d6442',1,'RotationOrder']]],
   ['a3',['a3',['../d6/d7f/classRotationOrder.html#a1e279094daf5b6381ecfa9b38b66f89f',1,'RotationOrder']]],
@@ -13,11 +13,12 @@ var searchData=
   ['active',['active',['../d0/d23/classScannerSettings.html#ab7ab44cae813ced7ecf252228beee109',1,'ScannerSettings']]],
   ['allmeasurements',['allMeasurements',['../db/da6/classFullWaveformPulseRunnable.html#aeedfb37ebcaa81fb785f4d0ce5b6ce3c',1,'FullWaveformPulseRunnable::allMeasurements()'],['../dc/d42/classScanner.html#aa6c767c57bf01a1e16fbec89fa0f6c3c',1,'Scanner::allMeasurements()'],['../db/d85/classScanningPulseProcess.html#aea2d0b2959ed1729e4520159bdd2e618',1,'ScanningPulseProcess::allMeasurements()']]],
   ['allmeasurementsmutex',['allMeasurementsMutex',['../db/da6/classFullWaveformPulseRunnable.html#adcaed1b88ed1f08ec6f7a9797ec62fb3',1,'FullWaveformPulseRunnable::allMeasurementsMutex()'],['../dc/d42/classScanner.html#a8cb71381e2e99cc7294c39fdfc7cb554',1,'Scanner::allMeasurementsMutex()'],['../db/d85/classScanningPulseProcess.html#aad7dd7577c3eb70d5faca1b2b3f67372',1,'ScanningPulseProcess::allMeasurementsMutex()']]],
+  ['alloutputpaths',['allOutputPaths',['../dc/d42/classScanner.html#a7492c090b0fdb4f7314f481d2334b1f2',1,'Scanner']]],
   ['alltrajectories',['allTrajectories',['../dc/d42/classScanner.html#a752aa650ad93f7617a9da41554ee8b4f',1,'Scanner']]],
   ['alpha_5fprime',['ALPHA_PRIME',['../d1/d2b/classMarquardtFitter.html#acca56fe1b7c1661a7df02e608e86189d',1,'MarquardtFitter']]],
   ['alphaprimen',['alphaPrimeN',['../d1/d2b/classMarquardtFitter.html#ad44315bbad0e716ba1b3daea3ef812c7',1,'MarquardtFitter']]],
-  ['ampattridx',['ampAttrIdx',['../d2/db3/classLasSyncFileWriter.html#a81c1cdc69e86046dbce25b90bc0abb39',1,'LasSyncFileWriter']]],
-  ['ampattrstart',['ampAttrStart',['../d2/db3/classLasSyncFileWriter.html#aa07f2f15a7754d03e4efe63d51c4d24f',1,'LasSyncFileWriter']]],
+  ['ampattridx',['ampAttrIdx',['../d7/d5b/classhelios_1_1filems_1_1LasSyncFileWriter.html#a394d5b4923009ec240dd3d3cf8de72d8',1,'helios::filems::LasSyncFileWriter']]],
+  ['ampattrstart',['ampAttrStart',['../d7/d5b/classhelios_1_1filems_1_1LasSyncFileWriter.html#af6a93a39acc2a2beb71fb1cee8e4ba04',1,'helios::filems::LasSyncFileWriter::ampAttrStart()'],['../da/d35/classhelios_1_1filems_1_1LasMeasurementWriteStrategy.html#aa9dfe01d95bd68598b2f635f40ec57b0',1,'helios::filems::LasMeasurementWriteStrategy::ampAttrStart()']]],
   ['angles',['angles',['../d9/d22/classLadLut.html#ab74093b290925c63b85144f390a6ee33',1,'LadLut']]],
   ['angularverticality',['angularVerticality',['../d4/dfa/classSurfaceInspector_1_1maths_1_1DetailedPlane.html#a377554f434066c5ab4336682816ef1ce',1,'SurfaceInspector::maths::DetailedPlane']]],
   ['anorm',['aNorm',['../da/d69/classSurfaceInspector_1_1maths_1_1SingularContextComputer.html#a879acb56a7e4f2dc88b515bdbbdc3e11',1,'SurfaceInspector::maths::SingularContextComputer']]],

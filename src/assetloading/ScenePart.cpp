@@ -10,7 +10,7 @@
 
 // ***  CONSTRUCTION / DESTRUCTION  *** //
 // ************************************ //
-ScenePart::ScenePart(ScenePart const &sp) {
+ScenePart::ScenePart(ScenePart const &sp, bool const shallowPrimitives) {
   this->centroid = sp.centroid;
   this->bound = sp.bound;
   this->mId = sp.mId;
@@ -24,12 +24,21 @@ ScenePart::ScenePart(ScenePart const &sp) {
   this->mCrs = nullptr; // TODO Copy this too
   this->mEnv = nullptr; // TODO Copy this too
 
+  this->primitiveType = sp.primitiveType;
   this->mPrimitives = std::vector<Primitive *>(0);
   Primitive *p;
-  for (size_t i = 0; i < sp.mPrimitives.size(); i++) {
-    p = sp.mPrimitives[i]->clone();
-    p->part = sp.mPrimitives[i]->part;
-    this->mPrimitives.push_back(p);
+
+  if(shallowPrimitives){
+      for (size_t i = 0; i < sp.mPrimitives.size(); ++i) {
+          this->mPrimitives.push_back(sp.mPrimitives[i]);
+      }
+  }
+  else{
+      for (size_t i = 0; i < sp.mPrimitives.size(); ++i) {
+          p = sp.mPrimitives[i]->clone();
+          p->part = sp.mPrimitives[i]->part;
+          this->mPrimitives.push_back(p);
+      }
   }
 
   this->subpartLimit = sp.subpartLimit;
@@ -84,7 +93,7 @@ void ScenePart::addObj(WavefrontObj *obj) {
   logging::DEBUG(ss.str());
 }
 
-std::vector<Vertex *> ScenePart::getAllVertices() {
+std::vector<Vertex *> ScenePart::getAllVertices() const {
   std::vector<Vertex *> allPos;
   for (Primitive *p : mPrimitives) {
     for (size_t i = 0; i < p->getNumVertices(); i++) {

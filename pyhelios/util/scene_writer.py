@@ -9,6 +9,8 @@
 This script contains functions to configure and write HELIOS++ scenes.
 """
 
+import warnings
+
 
 def add_transformation_filters(translation: list = None,
                                rotation: list = None,
@@ -35,6 +37,10 @@ def add_transformation_filters(translation: list = None,
         rotation = [0, 0, 0]
     if translation is None:
         translation = [0, 0, 0]
+    elif len(translation) < 3:
+        warnings.warn("Translation is not a list of length 3 (x, y, z). Setting missing dimensions to zero.")
+        for i in range(3-len(translation)):
+            translation.append(0)
     trafo_filter = ""
     if translation != [0, 0, 0] or on_ground != 0:
         trafo_filter += f"""
@@ -79,7 +85,8 @@ def create_scenepart_obj(filepath: str, up_axis: str = "z", trafofilter: str = "
     scenepart = f"""
         <part>
             <filter type="objloader">
-                <param type="string" key="{filepath_mode}" value="{filepath}" up="{up_axis}" />
+                <param type="string" key="{filepath_mode}" value="{filepath}" />
+                <param type="string" key="up" value="{up_axis}" />
             </filter>
             {trafofilter}
         </part>"""

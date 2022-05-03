@@ -166,10 +166,10 @@ public:
     {this->minElements = minElements;}
 };
 
-#include <hpc/SM_ParallelMergeSort.tpp>
 
 }}
 
+#include <hpc/SM_ParallelMergeSort.tpp>
 
 #endif
 

@@ -1,0 +1,6 @@
+<map id="helios::filems::SyncFileWriter" name="helios::filems::SyncFileWriter">
+<area shape="rect" id="node2" href="$d7/d5b/classhelios_1_1filems_1_1LasSyncFileWriter.html" title="SyncFileWriter implementation for LAS format. " alt="" coords="5,95,184,136"/>
+<area shape="rect" id="node4" href="$d1/db6/classhelios_1_1filems_1_1SimpleSyncFileWriter.html" title="SyncFileWriter implementation for simple text format. " alt="" coords="209,95,386,136"/>
+<area shape="rect" id="node3" href="$dc/dae/classhelios_1_1filems_1_1Las14SyncFileWriter.html" title="LasSyncFileWriter implementation for LAS v1.4 format. " alt="" coords="9,184,181,225"/>
+<area shape="rect" id="node5" href="$d9/d45/classhelios_1_1filems_1_1ZipSyncFileWriter.html" title="ZipSyncFileWriter implementation for zipped text output format. " alt="" coords="209,184,385,225"/>
+</map>

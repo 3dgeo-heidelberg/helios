@@ -6,22 +6,19 @@ using std::stringstream;
 
 // ***  CONSTRUCTION / DESTRUCTION  *** //
 // ************************************ //
-DynScene::DynScene(DynScene &ds) :
-    DynScene(static_cast<StaticScene&>(ds))
-{
+DynScene::DynScene(DynScene &ds) : DynScene(static_cast<StaticScene&>(ds)) {
     for(shared_ptr<DynObject> dynObj : ds.dynObjs){
         dynObjs.push_back(dynObj);
         updated.push_back(true);
     }
-    dynamicSpaceInterval = ds.dynamicSpaceInterval;
-    currentStep = ds.currentStep;
+    makeStepLoop(ds.stepLoop.getStepInterval());
+    stepLoop.setCurrentStep(ds.stepLoop.getCurrentStep());
 }
 
 // ***  SIMULATION STEP  *** //
 // ************************* //
 bool DynScene::doSimStep(){
-    currentStep = (currentStep + 1) % dynamicSpaceInterval;
-    if(currentStep == (dynamicSpaceInterval-1)) return doStep();
+    if(stepLoop.doStep()) return stepLoop.retrieveOutput();
     return false;
 }
 
@@ -34,6 +31,13 @@ bool DynScene::doStep(){
     }
     return updateFlag;
 }
+
+void DynScene::makeStepLoop(int const stepInterval){
+    this->stepLoop = NonVoidStepLoop<bool>(
+        stepInterval, [&] () -> bool{return doStep();}
+    );
+}
+
 
 // ***   READ/WRITE  *** //
 // ********************* //

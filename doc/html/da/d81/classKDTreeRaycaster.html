@@ -87,8 +87,10 @@ $(document).ready(function(){initNavTree('da/d81/classKDTreeRaycaster.html','../
 
 <div class="header">
   <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
+<a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="../../d8/d30/classKDTreeRaycaster-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">KDTreeRaycaster Class Reference</div>  </div>
@@ -99,24 +101,39 @@ $(document).ready(function(){initNavTree('da/d81/classKDTreeRaycaster.html','../
  <a href="../../da/d81/classKDTreeRaycaster.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="../../da/d8b/KDTreeRaycaster_8h_source.html">KDTreeRaycaster.h</a>&gt;</code></p>
+<div class="dynheader">
+Inheritance diagram for KDTreeRaycaster:</div>
+<div class="dyncontent">
+<div class="center"><img src="../../d2/d30/classKDTreeRaycaster__inherit__graph.png" border="0" usemap="#KDTreeRaycaster_inherit__map" alt="Inheritance graph"/></div>
+<map name="KDTreeRaycaster_inherit__map" id="KDTreeRaycaster_inherit__map">
+<area shape="rect" id="node3" href="../../d6/dba/classGroveKDTreeRaycaster.html" title="Grove KDTree Raycaster extends KDTreeRaycaster to make it compatible with groves by implementing the ..." alt="" coords="5,155,168,181"/>
+<area shape="rect" id="node2" href="../../d7/df4/classRaycaster.html" title="Raycaster interface declaring raycasting operations. " alt="" coords="45,5,128,32"/>
+</map>
+<center><span class="legend">[<a target="top" href="../../graph_legend.html">legend</a>]</span></center></div>
+<div class="dynheader">
+Collaboration diagram for KDTreeRaycaster:</div>
+<div class="dyncontent">
+<div class="center"><img src="../../dd/de1/classKDTreeRaycaster__coll__graph.png" border="0" usemap="#KDTreeRaycaster_coll__map" alt="Collaboration graph"/></div>
+<map name="KDTreeRaycaster_coll__map" id="KDTreeRaycaster_coll__map">
+<area shape="rect" id="node2" href="../../d7/df4/classRaycaster.html" title="Raycaster interface declaring raycasting operations. " alt="" coords="27,5,110,32"/>
+</map>
+<center><span class="legend">[<a target="top" href="../../graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/d7f/classKDTreeRaycaster_1_1KDTreeRaycasterSearch.html">KDTreeRaycasterSearch</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Data for search operations of KDTree raycaster.  <a href="../../de/d7f/classKDTreeRaycaster_1_1KDTreeRaycasterSearch.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a8a78b68e65bc40f36a6dedab308af668"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/d81/classKDTreeRaycaster.html#a8a78b68e65bc40f36a6dedab308af668">KDTreeRaycaster</a> (std::shared_ptr&lt; <a class="el" href="../../dd/d79/classLightKDTreeNode.html">LightKDTreeNode</a> &gt; <a class="el" href="../../da/d81/classKDTreeRaycaster.html#a6be5609184429cd100b63fcca6bd0186">root</a>)</td></tr>
 <tr class="memdesc:a8a78b68e65bc40f36a6dedab308af668"><td class="mdescLeft">&#160;</td><td class="mdescRight">KDTree ray caster constructor.  <a href="#a8a78b68e65bc40f36a6dedab308af668">More...</a><br /></td></tr>
 <tr class="separator:a8a78b68e65bc40f36a6dedab308af668"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a305b4a9dde6253f61a8a3ef4ee230964"><td class="memItemLeft" align="right" valign="top">std::map&lt; double, <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/d81/classKDTreeRaycaster.html#a305b4a9dde6253f61a8a3ef4ee230964">searchAll</a> (glm::dvec3 _rayOrigin, glm::dvec3 _rayDir, double tmin, double tmax, bool <a class="el" href="../../da/d81/classKDTreeRaycaster.html#a9e2ece0732b671b88e53c12b1241863d">groundOnly</a>)</td></tr>
-<tr class="memdesc:a305b4a9dde6253f61a8a3ef4ee230964"><td class="mdescLeft">&#160;</td><td class="mdescRight">Search all intersections for specified ray.  <a href="#a305b4a9dde6253f61a8a3ef4ee230964">More...</a><br /></td></tr>
-<tr class="separator:a305b4a9dde6253f61a8a3ef4ee230964"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5a8b58991ee1ae6a83bd3c6b16529f5a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../dc/da3/classRaySceneIntersection.html">RaySceneIntersection</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/d81/classKDTreeRaycaster.html#a5a8b58991ee1ae6a83bd3c6b16529f5a">search</a> (glm::dvec3 _rayOrigin, glm::dvec3 _rayDir, double tmin, double tmax, bool <a class="el" href="../../da/d81/classKDTreeRaycaster.html#a9e2ece0732b671b88e53c12b1241863d">groundOnly</a>)</td></tr>
-<tr class="memdesc:a5a8b58991ee1ae6a83bd3c6b16529f5a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Search first intersection for specified ray.  <a href="#a5a8b58991ee1ae6a83bd3c6b16529f5a">More...</a><br /></td></tr>
-<tr class="separator:a5a8b58991ee1ae6a83bd3c6b16529f5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaa6a91d081383a3092824b7862816189"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/d81/classKDTreeRaycaster.html#aaa6a91d081383a3092824b7862816189">searchAll_recursive</a> (<a class="el" href="../../dd/d79/classLightKDTreeNode.html">LightKDTreeNode</a> *node, double tmin, double tmax)</td></tr>
-<tr class="memdesc:aaa6a91d081383a3092824b7862816189"><td class="mdescLeft">&#160;</td><td class="mdescRight">Recursive search function to assist searchAll function.  <a href="#aaa6a91d081383a3092824b7862816189">More...</a><br /></td></tr>
-<tr class="separator:aaa6a91d081383a3092824b7862816189"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac3caf810e6611998d6f91a2810b6ccbc"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/d81/classKDTreeRaycaster.html#ac3caf810e6611998d6f91a2810b6ccbc">search_recursive</a> (<a class="el" href="../../dd/d79/classLightKDTreeNode.html">LightKDTreeNode</a> *node, double tmin, double tmax)</td></tr>
-<tr class="memdesc:ac3caf810e6611998d6f91a2810b6ccbc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Recursive search function to assist search function.  <a href="#ac3caf810e6611998d6f91a2810b6ccbc">More...</a><br /></td></tr>
-<tr class="separator:ac3caf810e6611998d6f91a2810b6ccbc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0dfe186a398e4131f4a11963cf8d3224"><td class="memItemLeft" align="right" valign="top">std::map&lt; double, <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/d81/classKDTreeRaycaster.html#a0dfe186a398e4131f4a11963cf8d3224">searchAll</a> (glm::dvec3 const rayOrigin, glm::dvec3 const rayDir, double const tmin, double const tmax, bool const groundOnly) override</td></tr>
+<tr class="separator:a0dfe186a398e4131f4a11963cf8d3224"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aac2bc3f3bd12f1b334496e4b2cc260ee"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../dc/da3/classRaySceneIntersection.html">RaySceneIntersection</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/d81/classKDTreeRaycaster.html#aac2bc3f3bd12f1b334496e4b2cc260ee">search</a> (glm::dvec3 const rayOrigin, glm::dvec3 const rayDir, double const tmin, double const tmax, bool const groundOnly) override</td></tr>
+<tr class="separator:aac2bc3f3bd12f1b334496e4b2cc260ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -124,39 +141,23 @@ Public Attributes</h2></td></tr>
 double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/d81/classKDTreeRaycaster.html#aad0cd21c294170f2db1364a592c7accd">epsilon</a> = 0.0001</td></tr>
 <tr class="memdesc:aad0cd21c294170f2db1364a592c7accd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Decimal precision for the ray caster. <br /></td></tr>
 <tr class="separator:aad0cd21c294170f2db1364a592c7accd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9e2ece0732b671b88e53c12b1241863d"><td class="memItemLeft" align="right" valign="top"><a id="a9e2ece0732b671b88e53c12b1241863d"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/d81/classKDTreeRaycaster.html#a9e2ece0732b671b88e53c12b1241863d">groundOnly</a> = false</td></tr>
-<tr class="memdesc:a9e2ece0732b671b88e53c12b1241863d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flag to specify if only ground points must be considered (true) or not (false) <br /></td></tr>
-<tr class="separator:a9e2ece0732b671b88e53c12b1241863d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3721387eb69ea712de612cac499b6ff7"><td class="memItemLeft" align="right" valign="top"><a id="a3721387eb69ea712de612cac499b6ff7"></a>
-glm::dvec3&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/d81/classKDTreeRaycaster.html#a3721387eb69ea712de612cac499b6ff7">rayDir</a></td></tr>
-<tr class="memdesc:a3721387eb69ea712de612cac499b6ff7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Ray 3D director vector. <br /></td></tr>
-<tr class="separator:a3721387eb69ea712de612cac499b6ff7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2a3b5a7b1cef49ca1fce453030942949"><td class="memItemLeft" align="right" valign="top"><a id="a2a3b5a7b1cef49ca1fce453030942949"></a>
-glm::dvec3&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/d81/classKDTreeRaycaster.html#a2a3b5a7b1cef49ca1fce453030942949">rayOrigin</a></td></tr>
-<tr class="memdesc:a2a3b5a7b1cef49ca1fce453030942949"><td class="mdescLeft">&#160;</td><td class="mdescRight">Ray origin 3D coordinates. <br /></td></tr>
-<tr class="separator:a2a3b5a7b1cef49ca1fce453030942949"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1213217018fb57ea8fafed4c48623d65"><td class="memItemLeft" align="right" valign="top">std::vector&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/d81/classKDTreeRaycaster.html#a1213217018fb57ea8fafed4c48623d65">rayDirArray</a></td></tr>
-<tr class="memdesc:a1213217018fb57ea8fafed4c48623d65"><td class="mdescLeft">&#160;</td><td class="mdescRight">Vector containing components of ray director vector. It is filled at the start of a search operation.  <a href="#a1213217018fb57ea8fafed4c48623d65">More...</a><br /></td></tr>
-<tr class="separator:a1213217018fb57ea8fafed4c48623d65"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af0fbe6018d5d928d1ac857729a40b54b"><td class="memItemLeft" align="right" valign="top">std::vector&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/d81/classKDTreeRaycaster.html#af0fbe6018d5d928d1ac857729a40b54b">rayOriginArray</a></td></tr>
-<tr class="memdesc:af0fbe6018d5d928d1ac857729a40b54b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Vector containing components of ray origin. It is filled at the start of a search operation.  <a href="#af0fbe6018d5d928d1ac857729a40b54b">More...</a><br /></td></tr>
-<tr class="separator:af0fbe6018d5d928d1ac857729a40b54b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6be5609184429cd100b63fcca6bd0186"><td class="memItemLeft" align="right" valign="top"><a id="a6be5609184429cd100b63fcca6bd0186"></a>
 std::shared_ptr&lt; <a class="el" href="../../dd/d79/classLightKDTreeNode.html">LightKDTreeNode</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/d81/classKDTreeRaycaster.html#a6be5609184429cd100b63fcca6bd0186">root</a></td></tr>
 <tr class="memdesc:a6be5609184429cd100b63fcca6bd0186"><td class="mdescLeft">&#160;</td><td class="mdescRight">Shared pointer to the root node of the KDTree. <br /></td></tr>
 <tr class="separator:a6be5609184429cd100b63fcca6bd0186"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af8e34cc7a55655e52ef2d6c18e47dda2"><td class="memItemLeft" align="right" valign="top"><a id="af8e34cc7a55655e52ef2d6c18e47dda2"></a>
-double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/d81/classKDTreeRaycaster.html#af8e34cc7a55655e52ef2d6c18e47dda2">closestHitDistance</a> = std::numeric_limits&lt;double&gt;::max()</td></tr>
-<tr class="memdesc:af8e34cc7a55655e52ef2d6c18e47dda2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Distance of closest hit. It is numeric_limits&lt;double&gt;::max() by default. <br /></td></tr>
-<tr class="separator:af8e34cc7a55655e52ef2d6c18e47dda2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1992ad18d4f4da22374c6e7571b2114e"><td class="memItemLeft" align="right" valign="top"><a id="a1992ad18d4f4da22374c6e7571b2114e"></a>
-std::map&lt; double, <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/d81/classKDTreeRaycaster.html#a1992ad18d4f4da22374c6e7571b2114e">collectedPoints</a></td></tr>
-<tr class="memdesc:a1992ad18d4f4da22374c6e7571b2114e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Map of primitives identified by its distance with respect to ray origin. Only primitives which intersect with the ray are considered (i.e. those which distance with respect to ray origin is greater than 0) <br /></td></tr>
-<tr class="separator:a1992ad18d4f4da22374c6e7571b2114e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
+Protected Member Functions</h2></td></tr>
+<tr class="memitem:a256e5ea9e69ddc58c6fd4037140c2d48"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/d81/classKDTreeRaycaster.html#a256e5ea9e69ddc58c6fd4037140c2d48">searchAll_recursive</a> (<a class="el" href="../../dd/d79/classLightKDTreeNode.html">LightKDTreeNode</a> *node, double const tmin, double const tmax, <a class="el" href="../../de/d7f/classKDTreeRaycaster_1_1KDTreeRaycasterSearch.html">KDTreeRaycasterSearch</a> &amp;<a class="el" href="../../da/d81/classKDTreeRaycaster.html#aac2bc3f3bd12f1b334496e4b2cc260ee">search</a>)</td></tr>
+<tr class="memdesc:a256e5ea9e69ddc58c6fd4037140c2d48"><td class="mdescLeft">&#160;</td><td class="mdescRight">Recursive search function to assist searchAll function.  <a href="#a256e5ea9e69ddc58c6fd4037140c2d48">More...</a><br /></td></tr>
+<tr class="separator:a256e5ea9e69ddc58c6fd4037140c2d48"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeec9d69cdcbd7c2be66f7882439430a8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/d81/classKDTreeRaycaster.html#aeec9d69cdcbd7c2be66f7882439430a8">search_recursive</a> (<a class="el" href="../../dd/d79/classLightKDTreeNode.html">LightKDTreeNode</a> *node, double const tmin, double const tmax, <a class="el" href="../../de/d7f/classKDTreeRaycaster_1_1KDTreeRaycasterSearch.html">KDTreeRaycasterSearch</a> &amp;<a class="el" href="../../da/d81/classKDTreeRaycaster.html#aac2bc3f3bd12f1b334496e4b2cc260ee">search</a>) const</td></tr>
+<tr class="memdesc:aeec9d69cdcbd7c2be66f7882439430a8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Recursive search function to assist search function.  <a href="#aeec9d69cdcbd7c2be66f7882439430a8">More...</a><br /></td></tr>
+<tr class="separator:aeec9d69cdcbd7c2be66f7882439430a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Class representing a KDTree ray caster. </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d7/df4/classRaycaster.html" title="Raycaster interface declaring raycasting operations. ">Raycaster</a> </dd></dl>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a8a78b68e65bc40f36a6dedab308af668"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a8a78b68e65bc40f36a6dedab308af668">&#9670;&nbsp;</a></span>KDTreeRaycaster()</h2>
@@ -193,40 +194,43 @@ std::map&lt; double, <a class="el" href="../../df/de1/classPrimitive.html">Primi
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a5a8b58991ee1ae6a83bd3c6b16529f5a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5a8b58991ee1ae6a83bd3c6b16529f5a">&#9670;&nbsp;</a></span>search()</h2>
+<a id="aac2bc3f3bd12f1b334496e4b2cc260ee"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aac2bc3f3bd12f1b334496e4b2cc260ee">&#9670;&nbsp;</a></span>search()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname"><a class="el" href="../../dc/da3/classRaySceneIntersection.html">RaySceneIntersection</a> * KDTreeRaycaster::search </td>
           <td>(</td>
-          <td class="paramtype">glm::dvec3&#160;</td>
-          <td class="paramname"><em>_rayOrigin</em>, </td>
+          <td class="paramtype">glm::dvec3 const&#160;</td>
+          <td class="paramname"><em>rayOrigin</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">glm::dvec3&#160;</td>
-          <td class="paramname"><em>_rayDir</em>, </td>
+          <td class="paramtype">glm::dvec3 const&#160;</td>
+          <td class="paramname"><em>rayDir</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">double&#160;</td>
+          <td class="paramtype">double const&#160;</td>
           <td class="paramname"><em>tmin</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">double&#160;</td>
+          <td class="paramtype">double const&#160;</td>
           <td class="paramname"><em>tmax</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">bool&#160;</td>
+          <td class="paramtype">bool const&#160;</td>
           <td class="paramname"><em>groundOnly</em>&#160;</td>
         </tr>
         <tr>
@@ -235,29 +239,28 @@ std::map&lt; double, <a class="el" href="../../df/de1/classPrimitive.html">Primi
           <td></td><td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d7/df4/classRaycaster.html#a2502ee50bad41b32060014a333f701b1" title="Search first intersection for specified ray. ">Raycaster::search</a> </dd>
+<dd>
+<a class="el" href="../../da/d81/classKDTreeRaycaster.html#aeec9d69cdcbd7c2be66f7882439430a8" title="Recursive search function to assist search function. ">KDTreeRaycaster::search_recursive</a> </dd></dl>
 
-<p>Search first intersection for specified ray. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">_rayOrigin</td><td>Ray origin 3D coordinates </td></tr>
-    <tr><td class="paramname">_rayDir</td><td>Ray 3D director vector </td></tr>
-    <tr><td class="paramname">tmin</td><td>Minimum time to intersection. It is used to prevent considering intersections (capturing points) before this time during the recursive search process </td></tr>
-    <tr><td class="paramname">tmax</td><td>Maximum time to intersection. It is used to prevent considering intersections (capturing points) after this time during the recursive search process </td></tr>
-    <tr><td class="paramname">groundOnly</td><td>Flag to specify if only ground primitives must be considered (true) or not (false) </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>Return first found intersection </dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../da/d81/classKDTreeRaycaster.html#ac3caf810e6611998d6f91a2810b6ccbc" title="Recursive search function to assist search function. ">KDTreeRaycaster::search_recursive</a> </dd></dl>
+<p>Implements <a class="el" href="../../d7/df4/classRaycaster.html#a2502ee50bad41b32060014a333f701b1">Raycaster</a>.</p>
 
 </div>
 </div>
-<a id="ac3caf810e6611998d6f91a2810b6ccbc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac3caf810e6611998d6f91a2810b6ccbc">&#9670;&nbsp;</a></span>search_recursive()</h2>
+<a id="aeec9d69cdcbd7c2be66f7882439430a8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeec9d69cdcbd7c2be66f7882439430a8">&#9670;&nbsp;</a></span>search_recursive()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname"><a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> * KDTreeRaycaster::search_recursive </td>
@@ -268,21 +271,32 @@ std::map&lt; double, <a class="el" href="../../df/de1/classPrimitive.html">Primi
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">double&#160;</td>
+          <td class="paramtype">double const&#160;</td>
           <td class="paramname"><em>tmin</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>tmax</em>&#160;</td>
+          <td class="paramtype">double const&#160;</td>
+          <td class="paramname"><em>tmax</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="../../de/d7f/classKDTreeRaycaster_1_1KDTreeRaycasterSearch.html">KDTreeRaycasterSearch</a> &amp;&#160;</td>
+          <td class="paramname"><em>search</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
           <td>)</td>
-          <td></td><td></td>
+          <td></td><td> const</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Recursive search function to assist search function. </p>
@@ -291,48 +305,52 @@ std::map&lt; double, <a class="el" href="../../df/de1/classPrimitive.html">Primi
     <tr><td class="paramname">node</td><td>KDTree node to be recursively explored </td></tr>
     <tr><td class="paramname">tmin</td><td>Minimum time to intersection. It is used to prevent considering intersections (capturing points) before this time during the recursive search process </td></tr>
     <tr><td class="paramname">tmax</td><td>Maximum time to intersection. It is used to prevent considering intersections (capturing points) after this time during the recursive search process </td></tr>
+    <tr><td class="paramname">search</td><td>The <a class="el" href="../../de/d7f/classKDTreeRaycaster_1_1KDTreeRaycasterSearch.html" title="Data for search operations of KDTree raycaster. ">KDTreeRaycasterSearch</a> data structure for current search process </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Return first found intersection </dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../da/d81/classKDTreeRaycaster.html#a5a8b58991ee1ae6a83bd3c6b16529f5a" title="Search first intersection for specified ray. ">KDTreeRaycaster::search</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../da/d81/classKDTreeRaycaster.html#aac2bc3f3bd12f1b334496e4b2cc260ee">KDTreeRaycaster::search</a> </dd></dl>
 
 </div>
 </div>
-<a id="a305b4a9dde6253f61a8a3ef4ee230964"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a305b4a9dde6253f61a8a3ef4ee230964">&#9670;&nbsp;</a></span>searchAll()</h2>
+<a id="a0dfe186a398e4131f4a11963cf8d3224"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0dfe186a398e4131f4a11963cf8d3224">&#9670;&nbsp;</a></span>searchAll()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">map&lt; double, <a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> * &gt; KDTreeRaycaster::searchAll </td>
           <td>(</td>
-          <td class="paramtype">glm::dvec3&#160;</td>
-          <td class="paramname"><em>_rayOrigin</em>, </td>
+          <td class="paramtype">glm::dvec3 const&#160;</td>
+          <td class="paramname"><em>rayOrigin</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">glm::dvec3&#160;</td>
-          <td class="paramname"><em>_rayDir</em>, </td>
+          <td class="paramtype">glm::dvec3 const&#160;</td>
+          <td class="paramname"><em>rayDir</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">double&#160;</td>
+          <td class="paramtype">double const&#160;</td>
           <td class="paramname"><em>tmin</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">double&#160;</td>
+          <td class="paramtype">double const&#160;</td>
           <td class="paramname"><em>tmax</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">bool&#160;</td>
+          <td class="paramtype">bool const&#160;</td>
           <td class="paramname"><em>groundOnly</em>&#160;</td>
         </tr>
         <tr>
@@ -341,29 +359,28 @@ std::map&lt; double, <a class="el" href="../../df/de1/classPrimitive.html">Primi
           <td></td><td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d7/df4/classRaycaster.html#aeb9316e9119abd8e007f3602a3731568" title="Search all intersections for specified ray. ">Raycaster::searchAll</a> </dd>
+<dd>
+<a class="el" href="../../da/d81/classKDTreeRaycaster.html#a256e5ea9e69ddc58c6fd4037140c2d48" title="Recursive search function to assist searchAll function. ">KDTreeRaycaster::searchAll_recursive</a> </dd></dl>
 
-<p>Search all intersections for specified ray. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">_rayOrigin</td><td>Ray origin 3D coordinates </td></tr>
-    <tr><td class="paramname">_rayDir</td><td>Ray 3D director vector </td></tr>
-    <tr><td class="paramname">tmin</td><td>Minimum time to intersection. It is used to prevent considering intersections (capturing points) before this time during the recursive search process </td></tr>
-    <tr><td class="paramname">tmax</td><td>Maximum time to intersection. It is used to prevent considering intersections (capturing points) after this time during the recursive search process </td></tr>
-    <tr><td class="paramname">groundOnly</td><td>Flag to specify if only ground primitives must be considered (true) or not (false) </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>Return map of collected primitives, each identified by its distance with respect to ray origin </dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../da/d81/classKDTreeRaycaster.html#aaa6a91d081383a3092824b7862816189" title="Recursive search function to assist searchAll function. ">KDTreeRaycaster::searchAll_recursive</a> </dd></dl>
+<p>Implements <a class="el" href="../../d7/df4/classRaycaster.html#aeb9316e9119abd8e007f3602a3731568">Raycaster</a>.</p>
 
 </div>
 </div>
-<a id="aaa6a91d081383a3092824b7862816189"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aaa6a91d081383a3092824b7862816189">&#9670;&nbsp;</a></span>searchAll_recursive()</h2>
+<a id="a256e5ea9e69ddc58c6fd4037140c2d48"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a256e5ea9e69ddc58c6fd4037140c2d48">&#9670;&nbsp;</a></span>searchAll_recursive()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">void KDTreeRaycaster::searchAll_recursive </td>
@@ -374,14 +391,20 @@ std::map&lt; double, <a class="el" href="../../df/de1/classPrimitive.html">Primi
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">double&#160;</td>
+          <td class="paramtype">double const&#160;</td>
           <td class="paramname"><em>tmin</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>tmax</em>&#160;</td>
+          <td class="paramtype">double const&#160;</td>
+          <td class="paramname"><em>tmax</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="../../de/d7f/classKDTreeRaycaster_1_1KDTreeRaycasterSearch.html">KDTreeRaycasterSearch</a> &amp;&#160;</td>
+          <td class="paramname"><em>search</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -389,6 +412,11 @@ std::map&lt; double, <a class="el" href="../../df/de1/classPrimitive.html">Primi
           <td></td><td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Recursive search function to assist searchAll function. </p>
@@ -397,55 +425,17 @@ std::map&lt; double, <a class="el" href="../../df/de1/classPrimitive.html">Primi
     <tr><td class="paramname">node</td><td>KDTree node to be recursively explored </td></tr>
     <tr><td class="paramname">tmin</td><td>Minimum time to intersection. It is used to prevent considering intersections (capturing points) before this time during the recursive search process </td></tr>
     <tr><td class="paramname">tmax</td><td>Maximum time to intersection. It is used to prevent considering intersections (capturing points) after this time during the recursive search process </td></tr>
+    <tr><td class="paramname">search</td><td>The <a class="el" href="../../de/d7f/classKDTreeRaycaster_1_1KDTreeRaycasterSearch.html" title="Data for search operations of KDTree raycaster. ">KDTreeRaycasterSearch</a> data structure for current search process </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../da/d81/classKDTreeRaycaster.html#a305b4a9dde6253f61a8a3ef4ee230964" title="Search all intersections for specified ray. ">KDTreeRaycaster::searchAll</a> </dd></dl>
-
-</div>
-</div>
-<h2 class="groupheader">Member Data Documentation</h2>
-<a id="a1213217018fb57ea8fafed4c48623d65"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1213217018fb57ea8fafed4c48623d65">&#9670;&nbsp;</a></span>rayDirArray</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::vector&lt;double&gt; KDTreeRaycaster::rayDirArray</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Vector containing components of ray director vector. It is filled at the start of a search operation. </p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../da/d81/classKDTreeRaycaster.html#a305b4a9dde6253f61a8a3ef4ee230964" title="Search all intersections for specified ray. ">KDTreeRaycaster::searchAll</a> </dd>
-<dd>
-<a class="el" href="../../da/d81/classKDTreeRaycaster.html#a5a8b58991ee1ae6a83bd3c6b16529f5a" title="Search first intersection for specified ray. ">KDTreeRaycaster::search</a> </dd></dl>
-
-</div>
-</div>
-<a id="af0fbe6018d5d928d1ac857729a40b54b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af0fbe6018d5d928d1ac857729a40b54b">&#9670;&nbsp;</a></span>rayOriginArray</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::vector&lt;double&gt; KDTreeRaycaster::rayOriginArray</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Vector containing components of ray origin. It is filled at the start of a search operation. </p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../da/d81/classKDTreeRaycaster.html#a305b4a9dde6253f61a8a3ef4ee230964" title="Search all intersections for specified ray. ">KDTreeRaycaster::searchAll</a> </dd>
-<dd>
-<a class="el" href="../../da/d81/classKDTreeRaycaster.html#a5a8b58991ee1ae6a83bd3c6b16529f5a" title="Search first intersection for specified ray. ">KDTreeRaycaster::search</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../da/d81/classKDTreeRaycaster.html#a0dfe186a398e4131f4a11963cf8d3224">KDTreeRaycaster::searchAll</a> </dd></dl>
 
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>src/adt/kdtree/<a class="el" href="../../da/d8b/KDTreeRaycaster_8h_source.html">KDTreeRaycaster.h</a></li>
-<li>src/adt/kdtree/KDTreeRaycaster.cpp</li>
+<li>src/alg/raycast/<a class="el" href="../../da/d8b/KDTreeRaycaster_8h_source.html">KDTreeRaycaster.h</a></li>
+<li>src/alg/raycast/KDTreeRaycaster.cpp</li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

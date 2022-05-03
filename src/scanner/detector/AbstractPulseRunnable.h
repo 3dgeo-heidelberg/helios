@@ -36,6 +36,7 @@ public:
      */
 	std::shared_ptr<AbstractDetector> detector = nullptr;
 
+
     /**
      * @brief Beam origin in absolute coordinates
      */
@@ -71,11 +72,11 @@ public:
 	 * @see AbstractPulseRunnable::currentGpsTime
 	 */
 	AbstractPulseRunnable(
-		std::shared_ptr<AbstractDetector> detector,
-		glm::dvec3 absoluteBeamOrigin,
-		Rotation absoluteBeamAttitude,
-		int pulseNumber,
-		long gpsTime
+		std::shared_ptr<AbstractDetector> const detector,
+		glm::dvec3 const absoluteBeamOrigin,
+		Rotation const absoluteBeamAttitude,
+		int const pulseNumber,
+		long const gpsTime
 	){
 		this->detector = detector;
 		this->absoluteBeamAttitude = absoluteBeamAttitude;

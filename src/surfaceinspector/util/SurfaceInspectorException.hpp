@@ -22,7 +22,6 @@ public:
     /**
      * @brief Surface inspector exception constructor
      * @param msg Surface inspector exception message
-     * @see SurfaceInspectorException::msg
      */
     SurfaceInspectorException(std::string const msg = ""):runtime_error(msg){}
     virtual ~SurfaceInspectorException() = default;

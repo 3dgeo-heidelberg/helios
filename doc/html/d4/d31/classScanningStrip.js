@@ -8,6 +8,7 @@ var classScanningStrip =
     [ "getStripId", "d4/d31/classScanningStrip.html#af56fb546e31a58bb8fb0650423a09e10", null ],
     [ "has", "d4/d31/classScanningStrip.html#ad1bf302193428db555a561557de90810", null ],
     [ "has", "d4/d31/classScanningStrip.html#a1b6a96a034f45065859d70b0d2845332", null ],
+    [ "isLastLegInStrip", "d4/d31/classScanningStrip.html#a9b49fa01d280a14e012594dbd7ee5c67", null ],
     [ "safeEmplace", "d4/d31/classScanningStrip.html#a8aa91fb4fc143a1a10e958a48f22b5fa", null ],
     [ "safeEmplace", "d4/d31/classScanningStrip.html#a782c926eb61848d435ef411f683c39bd", null ],
     [ "setStripId", "d4/d31/classScanningStrip.html#a6ec02e25bca303bd6ceeecf80c20e9b0", null ],

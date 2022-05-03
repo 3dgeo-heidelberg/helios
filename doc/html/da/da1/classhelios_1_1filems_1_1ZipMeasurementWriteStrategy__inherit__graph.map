@@ -1,0 +1,4 @@
+<map id="helios::filems::ZipMeasurementWriteStrategy" name="helios::filems::ZipMeasurementWriteStrategy">
+<area shape="rect" id="node2" href="$de/d6d/classhelios_1_1filems_1_1DirectMeasurementWriteStrategy.html" title="Concrete class specializing WriteStrategy to directly write measurements to a file. " alt="" coords="5,109,227,151"/>
+<area shape="rect" id="node3" href="$de/dd3/classhelios_1_1filems_1_1WriteStrategy.html" title="helios::filems::WriteStrategy\l\&lt; Measurement const &amp;, glm\l::dvec3 const &amp;\&gt;" alt="" coords="21,5,211,61"/>
+</map>

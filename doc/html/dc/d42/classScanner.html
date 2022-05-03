@@ -191,6 +191,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../.
 <tr class="memitem:aa3055bc70b3f94c747320cd617e36547"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d42/classScanner.html#aa3055bc70b3f94c747320cd617e36547">handleTrajectoryOutput</a> (double currentGpsTime)</td></tr>
 <tr class="memdesc:aa3055bc70b3f94c747320cd617e36547"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle trajectory output whatever it is to output file, to all trajectories vector or to cycle trajectories vector.  <a href="#aa3055bc70b3f94c747320cd617e36547">More...</a><br /></td></tr>
 <tr class="separator:aa3055bc70b3f94c747320cd617e36547"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a76ba598a20f198125336d0da7a2956da"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d42/classScanner.html#a76ba598a20f198125336d0da7a2956da">trackOutputPath</a> (std::string const path)</td></tr>
+<tr class="memdesc:a76ba598a20f198125336d0da7a2956da"><td class="mdescLeft">&#160;</td><td class="mdescRight">Track given output path in a thread safe way.  <a href="#a76ba598a20f198125336d0da7a2956da">More...</a><br /></td></tr>
+<tr class="separator:a76ba598a20f198125336d0da7a2956da"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8fbd614f591d9b0b645a4880ace1c8fd"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d42/classScanner.html#a8fbd614f591d9b0b645a4880ace1c8fd">getNumRays</a> ()</td></tr>
 <tr class="memdesc:a8fbd614f591d9b0b645a4880ace1c8fd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain the number of rays.  <a href="#a8fbd614f591d9b0b645a4880ace1c8fd">More...</a><br /></td></tr>
 <tr class="separator:a8fbd614f591d9b0b645a4880ace1c8fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -284,9 +287,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../.
 <tr class="memitem:afb359f3478a852ca34f97ced347892eb"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d42/classScanner.html#afb359f3478a852ca34f97ced347892eb">isActive</a> ()</td></tr>
 <tr class="memdesc:afb359f3478a852ca34f97ced347892eb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if scanner is active (true) or not (false)  <a href="#afb359f3478a852ca34f97ced347892eb">More...</a><br /></td></tr>
 <tr class="separator:afb359f3478a852ca34f97ced347892eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0eaa67c7710d2a173210591e8481774c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d42/classScanner.html#a0eaa67c7710d2a173210591e8481774c">setActive</a> (bool active)</td></tr>
-<tr class="memdesc:a0eaa67c7710d2a173210591e8481774c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set scanner active status. True to make it active, false to make it inactive.  <a href="#a0eaa67c7710d2a173210591e8481774c">More...</a><br /></td></tr>
-<tr class="separator:a0eaa67c7710d2a173210591e8481774c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a259db4489158b272acb1d7dfc1fc697c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d42/classScanner.html#a259db4489158b272acb1d7dfc1fc697c">setActive</a> (bool const active)</td></tr>
+<tr class="memdesc:a259db4489158b272acb1d7dfc1fc697c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set scanner active status. True to make it active, false to make it inactive.  <a href="#a259db4489158b272acb1d7dfc1fc697c">More...</a><br /></td></tr>
+<tr class="separator:a259db4489158b272acb1d7dfc1fc697c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acedd2ab5bf6cf8040c99122857d62b53"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d42/classScanner.html#acedd2ab5bf6cf8040c99122857d62b53">isWriteWaveform</a> ()</td></tr>
 <tr class="memdesc:acedd2ab5bf6cf8040c99122857d62b53"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if scanner is configured to write wave form (true) or not (false)  <a href="#acedd2ab5bf6cf8040c99122857d62b53">More...</a><br /></td></tr>
 <tr class="separator:acedd2ab5bf6cf8040c99122857d62b53"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -317,9 +320,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../.
 <tr class="memitem:a187fa8257eae75232c44176d15a9125b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d42/classScanner.html#a187fa8257eae75232c44176d15a9125b">setFixedIncidenceAngle</a> (bool <a class="el" href="../../dc/d42/classScanner.html#a441f1d6e8dfa7cab388cc460f8a71d4f">fixedIncidenceAngle</a>)</td></tr>
 <tr class="memdesc:a187fa8257eae75232c44176d15a9125b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set fixed incidence angle flag.  <a href="#a187fa8257eae75232c44176d15a9125b">More...</a><br /></td></tr>
 <tr class="separator:a187fa8257eae75232c44176d15a9125b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a31381060e7b292f9feab89b1eec90b89"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d42/classScanner.html#a31381060e7b292f9feab89b1eec90b89">setTrajectoryFileWriter</a> (std::shared_ptr&lt; <a class="el" href="../../d1/d0e/classSyncFileWriter.html">SyncFileWriter</a> &gt; <a class="el" href="../../dc/d42/classScanner.html#a296541247420ebb603b329301231c9d6">tfw</a>)</td></tr>
-<tr class="memdesc:a31381060e7b292f9feab89b1eec90b89"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set synchronous file writer for trajectory.  <a href="#a31381060e7b292f9feab89b1eec90b89">More...</a><br /></td></tr>
-<tr class="separator:a31381060e7b292f9feab89b1eec90b89"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a35fb0c52dbe478fcf27f7bba351caef5"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d42/classScanner.html#a35fb0c52dbe478fcf27f7bba351caef5">getDeviceId</a> ()</td></tr>
 <tr class="memdesc:a35fb0c52dbe478fcf27f7bba351caef5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain scanner device identifier.  <a href="#a35fb0c52dbe478fcf27f7bba351caef5">More...</a><br /></td></tr>
 <tr class="separator:a35fb0c52dbe478fcf27f7bba351caef5"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -360,9 +360,16 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../.
 <tr class="memitem:a9ad0c79df694d3f079daba3eedf0284c inherit pub_methods_classAsset"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/d97/classAsset.html#a9ad0c79df694d3f079daba3eedf0284c">getLocationString</a> ()</td></tr>
 <tr class="memdesc:a9ad0c79df694d3f079daba3eedf0284c inherit pub_methods_classAsset"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain asset location string.  <a href="../../de/d97/classAsset.html#a9ad0c79df694d3f079daba3eedf0284c">More...</a><br /></td></tr>
 <tr class="separator:a9ad0c79df694d3f079daba3eedf0284c inherit pub_methods_classAsset"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adadfa6f04f5d8a5a7411a53399f2cb32 inherit pub_methods_classAsset"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/d97/classAsset.html#adadfa6f04f5d8a5a7411a53399f2cb32">isEgg</a> () const</td></tr>
+<tr class="memdesc:adadfa6f04f5d8a5a7411a53399f2cb32 inherit pub_methods_classAsset"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check whether the asset is an <a class="el" href="../../da/dea/classEggAsset.html" title="An EggAsset is an asset that can hatch to its full class. ">EggAsset</a> or not.  <a href="../../de/d97/classAsset.html#adadfa6f04f5d8a5a7411a53399f2cb32">More...</a><br /></td></tr>
+<tr class="separator:adadfa6f04f5d8a5a7411a53399f2cb32 inherit pub_methods_classAsset"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
+<tr class="memitem:abbc12895d03073dd9ce70ac9b6a7ab6c"><td class="memItemLeft" align="right" valign="top"><a id="abbc12895d03073dd9ce70ac9b6a7ab6c"></a>
+std::shared_ptr&lt; <a class="el" href="../../db/daa/classhelios_1_1filems_1_1FMSFacade.html">FMSFacade</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d42/classScanner.html#abbc12895d03073dd9ce70ac9b6a7ab6c">fms</a></td></tr>
+<tr class="memdesc:abbc12895d03073dd9ce70ac9b6a7ab6c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Main facade to file management system. <br /></td></tr>
+<tr class="separator:abbc12895d03073dd9ce70ac9b6a7ab6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a44c2e17c2f2a92353667c760040e55a9"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="../../dc/da7/classScannerHead.html">ScannerHead</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d42/classScanner.html#a44c2e17c2f2a92353667c760040e55a9">scannerHead</a></td></tr>
 <tr class="memdesc:a44c2e17c2f2a92353667c760040e55a9"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="../../dc/d42/classScanner.html" title="Class representing a scanner asset. ">Scanner</a> head composing the scanner.  <a href="#a44c2e17c2f2a92353667c760040e55a9">More...</a><br /></td></tr>
 <tr class="separator:a44c2e17c2f2a92353667c760040e55a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -375,6 +382,9 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:aae0cadd53ad865a242fdf84ef8a03634"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="../../d8/d6b/classAbstractDetector.html">AbstractDetector</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d42/classScanner.html#aae0cadd53ad865a242fdf84ef8a03634">detector</a></td></tr>
 <tr class="memdesc:aae0cadd53ad865a242fdf84ef8a03634"><td class="mdescLeft">&#160;</td><td class="mdescRight">Detector composing the scanner.  <a href="#aae0cadd53ad865a242fdf84ef8a03634">More...</a><br /></td></tr>
 <tr class="separator:aae0cadd53ad865a242fdf84ef8a03634"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7492c090b0fdb4f7314f481d2334b1f2"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; std::vector&lt; std::string &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d42/classScanner.html#a7492c090b0fdb4f7314f481d2334b1f2">allOutputPaths</a> = nullptr</td></tr>
+<tr class="memdesc:a7492c090b0fdb4f7314f481d2334b1f2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Historical vector of all output paths where scanner measurements were written.  <a href="#a7492c090b0fdb4f7314f481d2334b1f2">More...</a><br /></td></tr>
+<tr class="separator:a7492c090b0fdb4f7314f481d2334b1f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa6c767c57bf01a1e16fbec89fa0f6c3c"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; std::vector&lt; <a class="el" href="../../db/d2e/classMeasurement.html">Measurement</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d42/classScanner.html#aa6c767c57bf01a1e16fbec89fa0f6c3c">allMeasurements</a> = nullptr</td></tr>
 <tr class="memdesc:aa6c767c57bf01a1e16fbec89fa0f6c3c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Historical vector of all measurements performed by the scanner.  <a href="#aa6c767c57bf01a1e16fbec89fa0f6c3c">More...</a><br /></td></tr>
 <tr class="separator:aa6c767c57bf01a1e16fbec89fa0f6c3c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -544,10 +554,6 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../.
 <tr class="memitem:ac4dfcd18602e00ffc6898f807f682a0d"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d42/classScanner.html#ac4dfcd18602e00ffc6898f807f682a0d">cached_Bt2</a></td></tr>
 <tr class="memdesc:ac4dfcd18602e00ffc6898f807f682a0d"><td class="mdescLeft">&#160;</td><td class="mdescRight">\(B_{t2}\) understood as the square of beam divergence  <a href="#ac4dfcd18602e00ffc6898f807f682a0d">More...</a><br /></td></tr>
 <tr class="separator:ac4dfcd18602e00ffc6898f807f682a0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a296541247420ebb603b329301231c9d6"><td class="memItemLeft" align="right" valign="top"><a id="a296541247420ebb603b329301231c9d6"></a>
-std::shared_ptr&lt; <a class="el" href="../../d1/d0e/classSyncFileWriter.html">SyncFileWriter</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d42/classScanner.html#a296541247420ebb603b329301231c9d6">tfw</a> = nullptr</td></tr>
-<tr class="memdesc:a296541247420ebb603b329301231c9d6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Synchronous file writer. <br /></td></tr>
-<tr class="separator:a296541247420ebb603b329301231c9d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad7b5a76759e660e794b650d480e0c0fb"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; <a class="el" href="../../db/d85/classScanningPulseProcess.html">ScanningPulseProcess</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d42/classScanner.html#ad7b5a76759e660e794b650d480e0c0fb">spp</a> = nullptr</td></tr>
 <tr class="memdesc:ad7b5a76759e660e794b650d480e0c0fb"><td class="mdescLeft">&#160;</td><td class="mdescRight">The scanning pulse process used by the scanner.  <a href="#ad7b5a76759e660e794b650d480e0c0fb">More...</a><br /></td></tr>
 <tr class="separator:ad7b5a76759e660e794b650d480e0c0fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -981,7 +987,7 @@ std::shared_ptr&lt; <a class="el" href="../../d1/d0e/classSyncFileWriter.html">S
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>True of the check is passed, false otherwise </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>True if the check is passed, false otherwise </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="../../dc/d42/classScanner.html#a4812fca171290ee0af1287f19a0d05ea" title="Maximum number of returns per pulse. When 0, it means there is not maximum at all. ">Scanner::maxNOR</a> </dd></dl>
 
 </div>
@@ -2081,8 +2087,8 @@ std::shared_ptr&lt; <a class="el" href="../../d1/d0e/classSyncFileWriter.html">S
 
 </div>
 </div>
-<a id="a0eaa67c7710d2a173210591e8481774c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0eaa67c7710d2a173210591e8481774c">&#9670;&nbsp;</a></span>setActive()</h2>
+<a id="a259db4489158b272acb1d7dfc1fc697c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a259db4489158b272acb1d7dfc1fc697c">&#9670;&nbsp;</a></span>setActive()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2093,7 +2099,7 @@ std::shared_ptr&lt; <a class="el" href="../../d1/d0e/classSyncFileWriter.html">S
         <tr>
           <td class="memname">void Scanner::setActive </td>
           <td>(</td>
-          <td class="paramtype">bool&#160;</td>
+          <td class="paramtype">bool const&#160;</td>
           <td class="paramname"><em>active</em></td><td>)</td>
           <td></td>
         </tr>
@@ -2730,41 +2736,6 @@ std::shared_ptr&lt; <a class="el" href="../../d1/d0e/classSyncFileWriter.html">S
 
 </div>
 </div>
-<a id="a31381060e7b292f9feab89b1eec90b89"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a31381060e7b292f9feab89b1eec90b89">&#9670;&nbsp;</a></span>setTrajectoryFileWriter()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Scanner::setTrajectoryFileWriter </td>
-          <td>(</td>
-          <td class="paramtype">std::shared_ptr&lt; <a class="el" href="../../d1/d0e/classSyncFileWriter.html">SyncFileWriter</a> &gt;&#160;</td>
-          <td class="paramname"><em>tfw</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Set synchronous file writer for trajectory. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">tfw</td><td>Synchronous file writer to be used to write trajectory </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../dc/d42/classScanner.html#a296541247420ebb603b329301231c9d6" title="Synchronous file writer. ">Scanner::tfw</a> </dd></dl>
-
-</div>
-</div>
 <a id="a37bfea01aa5a2b8848060dda85ee03b1"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a37bfea01aa5a2b8848060dda85ee03b1">&#9670;&nbsp;</a></span>setVisibility()</h2>
 
@@ -2890,6 +2861,33 @@ std::shared_ptr&lt; <a class="el" href="../../d1/d0e/classSyncFileWriter.html">S
 
 </div>
 </div>
+<a id="a76ba598a20f198125336d0da7a2956da"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a76ba598a20f198125336d0da7a2956da">&#9670;&nbsp;</a></span>trackOutputPath()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Scanner::trackOutputPath </td>
+          <td>(</td>
+          <td class="paramtype">std::string const&#160;</td>
+          <td class="paramname"><em>path</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Track given output path in a thread safe way. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">path</td><td>Output path to be tracked </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../dc/d42/classScanner.html#a7492c090b0fdb4f7314f481d2334b1f2" title="Historical vector of all output paths where scanner measurements were written. ">Scanner::allOutputPaths</a> </dd></dl>
+
+</div>
+</div>
 <h2 class="groupheader">Member Data Documentation</h2>
 <a id="aa6c767c57bf01a1e16fbec89fa0f6c3c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aa6c767c57bf01a1e16fbec89fa0f6c3c">&#9670;&nbsp;</a></span>allMeasurements</h2>
@@ -2924,6 +2922,23 @@ std::shared_ptr&lt; <a class="el" href="../../d1/d0e/classSyncFileWriter.html">S
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="../../dc/d42/classScanner.html#aa6c767c57bf01a1e16fbec89fa0f6c3c" title="Historical vector of all measurements performed by the scanner. ">Scanner::allMeasurements</a> </dd>
 <dd>
 Scanner::alTrajectories </dd></dl>
+
+</div>
+</div>
+<a id="a7492c090b0fdb4f7314f481d2334b1f2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7492c090b0fdb4f7314f481d2334b1f2">&#9670;&nbsp;</a></span>allOutputPaths</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::shared_ptr&lt;std::vector&lt;std::string&gt; &gt; Scanner::allOutputPaths = nullptr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Historical vector of all output paths where scanner measurements were written. </p>
+<p>It can be nullptr when no historical tracking of all output paths is requested </p>
 
 </div>
 </div>

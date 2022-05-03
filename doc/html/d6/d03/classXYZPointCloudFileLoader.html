@@ -188,6 +188,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../.
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d03/classXYZPointCloudFileLoader.html#a471a7eaa12eced954870e41704df505c">digestVoxel</a> (int <a class="el" href="../../d6/d03/classXYZPointCloudFileLoader.html#af841f25c5fb7616f3770d7a608476a93">estimateNormals</a>, double halfVoxelSize, double x, double y, double z, double r, double g, double b, double xnorm, double ynorm, double znorm)</td></tr>
 <tr class="memdesc:a471a7eaa12eced954870e41704df505c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Digest a voxel when filling voxels grid. This implies the voxel will be created in the grid if it does not exist. If the voxel already existed, then it will be populated with given new data. <br /></td></tr>
 <tr class="separator:a471a7eaa12eced954870e41704df505c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abf4534992108adb294711716766d8097"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d03/classXYZPointCloudFileLoader.html#abf4534992108adb294711716766d8097">warnAboutPotentialErrors</a> (string const &amp;filePathString)</td></tr>
+<tr class="memdesc:abf4534992108adb294711716766d8097"><td class="mdescLeft">&#160;</td><td class="mdescRight">Some issues with normals might be solved during post processing. This function is called before <a class="el" href="../../d6/d03/classXYZPointCloudFileLoader.html#a12fe6252a85ed194bd0d752ac438b6f1" title="Post process already filled voxels grid. ">XYZPointCloudFileLoader::postProcess</a> to find possible errors and report them before they are automatically treated during post processing.  <a href="#abf4534992108adb294711716766d8097">More...</a><br /></td></tr>
+<tr class="separator:abf4534992108adb294711716766d8097"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a12fe6252a85ed194bd0d752ac438b6f1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d03/classXYZPointCloudFileLoader.html#a12fe6252a85ed194bd0d752ac438b6f1">postProcess</a> (string const &amp;matName, int <a class="el" href="../../d6/d03/classXYZPointCloudFileLoader.html#af841f25c5fb7616f3770d7a608476a93">estimateNormals</a>)</td></tr>
 <tr class="memdesc:a12fe6252a85ed194bd0d752ac438b6f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Post process already filled voxels grid.  <a href="#a12fe6252a85ed194bd0d752ac438b6f1">More...</a><br /></td></tr>
 <tr class="separator:a12fe6252a85ed194bd0d752ac438b6f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -941,6 +944,41 @@ std::map&lt; std::string, <a class="el" href="../../d3/d89/classMaterial.html">M
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="abf4534992108adb294711716766d8097"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abf4534992108adb294711716766d8097">&#9670;&nbsp;</a></span>warnAboutPotentialErrors()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void XYZPointCloudFileLoader::warnAboutPotentialErrors </td>
+          <td>(</td>
+          <td class="paramtype">string const &amp;&#160;</td>
+          <td class="paramname"><em>filePathString</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Some issues with normals might be solved during post processing. This function is called before <a class="el" href="../../d6/d03/classXYZPointCloudFileLoader.html#a12fe6252a85ed194bd0d752ac438b6f1" title="Post process already filled voxels grid. ">XYZPointCloudFileLoader::postProcess</a> to find possible errors and report them before they are automatically treated during post processing. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">filePathString</td><td>The path to the file where XYZ points are specified </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d6/d03/classXYZPointCloudFileLoader.html#a12fe6252a85ed194bd0d752ac438b6f1" title="Post process already filled voxels grid. ">XYZPointCloudFileLoader::postProcess</a> </dd></dl>
 
 </div>
 </div>

@@ -1,4 +1,5 @@
 <map id="ZipSyncFileWriter" name="ZipSyncFileWriter">
-<area shape="rect" id="node2" href="$df/d47/classSimpleSyncFileWriter.html" title="SyncFileWriter implementation for simple text format. " alt="" coords="5,80,153,107"/>
-<area shape="rect" id="node3" href="$d1/d0e/classSyncFileWriter.html" title="Abstract class defining common behavior for all synchronous file writers. " alt="" coords="25,5,133,32"/>
+<area shape="rect" id="node1" title="ZipSyncFileWriter implementation for zipped text output format." alt="" coords="17,155,153,181"/>
+<area shape="rect" id="node2" href="$df/d47/classSimpleSyncFileWriter.html" title="SyncFileWriter implementation for simple text format." alt="" coords="5,80,165,107"/>
+<area shape="rect" id="node3" href="$d1/d0e/classSyncFileWriter.html" title="Abstract class defining common behavior for all synchronous file writers." alt="" coords="28,5,143,32"/>
 </map>

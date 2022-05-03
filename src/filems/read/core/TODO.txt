@@ -1,0 +1,8 @@
+TODO Rethink : Asset loading reading tasks should be implemented here.
+
+However, this is not done yet because it is recommended to update
+primitives before, so they are stored into matrices as contiguous memory
+blocks.
+
+Once primitives are updated, the core package of filems::read should be
+implemented

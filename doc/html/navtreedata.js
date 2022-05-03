@@ -1,7 +1,13 @@
 var NAVTREE =
 [
   [ "Helios++", "index.html", [
-    [ "Deprecated List", "da/d58/deprecated.html", null ],
+    [ "Namespaces", null, [
+      [ "Namespace List", "namespaces.html", "namespaces" ],
+      [ "Namespace Members", "namespacemembers.html", [
+        [ "All", "namespacemembers.html", null ],
+        [ "Functions", "namespacemembers_func.html", null ]
+      ] ]
+    ] ],
     [ "Classes", "annotated.html", [
       [ "Class List", "annotated.html", "annotated_dup" ],
       [ "Class Index", "classes.html", null ],
@@ -23,22 +29,26 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 ".html",
-"d1/d2b/classMarquardtFitter.html#aee2a297d40fb3d15afc20f671a6c056f",
-"d2/d1f/classSimpleThreadPool.html#a2413ce956d65cc6151abfbc6f02f877e",
-"d3/d89/classMaterial.html#a208703bcc362c4817f3a0daf42e29702",
-"d4/d96/classDynMovingObject.html#aaeec8774c4dd8a8f37adaf0ae9dd3d70",
-"d5/d85/classPulseThreadPoolFactory.html#a0e42482c402117ddd733a299520de4a3",
-"d6/d26/classSurfaceInspector_1_1util_1_1draggers_1_1MinDragger.html#ae5be98f5f033d717a175e2c0eff16805",
-"d6/ddc/classPulseThreadPool.html#aa6e7f76745b561c5da18ddd56dfcb83c",
-"d7/da7/classrigidmotion_1_1RigidMotionR2Factory.html#a218c5d312c34b18e40fdb4b15e25a01c",
-"d9/d47/classBlockAllocator.html#a31898b62be9e51a7adb1789e896843b5",
-"d9/ddf/classVoxelFileParser.html#af67af078ef3e5ded5c0d32a21cbfa820",
-"db/d2e/classMeasurement.html#a016165802eb3e886f35bab0ba1849c68",
-"db/da6/classFullWaveformPulseRunnable.html#ad8b27665f5d28502e9389f8677b12f7b",
-"dc/da7/classScannerHead.html#a27170fc0a487628ff4d4c3222dd1ebb2",
-"de/d51/classLeg.html#a44d8eab8385a77fcc2e97feda87fc476",
-"df/d39/classITreeIterator.html#a6fa0c7494f21bddb3098f77c2d29a246",
-"dir_68267d1309a1af8e8297ef4c3efbcdba.html"
+"d0/df1/structHeliosTests_1_1HPCTest__FloatComparator.html#a20f0bc383d6d82d892b14e68fbd73084",
+"d1/dc8/classIntersectionHandlingResult.html",
+"d2/daf/classSurfaceInspector_1_1maths_1_1permuters_1_1IPermuter.html",
+"d4/d31/classScanningStrip.html#adce92f6bc6f89b54ae15648d4b293e99",
+"d4/dfa/classSurfaceInspector_1_1maths_1_1DetailedPlane.html#a8d769afa48de35a520bbbf023991a6f3",
+"d5/d9c/classScene.html#a1ce25df38164ed98cf695bc8042bc6a5",
+"d6/d44/classVoxel.html#a5e774e17d703c3b261480e17ace3fc66",
+"d6/dd2/classAbstractGeometryFilter.html#a1d39c74323be93c86a7852f9c9b8086f",
+"d7/d5c/classArgumentsParser.html#a80d71b40ea4187c2ab52f146f8e88cf3",
+"d8/d3a/classSurfaceInspector_1_1util_1_1draggers_1_1MaxDragger.html#a8209697d8ca52711597e0d95dcf0cd52",
+"d9/d49/classfluxionum_1_1DiffDesignMatrix.html#a9ef9dc43ee7076cafa62dabc69ee8da5",
+"d9/ddd/classpyhelios_1_1PyHeliosSimulation.html#a91f7acd4e4f3b81072624830b5e5dbfd",
+"da/d8d/classTaskDropper.html#a0990e3c5f7cce4e518c6a7a073902ce3",
+"db/d69/classHelicopterPlatform.html#a3bd69e2c2b40d56ef5f76e5aa289e46f",
+"dc/d00/classrigidmotion_1_1RigidMotionFactory.html#a81c78af76b9d3fcd1b77f357be7131d0",
+"dc/d97/classInterpolatedMovingPlatform.html#a99efe7276d509d753bc2b305f126458d",
+"dd/dc0/classhelios_1_1filems_1_1FMSReadFacade.html#a4152fe4ffb95f637da78ae544e021aed",
+"de/d74/classDynScene.html#a1491f7ade0fbf5732e6cb5ec65d7a0bd",
+"df/d22/classMathConverter.html#a5f38933253e4b98bd9ec9a171cb780b5",
+"df/dd2/classvisualhelios_1_1VHNormalsCanvas.html#ae8df34806f6c1b19c62bd25b0116756c"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

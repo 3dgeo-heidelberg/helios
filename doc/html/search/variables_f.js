@@ -1,18 +1,18 @@
 var searchData=
 [
-  ['oa',['oa',['../de/d2a/classZipSyncFileWriter.html#abf26d1471e9791cd2c93175c35a82528',1,'ZipSyncFileWriter']]],
-  ['offset',['offset',['../d2/db3/classLasSyncFileWriter.html#a156e62d8d761d7aa86e8d42b5f1d81e9',1,'LasSyncFileWriter']]],
-  ['ofs',['ofs',['../df/d47/classSimpleSyncFileWriter.html#a698ad8740f4b8bdb7af111b8545ca6fc',1,'SimpleSyncFileWriter']]],
+  ['oa',['oa',['../d9/d45/classhelios_1_1filems_1_1ZipSyncFileWriter.html#aa38025cbfc3a902fc7b8b2bf3fe153c0',1,'helios::filems::ZipSyncFileWriter::oa()'],['../d6/d70/classhelios_1_1filems_1_1ZipFullWaveformWriteStrategy.html#af0b5b0027b461c2f034648d9ff09a6ef',1,'helios::filems::ZipFullWaveformWriteStrategy::oa()'],['../df/d31/classhelios_1_1filems_1_1ZipMeasurementWriteStrategy.html#affc8a199394a35a67c19459a8a0813e9',1,'helios::filems::ZipMeasurementWriteStrategy::oa()'],['../d3/d91/classhelios_1_1filems_1_1ZipTrajectoryWriteStrategy.html#ac2a2af8b73f2a18336b401e11516514b',1,'helios::filems::ZipTrajectoryWriteStrategy::oa()']]],
+  ['observersteploop',['observerStepLoop',['../d4/d96/classDynMovingObject.html#a2166f7d2e2fb7f7dd4d662fcee05039a',1,'DynMovingObject']]],
+  ['offset',['offset',['../d7/d5b/classhelios_1_1filems_1_1LasSyncFileWriter.html#a08b4f1cd3539769ed1dd6b5a01c8880d',1,'helios::filems::LasSyncFileWriter::offset()'],['../da/d35/classhelios_1_1filems_1_1LasMeasurementWriteStrategy.html#a828b274a98fd9b38a5f034eebe58bbf8',1,'helios::filems::LasMeasurementWriteStrategy::offset()']]],
+  ['ofs',['ofs',['../d1/db6/classhelios_1_1filems_1_1SimpleSyncFileWriter.html#a1c6950de5b07bc7908012eb780d8ff27',1,'helios::filems::SimpleSyncFileWriter::ofs()'],['../d8/df7/classhelios_1_1filems_1_1DirectFullWaveformWriteStrategy.html#a43c8fb9058722fa3c133add01fd171a1',1,'helios::filems::DirectFullWaveformWriteStrategy::ofs()'],['../de/d6d/classhelios_1_1filems_1_1DirectMeasurementWriteStrategy.html#ab7540e05749b8268f50cfce95513ae26',1,'helios::filems::DirectMeasurementWriteStrategy::ofs()'],['../d0/de5/classhelios_1_1filems_1_1DirectTrajectoryWriteStrategy.html#a6312da53667d50674319ae1645b37642',1,'helios::filems::DirectTrajectoryWriteStrategy::ofs()']]],
   ['omnivariance',['omnivariance',['../d4/dfa/classSurfaceInspector_1_1maths_1_1DetailedPlane.html#a057d7d04ca75065be028d0efa7cc9ff0',1,'SurfaceInspector::maths::DetailedPlane']]],
   ['onground',['onGround',['../df/d1e/classPlatform.html#a61cffbadc48e84d66b48b8a4d0bcae42',1,'Platform::onGround()'],['../d5/d0c/classPlatformSettings.html#ad8f592ea782edf1c573c8606c69543b0',1,'PlatformSettings::onGround()']]],
   ['onpopulatesplitsdigestprimitive',['onPopulateSplitsDigestPrimitive',['../d1/dc1/classSimpleKDTreePopulateSplitsSubTask.html#a2552db1279d2e2423806c9ba4eb075ea',1,'SimpleKDTreePopulateSplitsSubTask']]],
   ['onrayintersectionargument',['onRayIntersectionArgument',['../dd/dc4/classScenePart.html#a7d8e2726cca8ed5eeeef6326cbfe1385',1,'ScenePart']]],
   ['onrayintersectionmode',['onRayIntersectionMode',['../dd/dc4/classScenePart.html#a8d4c986047a3ae884b22e93575eba2ea',1,'ScenePart']]],
   ['onrootboundariesdigestprimitive',['onRootBoundariesDigestPrimitive',['../d1/da6/classSimpleKDTreeComputeRootNodeBoundariesSubTask.html#af93efcbb25c26df08c82b630d810a064',1,'SimpleKDTreeComputeRootNodeBoundariesSubTask']]],
+  ['openmode',['openMode',['../de/d6c/classhelios_1_1filems_1_1SimpleFileReader.html#afdf971fd55b8bd952efc019a8e4b0ff2',1,'helios::filems::SimpleFileReader']]],
   ['originwaypoint',['originWaypoint',['../df/d1e/classPlatform.html#ab09ad870a68d02b441b25e60439f72c6',1,'Platform']]],
   ['orthonormal',['orthonormal',['../d1/d16/classSurfaceInspector_1_1maths_1_1Plane.html#af82a3ced5e0e3d629bb1483582869086',1,'SurfaceInspector::maths::Plane']]],
-  ['outputfilelineformatstring',['outputFileLineFormatString',['../d8/d6b/classAbstractDetector.html#aa0b8b3f4ce8865d0318553261fb2483d',1,'AbstractDetector']]],
-  ['outputfilepath',['outputFilePath',['../d8/d6b/classAbstractDetector.html#a3cd34c888826fd57f7cf15ffd39a7861',1,'AbstractDetector']]],
-  ['outputpath',['outputPath',['../d6/da1/classSurveyPlayback.html#a8ecaf6182eba1df49d53d30f56bf4260',1,'SurveyPlayback']]],
+  ['output',['output',['../d8/dac/classNonVoidStepLoop.html#a92d7af03b0b5e0dd87830de55e5c8463',1,'NonVoidStepLoop']]],
   ['overhead_5fstructure',['OVERHEAD_STRUCTURE',['../df/d64/classLasSpecification.html#a45dbb6130c46b00f045abc180daeeb3e',1,'LasSpecification']]]
 ];

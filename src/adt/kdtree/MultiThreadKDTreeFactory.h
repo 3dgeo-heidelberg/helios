@@ -128,6 +128,10 @@ protected:
      * @see MultiThreadKDTreeFactory::finishedGeomJobs
      */
     boost::mutex finishedGeomJobsMutex;
+    /**
+     * @brief True if the factory has not been used before, false otherwise
+     */
+    bool notUsed;
 
 public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //
@@ -143,6 +147,18 @@ public:
         size_t const geomJobs=2
     );
     virtual ~MultiThreadKDTreeFactory() = default;
+
+    // ***  CLONE  *** //
+    // *************** //
+    /**
+     * @see KDTreeFactory::clone
+     */
+    KDTreeFactory * clone() const override;
+    /**
+     *
+     * @brief Assign attributes from MultiThreadKDTreeFactory to its clone
+     */
+    void _clone(KDTreeFactory *kdtf) const override;
 
     // ***  KDTREE FACTORY METHODS  *** //
     // ******************************** //
@@ -357,6 +373,19 @@ protected:
 
     // ***  UTIL METHODS  *** //
     // ********************** //
+    /**
+     * @brief Prepare the MultiThreadKDTreeFactory so it is ready to start
+     *  making a new KDTree.
+     *
+     * This implies handling the number of start pending tasks for node thread
+     *  pool so, when geometry-level parallelization is used, no node-level
+     *  parallelization occurs before it must (at adequate depth). Besides,
+     *  the maximum depth for geometry-level parallelization is properly
+     *  handled. Also, the sequencer is initialized with masters threads for
+     *  differents nodes if necessary. Finally, the count of finished
+     *  geometry-level jobs is set to 0.
+     */
+    virtual void prepareToMake();
     /**
      * @brief Increase count of finished geometry-level jobs in a thread safe
      *  way.

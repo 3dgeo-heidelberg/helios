@@ -1,10 +1,11 @@
 #pragma once
 
 #include <string>
+#include <ostream>
 
 #include <glm/glm.hpp>
-#include <ostream>
-#include "PrintUtils.h"
+
+#include <util/PrintUtils.h>
 
 /**
  * @brief Class representing a measurement

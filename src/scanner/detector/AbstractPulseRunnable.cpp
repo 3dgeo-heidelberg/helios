@@ -7,6 +7,7 @@
 #include <glm/glm.hpp>
 
 #include "AbstractDetector.h"
+#include <filems/facade/FMSFacade.h>
 
 
 // ALS Simplification "Radiometric Calibration..." (Wagner, 2010) Eq. 14
@@ -104,6 +105,8 @@ void AbstractPulseRunnable::capturePoint(
 	}
 
 	// Abort if point distance is below mininum scanner range:
+	// TODO Pending : This check is already done in FullWaveformPulseRunnable
+	// What is the point on repeating it?
 	if (m.distance < detector->cfg_device_rangeMin_m) {
 		return;
 	}
@@ -112,6 +115,8 @@ void AbstractPulseRunnable::capturePoint(
 	// ########## END Apply gaussian range accuracy error ###########
 
 	// Calculate final recorded point coordinates:
+	// TODO Pending : Is it necessary to compute position again? Notice it is
+    // known from ray intersection point at FullWaveformPulseRunnable
 	m.position = m.beamOrigin + m.beamDirection * m.distance;
     if(allMeasurements != nullptr){
         std::unique_lock<std::mutex> lock(*allMeasurementsMutex);
@@ -125,8 +130,7 @@ void AbstractPulseRunnable::capturePoint(
         (cycleMeasurements->end() - 1)->position +=
             detector->scanner->platform->scene->getShift();
     }
-    detector->writeMeasurement(m);
-	detector->mBuffer->add(m);
+    detector->pcloudYielder->push(m);
 }
 
 void AbstractPulseRunnable::applyMeasurementError(

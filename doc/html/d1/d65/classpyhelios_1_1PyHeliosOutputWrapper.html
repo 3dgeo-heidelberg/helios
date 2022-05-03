@@ -104,19 +104,20 @@ Collaboration diagram for pyhelios::PyHeliosOutputWrapper:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../d0/dd5/classpyhelios_1_1PyHeliosOutputWrapper__coll__graph.png" border="0" usemap="#pyhelios_1_1PyHeliosOutputWrapper_coll__map" alt="Collaboration graph"/></div>
 <map name="pyhelios_1_1PyHeliosOutputWrapper_coll__map" id="pyhelios_1_1PyHeliosOutputWrapper_coll__map">
-<area shape="rect" id="node2" href="../../d4/d2c/classpyhelios_1_1PyTrajectoryVectorWrapper.html" title="Python wrapper for helios trajectory. " alt="" coords="5,5,196,47"/>
-<area shape="rect" id="node3" href="../../d5/dfb/classpyhelios_1_1PyMeasurementVectorWrapper.html" title="Wrapper for std::vector&lt;Measurement&gt; class. " alt="" coords="221,5,431,47"/>
+<area shape="rect" id="node2" href="../../d4/d2c/classpyhelios_1_1PyTrajectoryVectorWrapper.html" title="Python wrapper for helios trajectory. " alt="" coords="15,5,206,47"/>
+<area shape="rect" id="node3" href="../../d5/dfb/classpyhelios_1_1PyMeasurementVectorWrapper.html" title="Wrapper for std::vector&lt;Measurement&gt; class. " alt="" coords="5,71,216,112"/>
+<area shape="rect" id="node5" href="../../dc/d5f/classpyhelios_1_1PyStringVector.html" title="pyhelios::PyStringVector" alt="" coords="27,187,194,214"/>
 </map>
 <center><span class="legend">[<a target="top" href="../../graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:afa16f6bfcf1a321fbd1d3818dc310f5f"><td class="memItemLeft" align="right" valign="top"><a id="afa16f6bfcf1a321fbd1d3818dc310f5f"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>PyHeliosOutputWrapper</b> (std::shared_ptr&lt; std::vector&lt; <a class="el" href="../../db/d2e/classMeasurement.html">Measurement</a> &gt;&gt; measurements, std::shared_ptr&lt; std::vector&lt; <a class="el" href="../../d2/d43/classTrajectory.html">Trajectory</a> &gt;&gt; trajectories, std::string const &amp;outpath, bool finished)</td></tr>
-<tr class="separator:afa16f6bfcf1a321fbd1d3818dc310f5f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a27a797a9155b4951a0e2a6ec7bb41db0"><td class="memItemLeft" align="right" valign="top"><a id="a27a797a9155b4951a0e2a6ec7bb41db0"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>PyHeliosOutputWrapper</b> (std::vector&lt; <a class="el" href="../../db/d2e/classMeasurement.html">Measurement</a> &gt; &amp;measurements, std::vector&lt; <a class="el" href="../../d2/d43/classTrajectory.html">Trajectory</a> &gt; &amp;trajectories, std::string const &amp;outpath, bool finished)</td></tr>
-<tr class="separator:a27a797a9155b4951a0e2a6ec7bb41db0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0433dfb56d5c259858130b717e0c8ab3"><td class="memItemLeft" align="right" valign="top"><a id="a0433dfb56d5c259858130b717e0c8ab3"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>PyHeliosOutputWrapper</b> (std::shared_ptr&lt; std::vector&lt; <a class="el" href="../../db/d2e/classMeasurement.html">Measurement</a> &gt;&gt; measurements, std::shared_ptr&lt; std::vector&lt; <a class="el" href="../../d2/d43/classTrajectory.html">Trajectory</a> &gt;&gt; trajectories, std::string const &amp;outpath, std::shared_ptr&lt; std::vector&lt; std::string &gt;&gt; outpaths, bool finished)</td></tr>
+<tr class="separator:a0433dfb56d5c259858130b717e0c8ab3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2b49bef119ac3667060d56e9aa86d184"><td class="memItemLeft" align="right" valign="top"><a id="a2b49bef119ac3667060d56e9aa86d184"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>PyHeliosOutputWrapper</b> (std::vector&lt; <a class="el" href="../../db/d2e/classMeasurement.html">Measurement</a> &gt; &amp;measurements, std::vector&lt; <a class="el" href="../../d2/d43/classTrajectory.html">Trajectory</a> &gt; &amp;trajectories, std::string const &amp;outpath, std::vector&lt; std::string &gt; outpaths, bool finished)</td></tr>
+<tr class="separator:a2b49bef119ac3667060d56e9aa86d184"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -129,6 +130,9 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:a52225aef7e8af6701902fe8da29da555"><td class="memItemLeft" align="right" valign="top"><a id="a52225aef7e8af6701902fe8da29da555"></a>
 std::string&#160;</td><td class="memItemRight" valign="bottom"><b>outpath</b></td></tr>
 <tr class="separator:a52225aef7e8af6701902fe8da29da555"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa5a47bad87cc30d68404b51c22efe220"><td class="memItemLeft" align="right" valign="top"><a id="aa5a47bad87cc30d68404b51c22efe220"></a>
+<a class="el" href="../../dc/d5f/classpyhelios_1_1PyStringVector.html">PyStringVector</a>&#160;</td><td class="memItemRight" valign="bottom"><b>outpaths</b></td></tr>
+<tr class="separator:aa5a47bad87cc30d68404b51c22efe220"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad8418db702f158424562e0a381a15b06"><td class="memItemLeft" align="right" valign="top"><a id="ad8418db702f158424562e0a381a15b06"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>finished</b></td></tr>
 <tr class="separator:ad8418db702f158424562e0a381a15b06"><td class="memSeparator" colspan="2">&#160;</td></tr>

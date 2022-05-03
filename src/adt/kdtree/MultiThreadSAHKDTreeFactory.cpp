@@ -22,3 +22,23 @@ MultiThreadSAHKDTreeFactory::MultiThreadSAHKDTreeFactory(
         this->ilotCacheLock.reset();
     };
 }
+
+// ***  CLONE  *** //
+// *************** //
+KDTreeFactory * MultiThreadSAHKDTreeFactory::clone() const{
+    shared_ptr<SimpleKDTreeFactory> skdtf(
+        (SimpleKDTreeFactory *) kdtf->clone()
+    );
+    MultiThreadSAHKDTreeFactory * mtkdtf = new MultiThreadSAHKDTreeFactory(
+        skdtf,
+        shared_ptr<SimpleKDTreeGeometricStrategy>(gs->clone(skdtf.get())),
+        numJobs,
+        geomJobs
+    );
+    _clone(mtkdtf);
+    return mtkdtf;
+}
+
+void MultiThreadSAHKDTreeFactory::_clone(KDTreeFactory *kdtf) const{
+    MultiThreadKDTreeFactory::_clone(kdtf);
+}

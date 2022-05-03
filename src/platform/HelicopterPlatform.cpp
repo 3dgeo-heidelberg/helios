@@ -59,6 +59,7 @@ void HelicopterPlatform::prepareSimulation(int simFrequency_hz){
     cfg_slowdownFactor = 1.0 - cfg_slowdown_magnitude / simFrequency_hz;
     cfg_speedupFactor = 1.0 + cfg_speedup_magnitude / simFrequency_hz;
     Platform::prepareSimulation(simFrequency_hz);
+    SimplePhysicsPlatform::prepareSimulation(simFrequency_hz);
 }
 void HelicopterPlatform::initLegManual(){
     // Set directional attitude
@@ -89,22 +90,25 @@ void HelicopterPlatform::initLeg(){
 }
 
 bool HelicopterPlatform::waypointReached(){
+    bool wayPointReached{};
     if(smoothTurn && cache_turning){
         cache_turnIterations--;
         if(cache_turnIterations <= 0){
             cache_turning = false;
             cache_speedUpFinished = false;
             logging::INFO("Waypoint passed (smooth turn)!");
-            return true;
+            wayPointReached = true;
         }
     }
 
     if(MovingPlatform::waypointReached()){
         cache_turning = false;
         cache_speedUpFinished = false;
-        return true;
+        wayPointReached = true;
     }
-    return false;
+
+    if (wayPointReached) SimplePhysicsPlatform::checkSpeedLimit();
+    return wayPointReached;
 }
 
 void HelicopterPlatform::updateStaticCache(){
@@ -226,6 +230,7 @@ void HelicopterPlatform::computeXYSpeed(int simFrequency_hz){
 
     // Limit engine power
     if (glm::l2Norm(speed_xy) > ef_xy_max) {
+        if (!engineLimitReached) engineLimitReached = true;
         speed_xy = glm::normalize(speed_xy) * ef_xy_max;
         cache_speedUpFinished = true;
     }
