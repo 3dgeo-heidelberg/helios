@@ -20,7 +20,7 @@ def find_playback_dir(survey_path):
             if '<survey name' in line:
                 survey_name = line.split('name="')[1].split('"')[0]
     if not (playback / survey_name).is_dir():
-        raise Exception('Could not locate output directory')
+        raise FileNotFoundError('Could not locate output directory')
     last_run_dir = sorted(list((playback / survey_name).glob('*')), key=lambda f: f.stat().st_ctime, reverse=True)[0]
     return last_run_dir
 
