@@ -43,6 +43,7 @@ def run_helios_pyhelios(survey_path: Path, options=None) -> Path:
 
     sim.start()
     output = sim.join()
+    sim = None
     return find_playback_dir(survey_path)
 
 def test_gpsStartTimeFlag_exe():
@@ -54,7 +55,7 @@ def test_gpsStartTimeFlag_exe():
                                         options=['--gpsStartTime', ''])
     # run with posix ts:
     r2 = run_helios_executable(Path(WORKING_DIR) / 'data' / 'surveys' / 'demo' / 'tls_arbaro_demo.xml',
-                                        options=['--gpsStartTime', unixtime])
+                                        options=['--gpsStartTime', f'{unixtime:.3f}'])
     # run with string ts:
     r3 = run_helios_executable(Path(WORKING_DIR) / 'data' / 'surveys' / 'demo' / 'tls_arbaro_demo.xml',
                                         options=['--gpsStartTime', stringtime])
@@ -64,7 +65,7 @@ def test_gpsStartTimeFlag_exe():
     r2_sum = sha256sum(r2 / 'leg000_points.xyz')
     r3_sum = sha256sum(r3 / 'leg000_points.xyz')
     assert r2_sum == r3_sum
-    assert r2_sum == '2cb239a1919552891e58682f2743c5fd565ca3365faf08313c6c20f127363b5d'
+    assert r2_sum == '7e6ddfe74370361bc070216b770c4b1b97a26409d7979e508d692df5aab2802e'
     assert r1_sum != r2_sum
 
     if DELETE_FILES_AFTER:
@@ -82,7 +83,7 @@ def test_gpsStartTimeFlag_pyh():
                                options={'gpsStartTime': ''})
     # run with posix ts:
     r2 = run_helios_pyhelios(Path(WORKING_DIR) / 'data' / 'surveys' / 'demo' / 'tls_arbaro_demo.xml',
-                               options={'gpsStartTime': '%d' % unixtime})
+                               options={'gpsStartTime': f'{unixtime:.0f}'})
     # run with string ts:
     r3 = run_helios_pyhelios(Path(WORKING_DIR) / 'data' / 'surveys' / 'demo' / 'tls_arbaro_demo.xml',
                                options={'gpsStartTime': stringtime})
@@ -92,10 +93,13 @@ def test_gpsStartTimeFlag_pyh():
     r2_sum = sha256sum(r2 / 'leg000_points.xyz')
     r3_sum = sha256sum(r3 / 'leg000_points.xyz')
     assert r2_sum == r3_sum
-    assert r2_sum == '2cb239a1919552891e58682f2743c5fd565ca3365faf08313c6c20f127363b5d'
+    assert r2_sum == '7e6ddfe74370361bc070216b770c4b1b97a26409d7979e508d692df5aab2802e'
     assert r1_sum != r2_sum
 
     if DELETE_FILES_AFTER:
-        shutil.rmtree(r1)
-        shutil.rmtree(r2)
-        shutil.rmtree(r3)
+        try:
+            shutil.rmtree(r1)
+            shutil.rmtree(r2)
+            shutil.rmtree(r3)
+        except Exception as e:
+            print(f"Error cleaning up: {e}")
