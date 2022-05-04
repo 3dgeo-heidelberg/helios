@@ -61,7 +61,9 @@ protected:
         ss  << t.position.x << " "
             << t.position.y << " "
             << t.position.z << " "
-            << ((double)t.gpsTime) / 1000.0 << " "
+            << std::setprecision(9) << std::fixed
+            << t.gpsTime / 1000000000.0 << " "
+            << std::setprecision(4) << std::fixed
             << MathConverter::radiansToDegrees(t.roll) << " "
             << MathConverter::radiansToDegrees(t.pitch) << " "
             << MathConverter::radiansToDegrees(t.yaw) << std::endl;

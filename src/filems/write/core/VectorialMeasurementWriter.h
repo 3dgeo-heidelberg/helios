@@ -16,7 +16,7 @@ using std::vector;
 /**
  * @author Alberto M. Esmoris Pena
  * @version 1.0
- * @brief Common implementation for any measurement writer
+ * @brief Common implementation for any vectorial measurement writer
  */
 class VectorialMeasurementWriter :
     public BaseMeasurementWriter<vector<Measurement> const&, glm::dvec3 const&>

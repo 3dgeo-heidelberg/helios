@@ -41,7 +41,7 @@ private:
      */
 	double length = 0;	// Distance to the next leg
 	/**
-	 * @brief The serial non negative intenger unique identifier for the leg.
+	 * @brief The serial non negative integer unique identifier for the leg.
 	 *  If it is a negative integer, it means that the serial identifier is not
 	 *  valid. It is, the serial identifier does not univocally identify the
 	 *  leg

@@ -75,6 +75,12 @@ public:
     // ***  GETTERs and SETTERs  *** //
     // ***************************** //
     /**
+     * @brief Check whether the HeliosWriter has a non null writer (true) or
+     *  not (false)
+     * @return True if the HeliosWriter has a non null writer, false otherwise
+     */
+    virtual bool hasWriter() const {return sfw != nullptr;}
+    /**
      * @brief Get the path to the output file
      * @return The path to the output file
      * @see filems::HeliosWriter::getOutputPath

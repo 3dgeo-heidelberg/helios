@@ -123,6 +123,18 @@ public:
     );
 
     /**
+     * @brief Validate the given loaded scene part
+     * @param scenePartNode XML part node corresponding to the scene part
+     *  being validated
+     * @param scenePart The scene part to be validated
+     * @return True if the given ScenePart is valid, false otherwise
+     */
+    bool validateScenePart(
+        shared_ptr<ScenePart> scenePart,
+        tinyxml2::XMLElement *scenePartNode
+    );
+
+    /**
      * @brief Apply final processings to the built scene part so it is fully
      *  integrated in the scene and totally configured
      * @param scenePart The scene part object to be digested
