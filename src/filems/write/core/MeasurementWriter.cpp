@@ -1,9 +1,6 @@
 #include <filems/write/core/MeasurementWriter.h>
 #include <util/HeliosException.h>
 
-#include <sstream>
-#include <fstream>
-
 using namespace helios::filems;
 
 // ***   M E T H O D S   *** //

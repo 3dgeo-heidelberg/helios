@@ -20,7 +20,7 @@ def find_playback_dir(survey_path):
             if '<survey name' in line:
                 survey_name = line.split('name="')[1].split('"')[0]
     if not (playback / survey_name).is_dir():
-        raise Exception('Could not locate output directory')
+        raise FileNotFoundError('Could not locate output directory')
     last_run_dir = sorted(list((playback / survey_name).glob('*')), key=lambda f: f.stat().st_ctime, reverse=True)[0]
     return last_run_dir
 
@@ -101,13 +101,13 @@ def test_tiffloader_als_pyh():
 
 def eval_tiffloader_als(dirname):
     assert (dirname / 'leg000_points.las').exists()
-    assert abs((dirname / 'leg000_points.las').stat().st_size - 105_049) < MAX_DIFFERENCE_BYTES
+    assert abs((dirname / 'leg000_points.las').stat().st_size - 38_645) < MAX_DIFFERENCE_BYTES
     assert (dirname / 'leg001_points.las').exists()
-    assert abs((dirname / 'leg001_points.las').stat().st_size - 105_049) < MAX_DIFFERENCE_BYTES
+    assert abs((dirname / 'leg001_points.las').stat().st_size - 60_329) < MAX_DIFFERENCE_BYTES
     with open(dirname / 'leg000_trajectory.txt', 'r') as f:
         next(f)
         line = f.readline()
-        assert line.startswith('474500.7510 5474500.0000 1500.0000')
+        assert line.startswith('474500.7500 5474500.0000 1500.0000')
     # clean up
     if DELETE_FILES_AFTER:
         shutil.rmtree(dirname)
@@ -179,7 +179,7 @@ def test_interpolated_traj_pyh():
 def eval_interpolated_traj(dirname):
     assert (dirname / 'leg000_points.laz').exists()
     assert (dirname / 'leg000_trajectory.txt').exists()
-    assert abs((dirname / 'leg000_points.laz').stat().st_size - 151_131) < MAX_DIFFERENCE_BYTES
+    assert abs((dirname / 'leg000_points.laz').stat().st_size - 153_538) < MAX_DIFFERENCE_BYTES
     with open(dirname / 'leg000_trajectory.txt', 'r') as f:
         for _ in range(3):
             next(f)

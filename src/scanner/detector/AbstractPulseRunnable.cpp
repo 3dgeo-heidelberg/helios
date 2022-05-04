@@ -11,27 +11,36 @@
 
 
 // ALS Simplification "Radiometric Calibration..." (Wagner, 2010) Eq. 14
-double AbstractPulseRunnable::calcCrossSection(double f, double Alf, double theta) {
+double AbstractPulseRunnable::calcCrossSection(
+    double const f,
+    double const Alf,
+    double const theta
+) const {
 	return PI_4 * f * Alf * cos(theta);
 }
 
 // Phong reflection model "Normalization of Lidar Intensity..." (Jutzi and Gross, 2009) 
 double AbstractPulseRunnable::phongBDRF(
-    double incidenceAngle,
-    double targetSpecularity,
-    double targetSpecularExponent
-) {
-	double ks = targetSpecularity;
-	double kd = (1 - ks);
-	double diffuse = kd * cos(incidenceAngle);
-	double specularAngle = (incidenceAngle <= PI_HALF) ?
+    double const incidenceAngle,
+    double const targetSpecularity,
+    double const targetSpecularExponent
+) const {
+	double const ks = targetSpecularity;
+	double const kd = (1 - ks);
+	double const diffuse = kd * cos(incidenceAngle);
+	double const specularAngle = (incidenceAngle <= PI_HALF) ?
 	    incidenceAngle : incidenceAngle - PI_HALF;
-	double specular = ks * pow(abs(cos(specularAngle)),targetSpecularExponent);
+	double const specular = ks * pow(
+	    abs(cos(specularAngle)),
+	    targetSpecularExponent
+    );
 	return diffuse + specular;
 }
 
 // Energy left after attenuation by air particles in range [0,1]
-inline double AbstractPulseRunnable::calcAtmosphericFactor(double targetRange){
+inline double AbstractPulseRunnable::calcAtmosphericFactor(
+    double const targetRange
+) const {
 	return exp(
 	    -2 * targetRange * detector->scanner->getAtmosphericExtinction()
     );
@@ -39,20 +48,20 @@ inline double AbstractPulseRunnable::calcAtmosphericFactor(double targetRange){
 
 // Laser radar equation "Signature simulation..." (Carlsson et al., 2000)
 double AbstractPulseRunnable::calcReceivedPower(
-    double emittedPower,
-    double targetRange,
-    double incidenceAngle,
-    double targetReflectivity,
-    double targetSpecularity,
-    double targetSpecularExponent,
-    double targetArea
-) {
-	double bdrf = targetReflectivity * phongBDRF(
+    double const emittedPower,
+    double const targetRange,
+    double const incidenceAngle,
+    double const targetReflectivity,
+    double const targetSpecularity,
+    double const targetSpecularExponent,
+    double const targetArea
+) const {
+	double const bdrf = targetReflectivity * phongBDRF(
 	    incidenceAngle,
 	    targetSpecularity,
 	    targetSpecularExponent
     );
-	double sigma = calcCrossSection(bdrf, targetArea, incidenceAngle);
+	double const sigma = calcCrossSection(bdrf, targetArea, incidenceAngle);
     return AbstractPulseRunnable::_calcReceivedPower(
         emittedPower,
         detector->scanner->getDr2(),
@@ -65,10 +74,10 @@ double AbstractPulseRunnable::calcReceivedPower(
 }
 
 double AbstractPulseRunnable::calcReceivedPower(
-    double emittedPower,
-    double targetRange,
-    double sigma
-){
+    double const emittedPower,
+    double const targetRange,
+    double const sigma
+) const {
     return AbstractPulseRunnable::_calcReceivedPower(
         emittedPower,
         detector->scanner->getDr2(),
@@ -81,13 +90,13 @@ double AbstractPulseRunnable::calcReceivedPower(
 }
 
 inline double AbstractPulseRunnable::_calcReceivedPower(
-    double Pt,
-    double Dr2,
-    double R,
-    double Bt2,
-    double etaSys,
-    double etaAtm,
-    double sigma
+    double const Pt,
+    double const Dr2,
+    double const R,
+    double const Bt2,
+    double const etaSys,
+    double const etaAtm,
+    double const sigma
 ){
     return (Pt * Dr2) / (PI_4 * pow(R, 4) * Bt2) * etaSys * etaAtm * sigma;
 }
