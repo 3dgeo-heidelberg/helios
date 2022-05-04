@@ -23,7 +23,7 @@ WORKING_DIR = str(Path(__file__).parent.parent.absolute())
 
 def find_scene(survey_file):
     scene_file = ET.parse(survey_file).find('survey').attrib['scene'].split('#')[0]
-    return scene_file
+    return scene_file.replace('.xml', '.scene')
 
 
 @pytest.fixture(scope="session")
