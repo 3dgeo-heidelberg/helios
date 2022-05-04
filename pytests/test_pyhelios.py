@@ -11,8 +11,9 @@ from pathlib import Path
 import sys
 import os
 import time
+import xml.etree.ElementTree as ET
 
-MAX_DIFFERENCE_BYTES = 1024
+
 DELETE_FILES_AFTER = False
 HELIOS_EXE = str(Path('run') / 'helios')
 if sys.platform == "win32":
@@ -20,46 +21,55 @@ if sys.platform == "win32":
 WORKING_DIR = str(Path(__file__).parent.parent.absolute())
 
 
+def find_scene(survey_file):
+    scene_file = ET.parse(survey_file).find('survey').attrib['scene'].split('#')[0]
+    return scene_file
+
+
 @pytest.fixture(scope="session")
-def toyblocks_sim(survey_path=Path('data') / 'surveys' / 'toyblocks' / 'als_toyblocks.xml'):
-    sys.path.append(WORKING_DIR)
-    import pyhelios
-    pyhelios.loggingSilent()
-    from pyhelios import SimulationBuilder
-    simB = SimulationBuilder(
-        surveyPath=str(survey_path.absolute()),
-        assetsDir=WORKING_DIR + os.sep + 'assets' + os.sep,
-        outputDir=WORKING_DIR + os.sep + 'output' + os.sep,
-    )
-    simB.setLasOutput(True)
-    simB.setRebuildScene(True)
-    simB.setZipOutput(True)
+def test_sim():
+    def create_test_sim(survey_path):
+        sys.path.append(WORKING_DIR)
+        import pyhelios
+        pyhelios.loggingSilent()
+        from pyhelios import SimulationBuilder
+        simB = SimulationBuilder(
+            surveyPath=str(survey_path.absolute()),
+            assetsDir=WORKING_DIR + os.sep + 'assets' + os.sep,
+            outputDir=WORKING_DIR + os.sep + 'output' + os.sep,
+        )
+        simB.setLasOutput(True)
+        simB.setRebuildScene(True)
+        simB.setZipOutput(True)
 
-    sim = simB.build()
+        sim = simB.build()
 
-    return sim
+        return sim
+
+    return create_test_sim
 
 
-def test_start_stop(toyblocks_sim):
-    toyblocks_sim.start()
-    assert toyblocks_sim.isStarted()
+def test_start_stop(test_sim):
+    sim = test_sim(Path('data') / 'surveys' / 'toyblocks' / 'als_toyblocks.xml')
+    sim.start()
+    assert sim.isStarted()
     time.sleep(0.05)
-    toyblocks_sim.pause()
-    assert toyblocks_sim.isPaused()
-    toyblocks_sim.resume()
-    assert toyblocks_sim.isRunning()
-    while toyblocks_sim.isRunning():
+    sim.pause()
+    assert sim.isPaused()
+    sim.resume()
+    assert sim.isRunning()
+    while sim.isRunning():
         pass
-    assert toyblocks_sim.isFinished()
-    toyblocks_sim.stop()
-    assert toyblocks_sim.isStopped()
-    assert toyblocks_sim.isRunning() is False
+    assert sim.isFinished()
+    sim.stop()
+    assert sim.isStopped()
+    assert sim.isRunning() is False
+    sim.join()
 
-    yield toyblocks_sim
 
-
-def test_templates(toyblocks_sim):
-    leg = toyblocks_sim.sim.getLeg(0)
+def test_templates(test_sim):
+    sim = test_sim(Path('data') / 'surveys' / 'toyblocks' / 'als_toyblocks.xml')
+    leg = sim.sim.getLeg(0)
     ss = leg.getScannerSettings()
     assert ss.hasTemplate()
     ss_templ = ss.getTemplate()
@@ -69,9 +79,24 @@ def test_templates(toyblocks_sim):
 
     assert ss_templ.id == "scanner1"
     assert ss_templ.active is True
-    assert ss_templ.pulseFreq == 1_200_000
+    assert ss_templ.pulseFreq == 300_000
     assert ss_templ.trajectoryTimeInterval == 0.01
     assert ss_templ.scanFreq == 200
     assert ss_templ.scanAngle * 180 / np.pi == 20
     assert ps_templ.id == "platform1"
     assert ps_templ.movePerSec == 30
+
+
+def test_detector(test_sim):
+    path_to_survey = Path('data') / 'test' / 'als_hd_demo_tiff_min.xml'
+    sim = test_sim(path_to_survey)
+    scanner = sim.sim.getScanner()
+    detector = scanner.getDetector()
+
+    assert detector.accuracy == 0.05
+    assert detector.rangeMin == 200
+    assert detector.rangeMax == 1700
+
+    scene_file = find_scene(path_to_survey)
+    if os.path.isfile(scene_file):
+        os.remove(scene_file)
