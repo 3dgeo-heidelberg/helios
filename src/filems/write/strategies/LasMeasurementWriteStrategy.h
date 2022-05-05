@@ -142,7 +142,7 @@ protected:
      ){
         // Compute shifted position (new impl. shift .las as .xyz)
         //glm::dvec3 shifted = m.position + shift - offset; // Old impl.
-        glm::dvec3 shifted = m.position + shift; // New impl.
+        glm::dvec3 const &shifted = m.position; // New, because offset=shift
 
         // Populate LAS point (base attributes)
         lp.set_X(I32(shifted.x * scaleFactorInverse));
