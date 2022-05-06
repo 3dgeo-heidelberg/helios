@@ -22,6 +22,8 @@ using std::shared_ptr;
  * @brief Dynamic scene demo
  *
  * This demo implements the rendering of a given dynamic scene
+ *
+ * @see HeliosDemos::SurveyDemo
  */
 class DynamicSceneDemo : public SurveyDemo{
 protected:
@@ -38,6 +40,7 @@ public:
     // ************************************ //
     /**
      * @brief Dynamic scene demo constructor
+     * @see HeliosDemos::SurveyDemo::SurveyDemo
      */
     DynamicSceneDemo(string const surveyPath, string const assetsPath) :
         SurveyDemo("Dynamic scene demo", surveyPath, assetsPath)
@@ -62,7 +65,7 @@ public:
      * @brief Load survey containing the scene to be rendered
      * @return Loaded survey containing the scene to be rendered
      */
-    shared_ptr<Survey> loadSurvey();
+    virtual shared_ptr<Survey> loadSurvey();
     /**
      * @brief Build a visual Helios scene canvas from given survey.
      *
