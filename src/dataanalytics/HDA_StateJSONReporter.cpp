@@ -60,8 +60,8 @@ void HDA_StateJSONReporter::reportSimulation(){
         << craftEntry("callbackFrequency", sim->callbackFrequency, 4)
         << craftEntry("stopped", sim->isStopped(), 4)
         << craftEntry("paused", sim->isPaused(), 4)
-        << craftEntry("timeStart_ms", sim->timeStart_ms, 4)
-        << craftEntry("currentGpsTime_ms", sim->currentGpsTime_ms, 4)
+        << craftEntry("timeStart_ns", sim->timeStart_ns, 4)
+        << craftEntry("currentGpsTime_ns", sim->currentGpsTime_ns, 4)
         << craftEntry("fixedGpsTimeStart", sim->fixedGpsTimeStart, 4, true)
         << craftEntry("currentLegIndex", sim->mCurrentLegIndex, 4)
         << craftEntry("exportToFile", sim->exportToFile, 4)
@@ -74,10 +74,10 @@ void HDA_StateJSONReporter::reportSimulation(){
         << craftEntry("legProgress", sp->getLegProgress(), 4)
         << craftEntry("legStartTime_ns", sp->getLegStartTime(), 4)
         << craftEntry("elapsedTime_ns", sp->getElapsedTime(), 4)
-        << craftEntry("remainingTime_ms", sp->getRemainingTime(), 4)
-        << craftEntry("legElapsedTime_ms", sp->getLegElapsedTime(), 4)
+        << craftEntry("remainingTime_ns", sp->getRemainingTime(), 4)
+        << craftEntry("legElapsedTime_ns", sp->getLegElapsedTime(), 4)
         << craftEntry(
-            "legRemainingTime_ms", sp->getLegRemainingTime(), 4, false, true
+            "legRemainingTime_ns", sp->getLegRemainingTime(), 4, false, true
         )
         << closeEntry(3, false, EntryType::OBJECT) // Close simulation
     ;
@@ -102,7 +102,7 @@ void HDA_StateJSONReporter::reportFilems(){
     FMSWriteFacade &wf = fms->write;
     VectorialMeasurementWriter *mw = wf.getMeasurementWriter().get();
     TrajectoryWriter *tw = wf.getTrajectoryWriter().get();
-    FullWaveformWriter *fw = wf.getFullWaveformWriter().get();
+    VectorialFullWaveformWriter *fw = wf.getFullWaveformWriter().get();
     std::stringstream ss;
     ss  << openEntry("filems", 3, EntryType::OBJECT)
         << craftEntry("writeRootDir", wf.getRootDir(), 4, true)
@@ -252,7 +252,9 @@ void HDA_StateJSONReporter::reportScanner(){
         << craftEntry("active", sc->isActive(), 4)
         << craftEntry("cached_Dr2", sc->getDr2(), 4)
         << craftEntry("cached_Bt2", sc->getBt2(), 4)
-        << craftEntry("trajectoryTimeInterval", sc->trajectoryTimeInterval, 4)
+        << craftEntry(
+            "trajectoryTimeInterval", sc->trajectoryTimeInterval_ns, 4
+           )
         << craftEntry("lastTrajectoryTime", sc->lastTrajectoryTime, 4)
         << craftEntry("FWFSettings", sc->FWF_settings, 4)
         << craftEntry("numTimeBins", sc->numTimeBins, 4)
@@ -441,11 +443,14 @@ std::string HDA_StateJSONReporter::craftEntry(
 ){
     std::stringstream ss;
     ss  << "[";
-    size_t const m = u.size()-1;
-    for(size_t i = 0 ; i < m ; ++i){
-        ss << u[i] << ", ";
+    if(u.size() > 0){
+        size_t const m = u.size()-1;
+        for(size_t i = 0 ; i < m ; ++i){
+            ss << u[i] << ", ";
+        }
+        ss << u[m];
     }
-    ss  << u[m] << "]";
+    ss << "]";
     return craftEntry(key, ss.str(), depth, asString, last);
 }
 
