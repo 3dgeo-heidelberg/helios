@@ -33,6 +33,24 @@ namespace fs = boost::filesystem;
 // ***  MAIN METHODS *** //
 // ********************* //
 ScenePart *WavefrontObjFileLoader::run() {
+    // Determine filepath
+    bool extendedFilePath = false;
+    std::vector<std::string> filePaths(0);
+    try {
+        filePathString = boost::get<string const &>(params["efilepath"]);
+        extendedFilePath = true;
+    } catch (std::exception &e) {
+        try {
+            filePathString = boost::get<string const &>(params["filepath"]);
+            filePaths.push_back(filePathString);
+        } catch (std::exception &e2) {
+            stringstream ss;
+            ss << "No filepath was provided.\nEXCEPTION: " << e2.what();
+            logging::ERR(ss.str());
+        }
+    }
+
+  // Determine up-axis
   bool yIsUp = false;
   try {
     // ######### BEGIN Read up axis ###########
@@ -46,31 +64,18 @@ ScenePart *WavefrontObjFileLoader::run() {
     }
   } catch (std::exception &e) {
     stringstream ss;
-    ss << "Failed to read 'up'-axis from scene XML file, assuming 'z' is 'up'.\nC++ Exception: " << e.what();
+    ss  << "Failed to read 'up'-axis from scene XML file.\n"
+        << "Assuming 'z' axis points upwards for scene part \""
+        << filePathString <<"\".\n"
+        << "Set up axis explicitly to silence this warning.\n"
+        << "C++ Exception: " << e.what();
     logging::INFO(ss.str());
   }
   // ######### END Read up axis ###########
 
-  // Determine filepath
-  bool extendedFilePath = false;
-  std::vector<std::string> filePaths(0);
-  try {
-    filePathString = boost::get<string const &>(params["efilepath"]);
-    extendedFilePath = true;
-  } catch (std::exception &e) {
-    try {
-      filePathString = boost::get<string const &>(params["filepath"]);
-      filePaths.push_back(filePathString);
-    } catch (std::exception &e2) {
-      stringstream ss;
-      ss << "No filepath was provided.\nEXCEPTION: " << e2.what();
-      logging::ERR(ss.str());
-    }
-  }
-
   // If extended file path, determine all file paths
-  if (extendedFilePath)
-    filePaths = FileUtils::getFilesByExpression(filePathString);
+  if(extendedFilePath)
+      filePaths = FileUtils::getFilesByExpression(filePathString);
 
   // Load OBJ Cache
   auto &cache = WavefrontObjCache::getInstance();
