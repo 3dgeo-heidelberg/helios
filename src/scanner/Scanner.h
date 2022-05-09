@@ -574,13 +574,13 @@ public:
 	 * @return Pulse frequency (hertz)
 	 * @see Scanner::cfg_setting_pulseFreq_Hz
 	 */
-	inline int getPulseFreq_Hz() {return this->cfg_setting_pulseFreq_Hz;}
+	inline int getPulseFreq_Hz() const {return this->cfg_setting_pulseFreq_Hz;}
     /**
      * @brief Set the pulse frequency
      * @param pulseFreq_Hz New pulse frequency (hertz)
      * @see Scanner::cfg_setting_pulseFreq_Hz
      */
-	void setPulseFreq_Hz(int pulseFreq_Hz);
+	void setPulseFreq_Hz(int const pulseFreq_Hz);
 
 	/**
 	 * @brief Get the pulse length

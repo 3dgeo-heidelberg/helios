@@ -43,7 +43,18 @@ public:
      * @see HeliosDemos::SurveyDemo::SurveyDemo
      */
     DynamicSceneDemo(string const surveyPath, string const assetsPath) :
-        SurveyDemo("Dynamic scene demo", surveyPath, assetsPath)
+        DynamicSceneDemo("Dynamic scene demo", surveyPath, assetsPath)
+    {}
+    /**
+     * @brief Dynamic scene demo constructor
+     * @see HeliosDemos::SurveyDemo::SurveyDemo
+     */
+    DynamicSceneDemo(
+        string const name,
+        string const surveyPath,
+        string const assetsPath
+    ) :
+        SurveyDemo(name, surveyPath, assetsPath)
     {}
     virtual ~DynamicSceneDemo() = default;
 

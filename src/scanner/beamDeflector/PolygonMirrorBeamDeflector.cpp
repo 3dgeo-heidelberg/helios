@@ -49,8 +49,9 @@ void PolygonMirrorBeamDeflector::applySettings(std::shared_ptr<ScannerSettings> 
 
 
     std::stringstream ss;
-    ss << "Applying settings for PolygonMirrorBeamDeflector...";
-    ss << "Vertical angle min/max " << cfg_setting_verticalAngleMin_rad << "/" << cfg_setting_verticalAngleMax_rad;
+    ss  << "Applying settings for PolygonMirrorBeamDeflector...\n";
+    ss  << "Vertical angle min/max " << cfg_setting_verticalAngleMin_rad << "/"
+        << cfg_setting_verticalAngleMax_rad;
 
 
     // if not set, use the ones from the scanAngleEffectiveMax or scanAngle (whichever is lower)

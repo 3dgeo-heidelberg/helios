@@ -553,30 +553,11 @@ std::shared_ptr<Platform> XmlAssetsLoader::createInterpolatedMovingPlatform(){
             if(platform->tdm == nullptr){ // First loaded trajectory
                 if(indices.find(trajectoryPath) != indices.end()){ // XML inds
                     DesignMatrix<double> dm(trajectoryPath);
-                    // TODO Remove section ---
-                    std::cout   << "First DM before swap:\n"
-                                << dm.getX().rows(0, 5)
-                                << std::endl;
-                    // --- TODO Remove section
                     dm.swapColumns(indices[trajectoryPath]);
-                    // TODO Remove section ---
-                    std::cout   << "First DM after swap:\n"
-                                << dm.getX().rows(0, 5)
-                                << std::endl;
-                    // --- TODO Remove section
                     platform->tdm =
                     std::make_shared<TemporalDesignMatrix<double, double>>(
                         dm, 0
                     );
-                    // TODO Remove section ---
-                    std::cout   << "First TDM after swap:\n"
-                                << "\tTIME VECTOR\n"
-                                << platform->tdm->getTimeVector().rows(0, 5)
-                                << "\tDATA MATRIX\n"
-                                << platform->tdm->getX().rows(0, 5)
-                                << std::endl;
-                    // --- TODO Remove section
-                    //std::exit(-1); // TODO Remove
                 }
                 else{ // Trajectory file indices
                     platform->tdm = std::make_shared<

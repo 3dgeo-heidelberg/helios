@@ -2,10 +2,15 @@
 #pragma once
 
 #include <demo/DynamicSceneDemo.h>
-#include <Platform.h>
+#include <visualhelios/VHRaycastingCanvas.h>
+#include <scanner/Scanner.h>
 
-// TODO Rethink : Implement this demo
 namespace HeliosDemos{
+
+using visualhelios::VHRaycastingCanvas;
+
+using std::string;
+using std::shared_ptr;
 
 /**
  * @author Alberto M. Esmoris Pena
@@ -36,7 +41,31 @@ public:
     RaycastingDemo(string const surveyPath, string const assetsPath) :
         DynamicSceneDemo("Raycasting demo", surveyPath, assetsPath)
     {}
-    virtual ~DynamicSceneDemo() = default;
+    virtual ~RaycastingDemo() = default;
+
+    // ***  R U N  *** //
+    // *************** //
+    /**
+     * @see DynamicSceneDemo::run
+     */
+    void run() override;
+
+    // ***   U T I L S   *** //
+    // ********************* //
+    /**
+     * @brief Build a visual Helios ray casting canvas from given survey.
+     *
+     * A ray casting canvas is like a scene canvas but extending it to support
+     *  the rendering of the scanner's rays. Both, dynamic and static scenes
+     *  are supported.
+     *
+     * @param survey Survey which must contain a valid scene to build the
+     *  visual Helios ray casting canvas
+     * @return Built visual helios ray casting canvas
+     */
+    shared_ptr<VHRaycastingCanvas> buildCanvas(
+        shared_ptr<Survey> survey
+    );
 };
 
 }
