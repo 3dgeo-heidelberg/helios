@@ -1,5 +1,7 @@
 #ifdef PCL_BINDING
 
+#pragma once
+
 #include <visualhelios/VHDynCanvas.h>
 #include <visualhelios/adapters/VHStaticObjectAdapter.h>
 

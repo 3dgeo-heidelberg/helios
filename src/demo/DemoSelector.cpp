@@ -6,6 +6,7 @@
 
 #include <demo/SimplePrimitivesDemo.h>
 #include <demo/DynamicSceneDemo.h>
+#include <demo/RaycastingDemo.h>
 
 
 using HeliosDemos::DemoSelector;
@@ -36,8 +37,11 @@ void HeliosDemos::DemoSelector::select(
     if(name == "simple_primitives"){ // Handle simple primitives demo
         HeliosDemos::SimplePrimitivesDemo().run();
     }
-    else if(name == "dynamic_scene"){  // Handle dynamic scene demo
+    else if(name == "dynamic_scene"){ // Handle dynamic scene demo
         HeliosDemos::DynamicSceneDemo(surveyPath, assetsPath).run();
+    }
+    else if(name == "raycasting"){ // Handle ray casting demo
+        HeliosDemos::RaycastingDemo(surveyPath, assetsPath).run();
     }
     else{ // Handle unexpected demo
         stringstream ss;

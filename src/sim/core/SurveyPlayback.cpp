@@ -226,7 +226,7 @@ void SurveyPlayback::onLegComplete() {
 	startNextLeg(false);
 }
 
-void SurveyPlayback::startLeg(unsigned int legIndex, bool manual) {
+void SurveyPlayback::startLeg(unsigned int const legIndex, bool const manual) {
 	if (legIndex < 0 || legIndex >= mSurvey->legs.size()) {
 		return;
 	}

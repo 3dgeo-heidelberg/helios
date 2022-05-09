@@ -556,7 +556,7 @@ std::shared_ptr<Platform> XmlAssetsLoader::createInterpolatedMovingPlatform(){
                     dm.swapColumns(indices[trajectoryPath]);
                     platform->tdm =
                     std::make_shared<TemporalDesignMatrix<double, double>>(
-                        dm, indices[trajectoryPath][0]
+                        dm, 0
                     );
                 }
                 else{ // Trajectory file indices
@@ -640,7 +640,7 @@ std::shared_ptr<Platform> XmlAssetsLoader::createInterpolatedMovingPlatform(){
                     dm.swapColumns(indices[trajectoryPath]);
                     tdm = unique_ptr<TemporalDesignMatrix<double, double>>(
                         new TemporalDesignMatrix<double, double>(
-                            dm, indices[trajectoryPath][0]
+                            dm, 0
                         )
                     );
                 }
