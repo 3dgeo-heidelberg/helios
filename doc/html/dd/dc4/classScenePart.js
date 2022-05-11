@@ -15,7 +15,7 @@ var classScenePart =
     [ "~ScenePart", "dd/dc4/classScenePart.html#aa43c74be32c643475b246e21345c7256", null ],
     [ "addObj", "dd/dc4/classScenePart.html#ad77755e3d5bf661ef5a69ca848de833d", null ],
     [ "computeCentroid", "dd/dc4/classScenePart.html#a8a35be714f874833b84a29841de8fe2b", null ],
-    [ "getAllVertices", "dd/dc4/classScenePart.html#aa17fabe6290c0c01de162457f758833a", null ],
+    [ "getAllVertices", "dd/dc4/classScenePart.html#abd6dca0437c9fb0de5907aa77cf6d700", null ],
     [ "getCentroid", "dd/dc4/classScenePart.html#ac08adff13b3dca6df68d1f6114367d99", null ],
     [ "getId", "dd/dc4/classScenePart.html#a9c2c908872ec82fde8a4885c0e68e933", null ],
     [ "getPrimitives", "dd/dc4/classScenePart.html#aea61ea007cb84871117666b732f7ce64", null ],

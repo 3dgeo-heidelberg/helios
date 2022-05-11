@@ -1,4 +1,4 @@
 <map id="helios::filems::DirectFullWaveformWriteStrategy" name="helios::filems::DirectFullWaveformWriteStrategy">
-<area shape="rect" id="node3" href="$d6/d70/classhelios_1_1filems_1_1ZipFullWaveformWriteStrategy.html" title="Like DirectFullWaveformWriteStrategy but zipping the output. " alt="" coords="500,27,707,69"/>
-<area shape="rect" id="node2" href="$de/dd3/classhelios_1_1filems_1_1WriteStrategy.html" title="helios::filems::WriteStrategy\l\&lt; std::vector\&lt; double \&gt; const\l &amp;, int const, double const,\l double const, glm::dvec3 const\l &amp;, glm::dvec3 const &amp;, long const \&gt;" alt="" coords="5,5,241,91"/>
+<area shape="rect" id="node3" href="$d6/d70/classhelios_1_1filems_1_1ZipFullWaveformWriteStrategy.html" title="Like DirectFullWaveformWriteStrategy but zipping the output. " alt="" coords="5,184,212,225"/>
+<area shape="rect" id="node2" href="$de/dd3/classhelios_1_1filems_1_1WriteStrategy.html" title="helios::filems::WriteStrategy\l\&lt; FullWaveform const &amp;\&gt;" alt="" coords="15,5,202,47"/>
 </map>
