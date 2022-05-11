@@ -8,7 +8,7 @@ to understand how it works and to detect bugs easily.
 <span style="color: red;"><b>WARNING!</b></span> *The debugging tools are openly
 provided to anyone according to the open access and free software nature of
 HELIOS++. However, the development team is not providing support for users
-who are using these tools. We are also not developing debug tools on demand.
+who are using these tools. We are neither developing debugging tools on demand.
 Any user is welcome to use our debugging tools. But keep in mind that you are
 doing it on your own.*
 
