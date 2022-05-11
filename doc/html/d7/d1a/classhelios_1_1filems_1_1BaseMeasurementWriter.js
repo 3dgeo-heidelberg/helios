@@ -6,6 +6,7 @@ var classhelios_1_1filems_1_1BaseMeasurementWriter =
     [ "clearPointcloudFile", "d7/d1a/classhelios_1_1filems_1_1BaseMeasurementWriter.html#a801102930e6917574e10b9b973edac87", null ],
     [ "configure", "d7/d1a/classhelios_1_1filems_1_1BaseMeasurementWriter.html#a1e67c417b604c11d561d58c5f1eb8c8d", null ],
     [ "getScanner", "d7/d1a/classhelios_1_1filems_1_1BaseMeasurementWriter.html#a6682d58f4e3d9d3e2e991d42ab02f7b8", null ],
+    [ "getShift", "d7/d1a/classhelios_1_1filems_1_1BaseMeasurementWriter.html#a6c2a3b352057fe1c13a83faaadb8d436", null ],
     [ "makeWriter", "d7/d1a/classhelios_1_1filems_1_1BaseMeasurementWriter.html#afdfe8b144e9fedfd67a56ca6a9603559", null ],
     [ "setOutputFilePath", "d7/d1a/classhelios_1_1filems_1_1BaseMeasurementWriter.html#ac7d5e0d3f0259fc05a66f93eb61d438d", null ],
     [ "setScanner", "d7/d1a/classhelios_1_1filems_1_1BaseMeasurementWriter.html#a5533c094b289284e79e21e66ac0e6cba", null ],

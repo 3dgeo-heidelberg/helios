@@ -10,6 +10,7 @@ var searchData=
   ['nextsharedsubtaskkey',['nextSharedSubTaskKey',['../da/d29/classSharedTaskSequencer.html#a517193fa011117446de166be921befb9',1,'SharedTaskSequencer']]],
   ['nextwaypoint',['nextWaypoint',['../df/d1e/classPlatform.html#aa754cef7d09478c19b37232944316236',1,'Platform']]],
   ['node',['node',['../d5/d80/classSimpleKDTreeBuildChildrenNodesSubTask.html#ad1270fb56b9b5c668ce68921b635e932',1,'SimpleKDTreeBuildChildrenNodesSubTask::node()'],['../de/d22/classIterableTreeNode.html#a1fcdfd63d558568ea9cc611b577d04aa',1,'IterableTreeNode::node()']]],
+  ['nonreturningraycolor',['nonReturningRayColor',['../db/d65/classvisualhelios_1_1VHScannerAdapter.html#a060a7ba9fabdd59452e8cbbe107eb9ae',1,'visualhelios::VHScannerAdapter']]],
   ['norm',['norm',['../da/d52/classSurfaceInspector_1_1maths_1_1Histogram.html#ac4d0e7dbd91a6aaca66f4b106cdce92e',1,'SurfaceInspector::maths::Histogram']]],
   ['normal',['normal',['../d2/da0/classVertex.html#ac891db9159da8423d25153b41e099afc',1,'Vertex']]],
   ['normaldefcolor',['normalDefColor',['../df/dd2/classvisualhelios_1_1VHNormalsCanvas.html#ab4f8e866b39464e087ef81e25f36b362',1,'visualhelios::VHNormalsCanvas']]],

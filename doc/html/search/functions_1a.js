@@ -7,5 +7,6 @@ var searchData=
   ['zipsyncfiletrajectorywriter',['ZipSyncFileTrajectoryWriter',['../d8/d74/classhelios_1_1filems_1_1ZipSyncFileTrajectoryWriter.html#aaaf4e27026443b6237ee6044fb4d1c78',1,'helios::filems::ZipSyncFileTrajectoryWriter']]],
   ['zipsyncfilewriter',['ZipSyncFileWriter',['../d9/d45/classhelios_1_1filems_1_1ZipSyncFileWriter.html#a924e38e855a25bb754db1f86a09a439e',1,'helios::filems::ZipSyncFileWriter']]],
   ['ziptrajectorywritestrategy',['ZipTrajectoryWriteStrategy',['../d3/d91/classhelios_1_1filems_1_1ZipTrajectoryWriteStrategy.html#aea404be4e14eb7d7fbd76605da7b7ec8',1,'helios::filems::ZipTrajectoryWriteStrategy']]],
+  ['zipvectorialsyncfilefullwaveformwriter',['ZipVectorialSyncFileFullWaveformWriter',['../de/d98/classhelios_1_1filems_1_1ZipVectorialSyncFileFullWaveformWriter.html#a4327799db0383740746ea47bcc2f32ed',1,'helios::filems::ZipVectorialSyncFileFullWaveformWriter']]],
   ['zipvectorialsyncfilemeasurementwriter',['ZipVectorialSyncFileMeasurementWriter',['../d8/d56/classhelios_1_1filems_1_1ZipVectorialSyncFileMeasurementWriter.html#a242a2ae282559262b46fcc1a2f4fccd4',1,'helios::filems::ZipVectorialSyncFileMeasurementWriter']]]
 ];

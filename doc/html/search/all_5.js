@@ -6,7 +6,7 @@ var searchData=
   ['eggasset',['EggAsset',['../da/dea/classEggAsset.html',1,'EggAsset&lt; FullClass, HatchArgs &gt;'],['../da/dea/classEggAsset.html#afefee62f20a9af8cf6d1a5359620aeeb',1,'EggAsset::EggAsset()']]],
   ['eggasset_3c_20interpolatedmovingplatform_2c_20simulationsteploop_20_26_20_3e',['EggAsset&lt; InterpolatedMovingPlatform, SimulationStepLoop &amp; &gt;',['../da/dea/classEggAsset.html',1,'']]],
   ['elapsedlength',['elapsedLength',['../d6/da1/classSurveyPlayback.html#a13f60c6bbffd7d924886fad2f5f39aae',1,'SurveyPlayback']]],
-  ['elapsedtime_5fms',['elapsedTime_ms',['../d6/da1/classSurveyPlayback.html#a0a961564e496e3a18c89c12734112fe5',1,'SurveyPlayback']]],
+  ['elapsedtime_5fns',['elapsedTime_ns',['../d6/da1/classSurveyPlayback.html#a65085c2248ee39af183e9e839fa15789',1,'SurveyPlayback']]],
   ['emplace',['emplace',['../d4/d31/classScanningStrip.html#a67ab61e0a7fff3530dc953bae0846cc0',1,'ScanningStrip::emplace(int const serialId, Leg *leg)'],['../d4/d31/classScanningStrip.html#af8bb55ae2bd0f934b4da67e8ebad5d2e',1,'ScanningStrip::emplace(Leg *leg)']]],
   ['empty',['empty',['../d8/d78/classWavefrontObjCache.html#ae0769e1911c305d59e77cab6cc694946',1,'WavefrontObjCache']]],
   ['emptyclone',['emptyClone',['../d5/d2f/classBuddingTaskDropper.html#a413aab607239eb3215733141842b120f',1,'BuddingTaskDropper::emptyClone()'],['../da/d8d/classTaskDropper.html#ae881d4c8f278850343a476dfb2908583',1,'TaskDropper::emptyClone()']]],

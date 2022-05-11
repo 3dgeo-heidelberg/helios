@@ -123,6 +123,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a748bdf72dddd3ab52bc6784f536d1927"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d91/classXmlSceneLoader.html#a748bdf72dddd3ab52bc6784f536d1927">loadScenePartId</a> (tinyxml2::XMLElement *scenePartNode, int partIndex, shared_ptr&lt; <a class="el" href="../../dd/dc4/classScenePart.html">ScenePart</a> &gt; scenePart)</td></tr>
 <tr class="memdesc:a748bdf72dddd3ab52bc6784f536d1927"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load the scene part identifier.  <a href="#a748bdf72dddd3ab52bc6784f536d1927">More...</a><br /></td></tr>
 <tr class="separator:a748bdf72dddd3ab52bc6784f536d1927"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a071d278c458b0abbc31d457a205de889"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d91/classXmlSceneLoader.html#a071d278c458b0abbc31d457a205de889">validateScenePart</a> (shared_ptr&lt; <a class="el" href="../../dd/dc4/classScenePart.html">ScenePart</a> &gt; scenePart, tinyxml2::XMLElement *scenePartNode)</td></tr>
+<tr class="memdesc:a071d278c458b0abbc31d457a205de889"><td class="mdescLeft">&#160;</td><td class="mdescRight">Validate the given loaded scene part.  <a href="#a071d278c458b0abbc31d457a205de889">More...</a><br /></td></tr>
+<tr class="separator:a071d278c458b0abbc31d457a205de889"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4f662808bd8f0e04d2b087cfc8061e07"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d91/classXmlSceneLoader.html#a4f662808bd8f0e04d2b087cfc8061e07">digestScenePart</a> (shared_ptr&lt; <a class="el" href="../../dd/dc4/classScenePart.html">ScenePart</a> &gt; &amp;scenePart, std::shared_ptr&lt; <a class="el" href="../../dd/d34/classStaticScene.html">StaticScene</a> &gt; &amp;scene, bool holistic, bool splitPart, bool dynObject, int &amp;partIndex)</td></tr>
 <tr class="memdesc:a4f662808bd8f0e04d2b087cfc8061e07"><td class="mdescLeft">&#160;</td><td class="mdescRight">Apply final processings to the built scene part so it is fully integrated in the scene and totally configured.  <a href="#a4f662808bd8f0e04d2b087cfc8061e07">More...</a><br /></td></tr>
 <tr class="separator:a4f662808bd8f0e04d2b087cfc8061e07"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -523,6 +526,44 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="..
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="../../dd/d34/classStaticScene.html" title="Static scene basic implementation. ">StaticScene</a> </dd>
 <dd>
 <a class="el" href="../../de/d74/classDynScene.html" title="Dynamic scene base implementation. ">DynScene</a> </dd></dl>
+
+</div>
+</div>
+<a id="a071d278c458b0abbc31d457a205de889"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a071d278c458b0abbc31d457a205de889">&#9670;&nbsp;</a></span>validateScenePart()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool XmlSceneLoader::validateScenePart </td>
+          <td>(</td>
+          <td class="paramtype">shared_ptr&lt; <a class="el" href="../../dd/dc4/classScenePart.html">ScenePart</a> &gt;&#160;</td>
+          <td class="paramname"><em>scenePart</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">tinyxml2::XMLElement *&#160;</td>
+          <td class="paramname"><em>scenePartNode</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Validate the given loaded scene part. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">scenePartNode</td><td>XML part node corresponding to the scene part being validated </td></tr>
+    <tr><td class="paramname">scenePart</td><td>The scene part to be validated </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>True if the given <a class="el" href="../../dd/dc4/classScenePart.html" title="Class representing a scene part. ">ScenePart</a> is valid, false otherwise </dd></dl>
 
 </div>
 </div>

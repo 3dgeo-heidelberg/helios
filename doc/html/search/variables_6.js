@@ -26,11 +26,13 @@ var searchData=
   ['frontierderivatives',['frontierDerivatives',['../dc/d97/classInterpolatedMovingPlatform.html#a2a9dbe1566975f02ab87deb6f89c94eb',1,'InterpolatedMovingPlatform']]],
   ['frontiervalues',['frontierValues',['../dc/d97/classInterpolatedMovingPlatform.html#a8f4a1f5b9fd237072894e1a34d1b2612',1,'InterpolatedMovingPlatform']]],
   ['fsahkdtf',['fsahkdtf',['../d1/ddc/classFastSAHKDTreeGeometricStrategy.html#afcae3fea433e744394a4e7c33e6ab6fb',1,'FastSAHKDTreeGeometricStrategy']]],
-  ['fullwaveindex',['fullwaveIndex',['../db/d2e/classMeasurement.html#a73b5258a21a5220e345597fbe2df8514',1,'Measurement']]],
+  ['fullwave',['fullwave',['../dc/d62/classFullWaveform.html#a0c3b39dde7c559bdf273a229a989a10e',1,'FullWaveform']]],
+  ['fullwaveindex',['fullwaveIndex',['../dc/d62/classFullWaveform.html#a847735152a3f897efbd44ce95fd2dc0b',1,'FullWaveform::fullwaveIndex()'],['../db/d2e/classMeasurement.html#a73b5258a21a5220e345597fbe2df8514',1,'Measurement::fullwaveIndex()']]],
   ['fullwavenoise',['fullWaveNoise',['../dc/d42/classScanner.html#a2a8724797e67174529b67d2a5c00dad3',1,'Scanner']]],
   ['fwdetector',['fwDetector',['../db/da6/classFullWaveformPulseRunnable.html#a6867cb16a9b1ede1d9bff80f2626c10d',1,'FullWaveformPulseRunnable']]],
   ['fwf_5fsettings',['FWF_settings',['../dc/d42/classScanner.html#a33b2ae27e64bc1f870580abc2ac5e645',1,'Scanner']]],
+  ['fwfyielder',['fwfYielder',['../d8/d6b/classAbstractDetector.html#ab7f2637a41f0400042df5b9d54cca9f5',1,'AbstractDetector']]],
   ['fwiattridx',['fwiAttrIdx',['../d7/d5b/classhelios_1_1filems_1_1LasSyncFileWriter.html#ab1e5e09facf857e5004d04057fb98828',1,'helios::filems::LasSyncFileWriter']]],
   ['fwiattrstart',['fwiAttrStart',['../d7/d5b/classhelios_1_1filems_1_1LasSyncFileWriter.html#a2000429cc6af539d97a515e55f67c370',1,'helios::filems::LasSyncFileWriter::fwiAttrStart()'],['../da/d35/classhelios_1_1filems_1_1LasMeasurementWriteStrategy.html#acad38c16b86d7b472103f10557e36179',1,'helios::filems::LasMeasurementWriteStrategy::fwiAttrStart()']]],
-  ['fww',['fww',['../df/d31/classhelios_1_1filems_1_1FMSWriteFacade.html#aee1b837a01ca9b8de3365fdf491bc969',1,'helios::filems::FMSWriteFacade']]]
+  ['fww',['fww',['../df/d31/classhelios_1_1filems_1_1FMSWriteFacade.html#a933d88b250f48bc5103fc045e4702b5c',1,'helios::filems::FMSWriteFacade']]]
 ];

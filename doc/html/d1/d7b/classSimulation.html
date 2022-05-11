@@ -157,7 +157,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../.
 <tr class="memdesc:a171b98c3d0a3a28ae151f7b716537717"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle simulation shutdown. <br /></td></tr>
 <tr class="separator:a171b98c3d0a3a28ae151f7b716537717"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afb4772514f61bdcd00f977106e8833ce"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d7b/classSimulation.html#afb4772514f61bdcd00f977106e8833ce">calcCurrentGpsTime</a> ()</td></tr>
-<tr class="memdesc:afb4772514f61bdcd00f977106e8833ce"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the current GPS time (milliseconds)  <a href="#afb4772514f61bdcd00f977106e8833ce">More...</a><br /></td></tr>
+<tr class="memdesc:afb4772514f61bdcd00f977106e8833ce"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the current GPS time (nanoseconds)  <a href="#afb4772514f61bdcd00f977106e8833ce">More...</a><br /></td></tr>
 <tr class="separator:afb4772514f61bdcd00f977106e8833ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0ba648397480bb134a0bfbbda499914d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d7b/classSimulation.html#a0ba648397480bb134a0bfbbda499914d">setSimSpeedFactor</a> (double factor)</td></tr>
 <tr class="memdesc:a0ba648397480bb134a0bfbbda499914d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the simulation speed factor.  <a href="#a0ba648397480bb134a0bfbbda499914d">More...</a><br /></td></tr>
@@ -260,14 +260,17 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../.
 bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d7b/classSimulation.html#a789ad5755f19fa068bf3317afc96209a">mPaused</a> = false</td></tr>
 <tr class="memdesc:a789ad5755f19fa068bf3317afc96209a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flag specifying if the simulation has been paused (true) or not (false) <br /></td></tr>
 <tr class="separator:a789ad5755f19fa068bf3317afc96209a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abb93b11da9a5fe48f3b4d42ada8ba5d1"><td class="memItemLeft" align="right" valign="top"><a id="abb93b11da9a5fe48f3b4d42ada8ba5d1"></a>
-long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d7b/classSimulation.html#abb93b11da9a5fe48f3b4d42ada8ba5d1">timeStart_ms</a> = 0</td></tr>
-<tr class="memdesc:abb93b11da9a5fe48f3b4d42ada8ba5d1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Time corresponding to simulation start (milliseconds) <br /></td></tr>
-<tr class="separator:abb93b11da9a5fe48f3b4d42ada8ba5d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1afafff95801808cecac3eda24bcefbc"><td class="memItemLeft" align="right" valign="top"><a id="a1afafff95801808cecac3eda24bcefbc"></a>
-double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d7b/classSimulation.html#a1afafff95801808cecac3eda24bcefbc">currentGpsTime_ms</a> = 0</td></tr>
-<tr class="memdesc:a1afafff95801808cecac3eda24bcefbc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Time corresponding to simulation start (currentGpsTime) <br /></td></tr>
-<tr class="separator:a1afafff95801808cecac3eda24bcefbc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5f7bd0667056d843937ad1895170bf15"><td class="memItemLeft" align="right" valign="top"><a id="a5f7bd0667056d843937ad1895170bf15"></a>
+long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d7b/classSimulation.html#a5f7bd0667056d843937ad1895170bf15">timeStart_ns</a> = 0</td></tr>
+<tr class="memdesc:a5f7bd0667056d843937ad1895170bf15"><td class="mdescLeft">&#160;</td><td class="mdescRight">Time corresponding to simulation start (nanoseconds) <br /></td></tr>
+<tr class="separator:a5f7bd0667056d843937ad1895170bf15"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a00ec849a21bd20bf73309af0356c5cff"><td class="memItemLeft" align="right" valign="top"><a id="a00ec849a21bd20bf73309af0356c5cff"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d7b/classSimulation.html#a00ec849a21bd20bf73309af0356c5cff">currentGpsTime_ns</a> = 0</td></tr>
+<tr class="memdesc:a00ec849a21bd20bf73309af0356c5cff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Time corresponding to simulation start (currentGpsTime in nanoseconds) <br /></td></tr>
+<tr class="separator:a00ec849a21bd20bf73309af0356c5cff"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab414e1dd7d0923ecc66c56023c179c3f"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d7b/classSimulation.html#ab414e1dd7d0923ecc66c56023c179c3f">stepGpsTime_ns</a> = 0</td></tr>
+<tr class="memdesc:ab414e1dd7d0923ecc66c56023c179c3f"><td class="mdescLeft">&#160;</td><td class="mdescRight">The time step for GPS time (in nanoseconds)  <a href="#ab414e1dd7d0923ecc66c56023c179c3f">More...</a><br /></td></tr>
+<tr class="separator:ab414e1dd7d0923ecc66c56023c179c3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac0b08636aea9fd4109a9e06178537007"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d7b/classSimulation.html#ac0b08636aea9fd4109a9e06178537007">fixedGpsTimeStart</a> = &quot;&quot;</td></tr>
 <tr class="memdesc:ac0b08636aea9fd4109a9e06178537007"><td class="mdescLeft">&#160;</td><td class="mdescRight">Given fixed time start for GPS time as a string.  <a href="#ac0b08636aea9fd4109a9e06178537007">More...</a><br /></td></tr>
 <tr class="separator:ac0b08636aea9fd4109a9e06178537007"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -355,8 +358,8 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>SimulationReporter</
       </table>
 </div><div class="memdoc">
 
-<p>Compute the current GPS time (milliseconds) </p>
-<dl class="section return"><dt>Returns</dt><dd>Current GPS time (milliseconds) </dd></dl>
+<p>Compute the current GPS time (nanoseconds) </p>
+<dl class="section return"><dt>Returns</dt><dd>Current GPS time (nanoseconds) </dd></dl>
 
 </div>
 </div>
@@ -907,6 +910,31 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>SimulationReporter</
 
 <p>The report to generate reports about simulation. </p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="../../da/dd6/classSimulationReporter.html" title="Class to handle reports related to simulation. ">SimulationReporter</a> </dd></dl>
+
+</div>
+</div>
+<a id="ab414e1dd7d0923ecc66c56023c179c3f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab414e1dd7d0923ecc66c56023c179c3f">&#9670;&nbsp;</a></span>stepGpsTime_ns</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double Simulation::stepGpsTime_ns = 0</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The time step for GPS time (in nanoseconds) </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d1/d7b/classSimulation.html#a00ec849a21bd20bf73309af0356c5cff" title="Time corresponding to simulation start (currentGpsTime in nanoseconds) ">Simulation::currentGpsTime_ns</a> </dd></dl>
 
 </div>
 </div>

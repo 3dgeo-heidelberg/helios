@@ -16,7 +16,7 @@ var searchData=
   ['abstractdesignmatrix_3c_20vartype_20_3e',['AbstractDesignMatrix&lt; VarType &gt;',['../da/d40/classfluxionum_1_1AbstractDesignMatrix.html',1,'fluxionum']]],
   ['abstractdetector',['AbstractDetector',['../d8/d6b/classAbstractDetector.html',1,'AbstractDetector'],['../d8/d6b/classAbstractDetector.html#a8745332e83cbbe5fafebeafa5544a01c',1,'AbstractDetector::AbstractDetector()']]],
   ['abstractgeometryfilter',['AbstractGeometryFilter',['../d6/dd2/classAbstractGeometryFilter.html',1,'AbstractGeometryFilter'],['../d6/dd2/classAbstractGeometryFilter.html#aeed873e49014921f65677c5fa2e31241',1,'AbstractGeometryFilter::AbstractGeometryFilter()']]],
-  ['abstractpulserunnable',['AbstractPulseRunnable',['../d6/d9e/classAbstractPulseRunnable.html',1,'AbstractPulseRunnable'],['../d6/d9e/classAbstractPulseRunnable.html#a9ebe8a4afc41a1b0e28f86885c547965',1,'AbstractPulseRunnable::AbstractPulseRunnable()']]],
+  ['abstractpulserunnable',['AbstractPulseRunnable',['../d6/d9e/classAbstractPulseRunnable.html',1,'AbstractPulseRunnable'],['../d6/d9e/classAbstractPulseRunnable.html#a9f9194d9037bfa0b0aa4500a8fd83b19',1,'AbstractPulseRunnable::AbstractPulseRunnable()']]],
   ['acceleratebeamangle',['accelerateBeamAngle',['../d4/dfd/classOscillatingMirrorBeamDeflector.html#a3244011c435c944bb16f80f0ce57bcb0',1,'OscillatingMirrorBeamDeflector']]],
   ['active',['active',['../d0/d23/classScannerSettings.html#ab7ab44cae813ced7ecf252228beee109',1,'ScannerSettings']]],
   ['acuteangle',['acuteAngle',['../d1/dd3/classSurfaceInspector_1_1maths_1_1Vector.html#a7cb1e555b5ada08fb1f8a223c2f67b57',1,'SurfaceInspector::maths::Vector']]],
