@@ -51,34 +51,19 @@ shared_ptr<AABB> AABB::getForPrimitives(std::vector<Primitive*> & primitives) {
 	double maxZ = numeric_limits<double>::lowest();
 
 	for (Primitive *p : primitives) {
-
-		AABB* box = p->getAABB();
-
-		// Find minimum:
-		if (box->getMin().x < minX) {
-			minX = box->getMin().x;
-		}
-
-		if (box->getMin().y < minY) {
-			minY = box->getMin().y;
-		}
-
-		if (box->getMin().z < minZ) {
-			minZ = box->getMin().z;
-		}
-
-		// Find maximum:
-		if (box->getMax().x > maxX) {
-			maxX = box->getMax().x;
-		}
-
-		if (box->getMax().y > maxY) {
-			maxY = box->getMax().y;
-		}
-
-		if (box->getMax().z > maxZ) {
-			maxZ = box->getMax().z;
-		}
+	    Vertex *v = p->getVertices();
+	    size_t const numVertices = p->getNumVertices();
+	    for(size_t i = 0 ; i < numVertices ; ++i){
+	        double const vx = v[i].pos.x;
+            double const vy = v[i].pos.y;
+            double const vz = v[i].pos.z;
+            if(vx < minX) minX = vx;
+            if(vx > maxX) maxX = vx;
+            if(vy < minY) minY = vy;
+            if(vy > maxY) maxY = vy;
+            if(vz < minZ) minZ = vz;
+            if(vz > maxZ) maxZ = vz;
+	    }
 	}
 
 	glm::dvec3 min = glm::dvec3(minX, minY, minZ);
