@@ -69,6 +69,10 @@ int main(int argc, char** argv) {
 #ifdef PCL_BINDING
         // Demo execution branch
         else if(demo != "NULL"){
+            // Load drivers
+            GDALAllRegister();  // Load All known GDAL Drivers
+
+            // Run demo
             HeliosDemos::DemoSelector::getInstance()->select(
                 demo,
                 demoSurveyPath,
