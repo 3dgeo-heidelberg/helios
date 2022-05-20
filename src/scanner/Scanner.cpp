@@ -456,7 +456,7 @@ void Scanner::handleTrajectoryOutput(double const currentGpsTime){
     lastTrajectoryTime = currentGpsTime;
 
     // Compute shifted position
-    glm::dvec3 pos = platform->position + platform->scene->getShift();
+    glm::dvec3 const pos = platform->position + platform->scene->getShift();
 
     // Obtain roll, pitch and yaw
     double roll, pitch, yaw;
