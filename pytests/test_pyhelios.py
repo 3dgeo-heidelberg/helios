@@ -19,6 +19,8 @@ HELIOS_EXE = str(Path('run') / 'helios')
 if sys.platform == "win32":
     HELIOS_EXE += ".exe"
 WORKING_DIR = str(Path(__file__).parent.parent.absolute())
+sys.path.append(WORKING_DIR)
+import pyhelios
 
 
 def find_scene(survey_file):
@@ -29,8 +31,6 @@ def find_scene(survey_file):
 @pytest.fixture(scope="session")
 def test_sim():
     def create_test_sim(survey_path):
-        sys.path.append(WORKING_DIR)
-        import pyhelios
         pyhelios.loggingSilent()
         from pyhelios import SimulationBuilder
         simB = SimulationBuilder(
@@ -87,6 +87,22 @@ def test_templates(test_sim):
     assert ps_templ.movePerSec == 30
 
 
+def test_scanner(test_sim):
+    path_to_survey = Path('data') / 'test' / 'als_hd_demo_tiff_min.xml'
+    sim = test_sim(path_to_survey)
+    scanner = sim.sim.getScanner()
+    assert scanner.deviceId == 'leica_als50-ii'
+    assert scanner.averagePower == 4.0
+    assert scanner.beamDivergence == 0.00022
+    assert scanner.wavelength * 1000000000 == 1064  # has to be converted from m to nm
+    assert scanner.visibility == 23.0
+    assert scanner.numRays == 19  # for default beamSampleQuality of 3
+    assert scanner.pulseLength_ns == 10.0
+    assert list(scanner.getSupportedPulseFrequencies()) == [20000, 60000, 150000]
+    assert scanner.toString() == 'Scanner: leica_als50-ii Power: 4.000000 W Divergence: 0.220000 mrad ' \
+                                 'Wavelength: 1064 nm Visibility: 23.000000 km'
+
+
 def test_detector(test_sim):
     path_to_survey = Path('data') / 'test' / 'als_hd_demo_tiff_min.xml'
     sim = test_sim(path_to_survey)
@@ -100,3 +116,29 @@ def test_detector(test_sim):
     scene_file = find_scene(path_to_survey)
     if os.path.isfile(scene_file):
         os.remove(scene_file)
+
+
+def test_output():
+    from pyhelios import SimulationBuilder
+    survey_path = Path('data') / 'test' / 'als_hd_demo_tiff_min.xml'
+    pyhelios.setDefaultRandomnessGeneratorSeed("43")
+    simB = SimulationBuilder(
+        surveyPath=str(survey_path.absolute()),
+        assetsDir=WORKING_DIR + os.sep + 'assets' + os.sep,
+        outputDir=WORKING_DIR + os.sep + 'output' + os.sep,
+    )
+    simB.setLasOutput(False)
+    simB.setRebuildScene(True)
+    simB.setZipOutput(True)
+    simB.setCallbackFrequency(100)
+    simB.setNumThreads(1)
+    simB.setKDTJobs(1)
+
+    sim = simB.build()
+
+    sim.start()
+    output = sim.join()
+    measurements_array, trajectory_array = pyhelios.outputToNumpy(output)
+    np.testing.assert_allclose(measurements_array[0, :3], np.array([474500.3, 5473529.0, 106.0196]), rtol=0.000001)
+    assert measurements_array.shape == (2433, 17)
+    assert trajectory_array.shape == (9, 7)
