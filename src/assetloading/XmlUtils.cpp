@@ -116,7 +116,7 @@ Rotation XmlUtils::createRotationFromXml(tinyxml2::XMLElement* rotGroupNode){
             if (globalRotation)
                 r = r2.applyTo(r); // Global rotation
             else
-                    r = r.applyTo(r2); // Local rotation
+                r = r.applyTo(r2); // Local rotation
         }
 
         rotNodes = rotNodes->NextSiblingElement("rot");

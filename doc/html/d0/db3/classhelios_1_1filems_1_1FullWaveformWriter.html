@@ -103,7 +103,8 @@ Inheritance diagram for helios::filems::FullWaveformWriter:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../da/db4/classhelios_1_1filems_1_1FullWaveformWriter__inherit__graph.png" border="0" usemap="#helios_1_1filems_1_1FullWaveformWriter_inherit__map" alt="Inheritance graph"/></div>
 <map name="helios_1_1filems_1_1FullWaveformWriter_inherit__map" id="helios_1_1filems_1_1FullWaveformWriter_inherit__map">
-<area shape="rect" id="node2" href="../../d1/d3b/classhelios_1_1filems_1_1HeliosWriter.html" title="helios::filems::HeliosWriter\l\&lt; std::vector\&lt; double \&gt; const\l &amp;, int const, double const,\l double const, glm::dvec3 const\l &amp;, glm::dvec3 const &amp;, long const \&gt;" alt="" coords="5,5,241,91"/>
+<area shape="rect" id="node2" href="../../df/dfa/classhelios_1_1filems_1_1BaseFullWaveformWriter.html" title="helios::filems::BaseFull\lWaveformWriter\&lt; FullWaveform\l const &amp;\&gt;" alt="" coords="5,95,216,151"/>
+<area shape="rect" id="node3" href="../../d1/d3b/classhelios_1_1filems_1_1HeliosWriter.html" title="helios::filems::HeliosWriter\l\&lt; WriteArgs ... \&gt;" alt="" coords="21,5,200,47"/>
 </map>
 <center><span class="legend">[<a target="top" href="../../graph_legend.html">legend</a>]</span></center></div>
 <div class="dynheader">
@@ -111,7 +112,8 @@ Collaboration diagram for helios::filems::FullWaveformWriter:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../d3/d96/classhelios_1_1filems_1_1FullWaveformWriter__coll__graph.png" border="0" usemap="#helios_1_1filems_1_1FullWaveformWriter_coll__map" alt="Collaboration graph"/></div>
 <map name="helios_1_1filems_1_1FullWaveformWriter_coll__map" id="helios_1_1filems_1_1FullWaveformWriter_coll__map">
-<area shape="rect" id="node2" href="../../d1/d3b/classhelios_1_1filems_1_1HeliosWriter.html" title="helios::filems::HeliosWriter\l\&lt; std::vector\&lt; double \&gt; const\l &amp;, int const, double const,\l double const, glm::dvec3 const\l &amp;, glm::dvec3 const &amp;, long const \&gt;" alt="" coords="237,5,473,91"/>
+<area shape="rect" id="node2" href="../../df/dfa/classhelios_1_1filems_1_1BaseFullWaveformWriter.html" title="helios::filems::BaseFull\lWaveformWriter\&lt; FullWaveform\l const &amp;\&gt;" alt="" coords="508,68,719,124"/>
+<area shape="rect" id="node3" href="../../d1/d3b/classhelios_1_1filems_1_1HeliosWriter.html" title="helios::filems::HeliosWriter\l\&lt; WriteArgs ... \&gt;" alt="" coords="237,13,416,54"/>
 </map>
 <center><span class="legend">[<a target="top" href="../../graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -121,25 +123,33 @@ Public Member Functions</h2></td></tr>
 &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/db3/classhelios_1_1filems_1_1FullWaveformWriter.html#aeaba96fcc5c451400797b4e9c2e7bb5e">FullWaveformWriter</a> ()=default</td></tr>
 <tr class="memdesc:aeaba96fcc5c451400797b4e9c2e7bb5e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor for full waveform writer. <br /></td></tr>
 <tr class="separator:aeaba96fcc5c451400797b4e9c2e7bb5e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1835ac0852b7c00dfdef2b58a6cbc885"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/db3/classhelios_1_1filems_1_1FullWaveformWriter.html#a1835ac0852b7c00dfdef2b58a6cbc885">configure</a> (string const &amp;parent, string const &amp;prefix, bool const computeWaveform)</td></tr>
-<tr class="memdesc:a1835ac0852b7c00dfdef2b58a6cbc885"><td class="mdescLeft">&#160;</td><td class="mdescRight">Configure the output path for the full waveform writer.  <a href="#a1835ac0852b7c00dfdef2b58a6cbc885">More...</a><br /></td></tr>
-<tr class="separator:a1835ac0852b7c00dfdef2b58a6cbc885"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8e8249828a904d76bb1234d1b85006c1"><td class="memItemLeft" align="right" valign="top"><a id="a8e8249828a904d76bb1234d1b85006c1"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/db3/classhelios_1_1filems_1_1FullWaveformWriter.html#a8e8249828a904d76bb1234d1b85006c1">writeFullWaveform</a> (vector&lt; double &gt; const &amp;fullwave, int const fullwaveIndex, double const minTime, double const maxTime, glm::dvec3 const &amp;beamOrigin, glm::dvec3 const &amp;beamDir, double const gpsTime)</td></tr>
-<tr class="memdesc:a8e8249828a904d76bb1234d1b85006c1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Write full waveform data. <br /></td></tr>
-<tr class="separator:a8e8249828a904d76bb1234d1b85006c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1586dc7de1692d87d2840a1757b18186"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/db3/classhelios_1_1filems_1_1FullWaveformWriter.html#a1586dc7de1692d87d2840a1757b18186">writeFullWaveformUnsafe</a> (vector&lt; double &gt; const &amp;fullwave, int const fullwaveIndex, double const minTime, double const maxTime, glm::dvec3 const &amp;beamOrigin, glm::dvec3 const &amp;beamDir, double const gpsTime) const</td></tr>
-<tr class="memdesc:a1586dc7de1692d87d2840a1757b18186"><td class="mdescLeft">&#160;</td><td class="mdescRight">Like <a class="el" href="../../d0/db3/classhelios_1_1filems_1_1FullWaveformWriter.html#a8e8249828a904d76bb1234d1b85006c1" title="Write full waveform data. ">filems::FullWaveformWriter::writeFullWaveform</a> but faster because there is no validation.  <a href="#a1586dc7de1692d87d2840a1757b18186">More...</a><br /></td></tr>
-<tr class="separator:a1586dc7de1692d87d2840a1757b18186"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a77cf2830f11d50f2beb7fddc1b150539"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/db3/classhelios_1_1filems_1_1FullWaveformWriter.html#a77cf2830f11d50f2beb7fddc1b150539">setOutputFilePath</a> (string const &amp;path)</td></tr>
-<tr class="memdesc:a77cf2830f11d50f2beb7fddc1b150539"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the path to output file.  <a href="#a77cf2830f11d50f2beb7fddc1b150539">More...</a><br /></td></tr>
-<tr class="separator:a77cf2830f11d50f2beb7fddc1b150539"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acc3f51d30f436c89e2452674e00a0475"><td class="memItemLeft" align="right" valign="top">fs::path&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/db3/classhelios_1_1filems_1_1FullWaveformWriter.html#acc3f51d30f436c89e2452674e00a0475">getOutputFilePath</a> () const</td></tr>
-<tr class="memdesc:acc3f51d30f436c89e2452674e00a0475"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the path to the output file.  <a href="#acc3f51d30f436c89e2452674e00a0475">More...</a><br /></td></tr>
-<tr class="separator:acc3f51d30f436c89e2452674e00a0475"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a80a54585f9b3397b2e86901e3637cd68"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/db3/classhelios_1_1filems_1_1FullWaveformWriter.html#a80a54585f9b3397b2e86901e3637cd68">getOutputPath</a> () const</td></tr>
-<tr class="separator:a80a54585f9b3397b2e86901e3637cd68"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pub_methods_classhelios_1_1filems_1_1HeliosWriter"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classhelios_1_1filems_1_1HeliosWriter')"><img src="../../closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="../../d1/d3b/classhelios_1_1filems_1_1HeliosWriter.html">helios::filems::HeliosWriter&lt; std::vector&lt; double &gt; const &amp;, int const, double const, double const, glm::dvec3 const &amp;, glm::dvec3 const &amp;, long const &gt;</a></td></tr>
+<tr class="memitem:ad5dd5890cff64b0ca98cd7f736da65c7"><td class="memItemLeft" align="right" valign="top"><a id="ad5dd5890cff64b0ca98cd7f736da65c7"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/db3/classhelios_1_1filems_1_1FullWaveformWriter.html#ad5dd5890cff64b0ca98cd7f736da65c7">writeFullWaveform</a> (<a class="el" href="../../dc/d62/classFullWaveform.html">FullWaveform</a> const &amp;fullWaveform)</td></tr>
+<tr class="memdesc:ad5dd5890cff64b0ca98cd7f736da65c7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Write full waveform data. <br /></td></tr>
+<tr class="separator:ad5dd5890cff64b0ca98cd7f736da65c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3d42a12576101a84e9f02f10c7dfc59d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/db3/classhelios_1_1filems_1_1FullWaveformWriter.html#a3d42a12576101a84e9f02f10c7dfc59d">writeFullWaveformUnsafe</a> (<a class="el" href="../../dc/d62/classFullWaveform.html">FullWaveform</a> const &amp;fullWaveform) const</td></tr>
+<tr class="memdesc:a3d42a12576101a84e9f02f10c7dfc59d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Like <a class="el" href="../../d0/db3/classhelios_1_1filems_1_1FullWaveformWriter.html#ad5dd5890cff64b0ca98cd7f736da65c7" title="Write full waveform data. ">filems::FullWaveformWriter::writeFullWaveform</a> but faster because there is no validation.  <a href="#a3d42a12576101a84e9f02f10c7dfc59d">More...</a><br /></td></tr>
+<tr class="separator:a3d42a12576101a84e9f02f10c7dfc59d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac230f3152422033d7cfd9018ac056674"><td class="memItemLeft" align="right" valign="top">shared_ptr&lt; <a class="el" href="../../da/d4c/classhelios_1_1filems_1_1SyncFileWriter.html">SyncFileWriter</a>&lt; <a class="el" href="../../dc/d62/classFullWaveform.html">FullWaveform</a> const &amp; &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/db3/classhelios_1_1filems_1_1FullWaveformWriter.html#ac230f3152422033d7cfd9018ac056674">makeWriter</a> (string const &amp;path) const override</td></tr>
+<tr class="memdesc:ac230f3152422033d7cfd9018ac056674"><td class="mdescLeft">&#160;</td><td class="mdescRight">Make a single full waveform <a class="el" href="../../da/d4c/classhelios_1_1filems_1_1SyncFileWriter.html" title="Abstract class defining common behavior for all synchronous file writers. ">SyncFileWriter</a>.  <a href="#ac230f3152422033d7cfd9018ac056674">More...</a><br /></td></tr>
+<tr class="separator:ac230f3152422033d7cfd9018ac056674"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_classhelios_1_1filems_1_1BaseFullWaveformWriter"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classhelios_1_1filems_1_1BaseFullWaveformWriter')"><img src="../../closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="../../df/dfa/classhelios_1_1filems_1_1BaseFullWaveformWriter.html">helios::filems::BaseFullWaveformWriter&lt; FullWaveform const &amp;&gt;</a></td></tr>
+<tr class="memitem:a943677ffdf179d4f789fe4779e76442a inherit pub_methods_classhelios_1_1filems_1_1BaseFullWaveformWriter"><td class="memItemLeft" align="right" valign="top"><a id="a943677ffdf179d4f789fe4779e76442a"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/dfa/classhelios_1_1filems_1_1BaseFullWaveformWriter.html#a943677ffdf179d4f789fe4779e76442a">BaseFullWaveformWriter</a> ()=default</td></tr>
+<tr class="memdesc:a943677ffdf179d4f789fe4779e76442a inherit pub_methods_classhelios_1_1filems_1_1BaseFullWaveformWriter"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor for base full waveform writer. <br /></td></tr>
+<tr class="separator:a943677ffdf179d4f789fe4779e76442a inherit pub_methods_classhelios_1_1filems_1_1BaseFullWaveformWriter"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aee4bb2fe86577c0fc158e40752f3f9df inherit pub_methods_classhelios_1_1filems_1_1BaseFullWaveformWriter"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/dfa/classhelios_1_1filems_1_1BaseFullWaveformWriter.html#aee4bb2fe86577c0fc158e40752f3f9df">configure</a> (string const &amp;parent, string const &amp;prefix, bool const computeWaveform)</td></tr>
+<tr class="memdesc:aee4bb2fe86577c0fc158e40752f3f9df inherit pub_methods_classhelios_1_1filems_1_1BaseFullWaveformWriter"><td class="mdescLeft">&#160;</td><td class="mdescRight">Configure the output path for the full waveform writer.  <a href="../../df/dfa/classhelios_1_1filems_1_1BaseFullWaveformWriter.html#aee4bb2fe86577c0fc158e40752f3f9df">More...</a><br /></td></tr>
+<tr class="separator:aee4bb2fe86577c0fc158e40752f3f9df inherit pub_methods_classhelios_1_1filems_1_1BaseFullWaveformWriter"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8872a91b77bad1ccf5dbece038055528 inherit pub_methods_classhelios_1_1filems_1_1BaseFullWaveformWriter"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/dfa/classhelios_1_1filems_1_1BaseFullWaveformWriter.html#a8872a91b77bad1ccf5dbece038055528">setOutputFilePath</a> (string const &amp;path)</td></tr>
+<tr class="memdesc:a8872a91b77bad1ccf5dbece038055528 inherit pub_methods_classhelios_1_1filems_1_1BaseFullWaveformWriter"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the path to output file.  <a href="../../df/dfa/classhelios_1_1filems_1_1BaseFullWaveformWriter.html#a8872a91b77bad1ccf5dbece038055528">More...</a><br /></td></tr>
+<tr class="separator:a8872a91b77bad1ccf5dbece038055528 inherit pub_methods_classhelios_1_1filems_1_1BaseFullWaveformWriter"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab443fd6e8fdf1a77bb80955102fe7244 inherit pub_methods_classhelios_1_1filems_1_1BaseFullWaveformWriter"><td class="memItemLeft" align="right" valign="top">fs::path&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/dfa/classhelios_1_1filems_1_1BaseFullWaveformWriter.html#ab443fd6e8fdf1a77bb80955102fe7244">getOutputFilePath</a> () const</td></tr>
+<tr class="memdesc:ab443fd6e8fdf1a77bb80955102fe7244 inherit pub_methods_classhelios_1_1filems_1_1BaseFullWaveformWriter"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the path to the output file.  <a href="../../df/dfa/classhelios_1_1filems_1_1BaseFullWaveformWriter.html#ab443fd6e8fdf1a77bb80955102fe7244">More...</a><br /></td></tr>
+<tr class="separator:ab443fd6e8fdf1a77bb80955102fe7244 inherit pub_methods_classhelios_1_1filems_1_1BaseFullWaveformWriter"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aba23f7a98040518f67373e71f7218790 inherit pub_methods_classhelios_1_1filems_1_1BaseFullWaveformWriter"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/dfa/classhelios_1_1filems_1_1BaseFullWaveformWriter.html#aba23f7a98040518f67373e71f7218790">getOutputPath</a> () const</td></tr>
+<tr class="separator:aba23f7a98040518f67373e71f7218790 inherit pub_methods_classhelios_1_1filems_1_1BaseFullWaveformWriter"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_classhelios_1_1filems_1_1HeliosWriter"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classhelios_1_1filems_1_1HeliosWriter')"><img src="../../closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="../../d1/d3b/classhelios_1_1filems_1_1HeliosWriter.html">helios::filems::HeliosWriter&lt; WriteArgs ... &gt;</a></td></tr>
 <tr class="memitem:a4f7de24460f7c425130cd5fe9e06d1a9 inherit pub_methods_classhelios_1_1filems_1_1HeliosWriter"><td class="memItemLeft" align="right" valign="top"><a id="a4f7de24460f7c425130cd5fe9e06d1a9"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d3b/classhelios_1_1filems_1_1HeliosWriter.html#a4f7de24460f7c425130cd5fe9e06d1a9">HeliosWriter</a> ()=default</td></tr>
 <tr class="memdesc:a4f7de24460f7c425130cd5fe9e06d1a9 inherit pub_methods_classhelios_1_1filems_1_1HeliosWriter"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor for HELIOS++ writer. <br /></td></tr>
@@ -147,6 +157,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../.
 <tr class="memitem:ae1f22260b3d5c9d1d94d6257558571fd inherit pub_methods_classhelios_1_1filems_1_1HeliosWriter"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d3b/classhelios_1_1filems_1_1HeliosWriter.html#ae1f22260b3d5c9d1d94d6257558571fd">finish</a> ()</td></tr>
 <tr class="memdesc:ae1f22260b3d5c9d1d94d6257558571fd inherit pub_methods_classhelios_1_1filems_1_1HeliosWriter"><td class="mdescLeft">&#160;</td><td class="mdescRight">Finish the sync file writer.  <a href="../../d1/d3b/classhelios_1_1filems_1_1HeliosWriter.html#ae1f22260b3d5c9d1d94d6257558571fd">More...</a><br /></td></tr>
 <tr class="separator:ae1f22260b3d5c9d1d94d6257558571fd inherit pub_methods_classhelios_1_1filems_1_1HeliosWriter"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a35bfcdea08ed4e17d6de1280f16cfb27 inherit pub_methods_classhelios_1_1filems_1_1HeliosWriter"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d3b/classhelios_1_1filems_1_1HeliosWriter.html#a35bfcdea08ed4e17d6de1280f16cfb27">hasWriter</a> () const</td></tr>
+<tr class="memdesc:a35bfcdea08ed4e17d6de1280f16cfb27 inherit pub_methods_classhelios_1_1filems_1_1HeliosWriter"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check whether the HeliosWriter has a non null writer (true) or not (false)  <a href="../../d1/d3b/classhelios_1_1filems_1_1HeliosWriter.html#a35bfcdea08ed4e17d6de1280f16cfb27">More...</a><br /></td></tr>
+<tr class="separator:a35bfcdea08ed4e17d6de1280f16cfb27 inherit pub_methods_classhelios_1_1filems_1_1HeliosWriter"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a505b07f2dba5b921221c7e6473bd4089 inherit pub_methods_classhelios_1_1filems_1_1HeliosWriter"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d3b/classhelios_1_1filems_1_1HeliosWriter.html#a505b07f2dba5b921221c7e6473bd4089">isLasOutput</a> () const</td></tr>
 <tr class="memdesc:a505b07f2dba5b921221c7e6473bd4089 inherit pub_methods_classhelios_1_1filems_1_1HeliosWriter"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the LAS output flag.  <a href="../../d1/d3b/classhelios_1_1filems_1_1HeliosWriter.html#a505b07f2dba5b921221c7e6473bd4089">More...</a><br /></td></tr>
 <tr class="separator:a505b07f2dba5b921221c7e6473bd4089 inherit pub_methods_classhelios_1_1filems_1_1HeliosWriter"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -174,7 +187,12 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../.
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
-<tr class="inherit_header pro_attribs_classhelios_1_1filems_1_1HeliosWriter"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classhelios_1_1filems_1_1HeliosWriter')"><img src="../../closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="../../d1/d3b/classhelios_1_1filems_1_1HeliosWriter.html">helios::filems::HeliosWriter&lt; std::vector&lt; double &gt; const &amp;, int const, double const, double const, glm::dvec3 const &amp;, glm::dvec3 const &amp;, long const &gt;</a></td></tr>
+<tr class="inherit_header pro_attribs_classhelios_1_1filems_1_1BaseFullWaveformWriter"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classhelios_1_1filems_1_1BaseFullWaveformWriter')"><img src="../../closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="../../df/dfa/classhelios_1_1filems_1_1BaseFullWaveformWriter.html">helios::filems::BaseFullWaveformWriter&lt; FullWaveform const &amp;&gt;</a></td></tr>
+<tr class="memitem:acea1650084302777a2fb6f22db000370 inherit pro_attribs_classhelios_1_1filems_1_1BaseFullWaveformWriter"><td class="memItemLeft" align="right" valign="top"><a id="acea1650084302777a2fb6f22db000370"></a>
+unordered_map&lt; string, shared_ptr&lt; <a class="el" href="../../da/d4c/classhelios_1_1filems_1_1SyncFileWriter.html">SyncFileWriter</a>&lt; WriteArgs ... &gt; &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/dfa/classhelios_1_1filems_1_1BaseFullWaveformWriter.html#acea1650084302777a2fb6f22db000370">writers</a></td></tr>
+<tr class="memdesc:acea1650084302777a2fb6f22db000370 inherit pro_attribs_classhelios_1_1filems_1_1BaseFullWaveformWriter"><td class="mdescLeft">&#160;</td><td class="mdescRight">Map of writers. This map allows to reuse writers for legs grouped in the same strip. <br /></td></tr>
+<tr class="separator:acea1650084302777a2fb6f22db000370 inherit pro_attribs_classhelios_1_1filems_1_1BaseFullWaveformWriter"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_attribs_classhelios_1_1filems_1_1HeliosWriter"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classhelios_1_1filems_1_1HeliosWriter')"><img src="../../closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="../../d1/d3b/classhelios_1_1filems_1_1HeliosWriter.html">helios::filems::HeliosWriter&lt; WriteArgs ... &gt;</a></td></tr>
 <tr class="memitem:a3a48f9f98ed9e18c4e7f111a6dbac5fb inherit pro_attribs_classhelios_1_1filems_1_1HeliosWriter"><td class="memItemLeft" align="right" valign="top">shared_ptr&lt; <a class="el" href="../../da/d4c/classhelios_1_1filems_1_1SyncFileWriter.html">SyncFileWriter</a>&lt; WriteArgs ... &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d3b/classhelios_1_1filems_1_1HeliosWriter.html#a3a48f9f98ed9e18c4e7f111a6dbac5fb">sfw</a></td></tr>
 <tr class="memdesc:a3a48f9f98ed9e18c4e7f111a6dbac5fb inherit pro_attribs_classhelios_1_1filems_1_1HeliosWriter"><td class="mdescLeft">&#160;</td><td class="mdescRight">Synchronous file writer.  <a href="../../d1/d3b/classhelios_1_1filems_1_1HeliosWriter.html#a3a48f9f98ed9e18c4e7f111a6dbac5fb">More...</a><br /></td></tr>
 <tr class="separator:a3a48f9f98ed9e18c4e7f111a6dbac5fb inherit pro_attribs_classhelios_1_1filems_1_1HeliosWriter"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -198,52 +216,8 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../.
 <dl class="section author"><dt>Author</dt><dd>Alberto M. Esmoris Pena </dd></dl>
 <dl class="section version"><dt>Version</dt><dd>1.0 </dd></dl>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a1835ac0852b7c00dfdef2b58a6cbc885"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1835ac0852b7c00dfdef2b58a6cbc885">&#9670;&nbsp;</a></span>configure()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void FullWaveformWriter::configure </td>
-          <td>(</td>
-          <td class="paramtype">string const &amp;&#160;</td>
-          <td class="paramname"><em>parent</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">string const &amp;&#160;</td>
-          <td class="paramname"><em>prefix</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">bool const&#160;</td>
-          <td class="paramname"><em>computeWaveform</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Configure the output path for the full waveform writer. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">parent</td><td>Path to output directory for full waveform files </td></tr>
-    <tr><td class="paramname">prefix</td><td>Prefix for the name of the output file </td></tr>
-    <tr><td class="paramname">computeWaveform</td><td>Flag to specify if waveform must be computed (true) or not (false) </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="acc3f51d30f436c89e2452674e00a0475"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acc3f51d30f436c89e2452674e00a0475">&#9670;&nbsp;</a></span>getOutputFilePath()</h2>
+<a id="ac230f3152422033d7cfd9018ac056674"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac230f3152422033d7cfd9018ac056674">&#9670;&nbsp;</a></span>makeWriter()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -252,83 +226,29 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../.
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">fs::path helios::filems::FullWaveformWriter::getOutputFilePath </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Get the path to the output file. </p>
-<dl class="section return"><dt>Returns</dt><dd>The path to the output file </dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d0/db3/classhelios_1_1filems_1_1FullWaveformWriter.html#a80a54585f9b3397b2e86901e3637cd68">filems::FullWaveformWriter::getOutputPath</a> </dd></dl>
-
-<p>Reimplemented from <a class="el" href="../../d1/d3b/classhelios_1_1filems_1_1HeliosWriter.html#a5da5103f02787ce1fcc3e09c5ea4a25b">helios::filems::HeliosWriter&lt; std::vector&lt; double &gt; const &amp;, int const, double const, double const, glm::dvec3 const &amp;, glm::dvec3 const &amp;, long const &gt;</a>.</p>
-
-</div>
-</div>
-<a id="a80a54585f9b3397b2e86901e3637cd68"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a80a54585f9b3397b2e86901e3637cd68">&#9670;&nbsp;</a></span>getOutputPath()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">string helios::filems::FullWaveformWriter::getOutputPath </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d0/db3/classhelios_1_1filems_1_1FullWaveformWriter.html#acc3f51d30f436c89e2452674e00a0475" title="Get the path to the output file. ">filems::FullWaveformWriter::getOutputFilePath</a> </dd></dl>
-
-<p>Reimplemented from <a class="el" href="../../d1/d3b/classhelios_1_1filems_1_1HeliosWriter.html#a2992dc517d7bc151ed8bb002b88a3938">helios::filems::HeliosWriter&lt; std::vector&lt; double &gt; const &amp;, int const, double const, double const, glm::dvec3 const &amp;, glm::dvec3 const &amp;, long const &gt;</a>.</p>
-
-</div>
-</div>
-<a id="a77cf2830f11d50f2beb7fddc1b150539"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a77cf2830f11d50f2beb7fddc1b150539">&#9670;&nbsp;</a></span>setOutputFilePath()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void FullWaveformWriter::setOutputFilePath </td>
+          <td class="memname">shared_ptr&lt;<a class="el" href="../../da/d4c/classhelios_1_1filems_1_1SyncFileWriter.html">SyncFileWriter</a>&lt;<a class="el" href="../../dc/d62/classFullWaveform.html">FullWaveform</a> const &amp;&gt; &gt; helios::filems::FullWaveformWriter::makeWriter </td>
           <td>(</td>
           <td class="paramtype">string const &amp;&#160;</td>
           <td class="paramname"><em>path</em></td><td>)</td>
-          <td></td>
+          <td> const</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
-<p>Set the path to output file. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">path</td><td>New path to output file </td></tr>
-  </table>
-  </dd>
-</dl>
+<p>Make a single full waveform <a class="el" href="../../da/d4c/classhelios_1_1filems_1_1SyncFileWriter.html" title="Abstract class defining common behavior for all synchronous file writers. ">SyncFileWriter</a>. </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../df/dfa/classhelios_1_1filems_1_1BaseFullWaveformWriter.html#a787adfcfc26de31260e04adbe11b1450" title="Make a SyncFileWriter that is suitable to be used by the base full waveform writer. ">BaseFullWaveformWriter::makeWriter</a> </dd></dl>
+
+<p>Implements <a class="el" href="../../df/dfa/classhelios_1_1filems_1_1BaseFullWaveformWriter.html#a787adfcfc26de31260e04adbe11b1450">helios::filems::BaseFullWaveformWriter&lt; FullWaveform const &amp;&gt;</a>.</p>
 
 </div>
 </div>
-<a id="a1586dc7de1692d87d2840a1757b18186"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1586dc7de1692d87d2840a1757b18186">&#9670;&nbsp;</a></span>writeFullWaveformUnsafe()</h2>
+<a id="a3d42a12576101a84e9f02f10c7dfc59d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3d42a12576101a84e9f02f10c7dfc59d">&#9670;&nbsp;</a></span>writeFullWaveformUnsafe()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -339,49 +259,9 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../.
         <tr>
           <td class="memname">void helios::filems::FullWaveformWriter::writeFullWaveformUnsafe </td>
           <td>(</td>
-          <td class="paramtype">vector&lt; double &gt; const &amp;&#160;</td>
-          <td class="paramname"><em>fullwave</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int const&#160;</td>
-          <td class="paramname"><em>fullwaveIndex</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double const&#160;</td>
-          <td class="paramname"><em>minTime</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double const&#160;</td>
-          <td class="paramname"><em>maxTime</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">glm::dvec3 const &amp;&#160;</td>
-          <td class="paramname"><em>beamOrigin</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">glm::dvec3 const &amp;&#160;</td>
-          <td class="paramname"><em>beamDir</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double const&#160;</td>
-          <td class="paramname"><em>gpsTime</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td> const</td>
+          <td class="paramtype"><a class="el" href="../../dc/d62/classFullWaveform.html">FullWaveform</a> const &amp;&#160;</td>
+          <td class="paramname"><em>fullWaveform</em></td><td>)</td>
+          <td> const</td>
         </tr>
       </table>
   </td>
@@ -391,8 +271,8 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../.
 </table>
 </div><div class="memdoc">
 
-<p>Like <a class="el" href="../../d0/db3/classhelios_1_1filems_1_1FullWaveformWriter.html#a8e8249828a904d76bb1234d1b85006c1" title="Write full waveform data. ">filems::FullWaveformWriter::writeFullWaveform</a> but faster because there is no validation. </p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d0/db3/classhelios_1_1filems_1_1FullWaveformWriter.html#a8e8249828a904d76bb1234d1b85006c1" title="Write full waveform data. ">filems::FullWaveformWriter::writeFullWaveform</a> </dd></dl>
+<p>Like <a class="el" href="../../d0/db3/classhelios_1_1filems_1_1FullWaveformWriter.html#ad5dd5890cff64b0ca98cd7f736da65c7" title="Write full waveform data. ">filems::FullWaveformWriter::writeFullWaveform</a> but faster because there is no validation. </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d0/db3/classhelios_1_1filems_1_1FullWaveformWriter.html#ad5dd5890cff64b0ca98cd7f736da65c7" title="Write full waveform data. ">filems::FullWaveformWriter::writeFullWaveform</a> </dd></dl>
 
 </div>
 </div>

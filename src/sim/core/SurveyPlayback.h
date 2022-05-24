@@ -133,7 +133,7 @@ public:
      * @see Platform::initLeg
      * @see Platform::initLegManual
      */
-    void startLeg(unsigned int legIndex, bool manual);
+    void startLeg(unsigned int const legIndex, bool const manual);
     /**
      * @brief Prepare output for current leg (measurements, trajectory and
      *  fullwave)

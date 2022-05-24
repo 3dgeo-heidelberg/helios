@@ -13,6 +13,7 @@ var classAbstractDetector =
     [ "cfg_device_rangeMax_m", "d8/d6b/classAbstractDetector.html#ad9b1d8aa37cb255f3af99d023e7825ea", null ],
     [ "cfg_device_rangeMin_m", "d8/d6b/classAbstractDetector.html#a4d47a75b623d9aa1598a4795a748ff84", null ],
     [ "fms", "d8/d6b/classAbstractDetector.html#a3e9aa1abe6f6850941dc5e80a37d9a2c", null ],
+    [ "fwfYielder", "d8/d6b/classAbstractDetector.html#ab7f2637a41f0400042df5b9d54cca9f5", null ],
     [ "pcloudYielder", "d8/d6b/classAbstractDetector.html#aa1516b51a47f416aa76ebf1d607aa91f", null ],
     [ "scanner", "d8/d6b/classAbstractDetector.html#a512ee25b5ab6b8bff4e87eaba5e1996f", null ]
 ];
