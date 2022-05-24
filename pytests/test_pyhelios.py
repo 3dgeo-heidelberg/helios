@@ -77,14 +77,48 @@ def test_templates(test_sim):
     assert ps.hasTemplate()
     ps_templ = ps.getTemplate()
 
-    assert ss_templ.id == "scanner1"
+    assert ss_templ.id == 'scanner1'
     assert ss_templ.active is True
     assert ss_templ.pulseFreq == 300_000
     assert ss_templ.trajectoryTimeInterval == 0.01
     assert ss_templ.scanFreq == 200
     assert ss_templ.scanAngle * 180 / np.pi == 20
-    assert ps_templ.id == "platform1"
+    assert ps_templ.id == 'platform1'
     assert ps_templ.movePerSec == 30
+
+
+def test_survey_characteristics(test_sim):
+    path_to_survey = Path('data') / 'surveys' / 'toyblocks' / 'als_toyblocks.xml'
+    sim = test_sim(path_to_survey)
+    assert Path(sim.sim.getSurveyPath()) == Path(WORKING_DIR) / path_to_survey
+    survey = sim.sim.getSurvey()
+    assert survey.name == 'toyblocks_als'
+    assert survey.getLength() == 0.0
+    survey.calculateLength()
+    assert survey.getLength() == 400.0
+
+
+def test_scene():
+    pass
+
+
+def test_create_survey():
+    pass
+
+
+def test_material(test_sim):
+    sim = test_sim(Path('data') / 'surveys' / 'toyblocks' / 'als_toyblocks.xml')
+    scene = sim.sim.getScene()
+    prim0 = scene.getPrimitive(0)  # get first primitive
+    mat0 = prim0.getMaterial()
+    assert mat0.name == 'None'
+    assert mat0.isGround is True
+    assert mat0.matFilePath == 'data/sceneparts/basic/groundplane/groundplane.mtl'
+    assert mat0.reflectance == 50.0
+    assert mat0.specularity == 0.0
+    assert mat0.specularExponent == 0.0
+    assert mat0.classification == 0
+    assert np.round(mat0.kd0, 2) == 0.20
 
 
 def test_scanner(test_sim):
