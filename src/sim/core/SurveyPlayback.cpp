@@ -413,7 +413,7 @@ void SurveyPlayback::prepareOutput(){
     std::shared_ptr<Leg> leg = getCurrentLeg();
     if(!leg->getScannerSettings().active) return;
 
-    // Check if all the legs in the rip were processed
+    // Check if all the legs in the strip were processed
     std::shared_ptr<ScanningStrip> strip = leg->getStrip();
     bool lastLegInStrip = true;
     if(strip != nullptr){
