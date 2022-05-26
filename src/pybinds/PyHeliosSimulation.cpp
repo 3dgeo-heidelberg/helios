@@ -61,7 +61,7 @@ PyHeliosSimulation::~PyHeliosSimulation() {
 // ***  GETTERs and SETTERs  *** //
 // ***************************** //
 Leg & PyHeliosSimulation::newLeg(int index){
-    int n = (int) survey->legs.size();
+    int const n = (int) survey->legs.size();
     if(index<0 || index>n) index = n;
     std::shared_ptr<Leg> leg = std::make_shared<Leg>();
     leg->mScannerSettings =

@@ -400,6 +400,8 @@ BOOST_PYTHON_MODULE(_pyhelios){
     // Register Leg
     class_<Leg, boost::noncopyable>("Leg", no_init)
         .add_property("length", &Leg::getLength, &Leg::setLength)
+        .add_property("serialId", &Leg::getSerialId, &Leg::setSerialId)
+        .add_property("strip", &Leg::getStrip, &Leg::setStrip)
         .def(
             "getScannerSettings",
             &Leg::getScannerSettings,
