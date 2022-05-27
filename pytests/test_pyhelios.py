@@ -31,7 +31,7 @@ def find_scene(survey_file):
 @pytest.fixture(scope="session")
 def test_sim():
     def create_test_sim(survey_path):
-        pyhelios.loggingSilent()
+        # pyhelios.loggingSilent()
         from pyhelios import SimulationBuilder
         simB = SimulationBuilder(
             surveyPath=str(survey_path.absolute()),
@@ -103,7 +103,70 @@ def test_scene():
 
 
 def test_create_survey():
-    pass
+    test_survey_path = 'data/surveys/test_survey.xml'
+
+    # default survey (missing platform and scanner definition and not containing any legs)
+    survey = """<?xml version="1.0" encoding="UTF-8"?>
+    <document>
+        <survey name="test_scan" scene="data/scenes/toyblocks/toyblocks_scene.xml#toyblocks_scene" platform="data/platforms.xml#sr22" scanner="data/scanners_als.xml#leica_als50">
+        </survey>
+    </document>
+    """
+
+    with open(test_survey_path, "w") as f:
+        f.write(survey)
+
+    simBuilder = pyhelios.SimulationBuilder(
+        test_survey_path,
+        'assets/',
+        'output/'
+    )
+    simBuilder.setFinalOutput(True)
+    simBuilder.setLasOutput(True)
+    simBuilder.setZipOutput(True)
+    simBuilder.setCallbackFrequency(100)
+    simBuilder.setRebuildScene(True)
+    simBuilder.setNumThreads(1)
+    simBuilder.setKDTJobs(1)
+
+    simB = simBuilder.build()
+
+    waypoints = [
+        [100., -100.],
+        [-100., -100.],
+        [-100., -50.],
+        [100., -50.],
+        [100., 0.],
+        [-100., 0.],
+        [-100., 50.],
+        [100., 50.],
+        [100., 100.],
+        [-100., 100.]]
+    altitude = 100
+    speed = 150
+    shift = simB.sim.getScene().getShift()
+    for j, wp in enumerate(waypoints):
+        leg = simB.sim.newLeg(j)
+        leg.getPlatformSettings().x = wp[0] - shift.x
+        leg.getPlatformSettings().y = wp[1] - shift.y
+        leg.getPlatformSettings().z = altitude - shift.z
+        leg.getPlatformSettings().movePerSec = speed
+        leg.getScannerSettings().pulseFreq = 10000
+        leg.getScannerSettings().scanAngle = 30 * np.pi / 180
+        leg.getScannerSettings().scanFreq = 50
+        if j % 2 != 0:
+            leg.getScannerSettings().active = False
+    survey = simB.sim.getSurvey()
+    survey.calculateLength()
+    assert survey.getLength() == 1200.0
+    assert simB.sim.getNumLegs() == 10
+
+    simB.start()
+    output = simB.join()
+    meas, traj = pyhelios.outputToNumpy(output)
+    assert meas.shape == (19, 100)
+    # os.remove(output.outpath)
+    # os.remove(test_survey_path)
 
 
 def test_material(test_sim):
@@ -161,9 +224,8 @@ def test_output():
         assetsDir=WORKING_DIR + os.sep + 'assets' + os.sep,
         outputDir=WORKING_DIR + os.sep + 'output' + os.sep,
     )
-    simB.setLasOutput(False)
+    simB.setFinalOutput(True)
     simB.setRebuildScene(True)
-    simB.setZipOutput(True)
     simB.setCallbackFrequency(100)
     simB.setNumThreads(1)
     simB.setKDTJobs(1)
@@ -176,3 +238,4 @@ def test_output():
     np.testing.assert_allclose(measurements_array[0, :3], np.array([474500.3, 5473529.0, 106.0196]), rtol=0.000001)
     assert measurements_array.shape == (2433, 17)
     assert trajectory_array.shape == (9, 7)
+    assert Path(output.outpath).parent.parent == Path(WORKING_DIR) / "output" / "als_hd_demo"
