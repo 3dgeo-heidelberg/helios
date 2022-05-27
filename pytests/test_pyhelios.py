@@ -25,12 +25,16 @@ import pyhelios
 
 
 def find_scene(survey_file):
+    """helper function which returns the path to the scene XML file"""
     scene_file = ET.parse(survey_file).find('survey').attrib['scene'].split('#')[0]
     return scene_file.replace('.xml', '.scene')
 
 
 @pytest.fixture(scope="session")
 def test_sim():
+    """
+    Fixture which returns a simulation object for a given survey path
+    """
     def create_test_sim(survey_path):
         # pyhelios.loggingSilent()
         from pyhelios import SimulationBuilder
@@ -51,6 +55,7 @@ def test_sim():
 
 
 def test_start_stop(test_sim):
+    """Test starting, pausing and stopping of simulation"""
     sim = test_sim(Path('data') / 'surveys' / 'toyblocks' / 'als_toyblocks.xml')
     sim.start()
     assert sim.isStarted()
@@ -69,6 +74,7 @@ def test_start_stop(test_sim):
 
 
 def test_templates(test_sim):
+    """Test accessing template settings defined in a survey XML"""
     sim = test_sim(Path('data') / 'surveys' / 'toyblocks' / 'als_toyblocks.xml')
     leg = sim.sim.getLeg(0)
     ss = leg.getScannerSettings()
@@ -89,6 +95,7 @@ def test_templates(test_sim):
 
 
 def test_survey_characteristics(test_sim):
+    """Test accessing survey characteristics (name, length)"""
     path_to_survey = Path('data') / 'surveys' / 'toyblocks' / 'als_toyblocks.xml'
     sim = test_sim(path_to_survey)
     assert Path(sim.sim.getSurveyPath()) == Path(WORKING_DIR) / path_to_survey
@@ -104,6 +111,7 @@ def test_scene():
 
 
 def test_create_survey():
+    """Test creating/configuring a survey with pyhelios"""
     pyhelios.setDefaultRandomnessGeneratorSeed("7")
     test_survey_path = 'data/surveys/test_survey.xml'
 
@@ -189,6 +197,7 @@ def test_create_survey():
 
 
 def test_material(test_sim):
+    """Test accessing material properties of a primitive in a scene"""
     sim = test_sim(Path('data') / 'surveys' / 'toyblocks' / 'als_toyblocks.xml')
     scene = sim.sim.getScene()
     prim0 = scene.getPrimitive(0)  # get first primitive
@@ -204,6 +213,7 @@ def test_material(test_sim):
 
 
 def test_scanner(test_sim):
+    """Test accessing scanner configurations with pyhelios"""
     path_to_survey = Path('data') / 'test' / 'als_hd_demo_tiff_min.xml'
     sim = test_sim(path_to_survey)
     scanner = sim.sim.getScanner()
@@ -220,6 +230,7 @@ def test_scanner(test_sim):
 
 
 def test_detector(test_sim):
+    """Test accessing detector settings with pyhelios"""
     path_to_survey = Path('data') / 'test' / 'als_hd_demo_tiff_min.xml'
     sim = test_sim(path_to_survey)
     scanner = sim.sim.getScanner()
@@ -235,6 +246,7 @@ def test_detector(test_sim):
 
 
 def test_output():
+    """Validating the output of a survey started with pyhelios"""
     from pyhelios import SimulationBuilder
     survey_path = Path('data') / 'test' / 'als_hd_demo_tiff_min.xml'
     pyhelios.setDefaultRandomnessGeneratorSeed("43")
