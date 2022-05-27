@@ -12,6 +12,7 @@ import sys
 import os
 import time
 import xml.etree.ElementTree as ET
+# import shutil
 
 
 DELETE_FILES_AFTER = False
@@ -103,6 +104,7 @@ def test_scene():
 
 
 def test_create_survey():
+    pyhelios.setDefaultRandomnessGeneratorSeed("7")
     test_survey_path = 'data/surveys/test_survey.xml'
 
     # default survey (missing platform and scanner definition and not containing any legs)
@@ -116,6 +118,7 @@ def test_create_survey():
     with open(test_survey_path, "w") as f:
         f.write(survey)
 
+    # build base simulation
     simBuilder = pyhelios.SimulationBuilder(
         test_survey_path,
         'assets/',
@@ -131,6 +134,7 @@ def test_create_survey():
 
     simB = simBuilder.build()
 
+    # list of waypoints
     waypoints = [
         [100., -100.],
         [-100., -100.],
@@ -142,31 +146,46 @@ def test_create_survey():
         [100., 50.],
         [100., 100.],
         [-100., 100.]]
-    altitude = 100
+
+    # settings
+    altitude = 500
     speed = 150
+    pulse_freq = 10_000
+    scan_angle = 30 * np.pi / 180
+    scan_freq = 20
     shift = simB.sim.getScene().getShift()
     for j, wp in enumerate(waypoints):
         leg = simB.sim.newLeg(j)
+        leg.serialId = j
         leg.getPlatformSettings().x = wp[0] - shift.x
         leg.getPlatformSettings().y = wp[1] - shift.y
         leg.getPlatformSettings().z = altitude - shift.z
         leg.getPlatformSettings().movePerSec = speed
-        leg.getScannerSettings().pulseFreq = 10000
-        leg.getScannerSettings().scanAngle = 30 * np.pi / 180
-        leg.getScannerSettings().scanFreq = 50
+        leg.getScannerSettings().trajectoryTimeInterval = 0.001
+        leg.getScannerSettings().pulseFreq = pulse_freq
+        leg.getScannerSettings().scanAngle = scan_angle
+        leg.getScannerSettings().scanFreq = scan_freq
+        # scanner should only be active for legs with even ID
         if j % 2 != 0:
             leg.getScannerSettings().active = False
     survey = simB.sim.getSurvey()
     survey.calculateLength()
+
+    # check length of survery and number of legs
     assert survey.getLength() == 1200.0
     assert simB.sim.getNumLegs() == 10
 
     simB.start()
     output = simB.join()
     meas, traj = pyhelios.outputToNumpy(output)
-    assert meas.shape == (19, 100)
-    # os.remove(output.outpath)
-    # os.remove(test_survey_path)
+    assert meas.shape == (10410, 17)
+    assert traj.shape == (6670, 7)
+    np.testing.assert_allclose(meas[100, :3], np.array([83.32, -66.43508, -0.07260715]))
+    np.testing.assert_allclose(traj[0, :3], np.array([waypoints[0][0], waypoints[0][1], altitude]))
+
+    # cleanup
+    os.remove(test_survey_path)
+    # shutil.rmtree(Path(output.outpath).parent)  # Fails with permission error (for the last trajectory file)
 
 
 def test_material(test_sim):
@@ -239,3 +258,6 @@ def test_output():
     assert measurements_array.shape == (2433, 17)
     assert trajectory_array.shape == (9, 7)
     assert Path(output.outpath).parent.parent == Path(WORKING_DIR) / "output" / "als_hd_demo"
+
+    # cleanup
+    # shutil.rmtree(Path(output.outpath).parent)  # Fails with permission error (for the last trajectory file)
