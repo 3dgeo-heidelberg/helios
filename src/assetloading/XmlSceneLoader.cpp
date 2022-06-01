@@ -429,7 +429,7 @@ shared_ptr<DynSequentiableMovingObject> XmlSceneLoader::loadDynMotions(
         primitive->part = dsmo;
     }
 
-    // Use scene part ID to build dynamic dynamic sequentiable moving object ID
+    // Use scene part ID to build dynamic sequentiable moving object ID
     std::stringstream ss;
     ss << "DSMO_" << scenePart->mId;
     dsmo->setId(ss.str());
