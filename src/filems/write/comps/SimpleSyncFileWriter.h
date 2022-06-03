@@ -44,6 +44,11 @@ public:
     {
 		// Open file for writing ...
 		ofs.open(path, om);
+		ofs.exceptions(
+		    std::ios_base::eofbit |
+		    std::ios_base::failbit |
+		    std::ios_base::badbit
+        );
 	}
 	virtual ~SimpleSyncFileWriter() {finish();}
 
@@ -54,7 +59,7 @@ public:
      * writing operations are guaranteed to be done after the instance has
      * been destroyed.
      */
-    void finish() override {ofs.close();}
+    void finish() override {if(ofs.is_open()) ofs.close();}
 };
 
 }}
