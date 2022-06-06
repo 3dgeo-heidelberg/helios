@@ -23,8 +23,8 @@ def parse_args():
         exit(0)
     elif len(sys.argv) < 3:
         raise Exception(
-            '{m} arguments were given but 3 are required'
-            .format(m=len(sys.argv))
+            '{m} arguments were given but 2 are required'
+            .format(m=len(sys.argv)-1)
         )
     data_path = sys.argv[1]
     if not validate_file_path(data_path):
@@ -87,6 +87,7 @@ def compare_data(data, datb):
 
 
 def report_diff(diff):
+    """Print the output of the compare_data function"""
     for i, d in enumerate(diff):
         print(
             'diff[{i}]:\n'
