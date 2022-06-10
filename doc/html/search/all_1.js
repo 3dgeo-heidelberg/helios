@@ -71,6 +71,7 @@ var searchData=
   ['assetsdir',['assetsDir',['../d9/d82/classXmlAssetsLoader.html#a93746ec0dd88588e1ddfafe4a0a850fe',1,'XmlAssetsLoader']]],
   ['assetspath',['assetsPath',['../d2/d88/classHeliosDemos_1_1SurveyDemo.html#aa34e5d609c4daf4b4263999b3bec88d8',1,'HeliosDemos::SurveyDemo']]],
   ['assigndefaultnormal',['assignDefaultNormal',['../d6/d03/classXYZPointCloudFileLoader.html#ac555daeba216fe3c5530c3f5769573c8',1,'XYZPointCloudFileLoader']]],
+  ['assoclegwithscanningstrip',['assocLegWithScanningStrip',['../d9/ddd/classpyhelios_1_1PyHeliosSimulation.html#a7db43c34ba60f33455847b39296d25a9',1,'pyhelios::PyHeliosSimulation']]],
   ['atmosphericextinction',['atmosphericExtinction',['../dc/d42/classScanner.html#af7f0202e89320c3bd498340d63bd500a',1,'Scanner']]],
   ['atmosphericvisibility',['atmosphericVisibility',['../d4/dfb/classFWFSettings.html#a27799c23f3b148e49013d503e2605e9c',1,'FWFSettings']]],
   ['attitude',['attitude',['../df/d1e/classPlatform.html#a15f01b90590d1774bab9bb2db77fc403',1,'Platform']]],

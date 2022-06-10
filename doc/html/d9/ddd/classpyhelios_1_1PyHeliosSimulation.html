@@ -158,6 +158,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a7041314c9422e4d3566ffd43d552b5ff"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../de/d51/classLeg.html">Leg</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/ddd/classpyhelios_1_1PyHeliosSimulation.html#a7041314c9422e4d3566ffd43d552b5ff">newLeg</a> (int index)</td></tr>
 <tr class="memdesc:a7041314c9422e4d3566ffd43d552b5ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a new empty leg.  <a href="#a7041314c9422e4d3566ffd43d552b5ff">More...</a><br /></td></tr>
 <tr class="separator:a7041314c9422e4d3566ffd43d552b5ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0ece0d1b0234e8075d9820e55b39e088"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d2/d6b/classpyhelios_1_1PyScanningStripWrapper.html">PyScanningStripWrapper</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/ddd/classpyhelios_1_1PyHeliosSimulation.html#a0ece0d1b0234e8075d9820e55b39e088">newScanningStrip</a> (std::string const &amp;stripId)</td></tr>
+<tr class="memdesc:a0ece0d1b0234e8075d9820e55b39e088"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a new empty scanning strip (with no legs)  <a href="#a0ece0d1b0234e8075d9820e55b39e088">More...</a><br /></td></tr>
+<tr class="separator:a0ece0d1b0234e8075d9820e55b39e088"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7db43c34ba60f33455847b39296d25a9"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/ddd/classpyhelios_1_1PyHeliosSimulation.html#a7db43c34ba60f33455847b39296d25a9">assocLegWithScanningStrip</a> (<a class="el" href="../../de/d51/classLeg.html">Leg</a> &amp;leg, <a class="el" href="../../d2/d6b/classpyhelios_1_1PyScanningStripWrapper.html">PyScanningStripWrapper</a> *strip)</td></tr>
+<tr class="memdesc:a7db43c34ba60f33455847b39296d25a9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Associate given leg with given strip.  <a href="#a7db43c34ba60f33455847b39296d25a9">More...</a><br /></td></tr>
+<tr class="separator:a7db43c34ba60f33455847b39296d25a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae5c4df23551cddf42ed7b09aca305304"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/ddd/classpyhelios_1_1PyHeliosSimulation.html#ae5c4df23551cddf42ed7b09aca305304">getCallbackFrequency</a> ()</td></tr>
 <tr class="memdesc:ae5c4df23551cddf42ed7b09aca305304"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain callback frequency.  <a href="#ae5c4df23551cddf42ed7b09aca305304">More...</a><br /></td></tr>
 <tr class="separator:ae5c4df23551cddf42ed7b09aca305304"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -504,6 +510,44 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>warehouseFactor</b> = 
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="a7db43c34ba60f33455847b39296d25a9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7db43c34ba60f33455847b39296d25a9">&#9670;&nbsp;</a></span>assocLegWithScanningStrip()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool PyHeliosSimulation::assocLegWithScanningStrip </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="../../de/d51/classLeg.html">Leg</a> &amp;&#160;</td>
+          <td class="paramname"><em>leg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="../../d2/d6b/classpyhelios_1_1PyScanningStripWrapper.html">PyScanningStripWrapper</a> *&#160;</td>
+          <td class="paramname"><em>strip</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Associate given leg with given strip. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">leg</td><td>The leg to be associated with given strip </td></tr>
+    <tr><td class="paramname">strip</td><td>The strip to be associated with given leg </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>True if the leg was previously associated with a strip, thus it was updated. False if this is the first strip to which the leg is associated. </dd></dl>
+
+</div>
+</div>
 <a id="a761e40b0106987942bdc084074adb59d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a761e40b0106987942bdc084074adb59d">&#9670;&nbsp;</a></span>buildPulseThreadPool()</h2>
 
@@ -1009,7 +1053,40 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>warehouseFactor</b> = 
 </div><div class="memdoc">
 
 <p>Create a new empty leg. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">index</td><td>The index specifying the position in the survey where the leg will be inserted </td></tr>
+  </table>
+  </dd>
+</dl>
 <dl class="section return"><dt>Returns</dt><dd>Created empty leg </dd></dl>
+
+</div>
+</div>
+<a id="a0ece0d1b0234e8075d9820e55b39e088"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0ece0d1b0234e8075d9820e55b39e088">&#9670;&nbsp;</a></span>newScanningStrip()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../d2/d6b/classpyhelios_1_1PyScanningStripWrapper.html">PyScanningStripWrapper</a> * PyHeliosSimulation::newScanningStrip </td>
+          <td>(</td>
+          <td class="paramtype">std::string const &amp;&#160;</td>
+          <td class="paramname"><em>stripId</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Create a new empty scanning strip (with no legs) </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">stripId</td><td>The identifier for the strip </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Created empty scanning strip </dd></dl>
 
 </div>
 </div>

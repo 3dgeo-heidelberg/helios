@@ -1,5 +1,15 @@
 var NAVTREEINDEX3 =
 {
+"d2/da0/classVertex.html#aef4cd825dac0c445888b04a815dca985":[1,0,180,8],
+"d2/da0/classVertex.html#afeb7021ae37432206c83f35b52eca970":[1,0,180,5],
+"d2/da0/classVertex.html#affedc0b00171a6b2bb383fdb515d191b":[1,0,180,10],
+"d2/da8/classrigidmotion_1_1RigidMotionEngine.html":[1,0,5,1],
+"d2/da8/classrigidmotion_1_1RigidMotionEngine.html#a1301ee234a2006cfab2d7d38142941bc":[1,0,5,1,0],
+"d2/da8/classrigidmotion_1_1RigidMotionEngine.html#a54565faf4bb040e25967127578e134b0":[1,0,5,1,6],
+"d2/da8/classrigidmotion_1_1RigidMotionEngine.html#a831300aa5a68e83ca7dd077e80e62e14":[1,0,5,1,5],
+"d2/da8/classrigidmotion_1_1RigidMotionEngine.html#a9a4f63c90b83123cf046d444757b9533":[1,0,5,1,3],
+"d2/da8/classrigidmotion_1_1RigidMotionEngine.html#aa105fc0d382712985d690b8e6742b13a":[1,0,5,1,2],
+"d2/da8/classrigidmotion_1_1RigidMotionEngine.html#aaecfc762505fc89be8c7d05168a95fe1":[1,0,5,1,7],
 "d2/da8/classrigidmotion_1_1RigidMotionEngine.html#abba32219e7d65188f1bbe74255e86574":[1,0,5,1,4],
 "d2/da8/classrigidmotion_1_1RigidMotionEngine.html#ac98d07dd8f7b70e16ccb9a01abf56b9c":[1,0,5,1,8],
 "d2/da8/classrigidmotion_1_1RigidMotionEngine.html#acb4954fa9eeefc45e948e7371e4d9e57":[1,0,5,1,1],
@@ -84,7 +94,7 @@ var NAVTREEINDEX3 =
 "d3/d60/classYielder.html#af642862edfa3c73331e1707de0065834":[1,0,198,7],
 "d3/d6a/StepLoop_8h_source.html":[2,0,0,14,2,3],
 "d3/d6f/AbstractDetector_8h_source.html":[2,0,0,12,1,0],
-"d3/d71/PyTrajectoryWrapper_8h_source.html":[2,0,0,11,23],
+"d3/d71/PyTrajectoryWrapper_8h_source.html":[2,0,0,11,24],
 "d3/d71/classvisualhelios_1_1VHSceneCanvas.html":[1,0,7,9],
 "d3/d71/classvisualhelios_1_1VHSceneCanvas.html#a07777a005e40fdd5fba6e102f1ff5d6b":[1,0,7,9,4],
 "d3/d71/classvisualhelios_1_1VHSceneCanvas.html#a0e918dc1d0f58259e8f2d8f463bb8da3":[1,0,7,9,11],
@@ -239,15 +249,5 @@ var NAVTREEINDEX3 =
 "d4/d02/classBinaryTreeDepthIterator.html#aa35a7714bdf1193163aab0bb9e5d55af":[1,0,21,3],
 "d4/d02/classBinaryTreeDepthIterator.html#ac66f47a11f85ed9c6ba145c14170efb8":[1,0,21,10],
 "d4/d02/classBinaryTreeDepthIterator.html#ac98d07dd8f7b70e16ccb9a01abf56b9c":[1,0,21,9],
-"d4/d02/classBinaryTreeDepthIterator.html#aecebb2c2dfeaa47be9e7a1735510e03c":[1,0,21,5],
-"d4/d02/classBinaryTreeDepthIterator.html#aeec334e88ad8feb60023b3a9d1594119":[1,0,21,2],
-"d4/d02/classBinaryTreeDepthIterator.html#afaf568c2435d977c31f569cbe90dc20d":[1,0,21,0],
-"d4/d0b/BlockAllocator_8h_source.html":[2,0,0,17,3],
-"d4/d0d/classHeliosTests_1_1HPCTest.html":[1,0,3,5],
-"d4/d0d/classHeliosTests_1_1HPCTest.html#a3473435039074cfad4b4f4ca1d0c11cb":[1,0,3,5,1],
-"d4/d0d/classHeliosTests_1_1HPCTest.html#a86229ef51f318d97ac04d4fb9ce3de4f":[1,0,3,5,2],
-"d4/d0d/classHeliosTests_1_1HPCTest.html#ab195a312ad504c59e911ac2b591af58a":[1,0,3,5,0],
-"d4/d0e/FluxionumTest_8h_source.html":[2,0,0,16,2],
-"d4/d21/classHeliosDemos_1_1RaycastingDemo.html":[1,0,2,3],
-"d4/d21/classHeliosDemos_1_1RaycastingDemo.html#a0c506105eb2650d963f26bd86bd4f754":[1,0,2,3,3]
+"d4/d02/classBinaryTreeDepthIterator.html#aecebb2c2dfeaa47be9e7a1735510e03c":[1,0,21,5]
 };
