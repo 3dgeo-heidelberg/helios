@@ -21,7 +21,7 @@ Input arguments:
 def parse_args():
     """Parse input arguments. Raise an exception if not correct arguments were
     given"""
-    return hda_diff_report.parse_args()
+    return hda_diff_report.parse_args(helpf=print_help)
 
 
 def validate_file_path(path):
