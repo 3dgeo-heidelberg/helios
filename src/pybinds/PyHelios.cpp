@@ -55,6 +55,11 @@ BOOST_PYTHON_MODULE(_pyhelios){
         logging::makeVerbose2,
         "Set the logging verbosity level to verbose 2"
     );
+    def(
+        "loggingTime",
+        logging::makeTime,
+        "Set the logging verbosity level to time"
+    );
 
     // Register PyHeliosSimulation
     def("getVersion", getHeliosVersion, "Obtain the current helios version");

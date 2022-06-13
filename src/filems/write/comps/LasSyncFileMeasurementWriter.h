@@ -67,7 +67,7 @@ public:
         );
     }
 
-    ~LasSyncFileMeasurementWriter() override
+    virtual ~LasSyncFileMeasurementWriter()
     {LasSyncFileMeasurementWriter::finish();}
 
 };
