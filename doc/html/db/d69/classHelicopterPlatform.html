@@ -149,6 +149,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>_clone</b> (std::shar
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d69/classHelicopterPlatform.html#aef11f24f6e25fe349a5d32342cfd894e">computeTurnDistanceThreshold</a> ()</td></tr>
 <tr class="memdesc:aef11f24f6e25fe349a5d32342cfd894e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the distance threshold with respect to expected turn. <br /></td></tr>
 <tr class="separator:aef11f24f6e25fe349a5d32342cfd894e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab93ebcfd0894c2c7aa9e9b93c9df1f44"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d69/classHelicopterPlatform.html#ab93ebcfd0894c2c7aa9e9b93c9df1f44">computeNonSmoothSlowdownDist</a> ()</td></tr>
+<tr class="memdesc:ab93ebcfd0894c2c7aa9e9b93c9df1f44"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the slowdown distance. This is necessary when using the slowdown mode with no smooth turn. Otherwise, the helicopter will stop before arriving to destination.  <a href="#ab93ebcfd0894c2c7aa9e9b93c9df1f44">More...</a><br /></td></tr>
+<tr class="separator:ab93ebcfd0894c2c7aa9e9b93c9df1f44"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0373523bd7604f41d3857a5bd6336581"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d69/classHelicopterPlatform.html#a0373523bd7604f41d3857a5bd6336581">setHeadingRad</a> (double rad) override</td></tr>
 <tr class="separator:a0373523bd7604f41d3857a5bd6336581"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0299f8b80d65f474838f3a40b74350ec"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d69/classHelicopterPlatform.html#a0299f8b80d65f474838f3a40b74350ec">getHeadingRad</a> () override</td></tr>
@@ -196,12 +199,12 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../.
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d69/classHelicopterPlatform.html#a5db6362a800f7c95618ff98255fe5488">handleRoute</a> (int simFrequency_hz)</td></tr>
 <tr class="memdesc:a5db6362a800f7c95618ff98255fe5488"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determine remaining iterations and start turning mode if necessary. <br /></td></tr>
 <tr class="separator:a5db6362a800f7c95618ff98255fe5488"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5aa3708f790bdc814436e8d8d8d7da25"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d69/classHelicopterPlatform.html#a5aa3708f790bdc814436e8d8d8d7da25">computeSlowdownStep</a> (double speedMagnitude)</td></tr>
-<tr class="memdesc:a5aa3708f790bdc814436e8d8d8d7da25"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute speed magnitude after a slowdown step.  <a href="#a5aa3708f790bdc814436e8d8d8d7da25">More...</a><br /></td></tr>
-<tr class="separator:a5aa3708f790bdc814436e8d8d8d7da25"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad1b52de7e38c3a5263c35d406cacdafb"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d69/classHelicopterPlatform.html#ad1b52de7e38c3a5263c35d406cacdafb">computeSpeedupStep</a> (double speedMagnitude)</td></tr>
-<tr class="memdesc:ad1b52de7e38c3a5263c35d406cacdafb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute speed magnitude after a speedup step.  <a href="#ad1b52de7e38c3a5263c35d406cacdafb">More...</a><br /></td></tr>
-<tr class="separator:ad1b52de7e38c3a5263c35d406cacdafb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7a27f302a45b20603414aa170eb576ac"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d69/classHelicopterPlatform.html#a7a27f302a45b20603414aa170eb576ac">computeSlowdownStep</a> (double const speedMagnitude) const</td></tr>
+<tr class="memdesc:a7a27f302a45b20603414aa170eb576ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute speed magnitude after a slowdown step.  <a href="#a7a27f302a45b20603414aa170eb576ac">More...</a><br /></td></tr>
+<tr class="separator:a7a27f302a45b20603414aa170eb576ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac531aebc54530c52afd238b057feba09"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d69/classHelicopterPlatform.html#ac531aebc54530c52afd238b057feba09">computeSpeedupStep</a> (double const speedMagnitude) const</td></tr>
+<tr class="memdesc:ac531aebc54530c52afd238b057feba09"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute speed magnitude after a speedup step.  <a href="#ac531aebc54530c52afd238b057feba09">More...</a><br /></td></tr>
+<tr class="separator:ac531aebc54530c52afd238b057feba09"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classSimplePhysicsPlatform"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classSimplePhysicsPlatform')"><img src="../../closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="../../d5/d3b/classSimplePhysicsPlatform.html">SimplePhysicsPlatform</a></td></tr>
 <tr class="memitem:ad2dfa8b3244c05f003573ee506359857 inherit pub_methods_classSimplePhysicsPlatform"><td class="memItemLeft" align="right" valign="top"><a id="ad2dfa8b3244c05f003573ee506359857"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d3b/classSimplePhysicsPlatform.html#ad2dfa8b3244c05f003573ee506359857">SimplePhysicsPlatform</a> ()=default</td></tr>
@@ -684,6 +687,26 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../.
 
 </div>
 </div>
+<a id="ab93ebcfd0894c2c7aa9e9b93c9df1f44"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab93ebcfd0894c2c7aa9e9b93c9df1f44">&#9670;&nbsp;</a></span>computeNonSmoothSlowdownDist()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void HelicopterPlatform::computeNonSmoothSlowdownDist </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Compute the slowdown distance. This is necessary when using the slowdown mode with no smooth turn. Otherwise, the helicopter will stop before arriving to destination. </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../db/d69/classHelicopterPlatform.html#aef5a02ea1be3bf929cb4eefee1322de0" title="Distance threshold to start slowdown process when not in smooth turn mode. ">HelicopterPlatform::cfg_slowdown_dist_xy</a> </dd></dl>
+
+</div>
+</div>
 <a id="a7054de308b809ca7ba853efbc2cbef04"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a7054de308b809ca7ba853efbc2cbef04">&#9670;&nbsp;</a></span>computeRotationAngles()</h2>
 
@@ -711,8 +734,8 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../.
 
 </div>
 </div>
-<a id="a5aa3708f790bdc814436e8d8d8d7da25"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5aa3708f790bdc814436e8d8d8d7da25">&#9670;&nbsp;</a></span>computeSlowdownStep()</h2>
+<a id="a7a27f302a45b20603414aa170eb576ac"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7a27f302a45b20603414aa170eb576ac">&#9670;&nbsp;</a></span>computeSlowdownStep()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -723,9 +746,9 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../.
         <tr>
           <td class="memname">double HelicopterPlatform::computeSlowdownStep </td>
           <td>(</td>
-          <td class="paramtype">double&#160;</td>
+          <td class="paramtype">double const&#160;</td>
           <td class="paramname"><em>speedMagnitude</em></td><td>)</td>
-          <td></td>
+          <td> const</td>
         </tr>
       </table>
   </td>
@@ -746,8 +769,8 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../.
 
 </div>
 </div>
-<a id="ad1b52de7e38c3a5263c35d406cacdafb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad1b52de7e38c3a5263c35d406cacdafb">&#9670;&nbsp;</a></span>computeSpeedupStep()</h2>
+<a id="ac531aebc54530c52afd238b057feba09"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac531aebc54530c52afd238b057feba09">&#9670;&nbsp;</a></span>computeSpeedupStep()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -758,9 +781,9 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../.
         <tr>
           <td class="memname">double HelicopterPlatform::computeSpeedupStep </td>
           <td>(</td>
-          <td class="paramtype">double&#160;</td>
+          <td class="paramtype">double const&#160;</td>
           <td class="paramname"><em>speedMagnitude</em></td><td>)</td>
-          <td></td>
+          <td> const</td>
         </tr>
       </table>
   </td>
