@@ -339,6 +339,7 @@ var hierarchy =
     ] ],
     [ "pyhelios::PyRandomnessGeneratorWrapper", "d2/d5b/classpyhelios_1_1PyRandomnessGeneratorWrapper.html", null ],
     [ "pyhelios::PyRaySceneIntersectionWrapper", "da/db0/classpyhelios_1_1PyRaySceneIntersectionWrapper.html", null ],
+    [ "pyhelios::PyScanningStripWrapper", "d2/d6b/classpyhelios_1_1PyScanningStripWrapper.html", null ],
     [ "pyhelios::PyScenePartWrapper", "df/d28/classpyhelios_1_1PyScenePartWrapper.html", null ],
     [ "pyhelios::PySceneWrapper", "d7/d17/classpyhelios_1_1PySceneWrapper.html", null ],
     [ "pyhelios::PyStringVector", "dc/d5f/classpyhelios_1_1PyStringVector.html", null ],

@@ -70,7 +70,7 @@ public:
     inline bool has(Leg &leg){return has(leg.getSerialId());}
     /**
      * @brief Insert/emplace given leg into the scanning strip
-     * @param serialId Serial identifier of the leg to be inserted/empalced
+     * @param serialId Serial identifier of the leg to be inserted/emplaced
      * @param leg Leg to be inserted/emplaced
      */
     inline void emplace(int const serialId, Leg *leg){
@@ -100,6 +100,7 @@ public:
      */
     inline void safeEmplace(Leg *leg){safeEmplace(leg->getSerialId(), leg);}
 
+
     // ***  GETTERS and SETTERS  *** //
     // ***************************** //
     /**
@@ -123,9 +124,10 @@ public:
         return has(serialId) ? legs[serialId] : nullptr;
     }
     /**
-     * @ brief Checks if all the legs in the strip were processed in order
+     * @brief Checks if all the legs in the strip were processed in order
      * to know if the associated SyncFileWriter can be destroyed.
-     * @return
+     * @return True if all legs have been processed. False if at least one leg
+     *  has not been processed.
      */
     inline bool isLastLegInStrip() const
     {
@@ -134,4 +136,5 @@ public:
           return false;
       return true;
     }
+
 };
