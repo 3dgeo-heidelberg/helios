@@ -170,10 +170,26 @@ public:
         {survey->legs.erase(survey->legs.begin() + index);}
     /**
      * @brief Create a new empty leg
-     *
+     * @param index The  index specifying the position in the survey where the
+     *  leg will be inserted
      * @return Created empty leg
      */
     Leg & newLeg(int index);
+    /**
+     * @brief Create a new empty scanning strip (with no legs)
+     * @param stripId The identifier for the strip
+     * @return Created empty scanning strip
+     */
+    PyScanningStripWrapper * newScanningStrip(std::string const &stripId);
+    /**
+     * @brief Associate given leg with given strip
+     * @param leg The leg to be associated with given strip
+     * @param strip The strip to be associated with given leg
+     * @return True if the leg was previously associated with a strip, thus it
+     *  was updated. False if this is the first strip to which the leg is
+     *  associated.
+     */
+    bool assocLegWithScanningStrip(Leg &leg, PyScanningStripWrapper *strip);
     /**
      * @brief Obtain callback frequency
      *

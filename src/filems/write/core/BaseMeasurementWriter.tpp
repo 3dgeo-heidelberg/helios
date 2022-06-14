@@ -59,7 +59,7 @@ void BaseMeasurementWriter<WriteArgs ...>::setOutputFilePath(
         WriterType wt = chooseWriterType();
 
         // Finish previous writer properly, if any
-        if(sfw != nullptr) sfw->finish();
+        //if(sfw != nullptr) sfw->finish(); // It is already done by destructor
 
         // Create the Writer
         if(!fs::exists(path)){

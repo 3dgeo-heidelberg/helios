@@ -17,6 +17,7 @@ var dir_d070cf0d69b492364e22332565a6126b =
     [ "PyPrimitiveWrapper.h", "d5/dad/PyPrimitiveWrapper_8h_source.html", null ],
     [ "PyRandomnessGeneratorWrapper.h", "d9/db9/PyRandomnessGeneratorWrapper_8h_source.html", null ],
     [ "PyRaySceneIntersectionWrapper.h", "dd/df5/PyRaySceneIntersectionWrapper_8h_source.html", null ],
+    [ "PyScanningStripWrapper.h", "df/d83/PyScanningStripWrapper_8h_source.html", null ],
     [ "PyScenePartWrapper.h", "d0/dd2/PyScenePartWrapper_8h_source.html", null ],
     [ "PySceneWrapper.h", "d8/d43/PySceneWrapper_8h_source.html", null ],
     [ "PySimulationCycleCallback.h", "dc/d3f/PySimulationCycleCallback_8h_source.html", null ],

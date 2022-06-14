@@ -1,10 +1,6 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$dd/dcc/classStepLoop.html" title="StepLoop\&lt; StepInput\l ... \&gt;" alt="" coords="5,89,151,131"/>
-<area shape="rect" id="node2" href="$d8/dac/classNonVoidStepLoop.html" title="Class extending StepLoop to support functions with non void return. " alt="" coords="199,5,408,47"/>
-<area shape="rect" id="node3" href="$d8/dac/classNonVoidStepLoop.html" title="NonVoidStepLoop\&lt; bool \&gt;" alt="" coords="216,71,391,98"/>
-<area shape="rect" id="node4" href="$dd/d96/classVoidStepLoop.html" title="Class extending StepLoop to support functions with no return. " alt="" coords="212,122,395,149"/>
-<area shape="rect" id="node5" href="$dd/d96/classVoidStepLoop.html" title="VoidStepLoop\&lt; StepInput\l ... \&gt;" alt="" coords="218,173,389,215"/>
-<area shape="rect" id="node6" href="$df/dd6/classLinearVoidStepLoop.html" title="Class extending VoidStepLoop to support a continous linear step loop without cyclic behavior..." alt="" coords="464,144,603,185"/>
-<area shape="rect" id="node7" href="$df/dd6/classLinearVoidStepLoop.html" title="LinearVoidStepLoop\&lt;\&gt;" alt="" coords="456,210,611,237"/>
-<area shape="rect" id="node8" href="$d6/d8c/classSimulationStepLoop.html" title="Class extending LinearVoidStepLoop to support main simulation loop. " alt="" coords="659,210,797,237"/>
+<area shape="rect" id="node1" href="$dc/d2c/classDynGrove.html" title="A DynGrove is an interface which declares observer&#45;like functionality so dynamic subjects can notify ..." alt="" coords="207,5,357,32"/>
+<area shape="rect" id="node2" href="$d1/d0a/classBasicDynGrove.html" title="Basic implementation of a DynGrove which extends BasicStaticGrove to provided dynamic funcionalities..." alt="" coords="417,23,573,65"/>
+<area shape="rect" id="node3" href="$d8/da0/classStaticGrove.html" title="A StaticGrove is an abstract class which declares methods to handle a set of trees. " alt="" coords="5,56,147,83"/>
+<area shape="rect" id="node4" href="$d9/dcd/classBasicStaticGrove.html" title="Basic implementation of a StaticGrove. " alt="" coords="195,56,369,83"/>
 </map>

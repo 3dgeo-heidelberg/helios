@@ -139,6 +139,7 @@ var annotated_dup =
       [ "PyPrimitiveWrapper", "de/df5/classpyhelios_1_1PyPrimitiveWrapper.html", "de/df5/classpyhelios_1_1PyPrimitiveWrapper" ],
       [ "PyRandomnessGeneratorWrapper", "d2/d5b/classpyhelios_1_1PyRandomnessGeneratorWrapper.html", "d2/d5b/classpyhelios_1_1PyRandomnessGeneratorWrapper" ],
       [ "PyRaySceneIntersectionWrapper", "da/db0/classpyhelios_1_1PyRaySceneIntersectionWrapper.html", "da/db0/classpyhelios_1_1PyRaySceneIntersectionWrapper" ],
+      [ "PyScanningStripWrapper", "d2/d6b/classpyhelios_1_1PyScanningStripWrapper.html", "d2/d6b/classpyhelios_1_1PyScanningStripWrapper" ],
       [ "PyScenePartWrapper", "df/d28/classpyhelios_1_1PyScenePartWrapper.html", "df/d28/classpyhelios_1_1PyScenePartWrapper" ],
       [ "PySceneWrapper", "d7/d17/classpyhelios_1_1PySceneWrapper.html", "d7/d17/classpyhelios_1_1PySceneWrapper" ],
       [ "PySimulationCycleCallback", "d9/d64/classpyhelios_1_1PySimulationCycleCallback.html", "d9/d64/classpyhelios_1_1PySimulationCycleCallback" ],

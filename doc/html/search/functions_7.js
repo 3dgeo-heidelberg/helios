@@ -153,6 +153,7 @@ var searchData=
   ['getlegelapsedtime',['getLegElapsedTime',['../d6/da1/classSurveyPlayback.html#add357e8861b2780df77e9c5495847cac',1,'SurveyPlayback']]],
   ['getlegoutputprefix',['getLegOutputPrefix',['../d6/da1/classSurveyPlayback.html#a8e690dd163e33dfb42d17adf2a9cdb1d',1,'SurveyPlayback']]],
   ['getlegprogress',['getLegProgress',['../d6/da1/classSurveyPlayback.html#a9081b0d9937a7076540d81e108711169',1,'SurveyPlayback']]],
+  ['getlegref',['getLegRef',['../d2/d6b/classpyhelios_1_1PyScanningStripWrapper.html#a1180ed07961c52257a9f0ed8fbedbd7a',1,'pyhelios::PyScanningStripWrapper']]],
   ['getlegremainingtime',['getLegRemainingTime',['../d6/da1/classSurveyPlayback.html#aec0dabde539225f6121a5eecffa27396',1,'SurveyPlayback']]],
   ['getlegstarttime',['getLegStartTime',['../d6/da1/classSurveyPlayback.html#a8de05b70ddfbedaef3b2270a48501462',1,'SurveyPlayback']]],
   ['getlength',['getLength',['../de/d51/classLeg.html#a3ebc77c84e75162d44981c4ed699fe1e',1,'Leg::getLength()'],['../d5/db6/classSurvey.html#a216064ca2a8723fe582ba66515dcaf29',1,'Survey::getLength()']]],
