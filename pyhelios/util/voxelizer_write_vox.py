@@ -65,9 +65,9 @@ class Voxelizer:
             localOrigin = origin
 
         # Find 3 - dimensional indices of voxels in which points are lying
-        idxVoxel = np.array([np.floor((self.data[:, 0] - localOrigin[0]) / self.voxel_size[0]),
-                             np.floor((self.data[:, 1] - localOrigin[1]) / self.voxel_size[1]),
-                             np.floor((self.data[:, 2] - localOrigin[2]) / self.voxel_size[2])]).T
+        idxVoxel = np.array([np.floor((self.data[:, 0] - localOrigin[0] + self.voxel_size[0] / 2) / self.voxel_size[0]),
+                             np.floor((self.data[:, 1] - localOrigin[1] + self.voxel_size[1] / 2) / self.voxel_size[1]),
+                             np.floor((self.data[:, 2] - localOrigin[2] + self.voxel_size[2] / 2) / self.voxel_size[2])]).T
 
         # Remove multiple voxels
         idxVoxelUnique, ic = np.unique(idxVoxel, axis=0,
@@ -85,7 +85,6 @@ class Voxelizer:
         idxSort = np.argsort(ic)
         ic = ic[idxSort]
 
-        data_sorted = self.data[idxSort, :]
         idxJump, = np.nonzero(np.diff(ic))
         idxJump += 1
 
@@ -134,7 +133,7 @@ def save_vox(voxel_idx, origin, max_corner, vox_size, fname):
         outfile.write("VOXEL SPACE\n")
         outfile.write(f"#min_corner: {origin[0]-c:f} {origin[1]-c:f} {origin[2]-c:f}\n")
         outfile.write(f"#max_corner: {max_corner[0]:f} {max_corner[1]:f} {max_corner[2]:f}\n")
-        outfile.write(f"#split: {split[0] + 1:d} {split[1] + 1:d} {split[2] + 1:d}\n")
+        outfile.write(f"#split: {int(split[0]) + 1} {int(split[1]) + 1} {int(split[2]) + 1}\n")
         outfile.write(f"#res: {vox_size:f}\n")
         outfile.write("i j k PadBVTotal angleMean bsEntering bsIntercepted bsPotential ground_distance lMeanTotal lgTotal nbEchos nbSampling transmittance attenuation attenuationBiasCorrection\n")
         arr = np.zeros((voxel_idx.shape[0], 16))
