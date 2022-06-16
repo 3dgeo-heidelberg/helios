@@ -4,7 +4,7 @@
 
 > Heidelberg LiDAR Operations Simulator ++
 
-![Logo](h++_small.png)
+![Logo](h++.png)
 
 HELIOS++ is a general-purpose software package for simulation of terrestrial, mobile and airborne laser scanning surveys written in C++11. 
 It is developed and maintained by the [3DGeo Research Group](https://uni-heidelberg.de/3dgeo) at Heidelberg University.
