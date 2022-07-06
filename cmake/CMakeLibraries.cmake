@@ -84,11 +84,11 @@ if(${BOOST_DYNAMIC_LIBS})
     set(Boost_USE_STATIC_LIBS_OFF)
     if(WIN32 OR MSVC)  # Specific boost stuff for Windows
         set(Boost_THREADAPI win32)
-        set(BASE_BOOST_COMPONENTS system thread regex filesystem serialization iostreams zlib)
+        set(BASE_BOOST_COMPONENTS system thread regex filesystem serialization iostreams zlib random)
     else()  # Specific boost stuff for Linux
         #set(Boost_COMPILER "-vc")
         set(Boost_THREADAPI pthread)
-        set(BASE_BOOST_COMPONENTS system thread regex filesystem serialization iostreams)
+        set(BASE_BOOST_COMPONENTS system thread regex filesystem serialization iostreams random)
     endif()
 else()
     set(Boost_USE_STATIC_LIBS ON)
