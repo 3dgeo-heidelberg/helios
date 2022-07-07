@@ -174,7 +174,7 @@ public:
         }
     }
 
-    ~LasSyncFileWriter() override {LasSyncFileWriter::finish();}
+    virtual ~LasSyncFileWriter() {LasSyncFileWriter::finish();}
 
     // ***  CRAFTING  *** //
     // ****************** //
