@@ -15,11 +15,11 @@ Input arguments:
     )
 
 
-def parse_args():
+def parse_args(helpf=print_help):
     """Parse input arguments. Raise an exception if not correct arguments were
     given"""
     if len(sys.argv) == 1:
-        print_help()
+        helpf()
         exit(0)
     elif len(sys.argv) < 3:
         raise Exception(

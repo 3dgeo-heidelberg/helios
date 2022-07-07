@@ -64,6 +64,8 @@ public:
         );
     };
 
+    virtual ~Las14SyncFileMeasurementWriter() = default;
+
     // ***  CRAFTING  *** //
     // ****************** //
     /**
