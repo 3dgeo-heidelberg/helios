@@ -145,7 +145,9 @@ void SurveyPlayback::trackProgress() {
 		    getScanner()->scannerHead->getRotateStart() -
 		    getScanner()->scannerHead->getRotateCurrent()
         );
-		int legProgress = (int)(legElapsedAngle * 100 / getScanner()->scannerHead->getRotateRange());
+		int const legProgress = (int)(
+		    legElapsedAngle * 100 / getScanner()->scannerHead->getRotateRange()
+		);
 		estimateTime(legProgress, true, 0);
 	}
 	else if (mCurrentLegIndex < mSurvey->legs.size() - 1) {
@@ -153,7 +155,7 @@ void SurveyPlayback::trackProgress() {
 		    getCurrentLeg()->mPlatformSettings->getPosition(),
 		    mSurvey->scanner->platform->getPosition()
         );
-		int legProgress = (int)
+		int const legProgress = (int)
 		    (legElapsedLength * 100 / getCurrentLeg()->getLength());
 		estimateTime(legProgress, false, legElapsedLength);
 	}
@@ -226,7 +228,7 @@ void SurveyPlayback::onLegComplete() {
 	startNextLeg(false);
 }
 
-void SurveyPlayback::startLeg(unsigned int legIndex, bool manual) {
+void SurveyPlayback::startLeg(unsigned int const legIndex, bool const manual) {
 	if (legIndex < 0 || legIndex >= mSurvey->legs.size()) {
 		return;
 	}
@@ -413,7 +415,7 @@ void SurveyPlayback::prepareOutput(){
     std::shared_ptr<Leg> leg = getCurrentLeg();
     if(!leg->getScannerSettings().active) return;
 
-    // Check if all the legs in the rip were processed
+    // Check if all the legs in the strip were processed
     std::shared_ptr<ScanningStrip> strip = leg->getStrip();
     bool lastLegInStrip = true;
     if(strip != nullptr){

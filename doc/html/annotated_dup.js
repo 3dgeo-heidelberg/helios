@@ -24,6 +24,7 @@ var annotated_dup =
     ] ],
     [ "helios", null, [
       [ "filems", null, [
+        [ "BaseFullWaveformWriter", "df/dfa/classhelios_1_1filems_1_1BaseFullWaveformWriter.html", "df/dfa/classhelios_1_1filems_1_1BaseFullWaveformWriter" ],
         [ "BaseMeasurementWriter", "d7/d1a/classhelios_1_1filems_1_1BaseMeasurementWriter.html", "d7/d1a/classhelios_1_1filems_1_1BaseMeasurementWriter" ],
         [ "BinaryFileReader", "d9/dab/classhelios_1_1filems_1_1BinaryFileReader.html", "d9/dab/classhelios_1_1filems_1_1BinaryFileReader" ],
         [ "BinaryReadingStrategy", "de/d7a/classhelios_1_1filems_1_1BinaryReadingStrategy.html", "de/d7a/classhelios_1_1filems_1_1BinaryReadingStrategy" ],
@@ -34,6 +35,7 @@ var annotated_dup =
         [ "DesignMatrixReader", "da/da4/classhelios_1_1filems_1_1DesignMatrixReader.html", "da/da4/classhelios_1_1filems_1_1DesignMatrixReader" ],
         [ "DirectFullWaveformWriteStrategy", "d8/df7/classhelios_1_1filems_1_1DirectFullWaveformWriteStrategy.html", "d8/df7/classhelios_1_1filems_1_1DirectFullWaveformWriteStrategy" ],
         [ "DirectMeasurementWriteStrategy", "de/d6d/classhelios_1_1filems_1_1DirectMeasurementWriteStrategy.html", "de/d6d/classhelios_1_1filems_1_1DirectMeasurementWriteStrategy" ],
+        [ "DirectStringWriteStrategy", "df/d83/classhelios_1_1filems_1_1DirectStringWriteStrategy.html", "df/d83/classhelios_1_1filems_1_1DirectStringWriteStrategy" ],
         [ "DirectTrajectoryWriteStrategy", "d0/de5/classhelios_1_1filems_1_1DirectTrajectoryWriteStrategy.html", "d0/de5/classhelios_1_1filems_1_1DirectTrajectoryWriteStrategy" ],
         [ "EndOfReadingException", "d4/dbc/classhelios_1_1filems_1_1EndOfReadingException.html", "d4/dbc/classhelios_1_1filems_1_1EndOfReadingException" ],
         [ "FileReader", "d4/d5e/classhelios_1_1filems_1_1FileReader.html", "d4/d5e/classhelios_1_1filems_1_1FileReader" ],
@@ -59,12 +61,15 @@ var annotated_dup =
         [ "SimpleReadingStrategy", "da/d24/classhelios_1_1filems_1_1SimpleReadingStrategy.html", "da/d24/classhelios_1_1filems_1_1SimpleReadingStrategy" ],
         [ "SimpleSyncFileFullWaveformWriter", "df/d8e/classhelios_1_1filems_1_1SimpleSyncFileFullWaveformWriter.html", "df/d8e/classhelios_1_1filems_1_1SimpleSyncFileFullWaveformWriter" ],
         [ "SimpleSyncFileMeasurementWriter", "d1/dd1/classhelios_1_1filems_1_1SimpleSyncFileMeasurementWriter.html", "d1/dd1/classhelios_1_1filems_1_1SimpleSyncFileMeasurementWriter" ],
+        [ "SimpleSyncFileStringWriter", "d4/d6d/classhelios_1_1filems_1_1SimpleSyncFileStringWriter.html", "d4/d6d/classhelios_1_1filems_1_1SimpleSyncFileStringWriter" ],
         [ "SimpleSyncFileTrajectoryWriter", "d0/dc9/classhelios_1_1filems_1_1SimpleSyncFileTrajectoryWriter.html", "d0/dc9/classhelios_1_1filems_1_1SimpleSyncFileTrajectoryWriter" ],
         [ "SimpleSyncFileWriter", "d1/db6/classhelios_1_1filems_1_1SimpleSyncFileWriter.html", "d1/db6/classhelios_1_1filems_1_1SimpleSyncFileWriter" ],
+        [ "SimpleVectorialSyncFileFullWaveformWriter", "d1/d76/classhelios_1_1filems_1_1SimpleVectorialSyncFileFullWaveformWriter.html", "d1/d76/classhelios_1_1filems_1_1SimpleVectorialSyncFileFullWaveformWriter" ],
         [ "SimpleVectorialSyncFileMeasurementWriter", "db/d36/classhelios_1_1filems_1_1SimpleVectorialSyncFileMeasurementWriter.html", "db/d36/classhelios_1_1filems_1_1SimpleVectorialSyncFileMeasurementWriter" ],
         [ "SyncFileMeasurementWriterFactory", "dc/d39/classhelios_1_1filems_1_1SyncFileMeasurementWriterFactory.html", "dc/d39/classhelios_1_1filems_1_1SyncFileMeasurementWriterFactory" ],
         [ "SyncFileWriter", "da/d4c/classhelios_1_1filems_1_1SyncFileWriter.html", "da/d4c/classhelios_1_1filems_1_1SyncFileWriter" ],
         [ "TrajectoryWriter", "dd/dd8/classhelios_1_1filems_1_1TrajectoryWriter.html", "dd/dd8/classhelios_1_1filems_1_1TrajectoryWriter" ],
+        [ "VectorialFullWaveformWriter", "d5/dd3/classhelios_1_1filems_1_1VectorialFullWaveformWriter.html", "d5/dd3/classhelios_1_1filems_1_1VectorialFullWaveformWriter" ],
         [ "VectorialMeasurementWriter", "d5/ded/classhelios_1_1filems_1_1VectorialMeasurementWriter.html", "d5/ded/classhelios_1_1filems_1_1VectorialMeasurementWriter" ],
         [ "VectorialWriteStrategy", "da/dca/classhelios_1_1filems_1_1VectorialWriteStrategy.html", "da/dca/classhelios_1_1filems_1_1VectorialWriteStrategy" ],
         [ "WriteStrategy", "de/dd3/classhelios_1_1filems_1_1WriteStrategy.html", "de/dd3/classhelios_1_1filems_1_1WriteStrategy" ],
@@ -75,6 +80,7 @@ var annotated_dup =
         [ "ZipSyncFileTrajectoryWriter", "d8/d74/classhelios_1_1filems_1_1ZipSyncFileTrajectoryWriter.html", "d8/d74/classhelios_1_1filems_1_1ZipSyncFileTrajectoryWriter" ],
         [ "ZipSyncFileWriter", "d9/d45/classhelios_1_1filems_1_1ZipSyncFileWriter.html", "d9/d45/classhelios_1_1filems_1_1ZipSyncFileWriter" ],
         [ "ZipTrajectoryWriteStrategy", "d3/d91/classhelios_1_1filems_1_1ZipTrajectoryWriteStrategy.html", "d3/d91/classhelios_1_1filems_1_1ZipTrajectoryWriteStrategy" ],
+        [ "ZipVectorialSyncFileFullWaveformWriter", "de/d98/classhelios_1_1filems_1_1ZipVectorialSyncFileFullWaveformWriter.html", "de/d98/classhelios_1_1filems_1_1ZipVectorialSyncFileFullWaveformWriter" ],
         [ "ZipVectorialSyncFileMeasurementWriter", "d8/d56/classhelios_1_1filems_1_1ZipVectorialSyncFileMeasurementWriter.html", "d8/d56/classhelios_1_1filems_1_1ZipVectorialSyncFileMeasurementWriter" ]
       ] ],
       [ "hpc", null, [
@@ -89,6 +95,7 @@ var annotated_dup =
       [ "BaseDemo", "df/df9/classHeliosDemos_1_1BaseDemo.html", "df/df9/classHeliosDemos_1_1BaseDemo" ],
       [ "DemoSelector", "df/d3f/classHeliosDemos_1_1DemoSelector.html", "df/d3f/classHeliosDemos_1_1DemoSelector" ],
       [ "DynamicSceneDemo", "d4/de8/classHeliosDemos_1_1DynamicSceneDemo.html", "d4/de8/classHeliosDemos_1_1DynamicSceneDemo" ],
+      [ "RaycastingDemo", "d4/d21/classHeliosDemos_1_1RaycastingDemo.html", "d4/d21/classHeliosDemos_1_1RaycastingDemo" ],
       [ "SimplePrimitivesDemo", "d0/d1c/classHeliosDemos_1_1SimplePrimitivesDemo.html", "d0/d1c/classHeliosDemos_1_1SimplePrimitivesDemo" ],
       [ "SurveyDemo", "d2/d88/classHeliosDemos_1_1SurveyDemo.html", "d2/d88/classHeliosDemos_1_1SurveyDemo" ]
     ] ],
@@ -132,6 +139,7 @@ var annotated_dup =
       [ "PyPrimitiveWrapper", "de/df5/classpyhelios_1_1PyPrimitiveWrapper.html", "de/df5/classpyhelios_1_1PyPrimitiveWrapper" ],
       [ "PyRandomnessGeneratorWrapper", "d2/d5b/classpyhelios_1_1PyRandomnessGeneratorWrapper.html", "d2/d5b/classpyhelios_1_1PyRandomnessGeneratorWrapper" ],
       [ "PyRaySceneIntersectionWrapper", "da/db0/classpyhelios_1_1PyRaySceneIntersectionWrapper.html", "da/db0/classpyhelios_1_1PyRaySceneIntersectionWrapper" ],
+      [ "PyScanningStripWrapper", "d2/d6b/classpyhelios_1_1PyScanningStripWrapper.html", "d2/d6b/classpyhelios_1_1PyScanningStripWrapper" ],
       [ "PyScenePartWrapper", "df/d28/classpyhelios_1_1PyScenePartWrapper.html", "df/d28/classpyhelios_1_1PyScenePartWrapper" ],
       [ "PySceneWrapper", "d7/d17/classpyhelios_1_1PySceneWrapper.html", "d7/d17/classpyhelios_1_1PySceneWrapper" ],
       [ "PySimulationCycleCallback", "d9/d64/classpyhelios_1_1PySimulationCycleCallback.html", "d9/d64/classpyhelios_1_1PySimulationCycleCallback" ],
@@ -190,6 +198,8 @@ var annotated_dup =
       [ "VHDynObjectXYZRGBAdapter", "d6/dd1/classvisualhelios_1_1VHDynObjectXYZRGBAdapter.html", "d6/dd1/classvisualhelios_1_1VHDynObjectXYZRGBAdapter" ],
       [ "VHDynSceneAdapter", "db/d0e/classvisualhelios_1_1VHDynSceneAdapter.html", "db/d0e/classvisualhelios_1_1VHDynSceneAdapter" ],
       [ "VHNormalsCanvas", "df/dd2/classvisualhelios_1_1VHNormalsCanvas.html", "df/dd2/classvisualhelios_1_1VHNormalsCanvas" ],
+      [ "VHRaycastingCanvas", "d9/d66/classvisualhelios_1_1VHRaycastingCanvas.html", "d9/d66/classvisualhelios_1_1VHRaycastingCanvas" ],
+      [ "VHScannerAdapter", "db/d65/classvisualhelios_1_1VHScannerAdapter.html", "db/d65/classvisualhelios_1_1VHScannerAdapter" ],
       [ "VHSceneCanvas", "d3/d71/classvisualhelios_1_1VHSceneCanvas.html", "d3/d71/classvisualhelios_1_1VHSceneCanvas" ],
       [ "VHSimpleCanvas", "d9/dc5/classvisualhelios_1_1VHSimpleCanvas.html", "d9/dc5/classvisualhelios_1_1VHSimpleCanvas" ],
       [ "VHStaticObjectAdapter", "d1/dda/classvisualhelios_1_1VHStaticObjectAdapter.html", "d1/dda/classvisualhelios_1_1VHStaticObjectAdapter" ],
@@ -242,8 +252,10 @@ var annotated_dup =
     [ "file_logger", "d8/d63/classfile__logger.html", "d8/d63/classfile__logger" ],
     [ "FileUtils", "d5/d4b/classFileUtils.html", "d5/d4b/classFileUtils" ],
     [ "full_logger", "d2/d65/classfull__logger.html", "d2/d65/classfull__logger" ],
+    [ "FullWaveform", "dc/d62/classFullWaveform.html", "dc/d62/classFullWaveform" ],
     [ "FullWaveformPulseDetector", "df/d37/classFullWaveformPulseDetector.html", "df/d37/classFullWaveformPulseDetector" ],
     [ "FullWaveformPulseRunnable", "db/da6/classFullWaveformPulseRunnable.html", "db/da6/classFullWaveformPulseRunnable" ],
+    [ "FullWaveformYielder", "da/d06/classFullWaveformYielder.html", "da/d06/classFullWaveformYielder" ],
     [ "FWFSettings", "d4/dfb/classFWFSettings.html", "d4/dfb/classFWFSettings" ],
     [ "GeoTiffFileLoader", "d1/d0c/classGeoTiffFileLoader.html", "d1/d0c/classGeoTiffFileLoader" ],
     [ "GroundVehiclePlatform", "d7/d94/classGroundVehiclePlatform.html", "d7/d94/classGroundVehiclePlatform" ],
@@ -378,9 +390,11 @@ var annotated_dup =
     [ "WavefrontObj", "d0/d92/classWavefrontObj.html", "d0/d92/classWavefrontObj" ],
     [ "WavefrontObjCache", "d8/d78/classWavefrontObjCache.html", "d8/d78/classWavefrontObjCache" ],
     [ "WavefrontObjFileLoader", "d9/d15/classWavefrontObjFileLoader.html", "d9/d15/classWavefrontObjFileLoader" ],
+    [ "WriteYielder", "de/d71/classWriteYielder.html", "de/d71/classWriteYielder" ],
     [ "XmlAssetsLoader", "d9/d82/classXmlAssetsLoader.html", "d9/d82/classXmlAssetsLoader" ],
     [ "XmlSceneLoader", "db/d91/classXmlSceneLoader.html", "db/d91/classXmlSceneLoader" ],
     [ "XmlSurveyLoader", "df/d9a/classXmlSurveyLoader.html", "df/d9a/classXmlSurveyLoader" ],
     [ "XmlUtils", "de/d52/classXmlUtils.html", "de/d52/classXmlUtils" ],
-    [ "XYZPointCloudFileLoader", "d6/d03/classXYZPointCloudFileLoader.html", "d6/d03/classXYZPointCloudFileLoader" ]
+    [ "XYZPointCloudFileLoader", "d6/d03/classXYZPointCloudFileLoader.html", "d6/d03/classXYZPointCloudFileLoader" ],
+    [ "Yielder", "d3/d60/classYielder.html", "d3/d60/classYielder" ]
 ];

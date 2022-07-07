@@ -550,7 +550,8 @@ void FullWaveformPulseRunnable::exportOutput(
                 currentPulseNum,
                 minHitTime_ns,
                 maxHitTime_ns,
-                absoluteBeamOrigin,
+                absoluteBeamOrigin +
+                    detector->scanner->platform->scene->getShift(),
                 beamDir,
                 currentGpsTime,
                 detector->scanner->isFullWaveNoise(),

@@ -6,7 +6,7 @@ var searchData=
   ['abstractdesignmatrix',['AbstractDesignMatrix',['../da/d40/classfluxionum_1_1AbstractDesignMatrix.html#a41cf75e41bc8894a87c404c698a614f1',1,'fluxionum::AbstractDesignMatrix']]],
   ['abstractdetector',['AbstractDetector',['../d8/d6b/classAbstractDetector.html#a8745332e83cbbe5fafebeafa5544a01c',1,'AbstractDetector']]],
   ['abstractgeometryfilter',['AbstractGeometryFilter',['../d6/dd2/classAbstractGeometryFilter.html#aeed873e49014921f65677c5fa2e31241',1,'AbstractGeometryFilter']]],
-  ['abstractpulserunnable',['AbstractPulseRunnable',['../d6/d9e/classAbstractPulseRunnable.html#a9ebe8a4afc41a1b0e28f86885c547965',1,'AbstractPulseRunnable']]],
+  ['abstractpulserunnable',['AbstractPulseRunnable',['../d6/d9e/classAbstractPulseRunnable.html#a9f9194d9037bfa0b0aa4500a8fd83b19',1,'AbstractPulseRunnable']]],
   ['acceleratebeamangle',['accelerateBeamAngle',['../d4/dfd/classOscillatingMirrorBeamDeflector.html#a3244011c435c944bb16f80f0ce57bcb0',1,'OscillatingMirrorBeamDeflector']]],
   ['acuteangle',['acuteAngle',['../d1/dd3/classSurfaceInspector_1_1maths_1_1Vector.html#a7cb1e555b5ada08fb1f8a223c2f67b57',1,'SurfaceInspector::maths::Vector']]],
   ['add',['add',['../db/d6f/classDynSequencer.html#a3a85de38c8256d8d82352e7a0119f2d2',1,'DynSequencer::add()'],['../d1/dd3/classSurfaceInspector_1_1maths_1_1Vector.html#a7e4a38ae9dbc489ef5cd8f6e18de44c1',1,'SurfaceInspector::maths::Vector::add()'],['../da/d8d/classTaskDropper.html#a91e6384d85f7aaa2156db59909d0c8cd',1,'TaskDropper::add(shared_ptr&lt; TaskType &gt; task)'],['../da/d8d/classTaskDropper.html#a44aa1feb3f6ef76da5c02b61b5cee30a',1,'TaskDropper::add(shared_ptr&lt; TaskType &gt; task, TaskArgs ... args)'],['../da/d8d/classTaskDropper.html#a6401445757ce03ab1ff60f7e6c05b663',1,'TaskDropper::add(ThreadPoolType &amp;pool, shared_ptr&lt; TaskType &gt; task)']]],
@@ -39,6 +39,7 @@ var searchData=
   ['argmax',['argmax',['../d1/dd3/classSurfaceInspector_1_1maths_1_1Vector.html#a909c0e5a73034d3a83692d8e8eb621e2',1,'SurfaceInspector::maths::Vector']]],
   ['argmin',['argmin',['../d9/d82/classfluxionum_1_1Minimizer.html#aee3b505a8afdaf211098ea86988ad89e',1,'fluxionum::Minimizer::argmin()'],['../db/d57/classfluxionum_1_1UnivariateNewtonRaphsonMinimizer.html#a51b95e942575693b3cf186aeb5c1805f',1,'fluxionum::UnivariateNewtonRaphsonMinimizer::argmin()'],['../d1/dd3/classSurfaceInspector_1_1maths_1_1Vector.html#a23843bdfb51a87089ca7ab8266d106da',1,'SurfaceInspector::maths::Vector::argmin()']]],
   ['argumentsparser',['ArgumentsParser',['../d7/d5c/classArgumentsParser.html#ac17c09e762ec2694ca8e61ec73d3edfb',1,'ArgumentsParser']]],
+  ['assoclegwithscanningstrip',['assocLegWithScanningStrip',['../d9/ddd/classpyhelios_1_1PyHeliosSimulation.html#a7db43c34ba60f33455847b39296d25a9',1,'pyhelios::PyHeliosSimulation']]],
   ['axissahkdtreefactory',['AxisSAHKDTreeFactory',['../df/d30/classAxisSAHKDTreeFactory.html#a830a51dc6cdb174357bed9a6fb55e400',1,'AxisSAHKDTreeFactory']]],
   ['axissahkdtreegeometricstrategy',['AxisSAHKDTreeGeometricStrategy',['../d4/d97/classAxisSAHKDTreeGeometricStrategy.html#afb19c346ad652ae725e037ade338261b',1,'AxisSAHKDTreeGeometricStrategy']]]
 ];

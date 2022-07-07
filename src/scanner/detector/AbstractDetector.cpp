@@ -16,6 +16,7 @@ void AbstractDetector::_clone(std::shared_ptr<AbstractDetector> ad){
 // *********************** //
 void AbstractDetector::shutdown() {
     fms->write.finishMeasurementWriter();
+    fms->write.finishTrajectoryWriter();
     if(scanner->isWriteWaveform()) fms->write.finishFullWaveformWriter();
 }
 void AbstractDetector::onLegComplete(){

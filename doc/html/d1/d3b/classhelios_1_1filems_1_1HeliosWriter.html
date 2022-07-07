@@ -114,6 +114,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ae1f22260b3d5c9d1d94d6257558571fd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d3b/classhelios_1_1filems_1_1HeliosWriter.html#ae1f22260b3d5c9d1d94d6257558571fd">finish</a> ()</td></tr>
 <tr class="memdesc:ae1f22260b3d5c9d1d94d6257558571fd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Finish the sync file writer.  <a href="#ae1f22260b3d5c9d1d94d6257558571fd">More...</a><br /></td></tr>
 <tr class="separator:ae1f22260b3d5c9d1d94d6257558571fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a35bfcdea08ed4e17d6de1280f16cfb27"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d3b/classhelios_1_1filems_1_1HeliosWriter.html#a35bfcdea08ed4e17d6de1280f16cfb27">hasWriter</a> () const</td></tr>
+<tr class="memdesc:a35bfcdea08ed4e17d6de1280f16cfb27"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check whether the <a class="el" href="../../d1/d3b/classhelios_1_1filems_1_1HeliosWriter.html" title="Alberto M. Esmoris Pena. ">HeliosWriter</a> has a non null writer (true) or not (false)  <a href="#a35bfcdea08ed4e17d6de1280f16cfb27">More...</a><br /></td></tr>
+<tr class="separator:a35bfcdea08ed4e17d6de1280f16cfb27"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5da5103f02787ce1fcc3e09c5ea4a25b"><td class="memItemLeft" align="right" valign="top">virtual fs::path&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d3b/classhelios_1_1filems_1_1HeliosWriter.html#a5da5103f02787ce1fcc3e09c5ea4a25b">getOutputFilePath</a> () const</td></tr>
 <tr class="memdesc:a5da5103f02787ce1fcc3e09c5ea4a25b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the path to the output file.  <a href="#a5da5103f02787ce1fcc3e09c5ea4a25b">More...</a><br /></td></tr>
 <tr class="separator:a5da5103f02787ce1fcc3e09c5ea4a25b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -252,7 +255,7 @@ template&lt;typename ... WriteArgs&gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>The path to the output file </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d1/d3b/classhelios_1_1filems_1_1HeliosWriter.html#a2992dc517d7bc151ed8bb002b88a3938">filems::HeliosWriter::getOutputPath</a> </dd></dl>
 
-<p>Reimplemented in <a class="el" href="../../d0/db3/classhelios_1_1filems_1_1FullWaveformWriter.html#acc3f51d30f436c89e2452674e00a0475">helios::filems::FullWaveformWriter</a>, and <a class="el" href="../../dd/dd8/classhelios_1_1filems_1_1TrajectoryWriter.html#af5915f9b4d94ad300a249378f86098b4">helios::filems::TrajectoryWriter</a>.</p>
+<p>Reimplemented in <a class="el" href="../../df/dfa/classhelios_1_1filems_1_1BaseFullWaveformWriter.html#ab443fd6e8fdf1a77bb80955102fe7244">helios::filems::BaseFullWaveformWriter&lt; WriteArgs &gt;</a>, <a class="el" href="../../df/dfa/classhelios_1_1filems_1_1BaseFullWaveformWriter.html#ab443fd6e8fdf1a77bb80955102fe7244">helios::filems::BaseFullWaveformWriter&lt; vector&lt; FullWaveform &gt; const &amp;&gt;</a>, <a class="el" href="../../df/dfa/classhelios_1_1filems_1_1BaseFullWaveformWriter.html#ab443fd6e8fdf1a77bb80955102fe7244">helios::filems::BaseFullWaveformWriter&lt; FullWaveform const &amp;&gt;</a>, and <a class="el" href="../../dd/dd8/classhelios_1_1filems_1_1TrajectoryWriter.html#af5915f9b4d94ad300a249378f86098b4">helios::filems::TrajectoryWriter</a>.</p>
 
 </div>
 </div>
@@ -282,7 +285,37 @@ template&lt;typename ... WriteArgs&gt; </div>
 </div><div class="memdoc">
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d1/d3b/classhelios_1_1filems_1_1HeliosWriter.html#a5da5103f02787ce1fcc3e09c5ea4a25b" title="Get the path to the output file. ">filems::HeliosWriter::getOutputFilePath</a> </dd></dl>
 
-<p>Reimplemented in <a class="el" href="../../d0/db3/classhelios_1_1filems_1_1FullWaveformWriter.html#a80a54585f9b3397b2e86901e3637cd68">helios::filems::FullWaveformWriter</a>, and <a class="el" href="../../dd/dd8/classhelios_1_1filems_1_1TrajectoryWriter.html#aacbb27da86ae374e9d89078a5f6456b7">helios::filems::TrajectoryWriter</a>.</p>
+<p>Reimplemented in <a class="el" href="../../df/dfa/classhelios_1_1filems_1_1BaseFullWaveformWriter.html#aba23f7a98040518f67373e71f7218790">helios::filems::BaseFullWaveformWriter&lt; WriteArgs &gt;</a>, <a class="el" href="../../dd/dd8/classhelios_1_1filems_1_1TrajectoryWriter.html#aacbb27da86ae374e9d89078a5f6456b7">helios::filems::TrajectoryWriter</a>, <a class="el" href="../../df/dfa/classhelios_1_1filems_1_1BaseFullWaveformWriter.html#aba23f7a98040518f67373e71f7218790">helios::filems::BaseFullWaveformWriter&lt; vector&lt; FullWaveform &gt; const &amp;&gt;</a>, and <a class="el" href="../../df/dfa/classhelios_1_1filems_1_1BaseFullWaveformWriter.html#aba23f7a98040518f67373e71f7218790">helios::filems::BaseFullWaveformWriter&lt; FullWaveform const &amp;&gt;</a>.</p>
+
+</div>
+</div>
+<a id="a35bfcdea08ed4e17d6de1280f16cfb27"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a35bfcdea08ed4e17d6de1280f16cfb27">&#9670;&nbsp;</a></span>hasWriter()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename ... WriteArgs&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual bool <a class="el" href="../../d1/d3b/classhelios_1_1filems_1_1HeliosWriter.html">helios::filems::HeliosWriter</a>&lt; WriteArgs &gt;::hasWriter </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Check whether the <a class="el" href="../../d1/d3b/classhelios_1_1filems_1_1HeliosWriter.html" title="Alberto M. Esmoris Pena. ">HeliosWriter</a> has a non null writer (true) or not (false) </p>
+<dl class="section return"><dt>Returns</dt><dd>True if the <a class="el" href="../../d1/d3b/classhelios_1_1filems_1_1HeliosWriter.html" title="Alberto M. Esmoris Pena. ">HeliosWriter</a> has a non null writer, false otherwise </dd></dl>
 
 </div>
 </div>

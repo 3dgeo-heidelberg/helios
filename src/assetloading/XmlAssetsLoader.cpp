@@ -556,7 +556,7 @@ std::shared_ptr<Platform> XmlAssetsLoader::createInterpolatedMovingPlatform(){
                     dm.swapColumns(indices[trajectoryPath]);
                     platform->tdm =
                     std::make_shared<TemporalDesignMatrix<double, double>>(
-                        dm, indices[trajectoryPath][0]
+                        dm, 0
                     );
                 }
                 else{ // Trajectory file indices
@@ -640,7 +640,7 @@ std::shared_ptr<Platform> XmlAssetsLoader::createInterpolatedMovingPlatform(){
                     dm.swapColumns(indices[trajectoryPath]);
                     tdm = unique_ptr<TemporalDesignMatrix<double, double>>(
                         new TemporalDesignMatrix<double, double>(
-                            dm, indices[trajectoryPath][0]
+                            dm, 0
                         )
                     );
                 }
@@ -742,6 +742,17 @@ std::shared_ptr<Platform> XmlAssetsLoader::createInterpolatedMovingPlatform(){
         platform->scope =
             InterpolatedMovingPlatform::InterpolationScope::POSITION;
     }
+
+    // Configure scanner mount
+    // TODO Rethink : Replace by a non hardcoded scanner mount ---
+    // Hardcode of sr22 scanner mount
+    /*platform->cfg_device_relativeMountPosition = glm::dvec3(0, 0, 0.7);
+    Rotation r(glm::dvec3(1, 0, 0), 0);
+    Rotation r2(glm::dvec3(1, 0, 0), MathConverter::degreesToRadians(-90.0));
+    r = r2.applyTo(r);
+    r2 = Rotation(glm::dvec3(0, 0, 1), MathConverter::degreesToRadians(90.0));
+    platform->cfg_device_relativeMountAttitude = r2.applyTo(r);*/
+    // --- TODO Rethink : Replace by a non hardcoded scanner mount
 
     // Return egg
     return platform;

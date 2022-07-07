@@ -1,5 +1,7 @@
 #ifdef PCL_BINDING
 
+#pragma once
+
 #include <visualhelios/VHNormalsCanvas.h>
 #include <visualhelios/adapters/VHDynSceneAdapter.h>
 #include <visualhelios/adapters/VHDynObjectXYZRGBAdapter.h>
@@ -37,7 +39,7 @@ protected:
     // ***  ATTRIBUTES  *** //
     // ******************** //
     /**
-     * @brief The dynamic scene that must be rendered by
+     * @brief The dynamic scene that must be rendered
      */
     shared_ptr<VHDynSceneAdapter<
         VHStaticObjectXYZRGBAdapter, VHDynObjectXYZRGBAdapter>

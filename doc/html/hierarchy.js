@@ -62,7 +62,9 @@ var hierarchy =
     [ "HeliosDemos::BaseDemo", "df/df9/classHeliosDemos_1_1BaseDemo.html", [
       [ "HeliosDemos::SimplePrimitivesDemo", "d0/d1c/classHeliosDemos_1_1SimplePrimitivesDemo.html", null ],
       [ "HeliosDemos::SurveyDemo", "d2/d88/classHeliosDemos_1_1SurveyDemo.html", [
-        [ "HeliosDemos::DynamicSceneDemo", "d4/de8/classHeliosDemos_1_1DynamicSceneDemo.html", null ]
+        [ "HeliosDemos::DynamicSceneDemo", "d4/de8/classHeliosDemos_1_1DynamicSceneDemo.html", [
+          [ "HeliosDemos::RaycastingDemo", "d4/d21/classHeliosDemos_1_1RaycastingDemo.html", null ]
+        ] ]
       ] ]
     ] ],
     [ "HeliosTests::BaseTest", "d9/d52/classHeliosTests_1_1BaseTest.html", [
@@ -148,6 +150,7 @@ var hierarchy =
     [ "helios::filems::FMSReadFacade", "dd/dc0/classhelios_1_1filems_1_1FMSReadFacade.html", null ],
     [ "helios::filems::FMSSerializationFacade", "d9/d56/classhelios_1_1filems_1_1FMSSerializationFacade.html", null ],
     [ "helios::filems::FMSWriteFacade", "df/d31/classhelios_1_1filems_1_1FMSWriteFacade.html", null ],
+    [ "FullWaveform", "dc/d62/classFullWaveform.html", null ],
     [ "fluxionum::Function< A, B >", "d4/d73/classfluxionum_1_1Function.html", [
       [ "fluxionum::ClosestLesserSampleFunction< A, B >", "d8/d7e/classfluxionum_1_1ClosestLesserSampleFunction.html", null ],
       [ "fluxionum::IterativeEulerMethod< A, B >", "d6/df0/classfluxionum_1_1IterativeEulerMethod.html", [
@@ -174,19 +177,23 @@ var hierarchy =
     ] ],
     [ "GroveTreeWrapper< Tree >", "d1/d1e/classGroveTreeWrapper.html", null ],
     [ "helios::filems::HeliosWriter< WriteArgs >", "d1/d3b/classhelios_1_1filems_1_1HeliosWriter.html", null ],
-    [ "helios::filems::HeliosWriter< std::vector< double > const &, int const, double const, double const, glm::dvec3 const &, glm::dvec3 const &, long const >", "d1/d3b/classhelios_1_1filems_1_1HeliosWriter.html", [
-      [ "helios::filems::FullWaveformWriter", "d0/db3/classhelios_1_1filems_1_1FullWaveformWriter.html", null ]
-    ] ],
     [ "helios::filems::HeliosWriter< Trajectory const &>", "d1/d3b/classhelios_1_1filems_1_1HeliosWriter.html", [
       [ "helios::filems::TrajectoryWriter", "dd/dd8/classhelios_1_1filems_1_1TrajectoryWriter.html", null ]
     ] ],
     [ "helios::filems::HeliosWriter< WriteArgs ... >", "d1/d3b/classhelios_1_1filems_1_1HeliosWriter.html", [
+      [ "helios::filems::BaseFullWaveformWriter< FullWaveform const &>", "df/dfa/classhelios_1_1filems_1_1BaseFullWaveformWriter.html", [
+        [ "helios::filems::FullWaveformWriter", "d0/db3/classhelios_1_1filems_1_1FullWaveformWriter.html", null ]
+      ] ],
+      [ "helios::filems::BaseFullWaveformWriter< vector< FullWaveform > const &>", "df/dfa/classhelios_1_1filems_1_1BaseFullWaveformWriter.html", [
+        [ "helios::filems::VectorialFullWaveformWriter", "d5/dd3/classhelios_1_1filems_1_1VectorialFullWaveformWriter.html", null ]
+      ] ],
       [ "helios::filems::BaseMeasurementWriter< Measurement const &, glm::dvec3 const &>", "d7/d1a/classhelios_1_1filems_1_1BaseMeasurementWriter.html", [
         [ "helios::filems::MeasurementWriter", "dd/d66/classhelios_1_1filems_1_1MeasurementWriter.html", null ]
       ] ],
       [ "helios::filems::BaseMeasurementWriter< vector< Measurement > const &, glm::dvec3 const &>", "d7/d1a/classhelios_1_1filems_1_1BaseMeasurementWriter.html", [
         [ "helios::filems::VectorialMeasurementWriter", "d5/ded/classhelios_1_1filems_1_1VectorialMeasurementWriter.html", null ]
       ] ],
+      [ "helios::filems::BaseFullWaveformWriter< WriteArgs >", "df/dfa/classhelios_1_1filems_1_1BaseFullWaveformWriter.html", null ],
       [ "helios::filems::BaseMeasurementWriter< WriteArgs >", "d7/d1a/classhelios_1_1filems_1_1BaseMeasurementWriter.html", null ]
     ] ],
     [ "HeliosTests::HPCTest_DoubleComparator", "dd/d54/structHeliosTests_1_1HPCTest__DoubleComparator.html", null ],
@@ -262,6 +269,11 @@ var hierarchy =
         [ "UniformNoiseSource< double >", "d3/d57/classUniformNoiseSource.html", null ]
       ] ]
     ] ],
+    [ "Object", null, [
+      [ "SurfaceInspector::maths::functions::IMathFunction< T, T >", "da/d80/classSurfaceInspector_1_1maths_1_1functions_1_1IMathFunction.html", [
+        [ "SurfaceInspector::maths::functions::GaussianFunction< T >", "db/dc1/classSurfaceInspector_1_1maths_1_1functions_1_1GaussianFunction.html", null ]
+      ] ]
+    ] ],
     [ "SurfaceInspector::util::Object", "d2/df2/classSurfaceInspector_1_1util_1_1Object.html", [
       [ "SurfaceInspector::util::draggers::IDragger< E, vector< E > >", "d1/dd1/classSurfaceInspector_1_1util_1_1draggers_1_1IDragger.html", [
         [ "SurfaceInspector::util::draggers::OptimizationDragger< E >", "d5/d68/classSurfaceInspector_1_1util_1_1draggers_1_1OptimizationDragger.html", [
@@ -288,13 +300,7 @@ var hierarchy =
       [ "SurfaceInspector::util::draggers::IDragger< E, C >", "d1/dd1/classSurfaceInspector_1_1util_1_1draggers_1_1IDragger.html", null ],
       [ "SurfaceInspector::util::SurfaceInspectorException", "df/da8/classSurfaceInspector_1_1util_1_1SurfaceInspectorException.html", null ]
     ] ],
-    [ "Object", null, [
-      [ "SurfaceInspector::maths::functions::IMathFunction< T, T >", "da/d80/classSurfaceInspector_1_1maths_1_1functions_1_1IMathFunction.html", [
-        [ "SurfaceInspector::maths::functions::GaussianFunction< T >", "db/dc1/classSurfaceInspector_1_1maths_1_1functions_1_1GaussianFunction.html", null ]
-      ] ]
-    ] ],
     [ "PlaneFitter", "d6/d51/classPlaneFitter.html", null ],
-    [ "PointcloudYielder", "d6/d61/classPointcloudYielder.html", null ],
     [ "Primitive", "df/de1/classPrimitive.html", [
       [ "AABB", "d2/d1a/classAABB.html", null ],
       [ "Triangle", "d2/d51/classTriangle.html", null ],
@@ -333,6 +339,7 @@ var hierarchy =
     ] ],
     [ "pyhelios::PyRandomnessGeneratorWrapper", "d2/d5b/classpyhelios_1_1PyRandomnessGeneratorWrapper.html", null ],
     [ "pyhelios::PyRaySceneIntersectionWrapper", "da/db0/classpyhelios_1_1PyRaySceneIntersectionWrapper.html", null ],
+    [ "pyhelios::PyScanningStripWrapper", "d2/d6b/classpyhelios_1_1PyScanningStripWrapper.html", null ],
     [ "pyhelios::PyScenePartWrapper", "df/d28/classpyhelios_1_1PyScenePartWrapper.html", null ],
     [ "pyhelios::PySceneWrapper", "d7/d17/classpyhelios_1_1PySceneWrapper.html", null ],
     [ "pyhelios::PyStringVector", "dc/d5f/classpyhelios_1_1PyStringVector.html", null ],
@@ -463,28 +470,37 @@ var hierarchy =
         [ "helios::filems::Las14VectorialSyncFileMeasurementWriter", "d6/de6/classhelios_1_1filems_1_1Las14VectorialSyncFileMeasurementWriter.html", null ],
         [ "helios::filems::LasVectorialSyncFileMeasurementWriter", "d6/dfd/classhelios_1_1filems_1_1LasVectorialSyncFileMeasurementWriter.html", null ]
       ] ],
+      [ "helios::filems::SimpleSyncFileWriter< FullWaveform const &>", "d1/db6/classhelios_1_1filems_1_1SimpleSyncFileWriter.html", [
+        [ "helios::filems::SimpleSyncFileFullWaveformWriter", "df/d8e/classhelios_1_1filems_1_1SimpleSyncFileFullWaveformWriter.html", null ]
+      ] ],
       [ "helios::filems::SimpleSyncFileWriter< Measurement const &, glm::dvec3 const &>", "d1/db6/classhelios_1_1filems_1_1SimpleSyncFileWriter.html", [
         [ "helios::filems::SimpleSyncFileMeasurementWriter", "d1/dd1/classhelios_1_1filems_1_1SimpleSyncFileMeasurementWriter.html", null ]
       ] ],
-      [ "helios::filems::SimpleSyncFileWriter< std::vector< double > const &, int const, double const, double const, glm::dvec3 const &, glm::dvec3 const &, long const >", "d1/db6/classhelios_1_1filems_1_1SimpleSyncFileWriter.html", [
-        [ "helios::filems::SimpleSyncFileFullWaveformWriter", "df/d8e/classhelios_1_1filems_1_1SimpleSyncFileFullWaveformWriter.html", null ]
+      [ "helios::filems::SimpleSyncFileWriter< std::string const &>", "d1/db6/classhelios_1_1filems_1_1SimpleSyncFileWriter.html", [
+        [ "helios::filems::SimpleSyncFileStringWriter", "d4/d6d/classhelios_1_1filems_1_1SimpleSyncFileStringWriter.html", null ]
       ] ],
       [ "helios::filems::SimpleSyncFileWriter< Trajectory const &>", "d1/db6/classhelios_1_1filems_1_1SimpleSyncFileWriter.html", [
         [ "helios::filems::SimpleSyncFileTrajectoryWriter", "d0/dc9/classhelios_1_1filems_1_1SimpleSyncFileTrajectoryWriter.html", null ]
+      ] ],
+      [ "helios::filems::SimpleSyncFileWriter< vector< FullWaveform > const &>", "d1/db6/classhelios_1_1filems_1_1SimpleSyncFileWriter.html", [
+        [ "helios::filems::SimpleVectorialSyncFileFullWaveformWriter", "d1/d76/classhelios_1_1filems_1_1SimpleVectorialSyncFileFullWaveformWriter.html", null ]
       ] ],
       [ "helios::filems::SimpleSyncFileWriter< vector< Measurement > const &, glm::dvec3 const & >", "d1/db6/classhelios_1_1filems_1_1SimpleSyncFileWriter.html", [
         [ "helios::filems::SimpleVectorialSyncFileMeasurementWriter", "db/d36/classhelios_1_1filems_1_1SimpleVectorialSyncFileMeasurementWriter.html", null ]
       ] ],
       [ "helios::filems::SimpleSyncFileWriter< WriteArgs... >", "d1/db6/classhelios_1_1filems_1_1SimpleSyncFileWriter.html", [
         [ "helios::filems::ZipSyncFileWriter< WriteArgs >", "d9/d45/classhelios_1_1filems_1_1ZipSyncFileWriter.html", null ],
+        [ "helios::filems::ZipSyncFileWriter< FullWaveform const &>", "d9/d45/classhelios_1_1filems_1_1ZipSyncFileWriter.html", [
+          [ "helios::filems::ZipSyncFileFullWaveformWriter", "db/dbf/classhelios_1_1filems_1_1ZipSyncFileFullWaveformWriter.html", null ]
+        ] ],
         [ "helios::filems::ZipSyncFileWriter< Measurement const &, glm::dvec3 const &>", "d9/d45/classhelios_1_1filems_1_1ZipSyncFileWriter.html", [
           [ "helios::filems::ZipSyncFileMeasurementWriter", "df/d63/classhelios_1_1filems_1_1ZipSyncFileMeasurementWriter.html", null ]
         ] ],
-        [ "helios::filems::ZipSyncFileWriter< std::vector< double > const &, int const, double const, double const, glm::dvec3 const &, glm::dvec3 const &, long const >", "d9/d45/classhelios_1_1filems_1_1ZipSyncFileWriter.html", [
-          [ "helios::filems::ZipSyncFileFullWaveformWriter", "db/dbf/classhelios_1_1filems_1_1ZipSyncFileFullWaveformWriter.html", null ]
-        ] ],
         [ "helios::filems::ZipSyncFileWriter< Trajectory const &>", "d9/d45/classhelios_1_1filems_1_1ZipSyncFileWriter.html", [
           [ "helios::filems::ZipSyncFileTrajectoryWriter", "d8/d74/classhelios_1_1filems_1_1ZipSyncFileTrajectoryWriter.html", null ]
+        ] ],
+        [ "helios::filems::ZipSyncFileWriter< vector< FullWaveform > const &>", "d9/d45/classhelios_1_1filems_1_1ZipSyncFileWriter.html", [
+          [ "helios::filems::ZipVectorialSyncFileFullWaveformWriter", "de/d98/classhelios_1_1filems_1_1ZipVectorialSyncFileFullWaveformWriter.html", null ]
         ] ],
         [ "helios::filems::ZipSyncFileWriter< vector< Measurement > const &, glm::dvec3 const & >", "d9/d45/classhelios_1_1filems_1_1ZipSyncFileWriter.html", [
           [ "helios::filems::ZipVectorialSyncFileMeasurementWriter", "d8/d56/classhelios_1_1filems_1_1ZipVectorialSyncFileMeasurementWriter.html", null ]
@@ -529,12 +545,15 @@ var hierarchy =
     [ "visualhelios::VHCanvas", "de/dda/classvisualhelios_1_1VHCanvas.html", [
       [ "visualhelios::VHDynCanvas", "da/d27/classvisualhelios_1_1VHDynCanvas.html", [
         [ "visualhelios::VHNormalsCanvas", "df/dd2/classvisualhelios_1_1VHNormalsCanvas.html", [
-          [ "visualhelios::VHSceneCanvas", "d3/d71/classvisualhelios_1_1VHSceneCanvas.html", null ],
+          [ "visualhelios::VHSceneCanvas", "d3/d71/classvisualhelios_1_1VHSceneCanvas.html", [
+            [ "visualhelios::VHRaycastingCanvas", "d9/d66/classvisualhelios_1_1VHRaycastingCanvas.html", null ]
+          ] ],
           [ "visualhelios::VHSimpleCanvas", "d9/dc5/classvisualhelios_1_1VHSimpleCanvas.html", null ]
         ] ]
       ] ]
     ] ],
     [ "visualhelios::VHDynSceneAdapter< ST, DT >", "db/d0e/classvisualhelios_1_1VHDynSceneAdapter.html", null ],
+    [ "visualhelios::VHScannerAdapter", "db/d65/classvisualhelios_1_1VHScannerAdapter.html", null ],
     [ "visualhelios::VHStaticObjectAdapter", "d1/dda/classvisualhelios_1_1VHStaticObjectAdapter.html", [
       [ "visualhelios::VHDynObjectAdapter", "d5/dc4/classvisualhelios_1_1VHDynObjectAdapter.html", [
         [ "visualhelios::VHDynObjectXYZAdapter", "de/d3c/classvisualhelios_1_1VHDynObjectXYZAdapter.html", null ],
@@ -552,16 +571,19 @@ var hierarchy =
     [ "WavefrontObj", "d0/d92/classWavefrontObj.html", null ],
     [ "WavefrontObjCache", "d8/d78/classWavefrontObjCache.html", null ],
     [ "helios::filems::WriteStrategy< WriteArgs >", "de/dd3/classhelios_1_1filems_1_1WriteStrategy.html", null ],
+    [ "helios::filems::WriteStrategy< FullWaveform const &>", "de/dd3/classhelios_1_1filems_1_1WriteStrategy.html", [
+      [ "helios::filems::DirectFullWaveformWriteStrategy", "d8/df7/classhelios_1_1filems_1_1DirectFullWaveformWriteStrategy.html", [
+        [ "helios::filems::ZipFullWaveformWriteStrategy", "d6/d70/classhelios_1_1filems_1_1ZipFullWaveformWriteStrategy.html", null ]
+      ] ]
+    ] ],
     [ "helios::filems::WriteStrategy< Measurement const &, glm::dvec3 const &>", "de/dd3/classhelios_1_1filems_1_1WriteStrategy.html", [
       [ "helios::filems::DirectMeasurementWriteStrategy", "de/d6d/classhelios_1_1filems_1_1DirectMeasurementWriteStrategy.html", [
         [ "helios::filems::ZipMeasurementWriteStrategy", "df/d31/classhelios_1_1filems_1_1ZipMeasurementWriteStrategy.html", null ]
       ] ],
       [ "helios::filems::LasMeasurementWriteStrategy", "da/d35/classhelios_1_1filems_1_1LasMeasurementWriteStrategy.html", null ]
     ] ],
-    [ "helios::filems::WriteStrategy< std::vector< double > const &, int const, double const, double const, glm::dvec3 const &, glm::dvec3 const &, long const >", "de/dd3/classhelios_1_1filems_1_1WriteStrategy.html", [
-      [ "helios::filems::DirectFullWaveformWriteStrategy", "d8/df7/classhelios_1_1filems_1_1DirectFullWaveformWriteStrategy.html", [
-        [ "helios::filems::ZipFullWaveformWriteStrategy", "d6/d70/classhelios_1_1filems_1_1ZipFullWaveformWriteStrategy.html", null ]
-      ] ]
+    [ "helios::filems::WriteStrategy< std::string const &>", "de/dd3/classhelios_1_1filems_1_1WriteStrategy.html", [
+      [ "helios::filems::DirectStringWriteStrategy", "df/d83/classhelios_1_1filems_1_1DirectStringWriteStrategy.html", null ]
     ] ],
     [ "helios::filems::WriteStrategy< Trajectory const &>", "de/dd3/classhelios_1_1filems_1_1WriteStrategy.html", [
       [ "helios::filems::DirectTrajectoryWriteStrategy", "d0/de5/classhelios_1_1filems_1_1DirectTrajectoryWriteStrategy.html", [
@@ -577,6 +599,19 @@ var hierarchy =
     ] ],
     [ "XmlSceneLoader", "db/d91/classXmlSceneLoader.html", null ],
     [ "XmlUtils", "de/d52/classXmlUtils.html", null ],
+    [ "Yielder< T >", "d3/d60/classYielder.html", [
+      [ "WriteYielder< T >", "de/d71/classWriteYielder.html", null ]
+    ] ],
+    [ "Yielder< FullWaveform >", "d3/d60/classYielder.html", [
+      [ "WriteYielder< FullWaveform >", "de/d71/classWriteYielder.html", [
+        [ "FullWaveformYielder", "da/d06/classFullWaveformYielder.html", null ]
+      ] ]
+    ] ],
+    [ "Yielder< Measurement >", "d3/d60/classYielder.html", [
+      [ "WriteYielder< Measurement >", "de/d71/classWriteYielder.html", [
+        [ "PointcloudYielder", "d6/d61/classPointcloudYielder.html", null ]
+      ] ]
+    ] ],
     [ "runtime_error", null, [
       [ "fluxionum::FluxionumException", "d3/dd9/classfluxionum_1_1FluxionumException.html", null ],
       [ "rigidmotion::RigidMotionException", "dd/db6/classrigidmotion_1_1RigidMotionException.html", null ],

@@ -11,11 +11,13 @@
 #include <filems/facade/FMSFacade.h>
 #include <filems/facade/FMSWriteFacade.h>
 #include <filems/factory/FMSFacadeFactory.h>
+#include <PyScanningStripWrapper.h>
 
 using helios::filems::FMSWriteFacade;
 
 using pyhelios::PyHeliosSimulation;
 using pyhelios::PyHeliosOutputWrapper;
+using pyhelios::PyScanningStripWrapper;
 
 namespace fms = helios::filems;
 
@@ -61,7 +63,7 @@ PyHeliosSimulation::~PyHeliosSimulation() {
 // ***  GETTERs and SETTERs  *** //
 // ***************************** //
 Leg & PyHeliosSimulation::newLeg(int index){
-    int n = (int) survey->legs.size();
+    int const n = (int) survey->legs.size();
     if(index<0 || index>n) index = n;
     std::shared_ptr<Leg> leg = std::make_shared<Leg>();
     leg->mScannerSettings =
@@ -70,6 +72,35 @@ Leg & PyHeliosSimulation::newLeg(int index){
         std::make_shared<PlatformSettings>();
     survey->addLeg(index, leg);
     return *leg;
+}
+
+PyScanningStripWrapper * PyHeliosSimulation::newScanningStrip(
+    std::string const &stripId
+){
+    std::shared_ptr<ScanningStrip> ss = std::make_shared<ScanningStrip>(
+        stripId
+    );
+    return new PyScanningStripWrapper(ss);
+}
+bool PyHeliosSimulation::assocLegWithScanningStrip(
+    Leg &leg, PyScanningStripWrapper *strip
+){
+    // Check leg status
+    bool previouslyAssoc = leg.isContainedInAStrip();
+    // Find leg pointer by serial ID
+    Leg *_leg = nullptr;
+    int const legSerialId = leg.getSerialId();
+    for(std::shared_ptr<Leg> l : survey->legs){
+        if(l->getSerialId() == legSerialId){
+            _leg = l.get();
+            break;
+        }
+    }
+    // Associate
+    leg.setStrip(strip->ss);
+    strip->ss->emplace(legSerialId, _leg);
+    // Return original leg association status
+    return previouslyAssoc;
 }
 
 // ***  CONTROL FUNCTIONS *** //
@@ -219,6 +250,7 @@ PyHeliosOutputWrapper * PyHeliosSimulation::join(){
 
     // Join (BLOCKING MODE)
     thread->join();
+    playback->fms->disconnect();
     finished = true;
 
     // Final output (BLOCKING MODE)

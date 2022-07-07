@@ -8,6 +8,7 @@
 # Input arguments:
 #  $1 -> Path to logs dir
 #  $2 -> Path to output file
+#  $3 -> Path to plots output directory
 # See : plot_log_data.py
 
 

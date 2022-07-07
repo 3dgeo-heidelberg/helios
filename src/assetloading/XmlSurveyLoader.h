@@ -23,7 +23,7 @@ protected:
     // ***  ATTRIBUTES  *** //
     // ******************** //
     /**
-     * @brief Map of scaning strips
+     * @brief Map of scanning strips
      * @see ScanningStrip
      */
     std::unordered_map<std::string, std::shared_ptr<ScanningStrip>> strips;

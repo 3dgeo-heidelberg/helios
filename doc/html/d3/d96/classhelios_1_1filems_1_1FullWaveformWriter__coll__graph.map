@@ -1,3 +1,4 @@
 <map id="helios::filems::FullWaveformWriter" name="helios::filems::FullWaveformWriter">
-<area shape="rect" id="node2" href="$d1/d3b/classhelios_1_1filems_1_1HeliosWriter.html" title="helios::filems::HeliosWriter\l\&lt; std::vector\&lt; double \&gt; const\l &amp;, int const, double const,\l double const, glm::dvec3 const\l &amp;, glm::dvec3 const &amp;, long const \&gt;" alt="" coords="237,5,473,91"/>
+<area shape="rect" id="node2" href="$df/dfa/classhelios_1_1filems_1_1BaseFullWaveformWriter.html" title="helios::filems::BaseFull\lWaveformWriter\&lt; FullWaveform\l const &amp;\&gt;" alt="" coords="508,68,719,124"/>
+<area shape="rect" id="node3" href="$d1/d3b/classhelios_1_1filems_1_1HeliosWriter.html" title="helios::filems::HeliosWriter\l\&lt; WriteArgs ... \&gt;" alt="" coords="237,13,416,54"/>
 </map>

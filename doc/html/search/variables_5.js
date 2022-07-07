@@ -4,7 +4,7 @@ var searchData=
   ['echo_5fwidth',['echo_width',['../db/d2e/classMeasurement.html#ac89b7bf01c08b449f332d40e1e35b6b1',1,'Measurement']]],
   ['ef_5fxy_5fmax',['ef_xy_max',['../db/d69/classHelicopterPlatform.html#a5d3a118bd4d36e5ed2685189ffbc7a97',1,'HelicopterPlatform']]],
   ['elapsedlength',['elapsedLength',['../d6/da1/classSurveyPlayback.html#a13f60c6bbffd7d924886fad2f5f39aae',1,'SurveyPlayback']]],
-  ['elapsedtime_5fms',['elapsedTime_ms',['../d6/da1/classSurveyPlayback.html#a0a961564e496e3a18c89c12734112fe5',1,'SurveyPlayback']]],
+  ['elapsedtime_5fns',['elapsedTime_ns',['../d6/da1/classSurveyPlayback.html#a65085c2248ee39af183e9e839fa15789',1,'SurveyPlayback']]],
   ['enableconvergencecriterion',['enableConvergenceCriterion',['../d8/d34/classfluxionum_1_1IterativeMethodHandler.html#afd84a0cd9595a366dab2a0a047b4c7ac',1,'fluxionum::IterativeMethodHandler']]],
   ['end',['end',['../d7/da6/classhelios_1_1hpc_1_1SM__ParallelMergeSortSubTask.html#a479c6de8d854cc31659d3d98cfe20b4f',1,'helios::hpc::SM_ParallelMergeSortSubTask']]],
   ['endnode',['endNode',['../d5/d89/classSAHKDTreeComputeLossNodesSubTask.html#a8ad32b15b87b071840e3869872af2faa',1,'SAHKDTreeComputeLossNodesSubTask']]],

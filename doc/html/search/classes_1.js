@@ -1,6 +1,9 @@
 var searchData=
 [
   ['basedemo',['BaseDemo',['../df/df9/classHeliosDemos_1_1BaseDemo.html',1,'HeliosDemos']]],
+  ['basefullwaveformwriter',['BaseFullWaveformWriter',['../df/dfa/classhelios_1_1filems_1_1BaseFullWaveformWriter.html',1,'helios::filems']]],
+  ['basefullwaveformwriter_3c_20fullwaveform_20const_20_26_3e',['BaseFullWaveformWriter&lt; FullWaveform const &amp;&gt;',['../df/dfa/classhelios_1_1filems_1_1BaseFullWaveformWriter.html',1,'helios::filems']]],
+  ['basefullwaveformwriter_3c_20vector_3c_20fullwaveform_20_3e_20const_20_26_3e',['BaseFullWaveformWriter&lt; vector&lt; FullWaveform &gt; const &amp;&gt;',['../df/dfa/classhelios_1_1filems_1_1BaseFullWaveformWriter.html',1,'helios::filems']]],
   ['basemeasurementwriter',['BaseMeasurementWriter',['../d7/d1a/classhelios_1_1filems_1_1BaseMeasurementWriter.html',1,'helios::filems']]],
   ['basemeasurementwriter_3c_20measurement_20const_20_26_2c_20glm_3a_3advec3_20const_20_26_3e',['BaseMeasurementWriter&lt; Measurement const &amp;, glm::dvec3 const &amp;&gt;',['../d7/d1a/classhelios_1_1filems_1_1BaseMeasurementWriter.html',1,'helios::filems']]],
   ['basemeasurementwriter_3c_20vector_3c_20measurement_20_3e_20const_20_26_2c_20glm_3a_3advec3_20const_20_26_3e',['BaseMeasurementWriter&lt; vector&lt; Measurement &gt; const &amp;, glm::dvec3 const &amp;&gt;',['../d7/d1a/classhelios_1_1filems_1_1BaseMeasurementWriter.html',1,'helios::filems']]],
