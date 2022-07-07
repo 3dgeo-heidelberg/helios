@@ -1,5 +1,8 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$d4/d5e/classhelios_1_1filems_1_1FileReader.html" title="helios::filems::FileReader\l\&lt; char \&gt;" alt="" coords="5,5,176,47"/>
-<area shape="rect" id="node2" href="$de/d6c/classhelios_1_1filems_1_1SimpleFileReader.html" title="helios::filems::SimpleFile\lReader\&lt; char \&gt;" alt="" coords="224,5,392,47"/>
-<area shape="rect" id="node3" href="$d9/dcf/classhelios_1_1filems_1_1CharFileReader.html" title="Class for char by char reading of files. " alt="" coords="440,5,596,47"/>
+<area shape="rect" id="node1" href="$d4/d73/classfluxionum_1_1Function.html" title="fluxionum::Function\l\&lt; double, arma::Col\l\&lt; double \&gt; \&gt;" alt="" coords="5,79,143,135"/>
+<area shape="rect" id="node2" href="$d5/d9a/classfluxionum_1_1ParametricClosestLesserSampleFunction.html" title="fluxionum::ParametricClosest\lLesserSampleFunction\&lt; double,\l double \&gt;" alt="" coords="191,5,400,61"/>
+<area shape="rect" id="node3" href="$d4/de0/classfluxionum_1_1ParametricIterativeEulerMethod.html" title="fluxionum::ParametricIterative\lEulerMethod\&lt; double, double \&gt;" alt="" coords="194,86,397,127"/>
+<area shape="rect" id="node5" href="$d9/de4/classTrajectoryFunction.html" title="Abstract class representing a trajectory function . " alt="" coords="230,153,361,180"/>
+<area shape="rect" id="node4" href="$dc/d03/classfluxionum_1_1FixedParametricIterativeEulerMethod.html" title="fluxionum::FixedParametric\lIterativeEulerMethod\&lt; double,\l double \&gt;" alt="" coords="448,76,644,132"/>
+<area shape="rect" id="node6" href="$d4/dc7/classDesignTrajectoryFunction.html" title="Class representing a trajectory function that comes from interpolating a TemporalDesignMatrix using i..." alt="" coords="461,156,631,183"/>
 </map>

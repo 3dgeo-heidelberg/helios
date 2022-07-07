@@ -17,6 +17,7 @@ var searchData=
   ['patiencepreservebest',['patiencePreserveBest',['../d8/d34/classfluxionum_1_1IterativeMethodHandler.html#aafb6c13f911d82ea3f7d0f3d2d3aafb9',1,'fluxionum::IterativeMethodHandler']]],
   ['pauselock',['pauseLock',['../d1/d7b/classSimulation.html#aa6b4f792c65bc94981b0c565d0dad2b7',1,'Simulation']]],
   ['pcloudyielder',['pcloudYielder',['../d8/d6b/classAbstractDetector.html#aa1516b51a47f416aa76ebf1d607aa91f',1,'AbstractDetector']]],
+  ['pclsf',['pclsf',['../d4/dc7/classDesignTrajectoryFunction.html#a98bb18c56c9f0e55fb532cee65f72f5d',1,'DesignTrajectoryFunction']]],
   ['peakenergy',['peakEnergy',['../d4/dfb/classFWFSettings.html#ada246995747fbe137e32261f6a305a00',1,'FWFSettings']]],
   ['peakintensityindex',['peakIntensityIndex',['../dc/d42/classScanner.html#aa88f7c100b678d59ca16376a15074546',1,'Scanner']]],
   ['pendingcount',['pendingCount',['../da/d92/classWarehouseThreadPool.html#aca83ee3987dd55e7fa7a0f97de765936',1,'WarehouseThreadPool']]],

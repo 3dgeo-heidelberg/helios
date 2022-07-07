@@ -247,11 +247,16 @@ public:
 	// Trajectory output processing interval
 	/**
 	 * @brief Time interval between record of trajectory points. When it is
-	 * exactly 0, then no trajectory points will be recorded
+	 * exactly 0, then no trajectory points will be recorded.
+	 *
+	 * NOTICE that it is given in nanosconds, while the trajectoryTimeInterval
+	 *  in the ScannerSettings class is given in seconds, as the user argument
+	 *  itself
+	 * @see ScannerSettings::trajectoryTimeInterval
 	 */
-    double trajectoryTimeInterval = 0.0;
+    double trajectoryTimeInterval_ns = 0.0;
     /**
-     * @brief GPS time (milliseconds) corresponding to last recorded trajectory
+     * @brief GPS time (nanoseconds) corresponding to last recorded trajectory
      * point
      */
     double lastTrajectoryTime;
@@ -531,20 +536,26 @@ public:
     /**
      * @brief Handle trajectory output whatever it is to output file, to
      * all trajectories vector or to cycle trajectories vector
-     * @param currentGpsTime Current GPS time (milliseconds)
+     * @param currentGpsTime Current GPS time (nanoseconds)
      * @see Scanner::allTrajectories
      * @see Scanner::cycleTrajectories
      */
-    void handleTrajectoryOutput(double currentGpsTime);
+    void handleTrajectoryOutput(double const currentGpsTime);
     /**
      * @brief Track given output path in a thread safe way
      * @param path Output path to be tracked
      * @see Scanner::allOutputPaths
      */
-    void trackOutputPath(std::string const path);
+    void trackOutputPath(std::string const &path);
 
 	// *** GETTERs and SETTERs *** //
 	// *************************** //
+	/**
+	 * @brief Obtain the current pulse number
+	 * @return The current pulse number
+	 * @see Scanner::state_currentPulseNumber
+	 */
+	inline int getCurrentPulseNumber() const {return state_currentPulseNumber;}
 	/**
 	 * @brief Obtain the number of rays
 	 * @return Number of rays
@@ -563,13 +574,13 @@ public:
 	 * @return Pulse frequency (hertz)
 	 * @see Scanner::cfg_setting_pulseFreq_Hz
 	 */
-	inline int getPulseFreq_Hz() {return this->cfg_setting_pulseFreq_Hz;}
+	inline int getPulseFreq_Hz() const {return this->cfg_setting_pulseFreq_Hz;}
     /**
      * @brief Set the pulse frequency
      * @param pulseFreq_Hz New pulse frequency (hertz)
      * @see Scanner::cfg_setting_pulseFreq_Hz
      */
-	void setPulseFreq_Hz(int pulseFreq_Hz);
+	void setPulseFreq_Hz(int const pulseFreq_Hz);
 
 	/**
 	 * @brief Get the pulse length

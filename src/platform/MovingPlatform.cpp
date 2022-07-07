@@ -110,7 +110,9 @@ void MovingPlatform::initLegManualIterative(){
 bool MovingPlatform::waypointReached() {
 	// velocity is in m/cycle
 	// m / (m/cycle) => cycles left to reach waypoint
-	bool result = (glm::l2Norm(cached_vectorToTarget) / glm::l2Norm(velocity)) < 1.0;
+	// TODO Pending : Use squared norm instead of norm (avoid sqrt)
+	bool const result = (glm::l2Norm(cached_vectorToTarget) /
+	    glm::l2Norm(velocity)) < 1.0;
         if (result) {
           logging::INFO("Waypoint reached!");
         }

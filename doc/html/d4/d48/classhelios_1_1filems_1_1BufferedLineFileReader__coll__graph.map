@@ -3,6 +3,6 @@
 <area shape="rect" id="node3" href="$de/d6c/classhelios_1_1filems_1_1SimpleFileReader.html" title="helios::filems::SimpleFile\lReader\&lt; string \&gt;" alt="" coords="604,70,772,111"/>
 <area shape="rect" id="node4" href="$d4/d5e/classhelios_1_1filems_1_1FileReader.html" title="helios::filems::FileReader\l\&lt; string \&gt;" alt="" coords="337,45,507,86"/>
 <area shape="rect" id="node9" href="$da/d24/classhelios_1_1filems_1_1SimpleReadingStrategy.html" title="helios::filems::SimpleReading\lStrategy\&lt; string \&gt;" alt="" coords="591,135,785,177"/>
-<area shape="rect" id="node8" href="$de/d50/classhelios_1_1filems_1_1LineReadingStrategy.html" title="Class defining the strategy to read line by line from a file input stream ::SimpleReadingStrategy. " alt="" coords="835,135,1013,177"/>
+<area shape="rect" id="node8" href="$de/d50/classhelios_1_1filems_1_1LineReadingStrategy.html" title="Class defining the strategy to read line by line from a file input stream. " alt="" coords="835,135,1013,177"/>
 <area shape="rect" id="node10" href="$df/dc7/classhelios_1_1filems_1_1ReadingStrategy.html" title="helios::filems::ReadingStrategy\l\&lt; string \&gt;" alt="" coords="320,169,524,210"/>
 </map>

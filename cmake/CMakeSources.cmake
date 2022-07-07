@@ -27,6 +27,7 @@ set(HELIOS_INCLUDE_DIRECTORIES
     "src/filems/write/strategies/"
     "src/main/"
     "src/platform/"
+    "src/platform/trajectory/"
     "src/scanner/"
     "src/scanner/beamDeflector/"
     "src/scanner/detector/"
@@ -55,6 +56,10 @@ set(HELIOS_INCLUDE_DIRECTORIES
 # Pyhelios specific include directories
 if(${PYTHON_BINDING})
     list(APPEND HELIOS_INCLUDE_DIRECTORIES "src/pybinds/")
+endif()
+# Data analytics include directories
+if(${DATA_ANALYTICS})
+    list(APPEND HELIOS_INCLUDE_DIRECTORIES "src/dataanalytics/")
 endif()
 # PCL specific include directories
 if(${PCL_BINDING})

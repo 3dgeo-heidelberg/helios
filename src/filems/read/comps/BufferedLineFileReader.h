@@ -39,8 +39,8 @@ public:
         long const maxCharsPerLine = 8192,
         size_t const bufferSize = 100000
     ) :
-        LineFileReader(path, openMode, maxCharsPerLine),
-        lrs(ifs, maxCharsPerLine),
+        LineFileReader(path, openMode, maxCharsPerLine, false),
+        lrs(ifs, this->maxCharsPerLine),
         bufferSize(bufferSize)
     {makeBufferedStrategy();}
     virtual ~BufferedLineFileReader() = default;

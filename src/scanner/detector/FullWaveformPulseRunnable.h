@@ -310,7 +310,10 @@ private:
      * @brief Compute the space distribution equation to calculate the beam
      * energy decreasing the further away from the center
      */
-	double calcEmmitedPower(double radius, double targetRange);
+	double calcEmmitedPower(
+	    double const radius,
+        double const targetRange
+    ) const ;
 	/**
 	 * @brief Capture full wave
 	 * @param fullwave Full wave vector
@@ -319,7 +322,7 @@ private:
 	 * @param max_time Maximum hit time (nanoseconds)
 	 * @param beamOrigin Beam origin in absolute coordinates
 	 * @param beamDir Beam director vector
-	 * @param gpstime Current GPS time (milliseconds)
+	 * @param gpstime Current GPS time (nanoseconds)
 	 * @param fullWaveNoise flag to specify if noise must be added to the
 	 *  full wave (true) or not (false)
 	 * @param rg2 Randomness generator to be used to add noise to the full wave
@@ -327,13 +330,13 @@ private:
 	 */
 	void captureFullWave(
 	    std::vector<double> & fullwave,
-	    int fullwaveIndex,
-	    double min_time,
-	    double max_time,
-	    glm::dvec3 & beamOrigin,
-	    glm::dvec3 & beamDir,
-        double gpstime,
-	    bool fullWaveNoise,
+	    int const fullwaveIndex,
+	    double const min_time,
+	    double const max_time,
+	    glm::dvec3 const &beamOrigin,
+	    glm::dvec3 const &beamDir,
+        double const gpstime,
+	    bool const fullWaveNoise,
 	    RandomnessGenerator<double> &rg2
     );
 
@@ -344,14 +347,14 @@ public:
      *  FullWaveformPulseRannaable::calcEmmitedPower
      */
 	double calcIntensity(
-	    double incidenceAngle,
-	    double targetRange,
-	    double targetReflectivity,
-	    double targetSpecularity,
-        double targetSpecularExponent,
-	    double targetArea,
-	    double radius
-    );
+	    double const incidenceAngle,
+	    double const targetRange,
+	    double const targetReflectivity,
+	    double const targetSpecularity,
+        double const targetSpecularExponent,
+	    double const targetArea,
+	    double const radius
+    ) const;
 
 	/**
 	 * @brief Compute intensity through scaling
@@ -359,10 +362,10 @@ public:
 	 *  FullWaveformPulseRunnable::calcEmmitedPower
 	 */
 	double calcIntensity(
-        double targetRange,
-        double radius,
-        double sigma
-    );
+        double const targetRange,
+        double const radius,
+        double const sigma
+    ) const;
 
 	// ***  O P E R A T O R  *** //
 	// ************************* //

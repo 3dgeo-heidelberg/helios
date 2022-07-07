@@ -6,11 +6,18 @@ using namespace std::chrono;
 
 #include "AbstractDetector.h"
 #include <scanner/BuddingScanningPulseProcess.h>
+#include <platform/InterpolatedMovingPlatformEgg.h>
+#include <platform/InterpolatedMovingPlatform.h>
+#ifdef DATA_ANALYTICS
+#include <dataanalytics/HDA_StateJSONReporter.h>
+using helios::analytics::HDA_StateJSONReporter;
+#endif
 
 #include "Simulation.h"
 #include <TimeWatcher.h>
 #include <DateTimeUtils.h>
 #include <filems/facade/FMSFacade.h>
+
 
 using namespace std;
 
@@ -30,7 +37,7 @@ Simulation::Simulation(
     reporter(*this)
 
 {
-    currentGpsTime_ms = calcCurrentGpsTime();
+    currentGpsTime_ns = calcCurrentGpsTime();
 }
 
 
@@ -55,6 +62,7 @@ void Simulation::prepareSimulation(int simFrequency_hz){
     // Prepare simulation
     setSimFrequency(this->mScanner->getPulseFreq_Hz());
     stepLoop.setCurrentStep(0);
+    stepGpsTime_ns = 1000000000. * stepLoop.getPeriod();
 }
 
 void Simulation::doSimStep(){
@@ -69,10 +77,11 @@ void Simulation::doSimStep(){
 
     // Ordered execution of simulation components
 	mScanner->platform->doSimStep(getScanner()->getPulseFreq_Hz());
-	mScanner->doSimStep(mCurrentLegIndex, currentGpsTime_ms);
+    mScanner->doSimStep(mCurrentLegIndex, currentGpsTime_ns);
 	mScanner->platform->scene->doSimStep();
-    currentGpsTime_ms += 1000. / ((double)getScanner()->getPulseFreq_Hz());
-    if (currentGpsTime_ms > 604800000.) currentGpsTime_ms -= 604800000.;
+    currentGpsTime_ns += stepGpsTime_ns;
+    if (currentGpsTime_ns > 604800000000000.)
+        currentGpsTime_ns -= 604800000000000.;
 }
 
 
@@ -111,9 +120,13 @@ void Simulation::start() {
     // Prepare to execute the main loop of simulation
     prepareSimulation(mScanner->getPulseFreq_Hz());
     size_t iter = 1;
-    timeStart_ms = duration_cast<milliseconds>(
+    timeStart_ns = duration_cast<nanoseconds>(
         system_clock::now().time_since_epoch()
     ).count();
+#ifdef DATA_ANALYTICS
+    HDA_StateJSONReporter sjr((SurveyPlayback *) this, "helios_state.json");
+    sjr.report();
+#endif
 
     // Execute the main loop of the simulation
 	while (!isStopped()) {
@@ -143,20 +156,21 @@ void Simulation::start() {
 	}
 
 	// Finish the main loop of the simulation
-	long const timeMainLoopFinish = duration_cast<milliseconds>(
+	long const timeMainLoopFinish = duration_cast<nanoseconds>(
 	    system_clock::now().time_since_epoch()
     ).count();
-	double const seconds = ((double)(timeMainLoopFinish - timeStart_ms))
-        / 1000.0;
+	double const seconds = (
+	        (double)(timeMainLoopFinish - timeStart_ns)
+	    ) / 1000000000.0;
 	reporter.preFinishReport(seconds);
 	mScanner->onSimulationFinished();
 
     // End of simulation report
-    long const timeFinishAll = duration_cast<milliseconds>(
+    long const timeFinishAll = duration_cast<nanoseconds>(
         system_clock::now().time_since_epoch()
     ).count();
-    double const secondsAll = ((double)(timeFinishAll - timeStart_ms))
-                              / 1000.0;
+    double const secondsAll = ((double)(timeFinishAll - timeStart_ns))
+                              / 1000000000.0;
     reporter.postFinishReport(secondsAll);
 
 	// Shutdown the simulation (e.g. close all file output streams. Implemented in derived classes.)
@@ -200,8 +214,8 @@ double Simulation::calcCurrentGpsTime(){
     }
 
     // 315964809s is the difference between 1970-01-01 and 1980-01-06
-    // 604800s per week -> resulting time is in ms since start of GPSweek
-    return (double)((now - 315964809L) % 604800L) * 1000.;
+    // 604800s per week -> resulting time is in ns since start of GPSweek
+    return (double)((now - 315964809L) % 604800L) * 1000000000.;
 }
 
 

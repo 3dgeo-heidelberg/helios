@@ -22,7 +22,7 @@ using std::vector;
  * @see filems::ZipSyncFileWriter
  * @see filems::ZipMeasurementWriteStrategy
  * @see Measurement
- * @see ZipSyncFileMeasurementWriter
+ * @see filems::ZipSyncFileMeasurementWriter
  */
 class ZipVectorialSyncFileMeasurementWriter :
     public ZipSyncFileWriter<

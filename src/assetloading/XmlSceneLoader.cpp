@@ -44,6 +44,13 @@ XmlSceneLoader::createSceneFromXml(
         // Read and set scene part ID
         bool splitPart = loadScenePartId(scenePartNode, partIndex, scenePart);
 
+        // Validate loaded scene part
+        if(!validateScenePart(scenePart, scenePartNode)){
+            // If not valid, proceed to next scene part, ignoring the malformed
+            scenePartNode = scenePartNode->NextSiblingElement("part");
+            continue;
+        }
+
         // Load dynamic motions if any
         shared_ptr<DynSequentiableMovingObject> dsmo =
             loadDynMotions(scenePartNode, scenePart);
@@ -214,6 +221,53 @@ bool XmlSceneLoader::loadScenePartId(
     return splitPart;
 }
 
+bool XmlSceneLoader::validateScenePart(
+    shared_ptr<ScenePart> scenePart,
+    tinyxml2::XMLElement *scenePartNode
+){
+    // If the scene part is not valid ...
+    if(
+        scenePart->getPrimitiveType() == ScenePart::PrimitiveType::NONE &&
+        scenePart->mPrimitives.empty()
+    ){
+        // Obtain the path
+        std::string path = "#NULL#";
+        std::string pathType = "path";
+        tinyxml2::XMLElement *filter = scenePartNode->FirstChildElement(
+            "filter"
+        );
+        bool foundPath = false;
+        while(filter != nullptr && !foundPath){
+            tinyxml2::XMLElement *param = filter->FirstChildElement("param");
+            while(param != nullptr && !foundPath){
+                if(!XmlUtils::hasAttribute(param, "key")) continue;
+                std::string key = param->Attribute("key");
+                bool const isFilePath = key == "filepath";
+                bool const isEFilePath = key == "efilepath";
+                if(isFilePath || isEFilePath){
+                    path = param->Attribute("value");
+                    if(isEFilePath) pathType = "extended path expression";
+                    foundPath = true;
+                    break;
+                }
+                param = param->NextSiblingElement("param");
+            }
+            filter = filter->NextSiblingElement("filter");
+        }
+        // Report the problem
+        std::stringstream ss;
+        ss  <<  "XmlSceneLoader::validateScenePart detected an invalid scene "
+                "part with id \"" << scenePart->mId << "\"\n"
+            << "The " << pathType << " \"" << path << "\" was given.\n"
+            << "It leads to the loading of an invalid scene part, which is "
+               "automatically ignored when composing the scene."
+            << std::endl;
+        logging::ERR(ss.str());
+        return false;
+    }
+    return true;
+}
+
 void XmlSceneLoader::digestScenePart(
     shared_ptr<ScenePart> &scenePart,
     shared_ptr<StaticScene> &scene,
@@ -375,7 +429,7 @@ shared_ptr<DynSequentiableMovingObject> XmlSceneLoader::loadDynMotions(
         primitive->part = dsmo;
     }
 
-    // Use scene part ID to build dynamic dynamic sequentiable moving object ID
+    // Use scene part ID to build dynamic sequentiable moving object ID
     std::stringstream ss;
     ss << "DSMO_" << scenePart->mId;
     dsmo->setId(ss.str());

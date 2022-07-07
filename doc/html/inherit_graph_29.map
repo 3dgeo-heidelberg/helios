@@ -1,3 +1,5 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$d5/d6b/classhelios_1_1filems_1_1FMSFactoryFacade.html" title="The facade for FMS factories. " alt="" coords="5,5,184,47"/>
+<area shape="rect" id="node1" href="$d4/d5e/classhelios_1_1filems_1_1FileReader.html" title="helios::filems::FileReader\l\&lt; char \&gt;" alt="" coords="5,5,176,47"/>
+<area shape="rect" id="node2" href="$de/d6c/classhelios_1_1filems_1_1SimpleFileReader.html" title="helios::filems::SimpleFile\lReader\&lt; char \&gt;" alt="" coords="224,5,392,47"/>
+<area shape="rect" id="node3" href="$d9/dcf/classhelios_1_1filems_1_1CharFileReader.html" title="Class for char by char reading of files. " alt="" coords="440,5,596,47"/>
 </map>

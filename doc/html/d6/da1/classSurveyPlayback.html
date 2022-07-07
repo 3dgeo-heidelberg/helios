@@ -145,9 +145,9 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/da1/classSurveyPlayback.html#a549b60078d43c9930ed7179f0f0f9ef0">onLegComplete</a> ()</td></tr>
 <tr class="memdesc:a549b60078d43c9930ed7179f0f0f9ef0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle leg completion. <br /></td></tr>
 <tr class="separator:a549b60078d43c9930ed7179f0f0f9ef0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1af3b1cca22ab616a610e55dad78ce86"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/da1/classSurveyPlayback.html#a1af3b1cca22ab616a610e55dad78ce86">startLeg</a> (unsigned int legIndex, bool manual)</td></tr>
-<tr class="memdesc:a1af3b1cca22ab616a610e55dad78ce86"><td class="mdescLeft">&#160;</td><td class="mdescRight">Start specified leg.  <a href="#a1af3b1cca22ab616a610e55dad78ce86">More...</a><br /></td></tr>
-<tr class="separator:a1af3b1cca22ab616a610e55dad78ce86"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4c23d65568e20a8918ececdf7d380778"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/da1/classSurveyPlayback.html#a4c23d65568e20a8918ececdf7d380778">startLeg</a> (unsigned int const legIndex, bool const manual)</td></tr>
+<tr class="memdesc:a4c23d65568e20a8918ececdf7d380778"><td class="mdescLeft">&#160;</td><td class="mdescRight">Start specified leg.  <a href="#a4c23d65568e20a8918ececdf7d380778">More...</a><br /></td></tr>
+<tr class="separator:a4c23d65568e20a8918ececdf7d380778"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5406350ac8cbd17d8a6c5a2537a0ac8f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/da1/classSurveyPlayback.html#a5406350ac8cbd17d8a6c5a2537a0ac8f">prepareOutput</a> ()</td></tr>
 <tr class="memdesc:a5406350ac8cbd17d8a6c5a2537a0ac8f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prepare output for current leg (measurements, trajectory and fullwave)  <a href="#a5406350ac8cbd17d8a6c5a2537a0ac8f">More...</a><br /></td></tr>
 <tr class="separator:a5406350ac8cbd17d8a6c5a2537a0ac8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -191,9 +191,15 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../.
 <tr class="memitem:a951bedf578f53735b9d553eb420a87e5"><td class="memItemLeft" align="right" valign="top">long long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/da1/classSurveyPlayback.html#a951bedf578f53735b9d553eb420a87e5">getElapsedTime</a> ()</td></tr>
 <tr class="memdesc:a951bedf578f53735b9d553eb420a87e5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain elapsed time.  <a href="#a951bedf578f53735b9d553eb420a87e5">More...</a><br /></td></tr>
 <tr class="separator:a951bedf578f53735b9d553eb420a87e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a196e63849982625a4dc79460d3f06819"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/da1/classSurveyPlayback.html#a196e63849982625a4dc79460d3f06819">getElapsedLength</a> ()</td></tr>
+<tr class="memdesc:a196e63849982625a4dc79460d3f06819"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain elapsed length.  <a href="#a196e63849982625a4dc79460d3f06819">More...</a><br /></td></tr>
+<tr class="separator:a196e63849982625a4dc79460d3f06819"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3df69c6b0e2c8df21d8009f6e80f980b"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/da1/classSurveyPlayback.html#a3df69c6b0e2c8df21d8009f6e80f980b">getRemainingTime</a> ()</td></tr>
 <tr class="memdesc:a3df69c6b0e2c8df21d8009f6e80f980b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain expected remaining time.  <a href="#a3df69c6b0e2c8df21d8009f6e80f980b">More...</a><br /></td></tr>
 <tr class="separator:a3df69c6b0e2c8df21d8009f6e80f980b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8de05b70ddfbedaef3b2270a48501462"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/da1/classSurveyPlayback.html#a8de05b70ddfbedaef3b2270a48501462">getLegStartTime</a> ()</td></tr>
+<tr class="memdesc:a8de05b70ddfbedaef3b2270a48501462"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain the leg start time in nanoseconds.  <a href="#a8de05b70ddfbedaef3b2270a48501462">More...</a><br /></td></tr>
+<tr class="separator:a8de05b70ddfbedaef3b2270a48501462"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:add357e8861b2780df77e9c5495847cac"><td class="memItemLeft" align="right" valign="top">long long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/da1/classSurveyPlayback.html#add357e8861b2780df77e9c5495847cac">getLegElapsedTime</a> ()</td></tr>
 <tr class="memdesc:add357e8861b2780df77e9c5495847cac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain current leg elapsed time.  <a href="#add357e8861b2780df77e9c5495847cac">More...</a><br /></td></tr>
 <tr class="separator:add357e8861b2780df77e9c5495847cac"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -222,7 +228,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../.
 <tr class="memdesc:a171b98c3d0a3a28ae151f7b716537717 inherit pub_methods_classSimulation"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle simulation shutdown. <br /></td></tr>
 <tr class="separator:a171b98c3d0a3a28ae151f7b716537717 inherit pub_methods_classSimulation"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afb4772514f61bdcd00f977106e8833ce inherit pub_methods_classSimulation"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d7b/classSimulation.html#afb4772514f61bdcd00f977106e8833ce">calcCurrentGpsTime</a> ()</td></tr>
-<tr class="memdesc:afb4772514f61bdcd00f977106e8833ce inherit pub_methods_classSimulation"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the current GPS time (milliseconds)  <a href="../../d1/d7b/classSimulation.html#afb4772514f61bdcd00f977106e8833ce">More...</a><br /></td></tr>
+<tr class="memdesc:afb4772514f61bdcd00f977106e8833ce inherit pub_methods_classSimulation"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the current GPS time (nanoseconds)  <a href="../../d1/d7b/classSimulation.html#afb4772514f61bdcd00f977106e8833ce">More...</a><br /></td></tr>
 <tr class="separator:afb4772514f61bdcd00f977106e8833ce inherit pub_methods_classSimulation"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0ba648397480bb134a0bfbbda499914d inherit pub_methods_classSimulation"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d7b/classSimulation.html#a0ba648397480bb134a0bfbbda499914d">setSimSpeedFactor</a> (double factor)</td></tr>
 <tr class="memdesc:a0ba648397480bb134a0bfbbda499914d inherit pub_methods_classSimulation"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the simulation speed factor.  <a href="../../d1/d7b/classSimulation.html#a0ba648397480bb134a0bfbbda499914d">More...</a><br /></td></tr>
@@ -254,6 +260,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../.
 <tr class="memitem:aa286c140e1c7fa44ee30adf175cea649 inherit pub_methods_classSimulation"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d7b/classSimulation.html#aa286c140e1c7fa44ee30adf175cea649">setCallbackFrequency</a> (size_t const <a class="el" href="../../d1/d7b/classSimulation.html#a8443eec8cae6ae1c587e375bf25f7eb0">callbackFrequency</a>)</td></tr>
 <tr class="memdesc:aa286c140e1c7fa44ee30adf175cea649 inherit pub_methods_classSimulation"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the new callback frequency.  <a href="../../d1/d7b/classSimulation.html#aa286c140e1c7fa44ee30adf175cea649">More...</a><br /></td></tr>
 <tr class="separator:aa286c140e1c7fa44ee30adf175cea649 inherit pub_methods_classSimulation"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa3e66ca269d023207ee9f2c76311c112 inherit pub_methods_classSimulation"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d6/d8c/classSimulationStepLoop.html">SimulationStepLoop</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d7b/classSimulation.html#aa3e66ca269d023207ee9f2c76311c112">getStepLoop</a> ()</td></tr>
+<tr class="memdesc:aa3e66ca269d023207ee9f2c76311c112 inherit pub_methods_classSimulation"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the simulation step loop of the simulation.  <a href="../../d1/d7b/classSimulation.html#aa3e66ca269d023207ee9f2c76311c112">More...</a><br /></td></tr>
+<tr class="separator:aa3e66ca269d023207ee9f2c76311c112 inherit pub_methods_classSimulation"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -311,22 +320,22 @@ double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="..
 long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/da1/classSurveyPlayback.html#a72fc18488407995214df64c9e1b43571">legStartTime_ns</a> = 0</td></tr>
 <tr class="memdesc:a72fc18488407995214df64c9e1b43571"><td class="mdescLeft">&#160;</td><td class="mdescRight">Time (nanoseconds) when the leg started. <br /></td></tr>
 <tr class="separator:a72fc18488407995214df64c9e1b43571"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0a961564e496e3a18c89c12734112fe5"><td class="memItemLeft" align="right" valign="top"><a id="a0a961564e496e3a18c89c12734112fe5"></a>
-long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/da1/classSurveyPlayback.html#a0a961564e496e3a18c89c12734112fe5">elapsedTime_ms</a> = 0</td></tr>
-<tr class="memdesc:a0a961564e496e3a18c89c12734112fe5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Elapsed time (milliseconds) since survey simulation started. <br /></td></tr>
-<tr class="separator:a0a961564e496e3a18c89c12734112fe5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a44385985d0e2f71e6094e0b59c8d252e"><td class="memItemLeft" align="right" valign="top"><a id="a44385985d0e2f71e6094e0b59c8d252e"></a>
-long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/da1/classSurveyPlayback.html#a44385985d0e2f71e6094e0b59c8d252e">remainingTime_ms</a> = 0</td></tr>
-<tr class="memdesc:a44385985d0e2f71e6094e0b59c8d252e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Expected remaining time (milliseconds) for survey simulation. <br /></td></tr>
-<tr class="separator:a44385985d0e2f71e6094e0b59c8d252e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a78dc2aefd26b2d4f36df137d2744bc00"><td class="memItemLeft" align="right" valign="top"><a id="a78dc2aefd26b2d4f36df137d2744bc00"></a>
-long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/da1/classSurveyPlayback.html#a78dc2aefd26b2d4f36df137d2744bc00">legElapsedTime_ms</a> = 0</td></tr>
-<tr class="memdesc:a78dc2aefd26b2d4f36df137d2744bc00"><td class="mdescLeft">&#160;</td><td class="mdescRight">Elapsed time (milliseconds) since current leg started. <br /></td></tr>
-<tr class="separator:a78dc2aefd26b2d4f36df137d2744bc00"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a45b7f868d416ce0907bf283c8f6ad0f2"><td class="memItemLeft" align="right" valign="top"><a id="a45b7f868d416ce0907bf283c8f6ad0f2"></a>
-long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/da1/classSurveyPlayback.html#a45b7f868d416ce0907bf283c8f6ad0f2">legRemainingTime_ms</a> = 0</td></tr>
-<tr class="memdesc:a45b7f868d416ce0907bf283c8f6ad0f2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Expected remaining time (milliseconds) for current leg completion. <br /></td></tr>
-<tr class="separator:a45b7f868d416ce0907bf283c8f6ad0f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a65085c2248ee39af183e9e839fa15789"><td class="memItemLeft" align="right" valign="top"><a id="a65085c2248ee39af183e9e839fa15789"></a>
+long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/da1/classSurveyPlayback.html#a65085c2248ee39af183e9e839fa15789">elapsedTime_ns</a> = 0</td></tr>
+<tr class="memdesc:a65085c2248ee39af183e9e839fa15789"><td class="mdescLeft">&#160;</td><td class="mdescRight">Elapsed time (nanoseconds) since survey simulation started. <br /></td></tr>
+<tr class="separator:a65085c2248ee39af183e9e839fa15789"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeebd2bcdcbd013b3038953982173cbd9"><td class="memItemLeft" align="right" valign="top"><a id="aeebd2bcdcbd013b3038953982173cbd9"></a>
+long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/da1/classSurveyPlayback.html#aeebd2bcdcbd013b3038953982173cbd9">remainingTime_ns</a> = 0</td></tr>
+<tr class="memdesc:aeebd2bcdcbd013b3038953982173cbd9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Expected remaining time (nanoseconds) for survey simulation. <br /></td></tr>
+<tr class="separator:aeebd2bcdcbd013b3038953982173cbd9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5f4c6421b2f4022f4d17977c7d3db212"><td class="memItemLeft" align="right" valign="top"><a id="a5f4c6421b2f4022f4d17977c7d3db212"></a>
+long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/da1/classSurveyPlayback.html#a5f4c6421b2f4022f4d17977c7d3db212">legElapsedTime_ns</a> = 0</td></tr>
+<tr class="memdesc:a5f4c6421b2f4022f4d17977c7d3db212"><td class="mdescLeft">&#160;</td><td class="mdescRight">Elapsed time (nanoseconds) since current leg started. <br /></td></tr>
+<tr class="separator:a5f4c6421b2f4022f4d17977c7d3db212"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a71469aafdaec8b0aacb06378f1004ed9"><td class="memItemLeft" align="right" valign="top"><a id="a71469aafdaec8b0aacb06378f1004ed9"></a>
+long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/da1/classSurveyPlayback.html#a71469aafdaec8b0aacb06378f1004ed9">legRemainingTime_ns</a> = 0</td></tr>
+<tr class="memdesc:a71469aafdaec8b0aacb06378f1004ed9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Expected remaining time (nanoseconds) for current leg completion. <br /></td></tr>
+<tr class="separator:a71469aafdaec8b0aacb06378f1004ed9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
@@ -374,14 +383,17 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../.
 bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d7b/classSimulation.html#a789ad5755f19fa068bf3317afc96209a">mPaused</a> = false</td></tr>
 <tr class="memdesc:a789ad5755f19fa068bf3317afc96209a inherit pro_attribs_classSimulation"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flag specifying if the simulation has been paused (true) or not (false) <br /></td></tr>
 <tr class="separator:a789ad5755f19fa068bf3317afc96209a inherit pro_attribs_classSimulation"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abb93b11da9a5fe48f3b4d42ada8ba5d1 inherit pro_attribs_classSimulation"><td class="memItemLeft" align="right" valign="top"><a id="abb93b11da9a5fe48f3b4d42ada8ba5d1"></a>
-long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d7b/classSimulation.html#abb93b11da9a5fe48f3b4d42ada8ba5d1">timeStart_ms</a> = 0</td></tr>
-<tr class="memdesc:abb93b11da9a5fe48f3b4d42ada8ba5d1 inherit pro_attribs_classSimulation"><td class="mdescLeft">&#160;</td><td class="mdescRight">Time corresponding to simulation start (milliseconds) <br /></td></tr>
-<tr class="separator:abb93b11da9a5fe48f3b4d42ada8ba5d1 inherit pro_attribs_classSimulation"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1afafff95801808cecac3eda24bcefbc inherit pro_attribs_classSimulation"><td class="memItemLeft" align="right" valign="top"><a id="a1afafff95801808cecac3eda24bcefbc"></a>
-double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d7b/classSimulation.html#a1afafff95801808cecac3eda24bcefbc">currentGpsTime_ms</a> = 0</td></tr>
-<tr class="memdesc:a1afafff95801808cecac3eda24bcefbc inherit pro_attribs_classSimulation"><td class="mdescLeft">&#160;</td><td class="mdescRight">Time corresponding to simulation start (currentGpsTime) <br /></td></tr>
-<tr class="separator:a1afafff95801808cecac3eda24bcefbc inherit pro_attribs_classSimulation"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5f7bd0667056d843937ad1895170bf15 inherit pro_attribs_classSimulation"><td class="memItemLeft" align="right" valign="top"><a id="a5f7bd0667056d843937ad1895170bf15"></a>
+long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d7b/classSimulation.html#a5f7bd0667056d843937ad1895170bf15">timeStart_ns</a> = 0</td></tr>
+<tr class="memdesc:a5f7bd0667056d843937ad1895170bf15 inherit pro_attribs_classSimulation"><td class="mdescLeft">&#160;</td><td class="mdescRight">Time corresponding to simulation start (nanoseconds) <br /></td></tr>
+<tr class="separator:a5f7bd0667056d843937ad1895170bf15 inherit pro_attribs_classSimulation"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a00ec849a21bd20bf73309af0356c5cff inherit pro_attribs_classSimulation"><td class="memItemLeft" align="right" valign="top"><a id="a00ec849a21bd20bf73309af0356c5cff"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d7b/classSimulation.html#a00ec849a21bd20bf73309af0356c5cff">currentGpsTime_ns</a> = 0</td></tr>
+<tr class="memdesc:a00ec849a21bd20bf73309af0356c5cff inherit pro_attribs_classSimulation"><td class="mdescLeft">&#160;</td><td class="mdescRight">Time corresponding to simulation start (currentGpsTime in nanoseconds) <br /></td></tr>
+<tr class="separator:a00ec849a21bd20bf73309af0356c5cff inherit pro_attribs_classSimulation"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab414e1dd7d0923ecc66c56023c179c3f inherit pro_attribs_classSimulation"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d7b/classSimulation.html#ab414e1dd7d0923ecc66c56023c179c3f">stepGpsTime_ns</a> = 0</td></tr>
+<tr class="memdesc:ab414e1dd7d0923ecc66c56023c179c3f inherit pro_attribs_classSimulation"><td class="mdescLeft">&#160;</td><td class="mdescRight">The time step for GPS time (in nanoseconds)  <a href="../../d1/d7b/classSimulation.html#ab414e1dd7d0923ecc66c56023c179c3f">More...</a><br /></td></tr>
+<tr class="separator:ab414e1dd7d0923ecc66c56023c179c3f inherit pro_attribs_classSimulation"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac0b08636aea9fd4109a9e06178537007 inherit pro_attribs_classSimulation"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d7b/classSimulation.html#ac0b08636aea9fd4109a9e06178537007">fixedGpsTimeStart</a> = &quot;&quot;</td></tr>
 <tr class="memdesc:ac0b08636aea9fd4109a9e06178537007 inherit pro_attribs_classSimulation"><td class="mdescLeft">&#160;</td><td class="mdescRight">Given fixed time start for GPS time as a string.  <a href="../../d1/d7b/classSimulation.html#ac0b08636aea9fd4109a9e06178537007">More...</a><br /></td></tr>
 <tr class="separator:ac0b08636aea9fd4109a9e06178537007 inherit pro_attribs_classSimulation"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -553,6 +565,35 @@ Simulation::Simulation(unsigned, double, size_t) </dd></dl>
 
 </div>
 </div>
+<a id="a196e63849982625a4dc79460d3f06819"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a196e63849982625a4dc79460d3f06819">&#9670;&nbsp;</a></span>getElapsedLength()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double SurveyPlayback::getElapsedLength </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Obtain elapsed length. </p>
+<dl class="section return"><dt>Returns</dt><dd>The elapsed length </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d6/da1/classSurveyPlayback.html#a13f60c6bbffd7d924886fad2f5f39aae" title="Currently elapsed length. It can be understood as the summation of all traveled legs. ">SurveyPlayback::elapsedLength</a> </dd></dl>
+
+</div>
+</div>
 <a id="a951bedf578f53735b9d553eb420a87e5"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a951bedf578f53735b9d553eb420a87e5">&#9670;&nbsp;</a></span>getElapsedTime()</h2>
 
@@ -577,7 +618,7 @@ Simulation::Simulation(unsigned, double, size_t) </dd></dl>
 </div><div class="memdoc">
 
 <p>Obtain elapsed time. </p>
-<dl class="section return"><dt>Returns</dt><dd>Elapsed time (milliseconds) </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Elapsed time (nanoseconds) </dd></dl>
 
 </div>
 </div>
@@ -605,7 +646,7 @@ Simulation::Simulation(unsigned, double, size_t) </dd></dl>
 </div><div class="memdoc">
 
 <p>Obtain current leg elapsed time. </p>
-<dl class="section return"><dt>Returns</dt><dd>Current leg elapsed time (milliseconds) </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Current leg elapsed time (nanoseconds) </dd></dl>
 
 </div>
 </div>
@@ -688,7 +729,35 @@ Simulation::Simulation(unsigned, double, size_t) </dd></dl>
 </div><div class="memdoc">
 
 <p>Obtain current leg expected remaining time. </p>
-<dl class="section return"><dt>Returns</dt><dd>Current leg expected remaining time (milliseconds) </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Current leg expected remaining time (nanoseconds) </dd></dl>
+
+</div>
+</div>
+<a id="a8de05b70ddfbedaef3b2270a48501462"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8de05b70ddfbedaef3b2270a48501462">&#9670;&nbsp;</a></span>getLegStartTime()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">long SurveyPlayback::getLegStartTime </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Obtain the leg start time in nanoseconds. </p>
+<dl class="section return"><dt>Returns</dt><dd>The leg start time (nanoseconds) </dd></dl>
 
 </div>
 </div>
@@ -795,7 +864,7 @@ Simulation::Simulation(unsigned, double, size_t) </dd></dl>
 </div><div class="memdoc">
 
 <p>Obtain expected remaining time. </p>
-<dl class="section return"><dt>Returns</dt><dd>Expected remaining time (milliseconds) </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Expected remaining time (nanoseconds) </dd></dl>
 
 </div>
 </div>
@@ -868,8 +937,8 @@ Scanner::AbstractDetector </dd></dl>
 
 </div>
 </div>
-<a id="a1af3b1cca22ab616a610e55dad78ce86"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1af3b1cca22ab616a610e55dad78ce86">&#9670;&nbsp;</a></span>startLeg()</h2>
+<a id="a4c23d65568e20a8918ececdf7d380778"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4c23d65568e20a8918ececdf7d380778">&#9670;&nbsp;</a></span>startLeg()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -877,13 +946,13 @@ Scanner::AbstractDetector </dd></dl>
         <tr>
           <td class="memname">void SurveyPlayback::startLeg </td>
           <td>(</td>
-          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramtype">unsigned int const&#160;</td>
           <td class="paramname"><em>legIndex</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">bool&#160;</td>
+          <td class="paramtype">bool const&#160;</td>
           <td class="paramname"><em>manual</em>&#160;</td>
         </tr>
         <tr>

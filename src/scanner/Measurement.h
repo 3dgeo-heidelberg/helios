@@ -62,7 +62,7 @@ public:
 	/**
 	 * @brief Measurement GPS time
 	 */
-	long gpsTime;
+	double gpsTime;
 
 	// ***  CONSTRUCTION / DESTRUCTION  *** //
 	// ************************************ //
@@ -84,6 +84,7 @@ public:
 	    classification = m.classification;
 	    gpsTime = m.gpsTime;
 	}
+	virtual ~Measurement() = default;
 
 	// ***  O P E R A T O R S  *** //
 	// *************************** //

@@ -2,6 +2,7 @@ var searchData=
 [
   ['vector',['Vector',['../d1/dd3/classSurfaceInspector_1_1maths_1_1Vector.html',1,'SurfaceInspector::maths']]],
   ['vectorial',['Vectorial',['../dc/db6/classVectorial.html',1,'']]],
+  ['vectorialfullwaveformwriter',['VectorialFullWaveformWriter',['../d5/dd3/classhelios_1_1filems_1_1VectorialFullWaveformWriter.html',1,'helios::filems']]],
   ['vectorialmeasurementwriter',['VectorialMeasurementWriter',['../d5/ded/classhelios_1_1filems_1_1VectorialMeasurementWriter.html',1,'helios::filems']]],
   ['vectorialwritestrategy',['VectorialWriteStrategy',['../da/dca/classhelios_1_1filems_1_1VectorialWriteStrategy.html',1,'helios::filems']]],
   ['vertex',['Vertex',['../d2/da0/classVertex.html',1,'']]],
@@ -14,6 +15,8 @@ var searchData=
   ['vhdynobjectxyzrgbadapter',['VHDynObjectXYZRGBAdapter',['../d6/dd1/classvisualhelios_1_1VHDynObjectXYZRGBAdapter.html',1,'visualhelios']]],
   ['vhdynsceneadapter',['VHDynSceneAdapter',['../db/d0e/classvisualhelios_1_1VHDynSceneAdapter.html',1,'visualhelios']]],
   ['vhnormalscanvas',['VHNormalsCanvas',['../df/dd2/classvisualhelios_1_1VHNormalsCanvas.html',1,'visualhelios']]],
+  ['vhraycastingcanvas',['VHRaycastingCanvas',['../d9/d66/classvisualhelios_1_1VHRaycastingCanvas.html',1,'visualhelios']]],
+  ['vhscanneradapter',['VHScannerAdapter',['../db/d65/classvisualhelios_1_1VHScannerAdapter.html',1,'visualhelios']]],
   ['vhscenecanvas',['VHSceneCanvas',['../d3/d71/classvisualhelios_1_1VHSceneCanvas.html',1,'visualhelios']]],
   ['vhsimplecanvas',['VHSimpleCanvas',['../d9/dc5/classvisualhelios_1_1VHSimpleCanvas.html',1,'visualhelios']]],
   ['vhstaticobjectadapter',['VHStaticObjectAdapter',['../d1/dda/classvisualhelios_1_1VHStaticObjectAdapter.html',1,'visualhelios']]],

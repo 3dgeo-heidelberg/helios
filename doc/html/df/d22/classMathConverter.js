@@ -1,5 +1,5 @@
 var classMathConverter =
 [
-    [ "degreesToRadians", "df/d22/classMathConverter.html#a9b0216cc0a7a9d3e6ae2adefe2c88c64", null ],
-    [ "radiansToDegrees", "df/d22/classMathConverter.html#aed4c9dcf289380c3be4ed2f7bcbedff5", null ]
+    [ "degreesToRadians", "df/d22/classMathConverter.html#a5f38933253e4b98bd9ec9a171cb780b5", null ],
+    [ "radiansToDegrees", "df/d22/classMathConverter.html#a477c843662c076de58486a4a1184b8fa", null ]
 ];

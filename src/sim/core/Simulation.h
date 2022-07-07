@@ -10,6 +10,9 @@
 #ifdef PYTHON_BINDING
 #include <PySimulationCycleCallback.h>
 #endif
+#ifdef DATA_ANALYTICS
+#include <dataanalytics/HDA_StateJSONReporter.h>
+#endif
 #include <SimulationReporter.h>
 
 /**
@@ -17,6 +20,9 @@
  */
 class Simulation {
 friend class SimulationReporter;
+#ifdef DATA_ANALYTICS
+friend class helios::analytics::HDA_StateJSONReporter;
+#endif
 protected:
     // ***  ATTRIBUTES  *** //
     // ******************** //
@@ -90,14 +96,20 @@ protected:
 	bool mPaused = false;
 
     /**
-     * @brief Time corresponding to simulation start (milliseconds)
+     * @brief Time corresponding to simulation start (nanoseconds)
      */
-    long timeStart_ms = 0;
+    long timeStart_ns = 0;
 
     /**
-     * @brief Time corresponding to simulation start (currentGpsTime)
+     * @brief Time corresponding to simulation start (currentGpsTime in
+     *  nanoseconds)
      */
-    double currentGpsTime_ms = 0;
+    double currentGpsTime_ns = 0;
+    /**
+     * @brief The time step for GPS time (in nanoseconds)
+     * @see Simulation::currentGpsTime_ns
+     */
+    double stepGpsTime_ns = 0;
     /**
      * @brief Given fixed time start for GPS time as a string.
      *
@@ -196,8 +208,8 @@ public:
 	// ***  UTIL METHODS  *** //
 	// ********************** //
     /**
-     * @brief Compute the current GPS time (milliseconds)
-     * @return Current GPS time (milliseconds)
+     * @brief Compute the current GPS time (nanoseconds)
+     * @return Current GPS time (nanoseconds)
      */
     double calcCurrentGpsTime();
 
@@ -280,4 +292,12 @@ public:
      */
     inline void setCallbackFrequency(size_t const callbackFrequency)
     {this->callbackFrequency = callbackFrequency;}
+    /**
+     * @brief Get the simulation step loop of the simulation
+     * @return The simulation's step loop
+     * @see Simulation:stepLoop
+     * @see SimulationStepLoop
+     */
+    SimulationStepLoop & getStepLoop()
+    {return stepLoop;}
 };

@@ -6,6 +6,7 @@ on:
     branches: [ main, dev ]
   pull_request:
     branches: [ main, dev ]
+  workflow_dispatch:
 
 env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
@@ -204,7 +205,7 @@ jobs:
         id: downloadgdal1
         name: Download GDAL (1/2)
         with:
-          url: "https://download.gisinternals.com/sdk/downloads/release-1928-x64-gdal-3-4-1-mapserver-7-6-4-libs.zip"
+          url: "https://download.gisinternals.com/sdk/downloads/release-1928-x64-gdal-3-5-0-mapserver-7-6-4-libs.zip"
           target: lib/gdal.zip
 
 

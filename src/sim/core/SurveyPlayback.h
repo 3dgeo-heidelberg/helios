@@ -58,21 +58,21 @@ private:
 	 */
 	long legStartTime_ns = 0;
 	/**
-	 * @brief Elapsed time (milliseconds) since survey simulation started
+	 * @brief Elapsed time (nanoseconds) since survey simulation started
 	 */
-	long elapsedTime_ms = 0;
+	long elapsedTime_ns = 0;
 	/**
-	 * @brief Expected remaining time (milliseconds) for survey simulation
+	 * @brief Expected remaining time (nanoseconds) for survey simulation
 	 */
-	long remainingTime_ms = 0;
+	long remainingTime_ns = 0;
     /**
-     * @brief Elapsed time (milliseconds) since current leg started
+     * @brief Elapsed time (nanoseconds) since current leg started
      */
-	long legElapsedTime_ms = 0;
+	long legElapsedTime_ns = 0;
 	/**
-	 * @brief Expected remaining time (milliseconds) for current leg completion
+	 * @brief Expected remaining time (nanoseconds) for current leg completion
 	 */
-	long legRemainingTime_ms = 0;
+	long legRemainingTime_ns = 0;
 
 public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //
@@ -133,7 +133,7 @@ public:
      * @see Platform::initLeg
      * @see Platform::initLegManual
      */
-    void startLeg(unsigned int legIndex, bool manual);
+    void startLeg(unsigned int const legIndex, bool const manual);
     /**
      * @brief Prepare output for current leg (measurements, trajectory and
      *  fullwave)
@@ -230,24 +230,34 @@ public:
 
 	/**
 	 * @brief Obtain elapsed time
-	 * @return Elapsed time (milliseconds)
+	 * @return Elapsed time (nanoseconds)
 	 */
-	long long getElapsedTime() {return this->elapsedTime_ms;}
+	long long getElapsedTime() {return this->elapsedTime_ns;}
+	/**
+	 * @brief Obtain elapsed length
+	 * @return The elapsed length
+	 * @see SurveyPlayback::elapsedLength
+	 */
+    double getElapsedLength() {return this->elapsedLength;}
 
 	/**
 	 * @brief Obtain expected remaining time
-	 * @return Expected remaining time (milliseconds)
+	 * @return Expected remaining time (nanoseconds)
 	 */
-	long getRemainingTime() {return this->remainingTime_ms;}
-
+	long getRemainingTime() {return this->remainingTime_ns;}
 	/**
-	 * @brief Obtain current leg elapsed time
-	 * @return Current leg elapsed time (milliseconds)
+	 * @brief Obtain the leg start time in nanoseconds
+	 * @return The leg start time (nanoseconds)
 	 */
-	long long getLegElapsedTime() {return this->legElapsedTime_ms;}
+    long getLegStartTime() {return this->legStartTime_ns;}
+    /**
+     * @brief Obtain current leg elapsed time
+     * @return Current leg elapsed time (nanoseconds)
+     */
+	long long getLegElapsedTime() {return this->legElapsedTime_ns;}
 	/**
 	 * @brief Obtain current leg expected remaining time
-	 * @return Current leg expected remaining time (milliseconds)
+	 * @return Current leg expected remaining time (nanoseconds)
 	 */
-	long getLegRemainingTime() {return this->legRemainingTime_ms;}
+	long getLegRemainingTime() {return this->legRemainingTime_ns;}
 };

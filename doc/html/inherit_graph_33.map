@@ -1,4 +1,6 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$d1/d3b/classhelios_1_1filems_1_1HeliosWriter.html" title="helios::filems::HeliosWriter\l\&lt; std::vector\&lt; double \&gt; const\l &amp;, int const, double const,\l double const, glm::dvec3 const\l &amp;, glm::dvec3 const &amp;, long const \&gt;" alt="" coords="5,5,241,91"/>
-<area shape="rect" id="node2" href="$d0/db3/classhelios_1_1filems_1_1FullWaveformWriter.html" title="Class to handle writing of full waveform to generate HELIOS++ output virtual full waveform..." alt="" coords="289,27,477,69"/>
+<area shape="rect" id="node1" href="$d4/d5e/classhelios_1_1filems_1_1FileReader.html" title="helios::filems::FileReader\l\&lt; string \&gt;" alt="" coords="5,5,176,47"/>
+<area shape="rect" id="node2" href="$de/d6c/classhelios_1_1filems_1_1SimpleFileReader.html" title="helios::filems::SimpleFile\lReader\&lt; string \&gt;" alt="" coords="224,5,392,47"/>
+<area shape="rect" id="node3" href="$de/d57/classhelios_1_1filems_1_1LineFileReader.html" title="Class supporting line by line reading of text files. " alt="" coords="440,5,592,47"/>
+<area shape="rect" id="node4" href="$d0/d01/classhelios_1_1filems_1_1BufferedLineFileReader.html" title="helios::filems::Buffered\lLineFileReader" alt="" coords="640,5,796,47"/>
 </map>

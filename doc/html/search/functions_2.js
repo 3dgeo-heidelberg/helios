@@ -1,6 +1,7 @@
 var searchData=
 [
   ['basedemo',['BaseDemo',['../df/df9/classHeliosDemos_1_1BaseDemo.html#ab2d78b15fec928c3ea154e56949c473d',1,'HeliosDemos::BaseDemo']]],
+  ['basefullwaveformwriter',['BaseFullWaveformWriter',['../df/dfa/classhelios_1_1filems_1_1BaseFullWaveformWriter.html#a943677ffdf179d4f789fe4779e76442a',1,'helios::filems::BaseFullWaveformWriter']]],
   ['basemeasurementwriter',['BaseMeasurementWriter',['../d7/d1a/classhelios_1_1filems_1_1BaseMeasurementWriter.html#a107bf7ca01b60162b0f75e13af0a5957',1,'helios::filems::BaseMeasurementWriter']]],
   ['basetest',['BaseTest',['../d9/d52/classHeliosTests_1_1BaseTest.html#ad4389cad0216026e48543cdb4095efbf',1,'HeliosTests::BaseTest']]],
   ['basicdyngrove',['BasicDynGrove',['../d1/d0a/classBasicDynGrove.html#a2c83c0f1d2e1d67fdeaa00203bc261b3',1,'BasicDynGrove']]],
@@ -29,7 +30,7 @@ var searchData=
   ['build',['build',['../d9/d6b/classNoiseSource.html#af229b3d574ff1135fbb7b710cb7318a2',1,'NoiseSource::build()'],['../da/dfd/classPulseTaskFactory.html#a070096d7c7dc977407e36aa6a3209159',1,'PulseTaskFactory::build()']]],
   ['buildaabb',['buildAABB',['../d2/d51/classTriangle.html#a705d5a49b7a0f5a42c30186625804f91',1,'Triangle']]],
   ['buildbreadthiterator',['buildBreadthIterator',['../dd/d79/classLightKDTreeNode.html#a0a538df2540f421cfd0b2e68304962a2',1,'LightKDTreeNode']]],
-  ['buildcanvas',['buildCanvas',['../d4/de8/classHeliosDemos_1_1DynamicSceneDemo.html#a66a97d6d026b9c0a899e70fb1c34f0d5',1,'HeliosDemos::DynamicSceneDemo']]],
+  ['buildcanvas',['buildCanvas',['../d4/de8/classHeliosDemos_1_1DynamicSceneDemo.html#a66a97d6d026b9c0a899e70fb1c34f0d5',1,'HeliosDemos::DynamicSceneDemo::buildCanvas()'],['../d4/d21/classHeliosDemos_1_1RaycastingDemo.html#a9184b67abb3f67fd4259cb8383dd27ea',1,'HeliosDemos::RaycastingDemo::buildCanvas()']]],
   ['buildchildrengeometrylevel',['buildChildrenGeometryLevel',['../df/d86/classMultiThreadKDTreeFactory.html#ae04d92ed6c0039baaf4abc7dc7a27d77',1,'MultiThreadKDTreeFactory']]],
   ['buildchildrennodes',['buildChildrenNodes',['../db/d58/classSAHKDTreeFactory.html#a1ce94a7548b00220c2970becba91ff8b',1,'SAHKDTreeFactory::buildChildrenNodes()'],['../d6/d96/classSimpleKDTreeFactory.html#a9c77a23429fcf72e7f5c46429e72f7af',1,'SimpleKDTreeFactory::buildChildrenNodes()']]],
   ['buildchildrennodesrecipe',['buildChildrenNodesRecipe',['../db/d58/classSAHKDTreeFactory.html#ab6ca93261853fe9d6929ccee7f62ca46',1,'SAHKDTreeFactory']]],

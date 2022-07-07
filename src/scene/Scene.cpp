@@ -67,84 +67,63 @@ Scene::Scene(Scene &s) {
 // ***  M E T H O D S  *** //
 // *********************** //
 bool Scene::finalizeLoading(bool const safe) {
-  if (primitives.empty()) return false;
+    if (primitives.empty()) return false;
 
-  // #####   UPDATE PRIMITIVES ON FINISH LOADING   #####
-  UniformNoiseSource<double> uns(*DEFAULT_RG, -1, 1);
-  for (Primitive *p : primitives) {
-    p->onFinishLoading(uns);
-  }
-
-  // ################ BEGIN Shift primitives to originWaypoint
-  // ##################
-
-  // Translate scene coordinates to originWaypoint (to prevent wasting of
-  // floating point precision):
-
-  vector<Vertex> vertices;
-
-  // Collect all vertices in an unordered set
-  // (makes sure that we don't translate the same vertex multiple times)
-  for (Primitive *p : primitives) {
-    Vertex *v = p->getFullVertices();
-    for (size_t i = 0; i < p->getNumFullVertices(); i++) {
-      vertices.push_back(v[i]);
+    // #####   UPDATE PRIMITIVES ON FINISH LOADING   #####
+    UniformNoiseSource<double> uns(*DEFAULT_RG, -1, 1);
+    for (Primitive *p : primitives) {
+        p->onFinishLoading(uns);
     }
-  }
-  ostringstream s;
-  s << "Total # of primitives in scene: " << primitives.size() << "\n";
-  logging::DEBUG(s.str());
 
-  if (vertices.size() == 0) return false;
+    // Report number of primitives in the scene
+    ostringstream s;
+    s << "Total # of primitives in scene: " << primitives.size() << "\n";
+    logging::DEBUG(s.str());
+    if (primitives.size() == 0) return false;
 
-  // Register all parts and translate to ground those flagged as forceOnGround
-  registerParts();
-  doForceOnGround();
+    // Compute the number of vertices in the scene
+    size_t numVertices = 0;
+    for(Primitive *p : primitives) numVertices += p->getNumVertices();
 
-  // ########## BEGIN Move the scene so that bounding box minimum is (0,0,0)
-  // ######## This is done to prevent precision problems (e.g. camera jitter)
+    // Register all parts and translate to ground those flagged as forceOnGround
+    registerParts();
+    doForceOnGround();
 
-  // Store original bounding box (CRS coordinates):
-  this->bbox_crs = AABB::getForVertices(vertices);
+    // Store original bounding box (CRS coordinates):
+    this->bbox_crs = AABB::getForPrimitives(primitives);
+    glm::dvec3 diff = this->bbox_crs->getMin();
+    stringstream ss;
+    ss  << "CRS bounding box (by vertices): " << this->bbox_crs->toString()
+        << "\nShift: " << glm::to_string(diff)
+        << "\n# vertices to translate: " << numVertices;
+    logging::INFO(ss.str());
+    ss.str("");
 
-  glm::dvec3 diff = this->bbox_crs->getMin();
-
-  stringstream ss;
-  ss << "CRS bounding box (by vertices): " << this->bbox_crs->toString()
-     << "\nShift: " << glm::to_string(diff)
-     << "\n# vertices to translate: " << vertices.size();
-  logging::INFO(ss.str());
-  ss.str("");
-
-  // Iterate over the hash set and translate each vertex:
-  for (Vertex &v : vertices) {
-    v.pos = v.pos - diff;
-  }
-
-  for (Primitive *p : primitives) {
-    Vertex *v = p->getVertices();
-    for (size_t i = 0; i < p->getNumVertices(); i++) {
-      v[i].pos = v[i].pos - diff;
+    // Iterate over the primitives and translate each vertex:
+    for (Primitive *p : primitives) {
+        Vertex *v = p->getVertices();
+        for (size_t i = 0; i < p->getNumVertices(); i++) {
+            v[i].pos = v[i].pos - diff;
+        }
+        p->update();
     }
-    p->update();
-  }
 
-  // Get new bounding box of tranlated scene:
-  this->bbox = AABB::getForVertices(vertices);
+    // Get new bounding box of tranlated scene:
+    this->bbox = AABB::getForPrimitives(primitives);
 
-  ss << "Actual bounding box (by vertices): " << this->bbox->toString();
-  logging::INFO(ss.str());
-  ss.str("");
+    ss << "Actual bounding box (by vertices): " << this->bbox->toString();
+    logging::INFO(ss.str());
+    ss.str("");
 
-  // ################ END Shift primitives to originWaypoint ##################
+    // ################ END Shift primitives to originWaypoint ##################
 
-  // Compute each part centroid wrt to scene
-  for(shared_ptr<ScenePart> & part : parts) part->computeCentroid();
+    // Compute each part centroid wrt to scene
+    for(shared_ptr<ScenePart> & part : parts) part->computeCentroid();
 
-  // Build KDGrove
-  if(kdgf != nullptr) buildKDGroveWithLog(safe);
+    // Build KDGrove
+    if(kdgf != nullptr) buildKDGroveWithLog(safe);
 
-  return true;
+    return true;
 }
 
 void Scene::registerParts(){
@@ -241,7 +220,6 @@ vector<Vertex *> Scene::getAllVertices(){
 }
 
 void Scene::doForceOnGround(){
-
     // 1. Find min and max vertices of ground scene parts
     vector<size_t> I; // Indices of ground parts
     vector<unique_ptr<Plane<double>>> planes; // Ground best fitting planes

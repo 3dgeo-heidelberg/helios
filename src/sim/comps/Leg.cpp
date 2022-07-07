@@ -1,5 +1,8 @@
 #include <Leg.h>
 #include <ScanningStrip.h>
+#ifdef PYTHON_BINDING
+#include <PyScanningStripWrapper.h>
+#endif
 
 // ***  CONSTRUCTION / DESTRUCTION  *** //
 // ************************************ //
@@ -25,7 +28,23 @@ Leg::Leg(Leg &leg){
     else this->mPlatformSettings = std::make_shared<PlatformSettings>(
         *leg.mPlatformSettings
     );
+    if(leg.mTrajectorySettings == nullptr) this->mTrajectorySettings = nullptr;
+    else this->mTrajectorySettings = std::make_shared<TrajectorySettings>(
+        *leg.mTrajectorySettings
+    );
     serialId = leg.serialId;
     strip = leg.strip;
 }
+
+
+// ***  GETTERs and SETTERs  *** //
+// ***************************** //
+#ifdef PYTHON_BINDING
+pyhelios::PyScanningStripWrapper * Leg::getPyStrip() const{
+    return new pyhelios::PyScanningStripWrapper(getStrip());
+}
+void Leg::setPyStrip(pyhelios::PyScanningStripWrapper *pssw){
+    setStrip(pssw->ss);
+}
+#endif
 

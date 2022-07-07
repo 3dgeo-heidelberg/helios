@@ -1,9 +1,3 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$df/d6f/classSharedSubTask.html" title="A shared task is said to be a collection of shared sub&#45;tasks. Each shared sub&#45;task can be computed in..." alt="" coords="5,177,120,204"/>
-<area shape="rect" id="node2" href="$d6/d0d/classFastSAHKDTreeRecountSubTask.html" title="FastSAHKDTreeRecountSubTask" alt="" coords="176,5,399,32"/>
-<area shape="rect" id="node3" href="$d7/da6/classhelios_1_1hpc_1_1SM__ParallelMergeSortSubTask.html" title="Shared sub&#45;task to sort a sequence using a parallel mergesort like algorithm for shared memory contex..." alt="" coords="168,56,407,112"/>
-<area shape="rect" id="node4" href="$d5/d89/classSAHKDTreeComputeLossNodesSubTask.html" title="Shared sub&#45;task to compute loss nodes when finding the split position during SAH KDTree building..." alt="" coords="180,137,395,178"/>
-<area shape="rect" id="node5" href="$d5/d80/classSimpleKDTreeBuildChildrenNodesSubTask.html" title="Shared sub&#45;task to build children nodes when building a Simple KDTree on all geometry&#45;level depths ex..." alt="" coords="195,202,379,243"/>
-<area shape="rect" id="node6" href="$d1/da6/classSimpleKDTreeComputeRootNodeBoundariesSubTask.html" title="Shared sub&#45;task to compute root node boundaries when building a Simple KDTree. It is meant to be used..." alt="" coords="178,267,397,309"/>
-<area shape="rect" id="node7" href="$d1/dc1/classSimpleKDTreePopulateSplitsSubTask.html" title="Shared sub&#45;task to populate splits when building a Simple KDTree. It is meant to be used at geometry&#45;..." alt="" coords="192,333,383,374"/>
+<area shape="rect" id="node1" href="$d6/d7f/classRotationOrder.html" title="RotationOrder" alt="" coords="5,5,108,32"/>
 </map>

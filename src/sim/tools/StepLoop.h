@@ -3,8 +3,10 @@
 /**
  * @author Alberto M. Esmoris Pena
  * @version 1.0
+ *
  * @brief Abstract class providing the basics to handle loops inside simulation
  *  time, which is discrete because it is based on simulation steps.
+ *
  *
  * Let \f$\Delta\f$ be the step interval and \f$s_t\f$ be the current step.
  * Considering that \f$s_t\f$ is calculated as explained in
@@ -27,7 +29,7 @@ protected:
      *
      * If the simulation frequency means there are \f$n\f$ iterations per
      *  second. Then, the step interval \f$\Delta\f$ means there are
-     *  \f$\left\frac{n}{\Delta}\right\f$ steps per
+     *  \f$\frac{n}{\Delta}\f$ steps per
      *  second. It must be satisfied that \f$\Delta \leq n\f$
      * @see StepLoop::currentStep
      */
@@ -35,7 +37,7 @@ protected:
     /**
      * @brief Stores the current step.
      *
-     * Let \f$Delta\f$ be the step interval and \f$s_t\f$ the step at
+     * Let \f$\Delta\f$ be the step interval and \f$s_t\f$ the step at
      *  \f$t\f$ instant. Thus, the current step update behavior can be defined
      *  as follows:
      *

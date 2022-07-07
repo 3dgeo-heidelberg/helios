@@ -11,6 +11,7 @@
 #include <PyPlatformWrapper.h>
 #include <PyPrimitiveWrapper.h>
 #include <PySimulationCycleCallback.h>
+#include <PyScanningStripWrapper.h>
 #include <Material.h>
 #include <gdal_priv.h>
 
@@ -53,6 +54,11 @@ BOOST_PYTHON_MODULE(_pyhelios){
         "loggingVerbose2",
         logging::makeVerbose2,
         "Set the logging verbosity level to verbose 2"
+    );
+    def(
+        "loggingTime",
+        logging::makeTime,
+        "Set the logging verbosity level to time"
     );
 
     // Register PyHeliosSimulation
@@ -140,6 +146,15 @@ BOOST_PYTHON_MODULE(_pyhelios){
             "newLeg",
             &PyHeliosSimulation::newLeg,
             return_internal_reference<>()
+        )
+        .def(
+            "newScanningStrip",
+            &PyHeliosSimulation::newScanningStrip,
+            return_value_policy<manage_new_object>()
+        )
+        .def(
+            "assocLegWithScanningStrip",
+            &PyHeliosSimulation::assocLegWithScanningStrip
         )
         .add_property(
             "simulationFrequency",
@@ -400,6 +415,15 @@ BOOST_PYTHON_MODULE(_pyhelios){
     // Register Leg
     class_<Leg, boost::noncopyable>("Leg", no_init)
         .add_property("length", &Leg::getLength, &Leg::setLength)
+        .add_property("serialId", &Leg::getSerialId, &Leg::setSerialId)
+        .add_property(
+            "strip",
+            make_function(
+                &Leg::getPyStrip,
+                return_value_policy<manage_new_object>()
+            ),
+            &Leg::setPyStrip
+        )
         .def(
             "getScannerSettings",
             &Leg::getScannerSettings,
@@ -409,6 +433,31 @@ BOOST_PYTHON_MODULE(_pyhelios){
             "getPlatformSettings",
             &Leg::getPlatformSettings,
             return_internal_reference<>()
+        )
+        .def("isContainedInAStrip", &Leg::isContainedInAStrip)
+    ;
+
+    // Register ScanningStrip
+    class_<PyScanningStripWrapper>("ScanningStrip", no_init)
+        .add_property(
+            "stripId",
+            &PyScanningStripWrapper::getStripId,
+            &PyScanningStripWrapper::setStripId
+        )
+        .def(
+            "getLeg",
+            &PyScanningStripWrapper::getLegRef,
+            return_internal_reference<>()
+        )
+        .def(
+            "isLastLegInStrip",
+            &PyScanningStripWrapper::isLastLegInStrip
+        )
+        .def<bool (PyScanningStripWrapper::*)(int const)>(
+            "has", &PyScanningStripWrapper::has
+        )
+        .def<bool (PyScanningStripWrapper::*)(Leg &)>(
+            "has", &PyScanningStripWrapper::has
         )
     ;
 
@@ -572,10 +621,15 @@ BOOST_PYTHON_MODULE(_pyhelios){
             &Scanner::isFixedIncidenceAngle,
             &Scanner::setFixedIncidenceAngle
         )
-        .add_property(
+        .add_property( // It was not in ns before, but in seconds
             "trajectoryTimeInterval",
-            &Scanner::trajectoryTimeInterval,
-            &Scanner::trajectoryTimeInterval
+            &Scanner::trajectoryTimeInterval_ns,
+            &Scanner::trajectoryTimeInterval_ns
+        )
+        .add_property(
+            "trajectoryTimeInterval_ns",
+            &Scanner::trajectoryTimeInterval_ns,
+            &Scanner::trajectoryTimeInterval_ns
         )
         .add_property(
             "deviceId",

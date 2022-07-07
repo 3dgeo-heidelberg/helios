@@ -216,7 +216,7 @@ def find_summary_best_parallelization(summary_entry):
     if bestType == 'Static':
         bestType = 'Static {cs}'.format(cs=bestEntry['chunkSize'])
     elif bestType == 'Dynamic':
-        bestType = 'Dyamic. {cs}'.format(cs=-bestEntry['chunkSize'])
+        bestType = 'Dynamic. {cs}'.format(cs=-bestEntry['chunkSize'])
     elif bestType == 'Warehouse':
         bestType = 'Ware. {cs}x{wf}'.format(
             cs=bestEntry['chunkSize'],
@@ -324,7 +324,7 @@ def plot_summary(summary):
     tickFontSize = 28
     legendFontSize = 24
     ax.set_xlabel('Cores', fontsize=labelFontSize)
-    ax.set_ylabel('Seconds', fontsize=labelFontSize)
+    ax.set_ylabel('Execution time (s)', fontsize=labelFontSize)
     ax.tick_params(axis='both', which='major', labelsize=tickFontSize)
     ax.autoscale(enable=True, axis='both', tight=True)
     ax.grid(True)
@@ -337,7 +337,10 @@ def plot_summary(summary):
     axx.legend(loc='upper right', fontsize=legendFontSize)
     axx.set_ylabel('Speedup', fontsize=labelFontSize)
     axx.tick_params(axis='y', which='major', labelsize=tickFontSize)
-    axx.autoscale(enable=True, axis='both', tight=True)
+    # axx.autoscale(enable=True, axis='both', tight=True)  # Autoscale speedup
+    axx_xticks = ax.get_xticks()  # Scale speedup to cores
+    axx_xticks[-1] -= 1  # Scale speedup to cores
+    axx.set_yticks(axx_xticks)  # Scale speedup to cores
     plt.tight_layout()
 
     # Export plot

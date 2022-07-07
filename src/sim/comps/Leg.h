@@ -4,8 +4,12 @@
 
 #include "ScannerSettings.h"
 #include "PlatformSettings.h"
+#include <platform/trajectory/TrajectorySettings.h>
 
 class ScanningStrip;
+#ifdef PYTHON_BINDING
+namespace pyhelios{ class PyScanningStripWrapper; };
+#endif
 
 /**
  * @brief Class representing a survey leg
@@ -24,6 +28,11 @@ public:
 	 * @see PlatformSettings
 	 */
 	std::shared_ptr<PlatformSettings> mPlatformSettings;
+	/**
+	 * @brief Trajectory settings for the leg
+	 * @see TrajectorySettings
+	 */
+	std::shared_ptr<TrajectorySettings> mTrajectorySettings = nullptr;
 
   /**
    * @brief Boolean flag to store whether the leg was already processed.
@@ -35,7 +44,7 @@ private:
      */
 	double length = 0;	// Distance to the next leg
 	/**
-	 * @brief The serial non negative intenger unique identifier for the leg.
+	 * @brief The serial non negative integer unique identifier for the leg.
 	 *  If it is a negative integer, it means that the serial identifier is not
 	 *  valid. It is, the serial identifier does not univocally identify the
 	 *  leg
@@ -112,7 +121,7 @@ public:
 	 * @return Leg serial identifier
 	 * @see Leg::serialId
 	 */
-	inline int getSerialId() {return serialId;} const
+	inline int getSerialId() const {return serialId;}
 	/**
 	 * @brief Set the leg serial identifier
 	 * @param serialId New serial identifier for the leg
@@ -137,4 +146,9 @@ public:
 	 * @return True if the leg belongs to a strip, false otherwise
 	 */
 	inline bool isContainedInAStrip() const {return strip!=nullptr;}
+
+#ifdef PYTHON_BINDING
+    pyhelios::PyScanningStripWrapper * getPyStrip() const;
+	void setPyStrip(pyhelios::PyScanningStripWrapper *pssw);
+#endif
 };

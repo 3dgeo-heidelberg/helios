@@ -14,6 +14,7 @@ namespace fs = boost::filesystem;
 #include "SurveyPlayback.h"
 #include <glm/gtx/vector_angle.hpp>
 #include "HelicopterPlatform.h"
+#include <platform/InterpolatedMovingPlatform.h>
 #include <ScanningStrip.h>
 #include <filems/facade/FMSFacade.h>
 #include <filems/write/comps/SimpleSyncFileWriter.h>
@@ -39,7 +40,8 @@ SurveyPlayback::SurveyPlayback(
     ),
     fms(fms)
 {
-  this->mSurvey = survey;
+    this->mSurvey = survey;
+    this->mSurvey->hatch(*this);
 	this->exitAtEnd = true;
 	this->exportToFile = exportToFile;
 	this->setScanner(mSurvey->scanner);
@@ -70,6 +72,15 @@ SurveyPlayback::SurveyPlayback(
         );
     }
 
+    // If platform is interpolated from data, sync GPS time if requested
+    shared_ptr<InterpolatedMovingPlatform> imp =
+        dynamic_pointer_cast<InterpolatedMovingPlatform>(
+            getScanner()->platform
+        );
+    if(imp != nullptr && imp->isSyncGPSTime()){
+        this->currentGpsTime_ns = imp->getStartTime() * 1000000000.0;
+    }
+
 	// Orientate platform and start first leg
 	startLeg(0, true);
 
@@ -79,19 +90,22 @@ SurveyPlayback::SurveyPlayback(
 		mSurvey->calculateLength();
 		numEffectiveLegs--;
 	}
-    this->mSurvey = survey;
 }
 
 
-void SurveyPlayback::estimateTime(int legCurrentProgress, bool onGround, double legElapsedLength) {
+void SurveyPlayback::estimateTime(
+    int legCurrentProgress,
+    bool onGround,
+    double legElapsedLength
+){
     if (legCurrentProgress > legProgress) {	// Do stuff only if leg progress incremented at least 1%
 		legProgress = (double) legCurrentProgress;
 
-		long currentTime = duration_cast<milliseconds>(
+		long currentTime = duration_cast<nanoseconds>(
 		    system_clock::now().time_since_epoch()).count();
-		legElapsedTime_ms = currentTime - legStartTime_ns;
-		legRemainingTime_ms = (long)((100 - legProgress) / legProgress
-		    * legElapsedTime_ms);
+		legElapsedTime_ns = currentTime - legStartTime_ns;
+		legRemainingTime_ns = (long)((100 - legProgress) / legProgress
+		    * legElapsedTime_ns);
 
 		if (!getScanner()->platform->canMove()) {
 			progress = ((mCurrentLegIndex * 100) + legProgress) /
@@ -101,9 +115,9 @@ void SurveyPlayback::estimateTime(int legCurrentProgress, bool onGround, double 
 			progress = (elapsedLength + legElapsedLength) * 100
 			    / (double) mSurvey->getLength();
 		}
-		elapsedTime_ms = currentTime - timeStart_ms;
-		remainingTime_ms = (long)((100 - progress) /
-		    progress * elapsedTime_ms);
+		elapsedTime_ns = currentTime - timeStart_ns;
+		remainingTime_ns = (long)((100 - progress) /
+		    progress * elapsedTime_ns);
 
         if(legProgress == 99){
             std::stringstream ss;
@@ -115,12 +129,12 @@ void SurveyPlayback::estimateTime(int legCurrentProgress, bool onGround, double 
         ostringstream oss;
         oss << std::fixed << std::setprecision(2);
         oss << "Survey " << progress << "%\tElapsed "
-            << milliToString(elapsedTime_ms) <<
-            " Remaining " << milliToString(remainingTime_ms) << endl;
+            << milliToString(elapsedTime_ns/1000000L) <<
+            " Remaining " << milliToString(remainingTime_ns/1000000L) << endl;
         oss << "Leg" << (mCurrentLegIndex+1) << "/" << (numEffectiveLegs)
             << " " << legProgress << "%\tElapsed "
-            << milliToString(legElapsedTime_ms) << " Remaining "
-            << milliToString(legRemainingTime_ms);
+            << milliToString(legElapsedTime_ns/1000000L) << " Remaining "
+            << milliToString(legRemainingTime_ns/1000000L);
         logging::INFO(oss.str());
 	}
 }
@@ -131,7 +145,9 @@ void SurveyPlayback::trackProgress() {
 		    getScanner()->scannerHead->getRotateStart() -
 		    getScanner()->scannerHead->getRotateCurrent()
         );
-		int legProgress = (int)(legElapsedAngle * 100 / getScanner()->scannerHead->getRotateRange());
+		int const legProgress = (int)(
+		    legElapsedAngle * 100 / getScanner()->scannerHead->getRotateRange()
+		);
 		estimateTime(legProgress, true, 0);
 	}
 	else if (mCurrentLegIndex < mSurvey->legs.size() - 1) {
@@ -139,7 +155,7 @@ void SurveyPlayback::trackProgress() {
 		    getCurrentLeg()->mPlatformSettings->getPosition(),
 		    mSurvey->scanner->platform->getPosition()
         );
-		int legProgress = (int)
+		int const legProgress = (int)
 		    (legElapsedLength * 100 / getCurrentLeg()->getLength());
 		estimateTime(legProgress, false, legElapsedLength);
 	}
@@ -151,7 +167,7 @@ void SurveyPlayback::doSimStep() {
 		if(exportToFile) clearPointcloudFile();
 
 		legProgress = 0;
-		legStartTime_ns = duration_cast<milliseconds>(
+		legStartTime_ns = duration_cast<nanoseconds>(
 		        system_clock::now().time_since_epoch()
         ).count();
 	}
@@ -212,7 +228,7 @@ void SurveyPlayback::onLegComplete() {
 	startNextLeg(false);
 }
 
-void SurveyPlayback::startLeg(unsigned int legIndex, bool manual) {
+void SurveyPlayback::startLeg(unsigned int const legIndex, bool const manual) {
 	if (legIndex < 0 || legIndex >= mSurvey->legs.size()) {
 		return;
 	}
@@ -240,10 +256,38 @@ void SurveyPlayback::startLeg(unsigned int legIndex, bool manual) {
 		if (nextLegIndex < mSurvey->legs.size()) {
 			// Set destination to position of next leg:
 			shared_ptr<Leg> nextLeg = mSurvey->legs.at(nextLegIndex);
-			platform->setOrigin(leg->mPlatformSettings->getPosition());
-            platform->setDestination(
-                nextLeg->mPlatformSettings->getPosition()
-            );
+            if(
+                leg->mTrajectorySettings != nullptr &&
+                leg->mTrajectorySettings->teleportToStart
+            ){
+                platform->setPosition(
+                    nextLeg->mPlatformSettings->getPosition()
+                );
+                platform->setOrigin(
+                    nextLeg->mPlatformSettings->getPosition()
+                );
+                platform->setDestination(
+                    nextLeg->mPlatformSettings->getPosition()
+                );
+            }
+            else{
+                platform->setOrigin(leg->mPlatformSettings->getPosition());
+                if(
+                    nextLeg->mTrajectorySettings != nullptr &&
+                    nextLeg->mTrajectorySettings->teleportToStart
+                ){
+                    // If next leg teleports to start, current leg is stop leg
+                    // Thus, set stop origin and destination to the same point
+                    platform->setDestination(
+                        leg->mPlatformSettings->getPosition()
+                    );
+                }
+                else{
+                    platform->setDestination(
+                        nextLeg->mPlatformSettings->getPosition()
+                    );
+                }
+            }
             if(nextLegIndex + 1 < mSurvey->legs.size()){
                 platform->setAfterDestination(
                     mSurvey->legs.at(nextLegIndex + 1)
@@ -273,6 +317,16 @@ void SurveyPlayback::startLeg(unsigned int legIndex, bool manual) {
             stopAndTurn(legIndex, leg);
 		else if(manual) platform->initLegManual();
         else platform->initLeg();
+        try{ // Transform trajectory time (if any) to simulation time
+            if(
+                leg->mTrajectorySettings != nullptr &&
+                leg->mTrajectorySettings->hasStartTime()
+            ){
+                std::shared_ptr<InterpolatedMovingPlatform> imp =
+                    dynamic_pointer_cast<InterpolatedMovingPlatform>(platform);
+                imp->toTrajectoryTime(leg->mTrajectorySettings->tStart);
+            }
+        }catch(...) {}
 
 		// ################ END Set platform destination ##################
 	}
@@ -361,7 +415,7 @@ void SurveyPlayback::prepareOutput(){
     std::shared_ptr<Leg> leg = getCurrentLeg();
     if(!leg->getScannerSettings().active) return;
 
-    // Check if all the legs in the rip were processed
+    // Check if all the legs in the strip were processed
     std::shared_ptr<ScanningStrip> strip = leg->getStrip();
     bool lastLegInStrip = true;
     if(strip != nullptr){

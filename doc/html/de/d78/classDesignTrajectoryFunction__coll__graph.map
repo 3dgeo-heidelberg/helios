@@ -1,0 +1,7 @@
+<map id="DesignTrajectoryFunction" name="DesignTrajectoryFunction">
+<area shape="rect" id="node2" href="$d9/de4/classTrajectoryFunction.html" title="Abstract class representing a trajectory function . " alt="" coords="447,5,577,32"/>
+<area shape="rect" id="node3" href="$d4/d73/classfluxionum_1_1Function.html" title="fluxionum::Function\l\&lt; double, arma::Col\l\&lt; double \&gt; \&gt;" alt="" coords="5,55,143,111"/>
+<area shape="rect" id="node4" href="$d5/d9a/classfluxionum_1_1ParametricClosestLesserSampleFunction.html" title="fluxionum::ParametricClosest\lLesserSampleFunction\&lt; double,\l double \&gt;" alt="" coords="601,136,811,192"/>
+<area shape="rect" id="node7" href="$d4/de0/classfluxionum_1_1ParametricIterativeEulerMethod.html" title="fluxionum::ParametricIterative\lEulerMethod\&lt; double, double \&gt;" alt="" coords="220,57,423,98"/>
+<area shape="rect" id="node6" href="$dc/d03/classfluxionum_1_1FixedParametricIterativeEulerMethod.html" title="fluxionum::FixedParametric\lIterativeEulerMethod\&lt; double,\l double \&gt;" alt="" coords="608,56,804,112"/>
+</map>
