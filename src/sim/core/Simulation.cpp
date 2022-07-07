@@ -188,8 +188,7 @@ double Simulation::calcCurrentGpsTime(){
         if(fixedGpsTimeStart != ""){
             if(fixedGpsTimeStart.find(":") != std::string::npos){
                 // "YYYY-MM-DD hh:mm:ss"
-                now = DateTimeUtils::dateTimeStrToMillis(fixedGpsTimeStart)
-                      /1000000000L;
+                now = DateTimeUtils::dateTimeStrToSeconds(fixedGpsTimeStart);
             }
             else{
                 now = std::stol(fixedGpsTimeStart);
