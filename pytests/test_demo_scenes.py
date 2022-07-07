@@ -128,7 +128,7 @@ def test_detailedVoxels_uls_pyh():
 
 def eval_detailedVoxels_uls(dirname):
     assert (dirname / 'leg000_points.las').exists()
-    assert abs((dirname / 'leg000_points.las').stat().st_size - 412_109) < MAX_DIFFERENCE_BYTES
+    assert abs((dirname / 'leg000_points.las').stat().st_size - 404_517) < MAX_DIFFERENCE_BYTES
     assert (dirname / 'leg000_trajectory.txt').exists()
     assert abs((dirname / 'leg000_trajectory.txt').stat().st_size - 1_250) < MAX_DIFFERENCE_BYTES
     with open(dirname / 'leg000_trajectory.txt', 'r') as f:

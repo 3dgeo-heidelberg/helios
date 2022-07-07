@@ -145,7 +145,9 @@ void SurveyPlayback::trackProgress() {
 		    getScanner()->scannerHead->getRotateStart() -
 		    getScanner()->scannerHead->getRotateCurrent()
         );
-		int legProgress = (int)(legElapsedAngle * 100 / getScanner()->scannerHead->getRotateRange());
+		int const legProgress = (int)(
+		    legElapsedAngle * 100 / getScanner()->scannerHead->getRotateRange()
+		);
 		estimateTime(legProgress, true, 0);
 	}
 	else if (mCurrentLegIndex < mSurvey->legs.size() - 1) {
@@ -153,7 +155,7 @@ void SurveyPlayback::trackProgress() {
 		    getCurrentLeg()->mPlatformSettings->getPosition(),
 		    mSurvey->scanner->platform->getPosition()
         );
-		int legProgress = (int)
+		int const legProgress = (int)
 		    (legElapsedLength * 100 / getCurrentLeg()->getLength());
 		estimateTime(legProgress, false, legElapsedLength);
 	}
