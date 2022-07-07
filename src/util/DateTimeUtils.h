@@ -23,5 +23,5 @@ public:
      * @param str Time "YYYY-MM-DD hh:mm:ss" string itself
      * @return The datetime string converted to milliseconds
      */
-    static long dateTimeStrToMillis(std::string const str);
+    static long dateTimeStrToSeconds(std::string const str);
 };

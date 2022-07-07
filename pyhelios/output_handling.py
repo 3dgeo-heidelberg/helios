@@ -29,14 +29,14 @@ def outputToList(output=None):
             pos.x, pos.y, pos.z,
             ori.x, ori.y, ori.z,
             dir.x, dir.y, dir.z,
-            meas.intensity,
-            meas.echoWidth,
-            meas.returnNumber,
-            meas.pulseReturnNumber,
-            meas.fullwaveIndex,
-            # meas.hitObjectId,  # Not numerical
-            meas.classification,
-            meas.gpsTime
+            meas.intensity,  # 9
+            meas.echoWidth,  # 10
+            meas.returnNumber,  # 11
+            meas.pulseReturnNumber,  # 12
+            meas.fullwaveIndex,  # 13
+            int(meas.hitObjectId),  # 14
+            meas.classification,  # 15
+            meas.gpsTime  # 16
         ])
     for i in range(nTrajectories):
         traj = trajectories[i]
