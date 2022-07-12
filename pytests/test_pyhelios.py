@@ -35,7 +35,7 @@ def test_sim():
     """
     Fixture which returns a simulation object for a given survey path
     """
-    def create_test_sim(survey_path):
+    def create_test_sim(survey_path, zip_output=True, las_output=True):
         # pyhelios.loggingSilent()
         from pyhelios import SimulationBuilder
         simB = SimulationBuilder(
@@ -43,15 +43,50 @@ def test_sim():
             assetsDir=WORKING_DIR + os.sep + 'assets' + os.sep,
             outputDir=WORKING_DIR + os.sep + 'output' + os.sep,
         )
-        simB.setLasOutput(True)
+        simB.setLasOutput(las_output)
         simB.setRebuildScene(True)
-        simB.setZipOutput(True)
+        simB.setZipOutput(zip_output)
 
         sim = simB.build()
 
         return sim
 
     return create_test_sim
+    
+    
+def test_open_output(test_sim):
+    """Test accessing output files (LAS/xyz) after simulation"""
+    from pyhelios import SimulationBuilder
+    
+    def access_output(outpath, outfile_ending):
+        # Attempt to rename files in output directory
+        for filename in os.listdir(os.path.dirname(outpath)):
+            if filename.endswith(outfile_ending):
+                os.rename(os.path.join(os.path.dirname(outpath), filename), os.path.join(os.path.dirname(outpath), filename.replace(outfile_ending, "_accessed"+outfile_ending)))
+    
+    # LAS test no. 1: ALS toyblocks no strip id
+    sim = test_sim(Path('data') / 'surveys' / 'toyblocks' / 'als_toyblocks.xml')
+    sim.start()
+    out = sim.join()
+    access_output(out.filepath, '.laz')
+    
+    # LAS test no. 2: ALS toyblocks with strip id
+    sim = test_sim(Path('data') / 'surveys' / 'toyblocks' / 'als_toyblocks_stripid.xml')
+    sim.start()
+    out = sim.join()
+    access_output(out.filepath, '.laz')
+    
+    # xyz test no. 1: ALS toyblocks no strip id
+    sim = test_sim(Path('data') / 'surveys' / 'toyblocks' / 'als_toyblocks.xml', zip_output=False, las_output=False)
+    sim.start()
+    out = sim.join()
+    access_output(out.filepath, '.xyz')
+    
+    # xyz test no. 2: ALS toyblocks with strip id
+    sim = test_sim(Path('data') / 'surveys' / 'toyblocks' / 'als_toyblocks_stripid.xml', zip_output=False, las_output=False)
+    sim.start()
+    out = sim.join()
+    access_output(out.filepath, '.xyz')
 
 
 def test_start_stop(test_sim):
