@@ -156,15 +156,15 @@ Back to the helios root directory, configure the project:
 
 - Linking Boost statically:
 
-```cmake -DCMAKE_BUILD_TYPE=Release -DPYTHON_BINDING=1 -DPYTHON_VERSION=38 .```
+```cmake -DCMAKE_BUILD_TYPE=Release -DPYTHON_BINDING=1 -DPYTHON_VERSION="38" .```
 
 - Linking Boost dynamically:
 
-```cmake -DCMAKE_BUILD_TYPE=Release -DPYTHON_BINDING=1 -DPYTHON_VERSION=38 -DBOOST_DYNAMIC_LIBS=1```
+```cmake -DCMAKE_BUILD_TYPE=Release -DPYTHON_BINDING=1 -DPYTHON_VERSION="38" -DBOOST_DYNAMIC_LIBS=1```
 
 - Compiling against a custom Python installation:
 
-```cmake -DCMAKE_BUILD_TYPE=Release -DPYTHON_BINDING=1 -DPYTHON_VERSION=36 -DPYTHON_PATH=/home/miniconda3/envs/py36/ .```
+```cmake -DCMAKE_BUILD_TYPE=Release -DPYTHON_BINDING=1 -DPYTHON_VERSION="36" -DPYTHON_PATH=/home/miniconda3/envs/py36/ .```
 
 Finally, compile Helios++:
 
@@ -205,7 +205,7 @@ For allowing dynamic Boost linkage, execute ```sudo ./b2 install```
 ##### Helios
 - The path to the custom Python root directory must be provided to CMake:
 
-```cmake -DCMAKE_BUILD_TYPE=Release -DPYTHON_BINDING=1 -DPYTHON_VERSION=38 -DPYTHON_PATH=/home/miguelyermo/miniconda3/envs/py38 . ```
+```cmake -DCMAKE_BUILD_TYPE=Release -DPYTHON_BINDING=1 -DPYTHON_VERSION="38" -DPYTHON_PATH=/home/miguelyermo/miniconda3/envs/py38 . ```
    
 Note that -DPYTHON_VERSION must match the chosen Python installation. If no path is provided, CMake will attempt to use default Python installation.
 
@@ -398,7 +398,7 @@ You can use certain flags together with CMake/CMakeGUI to configure the python b
 ```PYTHON_BINDING``` Set it to TRUE or 1 to compile with python bindings support. Set it to FALSE or 0 to ignore python bindings.
 
 ```PYTHON_VERSION``` Set it to the python version you would like to use. For instance 38. If it is not specified,
-python version 37 is considered by default.
+python version 37 is considered by default. The version must be in quotation marks: `-DPYTHON_VERSION="38"`
 
 ```PYTHON_PATH``` Use it if you need to specify the path to a python installation that is not the system default.
 
@@ -409,7 +409,7 @@ When specifying LAPACK_LIB it is not necessary to link it at Visual Studio IDE, 
 For example, to compile Helios with Python Bindings support, using `python3.6` located in `D:\Miniconda3\envs\py36\python.exe`:
 
 ```
-cmake -DCMAKE_BUILD_TYPE=Release -DPYTHON_BINDING=1 -DPYTHON_VERSION=36 -DPYTHON_PATH=D:\Miniconda3\envs\py36 .
+cmake -DCMAKE_BUILD_TYPE=Release -DPYTHON_BINDING=1 -DPYTHON_VERSION="36" -DPYTHON_PATH=D:\Miniconda3\envs\py36 .
 ```
 
 Finally, we only need to link at helios project. Open `helios.sln`, right click on *helios* at solution explorer and then properties:

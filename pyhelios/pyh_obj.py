@@ -9,9 +9,7 @@ import os
 class Scene:
     """
     Class that represents the scene of a pyhelios simulation.
-
     ...
-
     Attributes
     ----------
     survey : str
@@ -32,7 +30,6 @@ class Scene:
         open3d geometry that contains the survey trajectory points
     measurement : o3d ptcloud geometry
         open3d geometry that contains the survey measurement points
-
     Methods
     -------
     gen_from_xml():
@@ -109,6 +106,7 @@ class Scene:
         # Add measurement and trajectory geoms to visualizer.
         self.visualizer.add_geometry(self.measurement)
         self.visualizer.add_geometry(self.trajectory)
+        self.visualizer.get_render_option().mesh_show_back_face = True
 
         if self.logging:
             print("Adding sceneparts to visualisation...\n")
@@ -151,7 +149,6 @@ class Scene:
     def colourise(self, measurement_array):
         """
         Adds colours to open3d geometries of survey.
-
         Parameters
         ----------
         measurement_array : np.array
@@ -185,9 +182,7 @@ class Scene:
 class Scenepart:
     """
     Class used to represent individual scene parts of different data types.
-
     ...
-
     Attributes
     ----------
     o3dGeometry : None
@@ -206,7 +201,6 @@ class Scenepart:
         the location of the scene part within the parsed xml scene file
     logging : bool
         flag to enable or disable logging
-
     Methods
     -------
     gen_from_xml():
@@ -230,13 +224,32 @@ class Scenepart:
         self.path = xml_loc.find('filter').find('param').attrib['value']
         self.xml_loc = xml_loc
         self.logging = logging_flag
-
+        self.up = None
+        for param in xml_loc.find('filter').findall('param'):
+            if param.attrib['key'] == 'up':
+                self.up = param.attrib['value']
+                        
     def apply_tf(self):
         """
         Apply transformation from attributes rotate, scale, translation to open3d geometry.
         """
         if self.logging:
             print("Applying transformation!")
+            
+        if self.up == 'y' or self.up == 'Y':
+            print("Y-axis set to 'up'.")
+            rot = [1, 0, 0]
+            R = self.o3dGeometry.get_rotation_matrix_from_axis_angle(
+                    np.array(rot) * float(90) / 180. * np.pi)
+            self.o3dGeometry.rotate(R, center=[0, 0, 0])
+            
+        if self.up == 'x' or self.up == 'X':
+            print("X-axis set to 'up'.")
+            rot = [0, 1, 0]
+            R = self.o3dGeometry.get_rotation_matrix_from_axis_angle(
+                    np.array(rot) * float(90) / 180. * np.pi)
+            self.o3dGeometry.rotate(R, center=[0, 0, 0])
+            
         # Apply rotation
         if self.rotate.rotate:
             if self.rotate.method.lower() == 'local':
@@ -542,15 +555,17 @@ class ObjScenepart(Scenepart):
         """
         Creates open3d geometry for .obj scene part from scenepart path.
         """
+        from pyhelios.util import read_obj
+        
         if self.logging:
             print('Loading .obj Scenepart...')
 
         # Create open3d object.
-        self.o3dGeometry = o3d.io.read_triangle_mesh(self.path)
-        self.o3dGeometry.compute_vertex_normals()
+        self.o3dGeometry = read_obj.read_obj(self.path, logging=self.logging)
 
         if self.logging:
             print(".obj scenepart successfully loaded.")
+
 
 class TiffScenepart(Scenepart):
     """
@@ -707,4 +722,3 @@ class Scale:
              filter: xml location of scale.
         """
         self.scale = float(filter.find('param').attrib['value'])
-
