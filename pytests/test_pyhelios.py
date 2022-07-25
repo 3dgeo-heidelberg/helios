@@ -29,13 +29,20 @@ def find_scene(survey_file):
     scene_file = ET.parse(survey_file).find('survey').attrib['scene'].split('#')[0]
     return scene_file.replace('.xml', '.scene')
 
+def access_output(outpath, outfile_ending):
+    # Attempt to rename files in output directory
+    for filename in os.listdir(os.path.dirname(outpath)):
+        if filename.endswith(outfile_ending):
+            os.rename(os.path.join(os.path.dirname(outpath), filename),
+                      os.path.join(os.path.dirname(outpath), filename.replace(outfile_ending, "_accessed" + outfile_ending)))
+
 
 @pytest.fixture(scope="session")
 def test_sim():
     """
     Fixture which returns a simulation object for a given survey path
     """
-    def create_test_sim(survey_path):
+    def create_test_sim(survey_path, zip_output=True, las_output=True):
         # pyhelios.loggingSilent()
         from pyhelios import SimulationBuilder
         simB = SimulationBuilder(
@@ -43,15 +50,42 @@ def test_sim():
             assetsDir=WORKING_DIR + os.sep + 'assets' + os.sep,
             outputDir=WORKING_DIR + os.sep + 'output' + os.sep,
         )
-        simB.setLasOutput(True)
+        simB.setLasOutput(las_output)
         simB.setRebuildScene(True)
-        simB.setZipOutput(True)
+        simB.setZipOutput(zip_output)
 
         sim = simB.build()
 
         return sim
 
     return create_test_sim
+
+
+@pytest.mark.parametrize("survey_path,las,zip",
+[(Path('data') / 'surveys' / 'toyblocks' / 'als_toyblocks.xml', True, True),
+(Path('data') / 'surveys' / 'toyblocks' / 'als_toyblocks_stripid.xml', True, True),
+(Path('data') / 'surveys' / 'toyblocks' / 'als_toyblocks.xml', False, False),
+(Path('data') / 'surveys' / 'toyblocks' / 'als_toyblocks_stripid.xml', False, False)])
+def test_open_output(test_sim, survey_path, las, zip):
+    """Test accessing output files (LAS/xyz) after simulation"""
+    from pyhelios import SimulationBuilder
+
+    sim = test_sim(survey_path, las_output=las, zip_output=zip)
+    sim.start()
+    out = sim.join()
+    ext = None
+
+    if las is True and zip is True:
+        ext = '.laz'
+    elif las is True and zip is False:
+        ext = '.las'
+    elif las is False and zip is False:
+        ext = '.xyz'
+    elif las is False and zip is True:
+        ext = '.bin'
+
+    assert ext != None
+    access_output(out.filepath, ext)
 
 
 def test_start_stop(test_sim):
