@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<document>
+	<platformSettings id="platform1" movePerSec_m="30" z="100.0" />
+    <scannerSettings active="true" id="scanner1" pulseFreq_hz="1200000" scanAngle_deg="20.0" scanFreq_hz="200" trajectoryTimeInterval_s="0.01"/>
+    <survey name="toyblocks_als_stripid" platform="data/platforms.xml#sr22" scanner="data/scanners_als.xml#riegl_vq-880g" scene="data/scenes/toyblocks/toyblocks_scene.xml#toyblocks_scene">
+	<!-- platform: plane, deflector: conic -->
+		<leg stripId="0">
+			<platformSettings x="-30.0" y="-50.0" template="platform1"/>
+			<scannerSettings template="scanner1" />
+		</leg>
+		<leg stripId="0">
+			<platformSettings x="70.0" y="-50.0" template="platform1"/>
+			<scannerSettings template="scanner1" active="false"/>
+		</leg>
+		<leg stripId="0">
+			<platformSettings x="70.0" y="0.0" template="platform1"/>
+			<scannerSettings template="scanner1" />
+		</leg>
+		<leg>
+			<platformSettings x="-30.0" y="0.0" template="platform1"/>
+			<scannerSettings template="scanner1" active="false"/>
+		</leg>
+		<leg stripId="0">
+			<platformSettings x="-30.0" y="50.0" template="platform1"/>
+			<scannerSettings template="scanner1"/>
+		</leg>
+		<leg stripId="0">
+			<platformSettings x="70.0" y="50.0" template="platform1"/>
+			<scannerSettings template="scanner1" active="false"/>
+		</leg>
+	</survey>
+</document>
