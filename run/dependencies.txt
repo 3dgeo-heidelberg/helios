@@ -28,7 +28,7 @@ fileio.dll
 fileio_gw.dll
 freexl.dll
 functions_manager.dll
-gdal304.dll
+gdal305.dll
 geos.dll
 geos_c.dll
 GetWindowsVersion.dll
