@@ -457,10 +457,11 @@ jobs:
         uses: microsoft/setup-msbuild@v1.1
       - name: Debug
         working-directory: ${{env.GITHUB_WORKSPACE}}
-        run: >-
-          "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30133\bin\Hostx86\x86\dumpbin.exe" /dependents ${{env.GITHUB_WORKSPACE}}/run/helios.exe;
-          "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30133\bin\Hostx86\x86\dumpbin.exe" /imports ${{env.GITHUB_WORKSPACE}}/run/helios.exe;
-          dir run;
+        shell: cmd
+        run: |
+          "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30133\bin\Hostx86\x86\dumpbin.exe" /dependents ${{env.GITHUB_WORKSPACE}}/run/helios.exe
+          "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30133\bin\Hostx86\x86\dumpbin.exe" /imports ${{env.GITHUB_WORKSPACE}}/run/helios.exe
+          dir run
           
       - name: Test
         run: ${{github.workspace}}/run/helios.exe --test
