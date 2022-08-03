@@ -28,7 +28,10 @@ def find_playback_dir(survey_path):
 def run_helios_executable(survey_path: Path, options=None) -> Path:
     if options is None:
         options = list()
-    command = [HELIOS_EXE, str(survey_path)] + options + ['--rebuildScene', '--seed', '43', '-vt', '-j', '1']
+    command = [HELIOS_EXE, str(survey_path)] + options + ['--rebuildScene',
+                                                          '--seed', '43',
+                                                          '-vt',
+                                                          '-j', '1']
     print(command)
     # shell must be false for linux (but true for windows(?))
     p = subprocess.Popen(command, cwd=WORKING_DIR, shell=(sys.platform == "win32"))
@@ -37,7 +40,7 @@ def run_helios_executable(survey_path: Path, options=None) -> Path:
     return find_playback_dir(survey_path)
 
 
-def run_helios_pyhelios(survey_path: Path, zip_output=False) -> Path:
+def run_helios_pyhelios(survey_path: Path, las_output=True, zip_output=False, start_time=None) -> Path:
     sys.path.append(WORKING_DIR)
     import pyhelios
     pyhelios.setDefaultRandomnessGeneratorSeed("43")
@@ -47,12 +50,13 @@ def run_helios_pyhelios(survey_path: Path, zip_output=False) -> Path:
         assetsDir=WORKING_DIR + os.sep + 'assets' + os.sep,
         outputDir=WORKING_DIR + os.sep + 'output' + os.sep,
     )
-    simB.setLasOutput(True)
+    simB.setLasOutput(las_output)
     simB.setRebuildScene(True)
     simB.setZipOutput(zip_output)
     simB.setNumThreads(1)
     simB.setKDTJobs(1)
-
+    if start_time:
+        simB.setFixedGpsTimeStart(start_time)
     sim = simB.build()
 
     sim.start()
@@ -63,13 +67,15 @@ def run_helios_pyhelios(survey_path: Path, zip_output=False) -> Path:
 @pytest.mark.exe
 def test_arbaro_tls_exe():
     dirname_exe = run_helios_executable(Path('data') / 'surveys' / 'demo' / 'tls_arbaro_demo.xml',
-                                        options=['--lasOutput'])
+                                        options=['--lasOutput',
+                                                 '--gpsStartTime', '2022-01-01 00:00:00'])
     eval_arbaro_tls(dirname_exe)
 
 
 @pytest.mark.pyh
 def test_arbaro_tls_pyh():
-    dirname_pyh = run_helios_pyhelios(Path('data') / 'surveys' / 'demo' / 'tls_arbaro_demo.xml')
+    dirname_pyh = run_helios_pyhelios(Path('data') / 'surveys' / 'demo' / 'tls_arbaro_demo.xml',
+                                      start_time='2022-01-01 00:00:00')
     eval_arbaro_tls(dirname_pyh)
 
 
@@ -89,13 +95,15 @@ def eval_arbaro_tls(dirname):
 @pytest.mark.exe
 def test_tiffloader_als_exe():
     dirname_exe = run_helios_executable(Path('data') / 'test' / 'als_hd_demo_tiff_min.xml',
-                                        options=['--lasOutput'])
+                                        options=['--lasOutput',
+                                                 '--gpsStartTime', '2022-01-01 00:00:00'])
     eval_tiffloader_als(dirname_exe)
 
 
 @pytest.mark.pyh
 def test_tiffloader_als_pyh():
-    dirname_pyh = run_helios_pyhelios(Path('data') / 'test' / 'als_hd_demo_tiff_min.xml')
+    dirname_pyh = run_helios_pyhelios(Path('data') / 'test' / 'als_hd_demo_tiff_min.xml',
+                                      start_time='2022-01-01 00:00:00')
     eval_tiffloader_als(dirname_pyh)
 
 
@@ -116,13 +124,15 @@ def eval_tiffloader_als(dirname):
 @pytest.mark.exe
 def test_detailedVoxels_uls_exe():
     dirname_exe = run_helios_executable(Path('data') / 'test' / 'uls_detailedVoxels_mode_comparison_min.xml',
-                                        options=['--lasOutput'])
+                                        options=['--lasOutput',
+                                                 '--gpsStartTime', '2022-01-01 00:00:00'])
     eval_detailedVoxels_uls(dirname_exe)
 
 
 @pytest.mark.pyh
 def test_detailedVoxels_uls_pyh():
-    dirname_pyh = run_helios_pyhelios(Path('data') / 'test' / 'uls_detailedVoxels_mode_comparison_min.xml')
+    dirname_pyh = run_helios_pyhelios(Path('data') / 'test' / 'uls_detailedVoxels_mode_comparison_min.xml',
+                                      start_time='2022-01-01 00:00:00')
     eval_detailedVoxels_uls(dirname_pyh)
 
 
@@ -165,7 +175,9 @@ def eval_xyzVoxels_tls(dirname):
 @pytest.mark.exe
 def test_interpolated_traj_exe():
     dirname_exe = run_helios_executable(Path('data') / 'surveys' / 'demo' / 'als_interpolated_trajectory.xml',
-                                        options=['--lasOutput', '--zipOutput'])
+                                        options=['--lasOutput',
+                                                 '--zipOutput',
+                                                 '--gpsStartTime', '2022-01-01 00:00:00'])
     eval_interpolated_traj(dirname_exe)
 
 
