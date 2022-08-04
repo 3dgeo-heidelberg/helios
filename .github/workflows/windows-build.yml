@@ -455,6 +455,10 @@ jobs:
           path: ${{github.workspace}}/run/
       - name: Add msbuild to PATH
         uses: microsoft/setup-msbuild@v1.1
+        with:
+          msbuild-architecture: x86
+          vs-version: '[16.9,16.10)'
+        
       - name: Debug
         working-directory: ${{env.GITHUB_WORKSPACE}}
         shell: cmd
@@ -463,5 +467,14 @@ jobs:
           "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30133\bin\Hostx86\x86\dumpbin.exe" /imports ${{env.GITHUB_WORKSPACE}}/run/helios.exe
           dir run
           
+      - name: Debug-Artifact
+        uses: actions/upload-artifact@v2
+        with:
+            name: ${{ runner.os}}-helios-pybinds-${{ matrix.python-version }}-withlib
+            path: |
+              ${{github.workspace}}/run/helios.exe
+              ${{github.workspace}}/run/_pyhelios.cpython-*.pyd
+              ${{github.workspace}}/run/*.dll
+              
       - name: Test
         run: ${{github.workspace}}/run/helios.exe --test
