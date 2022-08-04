@@ -455,14 +455,12 @@ jobs:
           path: ${{github.workspace}}/run/
       - name: Add msbuild to PATH
         uses: microsoft/setup-msbuild@v1.1
-        with:
-          msbuild-architecture: x86
-          vs-version: '[16.9,16.10)'
         
       - name: Debug
         working-directory: ${{env.GITHUB_WORKSPACE}}
         shell: cmd
         run: |
+          echo %PATH%
           "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30133\bin\Hostx86\x86\dumpbin.exe" /dependents ${{env.GITHUB_WORKSPACE}}/run/helios.exe
           "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30133\bin\Hostx86\x86\dumpbin.exe" /imports ${{env.GITHUB_WORKSPACE}}/run/helios.exe
           dir run
