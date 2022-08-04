@@ -56,6 +56,10 @@ int main(int argc, char** argv) {
         helios::main::printMainHelp();
         done = true;
     }
+    if(ap.parseVersionRequest()){  // Print version and finish
+        std::cout << getHeliosFullVersion() << std::endl;
+        return EXIT_SUCCESS;
+    }
     else if(argc > 1){
         std::string inputPath, outputPath;
         std::string demo = ap.parseDemoRequest();

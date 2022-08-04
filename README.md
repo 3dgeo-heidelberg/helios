@@ -51,6 +51,9 @@ helios --help
 
 helios --test
     Perform necessary tests to check everything works as expected
+    
+helios --version
+    Show the HELIOS++ version details
 
 helios <survey_file_path> [OPTIONAL ARGUMENTS]
     Perform requested simulation.

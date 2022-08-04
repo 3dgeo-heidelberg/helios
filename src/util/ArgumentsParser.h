@@ -23,14 +23,19 @@ public:
     // ********************** //
     /**
      * @brief Parse help request argument if any (-h or --help)
-     * @return true if help was requested, false otherwise.
+     * @return True if help was requested, false otherwise.
      */
     bool parseHelpRequest();
     /**
      * @brief Parse test request argument if any (--test)
-     * @return true if test was requested, false otherwise.
+     * @return True if test was requested, false otherwise.
      */
     bool parseTestRequest();
+    /**
+     * @brief Parse version request argument if any (--version)
+     * @return True if version was requested, false otherwise.
+     */
+    bool parseVersionRequest();
     /**
      * @brief Parse test directory specification (not necessary,
      *  default one will be relative path "data/test/")

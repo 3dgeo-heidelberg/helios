@@ -85,6 +85,7 @@ set(Boost_USE_RELEASE_LIBS ON)
 set(Boost_USE_MULTITHREADED ON)
 set(Boost_NO_BOOST_CMAKE OFF)
 if(${BOOST_DYNAMIC_LIBS})
+    add_definitions(-DDYNAMIC_BOOST)
     set(Boost_USE_STATIC_LIBS_OFF)
     if(WIN32 OR MSVC)  # Specific boost stuff for Windows
         set(Boost_THREADAPI win32)
