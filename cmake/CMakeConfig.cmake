@@ -31,6 +31,11 @@ if(NOT PYTHON_VERSION)
 endif()
 string(TOUPPER ${CMAKE_BUILD_TYPE} BUILD_TYPE)
 
+# Add debug build definition
+if("${BUILD_TYPE}" STREQUAL "DEBUG")
+    add_definitions(-DDEBUG_BUILD)
+endif()
+
 # Initial messages
 if(WIN32 OR MSVC)
     message("CMake compiling for WINDOWS")
