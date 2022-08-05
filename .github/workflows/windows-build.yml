@@ -506,8 +506,10 @@ jobs:
         uses: microsoft/setup-msbuild@v1.1
         
       - name: Build GDAL
-        working-directory: ${{env.GITHUB_WORKSPACE}}\lib\gdal
+        working-directory: ${{env.GITHUB_WORKSPACE}}
+        shell: cmd
         run: |
+          cd lib\gdal
           mkdir build
           cd build
           cmake ..
