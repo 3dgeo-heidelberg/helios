@@ -476,3 +476,41 @@ jobs:
               
       - name: Test
         run: ${{github.workspace}}/run/helios.exe --test
+        
+    
+  build-gdal:
+    runs-on: windows-2019
+    needs: []
+    defaults:
+      run:
+        working-directory: ${{github.workspace}}
+
+    steps:
+      - uses: suisei-cn/actions-download-file@v1
+        id: buildgdal-downloadgdal
+        name: Download GDAL
+        with:
+          url: "https://download.gisinternals.com/sdk/downloads/release-1928-x64-gdal-3-5-0-mapserver-7-6-4-libs.zip"
+          target: lib/gdal.zip
+
+      - name: Extract GDAL
+        working-directory: ${{env.GITHUB_WORKSPACE}}
+        run: |
+          cd lib
+          7z x gdal.zip -ogdal
+          dir .
+          dir gdal
+          move gdal/include/boost gdal/include/boost-gdal
+
+      - name: Add msbuild to PATH
+        uses: microsoft/setup-msbuild@v1.1
+        
+      - name: Build GDAL
+        working-directory: ${{env.GITHUB_WORKSPACE}}\lib\gdal
+        run: |
+          mkdir build
+          cd build
+          cmake ..
+          cmake --build .
+          cmake --build . --target install
+          dir
