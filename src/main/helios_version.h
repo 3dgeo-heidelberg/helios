@@ -6,6 +6,10 @@
  * @brief Current Helios++ version
  */
 extern const char *HELIOS_VERSION;
+/**
+ * @brief The git hash associated to the source code of HELIOS++
+ */
+extern const char * HELIOS_GIT_HASH;
 
 /**
  * @brief Obtain current Helios++ version
