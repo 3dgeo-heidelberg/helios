@@ -490,14 +490,14 @@ jobs:
         id: buildgdal-downloadgdal
         name: Download GDAL
         with:
-          url: "https://download.gisinternals.com/sdk/downloads/release-1928-x64-gdal-3-5-0-mapserver-7-6-4-libs.zip"
-          target: lib/gdal.zip
+          url: "https://github.com/OSGeo/gdal/releases/download/v3.5.0/gdal-3.5.0.tar.gz"
+          target: lib/gdal.tar.gz
 
       - name: Extract GDAL
         working-directory: ${{env.GITHUB_WORKSPACE}}
         run: |
           cd lib
-          7z x gdal.zip -ogdal
+          7z x gdal.tar.gz -so | 7z x -aoa -si -ttar -ogdal
           dir .
           dir gdal
           move gdal/include/boost gdal/include/boost-gdal
