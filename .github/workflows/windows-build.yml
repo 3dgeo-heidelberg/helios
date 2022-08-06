@@ -497,11 +497,11 @@ jobs:
         working-directory: ${{env.GITHUB_WORKSPACE}}
         run: |
           cd lib
-          7z x gdal.tar.gz -so | 7z x -aoa -si -ttar -ogdal
+          7z x gdal.tar.gz -so | 7z x -aoa -si -ttar -o"."
           dir .
+          move gdal-3.5.0 gdal
           dir gdal
-          move gdal/include/boost gdal/include/boost-gdal
-
+          
       - name: Add msbuild to PATH
         uses: microsoft/setup-msbuild@v1.1
         
