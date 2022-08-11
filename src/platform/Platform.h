@@ -30,7 +30,9 @@ public:
 	/**
 	 * @brief Device mount attitude relative to the platform
 	 */
-	Rotation cfg_device_relativeMountAttitude = Rotation(glm::dvec3(0, 1, 0), 0);
+	Rotation cfg_device_relativeMountAttitude = Rotation(
+	    glm::dvec3(0, 1, 0), 0
+    );
 
     // misc stuff
     /**

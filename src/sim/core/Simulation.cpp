@@ -10,7 +10,9 @@ using namespace std::chrono;
 #include <platform/InterpolatedMovingPlatform.h>
 #ifdef DATA_ANALYTICS
 #include <dataanalytics/HDA_StateJSONReporter.h>
+#include <dataanalytics/HDA_SimStepRecorder.h>
 using helios::analytics::HDA_StateJSONReporter;
+using helios::analytics::HDA_SimStepRecorder;
 #endif
 
 #include "Simulation.h"
@@ -126,6 +128,7 @@ void Simulation::start() {
 #ifdef DATA_ANALYTICS
     HDA_StateJSONReporter sjr((SurveyPlayback *) this, "helios_state.json");
     sjr.report();
+    HDA_SimStepRecorder ssr((SurveyPlayback *) this, "helios_sim_records");
 #endif
 
     // Execute the main loop of the simulation
@@ -153,9 +156,18 @@ void Simulation::start() {
 		    iter = 1;
 		    condvar.notify_all();
 		}
+
+#ifdef DATA_ANALYTICS
+        ssr.record();
+#endif
 	}
 
-	// Finish the main loop of the simulation
+#ifdef DATA_ANALYTICS
+	// Finish data analytics stuff
+	ssr.closeBuffers();
+#endif
+
+    // Finish the main loop of the simulation
 	long const timeMainLoopFinish = duration_cast<nanoseconds>(
 	    system_clock::now().time_since_epoch()
     ).count();
