@@ -3,6 +3,10 @@
 
 #include <util/HeliosException.h>
 #include <maths/RotationOrder.h>
+#include <platform/Platform.h>
+#include <scanner/Scanner.h>
+#include <scanner/ScannerHead.h>
+#include <beamDeflector/AbstractBeamDeflector.h>
 
 #include <boost/filesystem.hpp>
 #include <glm/glm.hpp>
@@ -16,6 +20,9 @@ using namespace helios::analytics;
 void HDA_SimStepRecorder::record(){
     recordPlatform();
     recordScanner();
+    recordScannerHead();
+    recordDeflector();
+    recordBeam();
 }
 
 // ***  RECORDER METHODS  *** //
@@ -47,6 +54,18 @@ bool HDA_SimStepRecorder::isAnyBufferOpen(){
     anyOpen |= scannerRoll->isOpen();
     anyOpen |= scannerPitch->isOpen();
     anyOpen |= scannerYaw->isOpen();
+    anyOpen |= scannerHeadRoll->isOpen();
+    anyOpen |= scannerHeadPitch->isOpen();
+    anyOpen |= scannerHeadYaw->isOpen();
+    anyOpen |= deflectorEmittingRoll->isOpen();
+    anyOpen |= deflectorEmittingPitch->isOpen();
+    anyOpen |= deflectorEmittingYaw->isOpen();
+    anyOpen |= beamOriginX->isOpen();
+    anyOpen |= beamOriginY->isOpen();
+    anyOpen |= beamOriginZ->isOpen();
+    anyOpen |= beamRoll->isOpen();
+    anyOpen |= beamPitch->isOpen();
+    anyOpen |= beamYaw->isOpen();
     return anyOpen;
 }
 
@@ -90,6 +109,48 @@ void HDA_SimStepRecorder::openBuffers(){
     scannerYaw = std::make_shared<HDA_RecordBuffer<double>>(
         craftOutputPath("scanner_yaw.csv")
     );
+
+    // Open scanner's head related buffers
+    scannerHeadRoll = std::make_shared<HDA_RecordBuffer<double>>(
+        craftOutputPath("scanner_head_roll.csv")
+    );
+    scannerHeadPitch = std::make_shared<HDA_RecordBuffer<double>>(
+        craftOutputPath("scanner_head_pitch.csv")
+    );
+    scannerHeadYaw = std::make_shared<HDA_RecordBuffer<double>>(
+        craftOutputPath("scanner_head_yaw.csv")
+    );
+
+    // Open deflector's pulses related buffers
+    deflectorEmittingRoll = std::make_shared<HDA_RecordBuffer<double>>(
+        craftOutputPath("deflector_emitting_roll.csv")
+    );
+    deflectorEmittingPitch = std::make_shared<HDA_RecordBuffer<double>>(
+        craftOutputPath("deflector_emitting_pitch.csv")
+    );
+    deflectorEmittingYaw = std::make_shared<HDA_RecordBuffer<double>>(
+        craftOutputPath("deflector_emitting_yaw.csv")
+    );
+
+    // Open platform related buffers
+    beamOriginX = std::make_shared<HDA_RecordBuffer<double>>(
+        craftOutputPath("beam_origin_x.csv")
+    );
+    beamOriginY = std::make_shared<HDA_RecordBuffer<double>>(
+        craftOutputPath("beam_origin_y.csv")
+    );
+    beamOriginZ = std::make_shared<HDA_RecordBuffer<double>>(
+        craftOutputPath("beam_origin_z.csv")
+    );
+    beamRoll = std::make_shared<HDA_RecordBuffer<double>>(
+        craftOutputPath("beam_roll.csv")
+    );
+    beamPitch = std::make_shared<HDA_RecordBuffer<double>>(
+        craftOutputPath("beam_pitch.csv")
+    );
+    beamYaw = std::make_shared<HDA_RecordBuffer<double>>(
+        craftOutputPath("beam_yaw.csv")
+    );
 }
 
 void HDA_SimStepRecorder::closeBuffers(){
@@ -108,6 +169,24 @@ void HDA_SimStepRecorder::closeBuffers(){
     scannerRoll->close();
     scannerPitch->close();
     scannerYaw->close();
+
+    // Close scanner head buffers
+    scannerHeadRoll->close();
+    scannerHeadPitch->close();
+    scannerHeadYaw->close();
+
+    // Close deflector buffers
+    deflectorEmittingRoll->close();
+    deflectorEmittingPitch->close();
+    deflectorEmittingYaw->close();
+
+    // Close beam buffers
+    beamOriginX->close();
+    beamOriginY->close();
+    beamOriginZ->close();
+    beamRoll->close();
+    beamPitch->close();
+    beamYaw->close();
 }
 
 // ***  CONCRETE RECORD METHODS  *** //
@@ -144,6 +223,52 @@ void HDA_SimStepRecorder::recordScanner(){
     scannerRoll->push(roll);
     scannerPitch->push(pitch);
     scannerYaw->push(yaw);
+}
+
+void HDA_SimStepRecorder::recordScannerHead(){
+    // Obtain scanner's head
+    ScannerHead &sh = *(sp->getScanner()->scannerHead);
+    // Record scanner's head angles
+    double roll, pitch, yaw;
+    sh.getMountRelativeAttitude().getAngles(
+        &RotationOrder::XYZ, roll, pitch, yaw
+    );
+    scannerHeadRoll->push(roll);
+    scannerHeadPitch->push(pitch);
+    scannerHeadYaw->push(yaw);
+}
+
+void HDA_SimStepRecorder::recordDeflector(){
+    // Obtain beam deflector
+    AbstractBeamDeflector &bd = *(sp->getScanner()->beamDeflector);
+    // Record deflector's angles
+    double roll, pitch, yaw;
+    bd.getEmitterRelativeAttitude().getAngles(
+        &RotationOrder::XYZ, roll, pitch, yaw
+    );
+    deflectorEmittingRoll->push(roll);
+    deflectorEmittingPitch->push(pitch);
+    deflectorEmittingYaw->push(yaw);
+}
+
+void HDA_SimStepRecorder::recordBeam(){
+    // TODO Rethink : Implement
+    // Obtain scanner
+    Platform &p = *(sp->getScanner()->platform);
+    Scanner &s = *(sp->getScanner());
+    // Record beam origin
+    glm::dvec3 bo = p.getAbsoluteMountPosition() +
+        s.cfg_device_headRelativeEmitterPosition;
+    beamOriginX->push(bo.x);
+    beamOriginY->push(bo.y);
+    beamOriginZ->push(bo.z);
+    // Record beam attitude
+    Rotation ba = s.calcAbsoluteBeamAttitude();
+    double roll, pitch, yaw;
+    ba.getAngles(&RotationOrder::XYZ, roll, pitch, yaw);
+    beamRoll->push(roll);
+    beamPitch->push(pitch);
+    beamYaw->push(yaw);
 }
 
 std::string HDA_SimStepRecorder::craftOutputPath(std::string const &fname){

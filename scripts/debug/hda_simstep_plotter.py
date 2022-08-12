@@ -112,6 +112,46 @@ def read_records(path, sep=','):
         ), sep),
         'scanner_yaw': read_record(os.path.join(
             path, 'scanner_yaw.csv'
+        ), sep),
+        # Scanner head attitude records
+        'scanner_head_roll': read_record(os.path.join(
+            path, 'scanner_head_roll.csv'
+        ), sep),
+        'scanner_head_pitch': read_record(os.path.join(
+            path, 'scanner_head_pitch.csv'
+        ), sep),
+        'scanner_head_yaw': read_record(os.path.join(
+            path, 'scanner_head_yaw.csv'
+        ), sep),
+        # Beam deflector attitude records
+        'deflector_emitting_roll': read_record(os.path.join(
+            path, 'deflector_emitting_roll.csv'
+        ), sep),
+        'deflector_emitting_pitch': read_record(os.path.join(
+            path, 'deflector_emitting_pitch.csv'
+        ), sep),
+        'deflector_emitting_yaw': read_record(os.path.join(
+            path, 'deflector_emitting_yaw.csv'
+        ), sep),
+        # Beam origin records
+        'beam_origin_x': read_record(os.path.join(
+            path, 'beam_origin_x.csv'
+        ), sep),
+        'beam_origin_y': read_record(os.path.join(
+            path, 'beam_origin_y.csv'
+        ), sep),
+        'beam_origin_z': read_record(os.path.join(
+            path, 'beam_origin_z.csv'
+        ), sep),
+        # Beam attitude records
+        'beam_roll': read_record(os.path.join(
+            path, 'beam_roll.csv'
+        ), sep),
+        'beam_pitch': read_record(os.path.join(
+            path, 'beam_pitch.csv'
+        ), sep),
+        'beam_yaw': read_record(os.path.join(
+            path, 'beam_yaw.csv'
         ), sep)
     }
 
@@ -139,6 +179,10 @@ def plot_records(arec, brec, outdir):
     do_platform_attitude_plots(arec, brec, outdir)
     do_scanner_position_plots(arec, brec, outdir)
     do_scanner_attitude_plots(arec, brec, outdir)
+    do_scanner_head_attitude_plots(arec, brec, outdir)
+    do_deflector_emitting_attitude_plots(arec, brec, outdir)
+    do_beam_origin_plots(arec, brec, outdir)
+    do_beam_attitude_plots(arec, brec, outdir)
 
 
 def validate_record(key, rec, recid):
@@ -313,6 +357,70 @@ def do_scanner_position_plots(arec, brec, outdir):
     plt.close(fig)
 
 
+def do_beam_origin_plots(arec, brec, outdir):
+    # Validate beam origin data
+    if not validate_record('beam_origin_x', arec, 'a') or \
+            not validate_record('beam_origin_y', arec, 'a') or \
+            not validate_record('beam_origin_z', arec, 'a') or \
+            not validate_record('beam_origin_x', brec, 'b') or \
+            not validate_record('beam_origin_y', brec, 'b') or \
+            not validate_record('beam_origin_z', brec, 'b'):
+        print('Cannot do beam origin plots')
+        return
+
+    # Do the beam origin plots
+    fig = init_figure()  # Initialize figure
+    ax = fig.add_subplot(2, 3, 1)  # Initialize x(a) subplot
+    do_position_subplot(
+        fig, ax, arec['beam_origin_x'],
+        label='$x(a)$',
+        title='A-Beam\'s origin $x$ position',
+        ylabel='$x(a)$'
+    )
+    ax = fig.add_subplot(2, 3, 2)  # Initialize y(a) subplot
+    do_position_subplot(
+        fig, ax, arec['beam_origin_y'],
+        label='$y(a)$',
+        title='A-Beam\'s origin $y$ position',
+        ylabel='$y(a)$'
+    )
+    ax = fig.add_subplot(2, 3, 3)  # Initialize z(a) subplot
+    do_position_subplot(
+        fig, ax, arec['beam_origin_z'],
+        label='$z(a)$',
+        title='A-Beam\'s origin $z$ position',
+        ylabel='$z(a)$'
+    )
+    ax = fig.add_subplot(2, 3, 4)  # Initialize x(b) subplot
+    do_position_subplot(
+        fig, ax, brec['beam_origin_x'],
+        label='$x(b)$',
+        title='B-Beam\'s origin $x$ position',
+        ylabel='$x(b)$'
+    )
+    ax = fig.add_subplot(2, 3, 5)  # Initialize y(b) subplot
+    do_position_subplot(
+        fig, ax, brec['beam_origin_y'],
+        label='$y(b)$',
+        title='B-Beam\'s origin $y$ position',
+        ylabel='$y(b)$'
+    )
+    ax = fig.add_subplot(2, 3, 6)  # Initialize z(b) subplot
+    do_position_subplot(
+        fig, ax, brec['beam_origin_z'],
+        label='$z(b)$',
+        title='B-Beam\'s origin $z$ position',
+        ylabel='$z(b)$'
+    )
+    fig.tight_layout()
+    # Save figure to file and remove it from memory
+    fig.savefig(
+        os.path.join(outdir, 'beam_origin.png')
+    )
+    fig.clear()
+    plt.close(fig)
+
+
 def do_attitude_subplot(
     fig, ax, x, label=None, title=None, ylabel=None, maxpoints=65536
 ):
@@ -461,6 +569,198 @@ def do_scanner_attitude_plots(arec, brec, outdir):
     plt.close(fig)
 
 
+def do_scanner_head_attitude_plots(arec, brec, outdir):
+    # Validate scanner head attitude data
+    if not validate_record('scanner_head_roll', arec, 'a') or \
+            not validate_record('scanner_head_pitch', arec, 'a') or \
+            not validate_record('scanner_head_yaw', arec, 'a') or \
+            not validate_record('scanner_head_roll', brec, 'b') or \
+            not validate_record('scanner_head_pitch', brec, 'b') or \
+            not validate_record('scanner_head_yaw', brec, 'b'):
+        print('Cannot do scanner head attitude plots')
+        return
+
+    # Do the scanner head attitude plots
+    fig = init_figure()  # Initialize figure
+    ax = fig.add_subplot(2, 3, 1)  # Initialize roll(a) subplot
+    do_attitude_subplot(
+        fig, ax, arec['scanner_head_roll'],
+        label='roll$(a)$',
+        title='A-Scanner\'s head roll angle',
+        ylabel='roll$(a)$'
+    )
+    ax = fig.add_subplot(2, 3, 2)  # Initialize pitch(a) subplot
+    do_attitude_subplot(
+        fig, ax, arec['scanner_head_pitch'],
+        label='pitch$(a)$',
+        title='A-Scanner\'s head pitch angle',
+        ylabel='pitch$(a)$'
+    )
+    ax = fig.add_subplot(2, 3, 3)  # Initialize yaw(a) subplot
+    do_attitude_subplot(
+        fig, ax, arec['scanner_head_yaw'],
+        label='yaw$(a)$',
+        title='A-Scanner\'s head yaw angle',
+        ylabel='yaw$(a)$'
+    )
+    ax = fig.add_subplot(2, 3, 4)  # Initialize roll(b) subplot
+    do_attitude_subplot(
+        fig, ax, brec['scanner_head_roll'],
+        label='roll$(b)$',
+        title='B-Scanner\'s head roll angle',
+        ylabel='roll$(b)$'
+    )
+    ax = fig.add_subplot(2, 3, 5)  # Initialize pitch(b) subplot
+    do_attitude_subplot(
+        fig, ax, brec['scanner_head_pitch'],
+        label='pitch$(b)$',
+        title='B-Scanner\'s head pitch angle',
+        ylabel='pitch$(b)$'
+    )
+    ax = fig.add_subplot(2, 3, 6)  # Initialize yaw(b) subplot
+    do_attitude_subplot(
+        fig, ax, brec['scanner_head_yaw'],
+        label='yaw$(b)$',
+        title='B-Scanner\'s head yaw angle',
+        ylabel='yaw$(b)$'
+    )
+    fig.tight_layout()
+    # Save figure to file and remove it from memory
+    fig.savefig(
+        os.path.join(outdir, 'scanner_head_attitude.png')
+    )
+    fig.clear()
+    plt.close(fig)
+
+
+def do_beam_attitude_plots(arec, brec, outdir):
+    # Validate beam attitude data
+    if not validate_record('beam_roll', arec, 'a') or \
+            not validate_record('beam_pitch', arec, 'a') or \
+            not validate_record('beam_yaw', arec, 'a') or \
+            not validate_record('beam_roll', brec, 'b') or \
+            not validate_record('beam_pitch', brec, 'b') or \
+            not validate_record('beam_yaw', brec, 'b'):
+        print('Cannot do beam attitude plots')
+        return
+
+    # Do the beam attitude plots
+    fig = init_figure()  # Initialize figure
+    ax = fig.add_subplot(2, 3, 1)  # Initialize roll(a) subplot
+    do_attitude_subplot(
+        fig, ax, arec['beam_roll'],
+        label='roll$(a)$',
+        title='A-Beam\'s roll angle',
+        ylabel='roll$(a)$'
+    )
+    ax = fig.add_subplot(2, 3, 2)  # Initialize pitch(a) subplot
+    do_attitude_subplot(
+        fig, ax, arec['beam_pitch'],
+        label='pitch$(a)$',
+        title='A-Beam\'s pitch angle',
+        ylabel='pitch$(a)$'
+    )
+    ax = fig.add_subplot(2, 3, 3)  # Initialize yaw(a) subplot
+    do_attitude_subplot(
+        fig, ax, arec['beam_yaw'],
+        label='yaw$(a)$',
+        title='A-Beam\'s yaw angle',
+        ylabel='yaw$(a)$'
+    )
+    ax = fig.add_subplot(2, 3, 4)  # Initialize roll(b) subplot
+    do_attitude_subplot(
+        fig, ax, brec['beam_roll'],
+        label='roll$(b)$',
+        title='B-Beam\'s roll angle',
+        ylabel='roll$(b)$'
+    )
+    ax = fig.add_subplot(2, 3, 5)  # Initialize pitch(b) subplot
+    do_attitude_subplot(
+        fig, ax, brec['beam_pitch'],
+        label='pitch$(b)$',
+        title='B-Beam\'s pitch angle',
+        ylabel='pitch$(b)$'
+    )
+    ax = fig.add_subplot(2, 3, 6)  # Initialize yaw(b) subplot
+    do_attitude_subplot(
+        fig, ax, brec['beam_yaw'],
+        label='yaw$(b)$',
+        title='B-Beam\'s yaw angle',
+        ylabel='yaw$(b)$'
+    )
+    fig.tight_layout()
+    # Save figure to file and remove it from memory
+    fig.savefig(
+        os.path.join(outdir, 'beam_attitude.png')
+    )
+    fig.clear()
+    plt.close(fig)
+
+
+def do_deflector_emitting_attitude_plots(arec, brec, outdir):
+    # Validate deflector emitting attitude data
+    if not validate_record('deflector_emitting_roll', arec, 'a') or \
+            not validate_record('deflector_emitting_pitch', arec, 'a') or \
+            not validate_record('deflector_emitting_yaw', arec, 'a') or \
+            not validate_record('deflector_emitting_roll', brec, 'b') or \
+            not validate_record('deflector_emitting_pitch', brec, 'b') or \
+            not validate_record('deflector_emitting_yaw', brec, 'b'):
+        print('Cannot do deflector emitting attitude plots')
+        return
+
+    # Do the deflector emitting attitude plots
+    fig = init_figure()  # Initialize figure
+    ax = fig.add_subplot(2, 3, 1)  # Initialize roll(a) subplot
+    do_attitude_subplot(
+        fig, ax, arec['deflector_emitting_roll'],
+        label='roll$(a)$',
+        title='A-Deflector\'s emitting roll angle',
+        ylabel='roll$(a)$'
+    )
+    ax = fig.add_subplot(2, 3, 2)  # Initialize pitch(a) subplot
+    do_attitude_subplot(
+        fig, ax, arec['deflector_emitting_pitch'],
+        label='pitch$(a)$',
+        title='A-Deflector\'s emitting pitch angle',
+        ylabel='pitch$(a)$'
+    )
+    ax = fig.add_subplot(2, 3, 3)  # Initialize yaw(a) subplot
+    do_attitude_subplot(
+        fig, ax, arec['deflector_emitting_yaw'],
+        label='yaw$(a)$',
+        title='A-Deflector\'s emitting yaw angle',
+        ylabel='yaw$(a)$'
+    )
+    ax = fig.add_subplot(2, 3, 4)  # Initialize roll(b) subplot
+    do_attitude_subplot(
+        fig, ax, brec['deflector_emitting_roll'],
+        label='roll$(b)$',
+        title='B-Deflector\'s emitting roll angle',
+        ylabel='roll$(b)$'
+    )
+    ax = fig.add_subplot(2, 3, 5)  # Initialize pitch(b) subplot
+    do_attitude_subplot(
+        fig, ax, brec['deflector_emitting_pitch'],
+        label='pitch$(b)$',
+        title='B-Deflector\'s emitting pitch angle',
+        ylabel='pitch$(b)$'
+    )
+    ax = fig.add_subplot(2, 3, 6)  # Initialize yaw(b) subplot
+    do_attitude_subplot(
+        fig, ax, brec['deflector_emitting_yaw'],
+        label='yaw$(b)$',
+        title='B-Deflector\'s emitting yaw angle',
+        ylabel='yaw$(b)$'
+    )
+    fig.tight_layout()
+    # Save figure to file and remove it from memory
+    fig.savefig(
+        os.path.join(outdir, 'deflector_emitting_attitude.png')
+    )
+    fig.clear()
+    plt.close(fig)
+
+
 # ---   M A I N   --- #
 # ------------------- #
 if __name__ == '__main__':
@@ -486,4 +786,13 @@ if __name__ == '__main__':
     end = time.perf_counter()
     print('Read B-records in {t} seconds'.format(t=end-start))
     # Plot records
+    print(
+        'Generating plots at "{path}" ...'
+        .format(
+            path=args['dirout_path']
+        )
+    )
+    start = time.perf_counter()
     plot_records(arec, brec, args['dirout_path'])
+    end = time.perf_counter()
+    print('Generated plots in {t} seconds'.format(t=end-start))

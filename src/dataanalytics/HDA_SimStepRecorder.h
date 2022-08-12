@@ -77,6 +77,54 @@ protected:
      * @brief The record buffer for the yaw angle of the scanner
      */
     std::shared_ptr<HDA_RecordBuffer<double>> scannerYaw;
+    /**
+     * @brief The record buffer for the roll angle of the scanner's head
+     */
+    std::shared_ptr<HDA_RecordBuffer<double>> scannerHeadRoll;
+    /**
+     * @brief The record buffer for the pitch angle of the scanner's head
+     */
+    std::shared_ptr<HDA_RecordBuffer<double>> scannerHeadPitch;
+    /**
+     * @brief The record buffer for the yaw angle of the scanner's head
+     */
+    std::shared_ptr<HDA_RecordBuffer<double>> scannerHeadYaw;
+    /**
+     * @brief The record buffer for the roll angle of the deflector's pulses
+     */
+    std::shared_ptr<HDA_RecordBuffer<double>> deflectorEmittingRoll;
+    /**
+     * @brief The record buffer for the pitch angle of the deflector's pulses
+     */
+    std::shared_ptr<HDA_RecordBuffer<double>> deflectorEmittingPitch;
+    /**
+     * @brief The record buffer for the yaw angle of the deflector's pulses
+     */
+    std::shared_ptr<HDA_RecordBuffer<double>> deflectorEmittingYaw;
+    /**
+     * @brief The record buffer for the x coordinate of the beam's origin
+     */
+    std::shared_ptr<HDA_RecordBuffer<double>> beamOriginX;
+    /**
+     * @brief The record buffer for the y coordinate of the beam's origin
+     */
+    std::shared_ptr<HDA_RecordBuffer<double>> beamOriginY;
+    /**
+     * @brief The record buffer for the z coordinate of the beam's origin
+     */
+    std::shared_ptr<HDA_RecordBuffer<double>> beamOriginZ;
+    /**
+     * @brief The record buffer for the roll angle of the beam
+     */
+    std::shared_ptr<HDA_RecordBuffer<double>> beamRoll;
+    /**
+     * @brief The record buffer for the pitch angle of the beam
+     */
+    std::shared_ptr<HDA_RecordBuffer<double>> beamPitch;
+    /**
+     * @brief The record buffer for the yaw angle of the beam
+     */
+    std::shared_ptr<HDA_RecordBuffer<double>> beamYaw;
 
 
 public:
@@ -150,6 +198,21 @@ protected:
      *  simulation step
      */
     virtual void recordScanner();
+    /**
+     * @brief Handle all the scanner's head related records for the current
+     *  simulation step
+     */
+    virtual void recordScannerHead();
+    /**
+     * @brief Handle all the deflector related records for the current
+     *  simulation step
+     */
+    virtual void recordDeflector();
+    /**
+     * @brief Handle all the beam related records for the current simulation
+     *  step
+     */
+    virtual void recordBeam();
     /**
      * @brief Craft the full output path considering the output directory and
      *  the given file name
