@@ -1,5 +1,9 @@
 var NAVTREEINDEX19 =
 {
+"de/dda/classvisualhelios_1_1VHCanvas.html#a66944abf757dfef6c6547c45b39d3af9":[1,0,7,0,1],
+"de/dda/classvisualhelios_1_1VHCanvas.html#a67358a5fe2d4b48344c8d0005ac3e3de":[1,0,7,0,12],
+"de/dda/classvisualhelios_1_1VHCanvas.html#a704a185d162818fd51b91df69a053456":[1,0,7,0,13],
+"de/dda/classvisualhelios_1_1VHCanvas.html#a79ffd9525c1c4a5100593a7f3ed31e7d":[1,0,7,0,10],
 "de/dda/classvisualhelios_1_1VHCanvas.html#a8a8b43caac7acf12d4d9800fa683b7cc":[1,0,7,0,7],
 "de/dda/classvisualhelios_1_1VHCanvas.html#aaab3c8ac4e2f4c0e5b37092bbbc0bf02":[1,0,7,0,16],
 "de/dda/classvisualhelios_1_1VHCanvas.html#ab1b12d6d85607736d724032d1c3cc7a8":[1,0,7,0,8],
@@ -245,9 +249,5 @@ var NAVTREEINDEX19 =
 "df/d3f/classHeliosDemos_1_1DemoSelector.html#abfb11b317aa16652130e14098acdbdd1":[1,0,2,1,3],
 "df/d50/WavefrontObjCache_8h_source.html":[2,0,0,2,0,7],
 "df/d57/BinaryTreeFastDepthIterator_8h_source.html":[2,0,0,0,0,3],
-"df/d5a/classTranslateFilter.html":[1,0,176],
-"df/d5a/classTranslateFilter.html#a0a672ad28c5f7c8acdf63c5e8dd2ff72":[1,0,176,2],
-"df/d5a/classTranslateFilter.html#a2f3c608889f5acfa65cff82c2f04d09f":[1,0,176,1],
-"df/d5a/classTranslateFilter.html#a8de7071da06ddc96b677c8e0bbc4634d":[1,0,176,3],
-"df/d5a/classTranslateFilter.html#ad2873f3b3d9b815e3f0c9eee086504af":[1,0,176,0]
+"df/d5a/classTranslateFilter.html":[1,0,176]
 };

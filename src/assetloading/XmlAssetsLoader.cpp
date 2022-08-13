@@ -744,15 +744,34 @@ std::shared_ptr<Platform> XmlAssetsLoader::createInterpolatedMovingPlatform(){
     }
 
     // Configure scanner mount
-    // TODO Rethink : Replace by a non hardcoded scanner mount ---
-    // Hardcode of sr22 scanner mount
-    /*platform->cfg_device_relativeMountPosition = glm::dvec3(0, 0, 0.7);
-    Rotation r(glm::dvec3(1, 0, 0), 0);
-    Rotation r2(glm::dvec3(1, 0, 0), MathConverter::degreesToRadians(-90.0));
-    r = r2.applyTo(r);
-    r2 = Rotation(glm::dvec3(0, 0, 1), MathConverter::degreesToRadians(90.0));
-    platform->cfg_device_relativeMountAttitude = r2.applyTo(r);*/
-    // --- TODO Rethink : Replace by a non hardcoded scanner mount
+
+    // Algorithm to take ScannerMount from platforms ---
+    // Check basePlatform was given
+    string basePlatformLocation = boost::get<string>(XmlUtils::getAttribute(
+            survey, "basePlatform", "string", string("")
+    ));
+    if(basePlatformLocation.size() > 0){ // If so, ScannerMount from base plat.
+        std::shared_ptr<Platform> bp = dynamic_pointer_cast<Platform>(
+            getAssetByLocation("platform", basePlatformLocation)
+        );
+        platform->cfg_device_relativeMountPosition =
+            bp->cfg_device_relativeMountPosition;
+        platform->cfg_device_relativeMountAttitude =
+            bp->cfg_device_relativeMountAttitude;
+    }
+    // --- Algorithm to take ScannerMount from platforms
+
+    // Algorithm to set ScannerMount from survey ---
+    // Check scanner mount is specified in Survey
+    tinyxml2::XMLElement *scMount = survey->FirstChildElement("scannerMount");
+    if(scMount != nullptr){ // If so, assign it to interpolated platform
+        platform->cfg_device_relativeMountPosition =
+            XmlUtils::createVec3dFromXml(scMount, "");
+        platform->cfg_device_relativeMountAttitude =
+            XmlUtils::createRotationFromXml(scMount);
+    }
+    // --- Algorithm to set ScannerMount from survey
+
 
     // Return egg
     return platform;

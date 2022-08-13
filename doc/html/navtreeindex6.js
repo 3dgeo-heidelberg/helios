@@ -1,5 +1,6 @@
 var NAVTREEINDEX6 =
 {
+"d5/d85/classPulseThreadPoolFactory.html#ad2101aee4e9e186496090e7289047f8a":[1,0,117,7],
 "d5/d85/classPulseThreadPoolFactory.html#ad3b6655d9c042c686d130332856994cc":[1,0,117,6],
 "d5/d85/classPulseThreadPoolFactory.html#addaff725cb37481a1403ace079dbde5c":[1,0,117,0],
 "d5/d85/classPulseThreadPoolFactory.html#afd5bfcacb14e3a3ae7033123f5981f0f":[1,0,117,3],
@@ -248,6 +249,5 @@ var NAVTREEINDEX6 =
 "d6/d0a/PulseThreadPoolInterface_8h_source.html":[2,0,0,12,1,12],
 "d6/d0b/FiberArrayBeamDeflector_8h_source.html":[2,0,0,12,0,2],
 "d6/d0d/classFastSAHKDTreeRecountSubTask.html":[1,0,49],
-"d6/d0d/classFastSAHKDTreeRecountSubTask.html#a08b30a2ddcd7721fc418a9725ac8912d":[1,0,49,7],
-"d6/d0d/classFastSAHKDTreeRecountSubTask.html#a15fb46b2852a1f56768d52800effe35e":[1,0,49,9]
+"d6/d0d/classFastSAHKDTreeRecountSubTask.html#a08b30a2ddcd7721fc418a9725ac8912d":[1,0,49,7]
 };

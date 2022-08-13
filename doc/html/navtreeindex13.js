@@ -1,5 +1,9 @@
 var NAVTREEINDEX13 =
 {
+"da/d52/classSurfaceInspector_1_1maths_1_1Histogram.html#aeb64b2067e26d01357ed97fbe86c1d22":[1,0,6,0,4,12],
+"da/d52/classSurfaceInspector_1_1maths_1_1Histogram.html#aec0a211810bcf8add93fea93d1b2d742":[1,0,6,0,4,5],
+"da/d52/classSurfaceInspector_1_1maths_1_1Histogram.html#afe08509813c9fed8bf95386b5c220d28":[1,0,6,0,4,25],
+"da/d55/VHSimpleCanvas_8h_source.html":[2,0,0,18,6],
 "da/d62/Scanner_8h_source.html":[2,0,0,12,5],
 "da/d69/classSurfaceInspector_1_1maths_1_1SingularContextComputer.html":[1,0,6,0,8],
 "da/d69/classSurfaceInspector_1_1maths_1_1SingularContextComputer.html#a02eaaeb7d7aeb17e1825f40b5f78d975":[1,0,6,0,8,6],
@@ -245,9 +249,5 @@ var NAVTREEINDEX13 =
 "db/d57/classfluxionum_1_1UnivariateNewtonRaphsonMinimizer.html":[1,0,0,19],
 "db/d57/classfluxionum_1_1UnivariateNewtonRaphsonMinimizer.html#a041caf921ac2956262f56cb4f64dced7":[1,0,0,19,8],
 "db/d57/classfluxionum_1_1UnivariateNewtonRaphsonMinimizer.html#a06e8105c3af6bb5d2480105a6c96c268":[1,0,0,19,1],
-"db/d57/classfluxionum_1_1UnivariateNewtonRaphsonMinimizer.html#a09ec6d08bed02eee61fe25c323eaa45a":[1,0,0,19,2],
-"db/d57/classfluxionum_1_1UnivariateNewtonRaphsonMinimizer.html#a1c235997716c3705ed215ae997185282":[1,0,0,19,4],
-"db/d57/classfluxionum_1_1UnivariateNewtonRaphsonMinimizer.html#a51b95e942575693b3cf186aeb5c1805f":[1,0,0,19,3],
-"db/d57/classfluxionum_1_1UnivariateNewtonRaphsonMinimizer.html#a75bb0216e88162c534c1c5d9102fa262":[1,0,0,19,6],
-"db/d57/classfluxionum_1_1UnivariateNewtonRaphsonMinimizer.html#a7b7b6fb5c0323516c12c992cca7783f9":[1,0,0,19,0]
+"db/d57/classfluxionum_1_1UnivariateNewtonRaphsonMinimizer.html#a09ec6d08bed02eee61fe25c323eaa45a":[1,0,0,19,2]
 };
