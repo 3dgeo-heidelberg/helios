@@ -54,6 +54,36 @@ protected:
      */
     std::shared_ptr<HDA_RecordBuffer<double>> platformYaw;
     /**
+     * @brief The record buffer for the x coordinate of the platform's
+     *  absolute mount position
+     */
+    std::shared_ptr<HDA_RecordBuffer<double>> platformMountX;
+    /**
+     * @brief The record buffer for the y coordinate of the platform's
+     *  absolute mount position
+     */
+    std::shared_ptr<HDA_RecordBuffer<double>> platformMountY;
+    /**
+     * @brief The record buffer for the z coordinate of the platform's
+     *  absolute mount position
+     */
+    std::shared_ptr<HDA_RecordBuffer<double>> platformMountZ;
+    /**
+     * @brief The record buffer for the roll angle of the platform's absolute
+     *  mount attitude
+     */
+    std::shared_ptr<HDA_RecordBuffer<double>> platformMountRoll;
+    /**
+     * @brief The record buffer for the pitch angle of the platform's absolute
+     *  mount attitude
+     */
+    std::shared_ptr<HDA_RecordBuffer<double>> platformMountPitch;
+    /**
+     * @brief The record buffer for the yaw angle of the platform's absolute
+     *  mount attitude
+     */
+    std::shared_ptr<HDA_RecordBuffer<double>> platformMountYaw;
+    /**
      * @brief The record buffer for the x coordinate of the scanner position
      */
     std::shared_ptr<HDA_RecordBuffer<double>> scannerPositionX;
@@ -193,6 +223,11 @@ protected:
      *  simulation step
      */
     virtual void recordPlatform();
+    /**
+     * @brief Handle all the platform's absolute mount related records for the
+     *  current simulation step
+     */
+    virtual void recordPlatformMount();
     /**
      * @brief Handle all the scanner related records for the current
      *  simulation step

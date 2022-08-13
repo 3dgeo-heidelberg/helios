@@ -36,7 +36,7 @@ protected:
     // ******************** //
     /**
      * @brief Reference to the SimulationStepLoop defining the Simulation
-     * @see SimulationStepLopp
+     * @see SimulationStepLoop
      * @see Simulation
      * @see Simulation::stepLoop
      */

@@ -93,6 +93,26 @@ def read_records(path, sep=','):
         'platform_yaw': read_record(os.path.join(
             path, 'platform_yaw.csv'
         ), sep),
+        # Platform mount position records
+        'platform_mount_x': read_record(os.path.join(
+            path, 'platform_mount_x.csv'
+        ), sep),
+        'platform_mount_y': read_record(os.path.join(
+            path, 'platform_mount_y.csv'
+        ), sep),
+        'platform_mount_z': read_record(os.path.join(
+            path, 'platform_mount_z.csv'
+        ), sep),
+        # Platform mount attitude records
+        'platform_mount_roll': read_record(os.path.join(
+            path, 'platform_mount_roll.csv'
+        ), sep),
+        'platform_mount_pitch': read_record(os.path.join(
+            path, 'platform_mount_pitch.csv'
+        ), sep),
+        'platform_mount_yaw': read_record(os.path.join(
+            path, 'platform_mount_yaw.csv'
+        ), sep),
         # Scanner position records
         'scanner_x': read_record(os.path.join(
             path, 'scanner_position_x.csv'
@@ -177,6 +197,8 @@ def plot_records(arec, brec, outdir):
     """
     do_platform_position_plots(arec, brec, outdir)
     do_platform_attitude_plots(arec, brec, outdir)
+    do_platform_mount_position_plots(arec, brec, outdir)
+    do_platform_mount_attitude_plots(arec, brec, outdir)
     do_scanner_position_plots(arec, brec, outdir)
     do_scanner_attitude_plots(arec, brec, outdir)
     do_scanner_head_attitude_plots(arec, brec, outdir)
@@ -288,6 +310,70 @@ def do_platform_position_plots(arec, brec, outdir):
     # Save figure to file and remove it from memory
     fig.savefig(
         os.path.join(outdir, 'platform_position.png')
+    )
+    fig.clear()
+    plt.close(fig)
+
+
+def do_platform_mount_position_plots(arec, brec, outdir):
+    # Validate platform mount position data
+    if not validate_record('platform_mount_x', arec, 'a') or \
+            not validate_record('platform_mount_y', arec, 'a') or \
+            not validate_record('platform_mount_z', arec, 'a') or \
+            not validate_record('platform_mount_x', brec, 'b') or \
+            not validate_record('platform_mount_y', brec, 'b') or \
+            not validate_record('platform_mount_z', brec, 'b'):
+        print('Cannot do platform mount position plots')
+        return
+
+    # Do the platform mount position plots
+    fig = init_figure()  # Initialize figure
+    ax = fig.add_subplot(2, 3, 1)  # Initialize x(a) subplot
+    do_position_subplot(
+        fig, ax, arec['platform_mount_x'],
+        label='$x(a)$',
+        title='A-Platform\'s mount $x$ position',
+        ylabel='$x(a)$'
+    )
+    ax = fig.add_subplot(2, 3, 2)  # Initialize y(a) subplot
+    do_position_subplot(
+        fig, ax, arec['platform_mount_y'],
+        label='$y(a)$',
+        title='A-Platform\'s mount $y$ position',
+        ylabel='$y(a)$'
+    )
+    ax = fig.add_subplot(2, 3, 3)  # Initialize z(a) subplot
+    do_position_subplot(
+        fig, ax, arec['platform_mount_z'],
+        label='$z(a)$',
+        title='A-Platform\'s mount $z$ position',
+        ylabel='$z(a)$'
+    )
+    ax = fig.add_subplot(2, 3, 4)  # Initialize x(b) subplot
+    do_position_subplot(
+        fig, ax, brec['platform_mount_x'],
+        label='$x(b)$',
+        title='B-Platform\'s mount $x$ position',
+        ylabel='$x(b)$'
+    )
+    ax = fig.add_subplot(2, 3, 5)  # Initialize y(b) subplot
+    do_position_subplot(
+        fig, ax, brec['platform_mount_y'],
+        label='$y(b)$',
+        title='B-Platform\'s mount $y$ position',
+        ylabel='$y(b)$'
+    )
+    ax = fig.add_subplot(2, 3, 6)  # Initialize z(b) subplot
+    do_position_subplot(
+        fig, ax, brec['platform_mount_z'],
+        label='$z(b)$',
+        title='B-Platform\'s mount $z$ position',
+        ylabel='$z(b)$'
+    )
+    fig.tight_layout()
+    # Save figure to file and remove it from memory
+    fig.savefig(
+        os.path.join(outdir, 'platform_mount_position.png')
     )
     fig.clear()
     plt.close(fig)
@@ -500,6 +586,70 @@ def do_platform_attitude_plots(arec, brec, outdir):
     # Save figure to file and remove it from memory
     fig.savefig(
         os.path.join(outdir, 'platform_attitude.png')
+    )
+    fig.clear()
+    plt.close(fig)
+
+
+def do_platform_mount_attitude_plots(arec, brec, outdir):
+    # Validate platform mount attitude data
+    if not validate_record('platform_mount_roll', arec, 'a') or \
+            not validate_record('platform_mount_pitch', arec, 'a') or \
+            not validate_record('platform_mount_yaw', arec, 'a') or \
+            not validate_record('platform_mount_roll', brec, 'b') or \
+            not validate_record('platform_mount_pitch', brec, 'b') or \
+            not validate_record('platform_mount_yaw', brec, 'b'):
+        print('Cannot do platform mount attitude plots')
+        return
+
+    # Do the platform mount attitude plots
+    fig = init_figure()  # Initialize figure
+    ax = fig.add_subplot(2, 3, 1)  # Initialize roll(a) subplot
+    do_attitude_subplot(
+        fig, ax, arec['platform_mount_roll'],
+        label='roll$(a)$',
+        title='A-Platform\'s mount roll angle',
+        ylabel='roll$(a)$'
+    )
+    ax = fig.add_subplot(2, 3, 2)  # Initialize pitch(a) subplot
+    do_attitude_subplot(
+        fig, ax, arec['platform_mount_pitch'],
+        label='pitch$(a)$',
+        title='A-Platform\'s mount pitch angle',
+        ylabel='pitch$(a)$'
+    )
+    ax = fig.add_subplot(2, 3, 3)  # Initialize yaw(a) subplot
+    do_attitude_subplot(
+        fig, ax, arec['platform_mount_yaw'],
+        label='yaw$(a)$',
+        title='A-Platform\'s mount yaw angle',
+        ylabel='yaw$(a)$'
+    )
+    ax = fig.add_subplot(2, 3, 4)  # Initialize roll(b) subplot
+    do_attitude_subplot(
+        fig, ax, brec['platform_mount_roll'],
+        label='roll$(b)$',
+        title='B-Platform\'s mount roll angle',
+        ylabel='roll$(b)$'
+    )
+    ax = fig.add_subplot(2, 3, 5)  # Initialize pitch(b) subplot
+    do_attitude_subplot(
+        fig, ax, brec['platform_mount_pitch'],
+        label='pitch$(b)$',
+        title='B-Platform\'s mount pitch angle',
+        ylabel='pitch$(b)$'
+    )
+    ax = fig.add_subplot(2, 3, 6)  # Initialize yaw(b) subplot
+    do_attitude_subplot(
+        fig, ax, brec['platform_mount_yaw'],
+        label='yaw$(b)$',
+        title='B-Platform\'s mount yaw angle',
+        ylabel='yaw$(b)$'
+    )
+    fig.tight_layout()
+    # Save figure to file and remove it from memory
+    fig.savefig(
+        os.path.join(outdir, 'platform_mount_attitude.png')
     )
     fig.clear()
     plt.close(fig)

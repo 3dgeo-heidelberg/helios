@@ -7,6 +7,8 @@
 #include <scanner/Scanner.h>
 #include <scanner/ScannerHead.h>
 #include <beamDeflector/AbstractBeamDeflector.h>
+#include <maths/MathConstants.h>
+#include <util/logger/logging.hpp>
 
 #include <boost/filesystem.hpp>
 #include <glm/glm.hpp>
@@ -19,6 +21,7 @@ using namespace helios::analytics;
 // **************************** //
 void HDA_SimStepRecorder::record(){
     recordPlatform();
+    recordPlatformMount();
     recordScanner();
     recordScannerHead();
     recordDeflector();
@@ -48,6 +51,12 @@ bool HDA_SimStepRecorder::isAnyBufferOpen(){
     anyOpen |= platformRoll->isOpen();
     anyOpen |= platformPitch->isOpen();
     anyOpen |= platformYaw->isOpen();
+    anyOpen |= platformMountX->isOpen();
+    anyOpen |= platformMountY->isOpen();
+    anyOpen |= platformMountZ->isOpen();
+    anyOpen |= platformMountRoll->isOpen();
+    anyOpen |= platformMountPitch->isOpen();
+    anyOpen |= platformMountYaw->isOpen();
     anyOpen |= scannerPositionX->isOpen();
     anyOpen |= scannerPositionY->isOpen();
     anyOpen |= scannerPositionZ->isOpen();
@@ -88,6 +97,26 @@ void HDA_SimStepRecorder::openBuffers(){
     );
     platformYaw = std::make_shared<HDA_RecordBuffer<double>>(
         craftOutputPath("platform_yaw.csv")
+    );
+
+    // Open platform's absolute mount related buffers
+    platformMountX = std::make_shared<HDA_RecordBuffer<double>>(
+        craftOutputPath("platform_mount_x.csv")
+    );
+    platformMountY = std::make_shared<HDA_RecordBuffer<double>>(
+        craftOutputPath("platform_mount_y.csv")
+    );
+    platformMountZ = std::make_shared<HDA_RecordBuffer<double>>(
+        craftOutputPath("platform_mount_z.csv")
+    );
+    platformMountRoll = std::make_shared<HDA_RecordBuffer<double>>(
+        craftOutputPath("platform_mount_roll.csv")
+    );
+    platformMountPitch = std::make_shared<HDA_RecordBuffer<double>>(
+        craftOutputPath("platform_mount_pitch.csv")
+    );
+    platformMountYaw = std::make_shared<HDA_RecordBuffer<double>>(
+        craftOutputPath("platform_mount_yaw.csv")
     );
 
     // Open scanner related buffers
@@ -162,6 +191,14 @@ void HDA_SimStepRecorder::closeBuffers(){
     platformPitch->close();
     platformYaw->close();
 
+    // Close platform's absolute mount buffers
+    platformMountX->close();
+    platformMountY->close();
+    platformMountZ->close();
+    platformMountRoll->close();
+    platformMountPitch->close();
+    platformMountYaw->close();
+
     // Close scanner buffers
     scannerPositionX->close();
     scannerPositionY->close();
@@ -205,6 +242,37 @@ void HDA_SimStepRecorder::recordPlatform(){
     platformRoll->push(roll);
     platformPitch->push(pitch);
     platformYaw->push(yaw);
+}
+
+void HDA_SimStepRecorder::recordPlatformMount(){
+    // Obtain platform
+    Platform &p = *(sp->getScanner()->platform);
+    // Record platform's absolute mount position
+    glm::dvec3 const pos = p.getAbsoluteMountPosition();
+    platformMountX->push(pos.x);
+    platformMountY->push(pos.y);
+    platformMountZ->push(pos.z);
+    // Record platform's absolute mount attitude
+    double roll, pitch, yaw;
+    try{
+        p.getAbsoluteMountAttitude().getAngles(
+            &RotationOrder::XYZ, roll, pitch, yaw
+        );
+    }
+    catch(HeliosException &hex){ // Probably, Gimbal lock
+        roll = -PI_2;
+        pitch = roll;
+        yaw = roll;
+        std::stringstream ss;
+        ss  << "The following exception occurred when recording the "
+            << "platform's absolute mount attitude:\n"
+            << hex.what() << "\n"
+            << "Recording " << roll << " value instead.";
+        logging::WARN(ss.str());
+    }
+    platformMountRoll->push(roll);
+    platformMountPitch->push(pitch);
+    platformMountYaw->push(yaw);
 }
 
 void HDA_SimStepRecorder::recordScanner(){
@@ -252,7 +320,6 @@ void HDA_SimStepRecorder::recordDeflector(){
 }
 
 void HDA_SimStepRecorder::recordBeam(){
-    // TODO Rethink : Implement
     // Obtain scanner
     Platform &p = *(sp->getScanner()->platform);
     Scanner &s = *(sp->getScanner());

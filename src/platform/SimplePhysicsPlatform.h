@@ -48,10 +48,10 @@ public:
 
 	// ***  M E T H O D S  *** //
 	// *********************** //
-  /**
-   * @see Platform::prepareSimulation
-   */
-  void prepareSimulation(int simFrequency_hz) override;
+   /**
+    * @see Platform::prepareSimulation
+    */
+   void prepareSimulation(int simFrequency_hz) override;
 	/**
 	 * @brief Phyisics step for simple phyisics platform simulation
 	 * @param simFrequency_hz Simulation frequency
@@ -67,6 +67,6 @@ public:
 	 */
 	virtual void doControlStep(int simFrequency_hz);
 
-  void checkSpeedLimit();
+    void checkSpeedLimit();
 
 };
