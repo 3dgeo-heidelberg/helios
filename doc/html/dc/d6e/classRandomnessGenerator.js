@@ -20,8 +20,8 @@ var classRandomnessGenerator =
     [ "doubleSeed", "dc/d6e/classRandomnessGenerator.html#ac4eda58f8ff25e3306124ed5701d4af5", null ],
     [ "longSeed", "dc/d6e/classRandomnessGenerator.html#aaf792085f6e985e6c88b112c1b616de4", null ],
     [ "mode", "dc/d6e/classRandomnessGenerator.html#a7853db34e47c881c941d0c96ebdca77f", null ],
-    [ "nd", "dc/d6e/classRandomnessGenerator.html#a0ab4ff5d2aa672bc8ebf849b3a022d5c", null ],
-    [ "ndGen", "dc/d6e/classRandomnessGenerator.html#ad720e02d5383d88c94db142ebc9f9505", null ],
-    [ "urd", "dc/d6e/classRandomnessGenerator.html#af0a3be63439887dae9665d35545f3c49", null ],
-    [ "urdGen", "dc/d6e/classRandomnessGenerator.html#a720417c774d70c85804670d230f5b483", null ]
+    [ "nd", "dc/d6e/classRandomnessGenerator.html#ac3ee10c0968bb2e0468eb99c6e36a22d", null ],
+    [ "ndGen", "dc/d6e/classRandomnessGenerator.html#a2f410ec727fb8961befaea71271205de", null ],
+    [ "urd", "dc/d6e/classRandomnessGenerator.html#a1446b79c5d0aef3b98925c3222434817", null ],
+    [ "urdGen", "dc/d6e/classRandomnessGenerator.html#a73a41c127fa2701c07015baa4857b88e", null ]
 ];

@@ -1,5 +1,6 @@
 var NAVTREEINDEX7 =
 {
+"d6/d0d/classFastSAHKDTreeRecountSubTask.html#a15fb46b2852a1f56768d52800effe35e":[1,0,49,9],
 "d6/d0d/classFastSAHKDTreeRecountSubTask.html#a245e26ede76bb926b3a05d0fc4b336d9":[1,0,49,10],
 "d6/d0d/classFastSAHKDTreeRecountSubTask.html#a4570cc5d22521f292041f8e5b9102328":[1,0,49,2],
 "d6/d0d/classFastSAHKDTreeRecountSubTask.html#a5a6160e6291e147bdf026eae18945bd9":[1,0,49,11],
@@ -208,7 +209,8 @@ var NAVTREEINDEX7 =
 "d6/d96/classSimpleKDTreeFactory.html#af26864527e1e6021277f19b797446559":[1,0,150,7],
 "d6/d96/classSimpleKDTreeFactory.html#afebd1f880d9171e68537df4e2485e06c":[1,0,150,19],
 "d6/d97/classhelios_1_1filems_1_1Las14SyncFileMeasurementWriter.html":[1,0,1,0,23],
-"d6/d97/classhelios_1_1filems_1_1Las14SyncFileMeasurementWriter.html#aa6abd4db6a2f5f36ec08545b5866ff85":[1,0,1,0,23,2],
+"d6/d97/classhelios_1_1filems_1_1Las14SyncFileMeasurementWriter.html#a657a186a4c01e8e1c611003b28a53229":[1,0,1,0,23,2],
+"d6/d97/classhelios_1_1filems_1_1Las14SyncFileMeasurementWriter.html#aa6abd4db6a2f5f36ec08545b5866ff85":[1,0,1,0,23,3],
 "d6/d97/classhelios_1_1filems_1_1Las14SyncFileMeasurementWriter.html#aac6a79e5fc23c67e4393e0c736750746":[1,0,1,0,23,1],
 "d6/d97/classhelios_1_1filems_1_1Las14SyncFileMeasurementWriter.html#afbcc636c1c7e45961786ac465751a165":[1,0,1,0,23,0],
 "d6/d9e/classAbstractPulseRunnable.html":[1,0,12],
@@ -247,7 +249,5 @@ var NAVTREEINDEX7 =
 "d6/da1/classSurveyPlayback.html#a72fc18488407995214df64c9e1b43571":[1,0,167,31],
 "d6/da1/classSurveyPlayback.html#a8de05b70ddfbedaef3b2270a48501462":[1,0,167,12],
 "d6/da1/classSurveyPlayback.html#a8e690dd163e33dfb42d17adf2a9cdb1d":[1,0,167,9],
-"d6/da1/classSurveyPlayback.html#a8efccdf6eb130b1524a71a89102cdfd3":[1,0,167,1],
-"d6/da1/classSurveyPlayback.html#a9081b0d9937a7076540d81e108711169":[1,0,167,10],
-"d6/da1/classSurveyPlayback.html#a951bedf578f53735b9d553eb420a87e5":[1,0,167,7]
+"d6/da1/classSurveyPlayback.html#a8efccdf6eb130b1524a71a89102cdfd3":[1,0,167,1]
 };

@@ -1,5 +1,9 @@
 var NAVTREEINDEX14 =
 {
+"db/d57/classfluxionum_1_1UnivariateNewtonRaphsonMinimizer.html#a1c235997716c3705ed215ae997185282":[1,0,0,19,4],
+"db/d57/classfluxionum_1_1UnivariateNewtonRaphsonMinimizer.html#a51b95e942575693b3cf186aeb5c1805f":[1,0,0,19,3],
+"db/d57/classfluxionum_1_1UnivariateNewtonRaphsonMinimizer.html#a75bb0216e88162c534c1c5d9102fa262":[1,0,0,19,6],
+"db/d57/classfluxionum_1_1UnivariateNewtonRaphsonMinimizer.html#a7b7b6fb5c0323516c12c992cca7783f9":[1,0,0,19,0],
 "db/d57/classfluxionum_1_1UnivariateNewtonRaphsonMinimizer.html#ac98d07dd8f7b70e16ccb9a01abf56b9c":[1,0,0,19,7],
 "db/d57/classfluxionum_1_1UnivariateNewtonRaphsonMinimizer.html#adba8706a6b811dda5fc11e634a8ee7d3":[1,0,0,19,5],
 "db/d58/classSAHKDTreeFactory.html":[1,0,132],
@@ -245,9 +249,5 @@ var NAVTREEINDEX14 =
 "db/d8b/classHeliosTests_1_1RigidMotionTest.html#a8f91e1e80529c1836059666949c3d651":[1,0,3,15,25],
 "db/d8b/classHeliosTests_1_1RigidMotionTest.html#a90bec10fbcc46875b590c2536235fbfb":[1,0,3,15,8],
 "db/d8b/classHeliosTests_1_1RigidMotionTest.html#a9184d901320e12d1e328761ea82b6660":[1,0,3,15,29],
-"db/d8b/classHeliosTests_1_1RigidMotionTest.html#aa08309aa0af82ceaa270994adfbf9b93":[1,0,3,15,23],
-"db/d8b/classHeliosTests_1_1RigidMotionTest.html#aa5726fc1e1088a5035eed8ae610e0784":[1,0,3,15,15],
-"db/d8b/classHeliosTests_1_1RigidMotionTest.html#aae08423913ac3b97212566a7419bbb14":[1,0,3,15,0],
-"db/d8b/classHeliosTests_1_1RigidMotionTest.html#abda4db2f178471e6145a7aaea64cba46":[1,0,3,15,10],
-"db/d8b/classHeliosTests_1_1RigidMotionTest.html#ac24b1a06fd0ea598f5899461de7b3e83":[1,0,3,15,3]
+"db/d8b/classHeliosTests_1_1RigidMotionTest.html#aa08309aa0af82ceaa270994adfbf9b93":[1,0,3,15,23]
 };
