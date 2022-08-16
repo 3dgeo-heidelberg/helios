@@ -45,6 +45,10 @@ private:
     // ***  ATTRIBUTES  *** //
     // ******************** //
     /**
+     * @brief The scanner's identifier
+     */
+    std::string id = "SCANNER-ID";
+    /**
      * @brief Flag specifying if write waveform (true) or not (false)
      */
     bool writeWaveform = false;
@@ -71,56 +75,10 @@ private:
 	 */
     bool fixedIncidenceAngle = false;
 
-    /**
-     * @brief Beam divergence (radians)
-     */
-	double cfg_device_beamDivergence_rad = 0;
-	/**
-	 * @brief Pulse length (nanoseconds)
-	 */
-	double cfg_device_pulseLength_ns = 0;
 	/**
 	 * @brief Pulse frequency (hertz)
 	 */
 	int cfg_setting_pulseFreq_Hz = 0;
-	/**
-	 * @brief Device identifier
-	 */
-	std::string cfg_device_id = "";
-	/**
-	 * @brief Average power (watts)
-	 */
-	double cfg_device_averagePower_w;
-	/**
-	 * @brief Beam quality
-	 */
-	double cfg_device_beamQuality;
-	/**
-	 * @brief Device efficiency
-	 */
-	double cfg_device_efficiency;
-	/**
-	 * @brief Receiver diamater (meters)
-	 */
-	double cfg_device_receiverDiameter_m;
-	/**
-	 * @brief Visibility (kilometers)
-	 */
-	double cfg_device_visibility_km;
-	/**
-	 * @brief Wave length (meters)
-	 */
-	double cfg_device_wavelength_m;
-
-	/**
-	 * @brief Atmospheric extinction
-	 */
-	double atmosphericExtinction;
-	/**
-	 * @brief Beam waist radius
-	 */
-	double beamWaistRadius;
-	// ########## END Emitter ###########
 
 	// State variables:
 	/**
@@ -138,27 +96,6 @@ private:
 	 */
 	bool state_isActive = true;
 
-	// Cached variables
-	/**
-	 * @brief \f$D_{r2}\f$ understood as the square of receiver diameter
-	 *
-	 * \f[
-	 *  D_{r2} = \textrm{receiverDiamater}^{2}
-	 * \f]
-	 *
-	 * @see Scanner::cfg_device_receiverDiameter_m
-	 */
-	double cached_Dr2;
-	/**
-	 * @brief \f$B_{t2}\f$ understood as the square of beam divergence
-	 *
-	 * \f[
-	 *  B_{t2} = \textrm{beamDivergence}^{2}
-	 * \f]
-	 *
-	 * @see Scanner::cfg_device_beamDivergence_rad
-	 */
-	double cached_Bt2;
 
 	/**
 	 * @brief The scanning pulse process used by the scanner
@@ -306,15 +243,6 @@ public:
         intersectionHandlingNoiseSource = nullptr;
 
     // ########## BEGIN Emitter ###########
-    /**
-     * @brief Head relative emitter position
-     */
-	glm::dvec3 cfg_device_headRelativeEmitterPosition = glm::dvec3(0, 0, 0);
-	/**
-	 * @brief Head relative emitter attitude
-	 */
-	Rotation cfg_device_headRelativeEmitterAttitude =
-	    Rotation(Directions::right, 0);
 	/**
 	 * @brief Pulse frequencies (hertz) supoported by the scanner
 	 */
@@ -354,24 +282,19 @@ public:
      * @see Scanner::platformNoiseDisabled
      */
 	Scanner(
-	    double beamDiv_rad,
-	    glm::dvec3 beamOrigin,
-	    Rotation beamOrientation,
-	    std::list<int> pulseFreqs,
-	    double pulseLength_ns,
-	    std::string id,
-	    double averagePower,
-	    double beamQuality,
-	    double efficiency,
-	    double receiverDiameter,
-	    double atmosphericVisibility,
-	    int wavelength,
-	    bool writeWaveform = false,
-	    bool calcEchowidth = false,
-	    bool fullWaveNoise = false,
-	    bool platformNoiseDisabled = false
+        std::string const id,
+        std::list<int> const &pulseFreqs,
+        bool const writeWaveform=false,
+        bool const calcEchowidth=false,
+        bool const fullWaveNoise=false,
+        bool const platformNoiseDisabled=false
     );
+	/**
+	 * @brief Copy constructor for the Scanner
+	 * @param scanner The scanner to be copied
+	 */
     Scanner(Scanner &scanner);
+    virtual ~Scanner() = default;
 
     // ***  M E T H O D S  *** //
     // *********************** //
@@ -380,17 +303,6 @@ public:
      *  necessary for sequential pulse computations
      */
     void initializeSequentialGenerators();
-    /**
-     * @brief Configure beam related attributes. It is recommended to
-     *  reconfigure beam attributes always that beam divergence, beam quality
-     *  or wavelength are updated.
-     * @see Scanner::cfg_device_beamDivergence_rad
-     * @see Scanner::cfg_device_beamQuality
-     * @see Scanner::cfg_device_wavelength_m
-     * @see Scanner::beamWaistRadius
-     * @see Scanner::cached_Bt2
-     */
-    void configureBeam();
     /**
      * @brief Build the scanning pulse process to be used by the scanner
      *  during simulation
@@ -484,20 +396,12 @@ public:
      */
     double calcFootprintRadius(double distance);
     /**
-     * @brief Compute the atmospheric attenuation to be used as the
-     * atmospheric attenuation
-     * @return Atmospheric attenuation
-     * @see Scanner::atmosphericExtinction
-     */
-    double calcAtmosphericAttenuation();
-    /**
      * @brief Compute the absolute beam attitude considering the mount relative
      * attitude and the deflector relative attitude
      * @see ScannerHead::getMountRelativeAttitude
      * @see AbstractBeamDeflector::getEmitterRelativeAttitude
      */
     Rotation calcAbsoluteBeamAttitude();
-
 
     /**
      * @brief Check if given number of return (nor) is inside
@@ -584,25 +488,29 @@ public:
 
 	/**
 	 * @brief Get the pulse length
+	 * @param idx The index of the scanning device which pulse length must
+	 *  be obtained (by default 0, it is the first one)
 	 * @return Pulse length (nanoseconds)
-	 * @see Scanner::cfg_device_pulseLength_ns
+	 * @see ScanningDevice::cfg_device_pulseLength_ns
 	 */
-	inline double getPulseLength_ns()
-	    {return this->cfg_device_pulseLength_ns;}
-    /**
+	virtual double getPulseLength_ns(size_t const idx=0) const = 0;
+	/**
      * @brief Set the pulse length
      * @param pulseLength_ns New pulse length (nanoseconds)
-	 * @see Scanner::cfg_device_pulseLength_ns
+     * @param idx The index of the scanning device which pulse length must
+     *  be setted (by default 1, it is the first one)
+	 * @see ScanningDevice::cfg_device_pulseLength_ns
      */
-	inline void setPulseLength_ns(double pulseLength_ns)
-	    {this->cfg_device_pulseLength_ns = pulseLength_ns;}
+	virtual void setPulseLength_ns(
+	    double const pulseLength_ns, size_t const idx=0
+    ) = 0;
 
 	/**
 	 * @brief Check if last pulse was hit (true) or not (false)
 	 * @return True if last pulse was hit, false otherwise
 	 * @see Scanner::state_lastPulseWasHit
 	 */
-	inline bool lastPulseWasHit() {return this->state_lastPulseWasHit;}
+	inline bool lastPulseWasHit() const {return this->state_lastPulseWasHit;}
 	/**
 	 * @brief Specify if last pulse was hit (true) or not (false)
 	 * @param lastPulseWasHit New last pulse hit specification
@@ -612,165 +520,247 @@ public:
 
     /**
      * @brief Obtain beam divergence
+     * @param idx The index of the scanning device which beam divergence must
+     *  be obtained (by default 0, it is the first one)
      * @return Beam divergence (radians)
-     * @see Scanner::cfg_device_beamDivergence_rad
+     * @see ScanningDevice::beamDivergence_rad
      */
-	inline double getBeamDivergence()
-	    {return this->cfg_device_beamDivergence_rad;}
+	virtual double getBeamDivergence(size_t const idx=0) const = 0;
 	/**
 	 * @brief Set beam divergence
 	 * @param beamDivergence New beam divergence (radians)
-     * @see Scanner::cfg_device_beamDivergence_rad
+	 * @param idx The index of the scanning device which beam divergence must
+	 *  be setted (by default 0, it is the first one)
+     * @see ScanningDevice::beamDivergence_rad
 	 */
-	inline void setBeamDivergence(double beamDivergence)
-	    {this->cfg_device_beamDivergence_rad = beamDivergence;}
+	virtual void setBeamDivergence(
+	    double const beamDivergence, size_t const idx=0
+    ) = 0;
 
     /**
      * @brief Obtain average power
+     * @param idx The index of the scanning device which average power must be
+     *  obtained (by default 0, it is the first one)
      * @return Average power (watts)
-     * @see Scanner::cfg_device_averagePower_w
+     * @see ScanningDevice::averagePower_w
      */
-	inline double getAveragePower() {return this->cfg_device_averagePower_w;}
+	virtual double getAveragePower(size_t const idx=0) const = 0;
 	/**
 	 * @brief Set average power
 	 * @param averagePower New average power (watts)
-	 * @see Scanner::cfg_device_averagePower_w
+	 * @param idx The index of the scanning device which average power must be
+	 *  setted (by default 0, it is the first one)
+     * @see ScanningDevice::averagePower_w
 	 */
-	inline void setAveragePower(double averagePower)
-	    {this->cfg_device_averagePower_w = averagePower;}
+	virtual void setAveragePower(
+	    double const averagePower, size_t const idx=0
+    ) = 0;
 
     /**
      * @brief Get beam quality
+     * @param idx The index of the scanning device which beam quality must be
+     *  obtained (by default 0, it is the first one)
      * @return Beam quality
-     * @see Scanner::cfg_device_beamQuality
+     * @see ScanningDevice::beamQuality
      */
-	inline double getBeamQuality() {return this->cfg_device_beamQuality;}
+	virtual double getBeamQuality(size_t const idx=0) const = 0;
 	/**
 	 * @brief Set beam quality
 	 * @param beamQuality New beam quality
-     * @see Scanner::cfg_device_beamQuality
+     * @param idx The index of the scanning device which beam quality must be
+     *  obtained (by default 0, it is the first one)
+     * @see ScanningDevice::beamQuality
 	 */
-	inline void setBeamQuality(double beamQuality)
-	    {this->cfg_device_beamQuality = beamQuality;}
+	virtual void setBeamQuality(
+	    double const beamQuality, size_t const idx=0
+    ) = 0;
 
     /**
      * @brief Obtain device efficiency
+     * @param idx The index of the scanning device which efficiency must be
+     *  obtained (by default 0, it is the first one)
      * @return Device efficiency
-     * @see Scanner::cfg_device_efficiency
+     * @see ScanningDevice::efficiency
      */
-	inline double getEfficiency() {return this->cfg_device_efficiency;}
+	virtual double getEfficiency(size_t const idx = 0) const = 0;
 	/**
 	 * @brief Set device efficiency
 	 * @param efficiency New device efficiency
-	 * @see Scanner::cfg_device_efficiency
+	 * @param idx The index of the scanning device which efficiency must be
+	 *  setted (by default 0, it is the first one)
+     * @see ScanningDevice::efficiency
 	 */
-	inline void setEfficiency(double efficiency)
-	    {this->cfg_device_efficiency = efficiency;}
+	virtual void setEfficiency(double const efficiency, size_t const idx=0)=0;
 
 	/**
-	 * @brief Get receiver diamater
-	 * @return Receiver diamater
-	 * @see Scanner::cfg_device_receiverDiameter_m
+	 * @brief Get receiver diameter
+	 * @param idx The index of the scanning device which efficiency must be
+	 *  obtained (by default 0, it is the first one)
+	 * @return Receiver diameter
+	 * @see ScanningDevice::receiverDiameter_m
 	 */
-	inline double getReceiverDiameter()
-	    {return this->cfg_device_receiverDiameter_m;}
+	virtual double getReceiverDiameter(size_t const idx = 0) const = 0;
 	/**
 	 * @brief Set receiver diameter
 	 * @param receiverDiameter  New receiver diameter
-	 * @see Scanner::cfg_device_receiverDiameter_m
+	 * @param idx The index of the scanning device which efficiency must be
+	 *  setted (by default 0, it is the first one)
+	 * @see ScanningDevice::receiverDiameter_m
 	 */
-	inline void setReceiverDiameter(double receiverDiameter)
-        {this->cfg_device_receiverDiameter_m = receiverDiameter;}
+	virtual void setReceiverDiameter(
+	    double const receiverDiameter, size_t const idx = 0
+    ) = 0;
 
     /**
      * @brief Get device visibility
+     * @param idx The index of the scanning device which visibility must be
+     *  obtained (by default 0, it is the first one)
      * @return Device visibility (kilometers)
-     * @see Scanner::cfg_device_visibility_km
+     * @see ScanningDevice::visibility_km
      */
-	inline double getVisibility() {return this->cfg_device_visibility_km;}
+	virtual double getVisibility(size_t const idx=0) const = 0;
 	/**
 	 * @brief Set device visibility
 	 * @param visibility New device visibility (kilometers)
-     * @see Scanner::cfg_device_visibility_km
+	 * @param idx The index of the scanning device which visibility must be
+	 *  setted (by default 0, it is the first one)
+     * @see ScanningDevice::visibility_km
 	 */
-	inline void setVisibility(double visibility)
-        {this->cfg_device_visibility_km = visibility;}
+	virtual void setVisibility(double const visibility, size_t const idx=0)=0;
 
     /**
      * @brief Obtain wave length
+     * @param idx The index of the scanning device which wavelength must be
+     *  obtained (by default 0, it is the first one)
      * @return Wave length (meters)
-     * @see Scanner::cfg_device_wavelength_m
+     * @see ScanningDevice::wavelength_m
      */
-	inline double getWavelength() {return this->cfg_device_wavelength_m;}
+	virtual double getWavelength(size_t const idx=0) const = 0;
 	/**
 	 * @brief Set wave length
 	 * @param wavelength New wave length (meters)
-     * @see Scanner::cfg_device_wavelength_m
+	 * @param idx The index of the scanning device which wavelength must be
+	 *  setted (by default 0, it is the first one)
+     * @see ScanningDevice::wavelength_m
 	 */
-	inline void setWavelength(double wavelength)
-	    {this->cfg_device_wavelength_m = wavelength;}
+	virtual void setWavelength(double const wavelength, size_t const idx=0)=0;
 
 	/**
 	 * @brief Obtain atmospheric extinction
+	 * @param idx The index of the scanning device which atmospheric extinction
+	 *  must be obtained (by default 0, it is the first one)
 	 * @return Atmospheric extinction
-	 * @see Scanner::atmosphericExtinction
+	 * @see ScanningDevice::atmosphericExtinction
 	 */
-	inline double getAtmosphericExtinction()
-	    {return this->atmosphericExtinction;}
-    /**
+	virtual double getAtmosphericExtinction(size_t const idx=0) const = 0;
+	/**
      * @brief Set atmospheric extinction
      * @param atmosphericExtinction New atmospheric extinction
-	 * @see Scanner::atmosphericExtinction
+	 * @param idx The index of the scanning device which atmospheric extinction
+	 *  must be setted (by default 0, it is the first one)
+	 * @see ScanningDevice::atmosphericExtinction
      */
-	inline void setAtmosphericExtinction(double atmosphericExtinction)
-        {this->atmosphericExtinction = atmosphericExtinction;}
+	virtual void setAtmosphericExtinction(
+	    double const atmosphericExtinction,
+	    size_t const idx=0
+    ) = 0;
 
     /**
      * @brief Obtain beam waist radius
+     * @param idx The index of the scanning device which beam waist radius must
+     *  be obtained (by default 0, it is the first one)
      * @return Beam waist radius
-     * @see Scanner::beamWaistRadius
+     * @see ScanningDevice::beamWaistRadius
      */
-	inline double getBeamWaistRadius() {return this->beamWaistRadius;}
+	virtual double getBeamWaistRadius(size_t const idx=0) const = 0;
 	/**
 	 * @brief Set beam waist radius
 	 * @param beamWaistRadius New beam waist radius
-	 * @see Scanner::beamWaistRadius
+	 * @param idx The index of the scanning device which beam waist radius must
+	 *  be setted (by default 0, it is the first one)
+     * @see ScanningDevice::beamWaistRadius
 	 */
-	inline void setBeamWaistRadius(double beamWaistRadius)
-	    {this->beamWaistRadius = beamWaistRadius;}
+	virtual void setBeamWaistRadius(
+	    double const beamWaistRadius, size_t const idx=0
+    ) = 0;
+	/**
+	 * @brief Obtain the head's relative emitter position
+	 * @param idx The index of the scanning device which head's relative
+	 *  emitter position must be obtained (by default 0, it is the first one)
+	 * @return The head's relative emitter position
+	 * @see ScanningDevice::headRelativeEmitterPosition
+	 */
+	virtual glm::dvec3 getHeadRelativeEmitterPosition(
+	    size_t const idx=0
+    ) const = 0;
+	/**
+	 * @brief Set the head's relative emitter position
+	 * @param pos The new position for the head's relative emitter
+	 * @param idx The index of the scanning device which head's relative
+	 *  emitter position must be setted (by default 0, it is the first one)
+	 * @see ScanningDevice::headRelativeEmitterPosition
+	 */
+	virtual void setHeadRelativeEmitterPosition(
+	    glm::dvec3 const &pos, size_t const idx=0
+    ) = 0;
+	/**
+	 * @brief Obtain the head's relative emitter attitude
+	 * @param idx The index of the scanning device which head's relative
+	 *  emitter attitude must be obtained (by default 0, it is the first one)
+	 * @return The head's relative emitter attitude
+	 * @see ScanningDevice::headRelativeEmitterAttitude
+	 */
+	virtual Rotation getHeadRelativeEmitterAttitude(size_t const idx=0)const=0;
+	/**
+	 * @brief Obtain the head's relative emitter attitude
+	 * @param attitude The new attitude for the head's relative emitter
+	 * @param idx The index of the scanning device which head's relative
+	 *  emitter attitude must be setted (by default 0, it is the first one)
+	 */
+    virtual void setHeadRelativeEmitterAttitude(
+        Rotation const &attitude, size_t const idx=0
+    ) = 0;
 
     /**
      * @brief Obtain \f$B_{t2}\f$
+     * @param idx The index of the scanning device which cached Bt2 (square of
+     *  beam divergence) must be obtained (by default 0, it is the first one)
      * @return \f$B_{t2}\f$
-     * @see Scanner::cached_Bt2
+     * @see ScanningDevice::cached_Bt2
      */
-	inline double getBt2() {return this->cached_Bt2;}
+	virtual double getBt2(size_t const idx) const = 0;
 	/**
 	 * @brief Set \f$B_{t2}\f$
 	 * @param bt2 New \f$B_{t2}\f$
-     * @see Scanner::cached_Bt2
+     * @param idx The index of the scanning device which cached Bt2 (square of
+     *  beam divergence) must be setted (by default 0, it is the first one)
+     * @see ScanningDevice::cached_Bt2
 	 */
-	inline void setBt2(double bt2) {this->cached_Bt2 = bt2;}
+	virtual void setBt2(double const bt2, size_t const idx=0) = 0;
 
 	/**
 	 * @brief Obtain \f$D_{r2}\f$
+	 * @param idx The index of the scanning device which cached Dr2 (square of
+	 *  receiver diameter) must be obtained (by default 0, it is the first one)
 	 * @return \f$D_{r2}\f$
-	 * @see Scanner::cached_Dr2
+	 * @see ScanningDevice::cached_Dr2
 	 */
-	inline double getDr2() {return this->cached_Dr2;}
+	virtual double getDr2(size_t const idx=0) const = 0;
 	/**
 	 * @brief Set \f$D_{r2}\f$
 	 * @param dr2 New \f$D_{t2}\f$
-	 * @see Scanner::cached_Dr2
+	 * @param idx The index of the scanning device which cached Dr2 (square of
+	 *  receiver diameter) must be obtained (by default 0, it is the first one)
+	 * @see ScanningDevice::cached_Dr2
 	 */
-	inline void setDr2(double dr2) {this->cached_Dr2 = dr2;}
+	virtual void setDr2(double const dr2, size_t const idx=0) = 0;
 
 	/**
 	 * @brief Check if scanner is active (true) or not (false)
 	 * @return True if scanner is active, false otherwise
 	 * @see Scanner::state_isActive
 	 */
-	inline bool isActive() {return this->state_isActive;}
+	inline bool isActive() const {return this->state_isActive;}
 	/**
 	 * @brief Set scanner active status. True to make it active, false to
 	 * make it inactive
@@ -786,14 +776,14 @@ public:
 	 *  otherwise
 	 * @see Scanner::writeWaveform
 	 */
-    inline bool isWriteWaveform() {return this->writeWaveform;}
+    inline bool isWriteWaveform() const {return this->writeWaveform;}
     /**
      * @brief Set scanner write wave form configuration.
      * @param writeWaveform True to make scanner write wave form, false
      *  otherwise
      * @see Scanner::writeWaveform
      */
-    inline void setWriteWaveform(bool writeWaveform)
+    inline void setWriteWaveform(bool const writeWaveform)
         {this->writeWaveform = writeWaveform;}
     /**
      * @brief Check if scanner is configured to compute echo width (true) or
@@ -802,14 +792,14 @@ public:
      *  otherwise
      * @see Scanner::calcEchowidth
      */
-    inline bool isCalcEchowidth() {return this->calcEchowidth;}
+    inline bool isCalcEchowidth() const {return this->calcEchowidth;}
     /**
      * @brief Set scanner echo width configuration.
      * @param calcEchowidth True to make scanner compute echo width,
      *  false otherwise
      * @see Scanner::calcEchowidth
      */
-    inline void setCalcEchowidth(bool calcEchowidth)
+    inline void setCalcEchowidth(bool const calcEchowidth)
         {this->calcEchowidth = calcEchowidth;}
 
     /**
@@ -819,14 +809,14 @@ public:
      *  otherwise
      * @see Scanner::fullWaveNoise
      */
-	inline bool isFullWaveNoise() {return this->fullWaveNoise;}
+	inline bool isFullWaveNoise() const {return this->fullWaveNoise;}
 	/**
 	 * @brief Set scanner full wave noise policy
 	 * @param fullWaveNoise True to make scanner add noise to the full wave,
 	 *  false otherwise
      * @see Scanner::fullWaveNoise
 	 */
-	inline void setFullWaveNoise(bool fullWaveNoise)
+	inline void setFullWaveNoise(bool const fullWaveNoise)
 	    {this->fullWaveNoise = fullWaveNoise;}
 
     /**
@@ -841,7 +831,7 @@ public:
 	 *  to enable it
      * @see Scanner::platformNoiseDisabled
 	 */
-	inline void setPlatformNoiseDisabled(bool platformNoiseDisabled)
+	inline void setPlatformNoiseDisabled(bool const platformNoiseDisabled)
         {this->platformNoiseDisabled = platformNoiseDisabled;}
 
     /**
@@ -849,30 +839,44 @@ public:
      * @return True if incidence angle is fixed, false otherwise
      * @see Scanner::fixedIncidenceAngle
      */
-    inline bool isFixedIncidenceAngle() {return this->fixedIncidenceAngle;}
+    inline bool isFixedIncidenceAngle() const
+        {return this->fixedIncidenceAngle;}
     /**
      * @brief Set fixed incidence angle flag
      * @param fixedIncidenceAngle True to enable fixed incidence angle, false
      *  to disable it
      * @see Scanner::fixedIncidenceAngle
      */
-    inline void setFixedIncidenceAngle(bool fixedIncidenceAngle)
+    inline void setFixedIncidenceAngle(bool const fixedIncidenceAngle)
         {this->fixedIncidenceAngle = fixedIncidenceAngle;}
 
-
+    /**
+     * @brief Obtain the identifier of the scanner
+     * @see Scanner::id
+     */
+    inline std::string getScannerId() const {return id;}
+    /**
+     * @brief Set the identifier of the scanner
+     * @param id The new identifier for the scanner
+     * @see Scanner::id
+     */
+    inline void setScannerId(std::string const &id) {this->id = id;}
 	/**
 	 * @brief Obtain scanner device identifier
 	 * @return Scanner device identifier
-	 * @see Scanner::cfg_device_id
+	 * @see ScanningDevice::id
 	 */
-	inline std::string getDeviceId() {return this->cfg_device_id;}
+	virtual std::string getDeviceId(size_t const idx = 0) const = 0;
 	/**
 	 * @brief Set the scanner device identifier
 	 * @param deviceId New scanner device identifier
-	 * @see Scanner::cfg_device_id
+	 * @see ScanningDevice::id
 	 */
-	inline void setDeviceId(std::string const deviceId)
-        {this->cfg_device_id = deviceId;}
+	virtual void setDeviceId(std::string const deviceId, size_t const idx=0)=0;
+	/**
+	 * @brief Obtain the number of scanning devices composing the scanner
+	 */
+	virtual size_t getNumDevices() const = 0;
 
 #ifdef PYTHON_BINDING
     /**
@@ -903,18 +907,22 @@ public:
         {return new PyIntegerList(cfg_device_supportedPulseFreqs_Hz);}
     /**
      * @brief Python wrapper for head relative emitter attitude access
+     * @param idx The index of the scanning device which relative attitude
+     *  must be obtained by reference (by default 0, it is the first one)
      * @return Reference to head relative emitter attitude
      * @see Scanner::cfg_device_headRelativeEmitterAttitude
      */
-    Rotation & getRelativeAttitudeByReference()
-        {return cfg_device_headRelativeEmitterAttitude;}
+    virtual Rotation & getRelativeAttitudeByReference(
+        size_t const idx=0
+    ) const = 0;
     /**
      * @brief Python wrapper for head relative emitter position
+     * @param idx The index of the scanning device which relative position
+     *  must be obtained (by default 0, it is the first one)
      * @return Wrapped head relative emitter position
      * @see Scanner::cfg_device_headRelativeEmitterPosition
      */
-    PythonDVec3 * getRelativePosition()
-        {return new PythonDVec3(&cfg_device_headRelativeEmitterPosition);}
+    virtual PythonDVec3 * getRelativePosition(size_t const idx=0) const = 0;
     /**
      * @brief Python wrapper for intersection handling noise source
      * @return Wrapped intersection handling noise source
