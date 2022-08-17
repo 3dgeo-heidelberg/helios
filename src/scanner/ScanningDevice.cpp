@@ -4,7 +4,7 @@
 // ************************************ //
 ScanningDevice::ScanningDevice(
     std::string const id,
-    double const beamDiv_rad
+    double const beamDiv_rad,
     glm::dvec3 const beamOrigin,
     Rotation const beamOrientation,
     double const pulseLength_ns,
@@ -16,19 +16,20 @@ ScanningDevice::ScanningDevice(
     double const wavelength_m
 ) :
     id(id),
-    beamDivergence_rad(beamDiv_rad),
     headRelativeEmitterPosition(beamOrigin),
     headRelativeEmitterAttitude(beamOrientation),
+    beamDivergence_rad(beamDiv_rad),
     pulseLength_ns(pulseLength_ns),
     averagePower_w(averagePower_w),
     beamQuality(beamQuality),
     efficiency(efficiency),
     receiverDiameter_m(receiverDiameter_m),
-    visibility_km(visibility_km),
-    wavelength_m(wavelength_m),
+    visibility_km(atmosphericVisibility_km),
+    wavelength_m(wavelength_m)
 {
     configureBeam();
-    calcAtmosphericAttenuation();
+    atmosphericExtinction = calcAtmosphericAttenuation();
+    cached_Dr2 = receiverDiameter_m * receiverDiameter_m;
 }
 
 ScanningDevice::ScanningDevice(ScanningDevice &scdev){
@@ -38,16 +39,16 @@ ScanningDevice::ScanningDevice(ScanningDevice &scdev){
 // ***  M E T H O D S  *** //
 // *********************** //
 void ScanningDevice::configureBeam(){
-    cached_Bt2 = cfg_device_beamDivergence_rad * cfg_device_beamDivergence_rad;
-    beamWaistRadius = (cfg_device_beamQuality * cfg_device_wavelength_m) /
-                      (M_PI * cfg_device_beamDivergence_rad);
+    cached_Bt2 = beamDivergence_rad * beamDivergence_rad;
+    beamWaistRadius = (beamQuality * wavelength_m) /
+        (M_PI * beamDivergence_rad);
 }
 
 // Simulate energy loss from aerial particles (Carlsson et al., 2001)
-double ScanningDevice::calcAtmosphericAttenuation() {
+double ScanningDevice::calcAtmosphericAttenuation() const {
     double q;
-    double lambda = cfg_device_wavelength_m * 1000000000;
-    double Vm = cfg_device_visibility_km;
+    double const lambda = wavelength_m * 1e9;
+    double const Vm = visibility_km;
 
     if (lambda < 500 && lambda > 2000) {
         // Do nothing if wavelength is outside range, approximation will be bad

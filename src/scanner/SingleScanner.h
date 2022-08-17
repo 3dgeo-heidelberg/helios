@@ -51,6 +51,47 @@ public:
     SingleScanner(SingleScanner &scanner);
     virtual ~SingleScanner() = default;
 
+    // ***   C L O N E   *** //
+    // ********************* //
+    /**
+     * @see Scanner::clone
+     */
+    std::shared_ptr<Scanner> clone() override;
+    /**
+     * @see Scanner::_clone
+     */
+    void _clone(Scanner &sc) const override;
+
+    // ***   M E T H O D S   *** //
+    // ************************* //
+    /**
+     * @see Scanner::applySettings
+     */
+    void applySettings(std::shared_ptr<ScannerSettings> settings) override;
+    /**
+     * @see Scanner::prepareDiscretization
+     */
+    void prepareDiscretization() override;
+    /**
+     * @see Scanner::calcTimePropagation
+     */
+    int calcTimePropagation(
+        std::vector<double> & timeWave, int const numBins
+    ) const override;
+    /**
+     * @see Scanner::calcFootprintArea
+     */
+    double calcFootprintArea(double const distance) const override;
+    /**
+     * @see Scanner::calcAbsoluteBeamAttitude
+     */
+    Rotation calcAbsoluteBeamAttitude() const override;
+    /**
+     * @see Scanner::calcAtmosphericAttenuation
+     */
+    double calcAtmosphericAttenuation() const override
+    {return scanDev.calcAtmosphericAttenuation();}
+
 
     // ***  GETTERs and SETTERs  *** //
     // ***************************** //
@@ -64,6 +105,10 @@ public:
      */
     void setDeviceId(std::string const deviceId, size_t const idx=0) override
     {scanDev.id = deviceId;}
+    /**
+     * @see Scanner::getNumDevices
+     */
+    size_t getNumDevices() const override {return 1;}
     /**
      * @see Scanner::getPulseLength_ns
 	 */
@@ -87,7 +132,7 @@ public:
     void setBeamDivergence(
         double const beamDivergence, size_t const idx=0
     ) override
-    {scanDev.beamDivergence_rad = beamDivergence}
+    {scanDev.beamDivergence_rad = beamDivergence;}
     /**
      * @see Scanner::getAveragePower
      */
@@ -99,7 +144,7 @@ public:
     void setAveragePower(
         double const averagePower, size_t const idx=0
     ) override
-    {scanDev.averagePower = averagePower;}
+    {scanDev.averagePower_w = averagePower;}
     /**
      * @see Scanner::getBeamQuality
      */
@@ -162,7 +207,7 @@ public:
      */
     void setAtmosphericExtinction(
         double const atmosphericExtinction,
-        size_const idx = 0
+        size_t const idx = 0
     ) override
     {scanDev.atmosphericExtinction = atmosphericExtinction;}
     /**
@@ -206,7 +251,7 @@ public:
     /**
      * @see Scanner::getBt2
      */
-    double getBt2(size_t const idx) const override
+    double getBt2(size_t const idx=0) const override
     {return scanDev.cached_Bt2;}
     /**
      * @see Scanner::setBt2
@@ -230,12 +275,12 @@ public:
      */
     Rotation & getRelativeAttitudeByReference(
         size_t const idx=0
-    ) override const
+    ) override
     {return scanDev.headRelativeEmitterAttitude;}
     /**
      * @see Scanner::getRelativePosition
      */
-    PythonDVec3 * getRelativePosition(size_t const idx=0) const override
-    {return new PythonDVec3(&scanDev.headRelativeEmitterPosition);}
+    PythonDVec3 * getRelativePosition(size_t const idx=0) override
+    {return new PythonDVec3(&(scanDev.headRelativeEmitterPosition));}
 #endif
 };

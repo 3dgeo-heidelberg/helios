@@ -279,13 +279,13 @@ void HDA_SimStepRecorder::recordScanner(){
     // Obtain scanner
     Scanner &s = *(sp->getScanner());
     // Record scanner position
-    glm::dvec3 const pos = s.cfg_device_headRelativeEmitterPosition;
+    glm::dvec3 const pos = s.getHeadRelativeEmitterPosition();
     scannerPositionX->push(pos.x);
     scannerPositionY->push(pos.y);
     scannerPositionZ->push(pos.z);
     // Record scanner angles
     double roll, pitch, yaw;
-    s.cfg_device_headRelativeEmitterAttitude.getAngles(
+    s.getHeadRelativeEmitterAttitude().getAngles(
         &RotationOrder::XYZ, roll, pitch, yaw
     );
     scannerRoll->push(roll);
@@ -325,7 +325,7 @@ void HDA_SimStepRecorder::recordBeam(){
     Scanner &s = *(sp->getScanner());
     // Record beam origin
     glm::dvec3 bo = p.getAbsoluteMountPosition() +
-        s.cfg_device_headRelativeEmitterPosition;
+        s.getHeadRelativeEmitterPosition();
     beamOriginX->push(bo.x);
     beamOriginY->push(bo.y);
     beamOriginZ->push(bo.z);

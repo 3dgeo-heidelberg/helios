@@ -1,6 +1,8 @@
 #pragma once
 
 #include <maths/Rotation.h>
+#include <maths/Directions.h>
+#include <assetloading/Asset.h>
 
 #include <glm/glm.hpp>
 
@@ -111,7 +113,7 @@ public:
      */
     ScanningDevice(
         std::string const id,
-        double const beamDiv_rad
+        double const beamDiv_rad,
         glm::dvec3 const beamOrigin,
         Rotation const beamOrientation,
         double const pulseLength_ns,
@@ -121,7 +123,7 @@ public:
         double const receiverDiameter_m,
         double const atmosphericVisibility_km,
         double const wavelength_m
-    ;
+    );
     /**
      * @brief Copy constructor for the ScanningDevice
      * @param scdev The scanning device to be copied
@@ -148,7 +150,7 @@ public:
      * @return Atmospheric attenuation
      * @see Scanner::atmosphericExtinction
      */
-    double calcAtmosphericAttenuation();
+    double calcAtmosphericAttenuation() const;
 
     // ***  GETTERs and SETTERs  *** //
     // ***************************** //

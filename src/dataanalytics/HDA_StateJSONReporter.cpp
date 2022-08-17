@@ -261,14 +261,14 @@ void HDA_StateJSONReporter::reportScanner(){
         << craftEntry("peakIntensityIndex", sc->peakIntensityIndex, 4)
         << craftEntry("timeWave", sc->time_wave, 4)
         << craftEntry(
-            "headRelativeEmitterPosition",
-            sc->cfg_device_headRelativeEmitterPosition,
-            4
+                "headRelativeEmitterPosition",
+                sc->getHeadRelativeEmitterPosition(),
+                4
             )
         << craftEntry(
-            "headRelativeEmitterAttitude",
-            sc->cfg_device_headRelativeEmitterAttitude,
-            4
+                "headRelativeEmitterAttitude",
+                sc->getHeadRelativeEmitterAttitude(),
+                4
             )
         << craftEntry(
             "supportedPulseFreqs_Hz",

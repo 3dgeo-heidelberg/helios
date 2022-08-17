@@ -118,21 +118,137 @@ Scanner::Scanner(Scanner &s){
     //initializeSequentialGenerators();
 }
 
-// ***  M E T H O D S  *** //
-// *********************** //
-void Scanner::applySettings(shared_ptr<ScannerSettings> settings) {
-	// Configure scanner:
-	this->setPulseFreq_Hz(settings->pulseFreq_Hz);
-	setActive(settings->active);
-	this->cfg_device_beamDivergence_rad = settings->beamDivAngle;
-    trajectoryTimeInterval_ns = settings->trajectoryTimeInterval*1000000000.0;
-    configureBeam();
 
-	detector->applySettings(settings);
-	scannerHead->applySettings(settings);
-	beamDeflector->applySettings(settings);
+// ***   C L O N E   *** //
+// ********************* //
+void Scanner::_clone(Scanner &sc) const{
+    // Clone scanner attributes
+    sc.id = id;
+    sc.writeWaveform = writeWaveform;
+    sc.calcEchowidth = calcEchowidth;
+    sc.fullWaveNoise = fullWaveNoise;
+    sc.platformNoiseDisabled = platformNoiseDisabled;
+    sc.numRays = numRays;
+    sc.fixedIncidenceAngle = fixedIncidenceAngle;
+    sc.cfg_setting_pulseFreq_Hz = cfg_setting_pulseFreq_Hz;
+    sc.state_currentPulseNumber = state_currentPulseNumber;
+    sc.state_lastPulseWasHit = state_lastPulseWasHit;
+    sc.state_isActive = state_isActive;
+    sc.spp = nullptr;  // Cannot be cloned (unique pointer)
+    sc.fms = fms;
+    if(scannerHead == nullptr){
+        sc.scannerHead = nullptr;
+    }
+    else{
+        sc.scannerHead = std::make_shared<ScannerHead>(*scannerHead);
+    }
+    if(beamDeflector == nullptr){
+        sc.beamDeflector = nullptr;
+    }
+    else{
+        sc.beamDeflector = beamDeflector->clone();
+    }
+    if(platform == nullptr){
+        sc.platform = nullptr;
+    }
+    else{
+        sc.platform = platform->clone();
+    }
+    if(detector == nullptr){
+        sc.detector = nullptr;
+    }
+    else{
+        sc.detector = detector->clone();
+    }
+    if(allOutputPaths == nullptr){
+        sc.allOutputPaths = nullptr;
+    }
+    else{
+        sc.allOutputPaths = std::make_shared<std::vector<std::string>>(
+            *allOutputPaths
+        );
+    }
+    if(allMeasurements == nullptr){
+        sc.allMeasurements = nullptr;
+    }
+    else{
+        sc.allMeasurements = std::make_shared<std::vector<Measurement>>(
+            *allMeasurements
+        );
+    }
+    if(allTrajectories == nullptr){
+        sc.allTrajectories = nullptr;
+    }
+    else{
+        sc.allTrajectories = std::make_shared<std::vector<Trajectory>>(
+            *allTrajectories
+        );
+    }
+    if(allMeasurementsMutex == nullptr){
+        sc.allMeasurementsMutex = nullptr;
+    }
+    else{
+        sc.allMeasurementsMutex = std::make_shared<std::mutex>();
+    }
+    if(cycleMeasurements == nullptr){
+        sc.cycleMeasurements = nullptr;
+    }
+    else{
+        sc.cycleMeasurements = std::make_shared<std::vector<Measurement>>(
+            *cycleMeasurements
+        );
+    }
+    if(cycleTrajectories == nullptr){
+        sc.cycleTrajectories = nullptr;
+    }
+    else{
+        sc.cycleTrajectories = std::make_shared<std::vector<Trajectory>>(
+            *cycleTrajectories
+        );
+    }
+    if(cycleMeasurementsMutex == nullptr){
+        sc.cycleMeasurementsMutex = nullptr;
+    }
+    else{
+        sc.cycleMeasurementsMutex = std::make_shared<std::mutex>();
+    }
+    sc.trajectoryTimeInterval_ns = trajectoryTimeInterval_ns;
+    sc.lastTrajectoryTime = lastTrajectoryTime;
+    sc.FWF_settings = FWF_settings;
+    sc.numTimeBins = numTimeBins;
+    sc.peakIntensityIndex = peakIntensityIndex;
+    sc.time_wave = time_wave;
+    if(randGen1 == nullptr){
+        sc.randGen1 = nullptr;
+    }
+    else{
+        sc.randGen1 = std::make_shared<RandomnessGenerator<double>>(*randGen1);
+    }
+    if(randGen2 == nullptr){
+        sc.randGen2 = nullptr;
+    }
+    else{
+        sc.randGen2 = std::make_shared<RandomnessGenerator<double>>(*randGen2);
+    }
+    if(intersectionHandlingNoiseSource == nullptr){
+        sc.intersectionHandlingNoiseSource = nullptr;
+    }
+    else{
+        sc.intersectionHandlingNoiseSource = std::make_shared<
+            UniformNoiseSource<double>
+        >(*intersectionHandlingNoiseSource);
+    }
+    sc.cfg_device_supportedPulseFreqs_Hz = cfg_device_supportedPulseFreqs_Hz;
+    sc.maxNOR = maxNOR;
+
+
+    // TODO Rethink : Update all references from cloned objects to cloned scanner
+    // Update references from cloned objects so they point to cloned scanner
 }
 
+
+// ***  M E T H O D S  *** //
+// *********************** //
 std::shared_ptr<ScannerSettings> Scanner::retrieveCurrentSettings(){
     shared_ptr<ScannerSettings> settings = make_shared<ScannerSettings>();
     // Settings from Scanner
@@ -240,41 +356,6 @@ void Scanner::calcRaysNumber() {
 	logging::INFO(ss.str());
 }
 
-void Scanner::prepareDiscretization(){
-    numTimeBins = cfg_device_pulseLength_ns / FWF_settings.binSize_ns;
-    time_wave = vector<double>(numTimeBins);
-    peakIntensityIndex = calcTimePropagation(time_wave, numTimeBins);
-}
-
-int Scanner::calcTimePropagation(vector<double> & timeWave, int numBins){
-    double const step = FWF_settings.binSize_ns;
-    double const tau = (cfg_device_pulseLength_ns * 0.5) / 3.5;
-    double t = 0;
-    double t_tau = 0;
-    double pt = 0;
-    double peakValue = 0;
-    int peakIndex = 0;
-
-    for (int i = 0; i < numBins; ++i) {
-        t = i * step;
-        t_tau = t / tau;
-        pt = (t_tau * t_tau) * exp(-t_tau);
-        timeWave[i] = pt;
-        if (pt > peakValue) {
-            peakValue = pt;
-            peakIndex = i;
-        }
-    }
-
-    return peakIndex;
-}
-
-double Scanner::calcFootprintArea(double distance) {
-	double Bt2 = cached_Bt2;
-	double R = distance;
-	return (M_PI * R * R * Bt2) / 4;
-}
-
 double Scanner::calcFootprintRadius(double distance) {
 	double area = calcFootprintArea(distance);
 	return sqrt(area / M_PI);
@@ -361,15 +442,6 @@ void Scanner::handleSimStepNoise(
             ));
         }
     }
-}
-
-Rotation Scanner::calcAbsoluteBeamAttitude(){
-    Rotation mountRelativeEmitterAttitude =
-        scannerHead->getMountRelativeAttitude()
-            .applyTo(cfg_device_headRelativeEmitterAttitude);
-    return platform->getAbsoluteMountAttitude()
-        .applyTo(mountRelativeEmitterAttitude)
-        .applyTo(beamDeflector->getEmitterRelativeAttitude());
 }
 
 void Scanner::handleTrajectoryOutput(double const currentGpsTime){

@@ -296,6 +296,23 @@ public:
     Scanner(Scanner &scanner);
     virtual ~Scanner() = default;
 
+    // ***   C L O N E   *** //
+    // ********************* //
+    /**
+     * @brief Make a clone of this scanner
+     * @return Shared pointer pointing to the clone of this scanner
+     */
+    virtual std::shared_ptr<Scanner> clone() = 0;
+protected:
+    /**
+     * @brief Assist the clone method by means of handling cloning of
+     *  attributes from this scanner to the new one (sc)
+     * @param sc The scanner which attributes must be assigned as clones of
+     *  the caller scanner (this)
+     */
+    virtual void _clone(Scanner &sc) const;
+public:
+
     // ***  M E T H O D S  *** //
     // *********************** //
     /**
@@ -323,7 +340,7 @@ public:
      * @param settings Scanner settings to be applied
      * @see ScannerSettings
      */
-	void applySettings(std::shared_ptr<ScannerSettings> settings);
+	virtual void applySettings(std::shared_ptr<ScannerSettings> settings) = 0;
 	/**
 	 * @brief Retrieve current scanner settings and build a new ScannerSettings
 	 *  object with them
@@ -361,7 +378,7 @@ public:
      * @see Scanner::time_wave
      * @see Scanner::peakIntensityIndex
      */
-    void prepareDiscretization();
+    virtual void prepareDiscretization() = 0;
     /**
      * @brief Compute propagation time, which means obtaining the intensity
      * peak index
@@ -370,7 +387,9 @@ public:
      * @see Scanner::peakIntensityIndex
      * @return Index of intensity peak
      */
-    int calcTimePropagation(std::vector<double> & timeWave, int numBins);
+    virtual int calcTimePropagation(
+        std::vector<double> & timeWave, int const numBins
+    ) const = 0;
     /**
      * @brief Compute the footprint area \f$f_{a}\f$
      *
@@ -382,7 +401,7 @@ public:
      * @return Footprint area \f$f_{a}\f$
      * @see Scanner::cached_Bt2
      */
-    double calcFootprintArea(double distance);
+    virtual double calcFootprintArea(double const distance) const = 0;
     /**
      * @brief Compute the footprint radius \f$f_{r}\f$
      *
@@ -396,12 +415,16 @@ public:
      */
     double calcFootprintRadius(double distance);
     /**
+     * @see ScanningDevice::calcAtmosphericAttenuation
+     */
+    virtual double calcAtmosphericAttenuation() const = 0;
+    /**
      * @brief Compute the absolute beam attitude considering the mount relative
      * attitude and the deflector relative attitude
      * @see ScannerHead::getMountRelativeAttitude
      * @see AbstractBeamDeflector::getEmitterRelativeAttitude
      */
-    Rotation calcAbsoluteBeamAttitude();
+    virtual Rotation calcAbsoluteBeamAttitude() const = 0;
 
     /**
      * @brief Check if given number of return (nor) is inside
@@ -728,7 +751,7 @@ public:
      * @return \f$B_{t2}\f$
      * @see ScanningDevice::cached_Bt2
      */
-	virtual double getBt2(size_t const idx) const = 0;
+	virtual double getBt2(size_t const idx=0) const = 0;
 	/**
 	 * @brief Set \f$B_{t2}\f$
 	 * @param bt2 New \f$B_{t2}\f$
@@ -914,7 +937,7 @@ public:
      */
     virtual Rotation & getRelativeAttitudeByReference(
         size_t const idx=0
-    ) const = 0;
+    ) = 0;
     /**
      * @brief Python wrapper for head relative emitter position
      * @param idx The index of the scanning device which relative position
@@ -922,7 +945,7 @@ public:
      * @return Wrapped head relative emitter position
      * @see Scanner::cfg_device_headRelativeEmitterPosition
      */
-    virtual PythonDVec3 * getRelativePosition(size_t const idx=0) const = 0;
+    virtual PythonDVec3 * getRelativePosition(size_t const idx=0) = 0;
     /**
      * @brief Python wrapper for intersection handling noise source
      * @return Wrapped intersection handling noise source
