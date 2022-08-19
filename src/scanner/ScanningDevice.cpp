@@ -1,4 +1,5 @@
 #include <ScanningDevice.h>
+#include <maths/MathConstants.h>
 
 // ***  CONSTRUCTION / DESTRUCTION  *** //
 // ************************************ //
