@@ -261,8 +261,13 @@ def test_scanner(test_sim):
     assert scanner.numRays == 19  # for default beamSampleQuality of 3
     assert scanner.pulseLength_ns == 10.0
     assert list(scanner.getSupportedPulseFrequencies()) == [20000, 60000, 150000]
-    assert scanner.toString() == 'Scanner: leica_als50-ii Power: 4.000000 W Divergence: 0.220000 mrad ' \
-                                 'Wavelength: 1064 nm Visibility: 23.000000 km'
+    assert scanner.toString() == """Scanner: leica_als50-ii
+Device[0]: leica_als50-ii
+	Average Power: 4 W
+	Beam Divergence: 0.22 mrad
+	Wavelength: 1064 nm
+	Visibility: 23 km
+"""
 
 
 def test_detector(test_sim):

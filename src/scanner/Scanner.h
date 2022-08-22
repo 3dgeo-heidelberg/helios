@@ -488,13 +488,13 @@ public:
 	 * @return Number of rays
 	 * @see Scanner::numRays
 	 */
-	inline int getNumRays() {return this->numRays;}
+	inline int getNumRays() const {return this->numRays;}
 	/**
 	 * @brief Set the number of rays
 	 * @param numRays New number of rays
 	 * @see Scanner::numRays
 	 */
-	inline void setNumRays(int numRays) {this->numRays = numRays;}
+	inline void setNumRays(int const numRays) {this->numRays = numRays;}
 
 	/**
 	 * @brief Obtain the pulse frequency
@@ -516,7 +516,13 @@ public:
 	 * @return Pulse length (nanoseconds)
 	 * @see ScanningDevice::cfg_device_pulseLength_ns
 	 */
-	virtual double getPulseLength_ns(size_t const idx=0) const = 0;
+	virtual double getPulseLength_ns(size_t const idx) const = 0;
+	/**
+	 * @brief No index argument version of the Scanner::getPulseLength_ns
+	 *  method
+	 * @see Scanner::getPulseLength_ns(size_t const)
+	 */
+	inline double getPulseLength_ns() const {return getPulseLength_ns(0);}
 	/**
      * @brief Set the pulse length
      * @param pulseLength_ns New pulse length (nanoseconds)
@@ -525,8 +531,15 @@ public:
 	 * @see ScanningDevice::cfg_device_pulseLength_ns
      */
 	virtual void setPulseLength_ns(
-	    double const pulseLength_ns, size_t const idx=0
+	    double const pulseLength_ns, size_t const idx
     ) = 0;
+	/**
+	 * @brief No index argument version of the Scanner::setPulseLength_ns
+	 *  method
+	 * @see Scanner::setPulseLength_ns(double const, size_t const)
+	 */
+	inline void setPulseLength_ns(double const pulseLength_ns)
+	{setPulseLength_ns(pulseLength_ns, 0);}
 
 	/**
 	 * @brief Check if last pulse was hit (true) or not (false)
@@ -548,7 +561,13 @@ public:
      * @return Beam divergence (radians)
      * @see ScanningDevice::beamDivergence_rad
      */
-	virtual double getBeamDivergence(size_t const idx=0) const = 0;
+	virtual double getBeamDivergence(size_t const idx) const = 0;
+	/**
+	 * @brief No index argument version of the Scanner::getBeamDivergence
+	 *  method
+	 * @see Scanner::getBeamDivergence(size_t const)
+	 */
+	inline double getBeamDivergence() const {return getBeamDivergence(0);}
 	/**
 	 * @brief Set beam divergence
 	 * @param beamDivergence New beam divergence (radians)
@@ -557,8 +576,15 @@ public:
      * @see ScanningDevice::beamDivergence_rad
 	 */
 	virtual void setBeamDivergence(
-	    double const beamDivergence, size_t const idx=0
+	    double const beamDivergence, size_t const idx
     ) = 0;
+	/**
+	 * @brief No index argument version of the Scanner::setBeamDivergence
+	 *  method
+	 * @see Scanner::setBeamDivergence(double const, size_t const)
+	 */
+	inline void setBeamDivergence(double const beamDivergence)
+	{return setBeamDivergence(beamDivergence, 0);}
 
     /**
      * @brief Obtain average power
@@ -567,7 +593,12 @@ public:
      * @return Average power (watts)
      * @see ScanningDevice::averagePower_w
      */
-	virtual double getAveragePower(size_t const idx=0) const = 0;
+	virtual double getAveragePower(size_t const idx) const = 0;
+	/**
+	 * @brief No index argument version of the Scanner::getAveragePower method
+	 * @see Scanner::getAveragePower(size_t const)
+	 */
+	inline double getAveragePower() const {return getAveragePower(0);}
 	/**
 	 * @brief Set average power
 	 * @param averagePower New average power (watts)
@@ -576,8 +607,14 @@ public:
      * @see ScanningDevice::averagePower_w
 	 */
 	virtual void setAveragePower(
-	    double const averagePower, size_t const idx=0
+	    double const averagePower, size_t const idx
     ) = 0;
+	/**
+	 * @brief No index argument version of the Scanner::setAveragePower method
+	 * @see Scanner::setAveragePower(double const, size_t const)
+	 */
+	inline void setAveragePower(double const averagePower)
+	{setAveragePower(averagePower, 0);}
 
     /**
      * @brief Get beam quality
@@ -586,7 +623,8 @@ public:
      * @return Beam quality
      * @see ScanningDevice::beamQuality
      */
-	virtual double getBeamQuality(size_t const idx=0) const = 0;
+	virtual double getBeamQuality(size_t const idx) const = 0;
+	inline double getBeamQuality() const {return getBeamQuality(0);}
 	/**
 	 * @brief Set beam quality
 	 * @param beamQuality New beam quality
@@ -595,8 +633,14 @@ public:
      * @see ScanningDevice::beamQuality
 	 */
 	virtual void setBeamQuality(
-	    double const beamQuality, size_t const idx=0
+	    double const beamQuality, size_t const idx
     ) = 0;
+	/**
+	 * @brief No index argument version of the Scanner::setBeamQuality method
+	 * @see Scanner::setBeamQuality(double const, size_t const)
+	 */
+	inline void setBeamQuality(double const beamQuality)
+	{setBeamQuality(beamQuality, 0);}
 
     /**
      * @brief Obtain device efficiency
@@ -605,7 +649,12 @@ public:
      * @return Device efficiency
      * @see ScanningDevice::efficiency
      */
-	virtual double getEfficiency(size_t const idx = 0) const = 0;
+	virtual double getEfficiency(size_t const idx) const = 0;
+	/**
+	 * @brief No index argument version of the Scanner::getEfficiency method
+	 * @see Scanner::getEfficiency(size_t const)
+	 */
+	inline double getEfficiency() const {return getEfficiency(0);}
 	/**
 	 * @brief Set device efficiency
 	 * @param efficiency New device efficiency
@@ -614,6 +663,12 @@ public:
      * @see ScanningDevice::efficiency
 	 */
 	virtual void setEfficiency(double const efficiency, size_t const idx=0)=0;
+	/**
+	 * @brief No index argument version of the Scanner::setEfficiency method
+	 * @see Scanner::setEfficiency(double const, size_t const)
+	 */
+	inline void setEfficiency(double const efficiency)
+	{setEfficiency(efficiency, 0);}
 
 	/**
 	 * @brief Get receiver diameter
@@ -622,7 +677,12 @@ public:
 	 * @return Receiver diameter
 	 * @see ScanningDevice::receiverDiameter_m
 	 */
-	virtual double getReceiverDiameter(size_t const idx = 0) const = 0;
+	virtual double getReceiverDiameter(size_t const idx) const = 0;
+	/**
+	 * @brief No index argument version of the Scanner::getReceiverDiameter
+	 * @see Scanner::getReceiverDiameter(size_t const)
+	 */
+	inline double getReceiverDiameter() const {return getReceiverDiameter(0);}
 	/**
 	 * @brief Set receiver diameter
 	 * @param receiverDiameter  New receiver diameter
@@ -631,8 +691,15 @@ public:
 	 * @see ScanningDevice::receiverDiameter_m
 	 */
 	virtual void setReceiverDiameter(
-	    double const receiverDiameter, size_t const idx = 0
+	    double const receiverDiameter, size_t const idx
     ) = 0;
+	/**
+	 * @brief No index argument version of the Scanner::setReceiverDiameter
+	 *  method
+	 * @see Scanner::setReceiverDiameter(double const, size_t const)
+	 */
+	inline void setReceiverDiameter(double const receiverDiameter)
+	{setReceiverDiameter(receiverDiameter, 0);}
 
     /**
      * @brief Get device visibility
@@ -641,7 +708,12 @@ public:
      * @return Device visibility (kilometers)
      * @see ScanningDevice::visibility_km
      */
-	virtual double getVisibility(size_t const idx=0) const = 0;
+	virtual double getVisibility(size_t const idx) const = 0;
+	/**
+	 * @brief No index argument version of the Scanner::getVisibility method
+	 * @see Scanner::getVisibility(size_t const)
+	 */
+	inline double getVisibility() const{return getVisibility(0);}
 	/**
 	 * @brief Set device visibility
 	 * @param visibility New device visibility (kilometers)
@@ -650,6 +722,12 @@ public:
      * @see ScanningDevice::visibility_km
 	 */
 	virtual void setVisibility(double const visibility, size_t const idx=0)=0;
+	/**
+	 * @brief No index argument version of the Scanner::setVisibility method
+	 * @see Scanner::setVisibility(double const, size_t const)
+	 */
+	inline void setVisibility(double const visibility)
+	{setVisibility(visibility, 0);}
 
     /**
      * @brief Obtain wave length
@@ -658,7 +736,12 @@ public:
      * @return Wave length (meters)
      * @see ScanningDevice::wavelength_m
      */
-	virtual double getWavelength(size_t const idx=0) const = 0;
+	virtual double getWavelength(size_t const idx) const = 0;
+	/**
+	 * @brief No index argument version of the Scanner::getWavelength method
+	 * @see Scanner::getWavelength(size_t const)
+	 */
+	inline double getWavelength() const {return getWavelength(0);}
 	/**
 	 * @brief Set wave length
 	 * @param wavelength New wave length (meters)
@@ -666,7 +749,13 @@ public:
 	 *  setted (by default 0, it is the first one)
      * @see ScanningDevice::wavelength_m
 	 */
-	virtual void setWavelength(double const wavelength, size_t const idx=0)=0;
+	virtual void setWavelength(double const wavelength, size_t const idx)=0;
+	/**
+	 * @brief No index argument version of the Scanner::setWavelength method
+	 * @see Scanner::setWavelength(double const, size_t const)
+	 */
+	inline void setWavelength(double const wavelength)
+	{setWavelength(wavelength, 0);}
 
 	/**
 	 * @brief Obtain atmospheric extinction
@@ -675,7 +764,14 @@ public:
 	 * @return Atmospheric extinction
 	 * @see ScanningDevice::atmosphericExtinction
 	 */
-	virtual double getAtmosphericExtinction(size_t const idx=0) const = 0;
+	virtual double getAtmosphericExtinction(size_t const idx) const = 0;
+	/**
+	 * @brief No index argument version of the
+	 *  Scanner::getAtmosphericExtinction method
+	 * @return Scanner::getAtmosphericExtinction(size_t const)
+	 */
+	inline double getAtmosphericExtinction() const
+	{return getAtmosphericExtinction(0);}
 	/**
      * @brief Set atmospheric extinction
      * @param atmosphericExtinction New atmospheric extinction
@@ -685,8 +781,15 @@ public:
      */
 	virtual void setAtmosphericExtinction(
 	    double const atmosphericExtinction,
-	    size_t const idx=0
+	    size_t const idx
     ) = 0;
+	/**
+	 * @brief No index argument version of the
+	 *  Scanner::setAtmosphericExtinction method
+	 * @see Scanner::setAtmosphericExtinction(double const, size_t const)
+	 */
+	inline void setAtmosphericExtinction(double const atmosphericExtinction)
+	{setAtmosphericExtinction(atmosphericExtinction, 0);}
 
     /**
      * @brief Obtain beam waist radius
@@ -695,7 +798,13 @@ public:
      * @return Beam waist radius
      * @see ScanningDevice::beamWaistRadius
      */
-	virtual double getBeamWaistRadius(size_t const idx=0) const = 0;
+	virtual double getBeamWaistRadius(size_t const idx) const = 0;
+	/**
+	 * @brief No index argument version of the Scanner::getBeamWaistRadius
+	 *  method
+	 * @see Scanner::getBeamWaistRadius(size_t const)
+	 */
+	inline double getBeamWaistRadius() const {return getBeamWaistRadius(0);}
 	/**
 	 * @brief Set beam waist radius
 	 * @param beamWaistRadius New beam waist radius
@@ -704,8 +813,15 @@ public:
      * @see ScanningDevice::beamWaistRadius
 	 */
 	virtual void setBeamWaistRadius(
-	    double const beamWaistRadius, size_t const idx=0
+	    double const beamWaistRadius, size_t const idx
     ) = 0;
+	/**
+	 * @brief No index argument version of the Scanner::setBeamWaistRadius
+	 *  method
+	 * @see Scanner::setBeamWaistRadius(double const, size_t const)
+	 */
+	inline void setBeamWaistRadius(double const beamWaistRadius)
+	{setBeamWaistRadius(beamWaistRadius, 0);}
 	/**
 	 * @brief Obtain the head's relative emitter position
 	 * @param idx The index of the scanning device which head's relative
@@ -751,15 +867,25 @@ public:
      * @return \f$B_{t2}\f$
      * @see ScanningDevice::cached_Bt2
      */
-	virtual double getBt2(size_t const idx=0) const = 0;
-	/**
-	 * @brief Set \f$B_{t2}\f$
-	 * @param bt2 New \f$B_{t2}\f$
+	virtual double getBt2(size_t const idx) const = 0;
+    /**
+     * @brief No index argument version of the Scanner::getBt2 method
+     * @see Scanner::getBt2(size_t const)
+     */
+    inline double getBt2() const {return getBt2(0);}
+    /**
+     * @brief Set \f$B_{t2}\f$
+     * @param bt2 New \f$B_{t2}\f$
      * @param idx The index of the scanning device which cached Bt2 (square of
      *  beam divergence) must be setted (by default 0, it is the first one)
      * @see ScanningDevice::cached_Bt2
-	 */
-	virtual void setBt2(double const bt2, size_t const idx=0) = 0;
+     */
+	virtual void setBt2(double const bt2, size_t const idx) = 0;
+    /**
+     * @brief No index argument version of the Scanner::setBt2 method
+     * @Scanner::setBt2(double const, size_t const)
+     */
+    inline void setBt2(double const bt2) {setBt2(bt2, 0);}
 
 	/**
 	 * @brief Obtain \f$D_{r2}\f$
@@ -768,7 +894,12 @@ public:
 	 * @return \f$D_{r2}\f$
 	 * @see ScanningDevice::cached_Dr2
 	 */
-	virtual double getDr2(size_t const idx=0) const = 0;
+	virtual double getDr2(size_t const idx) const = 0;
+    /**
+     * @brief No index argument version of the Scanner::getDr2 method
+     * @see Scanner::getDr2(size_t const)
+     */
+    inline double getDr2() const {return getDr2(0);}
 	/**
 	 * @brief Set \f$D_{r2}\f$
 	 * @param dr2 New \f$D_{t2}\f$
@@ -776,7 +907,12 @@ public:
 	 *  receiver diameter) must be obtained (by default 0, it is the first one)
 	 * @see ScanningDevice::cached_Dr2
 	 */
-	virtual void setDr2(double const dr2, size_t const idx=0) = 0;
+	virtual void setDr2(double const dr2, size_t const idx) = 0;
+	/**
+	 * @brief No index argument version of the Scanner::setDr2 method
+	 * @Scanner::setDr2(double const, size_t const)
+	 */
+	inline void setDr2(double const dr2) {setDr2(dr2, 0);}
 
 	/**
 	 * @brief Check if scanner is active (true) or not (false)
@@ -889,13 +1025,24 @@ public:
 	 * @return Scanner device identifier
 	 * @see ScanningDevice::id
 	 */
-	virtual std::string getDeviceId(size_t const idx = 0) const = 0;
+	virtual std::string getDeviceId(size_t const idx) const = 0;
+	/**
+	 * @brief No index argument version of the Scanner::getDeviceId method
+	 * @see Scanner::getDeviceId(size_t const)
+	 */
+	inline std::string getDeviceId() const {return getDeviceId(0);}
 	/**
 	 * @brief Set the scanner device identifier
 	 * @param deviceId New scanner device identifier
 	 * @see ScanningDevice::id
 	 */
-	virtual void setDeviceId(std::string const deviceId, size_t const idx=0)=0;
+	virtual void setDeviceId(std::string const deviceId, size_t const idx)=0;
+    /**
+     * @brief No index argument version of the Scanner::setDeviceId method
+     * @see Scanner::setDeviceId(std::string const, size_t const)
+     */
+    inline void setDeviceId(std::string const deviceId)
+    {setDeviceId(deviceId, 0);}
 	/**
 	 * @brief Obtain the number of scanning devices composing the scanner
 	 */

@@ -98,12 +98,12 @@ public:
     /**
      * @see Scanner::getDeviceId
      */
-    std::string getDeviceId(size_t const idx = 0) const override
+    std::string getDeviceId(size_t const idx) const override
     {return scanDev.id;}
     /**
      * @see Scanner::setDeviceId
      */
-    void setDeviceId(std::string const deviceId, size_t const idx=0) override
+    void setDeviceId(std::string const deviceId, size_t const idx) override
     {scanDev.id = deviceId;}
     /**
      * @see Scanner::getNumDevices
@@ -112,161 +112,161 @@ public:
     /**
      * @see Scanner::getPulseLength_ns
 	 */
-    double getPulseLength_ns(size_t const idx=0) const override
+    double getPulseLength_ns(size_t const idx) const override
     {return scanDev.pulseLength_ns;}
     /**
      * @see Scanner::setPulseLength_ns
      */
     void setPulseLength_ns(
-        double const pulseLength_ns, size_t const idx=0
+        double const pulseLength_ns, size_t const idx
     ) override
     {scanDev.pulseLength_ns = pulseLength_ns;}
     /**
      * @see Scanner::getBeamDivergence
      */
-    double getBeamDivergence(size_t const idx=0) const override
+    double getBeamDivergence(size_t const idx) const override
     {return scanDev.beamDivergence_rad;}
     /**
      * @see Scanner::setBeamDivergence
 	 */
     void setBeamDivergence(
-        double const beamDivergence, size_t const idx=0
+        double const beamDivergence, size_t const idx
     ) override
     {scanDev.beamDivergence_rad = beamDivergence;}
     /**
      * @see Scanner::getAveragePower
      */
-    double getAveragePower(size_t const idx=0) const override
+    double getAveragePower(size_t const idx) const override
     {return scanDev.averagePower_w;}
     /**
      * @see Scanner::setAveragePower
 	 */
     void setAveragePower(
-        double const averagePower, size_t const idx=0
+        double const averagePower, size_t const idx
     ) override
     {scanDev.averagePower_w = averagePower;}
     /**
      * @see Scanner::getBeamQuality
      */
-    double getBeamQuality(size_t const idx=0) const override
+    double getBeamQuality(size_t const idx) const override
     {return scanDev.beamQuality;}
     /**
      * @see Scanner::setBeamQuality
 	 */
-    void setBeamQuality(double const beamQuality, size_t const idx=0) override
+    void setBeamQuality(double const beamQuality, size_t const idx) override
     {scanDev.beamQuality = beamQuality;}
     /**
      * @see Scanner::getEfficiency
      */
-    double getEfficiency(size_t const idx = 0) const override
+    double getEfficiency(size_t const idx) const override
     {return scanDev.efficiency;}
     /**
      * @see Scanner::setEfficiency
      */
-    void setEfficiency(double const efficiency, size_t const idx=0) override
+    void setEfficiency(double const efficiency, size_t const idx) override
     {scanDev.efficiency = efficiency;}
     /**
      * @see Scanner::getReceiverDiameter
      */
-    double getReceiverDiameter(size_t const idx = 0) const override
+    double getReceiverDiameter(size_t const idx) const override
     {return scanDev.receiverDiameter_m;}
     /**
      * @see Scanner::setReceiverDiameter
      */
     void setReceiverDiameter(
-        double const receiverDiameter, size_t const idx = 0
+        double const receiverDiameter, size_t const idx
     ) override
     {scanDev.receiverDiameter_m = receiverDiameter;}
     /**
      * @see Scanner::getVisibility
      */
-    double getVisibility(size_t const idx=0) const override
+    double getVisibility(size_t const idx) const override
     {return scanDev.visibility_km;}
     /**
      * @see Scanner::setVisibility
      */
-    void setVisibility(double const visibility, size_t const idx=0) override
+    void setVisibility(double const visibility, size_t const idx) override
     {scanDev.visibility_km = visibility;}
     /**
      * @see Scanner::getWavelength
      */
-    double getWavelength(size_t const idx=0) const override
+    double getWavelength(size_t const idx) const override
     {return scanDev.wavelength_m;}
     /**
      * @see Scanner::setWavelength
      */
-    void setWavelength(double const wavelength, size_t const idx=0) override
+    void setWavelength(double const wavelength, size_t const idx) override
     {scanDev.wavelength_m = wavelength;}
     /**
      * @see Scanner::getAtmosphericExtinction
      */
-    double getAtmosphericExtinction(size_t const idx=0) const override
+    double getAtmosphericExtinction(size_t const idx) const override
     {return scanDev.atmosphericExtinction;}
     /**
      * @see Scanner::setAtmosphericExtinction
      */
     void setAtmosphericExtinction(
         double const atmosphericExtinction,
-        size_t const idx = 0
+        size_t const idx
     ) override
     {scanDev.atmosphericExtinction = atmosphericExtinction;}
     /**
      * @see Scanner::getBeamWaistRadius
      */
-    double getBeamWaistRadius(size_t const idx=0) const override
+    double getBeamWaistRadius(size_t const idx) const override
     {return scanDev.beamWaistRadius;}
     /**
      * @see Scanner::setBeamWaistRadius
      */
     void setBeamWaistRadius(
-        double const beamWaistRadius, size_t const idx=0
+        double const beamWaistRadius, size_t const idx
     ) override
     {scanDev.beamWaistRadius = beamWaistRadius;}
     /**
      * @see Scanner::getHeadRelativeEmitterPosition
      */
     glm::dvec3 getHeadRelativeEmitterPosition(
-        size_t const idx=0
+        size_t const idx
     ) const override
     {return scanDev.headRelativeEmitterPosition;}
     /**
      * @see Scanner::setHeadRelativeEmitterPosition
      */
     void setHeadRelativeEmitterPosition(
-        glm::dvec3 const &pos, size_t const idx=0
+        glm::dvec3 const &pos, size_t const idx
     ) override
     {scanDev.headRelativeEmitterPosition = pos;}
     /**
      * @see Scanner::getHeadRelativeEmitterAttitude
      */
-    Rotation getHeadRelativeEmitterAttitude(size_t const idx=0) const override
+    Rotation getHeadRelativeEmitterAttitude(size_t const idx) const override
     {return scanDev.headRelativeEmitterAttitude;}
     /**
      * @see Scanner::setHeadRelativeEmitterAttitude
      */
     void setHeadRelativeEmitterAttitude(
-        Rotation const &attitude, size_t const idx=0
+        Rotation const &attitude, size_t const idx
     ) override
     {scanDev.headRelativeEmitterAttitude = attitude;}
     /**
      * @see Scanner::getBt2
      */
-    double getBt2(size_t const idx=0) const override
+    double getBt2(size_t const idx) const override
     {return scanDev.cached_Bt2;}
     /**
      * @see Scanner::setBt2
      */
-    void setBt2(double const bt2, size_t const idx=0) override
+    void setBt2(double const bt2, size_t const idx) override
     {scanDev.cached_Bt2 = bt2;}
     /**
      * @see Scanner::getDr2
      */
-    double getDr2(size_t const idx=0) const override
+    double getDr2(size_t const idx) const override
     {return scanDev.cached_Dr2;}
     /**
      * @see Scanner::setDr2
      */
-    void setDr2(double const dr2, size_t const idx=0) override
+    void setDr2(double const dr2, size_t const idx) override
     {scanDev.cached_Dr2 = dr2;}
 
 #ifdef PYTHON_BINDING
@@ -274,13 +274,13 @@ public:
      * @see Scanner::getRelativeAttitudeByReference
      */
     Rotation & getRelativeAttitudeByReference(
-        size_t const idx=0
+        size_t const idx
     ) override
     {return scanDev.headRelativeEmitterAttitude;}
     /**
      * @see Scanner::getRelativePosition
      */
-    PythonDVec3 * getRelativePosition(size_t const idx=0) override
+    PythonDVec3 * getRelativePosition(size_t const idx) override
     {return new PythonDVec3(&(scanDev.headRelativeEmitterPosition));}
 #endif
 };

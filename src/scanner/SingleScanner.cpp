@@ -44,7 +44,7 @@ SingleScanner::SingleScanner(
         efficiency,
         receiverDiameter,
         atmosphericVisibility,
-        wavelength
+        wavelength  / 1000000000.0
     )
 {
     // Report scanner state through logging system
@@ -79,7 +79,7 @@ void SingleScanner::applySettings(std::shared_ptr<ScannerSettings> settings){
     // Configure scanner and scanning device
     setPulseFreq_Hz(settings->pulseFreq_Hz);
     setActive(settings->active);
-    setBeamDivergence(settings->beamDivAngle);
+    setBeamDivergence(settings->beamDivAngle, 0);
     trajectoryTimeInterval_ns = settings->trajectoryTimeInterval*1000000000.0;
     scanDev.configureBeam();
 
@@ -90,7 +90,7 @@ void SingleScanner::applySettings(std::shared_ptr<ScannerSettings> settings){
 }
 
 void SingleScanner::prepareDiscretization(){
-    numTimeBins = getPulseLength_ns() / FWF_settings.binSize_ns;
+    numTimeBins = getPulseLength_ns(0) / FWF_settings.binSize_ns;
     time_wave = vector<double>(numTimeBins);
     peakIntensityIndex = calcTimePropagation(time_wave, numTimeBins);
 }
@@ -100,7 +100,7 @@ int SingleScanner::calcTimePropagation(
 ) const {
     double const step = FWF_settings.binSize_ns;
     //double const tau = (getPulseLength_ns() * 0.5) / 3.5;  // Too many ops.
-    double const tau = getPulseLength_ns() / 7.0;  // Just one op.
+    double const tau = getPulseLength_ns(0) / 7.0;  // Just one op.
     double t = 0;
     double t_tau = 0;
     double pt = 0;
@@ -122,13 +122,13 @@ int SingleScanner::calcTimePropagation(
 }
 
 double SingleScanner::calcFootprintArea(double const distance) const {
-    return (M_PI * distance * distance * getBt2()) / 4;
+    return (M_PI * distance * distance * getBt2(0)) / 4;
 }
 
 Rotation SingleScanner::calcAbsoluteBeamAttitude() const{
     Rotation mountRelativeEmitterAttitude =
         scannerHead->getMountRelativeAttitude()
-            .applyTo(getHeadRelativeEmitterAttitude());
+            .applyTo(getHeadRelativeEmitterAttitude(0));
     return platform->getAbsoluteMountAttitude()
         .applyTo(mountRelativeEmitterAttitude)
         .applyTo(beamDeflector->getEmitterRelativeAttitude());

@@ -15,6 +15,9 @@
 #include <Material.h>
 #include <gdal_priv.h>
 
+
+// ***  PYHELIOS PYTHON MODULE  *** //
+// ******************************** //
 BOOST_PYTHON_MODULE(_pyhelios){
     // Namespace must be used locally to prevent conflicts
     using namespace boost::python;
@@ -490,59 +493,99 @@ BOOST_PYTHON_MODULE(_pyhelios){
             &Scanner::setLastPulseWasHit
         )
         .def("toString", &Scanner::toString)
-        .add_property("numRays", &Scanner::getNumRays, &Scanner::setNumRays)
         .add_property(
+            "numRays",
+            static_cast<int(Scanner::*)()const>(&Scanner::getNumRays),
+            static_cast<void(Scanner::*)(int const)>(&Scanner::setNumRays)
+        )
+        .add_property( // Only access first device. Use get/set for n device
             "pulseLength_ns",
-            &Scanner::getPulseLength_ns,
-            &Scanner::setPulseLength_ns
+            static_cast<double(Scanner::*)()const>(
+                &Scanner::getPulseLength_ns
+            ),
+            static_cast<void(Scanner::*)(double const)>(
+                &Scanner::setPulseLength_ns
+            )
         )
-        .add_property(
+        .add_property( // Only access first device. Use get/set for n device
             "beamDivergence",
-            &Scanner::getBeamDivergence,
-            &Scanner::setBeamDivergence
+            static_cast<double(Scanner::*)()const>(
+                &Scanner::getBeamDivergence
+            ),
+            static_cast<void(Scanner::*)(double const)>(
+                &Scanner::setBeamDivergence
+            )
         )
-        .add_property(
+        .add_property( // Only access first device. Use get/set for n device
             "averagePower",
-            &Scanner::getAveragePower,
-            &Scanner::setAveragePower
+            static_cast<double(Scanner::*)()const>(&Scanner::getAveragePower),
+            static_cast<void(Scanner::*)(double const)>(
+                &Scanner::setAveragePower
+            )
         )
-        .add_property(
+        .add_property( // Only access first device. Use get/set for n device
             "beamQuality",
-            &Scanner::getBeamQuality,
-            &Scanner::setBeamQuality
+            static_cast<double(Scanner::*)()const>(&Scanner::getBeamQuality),
+            static_cast<void(Scanner::*)(double const)>(
+                &Scanner::setBeamQuality
+            )
         )
-        .add_property(
+        .add_property( // Only access first device. Use get/set for n device
             "efficiency",
-            &Scanner::getEfficiency,
-            &Scanner::setEfficiency
+            static_cast<double(Scanner::*)()const>(&Scanner::getEfficiency),
+            static_cast<void(Scanner::*)(double const)>(&Scanner::setEfficiency)
         )
-        .add_property(
+        .add_property( // Only access first device. Use get/set for n device
             "receiverDiameter",
-            &Scanner::getReceiverDiameter,
-            &Scanner::setReceiverDiameter
+            static_cast<double(Scanner::*)()const>(
+                &Scanner::getReceiverDiameter
+            ),
+            static_cast<void(Scanner::*)(double const)>(
+                &Scanner::setReceiverDiameter
+            )
         )
-        .add_property(
+        .add_property( // Only access first device. Use get/set for n device
             "visibility",
-            &Scanner::getVisibility,
-            &Scanner::setVisibility
+            static_cast<double(Scanner::*)()const>(&Scanner::getVisibility),
+            static_cast<void(Scanner::*)(double const)>(
+                &Scanner::setVisibility
+            )
         )
-        .add_property(
+        .add_property( // Only access first device. Use get/set for n device
             "wavelength",
-            &Scanner::getWavelength,
-            &Scanner::setWavelength
+            static_cast<double(Scanner::*)()const>(&Scanner::getWavelength),
+            static_cast<void(Scanner::*)(double const)>(
+                &Scanner::setWavelength
+            )
         )
-        .add_property(
+        .add_property( // Only access first device. Use get/set for n device
             "atmosphericExtinction",
-            &Scanner::getAtmosphericExtinction,
-            &Scanner::setAtmosphericExtinction
+            static_cast<double(Scanner::*)()const>(
+                &Scanner::getAtmosphericExtinction
+            ),
+            static_cast<void(Scanner::*)(double const)>(
+                &Scanner::setAtmosphericExtinction
+            )
         )
-        .add_property(
+        .add_property( // Only access first device. Use get/set for n device
             "beamWaistRadius",
-            &Scanner::getBeamWaistRadius,
-            &Scanner::setBeamWaistRadius
+            static_cast<double(Scanner::*)()const>(
+                &Scanner::getBeamWaistRadius
+            ),
+            static_cast<void(Scanner::*)(double const)>(
+                &Scanner::setBeamWaistRadius
+            )
         )
-        .add_property("bt2", &Scanner::getBt2, &Scanner::setBt2)
-        .add_property("dr2", &Scanner::getDr2, &Scanner::setDr2)
+        .add_property( // Only access first device. Use get/set for n device
+            "bt2",
+            static_cast<double(Scanner::*)()const>(&Scanner::getBt2),
+            static_cast<void(Scanner::*)(double const)>(&Scanner::setBt2)
+        )
+        .add_property( // Only access first device. Use get/set for n device
+            "dr2",
+            static_cast<double(Scanner::*)()const>(&Scanner::getDr2),
+            static_cast<void(Scanner::*)(double const)>(&Scanner::setDr2)
+        )
         .add_property("active", &Scanner::isActive, &Scanner::setActive)
         .add_property(
             "writeWaveform",
@@ -631,10 +674,17 @@ BOOST_PYTHON_MODULE(_pyhelios){
             &Scanner::trajectoryTimeInterval_ns,
             &Scanner::trajectoryTimeInterval_ns
         )
-        .add_property(
+        .add_property(  // Only access first device. Use get/set for n device.
             "deviceId",
-            &Scanner::getDeviceId,
-            &Scanner::setDeviceId
+            static_cast<std::string(Scanner::*)()const>(&Scanner::getDeviceId),
+            static_cast<void(Scanner::*)(std::string const)>(
+                &Scanner::setDeviceId
+            )
+        )
+        .add_property(
+            "id",
+   &Scanner::getScannerId,
+            &Scanner::setScannerId
         )
     ;
 

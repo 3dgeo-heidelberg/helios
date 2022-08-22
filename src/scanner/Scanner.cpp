@@ -286,10 +286,10 @@ string Scanner::toString() {
     size_t const numDevices = getNumDevices();
     for(size_t i = 0 ; i < numDevices ; ++i){
         ss  << "Device[" << i << "]: " << getDeviceId(i) << "\n"
-            << "\tAverage Power: " << getAveragePower(i) << "W\n"
-            << "\tBeam Divergence: " << getBeamDivergence(i)*1e3 << "mrad\n"
-            << "\tWavelength: " << (int)(getWavelength(i)*1e9) << "nm\n"
-            << "\tVisibility: " << getVisibility(i) << "km\n";
+            << "\tAverage Power: " << getAveragePower(i) << " W\n"
+            << "\tBeam Divergence: " << getBeamDivergence(i)*1e3 << " mrad\n"
+            << "\tWavelength: " << (int)(getWavelength(i)*1e9) << " nm\n"
+            << "\tVisibility: " << getVisibility(i) << " km\n";
     }
     return ss.str();
 }
