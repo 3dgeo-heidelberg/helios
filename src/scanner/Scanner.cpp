@@ -8,9 +8,6 @@
 #include <cmath>
 
 #include <logging.hpp>
-#ifdef PYTHON_BINDING
-#include "PyDetectorWrapper.h"
-#endif
 
 #include <scanner/BuddingScanningPulseProcess.h>
 #include <scanner/WarehouseScanningPulseProcess.h>
@@ -392,12 +389,6 @@ void Scanner::setPulseFreq_Hz(int pulseFreq_Hz) {
 	ss << "Pulse frequency set to " << this->cfg_setting_pulseFreq_Hz;
 	logging::INFO(ss.str());
 }
-
-#ifdef PYTHON_BINDING
-PyDetectorWrapper * Scanner::getPyDetectorWrapper(){
-    return new PyDetectorWrapper(detector);
-}
-#endif
 
 void Scanner::setLastPulseWasHit(bool value) {
 	if (value == state_lastPulseWasHit) return;

@@ -237,6 +237,13 @@ public:
     ) override
     {scanDev.headRelativeEmitterPosition = pos;}
     /**
+     * @see Scanner::getHeadRelativeEmitterPositionByRef
+     */
+    glm::dvec3 & getHeadRelativeEmitterPositionByRef(
+        size_t const idx=0
+    ) override
+    {return scanDev.headRelativeEmitterPosition;}
+    /**
      * @see Scanner::getHeadRelativeEmitterAttitude
      */
     Rotation getHeadRelativeEmitterAttitude(size_t const idx) const override
@@ -248,6 +255,13 @@ public:
         Rotation const &attitude, size_t const idx
     ) override
     {scanDev.headRelativeEmitterAttitude = attitude;}
+    /**
+     * @see Scanner::getHeadRelativeEmitterAttitudeByRef
+     */
+    Rotation & getHeadRelativeEmitterAttitudeByRef(
+        size_t const idx=0
+    ) override
+    {return scanDev.headRelativeEmitterAttitude;}
     /**
      * @see Scanner::getBt2
      */
@@ -269,18 +283,4 @@ public:
     void setDr2(double const dr2, size_t const idx) override
     {scanDev.cached_Dr2 = dr2;}
 
-#ifdef PYTHON_BINDING
-    /**
-     * @see Scanner::getRelativeAttitudeByReference
-     */
-    Rotation & getRelativeAttitudeByReference(
-        size_t const idx
-    ) override
-    {return scanDev.headRelativeEmitterAttitude;}
-    /**
-     * @see Scanner::getRelativePosition
-     */
-    PythonDVec3 * getRelativePosition(size_t const idx) override
-    {return new PythonDVec3(&(scanDev.headRelativeEmitterPosition));}
-#endif
 };

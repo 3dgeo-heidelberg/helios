@@ -20,21 +20,6 @@ class AbstractDetector;
 namespace helios { namespace filems { class FMSFacade; }}
 using helios::filems::FMSFacade;
 
-#ifdef PYTHON_BINDING
-#include <PyBeamDeflectorWrapper.h>
-namespace pyhelios{ class PyDetectorWrapper;};
-#include <PyIntegerList.h>
-#include <PyNoiseSourceWrapper.h>
-#include <PyRandomnessGeneratorWrapper.h>
-#include <PyDoubleVector.h>
-using pyhelios::PyBeamDeflectorWrapper;
-using pyhelios::PyDetectorWrapper;
-using pyhelios::PyIntegerList;
-using pyhelios::PyNoiseSourceWrapper;
-using pyhelios::PyRandomnessGeneratorWrapper;
-using pyhelios::PyDoubleVector;
-#endif
-
 
 
 /**
@@ -584,7 +569,7 @@ public:
 	 * @see Scanner::setBeamDivergence(double const, size_t const)
 	 */
 	inline void setBeamDivergence(double const beamDivergence)
-	{return setBeamDivergence(beamDivergence, 0);}
+	{setBeamDivergence(beamDivergence, 0);}
 
     /**
      * @brief Obtain average power
@@ -624,6 +609,10 @@ public:
      * @see ScanningDevice::beamQuality
      */
 	virtual double getBeamQuality(size_t const idx) const = 0;
+	/**
+	 * @brief No index argument version of the Scanner::getBeamQuality method
+	 * @see Scanner::getBeamQuality(size_t const)
+	 */
 	inline double getBeamQuality() const {return getBeamQuality(0);}
 	/**
 	 * @brief Set beam quality
@@ -721,7 +710,7 @@ public:
 	 *  setted (by default 0, it is the first one)
      * @see ScanningDevice::visibility_km
 	 */
-	virtual void setVisibility(double const visibility, size_t const idx=0)=0;
+	virtual void setVisibility(double const visibility, size_t const idx)=0;
 	/**
 	 * @brief No index argument version of the Scanner::setVisibility method
 	 * @see Scanner::setVisibility(double const, size_t const)
@@ -842,6 +831,17 @@ public:
 	virtual void setHeadRelativeEmitterPosition(
 	    glm::dvec3 const &pos, size_t const idx=0
     ) = 0;
+    /**
+     * @brief Obtain the head's relative emitter position by reference (can be
+     *  written)
+     * @param idx The index of the scanning device which head's relative
+     *  emitter position must be obtained (by default 0, it is the first one)
+     * @return The head's relative emitter position by reference
+     * @see ScanningDevice::headRelativeEmitterPosition
+     */
+    virtual glm::dvec3 & getHeadRelativeEmitterPositionByRef(
+        size_t const idx=0
+    ) = 0;
 	/**
 	 * @brief Obtain the head's relative emitter attitude
 	 * @param idx The index of the scanning device which head's relative
@@ -858,6 +858,17 @@ public:
 	 */
     virtual void setHeadRelativeEmitterAttitude(
         Rotation const &attitude, size_t const idx=0
+    ) = 0;
+    /**
+     * @brief Obtain the head's relative emitter attitude by reference (can be
+     *  written)
+     * @param idx The index of the scanning device which head's relative
+     *  emitter attitude must be obtained (by default 0, it is the first one)
+     * @return The head's relative emitter attitude by reference
+     * @see ScanningDevice::headRelativeEmitterAttitude
+     */
+    virtual Rotation & getHeadRelativeEmitterAttitudeByRef(
+        size_t const idx=0
     ) = 0;
 
     /**
@@ -1047,86 +1058,4 @@ public:
 	 * @brief Obtain the number of scanning devices composing the scanner
 	 */
 	virtual size_t getNumDevices() const = 0;
-
-#ifdef PYTHON_BINDING
-    /**
-     * @brief Python wrapper for scanner head access
-     * @return Reference to scanner head
-     * @see Scanner::scannerHead
-     */
-    ScannerHead & getScannerHead(){return *scannerHead;}
-    /**
-     * @brief Python wrapper for beam deflector access
-     * @return Wrapped beam deflector
-     * @see Scanner::beamDeflector
-     */
-    PyBeamDeflectorWrapper * getPyBeamDeflector()
-        {return new PyBeamDeflectorWrapper(beamDeflector);}
-    /**
-     * @brief Python wrapper for detector access
-     * @return Wrapped detector
-     * @see Scanner::detector
-     */
-    PyDetectorWrapper * getPyDetectorWrapper();
-    /**
-     * @brief Python wrapper for supported pulse frequencies list
-     * @return Wrapped list of supported pulse frequencies
-     * @see Scanner::cfg_device_supportedPulseFreqs_Hz
-     */
-    PyIntegerList * getSupportedPulseFrequencies()
-        {return new PyIntegerList(cfg_device_supportedPulseFreqs_Hz);}
-    /**
-     * @brief Python wrapper for head relative emitter attitude access
-     * @param idx The index of the scanning device which relative attitude
-     *  must be obtained by reference (by default 0, it is the first one)
-     * @return Reference to head relative emitter attitude
-     * @see Scanner::cfg_device_headRelativeEmitterAttitude
-     */
-    virtual Rotation & getRelativeAttitudeByReference(
-        size_t const idx=0
-    ) = 0;
-    /**
-     * @brief Python wrapper for head relative emitter position
-     * @param idx The index of the scanning device which relative position
-     *  must be obtained (by default 0, it is the first one)
-     * @return Wrapped head relative emitter position
-     * @see Scanner::cfg_device_headRelativeEmitterPosition
-     */
-    virtual PythonDVec3 * getRelativePosition(size_t const idx=0) = 0;
-    /**
-     * @brief Python wrapper for intersection handling noise source
-     * @return Wrapped intersection handling noise source
-     * @see Scanner::intersectionHandlingNoiseSource
-     */
-	PyNoiseSourceWrapper * getIntersectionHandlingNoiseSource(){
-        if(intersectionHandlingNoiseSource == nullptr) return nullptr;
-        return new PyNoiseSourceWrapper(*intersectionHandlingNoiseSource);
-    }
-    /**
-     * @brief Python wrapper for first randomness generator
-     * @return Wrapped first randomness generator
-     * @see Scanner::randGen1
-     */
-    PyRandomnessGeneratorWrapper * getRandGen1(){
-        if(randGen1 == nullptr) return nullptr;
-        return new PyRandomnessGeneratorWrapper(*randGen1);
-    }
-    /**
-     * @brief Python wrapper for second randomness generator
-     * @return Wrapped second randomness generator
-     * @see Scanner::randGen2
-     */
-    PyRandomnessGeneratorWrapper * getRandGen2(){
-        if(randGen2 == nullptr) return nullptr;
-        return new PyRandomnessGeneratorWrapper(*randGen2);
-    }
-    /**
-     * @brief Python wrapper for time wave vector
-     * @return Wrapped time wave vector
-     * @see Scanner::time_wave
-     */
-    PyDoubleVector * getTimeWave(){
-        return new PyDoubleVector(time_wave);
-    }
-#endif
 };
