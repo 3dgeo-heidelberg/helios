@@ -8,7 +8,10 @@ void AbstractDetector::_clone(std::shared_ptr<AbstractDetector> ad){
     ad->scanner = scanner; // Reference pointer => copy pointer, not object
     ad->cfg_device_accuracy_m = cfg_device_accuracy_m;
     ad->cfg_device_rangeMin_m = cfg_device_rangeMin_m;
+    ad->cfg_device_rangeMax_m = cfg_device_rangeMax_m;
     ad->fms = fms;
+    ad->pcloudYielder = pcloudYielder;
+    ad->fwfYielder = fwfYielder;
 }
 
 

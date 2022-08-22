@@ -44,7 +44,7 @@ void VHScannerAdapter::nextStep(){
 
     // Calculate absolute beam originWaypoint:
     origin =    scanner.platform->getAbsoluteMountPosition() +
-                    scanner.cfg_device_headRelativeEmitterPosition;
+                scanner.getHeadRelativeEmitterPosition();
 
     // Calculate absolute beam attitude:
     dir = scanner.calcAbsoluteBeamAttitude().applyTo(Directions::forward);

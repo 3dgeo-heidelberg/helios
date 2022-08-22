@@ -5,6 +5,7 @@
 #include <OscillatingMirrorBeamDeflector.h>
 #include <HelicopterPlatform.h>
 #include <FullWaveformPulseDetector.h>
+#include <scanner/SingleScanner.h>
 
 namespace HeliosTests{
 /**
@@ -40,7 +41,7 @@ bool SurveyCopyTest::run(){
     pulseFreqs.push_back(100);
     pulseFreqs.push_back(30);
     pulseFreqs.push_back(70);
-    survey->scanner = std::make_shared<Scanner>(
+    survey->scanner = std::make_shared<SingleScanner>(
         0.1,
         glm::dvec3(2.0, 3.0, 0.0),
         Rotation(0.0, 0.0, 0.0, 0.0, true),

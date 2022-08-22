@@ -1,5 +1,6 @@
 #include "logging.hpp"
 #include <HeliosException.h>
+#include <scanner/SingleScanner.h>
 
 #define _USE_MATH_DEFINES
 #include <cmath>
@@ -835,7 +836,7 @@ XmlAssetsLoader::createScannerFromXml(tinyxml2::XMLElement *scannerNode) {
       scannerNode, "wavelength_nm", "int", 1064));
   // ########### END Read all the rest #############
 
-  std::shared_ptr<Scanner> scanner = std::make_shared<Scanner>(
+  std::shared_ptr<Scanner> scanner = std::make_shared<SingleScanner>(
       beamDiv_rad, emitterPosition, emitterAttitude, pulseFreqs,
       pulseLength_ns, id, avgPower, beamQuality, efficiency, receiverDiameter,
       visibility, wavelength, false

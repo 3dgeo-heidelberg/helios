@@ -8,9 +8,6 @@
 #include <cmath>
 
 #include <logging.hpp>
-#ifdef PYTHON_BINDING
-#include "PyDetectorWrapper.h"
-#endif
 
 #include <scanner/BuddingScanningPulseProcess.h>
 #include <scanner/WarehouseScanningPulseProcess.h>
@@ -23,56 +20,26 @@ using namespace std;
 // ***  CONSTRUCTION / DESTRUCTION  *** //
 // ************************************ //
 Scanner::Scanner(
-    double beamDiv_rad,
-    glm::dvec3 beamOrigin,
-    Rotation beamOrientation,
-    std::list<int> pulseFreqs,
-    double pulseLength_ns,
-    std::string id,
-    double averagePower,
-    double beamQuality,
-    double efficiency,
-    double receiverDiameter,
-    double atmosphericVisibility,
-    int wavelength,
-    bool writeWaveform,
-    bool calcEchowidth,
-    bool fullWaveNoise,
-    bool platformNoiseDisabled
-) {
-    this->writeWaveform = writeWaveform;
-    this->calcEchowidth = calcEchowidth;
-    this->fullWaveNoise = fullWaveNoise;
-    this->platformNoiseDisabled = platformNoiseDisabled;
-
-	// Configure emitter:
-	cfg_device_headRelativeEmitterPosition = beamOrigin;		
-	cfg_device_headRelativeEmitterAttitude = beamOrientation;
-	cfg_device_supportedPulseFreqs_Hz = pulseFreqs;
-	cfg_setting_pulseFreq_Hz = pulseFreqs.front();
-	cfg_device_beamDivergence_rad = beamDiv_rad;
-	cfg_device_pulseLength_ns = pulseLength_ns;
-	cfg_device_id = id;
-	cfg_device_averagePower_w = averagePower;
-	cfg_device_beamQuality = beamQuality;
-	cfg_device_efficiency = efficiency;
-	cfg_device_receiverDiameter_m = receiverDiameter;
-	cfg_device_visibility_km = atmosphericVisibility;
-	cfg_device_wavelength_m = wavelength / 1000000000.0;
-	configureBeam();
-
-	atmosphericExtinction = calcAtmosphericAttenuation();
-
+    std::string const id,
+    std::list<int> const &pulseFreqs,
+    bool const writeWaveform,
+    bool const calcEchowidth,
+    bool const fullWaveNoise,
+    bool const platformNoiseDisabled
+) :
+    id(id),
+    writeWaveform(writeWaveform),
+    calcEchowidth(calcEchowidth),
+    fullWaveNoise(fullWaveNoise),
+    platformNoiseDisabled(platformNoiseDisabled),
+    cfg_setting_pulseFreq_Hz(pulseFreqs.front()),
+    cfg_device_supportedPulseFreqs_Hz(pulseFreqs)
+{
     /*
      * Randomness generators must be initialized outside,
      * because DEFAULT_RG might not be instantiated at construction time
      */
     //initializeSequentialGenerators();
-
-    // Precompute variables
-	cached_Dr2 = cfg_device_receiverDiameter_m * cfg_device_receiverDiameter_m;
-
-	logging::INFO(toString());
 }
 
 Scanner::Scanner(Scanner &s){
@@ -81,27 +48,14 @@ Scanner::Scanner(Scanner &s){
     this->fullWaveNoise = s.fullWaveNoise;
     this->platformNoiseDisabled = s.platformNoiseDisabled;
     this->numRays = s.numRays;
-    this->cfg_device_beamDivergence_rad = s.cfg_device_beamDivergence_rad;
-    this->cfg_device_pulseLength_ns = s.cfg_device_pulseLength_ns;
     this->cfg_setting_pulseFreq_Hz = s.cfg_setting_pulseFreq_Hz;
-    this->cfg_device_id = s.cfg_device_id;
-    this->cfg_device_averagePower_w = s.cfg_device_averagePower_w;
-    this->cfg_device_beamQuality = s.cfg_device_beamQuality;
-    this->cfg_device_efficiency = s.cfg_device_efficiency;
-    this->cfg_device_receiverDiameter_m = s.cfg_device_receiverDiameter_m;
-    this->cfg_device_visibility_km = s.cfg_device_visibility_km;
-    this->cfg_device_wavelength_m = s.cfg_device_wavelength_m;
-    this->atmosphericExtinction = s.atmosphericExtinction;
-    this->beamWaistRadius = s.beamWaistRadius;
     this->state_currentPulseNumber = s.state_currentPulseNumber;
     this->state_lastPulseWasHit = s.state_lastPulseWasHit;
     this->state_isActive = s.state_isActive;
-    this->cached_Dr2 = s.cached_Dr2;
-    this->cached_Bt2 = s.cached_Bt2;
     this->numTimeBins = s.numTimeBins;
     this->peakIntensityIndex = s.peakIntensityIndex;
 
-    s.fms = this->fms;
+    this->fms = s.fms;
     if(s.scannerHead == nullptr) this->scannerHead = nullptr;
     else this->scannerHead = std::make_shared<ScannerHead>(*s.scannerHead);
     if(s.beamDeflector == nullptr) this->beamDeflector = nullptr;
@@ -150,12 +104,6 @@ Scanner::Scanner(Scanner &s){
     this->FWF_settings = FWFSettings(s.FWF_settings);
     this->time_wave = std::vector<double>(s.time_wave);
 
-    this->cfg_device_headRelativeEmitterPosition = glm::dvec3(
-        s.cfg_device_headRelativeEmitterPosition
-    );
-    this->cfg_device_headRelativeEmitterAttitude = Rotation(
-        s.cfg_device_headRelativeEmitterAttitude
-    );
     this->cfg_device_supportedPulseFreqs_Hz = std::list<int>(
         s.cfg_device_supportedPulseFreqs_Hz
     );
@@ -167,31 +115,142 @@ Scanner::Scanner(Scanner &s){
     //initializeSequentialGenerators();
 }
 
+
+// ***   C L O N E   *** //
+// ********************* //
+void Scanner::_clone(Scanner &sc) const{
+    // Clone scanner attributes
+    sc.id = id;
+    sc.writeWaveform = writeWaveform;
+    sc.calcEchowidth = calcEchowidth;
+    sc.fullWaveNoise = fullWaveNoise;
+    sc.platformNoiseDisabled = platformNoiseDisabled;
+    sc.numRays = numRays;
+    sc.fixedIncidenceAngle = fixedIncidenceAngle;
+    sc.cfg_setting_pulseFreq_Hz = cfg_setting_pulseFreq_Hz;
+    sc.state_currentPulseNumber = state_currentPulseNumber;
+    sc.state_lastPulseWasHit = state_lastPulseWasHit;
+    sc.state_isActive = state_isActive;
+    sc.spp = nullptr;  // Cannot be cloned (unique pointer)
+    sc.fms = fms;
+    if(scannerHead == nullptr){
+        sc.scannerHead = nullptr;
+    }
+    else{
+        sc.scannerHead = std::make_shared<ScannerHead>(*scannerHead);
+    }
+    if(beamDeflector == nullptr){
+        sc.beamDeflector = nullptr;
+    }
+    else{
+        sc.beamDeflector = beamDeflector->clone();
+    }
+    if(platform == nullptr){
+        sc.platform = nullptr;
+    }
+    else{
+        sc.platform = platform->clone();
+    }
+    if(detector == nullptr){
+        sc.detector = nullptr;
+    }
+    else{
+        sc.detector = detector->clone();
+    }
+    if(allOutputPaths == nullptr){
+        sc.allOutputPaths = nullptr;
+    }
+    else{
+        sc.allOutputPaths = std::make_shared<std::vector<std::string>>(
+            *allOutputPaths
+        );
+    }
+    if(allMeasurements == nullptr){
+        sc.allMeasurements = nullptr;
+    }
+    else{
+        sc.allMeasurements = std::make_shared<std::vector<Measurement>>(
+            *allMeasurements
+        );
+    }
+    if(allTrajectories == nullptr){
+        sc.allTrajectories = nullptr;
+    }
+    else{
+        sc.allTrajectories = std::make_shared<std::vector<Trajectory>>(
+            *allTrajectories
+        );
+    }
+    if(allMeasurementsMutex == nullptr){
+        sc.allMeasurementsMutex = nullptr;
+    }
+    else{
+        sc.allMeasurementsMutex = std::make_shared<std::mutex>();
+    }
+    if(cycleMeasurements == nullptr){
+        sc.cycleMeasurements = nullptr;
+    }
+    else{
+        sc.cycleMeasurements = std::make_shared<std::vector<Measurement>>(
+            *cycleMeasurements
+        );
+    }
+    if(cycleTrajectories == nullptr){
+        sc.cycleTrajectories = nullptr;
+    }
+    else{
+        sc.cycleTrajectories = std::make_shared<std::vector<Trajectory>>(
+            *cycleTrajectories
+        );
+    }
+    if(cycleMeasurementsMutex == nullptr){
+        sc.cycleMeasurementsMutex = nullptr;
+    }
+    else{
+        sc.cycleMeasurementsMutex = std::make_shared<std::mutex>();
+    }
+    sc.trajectoryTimeInterval_ns = trajectoryTimeInterval_ns;
+    sc.lastTrajectoryTime = lastTrajectoryTime;
+    sc.FWF_settings = FWF_settings;
+    sc.numTimeBins = numTimeBins;
+    sc.peakIntensityIndex = peakIntensityIndex;
+    sc.time_wave = time_wave;
+    if(randGen1 == nullptr){
+        sc.randGen1 = nullptr;
+    }
+    else{
+        sc.randGen1 = std::make_shared<RandomnessGenerator<double>>(*randGen1);
+    }
+    if(randGen2 == nullptr){
+        sc.randGen2 = nullptr;
+    }
+    else{
+        sc.randGen2 = std::make_shared<RandomnessGenerator<double>>(*randGen2);
+    }
+    if(intersectionHandlingNoiseSource == nullptr){
+        sc.intersectionHandlingNoiseSource = nullptr;
+    }
+    else{
+        sc.intersectionHandlingNoiseSource = std::make_shared<
+            UniformNoiseSource<double>
+        >(*intersectionHandlingNoiseSource);
+    }
+    sc.cfg_device_supportedPulseFreqs_Hz = cfg_device_supportedPulseFreqs_Hz;
+    sc.maxNOR = maxNOR;
+
+
+    // TODO Rethink : Update all references from cloned objects to cloned scanner
+    // Update references from cloned objects so they point to cloned scanner
+}
+
+
 // ***  M E T H O D S  *** //
 // *********************** //
-void Scanner::configureBeam(){
-    cached_Bt2 = cfg_device_beamDivergence_rad * cfg_device_beamDivergence_rad;
-    beamWaistRadius = (cfg_device_beamQuality * cfg_device_wavelength_m) /
-                      (M_PI * cfg_device_beamDivergence_rad);
-}
-void Scanner::applySettings(shared_ptr<ScannerSettings> settings) {
-	// Configure scanner:
-	this->setPulseFreq_Hz(settings->pulseFreq_Hz);
-	setActive(settings->active);
-	this->cfg_device_beamDivergence_rad = settings->beamDivAngle;
-    trajectoryTimeInterval_ns = settings->trajectoryTimeInterval*1000000000.0;
-    configureBeam();
-
-	detector->applySettings(settings);
-	scannerHead->applySettings(settings);
-	beamDeflector->applySettings(settings);
-}
-
 std::shared_ptr<ScannerSettings> Scanner::retrieveCurrentSettings(){
     shared_ptr<ScannerSettings> settings = make_shared<ScannerSettings>();
     // Settings from Scanner
     std::stringstream ss;
-    ss << cfg_device_id << "_settings";
+    ss << id << "_settings";
     settings->id = ss.str();
     settings->pulseFreq_Hz = getPulseFreq_Hz();
     settings->active = isActive();
@@ -219,20 +278,24 @@ void Scanner::applySettingsFWF(FWFSettings settings) {
 }
 
 string Scanner::toString() {
-    return  "Scanner: " + cfg_device_id + " " +
-            "Power: " + to_string(cfg_device_averagePower_w) + " W " +
-            "Divergence: " + to_string(cfg_device_beamDivergence_rad * 1000) +
-                " mrad " +
-            "Wavelength: " +
-                to_string((int)(cfg_device_wavelength_m * 1000000000)) +
-                " nm " +
-            "Visibility: " + to_string(cfg_device_visibility_km) + " km";
+    std::stringstream ss;
+    ss  << "Scanner: " << getScannerId() << "\n";
+    size_t const numDevices = getNumDevices();
+    for(size_t i = 0 ; i < numDevices ; ++i){
+        ss  << "Device[" << i << "]: " << getDeviceId(i) << "\n"
+            << "\tAverage Power: " << getAveragePower(i) << " W\n"
+            << "\tBeam Divergence: " << getBeamDivergence(i)*1e3 << " mrad\n"
+            << "\tWavelength: " << (int)(getWavelength(i)*1e9) << " nm\n"
+            << "\tVisibility: " << getVisibility(i) << " km\n";
+    }
+    return ss.str();
 }
 
 void Scanner::doSimStep(
     unsigned int const legIndex,
     double currentGpsTime
 ) {
+    // TODO Rethink : Make pure virtual, move implementation to SingleScanner
     // Update head attitude (we do this even when the scanner is inactive):
     scannerHead->doSimStep(cfg_setting_pulseFreq_Hz);
 
@@ -250,7 +313,7 @@ void Scanner::doSimStep(
 
     // Calculate absolute beam originWaypoint:
     glm::dvec3 absoluteBeamOrigin = platform->getAbsoluteMountPosition() +
-                               cfg_device_headRelativeEmitterPosition;
+        getHeadRelativeEmitterPosition();
 
 	// Calculate absolute beam attitude:
 	Rotation absoluteBeamAttitude = calcAbsoluteBeamAttitude();
@@ -290,65 +353,11 @@ void Scanner::calcRaysNumber() {
 	logging::INFO(ss.str());
 }
 
-void Scanner::prepareDiscretization(){
-    numTimeBins = cfg_device_pulseLength_ns / FWF_settings.binSize_ns;
-    time_wave = vector<double>(numTimeBins);
-    peakIntensityIndex = calcTimePropagation(time_wave, numTimeBins);
-}
-
-int Scanner::calcTimePropagation(vector<double> & timeWave, int numBins){
-    double const step = FWF_settings.binSize_ns;
-    double const tau = (cfg_device_pulseLength_ns * 0.5) / 3.5;
-    double t = 0;
-    double t_tau = 0;
-    double pt = 0;
-    double peakValue = 0;
-    int peakIndex = 0;
-
-    for (int i = 0; i < numBins; ++i) {
-        t = i * step;
-        t_tau = t / tau;
-        pt = (t_tau * t_tau) * exp(-t_tau);
-        timeWave[i] = pt;
-        if (pt > peakValue) {
-            peakValue = pt;
-            peakIndex = i;
-        }
-    }
-
-    return peakIndex;
-}
-
-double Scanner::calcFootprintArea(double distance) {
-	double Bt2 = cached_Bt2;
-	double R = distance;
-	return (M_PI * R * R * Bt2) / 4;
-}
-
 double Scanner::calcFootprintRadius(double distance) {
 	double area = calcFootprintArea(distance);
 	return sqrt(area / M_PI);
 }
 
-// Simulate energy loss from aerial particles (Carlsson et al., 2001)
-double Scanner::calcAtmosphericAttenuation() {
-	double q;
-	double lambda = cfg_device_wavelength_m * 1000000000;
-	double Vm = cfg_device_visibility_km;
-
-	if (lambda < 500 && lambda > 2000) {
-		return 0;	// Do no nothing if wavelength is outside this range as the approximation will be bad
-	}
-
-	if (Vm > 50)
-		q = 1.6;
-	else if (Vm > 6 && Vm < 50)
-		q = 1.3;
-	else
-		q = 0.585 * pow(Vm, 0.33);
-
-	return (3.91 / Vm) * pow((lambda / 0.55), -q);
-}
 
 void Scanner::setPulseFreq_Hz(int pulseFreq_Hz) {
 
@@ -380,12 +389,6 @@ void Scanner::setPulseFreq_Hz(int pulseFreq_Hz) {
 	ss << "Pulse frequency set to " << this->cfg_setting_pulseFreq_Hz;
 	logging::INFO(ss.str());
 }
-
-#ifdef PYTHON_BINDING
-PyDetectorWrapper * Scanner::getPyDetectorWrapper(){
-    return new PyDetectorWrapper(detector);
-}
-#endif
 
 void Scanner::setLastPulseWasHit(bool value) {
 	if (value == state_lastPulseWasHit) return;
@@ -430,15 +433,6 @@ void Scanner::handleSimStepNoise(
             ));
         }
     }
-}
-
-Rotation Scanner::calcAbsoluteBeamAttitude(){
-    Rotation mountRelativeEmitterAttitude =
-        scannerHead->getMountRelativeAttitude()
-            .applyTo(cfg_device_headRelativeEmitterAttitude);
-    return platform->getAbsoluteMountAttitude()
-        .applyTo(mountRelativeEmitterAttitude)
-        .applyTo(beamDeflector->getEmitterRelativeAttitude());
 }
 
 void Scanner::handleTrajectoryOutput(double const currentGpsTime){
