@@ -258,7 +258,7 @@ Unzip it inside the `lib` folder and rename it to `boost`.
 
 We also need to download zlib and unzip it inside the `lib/boost` folder.
 
-[Download zlib](https://www.zlib.net/zlib1211.zip)
+[Download zlib](https://www.zlib.net/zlib1212.zip)
 
 Open a Command Prompt terminal in `lib/boost` and execute the following command:
 
