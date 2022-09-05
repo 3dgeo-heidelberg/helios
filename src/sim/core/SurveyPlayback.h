@@ -56,7 +56,7 @@ private:
 	/**
 	 * @brief Time (nanoseconds) when the leg started
 	 */
-	long legStartTime_ns = 0;
+	std::chrono::nanoseconds legStartTime_ns;
 	/**
 	 * @brief Elapsed time (nanoseconds) since survey simulation started
 	 */
@@ -68,11 +68,11 @@ private:
     /**
      * @brief Elapsed time (nanoseconds) since current leg started
      */
-	long legElapsedTime_ns = 0;
+	std::chrono::nanoseconds legElapsedTime_ns;
 	/**
 	 * @brief Expected remaining time (nanoseconds) for current leg completion
 	 */
-	long legRemainingTime_ns = 0;
+	long legRemainingTime_ns;
 
 public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //
@@ -249,12 +249,12 @@ public:
 	 * @brief Obtain the leg start time in nanoseconds
 	 * @return The leg start time (nanoseconds)
 	 */
-    long getLegStartTime() {return this->legStartTime_ns;}
-    /**
+    std::chrono::nanoseconds getLegStartTime() {return this->legStartTime_ns;}    /**
      * @brief Obtain current leg elapsed time
      * @return Current leg elapsed time (nanoseconds)
      */
-	long long getLegElapsedTime() {return this->legElapsedTime_ns;}
+	std::chrono::nanoseconds getLegElapsedTime()
+        {return this->legElapsedTime_ns;}
 	/**
 	 * @brief Obtain current leg expected remaining time
 	 * @return Current leg expected remaining time (nanoseconds)

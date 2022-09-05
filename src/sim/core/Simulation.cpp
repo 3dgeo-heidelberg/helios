@@ -124,7 +124,7 @@ void Simulation::start() {
     size_t iter = 1;
     timeStart_ns = duration_cast<nanoseconds>(
         system_clock::now().time_since_epoch()
-    ).count();
+    );
 #ifdef DATA_ANALYTICS
     HDA_StateJSONReporter sjr((SurveyPlayback *) this, "helios_state.json");
     sjr.report();
@@ -168,20 +168,20 @@ void Simulation::start() {
 #endif
 
     // Finish the main loop of the simulation
-	long const timeMainLoopFinish = duration_cast<nanoseconds>(
+	chrono::nanoseconds timeMainLoopFinish = duration_cast<nanoseconds>(
 	    system_clock::now().time_since_epoch()
-    ).count();
+    );
 	double const seconds = (
-	        (double)(timeMainLoopFinish - timeStart_ns)
+	        (double)(timeMainLoopFinish - timeStart_ns).count()
 	    ) / 1000000000.0;
 	reporter.preFinishReport(seconds);
 	mScanner->onSimulationFinished();
 
     // End of simulation report
-    long const timeFinishAll = duration_cast<nanoseconds>(
+    chrono::nanoseconds const timeFinishAll = duration_cast<nanoseconds>(
         system_clock::now().time_since_epoch()
-    ).count();
-    double const secondsAll = ((double)(timeFinishAll - timeStart_ns))
+    );
+    double const secondsAll = ((double)(timeFinishAll - timeStart_ns).count())
                               / 1000000000.0;
     reporter.postFinishReport(secondsAll);
 
