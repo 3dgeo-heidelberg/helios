@@ -60,7 +60,7 @@ private:
 	/**
 	 * @brief Elapsed time (nanoseconds) since survey simulation started
 	 */
-	long elapsedTime_ns = 0;
+	std::chrono::nanoseconds elapsedTime_ns;
 	/**
 	 * @brief Expected remaining time (nanoseconds) for survey simulation
 	 */
@@ -232,7 +232,7 @@ public:
 	 * @brief Obtain elapsed time
 	 * @return Elapsed time (nanoseconds)
 	 */
-	long long getElapsedTime() {return this->elapsedTime_ns;}
+	std::chrono::nanoseconds getElapsedTime() {return this->elapsedTime_ns;}
 	/**
 	 * @brief Obtain elapsed length
 	 * @return The elapsed length

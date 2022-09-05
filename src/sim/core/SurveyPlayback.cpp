@@ -115,9 +115,9 @@ void SurveyPlayback::estimateTime(
 			progress = (elapsedLength + legElapsedLength) * 100
 			    / (double) mSurvey->getLength();
 		}
-		elapsedTime_ns = (currentTime - timeStart_ns).count();
+		elapsedTime_ns = currentTime - timeStart_ns;
 		remainingTime_ns = (long)((100 - progress) /
-		    progress * elapsedTime_ns);
+		    progress * elapsedTime_ns.count());
 
         if(legProgress == 99){
             std::stringstream ss;
@@ -129,7 +129,7 @@ void SurveyPlayback::estimateTime(
         ostringstream oss;
         oss << std::fixed << std::setprecision(2);
         oss << "Survey " << progress << "%\tElapsed "
-            << milliToString(elapsedTime_ns/1000000L) <<
+            << milliToString(elapsedTime_ns.count()/1000000L) <<
             " Remaining " << milliToString(remainingTime_ns/1000000L) << endl;
         oss << "Leg" << (mCurrentLegIndex+1) << "/" << (numEffectiveLegs)
             << " " << legProgress << "%\tElapsed "
