@@ -104,8 +104,8 @@ void SurveyPlayback::estimateTime(
 		chrono::nanoseconds currentTime = duration_cast<nanoseconds>(
 		    system_clock::now().time_since_epoch());
 		legElapsedTime_ns = currentTime - legStartTime_ns;
-		legRemainingTime_ns = (long)((100 - legProgress) / legProgress
-		    * legElapsedTime_ns.count());
+		legRemainingTime_ns = (long long)((100 - legProgress) / legProgress)
+		    * legElapsedTime_ns.count();
 
 		if (!getScanner()->platform->canMove()) {
 			progress = ((mCurrentLegIndex * 100) + legProgress) /
@@ -116,8 +116,8 @@ void SurveyPlayback::estimateTime(
 			    / (double) mSurvey->getLength();
 		}
 		elapsedTime_ns = currentTime - timeStart_ns;
-		remainingTime_ns = (long)((100 - progress) /
-		    progress * elapsedTime_ns.count());
+		remainingTime_ns = (long long)((100 - progress) / progress)
+            * elapsedTime_ns.count();
 
         if(legProgress == 99){
             std::stringstream ss;
@@ -130,11 +130,11 @@ void SurveyPlayback::estimateTime(
         oss << std::fixed << std::setprecision(2);
         oss << "Survey " << progress << "%\tElapsed "
             << milliToString(elapsedTime_ns.count()/1000000L) <<
-            " Remaining " << milliToString(remainingTime_ns/1000000L) << endl;
+            " Remaining " << milliToString(remainingTime_ns/1000000L) << "\n";
         oss << "Leg" << (mCurrentLegIndex+1) << "/" << (numEffectiveLegs)
             << " " << legProgress << "%\tElapsed "
-            << milliToString(legElapsedTime_ns.count()/1000000L) << " Remaining "
-            << milliToString(legRemainingTime_ns/1000000L);
+            << milliToString(legElapsedTime_ns.count()/1000000L)
+            << " Remaining " << milliToString(legRemainingTime_ns/1000000L);
         logging::INFO(oss.str());
 	}
 }
@@ -168,7 +168,7 @@ void SurveyPlayback::doSimStep() {
 
 		legProgress = 0;
 		legStartTime_ns = duration_cast<nanoseconds>(
-		        system_clock::now().time_since_epoch()
+            system_clock::now().time_since_epoch()
         );
 	}
 

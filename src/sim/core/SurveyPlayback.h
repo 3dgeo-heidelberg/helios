@@ -64,7 +64,7 @@ private:
 	/**
 	 * @brief Expected remaining time (nanoseconds) for survey simulation
 	 */
-	long remainingTime_ns = 0;
+	long long remainingTime_ns = 0;
     /**
      * @brief Elapsed time (nanoseconds) since current leg started
      */
@@ -72,7 +72,7 @@ private:
 	/**
 	 * @brief Expected remaining time (nanoseconds) for current leg completion
 	 */
-	long legRemainingTime_ns;
+	long long legRemainingTime_ns;
 
 public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //
