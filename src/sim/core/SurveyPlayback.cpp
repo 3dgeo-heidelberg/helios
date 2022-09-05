@@ -104,8 +104,8 @@ void SurveyPlayback::estimateTime(
 		chrono::nanoseconds currentTime = duration_cast<nanoseconds>(
 		    system_clock::now().time_since_epoch());
 		legElapsedTime_ns = currentTime - legStartTime_ns;
-		legRemainingTime_ns = (long long)((100 - legProgress) / legProgress)
-		    * legElapsedTime_ns.count();
+		legRemainingTime_ns = (long long)((100 - legProgress) / legProgress
+		    * legElapsedTime_ns.count());
 
 		if (!getScanner()->platform->canMove()) {
 			progress = ((mCurrentLegIndex * 100) + legProgress) /
@@ -116,8 +116,8 @@ void SurveyPlayback::estimateTime(
 			    / (double) mSurvey->getLength();
 		}
 		elapsedTime_ns = currentTime - timeStart_ns;
-		remainingTime_ns = (long long)((100 - progress) / progress)
-            * elapsedTime_ns.count();
+		remainingTime_ns = (long long)((100 - progress) / progress
+            * elapsedTime_ns.count());
 
         if(legProgress == 99){
             std::stringstream ss;
