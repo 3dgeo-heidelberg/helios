@@ -15,6 +15,8 @@
 #endif
 #include <SimulationReporter.h>
 
+#include <chrono>
+
 /**
  * @brief Class representing a simulation
  */
@@ -98,7 +100,7 @@ protected:
     /**
      * @brief Time corresponding to simulation start (nanoseconds)
      */
-    long timeStart_ns = 0;
+    std::chrono::nanoseconds timeStart_ns;
 
     /**
      * @brief Time corresponding to simulation start (currentGpsTime in

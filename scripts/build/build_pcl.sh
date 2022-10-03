@@ -27,6 +27,9 @@ PCL_DEF_DIR="${HELIOS_LIB_DIR}pcl-"$(sed 's/\.tar\.gz//g' <<< ${PCL_PKG})'/'
 # PCL lib path (where it MUST be placed)
 PCL_DIR="${HELIOS_LIB_DIR}"'pcl/'
 PCL_INSTALL_DIR="${PCL_DIR}"'install/'
+# Directory to the VTK for visualization
+PCL_VTK_DIR=$(ls "${HELIOS_LIB_DIR}vtk/install/lib/cmake" | grep vtk)
+PCL_VTK_DIR="${HELIOS_LIB_DIR}vtk/install/lib/cmake/${PCL_VTK_DIR}/"
 
 
 
@@ -55,8 +58,8 @@ cmake \
     -DCMAKE_BUILD_TYPE=Release \
     -DBOOST_ROOT="${HELIOS_LIB_DIR}"'boost/' \
     -DBUILD_visualization=${PCL_VISUALIZATION} \
-    -DVTK_DIR="${HELIOS_LIB_DIR}"'vtk/build/' \
-    -DCMAKE_INCLUDE_PATH="${HELIOS_LIB_DIR}"'vtk/build/' \
+    -DVTK_DIR="${PCL_VTK_DIR}" \
+    -DCMAKE_INCLUDE_PATH="${HELIOS_LIB_DIR}"'vtk/install/include' \
     ..
 make -j${HELIOS_BUILD_NCORES}
 make -j${HELIOS_BUILD_NCORES} install
