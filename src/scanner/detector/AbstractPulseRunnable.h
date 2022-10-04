@@ -88,37 +88,6 @@ public:
 	// ***  M E T H O D S  *** //
 	// *********************** //
 	/**
-	 * @brief Compute cross section
-	 *
-	 * \f[
-	 *  C_{S} = 4{\pi} \cdot f \cdot A_{lf} \cdot \cos(\theta)
-	 * \f]
-	 *
-	 * <br/>
-	 * Paper DOI: 10.1016/j.isprsjprs.2010.06.007
-	 *
-	 * @return Cross section
-	 */
-	double calcCrossSection(
-	    double const f,
-	    double const Alf,
-	    double const theta
-    ) const;
-	/**
-	 * @brief Compute the phong model
-	 *
-	 * <br/>
-	 * Paper title: NORMALIZATION OF LIDAR INTENSITY DATA BASED ON RANGE AND
-	 *  SURFACE INCIDENCE ANGLE
-	 * <br/>
-	 * Paper authors: B. Jutzi, H. Gross
-	 */
-	double phongBDRF(
-	    double const incidenceAngle,
-	    double const targetSpecularity,
-	    double const targetSpecularExponent
-    ) const;
-	/**
 	 * @brief Compute atmospheric factor \f$f\f$, understood as the energy left
 	 * after attenuation by air particles in range \f$[0, 1]\f$
 	 * @param targetRange \f$r\f$

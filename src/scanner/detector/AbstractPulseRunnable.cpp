@@ -3,6 +3,7 @@
 #define _USE_MATH_DEFINES
 #include "math.h"
 #include "MathConstants.h"
+#include <maths/EnergyMaths.h>
 
 #include <glm/glm.hpp>
 
@@ -10,39 +11,12 @@
 #include <filems/facade/FMSFacade.h>
 
 
-// ALS Simplification "Radiometric Calibration..." (Wagner, 2010) Eq. 14
-double AbstractPulseRunnable::calcCrossSection(
-    double const f,
-    double const Alf,
-    double const theta
-) const {
-	return PI_4 * f * Alf * cos(theta);
-}
-
-// Phong reflection model "Normalization of Lidar Intensity..." (Jutzi and Gross, 2009) 
-double AbstractPulseRunnable::phongBDRF(
-    double const incidenceAngle,
-    double const targetSpecularity,
-    double const targetSpecularExponent
-) const {
-	double const ks = targetSpecularity;
-	double const kd = (1 - ks);
-	double const diffuse = kd * cos(incidenceAngle);
-	double const specularAngle = (incidenceAngle <= PI_HALF) ?
-	    incidenceAngle : incidenceAngle - PI_HALF;
-	double const specular = ks * pow(
-	    abs(cos(specularAngle)),
-	    targetSpecularExponent
-    );
-	return diffuse + specular;
-}
-
 // Energy left after attenuation by air particles in range [0,1]
 inline double AbstractPulseRunnable::calcAtmosphericFactor(
     double const targetRange
 ) const {
-	return exp(
-	    -2 * targetRange * detector->scanner->getAtmosphericExtinction(0)
+    return EnergyMaths::calcAtmosphericFactor(
+        targetRange, detector->scanner->getAtmosphericExtinction(0)
     );
 }
 
@@ -56,12 +30,14 @@ double AbstractPulseRunnable::calcReceivedPower(
     double const targetSpecularExponent,
     double const targetArea
 ) const {
-	double const bdrf = targetReflectivity * phongBDRF(
+	double const bdrf = targetReflectivity * EnergyMaths::phongBDRF(
 	    incidenceAngle,
 	    targetSpecularity,
 	    targetSpecularExponent
     );
-	double const sigma = calcCrossSection(bdrf, targetArea, incidenceAngle);
+	double const sigma = EnergyMaths::calcCrossSection(
+	    bdrf, targetArea, incidenceAngle
+    );
     return AbstractPulseRunnable::_calcReceivedPower(
         emittedPower,
         detector->scanner->getDr2(0),

@@ -2,6 +2,7 @@
 #include <maths/MathConstants.h>
 #include <logging.hpp>
 #include <scanner/detector/AbstractDetector.h>
+#include <maths/EnergyMaths.h>
 
 // ***  CONSTRUCTION / DESTRUCTION  *** //
 // ************************************ //
@@ -219,4 +220,55 @@ void ScanningDevice::computeSubrays(
             );
         }
     }
+}
+
+double ScanningDevice::calcIntensity(
+    double const incidenceAngle,
+    double const targetRange,
+    double const targetReflectivity,
+    double const targetSpecularity,
+    double const targetSpecularExponent,
+    double const targetArea,
+    double const radius
+) const {
+    double const bdrf = targetReflectivity * EnergyMaths::phongBDRF(
+        incidenceAngle,
+        targetSpecularity,
+        targetSpecularExponent
+    );
+    double const sigma = EnergyMaths::calcCrossSection(
+        bdrf, targetArea, incidenceAngle
+    );
+    return EnergyMaths::calcReceivedPower(
+        averagePower_w,
+        wavelength_m,
+        targetRange,
+        detector->cfg_device_rangeMin_m,
+        radius,
+        beamWaistRadius,
+        cached_Dr2,
+        cached_Bt2,
+        efficiency,
+        atmosphericExtinction,
+        sigma
+    ) * 1000000000.0;
+}
+double ScanningDevice::calcIntensity(
+    double const targetRange,
+    double const radius,
+    double const sigma
+) const {
+    return EnergyMaths::calcReceivedPower(
+        averagePower_w,
+        wavelength_m,
+        targetRange,
+        detector->cfg_device_rangeMin_m,
+        radius,
+        beamWaistRadius,
+        cached_Dr2,
+        cached_Bt2,
+        efficiency,
+        atmosphericExtinction,
+        sigma
+    ) * 1000000000.0;
 }

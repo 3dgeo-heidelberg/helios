@@ -207,3 +207,32 @@ void SingleScanner::computeSubrays(
         intersects
     );
 }
+
+double SingleScanner::calcIntensity(
+    double const incidenceAngle,
+    double const targetRange,
+    double const targetReflectivity,
+    double const targetSpecularity,
+    double const targetSpecularExponent,
+    double const targetArea,
+    double const radius,
+    size_t const idx
+) const {
+    return scanDev.calcIntensity(
+        incidenceAngle,
+        targetRange,
+        targetReflectivity,
+        targetSpecularity,
+        targetSpecularExponent,
+        targetArea,
+        radius
+    );
+}
+double SingleScanner::calcIntensity(
+    double const targetRange,
+    double const radius,
+    double const sigma,
+    size_t const idx
+) const{
+    return scanDev.calcIntensity(targetRange, radius, sigma);
+}

@@ -283,9 +283,11 @@ public:
      *  minimum range, and \f$w_0\f$ be the beam waist radius. Thus, the
      *  emitted power \f$P_e\f$ can be defined:
      * \f[
-     *  P_e = I_0 \exp\left(-2r^2\right) \left[{
-     *      \frac{\lambda^2}{\pi^2 w_0^2} \left(R_0^2 + R^2\right)
-     *  }\right]^{-1}
+     *  P_e = I_0 \exp\left[- \frac{
+     *          2 \pi^2 r^2 w_0^2
+     *      }{
+     *          \lambda^2 \left(R_0^2 + R^2\right)
+     *      }\right]
      * \f]
      *
      * Note that if \f$a_e\f$ is the atmospheric extinction coefficient, then
@@ -301,13 +303,16 @@ public:
      *  can be calculated as:
      * \f[
      * \begin{split}
-     *  P_r =& \frac{P_e D_{r2} \eta_s \eta_a \sigma}{4 \pi R^4 B_{t2}} \\
+     *  P_r =& \frac{P_e D_r^2 \eta_s \eta_a \sigma}{4 \pi R^4 B_t^2} \\
      *   =& \frac{
-     *          I_0 \exp\left[-2\left(r^2+Ra_e\right)\right]
-     *          \pi w_0^2 \eta_s \sigma D_{r2}
+     *          I_0 D_r^2 \eta_s \sigma
      *      }{
-     *          4 \lambda^2 \left(R_0^2 + R^2\right) R^4 B_{t2}
+     *          4 \pi R^4 B_t^2
      *      }
+     *      \exp\left[-\left(
+     *          \frac{2\pi^2r^2w_0^2}{\lambda^2\left(R_0^2 + R^2\right)} +
+     *          2Ra_e
+     *      \right)\right]
      * \end{split}
      * \f]
      *
@@ -323,6 +328,17 @@ public:
         double const targetSpecularExponent,
         double const targetArea,
         double const radius
+    ) const;
+
+    /**
+     * @brief Version of ScanningDevice::calcIntensity with precomputed
+     *  \f$\sigma\f$
+     * @see ScanningDevice::calcIntensity
+     */
+    double calcIntensity(
+        double const targetRange,
+        double const radius,
+        double const sigma
     ) const;
 
 };

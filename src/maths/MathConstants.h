@@ -52,6 +52,13 @@ const double PI_SQUARED = M_PI*M_PI;
 
 /**
  * \f[
+ *  2 \pi^2
+ * \f]
+ */
+const double PI_SQUARED_2 = 2*M_PI*M_PI;
+
+/**
+ * \f[
  *  \frac{180}{\pi}
  * \f]
  */

@@ -8,6 +8,7 @@
 #include <cmath>
 
 #include "maths/Rotation.h"
+#include <maths/EnergyMaths.h>
 #include "MarquardtFitter.h"
 #include <TimeWatcher.h>
 #include <maths/RayUtils.h>
@@ -164,7 +165,7 @@ void FullWaveformPulseRunnable::handleSubray(
             ) continue;
 
             // Distance between beam's center line and intersection point:
-            double radius = sin(divergenceAngle) * distance;
+            double const radius = sin(divergenceAngle) * distance;
             double const targetArea =
                 detector->scanner->calcFootprintArea(distance, 0) /
                 (double) detector->scanner->getNumRays(0);
@@ -174,18 +175,21 @@ void FullWaveformPulseRunnable::handleSubray(
                 double sigma = intersect->prim->computeSigmaWithLadLut(
                     subrayDirection
                 );
-                intensity = calcIntensity(distance, radius, sigma);
+                intensity = detector->scanner->calcIntensity(
+                    distance, radius, sigma, 0
+                );
             }
             else{
                 // Standard intensity computation
-                intensity = calcIntensity(
+                intensity = detector->scanner->calcIntensity(
                     incidenceAngle,
                     distance,
                     intersect->prim->material->reflectance,
                     intersect->prim->material->specularity,
                     intersect->prim->material->specularExponent,
                     targetArea,
-                    radius
+                    radius,
+                    0
                 );
             }
 
@@ -576,29 +580,24 @@ double FullWaveformPulseRunnable::calcEmmitedPower(
     double const targetRange
 ) const {
     // TODO Remove : Old implementation below
-    double const I0 = detector->scanner->getAveragePower();
-    double const lambda = detector->scanner->getWavelength();
-    double const R = targetRange;
-    double const R0 = detector->cfg_device_rangeMin_m;
-    double const r = radius;
-    double const w0 = detector->scanner->getBeamWaistRadius();
-    double const denom = M_PI * w0 * w0;
-    double const omega = (lambda * R) / denom;
-    double const omega0 = (lambda * R0) / denom;
-    double const w = w0 * sqrt(omega0 * omega0 + omega * omega);
+    return EnergyMaths::calcEmittedPowerLegacy(
+        detector->scanner->getAveragePower(0),
+        detector->scanner->getWavelength(0),
+        targetRange,
+        detector->cfg_device_rangeMin_m,
+        radius,
+        detector->scanner->getBeamWaistRadius(0)
+    );
 
-    return I0 * exp((-2 * r * r) / (w * w));
     // TODO Rethink : New implementation below
-    /*double const I0 = detector->scanner->getAveragePower(0);
-    double const lambda = detector->scanner->getWavelength(0);
-    double const R = targetRange;
-    double const R0 = detector->cfg_device_rangeMin_m;
-    double const w0 = detector->scanner->getBeamWaistRadius(0);
-    double const w0Squared = w0 * w0;
-    double const denom = PI_SQUARED * w0Squared;
-    double const wSquared = lambda*lambda * (R0*R0 + R*R) / denom;
-
-    return I0 * exp(-2 * radius * radius) / wSquared;*/
+    /*return EnergyMaths::calcEmittedPower(
+        detector->scanner->getAveragePower(0),
+        detector->scanner->getWavelength(0),
+        targetRange,
+        detector->cfg_device_rangeMin_m,
+        radius,
+        detector->scanner->getBeamWaistRadius(0)
+    );*/
 }
 
 // Calculate the strength of the laser going back to the detector

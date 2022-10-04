@@ -130,6 +130,28 @@ public:
         vector<RaySceneIntersection> &intersects,
         size_t const idx
     ) override;
+    /**
+     * @see Scanner::calcIntensity
+     */
+    double calcIntensity(
+        double const incidenceAngle,
+        double const targetRange,
+        double const targetReflectivity,
+        double const targetSpecularity,
+        double const targetSpecularExponent,
+        double const targetArea,
+        double const radius,
+        size_t const idx
+    ) const override;
+    /**
+     * @see Scanner::calcIntensity
+     */
+    double calcIntensity(
+        double const targetRange,
+        double const radius,
+        double const sigma,
+        size_t const idx
+    ) const override;
 
 
     // ***  GETTERs and SETTERs  *** //

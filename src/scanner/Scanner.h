@@ -425,6 +425,7 @@ public:
      *  registered
      * @param[in] idx The index of the scanning device
      * @see FullWaveformPulseRunnable::handleSubray
+     * @see ScanningDevice::
      */
     virtual void computeSubrays(
         std::function<void(
@@ -443,6 +444,36 @@ public:
         vector<RaySceneIntersection> &intersects,
         size_t const idx
     ) = 0;
+
+    /**
+     * @brief Handle to which scanning device request the intensity computation
+     * @param idx The index of the scanning device that must compute the
+     *  intensity
+     * @see ScanningDevice::calcIntensity
+     */
+    virtual double calcIntensity(
+        double const incidenceAngle,
+        double const targetRange,
+        double const targetReflectivity,
+        double const targetSpecularity,
+        double const targetSpecularExponent,
+        double const targetArea,
+        double const radius,
+        size_t const idx
+    ) const = 0;
+    /**
+     * @brief Handle to which scanning device request the intensity computation
+     * @param idx The index of the scanning device that must compute the
+     *  intensity
+     * @see ScanningDevice::calcIntensity
+     */
+    virtual double calcIntensity(
+        double const targetRange,
+        double const radius,
+        double const sigma,
+        size_t const idx
+    ) const = 0;
+
 
     // ***  SIM STEP UTILS  *** //
     // ************************ //
