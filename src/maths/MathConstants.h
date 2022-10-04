@@ -43,6 +43,12 @@ const double PI_2 = M_PI*2.0;
  * \f]
  */
 const double PI_4 = M_PI*4.0;
+/**
+ * \f[
+ *  \pi^2
+ * \f]
+ */
+const double PI_SQUARED = M_PI*M_PI;
 
 /**
  * \f[

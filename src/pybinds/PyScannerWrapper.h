@@ -368,12 +368,12 @@ public:
 
     // ***  PyScannerWrapper ADHOC  *** //
     // ******************************** //
-    ScannerHead & getScannerHead(){return *scanner.scannerHead;}
+    ScannerHead & getScannerHead(){return *scanner.getScannerHead();}
     PyBeamDeflectorWrapper * getPyBeamDeflector()
-    {return new PyBeamDeflectorWrapper(scanner.beamDeflector);}
+    {return new PyBeamDeflectorWrapper(scanner.getBeamDeflector());}
     PyDetectorWrapper * getPyDetectorWrapper();
     PyIntegerList * getSupportedPulseFrequencies()
-    {return new PyIntegerList(scanner.cfg_device_supportedPulseFreqs_Hz);}
+    {return new PyIntegerList(scanner.getSupportedPulseFreqs_Hz());}
     Rotation & getRelativeAttitudeByReference(size_t const idx){
         return scanner.getHeadRelativeEmitterAttitudeByRef(idx);
     }
@@ -403,17 +403,17 @@ public:
         return new PyRandomnessGeneratorWrapper(*scanner.randGen2);
     }
     PyDoubleVector * getTimeWave(){
-        return new PyDoubleVector(scanner.time_wave);
+        return new PyDoubleVector(scanner.getTimeWave());
     }
-    FWFSettings getFWFSettings() {return scanner.FWF_settings;}
+    FWFSettings getFWFSettings() {return scanner.getFWFSettings();}
     void setFWFSettings(FWFSettings const &fwfSettings)
-    {scanner.FWF_settings = fwfSettings;}
-    int getNumTimeBins() {return scanner.numTimeBins;}
+    {scanner.setFWFSettings(fwfSettings);}
+    int getNumTimeBins() {return scanner.getNumTimeBins();}
     void setNumTimeBins(int const numTimeBins)
-    {scanner.numTimeBins = numTimeBins;}
-    int getPeakIntensityIndex() {return scanner.peakIntensityIndex;}
+    {scanner.setNumTimeBins(numTimeBins);}
+    int getPeakIntensityIndex() {return scanner.getPeakIntensityIndex();}
     void setPeakIntensityIndex(int const peakIntensityIndex)
-    {scanner.peakIntensityIndex = peakIntensityIndex;}
+    {scanner.setPeakIntensityIndex(peakIntensityIndex);}
     double getTrajectoryTimeInterval()
     {return scanner.trajectoryTimeInterval_ns;}
     void setTrajectoryTimeInterval(double const trajectoryTimeInterval_ns){

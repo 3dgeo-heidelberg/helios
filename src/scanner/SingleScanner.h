@@ -18,7 +18,6 @@ protected:
      */
     ScanningDevice scanDev;
 
-
 public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //
     // ************************************ //
@@ -67,7 +66,20 @@ public:
     /**
      * @see Scanner::applySettings
      */
-    void applySettings(std::shared_ptr<ScannerSettings> settings) override;
+    void applySettings(
+        std::shared_ptr<ScannerSettings> settings, size_t const idx
+    ) override;
+    /**
+     * @see Scanner::doSimStep(unsigned int, double const)
+     */
+    void doSimStep(
+        unsigned int legIndex, double const currentGpsTime
+    ) override;
+    /**
+     * @see Scanner::calcRaysNumber(size_t const)
+     */
+    void calcRaysNumber(size_t const idx) override
+    {scanDev.calcRaysNumber();}
     /**
      * @see Scanner::prepareDiscretization
      */
@@ -77,20 +89,47 @@ public:
      */
     int calcTimePropagation(
         std::vector<double> & timeWave, int const numBins
-    ) const override;
+    ) override;
     /**
      * @see Scanner::calcFootprintArea
      */
-    double calcFootprintArea(double const distance) const override;
+    double calcFootprintArea(
+        double const distance, size_t const idx
+    ) const override;
     /**
      * @see Scanner::calcAbsoluteBeamAttitude
      */
-    Rotation calcAbsoluteBeamAttitude() const override;
+    Rotation calcAbsoluteBeamAttitude() override;
     /**
      * @see Scanner::calcAtmosphericAttenuation
      */
     double calcAtmosphericAttenuation() const override
     {return scanDev.calcAtmosphericAttenuation();}
+    /**
+     * @see Scanner::checkMaxNOR
+     */
+    bool checkMaxNOR(int const nor, size_t const idx) override
+    {return scanDev.maxNOR==0 || nor < scanDev.maxNOR;}
+    /**
+     * @see Scanner::computeSubrays
+     */
+    void computeSubrays(
+        std::function<void(
+            vector<double> const &_tMinMax,
+            int const circleStep,
+            double const circleStep_rad,
+            Rotation &r1,
+            double const divergenceAngle,
+            NoiseSource<double> &intersectionHandlingNoiseSource,
+            std::map<double, double> &reflections,
+            vector<RaySceneIntersection> &intersects
+        )> handleSubray,
+        vector<double> const &tMinMax,
+        NoiseSource<double> &intersectionHandlingNoiseSource,
+        std::map<double, double> &reflections,
+        vector<RaySceneIntersection> &intersects,
+        size_t const idx
+    ) override;
 
 
     // ***  GETTERs and SETTERs  *** //
@@ -109,6 +148,15 @@ public:
      * @see Scanner::getNumDevices
      */
     size_t getNumDevices() const override {return 1;}
+    /**
+     * @see Scanner::getNumRays
+     */
+    int getNumRays(size_t const idx) const override {return scanDev.numRays;}
+    /**
+     * @see Scanner::setNumRays
+     */
+    void setNumRays(int const numRays, size_t const idx)
+    {scanDev.numRays = numRays;}
     /**
      * @see Scanner::getPulseLength_ns
 	 */
@@ -282,5 +330,117 @@ public:
      */
     void setDr2(double const dr2, size_t const idx) override
     {scanDev.cached_Dr2 = dr2;}
+
+    /**
+     * @see Scanner::getScannerHead(size_t const)
+     */
+    std::shared_ptr<ScannerHead> getScannerHead(size_t const idx) override
+    {return scanDev.scannerHead;}
+    /**
+     * @see Scanner::setScannerHead(shared_ptr<ScannerHead>, size_t const)
+     */
+    void setScannerHead(
+        std::shared_ptr<ScannerHead> scannerHead,
+        size_t const idx
+    ) override
+    {scanDev.scannerHead = scannerHead;}
+    /**
+     * @see Scanner::getBeamDeflector(size_t const)
+     */
+    std::shared_ptr<AbstractBeamDeflector> getBeamDeflector(
+        size_t const idx
+    ) override
+    {return scanDev.beamDeflector;}
+    /**
+     * @see Scanner::setBeamDeflector
+     */
+    void setBeamDeflector(
+        std::shared_ptr<AbstractBeamDeflector> beamDeflector,
+        size_t const idx
+    ) override
+    {scanDev.beamDeflector = beamDeflector;}
+    /**
+     * @see Scanner::getDetector(size_t const)
+     */
+    std::shared_ptr<AbstractDetector> getDetector(size_t const idx) override
+    {return scanDev.detector;}
+    /**
+     * @see Scanner::setDetector(shared_ptr<AbstractDetector>, size_t const)
+     */
+    void setDetector(
+        std::shared_ptr<AbstractDetector> detector, size_t const idx
+    ) override
+    {scanDev.detector = detector;}
+    /**
+     * @see Scanner::getFWFSettings
+     */
+    FWFSettings & getFWFSettings(size_t const idx)
+    {return scanDev.FWF_settings;}
+    /**
+     * @see Scanner::setFWFSettings(FWFSettings const &, size_t const)
+     */
+    void setFWFSettings(
+        FWFSettings const &fwfSettings, size_t const idx
+    ) override
+    {scanDev.FWF_settings = fwfSettings;}
+    /**
+     * @see Scanner::getSupportedPulseFreqs_Hz(size_t const)
+     */
+    std::list<int>& getSupportedPulseFreqs_Hz(size_t const idx) override
+    {return scanDev.supportedPulseFreqs_Hz;}
+    /**
+     * @see Scanner::setSupportedPulseFreqs_Hz(std::list<int> &, size_t const)
+     */
+    void setSupportedPulseFreqs_Hz(
+        std::list<int> &pulseFreqs_Hz, size_t const idx
+    ){
+        scanDev.supportedPulseFreqs_Hz = pulseFreqs_Hz;
+    }
+    /**
+     * @see Scanner::getMaxNOR(size_t const)
+     */
+    int getMaxNOR(size_t const idx) const override {return scanDev.maxNOR;}
+    /**
+     * @see Scanner::setMaxNOR(int const, size_t const)
+     */
+    void setMaxNOR(int const maxNOR, size_t const idx) override
+    {scanDev.maxNOR = maxNOR;}
+    /**
+     * @see Scanner::getNumTimeBins(size_t const)
+     */
+    int getNumTimeBins(size_t const idx) const {return scanDev.numTimeBins;}
+    /**
+     * @see Scanner::setNumTimeBins(int const, size_t const)
+     */
+    void setNumTimeBins(int const numTimeBins, size_t const idx)
+    {scanDev.numTimeBins = numTimeBins;}
+    /**
+     * @see Scanner::getPeakIntensityIndex(size_t const)
+     */
+    int getPeakIntensityIndex(size_t const idx) const override
+    {return scanDev.peakIntensityIndex;}
+    /**
+     * @see Scanner::setPeakIntensityIndex(int const, size_t const)
+     */
+    void setPeakIntensityIndex(int const pii, size_t const idx) override
+    {scanDev.peakIntensityIndex = pii;}
+    /**
+     * @see Scanner::getTimeWave(size_t const)
+     */
+    std::vector<double>& getTimeWave(size_t const idx) override
+    {return scanDev.time_wave;}
+    /**
+     * @see Scanner::setTimeWave(std::vector<double> &, size_t const)
+     */
+    void setTimeWave(std::vector<double> &timewave, size_t const idx)
+    {scanDev.time_wave = timewave;}
+    /**
+     * @see Scanner::setTimeWave(std::vector<double> &&, size_t const)
+     */
+    void setTimeWave(
+        std::vector<double> &&timewave, size_t const idx
+    ) override
+    {scanDev.time_wave = timewave;}
+
 
 };

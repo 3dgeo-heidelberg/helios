@@ -142,11 +142,12 @@ void SurveyPlayback::estimateTime(
 void SurveyPlayback::trackProgress() {
 	if(!getScanner()->platform->canMove()){
 		double legElapsedAngle = std::fabs(
-		    getScanner()->scannerHead->getRotateStart() -
-		    getScanner()->scannerHead->getRotateCurrent()
+		    getScanner()->getScannerHead()->getRotateStart() -
+		    getScanner()->getScannerHead()->getRotateCurrent()
         );
 		int const legProgress = (int)(
-		    legElapsedAngle * 100 / getScanner()->scannerHead->getRotateRange()
+		    legElapsedAngle * 100 /
+		    getScanner()->getScannerHead()->getRotateRange()
 		);
 		estimateTime(legProgress, true, 0);
 	}
@@ -221,7 +222,7 @@ void SurveyPlayback::onLegComplete() {
     mScanner->onLegComplete();
 
     // Notify detector about leg completion
-    mScanner->detector->onLegComplete();
+    mScanner->getDetector()->onLegComplete();
 
 	// Start next leg
     elapsedLength += mSurvey->legs.at(mCurrentLegIndex)->getLength();
@@ -337,7 +338,7 @@ void SurveyPlayback::startLeg(unsigned int const legIndex, bool const manual) {
 	    previousLeg != nullptr && !previousLeg->mScannerSettings->active &&
 	    leg->mScannerSettings->active
     ){
-        mSurvey->scanner->beamDeflector->restartDeflector();
+        mSurvey->scanner->getBeamDeflector()->restartDeflector();
 	}
 
 
@@ -364,7 +365,7 @@ void SurveyPlayback::startNextLeg(bool manual) {
 
 void SurveyPlayback::shutdown() {
 	Simulation::shutdown();
-	mSurvey->scanner->detector->shutdown();
+	mSurvey->scanner->getDetector()->shutdown();
 }
 
 string SurveyPlayback::milliToString(long millis) {

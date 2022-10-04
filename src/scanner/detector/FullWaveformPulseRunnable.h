@@ -164,10 +164,10 @@ private:
      */
     void handleSubray(
         vector<double> const &tMinMax,
-        int circleStep,
-        double circleStep_rad,
+        int const circleStep,
+        double const circleStep_rad,
         Rotation &r1,
-        double divergenceAngle,
+        double const divergenceAngle,
         NoiseSource<double> &intersectionHandlingNoiseSource,
         std::map<double, double> &reflections,
         vector<RaySceneIntersection> &intersects

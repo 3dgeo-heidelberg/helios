@@ -74,7 +74,7 @@ public:
      * @see ScanningPulseProcess::ScanningPulseProcess
      */
     WarehouseScanningPulseProcess(
-        std::shared_ptr<AbstractDetector> &detector,
+        std::shared_ptr<AbstractDetector> detector,
         int &currentPulseNumber,
         bool &writeWaveform,
         bool &calcEchowidth,

@@ -42,7 +42,7 @@ inline double AbstractPulseRunnable::calcAtmosphericFactor(
     double const targetRange
 ) const {
 	return exp(
-	    -2 * targetRange * detector->scanner->getAtmosphericExtinction()
+	    -2 * targetRange * detector->scanner->getAtmosphericExtinction(0)
     );
 }
 
@@ -64,10 +64,10 @@ double AbstractPulseRunnable::calcReceivedPower(
 	double const sigma = calcCrossSection(bdrf, targetArea, incidenceAngle);
     return AbstractPulseRunnable::_calcReceivedPower(
         emittedPower,
-        detector->scanner->getDr2(),
+        detector->scanner->getDr2(0),
         targetRange,
-        detector->scanner->getBt2(),
-        detector->scanner->getEfficiency(),
+        detector->scanner->getBt2(0),
+        detector->scanner->getEfficiency(0),
         calcAtmosphericFactor(targetRange),
         sigma
     );
@@ -80,10 +80,10 @@ double AbstractPulseRunnable::calcReceivedPower(
 ) const {
     return AbstractPulseRunnable::_calcReceivedPower(
         emittedPower,
-        detector->scanner->getDr2(),
+        detector->scanner->getDr2(0),
         targetRange,
-        detector->scanner->getBt2(),
-        detector->scanner->getEfficiency(),
+        detector->scanner->getBt2(0),
+        detector->scanner->getEfficiency(0),
         calcAtmosphericFactor(targetRange),
         sigma
     );

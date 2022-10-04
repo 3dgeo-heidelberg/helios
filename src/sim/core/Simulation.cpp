@@ -70,7 +70,7 @@ void Simulation::prepareSimulation(int simFrequency_hz){
 void Simulation::doSimStep(){
 	// Check for leg completion:
 	if(
-	    mScanner->scannerHead->rotateCompleted() &&
+	    mScanner->getScannerHead()->rotateCompleted() &&
 	    getScanner()->platform->waypointReached()
     ){
 	    onLegComplete();
@@ -108,7 +108,7 @@ void Simulation::shutdown(){
         (*callback)(
             *mScanner->cycleMeasurements,
             *mScanner->cycleTrajectories,
-            mScanner->detector->getFMS()->write
+            mScanner->fms->write
                 .getMeasurementWriterOutputPath().string()
         );
     }
@@ -147,7 +147,7 @@ void Simulation::start() {
                 (*callback)(
                     *mScanner->cycleMeasurements,
                     *mScanner->cycleTrajectories,
-                    mScanner->detector->getFMS()->write
+                    mScanner->fms->write
                         .getMeasurementWriterOutputPath().string()
                 );
                 mScanner->cycleMeasurements->clear();

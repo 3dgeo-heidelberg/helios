@@ -32,8 +32,7 @@ Scanner::Scanner(
     calcEchowidth(calcEchowidth),
     fullWaveNoise(fullWaveNoise),
     platformNoiseDisabled(platformNoiseDisabled),
-    cfg_setting_pulseFreq_Hz(pulseFreqs.front()),
-    cfg_device_supportedPulseFreqs_Hz(pulseFreqs)
+    cfg_setting_pulseFreq_Hz(pulseFreqs.front())
 {
     /*
      * Randomness generators must be initialized outside,
@@ -47,23 +46,14 @@ Scanner::Scanner(Scanner &s){
     this->calcEchowidth = s.calcEchowidth;
     this->fullWaveNoise = s.fullWaveNoise;
     this->platformNoiseDisabled = s.platformNoiseDisabled;
-    this->numRays = s.numRays;
     this->cfg_setting_pulseFreq_Hz = s.cfg_setting_pulseFreq_Hz;
     this->state_currentPulseNumber = s.state_currentPulseNumber;
     this->state_lastPulseWasHit = s.state_lastPulseWasHit;
     this->state_isActive = s.state_isActive;
-    this->numTimeBins = s.numTimeBins;
-    this->peakIntensityIndex = s.peakIntensityIndex;
 
     this->fms = s.fms;
-    if(s.scannerHead == nullptr) this->scannerHead = nullptr;
-    else this->scannerHead = std::make_shared<ScannerHead>(*s.scannerHead);
-    if(s.beamDeflector == nullptr) this->beamDeflector = nullptr;
-    else this->beamDeflector = s.beamDeflector->clone();
     if(s.platform == nullptr) this->platform = nullptr;
     else this->platform = s.platform->clone();
-    if(s.detector == nullptr) this->detector = nullptr;
-    else this->detector = s.detector->clone();
 
     if(s.allOutputPaths == nullptr) this->allOutputPaths = nullptr;
     else{
@@ -101,13 +91,6 @@ Scanner::Scanner(Scanner &s){
     if(s.cycleMeasurementsMutex == nullptr) this->cycleMeasurementsMutex = nullptr;
     else this->cycleMeasurementsMutex = std::make_shared<std::mutex>();
 
-    this->FWF_settings = FWFSettings(s.FWF_settings);
-    this->time_wave = std::vector<double>(s.time_wave);
-
-    this->cfg_device_supportedPulseFreqs_Hz = std::list<int>(
-        s.cfg_device_supportedPulseFreqs_Hz
-    );
-
     /*
      * Randomness generators must be initialized outside,
      * because DEFAULT_RG might not be instantiated at construction time
@@ -125,7 +108,6 @@ void Scanner::_clone(Scanner &sc) const{
     sc.calcEchowidth = calcEchowidth;
     sc.fullWaveNoise = fullWaveNoise;
     sc.platformNoiseDisabled = platformNoiseDisabled;
-    sc.numRays = numRays;
     sc.fixedIncidenceAngle = fixedIncidenceAngle;
     sc.cfg_setting_pulseFreq_Hz = cfg_setting_pulseFreq_Hz;
     sc.state_currentPulseNumber = state_currentPulseNumber;
@@ -133,29 +115,11 @@ void Scanner::_clone(Scanner &sc) const{
     sc.state_isActive = state_isActive;
     sc.spp = nullptr;  // Cannot be cloned (unique pointer)
     sc.fms = fms;
-    if(scannerHead == nullptr){
-        sc.scannerHead = nullptr;
-    }
-    else{
-        sc.scannerHead = std::make_shared<ScannerHead>(*scannerHead);
-    }
-    if(beamDeflector == nullptr){
-        sc.beamDeflector = nullptr;
-    }
-    else{
-        sc.beamDeflector = beamDeflector->clone();
-    }
     if(platform == nullptr){
         sc.platform = nullptr;
     }
     else{
         sc.platform = platform->clone();
-    }
-    if(detector == nullptr){
-        sc.detector = nullptr;
-    }
-    else{
-        sc.detector = detector->clone();
     }
     if(allOutputPaths == nullptr){
         sc.allOutputPaths = nullptr;
@@ -211,10 +175,6 @@ void Scanner::_clone(Scanner &sc) const{
     }
     sc.trajectoryTimeInterval_ns = trajectoryTimeInterval_ns;
     sc.lastTrajectoryTime = lastTrajectoryTime;
-    sc.FWF_settings = FWF_settings;
-    sc.numTimeBins = numTimeBins;
-    sc.peakIntensityIndex = peakIntensityIndex;
-    sc.time_wave = time_wave;
     if(randGen1 == nullptr){
         sc.randGen1 = nullptr;
     }
@@ -235,9 +195,6 @@ void Scanner::_clone(Scanner &sc) const{
             UniformNoiseSource<double>
         >(*intersectionHandlingNoiseSource);
     }
-    sc.cfg_device_supportedPulseFreqs_Hz = cfg_device_supportedPulseFreqs_Hz;
-    sc.maxNOR = maxNOR;
-
 
     // TODO Rethink : Update all references from cloned objects to cloned scanner
     // Update references from cloned objects so they point to cloned scanner
@@ -246,7 +203,9 @@ void Scanner::_clone(Scanner &sc) const{
 
 // ***  M E T H O D S  *** //
 // *********************** //
-std::shared_ptr<ScannerSettings> Scanner::retrieveCurrentSettings(){
+std::shared_ptr<ScannerSettings> Scanner::retrieveCurrentSettings(
+    size_t const idx
+){
     shared_ptr<ScannerSettings> settings = make_shared<ScannerSettings>();
     // Settings from Scanner
     std::stringstream ss;
@@ -254,25 +213,25 @@ std::shared_ptr<ScannerSettings> Scanner::retrieveCurrentSettings(){
     settings->id = ss.str();
     settings->pulseFreq_Hz = getPulseFreq_Hz();
     settings->active = isActive();
-    settings->beamDivAngle = getBeamDivergence();
+    settings->beamDivAngle = getBeamDivergence(idx);
     settings->trajectoryTimeInterval = trajectoryTimeInterval_ns/1000000000.0;
     // Settings from ScannerHead
-    settings->headRotatePerSec_rad = scannerHead->getRotateStart();
-    settings->headRotateStart_rad = scannerHead->getRotateCurrent();
-    settings->headRotateStop_rad = scannerHead->getRotateStop();
+    settings->headRotatePerSec_rad = getScannerHead(idx)->getRotateStart();
+    settings->headRotateStart_rad = getScannerHead(idx)->getRotateCurrent();
+    settings->headRotateStop_rad = getScannerHead(idx)->getRotateStop();
     // Settings from AbstractBeamDeflector
-    settings->scanAngle_rad = beamDeflector->cfg_setting_scanAngle_rad;
-    settings->scanFreq_Hz = beamDeflector->cfg_setting_scanFreq_Hz;
+    settings->scanAngle_rad = getBeamDeflector(idx)->cfg_setting_scanAngle_rad;
+    settings->scanFreq_Hz = getBeamDeflector(idx)->cfg_setting_scanFreq_Hz;
     settings->verticalAngleMin_rad = \
-        beamDeflector->cfg_setting_verticalAngleMin_rad;
+        getBeamDeflector(idx)->cfg_setting_verticalAngleMin_rad;
     settings->verticalAngleMax_rad = \
-        beamDeflector->cfg_setting_verticalAngleMax_rad;
+        getBeamDeflector(idx)->cfg_setting_verticalAngleMax_rad;
     // Return settings
     return settings;
 }
 
-void Scanner::applySettingsFWF(FWFSettings settings) {
-	FWF_settings = settings;
+void Scanner::applySettingsFWF(FWFSettings settings, size_t const idx) {
+    setFWFSettings(settings, idx);
 	calcRaysNumber();
 	prepareDiscretization();
 }
@@ -296,62 +255,8 @@ void Scanner::doSimStep(
     double currentGpsTime
 ) {
     // TODO Rethink : Make pure virtual, move implementation to SingleScanner
-    // Update head attitude (we do this even when the scanner is inactive):
-    scannerHead->doSimStep(cfg_setting_pulseFreq_Hz);
-
-    // If the scanner is inactive, stop here:
-    if (!isActive()) return;
-
-    // Update beam deflector attitude:
-    this->beamDeflector->doSimStep();
-
-    // Check last pulse
-    if (!beamDeflector->lastPulseLeftDevice()) return;
-
-    // Global pulse counter:
-    state_currentPulseNumber++;
-
-    // Calculate absolute beam originWaypoint:
-    glm::dvec3 absoluteBeamOrigin = platform->getAbsoluteMountPosition() +
-        getHeadRelativeEmitterPosition();
-
-	// Calculate absolute beam attitude:
-	Rotation absoluteBeamAttitude = calcAbsoluteBeamAttitude();
-
-    // Handle noise
-    handleSimStepNoise(absoluteBeamOrigin, absoluteBeamAttitude);
-
-	// Handle trajectory output
-	handleTrajectoryOutput(currentGpsTime);
-
-	// Pulse computation
-    spp->handlePulseComputation(
-        legIndex,
-        absoluteBeamOrigin,
-        absoluteBeamAttitude,
-        currentGpsTime
-    );
 }
 
-
-void Scanner::calcRaysNumber() {
-    // Count circle steps
-	int count = 1;
-	for (
-	    int radiusStep = 0;
-	    radiusStep < FWF_settings.beamSampleQuality;
-	    radiusStep++
-    ) {
-		int circleSteps = (int)(2 * M_PI) * radiusStep;
-		count += circleSteps;
-	}
-
-	// Update number of rays
-	numRays = count;
-	std::stringstream ss;
-	ss << "Number of subsampling rays: " << numRays;
-	logging::INFO(ss.str());
-}
 
 double Scanner::calcFootprintRadius(double distance) {
 	double area = calcFootprintArea(distance);
@@ -372,9 +277,10 @@ void Scanner::setPulseFreq_Hz(int pulseFreq_Hz) {
 
 	// Check if requested pulse freq is supported by device:
 	if(std::find(
-	    cfg_device_supportedPulseFreqs_Hz.begin(),
-	    cfg_device_supportedPulseFreqs_Hz.end(),
-	    pulseFreq_Hz) == cfg_device_supportedPulseFreqs_Hz.end()
+	        getSupportedPulseFreqs_Hz().begin(),
+	        getSupportedPulseFreqs_Hz().end(),
+	        pulseFreq_Hz
+        ) == getSupportedPulseFreqs_Hz().end()
     ){
 		logging::WARN(
 		    "WARNING: Specified pulse frequency is not supported "
@@ -390,7 +296,7 @@ void Scanner::setPulseFreq_Hz(int pulseFreq_Hz) {
 	logging::INFO(ss.str());
 }
 
-void Scanner::setLastPulseWasHit(bool value) {
+void Scanner::setLastPulseWasHit(bool const value) {
 	if (value == state_lastPulseWasHit) return;
 	//TODO see https://www.codeproject.com/Articles/12362/A-quot-synchronized-quot-statement-for-C-like-in-J
     this->state_lastPulseWasHit = value;
@@ -495,7 +401,7 @@ void Scanner::initializeSequentialGenerators(){
     randGen1->computeUniformRealDistribution(0.0, 1.0);
     randGen1->computeNormalDistribution(
         0.0,
-        detector->cfg_device_accuracy_m
+        getDetector()->cfg_device_accuracy_m
     );
     randGen2->computeNormalDistribution(0.0, 1.0);
     intersectionHandlingNoiseSource =
@@ -513,7 +419,7 @@ void Scanner::buildScanningPulseProcess(
     if(parallelizationStrategy==0){
         spp = std::unique_ptr<ScanningPulseProcess>(
             new BuddingScanningPulseProcess(
-                detector,
+                getDetector(),
                 state_currentPulseNumber,
                 writeWaveform,
                 calcEchowidth,
@@ -532,7 +438,7 @@ void Scanner::buildScanningPulseProcess(
     else if(parallelizationStrategy==1){
         spp = std::unique_ptr<ScanningPulseProcess>(
             new WarehouseScanningPulseProcess(
-                detector,
+                getDetector(),
                 state_currentPulseNumber,
                 writeWaveform,
                 calcEchowidth,

@@ -253,7 +253,7 @@ void XmlSurveyLoader::loadSurveyCore(
         surveyNode->FirstChildElement("FWFSettings");
     survey->scanner->applySettingsFWF(*createFWFSettingsFromXml(
         scannerFWFSettingsNode, std::make_shared<FWFSettings>(
-            FWFSettings(survey->scanner->FWF_settings)
+            FWFSettings(survey->scanner->getFWFSettings())
         )
     ));
     // Read number of runs
@@ -282,7 +282,7 @@ void XmlSurveyLoader::handleCoreOverloading(
     std::shared_ptr<Survey> survey
 ){
     // Detector overloading
-    AbstractDetector &detector = *(survey->scanner->detector);
+    AbstractDetector &detector = *(survey->scanner->getDetector());
     tinyxml2::XMLElement *dsNode = \
         surveyNode->FirstChildElement("detectorSettings");
     if(dsNode!=nullptr){ // If a detector overload is specified, apply it

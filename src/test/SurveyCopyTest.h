@@ -59,22 +59,22 @@ bool SurveyCopyTest::run(){
         false,
         true
     );
-    survey->scanner->scannerHead = std::make_shared<ScannerHead>(
+    survey->scanner->setScannerHead(std::make_shared<ScannerHead>(
         glm::dvec3(0.4, 0.7, 0.1), 0.067
-    );
-    survey->scanner->beamDeflector =
+    ));
+    survey->scanner->setBeamDeflector(
         std::make_shared<OscillatingMirrorBeamDeflector>(
             3.141592,
             1400.5,
             70.8,
             1
-        );
+        ));
     survey->scanner->platform = std::make_shared<HelicopterPlatform>();
-    survey->scanner->detector = std::make_shared<FullWaveformPulseDetector>(
+    survey->scanner->setDetector(std::make_shared<FullWaveformPulseDetector>(
         survey->scanner,
         1.5,
         0.1
-    );
+    ));
     survey->legs.push_back(std::make_shared<Leg>());
     survey->legs[0]->mPlatformSettings = std::make_shared<PlatformSettings>();
     survey->legs[0]->mPlatformSettings->onGround = false;
@@ -105,9 +105,9 @@ bool SurveyCopyTest::run(){
     copy->numRuns = 0;
     copy->scanner->name = "CopiedScanner";
     Rotation &copyMRA =
-        copy->scanner->scannerHead->getMountRelativeAttitudeByReference();
+        copy->scanner->getScannerHead()->getMountRelativeAttitudeByReference();
     copyMRA.setQ3(copyMRA.getQ3() + 0.1);
-    copy->scanner->beamDeflector->cfg_device_scanFreqMax_Hz += 1.0;
+    copy->scanner->getBeamDeflector()->cfg_device_scanFreqMax_Hz += 1.0;
     copy->scanner->platform->cfg_device_relativeMountPosition.x += 0.01;
     HelicopterPlatform *hp =
         ((HelicopterPlatform *)copy->scanner->platform.get());
@@ -115,7 +115,7 @@ bool SurveyCopyTest::run(){
     speedXy.x += 0.1;
     Rotation & r = hp->getRotationByReference();
     r.setQ2(r.getQ2()+0.1);
-    copy->scanner->FWF_settings.minEchoWidth += 0.001;
+    copy->scanner->getFWFSettings().minEchoWidth += 0.001;
     copy->legs[0]->mPlatformSettings->onGround = true;
     std::shared_ptr<Scene> copyScene = copy->scanner->platform->scene;
     copyScene->primitives[0]->getVertices()[0].pos.x += 0.1;
@@ -129,27 +129,28 @@ bool SurveyCopyTest::run(){
     if(copy->numRuns == survey->numRuns) return false;
     if(copy->simSpeedFactor != survey->simSpeedFactor) return false;
     if(copy->scanner->name == survey->scanner->name) return false;
-    if(copy->scanner->numTimeBins!=survey->scanner->numTimeBins) return false;
+    if(copy->scanner->getNumTimeBins()!=survey->scanner->getNumTimeBins())
+        return false;
     if(copy->scanner->isCalcEchowidth() != survey->scanner->isCalcEchowidth())
         return false;
-    if(copy->scanner->FWF_settings.minEchoWidth ==
-            survey->scanner->FWF_settings.minEchoWidth)
+    if(copy->scanner->getFWFSettings().minEchoWidth ==
+            survey->scanner->getFWFSettings().minEchoWidth)
         return false;
-    if(copy->scanner->FWF_settings.apertureDiameter !=
-       survey->scanner->FWF_settings.apertureDiameter)
+    if(copy->scanner->getFWFSettings().apertureDiameter !=
+       survey->scanner->getFWFSettings().apertureDiameter)
         return false;
-    if(copy->scanner->scannerHead->getRotatePerSecMax() !=
-            survey->scanner->scannerHead->getRotatePerSecMax())
+    if(copy->scanner->getScannerHead()->getRotatePerSecMax() !=
+            survey->scanner->getScannerHead()->getRotatePerSecMax())
         return false;
-    Rotation &baseMRA =
-        survey->scanner->scannerHead->getMountRelativeAttitudeByReference();
+    Rotation &baseMRA = survey->scanner->getScannerHead()
+        ->getMountRelativeAttitudeByReference();
     if(copyMRA.getQ0()!=baseMRA.getQ0() || copyMRA.getQ3()==baseMRA.getQ3())
         return false;
-    if(copy->scanner->beamDeflector->cfg_device_scanFreqMin_Hz !=
-            survey->scanner->beamDeflector->cfg_device_scanFreqMin_Hz)
+    if(copy->scanner->getBeamDeflector()->cfg_device_scanFreqMin_Hz !=
+            survey->scanner->getBeamDeflector()->cfg_device_scanFreqMin_Hz)
         return false;
-    if(copy->scanner->beamDeflector->cfg_device_scanFreqMax_Hz ==
-            survey->scanner->beamDeflector->cfg_device_scanFreqMax_Hz)
+    if(copy->scanner->getBeamDeflector()->cfg_device_scanFreqMax_Hz ==
+            survey->scanner->getBeamDeflector()->cfg_device_scanFreqMax_Hz)
         return false;
     if(copy->scanner->platform->cfg_device_relativeMountPosition.x ==
             survey->scanner->platform->cfg_device_relativeMountPosition.x)

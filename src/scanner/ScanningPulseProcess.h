@@ -28,7 +28,7 @@ protected:
      * @see Scanner::detector
 	 * @see AbstractDetector
 	 */
-    std::shared_ptr<AbstractDetector> &detector;
+    std::shared_ptr<AbstractDetector> detector;
     /**
      * @brief Reference to scanner's current pulse number
      * @see Scanner::state_currentPulseNumber
@@ -72,7 +72,7 @@ public:
      * @brief Default constructor for scanning pulse process
      */
     ScanningPulseProcess(
-        std::shared_ptr<AbstractDetector> &detector,
+        std::shared_ptr<AbstractDetector> detector,
         int &currentPulseNumber,
         bool &writeWaveform,
         bool &calcEchowidth,
@@ -127,7 +127,7 @@ public:
      * @return Scanner's detector
      * @see ScanningPulseProcess::detector
      */
-    inline std::shared_ptr<AbstractDetector> & getDetector() const
+    inline std::shared_ptr<AbstractDetector> getDetector() const
     {return detector;}
     /**
      * @brief Obtain the scanner's current pulse number

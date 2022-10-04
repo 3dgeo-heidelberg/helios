@@ -17,7 +17,7 @@ void VHScannerAdapter::start(){
 void VHScannerAdapter::nextStep(){
     // Check whether current leg has been completed or not
     if(
-        scanner.scannerHead->rotateCompleted() &&
+        scanner.getScannerHead()->rotateCompleted() &&
         scanner.platform->waypointReached()
     ){
         std::cout << "Leg "  << currentLegIndex << " completed!" << std::endl;
@@ -34,13 +34,13 @@ void VHScannerAdapter::nextStep(){
     scanner.platform->doSimStep(getPulseFreq_Hz());
 
     // Update head attitude (we do this even when the scanner is inactive):
-    scanner.scannerHead->doSimStep(getPulseFreq_Hz());
+    scanner.getScannerHead()->doSimStep(getPulseFreq_Hz());
 
     // If the scanner is inactive, stop here:
     if (!scanner.isActive()) return;
 
     // Update beam deflector attitude:
-    scanner.beamDeflector->doSimStep();
+    scanner.getBeamDeflector()->doSimStep();
 
     // Calculate absolute beam originWaypoint:
     origin =    scanner.platform->getAbsoluteMountPosition() +
@@ -126,7 +126,7 @@ void VHScannerAdapter::startLeg(
                 !previousLeg->mScannerSettings->active &&
                 leg->mScannerSettings->active
             ){
-                scanner.beamDeflector->restartDeflector();
+                scanner.getBeamDeflector()->restartDeflector();
             }
         }
     }

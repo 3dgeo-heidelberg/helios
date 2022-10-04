@@ -38,6 +38,7 @@ SingleScanner::SingleScanner(
         beamDiv_rad,
         beamOrigin,
         beamOrientation,
+        pulseFreqs,
         pulseLength_ns,
         averagePower,
         beamQuality,
@@ -75,7 +76,9 @@ void SingleScanner::_clone(Scanner &sc) const{
 
 // ***   M E T H O D S   *** //
 // ************************* //
-void SingleScanner::applySettings(std::shared_ptr<ScannerSettings> settings){
+void SingleScanner::applySettings(
+    std::shared_ptr<ScannerSettings> settings, size_t const idx
+){
     // Configure scanner and scanning device
     setPulseFreq_Hz(settings->pulseFreq_Hz);
     setActive(settings->active);
@@ -84,21 +87,68 @@ void SingleScanner::applySettings(std::shared_ptr<ScannerSettings> settings){
     scanDev.configureBeam();
 
     // Configure other components
-    detector->applySettings(settings);
-    scannerHead->applySettings(settings);
-    beamDeflector->applySettings(settings);
+    getDetector(0)->applySettings(settings);
+    getScannerHead(0)->applySettings(settings);
+    getBeamDeflector(0)->applySettings(settings);
+}
+
+void SingleScanner::doSimStep(
+    unsigned int legIndex, double const currentGpsTime
+){
+    // Check whether the scanner is active or not
+    bool const _isActive = isActive();
+
+    // Simulate scanning devices
+    scanDev.doSimStep(
+        legIndex,
+        currentGpsTime,
+        cfg_setting_pulseFreq_Hz,
+        _isActive,
+        platform->getAbsoluteMountPosition(),
+        platform->getAbsoluteMountAttitude(),
+        [&] (glm::dvec3 &origin, Rotation &attitude) -> void {
+            handleSimStepNoise(origin, attitude);
+        },
+        [&] (
+            unsigned int legIndex,
+            glm::dvec3 &absoluteBeamOrigin,
+            Rotation &absoluteBeamAttitude,
+            double const currentGpsTime
+        ) -> void{
+            spp->handlePulseComputation(
+                legIndex,
+                absoluteBeamOrigin,
+                absoluteBeamAttitude,
+                currentGpsTime
+            );
+        }
+    );
+
+    // If the scanner is inactive, stop here:
+    if (!_isActive) return;
+
+    // Global pulse counter:
+    ++state_currentPulseNumber;
+
+    // Handle trajectory output
+    handleTrajectoryOutput(currentGpsTime);
 }
 
 void SingleScanner::prepareDiscretization(){
-    numTimeBins = getPulseLength_ns(0) / FWF_settings.binSize_ns;
-    time_wave = vector<double>(numTimeBins);
-    peakIntensityIndex = calcTimePropagation(time_wave, numTimeBins);
+    setNumTimeBins(
+        getPulseLength_ns(0) / getFWFSettings(0).binSize_ns,
+        0
+    );
+    setTimeWave(vector<double>(getNumTimeBins(0)), 0);
+    setPeakIntensityIndex(calcTimePropagation(
+        getTimeWave(0), getNumTimeBins(0)
+    ), 0);
 }
 
 int SingleScanner::calcTimePropagation(
     std::vector<double> & timeWave, int const numBins
-) const {
-    double const step = FWF_settings.binSize_ns;
+) {
+    double const step = getFWFSettings(0).binSize_ns;
     //double const tau = (getPulseLength_ns() * 0.5) / 3.5;  // Too many ops.
     double const tau = getPulseLength_ns(0) / 7.0;  // Just one op.
     double t = 0;
@@ -121,15 +171,39 @@ int SingleScanner::calcTimePropagation(
     return peakIndex;
 }
 
-double SingleScanner::calcFootprintArea(double const distance) const {
-    return (M_PI * distance * distance * getBt2(0)) / 4;
+double SingleScanner::calcFootprintArea(
+    double const distance, size_t const idx
+) const {
+    return PI_QUARTER * distance * distance * getBt2(0);
 }
 
-Rotation SingleScanner::calcAbsoluteBeamAttitude() const{
-    Rotation mountRelativeEmitterAttitude =
-        scannerHead->getMountRelativeAttitude()
-            .applyTo(getHeadRelativeEmitterAttitude(0));
-    return platform->getAbsoluteMountAttitude()
-        .applyTo(mountRelativeEmitterAttitude)
-        .applyTo(beamDeflector->getEmitterRelativeAttitude());
+Rotation SingleScanner::calcAbsoluteBeamAttitude() {
+    return scanDev.calcAbsoluteBeamAttitude(
+        platform->getAbsoluteMountAttitude()
+    );
+}
+void SingleScanner::computeSubrays(
+    std::function<void(
+        vector<double> const &_tMinMax,
+        int const circleStep,
+        double const circleStep_rad,
+        Rotation &r1,
+        double const divergenceAngle,
+        NoiseSource<double> &intersectionHandlingNoiseSource,
+        std::map<double, double> &reflections,
+        vector<RaySceneIntersection> &intersects
+    )> handleSubray,
+    vector<double> const &tMinMax,
+    NoiseSource<double> &intersectionHandlingNoiseSource,
+    std::map<double, double> &reflections,
+    vector<RaySceneIntersection> &intersects,
+    size_t const idx
+){
+    scanDev.computeSubrays(
+        handleSubray,
+        tMinMax,
+        intersectionHandlingNoiseSource,
+        reflections,
+        intersects
+    );
 }
