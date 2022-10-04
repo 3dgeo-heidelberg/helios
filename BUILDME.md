@@ -258,7 +258,7 @@ Unzip it inside the `lib` folder and rename it to `boost`.
 
 We also need to download zlib and unzip it inside the `lib/boost` folder.
 
-[Download zlib](https://www.zlib.net/zlib1211.zip)
+[Download zlib](https://www.zlib.net/zlib1212.zip)
 
 Open a Command Prompt terminal in `lib/boost` and execute the following command:
 
@@ -269,7 +269,7 @@ Open a Command Prompt terminal in `lib/boost` and execute the following command:
 If you are **not planning** to compile with Python Binding support, execute:
 
 ```
-b2.exe -j6 -sNO_ZLIB=0 -sZLIB_INCLUDE="zlib-1.2.11" -sZLIB_SOURCE="zlib-1.2.11" address-model=64 link=static
+b2.exe -j6 -sNO_ZLIB=0 -sZLIB_INCLUDE="zlib-1.2.12" -sZLIB_SOURCE="zlib-1.2.12" address-model=64 link=static
 ```
 **REMEMBER** to change the zlib version in above command if you downloaded a different one
 
@@ -316,7 +316,7 @@ If you want to use other location, add `--user-config=/path/to/user-config.jam` 
 Then build **Boost C++** using the following command:
 
 ```
-b2.exe -j6 -sNO_ZLIB=0 -sZLIB_INCLUDE="zlib-1.2.11" -sZLIB_SOURCE="zlib-1.2.11" address-model=64 link=static python=3.6,3.7,3.8,3.9
+b2.exe -j6 -sNO_ZLIB=0 -sZLIB_INCLUDE="zlib-1.2.12" -sZLIB_SOURCE="zlib-1.2.12" address-model=64 link=static python=3.6,3.7,3.8,3.9
 ```
 
 - Remember to change the `zlib` version if you downloaded a different one.
