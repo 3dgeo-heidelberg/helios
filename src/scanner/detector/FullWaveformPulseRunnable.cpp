@@ -575,7 +575,21 @@ double FullWaveformPulseRunnable::calcEmmitedPower(
     double const radius,
     double const targetRange
 ) const {
-    double const I0 = detector->scanner->getAveragePower(0);
+    // TODO Remove : Old implementation below
+    double const I0 = detector->scanner->getAveragePower();
+    double const lambda = detector->scanner->getWavelength();
+    double const R = targetRange;
+    double const R0 = detector->cfg_device_rangeMin_m;
+    double const r = radius;
+    double const w0 = detector->scanner->getBeamWaistRadius();
+    double const denom = M_PI * w0 * w0;
+    double const omega = (lambda * R) / denom;
+    double const omega0 = (lambda * R0) / denom;
+    double const w = w0 * sqrt(omega0 * omega0 + omega * omega);
+
+    return I0 * exp((-2 * r * r) / (w * w));
+    // TODO Rethink : New implementation below
+    /*double const I0 = detector->scanner->getAveragePower(0);
     double const lambda = detector->scanner->getWavelength(0);
     double const R = targetRange;
     double const R0 = detector->cfg_device_rangeMin_m;
@@ -584,7 +598,7 @@ double FullWaveformPulseRunnable::calcEmmitedPower(
     double const denom = PI_SQUARED * w0Squared;
     double const wSquared = lambda*lambda * (R0*R0 + R*R) / denom;
 
-    return I0 * exp(-2 * radius * radius) / wSquared;
+    return I0 * exp(-2 * radius * radius) / wSquared;*/
 }
 
 // Calculate the strength of the laser going back to the detector
