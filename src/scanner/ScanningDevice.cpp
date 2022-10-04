@@ -1,6 +1,7 @@
 #include <ScanningDevice.h>
 #include <maths/MathConstants.h>
 #include <logging.hpp>
+#include <scanner/detector/AbstractDetector.h>
 
 // ***  CONSTRUCTION / DESTRUCTION  *** //
 // ************************************ //
@@ -51,9 +52,6 @@ ScanningDevice::ScanningDevice(ScanningDevice &scdev){
     this->wavelength_m = scdev.wavelength_m;
     this->atmosphericExtinction = scdev.atmosphericExtinction;
     this->beamWaistRadius = scdev.beamWaistRadius;
-    this->scannerHead = scdev.scannerHead;
-    this->beamDeflector = scdev.beamDeflector;
-    this->detector = scdev.detector;
     this->FWF_settings = scdev.FWF_settings;
     this->numRays = scdev.numRays;
     this->supportedPulseFreqs_Hz = scdev.supportedPulseFreqs_Hz;
@@ -61,6 +59,13 @@ ScanningDevice::ScanningDevice(ScanningDevice &scdev){
     this->numTimeBins = scdev.numTimeBins;
     this->peakIntensityIndex = scdev.peakIntensityIndex;
     this->time_wave = scdev.time_wave;
+
+    if(scdev.scannerHead == nullptr) this->scannerHead = nullptr;
+    else this->scannerHead = std::make_shared<ScannerHead>(*scdev.scannerHead);
+    if(scdev.beamDeflector == nullptr) this->beamDeflector = nullptr;
+    else this->beamDeflector = scdev.beamDeflector->clone();
+    if(scdev.detector == nullptr) this->detector = nullptr;
+    else this->detector = scdev.detector->clone();
 }
 
 // ***  M E T H O D S  *** //

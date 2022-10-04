@@ -273,4 +273,56 @@ public:
         std::vector<RaySceneIntersection> &intersects
     );
 
+    /**
+     * @brief Compute intensity. It is the strength of the laser going back
+     *  to the detector considering the emitted power \f$P_e\f$, and its
+     *  corresponding received power \f$P_r\f$.
+     *
+     * Let \f$I_0\f$ be the average power of the scanning device, \f$\lambda\f$
+     *  be the wavelength, \f$R\f$ be the target range, \f$R_0\f$ be the
+     *  minimum range, and \f$w_0\f$ be the beam waist radius. Thus, the
+     *  emitted power \f$P_e\f$ can be defined:
+     * \f[
+     *  P_e = I_0 \exp\left(-2r^2\right) \left[{
+     *      \frac{\lambda^2}{\pi^2 w_0^2} \left(R_0^2 + R^2\right)
+     *  }\right]^{-1}
+     * \f]
+     *
+     * Note that if \f$a_e\f$ is the atmospheric extinction coefficient, then
+     *  the atmospheric factor \f$\eta_a\f$ is:
+     * \f[
+     *  \eta_a = \exp\left(-2Ra_e\right)
+     * \f]
+     *
+     * Now, let \f$\eta_s\f$ be the efficiency of the scanning device,
+     *  \f$\sigma\f$ be the cross section between the target area and the
+     *  incidence angle, \f$D_{r2}\f$ the squared receiver diameter, and
+     *  \f$B_{t2}\f$ the squared beam divergence. Thus, the received power
+     *  can be calculated as:
+     * \f[
+     * \begin{split}
+     *  P_r =& \frac{P_e D_{r2} \eta_s \eta_a \sigma}{4 \pi R^4 B_{t2}} \\
+     *   =& \frac{
+     *          I_0 \exp\left[-2\left(r^2+Ra_e\right)\right]
+     *          \pi w_0^2 \eta_s \sigma D_{r2}
+     *      }{
+     *          4 \lambda^2 \left(R_0^2 + R^2\right) R^4 B_{t2}
+     *      }
+     * \end{split}
+     * \f]
+     *
+     * Finally, the intensity would be \f$P_r 10^9\f$.
+     *
+     * @return Computed intensity \f$P_r 10^9\f$
+     */
+    double calcIntensity(
+        double const incidenceAngle,
+        double const targetRange,
+        double const targetReflectivity,
+        double const targetSpecularity,
+        double const targetSpecularExponent,
+        double const targetArea,
+        double const radius
+    ) const;
+
 };
