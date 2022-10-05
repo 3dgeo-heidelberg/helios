@@ -323,21 +323,19 @@ void FullWaveformPulseRunnable::findMaxMinHitDistances(
     // Find min-max hit distances
     map<double, double>::iterator it;
     for (it = reflections.begin(); it != reflections.end(); it++) {
-
-        double entryDistance = it->first;
-
-        if (entryDistance > maxHitDist_m) {
+        double const entryDistance = it->first;
+        if(entryDistance > maxHitDist_m) {
             maxHitDist_m = entryDistance;
         }
-        if (entryDistance < minHitDist_m) {
+        if(entryDistance < minHitDist_m) {
             minHitDist_m = entryDistance;
         }
     }
 }
 
 bool FullWaveformPulseRunnable::initializeFullWaveform(
-    double minHitDist_m,
-    double maxHitDist_m,
+    double const minHitDist_m,
+    double const maxHitDist_m,
     double &minHitTime_ns,
     double &maxHitTime_ns,
     double &nsPerBin,
@@ -345,46 +343,17 @@ bool FullWaveformPulseRunnable::initializeFullWaveform(
     int &peakIntensityIndex,
     int &numFullwaveBins
 ){
-    // Calc time at minimum and maximum distance
-    // (i.e. total beam time in fwf signal)
-    FWFSettings const &fwfSettings = detector->scanner->getFWFSettings(0);
-    peakIntensityIndex = detector->scanner->getPeakIntensityIndex(0);
-    nsPerBin = fwfSettings.binSize_ns;
-    double const peakFactor = peakIntensityIndex * nsPerBin;
-    // Time until first maximum minus rising flank
-    minHitTime_ns = minHitDist_m / cfg_speedOfLight_mPerNanosec - peakFactor;
-    // Time until last maximum time for signal decay with 1 bin for buffer
-    maxHitTime_ns = maxHitDist_m / cfg_speedOfLight_mPerNanosec +
-        detector->scanner->getPulseLength_ns(0) - peakFactor +
-        nsPerBin; // 1 bin for buffer
-
-    // Calc ranges and threshold
-    double hitTimeDelta_ns = maxHitTime_ns - minHitTime_ns;
-    double maxFullwaveRange_ns = fwfSettings.maxFullwaveRange_ns;
-    distanceThreshold = maxHitDist_m;
-    if(maxFullwaveRange_ns > 0.0 && hitTimeDelta_ns > maxFullwaveRange_ns){
-        hitTimeDelta_ns = maxFullwaveRange_ns;
-        maxHitTime_ns = minHitTime_ns + maxFullwaveRange_ns;
-        distanceThreshold = cfg_speedOfLight_mPerNanosec * maxFullwaveRange_ns;
-    }
-
-    // Check if full wave is possible
-    if(
-        (detector->cfg_device_rangeMin_m / cfg_speedOfLight_mPerNanosec)
-        > minHitTime_ns
-    ) {
-        return false;
-    }
-
-    // Compute fullwave variables
-    numFullwaveBins = ((int)std::ceil(maxHitTime_ns/nsPerBin)) -
-        ((int)ceil(minHitTime_ns/nsPerBin));
-
-    // update maxHitTime to fit the discretized fullwave bins
-    // minus 1 is necessary as the minimum is in bin #0
-    maxHitTime_ns = minHitTime_ns + (numFullwaveBins - 1) * nsPerBin;
-
-    return true;
+    return detector->scanner->initializeFullWaveform(
+        minHitDist_m,
+        maxHitDist_m,
+        minHitTime_ns,
+        maxHitTime_ns,
+        nsPerBin,
+        distanceThreshold,
+        peakIntensityIndex,
+        numFullwaveBins,
+        0
+    );
 }
 
 void FullWaveformPulseRunnable::populateFullWaveform(
@@ -404,7 +373,7 @@ void FullWaveformPulseRunnable::populateFullWaveform(
         if(entryDistance_m > distanceThreshold) continue;
         double const entryIntensity = it->second;
         double const wavePeakTime_ns = entryDistance_m /
-            cfg_speedOfLight_mPerNanosec; // in nanoseconds
+            SPEEDofLIGHT_mPerNanosec; // in nanoseconds
         int const binStart = std::max(
             (
                 (
@@ -471,7 +440,7 @@ void FullWaveformPulseRunnable::digestFullWaveform(
         }
 
         // Compute distance
-        double distance = cfg_speedOfLight_mPerNanosec *
+        double distance = SPEEDofLIGHT_mPerNanosec *
             (i * nsPerBin + minHitTime_ns);
 
         // Build list of objects that produced this return
@@ -573,70 +542,6 @@ shared_ptr<RaySceneIntersection> FullWaveformPulseRunnable::findIntersection(
 ) const {
     return scene.getIntersection(tMinMax, o, v, false);
 }
-
-// Space distribution equation to calculate the beam energy decreasing the further away from the center (Carlsson et al., 2001)
-double FullWaveformPulseRunnable::calcEmmitedPower(
-    double const radius,
-    double const targetRange
-) const {
-    // TODO Remove : Old implementation below
-    return EnergyMaths::calcEmittedPowerLegacy(
-        detector->scanner->getAveragePower(0),
-        detector->scanner->getWavelength(0),
-        targetRange,
-        detector->cfg_device_rangeMin_m,
-        radius,
-        detector->scanner->getBeamWaistRadius(0)
-    );
-
-    // TODO Rethink : New implementation below
-    /*return EnergyMaths::calcEmittedPower(
-        detector->scanner->getAveragePower(0),
-        detector->scanner->getWavelength(0),
-        targetRange,
-        detector->cfg_device_rangeMin_m,
-        radius,
-        detector->scanner->getBeamWaistRadius(0)
-    );*/
-}
-
-// Calculate the strength of the laser going back to the detector
-double FullWaveformPulseRunnable::calcIntensity(
-    double const incidenceAngle,
-    double const targetRange,
-    double const targetReflectivity,
-    double const targetSpecularity,
-    double const targetSpecularExponent,
-    double const targetArea,
-    double const radius
-) const {
-    double const emmitedPower = calcEmmitedPower(radius, targetRange);
-    double const intensity = AbstractPulseRunnable::calcReceivedPower(
-        emmitedPower,
-        targetRange,
-        incidenceAngle,
-        targetReflectivity,
-        targetSpecularity,
-        targetSpecularExponent,
-        targetArea
-    );
-    return intensity * 1000000000.0;
-}
-
-double FullWaveformPulseRunnable::calcIntensity(
-    double const targetRange,
-    double const radius,
-    double const sigma
-) const {
-    double const emmitedPower = calcEmmitedPower(radius, targetRange);
-    double const intensity = AbstractPulseRunnable::calcReceivedPower(
-        emmitedPower,
-        targetRange,
-        sigma
-    );
-    return intensity * 1000000000.0;
-}
-
 
 void FullWaveformPulseRunnable::captureFullWave(
     vector<double> & fullwave,

@@ -219,8 +219,8 @@ private:
      * @see FullWaveformPulseRunnable::digestIntersections
      */
     bool initializeFullWaveform(
-        double minHitDist_m,
-        double maxHitDist_m,
+        double const minHitDist_m,
+        double const maxHitDist_m,
         double &minHitTime_ns,
         double &maxHitTime_ns,
         double &nsPerBin,
@@ -306,14 +306,6 @@ private:
         vector<double> const &fullwave
     );
 
-    /**
-     * @brief Compute the space distribution equation to calculate the beam
-     * energy decreasing the further away from the center
-     */
-	double calcEmmitedPower(
-	    double const radius,
-        double const targetRange
-    ) const ;
 	/**
 	 * @brief Capture full wave
 	 * @param fullwave Full wave vector
@@ -341,32 +333,6 @@ private:
     );
 
 public:
-    /**
-     * @brief Compute intensity. It is, the strength of the laser going back
-     *  to the detector considering the emmited power as computed by
-     *  FullWaveformPulseRannaable::calcEmmitedPower
-     */
-	double calcIntensity(
-	    double const incidenceAngle,
-	    double const targetRange,
-	    double const targetReflectivity,
-	    double const targetSpecularity,
-        double const targetSpecularExponent,
-	    double const targetArea,
-	    double const radius
-    ) const;
-
-	/**
-	 * @brief Compute intensity through scaling
-	 *  AbstractPulseRunnable::calcReceivedPower, which is computed considering
-	 *  FullWaveformPulseRunnable::calcEmmitedPower
-	 */
-	double calcIntensity(
-        double const targetRange,
-        double const radius,
-        double const sigma
-    ) const;
-
 	// ***  O P E R A T O R  *** //
 	// ************************* //
 	/**

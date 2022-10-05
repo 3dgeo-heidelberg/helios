@@ -23,6 +23,8 @@ using helios::filems::SimpleSyncFileWriter;
 
 using namespace std;
 
+// ***  CONSTRUCTION / DESTRUCTION  *** //
+// ************************************ //
 SurveyPlayback::SurveyPlayback(
     shared_ptr<Survey> survey,
     shared_ptr<FMSFacade> fms,

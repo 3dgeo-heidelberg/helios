@@ -17,7 +17,6 @@ class AbstractDetector;
 #include <unordered_map>
 #include <map>
 
-// TODO Rethink : Check all diamond friend classes are properly declared
 class Scanner;
 class SingleScanner;
 class MultiScanner;
@@ -271,6 +270,19 @@ public:
         NoiseSource<double> &intersectionHandlingNoiseSource,
         std::map<double, double> &reflections,
         std::vector<RaySceneIntersection> &intersects
+    );
+    /**
+     * @see Scanner::initializeFullWaveform
+     */
+    bool initializeFullWaveform(
+        double const minHitDist_m,
+        double const maxHitDist_m,
+        double &minHitTime_ns,
+        double &maxHitTime_ns,
+        double &nsPerBin,
+        double &distanceThreshold,
+        int &peakIntensityIndex,
+        int &numFullwaveBins
     );
 
     /**

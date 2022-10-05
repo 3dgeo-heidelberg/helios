@@ -32,7 +32,7 @@ SingleScanner::SingleScanner(
         calcEchowidth,
         fullWaveNoise,
         platformNoiseDisabled
-    ), // TODO Rethink : Pass properly arguments to parent constructor
+    ),
     scanDev(
         id,
         beamDiv_rad,
@@ -205,6 +205,29 @@ void SingleScanner::computeSubrays(
         intersectionHandlingNoiseSource,
         reflections,
         intersects
+    );
+}
+
+bool SingleScanner::initializeFullWaveform(
+    double const minHitDist_m,
+    double const maxHitDist_m,
+    double &minHitTime_ns,
+    double &maxHitTime_ns,
+    double &nsPerBin,
+    double &distanceThreshold,
+    int &peakIntensityIndex,
+    int &numFullwaveBins,
+    size_t const idx
+){
+    return scanDev.initializeFullWaveform(
+        minHitDist_m,
+        maxHitDist_m,
+        minHitTime_ns,
+        maxHitTime_ns,
+        nsPerBin,
+        distanceThreshold,
+        peakIntensityIndex,
+        numFullwaveBins
     );
 }
 

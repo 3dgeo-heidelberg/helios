@@ -39,7 +39,6 @@ ScanningDevice::ScanningDevice(
 }
 
 ScanningDevice::ScanningDevice(ScanningDevice &scdev){
-    // TODO Rethink : Implement
     this->id = scdev.id;
     this->headRelativeEmitterPosition = scdev.headRelativeEmitterPosition;
     this->headRelativeEmitterAttitude = scdev.headRelativeEmitterAttitude;
@@ -220,6 +219,57 @@ void ScanningDevice::computeSubrays(
             );
         }
     }
+}
+
+bool ScanningDevice::initializeFullWaveform(
+    double const minHitDist_m,
+    double const maxHitDist_m,
+    double &minHitTime_ns,
+    double &maxHitTime_ns,
+    double &nsPerBin,
+    double &distanceThreshold,
+    int &peakIntensityIndex,
+    int &numFullwaveBins
+){
+    // Calc time at minimum and maximum distance
+    // (i.e. total beam time in fwf signal)
+    nsPerBin = FWF_settings.binSize_ns;
+    peakIntensityIndex = this->peakIntensityIndex;
+    double const peakFactor = peakIntensityIndex * nsPerBin;
+    // Time until first maximum minus rising flank
+    minHitTime_ns = minHitDist_m / SPEEDofLIGHT_mPerNanosec - peakFactor;
+    // Time until last maximum time for signal decay with 1 bin for buffer
+    maxHitTime_ns = maxHitDist_m / SPEEDofLIGHT_mPerNanosec +
+                    pulseLength_ns - peakFactor +
+                    nsPerBin; // 1 bin for buffer
+
+    // Calc ranges and threshold
+    double hitTimeDelta_ns = maxHitTime_ns - minHitTime_ns;
+    double const maxFullwaveRange_ns = FWF_settings.maxFullwaveRange_ns;
+    distanceThreshold = maxHitDist_m;
+    if(maxFullwaveRange_ns > 0.0 && hitTimeDelta_ns > maxFullwaveRange_ns){
+        hitTimeDelta_ns = maxFullwaveRange_ns;
+        maxHitTime_ns = minHitTime_ns + maxFullwaveRange_ns;
+        distanceThreshold = SPEEDofLIGHT_mPerNanosec * maxFullwaveRange_ns;
+    }
+
+    // Check if full wave is possible
+    if(
+        (detector->cfg_device_rangeMin_m / SPEEDofLIGHT_mPerNanosec)
+        > minHitTime_ns
+    ) {
+        return false;
+    }
+
+    // Compute fullwave variables
+    numFullwaveBins = ((int)std::ceil(maxHitTime_ns/nsPerBin)) -
+                      ((int)ceil(minHitTime_ns/nsPerBin));
+
+    // update maxHitTime to fit the discretized fullwave bins
+    // minus 1 is necessary as the minimum is in bin #0
+    maxHitTime_ns = minHitTime_ns + (numFullwaveBins - 1) * nsPerBin;
+
+    return true;
 }
 
 double ScanningDevice::calcIntensity(

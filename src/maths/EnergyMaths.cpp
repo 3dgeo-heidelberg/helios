@@ -3,6 +3,7 @@
 
 // ***  EMITTED / RECEIVED POWER  *** //
 // ********************************** //
+// Space distribution equation to calculate the beam energy decreasing the further away from the center (Carlsson et al., 2001)
 double EnergyMaths::calcEmittedPower(
     double const I0,
     double const lambda,
@@ -30,6 +31,7 @@ double EnergyMaths::calcEmittedPowerLegacy(
     return I0 * exp((-2 * r * r) / (w * w));
 }
 
+// Laser radar equation "Signature simulation..." (Carlsson et al., 2000)
 double EnergyMaths::calcReceivedPower(
     double const I0,
     double const lambda,
@@ -68,6 +70,7 @@ double EnergyMaths::calcReceivedPowerLegacy(
 
 // ***  ATMOSPHERIC STUFF  *** //
 // *************************** //
+// Energy left after attenuation by air particles in range [0,1]
 double EnergyMaths::calcAtmosphericFactor(double const R, double const ae){
     return exp(-2 * R * ae);
 }

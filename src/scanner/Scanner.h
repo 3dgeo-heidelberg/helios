@@ -424,8 +424,9 @@ public:
      * @param[out] intersects Where intersections must be stored when a hit is
      *  registered
      * @param[in] idx The index of the scanning device
+     * @see FullWaveformPulseRunnable::computeSubrays
      * @see FullWaveformPulseRunnable::handleSubray
-     * @see ScanningDevice::
+     * @see ScanningDevice::computeSubrays
      */
     virtual void computeSubrays(
         std::function<void(
@@ -442,6 +443,34 @@ public:
         NoiseSource<double> &intersectionHandlingNoiseSource,
         std::map<double, double> &reflections,
         vector<RaySceneIntersection> &intersects,
+        size_t const idx
+    ) = 0;
+
+    /**
+     * @brief Initialize full waveform
+     * While the vector is not strictly initialized in this function,
+     * necessary variables are computed here.
+     * @param[out] nsPerBin The size of each bin in nano seconds
+     * @param[out] distanceThreshold Limit distance threshold
+     * @param[out] peakIntensityIndex Index of intensity peak
+     * @param[out] numFullwaveBins How many bins are necessary to discretize
+     *  the full waveform
+     * @param[in] idx The index of the scanning device
+     * @return True if it is possible to initialize the full waveform,
+     * false otherwise.
+     * @see FullWaveformPulseRunnable::initializeFullWaveform
+     * @see FullWaveformPulseRunnable::digestIntersections
+     * @see ScanningDevice::initializeFullWaveform
+     */
+    virtual bool initializeFullWaveform(
+        double const minHitDist_m,
+        double const maxHitDist_m,
+        double &minHitTime_ns,
+        double &maxHitTime_ns,
+        double &nsPerBin,
+        double &distanceThreshold,
+        int &peakIntensityIndex,
+        int &numFullwaveBins,
         size_t const idx
     ) = 0;
 

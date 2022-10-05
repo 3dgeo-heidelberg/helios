@@ -87,3 +87,19 @@ const double ALMOST_PLUS_1 = 0.9999999999;
  */
 
 const double SQRT2 = 1.4142135623730951;
+
+
+/**
+ * @brief Speed of light in meters per second
+ */
+const double SPEEDofLIGHT_mPerSec = 299792458;
+
+/**
+ * @brief Speed of light in meters per nanosecond
+ */
+const double SPEEDofLIGHT_mPerNanosec = 0.299792458;
+
+/**
+ * @brief Speed of light in meters per picosecond
+ */
+const double SPEEDofLIGHT_mPerPicosec = 0.000299792458;

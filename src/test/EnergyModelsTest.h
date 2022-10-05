@@ -23,7 +23,7 @@ public:
     /**
      * @brief Energy models test constructor
      */
-    EnergyModelsTest() : BaseTest("Enermgy models test") {}
+    EnergyModelsTest() : BaseTest("Energy models test") {}
 
     // ***  R U N  *** //
     // *************** //

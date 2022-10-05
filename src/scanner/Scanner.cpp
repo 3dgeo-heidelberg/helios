@@ -195,9 +195,6 @@ void Scanner::_clone(Scanner &sc) const{
             UniformNoiseSource<double>
         >(*intersectionHandlingNoiseSource);
     }
-
-    // TODO Rethink : Update all references from cloned objects to cloned scanner
-    // Update references from cloned objects so they point to cloned scanner
 }
 
 
@@ -248,13 +245,6 @@ string Scanner::toString() {
             << "\tVisibility: " << getVisibility(i) << " km\n";
     }
     return ss.str();
-}
-
-void Scanner::doSimStep(
-    unsigned int const legIndex,
-    double currentGpsTime
-) {
-    // TODO Rethink : Make pure virtual, move implementation to SingleScanner
 }
 
 

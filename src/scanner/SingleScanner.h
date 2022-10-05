@@ -131,6 +131,20 @@ public:
         size_t const idx
     ) override;
     /**
+     * @see Scanner::initializeFullWaveform
+     */
+    bool initializeFullWaveform(
+        double const minHitDist_m,
+        double const maxHitDist_m,
+        double &minHitTime_ns,
+        double &maxHitTime_ns,
+        double &nsPerBin,
+        double &distanceThreshold,
+        int &peakIntensityIndex,
+        int &numFullwaveBins,
+        size_t const idx
+    ) override;
+    /**
      * @see Scanner::calcIntensity
      */
     double calcIntensity(
