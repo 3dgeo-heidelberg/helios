@@ -145,7 +145,7 @@ def eval_detailedVoxels_uls(dirname):
         for _ in range(6):
             next(f)
         line = f.readline()
-        assert line.startswith('-3.0000 -1.2741 50.0000')
+        assert line.startswith('-3.0000 -2.1000 50.0000')
     # clean up
     if DELETE_FILES_AFTER:
         shutil.rmtree(dirname)
