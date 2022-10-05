@@ -151,7 +151,7 @@ public:
 	 * @brief Time interval between record of trajectory points. When it is
 	 * exactly 0, then no trajectory points will be recorded.
 	 *
-	 * NOTICE that it is given in nanosconds, while the trajectoryTimeInterval
+	 * NOTICE that it is given in nanoseconds, while the trajectoryTimeInterval
 	 *  in the ScannerSettings class is given in seconds, as the user argument
 	 *  itself
 	 * @see ScannerSettings::trajectoryTimeInterval
