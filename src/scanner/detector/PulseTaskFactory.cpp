@@ -19,13 +19,14 @@ shared_ptr<PulseTask> PulseTaskFactory::buildFullWaveformPulseRunnable(
     unsigned int const legIndex,
     glm::dvec3 &absoluteBeamOrigin,
     Rotation &absoluteBeamAttitude,
-    double const currentGpsTime
+    double const currentGpsTime,
+    int const currentPulseNumber
 ) const {
     return make_shared<FullWaveformPulseRunnable>(
         dynamic_pointer_cast<FullWaveformPulseDetector>(spp.getDetector()),
         absoluteBeamOrigin,
         absoluteBeamAttitude,
-        spp.getCurrentPulseNumber(),
+        currentPulseNumber,
         currentGpsTime,
         spp.isWriteWaveform(),
         spp.isCalcEchowidth(),
@@ -42,7 +43,8 @@ shared_ptr<PulseTask> PulseTaskFactory::buildDynFullWaveformPulseRunnable(
     unsigned int const legIndex,
     glm::dvec3 &absoluteBeamOrigin,
     Rotation &absoluteBeamAttitude,
-    double const currentGpsTime
+    double const currentGpsTime,
+    int const currentPulseNumber
 ) const {
     return make_shared<DynFullWaveformPulseRunnable>(
         spp.getDetector()->scanner->platform->scene->getRaycaster()\
@@ -50,7 +52,7 @@ shared_ptr<PulseTask> PulseTaskFactory::buildDynFullWaveformPulseRunnable(
         dynamic_pointer_cast<FullWaveformPulseDetector>(spp.getDetector()),
         absoluteBeamOrigin,
         absoluteBeamAttitude,
-        spp.getCurrentPulseNumber(),
+        currentPulseNumber,
         currentGpsTime,
         spp.isWriteWaveform(),
         spp.isCalcEchowidth(),
@@ -69,14 +71,16 @@ void PulseTaskFactory::configureBuildMethod(){
             unsigned int const legIndex,
             glm::dvec3 &absoluteBeamOrigin,
             Rotation &absoluteBeamAttitude,
-            double const currentGpsTime
+            double const currentGpsTime,
+            int const currentPulseNumber
         ) -> shared_ptr<PulseTask>{
             return buildDynFullWaveformPulseRunnable(
                 spp,
                 legIndex,
                 absoluteBeamOrigin,
                 absoluteBeamAttitude,
-                currentGpsTime
+                currentGpsTime,
+                currentPulseNumber
             );
         };
     }
@@ -86,14 +90,16 @@ void PulseTaskFactory::configureBuildMethod(){
             unsigned int const legIndex,
             glm::dvec3 &absoluteBeamOrigin,
             Rotation &absoluteBeamAttitude,
-            double const currentGpsTime
+            double const currentGpsTime,
+            int const currentPulseNumber
         ) -> shared_ptr<PulseTask>{
             return buildFullWaveformPulseRunnable(
                 spp,
                 legIndex,
                 absoluteBeamOrigin,
                 absoluteBeamAttitude,
-                currentGpsTime
+                currentGpsTime,
+                currentPulseNumber
             );
         };
     }

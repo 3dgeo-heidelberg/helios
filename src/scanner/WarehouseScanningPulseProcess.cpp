@@ -4,10 +4,9 @@
 // ***  CONSTRUCTION / DESTRUCTION  *** //
 // ************************************ //
 WarehouseScanningPulseProcess::WarehouseScanningPulseProcess(
-    std::shared_ptr<AbstractDetector> &detector,
-    int &currentPulseNumber,
-    bool &writeWaveform,
-    bool &calcEchowidth,
+    std::shared_ptr<AbstractDetector> detector,
+    bool const writeWaveform,
+    bool const calcEchowidth,
     std::shared_ptr<std::vector<Measurement>> &allMeasurements,
     std::shared_ptr<std::mutex> &allMeasurementsMutex,
     std::shared_ptr<std::vector<Measurement>> &cycleMeasurements,
@@ -20,7 +19,6 @@ WarehouseScanningPulseProcess::WarehouseScanningPulseProcess(
 ) :
     ScanningPulseProcess(
         detector,
-        currentPulseNumber,
         writeWaveform,
         calcEchowidth,
         allMeasurements,
@@ -39,13 +37,15 @@ WarehouseScanningPulseProcess::WarehouseScanningPulseProcess(
             unsigned int const legIndex,
             glm::dvec3 &absoluteBeamOrigin,
             Rotation &absoluteBeamAttitude,
-            double const currentGpsTime
+            double const currentGpsTime,
+            int const currentPulseNumber
         ) -> void {
             handlePulseComputationParallel(
                 legIndex,
                 absoluteBeamOrigin,
                 absoluteBeamAttitude,
-                currentGpsTime
+                currentGpsTime,
+                currentPulseNumber
             );
         };
     }
@@ -54,13 +54,15 @@ WarehouseScanningPulseProcess::WarehouseScanningPulseProcess(
             unsigned int const legIndex,
             glm::dvec3 &absoluteBeamOrigin,
             Rotation &absoluteBeamAttitude,
-            double const currentGpsTime
+            double const currentGpsTime,
+            int const currentPulseNumber
         ) -> void {
             handlePulseComputationSequential(
                 legIndex,
                 absoluteBeamOrigin,
                 absoluteBeamAttitude,
-                currentGpsTime
+                currentGpsTime,
+                currentPulseNumber
             );
         };
     }
@@ -99,7 +101,8 @@ void WarehouseScanningPulseProcess::handlePulseComputationSequential(
     unsigned int const legIndex,
     glm::dvec3 &absoluteBeamOrigin,
     Rotation &absoluteBeamAttitude,
-    double const currentGpsTime
+    double const currentGpsTime,
+    int const currentPulseNumber
 ){
     // Sequential pulse computation
     shared_ptr<PulseTask> worker = ptf.build(
@@ -107,7 +110,8 @@ void WarehouseScanningPulseProcess::handlePulseComputationSequential(
         legIndex,
         absoluteBeamOrigin,
         absoluteBeamAttitude,
-        currentGpsTime
+        currentGpsTime,
+        currentPulseNumber
     );
     (*worker)( // call functor
         apMatrix,
@@ -121,7 +125,8 @@ void WarehouseScanningPulseProcess::handlePulseComputationParallel(
     unsigned int const legIndex,
     glm::dvec3 &absoluteBeamOrigin,
     Rotation &absoluteBeamAttitude,
-    double const currentGpsTime
+    double const currentGpsTime,
+    int const currentPulseNumber
 ){
     // Submit pulse computation functor to thread pool
     char const status = dropper.tryAdd(
@@ -131,7 +136,8 @@ void WarehouseScanningPulseProcess::handlePulseComputationParallel(
             legIndex,
             absoluteBeamOrigin,
             absoluteBeamAttitude,
-            currentGpsTime
+            currentGpsTime,
+            currentPulseNumber
         )
     );
     if(status){

@@ -70,15 +70,15 @@ void Simulation::prepareSimulation(int simFrequency_hz){
 void Simulation::doSimStep(){
 	// Check for leg completion:
 	if(
-	    mScanner->scannerHead->rotateCompleted() &&
-	    getScanner()->platform->waypointReached()
+	    mScanner->getScannerHead(0)->rotateCompleted() &&
+	    mScanner->platform->waypointReached()
     ){
 	    onLegComplete();
         return;
     }
 
     // Ordered execution of simulation components
-	mScanner->platform->doSimStep(getScanner()->getPulseFreq_Hz());
+	mScanner->platform->doSimStep(mScanner->getPulseFreq_Hz());
     mScanner->doSimStep(mCurrentLegIndex, currentGpsTime_ns);
 	mScanner->platform->scene->doSimStep();
     currentGpsTime_ns += stepGpsTime_ns;
@@ -108,7 +108,7 @@ void Simulation::shutdown(){
         (*callback)(
             *mScanner->cycleMeasurements,
             *mScanner->cycleTrajectories,
-            mScanner->detector->getFMS()->write
+            mScanner->fms->write
                 .getMeasurementWriterOutputPath().string()
         );
     }
@@ -147,7 +147,7 @@ void Simulation::start() {
                 (*callback)(
                     *mScanner->cycleMeasurements,
                     *mScanner->cycleTrajectories,
-                    mScanner->detector->getFMS()->write
+                    mScanner->fms->write
                         .getMeasurementWriterOutputPath().string()
                 );
                 mScanner->cycleMeasurements->clear();

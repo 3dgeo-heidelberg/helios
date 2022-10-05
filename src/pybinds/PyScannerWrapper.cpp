@@ -6,7 +6,7 @@
 using namespace pyhelios;
 
 PyDetectorWrapper * PyScannerWrapper::getPyDetectorWrapper(){
-    return new PyDetectorWrapper(scanner.detector);
+    return new PyDetectorWrapper(scanner.getDetector());
 }
 
 

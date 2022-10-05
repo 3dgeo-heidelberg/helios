@@ -327,7 +327,7 @@ public:
      *  echo or not
      */
     inline double const * getCurrentRayColor() const{
-        if(scanner.beamDeflector->lastPulseLeftDevice()){
+        if(scanner.getBeamDeflector()->lastPulseLeftDevice()){
             return getRayColor();
         }
         return getNonReturningRayColor();

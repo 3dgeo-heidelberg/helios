@@ -33,7 +33,7 @@ protected:
      *  parallel computing method as corresponds
      */
     std::function<void(
-        unsigned int const, glm::dvec3 &, Rotation &, double const
+        unsigned int const, glm::dvec3 &, Rotation &, double const, int const
     )> handler;
 
     /**
@@ -101,10 +101,9 @@ public:
      * @see ScanningPulseProcess::ScanningPulseProcess
      */
     BuddingScanningPulseProcess(
-        std::shared_ptr<AbstractDetector> &detector,
-        int &currentPulseNumber,
-        bool &writeWaveform,
-        bool &calcEchowidth,
+        std::shared_ptr<AbstractDetector> detector,
+        bool const writeWaveform,
+        bool const calcEchowidth,
         std::shared_ptr<std::vector<Measurement>> &allMeasurements,
         std::shared_ptr<std::mutex> &allMeasurementsMutex,
         std::shared_ptr<std::vector<Measurement>> &cycleMeasurements,
@@ -132,13 +131,15 @@ public:
         unsigned int const legIndex,
         glm::dvec3 &absoluteBeamOrigin,
         Rotation &absoluteBeamAttitude,
-        double const currentGpsTime
+        double const currentGpsTime,
+        int const currentPulseNumber
     ) override {
         this->handler(
             legIndex,
             absoluteBeamOrigin,
             absoluteBeamAttitude,
-            currentGpsTime
+            currentGpsTime,
+            currentPulseNumber
         );
     }
     /**
@@ -166,7 +167,8 @@ protected:
         unsigned int const legIndex,
         glm::dvec3 &absoluteBeamOrigin,
         Rotation &absoluteBeamAttitude,
-        double const currentGpsTime
+        double const currentGpsTime,
+        int const currentPulseNumber
     );
     /**
      * @brief Handle parallel computation of scanning pulses using a dynamic
@@ -179,7 +181,8 @@ protected:
         unsigned int const legIndex,
         glm::dvec3 &absoluteBeamOrigin,
         Rotation &absoluteBeamAttitude,
-        double const currentGpsTime
+        double const currentGpsTime,
+        int const currentPulseNumber
     );
     /**
      * @brief Handle a parallel computation of scanning pulse using a static
@@ -192,7 +195,8 @@ protected:
         unsigned int const legIndex,
         glm::dvec3 &absoluteBeamOrigin,
         Rotation &absoluteBeamAttitude,
-        double const currentGpsTime
+        double const currentGpsTime,
+        int const currentPulseNumber
     );
 
 };

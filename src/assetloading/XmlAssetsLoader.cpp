@@ -843,8 +843,8 @@ XmlAssetsLoader::createScannerFromXml(tinyxml2::XMLElement *scannerNode) {
   );
 
   // Parse max number of returns per pulse
-  scanner->maxNOR = boost::get<int>(XmlUtils::getAttribute(
-      scannerNode, "maxNOR", "int", 0));
+  scanner->setMaxNOR(boost::get<int>(XmlUtils::getAttribute(
+      scannerNode, "maxNOR", "int", 0)));
 
   // ########## BEGIN Default FWF_settings ##########
   std::shared_ptr<FWFSettings> settings = std::make_shared<FWFSettings>();
@@ -882,8 +882,8 @@ XmlAssetsLoader::createScannerFromXml(tinyxml2::XMLElement *scannerNode) {
   );
 
   // Configure scanner head:
-  scanner->scannerHead = std::shared_ptr<ScannerHead>(
-      new ScannerHead(headRotateAxis, headRotatePerSecMax_rad));
+  scanner->setScannerHead(std::make_shared<ScannerHead>(
+      headRotateAxis, headRotatePerSecMax_rad));
 
   // ############################# END Configure scanner head
   // ##############################
@@ -947,7 +947,7 @@ XmlAssetsLoader::createScannerFromXml(tinyxml2::XMLElement *scannerNode) {
     exit(1);
   }
 
-  scanner->beamDeflector = beamDeflector;
+  scanner->setBeamDeflector(beamDeflector);
 
   // ################################## END Configure beam deflector
   // #######################################
@@ -966,9 +966,9 @@ XmlAssetsLoader::createScannerFromXml(tinyxml2::XMLElement *scannerNode) {
   );
   double accuracy_m = boost::get<double>(
       XmlUtils::getAttribute(scannerNode, "accuracy_m", "double", 0.0));
-  scanner->detector = std::make_shared<FullWaveformPulseDetector>(
+  scanner->setDetector(std::make_shared<FullWaveformPulseDetector>(
       scanner, accuracy_m, rangeMin_m, rangeMax_m
-  );
+  ));
   // ############################ END Configure detector
   // ###############################
 

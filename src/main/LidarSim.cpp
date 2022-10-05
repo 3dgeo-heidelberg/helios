@@ -117,7 +117,7 @@ void LidarSim::init(
     PulseThreadPoolFactory ptpf(
         parallelizationStrategy,
         poolSize,
-        survey->scanner->detector->cfg_device_accuracy_m,
+        survey->scanner->getDetector()->cfg_device_accuracy_m,
         chunkSize,
         warehouseFactor
     );

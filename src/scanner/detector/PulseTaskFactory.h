@@ -39,7 +39,8 @@ protected:
         unsigned int const,
         glm::dvec3 &,
         Rotation &,
-        double const
+        double const,
+        int const
     )> _build;
 
 public:
@@ -65,9 +66,15 @@ public:
         unsigned int const legIndex,
         glm::dvec3 &absoluteBeamOrigin,
         Rotation &absoluteBeamAttitude,
-        double const currentGpsTime
+        double const currentGpsTime,
+        int const currentPulseNumber
     ) const {return _build(
-        spp, legIndex, absoluteBeamOrigin, absoluteBeamAttitude, currentGpsTime
+        spp,
+        legIndex,
+        absoluteBeamOrigin,
+        absoluteBeamAttitude,
+        currentGpsTime,
+        currentPulseNumber
     );}
 
 protected:
@@ -80,7 +87,8 @@ protected:
         unsigned int const legIndex,
         glm::dvec3 &absoluteBeamOrigin,
         Rotation &absoluteBeamAttitude,
-        double const currentGpsTime
+        double const currentGpsTime,
+        int const currentPulseNumber
     ) const;
     /**
      * @brief Build a DynFullWaveformPulseRunnable from given arguments
@@ -91,7 +99,8 @@ protected:
         unsigned int const legIndex,
         glm::dvec3 &absoluteBeamOrigin,
         Rotation &absoluteBeamAttitude,
-        double const currentGpsTime
+        double const currentGpsTime,
+        int const currentPulseNumber
     ) const;
 
     /**

@@ -14,6 +14,7 @@
 #include <test/ScenePartSplitTest.h>
 #include <test/RigidMotionTest.h>
 #include <test/FluxionumTest.h>
+#include <test/EnergyModelsTest.h>
 #include <test/HPCTest.h>
 
 #include <boost/filesystem.hpp>
@@ -99,6 +100,9 @@ void doTests(std::string const & testDir){
 
     FluxionumTest fluxionumTest(testDir);
     passed &= fluxionumTest.test(std::cout, TEST_COLOR);
+
+    EnergyModelsTest energyModelsTest;
+    passed &= energyModelsTest.test(std::cout, TEST_COLOR);
 
     HPCTest hpcTest;
     passed &= hpcTest.test(std::cout, TEST_COLOR);

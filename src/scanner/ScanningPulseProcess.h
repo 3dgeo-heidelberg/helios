@@ -28,22 +28,17 @@ protected:
      * @see Scanner::detector
 	 * @see AbstractDetector
 	 */
-    std::shared_ptr<AbstractDetector> &detector;
+    std::shared_ptr<AbstractDetector> detector;
     /**
-     * @brief Reference to scanner's current pulse number
-     * @see Scanner::state_currentPulseNumber
-     */
-    int &currentPulseNumber;
-    /**
-     * @brief Reference to scanner's write waveform flag
+     * @brief Copy of the scanner's write waveform flag
      * @see Scanner::writeWaveform
      */
-    bool &writeWaveform;
+    bool writeWaveform;
     /**
-     * @brief Reference to scanner's calc echowidth flag
+     * @brief Copy of the scanner's calc echowidth flag
      * @see Scanner::calcEchowidth
      */
-    bool &calcEchowidth;
+    bool calcEchowidth;
     /**
      * @brief Reference to scanner's all measurements vector
      * @see Scanner::allMeasurements
@@ -72,10 +67,9 @@ public:
      * @brief Default constructor for scanning pulse process
      */
     ScanningPulseProcess(
-        std::shared_ptr<AbstractDetector> &detector,
-        int &currentPulseNumber,
-        bool &writeWaveform,
-        bool &calcEchowidth,
+        std::shared_ptr<AbstractDetector> detector,
+        bool const writeWaveform,
+        bool const calcEchowidth,
         std::shared_ptr<std::vector<Measurement>> &allMeasurements,
         std::shared_ptr<std::mutex> &allMeasurementsMutex,
         std::shared_ptr<std::vector<Measurement>> &cycleMeasurements,
@@ -92,12 +86,15 @@ public:
      * @param absoluteBeamOrigin Absolute position of beam origin
      * @param absoluteBeamAttitude Beam attitude
      * @param currentGpsTime Current GPS time (nanoseconds)
+     * @param currentPulseNumber The current pulse number of the scanning
+     *  device
      */
     virtual void handlePulseComputation(
         unsigned int const legIndex,
         glm::dvec3 &absoluteBeamOrigin,
         Rotation &absoluteBeamAttitude,
-        double const currentGpsTime
+        double const currentGpsTime,
+        int const currentPulseNumber
     ) = 0;
     /**
      * @brief Handle behavior of scanning pulse process once current leg has
@@ -127,26 +124,20 @@ public:
      * @return Scanner's detector
      * @see ScanningPulseProcess::detector
      */
-    inline std::shared_ptr<AbstractDetector> & getDetector() const
+    inline std::shared_ptr<AbstractDetector> getDetector() const
     {return detector;}
-    /**
-     * @brief Obtain the scanner's current pulse number
-     * @return Scanner's current pulse number
-     * @see ScanningPulseProcess::currentPulseNumber
-     */
-    inline int & getCurrentPulseNumber() const {return currentPulseNumber;}
     /**
      * @brief Obtain the scanner's write waveform flag
      * @return Scanner's write waveform flag
      * @see ScanningPulseProcess::writeWaveform
      */
-    inline bool & isWriteWaveform() const {return writeWaveform;}
+    inline bool isWriteWaveform() const {return writeWaveform;}
     /**
      * @brief Obtain the scanner's calc echowidth flag
      * @return Scanner's calc echowidth flag
      * @see ScanningPulseProcess::calcEchowidth
      */
-    inline bool & isCalcEchowidth() const {return calcEchowidth;}
+    inline bool isCalcEchowidth() const {return calcEchowidth;}
     /**
      * @brief Obtain the scanner's all measurements vector
      * @return Scanner's all measurements vector
