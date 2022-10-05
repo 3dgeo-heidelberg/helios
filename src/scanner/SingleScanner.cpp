@@ -113,22 +113,21 @@ void SingleScanner::doSimStep(
             unsigned int legIndex,
             glm::dvec3 &absoluteBeamOrigin,
             Rotation &absoluteBeamAttitude,
-            double const currentGpsTime
+            double const currentGpsTime,
+            int const currentPulseNumber
         ) -> void{
             spp->handlePulseComputation(
                 legIndex,
                 absoluteBeamOrigin,
                 absoluteBeamAttitude,
-                currentGpsTime
+                currentGpsTime,
+                currentPulseNumber
             );
         }
     );
 
     // If the scanner is inactive, stop here:
     if (!_isActive) return;
-
-    // Global pulse counter:
-    ++state_currentPulseNumber;
 
     // Handle trajectory output
     handleTrajectoryOutput(currentGpsTime);

@@ -147,6 +147,20 @@ protected:
      */
     std::vector<double> time_wave;
 
+    // ***  STATE ATTRIBUTES  *** //
+    // ************************** //
+    /**
+	 * @brief Current pulse number
+	 */
+    int state_currentPulseNumber = 0;
+
+protected:
+    /**
+	 * @brief Flag specifying if last pulse was hit (true) or not (false)
+	 */
+    bool state_lastPulseWasHit = false;
+public:
+
     // ***  CACHED ATTRIBUTES  *** //
     // *************************** //
     /**
@@ -239,7 +253,7 @@ public:
         Rotation const &platformAttitude,
         std::function<void(glm::dvec3 &, Rotation &)> handleSimStepNoise,
         std::function<void(
-            unsigned int, glm::dvec3 &, Rotation &, double const
+            unsigned int, glm::dvec3 &, Rotation &, double const, int const
         )> handlePulseComputation
     );
     /**
@@ -352,5 +366,26 @@ public:
         double const radius,
         double const sigma
     ) const;
+
+
+    // ***  GETTERs and SETTERs  *** //
+    // ***************************** //
+    /**
+	 * @brief Check if last pulse was hit (true) or not (false) for the
+     *  scanning device.
+     * @param idx The index of the scanning device which last pulse must be
+     *  checked.
+	 * @return True if the last pulse of the scanning device was hit, false
+     *  otherwise.
+	 * @see ScanningDevice::state_lastPulseWasHit
+     * @see Scanner::lastPulseWasHit(size_t const)
+	 */
+    inline bool lastPulseWasHit() const {return state_lastPulseWasHit;}
+    /**
+	 * @brief Specify if last pulse was hit (true) or not (false)
+	 * @param lastPulseWasHit New last pulse hit specification
+	 * @see Scanner::state_lastPulseWasHit
+	 */
+    void setLastPulseWasHit(bool const value);
 
 };

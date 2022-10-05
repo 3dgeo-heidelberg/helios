@@ -5,9 +5,8 @@
 // ************************************ //
 BuddingScanningPulseProcess::BuddingScanningPulseProcess(
     std::shared_ptr<AbstractDetector> detector,
-    int &currentPulseNumber,
-    bool &writeWaveform,
-    bool &calcEchowidth,
+    bool const writeWaveform,
+    bool const calcEchowidth,
     std::shared_ptr<std::vector<Measurement>> &allMeasurements,
     std::shared_ptr<std::mutex> &allMeasurementsMutex,
     std::shared_ptr<std::vector<Measurement>> &cycleMeasurements,
@@ -20,7 +19,6 @@ BuddingScanningPulseProcess::BuddingScanningPulseProcess(
 ) :
     ScanningPulseProcess(
         detector,
-        currentPulseNumber,
         writeWaveform,
         calcEchowidth,
         allMeasurements,
@@ -40,14 +38,16 @@ BuddingScanningPulseProcess::BuddingScanningPulseProcess(
                 unsigned int const legIndex,
                 glm::dvec3 &absoluteBeamOrigin,
                 Rotation &absoluteBeamAttitude,
-                double const currentGpsTime
+                double const currentGpsTime,
+                int const currentPulseNumber
                 ) -> void {
                 handlePulseComputationParallelDynamic(
                     legIndex,
                     absoluteBeamOrigin,
                     absoluteBeamAttitude,
-                    currentGpsTime
-                    );
+                    currentGpsTime,
+                    currentPulseNumber
+                );
             };
         }
         else{ // Static chunk schedule
@@ -55,13 +55,15 @@ BuddingScanningPulseProcess::BuddingScanningPulseProcess(
                 unsigned int const legIndex,
                 glm::dvec3 &absoluteBeamOrigin,
                 Rotation &absoluteBeamAttitude,
-                double const currentGpsTime
+                double const currentGpsTime,
+                int const currentPulseNumber
             ) -> void {
                 handlePulseComputationParallelStatic(
                     legIndex,
                     absoluteBeamOrigin,
                     absoluteBeamAttitude,
-                    currentGpsTime
+                    currentGpsTime,
+                    currentPulseNumber
                 );
             };
         }
@@ -71,13 +73,15 @@ BuddingScanningPulseProcess::BuddingScanningPulseProcess(
             unsigned int const legIndex,
             glm::dvec3 &absoluteBeamOrigin,
             Rotation &absoluteBeamAttitude,
-            double const currentGpsTime
+            double const currentGpsTime,
+            int const currentPulseNumber
         ) -> void {
             handlePulseComputationSequential(
                 legIndex,
                 absoluteBeamOrigin,
                 absoluteBeamAttitude,
-                currentGpsTime
+                currentGpsTime,
+                currentPulseNumber
             );
         };
     }
@@ -119,7 +123,8 @@ void BuddingScanningPulseProcess::handlePulseComputationSequential(
     unsigned int const legIndex,
     glm::dvec3 &absoluteBeamOrigin,
     Rotation &absoluteBeamAttitude,
-    double const currentGpsTime
+    double const currentGpsTime,
+    int const currentPulseNumber
 ){
     // Sequential pulse computation
     shared_ptr<PulseTask> worker = ptf.build(
@@ -127,7 +132,8 @@ void BuddingScanningPulseProcess::handlePulseComputationSequential(
         legIndex,
         absoluteBeamOrigin,
         absoluteBeamAttitude,
-        currentGpsTime
+        currentGpsTime,
+        currentPulseNumber
     );
     (*worker)( // call functor
         apMatrix,
@@ -140,7 +146,8 @@ void BuddingScanningPulseProcess::handlePulseComputationParallelDynamic(
     unsigned int const legIndex,
     glm::dvec3 &absoluteBeamOrigin,
     Rotation &absoluteBeamAttitude,
-    double const currentGpsTime
+    double const currentGpsTime,
+    int const currentPulseNumber
 ){
     // Submit pulse computation functor to thread pool
     char const status = dropper.tryAdd(
@@ -150,7 +157,8 @@ void BuddingScanningPulseProcess::handlePulseComputationParallelDynamic(
             legIndex,
             absoluteBeamOrigin,
             absoluteBeamAttitude,
-            currentGpsTime
+            currentGpsTime,
+            currentPulseNumber
         )
     );
     if(status==1){ // Dropper successfully posted to thread pool
@@ -204,7 +212,8 @@ void BuddingScanningPulseProcess::handlePulseComputationParallelStatic(
     unsigned int const legIndex,
     glm::dvec3 &absoluteBeamOrigin,
     Rotation &absoluteBeamAttitude,
-    double const currentGpsTime
+    double const currentGpsTime,
+    int const currentPulseNumber
 ){
     // Submit pulse computation functor to thread pool
     char const status = dropper.tryAdd(
@@ -214,7 +223,8 @@ void BuddingScanningPulseProcess::handlePulseComputationParallelStatic(
             legIndex,
             absoluteBeamOrigin,
             absoluteBeamAttitude,
-            currentGpsTime
+            currentGpsTime,
+            currentPulseNumber
         )
     );
     if(status==1){ // Dropper successfully posted to thread pool

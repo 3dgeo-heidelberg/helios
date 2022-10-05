@@ -477,6 +477,24 @@ public:
         std::vector<double> &&timewave, size_t const idx
     ) override
     {scanDev.time_wave = timewave;}
+    /**
+     * @see Scanner::getCurrentPulseNumber(size_t const)
+     */
+    int getCurrentPulseNumber(size_t const idx) const override
+    {return scanDev.state_currentPulseNumber;}
+    /**
+     * @see Scanner::lastPulseWasHit(size_t const)
+     */
+    bool lastPulseWasHit(size_t const idx) const override
+    {return scanDev.lastPulseWasHit();}
+    /**
+     * @see Scanner::setLastPulseWasHit(bool const, size_t const)
+     */
+    void setLastPulseWasHit(
+        bool const lastPulseWasHit, size_t const idx
+    ) override
+    {scanDev.setLastPulseWasHit(lastPulseWasHit);}
+
 
 
 };

@@ -59,6 +59,8 @@ ScanningDevice::ScanningDevice(ScanningDevice &scdev){
     this->numTimeBins = scdev.numTimeBins;
     this->peakIntensityIndex = scdev.peakIntensityIndex;
     this->time_wave = scdev.time_wave;
+    this->state_currentPulseNumber = scdev.state_currentPulseNumber;
+    this->state_lastPulseWasHit = scdev.state_lastPulseWasHit;
 
     if(scdev.scannerHead == nullptr) this->scannerHead = nullptr;
     else this->scannerHead = std::make_shared<ScannerHead>(*scdev.scannerHead);
@@ -122,7 +124,7 @@ void ScanningDevice::doSimStep(
     Rotation const &platformAttitude,
     std::function<void(glm::dvec3 &, Rotation &)> handleSimStepNoise,
     std::function<void(
-        unsigned int, glm::dvec3 &, Rotation &, double const
+        unsigned int, glm::dvec3 &, Rotation &, double const, int const
     )> handlePulseComputation
 ){
     // Do what must be done whether active or not
@@ -140,6 +142,8 @@ void ScanningDevice::doSimStep(
     beamDeflector->doSimStep();
     // Check last pulse
     if (!beamDeflector->lastPulseLeftDevice()) return;
+    // Pulse counter
+    ++state_currentPulseNumber;
     // Calculate absolute beam originWaypoint:
     glm::dvec3 absoluteBeamOrigin = platformPosition +
                                     headRelativeEmitterPosition;
@@ -154,7 +158,8 @@ void ScanningDevice::doSimStep(
         legIndex,
         absoluteBeamOrigin,
         absoluteBeamAttitude,
-        currentGpsTime
+        currentGpsTime,
+        state_currentPulseNumber
     );
 }
 
@@ -321,4 +326,13 @@ double ScanningDevice::calcIntensity(
         atmosphericExtinction,
         sigma
     ) * 1000000000.0;
+}
+
+
+// ***  GETTERs and SETTERs  *** //
+// ***************************** //
+void ScanningDevice::setLastPulseWasHit(bool const value){
+    if (value == state_lastPulseWasHit) return;
+    //TODO see https://www.codeproject.com/Articles/12362/A-quot-synchronized-quot-statement-for-C-like-in-J
+    state_lastPulseWasHit = value;
 }

@@ -62,14 +62,6 @@ protected:
 
     // State variables:
     /**
-	 * @brief Current pulse number
-	 */
-    int state_currentPulseNumber = 0;
-    /**
-	 * @brief Flag specifying if last pulse was hit (true) or not (false)
-	 */
-    bool state_lastPulseWasHit = false;
-    /**
 	 * @brief Flag specifying if scanner is active (true) or not (false)
 	 *
 	 * When a scanner is not active, it is not sensing
@@ -544,11 +536,18 @@ public:
     // *** GETTERs and SETTERs *** //
     // *************************** //
     /**
-	 * @brief Obtain the current pulse number
-	 * @return The current pulse number
-	 * @see Scanner::state_currentPulseNumber
+	 * @brief Obtain the current pulse number of the scanning device
+     * @param idx The index of the scanning device which pulse number must be
+     *  obtained
+	 * @return The current pulse number of the scanning device
+	 * @see ScanningDevice::state_currentPulseNumber
 	 */
-    inline int getCurrentPulseNumber() const {return state_currentPulseNumber;}
+    virtual int getCurrentPulseNumber(size_t const idx) const = 0;
+    /**
+     * @brief Non index version of the Scanner::getCurrentPulseNumber method
+     * @see Scanner::getCurrentPulseNumber(size_t const)
+     */
+    inline int getCurrentPulseNumber() const {return getCurrentPulseNumber(0);}
     /**
 	 * @brief Obtain the number of rays of the scanning device
      * @param idx The index of the scanning device which number of rays must
@@ -624,17 +623,35 @@ public:
     {setPulseLength_ns(pulseLength_ns, 0);}
 
     /**
-	 * @brief Check if last pulse was hit (true) or not (false)
-	 * @return True if last pulse was hit, false otherwise
-	 * @see Scanner::state_lastPulseWasHit
+	 * @brief Check if last pulse was hit (true) or not (false) for the
+     *  scanning device.
+     * @param idx The index of the scanning device which last pulse must be
+     *  checked.
+	 * @return True if the last pulse of the scanning device was hit, false
+     *  otherwise.
+	 * @see ScanningDevice::state_lastPulseWasHit
+     * @see ScanningDevice::lastPulseWasHit
 	 */
-    inline bool lastPulseWasHit() const {return this->state_lastPulseWasHit;}
+    virtual bool lastPulseWasHit(size_t const idx) const = 0;
+    /**
+     * @brief Non index version of the Scanner::lastPulseWasHit method
+     * @see Scanner::lastPulseWasHit method
+     */
+    inline bool lastPulseWasHit() const {return lastPulseWasHit(0);}
     /**
 	 * @brief Specify if last pulse was hit (true) or not (false)
 	 * @param lastPulseWasHit New last pulse hit specification
 	 * @see Scanner::state_lastPulseWasHit
 	 */
-    void setLastPulseWasHit(bool const lastPulseWasHit);
+    virtual void setLastPulseWasHit(
+        bool const lastPulseWasHit, size_t const idx
+    ) = 0;
+    /**
+     * @brief Non index version of the Scanner::setLastPulseWasHit method
+     * @see Scanner::setLastPulseWasHit(bool const, size_t const)
+     */
+    inline void setLastPulseWasHit(bool const lastPulseWasHit)
+    {setLastPulseWasHit(lastPulseWasHit, 0);}
 
     /**
      * @brief Obtain beam divergence

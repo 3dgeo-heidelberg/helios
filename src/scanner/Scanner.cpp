@@ -47,8 +47,6 @@ Scanner::Scanner(Scanner &s){
     this->fullWaveNoise = s.fullWaveNoise;
     this->platformNoiseDisabled = s.platformNoiseDisabled;
     this->cfg_setting_pulseFreq_Hz = s.cfg_setting_pulseFreq_Hz;
-    this->state_currentPulseNumber = s.state_currentPulseNumber;
-    this->state_lastPulseWasHit = s.state_lastPulseWasHit;
     this->state_isActive = s.state_isActive;
 
     this->fms = s.fms;
@@ -110,8 +108,6 @@ void Scanner::_clone(Scanner &sc) const{
     sc.platformNoiseDisabled = platformNoiseDisabled;
     sc.fixedIncidenceAngle = fixedIncidenceAngle;
     sc.cfg_setting_pulseFreq_Hz = cfg_setting_pulseFreq_Hz;
-    sc.state_currentPulseNumber = state_currentPulseNumber;
-    sc.state_lastPulseWasHit = state_lastPulseWasHit;
     sc.state_isActive = state_isActive;
     sc.spp = nullptr;  // Cannot be cloned (unique pointer)
     sc.fms = fms;
@@ -286,12 +282,6 @@ void Scanner::setPulseFreq_Hz(int pulseFreq_Hz) {
 	logging::INFO(ss.str());
 }
 
-void Scanner::setLastPulseWasHit(bool const value) {
-	if (value == state_lastPulseWasHit) return;
-	//TODO see https://www.codeproject.com/Articles/12362/A-quot-synchronized-quot-statement-for-C-like-in-J
-    this->state_lastPulseWasHit = value;
-}
-
 // ***  SIM STEP UTILS  *** //
 // ************************ //
 void Scanner::handleSimStepNoise(
@@ -409,8 +399,7 @@ void Scanner::buildScanningPulseProcess(
     if(parallelizationStrategy==0){
         spp = std::unique_ptr<ScanningPulseProcess>(
             new BuddingScanningPulseProcess(
-                getDetector(),
-                state_currentPulseNumber,
+                getDetector(0),
                 writeWaveform,
                 calcEchowidth,
                 allMeasurements,
@@ -428,8 +417,7 @@ void Scanner::buildScanningPulseProcess(
     else if(parallelizationStrategy==1){
         spp = std::unique_ptr<ScanningPulseProcess>(
             new WarehouseScanningPulseProcess(
-                getDetector(),
-                state_currentPulseNumber,
+                getDetector(0),
                 writeWaveform,
                 calcEchowidth,
                 allMeasurements,
