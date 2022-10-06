@@ -1,7 +1,5 @@
 <map id="visualhelios::VHScannerAdapter" name="visualhelios::VHScannerAdapter">
-<area shape="rect" id="node2" href="$dc/d42/classScanner.html" title="Class representing a scanner asset. " alt="" coords="89,317,160,344"/>
-<area shape="rect" id="node3" href="$de/d97/classAsset.html" title="Base class for all assets. " alt="" coords="122,124,178,151"/>
-<area shape="rect" id="node5" href="$d4/dfb/classFWFSettings.html" title="Full Waveform settings. " alt="" coords="100,213,199,240"/>
-<area shape="rect" id="node7" href="$d5/db6/classSurvey.html" title="Class representing a Helios++ survey. " alt="" coords="318,213,381,240"/>
-<area shape="rect" id="node6" href="$d5/dcb/classRotation.html" title="Rotation" alt="" coords="224,213,294,240"/>
+<area shape="rect" id="node2" href="$dc/d42/classScanner.html" title="Class representing a scanner asset. " alt="" coords="31,200,102,227"/>
+<area shape="rect" id="node3" href="$de/d97/classAsset.html" title="Base class for all assets. " alt="" coords="89,124,145,151"/>
+<area shape="rect" id="node5" href="$d5/db6/classSurvey.html" title="Class representing a Helios++ survey. " alt="" coords="126,200,189,227"/>
 </map>

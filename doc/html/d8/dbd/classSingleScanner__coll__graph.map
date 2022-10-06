@@ -1,0 +1,7 @@
+<map id="SingleScanner" name="SingleScanner">
+<area shape="rect" id="node2" href="$dc/d42/classScanner.html" title="Class representing a scanner asset. " alt="" coords="5,213,76,240"/>
+<area shape="rect" id="node3" href="$de/d97/classAsset.html" title="Base class for all assets. " alt="" coords="86,124,142,151"/>
+<area shape="rect" id="node5" href="$d1/d09/classScanningDevice.html" title="Class representing a scanning device. Any scanner needs to be composed of at least one scanning devic..." alt="" coords="122,303,239,329"/>
+<area shape="rect" id="node6" href="$d4/dfb/classFWFSettings.html" title="Full Waveform settings. " alt="" coords="151,213,250,240"/>
+<area shape="rect" id="node7" href="$d5/dcb/classRotation.html" title="Rotation" alt="" coords="325,213,396,240"/>
+</map>

@@ -88,7 +88,6 @@ $(document).ready(function(){initNavTree('d6/d9e/classAbstractPulseRunnable.html
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="../../dc/dee/classAbstractPulseRunnable-members.html">List of all members</a>  </div>
   <div class="headertitle">
@@ -126,21 +125,6 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a9f9194d9037bfa0b0aa4500a8fd83b19"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d9e/classAbstractPulseRunnable.html#a9f9194d9037bfa0b0aa4500a8fd83b19">AbstractPulseRunnable</a> (std::shared_ptr&lt; <a class="el" href="../../d8/d6b/classAbstractDetector.html">AbstractDetector</a> &gt; const <a class="el" href="../../d6/d9e/classAbstractPulseRunnable.html#a5f89956813516dcb6090715f2aed8631">detector</a>, glm::dvec3 const <a class="el" href="../../d6/d9e/classAbstractPulseRunnable.html#aa7f3f0ea66414823b4bd1e4ebd12295f">absoluteBeamOrigin</a>, <a class="el" href="../../d5/dcb/classRotation.html">Rotation</a> const <a class="el" href="../../d6/d9e/classAbstractPulseRunnable.html#a5431be620a94c48f0b13bdb4627b9f54">absoluteBeamAttitude</a>, int const pulseNumber, double const gpsTime)</td></tr>
 <tr class="memdesc:a9f9194d9037bfa0b0aa4500a8fd83b19"><td class="mdescLeft">&#160;</td><td class="mdescRight">Base constructor for pulse runnables.  <a href="#a9f9194d9037bfa0b0aa4500a8fd83b19">More...</a><br /></td></tr>
 <tr class="separator:a9f9194d9037bfa0b0aa4500a8fd83b19"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0400b8a23bd30f4d7450a7f8ea4b6dc5"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d9e/classAbstractPulseRunnable.html#a0400b8a23bd30f4d7450a7f8ea4b6dc5">calcCrossSection</a> (double const f, double const Alf, double const theta) const</td></tr>
-<tr class="memdesc:a0400b8a23bd30f4d7450a7f8ea4b6dc5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute cross section.  <a href="#a0400b8a23bd30f4d7450a7f8ea4b6dc5">More...</a><br /></td></tr>
-<tr class="separator:a0400b8a23bd30f4d7450a7f8ea4b6dc5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8322f8ec470c39f77f7549fcf2d039e7"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d9e/classAbstractPulseRunnable.html#a8322f8ec470c39f77f7549fcf2d039e7">phongBDRF</a> (double const incidenceAngle, double const targetSpecularity, double const targetSpecularExponent) const</td></tr>
-<tr class="memdesc:a8322f8ec470c39f77f7549fcf2d039e7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the phong model.  <a href="#a8322f8ec470c39f77f7549fcf2d039e7">More...</a><br /></td></tr>
-<tr class="separator:a8322f8ec470c39f77f7549fcf2d039e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae8688dd6b9550fda006623d6858653ab"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d9e/classAbstractPulseRunnable.html#ae8688dd6b9550fda006623d6858653ab">calcAtmosphericFactor</a> (double const targetRange) const</td></tr>
-<tr class="memdesc:ae8688dd6b9550fda006623d6858653ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute atmospheric factor \(f\), understood as the energy left after attenuation by air particles in range \([0, 1]\).  <a href="#ae8688dd6b9550fda006623d6858653ab">More...</a><br /></td></tr>
-<tr class="separator:ae8688dd6b9550fda006623d6858653ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab1f0acede55c34f2cb21aa52ec09d363"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d9e/classAbstractPulseRunnable.html#ab1f0acede55c34f2cb21aa52ec09d363">calcReceivedPower</a> (double const emittedPower, double const targetRange, double const incidenceAngle, double const targetReflectivity, double const targetSpecularity, double const targetSpecularExponent, double const targetArea) const</td></tr>
-<tr class="memdesc:ab1f0acede55c34f2cb21aa52ec09d363"><td class="mdescLeft">&#160;</td><td class="mdescRight">Solve the laser radar equation.  <a href="#ab1f0acede55c34f2cb21aa52ec09d363">More...</a><br /></td></tr>
-<tr class="separator:ab1f0acede55c34f2cb21aa52ec09d363"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acbefc714a8b7538d8ee08bb1eff181ee"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d9e/classAbstractPulseRunnable.html#acbefc714a8b7538d8ee08bb1eff181ee">calcReceivedPower</a> (double const emittedPower, double const targetRange, double const sigma) const</td></tr>
-<tr class="memdesc:acbefc714a8b7538d8ee08bb1eff181ee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Alternative received power computation method.  <a href="#acbefc714a8b7538d8ee08bb1eff181ee">More...</a><br /></td></tr>
-<tr class="separator:acbefc714a8b7538d8ee08bb1eff181ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a238c5879265bb80396351182a6779ec8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d9e/classAbstractPulseRunnable.html#a238c5879265bb80396351182a6779ec8">capturePoint</a> (<a class="el" href="../../db/d2e/classMeasurement.html">Measurement</a> &amp;m, <a class="el" href="../../dc/d6e/classRandomnessGenerator.html">RandomnessGenerator</a>&lt; double &gt; &amp;rg, std::vector&lt; <a class="el" href="../../db/d2e/classMeasurement.html">Measurement</a> &gt; *allMeasurements, std::mutex *allMeasurementsMutex, std::vector&lt; <a class="el" href="../../db/d2e/classMeasurement.html">Measurement</a> &gt; *cycleMeasurements, std::mutex *cycleMeasurementsMutex)</td></tr>
 <tr class="memdesc:a238c5879265bb80396351182a6779ec8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Capture point if proceed and write it.  <a href="#a238c5879265bb80396351182a6779ec8">More...</a><br /></td></tr>
 <tr class="separator:a238c5879265bb80396351182a6779ec8"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -155,12 +139,6 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 <tr class="memitem:a98af88f70ab5a66aeecb2cb07f43c469 inherit pub_methods_classPulseTask"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d6e/classPulseTask.html#a98af88f70ab5a66aeecb2cb07f43c469">operator()</a> (std::vector&lt; std::vector&lt; double &gt;&gt; &amp;apMatrix, <a class="el" href="../../dc/d6e/classRandomnessGenerator.html">RandomnessGenerator</a>&lt; double &gt; &amp;randGen, <a class="el" href="../../dc/d6e/classRandomnessGenerator.html">RandomnessGenerator</a>&lt; double &gt; &amp;randGen2, <a class="el" href="../../d9/d6b/classNoiseSource.html">NoiseSource</a>&lt; double &gt; &amp;intersectionHandlingNoiseSource)=0</td></tr>
 <tr class="memdesc:a98af88f70ab5a66aeecb2cb07f43c469 inherit pub_methods_classPulseTask"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pulse task runnable functor.  <a href="../../d1/d6e/classPulseTask.html#a98af88f70ab5a66aeecb2cb07f43c469">More...</a><br /></td></tr>
 <tr class="separator:a98af88f70ab5a66aeecb2cb07f43c469 inherit pub_methods_classPulseTask"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
-Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a8f3d75e2afbe439c573e722c6f76de75"><td class="memItemLeft" align="right" valign="top">static double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d9e/classAbstractPulseRunnable.html#a8f3d75e2afbe439c573e722c6f76de75">_calcReceivedPower</a> (double const Pt, double const Dr2, double const R, double const Bt2, double const etaSys, double const etaAtm, double const sigma)</td></tr>
-<tr class="memdesc:a8f3d75e2afbe439c573e722c6f76de75"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute received power \(P_{r}\).  <a href="#a8f3d75e2afbe439c573e722c6f76de75">More...</a><br /></td></tr>
-<tr class="separator:a8f3d75e2afbe439c573e722c6f76de75"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -258,77 +236,6 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../.
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a8f3d75e2afbe439c573e722c6f76de75"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8f3d75e2afbe439c573e722c6f76de75">&#9670;&nbsp;</a></span>_calcReceivedPower()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">double AbstractPulseRunnable::_calcReceivedPower </td>
-          <td>(</td>
-          <td class="paramtype">double const&#160;</td>
-          <td class="paramname"><em>Pt</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double const&#160;</td>
-          <td class="paramname"><em>Dr2</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double const&#160;</td>
-          <td class="paramname"><em>R</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double const&#160;</td>
-          <td class="paramname"><em>Bt2</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double const&#160;</td>
-          <td class="paramname"><em>etaSys</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double const&#160;</td>
-          <td class="paramname"><em>etaAtm</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double const&#160;</td>
-          <td class="paramname"><em>sigma</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Compute received power \(P_{r}\). </p>
-<p class="formulaDsp">
-\[ P_{r} = \textrm{etaSys} \cdot \textrm{etaAm} \cdot \sigma \cdot \frac{P_{t} \cdot D_{r2}}{4{\pi} \cdot R^{4} \cdot B_{t2}} \]
-</p>
- 
-</div>
-</div>
 <a id="ad1ef3d2f2b751388bd1a5a44aa89b1d4"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad1ef3d2f2b751388bd1a5a44aa89b1d4">&#9670;&nbsp;</a></span>applyMeasurementError()</h2>
 
@@ -376,197 +283,6 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../.
   </table>
   </dd>
 </dl>
-
-</div>
-</div>
-<a id="ae8688dd6b9550fda006623d6858653ab"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae8688dd6b9550fda006623d6858653ab">&#9670;&nbsp;</a></span>calcAtmosphericFactor()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">double AbstractPulseRunnable::calcAtmosphericFactor </td>
-          <td>(</td>
-          <td class="paramtype">double const&#160;</td>
-          <td class="paramname"><em>targetRange</em></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Compute atmospheric factor \(f\), understood as the energy left after attenuation by air particles in range \([0, 1]\). </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">targetRange</td><td>\(r\)</td></tr>
-  </table>
-  </dd>
-</dl>
-<p>Let \(A_{e}\) be the atmospheric extinction </p><p class="formulaDsp">
-\[ f = e^{-2r \cdot A_{e}} \]
-</p>
-<dl class="section return"><dt>Returns</dt><dd>\(f\) </dd></dl>
-
-</div>
-</div>
-<a id="a0400b8a23bd30f4d7450a7f8ea4b6dc5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0400b8a23bd30f4d7450a7f8ea4b6dc5">&#9670;&nbsp;</a></span>calcCrossSection()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">double AbstractPulseRunnable::calcCrossSection </td>
-          <td>(</td>
-          <td class="paramtype">double const&#160;</td>
-          <td class="paramname"><em>f</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double const&#160;</td>
-          <td class="paramname"><em>Alf</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double const&#160;</td>
-          <td class="paramname"><em>theta</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td> const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Compute cross section. </p>
-<p class="formulaDsp">
-\[ C_{S} = 4{\pi} \cdot f \cdot A_{lf} \cdot \cos(\theta) \]
-</p>
-<p><br />
- Paper DOI: 10.1016/j.isprsjprs.2010.06.007</p>
-<dl class="section return"><dt>Returns</dt><dd>Cross section </dd></dl>
-
-</div>
-</div>
-<a id="ab1f0acede55c34f2cb21aa52ec09d363"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab1f0acede55c34f2cb21aa52ec09d363">&#9670;&nbsp;</a></span>calcReceivedPower() <span class="overload">[1/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">double AbstractPulseRunnable::calcReceivedPower </td>
-          <td>(</td>
-          <td class="paramtype">double const&#160;</td>
-          <td class="paramname"><em>emittedPower</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double const&#160;</td>
-          <td class="paramname"><em>targetRange</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double const&#160;</td>
-          <td class="paramname"><em>incidenceAngle</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double const&#160;</td>
-          <td class="paramname"><em>targetReflectivity</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double const&#160;</td>
-          <td class="paramname"><em>targetSpecularity</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double const&#160;</td>
-          <td class="paramname"><em>targetSpecularExponent</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double const&#160;</td>
-          <td class="paramname"><em>targetArea</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td> const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Solve the laser radar equation. </p>
-<p><br />
- Report title: Signature simulation and signal analysis for 3-D laser radar <br />
- Report authors: Tomas Carlsson, Ove Steinvall and Dietmar Letalick </p>
-
-</div>
-</div>
-<a id="acbefc714a8b7538d8ee08bb1eff181ee"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acbefc714a8b7538d8ee08bb1eff181ee">&#9670;&nbsp;</a></span>calcReceivedPower() <span class="overload">[2/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">double AbstractPulseRunnable::calcReceivedPower </td>
-          <td>(</td>
-          <td class="paramtype">double const&#160;</td>
-          <td class="paramname"><em>emittedPower</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double const&#160;</td>
-          <td class="paramname"><em>targetRange</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double const&#160;</td>
-          <td class="paramname"><em>sigma</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td> const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Alternative received power computation method. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">emittedPower</td><td>Emitted power </td></tr>
-    <tr><td class="paramname">targetRange</td><td>The distance with respect to intersection multiplied by the sine of the divergence angle </td></tr>
-    <tr><td class="paramname">sigma</td><td>Sigma value taken from <a class="el" href="../../d9/d22/classLadLut.html" title="Leaf Angle Distribution Look-Up Table. ">LadLut</a> specification</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>Received power</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d9/d22/classLadLut.html" title="Leaf Angle Distribution Look-Up Table. ">LadLut</a> </dd>
-<dd>
-<a class="el" href="../../d6/d9e/classAbstractPulseRunnable.html#a8f3d75e2afbe439c573e722c6f76de75" title="Compute received power . ">AbstractPulseRunnable::_calcReceivedPower</a> </dd></dl>
 
 </div>
 </div>
@@ -632,45 +348,6 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../.
   </table>
   </dd>
 </dl>
-
-</div>
-</div>
-<a id="a8322f8ec470c39f77f7549fcf2d039e7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8322f8ec470c39f77f7549fcf2d039e7">&#9670;&nbsp;</a></span>phongBDRF()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">double AbstractPulseRunnable::phongBDRF </td>
-          <td>(</td>
-          <td class="paramtype">double const&#160;</td>
-          <td class="paramname"><em>incidenceAngle</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double const&#160;</td>
-          <td class="paramname"><em>targetSpecularity</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double const&#160;</td>
-          <td class="paramname"><em>targetSpecularExponent</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td> const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Compute the phong model. </p>
-<p><br />
- Paper title: NORMALIZATION OF LIDAR INTENSITY DATA BASED ON RANGE AND SURFACE INCIDENCE ANGLE <br />
- Paper authors: B. Jutzi, H. Gross </p>
 
 </div>
 </div>

@@ -6,6 +6,7 @@ var searchData=
   ['emptyclone',['emptyClone',['../d5/d2f/classBuddingTaskDropper.html#a413aab607239eb3215733141842b120f',1,'BuddingTaskDropper::emptyClone()'],['../da/d8d/classTaskDropper.html#ae881d4c8f278850343a476dfb2908583',1,'TaskDropper::emptyClone()']]],
   ['end',['end',['../d8/da0/classStaticGrove.html#a485a95a070672bb8a8ba35b4c4384bc6',1,'StaticGrove::end()'],['../df/dfa/classDynSequence.html#a5b8a9682938320055785a5dbb35abff9',1,'DynSequence::end()']]],
   ['endofreadingexception',['EndOfReadingException',['../d4/dbc/classhelios_1_1filems_1_1EndOfReadingException.html#a06f910af42e8379c499fa3705b4b583a',1,'helios::filems::EndOfReadingException']]],
+  ['energymodelstest',['EnergyModelsTest',['../d6/d35/classHeliosTests_1_1EnergyModelsTest.html#a438c15a639662075f0c1bdc43d3b7fda',1,'HeliosTests::EnergyModelsTest']]],
   ['equals',['equals',['../d1/dd3/classSurfaceInspector_1_1maths_1_1Vector.html#a4ff521d759bb709ab1ddefa6b9fb6229',1,'SurfaceInspector::maths::Vector']]],
   ['err',['ERR',['../d0/da9/logging_8hpp.html#a4193297e40b6589c7a59eeb3e4f32052',1,'logging']]],
   ['estimategaussian',['estimateGaussian',['../da/d52/classSurfaceInspector_1_1maths_1_1Histogram.html#a6f02d0bb3b5194d17a706e377259c2c2',1,'SurfaceInspector::maths::Histogram']]],

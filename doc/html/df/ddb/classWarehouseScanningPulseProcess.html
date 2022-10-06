@@ -134,12 +134,12 @@ Collaboration diagram for WarehouseScanningPulseProcess:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a476636a1082a422691aa4cb906618264"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/ddb/classWarehouseScanningPulseProcess.html#a476636a1082a422691aa4cb906618264">WarehouseScanningPulseProcess</a> (std::shared_ptr&lt; <a class="el" href="../../d8/d6b/classAbstractDetector.html">AbstractDetector</a> &gt; &amp;<a class="el" href="../../db/d85/classScanningPulseProcess.html#a26e6882306a16fae340deb86d2b42a68">detector</a>, int &amp;<a class="el" href="../../db/d85/classScanningPulseProcess.html#a0c4057d2f0f6d7c4334a435f19b9ba65">currentPulseNumber</a>, bool &amp;<a class="el" href="../../db/d85/classScanningPulseProcess.html#af8d8e15c0be842fdb5600395797454f3">writeWaveform</a>, bool &amp;<a class="el" href="../../db/d85/classScanningPulseProcess.html#a9403a10e5bfaf5f346ae779b05381d42">calcEchowidth</a>, std::shared_ptr&lt; std::vector&lt; <a class="el" href="../../db/d2e/classMeasurement.html">Measurement</a> &gt;&gt; &amp;<a class="el" href="../../db/d85/classScanningPulseProcess.html#aea2d0b2959ed1729e4520159bdd2e618">allMeasurements</a>, std::shared_ptr&lt; std::mutex &gt; &amp;<a class="el" href="../../db/d85/classScanningPulseProcess.html#aad7dd7577c3eb70d5faca1b2b3f67372">allMeasurementsMutex</a>, std::shared_ptr&lt; std::vector&lt; <a class="el" href="../../db/d2e/classMeasurement.html">Measurement</a> &gt;&gt; &amp;<a class="el" href="../../db/d85/classScanningPulseProcess.html#ac2da1c14b037548e5871f6d7a948b74c">cycleMeasurements</a>, std::shared_ptr&lt; std::mutex &gt; &amp;<a class="el" href="../../db/d85/classScanningPulseProcess.html#a0671ed427321bc0972a1238774c897c6">cycleMeasurementsMutex</a>, <a class="el" href="../../de/d9a/classPulseTaskDropper.html">PulseTaskDropper</a> &amp;<a class="el" href="../../df/ddb/classWarehouseScanningPulseProcess.html#a5cc71d713b9aa410df024873721e9a52">dropper</a>, <a class="el" href="../../d7/de7/classPulseWarehouseThreadPool.html">PulseWarehouseThreadPool</a> &amp;<a class="el" href="../../df/ddb/classWarehouseScanningPulseProcess.html#aba0a26cf1b96f8ec0c4c4f9f8ecddb20">pool</a>, <a class="el" href="../../dc/d6e/classRandomnessGenerator.html">RandomnessGenerator</a>&lt; double &gt; &amp;<a class="el" href="../../df/ddb/classWarehouseScanningPulseProcess.html#af8ab6457d5dc9a3f727ace90abf7f539">randGen1</a>, <a class="el" href="../../dc/d6e/classRandomnessGenerator.html">RandomnessGenerator</a>&lt; double &gt; &amp;<a class="el" href="../../df/ddb/classWarehouseScanningPulseProcess.html#a2e7d2db7b161d90aa071a6a713ebac57">randGen2</a>, <a class="el" href="../../d3/d57/classUniformNoiseSource.html">UniformNoiseSource</a>&lt; double &gt; &amp;<a class="el" href="../../df/ddb/classWarehouseScanningPulseProcess.html#a7317f39da918e3e939ba015688537f7b">intersectionHandlingNoiseSource</a>)</td></tr>
-<tr class="memdesc:a476636a1082a422691aa4cb906618264"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor for warehouse scanning pulse process.  <a href="#a476636a1082a422691aa4cb906618264">More...</a><br /></td></tr>
-<tr class="separator:a476636a1082a422691aa4cb906618264"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9cd11e56054d40e74a716298be6569c3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/ddb/classWarehouseScanningPulseProcess.html#a9cd11e56054d40e74a716298be6569c3">handlePulseComputation</a> (unsigned int const legIndex, glm::dvec3 &amp;absoluteBeamOrigin, <a class="el" href="../../d5/dcb/classRotation.html">Rotation</a> &amp;absoluteBeamAttitude, double const currentGpsTime) override</td></tr>
-<tr class="memdesc:a9cd11e56054d40e74a716298be6569c3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implementation of handle pulse computation method for the pair budding task dropper and pulse warehouse thread pool.  <a href="#a9cd11e56054d40e74a716298be6569c3">More...</a><br /></td></tr>
-<tr class="separator:a9cd11e56054d40e74a716298be6569c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0fe601e0dd4198b1cfba88cacc7f59d1"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/ddb/classWarehouseScanningPulseProcess.html#a0fe601e0dd4198b1cfba88cacc7f59d1">WarehouseScanningPulseProcess</a> (std::shared_ptr&lt; <a class="el" href="../../d8/d6b/classAbstractDetector.html">AbstractDetector</a> &gt; <a class="el" href="../../db/d85/classScanningPulseProcess.html#ae67dc3339f37aa19cf27a30e793b437f">detector</a>, bool const <a class="el" href="../../db/d85/classScanningPulseProcess.html#ab1dc1bba85c3f731407497e43432c7cb">writeWaveform</a>, bool const <a class="el" href="../../db/d85/classScanningPulseProcess.html#a8eaef9604627436f79075f418c595f45">calcEchowidth</a>, std::shared_ptr&lt; std::vector&lt; <a class="el" href="../../db/d2e/classMeasurement.html">Measurement</a> &gt;&gt; &amp;<a class="el" href="../../db/d85/classScanningPulseProcess.html#aea2d0b2959ed1729e4520159bdd2e618">allMeasurements</a>, std::shared_ptr&lt; std::mutex &gt; &amp;<a class="el" href="../../db/d85/classScanningPulseProcess.html#aad7dd7577c3eb70d5faca1b2b3f67372">allMeasurementsMutex</a>, std::shared_ptr&lt; std::vector&lt; <a class="el" href="../../db/d2e/classMeasurement.html">Measurement</a> &gt;&gt; &amp;<a class="el" href="../../db/d85/classScanningPulseProcess.html#ac2da1c14b037548e5871f6d7a948b74c">cycleMeasurements</a>, std::shared_ptr&lt; std::mutex &gt; &amp;<a class="el" href="../../db/d85/classScanningPulseProcess.html#a0671ed427321bc0972a1238774c897c6">cycleMeasurementsMutex</a>, <a class="el" href="../../de/d9a/classPulseTaskDropper.html">PulseTaskDropper</a> &amp;<a class="el" href="../../df/ddb/classWarehouseScanningPulseProcess.html#a5cc71d713b9aa410df024873721e9a52">dropper</a>, <a class="el" href="../../d7/de7/classPulseWarehouseThreadPool.html">PulseWarehouseThreadPool</a> &amp;<a class="el" href="../../df/ddb/classWarehouseScanningPulseProcess.html#aba0a26cf1b96f8ec0c4c4f9f8ecddb20">pool</a>, <a class="el" href="../../dc/d6e/classRandomnessGenerator.html">RandomnessGenerator</a>&lt; double &gt; &amp;<a class="el" href="../../df/ddb/classWarehouseScanningPulseProcess.html#af8ab6457d5dc9a3f727ace90abf7f539">randGen1</a>, <a class="el" href="../../dc/d6e/classRandomnessGenerator.html">RandomnessGenerator</a>&lt; double &gt; &amp;<a class="el" href="../../df/ddb/classWarehouseScanningPulseProcess.html#a2e7d2db7b161d90aa071a6a713ebac57">randGen2</a>, <a class="el" href="../../d3/d57/classUniformNoiseSource.html">UniformNoiseSource</a>&lt; double &gt; &amp;<a class="el" href="../../df/ddb/classWarehouseScanningPulseProcess.html#a7317f39da918e3e939ba015688537f7b">intersectionHandlingNoiseSource</a>)</td></tr>
+<tr class="memdesc:a0fe601e0dd4198b1cfba88cacc7f59d1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor for warehouse scanning pulse process.  <a href="#a0fe601e0dd4198b1cfba88cacc7f59d1">More...</a><br /></td></tr>
+<tr class="separator:a0fe601e0dd4198b1cfba88cacc7f59d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ada9e5a9b350c75c6efcb3001b4d46b16"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/ddb/classWarehouseScanningPulseProcess.html#ada9e5a9b350c75c6efcb3001b4d46b16">handlePulseComputation</a> (unsigned int const legIndex, glm::dvec3 &amp;absoluteBeamOrigin, <a class="el" href="../../d5/dcb/classRotation.html">Rotation</a> &amp;absoluteBeamAttitude, double const currentGpsTime, int const currentPulseNumber) override</td></tr>
+<tr class="memdesc:ada9e5a9b350c75c6efcb3001b4d46b16"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implementation of handle pulse computation method for the pair budding task dropper and pulse warehouse thread pool.  <a href="#ada9e5a9b350c75c6efcb3001b4d46b16">More...</a><br /></td></tr>
+<tr class="separator:ada9e5a9b350c75c6efcb3001b4d46b16"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac619b97e6aee29db52f15f03dac6a085"><td class="memItemLeft" align="right" valign="top"><a id="ac619b97e6aee29db52f15f03dac6a085"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/ddb/classWarehouseScanningPulseProcess.html#ac619b97e6aee29db52f15f03dac6a085">onLegComplete</a> () override</td></tr>
 <tr class="memdesc:ac619b97e6aee29db52f15f03dac6a085"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle sequential computation of a chunk of pulses through task dropper. <br /></td></tr>
@@ -148,22 +148,19 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../.
 <tr class="memdesc:aa3bcc1d2bc407738df604ea6e1ec7c43"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle shutdown of warehouse thread pool (final join)  <a href="#aa3bcc1d2bc407738df604ea6e1ec7c43">More...</a><br /></td></tr>
 <tr class="separator:aa3bcc1d2bc407738df604ea6e1ec7c43"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classScanningPulseProcess"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classScanningPulseProcess')"><img src="../../closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="../../db/d85/classScanningPulseProcess.html">ScanningPulseProcess</a></td></tr>
-<tr class="memitem:a90aa81188c1840ea5f82cfe93110b01a inherit pub_methods_classScanningPulseProcess"><td class="memItemLeft" align="right" valign="top"><a id="a90aa81188c1840ea5f82cfe93110b01a"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d85/classScanningPulseProcess.html#a90aa81188c1840ea5f82cfe93110b01a">ScanningPulseProcess</a> (std::shared_ptr&lt; <a class="el" href="../../d8/d6b/classAbstractDetector.html">AbstractDetector</a> &gt; &amp;<a class="el" href="../../db/d85/classScanningPulseProcess.html#a26e6882306a16fae340deb86d2b42a68">detector</a>, int &amp;<a class="el" href="../../db/d85/classScanningPulseProcess.html#a0c4057d2f0f6d7c4334a435f19b9ba65">currentPulseNumber</a>, bool &amp;<a class="el" href="../../db/d85/classScanningPulseProcess.html#af8d8e15c0be842fdb5600395797454f3">writeWaveform</a>, bool &amp;<a class="el" href="../../db/d85/classScanningPulseProcess.html#a9403a10e5bfaf5f346ae779b05381d42">calcEchowidth</a>, std::shared_ptr&lt; std::vector&lt; <a class="el" href="../../db/d2e/classMeasurement.html">Measurement</a> &gt;&gt; &amp;<a class="el" href="../../db/d85/classScanningPulseProcess.html#aea2d0b2959ed1729e4520159bdd2e618">allMeasurements</a>, std::shared_ptr&lt; std::mutex &gt; &amp;<a class="el" href="../../db/d85/classScanningPulseProcess.html#aad7dd7577c3eb70d5faca1b2b3f67372">allMeasurementsMutex</a>, std::shared_ptr&lt; std::vector&lt; <a class="el" href="../../db/d2e/classMeasurement.html">Measurement</a> &gt;&gt; &amp;<a class="el" href="../../db/d85/classScanningPulseProcess.html#ac2da1c14b037548e5871f6d7a948b74c">cycleMeasurements</a>, std::shared_ptr&lt; std::mutex &gt; &amp;<a class="el" href="../../db/d85/classScanningPulseProcess.html#a0671ed427321bc0972a1238774c897c6">cycleMeasurementsMutex</a>)</td></tr>
-<tr class="memdesc:a90aa81188c1840ea5f82cfe93110b01a inherit pub_methods_classScanningPulseProcess"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor for scanning pulse process. <br /></td></tr>
-<tr class="separator:a90aa81188c1840ea5f82cfe93110b01a inherit pub_methods_classScanningPulseProcess"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a802cfc799d3c344e0c8a2e55ed2e097c inherit pub_methods_classScanningPulseProcess"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="../../d8/d6b/classAbstractDetector.html">AbstractDetector</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d85/classScanningPulseProcess.html#a802cfc799d3c344e0c8a2e55ed2e097c">getDetector</a> () const</td></tr>
-<tr class="memdesc:a802cfc799d3c344e0c8a2e55ed2e097c inherit pub_methods_classScanningPulseProcess"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain the scanner's detector.  <a href="../../db/d85/classScanningPulseProcess.html#a802cfc799d3c344e0c8a2e55ed2e097c">More...</a><br /></td></tr>
-<tr class="separator:a802cfc799d3c344e0c8a2e55ed2e097c inherit pub_methods_classScanningPulseProcess"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0f54689b34bbf46bafe753b163a9130e inherit pub_methods_classScanningPulseProcess"><td class="memItemLeft" align="right" valign="top">int &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d85/classScanningPulseProcess.html#a0f54689b34bbf46bafe753b163a9130e">getCurrentPulseNumber</a> () const</td></tr>
-<tr class="memdesc:a0f54689b34bbf46bafe753b163a9130e inherit pub_methods_classScanningPulseProcess"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain the scanner's current pulse number.  <a href="../../db/d85/classScanningPulseProcess.html#a0f54689b34bbf46bafe753b163a9130e">More...</a><br /></td></tr>
-<tr class="separator:a0f54689b34bbf46bafe753b163a9130e inherit pub_methods_classScanningPulseProcess"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa24a1a239dfbe7f5ece35ff7226a2ce5 inherit pub_methods_classScanningPulseProcess"><td class="memItemLeft" align="right" valign="top">bool &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d85/classScanningPulseProcess.html#aa24a1a239dfbe7f5ece35ff7226a2ce5">isWriteWaveform</a> () const</td></tr>
-<tr class="memdesc:aa24a1a239dfbe7f5ece35ff7226a2ce5 inherit pub_methods_classScanningPulseProcess"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain the scanner's write waveform flag.  <a href="../../db/d85/classScanningPulseProcess.html#aa24a1a239dfbe7f5ece35ff7226a2ce5">More...</a><br /></td></tr>
-<tr class="separator:aa24a1a239dfbe7f5ece35ff7226a2ce5 inherit pub_methods_classScanningPulseProcess"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aeb5eafba680411953233e864f70bd25e inherit pub_methods_classScanningPulseProcess"><td class="memItemLeft" align="right" valign="top">bool &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d85/classScanningPulseProcess.html#aeb5eafba680411953233e864f70bd25e">isCalcEchowidth</a> () const</td></tr>
-<tr class="memdesc:aeb5eafba680411953233e864f70bd25e inherit pub_methods_classScanningPulseProcess"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain the scanner's calc echowidth flag.  <a href="../../db/d85/classScanningPulseProcess.html#aeb5eafba680411953233e864f70bd25e">More...</a><br /></td></tr>
-<tr class="separator:aeb5eafba680411953233e864f70bd25e inherit pub_methods_classScanningPulseProcess"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a68275c7de1c008909adf0acda8e3eb3a inherit pub_methods_classScanningPulseProcess"><td class="memItemLeft" align="right" valign="top"><a id="a68275c7de1c008909adf0acda8e3eb3a"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d85/classScanningPulseProcess.html#a68275c7de1c008909adf0acda8e3eb3a">ScanningPulseProcess</a> (std::shared_ptr&lt; <a class="el" href="../../d8/d6b/classAbstractDetector.html">AbstractDetector</a> &gt; <a class="el" href="../../db/d85/classScanningPulseProcess.html#ae67dc3339f37aa19cf27a30e793b437f">detector</a>, bool const <a class="el" href="../../db/d85/classScanningPulseProcess.html#ab1dc1bba85c3f731407497e43432c7cb">writeWaveform</a>, bool const <a class="el" href="../../db/d85/classScanningPulseProcess.html#a8eaef9604627436f79075f418c595f45">calcEchowidth</a>, std::shared_ptr&lt; std::vector&lt; <a class="el" href="../../db/d2e/classMeasurement.html">Measurement</a> &gt;&gt; &amp;<a class="el" href="../../db/d85/classScanningPulseProcess.html#aea2d0b2959ed1729e4520159bdd2e618">allMeasurements</a>, std::shared_ptr&lt; std::mutex &gt; &amp;<a class="el" href="../../db/d85/classScanningPulseProcess.html#aad7dd7577c3eb70d5faca1b2b3f67372">allMeasurementsMutex</a>, std::shared_ptr&lt; std::vector&lt; <a class="el" href="../../db/d2e/classMeasurement.html">Measurement</a> &gt;&gt; &amp;<a class="el" href="../../db/d85/classScanningPulseProcess.html#ac2da1c14b037548e5871f6d7a948b74c">cycleMeasurements</a>, std::shared_ptr&lt; std::mutex &gt; &amp;<a class="el" href="../../db/d85/classScanningPulseProcess.html#a0671ed427321bc0972a1238774c897c6">cycleMeasurementsMutex</a>)</td></tr>
+<tr class="memdesc:a68275c7de1c008909adf0acda8e3eb3a inherit pub_methods_classScanningPulseProcess"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor for scanning pulse process. <br /></td></tr>
+<tr class="separator:a68275c7de1c008909adf0acda8e3eb3a inherit pub_methods_classScanningPulseProcess"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a33ddeb7a501db5fe64f877ae0dc112bb inherit pub_methods_classScanningPulseProcess"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="../../d8/d6b/classAbstractDetector.html">AbstractDetector</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d85/classScanningPulseProcess.html#a33ddeb7a501db5fe64f877ae0dc112bb">getDetector</a> () const</td></tr>
+<tr class="memdesc:a33ddeb7a501db5fe64f877ae0dc112bb inherit pub_methods_classScanningPulseProcess"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain the scanner's detector.  <a href="../../db/d85/classScanningPulseProcess.html#a33ddeb7a501db5fe64f877ae0dc112bb">More...</a><br /></td></tr>
+<tr class="separator:a33ddeb7a501db5fe64f877ae0dc112bb inherit pub_methods_classScanningPulseProcess"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1982098c9f9d7ac99a57196c70fab295 inherit pub_methods_classScanningPulseProcess"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d85/classScanningPulseProcess.html#a1982098c9f9d7ac99a57196c70fab295">isWriteWaveform</a> () const</td></tr>
+<tr class="memdesc:a1982098c9f9d7ac99a57196c70fab295 inherit pub_methods_classScanningPulseProcess"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain the scanner's write waveform flag.  <a href="../../db/d85/classScanningPulseProcess.html#a1982098c9f9d7ac99a57196c70fab295">More...</a><br /></td></tr>
+<tr class="separator:a1982098c9f9d7ac99a57196c70fab295 inherit pub_methods_classScanningPulseProcess"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a037b95cd9168ad0041827f97379f90fd inherit pub_methods_classScanningPulseProcess"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d85/classScanningPulseProcess.html#a037b95cd9168ad0041827f97379f90fd">isCalcEchowidth</a> () const</td></tr>
+<tr class="memdesc:a037b95cd9168ad0041827f97379f90fd inherit pub_methods_classScanningPulseProcess"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain the scanner's calc echowidth flag.  <a href="../../db/d85/classScanningPulseProcess.html#a037b95cd9168ad0041827f97379f90fd">More...</a><br /></td></tr>
+<tr class="separator:a037b95cd9168ad0041827f97379f90fd inherit pub_methods_classScanningPulseProcess"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7e3ff1192ced44b3873546934bd93d09 inherit pub_methods_classScanningPulseProcess"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; std::vector&lt; <a class="el" href="../../db/d2e/classMeasurement.html">Measurement</a> &gt; &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d85/classScanningPulseProcess.html#a7e3ff1192ced44b3873546934bd93d09">getAllMeasurements</a> () const</td></tr>
 <tr class="memdesc:a7e3ff1192ced44b3873546934bd93d09 inherit pub_methods_classScanningPulseProcess"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain the scanner's all measurements vector.  <a href="../../db/d85/classScanningPulseProcess.html#a7e3ff1192ced44b3873546934bd93d09">More...</a><br /></td></tr>
 <tr class="separator:a7e3ff1192ced44b3873546934bd93d09 inherit pub_methods_classScanningPulseProcess"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -179,12 +176,12 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../.
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
-<tr class="memitem:a39373daea64d1205e9254ce1675f87e7"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/ddb/classWarehouseScanningPulseProcess.html#a39373daea64d1205e9254ce1675f87e7">handlePulseComputationSequential</a> (unsigned int const legIndex, glm::dvec3 &amp;absoluteBeamOrigin, <a class="el" href="../../d5/dcb/classRotation.html">Rotation</a> &amp;absoluteBeamAttitude, double const currentGpsTime)</td></tr>
-<tr class="memdesc:a39373daea64d1205e9254ce1675f87e7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle sequential computation of scanning pulses.  <a href="#a39373daea64d1205e9254ce1675f87e7">More...</a><br /></td></tr>
-<tr class="separator:a39373daea64d1205e9254ce1675f87e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:add370cfcae00854b555a2966d682ab42"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/ddb/classWarehouseScanningPulseProcess.html#add370cfcae00854b555a2966d682ab42">handlePulseComputationParallel</a> (unsigned int const legIndex, glm::dvec3 &amp;absoluteBeamOrigin, <a class="el" href="../../d5/dcb/classRotation.html">Rotation</a> &amp;absoluteBeamAttitude, double const currentGpsTime)</td></tr>
-<tr class="memdesc:add370cfcae00854b555a2966d682ab42"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle parallel computation of scanning pulses using a warehouse of task-chunks based strategy.  <a href="#add370cfcae00854b555a2966d682ab42">More...</a><br /></td></tr>
-<tr class="separator:add370cfcae00854b555a2966d682ab42"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a479552157c3f1aa67fcfc80122e0cb7a"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/ddb/classWarehouseScanningPulseProcess.html#a479552157c3f1aa67fcfc80122e0cb7a">handlePulseComputationSequential</a> (unsigned int const legIndex, glm::dvec3 &amp;absoluteBeamOrigin, <a class="el" href="../../d5/dcb/classRotation.html">Rotation</a> &amp;absoluteBeamAttitude, double const currentGpsTime, int const currentPulseNumber)</td></tr>
+<tr class="memdesc:a479552157c3f1aa67fcfc80122e0cb7a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle sequential computation of scanning pulses.  <a href="#a479552157c3f1aa67fcfc80122e0cb7a">More...</a><br /></td></tr>
+<tr class="separator:a479552157c3f1aa67fcfc80122e0cb7a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a16d58f0d9985fc46f463f204e45afd2c"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/ddb/classWarehouseScanningPulseProcess.html#a16d58f0d9985fc46f463f204e45afd2c">handlePulseComputationParallel</a> (unsigned int const legIndex, glm::dvec3 &amp;absoluteBeamOrigin, <a class="el" href="../../d5/dcb/classRotation.html">Rotation</a> &amp;absoluteBeamAttitude, double const currentGpsTime, int const currentPulseNumber)</td></tr>
+<tr class="memdesc:a16d58f0d9985fc46f463f204e45afd2c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle parallel computation of scanning pulses using a warehouse of task-chunks based strategy.  <a href="#a16d58f0d9985fc46f463f204e45afd2c">More...</a><br /></td></tr>
+<tr class="separator:a16d58f0d9985fc46f463f204e45afd2c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
@@ -196,10 +193,10 @@ Protected Attributes</h2></td></tr>
 <a class="el" href="../../d7/de7/classPulseWarehouseThreadPool.html">PulseWarehouseThreadPool</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/ddb/classWarehouseScanningPulseProcess.html#aba0a26cf1b96f8ec0c4c4f9f8ecddb20">pool</a></td></tr>
 <tr class="memdesc:aba0a26cf1b96f8ec0c4c4f9f8ecddb20"><td class="mdescLeft">&#160;</td><td class="mdescRight">Thread pool to be used to handle multi threading pulse computation. <br /></td></tr>
 <tr class="separator:aba0a26cf1b96f8ec0c4c4f9f8ecddb20"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a820ead8c0e09bbb62612a488c1912de1"><td class="memItemLeft" align="right" valign="top"><a id="a820ead8c0e09bbb62612a488c1912de1"></a>
-std::function&lt; void(unsigned int const, glm::dvec3 &amp;, <a class="el" href="../../d5/dcb/classRotation.html">Rotation</a> &amp;, double const)&gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/ddb/classWarehouseScanningPulseProcess.html#a820ead8c0e09bbb62612a488c1912de1">handler</a></td></tr>
-<tr class="memdesc:a820ead8c0e09bbb62612a488c1912de1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pulse computation handling function. It will be configured at construction depending on thread pool size to assign sequential or parallel computing method as corresponds. <br /></td></tr>
-<tr class="separator:a820ead8c0e09bbb62612a488c1912de1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4c0433c6baab24aa9900c42f8f371e95"><td class="memItemLeft" align="right" valign="top"><a id="a4c0433c6baab24aa9900c42f8f371e95"></a>
+std::function&lt; void(unsigned int const, glm::dvec3 &amp;, <a class="el" href="../../d5/dcb/classRotation.html">Rotation</a> &amp;, double const, int const)&gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/ddb/classWarehouseScanningPulseProcess.html#a4c0433c6baab24aa9900c42f8f371e95">handler</a></td></tr>
+<tr class="memdesc:a4c0433c6baab24aa9900c42f8f371e95"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pulse computation handling function. It will be configured at construction depending on thread pool size to assign sequential or parallel computing method as corresponds. <br /></td></tr>
+<tr class="separator:a4c0433c6baab24aa9900c42f8f371e95"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acc59fe81ae7203882c001353d5b8ea11"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::vector&lt; double &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/ddb/classWarehouseScanningPulseProcess.html#acc59fe81ae7203882c001353d5b8ea11">apMatrix</a></td></tr>
 <tr class="memdesc:acc59fe81ae7203882c001353d5b8ea11"><td class="mdescLeft">&#160;</td><td class="mdescRight">Alpha-Prime Matrix for sequential executions (either single thread or main thread workload)  <a href="#acc59fe81ae7203882c001353d5b8ea11">More...</a><br /></td></tr>
 <tr class="separator:acc59fe81ae7203882c001353d5b8ea11"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -216,18 +213,15 @@ std::function&lt; void(unsigned int const, glm::dvec3 &amp;, <a class="el" href=
 <tr class="memitem:a36794f689c75b9053fbe424667d01715 inherit pro_attribs_classScanningPulseProcess"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../da/dfd/classPulseTaskFactory.html">PulseTaskFactory</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d85/classScanningPulseProcess.html#a36794f689c75b9053fbe424667d01715">ptf</a></td></tr>
 <tr class="memdesc:a36794f689c75b9053fbe424667d01715 inherit pro_attribs_classScanningPulseProcess"><td class="mdescLeft">&#160;</td><td class="mdescRight">The pulse task factory to build pulse tasks.  <a href="../../db/d85/classScanningPulseProcess.html#a36794f689c75b9053fbe424667d01715">More...</a><br /></td></tr>
 <tr class="separator:a36794f689c75b9053fbe424667d01715 inherit pro_attribs_classScanningPulseProcess"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a26e6882306a16fae340deb86d2b42a68 inherit pro_attribs_classScanningPulseProcess"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="../../d8/d6b/classAbstractDetector.html">AbstractDetector</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d85/classScanningPulseProcess.html#a26e6882306a16fae340deb86d2b42a68">detector</a></td></tr>
-<tr class="memdesc:a26e6882306a16fae340deb86d2b42a68 inherit pro_attribs_classScanningPulseProcess"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="../../dc/d42/classScanner.html" title="Class representing a scanner asset. ">Scanner</a>'s detector.  <a href="../../db/d85/classScanningPulseProcess.html#a26e6882306a16fae340deb86d2b42a68">More...</a><br /></td></tr>
-<tr class="separator:a26e6882306a16fae340deb86d2b42a68 inherit pro_attribs_classScanningPulseProcess"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0c4057d2f0f6d7c4334a435f19b9ba65 inherit pro_attribs_classScanningPulseProcess"><td class="memItemLeft" align="right" valign="top">int &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d85/classScanningPulseProcess.html#a0c4057d2f0f6d7c4334a435f19b9ba65">currentPulseNumber</a></td></tr>
-<tr class="memdesc:a0c4057d2f0f6d7c4334a435f19b9ba65 inherit pro_attribs_classScanningPulseProcess"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reference to scanner's current pulse number.  <a href="../../db/d85/classScanningPulseProcess.html#a0c4057d2f0f6d7c4334a435f19b9ba65">More...</a><br /></td></tr>
-<tr class="separator:a0c4057d2f0f6d7c4334a435f19b9ba65 inherit pro_attribs_classScanningPulseProcess"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af8d8e15c0be842fdb5600395797454f3 inherit pro_attribs_classScanningPulseProcess"><td class="memItemLeft" align="right" valign="top">bool &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d85/classScanningPulseProcess.html#af8d8e15c0be842fdb5600395797454f3">writeWaveform</a></td></tr>
-<tr class="memdesc:af8d8e15c0be842fdb5600395797454f3 inherit pro_attribs_classScanningPulseProcess"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reference to scanner's write waveform flag.  <a href="../../db/d85/classScanningPulseProcess.html#af8d8e15c0be842fdb5600395797454f3">More...</a><br /></td></tr>
-<tr class="separator:af8d8e15c0be842fdb5600395797454f3 inherit pro_attribs_classScanningPulseProcess"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9403a10e5bfaf5f346ae779b05381d42 inherit pro_attribs_classScanningPulseProcess"><td class="memItemLeft" align="right" valign="top">bool &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d85/classScanningPulseProcess.html#a9403a10e5bfaf5f346ae779b05381d42">calcEchowidth</a></td></tr>
-<tr class="memdesc:a9403a10e5bfaf5f346ae779b05381d42 inherit pro_attribs_classScanningPulseProcess"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reference to scanner's calc echowidth flag.  <a href="../../db/d85/classScanningPulseProcess.html#a9403a10e5bfaf5f346ae779b05381d42">More...</a><br /></td></tr>
-<tr class="separator:a9403a10e5bfaf5f346ae779b05381d42 inherit pro_attribs_classScanningPulseProcess"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae67dc3339f37aa19cf27a30e793b437f inherit pro_attribs_classScanningPulseProcess"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="../../d8/d6b/classAbstractDetector.html">AbstractDetector</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d85/classScanningPulseProcess.html#ae67dc3339f37aa19cf27a30e793b437f">detector</a></td></tr>
+<tr class="memdesc:ae67dc3339f37aa19cf27a30e793b437f inherit pro_attribs_classScanningPulseProcess"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="../../dc/d42/classScanner.html" title="Class representing a scanner asset. ">Scanner</a>'s detector.  <a href="../../db/d85/classScanningPulseProcess.html#ae67dc3339f37aa19cf27a30e793b437f">More...</a><br /></td></tr>
+<tr class="separator:ae67dc3339f37aa19cf27a30e793b437f inherit pro_attribs_classScanningPulseProcess"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab1dc1bba85c3f731407497e43432c7cb inherit pro_attribs_classScanningPulseProcess"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d85/classScanningPulseProcess.html#ab1dc1bba85c3f731407497e43432c7cb">writeWaveform</a></td></tr>
+<tr class="memdesc:ab1dc1bba85c3f731407497e43432c7cb inherit pro_attribs_classScanningPulseProcess"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy of the scanner's write waveform flag.  <a href="../../db/d85/classScanningPulseProcess.html#ab1dc1bba85c3f731407497e43432c7cb">More...</a><br /></td></tr>
+<tr class="separator:ab1dc1bba85c3f731407497e43432c7cb inherit pro_attribs_classScanningPulseProcess"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8eaef9604627436f79075f418c595f45 inherit pro_attribs_classScanningPulseProcess"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d85/classScanningPulseProcess.html#a8eaef9604627436f79075f418c595f45">calcEchowidth</a></td></tr>
+<tr class="memdesc:a8eaef9604627436f79075f418c595f45 inherit pro_attribs_classScanningPulseProcess"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy of the scanner's calc echowidth flag.  <a href="../../db/d85/classScanningPulseProcess.html#a8eaef9604627436f79075f418c595f45">More...</a><br /></td></tr>
+<tr class="separator:a8eaef9604627436f79075f418c595f45 inherit pro_attribs_classScanningPulseProcess"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aea2d0b2959ed1729e4520159bdd2e618 inherit pro_attribs_classScanningPulseProcess"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; std::vector&lt; <a class="el" href="../../db/d2e/classMeasurement.html">Measurement</a> &gt; &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d85/classScanningPulseProcess.html#aea2d0b2959ed1729e4520159bdd2e618">allMeasurements</a></td></tr>
 <tr class="memdesc:aea2d0b2959ed1729e4520159bdd2e618 inherit pro_attribs_classScanningPulseProcess"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reference to scanner's all measurements vector.  <a href="../../db/d85/classScanningPulseProcess.html#aea2d0b2959ed1729e4520159bdd2e618">More...</a><br /></td></tr>
 <tr class="separator:aea2d0b2959ed1729e4520159bdd2e618 inherit pro_attribs_classScanningPulseProcess"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -249,8 +243,8 @@ std::function&lt; void(unsigned int const, glm::dvec3 &amp;, <a class="el" href=
 <dd>
 <a class="el" href="../../d7/de7/classPulseWarehouseThreadPool.html" title="Class implementing a warehouse thread pool to deal with pulse tasks. ">PulseWarehouseThreadPool</a> </dd></dl>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a476636a1082a422691aa4cb906618264"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a476636a1082a422691aa4cb906618264">&#9670;&nbsp;</a></span>WarehouseScanningPulseProcess()</h2>
+<a id="a0fe601e0dd4198b1cfba88cacc7f59d1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0fe601e0dd4198b1cfba88cacc7f59d1">&#9670;&nbsp;</a></span>WarehouseScanningPulseProcess()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -258,25 +252,19 @@ std::function&lt; void(unsigned int const, glm::dvec3 &amp;, <a class="el" href=
         <tr>
           <td class="memname">WarehouseScanningPulseProcess::WarehouseScanningPulseProcess </td>
           <td>(</td>
-          <td class="paramtype">std::shared_ptr&lt; <a class="el" href="../../d8/d6b/classAbstractDetector.html">AbstractDetector</a> &gt; &amp;&#160;</td>
+          <td class="paramtype">std::shared_ptr&lt; <a class="el" href="../../d8/d6b/classAbstractDetector.html">AbstractDetector</a> &gt;&#160;</td>
           <td class="paramname"><em>detector</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">int &amp;&#160;</td>
-          <td class="paramname"><em>currentPulseNumber</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">bool &amp;&#160;</td>
+          <td class="paramtype">bool const&#160;</td>
           <td class="paramname"><em>writeWaveform</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">bool &amp;&#160;</td>
+          <td class="paramtype">bool const&#160;</td>
           <td class="paramname"><em>calcEchowidth</em>, </td>
         </tr>
         <tr>
@@ -352,13 +340,13 @@ std::function&lt; void(unsigned int const, glm::dvec3 &amp;, <a class="el" href=
   </table>
   </dd>
 </dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../db/d85/classScanningPulseProcess.html#a90aa81188c1840ea5f82cfe93110b01a" title="Default constructor for scanning pulse process. ">ScanningPulseProcess::ScanningPulseProcess</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../db/d85/classScanningPulseProcess.html#a68275c7de1c008909adf0acda8e3eb3a" title="Default constructor for scanning pulse process. ">ScanningPulseProcess::ScanningPulseProcess</a> </dd></dl>
 
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a9cd11e56054d40e74a716298be6569c3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9cd11e56054d40e74a716298be6569c3">&#9670;&nbsp;</a></span>handlePulseComputation()</h2>
+<a id="ada9e5a9b350c75c6efcb3001b4d46b16"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ada9e5a9b350c75c6efcb3001b4d46b16">&#9670;&nbsp;</a></span>handlePulseComputation()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -388,7 +376,13 @@ std::function&lt; void(unsigned int const, glm::dvec3 &amp;, <a class="el" href=
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">double const&#160;</td>
-          <td class="paramname"><em>currentGpsTime</em>&#160;</td>
+          <td class="paramname"><em>currentGpsTime</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int const&#160;</td>
+          <td class="paramname"><em>currentPulseNumber</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -404,22 +398,22 @@ std::function&lt; void(unsigned int const, glm::dvec3 &amp;, <a class="el" href=
 </div><div class="memdoc">
 
 <p>Implementation of handle pulse computation method for the pair budding task dropper and pulse warehouse thread pool. </p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../db/d85/classScanningPulseProcess.html#a5349ba0cce56efe76573b8be6c7cd298" title="Handle pulse computation whatever it is single thread based or thread pool based. ...">ScanningPulseProcess::handlePulseComputation</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../db/d85/classScanningPulseProcess.html#a350b02c7b783505906fdfc51a9e80909" title="Handle pulse computation whatever it is single thread based or thread pool based. ...">ScanningPulseProcess::handlePulseComputation</a> </dd>
 <dd>
 <a class="el" href="../../de/d9a/classPulseTaskDropper.html" title="Class implementing a task dropper to deal with pulse tasks. ">PulseTaskDropper</a> </dd>
 <dd>
 <a class="el" href="../../d7/de7/classPulseWarehouseThreadPool.html" title="Class implementing a warehouse thread pool to deal with pulse tasks. ">PulseWarehouseThreadPool</a> </dd>
 <dd>
-<a class="el" href="../../df/ddb/classWarehouseScanningPulseProcess.html#a39373daea64d1205e9254ce1675f87e7" title="Handle sequential computation of scanning pulses. ">WarehouseScanningPulseProcess::handlePulseComputationSequential</a> </dd>
+<a class="el" href="../../df/ddb/classWarehouseScanningPulseProcess.html#a479552157c3f1aa67fcfc80122e0cb7a" title="Handle sequential computation of scanning pulses. ">WarehouseScanningPulseProcess::handlePulseComputationSequential</a> </dd>
 <dd>
-<a class="el" href="../../df/ddb/classWarehouseScanningPulseProcess.html#add370cfcae00854b555a2966d682ab42" title="Handle parallel computation of scanning pulses using a warehouse of task-chunks based strategy...">WarehouseScanningPulseProcess::handlePulseComputationParallel</a> </dd></dl>
+<a class="el" href="../../df/ddb/classWarehouseScanningPulseProcess.html#a16d58f0d9985fc46f463f204e45afd2c" title="Handle parallel computation of scanning pulses using a warehouse of task-chunks based strategy...">WarehouseScanningPulseProcess::handlePulseComputationParallel</a> </dd></dl>
 
-<p>Implements <a class="el" href="../../db/d85/classScanningPulseProcess.html#a5349ba0cce56efe76573b8be6c7cd298">ScanningPulseProcess</a>.</p>
+<p>Implements <a class="el" href="../../db/d85/classScanningPulseProcess.html#a350b02c7b783505906fdfc51a9e80909">ScanningPulseProcess</a>.</p>
 
 </div>
 </div>
-<a id="add370cfcae00854b555a2966d682ab42"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#add370cfcae00854b555a2966d682ab42">&#9670;&nbsp;</a></span>handlePulseComputationParallel()</h2>
+<a id="a16d58f0d9985fc46f463f204e45afd2c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a16d58f0d9985fc46f463f204e45afd2c">&#9670;&nbsp;</a></span>handlePulseComputationParallel()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -449,7 +443,13 @@ std::function&lt; void(unsigned int const, glm::dvec3 &amp;, <a class="el" href=
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">double const&#160;</td>
-          <td class="paramname"><em>currentGpsTime</em>&#160;</td>
+          <td class="paramname"><em>currentGpsTime</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int const&#160;</td>
+          <td class="paramname"><em>currentPulseNumber</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -465,14 +465,14 @@ std::function&lt; void(unsigned int const, glm::dvec3 &amp;, <a class="el" href=
 </div><div class="memdoc">
 
 <p>Handle parallel computation of scanning pulses using a warehouse of task-chunks based strategy. </p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../df/ddb/classWarehouseScanningPulseProcess.html#a9cd11e56054d40e74a716298be6569c3" title="Implementation of handle pulse computation method for the pair budding task dropper and pulse warehou...">WarehouseScanningPulseProcess::handlePulseComputation</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../df/ddb/classWarehouseScanningPulseProcess.html#ada9e5a9b350c75c6efcb3001b4d46b16" title="Implementation of handle pulse computation method for the pair budding task dropper and pulse warehou...">WarehouseScanningPulseProcess::handlePulseComputation</a> </dd>
 <dd>
-<a class="el" href="../../df/ddb/classWarehouseScanningPulseProcess.html#a39373daea64d1205e9254ce1675f87e7" title="Handle sequential computation of scanning pulses. ">WarehouseScanningPulseProcess::handlePulseComputationSequential</a> </dd></dl>
+<a class="el" href="../../df/ddb/classWarehouseScanningPulseProcess.html#a479552157c3f1aa67fcfc80122e0cb7a" title="Handle sequential computation of scanning pulses. ">WarehouseScanningPulseProcess::handlePulseComputationSequential</a> </dd></dl>
 
 </div>
 </div>
-<a id="a39373daea64d1205e9254ce1675f87e7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a39373daea64d1205e9254ce1675f87e7">&#9670;&nbsp;</a></span>handlePulseComputationSequential()</h2>
+<a id="a479552157c3f1aa67fcfc80122e0cb7a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a479552157c3f1aa67fcfc80122e0cb7a">&#9670;&nbsp;</a></span>handlePulseComputationSequential()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -502,7 +502,13 @@ std::function&lt; void(unsigned int const, glm::dvec3 &amp;, <a class="el" href=
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">double const&#160;</td>
-          <td class="paramname"><em>currentGpsTime</em>&#160;</td>
+          <td class="paramname"><em>currentGpsTime</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int const&#160;</td>
+          <td class="paramname"><em>currentPulseNumber</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -518,9 +524,9 @@ std::function&lt; void(unsigned int const, glm::dvec3 &amp;, <a class="el" href=
 </div><div class="memdoc">
 
 <p>Handle sequential computation of scanning pulses. </p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../df/ddb/classWarehouseScanningPulseProcess.html#a9cd11e56054d40e74a716298be6569c3" title="Implementation of handle pulse computation method for the pair budding task dropper and pulse warehou...">WarehouseScanningPulseProcess::handlePulseComputation</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../df/ddb/classWarehouseScanningPulseProcess.html#ada9e5a9b350c75c6efcb3001b4d46b16" title="Implementation of handle pulse computation method for the pair budding task dropper and pulse warehou...">WarehouseScanningPulseProcess::handlePulseComputation</a> </dd>
 <dd>
-<a class="el" href="../../df/ddb/classWarehouseScanningPulseProcess.html#add370cfcae00854b555a2966d682ab42" title="Handle parallel computation of scanning pulses using a warehouse of task-chunks based strategy...">WarehouseScanningPulseProcess::handlePulseComputationParallel</a> </dd></dl>
+<a class="el" href="../../df/ddb/classWarehouseScanningPulseProcess.html#a16d58f0d9985fc46f463f204e45afd2c" title="Handle parallel computation of scanning pulses using a warehouse of task-chunks based strategy...">WarehouseScanningPulseProcess::handlePulseComputationParallel</a> </dd></dl>
 
 </div>
 </div>

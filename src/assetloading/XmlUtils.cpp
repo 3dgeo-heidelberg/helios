@@ -444,3 +444,34 @@ std::vector<std::shared_ptr<DynMotion>> XmlUtils::createDynMotionsVector(
 
     return dms;
 }
+
+void XmlUtils::assertDocumentForAssetLoading(
+    tinyxml2::XMLDocument &doc,
+    std::string const &filename,
+    std::string const &path,
+    std::string const &type,
+    std::string const &id,
+    std::string const &caller
+){
+    if(doc.Error()){
+        if(doc.ErrorID() == tinyxml2::XML_ERROR_FILE_NOT_FOUND){
+            std::stringstream ss;
+            ss    << "File \"" << filename << "\" was not found at:\n"
+                  << "\"" << path << "\"\n"
+                  << "Thus, it is not possible to load the asset \""
+                  << type << "\":\"" << id << "\"";
+            logging::ERR(ss.str());
+        }
+        else{
+            std::stringstream ss;
+            ss    << "It was not possible to load the asset \""
+                  << type << "\":\"" << id << "\"\n"
+                  << "At least not from file \"" << filename
+                  << "\" at:\n" << "\"" << path << "\"";
+            logging::ERR(ss.str());
+        }
+        std::stringstream ss;
+        ss  << caller << " failed due to a document error";
+        throw HeliosException(ss.str());
+    }
+}

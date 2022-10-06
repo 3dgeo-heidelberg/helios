@@ -414,6 +414,11 @@ std::shared_ptr<Platform> XmlAssetsLoader::procedurallyCreatePlatformFromXml(
     }
 }
 std::shared_ptr<Platform> XmlAssetsLoader::createInterpolatedMovingPlatform(){
+    // Validate
+    XmlUtils::assertDocumentForAssetLoading(
+        doc, xmlDocFilename, xmlDocFilePath, "platform", "interpolated",
+        "XmlAssetsLoader::createInterpolatedMovingPlatform"
+    );
     // Prepare egg building
     std::shared_ptr<InterpolatedMovingPlatformEgg> platform =
         std::make_shared<InterpolatedMovingPlatformEgg>();
@@ -1214,6 +1219,10 @@ std::shared_ptr<Asset> XmlAssetsLoader::getAssetById(
     void *extraOutput
 ) {
   std::string errorMsg = "# DEF ERR MSG #";
+  XmlUtils::assertDocumentForAssetLoading(
+    doc, xmlDocFilename, xmlDocFilePath, type, id,
+    "XmlAssetsLoader::getAssetById"
+  );
   try {
     tinyxml2::XMLElement *assetNodes =
         doc.FirstChild()->NextSibling()->FirstChildElement(type.c_str());

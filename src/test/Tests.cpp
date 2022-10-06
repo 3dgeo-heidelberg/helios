@@ -6,6 +6,7 @@
 #include <test/RayIntersectionTest.h>
 #include <test/GroveTest.h>
 #include <test/SerializationTest.h>
+#include <test/AssetLoadingTest.h>
 #include <test/SurveyCopyTest.h>
 #include <test/PlaneFitterTest.h>
 #include <test/LadLutTest.h>
@@ -76,6 +77,9 @@ void doTests(std::string const & testDir){
 
     SerializationTest serializationTest;
     passed &= serializationTest.test(std::cout, TEST_COLOR);
+
+    AssetLoadingTest assetLoadingTest;
+    passed &= assetLoadingTest.test(std::cout, TEST_COLOR);
 
     SurveyCopyTest surveyCopyTest;
     passed &= surveyCopyTest.test(std::cout, TEST_COLOR);

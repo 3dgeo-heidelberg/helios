@@ -1,7 +1,9 @@
 var searchData=
 [
   ['halfsize',['halfSize',['../d6/d44/classVoxel.html#ab9d383812ebf70210957702b88a86831',1,'Voxel']]],
-  ['handler',['handler',['../d5/d3c/classBuddingScanningPulseProcess.html#a75ecfafbbca2d43e53bf5d1d256f72e1',1,'BuddingScanningPulseProcess::handler()'],['../df/ddb/classWarehouseScanningPulseProcess.html#a820ead8c0e09bbb62612a488c1912de1',1,'WarehouseScanningPulseProcess::handler()']]],
+  ['handler',['handler',['../d5/d3c/classBuddingScanningPulseProcess.html#aa9ed5eccd3807e7ebebc9bf4852ebef2',1,'BuddingScanningPulseProcess::handler()'],['../df/ddb/classWarehouseScanningPulseProcess.html#a4c0433c6baab24aa9900c42f8f371e95',1,'WarehouseScanningPulseProcess::handler()']]],
+  ['headrelativeemitterattitude',['headRelativeEmitterAttitude',['../d1/d09/classScanningDevice.html#a41feb2c8e822323b9830ab2816b59500',1,'ScanningDevice']]],
+  ['headrelativeemitterposition',['headRelativeEmitterPosition',['../d1/d09/classScanningDevice.html#af5ed5afbb23d6e2dea4bc4d84c9d86d1',1,'ScanningDevice']]],
   ['headrotatepersec_5frad',['headRotatePerSec_rad',['../d0/d23/classScannerSettings.html#ac58959e3d36c627248ccf922dad63e9f',1,'ScannerSettings']]],
   ['headrotatestart_5frad',['headRotateStart_rad',['../d0/d23/classScannerSettings.html#a6c67ef78ba16208f85fae4e04fd2d869',1,'ScannerSettings']]],
   ['headrotatestop_5frad',['headRotateStop_rad',['../d0/d23/classScannerSettings.html#a30fdaba2022b552a10ecc26c31d01e22',1,'ScannerSettings']]],

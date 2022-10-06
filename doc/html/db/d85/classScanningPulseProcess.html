@@ -121,31 +121,28 @@ Collaboration diagram for ScanningPulseProcess:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a90aa81188c1840ea5f82cfe93110b01a"><td class="memItemLeft" align="right" valign="top"><a id="a90aa81188c1840ea5f82cfe93110b01a"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d85/classScanningPulseProcess.html#a90aa81188c1840ea5f82cfe93110b01a">ScanningPulseProcess</a> (std::shared_ptr&lt; <a class="el" href="../../d8/d6b/classAbstractDetector.html">AbstractDetector</a> &gt; &amp;<a class="el" href="../../db/d85/classScanningPulseProcess.html#a26e6882306a16fae340deb86d2b42a68">detector</a>, int &amp;<a class="el" href="../../db/d85/classScanningPulseProcess.html#a0c4057d2f0f6d7c4334a435f19b9ba65">currentPulseNumber</a>, bool &amp;<a class="el" href="../../db/d85/classScanningPulseProcess.html#af8d8e15c0be842fdb5600395797454f3">writeWaveform</a>, bool &amp;<a class="el" href="../../db/d85/classScanningPulseProcess.html#a9403a10e5bfaf5f346ae779b05381d42">calcEchowidth</a>, std::shared_ptr&lt; std::vector&lt; <a class="el" href="../../db/d2e/classMeasurement.html">Measurement</a> &gt;&gt; &amp;<a class="el" href="../../db/d85/classScanningPulseProcess.html#aea2d0b2959ed1729e4520159bdd2e618">allMeasurements</a>, std::shared_ptr&lt; std::mutex &gt; &amp;<a class="el" href="../../db/d85/classScanningPulseProcess.html#aad7dd7577c3eb70d5faca1b2b3f67372">allMeasurementsMutex</a>, std::shared_ptr&lt; std::vector&lt; <a class="el" href="../../db/d2e/classMeasurement.html">Measurement</a> &gt;&gt; &amp;<a class="el" href="../../db/d85/classScanningPulseProcess.html#ac2da1c14b037548e5871f6d7a948b74c">cycleMeasurements</a>, std::shared_ptr&lt; std::mutex &gt; &amp;<a class="el" href="../../db/d85/classScanningPulseProcess.html#a0671ed427321bc0972a1238774c897c6">cycleMeasurementsMutex</a>)</td></tr>
-<tr class="memdesc:a90aa81188c1840ea5f82cfe93110b01a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor for scanning pulse process. <br /></td></tr>
-<tr class="separator:a90aa81188c1840ea5f82cfe93110b01a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5349ba0cce56efe76573b8be6c7cd298"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d85/classScanningPulseProcess.html#a5349ba0cce56efe76573b8be6c7cd298">handlePulseComputation</a> (unsigned int const legIndex, glm::dvec3 &amp;absoluteBeamOrigin, <a class="el" href="../../d5/dcb/classRotation.html">Rotation</a> &amp;absoluteBeamAttitude, double const currentGpsTime)=0</td></tr>
-<tr class="memdesc:a5349ba0cce56efe76573b8be6c7cd298"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle pulse computation whatever it is single thread based or thread pool based.  <a href="#a5349ba0cce56efe76573b8be6c7cd298">More...</a><br /></td></tr>
-<tr class="separator:a5349ba0cce56efe76573b8be6c7cd298"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a68275c7de1c008909adf0acda8e3eb3a"><td class="memItemLeft" align="right" valign="top"><a id="a68275c7de1c008909adf0acda8e3eb3a"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d85/classScanningPulseProcess.html#a68275c7de1c008909adf0acda8e3eb3a">ScanningPulseProcess</a> (std::shared_ptr&lt; <a class="el" href="../../d8/d6b/classAbstractDetector.html">AbstractDetector</a> &gt; <a class="el" href="../../db/d85/classScanningPulseProcess.html#ae67dc3339f37aa19cf27a30e793b437f">detector</a>, bool const <a class="el" href="../../db/d85/classScanningPulseProcess.html#ab1dc1bba85c3f731407497e43432c7cb">writeWaveform</a>, bool const <a class="el" href="../../db/d85/classScanningPulseProcess.html#a8eaef9604627436f79075f418c595f45">calcEchowidth</a>, std::shared_ptr&lt; std::vector&lt; <a class="el" href="../../db/d2e/classMeasurement.html">Measurement</a> &gt;&gt; &amp;<a class="el" href="../../db/d85/classScanningPulseProcess.html#aea2d0b2959ed1729e4520159bdd2e618">allMeasurements</a>, std::shared_ptr&lt; std::mutex &gt; &amp;<a class="el" href="../../db/d85/classScanningPulseProcess.html#aad7dd7577c3eb70d5faca1b2b3f67372">allMeasurementsMutex</a>, std::shared_ptr&lt; std::vector&lt; <a class="el" href="../../db/d2e/classMeasurement.html">Measurement</a> &gt;&gt; &amp;<a class="el" href="../../db/d85/classScanningPulseProcess.html#ac2da1c14b037548e5871f6d7a948b74c">cycleMeasurements</a>, std::shared_ptr&lt; std::mutex &gt; &amp;<a class="el" href="../../db/d85/classScanningPulseProcess.html#a0671ed427321bc0972a1238774c897c6">cycleMeasurementsMutex</a>)</td></tr>
+<tr class="memdesc:a68275c7de1c008909adf0acda8e3eb3a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor for scanning pulse process. <br /></td></tr>
+<tr class="separator:a68275c7de1c008909adf0acda8e3eb3a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a350b02c7b783505906fdfc51a9e80909"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d85/classScanningPulseProcess.html#a350b02c7b783505906fdfc51a9e80909">handlePulseComputation</a> (unsigned int const legIndex, glm::dvec3 &amp;absoluteBeamOrigin, <a class="el" href="../../d5/dcb/classRotation.html">Rotation</a> &amp;absoluteBeamAttitude, double const currentGpsTime, int const currentPulseNumber)=0</td></tr>
+<tr class="memdesc:a350b02c7b783505906fdfc51a9e80909"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle pulse computation whatever it is single thread based or thread pool based.  <a href="#a350b02c7b783505906fdfc51a9e80909">More...</a><br /></td></tr>
+<tr class="separator:a350b02c7b783505906fdfc51a9e80909"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aada8ba033b4764e33da070a613ba01df"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d85/classScanningPulseProcess.html#aada8ba033b4764e33da070a613ba01df">onLegComplete</a> ()</td></tr>
 <tr class="memdesc:aada8ba033b4764e33da070a613ba01df"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle behavior of scanning pulse process once current leg has been completed. It is useful mainly when scanning pulses are computed in a parallel way, so pending tasks can be adequately handled.  <a href="#aada8ba033b4764e33da070a613ba01df">More...</a><br /></td></tr>
 <tr class="separator:aada8ba033b4764e33da070a613ba01df"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8e3cb6388ace9c320fdbb32955bf9d8a"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d85/classScanningPulseProcess.html#a8e3cb6388ace9c320fdbb32955bf9d8a">onSimulationFinished</a> ()</td></tr>
 <tr class="memdesc:a8e3cb6388ace9c320fdbb32955bf9d8a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle behavior of scanning pulse process once simulation has finished.  <a href="#a8e3cb6388ace9c320fdbb32955bf9d8a">More...</a><br /></td></tr>
 <tr class="separator:a8e3cb6388ace9c320fdbb32955bf9d8a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a802cfc799d3c344e0c8a2e55ed2e097c"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="../../d8/d6b/classAbstractDetector.html">AbstractDetector</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d85/classScanningPulseProcess.html#a802cfc799d3c344e0c8a2e55ed2e097c">getDetector</a> () const</td></tr>
-<tr class="memdesc:a802cfc799d3c344e0c8a2e55ed2e097c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain the scanner's detector.  <a href="#a802cfc799d3c344e0c8a2e55ed2e097c">More...</a><br /></td></tr>
-<tr class="separator:a802cfc799d3c344e0c8a2e55ed2e097c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0f54689b34bbf46bafe753b163a9130e"><td class="memItemLeft" align="right" valign="top">int &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d85/classScanningPulseProcess.html#a0f54689b34bbf46bafe753b163a9130e">getCurrentPulseNumber</a> () const</td></tr>
-<tr class="memdesc:a0f54689b34bbf46bafe753b163a9130e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain the scanner's current pulse number.  <a href="#a0f54689b34bbf46bafe753b163a9130e">More...</a><br /></td></tr>
-<tr class="separator:a0f54689b34bbf46bafe753b163a9130e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa24a1a239dfbe7f5ece35ff7226a2ce5"><td class="memItemLeft" align="right" valign="top">bool &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d85/classScanningPulseProcess.html#aa24a1a239dfbe7f5ece35ff7226a2ce5">isWriteWaveform</a> () const</td></tr>
-<tr class="memdesc:aa24a1a239dfbe7f5ece35ff7226a2ce5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain the scanner's write waveform flag.  <a href="#aa24a1a239dfbe7f5ece35ff7226a2ce5">More...</a><br /></td></tr>
-<tr class="separator:aa24a1a239dfbe7f5ece35ff7226a2ce5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aeb5eafba680411953233e864f70bd25e"><td class="memItemLeft" align="right" valign="top">bool &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d85/classScanningPulseProcess.html#aeb5eafba680411953233e864f70bd25e">isCalcEchowidth</a> () const</td></tr>
-<tr class="memdesc:aeb5eafba680411953233e864f70bd25e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain the scanner's calc echowidth flag.  <a href="#aeb5eafba680411953233e864f70bd25e">More...</a><br /></td></tr>
-<tr class="separator:aeb5eafba680411953233e864f70bd25e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a33ddeb7a501db5fe64f877ae0dc112bb"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="../../d8/d6b/classAbstractDetector.html">AbstractDetector</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d85/classScanningPulseProcess.html#a33ddeb7a501db5fe64f877ae0dc112bb">getDetector</a> () const</td></tr>
+<tr class="memdesc:a33ddeb7a501db5fe64f877ae0dc112bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain the scanner's detector.  <a href="#a33ddeb7a501db5fe64f877ae0dc112bb">More...</a><br /></td></tr>
+<tr class="separator:a33ddeb7a501db5fe64f877ae0dc112bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1982098c9f9d7ac99a57196c70fab295"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d85/classScanningPulseProcess.html#a1982098c9f9d7ac99a57196c70fab295">isWriteWaveform</a> () const</td></tr>
+<tr class="memdesc:a1982098c9f9d7ac99a57196c70fab295"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain the scanner's write waveform flag.  <a href="#a1982098c9f9d7ac99a57196c70fab295">More...</a><br /></td></tr>
+<tr class="separator:a1982098c9f9d7ac99a57196c70fab295"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a037b95cd9168ad0041827f97379f90fd"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d85/classScanningPulseProcess.html#a037b95cd9168ad0041827f97379f90fd">isCalcEchowidth</a> () const</td></tr>
+<tr class="memdesc:a037b95cd9168ad0041827f97379f90fd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain the scanner's calc echowidth flag.  <a href="#a037b95cd9168ad0041827f97379f90fd">More...</a><br /></td></tr>
+<tr class="separator:a037b95cd9168ad0041827f97379f90fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7e3ff1192ced44b3873546934bd93d09"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; std::vector&lt; <a class="el" href="../../db/d2e/classMeasurement.html">Measurement</a> &gt; &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d85/classScanningPulseProcess.html#a7e3ff1192ced44b3873546934bd93d09">getAllMeasurements</a> () const</td></tr>
 <tr class="memdesc:a7e3ff1192ced44b3873546934bd93d09"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain the scanner's all measurements vector.  <a href="#a7e3ff1192ced44b3873546934bd93d09">More...</a><br /></td></tr>
 <tr class="separator:a7e3ff1192ced44b3873546934bd93d09"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -164,18 +161,15 @@ Protected Attributes</h2></td></tr>
 <tr class="memitem:a36794f689c75b9053fbe424667d01715"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../da/dfd/classPulseTaskFactory.html">PulseTaskFactory</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d85/classScanningPulseProcess.html#a36794f689c75b9053fbe424667d01715">ptf</a></td></tr>
 <tr class="memdesc:a36794f689c75b9053fbe424667d01715"><td class="mdescLeft">&#160;</td><td class="mdescRight">The pulse task factory to build pulse tasks.  <a href="#a36794f689c75b9053fbe424667d01715">More...</a><br /></td></tr>
 <tr class="separator:a36794f689c75b9053fbe424667d01715"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a26e6882306a16fae340deb86d2b42a68"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="../../d8/d6b/classAbstractDetector.html">AbstractDetector</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d85/classScanningPulseProcess.html#a26e6882306a16fae340deb86d2b42a68">detector</a></td></tr>
-<tr class="memdesc:a26e6882306a16fae340deb86d2b42a68"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="../../dc/d42/classScanner.html" title="Class representing a scanner asset. ">Scanner</a>'s detector.  <a href="#a26e6882306a16fae340deb86d2b42a68">More...</a><br /></td></tr>
-<tr class="separator:a26e6882306a16fae340deb86d2b42a68"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0c4057d2f0f6d7c4334a435f19b9ba65"><td class="memItemLeft" align="right" valign="top">int &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d85/classScanningPulseProcess.html#a0c4057d2f0f6d7c4334a435f19b9ba65">currentPulseNumber</a></td></tr>
-<tr class="memdesc:a0c4057d2f0f6d7c4334a435f19b9ba65"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reference to scanner's current pulse number.  <a href="#a0c4057d2f0f6d7c4334a435f19b9ba65">More...</a><br /></td></tr>
-<tr class="separator:a0c4057d2f0f6d7c4334a435f19b9ba65"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af8d8e15c0be842fdb5600395797454f3"><td class="memItemLeft" align="right" valign="top">bool &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d85/classScanningPulseProcess.html#af8d8e15c0be842fdb5600395797454f3">writeWaveform</a></td></tr>
-<tr class="memdesc:af8d8e15c0be842fdb5600395797454f3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reference to scanner's write waveform flag.  <a href="#af8d8e15c0be842fdb5600395797454f3">More...</a><br /></td></tr>
-<tr class="separator:af8d8e15c0be842fdb5600395797454f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9403a10e5bfaf5f346ae779b05381d42"><td class="memItemLeft" align="right" valign="top">bool &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d85/classScanningPulseProcess.html#a9403a10e5bfaf5f346ae779b05381d42">calcEchowidth</a></td></tr>
-<tr class="memdesc:a9403a10e5bfaf5f346ae779b05381d42"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reference to scanner's calc echowidth flag.  <a href="#a9403a10e5bfaf5f346ae779b05381d42">More...</a><br /></td></tr>
-<tr class="separator:a9403a10e5bfaf5f346ae779b05381d42"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae67dc3339f37aa19cf27a30e793b437f"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="../../d8/d6b/classAbstractDetector.html">AbstractDetector</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d85/classScanningPulseProcess.html#ae67dc3339f37aa19cf27a30e793b437f">detector</a></td></tr>
+<tr class="memdesc:ae67dc3339f37aa19cf27a30e793b437f"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="../../dc/d42/classScanner.html" title="Class representing a scanner asset. ">Scanner</a>'s detector.  <a href="#ae67dc3339f37aa19cf27a30e793b437f">More...</a><br /></td></tr>
+<tr class="separator:ae67dc3339f37aa19cf27a30e793b437f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab1dc1bba85c3f731407497e43432c7cb"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d85/classScanningPulseProcess.html#ab1dc1bba85c3f731407497e43432c7cb">writeWaveform</a></td></tr>
+<tr class="memdesc:ab1dc1bba85c3f731407497e43432c7cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy of the scanner's write waveform flag.  <a href="#ab1dc1bba85c3f731407497e43432c7cb">More...</a><br /></td></tr>
+<tr class="separator:ab1dc1bba85c3f731407497e43432c7cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8eaef9604627436f79075f418c595f45"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d85/classScanningPulseProcess.html#a8eaef9604627436f79075f418c595f45">calcEchowidth</a></td></tr>
+<tr class="memdesc:a8eaef9604627436f79075f418c595f45"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy of the scanner's calc echowidth flag.  <a href="#a8eaef9604627436f79075f418c595f45">More...</a><br /></td></tr>
+<tr class="separator:a8eaef9604627436f79075f418c595f45"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aea2d0b2959ed1729e4520159bdd2e618"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; std::vector&lt; <a class="el" href="../../db/d2e/classMeasurement.html">Measurement</a> &gt; &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d85/classScanningPulseProcess.html#aea2d0b2959ed1729e4520159bdd2e618">allMeasurements</a></td></tr>
 <tr class="memdesc:aea2d0b2959ed1729e4520159bdd2e618"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reference to scanner's all measurements vector.  <a href="#aea2d0b2959ed1729e4520159bdd2e618">More...</a><br /></td></tr>
 <tr class="separator:aea2d0b2959ed1729e4520159bdd2e618"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -252,35 +246,6 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a0f54689b34bbf46bafe753b163a9130e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0f54689b34bbf46bafe753b163a9130e">&#9670;&nbsp;</a></span>getCurrentPulseNumber()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">int&amp; ScanningPulseProcess::getCurrentPulseNumber </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Obtain the scanner's current pulse number. </p>
-<dl class="section return"><dt>Returns</dt><dd><a class="el" href="../../dc/d42/classScanner.html" title="Class representing a scanner asset. ">Scanner</a>'s current pulse number </dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../db/d85/classScanningPulseProcess.html#a0c4057d2f0f6d7c4334a435f19b9ba65" title="Reference to scanner&#39;s current pulse number. ">ScanningPulseProcess::currentPulseNumber</a> </dd></dl>
-
-</div>
-</div>
 <a id="a2d406b636fc39cac2d9376e3a97bfd97"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a2d406b636fc39cac2d9376e3a97bfd97">&#9670;&nbsp;</a></span>getCycleMeasurements()</h2>
 
@@ -339,8 +304,8 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a802cfc799d3c344e0c8a2e55ed2e097c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a802cfc799d3c344e0c8a2e55ed2e097c">&#9670;&nbsp;</a></span>getDetector()</h2>
+<a id="a33ddeb7a501db5fe64f877ae0dc112bb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a33ddeb7a501db5fe64f877ae0dc112bb">&#9670;&nbsp;</a></span>getDetector()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -349,7 +314,7 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::shared_ptr&lt;<a class="el" href="../../d8/d6b/classAbstractDetector.html">AbstractDetector</a>&gt;&amp; ScanningPulseProcess::getDetector </td>
+          <td class="memname">std::shared_ptr&lt;<a class="el" href="../../d8/d6b/classAbstractDetector.html">AbstractDetector</a>&gt; ScanningPulseProcess::getDetector </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -364,12 +329,12 @@ Protected Attributes</h2></td></tr>
 
 <p>Obtain the scanner's detector. </p>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="../../dc/d42/classScanner.html" title="Class representing a scanner asset. ">Scanner</a>'s detector </dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../db/d85/classScanningPulseProcess.html#a26e6882306a16fae340deb86d2b42a68" title="Scanner&#39;s detector. ">ScanningPulseProcess::detector</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../db/d85/classScanningPulseProcess.html#ae67dc3339f37aa19cf27a30e793b437f" title="Scanner&#39;s detector. ">ScanningPulseProcess::detector</a> </dd></dl>
 
 </div>
 </div>
-<a id="a5349ba0cce56efe76573b8be6c7cd298"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5349ba0cce56efe76573b8be6c7cd298">&#9670;&nbsp;</a></span>handlePulseComputation()</h2>
+<a id="a350b02c7b783505906fdfc51a9e80909"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a350b02c7b783505906fdfc51a9e80909">&#9670;&nbsp;</a></span>handlePulseComputation()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -399,7 +364,13 @@ Protected Attributes</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">double const&#160;</td>
-          <td class="paramname"><em>currentGpsTime</em>&#160;</td>
+          <td class="paramname"><em>currentGpsTime</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int const&#160;</td>
+          <td class="paramname"><em>currentPulseNumber</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -421,16 +392,17 @@ Protected Attributes</h2></td></tr>
     <tr><td class="paramname">absoluteBeamOrigin</td><td>Absolute position of beam origin </td></tr>
     <tr><td class="paramname">absoluteBeamAttitude</td><td>Beam attitude </td></tr>
     <tr><td class="paramname">currentGpsTime</td><td>Current GPS time (nanoseconds) </td></tr>
+    <tr><td class="paramname">currentPulseNumber</td><td>The current pulse number of the scanning device </td></tr>
   </table>
   </dd>
 </dl>
 
-<p>Implemented in <a class="el" href="../../d5/d3c/classBuddingScanningPulseProcess.html#a81e696cb1ec6af65cfcdc9952d0c391e">BuddingScanningPulseProcess</a>, and <a class="el" href="../../df/ddb/classWarehouseScanningPulseProcess.html#a9cd11e56054d40e74a716298be6569c3">WarehouseScanningPulseProcess</a>.</p>
+<p>Implemented in <a class="el" href="../../d5/d3c/classBuddingScanningPulseProcess.html#a0ffc1db25457336404f0734ec6dbfebe">BuddingScanningPulseProcess</a>, and <a class="el" href="../../df/ddb/classWarehouseScanningPulseProcess.html#ada9e5a9b350c75c6efcb3001b4d46b16">WarehouseScanningPulseProcess</a>.</p>
 
 </div>
 </div>
-<a id="aeb5eafba680411953233e864f70bd25e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aeb5eafba680411953233e864f70bd25e">&#9670;&nbsp;</a></span>isCalcEchowidth()</h2>
+<a id="a037b95cd9168ad0041827f97379f90fd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a037b95cd9168ad0041827f97379f90fd">&#9670;&nbsp;</a></span>isCalcEchowidth()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -439,7 +411,7 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool&amp; ScanningPulseProcess::isCalcEchowidth </td>
+          <td class="memname">bool ScanningPulseProcess::isCalcEchowidth </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -454,12 +426,12 @@ Protected Attributes</h2></td></tr>
 
 <p>Obtain the scanner's calc echowidth flag. </p>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="../../dc/d42/classScanner.html" title="Class representing a scanner asset. ">Scanner</a>'s calc echowidth flag </dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../db/d85/classScanningPulseProcess.html#a9403a10e5bfaf5f346ae779b05381d42" title="Reference to scanner&#39;s calc echowidth flag. ">ScanningPulseProcess::calcEchowidth</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../db/d85/classScanningPulseProcess.html#a8eaef9604627436f79075f418c595f45" title="Copy of the scanner&#39;s calc echowidth flag. ">ScanningPulseProcess::calcEchowidth</a> </dd></dl>
 
 </div>
 </div>
-<a id="aa24a1a239dfbe7f5ece35ff7226a2ce5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa24a1a239dfbe7f5ece35ff7226a2ce5">&#9670;&nbsp;</a></span>isWriteWaveform()</h2>
+<a id="a1982098c9f9d7ac99a57196c70fab295"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1982098c9f9d7ac99a57196c70fab295">&#9670;&nbsp;</a></span>isWriteWaveform()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -468,7 +440,7 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool&amp; ScanningPulseProcess::isWriteWaveform </td>
+          <td class="memname">bool ScanningPulseProcess::isWriteWaveform </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -483,7 +455,7 @@ Protected Attributes</h2></td></tr>
 
 <p>Obtain the scanner's write waveform flag. </p>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="../../dc/d42/classScanner.html" title="Class representing a scanner asset. ">Scanner</a>'s write waveform flag </dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../db/d85/classScanningPulseProcess.html#af8d8e15c0be842fdb5600395797454f3" title="Reference to scanner&#39;s write waveform flag. ">ScanningPulseProcess::writeWaveform</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../db/d85/classScanningPulseProcess.html#ab1dc1bba85c3f731407497e43432c7cb" title="Copy of the scanner&#39;s write waveform flag. ">ScanningPulseProcess::writeWaveform</a> </dd></dl>
 
 </div>
 </div>
@@ -598,8 +570,8 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a9403a10e5bfaf5f346ae779b05381d42"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9403a10e5bfaf5f346ae779b05381d42">&#9670;&nbsp;</a></span>calcEchowidth</h2>
+<a id="a8eaef9604627436f79075f418c595f45"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8eaef9604627436f79075f418c595f45">&#9670;&nbsp;</a></span>calcEchowidth</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -608,7 +580,7 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool&amp; ScanningPulseProcess::calcEchowidth</td>
+          <td class="memname">bool ScanningPulseProcess::calcEchowidth</td>
         </tr>
       </table>
   </td>
@@ -618,33 +590,8 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Reference to scanner's calc echowidth flag. </p>
+<p>Copy of the scanner's calc echowidth flag. </p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="../../dc/d42/classScanner.html#aca065cd1d5ef6bfe59ddcecd270a7393" title="Flag specifying if calculate echo width (true) or not (false) ">Scanner::calcEchowidth</a> </dd></dl>
-
-</div>
-</div>
-<a id="a0c4057d2f0f6d7c4334a435f19b9ba65"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0c4057d2f0f6d7c4334a435f19b9ba65">&#9670;&nbsp;</a></span>currentPulseNumber</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">int&amp; ScanningPulseProcess::currentPulseNumber</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Reference to scanner's current pulse number. </p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../dc/d42/classScanner.html#a6d88db97d8ce9fa9e3880eb58590de7a" title="Current pulse number. ">Scanner::state_currentPulseNumber</a> </dd></dl>
 
 </div>
 </div>
@@ -698,8 +645,8 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a26e6882306a16fae340deb86d2b42a68"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a26e6882306a16fae340deb86d2b42a68">&#9670;&nbsp;</a></span>detector</h2>
+<a id="ae67dc3339f37aa19cf27a30e793b437f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae67dc3339f37aa19cf27a30e793b437f">&#9670;&nbsp;</a></span>detector</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -708,7 +655,7 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::shared_ptr&lt;<a class="el" href="../../d8/d6b/classAbstractDetector.html">AbstractDetector</a>&gt;&amp; ScanningPulseProcess::detector</td>
+          <td class="memname">std::shared_ptr&lt;<a class="el" href="../../d8/d6b/classAbstractDetector.html">AbstractDetector</a>&gt; ScanningPulseProcess::detector</td>
         </tr>
       </table>
   </td>
@@ -719,7 +666,7 @@ Protected Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p><a class="el" href="../../dc/d42/classScanner.html" title="Class representing a scanner asset. ">Scanner</a>'s detector. </p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../dc/d42/classScanner.html#aae0cadd53ad865a242fdf84ef8a03634" title="Detector composing the scanner. ">Scanner::detector</a> </dd>
+<dl class="section see"><dt>See also</dt><dd>Scanner::detector </dd>
 <dd>
 <a class="el" href="../../d8/d6b/classAbstractDetector.html" title="Base abstract class for detectors. ">AbstractDetector</a> </dd></dl>
 
@@ -750,8 +697,8 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="af8d8e15c0be842fdb5600395797454f3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af8d8e15c0be842fdb5600395797454f3">&#9670;&nbsp;</a></span>writeWaveform</h2>
+<a id="ab1dc1bba85c3f731407497e43432c7cb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab1dc1bba85c3f731407497e43432c7cb">&#9670;&nbsp;</a></span>writeWaveform</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -760,7 +707,7 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool&amp; ScanningPulseProcess::writeWaveform</td>
+          <td class="memname">bool ScanningPulseProcess::writeWaveform</td>
         </tr>
       </table>
   </td>
@@ -770,7 +717,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Reference to scanner's write waveform flag. </p>
+<p>Copy of the scanner's write waveform flag. </p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="../../dc/d42/classScanner.html#aaec9d6c112b1a6f90af5e1582c6f974b" title="Flag specifying if write waveform (true) or not (false) ">Scanner::writeWaveform</a> </dd></dl>
 
 </div>

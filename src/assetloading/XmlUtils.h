@@ -119,4 +119,19 @@ public:
     static std::vector<std::shared_ptr<DynMotion>> createDynMotionsVector(
         tinyxml2::XMLElement *element
     );
+
+    /**
+     * @brief Assert whether the given document is valid for asset loading or
+     *  not. If it is in an error state, then adequate logging is printed and
+     *  the opportune exception is thrown.
+     * @param doc The document to be asserted.
+     */
+    static void assertDocumentForAssetLoading(
+        tinyxml2::XMLDocument &doc,
+        std::string const &filename,
+        std::string const &path,
+        std::string const &type,
+        std::string const &id,
+        std::string const &caller
+    );
 };

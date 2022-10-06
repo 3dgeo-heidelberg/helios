@@ -38,8 +38,8 @@ public:
     // ************************************ //
     /**
      * @brief XML survey loader constructor
-     * @param filePath
-     * @param assetsDir
+     * @param filePath Path to the XML File
+     * @param assetsDir Path to the assets directory
      */
 	XmlSurveyLoader(std::string& filePath, std::string& assetsDir)
 	    : XmlAssetsLoader(filePath, assetsDir) {}
