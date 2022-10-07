@@ -29,15 +29,46 @@ public:
      * @param scanDevs The scanning devices composing the MultiScanner
      * @see Scanner::Scanner
      */
-    MultiScanner(std::vector<ScanningDevice> scanDevs) :
-        scanDevs(scanDevs)
+    MultiScanner(
+        std::vector<ScanningDevice> && scanDevs,
+        std::string const id,
+        std::list<int> const &pulseFreqs,
+        bool const writeWaveform=false,
+        bool const calcEchowidth=false,
+        bool const fullWaveNoise=false,
+        bool const platformNoiseDisabled=false
+    ) :
+        Scanner(
+            id,
+            pulseFreqs,
+            writeWaveform,
+            calcEchowidth,
+            fullWaveNoise,
+            platformNoiseDisabled
+        ),
+        scanDevs(std::move(scanDevs))
     {}
     /**
      * @brief MultiScanner default constructor
      * @see Scanner::Scanner
      */
-    MultiScanner() :
-        scanDevs(0)
+    MultiScanner(
+        std::string const id,
+        std::list<int> const &pulseFreqs,
+        bool const writeWaveform=false,
+        bool const calcEchowdith=false,
+        bool const fullWaveNoise=false,
+        bool const platformNoiseDisabled=false
+    ) :
+        Scanner(
+            id,
+            pulseFreqs,
+            writeWaveform,
+            calcEchowidth,
+            fullWaveNoise,
+            platformNoiseDisabled
+        ),
+        scanDevs()
     {}
     /**
      * @brief Copy constructor for the MultiScanner
@@ -64,29 +95,28 @@ public:
     /**
      * @see Scanner::applySettings
      */
-    void applySettings(std::shared_ptr<ScannerSettings> settings) override;
+    void applySettings(
+        std::shared_ptr<ScannerSettings> settings, size_t const idx
+    ) override;
     /**
      * @see Scanner::prepareDiscretization
      */
-    void prepareDiscretization() override;
-    /**
-     * @see Scanner::calcTimePropagation
-     */
-    int calcTimePropagation(
-        std::vector<double> &timeWave, int const numBins
-    ) const override;
+    void prepareDiscretization(size_t const idx) override;
     /**
      * @see Scanner::calcFootprintArea
      */
-    double calcFootprintArea(double const distance) const override;
+    double calcFootprintArea(
+        double const distance, size_t const idx
+    ) const override;
     /**
      * @see Scanner::calcAbsoluteBeamAttitude
      */
-    Rotation calcAbsoluteBeamAttitude() const override;
+    Rotation calcAbsoluteBeamAttitude(size_t const idx) override;
     /**
      * @see Scanner::calcAtmosphericAttenuation
      */
-    double calcAtmosphericAttenuation() const override;
+    double calcAtmosphericAttenuation(size_t const idx) const override
+    {return scanDevs[idx].calcAtmosphericAttenuation();}
 
 
     // ***  GETTERs and SETTERs  *** //

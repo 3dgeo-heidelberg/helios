@@ -24,6 +24,7 @@ public:
     /**
      * @brief SingleScanner constructor from given values
      * @see Scanner::Scanner
+     * @see ScanningDevice::ScanningDevice
      */
     SingleScanner(
         double const beamDiv_rad,
@@ -83,13 +84,7 @@ public:
     /**
      * @see Scanner::prepareDiscretization
      */
-    void prepareDiscretization() override;
-    /**
-     * @see Scanner::calcTimePropagation
-     */
-    int calcTimePropagation(
-        std::vector<double> & timeWave, int const numBins
-    ) override;
+    void prepareDiscretization(size_t const idx) override;
     /**
      * @see Scanner::calcFootprintArea
      */
@@ -99,11 +94,11 @@ public:
     /**
      * @see Scanner::calcAbsoluteBeamAttitude
      */
-    Rotation calcAbsoluteBeamAttitude() override;
+    Rotation calcAbsoluteBeamAttitude(size_t const idx) override;
     /**
      * @see Scanner::calcAtmosphericAttenuation
      */
-    double calcAtmosphericAttenuation() const override
+    double calcAtmosphericAttenuation(size_t const idx) const override
     {return scanDev.calcAtmosphericAttenuation();}
     /**
      * @see Scanner::checkMaxNOR

@@ -143,7 +143,7 @@ protected:
 	 */
     int peakIntensityIndex = -1;
     /**
-     * @brief Discretization vector
+     * @brief Time discretization vector
      */
     std::vector<double> time_wave;
 
@@ -366,6 +366,9 @@ public:
         double const radius,
         double const sigma
     ) const;
+    int calcTimePropagation(
+        std::vector<double> &timeWave
+    );
 
 
     // ***  GETTERs and SETTERs  *** //

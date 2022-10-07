@@ -16,6 +16,7 @@ using pyhelios::PyRandomnessGeneratorWrapper;
 using pyhelios::PyDoubleVector;
 
 #include <scanner/Scanner.h>
+#include <maths/WaveMaths.h>
 
 namespace pyhelios{
 
@@ -78,7 +79,13 @@ public:
     int calcTimePropagation(
         std::vector<double> & timeWave, int const numBins
     ){
-        return scanner.calcTimePropagation(timeWave, numBins);
+        return WaveMaths::calcPropagationTimeLegacy(
+            timeWave,
+            numBins,
+            scanner.getFWFSettings(0).binSize_ns,
+            scanner.getPulseLength_ns(0),
+            7.0  // 3.5 too many ops., 7.0 just one op.
+        );
     }
     double calcFootprintArea(double const distance) const{
         return scanner.calcFootprintArea(distance);
