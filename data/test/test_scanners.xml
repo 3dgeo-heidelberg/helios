@@ -1,0 +1,229 @@
+<?xml version="1.0"?>
+
+<document>
+	<!-- ##### BEGIN Leica ALS50 ##### -->
+	<scanner 	id 							= "leica_als50"
+				accuracy_m					= "0.05"	
+			 	beamDivergence_rad 			= "0.00033"
+				name              			= "Leica ALS50"
+				optics            			= "oscillating"
+				pulseFreqs_Hz				= "83000"
+				pulseLength_ns     			= "10"
+				rangeMin_m					= "200"
+				scanAngleMax_deg   			= "37.5"
+				scanFreqMin_Hz				= "25"
+				scanFreqMax_Hz				= "70"				
+	/>
+	<!-- ##### END Leica ALS50 ##### -->
+
+
+	<!-- ##### BEGIN Leica ALS50-II ##### -->
+	<!-- capable of detecting up to 4 targets for each pulse, vertical discrimination distance is approx. 3.5 m--> 
+	<scanner 	id 							= "leica_als50-ii"
+				accuracy_m					= "0.05"
+			 	beamDivergence_rad 			= "0.00022"
+				name              			= "Leica ALS50-II"
+				optics            			= "oscillating"
+				pulseFreqs_Hz				= "20000,60000,150000"
+				pulseLength_ns     			= "10"
+				rangeMin_m					= "200"
+				scanAngleMax_deg   			= "37.5"
+				scanFreqMin_Hz				= "0"
+				scanFreqMax_Hz				= "90"
+				maxNOR						= "4"
+	/>
+	<!-- ##### END Leica ALS50-II ##### -->
+
+
+	<!-- ##### BEGIN Optech ALTM 2033 ##### -->
+	<scanner 	id 							= "optech_2033"
+			 	accuracy_m					= "0.01"
+			 	beamDivergence_rad 			= "0.000424"
+				name              			= "Optech ALTM 2033"
+				optics            			= "oscillating"
+				pulseFreqs_Hz				= "33000"
+				pulseLength_ns     			= "8"
+				rangeMin_m					= "1"
+				scanAngleMax_deg   			= "20"
+				scanFreqMin_Hz				= "0"
+				scanFreqMax_Hz				= "30"
+				scanProduct					= "590"
+				wavelength_nm				= "1047"
+	>
+		<beamOrigin x="0" y="0.085" z="0.06">
+				<rot axis="y" angle_deg="0" />			
+				<rot axis="x" angle_deg="0" />		
+		</beamOrigin>
+		<headRotateAxis x="0" y="0" z="1"/>
+	</scanner>
+	<!-- ##### END Optech ALTM 2033 ##### -->
+
+
+	<!-- ##### BEGIN RIEGL LMS-Q560 ##### -->
+	<scanner 	id 							= "riegl_lms-q560"
+				accuracy_m					= "0.02"
+			 	beamDivergence_rad 			= "0.0005"
+				name              			= "RIEGL LMS-Q560"
+				optics            			= "rotating"
+				pulseFreqs_Hz				= "50000,100000,180000,200000,240000"
+				pulseLength_ns     			= "4"
+				rangeMin_m					= "30"
+				scanAngleMax_deg   			= "45"
+				scanAngleEffectiveMax_deg	= "22.5"
+				scanFreqMin_Hz				= "10"
+				scanFreqMax_Hz				= "160"
+	/>
+	<!-- ##### END RIEGL LMS-Q560 ##### -->
+	
+	
+	<!-- ##### BEGIN RIEGL LMS VQ-880-G II ##### -->
+	<!-- Note regarding pulseLength_ns (2020-04 KA/LW):
+		the value is not taken from a datasheet or literature, as it is not known/reported,
+		but should be a suitable value regarding the vertical dead zone;
+		Note (2020-06 HW):
+		Laser has two channels (NIR, green); took specs from the NIR channel
+	-->
+
+	<scanner 	id 							= "riegl_vq-880g"
+				accuracy_m					= "0.025"
+				beamDivergence_rad 			= "0.0003"
+				name              			= "RIEGL VQ-880-G"
+				optics            			= "conic"
+				pulseFreqs_Hz				= "150000,300000,600000,900000"
+				pulseLength_ns     			= "2"
+				rangeMin_m					= "10"
+				scanAngleMax_deg   			= "20"
+				scanFreqMin_Hz				= "28"
+				scanFreqMax_Hz				= "200"
+				wavelength_nm				= "1064"
+	>
+				
+		<beamOrigin x="0" y="0.085" z="0.06">			
+			<rot axis="x" angle_deg="0" />
+			<rot axis="z" angle_deg="0" />
+		</beamOrigin>
+		<headRotateAxis x="0" y="0" z="1"/>
+	</scanner>
+	<!-- ##### END RIEGL LMS VQ-880-G II ##### -->
+
+	<!-- ##### LIVOX Mid-70 -->
+	<!-- beam divergence horizontal: 0.000523598, vertical: 0.004887 -->	
+	<scanner 	id 							= "livox_mid-70"
+				accuracy_m					= "0.02"
+			 	beamDivergence_rad 			= "0.004887"	
+				name              			= "Livox Mid-70"
+				optics            			= "risley"
+				pulseFreqs_Hz				= "100000"
+				pulseLength_ns     			= "4"
+				rangeMin_m					= "2"
+				scanAngleMax_deg   			= "35"
+				scanAngleEffectiveMax_deg   = "35"
+				rotorFreq1_Hz				= "7294"
+				rotorFreq2_Hz				= "-4664"
+				wavelength_nm				= "905"
+				maxNOR						= "1"
+	>
+		<FWFSettings beamSampleQuality="3"/>
+		<beamOrigin x="0" y="0" z="0">
+			<rot axis="x" angle_deg="90" />			
+			<rot axis="z" angle_deg="90" />
+		</beamOrigin>
+		<headRotateAxis x="1" y="0" z="0" />
+	</scanner>
+	<!-- ######## END LIVOX Mid-70 ####### -->
+
+
+	<!-- ##### LIVOX Mid-100 models ##### -->
+	<scanner id="livox-mid-100"
+             accuracy_m="0.02"
+             beamDivergence_rad="0.0027"
+             name="livox-mid-100"
+             optics="risley"
+             pulseFreqs_Hz="50000"
+             pulseLength_ns="4"
+             rangeMin_m="2"
+             scanAngleMax_deg="35"
+             rotorFreq1_Hz = "7294"
+             rotorFreq2_Hz = "-4664"
+             wavelength_nm="905">
+        <channels>
+           <channel id="0">
+			  <FWFSettings beamSampleQuality="3"/>	
+              <beamOrigin x="0" y="0" z="0">
+                  <rot axis="z" angle_deg="-30"/> <!-- cone center looking left 30 deg -->
+              </beamOrigin>
+           <!-- scan plane is defined by the central ray -->
+           </channel>
+           <channel id="1">
+			  <FWFSettings beamSampleQuality="3"/>
+              <beamOrigin x="0" y="0" z="0">
+                  <!-- central cone -->
+              </beamOrigin>
+           </channel>
+           <channel id="2">
+		 	  <FWFSettings beamSampleQuality="3"/>
+              <beamOrigin x="0" y="0" z="0">
+                  <rot axis="z" angle_deg="30"/> <!-- cone center looking right 30 deg -->
+              </beamOrigin>
+           </channel>
+        </channels>
+        <FWFSettings beamSampleQuality="3"/>
+    </scanner>
+
+	<scanner id="livox-mid-100a"
+		         accuracy_m="0.02"
+		         beamDivergence_rad="0.0027"
+		         name="livox-mid-100"
+		         optics="risley"
+		         pulseFreqs_Hz="50000"
+		         pulseLength_ns="4"
+		         rangeMin_m="2"
+		         scanAngleMax_deg="35"
+		         scanAngleEffectiveMax_deg = "35"
+		         rotorFreq1_Hz = "7294"
+		         rotorFreq2_Hz = "-4664"
+		         wavelength_nm="905">
+			<beamOrigin x="0" y="0" z="0">
+			  <rot axis="z" angle_deg="-30"/> <!-- cone center looking left 30 deg -->
+			</beamOrigin>
+		    <FWFSettings beamSampleQuality="3"/>
+    </scanner>
+	<scanner id="livox-mid-100b"
+		         accuracy_m="0.02"
+		         beamDivergence_rad="0.0027"
+		         name="livox-mid-100"
+		         optics="risley"
+		         pulseFreqs_Hz="50000"
+		         pulseLength_ns="4"
+		         rangeMin_m="2"
+		         scanAngleMax_deg="35"
+		         scanAngleEffectiveMax_deg = "35"
+		         rotorFreq1_Hz = "7294"
+		         rotorFreq2_Hz = "-4664"
+		         wavelength_nm="905">
+			<FWFSettings beamSampleQuality="3"/>
+		      <beamOrigin x="0" y="0" z="0">
+		          <!-- central cone -->
+		      </beamOrigin>
+    </scanner>
+	<scanner id="livox-mid-100c"
+		         accuracy_m="0.02"
+		         beamDivergence_rad="0.0027"
+		         name="livox-mid-100"
+		         optics="risley"
+		         pulseFreqs_Hz="50000"
+		         pulseLength_ns="4"
+		         rangeMin_m="2"
+		         scanAngleMax_deg="35"
+		         scanAngleEffectiveMax_deg = "35"
+		         rotorFreq1_Hz = "7294"
+		         rotorFreq2_Hz = "-4664"
+		         wavelength_nm="905">
+			<FWFSettings beamSampleQuality="3"/>
+			<beamOrigin x="0" y="0" z="0">
+			  <rot axis="z" angle_deg="30"/> <!-- cone center looking right 30 deg -->
+			</beamOrigin>
+    </scanner>
+
+
+</document>
