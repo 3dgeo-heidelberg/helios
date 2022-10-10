@@ -11,6 +11,13 @@
 #include <scanner/beamDeflector/RisleyBeamDeflector.h>
 #include <scanner/SingleScanner.h>
 #include <scanner/MultiScanner.h>
+#include <platform/Platform.h>
+#include <platform/HelicopterPlatform.h>
+#include <platform/LinearPathPlatform.h>
+#include <platform/GroundVehiclePlatform.h>
+#include <noise/NoiseSource.h>
+#include <noise/NormalNoiseSource.h>
+#include <noise/UniformNoiseSource.h>
 
 
 namespace HeliosTests{
@@ -51,25 +58,10 @@ public:
      */
     bool testScannerLoading();
     /**
-     * @brief Test scanner settings loading
-     * @return True if passed, false otherwise
-     */
-    bool testScannerSettingsLoading();
-    /**
-     * @brief Test full waveform settings loading
-     * @return True if passed, false otherwise
-     */
-    bool testFWFSettingsLoading();
-    /**
      * @brief Test platform loading
      * @return True if passed, false otherwise
      */
     bool testPlatformLoading();
-    /**
-     * @brief Test platform settings loading
-     * @return True if passed, false otherwise
-     */
-    bool testPlatformSettingsLoading();
     /**
      * @brief Test Wavefront OBJ loading
      * @return True if passed, false otherwise
@@ -109,10 +101,7 @@ bool AssetLoadingTest::run(){
     // Run tests
     try{
         if(!testScannerLoading()) return false;
-        if(!testScannerSettingsLoading()) return false;
-        if(!testFWFSettingsLoading()) return false;
         if(!testPlatformLoading()) return false;
-        if(!testPlatformSettingsLoading()) return false;
         if(!testObjLoading()) return false;
         if(!testVoxelLoading()) return false;
         if(!testDetailedVoxelLoading()) return false;
@@ -138,11 +127,10 @@ bool AssetLoadingTest::testScannerLoading(){
     std::shared_ptr<Scanner> scanner = std::static_pointer_cast<Scanner>(
         loader.getAssetById("scanner", "leica_als50", nullptr)
     );
-    // TODO Rethink: Apply Single/Multi test to all cases
     if(std::dynamic_pointer_cast<SingleScanner>(scanner)==nullptr)
         return false;
-    /*if(std::dynamic_pointer_cast<MultiScanner>(scanner)!=nullptr)
-        return false;*/
+    if(std::dynamic_pointer_cast<MultiScanner>(scanner)!=nullptr)
+        return false;
     if(scanner->getScannerId() != "leica_als50") return false;
     if(scanner->getDetector()->cfg_device_accuracy_m != 0.05) return false;
     if(scanner->getBeamDivergence() != 0.00033) return false;
@@ -170,6 +158,10 @@ bool AssetLoadingTest::testScannerLoading(){
     scanner = std::static_pointer_cast<Scanner>(
         loader.getAssetById("scanner", "leica_als50-ii", nullptr)
     );
+    if(std::dynamic_pointer_cast<SingleScanner>(scanner)==nullptr)
+        return false;
+    if(std::dynamic_pointer_cast<MultiScanner>(scanner)!=nullptr)
+        return false;
     if(scanner->getScannerId() != "leica_als50-ii") return false;
     if(scanner->getDetector()->cfg_device_accuracy_m != 0.05) return false;
     if(scanner->getBeamDivergence() != 0.00022) return false;
@@ -203,6 +195,10 @@ bool AssetLoadingTest::testScannerLoading(){
     scanner = std::static_pointer_cast<Scanner>(
         loader.getAssetById("scanner", "optech_2033", nullptr)
     );
+    if(std::dynamic_pointer_cast<SingleScanner>(scanner)==nullptr)
+        return false;
+    if(std::dynamic_pointer_cast<MultiScanner>(scanner)!=nullptr)
+        return false;
     if(scanner->getScannerId() != "optech_2033") return false;
     if(scanner->getDetector()->cfg_device_accuracy_m != 0.01) return false;
     if(scanner->getBeamDivergence() != 0.000424) return false;
@@ -248,6 +244,10 @@ bool AssetLoadingTest::testScannerLoading(){
     scanner = std::static_pointer_cast<Scanner>(
         loader.getAssetById("scanner", "riegl_lms-q560")
     );
+    if(std::dynamic_pointer_cast<SingleScanner>(scanner)==nullptr)
+        return false;
+    if(std::dynamic_pointer_cast<MultiScanner>(scanner)!=nullptr)
+        return false;
     if(scanner->getScannerId() != "riegl_lms-q560") return false;
     if(scanner->getDetector()->cfg_device_accuracy_m != 0.02) return false;
     if(scanner->getBeamDivergence() != 0.0005) return false;
@@ -284,6 +284,10 @@ bool AssetLoadingTest::testScannerLoading(){
     scanner = std::static_pointer_cast<Scanner>(
         loader.getAssetById("scanner", "riegl_vq-880g", nullptr)
     );
+    if(std::dynamic_pointer_cast<SingleScanner>(scanner)==nullptr)
+        return false;
+    if(std::dynamic_pointer_cast<MultiScanner>(scanner)!=nullptr)
+        return false;
     if(scanner->getScannerId() != "riegl_vq-880g") return false;
     if(scanner->getDetector()->cfg_device_accuracy_m != 0.025) return false;
     if(scanner->getBeamDivergence() != 0.0003) return false;
@@ -328,6 +332,10 @@ bool AssetLoadingTest::testScannerLoading(){
     scanner = std::static_pointer_cast<Scanner>(
         loader.getAssetById("scanner", "livox_mid-70", nullptr)
     );
+    if(std::dynamic_pointer_cast<SingleScanner>(scanner)==nullptr)
+        return false;
+    if(std::dynamic_pointer_cast<MultiScanner>(scanner)!=nullptr)
+        return false;
     if(scanner->getScannerId() != "livox_mid-70") return false;
     if(scanner->getDetector()->cfg_device_accuracy_m != 0.02) return false;
     if(scanner->getBeamDivergence() != 0.004887) return false;
@@ -388,30 +396,179 @@ bool AssetLoadingTest::testScannerLoading(){
     return true;
 }
 
-bool AssetLoadingTest::testScannerSettingsLoading(){
-    // TODO Rethink : Implement
-    return true;
-}
-
-bool AssetLoadingTest::testFWFSettingsLoading(){
-    // TODO Rethink : Implement
-    return true;
-}
-
 bool AssetLoadingTest::testPlatformLoading(){
     // Prepare platform loading
-    std::string testPlatformsPath = "data/test/test_scanners.xml";
+    std::string testPlatformsPath = "data/test/test_platforms.xml";
     std::string assetsPath = "assets/";
     XmlAssetsLoader loader(testPlatformsPath, assetsPath);
-    // Load and validate Quadropcopter UAV
+    // Load and validate Quadrocopter UAV
+    std::shared_ptr<Platform> platf = std::dynamic_pointer_cast<Platform>(
+        loader.getAssetById("platform", "quadcopter", nullptr)
+    );
+    std::shared_ptr<HelicopterPlatform> hplatf = std::dynamic_pointer_cast<
+        HelicopterPlatform
+    >(platf);
+    if(hplatf == nullptr) return false;
+    if(platf->name != "Quadrocopter UAV") return false;
+    if(hplatf->mCfg_drag != 0.0099) return false;
+    if(hplatf->ef_xy_max != 0.099) return false;
+    if(hplatf->cfg_speedup_magnitude != 1.99) return false;
+    if(hplatf->cfg_slowdown_magnitude != 1.99) return false;
+    if(hplatf->cfg_slowdown_dist_xy != 4.99) return false;
+    if(std::fabs(hplatf->cfg_pitch_base+0.0959931) > eps) return false;
+    if(std::fabs(hplatf->cfg_roll_speed-0.5087635) > eps) return false;
+    if(std::fabs(hplatf->cfg_pitch_speed-1.5086626) > eps) return false;
+    if(std::fabs(hplatf->cfg_yaw_speed-1.4999360) > eps) return false;
+    if(std::fabs(hplatf->cfg_max_roll_offset-0.4433136) > eps) return false;
+    if(std::fabs(hplatf->cfg_max_pitch_offset-0.6038839) > eps) return false;
+    glm::dvec3 mpdiff = platf->cfg_device_relativeMountPosition - glm::dvec3(
+        0, 0, 0.21
+    );
+    if(
+        std::fabs(mpdiff[0]) > eps ||
+        std::fabs(mpdiff[1]) > eps ||
+        std::fabs(mpdiff[2]) > eps
+    ) return false;
+    Rotation matt = platf->cfg_device_relativeMountAttitude;
+    if(
+        std::fabs(matt.getQ0()-0) > eps ||
+        std::fabs(matt.getQ1()-0) > eps ||
+        std::fabs(matt.getQ2()+1) > eps ||
+        std::fabs(matt.getQ3()-0) > eps
+    ) return false;
     // Load and validate Cirrus SR-22
+    platf = std::dynamic_pointer_cast<Platform>(loader.getAssetById(
+        "platform", "sr22", nullptr
+    ));
+    if(platf->name != "Cirrus SR-22") return false;
+    mpdiff = platf->cfg_device_relativeMountPosition - glm::dvec3(0, 0, 0.7);
+    if(
+        std::fabs(mpdiff[0]) > eps ||
+        std::fabs(mpdiff[1]) > eps ||
+        std::fabs(mpdiff[2]) > eps
+    ) return false;
+    matt = platf->cfg_device_relativeMountAttitude;
+    if(
+        std::fabs(matt.getQ0()-0.5) > eps ||
+        std::fabs(matt.getQ1()-0.5) > eps ||
+        std::fabs(matt.getQ2()-0.5) > eps ||
+        std::fabs(matt.getQ3()+0.5) > eps
+    ) return false;
+    if(platf->positionXNoiseSource->getClipMin()!=0.0) return false;
+    if(platf->positionXNoiseSource->getClipMax()!=0.0) return false;
+    if(platf->positionXNoiseSource->isClipEnabled()) return false;
+    if(platf->positionXNoiseSource->getFixedLifespan()!=5) return false;
+    std::shared_ptr<NormalNoiseSource<double>> nns = std::dynamic_pointer_cast<
+        NormalNoiseSource<double>
+    >(platf->positionXNoiseSource);
+    if(nns == nullptr) return false;
+    if( std::dynamic_pointer_cast<UniformNoiseSource<double>>(
+            platf->positionXNoiseSource
+        ) != nullptr
+    ) return false;
+    if(nns->getMean()!=0.01) return false;
+    if(nns->getStdev()!=0.021) return false;
+    if(platf->positionYNoiseSource->getClipMin()!=-0.01) return false;
+    if(platf->positionYNoiseSource->getClipMax()!=0.0) return false;
+    if(platf->positionYNoiseSource->isClipEnabled()) return false;
+    if(platf->positionYNoiseSource->getFixedLifespan()!=7) return false;
+    nns = std::dynamic_pointer_cast<NormalNoiseSource<double>>(
+        platf->positionYNoiseSource);
+    if(nns == nullptr) return false;
+    if( std::dynamic_pointer_cast<UniformNoiseSource<double>>(
+            platf->positionYNoiseSource
+        ) != nullptr
+    ) return false;
+    if(nns->getMean()!=-0.01) return false;
+    if(nns->getStdev()!=0.019) return false;
+    if(platf->positionZNoiseSource->getClipMin()!=-0.03) return false;
+    if(platf->positionZNoiseSource->getClipMax()!=0.03) return false;
+    if(!platf->positionZNoiseSource->isClipEnabled()) return false;
+    if(platf->positionZNoiseSource->getFixedLifespan()!=1) return false;
+    nns = std::dynamic_pointer_cast<NormalNoiseSource<double>>(
+        platf->positionZNoiseSource);
+    if(nns == nullptr) return false;
+    if( std::dynamic_pointer_cast<UniformNoiseSource<double>>(
+            platf->positionZNoiseSource
+        ) != nullptr
+    ) return false;
+    if(nns->getMean()!=0.0) return false;
+    if(nns->getStdev()!=0.02) return false;
+    if(platf->attitudeXNoiseSource->getClipMin()!=0.0) return false;
+    if(platf->attitudeXNoiseSource->getClipMax()!=0.0) return false;
+    if(platf->attitudeXNoiseSource->isClipEnabled()) return false;
+    if(platf->attitudeXNoiseSource->getFixedLifespan()!=1) return false;
+    nns = std::dynamic_pointer_cast<NormalNoiseSource<double>>(
+        platf->attitudeXNoiseSource
+    );
+    if(nns == nullptr) return false;
+    if( std::dynamic_pointer_cast<UniformNoiseSource<double>>(
+            platf->attitudeXNoiseSource
+        ) != nullptr
+    ) return false;
+    if(nns->getMean()!=0.0) return false;
+    if(nns->getStdev()!=0.001) return false;
+    if(platf->attitudeYNoiseSource->getClipMin()!=0.0) return false;
+    if(platf->attitudeYNoiseSource->getClipMax()!=0.0) return false;
+    if(platf->attitudeYNoiseSource->isClipEnabled()) return false;
+    if(platf->attitudeYNoiseSource->getFixedLifespan()!=3) return false;
+    nns = std::dynamic_pointer_cast<NormalNoiseSource<double>>(
+        platf->attitudeYNoiseSource
+    );
+    if(nns == nullptr) return false;
+    if( std::dynamic_pointer_cast<UniformNoiseSource<double>>(
+        platf->attitudeYNoiseSource
+    ) != nullptr
+        ) return false;
+    if(nns->getMean()!=0.0) return false;
+    if(nns->getStdev()!=0.001) return false;
+    if(platf->attitudeZNoiseSource->getClipMin()!=0.0) return false;
+    if(platf->attitudeZNoiseSource->getClipMax()!=0.0) return false;
+    if(platf->attitudeZNoiseSource->isClipEnabled()) return false;
+    if(platf->attitudeZNoiseSource->getFixedLifespan()!=11) return false;
+    nns = std::dynamic_pointer_cast<NormalNoiseSource<double>>(
+        platf->attitudeZNoiseSource
+    );
+    if(nns == nullptr) return false;
+    if( std::dynamic_pointer_cast<UniformNoiseSource<double>>(
+        platf->attitudeZNoiseSource
+    ) != nullptr
+        ) return false;
+    if(nns->getMean()!=0.0) return false;
+    if(nns->getStdev()!=0.001) return false;
     // Load and validate Tractor
+    platf = std::dynamic_pointer_cast<Platform>(loader.getAssetById(
+        "platform", "tractor"
+    ));
+    if(platf->name != "Tractor") return false;
+    mpdiff = platf->cfg_device_relativeMountPosition - glm::dvec3(0, 1, 4);
+    if(
+        std::fabs(mpdiff[0]) > eps ||
+        std::fabs(mpdiff[1]) > eps ||
+        std::fabs(mpdiff[2]) > eps
+    ) return false;
+    matt = platf->cfg_device_relativeMountAttitude;
+    if(
+        std::fabs(matt.getQ0()-0.6830127) > eps ||
+        std::fabs(matt.getQ1()+0.1830127) > eps ||
+        std::fabs(matt.getQ2()-0.1830127) > eps ||
+        std::fabs(matt.getQ3()+0.6830127) > eps
+        ) return false;
+    std::shared_ptr<GroundVehiclePlatform> gplatf = std::dynamic_pointer_cast<
+        GroundVehiclePlatform>(platf);
+    if(gplatf == nullptr) return false;
+    if(gplatf->mCfg_drag != 0.00499) return false;
     // Load and validate Tripod
-    // TODO Rethink : Implement
-    return true;
-}
-
-bool AssetLoadingTest::testPlatformSettingsLoading(){
+    platf = std::dynamic_pointer_cast<Platform>(
+        loader.getAssetById("platform", "tripod", nullptr)
+    );
+    if(platf->name != "TLS Tripod") return false;
+    mpdiff = platf->cfg_device_relativeMountPosition - glm::dvec3(0, 0, 1.5);
+    if(
+        std::fabs(mpdiff[0]) > eps ||
+        std::fabs(mpdiff[1]) > eps ||
+        std::fabs(mpdiff[2]) > eps
+    ) return false;
     // TODO Rethink : Implement
     return true;
 }

@@ -4,8 +4,7 @@
 
 // ***  CONSTRUCTION / DESTRUCTION  *** //
 // ************************************ //
-// TODO Rethink : Restore and complete implementation below
-/*MultiScanner::MultiScanner(MultiScanner &scanner) :
+MultiScanner::MultiScanner(MultiScanner &scanner) :
     Scanner(scanner),
     scanDevs(std::move(scanner.scanDevs))
 {}
@@ -48,6 +47,50 @@ void MultiScanner::applySettings(
     }
 }
 
+void MultiScanner::doSimStep(
+    unsigned int legIndex, double const currentGpsTime
+){
+    // Check whether the scanner is active or not
+    bool const _isActive = isActive();
+
+    // Simulate scanning devices
+    size_t const numScanDevs = getNumDevices();
+    for(size_t i = 0 ; i < numScanDevs ; ++i){
+        scanDevs[i].doSimStep(
+            legIndex,
+            currentGpsTime,
+            cfg_setting_pulseFreq_Hz,
+            _isActive,
+            platform->getAbsoluteMountPosition(),
+            platform->getAbsoluteMountAttitude(),
+            [&] (glm::dvec3 &origin, Rotation &attitude) -> void {
+                handleSimStepNoise(origin, attitude);
+            },
+            [&] (
+                unsigned int legIndex,
+                glm::dvec3 &absoluteBeamOrigin,
+                Rotation &absoluteBeamAttitude,
+                double const currentGpsTime,
+                int const currentPulseNumber
+            ) -> void{
+                spp->handlePulseComputation(
+                    legIndex,
+                    absoluteBeamOrigin,
+                    absoluteBeamAttitude,
+                    currentGpsTime,
+                    currentPulseNumber
+                );
+            }
+            );
+    }
+
+    // If the scanner is inactive, stop here:
+    if (!_isActive) return;
+
+    // Handle trajectory output
+    handleTrajectoryOutput(currentGpsTime);
+}
+
 void MultiScanner::prepareDiscretization(size_t const idx){
     setNumTimeBins(
         getPulseLength_ns(idx) / getFWFSettings(idx).binSize_ns,
@@ -73,4 +116,82 @@ Rotation MultiScanner::calcAbsoluteBeamAttitude(size_t const idx){
     return scanDevs[idx].calcAbsoluteBeamAttitude(
         platform->getAbsoluteMountAttitude()
     );
-}*/
+}
+void MultiScanner::computeSubrays(
+    std::function<void(
+        vector<double> const &_tMinMax,
+        int const circleStep,
+        double const circleStep_rad,
+        Rotation &r1,
+        double const divergenceAngle,
+        NoiseSource<double> &intersectionHandlingNoiseSource,
+        std::map<double, double> &reflections,
+        vector<RaySceneIntersection> &intersects
+    )> handleSubray,
+    vector<double> const &tMinMax,
+    NoiseSource<double> &intersectionHandlingNoiseSource,
+    std::map<double, double> &reflections,
+    vector<RaySceneIntersection> &intersects,
+    size_t const idx
+){
+    scanDevs[idx].computeSubrays(
+        handleSubray,
+        tMinMax,
+        intersectionHandlingNoiseSource,
+        reflections,
+        intersects
+    );
+}
+
+bool MultiScanner::initializeFullWaveform(
+    double const minHitDist_m,
+    double const maxHitDist_m,
+    double &minHitTime_ns,
+    double &maxHitTime_ns,
+    double &nsPerBin,
+    double &distanceThreshold,
+    int &peakIntensityIndex,
+    int &numFullwaveBins,
+    size_t const idx
+){
+    return scanDevs[idx].initializeFullWaveform(
+        minHitDist_m,
+        maxHitDist_m,
+        minHitTime_ns,
+        maxHitTime_ns,
+        nsPerBin,
+        distanceThreshold,
+        peakIntensityIndex,
+        numFullwaveBins
+    );
+}
+
+double MultiScanner::calcIntensity(
+    double const incidenceAngle,
+    double const targetRange,
+    double const targetReflectivity,
+    double const targetSpecularity,
+    double const targetSpecularExponent,
+    double const targetArea,
+    double const radius,
+    size_t const idx
+) const{
+    return scanDevs[idx].calcIntensity(
+        incidenceAngle,
+        targetRange,
+        targetReflectivity,
+        targetSpecularity,
+        targetSpecularExponent,
+        targetArea,
+        radius
+    );
+}
+
+double MultiScanner::calcIntensity(
+    double const targetRange,
+    double const radius,
+    double const sigma,
+    size_t const idx
+) const{
+    return scanDevs[idx].calcIntensity(targetRange, radius, sigma);
+}
