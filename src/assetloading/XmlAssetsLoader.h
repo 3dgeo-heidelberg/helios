@@ -234,6 +234,40 @@ public:
 	std::shared_ptr<Scanner> createScannerFromXml(
 	    tinyxml2::XMLElement* scannerNode
     );
+
+	/**
+	 * @brief Create a beam deflector from given XML element (node)
+	 * @param scannerNode XML element (node) containing deflector data
+	 * @return Shared pointer to created beam deflector
+	 * @see AbstractBeamDeflector
+	 */
+	std::shared_ptr<AbstractBeamDeflector> createBeamDeflectorFromXml(
+	    tinyxml2::XMLElement *scannerNode
+    );
+
+	/**
+	 * @brief Create a pulse detector from given XML element (node)
+	 * @param scannerNode XML element (node) containing deflector data
+	 * @param scanner The shared pointer to the scanner associated to the
+	 *  detector
+	 * @return Shared pointer to created detector
+	 * @see AbstractDetector
+	 */
+	std::shared_ptr<AbstractDetector> createDetectorFromXml(
+	    tinyxml2::XMLElement *scannerNode,
+	    std::shared_ptr<Scanner> scanner
+    );
+
+	/**
+	 * @brief Create a scanner head from given XML element (node)
+	 * @param scannerNode XML element (node) containing scanner head data
+	 * @return Shared pointer to created scanner head
+	 * @see ScannerHead
+	 */
+	std::shared_ptr<ScannerHead> createScannerHeadFromXml(
+	    tinyxml2::XMLElement *scannerNode
+    );
+
 	/**
 	 * @brief Create scanner settings from given XML element (node)
 	 * @param node XML element (node) containing scanner settings data
@@ -271,6 +305,27 @@ public:
 	std::shared_ptr<TrajectorySettings> createTrajectorySettingsFromXml(
 	    tinyxml2::XMLElement *legNode,
         std::shared_ptr<TrajectorySettings> settings = nullptr
+    );
+
+	/**
+	 * @brief Fill vector of scanning devices with channel data
+	 * @param scanner The multi-channel scanner to be filled
+	 * @param scannerNode The XML element representing the scanner
+	 * @param channels The channels to fill each scanning device
+	 * @param deflec The base deflector for each scanning device
+	 * @param detec The base detector for each scanning device
+	 * @param scanHead The base scanner head for each scanning device
+	 * @param fwfSettings The base fullwave settings for each scanning device
+	 * @see MultiScanner
+	 */
+	void fillScanningDevicesFromChannels(
+	    std::shared_ptr<Scanner> scanner,
+        tinyxml2::XMLElement *scannerNode,
+        tinyxml2::XMLElement *channels,
+        std::shared_ptr<AbstractBeamDeflector> deflec,
+        std::shared_ptr<AbstractDetector> detec,
+        std::shared_ptr<ScannerHead> scanHead,
+        std::shared_ptr<FWFSettings> fwfSettings
     );
 
 protected:

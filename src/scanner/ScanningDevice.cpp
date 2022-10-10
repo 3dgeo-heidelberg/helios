@@ -38,7 +38,7 @@ ScanningDevice::ScanningDevice(
     cached_Dr2 = receiverDiameter_m * receiverDiameter_m;
 }
 
-ScanningDevice::ScanningDevice(ScanningDevice &scdev){
+ScanningDevice::ScanningDevice(ScanningDevice const &scdev){
     this->id = scdev.id;
     this->headRelativeEmitterPosition = scdev.headRelativeEmitterPosition;
     this->headRelativeEmitterAttitude = scdev.headRelativeEmitterAttitude;

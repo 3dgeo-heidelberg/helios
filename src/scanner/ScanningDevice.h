@@ -198,7 +198,7 @@ public:
         std::list<int> const &pulseFreqs,
         double const pulseLength_ns,
         double const averagePower,
-        double const bemQuality,
+        double const beamQuality,
         double const efficiency,
         double const receiverDiameter_m,
         double const atmosphericVisibility_km,
@@ -208,7 +208,7 @@ public:
      * @brief Copy constructor for the ScanningDevice
      * @param scdev The scanning device to be copied
      */
-    ScanningDevice(ScanningDevice &scdev);
+    ScanningDevice(ScanningDevice const &scdev);
     virtual ~ScanningDevice() = default;
 
     // ***  M E T H O D S  *** //
@@ -390,5 +390,33 @@ public:
 	 * @see Scanner::state_lastPulseWasHit
 	 */
     void setLastPulseWasHit(bool const value);
+    /**
+     * @brief Set the relative emitter position
+     * @see ScanningDevice::headRelativeEmitterPosition
+     */
+    inline void setHeadRelativeEmitterPosition(
+        glm::dvec3 const & headRelativeEmitterPosition
+    )
+    {this->headRelativeEmitterPosition = headRelativeEmitterPosition;}
+    /**
+     * @brief Set the relative emitter attitude
+     * @see ScanningDevice::headRelativeEmitterAttitude
+     */
+    inline void setHeadRelativeEmitterAttitude(
+        Rotation const & headRelativeEmitterAttitude
+    )
+    {this->headRelativeEmitterAttitude = headRelativeEmitterAttitude;}
+    /**
+     * @brief Obtain the Full Waveform settings of the scanning device
+     * @see ScanningDevice::FWF_settings
+     */
+    inline FWFSettings const & getFWFSettings() {return FWF_settings;}
+    /**
+     * @brief Set the Full Waveform settings of the scanning device
+     * @see ScanningDevice::FWF_settings
+     */
+    inline void setFWFSettings(std::shared_ptr<FWFSettings> FWF_settings)
+    {this->FWF_settings = *FWF_settings;}
+
 
 };

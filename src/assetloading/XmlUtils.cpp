@@ -130,17 +130,22 @@ glm::dvec3 XmlUtils::createVec3dFromXml(
     std::string attrPrefix
 ){
     if (node == nullptr) {
-        throw HeliosException("No node with attribute " + attrPrefix + "[xyz]");
+        throw HeliosException(
+            "No node with attribute " + attrPrefix + "[xyz]"
+        );
     }
 
-    double x =
-        boost::get<double>(getAttribute(node, attrPrefix + "x", "double", 0.0));
-    double y =
-        boost::get<double>(getAttribute(node, attrPrefix + "y", "double", 0.0));
-    double z =
-        boost::get<double>(getAttribute(node, attrPrefix + "z", "double", 0.0));
-
-    return glm::dvec3(x, y, z);
+    return glm::dvec3(
+        boost::get<double>(
+            getAttribute(node, attrPrefix + "x", "double", 0.0)
+        ),
+        boost::get<double>(
+            getAttribute(node, attrPrefix + "y", "double", 0.0)
+        ),
+        boost::get<double>(
+            getAttribute(node, attrPrefix + "z", "double", 0.0)
+        )
+    );
 }
 
 std::shared_ptr<NoiseSource<double>>
