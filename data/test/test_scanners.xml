@@ -134,41 +134,52 @@
 
 
 	<!-- ##### LIVOX Mid-100 models ##### -->
-	<scanner id="livox-mid-100"
-             accuracy_m="0.02"
-             beamDivergence_rad="0.0027"
-             name="livox-mid-100"
-             optics="risley"
-             pulseFreqs_Hz="50000"
-             pulseLength_ns="4"
-             rangeMin_m="2"
-             scanAngleMax_deg="35"
-             rotorFreq1_Hz = "7294"
-             rotorFreq2_Hz = "-4664"
-             wavelength_nm="905">
-        <channels>
-           <channel id="0">
-			  <FWFSettings beamSampleQuality="3"/>	
-              <beamOrigin x="0" y="0" z="0">
-                  <rot axis="z" angle_deg="-30"/> <!-- cone center looking left 30 deg -->
-              </beamOrigin>
-           <!-- scan plane is defined by the central ray -->
-           </channel>
-           <channel id="1">
-			  <FWFSettings beamSampleQuality="3"/>
-              <beamOrigin x="0" y="0" z="0">
-                  <!-- central cone -->
-              </beamOrigin>
-           </channel>
-           <channel id="2">
-		 	  <FWFSettings beamSampleQuality="3"/>
-              <beamOrigin x="0" y="0" z="0">
-                  <rot axis="z" angle_deg="30"/> <!-- cone center looking right 30 deg -->
-              </beamOrigin>
-           </channel>
-        </channels>
-        <FWFSettings beamSampleQuality="3"/>
-    </scanner>
+	<scanner 	id="livox-mid-100"
+				accuracy_m="0.02"
+				beamDivergence_rad="0.0027"
+				name="livox-mid-100"
+				optics="risley"
+				pulseFreqs_Hz="50000"
+				pulseLength_ns="4"
+				rangeMin_m="2"
+				scanAngleMax_deg="35"
+				rotorFreq1_Hz = "7294"
+				rotorFreq2_Hz = "-4664"
+				wavelength_nm="905"
+	>
+		<FWFSettings beamSampleQuality="4"/>
+		<headRotateAxis x="0" y="1" z="0" />
+		<channels>
+			<channel 	id="0"
+						rotorFreq1_Hz = "7000"
+						rotorFreq2_Hz = "-4000"
+			>
+				<FWFSettings beamSampleQuality="2"/>	
+				<beamOrigin x="0" y="0" z="0.1">
+					<rot axis="z" angle_deg="-30"/> <!-- cone center looking left 30 deg -->
+				</beamOrigin>
+				<!-- scan plane is defined by the central ray -->
+				<headRotateAxis x="1" y="0" z="0" />
+			</channel>
+			<channel 	id="1"
+						accuracy_m="0.03"
+			>
+				<FWFSettings beamSampleQuality="3"/>
+				<beamOrigin x="0" y="0" z="-0.1">
+				<!-- central cone -->
+				</beamOrigin>
+			</channel>
+			<!-- If channel changes optics type, all values must be explicitly stated. Otherwise, default values will be used (not those from scanner) -->
+			<channel 	id="2"
+						optics="conic"
+						scanAngleMax_deg="35"
+			>
+			<beamOrigin x="0" y="0" z="0">
+				<rot axis="z" angle_deg="30"/> <!-- cone center looking right 30 deg -->
+			</beamOrigin>
+			</channel>
+		</channels>
+	</scanner>
 
 	<scanner id="livox-mid-100a"
 		         accuracy_m="0.02"

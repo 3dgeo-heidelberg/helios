@@ -20,7 +20,8 @@ Base RisleyBeamDeflector::clone(){
             RisleyBeamDeflector(
                 cfg_device_scanAngleMax_rad,
                 cfg_device_scanFreqMax_Hz,
-                cfg_device_scanFreqMin_Hz )
+                cfg_device_scanFreqMin_Hz
+            )
         );
     _clone(ombd);
     return ombd;
@@ -32,6 +33,8 @@ void RisleyBeamDeflector::_clone(
     RisleyBeamDeflector *ombd = (RisleyBeamDeflector *)
         abd.get();
     ombd->scanAngle = scanAngle;
+    ombd->rotorSpeed_rad_1 = rotorSpeed_rad_1;
+    ombd->rotorSpeed_rad_2 = rotorSpeed_rad_2;
 }
 
 void RisleyBeamDeflector::applySettings(std::shared_ptr<ScannerSettings> settings) {

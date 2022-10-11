@@ -857,7 +857,7 @@ XmlAssetsLoader::createScannerFromXml(tinyxml2::XMLElement *scannerNode) {
           nChannels, ScanningDevice(
               id, beamDiv_rad, emitterPosition, emitterAttitude,
               pulseFreqs, pulseLength_ns, avgPower, beamQuality, efficiency,
-              receiverDiameter, visibility, wavelength
+              receiverDiameter, visibility, wavelength*1e-9
           )
       );
       scanner = std::make_shared<MultiScanner>(
@@ -1302,6 +1302,9 @@ void XmlAssetsLoader::fillScanningDevicesFromChannels(
             fwfs = createFWFSettingsFromXml(elem, fwfs);
             scanner->setFWFSettings(*fwfs, idx);
         }
+        else{
+            scanner->setFWFSettings(*fwfSettings, idx);
+        }
         // Check beam deflector update
         bool updateDeflector = true;
         if(XmlUtils::hasAttribute(chan, "optics")){
@@ -1449,6 +1452,13 @@ void XmlAssetsLoader::fillScanningDevicesFromChannels(
                 )
             ))
         ));
+        tinyxml2::XMLElement *hraNode = chan->FirstChildElement(
+            "headRotateAxis");
+        if(hraNode != nullptr){
+            glm::dvec3 shra = XmlUtils::createVec3dFromXml(
+                chan->FirstChildElement("headRotateAxis"), "");
+            _scanHead->cfg_device_rotateAxis = shra;
+        }
         scanner->setScannerHead(_scanHead, idx);
         // Check general attributes
         scanner->setBeamDivergence(
@@ -1465,13 +1475,14 @@ void XmlAssetsLoader::fillScanningDevicesFromChannels(
             )),
             idx
         );
-        scanner->setWavelength(
-            boost::get<int>(XmlUtils::getAttribute(
-                chan, "wavelength_nm", "int",
-                scanner->getWavelength(idx)
-            )),
-            idx
-        );
+        if(XmlUtils::hasAttribute(chan, "wavelength_nm")){
+            scanner->setWavelength(
+                boost::get<int>(XmlUtils::getAttribute(
+                    chan, "wavelength_nm", "int", 1064
+                ))*1e-9,
+                idx
+            );
+        }
         scanner->setMaxNOR(
             boost::get<int>(XmlUtils::getAttribute(
                 chan, "maxNOR", "int", 0

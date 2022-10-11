@@ -381,10 +381,135 @@ bool AssetLoadingTest::testScannerLoading(){
         std::fabs(eatt.getQ2()+0.5)>eps || std::fabs(eatt.getQ3()+0.5)>eps
     ) return false;
     eraxis = scanner->getScannerHead()->cfg_device_rotateAxis;
-        - glm::dvec3(0, 0, 0);
     if(eraxis[0] != 1 || eraxis[1] != 0 || eraxis[2] != 0) return false;
     // Load and validate LIVOX Mid-100 with triple channel scanner
-    // TODO Rethink : Implement LIVOX Mid-100 with triple channel test
+    scanner = std::static_pointer_cast<Scanner>(
+        loader.getAssetById("scanner", "livox-mid-100", nullptr)
+    );
+    if(std::dynamic_pointer_cast<SingleScanner>(scanner) != nullptr)
+        return false;
+    if(std::dynamic_pointer_cast<MultiScanner>(scanner) == nullptr)
+        return false;
+    if(scanner->getScannerId() != "livox-mid-100") return false;
+    if(scanner->getDetector(0)->cfg_device_accuracy_m != 0.02) return false;
+    if(scanner->getDetector(1)->cfg_device_accuracy_m != 0.03) return false;
+    if(scanner->getDetector(2)->cfg_device_accuracy_m != 0.02) return false;
+    if(scanner->getBeamDivergence(0) != 0.0027) return false;
+    if(scanner->getBeamDivergence(1) != 0.0027) return false;
+    if(scanner->getBeamDivergence(2) != 0.0027) return false;
+    if( std::dynamic_pointer_cast<RisleyBeamDeflector>(
+            scanner->getBeamDeflector(0)
+        ) == nullptr
+    ) return false;
+    if( std::dynamic_pointer_cast<RisleyBeamDeflector>(
+            scanner->getBeamDeflector(1)
+        ) == nullptr
+    ) return false;
+    if( std::dynamic_pointer_cast<RisleyBeamDeflector>(
+            scanner->getBeamDeflector(2)
+        ) != nullptr
+    ) return false;
+    if( std::dynamic_pointer_cast<ConicBeamDeflector>(
+            scanner->getBeamDeflector(2)
+        ) == nullptr
+    ) return false;
+    pfs = scanner->getSupportedPulseFreqs_Hz();
+    if(pfs.size() != 1) return false;
+    if(pfs.front() != 50000) return false;
+    if(scanner->getPulseLength_ns(0) != 4) return false;
+    if(scanner->getPulseLength_ns(1) != 4) return false;
+    if(scanner->getPulseLength_ns(2) != 4) return false;
+    if(scanner->getDetector(0)->cfg_device_rangeMin_m != 2) return false;
+    if(scanner->getDetector(1)->cfg_device_rangeMin_m != 2) return false;
+    if(scanner->getDetector(2)->cfg_device_rangeMin_m != 2) return false;
+    if( std::fabs(
+            scanner->getBeamDeflector(0)->cfg_device_scanAngleMax_rad-0.6108652
+        ) > eps
+    ) return false;
+    if( std::fabs(
+            scanner->getBeamDeflector(1)->cfg_device_scanAngleMax_rad-0.6108652
+        ) > eps
+    ) return false;
+    if( std::fabs(
+            scanner->getBeamDeflector(2)->cfg_device_scanAngleMax_rad-0.6108652
+        ) > eps
+    ) return false;
+    if( std::fabs(
+            std::dynamic_pointer_cast<RisleyBeamDeflector>(
+                scanner->getBeamDeflector(0)
+            )->rotorSpeed_rad_1 - 1114.084602
+        ) > eps
+    ) return false;
+    if( std::fabs(
+            std::dynamic_pointer_cast<RisleyBeamDeflector>(
+                scanner->getBeamDeflector(1)
+            )->rotorSpeed_rad_1 - 1160.876155
+        ) > eps
+    ) return false;
+    if( std::fabs(
+            std::dynamic_pointer_cast<RisleyBeamDeflector>(
+                scanner->getBeamDeflector(0)
+            )->rotorSpeed_rad_2 + 636.6197724
+        ) > eps
+    ) return false;
+    if( std::fabs(
+            std::dynamic_pointer_cast<RisleyBeamDeflector>(
+                scanner->getBeamDeflector(1)
+            )->rotorSpeed_rad_2 + 742.298655
+        ) > eps
+    ) return false;
+    if(std::fabs(scanner->getWavelength(0)-905e-9) > eps) return false;
+    if(std::fabs(scanner->getWavelength(1)-905e-9) > eps) return false;
+    if(std::fabs(scanner->getWavelength(2)-905e-9) > eps) return false;
+    if(scanner->getFWFSettings(0).beamSampleQuality != 2) return false;
+    if(scanner->getFWFSettings(1).beamSampleQuality != 3) return false;
+    if(scanner->getFWFSettings(2).beamSampleQuality != 4) return false;
+    epdiff = scanner->getHeadRelativeEmitterPosition(0)-glm::dvec3(0, 0, 0.1);
+    if(
+        std::fabs(epdiff[0]) > eps ||
+        std::fabs(epdiff[1]) > eps ||
+        std::fabs(epdiff[2]) > eps
+    ) return false;
+    epdiff = scanner->getHeadRelativeEmitterPosition(1) -
+        glm::dvec3(0, 0, -0.1);
+    if(
+        std::fabs(epdiff[0]) > eps ||
+        std::fabs(epdiff[1]) > eps ||
+        std::fabs(epdiff[2]) > eps
+    ) return false;
+    epdiff = scanner->getHeadRelativeEmitterPosition(2);
+    if(
+        std::fabs(epdiff[0]) > eps ||
+        std::fabs(epdiff[1]) > eps ||
+        std::fabs(epdiff[2]) > eps
+    ) return false;
+    eatt = scanner->getHeadRelativeEmitterAttitude(0);
+    if(
+        std::fabs(eatt.getQ0()-0.965926) > eps ||
+        std::fabs(eatt.getQ1()) > eps ||
+        std::fabs(eatt.getQ2()) > eps ||
+        std::fabs(eatt.getQ3()-0.258819) > eps
+    ) return false;
+    eatt = scanner->getHeadRelativeEmitterAttitude(1);
+    if(
+        std::fabs(eatt.getQ0()-1) > eps ||
+        std::fabs(eatt.getQ1()) > eps ||
+        std::fabs(eatt.getQ2()) > eps ||
+        std::fabs(eatt.getQ3()) > eps
+    ) return false;
+    eatt = scanner->getHeadRelativeEmitterAttitude(2);
+    if(
+        std::fabs(eatt.getQ0()-0.965926) > eps ||
+        std::fabs(eatt.getQ1()) > eps ||
+        std::fabs(eatt.getQ2()) > eps ||
+        std::fabs(eatt.getQ3()+0.258819) > eps
+    ) return false;
+    eraxis = scanner->getScannerHead(0)->cfg_device_rotateAxis;
+    if(eraxis[0] != 1 || eraxis[1] != 0 || eraxis[2] != 0) return false;
+    eraxis = scanner->getScannerHead(1)->cfg_device_rotateAxis;
+    if(eraxis[0] != 0 || eraxis[1] != 1 || eraxis[2] != 0) return false;
+    eraxis = scanner->getScannerHead(2)->cfg_device_rotateAxis;
+    if(eraxis[0] != 0 || eraxis[1] != 1 || eraxis[2] != 0) return false;
     // Load and validate unexistent scanner
     try{
         scanner = std::dynamic_pointer_cast<Scanner>(loader.getAssetById(
@@ -569,7 +694,6 @@ bool AssetLoadingTest::testPlatformLoading(){
         std::fabs(mpdiff[1]) > eps ||
         std::fabs(mpdiff[2]) > eps
     ) return false;
-    // TODO Rethink : Implement
     return true;
 }
 
