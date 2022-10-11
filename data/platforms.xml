@@ -4,7 +4,7 @@
 	<!-- ###################### BEGIN ALS Platforms ###################### -->
 	<platform id="quadcopter" name="Quadrocopter UAV" type="multicopter"
 		drag="0.01" engine_max_force="0.1"
-		speedup_magnitude="2.0" slowndown_magnitude="2.0" slowdown_distance="5.0"
+		speedup_magnitude="2.0" slowdown_magnitude="2.0" slowdown_distance="5.0"
 		base_pitch_deg="-5.0"	
 		roll_speed_deg="28.65" pitch_speed_deg="85.94" yaw_speed_deg="85.94"
 		roll_offset_deg="25.0" pitch_offset_deg="35.0"
