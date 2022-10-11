@@ -45,7 +45,13 @@ public:
 	 */
 	bool writeGround = true;
 
-	// ***  CONSTRUCTION / DESTRUCTION  *** //
+    /**
+     * @brief The nonnegative integer index of the scanning device.
+     *  It is necessary to support scanners with multiple devices / channels
+     */
+    size_t devIdx;
+
+    // ***  CONSTRUCTION / DESTRUCTION  *** //
 	// ************************************ //
 	/**
 	 * @brief Base constructor for pulse runnables
@@ -60,13 +66,15 @@ public:
 		glm::dvec3 const absoluteBeamOrigin,
 		Rotation const absoluteBeamAttitude,
 		int const pulseNumber,
-		double const gpsTime
+		double const gpsTime,
+		size_t const devIdx
 	){
 		this->detector = detector;
 		this->absoluteBeamAttitude = absoluteBeamAttitude;
 		this->absoluteBeamOrigin = absoluteBeamOrigin;
 		this->currentPulseNum = pulseNumber;
 		this->currentGpsTime = gpsTime;
+		this->devIdx = devIdx;
 	}
 
 	// ***  M E T H O D S  *** //

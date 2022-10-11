@@ -88,13 +88,16 @@ public:
      * @param currentGpsTime Current GPS time (nanoseconds)
      * @param currentPulseNumber The current pulse number of the scanning
      *  device
+     * @param deviceIndex The index of the ScanningDevice generating the
+     *  pulse
      */
     virtual void handlePulseComputation(
         unsigned int const legIndex,
         glm::dvec3 &absoluteBeamOrigin,
         Rotation &absoluteBeamAttitude,
         double const currentGpsTime,
-        int const currentPulseNumber
+        int const currentPulseNumber,
+        size_t const deviceIndex
     ) = 0;
     /**
      * @brief Handle behavior of scanning pulse process once current leg has

@@ -38,14 +38,16 @@ WarehouseScanningPulseProcess::WarehouseScanningPulseProcess(
             glm::dvec3 &absoluteBeamOrigin,
             Rotation &absoluteBeamAttitude,
             double const currentGpsTime,
-            int const currentPulseNumber
+            int const currentPulseNumber,
+            size_t const deviceIndex
         ) -> void {
             handlePulseComputationParallel(
                 legIndex,
                 absoluteBeamOrigin,
                 absoluteBeamAttitude,
                 currentGpsTime,
-                currentPulseNumber
+                currentPulseNumber,
+                deviceIndex
             );
         };
     }
@@ -55,14 +57,16 @@ WarehouseScanningPulseProcess::WarehouseScanningPulseProcess(
             glm::dvec3 &absoluteBeamOrigin,
             Rotation &absoluteBeamAttitude,
             double const currentGpsTime,
-            int const currentPulseNumber
+            int const currentPulseNumber,
+            size_t const deviceIndex
         ) -> void {
             handlePulseComputationSequential(
                 legIndex,
                 absoluteBeamOrigin,
                 absoluteBeamAttitude,
                 currentGpsTime,
-                currentPulseNumber
+                currentPulseNumber,
+                deviceIndex
             );
         };
     }
@@ -102,7 +106,8 @@ void WarehouseScanningPulseProcess::handlePulseComputationSequential(
     glm::dvec3 &absoluteBeamOrigin,
     Rotation &absoluteBeamAttitude,
     double const currentGpsTime,
-    int const currentPulseNumber
+    int const currentPulseNumber,
+    size_t const deviceIndex
 ){
     // Sequential pulse computation
     shared_ptr<PulseTask> worker = ptf.build(
@@ -111,7 +116,8 @@ void WarehouseScanningPulseProcess::handlePulseComputationSequential(
         absoluteBeamOrigin,
         absoluteBeamAttitude,
         currentGpsTime,
-        currentPulseNumber
+        currentPulseNumber,
+        deviceIndex
     );
     (*worker)( // call functor
         apMatrix,
@@ -126,7 +132,8 @@ void WarehouseScanningPulseProcess::handlePulseComputationParallel(
     glm::dvec3 &absoluteBeamOrigin,
     Rotation &absoluteBeamAttitude,
     double const currentGpsTime,
-    int const currentPulseNumber
+    int const currentPulseNumber,
+    size_t const deviceIndex
 ){
     // Submit pulse computation functor to thread pool
     char const status = dropper.tryAdd(
@@ -137,7 +144,8 @@ void WarehouseScanningPulseProcess::handlePulseComputationParallel(
             absoluteBeamOrigin,
             absoluteBeamAttitude,
             currentGpsTime,
-            currentPulseNumber
+            currentPulseNumber,
+            deviceIndex
         )
     );
     if(status){

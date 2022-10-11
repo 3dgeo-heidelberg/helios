@@ -122,7 +122,8 @@ void SingleScanner::doSimStep(
                 absoluteBeamOrigin,
                 absoluteBeamAttitude,
                 currentGpsTime,
-                currentPulseNumber
+                currentPulseNumber,
+                0
             );
         }
     );

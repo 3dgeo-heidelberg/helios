@@ -39,14 +39,16 @@ BuddingScanningPulseProcess::BuddingScanningPulseProcess(
                 glm::dvec3 &absoluteBeamOrigin,
                 Rotation &absoluteBeamAttitude,
                 double const currentGpsTime,
-                int const currentPulseNumber
+                int const currentPulseNumber,
+                size_t const deviceIndex
                 ) -> void {
                 handlePulseComputationParallelDynamic(
                     legIndex,
                     absoluteBeamOrigin,
                     absoluteBeamAttitude,
                     currentGpsTime,
-                    currentPulseNumber
+                    currentPulseNumber,
+                    deviceIndex
                 );
             };
         }
@@ -56,14 +58,16 @@ BuddingScanningPulseProcess::BuddingScanningPulseProcess(
                 glm::dvec3 &absoluteBeamOrigin,
                 Rotation &absoluteBeamAttitude,
                 double const currentGpsTime,
-                int const currentPulseNumber
+                int const currentPulseNumber,
+                size_t const deviceIndex
             ) -> void {
                 handlePulseComputationParallelStatic(
                     legIndex,
                     absoluteBeamOrigin,
                     absoluteBeamAttitude,
                     currentGpsTime,
-                    currentPulseNumber
+                    currentPulseNumber,
+                    deviceIndex
                 );
             };
         }
@@ -74,14 +78,16 @@ BuddingScanningPulseProcess::BuddingScanningPulseProcess(
             glm::dvec3 &absoluteBeamOrigin,
             Rotation &absoluteBeamAttitude,
             double const currentGpsTime,
-            int const currentPulseNumber
+            int const currentPulseNumber,
+            size_t const deviceIndex
         ) -> void {
             handlePulseComputationSequential(
                 legIndex,
                 absoluteBeamOrigin,
                 absoluteBeamAttitude,
                 currentGpsTime,
-                currentPulseNumber
+                currentPulseNumber,
+                deviceIndex
             );
         };
     }
@@ -124,7 +130,8 @@ void BuddingScanningPulseProcess::handlePulseComputationSequential(
     glm::dvec3 &absoluteBeamOrigin,
     Rotation &absoluteBeamAttitude,
     double const currentGpsTime,
-    int const currentPulseNumber
+    int const currentPulseNumber,
+    size_t const deviceIndex
 ){
     // Sequential pulse computation
     shared_ptr<PulseTask> worker = ptf.build(
@@ -133,7 +140,8 @@ void BuddingScanningPulseProcess::handlePulseComputationSequential(
         absoluteBeamOrigin,
         absoluteBeamAttitude,
         currentGpsTime,
-        currentPulseNumber
+        currentPulseNumber,
+        deviceIndex
     );
     (*worker)( // call functor
         apMatrix,
@@ -147,7 +155,8 @@ void BuddingScanningPulseProcess::handlePulseComputationParallelDynamic(
     glm::dvec3 &absoluteBeamOrigin,
     Rotation &absoluteBeamAttitude,
     double const currentGpsTime,
-    int const currentPulseNumber
+    int const currentPulseNumber,
+    size_t const deviceIndex
 ){
     // Submit pulse computation functor to thread pool
     char const status = dropper.tryAdd(
@@ -158,7 +167,8 @@ void BuddingScanningPulseProcess::handlePulseComputationParallelDynamic(
             absoluteBeamOrigin,
             absoluteBeamAttitude,
             currentGpsTime,
-            currentPulseNumber
+            currentPulseNumber,
+            deviceIndex
         )
     );
     if(status==1){ // Dropper successfully posted to thread pool
@@ -213,7 +223,8 @@ void BuddingScanningPulseProcess::handlePulseComputationParallelStatic(
     glm::dvec3 &absoluteBeamOrigin,
     Rotation &absoluteBeamAttitude,
     double const currentGpsTime,
-    int const currentPulseNumber
+    int const currentPulseNumber,
+    size_t const deviceIndex
 ){
     // Submit pulse computation functor to thread pool
     char const status = dropper.tryAdd(
@@ -224,7 +235,8 @@ void BuddingScanningPulseProcess::handlePulseComputationParallelStatic(
             absoluteBeamOrigin,
             absoluteBeamAttitude,
             currentGpsTime,
-            currentPulseNumber
+            currentPulseNumber,
+            deviceIndex
         )
     );
     if(status==1){ // Dropper successfully posted to thread pool

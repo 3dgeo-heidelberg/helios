@@ -33,7 +33,12 @@ protected:
      *  parallel computing method as corresponds
      */
     std::function<void(
-        unsigned int const, glm::dvec3 &, Rotation &, double const, int const
+        unsigned int const,
+        glm::dvec3 &,
+        Rotation &,
+        double const,
+        int const,
+        size_t const
     )> handler;
 
     /**
@@ -132,14 +137,16 @@ public:
         glm::dvec3 &absoluteBeamOrigin,
         Rotation &absoluteBeamAttitude,
         double const currentGpsTime,
-        int const currentPulseNumber
+        int const currentPulseNumber,
+        size_t const deviceIndex
     ) override {
         this->handler(
             legIndex,
             absoluteBeamOrigin,
             absoluteBeamAttitude,
             currentGpsTime,
-            currentPulseNumber
+            currentPulseNumber,
+            deviceIndex
         );
     }
     /**
@@ -168,7 +175,8 @@ protected:
         glm::dvec3 &absoluteBeamOrigin,
         Rotation &absoluteBeamAttitude,
         double const currentGpsTime,
-        int const currentPulseNumber
+        int const currentPulseNumber,
+        size_t const deviceIndex
     );
     /**
      * @brief Handle parallel computation of scanning pulses using a dynamic
@@ -182,7 +190,8 @@ protected:
         glm::dvec3 &absoluteBeamOrigin,
         Rotation &absoluteBeamAttitude,
         double const currentGpsTime,
-        int const currentPulseNumber
+        int const currentPulseNumber,
+        size_t const deviceIndex
     );
     /**
      * @brief Handle a parallel computation of scanning pulse using a static
@@ -196,7 +205,8 @@ protected:
         glm::dvec3 &absoluteBeamOrigin,
         Rotation &absoluteBeamAttitude,
         double const currentGpsTime,
-        int const currentPulseNumber
+        int const currentPulseNumber,
+        size_t const deviceIndex
     );
 
 };

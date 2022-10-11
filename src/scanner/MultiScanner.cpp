@@ -78,10 +78,11 @@ void MultiScanner::doSimStep(
                     absoluteBeamOrigin,
                     absoluteBeamAttitude,
                     currentGpsTime,
-                    currentPulseNumber
+                    currentPulseNumber,
+                    i
                 );
             }
-            );
+        );
     }
 
     // If the scanner is inactive, stop here:

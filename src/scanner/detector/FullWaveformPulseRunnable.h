@@ -109,14 +109,16 @@ public:
         std::mutex * allMeasurementsMutex,
         std::vector<Measurement> * cycleMeasurements,
         std::mutex * cycleMeasurementsMutex,
-        unsigned int const legIndex
+        unsigned int const legIndex,
+        size_t const devIdx
     ) :
         AbstractPulseRunnable(
 			detector,
 			absoluteBeamOrigin, 
 			absoluteBeamAttitude, 
 			currentPulseNum, 
-			currentGpsTime
+			currentGpsTime,
+			devIdx
         ),
         scene(*(detector->scanner->platform->scene))
 	{

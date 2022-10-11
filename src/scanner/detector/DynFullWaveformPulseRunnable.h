@@ -42,7 +42,8 @@ public:
         std::mutex * allMeasurementsMutex,
         std::vector<Measurement> * cycleMeasurements,
         std::mutex * cycleMeasurementsMutex,
-        unsigned int legIndex
+        unsigned int legIndex,
+        size_t const devIndex
     ) :
         FullWaveformPulseRunnable(
             detector,
@@ -56,7 +57,8 @@ public:
             allMeasurementsMutex,
             cycleMeasurements,
             cycleMeasurementsMutex,
-            legIndex
+            legIndex,
+            devIdx
         ),
         raycaster(raycaster)
     {}
