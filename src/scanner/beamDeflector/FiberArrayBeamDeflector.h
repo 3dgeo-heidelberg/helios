@@ -59,5 +59,10 @@ public:
      * @brief Set the number of fibers
      * @param numFibers New number of fibers
      */
-    void setNumFibers(int numFibers);
+    void setNumFibers(int const numFibers);
+    /**
+     * @brief Obtain the number of fibers
+     * @return The number of fibers
+     */
+    int getNumFibers() const {return cfg_device_numFibers;}
 };

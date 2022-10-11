@@ -19,7 +19,7 @@ var searchData=
   ['pcloudyielder',['pcloudYielder',['../d8/d6b/classAbstractDetector.html#aa1516b51a47f416aa76ebf1d607aa91f',1,'AbstractDetector']]],
   ['pclsf',['pclsf',['../d4/dc7/classDesignTrajectoryFunction.html#a98bb18c56c9f0e55fb532cee65f72f5d',1,'DesignTrajectoryFunction']]],
   ['peakenergy',['peakEnergy',['../d4/dfb/classFWFSettings.html#ada246995747fbe137e32261f6a305a00',1,'FWFSettings']]],
-  ['peakintensityindex',['peakIntensityIndex',['../dc/d42/classScanner.html#aa88f7c100b678d59ca16376a15074546',1,'Scanner']]],
+  ['peakintensityindex',['peakIntensityIndex',['../d1/d09/classScanningDevice.html#aeebd83c3077850a4138aaf5e162da92c',1,'ScanningDevice']]],
   ['pendingcount',['pendingCount',['../da/d92/classWarehouseThreadPool.html#aca83ee3987dd55e7fa7a0f97de765936',1,'WarehouseThreadPool']]],
   ['pendingnodes',['pendingNodes',['../d0/da5/classBinaryTreeBreadthIterator.html#a9dfe9e4197cde906fa73bbdc2a4fa5d3',1,'BinaryTreeBreadthIterator::pendingNodes()'],['../d4/d02/classBinaryTreeDepthIterator.html#ac66f47a11f85ed9c6ba145c14170efb8',1,'BinaryTreeDepthIterator::pendingNodes()'],['../d3/d43/classBinaryTreeFastBreadthIterator.html#a049d07d55c3fe96d92fe2ea1395d42aa',1,'BinaryTreeFastBreadthIterator::pendingNodes()'],['../dc/da5/classBinaryTreeFastDepthIterator.html#ac2f9ae2f5acbd23bd656b21e3721d6a3',1,'BinaryTreeFastDepthIterator::pendingNodes()']]],
   ['period',['period',['../dd/de3/classDiscreteTime.html#a139f5f004ad63f4fd1066fb562d4fba1',1,'DiscreteTime']]],
@@ -54,6 +54,6 @@ var searchData=
   ['progress',['progress',['../d6/da1/classSurveyPlayback.html#af4d53e6a4430ba53c8551bd483b46d08',1,'SurveyPlayback']]],
   ['ptf',['ptf',['../db/d85/classScanningPulseProcess.html#a36794f689c75b9053fbe424667d01715',1,'ScanningPulseProcess']]],
   ['pulsefreq_5fhz',['pulseFreq_Hz',['../d0/d23/classScannerSettings.html#a4dd555e27c9634222b04ff1aef51a4a8',1,'ScannerSettings']]],
-  ['pulselength_5fns',['pulseLength_ns',['../d4/dfb/classFWFSettings.html#aa66ec3a7b686cb679b3c4d8dcf401ff8',1,'FWFSettings']]],
+  ['pulselength_5fns',['pulseLength_ns',['../d4/dfb/classFWFSettings.html#aa66ec3a7b686cb679b3c4d8dcf401ff8',1,'FWFSettings::pulseLength_ns()'],['../d1/d09/classScanningDevice.html#a04452f262c47f45f15c61bb4ed23e75c',1,'ScanningDevice::pulseLength_ns()']]],
   ['pulsereturnnumber',['pulseReturnNumber',['../db/d2e/classMeasurement.html#a07c6e9ca3067967a6c609530bc55373e',1,'Measurement']]]
 ];

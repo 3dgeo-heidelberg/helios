@@ -35,11 +35,13 @@ public:
 	RisleyBeamDeflector(
 	    double scanAngleMax_rad,
         double rotorFreq_Hz_1,
-        double rotorFreq_Hz_2) :
+        double rotorFreq_Hz_2
+    ) :
 	    AbstractBeamDeflector(
 	        scanAngleMax_rad,
 	        0,
-	        0  )
+	        0
+        )
     {
         this->scanAngle = scanAngleMax_rad;
         this->rotorSpeed_rad_1 = rotorFreq_Hz_1 * 0.5 / M_PI;

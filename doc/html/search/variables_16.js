@@ -9,6 +9,7 @@ var searchData=
   ['vertices',['vertices',['../d1/d0c/classGeoTiffFileLoader.html#ab9a51b621924a1f8f2c728ce8c278782',1,'GeoTiffFileLoader::vertices()'],['../d2/d1a/classAABB.html#a4efbdbe41e3e4e4728fbfb05ba32c8d8',1,'AABB::vertices()'],['../d1/dda/classvisualhelios_1_1VHStaticObjectAdapter.html#a04403c2c02480d56d19744a678dd11af',1,'visualhelios::VHStaticObjectAdapter::vertices()']]],
   ['verts',['verts',['../d2/d51/classTriangle.html#a0537cb4c881d44091046a4d149302be7',1,'Triangle']]],
   ['viewer',['viewer',['../de/dda/classvisualhelios_1_1VHCanvas.html#a12caab990bc6181ff39c6b090ba71c47',1,'visualhelios::VHCanvas']]],
+  ['visibility_5fkm',['visibility_km',['../d1/d09/classScanningDevice.html#aece6565852d8105dfa3167999fd7bf38',1,'ScanningDevice']]],
   ['voxelpopulationthreshold',['voxelPopulationThreshold',['../d6/d03/classXYZPointCloudFileLoader.html#a74714cc22686cf55fc4fb90d712de2b2',1,'XYZPointCloudFileLoader']]],
   ['voxels',['voxels',['../d6/d03/classXYZPointCloudFileLoader.html#a481fb42ed47236a0a0179c9af276ae52',1,'XYZPointCloudFileLoader']]],
   ['voxelsize',['voxelSize',['../d6/d03/classXYZPointCloudFileLoader.html#a27900dddea73898f23a8070070ad58f7',1,'XYZPointCloudFileLoader']]]

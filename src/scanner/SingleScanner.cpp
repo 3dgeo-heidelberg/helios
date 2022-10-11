@@ -1,5 +1,6 @@
 #include <scanner/SingleScanner.h>
 #include <scanner/detector/AbstractDetector.h>
+#include <maths/WaveMaths.h>
 
 #ifdef PYTHON_BINDING
 #include "PyDetectorWrapper.h"
@@ -133,42 +134,21 @@ void SingleScanner::doSimStep(
     handleTrajectoryOutput(currentGpsTime);
 }
 
-void SingleScanner::prepareDiscretization(){
+void SingleScanner::prepareDiscretization(size_t const idx){
     setNumTimeBins(
         getPulseLength_ns(0) / getFWFSettings(0).binSize_ns,
         0
     );
     setTimeWave(vector<double>(getNumTimeBins(0)), 0);
-    setPeakIntensityIndex(calcTimePropagation(
-        getTimeWave(0), getNumTimeBins(0)
+    setPeakIntensityIndex(WaveMaths::calcPropagationTimeLegacy(
+        getTimeWave(0),
+        getNumTimeBins(0),
+        getFWFSettings(0).binSize_ns,
+        getPulseLength_ns(0),
+        7.0  // 3.5 too many ops., 7.0 just one op.
     ), 0);
 }
 
-int SingleScanner::calcTimePropagation(
-    std::vector<double> & timeWave, int const numBins
-) {
-    double const step = getFWFSettings(0).binSize_ns;
-    //double const tau = (getPulseLength_ns() * 0.5) / 3.5;  // Too many ops.
-    double const tau = getPulseLength_ns(0) / 7.0;  // Just one op.
-    double t = 0;
-    double t_tau = 0;
-    double pt = 0;
-    double peakValue = 0;
-    int peakIndex = 0;
-
-    for (int i = 0; i < numBins; ++i) {
-        t = i * step;
-        t_tau = t / tau;
-        pt = (t_tau * t_tau) * exp(-t_tau);
-        timeWave[i] = pt;
-        if (pt > peakValue) {
-            peakValue = pt;
-            peakIndex = i;
-        }
-    }
-
-    return peakIndex;
-}
 
 double SingleScanner::calcFootprintArea(
     double const distance, size_t const idx
@@ -176,7 +156,7 @@ double SingleScanner::calcFootprintArea(
     return PI_QUARTER * distance * distance * getBt2(0);
 }
 
-Rotation SingleScanner::calcAbsoluteBeamAttitude() {
+Rotation SingleScanner::calcAbsoluteBeamAttitude(size_t const idx) {
     return scanDev.calcAbsoluteBeamAttitude(
         platform->getAbsoluteMountAttitude()
     );

@@ -130,17 +130,22 @@ glm::dvec3 XmlUtils::createVec3dFromXml(
     std::string attrPrefix
 ){
     if (node == nullptr) {
-        throw HeliosException("No node with attribute " + attrPrefix + "[xyz]");
+        throw HeliosException(
+            "No node with attribute " + attrPrefix + "[xyz]"
+        );
     }
 
-    double x =
-        boost::get<double>(getAttribute(node, attrPrefix + "x", "double", 0.0));
-    double y =
-        boost::get<double>(getAttribute(node, attrPrefix + "y", "double", 0.0));
-    double z =
-        boost::get<double>(getAttribute(node, attrPrefix + "z", "double", 0.0));
-
-    return glm::dvec3(x, y, z);
+    return glm::dvec3(
+        boost::get<double>(
+            getAttribute(node, attrPrefix + "x", "double", 0.0)
+        ),
+        boost::get<double>(
+            getAttribute(node, attrPrefix + "y", "double", 0.0)
+        ),
+        boost::get<double>(
+            getAttribute(node, attrPrefix + "z", "double", 0.0)
+        )
+    );
 }
 
 std::shared_ptr<NoiseSource<double>>
@@ -443,4 +448,35 @@ std::vector<std::shared_ptr<DynMotion>> XmlUtils::createDynMotionsVector(
     }
 
     return dms;
+}
+
+void XmlUtils::assertDocumentForAssetLoading(
+    tinyxml2::XMLDocument &doc,
+    std::string const &filename,
+    std::string const &path,
+    std::string const &type,
+    std::string const &id,
+    std::string const &caller
+){
+    if(doc.Error()){
+        if(doc.ErrorID() == tinyxml2::XML_ERROR_FILE_NOT_FOUND){
+            std::stringstream ss;
+            ss    << "File \"" << filename << "\" was not found at:\n"
+                  << "\"" << path << "\"\n"
+                  << "Thus, it is not possible to load the asset \""
+                  << type << "\":\"" << id << "\"";
+            logging::ERR(ss.str());
+        }
+        else{
+            std::stringstream ss;
+            ss    << "It was not possible to load the asset \""
+                  << type << "\":\"" << id << "\"\n"
+                  << "At least not from file \"" << filename
+                  << "\" at:\n" << "\"" << path << "\"";
+            logging::ERR(ss.str());
+        }
+        std::stringstream ss;
+        ss  << caller << " failed due to a document error";
+        throw HeliosException(ss.str());
+    }
 }

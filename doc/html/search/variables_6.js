@@ -30,7 +30,7 @@ var searchData=
   ['fullwaveindex',['fullwaveIndex',['../dc/d62/classFullWaveform.html#a847735152a3f897efbd44ce95fd2dc0b',1,'FullWaveform::fullwaveIndex()'],['../db/d2e/classMeasurement.html#a73b5258a21a5220e345597fbe2df8514',1,'Measurement::fullwaveIndex()']]],
   ['fullwavenoise',['fullWaveNoise',['../dc/d42/classScanner.html#a2a8724797e67174529b67d2a5c00dad3',1,'Scanner']]],
   ['fwdetector',['fwDetector',['../db/da6/classFullWaveformPulseRunnable.html#a6867cb16a9b1ede1d9bff80f2626c10d',1,'FullWaveformPulseRunnable']]],
-  ['fwf_5fsettings',['FWF_settings',['../dc/d42/classScanner.html#a33b2ae27e64bc1f870580abc2ac5e645',1,'Scanner']]],
+  ['fwf_5fsettings',['FWF_settings',['../d1/d09/classScanningDevice.html#a1828d2d6b10bbcb75998e069de1fc86f',1,'ScanningDevice']]],
   ['fwfyielder',['fwfYielder',['../d8/d6b/classAbstractDetector.html#ab7f2637a41f0400042df5b9d54cca9f5',1,'AbstractDetector']]],
   ['fwiattridx',['fwiAttrIdx',['../d7/d5b/classhelios_1_1filems_1_1LasSyncFileWriter.html#ab1e5e09facf857e5004d04057fb98828',1,'helios::filems::LasSyncFileWriter']]],
   ['fwiattrstart',['fwiAttrStart',['../d7/d5b/classhelios_1_1filems_1_1LasSyncFileWriter.html#a2000429cc6af539d97a515e55f67c370',1,'helios::filems::LasSyncFileWriter::fwiAttrStart()'],['../da/d35/classhelios_1_1filems_1_1LasMeasurementWriteStrategy.html#acad38c16b86d7b472103f10557e36179',1,'helios::filems::LasMeasurementWriteStrategy::fwiAttrStart()']]],

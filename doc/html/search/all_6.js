@@ -99,7 +99,7 @@ var searchData=
   ['function_3c_20double_2c_20arma_3a_3acol_3c_20double_20_3e_20_3e',['Function&lt; double, arma::Col&lt; double &gt; &gt;',['../d4/d73/classfluxionum_1_1Function.html',1,'fluxionum']]],
   ['functionalplatformtest',['FunctionalPlatformTest',['../d4/dbf/classHeliosTests_1_1FunctionalPlatformTest.html',1,'HeliosTests::FunctionalPlatformTest'],['../d4/dbf/classHeliosTests_1_1FunctionalPlatformTest.html#a705361a156b6632bf9e02c9d0feaab01',1,'HeliosTests::FunctionalPlatformTest::FunctionalPlatformTest()']]],
   ['fwdetector',['fwDetector',['../db/da6/classFullWaveformPulseRunnable.html#a6867cb16a9b1ede1d9bff80f2626c10d',1,'FullWaveformPulseRunnable']]],
-  ['fwf_5fsettings',['FWF_settings',['../dc/d42/classScanner.html#a33b2ae27e64bc1f870580abc2ac5e645',1,'Scanner']]],
+  ['fwf_5fsettings',['FWF_settings',['../d1/d09/classScanningDevice.html#a1828d2d6b10bbcb75998e069de1fc86f',1,'ScanningDevice']]],
   ['fwfsettings',['FWFSettings',['../d4/dfb/classFWFSettings.html',1,'FWFSettings'],['../d4/dfb/classFWFSettings.html#aeece2d2aef30372b85fc9d1ba7cac29b',1,'FWFSettings::FWFSettings()']]],
   ['fwfyielder',['fwfYielder',['../d8/d6b/classAbstractDetector.html#ab7f2637a41f0400042df5b9d54cca9f5',1,'AbstractDetector']]],
   ['fwiattridx',['fwiAttrIdx',['../d7/d5b/classhelios_1_1filems_1_1LasSyncFileWriter.html#ab1e5e09facf857e5004d04057fb98828',1,'helios::filems::LasSyncFileWriter']]],

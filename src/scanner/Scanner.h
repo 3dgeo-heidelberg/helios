@@ -175,22 +175,8 @@ public:
     // ************************************ //
     /**
      * @brief Scanner constructor
-     * @see Scanner::cfg_device_beamDivergence_rad
-     * @param beamOrigin Beam origin used to set head relative emitter position
-     * @param beamOrientation Beam orientation used to set head relative
-     *  emitter attitude
      * @param pulseFreqs List of supported pulse frequencies (hertz)
-     * @see Scanner::cfg_device_supportedPulseFreqs_Hz
-     * @see Scanner::cfg_device_pulseLength_ns
-     * @see Scanner::cfg_device_id
-     * @see Scanner::cfg_device_averagePower_w
-     * @see Scanner::cfg_device_beamQuality
-     * @see Scanner::cfg_device_efficiency
-     * @see Scanner::cfg_device_receiverDiameter_m
-     * @param atmosphericVisibility Atmospheric visibility understood as
-     * the scanner visibility (kilometers)
-     * @param wavelength Wavelength used to set scanner wave length after
-     * dividing by \f$10^{9}\f$
+     * @see Scanner::id
      * @see Scanner::writeWaveform
      * @see Scanner::calcEchowidth
      * @see Scanner::fullWaveNoise
@@ -324,25 +310,19 @@ public:
      *  method
      * @see Scanner::calcRaysNumber(size_t const)
      */
-    void calcRaysNumber() {calcRaysNumber(0);}
+    inline void calcRaysNumber() {calcRaysNumber(0);}
     /**
      * @brief Prepare wave discretization
      * @see Scanner::numTimeBins
      * @see Scanner::time_wave
      * @see Scanner::peakIntensityIndex
      */
-    virtual void prepareDiscretization() = 0;
+    virtual void prepareDiscretization(size_t const idx) = 0;
     /**
-     * @brief Compute propagation time, which means obtaining the intensity
-     * peak index
-     * @see Scanner::numTimeBins
-     * @see Scanner::time_wave
-     * @see Scanner::peakIntensityIndex
-     * @return Index of intensity peak
+     * @brief Non index version of the Scanner::prepareDiscretization method
+     * @see Scanner::prepareDiscretization(size_t const)
      */
-    virtual int calcTimePropagation(
-        std::vector<double> & timeWave, int const numBins
-    ) = 0;
+    inline void prepareDiscretization() {this->prepareDiscretization(0);}
     /**
      * @brief Compute the footprint area \f$f_{a}\f$
      *
@@ -379,14 +359,27 @@ public:
     /**
      * @see ScanningDevice::calcAtmosphericAttenuation
      */
-    virtual double calcAtmosphericAttenuation() const = 0;
+    virtual double calcAtmosphericAttenuation(size_t const idx) const = 0;
+    /**
+     * @brief Non index version of Scanner::calcAtmosphericAttenuation
+     * @see Scanner::calcAtmosphericAttenuation(size_t const)
+     */
+    inline double calcAtmosphericAttenuation() const
+    {return calcAtmosphericAttenuation(0);}
     /**
      * @brief Compute the absolute beam attitude considering the mount relative
      * attitude and the deflector relative attitude
      * @see ScannerHead::getMountRelativeAttitude
      * @see AbstractBeamDeflector::getEmitterRelativeAttitude
      */
-    virtual Rotation calcAbsoluteBeamAttitude() = 0;
+    virtual Rotation calcAbsoluteBeamAttitude(size_t const idx) = 0;
+    /**
+     * @brief Non index version of the Scanner::calcAbsoluteBeamAttitude
+     *  function
+     * @see Scanner::calcAbsoluteBeamAttitude(size_t const)
+     */
+    inline Rotation calcAbsoluteBeamAttitude()
+    {return calcAbsoluteBeamAttitude(0);}
 
     /**
      * @brief Check if given number of return (nor) is inside

@@ -27,7 +27,7 @@ var classpyhelios_1_1PyHeliosSimulation =
     [ "getNumThreads", "d9/ddd/classpyhelios_1_1PyHeliosSimulation.html#a9fa0a9159322f1a97b3436e5b5248e1f", null ],
     [ "getParallelizationStrategy", "d9/ddd/classpyhelios_1_1PyHeliosSimulation.html#ab9ed3e6238206eb5eb9d409d3bc6ce27", null ],
     [ "getPlatform", "d9/ddd/classpyhelios_1_1PyHeliosSimulation.html#a49518d45ba95f50d048425e2a915fa49", null ],
-    [ "getScanner", "d9/ddd/classpyhelios_1_1PyHeliosSimulation.html#a3cf2628ee54d2ff51e3acc700c17a9b2", null ],
+    [ "getScanner", "d9/ddd/classpyhelios_1_1PyHeliosSimulation.html#a094f161c94a2b8d9eded64efd2a584ac", null ],
     [ "getScene", "d9/ddd/classpyhelios_1_1PyHeliosSimulation.html#a7ddc9832e74879ef58ba3b4c97afa207", null ],
     [ "getSimFrequency", "d9/ddd/classpyhelios_1_1PyHeliosSimulation.html#ad5ee96243b70a96892a4b5ec9779171c", null ],
     [ "getSurvey", "d9/ddd/classpyhelios_1_1PyHeliosSimulation.html#aba5bdcd1700b55d8a111051c3aea1fda", null ],

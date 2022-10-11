@@ -48,8 +48,12 @@ var hierarchy =
         ] ]
       ] ],
       [ "PlatformSettings", "d5/d0c/classPlatformSettings.html", null ],
-      [ "Scanner", "dc/d42/classScanner.html", null ],
+      [ "Scanner", "dc/d42/classScanner.html", [
+        [ "MultiScanner", "da/d23/classMultiScanner.html", null ],
+        [ "SingleScanner", "d2/d24/classSingleScanner.html", null ]
+      ] ],
       [ "ScannerSettings", "d0/d23/classScannerSettings.html", null ],
+      [ "ScanningDevice", "d1/d09/classScanningDevice.html", null ],
       [ "Scene", "d5/d9c/classScene.html", [
         [ "StaticScene", "dd/d34/classStaticScene.html", [
           [ "DynScene", "de/d74/classDynScene.html", null ]
@@ -69,6 +73,7 @@ var hierarchy =
     ] ],
     [ "HeliosTests::BaseTest", "d9/d52/classHeliosTests_1_1BaseTest.html", [
       [ "HeliosTests::DiscreteTimeTest", "d6/d7f/classHeliosTests_1_1DiscreteTimeTest.html", null ],
+      [ "HeliosTests::EnergyModelsTest", "d6/d35/classHeliosTests_1_1EnergyModelsTest.html", null ],
       [ "HeliosTests::FluxionumTest", "dd/de0/classHeliosTests_1_1FluxionumTest.html", null ],
       [ "HeliosTests::FunctionalPlatformTest", "d4/dbf/classHeliosTests_1_1FunctionalPlatformTest.html", null ],
       [ "HeliosTests::GroveTest", "d0/d01/classHeliosTests_1_1GroveTest.html", null ],
@@ -115,6 +120,7 @@ var hierarchy =
     [ "DynSequence< T >", "df/dfa/classDynSequence.html", null ],
     [ "DynSequencer< T >", "db/d6f/classDynSequencer.html", null ],
     [ "DynSequencer< DynMotion >", "db/d6f/classDynSequencer.html", null ],
+    [ "EnergyMaths", "dd/d3c/classEnergyMaths.html", null ],
     [ "enum_hasher", "da/ded/structenum__hasher.html", null ],
     [ "exception", null, [
       [ "HeliosException", "d6/dda/classHeliosException.html", [
@@ -269,11 +275,6 @@ var hierarchy =
         [ "UniformNoiseSource< double >", "d3/d57/classUniformNoiseSource.html", null ]
       ] ]
     ] ],
-    [ "Object", null, [
-      [ "SurfaceInspector::maths::functions::IMathFunction< T, T >", "da/d80/classSurfaceInspector_1_1maths_1_1functions_1_1IMathFunction.html", [
-        [ "SurfaceInspector::maths::functions::GaussianFunction< T >", "db/dc1/classSurfaceInspector_1_1maths_1_1functions_1_1GaussianFunction.html", null ]
-      ] ]
-    ] ],
     [ "SurfaceInspector::util::Object", "d2/df2/classSurfaceInspector_1_1util_1_1Object.html", [
       [ "SurfaceInspector::util::draggers::IDragger< E, vector< E > >", "d1/dd1/classSurfaceInspector_1_1util_1_1draggers_1_1IDragger.html", [
         [ "SurfaceInspector::util::draggers::OptimizationDragger< E >", "d5/d68/classSurfaceInspector_1_1util_1_1draggers_1_1OptimizationDragger.html", [
@@ -299,6 +300,11 @@ var hierarchy =
       [ "SurfaceInspector::maths::Vector< T >", "d1/dd3/classSurfaceInspector_1_1maths_1_1Vector.html", null ],
       [ "SurfaceInspector::util::draggers::IDragger< E, C >", "d1/dd1/classSurfaceInspector_1_1util_1_1draggers_1_1IDragger.html", null ],
       [ "SurfaceInspector::util::SurfaceInspectorException", "df/da8/classSurfaceInspector_1_1util_1_1SurfaceInspectorException.html", null ]
+    ] ],
+    [ "Object", null, [
+      [ "SurfaceInspector::maths::functions::IMathFunction< T, T >", "da/d80/classSurfaceInspector_1_1maths_1_1functions_1_1IMathFunction.html", [
+        [ "SurfaceInspector::maths::functions::GaussianFunction< T >", "db/dc1/classSurfaceInspector_1_1maths_1_1functions_1_1GaussianFunction.html", null ]
+      ] ]
     ] ],
     [ "PlaneFitter", "d6/d51/classPlaneFitter.html", null ],
     [ "Primitive", "df/de1/classPrimitive.html", [
@@ -339,6 +345,7 @@ var hierarchy =
     ] ],
     [ "pyhelios::PyRandomnessGeneratorWrapper", "d2/d5b/classpyhelios_1_1PyRandomnessGeneratorWrapper.html", null ],
     [ "pyhelios::PyRaySceneIntersectionWrapper", "da/db0/classpyhelios_1_1PyRaySceneIntersectionWrapper.html", null ],
+    [ "pyhelios::PyScannerWrapper", "dc/d30/classpyhelios_1_1PyScannerWrapper.html", null ],
     [ "pyhelios::PyScanningStripWrapper", "d2/d6b/classpyhelios_1_1PyScanningStripWrapper.html", null ],
     [ "pyhelios::PyScenePartWrapper", "df/d28/classpyhelios_1_1PyScenePartWrapper.html", null ],
     [ "pyhelios::PySceneWrapper", "d7/d17/classpyhelios_1_1PySceneWrapper.html", null ],

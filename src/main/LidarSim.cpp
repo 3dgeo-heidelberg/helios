@@ -74,9 +74,9 @@ void LidarSim::init(
     logging::INFO(ss.str());
 
 	// Load survey description from XML file:
- 	std::shared_ptr<XmlSurveyLoader> xmlreader(
- 	    new XmlSurveyLoader(surveyPath, assetsPath)
- 	);
+ 	std::shared_ptr<XmlSurveyLoader> xmlreader = std::make_shared<
+ 	    XmlSurveyLoader
+    >(surveyPath, assetsPath);
  	xmlreader->sceneLoader.kdtFactoryType = kdtType;
  	xmlreader->sceneLoader.kdtNumJobs = kdtJobs;
  	xmlreader->sceneLoader.kdtGeomJobs = kdtGeomJobs;

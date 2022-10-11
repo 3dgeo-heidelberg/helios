@@ -38,7 +38,7 @@ ScanningDevice::ScanningDevice(
     cached_Dr2 = receiverDiameter_m * receiverDiameter_m;
 }
 
-ScanningDevice::ScanningDevice(ScanningDevice &scdev){
+ScanningDevice::ScanningDevice(ScanningDevice const &scdev){
     this->id = scdev.id;
     this->headRelativeEmitterPosition = scdev.headRelativeEmitterPosition;
     this->headRelativeEmitterAttitude = scdev.headRelativeEmitterAttitude;
@@ -61,6 +61,8 @@ ScanningDevice::ScanningDevice(ScanningDevice &scdev){
     this->time_wave = scdev.time_wave;
     this->state_currentPulseNumber = scdev.state_currentPulseNumber;
     this->state_lastPulseWasHit = scdev.state_lastPulseWasHit;
+    this->cached_Dr2 = scdev.cached_Dr2;
+    this->cached_Bt2 = scdev.cached_Bt2;
 
     if(scdev.scannerHead == nullptr) this->scannerHead = nullptr;
     else this->scannerHead = std::make_shared<ScannerHead>(*scdev.scannerHead);

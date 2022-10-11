@@ -8,6 +8,7 @@ var searchData=
   ['testdesignmatrixbuilding',['testDesignMatrixBuilding',['../dd/de0/classHeliosTests_1_1FluxionumTest.html#a588e144895f8e48e75372c40c88ad7f0',1,'HeliosTests::FluxionumTest']]],
   ['testdesignmatrixmethods',['testDesignMatrixMethods',['../dd/de0/classHeliosTests_1_1FluxionumTest.html#a89cf708da946994f521e0ed78d410e8b',1,'HeliosTests::FluxionumTest']]],
   ['testdiffdesignmatrix',['testDiffDesignMatrix',['../dd/de0/classHeliosTests_1_1FluxionumTest.html#ae24e8e23e31cb668b8ee0b5aa3b7875c',1,'HeliosTests::FluxionumTest']]],
+  ['testemittedreceivedpower',['testEmittedReceivedPower',['../d6/d35/classHeliosTests_1_1EnergyModelsTest.html#a65492a0561199cd728a97f2275f76ea5',1,'HeliosTests::EnergyModelsTest']]],
   ['testheliosglidereflectionr3',['testHeliosGlideReflectionR3',['../db/d8b/classHeliosTests_1_1RigidMotionTest.html#aef05752c70c2442632d16e8e37f1972f',1,'HeliosTests::RigidMotionTest']]],
   ['testhelioshelicalr3',['testHeliosHelicalR3',['../db/d8b/classHeliosTests_1_1RigidMotionTest.html#ac24b1a06fd0ea598f5899461de7b3e83',1,'HeliosTests::RigidMotionTest']]],
   ['testheliosidentityr3',['testHeliosIdentityR3',['../db/d8b/classHeliosTests_1_1RigidMotionTest.html#ad6cd1b739323b69ee62a96077287cb85',1,'HeliosTests::RigidMotionTest']]],

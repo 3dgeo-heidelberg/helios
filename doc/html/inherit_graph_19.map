@@ -1,7 +1,4 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$da/d40/classfluxionum_1_1AbstractDesignMatrix.html" title="fluxionum::AbstractDesign\lMatrix\&lt; VarType \&gt;" alt="" coords="5,71,181,112"/>
-<area shape="rect" id="node2" href="$d7/d0d/classfluxionum_1_1DesignMatrix.html" title="fluxionum::DesignMatrix\l\&lt; VarType \&gt;" alt="" coords="240,37,403,79"/>
-<area shape="rect" id="node5" href="$d9/d49/classfluxionum_1_1DiffDesignMatrix.html" title="The heart of a differential design matrix is the idea that the columns are defining the values of var..." alt="" coords="229,103,413,144"/>
-<area shape="rect" id="node3" href="$dc/da5/classfluxionum_1_1IndexedDesignMatrix.html" title="fluxionum::IndexedDesign\lMatrix\&lt; IndexType, VarType \&gt;" alt="" coords="461,5,661,47"/>
-<area shape="rect" id="node4" href="$db/d9b/classfluxionum_1_1TemporalDesignMatrix.html" title="This class represents a DesignMatrix where each row satisfy that its elements can be placed into a co..." alt="" coords="463,71,660,112"/>
+<area shape="rect" id="node1" href="$da/d40/classfluxionum_1_1AbstractDesignMatrix.html" title="The abstract class which represents the fundamentals of any design matrix. " alt="" coords="5,5,181,47"/>
+<area shape="rect" id="node2" href="$d7/d0d/classfluxionum_1_1DesignMatrix.html" title="This class represents a DesignMatrix . " alt="" coords="229,13,424,39"/>
 </map>
