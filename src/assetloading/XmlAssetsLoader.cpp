@@ -1301,10 +1301,10 @@ void XmlAssetsLoader::fillScanningDevicesFromChannels(
                 *fwfSettings
             );
             fwfs = createFWFSettingsFromXml(elem, fwfs);
-            scanner->setFWFSettings(*fwfs, idx);
+            scanner->applySettingsFWF(*fwfs, idx);
         }
         else{
-            scanner->setFWFSettings(*fwfSettings, idx);
+            scanner->applySettingsFWF(*fwfSettings, idx);
         }
         // Check beam deflector update
         bool updateDeflector = true;

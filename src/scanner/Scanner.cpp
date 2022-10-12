@@ -225,8 +225,8 @@ std::shared_ptr<ScannerSettings> Scanner::retrieveCurrentSettings(
 
 void Scanner::applySettingsFWF(FWFSettings settings, size_t const idx) {
     setFWFSettings(settings, idx);
-	calcRaysNumber();
-	prepareDiscretization();
+	calcRaysNumber(idx);
+	prepareDiscretization(idx);
 }
 
 string Scanner::toString() {
