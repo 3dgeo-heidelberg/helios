@@ -5,12 +5,29 @@
 #include "MathConstants.h"
 #include <maths/EnergyMaths.h>
 
-#include <glm/glm.hpp>
-
 #include "AbstractDetector.h"
 #include <filems/facade/FMSFacade.h>
 
+#include <glm/glm.hpp>
 
+#include <memory>
+
+// ***  CONSTRUCTION / DESTRUCTION  *** //
+// ************************************ //
+AbstractPulseRunnable::AbstractPulseRunnable(
+    std::shared_ptr<Scanner> scanner,
+    SimulatedPulse const &pulse
+) :
+    scanner(scanner),
+    pulse(pulse),
+    scene(*(scanner->platform->scene))
+{}
+
+// ***  M E T H O D S  *** //
+// *********************** //
+void AbstractPulseRunnable::initialize(){
+    detector = scanner->getDetector(pulse.getDeviceIndex());
+}
 void AbstractPulseRunnable::capturePoint(
     Measurement & m,
     RandomnessGenerator<double> &rg,
@@ -19,10 +36,6 @@ void AbstractPulseRunnable::capturePoint(
     std::vector<Measurement> *cycleMeasurements,
     std::mutex *cycleMeasurementsMutex
 ) {
-	if (!writeGround && m.classification == LasSpecification::GROUND) {
-		return;
-	}
-
 	// Abort if point distance is below mininum scanner range:
 	// TODO Pending : This check is already done in FullWaveformPulseRunnable
 	// What is the point on repeating it?
@@ -40,14 +53,12 @@ void AbstractPulseRunnable::capturePoint(
     if(allMeasurements != nullptr){
         std::unique_lock<std::mutex> lock(*allMeasurementsMutex);
         allMeasurements->push_back(m);
-        (allMeasurements->end() - 1)->position +=
-            detector->scanner->platform->scene->getShift();
+        (allMeasurements->end() - 1)->position += scene.getShift();
     }
     if(cycleMeasurements != nullptr){
         std::unique_lock<std::mutex> lock(*cycleMeasurementsMutex);
         cycleMeasurements->push_back(m);
-        (cycleMeasurements->end() - 1)->position +=
-            detector->scanner->platform->scene->getShift();
+        (cycleMeasurements->end() - 1)->position += scene.getShift();
     }
     detector->pcloudYielder->push(m);
 }

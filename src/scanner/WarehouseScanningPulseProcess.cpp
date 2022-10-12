@@ -1,31 +1,18 @@
 #include <scanner/WarehouseScanningPulseProcess.h>
+#include <scanner/Scanner.h>
 
 
 // ***  CONSTRUCTION / DESTRUCTION  *** //
 // ************************************ //
 WarehouseScanningPulseProcess::WarehouseScanningPulseProcess(
-    std::shared_ptr<AbstractDetector> detector,
-    bool const writeWaveform,
-    bool const calcEchowidth,
-    std::shared_ptr<std::vector<Measurement>> &allMeasurements,
-    std::shared_ptr<std::mutex> &allMeasurementsMutex,
-    std::shared_ptr<std::vector<Measurement>> &cycleMeasurements,
-    std::shared_ptr<std::mutex> &cycleMeasurementsMutex,
+    std::shared_ptr<Scanner> scanner,
     PulseTaskDropper &dropper,
     PulseWarehouseThreadPool &pool,
     RandomnessGenerator<double> &randGen1,
     RandomnessGenerator<double> &randGen2,
     UniformNoiseSource<double> &intersectionHandlingNoiseSource
 ) :
-    ScanningPulseProcess(
-        detector,
-        writeWaveform,
-        calcEchowidth,
-        allMeasurements,
-        allMeasurementsMutex,
-        cycleMeasurements,
-        cycleMeasurementsMutex
-    ),
+    ScanningPulseProcess(scanner),
     dropper(dropper),
     pool(pool),
     randGen1(randGen1),
@@ -33,41 +20,13 @@ WarehouseScanningPulseProcess::WarehouseScanningPulseProcess(
     intersectionHandlingNoiseSource(intersectionHandlingNoiseSource)
 {
     if(pool.getPoolSize() > 0){ // Parallel computation
-        handler = [&] (
-            unsigned int const legIndex,
-            glm::dvec3 &absoluteBeamOrigin,
-            Rotation &absoluteBeamAttitude,
-            double const currentGpsTime,
-            int const currentPulseNumber,
-            size_t const deviceIndex
-        ) -> void {
-            handlePulseComputationParallel(
-                legIndex,
-                absoluteBeamOrigin,
-                absoluteBeamAttitude,
-                currentGpsTime,
-                currentPulseNumber,
-                deviceIndex
-            );
+        handler = [&] (SimulatedPulse const &sp) -> void {
+            handlePulseComputationParallel(sp);
         };
     }
     else{ // Sequential computation
-        handler = [&] (
-            unsigned int const legIndex,
-            glm::dvec3 &absoluteBeamOrigin,
-            Rotation &absoluteBeamAttitude,
-            double const currentGpsTime,
-            int const currentPulseNumber,
-            size_t const deviceIndex
-        ) -> void {
-            handlePulseComputationSequential(
-                legIndex,
-                absoluteBeamOrigin,
-                absoluteBeamAttitude,
-                currentGpsTime,
-                currentPulseNumber,
-                deviceIndex
-            );
+        handler = [&] (SimulatedPulse const &sp) -> void {
+            handlePulseComputationSequential(sp);
         };
     }
 
@@ -102,23 +61,10 @@ void WarehouseScanningPulseProcess::onSimulationFinished(){
 // ***  INNER PULSE COMPUTATION  *** //
 // ********************************* //
 void WarehouseScanningPulseProcess::handlePulseComputationSequential(
-    unsigned int const legIndex,
-    glm::dvec3 &absoluteBeamOrigin,
-    Rotation &absoluteBeamAttitude,
-    double const currentGpsTime,
-    int const currentPulseNumber,
-    size_t const deviceIndex
+    SimulatedPulse const &sp
 ){
     // Sequential pulse computation
-    shared_ptr<PulseTask> worker = ptf.build(
-        *this,
-        legIndex,
-        absoluteBeamOrigin,
-        absoluteBeamAttitude,
-        currentGpsTime,
-        currentPulseNumber,
-        deviceIndex
-    );
+    shared_ptr<PulseTask> worker = ptf.build(*this, sp);
     (*worker)( // call functor
         apMatrix,
         randGen1,
@@ -128,25 +74,12 @@ void WarehouseScanningPulseProcess::handlePulseComputationSequential(
 
 }
 void WarehouseScanningPulseProcess::handlePulseComputationParallel(
-    unsigned int const legIndex,
-    glm::dvec3 &absoluteBeamOrigin,
-    Rotation &absoluteBeamAttitude,
-    double const currentGpsTime,
-    int const currentPulseNumber,
-    size_t const deviceIndex
+    SimulatedPulse const &sp
 ){
     // Submit pulse computation functor to thread pool
     char const status = dropper.tryAdd(
         pool,
-        ptf.build(
-            *this,
-            legIndex,
-            absoluteBeamOrigin,
-            absoluteBeamAttitude,
-            currentGpsTime,
-            currentPulseNumber,
-            deviceIndex
-        )
+        ptf.build(*this, sp)
     );
     if(status){
         pool.notify();

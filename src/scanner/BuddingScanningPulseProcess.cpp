@@ -1,31 +1,17 @@
 #include <scanner/BuddingScanningPulseProcess.h>
-
+#include <scanner/Scanner.h>
 
 // ***  CONSTRUCTION / DESTRUCTION  *** //
 // ************************************ //
 BuddingScanningPulseProcess::BuddingScanningPulseProcess(
-    std::shared_ptr<AbstractDetector> detector,
-    bool const writeWaveform,
-    bool const calcEchowidth,
-    std::shared_ptr<std::vector<Measurement>> &allMeasurements,
-    std::shared_ptr<std::mutex> &allMeasurementsMutex,
-    std::shared_ptr<std::vector<Measurement>> &cycleMeasurements,
-    std::shared_ptr<std::mutex> &cycleMeasurementsMutex,
+    std::shared_ptr<Scanner> scanner,
     PulseTaskDropper &dropper,
     PulseThreadPool &pool,
     RandomnessGenerator<double> &randGen1,
     RandomnessGenerator<double> &randGen2,
     UniformNoiseSource<double> &intersectionHandlingNoiseSource
 ) :
-    ScanningPulseProcess(
-        detector,
-        writeWaveform,
-        calcEchowidth,
-        allMeasurements,
-        allMeasurementsMutex,
-        cycleMeasurements,
-        cycleMeasurementsMutex
-    ),
+    ScanningPulseProcess(scanner),
     dropper(dropper),
     pool(pool),
     randGen1(randGen1),
@@ -34,61 +20,19 @@ BuddingScanningPulseProcess::BuddingScanningPulseProcess(
 {
     if(pool.getPoolSize() > 0){
         if(pool.isDynamic()){ // Dynamic chunk schedule
-            handler = [&] (
-                unsigned int const legIndex,
-                glm::dvec3 &absoluteBeamOrigin,
-                Rotation &absoluteBeamAttitude,
-                double const currentGpsTime,
-                int const currentPulseNumber,
-                size_t const deviceIndex
-                ) -> void {
-                handlePulseComputationParallelDynamic(
-                    legIndex,
-                    absoluteBeamOrigin,
-                    absoluteBeamAttitude,
-                    currentGpsTime,
-                    currentPulseNumber,
-                    deviceIndex
-                );
+            handler = [&] (SimulatedPulse const &sp) -> void {
+                handlePulseComputationParallelDynamic(sp);
             };
         }
         else{ // Static chunk schedule
-            handler = [&] (
-                unsigned int const legIndex,
-                glm::dvec3 &absoluteBeamOrigin,
-                Rotation &absoluteBeamAttitude,
-                double const currentGpsTime,
-                int const currentPulseNumber,
-                size_t const deviceIndex
-            ) -> void {
-                handlePulseComputationParallelStatic(
-                    legIndex,
-                    absoluteBeamOrigin,
-                    absoluteBeamAttitude,
-                    currentGpsTime,
-                    currentPulseNumber,
-                    deviceIndex
-                );
+            handler = [&] (SimulatedPulse const &sp) -> void {
+                handlePulseComputationParallelStatic(sp);
             };
         }
     }
     else{ // Sequential computation
-        handler = [&] (
-            unsigned int const legIndex,
-            glm::dvec3 &absoluteBeamOrigin,
-            Rotation &absoluteBeamAttitude,
-            double const currentGpsTime,
-            int const currentPulseNumber,
-            size_t const deviceIndex
-        ) -> void {
-            handlePulseComputationSequential(
-                legIndex,
-                absoluteBeamOrigin,
-                absoluteBeamAttitude,
-                currentGpsTime,
-                currentPulseNumber,
-                deviceIndex
-            );
+        handler = [&] (SimulatedPulse const &sp) -> void{
+            handlePulseComputationSequential(sp);
         };
     }
 #ifdef BUDDING_METRICS
@@ -126,23 +70,10 @@ void BuddingScanningPulseProcess::onSimulationFinished(){
 // ***  INNER PULSE COMPUTATION  *** //
 // ********************************* //
 void BuddingScanningPulseProcess::handlePulseComputationSequential(
-    unsigned int const legIndex,
-    glm::dvec3 &absoluteBeamOrigin,
-    Rotation &absoluteBeamAttitude,
-    double const currentGpsTime,
-    int const currentPulseNumber,
-    size_t const deviceIndex
+    SimulatedPulse const &sp
 ){
     // Sequential pulse computation
-    shared_ptr<PulseTask> worker = ptf.build(
-        *this,
-        legIndex,
-        absoluteBeamOrigin,
-        absoluteBeamAttitude,
-        currentGpsTime,
-        currentPulseNumber,
-        deviceIndex
-    );
+    shared_ptr<PulseTask> worker = ptf.build(*this, sp);
     (*worker)( // call functor
         apMatrix,
         randGen1,
@@ -151,25 +82,12 @@ void BuddingScanningPulseProcess::handlePulseComputationSequential(
     );
 }
 void BuddingScanningPulseProcess::handlePulseComputationParallelDynamic(
-    unsigned int const legIndex,
-    glm::dvec3 &absoluteBeamOrigin,
-    Rotation &absoluteBeamAttitude,
-    double const currentGpsTime,
-    int const currentPulseNumber,
-    size_t const deviceIndex
+    SimulatedPulse const &sp
 ){
     // Submit pulse computation functor to thread pool
     char const status = dropper.tryAdd(
         pool,
-        ptf.build(
-            *this,
-            legIndex,
-            absoluteBeamOrigin,
-            absoluteBeamAttitude,
-            currentGpsTime,
-            currentPulseNumber,
-            deviceIndex
-        )
+        ptf.build(*this, sp)
     );
     if(status==1){ // Dropper successfully posted to thread pool
         if(idleTimer.hasStarted()){
@@ -219,25 +137,12 @@ void BuddingScanningPulseProcess::handlePulseComputationParallelDynamic(
 }
 
 void BuddingScanningPulseProcess::handlePulseComputationParallelStatic(
-    unsigned int const legIndex,
-    glm::dvec3 &absoluteBeamOrigin,
-    Rotation &absoluteBeamAttitude,
-    double const currentGpsTime,
-    int const currentPulseNumber,
-    size_t const deviceIndex
+    SimulatedPulse const &sp
 ){
     // Submit pulse computation functor to thread pool
     char const status = dropper.tryAdd(
         pool,
-        ptf.build(
-            *this,
-            legIndex,
-            absoluteBeamOrigin,
-            absoluteBeamAttitude,
-            currentGpsTime,
-            currentPulseNumber,
-            deviceIndex
-        )
+        ptf.build(*this, sp)
     );
     if(status==1){ // Dropper successfully posted to thread pool
 #ifdef BUDDING_METRICS

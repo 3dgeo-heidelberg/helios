@@ -7,6 +7,7 @@
 // ***  CONSTRUCTION / DESTRUCTION  *** //
 // ************************************ //
 ScanningDevice::ScanningDevice(
+    size_t const deviceIndex,
     std::string const id,
     double const beamDiv_rad,
     glm::dvec3 const beamOrigin,
@@ -20,6 +21,7 @@ ScanningDevice::ScanningDevice(
     double const atmosphericVisibility_km,
     double const wavelength_m
 ) :
+    devIdx(deviceIndex),
     id(id),
     headRelativeEmitterPosition(beamOrigin),
     headRelativeEmitterAttitude(beamOrientation),
@@ -39,6 +41,7 @@ ScanningDevice::ScanningDevice(
 }
 
 ScanningDevice::ScanningDevice(ScanningDevice const &scdev){
+    this->devIdx = scdev.devIdx;
     this->id = scdev.id;
     this->headRelativeEmitterPosition = scdev.headRelativeEmitterPosition;
     this->headRelativeEmitterAttitude = scdev.headRelativeEmitterAttitude;
@@ -125,9 +128,7 @@ void ScanningDevice::doSimStep(
     glm::dvec3 const &platformPosition,
     Rotation const &platformAttitude,
     std::function<void(glm::dvec3 &, Rotation &)> handleSimStepNoise,
-    std::function<void(
-        unsigned int, glm::dvec3 &, Rotation &, double const, int const
-    )> handlePulseComputation
+    std::function<void(SimulatedPulse const &sp)> handlePulseComputation
 ){
     // Do what must be done whether active or not
     // ------------------------------------------//
@@ -156,13 +157,14 @@ void ScanningDevice::doSimStep(
     // Handle noise
     handleSimStepNoise(absoluteBeamOrigin, absoluteBeamAttitude);
     // Handle pulse computation
-    handlePulseComputation(
-        legIndex,
+    handlePulseComputation(SimulatedPulse(
         absoluteBeamOrigin,
         absoluteBeamAttitude,
         currentGpsTime,
-        state_currentPulseNumber
-    );
+        legIndex,
+        state_currentPulseNumber,
+        devIdx
+    ));
 }
 
 Rotation ScanningDevice::calcAbsoluteBeamAttitude(

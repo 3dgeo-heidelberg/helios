@@ -855,7 +855,7 @@ XmlAssetsLoader::createScannerFromXml(tinyxml2::XMLElement *scannerNode) {
       }
       std::vector<ScanningDevice> scanDevs(
           nChannels, ScanningDevice(
-              id, beamDiv_rad, emitterPosition, emitterAttitude,
+              0, id, beamDiv_rad, emitterPosition, emitterAttitude,
               pulseFreqs, pulseLength_ns, avgPower, beamQuality, efficiency,
               receiverDiameter, visibility, wavelength*1e-9
           )
@@ -1259,6 +1259,7 @@ void XmlAssetsLoader::fillScanningDevicesFromChannels(
     size_t idx = 0;  // Device/channel index
     while(chan != nullptr){ // Update i-th device with i-th channel
         // Set id
+        scanner->setDeviceIndex(idx, idx);
         std::string const deviceId = boost::get<std::string>(
             XmlUtils::getAttribute(
                 chan, "id", "string", std::to_string(idx), "DeviceID"

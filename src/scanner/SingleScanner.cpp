@@ -35,6 +35,7 @@ SingleScanner::SingleScanner(
         platformNoiseDisabled
     ),
     scanDev(
+        0,
         id,
         beamDiv_rad,
         beamOrigin,
@@ -110,21 +111,8 @@ void SingleScanner::doSimStep(
         [&] (glm::dvec3 &origin, Rotation &attitude) -> void {
             handleSimStepNoise(origin, attitude);
         },
-        [&] (
-            unsigned int legIndex,
-            glm::dvec3 &absoluteBeamOrigin,
-            Rotation &absoluteBeamAttitude,
-            double const currentGpsTime,
-            int const currentPulseNumber
-        ) -> void{
-            spp->handlePulseComputation(
-                legIndex,
-                absoluteBeamOrigin,
-                absoluteBeamAttitude,
-                currentGpsTime,
-                currentPulseNumber,
-                0
-            );
+        [&] (SimulatedPulse const &sp) -> void{
+            spp->handlePulseComputation(sp);
         }
     );
 
@@ -155,6 +143,12 @@ double SingleScanner::calcFootprintArea(
     double const distance, size_t const idx
 ) const {
     return PI_QUARTER * distance * distance * getBt2(0);
+}
+
+double SingleScanner::calcTargetArea(
+    double const distance, size_t const idx
+) const{
+    return calcFootprintArea(distance, 0) / ((double)getNumRays(0));
 }
 
 Rotation SingleScanner::calcAbsoluteBeamAttitude(size_t const idx) {

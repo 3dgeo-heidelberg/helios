@@ -33,14 +33,7 @@ protected:
      *  construction depending on thread pool size to assign sequential or
      *  parallel computing method as corresponds
      */
-    std::function<void(
-        unsigned int const,
-        glm::dvec3 &,
-        Rotation &,
-        double const,
-        int const,
-        size_t const
-    )> handler;
+    std::function<void(SimulatedPulse const &sp)> handler;
 
     /**
      * @brief Alpha-Prime Matrix for sequential executions (either single
@@ -79,13 +72,7 @@ public:
      * @see ScanningPulseProcess::ScanningPulseProcess
      */
     WarehouseScanningPulseProcess(
-        std::shared_ptr<AbstractDetector> detector,
-        bool const writeWaveform,
-        bool const calcEchowidth,
-        std::shared_ptr<std::vector<Measurement>> &allMeasurements,
-        std::shared_ptr<std::mutex> &allMeasurementsMutex,
-        std::shared_ptr<std::vector<Measurement>> &cycleMeasurements,
-        std::shared_ptr<std::mutex> &cycleMeasurementsMutex,
+        std::shared_ptr<Scanner> scanner,
         PulseTaskDropper &dropper,
         PulseWarehouseThreadPool &pool,
         RandomnessGenerator<double> &randGen1,
@@ -105,22 +92,8 @@ public:
      * @see WarehouseScanningPulseProcess::handlePulseComputationSequential
      * @see WarehouseScanningPulseProcess::handlePulseComputationParallel
      */
-    inline void handlePulseComputation(
-        unsigned int const legIndex,
-        glm::dvec3 &absoluteBeamOrigin,
-        Rotation &absoluteBeamAttitude,
-        double const currentGpsTime,
-        int const currentPulseNumber,
-        size_t const deviceIndex
-    ) override {
-        this->handler(
-            legIndex,
-            absoluteBeamOrigin,
-            absoluteBeamAttitude,
-            currentGpsTime,
-            currentPulseNumber,
-            deviceIndex
-        );
+    inline void handlePulseComputation(SimulatedPulse const &sp) override {
+        this->handler(sp);
     }
     /**
      * @brief Handle sequential computation of a chunk of pulses through task
@@ -142,26 +115,12 @@ protected:
      * @see WarehouseScanningPulseProcess::handlePulseComputation
      * @see WarehouseScanningPulseProcess::handlePulseComputationParallel
      */
-    virtual void handlePulseComputationSequential(
-        unsigned int const legIndex,
-        glm::dvec3 &absoluteBeamOrigin,
-        Rotation &absoluteBeamAttitude,
-        double const currentGpsTime,
-        int const currentPulseNumber,
-        size_t const deviceIndex
-    );
+    virtual void handlePulseComputationSequential(SimulatedPulse const &sp);
     /**
      * @brief Handle parallel computation of scanning pulses using a warehouse
      *  of task-chunks based strategy
      * @see WarehouseScanningPulseProcess::handlePulseComputation
      * @see WarehouseScanningPulseProcess::handlePulseComputationSequential
      */
-    virtual void handlePulseComputationParallel(
-        unsigned int const legIndex,
-        glm::dvec3 &absoluteBeamOrigin,
-        Rotation &absoluteBeamAttitude,
-        double const currentGpsTime,
-        int const currentPulseNumber,
-        size_t const deviceIndex
-    );
+    virtual void handlePulseComputationParallel(SimulatedPulse const &sp);
 };

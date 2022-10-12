@@ -16,55 +16,19 @@ PulseTaskFactory::PulseTaskFactory(Scene &scene) :
 // ************************* //
 shared_ptr<PulseTask> PulseTaskFactory::buildFullWaveformPulseRunnable(
     ScanningPulseProcess const &spp,
-    unsigned int const legIndex,
-    glm::dvec3 &absoluteBeamOrigin,
-    Rotation &absoluteBeamAttitude,
-    double const currentGpsTime,
-    int const currentPulseNumber,
-    size_t const deviceIndex
+    SimulatedPulse const &sp
 ) const {
-    return make_shared<FullWaveformPulseRunnable>(
-        dynamic_pointer_cast<FullWaveformPulseDetector>(spp.getDetector()),
-        absoluteBeamOrigin,
-        absoluteBeamAttitude,
-        currentPulseNumber,
-        currentGpsTime,
-        spp.isWriteWaveform(),
-        spp.isCalcEchowidth(),
-        spp.getAllMeasurements().get(),
-        spp.getAllMeasurementsMutex().get(),
-        spp.getCycleMeasurements().get(),
-        spp.getCycleMeasurementsMutex().get(),
-        legIndex,
-        deviceIndex
-    );
+    return make_shared<FullWaveformPulseRunnable>(spp.getScanner(), sp);
 }
 
 shared_ptr<PulseTask> PulseTaskFactory::buildDynFullWaveformPulseRunnable(
     ScanningPulseProcess const &spp,
-    unsigned int const legIndex,
-    glm::dvec3 &absoluteBeamOrigin,
-    Rotation &absoluteBeamAttitude,
-    double const currentGpsTime,
-    int const currentPulseNumber,
-    size_t const deviceIndex
+    SimulatedPulse const &sp
 ) const {
     return make_shared<DynFullWaveformPulseRunnable>(
-        spp.getDetector()->scanner->platform->scene->getRaycaster()\
-            ->makeTemporalClone(),
-        dynamic_pointer_cast<FullWaveformPulseDetector>(spp.getDetector()),
-        absoluteBeamOrigin,
-        absoluteBeamAttitude,
-        currentPulseNumber,
-        currentGpsTime,
-        spp.isWriteWaveform(),
-        spp.isCalcEchowidth(),
-        spp.getAllMeasurements().get(),
-        spp.getAllMeasurementsMutex().get(),
-        spp.getCycleMeasurements().get(),
-        spp.getCycleMeasurementsMutex().get(),
-        legIndex,
-        deviceIndex
+        scene.getRaycaster()->makeTemporalClone(),
+        spp.getScanner(),
+        sp
     );
 }
 
@@ -72,43 +36,17 @@ void PulseTaskFactory::configureBuildMethod(){
     if(scene.hasMovingObjects()){
         _build = [&] (
             ScanningPulseProcess const &spp,
-            unsigned int const legIndex,
-            glm::dvec3 &absoluteBeamOrigin,
-            Rotation &absoluteBeamAttitude,
-            double const currentGpsTime,
-            int const currentPulseNumber,
-            size_t const deviceIndex
+            SimulatedPulse const &sp
         ) -> shared_ptr<PulseTask>{
-            return buildDynFullWaveformPulseRunnable(
-                spp,
-                legIndex,
-                absoluteBeamOrigin,
-                absoluteBeamAttitude,
-                currentGpsTime,
-                currentPulseNumber,
-                deviceIndex
-            );
+            return buildDynFullWaveformPulseRunnable(spp, sp);
         };
     }
     else{
         _build = [&] (
             ScanningPulseProcess const &spp,
-            unsigned int const legIndex,
-            glm::dvec3 &absoluteBeamOrigin,
-            Rotation &absoluteBeamAttitude,
-            double const currentGpsTime,
-            int const currentPulseNumber,
-            size_t const deviceIndex
+            SimulatedPulse const & sp
         ) -> shared_ptr<PulseTask>{
-            return buildFullWaveformPulseRunnable(
-                spp,
-                legIndex,
-                absoluteBeamOrigin,
-                absoluteBeamAttitude,
-                currentGpsTime,
-                currentPulseNumber,
-                deviceIndex
-            );
+            return buildFullWaveformPulseRunnable(spp, sp);
         };
     }
 }

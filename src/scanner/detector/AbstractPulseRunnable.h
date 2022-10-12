@@ -1,10 +1,14 @@
 #pragma once
 
 #include <scanner/detector/PulseTask.h>
-#include "AbstractDetector.h"
+#include <scanner/detector/AbstractDetector.h>
 #include <noise/RandomnessGenerator.h>
 class Measurement;
 #include "LasSpecification.h"
+class Scanner;
+#include <scanner/SimulatedPulse.h>
+
+
 #include <mutex>
 
 
@@ -16,69 +20,45 @@ public:
     // ***  ATTRIBUTES  *** //
     // ******************** //
     /**
+	 * @brief Scanner used to simulate the pulse
+	 */
+    std::shared_ptr<Scanner> scanner = nullptr;
+    /**
      * @brief Detector used to simulate pulse
      */
 	std::shared_ptr<AbstractDetector> detector = nullptr;
-
-
+	/**
+	 * @brief The definition of the pulse to be simulated
+	 */
+	SimulatedPulse pulse;
     /**
-     * @brief Beam origin in absolute coordinates
+     * @brief Reference to the scene that is being scanned
      */
-	glm::dvec3 absoluteBeamOrigin;
-	/**
-	 * @brief Beam attitude
-	 */
-	Rotation absoluteBeamAttitude;
-
-	/**
-	 * @brief Number of current pulse
-	 */
-	int currentPulseNum;
-	/**
-	 * @brief Current GPS time in nanoseconds
-	 */
-    double currentGpsTime; // In nanoseconds
-
-	/**
-	 * @brief Flag to specify if ground points must be captured (true) or not
-	 * (false)
-	 */
-	bool writeGround = true;
-
-    /**
-     * @brief The nonnegative integer index of the scanning device.
-     *  It is necessary to support scanners with multiple devices / channels
-     */
-    size_t devIdx;
+    Scene &scene;
 
     // ***  CONSTRUCTION / DESTRUCTION  *** //
 	// ************************************ //
 	/**
 	 * @brief Base constructor for pulse runnables
-	 * @see AbstractPulseRunnable::detector
-	 * @see AbstractPulseRunnable::absoluteBeamOrigin
-	 * @see AbstractPulseRunnable::absoluteBeamAttitude
-	 * @see AbstractPulseRunnable::currentPulseNum
-	 * @see AbstractPulseRunnable::currentGpsTime
+	 * @see AbstractPulseRunnable::scanner
+	 * @see AbstractPulseRunnable::pulse
+	 * @see SimulatedPulse
 	 */
 	AbstractPulseRunnable(
-		std::shared_ptr<AbstractDetector> const detector,
-		glm::dvec3 const absoluteBeamOrigin,
-		Rotation const absoluteBeamAttitude,
-		int const pulseNumber,
-		double const gpsTime,
-		size_t const devIdx
-	){
-		this->detector = detector;
-		this->absoluteBeamAttitude = absoluteBeamAttitude;
-		this->absoluteBeamOrigin = absoluteBeamOrigin;
-		this->currentPulseNum = pulseNumber;
-		this->currentGpsTime = gpsTime;
-		this->devIdx = devIdx;
-	}
+		std::shared_ptr<Scanner> const scanner,
+		SimulatedPulse const &pulse
+	);
 
 	// ***  M E T H O D S  *** //
 	// *********************** //
+	/**
+	 * @brief Initialize pending attributes of the abstract pulse runnable
+	 *  before doing further computations.
+	 *
+	 * NOTE that this method alleviates the burden of the sequential thread
+	 *  by supporting deferred initialization whenever possible.
+	 */
+	virtual void initialize();
 	/**
 	 * @brief Capture point if proceed and write it
 	 * @param m Measurement

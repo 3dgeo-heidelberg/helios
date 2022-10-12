@@ -399,13 +399,7 @@ void Scanner::buildScanningPulseProcess(
     if(parallelizationStrategy==0){
         spp = std::unique_ptr<ScanningPulseProcess>(
             new BuddingScanningPulseProcess(
-                getDetector(0),
-                writeWaveform,
-                calcEchowidth,
-                allMeasurements,
-                allMeasurementsMutex,
-                cycleMeasurements,
-                cycleMeasurementsMutex,
+                getDetector(0)->scanner,
                 dropper,
                 *(std::static_pointer_cast<PulseThreadPool>(pool)),
                 *randGen1,
@@ -417,13 +411,7 @@ void Scanner::buildScanningPulseProcess(
     else if(parallelizationStrategy==1){
         spp = std::unique_ptr<ScanningPulseProcess>(
             new WarehouseScanningPulseProcess(
-                getDetector(0),
-                writeWaveform,
-                calcEchowidth,
-                allMeasurements,
-                allMeasurementsMutex,
-                cycleMeasurements,
-                cycleMeasurementsMutex,
+                getDetector(0)->scanner,
                 dropper,
                 *(std::static_pointer_cast<PulseWarehouseThreadPool>(pool)),
                 *randGen1,
