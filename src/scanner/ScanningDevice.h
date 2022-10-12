@@ -5,6 +5,7 @@
 #include <assetloading/Asset.h>
 #include <scanner/ScannerHead.h>
 #include <scanner/FWFSettings.h>
+#include <scanner/SimulatedPulse.h>
 #include <scanner/beamDeflector/AbstractBeamDeflector.h>
 class AbstractDetector;
 #include <scene/RaySceneIntersection.h>
@@ -38,6 +39,10 @@ protected:
 
     // ***  DEVICE ATTRIBUTES  *** //
     // *************************** //
+    /**
+     * @brief The index of the scanning device in the MultiScanner context
+     */
+    size_t devIdx;
     /**
 	 * @brief Device identifier
 	 */
@@ -191,6 +196,7 @@ public:
      * @brief ScanningDevice constructor from given values
      */
     ScanningDevice(
+        size_t const devIdx,
         std::string const id,
         double const beamDiv_rad,
         glm::dvec3 const beamOrigin,
@@ -252,9 +258,7 @@ public:
         glm::dvec3 const &platformPosition,
         Rotation const &platformAttitude,
         std::function<void(glm::dvec3 &, Rotation &)> handleSimStepNoise,
-        std::function<void(
-            unsigned int, glm::dvec3 &, Rotation &, double const, int const
-        )> handlePulseComputation
+        std::function<void(SimulatedPulse const &sp)> handlePulseComputation
     );
     /**
      * @brief Compute the absolute beam attitude of the scanning device

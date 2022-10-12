@@ -225,8 +225,8 @@ std::shared_ptr<ScannerSettings> Scanner::retrieveCurrentSettings(
 
 void Scanner::applySettingsFWF(FWFSettings settings, size_t const idx) {
     setFWFSettings(settings, idx);
-	calcRaysNumber();
-	prepareDiscretization();
+	calcRaysNumber(idx);
+	prepareDiscretization(idx);
 }
 
 string Scanner::toString() {
@@ -399,13 +399,7 @@ void Scanner::buildScanningPulseProcess(
     if(parallelizationStrategy==0){
         spp = std::unique_ptr<ScanningPulseProcess>(
             new BuddingScanningPulseProcess(
-                getDetector(0),
-                writeWaveform,
-                calcEchowidth,
-                allMeasurements,
-                allMeasurementsMutex,
-                cycleMeasurements,
-                cycleMeasurementsMutex,
+                getDetector(0)->scanner,
                 dropper,
                 *(std::static_pointer_cast<PulseThreadPool>(pool)),
                 *randGen1,
@@ -417,13 +411,7 @@ void Scanner::buildScanningPulseProcess(
     else if(parallelizationStrategy==1){
         spp = std::unique_ptr<ScanningPulseProcess>(
             new WarehouseScanningPulseProcess(
-                getDetector(0),
-                writeWaveform,
-                calcEchowidth,
-                allMeasurements,
-                allMeasurementsMutex,
-                cycleMeasurements,
-                cycleMeasurementsMutex,
+                getDetector(0)->scanner,
                 dropper,
                 *(std::static_pointer_cast<PulseWarehouseThreadPool>(pool)),
                 *randGen1,

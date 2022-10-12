@@ -97,6 +97,26 @@ public:
      */
     virtual void onLegComplete();
 
+    /**
+     * @brief Check whether the given distance is inside detected range or not
+     * @param distance The distance to be checked (in meters)
+     * @return True if given distance is inside detected range, false otherwise
+     */
+    inline bool isDistanceInRange(double const distance){
+        return  cfg_device_rangeMin_m <= distance &&
+                cfg_device_rangeMax_m >= distance;
+    }
+    /**
+     * @brief Check whether the given distance is inside detected range or not
+     * @param distance The distance to be checked (in meters)
+     * @return True if given distance is NOT inside detected range, false
+     *  otherwise
+     */
+    inline bool isDistanceNotInRange(double const distance){
+        return  cfg_device_rangeMin_m > distance ||
+                cfg_device_rangeMax_m < distance;
+    }
+
     // ***  GETTERs and SETTERs  *** //
     // ***************************** //
     /**

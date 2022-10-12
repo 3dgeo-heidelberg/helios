@@ -3,7 +3,8 @@
 #include <Measurement.h>
 #include <Rotation.h>
 #include <PulseTaskFactory.h>
-class AbstractDetector;
+#include <scanner/SimulatedPulse.h>
+class Scanner;
 
 #include <glm/glm.hpp>
 
@@ -24,41 +25,10 @@ protected:
      */
     PulseTaskFactory ptf;
     /**
-	 * @brief Scanner's detector
-     * @see Scanner::detector
-	 * @see AbstractDetector
+	 * @brief The scanner emitting the pulses
+     * @see Scanner
 	 */
-    std::shared_ptr<AbstractDetector> detector;
-    /**
-     * @brief Copy of the scanner's write waveform flag
-     * @see Scanner::writeWaveform
-     */
-    bool writeWaveform;
-    /**
-     * @brief Copy of the scanner's calc echowidth flag
-     * @see Scanner::calcEchowidth
-     */
-    bool calcEchowidth;
-    /**
-     * @brief Reference to scanner's all measurements vector
-     * @see Scanner::allMeasurements
-     */
-    std::shared_ptr<std::vector<Measurement>> &allMeasurements;
-    /**
-     * @brief Reference to scanner's all measurements mutex
-     * @see Scanner::allMeasurementsMutex
-     */
-    std::shared_ptr<std::mutex> &allMeasurementsMutex;
-    /**
-     * @brief Reference to scanner's cycle measurements vector
-     * @see Scanner::cycleMeasurements
-     */
-    std::shared_ptr<std::vector<Measurement>> &cycleMeasurements;
-    /**
-     * @brief Reference to scanner's cycle measurements mutex
-     * @see Scanner::cycleMeasurementsMutex
-     */
-    std::shared_ptr<std::mutex> &cycleMeasurementsMutex;
+    std::shared_ptr<Scanner> scanner;
 
 public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //
@@ -66,15 +36,7 @@ public:
     /**
      * @brief Default constructor for scanning pulse process
      */
-    ScanningPulseProcess(
-        std::shared_ptr<AbstractDetector> detector,
-        bool const writeWaveform,
-        bool const calcEchowidth,
-        std::shared_ptr<std::vector<Measurement>> &allMeasurements,
-        std::shared_ptr<std::mutex> &allMeasurementsMutex,
-        std::shared_ptr<std::vector<Measurement>> &cycleMeasurements,
-        std::shared_ptr<std::mutex> &cycleMeasurementsMutex
-    );
+    ScanningPulseProcess(std::shared_ptr<Scanner> scanner);
     virtual ~ScanningPulseProcess() = default;
 
     // ***  PULSE COMPUTATION  *** //
@@ -82,20 +44,9 @@ public:
     /**
      * @brief Handle pulse computation whatever it is single thread based
      * or thread pool based
-     * @param legIndex Index of current leg
-     * @param absoluteBeamOrigin Absolute position of beam origin
-     * @param absoluteBeamAttitude Beam attitude
-     * @param currentGpsTime Current GPS time (nanoseconds)
-     * @param currentPulseNumber The current pulse number of the scanning
-     *  device
+     * @see SimulatedPulse
      */
-    virtual void handlePulseComputation(
-        unsigned int const legIndex,
-        glm::dvec3 &absoluteBeamOrigin,
-        Rotation &absoluteBeamAttitude,
-        double const currentGpsTime,
-        int const currentPulseNumber
-    ) = 0;
+    virtual void handlePulseComputation(SimulatedPulse const &sp) = 0;
     /**
      * @brief Handle behavior of scanning pulse process once current leg has
      *  been completed. It is useful mainly when scanning pulses are computed
@@ -120,52 +71,45 @@ public:
     // *** GETTERs and SETTERs  *** //
     // **************************** //
     /**
-     * @brief Obtain the scanner's detector
-     * @return Scanner's detector
-     * @see ScanningPulseProcess::detector
+     * @brief Obtain the scanner
+     * @return The scanner
+     * @see ScanningPulseProcess::scanner
      */
-    inline std::shared_ptr<AbstractDetector> getDetector() const
-    {return detector;}
+    std::shared_ptr<Scanner> getScanner() const;
     /**
      * @brief Obtain the scanner's write waveform flag
      * @return Scanner's write waveform flag
      * @see ScanningPulseProcess::writeWaveform
      */
-    inline bool isWriteWaveform() const {return writeWaveform;}
+    bool isWriteWaveform() const;
     /**
      * @brief Obtain the scanner's calc echowidth flag
      * @return Scanner's calc echowidth flag
      * @see ScanningPulseProcess::calcEchowidth
      */
-    inline bool isCalcEchowidth() const {return calcEchowidth;}
+    bool isCalcEchowidth() const;
     /**
      * @brief Obtain the scanner's all measurements vector
      * @return Scanner's all measurements vector
      * @see ScanningPulseProcess::allMeasurements
      */
-    inline std::shared_ptr<std::vector<Measurement>> & getAllMeasurements(
-    )const
-    {return allMeasurements;}
+    std::shared_ptr<std::vector<Measurement>> & getAllMeasurements() const;
     /**
      * @brief Obtain the scanner's all measurements mutex
      * @return Scanner's all measurements mutex
      * @see ScanningPulseProcess::allMeasurementsMutex
      */
-    inline std::shared_ptr<std::mutex> & getAllMeasurementsMutex() const
-    {return allMeasurementsMutex;}
+    std::shared_ptr<std::mutex> & getAllMeasurementsMutex() const;
     /**
      * @brief Obtain the scanner's cycle measurements vector
      * @return Scanner's cycle measurements vector
      * @see ScanningPulseProcess::cycleMeasurements
      */
-    inline std::shared_ptr<std::vector<Measurement>> & getCycleMeasurements(
-    )const
-    {return cycleMeasurements;}
+    std::shared_ptr<std::vector<Measurement>> & getCycleMeasurements() const;
     /**
      * @brief Obtain the scanner's cycle measurements mutex
      * @return Scanner's cycle measurements mutex
      * @see ScanningPulseProcess::cycleMeasurementsMutex
      */
-    inline std::shared_ptr<std::mutex> &getCycleMeasurementsMutex() const
-    {return cycleMeasurementsMutex;}
+    std::shared_ptr<std::mutex> &getCycleMeasurementsMutex() const;
 };

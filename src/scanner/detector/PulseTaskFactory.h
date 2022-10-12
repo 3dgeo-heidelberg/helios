@@ -2,6 +2,7 @@
 
 #include <PulseTask.h>
 #include <Scene.h>
+#include <SimulatedPulse.h>
 class ScanningPulseProcess;
 
 #include <functional>
@@ -36,11 +37,7 @@ protected:
      */
     std::function<shared_ptr<PulseTask>(
         ScanningPulseProcess const &,
-        unsigned int const,
-        glm::dvec3 &,
-        Rotation &,
-        double const,
-        int const
+        SimulatedPulse const &
     )> _build;
 
 public:
@@ -63,19 +60,8 @@ public:
      */
     inline shared_ptr<PulseTask> build(
         ScanningPulseProcess const &spp,
-        unsigned int const legIndex,
-        glm::dvec3 &absoluteBeamOrigin,
-        Rotation &absoluteBeamAttitude,
-        double const currentGpsTime,
-        int const currentPulseNumber
-    ) const {return _build(
-        spp,
-        legIndex,
-        absoluteBeamOrigin,
-        absoluteBeamAttitude,
-        currentGpsTime,
-        currentPulseNumber
-    );}
+        SimulatedPulse const &sp
+    ) const {return _build(spp,sp);}
 
 protected:
     /**
@@ -84,11 +70,7 @@ protected:
      */
     shared_ptr<PulseTask> buildFullWaveformPulseRunnable(
         ScanningPulseProcess const &spp,
-        unsigned int const legIndex,
-        glm::dvec3 &absoluteBeamOrigin,
-        Rotation &absoluteBeamAttitude,
-        double const currentGpsTime,
-        int const currentPulseNumber
+        SimulatedPulse const &sp
     ) const;
     /**
      * @brief Build a DynFullWaveformPulseRunnable from given arguments
@@ -96,11 +78,7 @@ protected:
      */
     shared_ptr<PulseTask> buildDynFullWaveformPulseRunnable(
         ScanningPulseProcess const &spp,
-        unsigned int const legIndex,
-        glm::dvec3 &absoluteBeamOrigin,
-        Rotation &absoluteBeamAttitude,
-        double const currentGpsTime,
-        int const currentPulseNumber
+        SimulatedPulse const &sp
     ) const;
 
     /**

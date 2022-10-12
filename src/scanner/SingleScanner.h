@@ -92,6 +92,12 @@ public:
         double const distance, size_t const idx
     ) const override;
     /**
+     * @see Scanner::calcTargetArea
+     */
+    double calcTargetArea(
+        double const distance, size_t const idx
+    ) const override;
+    /**
      * @see Scanner::calcAbsoluteBeamAttitude
      */
     Rotation calcAbsoluteBeamAttitude(size_t const idx) override;
@@ -165,6 +171,11 @@ public:
 
     // ***  GETTERs and SETTERs  *** //
     // ***************************** //
+    /**
+     * @see Scanner::setDeviceIndex
+     */
+    void setDeviceIndex(size_t const newIdx, size_t const oldIdx) override
+    {scanDev.devIdx = newIdx;}
     /**
      * @see Scanner::getDeviceId
      */

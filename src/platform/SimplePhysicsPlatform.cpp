@@ -63,8 +63,9 @@ void SimplePhysicsPlatform::doPhysicsStep(int simFrequency_hz) {
     }
 
     velocity_magnitude = std::min(velocity_magnitude, max_velocity_magnitude);
-    if (!userSpeedLimitReached
-        && simFrequency_hz*(max_velocity_magnitude - velocity_magnitude) <= 0.0001) {
+    if( !userSpeedLimitReached &&
+        simFrequency_hz*(max_velocity_magnitude - velocity_magnitude) <= 0.0001
+    ) {
       userSpeedLimitReached = true;
     }
 

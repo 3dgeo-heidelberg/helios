@@ -55,33 +55,25 @@ void MultiScanner::doSimStep(
 
     // Simulate scanning devices
     size_t const numScanDevs = getNumDevices();
+    glm::dvec3 const absoluteMountPosition =
+        platform->getAbsoluteMountPosition();
+    Rotation const absoluteMountAttitude =
+        platform->getAbsoluteMountAttitude();
     for(size_t i = 0 ; i < numScanDevs ; ++i){
         scanDevs[i].doSimStep(
             legIndex,
             currentGpsTime,
             cfg_setting_pulseFreq_Hz,
             _isActive,
-            platform->getAbsoluteMountPosition(),
-            platform->getAbsoluteMountAttitude(),
+            absoluteMountPosition,
+            absoluteMountAttitude,
             [&] (glm::dvec3 &origin, Rotation &attitude) -> void {
                 handleSimStepNoise(origin, attitude);
             },
-            [&] (
-                unsigned int legIndex,
-                glm::dvec3 &absoluteBeamOrigin,
-                Rotation &absoluteBeamAttitude,
-                double const currentGpsTime,
-                int const currentPulseNumber
-            ) -> void{
-                spp->handlePulseComputation(
-                    legIndex,
-                    absoluteBeamOrigin,
-                    absoluteBeamAttitude,
-                    currentGpsTime,
-                    currentPulseNumber
-                );
+            [&] (SimulatedPulse const &sp) -> void {
+                spp->handlePulseComputation(sp);
             }
-            );
+        );
     }
 
     // If the scanner is inactive, stop here:
@@ -110,6 +102,12 @@ double MultiScanner::calcFootprintArea(
     double const distance, size_t const idx
 ) const{
     return PI_QUARTER * distance * distance * getBt2(idx);
+}
+
+double MultiScanner::calcTargetArea(
+    double const distance, size_t const idx
+) const{
+    return calcFootprintArea(distance, idx) / ((double)getNumRays(idx));
 }
 
 Rotation MultiScanner::calcAbsoluteBeamAttitude(size_t const idx){
