@@ -87,6 +87,7 @@ var searchData=
   ['minimizer',['Minimizer',['../d9/d82/classfluxionum_1_1Minimizer.html#af3ea32c6b60170de1fdfbada7d07dca1',1,'fluxionum::Minimizer']]],
   ['minkowski',['minkowski',['../dc/d30/classSurfaceInspector_1_1maths_1_1Distances.html#ad4ca7ec888656afad2fcea6c296b7100',1,'SurfaceInspector::maths::Distances']]],
   ['movingplatform',['MovingPlatform',['../d1/d83/classMovingPlatform.html#a1fda311a499f27b3dc449dc13b2aeaed',1,'MovingPlatform']]],
+  ['multiscanner',['MultiScanner',['../da/d23/classMultiScanner.html#a55d64e57557ed7f8468ee2a5428841e3',1,'MultiScanner::MultiScanner(std::vector&lt; ScanningDevice &gt; scanDevs)'],['../da/d23/classMultiScanner.html#a99afe510b8e305ab2a4b6fb1fd843f27',1,'MultiScanner::MultiScanner()'],['../da/d23/classMultiScanner.html#aa14628536a958cba7a78bb147a92a184',1,'MultiScanner::MultiScanner(MultiScanner &amp;scanner)']]],
   ['multithreadkdtreefactory',['MultiThreadKDTreeFactory',['../df/d86/classMultiThreadKDTreeFactory.html#a8a9b7464e9c1d883de16d29ff95deca8',1,'MultiThreadKDTreeFactory']]],
   ['multithreadsahkdtreefactory',['MultiThreadSAHKDTreeFactory',['../dd/d95/classMultiThreadSAHKDTreeFactory.html#ac3d0d977e844f34b803086fa23afbf1d',1,'MultiThreadSAHKDTreeFactory']]]
 ];

@@ -226,10 +226,10 @@ PyHeliosOutputWrapper * PyHeliosSimulation::join(){
             return new PyHeliosOutputWrapper(
                 measurements,
                 trajectories,
-                survey->scanner->detector->getFMS()->write
+                survey->scanner->fms->write
                     .getMeasurementWriterOutputPath().string(),
                 std::vector<std::string>{
-                    survey->scanner->detector->getFMS()->write
+                    survey->scanner->fms->write
                         .getMeasurementWriterOutputPath().string()
                 },
                 false
@@ -240,7 +240,7 @@ PyHeliosOutputWrapper * PyHeliosSimulation::join(){
             return new PyHeliosOutputWrapper(
                 survey->scanner->allMeasurements,
                 survey->scanner->allTrajectories,
-                survey->scanner->detector->getFMS()->write
+                survey->scanner->fms->write
                     .getMeasurementWriterOutputPath().string(),
                 survey->scanner->allOutputPaths,
                 true
@@ -258,7 +258,7 @@ PyHeliosOutputWrapper * PyHeliosSimulation::join(){
     return new PyHeliosOutputWrapper(
         survey->scanner->allMeasurements,
         survey->scanner->allTrajectories,
-        survey->scanner->detector->getFMS()->write
+        survey->scanner->fms->write
             .getMeasurementWriterOutputPath().string(),
         survey->scanner->allOutputPaths,
         true
@@ -324,7 +324,7 @@ void PyHeliosSimulation::buildPulseThreadPool(){
     PulseThreadPoolFactory ptpf(
         parallelizationStrategy,
         numThreads-1,
-        survey->scanner->detector->cfg_device_accuracy_m,
+        survey->scanner->getDetector()->cfg_device_accuracy_m,
         chunkSize,
         warehouseFactor
     );

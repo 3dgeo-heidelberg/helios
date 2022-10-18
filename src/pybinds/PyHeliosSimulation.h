@@ -11,6 +11,7 @@
 #include <PyHeliosOutputWrapper.h>
 #include <PyHeliosException.h>
 #include <XmlSurveyLoader.h>
+#include <PyScannerWrapper.h>
 
 namespace pyhelios{
 
@@ -139,7 +140,8 @@ public:
      *
      * @return Scanner used by the simulation
      */
-    Scanner & getScanner() {return *survey->scanner;}
+    PyScannerWrapper * getScanner()
+        {return new PyScannerWrapper(*survey->scanner);}
     /**
      * @brief Obtain the platform used by the simulation
      *

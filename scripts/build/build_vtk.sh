@@ -16,9 +16,9 @@ fi
 # ---  SCRIPT VARIABLES  --- #
 # -------------------------- #
 # VTK package
-VTK_PKG='VTK-8.2.0.tar.gz'
+VTK_PKG='VTK-9.2.0.rc2.tar.gz'
 # VTK URL
-VTK_URL='https://www.vtk.org/files/release/8.2/'"${VTK_PKG}"
+VTK_URL='https://www.vtk.org/files/release/9.2/'"${VTK_PKG}"
 # VTK download path
 VTK_TAR="${HELIOS_LIB_DIR}${VTK_PKG}"
 # VTK lib path (where it is extracted)
@@ -57,5 +57,4 @@ cmake \
     ..
 make -j${HELIOS_BUILD_NCORES}
 make -j${HELIOS_BUILD_NCORES} install
-mv "${VTK_INSTALL_DIR}"'include/'*/* "${VTK_INSTALL_DIR}"'include/'
 

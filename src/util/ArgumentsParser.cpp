@@ -13,6 +13,10 @@ bool ArgumentsParser::parseTestRequest(){
     return findIndexOfArgument("--test") >= 0;
 }
 
+bool ArgumentsParser::parseVersionRequest(){
+    return findIndexOfArgument("--version") >= 0;
+}
+
 std::string ArgumentsParser::parseTestDir(){
     int index = findIndexOfArgument("--testDir");
     if(index >= 0){

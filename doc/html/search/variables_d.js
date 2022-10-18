@@ -19,7 +19,7 @@ var searchData=
   ['maxmaxdepth',['maxMaxDepth',['../de/d29/classKDGroveStats.html#a29d6ce36da13b0544bdad1a679486816',1,'KDGroveStats']]],
   ['maxmaxprimsinleaf',['maxMaxPrimsInLeaf',['../de/d29/classKDGroveStats.html#ab9db5998280d409960d4077cb890eccc',1,'KDGroveStats']]],
   ['maxminprimsinleaf',['maxMinPrimsInLeaf',['../de/d29/classKDGroveStats.html#ab9253d9d8a39d1627a964b6af1e7a7be',1,'KDGroveStats']]],
-  ['maxnor',['maxNOR',['../dc/d42/classScanner.html#a4812fca171290ee0af1287f19a0d05ea',1,'Scanner']]],
+  ['maxnor',['maxNOR',['../d1/d09/classScanningDevice.html#a40ab679abb6b86288571eff4f2c58738',1,'ScanningDevice']]],
   ['maxnuminterior',['maxNumInterior',['../de/d29/classKDGroveStats.html#a10e1e3ca13397aa0bfe2412d0107ed4c',1,'KDGroveStats']]],
   ['maxnumleaves',['maxNumLeaves',['../de/d29/classKDGroveStats.html#a1b5ab6b5296ec6814ea50bd694f859ba',1,'KDGroveStats']]],
   ['maxnvoxels',['maxNVoxels',['../d6/d03/classXYZPointCloudFileLoader.html#ae988b41a0ea88d17a33bd6134f54cbe1',1,'XYZPointCloudFileLoader']]],

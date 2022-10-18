@@ -1,5 +1,7 @@
 #include "logging.hpp"
 #include <HeliosException.h>
+#include <scanner/SingleScanner.h>
+#include <scanner/MultiScanner.h>
 
 #define _USE_MATH_DEFINES
 #include <cmath>
@@ -413,6 +415,11 @@ std::shared_ptr<Platform> XmlAssetsLoader::procedurallyCreatePlatformFromXml(
     }
 }
 std::shared_ptr<Platform> XmlAssetsLoader::createInterpolatedMovingPlatform(){
+    // Validate
+    XmlUtils::assertDocumentForAssetLoading(
+        doc, xmlDocFilename, xmlDocFilePath, "platform", "interpolated",
+        "XmlAssetsLoader::createInterpolatedMovingPlatform"
+    );
     // Prepare egg building
     std::shared_ptr<InterpolatedMovingPlatformEgg> platform =
         std::make_shared<InterpolatedMovingPlatformEgg>();
@@ -744,15 +751,34 @@ std::shared_ptr<Platform> XmlAssetsLoader::createInterpolatedMovingPlatform(){
     }
 
     // Configure scanner mount
-    // TODO Rethink : Replace by a non hardcoded scanner mount ---
-    // Hardcode of sr22 scanner mount
-    /*platform->cfg_device_relativeMountPosition = glm::dvec3(0, 0, 0.7);
-    Rotation r(glm::dvec3(1, 0, 0), 0);
-    Rotation r2(glm::dvec3(1, 0, 0), MathConverter::degreesToRadians(-90.0));
-    r = r2.applyTo(r);
-    r2 = Rotation(glm::dvec3(0, 0, 1), MathConverter::degreesToRadians(90.0));
-    platform->cfg_device_relativeMountAttitude = r2.applyTo(r);*/
-    // --- TODO Rethink : Replace by a non hardcoded scanner mount
+
+    // Algorithm to take ScannerMount from platforms ---
+    // Check basePlatform was given
+    string basePlatformLocation = boost::get<string>(XmlUtils::getAttribute(
+            survey, "basePlatform", "string", string("")
+    ));
+    if(basePlatformLocation.size() > 0){ // If so, ScannerMount from base plat.
+        std::shared_ptr<Platform> bp = dynamic_pointer_cast<Platform>(
+            getAssetByLocation("platform", basePlatformLocation)
+        );
+        platform->cfg_device_relativeMountPosition =
+            bp->cfg_device_relativeMountPosition;
+        platform->cfg_device_relativeMountAttitude =
+            bp->cfg_device_relativeMountAttitude;
+    }
+    // --- Algorithm to take ScannerMount from platforms
+
+    // Algorithm to set ScannerMount from survey ---
+    // Check scanner mount is specified in Survey
+    tinyxml2::XMLElement *scMount = survey->FirstChildElement("scannerMount");
+    if(scMount != nullptr){ // If so, assign it to interpolated platform
+        platform->cfg_device_relativeMountPosition =
+            XmlUtils::createVec3dFromXml(scMount, "");
+        platform->cfg_device_relativeMountAttitude =
+            XmlUtils::createRotationFromXml(scMount);
+    }
+    // --- Algorithm to set ScannerMount from survey
+
 
     // Return egg
     return platform;
@@ -816,143 +842,175 @@ XmlAssetsLoader::createScannerFromXml(tinyxml2::XMLElement *scannerNode) {
       scannerNode, "wavelength_nm", "int", 1064));
   // ########### END Read all the rest #############
 
-  std::shared_ptr<Scanner> scanner = std::make_shared<Scanner>(
-      beamDiv_rad, emitterPosition, emitterAttitude, pulseFreqs,
-      pulseLength_ns, id, avgPower, beamQuality, efficiency, receiverDiameter,
-      visibility, wavelength, false
-  );
-
-  // Parse max number of returns per pulse
-  scanner->maxNOR = boost::get<int>(XmlUtils::getAttribute(
-      scannerNode, "maxNOR", "int", 0));
-
-  // ########## BEGIN Default FWF_settings ##########
-  std::shared_ptr<FWFSettings> settings = std::make_shared<FWFSettings>();
-  settings->pulseLength_ns = pulseLength_ns;
-  scanner->applySettingsFWF(*createFWFSettingsFromXml(
-      scannerNode->FirstChildElement("FWFSettings"), settings));
-  // ########## END Default FWF_settings ##########
-
-  // ############################# BEGIN Configure scanner head
-  // ##############################
-  // ################### BEGIN Read Scan head rotation axis #############
-  glm::dvec3 headRotateAxis = glm::dvec3(0, 0, 1);
-
-  try {
-    glm::dvec3 axis = XmlUtils::createVec3dFromXml(
-        scannerNode->FirstChildElement("headRotateAxis"), "");
-    if (glm::l2Norm(axis) > 0.1) {
-      headRotateAxis = axis;
-    }
-  } catch (std::exception &e) {
-    std::stringstream ss;
-    ss << "XML Assets Loader: Failed to read child element "
-       << "<headRotateAxis> of <scanner> element at line "
-       << scannerNode->GetLineNum()
-       << ". Using default.\nEXCEPTION: " << e.what();
-    logging::WARN(ss.str());
+  // Check multi scanner
+  tinyxml2::XMLElement * channels = scannerNode->FirstChildElement("channels");
+  bool const isMultiScanner = channels != nullptr;
+  std::shared_ptr<Scanner> scanner;
+  if(isMultiScanner){
+      size_t nChannels = 0;
+      tinyxml2::XMLElement * chan = channels->FirstChildElement("channel");
+      while(chan != nullptr){
+          ++nChannels;
+          chan = chan->NextSiblingElement("channel");
+      }
+      std::vector<ScanningDevice> scanDevs(
+          nChannels, ScanningDevice(
+              0, id, beamDiv_rad, emitterPosition, emitterAttitude,
+              pulseFreqs, pulseLength_ns, avgPower, beamQuality, efficiency,
+              receiverDiameter, visibility, wavelength*1e-9
+          )
+      );
+      scanner = std::make_shared<MultiScanner>(
+          std::move(scanDevs),
+          id,
+          pulseFreqs
+      );
+      std::shared_ptr<FWFSettings> settings = std::make_shared<FWFSettings>();
+      fillScanningDevicesFromChannels(
+          scanner,
+          scannerNode,
+          channels,
+          createBeamDeflectorFromXml(scannerNode),
+          createDetectorFromXml(scannerNode, scanner),
+          createScannerHeadFromXml(scannerNode),
+          createFWFSettingsFromXml(
+            scannerNode->FirstChildElement("FWFSettings"), settings
+          )
+      );
   }
-  // ############### END Read Scan head rotation axis ###############
+  else{// Scanner as single scanner
+      scanner = std::make_shared<SingleScanner>(
+          beamDiv_rad, emitterPosition, emitterAttitude, pulseFreqs,
+          pulseLength_ns, id, avgPower, beamQuality, efficiency,
+          receiverDiameter, visibility, wavelength
+      );
+      // Parse max number of returns per pulse
+      scanner->setMaxNOR(boost::get<int>(XmlUtils::getAttribute(
+          scannerNode, "maxNOR", "int", 0)));
+      // Parse beam deflector
+      scanner->setBeamDeflector(createBeamDeflectorFromXml(scannerNode));
+      // Parse detector
+      scanner->setDetector(createDetectorFromXml(scannerNode, scanner));
+      // Parse scanner head
+      scanner->setScannerHead(createScannerHeadFromXml(scannerNode));
+      // Parse full waveform settings
+      std::shared_ptr<FWFSettings> settings = std::make_shared<FWFSettings>();
+      settings->pulseLength_ns = pulseLength_ns;
+      scanner->applySettingsFWF(*createFWFSettingsFromXml(
+          scannerNode->FirstChildElement("FWFSettings"), settings));
+  }
+  // Return built scanner
+  return scanner;
+}
 
-  // Read head rotation speed:
-  double headRotatePerSecMax_rad = MathConverter::degreesToRadians(
-      boost::get<double>(XmlUtils::getAttribute(
-          scannerNode, "headRotatePerSecMax_deg", "double", 0.0
-      ))
-  );
-
-  // Configure scanner head:
-  scanner->scannerHead = std::shared_ptr<ScannerHead>(
-      new ScannerHead(headRotateAxis, headRotatePerSecMax_rad));
-
-  // ############################# END Configure scanner head
-  // ##############################
-
-  // ################################## BEGIN Configure beam deflector
-  // ######################################
-
-  // ########### BEGIN Read and apply generic properties ##########
-  double scanFreqMax_Hz = boost::get<double>(
-      XmlUtils::getAttribute(scannerNode, "scanFreqMax_Hz", "double", 0.0));
-  double scanFreqMin_Hz = boost::get<double>(
-      XmlUtils::getAttribute(scannerNode, "scanFreqMin_Hz", "double", 0.0));
-
-  double scanAngleMax_rad = MathConverter::degreesToRadians(boost::get<double>(
-      XmlUtils::getAttribute(scannerNode, "scanAngleMax_deg", "double", 0.0)));
-  // ########### END Read and apply generic properties ##########
-
-  std::string str_opticsType = scannerNode->Attribute("optics");
-  std::shared_ptr<AbstractBeamDeflector> beamDeflector = NULL;
-
-  if (str_opticsType == "oscillating") {
-    int scanProduct = boost::get<int>(
-        XmlUtils::getAttribute(scannerNode, "scanProduct", "int", 1000000));
-    beamDeflector = std::shared_ptr<OscillatingMirrorBeamDeflector>(
-        new OscillatingMirrorBeamDeflector(scanAngleMax_rad, scanFreqMax_Hz,
-                                           scanFreqMin_Hz, scanProduct));
-  } else if (str_opticsType == "conic") {
-    beamDeflector = std::shared_ptr<ConicBeamDeflector>(new ConicBeamDeflector(
-        scanAngleMax_rad, scanFreqMax_Hz, scanFreqMin_Hz));
-  } else if (str_opticsType == "line") {
-    int numFibers = boost::get<int>(XmlUtils::getAttribute(
-        scannerNode, "numFibers", "int", 1));
-    beamDeflector =
-        std::shared_ptr<FiberArrayBeamDeflector>(new FiberArrayBeamDeflector(
-            scanAngleMax_rad, scanFreqMax_Hz, scanFreqMin_Hz, numFibers));
-  } else if (str_opticsType == "rotating") {
-    double scanAngleEffectiveMax_rad = MathConverter::degreesToRadians(
+std::shared_ptr<AbstractBeamDeflector>
+XmlAssetsLoader::createBeamDeflectorFromXml(
+    tinyxml2::XMLElement *scannerNode
+){
+    // Prepare beam deflector variable
+    std::shared_ptr<AbstractBeamDeflector> beamDeflector = nullptr;
+    // Parse beam deflector
+    std::string str_opticsType = scannerNode->Attribute("optics");
+    double scanFreqMax_Hz = boost::get<double>(
+        XmlUtils::getAttribute(scannerNode, "scanFreqMax_Hz", "double", 0.0));
+    double scanFreqMin_Hz = boost::get<double>(
+        XmlUtils::getAttribute(scannerNode, "scanFreqMin_Hz", "double", 0.0));
+    double scanAngleMax_rad = MathConverter::degreesToRadians(
         boost::get<double>(XmlUtils::getAttribute(
-            scannerNode, "scanAngleEffectiveMax_deg", "double", 0.0
+            scannerNode, "scanAngleMax_deg", "double", 0.0
         ))
     );
-    beamDeflector = std::shared_ptr<PolygonMirrorBeamDeflector>(
-        new PolygonMirrorBeamDeflector(scanFreqMax_Hz, scanFreqMin_Hz,
-                                       scanAngleMax_rad,
-                                       scanAngleEffectiveMax_rad));
-  } else if (str_opticsType == "risley") {
-    int rotorFreq_1_Hz = boost::get<int>(
-        XmlUtils::getAttribute(scannerNode, "rotorFreq1_Hz", "int", 7294));
-    int rotorFreq_2_Hz = boost::get<int>(
-        XmlUtils::getAttribute(scannerNode, "rotorFreq2_Hz", "int", -4664));
-    beamDeflector =
-        std::shared_ptr<RisleyBeamDeflector>(new RisleyBeamDeflector(
-            scanAngleMax_rad, (double)rotorFreq_1_Hz, (double)rotorFreq_2_Hz));
-  }
+    // Build beam deflector
+    if (str_opticsType == "oscillating") {
+        int scanProduct = boost::get<int>(
+            XmlUtils::getAttribute(scannerNode, "scanProduct", "int", 1000000));
+        beamDeflector = std::make_shared<OscillatingMirrorBeamDeflector>(
+            scanAngleMax_rad, scanFreqMax_Hz, scanFreqMin_Hz, scanProduct);
+    } else if (str_opticsType == "conic") {
+        beamDeflector = std::make_shared<ConicBeamDeflector>(
+            scanAngleMax_rad, scanFreqMax_Hz, scanFreqMin_Hz);
+    } else if (str_opticsType == "line") {
+        int numFibers = boost::get<int>(XmlUtils::getAttribute(
+            scannerNode, "numFibers", "int", 1));
+        beamDeflector = std::make_shared<FiberArrayBeamDeflector>(
+            scanAngleMax_rad, scanFreqMax_Hz, scanFreqMin_Hz, numFibers);
+    } else if (str_opticsType == "rotating") {
+        double scanAngleEffectiveMax_rad = MathConverter::degreesToRadians(
+            boost::get<double>(XmlUtils::getAttribute(
+                scannerNode, "scanAngleEffectiveMax_deg", "double", 0.0
+            ))
+        );
+        beamDeflector = std::make_shared<PolygonMirrorBeamDeflector>(
+            scanFreqMax_Hz, scanFreqMin_Hz, scanAngleMax_rad,
+            scanAngleEffectiveMax_rad
+        );
+    } else if (str_opticsType == "risley") {
+        int rotorFreq_1_Hz = boost::get<int>(
+            XmlUtils::getAttribute(scannerNode, "rotorFreq1_Hz", "int", 7294));
+        int rotorFreq_2_Hz = boost::get<int>(
+            XmlUtils::getAttribute(scannerNode, "rotorFreq2_Hz", "int", -4664));
+        beamDeflector = std::make_shared<RisleyBeamDeflector>(
+            scanAngleMax_rad, (double)rotorFreq_1_Hz, (double)rotorFreq_2_Hz);
+    }
 
-  if (beamDeflector == nullptr) {
-    std::stringstream ss;
-    ss << "ERROR: Unknown beam deflector type: '" << str_opticsType
-       << "'. Aborting.";
-    logging::ERR(ss.str());
-    exit(1);
-  }
+    if (beamDeflector == nullptr) {
+        std::stringstream ss;
+        ss << "ERROR: Unknown beam deflector type: '" << str_opticsType
+        << "'. Aborting.";
+        logging::ERR(ss.str());
+        exit(1);
+    }
+    // Return built beam deflector
+    return beamDeflector;
+}
 
-  scanner->beamDeflector = beamDeflector;
+std::shared_ptr<AbstractDetector> XmlAssetsLoader::createDetectorFromXml(
+    tinyxml2::XMLElement *scannerNode,
+    std::shared_ptr<Scanner> scanner
+){
+    double const rangeMin_m = boost::get<double>(
+        XmlUtils::getAttribute(scannerNode, "rangeMin_m", "double", 0.0));
+    double const rangeMax_m = boost::get<double>(
+        XmlUtils::getAttribute(
+            scannerNode,
+            "rangeMax_m",
+            "double",
+            std::numeric_limits<double>::max()
+        )
+    );
+    double const accuracy_m = boost::get<double>(
+        XmlUtils::getAttribute(scannerNode, "accuracy_m", "double", 0.0));
+    return std::make_shared<FullWaveformPulseDetector>(
+        scanner, accuracy_m, rangeMin_m, rangeMax_m
+    );
+}
 
-  // ################################## END Configure beam deflector
-  // #######################################
-
-  // ############################ BEGIN Configure detector
-  // ###############################
-  double rangeMin_m = boost::get<double>(
-      XmlUtils::getAttribute(scannerNode, "rangeMin_m", "double", 0.0));
-  double rangeMax_m = boost::get<double>(
-      XmlUtils::getAttribute(
-          scannerNode,
-          "rangeMax_m",
-          "double",
-          std::numeric_limits<double>::max()
-      )
-  );
-  double accuracy_m = boost::get<double>(
-      XmlUtils::getAttribute(scannerNode, "accuracy_m", "double", 0.0));
-  scanner->detector = std::make_shared<FullWaveformPulseDetector>(
-      scanner, accuracy_m, rangeMin_m, rangeMax_m
-  );
-  // ############################ END Configure detector
-  // ###############################
-
-  return scanner;
+std::shared_ptr<ScannerHead> XmlAssetsLoader::createScannerHeadFromXml(
+    tinyxml2::XMLElement *scannerNode
+){
+    glm::dvec3 headRotateAxis = glm::dvec3(0, 0, 1);
+    try {
+        glm::dvec3 axis = XmlUtils::createVec3dFromXml(
+            scannerNode->FirstChildElement("headRotateAxis"), "");
+        if (glm::l2Norm(axis) > 0.1) {
+            headRotateAxis = axis;
+        }
+    } catch (std::exception &e) {
+        std::stringstream ss;
+        ss << "XML Assets Loader: Failed to read child element "
+           << "<headRotateAxis> of <scanner> element at line "
+           << scannerNode->GetLineNum()
+           << ". Using default.\nEXCEPTION: " << e.what();
+        logging::WARN(ss.str());
+    }
+    double headRotatePerSecMax_rad = MathConverter::degreesToRadians(
+        boost::get<double>(XmlUtils::getAttribute(
+            scannerNode, "headRotatePerSecMax_deg", "double", 0.0
+        ))
+    );
+    return std::make_shared<ScannerHead>(
+        headRotateAxis, headRotatePerSecMax_rad
+    );
 }
 
 std::shared_ptr<ScannerSettings>
@@ -1141,7 +1199,8 @@ XmlAssetsLoader::createScannerSettingsFromXml(
 }
 
 std::shared_ptr<FWFSettings> XmlAssetsLoader::createFWFSettingsFromXml(
-    tinyxml2::XMLElement *node, std::shared_ptr<FWFSettings> settings) {
+    tinyxml2::XMLElement *node, std::shared_ptr<FWFSettings> settings
+) {
   if (settings == nullptr) {
     settings = std::make_shared<FWFSettings>();
   }
@@ -1186,6 +1245,257 @@ XmlAssetsLoader::createTrajectorySettingsFromXml(
     return settings;
 }
 
+void XmlAssetsLoader::fillScanningDevicesFromChannels(
+    std::shared_ptr<Scanner> scanner,
+    tinyxml2::XMLElement *scannerNode,
+    tinyxml2::XMLElement *channels,
+    std::shared_ptr<AbstractBeamDeflector> deflec,
+    std::shared_ptr<AbstractDetector> detec,
+    std::shared_ptr<ScannerHead> scanHead,
+    std::shared_ptr<FWFSettings> fwfSettings
+){
+    tinyxml2::XMLElement *chan = channels->FirstChildElement("channel");
+    tinyxml2::XMLElement *elem;
+    size_t idx = 0;  // Device/channel index
+    while(chan != nullptr){ // Update i-th device with i-th channel
+        // Set id
+        scanner->setDeviceIndex(idx, idx);
+        std::string const deviceId = boost::get<std::string>(
+            XmlUtils::getAttribute(
+                chan, "id", "string", std::to_string(idx), "DeviceID"
+            )
+        );
+        scanner->setDeviceId(deviceId, idx);
+        // Check beam update
+        elem = chan->FirstChildElement("beamOrigin");
+        if(elem != nullptr){
+            // Check beam origin
+            try{
+                scanner->setHeadRelativeEmitterPosition(
+                    XmlUtils::createVec3dFromXml(elem, ""), idx
+                );
+            }
+            catch(HeliosException &hex){
+                std::stringstream ss;
+                ss  << "Failed to find beamOrigin (x, y, z) in channel "
+                    << idx << ".\nEXCEPTION:\n" << hex.what();
+                logging::WARN(ss.str());
+            }
+            // Check beam attitude
+            try{
+                scanner->setHeadRelativeEmitterAttitude(
+                    XmlUtils::createRotationFromXml(elem), idx
+                );
+            }
+            catch(HeliosException &hex){
+                std::stringstream ss;
+                ss  << "Failed to find beamAttitude (q0, q1, q2, q3) in "
+                    << "channel " << idx << ".\nEXCEPTION:\n" << hex.what();
+                logging::WARN(ss.str());
+            }
+        }
+        // Check full waveform settings update
+        elem = chan->FirstChildElement("FWFSettings");
+        if(elem != nullptr){
+            std::shared_ptr<FWFSettings> fwfs = std::make_shared<FWFSettings>(
+                *fwfSettings
+            );
+            fwfs = createFWFSettingsFromXml(elem, fwfs);
+            scanner->applySettingsFWF(*fwfs, idx);
+        }
+        else{
+            scanner->applySettingsFWF(*fwfSettings, idx);
+        }
+        // Check beam deflector update
+        bool updateDeflector = true;
+        if(XmlUtils::hasAttribute(chan, "optics")){
+            std::string optics = chan->Attribute("optics");
+            bool deflectorsMatch = (
+                optics=="oscillating" && std::dynamic_pointer_cast<
+                    OscillatingMirrorBeamDeflector
+                >(deflec)!=nullptr
+            ) || (
+                optics=="conic" && std::dynamic_pointer_cast<
+                    ConicBeamDeflector
+                >(deflec)!=nullptr
+            ) || (
+                optics=="line" && std::dynamic_pointer_cast<
+                    FiberArrayBeamDeflector
+                >(deflec)!=nullptr
+            ) || (
+                optics=="rotating" && std::dynamic_pointer_cast<
+                    PolygonMirrorBeamDeflector
+                >(deflec)!=nullptr
+            ) || (
+                optics=="risley" && std::dynamic_pointer_cast<
+                    RisleyBeamDeflector
+                >(deflec)!=nullptr
+            );
+            if(!deflectorsMatch){ // Assign new beam deflector, dont update
+                scanner->setBeamDeflector(
+                    createBeamDeflectorFromXml(chan), idx
+                );
+                updateDeflector = false;
+            }
+        }
+        if(updateDeflector){
+            std::string optics = scannerNode->Attribute("optics");
+            scanner->setBeamDeflector(deflec->clone(), idx);
+            std::shared_ptr<AbstractBeamDeflector> _deflec =
+                scanner->getBeamDeflector(idx);
+            // Common beam deflector updates
+            _deflec->cfg_device_scanFreqMin_Hz = boost::get<double>(
+                XmlUtils::getAttribute(
+                    chan, "scanFreqMin_Hz", "double",
+                    _deflec->cfg_device_scanFreqMin_Hz
+               )
+            );
+            _deflec->cfg_device_scanFreqMax_Hz = boost::get<double>(
+                XmlUtils::getAttribute(
+                    chan, "scanFreqMax_Hz", "double",
+                    _deflec->cfg_device_scanFreqMax_Hz
+                )
+            );
+            if(XmlUtils::hasAttribute(chan, "scanAngleMax_deg")){
+                _deflec->cfg_device_scanAngleMax_rad = boost::get<double>(
+                    XmlUtils::getAttribute(
+                        chan, "scanAngleMax_deg", "double", 0.0
+                    )
+                );
+            }
+            // Oscillating mirror beam deflector updates
+            if(optics == "oscillating"){
+                std::shared_ptr<OscillatingMirrorBeamDeflector> ombd =
+                    std::static_pointer_cast<OscillatingMirrorBeamDeflector>(
+                        _deflec
+                    );
+                ombd->cfg_device_scanProduct = boost::get<int>(
+                    XmlUtils::getAttribute(
+                        chan, "scanProduct", "int",
+                        ombd->cfg_device_scanProduct
+                    )
+                );
+            }
+            // Conic beam deflector updates (NONE)
+            // Fiber array beam deflector updates
+            if(optics == "line"){
+                std::shared_ptr<FiberArrayBeamDeflector> fabd =
+                    std::static_pointer_cast<FiberArrayBeamDeflector>(
+                        _deflec
+                    );
+                fabd->setNumFibers(boost::get<int>(XmlUtils::getAttribute(
+                    scannerNode, "numFibers", "int", fabd->getNumFibers()
+                )));
+            }
+            // Polygon mirror beam deflector updates
+            if(optics == "rotating"){
+                std::shared_ptr<PolygonMirrorBeamDeflector> pmbd =
+                    std::static_pointer_cast<PolygonMirrorBeamDeflector>(
+                        _deflec
+                    );
+                pmbd->cfg_device_scanAngleMax_rad =
+                    MathConverter::degreesToRadians(boost::get<double>(
+                        XmlUtils::getAttribute(
+                            chan, "scanAngleEffectiveMax_deg", "double",
+                            MathConverter::radiansToDegrees(
+                                pmbd->cfg_device_scanAngleMax_rad
+                            )
+                        )
+                    ));
+            }
+            // Risley beam deflector updates
+            if(optics == "risley"){
+                std::shared_ptr<RisleyBeamDeflector> rbd =
+                    std::static_pointer_cast<RisleyBeamDeflector>(_deflec);
+                if(XmlUtils::hasAttribute(chan, "rotorFreq1_Hz")){
+                    rbd->rotorSpeed_rad_1 = ((double)boost::get<int>(
+                        XmlUtils::getAttribute(
+                            chan, "rotorFreq1_Hz", "int", 7294
+                        )
+                    )) / PI_2;
+                }
+                if(XmlUtils::hasAttribute(chan, "rotorFreq2_Hz")){
+                    rbd->rotorSpeed_rad_2 = ((double)boost::get<int>(
+                        XmlUtils::getAttribute(
+                            chan, "rotorFreq2_Hz", "int", -4664
+                        )
+                    )) / PI_2;
+                }
+            }
+        }
+        // Check detector related attributes
+        std::shared_ptr<AbstractDetector> _detec = detec->clone();
+        _detec->cfg_device_accuracy_m = boost::get<double>(
+            XmlUtils::getAttribute(
+                chan, "accuracy_m", "double", _detec->cfg_device_accuracy_m
+            )
+        );
+        _detec->cfg_device_rangeMin_m = boost::get<double>(
+            XmlUtils::getAttribute(
+                chan, "rangeMin_m", "double", _detec->cfg_device_rangeMin_m
+            )
+        );
+        _detec->cfg_device_rangeMax_m = boost::get<double>(
+            XmlUtils::getAttribute(
+                chan, "rangeMax_m", "double", _detec->cfg_device_rangeMax_m
+            )
+        );
+        scanner->setDetector(_detec, idx);
+        // Check scanner head related attributes
+        std::shared_ptr<ScannerHead> _scanHead = std::make_shared<ScannerHead>(
+            *scanHead
+        );
+        _scanHead->setRotatePerSecMax(MathConverter::degreesToRadians(
+            boost::get<double>(XmlUtils::getAttribute(
+                chan, "headRotatePerSecMax_deg", "double",
+                MathConverter::radiansToDegrees(
+                    _scanHead->getRotatePerSecMax()
+                )
+            ))
+        ));
+        tinyxml2::XMLElement *hraNode = chan->FirstChildElement(
+            "headRotateAxis");
+        if(hraNode != nullptr){
+            glm::dvec3 shra = XmlUtils::createVec3dFromXml(
+                chan->FirstChildElement("headRotateAxis"), "");
+            _scanHead->cfg_device_rotateAxis = shra;
+        }
+        scanner->setScannerHead(_scanHead, idx);
+        // Check general attributes
+        scanner->setBeamDivergence(
+            boost::get<double>(XmlUtils::getAttribute(
+                chan, "beamDivergence_rad", "double",
+                scanner->getBeamDivergence(idx)
+            )),
+            idx
+        );
+        scanner->setPulseLength_ns(
+            boost::get<double>(XmlUtils::getAttribute(
+                chan, "pulseLength_ns", "double",
+                scanner->getPulseLength_ns(idx)
+            )),
+            idx
+        );
+        if(XmlUtils::hasAttribute(chan, "wavelength_nm")){
+            scanner->setWavelength(
+                boost::get<int>(XmlUtils::getAttribute(
+                    chan, "wavelength_nm", "int", 1064
+                ))*1e-9,
+                idx
+            );
+        }
+        scanner->setMaxNOR(
+            boost::get<int>(XmlUtils::getAttribute(
+                chan, "maxNOR", "int", 0
+            )),
+            idx
+        );
+        // Next channel, if any
+        chan = chan->NextSiblingElement("channel");
+        ++idx;
+    }
+}
+
 // ***  GETTERS and SETTERS  *** //
 // ***************************** //
 std::shared_ptr<Asset> XmlAssetsLoader::getAssetById(
@@ -1194,6 +1504,10 @@ std::shared_ptr<Asset> XmlAssetsLoader::getAssetById(
     void *extraOutput
 ) {
   std::string errorMsg = "# DEF ERR MSG #";
+  XmlUtils::assertDocumentForAssetLoading(
+    doc, xmlDocFilename, xmlDocFilePath, type, id,
+    "XmlAssetsLoader::getAssetById"
+  );
   try {
     tinyxml2::XMLElement *assetNodes =
         doc.FirstChild()->NextSibling()->FirstChildElement(type.c_str());

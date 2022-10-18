@@ -2,7 +2,7 @@ var searchData=
 [
   ['wait',['wait',['../d9/d5e/classTaskWarehouse.html#ac116fc4fe30d9f04eb6d6fc735b5cb98',1,'TaskWarehouse']]],
   ['waitif',['waitIf',['../d9/d5e/classTaskWarehouse.html#acc6d9af3a4e3fbc460bf2cf35f679f52',1,'TaskWarehouse']]],
-  ['warehousescanningpulseprocess',['WarehouseScanningPulseProcess',['../df/ddb/classWarehouseScanningPulseProcess.html#a476636a1082a422691aa4cb906618264',1,'WarehouseScanningPulseProcess']]],
+  ['warehousescanningpulseprocess',['WarehouseScanningPulseProcess',['../df/ddb/classWarehouseScanningPulseProcess.html#a0fe601e0dd4198b1cfba88cacc7f59d1',1,'WarehouseScanningPulseProcess']]],
   ['warehousethreadpool',['WarehouseThreadPool',['../da/d92/classWarehouseThreadPool.html#a575db94e0ab1ef84aa35adb3529a20fe',1,'WarehouseThreadPool']]],
   ['warn',['WARN',['../d0/da9/logging_8hpp.html#ab5be34e04f22d7b85bcfff4de30d5c45',1,'logging']]],
   ['warnaboutpotentialerrors',['warnAboutPotentialErrors',['../d6/d03/classXYZPointCloudFileLoader.html#abf4534992108adb294711716766d8097',1,'XYZPointCloudFileLoader']]],

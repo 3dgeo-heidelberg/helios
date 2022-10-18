@@ -6,6 +6,7 @@
 #include <test/RayIntersectionTest.h>
 #include <test/GroveTest.h>
 #include <test/SerializationTest.h>
+#include <test/AssetLoadingTest.h>
 #include <test/SurveyCopyTest.h>
 #include <test/PlaneFitterTest.h>
 #include <test/LadLutTest.h>
@@ -14,6 +15,7 @@
 #include <test/ScenePartSplitTest.h>
 #include <test/RigidMotionTest.h>
 #include <test/FluxionumTest.h>
+#include <test/EnergyModelsTest.h>
 #include <test/HPCTest.h>
 
 #include <boost/filesystem.hpp>
@@ -76,6 +78,9 @@ void doTests(std::string const & testDir){
     SerializationTest serializationTest;
     passed &= serializationTest.test(std::cout, TEST_COLOR);
 
+    AssetLoadingTest assetLoadingTest;
+    passed &= assetLoadingTest.test(std::cout, TEST_COLOR);
+
     SurveyCopyTest surveyCopyTest;
     passed &= surveyCopyTest.test(std::cout, TEST_COLOR);
 
@@ -99,6 +104,9 @@ void doTests(std::string const & testDir){
 
     FluxionumTest fluxionumTest(testDir);
     passed &= fluxionumTest.test(std::cout, TEST_COLOR);
+
+    EnergyModelsTest energyModelsTest;
+    passed &= energyModelsTest.test(std::cout, TEST_COLOR);
 
     HPCTest hpcTest;
     passed &= hpcTest.test(std::cout, TEST_COLOR);

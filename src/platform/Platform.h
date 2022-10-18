@@ -30,7 +30,9 @@ public:
 	/**
 	 * @brief Device mount attitude relative to the platform
 	 */
-	Rotation cfg_device_relativeMountAttitude = Rotation(glm::dvec3(0, 1, 0), 0);
+	Rotation cfg_device_relativeMountAttitude = Rotation(
+	    glm::dvec3(0, 1, 0), 0
+    );
 
     // misc stuff
     /**
@@ -324,7 +326,7 @@ public:
 	 * @brief Obtain platform absolute mount attitude
 	 * @return Platform absolute mount attitude
 	 */
-	Rotation getAbsoluteMountAttitude() {
+	inline Rotation getAbsoluteMountAttitude() const {
 		return cached_absoluteMountAttitude;
 	}
 
@@ -332,7 +334,7 @@ public:
 	 * @brief Obtain platform absolute mount position
 	 * @return Platform absolute mount position
 	 */
-	glm::dvec3 getAbsoluteMountPosition() {
+	inline glm::dvec3 getAbsoluteMountPosition() const {
 		return cached_absoluteMountPosition;
 	}
 
@@ -340,7 +342,7 @@ public:
 	 * @brief Obtain platform attitude
 	 * @return Platform attitude
 	 */
-	Rotation getAttitude() {
+	inline Rotation getAttitude() const {
 		return this->attitude;
 	}
 	/**
@@ -366,7 +368,7 @@ public:
 	 * @brief Obtain platform position
 	 * @return Platform position
 	 */
-	glm::dvec3 getPosition() {
+	inline glm::dvec3 getPosition() const {
 		return position;
 	}
 
@@ -374,7 +376,7 @@ public:
 	 * @brief Obtain platform vector to target (cache)
 	 * @return Platform vector to target (cache)
 	 */
-	glm::dvec3 getVectorToTarget() {
+	inline glm::dvec3 getVectorToTarget() const {
 		return cached_vectorToTarget;
 	}
 

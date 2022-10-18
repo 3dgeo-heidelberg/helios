@@ -176,6 +176,33 @@ The resulting output warns about each difference between the two JSON reports
 and shows the total number of differences.
 
 
+#### Recording simulation steps
+
+When running HELIOS++ in data analytics mode, a directory named
+`helios_sim_records` will contain CSV files with different variables over
+simulation steps/time. Note that this directory and all the files inside it
+will be overwritten each time that HELIOS++ is run again. Thus, remember to
+move them to a directory with different name in case you want to preserve them.
+
+Any pair of directories containing simulation records can be graphically
+compared with the python script at `scripts/debug/hda_simstep_plotter.py`.
+Its syntax is simple:
+
+```
+python3 scripts/debug/hda_simstep_plotter <First dir> <Second dir> <Output dir>
+```
+
+The generated plots will be exported in the given output directory. They
+compare the behavior of the different components (such as the beam,
+the deflector, the platform, the platform's mount, the scanner,
+the scanner's head, ...) involved in both simulations as shown in the plot
+below.
+
+<img src="https://drive.google.com/uc?export=view&id=1yfHzc1JiuifervHjgsZ6Avxm_kxhTR8x" alt="Platform mount attitude" width="600" height="400"/>
+
+
+
+
 
 
 

@@ -42,7 +42,9 @@ shared_ptr<FMSFacade> FMSFacadeFactory::buildFacade(
     shared_ptr<FMSFacade> fms = make_shared<FMSFacade>();
     // Assign facade to interested survey components
     survey.scanner->fms = fms;
-    survey.scanner->detector->setFMS(fms);
+    for(size_t i = 0 ; i < survey.scanner->getNumDevices() ; ++i){
+        survey.scanner->getDetector(i)->setFMS(fms);
+    }
 
     // Configure write facade
     FMSWriteFacade &fmsWrite = fms->write;

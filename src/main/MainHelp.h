@@ -14,6 +14,8 @@ void printMainHelp(){
 
     <<  "\t\t-h or --help : Show this help\n\n"
 
+    << "\t\t--version : Show the full version of HELIOS++\n\n"
+
     <<  "\t\t--test : Run tests to check helios++ behaves as expected\n\n"
 
     <<  "\t\t--unzip <input_path> <output_path>\n"

@@ -9,12 +9,16 @@
 #include <PyIntegerList.h>
 #include <PyDoubleVector.h>
 #include <PyPlatformWrapper.h>
+#include <PyScannerWrapper.h>
 #include <PyPrimitiveWrapper.h>
 #include <PySimulationCycleCallback.h>
 #include <PyScanningStripWrapper.h>
 #include <Material.h>
 #include <gdal_priv.h>
 
+
+// ***  PYHELIOS PYTHON MODULE  *** //
+// ******************************** //
 BOOST_PYTHON_MODULE(_pyhelios){
     // Namespace must be used locally to prevent conflicts
     using namespace boost::python;
@@ -117,7 +121,7 @@ BOOST_PYTHON_MODULE(_pyhelios){
         .def(
             "getScanner",
             &PyHeliosSimulation::getScanner,
-            return_internal_reference<>()
+            return_value_policy<manage_new_object>()
         )
         .def(
             "getPlatform",
@@ -462,179 +466,264 @@ BOOST_PYTHON_MODULE(_pyhelios){
     ;
 
     // Register Scanner
-    class_<Scanner, boost::noncopyable>("Scanner", no_init)
-        .add_property("fwfSettings", &Scanner::FWF_settings)
+    class_<PyScannerWrapper, boost::noncopyable>("Scanner", no_init)
+        .add_property(
+            "fwfSettings",
+            &PyScannerWrapper::getFWFSettings,
+            &PyScannerWrapper::setFWFSettings
+        )
         .add_property(
             "numTimeBins",
-            &Scanner::numTimeBins,
-            &Scanner::numTimeBins
+            &PyScannerWrapper::getNumTimeBins,
+            &PyScannerWrapper::setNumTimeBins
         )
         .add_property(
             "peakIntensityIndex",
-            &Scanner::peakIntensityIndex,
-            &Scanner::peakIntensityIndex
+            &PyScannerWrapper::getPeakIntensityIndex,
+            &PyScannerWrapper::setPeakIntensityIndex
         )
         .def(
             "getTimeWave",
-            &Scanner::getTimeWave,
+            &PyScannerWrapper::getTimeWave,
             return_value_policy<manage_new_object>()
         )
         .add_property(
             "pulseFreq_Hz",
-            &Scanner::getPulseFreq_Hz,
-            &Scanner::setPulseFreq_Hz
+            &PyScannerWrapper::getPulseFreq_Hz,
+            &PyScannerWrapper::setPulseFreq_Hz
         )
         .add_property(
             "lastPulseWasHit",
-            &Scanner::lastPulseWasHit,
-            &Scanner::setLastPulseWasHit
+            &PyScannerWrapper::lastPulseWasHit,
+            &PyScannerWrapper::setLastPulseWasHit
         )
-        .def("toString", &Scanner::toString)
-        .add_property("numRays", &Scanner::getNumRays, &Scanner::setNumRays)
+        .def("toString", &PyScannerWrapper::toString)
         .add_property(
+            "numRays",
+            static_cast<int(PyScannerWrapper::*)()const>(
+                &PyScannerWrapper::getNumRays
+            ),
+            static_cast<void(PyScannerWrapper::*)(int const)>(
+                &PyScannerWrapper::setNumRays
+            )
+        )
+        .add_property( // Only access first device. Use get/set for n device
             "pulseLength_ns",
-            &Scanner::getPulseLength_ns,
-            &Scanner::setPulseLength_ns
+            static_cast<double(PyScannerWrapper::*)()const>(
+                &PyScannerWrapper::getPulseLength_ns
+            ),
+            static_cast<void(PyScannerWrapper::*)(double const)>(
+                &PyScannerWrapper::setPulseLength_ns
+            )
         )
-        .add_property(
+        .add_property( // Only access first device. Use get/set for n device
             "beamDivergence",
-            &Scanner::getBeamDivergence,
-            &Scanner::setBeamDivergence
+            static_cast<double(PyScannerWrapper::*)()const>(
+                &PyScannerWrapper::getBeamDivergence
+            ),
+            static_cast<void(PyScannerWrapper::*)(double const)>(
+                &PyScannerWrapper::setBeamDivergence
+            )
         )
-        .add_property(
+        .add_property( // Only access first device. Use get/set for n device
             "averagePower",
-            &Scanner::getAveragePower,
-            &Scanner::setAveragePower
+            static_cast<double(PyScannerWrapper::*)()const>(
+                &PyScannerWrapper::getAveragePower
+            ),
+            static_cast<void(PyScannerWrapper::*)(double const)>(
+                &PyScannerWrapper::setAveragePower
+            )
         )
-        .add_property(
+        .add_property( // Only access first device. Use get/set for n device
             "beamQuality",
-            &Scanner::getBeamQuality,
-            &Scanner::setBeamQuality
+            static_cast<double(PyScannerWrapper::*)()const>(
+                &PyScannerWrapper::getBeamQuality
+            ),
+            static_cast<void(PyScannerWrapper::*)(double const)>(
+                &PyScannerWrapper::setBeamQuality
+            )
         )
-        .add_property(
+        .add_property( // Only access first device. Use get/set for n device
             "efficiency",
-            &Scanner::getEfficiency,
-            &Scanner::setEfficiency
+            static_cast<double(PyScannerWrapper::*)()const>(
+                &PyScannerWrapper::getEfficiency
+            ),
+            static_cast<void(PyScannerWrapper::*)(double const)>(
+                &PyScannerWrapper::setEfficiency
+            )
         )
-        .add_property(
+        .add_property( // Only access first device. Use get/set for n device
             "receiverDiameter",
-            &Scanner::getReceiverDiameter,
-            &Scanner::setReceiverDiameter
+            static_cast<double(PyScannerWrapper::*)()const>(
+                &PyScannerWrapper::getReceiverDiameter
+            ),
+            static_cast<void(PyScannerWrapper::*)(double const)>(
+                &PyScannerWrapper::setReceiverDiameter
+            )
         )
-        .add_property(
+        .add_property( // Only access first device. Use get/set for n device
             "visibility",
-            &Scanner::getVisibility,
-            &Scanner::setVisibility
+            static_cast<double(PyScannerWrapper::*)()const>(
+                &PyScannerWrapper::getVisibility
+            ),
+            static_cast<void(PyScannerWrapper::*)(double const)>(
+                &PyScannerWrapper::setVisibility
+            )
         )
-        .add_property(
+        .add_property( // Only access first device. Use get/set for n device
             "wavelength",
-            &Scanner::getWavelength,
-            &Scanner::setWavelength
+            static_cast<double(PyScannerWrapper::*)()const>(
+                &PyScannerWrapper::getWavelength
+            ),
+            static_cast<void(PyScannerWrapper::*)(double const)>(
+                &PyScannerWrapper::setWavelength
+            )
         )
-        .add_property(
+        .add_property( // Only access first device. Use get/set for n device
             "atmosphericExtinction",
-            &Scanner::getAtmosphericExtinction,
-            &Scanner::setAtmosphericExtinction
+            static_cast<double(PyScannerWrapper::*)()const>(
+                &PyScannerWrapper::getAtmosphericExtinction
+            ),
+            static_cast<void(PyScannerWrapper::*)(double const)>(
+                &PyScannerWrapper::setAtmosphericExtinction
+            )
+        )
+        .add_property( // Only access first device. Use get/set for n device
+            "beamWaistRadius",
+            static_cast<double(PyScannerWrapper::*)()const>(
+                &PyScannerWrapper::getBeamWaistRadius
+            ),
+            static_cast<void(PyScannerWrapper::*)(double const)>(
+                &PyScannerWrapper::setBeamWaistRadius
+            )
+        )
+        .add_property( // Only access first device. Use get/set for n device
+            "bt2",
+            static_cast<double(PyScannerWrapper::*)()const>(
+                &PyScannerWrapper::getBt2
+            ),
+            static_cast<void(PyScannerWrapper::*)(double const)>(
+                &PyScannerWrapper::setBt2
+            )
+        )
+        .add_property( // Only access first device. Use get/set for n device
+            "dr2",
+            static_cast<double(PyScannerWrapper::*)()const>(
+                &PyScannerWrapper::getDr2
+            ),
+            static_cast<void(PyScannerWrapper::*)(double const)>(
+                &PyScannerWrapper::setDr2
+            )
         )
         .add_property(
-            "beamWaistRadius",
-            &Scanner::getBeamWaistRadius,
-            &Scanner::setBeamWaistRadius
+            "active",
+            &PyScannerWrapper::isActive,
+            &PyScannerWrapper::setActive
         )
-        .add_property("bt2", &Scanner::getBt2, &Scanner::setBt2)
-        .add_property("dr2", &Scanner::getDr2, &Scanner::setDr2)
-        .add_property("active", &Scanner::isActive, &Scanner::setActive)
         .add_property(
             "writeWaveform",
-            &Scanner::isWriteWaveform,
-            &Scanner::setWriteWaveform
+            &PyScannerWrapper::isWriteWaveform,
+            &PyScannerWrapper::setWriteWaveform
         )
         .add_property(
             "calcEchowidth",
-            &Scanner::isCalcEchowidth,
-            &Scanner::setCalcEchowidth
+            &PyScannerWrapper::isCalcEchowidth,
+            &PyScannerWrapper::setCalcEchowidth
         )
         .add_property(
             "fullWaveNoise",
-            &Scanner::isFullWaveNoise,
-            &Scanner::setFullWaveNoise
+            &PyScannerWrapper::isFullWaveNoise,
+            &PyScannerWrapper::setFullWaveNoise
         )
         .add_property(
             "platformNoiseDisabled",
-            &Scanner::isPlatformNoiseDisabled,
-            &Scanner::setPlatformNoiseDisabled
+            &PyScannerWrapper::isPlatformNoiseDisabled,
+            &PyScannerWrapper::setPlatformNoiseDisabled
         )
         .def(
             "getSupportedPulseFrequencies",
-            &Scanner::getSupportedPulseFrequencies,
+            &PyScannerWrapper::getSupportedPulseFrequencies,
             return_internal_reference<>()
         )
         .def(
             "getRelativeAttitude",
-            &Scanner::getRelativeAttitudeByReference,
+            static_cast<Rotation &(PyScannerWrapper::*)()>(
+                &PyScannerWrapper::getRelativeAttitudeByReference
+            ),
             return_internal_reference<>()
         )
         .def(
             "getRelativePosition",
-            &Scanner::getRelativePosition,
+            static_cast<PythonDVec3 *(PyScannerWrapper::*)()>(
+                &PyScannerWrapper::getRelativePosition
+            ),
             return_value_policy<manage_new_object>()
         )
         .def(
             "getIntersectionHandlingNoiseSource",
-            &Scanner::getIntersectionHandlingNoiseSource,
+            &PyScannerWrapper::getIntersectionHandlingNoiseSource,
             return_value_policy<manage_new_object>()
         )
         .def(
             "getRandGen1",
-            &Scanner::getRandGen1,
+            &PyScannerWrapper::getRandGen1,
             return_value_policy<manage_new_object>()
         )
         .def(
             "getRandGen2",
-            &Scanner::getRandGen2,
+            &PyScannerWrapper::getRandGen2,
             return_value_policy<manage_new_object>()
         )
         .def(
             "getScannerHead",
-            &Scanner::getScannerHead,
+            &PyScannerWrapper::getScannerHead,
             return_internal_reference<>()
         )
         .def(
             "getBeamDeflector",
-            &Scanner::getPyBeamDeflector,
+            &PyScannerWrapper::getPyBeamDeflector,
             return_value_policy<manage_new_object>()
         )
         .def(
             "getDetector",
-            &Scanner::getPyDetectorWrapper,
+            &PyScannerWrapper::getPyDetectorWrapper,
             return_value_policy<manage_new_object>()
         )
-        .def("calcRaysNumber", &Scanner::calcRaysNumber)
-        .def("calcFootprintArea", &Scanner::calcFootprintArea)
+        .def("calcRaysNumber", &PyScannerWrapper::calcRaysNumber)
+        .def("calcFootprintArea", &PyScannerWrapper::calcFootprintArea)
         .def(
             "calcAtmosphericAttenuation",
-            &Scanner::calcAtmosphericAttenuation
+            &PyScannerWrapper::calcAtmosphericAttenuation
         )
-        .def("calcFootprintRadius", &Scanner::calcFootprintRadius)
+        .def("calcFootprintRadius", &PyScannerWrapper::calcFootprintRadius)
         .add_property(
             "fixedIncidenceAngle",
-            &Scanner::isFixedIncidenceAngle,
-            &Scanner::setFixedIncidenceAngle
+            &PyScannerWrapper::isFixedIncidenceAngle,
+            &PyScannerWrapper::setFixedIncidenceAngle
         )
         .add_property( // It was not in ns before, but in seconds
             "trajectoryTimeInterval",
-            &Scanner::trajectoryTimeInterval_ns,
-            &Scanner::trajectoryTimeInterval_ns
+            &PyScannerWrapper::getTrajectoryTimeInterval,
+            &PyScannerWrapper::setTrajectoryTimeInterval
         )
         .add_property(
             "trajectoryTimeInterval_ns",
-            &Scanner::trajectoryTimeInterval_ns,
-            &Scanner::trajectoryTimeInterval_ns
+            &PyScannerWrapper::getTrajectoryTimeInterval,
+            &PyScannerWrapper::setTrajectoryTimeInterval
+        )
+        .add_property(  // Only access first device. Use get/set for n device.
+            "deviceId",
+            static_cast<std::string(PyScannerWrapper::*)()const>(
+                &PyScannerWrapper::getDeviceId
+            ),
+            static_cast<void(PyScannerWrapper::*)(std::string const)>(
+                &PyScannerWrapper::setDeviceId
+            )
         )
         .add_property(
-            "deviceId",
-            &Scanner::getDeviceId,
-            &Scanner::setDeviceId
+            "id",
+            &PyScannerWrapper::getScannerId,
+            &PyScannerWrapper::setScannerId
         )
     ;
 

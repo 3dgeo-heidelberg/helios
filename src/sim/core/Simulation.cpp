@@ -10,7 +10,9 @@ using namespace std::chrono;
 #include <platform/InterpolatedMovingPlatform.h>
 #ifdef DATA_ANALYTICS
 #include <dataanalytics/HDA_StateJSONReporter.h>
+#include <dataanalytics/HDA_SimStepRecorder.h>
 using helios::analytics::HDA_StateJSONReporter;
+using helios::analytics::HDA_SimStepRecorder;
 #endif
 
 #include "Simulation.h"
@@ -68,15 +70,15 @@ void Simulation::prepareSimulation(int simFrequency_hz){
 void Simulation::doSimStep(){
 	// Check for leg completion:
 	if(
-	    mScanner->scannerHead->rotateCompleted() &&
-	    getScanner()->platform->waypointReached()
+	    mScanner->getScannerHead(0)->rotateCompleted() &&
+	    mScanner->platform->waypointReached()
     ){
 	    onLegComplete();
         return;
     }
 
     // Ordered execution of simulation components
-	mScanner->platform->doSimStep(getScanner()->getPulseFreq_Hz());
+	mScanner->platform->doSimStep(mScanner->getPulseFreq_Hz());
     mScanner->doSimStep(mCurrentLegIndex, currentGpsTime_ns);
 	mScanner->platform->scene->doSimStep();
     currentGpsTime_ns += stepGpsTime_ns;
@@ -106,7 +108,7 @@ void Simulation::shutdown(){
         (*callback)(
             *mScanner->cycleMeasurements,
             *mScanner->cycleTrajectories,
-            mScanner->detector->getFMS()->write
+            mScanner->fms->write
                 .getMeasurementWriterOutputPath().string()
         );
     }
@@ -122,10 +124,11 @@ void Simulation::start() {
     size_t iter = 1;
     timeStart_ns = duration_cast<nanoseconds>(
         system_clock::now().time_since_epoch()
-    ).count();
+    );
 #ifdef DATA_ANALYTICS
     HDA_StateJSONReporter sjr((SurveyPlayback *) this, "helios_state.json");
     sjr.report();
+    HDA_SimStepRecorder ssr((SurveyPlayback *) this, "helios_sim_records");
 #endif
 
     // Execute the main loop of the simulation
@@ -144,7 +147,7 @@ void Simulation::start() {
                 (*callback)(
                     *mScanner->cycleMeasurements,
                     *mScanner->cycleTrajectories,
-                    mScanner->detector->getFMS()->write
+                    mScanner->fms->write
                         .getMeasurementWriterOutputPath().string()
                 );
                 mScanner->cycleMeasurements->clear();
@@ -153,23 +156,32 @@ void Simulation::start() {
 		    iter = 1;
 		    condvar.notify_all();
 		}
+
+#ifdef DATA_ANALYTICS
+        ssr.record();
+#endif
 	}
 
-	// Finish the main loop of the simulation
-	long const timeMainLoopFinish = duration_cast<nanoseconds>(
+#ifdef DATA_ANALYTICS
+	// Finish data analytics stuff
+	ssr.closeBuffers();
+#endif
+
+    // Finish the main loop of the simulation
+	chrono::nanoseconds timeMainLoopFinish = duration_cast<nanoseconds>(
 	    system_clock::now().time_since_epoch()
-    ).count();
+    );
 	double const seconds = (
-	        (double)(timeMainLoopFinish - timeStart_ns)
+	        (double)(timeMainLoopFinish - timeStart_ns).count()
 	    ) / 1000000000.0;
 	reporter.preFinishReport(seconds);
 	mScanner->onSimulationFinished();
 
     // End of simulation report
-    long const timeFinishAll = duration_cast<nanoseconds>(
+    chrono::nanoseconds const timeFinishAll = duration_cast<nanoseconds>(
         system_clock::now().time_since_epoch()
-    ).count();
-    double const secondsAll = ((double)(timeFinishAll - timeStart_ns))
+    );
+    double const secondsAll = ((double)(timeFinishAll - timeStart_ns).count())
                               / 1000000000.0;
     reporter.postFinishReport(secondsAll);
 

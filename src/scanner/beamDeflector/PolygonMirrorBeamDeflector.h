@@ -11,7 +11,7 @@ protected:
     // ***  ATTRIBUTES  *** //
     // ******************** //
     /**
-     * @brief Effective scan anngle (radians)
+     * @brief Effective scan angle (radians)
      */
 	double cfg_device_scanAngleEffective_rad = 0;
 	/**
@@ -56,4 +56,10 @@ public:
 	 * @see AbstractBeamDeflector::lastPulseLeftDevice
 	 */
 	bool lastPulseLeftDevice() override;
+	/**
+	 * @brief Obtain the maximum effective scan angle in radians.
+	 * @see PolygonMirrorBeamDeflector::cfg_device_scanAngleEffectiveMax_rad
+	 */
+	double getScanAngleEffectiveMax_rad() const
+	{return cfg_device_scanAngleEffectiveMax_rad;}
 };

@@ -74,9 +74,9 @@ void LidarSim::init(
     logging::INFO(ss.str());
 
 	// Load survey description from XML file:
- 	std::shared_ptr<XmlSurveyLoader> xmlreader(
- 	    new XmlSurveyLoader(surveyPath, assetsPath)
- 	);
+ 	std::shared_ptr<XmlSurveyLoader> xmlreader = std::make_shared<
+ 	    XmlSurveyLoader
+    >(surveyPath, assetsPath);
  	xmlreader->sceneLoader.kdtFactoryType = kdtType;
  	xmlreader->sceneLoader.kdtNumJobs = kdtJobs;
  	xmlreader->sceneLoader.kdtGeomJobs = kdtGeomJobs;
@@ -117,7 +117,7 @@ void LidarSim::init(
     PulseThreadPoolFactory ptpf(
         parallelizationStrategy,
         poolSize,
-        survey->scanner->detector->cfg_device_accuracy_m,
+        survey->scanner->getDetector()->cfg_device_accuracy_m,
         chunkSize,
         warehouseFactor
     );

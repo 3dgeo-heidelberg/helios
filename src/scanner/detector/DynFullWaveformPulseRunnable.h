@@ -24,40 +24,17 @@ public:
     // ************************************ //
     /**
      * @brief Base constructor for dynamic full waveform pulse runnable
-     * @param tkdg The temporal KDGrove for the dynamic full waveform pulse
-     *  runnable
+     * @param raycaster The temporal KDGrove for the dynamic full waveform
+     *  pulse runnable
      * @see FullWaveformPulseRunnable::FullWaveformPulseRunnable
-     * @see DynFullWaveformPulseRunnable::tkdg
+     * @see DynFullWaveformPulseRunnable::raycaster
      */
     DynFullWaveformPulseRunnable(
         std::shared_ptr<KDGroveRaycaster> raycaster,
-        std::shared_ptr<FullWaveformPulseDetector> detector,
-        glm::dvec3 absoluteBeamOrigin,
-        Rotation absoluteBeamAttitude,
-        int currentPulseNum,
-        double currentGpsTime,
-        bool writeWaveform,
-        bool calcEchowidth,
-        std::vector<Measurement> * allMeasurements,
-        std::mutex * allMeasurementsMutex,
-        std::vector<Measurement> * cycleMeasurements,
-        std::mutex * cycleMeasurementsMutex,
-        unsigned int legIndex
+        std::shared_ptr<Scanner> scanner,
+        SimulatedPulse const &pulse
     ) :
-        FullWaveformPulseRunnable(
-            detector,
-            absoluteBeamOrigin,
-            absoluteBeamAttitude,
-            currentPulseNum,
-            currentGpsTime,
-            writeWaveform,
-            calcEchowidth,
-            allMeasurements,
-            allMeasurementsMutex,
-            cycleMeasurements,
-            cycleMeasurementsMutex,
-            legIndex
-        ),
+        FullWaveformPulseRunnable(scanner, pulse),
         raycaster(raycaster)
     {}
     virtual ~DynFullWaveformPulseRunnable() = default;

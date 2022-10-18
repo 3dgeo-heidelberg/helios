@@ -2,6 +2,7 @@ var dir_120ed4da3e3217b1e7fc0b4f48568e79 =
 [
     [ "BaseTest.h", "de/da0/BaseTest_8h_source.html", null ],
     [ "DiscreteTimeTest.h", "d2/df8/DiscreteTimeTest_8h_source.html", null ],
+    [ "EnergyModelsTest.h", "da/dcf/EnergyModelsTest_8h_source.html", null ],
     [ "FluxionumTest.h", "d4/d0e/FluxionumTest_8h_source.html", null ],
     [ "FunctionalPlatformTest.h", "d0/d2b/FunctionalPlatformTest_8h_source.html", null ],
     [ "GroveTest.h", "dd/d26/GroveTest_8h_source.html", null ],

@@ -18,8 +18,8 @@ Survey::Survey(Survey &survey){
     this->length = survey.length;
 
     // Copy Scanner
-    this->scanner = std::make_shared<Scanner>(*survey.scanner);
-    this->scanner->detector->scanner = this->scanner;
+    this->scanner = survey.scanner->clone();
+    this->scanner->getDetector()->scanner = this->scanner;
 
     // Copy legs
     this->legs = std::vector<std::shared_ptr<Leg>>(0);

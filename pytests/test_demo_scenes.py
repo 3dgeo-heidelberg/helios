@@ -140,12 +140,12 @@ def eval_detailedVoxels_uls(dirname):
     assert (dirname / 'leg000_points.las').exists()
     assert abs((dirname / 'leg000_points.las').stat().st_size - 404_517) < MAX_DIFFERENCE_BYTES
     assert (dirname / 'leg000_trajectory.txt').exists()
-    assert abs((dirname / 'leg000_trajectory.txt').stat().st_size - 1_250) < MAX_DIFFERENCE_BYTES
+    assert abs((dirname / 'leg000_trajectory.txt').stat().st_size - 2_541) < MAX_DIFFERENCE_BYTES
     with open(dirname / 'leg000_trajectory.txt', 'r') as f:
         for _ in range(6):
             next(f)
         line = f.readline()
-        assert line.startswith('-3.0000 -1.2741 50.0000')
+        assert line.startswith('-3.0000 -2.1000 50.0000')
     # clean up
     if DELETE_FILES_AFTER:
         shutil.rmtree(dirname)

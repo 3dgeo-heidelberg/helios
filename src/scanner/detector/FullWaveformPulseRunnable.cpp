@@ -8,11 +8,13 @@
 #include <cmath>
 
 #include "maths/Rotation.h"
+#include <maths/EnergyMaths.h>
 #include "MarquardtFitter.h"
 #include <TimeWatcher.h>
 #include <maths/RayUtils.h>
 #include <filems/facade/FMSFacade.h>
 #include <scanner/detector/FullWaveform.h>
+#include <scanner/Scanner.h>
 
 using namespace std;
 
@@ -29,8 +31,10 @@ void FullWaveformPulseRunnable::operator()(
 	RandomnessGenerator<double> &randGen2,
 	NoiseSource<double> &intersectionHandlingNoiseSource
 ){
+    // Deferred/lazy initialization
+    initialize();
 	// Compute beam direction
-	glm::dvec3 beamDir = absoluteBeamAttitude.applyTo(Directions::forward);
+	glm::dvec3 beamDir = pulse.computeDirection();
 
 	// NOTE:
 	// With beam divergence / full waveform being simulated, this is not perfect, since a sub-ray
@@ -39,12 +43,12 @@ void FullWaveformPulseRunnable::operator()(
 
 	// Early abort if central axis of the beam does not intersect with the scene:
 	vector<double> tMinMax = scene.getAABB()->getRayIntersection(
-	    absoluteBeamOrigin,
+	    pulse.getOriginRef(),
 	    beamDir
     );
 	if (tMinMax.empty()) {
 		logging::DEBUG("Early abort - beam does not intersect with the scene");
-		detector->scanner->setLastPulseWasHit(false);
+		scanner->setLastPulseWasHit(false, pulse.getDeviceIndex());
 		return;
 	}
 
@@ -74,55 +78,54 @@ void FullWaveformPulseRunnable::operator()(
 
 // ***  OPERATOR METHODS  *** //
 // ************************** //
+void FullWaveformPulseRunnable::initialize(){
+    AbstractPulseRunnable::initialize();
+    fwDetector = std::static_pointer_cast<FullWaveformPulseDetector>(
+        detector
+    );
+}
 void FullWaveformPulseRunnable::computeSubrays(
     vector<double> const &tMinMax,
     NoiseSource<double> &intersectionHandlingNoiseSource,
     std::map<double, double> &reflections,
     vector<RaySceneIntersection> &intersects
 ){
-    double radiusStep_rad = detector->scanner->getBeamDivergence()/
-        detector->scanner->FWF_settings.beamSampleQuality;
-
-    // Outer loop over radius steps from beam center to outer edge
-    int beamSampleQuality = detector->scanner->FWF_settings.beamSampleQuality;
-    for (int radiusStep = 0; radiusStep < beamSampleQuality; radiusStep++){
-        double subrayDivergenceAngle_rad = radiusStep * radiusStep_rad;
-
-        // Rotate subbeam into divergence step (towards outer rim of the beam cone):
-        Rotation r1 = Rotation(Directions::right, subrayDivergenceAngle_rad);
-
-        // Calculate circle step width:
-        int circleSteps = (int)(2 * M_PI) * radiusStep;
-
-        // Make sure that central ray is not skipped:
-        if (circleSteps == 0) {
-            circleSteps = 1;
-        }
-
-        double circleStep_rad = (2 * M_PI) / circleSteps;
-
-        // # Loop over sub-rays along the circle
-        for (int circleStep = 0; circleStep < circleSteps; circleStep++){
+    scanner->computeSubrays(
+        [&] (
+            vector<double> const &_tMinMax,
+            int const circleStep,
+            double const circleStep_rad,
+            Rotation &r1,
+            double const divergenceAngle,
+            NoiseSource<double> &intersectionHandlingNoiseSource,
+            std::map<double, double> &reflections,
+            vector<RaySceneIntersection> &intersects
+        ) -> void{
             handleSubray(
-                tMinMax,
+                _tMinMax,
                 circleStep,
                 circleStep_rad,
                 r1,
-                subrayDivergenceAngle_rad,
+                divergenceAngle,
                 intersectionHandlingNoiseSource,
                 reflections,
                 intersects
             );
-        }
-    }
+        },
+        tMinMax,
+        intersectionHandlingNoiseSource,
+        reflections,
+        intersects,
+        pulse.getDeviceIndex()
+    );
 }
 
 void FullWaveformPulseRunnable::handleSubray(
     vector<double> const &_tMinMax,
-    int circleStep,
-    double circleStep_rad,
+    int const circleStep,
+    double const circleStep_rad,
     Rotation &r1,
-    double divergenceAngle,
+    double const divergenceAngle,
     NoiseSource<double> &intersectionHandlingNoiseSource,
     map<double, double> &reflections,
     vector<RaySceneIntersection> &intersects
@@ -132,11 +135,10 @@ void FullWaveformPulseRunnable::handleSubray(
     Rotation r2 = Rotation(Directions::forward, circleStep_rad * circleStep);
     r2 = r2.applyTo(r1);
 
-    glm::dvec3 subrayDirection = absoluteBeamAttitude
-        .applyTo(r2)
+    glm::dvec3 subrayDirection = pulse.getAttitude().applyTo(r2)
         .applyTo(Directions::forward);
 
-    glm::dvec3 subrayOrigin(absoluteBeamOrigin);
+    glm::dvec3 subrayOrigin(pulse.getOrigin());
     bool rayContinues = true;
     double incidenceAngle = 0.0;
     while(rayContinues) {
@@ -149,10 +151,10 @@ void FullWaveformPulseRunnable::handleSubray(
 
         if (intersect != nullptr && intersect->prim != nullptr) {
             // Incidence angle:
-            if(!detector->scanner->isFixedIncidenceAngle()) {
+            if(!scanner->isFixedIncidenceAngle()) {
                 incidenceAngle =
                     intersect->prim->getIncidenceAngle_rad(
-                        absoluteBeamOrigin,
+                        pulse.getOriginRef(),
                         subrayDirection,
                         intersect->point
                     );
@@ -161,38 +163,38 @@ void FullWaveformPulseRunnable::handleSubray(
             // Distance between beam origin and intersection:
             double distance = glm::distance(
                 intersect->point,
-                absoluteBeamOrigin
+                pulse.getOriginRef()
             );
 
             // Distance must be inside [rangeMin, rangeMax] interval
-            if(
-                detector->cfg_device_rangeMin_m > distance ||
-                detector->cfg_device_rangeMax_m < distance
-            ) continue;
+            if(detector->isDistanceNotInRange(distance)) continue;
 
             // Distance between beam's center line and intersection point:
-            double radius = sin(divergenceAngle) * distance;
-            double const targetArea =
-                detector->scanner->calcFootprintArea(distance) /
-                (double) detector->scanner->getNumRays();
+            double const radius = sin(divergenceAngle) * distance;
+            double const targetArea = scanner->calcTargetArea(
+                distance, pulse.getDeviceIndex()
+            );
             double intensity = 0.0;
             if(intersect->prim->canComputeSigmaWithLadLut()){
                 // LadLut based intensity computation
                 double sigma = intersect->prim->computeSigmaWithLadLut(
                     subrayDirection
                 );
-                intensity = calcIntensity(distance, radius, sigma);
+                intensity = scanner->calcIntensity(
+                    distance, radius, sigma, pulse.getDeviceIndex()
+                );
             }
             else{
                 // Standard intensity computation
-                intensity = calcIntensity(
+                intensity = scanner->calcIntensity(
                     incidenceAngle,
                     distance,
                     intersect->prim->material->reflectance,
                     intersect->prim->material->specularity,
                     intersect->prim->material->specularExponent,
                     targetArea,
-                    radius
+                    radius,
+                    pulse.getDeviceIndex()
                 );
             }
 
@@ -227,7 +229,7 @@ void FullWaveformPulseRunnable::handleSubray(
                 else{ // Update distance considering noise
                     distance = glm::distance(
                         ihr.getIntersectionPoint(),
-                        absoluteBeamOrigin
+                        pulse.getOriginRef()
                     );
                 }
             }
@@ -256,7 +258,7 @@ void FullWaveformPulseRunnable::digestIntersections(
 
     // If nothing was hit, get out of here
     if (maxHitDist_m < 0) {
-        detector->scanner->setLastPulseWasHit(false);
+        scanner->setLastPulseWasHit(false, pulse.getDeviceIndex());
         return;
     }
 
@@ -326,21 +328,19 @@ void FullWaveformPulseRunnable::findMaxMinHitDistances(
     // Find min-max hit distances
     map<double, double>::iterator it;
     for (it = reflections.begin(); it != reflections.end(); it++) {
-
-        double entryDistance = it->first;
-
-        if (entryDistance > maxHitDist_m) {
+        double const entryDistance = it->first;
+        if(entryDistance > maxHitDist_m) {
             maxHitDist_m = entryDistance;
         }
-        if (entryDistance < minHitDist_m) {
+        if(entryDistance < minHitDist_m) {
             minHitDist_m = entryDistance;
         }
     }
 }
 
 bool FullWaveformPulseRunnable::initializeFullWaveform(
-    double minHitDist_m,
-    double maxHitDist_m,
+    double const minHitDist_m,
+    double const maxHitDist_m,
     double &minHitTime_ns,
     double &maxHitTime_ns,
     double &nsPerBin,
@@ -348,46 +348,17 @@ bool FullWaveformPulseRunnable::initializeFullWaveform(
     int &peakIntensityIndex,
     int &numFullwaveBins
 ){
-    // Calc time at minimum and maximum distance
-    // (i.e. total beam time in fwf signal)
-    peakIntensityIndex = detector->scanner->peakIntensityIndex;
-    nsPerBin = detector->scanner->FWF_settings.binSize_ns;
-    double const peakFactor = peakIntensityIndex * nsPerBin;
-    // Time until first maximum minus rising flank
-    minHitTime_ns = minHitDist_m / cfg_speedOfLight_mPerNanosec - peakFactor;
-    // Time until last maximum time for signal decay with 1 bin for buffer
-    maxHitTime_ns = maxHitDist_m / cfg_speedOfLight_mPerNanosec +
-        detector->scanner->getPulseLength_ns() - peakFactor +
-        nsPerBin; // 1 bin for buffer
-
-    // Calc ranges and threshold
-    double hitTimeDelta_ns = maxHitTime_ns - minHitTime_ns;
-    double maxFullwaveRange_ns =
-        detector->scanner->FWF_settings.maxFullwaveRange_ns;
-    distanceThreshold = maxHitDist_m;
-    if(maxFullwaveRange_ns > 0.0 && hitTimeDelta_ns > maxFullwaveRange_ns){
-        hitTimeDelta_ns = maxFullwaveRange_ns;
-        maxHitTime_ns = minHitTime_ns + maxFullwaveRange_ns;
-        distanceThreshold = cfg_speedOfLight_mPerNanosec * maxFullwaveRange_ns;
-    }
-
-    // Check if full wave is possible
-    if(
-        (detector->cfg_device_rangeMin_m / cfg_speedOfLight_mPerNanosec)
-        > minHitTime_ns
-    ) {
-        return false;
-    }
-
-    // Compute fullwave variables
-    numFullwaveBins = ((int)std::ceil(maxHitTime_ns/nsPerBin)) -
-        ((int)ceil(minHitTime_ns/nsPerBin));
-
-    // update maxHitTime to fit the discretized fullwave bins
-    // minus 1 is necessary as the minimum is in bin #0
-    maxHitTime_ns = minHitTime_ns + (numFullwaveBins - 1) * nsPerBin;
-
-    return true;
+    return scanner->initializeFullWaveform(
+        minHitDist_m,
+        maxHitDist_m,
+        minHitTime_ns,
+        maxHitTime_ns,
+        nsPerBin,
+        distanceThreshold,
+        peakIntensityIndex,
+        numFullwaveBins,
+        pulse.getDeviceIndex()
+    );
 }
 
 void FullWaveformPulseRunnable::populateFullWaveform(
@@ -400,14 +371,16 @@ void FullWaveformPulseRunnable::populateFullWaveform(
 ){
     // Multiply each sub-beam intensity with time_wave and
     // add to the full waveform
-    vector<double> const &time_wave = detector->scanner->time_wave;
+    vector<double> const &time_wave = scanner->getTimeWave(
+        pulse.getDeviceIndex()
+    );
     map<double, double>::const_iterator it;
     for (it = reflections.begin(); it != reflections.end(); ++it) {
         double const entryDistance_m = it->first;
         if(entryDistance_m > distanceThreshold) continue;
         double const entryIntensity = it->second;
         double const wavePeakTime_ns = entryDistance_m /
-            cfg_speedOfLight_mPerNanosec; // in nanoseconds
+            SPEEDofLIGHT_mPerNanosec; // in nanoseconds
         int const binStart = std::max(
             (
                 (
@@ -436,7 +409,9 @@ void FullWaveformPulseRunnable::digestFullWaveform(
 ){
     // Extract points from waveform data via Gaussian decomposition
     numReturns = 0;
-    int win_size = (int)(detector->scanner->FWF_settings.winSize_ns/nsPerBin);
+    int win_size = (int)(
+        scanner->getFWFSettings(pulse.getDeviceIndex()).winSize_ns/nsPerBin
+    );
     // search for peaks around [-win_size, win_size]
 
     // least-squares estimation
@@ -452,7 +427,7 @@ void FullWaveformPulseRunnable::digestFullWaveform(
         if(!detectPeak(i, win_size, fullwave)) continue;
 
         // Gaussian model fitting
-        if (calcEchowidth) {
+        if (scanner->isCalcEchowidth()) {
             try {
                 fit.setParameters(
                     vector<double>{0, fullwave[i], (double) i, 1}
@@ -472,7 +447,7 @@ void FullWaveformPulseRunnable::digestFullWaveform(
         }
 
         // Compute distance
-        double distance = cfg_speedOfLight_mPerNanosec *
+        double distance = SPEEDofLIGHT_mPerNanosec *
             (i * nsPerBin + minHitTime_ns);
 
         // Build list of objects that produced this return
@@ -481,7 +456,7 @@ void FullWaveformPulseRunnable::digestFullWaveform(
 
         for (RaySceneIntersection intersect : intersects) {
             double intersectDist = glm::distance(
-                intersect.point, absoluteBeamOrigin);
+                intersect.point, pulse.getOriginRef());
 
             if (std::fabs(intersectDist - distance) < minDifference) {
                 minDifference = std::fabs(intersectDist - distance);
@@ -500,33 +475,33 @@ void FullWaveformPulseRunnable::digestFullWaveform(
 
         // Build measurement
         Measurement tmp;
-        tmp.beamOrigin = absoluteBeamOrigin;
+        tmp.beamOrigin = pulse.getOrigin();
         tmp.beamDirection = beamDir;
         tmp.distance = distance;
         tmp.echo_width = echo_width;
         tmp.intensity = fullwave.at(i);
-        tmp.fullwaveIndex = currentPulseNum;
+        tmp.fullwaveIndex = pulse.getPulseNumber();
         tmp.hitObjectId = hitObject;
         tmp.returnNumber = numReturns + 1;
         tmp.classification = classification;
-        tmp.gpsTime = currentGpsTime;
+        tmp.gpsTime = pulse.getTime();
 
         pointsMeasurement.push_back(tmp);
         ++numReturns;
 
         // Check if maximum number of returns per pulse has been reached
-        if(!fwDetector->scanner->checkMaxNOR(numReturns)) break;
+        if(!scanner->checkMaxNOR(numReturns, pulse.getDeviceIndex())) break;
     }
 
 }
 
 void FullWaveformPulseRunnable::exportOutput(
-    std::vector<double> &fullwave,
-    int &numReturns,
+    std::vector<double> & fullwave,
+    int const numReturns,
     std::vector<Measurement> &pointsMeasurement,
-    glm::dvec3 &beamDir,
-    double minHitTime_ns,
-    double maxHitTime_ns,
+    glm::dvec3 const &beamDir,
+    double const minHitTime_ns,
+    double const maxHitTime_ns,
     RandomnessGenerator<double> &randGen,
     RandomnessGenerator<double> &randGen2
 ){
@@ -537,24 +512,23 @@ void FullWaveformPulseRunnable::exportOutput(
             capturePoint(
                 pm,
                 randGen,
-                allMeasurements,
-                allMeasurementsMutex,
-                cycleMeasurements,
-                cycleMeasurementsMutex
+                scanner->allMeasurements.get(),
+                scanner->allMeasurementsMutex.get(),
+                scanner->cycleMeasurements.get(),
+                scanner->cycleMeasurementsMutex.get()
             );
         }
-        if(writeWaveform) {
-            detector->scanner->setLastPulseWasHit(true);
+        if(scanner->isWriteWaveform()) {
+            scanner->setLastPulseWasHit(true, pulse.getDeviceIndex());
             captureFullWave(
                 fullwave,
-                currentPulseNum,
+                pulse.getPulseNumber(),
                 minHitTime_ns,
                 maxHitTime_ns,
-                absoluteBeamOrigin +
-                    detector->scanner->platform->scene->getShift(),
+                pulse.getOrigin() + scene.getShift(),
                 beamDir,
-                currentGpsTime,
-                detector->scanner->isFullWaveNoise(),
+                pulse.getTime(),
+                scanner->isFullWaveNoise(),
                 randGen2
             );
         }
@@ -575,63 +549,6 @@ shared_ptr<RaySceneIntersection> FullWaveformPulseRunnable::findIntersection(
     return scene.getIntersection(tMinMax, o, v, false);
 }
 
-// Space distribution equation to calculate the beam energy decreasing the further away from the center (Carlsson et al., 2001)
-double FullWaveformPulseRunnable::calcEmmitedPower(
-    double const radius,
-    double const targetRange
-) const {
-    double const I0 = detector->scanner->getAveragePower();
-    double const lambda = detector->scanner->getWavelength();
-    double const R = targetRange;
-    double const R0 = detector->cfg_device_rangeMin_m;
-    double const r = radius;
-    double const w0 = detector->scanner->getBeamWaistRadius();
-    double const denom = M_PI * w0 * w0;
-    double const omega = (lambda * R) / denom;
-    double const omega0 = (lambda * R0) / denom;
-    double const w = w0 * sqrt(omega0 * omega0 + omega * omega);
-
-    return I0 * exp((-2 * r * r) / (w * w));
-}
-
-// Calculate the strength of the laser going back to the detector
-double FullWaveformPulseRunnable::calcIntensity(
-    double const incidenceAngle,
-    double const targetRange,
-    double const targetReflectivity,
-    double const targetSpecularity,
-    double const targetSpecularExponent,
-    double const targetArea,
-    double const radius
-) const {
-    double const emmitedPower = calcEmmitedPower(radius, targetRange);
-    double const intensity = AbstractPulseRunnable::calcReceivedPower(
-        emmitedPower,
-        targetRange,
-        incidenceAngle,
-        targetReflectivity,
-        targetSpecularity,
-        targetSpecularExponent,
-        targetArea
-    );
-    return intensity * 1000000000.0;
-}
-
-double FullWaveformPulseRunnable::calcIntensity(
-    double const targetRange,
-    double const radius,
-    double const sigma
-) const {
-    double const emmitedPower = calcEmmitedPower(radius, targetRange);
-    double const intensity = AbstractPulseRunnable::calcReceivedPower(
-        emmitedPower,
-        targetRange,
-        sigma
-    );
-    return intensity * 1000000000.0;
-}
-
-
 void FullWaveformPulseRunnable::captureFullWave(
     vector<double> & fullwave,
     int const fullwaveIndex,
@@ -645,9 +562,9 @@ void FullWaveformPulseRunnable::captureFullWave(
 ){
     // Add noise to the fullwave
     if(fullWaveNoise) {
+        double const halfDevAcc = detector->cfg_device_accuracy_m / 2.0;
         for (double &fw : fullwave) {
-            fw += rg2.normalDistributionNext() *
-                  this->detector->cfg_device_accuracy_m / 2.0;
+            fw += rg2.normalDistributionNext() * halfDevAcc;
         }
     }
 

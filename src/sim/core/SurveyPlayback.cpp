@@ -23,6 +23,8 @@ using helios::filems::SimpleSyncFileWriter;
 
 using namespace std;
 
+// ***  CONSTRUCTION / DESTRUCTION  *** //
+// ************************************ //
 SurveyPlayback::SurveyPlayback(
     shared_ptr<Survey> survey,
     shared_ptr<FMSFacade> fms,
@@ -101,11 +103,11 @@ void SurveyPlayback::estimateTime(
     if (legCurrentProgress > legProgress) {	// Do stuff only if leg progress incremented at least 1%
 		legProgress = (double) legCurrentProgress;
 
-		long currentTime = duration_cast<nanoseconds>(
-		    system_clock::now().time_since_epoch()).count();
+		chrono::nanoseconds currentTime = duration_cast<nanoseconds>(
+		    system_clock::now().time_since_epoch());
 		legElapsedTime_ns = currentTime - legStartTime_ns;
-		legRemainingTime_ns = (long)((100 - legProgress) / legProgress
-		    * legElapsedTime_ns);
+		legRemainingTime_ns = (long long)((100 - legProgress) / legProgress
+		    * legElapsedTime_ns.count());
 
 		if (!getScanner()->platform->canMove()) {
 			progress = ((mCurrentLegIndex * 100) + legProgress) /
@@ -116,8 +118,8 @@ void SurveyPlayback::estimateTime(
 			    / (double) mSurvey->getLength();
 		}
 		elapsedTime_ns = currentTime - timeStart_ns;
-		remainingTime_ns = (long)((100 - progress) /
-		    progress * elapsedTime_ns);
+		remainingTime_ns = (long long)((100 - progress) / progress
+            * elapsedTime_ns.count());
 
         if(legProgress == 99){
             std::stringstream ss;
@@ -129,12 +131,12 @@ void SurveyPlayback::estimateTime(
         ostringstream oss;
         oss << std::fixed << std::setprecision(2);
         oss << "Survey " << progress << "%\tElapsed "
-            << milliToString(elapsedTime_ns/1000000L) <<
-            " Remaining " << milliToString(remainingTime_ns/1000000L) << endl;
+            << milliToString(elapsedTime_ns.count()/1000000L) <<
+            " Remaining " << milliToString(remainingTime_ns/1000000L) << "\n";
         oss << "Leg" << (mCurrentLegIndex+1) << "/" << (numEffectiveLegs)
             << " " << legProgress << "%\tElapsed "
-            << milliToString(legElapsedTime_ns/1000000L) << " Remaining "
-            << milliToString(legRemainingTime_ns/1000000L);
+            << milliToString(legElapsedTime_ns.count()/1000000L)
+            << " Remaining " << milliToString(legRemainingTime_ns/1000000L);
         logging::INFO(oss.str());
 	}
 }
@@ -142,11 +144,12 @@ void SurveyPlayback::estimateTime(
 void SurveyPlayback::trackProgress() {
 	if(!getScanner()->platform->canMove()){
 		double legElapsedAngle = std::fabs(
-		    getScanner()->scannerHead->getRotateStart() -
-		    getScanner()->scannerHead->getRotateCurrent()
+		    getScanner()->getScannerHead()->getRotateStart() -
+		    getScanner()->getScannerHead()->getRotateCurrent()
         );
 		int const legProgress = (int)(
-		    legElapsedAngle * 100 / getScanner()->scannerHead->getRotateRange()
+		    legElapsedAngle * 100 /
+		    getScanner()->getScannerHead()->getRotateRange()
 		);
 		estimateTime(legProgress, true, 0);
 	}
@@ -168,8 +171,8 @@ void SurveyPlayback::doSimStep() {
 
 		legProgress = 0;
 		legStartTime_ns = duration_cast<nanoseconds>(
-		        system_clock::now().time_since_epoch()
-        ).count();
+            system_clock::now().time_since_epoch()
+        );
 	}
 
 	trackProgress();
@@ -221,7 +224,7 @@ void SurveyPlayback::onLegComplete() {
     mScanner->onLegComplete();
 
     // Notify detector about leg completion
-    mScanner->detector->onLegComplete();
+    mScanner->getDetector()->onLegComplete();
 
 	// Start next leg
     elapsedLength += mSurvey->legs.at(mCurrentLegIndex)->getLength();
@@ -337,7 +340,7 @@ void SurveyPlayback::startLeg(unsigned int const legIndex, bool const manual) {
 	    previousLeg != nullptr && !previousLeg->mScannerSettings->active &&
 	    leg->mScannerSettings->active
     ){
-        mSurvey->scanner->beamDeflector->restartDeflector();
+        mSurvey->scanner->getBeamDeflector()->restartDeflector();
 	}
 
 
@@ -364,7 +367,7 @@ void SurveyPlayback::startNextLeg(bool manual) {
 
 void SurveyPlayback::shutdown() {
 	Simulation::shutdown();
-	mSurvey->scanner->detector->shutdown();
+	mSurvey->scanner->getDetector()->shutdown();
 }
 
 string SurveyPlayback::milliToString(long millis) {

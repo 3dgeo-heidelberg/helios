@@ -51,7 +51,7 @@ public:
      */
     Survey() = default;
     Survey(Survey &survey);
-    ~Survey() override {scanner->detector->scanner = nullptr;}
+    ~Survey() override {scanner->setAllDetectors(nullptr);}
 
     // ***  M E T H O D S  *** //
     // *********************** //
