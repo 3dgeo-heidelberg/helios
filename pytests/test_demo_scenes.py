@@ -40,7 +40,7 @@ def run_helios_executable(survey_path: Path, options=None) -> Path:
     return find_playback_dir(survey_path)
 
 
-def run_helios_pyhelios(survey_path: Path, las_output=True, zip_output=False, start_time=None) -> Path:
+def run_helios_pyhelios(survey_path: Path, las_output: bool = True, zip_output: bool = False, start_time: str = None) -> Path:
     sys.path.append(WORKING_DIR)
     import pyhelios
     pyhelios.setDefaultRandomnessGeneratorSeed("43")
