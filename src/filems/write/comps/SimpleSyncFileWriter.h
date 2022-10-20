@@ -1,6 +1,6 @@
 #pragma once
 
-#include <filems/write/comps/SyncFileWriter.h>
+#include <filems/write/comps/SingleSyncFileWriter.h>
 #include <MathConverter.h>
 
 #include <fstream>
@@ -14,12 +14,13 @@ namespace helios { namespace filems{
 /**
  * @author Alberto M. Esmoris Pena
  * @version 1.0
- * @brief Abstract specialization of SyncFileWriter to write output directly
- *  to a file
+ * @brief Abstract specialization of SingleSyncFileWriter to write output
+ *  directly to a file
+ * @see filems::SingleSyncFileWriter
  * @see filems::SyncFileWriter
  */
 template <typename ... WriteArgs>
-class SimpleSyncFileWriter : public SyncFileWriter<WriteArgs ...>{
+class SimpleSyncFileWriter : public SingleSyncFileWriter<WriteArgs ...>{
 protected:
     // ***  ATTRIBUTES  *** //
     // ******************** //
@@ -40,7 +41,7 @@ public:
 	    const std::string& path,
 	    std::ios_base::openmode om = std::ios_base::app
     ) :
-	    SyncFileWriter<WriteArgs ...>(path)
+	    SingleSyncFileWriter<WriteArgs ...>(path)
     {
 		// Open file for writing ...
 		ofs.open(path, om);
@@ -55,9 +56,8 @@ public:
     // ***  F I N I S H  *** //
     // ********************* //
     /**
-     * @brief SimpleSyncFileWriter finish method does not do nothing. The
-     * writing operations are guaranteed to be done after the instance has
-     * been destroyed.
+     * @brief SimpleSyncFileWriter finish method assures that output file
+     *  will be closed if it is open
      */
     void finish() override {if(ofs.is_open()) ofs.close();}
 };

@@ -1,9 +1,10 @@
 #pragma once
 
-#include <filems/write/comps/SyncFileWriter.h>
+#include <filems/write/comps/SingleSyncFileWriter.h>
 #include <helios_version.h>
 
 #include <laswriter.hpp>
+#include <glm/glm.hpp>
 
 #include <memory>
 #include <string>
@@ -14,12 +15,12 @@ namespace helios { namespace filems{
 /**
  * @author Alberto M. Esmoris Pena
  * @verison 1.0
- * @brief Abstract specialization of SyncFileWriter to write output in LAS
- *  format
- * @see filems::SyncFileWriter
+ * @brief Abstract specialization of SingleSyncFileWriter to write output in
+ *  LAS format
+ * @see filems::SingleSyncFileWriter
  */
 template <typename ... WriteArgs>
-class LasSyncFileWriter : public SyncFileWriter<WriteArgs ...>{
+class LasSyncFileWriter : public SingleSyncFileWriter<WriteArgs ...>{
 protected:
     // ***  ATTRIBUTES  *** //
     // ******************** //
@@ -133,7 +134,7 @@ protected:
 public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //
     // ************************************ //
-    LasSyncFileWriter() : SyncFileWriter<WriteArgs ...>() {};
+    LasSyncFileWriter() : SingleSyncFileWriter<WriteArgs ...>() {};
     /**
      * @brief Synchronous LAS file writer constructor
      * @see SyncFileWriter::path
@@ -154,7 +155,7 @@ public:
         bool const createWriter = true
 
     ) :
-        SyncFileWriter<WriteArgs ...>(path),
+        SingleSyncFileWriter<WriteArgs ...>(path),
         scaleFactor(scaleFactor),
         offset(offset),
         minIntensity(minIntensity),

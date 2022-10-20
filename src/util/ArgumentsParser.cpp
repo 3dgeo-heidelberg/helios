@@ -221,6 +221,10 @@ size_t ArgumentsParser::parseSAHLossNodes(){
     return std::stoul(argv[index+1]);
 }
 
+bool ArgumentsParser::parseSplitByChannel(){
+    return findIndexOfArgument("--splitByChannel") >= 0;
+}
+
 // *** PRIVATE METHODS *** //
 // *********************** //
 int ArgumentsParser::findIndexOfArgument(std::string&& arg){

@@ -64,6 +64,7 @@ public:
         int chunkSize = 32,
         int warehouseFactor = 4,
         bool fullWaveNoise = false,
+        bool splitByChannel = false,
         bool platformNoiseDisabled = false,
         bool legNoiseDisabled = false,
         bool rebuildScene = false,

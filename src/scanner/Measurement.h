@@ -16,6 +16,14 @@ public:
     // ***  ATTRIBUTES  *** //
     // ******************** //
     /**
+     * @brief Identifier of the device which generated the measurement
+     */
+    std::string devId;
+    /**
+     * @brief The index of the scanning device which generated the measurement
+     */
+    size_t devIdx;
+    /**
      * @brief ID of hit object
      */
 	std::string hitObjectId;
@@ -63,6 +71,7 @@ public:
 	 * @brief Measurement GPS time
 	 */
 	double gpsTime;
+
 
 	// ***  CONSTRUCTION / DESTRUCTION  *** //
 	// ************************************ //

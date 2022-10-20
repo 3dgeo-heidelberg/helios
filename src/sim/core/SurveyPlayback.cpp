@@ -109,13 +109,16 @@ void SurveyPlayback::estimateTime(
 		legRemainingTime_ns = (long long)((100 - legProgress) / legProgress
 		    * legElapsedTime_ns.count());
 
-		if (!getScanner()->platform->canMove()) {
+		if (
+		        !getScanner()->platform->canMove() ||
+		        getScanner()->platform->isInterpolated()
+        ) {
 			progress = ((mCurrentLegIndex * 100) + legProgress) /
 			    (double) numEffectiveLegs;
 		}
 		else {
-			progress = (elapsedLength + legElapsedLength) * 100
-			    / (double) mSurvey->getLength();
+            progress = (elapsedLength + legElapsedLength) * 100
+                / (double) mSurvey->getLength();
 		}
 		elapsedTime_ns = currentTime - timeStart_ns;
 		remainingTime_ns = (long long)((100 - progress) / progress
@@ -141,16 +144,36 @@ void SurveyPlayback::estimateTime(
 	}
 }
 
+int SurveyPlayback::estimateSpatialLegProgress(double const legElapsedLength){
+    return (int)(
+        legElapsedLength * 100 / getCurrentLeg()->getLength()
+    );
+}
+int SurveyPlayback::estimateAngularLegProgress(double const legElapsedAngle){
+    return (int)(
+        legElapsedAngle * 100 /
+        getScanner()->getScannerHead()->getRotateRange()
+    );
+}
+int SurveyPlayback::estimateTemporalLegProgress(){
+    std::shared_ptr<InterpolatedMovingPlatform> imp =
+        std::static_pointer_cast<InterpolatedMovingPlatform>(
+            mSurvey->scanner->platform
+        );
+    arma::Col<double> const &tf = imp->getTimeFrontiers();
+    double const a1 = tf(0);
+    double const am = tf(tf.n_elem-1);
+    double const t = imp->getStepLoop().getCurrentTime();
+    return (int)(100*(t-a1)/(am-a1));
+}
+
 void SurveyPlayback::trackProgress() {
 	if(!getScanner()->platform->canMove()){
 		double legElapsedAngle = std::fabs(
 		    getScanner()->getScannerHead()->getRotateStart() -
 		    getScanner()->getScannerHead()->getRotateCurrent()
         );
-		int const legProgress = (int)(
-		    legElapsedAngle * 100 /
-		    getScanner()->getScannerHead()->getRotateRange()
-		);
+		int const legProgress = estimateAngularLegProgress(legElapsedAngle);
 		estimateTime(legProgress, true, 0);
 	}
 	else if (mCurrentLegIndex < mSurvey->legs.size() - 1) {
@@ -158,9 +181,10 @@ void SurveyPlayback::trackProgress() {
 		    getCurrentLeg()->mPlatformSettings->getPosition(),
 		    mSurvey->scanner->platform->getPosition()
         );
-		int const legProgress = (int)
-		    (legElapsedLength * 100 / getCurrentLeg()->getLength());
-		estimateTime(legProgress, false, legElapsedLength);
+		int const legProgress = mSurvey->scanner->platform->isInterpolated() ?
+            estimateTemporalLegProgress() :
+		    estimateSpatialLegProgress(legElapsedLength);
+        estimateTime(legProgress, false, legElapsedLength);
 	}
 }
 

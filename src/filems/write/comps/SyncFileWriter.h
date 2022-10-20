@@ -1,13 +1,9 @@
 #pragma once
 
-#include <Trajectory.h>
 #include <util/logger/logging.hpp>
-#include <filems/write/strategies/WriteStrategy.h>
 
-#include <mutex>
 #include <string>
 #include <sstream>
-#include <memory>
 
 namespace helios { namespace filems{
 
@@ -17,24 +13,9 @@ namespace helios { namespace filems{
   * @brief Abstract class defining common behavior for all synchronous file
   *  writers
   * @tparam WriteArgs Arguments for the write operation
-  * @see filems::WriteStrategy
   */
 template <typename ... WriteArgs>
 class SyncFileWriter{
-protected:
-    /**
-     * @brief Path to file to be written
-     */
-    std::string path;
-    /**
-     * @brief Mutex to synchronize concurrent write operations
-     */
-    std::mutex mutex;
-    /**
-     * @brief The write strategy specifying how to write data to file
-     */
-    std::shared_ptr<WriteStrategy<WriteArgs ...>> writeStrategy = nullptr;
-
 public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //
     // ************************************ //
@@ -42,35 +23,14 @@ public:
      * @brief Default constructor for synchronous file writer
      */
     SyncFileWriter() = default;
-
-    /**
-     * @brief Instantiate a SyncFileWriter which writes to file at given path
-     * @param path Path to file to be written
-     * @see SyncFileWriter::path
-     */
-    explicit SyncFileWriter(const std::string & path) : path(path) {};
     virtual ~SyncFileWriter(){}
 
     // ***  W R I T E  *** //
     // ******************* //
     /**
-     * @brief Synchronously write to file
+     * @brief Handle synchronous write operations
      */
-    void write(WriteArgs ... writeArgs){
-        // Get the mutex to have exclusive access
-        std::lock_guard<std::mutex> lock(mutex);
-
-        // Write data function
-        try {
-            writeStrategy->write(writeArgs ...);
-        }
-        catch(std::exception &e){
-            std::stringstream ss;
-            ss << "SyncFileWriter failed to write. EXCEPTION: \n\t"
-                << e.what();
-            logging::WARN(ss.str());
-        }
-    }
+    virtual void write(WriteArgs ... writeArgs) = 0;
 
     // ***  F I N I S H  *** //
     // ********************* //
@@ -83,10 +43,18 @@ public:
     // ***  GETTERS and SETTERS  *** //
     // ***************************** //
     /**
-     * @brief Obtain the path to the file
-     * @return Path to the file
+     * @brief Obtain the path to the file corresponding to the idx-th writing
+     *  stream
+     * @param idx The index of the writing stream which path must be obtained
+     * @return Path to the file corresponding to the idx-th writing stream
      */
-    inline std::string getPath(){return path;}
+    virtual std::string getPath(size_t const idx) const = 0;
+    /**
+     * @brief Non index version of the SyncFileWriter::getPath(size_t const)
+     *  function.
+     * @see SyncFileWriter::getPath(size_t const)
+     */
+    inline std::string getPath(){return getPath(0);}
 };
 
 }}
