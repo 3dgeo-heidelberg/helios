@@ -46,7 +46,8 @@ protected:
     MultiSyncFileWriter() : SyncFileWriter<WriteArgs ...>() {}
     explicit MultiSyncFileWriter(std::vector<std::string> const &path) :
         SyncFileWriter<WriteArgs ...>(),
-        path(path)
+        path(path),
+        mutex(path.size())
     {}
     virtual ~MultiSyncFileWriter(){}
 

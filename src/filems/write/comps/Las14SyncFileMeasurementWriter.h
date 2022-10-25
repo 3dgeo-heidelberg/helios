@@ -38,56 +38,32 @@ public:
             deltaIntensity,
             false // Prevent parent from creating LAS writer
         )
-    {
-        // Craft header and point format
-        craft();
-
-        // Add extra attributes
-        addExtraAttributes();
-
-        // Create LASWriter
-        createLasWriter(path, compress);
-
-        // Write strategy
-        this->writeStrategy = make_shared<LasMeasurementWriteStrategy>(
-            *lw,
-            lp,
-            scaleFactorInverse,
-            this->offset,
-            this->minIntensity,
-            maxIntensity,
-            intensityCoefficient,
-            ewAttrStart,
-            fwiAttrStart,
-            hoiAttrStart,
-            ampAttrStart
-        );
-    };
+    {};
 
     virtual ~Las14SyncFileMeasurementWriter() = default;
 
-    // ***  CRAFTING  *** //
-    // ****************** //
+    // ***  CREATE WRITER  *** //
+    // *********************** //
     /**
-     * @brief Crafting of header of the LAS file for version 1.4
-     * @see LasSyncFileMeasurementWriter::craft
+     * @brief Creation of the LasWriter itself, including LASpoint
+     * initialization but using LAS14 version instead of LAS10
+     * @param path Path where the file will be save
+     * @param compress Flag to activate/deactivate compression (las/laz format)
+     * @see LasSyncFileWriter::createLasWriter
      */
-    void craft(){
-        // Craft version of LasSyncWriter LAS 1.0
-        LasSyncFileMeasurementWriter::craft();
+    void createLasWriter(const std::string & path, bool const compress)
+    {
+        // Craft header and point format for LAS_14 version
+        lws.craft14();
 
-        // Update Header to 1.4 specification
-        lwHeader.version_minor = U8(4);
+        // Add extra attributes
+        lws.addExtraAttributes();
 
-        // Update Point Data Format to support new return number / classes
-        lwHeader.point_data_format = 6;
-        lwHeader.point_data_record_length = 30;
+        // Initialize LASpoint
+        lws.initLASPoint();
 
-        // Adds the byte difference between LAS 1.4 and LAS 1.0 (350 - 227)
-        lwHeader.header_size += 148;
-
-        // Adds the byte difference to the data point offset
-        lwHeader.offset_to_point_data += 148;
+        // Create writer from specification
+        lw = lws.makeWriter(path, compress);
     }
 
 

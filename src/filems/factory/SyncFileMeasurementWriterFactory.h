@@ -24,6 +24,7 @@
 #include <filems/write/comps/SimpleSyncFileMeasurementWriter.h>
 #include <filems/write/comps/Las14VectorialSyncFileMeasurementWriter.h>
 #include <filems/write/comps/LasVectorialSyncFileMeasurementWriter.h>
+#include <filems/write/comps/LasMultiVectorialSyncFileMeasurementWriter.h>
 #include <filems/write/comps/ZipVectorialSyncFileMeasurementWriter.h>
 #include <filems/write/comps/SimpleVectorialSyncFileMeasurementWriter.h>
 #include <util/HeliosException.h>
@@ -164,7 +165,62 @@ static shared_ptr<
 
     // Handle unexpected type
     stringstream ss;
-    ss  << "SyncFileMeasurementWriterFactory::makeWriter received an "
+    ss  << "SyncFileMeasurementWriterFactory::makeVectorialWriter received an "
+        << "unexpected type: (" << type << ")";
+    throw HeliosException(ss.str());
+}
+
+/**
+ * @brief Synchronous multi-stream vectorial file writer factory
+ * @see SyncFileMeasurementWriterFactory::WriterType
+ * @see SyncFileWriter::path
+ * @param compress Specify is use compressed LAS format (LAZ) or not (pure
+ *  LAS)
+ * @see LasSyncFileWriter::scaleFactor
+ * @see LasSyncFileWriter::offset
+ * @see LasSyncFileWriter::minIntensity
+ * @see LasSyncFileWriter::deltaIntensity
+ */
+static shared_ptr<
+    SyncFileWriter<vector<Measurement> const&, glm::dvec3 const&>
+> makeMultiVectorialWriter(
+    WriterType const type,
+    vector<string> const &path,
+    bool const compress,
+    vector<double> const &scaleFactor,
+    vector<glm::dvec3> const &offset,
+    vector<double> const &minIntensity,
+    vector<double> const &deltaIntensity
+){
+    // TODO Rethink : Update implementation below to work with multiwriters
+    switch (type) {
+        case las10Type:
+            return make_shared<LasMultiVectorialSyncFileMeasurementWriter>(
+                path,                                // Output path
+                compress,                            // Zip flag
+                scaleFactor,                         // Scale factor
+                offset,                              // Offset
+                minIntensity,                        // Min intensity
+                deltaIntensity                       // Delta intensity
+            ); // TODO Restore commented below
+        /*case las14Type:
+            return make_shared<Las14VectorialSyncFileMeasurementWriter>(
+                path,                                // Output path
+                compress,                            // Zip flag
+                scaleFactor,                         // Scale factor
+                offset,                              // Offset
+                minIntensity,                        // Min intensity
+                deltaIntensity                       // Delta intensity
+            );
+        case zipType:
+            return make_shared<ZipVectorialSyncFileMeasurementWriter>(path);
+        case simpleType:
+            return make_shared<SimpleVectorialSyncFileMeasurementWriter>(path);*/
+    }
+
+    // Handle unexpected type
+    stringstream ss;
+    ss  << "SyncFileMeasurementWriterFactory::makeVectorialWriter received an "
         << "unexpected type: (" << type << ")";
     throw HeliosException(ss.str());
 }

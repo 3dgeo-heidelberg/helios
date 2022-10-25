@@ -114,3 +114,21 @@ void FileUtils::unzipFile(
     }
 
 }
+
+void FileUtils::extractExtensionAndPathWithoutExtension(
+    std::string const &path,
+    std::string &ext,
+    std::string &pathNonExt
+){
+    size_t const extPos = path.find_last_of(".");
+    ext = path.substr(extPos);
+    pathNonExt = path.substr(0, extPos);
+}
+
+std::string FileUtils::craftPathWithSuffix(
+    std::string const &pathNonExt,
+    std::string const &suffix,
+    std::string const &ext
+){
+    return pathNonExt + suffix + ext;
+}

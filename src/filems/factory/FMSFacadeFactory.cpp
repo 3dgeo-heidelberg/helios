@@ -1,4 +1,5 @@
 #include <FMSFacadeFactory.h>
+#include <filems/write/core/MultiVectorialMeasurementWriter.h>
 #include <logging.hpp>
 
 #include <boost/filesystem.hpp>
@@ -23,6 +24,7 @@ shared_ptr<FMSFacade> FMSFacadeFactory::buildFacade(
     bool const lasOutput,
     bool const las10,
     bool const zipOutput,
+    bool const splitByChannel,
     Survey &survey
 ){
     // Determine root directory for output files, create it if necessary
@@ -51,7 +53,16 @@ shared_ptr<FMSFacade> FMSFacadeFactory::buildFacade(
     fmsWrite.setRootDir(rootDir);
 
     // Configure measurement writer
-    fmsWrite.setMeasurementWriter(make_shared<VectorialMeasurementWriter>());
+    if(survey.scanner->getNumDevices() > 1 && splitByChannel){
+        fmsWrite.setMeasurementWriter(
+            make_shared<MultiVectorialMeasurementWriter>()
+        );
+    }
+    else{
+        fmsWrite.setMeasurementWriter(
+            make_shared<VectorialMeasurementWriter>()
+        );
+    }
     fmsWrite.getMeasurementWriter()->setScanner(survey.scanner);
     fmsWrite.setMeasurementWriterLasOutput(lasOutput);
     fmsWrite.setMeasurementWriterLas10(las10);

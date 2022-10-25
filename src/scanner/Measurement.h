@@ -80,6 +80,8 @@ public:
 	 */
 	Measurement() = default;
 	Measurement(const Measurement &m){
+	    devId = m.devId;
+	    devIdx = m.devIdx;
 	    hitObjectId = m.hitObjectId;
 	    position = glm::dvec3(m.position);
 	    beamDirection = glm::dvec3(m.beamDirection);

@@ -106,6 +106,7 @@ void LidarSim::init(
         lasOutput,
         las10,
         zipOutput,
+        splitByChannel,
         *survey
     );
 
