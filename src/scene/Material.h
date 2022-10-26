@@ -55,7 +55,7 @@ public:
     /**
      * @brief Material reflectance
      */
-    double reflectance = 0;
+    double reflectance = 0.5;
     /**
      * @brief Material specularity
      * @see Material::setSpecularity

@@ -105,7 +105,7 @@ void SpectralLibrary::setReflectances(Scene* scene) {
 
 	for (Primitive* prim : scene->primitives) {
 
-		prim->material->reflectance = defaultReflectance;
+		// prim->material->reflectance = defaultReflectance;  this would overwrite all reflectances read from mat files!
 
 		if(prim->material->spectra.empty()) {
 			if(matsMissing.find(prim->material->spectra) == matsMissing.end()){
