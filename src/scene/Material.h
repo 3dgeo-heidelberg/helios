@@ -55,7 +55,7 @@ public:
     /**
      * @brief Material reflectance
      */
-    double reflectance = 0.5;
+    double reflectance = NAN;
     /**
      * @brief Material specularity
      * @see Material::setSpecularity

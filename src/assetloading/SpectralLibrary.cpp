@@ -104,8 +104,11 @@ void SpectralLibrary::setReflectances(Scene* scene) {
 	set<string> matsMissing;
 
 	for (Primitive* prim : scene->primitives) {
+        if (!isnan(prim->material->reflectance)){
+            continue;  // if a reflectance was set, this has precedence over spectra
+        }
 
-		// prim->material->reflectance = defaultReflectance;  this would overwrite all reflectances read from mat files!
+        prim->material->reflectance = defaultReflectance;  // otherwise, set the default reflectance
 
 		if(prim->material->spectra.empty()) {
 			if(matsMissing.find(prim->material->spectra) == matsMissing.end()){
