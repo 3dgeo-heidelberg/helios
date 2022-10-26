@@ -153,6 +153,15 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a02363e87fb6308162af5863a2f40022c"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="../../dc/d42/classScanner.html">Scanner</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/d82/classXmlAssetsLoader.html#a02363e87fb6308162af5863a2f40022c">createScannerFromXml</a> (tinyxml2::XMLElement *scannerNode)</td></tr>
 <tr class="memdesc:a02363e87fb6308162af5863a2f40022c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create scanner from given XML element (node)  <a href="#a02363e87fb6308162af5863a2f40022c">More...</a><br /></td></tr>
 <tr class="separator:a02363e87fb6308162af5863a2f40022c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0aee73cd24f66d00031733de536dfa8e"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="../../d7/d92/classAbstractBeamDeflector.html">AbstractBeamDeflector</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/d82/classXmlAssetsLoader.html#a0aee73cd24f66d00031733de536dfa8e">createBeamDeflectorFromXml</a> (tinyxml2::XMLElement *scannerNode)</td></tr>
+<tr class="memdesc:a0aee73cd24f66d00031733de536dfa8e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a beam deflector from given XML element (node)  <a href="#a0aee73cd24f66d00031733de536dfa8e">More...</a><br /></td></tr>
+<tr class="separator:a0aee73cd24f66d00031733de536dfa8e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a29475383e84991ab804aeb56259a2132"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="../../d8/d6b/classAbstractDetector.html">AbstractDetector</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/d82/classXmlAssetsLoader.html#a29475383e84991ab804aeb56259a2132">createDetectorFromXml</a> (tinyxml2::XMLElement *scannerNode, std::shared_ptr&lt; <a class="el" href="../../dc/d42/classScanner.html">Scanner</a> &gt; scanner)</td></tr>
+<tr class="memdesc:a29475383e84991ab804aeb56259a2132"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a pulse detector from given XML element (node)  <a href="#a29475383e84991ab804aeb56259a2132">More...</a><br /></td></tr>
+<tr class="separator:a29475383e84991ab804aeb56259a2132"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a18fb844e2739bc6db95584ba42032842"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="../../dc/da7/classScannerHead.html">ScannerHead</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/d82/classXmlAssetsLoader.html#a18fb844e2739bc6db95584ba42032842">createScannerHeadFromXml</a> (tinyxml2::XMLElement *scannerNode)</td></tr>
+<tr class="memdesc:a18fb844e2739bc6db95584ba42032842"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a scanner head from given XML element (node)  <a href="#a18fb844e2739bc6db95584ba42032842">More...</a><br /></td></tr>
+<tr class="separator:a18fb844e2739bc6db95584ba42032842"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a34407577e53737d34803929a936716ad"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="../../d0/d23/classScannerSettings.html">ScannerSettings</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/d82/classXmlAssetsLoader.html#a34407577e53737d34803929a936716ad">createScannerSettingsFromXml</a> (tinyxml2::XMLElement *node, std::unordered_set&lt; std::string &gt; *fields=nullptr)</td></tr>
 <tr class="memdesc:a34407577e53737d34803929a936716ad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create scanner settings from given XML element (node)  <a href="#a34407577e53737d34803929a936716ad">More...</a><br /></td></tr>
 <tr class="separator:a34407577e53737d34803929a936716ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -162,6 +171,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a383a893a770ffb5403fb8c36ac184f89"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="../../d7/d6d/classTrajectorySettings.html">TrajectorySettings</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/d82/classXmlAssetsLoader.html#a383a893a770ffb5403fb8c36ac184f89">createTrajectorySettingsFromXml</a> (tinyxml2::XMLElement *legNode, std::shared_ptr&lt; <a class="el" href="../../d7/d6d/classTrajectorySettings.html">TrajectorySettings</a> &gt; settings=nullptr)</td></tr>
 <tr class="memdesc:a383a893a770ffb5403fb8c36ac184f89"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create <a class="el" href="../../d7/d6d/classTrajectorySettings.html" title="Class representing trajectory settings. ">TrajectorySettings</a> from given XML element (node)  <a href="#a383a893a770ffb5403fb8c36ac184f89">More...</a><br /></td></tr>
 <tr class="separator:a383a893a770ffb5403fb8c36ac184f89"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7e3b2a0d6c4330031f46d9c7423b817b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/d82/classXmlAssetsLoader.html#a7e3b2a0d6c4330031f46d9c7423b817b">fillScanningDevicesFromChannels</a> (std::shared_ptr&lt; <a class="el" href="../../dc/d42/classScanner.html">Scanner</a> &gt; scanner, tinyxml2::XMLElement *scannerNode, tinyxml2::XMLElement *channels, std::shared_ptr&lt; <a class="el" href="../../d7/d92/classAbstractBeamDeflector.html">AbstractBeamDeflector</a> &gt; deflec, std::shared_ptr&lt; <a class="el" href="../../d8/d6b/classAbstractDetector.html">AbstractDetector</a> &gt; detec, std::shared_ptr&lt; <a class="el" href="../../dc/da7/classScannerHead.html">ScannerHead</a> &gt; scanHead, std::shared_ptr&lt; <a class="el" href="../../d4/dfb/classFWFSettings.html">FWFSettings</a> &gt; fwfSettings)</td></tr>
+<tr class="memdesc:a7e3b2a0d6c4330031f46d9c7423b817b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fill vector of scanning devices with channel data.  <a href="#a7e3b2a0d6c4330031f46d9c7423b817b">More...</a><br /></td></tr>
+<tr class="separator:a7e3b2a0d6c4330031f46d9c7423b817b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
@@ -327,6 +339,73 @@ Static Protected Attributes</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Shared pointer to created asset </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="../../de/d97/classAsset.html" title="Base class for all assets. ">Asset</a> </dd></dl>
+
+</div>
+</div>
+<a id="a0aee73cd24f66d00031733de536dfa8e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0aee73cd24f66d00031733de536dfa8e">&#9670;&nbsp;</a></span>createBeamDeflectorFromXml()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::shared_ptr&lt; <a class="el" href="../../d7/d92/classAbstractBeamDeflector.html">AbstractBeamDeflector</a> &gt; XmlAssetsLoader::createBeamDeflectorFromXml </td>
+          <td>(</td>
+          <td class="paramtype">tinyxml2::XMLElement *&#160;</td>
+          <td class="paramname"><em>scannerNode</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Create a beam deflector from given XML element (node) </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">scannerNode</td><td>XML element (node) containing deflector data </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Shared pointer to created beam deflector </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d7/d92/classAbstractBeamDeflector.html" title="Base abstract class for beam deflectors. ">AbstractBeamDeflector</a> </dd></dl>
+
+</div>
+</div>
+<a id="a29475383e84991ab804aeb56259a2132"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a29475383e84991ab804aeb56259a2132">&#9670;&nbsp;</a></span>createDetectorFromXml()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::shared_ptr&lt; <a class="el" href="../../d8/d6b/classAbstractDetector.html">AbstractDetector</a> &gt; XmlAssetsLoader::createDetectorFromXml </td>
+          <td>(</td>
+          <td class="paramtype">tinyxml2::XMLElement *&#160;</td>
+          <td class="paramname"><em>scannerNode</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::shared_ptr&lt; <a class="el" href="../../dc/d42/classScanner.html">Scanner</a> &gt;&#160;</td>
+          <td class="paramname"><em>scanner</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Create a pulse detector from given XML element (node) </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">scannerNode</td><td>XML element (node) containing deflector data </td></tr>
+    <tr><td class="paramname">scanner</td><td>The shared pointer to the scanner associated to the detector </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Shared pointer to created detector </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d8/d6b/classAbstractDetector.html" title="Base abstract class for detectors. ">AbstractDetector</a> </dd></dl>
 
 </div>
 </div>
@@ -525,6 +604,34 @@ Static Protected Attributes</h2></td></tr>
 
 </div>
 </div>
+<a id="a18fb844e2739bc6db95584ba42032842"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a18fb844e2739bc6db95584ba42032842">&#9670;&nbsp;</a></span>createScannerHeadFromXml()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::shared_ptr&lt; <a class="el" href="../../dc/da7/classScannerHead.html">ScannerHead</a> &gt; XmlAssetsLoader::createScannerHeadFromXml </td>
+          <td>(</td>
+          <td class="paramtype">tinyxml2::XMLElement *&#160;</td>
+          <td class="paramname"><em>scannerNode</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Create a scanner head from given XML element (node) </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">scannerNode</td><td>XML element (node) containing scanner head data </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Shared pointer to created scanner head </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../dc/da7/classScannerHead.html">ScannerHead</a> </dd></dl>
+
+</div>
+</div>
 <a id="a34407577e53737d34803929a936716ad"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a34407577e53737d34803929a936716ad">&#9670;&nbsp;</a></span>createScannerSettingsFromXml()</h2>
 
@@ -600,6 +707,79 @@ Static Protected Attributes</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Shared pointer to created <a class="el" href="../../d7/d6d/classTrajectorySettings.html" title="Class representing trajectory settings. ">TrajectorySettings</a> </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d7/d6d/classTrajectorySettings.html" title="Class representing trajectory settings. ">TrajectorySettings</a> </dd></dl>
+
+</div>
+</div>
+<a id="a7e3b2a0d6c4330031f46d9c7423b817b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7e3b2a0d6c4330031f46d9c7423b817b">&#9670;&nbsp;</a></span>fillScanningDevicesFromChannels()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void XmlAssetsLoader::fillScanningDevicesFromChannels </td>
+          <td>(</td>
+          <td class="paramtype">std::shared_ptr&lt; <a class="el" href="../../dc/d42/classScanner.html">Scanner</a> &gt;&#160;</td>
+          <td class="paramname"><em>scanner</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">tinyxml2::XMLElement *&#160;</td>
+          <td class="paramname"><em>scannerNode</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">tinyxml2::XMLElement *&#160;</td>
+          <td class="paramname"><em>channels</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::shared_ptr&lt; <a class="el" href="../../d7/d92/classAbstractBeamDeflector.html">AbstractBeamDeflector</a> &gt;&#160;</td>
+          <td class="paramname"><em>deflec</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::shared_ptr&lt; <a class="el" href="../../d8/d6b/classAbstractDetector.html">AbstractDetector</a> &gt;&#160;</td>
+          <td class="paramname"><em>detec</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::shared_ptr&lt; <a class="el" href="../../dc/da7/classScannerHead.html">ScannerHead</a> &gt;&#160;</td>
+          <td class="paramname"><em>scanHead</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::shared_ptr&lt; <a class="el" href="../../d4/dfb/classFWFSettings.html">FWFSettings</a> &gt;&#160;</td>
+          <td class="paramname"><em>fwfSettings</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Fill vector of scanning devices with channel data. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">scanner</td><td>The multi-channel scanner to be filled </td></tr>
+    <tr><td class="paramname">scannerNode</td><td>The XML element representing the scanner </td></tr>
+    <tr><td class="paramname">channels</td><td>The channels to fill each scanning device </td></tr>
+    <tr><td class="paramname">deflec</td><td>The base deflector for each scanning device </td></tr>
+    <tr><td class="paramname">detec</td><td>The base detector for each scanning device </td></tr>
+    <tr><td class="paramname">scanHead</td><td>The base scanner head for each scanning device </td></tr>
+    <tr><td class="paramname">fwfSettings</td><td>The base fullwave settings for each scanning device </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../da/d23/classMultiScanner.html" title="Class representing a multi scanner. It is, a scanner that can emit more than one pulse per time insta...">MultiScanner</a> </dd></dl>
 
 </div>
 </div>

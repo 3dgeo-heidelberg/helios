@@ -2,7 +2,7 @@ var classHelicopterPlatform =
 [
     [ "HelicopterPlatform", "db/d69/classHelicopterPlatform.html#a6c3a234e28ae685ea1879d0febd65d87", null ],
     [ "_clone", "db/d69/classHelicopterPlatform.html#ae094160c7754044df3d16058ab334e43", null ],
-    [ "canStopAndTurn", "db/d69/classHelicopterPlatform.html#aef615151ed945fb6baf2421fa3b64aaf", null ],
+    [ "canStopAndTurn", "db/d69/classHelicopterPlatform.html#a636b3a0798b729ba0c15984993cf7ad8", null ],
     [ "clone", "db/d69/classHelicopterPlatform.html#a99ffc82dd04bf0f0832f23185241e4b6", null ],
     [ "computeAlignmentAngles", "db/d69/classHelicopterPlatform.html#a1ca633d895758f0731ae33d9e9978bce", null ],
     [ "computeEngineForce", "db/d69/classHelicopterPlatform.html#ab35ce371755b03593b9587b662013085", null ],

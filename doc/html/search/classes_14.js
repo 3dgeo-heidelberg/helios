@@ -6,6 +6,7 @@ var searchData=
   ['wavefrontobj',['WavefrontObj',['../d0/d92/classWavefrontObj.html',1,'']]],
   ['wavefrontobjcache',['WavefrontObjCache',['../d8/d78/classWavefrontObjCache.html',1,'']]],
   ['wavefrontobjfileloader',['WavefrontObjFileLoader',['../d9/d15/classWavefrontObjFileLoader.html',1,'']]],
+  ['wavemaths',['WaveMaths',['../d8/d74/classWaveMaths.html',1,'']]],
   ['writestrategy',['WriteStrategy',['../de/dd3/classhelios_1_1filems_1_1WriteStrategy.html',1,'helios::filems']]],
   ['writestrategy_3c_20fullwaveform_20const_20_26_3e',['WriteStrategy&lt; FullWaveform const &amp;&gt;',['../de/dd3/classhelios_1_1filems_1_1WriteStrategy.html',1,'helios::filems']]],
   ['writestrategy_3c_20measurement_20const_20_26_2c_20glm_3a_3advec3_20const_20_26_3e',['WriteStrategy&lt; Measurement const &amp;, glm::dvec3 const &amp;&gt;',['../de/dd3/classhelios_1_1filems_1_1WriteStrategy.html',1,'helios::filems']]],

@@ -92,6 +92,7 @@ $(document).ready(function(){initNavTree('functions_o.html','');});
 <li>oa
 : <a class="el" href="d6/d70/classhelios_1_1filems_1_1ZipFullWaveformWriteStrategy.html#af0b5b0027b461c2f034648d9ff09a6ef">helios::filems::ZipFullWaveformWriteStrategy</a>
 , <a class="el" href="df/d31/classhelios_1_1filems_1_1ZipMeasurementWriteStrategy.html#affc8a199394a35a67c19459a8a0813e9">helios::filems::ZipMeasurementWriteStrategy</a>
+, <a class="el" href="d6/d1f/classhelios_1_1filems_1_1ZipMultiSyncFileWriter.html#abe91893892cea007d37bfa9c259c5f6f">helios::filems::ZipMultiSyncFileWriter&lt; WriteArgs &gt;</a>
 , <a class="el" href="d9/d45/classhelios_1_1filems_1_1ZipSyncFileWriter.html#aa38025cbfc3a902fc7b8b2bf3fe153c0">helios::filems::ZipSyncFileWriter&lt; WriteArgs &gt;</a>
 , <a class="el" href="d3/d91/classhelios_1_1filems_1_1ZipTrajectoryWriteStrategy.html#ac2a2af8b73f2a18336b401e11516514b">helios::filems::ZipTrajectoryWriteStrategy</a>
 </li>
@@ -118,13 +119,14 @@ $(document).ready(function(){initNavTree('functions_o.html','');});
 </li>
 <li>offset
 : <a class="el" href="da/d35/classhelios_1_1filems_1_1LasMeasurementWriteStrategy.html#a828b274a98fd9b38a5f034eebe58bbf8">helios::filems::LasMeasurementWriteStrategy</a>
-, <a class="el" href="d7/d5b/classhelios_1_1filems_1_1LasSyncFileWriter.html#a08b4f1cd3539769ed1dd6b5a01c8880d">helios::filems::LasSyncFileWriter&lt; WriteArgs &gt;</a>
+, <a class="el" href="d3/d15/classhelios_1_1filems_1_1LasWriterSpec.html#a6fc1e00c2dca8382aeca7be7796f6fef">helios::filems::LasWriterSpec</a>
 </li>
 <li>ofs
 : <a class="el" href="d8/df7/classhelios_1_1filems_1_1DirectFullWaveformWriteStrategy.html#a43c8fb9058722fa3c133add01fd171a1">helios::filems::DirectFullWaveformWriteStrategy</a>
 , <a class="el" href="de/d6d/classhelios_1_1filems_1_1DirectMeasurementWriteStrategy.html#ab7540e05749b8268f50cfce95513ae26">helios::filems::DirectMeasurementWriteStrategy</a>
 , <a class="el" href="df/d83/classhelios_1_1filems_1_1DirectStringWriteStrategy.html#a364ae8c3640aa709989928190ea41e3d">helios::filems::DirectStringWriteStrategy</a>
 , <a class="el" href="d0/de5/classhelios_1_1filems_1_1DirectTrajectoryWriteStrategy.html#a6312da53667d50674319ae1645b37642">helios::filems::DirectTrajectoryWriteStrategy</a>
+, <a class="el" href="df/dfc/classhelios_1_1filems_1_1SimpleMultiSyncFileWriter.html#ab3c43f27d1529d74f19f1736a44a92df">helios::filems::SimpleMultiSyncFileWriter&lt; WriteArgs &gt;</a>
 , <a class="el" href="d1/db6/classhelios_1_1filems_1_1SimpleSyncFileWriter.html#a1c6950de5b07bc7908012eb780d8ff27">helios::filems::SimpleSyncFileWriter&lt; WriteArgs &gt;</a>
 </li>
 <li>omnivariance
@@ -144,9 +146,11 @@ $(document).ready(function(){initNavTree('functions_o.html','');});
 <li>onLegComplete()
 : <a class="el" href="d8/d6b/classAbstractDetector.html#a1ddee13891ef33377207090c8965601c">AbstractDetector</a>
 , <a class="el" href="d5/d3c/classBuddingScanningPulseProcess.html#a69f273c35e7283e743bbf6ac11c6284e">BuddingScanningPulseProcess</a>
-, <a class="el" href="dc/d42/classScanner.html#aa654d2754946f445ff8faa91822eda25">Scanner</a>
+, <a class="el" href="da/d23/classMultiScanner.html#ad1d61bf2c7e66b9cb132b6dc555d3ecf">MultiScanner</a>
+, <a class="el" href="dc/d42/classScanner.html#add577a6df1ac8b6df527cc54356253ee">Scanner</a>
 , <a class="el" href="db/d85/classScanningPulseProcess.html#aada8ba033b4764e33da070a613ba01df">ScanningPulseProcess</a>
 , <a class="el" href="d1/d7b/classSimulation.html#a8dbf0836b204bb33a31a0fc09c2fbc06">Simulation</a>
+, <a class="el" href="d2/d24/classSingleScanner.html#abd60e64d8bed193960efc0bc189926f8">SingleScanner</a>
 , <a class="el" href="d6/da1/classSurveyPlayback.html#a549b60078d43c9930ed7179f0f0f9ef0">SurveyPlayback</a>
 , <a class="el" href="df/ddb/classWarehouseScanningPulseProcess.html#ac619b97e6aee29db52f15f03dac6a085">WarehouseScanningPulseProcess</a>
 </li>
@@ -202,7 +206,7 @@ $(document).ready(function(){initNavTree('functions_o.html','');});
 , <a class="el" href="d7/d0d/classfluxionum_1_1DesignMatrix.html#a10f63cd1ef257effe5638148f0e26ba6">fluxionum::DesignMatrix&lt; T &gt;</a>
 , <a class="el" href="d9/d49/classfluxionum_1_1DiffDesignMatrix.html#aacd24a9aa3cf39150c431beb1b562e39">fluxionum::DiffDesignMatrix&lt; TimeType, VarType &gt;</a>
 , <a class="el" href="d4/d73/classfluxionum_1_1Function.html#a1ce8aabf14e3d2371ec6b8f66ecf6524">fluxionum::Function&lt; A, B &gt;</a>
-, <a class="el" href="db/da6/classFullWaveformPulseRunnable.html#a9f311fc2f184a4093d98712105e1582b">FullWaveformPulseRunnable</a>
+, <a class="el" href="db/da6/classFullWaveformPulseRunnable.html#a309b48c537e77a7ee54a19ebe4222a6f">FullWaveformPulseRunnable</a>
 , <a class="el" href="d9/d52/classHeliosTests_1_1BaseTest.html#a11a3190fd7adf799f9d75051972f5897">HeliosTests::BaseTest</a>
 , <a class="el" href="d6/d1f/structKDTreePrimitiveComparator.html#a8349b27d42b80f6552f0b99abc2f48e8">KDTreePrimitiveComparator</a>
 , <a class="el" href="d1/d6e/classPulseTask.html#a009338bde2ce110c5e89d1345ba5d9cd">PulseTask</a>
@@ -237,7 +241,7 @@ $(document).ready(function(){initNavTree('functions_o.html','');});
 : <a class="el" href="d8/d7e/classfluxionum_1_1ClosestLesserSampleFunction.html#a6a00b2017f774cacd2844c2dad2dd504">fluxionum::ClosestLesserSampleFunction&lt; A, B &gt;</a>
 , <a class="el" href="d5/d9a/classfluxionum_1_1ParametricClosestLesserSampleFunction.html#a6a6b071c74096d0f7ae78f9a53467501">fluxionum::ParametricClosestLesserSampleFunction&lt; A, B &gt;</a>
 , <a class="el" href="d8/d94/classKDTreeNode.html#ad8e6ef82399b95cd206e667369559b79">KDTreeNode</a>
-, <a class="el" href="dd/d79/classLightKDTreeNode.html#a0b33fd3c51e0498c1b38bd0b9db70807">LightKDTreeNode</a>
+, <a class="el" href="dd/d79/classLightKDTreeNode.html#a2dd4c5305f945a16d55b23dfa7c78191">LightKDTreeNode</a>
 , <a class="el" href="dc/d6e/classRandomnessGenerator.html#abed86caeab308c222fb15d1e9ce3bb7e">RandomnessGenerator&lt; RealType &gt;</a>
 , <a class="el" href="dd/dc4/classScenePart.html#a0e4fe89589057061c7917b1476d268ee">ScenePart</a>
 </li>
@@ -252,7 +256,8 @@ $(document).ready(function(){initNavTree('functions_o.html','');});
 , <a class="el" href="d8/da0/classStaticGrove.html#ad8bfbf6144ac7d958de866f2c581ddd0">StaticGrove&lt; Tree &gt;</a>
 </li>
 <li>origin
-: <a class="el" href="db/d65/classvisualhelios_1_1VHScannerAdapter.html#a331db5cd897667c0c84566ea0aa5e940">visualhelios::VHScannerAdapter</a>
+: <a class="el" href="d3/d1a/classPulse.html#ac664286d5bdb2bd3ea420bbcdc116958">Pulse</a>
+, <a class="el" href="db/d65/classvisualhelios_1_1VHScannerAdapter.html#a331db5cd897667c0c84566ea0aa5e940">visualhelios::VHScannerAdapter</a>
 </li>
 <li>originColor
 : <a class="el" href="db/d65/classvisualhelios_1_1VHScannerAdapter.html#a2eb382b918b84fd2cb7346d12ad70e33">visualhelios::VHScannerAdapter</a>

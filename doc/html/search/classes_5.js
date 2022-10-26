@@ -11,6 +11,7 @@ var searchData=
   ['filereader_3c_20readarg_20_3e',['FileReader&lt; ReadArg &gt;',['../d4/d5e/classhelios_1_1filems_1_1FileReader.html',1,'helios::filems']]],
   ['filereader_3c_20string_20_3e',['FileReader&lt; string &gt;',['../d4/d5e/classhelios_1_1filems_1_1FileReader.html',1,'helios::filems']]],
   ['fileutils',['FileUtils',['../d5/d4b/classFileUtils.html',1,'']]],
+  ['filewriter',['FileWriter',['../db/d70/classhelios_1_1filems_1_1FileWriter.html',1,'helios::filems']]],
   ['fixediterativeeulermethod',['FixedIterativeEulerMethod',['../d0/d52/classfluxionum_1_1FixedIterativeEulerMethod.html',1,'fluxionum']]],
   ['fixedparametriciterativeeulermethod',['FixedParametricIterativeEulerMethod',['../dc/d03/classfluxionum_1_1FixedParametricIterativeEulerMethod.html',1,'fluxionum']]],
   ['fixedparametriciterativeeulermethod_3c_20double_2c_20double_20_3e',['FixedParametricIterativeEulerMethod&lt; double, double &gt;',['../dc/d03/classfluxionum_1_1FixedParametricIterativeEulerMethod.html',1,'fluxionum']]],

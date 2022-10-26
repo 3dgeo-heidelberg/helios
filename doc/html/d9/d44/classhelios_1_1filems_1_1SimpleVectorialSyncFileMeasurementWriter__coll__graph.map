@@ -1,6 +1,7 @@
 <map id="helios::filems::SimpleVectorialSyncFileMeasurementWriter" name="helios::filems::SimpleVectorialSyncFileMeasurementWriter">
-<area shape="rect" id="node2" href="$d1/db6/classhelios_1_1filems_1_1SimpleSyncFileWriter.html" title="helios::filems::SimpleSync\lFileWriter\&lt; vector\&lt; Measurement\l \&gt; const &amp;, glm::dvec3 const &amp; \&gt;" alt="" coords="379,5,597,61"/>
-<area shape="rect" id="node3" href="$da/d4c/classhelios_1_1filems_1_1SyncFileWriter.html" title="helios::filems::SyncFile\lWriter\&lt; WriteArgs ... \&gt;" alt="" coords="153,13,312,54"/>
-<area shape="rect" id="node5" href="$de/d6d/classhelios_1_1filems_1_1DirectMeasurementWriteStrategy.html" title="Concrete class specializing WriteStrategy to directly write measurements to a file. " alt="" coords="377,86,599,127"/>
-<area shape="rect" id="node6" href="$de/dd3/classhelios_1_1filems_1_1WriteStrategy.html" title="helios::filems::WriteStrategy\l\&lt; Measurement const &amp;, glm\l::dvec3 const &amp;\&gt;" alt="" coords="137,79,328,135"/>
+<area shape="rect" id="node2" href="$d1/db6/classhelios_1_1filems_1_1SimpleSyncFileWriter.html" title="helios::filems::SimpleSync\lFileWriter\&lt; vector\&lt; Measurement\l \&gt; const &amp;, glm::dvec3 const &amp; \&gt;" alt="" coords="483,27,701,83"/>
+<area shape="rect" id="node3" href="$d4/dfb/classhelios_1_1filems_1_1SingleSyncFileWriter.html" title="helios::filems::SingleSync\lFileWriter\&lt; WriteArgs ... \&gt;" alt="" coords="249,35,425,76"/>
+<area shape="rect" id="node4" href="$da/d4c/classhelios_1_1filems_1_1SyncFileWriter.html" title="helios::filems::SyncFile\lWriter\&lt; WriteArgs ... \&gt;" alt="" coords="5,5,164,47"/>
+<area shape="rect" id="node6" href="$de/d6d/classhelios_1_1filems_1_1DirectMeasurementWriteStrategy.html" title="Concrete class specializing WriteStrategy to directly write measurements to a file. " alt="" coords="481,108,703,149"/>
+<area shape="rect" id="node7" href="$de/dd3/classhelios_1_1filems_1_1WriteStrategy.html" title="helios::filems::WriteStrategy\l\&lt; Measurement const &amp;, glm\l::dvec3 const &amp;\&gt;" alt="" coords="241,101,432,157"/>
 </map>

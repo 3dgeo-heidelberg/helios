@@ -111,6 +111,12 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:ac41fcca89fb3b51cae5c0b8510e59154"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d4b/classFileUtils.html#ac41fcca89fb3b51cae5c0b8510e59154">unzipFile</a> (std::string const inputPath, std::string const outputPath)</td></tr>
 <tr class="memdesc:ac41fcca89fb3b51cae5c0b8510e59154"><td class="mdescLeft">&#160;</td><td class="mdescRight">Decompress a file generated through ZipSyncFileWriter.  <a href="#ac41fcca89fb3b51cae5c0b8510e59154">More...</a><br /></td></tr>
 <tr class="separator:ac41fcca89fb3b51cae5c0b8510e59154"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a24d1e96b5599ea8e32bb24f83bdf1529"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d4b/classFileUtils.html#a24d1e96b5599ea8e32bb24f83bdf1529">extractExtensionAndPathWithoutExtension</a> (std::string const &amp;path, std::string &amp;ext, std::string &amp;pathNonExt)</td></tr>
+<tr class="memdesc:a24d1e96b5599ea8e32bb24f83bdf1529"><td class="mdescLeft">&#160;</td><td class="mdescRight">Extract the extension and the path without extension from given path with extension.  <a href="#a24d1e96b5599ea8e32bb24f83bdf1529">More...</a><br /></td></tr>
+<tr class="separator:a24d1e96b5599ea8e32bb24f83bdf1529"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab27cafbe9117d17cf0467f62ebe5baac"><td class="memItemLeft" align="right" valign="top">static std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d4b/classFileUtils.html#ab27cafbe9117d17cf0467f62ebe5baac">craftPathWithSuffix</a> (std::string const &amp;pathNonExt, std::string const &amp;suffix, std::string const &amp;ext)</td></tr>
+<tr class="memdesc:ab27cafbe9117d17cf0467f62ebe5baac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Build a string such that: builtString = pathNonExt + suffix + ext.  <a href="#ab27cafbe9117d17cf0467f62ebe5baac">More...</a><br /></td></tr>
+<tr class="separator:ab27cafbe9117d17cf0467f62ebe5baac"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
@@ -123,6 +129,111 @@ Static Public Attributes</h2></td></tr>
 <dl class="section author"><dt>Author</dt><dd>Alberto M. Esmoris Pena </dd></dl>
 <dl class="section version"><dt>Version</dt><dd>1.0 </dd></dl>
 </div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="ab27cafbe9117d17cf0467f62ebe5baac"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab27cafbe9117d17cf0467f62ebe5baac">&#9670;&nbsp;</a></span>craftPathWithSuffix()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string FileUtils::craftPathWithSuffix </td>
+          <td>(</td>
+          <td class="paramtype">std::string const &amp;&#160;</td>
+          <td class="paramname"><em>pathNonExt</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::string const &amp;&#160;</td>
+          <td class="paramname"><em>suffix</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::string const &amp;&#160;</td>
+          <td class="paramname"><em>ext</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Build a string such that: builtString = pathNonExt + suffix + ext. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">pathNonExt</td><td>The path without extension </td></tr>
+    <tr><td class="paramname">suffix</td><td>The suffix to be appended to the path without extension </td></tr>
+    <tr><td class="paramname">ext</td><td>The extension to be appended after the suffix </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Built string : pathNonExt + suffix + ext </dd></dl>
+
+</div>
+</div>
+<a id="a24d1e96b5599ea8e32bb24f83bdf1529"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a24d1e96b5599ea8e32bb24f83bdf1529">&#9670;&nbsp;</a></span>extractExtensionAndPathWithoutExtension()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void FileUtils::extractExtensionAndPathWithoutExtension </td>
+          <td>(</td>
+          <td class="paramtype">std::string const &amp;&#160;</td>
+          <td class="paramname"><em>path</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::string &amp;&#160;</td>
+          <td class="paramname"><em>ext</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::string &amp;&#160;</td>
+          <td class="paramname"><em>pathNonExt</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Extract the extension and the path without extension from given path with extension. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">path</td><td>The patch which extension must be extracted </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">ext</td><td>Where the extracted extension will be stored </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">pathNonExt</td><td>Where the path without extension will be stored </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="afc3b18ca7f004b28d8c4984b06c9ecc6"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#afc3b18ca7f004b28d8c4984b06c9ecc6">&#9670;&nbsp;</a></span>getFilesByExpression()</h2>
 

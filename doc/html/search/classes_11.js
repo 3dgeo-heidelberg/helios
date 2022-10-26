@@ -8,6 +8,7 @@ var searchData=
   ['temporaldesignmatrix',['TemporalDesignMatrix',['../db/d9b/classfluxionum_1_1TemporalDesignMatrix.html',1,'fluxionum']]],
   ['test',['Test',['../df/da6/classTest.html',1,'']]],
   ['threadpool',['ThreadPool',['../dc/de7/classThreadPool.html',1,'']]],
+  ['timedpulse',['TimedPulse',['../d9/d2b/classTimedPulse.html',1,'']]],
   ['timewatcher',['TimeWatcher',['../d7/d7d/classTimeWatcher.html',1,'']]],
   ['trajectory',['Trajectory',['../d2/d43/classTrajectory.html',1,'']]],
   ['trajectoryfunction',['TrajectoryFunction',['../d9/de4/classTrajectoryFunction.html',1,'']]],

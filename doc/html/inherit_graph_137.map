@@ -1,8 +1,5 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$d2/d33/classBasicDynGroveSubject.html" title="BasicDynGroveSubject\l\&lt; GroveKDTreeRaycaster,\l DynMovingObject \&gt;" alt="" coords="5,5,184,61"/>
-<area shape="rect" id="node2" href="$dc/dbb/classKDGroveSubject.html" title="Interface defining the behaviors that must be supported by any object that can notify to a KDGrove..." alt="" coords="232,24,352,51"/>
-<area shape="rect" id="node3" href="$d4/d96/classDynMovingObject.html" title="Implementation of a dynamic object which supports dynamic motions (extended rigid motions) ..." alt="" coords="400,53,527,80"/>
-<area shape="rect" id="node4" href="$d4/d48/classDynSequentiableMovingObject.html" title="Implementation of a dynamic object which supports sequentiable dynamic motions. " alt="" coords="575,53,776,80"/>
-<area shape="rect" id="node5" href="$dd/dc4/classScenePart.html" title="Class representing a scene part. " alt="" coords="53,85,136,112"/>
-<area shape="rect" id="node6" href="$d5/d6a/classDynObject.html" title="Dynamic object base implementation. " alt="" coords="250,79,334,105"/>
+<area shape="rect" id="node1" href="$db/d85/classScanningPulseProcess.html" title="Class defining the scanning pulse process interface. " alt="" coords="5,31,163,57"/>
+<area shape="rect" id="node2" href="$d5/d3c/classBuddingScanningPulseProcess.html" title="Class implementing a scanning pulse process which works with a pulse task dropper based on budding ta..." alt="" coords="220,5,424,32"/>
+<area shape="rect" id="node3" href="$df/ddb/classWarehouseScanningPulseProcess.html" title="Class implementing a scanning pulse process which works with a pulse task dropper based on budding ta..." alt="" coords="211,56,433,83"/>
 </map>

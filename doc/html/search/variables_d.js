@@ -14,7 +14,7 @@ var searchData=
   ['maxdepth',['maxDepth',['../d8/de4/classhelios_1_1hpc_1_1SM__ParallelMergeSort.html#aa8c669dbdc5fb1acb498d769fc413993',1,'helios::hpc::SM_ParallelMergeSort::maxDepth()'],['../d7/da6/classhelios_1_1hpc_1_1SM__ParallelMergeSortSubTask.html#a70e77d291c932e9cac51b28764637522',1,'helios::hpc::SM_ParallelMergeSortSubTask::maxDepth()']]],
   ['maxfullwaverange_5fns',['maxFullwaveRange_ns',['../d4/dfb/classFWFSettings.html#a7ce48f507beb71a8f4720a2721e68cdb',1,'FWFSettings']]],
   ['maxgeometrydepth',['maxGeometryDepth',['../df/d86/classMultiThreadKDTreeFactory.html#a7257fabc8b3143b685c4fa7643f7828e',1,'MultiThreadKDTreeFactory']]],
-  ['maxintensity',['maxIntensity',['../d7/d5b/classhelios_1_1filems_1_1LasSyncFileWriter.html#a7231c557b8a41ed699523979d45ae2ff',1,'helios::filems::LasSyncFileWriter::maxIntensity()'],['../da/d35/classhelios_1_1filems_1_1LasMeasurementWriteStrategy.html#a6f5f72ec02253173a24c4857821df0b2',1,'helios::filems::LasMeasurementWriteStrategy::maxIntensity()']]],
+  ['maxintensity',['maxIntensity',['../d3/d15/classhelios_1_1filems_1_1LasWriterSpec.html#a504178a6090fe219a240217f651d834b',1,'helios::filems::LasWriterSpec::maxIntensity()'],['../da/d35/classhelios_1_1filems_1_1LasMeasurementWriteStrategy.html#a6f5f72ec02253173a24c4857821df0b2',1,'helios::filems::LasMeasurementWriteStrategy::maxIntensity()']]],
   ['maxiters',['maxIters',['../d8/d34/classfluxionum_1_1IterativeMethodHandler.html#aff7cf77655b112a48ea4602459655ee7',1,'fluxionum::IterativeMethodHandler']]],
   ['maxmaxdepth',['maxMaxDepth',['../de/d29/classKDGroveStats.html#a29d6ce36da13b0544bdad1a679486816',1,'KDGroveStats']]],
   ['maxmaxprimsinleaf',['maxMaxPrimsInLeaf',['../de/d29/classKDGroveStats.html#ab9db5998280d409960d4077cb890eccc',1,'KDGroveStats']]],
@@ -59,7 +59,7 @@ var searchData=
   ['minechowidth',['minEchoWidth',['../d4/dfb/classFWFSettings.html#a91a250a1d3a66f7b6bc36d34bdffa255',1,'FWFSettings']]],
   ['minelements',['minElements',['../d8/de4/classhelios_1_1hpc_1_1SM__ParallelMergeSort.html#a5c5b6827ef728efc7c2e4267984cb175',1,'helios::hpc::SM_ParallelMergeSort::minElements()'],['../d7/da6/classhelios_1_1hpc_1_1SM__ParallelMergeSortSubTask.html#ad149bec44bbfadddc6340b882be8ac60',1,'helios::hpc::SM_ParallelMergeSortSubTask::minElements()']]],
   ['minerror',['MINERROR',['../d1/d2b/classMarquardtFitter.html#a19a3dcaa4a23fc02618ca79108a45b7b',1,'MarquardtFitter']]],
-  ['minintensity',['minIntensity',['../d7/d5b/classhelios_1_1filems_1_1LasSyncFileWriter.html#a39896daedb286ea8b97cfec063217b96',1,'helios::filems::LasSyncFileWriter::minIntensity()'],['../da/d35/classhelios_1_1filems_1_1LasMeasurementWriteStrategy.html#a75cc39943d1e4f8079b007c10936f5db',1,'helios::filems::LasMeasurementWriteStrategy::minIntensity()']]],
+  ['minintensity',['minIntensity',['../d3/d15/classhelios_1_1filems_1_1LasWriterSpec.html#ace805b1b87aa72f79b733fd3e7ceb077',1,'helios::filems::LasWriterSpec::minIntensity()'],['../da/d35/classhelios_1_1filems_1_1LasMeasurementWriteStrategy.html#a75cc39943d1e4f8079b007c10936f5db',1,'helios::filems::LasMeasurementWriteStrategy::minIntensity()']]],
   ['minmaxdepth',['minMaxDepth',['../de/d29/classKDGroveStats.html#a9037a8f730ff75ee3d78ee16e9bb2711',1,'KDGroveStats']]],
   ['minmaxprimsinleaf',['minMaxPrimsInLeaf',['../de/d29/classKDGroveStats.html#a203c9a073b5560dea2e606f7d1a5252f',1,'KDGroveStats']]],
   ['minminprimsinleaf',['minMinPrimsInLeaf',['../de/d29/classKDGroveStats.html#a23443d45576b425f0ec185635a97eeb3',1,'KDGroveStats']]],
@@ -101,7 +101,7 @@ var searchData=
   ['mturnmode',['mTurnMode',['../d7/d94/classGroundVehiclePlatform.html#a2366e954a693577b361356d57a0349db',1,'GroundVehiclePlatform']]],
   ['mtx',['mtx',['../da/d29/classSharedTaskSequencer.html#af23611e0d8d435ad07fd201ba2e2bfee',1,'SharedTaskSequencer::mtx()'],['../d9/d5e/classTaskWarehouse.html#ae931c10cf95d5389fbf77dd46dd6d9c6',1,'TaskWarehouse::mtx()'],['../da/d92/classWarehouseThreadPool.html#a365262973c13d27700e738af4063d1e9',1,'WarehouseThreadPool::mtx()'],['../d3/d60/classYielder.html#a6800959e07e52e532d891619a94fb16e',1,'Yielder::mtx()']]],
   ['mu',['mu',['../db/dc1/classSurfaceInspector_1_1maths_1_1functions_1_1GaussianFunction.html#a10d8903ba44f92ca17663200ce500867',1,'SurfaceInspector::maths::functions::GaussianFunction']]],
-  ['mutex',['mutex',['../da/d4c/classhelios_1_1filems_1_1SyncFileWriter.html#a40668ca104a96f55cdec26e2967dc2cb',1,'helios::filems::SyncFileWriter::mutex()'],['../d1/d7b/classSimulation.html#a10de3cc2b800d92e80e40fbf61ff5942',1,'Simulation::mutex()']]],
+  ['mutex',['mutex',['../d2/d66/classhelios_1_1filems_1_1MultiSyncFileWriter.html#a511280c8f4d6f8fb8d871533ee7899cf',1,'helios::filems::MultiSyncFileWriter::mutex()'],['../d4/dfb/classhelios_1_1filems_1_1SingleSyncFileWriter.html#a22dc43db9b41665c4359df4d15d07ae0',1,'helios::filems::SingleSyncFileWriter::mutex()'],['../d1/d7b/classSimulation.html#a10de3cc2b800d92e80e40fbf61ff5942',1,'Simulation::mutex()']]],
   ['mutex_5f',['mutex_',['../d2/d1f/classSimpleThreadPool.html#a12ee0fb1dd91a63574329cca341a08ea',1,'SimpleThreadPool']]],
   ['mw',['mw',['../df/d31/classhelios_1_1filems_1_1FMSWriteFacade.html#a5d10be7c95cb005913c186dc87cc6863',1,'helios::filems::FMSWriteFacade']]]
 ];

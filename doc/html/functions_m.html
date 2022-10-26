@@ -172,6 +172,9 @@ $(document).ready(function(){initNavTree('functions_m.html','');});
 <li>makeMergeNonMoving()
 : <a class="el" href="de/d89/classKDGroveFactory.html#a37bce13b342a86e3bbfc26eb29109022">KDGroveFactory</a>
 </li>
+<li>makeMultiVectorialWriter()
+: <a class="el" href="dc/d39/classhelios_1_1filems_1_1SyncFileMeasurementWriterFactory.html#a5418ae765643f42ad955aa2230abd21d">helios::filems::SyncFileMeasurementWriterFactory</a>
+</li>
 <li>makeNormalCounterpart()
 : <a class="el" href="d6/d4f/classDynMotion.html#a62cfddd790dcd3e46cd73bf099089b1d">DynMotion</a>
 </li>
@@ -273,7 +276,9 @@ $(document).ready(function(){initNavTree('functions_m.html','');});
 : <a class="el" href="df/dfa/classhelios_1_1filems_1_1BaseFullWaveformWriter.html#a787adfcfc26de31260e04adbe11b1450">helios::filems::BaseFullWaveformWriter&lt; WriteArgs &gt;</a>
 , <a class="el" href="d7/d1a/classhelios_1_1filems_1_1BaseMeasurementWriter.html#afdfe8b144e9fedfd67a56ca6a9603559">helios::filems::BaseMeasurementWriter&lt; WriteArgs &gt;</a>
 , <a class="el" href="d0/db3/classhelios_1_1filems_1_1FullWaveformWriter.html#ac230f3152422033d7cfd9018ac056674">helios::filems::FullWaveformWriter</a>
+, <a class="el" href="d3/d15/classhelios_1_1filems_1_1LasWriterSpec.html#ac8f7c72dd793dca87a1406cb36630c0c">helios::filems::LasWriterSpec</a>
 , <a class="el" href="dd/d66/classhelios_1_1filems_1_1MeasurementWriter.html#af0a6e299363e475102279401a7be9582">helios::filems::MeasurementWriter</a>
+, <a class="el" href="d4/d16/classhelios_1_1filems_1_1MultiVectorialMeasurementWriter.html#af6fd700846890e75060e535a9bc0da92">helios::filems::MultiVectorialMeasurementWriter</a>
 , <a class="el" href="dc/d39/classhelios_1_1filems_1_1SyncFileMeasurementWriterFactory.html#abdbae8f2ca39d687befa8c9713290705">helios::filems::SyncFileMeasurementWriterFactory</a>
 , <a class="el" href="d5/dd3/classhelios_1_1filems_1_1VectorialFullWaveformWriter.html#ac6b27cb3e8589fe0f0c3da81c46f6a98">helios::filems::VectorialFullWaveformWriter</a>
 , <a class="el" href="d5/ded/classhelios_1_1filems_1_1VectorialMeasurementWriter.html#ab946182d2f4c5085668a1a329f3fa470">helios::filems::VectorialMeasurementWriter</a>
@@ -343,7 +348,7 @@ $(document).ready(function(){initNavTree('functions_m.html','');});
 </li>
 <li>maxIntensity
 : <a class="el" href="da/d35/classhelios_1_1filems_1_1LasMeasurementWriteStrategy.html#a6f5f72ec02253173a24c4857821df0b2">helios::filems::LasMeasurementWriteStrategy</a>
-, <a class="el" href="d7/d5b/classhelios_1_1filems_1_1LasSyncFileWriter.html#a7231c557b8a41ed699523979d45ae2ff">helios::filems::LasSyncFileWriter&lt; WriteArgs &gt;</a>
+, <a class="el" href="d3/d15/classhelios_1_1filems_1_1LasWriterSpec.html#a504178a6090fe219a240217f651d834b">helios::filems::LasWriterSpec</a>
 </li>
 <li>maxIters
 : <a class="el" href="d8/d34/classfluxionum_1_1IterativeMethodHandler.html#aff7cf77655b112a48ea4602459655ee7">fluxionum::IterativeMethodHandler&lt; IT, ET &gt;</a>
@@ -519,7 +524,7 @@ $(document).ready(function(){initNavTree('functions_m.html','');});
 </li>
 <li>minIntensity
 : <a class="el" href="da/d35/classhelios_1_1filems_1_1LasMeasurementWriteStrategy.html#a75cc39943d1e4f8079b007c10936f5db">helios::filems::LasMeasurementWriteStrategy</a>
-, <a class="el" href="d7/d5b/classhelios_1_1filems_1_1LasSyncFileWriter.html#a39896daedb286ea8b97cfec063217b96">helios::filems::LasSyncFileWriter&lt; WriteArgs &gt;</a>
+, <a class="el" href="d3/d15/classhelios_1_1filems_1_1LasWriterSpec.html#ace805b1b87aa72f79b733fd3e7ceb077">helios::filems::LasWriterSpec</a>
 </li>
 <li>minkowski()
 : <a class="el" href="dc/d30/classSurfaceInspector_1_1maths_1_1Distances.html#ad4ca7ec888656afad2fcea6c296b7100">SurfaceInspector::maths::Distances</a>
@@ -659,8 +664,14 @@ $(document).ready(function(){initNavTree('functions_m.html','');});
 <li>mu
 : <a class="el" href="db/dc1/classSurfaceInspector_1_1maths_1_1functions_1_1GaussianFunction.html#a10d8903ba44f92ca17663200ce500867">SurfaceInspector::maths::functions::GaussianFunction&lt; T &gt;</a>
 </li>
+<li>MultiLasSyncFileWriter()
+: <a class="el" href="de/daa/classhelios_1_1filems_1_1MultiLasSyncFileWriter.html#a36683a733ff0ef7be6d5e6a6c0829de4">helios::filems::MultiLasSyncFileWriter&lt; WriteArgs &gt;</a>
+</li>
 <li>MultiScanner()
-: <a class="el" href="da/d23/classMultiScanner.html#aa14628536a958cba7a78bb147a92a184">MultiScanner</a>
+: <a class="el" href="da/d23/classMultiScanner.html#ad35b2a1152df9b71d14bc4a6a288c599">MultiScanner</a>
+</li>
+<li>MultiSyncFileWriter()
+: <a class="el" href="d2/d66/classhelios_1_1filems_1_1MultiSyncFileWriter.html#a3a6be4b3adac2f306695fa837274bcee">helios::filems::MultiSyncFileWriter&lt; WriteArgs &gt;</a>
 </li>
 <li>MultiThreadKDTreeFactory()
 : <a class="el" href="df/d86/classMultiThreadKDTreeFactory.html#a8a9b7464e9c1d883de16d29ff95deca8">MultiThreadKDTreeFactory</a>
@@ -668,8 +679,12 @@ $(document).ready(function(){initNavTree('functions_m.html','');});
 <li>MultiThreadSAHKDTreeFactory()
 : <a class="el" href="dd/d95/classMultiThreadSAHKDTreeFactory.html#ac3d0d977e844f34b803086fa23afbf1d">MultiThreadSAHKDTreeFactory</a>
 </li>
+<li>MultiVectorialMeasurementWriter()
+: <a class="el" href="d4/d16/classhelios_1_1filems_1_1MultiVectorialMeasurementWriter.html#ae3b3c6b0b8884accde8e3ec1d5bb8647">helios::filems::MultiVectorialMeasurementWriter</a>
+</li>
 <li>mutex
-: <a class="el" href="da/d4c/classhelios_1_1filems_1_1SyncFileWriter.html#a40668ca104a96f55cdec26e2967dc2cb">helios::filems::SyncFileWriter&lt; WriteArgs &gt;</a>
+: <a class="el" href="d2/d66/classhelios_1_1filems_1_1MultiSyncFileWriter.html#a511280c8f4d6f8fb8d871533ee7899cf">helios::filems::MultiSyncFileWriter&lt; WriteArgs &gt;</a>
+, <a class="el" href="d4/dfb/classhelios_1_1filems_1_1SingleSyncFileWriter.html#a22dc43db9b41665c4359df4d15d07ae0">helios::filems::SingleSyncFileWriter&lt; WriteArgs &gt;</a>
 , <a class="el" href="d1/d7b/classSimulation.html#a10de3cc2b800d92e80e40fbf61ff5942">Simulation</a>
 </li>
 <li>mutex_
