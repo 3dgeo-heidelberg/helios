@@ -19,8 +19,14 @@ public:
 
     // ***  CONSTRUCTION / DESTRUCTION  *** //
     // ************************************ //
+    /**
+     * @brief Default constructor for the LAS-1.4 synchronous file measurement
+     *  writer
+     */
     Las14SyncFileMeasurementWriter() : LasSyncFileMeasurementWriter() {};
-
+    /**
+     * @brief Constructor for the LAS-1.4 synchronous file measurement writer
+     */
     explicit Las14SyncFileMeasurementWriter(
         const std::string &path,
         bool compress = false,
@@ -39,7 +45,6 @@ public:
             false // Prevent parent from creating LAS writer
         )
     {};
-
     virtual ~Las14SyncFileMeasurementWriter() = default;
 
     // ***  CREATE WRITER  *** //
@@ -51,7 +56,7 @@ public:
      * @param compress Flag to activate/deactivate compression (las/laz format)
      * @see LasSyncFileWriter::createLasWriter
      */
-    void createLasWriter(const std::string & path, bool const compress)
+    void createLasWriter(string const &path, bool const compress) override
     {
         // Craft header and point format for LAS_14 version
         lws.craft14();

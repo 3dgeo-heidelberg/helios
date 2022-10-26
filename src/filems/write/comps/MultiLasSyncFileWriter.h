@@ -45,6 +45,9 @@ public:
      * @brief Default constructor for Synchronous Multi LAS file writer
      */
     MultiLasSyncFileWriter() : MultiSyncFileWriter<WriteArgs...>() {};
+    /**
+     * @brief Constructor for Synchronous Multi LAS file writer
+     */
     explicit MultiLasSyncFileWriter(
         vector<string> const &path,
         bool const compress,
@@ -57,16 +60,16 @@ public:
         MultiSyncFileWriter<WriteArgs ...>(path),
         finished(false)
     {
-        // Initialize the specification for eachj LAS writer
+        // Initialize the specification for each LAS writer
         size_t nWriters = path.size();
         for(size_t i = 0 ; i < nWriters ; ++i){
-            lws.push_back(LasWriterSpec(
+            lws.emplace_back(
                 path[i],
                 scaleFactor[i],
                 offset[i],
                 minIntensity[i],
                 deltaIntensity[i]
-            ));
+            );
         }
         // If construct must create the writers
         if(createWriters){
@@ -91,8 +94,8 @@ public:
             // Extract path and writer spec
             string const &path = this->path[i];
             LasWriterSpec &lws = this->lws[i];
-            // Craft header and point format
-            lws.craft();
+            // Craft header and point format+
+            craftSpec(lws);
             // Add extra attributes
             lws.addExtraAttributes();
             // Initialize LASpoint
@@ -101,6 +104,12 @@ public:
             lw.push_back(lws.makeWriter(path, compress));
         }
     }
+    /**
+     * @brief Assist the MultiLasSyncFileWriter::createLasWriters method by
+     *  crafting the given specification
+     * @param lws The LAS write specification to be crafted
+     */
+    virtual void craftSpec(LasWriterSpec &lws){lws.craft();};
 
     // ***  F I N I S H  *** //
     // ********************* //

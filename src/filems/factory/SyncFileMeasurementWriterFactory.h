@@ -23,10 +23,13 @@
 #include <filems/write/comps/ZipSyncFileMeasurementWriter.h>
 #include <filems/write/comps/SimpleSyncFileMeasurementWriter.h>
 #include <filems/write/comps/Las14VectorialSyncFileMeasurementWriter.h>
+#include <filems/write/comps/Las14MultiVectorialSyncFileMeasurementWriter.h>
 #include <filems/write/comps/LasVectorialSyncFileMeasurementWriter.h>
 #include <filems/write/comps/LasMultiVectorialSyncFileMeasurementWriter.h>
 #include <filems/write/comps/ZipVectorialSyncFileMeasurementWriter.h>
+#include <filems/write/comps/ZipMultiVectorialSyncFileMeasurementWriter.h>
 #include <filems/write/comps/SimpleVectorialSyncFileMeasurementWriter.h>
+#include <filems/write/comps/SimpleMultiVectorialSyncFileMeasurementWriter.h>
 #include <util/HeliosException.h>
 
 #include <string>
@@ -192,7 +195,6 @@ static shared_ptr<
     vector<double> const &minIntensity,
     vector<double> const &deltaIntensity
 ){
-    // TODO Rethink : Update implementation below to work with multiwriters
     switch (type) {
         case las10Type:
             return make_shared<LasMultiVectorialSyncFileMeasurementWriter>(
@@ -202,9 +204,9 @@ static shared_ptr<
                 offset,                              // Offset
                 minIntensity,                        // Min intensity
                 deltaIntensity                       // Delta intensity
-            ); // TODO Restore commented below
-        /*case las14Type:
-            return make_shared<Las14VectorialSyncFileMeasurementWriter>(
+            );
+        case las14Type:
+            return make_shared<Las14MultiVectorialSyncFileMeasurementWriter>(
                 path,                                // Output path
                 compress,                            // Zip flag
                 scaleFactor,                         // Scale factor
@@ -213,15 +215,19 @@ static shared_ptr<
                 deltaIntensity                       // Delta intensity
             );
         case zipType:
-            return make_shared<ZipVectorialSyncFileMeasurementWriter>(path);
+            return make_shared<ZipMultiVectorialSyncFileMeasurementWriter>(
+                path
+            );
         case simpleType:
-            return make_shared<SimpleVectorialSyncFileMeasurementWriter>(path);*/
+            return make_shared<SimpleMultiVectorialSyncFileMeasurementWriter>(
+                path
+            );
     }
 
     // Handle unexpected type
     stringstream ss;
-    ss  << "SyncFileMeasurementWriterFactory::makeVectorialWriter received an "
-        << "unexpected type: (" << type << ")";
+    ss  << "SyncFileMeasurementWriterFactory::makeMultiVectorialWriter "
+        << "received an unexpected type: (" << type << ")";
     throw HeliosException(ss.str());
 }
 

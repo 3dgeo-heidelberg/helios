@@ -42,7 +42,7 @@ public:
         for(size_t i = 0 ; i < numFiles ; ++i){
             // Open it for writing ...
             std::ofstream &ofsi = ofs[i];
-            ofsi.open(path, om);
+            ofsi.open(path[i], om);
             ofsi.exceptions(
                 std::ios_base::eofbit |
                 std::ios_base::failbit |

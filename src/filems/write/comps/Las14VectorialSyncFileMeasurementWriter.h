@@ -46,6 +46,11 @@ protected:
 public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //
     // ************************************ //
+    /**
+     * @brief LAS-1.4 vectorial synchronous file measurement vector writer
+     *  constructor
+     * @see filems::LasSyncFileWriter::LasSyncFileWriter
+     */
     explicit Las14VectorialSyncFileMeasurementWriter(
         const std::string &path,
         bool const compress = false,

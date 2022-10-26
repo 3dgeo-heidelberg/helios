@@ -85,7 +85,7 @@ public:
      * @param path Path where the file will be save
      * @param compress Flag to activate/deactivate compression (las/laz format)
      */
-    void createLasWriter(const std::string & path, bool const compress)
+    virtual void createLasWriter(const std::string & path, bool const compress)
     {
         // Craft header and point format
         lws.craft();
