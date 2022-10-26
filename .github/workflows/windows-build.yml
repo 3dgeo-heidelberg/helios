@@ -118,13 +118,13 @@ jobs:
         id: downloadzlib
         name: Download zlib
         with:
-          url: "https://www.zlib.net/zlib1212.zip"
-          target: lib/boost/zlib1212.zip
+          url: "https://www.zlib.net/zlib1213.zip"
+          target: lib/boost/zlib1213.zip
 
       - name: Extract zlib
         working-directory: ${{env.GITHUB_WORKSPACE}}
         run: |
-          7z x lib/boost/zlib1212.zip -olib/boost
+          7z x lib/boost/zlib1213.zip -olib/boost
 
       - name: Build Boost
         if: steps.cache-boost.outputs.cache-hit != 'true'
@@ -133,7 +133,7 @@ jobs:
           Get-Content ${{env.USER_CONFIG}}
           cd lib/boost
           cmd.exe /c 'bootstrap.bat'
-          .\b2.exe --user-config=${{env.USER_CONFIG}} -j6 -sNO_ZLIB=0 -sZLIB_INCLUDE="zlib-1.2.12" -sZLIB_SOURCE="zlib-1.2.12" address-model=64 link=static python="3.6","3.7","3.8","3.9","3.10"
+          .\b2.exe --user-config=${{env.USER_CONFIG}} -j6 -sNO_ZLIB=0 -sZLIB_INCLUDE="zlib-1.2.13" -sZLIB_SOURCE="zlib-1.2.13" address-model=64 link=static python="3.6","3.7","3.8","3.9","3.10"
           
 
   build-libs:
