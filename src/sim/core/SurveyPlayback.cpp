@@ -247,9 +247,6 @@ void SurveyPlayback::onLegComplete() {
     // Do scanning pulse process handling of on leg complete, if any
     mScanner->onLegComplete();
 
-    // Notify detector about leg completion
-    mScanner->getDetector()->onLegComplete();
-
 	// Start next leg
     elapsedLength += mSurvey->legs.at(mCurrentLegIndex)->getLength();
 	startNextLeg(false);

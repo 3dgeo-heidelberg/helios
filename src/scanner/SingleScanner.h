@@ -62,6 +62,15 @@ public:
      */
     void _clone(Scanner &sc) const override;
 
+    // ***  SIM STEP UTILS  *** //
+    // ************************ //
+    /**
+     * @brief Extend Scanner::onLegComplete behavior by handling onLegComplete
+     *  events for the case of a single detector
+     * @see Scanner::onLegComplete
+     */
+    void onLegComplete() override;
+
     // ***   M E T H O D S   *** //
     // ************************* //
     /**
