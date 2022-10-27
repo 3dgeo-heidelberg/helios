@@ -48,7 +48,7 @@ SurveyPlayback::SurveyPlayback(
 	this->exportToFile = exportToFile;
 	this->setScanner(mSurvey->scanner);
 
-	// ############### BEGIN If the leg has no survey defined, create a default one ################
+    // ############### BEGIN If the leg has no survey defined, create a default one ################
 	if (mSurvey->legs.size() == 0) {
 		shared_ptr<Leg> leg(new Leg());
 
@@ -65,7 +65,7 @@ SurveyPlayback::SurveyPlayback(
 		// Add leg to survey:
 		mSurvey->addLeg(0, leg);
 	}
-	// ############### END If the leg has no survey defined, create a default one ################
+    // ############### END If the leg has no survey defined, create a default one ################
 
     // If we start a new scan, move platform to destination of first leg:
     if(!mSurvey->legs.empty()) {
@@ -86,7 +86,7 @@ SurveyPlayback::SurveyPlayback(
 	// Orientate platform and start first leg
 	startLeg(0, true);
 
-	// For progress tracking
+    // For progress tracking
 	numEffectiveLegs = mSurvey->legs.size();
     if(getScanner()->platform->canMove()) {
 		mSurvey->calculateLength();
@@ -257,21 +257,21 @@ void SurveyPlayback::startLeg(unsigned int const legIndex, bool const manual) {
 		return;
 	}
 
-	ostringstream oss;oss << "Starting leg " << legIndex << endl;
+    ostringstream oss;oss << "Starting leg " << legIndex << endl;
 	logging::INFO(oss.str());
 	mLegStarted = false;
 	mCurrentLegIndex = legIndex;
 	shared_ptr<Leg> leg = getCurrentLeg();
 
 	// Apply scanner settings:
-	if (leg->mScannerSettings != nullptr) {
+    if (leg->mScannerSettings != nullptr) {
 		mSurvey->scanner->applySettings(leg->mScannerSettings);
 	}
 	shared_ptr<Platform> platform(getScanner()->platform);
     mSurvey->scanner->lastTrajectoryTime = 0L;
 
 	// Apply platform settings:
-	if (leg->mPlatformSettings != nullptr) {
+    if (leg->mPlatformSettings != nullptr) {
 		platform->applySettings(leg->mPlatformSettings, manual);
 
 		// ################ BEGIN Set platform destination ##################
@@ -355,7 +355,7 @@ void SurveyPlayback::startLeg(unsigned int const legIndex, bool const manual) {
 		// ################ END Set platform destination ##################
 	}
 
-	// Restart deflector if previous leg was not active
+    // Restart deflector if previous leg was not active
 	shared_ptr<Leg> previousLeg = getPreviousLeg();
     if(
 	    previousLeg != nullptr && !previousLeg->mScannerSettings->active &&
@@ -365,7 +365,7 @@ void SurveyPlayback::startLeg(unsigned int const legIndex, bool const manual) {
 	}
 
 
-	if(exportToFile) prepareOutput();
+    if(exportToFile) prepareOutput();
     platform->writeNextTrajectory = true;
 }
 

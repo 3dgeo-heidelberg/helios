@@ -82,7 +82,7 @@ void SingleScanner::onLegComplete(){
     // Call parent handler for on leg complete events
     Scanner::onLegComplete();
     // Call detector's handle method for on leg complete events
-    getDetector(0)->onLegComplete();
+    scanDev.detector->onLegComplete();
 }
 
 // ***   M E T H O D S   *** //
