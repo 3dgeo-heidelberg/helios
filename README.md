@@ -22,9 +22,12 @@ Official website: https://uni-heidelberg.de/helios
 
 For scientific and collaboration inquiries please contact the HELIOS++ team at helios@uni-heidelberg.de
 
-We have also published a [paper](https://doi.org/10.1016/j.rse.2021.112772) on HELIOS++. If you use HELIOS++ in a scientific context, please cite
+We have also published two papers on HELIOS++. If you use HELIOS++ in a scientific context, please cite one of the following:
 
+- General description of the framework:
 > Winiwarter, L., Esmorís Pena, A., Weiser, H., Anders, K., Martínez Sanchez, J., Searle, M., Höfle, B. (2022): **Virtual laser scanning with HELIOS++: A novel take on ray tracing-based simulation of topographic full-waveform 3D laser scanning**. _Remote Sensing of Environment_, 269, doi:10.1016/j.rse.2021.112772
+- High performance computing:
+> Esmorís, A. M., Yermo, M., Weiser, H., Winiwarter, L., Höfle, B., Rivera, F. F. (2022): **Virtual LiDAR Simulation as a High Performance Computing Challenge: Toward HPC HELIOS++**. _IEEE Access_, 10, doi:10.1109/ACCESS.2022.3211072
 
 BibTeX:
 ```
@@ -39,6 +42,20 @@ url = {https://www.sciencedirect.com/science/article/pii/S0034425721004922},
 author = {Lukas Winiwarter and Alberto Manuel {Esmorís Pena} and Hannah Weiser and Katharina Anders and Jorge {Martínez Sánchez} and Mark Searle and Bernhard Höfle},
 keywords = {Software, LiDAR simulation, Point cloud, Data generation, Voxel, Vegetation modelling, Diffuse media}
 } 
+```
+
+```
+@Article{Esmoris2022_HPC-HELIOS,
+  author={Esmorís, Alberto M. and Yermo, Miguel and Weiser, Hannah and Winiwarter, Lukas and Höfle, Bernhard and Rivera, Francisco F.},
+  journal={IEEE Access},
+  title={Virtual LiDAR Simulation as a High Performance Computing Challenge: Toward HPC HELIOS++},
+  year={2022},
+  volume={10},
+  issn = {2169-3536},
+  pages={105052--105073},
+  doi={https://doi.org/10.1109/ACCESS.2022.3211072},
+  url={https://ieeexplore.ieee.org/document/9906068}
+}
 ```
 
 ## ⌨ Usage
