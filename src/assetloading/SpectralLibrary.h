@@ -25,7 +25,7 @@ private:
     /**
      * @brief Default reflectance value
      */
-	const double defaultReflectance = 0.5;
+	const double defaultReflectance = 50.0;
 	/**
 	 * @brief Reflectances retrieved from file
 	 */
