@@ -56,6 +56,16 @@ class Simulation:
         self.scene_file = ET.parse(survey_file).find('survey').attrib['scene'].split('#')[0]
         self.scanner_file = ET.parse(survey_file).find('survey').attrib['scanner'].split('#')[0]
         self.platform_file = ET.parse(survey_file).find('survey').attrib['platform'].split('#')[0]
+        if self.platform_file == "interpolated":
+            try:
+                self.platform_file = ET.parse(survey_file).find('survey').attrib['basePlatform'].split('#')[0]
+            except KeyError:
+                self.platform_file = "data/platforms.xml"
+        try:
+            self.trajectory_file = ET.parse(survey_file).find('survey').find('leg').find('platformSettings').attrib['trajectory']
+        except (AttributeError, KeyError):
+            print("No trajectory files used")
+            self.trajectory_file = None
         self.scene_root = ET.parse(self.scene_file).getroot()
         with open(self.scene_file, 'r') as f:
             self.scene_content = f.read()
@@ -109,8 +119,8 @@ def get_version_number(helios_executable):
     Function to get the version number of HELIOS++ for a given executable
     :param helios_executable: Path to HELIOS++ executable
     :type helios_executable: str
-    :return: HELIOS version number (e.g., 1.0.9)
-    :rtype: str
+    :return: Full version name, HELIOS version number (e.g., 1.0.9), GitHash
+    :rtype: tupe[str]
     """
     try:
         print("Running helios")
@@ -118,10 +128,14 @@ def get_version_number(helios_executable):
     except FileNotFoundError as exc:
         warnings.warn("Error. Could not execute helios:")
         raise exc
-    idx1 = helios_run.stdout.find("VERSION ") + len("VERSION ")
+    idx1 = helios_run.stdout.find("HELIOS_")
     idx2 = helios_run.stdout.find("\n", idx1)
+    idx3 = helios_run.stdout.find("GitHash: ", idx2) + len("GitHash: ")
+    version_name = helios_run.stdout[idx1:idx2]
+    version_number = version_name.split("_")[1]
+    git_hash = helios_run.stdout[idx3:].strip()
 
-    return helios_run.stdout[idx1:idx2]
+    return [version_name, version_number, git_hash]
 
 
 def get_latest_helios_version():
@@ -156,15 +170,14 @@ if __name__ == '__main__':
     if len(set(allowed_suffixes).intersection(outfile.suffixes)) == 0:
         outfile = outfile.with_suffix('.zip')
     helios_version_latest = get_latest_helios_version()
-
     try:
         import pyhelios
 
         helios_version = str(pyhelios.getVersion())
-    except ModuleNotFoundError as e:
+    except (ModuleNotFoundError, ImportError) as e:
         print(e)
         try:
-            helios_version = get_version_number(str(HELIOS_EXE))
+            _, helios_version, _ = get_version_number(str(HELIOS_EXE))
         except FileNotFoundError:
             print("No HELIOS++ executable found. Using the latest.")
             helios_version = helios_version_latest
@@ -219,12 +232,24 @@ if __name__ == '__main__':
             if scanner_file_new not in [Path(file) for file in outzip.namelist()]:
                 outzip.write(scanner_file_new)
 
+        if sim.trajectory_file not in [Path(file) for file in outzip.namelist()] and sim.trajectory_file is not None:
+            if Path(sim.trajectory_file).is_absolute():
+                trajectory_file_new = Path(sim.trajectory_file).relative_to(WORKING_DIR)
+            else:
+                trajectory_file_new = Path(sim.trajectory_file)
+            if trajectory_file_new not in [Path(file) for file in outzip.namelist()]:
+                outzip.write(trajectory_file_new)
+                print("trajectory written " + str(trajectory_file_new))
+        else:
+            trajectory_file_new = None
+
         with open(survey, "r") as f_survey:
             # replace absolute with relative file paths
             content = f_survey.read()
             content = content.replace(str(sim.scene_file), str(scene_file_new))
             content = content.replace(str(sim.platform_file), str(platform_file_new))
             content = content.replace(str(sim.scanner_file), str(scanner_file_new))
+            content = content.replace(str(sim.trajectory_file), str(trajectory_file_new))
         if survey.is_absolute():
             outzip.writestr(str(survey.relative_to(WORKING_DIR)), content)
         else:
