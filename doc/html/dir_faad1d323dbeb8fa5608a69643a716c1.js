@@ -11,5 +11,6 @@ var dir_faad1d323dbeb8fa5608a69643a716c1 =
     [ "RayUtils.h", "d5/da4/RayUtils_8h_source.html", null ],
     [ "Rotation.h", "d0/d8f/Rotation_8h_source.html", null ],
     [ "RotationOrder.h", "d7/d96/RotationOrder_8h_source.html", null ],
-    [ "Vectorial.h", "d0/d12/Vectorial_8h_source.html", null ]
+    [ "Vectorial.h", "d0/d12/Vectorial_8h_source.html", null ],
+    [ "WaveMaths.h", "d1/d6d/WaveMaths_8h_source.html", null ]
 ];

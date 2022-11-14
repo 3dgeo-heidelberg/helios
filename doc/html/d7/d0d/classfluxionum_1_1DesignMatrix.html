@@ -124,9 +124,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ad8a7b929474bdf0d5497782a5d707cb7"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d0d/classfluxionum_1_1DesignMatrix.html#ad8a7b929474bdf0d5497782a5d707cb7">DesignMatrix</a> (arma::Mat&lt; T &gt; const &amp;<a class="el" href="../../d7/d0d/classfluxionum_1_1DesignMatrix.html#aa83f527a4017054fcca922a9b0e846ed">X</a>, vector&lt; string &gt; const &amp;<a class="el" href="../../da/d40/classfluxionum_1_1AbstractDesignMatrix.html#a952ff8bf69516e4265e91104b8046860">columnNames</a>=vector&lt; string &gt;(0))</td></tr>
 <tr class="memdesc:ad8a7b929474bdf0d5497782a5d707cb7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Build a <a class="el" href="../../d7/d0d/classfluxionum_1_1DesignMatrix.html" title="This class represents a DesignMatrix . ">DesignMatrix</a> from given armadillo matrix.  <a href="#ad8a7b929474bdf0d5497782a5d707cb7">More...</a><br /></td></tr>
 <tr class="separator:ad8a7b929474bdf0d5497782a5d707cb7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac362cfb3d21ecab4f61d7a9e3e3972b7"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d0d/classfluxionum_1_1DesignMatrix.html#ac362cfb3d21ecab4f61d7a9e3e3972b7">DesignMatrix</a> (string const &amp;path)</td></tr>
-<tr class="memdesc:ac362cfb3d21ecab4f61d7a9e3e3972b7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Build a <a class="el" href="../../d7/d0d/classfluxionum_1_1DesignMatrix.html" title="This class represents a DesignMatrix . ">DesignMatrix</a> from data in file at given path.  <a href="#ac362cfb3d21ecab4f61d7a9e3e3972b7">More...</a><br /></td></tr>
-<tr class="separator:ac362cfb3d21ecab4f61d7a9e3e3972b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3d69a0f343642df493faecf84006b60e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d0d/classfluxionum_1_1DesignMatrix.html#a3d69a0f343642df493faecf84006b60e">DesignMatrix</a> (string const &amp;path, string const &amp;sep=&quot;,&quot;)</td></tr>
+<tr class="memdesc:a3d69a0f343642df493faecf84006b60e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Build a <a class="el" href="../../d7/d0d/classfluxionum_1_1DesignMatrix.html" title="This class represents a DesignMatrix . ">DesignMatrix</a> from data in file at given path.  <a href="#a3d69a0f343642df493faecf84006b60e">More...</a><br /></td></tr>
+<tr class="separator:a3d69a0f343642df493faecf84006b60e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a10f63cd1ef257effe5638148f0e26ba6"><td class="memItemLeft" align="right" valign="top">T &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d0d/classfluxionum_1_1DesignMatrix.html#a10f63cd1ef257effe5638148f0e26ba6">operator()</a> (size_t const i, size_t const j) override</td></tr>
 <tr class="memdesc:a10f63cd1ef257effe5638148f0e26ba6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access to the \(x_{ij}\) component of the \(X\) design matrix.  <a href="#a10f63cd1ef257effe5638148f0e26ba6">More...</a><br /></td></tr>
 <tr class="separator:a10f63cd1ef257effe5638148f0e26ba6"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -338,8 +338,8 @@ template&lt;typename T&gt; </div>
 
 </div>
 </div>
-<a id="ac362cfb3d21ecab4f61d7a9e3e3972b7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac362cfb3d21ecab4f61d7a9e3e3972b7">&#9670;&nbsp;</a></span>DesignMatrix() <span class="overload">[3/3]</span></h2>
+<a id="a3d69a0f343642df493faecf84006b60e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3d69a0f343642df493faecf84006b60e">&#9670;&nbsp;</a></span>DesignMatrix() <span class="overload">[3/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -353,8 +353,18 @@ template&lt;typename T&gt; </div>
           <td class="memname"><a class="el" href="../../d7/d0d/classfluxionum_1_1DesignMatrix.html">fluxionum::DesignMatrix</a>&lt; T &gt;::<a class="el" href="../../d7/d0d/classfluxionum_1_1DesignMatrix.html">DesignMatrix</a> </td>
           <td>(</td>
           <td class="paramtype">string const &amp;&#160;</td>
-          <td class="paramname"><em>path</em></td><td>)</td>
+          <td class="paramname"><em>path</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">string const &amp;&#160;</td>
+          <td class="paramname"><em>sep</em> = <code>&quot;,&quot;</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
   </td>

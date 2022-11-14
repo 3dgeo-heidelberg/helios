@@ -113,6 +113,54 @@ public:
 	    double legElapsedLength
     );
 	/**
+	 * @brief Estimate the leg progress from linear space progress.
+	 *
+	 * Let \f$l\f$ be the leg elapsed length and \f$L\f$ be the total length of
+	 *  the leg. But then, the leg progress \f$l_p\f$ can be estimated from
+	 *  linear space as follows:
+	 *
+	 * \f[
+	 *  l_p = 100 \frac{l}{L}
+	 * \f]
+	 *
+	 * @param legElapsedLength The elapsed L2 spatial distance (euclidean
+	 *  distance, standard vector norm) of the current leg. Noted as \f$l\f$.
+	 * @return Leg progress estimated from linear space progress.
+	 */
+	int estimateSpatialLegProgress(double const legElapsedLength);
+	/**
+	 * @brief Estimate leg progress from angular progress.
+	 *
+	 * Let \f$\theta\f$ be the elapsed angular distance in radians and
+	 *  \f$\Delta\f$ be the difference between end and start angles in radians
+	 *  too. But then, the leg progress \f$l_p\f$ can be estimated these
+	 *  angles as follows:
+	 *
+	 * \f[
+	 *  l_p = 100 \frac{\theta}{\Delta}
+	 * \f]
+	 *
+	 * @param legElapsedAngle The elapsed angular distance of the current leg.
+	 *  Noted as \f$\theta\f$.
+	 * @return Leg progress estimated from angular progress.
+	 */
+	int estimateAngularLegProgress(double const legElapsedAngle);
+	/**
+	 * @brief Estimate leg progress from temporal progress.
+	 *
+	 * Let \f$t\f$ be the current time, \f$t_a\f$ be the starting time point of
+	 *  the simulated time, and \f$t_b\f$ the ending time point of the
+	 *  simulation time.
+	 * Thus, the leg progress \f$l_p\f$ can be estimated from time as follows:
+	 *
+	 * \f[
+	 *  l_p = 100 \frac{t - t_a}{t_b - t_a}
+	 * \f]
+	 *
+	 * @return Leg progress estimated from temporal progress.
+	 */
+	int estimateTemporalLegProgress();
+	/**
 	 * @brief Progress tracking and time estimation
 	 * @see SurveyPlayback::estimateTime
 	 */
@@ -249,7 +297,8 @@ public:
 	 * @brief Obtain the leg start time in nanoseconds
 	 * @return The leg start time (nanoseconds)
 	 */
-    std::chrono::nanoseconds getLegStartTime() {return this->legStartTime_ns;}    /**
+    std::chrono::nanoseconds getLegStartTime() {return this->legStartTime_ns;}
+    /**
      * @brief Obtain current leg elapsed time
      * @return Current leg elapsed time (nanoseconds)
      */

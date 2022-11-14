@@ -16,6 +16,14 @@ public:
     // ***  ATTRIBUTES  *** //
     // ******************** //
     /**
+     * @brief Identifier of the device which generated the measurement
+     */
+    std::string devId;
+    /**
+     * @brief The index of the scanning device which generated the measurement
+     */
+    size_t devIdx;
+    /**
      * @brief ID of hit object
      */
 	std::string hitObjectId;
@@ -64,6 +72,7 @@ public:
 	 */
 	double gpsTime;
 
+
 	// ***  CONSTRUCTION / DESTRUCTION  *** //
 	// ************************************ //
 	/**
@@ -71,6 +80,8 @@ public:
 	 */
 	Measurement() = default;
 	Measurement(const Measurement &m){
+	    devId = m.devId;
+	    devIdx = m.devIdx;
 	    hitObjectId = m.hitObjectId;
 	    position = glm::dvec3(m.position);
 	    beamDirection = glm::dvec3(m.beamDirection);

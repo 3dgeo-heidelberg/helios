@@ -115,9 +115,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a4d59c521117893d05b87c88eb1b6ace4"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/dfd/classPulseTaskFactory.html#a4d59c521117893d05b87c88eb1b6ace4">PulseTaskFactory</a> (<a class="el" href="../../d5/d9c/classScene.html">Scene</a> &amp;<a class="el" href="../../da/dfd/classPulseTaskFactory.html#ae1b7ea453f41ee55951f2f219494ffdd">scene</a>)</td></tr>
 <tr class="memdesc:a4d59c521117893d05b87c88eb1b6ace4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor for the <a class="el" href="../../da/dfd/classPulseTaskFactory.html" title="Factory to make the adequate pulse task depending on the simulation. ">PulseTaskFactory</a>.  <a href="#a4d59c521117893d05b87c88eb1b6ace4">More...</a><br /></td></tr>
 <tr class="separator:a4d59c521117893d05b87c88eb1b6ace4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a237215ac856e2ab86f026123f3682f39"><td class="memItemLeft" align="right" valign="top">shared_ptr&lt; <a class="el" href="../../d1/d6e/classPulseTask.html">PulseTask</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/dfd/classPulseTaskFactory.html#a237215ac856e2ab86f026123f3682f39">build</a> (<a class="el" href="../../db/d85/classScanningPulseProcess.html">ScanningPulseProcess</a> const &amp;spp, unsigned int const legIndex, glm::dvec3 &amp;absoluteBeamOrigin, <a class="el" href="../../d5/dcb/classRotation.html">Rotation</a> &amp;absoluteBeamAttitude, double const currentGpsTime, int const currentPulseNumber) const</td></tr>
-<tr class="memdesc:a237215ac856e2ab86f026123f3682f39"><td class="mdescLeft">&#160;</td><td class="mdescRight">The main build method of the factory. It is the method that must be called to automatically build the adequate type of <a class="el" href="../../d1/d6e/classPulseTask.html" title="Pulse task interface. ">PulseTask</a>.  <a href="#a237215ac856e2ab86f026123f3682f39">More...</a><br /></td></tr>
-<tr class="separator:a237215ac856e2ab86f026123f3682f39"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae0c1fc64d9d792a88c3948bbb9b38187"><td class="memItemLeft" align="right" valign="top">shared_ptr&lt; <a class="el" href="../../d1/d6e/classPulseTask.html">PulseTask</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/dfd/classPulseTaskFactory.html#ae0c1fc64d9d792a88c3948bbb9b38187">build</a> (<a class="el" href="../../db/d85/classScanningPulseProcess.html">ScanningPulseProcess</a> const &amp;spp, <a class="el" href="../../d1/d81/classSimulatedPulse.html">SimulatedPulse</a> const &amp;sp) const</td></tr>
+<tr class="memdesc:ae0c1fc64d9d792a88c3948bbb9b38187"><td class="mdescLeft">&#160;</td><td class="mdescRight">The main build method of the factory. It is the method that must be called to automatically build the adequate type of <a class="el" href="../../d1/d6e/classPulseTask.html" title="Pulse task interface. ">PulseTask</a>.  <a href="#ae0c1fc64d9d792a88c3948bbb9b38187">More...</a><br /></td></tr>
+<tr class="separator:ae0c1fc64d9d792a88c3948bbb9b38187"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae4d13732f2e238ee40f74a96d34fd059"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d5/d9c/classScene.html">Scene</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/dfd/classPulseTaskFactory.html#ae4d13732f2e238ee40f74a96d34fd059">getScene</a> () const</td></tr>
 <tr class="memdesc:ae4d13732f2e238ee40f74a96d34fd059"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain the scene associated to the pulse task factory.  <a href="#ae4d13732f2e238ee40f74a96d34fd059">More...</a><br /></td></tr>
 <tr class="separator:ae4d13732f2e238ee40f74a96d34fd059"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -127,12 +127,12 @@ Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
-<tr class="memitem:a4f972a7dfd2e08aa63750d043bca8f5d"><td class="memItemLeft" align="right" valign="top">shared_ptr&lt; <a class="el" href="../../d1/d6e/classPulseTask.html">PulseTask</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/dfd/classPulseTaskFactory.html#a4f972a7dfd2e08aa63750d043bca8f5d">buildFullWaveformPulseRunnable</a> (<a class="el" href="../../db/d85/classScanningPulseProcess.html">ScanningPulseProcess</a> const &amp;spp, unsigned int const legIndex, glm::dvec3 &amp;absoluteBeamOrigin, <a class="el" href="../../d5/dcb/classRotation.html">Rotation</a> &amp;absoluteBeamAttitude, double const currentGpsTime, int const currentPulseNumber) const</td></tr>
-<tr class="memdesc:a4f972a7dfd2e08aa63750d043bca8f5d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Build a <a class="el" href="../../db/da6/classFullWaveformPulseRunnable.html" title="Concrete implementation of abstract pulse runnable to compute full waveform pulses. ">FullWaveformPulseRunnable</a> from given arguments.  <a href="#a4f972a7dfd2e08aa63750d043bca8f5d">More...</a><br /></td></tr>
-<tr class="separator:a4f972a7dfd2e08aa63750d043bca8f5d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afa1c6b34b6a3224ba435d426415f73a0"><td class="memItemLeft" align="right" valign="top">shared_ptr&lt; <a class="el" href="../../d1/d6e/classPulseTask.html">PulseTask</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/dfd/classPulseTaskFactory.html#afa1c6b34b6a3224ba435d426415f73a0">buildDynFullWaveformPulseRunnable</a> (<a class="el" href="../../db/d85/classScanningPulseProcess.html">ScanningPulseProcess</a> const &amp;spp, unsigned int const legIndex, glm::dvec3 &amp;absoluteBeamOrigin, <a class="el" href="../../d5/dcb/classRotation.html">Rotation</a> &amp;absoluteBeamAttitude, double const currentGpsTime, int const currentPulseNumber) const</td></tr>
-<tr class="memdesc:afa1c6b34b6a3224ba435d426415f73a0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Build a <a class="el" href="../../da/d0b/classDynFullWaveformPulseRunnable.html" title="Derived class extending FullWaveFormPulseRunnable to handle dynamic moving objects. ">DynFullWaveformPulseRunnable</a> from given arguments.  <a href="#afa1c6b34b6a3224ba435d426415f73a0">More...</a><br /></td></tr>
-<tr class="separator:afa1c6b34b6a3224ba435d426415f73a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad37fd42ef10ef2e0288593b48e834b36"><td class="memItemLeft" align="right" valign="top">shared_ptr&lt; <a class="el" href="../../d1/d6e/classPulseTask.html">PulseTask</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/dfd/classPulseTaskFactory.html#ad37fd42ef10ef2e0288593b48e834b36">buildFullWaveformPulseRunnable</a> (<a class="el" href="../../db/d85/classScanningPulseProcess.html">ScanningPulseProcess</a> const &amp;spp, <a class="el" href="../../d1/d81/classSimulatedPulse.html">SimulatedPulse</a> const &amp;sp) const</td></tr>
+<tr class="memdesc:ad37fd42ef10ef2e0288593b48e834b36"><td class="mdescLeft">&#160;</td><td class="mdescRight">Build a <a class="el" href="../../db/da6/classFullWaveformPulseRunnable.html" title="Concrete implementation of abstract pulse runnable to compute full waveform pulses. ">FullWaveformPulseRunnable</a> from given arguments.  <a href="#ad37fd42ef10ef2e0288593b48e834b36">More...</a><br /></td></tr>
+<tr class="separator:ad37fd42ef10ef2e0288593b48e834b36"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a94fe06da82f7fbd167bbab4ee19f1a3f"><td class="memItemLeft" align="right" valign="top">shared_ptr&lt; <a class="el" href="../../d1/d6e/classPulseTask.html">PulseTask</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/dfd/classPulseTaskFactory.html#a94fe06da82f7fbd167bbab4ee19f1a3f">buildDynFullWaveformPulseRunnable</a> (<a class="el" href="../../db/d85/classScanningPulseProcess.html">ScanningPulseProcess</a> const &amp;spp, <a class="el" href="../../d1/d81/classSimulatedPulse.html">SimulatedPulse</a> const &amp;sp) const</td></tr>
+<tr class="memdesc:a94fe06da82f7fbd167bbab4ee19f1a3f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Build a <a class="el" href="../../da/d0b/classDynFullWaveformPulseRunnable.html" title="Derived class extending FullWaveFormPulseRunnable to handle dynamic moving objects. ">DynFullWaveformPulseRunnable</a> from given arguments.  <a href="#a94fe06da82f7fbd167bbab4ee19f1a3f">More...</a><br /></td></tr>
+<tr class="separator:a94fe06da82f7fbd167bbab4ee19f1a3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acc34e31085230380223c668a8c1b0b05"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/dfd/classPulseTaskFactory.html#acc34e31085230380223c668a8c1b0b05">configureBuildMethod</a> ()</td></tr>
 <tr class="memdesc:acc34e31085230380223c668a8c1b0b05"><td class="mdescLeft">&#160;</td><td class="mdescRight">Automatically set the _build function depending on current factory state.  <a href="#acc34e31085230380223c668a8c1b0b05">More...</a><br /></td></tr>
 <tr class="separator:acc34e31085230380223c668a8c1b0b05"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -143,9 +143,9 @@ Protected Attributes</h2></td></tr>
 <a class="el" href="../../d5/d9c/classScene.html">Scene</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/dfd/classPulseTaskFactory.html#ae1b7ea453f41ee55951f2f219494ffdd">scene</a></td></tr>
 <tr class="memdesc:ae1b7ea453f41ee55951f2f219494ffdd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reference to the scene to be scanned. <br /></td></tr>
 <tr class="separator:ae1b7ea453f41ee55951f2f219494ffdd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7a1149d0257c768d316a4499d3bb1d7f"><td class="memItemLeft" align="right" valign="top">std::function&lt; shared_ptr&lt; <a class="el" href="../../d1/d6e/classPulseTask.html">PulseTask</a> &gt; <a class="el" href="../../db/d85/classScanningPulseProcess.html">ScanningPulseProcess</a> const &amp;, unsigned int const, glm::dvec3 &amp;, <a class="el" href="../../d5/dcb/classRotation.html">Rotation</a> &amp;, double const, int const)&gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/dfd/classPulseTaskFactory.html#a7a1149d0257c768d316a4499d3bb1d7f">_build</a></td></tr>
-<tr class="memdesc:a7a1149d0257c768d316a4499d3bb1d7f"><td class="mdescLeft">&#160;</td><td class="mdescRight">The build function to be used.  <a href="#a7a1149d0257c768d316a4499d3bb1d7f">More...</a><br /></td></tr>
-<tr class="separator:a7a1149d0257c768d316a4499d3bb1d7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a419340a4ce5cbac1cc76ae3498fe2faa"><td class="memItemLeft" align="right" valign="top">std::function&lt; shared_ptr&lt; <a class="el" href="../../d1/d6e/classPulseTask.html">PulseTask</a> &gt; <a class="el" href="../../db/d85/classScanningPulseProcess.html">ScanningPulseProcess</a> const &amp;, <a class="el" href="../../d1/d81/classSimulatedPulse.html">SimulatedPulse</a> const &amp;)&gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/dfd/classPulseTaskFactory.html#a419340a4ce5cbac1cc76ae3498fe2faa">_build</a></td></tr>
+<tr class="memdesc:a419340a4ce5cbac1cc76ae3498fe2faa"><td class="mdescLeft">&#160;</td><td class="mdescRight">The build function to be used.  <a href="#a419340a4ce5cbac1cc76ae3498fe2faa">More...</a><br /></td></tr>
+<tr class="separator:a419340a4ce5cbac1cc76ae3498fe2faa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Factory to make the adequate pulse task depending on the simulation. </p>
@@ -179,8 +179,8 @@ Protected Attributes</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a237215ac856e2ab86f026123f3682f39"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a237215ac856e2ab86f026123f3682f39">&#9670;&nbsp;</a></span>build()</h2>
+<a id="ae0c1fc64d9d792a88c3948bbb9b38187"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae0c1fc64d9d792a88c3948bbb9b38187">&#9670;&nbsp;</a></span>build()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -197,32 +197,8 @@ Protected Attributes</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">unsigned int const&#160;</td>
-          <td class="paramname"><em>legIndex</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">glm::dvec3 &amp;&#160;</td>
-          <td class="paramname"><em>absoluteBeamOrigin</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="../../d5/dcb/classRotation.html">Rotation</a> &amp;&#160;</td>
-          <td class="paramname"><em>absoluteBeamAttitude</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double const&#160;</td>
-          <td class="paramname"><em>currentGpsTime</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int const&#160;</td>
-          <td class="paramname"><em>currentPulseNumber</em>&#160;</td>
+          <td class="paramtype"><a class="el" href="../../d1/d81/classSimulatedPulse.html">SimulatedPulse</a> const &amp;&#160;</td>
+          <td class="paramname"><em>sp</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -243,8 +219,8 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="afa1c6b34b6a3224ba435d426415f73a0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afa1c6b34b6a3224ba435d426415f73a0">&#9670;&nbsp;</a></span>buildDynFullWaveformPulseRunnable()</h2>
+<a id="a94fe06da82f7fbd167bbab4ee19f1a3f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a94fe06da82f7fbd167bbab4ee19f1a3f">&#9670;&nbsp;</a></span>buildDynFullWaveformPulseRunnable()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -261,32 +237,8 @@ Protected Attributes</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">unsigned int const&#160;</td>
-          <td class="paramname"><em>legIndex</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">glm::dvec3 &amp;&#160;</td>
-          <td class="paramname"><em>absoluteBeamOrigin</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="../../d5/dcb/classRotation.html">Rotation</a> &amp;&#160;</td>
-          <td class="paramname"><em>absoluteBeamAttitude</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double const&#160;</td>
-          <td class="paramname"><em>currentGpsTime</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int const&#160;</td>
-          <td class="paramname"><em>currentPulseNumber</em>&#160;</td>
+          <td class="paramtype"><a class="el" href="../../d1/d81/classSimulatedPulse.html">SimulatedPulse</a> const &amp;&#160;</td>
+          <td class="paramname"><em>sp</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -302,12 +254,12 @@ Protected Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Build a <a class="el" href="../../da/d0b/classDynFullWaveformPulseRunnable.html" title="Derived class extending FullWaveFormPulseRunnable to handle dynamic moving objects. ">DynFullWaveformPulseRunnable</a> from given arguments. </p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../da/dfd/classPulseTaskFactory.html#a237215ac856e2ab86f026123f3682f39" title="The main build method of the factory. It is the method that must be called to automatically build the...">PulseTaskFactory::build</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../da/dfd/classPulseTaskFactory.html#ae0c1fc64d9d792a88c3948bbb9b38187" title="The main build method of the factory. It is the method that must be called to automatically build the...">PulseTaskFactory::build</a> </dd></dl>
 
 </div>
 </div>
-<a id="a4f972a7dfd2e08aa63750d043bca8f5d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4f972a7dfd2e08aa63750d043bca8f5d">&#9670;&nbsp;</a></span>buildFullWaveformPulseRunnable()</h2>
+<a id="ad37fd42ef10ef2e0288593b48e834b36"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad37fd42ef10ef2e0288593b48e834b36">&#9670;&nbsp;</a></span>buildFullWaveformPulseRunnable()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -324,32 +276,8 @@ Protected Attributes</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">unsigned int const&#160;</td>
-          <td class="paramname"><em>legIndex</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">glm::dvec3 &amp;&#160;</td>
-          <td class="paramname"><em>absoluteBeamOrigin</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="../../d5/dcb/classRotation.html">Rotation</a> &amp;&#160;</td>
-          <td class="paramname"><em>absoluteBeamAttitude</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double const&#160;</td>
-          <td class="paramname"><em>currentGpsTime</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int const&#160;</td>
-          <td class="paramname"><em>currentPulseNumber</em>&#160;</td>
+          <td class="paramtype"><a class="el" href="../../d1/d81/classSimulatedPulse.html">SimulatedPulse</a> const &amp;&#160;</td>
+          <td class="paramname"><em>sp</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -365,7 +293,7 @@ Protected Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Build a <a class="el" href="../../db/da6/classFullWaveformPulseRunnable.html" title="Concrete implementation of abstract pulse runnable to compute full waveform pulses. ">FullWaveformPulseRunnable</a> from given arguments. </p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../da/dfd/classPulseTaskFactory.html#a237215ac856e2ab86f026123f3682f39" title="The main build method of the factory. It is the method that must be called to automatically build the...">PulseTaskFactory::build</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../da/dfd/classPulseTaskFactory.html#ae0c1fc64d9d792a88c3948bbb9b38187" title="The main build method of the factory. It is the method that must be called to automatically build the...">PulseTaskFactory::build</a> </dd></dl>
 
 </div>
 </div>
@@ -393,7 +321,7 @@ Protected Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Automatically set the _build function depending on current factory state. </p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../da/dfd/classPulseTaskFactory.html#a7a1149d0257c768d316a4499d3bb1d7f" title="The build function to be used. ">PulseTaskFactory::_build</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../da/dfd/classPulseTaskFactory.html#a419340a4ce5cbac1cc76ae3498fe2faa" title="The build function to be used. ">PulseTaskFactory::_build</a> </dd></dl>
 
 </div>
 </div>
@@ -462,8 +390,8 @@ Protected Attributes</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a id="a7a1149d0257c768d316a4499d3bb1d7f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7a1149d0257c768d316a4499d3bb1d7f">&#9670;&nbsp;</a></span>_build</h2>
+<a id="a419340a4ce5cbac1cc76ae3498fe2faa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a419340a4ce5cbac1cc76ae3498fe2faa">&#9670;&nbsp;</a></span>_build</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -472,7 +400,7 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::function&lt;shared_ptr&lt;<a class="el" href="../../d1/d6e/classPulseTask.html">PulseTask</a>&gt; <a class="el" href="../../db/d85/classScanningPulseProcess.html">ScanningPulseProcess</a> const &amp;, unsigned int const, glm::dvec3 &amp;, <a class="el" href="../../d5/dcb/classRotation.html">Rotation</a> &amp;, double const, int const )&gt; PulseTaskFactory::_build</td>
+          <td class="memname">std::function&lt;shared_ptr&lt;<a class="el" href="../../d1/d6e/classPulseTask.html">PulseTask</a>&gt; <a class="el" href="../../db/d85/classScanningPulseProcess.html">ScanningPulseProcess</a> const &amp;, <a class="el" href="../../d1/d81/classSimulatedPulse.html">SimulatedPulse</a> const &amp; )&gt; PulseTaskFactory::_build</td>
         </tr>
       </table>
   </td>

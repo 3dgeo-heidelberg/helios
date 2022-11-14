@@ -241,6 +241,14 @@ public:
      *  approximate SAH when using Fast SAH strategy
      */
     size_t parseSAHLossNodes();
+    /**
+     * @brief Parse whether the output point clouds must be exported on a
+     *  different file per channel or not
+     * @return True if the output point clouds must be exported on a different
+     *  file par channel, False if the output point clouds must be exported
+     *  on the same file with no concern for the channel
+     */
+    bool parseSplitByChannel();
 
 
 private:

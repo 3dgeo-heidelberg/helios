@@ -1,5 +1,9 @@
 <map id="AbstractPulseRunnable" name="AbstractPulseRunnable">
-<area shape="rect" id="node1" title="Base abstract class for pulse runnables." alt="" coords="16,95,188,121"/>
-<area shape="rect" id="node2" href="$d1/d6e/classPulseTask.html" title="Pulse task interface." alt="" coords="5,5,92,32"/>
-<area shape="rect" id="node3" href="$d5/dcb/classRotation.html" title=" " alt="" coords="117,5,194,32"/>
+<area shape="rect" id="node2" href="$d1/d6e/classPulseTask.html" title="Pulse task interface. " alt="" coords="5,303,89,329"/>
+<area shape="rect" id="node3" href="$d5/d9c/classScene.html" title="Class representing a scene asset. " alt="" coords="114,303,173,329"/>
+<area shape="rect" id="node4" href="$de/d97/classAsset.html" title="Base class for all assets. " alt="" coords="115,213,171,240"/>
+<area shape="rect" id="node6" href="$d1/d81/classSimulatedPulse.html" title="Class representing a simulated laser pulse. " alt="" coords="197,303,311,329"/>
+<area shape="rect" id="node7" href="$d9/d2b/classTimedPulse.html" title="Class representing a time aware laser pulse. " alt="" coords="209,213,299,240"/>
+<area shape="rect" id="node8" href="$d3/d1a/classPulse.html" title="Class representing a laser pulse. " alt="" coords="228,95,283,121"/>
+<area shape="rect" id="node9" href="$d5/dcb/classRotation.html" title="Rotation" alt="" coords="220,5,291,32"/>
 </map>

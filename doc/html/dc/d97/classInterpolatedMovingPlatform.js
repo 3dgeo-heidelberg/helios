@@ -15,6 +15,7 @@ var classInterpolatedMovingPlatform =
     [ "getStepLoop", "dc/d97/classInterpolatedMovingPlatform.html#ab99e1982aa3c4d69144cc2387bf6222a", null ],
     [ "getTimeFrontiers", "dc/d97/classInterpolatedMovingPlatform.html#acacd7b90f4a8e6c211b790fe8ce01705", null ],
     [ "getTrajectoryFunction", "dc/d97/classInterpolatedMovingPlatform.html#a55356eaf310554a1d7fba7c34791bace", null ],
+    [ "isInterpolated", "dc/d97/classInterpolatedMovingPlatform.html#a36c5c9a88eea1ca80a3bb9d60b76c4e0", null ],
     [ "isSyncGPSTime", "dc/d97/classInterpolatedMovingPlatform.html#aff24436a84fb7ac3d2c2315c289f2845", null ],
     [ "setFrontierDerivatives", "dc/d97/classInterpolatedMovingPlatform.html#af4cd2862e184babbd6c2965c8e974ad8", null ],
     [ "setFrontierValues", "dc/d97/classInterpolatedMovingPlatform.html#a4a3bb4aa62c699345b43e51f98f685a1", null ],

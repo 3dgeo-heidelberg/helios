@@ -169,26 +169,38 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 <tr class="memitem:a0175839040b365327e610628653d3ebb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d42/classScanner.html#a0175839040b365327e610628653d3ebb">calcRaysNumber</a> ()</td></tr>
 <tr class="memdesc:a0175839040b365327e610628653d3ebb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Non index version of the <a class="el" href="../../dc/d42/classScanner.html#af87f93ad89227ec897d78b3ec9eff59a" title="Compute the number of rays depending on beam sample quality for the scanning device. ">Scanner::calcRaysNumber(size_t const)</a> method.  <a href="#a0175839040b365327e610628653d3ebb">More...</a><br /></td></tr>
 <tr class="separator:a0175839040b365327e610628653d3ebb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a53a6924bd867981b89701f58e81ab4c9"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d42/classScanner.html#a53a6924bd867981b89701f58e81ab4c9">prepareDiscretization</a> ()=0</td></tr>
-<tr class="memdesc:a53a6924bd867981b89701f58e81ab4c9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prepare wave discretization.  <a href="#a53a6924bd867981b89701f58e81ab4c9">More...</a><br /></td></tr>
-<tr class="separator:a53a6924bd867981b89701f58e81ab4c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9fe151faa9f96c54e930db69d9ad5605"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d42/classScanner.html#a9fe151faa9f96c54e930db69d9ad5605">calcTimePropagation</a> (std::vector&lt; double &gt; &amp;timeWave, int const numBins)=0</td></tr>
-<tr class="memdesc:a9fe151faa9f96c54e930db69d9ad5605"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute propagation time, which means obtaining the intensity peak index.  <a href="#a9fe151faa9f96c54e930db69d9ad5605">More...</a><br /></td></tr>
-<tr class="separator:a9fe151faa9f96c54e930db69d9ad5605"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acc6350ba175fb3af03d01358f8e962fa"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d42/classScanner.html#acc6350ba175fb3af03d01358f8e962fa">prepareDiscretization</a> (size_t const idx)=0</td></tr>
+<tr class="memdesc:acc6350ba175fb3af03d01358f8e962fa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prepare wave discretization.  <a href="#acc6350ba175fb3af03d01358f8e962fa">More...</a><br /></td></tr>
+<tr class="separator:acc6350ba175fb3af03d01358f8e962fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9da12b1d23b22b593851c5049852e871"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d42/classScanner.html#a9da12b1d23b22b593851c5049852e871">prepareDiscretization</a> ()</td></tr>
+<tr class="memdesc:a9da12b1d23b22b593851c5049852e871"><td class="mdescLeft">&#160;</td><td class="mdescRight">Non index version of the <a class="el" href="../../dc/d42/classScanner.html#acc6350ba175fb3af03d01358f8e962fa" title="Prepare wave discretization. ">Scanner::prepareDiscretization</a> method.  <a href="#a9da12b1d23b22b593851c5049852e871">More...</a><br /></td></tr>
+<tr class="separator:a9da12b1d23b22b593851c5049852e871"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af0eed687f66cc2dbd0b37faa4119e4a8"><td class="memItemLeft" align="right" valign="top">virtual double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d42/classScanner.html#af0eed687f66cc2dbd0b37faa4119e4a8">calcFootprintArea</a> (double const distance, size_t const idx) const =0</td></tr>
 <tr class="memdesc:af0eed687f66cc2dbd0b37faa4119e4a8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the footprint area \(f_{a}\).  <a href="#af0eed687f66cc2dbd0b37faa4119e4a8">More...</a><br /></td></tr>
 <tr class="separator:af0eed687f66cc2dbd0b37faa4119e4a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acf24d8cd60a77c430cb999ca10e57d92"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d42/classScanner.html#acf24d8cd60a77c430cb999ca10e57d92">calcFootprintArea</a> (double const distance)</td></tr>
-<tr class="memdesc:acf24d8cd60a77c430cb999ca10e57d92"><td class="mdescLeft">&#160;</td><td class="mdescRight">Non index version of the Scanner::calcFootprintArea(double const, size_t const) method.  <a href="#acf24d8cd60a77c430cb999ca10e57d92">More...</a><br /></td></tr>
-<tr class="separator:acf24d8cd60a77c430cb999ca10e57d92"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1a6722505e6732208607bc1ad7915f8c"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d42/classScanner.html#a1a6722505e6732208607bc1ad7915f8c">calcFootprintArea</a> (double const distance) const</td></tr>
+<tr class="memdesc:a1a6722505e6732208607bc1ad7915f8c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Non index version of the Scanner::calcFootprintArea(double const, size_t const) method.  <a href="#a1a6722505e6732208607bc1ad7915f8c">More...</a><br /></td></tr>
+<tr class="separator:a1a6722505e6732208607bc1ad7915f8c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad57a6aba3406fa80f548d0e71423a32f"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d42/classScanner.html#ad57a6aba3406fa80f548d0e71423a32f">calcFootprintRadius</a> (double distance)</td></tr>
 <tr class="memdesc:ad57a6aba3406fa80f548d0e71423a32f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the footprint radius \(f_{r}\).  <a href="#ad57a6aba3406fa80f548d0e71423a32f">More...</a><br /></td></tr>
 <tr class="separator:ad57a6aba3406fa80f548d0e71423a32f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1287025f886e3b1ea0018bcdba6eac47"><td class="memItemLeft" align="right" valign="top">virtual double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d42/classScanner.html#a1287025f886e3b1ea0018bcdba6eac47">calcAtmosphericAttenuation</a> () const =0</td></tr>
-<tr class="separator:a1287025f886e3b1ea0018bcdba6eac47"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a883dafa27af41e8288ba9eda144baf2f"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="../../d5/dcb/classRotation.html">Rotation</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d42/classScanner.html#a883dafa27af41e8288ba9eda144baf2f">calcAbsoluteBeamAttitude</a> ()=0</td></tr>
-<tr class="memdesc:a883dafa27af41e8288ba9eda144baf2f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the absolute beam attitude considering the mount relative attitude and the deflector relative attitude.  <a href="#a883dafa27af41e8288ba9eda144baf2f">More...</a><br /></td></tr>
-<tr class="separator:a883dafa27af41e8288ba9eda144baf2f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1ab80dede77ed7f907fda7a81d70526a"><td class="memItemLeft" align="right" valign="top">virtual double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d42/classScanner.html#a1ab80dede77ed7f907fda7a81d70526a">calcTargetArea</a> (double const distance, size_t const idx) const =0</td></tr>
+<tr class="memdesc:a1ab80dede77ed7f907fda7a81d70526a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculate the target area. It is the footprint area divided by the number of rays.  <a href="#a1ab80dede77ed7f907fda7a81d70526a">More...</a><br /></td></tr>
+<tr class="separator:a1ab80dede77ed7f907fda7a81d70526a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a083b0ff29427abeb2ad0c7c668f2f304"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d42/classScanner.html#a083b0ff29427abeb2ad0c7c668f2f304">calcTargetArea</a> (double const distance) const</td></tr>
+<tr class="memdesc:a083b0ff29427abeb2ad0c7c668f2f304"><td class="mdescLeft">&#160;</td><td class="mdescRight">Non index version of the Scanner::calcTargetArea(double const, size_t const) method.  <a href="#a083b0ff29427abeb2ad0c7c668f2f304">More...</a><br /></td></tr>
+<tr class="separator:a083b0ff29427abeb2ad0c7c668f2f304"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afc0bf9cd2352de3e053b57ebbe90ae18"><td class="memItemLeft" align="right" valign="top">virtual double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d42/classScanner.html#afc0bf9cd2352de3e053b57ebbe90ae18">calcAtmosphericAttenuation</a> (size_t const idx) const =0</td></tr>
+<tr class="separator:afc0bf9cd2352de3e053b57ebbe90ae18"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aabe71111e16a47c9720a66aea18048fe"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d42/classScanner.html#aabe71111e16a47c9720a66aea18048fe">calcAtmosphericAttenuation</a> () const</td></tr>
+<tr class="memdesc:aabe71111e16a47c9720a66aea18048fe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Non index version of <a class="el" href="../../dc/d42/classScanner.html#afc0bf9cd2352de3e053b57ebbe90ae18">Scanner::calcAtmosphericAttenuation</a>.  <a href="#aabe71111e16a47c9720a66aea18048fe">More...</a><br /></td></tr>
+<tr class="separator:aabe71111e16a47c9720a66aea18048fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa9076ac0f9c4e3a8ead74f3d4be3337a"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="../../d5/dcb/classRotation.html">Rotation</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d42/classScanner.html#aa9076ac0f9c4e3a8ead74f3d4be3337a">calcAbsoluteBeamAttitude</a> (size_t const idx)=0</td></tr>
+<tr class="memdesc:aa9076ac0f9c4e3a8ead74f3d4be3337a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the absolute beam attitude considering the mount relative attitude and the deflector relative attitude.  <a href="#aa9076ac0f9c4e3a8ead74f3d4be3337a">More...</a><br /></td></tr>
+<tr class="separator:aa9076ac0f9c4e3a8ead74f3d4be3337a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a200c10597fe671a374f5ecc45d3410ae"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d5/dcb/classRotation.html">Rotation</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d42/classScanner.html#a200c10597fe671a374f5ecc45d3410ae">calcAbsoluteBeamAttitude</a> ()</td></tr>
+<tr class="memdesc:a200c10597fe671a374f5ecc45d3410ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Non index version of the <a class="el" href="../../dc/d42/classScanner.html#aa9076ac0f9c4e3a8ead74f3d4be3337a" title="Compute the absolute beam attitude considering the mount relative attitude and the deflector relative...">Scanner::calcAbsoluteBeamAttitude</a> function.  <a href="#a200c10597fe671a374f5ecc45d3410ae">More...</a><br /></td></tr>
+<tr class="separator:a200c10597fe671a374f5ecc45d3410ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af7d5e62ea323e22995b06ec7780574ec"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d42/classScanner.html#af7d5e62ea323e22995b06ec7780574ec">checkMaxNOR</a> (int const nor, size_t const idx)=0</td></tr>
 <tr class="memdesc:af7d5e62ea323e22995b06ec7780574ec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if given number of return (nor) is inside expected boundaries. If scanner maxNOR is 0 or nor is less than maxNOR, then the check is passed (true is returned). Otherwise, it is not passed (false is returned).  <a href="#af7d5e62ea323e22995b06ec7780574ec">More...</a><br /></td></tr>
 <tr class="separator:af7d5e62ea323e22995b06ec7780574ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -210,10 +222,10 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 <tr class="memitem:a9162783f755f55792d269396ea6a5172"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d42/classScanner.html#a9162783f755f55792d269396ea6a5172">handleSimStepNoise</a> (glm::dvec3 &amp;absoluteBeamOrigin, <a class="el" href="../../d5/dcb/classRotation.html">Rotation</a> &amp;absoluteBeamAttitude)</td></tr>
 <tr class="memdesc:a9162783f755f55792d269396ea6a5172"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle position and attitude noise.  <a href="#a9162783f755f55792d269396ea6a5172">More...</a><br /></td></tr>
 <tr class="separator:a9162783f755f55792d269396ea6a5172"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa654d2754946f445ff8faa91822eda25"><td class="memItemLeft" align="right" valign="top"><a id="aa654d2754946f445ff8faa91822eda25"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d42/classScanner.html#aa654d2754946f445ff8faa91822eda25">onLegComplete</a> ()</td></tr>
-<tr class="memdesc:aa654d2754946f445ff8faa91822eda25"><td class="mdescLeft">&#160;</td><td class="mdescRight">Exposes <a class="el" href="../../db/d85/classScanningPulseProcess.html" title="Class defining the scanning pulse process interface. ">ScanningPulseProcess</a>:onLegComplete method of the scanning pulse process defining this scanner. <br /></td></tr>
-<tr class="separator:aa654d2754946f445ff8faa91822eda25"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:add577a6df1ac8b6df527cc54356253ee"><td class="memItemLeft" align="right" valign="top"><a id="add577a6df1ac8b6df527cc54356253ee"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d42/classScanner.html#add577a6df1ac8b6df527cc54356253ee">onLegComplete</a> ()</td></tr>
+<tr class="memdesc:add577a6df1ac8b6df527cc54356253ee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Exposes <a class="el" href="../../db/d85/classScanningPulseProcess.html" title="Class defining the scanning pulse process interface. ">ScanningPulseProcess</a>:onLegComplete method of the scanning pulse process defining this scanner. <br /></td></tr>
+<tr class="separator:add577a6df1ac8b6df527cc54356253ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a74fb8838bba7b36ea5e3b3df48fb1349"><td class="memItemLeft" align="right" valign="top"><a id="a74fb8838bba7b36ea5e3b3df48fb1349"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d42/classScanner.html#a74fb8838bba7b36ea5e3b3df48fb1349">onSimulationFinished</a> ()</td></tr>
 <tr class="memdesc:a74fb8838bba7b36ea5e3b3df48fb1349"><td class="mdescLeft">&#160;</td><td class="mdescRight">Exposes <a class="el" href="../../db/d85/classScanningPulseProcess.html#a8e3cb6388ace9c320fdbb32955bf9d8a" title="Handle behavior of scanning pulse process once simulation has finished. ">ScanningPulseProcess::onSimulationFinished</a> method of the scanning pulse process defining this scanner. <br /></td></tr>
@@ -466,6 +478,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../.
 <tr class="memitem:a488f16d343dcfaf7430494e0beb03d00"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d42/classScanner.html#a488f16d343dcfaf7430494e0beb03d00">setScannerId</a> (std::string const &amp;<a class="el" href="../../dc/d42/classScanner.html#a49e2b8b1499a8865e5f511047019f2e2">id</a>)</td></tr>
 <tr class="memdesc:a488f16d343dcfaf7430494e0beb03d00"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the identifier of the scanner.  <a href="#a488f16d343dcfaf7430494e0beb03d00">More...</a><br /></td></tr>
 <tr class="separator:a488f16d343dcfaf7430494e0beb03d00"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4d34cdd2291b1a01f0adb83c24256242"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d42/classScanner.html#a4d34cdd2291b1a01f0adb83c24256242">setDeviceIndex</a> (size_t const newIdx, size_t const oldIdx)=0</td></tr>
+<tr class="memdesc:a4d34cdd2291b1a01f0adb83c24256242"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the device index (newIdx) of the device at given index (oldIdx).  <a href="#a4d34cdd2291b1a01f0adb83c24256242">More...</a><br /></td></tr>
+<tr class="separator:a4d34cdd2291b1a01f0adb83c24256242"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6e1bc483861b0e2ed36ea8bcb7d40f18"><td class="memItemLeft" align="right" valign="top">virtual std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d42/classScanner.html#a6e1bc483861b0e2ed36ea8bcb7d40f18">getDeviceId</a> (size_t const idx) const =0</td></tr>
 <tr class="memdesc:a6e1bc483861b0e2ed36ea8bcb7d40f18"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain scanner device identifier.  <a href="#a6e1bc483861b0e2ed36ea8bcb7d40f18">More...</a><br /></td></tr>
 <tr class="separator:a6e1bc483861b0e2ed36ea8bcb7d40f18"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -704,7 +719,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../.
 <tr class="separator:a441f1d6e8dfa7cab388cc460f8a71d4f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a397437d4ccf0e63fc0f9c23e68e2f4fe"><td class="memItemLeft" align="right" valign="top"><a id="a397437d4ccf0e63fc0f9c23e68e2f4fe"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d42/classScanner.html#a397437d4ccf0e63fc0f9c23e68e2f4fe">cfg_setting_pulseFreq_Hz</a> = 0</td></tr>
-<tr class="memdesc:a397437d4ccf0e63fc0f9c23e68e2f4fe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pulse frequency (hertz) <br /></td></tr>
+<tr class="memdesc:a397437d4ccf0e63fc0f9c23e68e2f4fe"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="../../d3/d1a/classPulse.html" title="Class representing a laser pulse. ">Pulse</a> frequency (hertz) <br /></td></tr>
 <tr class="separator:a397437d4ccf0e63fc0f9c23e68e2f4fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a55a36caf2765a32a62fc9f82645c5513"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d42/classScanner.html#a55a36caf2765a32a62fc9f82645c5513">state_isActive</a> = true</td></tr>
 <tr class="memdesc:a55a36caf2765a32a62fc9f82645c5513"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flag specifying if scanner is active (true) or not (false)  <a href="#a55a36caf2765a32a62fc9f82645c5513">More...</a><br /></td></tr>
@@ -767,36 +782,15 @@ int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../..
 </div><div class="memdoc">
 
 <p><a class="el" href="../../dc/d42/classScanner.html" title="Class representing a scanner asset. ">Scanner</a> constructor. </p>
-<dl class="section see"><dt>See also</dt><dd>Scanner::cfg_device_beamDivergence_rad </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">beamOrigin</td><td>Beam origin used to set head relative emitter position </td></tr>
-    <tr><td class="paramname">beamOrientation</td><td>Beam orientation used to set head relative emitter attitude </td></tr>
     <tr><td class="paramname">pulseFreqs</td><td>List of supported pulse frequencies (hertz) </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section see"><dt>See also</dt><dd>Scanner::cfg_device_supportedPulseFreqs_Hz </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../dc/d42/classScanner.html#a49e2b8b1499a8865e5f511047019f2e2" title="The scanner&#39;s identifier. ">Scanner::id</a> </dd>
 <dd>
-Scanner::cfg_device_pulseLength_ns </dd>
-<dd>
-Scanner::cfg_device_id </dd>
-<dd>
-Scanner::cfg_device_averagePower_w </dd>
-<dd>
-Scanner::cfg_device_beamQuality </dd>
-<dd>
-Scanner::cfg_device_efficiency </dd>
-<dd>
-Scanner::cfg_device_receiverDiameter_m </dd></dl>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">atmosphericVisibility</td><td>Atmospheric visibility understood as the scanner visibility (kilometers) </td></tr>
-    <tr><td class="paramname">wavelength</td><td>Wavelength used to set scanner wave length after dividing by \(10^{9}\) </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../dc/d42/classScanner.html#aaec9d6c112b1a6f90af5e1582c6f974b" title="Flag specifying if write waveform (true) or not (false) ">Scanner::writeWaveform</a> </dd>
+<a class="el" href="../../dc/d42/classScanner.html#aaec9d6c112b1a6f90af5e1582c6f974b" title="Flag specifying if write waveform (true) or not (false) ">Scanner::writeWaveform</a> </dd>
 <dd>
 <a class="el" href="../../dc/d42/classScanner.html#aca065cd1d5ef6bfe59ddcecd270a7393" title="Flag specifying if calculate echo width (true) or not (false) ">Scanner::calcEchowidth</a> </dd>
 <dd>
@@ -865,7 +859,7 @@ Scanner::cfg_device_receiverDiameter_m </dd></dl>
   </dd>
 </dl>
 
-<p>Reimplemented in <a class="el" href="../../d2/d24/classSingleScanner.html#a4e4363549806eb3d53ba45a5b09d4daf">SingleScanner</a>, and <a class="el" href="../../da/d23/classMultiScanner.html#ad65679f2d08dfa98067efb798d53a688">MultiScanner</a>.</p>
+<p>Reimplemented in <a class="el" href="../../da/d23/classMultiScanner.html#ad65679f2d08dfa98067efb798d53a688">MultiScanner</a>, and <a class="el" href="../../d2/d24/classSingleScanner.html#a4e4363549806eb3d53ba45a5b09d4daf">SingleScanner</a>.</p>
 
 </div>
 </div>
@@ -913,7 +907,7 @@ Scanner::cfg_device_receiverDiameter_m </dd></dl>
 </dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d0/d23/classScannerSettings.html" title="Scanner settings class. ">ScannerSettings</a> </dd></dl>
 
-<p>Implemented in <a class="el" href="../../d2/d24/classSingleScanner.html#a60c1c2276bbc3c8426edfdb985e7a0f6">SingleScanner</a>.</p>
+<p>Implemented in <a class="el" href="../../da/d23/classMultiScanner.html#aad60eab302c3c272a67698d513f6fdcb">MultiScanner</a>, and <a class="el" href="../../d2/d24/classSingleScanner.html#a60c1c2276bbc3c8426edfdb985e7a0f6">SingleScanner</a>.</p>
 
 </div>
 </div>
@@ -1070,8 +1064,8 @@ Scanner::cfg_device_receiverDiameter_m </dd></dl>
 
 </div>
 </div>
-<a id="a883dafa27af41e8288ba9eda144baf2f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a883dafa27af41e8288ba9eda144baf2f">&#9670;&nbsp;</a></span>calcAbsoluteBeamAttitude()</h2>
+<a id="aa9076ac0f9c4e3a8ead74f3d4be3337a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa9076ac0f9c4e3a8ead74f3d4be3337a">&#9670;&nbsp;</a></span>calcAbsoluteBeamAttitude() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1082,7 +1076,8 @@ Scanner::cfg_device_receiverDiameter_m </dd></dl>
         <tr>
           <td class="memname">virtual <a class="el" href="../../d5/dcb/classRotation.html">Rotation</a> Scanner::calcAbsoluteBeamAttitude </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
+          <td class="paramtype">size_t const&#160;</td>
+          <td class="paramname"><em>idx</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -1098,12 +1093,40 @@ Scanner::cfg_device_receiverDiameter_m </dd></dl>
 <dd>
 <a class="el" href="../../d7/d92/classAbstractBeamDeflector.html#ae65d89b6a449aa58656a0416e1fd2fbc" title="Get the relative emitter attitude. ">AbstractBeamDeflector::getEmitterRelativeAttitude</a> </dd></dl>
 
-<p>Implemented in <a class="el" href="../../d2/d24/classSingleScanner.html#a9bede81bcd8ccc55e2ceb9487a491ec7">SingleScanner</a>.</p>
+<p>Implemented in <a class="el" href="../../da/d23/classMultiScanner.html#ad9ac907ab4fa58cafdf567ff021f9a7f">MultiScanner</a>, and <a class="el" href="../../d2/d24/classSingleScanner.html#ad14c86e7e652b5b5294ff0db4881b879">SingleScanner</a>.</p>
 
 </div>
 </div>
-<a id="a1287025f886e3b1ea0018bcdba6eac47"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1287025f886e3b1ea0018bcdba6eac47">&#9670;&nbsp;</a></span>calcAtmosphericAttenuation()</h2>
+<a id="a200c10597fe671a374f5ecc45d3410ae"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a200c10597fe671a374f5ecc45d3410ae">&#9670;&nbsp;</a></span>calcAbsoluteBeamAttitude() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../d5/dcb/classRotation.html">Rotation</a> Scanner::calcAbsoluteBeamAttitude </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Non index version of the <a class="el" href="../../dc/d42/classScanner.html#aa9076ac0f9c4e3a8ead74f3d4be3337a" title="Compute the absolute beam attitude considering the mount relative attitude and the deflector relative...">Scanner::calcAbsoluteBeamAttitude</a> function. </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../dc/d42/classScanner.html#aa9076ac0f9c4e3a8ead74f3d4be3337a" title="Compute the absolute beam attitude considering the mount relative attitude and the deflector relative...">Scanner::calcAbsoluteBeamAttitude(size_t const)</a> </dd></dl>
+
+</div>
+</div>
+<a id="afc0bf9cd2352de3e053b57ebbe90ae18"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afc0bf9cd2352de3e053b57ebbe90ae18">&#9670;&nbsp;</a></span>calcAtmosphericAttenuation() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1114,7 +1137,8 @@ Scanner::cfg_device_receiverDiameter_m </dd></dl>
         <tr>
           <td class="memname">virtual double Scanner::calcAtmosphericAttenuation </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
+          <td class="paramtype">size_t const&#160;</td>
+          <td class="paramname"><em>idx</em></td><td>)</td>
           <td> const</td>
         </tr>
       </table>
@@ -1126,7 +1150,35 @@ Scanner::cfg_device_receiverDiameter_m </dd></dl>
 </div><div class="memdoc">
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d1/d09/classScanningDevice.html#ae231a867d527dd44c7a03cbb50502e08" title="Compute the atmospheric attenuation to be used as the atmospheric extinction. ">ScanningDevice::calcAtmosphericAttenuation</a> </dd></dl>
 
-<p>Implemented in <a class="el" href="../../d2/d24/classSingleScanner.html#a8b553ec6b6f3c7d2f97b34c0a16a8ab9">SingleScanner</a>, and <a class="el" href="../../da/d23/classMultiScanner.html#a98e7cc0caee1770bdfef01388f1f60be">MultiScanner</a>.</p>
+<p>Implemented in <a class="el" href="../../da/d23/classMultiScanner.html#a11b84c18988bc0bfd4bfffa69efacabb">MultiScanner</a>, and <a class="el" href="../../d2/d24/classSingleScanner.html#ad2d5c21ad022779084de080328000547">SingleScanner</a>.</p>
+
+</div>
+</div>
+<a id="aabe71111e16a47c9720a66aea18048fe"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aabe71111e16a47c9720a66aea18048fe">&#9670;&nbsp;</a></span>calcAtmosphericAttenuation() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double Scanner::calcAtmosphericAttenuation </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Non index version of <a class="el" href="../../dc/d42/classScanner.html#afc0bf9cd2352de3e053b57ebbe90ae18">Scanner::calcAtmosphericAttenuation</a>. </p>
+<dl class="section see"><dt>See also</dt><dd>Scanner::calcAtmosphericAttenuation(size_t const) </dd></dl>
 
 </div>
 </div>
@@ -1177,12 +1229,12 @@ Scanner::cfg_device_receiverDiameter_m </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>Footprint area \(f_{a}\) </dd></dl>
 <dl class="section see"><dt>See also</dt><dd>Scanner::cached_Bt2 </dd></dl>
 
-<p>Implemented in <a class="el" href="../../d2/d24/classSingleScanner.html#a313c54c99d30e87a673694ba2d52be47">SingleScanner</a>.</p>
+<p>Implemented in <a class="el" href="../../da/d23/classMultiScanner.html#a59dad9e6cb9a8e5c4fdd26fde8064869">MultiScanner</a>, and <a class="el" href="../../d2/d24/classSingleScanner.html#a313c54c99d30e87a673694ba2d52be47">SingleScanner</a>.</p>
 
 </div>
 </div>
-<a id="acf24d8cd60a77c430cb999ca10e57d92"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acf24d8cd60a77c430cb999ca10e57d92">&#9670;&nbsp;</a></span>calcFootprintArea() <span class="overload">[2/2]</span></h2>
+<a id="a1a6722505e6732208607bc1ad7915f8c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1a6722505e6732208607bc1ad7915f8c">&#9670;&nbsp;</a></span>calcFootprintArea() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1195,7 +1247,7 @@ Scanner::cfg_device_receiverDiameter_m </dd></dl>
           <td>(</td>
           <td class="paramtype">double const&#160;</td>
           <td class="paramname"><em>distance</em></td><td>)</td>
-          <td></td>
+          <td> const</td>
         </tr>
       </table>
   </td>
@@ -1320,7 +1372,7 @@ Scanner::cfg_device_receiverDiameter_m </dd></dl>
 </dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d1/d09/classScanningDevice.html#a77dc4ebcfda58b3015a109a3496c88b3" title="Compute intensity. It is the strength of the laser going back to the detector considering the emitted...">ScanningDevice::calcIntensity</a> </dd></dl>
 
-<p>Implemented in <a class="el" href="../../d2/d24/classSingleScanner.html#ad3179c9405c1d94bcd2592b63e06c6a3">SingleScanner</a>.</p>
+<p>Implemented in <a class="el" href="../../da/d23/classMultiScanner.html#a000cd1cdc31001eff5a8621dad9d03c7">MultiScanner</a>, and <a class="el" href="../../d2/d24/classSingleScanner.html#ad3179c9405c1d94bcd2592b63e06c6a3">SingleScanner</a>.</p>
 
 </div>
 </div>
@@ -1379,7 +1431,7 @@ Scanner::cfg_device_receiverDiameter_m </dd></dl>
 </dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d1/d09/classScanningDevice.html#a77dc4ebcfda58b3015a109a3496c88b3" title="Compute intensity. It is the strength of the laser going back to the detector considering the emitted...">ScanningDevice::calcIntensity</a> </dd></dl>
 
-<p>Implemented in <a class="el" href="../../d2/d24/classSingleScanner.html#a76bbaf9ce02828ca5b3b9b6e5186cdf0">SingleScanner</a>.</p>
+<p>Implemented in <a class="el" href="../../da/d23/classMultiScanner.html#ac52faf5d43482500307dff543cfedcc2">MultiScanner</a>, and <a class="el" href="../../d2/d24/classSingleScanner.html#a76bbaf9ce02828ca5b3b9b6e5186cdf0">SingleScanner</a>.</p>
 
 </div>
 </div>
@@ -1411,8 +1463,8 @@ Scanner::cfg_device_receiverDiameter_m </dd></dl>
 
 </div>
 </div>
-<a id="a9fe151faa9f96c54e930db69d9ad5605"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9fe151faa9f96c54e930db69d9ad5605">&#9670;&nbsp;</a></span>calcTimePropagation()</h2>
+<a id="a1ab80dede77ed7f907fda7a81d70526a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1ab80dede77ed7f907fda7a81d70526a">&#9670;&nbsp;</a></span>calcTargetArea() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1421,21 +1473,21 @@ Scanner::cfg_device_receiverDiameter_m </dd></dl>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual int Scanner::calcTimePropagation </td>
+          <td class="memname">virtual double Scanner::calcTargetArea </td>
           <td>(</td>
-          <td class="paramtype">std::vector&lt; double &gt; &amp;&#160;</td>
-          <td class="paramname"><em>timeWave</em>, </td>
+          <td class="paramtype">double const&#160;</td>
+          <td class="paramname"><em>distance</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">int const&#160;</td>
-          <td class="paramname"><em>numBins</em>&#160;</td>
+          <td class="paramtype">size_t const&#160;</td>
+          <td class="paramname"><em>idx</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
           <td>)</td>
-          <td></td><td></td>
+          <td></td><td> const</td>
         </tr>
       </table>
   </td>
@@ -1445,15 +1497,41 @@ Scanner::cfg_device_receiverDiameter_m </dd></dl>
 </table>
 </div><div class="memdoc">
 
-<p>Compute propagation time, which means obtaining the intensity peak index. </p>
-<dl class="section see"><dt>See also</dt><dd>Scanner::numTimeBins </dd>
+<p>Calculate the target area. It is the footprint area divided by the number of rays. </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../dc/d42/classScanner.html#af0eed687f66cc2dbd0b37faa4119e4a8" title="Compute the footprint area . ">Scanner::calcFootprintArea</a> </dd>
 <dd>
-Scanner::time_wave </dd>
-<dd>
-Scanner::peakIntensityIndex </dd></dl>
-<dl class="section return"><dt>Returns</dt><dd>Index of intensity peak </dd></dl>
+<a class="el" href="../../dc/d42/classScanner.html#af47fe12d8d15e3fd442e28591e9c0757" title="Obtain the number of rays of the scanning device. ">Scanner::getNumRays</a> </dd></dl>
 
-<p>Implemented in <a class="el" href="../../d2/d24/classSingleScanner.html#ab873c07c45779108d7ef0b6a178352cb">SingleScanner</a>.</p>
+<p>Implemented in <a class="el" href="../../da/d23/classMultiScanner.html#a11b7d6e728251aa5f324306092c83148">MultiScanner</a>, and <a class="el" href="../../d2/d24/classSingleScanner.html#a09e229ecebf8f93ce40abf5d8b16c395">SingleScanner</a>.</p>
+
+</div>
+</div>
+<a id="a083b0ff29427abeb2ad0c7c668f2f304"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a083b0ff29427abeb2ad0c7c668f2f304">&#9670;&nbsp;</a></span>calcTargetArea() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double Scanner::calcTargetArea </td>
+          <td>(</td>
+          <td class="paramtype">double const&#160;</td>
+          <td class="paramname"><em>distance</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Non index version of the Scanner::calcTargetArea(double const, size_t const) method. </p>
+<dl class="section see"><dt>See also</dt><dd>Scanner::calcTargetArea(double const, size_t const) </dd></dl>
 
 </div>
 </div>
@@ -1501,7 +1579,7 @@ Scanner::peakIntensityIndex </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>True if the check is passed, false otherwise </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d1/d09/classScanningDevice.html#a40ab679abb6b86288571eff4f2c58738" title="Maximum number of returns per pulse. When 0, it means there is not maximum at all. ">ScanningDevice::maxNOR</a> </dd></dl>
 
-<p>Implemented in <a class="el" href="../../d2/d24/classSingleScanner.html#ae4df1a4f2906cf42c103de74c0aa6209">SingleScanner</a>.</p>
+<p>Implemented in <a class="el" href="../../da/d23/classMultiScanner.html#a6d473c94333e1a00f034991b0c06a29a">MultiScanner</a>, and <a class="el" href="../../d2/d24/classSingleScanner.html#ae4df1a4f2906cf42c103de74c0aa6209">SingleScanner</a>.</p>
 
 </div>
 </div>
@@ -1560,7 +1638,7 @@ Scanner::peakIntensityIndex </dd></dl>
 <p>Make a clone of this scanner. </p>
 <dl class="section return"><dt>Returns</dt><dd>Shared pointer pointing to the clone of this scanner </dd></dl>
 
-<p>Implemented in <a class="el" href="../../d2/d24/classSingleScanner.html#a717072bbf65b9f725bee66da11474b14">SingleScanner</a>, and <a class="el" href="../../da/d23/classMultiScanner.html#ae60b9e12e361905fc3f9354a18852732">MultiScanner</a>.</p>
+<p>Implemented in <a class="el" href="../../da/d23/classMultiScanner.html#a490e16cfe5e18cd39f168c4de1c3ab0c">MultiScanner</a>, and <a class="el" href="../../d2/d24/classSingleScanner.html#a717072bbf65b9f725bee66da11474b14">SingleScanner</a>.</p>
 
 </div>
 </div>
@@ -1639,7 +1717,7 @@ Scanner::peakIntensityIndex </dd></dl>
 <dd>
 <a class="el" href="../../d1/d09/classScanningDevice.html#a93ef3cba34b763e686113909559ed9f5">ScanningDevice::computeSubrays</a> </dd></dl>
 
-<p>Implemented in <a class="el" href="../../d2/d24/classSingleScanner.html#a4d2013f668fd92930d9192190b116fc4">SingleScanner</a>.</p>
+<p>Implemented in <a class="el" href="../../da/d23/classMultiScanner.html#a553a32b0bd7eec92abe2fcb079a1292d">MultiScanner</a>, and <a class="el" href="../../d2/d24/classSingleScanner.html#a4d2013f668fd92930d9192190b116fc4">SingleScanner</a>.</p>
 
 </div>
 </div>
@@ -1686,7 +1764,7 @@ Scanner::peakIntensityIndex </dd></dl>
   </dd>
 </dl>
 
-<p>Implemented in <a class="el" href="../../d2/d24/classSingleScanner.html#aa1321a0329ea7295dee7b92ebabde416">SingleScanner</a>.</p>
+<p>Implemented in <a class="el" href="../../da/d23/classMultiScanner.html#a31ed84625854f528c5068f83de9b1315">MultiScanner</a>, and <a class="el" href="../../d2/d24/classSingleScanner.html#aa1321a0329ea7295dee7b92ebabde416">SingleScanner</a>.</p>
 
 </div>
 </div>
@@ -1724,7 +1802,7 @@ Scanner::peakIntensityIndex </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>Atmospheric extinction </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d1/d09/classScanningDevice.html#a669d758c7abac661431f7f5623f85022" title="Atmospheric extinction. ">ScanningDevice::atmosphericExtinction</a> </dd></dl>
 
-<p>Implemented in <a class="el" href="../../d2/d24/classSingleScanner.html#a9ba96ee33cc4a09d94dccd94ccdd164e">SingleScanner</a>, and <a class="el" href="../../da/d23/classMultiScanner.html#afcd36ddbefe21d8120b980dfe9e7a650">MultiScanner</a>.</p>
+<p>Implemented in <a class="el" href="../../da/d23/classMultiScanner.html#afcd36ddbefe21d8120b980dfe9e7a650">MultiScanner</a>, and <a class="el" href="../../d2/d24/classSingleScanner.html#a9ba96ee33cc4a09d94dccd94ccdd164e">SingleScanner</a>.</p>
 
 </div>
 </div>
@@ -1790,7 +1868,7 @@ Scanner::peakIntensityIndex </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>Average power (watts) </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d1/d09/classScanningDevice.html#a62c47fed463ea78eeced7a0772e0f417" title="Average power (watts) ">ScanningDevice::averagePower_w</a> </dd></dl>
 
-<p>Implemented in <a class="el" href="../../d2/d24/classSingleScanner.html#a7c44bdd272e976b94a6395430e94f784">SingleScanner</a>, and <a class="el" href="../../da/d23/classMultiScanner.html#a1bc1759ebda17e7591b1e2f98e558ace">MultiScanner</a>.</p>
+<p>Implemented in <a class="el" href="../../da/d23/classMultiScanner.html#a1bc1759ebda17e7591b1e2f98e558ace">MultiScanner</a>, and <a class="el" href="../../d2/d24/classSingleScanner.html#a7c44bdd272e976b94a6395430e94f784">SingleScanner</a>.</p>
 
 </div>
 </div>
@@ -1856,7 +1934,7 @@ Scanner::peakIntensityIndex </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>The beam deflector of the scanning device </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d7/d92/classAbstractBeamDeflector.html" title="Base abstract class for beam deflectors. ">AbstractBeamDeflector</a> </dd></dl>
 
-<p>Implemented in <a class="el" href="../../d2/d24/classSingleScanner.html#addd589ea4bcbe754381ba9e29dd43b1a">SingleScanner</a>.</p>
+<p>Implemented in <a class="el" href="../../da/d23/classMultiScanner.html#a123bf0eaf31faf560a05bbecd13c65ea">MultiScanner</a>, and <a class="el" href="../../d2/d24/classSingleScanner.html#addd589ea4bcbe754381ba9e29dd43b1a">SingleScanner</a>.</p>
 
 </div>
 </div>
@@ -1922,7 +2000,7 @@ Scanner::peakIntensityIndex </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>Beam divergence (radians) </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d1/d09/classScanningDevice.html#a03dbcc4567c712835704a581d1eb2094" title="Beam divergence (radians) ">ScanningDevice::beamDivergence_rad</a> </dd></dl>
 
-<p>Implemented in <a class="el" href="../../d2/d24/classSingleScanner.html#a3c31f9cdcfc4fc76ca6ec5c1bbabf29a">SingleScanner</a>, and <a class="el" href="../../da/d23/classMultiScanner.html#a6aaa839d99cbf0ed841a999043ec9050">MultiScanner</a>.</p>
+<p>Implemented in <a class="el" href="../../da/d23/classMultiScanner.html#a6aaa839d99cbf0ed841a999043ec9050">MultiScanner</a>, and <a class="el" href="../../d2/d24/classSingleScanner.html#a3c31f9cdcfc4fc76ca6ec5c1bbabf29a">SingleScanner</a>.</p>
 
 </div>
 </div>
@@ -1988,7 +2066,7 @@ Scanner::peakIntensityIndex </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>Beam quality </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d1/d09/classScanningDevice.html#a5cc7247e5d57e1c176a34e8424e2811c" title="Beam quality. ">ScanningDevice::beamQuality</a> </dd></dl>
 
-<p>Implemented in <a class="el" href="../../d2/d24/classSingleScanner.html#a00b2742e0c079164976035c1c445b81e">SingleScanner</a>, and <a class="el" href="../../da/d23/classMultiScanner.html#aa4647a84abd03df1820fe14405d96bb3">MultiScanner</a>.</p>
+<p>Implemented in <a class="el" href="../../da/d23/classMultiScanner.html#aa4647a84abd03df1820fe14405d96bb3">MultiScanner</a>, and <a class="el" href="../../d2/d24/classSingleScanner.html#a00b2742e0c079164976035c1c445b81e">SingleScanner</a>.</p>
 
 </div>
 </div>
@@ -2054,7 +2132,7 @@ Scanner::peakIntensityIndex </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>Beam waist radius </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d1/d09/classScanningDevice.html#a365d9dd56ccf98f83d027b14c368b264" title="Beam waist radius. ">ScanningDevice::beamWaistRadius</a> </dd></dl>
 
-<p>Implemented in <a class="el" href="../../d2/d24/classSingleScanner.html#af700167a94b76ddd3ea72eea1d880285">SingleScanner</a>, and <a class="el" href="../../da/d23/classMultiScanner.html#aed398e5eeac5ea3fc921712ddac9544e">MultiScanner</a>.</p>
+<p>Implemented in <a class="el" href="../../da/d23/classMultiScanner.html#aed398e5eeac5ea3fc921712ddac9544e">MultiScanner</a>, and <a class="el" href="../../d2/d24/classSingleScanner.html#af700167a94b76ddd3ea72eea1d880285">SingleScanner</a>.</p>
 
 </div>
 </div>
@@ -2120,7 +2198,7 @@ Scanner::peakIntensityIndex </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>\(B_{t2}\) </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d1/d09/classScanningDevice.html#af82c1a8c79298d01f2ec36ec86e57d71" title=" understood as the square of beam divergence ">ScanningDevice::cached_Bt2</a> </dd></dl>
 
-<p>Implemented in <a class="el" href="../../d2/d24/classSingleScanner.html#ae978a06f0c9c514a953849983d5f4d58">SingleScanner</a>, and <a class="el" href="../../da/d23/classMultiScanner.html#ae0104934396563fb773b06b942846dec">MultiScanner</a>.</p>
+<p>Implemented in <a class="el" href="../../da/d23/classMultiScanner.html#ae0104934396563fb773b06b942846dec">MultiScanner</a>, and <a class="el" href="../../d2/d24/classSingleScanner.html#ae978a06f0c9c514a953849983d5f4d58">SingleScanner</a>.</p>
 
 </div>
 </div>
@@ -2186,7 +2264,7 @@ Scanner::peakIntensityIndex </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>The current pulse number of the scanning device </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d1/d09/classScanningDevice.html#a7d28ca05b9e6d6a5007f9e70b6e6ee59" title="Current pulse number. ">ScanningDevice::state_currentPulseNumber</a> </dd></dl>
 
-<p>Implemented in <a class="el" href="../../d2/d24/classSingleScanner.html#a6100f6e9a74d1301d72542767fc5fc46">SingleScanner</a>.</p>
+<p>Implemented in <a class="el" href="../../d2/d24/classSingleScanner.html#a6100f6e9a74d1301d72542767fc5fc46">SingleScanner</a>, and <a class="el" href="../../da/d23/classMultiScanner.html#ac33a268897b6db74dced3f6746f588ab">MultiScanner</a>.</p>
 
 </div>
 </div>
@@ -2252,7 +2330,7 @@ Scanner::peakIntensityIndex </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>The abstract detector of the scanning device </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d8/d6b/classAbstractDetector.html" title="Base abstract class for detectors. ">AbstractDetector</a> </dd></dl>
 
-<p>Implemented in <a class="el" href="../../d2/d24/classSingleScanner.html#ac52c28c2b0e41433b2059967b2651c1d">SingleScanner</a>.</p>
+<p>Implemented in <a class="el" href="../../da/d23/classMultiScanner.html#a097b44f36ee84214437e616277d48c2c">MultiScanner</a>, and <a class="el" href="../../d2/d24/classSingleScanner.html#ac52c28c2b0e41433b2059967b2651c1d">SingleScanner</a>.</p>
 
 </div>
 </div>
@@ -2312,7 +2390,7 @@ Scanner::peakIntensityIndex </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="../../dc/d42/classScanner.html" title="Class representing a scanner asset. ">Scanner</a> device identifier </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d1/d09/classScanningDevice.html#aa66c16319d2af8c46de2108e3ddd26e1" title="Device identifier. ">ScanningDevice::id</a> </dd></dl>
 
-<p>Implemented in <a class="el" href="../../d2/d24/classSingleScanner.html#aa58c433d367e81c93d41228e957ecfeb">SingleScanner</a>, and <a class="el" href="../../da/d23/classMultiScanner.html#a740a999ad8e130edc641e898081366dc">MultiScanner</a>.</p>
+<p>Implemented in <a class="el" href="../../da/d23/classMultiScanner.html#a740a999ad8e130edc641e898081366dc">MultiScanner</a>, and <a class="el" href="../../d2/d24/classSingleScanner.html#aa58c433d367e81c93d41228e957ecfeb">SingleScanner</a>.</p>
 
 </div>
 </div>
@@ -2378,7 +2456,7 @@ Scanner::peakIntensityIndex </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>\(D_{r2}\) </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d1/d09/classScanningDevice.html#a133a62f6b04d3a51744090c96a0b2b9b" title=" understood as the square of receiver diameter ">ScanningDevice::cached_Dr2</a> </dd></dl>
 
-<p>Implemented in <a class="el" href="../../d2/d24/classSingleScanner.html#a3b5ad4a3061d9d05cf9c87f909533b50">SingleScanner</a>, and <a class="el" href="../../da/d23/classMultiScanner.html#a2ef982e4e9da6258b46b1f02a3b0c6c5">MultiScanner</a>.</p>
+<p>Implemented in <a class="el" href="../../da/d23/classMultiScanner.html#a2ef982e4e9da6258b46b1f02a3b0c6c5">MultiScanner</a>, and <a class="el" href="../../d2/d24/classSingleScanner.html#a3b5ad4a3061d9d05cf9c87f909533b50">SingleScanner</a>.</p>
 
 </div>
 </div>
@@ -2444,7 +2522,7 @@ Scanner::peakIntensityIndex </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>Device efficiency </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d1/d09/classScanningDevice.html#ad1f6d82940f42704f377e194461acf12" title="Device efficiency. ">ScanningDevice::efficiency</a> </dd></dl>
 
-<p>Implemented in <a class="el" href="../../d2/d24/classSingleScanner.html#a65ab40ee0d00d17c5b1fc21eb5e8248a">SingleScanner</a>, and <a class="el" href="../../da/d23/classMultiScanner.html#ac33c268807a62037aa0106397943dd03">MultiScanner</a>.</p>
+<p>Implemented in <a class="el" href="../../da/d23/classMultiScanner.html#ac33c268807a62037aa0106397943dd03">MultiScanner</a>, and <a class="el" href="../../d2/d24/classSingleScanner.html#a65ab40ee0d00d17c5b1fc21eb5e8248a">SingleScanner</a>.</p>
 
 </div>
 </div>
@@ -2510,7 +2588,7 @@ Scanner::peakIntensityIndex </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>The full waveform settings of the scanning device </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d4/dfb/classFWFSettings.html" title="Full Waveform settings. ">FWFSettings</a> </dd></dl>
 
-<p>Implemented in <a class="el" href="../../d2/d24/classSingleScanner.html#a59c2adfa1a4e9095c96d828833a0af28">SingleScanner</a>.</p>
+<p>Implemented in <a class="el" href="../../da/d23/classMultiScanner.html#a562efc066ffd4d85842d6f0e00112da8">MultiScanner</a>, and <a class="el" href="../../d2/d24/classSingleScanner.html#a59c2adfa1a4e9095c96d828833a0af28">SingleScanner</a>.</p>
 
 </div>
 </div>
@@ -2576,7 +2654,7 @@ Scanner::peakIntensityIndex </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>The head's relative emitter attitude </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d1/d09/classScanningDevice.html#a41feb2c8e822323b9830ab2816b59500" title="Head relative emitter attitude. ">ScanningDevice::headRelativeEmitterAttitude</a> </dd></dl>
 
-<p>Implemented in <a class="el" href="../../d2/d24/classSingleScanner.html#a3efc781b34e64d836ce2abcfeb752d55">SingleScanner</a>, and <a class="el" href="../../da/d23/classMultiScanner.html#ae9ebe67b5156c5d47bacf453f8851c81">MultiScanner</a>.</p>
+<p>Implemented in <a class="el" href="../../da/d23/classMultiScanner.html#ae9ebe67b5156c5d47bacf453f8851c81">MultiScanner</a>, and <a class="el" href="../../d2/d24/classSingleScanner.html#a3efc781b34e64d836ce2abcfeb752d55">SingleScanner</a>.</p>
 
 </div>
 </div>
@@ -2614,7 +2692,7 @@ Scanner::peakIntensityIndex </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>The head's relative emitter attitude by reference </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d1/d09/classScanningDevice.html#a41feb2c8e822323b9830ab2816b59500" title="Head relative emitter attitude. ">ScanningDevice::headRelativeEmitterAttitude</a> </dd></dl>
 
-<p>Implemented in <a class="el" href="../../d2/d24/classSingleScanner.html#a31a837d3af49b7fda1c566c264b45375">SingleScanner</a>, and <a class="el" href="../../da/d23/classMultiScanner.html#a8c3acb55e158e99e03a49c57b8c0f4bc">MultiScanner</a>.</p>
+<p>Implemented in <a class="el" href="../../da/d23/classMultiScanner.html#a8c3acb55e158e99e03a49c57b8c0f4bc">MultiScanner</a>, and <a class="el" href="../../d2/d24/classSingleScanner.html#a31a837d3af49b7fda1c566c264b45375">SingleScanner</a>.</p>
 
 </div>
 </div>
@@ -2652,7 +2730,7 @@ Scanner::peakIntensityIndex </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>The head's relative emitter position </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d1/d09/classScanningDevice.html#af5ed5afbb23d6e2dea4bc4d84c9d86d1" title="Head relative emitter position. ">ScanningDevice::headRelativeEmitterPosition</a> </dd></dl>
 
-<p>Implemented in <a class="el" href="../../d2/d24/classSingleScanner.html#a6facd8f9137677c049a7bc92f65dcbd0">SingleScanner</a>, and <a class="el" href="../../da/d23/classMultiScanner.html#a6f413115d401eecd3ca221b29a09e108">MultiScanner</a>.</p>
+<p>Implemented in <a class="el" href="../../da/d23/classMultiScanner.html#a6f413115d401eecd3ca221b29a09e108">MultiScanner</a>, and <a class="el" href="../../d2/d24/classSingleScanner.html#a6facd8f9137677c049a7bc92f65dcbd0">SingleScanner</a>.</p>
 
 </div>
 </div>
@@ -2690,7 +2768,7 @@ Scanner::peakIntensityIndex </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>The head's relative emitter position by reference </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d1/d09/classScanningDevice.html#af5ed5afbb23d6e2dea4bc4d84c9d86d1" title="Head relative emitter position. ">ScanningDevice::headRelativeEmitterPosition</a> </dd></dl>
 
-<p>Implemented in <a class="el" href="../../d2/d24/classSingleScanner.html#a57f8e2c1fc70fa1c00bb5e778a24bd54">SingleScanner</a>, and <a class="el" href="../../da/d23/classMultiScanner.html#a5d4b63e6284f923d4135ba13155a812d">MultiScanner</a>.</p>
+<p>Implemented in <a class="el" href="../../da/d23/classMultiScanner.html#a5d4b63e6284f923d4135ba13155a812d">MultiScanner</a>, and <a class="el" href="../../d2/d24/classSingleScanner.html#a57f8e2c1fc70fa1c00bb5e778a24bd54">SingleScanner</a>.</p>
 
 </div>
 </div>
@@ -2727,7 +2805,7 @@ Scanner::peakIntensityIndex </dd></dl>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The maximum number of returns per pulse for the scanning device </dd></dl>
 
-<p>Implemented in <a class="el" href="../../d2/d24/classSingleScanner.html#af6505d80f501263e9f867a971ba5cb64">SingleScanner</a>.</p>
+<p>Implemented in <a class="el" href="../../da/d23/classMultiScanner.html#ab8b702920af12eedb317f99674cbf96f">MultiScanner</a>, and <a class="el" href="../../d2/d24/classSingleScanner.html#af6505d80f501263e9f867a971ba5cb64">SingleScanner</a>.</p>
 
 </div>
 </div>
@@ -2793,7 +2871,7 @@ Scanner::peakIntensityIndex </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>Number of rays of the scanning device </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d1/d09/classScanningDevice.html#a00a02019f6c8434a3f04c27999209886" title="Number of rays computed by the calcRaysNumber function. ">ScanningDevice::numRays</a> </dd></dl>
 
-<p>Implemented in <a class="el" href="../../d2/d24/classSingleScanner.html#ab75cf8905e0648727643d6c1d6d5c2e2">SingleScanner</a>.</p>
+<p>Implemented in <a class="el" href="../../da/d23/classMultiScanner.html#ad7fbadde715972a53ec84ba790ddaa9d">MultiScanner</a>, and <a class="el" href="../../d2/d24/classSingleScanner.html#ab75cf8905e0648727643d6c1d6d5c2e2">SingleScanner</a>.</p>
 
 </div>
 </div>
@@ -2858,7 +2936,7 @@ Scanner::peakIntensityIndex </dd></dl>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The number of time bins for the scanning device </dd></dl>
 
-<p>Implemented in <a class="el" href="../../d2/d24/classSingleScanner.html#a0893bb93cd54dfd0cc79003963685e9a">SingleScanner</a>.</p>
+<p>Implemented in <a class="el" href="../../da/d23/classMultiScanner.html#af579a44b3daa42788e8e73bb7d6a86ef">MultiScanner</a>, and <a class="el" href="../../d2/d24/classSingleScanner.html#a0893bb93cd54dfd0cc79003963685e9a">SingleScanner</a>.</p>
 
 </div>
 </div>
@@ -2923,7 +3001,7 @@ Scanner::peakIntensityIndex </dd></dl>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The peak intensity index of the scanning device </dd></dl>
 
-<p>Implemented in <a class="el" href="../../d2/d24/classSingleScanner.html#a86f8e5036d7eec3197b8524cae1bc042">SingleScanner</a>.</p>
+<p>Implemented in <a class="el" href="../../da/d23/classMultiScanner.html#a244e4d4347b0924e16f2bdea070f0519">MultiScanner</a>, and <a class="el" href="../../d2/d24/classSingleScanner.html#a86f8e5036d7eec3197b8524cae1bc042">SingleScanner</a>.</p>
 
 </div>
 </div>
@@ -2979,7 +3057,7 @@ Scanner::peakIntensityIndex </dd></dl>
 </div><div class="memdoc">
 
 <p>Obtain the pulse frequency. </p>
-<dl class="section return"><dt>Returns</dt><dd>Pulse frequency (hertz) </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="../../d3/d1a/classPulse.html" title="Class representing a laser pulse. ">Pulse</a> frequency (hertz) </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="../../dc/d42/classScanner.html#a397437d4ccf0e63fc0f9c23e68e2f4fe" title="Pulse frequency (hertz) ">Scanner::cfg_setting_pulseFreq_Hz</a> </dd></dl>
 
 </div>
@@ -3015,10 +3093,10 @@ Scanner::peakIntensityIndex </dd></dl>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Pulse length (nanoseconds) </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="../../d3/d1a/classPulse.html" title="Class representing a laser pulse. ">Pulse</a> length (nanoseconds) </dd></dl>
 <dl class="section see"><dt>See also</dt><dd>ScanningDevice::cfg_device_pulseLength_ns </dd></dl>
 
-<p>Implemented in <a class="el" href="../../d2/d24/classSingleScanner.html#a243a6ed75a823bc754e747d22b58d075">SingleScanner</a>, and <a class="el" href="../../da/d23/classMultiScanner.html#a2019f66c1c8436e4987abf196915dc12">MultiScanner</a>.</p>
+<p>Implemented in <a class="el" href="../../da/d23/classMultiScanner.html#a2019f66c1c8436e4987abf196915dc12">MultiScanner</a>, and <a class="el" href="../../d2/d24/classSingleScanner.html#a243a6ed75a823bc754e747d22b58d075">SingleScanner</a>.</p>
 
 </div>
 </div>
@@ -3084,7 +3162,7 @@ Scanner::peakIntensityIndex </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>Receiver diameter </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d1/d09/classScanningDevice.html#ad51d18239d5beb8e5e18fe48301f1720" title="Receiver diameter (meters) ">ScanningDevice::receiverDiameter_m</a> </dd></dl>
 
-<p>Implemented in <a class="el" href="../../d2/d24/classSingleScanner.html#a93c99e47767c2f2a3040b1bc4ecdd8cc">SingleScanner</a>, and <a class="el" href="../../da/d23/classMultiScanner.html#ac488bb988e9b3f24128abd63a12453eb">MultiScanner</a>.</p>
+<p>Implemented in <a class="el" href="../../da/d23/classMultiScanner.html#ac488bb988e9b3f24128abd63a12453eb">MultiScanner</a>, and <a class="el" href="../../d2/d24/classSingleScanner.html#a93c99e47767c2f2a3040b1bc4ecdd8cc">SingleScanner</a>.</p>
 
 </div>
 </div>
@@ -3150,7 +3228,7 @@ Scanner::peakIntensityIndex </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>The scanner head of the scanning device </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="../../dc/da7/classScannerHead.html">ScannerHead</a> </dd></dl>
 
-<p>Implemented in <a class="el" href="../../d2/d24/classSingleScanner.html#ac21acacefa84d68d8308edfa5616dec3">SingleScanner</a>.</p>
+<p>Implemented in <a class="el" href="../../da/d23/classMultiScanner.html#a1b839d497c1c761468540229f294895e">MultiScanner</a>, and <a class="el" href="../../d2/d24/classSingleScanner.html#ac21acacefa84d68d8308edfa5616dec3">SingleScanner</a>.</p>
 
 </div>
 </div>
@@ -3243,7 +3321,7 @@ Scanner::peakIntensityIndex </dd></dl>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The list of supported pulse frequencies of the scanning device </dd></dl>
 
-<p>Implemented in <a class="el" href="../../d2/d24/classSingleScanner.html#ae3ea9e180d81401c949d8915ea3d5d9e">SingleScanner</a>.</p>
+<p>Implemented in <a class="el" href="../../da/d23/classMultiScanner.html#a08ee64f4a2c796f3f648ec33f319ecb2">MultiScanner</a>, and <a class="el" href="../../d2/d24/classSingleScanner.html#ae3ea9e180d81401c949d8915ea3d5d9e">SingleScanner</a>.</p>
 
 </div>
 </div>
@@ -3308,7 +3386,7 @@ Scanner::peakIntensityIndex </dd></dl>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The time discretization vector of the scanning device </dd></dl>
 
-<p>Implemented in <a class="el" href="../../d2/d24/classSingleScanner.html#af979b06b17ab5779449515b48a25e7ca">SingleScanner</a>.</p>
+<p>Implemented in <a class="el" href="../../da/d23/classMultiScanner.html#a1b374b478de7631b1b17463348addc6d">MultiScanner</a>, and <a class="el" href="../../d2/d24/classSingleScanner.html#af979b06b17ab5779449515b48a25e7ca">SingleScanner</a>.</p>
 
 </div>
 </div>
@@ -3374,7 +3452,7 @@ Scanner::peakIntensityIndex </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>Device visibility (kilometers) </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d1/d09/classScanningDevice.html#aece6565852d8105dfa3167999fd7bf38" title="Visibility (kilometers) ">ScanningDevice::visibility_km</a> </dd></dl>
 
-<p>Implemented in <a class="el" href="../../d2/d24/classSingleScanner.html#aa3570ae842f00783b768487fd5e03a39">SingleScanner</a>, and <a class="el" href="../../da/d23/classMultiScanner.html#a89a3666606d2167b5ff6aa5031bfd20e">MultiScanner</a>.</p>
+<p>Implemented in <a class="el" href="../../da/d23/classMultiScanner.html#a89a3666606d2167b5ff6aa5031bfd20e">MultiScanner</a>, and <a class="el" href="../../d2/d24/classSingleScanner.html#aa3570ae842f00783b768487fd5e03a39">SingleScanner</a>.</p>
 
 </div>
 </div>
@@ -3440,7 +3518,7 @@ Scanner::peakIntensityIndex </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>Wave length (meters) </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d1/d09/classScanningDevice.html#a3182396c4cad4094b0626b94387208f5" title="Wave length (meters) ">ScanningDevice::wavelength_m</a> </dd></dl>
 
-<p>Implemented in <a class="el" href="../../d2/d24/classSingleScanner.html#a35e837a02acae2646346297a6ee1d4c7">SingleScanner</a>, and <a class="el" href="../../da/d23/classMultiScanner.html#aa405c123e5ce0966c60ed558c81a94f3">MultiScanner</a>.</p>
+<p>Implemented in <a class="el" href="../../da/d23/classMultiScanner.html#aa405c123e5ce0966c60ed558c81a94f3">MultiScanner</a>, and <a class="el" href="../../d2/d24/classSingleScanner.html#a35e837a02acae2646346297a6ee1d4c7">SingleScanner</a>.</p>
 
 </div>
 </div>
@@ -3632,7 +3710,7 @@ Scanner::peakIntensityIndex </dd></dl>
 <dd>
 <a class="el" href="../../d1/d09/classScanningDevice.html#a49ca9f3bc6946fb6e19d817a309d97b9">ScanningDevice::initializeFullWaveform</a> </dd></dl>
 
-<p>Implemented in <a class="el" href="../../d2/d24/classSingleScanner.html#ab9806c2c903fca8bfe7348025f146fe7">SingleScanner</a>.</p>
+<p>Implemented in <a class="el" href="../../da/d23/classMultiScanner.html#a7b4693e361b473374f1d5869e061dafa">MultiScanner</a>, and <a class="el" href="../../d2/d24/classSingleScanner.html#ab9806c2c903fca8bfe7348025f146fe7">SingleScanner</a>.</p>
 
 </div>
 </div>
@@ -3846,7 +3924,7 @@ Scanner::peakIntensityIndex </dd></dl>
 <dd>
 <a class="el" href="../../d1/d09/classScanningDevice.html#a9939ba410524813eb528280800f1ebcc" title="Check if last pulse was hit (true) or not (false) for the scanning device. ">ScanningDevice::lastPulseWasHit</a> </dd></dl>
 
-<p>Implemented in <a class="el" href="../../d2/d24/classSingleScanner.html#a6a215a5d682511d286e2e36b3b6ba05a">SingleScanner</a>.</p>
+<p>Implemented in <a class="el" href="../../d2/d24/classSingleScanner.html#a6a215a5d682511d286e2e36b3b6ba05a">SingleScanner</a>, and <a class="el" href="../../da/d23/classMultiScanner.html#a83388795e02161b9fb902e6cb620deb3">MultiScanner</a>.</p>
 
 </div>
 </div>
@@ -3878,8 +3956,8 @@ Scanner::peakIntensityIndex </dd></dl>
 
 </div>
 </div>
-<a id="a53a6924bd867981b89701f58e81ab4c9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a53a6924bd867981b89701f58e81ab4c9">&#9670;&nbsp;</a></span>prepareDiscretization()</h2>
+<a id="acc6350ba175fb3af03d01358f8e962fa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acc6350ba175fb3af03d01358f8e962fa">&#9670;&nbsp;</a></span>prepareDiscretization() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -3890,7 +3968,8 @@ Scanner::peakIntensityIndex </dd></dl>
         <tr>
           <td class="memname">virtual void Scanner::prepareDiscretization </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
+          <td class="paramtype">size_t const&#160;</td>
+          <td class="paramname"><em>idx</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -3908,7 +3987,35 @@ Scanner::time_wave </dd>
 <dd>
 Scanner::peakIntensityIndex </dd></dl>
 
-<p>Implemented in <a class="el" href="../../d2/d24/classSingleScanner.html#a8831709ca0ebe011bffb9deacfd4f7c8">SingleScanner</a>, and <a class="el" href="../../da/d23/classMultiScanner.html#ad6417b21229fd376e0400c12cd811fb8">MultiScanner</a>.</p>
+<p>Implemented in <a class="el" href="../../da/d23/classMultiScanner.html#ab6854334d5b58246165513591baf774f">MultiScanner</a>, and <a class="el" href="../../d2/d24/classSingleScanner.html#a28867634eee0dfb5087f6869c48fd0ec">SingleScanner</a>.</p>
+
+</div>
+</div>
+<a id="a9da12b1d23b22b593851c5049852e871"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9da12b1d23b22b593851c5049852e871">&#9670;&nbsp;</a></span>prepareDiscretization() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Scanner::prepareDiscretization </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Non index version of the <a class="el" href="../../dc/d42/classScanner.html#acc6350ba175fb3af03d01358f8e962fa" title="Prepare wave discretization. ">Scanner::prepareDiscretization</a> method. </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../dc/d42/classScanner.html#acc6350ba175fb3af03d01358f8e962fa" title="Prepare wave discretization. ">Scanner::prepareDiscretization(size_t const)</a> </dd></dl>
 
 </div>
 </div>
@@ -4088,7 +4195,7 @@ Scanner::peakIntensityIndex </dd></dl>
 </dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d1/d09/classScanningDevice.html#a669d758c7abac661431f7f5623f85022" title="Atmospheric extinction. ">ScanningDevice::atmosphericExtinction</a> </dd></dl>
 
-<p>Implemented in <a class="el" href="../../d2/d24/classSingleScanner.html#a1ab2adb230b4b5e8e6d96a20eafdc79c">SingleScanner</a>, and <a class="el" href="../../da/d23/classMultiScanner.html#ad2d1454a297ec31aa9ef00d453b17464">MultiScanner</a>.</p>
+<p>Implemented in <a class="el" href="../../da/d23/classMultiScanner.html#ad2d1454a297ec31aa9ef00d453b17464">MultiScanner</a>, and <a class="el" href="../../d2/d24/classSingleScanner.html#a1ab2adb230b4b5e8e6d96a20eafdc79c">SingleScanner</a>.</p>
 
 </div>
 </div>
@@ -4165,7 +4272,7 @@ Scanner::peakIntensityIndex </dd></dl>
 </dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d1/d09/classScanningDevice.html#a62c47fed463ea78eeced7a0772e0f417" title="Average power (watts) ">ScanningDevice::averagePower_w</a> </dd></dl>
 
-<p>Implemented in <a class="el" href="../../d2/d24/classSingleScanner.html#a64b119be0585752f55294b0d7ff31572">SingleScanner</a>, and <a class="el" href="../../da/d23/classMultiScanner.html#a8453a4a1294cf8a0ea7c2f5cfa905a33">MultiScanner</a>.</p>
+<p>Implemented in <a class="el" href="../../da/d23/classMultiScanner.html#a8453a4a1294cf8a0ea7c2f5cfa905a33">MultiScanner</a>, and <a class="el" href="../../d2/d24/classSingleScanner.html#a64b119be0585752f55294b0d7ff31572">SingleScanner</a>.</p>
 
 </div>
 </div>
@@ -4241,7 +4348,7 @@ Scanner::peakIntensityIndex </dd></dl>
   </dd>
 </dl>
 
-<p>Implemented in <a class="el" href="../../d2/d24/classSingleScanner.html#ab564241a1aa54bb50d29174772f7bb85">SingleScanner</a>.</p>
+<p>Implemented in <a class="el" href="../../da/d23/classMultiScanner.html#a48a4e591c85fd641d7dc2a6b9e3c7484">MultiScanner</a>, and <a class="el" href="../../d2/d24/classSingleScanner.html#ab564241a1aa54bb50d29174772f7bb85">SingleScanner</a>.</p>
 
 </div>
 </div>
@@ -4318,7 +4425,7 @@ Scanner::peakIntensityIndex </dd></dl>
 </dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d1/d09/classScanningDevice.html#a03dbcc4567c712835704a581d1eb2094" title="Beam divergence (radians) ">ScanningDevice::beamDivergence_rad</a> </dd></dl>
 
-<p>Implemented in <a class="el" href="../../d2/d24/classSingleScanner.html#a7d1cd2a335b39a1323c1e23260a0f1bc">SingleScanner</a>, and <a class="el" href="../../da/d23/classMultiScanner.html#a483ce2e1c3b5cd465784ac78a0ccb5f7">MultiScanner</a>.</p>
+<p>Implemented in <a class="el" href="../../da/d23/classMultiScanner.html#a483ce2e1c3b5cd465784ac78a0ccb5f7">MultiScanner</a>, and <a class="el" href="../../d2/d24/classSingleScanner.html#a7d1cd2a335b39a1323c1e23260a0f1bc">SingleScanner</a>.</p>
 
 </div>
 </div>
@@ -4395,7 +4502,7 @@ Scanner::peakIntensityIndex </dd></dl>
 </dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d1/d09/classScanningDevice.html#a5cc7247e5d57e1c176a34e8424e2811c" title="Beam quality. ">ScanningDevice::beamQuality</a> </dd></dl>
 
-<p>Implemented in <a class="el" href="../../d2/d24/classSingleScanner.html#a51e9f8c09c0749da85b13e940279a979">SingleScanner</a>, and <a class="el" href="../../da/d23/classMultiScanner.html#a82695e3899828019842521208a44d2c9">MultiScanner</a>.</p>
+<p>Implemented in <a class="el" href="../../da/d23/classMultiScanner.html#a82695e3899828019842521208a44d2c9">MultiScanner</a>, and <a class="el" href="../../d2/d24/classSingleScanner.html#a51e9f8c09c0749da85b13e940279a979">SingleScanner</a>.</p>
 
 </div>
 </div>
@@ -4472,7 +4579,7 @@ Scanner::peakIntensityIndex </dd></dl>
 </dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d1/d09/classScanningDevice.html#a365d9dd56ccf98f83d027b14c368b264" title="Beam waist radius. ">ScanningDevice::beamWaistRadius</a> </dd></dl>
 
-<p>Implemented in <a class="el" href="../../d2/d24/classSingleScanner.html#ab7cf00a5579fd1f04288d427534964db">SingleScanner</a>, and <a class="el" href="../../da/d23/classMultiScanner.html#a3a3cee11c5a4e587ab5e11b76dcec018">MultiScanner</a>.</p>
+<p>Implemented in <a class="el" href="../../da/d23/classMultiScanner.html#a3a3cee11c5a4e587ab5e11b76dcec018">MultiScanner</a>, and <a class="el" href="../../d2/d24/classSingleScanner.html#ab7cf00a5579fd1f04288d427534964db">SingleScanner</a>.</p>
 
 </div>
 </div>
@@ -4549,7 +4656,7 @@ Scanner::peakIntensityIndex </dd></dl>
 </dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d1/d09/classScanningDevice.html#af82c1a8c79298d01f2ec36ec86e57d71" title=" understood as the square of beam divergence ">ScanningDevice::cached_Bt2</a> </dd></dl>
 
-<p>Implemented in <a class="el" href="../../d2/d24/classSingleScanner.html#a921f7cc132a48fe75e3a9e0f45ee57eb">SingleScanner</a>, and <a class="el" href="../../da/d23/classMultiScanner.html#a9e2b01cb2c72ead52cf556816aa4fecf">MultiScanner</a>.</p>
+<p>Implemented in <a class="el" href="../../da/d23/classMultiScanner.html#a9e2b01cb2c72ead52cf556816aa4fecf">MultiScanner</a>, and <a class="el" href="../../d2/d24/classSingleScanner.html#a921f7cc132a48fe75e3a9e0f45ee57eb">SingleScanner</a>.</p>
 
 </div>
 </div>
@@ -4631,7 +4738,7 @@ Scanner::peakIntensityIndex </dd></dl>
 </dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d8/d6b/classAbstractDetector.html" title="Base abstract class for detectors. ">AbstractDetector</a> </dd></dl>
 
-<p>Implemented in <a class="el" href="../../d2/d24/classSingleScanner.html#a6afdbff19e8fca70489fe40171c4001b">SingleScanner</a>.</p>
+<p>Implemented in <a class="el" href="../../da/d23/classMultiScanner.html#a5415ee3fd2150d4c2bdc1d962b79f1ca">MultiScanner</a>, and <a class="el" href="../../d2/d24/classSingleScanner.html#a6afdbff19e8fca70489fe40171c4001b">SingleScanner</a>.</p>
 
 </div>
 </div>
@@ -4707,7 +4814,7 @@ Scanner::peakIntensityIndex </dd></dl>
 </dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d1/d09/classScanningDevice.html#aa66c16319d2af8c46de2108e3ddd26e1" title="Device identifier. ">ScanningDevice::id</a> </dd></dl>
 
-<p>Implemented in <a class="el" href="../../d2/d24/classSingleScanner.html#a871c2637f58361ae5019209c288893c2">SingleScanner</a>, and <a class="el" href="../../da/d23/classMultiScanner.html#a548dfbc78270db39509da315401be329">MultiScanner</a>.</p>
+<p>Implemented in <a class="el" href="../../da/d23/classMultiScanner.html#a548dfbc78270db39509da315401be329">MultiScanner</a>, and <a class="el" href="../../d2/d24/classSingleScanner.html#a871c2637f58361ae5019209c288893c2">SingleScanner</a>.</p>
 
 </div>
 </div>
@@ -4737,6 +4844,54 @@ Scanner::peakIntensityIndex </dd></dl>
 
 <p>No index argument version of the <a class="el" href="../../dc/d42/classScanner.html#a98997d79ce405462d99667c83fbd5a31" title="Set the scanner device identifier. ">Scanner::setDeviceId</a> method. </p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="../../dc/d42/classScanner.html#a98997d79ce405462d99667c83fbd5a31" title="Set the scanner device identifier. ">Scanner::setDeviceId(std::string const, size_t const)</a> </dd></dl>
+
+</div>
+</div>
+<a id="a4d34cdd2291b1a01f0adb83c24256242"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4d34cdd2291b1a01f0adb83c24256242">&#9670;&nbsp;</a></span>setDeviceIndex()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void Scanner::setDeviceIndex </td>
+          <td>(</td>
+          <td class="paramtype">size_t const&#160;</td>
+          <td class="paramname"><em>newIdx</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t const&#160;</td>
+          <td class="paramname"><em>oldIdx</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Set the device index (newIdx) of the device at given index (oldIdx). </p>
+<p>NOTE this function is not safe. It usage must be avoided unless you really know what you are doing.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">newIdx</td><td>New index for the device </td></tr>
+    <tr><td class="paramname">oldIdx</td><td>Old index of the device to be updated </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Implemented in <a class="el" href="../../da/d23/classMultiScanner.html#a58bb56e77cd78f8a24ca20ef42449d01">MultiScanner</a>, and <a class="el" href="../../d2/d24/classSingleScanner.html#a050f30918eea77b2165ac3150eea69b2">SingleScanner</a>.</p>
 
 </div>
 </div>
@@ -4784,7 +4939,7 @@ Scanner::peakIntensityIndex </dd></dl>
 </dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d1/d09/classScanningDevice.html#a133a62f6b04d3a51744090c96a0b2b9b" title=" understood as the square of receiver diameter ">ScanningDevice::cached_Dr2</a> </dd></dl>
 
-<p>Implemented in <a class="el" href="../../d2/d24/classSingleScanner.html#acf7e6d416fd3bc5f0e42c0c4e4e4f2b5">SingleScanner</a>, and <a class="el" href="../../da/d23/classMultiScanner.html#ad9248334918bbc05b8b385138d374e64">MultiScanner</a>.</p>
+<p>Implemented in <a class="el" href="../../da/d23/classMultiScanner.html#ad9248334918bbc05b8b385138d374e64">MultiScanner</a>, and <a class="el" href="../../d2/d24/classSingleScanner.html#acf7e6d416fd3bc5f0e42c0c4e4e4f2b5">SingleScanner</a>.</p>
 
 </div>
 </div>
@@ -4832,7 +4987,7 @@ Scanner::peakIntensityIndex </dd></dl>
 </dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d1/d09/classScanningDevice.html#ad1f6d82940f42704f377e194461acf12" title="Device efficiency. ">ScanningDevice::efficiency</a> </dd></dl>
 
-<p>Implemented in <a class="el" href="../../d2/d24/classSingleScanner.html#a4c92c73c05c863cd8605e58924babefd">SingleScanner</a>, and <a class="el" href="../../da/d23/classMultiScanner.html#a75bf865c54ddb585f7176ea27dee2a70">MultiScanner</a>.</p>
+<p>Implemented in <a class="el" href="../../da/d23/classMultiScanner.html#a75bf865c54ddb585f7176ea27dee2a70">MultiScanner</a>, and <a class="el" href="../../d2/d24/classSingleScanner.html#a4c92c73c05c863cd8605e58924babefd">SingleScanner</a>.</p>
 
 </div>
 </div>
@@ -4978,7 +5133,7 @@ Scanner::peakIntensityIndex </dd></dl>
 </dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d4/dfb/classFWFSettings.html" title="Full Waveform settings. ">FWFSettings</a> </dd></dl>
 
-<p>Implemented in <a class="el" href="../../d2/d24/classSingleScanner.html#a083cf78c136b02fec2231f19b223ef37">SingleScanner</a>.</p>
+<p>Implemented in <a class="el" href="../../da/d23/classMultiScanner.html#a9d2733d7b87b7568be8ac9a2a501a9c9">MultiScanner</a>, and <a class="el" href="../../d2/d24/classSingleScanner.html#a083cf78c136b02fec2231f19b223ef37">SingleScanner</a>.</p>
 
 </div>
 </div>
@@ -5054,7 +5209,7 @@ Scanner::peakIntensityIndex </dd></dl>
   </dd>
 </dl>
 
-<p>Implemented in <a class="el" href="../../d2/d24/classSingleScanner.html#ae093393ddd9b8d3575edd926afc67063">SingleScanner</a>, and <a class="el" href="../../da/d23/classMultiScanner.html#a0eadaf34b665a00e593b0c245aa8e0ac">MultiScanner</a>.</p>
+<p>Implemented in <a class="el" href="../../da/d23/classMultiScanner.html#a0eadaf34b665a00e593b0c245aa8e0ac">MultiScanner</a>, and <a class="el" href="../../d2/d24/classSingleScanner.html#ae093393ddd9b8d3575edd926afc67063">SingleScanner</a>.</p>
 
 </div>
 </div>
@@ -5102,7 +5257,7 @@ Scanner::peakIntensityIndex </dd></dl>
 </dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d1/d09/classScanningDevice.html#af5ed5afbb23d6e2dea4bc4d84c9d86d1" title="Head relative emitter position. ">ScanningDevice::headRelativeEmitterPosition</a> </dd></dl>
 
-<p>Implemented in <a class="el" href="../../d2/d24/classSingleScanner.html#a2ad2c88d0ac38b6fe85dd8371dbdc875">SingleScanner</a>, and <a class="el" href="../../da/d23/classMultiScanner.html#aab23d99516235fd6bec8214782e3fcb2">MultiScanner</a>.</p>
+<p>Implemented in <a class="el" href="../../da/d23/classMultiScanner.html#aab23d99516235fd6bec8214782e3fcb2">MultiScanner</a>, and <a class="el" href="../../d2/d24/classSingleScanner.html#a2ad2c88d0ac38b6fe85dd8371dbdc875">SingleScanner</a>.</p>
 
 </div>
 </div>
@@ -5149,7 +5304,7 @@ Scanner::peakIntensityIndex </dd></dl>
 </dl>
 <dl class="section see"><dt>See also</dt><dd>Scanner::state_lastPulseWasHit </dd></dl>
 
-<p>Implemented in <a class="el" href="../../d2/d24/classSingleScanner.html#a0b0306de185a2905d54ec74c5b6518f2">SingleScanner</a>.</p>
+<p>Implemented in <a class="el" href="../../d2/d24/classSingleScanner.html#a0b0306de185a2905d54ec74c5b6518f2">SingleScanner</a>, and <a class="el" href="../../da/d23/classMultiScanner.html#ab1cf89a639384730a7ddaac2fbdc2be6">MultiScanner</a>.</p>
 
 </div>
 </div>
@@ -5226,7 +5381,7 @@ Scanner::peakIntensityIndex </dd></dl>
 </dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d1/d09/classScanningDevice.html#a40ab679abb6b86288571eff4f2c58738" title="Maximum number of returns per pulse. When 0, it means there is not maximum at all. ">ScanningDevice::maxNOR</a> </dd></dl>
 
-<p>Implemented in <a class="el" href="../../d2/d24/classSingleScanner.html#ab8ecd3025c12606c8d75f2d074044752">SingleScanner</a>.</p>
+<p>Implemented in <a class="el" href="../../da/d23/classMultiScanner.html#a7f13ab2f56280529d2c511135bcb0951">MultiScanner</a>, and <a class="el" href="../../d2/d24/classSingleScanner.html#ab8ecd3025c12606c8d75f2d074044752">SingleScanner</a>.</p>
 
 </div>
 </div>
@@ -5303,7 +5458,7 @@ Scanner::peakIntensityIndex </dd></dl>
 </dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d1/d09/classScanningDevice.html#a00a02019f6c8434a3f04c27999209886" title="Number of rays computed by the calcRaysNumber function. ">ScanningDevice::numRays</a> </dd></dl>
 
-<p>Implemented in <a class="el" href="../../d2/d24/classSingleScanner.html#ad2fabca4d11947d9d41732cab944bb7c">SingleScanner</a>.</p>
+<p>Implemented in <a class="el" href="../../da/d23/classMultiScanner.html#a437b256daf2f7b9d695a4a794e516154">MultiScanner</a>, and <a class="el" href="../../d2/d24/classSingleScanner.html#ad2fabca4d11947d9d41732cab944bb7c">SingleScanner</a>.</p>
 
 </div>
 </div>
@@ -5379,7 +5534,7 @@ Scanner::peakIntensityIndex </dd></dl>
   </dd>
 </dl>
 
-<p>Implemented in <a class="el" href="../../d2/d24/classSingleScanner.html#a233696fe0065cd550b207834b8582fcc">SingleScanner</a>.</p>
+<p>Implemented in <a class="el" href="../../da/d23/classMultiScanner.html#ae360aefa9f55ab3af9713f272f2cb4e5">MultiScanner</a>, and <a class="el" href="../../d2/d24/classSingleScanner.html#a233696fe0065cd550b207834b8582fcc">SingleScanner</a>.</p>
 
 </div>
 </div>
@@ -5455,7 +5610,7 @@ Scanner::peakIntensityIndex </dd></dl>
   </dd>
 </dl>
 
-<p>Implemented in <a class="el" href="../../d2/d24/classSingleScanner.html#ac801fe48469c59148bc8d0d5f25c0a4a">SingleScanner</a>.</p>
+<p>Implemented in <a class="el" href="../../da/d23/classMultiScanner.html#a33020ef98f5f6dee8255e32cf41e13be">MultiScanner</a>, and <a class="el" href="../../d2/d24/classSingleScanner.html#ac801fe48469c59148bc8d0d5f25c0a4a">SingleScanner</a>.</p>
 
 </div>
 </div>
@@ -5594,7 +5749,7 @@ Scanner::peakIntensityIndex </dd></dl>
 </dl>
 <dl class="section see"><dt>See also</dt><dd>ScanningDevice::cfg_device_pulseLength_ns </dd></dl>
 
-<p>Implemented in <a class="el" href="../../d2/d24/classSingleScanner.html#a23aad9468cec79174e524ee1aa7a4876">SingleScanner</a>, and <a class="el" href="../../da/d23/classMultiScanner.html#a12088b492c07028b18445c5f7dc4eb6c">MultiScanner</a>.</p>
+<p>Implemented in <a class="el" href="../../da/d23/classMultiScanner.html#a12088b492c07028b18445c5f7dc4eb6c">MultiScanner</a>, and <a class="el" href="../../d2/d24/classSingleScanner.html#a23aad9468cec79174e524ee1aa7a4876">SingleScanner</a>.</p>
 
 </div>
 </div>
@@ -5671,7 +5826,7 @@ Scanner::peakIntensityIndex </dd></dl>
 </dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d1/d09/classScanningDevice.html#ad51d18239d5beb8e5e18fe48301f1720" title="Receiver diameter (meters) ">ScanningDevice::receiverDiameter_m</a> </dd></dl>
 
-<p>Implemented in <a class="el" href="../../d2/d24/classSingleScanner.html#afeced45d1c2bcdf2215c1e19b1fd0657">SingleScanner</a>, and <a class="el" href="../../da/d23/classMultiScanner.html#a045e0f46cf64a521136a04a4b5f0c3e2">MultiScanner</a>.</p>
+<p>Implemented in <a class="el" href="../../da/d23/classMultiScanner.html#a045e0f46cf64a521136a04a4b5f0c3e2">MultiScanner</a>, and <a class="el" href="../../d2/d24/classSingleScanner.html#afeced45d1c2bcdf2215c1e19b1fd0657">SingleScanner</a>.</p>
 
 </div>
 </div>
@@ -5747,7 +5902,7 @@ Scanner::peakIntensityIndex </dd></dl>
   </dd>
 </dl>
 
-<p>Implemented in <a class="el" href="../../d2/d24/classSingleScanner.html#a73440fa9bf22e70dbef705b445448eaa">SingleScanner</a>.</p>
+<p>Implemented in <a class="el" href="../../da/d23/classMultiScanner.html#a3dc06ffebdb8c24be8f4c05c9ff6ad32">MultiScanner</a>, and <a class="el" href="../../d2/d24/classSingleScanner.html#a73440fa9bf22e70dbef705b445448eaa">SingleScanner</a>.</p>
 
 </div>
 </div>
@@ -5858,7 +6013,7 @@ Scanner::peakIntensityIndex </dd></dl>
   </dd>
 </dl>
 
-<p>Implemented in <a class="el" href="../../d2/d24/classSingleScanner.html#a9c7ff882f4be1abc8bc6dd9d75e618ee">SingleScanner</a>.</p>
+<p>Implemented in <a class="el" href="../../da/d23/classMultiScanner.html#a122878904f544f417870772151c4f2b7">MultiScanner</a>, and <a class="el" href="../../d2/d24/classSingleScanner.html#a9c7ff882f4be1abc8bc6dd9d75e618ee">SingleScanner</a>.</p>
 
 </div>
 </div>
@@ -5934,7 +6089,7 @@ Scanner::peakIntensityIndex </dd></dl>
   </dd>
 </dl>
 
-<p>Implemented in <a class="el" href="../../d2/d24/classSingleScanner.html#acd105b569d52f799bdfda4fadbf04206">SingleScanner</a>.</p>
+<p>Implemented in <a class="el" href="../../da/d23/classMultiScanner.html#aff818a6607dca3dfc7ec5236cb0170ec">MultiScanner</a>, and <a class="el" href="../../d2/d24/classSingleScanner.html#acd105b569d52f799bdfda4fadbf04206">SingleScanner</a>.</p>
 
 </div>
 </div>
@@ -6004,7 +6159,7 @@ Scanner::peakIntensityIndex </dd></dl>
 <p>Rvalue version of the <a class="el" href="../../dc/d42/classScanner.html#a63cc9b037d87402d9196300f457baa71" title="Set the time discretization vector of the scanning device. ">Scanner::setTimeWave(std::vector&lt;double&gt; &amp;, size_t const)</a> method. </p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="../../dc/d42/classScanner.html#a63cc9b037d87402d9196300f457baa71" title="Set the time discretization vector of the scanning device. ">Scanner::setTimeWave(std::vector&lt;double&gt; &amp;, size_t const)</a> </dd></dl>
 
-<p>Implemented in <a class="el" href="../../d2/d24/classSingleScanner.html#a7fc93b232d7dbdabdf4a5ee44f75909d">SingleScanner</a>.</p>
+<p>Implemented in <a class="el" href="../../da/d23/classMultiScanner.html#addc5c1016567d111599242afbe3a10ae">MultiScanner</a>, and <a class="el" href="../../d2/d24/classSingleScanner.html#a7fc93b232d7dbdabdf4a5ee44f75909d">SingleScanner</a>.</p>
 
 </div>
 </div>
@@ -6081,7 +6236,7 @@ Scanner::peakIntensityIndex </dd></dl>
 </dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d1/d09/classScanningDevice.html#aece6565852d8105dfa3167999fd7bf38" title="Visibility (kilometers) ">ScanningDevice::visibility_km</a> </dd></dl>
 
-<p>Implemented in <a class="el" href="../../d2/d24/classSingleScanner.html#a1d3800668bdfd90d55764677f4047267">SingleScanner</a>, and <a class="el" href="../../da/d23/classMultiScanner.html#ae68b69604588bff526fa3b1aa7e54d66">MultiScanner</a>.</p>
+<p>Implemented in <a class="el" href="../../da/d23/classMultiScanner.html#ae68b69604588bff526fa3b1aa7e54d66">MultiScanner</a>, and <a class="el" href="../../d2/d24/classSingleScanner.html#a1d3800668bdfd90d55764677f4047267">SingleScanner</a>.</p>
 
 </div>
 </div>
@@ -6158,7 +6313,7 @@ Scanner::peakIntensityIndex </dd></dl>
 </dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d1/d09/classScanningDevice.html#a3182396c4cad4094b0626b94387208f5" title="Wave length (meters) ">ScanningDevice::wavelength_m</a> </dd></dl>
 
-<p>Implemented in <a class="el" href="../../d2/d24/classSingleScanner.html#a67422819d80688fab958dd16b3795e9e">SingleScanner</a>, and <a class="el" href="../../da/d23/classMultiScanner.html#a979171aa7bbc7ac8d81303495f123b3c">MultiScanner</a>.</p>
+<p>Implemented in <a class="el" href="../../da/d23/classMultiScanner.html#a979171aa7bbc7ac8d81303495f123b3c">MultiScanner</a>, and <a class="el" href="../../d2/d24/classSingleScanner.html#a67422819d80688fab958dd16b3795e9e">SingleScanner</a>.</p>
 
 </div>
 </div>

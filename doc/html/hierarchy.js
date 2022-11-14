@@ -72,6 +72,7 @@ var hierarchy =
       ] ]
     ] ],
     [ "HeliosTests::BaseTest", "d9/d52/classHeliosTests_1_1BaseTest.html", [
+      [ "HeliosTests::AssetLoadingTest", "d1/dd4/classHeliosTests_1_1AssetLoadingTest.html", null ],
       [ "HeliosTests::DiscreteTimeTest", "d6/d7f/classHeliosTests_1_1DiscreteTimeTest.html", null ],
       [ "HeliosTests::EnergyModelsTest", "d6/d35/classHeliosTests_1_1EnergyModelsTest.html", null ],
       [ "HeliosTests::FluxionumTest", "dd/de0/classHeliosTests_1_1FluxionumTest.html", null ],
@@ -150,6 +151,7 @@ var hierarchy =
       ] ]
     ] ],
     [ "FileUtils", "d5/d4b/classFileUtils.html", null ],
+    [ "helios::filems::FileWriter< WriteArgs >", "db/d70/classhelios_1_1filems_1_1FileWriter.html", null ],
     [ "helios::filems::FMSFacade", "db/daa/classhelios_1_1filems_1_1FMSFacade.html", null ],
     [ "helios::filems::FMSFacadeFactory", "dd/dd0/classhelios_1_1filems_1_1FMSFacadeFactory.html", null ],
     [ "helios::filems::FMSFactoryFacade", "d5/d6b/classhelios_1_1filems_1_1FMSFactoryFacade.html", null ],
@@ -197,7 +199,9 @@ var hierarchy =
         [ "helios::filems::MeasurementWriter", "dd/d66/classhelios_1_1filems_1_1MeasurementWriter.html", null ]
       ] ],
       [ "helios::filems::BaseMeasurementWriter< vector< Measurement > const &, glm::dvec3 const &>", "d7/d1a/classhelios_1_1filems_1_1BaseMeasurementWriter.html", [
-        [ "helios::filems::VectorialMeasurementWriter", "d5/ded/classhelios_1_1filems_1_1VectorialMeasurementWriter.html", null ]
+        [ "helios::filems::VectorialMeasurementWriter", "d5/ded/classhelios_1_1filems_1_1VectorialMeasurementWriter.html", [
+          [ "helios::filems::MultiVectorialMeasurementWriter", "d4/d16/classhelios_1_1filems_1_1MultiVectorialMeasurementWriter.html", null ]
+        ] ]
       ] ],
       [ "helios::filems::BaseFullWaveformWriter< WriteArgs >", "df/dfa/classhelios_1_1filems_1_1BaseFullWaveformWriter.html", null ],
       [ "helios::filems::BaseMeasurementWriter< WriteArgs >", "d7/d1a/classhelios_1_1filems_1_1BaseMeasurementWriter.html", null ]
@@ -245,6 +249,7 @@ var hierarchy =
     [ "LadLut", "d9/d22/classLadLut.html", null ],
     [ "LadLutLoader", "de/d6b/classLadLutLoader.html", null ],
     [ "LasSpecification", "df/d64/classLasSpecification.html", null ],
+    [ "helios::filems::LasWriterSpec", "d3/d15/classhelios_1_1filems_1_1LasWriterSpec.html", null ],
     [ "Leg", "de/d51/classLeg.html", null ],
     [ "helios::main::LidarSim", "d7/d6c/classhelios_1_1main_1_1LidarSim.html", null ],
     [ "logger", "dc/d37/classlogger.html", [
@@ -275,6 +280,11 @@ var hierarchy =
         [ "UniformNoiseSource< double >", "d3/d57/classUniformNoiseSource.html", null ]
       ] ]
     ] ],
+    [ "Object", null, [
+      [ "SurfaceInspector::maths::functions::IMathFunction< T, T >", "da/d80/classSurfaceInspector_1_1maths_1_1functions_1_1IMathFunction.html", [
+        [ "SurfaceInspector::maths::functions::GaussianFunction< T >", "db/dc1/classSurfaceInspector_1_1maths_1_1functions_1_1GaussianFunction.html", null ]
+      ] ]
+    ] ],
     [ "SurfaceInspector::util::Object", "d2/df2/classSurfaceInspector_1_1util_1_1Object.html", [
       [ "SurfaceInspector::util::draggers::IDragger< E, vector< E > >", "d1/dd1/classSurfaceInspector_1_1util_1_1draggers_1_1IDragger.html", [
         [ "SurfaceInspector::util::draggers::OptimizationDragger< E >", "d5/d68/classSurfaceInspector_1_1util_1_1draggers_1_1OptimizationDragger.html", [
@@ -301,17 +311,17 @@ var hierarchy =
       [ "SurfaceInspector::util::draggers::IDragger< E, C >", "d1/dd1/classSurfaceInspector_1_1util_1_1draggers_1_1IDragger.html", null ],
       [ "SurfaceInspector::util::SurfaceInspectorException", "df/da8/classSurfaceInspector_1_1util_1_1SurfaceInspectorException.html", null ]
     ] ],
-    [ "Object", null, [
-      [ "SurfaceInspector::maths::functions::IMathFunction< T, T >", "da/d80/classSurfaceInspector_1_1maths_1_1functions_1_1IMathFunction.html", [
-        [ "SurfaceInspector::maths::functions::GaussianFunction< T >", "db/dc1/classSurfaceInspector_1_1maths_1_1functions_1_1GaussianFunction.html", null ]
-      ] ]
-    ] ],
     [ "PlaneFitter", "d6/d51/classPlaneFitter.html", null ],
     [ "Primitive", "df/de1/classPrimitive.html", [
       [ "AABB", "d2/d1a/classAABB.html", null ],
       [ "Triangle", "d2/d51/classTriangle.html", null ],
       [ "Voxel", "d6/d44/classVoxel.html", [
         [ "DetailedVoxel", "d7/d5a/classDetailedVoxel.html", null ]
+      ] ]
+    ] ],
+    [ "Pulse", "d3/d1a/classPulse.html", [
+      [ "TimedPulse", "d9/d2b/classTimedPulse.html", [
+        [ "SimulatedPulse", "d1/d81/classSimulatedPulse.html", null ]
       ] ]
     ] ],
     [ "PulseTask", "d1/d6e/classPulseTask.html", [
@@ -466,51 +476,73 @@ var hierarchy =
     [ "helios::filems::SyncFileMeasurementWriterFactory", "dc/d39/classhelios_1_1filems_1_1SyncFileMeasurementWriterFactory.html", null ],
     [ "helios::filems::SyncFileWriter< WriteArgs >", "da/d4c/classhelios_1_1filems_1_1SyncFileWriter.html", null ],
     [ "helios::filems::SyncFileWriter< WriteArgs ... >", "da/d4c/classhelios_1_1filems_1_1SyncFileWriter.html", [
-      [ "helios::filems::LasSyncFileWriter< WriteArgs >", "d7/d5b/classhelios_1_1filems_1_1LasSyncFileWriter.html", null ],
-      [ "helios::filems::SimpleSyncFileWriter< WriteArgs >", "d1/db6/classhelios_1_1filems_1_1SimpleSyncFileWriter.html", null ],
-      [ "helios::filems::LasSyncFileWriter< Measurement const &, glm::dvec3 const &>", "d7/d5b/classhelios_1_1filems_1_1LasSyncFileWriter.html", [
-        [ "helios::filems::LasSyncFileMeasurementWriter", "d5/d76/classhelios_1_1filems_1_1LasSyncFileMeasurementWriter.html", [
-          [ "helios::filems::Las14SyncFileMeasurementWriter", "d6/d97/classhelios_1_1filems_1_1Las14SyncFileMeasurementWriter.html", null ]
+      [ "helios::filems::MultiSyncFileWriter< WriteArgs >", "d2/d66/classhelios_1_1filems_1_1MultiSyncFileWriter.html", null ],
+      [ "helios::filems::SingleSyncFileWriter< WriteArgs >", "d4/dfb/classhelios_1_1filems_1_1SingleSyncFileWriter.html", null ],
+      [ "helios::filems::MultiSyncFileWriter< WriteArgs ... >", "d2/d66/classhelios_1_1filems_1_1MultiSyncFileWriter.html", [
+        [ "helios::filems::MultiLasSyncFileWriter< WriteArgs >", "de/daa/classhelios_1_1filems_1_1MultiLasSyncFileWriter.html", null ],
+        [ "helios::filems::SimpleMultiSyncFileWriter< WriteArgs >", "df/dfc/classhelios_1_1filems_1_1SimpleMultiSyncFileWriter.html", null ],
+        [ "helios::filems::MultiLasSyncFileWriter< vector< Measurement > const &, glm::dvec3 const & >", "de/daa/classhelios_1_1filems_1_1MultiLasSyncFileWriter.html", [
+          [ "helios::filems::LasMultiVectorialSyncFileMeasurementWriter", "dd/dc0/classhelios_1_1filems_1_1LasMultiVectorialSyncFileMeasurementWriter.html", [
+            [ "helios::filems::Las14MultiVectorialSyncFileMeasurementWriter", "d8/d0c/classhelios_1_1filems_1_1Las14MultiVectorialSyncFileMeasurementWriter.html", null ]
+          ] ]
+        ] ],
+        [ "helios::filems::SimpleMultiSyncFileWriter< vector< Measurement > const &, glm::dvec3 const & >", "df/dfc/classhelios_1_1filems_1_1SimpleMultiSyncFileWriter.html", [
+          [ "helios::filems::SimpleMultiVectorialSyncFileMeasurementWriter", "d9/dd0/classhelios_1_1filems_1_1SimpleMultiVectorialSyncFileMeasurementWriter.html", null ]
+        ] ],
+        [ "helios::filems::SimpleMultiSyncFileWriter< WriteArgs... >", "df/dfc/classhelios_1_1filems_1_1SimpleMultiSyncFileWriter.html", [
+          [ "helios::filems::ZipMultiSyncFileWriter< WriteArgs >", "d6/d1f/classhelios_1_1filems_1_1ZipMultiSyncFileWriter.html", null ],
+          [ "helios::filems::ZipMultiSyncFileWriter< vector< Measurement > const &, glm::dvec3 const & >", "d6/d1f/classhelios_1_1filems_1_1ZipMultiSyncFileWriter.html", [
+            [ "helios::filems::ZipMultiVectorialSyncFileMeasurementWriter", "d6/df7/classhelios_1_1filems_1_1ZipMultiVectorialSyncFileMeasurementWriter.html", null ]
+          ] ]
         ] ]
       ] ],
-      [ "helios::filems::LasSyncFileWriter< vector< Measurement > const &, glm::dvec3 const & >", "d7/d5b/classhelios_1_1filems_1_1LasSyncFileWriter.html", [
-        [ "helios::filems::Las14VectorialSyncFileMeasurementWriter", "d6/de6/classhelios_1_1filems_1_1Las14VectorialSyncFileMeasurementWriter.html", null ],
-        [ "helios::filems::LasVectorialSyncFileMeasurementWriter", "d6/dfd/classhelios_1_1filems_1_1LasVectorialSyncFileMeasurementWriter.html", null ]
-      ] ],
-      [ "helios::filems::SimpleSyncFileWriter< FullWaveform const &>", "d1/db6/classhelios_1_1filems_1_1SimpleSyncFileWriter.html", [
-        [ "helios::filems::SimpleSyncFileFullWaveformWriter", "df/d8e/classhelios_1_1filems_1_1SimpleSyncFileFullWaveformWriter.html", null ]
-      ] ],
-      [ "helios::filems::SimpleSyncFileWriter< Measurement const &, glm::dvec3 const &>", "d1/db6/classhelios_1_1filems_1_1SimpleSyncFileWriter.html", [
-        [ "helios::filems::SimpleSyncFileMeasurementWriter", "d1/dd1/classhelios_1_1filems_1_1SimpleSyncFileMeasurementWriter.html", null ]
-      ] ],
-      [ "helios::filems::SimpleSyncFileWriter< std::string const &>", "d1/db6/classhelios_1_1filems_1_1SimpleSyncFileWriter.html", [
-        [ "helios::filems::SimpleSyncFileStringWriter", "d4/d6d/classhelios_1_1filems_1_1SimpleSyncFileStringWriter.html", null ]
-      ] ],
-      [ "helios::filems::SimpleSyncFileWriter< Trajectory const &>", "d1/db6/classhelios_1_1filems_1_1SimpleSyncFileWriter.html", [
-        [ "helios::filems::SimpleSyncFileTrajectoryWriter", "d0/dc9/classhelios_1_1filems_1_1SimpleSyncFileTrajectoryWriter.html", null ]
-      ] ],
-      [ "helios::filems::SimpleSyncFileWriter< vector< FullWaveform > const &>", "d1/db6/classhelios_1_1filems_1_1SimpleSyncFileWriter.html", [
-        [ "helios::filems::SimpleVectorialSyncFileFullWaveformWriter", "d1/d76/classhelios_1_1filems_1_1SimpleVectorialSyncFileFullWaveformWriter.html", null ]
-      ] ],
-      [ "helios::filems::SimpleSyncFileWriter< vector< Measurement > const &, glm::dvec3 const & >", "d1/db6/classhelios_1_1filems_1_1SimpleSyncFileWriter.html", [
-        [ "helios::filems::SimpleVectorialSyncFileMeasurementWriter", "db/d36/classhelios_1_1filems_1_1SimpleVectorialSyncFileMeasurementWriter.html", null ]
-      ] ],
-      [ "helios::filems::SimpleSyncFileWriter< WriteArgs... >", "d1/db6/classhelios_1_1filems_1_1SimpleSyncFileWriter.html", [
-        [ "helios::filems::ZipSyncFileWriter< WriteArgs >", "d9/d45/classhelios_1_1filems_1_1ZipSyncFileWriter.html", null ],
-        [ "helios::filems::ZipSyncFileWriter< FullWaveform const &>", "d9/d45/classhelios_1_1filems_1_1ZipSyncFileWriter.html", [
-          [ "helios::filems::ZipSyncFileFullWaveformWriter", "db/dbf/classhelios_1_1filems_1_1ZipSyncFileFullWaveformWriter.html", null ]
+      [ "helios::filems::SingleSyncFileWriter< WriteArgs ... >", "d4/dfb/classhelios_1_1filems_1_1SingleSyncFileWriter.html", [
+        [ "helios::filems::LasSyncFileWriter< WriteArgs >", "d7/d5b/classhelios_1_1filems_1_1LasSyncFileWriter.html", null ],
+        [ "helios::filems::SimpleSyncFileWriter< WriteArgs >", "d1/db6/classhelios_1_1filems_1_1SimpleSyncFileWriter.html", null ],
+        [ "helios::filems::LasSyncFileWriter< Measurement const &, glm::dvec3 const &>", "d7/d5b/classhelios_1_1filems_1_1LasSyncFileWriter.html", [
+          [ "helios::filems::LasSyncFileMeasurementWriter", "d5/d76/classhelios_1_1filems_1_1LasSyncFileMeasurementWriter.html", [
+            [ "helios::filems::Las14SyncFileMeasurementWriter", "d6/d97/classhelios_1_1filems_1_1Las14SyncFileMeasurementWriter.html", null ]
+          ] ]
         ] ],
-        [ "helios::filems::ZipSyncFileWriter< Measurement const &, glm::dvec3 const &>", "d9/d45/classhelios_1_1filems_1_1ZipSyncFileWriter.html", [
-          [ "helios::filems::ZipSyncFileMeasurementWriter", "df/d63/classhelios_1_1filems_1_1ZipSyncFileMeasurementWriter.html", null ]
+        [ "helios::filems::LasSyncFileWriter< vector< Measurement > const &, glm::dvec3 const & >", "d7/d5b/classhelios_1_1filems_1_1LasSyncFileWriter.html", [
+          [ "helios::filems::Las14VectorialSyncFileMeasurementWriter", "d6/de6/classhelios_1_1filems_1_1Las14VectorialSyncFileMeasurementWriter.html", null ],
+          [ "helios::filems::LasVectorialSyncFileMeasurementWriter", "d6/dfd/classhelios_1_1filems_1_1LasVectorialSyncFileMeasurementWriter.html", null ]
         ] ],
-        [ "helios::filems::ZipSyncFileWriter< Trajectory const &>", "d9/d45/classhelios_1_1filems_1_1ZipSyncFileWriter.html", [
-          [ "helios::filems::ZipSyncFileTrajectoryWriter", "d8/d74/classhelios_1_1filems_1_1ZipSyncFileTrajectoryWriter.html", null ]
+        [ "helios::filems::SimpleSyncFileWriter< FullWaveform const &>", "d1/db6/classhelios_1_1filems_1_1SimpleSyncFileWriter.html", [
+          [ "helios::filems::SimpleSyncFileFullWaveformWriter", "df/d8e/classhelios_1_1filems_1_1SimpleSyncFileFullWaveformWriter.html", null ]
         ] ],
-        [ "helios::filems::ZipSyncFileWriter< vector< FullWaveform > const &>", "d9/d45/classhelios_1_1filems_1_1ZipSyncFileWriter.html", [
-          [ "helios::filems::ZipVectorialSyncFileFullWaveformWriter", "de/d98/classhelios_1_1filems_1_1ZipVectorialSyncFileFullWaveformWriter.html", null ]
+        [ "helios::filems::SimpleSyncFileWriter< Measurement const &, glm::dvec3 const &>", "d1/db6/classhelios_1_1filems_1_1SimpleSyncFileWriter.html", [
+          [ "helios::filems::SimpleSyncFileMeasurementWriter", "d1/dd1/classhelios_1_1filems_1_1SimpleSyncFileMeasurementWriter.html", null ]
         ] ],
-        [ "helios::filems::ZipSyncFileWriter< vector< Measurement > const &, glm::dvec3 const & >", "d9/d45/classhelios_1_1filems_1_1ZipSyncFileWriter.html", [
-          [ "helios::filems::ZipVectorialSyncFileMeasurementWriter", "d8/d56/classhelios_1_1filems_1_1ZipVectorialSyncFileMeasurementWriter.html", null ]
+        [ "helios::filems::SimpleSyncFileWriter< std::string const &>", "d1/db6/classhelios_1_1filems_1_1SimpleSyncFileWriter.html", [
+          [ "helios::filems::SimpleSyncFileStringWriter", "d4/d6d/classhelios_1_1filems_1_1SimpleSyncFileStringWriter.html", null ]
+        ] ],
+        [ "helios::filems::SimpleSyncFileWriter< Trajectory const &>", "d1/db6/classhelios_1_1filems_1_1SimpleSyncFileWriter.html", [
+          [ "helios::filems::SimpleSyncFileTrajectoryWriter", "d0/dc9/classhelios_1_1filems_1_1SimpleSyncFileTrajectoryWriter.html", null ]
+        ] ],
+        [ "helios::filems::SimpleSyncFileWriter< vector< FullWaveform > const &>", "d1/db6/classhelios_1_1filems_1_1SimpleSyncFileWriter.html", [
+          [ "helios::filems::SimpleVectorialSyncFileFullWaveformWriter", "d1/d76/classhelios_1_1filems_1_1SimpleVectorialSyncFileFullWaveformWriter.html", null ]
+        ] ],
+        [ "helios::filems::SimpleSyncFileWriter< vector< Measurement > const &, glm::dvec3 const & >", "d1/db6/classhelios_1_1filems_1_1SimpleSyncFileWriter.html", [
+          [ "helios::filems::SimpleVectorialSyncFileMeasurementWriter", "db/d36/classhelios_1_1filems_1_1SimpleVectorialSyncFileMeasurementWriter.html", null ]
+        ] ],
+        [ "helios::filems::SimpleSyncFileWriter< WriteArgs... >", "d1/db6/classhelios_1_1filems_1_1SimpleSyncFileWriter.html", [
+          [ "helios::filems::ZipSyncFileWriter< WriteArgs >", "d9/d45/classhelios_1_1filems_1_1ZipSyncFileWriter.html", null ],
+          [ "helios::filems::ZipSyncFileWriter< FullWaveform const &>", "d9/d45/classhelios_1_1filems_1_1ZipSyncFileWriter.html", [
+            [ "helios::filems::ZipSyncFileFullWaveformWriter", "db/dbf/classhelios_1_1filems_1_1ZipSyncFileFullWaveformWriter.html", null ]
+          ] ],
+          [ "helios::filems::ZipSyncFileWriter< Measurement const &, glm::dvec3 const &>", "d9/d45/classhelios_1_1filems_1_1ZipSyncFileWriter.html", [
+            [ "helios::filems::ZipSyncFileMeasurementWriter", "df/d63/classhelios_1_1filems_1_1ZipSyncFileMeasurementWriter.html", null ]
+          ] ],
+          [ "helios::filems::ZipSyncFileWriter< Trajectory const &>", "d9/d45/classhelios_1_1filems_1_1ZipSyncFileWriter.html", [
+            [ "helios::filems::ZipSyncFileTrajectoryWriter", "d8/d74/classhelios_1_1filems_1_1ZipSyncFileTrajectoryWriter.html", null ]
+          ] ],
+          [ "helios::filems::ZipSyncFileWriter< vector< FullWaveform > const &>", "d9/d45/classhelios_1_1filems_1_1ZipSyncFileWriter.html", [
+            [ "helios::filems::ZipVectorialSyncFileFullWaveformWriter", "de/d98/classhelios_1_1filems_1_1ZipVectorialSyncFileFullWaveformWriter.html", null ]
+          ] ],
+          [ "helios::filems::ZipSyncFileWriter< vector< Measurement > const &, glm::dvec3 const & >", "d9/d45/classhelios_1_1filems_1_1ZipSyncFileWriter.html", [
+            [ "helios::filems::ZipVectorialSyncFileMeasurementWriter", "d8/d56/classhelios_1_1filems_1_1ZipVectorialSyncFileMeasurementWriter.html", null ]
+          ] ]
         ] ]
       ] ]
     ] ],
@@ -577,6 +609,7 @@ var hierarchy =
     [ "VoxelGridCell", "d5/df6/structVoxelGridCell.html", null ],
     [ "WavefrontObj", "d0/d92/classWavefrontObj.html", null ],
     [ "WavefrontObjCache", "d8/d78/classWavefrontObjCache.html", null ],
+    [ "WaveMaths", "d8/d74/classWaveMaths.html", null ],
     [ "helios::filems::WriteStrategy< WriteArgs >", "de/dd3/classhelios_1_1filems_1_1WriteStrategy.html", null ],
     [ "helios::filems::WriteStrategy< FullWaveform const &>", "de/dd3/classhelios_1_1filems_1_1WriteStrategy.html", [
       [ "helios::filems::DirectFullWaveformWriteStrategy", "d8/df7/classhelios_1_1filems_1_1DirectFullWaveformWriteStrategy.html", [

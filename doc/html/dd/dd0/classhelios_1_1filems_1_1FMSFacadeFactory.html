@@ -105,23 +105,102 @@ Public Member Functions</h2></td></tr>
 &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/dd0/classhelios_1_1filems_1_1FMSFacadeFactory.html#ad1ddebef92ab84a5ab954f67582dc27c">FMSFacadeFactory</a> ()=default</td></tr>
 <tr class="memdesc:ad1ddebef92ab84a5ab954f67582dc27c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor for FMS facade factory. <br /></td></tr>
 <tr class="separator:ad1ddebef92ab84a5ab954f67582dc27c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aba36b58789455c478a5941c3dc3be32e"><td class="memItemLeft" align="right" valign="top">shared_ptr&lt; <a class="el" href="../../db/daa/classhelios_1_1filems_1_1FMSFacade.html">FMSFacade</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/dd0/classhelios_1_1filems_1_1FMSFacadeFactory.html#aba36b58789455c478a5941c3dc3be32e">buildFacade</a> (string const &amp;outdir, double const lasScale, bool const lasOutput, bool const las10, bool const zipOutput, <a class="el" href="../../d5/db6/classSurvey.html">Survey</a> &amp;survey)</td></tr>
-<tr class="memdesc:aba36b58789455c478a5941c3dc3be32e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Build a FMS facade connected with given survey.  <a href="#aba36b58789455c478a5941c3dc3be32e">More...</a><br /></td></tr>
-<tr class="separator:aba36b58789455c478a5941c3dc3be32e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af2a5fd0951f5e8d5b7eba828a87aeda5"><td class="memItemLeft" align="right" valign="top">shared_ptr&lt; <a class="el" href="../../db/daa/classhelios_1_1filems_1_1FMSFacade.html">FMSFacade</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/dd0/classhelios_1_1filems_1_1FMSFacadeFactory.html#af2a5fd0951f5e8d5b7eba828a87aeda5">buildFacade</a> (string const &amp;outdir, double const lasScale, bool const lasOutput, bool const las10, bool const zipOutput, bool const splitByChannel, <a class="el" href="../../d5/db6/classSurvey.html">Survey</a> &amp;survey)</td></tr>
+<tr class="memdesc:af2a5fd0951f5e8d5b7eba828a87aeda5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Build a FMS facade connected with given survey.  <a href="#af2a5fd0951f5e8d5b7eba828a87aeda5">More...</a><br /></td></tr>
+<tr class="separator:af2a5fd0951f5e8d5b7eba828a87aeda5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a20f3259d1c1626c6156eb89cee3b4dd8"><td class="memItemLeft" align="right" valign="top">shared_ptr&lt; <a class="el" href="../../db/daa/classhelios_1_1filems_1_1FMSFacade.html">FMSFacade</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/dd0/classhelios_1_1filems_1_1FMSFacadeFactory.html#a20f3259d1c1626c6156eb89cee3b4dd8">buildFacade</a> (string const &amp;outdir, double const lasScale, bool const lasOutput, bool const las10, bool const zipOutput, <a class="el" href="../../d5/db6/classSurvey.html">Survey</a> &amp;survey)</td></tr>
+<tr class="memdesc:a20f3259d1c1626c6156eb89cee3b4dd8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Overload of buildFacade method that considers splitByChannel as false by default (mostly because of retrocompatibility)  <a href="#a20f3259d1c1626c6156eb89cee3b4dd8">More...</a><br /></td></tr>
+<tr class="separator:a20f3259d1c1626c6156eb89cee3b4dd8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Factory to build FMS facades. </p>
 <dl class="section author"><dt>Author</dt><dd>Alberto M. Esmoris Pena </dd></dl>
 <dl class="section version"><dt>Version</dt><dd>1.0 </dd></dl>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="aba36b58789455c478a5941c3dc3be32e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aba36b58789455c478a5941c3dc3be32e">&#9670;&nbsp;</a></span>buildFacade()</h2>
+<a id="af2a5fd0951f5e8d5b7eba828a87aeda5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af2a5fd0951f5e8d5b7eba828a87aeda5">&#9670;&nbsp;</a></span>buildFacade() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">shared_ptr&lt; <a class="el" href="../../db/daa/classhelios_1_1filems_1_1FMSFacade.html">FMSFacade</a> &gt; FMSFacadeFactory::buildFacade </td>
+          <td>(</td>
+          <td class="paramtype">string const &amp;&#160;</td>
+          <td class="paramname"><em>outdir</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double const&#160;</td>
+          <td class="paramname"><em>lasScale</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool const&#160;</td>
+          <td class="paramname"><em>lasOutput</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool const&#160;</td>
+          <td class="paramname"><em>las10</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool const&#160;</td>
+          <td class="paramname"><em>zipOutput</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool const&#160;</td>
+          <td class="paramname"><em>splitByChannel</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="../../d5/db6/classSurvey.html">Survey</a> &amp;&#160;</td>
+          <td class="paramname"><em>survey</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Build a FMS facade connected with given survey. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">outdir</td><td>Root directory for output files </td></tr>
+    <tr><td class="paramname">lasScale</td><td>Specify LAS format scale factor </td></tr>
+    <tr><td class="paramname">lasOutput</td><td>Flag to specify LAS output format. True implies using LAS output format, false implies don't </td></tr>
+    <tr><td class="paramname">las10</td><td>Flag to specify that the output format must be LAS v1.0. </td></tr>
+    <tr><td class="paramname">zipOutput</td><td>Flag to specify output zipping. True implies output will be zipped, false means it will not </td></tr>
+    <tr><td class="paramname">splitByChannel</td><td>Flag to specify whether the measurements must be split by channel (True) or not (False). If True, then each scanning device will be written to a different file even for the same leg. </td></tr>
+    <tr><td class="paramname">survey</td><td>The survey to which the facade must be connected </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Built FMS facade </dd></dl>
+
+</div>
+</div>
+<a id="a20f3259d1c1626c6156eb89cee3b4dd8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a20f3259d1c1626c6156eb89cee3b4dd8">&#9670;&nbsp;</a></span>buildFacade() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">shared_ptr&lt;<a class="el" href="../../db/daa/classhelios_1_1filems_1_1FMSFacade.html">FMSFacade</a>&gt; helios::filems::FMSFacadeFactory::buildFacade </td>
           <td>(</td>
           <td class="paramtype">string const &amp;&#160;</td>
           <td class="paramname"><em>outdir</em>, </td>
@@ -162,21 +241,15 @@ Public Member Functions</h2></td></tr>
           <td></td><td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
-<p>Build a FMS facade connected with given survey. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">outdir</td><td>Root directory for output files </td></tr>
-    <tr><td class="paramname">lasScale</td><td>Specify LAS format scale factor </td></tr>
-    <tr><td class="paramname">lasOutput</td><td>Flag to specify LAS output format. True implies using LAS output format, false implies don't </td></tr>
-    <tr><td class="paramname">las10</td><td>Flag to specify that the output format must be LAS v1.0. </td></tr>
-    <tr><td class="paramname">zipOutput</td><td>Flag to specify output zipping. True implies output will be zipped, false means it will not </td></tr>
-    <tr><td class="paramname">survey</td><td>The survey to which the facade must be connected </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>Built FMS facade </dd></dl>
+<p>Overload of buildFacade method that considers splitByChannel as false by default (mostly because of retrocompatibility) </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../dd/dd0/classhelios_1_1filems_1_1FMSFacadeFactory.html#af2a5fd0951f5e8d5b7eba828a87aeda5" title="Build a FMS facade connected with given survey. ">FMSFacadeFactory::buildFacade</a> </dd></dl>
 
 </div>
 </div>

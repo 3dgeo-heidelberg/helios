@@ -91,6 +91,7 @@ public:
      * @see filems::HeliosWriter::getOutputFilePath
      */
     virtual string getOutputPath() const {return sfw->getPath();}
+
     /**
      * @brief Get the LAS output flag
      * @see filems::HeliosWriter::lasOutput

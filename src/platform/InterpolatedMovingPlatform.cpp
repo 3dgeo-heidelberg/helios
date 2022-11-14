@@ -76,8 +76,9 @@ void InterpolatedMovingPlatform::doSimStep(int simFrequency_hz){
     doStepUpdates(stepLoop.getCurrentTime());
 }
 bool InterpolatedMovingPlatform::waypointReached(){
-    // Waypoint reached if distance(platform, waypoint) < 1cm
-    return glm::l2Norm(cached_vectorToTarget) < 0.01;
+    double const am = timeFrontiers(timeFrontiers.n_elem-1);
+    double const t = stepLoop.getCurrentTime();
+    return t >= am;
 }
 void InterpolatedMovingPlatform::toTrajectoryTime(double const t){
     double h = t - tf->getFpiem().getT();

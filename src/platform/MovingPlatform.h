@@ -72,5 +72,5 @@ public:
 	/**
 	 * @see Platform::canMove
 	 */
-        bool canMove() override {return true;}
+    bool canMove() const override {return true;}
 };

@@ -390,7 +390,7 @@ jobs:
             run: python -m pip install pytest numpy
 
           - name: Run pytest
-            run: python -m pytest ${{github.workspace}}/pytests
+            run: python -m pytest -v ${{github.workspace}}/pytests
 
           - name: Save output files
             uses: actions/upload-artifact@v2

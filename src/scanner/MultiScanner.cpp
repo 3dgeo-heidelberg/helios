@@ -26,6 +26,18 @@ void MultiScanner::_clone(Scanner &sc) const{
     //ssc.scanDevs = scanDevs;  // Already handled by copy constructor
 }
 
+// ***  SIM STEP UTILS  *** //
+// ************************ //
+void MultiScanner::onLegComplete(){
+    // Call parent handler for on leg complete events
+    Scanner::onLegComplete();
+    // Call each detector's handle method for on leg complete events
+    size_t const nDevs = getNumDevices();
+    for(size_t i = 0 ; i < nDevs ; ++i){
+        getDetector(i)->onLegComplete();
+    }
+}
+
 // ***   M E T H O D S   *** //
 // ************************* //
 void MultiScanner::applySettings(

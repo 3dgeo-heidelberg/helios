@@ -115,7 +115,7 @@ Collaboration diagram for SingleScanner:</div>
 <map name="SingleScanner_coll__map" id="SingleScanner_coll__map">
 <area shape="rect" id="node2" href="../../dc/d42/classScanner.html" title="Class representing a scanner asset. " alt="" coords="5,213,76,240"/>
 <area shape="rect" id="node3" href="../../de/d97/classAsset.html" title="Base class for all assets. " alt="" coords="86,124,142,151"/>
-<area shape="rect" id="node5" href="../../d1/d09/classScanningDevice.html" title="Class representing a scanning device. Any scanner needs to be composed of at least one scanning devic..." alt="" coords="122,303,239,329"/>
+<area shape="rect" id="node5" href="../../d1/d09/classScanningDevice.html" title="Class representing a scanning device. Any scanner needs to be composed of at least one scanning devic..." alt="" coords="175,303,293,329"/>
 <area shape="rect" id="node6" href="../../d4/dfb/classFWFSettings.html" title="Full Waveform settings. " alt="" coords="151,213,250,240"/>
 <area shape="rect" id="node7" href="../../d5/dcb/classRotation.html" title="Rotation" alt="" coords="325,213,396,240"/>
 </map>
@@ -133,22 +133,25 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a717072bbf65b9f725bee66da11474b14"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4e4363549806eb3d53ba45a5b09d4daf"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d24/classSingleScanner.html#a4e4363549806eb3d53ba45a5b09d4daf">_clone</a> (<a class="el" href="../../dc/d42/classScanner.html">Scanner</a> &amp;sc) const override</td></tr>
 <tr class="separator:a4e4363549806eb3d53ba45a5b09d4daf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abd60e64d8bed193960efc0bc189926f8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d24/classSingleScanner.html#abd60e64d8bed193960efc0bc189926f8">onLegComplete</a> () override</td></tr>
+<tr class="memdesc:abd60e64d8bed193960efc0bc189926f8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Extend <a class="el" href="../../dc/d42/classScanner.html#add577a6df1ac8b6df527cc54356253ee" title="Exposes ScanningPulseProcess:onLegComplete method of the scanning pulse process defining this scanner...">Scanner::onLegComplete</a> behavior by handling onLegComplete events for the case of a single detector.  <a href="#abd60e64d8bed193960efc0bc189926f8">More...</a><br /></td></tr>
+<tr class="separator:abd60e64d8bed193960efc0bc189926f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a60c1c2276bbc3c8426edfdb985e7a0f6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d24/classSingleScanner.html#a60c1c2276bbc3c8426edfdb985e7a0f6">applySettings</a> (std::shared_ptr&lt; <a class="el" href="../../d0/d23/classScannerSettings.html">ScannerSettings</a> &gt; settings, size_t const idx) override</td></tr>
 <tr class="separator:a60c1c2276bbc3c8426edfdb985e7a0f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa1321a0329ea7295dee7b92ebabde416"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d24/classSingleScanner.html#aa1321a0329ea7295dee7b92ebabde416">doSimStep</a> (unsigned int legIndex, double const currentGpsTime) override</td></tr>
 <tr class="separator:aa1321a0329ea7295dee7b92ebabde416"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1a0135e74aa69498c18b364bfe4c3d55"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d24/classSingleScanner.html#a1a0135e74aa69498c18b364bfe4c3d55">calcRaysNumber</a> (size_t const idx) override</td></tr>
 <tr class="separator:a1a0135e74aa69498c18b364bfe4c3d55"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8831709ca0ebe011bffb9deacfd4f7c8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d24/classSingleScanner.html#a8831709ca0ebe011bffb9deacfd4f7c8">prepareDiscretization</a> () override</td></tr>
-<tr class="separator:a8831709ca0ebe011bffb9deacfd4f7c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab873c07c45779108d7ef0b6a178352cb"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d24/classSingleScanner.html#ab873c07c45779108d7ef0b6a178352cb">calcTimePropagation</a> (std::vector&lt; double &gt; &amp;timeWave, int const numBins) override</td></tr>
-<tr class="separator:ab873c07c45779108d7ef0b6a178352cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a28867634eee0dfb5087f6869c48fd0ec"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d24/classSingleScanner.html#a28867634eee0dfb5087f6869c48fd0ec">prepareDiscretization</a> (size_t const idx) override</td></tr>
+<tr class="separator:a28867634eee0dfb5087f6869c48fd0ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a313c54c99d30e87a673694ba2d52be47"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d24/classSingleScanner.html#a313c54c99d30e87a673694ba2d52be47">calcFootprintArea</a> (double const distance, size_t const idx) const override</td></tr>
 <tr class="separator:a313c54c99d30e87a673694ba2d52be47"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9bede81bcd8ccc55e2ceb9487a491ec7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d5/dcb/classRotation.html">Rotation</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d24/classSingleScanner.html#a9bede81bcd8ccc55e2ceb9487a491ec7">calcAbsoluteBeamAttitude</a> () override</td></tr>
-<tr class="separator:a9bede81bcd8ccc55e2ceb9487a491ec7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8b553ec6b6f3c7d2f97b34c0a16a8ab9"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d24/classSingleScanner.html#a8b553ec6b6f3c7d2f97b34c0a16a8ab9">calcAtmosphericAttenuation</a> () const override</td></tr>
-<tr class="separator:a8b553ec6b6f3c7d2f97b34c0a16a8ab9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a09e229ecebf8f93ce40abf5d8b16c395"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d24/classSingleScanner.html#a09e229ecebf8f93ce40abf5d8b16c395">calcTargetArea</a> (double const distance, size_t const idx) const override</td></tr>
+<tr class="separator:a09e229ecebf8f93ce40abf5d8b16c395"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad14c86e7e652b5b5294ff0db4881b879"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d5/dcb/classRotation.html">Rotation</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d24/classSingleScanner.html#ad14c86e7e652b5b5294ff0db4881b879">calcAbsoluteBeamAttitude</a> (size_t const idx) override</td></tr>
+<tr class="separator:ad14c86e7e652b5b5294ff0db4881b879"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad2d5c21ad022779084de080328000547"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d24/classSingleScanner.html#ad2d5c21ad022779084de080328000547">calcAtmosphericAttenuation</a> (size_t const idx) const override</td></tr>
+<tr class="separator:ad2d5c21ad022779084de080328000547"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae4df1a4f2906cf42c103de74c0aa6209"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d24/classSingleScanner.html#ae4df1a4f2906cf42c103de74c0aa6209">checkMaxNOR</a> (int const nor, size_t const idx) override</td></tr>
 <tr class="separator:ae4df1a4f2906cf42c103de74c0aa6209"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4d2013f668fd92930d9192190b116fc4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d24/classSingleScanner.html#a4d2013f668fd92930d9192190b116fc4">computeSubrays</a> (std::function&lt; void(vector&lt; double &gt; const &amp;_tMinMax, int const circleStep, double const circleStep_rad, <a class="el" href="../../d5/dcb/classRotation.html">Rotation</a> &amp;r1, double const divergenceAngle, <a class="el" href="../../d9/d6b/classNoiseSource.html">NoiseSource</a>&lt; double &gt; &amp;<a class="el" href="../../dc/d42/classScanner.html#ab0d7c2f3cbd4e8811d25958fad4deb4a">intersectionHandlingNoiseSource</a>, std::map&lt; double, double &gt; &amp;reflections, vector&lt; <a class="el" href="../../dc/da3/classRaySceneIntersection.html">RaySceneIntersection</a> &gt; &amp;intersects)&gt; handleSubray, vector&lt; double &gt; const &amp;tMinMax, <a class="el" href="../../d9/d6b/classNoiseSource.html">NoiseSource</a>&lt; double &gt; &amp;<a class="el" href="../../dc/d42/classScanner.html#ab0d7c2f3cbd4e8811d25958fad4deb4a">intersectionHandlingNoiseSource</a>, std::map&lt; double, double &gt; &amp;reflections, vector&lt; <a class="el" href="../../dc/da3/classRaySceneIntersection.html">RaySceneIntersection</a> &gt; &amp;intersects, size_t const idx) override</td></tr>
@@ -159,6 +162,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ad3179c9405c1d94bcd2592b63e06c6a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a76bbaf9ce02828ca5b3b9b6e5186cdf0"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d24/classSingleScanner.html#a76bbaf9ce02828ca5b3b9b6e5186cdf0">calcIntensity</a> (double const targetRange, double const radius, double const sigma, size_t const idx) const override</td></tr>
 <tr class="separator:a76bbaf9ce02828ca5b3b9b6e5186cdf0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a050f30918eea77b2165ac3150eea69b2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d24/classSingleScanner.html#a050f30918eea77b2165ac3150eea69b2">setDeviceIndex</a> (size_t const newIdx, size_t const oldIdx) override</td></tr>
+<tr class="separator:a050f30918eea77b2165ac3150eea69b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa58c433d367e81c93d41228e957ecfeb"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d24/classSingleScanner.html#aa58c433d367e81c93d41228e957ecfeb">getDeviceId</a> (size_t const idx) const override</td></tr>
 <tr class="separator:aa58c433d367e81c93d41228e957ecfeb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a871c2637f58361ae5019209c288893c2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d24/classSingleScanner.html#a871c2637f58361ae5019209c288893c2">setDeviceId</a> (std::string const deviceId, size_t const idx) override</td></tr>
@@ -308,22 +313,30 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../.
 <tr class="memitem:a0175839040b365327e610628653d3ebb inherit pub_methods_classScanner"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d42/classScanner.html#a0175839040b365327e610628653d3ebb">calcRaysNumber</a> ()</td></tr>
 <tr class="memdesc:a0175839040b365327e610628653d3ebb inherit pub_methods_classScanner"><td class="mdescLeft">&#160;</td><td class="mdescRight">Non index version of the <a class="el" href="../../dc/d42/classScanner.html#af87f93ad89227ec897d78b3ec9eff59a" title="Compute the number of rays depending on beam sample quality for the scanning device. ">Scanner::calcRaysNumber(size_t const)</a> method.  <a href="../../dc/d42/classScanner.html#a0175839040b365327e610628653d3ebb">More...</a><br /></td></tr>
 <tr class="separator:a0175839040b365327e610628653d3ebb inherit pub_methods_classScanner"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acf24d8cd60a77c430cb999ca10e57d92 inherit pub_methods_classScanner"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d42/classScanner.html#acf24d8cd60a77c430cb999ca10e57d92">calcFootprintArea</a> (double const distance)</td></tr>
-<tr class="memdesc:acf24d8cd60a77c430cb999ca10e57d92 inherit pub_methods_classScanner"><td class="mdescLeft">&#160;</td><td class="mdescRight">Non index version of the Scanner::calcFootprintArea(double const, size_t const) method.  <a href="../../dc/d42/classScanner.html#acf24d8cd60a77c430cb999ca10e57d92">More...</a><br /></td></tr>
-<tr class="separator:acf24d8cd60a77c430cb999ca10e57d92 inherit pub_methods_classScanner"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9da12b1d23b22b593851c5049852e871 inherit pub_methods_classScanner"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d42/classScanner.html#a9da12b1d23b22b593851c5049852e871">prepareDiscretization</a> ()</td></tr>
+<tr class="memdesc:a9da12b1d23b22b593851c5049852e871 inherit pub_methods_classScanner"><td class="mdescLeft">&#160;</td><td class="mdescRight">Non index version of the <a class="el" href="../../dc/d42/classScanner.html#acc6350ba175fb3af03d01358f8e962fa" title="Prepare wave discretization. ">Scanner::prepareDiscretization</a> method.  <a href="../../dc/d42/classScanner.html#a9da12b1d23b22b593851c5049852e871">More...</a><br /></td></tr>
+<tr class="separator:a9da12b1d23b22b593851c5049852e871 inherit pub_methods_classScanner"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1a6722505e6732208607bc1ad7915f8c inherit pub_methods_classScanner"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d42/classScanner.html#a1a6722505e6732208607bc1ad7915f8c">calcFootprintArea</a> (double const distance) const</td></tr>
+<tr class="memdesc:a1a6722505e6732208607bc1ad7915f8c inherit pub_methods_classScanner"><td class="mdescLeft">&#160;</td><td class="mdescRight">Non index version of the Scanner::calcFootprintArea(double const, size_t const) method.  <a href="../../dc/d42/classScanner.html#a1a6722505e6732208607bc1ad7915f8c">More...</a><br /></td></tr>
+<tr class="separator:a1a6722505e6732208607bc1ad7915f8c inherit pub_methods_classScanner"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad57a6aba3406fa80f548d0e71423a32f inherit pub_methods_classScanner"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d42/classScanner.html#ad57a6aba3406fa80f548d0e71423a32f">calcFootprintRadius</a> (double distance)</td></tr>
 <tr class="memdesc:ad57a6aba3406fa80f548d0e71423a32f inherit pub_methods_classScanner"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the footprint radius \(f_{r}\).  <a href="../../dc/d42/classScanner.html#ad57a6aba3406fa80f548d0e71423a32f">More...</a><br /></td></tr>
 <tr class="separator:ad57a6aba3406fa80f548d0e71423a32f inherit pub_methods_classScanner"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a083b0ff29427abeb2ad0c7c668f2f304 inherit pub_methods_classScanner"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d42/classScanner.html#a083b0ff29427abeb2ad0c7c668f2f304">calcTargetArea</a> (double const distance) const</td></tr>
+<tr class="memdesc:a083b0ff29427abeb2ad0c7c668f2f304 inherit pub_methods_classScanner"><td class="mdescLeft">&#160;</td><td class="mdescRight">Non index version of the Scanner::calcTargetArea(double const, size_t const) method.  <a href="../../dc/d42/classScanner.html#a083b0ff29427abeb2ad0c7c668f2f304">More...</a><br /></td></tr>
+<tr class="separator:a083b0ff29427abeb2ad0c7c668f2f304 inherit pub_methods_classScanner"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aabe71111e16a47c9720a66aea18048fe inherit pub_methods_classScanner"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d42/classScanner.html#aabe71111e16a47c9720a66aea18048fe">calcAtmosphericAttenuation</a> () const</td></tr>
+<tr class="memdesc:aabe71111e16a47c9720a66aea18048fe inherit pub_methods_classScanner"><td class="mdescLeft">&#160;</td><td class="mdescRight">Non index version of <a class="el" href="../../dc/d42/classScanner.html#afc0bf9cd2352de3e053b57ebbe90ae18">Scanner::calcAtmosphericAttenuation</a>.  <a href="../../dc/d42/classScanner.html#aabe71111e16a47c9720a66aea18048fe">More...</a><br /></td></tr>
+<tr class="separator:aabe71111e16a47c9720a66aea18048fe inherit pub_methods_classScanner"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a200c10597fe671a374f5ecc45d3410ae inherit pub_methods_classScanner"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d5/dcb/classRotation.html">Rotation</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d42/classScanner.html#a200c10597fe671a374f5ecc45d3410ae">calcAbsoluteBeamAttitude</a> ()</td></tr>
+<tr class="memdesc:a200c10597fe671a374f5ecc45d3410ae inherit pub_methods_classScanner"><td class="mdescLeft">&#160;</td><td class="mdescRight">Non index version of the <a class="el" href="../../dc/d42/classScanner.html#aa9076ac0f9c4e3a8ead74f3d4be3337a" title="Compute the absolute beam attitude considering the mount relative attitude and the deflector relative...">Scanner::calcAbsoluteBeamAttitude</a> function.  <a href="../../dc/d42/classScanner.html#a200c10597fe671a374f5ecc45d3410ae">More...</a><br /></td></tr>
+<tr class="separator:a200c10597fe671a374f5ecc45d3410ae inherit pub_methods_classScanner"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4be33826f05ef723f029509516c3f490 inherit pub_methods_classScanner"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d42/classScanner.html#a4be33826f05ef723f029509516c3f490">checkMaxNOR</a> (int const nor)</td></tr>
 <tr class="memdesc:a4be33826f05ef723f029509516c3f490 inherit pub_methods_classScanner"><td class="mdescLeft">&#160;</td><td class="mdescRight">Non index version of <a class="el" href="../../dc/d42/classScanner.html#af7d5e62ea323e22995b06ec7780574ec" title="Check if given number of return (nor) is inside expected boundaries. If scanner maxNOR is 0 or nor is...">Scanner::checkMaxNOR(int const, size_t const)</a> method.  <a href="../../dc/d42/classScanner.html#a4be33826f05ef723f029509516c3f490">More...</a><br /></td></tr>
 <tr class="separator:a4be33826f05ef723f029509516c3f490 inherit pub_methods_classScanner"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9162783f755f55792d269396ea6a5172 inherit pub_methods_classScanner"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d42/classScanner.html#a9162783f755f55792d269396ea6a5172">handleSimStepNoise</a> (glm::dvec3 &amp;absoluteBeamOrigin, <a class="el" href="../../d5/dcb/classRotation.html">Rotation</a> &amp;absoluteBeamAttitude)</td></tr>
 <tr class="memdesc:a9162783f755f55792d269396ea6a5172 inherit pub_methods_classScanner"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle position and attitude noise.  <a href="../../dc/d42/classScanner.html#a9162783f755f55792d269396ea6a5172">More...</a><br /></td></tr>
 <tr class="separator:a9162783f755f55792d269396ea6a5172 inherit pub_methods_classScanner"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa654d2754946f445ff8faa91822eda25 inherit pub_methods_classScanner"><td class="memItemLeft" align="right" valign="top"><a id="aa654d2754946f445ff8faa91822eda25"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d42/classScanner.html#aa654d2754946f445ff8faa91822eda25">onLegComplete</a> ()</td></tr>
-<tr class="memdesc:aa654d2754946f445ff8faa91822eda25 inherit pub_methods_classScanner"><td class="mdescLeft">&#160;</td><td class="mdescRight">Exposes <a class="el" href="../../db/d85/classScanningPulseProcess.html" title="Class defining the scanning pulse process interface. ">ScanningPulseProcess</a>:onLegComplete method of the scanning pulse process defining this scanner. <br /></td></tr>
-<tr class="separator:aa654d2754946f445ff8faa91822eda25 inherit pub_methods_classScanner"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a74fb8838bba7b36ea5e3b3df48fb1349 inherit pub_methods_classScanner"><td class="memItemLeft" align="right" valign="top"><a id="a74fb8838bba7b36ea5e3b3df48fb1349"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d42/classScanner.html#a74fb8838bba7b36ea5e3b3df48fb1349">onSimulationFinished</a> ()</td></tr>
 <tr class="memdesc:a74fb8838bba7b36ea5e3b3df48fb1349 inherit pub_methods_classScanner"><td class="mdescLeft">&#160;</td><td class="mdescRight">Exposes <a class="el" href="../../db/d85/classScanningPulseProcess.html#a8e3cb6388ace9c320fdbb32955bf9d8a" title="Handle behavior of scanning pulse process once simulation has finished. ">ScanningPulseProcess::onSimulationFinished</a> method of the scanning pulse process defining this scanner. <br /></td></tr>
@@ -578,7 +591,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../.
 <tr class="separator:a441f1d6e8dfa7cab388cc460f8a71d4f inherit pro_attribs_classScanner"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a397437d4ccf0e63fc0f9c23e68e2f4fe inherit pro_attribs_classScanner"><td class="memItemLeft" align="right" valign="top"><a id="a397437d4ccf0e63fc0f9c23e68e2f4fe"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d42/classScanner.html#a397437d4ccf0e63fc0f9c23e68e2f4fe">cfg_setting_pulseFreq_Hz</a> = 0</td></tr>
-<tr class="memdesc:a397437d4ccf0e63fc0f9c23e68e2f4fe inherit pro_attribs_classScanner"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pulse frequency (hertz) <br /></td></tr>
+<tr class="memdesc:a397437d4ccf0e63fc0f9c23e68e2f4fe inherit pro_attribs_classScanner"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="../../d3/d1a/classPulse.html" title="Class representing a laser pulse. ">Pulse</a> frequency (hertz) <br /></td></tr>
 <tr class="separator:a397437d4ccf0e63fc0f9c23e68e2f4fe inherit pro_attribs_classScanner"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a55a36caf2765a32a62fc9f82645c5513 inherit pro_attribs_classScanner"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d42/classScanner.html#a55a36caf2765a32a62fc9f82645c5513">state_isActive</a> = true</td></tr>
 <tr class="memdesc:a55a36caf2765a32a62fc9f82645c5513 inherit pro_attribs_classScanner"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flag specifying if scanner is active (true) or not (false)  <a href="../../dc/d42/classScanner.html#a55a36caf2765a32a62fc9f82645c5513">More...</a><br /></td></tr>
@@ -767,7 +780,9 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
 </div><div class="memdoc">
 
 <p><a class="el" href="../../d2/d24/classSingleScanner.html" title="Class representing a single scanner. It is, a scanner that can only emit one pulse per time instant...">SingleScanner</a> constructor from given values. </p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../dc/d42/classScanner.html#a84a7b81669f9b449d8b5c5e70c45f42b" title="Scanner constructor. ">Scanner::Scanner</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../dc/d42/classScanner.html#a84a7b81669f9b449d8b5c5e70c45f42b" title="Scanner constructor. ">Scanner::Scanner</a> </dd>
+<dd>
+<a class="el" href="../../d1/d09/classScanningDevice.html#ad087e42613145b9bf4e72adc1ef2e69a" title="ScanningDevice constructor from given values. ">ScanningDevice::ScanningDevice</a> </dd></dl>
 
 </div>
 </div>
@@ -866,8 +881,8 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
 
 </div>
 </div>
-<a id="a9bede81bcd8ccc55e2ceb9487a491ec7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9bede81bcd8ccc55e2ceb9487a491ec7">&#9670;&nbsp;</a></span>calcAbsoluteBeamAttitude()</h2>
+<a id="ad14c86e7e652b5b5294ff0db4881b879"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad14c86e7e652b5b5294ff0db4881b879">&#9670;&nbsp;</a></span>calcAbsoluteBeamAttitude()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -878,7 +893,8 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
         <tr>
           <td class="memname"><a class="el" href="../../d5/dcb/classRotation.html">Rotation</a> SingleScanner::calcAbsoluteBeamAttitude </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
+          <td class="paramtype">size_t const&#160;</td>
+          <td class="paramname"><em>idx</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -888,14 +904,14 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
   </tr>
 </table>
 </div><div class="memdoc">
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../dc/d42/classScanner.html#a883dafa27af41e8288ba9eda144baf2f" title="Compute the absolute beam attitude considering the mount relative attitude and the deflector relative...">Scanner::calcAbsoluteBeamAttitude</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../dc/d42/classScanner.html#aa9076ac0f9c4e3a8ead74f3d4be3337a" title="Compute the absolute beam attitude considering the mount relative attitude and the deflector relative...">Scanner::calcAbsoluteBeamAttitude</a> </dd></dl>
 
-<p>Implements <a class="el" href="../../dc/d42/classScanner.html#a883dafa27af41e8288ba9eda144baf2f">Scanner</a>.</p>
+<p>Implements <a class="el" href="../../dc/d42/classScanner.html#aa9076ac0f9c4e3a8ead74f3d4be3337a">Scanner</a>.</p>
 
 </div>
 </div>
-<a id="a8b553ec6b6f3c7d2f97b34c0a16a8ab9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8b553ec6b6f3c7d2f97b34c0a16a8ab9">&#9670;&nbsp;</a></span>calcAtmosphericAttenuation()</h2>
+<a id="ad2d5c21ad022779084de080328000547"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad2d5c21ad022779084de080328000547">&#9670;&nbsp;</a></span>calcAtmosphericAttenuation()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -906,7 +922,8 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
         <tr>
           <td class="memname">double SingleScanner::calcAtmosphericAttenuation </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
+          <td class="paramtype">size_t const&#160;</td>
+          <td class="paramname"><em>idx</em></td><td>)</td>
           <td> const</td>
         </tr>
       </table>
@@ -916,9 +933,9 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
   </tr>
 </table>
 </div><div class="memdoc">
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../dc/d42/classScanner.html#a1287025f886e3b1ea0018bcdba6eac47">Scanner::calcAtmosphericAttenuation</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../dc/d42/classScanner.html#afc0bf9cd2352de3e053b57ebbe90ae18">Scanner::calcAtmosphericAttenuation</a> </dd></dl>
 
-<p>Implements <a class="el" href="../../dc/d42/classScanner.html#a1287025f886e3b1ea0018bcdba6eac47">Scanner</a>.</p>
+<p>Implements <a class="el" href="../../dc/d42/classScanner.html#afc0bf9cd2352de3e053b57ebbe90ae18">Scanner</a>.</p>
 
 </div>
 </div>
@@ -1116,8 +1133,8 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
 
 </div>
 </div>
-<a id="ab873c07c45779108d7ef0b6a178352cb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab873c07c45779108d7ef0b6a178352cb">&#9670;&nbsp;</a></span>calcTimePropagation()</h2>
+<a id="a09e229ecebf8f93ce40abf5d8b16c395"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a09e229ecebf8f93ce40abf5d8b16c395">&#9670;&nbsp;</a></span>calcTargetArea()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1126,21 +1143,21 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">int SingleScanner::calcTimePropagation </td>
+          <td class="memname">double SingleScanner::calcTargetArea </td>
           <td>(</td>
-          <td class="paramtype">std::vector&lt; double &gt; &amp;&#160;</td>
-          <td class="paramname"><em>timeWave</em>, </td>
+          <td class="paramtype">double const&#160;</td>
+          <td class="paramname"><em>distance</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">int const&#160;</td>
-          <td class="paramname"><em>numBins</em>&#160;</td>
+          <td class="paramtype">size_t const&#160;</td>
+          <td class="paramname"><em>idx</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
           <td>)</td>
-          <td></td><td></td>
+          <td></td><td> const</td>
         </tr>
       </table>
   </td>
@@ -1149,9 +1166,9 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
   </tr>
 </table>
 </div><div class="memdoc">
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../dc/d42/classScanner.html#a9fe151faa9f96c54e930db69d9ad5605" title="Compute propagation time, which means obtaining the intensity peak index. ">Scanner::calcTimePropagation</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../dc/d42/classScanner.html#a1ab80dede77ed7f907fda7a81d70526a" title="Calculate the target area. It is the footprint area divided by the number of rays. ">Scanner::calcTargetArea</a> </dd></dl>
 
-<p>Implements <a class="el" href="../../dc/d42/classScanner.html#a9fe151faa9f96c54e930db69d9ad5605">Scanner</a>.</p>
+<p>Implements <a class="el" href="../../dc/d42/classScanner.html#a1ab80dede77ed7f907fda7a81d70526a">Scanner</a>.</p>
 
 </div>
 </div>
@@ -2274,8 +2291,8 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
 
 </div>
 </div>
-<a id="a8831709ca0ebe011bffb9deacfd4f7c8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8831709ca0ebe011bffb9deacfd4f7c8">&#9670;&nbsp;</a></span>prepareDiscretization()</h2>
+<a id="abd60e64d8bed193960efc0bc189926f8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abd60e64d8bed193960efc0bc189926f8">&#9670;&nbsp;</a></span>onLegComplete()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2284,7 +2301,7 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void SingleScanner::prepareDiscretization </td>
+          <td class="memname">void SingleScanner::onLegComplete </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -2296,9 +2313,40 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
   </tr>
 </table>
 </div><div class="memdoc">
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../dc/d42/classScanner.html#a53a6924bd867981b89701f58e81ab4c9" title="Prepare wave discretization. ">Scanner::prepareDiscretization</a> </dd></dl>
 
-<p>Implements <a class="el" href="../../dc/d42/classScanner.html#a53a6924bd867981b89701f58e81ab4c9">Scanner</a>.</p>
+<p>Extend <a class="el" href="../../dc/d42/classScanner.html#add577a6df1ac8b6df527cc54356253ee" title="Exposes ScanningPulseProcess:onLegComplete method of the scanning pulse process defining this scanner...">Scanner::onLegComplete</a> behavior by handling onLegComplete events for the case of a single detector. </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../dc/d42/classScanner.html#add577a6df1ac8b6df527cc54356253ee" title="Exposes ScanningPulseProcess:onLegComplete method of the scanning pulse process defining this scanner...">Scanner::onLegComplete</a> </dd></dl>
+
+<p>Reimplemented from <a class="el" href="../../dc/d42/classScanner.html#add577a6df1ac8b6df527cc54356253ee">Scanner</a>.</p>
+
+</div>
+</div>
+<a id="a28867634eee0dfb5087f6869c48fd0ec"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a28867634eee0dfb5087f6869c48fd0ec">&#9670;&nbsp;</a></span>prepareDiscretization()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SingleScanner::prepareDiscretization </td>
+          <td>(</td>
+          <td class="paramtype">size_t const&#160;</td>
+          <td class="paramname"><em>idx</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../dc/d42/classScanner.html#acc6350ba175fb3af03d01358f8e962fa" title="Prepare wave discretization. ">Scanner::prepareDiscretization</a> </dd></dl>
+
+<p>Implements <a class="el" href="../../dc/d42/classScanner.html#acc6350ba175fb3af03d01358f8e962fa">Scanner</a>.</p>
 
 </div>
 </div>
@@ -2650,6 +2698,45 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="../../dc/d42/classScanner.html#a98997d79ce405462d99667c83fbd5a31" title="Set the scanner device identifier. ">Scanner::setDeviceId</a> </dd></dl>
 
 <p>Implements <a class="el" href="../../dc/d42/classScanner.html#a98997d79ce405462d99667c83fbd5a31">Scanner</a>.</p>
+
+</div>
+</div>
+<a id="a050f30918eea77b2165ac3150eea69b2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a050f30918eea77b2165ac3150eea69b2">&#9670;&nbsp;</a></span>setDeviceIndex()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SingleScanner::setDeviceIndex </td>
+          <td>(</td>
+          <td class="paramtype">size_t const&#160;</td>
+          <td class="paramname"><em>newIdx</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t const&#160;</td>
+          <td class="paramname"><em>oldIdx</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../dc/d42/classScanner.html#a4d34cdd2291b1a01f0adb83c24256242" title="Set the device index (newIdx) of the device at given index (oldIdx). ">Scanner::setDeviceIndex</a> </dd></dl>
+
+<p>Implements <a class="el" href="../../dc/d42/classScanner.html#a4d34cdd2291b1a01f0adb83c24256242">Scanner</a>.</p>
 
 </div>
 </div>

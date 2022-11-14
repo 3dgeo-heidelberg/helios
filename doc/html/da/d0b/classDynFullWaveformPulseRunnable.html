@@ -114,27 +114,30 @@ Collaboration diagram for DynFullWaveformPulseRunnable:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../d9/da4/classDynFullWaveformPulseRunnable__coll__graph.png" border="0" usemap="#DynFullWaveformPulseRunnable_coll__map" alt="Collaboration graph"/></div>
 <map name="DynFullWaveformPulseRunnable_coll__map" id="DynFullWaveformPulseRunnable_coll__map">
-<area shape="rect" id="node2" href="../../db/da6/classFullWaveformPulseRunnable.html" title="Concrete implementation of abstract pulse runnable to compute full waveform pulses. " alt="" coords="119,303,309,329"/>
-<area shape="rect" id="node3" href="../../d6/d9e/classAbstractPulseRunnable.html" title="Base abstract class for pulse runnables. " alt="" coords="69,213,228,240"/>
-<area shape="rect" id="node4" href="../../d1/d6e/classPulseTask.html" title="Pulse task interface. " alt="" coords="5,124,89,151"/>
-<area shape="rect" id="node5" href="../../d5/dcb/classRotation.html" title="Rotation" alt="" coords="113,124,184,151"/>
-<area shape="rect" id="node6" href="../../d5/d9c/classScene.html" title="Class representing a scene asset. " alt="" coords="262,213,321,240"/>
-<area shape="rect" id="node7" href="../../de/d97/classAsset.html" title="Base class for all assets. " alt="" coords="274,124,330,151"/>
+<area shape="rect" id="node2" href="../../db/da6/classFullWaveformPulseRunnable.html" title="Concrete implementation of abstract pulse runnable to compute full waveform pulses. " alt="" coords="48,468,239,495"/>
+<area shape="rect" id="node3" href="../../d6/d9e/classAbstractPulseRunnable.html" title="Base abstract class for pulse runnables. " alt="" coords="64,392,223,419"/>
+<area shape="rect" id="node4" href="../../d1/d6e/classPulseTask.html" title="Pulse task interface. " alt="" coords="5,303,89,329"/>
+<area shape="rect" id="node5" href="../../d5/d9c/classScene.html" title="Class representing a scene asset. " alt="" coords="114,303,173,329"/>
+<area shape="rect" id="node6" href="../../de/d97/classAsset.html" title="Base class for all assets. " alt="" coords="115,213,171,240"/>
+<area shape="rect" id="node8" href="../../d1/d81/classSimulatedPulse.html" title="Class representing a simulated laser pulse. " alt="" coords="197,303,311,329"/>
+<area shape="rect" id="node9" href="../../d9/d2b/classTimedPulse.html" title="Class representing a time aware laser pulse. " alt="" coords="209,213,299,240"/>
+<area shape="rect" id="node10" href="../../d3/d1a/classPulse.html" title="Class representing a laser pulse. " alt="" coords="228,95,283,121"/>
+<area shape="rect" id="node11" href="../../d5/dcb/classRotation.html" title="Rotation" alt="" coords="220,5,291,32"/>
 </map>
 <center><span class="legend">[<a target="top" href="../../graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a646d486d34bfb2e05ec84f668fe8b01d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/d0b/classDynFullWaveformPulseRunnable.html#a646d486d34bfb2e05ec84f668fe8b01d">DynFullWaveformPulseRunnable</a> (std::shared_ptr&lt; <a class="el" href="../../df/d01/classKDGroveRaycaster.html">KDGroveRaycaster</a> &gt; <a class="el" href="../../da/d0b/classDynFullWaveformPulseRunnable.html#a6bba4ad96441afcdc19c03209b3d42d3">raycaster</a>, std::shared_ptr&lt; <a class="el" href="../../df/d37/classFullWaveformPulseDetector.html">FullWaveformPulseDetector</a> &gt; <a class="el" href="../../d6/d9e/classAbstractPulseRunnable.html#a5f89956813516dcb6090715f2aed8631">detector</a>, glm::dvec3 <a class="el" href="../../d6/d9e/classAbstractPulseRunnable.html#aa7f3f0ea66414823b4bd1e4ebd12295f">absoluteBeamOrigin</a>, <a class="el" href="../../d5/dcb/classRotation.html">Rotation</a> <a class="el" href="../../d6/d9e/classAbstractPulseRunnable.html#a5431be620a94c48f0b13bdb4627b9f54">absoluteBeamAttitude</a>, int <a class="el" href="../../d6/d9e/classAbstractPulseRunnable.html#ac5d3bcb0892688c12fe36b128d07c395">currentPulseNum</a>, double <a class="el" href="../../d6/d9e/classAbstractPulseRunnable.html#a9e6215211c94b37b40f9d0e724c053fd">currentGpsTime</a>, bool <a class="el" href="../../db/da6/classFullWaveformPulseRunnable.html#a06e7d38a47f7fc76d55ba205fa399b8e">writeWaveform</a>, bool <a class="el" href="../../db/da6/classFullWaveformPulseRunnable.html#ab817063a50399ea3b1ba7b9cb4a3165b">calcEchowidth</a>, std::vector&lt; <a class="el" href="../../db/d2e/classMeasurement.html">Measurement</a> &gt; *<a class="el" href="../../db/da6/classFullWaveformPulseRunnable.html#aeedfb37ebcaa81fb785f4d0ce5b6ce3c">allMeasurements</a>, std::mutex *<a class="el" href="../../db/da6/classFullWaveformPulseRunnable.html#adcaed1b88ed1f08ec6f7a9797ec62fb3">allMeasurementsMutex</a>, std::vector&lt; <a class="el" href="../../db/d2e/classMeasurement.html">Measurement</a> &gt; *<a class="el" href="../../db/da6/classFullWaveformPulseRunnable.html#a77ea04182b4e55b08a7b216eb73ff47a">cycleMeasurements</a>, std::mutex *<a class="el" href="../../db/da6/classFullWaveformPulseRunnable.html#a07e49f4388cb3ff37a7b1b929f87ab75">cycleMeasurementsMutex</a>, unsigned int <a class="el" href="../../db/da6/classFullWaveformPulseRunnable.html#a9fe7e3bbd744a5bf3ce57e417b746822">legIndex</a>)</td></tr>
-<tr class="memdesc:a646d486d34bfb2e05ec84f668fe8b01d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Base constructor for dynamic full waveform pulse runnable.  <a href="#a646d486d34bfb2e05ec84f668fe8b01d">More...</a><br /></td></tr>
-<tr class="separator:a646d486d34bfb2e05ec84f668fe8b01d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5ea5ed429f5617282ffbfd61c0442717"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/d0b/classDynFullWaveformPulseRunnable.html#a5ea5ed429f5617282ffbfd61c0442717">DynFullWaveformPulseRunnable</a> (std::shared_ptr&lt; <a class="el" href="../../df/d01/classKDGroveRaycaster.html">KDGroveRaycaster</a> &gt; <a class="el" href="../../da/d0b/classDynFullWaveformPulseRunnable.html#a6bba4ad96441afcdc19c03209b3d42d3">raycaster</a>, std::shared_ptr&lt; <a class="el" href="../../dc/d42/classScanner.html">Scanner</a> &gt; <a class="el" href="../../d6/d9e/classAbstractPulseRunnable.html#a0e17e623e56492cfd7a22b04467b45b3">scanner</a>, <a class="el" href="../../d1/d81/classSimulatedPulse.html">SimulatedPulse</a> const &amp;<a class="el" href="../../d6/d9e/classAbstractPulseRunnable.html#abd5c1c59b306ff4344832823f3af60e8">pulse</a>)</td></tr>
+<tr class="memdesc:a5ea5ed429f5617282ffbfd61c0442717"><td class="mdescLeft">&#160;</td><td class="mdescRight">Base constructor for dynamic full waveform pulse runnable.  <a href="#a5ea5ed429f5617282ffbfd61c0442717">More...</a><br /></td></tr>
+<tr class="separator:a5ea5ed429f5617282ffbfd61c0442717"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8992fefd6a8d370fa0ae7aefc654b081"><td class="memItemLeft" align="right" valign="top">shared_ptr&lt; <a class="el" href="../../dc/da3/classRaySceneIntersection.html">RaySceneIntersection</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/d0b/classDynFullWaveformPulseRunnable.html#a8992fefd6a8d370fa0ae7aefc654b081">findIntersection</a> (vector&lt; double &gt; const &amp;tMinMax, glm::dvec3 const &amp;o, glm::dvec3 const &amp;v) const override</td></tr>
 <tr class="memdesc:a8992fefd6a8d370fa0ae7aefc654b081"><td class="mdescLeft">&#160;</td><td class="mdescRight">Find intersections considering there are dynamic moving objects involved.  <a href="#a8992fefd6a8d370fa0ae7aefc654b081">More...</a><br /></td></tr>
 <tr class="separator:a8992fefd6a8d370fa0ae7aefc654b081"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classFullWaveformPulseRunnable"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classFullWaveformPulseRunnable')"><img src="../../closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="../../db/da6/classFullWaveformPulseRunnable.html">FullWaveformPulseRunnable</a></td></tr>
-<tr class="memitem:af21f75719cfd04252c91c2c9e40ccdf6 inherit pub_methods_classFullWaveformPulseRunnable"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/da6/classFullWaveformPulseRunnable.html#af21f75719cfd04252c91c2c9e40ccdf6">FullWaveformPulseRunnable</a> (std::shared_ptr&lt; <a class="el" href="../../df/d37/classFullWaveformPulseDetector.html">FullWaveformPulseDetector</a> &gt; <a class="el" href="../../d6/d9e/classAbstractPulseRunnable.html#a5f89956813516dcb6090715f2aed8631">detector</a>, glm::dvec3 const <a class="el" href="../../d6/d9e/classAbstractPulseRunnable.html#aa7f3f0ea66414823b4bd1e4ebd12295f">absoluteBeamOrigin</a>, <a class="el" href="../../d5/dcb/classRotation.html">Rotation</a> const <a class="el" href="../../d6/d9e/classAbstractPulseRunnable.html#a5431be620a94c48f0b13bdb4627b9f54">absoluteBeamAttitude</a>, int const <a class="el" href="../../d6/d9e/classAbstractPulseRunnable.html#ac5d3bcb0892688c12fe36b128d07c395">currentPulseNum</a>, double const <a class="el" href="../../d6/d9e/classAbstractPulseRunnable.html#a9e6215211c94b37b40f9d0e724c053fd">currentGpsTime</a>, bool const <a class="el" href="../../db/da6/classFullWaveformPulseRunnable.html#a06e7d38a47f7fc76d55ba205fa399b8e">writeWaveform</a>, bool const <a class="el" href="../../db/da6/classFullWaveformPulseRunnable.html#ab817063a50399ea3b1ba7b9cb4a3165b">calcEchowidth</a>, std::vector&lt; <a class="el" href="../../db/d2e/classMeasurement.html">Measurement</a> &gt; *<a class="el" href="../../db/da6/classFullWaveformPulseRunnable.html#aeedfb37ebcaa81fb785f4d0ce5b6ce3c">allMeasurements</a>, std::mutex *<a class="el" href="../../db/da6/classFullWaveformPulseRunnable.html#adcaed1b88ed1f08ec6f7a9797ec62fb3">allMeasurementsMutex</a>, std::vector&lt; <a class="el" href="../../db/d2e/classMeasurement.html">Measurement</a> &gt; *<a class="el" href="../../db/da6/classFullWaveformPulseRunnable.html#a77ea04182b4e55b08a7b216eb73ff47a">cycleMeasurements</a>, std::mutex *<a class="el" href="../../db/da6/classFullWaveformPulseRunnable.html#a07e49f4388cb3ff37a7b1b929f87ab75">cycleMeasurementsMutex</a>, unsigned int const <a class="el" href="../../db/da6/classFullWaveformPulseRunnable.html#a9fe7e3bbd744a5bf3ce57e417b746822">legIndex</a>)</td></tr>
-<tr class="memdesc:af21f75719cfd04252c91c2c9e40ccdf6 inherit pub_methods_classFullWaveformPulseRunnable"><td class="mdescLeft">&#160;</td><td class="mdescRight">Base constructor for full waveform pulse runnable.  <a href="../../db/da6/classFullWaveformPulseRunnable.html#af21f75719cfd04252c91c2c9e40ccdf6">More...</a><br /></td></tr>
-<tr class="separator:af21f75719cfd04252c91c2c9e40ccdf6 inherit pub_methods_classFullWaveformPulseRunnable"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adb14f58d930e8b68cc3f3e6df117f827 inherit pub_methods_classFullWaveformPulseRunnable"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/da6/classFullWaveformPulseRunnable.html#adb14f58d930e8b68cc3f3e6df117f827">FullWaveformPulseRunnable</a> (std::shared_ptr&lt; <a class="el" href="../../dc/d42/classScanner.html">Scanner</a> &gt; <a class="el" href="../../d6/d9e/classAbstractPulseRunnable.html#a0e17e623e56492cfd7a22b04467b45b3">scanner</a>, <a class="el" href="../../d1/d81/classSimulatedPulse.html">SimulatedPulse</a> const &amp;<a class="el" href="../../d6/d9e/classAbstractPulseRunnable.html#abd5c1c59b306ff4344832823f3af60e8">pulse</a>)</td></tr>
+<tr class="memdesc:adb14f58d930e8b68cc3f3e6df117f827 inherit pub_methods_classFullWaveformPulseRunnable"><td class="mdescLeft">&#160;</td><td class="mdescRight">Base constructor for full waveform pulse runnable.  <a href="../../db/da6/classFullWaveformPulseRunnable.html#adb14f58d930e8b68cc3f3e6df117f827">More...</a><br /></td></tr>
+<tr class="separator:adb14f58d930e8b68cc3f3e6df117f827 inherit pub_methods_classFullWaveformPulseRunnable"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9f311fc2f184a4093d98712105e1582b inherit pub_methods_classFullWaveformPulseRunnable"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/da6/classFullWaveformPulseRunnable.html#a9f311fc2f184a4093d98712105e1582b">operator()</a> () override</td></tr>
 <tr class="memdesc:a9f311fc2f184a4093d98712105e1582b inherit pub_methods_classFullWaveformPulseRunnable"><td class="mdescLeft">&#160;</td><td class="mdescRight">Full waveform pulse runnable void functor. It is necessary due to compatibility reasons.  <a href="../../db/da6/classFullWaveformPulseRunnable.html#a9f311fc2f184a4093d98712105e1582b">More...</a><br /></td></tr>
 <tr class="separator:a9f311fc2f184a4093d98712105e1582b inherit pub_methods_classFullWaveformPulseRunnable"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -142,9 +145,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a309b48c537e77a7ee54a19ebe4222a6f inherit pub_methods_classFullWaveformPulseRunnable"><td class="mdescLeft">&#160;</td><td class="mdescRight">Full waveform pulse runnable functor.  <a href="../../db/da6/classFullWaveformPulseRunnable.html#a309b48c537e77a7ee54a19ebe4222a6f">More...</a><br /></td></tr>
 <tr class="separator:a309b48c537e77a7ee54a19ebe4222a6f inherit pub_methods_classFullWaveformPulseRunnable"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classAbstractPulseRunnable"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classAbstractPulseRunnable')"><img src="../../closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="../../d6/d9e/classAbstractPulseRunnable.html">AbstractPulseRunnable</a></td></tr>
-<tr class="memitem:a9f9194d9037bfa0b0aa4500a8fd83b19 inherit pub_methods_classAbstractPulseRunnable"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d9e/classAbstractPulseRunnable.html#a9f9194d9037bfa0b0aa4500a8fd83b19">AbstractPulseRunnable</a> (std::shared_ptr&lt; <a class="el" href="../../d8/d6b/classAbstractDetector.html">AbstractDetector</a> &gt; const <a class="el" href="../../d6/d9e/classAbstractPulseRunnable.html#a5f89956813516dcb6090715f2aed8631">detector</a>, glm::dvec3 const <a class="el" href="../../d6/d9e/classAbstractPulseRunnable.html#aa7f3f0ea66414823b4bd1e4ebd12295f">absoluteBeamOrigin</a>, <a class="el" href="../../d5/dcb/classRotation.html">Rotation</a> const <a class="el" href="../../d6/d9e/classAbstractPulseRunnable.html#a5431be620a94c48f0b13bdb4627b9f54">absoluteBeamAttitude</a>, int const pulseNumber, double const gpsTime)</td></tr>
-<tr class="memdesc:a9f9194d9037bfa0b0aa4500a8fd83b19 inherit pub_methods_classAbstractPulseRunnable"><td class="mdescLeft">&#160;</td><td class="mdescRight">Base constructor for pulse runnables.  <a href="../../d6/d9e/classAbstractPulseRunnable.html#a9f9194d9037bfa0b0aa4500a8fd83b19">More...</a><br /></td></tr>
-<tr class="separator:a9f9194d9037bfa0b0aa4500a8fd83b19 inherit pub_methods_classAbstractPulseRunnable"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a53cbd941ae29233d77d67bf4964f9c18 inherit pub_methods_classAbstractPulseRunnable"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d9e/classAbstractPulseRunnable.html#a53cbd941ae29233d77d67bf4964f9c18">AbstractPulseRunnable</a> (std::shared_ptr&lt; <a class="el" href="../../dc/d42/classScanner.html">Scanner</a> &gt; const <a class="el" href="../../d6/d9e/classAbstractPulseRunnable.html#a0e17e623e56492cfd7a22b04467b45b3">scanner</a>, <a class="el" href="../../d1/d81/classSimulatedPulse.html">SimulatedPulse</a> const &amp;<a class="el" href="../../d6/d9e/classAbstractPulseRunnable.html#abd5c1c59b306ff4344832823f3af60e8">pulse</a>)</td></tr>
+<tr class="memdesc:a53cbd941ae29233d77d67bf4964f9c18 inherit pub_methods_classAbstractPulseRunnable"><td class="mdescLeft">&#160;</td><td class="mdescRight">Base constructor for pulse runnables.  <a href="../../d6/d9e/classAbstractPulseRunnable.html#a53cbd941ae29233d77d67bf4964f9c18">More...</a><br /></td></tr>
+<tr class="separator:a53cbd941ae29233d77d67bf4964f9c18 inherit pub_methods_classAbstractPulseRunnable"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a238c5879265bb80396351182a6779ec8 inherit pub_methods_classAbstractPulseRunnable"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d9e/classAbstractPulseRunnable.html#a238c5879265bb80396351182a6779ec8">capturePoint</a> (<a class="el" href="../../db/d2e/classMeasurement.html">Measurement</a> &amp;m, <a class="el" href="../../dc/d6e/classRandomnessGenerator.html">RandomnessGenerator</a>&lt; double &gt; &amp;rg, std::vector&lt; <a class="el" href="../../db/d2e/classMeasurement.html">Measurement</a> &gt; *allMeasurements, std::mutex *allMeasurementsMutex, std::vector&lt; <a class="el" href="../../db/d2e/classMeasurement.html">Measurement</a> &gt; *cycleMeasurements, std::mutex *cycleMeasurementsMutex)</td></tr>
 <tr class="memdesc:a238c5879265bb80396351182a6779ec8 inherit pub_methods_classAbstractPulseRunnable"><td class="mdescLeft">&#160;</td><td class="mdescRight">Capture point if proceed and write it.  <a href="../../d6/d9e/classAbstractPulseRunnable.html#a238c5879265bb80396351182a6779ec8">More...</a><br /></td></tr>
 <tr class="separator:a238c5879265bb80396351182a6779ec8 inherit pub_methods_classAbstractPulseRunnable"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -161,35 +164,23 @@ std::shared_ptr&lt; <a class="el" href="../../df/d01/classKDGroveRaycaster.html"
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
-<tr class="inherit_header pub_attribs_classFullWaveformPulseRunnable"><td colspan="2" onclick="javascript:toggleInherit('pub_attribs_classFullWaveformPulseRunnable')"><img src="../../closed.png" alt="-"/>&#160;Public Attributes inherited from <a class="el" href="../../db/da6/classFullWaveformPulseRunnable.html">FullWaveformPulseRunnable</a></td></tr>
-<tr class="memitem:a9fe7e3bbd744a5bf3ce57e417b746822 inherit pub_attribs_classFullWaveformPulseRunnable"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/da6/classFullWaveformPulseRunnable.html#a9fe7e3bbd744a5bf3ce57e417b746822">legIndex</a> = 0</td></tr>
-<tr class="memdesc:a9fe7e3bbd744a5bf3ce57e417b746822 inherit pub_attribs_classFullWaveformPulseRunnable"><td class="mdescLeft">&#160;</td><td class="mdescRight">Which leg the <a class="el" href="../../db/da6/classFullWaveformPulseRunnable.html" title="Concrete implementation of abstract pulse runnable to compute full waveform pulses. ">FullWaveformPulseRunnable</a> belongs to.  <a href="../../db/da6/classFullWaveformPulseRunnable.html#a9fe7e3bbd744a5bf3ce57e417b746822">More...</a><br /></td></tr>
-<tr class="separator:a9fe7e3bbd744a5bf3ce57e417b746822 inherit pub_attribs_classFullWaveformPulseRunnable"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_attribs_classAbstractPulseRunnable"><td colspan="2" onclick="javascript:toggleInherit('pub_attribs_classAbstractPulseRunnable')"><img src="../../closed.png" alt="-"/>&#160;Public Attributes inherited from <a class="el" href="../../d6/d9e/classAbstractPulseRunnable.html">AbstractPulseRunnable</a></td></tr>
+<tr class="memitem:a0e17e623e56492cfd7a22b04467b45b3 inherit pub_attribs_classAbstractPulseRunnable"><td class="memItemLeft" align="right" valign="top"><a id="a0e17e623e56492cfd7a22b04467b45b3"></a>
+std::shared_ptr&lt; <a class="el" href="../../dc/d42/classScanner.html">Scanner</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d9e/classAbstractPulseRunnable.html#a0e17e623e56492cfd7a22b04467b45b3">scanner</a> = nullptr</td></tr>
+<tr class="memdesc:a0e17e623e56492cfd7a22b04467b45b3 inherit pub_attribs_classAbstractPulseRunnable"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="../../dc/d42/classScanner.html" title="Class representing a scanner asset. ">Scanner</a> used to simulate the pulse. <br /></td></tr>
+<tr class="separator:a0e17e623e56492cfd7a22b04467b45b3 inherit pub_attribs_classAbstractPulseRunnable"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5f89956813516dcb6090715f2aed8631 inherit pub_attribs_classAbstractPulseRunnable"><td class="memItemLeft" align="right" valign="top"><a id="a5f89956813516dcb6090715f2aed8631"></a>
 std::shared_ptr&lt; <a class="el" href="../../d8/d6b/classAbstractDetector.html">AbstractDetector</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d9e/classAbstractPulseRunnable.html#a5f89956813516dcb6090715f2aed8631">detector</a> = nullptr</td></tr>
 <tr class="memdesc:a5f89956813516dcb6090715f2aed8631 inherit pub_attribs_classAbstractPulseRunnable"><td class="mdescLeft">&#160;</td><td class="mdescRight">Detector used to simulate pulse. <br /></td></tr>
 <tr class="separator:a5f89956813516dcb6090715f2aed8631 inherit pub_attribs_classAbstractPulseRunnable"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa7f3f0ea66414823b4bd1e4ebd12295f inherit pub_attribs_classAbstractPulseRunnable"><td class="memItemLeft" align="right" valign="top"><a id="aa7f3f0ea66414823b4bd1e4ebd12295f"></a>
-glm::dvec3&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d9e/classAbstractPulseRunnable.html#aa7f3f0ea66414823b4bd1e4ebd12295f">absoluteBeamOrigin</a></td></tr>
-<tr class="memdesc:aa7f3f0ea66414823b4bd1e4ebd12295f inherit pub_attribs_classAbstractPulseRunnable"><td class="mdescLeft">&#160;</td><td class="mdescRight">Beam origin in absolute coordinates. <br /></td></tr>
-<tr class="separator:aa7f3f0ea66414823b4bd1e4ebd12295f inherit pub_attribs_classAbstractPulseRunnable"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5431be620a94c48f0b13bdb4627b9f54 inherit pub_attribs_classAbstractPulseRunnable"><td class="memItemLeft" align="right" valign="top"><a id="a5431be620a94c48f0b13bdb4627b9f54"></a>
-<a class="el" href="../../d5/dcb/classRotation.html">Rotation</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d9e/classAbstractPulseRunnable.html#a5431be620a94c48f0b13bdb4627b9f54">absoluteBeamAttitude</a></td></tr>
-<tr class="memdesc:a5431be620a94c48f0b13bdb4627b9f54 inherit pub_attribs_classAbstractPulseRunnable"><td class="mdescLeft">&#160;</td><td class="mdescRight">Beam attitude. <br /></td></tr>
-<tr class="separator:a5431be620a94c48f0b13bdb4627b9f54 inherit pub_attribs_classAbstractPulseRunnable"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac5d3bcb0892688c12fe36b128d07c395 inherit pub_attribs_classAbstractPulseRunnable"><td class="memItemLeft" align="right" valign="top"><a id="ac5d3bcb0892688c12fe36b128d07c395"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d9e/classAbstractPulseRunnable.html#ac5d3bcb0892688c12fe36b128d07c395">currentPulseNum</a></td></tr>
-<tr class="memdesc:ac5d3bcb0892688c12fe36b128d07c395 inherit pub_attribs_classAbstractPulseRunnable"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of current pulse. <br /></td></tr>
-<tr class="separator:ac5d3bcb0892688c12fe36b128d07c395 inherit pub_attribs_classAbstractPulseRunnable"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9e6215211c94b37b40f9d0e724c053fd inherit pub_attribs_classAbstractPulseRunnable"><td class="memItemLeft" align="right" valign="top"><a id="a9e6215211c94b37b40f9d0e724c053fd"></a>
-double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d9e/classAbstractPulseRunnable.html#a9e6215211c94b37b40f9d0e724c053fd">currentGpsTime</a></td></tr>
-<tr class="memdesc:a9e6215211c94b37b40f9d0e724c053fd inherit pub_attribs_classAbstractPulseRunnable"><td class="mdescLeft">&#160;</td><td class="mdescRight">Current GPS time in nanoseconds. <br /></td></tr>
-<tr class="separator:a9e6215211c94b37b40f9d0e724c053fd inherit pub_attribs_classAbstractPulseRunnable"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afb0cbbe6296be3c71c0647bab194166d inherit pub_attribs_classAbstractPulseRunnable"><td class="memItemLeft" align="right" valign="top"><a id="afb0cbbe6296be3c71c0647bab194166d"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d9e/classAbstractPulseRunnable.html#afb0cbbe6296be3c71c0647bab194166d">writeGround</a> = true</td></tr>
-<tr class="memdesc:afb0cbbe6296be3c71c0647bab194166d inherit pub_attribs_classAbstractPulseRunnable"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flag to specify if ground points must be captured (true) or not (false) <br /></td></tr>
-<tr class="separator:afb0cbbe6296be3c71c0647bab194166d inherit pub_attribs_classAbstractPulseRunnable"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abd5c1c59b306ff4344832823f3af60e8 inherit pub_attribs_classAbstractPulseRunnable"><td class="memItemLeft" align="right" valign="top"><a id="abd5c1c59b306ff4344832823f3af60e8"></a>
+<a class="el" href="../../d1/d81/classSimulatedPulse.html">SimulatedPulse</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d9e/classAbstractPulseRunnable.html#abd5c1c59b306ff4344832823f3af60e8">pulse</a></td></tr>
+<tr class="memdesc:abd5c1c59b306ff4344832823f3af60e8 inherit pub_attribs_classAbstractPulseRunnable"><td class="mdescLeft">&#160;</td><td class="mdescRight">The definition of the pulse to be simulated. <br /></td></tr>
+<tr class="separator:abd5c1c59b306ff4344832823f3af60e8 inherit pub_attribs_classAbstractPulseRunnable"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9651a57a9ae43e0bf4ed4f61ff19f096 inherit pub_attribs_classAbstractPulseRunnable"><td class="memItemLeft" align="right" valign="top"><a id="a9651a57a9ae43e0bf4ed4f61ff19f096"></a>
+<a class="el" href="../../d5/d9c/classScene.html">Scene</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d9e/classAbstractPulseRunnable.html#a9651a57a9ae43e0bf4ed4f61ff19f096">scene</a></td></tr>
+<tr class="memdesc:a9651a57a9ae43e0bf4ed4f61ff19f096 inherit pub_attribs_classAbstractPulseRunnable"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reference to the scene that is being scanned. <br /></td></tr>
+<tr class="separator:a9651a57a9ae43e0bf4ed4f61ff19f096 inherit pub_attribs_classAbstractPulseRunnable"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_static_attribs_classFullWaveformPulseRunnable"><td colspan="2" onclick="javascript:toggleInherit('pub_static_attribs_classFullWaveformPulseRunnable')"><img src="../../closed.png" alt="-"/>&#160;Static Public Attributes inherited from <a class="el" href="../../db/da6/classFullWaveformPulseRunnable.html">FullWaveformPulseRunnable</a></td></tr>
 <tr class="memitem:a6487db112df105273708d5314f2292bb inherit pub_static_attribs_classFullWaveformPulseRunnable"><td class="memItemLeft" align="right" valign="top"><a id="a6487db112df105273708d5314f2292bb"></a>
 static const double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/da6/classFullWaveformPulseRunnable.html#a6487db112df105273708d5314f2292bb">eps</a> = 0.001</td></tr>
@@ -202,8 +193,8 @@ static const double&#160;</td><td class="memItemRight" valign="bottom"><a class=
 <dl class="section version"><dt>Version</dt><dd>1.0 </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="../../db/da6/classFullWaveformPulseRunnable.html" title="Concrete implementation of abstract pulse runnable to compute full waveform pulses. ">FullWaveformPulseRunnable</a> </dd></dl>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a646d486d34bfb2e05ec84f668fe8b01d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a646d486d34bfb2e05ec84f668fe8b01d">&#9670;&nbsp;</a></span>DynFullWaveformPulseRunnable()</h2>
+<a id="a5ea5ed429f5617282ffbfd61c0442717"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5ea5ed429f5617282ffbfd61c0442717">&#9670;&nbsp;</a></span>DynFullWaveformPulseRunnable()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -220,74 +211,14 @@ static const double&#160;</td><td class="memItemRight" valign="bottom"><a class=
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">std::shared_ptr&lt; <a class="el" href="../../df/d37/classFullWaveformPulseDetector.html">FullWaveformPulseDetector</a> &gt;&#160;</td>
-          <td class="paramname"><em>detector</em>, </td>
+          <td class="paramtype">std::shared_ptr&lt; <a class="el" href="../../dc/d42/classScanner.html">Scanner</a> &gt;&#160;</td>
+          <td class="paramname"><em>scanner</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">glm::dvec3&#160;</td>
-          <td class="paramname"><em>absoluteBeamOrigin</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="../../d5/dcb/classRotation.html">Rotation</a>&#160;</td>
-          <td class="paramname"><em>absoluteBeamAttitude</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>currentPulseNum</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>currentGpsTime</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>writeWaveform</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>calcEchowidth</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">std::vector&lt; <a class="el" href="../../db/d2e/classMeasurement.html">Measurement</a> &gt; *&#160;</td>
-          <td class="paramname"><em>allMeasurements</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">std::mutex *&#160;</td>
-          <td class="paramname"><em>allMeasurementsMutex</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">std::vector&lt; <a class="el" href="../../db/d2e/classMeasurement.html">Measurement</a> &gt; *&#160;</td>
-          <td class="paramname"><em>cycleMeasurements</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">std::mutex *&#160;</td>
-          <td class="paramname"><em>cycleMeasurementsMutex</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">unsigned int&#160;</td>
-          <td class="paramname"><em>legIndex</em>&#160;</td>
+          <td class="paramtype"><a class="el" href="../../d1/d81/classSimulatedPulse.html">SimulatedPulse</a> const &amp;&#160;</td>
+          <td class="paramname"><em>pulse</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -305,13 +236,13 @@ static const double&#160;</td><td class="memItemRight" valign="bottom"><a class=
 <p>Base constructor for dynamic full waveform pulse runnable. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">tkdg</td><td>The temporal <a class="el" href="../../d9/d76/classKDGrove.html" title="Grove of KDTrees. It supports both static and dynamic KDTrees, handling each accordingly. ">KDGrove</a> for the dynamic full waveform pulse runnable </td></tr>
+    <tr><td class="paramname">raycaster</td><td>The temporal <a class="el" href="../../d9/d76/classKDGrove.html" title="Grove of KDTrees. It supports both static and dynamic KDTrees, handling each accordingly. ">KDGrove</a> for the dynamic full waveform pulse runnable </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../db/da6/classFullWaveformPulseRunnable.html#af21f75719cfd04252c91c2c9e40ccdf6" title="Base constructor for full waveform pulse runnable. ">FullWaveformPulseRunnable::FullWaveformPulseRunnable</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../db/da6/classFullWaveformPulseRunnable.html#adb14f58d930e8b68cc3f3e6df117f827" title="Base constructor for full waveform pulse runnable. ">FullWaveformPulseRunnable::FullWaveformPulseRunnable</a> </dd>
 <dd>
-DynFullWaveformPulseRunnable::tkdg </dd></dl>
+<a class="el" href="../../da/d0b/classDynFullWaveformPulseRunnable.html#a6bba4ad96441afcdc19c03209b3d42d3" title="The temporal KDGrove raycaster to compute pulse simulation. ">DynFullWaveformPulseRunnable::raycaster</a> </dd></dl>
 
 </div>
 </div>

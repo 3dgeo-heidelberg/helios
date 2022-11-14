@@ -46,6 +46,11 @@ protected:
 public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //
     // ************************************ //
+    /**
+     * @brief LAS-1.4 vectorial synchronous file measurement vector writer
+     *  constructor
+     * @see filems::LasSyncFileWriter::LasSyncFileWriter
+     */
     explicit Las14VectorialSyncFileMeasurementWriter(
         const std::string &path,
         bool const compress = false,
@@ -69,16 +74,16 @@ public:
         ),
         lmws(
             *lw,
-            lp,
-            scaleFactorInverse,
-            this->offset,
-            this->minIntensity,
-            maxIntensity,
-            intensityCoefficient,
-            ewAttrStart,
-            fwiAttrStart,
-            hoiAttrStart,
-            ampAttrStart
+            lws.lp,
+            lws.scaleFactorInverse,
+            lws.offset,
+            lws.minIntensity,
+            lws.maxIntensity,
+            lws.intensityCoefficient,
+            lws.ewAttrStart,
+            lws.fwiAttrStart,
+            lws.hoiAttrStart,
+            lws.ampAttrStart
         )
     {
         // Write strategy

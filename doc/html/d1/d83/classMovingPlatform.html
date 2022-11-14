@@ -153,8 +153,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>_clone</b> (std::shar
 <tr class="memitem:a8625dc64a17d52bf88b0b5008a9037a2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d83/classMovingPlatform.html#a8625dc64a17d52bf88b0b5008a9037a2">setVelocity</a> (glm::dvec3 v)</td></tr>
 <tr class="memdesc:a8625dc64a17d52bf88b0b5008a9037a2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set velocity vector for moving platform.  <a href="#a8625dc64a17d52bf88b0b5008a9037a2">More...</a><br /></td></tr>
 <tr class="separator:a8625dc64a17d52bf88b0b5008a9037a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad252ab38b2363cee72a55d54235e0e3f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d83/classMovingPlatform.html#ad252ab38b2363cee72a55d54235e0e3f">canMove</a> () override</td></tr>
-<tr class="separator:ad252ab38b2363cee72a55d54235e0e3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1a7f8136068ce11a74e1e44c8f473c7b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d83/classMovingPlatform.html#a1a7f8136068ce11a74e1e44c8f473c7b">canMove</a> () const override</td></tr>
+<tr class="separator:a1a7f8136068ce11a74e1e44c8f473c7b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classPlatform"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classPlatform')"><img src="../../closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="../../df/d1e/classPlatform.html">Platform</a></td></tr>
 <tr class="memitem:a6b2ba3089df1d2ed16a8349f0876c100 inherit pub_methods_classPlatform"><td class="memItemLeft" align="right" valign="top"><a id="a6b2ba3089df1d2ed16a8349f0876c100"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d1e/classPlatform.html#a6b2ba3089df1d2ed16a8349f0876c100">Platform</a> ()=default</td></tr>
@@ -225,9 +225,12 @@ virtual glm::dvec3&#160;</td><td class="memItemRight" valign="bottom"><a class="
 <tr class="memitem:a128196f54f7c9fb7cf670d746b362225 inherit pub_methods_classPlatform"><td class="memItemLeft" align="right" valign="top">virtual double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d1e/classPlatform.html#a128196f54f7c9fb7cf670d746b362225">getHeadingRad</a> ()</td></tr>
 <tr class="memdesc:a128196f54f7c9fb7cf670d746b362225 inherit pub_methods_classPlatform"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain platform heading angle in radians, which can be understood as yaw in most cases.  <a href="../../df/d1e/classPlatform.html#a128196f54f7c9fb7cf670d746b362225">More...</a><br /></td></tr>
 <tr class="separator:a128196f54f7c9fb7cf670d746b362225 inherit pub_methods_classPlatform"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a28a933a159f8cd2c51d37a890bc8526a inherit pub_methods_classPlatform"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d1e/classPlatform.html#a28a933a159f8cd2c51d37a890bc8526a">canStopAndTurn</a> ()</td></tr>
-<tr class="memdesc:a28a933a159f8cd2c51d37a890bc8526a inherit pub_methods_classPlatform"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if platform support stop and turn mode (true) or not (false)  <a href="../../df/d1e/classPlatform.html#a28a933a159f8cd2c51d37a890bc8526a">More...</a><br /></td></tr>
-<tr class="separator:a28a933a159f8cd2c51d37a890bc8526a inherit pub_methods_classPlatform"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a47730d66afb4900605fcf8ca791b0e12 inherit pub_methods_classPlatform"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d1e/classPlatform.html#a47730d66afb4900605fcf8ca791b0e12">canStopAndTurn</a> () const</td></tr>
+<tr class="memdesc:a47730d66afb4900605fcf8ca791b0e12 inherit pub_methods_classPlatform"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if platform support stop and turn mode (true) or not (false)  <a href="../../df/d1e/classPlatform.html#a47730d66afb4900605fcf8ca791b0e12">More...</a><br /></td></tr>
+<tr class="separator:a47730d66afb4900605fcf8ca791b0e12 inherit pub_methods_classPlatform"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad25395d774e6b63b4c5961cc110f7bca inherit pub_methods_classPlatform"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d1e/classPlatform.html#ad25395d774e6b63b4c5961cc110f7bca">isInterpolated</a> () const</td></tr>
+<tr class="memdesc:ad25395d774e6b63b4c5961cc110f7bca inherit pub_methods_classPlatform"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if platform is simulated (false) or interpolated (true)  <a href="../../df/d1e/classPlatform.html#ad25395d774e6b63b4c5961cc110f7bca">More...</a><br /></td></tr>
+<tr class="separator:ad25395d774e6b63b4c5961cc110f7bca inherit pub_methods_classPlatform"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classAsset"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classAsset')"><img src="../../closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="../../de/d97/classAsset.html">Asset</a></td></tr>
 <tr class="memitem:a9ad0c79df694d3f079daba3eedf0284c inherit pub_methods_classAsset"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/d97/classAsset.html#a9ad0c79df694d3f079daba3eedf0284c">getLocationString</a> ()</td></tr>
 <tr class="memdesc:a9ad0c79df694d3f079daba3eedf0284c inherit pub_methods_classAsset"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain asset location string.  <a href="../../de/d97/classAsset.html#a9ad0c79df694d3f079daba3eedf0284c">More...</a><br /></td></tr>
@@ -453,8 +456,8 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
 
 </div>
 </div>
-<a id="ad252ab38b2363cee72a55d54235e0e3f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad252ab38b2363cee72a55d54235e0e3f">&#9670;&nbsp;</a></span>canMove()</h2>
+<a id="a1a7f8136068ce11a74e1e44c8f473c7b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1a7f8136068ce11a74e1e44c8f473c7b">&#9670;&nbsp;</a></span>canMove()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -466,7 +469,7 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
           <td class="memname">bool MovingPlatform::canMove </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
-          <td></td>
+          <td> const</td>
         </tr>
       </table>
   </td>
@@ -475,9 +478,9 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
   </tr>
 </table>
 </div><div class="memdoc">
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../df/d1e/classPlatform.html#ab2e77b89eb4dba596852ab99091e4387" title="Check if platform can move (true) or not (false) ">Platform::canMove</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../df/d1e/classPlatform.html#afd2d245460d990c7a5625c492e57cf80" title="Check if platform can move (true) or not (false) ">Platform::canMove</a> </dd></dl>
 
-<p>Reimplemented from <a class="el" href="../../df/d1e/classPlatform.html#ab2e77b89eb4dba596852ab99091e4387">Platform</a>.</p>
+<p>Reimplemented from <a class="el" href="../../df/d1e/classPlatform.html#afd2d245460d990c7a5625c492e57cf80">Platform</a>.</p>
 
 </div>
 </div>

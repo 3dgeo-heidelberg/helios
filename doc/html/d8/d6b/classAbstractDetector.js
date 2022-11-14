@@ -6,6 +6,8 @@ var classAbstractDetector =
     [ "applySettings", "d8/d6b/classAbstractDetector.html#a78346a126dcb35c991bc9e14ba9a5f6c", null ],
     [ "clone", "d8/d6b/classAbstractDetector.html#a4a24217d4e34ad86ce1ee0cd2a2dea7f", null ],
     [ "getFMS", "d8/d6b/classAbstractDetector.html#ad7746af8ee359e06e0b0e51028eb6efe", null ],
+    [ "isDistanceInRange", "d8/d6b/classAbstractDetector.html#a93a62d33b2bcc9f9549cc2986bf7c01f", null ],
+    [ "isDistanceNotInRange", "d8/d6b/classAbstractDetector.html#a5f78414b3562fc16bbdf557fd7ab85b8", null ],
     [ "onLegComplete", "d8/d6b/classAbstractDetector.html#a1ddee13891ef33377207090c8965601c", null ],
     [ "setFMS", "d8/d6b/classAbstractDetector.html#ace7d0ac0bdc7903716e00026b411be4d", null ],
     [ "shutdown", "d8/d6b/classAbstractDetector.html#a59f4cb45a1209a3409872b8b69ccd24b", null ],

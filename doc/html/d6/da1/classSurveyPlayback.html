@@ -134,6 +134,15 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a36f9638ef520b4d7a47a89957b6fed27"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/da1/classSurveyPlayback.html#a36f9638ef520b4d7a47a89957b6fed27">estimateTime</a> (int legCurrentProgress, bool onGround, double legElapsedLength)</td></tr>
 <tr class="memdesc:a36f9638ef520b4d7a47a89957b6fed27"><td class="mdescLeft">&#160;</td><td class="mdescRight">Time estimation for the entire simulation and current leg. NOTICE this function is called from trackProgress.  <a href="#a36f9638ef520b4d7a47a89957b6fed27">More...</a><br /></td></tr>
 <tr class="separator:a36f9638ef520b4d7a47a89957b6fed27"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ada271f30649914dc25624c94da4749e2"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/da1/classSurveyPlayback.html#ada271f30649914dc25624c94da4749e2">estimateSpatialLegProgress</a> (double const legElapsedLength)</td></tr>
+<tr class="memdesc:ada271f30649914dc25624c94da4749e2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Estimate the leg progress from linear space progress.  <a href="#ada271f30649914dc25624c94da4749e2">More...</a><br /></td></tr>
+<tr class="separator:ada271f30649914dc25624c94da4749e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5c86d01bf776808d964b99790cc4390f"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/da1/classSurveyPlayback.html#a5c86d01bf776808d964b99790cc4390f">estimateAngularLegProgress</a> (double const legElapsedAngle)</td></tr>
+<tr class="memdesc:a5c86d01bf776808d964b99790cc4390f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Estimate leg progress from angular progress.  <a href="#a5c86d01bf776808d964b99790cc4390f">More...</a><br /></td></tr>
+<tr class="separator:a5c86d01bf776808d964b99790cc4390f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afc937a1c7baf49e5a8de2946044f9c81"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/da1/classSurveyPlayback.html#afc937a1c7baf49e5a8de2946044f9c81">estimateTemporalLegProgress</a> ()</td></tr>
+<tr class="memdesc:afc937a1c7baf49e5a8de2946044f9c81"><td class="mdescLeft">&#160;</td><td class="mdescRight">Estimate leg progress from temporal progress.  <a href="#afc937a1c7baf49e5a8de2946044f9c81">More...</a><br /></td></tr>
+<tr class="separator:afc937a1c7baf49e5a8de2946044f9c81"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3ba77b5582defa28808c7e5b748eb1c3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/da1/classSurveyPlayback.html#a3ba77b5582defa28808c7e5b748eb1c3">trackProgress</a> ()</td></tr>
 <tr class="memdesc:a3ba77b5582defa28808c7e5b748eb1c3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Progress tracking and time estimation.  <a href="#a3ba77b5582defa28808c7e5b748eb1c3">More...</a><br /></td></tr>
 <tr class="separator:a3ba77b5582defa28808c7e5b748eb1c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -344,10 +353,10 @@ Additional Inherited Members</h2></td></tr>
 <tr class="memdesc:a48673f2bf8e3917d8a2b55f81fdd7ffc inherit pro_attribs_classSimulation"><td class="mdescLeft">&#160;</td><td class="mdescRight">Specify the parallelization strategy.  <a href="../../d1/d7b/classSimulation.html#a48673f2bf8e3917d8a2b55f81fdd7ffc">More...</a><br /></td></tr>
 <tr class="separator:a48673f2bf8e3917d8a2b55f81fdd7ffc inherit pro_attribs_classSimulation"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a46e423ef446467b8f8758a952cddb860 inherit pro_attribs_classSimulation"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="../../df/d9c/classPulseThreadPoolInterface.html">PulseThreadPoolInterface</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d7b/classSimulation.html#a46e423ef446467b8f8758a952cddb860">threadPool</a></td></tr>
-<tr class="memdesc:a46e423ef446467b8f8758a952cddb860 inherit pro_attribs_classSimulation"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pulse thread pool.  <a href="../../d1/d7b/classSimulation.html#a46e423ef446467b8f8758a952cddb860">More...</a><br /></td></tr>
+<tr class="memdesc:a46e423ef446467b8f8758a952cddb860 inherit pro_attribs_classSimulation"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="../../d3/d1a/classPulse.html" title="Class representing a laser pulse. ">Pulse</a> thread pool.  <a href="../../d1/d7b/classSimulation.html#a46e423ef446467b8f8758a952cddb860">More...</a><br /></td></tr>
 <tr class="separator:a46e423ef446467b8f8758a952cddb860 inherit pro_attribs_classSimulation"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a32f3686c613045b5f96fac6d2b531c86 inherit pro_attribs_classSimulation"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../de/d9a/classPulseTaskDropper.html">PulseTaskDropper</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d7b/classSimulation.html#a32f3686c613045b5f96fac6d2b531c86">taskDropper</a></td></tr>
-<tr class="memdesc:a32f3686c613045b5f96fac6d2b531c86 inherit pro_attribs_classSimulation"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pulse task dropper.  <a href="../../d1/d7b/classSimulation.html#a32f3686c613045b5f96fac6d2b531c86">More...</a><br /></td></tr>
+<tr class="memdesc:a32f3686c613045b5f96fac6d2b531c86 inherit pro_attribs_classSimulation"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="../../d3/d1a/classPulse.html" title="Class representing a laser pulse. ">Pulse</a> task dropper.  <a href="../../d1/d7b/classSimulation.html#a32f3686c613045b5f96fac6d2b531c86">More...</a><br /></td></tr>
 <tr class="separator:a32f3686c613045b5f96fac6d2b531c86 inherit pro_attribs_classSimulation"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8615edf208cfc87018bf12446a29520d inherit pro_attribs_classSimulation"><td class="memItemLeft" align="right" valign="top"><a id="a8615edf208cfc87018bf12446a29520d"></a>
 double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d7b/classSimulation.html#a8615edf208cfc87018bf12446a29520d">mSimSpeedFactor</a> = 1</td></tr>
@@ -477,6 +486,92 @@ Simulation::Simulation(unsigned, double, size_t) </dd></dl>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="a5c86d01bf776808d964b99790cc4390f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5c86d01bf776808d964b99790cc4390f">&#9670;&nbsp;</a></span>estimateAngularLegProgress()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int SurveyPlayback::estimateAngularLegProgress </td>
+          <td>(</td>
+          <td class="paramtype">double const&#160;</td>
+          <td class="paramname"><em>legElapsedAngle</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Estimate leg progress from angular progress. </p>
+<p>Let \(\theta\) be the elapsed angular distance in radians and \(\Delta\) be the difference between end and start angles in radians too. But then, the leg progress \(l_p\) can be estimated these angles as follows:</p>
+<p class="formulaDsp">
+\[ l_p = 100 \frac{\theta}{\Delta} \]
+</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">legElapsedAngle</td><td>The elapsed angular distance of the current leg. Noted as \(\theta\). </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="../../de/d51/classLeg.html" title="Class representing a survey leg. ">Leg</a> progress estimated from angular progress. </dd></dl>
+
+</div>
+</div>
+<a id="ada271f30649914dc25624c94da4749e2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ada271f30649914dc25624c94da4749e2">&#9670;&nbsp;</a></span>estimateSpatialLegProgress()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int SurveyPlayback::estimateSpatialLegProgress </td>
+          <td>(</td>
+          <td class="paramtype">double const&#160;</td>
+          <td class="paramname"><em>legElapsedLength</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Estimate the leg progress from linear space progress. </p>
+<p>Let \(l\) be the leg elapsed length and \(L\) be the total length of the leg. But then, the leg progress \(l_p\) can be estimated from linear space as follows:</p>
+<p class="formulaDsp">
+\[ l_p = 100 \frac{l}{L} \]
+</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">legElapsedLength</td><td>The elapsed L2 spatial distance (euclidean distance, standard vector norm) of the current leg. Noted as \(l\). </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="../../de/d51/classLeg.html" title="Class representing a survey leg. ">Leg</a> progress estimated from linear space progress. </dd></dl>
+
+</div>
+</div>
+<a id="afc937a1c7baf49e5a8de2946044f9c81"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afc937a1c7baf49e5a8de2946044f9c81">&#9670;&nbsp;</a></span>estimateTemporalLegProgress()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int SurveyPlayback::estimateTemporalLegProgress </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Estimate leg progress from temporal progress. </p>
+<p>Let \(t\) be the current time, \(t_a\) be the starting time point of the simulated time, and \(t_b\) the ending time point of the simulation time. Thus, the leg progress \(l_p\) can be estimated from time as follows:</p>
+<p class="formulaDsp">
+\[ l_p = 100 \frac{t - t_a}{t_b - t_a} \]
+</p>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="../../de/d51/classLeg.html" title="Class representing a survey leg. ">Leg</a> progress estimated from temporal progress. </dd></dl>
+
+</div>
+</div>
 <a id="a36f9638ef520b4d7a47a89957b6fed27"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a36f9638ef520b4d7a47a89957b6fed27">&#9670;&nbsp;</a></span>estimateTime()</h2>
 

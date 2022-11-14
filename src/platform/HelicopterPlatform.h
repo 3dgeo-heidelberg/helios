@@ -257,7 +257,7 @@ public:
     /**
      * @see Platform::canStopAndTurn
      */
-    bool canStopAndTurn() override {return true;}
+    bool canStopAndTurn() const override {return true;}
 
     // ***  CONTROL STEP  *** //
     // ********************** //
