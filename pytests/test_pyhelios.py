@@ -61,32 +61,71 @@ def test_sim():
     return create_test_sim
 
 
-@pytest.mark.parametrize("survey_path,las,zip",
-[(Path('data') / 'surveys' / 'toyblocks' / 'als_toyblocks.xml', True, True),
-(Path('data') / 'surveys' / 'toyblocks' / 'als_toyblocks_stripid.xml', True, True),
-(Path('data') / 'surveys' / 'toyblocks' / 'als_toyblocks.xml', False, False),
-(Path('data') / 'surveys' / 'toyblocks' / 'als_toyblocks_stripid.xml', False, False)])
-def test_open_output(test_sim, survey_path, las, zip):
+# BELOW IS COMMENTED TO PREVENT OUT OF MEMORY ERRORS
+# @pytest.mark.parametrize("survey_path,las,zip",
+# [(Path('data') / 'surveys' / 'toyblocks' / 'als_toyblocks.xml', True, True),
+# (Path('data') / 'surveys' / 'toyblocks' / 'als_toyblocks_stripid.xml', True, True),
+# (Path('data') / 'surveys' / 'toyblocks' / 'als_toyblocks.xml', False, False),
+# (Path('data') / 'surveys' / 'toyblocks' / 'als_toyblocks_stripid.xml', False, False)])
+# def test_open_output(test_sim, survey_path, las, zip):
+    # """Test accessing output files (LAS/xyz) after simulation"""
+    # from pyhelios import SimulationBuilder
+
+    # sim = test_sim(survey_path, las_output=las, zip_output=zip)
+    # sim.start()
+    # out = sim.join()
+    # ext = None
+
+    # if las is True and zip is True:
+        # ext = '.laz'
+    # elif las is True and zip is False:
+        # ext = '.las'
+    # elif las is False and zip is False:
+        # ext = '.xyz'
+    # elif las is False and zip is True:
+        # ext = '.bin'
+
+    # assert ext != None
+    # access_output(out.filepath, ext)
+
+def test_open_output1(test_sim):
     """Test accessing output files (LAS/xyz) after simulation"""
     from pyhelios import SimulationBuilder
-
-    sim = test_sim(survey_path, las_output=las, zip_output=zip)
+    survey_path = Path('data') / 'surveys' / 'toyblocks' / 'als_toyblocks.xml'
+    sim = test_sim(survey_path, las_output=True, zip_output=True)
     sim.start()
     out = sim.join()
-    ext = None
+    access_output(out.filepath, '.laz')
 
-    if las is True and zip is True:
-        ext = '.laz'
-    elif las is True and zip is False:
-        ext = '.las'
-    elif las is False and zip is False:
-        ext = '.xyz'
-    elif las is False and zip is True:
-        ext = '.bin'
 
-    assert ext != None
-    access_output(out.filepath, ext)
+def test_open_output2(test_sim):
+    """Test accessing output files (LAS/xyz) after simulation"""
+    from pyhelios import SimulationBuilder
+    survey_path = Path('data') / 'surveys' / 'toyblocks' / 'als_toyblocks_stripid.xml'
+    sim = test_sim(survey_path, las_output=True, zip_output=True)
+    sim.start()
+    out = sim.join()
+    access_output(out.filepath, '.laz')
 
+
+def test_open_output3(test_sim):
+    """Test accessing output files (LAS/xyz) after simulation"""
+    from pyhelios import SimulationBuilder
+    survey_path = Path('data') / 'surveys' / 'toyblocks' / 'als_toyblocks.xml'
+    sim = test_sim(survey_path, las_output=False, zip_output=False)
+    sim.start()
+    out = sim.join()
+    access_output(out.filepath, '.xyz')
+
+
+def test_open_output4(test_sim):
+    """Test accessing output files (LAS/xyz) after simulation"""
+    from pyhelios import SimulationBuilder
+    survey_path = Path('data') / 'surveys' / 'toyblocks' / 'als_toyblocks_stripid.xml'
+    sim = test_sim(survey_path, las_output=False, zip_output=False)
+    sim.start()
+    out = sim.join()
+    access_output(out.filepath, '.xyz')
 
 def test_start_stop(test_sim):
     """Test starting, pausing and stopping of simulation"""
