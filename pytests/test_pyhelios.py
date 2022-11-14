@@ -88,25 +88,14 @@ def test_sim():
     # assert ext != None
     # access_output(out.filepath, ext)
 
-def test_open_output1(test_sim):
-    """Test accessing output files (LAS/xyz) after simulation"""
-    from pyhelios import SimulationBuilder
-    survey_path = Path('data') / 'surveys' / 'toyblocks' / 'als_toyblocks.xml'
-    sim = test_sim(survey_path, las_output=True, zip_output=True)
-    sim.start()
-    out = sim.join()
-    access_output(out.filepath, '.laz')
-
-
-def test_open_output2(test_sim):
+def test_open_output4(test_sim):
     """Test accessing output files (LAS/xyz) after simulation"""
     from pyhelios import SimulationBuilder
     survey_path = Path('data') / 'surveys' / 'toyblocks' / 'als_toyblocks_stripid.xml'
-    sim = test_sim(survey_path, las_output=True, zip_output=True)
+    sim = test_sim(survey_path, las_output=False, zip_output=False)
     sim.start()
     out = sim.join()
-    access_output(out.filepath, '.laz')
-
+    access_output(out.filepath, '.xyz')
 
 def test_open_output3(test_sim):
     """Test accessing output files (LAS/xyz) after simulation"""
@@ -117,15 +106,23 @@ def test_open_output3(test_sim):
     out = sim.join()
     access_output(out.filepath, '.xyz')
 
-
-def test_open_output4(test_sim):
+def test_open_output2(test_sim):
     """Test accessing output files (LAS/xyz) after simulation"""
     from pyhelios import SimulationBuilder
     survey_path = Path('data') / 'surveys' / 'toyblocks' / 'als_toyblocks_stripid.xml'
-    sim = test_sim(survey_path, las_output=False, zip_output=False)
+    sim = test_sim(survey_path, las_output=True, zip_output=True)
     sim.start()
     out = sim.join()
-    access_output(out.filepath, '.xyz')
+    access_output(out.filepath, '.laz')
+
+def test_open_output1(test_sim):
+    """Test accessing output files (LAS/xyz) after simulation"""
+    from pyhelios import SimulationBuilder
+    survey_path = Path('data') / 'surveys' / 'toyblocks' / 'als_toyblocks.xml'
+    sim = test_sim(survey_path, las_output=True, zip_output=True)
+    sim.start()
+    out = sim.join()
+    access_output(out.filepath, '.laz')
 
 def test_start_stop(test_sim):
     """Test starting, pausing and stopping of simulation"""
