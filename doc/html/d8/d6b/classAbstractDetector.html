@@ -130,6 +130,12 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 <tr class="memitem:a1ddee13891ef33377207090c8965601c"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d6b/classAbstractDetector.html#a1ddee13891ef33377207090c8965601c">onLegComplete</a> ()</td></tr>
 <tr class="memdesc:a1ddee13891ef33377207090c8965601c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle detector behavior when leg has been completed.  <a href="#a1ddee13891ef33377207090c8965601c">More...</a><br /></td></tr>
 <tr class="separator:a1ddee13891ef33377207090c8965601c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a93a62d33b2bcc9f9549cc2986bf7c01f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d6b/classAbstractDetector.html#a93a62d33b2bcc9f9549cc2986bf7c01f">isDistanceInRange</a> (double const distance)</td></tr>
+<tr class="memdesc:a93a62d33b2bcc9f9549cc2986bf7c01f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check whether the given distance is inside detected range or not.  <a href="#a93a62d33b2bcc9f9549cc2986bf7c01f">More...</a><br /></td></tr>
+<tr class="separator:a93a62d33b2bcc9f9549cc2986bf7c01f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5f78414b3562fc16bbdf557fd7ab85b8"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d6b/classAbstractDetector.html#a5f78414b3562fc16bbdf557fd7ab85b8">isDistanceNotInRange</a> (double const distance)</td></tr>
+<tr class="memdesc:a5f78414b3562fc16bbdf557fd7ab85b8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check whether the given distance is inside detected range or not.  <a href="#a5f78414b3562fc16bbdf557fd7ab85b8">More...</a><br /></td></tr>
+<tr class="separator:a5f78414b3562fc16bbdf557fd7ab85b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad7746af8ee359e06e0b0e51028eb6efe"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="../../db/daa/classhelios_1_1filems_1_1FMSFacade.html">FMSFacade</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d6b/classAbstractDetector.html#ad7746af8ee359e06e0b0e51028eb6efe">getFMS</a> () const</td></tr>
 <tr class="memdesc:ad7746af8ee359e06e0b0e51028eb6efe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain the main facade to file management system.  <a href="#ad7746af8ee359e06e0b0e51028eb6efe">More...</a><br /></td></tr>
 <tr class="separator:ad7746af8ee359e06e0b0e51028eb6efe"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -291,6 +297,76 @@ AbstractDetector::rangeMin_m </dd></dl>
 
 <p>Obtain the main facade to file management system. </p>
 <dl class="section return"><dt>Returns</dt><dd>The main facade to file management system </dd></dl>
+
+</div>
+</div>
+<a id="a93a62d33b2bcc9f9549cc2986bf7c01f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a93a62d33b2bcc9f9549cc2986bf7c01f">&#9670;&nbsp;</a></span>isDistanceInRange()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool AbstractDetector::isDistanceInRange </td>
+          <td>(</td>
+          <td class="paramtype">double const&#160;</td>
+          <td class="paramname"><em>distance</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Check whether the given distance is inside detected range or not. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">distance</td><td>The distance to be checked (in meters) </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>True if given distance is inside detected range, false otherwise </dd></dl>
+
+</div>
+</div>
+<a id="a5f78414b3562fc16bbdf557fd7ab85b8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5f78414b3562fc16bbdf557fd7ab85b8">&#9670;&nbsp;</a></span>isDistanceNotInRange()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool AbstractDetector::isDistanceNotInRange </td>
+          <td>(</td>
+          <td class="paramtype">double const&#160;</td>
+          <td class="paramname"><em>distance</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Check whether the given distance is inside detected range or not. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">distance</td><td>The distance to be checked (in meters) </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>True if given distance is NOT inside detected range, false otherwise </dd></dl>
 
 </div>
 </div>

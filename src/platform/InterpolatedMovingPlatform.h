@@ -136,6 +136,20 @@ public:
      */
     void doSimStep(int simFrequency_hz) override;
     /**
+     * @brief Check whether the interpolated moving platform has reached its
+     *  waypoint or not.
+     *
+     * Let \f$t\f$ be the current time, and \f$a_m\f$ the last time frontier.
+     *  Thus, the proposition "the waypoint of the interpolated platform has
+     *  been reached" will be true if and only if \f$t \geq a_m\f$:
+     *
+     * \f[
+     * \left\{\begin{array}{ll}
+     *  \bot &,\; t < a_m \\
+     *  \top &,\; t \geq a_m
+     * \end{array}\right.
+     * \f]
+     *
 	 * @see Platform::waypointReached
 	 */
     bool waypointReached() override;
@@ -243,4 +257,8 @@ public:
      */
     inline void setStartTime(double const startTime)
     {this->startTime = startTime;}
+    /**
+     * @see Platform::isInterpolated
+     */
+    bool isInterpolated() const override {return true;}
 };

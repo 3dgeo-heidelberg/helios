@@ -125,10 +125,81 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a8af100a5fe8140c61a05a2fc7f57facb"><td class="memItemLeft" align="right" valign="top">static std::vector&lt; std::shared_ptr&lt; <a class="el" href="../../d6/d4f/classDynMotion.html">DynMotion</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/d52/classXmlUtils.html#a8af100a5fe8140c61a05a2fc7f57facb">createDynMotionsVector</a> (tinyxml2::XMLElement *element)</td></tr>
 <tr class="memdesc:a8af100a5fe8140c61a05a2fc7f57facb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain a dynamic sequence of dynamic motions from given XML element.  <a href="#a8af100a5fe8140c61a05a2fc7f57facb">More...</a><br /></td></tr>
 <tr class="separator:a8af100a5fe8140c61a05a2fc7f57facb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a029640c9da4e4e2324bda1c43e61b803"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/d52/classXmlUtils.html#a029640c9da4e4e2324bda1c43e61b803">assertDocumentForAssetLoading</a> (tinyxml2::XMLDocument &amp;doc, std::string const &amp;filename, std::string const &amp;path, std::string const &amp;type, std::string const &amp;id, std::string const &amp;caller)</td></tr>
+<tr class="memdesc:a029640c9da4e4e2324bda1c43e61b803"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assert whether the given document is valid for asset loading or not. If it is in an error state, then adequate logging is printed and the opportune exception is thrown.  <a href="#a029640c9da4e4e2324bda1c43e61b803">More...</a><br /></td></tr>
+<tr class="separator:a029640c9da4e4e2324bda1c43e61b803"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Common utils for XML handling. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="a029640c9da4e4e2324bda1c43e61b803"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a029640c9da4e4e2324bda1c43e61b803">&#9670;&nbsp;</a></span>assertDocumentForAssetLoading()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void XmlUtils::assertDocumentForAssetLoading </td>
+          <td>(</td>
+          <td class="paramtype">tinyxml2::XMLDocument &amp;&#160;</td>
+          <td class="paramname"><em>doc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::string const &amp;&#160;</td>
+          <td class="paramname"><em>filename</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::string const &amp;&#160;</td>
+          <td class="paramname"><em>path</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::string const &amp;&#160;</td>
+          <td class="paramname"><em>type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::string const &amp;&#160;</td>
+          <td class="paramname"><em>id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::string const &amp;&#160;</td>
+          <td class="paramname"><em>caller</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Assert whether the given document is valid for asset loading or not. If it is in an error state, then adequate logging is printed and the opportune exception is thrown. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">doc</td><td>The document to be asserted. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a8c5430fd493eda755d211e2614bd93f5"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a8c5430fd493eda755d211e2614bd93f5">&#9670;&nbsp;</a></span>createColorFromXml()</h2>
 

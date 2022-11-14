@@ -48,7 +48,8 @@ public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //
     // ************************************ //
     /**
-     * @brief LAS synchronous file measurement vector writer constructor
+     * @brief LAS vectorial synchronous file measurement vector writer
+     *  constructor
      * @see filems::LasSyncFileWriter::LasSyncFileWriter
      */
     explicit LasVectorialSyncFileMeasurementWriter(
@@ -74,16 +75,16 @@ public:
         ),
         lmws(
             *lw,
-            lp,
-            scaleFactorInverse,
-            this->offset,
-            this->minIntensity,
-            maxIntensity,
-            intensityCoefficient,
-            ewAttrStart,
-            fwiAttrStart,
-            hoiAttrStart,
-            ampAttrStart
+            lws.lp,
+            lws.scaleFactorInverse,
+            lws.offset,
+            lws.minIntensity,
+            lws.maxIntensity,
+            lws.intensityCoefficient,
+            lws.ewAttrStart,
+            lws.fwiAttrStart,
+            lws.hoiAttrStart,
+            lws.ampAttrStart
         )
     {
         // Write strategy

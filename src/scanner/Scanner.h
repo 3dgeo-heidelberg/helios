@@ -521,7 +521,7 @@ public:
      * @brief Exposes ScanningPulseProcess:onLegComplete method of the
      *  scanning pulse process defining this scanner
      */
-    inline void onLegComplete() {spp->onLegComplete();}
+    virtual void onLegComplete() {spp->onLegComplete();}
     /**
      * @brief Exposes ScanningPulseProcess::onSimulationFinished method of the
      *  scanning pulse process defining this scanner

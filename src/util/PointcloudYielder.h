@@ -50,7 +50,7 @@ public:
      * @see WriteYielder
      */
     void digest(vector<Measurement> &copy) override {
-        write.writeMeasurementsUnsafe(copy);
+        if(!copy.empty()) write.writeMeasurementsUnsafe(copy);
     }
 
 };

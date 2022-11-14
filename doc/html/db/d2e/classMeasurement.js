@@ -7,6 +7,8 @@ var classMeasurement =
     [ "beamDirection", "db/d2e/classMeasurement.html#a016165802eb3e886f35bab0ba1849c68", null ],
     [ "beamOrigin", "db/d2e/classMeasurement.html#a7a5aba2a358daac7eab9b03e7d88a756", null ],
     [ "classification", "db/d2e/classMeasurement.html#ad37412ea24b57192dd6b5bdef11a2c3c", null ],
+    [ "devId", "db/d2e/classMeasurement.html#aeb04936d009cb47776143526fd02308d", null ],
+    [ "devIdx", "db/d2e/classMeasurement.html#a400afcc65493e7424ce089088e9669de", null ],
     [ "distance", "db/d2e/classMeasurement.html#a4338a142ac05145ea41e0ac404566f42", null ],
     [ "echo_width", "db/d2e/classMeasurement.html#ac89b7bf01c08b449f332d40e1e35b6b1", null ],
     [ "fullwaveIndex", "db/d2e/classMeasurement.html#a73b5258a21a5220e345597fbe2df8514", null ],

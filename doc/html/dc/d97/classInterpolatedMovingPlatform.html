@@ -144,6 +144,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aecf2f263f98fcd23ac2dfcbc803a05be"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d97/classInterpolatedMovingPlatform.html#aecf2f263f98fcd23ac2dfcbc803a05be">doSimStep</a> (int simFrequency_hz) override</td></tr>
 <tr class="separator:aecf2f263f98fcd23ac2dfcbc803a05be"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a99efe7276d509d753bc2b305f126458d"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d97/classInterpolatedMovingPlatform.html#a99efe7276d509d753bc2b305f126458d">waypointReached</a> () override</td></tr>
+<tr class="memdesc:a99efe7276d509d753bc2b305f126458d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check whether the interpolated moving platform has reached its waypoint or not.  <a href="#a99efe7276d509d753bc2b305f126458d">More...</a><br /></td></tr>
 <tr class="separator:a99efe7276d509d753bc2b305f126458d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a05ad37399219ac07edf9fcad05608ac6"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d97/classInterpolatedMovingPlatform.html#a05ad37399219ac07edf9fcad05608ac6">toTrajectoryTime</a> (double const t)</td></tr>
 <tr class="memdesc:a05ad37399219ac07edf9fcad05608ac6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Configures the iterative method of the trajectory function so the current iteration is considered to be at given time \(t\).  <a href="#a05ad37399219ac07edf9fcad05608ac6">More...</a><br /></td></tr>
@@ -193,6 +194,8 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a28ea097df9fb781cdd976ba27ec57022"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d97/classInterpolatedMovingPlatform.html#a28ea097df9fb781cdd976ba27ec57022">setStartTime</a> (double const <a class="el" href="../../dc/d97/classInterpolatedMovingPlatform.html#ab3bc200146684a07a4e36ee4596f11bf">startTime</a>)</td></tr>
 <tr class="memdesc:a28ea097df9fb781cdd976ba27ec57022"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the start time.  <a href="#a28ea097df9fb781cdd976ba27ec57022">More...</a><br /></td></tr>
 <tr class="separator:a28ea097df9fb781cdd976ba27ec57022"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a36c5c9a88eea1ca80a3bb9d60b76c4e0"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d97/classInterpolatedMovingPlatform.html#a36c5c9a88eea1ca80a3bb9d60b76c4e0">isInterpolated</a> () const override</td></tr>
+<tr class="separator:a36c5c9a88eea1ca80a3bb9d60b76c4e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classMovingPlatform"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classMovingPlatform')"><img src="../../closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="../../d1/d83/classMovingPlatform.html">MovingPlatform</a></td></tr>
 <tr class="memitem:a1fda311a499f27b3dc449dc13b2aeaed inherit pub_methods_classMovingPlatform"><td class="memItemLeft" align="right" valign="top"><a id="a1fda311a499f27b3dc449dc13b2aeaed"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d83/classMovingPlatform.html#a1fda311a499f27b3dc449dc13b2aeaed">MovingPlatform</a> ()=default</td></tr>
@@ -220,8 +223,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>_clone</b> (std::shar
 <tr class="memitem:a8625dc64a17d52bf88b0b5008a9037a2 inherit pub_methods_classMovingPlatform"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d83/classMovingPlatform.html#a8625dc64a17d52bf88b0b5008a9037a2">setVelocity</a> (glm::dvec3 v)</td></tr>
 <tr class="memdesc:a8625dc64a17d52bf88b0b5008a9037a2 inherit pub_methods_classMovingPlatform"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set velocity vector for moving platform.  <a href="../../d1/d83/classMovingPlatform.html#a8625dc64a17d52bf88b0b5008a9037a2">More...</a><br /></td></tr>
 <tr class="separator:a8625dc64a17d52bf88b0b5008a9037a2 inherit pub_methods_classMovingPlatform"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad252ab38b2363cee72a55d54235e0e3f inherit pub_methods_classMovingPlatform"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d83/classMovingPlatform.html#ad252ab38b2363cee72a55d54235e0e3f">canMove</a> () override</td></tr>
-<tr class="separator:ad252ab38b2363cee72a55d54235e0e3f inherit pub_methods_classMovingPlatform"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1a7f8136068ce11a74e1e44c8f473c7b inherit pub_methods_classMovingPlatform"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d83/classMovingPlatform.html#a1a7f8136068ce11a74e1e44c8f473c7b">canMove</a> () const override</td></tr>
+<tr class="separator:a1a7f8136068ce11a74e1e44c8f473c7b inherit pub_methods_classMovingPlatform"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classPlatform"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classPlatform')"><img src="../../closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="../../df/d1e/classPlatform.html">Platform</a></td></tr>
 <tr class="memitem:a6b2ba3089df1d2ed16a8349f0876c100 inherit pub_methods_classPlatform"><td class="memItemLeft" align="right" valign="top"><a id="a6b2ba3089df1d2ed16a8349f0876c100"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d1e/classPlatform.html#a6b2ba3089df1d2ed16a8349f0876c100">Platform</a> ()=default</td></tr>
@@ -292,9 +295,9 @@ virtual glm::dvec3&#160;</td><td class="memItemRight" valign="bottom"><a class="
 <tr class="memitem:a128196f54f7c9fb7cf670d746b362225 inherit pub_methods_classPlatform"><td class="memItemLeft" align="right" valign="top">virtual double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d1e/classPlatform.html#a128196f54f7c9fb7cf670d746b362225">getHeadingRad</a> ()</td></tr>
 <tr class="memdesc:a128196f54f7c9fb7cf670d746b362225 inherit pub_methods_classPlatform"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain platform heading angle in radians, which can be understood as yaw in most cases.  <a href="../../df/d1e/classPlatform.html#a128196f54f7c9fb7cf670d746b362225">More...</a><br /></td></tr>
 <tr class="separator:a128196f54f7c9fb7cf670d746b362225 inherit pub_methods_classPlatform"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a28a933a159f8cd2c51d37a890bc8526a inherit pub_methods_classPlatform"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d1e/classPlatform.html#a28a933a159f8cd2c51d37a890bc8526a">canStopAndTurn</a> ()</td></tr>
-<tr class="memdesc:a28a933a159f8cd2c51d37a890bc8526a inherit pub_methods_classPlatform"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if platform support stop and turn mode (true) or not (false)  <a href="../../df/d1e/classPlatform.html#a28a933a159f8cd2c51d37a890bc8526a">More...</a><br /></td></tr>
-<tr class="separator:a28a933a159f8cd2c51d37a890bc8526a inherit pub_methods_classPlatform"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a47730d66afb4900605fcf8ca791b0e12 inherit pub_methods_classPlatform"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d1e/classPlatform.html#a47730d66afb4900605fcf8ca791b0e12">canStopAndTurn</a> () const</td></tr>
+<tr class="memdesc:a47730d66afb4900605fcf8ca791b0e12 inherit pub_methods_classPlatform"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if platform support stop and turn mode (true) or not (false)  <a href="../../df/d1e/classPlatform.html#a47730d66afb4900605fcf8ca791b0e12">More...</a><br /></td></tr>
+<tr class="separator:a47730d66afb4900605fcf8ca791b0e12 inherit pub_methods_classPlatform"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classAsset"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classAsset')"><img src="../../closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="../../de/d97/classAsset.html">Asset</a></td></tr>
 <tr class="memitem:a9ad0c79df694d3f079daba3eedf0284c inherit pub_methods_classAsset"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/d97/classAsset.html#a9ad0c79df694d3f079daba3eedf0284c">getLocationString</a> ()</td></tr>
 <tr class="memdesc:a9ad0c79df694d3f079daba3eedf0284c inherit pub_methods_classAsset"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain asset location string.  <a href="../../de/d97/classAsset.html#a9ad0c79df694d3f079daba3eedf0284c">More...</a><br /></td></tr>
@@ -801,6 +804,34 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
 
 </div>
 </div>
+<a id="a36c5c9a88eea1ca80a3bb9d60b76c4e0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a36c5c9a88eea1ca80a3bb9d60b76c4e0">&#9670;&nbsp;</a></span>isInterpolated()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool InterpolatedMovingPlatform::isInterpolated </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../df/d1e/classPlatform.html#ad25395d774e6b63b4c5961cc110f7bca" title="Check if platform is simulated (false) or interpolated (true) ">Platform::isInterpolated</a> </dd></dl>
+
+<p>Reimplemented from <a class="el" href="../../df/d1e/classPlatform.html#ad25395d774e6b63b4c5961cc110f7bca">Platform</a>.</p>
+
+</div>
+</div>
 <a id="aff24436a84fb7ac3d2c2315c289f2845"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aff24436a84fb7ac3d2c2315c289f2845">&#9670;&nbsp;</a></span>isSyncGPSTime()</h2>
 
@@ -1083,6 +1114,13 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Check whether the interpolated moving platform has reached its waypoint or not. </p>
+<p>Let \(t\) be the current time, and \(a_m\) the last time frontier. Thus, the proposition "the waypoint of the interpolated platform has
+ been reached" will be true if and only if \(t \geq a_m\):</p>
+<p class="formulaDsp">
+\[ \left\{\begin{array}{ll} \bot &amp;,\; t &lt; a_m \\ \top &amp;,\; t \geq a_m \end{array}\right. \]
+</p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="../../df/d1e/classPlatform.html#aa658baef39962956c290b9b22d943ef1" title="Check if platform has reached its destination way point (true) or not (false) ">Platform::waypointReached</a> </dd></dl>
 
 <p>Reimplemented from <a class="el" href="../../df/d1e/classPlatform.html#aa658baef39962956c290b9b22d943ef1">Platform</a>.</p>

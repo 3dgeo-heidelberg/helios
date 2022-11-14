@@ -241,8 +241,12 @@ public:
      *  case the read DesignMatrix does not specify a column name for its time
      *  column
      */
-    TemporalDesignMatrix(string const &path, string const &timeName="time"){
-        helios::filems::DesignMatrixReader<VarType> reader(path);
+    TemporalDesignMatrix(
+        string const &path,
+        string const &sep=",",
+        string const &timeName="time"
+    ){
+        helios::filems::DesignMatrixReader<VarType> reader(path, sep);
         std::unordered_map<string, string> kv;
         DesignMatrix<VarType> const dm = reader.read(&kv);
         size_t const tCol = (size_t) std::strtoul(

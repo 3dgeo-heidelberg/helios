@@ -30,6 +30,10 @@ void printMainHelp(){
     <<  "\t\t--output <dir_path> : Specify the path to output directory\n"
     <<  "\t\t\tBy default: ./output/\n\n"
 
+    << "\t\t--splitByChannel : Use this flag to enable the one-file-per-device"
+       "\n\t\t\twriting mode when using a multi-channel scanner.\n"
+       "\t\t\tBy default one-file-for-all writing is enabled\n\n"
+
     <<  "\t\t--writeWaveform : Use this flag to enable full waveform "
     <<  "writing\n"
     <<  "\t\t\tBy default waveform is NOT written to output file\n\n"

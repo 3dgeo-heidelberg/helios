@@ -33,6 +33,7 @@ void LidarSim::init(
     int chunkSize,
     int warehouseFactor,
     bool fullWaveNoise,
+    bool splitByChannel,
     bool platformNoiseDisabled,
     bool legNoiseDisabled,
     bool rebuildScene,
@@ -55,6 +56,7 @@ void LidarSim::init(
 	    << "writeWaveform: " << writeWaveform << "\n"
         << "calcEchowidth: " << calcEchowidth << "\n"
 	    << "fullWaveNoise: " << fullWaveNoise << "\n"
+	    << "splitByChannel: " << splitByChannel << "\n"
 	    << "parallelization: " << parallelizationStrategy << "\n"
 	    << "njobs: " << njobs << "\n"
 	    << "chunkSize: " << chunkSize << "\n"
@@ -104,6 +106,7 @@ void LidarSim::init(
         lasOutput,
         las10,
         zipOutput,
+        splitByChannel,
         *survey
     );
 

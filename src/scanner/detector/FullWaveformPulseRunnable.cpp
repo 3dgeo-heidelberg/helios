@@ -475,6 +475,8 @@ void FullWaveformPulseRunnable::digestFullWaveform(
 
         // Build measurement
         Measurement tmp;
+        tmp.devIdx = pulse.getDeviceIndex();
+        tmp.devId = scanner->getDeviceId(tmp.devIdx);
         tmp.beamOrigin = pulse.getOrigin();
         tmp.beamDirection = beamDir;
         tmp.distance = distance;

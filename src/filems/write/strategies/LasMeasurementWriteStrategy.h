@@ -39,43 +39,43 @@ protected:
     /**
      * @brief The LASpoint configured to build points for the desired LAS
      *  output format.
-     * @see filems::LasSyncFileMeasurementWriter::lp
+     * @see filems::LasWriterSpec::lp
      */
     LASpoint &lp;
     /**
-     * @see filems::LasSyncFileMeasurementWriter::scaleFactorInverse
+     * @see filems::LasWriterSpec::scaleFactorInverse
      */
     double const &scaleFactorInverse;
     /**
-     * @see filems::LasSyncFileMeasurementWriter::offset
+     * @see filems::LasWriterSpec::offset
      */
     glm::dvec3 const &offset;
     /**
-     * @see filems::LasSyncFileMeasurementWriter::minIntensity
+     * @see filems::LasWriterSpec::minIntensity
      */
     double const &minIntensity;
     /**
-     * @see filems::LasSyncFileMeasurementWriter::maxIntensity
+     * @see filems::LasWriterSpec::maxIntensity
      */
     double const &maxIntensity;
     /**
-     * @see filems::LasSyncFileMeasurementWriter::intensityCoefficient
+     * @see filems::LasWriterSpec::intensityCoefficient
      */
     double const &intensityCoefficient;
     /**
-     * @see filems::LasSyncFileMeasurementWriter::ewAttrStart
+     * @see filems::LasWriterSpec::ewAttrStart
      */
     I32 const &ewAttrStart;
     /**
-     * @see filems::LasSyncFileMeasurementWriter::fwiAttrStart
+     * @see filems::LasWriterSpec::fwiAttrStart
      */
     I32 const &fwiAttrStart;
     /**
-     * @see filems::LasSyncFileMeasurementWriter::hoiAttrStart
+     * @see filems::LasWriterSpec::hoiAttrStart
      */
     I32 const &hoiAttrStart;
     /**
-     * @see filems::LasSyncFileMeasurementWriter::ampAttrStart
+     * @see filems::LasWriterSpec::ampAttrStart
      */
     I32 const &ampAttrStart;
 
@@ -85,7 +85,7 @@ public:
     /**
      * @brief Default constructor for LAS measurement write strategy
      * @see LasMeasurementWriteStrategy::lw
-     * @see LasMeasurementWriteStrategy::lp
+     * @see LasWriterSpec::lp
      */
     LasMeasurementWriteStrategy(
         LASwriter &lw,

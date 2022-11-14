@@ -144,6 +144,7 @@ int main(int argc, char** argv) {
             ap.parseChunkSize(),
             ap.parseWarehouseFactor(),
             ap.parseFullWaveNoise(),
+            ap.parseSplitByChannel(),
             ap.parseDisablePlatformNoise(),
             ap.parseDisableLegNoise(),
             ap.parseRebuildScene(),

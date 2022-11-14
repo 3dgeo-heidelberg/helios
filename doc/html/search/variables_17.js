@@ -22,10 +22,9 @@ var searchData=
   ['worstvectormincomponents',['worstVectorMinComponents',['../d1/db0/classSurfaceInspector_1_1maths_1_1SingularContextDescriptors.html#a53475389730aac217dc34b58e9076297',1,'SurfaceInspector::maths::SingularContextDescriptors']]],
   ['worstvectorminindices',['worstVectorMinIndices',['../d1/db0/classSurfaceInspector_1_1maths_1_1SingularContextDescriptors.html#a5293b6e2dab8d2b6604a057804d17216',1,'SurfaceInspector::maths::SingularContextDescriptors']]],
   ['write',['write',['../db/daa/classhelios_1_1filems_1_1FMSFacade.html#a39c9f98c7eae99c28e3658e037c601c6',1,'helios::filems::FMSFacade::write()'],['../de/d71/classWriteYielder.html#aeb90b6b0db138c2958d647b36c1c87d5',1,'WriteYielder::write()']]],
-  ['writeground',['writeGround',['../d6/d9e/classAbstractPulseRunnable.html#afb0cbbe6296be3c71c0647bab194166d',1,'AbstractPulseRunnable']]],
   ['writenexttrajectory',['writeNextTrajectory',['../df/d1e/classPlatform.html#a79c6568256169bf60219bd4092a11411',1,'Platform']]],
   ['writers',['writers',['../df/dfa/classhelios_1_1filems_1_1BaseFullWaveformWriter.html#acea1650084302777a2fb6f22db000370',1,'helios::filems::BaseFullWaveformWriter::writers()'],['../d7/d1a/classhelios_1_1filems_1_1BaseMeasurementWriter.html#ab2132e2c5849ba72eb5c75fcb96f6ecc',1,'helios::filems::BaseMeasurementWriter::writers()']]],
-  ['writestrategy',['writeStrategy',['../da/d4c/classhelios_1_1filems_1_1SyncFileWriter.html#a34a8343444575eb2c9d9b36e01f5e697',1,'helios::filems::SyncFileWriter']]],
-  ['writewaveform',['writeWaveform',['../db/da6/classFullWaveformPulseRunnable.html#a06e7d38a47f7fc76d55ba205fa399b8e',1,'FullWaveformPulseRunnable::writeWaveform()'],['../dc/d42/classScanner.html#aaec9d6c112b1a6f90af5e1582c6f974b',1,'Scanner::writeWaveform()'],['../db/d85/classScanningPulseProcess.html#ab1dc1bba85c3f731407497e43432c7cb',1,'ScanningPulseProcess::writeWaveform()']]],
+  ['writestrategy',['writeStrategy',['../d2/d66/classhelios_1_1filems_1_1MultiSyncFileWriter.html#ac3f9bdee5443092119f2a03258232b86',1,'helios::filems::MultiSyncFileWriter::writeStrategy()'],['../d4/dfb/classhelios_1_1filems_1_1SingleSyncFileWriter.html#a41725e5ee77d81059601b3067d89e027',1,'helios::filems::SingleSyncFileWriter::writeStrategy()']]],
+  ['writewaveform',['writeWaveform',['../dc/d42/classScanner.html#aaec9d6c112b1a6f90af5e1582c6f974b',1,'Scanner']]],
   ['ws',['ws',['../da/dca/classhelios_1_1filems_1_1VectorialWriteStrategy.html#a4e0c5f390547fc0c28a06529109da80b',1,'helios::filems::VectorialWriteStrategy']]]
 ];
