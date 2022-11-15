@@ -55,6 +55,7 @@ if __name__ == '__main__':
     simBuilder.setNumThreads(0)
     simBuilder.setLasOutput(False)
     simBuilder.setZipOutput(False)
+    simBuilder.setSplitByChannel(True)  # Split multiscanner output by channel
     # Sim frequency 0 means the simulation will start and run until it is
     # finished with no interleaved work (no callbacks)
     simBuilder.setCallbackFrequency(10)

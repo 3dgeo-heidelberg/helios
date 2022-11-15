@@ -80,6 +80,7 @@ BOOST_PYTHON_MODULE(_pyhelios){
             size_t,
             bool,
             bool,
+            bool,
             bool
         >())
         .def(init<
@@ -87,6 +88,7 @@ BOOST_PYTHON_MODULE(_pyhelios){
             std::string,
             std::string,
             size_t,
+            bool,
             bool,
             bool,
             bool,
@@ -215,6 +217,11 @@ BOOST_PYTHON_MODULE(_pyhelios){
             "zipOutput",
             &PyHeliosSimulation::getZipOutput,
             &PyHeliosSimulation::setZipOutput
+        )
+        .add_property(
+            "splitByChannel",
+            &PyHeliosSimulation::getSplitByChannel,
+            &PyHeliosSimulation::setSplitByChannel
         )
         .add_property(
             "lasScale",

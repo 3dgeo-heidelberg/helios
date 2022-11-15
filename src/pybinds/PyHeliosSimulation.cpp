@@ -31,6 +31,7 @@ PyHeliosSimulation::PyHeliosSimulation(
     bool lasOutput,
     bool las10,
     bool zipOutput,
+    bool splitByChannel,
     int kdtFactory,
     size_t kdtJobs,
     size_t kdtSAHLossNodes,
@@ -42,6 +43,7 @@ PyHeliosSimulation::PyHeliosSimulation(
     this->lasOutput = lasOutput;
     this->las10 = las10;
     this->zipOutput = zipOutput;
+    this->splitByChannel = splitByChannel;
     this->surveyPath = surveyPath;
     this->assetsPath = assetsPath;
     this->outputPath = outputPath;
@@ -132,6 +134,7 @@ void PyHeliosSimulation::start (){
         lasOutput,
         las10,
         zipOutput,
+        splitByChannel,
         *survey
     );
 

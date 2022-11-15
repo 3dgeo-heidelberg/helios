@@ -43,6 +43,7 @@ private:
     bool lasOutput = false;
     bool las10     = false;
     bool zipOutput = false;
+    bool splitByChannel = false;
     double lasScale = 0.0001;
     std::shared_ptr<PulseThreadPoolInterface> pulseThreadPool;
     int kdtFactory = 4;
@@ -75,6 +76,7 @@ public:
         bool lasOutput = false,
         bool las10     = false,
         bool zipOutput = false,
+        bool splitByChannel = false,
         int kdtFactory = 4,
         size_t kdtJobs = 0,
         size_t kdtSAHLossNodes = 32,
@@ -273,6 +275,14 @@ public:
             "Cannot modify ZIP output flag for already started simulations."
         );
         this->zipOutput = zipOutput_;
+    }
+    bool getSplitByChannel(){return splitByChannel;}
+    void setSplitByChannel(bool splitByChannel_){
+        if(started) throw PyHeliosException(
+            "Cannot modify splitByChannel flag for already started "
+            "simulations."
+        );
+        this->splitByChannel = splitByChannel_;
     }
 
     bool getLasScale(){return lasScale;}
