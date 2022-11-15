@@ -2,10 +2,9 @@
 
 #include <sstream>
 
-const char * HELIOS_VERSION = "1.1.2";
+const char * HELIOS_VERSION = "1.1.1";
 
-
-const char * HELIOS_GIT_HASH = "ad8a5cbb";
+const char * HELIOS_GIT_HASH = "a4efa0aa";
 
 const char * getHeliosVersion(){
     return HELIOS_VERSION;

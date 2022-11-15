@@ -244,8 +244,8 @@ string Scanner::toString() {
 }
 
 
-double Scanner::calcFootprintRadius(double distance) {
-	double area = calcFootprintArea(distance);
+double Scanner::calcFootprintRadius(double distance, size_t const idx) {
+	double area = calcFootprintArea(distance, idx);
 	return sqrt(area / M_PI);
 }
 
