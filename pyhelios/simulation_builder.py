@@ -36,6 +36,7 @@ class SimulationBuilder:
         lasOutput -- LAS output format flag
         las10     -- LAS v1.0 output format flag
         zipOutput -- Zip output format flag (can be unzipped with Helios++)
+        splitBychannel -- Each scanning channel to a different file
         kdtFactory -- The KDT factory to be used (Simple, SAH; AxisSAH, FSAH)
         kdtJobs -- Number of threads to build KDT
         kdtSAHLossNodes -- Size of iterative SAH computation or approximation
@@ -78,6 +79,7 @@ class SimulationBuilder:
         self.setLasOutput(False)
         self.setLas10(False)
         self.setZipOutput(False)
+        self.setSplitByChannel(False)
         self.setKDTFactory(4)
         self.setKDTJobs(0)
         self.setKDTSAHLossNodes(32)
@@ -111,6 +113,7 @@ class SimulationBuilder:
             self.lasOutput,
             self.las10,
             self.zipOutput,
+            self.splitByChannel,
             fixedGpsTimeStart=self.fixedGpsTimeStart
         )
         build.sim.callbackFrequency = self.callbackFrequency
@@ -190,6 +193,10 @@ class SimulationBuilder:
     def setZipOutput(self, zipOutput):
         self.validateBoolean(zipOutput)
         self.zipOutput = zipOutput
+
+    def setSplitByChannel(self, splitByChannel):
+        self.validateBoolean(splitByChannel)
+        self.splitByChannel = splitByChannel
 
     def setKDTFactory(self, kdtFactory):
         self.validateKDTFactory(kdtFactory)

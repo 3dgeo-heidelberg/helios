@@ -166,7 +166,7 @@ def test_xyzVoxels_tls_pyh():
 
 def eval_xyzVoxels_tls(dirname):
     assert (dirname / 'leg000_points.las').exists()
-    assert abs((dirname / 'leg000_points.las').stat().st_size - 13_555_681) < MAX_DIFFERENCE_BYTES
+    assert abs((dirname / 'leg000_points.las').stat().st_size - 13_592_497) < MAX_DIFFERENCE_BYTES
     # clean up
     if DELETE_FILES_AFTER:
         shutil.rmtree(dirname)
@@ -191,7 +191,7 @@ def test_interpolated_traj_pyh():
 def eval_interpolated_traj(dirname):
     assert (dirname / 'leg000_points.laz').exists()
     assert (dirname / 'leg000_trajectory.txt').exists()
-    assert abs((dirname / 'leg000_points.laz').stat().st_size - 153_538) < MAX_DIFFERENCE_BYTES
+    assert abs((dirname / 'leg000_points.laz').stat().st_size - 149_382) < MAX_DIFFERENCE_BYTES
     with open(dirname / 'leg000_trajectory.txt', 'r') as f:
         for _ in range(3):
             next(f)

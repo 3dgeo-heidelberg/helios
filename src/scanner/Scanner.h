@@ -355,7 +355,14 @@ public:
      * @return Footprint radius \f$f_{r}\f$
      * @see Scanner::calcFootprintArea
      */
-    double calcFootprintRadius(double distance);
+    double calcFootprintRadius(double const distance, size_t const idx);
+    /**
+     * @brief Non index version of the
+     *  Scanner::calcFootprintRadius(double const, size_t const) method
+     * @see Scanner::calcFootprintRadius(double const, size_t const)
+     */
+    double calcFootprintRadius(double const distance)
+    {return calcFootprintRadius(distance, 0);}
     /**
      * @brief Calculate the target area. It is the footprint area divided by
      *  the number of rays
