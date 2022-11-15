@@ -552,6 +552,10 @@ std::shared_ptr<Platform> XmlAssetsLoader::createInterpolatedMovingPlatform(){
         tinyxml2::XMLElement *ps = leg->FirstChildElement(
             "platformSettings"
         );
+        // Obtain trajectory column separator
+        string sep = boost::get<string>(XmlUtils::getAttribute(
+            ps, "trajectory_separator", "string", string(",")
+        ));
         // Handle trajectory itself
         string const trajectoryPath = ps->Attribute("trajectory");
         bool const alreadyLoaded =
@@ -559,7 +563,7 @@ std::shared_ptr<Platform> XmlAssetsLoader::createInterpolatedMovingPlatform(){
         if(!alreadyLoaded){ // Load trajectory data if not already loaded
             if(platform->tdm == nullptr){ // First loaded trajectory
                 if(indices.find(trajectoryPath) != indices.end()){ // XML inds
-                    DesignMatrix<double> dm(trajectoryPath);
+                    DesignMatrix<double> dm(trajectoryPath, sep);
                     dm.swapColumns(indices[trajectoryPath]);
                     platform->tdm =
                     std::make_shared<TemporalDesignMatrix<double, double>>(
@@ -570,7 +574,7 @@ std::shared_ptr<Platform> XmlAssetsLoader::createInterpolatedMovingPlatform(){
                     platform->tdm = std::make_shared<
                         TemporalDesignMatrix<double, double>
                     >(
-                        trajectoryPath
+                        trajectoryPath, sep
                     );
                     if(interpDom == "position"){ // t, x, y, z from header
                         vector<unsigned long long>inds({0, 1, 2});
@@ -643,7 +647,7 @@ std::shared_ptr<Platform> XmlAssetsLoader::createInterpolatedMovingPlatform(){
             else{ // Not first loaded, so merge with previous data
                 std::unique_ptr<TemporalDesignMatrix<double, double>> tdm;
                 if(indices.find(trajectoryPath) != indices.end()){ // XML inds
-                    DesignMatrix<double> dm(trajectoryPath);
+                    DesignMatrix<double> dm(trajectoryPath, sep);
                     dm.swapColumns(indices[trajectoryPath]);
                     tdm = unique_ptr<TemporalDesignMatrix<double, double>>(
                         new TemporalDesignMatrix<double, double>(
@@ -654,7 +658,7 @@ std::shared_ptr<Platform> XmlAssetsLoader::createInterpolatedMovingPlatform(){
                 else{  // Trajectory file indices
                     tdm = unique_ptr<TemporalDesignMatrix<double, double>>(
                         new TemporalDesignMatrix<double, double>(
-                            trajectoryPath
+                            trajectoryPath, sep
                         )
                     );
                     if(interpDom == "position"){ // t, x, y, z from header

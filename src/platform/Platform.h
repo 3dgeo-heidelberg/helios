@@ -413,12 +413,17 @@ public:
      * @brief Check if platform can move (true) or not (false)
      * @return True if platform can move, false otherwise
      */
-    virtual bool canMove() {return false;}
+    virtual bool canMove() const {return false;}
     /**
      * @brief Check if platform support stop and turn mode (true) or not
      *  (false)
      * @return True if platform support stop and turn mode, false otherwise
      */
-    virtual bool canStopAndTurn() {return false;}
+    virtual bool canStopAndTurn() const {return false;}
+    /**
+     * @brief Check if platform is simulated (false) or interpolated (true)
+     * @return False if platform is simulated, True otherwise
+     */
+    virtual bool isInterpolated() const {return false;}
 
 };

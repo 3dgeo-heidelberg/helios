@@ -16,6 +16,7 @@ var searchData=
   ['threadpool',['threadPool',['../d1/d7b/classSimulation.html#a46e423ef446467b8f8758a952cddb860',1,'Simulation']]],
   ['threads_5f',['threads_',['../dc/de7/classThreadPool.html#a56090e231c048e3a4e9e88261bd7cec5',1,'ThreadPool']]],
   ['tidx',['tIdx',['../d7/da6/classhelios_1_1hpc_1_1SM__ParallelMergeSortSubTask.html#aab0b00e121b1d753b3674c9744eceb2d',1,'helios::hpc::SM_ParallelMergeSortSubTask']]],
+  ['time_5fns',['time_ns',['../d9/d2b/classTimedPulse.html#af793f40f8cdf454ea78a095e007a38cc',1,'TimedPulse']]],
   ['time_5fwave',['time_wave',['../d1/d09/classScanningDevice.html#a532032845de02154a846ebc0a8139033',1,'ScanningDevice']]],
   ['timebetweenupdates',['timeBetweenUpdates',['../de/dda/classvisualhelios_1_1VHCanvas.html#af33a9595a2e1b21c5b1a37686f979336',1,'visualhelios::VHCanvas']]],
   ['timefrontiers',['timeFrontiers',['../dc/d97/classInterpolatedMovingPlatform.html#a8599d6c77581331c2882b3c8d2f37f68',1,'InterpolatedMovingPlatform']]],

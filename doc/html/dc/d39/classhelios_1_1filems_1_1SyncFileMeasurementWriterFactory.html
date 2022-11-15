@@ -107,12 +107,99 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a9ef42f7bedda01e22545dbffd0ae5eac"><td class="memItemLeft" align="right" valign="top">static shared_ptr&lt; <a class="el" href="../../da/d4c/classhelios_1_1filems_1_1SyncFileWriter.html">SyncFileWriter</a>&lt; vector&lt; <a class="el" href="../../db/d2e/classMeasurement.html">Measurement</a> &gt; const  &amp;, glm::dvec3 const  &amp; &gt;&gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d39/classhelios_1_1filems_1_1SyncFileMeasurementWriterFactory.html#a9ef42f7bedda01e22545dbffd0ae5eac">makeVectorialWriter</a> (WriterType const type, const string &amp;path, bool const compress=false, double const scaleFactor=0.0001, glm::dvec3 const offset=glm::dvec3(0, 0, 0), double const minIntensity=0.0, double const deltaIntensity=1000000.0)</td></tr>
 <tr class="memdesc:a9ef42f7bedda01e22545dbffd0ae5eac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Synchronous vectorial file writer factory.  <a href="#a9ef42f7bedda01e22545dbffd0ae5eac">More...</a><br /></td></tr>
 <tr class="separator:a9ef42f7bedda01e22545dbffd0ae5eac"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5418ae765643f42ad955aa2230abd21d"><td class="memItemLeft" align="right" valign="top">static shared_ptr&lt; <a class="el" href="../../da/d4c/classhelios_1_1filems_1_1SyncFileWriter.html">SyncFileWriter</a>&lt; vector&lt; <a class="el" href="../../db/d2e/classMeasurement.html">Measurement</a> &gt; const  &amp;, glm::dvec3 const  &amp; &gt;&gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d39/classhelios_1_1filems_1_1SyncFileMeasurementWriterFactory.html#a5418ae765643f42ad955aa2230abd21d">makeMultiVectorialWriter</a> (WriterType const type, vector&lt; string &gt; const &amp;path, bool const compress, vector&lt; double &gt; const &amp;scaleFactor, vector&lt; glm::dvec3 &gt; const &amp;offset, vector&lt; double &gt; const &amp;minIntensity, vector&lt; double &gt; const &amp;deltaIntensity)</td></tr>
+<tr class="memdesc:a5418ae765643f42ad955aa2230abd21d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Synchronous multi-stream vectorial file writer factory.  <a href="#a5418ae765643f42ad955aa2230abd21d">More...</a><br /></td></tr>
+<tr class="separator:a5418ae765643f42ad955aa2230abd21d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>SyncFileMeasurementWriter Factory class. Used to create the appropriate measurement writers based on input flags. </p>
 <dl class="section author"><dt>Author</dt><dd>Miguel Yermo Garcia </dd></dl>
 <dl class="section version"><dt>Version</dt><dd>1.0 </dd></dl>
 </div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="a5418ae765643f42ad955aa2230abd21d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5418ae765643f42ad955aa2230abd21d">&#9670;&nbsp;</a></span>makeMultiVectorialWriter()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static shared_ptr&lt; <a class="el" href="../../da/d4c/classhelios_1_1filems_1_1SyncFileWriter.html">SyncFileWriter</a>&lt;vector&lt;<a class="el" href="../../db/d2e/classMeasurement.html">Measurement</a>&gt; const&amp;, glm::dvec3 const&amp;&gt;&gt; helios::filems::SyncFileMeasurementWriterFactory::makeMultiVectorialWriter </td>
+          <td>(</td>
+          <td class="paramtype">WriterType const&#160;</td>
+          <td class="paramname"><em>type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">vector&lt; string &gt; const &amp;&#160;</td>
+          <td class="paramname"><em>path</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool const&#160;</td>
+          <td class="paramname"><em>compress</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">vector&lt; double &gt; const &amp;&#160;</td>
+          <td class="paramname"><em>scaleFactor</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">vector&lt; glm::dvec3 &gt; const &amp;&#160;</td>
+          <td class="paramname"><em>offset</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">vector&lt; double &gt; const &amp;&#160;</td>
+          <td class="paramname"><em>minIntensity</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">vector&lt; double &gt; const &amp;&#160;</td>
+          <td class="paramname"><em>deltaIntensity</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Synchronous multi-stream vectorial file writer factory. </p>
+<dl class="section see"><dt>See also</dt><dd>SyncFileMeasurementWriterFactory::WriterType </dd>
+<dd>
+SyncFileWriter::path </dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">compress</td><td>Specify is use compressed LAS format (LAZ) or not (pure LAS) </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section see"><dt>See also</dt><dd>LasSyncFileWriter::scaleFactor </dd>
+<dd>
+LasSyncFileWriter::offset </dd>
+<dd>
+LasSyncFileWriter::minIntensity </dd>
+<dd>
+LasSyncFileWriter::deltaIntensity </dd></dl>
+
+</div>
+</div>
 <a id="a9ef42f7bedda01e22545dbffd0ae5eac"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a9ef42f7bedda01e22545dbffd0ae5eac">&#9670;&nbsp;</a></span>makeVectorialWriter()</h2>
 
@@ -180,20 +267,20 @@ Static Public Member Functions</h2></td></tr>
 <p>Synchronous vectorial file writer factory. </p>
 <dl class="section see"><dt>See also</dt><dd>SyncFileMeasurementWriterFactory::WriterType </dd>
 <dd>
-<a class="el" href="../../da/d4c/classhelios_1_1filems_1_1SyncFileWriter.html#a748ce8abf110a1983e0e4f212c72d11f" title="Path to file to be written. ">SyncFileWriter::path</a> </dd></dl>
+SyncFileWriter::path </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">compress</td><td>Specify is use compressed LAS format (LAZ) or not (pure LAS) </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d7/d5b/classhelios_1_1filems_1_1LasSyncFileWriter.html#aa83ab9f64072071a421d77491f0ccfc1" title="Scale factor for coordinates. ">LasSyncFileWriter::scaleFactor</a> </dd>
+<dl class="section see"><dt>See also</dt><dd>LasSyncFileWriter::scaleFactor </dd>
 <dd>
-<a class="el" href="../../d7/d5b/classhelios_1_1filems_1_1LasSyncFileWriter.html#a08b4f1cd3539769ed1dd6b5a01c8880d" title="Offset for coordinates. ">LasSyncFileWriter::offset</a> </dd>
+LasSyncFileWriter::offset </dd>
 <dd>
-<a class="el" href="../../d7/d5b/classhelios_1_1filems_1_1LasSyncFileWriter.html#a39896daedb286ea8b97cfec063217b96" title="Minimum value for intensity. Values less than this will be clipped to minIntensity. ">LasSyncFileWriter::minIntensity</a> </dd>
+LasSyncFileWriter::minIntensity </dd>
 <dd>
-<a class="el" href="../../d7/d5b/classhelios_1_1filems_1_1LasSyncFileWriter.html#ab7d6394c537a33af6c6efe360a9e5252" title="The difference between max and min intensity. ">LasSyncFileWriter::deltaIntensity</a> </dd></dl>
+LasSyncFileWriter::deltaIntensity </dd></dl>
 
 </div>
 </div>
@@ -264,20 +351,20 @@ Static Public Member Functions</h2></td></tr>
 <p>Synchronous file writer factory. </p>
 <dl class="section see"><dt>See also</dt><dd>SyncFileMeasurementWriterFactory::WriterType </dd>
 <dd>
-<a class="el" href="../../da/d4c/classhelios_1_1filems_1_1SyncFileWriter.html#a748ce8abf110a1983e0e4f212c72d11f" title="Path to file to be written. ">SyncFileWriter::path</a> </dd></dl>
+SyncFileWriter::path </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">compress</td><td>Specify is use compressed LAS format (LAZ) or not (pure LAS) </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d7/d5b/classhelios_1_1filems_1_1LasSyncFileWriter.html#aa83ab9f64072071a421d77491f0ccfc1" title="Scale factor for coordinates. ">LasSyncFileWriter::scaleFactor</a> </dd>
+<dl class="section see"><dt>See also</dt><dd>LasSyncFileWriter::scaleFactor </dd>
 <dd>
-<a class="el" href="../../d7/d5b/classhelios_1_1filems_1_1LasSyncFileWriter.html#a08b4f1cd3539769ed1dd6b5a01c8880d" title="Offset for coordinates. ">LasSyncFileWriter::offset</a> </dd>
+LasSyncFileWriter::offset </dd>
 <dd>
-<a class="el" href="../../d7/d5b/classhelios_1_1filems_1_1LasSyncFileWriter.html#a39896daedb286ea8b97cfec063217b96" title="Minimum value for intensity. Values less than this will be clipped to minIntensity. ">LasSyncFileWriter::minIntensity</a> </dd>
+LasSyncFileWriter::minIntensity </dd>
 <dd>
-<a class="el" href="../../d7/d5b/classhelios_1_1filems_1_1LasSyncFileWriter.html#ab7d6394c537a33af6c6efe360a9e5252" title="The difference between max and min intensity. ">LasSyncFileWriter::deltaIntensity</a> </dd></dl>
+LasSyncFileWriter::deltaIntensity </dd></dl>
 
 </div>
 </div>

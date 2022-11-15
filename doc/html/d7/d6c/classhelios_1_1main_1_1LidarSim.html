@@ -101,16 +101,16 @@ $(document).ready(function(){initNavTree('d7/d6c/classhelios_1_1main_1_1LidarSim
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:abda8b8cf5a3a7de340ee5819960ad28e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d6c/classhelios_1_1main_1_1LidarSim.html#abda8b8cf5a3a7de340ee5819960ad28e">init</a> (std::string surveyPath, std::string assetsPath, std::string outputPath, bool writeWaveform=false, bool calcEchowidth=false, int parallelizationStrategy=0, size_t njobs=0, int chunkSize=32, int warehouseFactor=4, bool fullWaveNoise=false, bool platformNoiseDisabled=false, bool legNoiseDisabled=false, bool rebuildScene=false, bool lasOutput=false, bool las10=false, bool zipOutput=false, bool fixedIncidenceAngle=false, std::string gpsStartTime=&quot;&quot;, double lasScale=0.0001, int kdtType=1, size_t kdtJobs=1, size_t kdtGeomJobs=1, size_t sahLossNodes=21)</td></tr>
-<tr class="memdesc:abda8b8cf5a3a7de340ee5819960ad28e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize a LiDAR simulation.  <a href="#abda8b8cf5a3a7de340ee5819960ad28e">More...</a><br /></td></tr>
-<tr class="separator:abda8b8cf5a3a7de340ee5819960ad28e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac057a45a310ccbb9025eb40a423d6260"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d6c/classhelios_1_1main_1_1LidarSim.html#ac057a45a310ccbb9025eb40a423d6260">init</a> (std::string surveyPath, std::string assetsPath, std::string outputPath, bool writeWaveform=false, bool calcEchowidth=false, int parallelizationStrategy=0, size_t njobs=0, int chunkSize=32, int warehouseFactor=4, bool fullWaveNoise=false, bool splitByChannel=false, bool platformNoiseDisabled=false, bool legNoiseDisabled=false, bool rebuildScene=false, bool lasOutput=false, bool las10=false, bool zipOutput=false, bool fixedIncidenceAngle=false, std::string gpsStartTime=&quot;&quot;, double lasScale=0.0001, int kdtType=1, size_t kdtJobs=1, size_t kdtGeomJobs=1, size_t sahLossNodes=21)</td></tr>
+<tr class="memdesc:ac057a45a310ccbb9025eb40a423d6260"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize a LiDAR simulation.  <a href="#ac057a45a310ccbb9025eb40a423d6260">More...</a><br /></td></tr>
+<tr class="separator:ac057a45a310ccbb9025eb40a423d6260"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Lidar simulation class. </p>
 <p>It serves as entry point for Helios++ execution </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="abda8b8cf5a3a7de340ee5819960ad28e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abda8b8cf5a3a7de340ee5819960ad28e">&#9670;&nbsp;</a></span>init()</h2>
+<a id="ac057a45a310ccbb9025eb40a423d6260"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac057a45a310ccbb9025eb40a423d6260">&#9670;&nbsp;</a></span>init()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -174,6 +174,12 @@ Public Member Functions</h2></td></tr>
           <td></td>
           <td class="paramtype">bool&#160;</td>
           <td class="paramname"><em>fullWaveNoise</em> = <code>false</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>splitByChannel</em> = <code>false</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>

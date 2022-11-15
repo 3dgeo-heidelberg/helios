@@ -48,7 +48,7 @@ SurveyPlayback::SurveyPlayback(
 	this->exportToFile = exportToFile;
 	this->setScanner(mSurvey->scanner);
 
-	// ############### BEGIN If the leg has no survey defined, create a default one ################
+    // ############### BEGIN If the leg has no survey defined, create a default one ################
 	if (mSurvey->legs.size() == 0) {
 		shared_ptr<Leg> leg(new Leg());
 
@@ -65,7 +65,7 @@ SurveyPlayback::SurveyPlayback(
 		// Add leg to survey:
 		mSurvey->addLeg(0, leg);
 	}
-	// ############### END If the leg has no survey defined, create a default one ################
+    // ############### END If the leg has no survey defined, create a default one ################
 
     // If we start a new scan, move platform to destination of first leg:
     if(!mSurvey->legs.empty()) {
@@ -86,7 +86,7 @@ SurveyPlayback::SurveyPlayback(
 	// Orientate platform and start first leg
 	startLeg(0, true);
 
-	// For progress tracking
+    // For progress tracking
 	numEffectiveLegs = mSurvey->legs.size();
     if(getScanner()->platform->canMove()) {
 		mSurvey->calculateLength();
@@ -109,13 +109,16 @@ void SurveyPlayback::estimateTime(
 		legRemainingTime_ns = (long long)((100 - legProgress) / legProgress
 		    * legElapsedTime_ns.count());
 
-		if (!getScanner()->platform->canMove()) {
+		if (
+		        !getScanner()->platform->canMove() ||
+		        getScanner()->platform->isInterpolated()
+        ) {
 			progress = ((mCurrentLegIndex * 100) + legProgress) /
 			    (double) numEffectiveLegs;
 		}
 		else {
-			progress = (elapsedLength + legElapsedLength) * 100
-			    / (double) mSurvey->getLength();
+            progress = (elapsedLength + legElapsedLength) * 100
+                / (double) mSurvey->getLength();
 		}
 		elapsedTime_ns = currentTime - timeStart_ns;
 		remainingTime_ns = (long long)((100 - progress) / progress
@@ -141,16 +144,36 @@ void SurveyPlayback::estimateTime(
 	}
 }
 
+int SurveyPlayback::estimateSpatialLegProgress(double const legElapsedLength){
+    return (int)(
+        legElapsedLength * 100 / getCurrentLeg()->getLength()
+    );
+}
+int SurveyPlayback::estimateAngularLegProgress(double const legElapsedAngle){
+    return (int)(
+        legElapsedAngle * 100 /
+        getScanner()->getScannerHead()->getRotateRange()
+    );
+}
+int SurveyPlayback::estimateTemporalLegProgress(){
+    std::shared_ptr<InterpolatedMovingPlatform> imp =
+        std::static_pointer_cast<InterpolatedMovingPlatform>(
+            mSurvey->scanner->platform
+        );
+    arma::Col<double> const &tf = imp->getTimeFrontiers();
+    double const a1 = tf(0);
+    double const am = tf(tf.n_elem-1);
+    double const t = imp->getStepLoop().getCurrentTime();
+    return (int)(100*(t-a1)/(am-a1));
+}
+
 void SurveyPlayback::trackProgress() {
 	if(!getScanner()->platform->canMove()){
 		double legElapsedAngle = std::fabs(
 		    getScanner()->getScannerHead()->getRotateStart() -
 		    getScanner()->getScannerHead()->getRotateCurrent()
         );
-		int const legProgress = (int)(
-		    legElapsedAngle * 100 /
-		    getScanner()->getScannerHead()->getRotateRange()
-		);
+		int const legProgress = estimateAngularLegProgress(legElapsedAngle);
 		estimateTime(legProgress, true, 0);
 	}
 	else if (mCurrentLegIndex < mSurvey->legs.size() - 1) {
@@ -158,9 +181,10 @@ void SurveyPlayback::trackProgress() {
 		    getCurrentLeg()->mPlatformSettings->getPosition(),
 		    mSurvey->scanner->platform->getPosition()
         );
-		int const legProgress = (int)
-		    (legElapsedLength * 100 / getCurrentLeg()->getLength());
-		estimateTime(legProgress, false, legElapsedLength);
+		int const legProgress = mSurvey->scanner->platform->isInterpolated() ?
+            estimateTemporalLegProgress() :
+		    estimateSpatialLegProgress(legElapsedLength);
+        estimateTime(legProgress, false, legElapsedLength);
 	}
 }
 
@@ -223,9 +247,6 @@ void SurveyPlayback::onLegComplete() {
     // Do scanning pulse process handling of on leg complete, if any
     mScanner->onLegComplete();
 
-    // Notify detector about leg completion
-    mScanner->getDetector()->onLegComplete();
-
 	// Start next leg
     elapsedLength += mSurvey->legs.at(mCurrentLegIndex)->getLength();
 	startNextLeg(false);
@@ -236,21 +257,21 @@ void SurveyPlayback::startLeg(unsigned int const legIndex, bool const manual) {
 		return;
 	}
 
-	ostringstream oss;oss << "Starting leg " << legIndex << endl;
+    ostringstream oss;oss << "Starting leg " << legIndex << endl;
 	logging::INFO(oss.str());
 	mLegStarted = false;
 	mCurrentLegIndex = legIndex;
 	shared_ptr<Leg> leg = getCurrentLeg();
 
 	// Apply scanner settings:
-	if (leg->mScannerSettings != nullptr) {
+    if (leg->mScannerSettings != nullptr) {
 		mSurvey->scanner->applySettings(leg->mScannerSettings);
 	}
 	shared_ptr<Platform> platform(getScanner()->platform);
     mSurvey->scanner->lastTrajectoryTime = 0L;
 
 	// Apply platform settings:
-	if (leg->mPlatformSettings != nullptr) {
+    if (leg->mPlatformSettings != nullptr) {
 		platform->applySettings(leg->mPlatformSettings, manual);
 
 		// ################ BEGIN Set platform destination ##################
@@ -334,7 +355,7 @@ void SurveyPlayback::startLeg(unsigned int const legIndex, bool const manual) {
 		// ################ END Set platform destination ##################
 	}
 
-	// Restart deflector if previous leg was not active
+    // Restart deflector if previous leg was not active
 	shared_ptr<Leg> previousLeg = getPreviousLeg();
     if(
 	    previousLeg != nullptr && !previousLeg->mScannerSettings->active &&
@@ -344,7 +365,7 @@ void SurveyPlayback::startLeg(unsigned int const legIndex, bool const manual) {
 	}
 
 
-	if(exportToFile) prepareOutput();
+    if(exportToFile) prepareOutput();
     platform->writeNextTrajectory = true;
 }
 

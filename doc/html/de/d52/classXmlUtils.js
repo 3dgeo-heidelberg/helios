@@ -1,6 +1,7 @@
 var classXmlUtils =
 [
     [ "XmlUtils", "de/d52/classXmlUtils.html#ae62f497411879607d21e451531efc50a", null ],
+    [ "assertDocumentForAssetLoading", "de/d52/classXmlUtils.html#a029640c9da4e4e2324bda1c43e61b803", null ],
     [ "createColorFromXml", "de/d52/classXmlUtils.html#a8c5430fd493eda755d211e2614bd93f5", null ],
     [ "createDynMotionsVector", "de/d52/classXmlUtils.html#a8af100a5fe8140c61a05a2fc7f57facb", null ],
     [ "createNoiseSource", "de/d52/classXmlUtils.html#a00527014fcd9d96c6711126812a01ae4", null ],

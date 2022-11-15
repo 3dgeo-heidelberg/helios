@@ -2,7 +2,7 @@ var classfluxionum_1_1DesignMatrix =
 [
     [ "DesignMatrix", "d7/d0d/classfluxionum_1_1DesignMatrix.html#a42a3f06350b30a6a3024f2775d14a595", null ],
     [ "DesignMatrix", "d7/d0d/classfluxionum_1_1DesignMatrix.html#ad8a7b929474bdf0d5497782a5d707cb7", null ],
-    [ "DesignMatrix", "d7/d0d/classfluxionum_1_1DesignMatrix.html#ac362cfb3d21ecab4f61d7a9e3e3972b7", null ],
+    [ "DesignMatrix", "d7/d0d/classfluxionum_1_1DesignMatrix.html#a3d69a0f343642df493faecf84006b60e", null ],
     [ "~DesignMatrix", "d7/d0d/classfluxionum_1_1DesignMatrix.html#aa7d56f95b15094194896d9510df99261", null ],
     [ "addToColumn", "d7/d0d/classfluxionum_1_1DesignMatrix.html#aa56972da8669ee016fe224f4b9c79a04", null ],
     [ "dropColumns", "d7/d0d/classfluxionum_1_1DesignMatrix.html#a174b81dfeb949f82ab7abb6833f1b3c2", null ],

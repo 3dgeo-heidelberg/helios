@@ -59,5 +59,30 @@ public:
         std::string const inputPath,
         std::string const outputPath
     );
+
+    /**
+     * @brief Extract the extension and the path without extension from given
+     *  path with extension
+     * @param[in] path The patch which extension must be extracted
+     * @param[out] ext Where the extracted extension will be stored
+     * @param[out] pathNonExt Where the path without extension will be stored
+     */
+    static void extractExtensionAndPathWithoutExtension(
+        std::string const &path,
+        std::string &ext,
+        std::string &pathNonExt
+    );
+    /**
+     * @brief Build a string such that: builtString = pathNonExt + suffix + ext
+     * @param pathNonExt The path without extension
+     * @param suffix The suffix to be appended to the path without extension
+     * @param ext The extension to be appended after the suffix
+     * @return Built string : pathNonExt + suffix + ext
+     */
+    static std::string craftPathWithSuffix(
+        std::string const &pathNonExt,
+        std::string const &suffix,
+        std::string const &ext
+    );
 };
 

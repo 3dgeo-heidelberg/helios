@@ -134,6 +134,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>_clone</b> (std::shar
 <tr class="separator:a8a7eb7692bb06374a41c2f406c36ea13"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab02b19f592551bfebba9c496956402e3"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d7e/classPolygonMirrorBeamDeflector.html#ab02b19f592551bfebba9c496956402e3">lastPulseLeftDevice</a> () override</td></tr>
 <tr class="separator:ab02b19f592551bfebba9c496956402e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa0793fa90572d0101eb8f1027bcea145"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d7e/classPolygonMirrorBeamDeflector.html#aa0793fa90572d0101eb8f1027bcea145">getScanAngleEffectiveMax_rad</a> () const</td></tr>
+<tr class="memdesc:aa0793fa90572d0101eb8f1027bcea145"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain the maximum effective scan angle in radians.  <a href="#aa0793fa90572d0101eb8f1027bcea145">More...</a><br /></td></tr>
+<tr class="separator:aa0793fa90572d0101eb8f1027bcea145"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classAbstractBeamDeflector"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classAbstractBeamDeflector')"><img src="../../closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="../../d7/d92/classAbstractBeamDeflector.html">AbstractBeamDeflector</a></td></tr>
 <tr class="memitem:a1eba6f027b964c01653685dca48daf5d inherit pub_methods_classAbstractBeamDeflector"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d92/classAbstractBeamDeflector.html#a1eba6f027b964c01653685dca48daf5d">AbstractBeamDeflector</a> (double scanAngleMax_rad, double scanFreqMax_Hz, double scanFreqMin_Hz)</td></tr>
 <tr class="memdesc:a1eba6f027b964c01653685dca48daf5d inherit pub_methods_classAbstractBeamDeflector"><td class="mdescLeft">&#160;</td><td class="mdescRight">Base constructor for beam deflectors.  <a href="../../d7/d92/classAbstractBeamDeflector.html#a1eba6f027b964c01653685dca48daf5d">More...</a><br /></td></tr>
@@ -159,7 +162,7 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 Protected Attributes</h2></td></tr>
 <tr class="memitem:afb37fbbe6e4b1260037b6ab0701477ea"><td class="memItemLeft" align="right" valign="top"><a id="afb37fbbe6e4b1260037b6ab0701477ea"></a>
 double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d7e/classPolygonMirrorBeamDeflector.html#afb37fbbe6e4b1260037b6ab0701477ea">cfg_device_scanAngleEffective_rad</a> = 0</td></tr>
-<tr class="memdesc:afb37fbbe6e4b1260037b6ab0701477ea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Effective scan anngle (radians) <br /></td></tr>
+<tr class="memdesc:afb37fbbe6e4b1260037b6ab0701477ea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Effective scan angle (radians) <br /></td></tr>
 <tr class="separator:afb37fbbe6e4b1260037b6ab0701477ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ada2ccbb038465d90e2a3d06a13c1edd4"><td class="memItemLeft" align="right" valign="top"><a id="ada2ccbb038465d90e2a3d06a13c1edd4"></a>
 double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d7e/classPolygonMirrorBeamDeflector.html#ada2ccbb038465d90e2a3d06a13c1edd4">cfg_device_scanAngleEffectiveMax_rad</a> = 0</td></tr>
@@ -325,6 +328,34 @@ double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="..
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d7/d92/classAbstractBeamDeflector.html#aacc1f2048736091dc9cc7ee18caaae23" title="Perform computations for current simulation step. ">AbstractBeamDeflector::doSimStep</a> </dd></dl>
 
 <p>Implements <a class="el" href="../../d7/d92/classAbstractBeamDeflector.html#aacc1f2048736091dc9cc7ee18caaae23">AbstractBeamDeflector</a>.</p>
+
+</div>
+</div>
+<a id="aa0793fa90572d0101eb8f1027bcea145"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa0793fa90572d0101eb8f1027bcea145">&#9670;&nbsp;</a></span>getScanAngleEffectiveMax_rad()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double PolygonMirrorBeamDeflector::getScanAngleEffectiveMax_rad </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Obtain the maximum effective scan angle in radians. </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../db/d7e/classPolygonMirrorBeamDeflector.html#ada2ccbb038465d90e2a3d06a13c1edd4" title="Maximum effective scan angle (radians) ">PolygonMirrorBeamDeflector::cfg_device_scanAngleEffectiveMax_rad</a> </dd></dl>
 
 </div>
 </div>

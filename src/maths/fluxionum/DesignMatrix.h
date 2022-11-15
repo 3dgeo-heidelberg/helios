@@ -83,10 +83,10 @@ public:
      * @param columnNames The default column names to be used if no column
      *  names are read from file at given path
      */
-    DesignMatrix(string const &path) :
+    DesignMatrix(string const &path, string const &sep = ",") :
         AbstractDesignMatrix<T>()
     {
-        helios::filems::DesignMatrixReader<T> reader(path);
+        helios::filems::DesignMatrixReader<T> reader(path, sep);
         *this = reader.read();
     }
     virtual ~DesignMatrix() = default;

@@ -54,16 +54,16 @@ public:
         // Write strategy
         this->writeStrategy = make_shared<LasMeasurementWriteStrategy>(
             *lw,
-            lp,
-            scaleFactorInverse,
-            this->offset,
-            this->minIntensity,
-            maxIntensity,
-            intensityCoefficient,
-            ewAttrStart,
-            fwiAttrStart,
-            hoiAttrStart,
-            ampAttrStart
+            lws.lp,
+            lws.scaleFactorInverse,
+            lws.offset,
+            lws.minIntensity,
+            lws.maxIntensity,
+            lws.intensityCoefficient,
+            lws.ewAttrStart,
+            lws.fwiAttrStart,
+            lws.hoiAttrStart,
+            lws.ampAttrStart
         );
     }
 

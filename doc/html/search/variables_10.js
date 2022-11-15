@@ -7,7 +7,7 @@ var searchData=
   ['partialloss',['partialLoss',['../d5/d89/classSAHKDTreeComputeLossNodesSubTask.html#a54ba7cf976bcd0b90c4e0e120f5807ef',1,'SAHKDTreeComputeLossNodesSubTask']]],
   ['partialsplitpos',['partialSplitPos',['../d5/d89/classSAHKDTreeComputeLossNodesSubTask.html#a769f670c8891d65d48ce42e33ae19917',1,'SAHKDTreeComputeLossNodesSubTask']]],
   ['parts',['parts',['../d5/d9c/classScene.html#a3cc4bc214f0f830bb96ad276c0bdce98',1,'Scene']]],
-  ['path',['path',['../d4/d5e/classhelios_1_1filems_1_1FileReader.html#aae314c671cc56d7cc93f952e85191455',1,'helios::filems::FileReader::path()'],['../da/d4c/classhelios_1_1filems_1_1SyncFileWriter.html#a748ce8abf110a1983e0e4f212c72d11f',1,'helios::filems::SyncFileWriter::path()']]],
+  ['path',['path',['../d4/d5e/classhelios_1_1filems_1_1FileReader.html#aae314c671cc56d7cc93f952e85191455',1,'helios::filems::FileReader::path()'],['../d2/d66/classhelios_1_1filems_1_1MultiSyncFileWriter.html#a6a34786cc0e796f4611b31794e8dbb9a',1,'helios::filems::MultiSyncFileWriter::path()'],['../d4/dfb/classhelios_1_1filems_1_1SingleSyncFileWriter.html#a3eeca6e5348670b6047f97b7b1710cca',1,'helios::filems::SingleSyncFileWriter::path()']]],
   ['pathseparator',['pathSeparator',['../d5/d4b/classFileUtils.html#a4686b88d2967a18640b709834cd031aa',1,'FileUtils']]],
   ['patience',['patience',['../d8/d34/classfluxionum_1_1IterativeMethodHandler.html#a07752e83d10462959b3afb51ae11d0b2',1,'fluxionum::IterativeMethodHandler']]],
   ['patiencebesterror',['patienceBestError',['../d8/d34/classfluxionum_1_1IterativeMethodHandler.html#aeb467ae58be886679d8fa318612eadcc',1,'fluxionum::IterativeMethodHandler']]],
@@ -53,7 +53,9 @@ var searchData=
   ['primsout',['primsOut',['../d6/dd2/classAbstractGeometryFilter.html#a2cad90f9937927dbb66517fb4bc0205f',1,'AbstractGeometryFilter']]],
   ['progress',['progress',['../d6/da1/classSurveyPlayback.html#af4d53e6a4430ba53c8551bd483b46d08',1,'SurveyPlayback']]],
   ['ptf',['ptf',['../db/d85/classScanningPulseProcess.html#a36794f689c75b9053fbe424667d01715',1,'ScanningPulseProcess']]],
+  ['pulse',['pulse',['../d6/d9e/classAbstractPulseRunnable.html#abd5c1c59b306ff4344832823f3af60e8',1,'AbstractPulseRunnable']]],
   ['pulsefreq_5fhz',['pulseFreq_Hz',['../d0/d23/classScannerSettings.html#a4dd555e27c9634222b04ff1aef51a4a8',1,'ScannerSettings']]],
   ['pulselength_5fns',['pulseLength_ns',['../d4/dfb/classFWFSettings.html#aa66ec3a7b686cb679b3c4d8dcf401ff8',1,'FWFSettings::pulseLength_ns()'],['../d1/d09/classScanningDevice.html#a04452f262c47f45f15c61bb4ed23e75c',1,'ScanningDevice::pulseLength_ns()']]],
+  ['pulsenumber',['pulseNumber',['../d1/d81/classSimulatedPulse.html#ad65c6894e66f9b156a5a8c0525dbff73',1,'SimulatedPulse']]],
   ['pulsereturnnumber',['pulseReturnNumber',['../db/d2e/classMeasurement.html#a07c6e9ca3067967a6c609530bc55373e',1,'Measurement']]]
 ];

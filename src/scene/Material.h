@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <cmath>
 
 #include <boost/archive/text_iarchive.hpp>
 #include <boost/archive/text_oarchive.hpp>
@@ -55,7 +56,7 @@ public:
     /**
      * @brief Material reflectance
      */
-    double reflectance = 0;
+    double reflectance = NAN;
     /**
      * @brief Material specularity
      * @see Material::setSpecularity

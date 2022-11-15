@@ -1,4 +1,5 @@
 <map id="helios::filems::ZipSyncFileWriter&lt; WriteArgs &gt;" name="helios::filems::ZipSyncFileWriter&lt; WriteArgs &gt;">
-<area shape="rect" id="node2" href="$d1/db6/classhelios_1_1filems_1_1SimpleSyncFileWriter.html" title="helios::filems::SimpleSync\lFileWriter\&lt; WriteArgs... \&gt;" alt="" coords="5,95,183,136"/>
-<area shape="rect" id="node3" href="$da/d4c/classhelios_1_1filems_1_1SyncFileWriter.html" title="helios::filems::SyncFile\lWriter\&lt; WriteArgs ... \&gt;" alt="" coords="15,5,173,47"/>
+<area shape="rect" id="node2" href="$d1/db6/classhelios_1_1filems_1_1SimpleSyncFileWriter.html" title="helios::filems::SimpleSync\lFileWriter\&lt; WriteArgs... \&gt;" alt="" coords="5,184,183,225"/>
+<area shape="rect" id="node3" href="$d4/dfb/classhelios_1_1filems_1_1SingleSyncFileWriter.html" title="helios::filems::SingleSync\lFileWriter\&lt; WriteArgs ... \&gt;" alt="" coords="6,95,182,136"/>
+<area shape="rect" id="node4" href="$da/d4c/classhelios_1_1filems_1_1SyncFileWriter.html" title="helios::filems::SyncFile\lWriter\&lt; WriteArgs ... \&gt;" alt="" coords="15,5,173,47"/>
 </map>
