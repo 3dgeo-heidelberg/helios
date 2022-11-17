@@ -83,7 +83,7 @@ def eval_arbaro_tls(dirname):
     assert (dirname / 'leg000_points.las').exists()
     assert abs((dirname / 'leg000_points.las').stat().st_size - 15_803_973) < MAX_DIFFERENCE_BYTES
     assert (dirname / 'leg001_points.las').exists()
-    assert abs((dirname / 'leg001_points.las').stat().st_size - 9_773_929) < MAX_DIFFERENCE_BYTES
+    assert abs((dirname / 'leg001_points.las').stat().st_size - 10_149_957) < MAX_DIFFERENCE_BYTES
     with open(dirname / 'leg000_trajectory.txt', 'r') as f:
         line = f.readline()
         assert line.startswith('1.0000 25.5000 0.0000')
@@ -111,7 +111,7 @@ def eval_tiffloader_als(dirname):
     assert (dirname / 'leg000_points.las').exists()
     assert abs((dirname / 'leg000_points.las').stat().st_size - 40_239) < MAX_DIFFERENCE_BYTES
     assert (dirname / 'leg001_points.las').exists()
-    assert abs((dirname / 'leg001_points.las').stat().st_size - 60_329) < MAX_DIFFERENCE_BYTES
+    assert abs((dirname / 'leg001_points.las').stat().st_size - 62_757) < MAX_DIFFERENCE_BYTES
     with open(dirname / 'leg000_trajectory.txt', 'r') as f:
         next(f)
         line = f.readline()
