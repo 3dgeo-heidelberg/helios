@@ -355,6 +355,7 @@ void SurveyPlayback::startLeg(unsigned int const legIndex, bool const manual) {
         }catch(...) {}
 
 		// ################ END Set platform destination ##################
+		platform->prepareLeg(mScanner->getPulseFreq_Hz());
 	}
 
     // Restart deflector if previous leg was not active
