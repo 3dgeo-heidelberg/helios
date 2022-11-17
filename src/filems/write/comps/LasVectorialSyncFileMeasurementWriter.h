@@ -44,6 +44,7 @@ protected:
      * @see filems::LasMeasurementWriteStrategy
      */
     LasMeasurementWriteStrategy lmws;
+
 public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //
     // ************************************ //

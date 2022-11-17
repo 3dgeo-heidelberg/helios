@@ -18,8 +18,11 @@ void SimplePhysicsPlatform::_clone(std::shared_ptr<Platform> p){
 // ***  M E T H O D S  *** //
 // *********************** //
 void SimplePhysicsPlatform::prepareSimulation(int simFrequency_hz) {
-  movePerSec_m_stepMagnitude =
-    cfg_settings_movePerSec_m / (double)simFrequency_hz;
+    configureStepMagnitude(simFrequency_hz);
+}
+
+void SimplePhysicsPlatform::prepareLeg(int const simFrequency_hz){
+    configureStepMagnitude(simFrequency_hz);
 }
 
 void SimplePhysicsPlatform::checkSpeedLimit()
@@ -82,4 +85,9 @@ void SimplePhysicsPlatform::doSimStep(int simFrequency_hz) {
 }
 
 void SimplePhysicsPlatform::doControlStep(int simFrequency_hz) {}
+
+void SimplePhysicsPlatform::configureStepMagnitude(int const simFrequency_hz){
+    movePerSec_m_stepMagnitude =
+        cfg_settings_movePerSec_m / (double)simFrequency_hz;
+}
 

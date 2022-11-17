@@ -52,6 +52,10 @@ public:
     * @see Platform::prepareSimulation
     */
    void prepareSimulation(int simFrequency_hz) override;
+   /**
+    * @see Platform::prepareLeg
+    */
+   void prepareLeg(int const simFrequency_hz) override;
 	/**
 	 * @brief Phyisics step for simple phyisics platform simulation
 	 * @param simFrequency_hz Simulation frequency
@@ -66,6 +70,19 @@ public:
 	 * @param simFrequency_hz Simulation frequency
 	 */
 	virtual void doControlStep(int simFrequency_hz);
+	/**
+	 * @brief Configure the step magnitude for current moverPerSec and given
+	 *  simulation frequency.
+	 *
+	 * Let \f$v\f$ be the amount of movement in \f$\mathrm{m}/\mathrm{s}\f$
+	 *  (meters per second). Then, the step magnitude \f$s\f$ can be defined
+	 *  for a given simulation frequency \f$F\f$ in hertz:
+	 *
+	 * \f[
+	 *  s = \frac{v}{F}
+	 * \f]
+	 */
+	void configureStepMagnitude(int const simFrequency_hz);
 
     void checkSpeedLimit();
 

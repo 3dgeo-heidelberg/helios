@@ -88,7 +88,7 @@ public:
     virtual void createLasWriter(const std::string & path, bool const compress)
     {
         // Craft header and point format
-        lws.craft();
+        craftSpec(lws);
 
         // Add extra attributes
         lws.addExtraAttributes();
@@ -99,6 +99,12 @@ public:
         // Create writer from specification
         lw = lws.makeWriter(path, compress);
     }
+    /**
+     * @brief Assist the LasSyncFileWriter::createLasWriters method by
+     *  crafting the given specification
+     * @param lws The LAS write specification to be crafted
+     */
+    virtual void craftSpec(LasWriterSpec &lws){lws.craft();}
 
     // ***  F I N I S H  *** //
     // ********************* //
