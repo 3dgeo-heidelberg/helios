@@ -70,12 +70,11 @@ public:
     std::string toString(){
         return scanner.toString();
     }
-    void calcRaysNumber(){
-        scanner.calcRaysNumber();
-    }
-    void prepareDiscretization(){
-        scanner.prepareDiscretization();
-    }
+    inline void calcRaysNumber(){scanner.calcRaysNumber();}
+    inline void calcRaysNumber(size_t const idx){scanner.calcRaysNumber(idx);}
+    inline void prepareDiscretization(){scanner.prepareDiscretization();}
+    inline void prepareDiscretization(size_t const idx)
+    {scanner.prepareDiscretization(idx);}
     int calcTimePropagation(
         std::vector<double> & timeWave, int const numBins
     ){
@@ -87,14 +86,25 @@ public:
             7.0  // 3.5 too many ops., 7.0 just one op.
         );
     }
-    double calcFootprintArea(double const distance) const{
+    inline double calcFootprintArea(double const distance) const{
         return scanner.calcFootprintArea(distance);
     }
-    double calcFootprintRadius(double distance){
+    inline double calcFootprintArea(
+        double const distance, size_t const idx
+    )const{
+        return scanner.calcFootprintArea(distance, idx);
+    }
+    inline double calcFootprintRadius(double const distance){
         return scanner.calcFootprintRadius(distance);
     }
-    double calcAtmosphericAttenuation() const{
+    inline double calcFootprintRadius(double const distance, size_t const idx){
+        return scanner.calcFootprintRadius(distance, idx);
+    }
+    inline double calcAtmosphericAttenuation() const{
         return scanner.calcAtmosphericAttenuation();
+    }
+    inline double calcAtmosphericAttenuation(size_t const idx) const{
+        return scanner.calcAtmosphericAttenuation(idx);
     }
     Rotation calcAbsoluteBeamAttitude() const{
         return scanner.calcAbsoluteBeamAttitude();
@@ -124,11 +134,20 @@ public:
     inline int getCurrentPulseNumber() const {
         return scanner.getCurrentPulseNumber();
     }
+    inline int getCurrentPulseNumber(size_t const idx) const {
+        return scanner.getCurrentPulseNumber(idx);
+    }
     inline int getNumRays() const {
         return scanner.getNumRays();
     }
+    inline int getNumRays(size_t const idx) const{
+        return scanner.getNumRays(idx);
+    }
     inline void setNumRays(int const numRays) {
         scanner.setNumRays(numRays);
+    }
+    inline void setNumRays(int const numRays, size_t const idx){
+        scanner.setNumRays(numRays, idx);
     }
     inline int getPulseFreq_Hz() const {
         return scanner.getPulseFreq_Hz();
@@ -153,8 +172,14 @@ public:
     inline bool lastPulseWasHit() const {
         return scanner.lastPulseWasHit();
     }
-    void setLastPulseWasHit(bool lastPulseWasHit){
+    inline bool getLastPulseWasHit(size_t const idx) const {
+        return scanner.lastPulseWasHit(idx);
+    }
+    void setLastPulseWasHit(bool const lastPulseWasHit){
         scanner.setLastPulseWasHit(lastPulseWasHit);
+    }
+    void setLastPulseWasHit(bool const lastPulseWasHit, size_t const idx){
+        scanner.setLastPulseWasHit(lastPulseWasHit, idx);
     }
     double getBeamDivergence(size_t const idx) const{
         return scanner.getBeamDivergence(idx);
@@ -376,11 +401,18 @@ public:
     // ***  PyScannerWrapper ADHOC  *** //
     // ******************************** //
     ScannerHead & getScannerHead(){return *scanner.getScannerHead();}
+    ScannerHead & getScannerHead(size_t const idx)
+    {return *scanner.getScannerHead(idx);}
     PyBeamDeflectorWrapper * getPyBeamDeflector()
     {return new PyBeamDeflectorWrapper(scanner.getBeamDeflector());}
+    PyBeamDeflectorWrapper * getPyBeamDeflector(size_t const idx)
+    {return new PyBeamDeflectorWrapper(scanner.getBeamDeflector(idx));}
     PyDetectorWrapper * getPyDetectorWrapper();
+    PyDetectorWrapper * getPyDetectorWrapper(size_t const idx);
     PyIntegerList * getSupportedPulseFrequencies()
     {return new PyIntegerList(scanner.getSupportedPulseFreqs_Hz());}
+    PyIntegerList * getSupportedPulseFrequencies(size_t const idx)
+    {return new PyIntegerList(scanner.getSupportedPulseFreqs_Hz(idx));}
     Rotation & getRelativeAttitudeByReference(size_t const idx){
         return scanner.getHeadRelativeEmitterAttitudeByRef(idx);
     }

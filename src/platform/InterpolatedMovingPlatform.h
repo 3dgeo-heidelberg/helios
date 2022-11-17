@@ -98,6 +98,14 @@ protected:
      * @see InterpolatedMovingPlatform::syncGPSTime
      */
     double startTime;
+    /**
+     * @brief The time at the start of the current leg (in seconds). It is
+     *  \f$0\f$ for the first leg and it is the time at which \f$i\f$-th leg
+     *  finished for the \f$(i+1)\f$-th leg
+     *
+     * @see InterpolatedMovingPlatform::currentLegStartTime
+     */
+    double currentLegStartTime;
 
 public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //
@@ -161,6 +169,20 @@ public:
      *  the new \f$t\f$
      */
     virtual void toTrajectoryTime(double const t);
+
+    /**
+     * @brief Consider the current time as the start time of the manually
+     *  initialized leg
+     */
+    void initLegManual() override
+    {currentLegStartTime = stepLoop.getCurrentTime();}
+
+    /**
+     * @brief Consider the current time as the start time of the initialized
+     *  leg
+     */
+    void initLeg() override
+    {currentLegStartTime = stepLoop.getCurrentTime();}
 
     // ***  GETTERs and SETTERs  *** //
     // ***************************** //
@@ -261,4 +283,9 @@ public:
      * @see Platform::isInterpolated
      */
     bool isInterpolated() const override {return true;}
+    /**
+     * @brief Obtain the start time of the current leg
+     * @see InterpolatedMovingPlatform::currentLegStartTime
+     */
+    double getCurrentLegStartTime() const {return currentLegStartTime;}
 };

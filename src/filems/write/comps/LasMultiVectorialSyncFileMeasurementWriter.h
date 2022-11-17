@@ -69,7 +69,7 @@ public:
             deltaIntensity,
             createWriter
         )
-        {
+    {
         if(createWriter){
             // Build measurement write strategies
             buildMeasurementWriteStrategies();

@@ -234,6 +234,11 @@ public:
 	 */
 	virtual void prepareSimulation(int simFrequency_hz) {updateStaticCache();}
 	/**
+	 * @brief Prepare the platform to deal with the next leg
+	 * @param simFrequency_hz Simulation frequency the platform will work with
+	 */
+	virtual void prepareLeg(int const simFrequency_hz) {}
+	/**
 	 * @brief Apply given platform settings to the platform
 	 * @param settings Settings to be applied to the platform
 	 * @param manual Not used by base Platform class.

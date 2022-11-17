@@ -80,6 +80,7 @@ BOOST_PYTHON_MODULE(_pyhelios){
             size_t,
             bool,
             bool,
+            bool,
             bool
         >())
         .def(init<
@@ -87,6 +88,7 @@ BOOST_PYTHON_MODULE(_pyhelios){
             std::string,
             std::string,
             size_t,
+            bool,
             bool,
             bool,
             bool,
@@ -217,6 +219,11 @@ BOOST_PYTHON_MODULE(_pyhelios){
             &PyHeliosSimulation::setZipOutput
         )
         .add_property(
+            "splitByChannel",
+            &PyHeliosSimulation::getSplitByChannel,
+            &PyHeliosSimulation::setSplitByChannel
+        )
+        .add_property(
             "lasScale",
             &PyHeliosSimulation::getLasScale,
             &PyHeliosSimulation::setLasScale
@@ -268,7 +275,7 @@ BOOST_PYTHON_MODULE(_pyhelios){
             "addTranslateFilter",
             &PyHeliosSimulation::addTranslateFilter
         )
-    ;
+        ;
 
     // Register Survey
     class_<Survey, boost::noncopyable>("Survey", no_init)
@@ -465,6 +472,7 @@ BOOST_PYTHON_MODULE(_pyhelios){
         )
     ;
 
+
     // Register Scanner
     class_<PyScannerWrapper, boost::noncopyable>("Scanner", no_init)
         .add_property(
@@ -495,15 +503,35 @@ BOOST_PYTHON_MODULE(_pyhelios){
         .add_property(
             "lastPulseWasHit",
             &PyScannerWrapper::lastPulseWasHit,
-            &PyScannerWrapper::setLastPulseWasHit
+            static_cast<void(PyScannerWrapper::*)(bool const)>(
+                &PyScannerWrapper::setLastPulseWasHit
+            )
         )
         .def("toString", &PyScannerWrapper::toString)
+        .def(
+            "getCurrentPulseNumber",
+            static_cast<int(PyScannerWrapper::*)(size_t const) const>(
+                &PyScannerWrapper::getCurrentPulseNumber
+            )
+        )
         .add_property(
             "numRays",
             static_cast<int(PyScannerWrapper::*)()const>(
                 &PyScannerWrapper::getNumRays
             ),
             static_cast<void(PyScannerWrapper::*)(int const)>(
+                &PyScannerWrapper::setNumRays
+            )
+        )
+        .def(
+            "getNumRays",
+            static_cast<int(PyScannerWrapper::*)(size_t const) const>(
+                &PyScannerWrapper::getNumRays
+            )
+        )
+        .def(
+            "setNumRays",
+            static_cast<void(PyScannerWrapper::*)(int const, size_t const)>(
                 &PyScannerWrapper::setNumRays
             )
         )
@@ -516,6 +544,20 @@ BOOST_PYTHON_MODULE(_pyhelios){
                 &PyScannerWrapper::setPulseLength_ns
             )
         )
+        .def(
+            "getPulseLength_ns",
+            static_cast<double(PyScannerWrapper::*)(size_t const)>(
+                &PyScannerWrapper::getPulseLength_ns
+            )
+        )
+        .def(
+            "setPulseLength_ns",
+            static_cast<
+                void(PyScannerWrapper::*)(double const, size_t const)
+            >(
+                &PyScannerWrapper::setPulseLength_ns
+            )
+        )
         .add_property( // Only access first device. Use get/set for n device
             "beamDivergence",
             static_cast<double(PyScannerWrapper::*)()const>(
@@ -525,12 +567,48 @@ BOOST_PYTHON_MODULE(_pyhelios){
                 &PyScannerWrapper::setBeamDivergence
             )
         )
+        .def(
+            "getBeamDivergence",
+            static_cast<double(PyScannerWrapper::*)(size_t const)const>(
+                &PyScannerWrapper::getBeamDivergence
+            )
+        )
+        .def(
+            "setBeamDivergence",
+            static_cast<void(PyScannerWrapper::*)(double const, size_t const)>(
+                &PyScannerWrapper::setBeamDivergence
+            )
+        )
+        .def(
+            "getLastPulseWasHit",
+            static_cast<bool(PyScannerWrapper::*)(size_t const)const>(
+                &PyScannerWrapper::getLastPulseWasHit
+            )
+        )
+        .def(
+            "setLastPulseWasHit",
+            static_cast<void(PyScannerWrapper::*)(bool const, size_t const)>(
+                &PyScannerWrapper::setLastPulseWasHit
+            )
+        )
         .add_property( // Only access first device. Use get/set for n device
             "averagePower",
             static_cast<double(PyScannerWrapper::*)()const>(
                 &PyScannerWrapper::getAveragePower
             ),
             static_cast<void(PyScannerWrapper::*)(double const)>(
+                &PyScannerWrapper::setAveragePower
+            )
+        )
+        .def(
+            "getAveragePower",
+            static_cast<double(PyScannerWrapper::*)(size_t const)const>(
+                &PyScannerWrapper::getAveragePower
+            )
+        )
+        .def(
+            "setAveragePower",
+            static_cast<void(PyScannerWrapper::*)(double const, size_t const)>(
                 &PyScannerWrapper::setAveragePower
             )
         )
@@ -543,12 +621,36 @@ BOOST_PYTHON_MODULE(_pyhelios){
                 &PyScannerWrapper::setBeamQuality
             )
         )
+        .def(
+            "getBeamQuality",
+            static_cast<double(PyScannerWrapper::*)(size_t const)const>(
+                &PyScannerWrapper::getBeamQuality
+            )
+        )
+        .def(
+            "setBeamQuality",
+            static_cast<void(PyScannerWrapper::*)(double const, size_t const)>(
+                &PyScannerWrapper::setBeamQuality
+            )
+        )
         .add_property( // Only access first device. Use get/set for n device
             "efficiency",
             static_cast<double(PyScannerWrapper::*)()const>(
                 &PyScannerWrapper::getEfficiency
             ),
             static_cast<void(PyScannerWrapper::*)(double const)>(
+                &PyScannerWrapper::setEfficiency
+            )
+        )
+        .def(
+            "getEfficiency",
+            static_cast<double(PyScannerWrapper::*)(size_t const)const>(
+                &PyScannerWrapper::getEfficiency
+            )
+        )
+        .def(
+            "setEfficiency",
+            static_cast<void(PyScannerWrapper::*)(double const, size_t const)>(
                 &PyScannerWrapper::setEfficiency
             )
         )
@@ -561,12 +663,36 @@ BOOST_PYTHON_MODULE(_pyhelios){
                 &PyScannerWrapper::setReceiverDiameter
             )
         )
+        .def(
+            "getReceiverDiameter",
+            static_cast<double(PyScannerWrapper::*)(size_t const)const>(
+                &PyScannerWrapper::getReceiverDiameter
+            )
+        )
+        .def(
+            "setReceiverDiameter",
+            static_cast<void(PyScannerWrapper::*)(double const, size_t const)>(
+                &PyScannerWrapper::setReceiverDiameter
+            )
+        )
         .add_property( // Only access first device. Use get/set for n device
             "visibility",
             static_cast<double(PyScannerWrapper::*)()const>(
                 &PyScannerWrapper::getVisibility
             ),
             static_cast<void(PyScannerWrapper::*)(double const)>(
+                &PyScannerWrapper::setVisibility
+            )
+        )
+        .def(
+            "getVisibility",
+            static_cast<double(PyScannerWrapper::*)(size_t const)const>(
+                &PyScannerWrapper::getVisibility
+            )
+        )
+        .def(
+            "setVisibility",
+            static_cast<void(PyScannerWrapper::*)(double const, size_t const)>(
                 &PyScannerWrapper::setVisibility
             )
         )
@@ -579,12 +705,36 @@ BOOST_PYTHON_MODULE(_pyhelios){
                 &PyScannerWrapper::setWavelength
             )
         )
+        .def(
+            "getWavelength",
+            static_cast<double(PyScannerWrapper::*)(size_t const)const>(
+                &PyScannerWrapper::getWavelength
+            )
+        )
+        .def(
+            "setWavelength",
+            static_cast<void(PyScannerWrapper::*)(double const, size_t const)>(
+                &PyScannerWrapper::setWavelength
+            )
+        )
         .add_property( // Only access first device. Use get/set for n device
             "atmosphericExtinction",
             static_cast<double(PyScannerWrapper::*)()const>(
                 &PyScannerWrapper::getAtmosphericExtinction
             ),
             static_cast<void(PyScannerWrapper::*)(double const)>(
+                &PyScannerWrapper::setAtmosphericExtinction
+            )
+        )
+        .def(
+            "getAtmosphericExtinction",
+            static_cast<double(PyScannerWrapper::*)(size_t const)const>(
+                &PyScannerWrapper::getAtmosphericExtinction
+            )
+        )
+        .def(
+            "setAtmosphericExtinction",
+            static_cast<void(PyScannerWrapper::*)(double const, size_t const)>(
                 &PyScannerWrapper::setAtmosphericExtinction
             )
         )
@@ -597,6 +747,18 @@ BOOST_PYTHON_MODULE(_pyhelios){
                 &PyScannerWrapper::setBeamWaistRadius
             )
         )
+        .def(
+            "getBeamWaistRadius",
+            static_cast<double(PyScannerWrapper::*)(size_t const)const>(
+                &PyScannerWrapper::getBeamWaistRadius
+            )
+        )
+        .def(
+            "setBeamWaistRadius",
+            static_cast<void(PyScannerWrapper::*)(double const, size_t const)>(
+                &PyScannerWrapper::setBeamWaistRadius
+            )
+        )
         .add_property( // Only access first device. Use get/set for n device
             "bt2",
             static_cast<double(PyScannerWrapper::*)()const>(
@@ -606,12 +768,36 @@ BOOST_PYTHON_MODULE(_pyhelios){
                 &PyScannerWrapper::setBt2
             )
         )
+        .def(
+            "getBt2",
+            static_cast<double(PyScannerWrapper::*)(size_t const)const>(
+                &PyScannerWrapper::getBt2
+            )
+        )
+        .def(
+            "setBt2",
+            static_cast<void(PyScannerWrapper::*)(double const, size_t const)>(
+                &PyScannerWrapper::setBt2
+            )
+        )
         .add_property( // Only access first device. Use get/set for n device
             "dr2",
             static_cast<double(PyScannerWrapper::*)()const>(
                 &PyScannerWrapper::getDr2
             ),
             static_cast<void(PyScannerWrapper::*)(double const)>(
+                &PyScannerWrapper::setDr2
+            )
+        )
+        .def(
+            "getDr2",
+            static_cast<double(PyScannerWrapper::*)(size_t const)const>(
+                &PyScannerWrapper::getDr2
+            )
+        )
+        .def(
+            "setDr2",
+            static_cast<void(PyScannerWrapper::*)(double const, size_t const)>(
                 &PyScannerWrapper::setDr2
             )
         )
@@ -642,7 +828,16 @@ BOOST_PYTHON_MODULE(_pyhelios){
         )
         .def(
             "getSupportedPulseFrequencies",
-            &PyScannerWrapper::getSupportedPulseFrequencies,
+            static_cast<PyIntegerList*(PyScannerWrapper::*)()>(
+                &PyScannerWrapper::getSupportedPulseFrequencies
+            ),
+            return_internal_reference<>()
+        )
+        .def(
+            "getSupportedPulseFrequencies",
+            static_cast<PyIntegerList*(PyScannerWrapper::*)(size_t const)>(
+                &PyScannerWrapper::getSupportedPulseFrequencies
+            ),
             return_internal_reference<>()
         )
         .def(
@@ -653,8 +848,22 @@ BOOST_PYTHON_MODULE(_pyhelios){
             return_internal_reference<>()
         )
         .def(
+            "getRelativeAttitude",
+            static_cast<Rotation &(PyScannerWrapper::*)(size_t const)>(
+                &PyScannerWrapper::getRelativeAttitudeByReference
+            ),
+            return_internal_reference<>()
+        )
+        .def(
             "getRelativePosition",
             static_cast<PythonDVec3 *(PyScannerWrapper::*)()>(
+                &PyScannerWrapper::getRelativePosition
+            ),
+            return_value_policy<manage_new_object>()
+        )
+        .def(
+            "getRelativePosition",
+            static_cast<PythonDVec3 *(PyScannerWrapper::*)(size_t const)>(
                 &PyScannerWrapper::getRelativePosition
             ),
             return_value_policy<manage_new_object>()
@@ -676,26 +885,96 @@ BOOST_PYTHON_MODULE(_pyhelios){
         )
         .def(
             "getScannerHead",
-            &PyScannerWrapper::getScannerHead,
+            static_cast<ScannerHead&(PyScannerWrapper::*)()>(
+                &PyScannerWrapper::getScannerHead
+            ),
+            return_internal_reference<>()
+        )
+        .def(
+            "getScannerHead",
+            static_cast<ScannerHead&(PyScannerWrapper::*)(size_t const)>(
+                &PyScannerWrapper::getScannerHead
+            ),
             return_internal_reference<>()
         )
         .def(
             "getBeamDeflector",
-            &PyScannerWrapper::getPyBeamDeflector,
+            static_cast<
+                PyBeamDeflectorWrapper*(PyScannerWrapper::*)()
+            >(&PyScannerWrapper::getPyBeamDeflector),
+            return_value_policy<manage_new_object>()
+        )
+        .def(
+            "getBeamDeflector",
+            static_cast<
+                PyBeamDeflectorWrapper*(PyScannerWrapper::*)(size_t const)
+                >(&PyScannerWrapper::getPyBeamDeflector),
             return_value_policy<manage_new_object>()
         )
         .def(
             "getDetector",
-            &PyScannerWrapper::getPyDetectorWrapper,
+            static_cast<
+                PyDetectorWrapper*(PyScannerWrapper::*)()
+            >(&PyScannerWrapper::getPyDetectorWrapper),
             return_value_policy<manage_new_object>()
         )
-        .def("calcRaysNumber", &PyScannerWrapper::calcRaysNumber)
-        .def("calcFootprintArea", &PyScannerWrapper::calcFootprintArea)
+        .def(
+            "getDetector",
+            static_cast<
+                PyDetectorWrapper*(PyScannerWrapper::*)(size_t const)
+            >(&PyScannerWrapper::getPyDetectorWrapper),
+            return_value_policy<manage_new_object>()
+        )
+        .def(
+            "calcRaysNumber",
+            static_cast<void(PyScannerWrapper::*)()>(
+                &PyScannerWrapper::calcRaysNumber
+            ),
+            return_value_policy<manage_new_object>()
+        )
+        .def(
+            "calcRaysNumber",
+            static_cast<void(PyScannerWrapper::*)(size_t const)>(
+                &PyScannerWrapper::calcRaysNumber
+            ),
+            return_value_policy<manage_new_object>()
+        )
+        .def(
+            "calcFootprintArea",
+            static_cast<double(PyScannerWrapper::*)(double const)const>(
+                &PyScannerWrapper::calcFootprintArea
+            )
+        )
+        .def(
+            "calcFootprintArea",
+            static_cast<
+                double(PyScannerWrapper::*)(double const, size_t const)const
+            >(&PyScannerWrapper::calcFootprintArea)
+        )
         .def(
             "calcAtmosphericAttenuation",
-            &PyScannerWrapper::calcAtmosphericAttenuation
+            static_cast<double(PyScannerWrapper::*)()const>(
+                &PyScannerWrapper::calcAtmosphericAttenuation
+            )
         )
-        .def("calcFootprintRadius", &PyScannerWrapper::calcFootprintRadius)
+        .def(
+            "calcAtmosphericAttenuation",
+            static_cast<double(PyScannerWrapper::*)(size_t const)const>(
+                &PyScannerWrapper::calcAtmosphericAttenuation
+            )
+        )
+        .def(
+            "calcFootprintRadius",
+            static_cast<
+                double(PyScannerWrapper::*)(double const)
+            >(&PyScannerWrapper::calcFootprintRadius)
+        )
+        .def(
+            "calcFootprintRadius",
+            static_cast<
+                double(PyScannerWrapper::*)(double const, size_t const)
+            >(&PyScannerWrapper::calcFootprintRadius)
+        )
         .add_property(
             "fixedIncidenceAngle",
             &PyScannerWrapper::isFixedIncidenceAngle,
@@ -720,11 +999,24 @@ BOOST_PYTHON_MODULE(_pyhelios){
                 &PyScannerWrapper::setDeviceId
             )
         )
+        .def(
+            "getDeviceId",
+            static_cast<std::string(PyScannerWrapper::*)(size_t const)const>(
+                &PyScannerWrapper::getDeviceId
+            )
+        )
+        .def(
+            "setDeviceId",
+            static_cast<
+                void(PyScannerWrapper::*)(std::string const, size_t const)
+            >(&PyScannerWrapper::setDeviceId)
+        )
         .add_property(
             "id",
             &PyScannerWrapper::getScannerId,
             &PyScannerWrapper::setScannerId
         )
+        .def("getNumDevices", &PyScannerWrapper::getNumDevices)
     ;
 
     // Register FWFSettings

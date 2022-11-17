@@ -21,7 +21,8 @@ InterpolatedMovingPlatform::InterpolatedMovingPlatform(
     frontierValues(tdm.getX().rows(0, tdm.getX().n_rows-2)),
     frontierDerivatives(ddm.getA()),
     syncGPSTime(syncGPSTime),
-    startTime(startTime)
+    startTime(startTime),
+    currentLegStartTime(0)
 {
     // Build DesignTrajectoryFunction
     tf = std::make_shared<DesignTrajectoryFunction>(
@@ -76,7 +77,8 @@ void InterpolatedMovingPlatform::doSimStep(int simFrequency_hz){
     doStepUpdates(stepLoop.getCurrentTime());
 }
 bool InterpolatedMovingPlatform::waypointReached(){
-    double const am = timeFrontiers(timeFrontiers.n_elem-1);
+    double const am = timeFrontiers(timeFrontiers.n_elem-1) +
+        currentLegStartTime;
     double const t = stepLoop.getCurrentTime();
     return t >= am;
 }

@@ -70,7 +70,7 @@ public:
             offset,
             minIntensity,
             deltaIntensity,
-            createWriter
+            false
         ),
         lmws(
             *lw,
@@ -86,12 +86,41 @@ public:
             lws.ampAttrStart
         )
     {
+        // If construct requires creating the wi
+        if(createWriter){
+            // Create the LASWriter
+            createLasWriter(path, compress);
+            // In-place update LasMeasurementWriteStrategy
+            new(&lmws) LasMeasurementWriteStrategy(
+                *lw,
+                lws.lp,
+                lws.scaleFactorInverse,
+                lws.offset,
+                lws.minIntensity,
+                lws.maxIntensity,
+                lws.intensityCoefficient,
+                lws.ewAttrStart,
+                lws.fwiAttrStart,
+                lws.hoiAttrStart,
+                lws.ampAttrStart
+            );
+        }
         // Write strategy
         this->writeStrategy = make_shared<VectorialWriteStrategy<
             Measurement,
             glm::dvec3 const &
         >>(lmws);
     }
+
+    // ***  CREATE WRITER  *** //
+    // *********************** //
+    /**
+     * @brief Assist the LasSyncFileWriter::createLasWriters method by
+     *  crafting the given specification using the 1.4 version
+     * @param lws The LAS write specification to be crafted according to 1.4
+     *  version
+     */
+    void craftSpec(LasWriterSpec &lws) override {lws.craft14();}
 };
 
 }}

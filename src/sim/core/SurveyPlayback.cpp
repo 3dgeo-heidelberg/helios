@@ -163,12 +163,14 @@ int SurveyPlayback::estimateTemporalLegProgress(){
     arma::Col<double> const &tf = imp->getTimeFrontiers();
     double const a1 = tf(0);
     double const am = tf(tf.n_elem-1);
-    double const t = imp->getStepLoop().getCurrentTime();
+    double const t = imp->getStepLoop().getCurrentTime() - \
+        imp->getCurrentLegStartTime();
     return (int)(100*(t-a1)/(am-a1));
 }
 
 void SurveyPlayback::trackProgress() {
-	if(!getScanner()->platform->canMove()){
+    std::shared_ptr<Platform> platform = getScanner()->platform;
+	if(!platform->canMove()){
 		double legElapsedAngle = std::fabs(
 		    getScanner()->getScannerHead()->getRotateStart() -
 		    getScanner()->getScannerHead()->getRotateCurrent()
@@ -177,13 +179,13 @@ void SurveyPlayback::trackProgress() {
 		estimateTime(legProgress, true, 0);
 	}
 	else if (mCurrentLegIndex < mSurvey->legs.size() - 1) {
-		double legElapsedLength = glm::distance(
-		    getCurrentLeg()->mPlatformSettings->getPosition(),
-		    mSurvey->scanner->platform->getPosition()
+        double const legElapsedLength = glm::distance(
+            getCurrentLeg()->mPlatformSettings->getPosition(),
+            mSurvey->scanner->platform->getPosition()
         );
-		int const legProgress = mSurvey->scanner->platform->isInterpolated() ?
+        int const legProgress = platform->isInterpolated() ?
             estimateTemporalLegProgress() :
-		    estimateSpatialLegProgress(legElapsedLength);
+            estimateSpatialLegProgress(legElapsedLength);
         estimateTime(legProgress, false, legElapsedLength);
 	}
 }
@@ -353,6 +355,7 @@ void SurveyPlayback::startLeg(unsigned int const legIndex, bool const manual) {
         }catch(...) {}
 
 		// ################ END Set platform destination ##################
+		platform->prepareLeg(mScanner->getPulseFreq_Hz());
 	}
 
     // Restart deflector if previous leg was not active
