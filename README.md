@@ -82,6 +82,9 @@ helios <survey_file_path> [OPTIONAL ARGUMENTS]
             Specify the path to assets directory
         --output <directory_path>
             Specify the path to output directory
+        --splitByChannel
+            Enable the one-file-per-device writing mode when using a
+            multi-channel scanner.
         --writeWaveform
             Specify the full waveform must be written
         --calcEchowidth
