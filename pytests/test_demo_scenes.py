@@ -3,6 +3,7 @@ import shutil
 import subprocess
 import sys
 from pathlib import Path
+import numpy as np
 import pytest
 
 MAX_DIFFERENCE_BYTES = 1024
@@ -62,6 +63,36 @@ def run_helios_pyhelios(survey_path: Path, las_output: bool = True, zip_output: 
     sim.start()
     sim.join()
     return find_playback_dir(survey_path)
+
+
+def speed_from_traj(trajectory_file):
+
+    def mode(arr):
+        vals, counts = np.unique(arr, return_counts=True)
+        mode_idx = np.argwhere(counts == np.max(counts))
+        mode_val = vals[mode_idx].flatten().tolist()[0]
+
+        # round to 4 decimal places
+        return np.round(mode_val, 3)
+
+    # load trajectory file
+    traj_data = np.loadtxt(trajectory_file, delimiter=" ", usecols=(0, 1, 2, 3))
+
+    # get distance between all points
+    points = traj_data[:, :2]
+    d = np.diff(points, axis=0)
+    segdists = np.sqrt((d ** 2).sum(axis=1))
+    # get most frequent distance (ignore smaller distances from speedup/slowdown)
+    dist = mode(segdists)
+
+    # get time diff. between points (should always be the same, but we're nevertheless computing the mode to be safe)
+    times = traj_data[:, 3]
+    dt = np.diff(times, axis=0)
+    time_diff = mode(dt)
+
+    speed = dist / time_diff
+
+    return speed
 
 
 @pytest.mark.exe
@@ -197,6 +228,40 @@ def eval_interpolated_traj(dirname):
             next(f)
         line = f.readline()
         assert line.startswith('13.4766 1.7424 400.0000')
+    # clean up
+    if DELETE_FILES_AFTER:
+        shutil.rmtree(dirname)
+
+
+@pytest.mark.exe
+def test_quadcopter_exe():
+    dirname_exe = run_helios_executable(Path('data') / 'surveys' / 'toyblocks' / 'uls_toyblocks_survey_scene_combo.xml',
+                                        options=['--lasOutput',
+                                                 '--zipOutput'])
+    eval_quadcopter(dirname_exe)
+
+
+@pytest.mark.pyh
+def test_quadcopter_pyh():
+    dirname_pyh = run_helios_pyhelios(Path('data') / 'surveys' / 'toyblocks' / 'uls_toyblocks_survey_scene_combo.xml',
+                                      zip_output=True)
+    eval_quadcopter(dirname_pyh)
+
+
+def eval_quadcopter(dirname):
+    assert (dirname / 'leg000_points.laz').exists()
+    assert (dirname / 'leg000_trajectory.txt').exists()
+    assert abs((dirname / 'leg000_points.laz').stat().st_size - 1_982_564) < MAX_DIFFERENCE_BYTES
+    assert abs((dirname / 'leg002_points.laz').stat().st_size - 2_166_606) < MAX_DIFFERENCE_BYTES
+    assert abs((dirname / 'leg004_points.laz').stat().st_size - 3_839_055) < MAX_DIFFERENCE_BYTES
+    assert speed_from_traj(dirname / 'leg000_trajectory.txt') == pytest.approx(10.0, 0.001)
+    assert speed_from_traj(dirname / 'leg002_trajectory.txt') == pytest.approx(7.0, 0.001)
+    assert speed_from_traj(dirname / 'leg004_trajectory.txt') == pytest.approx(4.0, 0.001)
+    with open(dirname / 'leg000_trajectory.txt', 'r') as f:
+        for _ in range(3):
+            next(f)
+        line = f.readline()
+        assert line.startswith('-69.9983 -60.0000 80.0002')
     # clean up
     if DELETE_FILES_AFTER:
         shutil.rmtree(dirname)
