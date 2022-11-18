@@ -1,8 +1,8 @@
 <xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
     <xs:element name="document">
         <xs:complexType>
-            <xs:sequence>
-                <xs:element name="scannerSettings" maxOccurs="unbounded" minOccurs="0">
+            <xs:all>
+                <xs:element name="scannerSettings" maxOccurs="1" minOccurs="0">
                     <xs:complexType>
                         <xs:simpleContent>
                             <xs:extension base="xs:string">
@@ -17,6 +17,24 @@
                                 <xs:attribute type="xs:float" name="headRotateStart_deg" use="optional"/>
                                 <xs:attribute type="xs:float" name="headRotateStop_deg" use="optional"/>
                                 <xs:attribute type="xs:float" name="trajectoryTimeInterval_s" use="optional"/>
+                            </xs:extension>
+                        </xs:simpleContent>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="platformSettings" maxOccurs="1" minOccurs="0">
+                    <xs:complexType>
+                        <xs:simpleContent>
+                            <xs:extension base="xs:string">
+                                <xs:attribute type="xs:string" name="id" use="required"/>
+                                <xs:attribute type="xs:float" name="x" use="optional"/>
+                                <xs:attribute type="xs:float" name="y" use="optional"/>
+                                <xs:attribute type="xs:float" name="z" use="optional"/>
+                                <xs:attribute type="xs:float" name="movePerSec_m" use="optional"/>
+                                <xs:attribute type="xs:boolean" name="onGround" use="optional"/>
+                                <xs:attribute type="xs:boolean" name="stopAndTurn" use="optional"/>
+                                <xs:attribute type="xs:boolean" name="smoothTurn" use="optional"/>
+                                <xs:attribute type="xs:boolean" name="slowdownEnabled" use="optional"/>
+                                <xs:attribute type="xs:float" name="yawAtDeparture_deg" use="optional"/>
                             </xs:extension>
                         </xs:simpleContent>
                     </xs:complexType>
@@ -43,6 +61,7 @@
                                             <xs:complexType>
                                                 <xs:simpleContent>
                                                     <xs:extension base="xs:string">
+                                                        <xs:attribute type="xs:string" name="template" use="optional"/>
                                                         <xs:attribute type="xs:float" name="x" use="required"/>
                                                         <xs:attribute type="xs:float" name="y" use="required"/>
                                                         <xs:attribute type="xs:float" name="z" use="optional"/>
@@ -52,6 +71,22 @@
                                                         <xs:attribute type="xs:boolean" name="smoothTurn" use="optional"/>
                                                         <xs:attribute type="xs:boolean" name="slowdownEnabled" use="optional"/>
                                                         <xs:attribute type="xs:float" name="yawAtDeparture_deg" use="optional"/>
+
+                                                        <xs:attribute type="xs:string" name="trajectory" use="optional"/>
+                                                        <xs:attribute type="xs:string" name="trajectory_separator" use="optional"/>
+                                                        <xs:attribute type="xs:int" name="xIndex" use="optional"/>
+                                                        <xs:attribute type="xs:int" name="yIndex" use="optional"/>
+                                                        <xs:attribute type="xs:int" name="zIndex" use="optional"/>
+                                                        <xs:attribute type="xs:int" name="tIndex" use="optional"/>
+                                                        <xs:attribute type="xs:int" name="rollIndex" use="optional"/>
+                                                        <xs:attribute type="xs:int" name="pitchIndex" use="optional"/>
+                                                        <xs:attribute type="xs:int" name="yawIndex" use="optional"/>
+                                                        <xs:attribute type="xs:float" name="tStart" use="optional"/>
+                                                        <xs:attribute type="xs:float" name="tEnd" use="optional"/>
+                                                        <xs:attribute type="xs:float" name="slopeFilterThreshold" use="optional"/>
+                                                        <xs:attribute type="xs:boolean" name="syncGPSTime" use="optional"/>
+                                                        <xs:attribute type="xs:boolean" name="teleportToStart" use="optional"/>
+                                                        <xs:attribute type="xs:boolean" name="toRadians" use="optional"/>
                                                     </xs:extension>
                                                 </xs:simpleContent>
                                             </xs:complexType>
@@ -71,11 +106,13 @@
                                                         <xs:attribute type="xs:float" name="headRotatePerSec_deg" use="optional"/>
                                                         <xs:attribute type="xs:float" name="headRotateStart_deg" use="optional"/>
                                                         <xs:attribute type="xs:float" name="headRotateStop_deg" use="optional"/>
+                                                        <xs:attribute type="xs:float" name="beamDivergenceRad" use="optional"/>
                                                     </xs:extension>
                                                 </xs:simpleContent>
                                             </xs:complexType>
                                         </xs:element>
                                     </xs:sequence>
+                                    <xs:attribute type="xs:int" name="stripId" use="optional"/>
                                 </xs:complexType>
                             </xs:element>
                         </xs:sequence>
@@ -86,7 +123,7 @@
                         <xs:attribute type="xs:string" name="seed" use="optional"/>
                     </xs:complexType>
                 </xs:element>
-            </xs:sequence>
+            </xs:all>
         </xs:complexType>
     </xs:element>
 </xs:schema>
