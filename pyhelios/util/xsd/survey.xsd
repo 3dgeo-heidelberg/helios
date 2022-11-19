@@ -1,15 +1,16 @@
-<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-    <xs:simpleType name="axisType">
-        <xs:restriction base="xs:string">
-            <xs:enumeration value="x"/>
-            <xs:enumeration value="y"/>
-            <xs:enumeration value="z"/>
-        </xs:restriction>
-    </xs:simpleType>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema">
     <xs:simpleType name="rotType">
         <xs:restriction base="xs:string">
             <xs:enumeration value="global"/>
             <xs:enumeration value="local"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="axisType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="x" />
+            <xs:enumeration value="y" />
+            <xs:enumeration value="z" />
         </xs:restriction>
     </xs:simpleType>
     <xs:element name="scannerSettings">
