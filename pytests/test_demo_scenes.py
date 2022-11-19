@@ -227,7 +227,7 @@ def eval_interpolated_traj(dirname):
         for _ in range(3):
             next(f)
         line = f.readline()
-        assert line.startswith('13.4766 1.7424 400.0000')
+        assert line.startswith('13.4764 1.7423 400.0000')
     # clean up
     if DELETE_FILES_AFTER:
         shutil.rmtree(dirname)
@@ -251,7 +251,7 @@ def test_quadcopter_pyh():
 def eval_quadcopter(dirname):
     assert (dirname / 'leg000_points.laz').exists()
     assert (dirname / 'leg000_trajectory.txt').exists()
-    assert abs((dirname / 'leg000_points.laz').stat().st_size - 1_982_564) < MAX_DIFFERENCE_BYTES
+    assert abs((dirname / 'leg000_points.laz').stat().st_size - 1_980_849) < MAX_DIFFERENCE_BYTES
     assert abs((dirname / 'leg002_points.laz').stat().st_size - 2_166_606) < MAX_DIFFERENCE_BYTES
     assert abs((dirname / 'leg004_points.laz').stat().st_size - 3_839_055) < MAX_DIFFERENCE_BYTES
     assert speed_from_traj(dirname / 'leg000_trajectory.txt') == pytest.approx(10.0, 0.001)
