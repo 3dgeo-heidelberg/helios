@@ -1,27 +1,42 @@
 <xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:simpleType name="axisType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="x"/>
+            <xs:enumeration value="y"/>
+            <xs:enumeration value="z"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="rotType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="global"/>
+            <xs:enumeration value="local"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:element name="scannerSettings">
+        <xs:complexType>
+            <xs:simpleContent>
+                <xs:extension base="xs:string">
+                    <xs:attribute type="xs:string" name="id" use="optional"/>
+                    <xs:attribute type="xs:float" name="trajectoryTimeInterval_s" use="optional"/>
+                    <xs:attribute type="xs:boolean" name="active" use="optional"/>
+                    <xs:attribute type="xs:float" name="scanAngle_deg" use="optional"/>
+                    <xs:attribute type="xs:float" name="pulseFreq_hz" use="optional"/>
+                    <xs:attribute type="xs:float" name="scanFreq_hz" use="optional"/>
+                    <xs:attribute type="xs:float" name="verticalAngleMin_deg" use="optional"/>
+                    <xs:attribute type="xs:float" name="verticalAngleMax_deg" use="optional"/>
+                    <xs:attribute type="xs:float" name="headRotatePerSec_deg" use="optional"/>
+                    <xs:attribute type="xs:float" name="headRotateStart_deg" use="optional"/>
+                    <xs:attribute type="xs:float" name="headRotateStop_deg" use="optional"/>
+                    <xs:attribute type="xs:float" name="beamDivergenceRad" use="optional"/>
+                </xs:extension>
+            </xs:simpleContent>
+        </xs:complexType>
+    </xs:element>
     <xs:element name="document">
         <xs:complexType>
-            <xs:all>
-                <xs:element name="scannerSettings" maxOccurs="1" minOccurs="0">
-                    <xs:complexType>
-                        <xs:simpleContent>
-                            <xs:extension base="xs:string">
-                                <xs:attribute type="xs:string" name="id" use="required"/>
-                                <xs:attribute type="xs:boolean" name="active" use="optional"/>
-                                <xs:attribute type="xs:float" name="scanAngle_deg" use="optional"/>
-                                <xs:attribute type="xs:float" name="pulseFreq_hz" use="optional"/>
-                                <xs:attribute type="xs:float" name="scanFreq_hz" use="optional"/>
-                                <xs:attribute type="xs:float" name="verticalAngleMin_deg" use="optional"/>
-                                <xs:attribute type="xs:float" name="verticalAngleMax_deg" use="optional"/>
-                                <xs:attribute type="xs:float" name="headRotatePerSec_deg" use="optional"/>
-                                <xs:attribute type="xs:float" name="headRotateStart_deg" use="optional"/>
-                                <xs:attribute type="xs:float" name="headRotateStop_deg" use="optional"/>
-                                <xs:attribute type="xs:float" name="trajectoryTimeInterval_s" use="optional"/>
-                            </xs:extension>
-                        </xs:simpleContent>
-                    </xs:complexType>
-                </xs:element>
-                <xs:element name="platformSettings" maxOccurs="1" minOccurs="0">
+            <xs:choice minOccurs="1" maxOccurs="unbounded">
+                <xs:element ref="scannerSettings" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element name="platformSettings" minOccurs="0" maxOccurs="unbounded">
                     <xs:complexType>
                         <xs:simpleContent>
                             <xs:extension base="xs:string">
@@ -39,9 +54,9 @@
                         </xs:simpleContent>
                     </xs:complexType>
                 </xs:element>
-                <xs:element name="survey">
+                <xs:element name="survey" minOccurs="1" maxOccurs="1">
                     <xs:complexType>
-                        <xs:sequence>
+                        <xs:choice minOccurs="1" maxOccurs="unbounded">
                             <xs:element name="FWFSettings" maxOccurs="1" minOccurs="0">
                                 <xs:complexType>
                                     <xs:simpleContent>
@@ -54,6 +69,37 @@
                                     </xs:simpleContent>
                                 </xs:complexType>
                             </xs:element>
+                            <xs:element name="detectorSettings" maxOccurs="1" minOccurs="0">
+                                    <xs:complexType>
+                                        <xs:simpleContent>
+                                            <xs:extension base="xs:string">
+                                                <xs:attribute type="xs:float" name="rangeMin_m" use="optional"/>
+                                                <xs:attribute type="xs:float" name="rangeMax_m" use="optional"/>
+                                                <xs:attribute type="xs:float" name="accuracy_m" use="optional"/>
+                                            </xs:extension>
+                                        </xs:simpleContent>
+                                    </xs:complexType>
+                                </xs:element>
+                            <xs:element name="scannerMount" maxOccurs="1" minOccurs="0">
+                                    <xs:complexType mixed="true">
+                                        <xs:sequence>
+                                            <xs:element name="rot" maxOccurs="unbounded" minOccurs="0">
+                                                <xs:complexType>
+                                                    <xs:simpleContent>
+                                                        <xs:extension base="xs:string">
+                                                            <xs:attribute type="axisType" name="axis" use="optional"/>
+                                                            <xs:attribute type="xs:float" name="angle_deg" use="optional"/>
+                                                        </xs:extension>
+                                                    </xs:simpleContent>
+                                                </xs:complexType>
+                                            </xs:element>
+                                        </xs:sequence>
+                                        <xs:attribute type="xs:float" name="x" use="optional"/>
+                                        <xs:attribute type="xs:float" name="y" use="optional"/>
+                                        <xs:attribute type="xs:float" name="z" use="optional"/>
+                                        <xs:attribute type="rotType" name="rotations" use="optional"/>
+                                    </xs:complexType>
+                                </xs:element>
                             <xs:element name="leg" maxOccurs="unbounded" minOccurs="1">
                                 <xs:complexType>
                                     <xs:sequence>
@@ -62,8 +108,8 @@
                                                 <xs:simpleContent>
                                                     <xs:extension base="xs:string">
                                                         <xs:attribute type="xs:string" name="template" use="optional"/>
-                                                        <xs:attribute type="xs:float" name="x" use="required"/>
-                                                        <xs:attribute type="xs:float" name="y" use="required"/>
+                                                        <xs:attribute type="xs:float" name="x" use="optional"/>
+                                                        <xs:attribute type="xs:float" name="y" use="optional"/>
                                                         <xs:attribute type="xs:float" name="z" use="optional"/>
                                                         <xs:attribute type="xs:float" name="movePerSec_m" use="optional"/>
                                                         <xs:attribute type="xs:boolean" name="onGround" use="optional"/>
@@ -71,7 +117,6 @@
                                                         <xs:attribute type="xs:boolean" name="smoothTurn" use="optional"/>
                                                         <xs:attribute type="xs:boolean" name="slowdownEnabled" use="optional"/>
                                                         <xs:attribute type="xs:float" name="yawAtDeparture_deg" use="optional"/>
-
                                                         <xs:attribute type="xs:string" name="trajectory" use="optional"/>
                                                         <xs:attribute type="xs:string" name="trajectory_separator" use="optional"/>
                                                         <xs:attribute type="xs:int" name="xIndex" use="optional"/>
@@ -114,16 +159,17 @@
                                     </xs:sequence>
                                     <xs:attribute type="xs:int" name="stripId" use="optional"/>
                                 </xs:complexType>
-                            </xs:element>
-                        </xs:sequence>
+                                </xs:element>
+                        </xs:choice>
                         <xs:attribute type="xs:string" name="name" use="required"/>
                         <xs:attribute type="xs:string" name="platform" use="required"/>
+                        <xs:attribute type="xs:string" name="basePlatform" use="optional"/>
                         <xs:attribute type="xs:string" name="scanner" use="required"/>
                         <xs:attribute type="xs:string" name="scene" use="required"/>
                         <xs:attribute type="xs:string" name="seed" use="optional"/>
                     </xs:complexType>
                 </xs:element>
-            </xs:all>
+            </xs:choice>
         </xs:complexType>
     </xs:element>
 </xs:schema>

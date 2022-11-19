@@ -13,6 +13,7 @@ import sys
 import xml.etree.ElementTree as ET
 import subprocess
 from pathlib import Path
+import urllib
 
 
 def handle_relative_path(root, *paths):
@@ -64,7 +65,10 @@ except KeyError as e:
 xmlschema.validate(str(survey_file), survey_schema)
 xmlschema.validate(str(scene_file), scene_schema)
 xmlschema.validate(str(scanner_file), scanner_schema)
-xmlschema.validate(str(platform_file), platform_schema)
+try:
+    xmlschema.validate(str(platform_file), platform_schema)
+except urllib.error.URLError:
+    assert str(platform_file) == "interpolated"
 
 # call HELIOS++
 subprocess.run([HELIOS_EXE, survey_file, *sys.argv[2:]])

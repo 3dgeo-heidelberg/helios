@@ -13,6 +13,23 @@
         </xs:restriction>
     </xs:simpleType>
 
+    <xs:simpleType name="motionType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="translation" />
+            <xs:enumeration value="rotation" />
+            <xs:enumeration value="reflection" />
+            <xs:enumeration value="glideplane" />
+            <xs:enumeration value="helical" />
+            <xs:enumeration value="rotsym" />
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="vector">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="([+-]?(\d*\.)?\d*);([+-]?(\d*\.)?\d*);([+-]?(\d*\.)?\d*)"></xs:pattern>
+        </xs:restriction>
+    </xs:simpleType>
+
     <xs:simpleType name="axisType">
         <xs:restriction base="xs:string">
             <xs:enumeration value="x" />
@@ -89,13 +106,39 @@
                                                 <xs:attribute type="filterType" name="type" use="required"/>
                                             </xs:complexType>
                                         </xs:element>
+                                        <xs:element name="dmotion" maxOccurs="unbounded" minOccurs="0">
+                                            <xs:complexType>
+                                                <xs:sequence>
+                                                    <xs:element name="motion" maxOccurs="unbounded" minOccurs="1">
+                                                        <xs:complexType>
+                                                            <xs:attribute type="xs:string" name="type" use="required"/>
+                                                            <xs:attribute type="vector" name="vec" use="optional"/>
+                                                            <xs:attribute type="vector" name="axis" use="optional"/>
+                                                            <xs:attribute type="xs:float" name="angle" use="optional"/>
+                                                            <xs:attribute type="vector" name="center" use="optional"/>
+                                                            <xs:attribute type="xs:float" name="glide" use="optional"/>
+                                                            <xs:attribute type="vector" name="ortho" use="optional"/>
+                                                            <xs:attribute type="vector" name="shift" use="optional"/>
+                                                            <xs:attribute type="xs:boolean" name="selfMode" use="optional"/>
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                </xs:sequence>
+                                                <xs:attribute type="xs:string" name="id" use="required"/>
+                                                <xs:attribute type="xs:int" name="loop" use="optional"/>
+                                                <xs:attribute type="xs:string" name="next" use="optional"/>
+                                            </xs:complexType>
+                                        </xs:element>
                                     </xs:sequence>
                                     <xs:attribute type="xs:string" name="id" use="optional"/>
+                                    <xs:attribute type="xs:string" name="dynStep" use="optional"/>
+                                    <xs:attribute type="xs:string" name="kdtDynStep" use="optional"/>
                                 </xs:complexType>
                             </xs:element>
                         </xs:sequence>
                         <xs:attribute type="xs:string" name="id" use="required"/>
                         <xs:attribute type="xs:string" name="name" use="optional"/>
+                        <xs:attribute type="xs:string" name="dynStep" use="optional"/>
+                        <xs:attribute type="xs:string" name="kdtDynStep" use="optional"/>
                     </xs:complexType>
                 </xs:element>
             </xs:sequence>
