@@ -140,9 +140,9 @@
 
     <xs:element name="document">
         <xs:complexType>
-            <xs:sequence>
-                <xs:element name="scene" type="sceneType"/>
-            </xs:sequence>
+            <xs:choice>
+                <xs:element name="scene" type="sceneType" minOccurs="1" maxOccurs="unbounded"/>
+            </xs:choice>
         </xs:complexType>
     </xs:element>
 </xs:schema>

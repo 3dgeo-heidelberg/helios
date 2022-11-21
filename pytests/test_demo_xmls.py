@@ -96,12 +96,10 @@ def get_paths(survey_file):
      pytest.param((Path(WORKING_DIR) / 'data' / 'surveys' / 'voxels' / 'als_detailedVoxels_mode_comparison.xml'),
                   id="als_detailedVoxels_mode_comparison.xml"),
      # skip because survey-scene combo not supported by XSD at the moment
-     # pytest.param((Path(WORKING_DIR) / 'data' / 'surveys' / 'voxels' / 'tls_sphere_xyzloader.xml'),
-     # id="tls_sphere_xyzloader.xml"),
-     # pytest.param((Path(WORKING_DIR) / 'data' / 'surveys' / 'voxels' / 'tls_sphere_xyzloader_comma.xml'),
-     # id="tls_sphere_xyzloader_comma.xml"),
-     # pytest.param((Path(WORKING_DIR) / 'data' / 'surveys' / 'voxels' / 'tls_sphere_xyzloader_normals.xml'),
-     # id="tls_sphere_xyzloader_normals.xml"),
+     pytest.param((Path(WORKING_DIR) / 'data' / 'surveys' / 'voxels' / 'tls_sphere_xyzloader.xml'),
+                  id="tls_sphere_xyzloader.xml"),
+     pytest.param((Path(WORKING_DIR) / 'data' / 'surveys' / 'voxels' / 'tls_sphere_xyzloader_normals.xml'),
+                  id="tls_sphere_xyzloader_normals.xml"),
      pytest.param((Path(WORKING_DIR) / 'data' / 'surveys' / 'voxels' / 'uls_detailedVoxels_mode_comparison.xml'),
                   id="uls_detailedVoxels_mode_comparison.xml"),
      ]
