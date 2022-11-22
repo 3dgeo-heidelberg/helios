@@ -5,6 +5,7 @@ import sys
 from pathlib import Path
 import numpy as np
 import pytest
+import fnmatch
 
 MAX_DIFFERENCE_BYTES = 1024
 DELETE_FILES_AFTER = False
@@ -41,7 +42,8 @@ def run_helios_executable(survey_path: Path, options=None) -> Path:
     return find_playback_dir(survey_path)
 
 
-def run_helios_pyhelios(survey_path: Path, las_output: bool = True, zip_output: bool = False, start_time: str = None) -> Path:
+def run_helios_pyhelios(survey_path: Path, las_output: bool = True, zip_output: bool = False,
+                        start_time: str = None, split_by_channel: bool = False) -> Path:
     sys.path.append(WORKING_DIR)
     import pyhelios
     pyhelios.setDefaultRandomnessGeneratorSeed("43")
@@ -54,6 +56,7 @@ def run_helios_pyhelios(survey_path: Path, las_output: bool = True, zip_output: 
     simB.setLasOutput(las_output)
     simB.setRebuildScene(True)
     simB.setZipOutput(zip_output)
+    simB.setSplitByChannel(split_by_channel)
     simB.setNumThreads(1)
     simB.setKDTJobs(1)
     if start_time:
@@ -228,7 +231,7 @@ def eval_interpolated_traj(dirname):
         for _ in range(3):
             next(f)
         line = f.readline()
-        assert line.startswith('13.4764 1.7423 400.0000')
+        assert line.startswith('13.4766 1.7424 400.0000')
     # clean up
     if DELETE_FILES_AFTER:
         shutil.rmtree(dirname)
@@ -266,3 +269,43 @@ def eval_quadcopter(dirname):
     # clean up
     if DELETE_FILES_AFTER:
         shutil.rmtree(dirname)
+
+
+@pytest.mark.pyh
+def test_als_multichannel_pyh():
+    dirname_pyh = run_helios_pyhelios(Path('data') / 'surveys' / 'demo' / 'light_als_toyblocks_multiscanner.xml',
+                                      zip_output=True)
+    eval_als_multichannel(dirname_pyh)
+
+
+@pytest.mark.pyh
+def test_als_multichannel_split_pyh():
+    dirname_pyh = run_helios_pyhelios(Path('data') / 'surveys' / 'demo' / 'light_als_toyblocks_multiscanner.xml',
+                                      zip_output=True, split_by_channel=True)
+    eval_als_multichannel_split(dirname_pyh)
+
+
+@pytest.mark.exe
+def test_als_multichannel():
+    dirname_exe = run_helios_executable(Path('data') / 'surveys' / 'demo' / 'light_als_toyblocks_multiscanner.xml',
+                                        options=['--lasOutput',
+                                                 '--zipOutput'])
+    eval_als_multichannel(dirname_exe)
+
+
+@pytest.mark.exe
+def test_als_multichannel_split():
+    dirname_exe = run_helios_executable(Path('data') / 'surveys' / 'demo' / 'light_als_toyblocks_multiscanner.xml',
+                                        options=['--lasOutput',
+                                                 '--zipOutput',
+                                                 '--splitByChannel'])
+    eval_als_multichannel_split(dirname_exe)
+
+
+def eval_als_multichannel(dirname):
+    assert len(fnmatch.filter(os.listdir(dirname), '*.laz')) == 2
+
+
+def eval_als_multichannel_split(dirname):
+    # 2 legs, Livox Mid-100 has 3 channels, so we expect 6 point clouds
+    assert len(fnmatch.filter(os.listdir(dirname), '*.laz')) == 6
