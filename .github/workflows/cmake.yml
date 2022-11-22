@@ -387,7 +387,7 @@ jobs:
               echo "LD_LIBRARY_PATH=${{github.workspace}}/lib/armadillo:${{github.workspace}}/lib/LAStools:${{github.workspace}}/lib/gdal" >> $GITHUB_ENV
 
           - name: Install pytest and numpy
-            run: python -m pip install pytest numpy
+            run: python -m pip install pytest numpy xmlschema
 
           - name: Run pytest
             run: python -m pytest -v ${{github.workspace}}/pytests
