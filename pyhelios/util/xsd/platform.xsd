@@ -80,7 +80,7 @@
                         <xs:attribute type="xs:float" name="drag" use="optional"/>
                         <xs:attribute type="xs:float" name="engine_max_force" use="optional"/>
                         <xs:attribute type="xs:float" name="speedup_magnitude" use="optional"/>
-                        <xs:attribute type="xs:float" name="slowndown_magnitude" use="optional"/>
+                        <xs:attribute type="xs:float" name="slowdown_magnitude" use="optional"/>
                         <xs:attribute type="xs:float" name="slowdown_distance" use="optional"/>
                         <xs:attribute type="xs:float" name="base_pitch_deg" use="optional"/>
                         <xs:attribute type="xs:float" name="roll_speed_deg" use="optional"/>

@@ -14,7 +14,6 @@
                 <param type="string" key="filepath" value="data/sceneparts/pointclouds/sphere_dens25000.xyz" />
 				<param type="string" key="separator" value=" " />
 				<param type="double" key="voxelSize" value="1.0" />
-				<param type="double" key="maxColorValue" value="255" />
 				<!-- Normal estimation using Singular Value Decomposition (SVD)
 				MODE 1: simple mode / MODE 2: advanced mode for large files, which works in batches -->
 				<param type="int" key="estimateNormals" value="1" />
@@ -44,7 +43,6 @@
                 <param type="string" key="filepath" value="data/sceneparts/pointclouds/sphere_dens25000_normals.xyz" />
 				<param type="string" key="separator" value=" " />
 				<param type="double" key="voxelSize" value="1.0" />
-				<param type="double" key="maxColorValue" value="255" />
 				<!-- DEFAULT: voxel normal is computed as the average of the point normals in the voxel
 				ALTERNATIVELY, the normal of the point closest to the voxel centre can be used:
 				<param type="boolean" key="snapNeighborNormal" value="true" /> -->

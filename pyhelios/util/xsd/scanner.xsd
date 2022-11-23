@@ -26,7 +26,7 @@
             <xs:sequence>
                 <xs:element name="scanner" maxOccurs="unbounded" minOccurs="1">
                     <xs:complexType mixed="true">
-                        <xs:sequence>
+                        <xs:all>
                             <xs:element name="FWFSettings" minOccurs="0">
                                 <xs:complexType>
                                     <xs:simpleContent>
@@ -70,7 +70,63 @@
                                     </xs:simpleContent>
                                 </xs:complexType>
                             </xs:element>
-                        </xs:sequence>
+                            <xs:element name="channels" minOccurs="0">
+                                <xs:complexType>
+                                    <xs:choice>
+                                        <xs:element name="channel" minOccurs="1" maxOccurs="unbounded">
+                                            <xs:complexType>
+                                                <xs:all>
+                                                    <xs:element name="FWFSettings" minOccurs="0">
+                                                        <xs:complexType>
+                                                            <xs:simpleContent>
+                                                                <xs:extension base="xs:string">
+                                                                    <xs:attribute type="xs:int" name="beamSampleQuality"/>
+                                                                    <xs:attribute type="xs:float" name="binSize_ns"/>
+                                                                    <xs:attribute type="xs:float" name="maxFullwaveRange_ns"/>
+                                                                    <xs:attribute type="xs:float" name="winSize_ns"/>
+                                                                </xs:extension>
+                                                            </xs:simpleContent>
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                    <xs:element name="beamOrigin" minOccurs="0">
+                                                        <xs:complexType>
+                                                            <xs:choice maxOccurs="unbounded" minOccurs="0">
+                                                                <xs:element name="rot">
+                                                                    <xs:complexType>
+                                                                        <xs:simpleContent>
+                                                                            <xs:extension base="xs:string">
+                                                                                <xs:attribute type="axisType" name="axis" use="optional"/>
+                                                                                <xs:attribute type="xs:float" name="angle_deg" use="optional"/>
+                                                                            </xs:extension>
+                                                                        </xs:simpleContent>
+                                                                    </xs:complexType>
+                                                                </xs:element>
+                                                            </xs:choice>
+                                                            <xs:attribute type="xs:float" name="x" use="optional"/>
+                                                            <xs:attribute type="xs:float" name="y" use="optional"/>
+                                                            <xs:attribute type="xs:float" name="z" use="optional"/>
+                                                            <xs:attribute type="rotType" name="rotations" use="optional"/>
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                    <xs:element name="headRotateAxis" minOccurs="0">
+                                                        <xs:complexType>
+                                                            <xs:simpleContent>
+                                                                <xs:extension base="xs:string">
+                                                                    <xs:attribute type="xs:float" name="x" use="optional"/>
+                                                                    <xs:attribute type="xs:float" name="y" use="optional"/>
+                                                                    <xs:attribute type="xs:float" name="z" use="optional"/>
+                                                                </xs:extension>
+                                                            </xs:simpleContent>
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                </xs:all>
+                                            <xs:attribute type="xs:string" name="id" use="required"/>
+                                        </xs:complexType>
+                                        </xs:element>
+                                    </xs:choice>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:all>
                         <xs:attribute type="xs:string" name="id" use="required"/>
                         <xs:attribute type="xs:float" name="accuracy_m" use="optional"/>
                         <xs:attribute type="xs:float" name="beamDivergence_rad" use="optional"/>

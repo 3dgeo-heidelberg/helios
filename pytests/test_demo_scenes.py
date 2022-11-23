@@ -184,7 +184,8 @@ def test_interpolated_traj_exe():
 @pytest.mark.pyh
 def test_interpolated_traj_pyh():
     dirname_pyh = run_helios_pyhelios(Path('data') / 'surveys' / 'demo' / 'als_interpolated_trajectory.xml',
-                                      zip_output=True)
+                                      zip_output=True,
+                                      start_time='2022-01-01 00:00:00')
     eval_interpolated_traj(dirname_pyh)
 
 
