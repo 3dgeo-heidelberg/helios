@@ -226,8 +226,8 @@ public:
         lwHeader.version_minor = U8(4);
 
         // Update Point Data Format to support new return number / classes
-        lwHeader.point_data_format = 0;
-        lwHeader.point_data_record_length = 30;
+        lwHeader.point_data_format = 1;
+        lwHeader.point_data_record_length = 38;
 
         // Adds the byte difference between LAS 1.4 and LAS 1.0 (350 - 227)
         lwHeader.header_size += 148;
