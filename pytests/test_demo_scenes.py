@@ -7,6 +7,11 @@ import numpy as np
 import pytest
 import fnmatch
 
+try:
+    import laspy
+except ImportError:
+    pass
+
 MAX_DIFFERENCE_BYTES = 1024
 DELETE_FILES_AFTER = False
 HELIOS_EXE = str(Path('run') / 'helios')
@@ -43,7 +48,7 @@ def run_helios_executable(survey_path: Path, options=None) -> Path:
 
 
 def run_helios_pyhelios(survey_path: Path, las_output: bool = True, zip_output: bool = False,
-                        start_time: str = None, split_by_channel: bool = False) -> Path:
+                        start_time: str = None, split_by_channel: bool = False, las10: bool = False) -> Path:
     sys.path.append(WORKING_DIR)
     import pyhelios
     pyhelios.setDefaultRandomnessGeneratorSeed("43")
@@ -54,6 +59,7 @@ def run_helios_pyhelios(survey_path: Path, las_output: bool = True, zip_output: 
         outputDir=WORKING_DIR + os.sep + 'output' + os.sep,
     )
     simB.setLasOutput(las_output)
+    simB.setLas10(las10)
     simB.setRebuildScene(True)
     simB.setZipOutput(zip_output)
     simB.setSplitByChannel(split_by_channel)
@@ -309,3 +315,67 @@ def eval_als_multichannel(dirname):
 def eval_als_multichannel_split(dirname):
     # 2 legs, Livox Mid-100 has 3 channels, so we expect 6 point clouds
     assert len(fnmatch.filter(os.listdir(dirname), '*.laz')) == 6
+
+
+@pytest.mark.skipif("laspy" not in sys.modules,
+                    reason="requires the laspy library")
+@pytest.mark.pyh
+@pytest.mark.parametrize(
+    "zip_flag, las10_flag",
+    [
+        pytest.param(False, False, id="LAS v1.4"),
+        pytest.param(False, True, id="LAS v1.0"),
+        pytest.param(True, False, id="LAZ v1.4"),
+        pytest.param(True, True, id="LAZ v1.0"),
+    ]
+)
+def test_las_pyh(zip_flag: bool, las10_flag: bool):
+    """"""
+    dirname_pyh = run_helios_pyhelios(Path('data') / 'surveys' / 'demo' / 'light_als_toyblocks_multiscanner.xml',
+                                      las_output=True, zip_output=zip_flag, las10=las10_flag)
+    las_version = "1.0" if las10_flag else "1.4"
+    eval_las(dirname_pyh, las_version)
+
+
+@pytest.mark.skipif("laspy" not in sys.modules,
+                    reason="requires the laspy library")
+@pytest.mark.exe
+@pytest.mark.parametrize(
+    "zip_flag, las10_flag",
+    [
+        pytest.param(False, False, id="LAS v1.4"),
+        pytest.param(False, True, id="LAS v1.0"),
+        pytest.param(True, False, id="LAZ v1.4"),
+        pytest.param(True, True, id="LAZ v1.0"),
+    ]
+)
+def test_las_exe(zip_flag: bool, las10_flag: bool):
+    options = ["--lasOutput"]
+    if zip_flag:
+        options.append("--zipOutput")
+    if las10_flag:
+        options.append("--las10")
+
+    dirname_exe = run_helios_executable(Path('data') / 'surveys' / 'demo' / 'light_als_toyblocks_multiscanner.xml',
+                                        options=options)
+    las_version = "1.0" if las10_flag else "1.4"
+    eval_las(dirname_exe, las_version)
+
+
+def eval_las(dirname, las_version):
+    path = Path(dirname) / fnmatch.filter(os.listdir(dirname), '*.la?')[0]
+    las = laspy.read(path)
+    dimensions = [d.name for d in las.point_format.dimensions]
+    expected_dimensions = [
+        "X", "Y", "Z",
+        "intensity",
+        "classification",
+        "gps_time",
+        "echo_width",
+        "fullwaveIndex",
+        "hitObjectId",
+        "heliosAmplitude"
+    ]
+    for dim in expected_dimensions:
+        assert dim in dimensions
+    assert las.header.version == las_version
