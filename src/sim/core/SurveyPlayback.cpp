@@ -80,7 +80,16 @@ SurveyPlayback::SurveyPlayback(
             getScanner()->platform
         );
     if(imp != nullptr && imp->isSyncGPSTime()){
-        this->currentGpsTime_ns = imp->getStartTime() * 1000000000.0;
+        if(mSurvey->legs[0]->mTrajectorySettings->hasStartTime()){
+            // Use start time of first leg
+            this->currentGpsTime_ns = (
+                mSurvey->legs[0]->mTrajectorySettings->tStart +
+                imp->getStartTime()
+            ) * 1000000000.0;
+        }
+        else{  // Use min time from input trajectory
+            this->currentGpsTime_ns = imp->getStartTime() * 1000000000.0;
+        }
     }
 
 	// Orientate platform and start first leg
@@ -353,6 +362,23 @@ void SurveyPlayback::startLeg(unsigned int const legIndex, bool const manual) {
                 imp->toTrajectoryTime(leg->mTrajectorySettings->tStart);
             }
         }catch(...) {}
+        // Set the interpolated moving platform time difference from target leg
+        if(platform->isInterpolated()){
+            std::shared_ptr<InterpolatedMovingPlatform> imp =
+                dynamic_pointer_cast<InterpolatedMovingPlatform>(platform);
+            if(!(
+                leg->mTrajectorySettings->hasStartTime() ||
+                leg->mTrajectorySettings->hasEndTime()
+            )){  // If stop leg
+                imp->setTargetLegTimeDiff(0);
+            }
+            else{  // If non-stop leg
+                imp->setTargetLegTimeDiff(
+                    leg->mTrajectorySettings->tEnd -
+                    leg->mTrajectorySettings->tStart
+                );
+            }
+        }
 
 		// ################ END Set platform destination ##################
 		platform->prepareLeg(mScanner->getPulseFreq_Hz());

@@ -77,10 +77,9 @@ void InterpolatedMovingPlatform::doSimStep(int simFrequency_hz){
     doStepUpdates(stepLoop.getCurrentTime());
 }
 bool InterpolatedMovingPlatform::waypointReached(){
-    double const am = timeFrontiers(timeFrontiers.n_elem-1) +
-        currentLegStartTime;
+    double const legEndTime = targetLegTimeDiff + currentLegStartTime;
     double const t = stepLoop.getCurrentTime();
-    return t >= am;
+    return t >= legEndTime;
 }
 void InterpolatedMovingPlatform::toTrajectoryTime(double const t){
     double h = t - tf->getFpiem().getT();

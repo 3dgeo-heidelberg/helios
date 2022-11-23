@@ -103,9 +103,18 @@ protected:
      *  \f$0\f$ for the first leg and it is the time at which \f$i\f$-th leg
      *  finished for the \f$(i+1)\f$-th leg
      *
-     * @see InterpolatedMovingPlatform::currentLegStartTime
+     * @see InterpolatedMovingPlatform::waypointReached
+     * @see InterpolatedMovingPlatform::targetLegTimeDiff
      */
     double currentLegStartTime;
+    /**
+     * @brief The difference between the start time and the end time of the
+     *  target leg (the one defining the end point of the current leg)
+     *
+     * @see InterpolatedMovingPlatform::waypointReached
+     * @see InterpolatedMovingPlatform::currentLegStartTime
+     */
+    double targetLegTimeDiff;
 
 public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //
@@ -282,10 +291,23 @@ public:
     /**
      * @see Platform::isInterpolated
      */
-    bool isInterpolated() const override {return true;}
+    inline bool isInterpolated() const override {return true;}
     /**
      * @brief Obtain the start time of the current leg
      * @see InterpolatedMovingPlatform::currentLegStartTime
      */
-    double getCurrentLegStartTime() const {return currentLegStartTime;}
+    inline double getCurrentLegStartTime() const {return currentLegStartTime;}
+    /**
+     * @brief Set the time difference between the start and end points of the
+     *  target leg
+     * @see InterpolatedMovingPlatform::targetLegTimeDiff
+     */
+    inline void setTargetLegTimeDiff(double const timeDiff)
+    {targetLegTimeDiff = timeDiff;}
+    /**
+     * @brief Obtain the time difference between the start and end points of
+     *  the target leg
+     * @see InterpolatedMovingPlatform::targetLegTimeDiff
+     */
+    inline double getTargetLegTimeDiff() const {return targetLegTimeDiff;}
 };
