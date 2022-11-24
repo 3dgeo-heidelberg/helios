@@ -169,12 +169,10 @@ int SurveyPlayback::estimateTemporalLegProgress(){
         std::static_pointer_cast<InterpolatedMovingPlatform>(
             mSurvey->scanner->platform
         );
-    arma::Col<double> const &tf = imp->getTimeFrontiers();
-    double const a1 = tf(0);
-    double const am = tf(tf.n_elem-1);
-    double const t = imp->getStepLoop().getCurrentTime() - \
-        imp->getCurrentLegStartTime();
-    return (int)(100*(t-a1)/(am-a1));
+    double const t0 = imp->getCurrentLegStartTime();
+    double const t = imp->getStepLoop().getCurrentTime();
+    double const Dt = imp->getCurrentLegTimeDiff();
+    return (int)(100*t/(t0 + Dt));
 }
 
 void SurveyPlayback::trackProgress() {
@@ -370,10 +368,10 @@ void SurveyPlayback::startLeg(unsigned int const legIndex, bool const manual) {
                 leg->mTrajectorySettings->hasStartTime() ||
                 leg->mTrajectorySettings->hasEndTime()
             )){  // If stop leg
-                imp->setTargetLegTimeDiff(0);
+                imp->setCurrentLegTimeDiff(0);
             }
             else{  // If non-stop leg
-                imp->setTargetLegTimeDiff(
+                imp->setCurrentLegTimeDiff(
                     leg->mTrajectorySettings->tEnd -
                     leg->mTrajectorySettings->tStart
                 );
