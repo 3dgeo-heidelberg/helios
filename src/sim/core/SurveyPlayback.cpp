@@ -80,7 +80,16 @@ SurveyPlayback::SurveyPlayback(
             getScanner()->platform
         );
     if(imp != nullptr && imp->isSyncGPSTime()){
-        this->currentGpsTime_ns = imp->getStartTime() * 1000000000.0;
+        if(mSurvey->legs[0]->mTrajectorySettings->hasStartTime()){
+            // Use start time of first leg
+            this->currentGpsTime_ns = (
+                mSurvey->legs[0]->mTrajectorySettings->tStart +
+                imp->getStartTime()
+            ) * 1000000000.0;
+        }
+        else{  // Use min time from input trajectory
+            this->currentGpsTime_ns = imp->getStartTime() * 1000000000.0;
+        }
     }
 
 	// Orientate platform and start first leg
@@ -160,12 +169,10 @@ int SurveyPlayback::estimateTemporalLegProgress(){
         std::static_pointer_cast<InterpolatedMovingPlatform>(
             mSurvey->scanner->platform
         );
-    arma::Col<double> const &tf = imp->getTimeFrontiers();
-    double const a1 = tf(0);
-    double const am = tf(tf.n_elem-1);
-    double const t = imp->getStepLoop().getCurrentTime() - \
-        imp->getCurrentLegStartTime();
-    return (int)(100*(t-a1)/(am-a1));
+    double const t0 = imp->getCurrentLegStartTime();
+    double const t = imp->getStepLoop().getCurrentTime();
+    double const Dt = imp->getCurrentLegTimeDiff();
+    return (int)(100*t/(t0 + Dt));
 }
 
 void SurveyPlayback::trackProgress() {
@@ -353,6 +360,23 @@ void SurveyPlayback::startLeg(unsigned int const legIndex, bool const manual) {
                 imp->toTrajectoryTime(leg->mTrajectorySettings->tStart);
             }
         }catch(...) {}
+        // Set the interpolated moving platform time difference from target leg
+        if(platform->isInterpolated()){
+            std::shared_ptr<InterpolatedMovingPlatform> imp =
+                dynamic_pointer_cast<InterpolatedMovingPlatform>(platform);
+            if(!(
+                leg->mTrajectorySettings->hasStartTime() ||
+                leg->mTrajectorySettings->hasEndTime()
+            )){  // If stop leg
+                imp->setCurrentLegTimeDiff(0);
+            }
+            else{  // If non-stop leg
+                imp->setCurrentLegTimeDiff(
+                    leg->mTrajectorySettings->tEnd -
+                    leg->mTrajectorySettings->tStart
+                );
+            }
+        }
 
 		// ################ END Set platform destination ##################
 		platform->prepareLeg(mScanner->getPulseFreq_Hz());

@@ -391,6 +391,8 @@ void XmlSurveyLoader::loadLegs(
             }
             else{
                 xStart = (*trajInterp)(0);
+                leg->mTrajectorySettings->tStart =
+                    ip->tdm->getTimeVector().front();
             }
             leg->mPlatformSettings->x = xStart[xIdx];
             leg->mPlatformSettings->y = xStart[yIdx];
@@ -402,6 +404,8 @@ void XmlSurveyLoader::loadLegs(
             }
             else{
                 xEnd = (*trajInterp)(arma::max(ip->tdm->getTimeVector()));
+                leg->mTrajectorySettings->tEnd =
+                    ip->tdm->getTimeVector().back();
             }
             // Insert stop leg
             std::shared_ptr<Leg> stopLeg = std::make_shared<Leg>(*leg);
