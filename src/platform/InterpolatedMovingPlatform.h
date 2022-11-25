@@ -103,9 +103,23 @@ protected:
      *  \f$0\f$ for the first leg and it is the time at which \f$i\f$-th leg
      *  finished for the \f$(i+1)\f$-th leg
      *
-     * @see InterpolatedMovingPlatform::currentLegStartTime
+     * @see InterpolatedMovingPlatform::waypointReached
+     * @see InterpolatedMovingPlatform::currentLegTimeDiff
      */
     double currentLegStartTime;
+    /**
+     * @brief The difference between the start time and the end time of the
+     *  current leg.
+     *
+     * It is only reliable for non-stop legs. Non-stop legs do not have start
+     *  and end time frontiers, thus their values are the smaller and
+     *  greater numeric limits, respectively (std::numeric_limits).
+     *
+     * @see InterpolatedMovingPlatform::waypointReached
+     * @see InterpolatedMovingPlatform::currentLegStartTime
+     * @see std::numeric_limits
+     */
+    double currentLegTimeDiff;
 
 public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //
@@ -282,10 +296,23 @@ public:
     /**
      * @see Platform::isInterpolated
      */
-    bool isInterpolated() const override {return true;}
+    inline bool isInterpolated() const override {return true;}
     /**
      * @brief Obtain the start time of the current leg
      * @see InterpolatedMovingPlatform::currentLegStartTime
      */
-    double getCurrentLegStartTime() const {return currentLegStartTime;}
+    inline double getCurrentLegStartTime() const {return currentLegStartTime;}
+    /**
+     * @brief Set the time difference between the start and end points of the
+     *  current leg
+     * @see InterpolatedMovingPlatform::currentLegTimeDiff
+     */
+    inline void setCurrentLegTimeDiff(double const timeDiff)
+    {currentLegTimeDiff = timeDiff;}
+    /**
+     * @brief Obtain the time difference between the start and end points of
+     *  the current leg
+     * @see InterpolatedMovingPlatform::currentLegTimeDiff
+     */
+    inline double getCurrentLegTimeDiff() const {return currentLegTimeDiff;}
 };
