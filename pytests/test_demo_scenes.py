@@ -41,9 +41,9 @@ def run_helios_executable(survey_path: Path, options=None) -> Path:
                                                           '-j', '1']
     print(command)
     # shell must be false for linux (but true for windows(?))
-    p = subprocess.Popen(command, cwd=WORKING_DIR, shell=(sys.platform == "win32")))
-    assert
-    p.wait( p.returncode == 0
+    p = subprocess.Popen(command, cwd=WORKING_DIR, shell=(sys.platform == "win32"))
+    p.wait()
+    assert p.returncode == 0
     return find_playback_dir(survey_path)
 
 
