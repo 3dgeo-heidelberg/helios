@@ -29,8 +29,10 @@ public:
 
     /**
      * @brief Load a Detailed Voxels file
+     * @param discardNullPad If true, detailed voxels with PadBVTotal==0 will
+     *  be discarded (it is useful, for instance, when using transmittive mode)
      */
-    void loadDv(std::string const & pathString);
+    void loadDv(std::string const & pathString, bool const discardNullPad);
 
     /**
      * @brief Load specified material for Detailed Voxels. If no material

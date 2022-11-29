@@ -8,10 +8,12 @@ std::vector<std::shared_ptr<DetailedVoxel>> VoxelFileParser::parseDetailed(
     std::string const & path,
     size_t numHeaderLines,
     bool const exactFormat,
+    bool const discardNullPad,
     std::string const separator
 ){
-    std::vector<DetailedVoxel *> oldvec =
-        bruteParseDetailed(path, numHeaderLines, exactFormat, separator);
+    std::vector<DetailedVoxel *> oldvec = bruteParseDetailed(
+        path, numHeaderLines, exactFormat, discardNullPad, separator
+    );
     std::vector<std::shared_ptr<DetailedVoxel>> newvec;
     for(DetailedVoxel *dv : oldvec){
         newvec.push_back(std::shared_ptr<DetailedVoxel>(dv));
@@ -22,7 +24,8 @@ std::vector<std::shared_ptr<DetailedVoxel>> VoxelFileParser::parseDetailed(
 std::vector<DetailedVoxel *> VoxelFileParser::bruteParseDetailed(
     std::string const & path,
     size_t numHeaderLines,
-    bool exactFormat,
+    bool const exactFormat,
+    bool const discardNullPad,
     std::string const separator
 ){
     // Load voxels file
@@ -76,13 +79,16 @@ std::vector<DetailedVoxel *> VoxelFileParser::bruteParseDetailed(
     );
     char format3[4096];
     sprintf(format3, "%s%s", "%lf", sep);
+    DetailedVoxel *dv;
     for(std::string line : lines){
-        voxels.push_back(parseDetailedVoxelLine(
-            line, separator, exactFormat, format1, format2, format3,
+        dv = parseDetailedVoxelLine(
+            line, separator, exactFormat, discardNullPad,
+            format1, format2, format3,
             minCornerX, minCornerY, minCornerZ,
             maxCornerX, maxCornerY, maxCornerZ,
             voxelSize, voxelHalfSize, maxPad
-        ));
+        );
+        if(dv != nullptr) voxels.push_back(dv);
     }
 
     // Return loaded voxels
@@ -451,6 +457,7 @@ DetailedVoxel * VoxelFileParser::parseDetailedVoxelLine(
     std::string &line,
     std::string const separator,
     bool const exactFormat,
+    bool const discardNullPad,
     char const *format1,
     char const *format2,
     char const *format3,
@@ -497,6 +504,8 @@ DetailedVoxel * VoxelFileParser::parseDetailedVoxelLine(
             "VoxelFileParser::parseDetailedVoxelLine failed to parse params2"
         );
     }
+    // Discard when PadBVTotal==0, if requested (e.g., transmittive mode)
+    if(discardNullPad && pad==0) return nullptr;
     values.push_back(pad);          values.push_back(angMean);
     values.push_back(bsEnter);      values.push_back(bsInterc);
     values.push_back(bsPoten);      values.push_back(gDist);
