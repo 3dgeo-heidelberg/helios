@@ -11,6 +11,7 @@ namespace fs = boost::filesystem;
 
 ScenePart* DetailedVoxelLoader::run() {
     // Retrieve params
+    bool transmittiveMode = false;
     if (params.find("intersectionMode") != params.end()){
         primsOut->onRayIntersectionMode =
             boost::get<std::string>(params["intersectionMode"]);
@@ -19,6 +20,7 @@ ScenePart* DetailedVoxelLoader::run() {
             primsOut->onRayIntersectionArgument = 0.5;
         }
     }
+    else transmittiveMode = true;
     if(params.find("intersectionArgument") != params.end()){
         primsOut->onRayIntersectionArgument =
             boost::get<double>(params["intersectionArgument"]);
@@ -37,7 +39,7 @@ ScenePart* DetailedVoxelLoader::run() {
 
     // Load DV files
     for(std::string const & pathString : filePaths) {
-        loadDv(pathString);
+        loadDv(pathString, transmittiveMode);
         primsOut->subpartLimit.push_back(primsOut->mPrimitives.size());
     }
 
@@ -51,7 +53,10 @@ ScenePart* DetailedVoxelLoader::run() {
     return primsOut;
 }
 
-void DetailedVoxelLoader::loadDv(std::string const & pathString){
+void DetailedVoxelLoader::loadDv(
+    std::string const & pathString,
+    bool const discardNullPad
+){
     // Check path exists
     fs::path fsPath(pathString);
     if(!fs::exists(pathString)){
@@ -78,7 +83,7 @@ void DetailedVoxelLoader::loadDv(std::string const & pathString){
     // Parse detailed voxels
     VoxelFileParser vfp;
     std::vector<DetailedVoxel *> dvs =
-        vfp.bruteParseDetailed(pathString, 2, false);
+        vfp.bruteParseDetailed(pathString, 2, false, discardNullPad);
 
     // Prepare detailed voxels
     for(DetailedVoxel * dv : dvs) {
