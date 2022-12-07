@@ -36,7 +36,7 @@ class SimulationBuilder:
         lasOutput -- LAS output format flag
         las10     -- LAS v1.0 output format flag
         zipOutput -- Zip output format flag (can be unzipped with Helios++)
-        splitBychannel -- Each scanning channel to a different file
+        splitByChannel -- Each scanning channel to a different file
         kdtFactory -- The KDT factory to be used (Simple, SAH; AxisSAH, FSAH)
         kdtJobs -- Number of threads to build KDT
         kdtSAHLossNodes -- Size of iterative SAH computation or approximation
@@ -154,7 +154,7 @@ class SimulationBuilder:
         print(
             'SimulationBuilder built simulation in {t} seconds'
             .format(
-                t=end-start
+                t=end - start
             )
         )
         return build
