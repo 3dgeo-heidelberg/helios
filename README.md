@@ -58,6 +58,13 @@ keywords = {Software, LiDAR simulation, Point cloud, Data generation, Voxel, Veg
 }
 ```
 
+## 🎮 Examples
+
+| [![Example 1](img/example1_thumbnail.png)](https://nbviewer.org/github/3dgeo-heidelberg/helios/blob/dev/example_notebooks/1-getting-started.ipynb)  | [![Example 2](img/example2_thumbnail.png)](https://nbviewer.org/github/3dgeo-heidelberg/helios/blob/dev/example_notebooks/2-the-survey.ipynb) |
+|-----------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------|
+| [![Example A](img/exampleA_thumbnail.png)](https://nbviewer.org/github/3dgeo-heidelberg/helios/blob/dev/example_notebooks/arboretum_notebook.ipynb) | |
+
+
 ## ⌨ Usage
 
 HELIOS++ can be invoked with following syntax:
