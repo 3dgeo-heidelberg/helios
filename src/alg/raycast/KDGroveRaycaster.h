@@ -71,4 +71,13 @@ public:
      * @see KDGrove::makeTemporalClone
      */
     virtual std::shared_ptr<KDGroveRaycaster> makeTemporalClone() const;
+
+    // ***  GETTERs and SETTERs  *** //
+    // ***************************** //
+    /**
+     * @brief Obtain the KDGrove associated to the KDGroveRaycaster
+     * @return KDGrove associated to the KDGroveRaycaster
+     * @see KDGroveRaycaster::grove
+     */
+    inline std::shared_ptr<KDGrove> getGrove() {return grove;}
 };

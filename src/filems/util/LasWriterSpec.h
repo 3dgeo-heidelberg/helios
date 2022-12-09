@@ -285,7 +285,7 @@ public:
         }
 
         lwHeader.update_extra_bytes_vlr();
-        lwHeader.point_data_record_length += lwHeader.get_attributes_size();
+        lwHeader.point_data_record_length += lwHeader.get_attributes_size(); // TODO Rethink : Is this wrong? It is necessary for LAS10 but not for LAS14?
         ewAttrStart = lwHeader.get_attribute_start(ewAttrIdx);
         fwiAttrStart = lwHeader.get_attribute_start(fwiAttrIdx);
         hoiAttrStart = lwHeader.get_attribute_start(hoiAttrIdx);
