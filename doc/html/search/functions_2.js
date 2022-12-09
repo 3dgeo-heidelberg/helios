@@ -22,7 +22,7 @@ var searchData=
   ['binarytreefastdepthiterator',['BinaryTreeFastDepthIterator',['../dc/da5/classBinaryTreeFastDepthIterator.html#a0c758bd0115a75a4d6c1b9ea10277ce3',1,'BinaryTreeFastDepthIterator::BinaryTreeFastDepthIterator()=default'],['../dc/da5/classBinaryTreeFastDepthIterator.html#ae34babb1a0e7139df8344a3862d6e00f',1,'BinaryTreeFastDepthIterator::BinaryTreeFastDepthIterator(NodeType *node)']]],
   ['binom',['binom',['../d6/d68/classSurfaceInspector_1_1maths_1_1Scalar.html#a30864dbc17452edc3f9416dbf56a2d68',1,'SurfaceInspector::maths::Scalar']]],
   ['blockallocator',['BlockAllocator',['../d9/d47/classBlockAllocator.html#accbb9f8283a39178a2c5ae1ff1cea09c',1,'BlockAllocator']]],
-  ['bruteparsedetailed',['bruteParseDetailed',['../d9/ddf/classVoxelFileParser.html#ae71162e8c99f8df851732367c12898f9',1,'VoxelFileParser']]],
+  ['bruteparsedetailed',['bruteParseDetailed',['../d9/ddf/classVoxelFileParser.html#ad03409ede9f826d6e216a621888f1bc9',1,'VoxelFileParser']]],
   ['buddingscanningpulseprocess',['BuddingScanningPulseProcess',['../d5/d3c/classBuddingScanningPulseProcess.html#a4118eda862a04607ef37b02696c10960',1,'BuddingScanningPulseProcess']]],
   ['buddingtaskdropper',['BuddingTaskDropper',['../d5/d2f/classBuddingTaskDropper.html#a2f2c0e9440e475a0bdd4c866a7723d7b',1,'BuddingTaskDropper']]],
   ['bufferedlinefilereader',['BufferedLineFileReader',['../d0/d01/classhelios_1_1filems_1_1BufferedLineFileReader.html#a70aa51ce73e1ae1c7b83f62a494d0499',1,'helios::filems::BufferedLineFileReader']]],

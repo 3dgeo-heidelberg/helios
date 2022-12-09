@@ -181,9 +181,12 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 <tr class="memitem:a1a6722505e6732208607bc1ad7915f8c"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d42/classScanner.html#a1a6722505e6732208607bc1ad7915f8c">calcFootprintArea</a> (double const distance) const</td></tr>
 <tr class="memdesc:a1a6722505e6732208607bc1ad7915f8c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Non index version of the Scanner::calcFootprintArea(double const, size_t const) method.  <a href="#a1a6722505e6732208607bc1ad7915f8c">More...</a><br /></td></tr>
 <tr class="separator:a1a6722505e6732208607bc1ad7915f8c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad57a6aba3406fa80f548d0e71423a32f"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d42/classScanner.html#ad57a6aba3406fa80f548d0e71423a32f">calcFootprintRadius</a> (double distance)</td></tr>
-<tr class="memdesc:ad57a6aba3406fa80f548d0e71423a32f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the footprint radius \(f_{r}\).  <a href="#ad57a6aba3406fa80f548d0e71423a32f">More...</a><br /></td></tr>
-<tr class="separator:ad57a6aba3406fa80f548d0e71423a32f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7bf4099625049e5472aeacf30cbe0d38"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d42/classScanner.html#a7bf4099625049e5472aeacf30cbe0d38">calcFootprintRadius</a> (double const distance, size_t const idx)</td></tr>
+<tr class="memdesc:a7bf4099625049e5472aeacf30cbe0d38"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the footprint radius \(f_{r}\).  <a href="#a7bf4099625049e5472aeacf30cbe0d38">More...</a><br /></td></tr>
+<tr class="separator:a7bf4099625049e5472aeacf30cbe0d38"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae0dfc3c2023e9c5e66b64092e8856b2b"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d42/classScanner.html#ae0dfc3c2023e9c5e66b64092e8856b2b">calcFootprintRadius</a> (double const distance)</td></tr>
+<tr class="memdesc:ae0dfc3c2023e9c5e66b64092e8856b2b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Non index version of the <a class="el" href="../../dc/d42/classScanner.html#a7bf4099625049e5472aeacf30cbe0d38" title="Compute the footprint radius . ">Scanner::calcFootprintRadius(double const, size_t const)</a> method.  <a href="#ae0dfc3c2023e9c5e66b64092e8856b2b">More...</a><br /></td></tr>
+<tr class="separator:ae0dfc3c2023e9c5e66b64092e8856b2b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1ab80dede77ed7f907fda7a81d70526a"><td class="memItemLeft" align="right" valign="top">virtual double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d42/classScanner.html#a1ab80dede77ed7f907fda7a81d70526a">calcTargetArea</a> (double const distance, size_t const idx) const =0</td></tr>
 <tr class="memdesc:a1ab80dede77ed7f907fda7a81d70526a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculate the target area. It is the footprint area divided by the number of rays.  <a href="#a1ab80dede77ed7f907fda7a81d70526a">More...</a><br /></td></tr>
 <tr class="separator:a1ab80dede77ed7f907fda7a81d70526a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1262,8 +1265,8 @@ int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../..
 
 </div>
 </div>
-<a id="ad57a6aba3406fa80f548d0e71423a32f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad57a6aba3406fa80f548d0e71423a32f">&#9670;&nbsp;</a></span>calcFootprintRadius()</h2>
+<a id="a7bf4099625049e5472aeacf30cbe0d38"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7bf4099625049e5472aeacf30cbe0d38">&#9670;&nbsp;</a></span>calcFootprintRadius() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1271,9 +1274,19 @@ int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../..
         <tr>
           <td class="memname">double Scanner::calcFootprintRadius </td>
           <td>(</td>
-          <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>distance</em></td><td>)</td>
+          <td class="paramtype">double const&#160;</td>
+          <td class="paramname"><em>distance</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">size_t const&#160;</td>
+          <td class="paramname"><em>idx</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -1290,6 +1303,35 @@ int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../..
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Footprint radius \(f_{r}\) </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="../../dc/d42/classScanner.html#af0eed687f66cc2dbd0b37faa4119e4a8" title="Compute the footprint area . ">Scanner::calcFootprintArea</a> </dd></dl>
+
+</div>
+</div>
+<a id="ae0dfc3c2023e9c5e66b64092e8856b2b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae0dfc3c2023e9c5e66b64092e8856b2b">&#9670;&nbsp;</a></span>calcFootprintRadius() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double Scanner::calcFootprintRadius </td>
+          <td>(</td>
+          <td class="paramtype">double const&#160;</td>
+          <td class="paramname"><em>distance</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Non index version of the <a class="el" href="../../dc/d42/classScanner.html#a7bf4099625049e5472aeacf30cbe0d38" title="Compute the footprint radius . ">Scanner::calcFootprintRadius(double const, size_t const)</a> method. </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../dc/d42/classScanner.html#a7bf4099625049e5472aeacf30cbe0d38" title="Compute the footprint radius . ">Scanner::calcFootprintRadius(double const, size_t const)</a> </dd></dl>
 
 </div>
 </div>

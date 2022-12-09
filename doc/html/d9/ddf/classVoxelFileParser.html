@@ -112,12 +112,12 @@ Public Member Functions</h2></td></tr>
 &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/ddf/classVoxelFileParser.html#aacfe87951117d8b72c1709751a27f787">VoxelFileParser</a> ()</td></tr>
 <tr class="memdesc:aacfe87951117d8b72c1709751a27f787"><td class="mdescLeft">&#160;</td><td class="mdescRight">Build a <a class="el" href="../../d9/ddf/classVoxelFileParser.html" title="Class for parsing voxel files. ">VoxelFileParser</a>. <br /></td></tr>
 <tr class="separator:aacfe87951117d8b72c1709751a27f787"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a139e8e3bdf5386ad6860c0e155dc2cb4"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::shared_ptr&lt; <a class="el" href="../../d7/d5a/classDetailedVoxel.html">DetailedVoxel</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/ddf/classVoxelFileParser.html#a139e8e3bdf5386ad6860c0e155dc2cb4">parseDetailed</a> (std::string const &amp;path, size_t numHeaderLines=2, bool const exactFormat=true, std::string const separator=&quot; &quot;)</td></tr>
-<tr class="memdesc:a139e8e3bdf5386ad6860c0e155dc2cb4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parse detailed voxels specified at file located at given path.  <a href="#a139e8e3bdf5386ad6860c0e155dc2cb4">More...</a><br /></td></tr>
-<tr class="separator:a139e8e3bdf5386ad6860c0e155dc2cb4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae71162e8c99f8df851732367c12898f9"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="../../d7/d5a/classDetailedVoxel.html">DetailedVoxel</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/ddf/classVoxelFileParser.html#ae71162e8c99f8df851732367c12898f9">bruteParseDetailed</a> (std::string const &amp;path, size_t numHeaderLines=2, bool const exactFormat=true, std::string const separator=&quot; &quot;)</td></tr>
-<tr class="memdesc:ae71162e8c99f8df851732367c12898f9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Like parseDetailed but returns a vector a normla pointers instead of shared pointers.  <a href="#ae71162e8c99f8df851732367c12898f9">More...</a><br /></td></tr>
-<tr class="separator:ae71162e8c99f8df851732367c12898f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9fb7e9ab70fa08597fc7f0e8be338a33"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::shared_ptr&lt; <a class="el" href="../../d7/d5a/classDetailedVoxel.html">DetailedVoxel</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/ddf/classVoxelFileParser.html#a9fb7e9ab70fa08597fc7f0e8be338a33">parseDetailed</a> (std::string const &amp;path, size_t numHeaderLines=2, bool const exactFormat=true, bool const discardNullPad=false, std::string const separator=&quot; &quot;)</td></tr>
+<tr class="memdesc:a9fb7e9ab70fa08597fc7f0e8be338a33"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parse detailed voxels specified at file located at given path.  <a href="#a9fb7e9ab70fa08597fc7f0e8be338a33">More...</a><br /></td></tr>
+<tr class="separator:a9fb7e9ab70fa08597fc7f0e8be338a33"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad03409ede9f826d6e216a621888f1bc9"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="../../d7/d5a/classDetailedVoxel.html">DetailedVoxel</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/ddf/classVoxelFileParser.html#ad03409ede9f826d6e216a621888f1bc9">bruteParseDetailed</a> (std::string const &amp;path, size_t numHeaderLines=2, bool const exactFormat=true, bool const discardNullPad=false, std::string const separator=&quot; &quot;)</td></tr>
+<tr class="memdesc:ad03409ede9f826d6e216a621888f1bc9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Like parseDetailed but returns a vector a normla pointers instead of shared pointers.  <a href="#ad03409ede9f826d6e216a621888f1bc9">More...</a><br /></td></tr>
+<tr class="separator:ad03409ede9f826d6e216a621888f1bc9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
@@ -145,9 +145,9 @@ Protected Member Functions</h2></td></tr>
 <tr class="memitem:a7bc1f319223e79b9520fd1f3dc2a1f07"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/ddf/classVoxelFileParser.html#a7bc1f319223e79b9520fd1f3dc2a1f07">validateDetailed</a> (bool minCornerXFound, bool minCornerYFound, bool minCornerZFound, bool maxCornerXFound, bool maxCornerYFound, bool maxCornerZFound, bool splitXFound, bool splitYFound, bool splitZFound)</td></tr>
 <tr class="memdesc:a7bc1f319223e79b9520fd1f3dc2a1f07"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if flags are valid.  <a href="#a7bc1f319223e79b9520fd1f3dc2a1f07">More...</a><br /></td></tr>
 <tr class="separator:a7bc1f319223e79b9520fd1f3dc2a1f07"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6014db45cda99f1fa078a68b4c8edad6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d7/d5a/classDetailedVoxel.html">DetailedVoxel</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/ddf/classVoxelFileParser.html#a6014db45cda99f1fa078a68b4c8edad6">parseDetailedVoxelLine</a> (std::string &amp;line, std::string const separator, bool const exactFormat, char const *format1, char const *format2, char const *format3, double minCornerX, double minCornerY, double minCornerZ, double maxCornerX, double maxCornerY, double maxCornerZ, double voxelSize, double voxelHalfSize, double maxPad)</td></tr>
-<tr class="memdesc:a6014db45cda99f1fa078a68b4c8edad6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parse the <a class="el" href="../../d7/d5a/classDetailedVoxel.html" title="Class which extends Voxel to support AMAPVox format with extra features. ">DetailedVoxel</a> specified in given line.  <a href="#a6014db45cda99f1fa078a68b4c8edad6">More...</a><br /></td></tr>
-<tr class="separator:a6014db45cda99f1fa078a68b4c8edad6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a32da03bad5becde86f50cb8bfe704ac7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d7/d5a/classDetailedVoxel.html">DetailedVoxel</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/ddf/classVoxelFileParser.html#a32da03bad5becde86f50cb8bfe704ac7">parseDetailedVoxelLine</a> (std::string &amp;line, std::string const separator, bool const exactFormat, bool const discardNullPad, char const *format1, char const *format2, char const *format3, double minCornerX, double minCornerY, double minCornerZ, double maxCornerX, double maxCornerY, double maxCornerZ, double voxelSize, double voxelHalfSize, double maxPad)</td></tr>
+<tr class="memdesc:a32da03bad5becde86f50cb8bfe704ac7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parse the <a class="el" href="../../d7/d5a/classDetailedVoxel.html" title="Class which extends Voxel to support AMAPVox format with extra features. ">DetailedVoxel</a> specified in given line.  <a href="#a32da03bad5becde86f50cb8bfe704ac7">More...</a><br /></td></tr>
+<tr class="separator:a32da03bad5becde86f50cb8bfe704ac7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-static-attribs"></a>
 Static Protected Attributes</h2></td></tr>
@@ -170,8 +170,8 @@ static char constexpr&#160;</td><td class="memItemRight" valign="bottom"><a clas
 <dl class="section version"><dt>Version</dt><dd>1.0</dd></dl>
 <p>Current implementation is based on AMAPVox format </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="ae71162e8c99f8df851732367c12898f9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae71162e8c99f8df851732367c12898f9">&#9670;&nbsp;</a></span>bruteParseDetailed()</h2>
+<a id="ad03409ede9f826d6e216a621888f1bc9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad03409ede9f826d6e216a621888f1bc9">&#9670;&nbsp;</a></span>bruteParseDetailed()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -197,6 +197,12 @@ static char constexpr&#160;</td><td class="memItemRight" valign="bottom"><a clas
         <tr>
           <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">bool const&#160;</td>
+          <td class="paramname"><em>discardNullPad</em> = <code>false</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
           <td class="paramtype">std::string const&#160;</td>
           <td class="paramname"><em>separator</em> = <code>&quot;&#160;&quot;</code>&#160;</td>
         </tr>
@@ -209,7 +215,7 @@ static char constexpr&#160;</td><td class="memItemRight" valign="bottom"><a clas
 </div><div class="memdoc">
 
 <p>Like parseDetailed but returns a vector a normla pointers instead of shared pointers. </p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d9/ddf/classVoxelFileParser.html#a139e8e3bdf5386ad6860c0e155dc2cb4" title="Parse detailed voxels specified at file located at given path. ">parseDetailed</a>( std::string const &amp;, size_t, bool const, std::string const) </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d9/ddf/classVoxelFileParser.html#a9fb7e9ab70fa08597fc7f0e8be338a33" title="Parse detailed voxels specified at file located at given path. ">parseDetailed</a>( std::string const &amp;, size_t, bool const, std::string const) </dd></dl>
 
 </div>
 </div>
@@ -842,8 +848,8 @@ All lines which first character is '#' are considered as comments, hence removed
 
 </div>
 </div>
-<a id="a139e8e3bdf5386ad6860c0e155dc2cb4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a139e8e3bdf5386ad6860c0e155dc2cb4">&#9670;&nbsp;</a></span>parseDetailed()</h2>
+<a id="a9fb7e9ab70fa08597fc7f0e8be338a33"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9fb7e9ab70fa08597fc7f0e8be338a33">&#9670;&nbsp;</a></span>parseDetailed()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -869,6 +875,12 @@ All lines which first character is '#' are considered as comments, hence removed
         <tr>
           <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">bool const&#160;</td>
+          <td class="paramname"><em>discardNullPad</em> = <code>false</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
           <td class="paramtype">std::string const&#160;</td>
           <td class="paramname"><em>separator</em> = <code>&quot;&#160;&quot;</code>&#160;</td>
         </tr>
@@ -886,6 +898,7 @@ All lines which first character is '#' are considered as comments, hence removed
     <tr><td class="paramname">path</td><td>Where the detailed voxels specification file is located </td></tr>
     <tr><td class="paramname">numHeaderLines</td><td>Specify how many header lines are used at given file. Comments and blank lines must not be considered for this count. </td></tr>
     <tr><td class="paramname">exactFormat</td><td>When true it is assumed that only standard parameters should be considering for each voxel. Using this knowledge parsing process can be accelerated. </td></tr>
+    <tr><td class="paramname">discardNullPad</td><td>When true, those voxels with a PadBvTotal of 0 will be discarded (by default they are preserved) </td></tr>
     <tr><td class="paramname">separator</td><td>The separator between different fields</td></tr>
   </table>
   </dd>
@@ -895,8 +908,8 @@ All lines which first character is '#' are considered as comments, hence removed
 
 </div>
 </div>
-<a id="a6014db45cda99f1fa078a68b4c8edad6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6014db45cda99f1fa078a68b4c8edad6">&#9670;&nbsp;</a></span>parseDetailedVoxelLine()</h2>
+<a id="a32da03bad5becde86f50cb8bfe704ac7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a32da03bad5becde86f50cb8bfe704ac7">&#9670;&nbsp;</a></span>parseDetailedVoxelLine()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -921,6 +934,12 @@ All lines which first character is '#' are considered as comments, hence removed
           <td></td>
           <td class="paramtype">bool const&#160;</td>
           <td class="paramname"><em>exactFormat</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool const&#160;</td>
+          <td class="paramname"><em>discardNullPad</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -1018,7 +1037,7 @@ All lines which first character is '#' are considered as comments, hence removed
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Parsed <a class="el" href="../../d7/d5a/classDetailedVoxel.html" title="Class which extends Voxel to support AMAPVox format with extra features. ">DetailedVoxel</a> </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Parsed <a class="el" href="../../d7/d5a/classDetailedVoxel.html" title="Class which extends Voxel to support AMAPVox format with extra features. ">DetailedVoxel</a> (nullptr if it was discarded, for instance to ignore transmittive voxels with PadBVTotal==0) </dd></dl>
 
 </div>
 </div>

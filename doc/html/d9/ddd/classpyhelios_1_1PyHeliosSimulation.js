@@ -1,7 +1,7 @@
 var classpyhelios_1_1PyHeliosSimulation =
 [
     [ "PyHeliosSimulation", "d9/ddd/classpyhelios_1_1PyHeliosSimulation.html#a131f3db32f40820f76d90226ef85a0b2", null ],
-    [ "PyHeliosSimulation", "d9/ddd/classpyhelios_1_1PyHeliosSimulation.html#ae1ca08924e97c3015125ea2d9597f814", null ],
+    [ "PyHeliosSimulation", "d9/ddd/classpyhelios_1_1PyHeliosSimulation.html#a8658201c2a7997fdd6f5d0c63df51b7c", null ],
     [ "~PyHeliosSimulation", "d9/ddd/classpyhelios_1_1PyHeliosSimulation.html#ada1cb7fc9789223287464f3381c911a8", null ],
     [ "_getDynScene", "d9/ddd/classpyhelios_1_1PyHeliosSimulation.html#ab67b3b335fb0cca0e7ebefa1d999fb63", null ],
     [ "addRotateFilter", "d9/ddd/classpyhelios_1_1PyHeliosSimulation.html#a3e374382bd562c461e570920a3beb20b", null ],
@@ -30,6 +30,7 @@ var classpyhelios_1_1PyHeliosSimulation =
     [ "getScanner", "d9/ddd/classpyhelios_1_1PyHeliosSimulation.html#a094f161c94a2b8d9eded64efd2a584ac", null ],
     [ "getScene", "d9/ddd/classpyhelios_1_1PyHeliosSimulation.html#a7ddc9832e74879ef58ba3b4c97afa207", null ],
     [ "getSimFrequency", "d9/ddd/classpyhelios_1_1PyHeliosSimulation.html#ad5ee96243b70a96892a4b5ec9779171c", null ],
+    [ "getSplitByChannel", "d9/ddd/classpyhelios_1_1PyHeliosSimulation.html#a204501e43bc1e9eac60163eff112cde3", null ],
     [ "getSurvey", "d9/ddd/classpyhelios_1_1PyHeliosSimulation.html#aba5bdcd1700b55d8a111051c3aea1fda", null ],
     [ "getSurveyPath", "d9/ddd/classpyhelios_1_1PyHeliosSimulation.html#a55e60f239777a1a0e4bacb59070da425", null ],
     [ "getWarehouseFactor", "d9/ddd/classpyhelios_1_1PyHeliosSimulation.html#a560ac4836e9ef452a425ccaf2f41ba36", null ],
@@ -60,6 +61,7 @@ var classpyhelios_1_1PyHeliosSimulation =
     [ "setNumThreads", "d9/ddd/classpyhelios_1_1PyHeliosSimulation.html#ae272290ff315852519932adae3711623", null ],
     [ "setParallelizationStrategy", "d9/ddd/classpyhelios_1_1PyHeliosSimulation.html#a7e316047ab7d6868c876aa60367a2830", null ],
     [ "setSimFrequency", "d9/ddd/classpyhelios_1_1PyHeliosSimulation.html#a583664a38a1f4bd4aeb66cf91a8e30a0", null ],
+    [ "setSplitByChannel", "d9/ddd/classpyhelios_1_1PyHeliosSimulation.html#ab53f2f52b674c9f1a2dd94b87362086f", null ],
     [ "setWarehouseFactor", "d9/ddd/classpyhelios_1_1PyHeliosSimulation.html#aa76943340d55014ffba11a363ea0da3e", null ],
     [ "setZipOutput", "d9/ddd/classpyhelios_1_1PyHeliosSimulation.html#ae490a1ad1ee124bf23f75e226f6ce5a7", null ],
     [ "start", "d9/ddd/classpyhelios_1_1PyHeliosSimulation.html#aa2716558523a01740748f5b5c8c13f87", null ],
@@ -84,6 +86,7 @@ var classpyhelios_1_1PyHeliosSimulation =
     [ "paused", "d9/ddd/classpyhelios_1_1PyHeliosSimulation.html#a8af2392412c0b9dece2d7d62574d6d69", null ],
     [ "playback", "d9/ddd/classpyhelios_1_1PyHeliosSimulation.html#a58bfde234f85cac56869aa111b2cecfa", null ],
     [ "pulseThreadPool", "d9/ddd/classpyhelios_1_1PyHeliosSimulation.html#ab9195cd9c927e7faf540264a6de6b5d8", null ],
+    [ "splitByChannel", "d9/ddd/classpyhelios_1_1PyHeliosSimulation.html#a3824f3cd4e875f090d35e134f1792f50", null ],
     [ "started", "d9/ddd/classpyhelios_1_1PyHeliosSimulation.html#a17c21705d7772efca5dc92a3f03e791d", null ],
     [ "stopped", "d9/ddd/classpyhelios_1_1PyHeliosSimulation.html#a577c4d54299831b0bbcd1956a44dc96b", null ],
     [ "survey", "d9/ddd/classpyhelios_1_1PyHeliosSimulation.html#ac67e768cfa9547aac26ae53cbfbc7c0a", null ],
