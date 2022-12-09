@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document>
     <scene id="dyn_cube_scene" name="DynCubeScene" dynStep="20">
-		<part>
+		<part id="1">
             <filter type="objloader">
                 <param type="string" key="filepath" value="data/sceneparts/basic/groundplane/groundplane.obj" />
             </filter>
@@ -12,7 +12,7 @@
 				<param type="vec3" key="offset" value="50.0;0;0" />
 			</filter>
         </part>
-		<part dynStep="5" kdtDynStep="10">
+		<part dynStep="5" kdtDynStep="10" id="0">
             <filter type="objloader">
                 <param type="string" key="filepath" value="data/sceneparts/toyblocks/cube.obj" />
             </filter>
