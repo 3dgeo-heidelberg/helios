@@ -20,6 +20,7 @@ var classPlatform =
     [ "initLeg", "df/d1e/classPlatform.html#a51b430d256fa91cd335b858d39aa5adf", null ],
     [ "initLegManual", "df/d1e/classPlatform.html#ad6d2eff760f19d85c0f7136c2f6069a8", null ],
     [ "isInterpolated", "df/d1e/classPlatform.html#ad25395d774e6b63b4c5961cc110f7bca", null ],
+    [ "prepareLeg", "df/d1e/classPlatform.html#a7b3f571046280608e18af310e507fe52", null ],
     [ "prepareSimulation", "df/d1e/classPlatform.html#a3ec9cfff6259050df223fc8358f582fc", null ],
     [ "retrieveCurrentSettings", "df/d1e/classPlatform.html#abd04d2b777390ddc77648a60daf09093", null ],
     [ "setAfterDestination", "df/d1e/classPlatform.html#a0643919cb4ea411f75078086e9824815", null ],

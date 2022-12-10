@@ -110,9 +110,9 @@ Collaboration diagram for pyhelios::PyHeliosSimulation:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ae1ca08924e97c3015125ea2d9597f814"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/ddd/classpyhelios_1_1PyHeliosSimulation.html#ae1ca08924e97c3015125ea2d9597f814">PyHeliosSimulation</a> (std::string surveyPath, std::string assetsPath=&quot;assets/&quot;, std::string outputPath=&quot;output/&quot;, size_t numThreads=0, bool lasOutput=false, bool las10=false, bool zipOutput=false, int kdtFactory=4, size_t kdtJobs=0, size_t kdtSAHLossNodes=32, int parallelizationStrategy=1, int chunkSize=32, int warehouseFactor=1)</td></tr>
-<tr class="memdesc:ae1ca08924e97c3015125ea2d9597f814"><td class="mdescLeft">&#160;</td><td class="mdescRight">Build a <a class="el" href="../../d9/ddd/classpyhelios_1_1PyHeliosSimulation.html">PyHeliosSimulation</a> instance.  <a href="#ae1ca08924e97c3015125ea2d9597f814">More...</a><br /></td></tr>
-<tr class="separator:ae1ca08924e97c3015125ea2d9597f814"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8658201c2a7997fdd6f5d0c63df51b7c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/ddd/classpyhelios_1_1PyHeliosSimulation.html#a8658201c2a7997fdd6f5d0c63df51b7c">PyHeliosSimulation</a> (std::string surveyPath, std::string assetsPath=&quot;assets/&quot;, std::string outputPath=&quot;output/&quot;, size_t numThreads=0, bool lasOutput=false, bool las10=false, bool zipOutput=false, bool splitByChannel=false, int kdtFactory=4, size_t kdtJobs=0, size_t kdtSAHLossNodes=32, int parallelizationStrategy=1, int chunkSize=32, int warehouseFactor=1)</td></tr>
+<tr class="memdesc:a8658201c2a7997fdd6f5d0c63df51b7c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Build a <a class="el" href="../../d9/ddd/classpyhelios_1_1PyHeliosSimulation.html">PyHeliosSimulation</a> instance.  <a href="#a8658201c2a7997fdd6f5d0c63df51b7c">More...</a><br /></td></tr>
+<tr class="separator:a8658201c2a7997fdd6f5d0c63df51b7c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a19162c9ce6e4c5945e1b34c06f68b6e1"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/ddd/classpyhelios_1_1PyHeliosSimulation.html#a19162c9ce6e4c5945e1b34c06f68b6e1">isStarted</a> ()</td></tr>
 <tr class="memdesc:a19162c9ce6e4c5945e1b34c06f68b6e1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if the simulation has been started or not.  <a href="#a19162c9ce6e4c5945e1b34c06f68b6e1">More...</a><br /></td></tr>
 <tr class="separator:a19162c9ce6e4c5945e1b34c06f68b6e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -225,6 +225,12 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>getZipOutput</b> ()</
 <tr class="memitem:ae490a1ad1ee124bf23f75e226f6ce5a7"><td class="memItemLeft" align="right" valign="top"><a id="ae490a1ad1ee124bf23f75e226f6ce5a7"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>setZipOutput</b> (bool zipOutput_)</td></tr>
 <tr class="separator:ae490a1ad1ee124bf23f75e226f6ce5a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a204501e43bc1e9eac60163eff112cde3"><td class="memItemLeft" align="right" valign="top"><a id="a204501e43bc1e9eac60163eff112cde3"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>getSplitByChannel</b> ()</td></tr>
+<tr class="separator:a204501e43bc1e9eac60163eff112cde3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab53f2f52b674c9f1a2dd94b87362086f"><td class="memItemLeft" align="right" valign="top"><a id="ab53f2f52b674c9f1a2dd94b87362086f"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setSplitByChannel</b> (bool splitByChannel_)</td></tr>
+<tr class="separator:ab53f2f52b674c9f1a2dd94b87362086f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad96116d560dc7d3074778f17ad55281b"><td class="memItemLeft" align="right" valign="top"><a id="ad96116d560dc7d3074778f17ad55281b"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>getLasScale</b> ()</td></tr>
 <tr class="separator:ad96116d560dc7d3074778f17ad55281b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -375,6 +381,9 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>las10</b> = false</td
 <tr class="memitem:adf131a4ad580e278365f4060f9bac1d2"><td class="memItemLeft" align="right" valign="top"><a id="adf131a4ad580e278365f4060f9bac1d2"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>zipOutput</b> = false</td></tr>
 <tr class="separator:adf131a4ad580e278365f4060f9bac1d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3824f3cd4e875f090d35e134f1792f50"><td class="memItemLeft" align="right" valign="top"><a id="a3824f3cd4e875f090d35e134f1792f50"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>splitByChannel</b> = false</td></tr>
+<tr class="separator:a3824f3cd4e875f090d35e134f1792f50"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa303bd6b044747e302ead2cbc671a1ec"><td class="memItemLeft" align="right" valign="top"><a id="aa303bd6b044747e302ead2cbc671a1ec"></a>
 double&#160;</td><td class="memItemRight" valign="bottom"><b>lasScale</b> = 0.0001</td></tr>
 <tr class="separator:aa303bd6b044747e302ead2cbc671a1ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -405,8 +414,8 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>warehouseFactor</b> = 
 <dl class="section version"><dt>Version</dt><dd>1.0</dd></dl>
 <p>Helios++ simulation wrapped to be used from Python </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="ae1ca08924e97c3015125ea2d9597f814"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae1ca08924e97c3015125ea2d9597f814">&#9670;&nbsp;</a></span>PyHeliosSimulation()</h2>
+<a id="a8658201c2a7997fdd6f5d0c63df51b7c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8658201c2a7997fdd6f5d0c63df51b7c">&#9670;&nbsp;</a></span>PyHeliosSimulation()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -452,6 +461,12 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>warehouseFactor</b> = 
           <td></td>
           <td class="paramtype">bool&#160;</td>
           <td class="paramname"><em>zipOutput</em> = <code>false</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>splitByChannel</em> = <code>false</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>

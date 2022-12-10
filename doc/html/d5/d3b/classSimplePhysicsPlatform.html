@@ -138,6 +138,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>_clone</b> (std::shar
 <tr class="separator:a693f94121bc31b9921ab2985c3e5ba36"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a60d03d7a0b9fd0175b40c96752502ee1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d3b/classSimplePhysicsPlatform.html#a60d03d7a0b9fd0175b40c96752502ee1">prepareSimulation</a> (int simFrequency_hz) override</td></tr>
 <tr class="separator:a60d03d7a0b9fd0175b40c96752502ee1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afec233dd469da9215c64bb90b70c4ac4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d3b/classSimplePhysicsPlatform.html#afec233dd469da9215c64bb90b70c4ac4">prepareLeg</a> (int const simFrequency_hz) override</td></tr>
+<tr class="separator:afec233dd469da9215c64bb90b70c4ac4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a536da07e49058f215c38bd1210fe6030"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d3b/classSimplePhysicsPlatform.html#a536da07e49058f215c38bd1210fe6030">doPhysicsStep</a> (int simFrequency_hz)</td></tr>
 <tr class="memdesc:a536da07e49058f215c38bd1210fe6030"><td class="mdescLeft">&#160;</td><td class="mdescRight">Phyisics step for simple phyisics platform simulation.  <a href="#a536da07e49058f215c38bd1210fe6030">More...</a><br /></td></tr>
 <tr class="separator:a536da07e49058f215c38bd1210fe6030"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -146,6 +148,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>_clone</b> (std::shar
 <tr class="memitem:a1804dc3d3314ec305bd9cebde119a4a3"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d3b/classSimplePhysicsPlatform.html#a1804dc3d3314ec305bd9cebde119a4a3">doControlStep</a> (int simFrequency_hz)</td></tr>
 <tr class="memdesc:a1804dc3d3314ec305bd9cebde119a4a3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Control step for simple phyisics platform simulation.  <a href="#a1804dc3d3314ec305bd9cebde119a4a3">More...</a><br /></td></tr>
 <tr class="separator:a1804dc3d3314ec305bd9cebde119a4a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a357c7f5c2bee064923faf03e69fe2d0f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d3b/classSimplePhysicsPlatform.html#a357c7f5c2bee064923faf03e69fe2d0f">configureStepMagnitude</a> (int const simFrequency_hz)</td></tr>
+<tr class="memdesc:a357c7f5c2bee064923faf03e69fe2d0f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Configure the step magnitude for current moverPerSec and given simulation frequency.  <a href="#a357c7f5c2bee064923faf03e69fe2d0f">More...</a><br /></td></tr>
+<tr class="separator:a357c7f5c2bee064923faf03e69fe2d0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abcd0224108963a78add690288b74fbc7"><td class="memItemLeft" align="right" valign="top"><a id="abcd0224108963a78add690288b74fbc7"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>checkSpeedLimit</b> ()</td></tr>
 <tr class="separator:abcd0224108963a78add690288b74fbc7"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -449,6 +454,30 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../.
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Class representing a simple phyiscs platform. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="a357c7f5c2bee064923faf03e69fe2d0f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a357c7f5c2bee064923faf03e69fe2d0f">&#9670;&nbsp;</a></span>configureStepMagnitude()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SimplePhysicsPlatform::configureStepMagnitude </td>
+          <td>(</td>
+          <td class="paramtype">int const&#160;</td>
+          <td class="paramname"><em>simFrequency_hz</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Configure the step magnitude for current moverPerSec and given simulation frequency. </p>
+<p>Let \(v\) be the amount of movement in \(\mathrm{m}/\mathrm{s}\) (meters per second). Then, the step magnitude \(s\) can be defined for a given simulation frequency \(F\) in hertz:</p>
+<p class="formulaDsp">
+\[ s = \frac{v}{F} \]
+</p>
+ 
+</div>
+</div>
 <a id="a1804dc3d3314ec305bd9cebde119a4a3"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a1804dc3d3314ec305bd9cebde119a4a3">&#9670;&nbsp;</a></span>doControlStep()</h2>
 
@@ -537,6 +566,35 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../.
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="../../df/d1e/classPlatform.html#afe4f12868e5f6b39df7505b76872d040" title="Do corresponding computations for the platform at current simulation step. ">Platform::doSimStep</a> </dd></dl>
 
 <p>Reimplemented from <a class="el" href="../../d1/d83/classMovingPlatform.html#a32ae10a0bfa375b9d0feada4b70ebe68">MovingPlatform</a>.</p>
+
+</div>
+</div>
+<a id="afec233dd469da9215c64bb90b70c4ac4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afec233dd469da9215c64bb90b70c4ac4">&#9670;&nbsp;</a></span>prepareLeg()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SimplePhysicsPlatform::prepareLeg </td>
+          <td>(</td>
+          <td class="paramtype">int const&#160;</td>
+          <td class="paramname"><em>simFrequency_hz</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../df/d1e/classPlatform.html#a7b3f571046280608e18af310e507fe52" title="Prepare the platform to deal with the next leg. ">Platform::prepareLeg</a> </dd></dl>
+
+<p>Reimplemented from <a class="el" href="../../df/d1e/classPlatform.html#a7b3f571046280608e18af310e507fe52">Platform</a>.</p>
 
 </div>
 </div>

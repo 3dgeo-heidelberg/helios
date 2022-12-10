@@ -2,6 +2,7 @@ var searchData=
 [
   ['c',['C',['../d7/d84/classrigidmotion_1_1RigidMotion.html#aa5c886a5a11975a809580318ba5cdc42',1,'rigidmotion::RigidMotion::C()'],['../da/d52/classSurfaceInspector_1_1maths_1_1Histogram.html#ab2dbc24fff56c1616a35771050a142fd',1,'SurfaceInspector::maths::Histogram::c()'],['../d6/d26/classSurfaceInspector_1_1util_1_1draggers_1_1MinDragger.html#a6d1fb91194ff6b82373d18bf9c5da977',1,'SurfaceInspector::util::draggers::MinDragger::c()']]],
   ['cache_5faligning',['cache_aligning',['../db/d69/classHelicopterPlatform.html#a08d6a1486365bc4bab38844c69dd728f',1,'HelicopterPlatform']]],
+  ['cache_5fprims',['cache_prims',['../d6/dba/classGroveKDTreeRaycaster.html#a8abf80e077e0620681b50c4fb1fdb76c',1,'GroveKDTreeRaycaster']]],
   ['cache_5fspeedupfinished',['cache_speedUpFinished',['../db/d69/classHelicopterPlatform.html#a482a28380f0869ba415ff7b394d0d4a3',1,'HelicopterPlatform']]],
   ['cache_5fturning',['cache_turning',['../db/d69/classHelicopterPlatform.html#ac0e16b0d3f3bb4f086487b2070f946da',1,'HelicopterPlatform']]],
   ['cache_5fturniterations',['cache_turnIterations',['../db/d69/classHelicopterPlatform.html#a94f79831a9757d4c492acd4239ebd14d',1,'HelicopterPlatform']]],
@@ -118,6 +119,8 @@ var searchData=
   ['currentgpstime_5fns',['currentGpsTime_ns',['../d1/d7b/classSimulation.html#a00ec849a21bd20bf73309af0356c5cff',1,'Simulation']]],
   ['currentiter',['currentIter',['../d8/d34/classfluxionum_1_1IterativeMethodHandler.html#a86c310e2fec9b8c2d5dfd0df06df4051',1,'fluxionum::IterativeMethodHandler']]],
   ['currentlegindex',['currentLegIndex',['../db/d65/classvisualhelios_1_1VHScannerAdapter.html#a70412f701fe1ed860a1fb4dab7ba80b4',1,'visualhelios::VHScannerAdapter']]],
+  ['currentlegstarttime',['currentLegStartTime',['../dc/d97/classInterpolatedMovingPlatform.html#ac492bdfa1b814b15937fb88620f26833',1,'InterpolatedMovingPlatform']]],
+  ['currentlegtimediff',['currentLegTimeDiff',['../dc/d97/classInterpolatedMovingPlatform.html#af99a67406bb01d9591dd92dec6785f97',1,'InterpolatedMovingPlatform']]],
   ['currentscanlinepulse',['currentScanLinePulse',['../d4/dfd/classOscillatingMirrorBeamDeflector.html#aad09aab136c10bc85619ce30cb78a4ac',1,'OscillatingMirrorBeamDeflector']]],
   ['currentstep',['currentStep',['../dd/dcc/classStepLoop.html#a0187abd8c8e38a5e8377f6e7c311b34d',1,'StepLoop']]],
   ['curvature',['curvature',['../d1/d16/classSurfaceInspector_1_1maths_1_1Plane.html#aa91d512b976f82ad2cbf51574531d653',1,'SurfaceInspector::maths::Plane']]],
