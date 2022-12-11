@@ -1,0 +1,50 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+authors:
+- family-names: "Winiwarter"
+  given-names: "Lukas"
+- family-names: "Esmorís Pena"
+  given-names: "Alberto Manuel"
+- family-names: "Yermo García"
+  given-names: "Miguel"
+- family-names: "Martínez Sánchez"
+  given-names: "Jorge"
+- family-names: "Searle"
+  given-names: "Mark"
+- family-names: "Weiser"
+  given-names: "Hannah"
+- family-names: "Anders"
+  given-names: "Katharina"
+- family-names: "Höfle"
+  given-names: "Bernhard"
+title: "HELIOS++"
+version: 1.1.0
+doi: 10.5281/zenodo.4452870
+date-released: 2022-03-15
+url: "https://github.com/3dgeo-heidelberg/helios"
+preferred-citation:
+  type: article
+  authors:
+  - family-names: "Winiwarter"
+    given-names: "Lukas"
+  - family-names: "Esmorís Pena"
+    given-names: "Alberto Manuel"
+  - family-names: "Weiser"
+    given-names: "Hannah"
+  - family-names: "Anders"
+    given-names: "Katharina"
+  - family-names: "Martínez Sánchez"
+    given-names: "Jorge"
+  - family-names: "Searle"
+    given-names: "Mark"
+  - family-names: "Höfle"
+    given-names: "Bernhard"
+  doi: "10.1016/j.rse.2021.112772"
+  journal: "Remote Sensing of Environment"
+  month: 2
+  start: 1 # First page number
+  end: 18 # Last page number
+  title: "Virtual laser scanning with HELIOS++: A novel take on ray tracing-based simulation of topographic full-waveform 3D laser scanning"
+  issue: 1
+  volume: 269
+  year: 2022
