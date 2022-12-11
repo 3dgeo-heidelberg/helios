@@ -124,10 +124,9 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a24b9858e16033ec23400c4e3029dcf8e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af72c03e34a68e0dee2cc6b6003807d6a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../dd/dc4/classScenePart.html">ScenePart</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d49/classDetailedVoxelLoader.html#af72c03e34a68e0dee2cc6b6003807d6a">run</a> () override</td></tr>
 <tr class="separator:af72c03e34a68e0dee2cc6b6003807d6a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3be6804f5bcc7bb58edab7ba9dbf4730"><td class="memItemLeft" align="right" valign="top"><a id="a3be6804f5bcc7bb58edab7ba9dbf4730"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d49/classDetailedVoxelLoader.html#a3be6804f5bcc7bb58edab7ba9dbf4730">loadDv</a> (std::string const &amp;pathString)</td></tr>
-<tr class="memdesc:a3be6804f5bcc7bb58edab7ba9dbf4730"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load a Detailed Voxels file. <br /></td></tr>
-<tr class="separator:a3be6804f5bcc7bb58edab7ba9dbf4730"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7c1232f6cda990a4ae864dc004a1a483"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d49/classDetailedVoxelLoader.html#a7c1232f6cda990a4ae864dc004a1a483">loadDv</a> (std::string const &amp;pathString, bool const discardNullPad)</td></tr>
+<tr class="memdesc:a7c1232f6cda990a4ae864dc004a1a483"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load a Detailed Voxels file.  <a href="#a7c1232f6cda990a4ae864dc004a1a483">More...</a><br /></td></tr>
+<tr class="separator:a7c1232f6cda990a4ae864dc004a1a483"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adf418a73d4f83db7b0c866dd917162e9"><td class="memItemLeft" align="right" valign="top"><a id="adf418a73d4f83db7b0c866dd917162e9"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d49/classDetailedVoxelLoader.html#adf418a73d4f83db7b0c866dd917162e9">loadMaterial</a> ()</td></tr>
 <tr class="memdesc:adf418a73d4f83db7b0c866dd917162e9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load specified material for Detailed Voxels. If no material was specified, then none is loaded. <br /></td></tr>
@@ -202,6 +201,42 @@ std::map&lt; std::string, <a class="el" href="../../d3/d89/classMaterial.html">M
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="a7c1232f6cda990a4ae864dc004a1a483"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7c1232f6cda990a4ae864dc004a1a483">&#9670;&nbsp;</a></span>loadDv()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void DetailedVoxelLoader::loadDv </td>
+          <td>(</td>
+          <td class="paramtype">std::string const &amp;&#160;</td>
+          <td class="paramname"><em>pathString</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool const&#160;</td>
+          <td class="paramname"><em>discardNullPad</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Load a Detailed Voxels file. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">discardNullPad</td><td>If true, detailed voxels with PadBVTotal==0 will be discarded (it is useful, for instance, when using transmittive mode) </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="af72c03e34a68e0dee2cc6b6003807d6a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af72c03e34a68e0dee2cc6b6003807d6a">&#9670;&nbsp;</a></span>run()</h2>
 
