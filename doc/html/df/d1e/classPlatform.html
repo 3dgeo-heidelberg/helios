@@ -139,6 +139,9 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>_clone</b> (s
 <tr class="memitem:a3ec9cfff6259050df223fc8358f582fc"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d1e/classPlatform.html#a3ec9cfff6259050df223fc8358f582fc">prepareSimulation</a> (int simFrequency_hz)</td></tr>
 <tr class="memdesc:a3ec9cfff6259050df223fc8358f582fc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prepare the platform to deal with simulation.  <a href="#a3ec9cfff6259050df223fc8358f582fc">More...</a><br /></td></tr>
 <tr class="separator:a3ec9cfff6259050df223fc8358f582fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7b3f571046280608e18af310e507fe52"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d1e/classPlatform.html#a7b3f571046280608e18af310e507fe52">prepareLeg</a> (int const simFrequency_hz)</td></tr>
+<tr class="memdesc:a7b3f571046280608e18af310e507fe52"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prepare the platform to deal with the next leg.  <a href="#a7b3f571046280608e18af310e507fe52">More...</a><br /></td></tr>
+<tr class="separator:a7b3f571046280608e18af310e507fe52"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abf3180730f8e890f8e3f8c85e65dcf91"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d1e/classPlatform.html#abf3180730f8e890f8e3f8c85e65dcf91">applySettings</a> (std::shared_ptr&lt; <a class="el" href="../../d5/d0c/classPlatformSettings.html">PlatformSettings</a> &gt; settings, bool manual)</td></tr>
 <tr class="memdesc:abf3180730f8e890f8e3f8c85e65dcf91"><td class="mdescLeft">&#160;</td><td class="mdescRight">Apply given platform settings to the platform.  <a href="#abf3180730f8e890f8e3f8c85e65dcf91">More...</a><br /></td></tr>
 <tr class="separator:abf3180730f8e890f8e3f8c85e65dcf91"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -856,6 +859,42 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
 <dl class="section return"><dt>Returns</dt><dd>False if platform is simulated, True otherwise </dd></dl>
 
 <p>Reimplemented in <a class="el" href="../../dc/d97/classInterpolatedMovingPlatform.html#a36c5c9a88eea1ca80a3bb9d60b76c4e0">InterpolatedMovingPlatform</a>.</p>
+
+</div>
+</div>
+<a id="a7b3f571046280608e18af310e507fe52"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7b3f571046280608e18af310e507fe52">&#9670;&nbsp;</a></span>prepareLeg()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void Platform::prepareLeg </td>
+          <td>(</td>
+          <td class="paramtype">int const&#160;</td>
+          <td class="paramname"><em>simFrequency_hz</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Prepare the platform to deal with the next leg. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">simFrequency_hz</td><td><a class="el" href="../../d1/d7b/classSimulation.html" title="Class representing a simulation. ">Simulation</a> frequency the platform will work with </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Reimplemented in <a class="el" href="../../d5/d3b/classSimplePhysicsPlatform.html#afec233dd469da9215c64bb90b70c4ac4">SimplePhysicsPlatform</a>.</p>
 
 </div>
 </div>

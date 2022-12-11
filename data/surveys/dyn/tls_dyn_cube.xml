@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+    <survey name="dyn_cube_tls" scene="data/scenes/dyn/dyn_cube_scene.xml#dyn_cube_scene" platform="data/platforms.xml#tripod" scanner="data/scanners_tls.xml#riegl_vz400">
+		<leg>
+            <platformSettings  x="-30" y="-30.0" z="0" onGround="true"/>
+            <scannerSettings  active="true" pulseFreq_hz="100000" verticalAngleMin_deg="-40.0" verticalAngleMax_deg="60.0" scanFreq_hz="120" headRotatePerSec_deg="-10.00" headRotateStart_deg="340.0" headRotateStop_deg="220.0"/>
+        </leg>
+    </survey>
+</document>

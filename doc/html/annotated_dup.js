@@ -326,6 +326,7 @@ var annotated_dup =
     [ "Platform", "df/d1e/classPlatform.html", "df/d1e/classPlatform" ],
     [ "PlatformSettings", "d5/d0c/classPlatformSettings.html", "d5/d0c/classPlatformSettings" ],
     [ "PointcloudYielder", "d6/d61/classPointcloudYielder.html", "d6/d61/classPointcloudYielder" ],
+    [ "PointerVector", "db/dc4/classPointerVector.html", "db/dc4/classPointerVector" ],
     [ "PolygonMirrorBeamDeflector", "db/d7e/classPolygonMirrorBeamDeflector.html", "db/d7e/classPolygonMirrorBeamDeflector" ],
     [ "Primitive", "df/de1/classPrimitive.html", "df/de1/classPrimitive" ],
     [ "Pulse", "d3/d1a/classPulse.html", "d3/d1a/classPulse" ],

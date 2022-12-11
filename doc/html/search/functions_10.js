@@ -12,8 +12,8 @@ var searchData=
   ['parsedemoassetspath',['parseDemoAssetsPath',['../d7/d5c/classArgumentsParser.html#a55c2af81b42b074d3bc1054f1653b9b4',1,'ArgumentsParser']]],
   ['parsedemorequest',['parseDemoRequest',['../d7/d5c/classArgumentsParser.html#affb6efa512c250e84d05b0a6c9493b37',1,'ArgumentsParser']]],
   ['parsedemosurveypath',['parseDemoSurveyPath',['../d7/d5c/classArgumentsParser.html#a9aab28cc2b7da80e19c1dbe3c000a80f',1,'ArgumentsParser']]],
-  ['parsedetailed',['parseDetailed',['../d9/ddf/classVoxelFileParser.html#a139e8e3bdf5386ad6860c0e155dc2cb4',1,'VoxelFileParser']]],
-  ['parsedetailedvoxelline',['parseDetailedVoxelLine',['../d9/ddf/classVoxelFileParser.html#a6014db45cda99f1fa078a68b4c8edad6',1,'VoxelFileParser']]],
+  ['parsedetailed',['parseDetailed',['../d9/ddf/classVoxelFileParser.html#a9fb7e9ab70fa08597fc7f0e8be338a33',1,'VoxelFileParser']]],
+  ['parsedetailedvoxelline',['parseDetailedVoxelLine',['../d9/ddf/classVoxelFileParser.html#a32da03bad5becde86f50cb8bfe704ac7',1,'VoxelFileParser']]],
   ['parsedisablelegnoise',['parseDisableLegNoise',['../d7/d5c/classArgumentsParser.html#a80d71b40ea4187c2ab52f146f8e88cf3',1,'ArgumentsParser']]],
   ['parsedisableplatformnoise',['parseDisablePlatformNoise',['../d7/d5c/classArgumentsParser.html#a0eeea55ac2ec2940667444bf7d9deb70',1,'ArgumentsParser']]],
   ['parsefixedincidenceangle',['parseFixedIncidenceAngle',['../d7/d5c/classArgumentsParser.html#a4ff03c5a307080829b7c72477316253c',1,'ArgumentsParser']]],
@@ -55,6 +55,7 @@ var searchData=
   ['platformphysicstest',['PlatformPhysicsTest',['../d6/d96/classHeliosTests_1_1PlatformPhysicsTest.html#acb965ec9356d4eabd37390b2df0051c8',1,'HeliosTests::PlatformPhysicsTest']]],
   ['platformsettings',['PlatformSettings',['../d5/d0c/classPlatformSettings.html#a7b9d218f330dc0c6185876ff94584d2d',1,'PlatformSettings::PlatformSettings()=default'],['../d5/d0c/classPlatformSettings.html#a706c06340a17ba5d1d24d0e6855f889c',1,'PlatformSettings::PlatformSettings(PlatformSettings *other)']]],
   ['pointcloudyielder',['PointcloudYielder',['../d6/d61/classPointcloudYielder.html#ab6fe0e5241fe5f1e934f4b6f54e98020',1,'PointcloudYielder']]],
+  ['pointervector',['PointerVector',['../db/dc4/classPointerVector.html#a389f688da4ce5fa24400ada91db6f7f9',1,'PointerVector::PointerVector()=default'],['../db/dc4/classPointerVector.html#a1d8944f774f0b46153349a78cf0d5fcf',1,'PointerVector::PointerVector(size_t const numElements)']]],
   ['polygonmirrorbeamdeflector',['PolygonMirrorBeamDeflector',['../db/d7e/classPolygonMirrorBeamDeflector.html#abb2af3da6ec8f8551405d835ba9b1ecf',1,'PolygonMirrorBeamDeflector']]],
   ['poptask',['popTask',['../da/d8d/classTaskDropper.html#aa39b12c43987184b28acee4399c35d1e',1,'TaskDropper']]],
   ['populatefullwaveform',['populateFullWaveform',['../db/da6/classFullWaveformPulseRunnable.html#abc0bce6d9e156c6366458d1b6942f783',1,'FullWaveformPulseRunnable']]],
@@ -68,6 +69,7 @@ var searchData=
   ['pow2',['pow2',['../d6/d68/classSurfaceInspector_1_1maths_1_1Scalar.html#af2f412e4bf9b6c4c2767f14183aca937',1,'SurfaceInspector::maths::Scalar']]],
   ['prefinishreport',['preFinishReport',['../da/dd6/classSimulationReporter.html#a22ddda84bbb6db0a3f0d7609b370a424',1,'SimulationReporter']]],
   ['preparediscretization',['prepareDiscretization',['../da/d23/classMultiScanner.html#ab6854334d5b58246165513591baf774f',1,'MultiScanner::prepareDiscretization()'],['../dc/d42/classScanner.html#acc6350ba175fb3af03d01358f8e962fa',1,'Scanner::prepareDiscretization(size_t const idx)=0'],['../dc/d42/classScanner.html#a9da12b1d23b22b593851c5049852e871',1,'Scanner::prepareDiscretization()'],['../d2/d24/classSingleScanner.html#a28867634eee0dfb5087f6869c48fd0ec',1,'SingleScanner::prepareDiscretization()']]],
+  ['prepareleg',['prepareLeg',['../df/d1e/classPlatform.html#a7b3f571046280608e18af310e507fe52',1,'Platform::prepareLeg()'],['../d5/d3b/classSimplePhysicsPlatform.html#afec233dd469da9215c64bb90b70c4ac4',1,'SimplePhysicsPlatform::prepareLeg()']]],
   ['prepareoutput',['prepareOutput',['../d6/da1/classSurveyPlayback.html#a5406350ac8cbd17d8a6c5a2537a0ac8f',1,'SurveyPlayback']]],
   ['preparesimulation',['prepareSimulation',['../d7/d94/classGroundVehiclePlatform.html#a2b51efe3650291ac7363ed56690118fa',1,'GroundVehiclePlatform::prepareSimulation()'],['../db/d69/classHelicopterPlatform.html#a357cd099a9ab25dd437ebefe7edfd947',1,'HelicopterPlatform::prepareSimulation()'],['../df/d1e/classPlatform.html#a3ec9cfff6259050df223fc8358f582fc',1,'Platform::prepareSimulation()'],['../d5/d3b/classSimplePhysicsPlatform.html#a60d03d7a0b9fd0175b40c96752502ee1',1,'SimplePhysicsPlatform::prepareSimulation()'],['../d1/d7b/classSimulation.html#a1e75978f218fb7a9138b2852584bf40d',1,'Simulation::prepareSimulation()']]],
   ['preparetomake',['prepareToMake',['../df/d86/classMultiThreadKDTreeFactory.html#a29186783483d298b6fb376e4909b0352',1,'MultiThreadKDTreeFactory']]],
@@ -86,5 +88,5 @@ var searchData=
   ['push',['push',['../d3/d60/classYielder.html#a58156a0e19e9b972465a60b563b9380a',1,'Yielder']]],
   ['pushnormalmotion',['pushNormalMotion',['../d4/d96/classDynMovingObject.html#a6554aca7eb64bfd55254c456fe557345',1,'DynMovingObject']]],
   ['pushpositionmotion',['pushPositionMotion',['../d4/d96/classDynMovingObject.html#aaeec8774c4dd8a8f37adaf0ae9dd3d70',1,'DynMovingObject']]],
-  ['pyheliossimulation',['PyHeliosSimulation',['../d9/ddd/classpyhelios_1_1PyHeliosSimulation.html#ae1ca08924e97c3015125ea2d9597f814',1,'pyhelios::PyHeliosSimulation']]]
+  ['pyheliossimulation',['PyHeliosSimulation',['../d9/ddd/classpyhelios_1_1PyHeliosSimulation.html#a8658201c2a7997fdd6f5d0c63df51b7c',1,'pyhelios::PyHeliosSimulation']]]
 ];
