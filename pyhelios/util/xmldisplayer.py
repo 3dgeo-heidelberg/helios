@@ -2,6 +2,7 @@ import xml.etree.ElementTree as ET
 from pathlib import Path
 import os
 
+
 def display_xml(path, item=None):
     root = ET.parse(path)
     tree = root.getroot()
@@ -12,13 +13,14 @@ def display_xml(path, item=None):
     for e in tree:
         if 'id' in e.attrib and e.attrib['id'] == item:
             # ET.indent(e)
-            return(ET.tostring(e, encoding='unicode'))
+            return ET.tostring(e, encoding='unicode')
 
 
-def find_playback_dir(survey_path):
-    WORKING_DIR = os.getcwd()
-    playback = Path(WORKING_DIR) / 'output'
-    with open(Path(WORKING_DIR) / survey_path, 'r') as sf:
+def find_playback_dir(survey_path, helios_root=None):
+    if not helios_root:
+        helios_root = os.getcwd()
+    playback = Path(helios_root) / 'output'
+    with open(Path(helios_root) / survey_path, 'r') as sf:
         for line in sf:
             if '<survey name' in line:
                 survey_name = line.split('name="')[1].split('"')[0]
