@@ -267,7 +267,7 @@ def eval_quadcopter(dirname):
     assert abs(
         (dirname / 'leg000_points.laz').stat().st_size - 1_973_177) < MAX_DIFFERENCE_BYTES  # Win: 1_974_904
     assert abs(
-        (dirname / 'leg002_points.laz').stat().st_size - 2_150_438) < MAX_DIFFERENCE_BYTES  # Win: 2_154_149
+        (dirname / 'leg002_points.laz').stat().st_size - 2_154_902) < MAX_DIFFERENCE_BYTES  # Win: 2_154_149
     assert abs(
         (dirname / 'leg004_points.laz').stat().st_size - 3_813_762) < MAX_DIFFERENCE_BYTES  # Win: 3_819_553
     las = laspy.read(dirname / 'leg000_points.laz')
