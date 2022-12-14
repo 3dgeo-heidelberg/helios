@@ -12,6 +12,7 @@ var searchData=
   ['platformphysicstest',['PlatformPhysicsTest',['../d6/d96/classHeliosTests_1_1PlatformPhysicsTest.html',1,'HeliosTests']]],
   ['platformsettings',['PlatformSettings',['../d5/d0c/classPlatformSettings.html',1,'']]],
   ['pointcloudyielder',['PointcloudYielder',['../d6/d61/classPointcloudYielder.html',1,'']]],
+  ['pointervector',['PointerVector',['../db/dc4/classPointerVector.html',1,'']]],
   ['polygonmirrorbeamdeflector',['PolygonMirrorBeamDeflector',['../db/d7e/classPolygonMirrorBeamDeflector.html',1,'']]],
   ['primitive',['Primitive',['../df/de1/classPrimitive.html',1,'']]],
   ['pulse',['Pulse',['../d3/d1a/classPulse.html',1,'']]],

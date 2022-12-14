@@ -131,6 +131,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a75ad04ce4db2af7f0c9f43bf6c636d55"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d5b/classhelios_1_1filems_1_1LasSyncFileWriter.html#a75ad04ce4db2af7f0c9f43bf6c636d55">createLasWriter</a> (const std::string &amp;<a class="el" href="../../d4/dfb/classhelios_1_1filems_1_1SingleSyncFileWriter.html#a3eeca6e5348670b6047f97b7b1710cca">path</a>, bool const compress)</td></tr>
 <tr class="memdesc:a75ad04ce4db2af7f0c9f43bf6c636d55"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creation of the LasWriter itself, including LASpoint initialization.  <a href="#a75ad04ce4db2af7f0c9f43bf6c636d55">More...</a><br /></td></tr>
 <tr class="separator:a75ad04ce4db2af7f0c9f43bf6c636d55"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a535a0b8d6fcff7079e461e09ac0c6065"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d5b/classhelios_1_1filems_1_1LasSyncFileWriter.html#a535a0b8d6fcff7079e461e09ac0c6065">craftSpec</a> (<a class="el" href="../../d3/d15/classhelios_1_1filems_1_1LasWriterSpec.html">LasWriterSpec</a> &amp;<a class="el" href="../../d7/d5b/classhelios_1_1filems_1_1LasSyncFileWriter.html#a183ee1f3cddf5c924179127ece5fe17b">lws</a>)</td></tr>
+<tr class="memdesc:a535a0b8d6fcff7079e461e09ac0c6065"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assist the LasSyncFileWriter::createLasWriters method by crafting the given specification.  <a href="#a535a0b8d6fcff7079e461e09ac0c6065">More...</a><br /></td></tr>
+<tr class="separator:a535a0b8d6fcff7079e461e09ac0c6065"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2281924316dcc3b447bd5ff872fb7dc0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d5b/classhelios_1_1filems_1_1LasSyncFileWriter.html#a2281924316dcc3b447bd5ff872fb7dc0">finish</a> () override</td></tr>
 <tr class="memdesc:a2281924316dcc3b447bd5ff872fb7dc0"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="../../d7/d5b/classhelios_1_1filems_1_1LasSyncFileWriter.html" title="Abstract specialization of SingleSyncFileWriter to write output in LAS format. ">LasSyncFileWriter</a> updates header and guarantees writings have been done only after the finish method has been invoked. If it has not been manually invoked, then it will when destroying the instance. Once the finish method has been invoked, the <a class="el" href="../../d7/d5b/classhelios_1_1filems_1_1LasSyncFileWriter.html" title="Abstract specialization of SingleSyncFileWriter to write output in LAS format. ">LasSyncFileWriter</a> should not be used again.  <a href="#a2281924316dcc3b447bd5ff872fb7dc0">More...</a><br /></td></tr>
 <tr class="separator:a2281924316dcc3b447bd5ff872fb7dc0"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -280,6 +283,44 @@ template&lt;typename ... WriteArgs&gt; </div>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="a535a0b8d6fcff7079e461e09ac0c6065"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a535a0b8d6fcff7079e461e09ac0c6065">&#9670;&nbsp;</a></span>craftSpec()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename ... WriteArgs&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void <a class="el" href="../../d7/d5b/classhelios_1_1filems_1_1LasSyncFileWriter.html">helios::filems::LasSyncFileWriter</a>&lt; WriteArgs &gt;::craftSpec </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="../../d3/d15/classhelios_1_1filems_1_1LasWriterSpec.html">LasWriterSpec</a> &amp;&#160;</td>
+          <td class="paramname"><em>lws</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Assist the LasSyncFileWriter::createLasWriters method by crafting the given specification. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">lws</td><td>The LAS write specification to be crafted </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Reimplemented in <a class="el" href="../../d6/de6/classhelios_1_1filems_1_1Las14VectorialSyncFileMeasurementWriter.html#aebb1cbbe281c6532570389938107275d">helios::filems::Las14VectorialSyncFileMeasurementWriter</a>.</p>
+
+</div>
+</div>
 <a id="a75ad04ce4db2af7f0c9f43bf6c636d55"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a75ad04ce4db2af7f0c9f43bf6c636d55">&#9670;&nbsp;</a></span>createLasWriter()</h2>
 

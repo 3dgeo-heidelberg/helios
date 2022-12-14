@@ -312,6 +312,7 @@ var hierarchy =
       [ "SurfaceInspector::util::SurfaceInspectorException", "df/da8/classSurfaceInspector_1_1util_1_1SurfaceInspectorException.html", null ]
     ] ],
     [ "PlaneFitter", "d6/d51/classPlaneFitter.html", null ],
+    [ "PointerVector< T >", "db/dc4/classPointerVector.html", null ],
     [ "Primitive", "df/de1/classPrimitive.html", [
       [ "AABB", "d2/d1a/classAABB.html", null ],
       [ "Triangle", "d2/d51/classTriangle.html", null ],

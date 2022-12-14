@@ -469,6 +469,12 @@ void FullWaveformPulseRunnable::digestFullWaveform(
         int classification = 0;
         if (closestIntersection != nullptr) {
             hitObject = closestIntersection->prim->part->mId;
+            if(
+                closestIntersection->prim->part->getType() ==
+                ScenePart::DYN_MOVING_OBJECT
+            ){  // Skip DSMO_ prefix for dynamic moving objects
+                hitObject = hitObject.substr(5);
+            }
             classification =
                 closestIntersection->prim->material->classification;
         }
