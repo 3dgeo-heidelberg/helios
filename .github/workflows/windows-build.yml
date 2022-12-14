@@ -1,11 +1,11 @@
 name: win-build
 
 on:
+  workflow_dispatch:
   push:
     branches: [ main, dev ]
   pull_request:
     branches: [ main, dev ]
-  workflow_dispatch:
 
 env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
@@ -157,8 +157,8 @@ jobs:
         uses: actions/cache@v2
         with:
           path: |
-            ${{github.workspace}}/lib            
-          key: ${{ runner.os }}-gdal-lastools-armadillo-latest3
+            ${{github.workspace}}/lib
+          key: ${{ runner.os }}-gdal-lastools-armadillo-latest4
 
       - uses: suisei-cn/actions-download-file@v1
         if: steps.cache-lastools-armadillo-gdal.outputs.cache-hit != 'true'
@@ -237,8 +237,10 @@ jobs:
           cd LAStools
           cmake -DCMAKE_BUILD_TYPE=Release .
           msbuild.exe LAStools.sln /p:Configuration=Release
-          
-              
+
+  
+  
+  
 
   build-helios:
     runs-on: windows-2019
@@ -256,22 +258,23 @@ jobs:
     
       - name: Add MSBuild to PATH
         uses: microsoft/setup-msbuild@v1.0.2
-        
+
       - uses: suisei-cn/actions-download-file@v1
+        if: steps.cache-scilab.outputs.cache-hit != 'true'
         id: downloadscilab
         name: Download SciLab
         with:
           url: "https://www.scilab.org/download/6.1.0/scilab-6.1.0_x64.exe"
 
       - name: Install scilab
+        if: steps.cache-scilab.outputs.cache-hit != 'true'
         working-directory: ${{env.GITHUB_WORKSPACE}}
         run: |
           dir
           Start-Process -FilePath .\scilab-6.1.0_x64.exe -ArgumentList "/SILENT /NORESTART /DIR=`"C:\Program Files\scilab-6.1.0\`"" -Wait
           dir "C:\Program Files"
           dir "C:\Program Files\scilab-6.1.0"
-
-        
+          
       - uses: actions/checkout@v2            
       
       - name: Set Up Python
@@ -285,10 +288,10 @@ jobs:
         with:
           path: |
             ${{github.workspace}}/lib
-          key: ${{ runner.os }}-gdal-lastools-armadillo-latest3
+          key: ${{ runner.os }}-gdal-lastools-armadillo-latest4
           restore-keys: |
             Windows-gdal-lastools-armadillo-latest
-      
+
       - name: Load Boost from Cache
         id: cache-boost
         uses: actions/cache@v2
@@ -318,6 +321,198 @@ jobs:
               ${{github.workspace}}/run/helios.exe
               ${{github.workspace}}/run/_pyhelios.cpython-*.pyd
 
+  prepare-package:
+    runs-on: windows-2019
+    defaults:
+        run:
+          working-directory: ${{github.workspace}}
+    steps:
+        - uses: actions/checkout@v2
+        - name: Cache DLLs
+          id: cache-DLL
+          uses: actions/cache@v2
+          with:
+            path: |
+              ${{github.workspace}}/run
+            key: ${{ runner.os }}-DLLs-2
+
+        - uses: suisei-cn/actions-download-file@v1
+          #if: steps.cache-DLL.outputs.cache-hit != 'true'
+          id: downloadgisinternals
+          name: Download GISInternals
+          with:
+            url: "https://download.gisinternals.com/sdk/downloads/release-1928-x64-gdal-3-5-0-mapserver-7-6-4.zip"
+
+        - name: Extract & copy DLLs
+          #if: steps.cache-DLL.outputs.cache-hit != 'true'
+          working-directory: ${{env.GITHUB_WORKSPACE}}
+          run: >-
+            7z x release-1928-x64-gdal-3-5-0-mapserver-7-6-4.zip;
+            dir bin;
+            $source1 = "bin";
+            $destination = "run";
+            $file_list = Get-Content "run\dependencies.txt";
+            foreach ($file in $file_list)
+            {
+              $source = $source1 + "\$file";
+              try { Copy-Item $source $destination }
+              catch { 
+                  Write-Host $_ 
+              }
+            }
+
+
+        - uses: suisei-cn/actions-download-file@v1
+          if: steps.cache-scilab.outputs.cache-hit != 'true'
+          id: downloadscilab
+          name: Download SciLab
+          with:
+            url: "https://www.scilab.org/download/6.1.0/scilab-6.1.0_x64.exe"
+
+        - name: Install scilab
+          if: steps.cache-scilab.outputs.cache-hit != 'true'
+          working-directory: ${{env.GITHUB_WORKSPACE}}
+          run: |
+            dir
+            Start-Process -FilePath .\scilab-6.1.0_x64.exe -ArgumentList "/SILENT /NORESTART /DIR=`"C:\Program Files\scilab-6.1.0\`"" -Wait
+            dir "C:\Program Files"
+            dir "C:\Program Files\scilab-6.1.0"
+
+        - name: Copy DLLs from scilab
+          #if: steps.cache-DLL.outputs.cache-hit != 'true'
+          working-directory: ${{env.GITHUB_WORKSPACE}}
+          run: >-
+            $source1 = "C:\Program Files\scilab-6.1.0\bin";
+            $destination = "run";
+            $file_list = Get-Content "run\dependencies.txt";
+            foreach ($file in $file_list)
+            {
+              $source = $source1 + "\$file";
+              try { Copy-Item $source $destination }
+              catch { 
+                  Write-Host $_ 
+              }
+            }
+
+  test-helios:
+    runs-on: windows-2019
+    needs: [build-helios, prepare-package]
+    defaults:
+      run:
+        working-directory: ${{github.workspace}}
+
+
+    strategy:
+      matrix:
+        python-version: ['3.6', '3.7', '3.8', '3.9']
+
+    steps:
+      - name: Load DLLs
+        id: cache-DLL
+        uses: actions/cache@v2
+        with:
+          path: |
+            ${{github.workspace}}/run
+          key: ${{ runner.os }}-DLLs-2
+          restore-keys: |
+            Windows-DLLs
+
+      - uses: suisei-cn/actions-download-file@v1
+        if: steps.cache-scilab.outputs.cache-hit != 'true'
+        id: downloadDll
+        name: Download remaining DLLs (from taken from osgeo4w)
+        with:
+          url: "https://heibox.uni-heidelberg.de/f/a96bc746e6d64438ba2a/?dl=1"
+          filename: "missingDLLs.zip"
+
+      - name: Extract & copy DLLs
+        #if: steps.cache-DLL.outputs.cache-hit != 'true'
+        working-directory: ${{env.GITHUB_WORKSPACE}}
+        run: >-
+          7z x missingDLLs.zip;
+          dir;
+          $source1 = ".";
+          $destination = "run";
+          $file_list = Get-Content "run\dependencies.txt";
+          foreach ($file in $file_list)
+          {
+            $source = $source1 + "\$file";
+            try { Copy-Item $source $destination }
+            catch { 
+                Write-Host $_ 
+            }
+          }
+
+      - name: Set Up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Load artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: ${{ runner.os}}-helios-pybinds-${{ matrix.python-version }}
+          path: ${{github.workspace}}/run/
+      - name: Add msbuild to PATH
+        uses: microsoft/setup-msbuild@v1.1
+        
+      - name: Debug
+        working-directory: ${{env.GITHUB_WORKSPACE}}
+        shell: cmd
+        run: |
+          echo %PATH%
+          "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30133\bin\Hostx86\x86\dumpbin.exe" /dependents ${{env.GITHUB_WORKSPACE}}/run/helios.exe
+          "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30133\bin\Hostx86\x86\dumpbin.exe" /imports ${{env.GITHUB_WORKSPACE}}/run/helios.exe
+          dir run
+          
+      - name: Debug-Artifact
+        uses: actions/upload-artifact@v2
+        with:
+            name: ${{ runner.os}}-helios-pybinds-${{ matrix.python-version }}-withlib
+            path: |
+              ${{github.workspace}}/run/helios.exe
+              ${{github.workspace}}/run/_pyhelios.cpython-*.pyd
+              ${{github.workspace}}/run/*.dll
+              
       - name: Test
-        if: false
         run: ${{github.workspace}}/run/helios.exe --test
+        
+    
+  build-gdal:
+    runs-on: windows-2019
+    needs: []
+    defaults:
+      run:
+        working-directory: ${{github.workspace}}
+
+    steps:
+      - uses: suisei-cn/actions-download-file@v1
+        id: buildgdal-downloadgdal
+        name: Download GDAL
+        with:
+          url: "https://github.com/OSGeo/gdal/releases/download/v3.5.0/gdal-3.5.0.tar.gz"
+          target: lib/gdal.tar.gz
+
+      - name: Extract GDAL
+        working-directory: ${{env.GITHUB_WORKSPACE}}
+        run: |
+          cd lib
+          7z x gdal.tar.gz -so | 7z x -aoa -si -ttar -o"."
+          dir .
+          move gdal-3.5.0 gdal
+          dir gdal
+          
+      - name: Add msbuild to PATH
+        uses: microsoft/setup-msbuild@v1.1
+        
+      - name: Build GDAL
+        working-directory: ${{env.GITHUB_WORKSPACE}}
+        shell: cmd
+        run: |
+          cd lib\gdal
+          mkdir build
+          cd build
+          cmake ..
+          cmake --build .
+          cmake --build . --target install
+          dir
