@@ -298,6 +298,12 @@ public:
     inline void setBeamWaistRadius(double const beamWaistRadius){
         scanner.setBeamWaistRadius(beamWaistRadius, 0);
     }
+    inline int getMaxNOR(size_t const idx) const
+        {return scanner.getMaxNOR(idx);}
+    inline int getMaxNOR() const {return scanner.getMaxNOR(0);}
+    inline void setMaxNOR(int const maxNOR, size_t const idx)
+        {scanner.setMaxNOR(maxNOR, idx);}
+    inline void setMaxNOR(int const maxNOR) {scanner.setMaxNOR(maxNOR);}
     glm::dvec3 getHeadRelativeEmitterPosition(
         size_t const idx
     ) const{

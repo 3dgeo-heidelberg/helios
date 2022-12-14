@@ -285,7 +285,7 @@ public:
         this->splitByChannel = splitByChannel_;
     }
 
-    bool getLasScale(){return lasScale;}
+    double getLasScale(){return lasScale;}
     void setLasScale(double const lasScale){
         if(started) throw PyHeliosException(
             "Cannot modify LAS scale for already started simulations."
