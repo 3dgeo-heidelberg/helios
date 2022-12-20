@@ -181,34 +181,6 @@
 	<!-- ##### END RIEGL VUX-1UAV ##### -->
 
 
-	<!-- ##### BEGIN RIEGL VUX-1LR ##### -->
-	<!-- Maximum number of returns per pulse dependent on pulse frequency;
-	50-200 kHz: 15; 400 kHz: 14, 600 kHz: 8, 820 kHz: 6;
-	for simulations with high pulse frequencies, we recommend to create a copy of this scanner entry with the respective maxNOR value -->
-	<scanner 	id 							= "riegl_vux-1lr"
-				accuracy_m					= "0.015"
-			 	beamDivergence_rad 			= "0.0005"
-				name              			= "RIEGL VUX-1UAV"
-				optics            			= "rotating"
-				pulseFreqs_Hz				= "50000,100000,200000,400000,600000,820000"
-				pulseLength_ns     			= "4"
-				rangeMin_m					= "5"
-				scanAngleMax_deg   			= "180"
-				scanAngleEffectiveMax_deg	= "165"
-				scanFreqMin_Hz				= "10"
-				scanFreqMax_Hz				= "200"
-                maxNOR                      = "6">
-		
-			<beamOrigin x="0" y="0.085" z="0.06">			
-				<rot axis="x" angle_deg="90" />			
-				<rot axis="z" angle_deg="90" />			
-			</beamOrigin>
-		<headRotateAxis x="0" y="0" z="1"/>
-	</scanner>
-	<!-- ##### END RIEGL VUX-1UAV ##### -->
-
-
-
     <!-- ##### BEGIN RIEGL VUX-1UAV22 ##### -->
 	<!-- Maximum number of returns per pulse dependent on pulse frequency;
 	50-600 kHz: 15; 800 kHz: 11, 1200 kHz: 7;
