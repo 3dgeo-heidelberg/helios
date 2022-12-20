@@ -70,6 +70,15 @@ public:
         string const &path
     ) const = 0;
 
+    // ***  HELIOS WRITER METHODS  *** //
+    // ******************************* //
+    /**
+     * @brief Finishes all writers
+     * @see filems::BaseFullWaveformWriter::writers
+     * @see HeliosWriter::finish
+     */
+    void finish() override;
+
     // ***  GETTERs and SETTERs  *** //
     // ***************************** //
     /**

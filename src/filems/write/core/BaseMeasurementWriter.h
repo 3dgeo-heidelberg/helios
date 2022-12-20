@@ -110,6 +110,15 @@ public:
         double const deltaIntensity
     ) const = 0;
 
+    // ***  HELIOS WRITER METHODS  *** //
+    // ******************************* //
+    /**
+     * @brief Finishes all writers
+     * @see filems::BaseMeasurementWriter::writers
+     * @see HeliosWriter::finish
+     */
+    void finish() override;
+
     // ***  GETTERs and SETTERs  *** //
     // ***************************** //
     /**
