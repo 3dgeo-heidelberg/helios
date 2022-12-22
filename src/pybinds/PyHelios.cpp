@@ -760,6 +760,27 @@ BOOST_PYTHON_MODULE(_pyhelios){
             )
         )
         .add_property( // Only access first device. Use get/set for n device
+            "maxNOR",
+            static_cast<int(PyScannerWrapper::*)()const>(
+                &PyScannerWrapper::getMaxNOR
+            ),
+            static_cast<void(PyScannerWrapper::*)(int const)>(
+                &PyScannerWrapper::setMaxNOR
+            )
+        )
+        .def(
+            "getMaxNOR",
+            static_cast<int(PyScannerWrapper::*)(size_t const)const>(
+                &PyScannerWrapper::getMaxNOR
+            )
+        )
+        .def(
+            "setMaxNOR",
+            static_cast<void(PyScannerWrapper::*)(int const, size_t const)>(
+                &PyScannerWrapper::setMaxNOR
+            )
+        )
+        .add_property( // Only access first device. Use get/set for n device
             "bt2",
             static_cast<double(PyScannerWrapper::*)()const>(
                 &PyScannerWrapper::getBt2
@@ -1200,6 +1221,18 @@ BOOST_PYTHON_MODULE(_pyhelios){
             "getEmitterRelativeAttitude",
             &PyBeamDeflectorWrapper::getEmitterRelativeAttitude,
             return_internal_reference<>()
+        )
+        .def(
+            "getOpticsType",
+            static_cast<string(PyBeamDeflectorWrapper::*)()const>(
+                &PyBeamDeflectorWrapper::getOpticsType
+            )
+        )
+        .def(
+            "getOpticsType",
+            static_cast<string(PyBeamDeflectorWrapper::*)(size_t const)const>(
+                &PyBeamDeflectorWrapper::getOpticsType
+            )
         )
     ;
 

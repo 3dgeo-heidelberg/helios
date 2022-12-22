@@ -70,7 +70,7 @@ public:
      * @brief Finish the sync file writer
      * @see filems::SyncFileWriter::finish
      */
-    void finish();
+    virtual void finish();
 
     // ***  GETTERs and SETTERs  *** //
     // ***************************** //
