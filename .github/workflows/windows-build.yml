@@ -179,8 +179,8 @@ jobs:
           dir
           move armadillo-10.6.2 armadillo
           cd armadillo
-          $env:Path += ';"C:\Program Files\scilab-6.1.0\bin"'
-          cmake -DCMAKE_BUILD_TYPE=Release -DLAPACK_LIBRARY="C:\Program Files\scilab-6.1.0\bin\lapack.lib" -DBLAS_LIBRARY="C:\Program Files\scilab-6.1.0\bin\blasplus.lib" .
+          $env:Path += ';"C:\Program Files\scilab-6.1.1\bin"'
+          cmake -DCMAKE_BUILD_TYPE=Release -DLAPACK_LIBRARY="C:\Program Files\scilab-6.1.1\bin\lapack.lib" -DBLAS_LIBRARY="C:\Program Files\scilab-6.1.1\bin\blasplus.lib" .
           msbuild.exe armadillo.sln /p:Configuration=Release
 
       - uses: suisei-cn/actions-download-file@v1
@@ -261,15 +261,15 @@ jobs:
         id: downloadscilab
         name: Download SciLab
         with:
-          url: "https://www.scilab.org/download/6.1.0/scilab-6.1.0_x64.exe"
+          url: "https://oos.eu-west-2.outscale.com/scilab-releases/6.1.1/scilab-6.1.1_x64.exe"
 
-      - name: Install scilab
+      - name: Install 
         working-directory: ${{env.GITHUB_WORKSPACE}}
         run: |
           dir
-          Start-Process -FilePath .\scilab-6.1.0_x64.exe -ArgumentList "/SILENT /NORESTART /DIR=`"C:\Program Files\scilab-6.1.0\`"" -Wait
+          Start-Process -FilePath .\scilab-6.1.1_x64.exe -ArgumentList "/SILENT /NORESTART /DIR=`"C:\Program Files\scilab-6.1.1\`"" -Wait
           dir "C:\Program Files"
-          dir "C:\Program Files\scilab-6.1.0"
+          dir "C:\Program Files\scilab-6.1.1"
 
         
       - uses: actions/checkout@v2            
@@ -301,12 +301,12 @@ jobs:
       - name: Build HELIOS++
         working-directory: ${{env.GITHUB_WORKSPACE}}
         run: |
-          dir "C:\Program Files\scilab-6.1.0\bin"
+          dir "C:\Program Files\scilab-6.1.1\bin"
           $py_no_dot="${{ matrix.python-version }}"
           $py_no_dot=$py_no_dot.Replace(".", "")
           ((Get-Content -path src\main\helios_version.cpp -Raw) -replace '(^const char \* HELIOS_VERSION = ")(.*)(";)','$1$2 - ${{ github.head_ref }}.${{ github.sha }}$3') | Set-Content -Path src\main\helios_version.cpp
-          cmake -DCMAKE_BUILD_TYPE=Release -DPYTHON_BINDING=1 "-DPYTHON_VERSION=${{ matrix.python-version }}" -DPYTHON_PATH=${{env.pythonLocation}} -DLAPACK_LIB="C:\Program Files\scilab-6.1.0\bin\lapack.lib;C:\Program Files\scilab-6.1.0\bin\blasplus.lib" .
-          msbuild.exe helios.sln /p:AdditionalDependencies='"C:\Program Files\scilab-6.1.0\bin\blasplus.lib;C:\Program Files\scilab-6.1.0\bin\lapack.lib"' /p:AdditionalLibraryDirectories='"C:\Program Files\scilab-6.1.0\bin"' /p:Configuration=Release
+          cmake -DCMAKE_BUILD_TYPE=Release -DPYTHON_BINDING=1 "-DPYTHON_VERSION=${{ matrix.python-version }}" -DPYTHON_PATH=${{env.pythonLocation}} -DLAPACK_LIB="C:\Program Files\scilab-6.1.1\bin\lapack.lib;C:\Program Files\scilab-6.1.1\bin\blasplus.lib" .
+          msbuild.exe helios.sln /p:AdditionalDependencies='"C:\Program Files\scilab-6.1.1\bin\blasplus.lib;C:\Program Files\scilab-6.1.1\bin\lapack.lib"' /p:AdditionalLibraryDirectories='"C:\Program Files\scilab-6.1.1\bin"' /p:Configuration=Release
           copy ${{github.workspace}}/Release/helios.exe ${{github.workspace}}/run/helios.exe
           copy ${{github.workspace}}/Release/_pyhelios.pyd "${{github.workspace}}/run/_pyhelios.cpython-$py_no_dot.pyd"
           
