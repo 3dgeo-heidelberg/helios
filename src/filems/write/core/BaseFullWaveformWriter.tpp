@@ -24,6 +24,24 @@ void BaseFullWaveformWriter<WriteArgs ...>::configure(
     setOutputFilePath(ss.str());
 }
 
+// ***  HELIOS WRITER METHODS  *** //
+// ******************************* //
+template <typename ... WriteArgs>
+void BaseFullWaveformWriter<WriteArgs ...>::finish(){
+    // Call parent finish method that finishes current writer
+    shared_ptr<SyncFileWriter<WriteArgs ...>> current = sfw;
+    HeliosWriter<WriteArgs ...>::finish();
+
+    // Finish remaining writers
+    typename unordered_map<
+        string, shared_ptr<SyncFileWriter<WriteArgs ...>>
+    >::iterator it;
+    for(it = writers.begin() ; it != writers.end(); ++it){
+        shared_ptr<SyncFileWriter<WriteArgs ...>> w = it->second;
+        if(w!=current) w->finish();
+    }
+}
+
 // ***  GETTERs and SETTERs  *** //
 // ***************************** //
 template <typename ... WriteArgs>
