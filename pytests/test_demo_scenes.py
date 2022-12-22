@@ -408,7 +408,7 @@ def eval_las(dirname, las_version, check_empty=False):
     for dim in expected_dimensions:
         assert dim in dimensions
     assert las.header.version == las_version
-    if check_empty:
+    if check_empty is True:
         assert las.header.point_count > 0
 
 
