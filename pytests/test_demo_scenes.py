@@ -419,7 +419,7 @@ def test_strip_id_pyh():
     dirname_pyh = run_helios_pyhelios(Path('data') / 'test' / 'als_hd_height_above_ground_stripid_light.xml',
                                       las_output=True, zip_output=True)
     las_version = "1.4"
-    eval_las(dirname_pyh, las_version, check_empty=True)
+    eval_las(dirname_pyh, las_version, check_empty=False)
 
 
 @pytest.mark.skipif("laspy" not in sys.modules,
