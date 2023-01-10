@@ -1,10 +1,13 @@
 <map id="FullWaveformPulseRunnable" name="FullWaveformPulseRunnable">
-<area shape="rect" id="node2" href="$d6/d9e/classAbstractPulseRunnable.html" title="Base abstract class for pulse runnables. " alt="" coords="64,392,223,419"/>
-<area shape="rect" id="node3" href="$d1/d6e/classPulseTask.html" title="Pulse task interface. " alt="" coords="5,303,89,329"/>
-<area shape="rect" id="node4" href="$d5/d9c/classScene.html" title="Class representing a scene asset. " alt="" coords="114,303,173,329"/>
-<area shape="rect" id="node5" href="$de/d97/classAsset.html" title="Base class for all assets. " alt="" coords="115,213,171,240"/>
-<area shape="rect" id="node7" href="$d1/d81/classSimulatedPulse.html" title="Class representing a simulated laser pulse. " alt="" coords="197,303,311,329"/>
-<area shape="rect" id="node8" href="$d9/d2b/classTimedPulse.html" title="Class representing a time aware laser pulse. " alt="" coords="209,213,299,240"/>
-<area shape="rect" id="node9" href="$d3/d1a/classPulse.html" title="Class representing a laser pulse. " alt="" coords="228,95,283,121"/>
-<area shape="rect" id="node10" href="$d5/dcb/classRotation.html" title="Rotation" alt="" coords="220,5,291,32"/>
+<area shape="rect" id="node1" title="Concrete implementation of abstract pulse runnable to compute full waveform pulses." alt="" coords="46,468,237,495"/>
+<area shape="rect" id="node2" href="$d6/d9e/classAbstractPulseRunnable.html" title="Base abstract class for pulse runnables." alt="" coords="62,392,221,419"/>
+<area shape="rect" id="node3" href="$d1/d6e/classPulseTask.html" title="Pulse task interface." alt="" coords="5,303,88,329"/>
+<area shape="rect" id="node4" href="$d5/d9c/classScene.html" title="Class representing a scene asset." alt="" coords="112,303,171,329"/>
+<area shape="rect" id="node5" href="$de/d97/classAsset.html" title="Base class for all assets." alt="" coords="113,213,169,240"/>
+<area shape="rect" id="node6" title=" " alt="" coords="114,95,169,121"/>
+<area shape="rect" id="node7" href="$d1/d81/classSimulatedPulse.html" title="Class representing a simulated laser pulse." alt="" coords="195,303,309,329"/>
+<area shape="rect" id="node8" href="$d9/d2b/classTimedPulse.html" title="Class representing a time aware laser pulse." alt="" coords="205,213,296,240"/>
+<area shape="rect" id="node9" href="$d3/d1a/classPulse.html" title="Class representing a laser pulse." alt="" coords="223,95,278,121"/>
+<area shape="rect" id="node10" href="$d5/dcb/classRotation.html" title=" " alt="" coords="215,5,286,32"/>
+<area shape="rect" id="node11" title=" " alt="" coords="321,213,378,240"/>
 </map>

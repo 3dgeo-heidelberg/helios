@@ -1,5 +1,6 @@
 <map id="InterpolatedMovingPlatform" name="InterpolatedMovingPlatform">
-<area shape="rect" id="node2" href="$d1/d83/classMovingPlatform.html" title="Class representing a moving platform. " alt="" coords="39,155,153,181"/>
-<area shape="rect" id="node3" href="$df/d1e/classPlatform.html" title="Class representing a platform asset. " alt="" coords="61,80,131,107"/>
-<area shape="rect" id="node4" href="$de/d97/classAsset.html" title="Base class for all assets. " alt="" coords="68,5,124,32"/>
+<area shape="rect" id="node1" title="Class representing a MovingPlatform which position is defined by a function interpolated from a Desig..." alt="" coords="5,229,187,256"/>
+<area shape="rect" id="node2" href="$d1/d83/classMovingPlatform.html" title="Class representing a moving platform." alt="" coords="39,155,153,181"/>
+<area shape="rect" id="node3" href="$df/d1e/classPlatform.html" title="Class representing a platform asset." alt="" coords="61,80,131,107"/>
+<area shape="rect" id="node4" href="$de/d97/classAsset.html" title="Base class for all assets." alt="" coords="68,5,124,32"/>
 </map>

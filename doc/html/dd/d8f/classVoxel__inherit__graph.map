@@ -1,4 +1,5 @@
 <map id="Voxel" name="Voxel">
-<area shape="rect" id="node3" href="$d7/d5a/classDetailedVoxel.html" title="Class which extends Voxel to support AMAPVox format with extra features. " alt="" coords="5,155,108,181"/>
-<area shape="rect" id="node2" href="$df/de1/classPrimitive.html" title="Abstract class defining the common behavior for all primitives. " alt="" coords="20,5,93,32"/>
+<area shape="rect" id="node1" title="Class representing a voxel primitive." alt="" coords="29,80,84,107"/>
+<area shape="rect" id="node3" href="$d7/d5a/classDetailedVoxel.html" title="Class which extends Voxel to support AMAPVox format with extra features." alt="" coords="5,155,108,181"/>
+<area shape="rect" id="node2" href="$df/de1/classPrimitive.html" title="Abstract class defining the common behavior for all primitives." alt="" coords="20,5,93,32"/>
 </map>

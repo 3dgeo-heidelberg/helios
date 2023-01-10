@@ -14,10 +14,12 @@ var classWarehouseThreadPool =
     [ "post", "da/d92/classWarehouseThreadPool.html#a612fefbce61495de99e3857936e5ecef", null ],
     [ "start", "da/d92/classWarehouseThreadPool.html#a508f09fa5cef7b7f50b5354ede10a34f", null ],
     [ "condvar", "da/d92/classWarehouseThreadPool.html#a6696ae31df49821f1fe76673d3b4c8d5", null ],
+    [ "io_service_", "da/d92/classWarehouseThreadPool.html#a3879736968a0b84d751ec595cdd2c6ca", null ],
     [ "joinCondvar", "da/d92/classWarehouseThreadPool.html#a71c9f9ec221d638d1a21361c7349881a", null ],
     [ "joinMtx", "da/d92/classWarehouseThreadPool.html#a3d15b8e71f854ff5b2153c5afa17bb06", null ],
     [ "mtx", "da/d92/classWarehouseThreadPool.html#a365262973c13d27700e738af4063d1e9", null ],
     [ "pendingCount", "da/d92/classWarehouseThreadPool.html#aca83ee3987dd55e7fa7a0f97de765936", null ],
+    [ "pool_size", "da/d92/classWarehouseThreadPool.html#a0d1603eed0547e1f3774cafe94256abe", null ],
     [ "warehouse", "da/d92/classWarehouseThreadPool.html#a6d136e811b23ff8b39c9d1323e75911c", null ],
     [ "workersCount", "da/d92/classWarehouseThreadPool.html#add3a38d0067d7829bcb596332c674e21", null ],
     [ "working", "da/d92/classWarehouseThreadPool.html#a73443fb65721868adda313fff534c1db", null ]

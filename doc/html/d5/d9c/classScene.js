@@ -9,7 +9,7 @@ var classScene =
     [ "doForceOnGround", "d5/d9c/classScene.html#a3c173e62cd1c1c31cdd05edcafbee0ab", null ],
     [ "doSimStep", "d5/d9c/classScene.html#ae788ef988fdebee152a06adb3974da6a", null ],
     [ "finalizeLoading", "d5/d9c/classScene.html#adb8e9900ddf447c30d4ff869e3f0c152", null ],
-    [ "findForceOnGroundQ", "d5/d9c/classScene.html#abbd93c3c45cb22ba6fa6c6f7da1dcb01", null ],
+    [ "findForceOnGroundQ", "d5/d9c/classScene.html#a6da897e6569fa3058ab91767b25658c0", null ],
     [ "getAABB", "d5/d9c/classScene.html#aa9d6bd40ca4908b40dd1d6e14ccea2c2", null ],
     [ "getAllVertices", "d5/d9c/classScene.html#af46ce55bcb11ce26343b4b72066e0cf5", null ],
     [ "getBBox", "d5/d9c/classScene.html#a18592eb6dd32e43dd35cd95f22cbbb11", null ],

@@ -1191,7 +1191,52 @@ XmlAssetsLoader::createScannerSettingsFromXml(
     defaultScannerSettingsMsg
   ));
 
-  // Track non default values if requested
+  // Parse alternative spec. based on vertical and horizontal resolutions
+  if(XmlUtils::hasAttribute(node, "verticalResolution_deg")){
+    settings->verticalResolution_rad = MathConverter::degreesToRadians(
+        boost::get<double>(XmlUtils::getAttribute(
+            node,
+            "verticalResolution_deg",
+            "double",
+            0.0,
+            defaultScannerSettingsMsg
+        ))
+    );
+  }
+  if(XmlUtils::hasAttribute(node, "horizontalResolution_deg")){
+      settings->horizontalResolution_rad = MathConverter::degreesToRadians(
+        boost::get<double>(XmlUtils::getAttribute(
+            node,
+            "horizontalResolution_deg",
+            "double",
+            0.0,
+            defaultScannerSettingsMsg
+        ))
+      );
+  }
+
+  // If vertical or horizontal resolutions were given, apply them
+  if(!settings->hasDefaultResolution()){
+      std::stringstream ss;
+      ss    << "Scanner settings have been fitted from "
+            << "verticalResolution_rad = " << settings->verticalResolution_rad
+                << ", horizontalResolution_rad = "
+                << settings->horizontalResolution_rad << ", \n"
+            << "\tpulseFreq_Hz = " << settings->pulseFreq_Hz << ", "
+            << "scanAngle_rad = " << settings->scanAngle_rad << ", "
+            << "headRotationLength_rad = "
+                << (settings->headRotateStop_rad-settings->headRotateStart_rad)
+                << "\n"
+            << "Consequently, the old scanFreq_Hz = " << settings->scanFreq_Hz
+                << ", and headRotatePerSec_rad = "
+                << settings->headRotatePerSec_rad << " have been udpated to\n";
+      settings->fitToResolution(); // Fit to resolution (itself)
+      ss    << "\tthe new scanFreqHz = " << settings->scanFreq_Hz << ", "
+            << "and headRotatePerSec_rad = " << settings->headRotatePerSec_rad;
+      logging::INFO(ss.str());
+  }
+
+    // Track non default values if requested
   if(fields != nullptr){
     trackNonDefaultScannerSettings(
         settings, template1, DEFAULT_TEMPLATE_ID, *fields

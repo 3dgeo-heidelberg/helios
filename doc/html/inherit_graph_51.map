@@ -1,3 +1,6 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$dc/d39/classhelios_1_1filems_1_1SyncFileMeasurementWriterFactory.html" title="SyncFileMeasurementWriter Factory class. Used to create the appropriate measurement writers based on ..." alt="" coords="5,5,185,47"/>
+<area shape="rect" id="node1" href="$de/dd3/classhelios_1_1filems_1_1WriteStrategy.html" title=" " alt="" coords="5,31,196,87"/>
+<area shape="rect" id="node2" href="$de/d6d/classhelios_1_1filems_1_1DirectMeasurementWriteStrategy.html" title="Concrete class specializing WriteStrategy to directly write measurements to a file." alt="" coords="244,5,465,47"/>
+<area shape="rect" id="node4" href="$da/d35/classhelios_1_1filems_1_1LasMeasurementWriteStrategy.html" title="Concrete class specializing WriteStrategy to directly write measurements to a file with LAS format." alt="" coords="251,71,458,112"/>
+<area shape="rect" id="node3" href="$df/d31/classhelios_1_1filems_1_1ZipMeasurementWriteStrategy.html" title="Like DirectMeasurementWriteStrategy but zipping the output." alt="" coords="513,5,717,47"/>
 </map>

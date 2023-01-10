@@ -25,7 +25,7 @@ var classScenePart =
     [ "serialize", "dd/dc4/classScenePart.html#ac8d1c1199b07fbaca54f50c09c931f77", null ],
     [ "setCentroid", "dd/dc4/classScenePart.html#a49668b1b63fac9583c9cd33b4190c532", null ],
     [ "setId", "dd/dc4/classScenePart.html#a015f2bac94d9e0b65cc7706073164b7a", null ],
-    [ "setPrimitives", "dd/dc4/classScenePart.html#aa7c7eab0f6bec05bbf5d5cf3c0932c46", null ],
+    [ "setPrimitives", "dd/dc4/classScenePart.html#a389dba2162459d619a56b52954cae8fc", null ],
     [ "smoothVertexNormals", "dd/dc4/classScenePart.html#a2b1855e4215d1170177caaa95e89dfbd", null ],
     [ "splitSubparts", "dd/dc4/classScenePart.html#a82912d3e287312e90e622b512a653df0", null ],
     [ "boost::serialization::access", "dd/dc4/classScenePart.html#ac98d07dd8f7b70e16ccb9a01abf56b9c", null ],

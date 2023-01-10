@@ -67,6 +67,10 @@ XmlSurveyLoader::createSurveyFromXml(
     survey->legs
   );
 
+  // Validate survey
+  validateSurvey(survey);
+
+
   // NOTE:
   // The scene is loaded as the last step, since it takes the longest time.
   // In the case that something goes wrong during the parsing
@@ -551,4 +555,45 @@ void XmlSurveyLoader::loadPlatformNoise(
        surveyNode->FirstChildElement("attitudeZNoise");
     if(attitudeZNoise != nullptr) platform->attitudeZNoiseSource =
         XmlUtils::createNoiseSource(attitudeZNoise);
+}
+
+void XmlSurveyLoader::validateSurvey(std::shared_ptr<Survey> survey){
+    int const FORCED_EXIT_STATUS = 3; // Exit code for forced exits
+    for(std::shared_ptr<Leg> leg : survey->legs){
+        int const legId = leg->getSerialId();
+        ScannerSettings const &ss = leg->getScannerSettings();
+        std::shared_ptr<AbstractBeamDeflector> delf =
+            survey->scanner->getBeamDeflector();
+        // Check scanFreq_Hz is not below the minimum threshold
+        if(ss.scanFreq_Hz < delf->cfg_device_scanFreqMin_Hz){
+            std::stringstream s;
+            s   << "Scanning frequency for leg " << legId << " is "
+                << ss.scanFreq_Hz << "Hz but "
+                << "min scanning frequency is set to "
+                << delf->cfg_device_scanFreqMin_Hz << "Hz\n"
+                << "The requested scanning frequency cannot be achieved by "
+                << "this scanner.\n"
+                << "Please update either the requested scanning "
+                << "frequency (potentially via the requested scan resolution) "
+                << "or the scanner specification.";
+            logging::ERR(s.str());
+            std::exit(FORCED_EXIT_STATUS);
+        }
+        // Check scanFreq_Hz is not above the maximum threshold
+        if(ss.scanFreq_Hz > delf->cfg_device_scanFreqMax_Hz){
+            std::stringstream s;
+            s   << "Scanning frequency for leg " << legId << " is "
+                << ss.scanFreq_Hz << "Hz but "
+                << "max scanning frequency is set to "
+                << delf->cfg_device_scanFreqMax_Hz << "Hz\n"
+                << "The requested scanning frequency cannot be achieved by "
+                << "this scanner.\n"
+                << "Please update either the requested scanning "
+                << "frequency (potentially via the requested scan resolution) "
+                << "or the scanner specification.";
+            logging::ERR(s.str());
+            std::exit(FORCED_EXIT_STATUS);
+        }
+
+    }
 }

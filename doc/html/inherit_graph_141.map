@@ -1,8 +1,6 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$d2/d33/classBasicDynGroveSubject.html" title="BasicDynGroveSubject\l\&lt; GroveKDTreeRaycaster,\l DynMovingObject \&gt;" alt="" coords="5,5,184,61"/>
-<area shape="rect" id="node2" href="$dc/dbb/classKDGroveSubject.html" title="Interface defining the behaviors that must be supported by any object that can notify to a KDGrove..." alt="" coords="232,24,352,51"/>
-<area shape="rect" id="node3" href="$d4/d96/classDynMovingObject.html" title="Implementation of a dynamic object which supports dynamic motions (extended rigid motions) ..." alt="" coords="400,53,527,80"/>
-<area shape="rect" id="node4" href="$d4/d48/classDynSequentiableMovingObject.html" title="Implementation of a dynamic object which supports sequentiable dynamic motions. " alt="" coords="575,53,776,80"/>
-<area shape="rect" id="node5" href="$dd/dc4/classScenePart.html" title="Class representing a scene part. " alt="" coords="53,85,136,112"/>
-<area shape="rect" id="node6" href="$d5/d6a/classDynObject.html" title="Dynamic object base implementation. " alt="" coords="250,79,334,105"/>
+<area shape="rect" id="node1" href="$d3/de1/classSimpleKDTreeGeometricStrategy.html" title="Class providing a strategy for geometry&#45;level parallelization of Simple KDTree building...." alt="" coords="5,31,221,57"/>
+<area shape="rect" id="node2" href="$d9/d31/classSAHKDTreeGeometricStrategy.html" title="Class providing a strategy for geometry&#45;level parallelization of SAH KDTree building...." alt="" coords="269,31,473,57"/>
+<area shape="rect" id="node3" href="$d4/d97/classAxisSAHKDTreeGeometricStrategy.html" title="Class providing a strategy for geometry&#45;level parallelization of Axis SAH KDTree building...." alt="" coords="521,5,752,32"/>
+<area shape="rect" id="node4" href="$d1/ddc/classFastSAHKDTreeGeometricStrategy.html" title="Class providing a strategy for geometry&#45;level parallelization of Fast SAH KDTree building...." alt="" coords="521,56,752,83"/>
 </map>

@@ -7,7 +7,7 @@ var classhelios_1_1filems_1_1TrajectoryWriter =
     [ "getOutputPath", "dd/dd8/classhelios_1_1filems_1_1TrajectoryWriter.html#aacbb27da86ae374e9d89078a5f6456b7", null ],
     [ "getSyncFileWriter", "dd/dd8/classhelios_1_1filems_1_1TrajectoryWriter.html#abec4b14c0572bc573c09a75444b29b2c", null ],
     [ "setOutputFilePath", "dd/dd8/classhelios_1_1filems_1_1TrajectoryWriter.html#adf703f97525a78386cfa55e73bf9e816", null ],
-    [ "setSyncFileWriter", "dd/dd8/classhelios_1_1filems_1_1TrajectoryWriter.html#a8485c6d03fd67a817d6f65590faea15c", null ],
+    [ "setSyncFileWriter", "dd/dd8/classhelios_1_1filems_1_1TrajectoryWriter.html#a3cbcb59486846f59250bdf19a563db94", null ],
     [ "writeTrajectory", "dd/dd8/classhelios_1_1filems_1_1TrajectoryWriter.html#a099fb31fee3631a26b4108a2831fd893", null ],
     [ "writeTrajectoryUnsafe", "dd/dd8/classhelios_1_1filems_1_1TrajectoryWriter.html#a713e588d271438f018587927d65fc9d8", null ]
 ];
