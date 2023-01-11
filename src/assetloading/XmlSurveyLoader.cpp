@@ -565,7 +565,7 @@ void XmlSurveyLoader::validateSurvey(std::shared_ptr<Survey> survey){
         std::shared_ptr<AbstractBeamDeflector> delf =
             survey->scanner->getBeamDeflector();
         // Check scanFreq_Hz is not below the minimum threshold
-        if(ss.scanFreq_Hz < delf->cfg_device_scanFreqMin_Hz){
+        if( ss.scanFreq_Hz < delf->cfg_device_scanFreqMin_Hz){
             std::stringstream s;
             s   << "Scanning frequency for leg " << legId << " is "
                 << ss.scanFreq_Hz << "Hz but "
@@ -580,7 +580,10 @@ void XmlSurveyLoader::validateSurvey(std::shared_ptr<Survey> survey){
             std::exit(FORCED_EXIT_STATUS);
         }
         // Check scanFreq_Hz is not above the maximum threshold
-        if(ss.scanFreq_Hz > delf->cfg_device_scanFreqMax_Hz){
+        if(
+            ss.scanFreq_Hz > delf->cfg_device_scanFreqMax_Hz &&
+            delf->cfg_device_scanFreqMax_Hz != 0 // 0 maxFreq means no limit
+        ){
             std::stringstream s;
             s   << "Scanning frequency for leg " << legId << " is "
                 << ss.scanFreq_Hz << "Hz but "
