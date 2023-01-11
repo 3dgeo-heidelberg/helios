@@ -1,3 +1,6 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$d8/de4/classhelios_1_1hpc_1_1SM__ParallelMergeSort.html" title="Class providing a shared memory sorting algorithm based on merge sort. " alt="" coords="5,5,237,61"/>
+<area shape="rect" id="node1" title=" " alt="" coords="5,42,109,69"/>
+<area shape="rect" id="node2" href="$d6/dda/classHeliosException.html" title="Base class for Helios exceptions." alt="" coords="157,42,275,69"/>
+<area shape="rect" id="node3" href="$d4/dbc/classhelios_1_1filems_1_1EndOfReadingException.html" title="Class representing the end of reading exception for FMS readers." alt="" coords="323,5,515,47"/>
+<area shape="rect" id="node4" href="$d8/d98/classpyhelios_1_1PyHeliosException.html" title=" " alt="" coords="324,71,513,98"/>
 </map>

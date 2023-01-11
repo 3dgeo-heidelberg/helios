@@ -181,4 +181,10 @@ protected:
 	    tinyxml2::XMLElement *surveyNode,
         std::shared_ptr<Platform> platform
     );
+    /**
+     * @brief Validate given survey is free from inconsistencies. Otherwise,
+     *  proper logging and forced exit (if needed) will be applied.
+     * @param survey The survey to be validated
+     */
+    static void validateSurvey(std::shared_ptr<Survey> survey);
 };

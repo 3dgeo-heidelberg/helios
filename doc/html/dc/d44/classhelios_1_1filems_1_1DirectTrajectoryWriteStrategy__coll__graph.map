@@ -1,3 +1,4 @@
 <map id="helios::filems::DirectTrajectoryWriteStrategy" name="helios::filems::DirectTrajectoryWriteStrategy">
-<area shape="rect" id="node2" href="$de/dd3/classhelios_1_1filems_1_1WriteStrategy.html" title="helios::filems::WriteStrategy\l\&lt; Trajectory const &amp;\&gt;" alt="" coords="12,5,199,47"/>
+<area shape="rect" id="node1" title="Concrete class specializing WriteStrategy to directly write trajectory to a file." alt="" coords="5,95,205,136"/>
+<area shape="rect" id="node2" href="$de/dd3/classhelios_1_1filems_1_1WriteStrategy.html" title=" " alt="" coords="12,5,199,47"/>
 </map>

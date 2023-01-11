@@ -1,3 +1,8 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$d9/d5e/classTaskWarehouse.html" title="Class implementing a warehouse to store and retrieve tasks in a thread safe fashion. " alt="" coords="5,5,176,32"/>
+<area shape="rect" id="node1" href="$de/dda/classvisualhelios_1_1VHCanvas.html" title="Visual Helios Canvas is a class which provides the base mechanisms to implement Helios visualizations..." alt="" coords="5,38,168,65"/>
+<area shape="rect" id="node2" href="$da/d27/classvisualhelios_1_1VHDynCanvas.html" title="Visual Helios Dynamic Canvas is a class which provides the basis layer to deal with dynamic objects r..." alt="" coords="216,38,403,65"/>
+<area shape="rect" id="node3" href="$df/dd2/classvisualhelios_1_1VHNormalsCanvas.html" title="Abstract class providing some behaviors and defining the interface for all canvas which deal with nor..." alt="" coords="451,38,661,65"/>
+<area shape="rect" id="node4" href="$d3/d71/classvisualhelios_1_1VHSceneCanvas.html" title="Visual Helios Scene Canvas is a class which supports rendering a dynamic scene." alt="" coords="711,13,910,39"/>
+<area shape="rect" id="node6" href="$d9/dc5/classvisualhelios_1_1VHSimpleCanvas.html" title="Visual Helios Simple Canvas is a class which supports rendering polygon meshes which are updated over..." alt="" coords="709,63,912,90"/>
+<area shape="rect" id="node5" href="$d9/d66/classvisualhelios_1_1VHRaycastingCanvas.html" title="Visual Helios Ray casting Canvas is a class which supports rendering a dynamic scene together with th..." alt="" coords="960,5,1143,47"/>
 </map>

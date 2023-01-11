@@ -1,4 +1,5 @@
 <map id="helios::filems::MeasurementWriter" name="helios::filems::MeasurementWriter">
-<area shape="rect" id="node2" href="$d7/d1a/classhelios_1_1filems_1_1BaseMeasurementWriter.html" title="helios::filems::BaseMeasurement\lWriter\&lt; Measurement const\l &amp;, glm::dvec3 const &amp;\&gt;" alt="" coords="515,85,731,141"/>
-<area shape="rect" id="node3" href="$d1/d3b/classhelios_1_1filems_1_1HeliosWriter.html" title="helios::filems::HeliosWriter\l\&lt; WriteArgs ... \&gt;" alt="" coords="237,13,416,54"/>
+<area shape="rect" id="node1" title="Class to handle writing of measurements to generate HELIOS++ output virtual point clouds." alt="" coords="20,199,207,240"/>
+<area shape="rect" id="node2" href="$d7/d1a/classhelios_1_1filems_1_1BaseMeasurementWriter.html" title=" " alt="" coords="5,95,221,151"/>
+<area shape="rect" id="node3" href="$d1/d3b/classhelios_1_1filems_1_1HeliosWriter.html" title=" " alt="" coords="24,5,203,47"/>
 </map>

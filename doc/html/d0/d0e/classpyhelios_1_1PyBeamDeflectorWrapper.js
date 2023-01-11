@@ -6,6 +6,8 @@ var classpyhelios_1_1PyBeamDeflectorWrapper =
     [ "getCachedAngleBetweenPulses", "d0/d0e/classpyhelios_1_1PyBeamDeflectorWrapper.html#ad1298e1bb878b5018c567197a9762075", null ],
     [ "getCurrentBeamAngle", "d0/d0e/classpyhelios_1_1PyBeamDeflectorWrapper.html#a531515cf7b3d6df807c74655b4818010", null ],
     [ "getEmitterRelativeAttitude", "d0/d0e/classpyhelios_1_1PyBeamDeflectorWrapper.html#abe82236472b15b27f1ef1f08767a599a", null ],
+    [ "getOpticsType", "d0/d0e/classpyhelios_1_1PyBeamDeflectorWrapper.html#a975dc8bd29a002807e4dd91d2bf6f977", null ],
+    [ "getOpticsType", "d0/d0e/classpyhelios_1_1PyBeamDeflectorWrapper.html#a22ce1ae9fbdbe1feb21b53ec6563e869", null ],
     [ "getScanAngle", "d0/d0e/classpyhelios_1_1PyBeamDeflectorWrapper.html#a9045d92ed7ecec8130c0a8e10e8e40a5", null ],
     [ "getScanAngleMax", "d0/d0e/classpyhelios_1_1PyBeamDeflectorWrapper.html#a48be4fb65e06a177964048a671544d01", null ],
     [ "getScanFreq", "d0/d0e/classpyhelios_1_1PyBeamDeflectorWrapper.html#a82224b061e7d76f394ed04aec270128a", null ],

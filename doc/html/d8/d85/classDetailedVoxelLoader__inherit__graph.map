@@ -1,3 +1,4 @@
 <map id="DetailedVoxelLoader" name="DetailedVoxelLoader">
-<area shape="rect" id="node2" href="$d6/dd2/classAbstractGeometryFilter.html" title="Abstract class defining asset loading filters common behavior. " alt="" coords="5,5,163,32"/>
+<area shape="rect" id="node1" title="Loader for deatiled voxel geometries." alt="" coords="13,80,155,107"/>
+<area shape="rect" id="node2" href="$d6/dd2/classAbstractGeometryFilter.html" title="Abstract class defining asset loading filters common behavior." alt="" coords="5,5,163,32"/>
 </map>
