@@ -1229,14 +1229,14 @@ XmlAssetsLoader::createScannerSettingsFromXml(
                 << "\n"
             << "Consequently, the old scanFreq_Hz = " << settings->scanFreq_Hz
                 << ", and headRotatePerSec_rad = "
-                << settings->headRotatePerSec_rad << " have been udpated to\n";
+                << settings->headRotatePerSec_rad << " have been updated to\n";
       settings->fitToResolution(); // Fit to resolution (itself)
       ss    << "\tthe new scanFreqHz = " << settings->scanFreq_Hz << ", "
             << "and headRotatePerSec_rad = " << settings->headRotatePerSec_rad;
       logging::INFO(ss.str());
   }
 
-    // Track non default values if requested
+  // Track non default values if requested
   if(fields != nullptr){
     trackNonDefaultScannerSettings(
         settings, template1, DEFAULT_TEMPLATE_ID, *fields
