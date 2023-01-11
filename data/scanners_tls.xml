@@ -149,8 +149,6 @@
 				scanAngleEffectiveMax_deg   = "150"
 				scanFreqMin_Hz				= "0"
 				scanFreqMax_Hz				= "12000"
-				verticalAngleMin_deg		= "-60"
-				verticalAngleMax_deg		= "240"
 	>
 		<FWFSettings beamSampleQuality="3"/>	
 		<beamOrigin x="0" y="0" z="0.2">
