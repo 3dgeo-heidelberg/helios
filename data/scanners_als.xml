@@ -239,44 +239,18 @@
 	</scanner>
 	<!-- ##### END RIEGL LMS VQ-880-G II ##### -->
 
+	
+	
+	<!-- ##### BEGIN RIEGL VQ-1560i - Combined ##### -->
 
-	<!-- ##### BEGIN RIEGL VQ-1560i - Laser 1 ##### -->
-
-	<scanner 	id 						= "riegl_vq-1560i_1"
-			accuracy_m					= "0.02"
-			beamDivergence_rad 			= "0.00025"
-			name              			= "RIEGL VQ-1560i 1"
-			optics            			= "rotating"
-			pulseFreqs_Hz				= "150000,250000,350000,500000,700000,1000000,2000000"
-			pulseLength_ns     			= "4"
-			rangeMin_m					= "100"
-			scanAngleMax_deg   			= "45"
-			scanAngleEffectiveMax_deg	= "30"
-			scanFreqMin_Hz				= "40"
-			scanFreqMax_Hz				= "600"
-			wavelength_nm				= "1064"
-	>
-				
-		<beamOrigin x="0" y="0.0" z="0.0">			
-			<rot axis="y" angle_deg="-14" />			
-			<rot axis="z" angle_deg="8" />			
-		</beamOrigin>
-		<headRotateAxis x="0" y="0" z="1"/>
-
-	</scanner>
-	<!-- ##### END RIEGL VQ-1560i - Laser 1 ##### -->
-
-
-	<!-- ##### BEGIN RIEGL VQ-1560i - Laser 2 ##### -->
-
-	<scanner 	id 						= "riegl_vq-1560i_2"
+	<scanner 	id 						= "riegl_vq-1560i"
 			accuracy_m					= "0.02"
 			beamDivergence_rad 			= "0.0007"
-			name              			= "RIEGL VQ-1560i 2"
+			name              			= "RIEGL VQ-1560i (Dual-Channel)"
 			optics            			= "rotating"
 			pulseFreqs_Hz				= "150000,250000,350000,500000,700000,1000000,2000000"
 			pulseLength_ns     			= "4"
-			rangeMin_m					= "100"
+			rangeMin_m					= "0.0100"
 			scanAngleMax_deg   			= "45"
 			scanAngleEffectiveMax_deg	= "30"
 			scanFreqMin_Hz				= "40"
@@ -284,15 +258,24 @@
 			wavelength_nm				= "532"
 	>
 				
-		<beamOrigin x="0" y="0.0" z="0.0">			
-			<rot axis="y" angle_deg="14" />			
-			<rot axis="z" angle_deg="8" />			
-		</beamOrigin>
-		<headRotateAxis x="0" y="0" z="1"/>
+		<FWFSettings beamSampleQuality="3"/>	
+		<channels>
+			<channel id="0">
+				<beamOrigin x="0" y="0.0" z="0.0">				
+					<rot axis="y" angle_deg="14" />					
+				</beamOrigin>
+			</channel>
+			<channel id="1">
+				<beamOrigin x="0" y="0.0" z="0.0">					
+					<rot axis="y" angle_deg="-14" />					
+				</beamOrigin>
+			</channel>
+		</channels>
 
 	</scanner>
-	<!-- ##### END RIEGL VQ-1560i - Laser 2 ##### -->
-
+	
+	
+	<!-- ##### END RIEGL VQ-1560i - Combined ##### -->
 
 	<!-- ##### LIVOX Mid-70 -->
 	<!-- beam divergence horizontal: 0.000523598, vertical: 0.004887 -->	

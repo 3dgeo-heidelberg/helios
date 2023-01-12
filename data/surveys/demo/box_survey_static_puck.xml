@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+    <scannerSettings id="scaset" active="true" pulseFreq_hz="18750" scanFreq_hz="0"/>
+    <survey name="box_puck_static" scene="data/scenes/demo/box_scene.xml#box_scene" platform="data/platforms.xml#tripod" scanner="data/scanners_tls.xml#vlp16">
+		<leg>
+            <platformSettings x="0" y="0" z="0" />
+			<scannerSettings template="scaset" headRotatePerSec_deg="3600" headRotateStart_deg="0" headRotateStop_deg="3600"/> <!-- 1 second integration time -->
+        </leg>
+    </survey>
+</document>
