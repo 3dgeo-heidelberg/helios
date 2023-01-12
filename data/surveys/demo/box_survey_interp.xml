@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+    <scannerSettings id="scaset" active="true" pulseFreq_hz="180000" scanFreq_hz="100"/>
+
+    <survey name="box_interpolation" scene="data/scenes/demo/box_scene.xml#box_scene" platform="interpolated" basePlatform="data\platforms.xml#sr22" scanner="data/scanners_als.xml#riegl_lms-q560">
+		<leg>
+            <platformSettings 
+				trajectory="data/trajectories/flyandrotate.trj"
+				tIndex="0" xIndex="4" yIndex="5" zIndex="6" rollIndex="1" pitchIndex="2" yawIndex="3"
+				slopeFilterThreshold="0.0" toRadians="true" syncGPSTime="true"
+				tStart="0" tEnd="5" teleportToStart="true"
+			/>  
+			<scannerSettings template="scaset" trajectoryTimeInterval_s="0.01"/>
+        </leg>
+		<leg>
+            <platformSettings
+				trajectory="data/trajectories/flyandrotate.trj"
+				tStart="5" tEnd="10" teleportToStart="true"
+			/>
+			<scannerSettings template="scaset" trajectoryTimeInterval_s="0.01"/>
+        </leg>
+    </survey>
+</document>
