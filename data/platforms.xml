@@ -240,4 +240,7 @@
 	</platform>
 	<!-- ###################### END TLS Platforms ###################### -->
 	
+	<platform id="simple_linearpath" name="Simple Linearpath" type="linearpath">
+	</platform>
+	
 </document>
