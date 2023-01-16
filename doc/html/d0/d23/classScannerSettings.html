@@ -135,9 +135,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a90a10602de137e6a7f60c6f21fd3d3c4"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="../../d0/d23/classScannerSettings.html">ScannerSettings</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d23/classScannerSettings.html#a90a10602de137e6a7f60c6f21fd3d3c4">cherryPick</a> (std::shared_ptr&lt; <a class="el" href="../../d0/d23/classScannerSettings.html">ScannerSettings</a> &gt; cherries, std::unordered_set&lt; std::string &gt; const &amp;fields, std::unordered_set&lt; std::string &gt; const *templateFields=nullptr)</td></tr>
 <tr class="memdesc:a90a10602de137e6a7f60c6f21fd3d3c4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Build a new scanner settings which by default has the same values than caller scanner settings (this). Any field specified through fields set will be overloaded from cherries scanner settings.  <a href="../../d0/d23/classScannerSettings.html#a90a10602de137e6a7f60c6f21fd3d3c4">More...</a><br /></td></tr>
 <tr class="separator:a90a10602de137e6a7f60c6f21fd3d3c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a14415b80b9757e3bfdceaffc718a616c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d23/classScannerSettings.html#a14415b80b9757e3bfdceaffc718a616c">fitToResolution</a> ()</td></tr>
-<tr class="memdesc:a14415b80b9757e3bfdceaffc718a616c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Update the settings to fit the specified resolution.  <a href="../../d0/d23/classScannerSettings.html#a14415b80b9757e3bfdceaffc718a616c">More...</a><br /></td></tr>
-<tr class="separator:a14415b80b9757e3bfdceaffc718a616c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a623c5882de8f80c7399ccba69f56d9fa"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d23/classScannerSettings.html#a623c5882de8f80c7399ccba69f56d9fa">fitToResolution</a> (double const scanAngleMax_rad)</td></tr>
+<tr class="memdesc:a623c5882de8f80c7399ccba69f56d9fa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Update the settings to fit the specified resolution.  <a href="../../d0/d23/classScannerSettings.html#a623c5882de8f80c7399ccba69f56d9fa">More...</a><br /></td></tr>
+<tr class="separator:a623c5882de8f80c7399ccba69f56d9fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afe0319ade625b3b749d274ac26fd9cb6"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d23/classScannerSettings.html#afe0319ade625b3b749d274ac26fd9cb6">hasTemplate</a> ()</td></tr>
 <tr class="memdesc:afe0319ade625b3b749d274ac26fd9cb6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if this <a class="el" href="../../d0/d23/classScannerSettings.html" title="Scanner settings class.">ScannerSettings</a> has an associated template (true) or not (false)  <a href="../../d0/d23/classScannerSettings.html#afe0319ade625b3b749d274ac26fd9cb6">More...</a><br /></td></tr>
 <tr class="separator:afe0319ade625b3b749d274ac26fd9cb6"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -329,8 +329,8 @@ std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="
 
 </div>
 </div>
-<a id="a14415b80b9757e3bfdceaffc718a616c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a14415b80b9757e3bfdceaffc718a616c">&#9670;&nbsp;</a></span>fitToResolution()</h2>
+<a id="a623c5882de8f80c7399ccba69f56d9fa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a623c5882de8f80c7399ccba69f56d9fa">&#9670;&nbsp;</a></span>fitToResolution()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -341,7 +341,8 @@ std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="
         <tr>
           <td class="memname">void ScannerSettings::fitToResolution </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
+          <td class="paramtype">double const&#160;</td>
+          <td class="paramname"><em>scanAngleMax_rad</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -353,14 +354,20 @@ std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="
 </div><div class="memdoc">
 
 <p>Update the settings to fit the specified resolution. </p>
-<p>Let \(v_{\mathrm{res}}\) be the given vertical resolution, \(h_{\mathrm{res}}\) be the given horizontal resolution, \(f_{p}\) be the given pulse frequency, and \(\alpha\) be the scan angle (or diff between stop and end angle for head rotation when there is no explicit scan angle).</p>
+<p>Let \(V_{\mathrm{res}}\) be the given vertical resolution, \(H_{\mathrm{res}}\) be the given horizontal resolution, \(f_{p}\) be the given pulse frequency, and \(\alpha^*\) be the max scan angle.</p>
 <p>But then, the scanning frequency \(f_s\) can be determined as: </p><p class="formulaDsp">
-\[ f_s = \frac{V_{\mathrm{res}} f_p}{2 \alpha} \]
+\[ f_s = \frac{V_{\mathrm{res}} f_p}{2 \alpha^*} \]
 </p>
-<p>Also, the head rotation per second \(h_{\mathrm{rps}}\) can be determined as: </p><p class="formulaDsp">
-\[ h_{\mathrm{rps}} = h_{\mathrm{res}} f_s \]
+<p>Also, the head rotation per second \(H_{\mathrm{rps}}\) can be determined as: </p><p class="formulaDsp">
+\[ H_{\mathrm{rps}} = H_{\mathrm{res}} f_s \]
 </p>
- 
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">scanAngleMax_rad</td><td>\(\alpha^*\) </td></tr>
+  </table>
+  </dd>
+</dl>
+
 </div>
 </div>
 <a id="a1fd03e0a409115c15b37d84b1c1d1ec2"></a>

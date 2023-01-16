@@ -3,7 +3,7 @@ var classScannerSettings =
     [ "ScannerSettings", "d0/d23/classScannerSettings.html#ac60cfbaff59eab85f2bac4a73934e162", null ],
     [ "ScannerSettings", "d0/d23/classScannerSettings.html#a5510f5b3f914ba2aefb546a85283c775", null ],
     [ "cherryPick", "d0/d23/classScannerSettings.html#a90a10602de137e6a7f60c6f21fd3d3c4", null ],
-    [ "fitToResolution", "d0/d23/classScannerSettings.html#a14415b80b9757e3bfdceaffc718a616c", null ],
+    [ "fitToResolution", "d0/d23/classScannerSettings.html#a623c5882de8f80c7399ccba69f56d9fa", null ],
     [ "getTemplate", "d0/d23/classScannerSettings.html#a1fd03e0a409115c15b37d84b1c1d1ec2", null ],
     [ "hasDefaultResolution", "d0/d23/classScannerSettings.html#a7a7a0d8290e0c42c7ae224977e1f025b", null ],
     [ "hasTemplate", "d0/d23/classScannerSettings.html#afe0319ade625b3b749d274ac26fd9cb6", null ],
