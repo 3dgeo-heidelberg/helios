@@ -195,29 +195,28 @@ public:
     /**
      * @brief Update the settings to fit the specified resolution.
      *
-     * Let \f$v_{\mathrm{res}}\f$ be the given vertical resolution,
-     *  \f$h_{\mathrm{res}}\f$ be the given horizontal resolution,
-     *  \f$f_{p}\f$ be the given pulse frequency, and \f$\alpha\f$ be the
-     *  scan angle (or diff between stop and end angle for head rotation when
-     *  there is no explicit scan angle).
+     * Let \f$V_{\mathrm{res}}\f$ be the given vertical resolution,
+     *  \f$H_{\mathrm{res}}\f$ be the given horizontal resolution,
+     *  \f$f_{p}\f$ be the given pulse frequency, and \f$\alpha^*\f$ be the
+     *  max scan angle.
      *
      * But then, the scanning frequency \f$f_s\f$ can be determined as:
      * \f[
-     *  f_s = \frac{V_{\mathrm{res}} f_p}{2 \alpha}
+     *  f_s = \frac{V_{\mathrm{res}} f_p}{2 \alpha^*}
      * \f]
      *
-     * Also, the head rotation per second \f$h_{\mathrm{rps}}\f$ can be
+     * Also, the head rotation per second \f$H_{\mathrm{rps}}\f$ can be
      *  determined as:
      * \f[
-     *  h_{\mathrm{rps}} = h_{\mathrm{res}} f_s
+     *  H_{\mathrm{rps}} = H_{\mathrm{res}} f_s
      * \f]
      *
+     * @param scanAngleMax_rad \f$\alpha^*\f$
      */
-    inline void fitToResolution(){
-        double const scanAngle_rad = (this->scanAngle_rad != 0.0) ?
-            this->scanAngle_rad : headRotateStop_rad-headRotateStart_rad;
-        scanFreq_Hz = (verticalResolution_rad * pulseFreq_Hz) /
-            (2*scanAngle_rad);
+    inline void fitToResolution(double const scanAngleMax_rad){
+        scanFreq_Hz = (pulseFreq_Hz *verticalResolution_rad) / (
+            2.0*scanAngleMax_rad
+        );
         headRotatePerSec_rad = horizontalResolution_rad * scanFreq_Hz;
     }
 

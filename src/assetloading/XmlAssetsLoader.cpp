@@ -1203,6 +1203,7 @@ XmlAssetsLoader::createScannerSettingsFromXml(
         ))
     );
   }
+  else settings->verticalResolution_rad = template1->verticalResolution_rad;
   if(XmlUtils::hasAttribute(node, "horizontalResolution_deg")){
       settings->horizontalResolution_rad = MathConverter::degreesToRadians(
         boost::get<double>(XmlUtils::getAttribute(
@@ -1214,27 +1215,7 @@ XmlAssetsLoader::createScannerSettingsFromXml(
         ))
       );
   }
-
-  // If vertical or horizontal resolutions were given, apply them
-  if(!settings->hasDefaultResolution()){
-      std::stringstream ss;
-      ss    << "Scanner settings have been fitted from "
-            << "verticalResolution_rad = " << settings->verticalResolution_rad
-                << ", horizontalResolution_rad = "
-                << settings->horizontalResolution_rad << ", \n"
-            << "\tpulseFreq_Hz = " << settings->pulseFreq_Hz << ", "
-            << "scanAngle_rad = " << settings->scanAngle_rad << ", "
-            << "headRotationLength_rad = "
-                << (settings->headRotateStop_rad-settings->headRotateStart_rad)
-                << "\n"
-            << "Consequently, the old scanFreq_Hz = " << settings->scanFreq_Hz
-                << ", and headRotatePerSec_rad = "
-                << settings->headRotatePerSec_rad << " have been updated to\n";
-      settings->fitToResolution(); // Fit to resolution (itself)
-      ss    << "\tthe new scanFreqHz = " << settings->scanFreq_Hz << ", "
-            << "and headRotatePerSec_rad = " << settings->headRotatePerSec_rad;
-      logging::INFO(ss.str());
-  }
+  else settings->horizontalResolution_rad=template1->horizontalResolution_rad;
 
   // Track non default values if requested
   if(fields != nullptr){
@@ -1683,6 +1664,10 @@ void XmlAssetsLoader::trackNonDefaultScannerSettings(
         fields.insert("beamDivAngle");
     if(base->trajectoryTimeInterval != ref->trajectoryTimeInterval)
         fields.insert("trajectoryTimeInterval");
+    if(base->verticalResolution_rad != ref->verticalResolution_rad)
+        fields.insert("verticalResolution_rad");
+    if(base->horizontalResolution_rad != ref->horizontalResolution_rad)
+        fields.insert("horizontalResolution_rad");
 }
 
 void XmlAssetsLoader::trackNonDefaultPlatformSettings(
