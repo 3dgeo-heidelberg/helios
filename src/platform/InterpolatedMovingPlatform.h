@@ -89,6 +89,28 @@ protected:
      */
     arma::Mat<double> frontierDerivatives;
     /**
+     * @brief Function which handles how attitude is calculated. It depends on
+     *  the rotation specification.
+     *
+     * Canonical rotation uses:
+     * <ol>
+     *  <li>pitch \f$(1, 0, 0)\f$</li>
+     *  <li>roll \f$(0, 1, 0)\f$</li>
+     *  <li>yaw \f$(0, 0, 1)\f$</li>
+     * </ol>
+     *
+     * ARINC 705 rotation uses:
+     * <ol>
+     *  <li>yaw \f$(0, 0, -1)\f$</li>
+     *  <li>roll \f$(0, 1, 0)\f$</li>
+     *  <li>pitch \f$(1, 0, 0)\f$</li>
+     * </ol>
+     *
+     * @see InterpolatedMovingPlatform::rotspec
+     * @see Directions
+     */
+    std::function<Rotation(arma::Col<double> const)> calcAttitude;
+    /**
      * @brief Function which handles the update of components belonging to
      *  interpolation scope at each simulation step
      * @see InterpolatedMovingPlatform::doSimStep

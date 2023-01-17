@@ -18,13 +18,13 @@ InterpolatedMovingPlatform::InterpolatedMovingPlatform(
     MovingPlatform(),
     stepLoop(stepLoop),
     scope(scope),
+    rotspec(rotspec),
     timeFrontiers(ddm.getTimeVector()),
     frontierValues(tdm.getX().rows(0, tdm.getX().n_rows-2)),
     frontierDerivatives(ddm.getA()),
     syncGPSTime(syncGPSTime),
     startTime(startTime),
-    currentLegStartTime(0),
-    rotspec(rotspec)
+    currentLegStartTime(0)
 {
     // Build DesignTrajectoryFunction
     tf = std::make_shared<DesignTrajectoryFunction>(
@@ -32,30 +32,35 @@ InterpolatedMovingPlatform::InterpolatedMovingPlatform(
         frontierValues,
         frontierDerivatives
     );
-    // Configure update function to be computed once at each sim step
-    std::function<Rotation(arma::Col<double> const)> calcAttitude =
-    [&] (arma::Col<double> const x) -> Rotation {
-        switch(rotspec){
-            case RotationSpec::CANONICAL:
+    // Configure rotation specification
+    switch(rotspec){
+        case RotationSpec::CANONICAL:
+            calcAttitude = [] (arma::Col<double> const x) -> Rotation {
                 return Rotation(Directions::right, x[0]).applyTo(
                     Rotation(Directions::forward, x[1])
                 ).applyTo(
                     Rotation(Directions::up, x[2])
                 );
-            case RotationSpec::ARINC_705:
+            };
+            break;
+        case RotationSpec::ARINC_705:
+            calcAttitude = [] (arma::Col<double> const x) -> Rotation {
                 return Rotation(Directions::yaw, x[2]).applyTo(
                     Rotation(Directions::roll, x[1])
                 ).applyTo(
                     Rotation(Directions::pitch, x[0])
                 );
-            default:
-                std::stringstream ss;
-                ss << "InterpolatedMovingPlatform::InterpolatedMovingPlatform "
-                   << "failed to construct because an unexpected RotationSpec "
-                   << "was given";
-                logging::ERR(ss.str());
-        }
-    };
+            };
+            break;
+        default:
+            std::stringstream ss;
+            ss << "InterpolatedMovingPlatform::InterpolatedMovingPlatform "
+               << "failed to construct because an unexpected RotationSpec "
+               << "was given";
+            logging::ERR(ss.str());
+            break;
+    }
+    // Configure update function to be computed once at each sim step
     switch(scope){
         case InterpolationScope::POSITION:
             doStepUpdates = [&] (double const t) -> void{
