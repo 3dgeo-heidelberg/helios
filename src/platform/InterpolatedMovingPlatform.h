@@ -30,6 +30,14 @@ public:
         ATTITUDE,
         POSITION_AND_ATTITUDE
     };
+    /**
+     * @brief Rotation specifications supported by the interpolated moving
+     *  platform.
+     */
+    enum class RotationSpec{
+        CANONICAL,
+        ARINC_705
+    };
 
 protected:
     // ***  ATTRIBUTES  *** //
@@ -46,6 +54,10 @@ protected:
      * @see InterpolatedMovingPlatform::InterpolationScope
      */
     InterpolationScope scope;
+    /**
+     * @brief The rotation specification defining the interpolated attitude
+     */
+    RotationSpec rotspec;
     /**
      * @brief The trajectory function defining the platform's motion
      * @see TrajectoryFunction
@@ -140,6 +152,7 @@ public:
      *  used by the data source), it is given in seconds
      * @see InterpolatedMovingPlatform::InterpolationScope
      * @see InterpolatedMovingPlatform::stepLoop
+     * @see InterpolatedMovingPlatform::RotationSpec
      */
     InterpolatedMovingPlatform(
         SimulationStepLoop &stepLoop,
@@ -147,7 +160,8 @@ public:
         DiffDesignMatrix<double, double> const &ddm,
         InterpolationScope scope,
         bool const syncGPSTime,
-        double const startTime
+        double const startTime,
+        RotationSpec rotspec=RotationSpec::CANONICAL
     );
     virtual ~InterpolatedMovingPlatform() = default;
 

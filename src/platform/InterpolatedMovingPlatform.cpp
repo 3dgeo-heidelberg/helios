@@ -12,7 +12,8 @@ InterpolatedMovingPlatform::InterpolatedMovingPlatform(
     DiffDesignMatrix<double, double> const &ddm,
     InterpolationScope scope,
     bool const syncGPSTime,
-    double const startTime
+    double const startTime,
+    RotationSpec rotspec
 ) :
     MovingPlatform(),
     stepLoop(stepLoop),
@@ -22,7 +23,8 @@ InterpolatedMovingPlatform::InterpolatedMovingPlatform(
     frontierDerivatives(ddm.getA()),
     syncGPSTime(syncGPSTime),
     startTime(startTime),
-    currentLegStartTime(0)
+    currentLegStartTime(0),
+    rotspec(rotspec)
 {
     // Build DesignTrajectoryFunction
     tf = std::make_shared<DesignTrajectoryFunction>(
@@ -31,6 +33,29 @@ InterpolatedMovingPlatform::InterpolatedMovingPlatform(
         frontierDerivatives
     );
     // Configure update function to be computed once at each sim step
+    std::function<Rotation(arma::Col<double> const)> calcAttitude =
+    [&] (arma::Col<double> const x) -> Rotation {
+        switch(rotspec){
+            case RotationSpec::CANONICAL:
+                return Rotation(Directions::right, x[0]).applyTo(
+                    Rotation(Directions::forward, x[1])
+                ).applyTo(
+                    Rotation(Directions::up, x[2])
+                );
+            case RotationSpec::ARINC_705:
+                return Rotation(Directions::yaw, x[2]).applyTo(
+                    Rotation(Directions::roll, x[1])
+                ).applyTo(
+                    Rotation(Directions::pitch, x[0])
+                );
+            default:
+                std::stringstream ss;
+                ss << "InterpolatedMovingPlatform::InterpolatedMovingPlatform "
+                   << "failed to construct because an unexpected RotationSpec "
+                   << "was given";
+                logging::ERR(ss.str());
+        }
+    };
     switch(scope){
         case InterpolationScope::POSITION:
             doStepUpdates = [&] (double const t) -> void{
@@ -41,26 +66,14 @@ InterpolatedMovingPlatform::InterpolatedMovingPlatform(
         case InterpolationScope::ATTITUDE:
             doStepUpdates = [&] (double const t) -> void{
                 arma::Col<double> const x = tf->eval(t); // roll,pitch,yaw
-                setAttitude(
-                    Rotation(Directions::right, x[0]).applyTo(
-                        Rotation(Directions::forward, x[1])
-                    ).applyTo(
-                        Rotation(Directions::up, x[2])
-                    )
-                );
+                setAttitude(calcAttitude(x));
             };
             break;
         case InterpolationScope::POSITION_AND_ATTITUDE:
             doStepUpdates = [&] (double const t) -> void{
                 arma::Col<double> const x = tf->eval(t); //roll,pitch,yaw,x,y,z
                 setPosition(glm::dvec3(x[3], x[4], x[5]));
-                setAttitude(
-                    Rotation(Directions::right, x[0]).applyTo(
-                        Rotation(Directions::forward, x[1])
-                    ).applyTo(
-                        Rotation(Directions::up, x[2])
-                    )
-                );
+                setAttitude(calcAttitude(x));
             };
             break;
         default:
