@@ -6,6 +6,7 @@
 #include <fluxionum/DiffDesignMatrix.h>
 #include <SimulationStepLoop.h>
 #include <util/HeliosException.h>
+#include <maths/MathConstants.h>
 
 #include <memory>
 #include <functional>
@@ -30,6 +31,14 @@ public:
         ATTITUDE,
         POSITION_AND_ATTITUDE
     };
+    /**
+     * @brief Rotation specifications supported by the interpolated moving
+     *  platform.
+     */
+    enum class RotationSpec{
+        CANONICAL,
+        ARINC_705
+    };
 
 protected:
     // ***  ATTRIBUTES  *** //
@@ -46,6 +55,11 @@ protected:
      * @see InterpolatedMovingPlatform::InterpolationScope
      */
     InterpolationScope scope;
+    /**
+     * @brief The rotation specification defining the interpolated attitude
+     * @see InterpolatedMovingPlatform::calcAttitude
+     */
+    RotationSpec rotspec;
     /**
      * @brief The trajectory function defining the platform's motion
      * @see TrajectoryFunction
@@ -76,6 +90,37 @@ protected:
      * @see InterpolatedMovingPlatform::frontierValues
      */
     arma::Mat<double> frontierDerivatives;
+    /**
+     * @brief Function which handles how attitude is calculated. It depends on
+     *  the rotation specification.
+     *
+     * Canonical rotation uses:
+     * <ol>
+     *  <li>pitch \f$(1, 0, 0)\f$</li>
+     *  <li>roll \f$(0, 1, 0)\f$</li>
+     *  <li>yaw \f$(0, 0, 1)\f$</li>
+     * </ol>
+     *
+     * ARINC 705 rotation uses:
+     * <ol>
+     *  <li>yaw \f$(0, 0, -1)\f$</li>
+     *  <li>roll \f$(0, 1, 0)\f$</li>
+     *  <li>pitch \f$(1, 0, 0)\f$</li>
+     * </ol>
+     *
+     * @see InterpolatedMovingPlatform::rotspec
+     * @see Directions
+     */
+    std::function<Rotation(arma::Col<double> const)> calcAttitude;
+    /**
+     * @brief Function to get the roll, pitch, and yaw angles depending on the
+     *  rotation specification
+     * @see InterpolatedMovingPlatform::rotspec
+     * @see InterpolatedMovingPlatform::calcAttitude
+     */
+    std::function<
+        void(double &, double &, double &, Rotation &)
+    > _getRollPitchYaw;
     /**
      * @brief Function which handles the update of components belonging to
      *  interpolation scope at each simulation step
@@ -140,6 +185,7 @@ public:
      *  used by the data source), it is given in seconds
      * @see InterpolatedMovingPlatform::InterpolationScope
      * @see InterpolatedMovingPlatform::stepLoop
+     * @see InterpolatedMovingPlatform::RotationSpec
      */
     InterpolatedMovingPlatform(
         SimulationStepLoop &stepLoop,
@@ -147,7 +193,8 @@ public:
         DiffDesignMatrix<double, double> const &ddm,
         InterpolationScope scope,
         bool const syncGPSTime,
-        double const startTime
+        double const startTime,
+        RotationSpec rotspec=RotationSpec::ARINC_705
     );
     virtual ~InterpolatedMovingPlatform() = default;
 
@@ -315,4 +362,17 @@ public:
      * @see InterpolatedMovingPlatform::currentLegTimeDiff
      */
     inline double getCurrentLegTimeDiff() const {return currentLegTimeDiff;}
+
+    /**
+     * @brief Override the platform's default Platform::getRollPitchYaw method
+     *  to account for the given rotation specification when using a
+     *  InterpolatedMovingPlatform
+     * @see Platform::getRollPitchYaw
+     * @see InterpolatedMovingPlatform::rotspec
+     */
+    inline void getRollPitchYaw(
+        double &roll, double &pitch, double &yaw
+    ) override {
+        _getRollPitchYaw(roll, pitch, yaw, attitude);
+    }
 };
