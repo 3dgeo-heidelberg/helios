@@ -430,7 +430,7 @@ std::shared_ptr<Platform> XmlAssetsLoader::createInterpolatedMovingPlatform(){
     std::unordered_map<std::string, vector<size_t>> indices; // t, RPY, XYZ
     std::string interpDom = "position_and_attitude";
     std::string rotspec = XmlUtils::hasAttribute(survey, "rotationSpec") ?
-        survey->Attribute("rotationSpec") : "CANONICAL";
+        survey->Attribute("rotationSpec") : "ARINC 705";
     bool firstInterpDom = true;
     bool toRadians = true;
     double startTime = 0.0;
@@ -767,6 +767,7 @@ std::shared_ptr<Platform> XmlAssetsLoader::createInterpolatedMovingPlatform(){
             << "unexpected rotation specification: \"" << rotspec << "\""
         ;
         logging::ERR(ss.str());
+        std::exit(3);
     }
 
     // Configure scanner mount

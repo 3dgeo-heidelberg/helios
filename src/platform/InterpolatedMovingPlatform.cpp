@@ -42,6 +42,11 @@ InterpolatedMovingPlatform::InterpolatedMovingPlatform(
                     Rotation(Directions::up, x[2])
                 );
             };
+            _getRollPitchYaw = [] (
+                double &roll, double &pitch, double &yaw, Rotation &attitude
+            ) -> void {
+                attitude.getAngles(&RotationOrder::XYZ, roll, pitch, yaw);
+            };
             break;
         case RotationSpec::ARINC_705:
             calcAttitude = [] (arma::Col<double> const x) -> Rotation {
@@ -51,6 +56,12 @@ InterpolatedMovingPlatform::InterpolatedMovingPlatform(
                     Rotation(Directions::pitch, x[0])
                 );
             };
+            _getRollPitchYaw = [] (
+                double &roll, double &pitch, double &yaw, Rotation &attitude
+            ) -> void {
+                attitude.getAngles(&RotationOrder::ZYX, yaw, pitch, roll);
+                yaw = (yaw < M_PI) ? -yaw : PI_2 - yaw;
+            };
             break;
         default:
             std::stringstream ss;
@@ -58,6 +69,7 @@ InterpolatedMovingPlatform::InterpolatedMovingPlatform(
                << "failed to construct because an unexpected RotationSpec "
                << "was given";
             logging::ERR(ss.str());
+            std::exit(3);
             break;
     }
     // Configure update function to be computed once at each sim step
