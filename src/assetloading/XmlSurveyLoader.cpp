@@ -17,6 +17,7 @@ namespace fs = boost::filesystem;
 #include <platform/InterpolatedMovingPlatformEgg.h>
 #include <fluxionum/ParametricLinearPiecesFunction.h>
 #include <fluxionum/DiffDesignMatrixInterpolator.h>
+#include <scanner/beamDeflector/PolygonMirrorBeamDeflector.h>
 
 #include <unordered_set>
 
@@ -66,6 +67,9 @@ XmlSurveyLoader::createSurveyFromXml(
     survey->scanner->platform,
     survey->legs
   );
+
+  // Fit survey to legs and legs to survey
+  integrateSurveyAndLegs(survey);
 
   // Validate survey
   validateSurvey(survey);
@@ -555,6 +559,40 @@ void XmlSurveyLoader::loadPlatformNoise(
        surveyNode->FirstChildElement("attitudeZNoise");
     if(attitudeZNoise != nullptr) platform->attitudeZNoiseSource =
         XmlUtils::createNoiseSource(attitudeZNoise);
+}
+
+void XmlSurveyLoader::integrateSurveyAndLegs(std::shared_ptr<Survey> survey){
+    // Obtain legs
+    std::vector<std::shared_ptr<Leg>> &legs = survey->legs;
+
+    // Handle scanAngleMax/scanAngleEffectiveMax != 1
+    std::shared_ptr<PolygonMirrorBeamDeflector> pmbd =
+        std::dynamic_pointer_cast<PolygonMirrorBeamDeflector>(
+            survey->scanner->getBeamDeflector()
+        );
+    if(pmbd != nullptr){
+        for(std::shared_ptr<Leg> leg : legs){
+            if(!leg->mScannerSettings->hasDefaultResolution()){
+                std::stringstream ss;
+                ss << "Scanner settings of leg " << leg->getSerialId() << " "
+                   << "have been updated to consider the ratio between max "
+                   << "effective scan angle and max scan angle.\n"
+                   << "\tConsequently, the old scanFreq_Hz = "
+                   << leg->mScannerSettings->scanFreq_Hz << " and "
+                   << "headRotatePerSec_rad = "
+                   << leg->mScannerSettings->headRotatePerSec_rad << " have "
+                   << "been updated.\n";
+                leg->mScannerSettings->fitToResolution(
+                    pmbd->cfg_device_scanAngleMax_rad
+                );
+                ss << "\tThe new values are scanFreq_Hz = "
+                   << leg->mScannerSettings->scanFreq_Hz << " and "
+                   << "headRotatePerSec_rad = "
+                   << leg->mScannerSettings->headRotatePerSec_rad << ".";
+                logging::INFO(ss.str());
+            }
+        }
+    }
 }
 
 void XmlSurveyLoader::validateSurvey(std::shared_ptr<Survey> survey){

@@ -182,6 +182,18 @@ protected:
         std::shared_ptr<Platform> platform
     );
     /**
+     * @brief Integrating survey and legs means fitting survey attributes from
+     *  legs and leg attributes from survey whenever it is necessary.
+     *
+     * For example, it is used to scale the vertical resolution when the
+     *  deflector has an effective max scan angle.
+     *
+     * @param survey The survey that must be integrated with respect to the
+     *  legs composing it
+     */
+    static void integrateSurveyAndLegs(std::shared_ptr<Survey> survey);
+
+    /**
      * @brief Validate given survey is free from inconsistencies. Otherwise,
      *  proper logging and forced exit (if needed) will be applied.
      * @param survey The survey to be validated

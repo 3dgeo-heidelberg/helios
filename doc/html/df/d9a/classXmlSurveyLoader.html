@@ -232,6 +232,12 @@ Static Protected Member Functions</h2></td></tr>
 <tr class="memitem:af10e51e119a17325db53b9513789f353"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d9a/classXmlSurveyLoader.html#af10e51e119a17325db53b9513789f353">configureDefaultRandomnessGenerator</a> (tinyxml2::XMLElement *surveyNode)</td></tr>
 <tr class="memdesc:af10e51e119a17325db53b9513789f353"><td class="mdescLeft">&#160;</td><td class="mdescRight">Configure the default randomness generador. If a seed was specified through XML survey node, then it will replace the previous one.  <a href="../../df/d9a/classXmlSurveyLoader.html#af10e51e119a17325db53b9513789f353">More...</a><br /></td></tr>
 <tr class="separator:af10e51e119a17325db53b9513789f353"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2c242f6247b6994cfde0f6ffa68e0ec0"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d9a/classXmlSurveyLoader.html#a2c242f6247b6994cfde0f6ffa68e0ec0">integrateSurveyAndLegs</a> (std::shared_ptr&lt; <a class="el" href="../../d5/db6/classSurvey.html">Survey</a> &gt; survey)</td></tr>
+<tr class="memdesc:a2c242f6247b6994cfde0f6ffa68e0ec0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Integrating survey and legs means fitting survey attributes from legs and leg attributes from survey whenever it is necessary.  <a href="../../df/d9a/classXmlSurveyLoader.html#a2c242f6247b6994cfde0f6ffa68e0ec0">More...</a><br /></td></tr>
+<tr class="separator:a2c242f6247b6994cfde0f6ffa68e0ec0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac483623b3331187d5f65dc53acd577d5"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d9a/classXmlSurveyLoader.html#ac483623b3331187d5f65dc53acd577d5">validateSurvey</a> (std::shared_ptr&lt; <a class="el" href="../../d5/db6/classSurvey.html">Survey</a> &gt; survey)</td></tr>
+<tr class="memdesc:ac483623b3331187d5f65dc53acd577d5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Validate given survey is free from inconsistencies. Otherwise, proper logging and forced exit (if needed) will be applied.  <a href="../../df/d9a/classXmlSurveyLoader.html#ac483623b3331187d5f65dc53acd577d5">More...</a><br /></td></tr>
+<tr class="separator:ac483623b3331187d5f65dc53acd577d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
@@ -576,6 +582,41 @@ tinyxml2::XMLDocument&#160;</td><td class="memItemRight" valign="bottom"><a clas
 
 </div>
 </div>
+<a id="a2c242f6247b6994cfde0f6ffa68e0ec0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2c242f6247b6994cfde0f6ffa68e0ec0">&#9670;&nbsp;</a></span>integrateSurveyAndLegs()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void XmlSurveyLoader::integrateSurveyAndLegs </td>
+          <td>(</td>
+          <td class="paramtype">std::shared_ptr&lt; <a class="el" href="../../d5/db6/classSurvey.html">Survey</a> &gt;&#160;</td>
+          <td class="paramname"><em>survey</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Integrating survey and legs means fitting survey attributes from legs and leg attributes from survey whenever it is necessary. </p>
+<p>For example, it is used to scale the vertical resolution when the deflector has an effective max scan angle.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">survey</td><td>The survey that must be integrated with respect to the legs composing it </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a942b31f81c152d4fe2669a99bee187c6"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a942b31f81c152d4fe2669a99bee187c6">&#9670;&nbsp;</a></span>load()</h2>
 
@@ -839,6 +880,40 @@ tinyxml2::XMLDocument&#160;</td><td class="memItemRight" valign="bottom"><a clas
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d9/d82/classXmlAssetsLoader.html#a743d9cc57820f29c7638bfdec03fbd1e" title="Reinitialize the loader so maps with scanner fields and scanner templates and their fields are empty.">XmlAssetsLoader::reinitLoader</a> </dd></dl>
 
 <p>Reimplemented from <a class="el" href="../../d9/d82/classXmlAssetsLoader.html#a743d9cc57820f29c7638bfdec03fbd1e">XmlAssetsLoader</a>.</p>
+
+</div>
+</div>
+<a id="ac483623b3331187d5f65dc53acd577d5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac483623b3331187d5f65dc53acd577d5">&#9670;&nbsp;</a></span>validateSurvey()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void XmlSurveyLoader::validateSurvey </td>
+          <td>(</td>
+          <td class="paramtype">std::shared_ptr&lt; <a class="el" href="../../d5/db6/classSurvey.html">Survey</a> &gt;&#160;</td>
+          <td class="paramname"><em>survey</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Validate given survey is free from inconsistencies. Otherwise, proper logging and forced exit (if needed) will be applied. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">survey</td><td>The survey to be validated </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
