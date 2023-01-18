@@ -6,6 +6,7 @@ var classvisualhelios_1_1VHRaycastingCanvas =
     [ "configure", "d9/d66/classvisualhelios_1_1VHRaycastingCanvas.html#a879e0fa3394a988b602efb98c954aa4b", null ],
     [ "start", "d9/d66/classvisualhelios_1_1VHRaycastingCanvas.html#ab907b817c3959a89207273bd058e322d", null ],
     [ "update", "d9/d66/classvisualhelios_1_1VHRaycastingCanvas.html#a56015778f4c734f6a553e0c89e2c76bb", null ],
+    [ "dynScene", "d9/d66/classvisualhelios_1_1VHRaycastingCanvas.html#a3b80fd0996eca4e124c36ae45757b165", null ],
     [ "rayId", "d9/d66/classvisualhelios_1_1VHRaycastingCanvas.html#a4bdd487d0c6bfe5180b4497320283bcb", null ],
     [ "rayOriginId", "d9/d66/classvisualhelios_1_1VHRaycastingCanvas.html#aa2f9295220812e7004cca77af71934c0", null ],
     [ "rayRendered", "d9/d66/classvisualhelios_1_1VHRaycastingCanvas.html#a26e8a63bd4fd90f3863c41da14ae5090", null ],

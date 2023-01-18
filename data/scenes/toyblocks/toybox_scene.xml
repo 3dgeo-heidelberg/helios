@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+    <scene id="toybox_scene" name="toybox_scene">
+        <part>
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/toyblocks/cube.obj" />
+            </filter>
+			<filter type="translate">
+				<param type="vec3" key="offset" value="-19.4827;19.5782;-4.90499" />
+            </filter>
+			<filter type="scale">
+                <param type="double" key="scale" value="0.5" />
+            </filter>
+        </part>
+    </scene>
+</document>

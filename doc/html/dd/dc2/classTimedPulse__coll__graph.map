@@ -1,4 +1,5 @@
 <map id="TimedPulse" name="TimedPulse">
-<area shape="rect" id="node2" href="$d3/d1a/classPulse.html" title="Class representing a laser pulse. " alt="" coords="23,95,78,121"/>
-<area shape="rect" id="node3" href="$d5/dcb/classRotation.html" title="Rotation" alt="" coords="15,5,86,32"/>
+<area shape="rect" id="node1" title="Class representing a time aware laser pulse." alt="" coords="5,171,96,197"/>
+<area shape="rect" id="node2" href="$d3/d1a/classPulse.html" title="Class representing a laser pulse." alt="" coords="23,95,78,121"/>
+<area shape="rect" id="node3" href="$d5/dcb/classRotation.html" title=" " alt="" coords="15,5,86,32"/>
 </map>

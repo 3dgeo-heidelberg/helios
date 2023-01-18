@@ -8,5 +8,6 @@ var classMultiThreadSAHKDTreeFactory =
     [ "boost::serialization::access", "dd/d95/classMultiThreadSAHKDTreeFactory.html#ac98d07dd8f7b70e16ccb9a01abf56b9c", null ],
     [ "ilotCacheLock", "dd/d95/classMultiThreadSAHKDTreeFactory.html#a76fc728b451cae6ec8a6bb843688d511", null ],
     [ "ilotCacheMutex", "dd/d95/classMultiThreadSAHKDTreeFactory.html#a5cc67dda6cbbf7d3ffa0e2ecbebf622c", null ],
+    [ "kdtf", "dd/d95/classMultiThreadSAHKDTreeFactory.html#aa1d8bb9d7b9f810ded3c70a1650cbaa0", null ],
     [ "sahkdtf", "dd/d95/classMultiThreadSAHKDTreeFactory.html#a4093c01581a9c2d84611973e38669b96", null ]
 ];

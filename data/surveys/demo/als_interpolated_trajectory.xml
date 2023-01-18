@@ -2,7 +2,11 @@
 <document>
 	<!-- Default scanner settings: -->
     <scannerSettings id="scaset" active="true" pulseFreq_hz="70000" scanAngle_deg="60" scanFreq_hz="50" />
-    <survey name="interpolated_trajectory_als" scene="data/scenes/demo/interpolated_trajectory.xml#interpolated_trajectory_demo" platform="interpolated" basePlatform="data/platforms.xml#sr22" scanner="data/scanners_als.xml#leica_als50-ii">
+    <survey name="interpolated_trajectory_als" 
+			scene="data/scenes/demo/interpolated_trajectory.xml#interpolated_trajectory_demo"
+			platform="interpolated" basePlatform="data/platforms.xml#sr22" rotationSpec="CANONICAL"
+			scanner="data/scanners_als.xml#leica_als50-ii"
+	>
 		<scannerMount x="0" y="0" z="0.2">
 			<rot axis="x" angle_deg="180" />
 			<rot axis="z" angle_deg="175" />

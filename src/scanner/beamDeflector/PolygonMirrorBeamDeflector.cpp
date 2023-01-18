@@ -38,8 +38,6 @@ void PolygonMirrorBeamDeflector::_clone(
 // *********************** //
 
 void PolygonMirrorBeamDeflector::applySettings(std::shared_ptr<ScannerSettings> settings) {
-
-
     setScanAngle_rad(settings->scanAngle_rad);
     setScanFreq_Hz(settings->scanFreq_Hz);
 
@@ -56,31 +54,36 @@ void PolygonMirrorBeamDeflector::applySettings(std::shared_ptr<ScannerSettings> 
 
     // if not set, use the ones from the scanAngleEffectiveMax or scanAngle (whichever is lower)
     if(std::isnan(cfg_setting_verticalAngleMin_rad)){
-        cfg_setting_verticalAngleMin_rad = -1. * std::min(cfg_device_scanAngleEffectiveMax_rad,
-                                                          cfg_setting_scanAngle_rad);
-
-        ss << "\n -- verticalAngleMin not set, using the value of " << MathConverter::radiansToDegrees(
+        cfg_setting_verticalAngleMin_rad = -1. * std::min(
+            cfg_device_scanAngleEffectiveMax_rad,
+            cfg_setting_scanAngle_rad
+        );
+        ss  << "\n -- verticalAngleMin not set, using the value of "
+            << MathConverter::radiansToDegrees(
                 cfg_setting_verticalAngleMin_rad
-        ) << " degrees";
+            ) << " degrees";
     }
     if(std::isnan(cfg_setting_verticalAngleMax_rad)){
-        cfg_setting_verticalAngleMax_rad = std::min(cfg_device_scanAngleEffectiveMax_rad,
-                                                    cfg_setting_scanAngle_rad);
-
-        ss << "\n -- verticalAngleMax not set, using the value of " << MathConverter::radiansToDegrees(
+        cfg_setting_verticalAngleMax_rad = std::min(
+            cfg_device_scanAngleEffectiveMax_rad,
+            cfg_setting_scanAngle_rad
+        );
+        ss  << "\n -- verticalAngleMax not set, using the value of "
+            << MathConverter::radiansToDegrees(
                 cfg_setting_verticalAngleMax_rad
-        ) << " degrees";
+            ) << " degrees";
     }
     state_currentBeamAngle_rad = 0;
     logging::INFO(ss.str());
 
     // For calculating the spacing between subsequent shots:
-    double angleMax = cfg_device_scanAngleMax_rad;
-    double angleMin = -cfg_device_scanAngleMax_rad;
+    double const angleMax = cfg_device_scanAngleMax_rad;
+    double const angleMin = -cfg_device_scanAngleMax_rad;
 
     state_angleDiff_rad = angleMax-angleMin;
-    cached_angleBetweenPulses_rad = (double)(this->cfg_setting_scanFreq_Hz *
-                                             state_angleDiff_rad) / settings->pulseFreq_Hz;
+    cached_angleBetweenPulses_rad = (double)(
+        this->cfg_setting_scanFreq_Hz * state_angleDiff_rad
+    ) / settings->pulseFreq_Hz;
 }
 
 void PolygonMirrorBeamDeflector::doSimStep() {

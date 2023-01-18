@@ -1,10 +1,11 @@
 <map id="PulseWarehouseThreadPool" name="PulseWarehouseThreadPool">
-<area shape="rect" id="node2" href="$da/d92/classWarehouseThreadPool.html" title="WarehouseThreadPool\l\&lt; PulseTaskDropper \&gt;" alt="" coords="741,53,895,94"/>
-<area shape="rect" id="node3" href="$dc/de7/classThreadPool.html" title="Base class providing core implementation of a thread pool to deal with multi threading tasks..." alt="" coords="477,5,565,32"/>
-<area shape="rect" id="node5" href="$d9/d5e/classTaskWarehouse.html" title="TaskWarehouse\&lt; PulseTask\lDropper \&gt;" alt="" coords="425,57,616,98"/>
-<area shape="rect" id="node7" href="$df/d9c/classPulseThreadPoolInterface.html" title="Interface for thread pools supporting pulse tasks. " alt="" coords="732,119,904,145"/>
-<area shape="rect" id="node8" href="$d3/d57/classUniformNoiseSource.html" title="UniformNoiseSource\l\&lt; double \&gt;" alt="" coords="747,170,889,211"/>
-<area shape="rect" id="node9" href="$d4/d38/classRandomNoiseSource.html" title="RandomNoiseSource\&lt;\l double \&gt;" alt="" coords="443,170,598,211"/>
-<area shape="rect" id="node10" href="$d9/d6b/classNoiseSource.html" title="NoiseSource\&lt; double \&gt;" alt="" coords="149,157,308,184"/>
-<area shape="rect" id="node11" href="$dc/d6e/classRandomnessGenerator.html" title="RandomnessGenerator\l\&lt; double \&gt;" alt="" coords="151,218,307,259"/>
+<area shape="rect" id="node1" title="Class implementing a warehouse thread pool to deal with pulse tasks." alt="" coords="871,97,1057,123"/>
+<area shape="rect" id="node2" href="$da/d92/classWarehouseThreadPool.html" title=" " alt="" coords="503,5,656,47"/>
+<area shape="rect" id="node3" href="$dc/de7/classThreadPool.html" title="Base class providing core implementation of a thread pool to deal with multi threading tasks." alt="" coords="323,13,411,39"/>
+<area shape="rect" id="node4" title=" " alt="" coords="65,13,122,39"/>
+<area shape="rect" id="node5" href="$df/d9c/classPulseThreadPoolInterface.html" title="Interface for thread pools supporting pulse tasks." alt="" coords="493,71,665,98"/>
+<area shape="rect" id="node6" href="$d3/d57/classUniformNoiseSource.html" title=" " alt="" coords="508,123,651,164"/>
+<area shape="rect" id="node7" href="$d4/d38/classRandomNoiseSource.html" title="Abstract class for random noise handling." alt="" coords="289,123,444,164"/>
+<area shape="rect" id="node8" href="$d9/d6b/classNoiseSource.html" title="Class to handle a noise source." alt="" coords="5,130,181,157"/>
+<area shape="rect" id="node9" href="$dc/d6e/classRandomnessGenerator.html" title=" " alt="" coords="501,188,657,229"/>
 </map>
