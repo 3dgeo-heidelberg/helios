@@ -391,7 +391,7 @@ def test_las_exe(zip_flag: bool, las10_flag: bool):
     eval_las(dirname_exe, las_version)
 
 
-def eval_las(dirname, las_version):
+def eval_las(dirname, las_version, check_empty=False):
     path = Path(dirname) / fnmatch.filter(os.listdir(dirname), '*.la?')[0]
     las = laspy.read(path)
     dimensions = [d.name for d in las.point_format.dimensions]
@@ -408,3 +408,25 @@ def eval_las(dirname, las_version):
     for dim in expected_dimensions:
         assert dim in dimensions
     assert las.header.version == las_version
+    if check_empty is True:
+        assert las.header.point_count > 0
+
+
+@pytest.mark.skipif("laspy" not in sys.modules,
+                    reason="requires the laspy library")
+def test_strip_id_pyh():
+    """"""
+    dirname_pyh = run_helios_pyhelios(Path('data') / 'test' / 'als_hd_height_above_ground_stripid_light.xml',
+                                      las_output=True, zip_output=True)
+    las_version = "1.4"
+    eval_las(dirname_pyh, las_version, check_empty=False)
+
+
+@pytest.mark.skipif("laspy" not in sys.modules,
+                    reason="requires the laspy library")
+def test_strip_id_exe():
+
+    dirname_exe = run_helios_executable(Path('data') / 'test' / 'als_hd_height_above_ground_stripid_light.xml',
+                                        options=["--lasOutput", "--zipOutput"])
+    las_version = "1.4"
+    eval_las(dirname_exe, las_version, check_empty=True)
