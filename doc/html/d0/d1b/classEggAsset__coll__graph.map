@@ -1,3 +1,5 @@
 <map id="EggAsset&lt; FullClass, HatchArgs &gt;" name="EggAsset&lt; FullClass, HatchArgs &gt;">
-<area shape="rect" id="node2" href="$de/d97/classAsset.html" title="Base class for all assets. " alt="" coords="53,124,109,151"/>
+<area shape="rect" id="node1" title="An EggAsset is an asset that can hatch to its full class." alt="" coords="5,200,156,241"/>
+<area shape="rect" id="node2" href="$de/d97/classAsset.html" title="Base class for all assets." alt="" coords="53,124,109,151"/>
+<area shape="rect" id="node3" title=" " alt="" coords="53,5,108,32"/>
 </map>

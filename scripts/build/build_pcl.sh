@@ -17,7 +17,7 @@ fi
 # ---  SCRIPT VARIABLES  --- #
 # -------------------------- #
 # PCL package
-PCL_PKG='pcl-1.12.0.tar.gz'
+PCL_PKG='pcl-1.13.0.tar.gz'
 # PCL URL
 PCL_URL='https://github.com/PointCloudLibrary/pcl/archive/refs/tags/'"${PCL_PKG}"
 # PCL download path

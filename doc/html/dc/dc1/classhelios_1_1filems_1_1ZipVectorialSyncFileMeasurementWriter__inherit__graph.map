@@ -1,6 +1,7 @@
 <map id="helios::filems::ZipVectorialSyncFileMeasurementWriter" name="helios::filems::ZipVectorialSyncFileMeasurementWriter">
-<area shape="rect" id="node2" href="$d9/d45/classhelios_1_1filems_1_1ZipSyncFileWriter.html" title="helios::filems::ZipSyncFile\lWriter\&lt; vector\&lt; Measurement\l \&gt; const &amp;, glm::dvec3 const &amp; \&gt;" alt="" coords="661,5,877,61"/>
-<area shape="rect" id="node3" href="$d1/db6/classhelios_1_1filems_1_1SimpleSyncFileWriter.html" title="helios::filems::SimpleSync\lFileWriter\&lt; WriteArgs... \&gt;" alt="" coords="436,13,613,54"/>
-<area shape="rect" id="node4" href="$d4/dfb/classhelios_1_1filems_1_1SingleSyncFileWriter.html" title="helios::filems::SingleSync\lFileWriter\&lt; WriteArgs ... \&gt;" alt="" coords="212,13,388,54"/>
-<area shape="rect" id="node5" href="$da/d4c/classhelios_1_1filems_1_1SyncFileWriter.html" title="helios::filems::SyncFile\lWriter\&lt; WriteArgs ... \&gt;" alt="" coords="5,13,164,54"/>
+<area shape="rect" id="node1" title="Concrete class specializing ZipSyncFileWriter to write a vector of measurements to a zip file." alt="" coords="924,13,1111,54"/>
+<area shape="rect" id="node2" href="$d9/d45/classhelios_1_1filems_1_1ZipSyncFileWriter.html" title=" " alt="" coords="660,5,876,61"/>
+<area shape="rect" id="node3" href="$d1/db6/classhelios_1_1filems_1_1SimpleSyncFileWriter.html" title=" " alt="" coords="435,13,612,54"/>
+<area shape="rect" id="node4" href="$d4/dfb/classhelios_1_1filems_1_1SingleSyncFileWriter.html" title=" " alt="" coords="212,13,387,54"/>
+<area shape="rect" id="node5" href="$da/d4c/classhelios_1_1filems_1_1SyncFileWriter.html" title=" " alt="" coords="5,13,164,54"/>
 </map>

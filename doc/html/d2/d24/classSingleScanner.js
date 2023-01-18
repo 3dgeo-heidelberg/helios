@@ -73,8 +73,8 @@ var classSingleScanner =
     [ "setReceiverDiameter", "d2/d24/classSingleScanner.html#afeced45d1c2bcdf2215c1e19b1fd0657", null ],
     [ "setScannerHead", "d2/d24/classSingleScanner.html#a73440fa9bf22e70dbef705b445448eaa", null ],
     [ "setSupportedPulseFreqs_Hz", "d2/d24/classSingleScanner.html#a9c7ff882f4be1abc8bc6dd9d75e618ee", null ],
-    [ "setTimeWave", "d2/d24/classSingleScanner.html#acd105b569d52f799bdfda4fadbf04206", null ],
     [ "setTimeWave", "d2/d24/classSingleScanner.html#a7fc93b232d7dbdabdf4a5ee44f75909d", null ],
+    [ "setTimeWave", "d2/d24/classSingleScanner.html#acd105b569d52f799bdfda4fadbf04206", null ],
     [ "setVisibility", "d2/d24/classSingleScanner.html#a1d3800668bdfd90d55764677f4047267", null ],
     [ "setWavelength", "d2/d24/classSingleScanner.html#a67422819d80688fab958dd16b3795e9e", null ],
     [ "scanDev", "d2/d24/classSingleScanner.html#a98aedf961d808c32f8faaa5f2d7eaa3c", null ]

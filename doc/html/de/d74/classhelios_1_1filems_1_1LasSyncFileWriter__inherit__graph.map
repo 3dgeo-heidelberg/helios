@@ -1,4 +1,5 @@
 <map id="helios::filems::LasSyncFileWriter&lt; WriteArgs &gt;" name="helios::filems::LasSyncFileWriter&lt; WriteArgs &gt;">
-<area shape="rect" id="node2" href="$d4/dfb/classhelios_1_1filems_1_1SingleSyncFileWriter.html" title="helios::filems::SingleSync\lFileWriter\&lt; WriteArgs ... \&gt;" alt="" coords="7,95,183,136"/>
-<area shape="rect" id="node3" href="$da/d4c/classhelios_1_1filems_1_1SyncFileWriter.html" title="helios::filems::SyncFile\lWriter\&lt; WriteArgs ... \&gt;" alt="" coords="15,5,174,47"/>
+<area shape="rect" id="node1" title="Abstract specialization of SingleSyncFileWriter to write output in LAS format." alt="" coords="5,184,184,225"/>
+<area shape="rect" id="node2" href="$d4/dfb/classhelios_1_1filems_1_1SingleSyncFileWriter.html" title=" " alt="" coords="7,95,182,136"/>
+<area shape="rect" id="node3" href="$da/d4c/classhelios_1_1filems_1_1SyncFileWriter.html" title=" " alt="" coords="15,5,174,47"/>
 </map>

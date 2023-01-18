@@ -1,4 +1,5 @@
 <map id="helios::filems::LineReadingStrategy" name="helios::filems::LineReadingStrategy">
-<area shape="rect" id="node2" href="$da/d24/classhelios_1_1filems_1_1SimpleReadingStrategy.html" title="helios::filems::SimpleReading\lStrategy\&lt; string \&gt;" alt="" coords="90,109,285,151"/>
-<area shape="rect" id="node3" href="$df/dc7/classhelios_1_1filems_1_1ReadingStrategy.html" title="helios::filems::ReadingStrategy\l\&lt; string \&gt;" alt="" coords="5,5,209,47"/>
+<area shape="rect" id="node1" title="Class defining the strategy to read line by line from a file input stream." alt="" coords="18,184,197,225"/>
+<area shape="rect" id="node2" href="$da/d24/classhelios_1_1filems_1_1SimpleReadingStrategy.html" title=" " alt="" coords="10,95,205,136"/>
+<area shape="rect" id="node3" href="$df/dc7/classhelios_1_1filems_1_1ReadingStrategy.html" title="Abstract class defining the fundamentals of any file reading strategy." alt="" coords="5,5,209,47"/>
 </map>

@@ -21,7 +21,7 @@ var classpyhelios_1_1PyHeliosSimulation =
     [ "getKDTSAHLossNodes", "d9/ddd/classpyhelios_1_1PyHeliosSimulation.html#ac001c3e77a32411d1abc0cee91de8b53", null ],
     [ "getLas10", "d9/ddd/classpyhelios_1_1PyHeliosSimulation.html#ae3595357f20b66960e9378ce07976956", null ],
     [ "getLasOutput", "d9/ddd/classpyhelios_1_1PyHeliosSimulation.html#a5cf9e70c3e8822cb9363dad968e37236", null ],
-    [ "getLasScale", "d9/ddd/classpyhelios_1_1PyHeliosSimulation.html#ad96116d560dc7d3074778f17ad55281b", null ],
+    [ "getLasScale", "d9/ddd/classpyhelios_1_1PyHeliosSimulation.html#add18577851b15babdfb09fbbb29cd170", null ],
     [ "getLeg", "d9/ddd/classpyhelios_1_1PyHeliosSimulation.html#a13ec28795040cea09f5809fab775906f", null ],
     [ "getNumLegs", "d9/ddd/classpyhelios_1_1PyHeliosSimulation.html#a1660fcb39447d24243246d4bab03de28", null ],
     [ "getNumThreads", "d9/ddd/classpyhelios_1_1PyHeliosSimulation.html#a9fa0a9159322f1a97b3436e5b5248e1f", null ],

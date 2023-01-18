@@ -1,7 +1,3 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$df/de1/classPrimitive.html" title="Abstract class defining the common behavior for all primitives. " alt="" coords="5,56,79,83"/>
-<area shape="rect" id="node2" href="$d2/d1a/classAABB.html" title="Class representing an Axis Aligned Bounding Box (AABB) " alt="" coords="131,5,190,32"/>
-<area shape="rect" id="node3" href="$d2/d51/classTriangle.html" title="Class representing triangle primitive. " alt="" coords="127,56,195,83"/>
-<area shape="rect" id="node4" href="$d6/d44/classVoxel.html" title="Class representing a voxel primitive. " alt="" coords="133,107,188,133"/>
-<area shape="rect" id="node5" href="$d7/d5a/classDetailedVoxel.html" title="Class which extends Voxel to support AMAPVox format with extra features. " alt="" coords="243,107,345,133"/>
+<area shape="rect" id="node1" href="$d5/d85/classPulseThreadPoolFactory.html" title="Factory to build different types of pulse thread pools." alt="" coords="5,5,171,32"/>
 </map>

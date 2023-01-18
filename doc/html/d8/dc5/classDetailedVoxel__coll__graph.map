@@ -1,7 +1,8 @@
 <map id="DetailedVoxel" name="DetailedVoxel">
-<area shape="rect" id="node2" href="$d6/d44/classVoxel.html" title="Class representing a voxel primitive. " alt="" coords="119,273,173,300"/>
-<area shape="rect" id="node3" href="$df/de1/classPrimitive.html" title="Abstract class defining the common behavior for all primitives. " alt="" coords="5,95,79,121"/>
-<area shape="rect" id="node4" href="$d2/d1a/classAABB.html" title="Class representing an Axis Aligned Bounding Box (AABB) " alt="" coords="66,184,125,211"/>
-<area shape="rect" id="node5" href="$d2/da0/classVertex.html" title="Class representing a vertex. " alt="" coords="124,95,184,121"/>
-<area shape="rect" id="node6" href="$db/d02/classColor4f.html" title="Class representing a color with 4 float components: RGBA. " alt="" coords="157,5,221,32"/>
+<area shape="rect" id="node1" title="Class which extends Voxel to support AMAPVox format with extra features." alt="" coords="95,349,197,376"/>
+<area shape="rect" id="node2" href="$d6/d44/classVoxel.html" title="Class representing a voxel primitive." alt="" coords="119,273,173,300"/>
+<area shape="rect" id="node3" href="$df/de1/classPrimitive.html" title="Abstract class defining the common behavior for all primitives." alt="" coords="5,95,79,121"/>
+<area shape="rect" id="node4" href="$d2/d1a/classAABB.html" title="Class representing an Axis Aligned Bounding Box (AABB)" alt="" coords="66,184,125,211"/>
+<area shape="rect" id="node5" href="$d2/da0/classVertex.html" title="Class representing a vertex." alt="" coords="124,95,184,121"/>
+<area shape="rect" id="node6" href="$db/d02/classColor4f.html" title="Class representing a color with 4 float components: RGBA." alt="" coords="157,5,221,32"/>
 </map>

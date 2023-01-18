@@ -1,6 +1,6 @@
 var classSimpleKDTreeComputeRootNodeBoundariesSubTask =
 [
-    [ "SimpleKDTreeComputeRootNodeBoundariesSubTask", "d1/da6/classSimpleKDTreeComputeRootNodeBoundariesSubTask.html#a551854db51e488e2e31816c781c76d61", null ],
+    [ "SimpleKDTreeComputeRootNodeBoundariesSubTask", "d1/da6/classSimpleKDTreeComputeRootNodeBoundariesSubTask.html#ad3c7bf861d02fa617229c1e29b4dbeae", null ],
     [ "~SimpleKDTreeComputeRootNodeBoundariesSubTask", "d1/da6/classSimpleKDTreeComputeRootNodeBoundariesSubTask.html#aa0bbf92dfb425b6faa40c2c2071ca237", null ],
     [ "run", "d1/da6/classSimpleKDTreeComputeRootNodeBoundariesSubTask.html#a3b93b55ad0ddb3cc71b2a015e9b01743", null ],
     [ "ax", "d1/da6/classSimpleKDTreeComputeRootNodeBoundariesSubTask.html#a81737a2f4114eeeb6c6694f9c7a1bb4e", null ],

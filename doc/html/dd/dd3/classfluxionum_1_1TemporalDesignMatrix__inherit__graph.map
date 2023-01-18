@@ -1,4 +1,5 @@
 <map id="fluxionum::TemporalDesignMatrix&lt; TimeType, VarType &gt;" name="fluxionum::TemporalDesignMatrix&lt; TimeType, VarType &gt;">
-<area shape="rect" id="node2" href="$d7/d0d/classfluxionum_1_1DesignMatrix.html" title="fluxionum::DesignMatrix\l\&lt; VarType \&gt;" alt="" coords="23,95,185,136"/>
-<area shape="rect" id="node3" href="$da/d40/classfluxionum_1_1AbstractDesignMatrix.html" title="fluxionum::AbstractDesign\lMatrix\&lt; VarType \&gt;" alt="" coords="16,5,192,47"/>
+<area shape="rect" id="node1" title="This class represents a DesignMatrix where each row satisfy that its elements can be placed into a co..." alt="" coords="5,184,200,225"/>
+<area shape="rect" id="node2" href="$d7/d0d/classfluxionum_1_1DesignMatrix.html" title=" " alt="" coords="21,95,184,136"/>
+<area shape="rect" id="node3" href="$da/d40/classfluxionum_1_1AbstractDesignMatrix.html" title=" " alt="" coords="15,5,191,47"/>
 </map>

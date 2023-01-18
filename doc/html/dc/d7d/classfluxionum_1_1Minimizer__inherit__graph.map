@@ -1,4 +1,5 @@
 <map id="fluxionum::Minimizer&lt; IT, OT &gt;" name="fluxionum::Minimizer&lt; IT, OT &gt;">
-<area shape="rect" id="node2" href="$d3/d7f/classfluxionum_1_1DiffMinimizer.html" title="Base abstract class providing basic structure for minimization optimization of a given function based..." alt="" coords="20,95,183,136"/>
-<area shape="rect" id="node3" href="$db/d57/classfluxionum_1_1UnivariateNewtonRaphsonMinimizer.html" title="Implementation of univariate Newton&#45;Raphson minimizer. " alt="" coords="5,184,197,225"/>
+<area shape="rect" id="node1" title="Base abstract class providing basic structure for minimization optimization of a given function." alt="" coords="29,5,172,47"/>
+<area shape="rect" id="node2" href="$d3/d7f/classfluxionum_1_1DiffMinimizer.html" title="Base abstract class providing basic structure for minimization optimization of a given function based..." alt="" coords="19,95,182,136"/>
+<area shape="rect" id="node3" href="$db/d57/classfluxionum_1_1UnivariateNewtonRaphsonMinimizer.html" title="Implementation of univariate Newton&#45;Raphson minimizer." alt="" coords="5,184,196,225"/>
 </map>

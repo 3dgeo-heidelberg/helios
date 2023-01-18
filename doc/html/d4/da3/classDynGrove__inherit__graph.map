@@ -1,3 +1,6 @@
 <map id="DynGrove&lt; Subject &gt;" name="DynGrove&lt; Subject &gt;">
-<area shape="rect" id="node2" href="$d1/d0a/classBasicDynGrove.html" title="Basic implementation of a DynGrove which extends BasicStaticGrove to provided dynamic funcionalities..." alt="" coords="5,80,188,107"/>
+<area shape="rect" id="node1" title="A DynGrove is an interface which declares observer&#45;like functionality so dynamic subjects can notify ..." alt="" coords="5,46,155,73"/>
+<area shape="rect" id="node2" href="$d1/d0a/classBasicDynGrove.html" title=" " alt="" coords="203,5,409,47"/>
+<area shape="rect" id="node4" href="$d1/d0a/classBasicDynGrove.html" title="Basic implementation of a DynGrove which extends BasicStaticGrove to provided dynamic funcionalities." alt="" coords="228,71,384,112"/>
+<area shape="rect" id="node3" href="$d9/d76/classKDGrove.html" title="Grove of KDTrees. It supports both static and dynamic KDTrees, handling each accordingly." alt="" coords="457,13,533,39"/>
 </map>
