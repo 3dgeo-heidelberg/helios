@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <document>
-    <survey name="hdb_stripid5" platform="data\platforms.xml#sr22" scanner="data\scanners_als.xml#leica_als50" scene="data\scenes\demo\hd_demo.xml#hd_demo">
+    <survey name="hdb_stripid5" platform="data/platforms.xml#sr22" scanner="data/scanners_als.xml#leica_als50" scene="data/scenes/demo/hd_demo.xml#hd_demo">
         <leg stripId="0">
             <platformSettings  x="477280.4197453116" y="5472582.624303755" z="1619.0" onGround="false" movePerSec_m="250"/>
             <scannerSettings  active="true" pulseFreq_hz="83000" scanAngle_deg="30" scanFreq_hz="50" headRotatePerSec_deg="0.0" headRotateStart_deg="0.0" headRotateStop_deg="0.0" trajectoryTimeInterval_s="0.067"/>
