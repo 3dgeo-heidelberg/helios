@@ -1,5 +1,3 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$db/d85/classScanningPulseProcess.html" title="Class defining the scanning pulse process interface. " alt="" coords="5,31,163,57"/>
-<area shape="rect" id="node2" href="$d5/d3c/classBuddingScanningPulseProcess.html" title="Class implementing a scanning pulse process which works with a pulse task dropper based on budding ta..." alt="" coords="220,5,424,32"/>
-<area shape="rect" id="node3" href="$df/ddb/classWarehouseScanningPulseProcess.html" title="Class implementing a scanning pulse process which works with a pulse task dropper based on budding ta..." alt="" coords="211,56,433,83"/>
+<area shape="rect" id="node1" href="$d6/db9/classSerialIO.html" title="Utils for Input/Output operations of serializable objects." alt="" coords="5,5,75,32"/>
 </map>

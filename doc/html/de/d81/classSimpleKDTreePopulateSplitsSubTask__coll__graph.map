@@ -1,3 +1,6 @@
 <map id="SimpleKDTreePopulateSplitsSubTask" name="SimpleKDTreePopulateSplitsSubTask">
+<area shape="rect" id="node1" title="Shared sub&#45;task to populate splits when building a Simple KDTree. It is meant to be used at geometry&#45;..." alt="" coords="76,216,267,257"/>
 <area shape="rect" id="node2" href="$df/d6f/classSharedSubTask.html" title="A shared task is said to be a collection of shared sub&#45;tasks. Each shared sub&#45;task can be computed in..." alt="" coords="114,96,229,123"/>
+<area shape="rect" id="node3" title=" " alt="" coords="5,5,63,32"/>
+<area shape="rect" id="node4" title=" " alt="" coords="253,96,396,123"/>
 </map>

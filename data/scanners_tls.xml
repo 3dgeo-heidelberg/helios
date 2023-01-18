@@ -135,4 +135,29 @@
 	<!-- ############### END "Fantasy" Scanners ############### -->
 
 
+	<!-- ##### BEGIN Panoramic scanner ##### -->	
+	<scanner 	id 							= "panoscanner"
+				name              			= "PANO"
+				accuracy_m					= "0.005"
+			 	beamDivergence_rad 			= "0.0003"
+				headRotatePerSecMax_deg		= "500"
+				optics            			= "rotating"
+				pulseFreqs_Hz				= "100000,300000"
+				pulseLength_ns     			= "5"
+				rangeMin_m					= "0.01"
+				scanAngleMax_deg   			= "180"
+				scanAngleEffectiveMax_deg   = "150"
+				scanFreqMin_Hz				= "0"
+				scanFreqMax_Hz				= "12000"
+	>
+		<FWFSettings beamSampleQuality="3"/>	
+		<beamOrigin x="0" y="0" z="0.2">
+			<rot axis="y" angle_deg="0" />
+			<rot axis="z" angle_deg="0" />
+			<rot axis="x" angle_deg="90" />
+		</beamOrigin>
+		<headRotateAxis x="0" y="0" z="1"/>
+	</scanner>
+	<!-- ##### END Panoramic scanner ##### -->
+
 </document>

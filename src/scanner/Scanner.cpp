@@ -324,7 +324,7 @@ void Scanner::handleSimStepNoise(
 void Scanner::handleTrajectoryOutput(double const currentGpsTime){
     // Get out of here if trajectory time interval is 0 (no trajectory output)
     if(trajectoryTimeInterval_ns == 0.0) return;
-    // Get out of here it it has been explicitly specified to dont write
+    // Get out of here if it has been explicitly specified to dont write
     if(!platform->writeNextTrajectory) return;
 
     // Check elapsed time

@@ -60,15 +60,14 @@ keywords = {Software, LiDAR simulation, Point cloud, Data generation, Voxel, Veg
 
 ## 🎮 Examples
 
+
 |                                                                                                                                                      |   |
 |------------------------------------------------------------------------------------------------------------------------------------------------------|---|
-| [![Example 1](img/example1_thumbnail.png)](https://nbviewer.org/github/3dgeo-heidelberg/helios/blob/dev/example_notebooks/1-getting-started.ipynb)   | [![Example 2](img/example2_thumbnail.png)](https://nbviewer.org/github/3dgeo-heidelberg/helios/blob/dev/example_notebooks/2-the-survey.ipynb)  |
-|
-| [![Example 3](img/example3_thumbnail.png)](https://nbviewer.org/github/3dgeo-heidelberg/helios/blob/dev/example_notebooks/3_arbaro_TLS_demo.ipynb)   | [![Example A](img/exampleA_thumbnail.png)](https://nbviewer.org/github/3dgeo-heidelberg/helios/blob/dev/example_notebooks/arboretum_notebook.ipynb) |
-| 
-| [![Example 5](img/example5_thumbnail.png)](https://nbviewer.org/github/3dgeo-heidelberg/helios/blob/dev/example_notebooks/5_ALS_hd_demo.ipynb)       |                                                                                                                                            |
-| 
- | [![Example 7](img/example7_thumbnail.png)](https://nbviewer.org/github/3dgeo-heidelberg/helios/blob/dev/example_notebooks/7_ALS_toyblock_demo.ipynb) |                                                                                                                                            |
+| [![Example 1](img/example1_thumbnail.png)](https://nbviewer.org/github/3dgeo-heidelberg/helios/blob/dev/example_notebooks/1-getting-started.ipynb)   | [![Example 2](img/example2_thumbnail.png)](https://nbviewer.org/github/3dgeo-heidelberg/helios/blob/dev/example_notebooks/2-the-survey.ipynb)            |
+| [![Example 3](img/example3_thumbnail.png)](https://nbviewer.org/github/3dgeo-heidelberg/helios/blob/dev/example_notebooks/3_arbaro_TLS_demo.ipynb)   | [![Example A](img/exampleA_thumbnail.png)](https://nbviewer.org/github/3dgeo-heidelberg/helios/blob/dev/example_notebooks/arboretum_notebook.ipynb)      |
+| [![Example 5](img/example5_thumbnail.png)](https://nbviewer.org/github/3dgeo-heidelberg/helios/blob/dev/example_notebooks/5_ALS_hd_demo.ipynb)       | [![Example 6](img/example6_thumbnail.png)](https://nbviewer.org/github/3dgeo-heidelberg/helios/blob/dev/example_notebooks/6_mls_wheat_demo.ipynb)        |
+| [![Example 7](img/example7_thumbnail.png)](https://nbviewer.org/github/3dgeo-heidelberg/helios/blob/dev/example_notebooks/7_ALS_toyblock_demo.ipynb) |                                                                                                                                                          |
+
 
 
 

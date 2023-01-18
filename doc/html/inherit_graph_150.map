@@ -1,3 +1,5 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$d5/d20/classSpectralLibrary.html" title="Class representing the spectral library. " alt="" coords="5,5,115,32"/>
+<area shape="rect" id="node1" title=" " alt="" coords="5,20,65,47"/>
+<area shape="rect" id="node2" href="$da/d80/classSurfaceInspector_1_1maths_1_1functions_1_1IMathFunction.html" title=" " alt="" coords="113,5,288,61"/>
+<area shape="rect" id="node3" href="$db/dc1/classSurfaceInspector_1_1maths_1_1functions_1_1GaussianFunction.html" title="Implementation of a gaussian function." alt="" coords="336,13,564,54"/>
 </map>

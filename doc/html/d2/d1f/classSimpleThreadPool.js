@@ -9,5 +9,7 @@ var classSimpleThreadPool =
     [ "wrap_task", "d2/d1f/classSimpleThreadPool.html#a82a5b7389fd28188b688a92edadb9038", null ],
     [ "available_", "d2/d1f/classSimpleThreadPool.html#aed288649b910b5ba8222484c5ae49bad", null ],
     [ "cond_", "d2/d1f/classSimpleThreadPool.html#a4e7b864843b36d0f86ddfe4626687012", null ],
-    [ "mutex_", "d2/d1f/classSimpleThreadPool.html#a12ee0fb1dd91a63574329cca341a08ea", null ]
+    [ "io_service_", "d2/d1f/classSimpleThreadPool.html#a3879736968a0b84d751ec595cdd2c6ca", null ],
+    [ "mutex_", "d2/d1f/classSimpleThreadPool.html#a12ee0fb1dd91a63574329cca341a08ea", null ],
+    [ "pool_size", "d2/d1f/classSimpleThreadPool.html#a0d1603eed0547e1f3774cafe94256abe", null ]
 ];

@@ -1,8 +1,32 @@
+/*
+ @licstart  The following is the entire license notice for the JavaScript code in this file.
+
+ The MIT License (MIT)
+
+ Copyright (C) 1997-2020 by Dimitri van Heesch
+
+ Permission is hereby granted, free of charge, to any person obtaining a copy of this software
+ and associated documentation files (the "Software"), to deal in the Software without restriction,
+ including without limitation the rights to use, copy, modify, merge, publish, distribute,
+ sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is
+ furnished to do so, subject to the following conditions:
+
+ The above copyright notice and this permission notice shall be included in all copies or
+ substantial portions of the Software.
+
+ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING
+ BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+ DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+ @licend  The above is the entire license notice for the JavaScript code in this file
+*/
 var NAVTREE =
 [
   [ "Helios++", "index.html", [
-    [ "Namespaces", null, [
-      [ "Namespace List", "namespaces.html", "namespaces" ],
+    [ "Namespaces", "namespaces.html", [
+      [ "Namespace List", "namespaces.html", "namespaces_dup" ],
       [ "Namespace Members", "namespacemembers.html", [
         [ "All", "namespacemembers.html", null ],
         [ "Functions", "namespacemembers_func.html", null ]
@@ -20,38 +44,39 @@ var NAVTREE =
         [ "Related Functions", "functions_rela.html", null ]
       ] ]
     ] ],
-    [ "Files", null, [
-      [ "File List", "files.html", "files" ]
+    [ "Files", "files.html", [
+      [ "File List", "files.html", "files_dup" ]
     ] ]
   ] ]
 ];
 
 var NAVTREEINDEX =
 [
-".html",
-"d0/df8/SurfaceInspectorException_8hpp_source.html",
-"d1/d81/classSimulatedPulse.html#aa8827b93a1d9d37a7db70fea9751a6b2",
-"d2/d24/classSingleScanner.html#a64b119be0585752f55294b0d7ff31572",
-"d3/d18/AbstractDesignMatrix_8h_source.html",
-"d4/d31/classScanningStrip.html#ae4647d2bd13da8b02f13b7182702272d",
-"d4/dfa/classSurfaceInspector_1_1maths_1_1DetailedPlane.html#a377554f434066c5ab4336682816ef1ce",
-"d5/d97/LasSpecification_8h_source.html",
-"d6/d1f/classhelios_1_1filems_1_1ZipMultiSyncFileWriter.html#a8b193196afe6be4ad454b3b8a2211e8d",
-"d6/da1/classSurveyPlayback.html#ae2974793429dc0d6cbf8f82dc6e0f304",
-"d7/d5a/classDetailedVoxel.html#aed3aefba26f5cc156fd9be0a1315a370",
-"d8/d34/classfluxionum_1_1IterativeMethodHandler.html#a07752e83d10462959b3afb51ae11d0b2",
-"d9/d22/classLadLut.html#ae3d291c2ea48993baded5157a030b103",
-"d9/dcd/classBasicStaticGrove.html#a2a887801e9c97d6d2c19c2a0955c0c3a",
-"da/d24/classSurfaceInspector_1_1maths_1_1Statistics.html#aa2d37ca457230b7f37d563ed778e4e22",
-"da/dea/classEggAsset.html#ae7e6effb77c1aab5d1600403330d3bed",
-"db/d69/classHelicopterPlatform.html#ae9da1f63cee6bf72912c1ab7770d2202",
-"dc/d30/classpyhelios_1_1PyScannerWrapper.html#a0bc5556acb8b41c962c11578ae7ea655",
-"dc/d42/classScanner.html#a7d02fd34bd353cf0398f5f7f639c2d61",
-"dc/da7/classScannerHead.html#a8dfdcf7765e3e23ca8c0d5f7a14a50bb",
-"dd/dc4/classScenePart.html#aea61ea007cb84871117666b732f7ce64",
-"de/d7f/classKDTreeRaycaster_1_1KDTreeRaycasterSearch.html#a15c7a8b9df5d38f41bccd581ff011806",
-"df/d28/classpyhelios_1_1PyScenePartWrapper.html#aa00f66985e6eed3fa2c3090f7490ba1b",
-"df/dd6/classLinearVoidStepLoop.html#aa5d76d9f25046a6ae6f058227d592eaa"
+"annotated.html",
+"d0/dd8/classhelios_1_1filems_1_1BufferedReadingStrategy.html#a515f34fe079b9edcbfbf34d67ba86e5f",
+"d1/d7b/classSimulation.html#acf598e815ded8ca12cad5db975ac8849",
+"d2/d24/classSingleScanner.html#a1d3800668bdfd90d55764677f4047267",
+"d3/d0d/StaticScene_8h_source.html",
+"d4/d0d/classHeliosTests_1_1HPCTest.html#a86229ef51f318d97ac04d4fb9ce3de4f",
+"d4/dd0/HDA__SimStepRecorder_8h_source.html",
+"d5/d80/classSimpleKDTreeBuildChildrenNodesSubTask.html#a3057e3e652388285c707305486221fab",
+"d6/d03/classXYZPointCloudFileLoader.html#ad0d14a1085513182f676f0127a522b15",
+"d6/da1/classSurveyPlayback.html#a0a020972e81fb2b2e0623689c62d30c6",
+"d7/d52/SceneLoadingSpecification_8h_source.html",
+"d7/de7/classPulseWarehouseThreadPool.html#aa96156d247c4332c340d96066e885608",
+"d8/df5/MainHelp_8h_source.html",
+"d9/dab/classhelios_1_1filems_1_1BinaryFileReader.html",
+"da/d23/classMultiScanner.html#ab6854334d5b58246165513591baf774f",
+"da/da4/classhelios_1_1filems_1_1DesignMatrixReader.html#a1342315baecbca7426241d7569166a8e",
+"db/d69/classHelicopterPlatform.html#a2dcfe4799486ac1e7e1b4fac1d25431e",
+"db/dff/LasSyncFileMeasurementWriter_8h_source.html",
+"dc/d42/classScanner.html#a3f635b8f49b32e3703b803763af03b4a",
+"dc/da5/classBinaryTreeFastDepthIterator.html#a0648f1019a77d4f0d05b696be85f6dfc",
+"dd/dc1/OscillatingMirrorBeamDeflector_8h_source.html",
+"de/d6d/classhelios_1_1filems_1_1DirectMeasurementWriteStrategy.html#a0ef2326c29a62f3cb4b59a1018a45bcd",
+"df/d1e/classPlatform.html#acb454ba1e7bd90a83d236a506ab1c7ee",
+"df/da1/classHeliosTests_1_1SerializationTest.html#acc67c271e511abd93cac2a2556507434",
+"functions_j.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

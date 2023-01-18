@@ -74,8 +74,8 @@ var classMultiScanner =
     [ "setReceiverDiameter", "da/d23/classMultiScanner.html#a045e0f46cf64a521136a04a4b5f0c3e2", null ],
     [ "setScannerHead", "da/d23/classMultiScanner.html#a3dc06ffebdb8c24be8f4c05c9ff6ad32", null ],
     [ "setSupportedPulseFreqs_Hz", "da/d23/classMultiScanner.html#a122878904f544f417870772151c4f2b7", null ],
-    [ "setTimeWave", "da/d23/classMultiScanner.html#aff818a6607dca3dfc7ec5236cb0170ec", null ],
     [ "setTimeWave", "da/d23/classMultiScanner.html#addc5c1016567d111599242afbe3a10ae", null ],
+    [ "setTimeWave", "da/d23/classMultiScanner.html#aff818a6607dca3dfc7ec5236cb0170ec", null ],
     [ "setVisibility", "da/d23/classMultiScanner.html#ae68b69604588bff526fa3b1aa7e54d66", null ],
     [ "setWavelength", "da/d23/classMultiScanner.html#a979171aa7bbc7ac8d81303495f123b3c", null ],
     [ "scanDevs", "da/d23/classMultiScanner.html#afde94a48a73ad3288d83681a90e76445", null ]

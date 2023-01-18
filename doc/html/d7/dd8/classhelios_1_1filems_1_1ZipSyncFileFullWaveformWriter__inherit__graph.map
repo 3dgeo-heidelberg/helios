@@ -1,6 +1,7 @@
 <map id="helios::filems::ZipSyncFileFullWaveformWriter" name="helios::filems::ZipSyncFileFullWaveformWriter">
-<area shape="rect" id="node2" href="$d9/d45/classhelios_1_1filems_1_1ZipSyncFileWriter.html" title="helios::filems::ZipSyncFile\lWriter\&lt; FullWaveform const &amp;\&gt;" alt="" coords="5,273,212,315"/>
-<area shape="rect" id="node3" href="$d1/db6/classhelios_1_1filems_1_1SimpleSyncFileWriter.html" title="helios::filems::SimpleSync\lFileWriter\&lt; WriteArgs... \&gt;" alt="" coords="20,184,197,225"/>
-<area shape="rect" id="node4" href="$d4/dfb/classhelios_1_1filems_1_1SingleSyncFileWriter.html" title="helios::filems::SingleSync\lFileWriter\&lt; WriteArgs ... \&gt;" alt="" coords="21,95,197,136"/>
-<area shape="rect" id="node5" href="$da/d4c/classhelios_1_1filems_1_1SyncFileWriter.html" title="helios::filems::SyncFile\lWriter\&lt; WriteArgs ... \&gt;" alt="" coords="29,5,188,47"/>
+<area shape="rect" id="node1" title="Concrete class specializing ZipSyncFileWriter to write compressed full waveform data to a file." alt="" coords="22,363,198,404"/>
+<area shape="rect" id="node2" href="$d9/d45/classhelios_1_1filems_1_1ZipSyncFileWriter.html" title=" " alt="" coords="5,273,215,315"/>
+<area shape="rect" id="node3" href="$d1/db6/classhelios_1_1filems_1_1SimpleSyncFileWriter.html" title=" " alt="" coords="21,184,199,225"/>
+<area shape="rect" id="node4" href="$d4/dfb/classhelios_1_1filems_1_1SingleSyncFileWriter.html" title=" " alt="" coords="23,95,197,136"/>
+<area shape="rect" id="node5" href="$da/d4c/classhelios_1_1filems_1_1SyncFileWriter.html" title=" " alt="" coords="31,5,189,47"/>
 </map>

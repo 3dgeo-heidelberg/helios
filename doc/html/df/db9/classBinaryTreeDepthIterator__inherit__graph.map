@@ -1,3 +1,4 @@
 <map id="BinaryTreeDepthIterator&lt; NodeType &gt;" name="BinaryTreeDepthIterator&lt; NodeType &gt;">
-<area shape="rect" id="node2" href="$df/d39/classITreeIterator.html" title="ITreeIterator\&lt; IterableTree\lNode\&lt; IBinaryTreeNode \&gt; \&gt;" alt="" coords="5,5,192,47"/>
+<area shape="rect" id="node1" title="Like fast depth first iterator but wrapping tree nodes inside a IterableTreeNode instance." alt="" coords="18,95,179,136"/>
+<area shape="rect" id="node2" href="$df/d39/classITreeIterator.html" title=" " alt="" coords="5,5,192,47"/>
 </map>

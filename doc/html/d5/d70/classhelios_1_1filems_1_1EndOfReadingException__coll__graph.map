@@ -1,3 +1,5 @@
 <map id="helios::filems::EndOfReadingException" name="helios::filems::EndOfReadingException">
-<area shape="rect" id="node2" href="$d6/dda/classHeliosException.html" title="Base class for Helios exceptions. " alt="" coords="43,80,160,107"/>
+<area shape="rect" id="node1" title="Class representing the end of reading exception for FMS readers." alt="" coords="5,155,197,196"/>
+<area shape="rect" id="node2" href="$d6/dda/classHeliosException.html" title="Base class for Helios exceptions." alt="" coords="43,80,160,107"/>
+<area shape="rect" id="node3" title=" " alt="" coords="49,5,153,32"/>
 </map>

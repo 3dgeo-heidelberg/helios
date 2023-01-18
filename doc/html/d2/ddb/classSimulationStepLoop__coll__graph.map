@@ -1,6 +1,8 @@
 <map id="SimulationStepLoop" name="SimulationStepLoop">
-<area shape="rect" id="node2" href="$df/dd6/classLinearVoidStepLoop.html" title="LinearVoidStepLoop\&lt;\&gt;" alt="" coords="13,215,168,241"/>
-<area shape="rect" id="node3" href="$dd/d96/classVoidStepLoop.html" title="VoidStepLoop\&lt; StepInput\l ... \&gt;" alt="" coords="5,96,176,137"/>
-<area shape="rect" id="node4" href="$dd/dcc/classStepLoop.html" title="StepLoop\&lt; StepInput\l ... \&gt;" alt="" coords="18,5,163,47"/>
+<area shape="rect" id="node1" title="Class extending LinearVoidStepLoop to support main simulation loop." alt="" coords="96,304,235,331"/>
+<area shape="rect" id="node2" href="$df/dd6/classLinearVoidStepLoop.html" title=" " alt="" coords="13,215,168,241"/>
+<area shape="rect" id="node3" href="$dd/d96/classVoidStepLoop.html" title=" " alt="" coords="5,96,176,137"/>
+<area shape="rect" id="node4" href="$dd/dcc/classStepLoop.html" title=" " alt="" coords="18,5,163,47"/>
 <area shape="rect" id="node5" href="$dd/de3/classDiscreteTime.html" title="Class to handle discrete time. It supports transforming from continuous time to discrete time and als..." alt="" coords="193,215,293,241"/>
+<area shape="rect" id="node6" title=" " alt="" coords="214,103,271,130"/>
 </map>

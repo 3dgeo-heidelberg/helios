@@ -1,3 +1,7 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$de/dd3/classhelios_1_1filems_1_1WriteStrategy.html" title="helios::filems::WriteStrategy\l\&lt; WriteArg const &amp;, BiasType ... \&gt;" alt="" coords="5,5,231,47"/>
+<area shape="rect" id="node1" href="$df/df9/classHeliosDemos_1_1BaseDemo.html" title="BaseDemo class." alt="" coords="5,31,180,57"/>
+<area shape="rect" id="node2" href="$d0/d1c/classHeliosDemos_1_1SimplePrimitivesDemo.html" title="Simple primitives demo." alt="" coords="228,5,471,32"/>
+<area shape="rect" id="node3" href="$d2/d88/classHeliosDemos_1_1SurveyDemo.html" title="SurveyDemo class." alt="" coords="257,56,442,83"/>
+<area shape="rect" id="node4" href="$d4/de8/classHeliosDemos_1_1DynamicSceneDemo.html" title="Dynamic scene demo." alt="" coords="519,56,752,83"/>
+<area shape="rect" id="node5" href="$d4/d21/classHeliosDemos_1_1RaycastingDemo.html" title="Raycasting demo." alt="" coords="800,56,1011,83"/>
 </map>
