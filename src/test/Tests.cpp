@@ -13,6 +13,7 @@
 #include <test/PlatformPhysicsTest.h>
 #include <test/FunctionalPlatformTest.h>
 #include <test/ScenePartSplitTest.h>
+#include <test/ExprTreeTest.h>
 #include <test/RigidMotionTest.h>
 #include <test/FluxionumTest.h>
 #include <test/EnergyModelsTest.h>
@@ -98,6 +99,9 @@ void doTests(std::string const & testDir){
 
     ScenePartSplitTest scenePartSplitTest;
     passed &= scenePartSplitTest.test(std::cout, TEST_COLOR);
+
+    ExprTreeTest exprTreeTest;
+    passed &= exprTreeTest.test(std::cout, TEST_COLOR);
 
     RigidMotionTest rigidMotionTest;
     passed &= rigidMotionTest.test(std::cout, TEST_COLOR);

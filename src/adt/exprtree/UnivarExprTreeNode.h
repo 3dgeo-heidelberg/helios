@@ -12,16 +12,17 @@
  * The Univariate Expression Tree Node supports univariate expressions where
  *  \f$t\f$ is the variable. Univariate expression trees can work with real
  *  numbers (complex are outside its scope). Supported operators are
- *  \f$+, -, *, /, \^|f$. Supported constants are $e, \pi$. Supported functions
- *  are \f$\exp, \ln, \sqrt, \cos, \sin, \tan, \operatorname{atan}, \f$
- *  \f$\operatorname{abs}\f$.
+ *  \f$+, -, *, /, \textrm{^}\f$. Supported constants are \f$e, \pi\f$.
+ *  Supported functions are \f$\exp, \ln, \mathrm{sqrt}, \mathrm{abs}, \f$
+ *  \f$\cos, \sin, \tan, \mathrm{acos}, \mathrm{asin}, \mathrm{atan}, \f$
+ *  \f$\mathrm{atan2}, \cosh, \sinh, \tanh\f$.
  *
  * @tparam NumericType The numeric type to be used by the univariate
  *  expression tree. It must be contained or equal to the reals (
- *  \f$\subset \mathbb{R}\f$).
+ *  \f$\subseteq \mathbb{R}\f$).
  */
 template <typename NumericType>
-class UnivarExprTreeNode : public IExprTreeNode<NumericType> {
+class UnivarExprTreeNode : public IExprTreeNode<NumericType, NumericType> {
 public:
     // ***   E N U M   *** //
     // ******************* //
@@ -51,13 +52,17 @@ public:
     enum FunType {
         f_exp,      // Exponential Function
         f_ln,       // Napierian Logarithm
-        f_sqrt,     // Square root
+        f_sqrt,     // Square Root
+        f_abs,      // Absolute Value
         f_cos,      // Cosine
         f_sin,      // Sine
         f_tan,      // Tangent
         f_acos,     // Arccosine
         f_asin,     // Arcsine
-        f_atan      // Arctangent
+        f_atan,     // Arctangent
+        f_cosh,     // Hyperbolic Cosine
+        f_sinh,     // Hyperbolic Sine
+        f_tanh      // Hyperbolic Tangent
     };
 
     // ***  ATTRIBUTES  *** //
@@ -106,7 +111,9 @@ public:
         UnivarExprTreeNode *left=nullptr, UnivarExprTreeNode *right=nullptr
     ) : left(left), right(right) {}
 
-    virtual ~UnivarExprTreeNode() = default;
+    virtual ~UnivarExprTreeNode(){
+        // TODO Rethink : Implement cascade destructor
+    }
 
     // ***  UNIVARIATE EXPRESSION TREE NODE METHODS  *** //
     // ************************************************* //
@@ -145,12 +152,16 @@ public:
             case f_exp:     return std::exp(x);
             case f_ln:      return std::log(x);
             case f_sqrt:    return std::sqrt(x);
+            case f_abs:     return std::abs(x);
             case f_cos:     return std::cos(x);
             case f_sin:     return std::sin(x);
             case f_tan:     return std::tan(x);
             case f_acos:    return std::acos(x);
             case f_asin:    return std::asin(x);
             case f_atan:    return std::atan(x);
+            case f_cosh:    return std::cosh(x);
+            case f_sinh:    return std::sinh(x);
+            case f_tanh:    return std::tanh(x);
         }
     }
 
