@@ -135,6 +135,7 @@
                         <xs:attribute type="xs:string" name="pulseFreqs_Hz" use="optional"/>
                         <xs:attribute type="xs:float" name="pulseLength_ns" use="optional"/>
                         <xs:attribute type="xs:float" name="rangeMin_m" use="optional"/>
+                        <xs:attribute type="xs:float" name="rangeMax_m" use="optional"/>
                         <xs:attribute type="xs:float" name="scanAngleMax_deg" use="optional"/>
                         <xs:attribute type="xs:float" name="scanAngleEffectiveMax_deg" use="optional"/>
                         <xs:attribute type="xs:float" name="scanFreqMin_Hz" use="optional"/>
