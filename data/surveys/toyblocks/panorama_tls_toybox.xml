@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+    <survey name="toybox_tls" scene="data/scenes/toyblocks/toybox_scene.xml#toybox_scene" platform="data/platforms.xml#tripod" scanner="data/scanners_tls.xml#panoscanner">
+		<!-- platform: tripod, deflector: rotating -->
+		<!-- Specification using pulseFreq_hz and headRotatePerSec_deg -->
+		<!--<leg>
+            <platformSettings  x="0" y="0" z="-1.7" onGround="false"/>       
+			<scannerSettings  active="true" pulseFreq_hz="600000" scanFreq_hz="333.333333" headRotatePerSec_deg="66.666667" headRotateStart_deg="0.0" headRotateStop_deg="180.0" verticalAngleMin_deg="-60" verticalAngleMax_deg="240"/>
+        </leg>
+		<leg>
+            <platformSettings   x="0" y="0" z="-1.7" onGround="false"/>
+			<scannerSettings  active="true" pulseFreq_hz="600000" scanFreq_hz="333.333333" headRotatePerSec_deg="66.666667" headRotateStart_deg="0.0" headRotateStop_deg="360.0" verticalAngleMin_deg="-60" verticalAngleMax_deg="240"/>
+        </leg>-->
+		<!-- Specification using verticalResolution_deg and horizontalResolution_deg -->
+		<leg>
+            <platformSettings  x="0" y="0" z="-1.7" onGround="false"/>       
+			<scannerSettings  active="true" pulseFreq_hz="600000" verticalResolution_deg="0.2" horizontalResolution_deg="0.2" headRotateStart_deg="0.0" headRotateStop_deg="180.0" verticalAngleMin_deg="-60" verticalAngleMax_deg="240"/>
+        </leg>
+		<leg>
+            <platformSettings   x="0" y="0" z="-1.7" onGround="false"/>
+			<scannerSettings  active="true" pulseFreq_hz="600000" verticalResolution_deg="0.4" horizontalResolution_deg="0.2" headRotateStart_deg="0.0" headRotateStop_deg="360.0" verticalAngleMin_deg="-60" verticalAngleMax_deg="240"/>
+        </leg>
+    </survey>
+</document>

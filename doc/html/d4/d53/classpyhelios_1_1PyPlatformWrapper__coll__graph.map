@@ -1,5 +1,7 @@
 <map id="pyhelios::PyPlatformWrapper" name="pyhelios::PyPlatformWrapper">
-<area shape="rect" id="node2" href="$df/d1e/classPlatform.html" title="Class representing a platform asset. " alt="" coords="66,243,137,269"/>
-<area shape="rect" id="node3" href="$de/d97/classAsset.html" title="Base class for all assets. " alt="" coords="29,124,85,151"/>
-<area shape="rect" id="node5" href="$d5/dcb/classRotation.html" title="Rotation" alt="" coords="110,124,181,151"/>
+<area shape="rect" id="node1" title="Wrapper for Platform class." alt="" coords="5,332,196,359"/>
+<area shape="rect" id="node2" href="$df/d1e/classPlatform.html" title="Class representing a platform asset." alt="" coords="65,243,136,269"/>
+<area shape="rect" id="node3" href="$de/d97/classAsset.html" title="Base class for all assets." alt="" coords="29,124,85,151"/>
+<area shape="rect" id="node4" title=" " alt="" coords="29,5,84,32"/>
+<area shape="rect" id="node5" href="$d5/dcb/classRotation.html" title=" " alt="" coords="109,124,180,151"/>
 </map>

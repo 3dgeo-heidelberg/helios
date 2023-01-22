@@ -106,7 +106,7 @@ def test_sim():
 
 def test_open_output_xyz_stripid(test_sim):
     """Test accessing xyz output after simulation when using strip ID"""
-    survey_path = Path('data') / 'surveys' / 'demo' / 'light_als_toyblocks_multiscanner.xml'
+    survey_path = Path('data') / 'test' / 'als_hd_height_above_ground_stripid_light.xml'
     sim = test_sim(survey_path, las_output=False, zip_output=False)
     sim.start()
     out = sim.join()
@@ -124,7 +124,7 @@ def test_open_output_xyz(test_sim):
 
 def test_open_output_laz_stripid(test_sim):
     """Test accessing LAZ output files after simulation when using strip ID"""
-    survey_path = Path('data') / 'surveys' / 'demo' / 'light_als_toyblocks_multiscanner.xml'
+    survey_path = Path('data') / 'test' / 'als_hd_height_above_ground_stripid_light.xml'
     sim = test_sim(survey_path, las_output=True, zip_output=True, las10=True)
     sim.start()
     out = sim.join()

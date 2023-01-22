@@ -1,8 +1,12 @@
 <map id="helios::filems::BufferedLineFileReader" name="helios::filems::BufferedLineFileReader">
-<area shape="rect" id="node2" href="$de/d57/classhelios_1_1filems_1_1LineFileReader.html" title="Class supporting line by line reading of text files. " alt="" coords="848,70,1000,111"/>
-<area shape="rect" id="node3" href="$de/d6c/classhelios_1_1filems_1_1SimpleFileReader.html" title="helios::filems::SimpleFile\lReader\&lt; string \&gt;" alt="" coords="604,70,772,111"/>
-<area shape="rect" id="node4" href="$d4/d5e/classhelios_1_1filems_1_1FileReader.html" title="helios::filems::FileReader\l\&lt; string \&gt;" alt="" coords="337,45,507,86"/>
-<area shape="rect" id="node9" href="$da/d24/classhelios_1_1filems_1_1SimpleReadingStrategy.html" title="helios::filems::SimpleReading\lStrategy\&lt; string \&gt;" alt="" coords="591,135,785,177"/>
-<area shape="rect" id="node8" href="$de/d50/classhelios_1_1filems_1_1LineReadingStrategy.html" title="Class defining the strategy to read line by line from a file input stream. " alt="" coords="835,135,1013,177"/>
-<area shape="rect" id="node10" href="$df/dc7/classhelios_1_1filems_1_1ReadingStrategy.html" title="helios::filems::ReadingStrategy\l\&lt; string \&gt;" alt="" coords="320,169,524,210"/>
+<area shape="rect" id="node1" title=" " alt="" coords="1108,110,1264,151"/>
+<area shape="rect" id="node2" href="$de/d57/classhelios_1_1filems_1_1LineFileReader.html" title="Class supporting line by line reading of text files." alt="" coords="831,45,983,86"/>
+<area shape="rect" id="node3" href="$de/d6c/classhelios_1_1filems_1_1SimpleFileReader.html" title=" " alt="" coords="587,45,755,86"/>
+<area shape="rect" id="node4" href="$d4/d5e/classhelios_1_1filems_1_1FileReader.html" title="Abstract class defining the fundamentals of any file reader." alt="" coords="337,45,507,86"/>
+<area shape="rect" id="node5" title=" " alt="" coords="5,5,176,61"/>
+<area shape="rect" id="node6" title=" " alt="" coords="63,85,118,112"/>
+<area shape="rect" id="node7" href="$de/d50/classhelios_1_1filems_1_1LineReadingStrategy.html" title="Class defining the strategy to read line by line from a file input stream." alt="" coords="817,110,996,151"/>
+<area shape="rect" id="node8" href="$da/d24/classhelios_1_1filems_1_1SimpleReadingStrategy.html" title=" " alt="" coords="573,110,768,151"/>
+<area shape="rect" id="node9" href="$df/dc7/classhelios_1_1filems_1_1ReadingStrategy.html" title="Abstract class defining the fundamentals of any file reading strategy." alt="" coords="320,110,524,151"/>
+<area shape="rect" id="node10" title=" " alt="" coords="878,176,935,203"/>
 </map>

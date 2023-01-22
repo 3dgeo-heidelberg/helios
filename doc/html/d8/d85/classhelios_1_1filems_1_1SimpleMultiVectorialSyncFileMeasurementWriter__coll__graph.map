@@ -1,5 +1,7 @@
 <map id="helios::filems::SimpleMultiVectorialSyncFileMeasurementWriter" name="helios::filems::SimpleMultiVectorialSyncFileMeasurementWriter">
-<area shape="rect" id="node2" href="$df/dfc/classhelios_1_1filems_1_1SimpleMultiSyncFileWriter.html" title="helios::filems::SimpleMulti\lSyncFileWriter\&lt; vector\&lt;\l Measurement \&gt; const &amp;, glm\l::dvec3 const &amp; \&gt;" alt="" coords="459,5,654,76"/>
-<area shape="rect" id="node3" href="$d2/d66/classhelios_1_1filems_1_1MultiSyncFileWriter.html" title="helios::filems::MultiSync\lFileWriter\&lt; WriteArgs ... \&gt;" alt="" coords="213,20,389,61"/>
-<area shape="rect" id="node4" href="$da/d4c/classhelios_1_1filems_1_1SyncFileWriter.html" title="helios::filems::SyncFile\lWriter\&lt; WriteArgs ... \&gt;" alt="" coords="5,20,164,61"/>
+<area shape="rect" id="node1" title="Concrete class specializing a SimpleMultiSyncFileWriter to write vectors of measurements directly to ..." alt="" coords="760,83,997,124"/>
+<area shape="rect" id="node2" href="$df/dfc/classhelios_1_1filems_1_1SimpleMultiSyncFileWriter.html" title=" " alt="" coords="457,5,652,76"/>
+<area shape="rect" id="node3" href="$d2/d66/classhelios_1_1filems_1_1MultiSyncFileWriter.html" title=" " alt="" coords="213,20,388,61"/>
+<area shape="rect" id="node4" href="$da/d4c/classhelios_1_1filems_1_1SyncFileWriter.html" title=" " alt="" coords="5,20,164,61"/>
+<area shape="rect" id="node5" title=" " alt="" coords="437,100,672,141"/>
 </map>

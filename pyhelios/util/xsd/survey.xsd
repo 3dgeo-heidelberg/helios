@@ -168,6 +168,7 @@
                         <xs:attribute type="xs:string" name="scanner" use="required"/>
                         <xs:attribute type="xs:string" name="scene" use="required"/>
                         <xs:attribute type="xs:string" name="seed" use="optional"/>
+                        <xs:attribute type="xs:string" name="rotationSpec" use="optional"/>
                     </xs:complexType>
                 </xs:element>
             </xs:choice>

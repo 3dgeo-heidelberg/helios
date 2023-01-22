@@ -1,5 +1,6 @@
 <map id="helios::filems::SimpleSyncFileMeasurementWriter" name="helios::filems::SimpleSyncFileMeasurementWriter">
-<area shape="rect" id="node2" href="$d1/db6/classhelios_1_1filems_1_1SimpleSyncFileWriter.html" title="helios::filems::SimpleSync\lFileWriter\&lt; Measurement\l const &amp;, glm::dvec3 const &amp;\&gt;" alt="" coords="5,184,205,240"/>
-<area shape="rect" id="node3" href="$d4/dfb/classhelios_1_1filems_1_1SingleSyncFileWriter.html" title="helios::filems::SingleSync\lFileWriter\&lt; WriteArgs ... \&gt;" alt="" coords="17,95,193,136"/>
-<area shape="rect" id="node4" href="$da/d4c/classhelios_1_1filems_1_1SyncFileWriter.html" title="helios::filems::SyncFile\lWriter\&lt; WriteArgs ... \&gt;" alt="" coords="26,5,185,47"/>
+<area shape="rect" id="node1" title="Concrete class specializing SimpleSyncFileWriter to write measurements directly to a file." alt="" coords="19,288,196,329"/>
+<area shape="rect" id="node2" href="$d1/db6/classhelios_1_1filems_1_1SimpleSyncFileWriter.html" title=" " alt="" coords="5,184,209,240"/>
+<area shape="rect" id="node3" href="$d4/dfb/classhelios_1_1filems_1_1SingleSyncFileWriter.html" title=" " alt="" coords="20,95,195,136"/>
+<area shape="rect" id="node4" href="$da/d4c/classhelios_1_1filems_1_1SyncFileWriter.html" title=" " alt="" coords="28,5,187,47"/>
 </map>

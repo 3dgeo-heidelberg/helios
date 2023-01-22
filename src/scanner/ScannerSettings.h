@@ -76,6 +76,22 @@ public:
 	 * @brief Time interval between trajectory recollections (seconds)
 	 */
 	double trajectoryTimeInterval = 0.0; // In seconds
+    /**
+     * @brief Specify the vertical resolution to be used. By default,
+     *  vertical and horizontal resolutions are \f$0\f$ which means they will
+     *  be ignored. When at least one of them is distinct than \f$0\f$, the
+     *  scanner frequency and the head rotate per sec will be calculated
+     *  from the resolutions ignoring given values
+     * @see ScannerSettings::scanFreq_hz
+     * @see ScannerSettings::headRotatePerSec_rad
+     * @see ScannerSettings::horizontalResolution_rad
+     */
+    double verticalResolution_rad = 0.0;
+    /**
+     * @brief Specify the horizontal resolution to be used.
+     * @see ScannerSettings::verticalResolution_rad
+     */
+    double horizontalResolution_rad = 0.0;
 
 	// ***  CONSTRUCTION / DESTRUCTION  *** //
 	// ************************************ //
@@ -104,6 +120,8 @@ public:
 		this->scanFreq_Hz = other->scanFreq_Hz;
 		this->beamDivAngle = other->beamDivAngle;
 		this->trajectoryTimeInterval = other->trajectoryTimeInterval;
+        this->verticalResolution_rad = other->verticalResolution_rad;
+        this->horizontalResolution_rad = other->horizontalResolution_rad;
 	}
 
 	// ***  CHERRY PICKING  *** //
@@ -159,12 +177,48 @@ public:
             settings->scanFreq_Hz = cherries->scanFreq_Hz;
         if(hasCherry("beamDivAngle"))
             settings->beamDivAngle = cherries->beamDivAngle;
-        if(hasCherry("trajectoryTimeInterval")){
+        if(hasCherry("trajectoryTimeInterval"))
             settings->trajectoryTimeInterval=cherries->trajectoryTimeInterval;
+        if(hasCherry("verticalResolution_rad"))
+            settings->verticalResolution_rad=cherries->verticalResolution_rad;
+        if(hasCherry("horizontalResolution_rad")) {
+            settings->horizontalResolution_rad =
+                cherries->horizontalResolution_rad;
         }
+
         // Return settings from cherry picking
         return settings;
 	}
+
+    // ***  CONFIG METHODS  *** //
+    // ************************ //
+    /**
+     * @brief Update the settings to fit the specified resolution.
+     *
+     * Let \f$V_{\mathrm{res}}\f$ be the given vertical resolution,
+     *  \f$H_{\mathrm{res}}\f$ be the given horizontal resolution,
+     *  \f$f_{p}\f$ be the given pulse frequency, and \f$\alpha^*\f$ be the
+     *  max scan angle.
+     *
+     * But then, the scanning frequency \f$f_s\f$ can be determined as:
+     * \f[
+     *  f_s = \frac{V_{\mathrm{res}} f_p}{2 \alpha^*}
+     * \f]
+     *
+     * Also, the head rotation per second \f$H_{\mathrm{rps}}\f$ can be
+     *  determined as:
+     * \f[
+     *  H_{\mathrm{rps}} = H_{\mathrm{res}} f_s
+     * \f]
+     *
+     * @param scanAngleMax_rad \f$\alpha^*\f$
+     */
+    inline void fitToResolution(double const scanAngleMax_rad){
+        scanFreq_Hz = (pulseFreq_Hz *verticalResolution_rad) / (
+            2.0*scanAngleMax_rad
+        );
+        headRotatePerSec_rad = horizontalResolution_rad * scanFreq_Hz;
+    }
 
 	// ***  GETTERS and SETTERS  *** //
 	// ***************************** //
@@ -183,6 +237,17 @@ public:
 	 * @see ScannerSettings::hasTemplate
 	 */
 	ScannerSettings & getTemplate() {return *this->baseTemplate;}
+
+    /**
+     * @brief Check whether the scanner settings' vertical and horizontal
+     *  resolutions have the default values (disabled) or not (enabled).
+     * @return True if vertical and horizontal resolutions have default
+     *  null values (both 0), False otherwise.
+     */
+    inline bool hasDefaultResolution(){
+        return  verticalResolution_rad == 0 &&
+                horizontalResolution_rad == 0;
+    }
 
 	// ***  TO STRING  *** //
 	// ******************* //
@@ -229,6 +294,8 @@ public:
             << "scanFreq_Hz = " << scanFreq_Hz << "\n"
             << "beamDivAngle = " << beamDivAngle << "\n"
             << "trajectoryTimeInterval = " << trajectoryTimeInterval << "\n"
+            << "verticalResolution_rad = " << verticalResolution_rad << "\n"
+            << "horizontalResolution_rad = " << horizontalResolution_rad<<"\n"
         ;
         return ss.str();
 	}

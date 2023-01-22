@@ -1,6 +1,7 @@
 <map id="helios::filems::Las14MultiVectorialSyncFileMeasurementWriter" name="helios::filems::Las14MultiVectorialSyncFileMeasurementWriter">
-<area shape="rect" id="node2" href="$dd/dc0/classhelios_1_1filems_1_1LasMultiVectorialSyncFileMeasurementWriter.html" title="Concrete class specializing MultiLasSyncFileWriter to write vectors of measurements to LAS files supp..." alt="" coords="663,13,865,69"/>
-<area shape="rect" id="node3" href="$de/daa/classhelios_1_1filems_1_1MultiLasSyncFileWriter.html" title="helios::filems::MultiLas\lSyncFileWriter\&lt; vector\l\&lt; Measurement \&gt; const &amp;,\l glm::dvec3 const &amp; \&gt;" alt="" coords="436,5,615,76"/>
-<area shape="rect" id="node4" href="$d2/d66/classhelios_1_1filems_1_1MultiSyncFileWriter.html" title="helios::filems::MultiSync\lFileWriter\&lt; WriteArgs ... \&gt;" alt="" coords="212,20,388,61"/>
-<area shape="rect" id="node5" href="$da/d4c/classhelios_1_1filems_1_1SyncFileWriter.html" title="helios::filems::SyncFile\lWriter\&lt; WriteArgs ... \&gt;" alt="" coords="5,20,164,61"/>
+<area shape="rect" id="node1" title="Concrete class specializing MultiLasSyncFileWriter to write vectors of measurements to LAS&#45;1...." alt="" coords="912,20,1149,61"/>
+<area shape="rect" id="node2" href="$dd/dc0/classhelios_1_1filems_1_1LasMultiVectorialSyncFileMeasurementWriter.html" title="Concrete class specializing MultiLasSyncFileWriter to write vectors of measurements to LAS files supp..." alt="" coords="661,13,864,69"/>
+<area shape="rect" id="node3" href="$de/daa/classhelios_1_1filems_1_1MultiLasSyncFileWriter.html" title=" " alt="" coords="435,5,613,76"/>
+<area shape="rect" id="node4" href="$d2/d66/classhelios_1_1filems_1_1MultiSyncFileWriter.html" title=" " alt="" coords="212,20,387,61"/>
+<area shape="rect" id="node5" href="$da/d4c/classhelios_1_1filems_1_1SyncFileWriter.html" title=" " alt="" coords="5,20,164,61"/>
 </map>

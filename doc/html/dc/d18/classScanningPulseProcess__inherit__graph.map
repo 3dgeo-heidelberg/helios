@@ -1,4 +1,5 @@
 <map id="ScanningPulseProcess" name="ScanningPulseProcess">
+<area shape="rect" id="node1" title="Class defining the scanning pulse process interface." alt="" coords="147,5,305,32"/>
 <area shape="rect" id="node2" href="$d5/d3c/classBuddingScanningPulseProcess.html" title="Class implementing a scanning pulse process which works with a pulse task dropper based on budding ta..." alt="" coords="5,80,209,107"/>
 <area shape="rect" id="node3" href="$df/ddb/classWarehouseScanningPulseProcess.html" title="Class implementing a scanning pulse process which works with a pulse task dropper based on budding ta..." alt="" coords="233,80,456,107"/>
 </map>

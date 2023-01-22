@@ -7,5 +7,6 @@ var classhelios_1_1filems_1_1BufferedLineFileReader =
     [ "makeStrategy", "d0/d01/classhelios_1_1filems_1_1BufferedLineFileReader.html#a9fe10d5700976efa746654dbfab79d8b", null ],
     [ "setBufferSize", "d0/d01/classhelios_1_1filems_1_1BufferedLineFileReader.html#a69a2686eab9a0b519fcc4cae554cd40c", null ],
     [ "bufferSize", "d0/d01/classhelios_1_1filems_1_1BufferedLineFileReader.html#a26858c5a5492351fd425b61654790432", null ],
-    [ "lrs", "d0/d01/classhelios_1_1filems_1_1BufferedLineFileReader.html#af7e4670ddd95c606f3e5d81f324c155a", null ]
+    [ "lrs", "d0/d01/classhelios_1_1filems_1_1BufferedLineFileReader.html#af7e4670ddd95c606f3e5d81f324c155a", null ],
+    [ "maxCharsPerLine", "d0/d01/classhelios_1_1filems_1_1BufferedLineFileReader.html#a1d63094406c47abca1073cac9d0844d6", null ]
 ];
