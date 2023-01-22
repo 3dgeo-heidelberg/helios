@@ -62,10 +62,14 @@ class Simulation:
             except KeyError:
                 self.platform_file = "data/platforms.xml"
         try:
-            self.trajectory_file = ET.parse(survey_file).find('survey').find('leg').find('platformSettings').attrib['trajectory']
+            trajectory_files = []
+            survey = ET.parse(survey_file).find('survey')
+            for leg in survey:
+                trajectory_files.append(leg.find('platformSettings').attrib['trajectory'])
+            self.trajectory_files = trajectory_files
         except (AttributeError, KeyError):
             print("No trajectory files used")
-            self.trajectory_file = None
+            self.trajectory_files = None
         self.scene_root = ET.parse(self.scene_file).getroot()
         with open(self.scene_file, 'r') as f:
             self.scene_content = f.read()
@@ -166,6 +170,10 @@ if __name__ == '__main__':
     sys.path.append(str(RUN_PATH))
     survey_path = Path(sys.argv[2])
     outfile = Path(sys.argv[3])
+    write_only_data = False
+    if len(sys.argv) > 3:
+        if sys.argv[4] == "--onlyData":
+            write_only_data = True
     allowed_suffixes = ['.zip', '.7z', '.rar', '.gz', '.tar']
     if len(set(allowed_suffixes).intersection(outfile.suffixes)) == 0:
         outfile = outfile.with_suffix('.zip')
@@ -209,7 +217,8 @@ if __name__ == '__main__':
                 scene_file_new = Path(sim.scene_file).relative_to(WORKING_DIR)
             else:
                 scene_file_new = Path(sim.scene_file)
-            outzip.writestr(str(scene_file_new), sim.scene_content)
+            if scene_file_new not in [Path(file) for file in outzip.namelist()]:
+                outzip.writestr(str(scene_file_new), sim.scene_content)
             # try:
             #     scene_path_built = Path(str(scene_file_new).replace('.xml', '.scene'))
             #     outzip.write(scene_path_built)
@@ -232,78 +241,86 @@ if __name__ == '__main__':
             if scanner_file_new not in [Path(file) for file in outzip.namelist()]:
                 outzip.write(scanner_file_new)
 
-        if sim.trajectory_file not in [Path(file) for file in outzip.namelist()] and sim.trajectory_file is not None:
-            if Path(sim.trajectory_file).is_absolute():
-                trajectory_file_new = Path(sim.trajectory_file).relative_to(WORKING_DIR)
-            else:
-                trajectory_file_new = Path(sim.trajectory_file)
-            if trajectory_file_new not in [Path(file) for file in outzip.namelist()]:
-                outzip.write(trajectory_file_new)
-                print("trajectory written " + str(trajectory_file_new))
+        if not set(sim.trajectory_files).issubset(set([Path(file) for file in outzip.namelist()])) and sim.trajectory_files is not None:
+            trajectory_files_new = []
+            for traj in sim.trajectory_files:
+                if Path(traj).is_absolute():
+                    trajectory_file_new = Path(traj).relative_to(WORKING_DIR)
+                else:
+                    trajectory_file_new = Path(traj)
+                if trajectory_file_new not in [Path(file) for file in outzip.namelist()]:
+                    outzip.write(trajectory_file_new)
+                    print("trajectory written " + str(trajectory_file_new))
+                trajectory_files_new.append(trajectory_file_new)
         else:
-            trajectory_file_new = None
+            trajectory_files_new = None
 
         with open(survey, "r") as f_survey:
             # replace absolute with relative file paths
             content = f_survey.read()
-            content = content.replace(str(sim.scene_file), str(scene_file_new))
-            content = content.replace(str(sim.platform_file), str(platform_file_new))
-            content = content.replace(str(sim.scanner_file), str(scanner_file_new))
-            content = content.replace(str(sim.trajectory_file), str(trajectory_file_new))
+            content = content.replace(str(sim.scene_file), str(scene_file_new.as_posix()))
+            content = content.replace(str(sim.platform_file), str(platform_file_new.as_posix()))
+            content = content.replace(str(sim.scanner_file), str(scanner_file_new.as_posix()))
+            try:
+                for traj_file, traj_file_new in zip(sim.trajectory_files, trajectory_files_new):
+                    content = content.replace(str(traj_file), str(traj_file_new))
+            except TypeError:  # no trajectory present
+                pass
         if survey.is_absolute():
             outzip.writestr(str(survey.relative_to(WORKING_DIR)), content)
         else:
             outzip.writestr(str(survey), content)
 
-    print('Writing assets')
-    assets_path = Path('assets').glob('**/*')
-    for path in assets_path:
-        outzip.write(path)
-
-    path = None
-    print('Writing run')
-    run_path = Path('run').glob('*')
-    for path in run_path:
-        if not path.parts[-1].startswith('helios'):
+    if not write_only_data:
+        print('Writing assets')
+        assets_path = Path('assets').glob('**/*')
+        for path in assets_path:
             outzip.write(path)
-    outzip.write(HELIOS_EXE.relative_to(WORKING_DIR))
-    zipurl = None
-    if not Path('run').exists():
-        warnings.warn('There is no run-folder in your root directory. Downloading run folder from GitHub repository')
-        if platform.system() == 'Windows':
-            zipurl = f'https://github.com/3dgeo-heidelberg/helios/releases/download/' \
-                     f'v{helios_version}/helios-plusplus-win.zip'
-        elif platform.system() == 'Linux':
-            zipurl = f'https://github.com/3dgeo-heidelberg/helios/releases/download/' \
-                     f'v{helios_version}/helios-plusplus-lin.tar.gz'
 
-    if zipurl is not None:
-        try:
-            zipresp = urlopen(zipurl)
-        except HTTPError or URLError:
-            warnings.warn("No release available for your HELIOS++ version. Downloading latest release from GitHub.")
+        path = None
+        print('Writing run')
+        run_path = Path('run').glob('*')
+        for path in run_path:
+            if not path.parts[-1].startswith('helios'):
+                outzip.write(path)
+        outzip.write(HELIOS_EXE.relative_to(WORKING_DIR))
+        zipurl = None
+        if not Path('run').exists():
+            warnings.warn('There is no run-folder in your root directory. Downloading run folder from GitHub repository')
             if platform.system() == 'Windows':
-                zipurl = f'https://github.com/3dgeo-heidelberg/helios/releases/download/v{helios_version_latest}/' \
-                         f'helios-plusplus-win.zip'
+                zipurl = f'https://github.com/3dgeo-heidelberg/helios/releases/download/' \
+                         f'v{helios_version}/helios-plusplus-win.zip'
             elif platform.system() == 'Linux':
-                zipurl = f'https://github.com/3dgeo-heidelberg/helios/releases/download/v{helios_version_latest}/' \
-                         f'helios-plusplus-lin.tar.gz'
-            zipresp = urlopen(zipurl)
+                zipurl = f'https://github.com/3dgeo-heidelberg/helios/releases/download/' \
+                         f'v{helios_version}/helios-plusplus-lin.tar.gz'
 
-        temp_dir = Path(WORKING_DIR) / 'tmp'
-        if not temp_dir.exists():
-            temp_dir.mkdir()
-        with open(temp_dir.joinpath('tempfile.zip'), 'wb') as tempzip:
-            tempzip.write(zipresp.read())
-        zf = zipfile.ZipFile(temp_dir.joinpath('tempfile.zip'))
-        list_files = zf.namelist()
-        for filename in list_files:
-            if "run" in Path(filename).parts:
-                zf.extract(filename, temp_dir)
-                outzip.write(temp_dir.joinpath(filename), filename)
-        zf.close()
+        if zipurl is not None:
+            try:
+                zipresp = urlopen(zipurl)
+            except HTTPError or URLError:
+                warnings.warn("No release available for your HELIOS++ version. Downloading latest release from GitHub.")
+                if platform.system() == 'Windows':
+                    zipurl = f'https://github.com/3dgeo-heidelberg/helios/releases/download/v{helios_version_latest}/' \
+                             f'helios-plusplus-win.zip'
+                elif platform.system() == 'Linux':
+                    zipurl = f'https://github.com/3dgeo-heidelberg/helios/releases/download/v{helios_version_latest}/' \
+                             f'helios-plusplus-lin.tar.gz'
+                zipresp = urlopen(zipurl)
 
-        rmtree(temp_dir.absolute())
+            temp_dir = Path(WORKING_DIR) / 'tmp'
+            if not temp_dir.exists():
+                temp_dir.mkdir()
+            with open(temp_dir.joinpath('tempfile.zip'), 'wb') as tempzip:
+                tempzip.write(zipresp.read())
+            zf = zipfile.ZipFile(temp_dir.joinpath('tempfile.zip'))
+            list_files = zf.namelist()
+            for filename in list_files:
+                if "run" in Path(filename).parts:
+                    zf.extract(filename, temp_dir)
+                    outzip.write(temp_dir.joinpath(filename), filename)
+            zf.close()
+
+            rmtree(temp_dir.absolute())
 
     print('Writing version.txt')
     outzip.writestr('version.txt', f'v{helios_version}\nDOI: {HELIOS_DOI}')
