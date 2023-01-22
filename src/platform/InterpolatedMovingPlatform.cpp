@@ -51,9 +51,9 @@ InterpolatedMovingPlatform::InterpolatedMovingPlatform(
         case RotationSpec::ARINC_705:
             calcAttitude = [] (arma::Col<double> const x) -> Rotation {
                 return Rotation(Directions::yaw, x[2]).applyTo(
-                    Rotation(Directions::roll, x[1])
+                    Rotation(Directions::roll, x[0])
                 ).applyTo(
-                    Rotation(Directions::pitch, x[0])
+                    Rotation(Directions::pitch, x[1])
                 );
             };
             _getRollPitchYaw = [] (

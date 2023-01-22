@@ -112,7 +112,14 @@ public:
     ) : left(left), right(right) {}
 
     virtual ~UnivarExprTreeNode(){
-        // TODO Rethink : Implement cascade destructor
+        if(left != nullptr){
+            delete left;
+            left = nullptr;
+        }
+        if(right != nullptr){
+            delete right;
+            right = nullptr;
+        }
     }
 
     // ***  UNIVARIATE EXPRESSION TREE NODE METHODS  *** //

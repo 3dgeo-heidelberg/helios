@@ -24,8 +24,8 @@ template <typename NumericType> char const
     'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', // letters
     'Y', 'Z',
     '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',           // Digits
-    '.',                                                        // Separators
-    '+', '-', '*', '/', '^', '(', ')',                          // Operators
+    '.', ',',                                                   // Separators
+    '+', '-', '*', '/', '^', '(', ')'                           // Operators
 };
 
 template <typename NumericType> std::string const
@@ -132,6 +132,119 @@ UnivarExprTreeStringFactory<NumericType>::makeIterative(
 }
 
 
+template <typename NumericType>
+void UnivarExprTreeStringFactory<NumericType>::flush(){
+    // Get, remove and validate next top operator
+    Symbol &symbol = ops.back();
+    if(symbol.type != UnivarExprTreeNode<NumericType>::SymbolType::OPERATOR){
+        std::stringstream ss;
+        ss  << "UnivarExprTreeStringFactory::flush detected an unexpected "
+            <<  "operator: \"" << symbol.str << "\"";
+        throw HeliosException(ss.str());
+    }
+    ops.pop_back();
+
+    if(symbol.str == "("){ // Handle new tree building when top operator is (
+        size_t const m = nodes.size(); // Num nodes
+        if(nodes.size() > 1 && nodes[m-2].isFunction()){ // Function opening
+            UnivarExprTreeNode<NumericType> * input = nodes.back();
+            nodes.pop_back();
+            UnivarExprTreeNode<NumericType> * function = nodes.back();
+            function->left = input;
+        }
+        else{ // Priority opening
+            nodes.pop_back();
+        }
+    }
+    else { // Build new tree by merging two top trees with operator as root
+        UnivarExprTreeNode<NumericType> * right = nodes.back();
+        nodes.pop_back();
+        UnivarExprTreeNode<NumericType> * left = nodes.back();
+        nodes.pop_back();
+        UnivarExprTreeNode<NumericType> * newNode =
+            std::make_shared<UnivarExprTreeNode<NumericType>>(left, right);
+        newNode->symbolType =
+            UnivarExprTreeNode<NumericType>::SymbolType::OPERATOR;
+        nodes.push_back(newNode);
+    }
+
+    // TODO Rethink : Recursive flush here, if necessary
+    // TODO Rethink : Recursion only for ops with >= priority
+}
+
+
+
+
+// ***  HANDLE METHODS  *** //
+// ************************ //
+template <typename NumericType>
+void UnivarExprTreeStringFactory<NumericType>::handleOp(
+    UnivarExprTreeStringFactory<NumericType>::Symbol const &symbol
+){
+    // TODO Rethink : Implement handle operator symbol
+    // TODO Rethink : Must update priority here
+    if(symbol.str == ")"){ // On close priority / function close operator
+
+    }
+    else if(symbol.str == "("){ // On open priority / function open operator
+        if(ops.back().str == "atan2"){  // On open atan2
+
+        }
+        else if(  // On open function
+            ops.back().str != "(" &&
+            nodes.back()->symbolType ==
+                UnivarExprTreeNode<NumericType>::SymbolType::FUNCTION
+        ){
+
+        }
+        else{  // On open priority operator
+
+        }
+    }
+    else{ // On typical operator (+-*/^atan2)
+
+    }
+}
+
+template <typename NumericType>
+void UnivarExprTreeStringFactory<NumericType>::handleFun(
+    UnivarExprTreeStringFactory<NumericType>::Symbol const &symbol
+){
+    // TODO Rethink : Implement handle function symbol
+    // TODO Rethink : What about functions and priority?
+    // TODO Rethink : If priority update required for functions, must be here
+    UnivarExprTreeNode<NumericType> *node =
+        new UnivarExprTreeNode<NumericType>();
+    nodes->push_back(node);
+    if(symbol.str == "exp")
+        nodes->fun = UnivarExprTreeNode<NumericType>::FunType::f_exp;
+    else if(symbol.str == "ln")
+        nodes->fun = UnivarExprTreeNode<NumericType>::FunType::f_ln;
+    else if(symbol.str == "sqrt")
+        nodes->fun = UnivarExprTreeNode<NumericType>::FunType::f_sqrt;
+    else if(symbol.str == "abs")
+        nodes->fun = UnivarExprTreeNode<NumericType>::FunType::f_abs;
+    else if(symbol.str == "cos")
+        nodes->fun = UnivarExprTreeNode<NumericType>::FunType::f_cos;
+    else if(symbol.str == "sin")
+        nodes->fun = UnivarExprTreeNode<NumericType>::FunType::f_sin;
+    else if(symbol.str == "tan")
+        nodes->fun = UnivarExprTreeNode<NumericType>::FunType::f_tan;
+    else if(symbol.str == "acos")
+        nodes->fun = UnivarExprTreeNode<NumericType>::FunType::f_acos;
+    else if(symbol.str == "asin")
+        nodes->fun = UnivarExprTreeNode<NumericType>::FunType::f_asin;
+    else if(symbol.str == "atan")
+        nodes->fun = UnivarExprTreeNode<NumericType>::FunType::f_atan;
+    else if(symbol.str == "cosh")
+        nodes->fun = UnivarExprTreeNode<NumericType>::FunType::f_cosh;
+    else if(symbol.str == "sinh")
+        nodes->fun = UnivarExprTreeNode<NumericType>::FunType::f_sinh;
+    else if(symbol.str == "tanh")
+        nodes->fun = UnivarExprTreeNode<NumericType>::FunType::f_tanh;
+}
+
+
 
 
 // ***  UTIL METHODS  *** //
@@ -141,6 +254,9 @@ typename UnivarExprTreeStringFactory<NumericType>::Symbol
 UnivarExprTreeStringFactory<NumericType>::nextSymbol(
     std::string const &expr
 ){
+    // Skip first character if it is a comma
+    if(expr[0] == ',') return nextSymbol(expr.substr(1));
+
     // Prepare next symbol finding
     char const c0 = expr[0];        // Initial character
     size_t const m = expr.size();   // Num. characters in expression
