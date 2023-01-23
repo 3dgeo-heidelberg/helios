@@ -133,7 +133,9 @@ public:
      * @return Result of applying the operator \f$\odot\f$ such that
      *  \f$x \odot y\f$
      */
-    inline NumericType doOperation(NumericType const x, NumericType const y){
+    inline NumericType doOperation(
+        NumericType const x, NumericType const y
+    ) const {
         switch(op){
             case OP_ADD:    return x + y;
             case OP_SUB:    return x - y;
@@ -148,13 +150,19 @@ public:
             }
             case OP_atan2:  return std::atan2(x, y);
         }
+        std::stringstream ss;
+        ss  << "UnivarExprTreeNode failed to do operation with "
+            << "x = " << x << ", y = " << y;
+        throw HeliosException(ss.str());
     }
     /**
      * @brief Compute the function's output for the given input \f$x\f$
      * @param x The function's input \f$x\f$
      * @return The function's output \f$f(x)\f$
      */
-    inline NumericType doFunction(NumericType const x){
+    inline NumericType doFunction(
+        NumericType const x
+    ) const {
         switch(fun){
             case f_exp:     return std::exp(x);
             case f_ln:      return std::log(x);
@@ -170,6 +178,10 @@ public:
             case f_sinh:    return std::sinh(x);
             case f_tanh:    return std::tanh(x);
         }
+        std::stringstream ss;
+        ss  << "UnivarExprTreeNode failed to do function with "
+            << "x = " << x;
+        throw HeliosException(ss.str());
     }
 
     // ***  EXPRESSION TREE NODE INTERFACE *** //
@@ -188,6 +200,9 @@ public:
             case FUNCTION:
                 return doFunction(left->eval(t));
         }
+        std::stringstream ss;
+        ss  << "UnivarExprTreeNode failed to eval t = " << t;
+        throw HeliosException(ss.str());
     }
 
     // ***  BINARY TREE INTERFACE  *** //
@@ -208,4 +223,45 @@ public:
      * @see IBinaryTreeNode::isLeafNode
      */
     bool isLeafNode() const override {return getLeftChild()==nullptr;}
+
+    // ***  GETTERs and SETTERs  *** //
+    // ***************************** //
+    /**
+     * @brief Check whether the node is an operator (true) or not (false)
+     * @return True if node is an operator, false otherwise
+     */
+    inline bool isOperator() const {return symbolType == OPERATOR;}
+    /**
+     * @brief Check whether the node is a function (true) or not (false)
+     * @return True if node is a function, false otherwise
+     */
+    inline bool isFunction() const {return symbolType == FUNCTION;}
+    /**
+     * @brief Check whether the node is a number (true) or not (false)
+     * @return True if node is a number, false otherwise
+     */
+    inline bool isNumber() const {return symbolType == NUMBER;}
+    /**
+     * @brief Check whether the node is a variable (true) or not (false)
+     * @return True if node is a variable, false otherwise
+     */
+    inline bool isVariable() const {return symbolType == VARIABLE;}
+    /**
+     * @brief Set the operator UnivarExprTreeNode::op from given string
+     * @param opStr String representing an operator for the node
+     */
+    inline void setOperator(std::string const &opStr){
+        if(opStr == "+") op = OP_ADD;
+        else if(opStr == "-") op = OP_SUB;
+        else if(opStr == "*") op = OP_MUL;
+        else if(opStr == "/") op = OP_DIV;
+        else if(opStr == "^") op = OP_POW;
+        else if(opStr == "atan2") op = OP_atan2;
+        else {
+            std::stringstream ss;
+            ss << "UnivarExprTreeNode::setOperator(std::string const &) "
+               << "failed due to an unexpected operator: \"" << opStr << "\"";
+            throw HeliosException(ss.str());
+        }
+    }
 };

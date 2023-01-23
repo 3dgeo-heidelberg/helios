@@ -58,7 +58,7 @@ public:
         std::vector<OutputType> const &y
     ){
         std::vector<OutputType> ft;
-        for(InputType const & t : t) ft.push_back(f->eval(t));
+        for(InputType const & ti : t) ft.push_back(f->eval(ti));
         size_t const m = ft.size();
         size_t const n = y.size();
         if(m!=n) return false;
@@ -69,6 +69,14 @@ public:
         return true;
     }
 };
+
+// ***  R U N  *** //
+// *************** //
+bool ExprTreeTest::run(){
+    bool passed = true;
+    passed = passed && testUnivarExprTree();
+    return passed;
+}
 
 
 // ***  SUB-TESTS  *** //
@@ -91,6 +99,7 @@ bool ExprTreeTest::testUnivarExprTree(){
     });
     if(!validate<double, double>(node, t, y)) return false;
 
+    // TODO Restore : Commented tests below
     // Test case 2: exp(t)+3*cos(1+2*t)
     node = uetsf.makeShared("exp(t)+3*cos(1+2*t)");
     y = std::vector<double>({
@@ -111,7 +120,7 @@ bool ExprTreeTest::testUnivarExprTree(){
 
 
 
-        // Test case 4: acos(1/3)+t/pi
+    // Test case 4: acos(1/3)+t/pi
     node = uetsf.makeShared("acos(1/3)+t/pi");
     y = std::vector<double>({
         -1.95213944,  0.23146637,  0.36515653,  0.88081854,  1.12273406,

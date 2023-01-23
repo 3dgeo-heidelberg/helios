@@ -1,4 +1,6 @@
-#pragma once
+#ifndef _UNIVAREXPRTREESTRINGFACTORY_H_
+#define _UNIVAREXPRTREESTRINGFACTORY_H_
+
 
 #include <adt/exprtree/UnivarExprTreeNode.h>
 #include <adt/exprtree/IExprTreeNodeStringFactory.h>
@@ -177,28 +179,25 @@ public:
     /**
      * @brief Calculate the corresponding priority considering current base
      *  priority and given operator
-     * @param op Given operator for which priority must be calculated
+     * @param op Given operator symbol for which priority must be calculated
      * @return Calculated priority
      * @see UnivarExprTreeStringFactory::basePriority
      */
     inline unsigned int calcOpPriority(
-        typename UnivarExprTreeNode<NumericType>::OpType op
+        Symbol const &symbol
     ){
-        switch(op){
-            case UnivarExprTreeNode<NumericType>::OP_ADD:
-            case UnivarExprTreeNode<NumericType>::OP_SUB:
-                return basePriority + OP_ADD_BASE_PRIORITY;
-            case UnivarExprTreeNode<NumericType>::OP_MUL:
-            case UnivarExprTreeNode<NumericType>::OP_DIV:
-                return basePriority + OP_MUL_BASE_PRIORITY;
-            case UnivarExprTreeNode<NumericType>::OP_POW:
-            case UnivarExprTreeNode<NumericType>::OP_IPOW:
-                return basePriority + OP_POW_BASE_PRIORITY;
-            default:
-                throw HeliosException(
-                    "UnivarExprTreeStringFactory::calcOpPriority received an "
-                    "unexpected operator as input"
-                );
+        if(symbol.str == "+" || symbol.str == "-")
+            return basePriority + OP_ADD_BASE_PRIORITY;
+        else if(symbol.str == "*" || symbol.str == "/")
+            return basePriority + OP_MUL_BASE_PRIORITY;
+        else if(symbol.str == "^")
+            return basePriority + OP_POW_BASE_PRIORITY;
+        else if(symbol.str == "(") return basePriority;
+        else{
+            throw HeliosException(
+                "UnivarExprTreeStringFactory::calcOpPriority received an "
+                "unexpected operator as input"
+            );
         }
     }
     /**
@@ -211,7 +210,7 @@ public:
     {return basePriority + FUN_BASE_PRIORITY;}
     /**
      * @brief Calculate the corresponding priority considering current base
-     *  priority and an opening bracket
+     *  priority and the push of an opening bracket
      * @return Calculated priority
      * @see UnivarExprTreeStringFactory::basePriority
      * @see UnivarExprTreeStringFactory::calcCloseBracketPriority
@@ -220,7 +219,8 @@ public:
     {return basePriority + BRACKET_BASE_PRIORITY;}
     /**
      * @brief Calculate the corresponding bracket priority considering current
-     *  base priority and an opening bracket
+     *  base priority and the pop of an opening bracket (which happens because
+     *  a close bracket has been read)
      * @return Calculated priority
      * @see UnivarExprTreeStringFactory::basePriority
      * @see UnivarExprTreeStringFactory::calcOpenBracketPriority
@@ -268,4 +268,37 @@ public:
      * @return Crafted numeric symbol
      */
     Symbol craftNumSymbol(std::string const &expr);
+    /**
+     * @brief Check whether the given string is representing a valid operator
+     *  (true) or not (false).
+     * @param opStr The string to be checked.
+     * @return True if given string represents a valid operator, false
+     *  otherwise
+     */
+    inline bool isValidOpString(std::string const &opStr){
+        return  opStr == "+"    ||      opStr == "-"     ||     opStr == "*" ||
+                opStr == "/"    ||      opStr == "^"     ||     opStr == "(" ||
+                opStr == ")"    ||      opStr == "atan2"
+        ;
+    }
+    /**
+     * @brief Check whether the given string is representing a valid function
+     *  (true) or not (false).
+     * @param funStr The string to be checked.
+     * @return True if given string represents a valid function, false
+     *  otherwise
+     */
+    inline bool isValidFunString(std::string const &funStr){
+        return  funStr == "exp"         ||      funStr == "ln"      ||
+                funStr == "sqrt"        ||      funStr == "abs"     ||
+                funStr == "cos"         ||      funStr == "sin"     ||
+                funStr == "tan"         ||      funStr == "acos"    ||
+                funStr == "asin"        ||      funStr == "atan"    ||
+                funStr == "cosh"        ||      funStr == "sinh"    ||
+                funStr == "tanh";
+    }
 };
+
+#include <adt/exprtree/UnivarExprTreeStringFactory.tpp>
+
+#endif
