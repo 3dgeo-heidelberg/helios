@@ -139,7 +139,7 @@ bool ExprTreeTest::testUnivarExprTree(){
     if(!validate<double, double>(node, t, y)) return false;
 
 
-        // Test case 6: t
+    // Test case 6: t
     node = uetsf.makeShared("t");
     y = std::vector<double>({
         -10.00000000,  -3.14000000,  -2.72000000,  -1.10000000,
@@ -292,6 +292,19 @@ bool ExprTreeTest::testUnivarExprTree(){
     node = uetsf.makeShared("(1-(1))");
     y = std::vector<double>({0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0});
     if(!validate<double, double>(node, t, y)) return false;
+
+    // Test case 26: abs(t)
+    // TODO Rethink: Implement
+
+    // Test case 27: 1+atan2(3*t-1, 1)
+    // TODO Rethink: Implement
+
+    // Test case 28: 1+atan2(3*t-1, (t-1)*2)
+    // TODO Rethink: Implement
+
+    // Test case 29: t+(-(t-1)) = t+(-(-1+t))
+    // TODO Rethink: Implement
+
 
 
     // On test passed

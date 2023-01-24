@@ -92,13 +92,13 @@ public:
      * @brief The number of elements in the stack of nodes at current state
      * @see UnivarExprTreeStringFactory::nodes
      */
-    unsigned int numNodes = 0;
+    unsigned int numNodes = 0; // TODO Remove : If not used
     /**
      * @brief The number of non parentheses operators in ops stack at current
      *  state
      * @see UnivarExprTreeStringFactory::ops
      */
-    unsigned int numNonParenthesesOps = 0;
+    unsigned int numNonParenthesesOps = 0; // TODO Remove : If not used
     /**
      * @brief The nodes at current state (must be used as a stack)
      */
@@ -193,6 +193,7 @@ public:
         else if(symbol.str == "^")
             return basePriority + OP_POW_BASE_PRIORITY;
         else if(symbol.str == "(") return basePriority;
+        else if(symbol.str == "atan2") return basePriority;
         else{
             throw HeliosException(
                 "UnivarExprTreeStringFactory::calcOpPriority received an "

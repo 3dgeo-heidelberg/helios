@@ -70,6 +70,7 @@ UnivarExprTreeStringFactory<NumericType>::makeIterative(
         // --- TODO Remove : Debug section
         // Obtain next symbol (tokenization)
         Symbol symbol = nextSymbol(subexpr);
+        if(subexpr[0] == ',') subexpr = subexpr.substr(1); // Skip separator
         // TODO Remove : Debug section ---
         std::cout   << "CURRENT SYMBOL: \"" << symbol.str << "\""
                     << std::endl;
@@ -170,11 +171,15 @@ void UnivarExprTreeStringFactory<NumericType>::flush(){
             <<  "operator: \"" << symbol.str << "\"";
         throw HeliosException(ss.str());
     }
+    if(symbol.str != "(") --numNonParenthesesOps;
     ops.pop_back();
 
     if(symbol.str == "("){ // Handle new tree building when top operator is (
         size_t const m = nodes.size(); // Num nodes
-        if(nodes.size() > 1 && nodes[m-2]->isFunction()){ // Function opening
+        if(
+            nodes.size() > 1 && nodes[m-2]->isFunction() &&
+            nodes[m-2]->getLeftChild() == nullptr
+        ){ // Function opening
             UnivarExprTreeNode<NumericType> * input = nodes.back();
             nodes.pop_back();
             UnivarExprTreeNode<NumericType> * function = nodes.back();
@@ -182,6 +187,8 @@ void UnivarExprTreeStringFactory<NumericType>::flush(){
         }
         // Common opening (both priority, function, and operator)
         basePriority = calcCloseBracketPriority();
+        // Handle the particular atan2 as bivariate operator case
+        if(!ops.empty() && ops.back().str == "atan2") flush();
     }
     else { // Build new tree by merging two top trees with operator as root
         UnivarExprTreeNode<NumericType> * right = nodes.back();
@@ -237,7 +244,8 @@ void UnivarExprTreeStringFactory<NumericType>::handleOp(
         // While top operator priority is >= handled operator priority, flush
         while((!ops.empty()) && calcOpPriority(ops.back()) >= opPriority)
             flush();
-        ops.push_back(symbol); // Pûsh handled operator priority
+        ops.push_back(symbol); // Push handled operator priority
+        ++numNonParenthesesOps;
     }
 }
 
@@ -292,7 +300,7 @@ UnivarExprTreeStringFactory<NumericType>::nextSymbol(
 ){
     // Flush until start ( of atan2 and skip first character if it is a comma
     if(expr[0] == ','){
-        while(ops.back().str == "(") flush();
+        //while(ops.back().str == "(") flush();
         return nextSymbol(expr.substr(1));
     }
 
@@ -311,7 +319,7 @@ UnivarExprTreeStringFactory<NumericType>::nextSymbol(
         // is open parenthesis and num nodes < num non parenthesis ops)]
         bool const negativeNumber = c0 == '-' && (
             (nodes.empty() && ops.empty()) ||
-            (!ops.empty() && ops.back().str == "(" && numNodes < numNonParenthesesOps)
+            (!ops.empty() && ops.back().str == "(" && nodes.size() <= numNonParenthesesOps)
         ); // TODO Rethink : Simplify this if?
         // TODO Rethink : numNonParenthesesOps and numNodes are not updated
         if(!negativeNumber) { // Handle if operator, skip if negative number
@@ -334,13 +342,18 @@ UnivarExprTreeStringFactory<NumericType>::nextSymbol(
         }
         // Extract consecutive text token
         std::string symstr = expr.substr(0, nonAlphaIdx);
+        if(symstr == "atan" && expr[nonAlphaIdx] == '2'){ // Handle atan2 case
+            ++nonAlphaIdx;
+            symstr = expr.substr(0, nonAlphaIdx);
+        }
         // Check named numbers and variables
         if(expr[nonAlphaIdx] != '('){
             if( // If last char is an operator other than opening parentheses
                 nonAlphaIdx==m ||  // Or there is nothing after named num/var
                 expr[nonAlphaIdx] == '+'    || expr[nonAlphaIdx] == '-' ||
                 expr[nonAlphaIdx] == '*'    || expr[nonAlphaIdx] == '/' ||
-                expr[nonAlphaIdx] == '^'    || expr[nonAlphaIdx] == ')'
+                expr[nonAlphaIdx] == '^'    || expr[nonAlphaIdx] == ')' ||
+                expr[nonAlphaIdx] == ','  // Also a separator
             ){
                 // Check named number : pi
                 if(symstr == "pi"){
