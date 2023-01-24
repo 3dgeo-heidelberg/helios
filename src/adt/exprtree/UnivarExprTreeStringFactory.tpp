@@ -49,7 +49,7 @@ UnivarExprTreeStringFactory<NumericType>::make(std::string const &expr){
     nodes.clear();
 
     // Do iterative building
-    return makeIterative(cleanExpressionString(expr));
+    return makeIterative(prepareExpressionString(expr));
 }
 
 
@@ -300,7 +300,9 @@ UnivarExprTreeStringFactory<NumericType>::nextSymbol(
 ){
     // Flush until start ( of atan2 and skip first character if it is a comma
     if(expr[0] == ','){
-        //while(ops.back().str == "(") flush();
+        //while(ops.back().str == "(") flush(); // TODO Rethink : Whats wrong with this?
+        while(ops.back().str != "(") flush(); // TODO Rethink : Does this work?
+        lastReadIsOpenPriorityOrSeparator = true;
         return nextSymbol(expr.substr(1));
     }
 
@@ -319,7 +321,11 @@ UnivarExprTreeStringFactory<NumericType>::nextSymbol(
         // is open parenthesis and num nodes < num non parenthesis ops)]
         bool const negativeNumber = c0 == '-' && (
             (nodes.empty() && ops.empty()) ||
-            (!ops.empty() && ops.back().str == "(" && nodes.size() <= numNonParenthesesOps)
+            lastReadIsOpenPriorityOrSeparator // TODO Remove if doesnt work
+            // TODO Restore below if above doesnt work
+            /*(!ops.empty() && ops.back().str == "(" && (
+                nodes.size() <= numNonParenthesesOps || nodes.size() == 0
+            ))*/
         ); // TODO Rethink : Simplify this if?
         // TODO Rethink : numNonParenthesesOps and numNodes are not updated
         if(!negativeNumber) { // Handle if operator, skip if negative number
@@ -327,6 +333,8 @@ UnivarExprTreeStringFactory<NumericType>::nextSymbol(
             symbol.type =
                 UnivarExprTreeNode<NumericType>::SymbolType::OPERATOR;
             symbol.str = c0;
+            if(c0 == '(') lastReadIsOpenPriorityOrSeparator = true;
+            else lastReadIsOpenPriorityOrSeparator = false;
             return symbol;
         }
     }
@@ -361,6 +369,7 @@ UnivarExprTreeStringFactory<NumericType>::nextSymbol(
                     symbol.type =
                         UnivarExprTreeNode<NumericType>::SymbolType::NUMBER;
                     symbol.str = stringFromNumber(M_PI);
+                    lastReadIsOpenPriorityOrSeparator = false;
                     return symbol;
                 }
                 // Check named number : e
@@ -369,6 +378,7 @@ UnivarExprTreeStringFactory<NumericType>::nextSymbol(
                     symbol.type =
                         UnivarExprTreeNode<NumericType>::SymbolType::NUMBER;
                     symbol.str = stringFromNumber(M_E);
+                    lastReadIsOpenPriorityOrSeparator = false;
                     return symbol;
                 }
                 // Check variable : t
@@ -377,6 +387,7 @@ UnivarExprTreeStringFactory<NumericType>::nextSymbol(
                     symbol.type =
                         UnivarExprTreeNode<NumericType>::SymbolType::VARIABLE;
                     symbol.str = symstr;
+                    lastReadIsOpenPriorityOrSeparator = false;
                     return symbol;
                 }
             }
@@ -393,9 +404,11 @@ UnivarExprTreeStringFactory<NumericType>::nextSymbol(
             Symbol symbol;
             symbol.type= UnivarExprTreeNode<NumericType>::SymbolType::OPERATOR;
             symbol.str = symstr;
+            lastReadIsOpenPriorityOrSeparator = false;
             return symbol;
         }
         // Handle general case as a function
+        lastReadIsOpenPriorityOrSeparator = false;
         return craftFunSymbol(symstr);
     }
 
@@ -407,6 +420,7 @@ UnivarExprTreeStringFactory<NumericType>::nextSymbol(
             symbol.type =
                 UnivarExprTreeNode<NumericType>::SymbolType::VARIABLE;
             symbol.str = "-t";
+            lastReadIsOpenPriorityOrSeparator = false;
             return symbol;
         }
         if( (!std::isdigit(c1)) && c1 != '.'){
@@ -418,9 +432,11 @@ UnivarExprTreeStringFactory<NumericType>::nextSymbol(
         }
         Symbol symbol = craftNumSymbol(expr.substr(1));
         symbol.str = "-" + symbol.str;
+        lastReadIsOpenPriorityOrSeparator = false;
         return symbol;
     }
     else if(c0 == '.' || std::isdigit(c0)){  // Handle non-negative numbers
+        lastReadIsOpenPriorityOrSeparator = false;
         return craftNumSymbol(expr);
     }
 
@@ -429,6 +445,28 @@ UnivarExprTreeStringFactory<NumericType>::nextSymbol(
     ss  << "UnivarExprTreeStringFactory::nextSymbol cannot handle expression: "
         << "\"" << expr << "\"";
     throw HeliosException(ss.str());
+}
+
+template <typename NumericType> std::string
+UnivarExprTreeStringFactory<NumericType>::prepareExpressionString(
+    std::string const &expr
+){
+    // Clean expression
+    std::string prep = cleanExpressionString(expr);
+
+    // Replace (-( by (-1*(
+    std::size_t pos;
+    while( (pos = prep.find("(-(")) != std::string::npos ){
+        prep.replace(pos, 3, "(-1*(");
+    }
+
+    // Replace by -1* if starts with -(
+    if(prep.substr(0, 2) == "-("){
+        prep = "-1*"+prep.substr(1);
+    }
+
+    // Return prepared expression string
+    return prep;
 }
 
 template <typename NumericType> std::string

@@ -94,11 +94,22 @@ public:
      */
     unsigned int numNodes = 0; // TODO Remove : If not used
     /**
+     * @brief The number of non-function elements in the stack of nodes at
+     *  current state
+     * @see UnivarExprTreeStringFactory::nodes
+     */
+    unsigned int numNonFunctionNodes = 0; // TODO Remove : If not used
+    /**
      * @brief The number of non parentheses operators in ops stack at current
      *  state
      * @see UnivarExprTreeStringFactory::ops
      */
     unsigned int numNonParenthesesOps = 0; // TODO Remove : If not used
+    /**
+     * @brief True when the last read has been a priority operator or a
+     *  separator, false otherwise
+     */
+    bool lastReadIsOpenPriorityOrSeparator = false; // TODO Remove : If not used
     /**
      * @brief The nodes at current state (must be used as a stack)
      */
@@ -193,7 +204,7 @@ public:
         else if(symbol.str == "^")
             return basePriority + OP_POW_BASE_PRIORITY;
         else if(symbol.str == "(") return basePriority;
-        else if(symbol.str == "atan2") return basePriority;
+        else if(symbol.str == "atan2") return basePriority + FUN_BASE_PRIORITY;
         else{
             throw HeliosException(
                 "UnivarExprTreeStringFactory::calcOpPriority received an "
@@ -239,9 +250,26 @@ public:
      */
     Symbol nextSymbol(std::string const &expr);
     /**
-     * @brief Clean the expression string from unnecessary characters
+     * @brief Prepare the expression string so it can be digested by an
+     *  iterative make process.
+     *
+     * This method implies invoking
+     *  UnivarExprTreeStringFactory::cleanExpressionString always.
+     *
+     * @param expr The expression string to be prepared
+     * @return Prepared expression, ready for an iterative make process
+     * @see UnivarExprTreeStringFactory::cleanExpressionString
+     */
+    std::string prepareExpressionString(std::string const &expr);
+    /**
+     * @brief Clean the expression string from unnecessary characters.
+     *
+     * This method is also invoked when
+     *  UnivarExprTreeStringFactory::prepareExpressionString is invoked.
+     *
      * @param expr The expression string to be cleaned
      * @return Cleaned expression
+     * @see UnivarExprTreeStringFactory::prepareEpresssionString
      */
     std::string cleanExpressionString(std::string const &expr);
     /**

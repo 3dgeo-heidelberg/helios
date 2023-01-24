@@ -68,6 +68,22 @@ public:
         }
         return true;
     }
+    /**
+     * @brief Validate \f$f(t) = g(t)\f$
+     * @return True if the test is passed, false otherwise
+     */
+    template <typename InputType, typename OutputType>
+    bool validate(
+        std::shared_ptr<IExprTreeNode<InputType, OutputType>> f,
+        std::shared_ptr<IExprTreeNode<InputType, OutputType>> g,
+        std::vector<InputType> const &t
+    ){
+        for(double const &ti : t){
+            double const absDiff = std::abs(f->eval(ti)-g->eval(ti));
+            if(absDiff > eps) return false;
+        }
+        return true;
+    }
 };
 
 // ***  R U N  *** //
@@ -82,17 +98,19 @@ bool ExprTreeTest::run(){
 // ***  SUB-TESTS  *** //
 // ******************* //
 bool ExprTreeTest::testUnivarExprTree(){
-    // Prepare factory
+    // Prepare tests
     UnivarExprTreeStringFactory<double> uetsf;
-
-    // Test case 1: 1+(t-1)^2
-    std::shared_ptr<IExprTreeNode<double, double>> node = uetsf.makeShared(
-        "1+(t-1)^2"
-    );
-    std::vector<double> t({
+    std::shared_ptr<IExprTreeNode<double, double>> node;
+    std::shared_ptr<IExprTreeNode<double, double>> node2;
+    std::vector<double> t({ // Input domain for all cases
         -10, -3.14, -2.72, -1.1, -0.34, 0, 0.34, 1.1, 2.72, 3.14, 10
     });
-    std::vector<double> y({
+    std::vector<double> y; // Expected output (distinct for each case)
+
+
+    // Test case 1: 1+(t-1)^2
+    node = uetsf.makeShared("1+(t-1)^2");
+    y = std::vector<double>({
         122.00000000,  18.13960000,  14.83840000,   5.41000000,
         2.79560000,   2.00000000,   1.43560000,   1.01000000,
         3.95840000,   5.57960000,  82.00000000
@@ -253,13 +271,8 @@ bool ExprTreeTest::testUnivarExprTree(){
 
     // Test case 20: t-(-t) = 2*t
     node = uetsf.makeShared("t-(-t)");
-    std::shared_ptr<IExprTreeNode<double, double>> node2 = uetsf.makeShared(
-        "2*t"
-    );
-    for(double const &ti : t){
-        double const absDiff = std::abs(node->eval(ti)-node2->eval(ti));
-        if(absDiff > eps) return false;
-    }
+    node2 = uetsf.makeShared("2*t");
+    if(!validate<double, double>(node, node2, t)) return false;
 
     // Test case 21: t+(1)
     node = uetsf.makeShared("t+(1)");
@@ -293,17 +306,102 @@ bool ExprTreeTest::testUnivarExprTree(){
     y = std::vector<double>({0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0});
     if(!validate<double, double>(node, t, y)) return false;
 
-    // Test case 26: abs(t)
-    // TODO Rethink: Implement
+    // Test case 26: abs(t) = abs(-t) = abs(-1*t)
+    node = uetsf.makeShared("abs(t)");
+    node2 = uetsf.makeShared("abs(-t)");
+    if(!validate<double, double>(node, node2, t)) return false;
+    node = uetsf.makeShared("abs(-1*t)");
+    if(!validate<double, double>(node, node2, t)) return false;
 
-    // Test case 27: 1+atan2(3*t-1, 1)
-    // TODO Rethink: Implement
+    // Test case 27: abs(-t) - abs(-1*t) + abs(t) - abs(-2*t+(t))
+    node = uetsf.makeShared("abs(-t) - abs(-1*t) + abs(t) - abs(-2*t+(t))");
+    y = std::vector<double>({0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0});
+    if(!validate<double, double>(node, t, y)) return false;
 
-    // Test case 28: 1+atan2(3*t-1, (t-1)*2)
-    // TODO Rethink: Implement
+    // Test case 28: 1+atan2(3*t-1, 1)
+    node = uetsf.makeShared("1 + atan2(3*t-1, 1)");
+    y = std::vector<double>({
+        -0.53854944, -0.47512005, -0.46205665, -0.34229969, -0.11111695,
+         0.21460184,  1.01999733,  2.16066899,  2.43202915,  2.4525852 ,
+         2.53632723
+    });
+    if(!validate<double, double>(node, t, y)) return false;
 
-    // Test case 29: t+(-(t-1)) = t+(-(-1+t))
-    // TODO Rethink: Implement
+    // Test case 29: 1+atan2(3*t-1, (t-1)*2)
+    node = uetsf.makeShared("1+atan2(3*t-1, (t-1)*2)");
+    y = std::vector<double>({
+        -1.18798772, -1.24225167, -1.25294846, -1.34443033, -1.49570776,
+        -1.67794504,  4.1264423 ,  2.48405799,  2.12291318,  2.10052003,
+        2.01530259
+    });
+    if(!validate<double, double>(node, t, y)) return false;
+
+    // Test case 30: t*atan2(-1, -t)
+    node = uetsf.makeShared("t*atan2(-1, -t)");
+    y = std::vector<double>({
+        0.99668652,   0.96811118,   0.95827973,   0.81159657,
+        0.42263966,  -0.        ,  -0.64550184,  -2.64415535,
+        -7.58685229,  -8.89648975, -30.41924001
+    });
+    if(!validate<double, double>(node, t, y)) return false;
+
+    // Test case 31: t+(-(t-1)) = t+(-(-1+t))
+    node = uetsf.makeShared("t+(-(t-1))");
+    node2 = uetsf.makeShared("t+(-(-1+t))");
+    if(!validate<double, double>(node, node2, t)) return false;
+
+    // Test case 32: -(t-1)*(t^2-2*t)/10^3
+    node = uetsf.makeShared("-(t-1)*(t^2-2*t)/10^3");
+    y = std::vector<double>({
+        1.3200000e+00,  6.6817944e-02,  4.7758848e-02,  7.1610000e-03,
+        1.0661040e-03,  0.0000000e+00, -3.7250400e-04,  9.9000000e-05,
+        -3.3684480e-03, -7.6603440e-03, -7.2000000e-01
+    });
+    if(!validate<double, double>(node, t, y)) return false;
+
+    // Test case 33: -(-1)*(t^2-2*t)/10^3
+    node = uetsf.makeShared("-(-1)*(t^2-2*t)/10^3");
+    y = std::vector<double>({
+        0.12     ,  0.0161396,  0.0128384,  0.00341  ,  0.0007956,
+        0.       , -0.0005644, -0.00099  ,  0.0019584,  0.0035796,
+        0.08
+    });
+    if(!validate<double, double>(node, t, y)) return false;
+
+    // Test case 34:
+    // (1000+((1-(1+sin(1/2+3*pi/3*t))*(2+t))*abs(t)^(2-1/2)))^(3/2)
+    node = uetsf.makeShared(
+        "(1000+((1-(1+sin(1/2+3*pi/3*t))*(2+t))*abs(t)^(2-1/2)))^(3/2)"
+    );
+    y = std::vector<double>({
+        52714.18945957, 32171.06013344, 31838.59857288, 31637.35056204,
+        31624.96953355, 31622.77660168, 31588.17650985, 31631.21333073,
+        30466.17238908, 31625.49824345, 10196.5206164
+    });
+    if(!validate<double, double>(node, t, y)) return false;
+
+    // Test case 35: cos(3*t+sin(1+t)-5*(10+tan(t))^(2*sqrt(abs(t))))
+    node = uetsf.makeShared(
+        "cos(3*t+sin(1+t)-5*(10+tan(t))^(2*sqrt(abs(t))))"
+    );
+    y = std::vector<double>({
+        0.91282919,  0.97082196,  0.90930816, -0.9976885 , -0.01534952,
+        -0.52597404,  0.49827694, -0.99743291,  0.3236059 ,  0.7942002 ,
+        -0.98567806
+    });
+    if(!validate<double, double>(node, t, y)) return false;
+
+    // Test case 36:
+    // cos(3*t+atan2(t,1)-5*atan2(1/1+1-1,t/t*t)^(2*sqrt(abs(t))))
+    node = uetsf.makeShared(
+        "cos(3*t+atan2(t,1)-5*atan2(1/1+1-1,t/t*t)^(2*sqrt(abs(t))))"
+    );
+    y = std::vector<double>({
+        -0.45058035, -0.83062706,  0.94696144, -0.49875059,  0.79075789,
+        0.28366219,  0.37464262,  0.0799824 , -0.9787685 , -0.38051728,
+        0.99847693
+    });
+    if(!validate<double, double>(node, t, y)) return false;
 
 
 
