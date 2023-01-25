@@ -117,7 +117,6 @@ bool ExprTreeTest::testUnivarExprTree(){
     });
     if(!validate<double, double>(node, t, y)) return false;
 
-    // TODO Restore : Commented tests below
     // Test case 2: exp(t)+3*cos(1+2*t)
     node = uetsf.makeShared("exp(t)+3*cos(1+2*t)");
     y = std::vector<double>({

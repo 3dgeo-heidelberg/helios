@@ -15,7 +15,9 @@
  *  \f$+, -, *, /, \textrm{^}\f$. Supported constants are \f$e, \pi\f$.
  *  Supported functions are \f$\exp, \ln, \mathrm{sqrt}, \mathrm{abs}, \f$
  *  \f$\cos, \sin, \tan, \mathrm{acos}, \mathrm{asin}, \mathrm{atan}, \f$
- *  \f$\mathrm{atan2}, \cosh, \sinh, \tanh\f$.
+ *  \f$\mathrm{atan2}, \cosh, \sinh, \tanh\f$. However since \f$atan2\f$ is a
+ *  bivariate function, it is internally considered as an operator due to an
+ *  implementation trick.
  *
  * @tparam NumericType The numeric type to be used by the univariate
  *  expression tree. It must be contained or equal to the reals (

@@ -22,7 +22,36 @@
  *
  * Postfix expression example: \f$a b +\f$
  *
- * // TODO Rethink : Document logical rules for infix parsing algorithm
+ * The core implementation of the expression tree is based on two sets of
+ *  logical rules that specify how push and pop operations must be handled.
+ *
+ * First, when one of the the following logical rules is satisfied, the
+ *  algorithm must stop reading and do the corresponding operations to push
+ *  new trees built from popped operators and trees.
+ *
+ * <ol>
+ *  <li>Reading a closing priority operator (e.g., ')')</li>
+ *  <li>Reading an operator whose priority is less than or equal to the
+ *  priority of the operator at the top of the stack of operators</li>
+ *  <li>End of reading</li>
+ * </ol>
+ *
+ * Second, when push and pop operations are triggered, they must stop depending
+ *  on why they have been triggered.
+ *
+ * <ol>
+ *  <li>If ')' has been read, then all the elements in the stack of operators
+ *      must be pop until the corresponding '(' has been reached (inclusive).
+ *  </li>
+ *  <li>If an operator with priority less than or equal to the priority of the
+ *   operator in the top of the stack has been read, then all the operators
+ *   in the stack with a priority greater than or equal to read operator must
+ *   be popped.
+ *   <li>If reading has finished, then all the operators in the stack must be
+ *   consumed and consequently there must be a single tree in the stack of
+ *   nodes/trees (otherwise the generated expression try will be inconsistent).
+ *   </li>
+ * </ol>
  *
  * @tparam NumericType The numeric type of expression trees to be built by
  *  the factory
@@ -89,27 +118,10 @@ public:
      */
     unsigned int basePriority = 0;
     /**
-     * @brief The number of elements in the stack of nodes at current state
-     * @see UnivarExprTreeStringFactory::nodes
-     */
-    unsigned int numNodes = 0; // TODO Remove : If not used
-    /**
-     * @brief The number of non-function elements in the stack of nodes at
-     *  current state
-     * @see UnivarExprTreeStringFactory::nodes
-     */
-    unsigned int numNonFunctionNodes = 0; // TODO Remove : If not used
-    /**
-     * @brief The number of non parentheses operators in ops stack at current
-     *  state
-     * @see UnivarExprTreeStringFactory::ops
-     */
-    unsigned int numNonParenthesesOps = 0; // TODO Remove : If not used
-    /**
      * @brief True when the last read has been a priority operator or a
      *  separator, false otherwise
      */
-    bool lastReadIsOpenPriorityOrSeparator = false; // TODO Remove : If not used
+    bool lastReadIsOpenPriorityOrSeparator = false;
     /**
      * @brief The nodes at current state (must be used as a stack)
      */

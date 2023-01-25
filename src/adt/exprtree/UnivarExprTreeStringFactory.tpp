@@ -1,7 +1,6 @@
 #include <UnivarExprTreeStringFactory.h>
 
 #include <sstream>
-#include <iostream>  // TODO Remove
 
 // ***  CONSTANTS  *** //
 // ******************* //
@@ -44,9 +43,9 @@ template <typename NumericType> IExprTreeNode<NumericType, NumericType> *
 UnivarExprTreeStringFactory<NumericType>::make(std::string const &expr){
     // Initialize building process
     basePriority = 0;
-    numNodes = 0;
-    numNonParenthesesOps = 0;
+    lastReadIsOpenPriorityOrSeparator = false;
     nodes.clear();
+    ops.clear();
 
     // Do iterative building
     return makeIterative(prepareExpressionString(expr));
@@ -64,17 +63,9 @@ UnivarExprTreeStringFactory<NumericType>::makeIterative(
     // Iterate over input expression until it has been entirely digested
     std::string subexpr(expr);
     while(!subexpr.empty()){
-        // TODO Remove : Debug section ---
-        std::cout   << "CURRENT SUB-EXPRESSION: \"" << subexpr << "\""
-                    << std::endl;
-        // --- TODO Remove : Debug section
         // Obtain next symbol (tokenization)
         Symbol symbol = nextSymbol(subexpr);
         if(subexpr[0] == ',') subexpr = subexpr.substr(1); // Skip separator
-        // TODO Remove : Debug section ---
-        std::cout   << "CURRENT SYMBOL: \"" << symbol.str << "\""
-                    << std::endl;
-        // --- TODO Remove : Debug section
 
         // Handle symbol depending on type
         switch(symbol.type){
@@ -171,7 +162,6 @@ void UnivarExprTreeStringFactory<NumericType>::flush(){
             <<  "operator: \"" << symbol.str << "\"";
         throw HeliosException(ss.str());
     }
-    if(symbol.str != "(") --numNonParenthesesOps;
     ops.pop_back();
 
     if(symbol.str == "("){ // Handle new tree building when top operator is (
@@ -202,9 +192,6 @@ void UnivarExprTreeStringFactory<NumericType>::flush(){
         newNode->setOperator(symbol.str);
         nodes.push_back(newNode);
     }
-
-    // TODO Rethink : Recursive flush here, if necessary
-    // TODO Rethink : Recursion only for ops with >= priority
 }
 
 
@@ -216,26 +203,11 @@ template <typename NumericType>
 void UnivarExprTreeStringFactory<NumericType>::handleOp(
     UnivarExprTreeStringFactory<NumericType>::Symbol const &symbol
 ){
-    // TODO Rethink : Implement handle operator symbol
-    // TODO Rethink : Must update priority here
     if(symbol.str == ")"){ // On close priority / function close operator
         while(ops.back().str != "(") flush();
         flush();
     }
     else if(symbol.str == "("){ // On open priority / function open operator
-        // TODO Remove : Commented code below if not needed
-        /*if(ops.back().str == "atan2"){  // On open atan2
-
-        }
-        else if(  // On open function
-            ops.back().str != "(" &&
-            nodes.back()->symbolType ==
-                UnivarExprTreeNode<NumericType>::SymbolType::FUNCTION
-        ){
-
-        }
-        else{  // On open priority operator
-        }*/
         ops.push_back(symbol);
         basePriority = calcOpenBracketPriority();
     }
@@ -245,7 +217,6 @@ void UnivarExprTreeStringFactory<NumericType>::handleOp(
         while((!ops.empty()) && calcOpPriority(ops.back()) >= opPriority)
             flush();
         ops.push_back(symbol); // Push handled operator priority
-        ++numNonParenthesesOps;
     }
 }
 
@@ -253,9 +224,6 @@ template <typename NumericType>
 void UnivarExprTreeStringFactory<NumericType>::handleFun(
     UnivarExprTreeStringFactory<NumericType>::Symbol const &symbol
 ){
-    // TODO Rethink : Implement handle function symbol
-    // TODO Rethink : What about functions and priority?
-    // TODO Rethink : If priority update required for functions, must be here
     UnivarExprTreeNode<NumericType> *node =
         new UnivarExprTreeNode<NumericType>();
     node->symbolType = UnivarExprTreeNode<NumericType>::SymbolType::FUNCTION;
@@ -300,8 +268,7 @@ UnivarExprTreeStringFactory<NumericType>::nextSymbol(
 ){
     // Flush until start ( of atan2 and skip first character if it is a comma
     if(expr[0] == ','){
-        //while(ops.back().str == "(") flush(); // TODO Rethink : Whats wrong with this?
-        while(ops.back().str != "(") flush(); // TODO Rethink : Does this work?
+        while(ops.back().str != "(") flush();
         lastReadIsOpenPriorityOrSeparator = true;
         return nextSymbol(expr.substr(1));
     }
@@ -320,14 +287,8 @@ UnivarExprTreeStringFactory<NumericType>::nextSymbol(
         // Negative number if starts by - and [stacks are empty or (top op
         // is open parenthesis and num nodes < num non parenthesis ops)]
         bool const negativeNumber = c0 == '-' && (
-            (nodes.empty() && ops.empty()) ||
-            lastReadIsOpenPriorityOrSeparator // TODO Remove if doesnt work
-            // TODO Restore below if above doesnt work
-            /*(!ops.empty() && ops.back().str == "(" && (
-                nodes.size() <= numNonParenthesesOps || nodes.size() == 0
-            ))*/
-        ); // TODO Rethink : Simplify this if?
-        // TODO Rethink : numNonParenthesesOps and numNodes are not updated
+            (nodes.empty() && ops.empty()) || lastReadIsOpenPriorityOrSeparator
+        );
         if(!negativeNumber) { // Handle if operator, skip if negative number
             Symbol symbol;
             symbol.type =
