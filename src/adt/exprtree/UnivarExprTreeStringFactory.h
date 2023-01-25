@@ -181,6 +181,15 @@ public:
      */
     virtual void flush();
 
+    // ***  POST-PROCESS METHODS  *** //
+    // ****************************** //
+    /**
+     * @brief Transform all POW nodes that are either the given node or a child
+     *  of it into IPOW nodes
+     * @param node Node to be optimized by using IPOW whenever possible
+     */
+    void doIPowOptimization(UnivarExprTreeNode<NumericType> *node);
+
     // ***  HANDLE METHODS  *** //
     // ************************ //
     /**

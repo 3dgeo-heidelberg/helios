@@ -3,6 +3,7 @@
 #include <BaseTest.h>
 #include <adt/exprtree/UnivarExprTreeNode.h>
 #include <adt/exprtree/UnivarExprTreeStringFactory.h>
+#include <adt/bintree/BinaryTreeFastDepthIterator.h>
 
 #include <memory>
 #include <vector>
@@ -83,6 +84,46 @@ public:
             if(absDiff > eps) return false;
         }
         return true;
+    }
+    /**
+     * @brief Validate given tree as UnivarExprTreeNode contains exactly
+     *  as many POW and IPOW nodes as specified
+     * @return True if the test is passed, false otherwise
+     */
+    template <typename NumericType>
+    bool validatePowIPow(
+        std::shared_ptr<UnivarExprTreeNode<NumericType>> f,
+        size_t const expectedPowCount,
+        size_t const expectedIPowCount
+    ){
+        size_t powCount = 0, ipowCount = 0;
+        BinaryTreeFastDepthIterator<UnivarExprTreeNode<NumericType>> btdi(
+            f.get()
+        );
+        while(btdi.hasNext()){
+            UnivarExprTreeNode<NumericType> *node = btdi.next();
+            if(!node->isOperator()) continue; // Ignore non-operator nodes
+            if(node->op == node->OP_POW) ++powCount;
+            if(node->op == node->OP_IPOW) ++ipowCount;
+        }
+        return powCount == expectedPowCount && ipowCount == expectedIPowCount;
+    }
+    /**
+     * @brief Wrapper for validatePowIPow method providing automatic pointer
+     *  casting.
+     * @see ExprTreeTest::validatePowIPow
+     */
+    template <typename NumericType>
+    bool validatePowIPow(
+        std::shared_ptr<IExprTreeNode<NumericType, NumericType>> f,
+        size_t const expectedPowCount,
+        size_t const expectedIPowCount
+    ){
+        return validatePowIPow(
+            std::static_pointer_cast<UnivarExprTreeNode<NumericType>>(f),
+            expectedPowCount,
+            expectedIPowCount
+        );
     }
 };
 
@@ -402,7 +443,35 @@ bool ExprTreeTest::testUnivarExprTree(){
     });
     if(!validate<double, double>(node, t, y)) return false;
 
+    // Test case 37: (t+10)^2-(t+10)^3
+    node = uetsf.makeShared("(t+10)^2-(t+10)^3");
+    y = std::vector<double>({
+        0.          ,  -275.769256,  -332.829952,  -625.759,
+        -808.113096 ,  -900.      ,  -998.591704, -1244.421,
+        -1896.277248, -2096.087544, -7600.
+    });
+    if(!validate<double, double>(node, t, y)) return false;
+    if(!validatePowIPow<double>(node, 0, 2)) return false;
 
+    // Test case 38: (t+10)^2.0000001
+    node = uetsf.makeShared("(t+10)^2.0000001");
+    y = std::vector<double>({
+        0.        ,  47.05960906,  52.99841052,  79.21001732,
+        93.31562116, 100.00002303, 106.91562498, 123.21002966,
+        161.79844115, 172.65964447, 400.00011983
+    });
+    if(!validate<double, double>(node, t, y)) return false;
+    if(!validatePowIPow<double>(node, 1, 0)) return false;
+
+    // Test case 39: (t+10)^2.0000001-(t+10)^2
+    node = uetsf.makeShared("1000*((t+10)^2.0000001-(t+10)^2)");
+    y = std::vector<double>({
+        0.        , 0.0090623 , 0.01052088, 0.01731571, 0.02116392,
+        0.02302585, 0.0249757 , 0.02965597, 0.04114818, 0.04447127,
+        0.11982931
+    });
+    if(!validate<double, double>(node, t, y)) return false;
+    if(!validatePowIPow<double>(node, 1, 1)) return false;
 
     // On test passed
     return true;

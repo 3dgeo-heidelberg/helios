@@ -1,4 +1,5 @@
 #include <UnivarExprTreeStringFactory.h>
+#include <adt/bintree/BinaryTreeFastDepthIterator.h>
 
 #include <sstream>
 
@@ -145,7 +146,7 @@ UnivarExprTreeStringFactory<NumericType>::makeIterative(
     UnivarExprTreeNode<NumericType> * tree = nodes[0];
 
     // Optimize the built Univariate Expression Tree
-    // TODO Rethink : Implement IPOW optimization (auto-convert IPOW-like nodes)
+    doIPowOptimization(tree);
 
     // Return built Univariate Expression Tree
     return (IExprTreeNode<NumericType, NumericType> *) tree;
@@ -191,6 +192,30 @@ void UnivarExprTreeStringFactory<NumericType>::flush(){
             UnivarExprTreeNode<NumericType>::SymbolType::OPERATOR;
         newNode->setOperator(symbol.str);
         nodes.push_back(newNode);
+    }
+}
+
+
+
+
+// ***  POST-PROCESS METHODS  *** //
+// ****************************** //
+template <typename NumericType>
+void UnivarExprTreeStringFactory<NumericType>::doIPowOptimization(
+    UnivarExprTreeNode<NumericType> *_node
+){
+    BinaryTreeFastDepthIterator<UnivarExprTreeNode<NumericType>> btdi(_node);
+    while(btdi.hasNext()){
+        UnivarExprTreeNode<NumericType> *node = btdi.next();
+        if(!node->isOperator()) continue; // Ignore non-operator nodes
+        if(node->op != node->OP_POW) continue; // Ignore non-POW operators
+        if(!node->right->isNumber()) continue; // Ignore if non-number exponent
+        // Check whether exponent is integer or not
+        NumericType dnum = node->right->num; // Decimal number
+        NumericType inum = (int) dnum;
+        NumericType dinum = (double) inum;
+        if(dnum != dinum) continue; // Ignore if non-integer exponent
+        node->op = node->OP_IPOW; // Make IPOW operator
     }
 }
 

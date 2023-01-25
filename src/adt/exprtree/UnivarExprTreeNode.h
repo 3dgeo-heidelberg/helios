@@ -147,7 +147,9 @@ public:
             case OP_IPOW: {
                 NumericType out = x;
                 int const n = (int) y;
-                for (int i = 1; i < n; ++i) out *= x;
+                int const nAbs = std::abs(n);
+                for (int i = 1; i < nAbs; ++i) out *= x;
+                if(n < 0) return 1.0/out;
                 return out;
             }
             case OP_atan2:  return std::atan2(x, y);
