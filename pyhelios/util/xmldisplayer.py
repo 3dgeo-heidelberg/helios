@@ -4,7 +4,8 @@ import os
 
 
 def display_xml(path, item=None):
-    root = ET.parse(path)
+    parser = ET.XMLParser(target = ET.TreeBuilder(insert_comments=True))
+    root = ET.parse(path, parser=parser)
     tree = root.getroot()
     # ET.indent(tree)
     if item is None:

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+    <survey name="tls_toyblocks_livox" scene="data/scenes/demo/box_scene.xml#box_scene"
+            platform="data/platforms.xml#simple_linearpath"
+            scanner="data/scanners_tls.xml#livox_mid-70">
+        
+        <!--<scannerMount x="0" y="0" z="2.0">
+        </scannerMount>-->
+
+        <FWFSettings binSize_ns="0.2" beamSampleQuality="3" />
+
+        <leg>
+        <!-- minimal leg 1: 0.01 m with speed of 0.05 m/s = 0.2 s integration time;
+		     decrease movePerSec_m for longer integration time -->
+            <platformSettings x="-10.01" y="-15.0" z="0.0"
+                            movePerSec_m="0.05"
+                            />
+            <scannerSettings  active="true"
+                            scanAngle_deg = "35"
+                            pulseFreq_hz="100000"
+                            headRotatePerSec_deg="0"
+                              trajectoryTimeInterval_s="0.01"
+                            />
+        </leg>
+        <leg>
+            <platformSettings x="-10.0" y="-15.0" z="0.0"
+                            movePerSec_m="0.05"
+                            />
+            <scannerSettings  active="false"
+                            scanAngle_deg = "35"
+                            pulseFreq_hz="100000"
+                            headRotatePerSec_deg="0"
+                              />
+        </leg>
+        
+        <leg>
+        <!-- minimal leg 2: 0.01 m with speed of 0.01 m/s = 1 s integration time;
+		     decrease movePerSec_m for longer integration time -->
+            <platformSettings x="-10.01" y="-15.0" z="0.0"
+                            movePerSec_m="0.01"
+                            />
+            <scannerSettings  active="true"
+                            scanAngle_deg = "35"
+                            pulseFreq_hz="100000"
+                            headRotatePerSec_deg="0"
+                              trajectoryTimeInterval_s="0.01"
+                            />
+        </leg>
+        <leg>
+            <platformSettings x="-10.0" y="-15.0" z="0.0"
+                            movePerSec_m="0.01"
+                            />
+            <scannerSettings  active="false"
+                            scanAngle_deg = "35"
+                            pulseFreq_hz="100000"
+                            headRotatePerSec_deg="0"
+                              />
+        </leg>
+        
+        <leg>
+        <!-- minimal leg 3: 0.01 m with speed of 0.005 m/s = 2 s integration time;
+		     decrease movePerSec_m for longer integration time -->
+            <platformSettings x="-10.01" y="-15.0" z="0.0"
+                            movePerSec_m="0.005"
+                            />
+            <scannerSettings  active="true"
+                            scanAngle_deg = "35"
+                            pulseFreq_hz="100000"
+                            headRotatePerSec_deg="0"
+                              trajectoryTimeInterval_s="0.01"
+                            />
+        </leg>
+        <leg>
+            <platformSettings x="-10.0" y="-15.0" z="0.0"
+                            movePerSec_m="0.005"
+                            />
+            <scannerSettings  active="false"
+                            scanAngle_deg = "35"
+                            pulseFreq_hz="100000"
+                            headRotatePerSec_deg="0"
+                              />
+        </leg>
+
+        
+    </survey>
+</document>
