@@ -47,7 +47,7 @@
                 <xs:element name="platform" maxOccurs="unbounded" minOccurs="1">
                     <xs:complexType>
                         <xs:sequence>
-                            <xs:element name="scannerMount">
+                            <xs:element name="scannerMount" minOccurs="0">
                                 <xs:complexType mixed="true">
                                     <xs:sequence>
                                         <xs:element name="rot" maxOccurs="unbounded" minOccurs="0">
