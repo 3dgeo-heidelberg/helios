@@ -1,3 +1,5 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$da/dfd/classPulseTaskFactory.html" title="Factory to make the adequate pulse task depending on the simulation." alt="" coords="5,5,132,32"/>
+<area shape="rect" id="node1" href="$d3/d1a/classPulse.html" title="Class representing a laser pulse." alt="" coords="5,5,60,32"/>
+<area shape="rect" id="node2" href="$d9/d2b/classTimedPulse.html" title="Class representing a time aware laser pulse." alt="" coords="108,5,199,32"/>
+<area shape="rect" id="node3" href="$d1/d81/classSimulatedPulse.html" title="Class representing a simulated laser pulse." alt="" coords="247,5,360,32"/>
 </map>

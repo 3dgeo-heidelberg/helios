@@ -115,9 +115,9 @@ Inheritance diagram for AbstractDetector:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a8745332e83cbbe5fafebeafa5544a01c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d6b/classAbstractDetector.html#a8745332e83cbbe5fafebeafa5544a01c">AbstractDetector</a> (std::shared_ptr&lt; <a class="el" href="../../dc/d42/classScanner.html">Scanner</a> &gt; <a class="el" href="../../d8/d6b/classAbstractDetector.html#a512ee25b5ab6b8bff4e87eaba5e1996f">scanner</a>, double accuracy_m, double rangeMin_m, double rangeMax_m=std::numeric_limits&lt; double &gt;::max())</td></tr>
-<tr class="memdesc:a8745332e83cbbe5fafebeafa5544a01c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Base constructor for abstract detector.  <a href="../../d8/d6b/classAbstractDetector.html#a8745332e83cbbe5fafebeafa5544a01c">More...</a><br /></td></tr>
-<tr class="separator:a8745332e83cbbe5fafebeafa5544a01c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0ee97bcde40220690d6419aab964f6f9"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d6b/classAbstractDetector.html#a0ee97bcde40220690d6419aab964f6f9">AbstractDetector</a> (std::shared_ptr&lt; <a class="el" href="../../dc/d42/classScanner.html">Scanner</a> &gt; <a class="el" href="../../d8/d6b/classAbstractDetector.html#a512ee25b5ab6b8bff4e87eaba5e1996f">scanner</a>, double accuracy_m, double rangeMin_m, double rangeMax_m=std::numeric_limits&lt; double &gt;::max(), std::shared_ptr&lt; <a class="el" href="../../d7/d02/classUnivarExprTreeNode.html">UnivarExprTreeNode</a>&lt; double &gt;&gt; errorDistanceExpr=nullptr)</td></tr>
+<tr class="memdesc:a0ee97bcde40220690d6419aab964f6f9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Base constructor for abstract detector.  <a href="../../d8/d6b/classAbstractDetector.html#a0ee97bcde40220690d6419aab964f6f9">More...</a><br /></td></tr>
+<tr class="separator:a0ee97bcde40220690d6419aab964f6f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4a24217d4e34ad86ce1ee0cd2a2dea7f"><td class="memItemLeft" align="right" valign="top"><a id="a4a24217d4e34ad86ce1ee0cd2a2dea7f"></a>
 virtual std::shared_ptr&lt; <a class="el" href="../../d8/d6b/classAbstractDetector.html">AbstractDetector</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>clone</b> ()=0</td></tr>
 <tr class="separator:a4a24217d4e34ad86ce1ee0cd2a2dea7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -173,6 +173,9 @@ double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="..
 double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d6b/classAbstractDetector.html#ad9b1d8aa37cb255f3af99d023e7825ea">cfg_device_rangeMax_m</a></td></tr>
 <tr class="memdesc:ad9b1d8aa37cb255f3af99d023e7825ea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maximum range for detector in meters. <br /></td></tr>
 <tr class="separator:ad9b1d8aa37cb255f3af99d023e7825ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a72428c260e79118df624570078c0c481"><td class="memItemLeft" align="right" valign="top"><a id="a72428c260e79118df624570078c0c481"></a>
+std::shared_ptr&lt; <a class="el" href="../../d7/d02/classUnivarExprTreeNode.html">UnivarExprTreeNode</a>&lt; double &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>errorDistanceExpr</b> =nullptr</td></tr>
+<tr class="separator:a72428c260e79118df624570078c0c481"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
@@ -184,8 +187,8 @@ std::shared_ptr&lt; <a class="el" href="../../db/daa/classhelios_1_1filems_1_1FM
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Base abstract class for detectors. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a8745332e83cbbe5fafebeafa5544a01c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8745332e83cbbe5fafebeafa5544a01c">&#9670;&nbsp;</a></span>AbstractDetector()</h2>
+<a id="a0ee97bcde40220690d6419aab964f6f9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0ee97bcde40220690d6419aab964f6f9">&#9670;&nbsp;</a></span>AbstractDetector()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -215,7 +218,13 @@ std::shared_ptr&lt; <a class="el" href="../../db/daa/classhelios_1_1filems_1_1FM
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>rangeMax_m</em> = <code>std::numeric_limits&lt;double&gt;::max()</code>&#160;</td>
+          <td class="paramname"><em>rangeMax_m</em> = <code>std::numeric_limits&lt;double&gt;::max()</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::shared_ptr&lt; <a class="el" href="../../d7/d02/classUnivarExprTreeNode.html">UnivarExprTreeNode</a>&lt; double &gt;&gt;&#160;</td>
+          <td class="paramname"><em>errorDistanceExpr</em> = <code>nullptr</code>&#160;</td>
         </tr>
         <tr>
           <td></td>

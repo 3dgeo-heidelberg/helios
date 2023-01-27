@@ -20,7 +20,11 @@ class PulseThreadPool :
     >,
     public PulseThreadPoolInterface
 {
+#ifdef DATA_ANALYTICS
+public:
+#else
 protected:
+#endif
     // ***  ATTRIBUTES  *** //
     // ******************** //
     /**

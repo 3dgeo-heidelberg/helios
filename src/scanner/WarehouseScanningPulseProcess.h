@@ -16,7 +16,11 @@
  * @see PulseWarehouseThreadPool
  */
 class WarehouseScanningPulseProcess : public ScanningPulseProcess {
+#ifdef DATA_ANALYTICS
+public:
+#else
 protected:
+#endif
     // ***  ATTRIBUTES  *** //
     // ******************** //
     /**

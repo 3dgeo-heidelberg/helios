@@ -75,6 +75,7 @@ var hierarchy =
       [ "HeliosTests::AssetLoadingTest", "d1/dd4/classHeliosTests_1_1AssetLoadingTest.html", null ],
       [ "HeliosTests::DiscreteTimeTest", "d6/d7f/classHeliosTests_1_1DiscreteTimeTest.html", null ],
       [ "HeliosTests::EnergyModelsTest", "d6/d35/classHeliosTests_1_1EnergyModelsTest.html", null ],
+      [ "HeliosTests::ExprTreeTest", "d9/d27/classHeliosTests_1_1ExprTreeTest.html", null ],
       [ "HeliosTests::FluxionumTest", "dd/de0/classHeliosTests_1_1FluxionumTest.html", null ],
       [ "HeliosTests::FunctionalPlatformTest", "d4/dbf/classHeliosTests_1_1FunctionalPlatformTest.html", null ],
       [ "HeliosTests::GroveTest", "d0/d01/classHeliosTests_1_1GroveTest.html", null ],
@@ -201,11 +202,19 @@ var hierarchy =
     [ "HeliosTests::HPCTest_FloatComparator", "d0/df1/structHeliosTests_1_1HPCTest__FloatComparator.html", null ],
     [ "HeliosTests::HPCTest_IntComparator", "d8/d51/structHeliosTests_1_1HPCTest__IntComparator.html", null ],
     [ "IBinaryTreeNode", "d7/d98/classIBinaryTreeNode.html", [
+      [ "IExprTreeNode< NumericType, NumericType >", "dc/d7c/classIExprTreeNode.html", [
+        [ "UnivarExprTreeNode< NumericType >", "d7/d02/classUnivarExprTreeNode.html", null ]
+      ] ],
+      [ "IExprTreeNode< InputType, OutputType >", "dc/d7c/classIExprTreeNode.html", null ],
       [ "LightKDTreeNode", "dd/d79/classLightKDTreeNode.html", [
         [ "KDTreeNode", "d8/d94/classKDTreeNode.html", [
           [ "KDTreeNodeRoot", "d0/d64/classKDTreeNodeRoot.html", null ]
         ] ]
       ] ]
+    ] ],
+    [ "IExprTreeNodeStringFactory< InputType, OutputType >", "d1/d14/classIExprTreeNodeStringFactory.html", null ],
+    [ "IExprTreeNodeStringFactory< NumericType, NumericType >", "d1/d14/classIExprTreeNodeStringFactory.html", [
+      [ "UnivarExprTreeStringFactory< NumericType >", "db/d8f/classUnivarExprTreeStringFactory.html", null ]
     ] ],
     [ "IntersectionHandlingResult", "d1/dc8/classIntersectionHandlingResult.html", null ],
     [ "IterableTreeNode< NodeType >", "de/d22/classIterableTreeNode.html", null ],
@@ -453,6 +462,7 @@ var hierarchy =
       [ "NonVoidStepLoop< StepOutput, StepInput >", "d8/dac/classNonVoidStepLoop.html", null ],
       [ "VoidStepLoop< StepInput >", "dd/d96/classVoidStepLoop.html", null ]
     ] ],
+    [ "UnivarExprTreeStringFactory< NumericType >::Symbol", "df/dcb/structUnivarExprTreeStringFactory_1_1Symbol.html", null ],
     [ "helios::filems::SyncFileMeasurementWriterFactory", "dc/d39/classhelios_1_1filems_1_1SyncFileMeasurementWriterFactory.html", null ],
     [ "helios::filems::SyncFileWriter< WriteArgs >", "da/d4c/classhelios_1_1filems_1_1SyncFileWriter.html", null ],
     [ "helios::filems::SyncFileWriter< WriteArgs ... >", "da/d4c/classhelios_1_1filems_1_1SyncFileWriter.html", [

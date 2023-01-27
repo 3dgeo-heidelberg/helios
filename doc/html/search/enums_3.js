@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['scenetype_6047',['SceneType',['../d3/df0/classSerialSceneWrapper.html#a5a14c0dcc019f5ec058e18af53fe4746',1,'SerialSceneWrapper']]],
-  ['supertype_6048',['SuperType',['../d7/d84/classrigidmotion_1_1RigidMotion.html#a377def083f7c289d4a286a45638f3e61',1,'rigidmotion::RigidMotion']]]
+  ['primitivetype_6171',['PrimitiveType',['../dd/dc4/classScenePart.html#a5c843c2ed1df9e417540d14d01036c12',1,'ScenePart']]]
 ];

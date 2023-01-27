@@ -21,7 +21,34 @@ AbstractPulseRunnable::AbstractPulseRunnable(
     scanner(scanner),
     pulse(pulse),
     scene(*(scanner->platform->scene))
-{}
+{
+    // Assign corresponding measurement error function
+    AbstractDetector &ad = *scanner->getDetector();
+    if(ad.errorDistanceExpr != nullptr){
+        applyMeasurementError = [&](
+            RandomnessGenerator<double> &rg,
+            double &distance,
+            glm::dvec3 &beamOrigin,
+            glm::dvec3 &beamDirection
+        ) -> void {
+            applyMeasurementErrorFromExpr(
+                rg, distance, beamOrigin, beamDirection
+            );
+        };
+    }
+    else {
+        applyMeasurementError = [&](
+            RandomnessGenerator<double> &rg,
+            double &distance,
+            glm::dvec3 &beamOrigin,
+            glm::dvec3 &beamDirection
+        ) -> void {
+            applyMeasurementErrorDirectly(
+                rg, distance, beamOrigin, beamDirection
+            );
+        };
+    }
+}
 
 // ***  M E T H O D S  *** //
 // *********************** //
@@ -63,7 +90,7 @@ void AbstractPulseRunnable::capturePoint(
     detector->pcloudYielder->push(m);
 }
 
-void AbstractPulseRunnable::applyMeasurementError(
+void AbstractPulseRunnable::applyMeasurementErrorDirectly(
     RandomnessGenerator<double> &rg,
     double &distance,
     glm::dvec3 &beamOrigin,
@@ -71,4 +98,12 @@ void AbstractPulseRunnable::applyMeasurementError(
 ){
     distance += rg.normalDistributionNext();
 }
-
+void AbstractPulseRunnable::applyMeasurementErrorFromExpr(
+    RandomnessGenerator<double> &rg,
+    double &distance,
+    glm::dvec3 &beamOrigin,
+    glm::dvec3 &beamDirection
+){
+    distance = distance + rg.normalDistributionNext()*
+        detector->errorDistanceExpr->eval(distance);
+}

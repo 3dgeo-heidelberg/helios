@@ -8,6 +8,7 @@
 #include <Measurement.h>
 #include <util/PointcloudYielder.h>
 #include <util/FullWaveformYielder.h>
+#include <adt/exprtree/UnivarExprTreeNode.h>
 
 namespace helios { namespace filems { class FMSFacade; }}
 using helios::filems::FMSFacade;
@@ -56,6 +57,8 @@ public:
 	 */
 	double cfg_device_rangeMax_m;
 
+    std::shared_ptr<UnivarExprTreeNode<double>> errorDistanceExpr=nullptr;
+
 	// ***  CONSTRUCTION / DESTRUCTION  *** //
 	// ************************************ //
 	/**
@@ -68,12 +71,14 @@ public:
 	    std::shared_ptr<Scanner> scanner,
 	    double accuracy_m,
 	    double rangeMin_m,
-	    double rangeMax_m=std::numeric_limits<double>::max()
+	    double rangeMax_m=std::numeric_limits<double>::max(),
+        std::shared_ptr<UnivarExprTreeNode<double>> errorDistanceExpr=nullptr
     ){
         this->cfg_device_accuracy_m = accuracy_m;
         this->cfg_device_rangeMin_m = rangeMin_m;
         this->cfg_device_rangeMax_m = rangeMax_m;
-        this->scanner   = std::move(scanner);
+        this->scanner = std::move(scanner);
+        this->errorDistanceExpr = errorDistanceExpr;
 	}
 	virtual ~AbstractDetector() {}
 	virtual std::shared_ptr<AbstractDetector> clone() = 0;

@@ -67,7 +67,7 @@ public:
      * @brief Obtain the attitude of the ray by reference
      * @return Reference to the attitude of the ray
      */
-    inline Rotation getAttitudeRef() {return attitude;}
+    inline Rotation & getAttitudeRef() {return attitude;}
     /**
      * @brief Set the attitude of the ray
      * @param attitude The new attitude for the ray
