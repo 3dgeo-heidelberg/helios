@@ -1,6 +1,6 @@
 # ---  B U I L D I N G  --- #
 # ------------------------- #
-ADD_EXECUTABLE(helios ${sources} AppIcon.rc ../src/adt/exprtree/UnivarExprTreeNode.h ../src/test/ExprTreeTest.h ../src/adt/exprtree/IExprTreeNodeStringFactory.h ../src/adt/exprtree/UnivarExprTreeStringFactory.h ../src/adt/exprtree/UnivarExprTreeStringFactory.tpp)
+ADD_EXECUTABLE(helios ${sources} AppIcon.rc)
 
 # HANDLE PYTHON BINDING
 if(PYTHON_BINDING)
