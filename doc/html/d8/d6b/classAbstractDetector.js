@@ -1,6 +1,6 @@
 var classAbstractDetector =
 [
-    [ "AbstractDetector", "d8/d6b/classAbstractDetector.html#a8745332e83cbbe5fafebeafa5544a01c", null ],
+    [ "AbstractDetector", "d8/d6b/classAbstractDetector.html#a0ee97bcde40220690d6419aab964f6f9", null ],
     [ "~AbstractDetector", "d8/d6b/classAbstractDetector.html#a0568eaa2d69b93d1fae18be7fc6b91fd", null ],
     [ "_clone", "d8/d6b/classAbstractDetector.html#ad4dea4ae507f42528e66cf770650474a", null ],
     [ "applySettings", "d8/d6b/classAbstractDetector.html#a78346a126dcb35c991bc9e14ba9a5f6c", null ],
@@ -14,6 +14,7 @@ var classAbstractDetector =
     [ "cfg_device_accuracy_m", "d8/d6b/classAbstractDetector.html#ae14086d0d232e23911a7ec99dff6299a", null ],
     [ "cfg_device_rangeMax_m", "d8/d6b/classAbstractDetector.html#ad9b1d8aa37cb255f3af99d023e7825ea", null ],
     [ "cfg_device_rangeMin_m", "d8/d6b/classAbstractDetector.html#a4d47a75b623d9aa1598a4795a748ff84", null ],
+    [ "errorDistanceExpr", "d8/d6b/classAbstractDetector.html#a72428c260e79118df624570078c0c481", null ],
     [ "fms", "d8/d6b/classAbstractDetector.html#a3e9aa1abe6f6850941dc5e80a37d9a2c", null ],
     [ "fwfYielder", "d8/d6b/classAbstractDetector.html#ab7f2637a41f0400042df5b9d54cca9f5", null ],
     [ "pcloudYielder", "d8/d6b/classAbstractDetector.html#aa1516b51a47f416aa76ebf1d607aa91f", null ],

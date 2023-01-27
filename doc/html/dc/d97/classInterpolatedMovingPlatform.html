@@ -142,12 +142,17 @@ Public Types</h2></td></tr>
  }</td></tr>
 <tr class="memdesc:a0f2d77711abb5dbdb5a99d3c4436a1d8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Specify what is the interpolation scope. It is, which components are interpolated. <br /></td></tr>
 <tr class="separator:a0f2d77711abb5dbdb5a99d3c4436a1d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4a9b4a4cffa133cf57bfd588b5ac1fb3"><td class="memItemLeft" align="right" valign="top"><a id="a4a9b4a4cffa133cf57bfd588b5ac1fb3"></a>enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d97/classInterpolatedMovingPlatform.html#a4a9b4a4cffa133cf57bfd588b5ac1fb3">RotationSpec</a> { <b>CANONICAL</b>
+, <b>ARINC_705</b>
+ }</td></tr>
+<tr class="memdesc:a4a9b4a4cffa133cf57bfd588b5ac1fb3"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="../../d5/dcb/classRotation.html">Rotation</a> specifications supported by the interpolated moving platform. <br /></td></tr>
+<tr class="separator:a4a9b4a4cffa133cf57bfd588b5ac1fb3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a0b0882b33c5b7ec5ade27c012ef42795"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d97/classInterpolatedMovingPlatform.html#a0b0882b33c5b7ec5ade27c012ef42795">InterpolatedMovingPlatform</a> (<a class="el" href="../../d6/d8c/classSimulationStepLoop.html">SimulationStepLoop</a> &amp;<a class="el" href="../../dc/d97/classInterpolatedMovingPlatform.html#acec3f23182a2a5c78f24a4487bd79d4e">stepLoop</a>, TemporalDesignMatrix&lt; double, double &gt; const &amp;tdm, DiffDesignMatrix&lt; double, double &gt; const &amp;ddm, <a class="el" href="../../dc/d97/classInterpolatedMovingPlatform.html#a0f2d77711abb5dbdb5a99d3c4436a1d8">InterpolationScope</a> <a class="el" href="../../dc/d97/classInterpolatedMovingPlatform.html#a0e62d7778f89fd881d5cda69ee67809e">scope</a>, bool const <a class="el" href="../../dc/d97/classInterpolatedMovingPlatform.html#ae64b40a9ec1e8f8f20c34692088349ec">syncGPSTime</a>, double const <a class="el" href="../../dc/d97/classInterpolatedMovingPlatform.html#ab3bc200146684a07a4e36ee4596f11bf">startTime</a>)</td></tr>
-<tr class="memdesc:a0b0882b33c5b7ec5ade27c012ef42795"><td class="mdescLeft">&#160;</td><td class="mdescRight">Build an <a class="el" href="../../dc/d97/classInterpolatedMovingPlatform.html" title="Class representing a MovingPlatform which position is defined by a function interpolated from a Desig...">InterpolatedMovingPlatform</a> from given values and differentials. Note that the DiffDesignMatrix must define the derivatives for the same functions which values over time are described by the TemporalDesignMatrix.  <a href="../../dc/d97/classInterpolatedMovingPlatform.html#a0b0882b33c5b7ec5ade27c012ef42795">More...</a><br /></td></tr>
-<tr class="separator:a0b0882b33c5b7ec5ade27c012ef42795"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a64922a61979b845c2f57d311aa84b5c7"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d97/classInterpolatedMovingPlatform.html#a64922a61979b845c2f57d311aa84b5c7">InterpolatedMovingPlatform</a> (<a class="el" href="../../d6/d8c/classSimulationStepLoop.html">SimulationStepLoop</a> &amp;<a class="el" href="../../dc/d97/classInterpolatedMovingPlatform.html#acec3f23182a2a5c78f24a4487bd79d4e">stepLoop</a>, TemporalDesignMatrix&lt; double, double &gt; const &amp;tdm, DiffDesignMatrix&lt; double, double &gt; const &amp;ddm, <a class="el" href="../../dc/d97/classInterpolatedMovingPlatform.html#a0f2d77711abb5dbdb5a99d3c4436a1d8">InterpolationScope</a> <a class="el" href="../../dc/d97/classInterpolatedMovingPlatform.html#a0e62d7778f89fd881d5cda69ee67809e">scope</a>, bool const <a class="el" href="../../dc/d97/classInterpolatedMovingPlatform.html#ae64b40a9ec1e8f8f20c34692088349ec">syncGPSTime</a>, double const <a class="el" href="../../dc/d97/classInterpolatedMovingPlatform.html#ab3bc200146684a07a4e36ee4596f11bf">startTime</a>, <a class="el" href="../../dc/d97/classInterpolatedMovingPlatform.html#a4a9b4a4cffa133cf57bfd588b5ac1fb3">RotationSpec</a> <a class="el" href="../../dc/d97/classInterpolatedMovingPlatform.html#a95754cab79a5ce947ab2acd9880ace4c">rotspec</a>=RotationSpec::ARINC_705)</td></tr>
+<tr class="memdesc:a64922a61979b845c2f57d311aa84b5c7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Build an <a class="el" href="../../dc/d97/classInterpolatedMovingPlatform.html" title="Class representing a MovingPlatform which position is defined by a function interpolated from a Desig...">InterpolatedMovingPlatform</a> from given values and differentials. Note that the DiffDesignMatrix must define the derivatives for the same functions which values over time are described by the TemporalDesignMatrix.  <a href="../../dc/d97/classInterpolatedMovingPlatform.html#a64922a61979b845c2f57d311aa84b5c7">More...</a><br /></td></tr>
+<tr class="separator:a64922a61979b845c2f57d311aa84b5c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aecf2f263f98fcd23ac2dfcbc803a05be"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d97/classInterpolatedMovingPlatform.html#aecf2f263f98fcd23ac2dfcbc803a05be">doSimStep</a> (int simFrequency_hz) override</td></tr>
 <tr class="separator:aecf2f263f98fcd23ac2dfcbc803a05be"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a99efe7276d509d753bc2b305f126458d"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d97/classInterpolatedMovingPlatform.html#a99efe7276d509d753bc2b305f126458d">waypointReached</a> () override</td></tr>
@@ -220,6 +225,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../.
 <tr class="memitem:a243fad0264b6dce4426909d67186b72e"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d97/classInterpolatedMovingPlatform.html#a243fad0264b6dce4426909d67186b72e">getCurrentLegTimeDiff</a> () const</td></tr>
 <tr class="memdesc:a243fad0264b6dce4426909d67186b72e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain the time difference between the start and end points of the current leg.  <a href="../../dc/d97/classInterpolatedMovingPlatform.html#a243fad0264b6dce4426909d67186b72e">More...</a><br /></td></tr>
 <tr class="separator:a243fad0264b6dce4426909d67186b72e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a19c4c5f91384300141cfbbb8a5f9a12d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d97/classInterpolatedMovingPlatform.html#a19c4c5f91384300141cfbbb8a5f9a12d">getRollPitchYaw</a> (double &amp;roll, double &amp;pitch, double &amp;yaw) override</td></tr>
+<tr class="memdesc:a19c4c5f91384300141cfbbb8a5f9a12d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Override the platform's default <a class="el" href="../../df/d1e/classPlatform.html#a67b7a936b6c0a79004a510f7db3ce50a" title="Obtain platform roll, pitch and yaw angles. Notice not all platforms track those angles.">Platform::getRollPitchYaw</a> method to account for the given rotation specification when using a <a class="el" href="../../dc/d97/classInterpolatedMovingPlatform.html" title="Class representing a MovingPlatform which position is defined by a function interpolated from a Desig...">InterpolatedMovingPlatform</a>.  <a href="../../dc/d97/classInterpolatedMovingPlatform.html#a19c4c5f91384300141cfbbb8a5f9a12d">More...</a><br /></td></tr>
+<tr class="separator:a19c4c5f91384300141cfbbb8a5f9a12d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classMovingPlatform"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classMovingPlatform')"><img src="../../closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="../../d1/d83/classMovingPlatform.html">MovingPlatform</a></td></tr>
 <tr class="memitem:a1fda311a499f27b3dc449dc13b2aeaed inherit pub_methods_classMovingPlatform"><td class="memItemLeft" align="right" valign="top"><a id="a1fda311a499f27b3dc449dc13b2aeaed"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d83/classMovingPlatform.html#a1fda311a499f27b3dc449dc13b2aeaed">MovingPlatform</a> ()=default</td></tr>
@@ -309,9 +317,6 @@ virtual glm::dvec3&#160;</td><td class="memItemRight" valign="bottom"><a class="
 <tr class="memitem:a9f061c5519fa456b6a4b24df170ab62f inherit pub_methods_classPlatform"><td class="memItemLeft" align="right" valign="top">glm::dvec3&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d1e/classPlatform.html#a9f061c5519fa456b6a4b24df170ab62f">getVectorToTarget</a> () const</td></tr>
 <tr class="memdesc:a9f061c5519fa456b6a4b24df170ab62f inherit pub_methods_classPlatform"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain platform vector to target (cache)  <a href="../../df/d1e/classPlatform.html#a9f061c5519fa456b6a4b24df170ab62f">More...</a><br /></td></tr>
 <tr class="separator:a9f061c5519fa456b6a4b24df170ab62f inherit pub_methods_classPlatform"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a67b7a936b6c0a79004a510f7db3ce50a inherit pub_methods_classPlatform"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d1e/classPlatform.html#a67b7a936b6c0a79004a510f7db3ce50a">getRollPitchYaw</a> (double &amp;roll, double &amp;pitch, double &amp;yaw)</td></tr>
-<tr class="memdesc:a67b7a936b6c0a79004a510f7db3ce50a inherit pub_methods_classPlatform"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain platform roll, pitch and yaw angles. Notice not all platforms track those angles.  <a href="../../df/d1e/classPlatform.html#a67b7a936b6c0a79004a510f7db3ce50a">More...</a><br /></td></tr>
-<tr class="separator:a67b7a936b6c0a79004a510f7db3ce50a inherit pub_methods_classPlatform"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab257eef70c845a1da3a012f592652966 inherit pub_methods_classPlatform"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d1e/classPlatform.html#ab257eef70c845a1da3a012f592652966">setHeadingRad</a> (double rad)</td></tr>
 <tr class="memdesc:ab257eef70c845a1da3a012f592652966 inherit pub_methods_classPlatform"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the heading angle in radians. This angle can be understood as yaw in most cases.  <a href="../../df/d1e/classPlatform.html#ab257eef70c845a1da3a012f592652966">More...</a><br /></td></tr>
 <tr class="separator:ab257eef70c845a1da3a012f592652966 inherit pub_methods_classPlatform"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -337,6 +342,9 @@ Protected Attributes</h2></td></tr>
 <tr class="memitem:a0e62d7778f89fd881d5cda69ee67809e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../dc/d97/classInterpolatedMovingPlatform.html#a0f2d77711abb5dbdb5a99d3c4436a1d8">InterpolationScope</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d97/classInterpolatedMovingPlatform.html#a0e62d7778f89fd881d5cda69ee67809e">scope</a></td></tr>
 <tr class="memdesc:a0e62d7778f89fd881d5cda69ee67809e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Specify the scope of the interpolation.  <a href="../../dc/d97/classInterpolatedMovingPlatform.html#a0e62d7778f89fd881d5cda69ee67809e">More...</a><br /></td></tr>
 <tr class="separator:a0e62d7778f89fd881d5cda69ee67809e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a95754cab79a5ce947ab2acd9880ace4c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../dc/d97/classInterpolatedMovingPlatform.html#a4a9b4a4cffa133cf57bfd588b5ac1fb3">RotationSpec</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d97/classInterpolatedMovingPlatform.html#a95754cab79a5ce947ab2acd9880ace4c">rotspec</a></td></tr>
+<tr class="memdesc:a95754cab79a5ce947ab2acd9880ace4c"><td class="mdescLeft">&#160;</td><td class="mdescRight">The rotation specification defining the interpolated attitude.  <a href="../../dc/d97/classInterpolatedMovingPlatform.html#a95754cab79a5ce947ab2acd9880ace4c">More...</a><br /></td></tr>
+<tr class="separator:a95754cab79a5ce947ab2acd9880ace4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a12206bb74e6153d7b18d32421120730c"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="../../d4/dc7/classDesignTrajectoryFunction.html">DesignTrajectoryFunction</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d97/classInterpolatedMovingPlatform.html#a12206bb74e6153d7b18d32421120730c">tf</a> = nullptr</td></tr>
 <tr class="memdesc:a12206bb74e6153d7b18d32421120730c"><td class="mdescLeft">&#160;</td><td class="mdescRight">The trajectory function defining the platform's motion.  <a href="../../dc/d97/classInterpolatedMovingPlatform.html#a12206bb74e6153d7b18d32421120730c">More...</a><br /></td></tr>
 <tr class="separator:a12206bb74e6153d7b18d32421120730c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -349,6 +357,12 @@ Protected Attributes</h2></td></tr>
 <tr class="memitem:a2a9dbe1566975f02ab87deb6f89c94eb"><td class="memItemLeft" align="right" valign="top">arma::Mat&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d97/classInterpolatedMovingPlatform.html#a2a9dbe1566975f02ab87deb6f89c94eb">frontierDerivatives</a></td></tr>
 <tr class="memdesc:a2a9dbe1566975f02ab87deb6f89c94eb"><td class="mdescLeft">&#160;</td><td class="mdescRight">The \(m\) vectors in \(\mathbb{R}^{n}\) such that at the \(i\)-th frontier it is known that \( \frac{d\vec{y}}{dt} = \left( \frac{dy_1}{dt}, \ldots, \frac{dy_n}{dt} \right) \).  <a href="../../dc/d97/classInterpolatedMovingPlatform.html#a2a9dbe1566975f02ab87deb6f89c94eb">More...</a><br /></td></tr>
 <tr class="separator:a2a9dbe1566975f02ab87deb6f89c94eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a52b23642738f52fd966e06d489230e60"><td class="memItemLeft" align="right" valign="top">std::function&lt; <a class="el" href="../../d5/dcb/classRotation.html">Rotation</a>(arma::Col&lt; double &gt; const)&gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d97/classInterpolatedMovingPlatform.html#a52b23642738f52fd966e06d489230e60">calcAttitude</a></td></tr>
+<tr class="memdesc:a52b23642738f52fd966e06d489230e60"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function which handles how attitude is calculated. It depends on the rotation specification.  <a href="../../dc/d97/classInterpolatedMovingPlatform.html#a52b23642738f52fd966e06d489230e60">More...</a><br /></td></tr>
+<tr class="separator:a52b23642738f52fd966e06d489230e60"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a751900d87e04585977ed3211e4371e44"><td class="memItemLeft" align="right" valign="top">std::function&lt; void(double &amp;, double &amp;, double &amp;, <a class="el" href="../../d5/dcb/classRotation.html">Rotation</a> &amp;) &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d97/classInterpolatedMovingPlatform.html#a751900d87e04585977ed3211e4371e44">_getRollPitchYaw</a></td></tr>
+<tr class="memdesc:a751900d87e04585977ed3211e4371e44"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function to get the roll, pitch, and yaw angles depending on the rotation specification.  <a href="../../dc/d97/classInterpolatedMovingPlatform.html#a751900d87e04585977ed3211e4371e44">More...</a><br /></td></tr>
+<tr class="separator:a751900d87e04585977ed3211e4371e44"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a44bdb1cb040e26bbc2ac8c57f8c20e51"><td class="memItemLeft" align="right" valign="top">std::function&lt; void(double const t)&gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d97/classInterpolatedMovingPlatform.html#a44bdb1cb040e26bbc2ac8c57f8c20e51">doStepUpdates</a></td></tr>
 <tr class="memdesc:a44bdb1cb040e26bbc2ac8c57f8c20e51"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function which handles the update of components belonging to interpolation scope at each simulation step.  <a href="../../dc/d97/classInterpolatedMovingPlatform.html#a44bdb1cb040e26bbc2ac8c57f8c20e51">More...</a><br /></td></tr>
 <tr class="separator:a44bdb1cb040e26bbc2ac8c57f8c20e51"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -539,8 +553,8 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
 <dl class="section version"><dt>Version</dt><dd>1.0</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d1/d83/classMovingPlatform.html" title="Class representing a moving platform.">MovingPlatform</a> </dd></dl>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a0b0882b33c5b7ec5ade27c012ef42795"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0b0882b33c5b7ec5ade27c012ef42795">&#9670;&nbsp;</a></span>InterpolatedMovingPlatform()</h2>
+<a id="a64922a61979b845c2f57d311aa84b5c7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a64922a61979b845c2f57d311aa84b5c7">&#9670;&nbsp;</a></span>InterpolatedMovingPlatform()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -579,7 +593,13 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">double const&#160;</td>
-          <td class="paramname"><em>startTime</em>&#160;</td>
+          <td class="paramname"><em>startTime</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="../../dc/d97/classInterpolatedMovingPlatform.html#a4a9b4a4cffa133cf57bfd588b5ac1fb3">RotationSpec</a>&#160;</td>
+          <td class="paramname"><em>rotspec</em> = <code>RotationSpec::ARINC_705</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -603,7 +623,9 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
 </dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="../../dc/d97/classInterpolatedMovingPlatform.html#a0f2d77711abb5dbdb5a99d3c4436a1d8" title="Specify what is the interpolation scope. It is, which components are interpolated.">InterpolatedMovingPlatform::InterpolationScope</a> </dd>
 <dd>
-<a class="el" href="../../dc/d97/classInterpolatedMovingPlatform.html#acec3f23182a2a5c78f24a4487bd79d4e" title="Reference to the SimulationStepLoop defining the Simulation.">InterpolatedMovingPlatform::stepLoop</a> </dd></dl>
+<a class="el" href="../../dc/d97/classInterpolatedMovingPlatform.html#acec3f23182a2a5c78f24a4487bd79d4e" title="Reference to the SimulationStepLoop defining the Simulation.">InterpolatedMovingPlatform::stepLoop</a> </dd>
+<dd>
+<a class="el" href="../../dc/d97/classInterpolatedMovingPlatform.html#a4a9b4a4cffa133cf57bfd588b5ac1fb3" title="Rotation specifications supported by the interpolated moving platform.">InterpolatedMovingPlatform::RotationSpec</a> </dd></dl>
 
 </div>
 </div>
@@ -746,6 +768,55 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
 
 <p>Obtain the values at the frontier points. </p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="../../dc/d97/classInterpolatedMovingPlatform.html#a8f4a1f5b9fd237072894e1a34d1b2612" title="The  vectors in  such that at the -th frontier it is known that .">InterpolatedMovingPlatform::frontierValues</a> </dd></dl>
+
+</div>
+</div>
+<a id="a19c4c5f91384300141cfbbb8a5f9a12d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a19c4c5f91384300141cfbbb8a5f9a12d">&#9670;&nbsp;</a></span>getRollPitchYaw()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void InterpolatedMovingPlatform::getRollPitchYaw </td>
+          <td>(</td>
+          <td class="paramtype">double &amp;&#160;</td>
+          <td class="paramname"><em>roll</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double &amp;&#160;</td>
+          <td class="paramname"><em>pitch</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double &amp;&#160;</td>
+          <td class="paramname"><em>yaw</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Override the platform's default <a class="el" href="../../df/d1e/classPlatform.html#a67b7a936b6c0a79004a510f7db3ce50a" title="Obtain platform roll, pitch and yaw angles. Notice not all platforms track those angles.">Platform::getRollPitchYaw</a> method to account for the given rotation specification when using a <a class="el" href="../../dc/d97/classInterpolatedMovingPlatform.html" title="Class representing a MovingPlatform which position is defined by a function interpolated from a Desig...">InterpolatedMovingPlatform</a>. </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../df/d1e/classPlatform.html#a67b7a936b6c0a79004a510f7db3ce50a" title="Obtain platform roll, pitch and yaw angles. Notice not all platforms track those angles.">Platform::getRollPitchYaw</a> </dd>
+<dd>
+<a class="el" href="../../dc/d97/classInterpolatedMovingPlatform.html#a95754cab79a5ce947ab2acd9880ace4c" title="The rotation specification defining the interpolated attitude.">InterpolatedMovingPlatform::rotspec</a> </dd></dl>
+
+<p>Reimplemented from <a class="el" href="../../df/d1e/classPlatform.html#a67b7a936b6c0a79004a510f7db3ce50a">Platform</a>.</p>
 
 </div>
 </div>
@@ -1242,6 +1313,76 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
+<a id="a751900d87e04585977ed3211e4371e44"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a751900d87e04585977ed3211e4371e44">&#9670;&nbsp;</a></span>_getRollPitchYaw</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::function&lt; void(double &amp;, double &amp;, double &amp;, <a class="el" href="../../d5/dcb/classRotation.html">Rotation</a> &amp;) &gt; InterpolatedMovingPlatform::_getRollPitchYaw</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Function to get the roll, pitch, and yaw angles depending on the rotation specification. </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../dc/d97/classInterpolatedMovingPlatform.html#a95754cab79a5ce947ab2acd9880ace4c" title="The rotation specification defining the interpolated attitude.">InterpolatedMovingPlatform::rotspec</a> </dd>
+<dd>
+<a class="el" href="../../dc/d97/classInterpolatedMovingPlatform.html#a52b23642738f52fd966e06d489230e60" title="Function which handles how attitude is calculated. It depends on the rotation specification.">InterpolatedMovingPlatform::calcAttitude</a> </dd></dl>
+
+</div>
+</div>
+<a id="a52b23642738f52fd966e06d489230e60"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a52b23642738f52fd966e06d489230e60">&#9670;&nbsp;</a></span>calcAttitude</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::function&lt;<a class="el" href="../../d5/dcb/classRotation.html">Rotation</a>(arma::Col&lt;double&gt; const)&gt; InterpolatedMovingPlatform::calcAttitude</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Function which handles how attitude is calculated. It depends on the rotation specification. </p>
+<p>Canonical rotation uses: </p><ol>
+<li>
+pitch \((1, 0, 0)\) </li>
+<li>
+roll \((0, 1, 0)\) </li>
+<li>
+yaw \((0, 0, 1)\) </li>
+</ol>
+<p>ARINC 705 rotation uses: </p><ol>
+<li>
+yaw \((0, 0, -1)\) </li>
+<li>
+roll \((0, 1, 0)\) </li>
+<li>
+pitch \((1, 0, 0)\) </li>
+</ol>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../dc/d97/classInterpolatedMovingPlatform.html#a95754cab79a5ce947ab2acd9880ace4c" title="The rotation specification defining the interpolated attitude.">InterpolatedMovingPlatform::rotspec</a> </dd>
+<dd>
+<a class="el" href="../../df/dc3/classDirections.html" title="Coordinate system convention.">Directions</a> </dd></dl>
+
+</div>
+</div>
 <a id="ac492bdfa1b814b15937fb88620f26833"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ac492bdfa1b814b15937fb88620f26833">&#9670;&nbsp;</a></span>currentLegStartTime</h2>
 
@@ -1375,6 +1516,31 @@ std::numeric_limits </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="../../dc/d97/classInterpolatedMovingPlatform.html#a8599d6c77581331c2882b3c8d2f37f68" title="The  time frontiers  such that .">InterpolatedMovingPlatform::timeFrontiers</a> </dd>
 <dd>
 <a class="el" href="../../dc/d97/classInterpolatedMovingPlatform.html#a2a9dbe1566975f02ab87deb6f89c94eb" title="The  vectors in  such that at the -th frontier it is known that .">InterpolatedMovingPlatform::frontierDerivatives</a> </dd></dl>
+
+</div>
+</div>
+<a id="a95754cab79a5ce947ab2acd9880ace4c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a95754cab79a5ce947ab2acd9880ace4c">&#9670;&nbsp;</a></span>rotspec</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../dc/d97/classInterpolatedMovingPlatform.html#a4a9b4a4cffa133cf57bfd588b5ac1fb3">RotationSpec</a> InterpolatedMovingPlatform::rotspec</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The rotation specification defining the interpolated attitude. </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../dc/d97/classInterpolatedMovingPlatform.html#a52b23642738f52fd966e06d489230e60" title="Function which handles how attitude is calculated. It depends on the rotation specification.">InterpolatedMovingPlatform::calcAttitude</a> </dd></dl>
 
 </div>
 </div>

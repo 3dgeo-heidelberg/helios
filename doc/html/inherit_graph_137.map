@@ -1,3 +1,5 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$d7/d48/classSceneLoadingSpecification.html" title="Manually specify scene transformation filters to apply when loading a scene." alt="" coords="5,5,184,32"/>
+<area shape="rect" id="node1" href="$db/d85/classScanningPulseProcess.html" title="Class defining the scanning pulse process interface." alt="" coords="5,31,163,57"/>
+<area shape="rect" id="node2" href="$d5/d3c/classBuddingScanningPulseProcess.html" title="Class implementing a scanning pulse process which works with a pulse task dropper based on budding ta..." alt="" coords="220,5,424,32"/>
+<area shape="rect" id="node3" href="$df/ddb/classWarehouseScanningPulseProcess.html" title="Class implementing a scanning pulse process which works with a pulse task dropper based on budding ta..." alt="" coords="211,56,433,83"/>
 </map>

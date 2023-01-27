@@ -1,15 +1,15 @@
 var searchData=
 [
-  ['kdgrove_4204',['KDGrove',['../d9/d76/classKDGrove.html#a38ea6297a06bcd691fda666c472552d8',1,'KDGrove']]],
-  ['kdgrovefactory_4205',['KDGroveFactory',['../de/d89/classKDGroveFactory.html#a0c7152551b6513cba16af726d7f9fd9a',1,'KDGroveFactory']]],
-  ['kdgroveraycaster_4206',['KDGroveRaycaster',['../df/d01/classKDGroveRaycaster.html#a2b5cde375b74c883a52262274a6bf13d',1,'KDGroveRaycaster']]],
-  ['kdgrovestats_4207',['KDGroveStats',['../de/d29/classKDGroveStats.html#a7a5cd6ff46ba3f518a2df3ba82a75d8b',1,'KDGroveStats']]],
-  ['kdtreebuildtype_4208',['KDTreeBuildType',['../d8/d4c/classKDTreeBuildType.html#a9e9977862e623e6bc37c3e9dcfe7772b',1,'KDTreeBuildType::KDTreeBuildType()'],['../d8/d4c/classKDTreeBuildType.html#ae210084f20c4d05473d657f86559bb81',1,'KDTreeBuildType::KDTreeBuildType(KDTreeNode *parent, bool const left, vector&lt; Primitive * &gt; &amp;primitives, int const depth, int const index)']]],
-  ['kdtreefactory_4209',['KDTreeFactory',['../d5/dd0/classKDTreeFactory.html#ad905f937a8e13e78f18e659d0732a7a5',1,'KDTreeFactory']]],
-  ['kdtreefactorythreadpool_4210',['KDTreeFactoryThreadPool',['../d2/dea/classKDTreeFactoryThreadPool.html#a2351ab890b0c65d5597019e2ac678ea7',1,'KDTreeFactoryThreadPool::KDTreeFactoryThreadPool(std::size_t const _pool_size)'],['../d2/dea/classKDTreeFactoryThreadPool.html#a99ecde966a7fbc4623072c904f487baf',1,'KDTreeFactoryThreadPool::KDTreeFactoryThreadPool()']]],
-  ['kdtreenode_4211',['KDTreeNode',['../d8/d94/classKDTreeNode.html#a4544cbb2399baf6d14b1a7d696ccf529',1,'KDTreeNode::KDTreeNode()'],['../d8/d94/classKDTreeNode.html#af66b3e82f5718f38dac46d86d90900ee',1,'KDTreeNode::KDTreeNode(KDTreeNode const &amp;kdtn)'],['../d8/d94/classKDTreeNode.html#abbf503b0b33cef9157e5c805fa44bcba',1,'KDTreeNode::KDTreeNode(KDTreeNode &amp;&amp;kdtn)']]],
-  ['kdtreenoderoot_4212',['KDTreeNodeRoot',['../d0/d64/classKDTreeNodeRoot.html#adcea65fa6661fa292b6d517998a816c7',1,'KDTreeNodeRoot']]],
-  ['kdtreeprimitivecomparator_4213',['KDTreePrimitiveComparator',['../d6/d1f/structKDTreePrimitiveComparator.html#a5f3a73930bb58761e0c25ae1c9f7fc96',1,'KDTreePrimitiveComparator']]],
-  ['kdtreeraycaster_4214',['KDTreeRaycaster',['../da/d81/classKDTreeRaycaster.html#a8a78b68e65bc40f36a6dedab308af668',1,'KDTreeRaycaster']]],
-  ['kdtreeraycastersearch_4215',['KDTreeRaycasterSearch',['../de/d7f/classKDTreeRaycaster_1_1KDTreeRaycasterSearch.html#a15c7a8b9df5d38f41bccd581ff011806',1,'KDTreeRaycaster::KDTreeRaycasterSearch']]]
+  ['kdgrove_4294',['KDGrove',['../d9/d76/classKDGrove.html#a38ea6297a06bcd691fda666c472552d8',1,'KDGrove']]],
+  ['kdgrovefactory_4295',['KDGroveFactory',['../de/d89/classKDGroveFactory.html#a0c7152551b6513cba16af726d7f9fd9a',1,'KDGroveFactory']]],
+  ['kdgroveraycaster_4296',['KDGroveRaycaster',['../df/d01/classKDGroveRaycaster.html#a2b5cde375b74c883a52262274a6bf13d',1,'KDGroveRaycaster']]],
+  ['kdgrovestats_4297',['KDGroveStats',['../de/d29/classKDGroveStats.html#a7a5cd6ff46ba3f518a2df3ba82a75d8b',1,'KDGroveStats']]],
+  ['kdtreebuildtype_4298',['KDTreeBuildType',['../d8/d4c/classKDTreeBuildType.html#a9e9977862e623e6bc37c3e9dcfe7772b',1,'KDTreeBuildType::KDTreeBuildType()'],['../d8/d4c/classKDTreeBuildType.html#ae210084f20c4d05473d657f86559bb81',1,'KDTreeBuildType::KDTreeBuildType(KDTreeNode *parent, bool const left, vector&lt; Primitive * &gt; &amp;primitives, int const depth, int const index)']]],
+  ['kdtreefactory_4299',['KDTreeFactory',['../d5/dd0/classKDTreeFactory.html#ad905f937a8e13e78f18e659d0732a7a5',1,'KDTreeFactory']]],
+  ['kdtreefactorythreadpool_4300',['KDTreeFactoryThreadPool',['../d2/dea/classKDTreeFactoryThreadPool.html#a2351ab890b0c65d5597019e2ac678ea7',1,'KDTreeFactoryThreadPool::KDTreeFactoryThreadPool(std::size_t const _pool_size)'],['../d2/dea/classKDTreeFactoryThreadPool.html#a99ecde966a7fbc4623072c904f487baf',1,'KDTreeFactoryThreadPool::KDTreeFactoryThreadPool()']]],
+  ['kdtreenode_4301',['KDTreeNode',['../d8/d94/classKDTreeNode.html#a4544cbb2399baf6d14b1a7d696ccf529',1,'KDTreeNode::KDTreeNode()'],['../d8/d94/classKDTreeNode.html#af66b3e82f5718f38dac46d86d90900ee',1,'KDTreeNode::KDTreeNode(KDTreeNode const &amp;kdtn)'],['../d8/d94/classKDTreeNode.html#abbf503b0b33cef9157e5c805fa44bcba',1,'KDTreeNode::KDTreeNode(KDTreeNode &amp;&amp;kdtn)']]],
+  ['kdtreenoderoot_4302',['KDTreeNodeRoot',['../d0/d64/classKDTreeNodeRoot.html#adcea65fa6661fa292b6d517998a816c7',1,'KDTreeNodeRoot']]],
+  ['kdtreeprimitivecomparator_4303',['KDTreePrimitiveComparator',['../d6/d1f/structKDTreePrimitiveComparator.html#a5f3a73930bb58761e0c25ae1c9f7fc96',1,'KDTreePrimitiveComparator']]],
+  ['kdtreeraycaster_4304',['KDTreeRaycaster',['../da/d81/classKDTreeRaycaster.html#a8a78b68e65bc40f36a6dedab308af668',1,'KDTreeRaycaster']]],
+  ['kdtreeraycastersearch_4305',['KDTreeRaycasterSearch',['../de/d7f/classKDTreeRaycaster_1_1KDTreeRaycasterSearch.html#a15c7a8b9df5d38f41bccd581ff011806',1,'KDTreeRaycaster::KDTreeRaycasterSearch']]]
 ];
