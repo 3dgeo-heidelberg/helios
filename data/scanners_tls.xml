@@ -108,6 +108,113 @@
 	<!--######## END LIVOX Mid-70 ####### -->
 
 
+	<!-- ##### BEGIN Velodyne VLP-16 ("Puck") ##### -->
+	<!-- for the angles and corrections, see https://velodynelidar.com/wp-content/uploads/2019/12/63-9243-Rev-E-VLP-16-User-Manual.pdf, page 54) -->
+
+	<scanner 	id 						= "vlp16"
+			accuracy_m					= "0.03"
+			beamDivergence_rad 			= "0.0007"
+			name              			= "Velodyne VLP-16"
+			optics            			= "rotating"
+			pulseFreqs_Hz				= "18750"
+			pulseLength_ns     			= "4"
+			rangeMin_m					= "0.0100"
+			rangeMax_m					= "100"
+			scanAngleMax_deg   			= "1"
+			scanAngleEffectiveMax_deg	= "1"
+			scanFreqMin_Hz				= "0"
+			scanFreqMax_Hz				= "0"
+			wavelength_nm				= "532"
+			headRotatePerSecMax_deg		= "7200"
+	>
+				
+		<FWFSettings beamSampleQuality="1"/>	<!-- set to one for fast simulations -->
+		<channels>
+			<channel id="0">
+				<beamOrigin x="0" y="0" z="0">
+					<rot axis="x" angle_deg="-15" />					
+				</beamOrigin>
+			</channel>
+			<channel id="1">
+				<beamOrigin x="0" y="0" z="0">
+					<rot axis="x" angle_deg="1" />					
+				</beamOrigin>
+			</channel>
+			<channel id="2">
+				<beamOrigin x="0" y="0" z="0">
+					<rot axis="x" angle_deg="-13" />					
+				</beamOrigin>
+			</channel>
+			<channel id="3">
+				<beamOrigin x="0" y="0" z="0">
+					<rot axis="x" angle_deg="3" />					
+				</beamOrigin>
+			</channel>
+			<channel id="4">
+				<beamOrigin x="0" y="0" z="0">
+					<rot axis="x" angle_deg="-11" />					
+				</beamOrigin>
+			</channel>
+			<channel id="5">
+				<beamOrigin x="0" y="0" z="0">
+					<rot axis="x" angle_deg="5" />					
+				</beamOrigin>
+			</channel>
+			<channel id="6">
+				<beamOrigin x="0" y="0" z="0">
+					<rot axis="x" angle_deg="-9" />					
+				</beamOrigin>
+			</channel>
+			<channel id="7">
+				<beamOrigin x="0" y="0" z="0">
+					<rot axis="x" angle_deg="7" />					
+				</beamOrigin>
+			</channel>
+			<channel id="8">
+				<beamOrigin x="0" y="0" z="0">
+					<rot axis="x" angle_deg="-7" />					
+				</beamOrigin>
+			</channel>
+			<channel id="9">
+				<beamOrigin x="0" y="0" z="0">
+					<rot axis="x" angle_deg="9" />					
+				</beamOrigin>
+			</channel>
+			<channel id="10">
+				<beamOrigin x="0" y="0" z="0">
+					<rot axis="x" angle_deg="-5" />					
+				</beamOrigin>
+			</channel>
+			<channel id="11">
+				<beamOrigin x="0" y="0" z="0">
+					<rot axis="x" angle_deg="11" />					
+				</beamOrigin>
+			</channel>
+			<channel id="12">
+				<beamOrigin x="0" y="0" z="0">
+					<rot axis="x" angle_deg="-3" />					
+				</beamOrigin>
+			</channel>
+			<channel id="13">
+				<beamOrigin x="0" y="0" z="0">
+					<rot axis="x" angle_deg="13" />					
+				</beamOrigin>
+			</channel>
+			<channel id="14">
+				<beamOrigin x="0" y="0" z="0">
+					<rot axis="x" angle_deg="-1" />					
+				</beamOrigin>
+			</channel>
+			<channel id="15">
+				<beamOrigin x="0" y="0" z="0">
+					<rot axis="x" angle_deg="15" />					
+				</beamOrigin>
+			</channel>
+		</channels>
+
+	</scanner>
+	<!-- ##### END Velodyne VLP-16 ("Puck") ##### -->
+
 	<!-- ############### END Realistic Scanners (Do NOT MODIFY unless data is really wrong!!!) ############### -->
 
 
@@ -132,9 +239,6 @@
 	</scanner>
 	<!-- ##### END Tractor scanner ##### -->
 	
-	<!-- ############### END "Fantasy" Scanners ############### -->
-
-
 	<!-- ##### BEGIN Panoramic scanner ##### -->	
 	<scanner 	id 							= "panoscanner"
 				name              			= "PANO"
@@ -159,5 +263,8 @@
 		<headRotateAxis x="0" y="0" z="1"/>
 	</scanner>
 	<!-- ##### END Panoramic scanner ##### -->
+
+	<!-- ############### END "Fantasy" Scanners ############### -->
+
 
 </document>

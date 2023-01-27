@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+	<!-- Default scanner settings: -->
+    <scannerSettings id="profile1" active="true" pulseFreq_hz="100000" scanAngle_deg="100"/>
+    <survey name="arbaro_demo_tls" scene="data/scenes/demo/arbaro_demo.xml#arbaro_demo" platform="data/platforms.xml#tripod" scanner="data/scanners_tls.xml#riegl_vz400">
+        <FWFSettings binSize_ns="0.2" beamSampleQuality="3" />
+        <leg>
+            <platformSettings  x="-4.0" y="-2.5" onGround="true" />
+            <scannerSettings template="profile1" verticalAngleMin_deg="-40.0" verticalAngleMax_deg="60" headRotateStart_deg="-45" headRotateStop_deg="45" trajectoryTimeInterval_s="1.0" verticalResolution_deg="0.2" horizontalResolution_deg="0.2"/>
+        </leg>
+        <leg>
+            <platformSettings x="-4.0" y="-2.5" onGround="true" />
+            <scannerSettings template="profile1" verticalAngleMin_deg="-40.0" verticalAngleMax_deg="60" headRotateStart_deg="-45" headRotateStop_deg="45" trajectoryTimeInterval_s="1.0" scanFreq_hz="84.0" headRotatePerSec_deg="16.8" />
+        </leg>
+    </survey>
+</document>
