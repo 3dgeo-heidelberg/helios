@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['type_6049',['Type',['../d7/d84/classrigidmotion_1_1RigidMotion.html#a9f6af528c327231f6ad4565fa9bef21f',1,'rigidmotion::RigidMotion']]]
+  ['rotationspec_6172',['RotationSpec',['../dc/d97/classInterpolatedMovingPlatform.html#a4a9b4a4cffa133cf57bfd588b5ac1fb3',1,'InterpolatedMovingPlatform']]]
 ];

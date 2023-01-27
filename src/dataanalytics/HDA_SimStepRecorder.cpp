@@ -9,6 +9,8 @@
 #include <beamDeflector/AbstractBeamDeflector.h>
 #include <maths/MathConstants.h>
 #include <util/logger/logging.hpp>
+#include <scanner/WarehouseScanningPulseProcess.h>
+#include <scanner/BuddingScanningPulseProcess.h>
 
 #include <boost/filesystem.hpp>
 #include <glm/glm.hpp>
@@ -26,6 +28,10 @@ void HDA_SimStepRecorder::record(){
     recordScannerHead();
     recordDeflector();
     recordBeam();
+}
+
+void HDA_SimStepRecorder::delayedRecord(){
+    recordStochastic();
 }
 
 // ***  RECORDER METHODS  *** //
@@ -75,6 +81,8 @@ bool HDA_SimStepRecorder::isAnyBufferOpen(){
     anyOpen |= beamRoll->isOpen();
     anyOpen |= beamPitch->isOpen();
     anyOpen |= beamYaw->isOpen();
+    anyOpen |= measErrSeq->isOpen();
+    anyOpen |= measErrPar->isOpen();
     return anyOpen;
 }
 
@@ -180,6 +188,14 @@ void HDA_SimStepRecorder::openBuffers(){
     beamYaw = std::make_shared<HDA_RecordBuffer<double>>(
         craftOutputPath("beam_yaw.csv")
     );
+
+    // Open stochastic measurements buffers
+    measErrSeq = std::make_shared<HDA_RecordBuffer<double>>(
+        craftOutputPath("measurement_error_sequential.csv")
+    );
+    measErrPar = std::make_shared<HDA_RecordBuffer<double>>(
+        craftOutputPath("measurement_error_parallel.csv")
+    );
 }
 
 void HDA_SimStepRecorder::closeBuffers(){
@@ -224,6 +240,10 @@ void HDA_SimStepRecorder::closeBuffers(){
     beamRoll->close();
     beamPitch->close();
     beamYaw->close();
+
+    // Stochastic measurement buffers
+    measErrSeq->close();
+    measErrPar->close();
 }
 
 // ***  CONCRETE RECORD METHODS  *** //
@@ -295,7 +315,7 @@ void HDA_SimStepRecorder::recordScanner(){
 
 void HDA_SimStepRecorder::recordScannerHead(){
     // Obtain scanner's head
-    ScannerHead &sh = *(sp->getScanner()->scannerHead);
+    ScannerHead &sh = *(sp->getScanner()->getScannerHead());
     // Record scanner's head angles
     double roll, pitch, yaw;
     sh.getMountRelativeAttitude().getAngles(
@@ -308,7 +328,7 @@ void HDA_SimStepRecorder::recordScannerHead(){
 
 void HDA_SimStepRecorder::recordDeflector(){
     // Obtain beam deflector
-    AbstractBeamDeflector &bd = *(sp->getScanner()->beamDeflector);
+    AbstractBeamDeflector &bd = *(sp->getScanner()->getBeamDeflector());
     // Record deflector's angles
     double roll, pitch, yaw;
     bd.getEmitterRelativeAttitude().getAngles(
@@ -336,6 +356,63 @@ void HDA_SimStepRecorder::recordBeam(){
     beamRoll->push(roll);
     beamPitch->push(pitch);
     beamYaw->push(yaw);
+}
+
+void HDA_SimStepRecorder::recordStochastic(){
+    // Obtain scanner and pulse thread pool
+    Scanner &s = (*sp->getScanner());
+    ScanningPulseProcess * spp = s.getScanningPulseProcess();
+
+    // Obtain sequential randomness generator for measurement error
+    std::shared_ptr<RandomnessGenerator<double>> rg1Seq = s.randGen1;
+
+    // Obtain parallel randomness generator
+    RandomnessGenerator<double> *rg1Par = nullptr;
+    WarehouseScanningPulseProcess * wspp =
+        dynamic_cast<WarehouseScanningPulseProcess *>(spp);
+    if(wspp != nullptr){
+        rg1Par = wspp->pool.randGens;
+    }
+    else{
+        BuddingScanningPulseProcess *bspp =
+            dynamic_cast<BuddingScanningPulseProcess *>(spp);
+        rg1Par = bspp->pool.randGens;
+    }
+
+    // Prepare fake pulse
+    SimulatedPulse fakePulse(
+        glm::dvec3(0, 0, 0),
+        Rotation(),
+        0.0,
+        0,
+        0,
+        0
+    );
+
+    // Record sequential measurement error
+    size_t const N_SAMPLES = 1000000;
+    double const ERR_BASE = 1000; // Distance without error
+    double err;
+    FullWaveformPulseRunnable fwpr(sp->getScanner(), fakePulse);
+    fwpr.detector = s.getDetector();
+    for(size_t i = 0 ; i < N_SAMPLES ; ++i) {
+        err = ERR_BASE;
+        fwpr.applyMeasurementError(
+            *rg1Seq, err, fakePulse.getOriginRef(), fakePulse.getOriginRef()
+        );
+        measErrSeq->push(err-ERR_BASE);
+    }
+
+    // Record parallel measurement error
+    for(size_t i = 0 ; i < N_SAMPLES ; ++i) {
+        err = ERR_BASE;
+        fwpr.applyMeasurementError(
+            *rg1Par, err, fakePulse.getOriginRef(), fakePulse.getOriginRef()
+        );
+        measErrPar->push(err-ERR_BASE);
+    }
+
+
 }
 
 std::string HDA_SimStepRecorder::craftOutputPath(std::string const &fname){

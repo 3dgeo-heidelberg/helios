@@ -1,3 +1,5 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$d9/d5e/classTaskWarehouse.html" title="Class implementing a warehouse to store and retrieve tasks in a thread safe fashion." alt="" coords="5,5,172,32"/>
+<area shape="rect" id="node1" href="$da/d8d/classTaskDropper.html" title="Class which handles tasks dropping. It is, executing and then removing each task when dropping." alt="" coords="5,42,200,83"/>
+<area shape="rect" id="node2" href="$d5/d2f/classBuddingTaskDropper.html" title=" " alt="" coords="248,5,543,120"/>
+<area shape="rect" id="node3" href="$de/d9a/classPulseTaskDropper.html" title="Class implementing a task dropper to deal with pulse tasks." alt="" coords="591,49,720,76"/>
 </map>

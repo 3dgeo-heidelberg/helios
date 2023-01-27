@@ -60,7 +60,7 @@ void HDA_StateJSONReporter::reportSimulation(){
         << craftEntry("callbackFrequency", sim->callbackFrequency, 4)
         << craftEntry("stopped", sim->isStopped(), 4)
         << craftEntry("paused", sim->isPaused(), 4)
-        << craftEntry("timeStart_ns", sim->timeStart_ns, 4)
+        << craftEntry("timeStart_ns", sim->timeStart_ns.count(), 4)
         << craftEntry("currentGpsTime_ns", sim->currentGpsTime_ns, 4)
         << craftEntry("fixedGpsTimeStart", sim->fixedGpsTimeStart, 4, true)
         << craftEntry("currentLegIndex", sim->mCurrentLegIndex, 4)
@@ -72,10 +72,10 @@ void HDA_StateJSONReporter::reportSimulation(){
         << craftEntry("elapsedLength", sp->getElapsedLength(), 4)
         << craftEntry("progress", sp->getProgress(), 4)
         << craftEntry("legProgress", sp->getLegProgress(), 4)
-        << craftEntry("legStartTime_ns", sp->getLegStartTime(), 4)
-        << craftEntry("elapsedTime_ns", sp->getElapsedTime(), 4)
+        << craftEntry("legStartTime_ns", sp->getLegStartTime().count(), 4)
+        << craftEntry("elapsedTime_ns", sp->getElapsedTime().count(), 4)
         << craftEntry("remainingTime_ns", sp->getRemainingTime(), 4)
-        << craftEntry("legElapsedTime_ns", sp->getLegElapsedTime(), 4)
+        << craftEntry("legElapsedTime_ns", sp->getLegElapsedTime().count(), 4)
         << craftEntry(
             "legRemainingTime_ns", sp->getLegRemainingTime(), 4, false, true
         )
@@ -256,10 +256,10 @@ void HDA_StateJSONReporter::reportScanner(){
             "trajectoryTimeInterval", sc->trajectoryTimeInterval_ns, 4
            )
         << craftEntry("lastTrajectoryTime", sc->lastTrajectoryTime, 4)
-        << craftEntry("FWFSettings", sc->FWF_settings, 4)
-        << craftEntry("numTimeBins", sc->numTimeBins, 4)
-        << craftEntry("peakIntensityIndex", sc->peakIntensityIndex, 4)
-        << craftEntry("timeWave", sc->time_wave, 4)
+        << craftEntry("FWFSettings", sc->getFWFSettings(), 4)
+        << craftEntry("numTimeBins", sc->getNumTimeBins(), 4)
+        << craftEntry("peakIntensityIndex", sc->getPeakIntensityIndex(), 4)
+        << craftEntry("peakIntensityIndex", sc->getTimeWave(), 4)
         << craftEntry(
                 "headRelativeEmitterPosition",
                 sc->getHeadRelativeEmitterPosition(),
@@ -272,17 +272,17 @@ void HDA_StateJSONReporter::reportScanner(){
             )
         << craftEntry(
             "supportedPulseFreqs_Hz",
-            sc->cfg_device_supportedPulseFreqs_Hz,
+            sc->getSupportedPulseFreqs_Hz(),
             4
-            )
-        << craftEntry("maxNOR", sc->maxNOR, 4, false, true)
+           )
+        << craftEntry("maxNOR", sc->getMaxNOR(), 4, false, true)
         << closeEntry(3, false, EntryType::OBJECT) // Close scanner
     ;
     writer.write(ss.str());
 }
 
 void HDA_StateJSONReporter::reportDeflector(){
-    AbstractBeamDeflector *bd = sp->mSurvey->scanner->beamDeflector.get();
+    AbstractBeamDeflector *bd = sp->mSurvey->scanner->getBeamDeflector().get();
     std::stringstream ss;
     ss  << openEntry("deflector", 3, EntryType::OBJECT)
         << craftEntry("scanFreqMax_Hz", bd->cfg_device_scanFreqMax_Hz, 4)
@@ -316,7 +316,7 @@ void HDA_StateJSONReporter::reportDeflector(){
 }
 
 void HDA_StateJSONReporter::reportDetector(){
-    AbstractDetector *ad = sp->mSurvey->scanner->detector.get();
+    AbstractDetector *ad = sp->mSurvey->scanner->getDetector().get();
     std::stringstream ss;
     ss  << openEntry("detector", 3, EntryType::OBJECT)
         << craftEntry("accuracy_m", ad->cfg_device_accuracy_m, 4)

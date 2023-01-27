@@ -172,6 +172,13 @@ def read_records(path, sep=','):
         ), sep),
         'beam_yaw': read_record(os.path.join(
             path, 'beam_yaw.csv'
+        ), sep),
+        # Stochastic records
+        'measurement_error_sequential': read_record(os.path.join(
+            path, 'measurement_error_sequential.csv'
+        ), sep),
+        'measurement_error_parallel': read_record(os.path.join(
+            path, 'measurement_error_parallel.csv'
         ), sep)
     }
 
@@ -205,6 +212,7 @@ def plot_records(arec, brec, outdir):
     do_deflector_emitting_attitude_plots(arec, brec, outdir)
     do_beam_origin_plots(arec, brec, outdir)
     do_beam_attitude_plots(arec, brec, outdir)
+    do_measurement_error_plots(arec, brec, outdir)
 
 
 def validate_record(key, rec, recid):
@@ -909,6 +917,85 @@ def do_deflector_emitting_attitude_plots(arec, brec, outdir):
     )
     fig.clear()
     plt.close(fig)
+
+def do_error_distribution_histogram(
+    fig, ax, x, label=None, title=None, xlabel=None, ylabel=None, bins=32
+):
+    if title is not None:
+        ax.set_title(title, fontsize=20)
+    hist = ax.hist(x, bins=bins, label=label)
+    ax.axvline(x=np.mean(x), color='tab:orange', lw=3, label='$\\mu$')
+    if xlabel is not None:
+        ax.set_xlabel(xlabel, fontsize=16)
+    if ylabel is not None:
+        ax.set_ylabel(ylabel, fontsize=16)
+    ax.tick_params(axis='both', which='both', labelsize=14)
+    ax.legend(loc='upper right', fontsize=14)
+    ax.grid('both')
+    ax.set_axisbelow(True)
+
+def do_measurement_error_plots(arec, brec, outdir):
+    # Validate measurement error data
+    if not validate_record('measurement_error_sequential', arec, 'a') or \
+            not validate_record('measurement_error_parallel', arec, 'a') or \
+            not validate_record('measurement_error_sequential', brec, 'b') or \
+            not validate_record('measurement_error_parallel', brec, 'b'):
+        print('Cannot do measurement error data plots')
+        return
+    # Prepare the figure
+    fig = init_figure()
+    # Do the sequential measurement error subplots
+    ax = fig.add_subplot(2, 2, 1)  # Initialize seq meas err (a) subplota
+    seq_a_std = np.std(arec['measurement_error_sequential'])
+    do_error_distribution_histogram(
+        fig, ax, arec['measurement_error_sequential'],
+        label='$a$',
+        title='Sequential measurement error (A), $\sigma = {std:.4f}$'.format(
+            std=seq_a_std),
+        xlabel='$\\mathrm{err}(a)$',
+        ylabel='cases'
+    )
+    ax = fig.add_subplot(2, 2, 3)  # Initialize seq meas err (b) subplot
+    seq_b_std = np.std(brec['measurement_error_sequential'])
+    do_error_distribution_histogram(
+        fig, ax, brec['measurement_error_sequential'],
+        label='$b$',
+        title='Sequential measurement error (B), $\sigma = {std:.4f}$'.format(
+            std=seq_b_std),
+        xlabel='$\\mathrm{err}(b)$',
+        ylabel='cases'
+    )
+    # Do the parallel measurement error subplots
+    ax = fig.add_subplot(2, 2, 2)  # Initialize par meas err (a) subplot
+    par_a_std = np.std(arec['measurement_error_parallel'])
+    do_error_distribution_histogram(
+        fig, ax, arec['measurement_error_parallel'],
+        label='$a$',
+        title='Parallel measurement error (A), $\sigma = {std:.4f}$'.format(
+            std=par_a_std),
+        xlabel='$\\mathrm{err}(a)$',
+        ylabel='cases'
+    )
+    ax = fig.add_subplot(2, 2, 4)  # Initialize par meas err (b) subplot
+    par_b_std = np.std(brec['measurement_error_parallel'])
+    do_error_distribution_histogram(
+        fig, ax, brec['measurement_error_parallel'],
+        label='$b$',
+        title='Parallel measurement error (B), $\sigma = {std:.4f}$'.format(
+            std=par_b_std),
+        xlabel='$\\mathrm{err}(b)$',
+        ylabel='cases'
+    )
+    # Post-process the figure
+    fig.tight_layout()
+    # Save figure to file and remove it from memory
+    fig.savefig(
+        os.path.join(outdir, 'measurement_error.png')
+    )
+    fig.clear()
+    plt.close(fig)
+
+
 
 
 # ---   M A I N   --- #

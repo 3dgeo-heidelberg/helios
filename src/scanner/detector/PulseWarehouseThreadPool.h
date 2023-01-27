@@ -21,7 +21,11 @@ class PulseWarehouseThreadPool :
     public WarehouseThreadPool<PulseTaskDropper>,
     public PulseThreadPoolInterface
 {
+#ifdef DATA_ANALYTICS
+public:
+#else
 protected:
+#endif
     // ***  ATTRIBUTES  *** //
     // ******************** //
     /**

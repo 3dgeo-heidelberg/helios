@@ -1495,4 +1495,14 @@ public:
     inline void setTimeWave(std::vector<double> &&timewave)
     {setTimeWave(timewave, 0);}
 
+#ifdef DATA_ANALYTICS
+    /**
+     * @brief Workaround to access the scanning pulse process when building
+     *  HELIOS++ in DATA_ANALYTICS mode
+     */
+    inline ScanningPulseProcess * getScanningPulseProcess(){
+        return spp.get();
+    }
+#endif
+
 };

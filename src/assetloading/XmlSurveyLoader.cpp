@@ -18,6 +18,7 @@ namespace fs = boost::filesystem;
 #include <fluxionum/ParametricLinearPiecesFunction.h>
 #include <fluxionum/DiffDesignMatrixInterpolator.h>
 #include <scanner/beamDeflector/PolygonMirrorBeamDeflector.h>
+#include <adt/exprtree/UnivarExprTreeStringFactory.h>
 
 #include <unordered_set>
 
@@ -309,6 +310,15 @@ void XmlSurveyLoader::handleCoreOverloading(
                 dsNode, "rangeMax_m", "double", detector.cfg_device_rangeMax_m
             )
         );
+        if(XmlUtils::hasAttribute(dsNode, "distanceMeasurementError")){
+            char const * expr = dsNode->Attribute("distanceMeasurementError");
+            std::string exprStr(expr);
+            detector.errorDistanceExpr = static_pointer_cast<
+                UnivarExprTreeNode<double>
+            >(
+                UnivarExprTreeStringFactory<double>().makeShared(exprStr)
+            );
+        }
     }
 
 }
