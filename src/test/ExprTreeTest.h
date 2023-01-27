@@ -473,6 +473,13 @@ bool ExprTreeTest::testUnivarExprTree(){
     if(!validate<double, double>(node, t, y)) return false;
     if(!validatePowIPow<double>(node, 1, 1)) return false;
 
+    // Test case 40: 5
+    node = uetsf.makeShared("5");
+    y = std::vector<double>({
+        5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5
+    });
+    if(!validate<double, double>(node, t, y)) return false;
+
     // On test passed
     return true;
 }
