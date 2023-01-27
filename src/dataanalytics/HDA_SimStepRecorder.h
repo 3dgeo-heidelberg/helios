@@ -155,6 +155,16 @@ protected:
      * @brief The record buffer for the yaw angle of the beam
      */
     std::shared_ptr<HDA_RecordBuffer<double>> beamYaw;
+    /**
+     * @brief The record buffer for the measurement error (used by sequential
+     *  executions)
+     */
+    std::shared_ptr<HDA_RecordBuffer<double>> measErrSeq;
+    /**
+     * @brief The record buffer for the measurement error (used by parallel
+     *  executions)
+     */
+    std::shared_ptr<HDA_RecordBuffer<double>> measErrPar;
 
 
 public:
@@ -190,6 +200,12 @@ public:
      * @brief Handle all the records for the current simulation step
      */
     virtual void record();
+    /**
+     * @brief Handle all the records that must be extracted after simulation
+     *  has finished (it is named delayed record because it is postponed to
+     *  until the simulation has finished)
+     */
+    virtual void delayedRecord();
 
     // ***  RECORDER METHODS  *** //
     // ************************** //
@@ -248,6 +264,11 @@ protected:
      *  step
      */
     virtual void recordBeam();
+    /**
+     * @brief Handle all the stochastic measurement related records for the
+     *  current simulation step
+     */
+    virtual void recordStochastic();
     /**
      * @brief Craft the full output path considering the output directory and
      *  the given file name

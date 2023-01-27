@@ -15,7 +15,11 @@
  * @see PulseThreadPool
  */
 class BuddingScanningPulseProcess : public ScanningPulseProcess {
+#ifdef DATA_ANALYTICS
+public:
+#else
 protected:
+#endif
     // ***  ATTRIBUTES  *** //
     // ******************** //
     /**

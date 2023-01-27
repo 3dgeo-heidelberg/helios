@@ -138,6 +138,7 @@ var namespaces_dup =
       [ "BaseTest", "d9/d52/classHeliosTests_1_1BaseTest.html", "d9/d52/classHeliosTests_1_1BaseTest" ],
       [ "DiscreteTimeTest", "d6/d7f/classHeliosTests_1_1DiscreteTimeTest.html", "d6/d7f/classHeliosTests_1_1DiscreteTimeTest" ],
       [ "EnergyModelsTest", "d6/d35/classHeliosTests_1_1EnergyModelsTest.html", "d6/d35/classHeliosTests_1_1EnergyModelsTest" ],
+      [ "ExprTreeTest", "d9/d27/classHeliosTests_1_1ExprTreeTest.html", "d9/d27/classHeliosTests_1_1ExprTreeTest" ],
       [ "FluxionumTest", "dd/de0/classHeliosTests_1_1FluxionumTest.html", "dd/de0/classHeliosTests_1_1FluxionumTest" ],
       [ "FunctionalPlatformTest", "d4/dbf/classHeliosTests_1_1FunctionalPlatformTest.html", "d4/dbf/classHeliosTests_1_1FunctionalPlatformTest" ],
       [ "GroveTest", "d0/d01/classHeliosTests_1_1GroveTest.html", "d0/d01/classHeliosTests_1_1GroveTest" ],

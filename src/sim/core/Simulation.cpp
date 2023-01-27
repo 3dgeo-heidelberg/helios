@@ -164,6 +164,7 @@ void Simulation::start() {
 
 #ifdef DATA_ANALYTICS
 	// Finish data analytics stuff
+    ssr.delayedRecord();
 	ssr.closeBuffers();
 #endif
 

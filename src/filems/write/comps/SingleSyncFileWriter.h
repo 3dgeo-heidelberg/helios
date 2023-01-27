@@ -36,6 +36,7 @@ protected:
     std::shared_ptr<WriteStrategy<WriteArgs ...>> writeStrategy = nullptr;
 
 
+public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //
     // ************************************ //
     /**

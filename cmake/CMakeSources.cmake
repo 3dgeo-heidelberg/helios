@@ -11,6 +11,7 @@ set(HELIOS_INCLUDE_DIRECTORIES
     "src/adt/bintree/"
     "src/adt/kdtree/"
     "src/adt/grove/"
+    "src/adt/exprtree/"
     "src/alg/"
     "src/alg/raycast/"
     "src/assetloading/"
