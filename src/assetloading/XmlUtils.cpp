@@ -286,6 +286,15 @@ std::vector<std::shared_ptr<DynMotion>> XmlUtils::createDynMotionsVector(
         if(selfModeAttr != nullptr && selfModeAttr->BoolValue()){
             selfMode = true;
         }
+        // Handle motion autoCRS flag
+        bool autoCRS = false;
+        tinyxml2::XMLAttribute const *autoCRSAttr = xmlMotion->FindAttribute(
+            "autoCRS"
+        );
+        if(autoCRSAttr != nullptr && autoCRSAttr->BoolValue()){
+            autoCRS = true;
+        }
+
 
         // Handle identity
         if(type=="identity"){
@@ -306,7 +315,8 @@ std::vector<std::shared_ptr<DynMotion>> XmlUtils::createDynMotionsVector(
             arma::colvec vec(motionAttr->Value());
             dms.push_back(std::make_shared<DynMotion>(
                 rm3f.makeTranslation(arma::colvec(vec)),
-                selfMode
+                selfMode,
+                autoCRS
             ));
         }
         else if(type=="reflection"){
