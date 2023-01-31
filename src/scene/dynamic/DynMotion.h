@@ -76,6 +76,15 @@ protected:
      */
     bool normalMode = false;
 
+    /**
+     * @brief Specify if the translation vector must be translated to the
+     *  simulation's coordinate reference system (CRS) automatically (True)
+     *  or not (False).
+     *
+     * After the translation has been applied, the flag must be set to false
+     */
+    bool autoCRS = false;
+
 public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //
     // ************************************ //
@@ -86,9 +95,10 @@ public:
      * @see rigidmotion::RigidMotion
      * @see DynMotion::selfMode
      */
-    DynMotion(RigidMotion const & rm, bool selfMode=false) :
+    DynMotion(RigidMotion const & rm, bool selfMode=false, bool autoCRS=false):
         RigidMotion(rm),
-        selfMode(selfMode)
+        selfMode(selfMode),
+        autoCRS(autoCRS)
     {}
     /**
      * @brief Dynamic motion construction from given translation column vector
@@ -185,4 +195,18 @@ public:
      */
     inline void setNormalMode(bool const normalMode)
     {this->normalMode = normalMode;}
+    /**
+     * @brief Check if auto CRS is necessary (true) or not (false)
+     * @return True if auto CRS is necessary, false otherwise
+     * @see DynMotion::autoCRS
+     * @see DynMotion::setAutoCRS
+     */
+    inline bool isAutoCRS() const {return autoCRS;}
+    /**
+     * @brief Specify whether auto CRS is still necessary (true) or not (false)
+     * @param autoCRS True if auto CRS must be computed, false otherwise
+     * @see DynMotion::autoCRS
+     * @see DynMotion::isAutoCRS
+     */
+    inline void setAutoCRS(bool const autoCRS) {this->autoCRS = autoCRS;}
 };
