@@ -78,12 +78,14 @@ protected:
 
     /**
      * @brief Specify if the translation vector must be translated to the
-     *  simulation's coordinate reference system (CRS) automatically (True)
-     *  or not (False).
+     *  simulation's coordinate reference system (CRS) automatically
+     *  (\f$\neq=0\f$) or not (\f$=0\f$).
      *
-     * After the translation has been applied, the flag must be set to false
+     * The CRS translation will be applied scaled by autoCRS. Thus, a value
+     * of 1 implies adding the CRS translation while a value of -1 implies
+     * subtracting it.
      */
-    bool autoCRS = false;
+    double autoCRS = 0.0;
 
 public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //
@@ -95,7 +97,7 @@ public:
      * @see rigidmotion::RigidMotion
      * @see DynMotion::selfMode
      */
-    DynMotion(RigidMotion const & rm, bool selfMode=false, bool autoCRS=false):
+    DynMotion(RigidMotion const & rm, bool selfMode=false, double autoCRS=0.0):
         RigidMotion(rm),
         selfMode(selfMode),
         autoCRS(autoCRS)
@@ -196,17 +198,27 @@ public:
     inline void setNormalMode(bool const normalMode)
     {this->normalMode = normalMode;}
     /**
-     * @brief Check if auto CRS is necessary (true) or not (false)
-     * @return True if auto CRS is necessary, false otherwise
+     * @brief Obtain the value of the autoCRS attribute
+     * @return The value of the autoCRS attribute
      * @see DynMotion::autoCRS
      * @see DynMotion::setAutoCRS
-     */
-    inline bool isAutoCRS() const {return autoCRS;}
-    /**
-     * @brief Specify whether auto CRS is still necessary (true) or not (false)
-     * @param autoCRS True if auto CRS must be computed, false otherwise
-     * @see DynMotion::autoCRS
      * @see DynMotion::isAutoCRS
      */
-    inline void setAutoCRS(bool const autoCRS) {this->autoCRS = autoCRS;}
+    inline double getAutoCRS() const {return autoCRS;}
+    /**
+     * @brief Check whether there is a non-null autoCRS (True) or not (False)
+     * @return True if there is a non-null autoCRS, false otherwise
+     * @see DynMotion::autoCRS
+     * @see DynMotion::getAutoCRS
+     * @see DynMotion::setAutoCrs
+     */
+    inline bool isAutoCRS() const {return autoCRS != 0.0;}
+    /**
+     * @brief Set the value of the autoCRS attribute
+     * @param autoCRS New value of the autoCRS attribute
+     * @see DynMotion::autoCRS
+     * @see DynMotion::getAutoCRS
+     * @see DynMotion::isAutoCRS
+     */
+    inline void setAutoCRS(double const autoCRS) {this->autoCRS = autoCRS;}
 };

@@ -49,8 +49,7 @@ void DynSequentiableMovingObject::applyAutoCRS(
                 dm->findType() == DynMotion::Type::TRANSLATION_R3 &&
                 dm->isAutoCRS()
             ) {
-                dm->setC(dm->getC()+u);
-                dm->setAutoCRS(false);
+                dm->setC(dm->getC()+dm->getAutoCRS()*u);
             }
         }
     }
