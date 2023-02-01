@@ -241,7 +241,7 @@ if __name__ == '__main__':
             if scanner_file_new not in [Path(file) for file in outzip.namelist()]:
                 outzip.write(scanner_file_new)
 
-        if not set(sim.trajectory_files).issubset(set([Path(file) for file in outzip.namelist()])) and sim.trajectory_files is not None:
+        if sim.trajectory_files is not None:
             trajectory_files_new = []
             for traj in sim.trajectory_files:
                 if Path(traj).is_absolute():
