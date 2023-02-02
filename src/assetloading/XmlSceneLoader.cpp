@@ -477,7 +477,20 @@ void XmlSceneLoader::handleDynamicSceneAttributes(
     tinyxml2::XMLElement *sceneNode,
     shared_ptr<DynScene> scene
 ){
+    // Configure step interval
     scene->setStepInterval(
         boost::get<int>(XmlUtils::getAttribute(sceneNode, "dynStep", "int", 1))
     );
+    // Apply automatic CRS translation when requested
+    glm::dvec3 const &shift = scene->getBBoxCRS()->getMin();
+    size_t const numDynObjects = scene->numDynObjects();
+    for (size_t i = 0; i < numDynObjects; ++i) {
+        std::shared_ptr<DynSequentiableMovingObject> dsmo =
+            std::dynamic_pointer_cast<DynSequentiableMovingObject>(
+                scene->getDynObject(i)
+            );
+        if (dsmo != nullptr) {
+            dsmo->applyAutoCRS(-shift.x, -shift.y, -shift.z);
+        }
+    }
 }
