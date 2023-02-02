@@ -5,7 +5,7 @@
 /**
  * @author Alberto M. Esmoris Pena
  * @version 1.0
- * @brief Class extending VoidStepLoop to support a continous linear step loop
+ * @brief Class extending VoidStepLoop to support a continuous linear step loop
  *  without cyclic behavior.
  *
  * @see VoidStepLoop

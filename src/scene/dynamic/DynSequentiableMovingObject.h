@@ -106,6 +106,27 @@ protected:
     void fillMotionQueues();
 
 public:
+    // ***   U T I L S   *** //
+    // ********************* //
+    /**
+     * @brief Translate all the dynamic motions which are translations and
+     *  have the autoCRS flag to true
+     *
+     * For instance, let \f$\pmb{v} = (v_x, v_y, v_z)\f$ be a translation
+     *  vector. After DynSequentiableMovingObject::applyAutoCRS is called,
+     *  the translation vector will be updated to be
+     *  \f$\pmb{v}' = (v_x + x, v_y + y, v_z + z)\f$. Besides, the autoCRS
+     *  flag will be set to false because the CRS has been applied.
+     *
+     *
+     * @param x The CRS translation magnitude for the \f$x\f$ coordinate
+     * @param y The CRS translation magnitude for the \f$y\f$ coordinate
+     * @param z The CRS translation magnitude for the \f$z\f$ coordinate
+     *
+     * @see DynMotion::autoCRS
+     */
+    void applyAutoCRS(double const x, double const y, double const z);
+
     // ***  GETTERs and SETTERs  *** //
     // ***************************** //
     /**

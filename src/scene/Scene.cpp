@@ -108,7 +108,7 @@ bool Scene::finalizeLoading(bool const safe) {
         p->update();
     }
 
-    // Get new bounding box of tranlated scene:
+    // Get new bounding box of translated scene:
     this->bbox = AABB::getForPrimitives(primitives);
 
     ss << "Actual bounding box (by vertices): " << this->bbox->toString();
