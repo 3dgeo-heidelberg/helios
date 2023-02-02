@@ -287,13 +287,11 @@ std::vector<std::shared_ptr<DynMotion>> XmlUtils::createDynMotionsVector(
             selfMode = true;
         }
         // Handle motion autoCRS flag
-        bool autoCRS = false;
+        double autoCRS = 0.0;
         tinyxml2::XMLAttribute const *autoCRSAttr = xmlMotion->FindAttribute(
             "autoCRS"
         );
-        if(autoCRSAttr != nullptr && autoCRSAttr->BoolValue()){
-            autoCRS = true;
-        }
+        if(autoCRSAttr != nullptr) autoCRS = autoCRSAttr->DoubleValue();
 
 
         // Handle identity
