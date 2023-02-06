@@ -12,7 +12,7 @@
 		
 		<leg>
 			<platformSettings  x="-30" y="30" z="50" onGround="false" movePerSec_m="5"/>
-			<scannerSettings active="false"/>
+			<scannerSettings template="uls_templ" active="false"/>
 		</leg>
 		
 		<leg>
@@ -22,7 +22,7 @@
 		
 		<leg>
 			<platformSettings  x="0" y="-30" z="50" onGround="false" movePerSec_m="5"/>
-			<scannerSettings active="false"/>
+			<scannerSettings template="uls_templ" active="false"/>
 		</leg>
 		
 		<leg>
@@ -32,7 +32,7 @@
 		
 		<leg>
 			<platformSettings  x="30" y="30" z="50" onGround="false" movePerSec_m="5" />
-			<scannerSettings active="false"/>
+			<scannerSettings template="uls_templ" active="false"/>
 		</leg>
 		
 		<leg>
@@ -42,7 +42,7 @@
 		
 		<leg>
 			<platformSettings  x="-30" y="30" z="50" onGround="false" movePerSec_m="5" />
-			<scannerSettings active="false"/>
+			<scannerSettings template="uls_templ" active="false"/>
 		</leg>
 		
 		<leg>
@@ -52,7 +52,7 @@
 		
 		<leg>
 			<platformSettings  x="30" y="0" z="50" onGround="false" movePerSec_m="5" />
-			<scannerSettings active="false"/>
+			<scannerSettings template="uls_templ" active="false"/>
 		</leg>
 		
 		<leg>
@@ -62,7 +62,7 @@
 		
 		<leg>
 			<platformSettings  x="-30" y="-30" z="50" onGround="false" movePerSec_m="5" />
-			<scannerSettings active="false"/>
+			<scannerSettings template="uls_templ" active="false"/>
 		</leg>
 
     </survey>
