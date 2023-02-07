@@ -37,8 +37,7 @@
 	<!-- ###################### BEGIN ALS Platforms ###################### -->
 	<platform id="copter_linearpath" name="Quadrocopter UAV" type="linearpath">
 		<scannerMount x="0" y="0" z="0.2">
-			<rot axis="x" angle_deg="180" />
-			<rot axis="z" angle_deg="175" />
+			<rot axis="x" angle_deg="175" />
 		</scannerMount>
 		<!--<positionXNoise
 			clipMin="0.0" clipMax="0.0" clipEnabled="false" fixedLifespan="1"
