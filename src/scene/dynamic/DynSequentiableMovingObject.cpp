@@ -36,9 +36,10 @@ void DynSequentiableMovingObject::fillMotionQueues(){
 void DynSequentiableMovingObject::applyAutoCRS(
     double const x, double const y, double const z
 ){
-    unordered_map<string, shared_ptr<DynSequence<DynMotion>>> dynseqs =
+    unordered_map<string, shared_ptr<DynSequence<DynMotion>>> const &dynseqs =
         dmSequencer.getAllSequencesByRef();
-    unordered_map<string, shared_ptr<DynSequence<DynMotion>>>::iterator it;
+    unordered_map<string, shared_ptr<DynSequence<DynMotion>>>::const_iterator
+        it;
     arma::colvec u({x, y, z});
     for(it = dynseqs.begin() ; it != dynseqs.end() ; ++it){
         shared_ptr<DynSequence<DynMotion>> ds = it->second;
