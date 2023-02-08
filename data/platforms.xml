@@ -186,9 +186,9 @@
 			type="NORMAL" mean="0.0" stdev="0.001"/>-->
 	</platform>
 	
-	<platform id="vmx-450-car-middle" name="RIEGL VMX-450 Car Middle" type="linearpath">
-		<scannerMount x="0.0" y="-2.2" z="2.2">
-			<rot axis="x" angle_deg="110" />
+	<platform id="vmq-1ha-car-0" name="RIEGL VMQ-1HA Car (0° mounting)" type="linearpath">
+		<scannerMount x="0.0" y="-1.15" z="2.2">
+			<rot axis="x" angle_deg="45" />
 			<rot axis="z" angle_deg="0" />		
 		</scannerMount>
 		<!--<positionXNoise
