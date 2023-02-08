@@ -206,6 +206,27 @@
 	</scanner>
 	<!-- ##### END RIEGL VUX-1UAV22 ##### -->
 
+    <!-- ##### BEGIN RIEGL VUX-1HA22 ##### -->
+	<scanner 	id 							= "riegl_vux-1ha22"
+				accuracy_m					= "0.005"
+			 	beamDivergence_rad 			= "0.0005"
+				name              			= "RIEGL VUX-1HA22"
+				optics            			= "rotating"
+				pulseFreqs_Hz				= "300000,500000,1000000,1250000,1500000,1800000"
+				pulseLength_ns     			= "4"
+				rangeMin_m					= "1"
+				scanAngleMax_deg   			= "180"
+                scanAngleEffectiveMax_deg   = "180"
+				scanFreqMin_Hz				= "10"
+				scanFreqMax_Hz				= "250">
+
+			<beamOrigin x="0" y="0.015" z="0.0">
+				<rot axis="x" angle_deg="90" />
+				<rot axis="z" angle_deg="90" />
+			</beamOrigin>
+		<headRotateAxis x="0" y="0" z="1"/>
+	</scanner>
+	<!-- ##### END RIEGL VUX-1HA22 ##### -->
 	
 	<!-- ##### BEGIN RIEGL LMS VQ-880-G II ##### -->
 	<!-- Note regarding pulseLength_ns (2020-04 KA/LW):

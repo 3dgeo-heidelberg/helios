@@ -1,27 +1,27 @@
 <?xml version="1.0"?>
 <document>
-	<survey name="toyblocks_mls" platform="data/platforms.xml#vmx-450-car-middle" scanner="data/scanners_als.xml#riegl_vux-1uav" scene="data/scenes/toyblocks/toyblocks_scene.xml#toyblocks_scene">
+	<survey name="toyblocks_mls" platform="data/platforms.xml#vmq-1ha-car-0" scanner="data/scanners_als.xml#riegl_vux-1ha22" scene="data/scenes/toyblocks/toyblocks_scene.xml#toyblocks_scene">
 	<!-- platform: car, deflector: rotating -->
 	
 		<leg>
-			<platformSettings  x="-3.5" y="65.0" z="0.000" onGround="true" movePerSec_m="20"/>
-			<scannerSettings  active="true" pulseFreq_hz="100000" scanAngle_deg="195" scanFreq_hz="50" headRotatePerSec_deg="0.00" headRotateStart_deg="0.00" headRotateStop_deg="0.00" trajectoryTimeInterval_s="0.05"/>
+			<platformSettings  x="-30" y="65.0" z="0.000" onGround="true" movePerSec_m="20"/>
+			<scannerSettings  active="true" pulseFreq_hz="100000" scanAngle_deg="180" scanFreq_hz="50" headRotatePerSec_deg="0.00" headRotateStart_deg="0.00" headRotateStop_deg="0.00" trajectoryTimeInterval_s="0.05"/>
 		</leg>
 		<leg>
 			<platformSettings  x="-25.0" y="-30.0" z="0.000" onGround="true" movePerSec_m="20"/>
-			<scannerSettings  active="true" pulseFreq_hz="100000" scanAngle_deg="195" scanFreq_hz="50" headRotatePerSec_deg="0.00" headRotateStart_deg="0.00" headRotateStop_deg="0.00" trajectoryTimeInterval_s="0.05"/>
+			<scannerSettings  active="true" pulseFreq_hz="100000" scanAngle_deg="180" scanFreq_hz="50" headRotatePerSec_deg="0.00" headRotateStart_deg="0.00" headRotateStop_deg="0.00" trajectoryTimeInterval_s="0.05"/>
 		</leg>
 				<leg>
 			<platformSettings  x="1.0" y="-30.0" z="0.000" onGround="true" movePerSec_m="20"/>
-			<scannerSettings  active="true" pulseFreq_hz="100000" scanAngle_deg="195" scanFreq_hz="50" headRotatePerSec_deg="0.00" headRotateStart_deg="0.00" headRotateStop_deg="0.00" trajectoryTimeInterval_s="0.05"/>
+			<scannerSettings  active="true" pulseFreq_hz="100000" scanAngle_deg="180" scanFreq_hz="50" headRotatePerSec_deg="0.00" headRotateStart_deg="0.00" headRotateStop_deg="0.00" trajectoryTimeInterval_s="0.05"/>
 		</leg>
 		<leg>
 			<platformSettings  x="31.0" y="0.0" z="0.0" onGround="true" movePerSec_m="20"/>
-			<scannerSettings  active="true" pulseFreq_hz="100000" scanAngle_deg="195" scanFreq_hz="50" headRotatePerSec_deg="0.00" headRotateStart_deg="0.00" headRotateStop_deg="0.00" trajectoryTimeInterval_s="0.05"/>
+			<scannerSettings  active="true" pulseFreq_hz="100000" scanAngle_deg="180" scanFreq_hz="50" headRotatePerSec_deg="0.00" headRotateStart_deg="0.00" headRotateStop_deg="0.00" trajectoryTimeInterval_s="0.05"/>
 		</leg>
 		<leg>
 			<platformSettings  x="73.5" y="0.0" z="0.0" onGround="true" movePerSec_m="20"/>
-			<scannerSettings  active="true" pulseFreq_hz="100000" scanAngle_deg="195" scanFreq_hz="50" headRotatePerSec_deg="0.00" headRotateStart_deg="0.00" headRotateStop_deg="0.00"/>
+			<scannerSettings  active="true" pulseFreq_hz="100000" scanAngle_deg="180" scanFreq_hz="50" headRotatePerSec_deg="0.00" headRotateStart_deg="0.00" headRotateStop_deg="0.00"/>
 		</leg>
 	</survey>
 </document>
