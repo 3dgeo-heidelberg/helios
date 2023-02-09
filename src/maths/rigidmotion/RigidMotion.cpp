@@ -6,6 +6,10 @@ using rigidmotion::RigidMotion;
 using rigidmotion::RigidMotionException;
 using std::stringstream;
 
+// ***  CONSTANTS  *** //
+// ******************* //
+double const RigidMotion::eps = 0.000000001;
+
 // ***  RIGID MOTION METHODS  *** //
 // ****************************** //
 RigidMotion RigidMotion::compose(RigidMotion const rm) const {
@@ -21,7 +25,7 @@ void RigidMotion::composeInPlace(RigidMotion const rm){
 
 RigidMotion::SuperType RigidMotion::findSuperType() const{
     size_t const n = getDimensionality();
-    size_t const r = rank(eye(n, n)-A);
+    size_t const r = rank(eye(n, n)-A, eps);
     bool rankMismatchesDimensionality = false;
     if(n==2){
         if(r==0) return SuperType::R2_BASE;
@@ -62,7 +66,7 @@ bool RigidMotion::hasFixedPoints() const{
     size_t n = getDimensionality();
     mat coef = (eye(n, n) - A);  // coef = I-A
     mat sys = join_rows(coef, C); // sys = (I-A | C)
-    return rank(coef) == rank(sys);
+    return rank(coef, eps) == rank(sys, eps);
 }
 
 RigidMotion::Type RigidMotion::findType() const{
@@ -104,5 +108,5 @@ RigidMotion::Type RigidMotion::findType() const{
 
 size_t RigidMotion::findInvariantDimensionality() const{
     size_t n = getDimensionality();
-    return n-rank(eye(n, n)-A);
+    return n-rank(eye(n, n)-A, eps);
 }
