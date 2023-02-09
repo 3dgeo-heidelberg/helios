@@ -171,7 +171,7 @@ if __name__ == '__main__':
     survey_path = Path(sys.argv[2])
     outfile = Path(sys.argv[3])
     write_only_data = False
-    if len(sys.argv) > 3:
+    if len(sys.argv) > 4:
         if sys.argv[4] == "--onlyData":
             write_only_data = True
     allowed_suffixes = ['.zip', '.7z', '.rar', '.gz', '.tar']
