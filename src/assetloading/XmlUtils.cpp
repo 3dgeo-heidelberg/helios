@@ -312,7 +312,7 @@ std::vector<std::shared_ptr<DynMotion>> XmlUtils::createDynMotionsVector(
             }
             arma::colvec vec(motionAttr->Value());
             dms.push_back(std::make_shared<DynMotion>(
-                rm3f.makeTranslation(arma::colvec(vec)),
+                rm3f.makeTranslation(vec),
                 selfMode,
                 autoCRS
             ));
@@ -354,6 +354,18 @@ std::vector<std::shared_ptr<DynMotion>> XmlUtils::createDynMotionsVector(
             ));
         }
         else if(type=="rotation"){
+            arma::colvec center({0, 0, 0});
+            bool requiresCentering = false;
+            motionAttr = xmlMotion->FindAttribute("center");
+            if(motionAttr != nullptr){
+                requiresCentering = true;
+                center = arma::colvec(motionAttr->Value());
+                dms.push_back(std::make_shared<DynMotion>(
+                    rm3f.makeTranslation(-center),
+                    selfMode,
+                    autoCRS
+                ));
+            }
             motionAttr = xmlMotion->FindAttribute("axis");
             if(motionAttr == nullptr){
                 throw HeliosException(
@@ -376,6 +388,13 @@ std::vector<std::shared_ptr<DynMotion>> XmlUtils::createDynMotionsVector(
                 rm3f.makeRotation(axis, angle),
                 selfMode
             ));
+            if(requiresCentering){
+                dms.push_back(std::make_shared<DynMotion>(
+                    rm3f.makeTranslation(center),
+                    selfMode,
+                    -autoCRS  // Compensate the autoCRS of first translation
+                ));
+            }
         }
         else if(type=="helical"){
             motionAttr = xmlMotion->FindAttribute("axis");
