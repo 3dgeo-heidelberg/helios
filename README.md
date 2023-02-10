@@ -60,13 +60,32 @@ keywords = {Software, LiDAR simulation, Point cloud, Data generation, Voxel, Veg
 
 ## 🎮 Examples
 
+### XML demos
+|                                                                                                                                                      |   |
+|------------------------------------------------------------------------------------------------------------------------------------------------------|---|
+| [![Example 1](img/example1_thumbnail.png)](https://nbviewer.org/github/3dgeo-heidelberg/helios/blob/dev/example_notebooks/1-tls_arbaro.ipynb)   | [![Example 2](img/example2_thumbnail.png)](https://nbviewer.org/github/3dgeo-heidelberg/helios/blob/dev/example_notebooks/2-mls_wheat.ipynb)            |
+| [![Example 3](img/example3_thumbnail.png)](https://nbviewer.org/github/3dgeo-heidelberg/helios/blob/dev/example_notebooks/3-mls_toyblocks.ipynb)   | [![Example 4](img/example4_thumbnail.png)](https://nbviewer.org/github/3dgeo-heidelberg/helios/blob/dev/example_notebooks/4-uls_toyblocks_surveyscene.ipynb)            |
+| [![Example 5](img/example5_thumbnail.png)](https://nbviewer.org/github/3dgeo-heidelberg/helios/blob/dev/example_notebooks/5_als_hd_demo.ipynb)   | [![Example 6](img/example6_thumbnail.png)](https://nbviewer.org/github/3dgeo-heidelberg/helios/blob/dev/example_notebooks/6-als_hd_height_above_ground.ipynb)            |
+| [![Example 7](img/example7_thumbnail.png)](https://nbviewer.org/github/3dgeo-heidelberg/helios/blob/dev/example_notebooks/7-tls_sphere_xyzloader.ipynb)   | [![Example 8](img/example8_thumbnail.png)](https://nbviewer.org/github/3dgeo-heidelberg/helios/blob/dev/example_notebooks/8-als_uls_detailed_voxel.ipynb)            |
+| [![Example 9](img/example9_thumbnail.png)](https://nbviewer.org/github/3dgeo-heidelberg/helios/blob/dev/example_notebooks/9-tls_livox_demo.ipynb)   | [![Example 10](img/example10_thumbnail.png)](https://nbviewer.org/github/3dgeo-heidelberg/helios/blob/dev/example_notebooks/10-uls_toyblocks_livox.ipynb)            |
+| [![Example 11](img/example11_thumbnail.png)](https://nbviewer.org/github/3dgeo-heidelberg/helios/blob/dev/example_notebooks/11-als_toyblock_multi_scanner_livox.ipynb)   | [![Example 12](img/example12_thumbnail.png)](https://nbviewer.org/github/3dgeo-heidelberg/helios/blob/dev/example_notebooks/12-multi_scanner_puck.ipynb)            |
+| [![Example 13](img/example13_thumbnail.png)](https://nbviewer.org/github/3dgeo-heidelberg/helios/blob/dev/example_notebooks/13-interpolated_trajectory.ipynb)   |             |
+
+
+
+### pyhelios
+|                                                                                                                                                      |   |
+|------------------------------------------------------------------------------------------------------------------------------------------------------|---|
+| [![Tutorial I](img/tutorial_I_thumbnail.png)](https://nbviewer.org/github/3dgeo-heidelberg/helios/blob/dev/example_notebooks/I-getting-started.ipynb)   | [![Tutorial II](img/tutorial_II_thumbnail.png)](https://nbviewer.org/github/3dgeo-heidelberg/helios/blob/dev/example_notebooks/II-the-survey.ipynb)            |
+| [![Tutorial III](img/tutorial_III_thumbnail.png)](https://nbviewer.org/github/3dgeo-heidelberg/helios/blob/dev/example_notebooks/III-pyhelios_sim_and_vis.ipynb)   | [![Tutorial IV](img/tutorial_IV_thumbnail.png)](https://nbviewer.org/github/3dgeo-heidelberg/helios/blob/dev/example_notebooks/IV-live_trajectory_plot.ipynb)            |
+
+
+### Further examples
 
 |                                                                                                                                                      |   |
 |------------------------------------------------------------------------------------------------------------------------------------------------------|---|
-| [![Example 1](img/example1_thumbnail.png)](https://nbviewer.org/github/3dgeo-heidelberg/helios/blob/dev/example_notebooks/1-getting-started.ipynb)   | [![Example 2](img/example2_thumbnail.png)](https://nbviewer.org/github/3dgeo-heidelberg/helios/blob/dev/example_notebooks/2-the-survey.ipynb)            |
-| [![Example 3](img/example3_thumbnail.png)](https://nbviewer.org/github/3dgeo-heidelberg/helios/blob/dev/example_notebooks/3_arbaro_TLS_demo.ipynb)   | [![Example A](img/exampleA_thumbnail.png)](https://nbviewer.org/github/3dgeo-heidelberg/helios/blob/dev/example_notebooks/arboretum_notebook.ipynb)      |
-| [![Example 5](img/example5_thumbnail.png)](https://nbviewer.org/github/3dgeo-heidelberg/helios/blob/dev/example_notebooks/5_ALS_hd_demo.ipynb)       | [![Example 6](img/example6_thumbnail.png)](https://nbviewer.org/github/3dgeo-heidelberg/helios/blob/dev/example_notebooks/6_mls_wheat_demo.ipynb)        |
-| [![Example 7](img/example7_thumbnail.png)](https://nbviewer.org/github/3dgeo-heidelberg/helios/blob/dev/example_notebooks/7_ALS_toyblock_demo.ipynb) |                                                                                                                                                          |
+| [![Example A](img/exampleA_thumbnail.png)](https://nbviewer.org/github/3dgeo-heidelberg/helios/blob/dev/example_notebooks/A-arboretum_notebook.ipynb)   |             |
+
 
 
 
