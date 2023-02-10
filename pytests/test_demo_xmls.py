@@ -74,6 +74,8 @@ def get_paths(survey_file):
                   id="mls_wheat_demo.xml"),
      pytest.param((Path(WORKING_DIR) / 'data' / 'surveys' / 'demo' / 'tls_arbaro_demo.xml'),
                   id="tls_arbaro_demo.xml"),
+     pytest.param((Path(WORKING_DIR) / 'data' / 'surveys' / 'demo' / 'tls_arbaro_demo_angular_resolution.xml'),
+                  id="tls_arbaro_angular_resolution.xml"),
      pytest.param((Path(WORKING_DIR) / 'data' / 'surveys' / 'demo' / 'tls_livox.xml'),
                   id="tls_livox.xml"),
      pytest.param((Path(WORKING_DIR) / 'data' / 'surveys' / 'toyblocks' / 'als_toyblocks.xml'),

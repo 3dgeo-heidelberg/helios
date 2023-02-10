@@ -29,6 +29,8 @@
                     <xs:attribute type="xs:float" name="headRotateStart_deg" use="optional"/>
                     <xs:attribute type="xs:float" name="headRotateStop_deg" use="optional"/>
                     <xs:attribute type="xs:float" name="beamDivergenceRad" use="optional"/>
+                    <xs:attribute type="xs:float" name="verticalResolution_deg" use="optional"/>
+                    <xs:attribute type="xs:float" name="horizontalResolution_deg" use="optional"/>
                 </xs:extension>
             </xs:simpleContent>
         </xs:complexType>
@@ -36,6 +38,26 @@
     <xs:element name="document">
         <xs:complexType>
             <xs:choice minOccurs="1" maxOccurs="unbounded">
+                <xs:element name="scannerMount" minOccurs="0" maxOccurs="1">
+                                <xs:complexType mixed="true">
+                                    <xs:sequence>
+                                        <xs:element name="rot" maxOccurs="unbounded" minOccurs="0">
+                                            <xs:complexType>
+                                                <xs:simpleContent>
+                                                    <xs:extension base="xs:string">
+                                                        <xs:attribute type="axisType" name="axis" use="optional"/>
+                                                        <xs:attribute type="xs:float" name="angle_deg" use="optional"/>
+                                                    </xs:extension>
+                                                </xs:simpleContent>
+                                            </xs:complexType>
+                                        </xs:element>
+                                    </xs:sequence>
+                                    <xs:attribute type="xs:float" name="x" use="optional"/>
+                                    <xs:attribute type="xs:float" name="y" use="optional"/>
+                                    <xs:attribute type="xs:float" name="z" use="optional"/>
+                                    <xs:attribute type="rotType" name="rotations" use="optional"/>
+                                </xs:complexType>
+                            </xs:element>
                 <xs:element ref="scannerSettings" minOccurs="0" maxOccurs="unbounded"/>
                 <xs:element name="platformSettings" minOccurs="0" maxOccurs="unbounded">
                     <xs:complexType>
@@ -153,6 +175,8 @@
                                                         <xs:attribute type="xs:float" name="headRotateStart_deg" use="optional"/>
                                                         <xs:attribute type="xs:float" name="headRotateStop_deg" use="optional"/>
                                                         <xs:attribute type="xs:float" name="beamDivergenceRad" use="optional"/>
+                                                        <xs:attribute type="xs:float" name="verticalResolution_deg" use="optional"/>
+                                                        <xs:attribute type="xs:float" name="horizontalResolution_deg" use="optional"/>
                                                     </xs:extension>
                                                 </xs:simpleContent>
                                             </xs:complexType>
