@@ -175,6 +175,8 @@
                                                         <xs:attribute type="xs:float" name="headRotateStart_deg" use="optional"/>
                                                         <xs:attribute type="xs:float" name="headRotateStop_deg" use="optional"/>
                                                         <xs:attribute type="xs:float" name="beamDivergenceRad" use="optional"/>
+                                                        <xs:attribute type="xs:float" name="verticalResolution_deg" use="optional"/>
+                                                        <xs:attribute type="xs:float" name="horizontalResolution_deg" use="optional"/>
                                                     </xs:extension>
                                                 </xs:simpleContent>
                                             </xs:complexType>
