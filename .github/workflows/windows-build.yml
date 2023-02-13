@@ -99,7 +99,7 @@ jobs:
           $pythonString = "using python `n`t: 3.10 `n`t: ${{env.pythonLocation}}\bin\python.exe `n`t: ${{env.pythonLocation}}\include `n`t: ${{env.pythonLocation}}\libs `n;" 
           echo $pythonString.replace("\", "\\") >> ${{env.USER_CONFIG}}
 
-      - uses: suisei-cn/actions-download-file@v1
+      - uses: suisei-cn/actions-download-file@v1.3.0
         if: steps.cache-boost.outputs.cache-hit != 'true'
         id: downloadboost
         name: Download boost
@@ -114,7 +114,7 @@ jobs:
           7z x lib/boost_1_78_0.zip -olib
           move lib/boost_1_78_0 lib/boost
 
-      - uses: suisei-cn/actions-download-file@v1
+      - uses: suisei-cn/actions-download-file@v1.3.0
         id: downloadzlib
         name: Download zlib
         with:
@@ -160,7 +160,7 @@ jobs:
             ${{github.workspace}}/lib            
           key: ${{ runner.os }}-gdal-lastools-armadillo-latest3
 
-      - uses: suisei-cn/actions-download-file@v1
+      - uses: suisei-cn/actions-download-file@v1.3.0
         if: steps.cache-lastools-armadillo-gdal.outputs.cache-hit != 'true'
         id: downloadarmadillo
         name: Download Armadillo
@@ -183,7 +183,7 @@ jobs:
           cmake -DCMAKE_BUILD_TYPE=Release -DLAPACK_LIBRARY="C:\Program Files\scilab-6.1.1\bin\lapack.lib" -DBLAS_LIBRARY="C:\Program Files\scilab-6.1.1\bin\blasplus.lib" .
           msbuild.exe armadillo.sln /p:Configuration=Release
 
-      - uses: suisei-cn/actions-download-file@v1
+      - uses: suisei-cn/actions-download-file@v1.3.0
         if: steps.cache-lastools-armadillo-gdal.outputs.cache-hit != 'true'
         id: downloadglm
         name: Download GLM
@@ -199,12 +199,12 @@ jobs:
           dir lib
           
 
-      - uses: suisei-cn/actions-download-file@v1
+      - uses: suisei-cn/actions-download-file@v1.3.0
         if: steps.cache-lastools-armadillo-gdal.outputs.cache-hit != 'true'
         id: downloadgdal1
         name: Download GDAL (1/2)
         with:
-          url: "https://download.gisinternals.com/sdk/downloads/release-1928-x64-gdal-3-5-0-mapserver-7-6-4-libs.zip"
+          url: "https://build2.gisinternals.com/sdk/downloads/release-1916-x64-gdal-3-5-1-mapserver-7-6-4-libs.zip"
           target: lib/gdal.zip
 
 
@@ -220,7 +220,7 @@ jobs:
           move gdal/include/boost gdal/include/boost-gdal
 
 
-      - uses: suisei-cn/actions-download-file@v1
+      - uses: suisei-cn/actions-download-file@v1.3.0
         if: steps.cache-lastools-armadillo-gdal.outputs.cache-hit != 'true'
         id: downloadlastools
         name: Download LAStools
@@ -257,7 +257,7 @@ jobs:
       - name: Add MSBuild to PATH
         uses: microsoft/setup-msbuild@v1.0.2
         
-      - uses: suisei-cn/actions-download-file@v1
+      - uses: suisei-cn/actions-download-file@v1.3.0
         id: downloadscilab
         name: Download SciLab
         with:
