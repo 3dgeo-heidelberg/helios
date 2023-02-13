@@ -22,7 +22,7 @@ jobs:
 
     steps:
       - name: Add MSBuild to PATH
-        uses: microsoft/setup-msbuild@v1.0.2
+        uses: microsoft/setup-msbuild@v1.3.1
         
       - name: Create folder structure
         run: |
@@ -146,7 +146,7 @@ jobs:
     steps:
 
       - name: Add MSBuild to PATH
-        uses: microsoft/setup-msbuild@v1.0.2
+        uses: microsoft/setup-msbuild@v1.3.1
         
       - name: Create folder structure
         run: |
@@ -255,7 +255,7 @@ jobs:
     steps:
     
       - name: Add MSBuild to PATH
-        uses: microsoft/setup-msbuild@v1.0.2
+        uses: microsoft/setup-msbuild@v1.3.1
         
       - uses: suisei-cn/actions-download-file@v1.3.0
         id: downloadscilab
