@@ -15,7 +15,7 @@ Precompiled versions for Windows and Ubuntu (other Debian might also work, but y
 
 ## ℹ Documentation
 
-As a starting point, please consult the [wiki](https://github.com/3dgeo-heidelberg/helios/wiki/First-steps-and-examples). 
+As a starting point, please consult the [wiki](https://github.com/3dgeo-heidelberg/helios/wiki/First-steps). 
 We suggest you take the "first steps" tour to get to know the core concepts of the software.
 
 Official website: https://uni-heidelberg.de/helios
