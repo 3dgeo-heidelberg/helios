@@ -13,7 +13,7 @@
 1. [License](#license)
 
 ## Legacy version
-HELIOS, the precedessor of HELIOS++, can still be found at https://github.com/GIScience/helios
+HELIOS, the predecessor of HELIOS++, can still be found at https://github.com/GIScience/helios
 
 ## Install
 
@@ -346,7 +346,7 @@ GDAL 3.x.x version. For example, `release-1928-x64-gdal-3-x-x-mapserver-7-6-4`
 ---
 ##### LAStools library
 
-###### Configuring the project <a name="CMake"></a>
+###### Configuring the project
 Download [LAStools](https://rapidlasso.com/lastools/) and unzip it inside lib folder.
 
 Using [CMakeGUI](https://cmake.org/download/) we can configure and generate the LAStools project. If you prefer the command line version,
@@ -391,7 +391,7 @@ If the build was successful, `lib/armadillo/Release/armadillo.lib` must exist.
 
 ###### Configuring the project
 
-At the `helios` directory, generate the project as you did [here](#CMake).
+At the `helios` directory, generate the project as you did [here](#configuring-the-project).
 
 You can use certain flags together with CMake/CMakeGUI to configure the python bindings compilation:
 
