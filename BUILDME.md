@@ -391,7 +391,7 @@ If the build was successful, `lib/armadillo/Release/armadillo.lib` must exist.
 
 ###### Configuring the project
 
-At the `helios` directory, generate the project as you did [here](#configuring-the-project).
+At the `helios` directory, generate the project as you did [here](#configuring-the-project-1).
 
 You can use certain flags together with CMake/CMakeGUI to configure the python bindings compilation:
 
