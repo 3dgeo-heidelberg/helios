@@ -24,7 +24,7 @@ jobs:
 
        - name: Cache Boost
          id: cache-boost
-         uses: actions/cache@v2
+         uses: actions/cache@v3
          with:
            path: |
              ${{github.workspace}}/lib/boost
@@ -99,7 +99,7 @@ jobs:
 
        - name: Cache Armadillo, GDAL and LASTools
          id: cache-lastools-armadillo-gdal
-         uses: actions/cache@v2
+         uses: actions/cache@v3
          with:
            path: |
              ${{github.workspace}}/lib
@@ -166,7 +166,7 @@ jobs:
 
        - name: Load LasTools, Armadillo and GDAL from cache
          id: cache-lastools-armadillo-gdal
-         uses: actions/cache@v2
+         uses: actions/cache@v3
          with:
            path: |
              ${{github.workspace}}/lib
@@ -174,7 +174,7 @@ jobs:
 
        - name: Load Boost from Cache
          id: cache-boost
-         uses: actions/cache@v2
+         uses: actions/cache@v3
          with:
            path: |
              ${{github.workspace}}/lib/boost
@@ -235,7 +235,7 @@ jobs:
 
       - name: Load LasTools, Armadillo and GDAL from cache
         id: cache-lastools-armadillo-gdal
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: |
             ${{github.workspace}}/lib
@@ -243,7 +243,7 @@ jobs:
 
       - name: Load Boost from Cache
         id: cache-boost
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: |
             ${{github.workspace}}/lib/boost
@@ -310,7 +310,7 @@ jobs:
 
        - name: Cache Helios++
          id: cache-helios
-         uses: actions/cache@v2
+         uses: actions/cache@v3
          with:
            path: |
              ${{github.workspace}}/run
@@ -318,7 +318,7 @@ jobs:
 
        - name: Load LasTools, Armadillo and GDAL from cache
          id: cache-lastools-armadillo-gdal
-         uses: actions/cache@v2
+         uses: actions/cache@v3
          with:
            path: |
              ${{github.workspace}}/lib
@@ -326,7 +326,7 @@ jobs:
 
        - name: Load Boost from Cache
          id: cache-boost
-         uses: actions/cache@v2
+         uses: actions/cache@v3
          with:
            path: |
              ${{github.workspace}}/lib/boost
@@ -368,7 +368,7 @@ jobs:
 
           - name: Load LasTools, Armadillo and GDAL from cache
             id: cache-lastools-armadillo-gdal
-            uses: actions/cache@v2
+            uses: actions/cache@v3
             with:
               path: |
                 ${{github.workspace}}/lib
@@ -376,7 +376,7 @@ jobs:
 
           - name: Load helios++ from cache
             id: cache-helios
-            uses: actions/cache@v2
+            uses: actions/cache@v3
             with:
               path: |
                 ${{github.workspace}}/run
