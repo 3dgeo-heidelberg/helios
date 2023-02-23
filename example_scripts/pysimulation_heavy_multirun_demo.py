@@ -5,8 +5,14 @@
 # This way, once the iteration has finished, the simulation is released and
 # memory becomes available again
 
-import pyhelios
+import sys
+import os
+from pathlib import Path
 from threading import Condition as CondVar
+
+helios_root = str(Path(__file__).parent.parent.absolute())
+sys.path.append(helios_root)
+import pyhelios
 
 cv = CondVar()
 
@@ -48,34 +54,28 @@ if __name__ == '__main__':
     # pyhelios.loggingVerbose2()
     pyhelios.loggingQuiet()
     pyhelios.setDefaultRandomnessGeneratorSeed("123")
+    os.chdir(helios_root)
 
     # Build reference simulation
     print('>> Creating base/reference simulation\n')
-    sim0 = pyhelios.Simulation(  # First simulation
-        'data/surveys/voxels/als_detailedVoxels_mode_comparison.xml',
-        'assets/',
-        'output/',
-        0,          # Num Threads
-        False,      # LAS output FLAG
-        False,      # LAS 10 output FLAG
-        False       # Zip output FLAG
+    from pyhelios import SimulationBuilder
+
+    simB = pyhelios.SimulationBuilder(
+        surveyPath='data/surveys/voxels/als_detailedVoxels_mode_comparison.xml',
+        assetsDir='assets/',
+        outputDir='output/',
     )
-    sim0.callbackFrequency = 10
+    simB.setCallbackFrequency(10)
     # Callback frequency has to be setted
     # It is 0 by default and with 0 sim frequency it is not possible
     # to pause nor have callbacks
     # Sim frequency 0 means the simulation will start and run until it is
     # finished with no interleaved work
-    sim0.finalOutput = True
-    sim0.loadSurvey(
-        True,       # Leg Noise Disabled FLAG
-        False,      # Rebuild Scene FLAG
-        True,       # Write Waveform FLAG
-        True,       # Calc Echowidth FLAG
-        False,      # Full Wave Noise FLAG
-        True        # Platform Noise Disabled FLAG
-    )
-    sim0.setCallback(callback)
+    simB.setFinalOutput(True)
+    simB.setNumThreads(0)
+    simB.setCallback(callback)
+
+    sim0 = simB.build()  # First simulation
 
     # Run multiple simulations
     nSimulations = 3
@@ -83,19 +83,23 @@ if __name__ == '__main__':
     for i in range(nSimulations):
         # Run the simulation
         print('>> Running simulation {i}'.format(i=i+1))
-        sim = sim0.copy()
-        sim.callbackFrequency += i
+        sim_curr = sim0.sim.copy()
+        for j in range(sim_curr.getNumLegs()):
+            leg = sim_curr.getLeg(j)
+            leg.getScannerSettings().pulseFreq += i * 50000
+        print('Pulse frequency: {f} '.format(f=leg.getScannerSettings().pulseFreq))
+        sim_curr.callbackFrequency += i
         cycleMeasurementsCount = 0
         cp1 = []
         cpn = [0, 0, 0]
-        sim.start()
+        sim_curr.start()
 
         # Join simulation thread
         with cv:  # Conditional variable necessary for callback mode only
-            output = sim.join()
+            output = sim_curr.join()
             while not output.finished:  # Loop necessary for callback mode only
                 cv.wait()
-                output = sim.join()
+                output = sim_curr.join()
 
         # Digest output
         measurements = output.measurements
@@ -113,3 +117,5 @@ if __name__ == '__main__':
             x=pnPos.x, y=pnPos.y, z=pnPos.z))
         print('\t\tcpn position : ({x}, {y}, {z})'.format(
             x=cpn[0], y=cpn[1], z=cpn[2]))
+
+        print("Simulated point clouds saved to {folder}".format(folder=str(Path(output.filepath).parent)))

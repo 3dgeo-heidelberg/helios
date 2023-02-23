@@ -1,27 +1,36 @@
-import polyscope as ps
+import sys
 import os
+import shutil
+from pathlib import Path
+import polyscope as ps
 from math import pi, cos, sin
 from scipy import stats as sstats
 import numpy as np
 import tqdm
-import sys
-import pyhelios
 import matplotlib.pyplot as plt
+
+helios_root = str(Path(__file__).parent.parent.absolute())
+sys.path.append(helios_root)
+os.chdir(helios_root)
+import pyhelios
+
+DELETE_AFTER = True
+
 scene = """
 <?xml version="1.0" encoding="UTF-8"?>
 <document>
     <scene id="plane_scene" name="plane scene">
-        <part id="surface1">
+        <part id="1">
             <filter type="objloader">
-                <param type="string" key="filepath" value="pyhelios-data/scenes/groundplane.obj" />
+                <param type="string" key="filepath" value="data/sceneparts/basic/groundplane/groundplane.obj" />
             </filter>
             <filter type="scale">
                 <param type="double" key="scale" value="100" />
             </filter>
         </part>
-        <part id="surface2">
+        <part id="2">
             <filter type="objloader">
-                <param type="string" key="filepath" value="pyhelios-data/scenes/groundplane.obj" />
+                <param type="string" key="filepath" value="data/sceneparts/basic/groundplane/groundplane.obj" />
             </filter>
             <filter type="scale">
                 <param type="double" key="scale" value="100" />
@@ -29,6 +38,22 @@ scene = """
         </part>
     </scene>
 </document>"""
+
+survey = """
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+    <!-- Default scanner settings: -->
+    <survey defaultScannerSettings="profile1" name="plane_demo" scene="data/scenes/plane_scene.xml#plane_scene" platform="data/platforms.xml#tripod" scanner="data/scanners_tls.xml#riegl_vz400">
+        <FWFSettings binSize_ns="0.25" beamSampleQuality="1" />
+        <leg>
+            <platformSettings x="0" y="-10" z="0" onGround="false" />
+            <scannerSettings active="true" pulseFreq_hz="100000" scanAngle_deg="50.0" scanFreq_hz="120" headRotatePerSec_deg="20.0" headRotateStart_deg="-10" headRotateStop_deg="10" trajectoryTimeInterval_s="0.1"/>
+        </leg>
+    </survey>
+</document>"""
+
+with open('data/surveys/plane_survey.xml', 'w') as f:
+    f.write(survey)
 
 tls_pos = np.array([[0, -10, 0]])
 
@@ -47,32 +72,32 @@ nptss = []
 ps.init()
 
 for angle in angles:
-    print("Angle: %.3f deg" % angle)
-    with open("pyhelios-data/scenes/plane_scene.xml", "w") as f:
+    print("Angle: {ang:.3f} deg".format(ang=angle))
+    with open("data/scenes/plane_scene.xml", "w") as f:
         f.write(scene)
     angle = angle * pi / 180
     dists = []
 
     simBuilder = pyhelios.SimulationBuilder(
-        'pyhelios-data/scenes/plane_survey.xml',
-        'pyhelios-assets/',
-        'pyhelios-output/'
+        'data/surveys/plane_survey.xml',
+        'assets/',
+        'output/'
     )
     simBuilder.setNumThreads(0)
-    simBuilder.setLasOutput(False)
+    simBuilder.setLasOutput(True)
     simBuilder.setZipOutput(True)
-    simBuilder.setSimFrequency(0)       # Run without callback
+    simBuilder.setCallbackFrequency(0)  # Run without callback
+    simBuilder.setExportToFile(True)    # Enable export point cloud to file
     simBuilder.setFinalOutput(True)     # Return output at join
-    simBuilder.setExportToFile(False)   # Disable export pointcloud to file
     # General rotation
     simBuilder.addRotateFilter(cos(pi/4), sin(pi/4), 0, 0, "")
     # Surface 1 rotation
     simBuilder.addRotateFilter(
-        cos(-angle/2), 0, 0, sin(-angle/2), "surface1"
+        cos(-angle/2), 0, 0, sin(-angle/2), "1"
     )
     # Surface 2 rotation
     simBuilder.addRotateFilter(
-        cos(angle/2), 0, 0, sin(angle/2), "surface2"
+        cos(angle/2), 0, 0, sin(angle/2), "2"
     )
     simBuilder.setLegNoiseDisabled(True)
     simBuilder.setRebuildScene(True)
@@ -82,15 +107,15 @@ for angle in angles:
     simBuilder.setPlatformNoiseDisabled(True)
     sim = simBuilder.build()
 
-
     detector = sim.getScanner().getDetector()
     detector.accuracy = 0.005
+
     for i in tqdm.tqdm(range(5)):
-        sim0 = sim.copy()
+        sim0 = sim.sim.copy()
         sim0.start()
         meas = sim0.join().measurements
 
-        sim1 = sim.copy()
+        sim1 = sim.sim.copy()
         sim1.start()
         meas1 = sim1.join().measurements
 
@@ -101,7 +126,7 @@ for angle in angles:
                   meas[m].getPosition().y,
                   meas[m].getPosition().z] for m in range(len(meas))]
         points = np.array(points)
-        points = points[np.linalg.norm(points, axis=1) < 1, :] # 1m searchrad, "corepoint" at
+        points = points[np.linalg.norm(points, axis=1) < 1, :]  # 1 m searchrad, "corepoint" at
         points1 = [[meas1[m].getPosition().x,
                   meas1[m].getPosition().y,
                   meas1[m].getPosition().z] for m in range(len(meas1))]
@@ -122,7 +147,7 @@ for angle in angles:
 
     sigmaD = 2 * (n_points - 1) * sigma2_mean_ep / (
                 2 * n_points - 2)  # /n_points # adaption because our stddev comes from error prop and is not an estimate; weighted average of the matrices
-    p = 1  # three dimensional
+    p = 1  # three-dimensional
     # lods_m3c2_ep.append(1.96 * np.sqrt(sigma2_mean_ep/n_points)) #--> good solution
 
     Tsqalt = 1 / (sigmaD) * (n_points ** 2 / (2 * n_points))
@@ -141,7 +166,7 @@ for angle in angles:
 
 
 
-#angles = 90 - angles
+# angles = 90 - angles
 
 fig, ax1 = plt.subplots()
 
@@ -162,3 +187,7 @@ ax2.tick_params(axis='y', labelcolor=color)
 
 fig.legend()
 plt.show()
+
+# delete everything in output folder
+if DELETE_AFTER:
+    shutil.rmtree("output/plane_demo")

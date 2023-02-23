@@ -1,8 +1,13 @@
 # Light multirun demo shows how to launch multiple simulations when they are
 # small sized
-# As small simulations do not require too much memory, they can be all keeped
+# As small simulations do not require too much memory, they can be all kept
 # in memory at the same time
 
+import sys
+import os
+from pathlib import Path
+helios_root = str(Path(__file__).parent.parent.absolute())
+sys.path.append(helios_root)
 import pyhelios
 from threading import Condition as CondVar
 
@@ -46,73 +51,61 @@ if __name__ == '__main__':
     # pyhelios.loggingVerbose2()
     pyhelios.loggingQuiet()
     pyhelios.setDefaultRandomnessGeneratorSeed("123")
+    os.chdir(helios_root)
 
     # Build multiple simulations
     nSimulations = 3
     sims = []
     print('>> Creating {n} simulations\n'.format(n=nSimulations))
 
-    sim0 = pyhelios.Simulation(  # First simulation
+    simBuilder = pyhelios.SimulationBuilder(
         'data/surveys/voxels/als_detailedVoxels_mode_comparison.xml',
         'assets/',
-        'output/',
-        0,          # Num Threads
-        False,      # LAS output FLAG
-        False,      # LAS 10 output FLAG
-        False       # Zip output FLAG
+        'output/'
     )
-    sim0.callbackFrequency = 10
-    # Callback frequency has to be setted
+    simBuilder.setCallbackFrequency(10)
+    # Callback frequency has to be set
     # It is 0 by default and with 0 sim frequency it is not possible
     # to pause nor have callbacks
     # Sim frequency 0 means the simulation will start and run until it is
     # finished with no interleaved work
-    sim0.finalOutput = True
-    sim0.loadSurvey(
-        True,       # Leg Noise Disabled FLAG
-        True,       # Rebuild Scene FLAG
-        True,       # Write Waveform FLAG
-        True,       # Calc Echowidth FLAG
-        False,      # Full Wave Noise FLAG
-        True        # Platform Noise Disabled FLAG
-    )
-    sim0.setCallback(callback)
-    sims.append(sim0)
+    simBuilder.setFinalOutput(True)
+    simBuilder.setCallback(callback)
+    sim0 = simBuilder.build()
+    sims.append(sim0.sim)
 
     for i in range(1, nSimulations):  # Copies of first simulation
-        sim = sim0.copy()
-        sim.callbackFrequency += i+1
-        sims.append(sim)
-
-    print('>> Simulation frequencies = [ ', end='')
-    for sim in sims:
-        print('{f} '.format(f=sim.callbackFrequency), end='')
-    print(']')
+        sim_curr = sim0.sim.copy()
+        for j in range(sim_curr.getNumLegs()):
+            leg = sim_curr.getLeg(j)
+            leg.getScannerSettings().pulseFreq += i * 50000
+        sims.append(sim_curr)
 
     print('>> Running {n} simulations\n'.format(n=len(sims)))
 
     # Run multiple simulations
-    for i, sim in enumerate(sims):
+    for i, simulation in enumerate(sims):
         # Run the simulation
         print('>> Running simulation {i}'.format(i=i+1))
         cycleMeasurementsCount = 0
         cp1 = []
         cpn = [0, 0, 0]
-        sim.start()
+        print('Pulse frequency: {f} '.format(f=simulation.getLeg(0).getScannerSettings().pulseFreq))
+        simulation.start()
 
         # Join simulation thread
         with cv:  # Conditional variable necessary for callback mode only
-            output = sim.join()
+            output = simulation.join()
             while not output.finished:  # Loop necessary for callback mode only
                 cv.wait()
-                output = sim.join()
+                output = simulation.join()
 
         # Digest output
         measurements = output.measurements
         trajectories = output.trajectories
         print('\tSimulation {i}:'.format(i=i+1))
         print('\t\tnumber of measurements : {n}'.format(n=len(measurements)))
-        print('number of trajectories: {n}'.format(n=len(trajectories)))
+        print('\t\tnumber of trajectories: {n}'.format(n=len(trajectories)))
         p1Pos = measurements[0].getPosition()
         pnPos = measurements[len(measurements)-1].getPosition()
         print('\t\tp1 position  : ({x}, {y}, {z})'.format(
@@ -123,3 +116,5 @@ if __name__ == '__main__':
             x=pnPos.x, y=pnPos.y, z=pnPos.z))
         print('\t\tcpn position : ({x}, {y}, {z})'.format(
             x=cpn[0], y=cpn[1], z=cpn[2]))
+
+    print("Simulated point clouds saved to {folder}".format(folder=str(Path(output.filepath).parent)))
