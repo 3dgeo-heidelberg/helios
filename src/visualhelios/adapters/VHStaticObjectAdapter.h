@@ -96,27 +96,6 @@ public:
      */
     virtual void vertexToMesh(Vertex const & vertex) = 0;
 
-    // ***  UTILS  *** //
-    // *************** //
-    /**
-     * @brief Function to add triangle primitives to the polymesh during
-     *  building time
-     * @param primitive The triangle primitive to be added
-     * @param offset The offset for vertex index at current iteration
-     * @see VHStaticObjectAdapter::buildPolymesh
-     * @see VHStaticObjectAdapter::addVoxelToPolymesh
-     */
-    virtual void addTriangleToPolymesh(Primitive *primitive, int &offset);
-    /**
-     * @brief Function to add voxel primitives to the polymesh during
-     *  building time
-     * @param primitive The triangle primitive to be added
-     * @param offset The offset for vertex index at current iteration
-     * @see VHStaticObjectAdapter::buildPolymesh
-     * @see VHStaticObjectAdapter::addTriangleToPolymesh
-     */
-    virtual void addVoxelToPolymesh(Primitive *primitive, int &offset);
-
     // ***  GETTERS and SETTERS  *** //
     // ***************************** //
     /**
@@ -128,7 +107,8 @@ public:
      *
      * @return Static object
      */
-    inline ScenePart & getStaticObj() {return staticObj;}
+    inline ScenePart & getStaticObj()
+    {return staticObj;}
     /**
      * @brief Obtain the ordered vertices indices representing the static
      *  object

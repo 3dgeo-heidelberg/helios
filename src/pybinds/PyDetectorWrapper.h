@@ -34,19 +34,15 @@ public:
     // ***************************** //
     inline double getAccuracy()
         {return detector.cfg_device_accuracy_m;}
-    inline void setAccuracy(double const accuracy)
+    inline void setAccuracy(double accuracy)
         {detector.cfg_device_accuracy_m = accuracy;}
     inline double getRangeMin()
         {return detector.cfg_device_rangeMin_m;}
-    inline void setRangeMin(double const rangeMin)
+    inline void setRangeMin(double rangeMin)
         {detector.cfg_device_rangeMin_m = rangeMin;}
-    inline double getRangeMax()
-        {return detector.cfg_device_rangeMax_m;}
-    inline void setRangeMax(double const rangeMax)
-        {detector.cfg_device_rangeMax_m = rangeMax;}
     inline double getLasScale()
         {return detector.lasScale;}
-    inline void setLasScale(double const lasScale)
+    inline void setLasScale(double lasScale)
         {detector.lasScale = lasScale;}
 };
 

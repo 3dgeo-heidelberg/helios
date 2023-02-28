@@ -18,7 +18,6 @@ var classXYZPointCloudFileLoader =
     [ "run", "d6/d03/classXYZPointCloudFileLoader.html#a0f48cfdf95691524b366013e96f2ef8e", null ],
     [ "secondPass", "d6/d03/classXYZPointCloudFileLoader.html#a764e35999c92ab8bc1be940fec18bacf", null ],
     [ "voxelsGridToScenePart", "d6/d03/classXYZPointCloudFileLoader.html#a25b7bb04cfbda40824d1bed040dadb2e", null ],
-    [ "warnAboutPotentialErrors", "d6/d03/classXYZPointCloudFileLoader.html#abf4534992108adb294711716766d8097", null ],
     [ "assignDefaultNormal", "d6/d03/classXYZPointCloudFileLoader.html#ac555daeba216fe3c5530c3f5769573c8", null ],
     [ "batchSize", "d6/d03/classXYZPointCloudFileLoader.html#a1c651c3912d41261b997c29d00b155a9", null ],
     [ "defaultNormal", "d6/d03/classXYZPointCloudFileLoader.html#aa4abebcf0131e85079d6848209bf8c8d", null ],

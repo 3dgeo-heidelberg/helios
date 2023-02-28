@@ -83,7 +83,6 @@ public:
 		cfg_device_scanAngleMax_rad = scanAngleMax_rad;
 		cfg_device_scanFreqMax_Hz = scanFreqMax_Hz;
 		cfg_device_scanFreqMin_Hz = scanFreqMin_Hz;
-		state_currentBeamAngle_rad = 0;
     }
 
 	virtual ~AbstractBeamDeflector() {}
@@ -104,12 +103,6 @@ public:
 	 * @return True if last pulse left device, false otherwise
 	 */
     virtual bool lastPulseLeftDevice();
-    /**
-     * @brief Restart the deflector.
-     * This method is meant to be invoked whenever the deflector needs to be
-     *  restarted. Which generally occurs when the previous leg was inactive.
-     */
-    virtual void restartDeflector();
     /**
      * @brief Perform computations for current simulation step
      */

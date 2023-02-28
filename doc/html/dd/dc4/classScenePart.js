@@ -1,17 +1,7 @@
 var classScenePart =
 [
-    [ "ObjectType", "dd/dc4/classScenePart.html#abb04a8637137f4873ccb216573a5d6a5", [
-      [ "STATIC_OBJECT", "dd/dc4/classScenePart.html#abb04a8637137f4873ccb216573a5d6a5a4d8e5ffb946861bf2e930a94ae1f29bb", null ],
-      [ "DYN_OBJECT", "dd/dc4/classScenePart.html#abb04a8637137f4873ccb216573a5d6a5ae84483e961dcc343968a7f9a70001b99", null ],
-      [ "DYN_MOVING_OBJECT", "dd/dc4/classScenePart.html#abb04a8637137f4873ccb216573a5d6a5aa022da7b153a2562f58cbdfe1085ef5b", null ]
-    ] ],
-    [ "PrimitiveType", "dd/dc4/classScenePart.html#a5c843c2ed1df9e417540d14d01036c12", [
-      [ "NONE", "dd/dc4/classScenePart.html#a5c843c2ed1df9e417540d14d01036c12a1e7d7c772b0519eadcb9046e5beed437", null ],
-      [ "TRIANGLE", "dd/dc4/classScenePart.html#a5c843c2ed1df9e417540d14d01036c12aea4e8dc37ded175ce70d5b25eb0a9d16", null ],
-      [ "VOXEL", "dd/dc4/classScenePart.html#a5c843c2ed1df9e417540d14d01036c12a2b3b7153feedc244ae1c3caddfd53690", null ]
-    ] ],
-    [ "ScenePart", "dd/dc4/classScenePart.html#ae138cbe8db0cd435091aaaa42513b444", null ],
-    [ "ScenePart", "dd/dc4/classScenePart.html#a17d9907142cde0ed81a4a51c54b4566f", null ],
+    [ "ScenePart", "dd/dc4/classScenePart.html#ad08313c2aed966def11c0f507a116666", null ],
+    [ "ScenePart", "dd/dc4/classScenePart.html#a573c9469b4865af254d50200a7d7972b", null ],
     [ "~ScenePart", "dd/dc4/classScenePart.html#aa43c74be32c643475b246e21345c7256", null ],
     [ "addObj", "dd/dc4/classScenePart.html#ad77755e3d5bf661ef5a69ca848de833d", null ],
     [ "computeCentroid", "dd/dc4/classScenePart.html#a8a35be714f874833b84a29841de8fe2b", null ],
@@ -19,8 +9,6 @@ var classScenePart =
     [ "getCentroid", "dd/dc4/classScenePart.html#ac08adff13b3dca6df68d1f6114367d99", null ],
     [ "getId", "dd/dc4/classScenePart.html#a9c2c908872ec82fde8a4885c0e68e933", null ],
     [ "getPrimitives", "dd/dc4/classScenePart.html#aea61ea007cb84871117666b732f7ce64", null ],
-    [ "getPrimitiveType", "dd/dc4/classScenePart.html#ad41b49e850af8a489523274328f33d84", null ],
-    [ "getType", "dd/dc4/classScenePart.html#a57ecd7294b724ad3c229aed7f13d0453", null ],
     [ "operator=", "dd/dc4/classScenePart.html#a0e4fe89589057061c7917b1476d268ee", null ],
     [ "serialize", "dd/dc4/classScenePart.html#ac8d1c1199b07fbaca54f50c09c931f77", null ],
     [ "setCentroid", "dd/dc4/classScenePart.html#a49668b1b63fac9583c9cd33b4190c532", null ],
@@ -42,7 +30,6 @@ var classScenePart =
     [ "mScale", "dd/dc4/classScenePart.html#ac24a8aed9151384e58ed415d753916c3", null ],
     [ "onRayIntersectionArgument", "dd/dc4/classScenePart.html#a7d8e2726cca8ed5eeeef6326cbfe1385", null ],
     [ "onRayIntersectionMode", "dd/dc4/classScenePart.html#a8d4c986047a3ae884b22e93575eba2ea", null ],
-    [ "primitiveType", "dd/dc4/classScenePart.html#ad383e51370b014948843fdebad0e8f19", null ],
     [ "randomShift", "dd/dc4/classScenePart.html#a3643db20d99cfe0fb8c7515128326845", null ],
     [ "subpartLimit", "dd/dc4/classScenePart.html#a795698a1dbf63a9f5f9ef8fcae317cbd", null ]
 ];

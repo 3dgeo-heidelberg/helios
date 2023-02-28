@@ -135,12 +135,6 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a06c9c6dc24885dd5e7f0f6957fe63021"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/dda/classvisualhelios_1_1VHStaticObjectAdapter.html#a06c9c6dc24885dd5e7f0f6957fe63021">vertexToMesh</a> (<a class="el" href="../../d2/da0/classVertex.html">Vertex</a> const &amp;vertex)=0</td></tr>
 <tr class="memdesc:a06c9c6dc24885dd5e7f0f6957fe63021"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a vertex to the polymesh.  <a href="#a06c9c6dc24885dd5e7f0f6957fe63021">More...</a><br /></td></tr>
 <tr class="separator:a06c9c6dc24885dd5e7f0f6957fe63021"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aeb46f8cd8ea161b117e11b88511667af"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/dda/classvisualhelios_1_1VHStaticObjectAdapter.html#aeb46f8cd8ea161b117e11b88511667af">addTriangleToPolymesh</a> (<a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *primitive, int &amp;offset)</td></tr>
-<tr class="memdesc:aeb46f8cd8ea161b117e11b88511667af"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function to add triangle primitives to the polymesh during building time.  <a href="#aeb46f8cd8ea161b117e11b88511667af">More...</a><br /></td></tr>
-<tr class="separator:aeb46f8cd8ea161b117e11b88511667af"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aec9218512bc10ba21966eb5e9ebd13f3"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/dda/classvisualhelios_1_1VHStaticObjectAdapter.html#aec9218512bc10ba21966eb5e9ebd13f3">addVoxelToPolymesh</a> (<a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *primitive, int &amp;offset)</td></tr>
-<tr class="memdesc:aec9218512bc10ba21966eb5e9ebd13f3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function to add voxel primitives to the polymesh during building time.  <a href="#aec9218512bc10ba21966eb5e9ebd13f3">More...</a><br /></td></tr>
-<tr class="separator:aec9218512bc10ba21966eb5e9ebd13f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0904509dcf1dd34cbdbf2e5fe424de10"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../dd/dc4/classScenePart.html">ScenePart</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/dda/classvisualhelios_1_1VHStaticObjectAdapter.html#a0904509dcf1dd34cbdbf2e5fe424de10">getStaticObj</a> ()</td></tr>
 <tr class="memdesc:a0904509dcf1dd34cbdbf2e5fe424de10"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain the static object.  <a href="#a0904509dcf1dd34cbdbf2e5fe424de10">More...</a><br /></td></tr>
 <tr class="separator:a0904509dcf1dd34cbdbf2e5fe424de10"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -210,102 +204,6 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../.
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="aeb46f8cd8ea161b117e11b88511667af"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aeb46f8cd8ea161b117e11b88511667af">&#9670;&nbsp;</a></span>addTriangleToPolymesh()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void VHStaticObjectAdapter::addTriangleToPolymesh </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *&#160;</td>
-          <td class="paramname"><em>primitive</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int &amp;&#160;</td>
-          <td class="paramname"><em>offset</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Function to add triangle primitives to the polymesh during building time. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">primitive</td><td>The triangle primitive to be added </td></tr>
-    <tr><td class="paramname">offset</td><td>The offset for vertex index at current iteration </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d1/dda/classvisualhelios_1_1VHStaticObjectAdapter.html#a11cdd043b864eb148240e24cd50d4775" title="Build the polygon mesh from static object primitives. This implies building corresponding vertices ve...">VHStaticObjectAdapter::buildPolymesh</a> </dd>
-<dd>
-<a class="el" href="../../d1/dda/classvisualhelios_1_1VHStaticObjectAdapter.html#aec9218512bc10ba21966eb5e9ebd13f3" title="Function to add voxel primitives to the polymesh during building time. ">VHStaticObjectAdapter::addVoxelToPolymesh</a> </dd></dl>
-
-</div>
-</div>
-<a id="aec9218512bc10ba21966eb5e9ebd13f3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aec9218512bc10ba21966eb5e9ebd13f3">&#9670;&nbsp;</a></span>addVoxelToPolymesh()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void VHStaticObjectAdapter::addVoxelToPolymesh </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="../../df/de1/classPrimitive.html">Primitive</a> *&#160;</td>
-          <td class="paramname"><em>primitive</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int &amp;&#160;</td>
-          <td class="paramname"><em>offset</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Function to add voxel primitives to the polymesh during building time. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">primitive</td><td>The triangle primitive to be added </td></tr>
-    <tr><td class="paramname">offset</td><td>The offset for vertex index at current iteration </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d1/dda/classvisualhelios_1_1VHStaticObjectAdapter.html#a11cdd043b864eb148240e24cd50d4775" title="Build the polygon mesh from static object primitives. This implies building corresponding vertices ve...">VHStaticObjectAdapter::buildPolymesh</a> </dd>
-<dd>
-<a class="el" href="../../d1/dda/classvisualhelios_1_1VHStaticObjectAdapter.html#aeb46f8cd8ea161b117e11b88511667af" title="Function to add triangle primitives to the polymesh during building time. ">VHStaticObjectAdapter::addTriangleToPolymesh</a> </dd></dl>
-
-</div>
-</div>
 <a id="a11cdd043b864eb148240e24cd50d4775"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a11cdd043b864eb148240e24cd50d4775">&#9670;&nbsp;</a></span>buildPolymesh()</h2>
 

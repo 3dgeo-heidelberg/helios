@@ -1,7 +1,6 @@
 <map id="pyhelios::PyAABBWrapper" name="pyhelios::PyAABBWrapper">
-<area shape="rect" id="node1" title="Wrapper for AABB class." alt="" coords="5,273,197,300"/>
-<area shape="rect" id="node2" href="$d2/d1a/classAABB.html" title="Class representing an Axis Aligned Bounding Box (AABB)" alt="" coords="72,184,131,211"/>
-<area shape="rect" id="node3" href="$df/de1/classPrimitive.html" title="Abstract class defining the common behavior for all primitives." alt="" coords="26,95,107,121"/>
-<area shape="rect" id="node4" href="$d2/da0/classVertex.html" title="Class representing a vertex." alt="" coords="131,95,197,121"/>
-<area shape="rect" id="node5" href="$db/d02/classColor4f.html" title="Class representing a color with 4 float components: RGBA." alt="" coords="129,5,199,32"/>
+<area shape="rect" id="node2" href="$d2/d1a/classAABB.html" title="Class representing an Axis Aligned Bounding Box (AABB) " alt="" coords="65,184,124,211"/>
+<area shape="rect" id="node3" href="$df/de1/classPrimitive.html" title="Abstract class defining the common behavior for all primitives. " alt="" coords="25,95,98,121"/>
+<area shape="rect" id="node4" href="$d2/da0/classVertex.html" title="Class representing a vertex. " alt="" coords="122,95,182,121"/>
+<area shape="rect" id="node5" href="$db/d02/classColor4f.html" title="Class representing a color with 4 float components: RGBA. " alt="" coords="120,5,184,32"/>
 </map>

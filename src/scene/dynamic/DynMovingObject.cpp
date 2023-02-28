@@ -1,5 +1,4 @@
 #include <scene/dynamic/DynMovingObject.h>
-#include <adt/grove/KDGrove.h>
 
 #include <functional>
 
@@ -15,7 +14,7 @@ shared_ptr<DynMotion> DynMovingObject::_next(
 
 // ***  DYNAMIC BEHAVIOR  *** //
 // ************************** //
-bool DynMovingObject::doSimStep(){
+bool DynMovingObject::doStep(){
     // Flag to control whether the dynamic object has been modified or not
     bool modified = false;
 
@@ -51,23 +50,9 @@ bool DynMovingObject::doSimStep(){
         }
     );
 
-    // Update primitives
-    for(Primitive *prim : mPrimitives) prim->update();
-
-    // Notify observer if modified
-    if(modified && kdGroveObserver != nullptr){
-        observerStepLoop.doStep();
-    }
-
     // Return modifications control flag
     return modified;
 }
-
-void DynMovingObject::doObserverUpdate(){
-    // Notify observer that it has been updated by this dynamic moving object
-    kdGroveObserver->update(*this);
-}
-
 bool DynMovingObject::applyDynMotionQueue(
     std::function<arma::mat()> matrixFromPrimitives,
     std::function<void(arma::mat const &X)> matrixToPrimitives,
@@ -96,43 +81,4 @@ bool DynMovingObject::applyDynMotionQueue(
 
     // Return modifications control flag
     return modified;
-}
-// ***  GROVE SUBSCRIBER METHODS  *** //
-// ********************************** //
-void DynMovingObject::registerObserverGrove(
-    std::shared_ptr<KDGrove> kdGroveObserver
-){
-    // Check there is no previous observer (probably undesired register then)
-    if(this->kdGroveObserver != nullptr){
-        // Exception to prevent unexpected overwriting of kdGroveObserver
-        throw HeliosException(
-            "DynMovingObject::registerObserverGrove failed because it has "
-            "been registered before.\n\t"
-            "Call DynMovingObject::unregisterObserverGrove before registering "
-            "a new observer grove."
-        );
-    }
-    // Register observer
-    this->kdGroveObserver = kdGroveObserver;
-}
-void DynMovingObject::unregisterObserverGrove(){
-    // Check there is a observer to unregister
-    if(kdGroveObserver == nullptr){
-        // Exception to prevent unmatched pairs of register-unregister calls
-        throw HeliosException(
-            "DynMovingObject::unregisterObserverGrove failed because it has "
-            "not a registered observer.\n\t"
-            "Call DynMovingObject::registerObserverGrove before unregistering "
-            "current observer."
-        );
-    }
-    // Unregister observer
-    kdGroveObserver->removeSubject(this);
-    kdGroveObserver = nullptr;
-}
-void DynMovingObject::setGroveSubjectId(std::size_t const id){
-    groveSubjectId = id;
-}
-std::size_t DynMovingObject::getGroveSubjectId(){
-    return groveSubjectId;
 }

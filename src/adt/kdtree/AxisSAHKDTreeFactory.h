@@ -12,10 +12,6 @@
  * @see SAHKDTreeFactory
  */
 class AxisSAHKDTreeFactory : public SAHKDTreeFactory{
-using SAHKDTreeFactory::lossNodes;
-using SAHKDTreeFactory::ci;
-using SAHKDTreeFactory::cl;
-using SAHKDTreeFactory::co;
 private:
     // ***  SERIALIZATION  *** //
     // *********************** //
@@ -52,17 +48,6 @@ public:
     );
     virtual ~AxisSAHKDTreeFactory() = default;
 
-    // ***  CLONE  *** //
-    // *************** //
-    /**
-     * @see KDTreeFactory::clone
-     */
-    KDTreeFactory * clone() const override;
-    /**
-     * @brief Assign attributes from AxisSAHKDTreeFactory to its clone
-     */
-    void _clone(KDTreeFactory *kdtf) const override;
-
     // ***  BUILDING METHODS  *** //
     // ************************** //
     /**
@@ -76,5 +61,4 @@ public:
         vector<Primitive *> &primitives,
         int const depth
     ) const override;
-
 };

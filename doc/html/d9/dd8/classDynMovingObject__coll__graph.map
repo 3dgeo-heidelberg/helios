@@ -1,14 +1,9 @@
 <map id="DynMovingObject" name="DynMovingObject">
-<area shape="rect" id="node2" href="$d5/d6a/classDynObject.html" title="Dynamic object base implementation. " alt="" coords="791,107,875,133"/>
-<area shape="rect" id="node3" href="$dd/dc4/classScenePart.html" title="Class representing a scene part. " alt="" coords="403,57,485,84"/>
-<area shape="rect" id="node4" href="$d5/dcb/classRotation.html" title="Rotation" alt="" coords="51,5,122,32"/>
-<area shape="rect" id="node6" href="$d8/dac/classNonVoidStepLoop.html" title="NonVoidStepLoop\&lt; bool \&gt;" alt="" coords="357,108,531,135"/>
-<area shape="rect" id="node7" href="$dd/dcc/classStepLoop.html" title="StepLoop\&lt; StepInput\l ... \&gt;" alt="" coords="14,126,159,167"/>
-<area shape="rect" id="node10" href="$dd/d96/classVoidStepLoop.html" title="Class extending StepLoop to support functions with no return. " alt="" coords="557,159,740,185"/>
-<area shape="rect" id="node8" href="$dc/dbb/classKDGroveSubject.html" title="Interface defining the behaviors that must be supported by any object that can notify to a KDGrove..." alt="" coords="773,220,893,247"/>
-<area shape="rect" id="node9" href="$d2/d33/classBasicDynGroveSubject.html" title="BasicDynGroveSubject\l\&lt; GroveKDTreeRaycaster,\l DynMovingObject \&gt;" alt="" coords="355,209,533,265"/>
-<area shape="rect" id="node13" href="$d2/d0a/classDynMotionEngine.html" title="Adapter which wraps a rigid motion engine to make it fit the dynamic Helios context. " alt="" coords="771,388,896,415"/>
-<area shape="rect" id="node14" href="$dc/df6/classrigidmotion_1_1RigidMotionR3Factory.html" title="Class providing building methods for rigid motions in . " alt="" coords="363,347,525,389"/>
-<area shape="rect" id="node15" href="$dc/d00/classrigidmotion_1_1RigidMotionFactory.html" title="Class that must be extended by any class which provides factory methods for rigid motions..." alt="" coords="5,347,168,389"/>
-<area shape="rect" id="node16" href="$d2/da8/classrigidmotion_1_1RigidMotionEngine.html" title="Class to handle operations with rigid motions. " alt="" coords="363,413,525,454"/>
+<area shape="rect" id="node2" href="$d5/d6a/classDynObject.html" title="Dynamic object base implementation. " alt="" coords="61,235,145,262"/>
+<area shape="rect" id="node3" href="$dd/dc4/classScenePart.html" title="Class representing a scene part. " alt="" coords="62,131,145,158"/>
+<area shape="rect" id="node4" href="$d5/dcb/classRotation.html" title="Rotation" alt="" coords="5,13,76,39"/>
+<area shape="rect" id="node7" href="$d2/d0a/classDynMotionEngine.html" title="Adapter which wraps a rigid motion engine to make it fit the dynamic Helios context. " alt="" coords="333,235,458,262"/>
+<area shape="rect" id="node8" href="$dc/df6/classrigidmotion_1_1RigidMotionR3Factory.html" title="Class providing building methods for rigid motions in . " alt="" coords="281,124,443,165"/>
+<area shape="rect" id="node9" href="$dc/d00/classrigidmotion_1_1RigidMotionFactory.html" title="Class that must be extended by any class which provides factory methods for rigid motions..." alt="" coords="281,5,443,47"/>
+<area shape="rect" id="node10" href="$d2/da8/classrigidmotion_1_1RigidMotionEngine.html" title="Class to handle operations with rigid motions. " alt="" coords="467,124,630,165"/>
 </map>

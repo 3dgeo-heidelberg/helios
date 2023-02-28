@@ -13,7 +13,6 @@ using std::shared_ptr;
  *  KDTree building
  */
 class MultiThreadSAHKDTreeFactory : public MultiThreadKDTreeFactory{
-using MultiThreadKDTreeFactory::kdtf;
 private:
     // ***  SERIALIZATION  *** //
     // *********************** //
@@ -69,22 +68,8 @@ public:
      */
     MultiThreadSAHKDTreeFactory(
         shared_ptr<SimpleKDTreeFactory> const kdtf,
-        shared_ptr<SimpleKDTreeGeometricStrategy> const gs,
-        size_t const numJobs=2,
-        size_t const geomJobs=2
+        size_t const numJobs=2
     );
     virtual ~MultiThreadSAHKDTreeFactory() = default;
-
-    // ***  CLONE  *** //
-    // *************** //
-    /**
-     * @see KDTreeFactory::clone
-     */
-    KDTreeFactory * clone() const override;
-    /**
-     *
-     * @brief Assign attributes from MultiThreadSAHKDTreeFactory to its clone
-     */
-    void _clone(KDTreeFactory *kdtf) const override;
 
 };

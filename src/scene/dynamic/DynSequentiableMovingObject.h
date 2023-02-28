@@ -58,12 +58,9 @@ public:
      */
     DynSequentiableMovingObject() = default;
     /**
-     * @see DynMovingObject::DynMovingObject(ScenePart const &sp, bool const)
+     * @see DynMovingObject::DynMovingObject(ScenePart const &sp)
      */
-    DynSequentiableMovingObject(
-        ScenePart const &sp,
-        bool const shallowPrimitives=false
-    ) : DynMovingObject(sp, shallowPrimitives) {}
+    DynSequentiableMovingObject(ScenePart const &sp) : DynMovingObject(sp) {}
     /**
      * @see DynMovingObject::DynMovingObject(string const)
      */
@@ -89,15 +86,15 @@ public:
     /**
      * @brief Sequentiable dynamic motions behavior implementation
      *
-     * It is basically as the DynMovingObject::doSimStep but filling motion
+     * It is basically as the DynMovingObject::doStep but filling motion
      *  queues with dynamic motions coming from dynamic sequencer
      *
      * @return True if the dynamic object was modified, false otherwise
-     * @see DynMovingObject::doSimStep
+     * @see DynMovingObject::doStep
      * @see DynSequencer
      * @see DynSequence
      */
-    bool doSimStep() override;
+    bool doStep() override;
 protected:
     /**
      * @brief Fill motion queues with dynamic motions coming from dynamic

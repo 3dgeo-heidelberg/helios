@@ -25,6 +25,7 @@ var classrigidmotion_1_1RigidMotion =
     ] ],
     [ "RigidMotion", "d7/d84/classrigidmotion_1_1RigidMotion.html#acf4e7627472f7afd7593a1b02ad49ac2", null ],
     [ "RigidMotion", "d7/d84/classrigidmotion_1_1RigidMotion.html#aa61488d6e23c10f8143c8ba08a1b0ac3", null ],
+    [ "~RigidMotion", "d7/d84/classrigidmotion_1_1RigidMotion.html#ad9b37c57505baf7afd6f553ddd776be8", null ],
     [ "compose", "d7/d84/classrigidmotion_1_1RigidMotion.html#ac357c797732ee5a7d988e16ac911efbd", null ],
     [ "composeInPlace", "d7/d84/classrigidmotion_1_1RigidMotion.html#a3c45e22fd4f3f7447afac038feb1f4cc", null ],
     [ "findInvariantDimensionality", "d7/d84/classrigidmotion_1_1RigidMotion.html#ac8c8ccf506a652cbafd87f715ec3f392", null ],
@@ -37,6 +38,7 @@ var classrigidmotion_1_1RigidMotion =
     [ "serialize", "d7/d84/classrigidmotion_1_1RigidMotion.html#a95368d084d984bc260b778a0477d04f9", null ],
     [ "setA", "d7/d84/classrigidmotion_1_1RigidMotion.html#afbcb652a1ce947240c5b70cb132ee09e", null ],
     [ "setC", "d7/d84/classrigidmotion_1_1RigidMotion.html#afee19fb86c47e69c4fa06966c701bd8f", null ],
+    [ "boost::serialization::access", "d7/d84/classrigidmotion_1_1RigidMotion.html#ac98d07dd8f7b70e16ccb9a01abf56b9c", null ],
     [ "A", "d7/d84/classrigidmotion_1_1RigidMotion.html#af809d870aad52d3bd417b4832498c676", null ],
     [ "C", "d7/d84/classrigidmotion_1_1RigidMotion.html#aa5c886a5a11975a809580318ba5cdc42", null ]
 ];

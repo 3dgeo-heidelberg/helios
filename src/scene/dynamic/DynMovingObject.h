@@ -7,16 +7,12 @@
 #include <scene/dynamic/DynMotion.h>
 #include <rigidmotion/RigidMotionEngine.h>
 #include <scene/dynamic/DynMotionEngine.h>
-#include <adt/grove/KDGroveSubject.h>
-#include <sim/tools/VoidStepLoop.h>
 
 using std::shared_ptr;
 using std::make_shared;
 using std::deque;
 
 using rigidmotion::RigidMotionEngine;
-
-class KDGrove;
 
 /**
  * @author Alberto M. Esmoris Pena
@@ -36,7 +32,7 @@ class KDGrove;
  * @see rigidmotion::RigidMotionR2Factory
  * @see rigidmotion::RigidMotionR3Factory
  */
-class DynMovingObject : public DynObject, public KDGroveSubject{
+class DynMovingObject : public DynObject{
 private:
     // ***  SERIALIZATION  *** //
     // *********************** //
@@ -49,37 +45,11 @@ private:
      */
     template <typename Archive>
     void serialize(Archive &ar, const unsigned int version){
-        boost::serialization::split_member(ar, *this, version);
-    }
-    /**
-     * @brief Save a serialized dynamic moving object to a stream of bytes
-     * @see DynMovingObject::serialize(Archive &, const unsigned int)
-     * @see DynMovingObject::load(Archive &, const unsigned int)
-     */
-    template <typename Archive>
-    void save(Archive &ar, const unsigned int version) const{
         boost::serialization::void_cast_register<DynMovingObject, DynObject>();
         ar &boost::serialization::base_object<DynObject>(*this);
         ar &positionMotionQueue;
         ar &normalMotionQueue;
         ar &dme;
-        ar &observerStepLoop.getStepInterval();
-    }
-    /**
-     * @brief Load a serialized dynamic moving object from a stream of bytes
-     * @see DynMovingObject::serialize(Archive &, const unsigned int)
-     * @see DynMovingObject::save(Archive &, const unsigned int)
-     */
-    template <typename Archive>
-    void load(Archive &ar, const unsigned int version) {
-        boost::serialization::void_cast_register<DynMovingObject, DynObject>();
-        ar &boost::serialization::base_object<DynObject>(*this);
-        ar &positionMotionQueue;
-        ar &normalMotionQueue;
-        ar &dme;
-        int stepInterval;
-        ar &stepInterval;
-        observerStepLoop.setStepInterval(stepInterval);
     }
 protected:
     // ***  ATTRIBUTES  *** //
@@ -109,28 +79,6 @@ protected:
      * @see DynMotionEngine
      */
     DynMotionEngine dme;
-    /**
-     * @brief The observer grove to which the dynamic moving object is
-     *  registered
-     * @see BasicDynGrove
-     * @see KDGrove
-     */
-    std::shared_ptr<KDGrove> kdGroveObserver;
-    /**
-     * @brief The identifier of the dynamic moving object as subject of a
-     *  KDGrove
-     * @see DynMovingObject::kdGroveObserver
-     */
-    size_t groveSubjectId;
-    /**
-     * @brief Handle how many consecutive updates must elapse so the
-     *  observer is notified
-     * @see DynMovingObject::kdGroveObserver
-     * @see DynMovingObject::doObserverUpdate
-     * @see DynMovingObject::getObserverStepInterval
-     * @see DynMovingObject::setObserverStepInterval
-     */
-    VoidStepLoop<> observerStepLoop;
 
 public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //
@@ -138,41 +86,26 @@ public:
     /**
      * @see DynObject::DynObject
      */
-    DynMovingObject() :
-        DynObject(),
-        observerStepLoop(1, [&] () -> void {doObserverUpdate();})
-    {}
+    DynMovingObject() = default;
     /**
-     * @see DynObject::DynObject(ScenePart const &, bool const)
+     * @see DynObject::DynObject(ScenePart const &)
      */
-    DynMovingObject(ScenePart const &sp, bool const shallowPrimitives=false) :
-        DynObject(sp, shallowPrimitives),
-        kdGroveObserver(nullptr),
-        observerStepLoop(1, [&] () -> void {doObserverUpdate();})
-    {}
+    DynMovingObject(ScenePart const &sp) : DynObject(sp) {}
     /**
      * @see DynObject::DynObject(string const)
      */
-    DynMovingObject(string const id) :
-        DynObject(id),
-        kdGroveObserver(nullptr),
-        observerStepLoop(1, [&] () -> void {doObserverUpdate();})
-    {}
+    DynMovingObject(string const id) : DynObject(id) {}
     /**
      * @see DynObject::DynObject(vector<Primitive *> const &)
      */
     DynMovingObject(vector<Primitive *> const &primitives) :
-        DynObject(primitives),
-        kdGroveObserver(nullptr),
-        observerStepLoop(1, [&] () -> void {doObserverUpdate();})
+        DynObject(primitives)
     {}
     /**
      * @see DynObject::DynObject(string const, vector<Primitive *> const &)
      */
     DynMovingObject(string const id, vector<Primitive *> const &primitives) :
-        DynObject(id, primitives),
-        kdGroveObserver(nullptr),
-        observerStepLoop(1, [&] () -> void {doObserverUpdate();})
+        DynObject(id, primitives)
     {}
     virtual ~DynMovingObject() = default;
 
@@ -208,17 +141,7 @@ public:
      * @see DynMovingObject::positionMotionQueue
      * @see DynMovingObject::normalMotionQueue
      */
-    virtual bool doSimStep();
-    /**
-     * @brief Handle update notifications to the subscribed observer. It is,
-     *  notify the observer that it has been updated by the dynamic moving
-     *  object.
-     * @see DynMovingObject::observerStepLoop
-     * @see DynMovingObject::kdGroveObserver
-     * @see DynMovingObject::getObserverStepInterval
-     * @see DynMovingObject::setObserverStepInterval
-     */
-    virtual void doObserverUpdate();
+    bool doStep() override;
 
 protected:
     /**
@@ -313,58 +236,4 @@ protected:
      * @return First dynamic motion in the given queue
      */
     shared_ptr<DynMotion> _next(deque<shared_ptr<DynMotion>> &deck);
-
-public:
-    // ***  GROVE SUBSCRIBER METHODS  *** //
-    // ********************************** //
-    /**
-     * @brief Register given grove as a observer for the dynamic moving object
-     * @param kdGroveObserver Grove to be registered as a observer
-     * @see KDGroveSubject::registerObserverGrove
-     */
-    void registerObserverGrove(shared_ptr<KDGrove> kdGroveObserver) override;
-    /**
-     * @brief Unregister current grove observer
-     * @see KDGroveSubject::unregisterObserverGrove
-     */
-    void unregisterObserverGrove() override;
-    /**
-     * @see BasicDynGroveSubject::setGroveSubjectId
-     */
-    void setGroveSubjectId(std::size_t const id) override;
-    /**
-     * @see BasicDynGroveSubject::getGroveSubjectId
-     */
-    std::size_t getGroveSubjectId() override;
-
-    // ***  GETTERs and SETTERs  *** //
-    // ***************************** //
-    /**
-     * @see ScenePart::getType
-     */
-    ObjectType getType() const override {return ObjectType::DYN_MOVING_OBJECT;}
-    /**
-     * @brief Set the step interval between consecutive observer update
-     *  notifications
-     * @param stepInterval The new step interval between consecutive observer
-     *  update notifications
-     * @see DynMovingObject::observerStepLoop
-     * @see DynMovingObject::kdGroveObserver
-     * @see DynMovingObject::doObserverUpdate
-     * @see DynMovingObject::getObserverStepInterval
-     */
-    inline void setObserverStepInterval(int const stepInterval)
-    {observerStepLoop.setStepInterval(stepInterval);}
-    /**
-     * @brief Get the step interval between consecutive observer update
-     *  notifications
-     * @return The step interval between consecutive observer update
-     *  notifications
-     * @see DynMovingObject::observerStepLoop
-     * @see DynMovingObject::kdGroveObserver
-     * @see DynMovingObject::doObserverUpdate
-     * @see DynMovingObject::setObserverStepInterval
-     */
-    inline int getObserverStepInterval() const
-    {return observerStepLoop.getStepInterval();}
 };

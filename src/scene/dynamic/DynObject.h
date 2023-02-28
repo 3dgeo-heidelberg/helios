@@ -5,7 +5,6 @@
 #include <armadillo>
 
 #include <assetloading/ScenePart.h>
-#include <sim/tools/NonVoidStepLoop.h>
 
 using std::vector;
 using std::string;
@@ -33,42 +32,9 @@ private:
      */
     template <typename Archive>
     void serialize(Archive &ar, const unsigned int version){
-        boost::serialization::split_member(ar, *this, version);
-    }
-    /**
-     * @brief Save a serialized dynamic object to a stream of bytes
-     * @see DynObject::serialize(Archive &, const unsigned int)
-     * @see DynObject::load(Archive &, const unsigned int)
-     */
-    template <typename Archive>
-    void save(Archive &ar, const unsigned int version) const{
         boost::serialization::void_cast_register<DynObject, ScenePart>();
         ar &boost::serialization::base_object<ScenePart>(*this);
-        ar &stepLoop.getStepInterval();
     }
-    /**
-     * @brief Load a serialized dynamic object from a stream of bytes
-     * @see DynObject::serialize(Archive &, const unsigned int)
-     * @see DynObject::save(Archive &, const unsigned int)
-     */
-    template <typename Archive>
-    void load(Archive &ar, const unsigned int version) {
-        boost::serialization::void_cast_register<DynObject, ScenePart>();
-        ar &boost::serialization::base_object<ScenePart>(*this);
-        int stepInterval;
-        ar &stepInterval;
-        stepLoop.setStepInterval(stepInterval);
-    }
-
-protected:
-    // ***  ATTRIBUTES  *** //
-    // ******************** //
-    /**
-     * @brief The object to handle the execution of the dynamic object
-     *  logic between specified simulation steps.
-     * @see DynObject::doStep
-     */
-    NonVoidStepLoop<bool> stepLoop;
 
 public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //
@@ -76,33 +42,24 @@ public:
     /**
      * @brief Dynamic object default constructor
      */
-    DynObject() :
-        stepLoop(1, [&] () -> bool{return doSimStep();})
-    {}
+    DynObject() = default;
     /**
      * @brief Build the dynamic object from given scene part
      * @param sp Scene part as basis for dynamic object
-     * @see ScenePart::ScenePart(ScenePart const &, bool const)
      */
-    DynObject(ScenePart const &sp, bool const shallowPrimitives=false) :
-        ScenePart(sp, shallowPrimitives),
-        stepLoop(1, [&] () -> bool{return doSimStep();})
-    {}
+    DynObject(ScenePart const &sp) : ScenePart(sp) {}
     /**
      * @brief Dynamic object constructor with id as argument
      * @param id The id for the dynamic object
      * @see DynObject::id
      */
-    DynObject(string const id) :
-        stepLoop(1, [&] () -> bool{return doSimStep();})
-    {setId(id);}
+    DynObject(string const id) {setId(id);}
     /**
      * @brief Dynamic object constructor with primitives as argument
      * @param primitives The primitives defining the dynamic object
      * @see DynObject::primitives
      */
-    DynObject(vector<Primitive *> const &primitives) :
-        stepLoop(1, [&] () -> bool{return doSimStep();})
+    DynObject(vector<Primitive *> const &primitives)
     {setPrimitives(primitives);}
     /**
      * @brief Dynamic object constructor with id and primitives as arguments
@@ -111,9 +68,7 @@ public:
      * @see DynObject::id
      * @see DynObject::primitives
      */
-    DynObject(string const id, vector<Primitive *> const &primitives) :
-        stepLoop(1, [&] () -> bool{return doSimStep();})
-    {
+    DynObject(string const id, vector<Primitive *> const &primitives){
         setId(id);
         setPrimitives(primitives);
     }
@@ -121,17 +76,6 @@ public:
 
     // ***  DYNAMIC BEHAVIOR  *** //
     // ************************** //
-    /**
-     * @brief Handle the computation of current simulation step according to
-     *  configured step loop. This means that the DynObject::doSimStep
-     *  method (which implements the logic of the DynObject) will be
-     *  called by the DynObject::stepLoop when enough simulation steps
-     *  have elapsed.
-     * @return True if the dynamic object was modified, false otherwise
-     * @see DynObject::doSimStep
-     * @see DynObject::stepLoop
-     */
-    virtual bool doStep();
     /**
      * @brief Any dynamic object concrete implementation must override this
      *  method providing dynamic behavior to the object.
@@ -152,7 +96,7 @@ public:
      *  False if no changes have been performed.
      * @see DynObject::operator()()
      */
-    virtual bool doSimStep() = 0;
+    virtual bool doStep() = 0;
     /**
      * @brief Alias for DynObject::doStep method so it can be used as a functor
      * @see DynObject::doStep
@@ -388,30 +332,4 @@ protected:
         std::function<void(Vertex *, arma::colvec const &)> set,
         arma::mat const &X
     );
-
-public:
-    // ***  GETTERs and SETTERs  *** //
-    // ***************************** //
-    /**
-     * @see ScenePart::getType
-     */
-    ObjectType getType() const override {return ObjectType::DYN_OBJECT;}
-    /**
-     * @brief Obtain the current step interval for the dynamic object
-     * @return Current step interval for the dynamic object
-     * @see DynObject::stepLoop
-     * @see DynObject::doStep
-     * @see DynObject::setStepInterval
-     */
-    inline int getStepInterval() const
-    {return stepLoop.getStepInterval();}
-    /**
-     * @brief Set the step interval for the dynamic object
-     * @param stepInterval The new step interval for the dynamic object
-     * @see DynObject::stepLoop
-     * @see DynObject::doStep
-     * @see DynObject::getStepInterval
-     */
-    inline void setStepInterval(int const stepInterval)
-    {stepLoop.setStepInterval(stepInterval);}
 };

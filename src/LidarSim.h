@@ -18,12 +18,7 @@ public:
      *  form, false otherwise
      * @param calcEchowidth Calc echo width flag. True to enable echo width
      *  computation, false otherwise
-     * @param parallelizationStrategy Specify the parallelization strategy
      * @param njobs Number of concurrent jobs (0 means as many as possible)
-     * @param chunkSize Chunk size for job distribution in parallel execution
-     *  context
-     * @param warehouseFactor Factor defining warehouse size in parallel
-     *  execution context
      * @param fullWaveNoise Flag to specify full wave noise usage. True to
      *  enable full wave noise, false otherwise
      * @param platformNoiseDisabled Flag to specify platform noise disabled.
@@ -41,12 +36,9 @@ public:
      * @param fixedIncidenceAngle Flag to specify usage of fixed incidence
      *  angle. True means fixed incidence angle will be used, false implies
      *  it will not
-     * @param gpsStartTime Specify the fixed GPS start time
      * @param lasScale Specify LAS format scale factor
      * @param kdtType Specify the type of KDTree building strategy
      * @param kdtJobs Specify how many threads use to build the KDTree
-     * @param kdtGeomJobs Specify how many threads use to build upper nodes
-     *  of the KDTree
      * @param sahLossNodes Specify the number of nodes used to find the optimal
      *  split point when SAH or the number of samples if fast SAH is used
      */
@@ -56,10 +48,7 @@ public:
         std::string outputPath,
         bool writeWaveform = false,
         bool calcEchowidth = false,
-        int parallelizationStrategy = 0,
         size_t njobs = 0,
-        int chunkSize = 32,
-        int warehouseFactor = 4,
         bool fullWaveNoise = false,
         bool platformNoiseDisabled = false,
         bool legNoiseDisabled = false,
@@ -68,11 +57,9 @@ public:
         bool las10 = false,
         bool zipOutput = false,
         bool fixedIncidenceAngle = false,
-        std::string gpsStartTime = "",
         double lasScale = 0.0001,
         int kdtType = 1,
         size_t kdtJobs = 1,
-        size_t kdtGeomJobs = 1,
         size_t sahLossNodes = 21
     );
 };

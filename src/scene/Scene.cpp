@@ -15,10 +15,10 @@ using namespace std;
 #include <glm/gtx/string_cast.hpp>
 using namespace glm;
 
-#include <KDTreeRaycaster.h>
+#include "KDTreeRaycaster.h"
 
-#include <Scene.h>
-#include <TimeWatcher.h>
+#include "Scene.h"
+#include "TimeWatcher.h"
 #include <UniformNoiseSource.h>
 #include <surfaceinspector/maths/Plane.hpp>
 #include <surfaceinspector/maths/PlaneFitter.hpp>
@@ -54,14 +54,11 @@ Scene::Scene(Scene &s) {
     this->primitives.push_back(p->clone());
   }
 
+  this->kdtf = s.kdtf;
+  this->kdtree = shared_ptr<KDTreeNodeRoot>(
+      kdtf->makeFromPrimitivesUnsafe(this->primitives)
+  );
   registerParts();
-  this->kdgf = s.kdgf;
-  if(s.parts.empty()){
-      kdgrove = nullptr;
-  }
-  else{
-      buildKDGrove(true);
-  }
 }
 
 // ***  M E T H O D S  *** //
@@ -70,7 +67,7 @@ bool Scene::finalizeLoading(bool const safe) {
   if (primitives.empty()) return false;
 
   // #####   UPDATE PRIMITIVES ON FINISH LOADING   #####
-  UniformNoiseSource<double> uns(*DEFAULT_RG, -1, 1);
+  UniformNoiseSource<double> uns(-1, 1);
   for (Primitive *p : primitives) {
     p->onFinishLoading(uns);
   }
@@ -141,23 +138,19 @@ bool Scene::finalizeLoading(bool const safe) {
   // Compute each part centroid wrt to scene
   for(shared_ptr<ScenePart> & part : parts) part->computeCentroid();
 
-  // Build KDGrove
-  if(kdgf != nullptr) buildKDGroveWithLog(safe);
+  // ############# BEGIN Build KD-tree ##################
+  if(kdtf != nullptr) buildKDTreeWithLog(safe);
+  // ############# END Build KD-tree ##################
 
   return true;
 }
 
 void Scene::registerParts(){
-    // Find scene parts from primitives
     unordered_set<shared_ptr<ScenePart>> partsSet;
     for(Primitive *primitive : primitives)
         if(primitive->part != nullptr)
             partsSet.insert(primitive->part);
-    // Remove already registered scene parts
-    unordered_set<shared_ptr<ScenePart>>::iterator it;
-    for(shared_ptr<ScenePart> part : parts) partsSet.erase(part);
-    // Register all new scene parts
-    parts.insert(parts.end(), partsSet.begin(), partsSet.end());
+    parts = vector<shared_ptr<ScenePart>>(partsSet.begin(), partsSet.end());
 }
 
 shared_ptr<AABB> Scene::getAABB() { return this->bbox; }
@@ -187,34 +180,34 @@ glm::dvec3 Scene::getGroundPointAt(glm::dvec3 point) {
 
 shared_ptr<RaySceneIntersection>
 Scene::getIntersection(
-    glm::dvec3 const &rayOrigin,
-    glm::dvec3 const &rayDir,
-    bool const groundOnly
-) const {
-    vector<double> tMinMax = bbox->getRayIntersection(rayOrigin, rayDir);
-    return getIntersection(tMinMax, rayOrigin, rayDir, groundOnly);
-}
+    glm::dvec3 &rayOrigin,
+    glm::dvec3 &rayDir,
+    bool groundOnly
+){
+  vector<double> tMinMax = bbox->getRayIntersection(rayOrigin, rayDir);
+  if (tMinMax.empty()) {
+    logging::DEBUG("tMinMax is empty");
+    return nullptr;
+  }
 
-std::shared_ptr<RaySceneIntersection> Scene::getIntersection(
-    vector<double> const &tMinMax,
-    glm::dvec3 const &rayOrigin,
-    glm::dvec3 const &rayDir,
-    bool const groundOnly
-) const{
-    if (tMinMax.empty()) {
-        logging::DEBUG("tMinMax is empty");
-        return nullptr;
-    }
-    return shared_ptr<RaySceneIntersection>(raycaster->search(
-        rayOrigin, rayDir, tMinMax[0], tMinMax[1], groundOnly
-    ));
+  // TODO test without kdtree
+  bool bruteForce = false;
+  shared_ptr<RaySceneIntersection> result;
+
+  if (!bruteForce) {
+    KDTreeRaycaster raycaster(kdtree);
+    result = shared_ptr<RaySceneIntersection>(raycaster.search(
+        rayOrigin, rayDir, tMinMax[0], tMinMax[1], groundOnly));
+  }
+
+  return result;
 }
 
 map<double, Primitive *>
 Scene::getIntersections(
     glm::dvec3 &rayOrigin,
     glm::dvec3 &rayDir,
-    bool const groundOnly
+    bool groundOnly
 ){
 
   vector<double> tMinMax = bbox->getRayIntersection(rayOrigin, rayDir);
@@ -223,9 +216,9 @@ Scene::getIntersections(
     return {};
   }
 
-  return raycaster->searchAll(
-      rayOrigin, rayDir, tMinMax[0], tMinMax[1], groundOnly
-  );
+  shared_ptr<KDTreeRaycaster> raycaster(new KDTreeRaycaster(kdtree));
+  return raycaster->searchAll(rayOrigin, rayDir, tMinMax[0], tMinMax[1],
+                              groundOnly);
 }
 
 glm::dvec3 Scene::getShift() { return this->bbox_crs->getMin(); }
@@ -378,28 +371,23 @@ glm::dvec3 Scene::findForceOnGroundQ(
     return minzv;
 }
 
-void Scene::buildKDGrove(bool const safe){
-    kdgrove = kdgf->makeFromSceneParts(
-        parts,  // Scene parts
-        true,   // Merge non moving
-        safe,   // Safe
-        true,   // Compute KDGrove stats
-        true,   // Report KDGrove stats
-        true,   // Compute KDTree stats
-        true    // Report KDTree stats
+void Scene::buildKDTree(bool const safe){
+    kdtree = shared_ptr<KDTreeNodeRoot>(
+        safe ?
+        kdtf->makeFromPrimitives(primitives) :
+        kdtf->makeFromPrimitivesUnsafe(primitives)
     );
-    raycaster = std::make_shared<KDGroveRaycaster>(kdgrove);
 }
 
-void Scene::buildKDGroveWithLog(bool const safe){
-    logging::INFO("Building KD-Grove... ");
-    TimeWatcher kdgTw;
-    kdgTw.start();
-    buildKDGrove(safe);
-    kdgTw.stop();
+void Scene::buildKDTreeWithLog(bool const safe){
+    logging::INFO("Building KD-Tree... ");
+    TimeWatcher kdtTw;
+    kdtTw.start();
+    buildKDTree(safe);
+    kdtTw.stop();
     std::stringstream ss;
-    ss << "KDG built in " << kdgTw.getElapsedDecimalSeconds() << "s";
-    logging::TIME(ss.str());
+    ss << "KD built in " << kdtTw.getElapsedDecimalSeconds() << "s";
+    logging::INFO(ss.str());
 }
 
 // ***  READ/WRITE  *** //

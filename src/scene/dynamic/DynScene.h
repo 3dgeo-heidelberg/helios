@@ -6,7 +6,6 @@
 #include <scene/Scene.h>
 #include <scene/StaticScene.h>
 #include <scene/dynamic/DynObject.h>
-#include <sim/tools/NonVoidStepLoop.h>
 
 using std::vector;
 using std::shared_ptr;
@@ -36,42 +35,16 @@ private:
      * @tparam Archive Type of rendering
      * @param ar Specific rendering for the stream of bytes
      * @param version Version number for the DynScene
-     * @see DynScene::save(Archive &, const unsigned int)
-     * @see DynScene::load(Archive &, const unsigned int)
      */
     template <class Archive>
     void serialize(Archive &ar, const unsigned int version){
-        boost::serialization::split_member(ar, *this, version);
-    }
-    /**
-     * @brief Save a serialized DynScene to a stream of bytes
-     * @see DynScene::serialize(Archive &, const unsigned int)
-     * @see DynScene::load(Archive &, const unsigned int)
-     */
-    template <class Archive>
-    void save(Archive &ar, const unsigned int version) const {
         boost::serialization::void_cast_register<DynScene, StaticScene>();
         ar &boost::serialization::base_object<StaticScene>(*this);
         ar &dynObjs;
         ar &updated;
-        ar &stepLoop.getStepInterval();
+        ar &dynamicSpaceInterval;
+        ar &currentStep;
     }
-    /**
-     * @brief Load a serialized DynScene from a stream of bytes
-     * @see DynScene::serialize(Archive &, const unsigned int)
-     * @see DynScene::save(Archive &, const unsigned int)
-     */
-    template <class Archive>
-    void load(Archive &ar, const unsigned int version){
-        boost::serialization::void_cast_register<DynScene, StaticScene>();
-        ar &boost::serialization::base_object<StaticScene>(*this);
-        ar &dynObjs;
-        ar &updated;
-        int stepInterval;
-        ar &stepInterval;
-        stepLoop.setStepInterval(stepInterval);
-    }
-
 protected:
     // ***  ATTRIBUTES  *** //
     // ******************** //
@@ -89,10 +62,23 @@ protected:
      */
     vector<bool> updated;
     /**
-     * @brief The step loop for the dynamic scene
-     * @see StepLoop
+     * @brief Specify how many simulation steps must elapse between each
+     *  simulation step computation for the dynamic scene
      */
-    NonVoidStepLoop<bool> stepLoop;
+    int dynamicSpaceInterval = 1;
+    /**
+     * @brief Stores the current simulation step.
+     *
+     * Let \f$\delta\f$ be the dynamic space frequency and \f$s_t\f$ the step
+     *  at \f$t\f$ instant. Thus, the current step update behavior can be
+     *  defined as follows:
+     *
+     * \f[
+     *   s_{t+1} = \left(s_{t} + 1\right) \mod \delta
+     * \f]
+     * @see DynScene::dynamicSpaceInterval
+     */
+    int currentStep = 0;
 
 public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //
@@ -100,9 +86,7 @@ public:
     /**
      * @brief Dynamic scene default constructor
      */
-    DynScene(int const stepInterval=1) :
-        stepLoop(stepInterval, [&] () -> bool{return doStep();})
-    {}
+    DynScene() = default;
     ~DynScene() override {}
     /**
      * @brief Copy constructor for dynamic scene
@@ -113,43 +97,32 @@ public:
      * @brief Build a dynamic scene using given scene as basis
      * @param s Basis scene for dynamic scene
      */
-    DynScene(Scene &s, int const stepInterval=1) :
-        StaticScene(s),
-        stepLoop(stepInterval, [&] () -> bool{return doStep();})
-    {}
+    DynScene(Scene &s) : StaticScene(s) {}
     /**
      * @brief Build a dynamic scene using given static scene as basis
      * @param ss Basis static scene for dynamic scene
      */
-    DynScene(StaticScene &ss, int const stepInterval=1) :
-        StaticScene(ss),
-        stepLoop(stepInterval, [&] () -> bool{return doStep();})
-    {}
+    DynScene(StaticScene &ss) : StaticScene(ss) {}
 
     // ***  SIMULATION STEP  *** //
     // ************************* //
     /**
      * @brief Do corresponding computations for the dynamic scene at current
-     *  simulation step, if any.
+     *  simulation step if proceeds.
      *
      * Computations only occur for simulation steps which satisfy:
      * \f[
-     *  s_{t} \equiv 0 \mod \Delta
+     *  s_{t} \equiv 0 \mod \delta
      * \f]
      *
-     * Where \f$\Delta\f$ is the step interval and \f$s_{t}\f$ is the
+     * Where \f$\delta\f$ is the dynamic space frequency and \f$s_{t}\f$ is the
      *  current step at instant \f$t\f$.
-     *
-     * Notice handling of this loop is done through StepLoop class
-     *
      * @return True if any dynamic object was udpated, false otherwise
-     * @see DynScene::stepInterval
+     * @see DynScene::dynamicSpaceInterval
      * @see DynScene::currentStep
      * @see DynScene::doStep
-     * @see Scene::doSimStep
-     * @see StepLoop
      */
-    bool doSimStep() override;
+    bool doSimStep();
     /**
      * @brief Dynamic behavior computation itself.
      *
@@ -159,13 +132,6 @@ public:
      * @see DynScene::doSimStep
      */
     bool doStep();
-    /**
-     * @brief Build the step loop with given step interval for the dynamic
-     *  scene
-     * @param stepInterval Step interval for the step loop to be built
-     * @see StepLoop
-     */
-    virtual void makeStepLoop(int const stepInterval);
 
     // ***  GETTERs and SETTERs  *** //
     // ***************************** //
@@ -220,22 +186,6 @@ public:
      */
     inline bool isDynObjectUpdated(size_t const index) const
     {return updated[index];}
-    /**
-     * @brief Obtain the current step interval for the dynamic scene
-     * @return Current step interval for the dynamic scene
-     * @see DynScene::stepLoop
-     */
-    inline int getStepInterval() const
-    {return stepLoop.getStepInterval();}
-    /**
-     * @brief Set the step interval for the dynamic scene
-     * @param stepInterval The new step interval for the dynamic scene
-     * @see DynScene::stepLoop
-     */
-    inline void setStepInterval(int const stepInterval)
-    {stepLoop.setStepInterval(stepInterval);}
-
-
 
 
     // ***   READ/WRITE  *** //

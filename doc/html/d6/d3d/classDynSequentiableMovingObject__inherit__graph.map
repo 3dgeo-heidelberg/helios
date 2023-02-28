@@ -1,8 +1,5 @@
 <map id="DynSequentiableMovingObject" name="DynSequentiableMovingObject">
-<area shape="rect" id="node1" title="Implementation of a dynamic object which supports sequentiable dynamic motions." alt="" coords="17,259,240,285"/>
-<area shape="rect" id="node2" href="$d4/d96/classDynMovingObject.html" title="Implementation of a dynamic object which supports dynamic motions (extended rigid motions)" alt="" coords="59,184,198,211"/>
-<area shape="rect" id="node3" href="$d5/d6a/classDynObject.html" title="Dynamic object base implementation." alt="" coords="10,109,101,136"/>
-<area shape="rect" id="node4" href="$dd/dc4/classScenePart.html" title="Class representing a scene part." alt="" coords="5,20,92,47"/>
-<area shape="rect" id="node5" href="$dc/dbb/classKDGroveSubject.html" title="Interface defining the behaviors that must be supported by any object that can notify to a KDGrove." alt="" coords="139,109,267,136"/>
-<area shape="rect" id="node6" href="$d2/d33/classBasicDynGroveSubject.html" title=" " alt="" coords="116,5,307,61"/>
+<area shape="rect" id="node2" href="$d4/d96/classDynMovingObject.html" title="Implementation of a dynamic object which supports dynamic motions (extended rigid motions) ..." alt="" coords="43,155,169,181"/>
+<area shape="rect" id="node3" href="$d5/d6a/classDynObject.html" title="Dynamic object base implementation. " alt="" coords="64,80,148,107"/>
+<area shape="rect" id="node4" href="$dd/dc4/classScenePart.html" title="Class representing a scene part. " alt="" coords="65,5,147,32"/>
 </map>

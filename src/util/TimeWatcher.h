@@ -24,62 +24,13 @@ public:
     /**
      * @brief Start the time watcher, which sets the starting point for a time
      *  measure
-     * @see TimeWatcher::startIfNull
      */
     void start();
-    /**
-     * @brief Start the time watcher but only if it has not been started
-     *  before. Previous start might come either from TimeWatcher::start or
-     *  from TimeWatcher::startIfNull
-     * @see TimeWatcher::start
-     */
-    void startIfNull();
-    /**
-     * @brief Release stored start so it is null.
-     *
-     * For instance, following piece of code will only set the start time
-     *  at first TimeWatcher::startIfNull call
-     * \code
-     *  TimeWatcher tw;
-     *  tw.startIfNull();
-     *  // Do stuff here
-     *  tw.startIfNull();
-     * \endcode
-     *
-     * However, following piece of code will set the start time at second
-     *  TimeWatcher::startIfNull too
-     * \code
-     *  TimeWatcher tw;
-     *  tw.startIfNull();
-     *  // Do some stuff
-     *  tw.releaseStart();
-     *  // Do more stuff
-     *  tw.startIfNull();
-     * \endcode
-     */
-    void releaseStart();
-    /**
-     * @brief Check if time watcher has been started
-     * @return True if time watcher has been started, false otherwise
-     */
-    bool hasStarted() const;
     /**
      * @brief Stop the time watcher, which sets the ending point for a time
      *  measure
      */
     void stop();
-    /**
-     * @brief Save the start time to local cache
-     * @see TimeWatcher::tStart
-     * @see TimeWatcher::loadStart
-     */
-    void saveStart();
-    /**
-     * @brief Load the start time from local cache
-     * @see TimeWatcher::tStart
-     * @see TimeWatcher::saveStart
-     */
-    void loadStart();
     /**
      * @brief Obtain the elapsed time as the difference between the last
      *  start() and the last stop() invocations.
@@ -141,13 +92,6 @@ public:
     void reportFormat(
         std::string msg = "Total elapsed time: "
     );
-
-    /**
-     * @brief Synchronizes start, end and saved start times with those of given
-     *  source
-     * @param source Time watcher to be synchronized with
-     */
-    void synchronize(TimeWatcher const &source);
 private:
     // ***  ATTRIBUTES  *** //
     // ******************** //
@@ -155,7 +99,6 @@ private:
      * @brief Start time point
      *
      * @see TimeWatcher::start
-     * @see TimeWatcher::savedStart
      */
     std::unique_ptr<std::chrono::high_resolution_clock::time_point> tStart;
     /**
@@ -164,16 +107,6 @@ private:
      * @see TimeWatcher::stop
      */
     std::unique_ptr<std::chrono::high_resolution_clock::time_point> tEnd;
-
-    // ***  CACHE  *** //
-    // *************** //
-    /**
-     * @brief Used to store a temporary copy of current tStart
-     * @see TimeWatcher::tStart
-     * @see TimeWatcher::saveStart
-     * @see TimeWatcher::loadStart
-     */
-    std::unique_ptr<std::chrono::high_resolution_clock::time_point> savedStart;
 
     // *** PRIVATE METHODS *** //
     // *********************** //
@@ -184,15 +117,4 @@ private:
      *  nor end time point. TRUE otherwise.
      */
     bool hasNulls();
-    /**
-     * @brief Synchronize time point \f$p\f$ with time point \f$q\f$
-     * @param p Time point to be synchronized
-     * @param q Time point to synchronize with
-     */
-    void syncTimePoints(
-        std::unique_ptr<std::chrono::high_resolution_clock::time_point>
-            &p,
-        std::unique_ptr<std::chrono::high_resolution_clock::time_point> const
-            &q
-    );
 };

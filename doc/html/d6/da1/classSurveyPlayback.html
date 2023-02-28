@@ -113,24 +113,22 @@ Collaboration diagram for SurveyPlayback:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../d7/d39/classSurveyPlayback__coll__graph.png" border="0" usemap="#SurveyPlayback_coll__map" alt="Collaboration graph"/></div>
 <map name="SurveyPlayback_coll__map" id="SurveyPlayback_coll__map">
-<area shape="rect" id="node2" href="../../d1/d7b/classSimulation.html" title="Class representing a simulation. " alt="" coords="1296,168,1379,195"/>
-<area shape="rect" id="node7" href="../../da/dd6/classSimulationReporter.html" title="Class to handle reports related to simulation. " alt="" coords="1501,161,1635,188"/>
-<area shape="rect" id="node3" href="../../de/d9a/classPulseTaskDropper.html" title="Class implementing a task dropper to deal with pulse tasks. " alt="" coords="975,115,1105,141"/>
-<area shape="rect" id="node4" href="../../d5/d2f/classBuddingTaskDropper.html" title="BuddingTaskDropper\l\&lt; PulseTaskDropper,\l PulseTask, PulseThreadPool\lInterface, std::vector\&lt; std\l::vector\&lt; double \&gt; \&gt; &amp;, RandomnessGenerator\l\&lt; double \&gt; &amp;, RandomnessGenerator\&lt; double\l \&gt; &amp;, NoiseSource\&lt; double \&gt; &amp; \&gt;" alt="" coords="627,68,921,183"/>
-<area shape="rect" id="node5" href="../../da/d8d/classTaskDropper.html" title="TaskDropper\&lt; PulseTask,\l PulseThreadPoolInterface,\l TaskArgs... \&gt;" alt="" coords="299,97,479,153"/>
-<area shape="rect" id="node13" href="../../dd/de3/classDiscreteTime.html" title="Class to handle discrete time. It supports transforming from continuous time to discrete time and als..." alt="" coords="503,200,603,227"/>
-<area shape="rect" id="node9" href="../../d6/d8c/classSimulationStepLoop.html" title="Class extending LinearVoidStepLoop to support main simulation loop. " alt="" coords="971,207,1109,233"/>
-<area shape="rect" id="node10" href="../../df/dd6/classLinearVoidStepLoop.html" title="LinearVoidStepLoop\&lt;\&gt;" alt="" coords="697,269,851,296"/>
-<area shape="rect" id="node11" href="../../dd/d96/classVoidStepLoop.html" title="VoidStepLoop\&lt; StepInput\l ... \&gt;" alt="" coords="303,262,474,303"/>
-<area shape="rect" id="node12" href="../../dd/dcc/classStepLoop.html" title="StepLoop\&lt; StepInput\l ... \&gt;" alt="" coords="5,262,151,303"/>
+<area shape="rect" id="node2" href="../../d1/d7b/classSimulation.html" title="Class representing a simulation. " alt="" coords="1344,181,1427,208"/>
+<area shape="rect" id="node3" href="../../d6/ddc/classPulseThreadPool.html" title="Class implementing a thread pool to deal with pulse tasks. " alt="" coords="1108,137,1229,164"/>
+<area shape="rect" id="node4" href="../../d2/dee/classResThreadPool.html" title="ResThreadPool\&lt; std\l::vector\&lt; std::vector\l\&lt; double \&gt; \&gt; &amp;, RandomnessGenerator\l\&lt; double \&gt; &amp;, RandomnessGenerator\l\&lt; double \&gt; &amp;, NoiseSource\&lt; double \&gt; &amp; \&gt;" alt="" coords="636,73,903,159"/>
+<area shape="rect" id="node5" href="../../dc/de7/classThreadPool.html" title="ThreadPool\&lt; TaskArgs\l ... \&gt;" alt="" coords="368,95,524,137"/>
+<area shape="rect" id="node6" href="../../d3/d57/classUniformNoiseSource.html" title="UniformNoiseSource\l\&lt; double \&gt;" alt="" coords="698,183,841,225"/>
+<area shape="rect" id="node7" href="../../d4/d38/classRandomNoiseSource.html" title="RandomNoiseSource\&lt;\l double \&gt;" alt="" coords="369,183,523,225"/>
+<area shape="rect" id="node8" href="../../d9/d6b/classNoiseSource.html" title="NoiseSource\&lt; double \&gt;" alt="" coords="145,203,304,229"/>
+<area shape="rect" id="node9" href="../../dc/d6e/classRandomnessGenerator.html" title="RandomnessGenerator\l\&lt; double \&gt;" alt="" coords="147,137,303,178"/>
 </map>
 <center><span class="legend">[<a target="top" href="../../graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a8a87d0bf79db6bdd8d1107a840843ed1"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/da1/classSurveyPlayback.html#a8a87d0bf79db6bdd8d1107a840843ed1">SurveyPlayback</a> (std::shared_ptr&lt; <a class="el" href="../../d5/db6/classSurvey.html">Survey</a> &gt; survey, const std::string <a class="el" href="../../d6/da1/classSurveyPlayback.html#a8ecaf6182eba1df49d53d30f56bf4260">outputPath</a>, int const <a class="el" href="../../d1/d7b/classSimulation.html#a48673f2bf8e3917d8a2b55f81fdd7ffc">parallelizationStrategy</a>, std::shared_ptr&lt; <a class="el" href="../../df/d9c/classPulseThreadPoolInterface.html">PulseThreadPoolInterface</a> &gt; pulseThreadPoolInterface, int const chunkSize, std::string <a class="el" href="../../d1/d7b/classSimulation.html#ac0b08636aea9fd4109a9e06178537007">fixedGpsTimeStart</a>, bool const <a class="el" href="../../d6/da1/classSurveyPlayback.html#a1b2a23d061084f30108d2115cbfe313e">lasOutput</a>, bool const <a class="el" href="../../d6/da1/classSurveyPlayback.html#a8923c803b7e38d0d99272a03aa886888">las10</a>, bool const <a class="el" href="../../d6/da1/classSurveyPlayback.html#afd7c61d871adcce9096283538e8e8677">zipOutput</a>, bool const <a class="el" href="../../d1/d7b/classSimulation.html#a920742a7e2a07fef6f4c953423886495">exportToFile</a>=true)</td></tr>
-<tr class="memdesc:a8a87d0bf79db6bdd8d1107a840843ed1"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="../../d5/db6/classSurvey.html" title="Class representing a Helios++ survey. ">Survey</a> playback constructor.  <a href="#a8a87d0bf79db6bdd8d1107a840843ed1">More...</a><br /></td></tr>
-<tr class="separator:a8a87d0bf79db6bdd8d1107a840843ed1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ada60f96735928b11a4c549e737c237a5"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/da1/classSurveyPlayback.html#ada60f96735928b11a4c549e737c237a5">SurveyPlayback</a> (std::shared_ptr&lt; <a class="el" href="../../d5/db6/classSurvey.html">Survey</a> &gt; survey, const std::string <a class="el" href="../../d6/da1/classSurveyPlayback.html#a8ecaf6182eba1df49d53d30f56bf4260">outputPath</a>, size_t numThreads, bool <a class="el" href="../../d6/da1/classSurveyPlayback.html#a1b2a23d061084f30108d2115cbfe313e">lasOutput</a>, bool <a class="el" href="../../d6/da1/classSurveyPlayback.html#a8923c803b7e38d0d99272a03aa886888">las10</a>, bool <a class="el" href="../../d6/da1/classSurveyPlayback.html#afd7c61d871adcce9096283538e8e8677">zipOutput</a>, bool <a class="el" href="../../d1/d7b/classSimulation.html#a920742a7e2a07fef6f4c953423886495">exportToFile</a>=true)</td></tr>
+<tr class="memdesc:ada60f96735928b11a4c549e737c237a5"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="../../d5/db6/classSurvey.html" title="Class representing a Helios++ survey. ">Survey</a> playback constructor.  <a href="#ada60f96735928b11a4c549e737c237a5">More...</a><br /></td></tr>
+<tr class="separator:ada60f96735928b11a4c549e737c237a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a36f9638ef520b4d7a47a89957b6fed27"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/da1/classSurveyPlayback.html#a36f9638ef520b4d7a47a89957b6fed27">estimateTime</a> (int legCurrentProgress, bool onGround, double legElapsedLength)</td></tr>
 <tr class="memdesc:a36f9638ef520b4d7a47a89957b6fed27"><td class="mdescLeft">&#160;</td><td class="mdescRight">Time estimation for the entire simulation and current leg. NOTICE this function is called from trackProgress.  <a href="#a36f9638ef520b4d7a47a89957b6fed27">More...</a><br /></td></tr>
 <tr class="separator:a36f9638ef520b4d7a47a89957b6fed27"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -170,9 +168,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../.
 <tr class="memitem:a1c11c633a722976134b39a5f521d2bb3"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="../../de/d51/classLeg.html">Leg</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/da1/classSurveyPlayback.html#a1c11c633a722976134b39a5f521d2bb3">getCurrentLeg</a> ()</td></tr>
 <tr class="memdesc:a1c11c633a722976134b39a5f521d2bb3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain current leg.  <a href="#a1c11c633a722976134b39a5f521d2bb3">More...</a><br /></td></tr>
 <tr class="separator:a1c11c633a722976134b39a5f521d2bb3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae0a99a024583de818484f9b4427b2420"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="../../de/d51/classLeg.html">Leg</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/da1/classSurveyPlayback.html#ae0a99a024583de818484f9b4427b2420">getPreviousLeg</a> ()</td></tr>
-<tr class="memdesc:ae0a99a024583de818484f9b4427b2420"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain the previous leg, if any.  <a href="#ae0a99a024583de818484f9b4427b2420">More...</a><br /></td></tr>
-<tr class="separator:ae0a99a024583de818484f9b4427b2420"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afab006b6ace6eb6b21cb417a0bed78a2"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/da1/classSurveyPlayback.html#afab006b6ace6eb6b21cb417a0bed78a2">getCurrentLegIndex</a> ()</td></tr>
 <tr class="memdesc:afab006b6ace6eb6b21cb417a0bed78a2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain current leg index.  <a href="#afab006b6ace6eb6b21cb417a0bed78a2">More...</a><br /></td></tr>
 <tr class="separator:afab006b6ace6eb6b21cb417a0bed78a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -207,12 +202,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../.
 <tr class="memdesc:aec0dabde539225f6121a5eecffa27396"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain current leg expected remaining time.  <a href="#aec0dabde539225f6121a5eecffa27396">More...</a><br /></td></tr>
 <tr class="separator:aec0dabde539225f6121a5eecffa27396"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classSimulation"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classSimulation')"><img src="../../closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="../../d1/d7b/classSimulation.html">Simulation</a></td></tr>
-<tr class="memitem:aed2f6059225008b436289c792a540ca0 inherit pub_methods_classSimulation"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d7b/classSimulation.html#aed2f6059225008b436289c792a540ca0">Simulation</a> (int const <a class="el" href="../../d1/d7b/classSimulation.html#a48673f2bf8e3917d8a2b55f81fdd7ffc">parallelizationStrategy</a>, std::shared_ptr&lt; <a class="el" href="../../df/d9c/classPulseThreadPoolInterface.html">PulseThreadPoolInterface</a> &gt; pulseThreadPoolInterface, int const chunkSize, std::string <a class="el" href="../../d1/d7b/classSimulation.html#ac0b08636aea9fd4109a9e06178537007">fixedGpsTimeStart</a>=&quot;&quot;)</td></tr>
-<tr class="memdesc:aed2f6059225008b436289c792a540ca0 inherit pub_methods_classSimulation"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="../../d1/d7b/classSimulation.html" title="Class representing a simulation. ">Simulation</a> constructor.  <a href="../../d1/d7b/classSimulation.html#aed2f6059225008b436289c792a540ca0">More...</a><br /></td></tr>
-<tr class="separator:aed2f6059225008b436289c792a540ca0 inherit pub_methods_classSimulation"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1e75978f218fb7a9138b2852584bf40d inherit pub_methods_classSimulation"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d7b/classSimulation.html#a1e75978f218fb7a9138b2852584bf40d">prepareSimulation</a> (int simFrequency_hz)</td></tr>
-<tr class="memdesc:a1e75978f218fb7a9138b2852584bf40d inherit pub_methods_classSimulation"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prepare the simulation before starting its main loop.  <a href="../../d1/d7b/classSimulation.html#a1e75978f218fb7a9138b2852584bf40d">More...</a><br /></td></tr>
-<tr class="separator:a1e75978f218fb7a9138b2852584bf40d inherit pub_methods_classSimulation"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a546896453568ac7077b9f8e04557b74f inherit pub_methods_classSimulation"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d7b/classSimulation.html#a546896453568ac7077b9f8e04557b74f">Simulation</a> (unsigned numThreads, double deviceAccuracy)</td></tr>
+<tr class="memdesc:a546896453568ac7077b9f8e04557b74f inherit pub_methods_classSimulation"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="../../d1/d7b/classSimulation.html" title="Class representing a simulation. ">Simulation</a> constructor.  <a href="../../d1/d7b/classSimulation.html#a546896453568ac7077b9f8e04557b74f">More...</a><br /></td></tr>
+<tr class="separator:a546896453568ac7077b9f8e04557b74f inherit pub_methods_classSimulation"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acf598e815ded8ca12cad5db975ac8849 inherit pub_methods_classSimulation"><td class="memItemLeft" align="right" valign="top"><a id="acf598e815ded8ca12cad5db975ac8849"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d7b/classSimulation.html#acf598e815ded8ca12cad5db975ac8849">start</a> ()</td></tr>
 <tr class="memdesc:acf598e815ded8ca12cad5db975ac8849 inherit pub_methods_classSimulation"><td class="mdescLeft">&#160;</td><td class="mdescRight">Start the simmulation. <br /></td></tr>
@@ -233,33 +225,27 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../.
 <tr class="memitem:a0ba648397480bb134a0bfbbda499914d inherit pub_methods_classSimulation"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d7b/classSimulation.html#a0ba648397480bb134a0bfbbda499914d">setSimSpeedFactor</a> (double factor)</td></tr>
 <tr class="memdesc:a0ba648397480bb134a0bfbbda499914d inherit pub_methods_classSimulation"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the simulation speed factor.  <a href="../../d1/d7b/classSimulation.html#a0ba648397480bb134a0bfbbda499914d">More...</a><br /></td></tr>
 <tr class="separator:a0ba648397480bb134a0bfbbda499914d inherit pub_methods_classSimulation"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acc98b51f4bc9b99c2050e45792e92f49 inherit pub_methods_classSimulation"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d7b/classSimulation.html#acc98b51f4bc9b99c2050e45792e92f49">getSimSpeedFactor</a> () const</td></tr>
-<tr class="memdesc:acc98b51f4bc9b99c2050e45792e92f49 inherit pub_methods_classSimulation"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain simulation speed factor.  <a href="../../d1/d7b/classSimulation.html#acc98b51f4bc9b99c2050e45792e92f49">More...</a><br /></td></tr>
-<tr class="separator:acc98b51f4bc9b99c2050e45792e92f49 inherit pub_methods_classSimulation"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a140e29dd277773a477c89863d31cda8d inherit pub_methods_classSimulation"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d7b/classSimulation.html#a140e29dd277773a477c89863d31cda8d">getSimSpeedFactor</a> ()</td></tr>
+<tr class="memdesc:a140e29dd277773a477c89863d31cda8d inherit pub_methods_classSimulation"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain simulation speed factor.  <a href="../../d1/d7b/classSimulation.html#a140e29dd277773a477c89863d31cda8d">More...</a><br /></td></tr>
+<tr class="separator:a140e29dd277773a477c89863d31cda8d inherit pub_methods_classSimulation"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad0c799ae7d86b495c4b1a1639198e556 inherit pub_methods_classSimulation"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d7b/classSimulation.html#ad0c799ae7d86b495c4b1a1639198e556">setScanner</a> (std::shared_ptr&lt; <a class="el" href="../../dc/d42/classScanner.html">Scanner</a> &gt; scanner)</td></tr>
 <tr class="memdesc:ad0c799ae7d86b495c4b1a1639198e556 inherit pub_methods_classSimulation"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set scanner for the simulation.  <a href="../../d1/d7b/classSimulation.html#ad0c799ae7d86b495c4b1a1639198e556">More...</a><br /></td></tr>
 <tr class="separator:ad0c799ae7d86b495c4b1a1639198e556 inherit pub_methods_classSimulation"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab97f12ae37a7c2e81e377236175c3cd8 inherit pub_methods_classSimulation"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="../../dc/d42/classScanner.html">Scanner</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d7b/classSimulation.html#ab97f12ae37a7c2e81e377236175c3cd8">getScanner</a> ()</td></tr>
 <tr class="memdesc:ab97f12ae37a7c2e81e377236175c3cd8 inherit pub_methods_classSimulation"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain simulation scanner.  <a href="../../d1/d7b/classSimulation.html#ab97f12ae37a7c2e81e377236175c3cd8">More...</a><br /></td></tr>
 <tr class="separator:ab97f12ae37a7c2e81e377236175c3cd8 inherit pub_methods_classSimulation"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8b812b809ab0e65bcab85c151e3f4894 inherit pub_methods_classSimulation"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d7b/classSimulation.html#a8b812b809ab0e65bcab85c151e3f4894">isPaused</a> () const</td></tr>
-<tr class="memdesc:a8b812b809ab0e65bcab85c151e3f4894 inherit pub_methods_classSimulation"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if simulation is paused (true) or not (false)  <a href="../../d1/d7b/classSimulation.html#a8b812b809ab0e65bcab85c151e3f4894">More...</a><br /></td></tr>
-<tr class="separator:a8b812b809ab0e65bcab85c151e3f4894 inherit pub_methods_classSimulation"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9f62759686a1333be92bd4b6dd63b17f inherit pub_methods_classSimulation"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d7b/classSimulation.html#a9f62759686a1333be92bd4b6dd63b17f">isStopped</a> () const</td></tr>
-<tr class="memdesc:a9f62759686a1333be92bd4b6dd63b17f inherit pub_methods_classSimulation"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if simulation is stopped (true) or not (false)  <a href="../../d1/d7b/classSimulation.html#a9f62759686a1333be92bd4b6dd63b17f">More...</a><br /></td></tr>
-<tr class="separator:a9f62759686a1333be92bd4b6dd63b17f inherit pub_methods_classSimulation"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a927cda6f36a2be2778ae11826856e3ea inherit pub_methods_classSimulation"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d7b/classSimulation.html#a927cda6f36a2be2778ae11826856e3ea">getSimFrequency</a> () const</td></tr>
-<tr class="memdesc:a927cda6f36a2be2778ae11826856e3ea inherit pub_methods_classSimulation"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain simulation frequency.  <a href="../../d1/d7b/classSimulation.html#a927cda6f36a2be2778ae11826856e3ea">More...</a><br /></td></tr>
-<tr class="separator:a927cda6f36a2be2778ae11826856e3ea inherit pub_methods_classSimulation"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a18701f9e076932c4e2829480626f9f8d inherit pub_methods_classSimulation"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d7b/classSimulation.html#a18701f9e076932c4e2829480626f9f8d">setSimFrequency</a> (size_t const simFrequency)</td></tr>
-<tr class="memdesc:a18701f9e076932c4e2829480626f9f8d inherit pub_methods_classSimulation"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set simulation frequency.  <a href="../../d1/d7b/classSimulation.html#a18701f9e076932c4e2829480626f9f8d">More...</a><br /></td></tr>
-<tr class="separator:a18701f9e076932c4e2829480626f9f8d inherit pub_methods_classSimulation"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a10acf4042655408d4f5e3fc3a85bcca9 inherit pub_methods_classSimulation"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d7b/classSimulation.html#a10acf4042655408d4f5e3fc3a85bcca9">getCallbackFrequency</a> () const</td></tr>
-<tr class="memdesc:a10acf4042655408d4f5e3fc3a85bcca9 inherit pub_methods_classSimulation"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the callback frequency. It is, how many steps must elapse between consecutive callbacks.  <a href="../../d1/d7b/classSimulation.html#a10acf4042655408d4f5e3fc3a85bcca9">More...</a><br /></td></tr>
-<tr class="separator:a10acf4042655408d4f5e3fc3a85bcca9 inherit pub_methods_classSimulation"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa286c140e1c7fa44ee30adf175cea649 inherit pub_methods_classSimulation"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d7b/classSimulation.html#aa286c140e1c7fa44ee30adf175cea649">setCallbackFrequency</a> (size_t const <a class="el" href="../../d1/d7b/classSimulation.html#a8443eec8cae6ae1c587e375bf25f7eb0">callbackFrequency</a>)</td></tr>
-<tr class="memdesc:aa286c140e1c7fa44ee30adf175cea649 inherit pub_methods_classSimulation"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the new callback frequency.  <a href="../../d1/d7b/classSimulation.html#aa286c140e1c7fa44ee30adf175cea649">More...</a><br /></td></tr>
-<tr class="separator:aa286c140e1c7fa44ee30adf175cea649 inherit pub_methods_classSimulation"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abfb774d5e1aae1b8a081c2d5c355077e inherit pub_methods_classSimulation"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d7b/classSimulation.html#abfb774d5e1aae1b8a081c2d5c355077e">isPaused</a> ()</td></tr>
+<tr class="memdesc:abfb774d5e1aae1b8a081c2d5c355077e inherit pub_methods_classSimulation"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if simulation is paused (true) or not (false)  <a href="../../d1/d7b/classSimulation.html#abfb774d5e1aae1b8a081c2d5c355077e">More...</a><br /></td></tr>
+<tr class="separator:abfb774d5e1aae1b8a081c2d5c355077e inherit pub_methods_classSimulation"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8f55cc0ab14c095fdae0823acc57e423 inherit pub_methods_classSimulation"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d7b/classSimulation.html#a8f55cc0ab14c095fdae0823acc57e423">isStopped</a> ()</td></tr>
+<tr class="memdesc:a8f55cc0ab14c095fdae0823acc57e423 inherit pub_methods_classSimulation"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if simulation is stopped (true) or not (false)  <a href="../../d1/d7b/classSimulation.html#a8f55cc0ab14c095fdae0823acc57e423">More...</a><br /></td></tr>
+<tr class="separator:a8f55cc0ab14c095fdae0823acc57e423 inherit pub_methods_classSimulation"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6ba03b4690e762a3ff5ac07c3dc25b36 inherit pub_methods_classSimulation"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d7b/classSimulation.html#a6ba03b4690e762a3ff5ac07c3dc25b36">getSimFrequency</a> ()</td></tr>
+<tr class="memdesc:a6ba03b4690e762a3ff5ac07c3dc25b36 inherit pub_methods_classSimulation"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain simulation frequency.  <a href="../../d1/d7b/classSimulation.html#a6ba03b4690e762a3ff5ac07c3dc25b36">More...</a><br /></td></tr>
+<tr class="separator:a6ba03b4690e762a3ff5ac07c3dc25b36 inherit pub_methods_classSimulation"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a52ad025ceb300136a63b2de02c49e186 inherit pub_methods_classSimulation"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d7b/classSimulation.html#a52ad025ceb300136a63b2de02c49e186">setSimFrequency</a> (size_t <a class="el" href="../../d1/d7b/classSimulation.html#a23cb37028a47bc963ce2852e57803d10">simFrequency</a>)</td></tr>
+<tr class="memdesc:a52ad025ceb300136a63b2de02c49e186 inherit pub_methods_classSimulation"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set simulation frequency.  <a href="../../d1/d7b/classSimulation.html#a52ad025ceb300136a63b2de02c49e186">More...</a><br /></td></tr>
+<tr class="separator:a52ad025ceb300136a63b2de02c49e186 inherit pub_methods_classSimulation"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -306,9 +292,9 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../.
 bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d7b/classSimulation.html#ae26650389687bae4ae945f8c7cb5c9ea">finished</a> = false</td></tr>
 <tr class="memdesc:ae26650389687bae4ae945f8c7cb5c9ea inherit pub_attribs_classSimulation"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flag specifying if simulation has finished (true) or not (false) <br /></td></tr>
 <tr class="separator:ae26650389687bae4ae945f8c7cb5c9ea inherit pub_attribs_classSimulation"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab95d7b5c9a5227d35d0a7fe220dda51d inherit pub_attribs_classSimulation"><td class="memItemLeft" align="right" valign="top"><a id="ab95d7b5c9a5227d35d0a7fe220dda51d"></a>
-std::shared_ptr&lt; <a class="el" href="../../d3/dec/classMeasurementsBuffer.html">MeasurementsBuffer</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>mBuffer</b> = nullptr</td></tr>
-<tr class="separator:ab95d7b5c9a5227d35d0a7fe220dda51d inherit pub_attribs_classSimulation"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adb008ca9df4edfaadccafb95e2835fa4 inherit pub_attribs_classSimulation"><td class="memItemLeft" align="right" valign="top"><a id="adb008ca9df4edfaadccafb95e2835fa4"></a>
+std::shared_ptr&lt; <a class="el" href="../../d3/dec/classMeasurementsBuffer.html">MeasurementsBuffer</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>mbuffer</b> = NULL</td></tr>
+<tr class="separator:adb008ca9df4edfaadccafb95e2835fa4 inherit pub_attribs_classSimulation"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:accc8e53b18f149f9588e44e4316ff032 inherit pub_attribs_classSimulation"><td class="memItemLeft" align="right" valign="top"><a id="accc8e53b18f149f9588e44e4316ff032"></a>
 std::shared_ptr&lt; <a class="el" href="../../dc/d7a/classSimulationCycleCallback.html">SimulationCycleCallback</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>callback</b> = nullptr</td></tr>
 <tr class="separator:accc8e53b18f149f9588e44e4316ff032 inherit pub_attribs_classSimulation"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -359,30 +345,24 @@ long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../.
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
 <tr class="inherit_header pro_attribs_classSimulation"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classSimulation')"><img src="../../closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="../../d1/d7b/classSimulation.html">Simulation</a></td></tr>
-<tr class="memitem:a48673f2bf8e3917d8a2b55f81fdd7ffc inherit pro_attribs_classSimulation"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d7b/classSimulation.html#a48673f2bf8e3917d8a2b55f81fdd7ffc">parallelizationStrategy</a></td></tr>
-<tr class="memdesc:a48673f2bf8e3917d8a2b55f81fdd7ffc inherit pro_attribs_classSimulation"><td class="mdescLeft">&#160;</td><td class="mdescRight">Specify the parallelization strategy.  <a href="../../d1/d7b/classSimulation.html#a48673f2bf8e3917d8a2b55f81fdd7ffc">More...</a><br /></td></tr>
-<tr class="separator:a48673f2bf8e3917d8a2b55f81fdd7ffc inherit pro_attribs_classSimulation"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a46e423ef446467b8f8758a952cddb860 inherit pro_attribs_classSimulation"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="../../df/d9c/classPulseThreadPoolInterface.html">PulseThreadPoolInterface</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d7b/classSimulation.html#a46e423ef446467b8f8758a952cddb860">threadPool</a></td></tr>
-<tr class="memdesc:a46e423ef446467b8f8758a952cddb860 inherit pro_attribs_classSimulation"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pulse thread pool.  <a href="../../d1/d7b/classSimulation.html#a46e423ef446467b8f8758a952cddb860">More...</a><br /></td></tr>
-<tr class="separator:a46e423ef446467b8f8758a952cddb860 inherit pro_attribs_classSimulation"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a32f3686c613045b5f96fac6d2b531c86 inherit pro_attribs_classSimulation"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../de/d9a/classPulseTaskDropper.html">PulseTaskDropper</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d7b/classSimulation.html#a32f3686c613045b5f96fac6d2b531c86">taskDropper</a></td></tr>
-<tr class="memdesc:a32f3686c613045b5f96fac6d2b531c86 inherit pro_attribs_classSimulation"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pulse task dropper.  <a href="../../d1/d7b/classSimulation.html#a32f3686c613045b5f96fac6d2b531c86">More...</a><br /></td></tr>
-<tr class="separator:a32f3686c613045b5f96fac6d2b531c86 inherit pro_attribs_classSimulation"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a88802bddc60d38b9ed7daddfd365f9f7 inherit pro_attribs_classSimulation"><td class="memItemLeft" align="right" valign="top"><a id="a88802bddc60d38b9ed7daddfd365f9f7"></a>
+unsigned&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d7b/classSimulation.html#a88802bddc60d38b9ed7daddfd365f9f7">numSysThreads</a> = std::thread::hardware_concurrency()</td></tr>
+<tr class="memdesc:a88802bddc60d38b9ed7daddfd365f9f7 inherit pro_attribs_classSimulation"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of threads available in the system. <br /></td></tr>
+<tr class="separator:a88802bddc60d38b9ed7daddfd365f9f7 inherit pro_attribs_classSimulation"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a103fbbefc90fc8ecdce6799636445766 inherit pro_attribs_classSimulation"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d6/ddc/classPulseThreadPool.html">PulseThreadPool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d7b/classSimulation.html#a103fbbefc90fc8ecdce6799636445766">threadPool</a></td></tr>
+<tr class="memdesc:a103fbbefc90fc8ecdce6799636445766 inherit pro_attribs_classSimulation"><td class="mdescLeft">&#160;</td><td class="mdescRight">Thread pool.  <a href="../../d1/d7b/classSimulation.html#a103fbbefc90fc8ecdce6799636445766">More...</a><br /></td></tr>
+<tr class="separator:a103fbbefc90fc8ecdce6799636445766 inherit pro_attribs_classSimulation"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8615edf208cfc87018bf12446a29520d inherit pro_attribs_classSimulation"><td class="memItemLeft" align="right" valign="top"><a id="a8615edf208cfc87018bf12446a29520d"></a>
 double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d7b/classSimulation.html#a8615edf208cfc87018bf12446a29520d">mSimSpeedFactor</a> = 1</td></tr>
 <tr class="memdesc:a8615edf208cfc87018bf12446a29520d inherit pro_attribs_classSimulation"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="../../d1/d7b/classSimulation.html" title="Class representing a simulation. ">Simulation</a> speed factor. <br /></td></tr>
 <tr class="separator:a8615edf208cfc87018bf12446a29520d inherit pro_attribs_classSimulation"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a31f63ed73543cb7a481574ae41c4edf0 inherit pro_attribs_classSimulation"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="../../dc/d42/classScanner.html">Scanner</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d7b/classSimulation.html#a31f63ed73543cb7a481574ae41c4edf0">mScanner</a> = nullptr</td></tr>
+<tr class="memitem:a31f63ed73543cb7a481574ae41c4edf0 inherit pro_attribs_classSimulation"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="../../dc/d42/classScanner.html">Scanner</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d7b/classSimulation.html#a31f63ed73543cb7a481574ae41c4edf0">mScanner</a> = NULL</td></tr>
 <tr class="memdesc:a31f63ed73543cb7a481574ae41c4edf0 inherit pro_attribs_classSimulation"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="../../dc/d42/classScanner.html" title="Class representing a scanner asset. ">Scanner</a> used by the simulation.  <a href="../../d1/d7b/classSimulation.html#a31f63ed73543cb7a481574ae41c4edf0">More...</a><br /></td></tr>
 <tr class="separator:a31f63ed73543cb7a481574ae41c4edf0 inherit pro_attribs_classSimulation"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8ca72fd59e5d0285a05eb05768261a11 inherit pro_attribs_classSimulation"><td class="memItemLeft" align="right" valign="top"><a id="a8ca72fd59e5d0285a05eb05768261a11"></a>
-<a class="el" href="../../d6/d8c/classSimulationStepLoop.html">SimulationStepLoop</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d7b/classSimulation.html#a8ca72fd59e5d0285a05eb05768261a11">stepLoop</a></td></tr>
-<tr class="memdesc:a8ca72fd59e5d0285a05eb05768261a11 inherit pro_attribs_classSimulation"><td class="mdescLeft">&#160;</td><td class="mdescRight">The handler for simulation steps, it also contains the discrete time object that hanldes simulation frequency and time. <br /></td></tr>
-<tr class="separator:a8ca72fd59e5d0285a05eb05768261a11 inherit pro_attribs_classSimulation"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8443eec8cae6ae1c587e375bf25f7eb0 inherit pro_attribs_classSimulation"><td class="memItemLeft" align="right" valign="top"><a id="a8443eec8cae6ae1c587e375bf25f7eb0"></a>
-size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d7b/classSimulation.html#a8443eec8cae6ae1c587e375bf25f7eb0">callbackFrequency</a> = 0</td></tr>
-<tr class="memdesc:a8443eec8cae6ae1c587e375bf25f7eb0 inherit pro_attribs_classSimulation"><td class="mdescLeft">&#160;</td><td class="mdescRight">The callback frequency. It specifies how many steps must elapse between consecutive callbacks. <br /></td></tr>
-<tr class="separator:a8443eec8cae6ae1c587e375bf25f7eb0 inherit pro_attribs_classSimulation"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a23cb37028a47bc963ce2852e57803d10 inherit pro_attribs_classSimulation"><td class="memItemLeft" align="right" valign="top"><a id="a23cb37028a47bc963ce2852e57803d10"></a>
+size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d7b/classSimulation.html#a23cb37028a47bc963ce2852e57803d10">simFrequency</a> = 0</td></tr>
+<tr class="memdesc:a23cb37028a47bc963ce2852e57803d10 inherit pro_attribs_classSimulation"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="../../d1/d7b/classSimulation.html" title="Class representing a simulation. ">Simulation</a> frequency. If it is 0 then no pause is possible. <br /></td></tr>
+<tr class="separator:a23cb37028a47bc963ce2852e57803d10 inherit pro_attribs_classSimulation"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a10de3cc2b800d92e80e40fbf61ff5942 inherit pro_attribs_classSimulation"><td class="memItemLeft" align="right" valign="top"><a id="a10de3cc2b800d92e80e40fbf61ff5942"></a>
 std::mutex&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d7b/classSimulation.html#a10de3cc2b800d92e80e40fbf61ff5942">mutex</a></td></tr>
 <tr class="memdesc:a10de3cc2b800d92e80e40fbf61ff5942 inherit pro_attribs_classSimulation"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mutex to handle simulation pause and iterations on a multi threading context. <br /></td></tr>
@@ -410,12 +390,6 @@ long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../.
 double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d7b/classSimulation.html#a1afafff95801808cecac3eda24bcefbc">currentGpsTime_ms</a> = 0</td></tr>
 <tr class="memdesc:a1afafff95801808cecac3eda24bcefbc inherit pro_attribs_classSimulation"><td class="mdescLeft">&#160;</td><td class="mdescRight">Time corresponding to simulation start (currentGpsTime) <br /></td></tr>
 <tr class="separator:a1afafff95801808cecac3eda24bcefbc inherit pro_attribs_classSimulation"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac0b08636aea9fd4109a9e06178537007 inherit pro_attribs_classSimulation"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d7b/classSimulation.html#ac0b08636aea9fd4109a9e06178537007">fixedGpsTimeStart</a> = &quot;&quot;</td></tr>
-<tr class="memdesc:ac0b08636aea9fd4109a9e06178537007 inherit pro_attribs_classSimulation"><td class="mdescLeft">&#160;</td><td class="mdescRight">Given fixed time start for GPS time as a string.  <a href="../../d1/d7b/classSimulation.html#ac0b08636aea9fd4109a9e06178537007">More...</a><br /></td></tr>
-<tr class="separator:ac0b08636aea9fd4109a9e06178537007 inherit pro_attribs_classSimulation"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac910ddb5727e766aeb6ae3895ad3d16b inherit pro_attribs_classSimulation"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../da/dd6/classSimulationReporter.html">SimulationReporter</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d7b/classSimulation.html#ac910ddb5727e766aeb6ae3895ad3d16b">reporter</a></td></tr>
-<tr class="memdesc:ac910ddb5727e766aeb6ae3895ad3d16b inherit pro_attribs_classSimulation"><td class="mdescLeft">&#160;</td><td class="mdescRight">The report to generate reports about simulation.  <a href="../../d1/d7b/classSimulation.html#ac910ddb5727e766aeb6ae3895ad3d16b">More...</a><br /></td></tr>
-<tr class="separator:ac910ddb5727e766aeb6ae3895ad3d16b inherit pro_attribs_classSimulation"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_static_attribs_classSimulation"><td colspan="2" onclick="javascript:toggleInherit('pro_static_attribs_classSimulation')"><img src="../../closed.png" alt="-"/>&#160;Static Protected Attributes inherited from <a class="el" href="../../d1/d7b/classSimulation.html">Simulation</a></td></tr>
 <tr class="memitem:a2946fe05bca500ed8859d460475b2b5f inherit pro_static_attribs_classSimulation"><td class="memItemLeft" align="right" valign="top"><a id="a2946fe05bca500ed8859d460475b2b5f"></a>
 static const long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d7b/classSimulation.html#a2946fe05bca500ed8859d460475b2b5f">NANOSECONDS_PER_SECOND</a> = 1000000000</td></tr>
@@ -426,8 +400,8 @@ static const long&#160;</td><td class="memItemRight" valign="bottom"><a class="e
 <div class="textblock"><p><a class="el" href="../../d5/db6/classSurvey.html" title="Class representing a Helios++ survey. ">Survey</a> playback class, used to extend simulation functionalities so it can be controlled. </p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d1/d7b/classSimulation.html" title="Class representing a simulation. ">Simulation</a> </dd></dl>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a8a87d0bf79db6bdd8d1107a840843ed1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8a87d0bf79db6bdd8d1107a840843ed1">&#9670;&nbsp;</a></span>SurveyPlayback()</h2>
+<a id="ada60f96735928b11a4c549e737c237a5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ada60f96735928b11a4c549e737c237a5">&#9670;&nbsp;</a></span>SurveyPlayback()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -447,49 +421,31 @@ static const long&#160;</td><td class="memItemRight" valign="bottom"><a class="e
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">int const&#160;</td>
-          <td class="paramname"><em>parallelizationStrategy</em>, </td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>numThreads</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">std::shared_ptr&lt; <a class="el" href="../../df/d9c/classPulseThreadPoolInterface.html">PulseThreadPoolInterface</a> &gt;&#160;</td>
-          <td class="paramname"><em>pulseThreadPoolInterface</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int const&#160;</td>
-          <td class="paramname"><em>chunkSize</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">std::string&#160;</td>
-          <td class="paramname"><em>fixedGpsTimeStart</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">bool const&#160;</td>
+          <td class="paramtype">bool&#160;</td>
           <td class="paramname"><em>lasOutput</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">bool const&#160;</td>
+          <td class="paramtype">bool&#160;</td>
           <td class="paramname"><em>las10</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">bool const&#160;</td>
+          <td class="paramtype">bool&#160;</td>
           <td class="paramname"><em>zipOutput</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">bool const&#160;</td>
+          <td class="paramtype">bool&#160;</td>
           <td class="paramname"><em>exportToFile</em> = <code>true</code>&#160;</td>
         </tr>
         <tr>
@@ -505,6 +461,7 @@ static const long&#160;</td><td class="memItemRight" valign="bottom"><a class="e
   <table class="params">
     <tr><td class="paramname">survey</td><td>The survey itself </td></tr>
     <tr><td class="paramname">outputPath</td><td>Root output path </td></tr>
+    <tr><td class="paramname">numThreads</td><td>Number of threads to be used </td></tr>
     <tr><td class="paramname">lasOutput</td><td>Flag to specify LAS format for the output (true) or not (false) </td></tr>
     <tr><td class="paramname">las10</td><td>Flag to specify if LAS output must be LAS v1.0 (true) or not (false). </td></tr>
     <tr><td class="paramname">zipOutput</td><td>Flag to specify if output must be zipped (true) or not (false) </td></tr>
@@ -520,9 +477,7 @@ static const long&#160;</td><td class="memItemRight" valign="bottom"><a class="e
 <dd>
 <a class="el" href="../../d6/da1/classSurveyPlayback.html#a8ecaf6182eba1df49d53d30f56bf4260" title="Root output path. ">SurveyPlayback::outputPath</a> </dd>
 <dd>
-<a class="el" href="../../d5/db6/classSurvey.html" title="Class representing a Helios++ survey. ">Survey</a> </dd>
-<dd>
-Simulation::Simulation(unsigned, double, size_t) </dd></dl>
+<a class="el" href="../../d5/db6/classSurvey.html" title="Class representing a Helios++ survey. ">Survey</a> </dd></dl>
 
 </div>
 </div>
@@ -589,9 +544,7 @@ Simulation::Simulation(unsigned, double, size_t) </dd></dl>
 
 <p>Obtain current leg. </p>
 <dl class="section return"><dt>Returns</dt><dd>Current leg </dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../de/d51/classLeg.html" title="Class representing a survey leg. ">Leg</a> </dd>
-<dd>
-<a class="el" href="../../d6/da1/classSurveyPlayback.html#ae0a99a024583de818484f9b4427b2420" title="Obtain the previous leg, if any. ">SurveyPlayback::getPreviousLeg</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../de/d51/classLeg.html" title="Class representing a survey leg. ">Leg</a> </dd></dl>
 
 </div>
 </div>
@@ -792,29 +745,6 @@ Simulation::Simulation(unsigned, double, size_t) </dd></dl>
 
 <p>Obtain the number of effective legs. </p>
 <dl class="section return"><dt>Returns</dt><dd>Number of effective legs </dd></dl>
-
-</div>
-</div>
-<a id="ae0a99a024583de818484f9b4427b2420"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae0a99a024583de818484f9b4427b2420">&#9670;&nbsp;</a></span>getPreviousLeg()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">shared_ptr&lt; <a class="el" href="../../de/d51/classLeg.html">Leg</a> &gt; SurveyPlayback::getPreviousLeg </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Obtain the previous leg, if any. </p>
-<dl class="section return"><dt>Returns</dt><dd>Previous leg, nullptr if there is no previous leg </dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../de/d51/classLeg.html" title="Class representing a survey leg. ">Leg</a> </dd>
-<dd>
-<a class="el" href="../../d6/da1/classSurveyPlayback.html#a1c11c633a722976134b39a5f521d2bb3" title="Obtain current leg. ">SurveyPlayback::getCurrentLeg</a> </dd></dl>
 
 </div>
 </div>
@@ -1129,8 +1059,8 @@ Scanner::AbstractDetector </dd></dl>
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>src/sim/core/<a class="el" href="../../db/d0f/SurveyPlayback_8h_source.html">SurveyPlayback.h</a></li>
-<li>src/sim/core/SurveyPlayback.cpp</li>
+<li>src/surveyplayback/<a class="el" href="../../db/d0f/SurveyPlayback_8h_source.html">SurveyPlayback.h</a></li>
+<li>src/surveyplayback/SurveyPlayback.cpp</li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

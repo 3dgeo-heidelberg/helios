@@ -10,6 +10,5 @@ dependencies:
   - matplotlib
   - geopandas
   - numpy
-  - xmlschema
   - pip:
     - open3d

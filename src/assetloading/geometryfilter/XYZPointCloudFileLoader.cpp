@@ -207,9 +207,6 @@ void XYZPointCloudFileLoader::secondPass(
     // Fill voxels grid
     fillVoxelsGrid(ifs, estimateNormals, halfVoxelSize, filePathString);
 
-    // Warning about potential specification errors
-    warnAboutPotentialErrors(filePathString);
-
     // Post-processing of voxels
     postProcess(matName, estimateNormals);
 
@@ -279,6 +276,7 @@ void XYZPointCloudFileLoader::prepareVoxelsGrid(
     if(params.find("estimateNormals") != params.end()){
         estimateNormals = boost::get<int>(params["estimateNormals"]);
     }
+
 }
 
 void XYZPointCloudFileLoader::fillVoxelsGrid(
@@ -288,12 +286,12 @@ void XYZPointCloudFileLoader::fillVoxelsGrid(
     string const &filePathString
 ){
     // Retrieve voxel grid parameters
-    size_t rgbRIndex = 6;
-    size_t rgbGIndex = 7;
-    size_t rgbBIndex = 8;
-    size_t normalXIndex = 3;
-    size_t normalYIndex = 4;
-    size_t normalZIndex = 5;
+    size_t rgbRIndex = 3;
+    size_t rgbGIndex = 4;
+    size_t rgbBIndex = 5;
+    size_t normalXIndex = 6;
+    size_t normalYIndex = 7;
+    size_t normalZIndex = 8;
     if(params.find("rgbRIndex") != params.end()){
         rgbRIndex = (size_t) boost::get<int>(params["rgbRIndex"]);
         rgbGIndex = (size_t) boost::get<int>(params["rgbGIndex"]);
@@ -445,45 +443,19 @@ void XYZPointCloudFileLoader::digestVoxel(
             );
             if(distance < voxels[IDX].closestPointDistance){
                 voxels[IDX].closestPointDistance = distance;
-                voxel->v.normal[0] = xnorm;
-                voxel->v.normal[1] = ynorm;
-                voxel->v.normal[2] = znorm;
+                voxel->normal[0] = xnorm;
+                voxel->normal[1] = ynorm;
+                voxel->normal[2] = znorm;
             }
         }
         else {
             // Aggregate all points normals to compute voxel normal
-            voxel->v.normal[0] += xnorm;
-            voxel->v.normal[1] += ynorm;
-            voxel->v.normal[2] += znorm;
+            voxel->normal[0] += xnorm;
+            voxel->normal[1] += ynorm;
+            voxel->normal[2] += znorm;
         }
     }
 
-}
-
-void XYZPointCloudFileLoader::warnAboutPotentialErrors(string const &filePathString){
-    // Iterate over voxels to check them
-    Voxel *voxel;
-    bool nonUnitaryNormals = false;
-    for(size_t i = 0 ; i < maxNVoxels ; ++i){
-        voxel = voxels[i].voxel;
-        if(voxel == nullptr) continue; // Ignore non occupied voxels
-        if(
-            voxel->v.normal.x < -1.0 || voxel->v.normal.x > 1.0 ||
-            voxel->v.normal.y < -1.0 || voxel->v.normal.y > 1.0 ||
-            voxel->v.normal.z < -1.0 || voxel->v.normal.z > 1.0
-        ){
-            nonUnitaryNormals = true;
-            break; // If more checks are added in the future, remove this break
-        }
-    }
-
-    // Report checks
-    if(nonUnitaryNormals){
-        std::stringstream ss;
-        ss  << "Non unitary normals were found in point cloud loaded from "
-            << "file:\n\t\"" << filePathString << "\"";
-        logging::WARN(ss.str());
-    }
 }
 
 void XYZPointCloudFileLoader::postProcess(
@@ -508,7 +480,7 @@ void XYZPointCloudFileLoader::postProcess(
             1.0
         );
         if(!estimateNormals && voxel->hasNormal() && !snapNeighborNormal)
-            voxel->v.normal = glm::normalize(voxel->v.normal);
+            voxel->normal = glm::normalize(voxel->normal);
         voxel->material = getMaterial(matName);
     }
 
@@ -667,7 +639,7 @@ void XYZPointCloudFileLoader::_estimateNormals(size_t start, size_t end){
                 unsafeNormalEstimations += 1;
                 if(assignDefaultNormal) {
                     // Use default normal
-                    vgc.voxel->v.normal = defaultNormal;
+                    vgc.voxel->normal = XYZPointCloudFileLoader::defaultNormal;
                 }
                 else{
                     // Discard voxel
@@ -681,9 +653,9 @@ void XYZPointCloudFileLoader::_estimateNormals(size_t start, size_t end){
                 // Estimate normal
                 std::vector<double> orthonormal =
                     PlaneFitter::bestFittingPlaneOrthoNormal(*vgc.matrix, true);
-                vgc.voxel->v.normal.x = orthonormal[0];
-                vgc.voxel->v.normal.y = orthonormal[1];
-                vgc.voxel->v.normal.z = orthonormal[2];
+                vgc.voxel->normal.x = orthonormal[0];
+                vgc.voxel->normal.y = orthonormal[1];
+                vgc.voxel->normal.z = orthonormal[2];
             }
         }
     }

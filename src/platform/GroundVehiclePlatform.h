@@ -68,8 +68,4 @@ public:
 	 * @param dest
 	 */
 	void setDestination(glm::dvec3 dest) override;
-        /**
-         * @see Platform::prepareSimulation
-         */
-        void prepareSimulation(int simFrequency_hz) override;
 };

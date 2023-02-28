@@ -127,28 +127,15 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aed4ce19d178e3a6781d7f2a9a0666978"><td class="memItemLeft" align="right" valign="top"><a id="aed4ce19d178e3a6781d7f2a9a0666978"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>Scanner</b> (<a class="el" href="../../dc/d42/classScanner.html">Scanner</a> &amp;scanner)</td></tr>
 <tr class="separator:aed4ce19d178e3a6781d7f2a9a0666978"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad2846df5fb586988fd2008170c1a2d82"><td class="memItemLeft" align="right" valign="top"><a id="ad2846df5fb586988fd2008170c1a2d82"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d42/classScanner.html#ad2846df5fb586988fd2008170c1a2d82">initializeSequentialGenerators</a> ()</td></tr>
-<tr class="memdesc:ad2846df5fb586988fd2008170c1a2d82"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize randomness generators and noise sources that are necessary for sequential pulse computations. <br /></td></tr>
-<tr class="separator:ad2846df5fb586988fd2008170c1a2d82"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaa4a8ce1ee586e544d4ed27d67e2e1fa"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d42/classScanner.html#aaa4a8ce1ee586e544d4ed27d67e2e1fa">configureBeam</a> ()</td></tr>
-<tr class="memdesc:aaa4a8ce1ee586e544d4ed27d67e2e1fa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Configure beam related attributes. It is recommended to reconfigure beam attributes always that beam divergence, beam quality or wavelength are updated.  <a href="#aaa4a8ce1ee586e544d4ed27d67e2e1fa">More...</a><br /></td></tr>
-<tr class="separator:aaa4a8ce1ee586e544d4ed27d67e2e1fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1fb73d798dca372fa2639a715211936b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d42/classScanner.html#a1fb73d798dca372fa2639a715211936b">buildScanningPulseProcess</a> (int const parallelizationStrategy, <a class="el" href="../../de/d9a/classPulseTaskDropper.html">PulseTaskDropper</a> &amp;dropper, std::shared_ptr&lt; <a class="el" href="../../df/d9c/classPulseThreadPoolInterface.html">PulseThreadPoolInterface</a> &gt; pool)</td></tr>
-<tr class="memdesc:a1fb73d798dca372fa2639a715211936b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Build the scanning pulse process to be used by the scanner during simulation.  <a href="#a1fb73d798dca372fa2639a715211936b">More...</a><br /></td></tr>
-<tr class="separator:a1fb73d798dca372fa2639a715211936b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5fc4445b063f4c4ff0f4f63f23744743"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d42/classScanner.html#a5fc4445b063f4c4ff0f4f63f23744743">applySettings</a> (std::shared_ptr&lt; <a class="el" href="../../d0/d23/classScannerSettings.html">ScannerSettings</a> &gt; settings)</td></tr>
 <tr class="memdesc:a5fc4445b063f4c4ff0f4f63f23744743"><td class="mdescLeft">&#160;</td><td class="mdescRight">Apply scanner settings.  <a href="#a5fc4445b063f4c4ff0f4f63f23744743">More...</a><br /></td></tr>
 <tr class="separator:a5fc4445b063f4c4ff0f4f63f23744743"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acad2e86b93968e873b71aca67ced85c7"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="../../d0/d23/classScannerSettings.html">ScannerSettings</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d42/classScanner.html#acad2e86b93968e873b71aca67ced85c7">retrieveCurrentSettings</a> ()</td></tr>
-<tr class="memdesc:acad2e86b93968e873b71aca67ced85c7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve current scanner settings and build a new <a class="el" href="../../d0/d23/classScannerSettings.html" title="Scanner settings class. ">ScannerSettings</a> object with them.  <a href="#acad2e86b93968e873b71aca67ced85c7">More...</a><br /></td></tr>
-<tr class="separator:acad2e86b93968e873b71aca67ced85c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a000903d1c58e48f770efc0cb53796ee1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d42/classScanner.html#a000903d1c58e48f770efc0cb53796ee1">applySettingsFWF</a> (<a class="el" href="../../d4/dfb/classFWFSettings.html">FWFSettings</a> settings)</td></tr>
 <tr class="memdesc:a000903d1c58e48f770efc0cb53796ee1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Apply full wave form settings.  <a href="#a000903d1c58e48f770efc0cb53796ee1">More...</a><br /></td></tr>
 <tr class="separator:a000903d1c58e48f770efc0cb53796ee1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac993a356e56ade4e52a749b427b4c9cc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d42/classScanner.html#ac993a356e56ade4e52a749b427b4c9cc">doSimStep</a> (unsigned int legIndex, double currentGpsTime)</td></tr>
-<tr class="memdesc:ac993a356e56ade4e52a749b427b4c9cc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform computations for current simulation step.  <a href="#ac993a356e56ade4e52a749b427b4c9cc">More...</a><br /></td></tr>
-<tr class="separator:ac993a356e56ade4e52a749b427b4c9cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6beb1624696119ddfbdacdfae6f3c41f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d42/classScanner.html#a6beb1624696119ddfbdacdfae6f3c41f">doSimStep</a> (<a class="el" href="../../d6/ddc/classPulseThreadPool.html">PulseThreadPool</a> &amp;pool, unsigned int legIndex, double currentGpsTime)</td></tr>
+<tr class="memdesc:a6beb1624696119ddfbdacdfae6f3c41f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform computations for current simulation step.  <a href="#a6beb1624696119ddfbdacdfae6f3c41f">More...</a><br /></td></tr>
+<tr class="separator:a6beb1624696119ddfbdacdfae6f3c41f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae6791b56fa79726f07cfa76e8fa20283"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d42/classScanner.html#ae6791b56fa79726f07cfa76e8fa20283">toString</a> ()</td></tr>
 <tr class="memdesc:ae6791b56fa79726f07cfa76e8fa20283"><td class="mdescLeft">&#160;</td><td class="mdescRight">Build a string representation of the scanner.  <a href="#ae6791b56fa79726f07cfa76e8fa20283">More...</a><br /></td></tr>
 <tr class="separator:ae6791b56fa79726f07cfa76e8fa20283"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -180,20 +167,12 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../.
 <tr class="memitem:a9162783f755f55792d269396ea6a5172"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d42/classScanner.html#a9162783f755f55792d269396ea6a5172">handleSimStepNoise</a> (glm::dvec3 &amp;absoluteBeamOrigin, <a class="el" href="../../d5/dcb/classRotation.html">Rotation</a> &amp;absoluteBeamAttitude)</td></tr>
 <tr class="memdesc:a9162783f755f55792d269396ea6a5172"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle position and attitude noise.  <a href="#a9162783f755f55792d269396ea6a5172">More...</a><br /></td></tr>
 <tr class="separator:a9162783f755f55792d269396ea6a5172"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa654d2754946f445ff8faa91822eda25"><td class="memItemLeft" align="right" valign="top"><a id="aa654d2754946f445ff8faa91822eda25"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d42/classScanner.html#aa654d2754946f445ff8faa91822eda25">onLegComplete</a> ()</td></tr>
-<tr class="memdesc:aa654d2754946f445ff8faa91822eda25"><td class="mdescLeft">&#160;</td><td class="mdescRight">Exposes <a class="el" href="../../db/d85/classScanningPulseProcess.html" title="Class defining the scanning pulse process interface. ">ScanningPulseProcess</a>:onLegComplete method of the scanning pulse process defining this scanner. <br /></td></tr>
-<tr class="separator:aa654d2754946f445ff8faa91822eda25"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a74fb8838bba7b36ea5e3b3df48fb1349"><td class="memItemLeft" align="right" valign="top"><a id="a74fb8838bba7b36ea5e3b3df48fb1349"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d42/classScanner.html#a74fb8838bba7b36ea5e3b3df48fb1349">onSimulationFinished</a> ()</td></tr>
-<tr class="memdesc:a74fb8838bba7b36ea5e3b3df48fb1349"><td class="mdescLeft">&#160;</td><td class="mdescRight">Exposes <a class="el" href="../../db/d85/classScanningPulseProcess.html#a8e3cb6388ace9c320fdbb32955bf9d8a" title="Handle behavior of scanning pulse process once simulation has finished. ">ScanningPulseProcess::onSimulationFinished</a> method of the scanning pulse process defining this scanner. <br /></td></tr>
-<tr class="separator:a74fb8838bba7b36ea5e3b3df48fb1349"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0d0d7a4c9f3e99d7f062f8ed139e2107"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d42/classScanner.html#a0d0d7a4c9f3e99d7f062f8ed139e2107">handlePulseComputation</a> (<a class="el" href="../../d6/ddc/classPulseThreadPool.html">PulseThreadPool</a> &amp;pool, unsigned int const legIndex, glm::dvec3 &amp;absoluteBeamOrigin, <a class="el" href="../../d5/dcb/classRotation.html">Rotation</a> &amp;absoluteBeamAttitude, double currentGpsTime)</td></tr>
+<tr class="memdesc:a0d0d7a4c9f3e99d7f062f8ed139e2107"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle pulse computation whatever it is single thread based or thread pool based.  <a href="#a0d0d7a4c9f3e99d7f062f8ed139e2107">More...</a><br /></td></tr>
+<tr class="separator:a0d0d7a4c9f3e99d7f062f8ed139e2107"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa3055bc70b3f94c747320cd617e36547"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d42/classScanner.html#aa3055bc70b3f94c747320cd617e36547">handleTrajectoryOutput</a> (double currentGpsTime)</td></tr>
 <tr class="memdesc:aa3055bc70b3f94c747320cd617e36547"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle trajectory output whatever it is to output file, to all trajectories vector or to cycle trajectories vector.  <a href="#aa3055bc70b3f94c747320cd617e36547">More...</a><br /></td></tr>
 <tr class="separator:aa3055bc70b3f94c747320cd617e36547"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a76ba598a20f198125336d0da7a2956da"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d42/classScanner.html#a76ba598a20f198125336d0da7a2956da">trackOutputPath</a> (std::string const path)</td></tr>
-<tr class="memdesc:a76ba598a20f198125336d0da7a2956da"><td class="mdescLeft">&#160;</td><td class="mdescRight">Track given output path in a thread safe way.  <a href="#a76ba598a20f198125336d0da7a2956da">More...</a><br /></td></tr>
-<tr class="separator:a76ba598a20f198125336d0da7a2956da"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8fbd614f591d9b0b645a4880ace1c8fd"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d42/classScanner.html#a8fbd614f591d9b0b645a4880ace1c8fd">getNumRays</a> ()</td></tr>
 <tr class="memdesc:a8fbd614f591d9b0b645a4880ace1c8fd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain the number of rays.  <a href="#a8fbd614f591d9b0b645a4880ace1c8fd">More...</a><br /></td></tr>
 <tr class="separator:a8fbd614f591d9b0b645a4880ace1c8fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -378,9 +357,6 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:aae0cadd53ad865a242fdf84ef8a03634"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="../../d8/d6b/classAbstractDetector.html">AbstractDetector</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d42/classScanner.html#aae0cadd53ad865a242fdf84ef8a03634">detector</a></td></tr>
 <tr class="memdesc:aae0cadd53ad865a242fdf84ef8a03634"><td class="mdescLeft">&#160;</td><td class="mdescRight">Detector composing the scanner.  <a href="#aae0cadd53ad865a242fdf84ef8a03634">More...</a><br /></td></tr>
 <tr class="separator:aae0cadd53ad865a242fdf84ef8a03634"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7492c090b0fdb4f7314f481d2334b1f2"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; std::vector&lt; std::string &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d42/classScanner.html#a7492c090b0fdb4f7314f481d2334b1f2">allOutputPaths</a> = nullptr</td></tr>
-<tr class="memdesc:a7492c090b0fdb4f7314f481d2334b1f2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Historical vector of all output paths where scanner measurements were written.  <a href="#a7492c090b0fdb4f7314f481d2334b1f2">More...</a><br /></td></tr>
-<tr class="separator:a7492c090b0fdb4f7314f481d2334b1f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa6c767c57bf01a1e16fbec89fa0f6c3c"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; std::vector&lt; <a class="el" href="../../db/d2e/classMeasurement.html">Measurement</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d42/classScanner.html#aa6c767c57bf01a1e16fbec89fa0f6c3c">allMeasurements</a> = nullptr</td></tr>
 <tr class="memdesc:aa6c767c57bf01a1e16fbec89fa0f6c3c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Historical vector of all measurements performed by the scanner.  <a href="#aa6c767c57bf01a1e16fbec89fa0f6c3c">More...</a><br /></td></tr>
 <tr class="separator:aa6c767c57bf01a1e16fbec89fa0f6c3c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -554,9 +530,6 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../.
 std::shared_ptr&lt; <a class="el" href="../../d1/d0e/classSyncFileWriter.html">SyncFileWriter</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d42/classScanner.html#a296541247420ebb603b329301231c9d6">tfw</a> = nullptr</td></tr>
 <tr class="memdesc:a296541247420ebb603b329301231c9d6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Synchronous file writer. <br /></td></tr>
 <tr class="separator:a296541247420ebb603b329301231c9d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad7b5a76759e660e794b650d480e0c0fb"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; <a class="el" href="../../db/d85/classScanningPulseProcess.html">ScanningPulseProcess</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d42/classScanner.html#ad7b5a76759e660e794b650d480e0c0fb">spp</a> = nullptr</td></tr>
-<tr class="memdesc:ad7b5a76759e660e794b650d480e0c0fb"><td class="mdescLeft">&#160;</td><td class="mdescRight">The scanning pulse process used by the scanner.  <a href="#ad7b5a76759e660e794b650d480e0c0fb">More...</a><br /></td></tr>
-<tr class="separator:ad7b5a76759e660e794b650d480e0c0fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Class representing a scanner asset. </p>
@@ -766,55 +739,6 @@ std::shared_ptr&lt; <a class="el" href="../../d1/d0e/classSyncFileWriter.html">S
 
 </div>
 </div>
-<a id="a1fb73d798dca372fa2639a715211936b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1fb73d798dca372fa2639a715211936b">&#9670;&nbsp;</a></span>buildScanningPulseProcess()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Scanner::buildScanningPulseProcess </td>
-          <td>(</td>
-          <td class="paramtype">int const&#160;</td>
-          <td class="paramname"><em>parallelizationStrategy</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="../../de/d9a/classPulseTaskDropper.html">PulseTaskDropper</a> &amp;&#160;</td>
-          <td class="paramname"><em>dropper</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">std::shared_ptr&lt; <a class="el" href="../../df/d9c/classPulseThreadPoolInterface.html">PulseThreadPoolInterface</a> &gt;&#160;</td>
-          <td class="paramname"><em>pool</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Build the scanning pulse process to be used by the scanner during simulation. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">dropper</td><td><a class="el" href="../../d1/d7b/classSimulation.html" title="Class representing a simulation. ">Simulation</a>'s task dropper </td></tr>
-    <tr><td class="paramname">pool</td><td><a class="el" href="../../d1/d7b/classSimulation.html" title="Class representing a simulation. ">Simulation</a>'s thread pool </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>Built scanning pulse process </dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../d1/d7b/classSimulation.html#a48673f2bf8e3917d8a2b55f81fdd7ffc" title="Specify the parallelization strategy. ">Simulation::parallelizationStrategy</a> </dd>
-<dd>
-<a class="el" href="../../d1/d7b/classSimulation.html#a32f3686c613045b5f96fac6d2b531c86" title="Pulse task dropper. ">Simulation::taskDropper</a> </dd>
-<dd>
-<a class="el" href="../../d1/d7b/classSimulation.html#a46e423ef446467b8f8758a952cddb860" title="Pulse thread pool. ">Simulation::threadPool</a> </dd></dl>
-
-</div>
-</div>
 <a id="a200c10597fe671a374f5ecc45d3410ae"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a200c10597fe671a374f5ecc45d3410ae">&#9670;&nbsp;</a></span>calcAbsoluteBeamAttitude()</h2>
 
@@ -987,41 +911,13 @@ std::shared_ptr&lt; <a class="el" href="../../d1/d0e/classSyncFileWriter.html">S
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>True if the check is passed, false otherwise </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>True of the check is passed, false otherwise </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="../../dc/d42/classScanner.html#a4812fca171290ee0af1287f19a0d05ea" title="Maximum number of returns per pulse. When 0, it means there is not maximum at all. ">Scanner::maxNOR</a> </dd></dl>
 
 </div>
 </div>
-<a id="aaa4a8ce1ee586e544d4ed27d67e2e1fa"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aaa4a8ce1ee586e544d4ed27d67e2e1fa">&#9670;&nbsp;</a></span>configureBeam()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Scanner::configureBeam </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Configure beam related attributes. It is recommended to reconfigure beam attributes always that beam divergence, beam quality or wavelength are updated. </p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../dc/d42/classScanner.html#a4e58931ddb59368c42a099b669edad69" title="Beam divergence (radians) ">Scanner::cfg_device_beamDivergence_rad</a> </dd>
-<dd>
-<a class="el" href="../../dc/d42/classScanner.html#a5756a8e621e4e8f796b4724aeb0dbbac" title="Beam quality. ">Scanner::cfg_device_beamQuality</a> </dd>
-<dd>
-<a class="el" href="../../dc/d42/classScanner.html#a949734daacefc79252e7f85cc9d59d8d" title="Wave length (meters) ">Scanner::cfg_device_wavelength_m</a> </dd>
-<dd>
-<a class="el" href="../../dc/d42/classScanner.html#a97d67c4736c5ed3ba23ad96c7048dc43" title="Beam waist radius. ">Scanner::beamWaistRadius</a> </dd>
-<dd>
-<a class="el" href="../../dc/d42/classScanner.html#ac4dfcd18602e00ffc6898f807f682a0d" title=" understood as the square of beam divergence ">Scanner::cached_Bt2</a> </dd></dl>
-
-</div>
-</div>
-<a id="ac993a356e56ade4e52a749b427b4c9cc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac993a356e56ade4e52a749b427b4c9cc">&#9670;&nbsp;</a></span>doSimStep()</h2>
+<a id="a6beb1624696119ddfbdacdfae6f3c41f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6beb1624696119ddfbdacdfae6f3c41f">&#9670;&nbsp;</a></span>doSimStep()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1029,6 +925,12 @@ std::shared_ptr&lt; <a class="el" href="../../d1/d0e/classSyncFileWriter.html">S
         <tr>
           <td class="memname">void Scanner::doSimStep </td>
           <td>(</td>
+          <td class="paramtype"><a class="el" href="../../d6/ddc/classPulseThreadPool.html">PulseThreadPool</a> &amp;&#160;</td>
+          <td class="paramname"><em>pool</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
           <td class="paramtype">unsigned int&#160;</td>
           <td class="paramname"><em>legIndex</em>, </td>
         </tr>
@@ -1049,6 +951,7 @@ std::shared_ptr&lt; <a class="el" href="../../d1/d0e/classSyncFileWriter.html">S
 <p>Perform computations for current simulation step. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
+    <tr><td class="paramname">pool</td><td>Thread pool used to handle concurrent computations </td></tr>
     <tr><td class="paramname">legIndex</td><td>Index of current leg </td></tr>
     <tr><td class="paramname">currentGpsTime</td><td>GPS time of current pulse </td></tr>
   </table>
@@ -1774,6 +1677,64 @@ std::shared_ptr&lt; <a class="el" href="../../d1/d0e/classSyncFileWriter.html">S
 
 </div>
 </div>
+<a id="a0d0d7a4c9f3e99d7f062f8ed139e2107"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0d0d7a4c9f3e99d7f062f8ed139e2107">&#9670;&nbsp;</a></span>handlePulseComputation()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Scanner::handlePulseComputation </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="../../d6/ddc/classPulseThreadPool.html">PulseThreadPool</a> &amp;&#160;</td>
+          <td class="paramname"><em>pool</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int const&#160;</td>
+          <td class="paramname"><em>legIndex</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">glm::dvec3 &amp;&#160;</td>
+          <td class="paramname"><em>absoluteBeamOrigin</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="../../d5/dcb/classRotation.html">Rotation</a> &amp;&#160;</td>
+          <td class="paramname"><em>absoluteBeamAttitude</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>currentGpsTime</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Handle pulse computation whatever it is single thread based or thread pool based. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">pool</td><td>Thread pool to be used to handle multi threading pulse computation </td></tr>
+    <tr><td class="paramname">legIndex</td><td>Index of current leg </td></tr>
+    <tr><td class="paramname">absoluteBeamOrigin</td><td>Absolute position of beam origin </td></tr>
+    <tr><td class="paramname">absoluteBeamAttitude</td><td>Beam attitude </td></tr>
+    <tr><td class="paramname">currentGpsTime</td><td>Current GPS time (milliseconds) </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a9162783f755f55792d269396ea6a5172"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a9162783f755f55792d269396ea6a5172">&#9670;&nbsp;</a></span>handleSimStepNoise()</h2>
 
@@ -2064,26 +2025,6 @@ std::shared_ptr&lt; <a class="el" href="../../d1/d0e/classSyncFileWriter.html">S
 <a class="el" href="../../dc/d42/classScanner.html#abcc0b361b5a96df1b7edaa9859cd8f2e" title="Discretization vector. ">Scanner::time_wave</a> </dd>
 <dd>
 <a class="el" href="../../dc/d42/classScanner.html#aa88f7c100b678d59ca16376a15074546" title="Index of bin containing the intensity peak. It is computed through calcTimePropagation function...">Scanner::peakIntensityIndex</a> </dd></dl>
-
-</div>
-</div>
-<a id="acad2e86b93968e873b71aca67ced85c7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acad2e86b93968e873b71aca67ced85c7">&#9670;&nbsp;</a></span>retrieveCurrentSettings()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::shared_ptr&lt; <a class="el" href="../../d0/d23/classScannerSettings.html">ScannerSettings</a> &gt; Scanner::retrieveCurrentSettings </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Retrieve current scanner settings and build a new <a class="el" href="../../d0/d23/classScannerSettings.html" title="Scanner settings class. ">ScannerSettings</a> object with them. </p>
-<dl class="section return"><dt>Returns</dt><dd>Newly created <a class="el" href="../../d0/d23/classScannerSettings.html" title="Scanner settings class. ">ScannerSettings</a> object with current scanner settings </dd></dl>
 
 </div>
 </div>
@@ -2896,33 +2837,6 @@ std::shared_ptr&lt; <a class="el" href="../../d1/d0e/classSyncFileWriter.html">S
 
 </div>
 </div>
-<a id="a76ba598a20f198125336d0da7a2956da"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a76ba598a20f198125336d0da7a2956da">&#9670;&nbsp;</a></span>trackOutputPath()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Scanner::trackOutputPath </td>
-          <td>(</td>
-          <td class="paramtype">std::string const&#160;</td>
-          <td class="paramname"><em>path</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Track given output path in a thread safe way. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">path</td><td>Output path to be tracked </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../dc/d42/classScanner.html#a7492c090b0fdb4f7314f481d2334b1f2" title="Historical vector of all output paths where scanner measurements were written. ">Scanner::allOutputPaths</a> </dd></dl>
-
-</div>
-</div>
 <h2 class="groupheader">Member Data Documentation</h2>
 <a id="aa6c767c57bf01a1e16fbec89fa0f6c3c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aa6c767c57bf01a1e16fbec89fa0f6c3c">&#9670;&nbsp;</a></span>allMeasurements</h2>
@@ -2957,23 +2871,6 @@ std::shared_ptr&lt; <a class="el" href="../../d1/d0e/classSyncFileWriter.html">S
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="../../dc/d42/classScanner.html#aa6c767c57bf01a1e16fbec89fa0f6c3c" title="Historical vector of all measurements performed by the scanner. ">Scanner::allMeasurements</a> </dd>
 <dd>
 Scanner::alTrajectories </dd></dl>
-
-</div>
-</div>
-<a id="a7492c090b0fdb4f7314f481d2334b1f2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7492c090b0fdb4f7314f481d2334b1f2">&#9670;&nbsp;</a></span>allOutputPaths</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::shared_ptr&lt;std::vector&lt;std::string&gt; &gt; Scanner::allOutputPaths = nullptr</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Historical vector of all output paths where scanner measurements were written. </p>
-<p>It can be nullptr when no historical tracking of all output paths is requested </p>
 
 </div>
 </div>
@@ -3279,31 +3176,6 @@ Scanner::alTrajectories </dd></dl>
 
 <p><a class="el" href="../../dc/d42/classScanner.html" title="Class representing a scanner asset. ">Scanner</a> head composing the scanner. </p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="../../dc/da7/classScannerHead.html">ScannerHead</a> </dd></dl>
-
-</div>
-</div>
-<a id="ad7b5a76759e660e794b650d480e0c0fb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad7b5a76759e660e794b650d480e0c0fb">&#9670;&nbsp;</a></span>spp</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::unique_ptr&lt;<a class="el" href="../../db/d85/classScanningPulseProcess.html">ScanningPulseProcess</a>&gt; Scanner::spp = nullptr</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>The scanning pulse process used by the scanner. </p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../db/d85/classScanningPulseProcess.html" title="Class defining the scanning pulse process interface. ">ScanningPulseProcess</a> </dd></dl>
 
 </div>
 </div>

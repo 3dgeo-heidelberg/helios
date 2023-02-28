@@ -70,16 +70,15 @@ public:
      * @param out Output stream used to output test final status
      * @param color True to enable coloring when reporting test status.
      *  False otherwise
-     * @return True if the test was successfully passed, false otherwise
      */
-    bool test(std::ostream &out=std::cout, bool color=true);
+    void test(std::ostream &out=std::cout, bool color=true);
 };
 
 // *** CLASS IMPLEMENTATION *** //
 // **************************** //
-bool BaseTest::test(std::ostream &out, bool color){
+void BaseTest::test(std::ostream &out, bool color){
     // Do test
-    bool const status = run();
+    bool status = run();
 
     // Report test status
     if(color) out << "\033[1m";
@@ -97,9 +96,6 @@ bool BaseTest::test(std::ostream &out, bool color){
     out << "]";
     if(color) out << "\033[0m";
     out << std::endl;
-
-    // Return status
-    return status;
 }
 
 }

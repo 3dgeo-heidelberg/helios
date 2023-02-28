@@ -23,7 +23,7 @@ public:
     // ***  METHODS  *** //
     // ***************** //
     /**
-     * @brief Handle the filepath or efilepath argument from a map of
+     * @brief Handle a the filepath or efilepath argument from a map of
      * parameters in the context of geometry loading
      * @param params Map of parameters defining the geometry loading process
      * @return Vector of parsed file paths (1 for filepath, n for efilepath)

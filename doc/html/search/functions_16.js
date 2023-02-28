@@ -24,7 +24,6 @@ var searchData=
   ['vhstaticobjectadapter',['VHStaticObjectAdapter',['../d1/dda/classvisualhelios_1_1VHStaticObjectAdapter.html#abaed9920241678b097673d575b04c0c7',1,'visualhelios::VHStaticObjectAdapter']]],
   ['vhstaticobjectxyzadapter',['VHStaticObjectXYZAdapter',['../db/d6f/classvisualhelios_1_1VHStaticObjectXYZAdapter.html#af5bf4793a159536bd9884e6a392bd4ac',1,'visualhelios::VHStaticObjectXYZAdapter']]],
   ['vhstaticobjectxyzrgbadapter',['VHStaticObjectXYZRGBAdapter',['../d5/dfc/classvisualhelios_1_1VHStaticObjectXYZRGBAdapter.html#a1bed18e9009982320c4d54567a834b17',1,'visualhelios::VHStaticObjectXYZRGBAdapter']]],
-  ['voidsteploop',['VoidStepLoop',['../dd/d96/classVoidStepLoop.html#ac2612c90feddea6ca1d64e2fbc0d4dba',1,'VoidStepLoop']]],
   ['voxel',['Voxel',['../d6/d44/classVoxel.html#a5c7a2b788d03ad489a17c4a21da4c204',1,'Voxel::Voxel()'],['../d6/d44/classVoxel.html#a13fc18a3aefca7e9d9a04c2eec4ec366',1,'Voxel::Voxel(glm::dvec3 center, double voxelSize)'],['../d6/d44/classVoxel.html#a4da51b73b1521e7e7e4614f0c5b42172',1,'Voxel::Voxel(double x, double y, double z, double halfVoxelSize)']]],
   ['voxelfileparser',['VoxelFileParser',['../d9/ddf/classVoxelFileParser.html#aacfe87951117d8b72c1709751a27f787',1,'VoxelFileParser']]],
   ['voxelparsingtest',['VoxelParsingTest',['../da/d8d/classHeliosTests_1_1VoxelParsingTest.html#a5a44670a18e986c0324180950be4891c',1,'HeliosTests::VoxelParsingTest']]],

@@ -92,12 +92,10 @@ void GroundVehiclePlatform::doControlStep(int simFrequency_hz) {
 
 	// Limit engine forward/backward force:
 	if (mEngineForceCurrent > mEngineForceMax) {
-                engineLimitReached = true;
 		mEngineForceCurrent = mEngineForceMax;
 	}
 
 	if (mEngineForceCurrent < -mEngineForceMax) {
-                engineLimitReached = true;
 		mEngineForceCurrent = -mEngineForceMax;
 	}
 
@@ -114,8 +112,4 @@ void GroundVehiclePlatform::doControlStep(int simFrequency_hz) {
 void GroundVehiclePlatform::setDestination(glm::dvec3 dest) {
 	Platform::setDestination(dest);
 	mTurnMode = 0;
-}
-
-void GroundVehiclePlatform::prepareSimulation(int simFrequency_hz) {
-  SimplePhysicsPlatform::prepareSimulation(simFrequency_hz);
 }

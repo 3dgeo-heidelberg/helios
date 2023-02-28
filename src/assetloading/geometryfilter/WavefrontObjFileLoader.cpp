@@ -35,15 +35,11 @@ ScenePart *WavefrontObjFileLoader::run() {
     string const &upAxis = boost::get<string const &>(params["up"]);
     if (upAxis == "y") {
       yIsUp = true;
-    } else if (upAxis != "z") {
-        stringstream ss;
-        ss << "Error: 'up'-axis in the scene XML file may only be one of 'y' or 'z'.\nSetting 'up' to 'z'.";
-        logging::ERR(ss.str());
     }
   } catch (std::exception &e) {
     stringstream ss;
-    ss << "Failed to read 'up'-axis from scene XML file, assuming 'z' is 'up'.\nC++ Exception: " << e.what();
-    logging::INFO(ss.str());
+    ss << "Error reading params['up']\nEXCEPTION: " << e.what();
+    logging::WARN(ss.str());
   }
   // ######### END Read up axis ###########
 

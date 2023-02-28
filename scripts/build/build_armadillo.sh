@@ -35,7 +35,7 @@ parse_build_args $@
 
 # Download armadillo if it is not downloaded yet
 if [ ! -f "${ARMA_TAR}" ]; then
-    wget -c "${ARMA_URL}" -O "${ARMA_TAR}" --no-check-certificate
+    wget -c "${ARMA_URL}" -O "${ARMA_TAR}"
 fi
 
 # Decompress armadillo if it has not been unzipped yet

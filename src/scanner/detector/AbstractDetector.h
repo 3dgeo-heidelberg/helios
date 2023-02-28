@@ -1,14 +1,13 @@
 #pragma once
 
 #include <string>
-#include <unordered_map>
 #include <boost/asio/thread_pool.hpp>
 #include <boost/asio/post.hpp>
 #include <boost/filesystem.hpp>
 namespace fs = boost::filesystem;
 
 #include <Scanner.h>
-#include <ScannerSettings.h>
+#include "ScannerSettings.h"
 
 #include "Measurement.h"
 #include "MeasurementsBuffer.h"
@@ -47,10 +46,6 @@ public:
 	 * @brief Minimum range for detector in meters
 	 */
 	double cfg_device_rangeMin_m = 0;
-	/**
-	 * @brief Maximum range for detector in meters
-	 */
-	double cfg_device_rangeMax_m;
 
 	// File output:
 	/**
@@ -89,11 +84,6 @@ public:
 	 * @brief Path to output file
 	 */
 	fs::path outputFilePath;
-  /**
-   * @brief Map of writers. This map allows to reuse writers for legs grouped
-   * in the same strip.
-   */
-   std::unordered_map<std::string, std::shared_ptr<SyncFileWriter>> writers{};
 
 	// ***  CONSTRUCTION / DESTRUCTION  *** //
 	// ************************************ //
@@ -106,17 +96,15 @@ public:
 	AbstractDetector(
 	    std::shared_ptr<Scanner> scanner,
 	    double accuracy_m,
-	    double rangeMin_m,
-	    double rangeMax_m=std::numeric_limits<double>::max()
+	    double rangeMin_m
     ){
 	    this->lasOutput = false;
-        this->las10     = false;
+            this->las10     = false;
 	    this->zipOutput = false;
-	    this->lasScale  = 0.0001;
-        this->cfg_device_accuracy_m = accuracy_m;
-        this->cfg_device_rangeMin_m = rangeMin_m;
-        this->cfg_device_rangeMax_m = rangeMax_m;
-        this->scanner   = std::move(scanner);
+	    this->lasScale = 0.0001;
+            this->cfg_device_accuracy_m = accuracy_m;
+            this->cfg_device_rangeMin_m = rangeMin_m;
+            this->scanner = std::move(scanner);
 	}
 	virtual ~AbstractDetector() {}
 	virtual std::shared_ptr<AbstractDetector> clone() = 0;
@@ -147,13 +135,29 @@ public:
      * @brief Apply scanner settings to the detector
      * @param settings Settings to be applied to de detector
      */
-     virtual void applySettings(std::shared_ptr<ScannerSettings> & settings) {};
+	virtual void applySettings(std::shared_ptr<ScannerSettings> & settings) {};
 
-     // ***  GETTERS and SETTERS  *** //
-     // ***************************** //
+	/**
+	 * @brief Compute pulse simulation
+	 * @param pool Thread pool to be used to distribute computational burden
+	 * @param absoluteBeamOrigin Origin of the beam in absolute coordinates
+	 * @param absoluteBeamAttitude Attitude of the beam
+	 * @param state_currentPulseNumber Current pulse number
+	 * @param currentGpsTime Current GPS time
+	 */
+	virtual void simulatePulse(
+	    PulseThreadPool & pool,
+	    glm::dvec3 absoluteBeamOrigin,
+	    Rotation absoluteBeamAttitude,
+	    int state_currentPulseNumber,
+        double currentGpsTime
+    ) = 0;
+
+	// ***  GETTERS and SETTERS  *** //
+	// ***************************** //
     /**
      * @brief Set path to output file
      * @param path New path to output file
      */
-     void setOutputFilePath(std::string path, const bool lastLegInStrip);
+    void setOutputFilePath(std::string path);
 };

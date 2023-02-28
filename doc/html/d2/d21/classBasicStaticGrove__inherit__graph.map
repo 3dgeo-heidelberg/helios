@@ -1,5 +1,0 @@
-<map id="BasicStaticGrove&lt; Tree &gt;" name="BasicStaticGrove&lt; Tree &gt;">
-<area shape="rect" id="node1" title="Basic implementation of a StaticGrove." alt="" coords="5,80,196,107"/>
-<area shape="rect" id="node3" href="$d1/d0a/classBasicDynGrove.html" title="Basic implementation of a DynGrove which extends BasicStaticGrove to provided dynamic funcionalities." alt="" coords="17,155,185,196"/>
-<area shape="rect" id="node2" href="$d8/da0/classStaticGrove.html" title="A StaticGrove is an abstract class which declares methods to handle a set of trees." alt="" coords="23,5,178,32"/>
-</map>

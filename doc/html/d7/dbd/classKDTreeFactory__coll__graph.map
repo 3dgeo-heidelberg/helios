@@ -1,9 +1,6 @@
 <map id="KDTreeFactory" name="KDTreeFactory">
-<area shape="rect" id="node1" title="Class that must be extended by any class which provides factory methods for k&#45;dimensional trees...." alt="" coords="140,368,256,395"/>
-<area shape="rect" id="node2" href="$dd/d04/classLightKDTreeNodeBlockAllocator.html" title="Block allocator for LightKDTreeNode instances." alt="" coords="84,279,312,305"/>
-<area shape="rect" id="node3" href="$d9/d47/classBlockAllocator.html" title=" " alt="" coords="93,188,303,229"/>
-<area shape="rect" id="node4" title=" " alt="" coords="5,83,65,109"/>
-<area shape="rect" id="node5" title=" " alt="" coords="90,83,306,109"/>
-<area shape="rect" id="node6" href="$dd/d79/classLightKDTreeNode.html" title="Class representing a light KDTree node. It is, the basic representation of a KDTree node with uses le..." alt="" coords="331,83,465,109"/>
-<area shape="rect" id="node7" href="$d7/d98/classIBinaryTreeNode.html" title="Binary tree node interface that must be implemented by any class providing binary tree node based fun..." alt="" coords="333,5,463,32"/>
+<area shape="rect" id="node2" href="$dd/d04/classLightKDTreeNodeBlockAllocator.html" title="Block allocator for LightKDTreeNode instances. " alt="" coords="139,264,350,291"/>
+<area shape="rect" id="node3" href="$d9/d47/classBlockAllocator.html" title="BlockAllocator\&lt; LightKDTree\lNode \&gt;" alt="" coords="149,173,340,215"/>
+<area shape="rect" id="node4" href="$dd/d79/classLightKDTreeNode.html" title="Class representing a light KDTree node. It is, the basic representation of a KDTree node with uses le..." alt="" coords="5,83,132,109"/>
+<area shape="rect" id="node5" href="$d7/d98/classIBinaryTreeNode.html" title="Binary tree node interface that must be implemented by any class providing binary tree node based fun..." alt="" coords="9,5,129,32"/>
 </map>

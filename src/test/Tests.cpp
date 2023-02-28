@@ -1,10 +1,8 @@
 #include <test/BaseTest.h>
 #include <test/RandomTest.h>
 #include <test/NoiseTest.h>
-#include <test/DiscreteTimeTest.h>
 #include <test/VoxelParsingTest.h>
 #include <test/RayIntersectionTest.h>
-#include <test/GroveTest.h>
 #include <test/SerializationTest.h>
 #include <test/SurveyCopyTest.h>
 #include <test/PlaneFitterTest.h>
@@ -13,7 +11,6 @@
 #include <test/ScenePartSplitTest.h>
 #include <test/RigidMotionTest.h>
 #include <test/FluxionumTest.h>
-#include <test/HPCTest.h>
 
 #include <boost/filesystem.hpp>
 
@@ -53,53 +50,41 @@ void doTests(std::string const & testDir){
 
     // ***  T E S T S  *** //
     // ******************* //
-    bool passed = true;
     RandomTest randomTest;
-    passed &= randomTest.test(std::cout, TEST_COLOR);
+    randomTest.test(std::cout, TEST_COLOR);
 
     NoiseTest noiseTest;
-    passed &= noiseTest.test(std::cout, TEST_COLOR);
-
-    DiscreteTimeTest discreteTimeTest;
-    passed &= discreteTimeTest.test(std::cout, TEST_COLOR);
+    noiseTest.test(std::cout, TEST_COLOR);
 
     VoxelParsingTest voxelParsingTest(testDir);
-    passed &= voxelParsingTest.test(std::cout, TEST_COLOR);
+    voxelParsingTest.test(std::cout, TEST_COLOR);
 
     RayIntersectionTest rayIntersectionTest;
-    passed &= rayIntersectionTest.test(std::cout, TEST_COLOR);
-
-    GroveTest groveTest;
-    passed &= groveTest.test(std::cout, TEST_COLOR);
+    rayIntersectionTest.test(std::cout, TEST_COLOR);
 
     SerializationTest serializationTest;
-    passed &= serializationTest.test(std::cout, TEST_COLOR);
+    serializationTest.test(std::cout, TEST_COLOR);
 
     SurveyCopyTest surveyCopyTest;
-    passed &= surveyCopyTest.test(std::cout, TEST_COLOR);
+    surveyCopyTest.test(std::cout, TEST_COLOR);
 
     PlaneFitterTest planeFitterTest;
-    passed &= planeFitterTest.test(std::cout, TEST_COLOR);
+    planeFitterTest.test(std::cout, TEST_COLOR);
 
     LadLutTest ladLutTest(testDir);
-    passed &= ladLutTest.test(std::cout, TEST_COLOR);
+    ladLutTest.test(std::cout, TEST_COLOR);
 
     PlatformPhysicsTest platformPhysicsTest;
-    passed &= platformPhysicsTest.test(std::cout, TEST_COLOR);
+    platformPhysicsTest.test(std::cout, TEST_COLOR);
 
     ScenePartSplitTest scenePartSplitTest;
-    passed &= scenePartSplitTest.test(std::cout, TEST_COLOR);
+    scenePartSplitTest.test(std::cout, TEST_COLOR);
 
     RigidMotionTest rigidMotionTest;
-    passed &= rigidMotionTest.test(std::cout, TEST_COLOR);
+    rigidMotionTest.test(std::cout, TEST_COLOR);
 
     FluxionumTest fluxionumTest;
-    passed &= fluxionumTest.test(std::cout, TEST_COLOR);
-
-    HPCTest hpcTest;
-    passed &= hpcTest.test(std::cout, TEST_COLOR);
-
-    if(!passed) std::exit(3);
+    fluxionumTest.test(std::cout, TEST_COLOR);
 }
 
 

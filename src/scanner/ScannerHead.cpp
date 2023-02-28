@@ -18,6 +18,7 @@ void ScannerHead::applySettings(std::shared_ptr<ScannerSettings> settings) {
 	    cfg_setting_rotateStart_rad - cfg_setting_rotateStop_rad
     );
 }
+
 void ScannerHead::doSimStep(double pulseFreq_Hz) {
 	if (cfg_setting_rotatePerSec_rad != 0) {
 		setCurrentRotateAngle_rad(

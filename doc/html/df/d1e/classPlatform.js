@@ -1,9 +1,11 @@
 var classPlatform =
 [
     [ "Platform", "df/d1e/classPlatform.html#a6b2ba3089df1d2ed16a8349f0876c100", null ],
+    [ "_clone", "df/d1e/classPlatform.html#a87bb927fc4c98403712a0c9166b93157", null ],
     [ "applySettings", "df/d1e/classPlatform.html#abf3180730f8e890f8e3f8c85e65dcf91", null ],
     [ "canMove", "df/d1e/classPlatform.html#ab2e77b89eb4dba596852ab99091e4387", null ],
     [ "canStopAndTurn", "df/d1e/classPlatform.html#a28a933a159f8cd2c51d37a890bc8526a", null ],
+    [ "clone", "df/d1e/classPlatform.html#ad46e74ef685561591de62c2a53634729", null ],
     [ "doSimStep", "df/d1e/classPlatform.html#afe4f12868e5f6b39df7505b76872d040", null ],
     [ "getAbsoluteMountAttitude", "df/d1e/classPlatform.html#a1ea14a428a9e25756fb535dcfdfc225c", null ],
     [ "getAbsoluteMountPosition", "df/d1e/classPlatform.html#aa253427884f1a050646d9086ccf370be", null ],
@@ -18,7 +20,6 @@ var classPlatform =
     [ "initLeg", "df/d1e/classPlatform.html#a51b430d256fa91cd335b858d39aa5adf", null ],
     [ "initLegManual", "df/d1e/classPlatform.html#ad6d2eff760f19d85c0f7136c2f6069a8", null ],
     [ "prepareSimulation", "df/d1e/classPlatform.html#a3ec9cfff6259050df223fc8358f582fc", null ],
-    [ "retrieveCurrentSettings", "df/d1e/classPlatform.html#abd04d2b777390ddc77648a60daf09093", null ],
     [ "setAfterDestination", "df/d1e/classPlatform.html#a0643919cb4ea411f75078086e9824815", null ],
     [ "setAttitude", "df/d1e/classPlatform.html#a226e2c2c277841e439b30c3a3e855d48", null ],
     [ "setDestination", "df/d1e/classPlatform.html#acb454ba1e7bd90a83d236a506ab1c7ee", null ],

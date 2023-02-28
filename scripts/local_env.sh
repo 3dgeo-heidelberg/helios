@@ -2,10 +2,10 @@
 
 # Author: Alberto M. Esmoris Pena
 #
-# Configure a local environment to easily work with Helios++
+# Configure a local environment to easily work with helios++
 
 # Warn helios environment is being loaded
-echo 'Loading Helios environment ...'
+echo 'Loading helios environment ...'
 
 # Flag which specifies Helios environment has been loaded
 export HELIOS_ENV='ON'
@@ -21,5 +21,5 @@ export HELIOS_LIB_DIR=${HELIOS_DIR}'lib/'
 # Load utils
 source "${HELIOS_SCRIPTS_DIR}"'build/build_utils.sh'
 
-# Warn Helios environment has been loaded
+# Warn helios environment has been loaded
 echo 'Helios environment has been successfully loaded!'

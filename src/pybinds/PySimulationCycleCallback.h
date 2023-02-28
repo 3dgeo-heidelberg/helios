@@ -33,16 +33,9 @@ public:
     // *********************** //
     void operator() (
         std::vector<Measurement> &measurements,
-        std::vector<Trajectory> &trajectories,
-        std::string const &outpath
+        std::vector<Trajectory> &trajectories
     ) {
-        PyHeliosOutputWrapper phow(
-            measurements,
-            trajectories,
-            outpath,
-            std::vector<std::string>{outpath},
-            false
-        );
+        PyHeliosOutputWrapper phow(measurements, trajectories, false);
         PyGILState_STATE gilState = PyGILState_Ensure();
         call<void>(pyCallback, ref(phow));
         PyGILState_Release(gilState);

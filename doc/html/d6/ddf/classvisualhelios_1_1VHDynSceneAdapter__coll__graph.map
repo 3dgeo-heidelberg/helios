@@ -1,8 +1,6 @@
 <map id="visualhelios::VHDynSceneAdapter&lt; ST, DT &gt;" name="visualhelios::VHDynSceneAdapter&lt; ST, DT &gt;">
-<area shape="rect" id="node2" href="$de/d74/classDynScene.html" title="Dynamic scene base implementation. " alt="" coords="867,161,949,188"/>
-<area shape="rect" id="node3" href="$dd/d34/classStaticScene.html" title="Static scene basic implementation. " alt="" coords="603,73,697,100"/>
-<area shape="rect" id="node4" href="$d5/d9c/classScene.html" title="Class representing a scene asset. " alt="" coords="349,36,407,63"/>
-<area shape="rect" id="node5" href="$de/d97/classAsset.html" title="Base class for all assets. " alt="" coords="200,36,256,63"/>
-<area shape="rect" id="node9" href="$d8/dac/classNonVoidStepLoop.html" title="NonVoidStepLoop\&lt; bool \&gt;" alt="" coords="563,191,737,217"/>
-<area shape="rect" id="node10" href="$dd/dcc/classStepLoop.html" title="StepLoop\&lt; StepInput\l ... \&gt;" alt="" coords="305,183,451,225"/>
+<area shape="rect" id="node2" href="$de/d74/classDynScene.html" title="Dynamic scene base implementation. " alt="" coords="188,415,271,442"/>
+<area shape="rect" id="node3" href="$dd/d34/classStaticScene.html" title="Static scene basic implementation. " alt="" coords="47,311,140,338"/>
+<area shape="rect" id="node4" href="$d5/d9c/classScene.html" title="Class representing a scene asset. " alt="" coords="5,207,64,234"/>
+<area shape="rect" id="node5" href="$de/d97/classAsset.html" title="Base class for all assets. " alt="" coords="7,124,63,151"/>
 </map>

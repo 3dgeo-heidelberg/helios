@@ -18,13 +18,7 @@ VHDynSceneAdapter<ST, DT>::VHDynSceneAdapter(DynScene &dynScene) :
     // Add dynamic objects
     size_t const n = dynScene.numDynObjects();
     for(size_t i = 0 ; i < n ; ++i){
-        std::shared_ptr<DynObject> dynObj = dynScene.getDynObject(i);
-        dynObjs.push_back(make_shared<DT>(*dynObj));
-        // Remove observer from dyn moving object to prevent KDT rebuilding
-        if(dynObj->getType()==ScenePart::ObjectType::DYN_MOVING_OBJECT){
-            static_pointer_cast<DynMovingObject>(dynObj)\
-                ->unregisterObserverGrove();
-        }
+        dynObjs.push_back(make_shared<DT>(*dynScene.getDynObject(i)));
     }
 }
 

@@ -1,7 +1,4 @@
 <map id="XmlAssetsLoader" name="XmlAssetsLoader">
-<area shape="rect" id="node1" title="Class for asset loading from XML file." alt="" coords="41,243,175,269"/>
-<area shape="rect" id="node2" title=" " alt="" coords="9,124,68,151"/>
-<area shape="rect" id="node3" href="$db/d91/classXmlSceneLoader.html" title="Class for scene loading from XML file." alt="" coords="113,124,244,151"/>
-<area shape="rect" id="node4" href="$d7/d48/classSceneLoadingSpecification.html" title="Manually specify scene transformation filters to apply when loading a scene." alt="" coords="5,5,200,32"/>
-<area shape="rect" id="node5" title=" " alt="" coords="225,5,285,32"/>
+<area shape="rect" id="node2" href="$db/d91/classXmlSceneLoader.html" title="Class for scene loading from XML file. " alt="" coords="34,95,155,121"/>
+<area shape="rect" id="node3" href="$d7/d48/classSceneLoadingSpecification.html" title="Manually specify scene transformation filters to apply when loading a scene. " alt="" coords="5,5,184,32"/>
 </map>

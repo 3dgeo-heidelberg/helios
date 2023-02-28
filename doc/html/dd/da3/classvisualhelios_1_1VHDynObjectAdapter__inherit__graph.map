@@ -1,6 +1,5 @@
 <map id="visualhelios::VHDynObjectAdapter" name="visualhelios::VHDynObjectAdapter">
-<area shape="rect" id="node1" title="Abstract class defining core mechanisms to adapt dynamic objects to the visual Helios context based o..." alt="" coords="115,95,309,136"/>
-<area shape="rect" id="node3" href="$de/d3c/classvisualhelios_1_1VHDynObjectXYZAdapter.html" title="Class providing concrete implementation of a VHDynObjectAdapter for a simple XYZ visualization with n..." alt="" coords="5,184,200,225"/>
-<area shape="rect" id="node4" href="$d6/dd1/classvisualhelios_1_1VHDynObjectXYZRGBAdapter.html" title="Class providing concrete implementation of a VHDynObjectAdapter for a simple XYZ visualization with R..." alt="" coords="224,184,419,225"/>
-<area shape="rect" id="node2" href="$d1/dda/classvisualhelios_1_1VHStaticObjectAdapter.html" title="Abstract class defining core mechanisms to adapt static objects to the visual Helios context based on..." alt="" coords="109,5,315,47"/>
+<area shape="rect" id="node3" href="$de/d3c/classvisualhelios_1_1VHDynObjectXYZAdapter.html" title="Class providing concrete implementation of a VHDynObjectAdapter for a simple XYZ visualization with n..." alt="" coords="5,184,184,225"/>
+<area shape="rect" id="node4" href="$d6/dd1/classvisualhelios_1_1VHDynObjectXYZRGBAdapter.html" title="Class providing concrete implementation of a VHDynObjectAdapter for a simple XYZ visualization with R..." alt="" coords="208,184,387,225"/>
+<area shape="rect" id="node2" href="$d1/dda/classvisualhelios_1_1VHStaticObjectAdapter.html" title="Abstract class defining core mechanisms to adapt static objects to the visual Helios context based on..." alt="" coords="101,5,291,47"/>
 </map>

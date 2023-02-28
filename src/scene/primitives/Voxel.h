@@ -20,6 +20,7 @@ private:
         ar & v;
         ar & numPoints;
         ar & r & g & b;
+        ar & normal;
         ar & bbox;
         ar & color;
         ar & halfSize;
@@ -49,6 +50,10 @@ public:
      * @brief Aggregated blue component from points inside voxel
      */
     double b = 0;
+    /**
+     * @brief Voxel normal vecctor
+     */
+    glm::dvec3 normal = glm::dvec3(0, 0, 0);
     /**
      * @brief Axis aligned bounding box containing the voxel
      */
@@ -206,8 +211,8 @@ public:
      *
      * @return True if voxel has a valid normal, false otherwise
      */
-    bool inline hasNormal() const
-    {return v.normal[0]!=0.0 || v.normal[1]!=0.0 || v.normal[2]!=0.0;}
+    bool hasNormal()
+        {return normal[0]!=0.0 || normal[1]!=0.0 || normal[2]!=0.0;}
 
 
     // ***  TRANSFORMATIONS  *** //

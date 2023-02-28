@@ -83,10 +83,13 @@ IntersectionHandlingResult DetailedVoxel::onRayIntersectionTransmittive(
     if(isnan(sigma) || sigma == 0.0){
         return IntersectionHandlingResult(insideIntersectionPoint, true);
     }
+    if (sigma == 0.0){
+        return IntersectionHandlingResult(insideIntersectionPoint, true);
+    }
 
     // Probabilistic behavior
-    double const rndProb = uniformNoiseSource.next();
-    double const s = -std::log(rndProb) / sigma;
+    double rndProb = uniformNoiseSource.next();
+    double s = -std::log(rndProb) / sigma;
     if(s > intersectionLength){
         return IntersectionHandlingResult(insideIntersectionPoint, true);
     }

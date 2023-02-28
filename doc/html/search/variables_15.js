@@ -1,16 +1,15 @@
 var searchData=
 [
-  ['unclassified_0',['UNCLASSIFIED',['../df/d64/classLasSpecification.html#a3ae22f50d0a81d28f1554895088c29ba',1,'LasSpecification']]],
-  ['uniformnoisemax_1',['uniformNoiseMax',['../d3/d57/classUniformNoiseSource.html#a379670d2c25c5c224ff2007f9ea20cee',1,'UniformNoiseSource']]],
-  ['uniformnoisemin_2',['uniformNoiseMin',['../d3/d57/classUniformNoiseSource.html#aae440b0a488eab1d1355d4bbb8337c40',1,'UniformNoiseSource']]],
-  ['unknown_3',['UNKNOWN',['../df/d64/classLasSpecification.html#a4b5bae56cb202a761cc9f43d3012dba0',1,'LasSpecification']]],
-  ['unsafenormalestimations_4',['unsafeNormalEstimations',['../d6/d03/classXYZPointCloudFileLoader.html#af7cc4dd23f097d2538ddbd52ed155e41',1,'XYZPointCloudFileLoader']]],
-  ['up_5',['up',['../df/dc3/classDirections.html#acdd4e8e3979b368a581cbb10791ff27a',1,'Directions']]],
-  ['updated_6',['updated',['../de/d74/classDynScene.html#ab5715274cc1f9dd1ea3dfd1fe2598be8',1,'DynScene']]],
-  ['urd_7',['urd',['../dc/d6e/classRandomnessGenerator.html#af0a3be63439887dae9665d35545f3c49',1,'RandomnessGenerator']]],
-  ['urdgen_8',['urdGen',['../dc/d6e/classRandomnessGenerator.html#a720417c774d70c85804670d230f5b483',1,'RandomnessGenerator']]],
-  ['uselocalrotation_9',['useLocalRotation',['../de/de4/classRotateFilter.html#a16f197925b78fa23529e7ff8b547552b',1,'RotateFilter']]],
-  ['uselocalscalefactor_10',['useLocalScaleFactor',['../d9/d83/classScaleFilter.html#aa8fc26ba7bf2942ecfb426095b234bc2',1,'ScaleFilter']]],
-  ['uselocaltranslation_11',['useLocalTranslation',['../df/d5a/classTranslateFilter.html#a8de7071da06ddc96b677c8e0bbc4634d',1,'TranslateFilter']]],
-  ['usevertexcolors_12',['useVertexColors',['../d3/d89/classMaterial.html#a3f190f396e2a4adae7e472a2e19cf52f',1,'Material']]]
+  ['v',['v',['../d6/d44/classVoxel.html#aabef63790fe60ce1e155f0b86407844c',1,'Voxel']]],
+  ['velocity',['velocity',['../d1/d83/classMovingPlatform.html#ac80aef1ae5cbe96b5fa6ee1059ce8fdc',1,'MovingPlatform']]],
+  ['verticalanglemax_5frad',['verticalAngleMax_rad',['../d0/d23/classScannerSettings.html#a62b14d6ee9bb4e4e8f0d4bb866a2b682',1,'ScannerSettings']]],
+  ['verticalanglemin_5frad',['verticalAngleMin_rad',['../d0/d23/classScannerSettings.html#a82f52f986aa9a75dc2a931078fa5fc52',1,'ScannerSettings']]],
+  ['verticality',['verticality',['../d4/dfa/classSurfaceInspector_1_1maths_1_1DetailedPlane.html#a4c4db089d13c118d8287ad8dbdc4485a',1,'SurfaceInspector::maths::DetailedPlane']]],
+  ['verticalmoments',['verticalMoments',['../d4/dfa/classSurfaceInspector_1_1maths_1_1DetailedPlane.html#a2fd4f867ff8b72ca9926acd2db3943eb',1,'SurfaceInspector::maths::DetailedPlane']]],
+  ['vertices',['vertices',['../d1/d0c/classGeoTiffFileLoader.html#ab9a51b621924a1f8f2c728ce8c278782',1,'GeoTiffFileLoader::vertices()'],['../d2/d1a/classAABB.html#a4efbdbe41e3e4e4728fbfb05ba32c8d8',1,'AABB::vertices()'],['../d1/dda/classvisualhelios_1_1VHStaticObjectAdapter.html#a04403c2c02480d56d19744a678dd11af',1,'visualhelios::VHStaticObjectAdapter::vertices()']]],
+  ['verts',['verts',['../d2/d51/classTriangle.html#a0537cb4c881d44091046a4d149302be7',1,'Triangle']]],
+  ['viewer',['viewer',['../de/dda/classvisualhelios_1_1VHCanvas.html#a12caab990bc6181ff39c6b090ba71c47',1,'visualhelios::VHCanvas']]],
+  ['voxelpopulationthreshold',['voxelPopulationThreshold',['../d6/d03/classXYZPointCloudFileLoader.html#a74714cc22686cf55fc4fb90d712de2b2',1,'XYZPointCloudFileLoader']]],
+  ['voxels',['voxels',['../d6/d03/classXYZPointCloudFileLoader.html#a481fb42ed47236a0a0179c9af276ae52',1,'XYZPointCloudFileLoader']]],
+  ['voxelsize',['voxelSize',['../d6/d03/classXYZPointCloudFileLoader.html#a27900dddea73898f23a8070070ad58f7',1,'XYZPointCloudFileLoader']]]
 ];

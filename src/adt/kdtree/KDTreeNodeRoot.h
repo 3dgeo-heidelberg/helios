@@ -55,7 +55,7 @@ public:
      */
     int stats_numLeaves;
     /**
-     * @brief The total cost of the tree. It changes depending on tree building
+     * @brief Total cost of three. It changes depending on tree building
      *  strategy. It might be NaN if tree building strategy is not based on
      *  computing any cost
      */
@@ -110,12 +110,4 @@ public:
             }
         }
     }
-
-    // ***  GETTERs and SETTERs  *** //
-    // ***************************** //
-    /**
-     * @brief Check whether the KDTree is dynamic (true) or not (false)
-     * @return True if KDTree is dynamic, false otherwise
-     */
-    virtual bool isDynamic() const {return false;}
 };

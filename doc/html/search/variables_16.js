@@ -1,15 +1,19 @@
 var searchData=
 [
-  ['v_0',['v',['../d6/d44/classVoxel.html#aabef63790fe60ce1e155f0b86407844c',1,'Voxel']]],
-  ['velocity_1',['velocity',['../d1/d83/classMovingPlatform.html#ac80aef1ae5cbe96b5fa6ee1059ce8fdc',1,'MovingPlatform']]],
-  ['verticalanglemax_5frad_2',['verticalAngleMax_rad',['../d0/d23/classScannerSettings.html#a62b14d6ee9bb4e4e8f0d4bb866a2b682',1,'ScannerSettings']]],
-  ['verticalanglemin_5frad_3',['verticalAngleMin_rad',['../d0/d23/classScannerSettings.html#a82f52f986aa9a75dc2a931078fa5fc52',1,'ScannerSettings']]],
-  ['verticality_4',['verticality',['../d4/dfa/classSurfaceInspector_1_1maths_1_1DetailedPlane.html#a4c4db089d13c118d8287ad8dbdc4485a',1,'SurfaceInspector::maths::DetailedPlane']]],
-  ['verticalmoments_5',['verticalMoments',['../d4/dfa/classSurfaceInspector_1_1maths_1_1DetailedPlane.html#a2fd4f867ff8b72ca9926acd2db3943eb',1,'SurfaceInspector::maths::DetailedPlane']]],
-  ['vertices_6',['vertices',['../d1/d0c/classGeoTiffFileLoader.html#ab9a51b621924a1f8f2c728ce8c278782',1,'GeoTiffFileLoader::vertices()'],['../d2/d1a/classAABB.html#a4efbdbe41e3e4e4728fbfb05ba32c8d8',1,'AABB::vertices()'],['../d1/dda/classvisualhelios_1_1VHStaticObjectAdapter.html#a04403c2c02480d56d19744a678dd11af',1,'visualhelios::VHStaticObjectAdapter::vertices()']]],
-  ['verts_7',['verts',['../d2/d51/classTriangle.html#a0537cb4c881d44091046a4d149302be7',1,'Triangle']]],
-  ['viewer_8',['viewer',['../de/dda/classvisualhelios_1_1VHCanvas.html#a12caab990bc6181ff39c6b090ba71c47',1,'visualhelios::VHCanvas']]],
-  ['voxelpopulationthreshold_9',['voxelPopulationThreshold',['../d6/d03/classXYZPointCloudFileLoader.html#a74714cc22686cf55fc4fb90d712de2b2',1,'XYZPointCloudFileLoader']]],
-  ['voxels_10',['voxels',['../d6/d03/classXYZPointCloudFileLoader.html#a481fb42ed47236a0a0179c9af276ae52',1,'XYZPointCloudFileLoader']]],
-  ['voxelsize_11',['voxelSize',['../d6/d03/classXYZPointCloudFileLoader.html#a27900dddea73898f23a8070070ad58f7',1,'XYZPointCloudFileLoader']]]
+  ['w',['w',['../db/d02/classColor4f.html#a9e820b2ace5b886d8e83a420050895ac',1,'Color4f']]],
+  ['water',['WATER',['../df/d64/classLasSpecification.html#a7af2723918eb49310208190ba225787e',1,'LasSpecification']]],
+  ['wavelength_5fum',['wavelength_um',['../d5/d20/classSpectralLibrary.html#ab7fb8272765a5a20d854c07badad9525',1,'SpectralLibrary']]],
+  ['width',['width',['../d1/d0c/classGeoTiffFileLoader.html#a3d90a45b3a30096500afc8bd30e978a9',1,'GeoTiffFileLoader']]],
+  ['winsize_5fns',['winSize_ns',['../d4/dfb/classFWFSettings.html#a442387fd78aa23137901b18f8d6f639c',1,'FWFSettings']]],
+  ['wire_5fconductor',['WIRE_CONDUCTOR',['../df/d64/classLasSpecification.html#ae8ad8d4cd27de51ec1439498eb9ca988',1,'LasSpecification']]],
+  ['wire_5fguard',['WIRE_GUARD',['../df/d64/classLasSpecification.html#ae04e5b30ee67fa66c89667beff906df5',1,'LasSpecification']]],
+  ['wire_5fstructure',['WIRE_STRUCTURE',['../df/d64/classLasSpecification.html#a8d3d2455758b14ac1da2786bb874b645',1,'LasSpecification']]],
+  ['work_5f',['work_',['../dc/de7/classThreadPool.html#a8ba0794faf1a72f7f4a9922b3391a8f2',1,'ThreadPool']]],
+  ['worstvectormaxcomponents',['worstVectorMaxComponents',['../d1/db0/classSurfaceInspector_1_1maths_1_1SingularContextDescriptors.html#a38b1d9ac920fb62c50409eee74969f55',1,'SurfaceInspector::maths::SingularContextDescriptors']]],
+  ['worstvectormaxindices',['worstVectorMaxIndices',['../d1/db0/classSurfaceInspector_1_1maths_1_1SingularContextDescriptors.html#ae5fde2884424a87636d0708655cb85d9',1,'SurfaceInspector::maths::SingularContextDescriptors']]],
+  ['worstvectormincomponents',['worstVectorMinComponents',['../d1/db0/classSurfaceInspector_1_1maths_1_1SingularContextDescriptors.html#a53475389730aac217dc34b58e9076297',1,'SurfaceInspector::maths::SingularContextDescriptors']]],
+  ['worstvectorminindices',['worstVectorMinIndices',['../d1/db0/classSurfaceInspector_1_1maths_1_1SingularContextDescriptors.html#a5293b6e2dab8d2b6604a057804d17216',1,'SurfaceInspector::maths::SingularContextDescriptors']]],
+  ['writeground',['writeGround',['../d6/d9e/classAbstractPulseRunnable.html#afb0cbbe6296be3c71c0647bab194166d',1,'AbstractPulseRunnable']]],
+  ['writenexttrajectory',['writeNextTrajectory',['../df/d1e/classPlatform.html#a79c6568256169bf60219bd4092a11411',1,'Platform']]],
+  ['writewaveform',['writeWaveform',['../db/da6/classFullWaveformPulseRunnable.html#a06e7d38a47f7fc76d55ba205fa399b8e',1,'FullWaveformPulseRunnable::writeWaveform()'],['../dc/d42/classScanner.html#aaec9d6c112b1a6f90af5e1582c6f974b',1,'Scanner::writeWaveform()']]]
 ];

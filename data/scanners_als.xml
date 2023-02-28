@@ -8,6 +8,7 @@
 	<scanner 	id 							= "leica_als50"
 				accuracy_m					= "0.05"	
 			 	beamDivergence_rad 			= "0.00033"
+				deflectAngle_deg    		= "45"				
 				name              			= "Leica ALS50"
 				optics            			= "oscillating"
 				pulseFreqs_Hz				= "83000"
@@ -25,6 +26,7 @@
 	<scanner 	id 							= "leica_als50-ii"
 				accuracy_m					= "0.05"
 			 	beamDivergence_rad 			= "0.00022"
+				deflectAngle_deg    		= "45"
 				name              			= "Leica ALS50-II"
 				optics            			= "oscillating"
 				pulseFreqs_Hz				= "20000,60000,150000"
@@ -180,32 +182,6 @@
 	</scanner>
 	<!-- ##### END RIEGL VUX-1UAV ##### -->
 
-
-    <!-- ##### BEGIN RIEGL VUX-1UAV22 ##### -->
-	<!-- Maximum number of returns per pulse dependent on pulse frequency;
-	50-600 kHz: 15; 800 kHz: 11, 1200 kHz: 7;
-	for simulations with high pulse frequencies, we recommend to create a copy of this scanner entry with the respective maxNOR value -->
-	<scanner 	id 							= "riegl_vux-1uav22"
-				accuracy_m					= "0.01"
-			 	beamDivergence_rad 			= "0.0005"
-				name              			= "RIEGL VUX-1UAV22"
-				optics            			= "rotating"
-				pulseFreqs_Hz				= "50000,100000,200000,400000,600000,800000,1200000"
-				pulseLength_ns     			= "4"
-				rangeMin_m					= "3"
-				scanAngleMax_deg   			= "180"
-                scanAngleEffectiveMax_deg   = "180"
-				scanFreqMin_Hz				= "10"
-				scanFreqMax_Hz				= "200">
-
-			<beamOrigin x="0" y="0.085" z="0.06">
-				<rot axis="x" angle_deg="90" />
-				<rot axis="z" angle_deg="90" />
-			</beamOrigin>
-		<headRotateAxis x="0" y="0" z="1"/>
-	</scanner>
-	<!-- ##### END RIEGL VUX-1UAV22 ##### -->
-
 	
 	<!-- ##### BEGIN RIEGL LMS VQ-880-G II ##### -->
 	<!-- Note regarding pulseLength_ns (2020-04 KA/LW):
@@ -231,8 +207,8 @@
 	>
 				
 		<beamOrigin x="0" y="0.085" z="0.06">			
-			<rot axis="x" angle_deg="0" />
-			<rot axis="z" angle_deg="0" />
+			<rot axis="x" angle_deg="0" />			
+			<rot axis="z" angle_deg="0" />			
 		</beamOrigin>
 		<headRotateAxis x="0" y="0" z="1"/>
 

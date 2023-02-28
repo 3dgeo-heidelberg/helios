@@ -7,7 +7,6 @@
 #include <DetailedVoxel.h>
 #include <AABB.h>
 #include <Scene.h>
-#include <DynScene.h>
 #include <PyPrimitiveWrapper.h>
 #include <PyTriangleWrapper.h>
 #include <PyDetailedVoxelWrapper.h>
@@ -70,26 +69,12 @@ public:
         );
     }
     PythonDVec3 * getShift(){return new PythonDVec3(scene.getShift());}
-    size_t getNumSceneParts(){return scene.parts.size();}
-    PyScenePartWrapper * getScenePart(size_t const i)
-    {return new PyScenePartWrapper(*scene.parts[i]);}
-    size_t getDynSceneStep(){return _asDynScene().getStepInterval();}
-    void setDynSceneStep(size_t const stepInterval)
-    {_asDynScene().setStepInterval(stepInterval);}
 
 
     // ***  M E T H O D S  *** //
     // *********************** //
     bool finalizeLoading() {return scene.finalizeLoading();}
     void writeObject(std::string path) {scene.writeObject(path);}
-
-    // ***  INTERNAL USE  *** //
-    // ********************** //
-    /**
-     * @brief Obtain the scene as a dynamic scene if possible. Use with caution
-     *  because an exception can be thrown if the scene is not dynamic.
-     */
-    DynScene & _asDynScene();
 };
 
 }
