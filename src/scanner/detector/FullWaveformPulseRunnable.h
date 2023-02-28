@@ -1,14 +1,17 @@
 #pragma once
 
-
+#include <util/HeliosException.h>
 #include "AbstractDetector.h"
 #include "AbstractPulseRunnable.h"
 #include "FullWaveformPulseDetector.h"
 #include "RaySceneIntersection.h"
 #include "ScenePart.h"
 #include <noise/RandomnessGenerator.h>
-#include <vector>
+#include <scanner/ScanningPulseProcess.h>
+
 #include <LadLut.h>
+
+#include <vector>
 
 /**
  * @brief Concrete implementation of abstract pulse runnable to compute full
@@ -29,99 +32,26 @@ private:
     // ***  ATTRIBUTES  *** //
     // ******************** //
     /**
-     * @brief Full wavevform pulse detector used to handle pulse computation
+     * @brief Full waveform pulse detector used to handle pulse computation
      */
-	std::shared_ptr<FullWaveformPulseDetector> fwDetector;
-	/**
-	 * @brief Vector of all measurements. It can be nullptr, since tracking
-	 * historical of all measurements might not be requested
-	 */
-    std::vector<Measurement> * allMeasurements = nullptr;
-    /**
-     * @brief Mutex to handle concurrent access to vector of all measurements
-     */
-    std::mutex * allMeasurementsMutex = nullptr;
-    /**
-     * @brief Vector of current cycle measurements. It can be nullptr, since
-     * tracking current cycle measurements might noit be requested
-     */
-    std::vector<Measurement> * cycleMeasurements = nullptr;
-    /**
-     * @brief Mutex to handle concurrent access to vector of current cycle
-     * measurements
-     */
-    std::mutex * cycleMeasurementsMutex = nullptr;
-    /**
-     * @brief Flag to specify if write waveform (true) or not (false)
-     */
-    bool writeWaveform;
-    /**
-     * @brief Flag to specify if calc echo width (true) or not (false)
-     */
-    bool calcEchowidth;
+	std::shared_ptr<FullWaveformPulseDetector> fwDetector = nullptr;
 
 public:
-    /**
-     * @brief Which leg the FullWaveformPulseRunnable belongs to.
-     *
-     * While this attribute is not strictly necessary for the
-     * FullWaveformPulseRunnable to do its job, it really helps with
-     * tracing and debugging concurrency issues.
-     *
-     * For instance, to track what is going on with end of leg
-     * FullWaveformPulseRunnable threads while a new leg is being started.
-     *
-     * This attribute could be safely removed without degenerating class
-     * mechanics. So, if in the future it is not wanted any more, feel free
-     * to remove it.
-     */
-    unsigned int legIndex = 0;
 
     // ***  CONSTRUCTION / DESTRUCTION  *** //
     // ************************************ //
     /**
      * @brief Base constructor for full waveform pulse runnable
      * @see AbstractPulseRunnable::AbstractPulseRunnable(
-     *  std::shared_ptr<AbstractDetector>, glm::dvec3, Rotation, int, long)
-     * @see FullWaveformPulseRunnable::writeWaveform
-     * @see FullWaveformPulseRunnable::calcEchowidth
-     * @see FullWaveformPulseRunnable::allMeasurements
-     * @see FullWaveformPulseRunnable::allMeasurementsMutex
-     * @see FullWaveformPulseRunnable::cycleMeasurements
-     * @see FullWaveformPulseRunnable::cycleMeasurementsMutex
-     * @see FullWaveformPulseRunnable::legIndex
+     *  std::shared_ptr<AbstractDetector>, SimulatedPulse const &)
+     * @see SimulatedPulse
      */
     FullWaveformPulseRunnable(
-        std::shared_ptr<FullWaveformPulseDetector> detector,
-        glm::dvec3 absoluteBeamOrigin,
-        Rotation absoluteBeamAttitude,
-        int currentPulseNum,
-        double currentGpsTime,
-        bool writeWaveform,
-        bool calcEchowidth,
-        std::vector<Measurement> * allMeasurements,
-        std::mutex * allMeasurementsMutex,
-        std::vector<Measurement> * cycleMeasurements,
-        std::mutex * cycleMeasurementsMutex,
-        unsigned int legIndex
+        std::shared_ptr<Scanner> scanner,
+        SimulatedPulse const &pulse
     ) :
-        AbstractPulseRunnable(
-			detector,
-			absoluteBeamOrigin, 
-			absoluteBeamAttitude, 
-			currentPulseNum, 
-			currentGpsTime
-        )
-	{
-		fwDetector = detector;
-		this->writeWaveform = writeWaveform;
-		this->calcEchowidth = calcEchowidth;
-		this->allMeasurements = allMeasurements;
-		this->allMeasurementsMutex = allMeasurementsMutex;
-		this->cycleMeasurements = cycleMeasurements;
-		this->cycleMeasurementsMutex = cycleMeasurementsMutex;
-		this->legIndex = legIndex;
-	}
+        AbstractPulseRunnable(scanner, pulse)
+	{}
 
 	virtual ~FullWaveformPulseRunnable(){}
 
@@ -129,8 +59,19 @@ private:
     // ***  OPERATOR METHODS  *** //
     // ************************** //
     /**
+     * @brief Initialize pending attributes of the full waveform pulse runnable
+     *  before doing further computations. This implies calling the
+     *  AbstractPulseRunnable::initialize method
+     *
+     * NOTE that this method alleviates the burden of the sequential thread by
+     *  supporting deferred initialization whenever possible.
+     * @see AbstractPulseRunnable::initialize
+     */
+    void initialize() override;
+    /**
      * @brief Perform ray casting to find intersections
-     * @param[in] scene Reference to the scene to perform ray casting over
+     * @param[in] tMinMax Minimum and maximum time to intersection with respect
+     *  to the axis aligned bounding box that bounds the scene
      * @param[out] reflections Where reflections must be stored when a hit is
      *  registered
      * @param[out] intersects Where intersections must be stored when a hit is
@@ -138,13 +79,15 @@ private:
      * @see FullWaveformPulseRunnable::handleSubray
      */
     void computeSubrays(
-        Scene &scene,
+        vector<double> const &tMinMax,
         NoiseSource<double> &intersectionHandlingNoiseSource,
         std::map<double, double> &reflections,
         vector<RaySceneIntersection> &intersects
     );
     /**
      * @brief Handle sub-rays along the circle
+     * @param[in] tMinMax Minimum and maximum time to intersection with respect
+     *  to the axis aligned bounding box that bounds the scene
      * @param[in] circleStep The iteration along the circle
      * @param[in] circleStep_rad Angle in radians corresponding to the
      *  iteration
@@ -153,11 +96,11 @@ private:
      * @see FullWaveformPulseRunnable::computeSubrays
      */
     void handleSubray(
-        int circleStep,
-        double circleStep_rad,
+        vector<double> const &tMinMax,
+        int const circleStep,
+        double const circleStep_rad,
         Rotation &r1,
-        Scene &scene,
-        double divergenceAngle,
+        double const divergenceAngle,
         NoiseSource<double> &intersectionHandlingNoiseSource,
         std::map<double, double> &reflections,
         vector<RaySceneIntersection> &intersects
@@ -209,8 +152,8 @@ private:
      * @see FullWaveformPulseRunnable::digestIntersections
      */
     bool initializeFullWaveform(
-        double minHitDist_m,
-        double maxHitDist_m,
+        double const minHitDist_m,
+        double const maxHitDist_m,
         double &minHitTime_ns,
         double &maxHitTime_ns,
         double &nsPerBin,
@@ -225,12 +168,12 @@ private:
      * @see FullWaveformPulseRunnable::initializeFullWaveform
      */
     void populateFullWaveform(
-        std::map<double, double> &reflections,
+        std::map<double, double> const &reflections,
         std::vector<double> &fullwave,
-        double distanceThreshold,
-        double minHitTime_ns,
-        double nsPerBin,
-        int peakIntensityIndex
+        double const distanceThreshold,
+        double const minHitTime_ns,
+        double const nsPerBin,
+        int const peakIntensityIndex
     );
     /**
      * @brief Digest a previously populated full waveform vector,
@@ -247,13 +190,13 @@ private:
         std::vector<Measurement> &pointsMeasurement,
         int &numReturns,
         std::vector<std::vector<double>>& apMatrix,
-        std::vector<double> &fullwave,
-        vector<RaySceneIntersection> &intersects,
-        glm::dvec3 &beamDir,
-        double nsPerBin,
-        int numFullwaveBins,
-        int peakIntensityIndex,
-        double minHitTime_ns
+        std::vector<double> const &fullwave,
+        vector<RaySceneIntersection> const &intersects,
+        glm::dvec3 const &beamDir,
+        double const nsPerBin,
+        int const numFullwaveBins,
+        int const peakIntensityIndex,
+        double const minHitTime_ns
     );
     /**
      * @brief Export measurements and full waveform data
@@ -263,11 +206,11 @@ private:
      */
     void exportOutput(
         std::vector<double> &fullwave,
-        int &numReturns,
+        int const numReturns,
         std::vector<Measurement> &pointsMeasurement,
-        glm::dvec3 &beamDir,
-        double minHitTime_ns,
-        double maxHitTime_ns,
+        glm::dvec3 const &beamDir,
+        double const minHitTime_ns,
+        double const maxHitTime_ns,
         RandomnessGenerator<double> &randGen,
         RandomnessGenerator<double> &randGen2
     );
@@ -275,19 +218,27 @@ private:
     // ***  ASSISTANCE METHODS  *** //
     // **************************** //
     /**
+     * @brief Find the intersection between the scene and given ray, if any
+     * @param[in] tMinMax Minimum and maximum time to intersection with respect
+     *  to the axis aligned bounding box that bounds the scene
+     * @param o The ray origin
+     * @param v The ray director vector
+     * @return Intersection between the scene and given ray
+     */
+    virtual shared_ptr<RaySceneIntersection> findIntersection(
+        vector<double> const &tMinMax,
+        glm::dvec3 const &o,
+        glm::dvec3 const &v
+    ) const;
+    /**
      * @brief Detect full waveform peaks
      */
     bool detectPeak(
-        int i,
-        int win_size,
-        vector<double> &fullwave
+        int const i,
+        int const win_size,
+        vector<double> const &fullwave
     );
 
-    /**
-     * @brief Compute the space distribution equation to calculate the beam energy
-     * decreasing the further away from the center
-     */
-	double calcEmmitedPower(double radius, double targetRange);
 	/**
 	 * @brief Capture full wave
 	 * @param fullwave Full wave vector
@@ -296,7 +247,7 @@ private:
 	 * @param max_time Maximum hit time (nanoseconds)
 	 * @param beamOrigin Beam origin in absolute coordinates
 	 * @param beamDir Beam director vector
-	 * @param gpstime Current GPS time (milliseconds)
+	 * @param gpstime Current GPS time (nanoseconds)
 	 * @param fullWaveNoise flag to specify if noise must be added to the
 	 *  full wave (true) or not (false)
 	 * @param rg2 Randomness generator to be used to add noise to the full wave
@@ -304,39 +255,17 @@ private:
 	 */
 	void captureFullWave(
 	    std::vector<double> & fullwave,
-	    int fullwaveIndex,
-	    double min_time,
-	    double max_time,
-	    glm::dvec3 & beamOrigin,
-	    glm::dvec3 & beamDir,
-        double gpstime,
-	    bool fullWaveNoise,
+	    int const fullwaveIndex,
+	    double const min_time,
+	    double const max_time,
+	    glm::dvec3 const &beamOrigin,
+	    glm::dvec3 const &beamDir,
+        double const gpstime,
+	    bool const fullWaveNoise,
 	    RandomnessGenerator<double> &rg2
     );
 
 public:
-    /**
-     * @brief Compute intensity
-     */
-	double calcIntensity(
-	    double incidenceAngle,
-	    double targetRange,
-	    double targetReflectivity,
-	    double targetSpecularity,
-        double targetSpecularExponent,
-	    double targetArea,
-	    double radius
-    );
-
-	/**
-	 * @brief Compute intensity
-	 */
-	double calcIntensity(
-        double targetRange,
-        double radius,
-        double sigma
-    );
-
 	// ***  O P E R A T O R  *** //
 	// ************************* //
 	/**
@@ -344,7 +273,11 @@ public:
 	 * due to compatibility reasons.
 	 * @see AbstractPulseRunnable::operator()
 	 */
-	void operator()() override {}
+	void operator()() override {
+	    throw HeliosException(
+	        "FullWaveformPulseRunnable operator()() must not be used"
+        );
+	}
 	/**
 	 * @brief Full waveform pulse runnable functor
 	 * @param apMatrix Reference to matrix to be used to compute Marquardt
@@ -355,10 +288,10 @@ public:
 	 * intersection handling if necessary
 	 * @see AbstractPulseRunnable::operator()()
 	 */
-	void operator()(
+	void operator() (
 	    std::vector<std::vector<double>>& apMatrix,
 	    RandomnessGenerator<double> &randGen,
         RandomnessGenerator<double> &randGen2,
         NoiseSource<double> &intersectionHandlingNoiseSource
-    );
+    ) override;
 };

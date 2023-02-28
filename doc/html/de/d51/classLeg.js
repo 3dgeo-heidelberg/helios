@@ -1,13 +1,25 @@
 var classLeg =
 [
-    [ "Leg", "de/d51/classLeg.html#ad89abdcd47e0c542525f5cf26fe1925d", null ],
+    [ "Leg", "de/d51/classLeg.html#ac93ab869ff3014ae19ced4e0e6da36ce", null ],
+    [ "Leg", "de/d51/classLeg.html#a44d8eab8385a77fcc2e97feda87fc476", null ],
     [ "Leg", "de/d51/classLeg.html#a639d92f98416caed280e3004366eee8b", null ],
     [ "~Leg", "de/d51/classLeg.html#ac91b5f3805046311670ce4cca36acd2e", null ],
-    [ "getLength", "de/d51/classLeg.html#afc60ec75e6df1042e21d6dc5d711b2d4", null ],
-    [ "getPlatformSettings", "de/d51/classLeg.html#a0ddb260904dcb84e37ff44afccee1a09", null ],
-    [ "getScannerSettings", "de/d51/classLeg.html#ace174c5dd2fafbebb4b879d9bd52ba02", null ],
-    [ "setLength", "de/d51/classLeg.html#a252285b9330c42f0ea6a19e36586127f", null ],
+    [ "getLength", "de/d51/classLeg.html#a3ebc77c84e75162d44981c4ed699fe1e", null ],
+    [ "getPlatformSettings", "de/d51/classLeg.html#a71c684742ac4af52f03252d6e056e92d", null ],
+    [ "getPyStrip", "de/d51/classLeg.html#ac06a3c2e87436400812a2a1900257efe", null ],
+    [ "getScannerSettings", "de/d51/classLeg.html#a2efcea05a4248b1240fed67ac214c744", null ],
+    [ "getSerialId", "de/d51/classLeg.html#a423db91cf983d031a398a35d007c1c56", null ],
+    [ "getStrip", "de/d51/classLeg.html#a6cac8a8a2596fb52837e290452912bf2", null ],
+    [ "isContainedInAStrip", "de/d51/classLeg.html#af35867cfcdda534e188f7199f57feebc", null ],
+    [ "setLength", "de/d51/classLeg.html#a67408efb60d81a2f58a827d0321a2b0f", null ],
+    [ "setPyStrip", "de/d51/classLeg.html#ae4e1d435d52ceaede360ecc24c891b04", null ],
+    [ "setSerialId", "de/d51/classLeg.html#a47978f097f8c3c50cb60405278b22a4f", null ],
+    [ "setStrip", "de/d51/classLeg.html#aab614c7652b9157f76576a75fce61ac1", null ],
     [ "length", "de/d51/classLeg.html#a15cd4752c410a646e089bad74ead4a71", null ],
     [ "mPlatformSettings", "de/d51/classLeg.html#ae00c4c79dc9664953a0dee4e42e287d9", null ],
-    [ "mScannerSettings", "de/d51/classLeg.html#a7c65726df8dcd4cf499145db7bb6f67f", null ]
+    [ "mScannerSettings", "de/d51/classLeg.html#a7c65726df8dcd4cf499145db7bb6f67f", null ],
+    [ "mTrajectorySettings", "de/d51/classLeg.html#a71f711dcaeadf3af921d422fd9f551fc", null ],
+    [ "serialId", "de/d51/classLeg.html#abbd9dde712bb7a3d55b0c65a326359d2", null ],
+    [ "strip", "de/d51/classLeg.html#a143ae516c64ec8591c7b527c4fc13656", null ],
+    [ "wasProcessed", "de/d51/classLeg.html#a7351b728132623fa8c0490a938ea1c50", null ]
 ];

@@ -2,6 +2,8 @@
 
 #include <glm/glm.hpp>
 
+#include <ostream>
+
 /**
  * @brief Class representing a concrete trajectory definition
  */
@@ -10,10 +12,10 @@ public:
     // ***  ATTRIBUTES  *** //
     // ******************** //
     /**
-     * @brief GPS time in milliseconds identifying the moment at which
+     * @brief GPS time in nanoseconds identifying the moment at which
      * trajectory is registered
      */
-    long gpsTime = 0;
+    double gpsTime = 0;
     /**
      * @brief Trajectory position/coordinates
      */
@@ -39,14 +41,14 @@ public:
     Trajectory() = default;
     /**
      * @brief Trajectory constructor
-     * @param gpsTime GPS time in milliseconds
+     * @param gpsTime GPS time in nanoseconds
      * @param position 3D position
      * @param roll Roll angle in radians
      * @param pitch Pitch angle in radians
      * @param yaw Yaw angle in radians
      */
     Trajectory(
-        long gpsTime,
+        double gpsTime,
         glm::dvec3 position,
         double roll,
         double pitch,

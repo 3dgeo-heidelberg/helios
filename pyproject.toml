@@ -1,0 +1,11 @@
+[build-system]
+requires = [
+    "setuptools>=42",
+    "wheel"
+]
+[tool.pytest.ini_options]
+markers = [
+    "exe: mark tests for the command line tool",
+    "pyh: mark tests for the python bindings pyhelios",
+]
+build-backend = "setuptools.build_meta"

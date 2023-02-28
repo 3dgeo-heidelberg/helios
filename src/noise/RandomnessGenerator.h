@@ -1,8 +1,17 @@
 #pragma once
 
-#include <random>
 #include <memory>
 #include <HeliosException.h>
+/*
+ * Random device, mersenne twister, and distributions were changes from
+ * std::random to boost::random because the latter ones are consistent among
+ * different platforms
+ */
+// #include <random>  // std::random include, no longer used
+#include <boost/random/mersenne_twister.hpp>
+#include <boost/random/uniform_real_distribution.hpp>
+#include <boost/random/normal_distribution.hpp>
+#include <boost/random/random_device.hpp>
 
 /**
  * @brief Set the default randomness generator
@@ -49,20 +58,22 @@ protected:
     /**
      * @brief Uniform Real Distribution Generator
      */
-    std::unique_ptr<std::mt19937> urdGen = nullptr;
+    std::unique_ptr<boost::mt19937> urdGen = nullptr;
     /**
      * @brief Uniform Real Distribution
      */
-    std::unique_ptr<std::uniform_real_distribution<RealType>> urd = nullptr;
+    std::unique_ptr<
+        boost::random::uniform_real_distribution<RealType>
+    > urd = nullptr;
 
     /**
      * @brief Normal Distribution Generator
      */
-    std::unique_ptr<std::mt19937> ndGen = nullptr;
+    std::unique_ptr<boost::mt19937> ndGen = nullptr;
     /**
      * @brief Normal Distribution
      */
-    std::unique_ptr<std::normal_distribution<RealType>> nd = nullptr;
+    std::unique_ptr<boost::normal_distribution<RealType>> nd = nullptr;
 
 
     // ***  INTERNAL SEED FUNCTIONS  *** //
@@ -277,22 +288,22 @@ RandomnessGenerator<RealType>::RandomnessGenerator(
     this->longSeed = rg.longSeed;
 
     if(rg.urdGen == nullptr) this->urdGen = nullptr;
-    else this->urdGen = std::unique_ptr<std::mt19937>(
-            new std::mt19937(*rg.urdGen)
+    else this->urdGen = std::unique_ptr<boost::mt19937>(
+            new boost::mt19937(*rg.urdGen)
         );
     if(rg.urd == nullptr) this->urdGen = nullptr;
     else this->urd =
-        std::unique_ptr<std::uniform_real_distribution<RealType>>(
-            new std::uniform_real_distribution<RealType>(*rg.urd)
+        std::unique_ptr<boost::random::uniform_real_distribution<RealType>>(
+            new boost::random::uniform_real_distribution<RealType>(*rg.urd)
         );
 
     if(rg.ndGen == nullptr) this->ndGen = nullptr;
-    else this->ndGen = std::unique_ptr<std::mt19937>(
-            new std::mt19937(*rg.ndGen)
+    else this->ndGen = std::unique_ptr<boost::mt19937>(
+            new boost::mt19937(*rg.ndGen)
         );
     if(rg.nd == nullptr) this->nd = nullptr;
-    else this->nd = std::unique_ptr<std::normal_distribution<RealType>>(
-            new std::normal_distribution<RealType>(*rg.nd)
+    else this->nd = std::unique_ptr<boost::normal_distribution<RealType>>(
+            new boost::normal_distribution<RealType>(*rg.nd)
         );
 }
 
@@ -344,30 +355,39 @@ void RandomnessGenerator<RealType>::computeUniformRealDistribution(
     RealType lowerBound, RealType upperBound
 ){
     if(mode == "AUTO_SEED") {
-        std::random_device rd;
-        urdGen = std::unique_ptr<std::mt19937>(new std::mt19937(rd()));
-        urd = std::unique_ptr<std::uniform_real_distribution<RealType>>(
-            new std::uniform_real_distribution<RealType>(
-                lowerBound, upperBound
-            ));
+        boost::random_device rd;
+        urdGen = std::unique_ptr<boost::mt19937>(new boost::mt19937(rd()));
+        urd = std::unique_ptr<
+                boost::random::uniform_real_distribution<RealType>
+            >(
+                new boost::random::uniform_real_distribution<RealType>(
+                    lowerBound, upperBound
+                )
+            );
     }
     else if(mode == "FIXED_SEED_DOUBLE"){
-        urdGen = std::unique_ptr<std::mt19937>(
-            new std::mt19937(getDoubleSeed())
+        urdGen = std::unique_ptr<boost::mt19937>(
+            new boost::mt19937(getDoubleSeed())
         );
-        urd = std::unique_ptr<std::uniform_real_distribution<RealType>>(
-            new std::uniform_real_distribution<RealType>(
+        urd = std::unique_ptr<
+            boost::random::uniform_real_distribution<RealType>
+        >(
+            new boost::random::uniform_real_distribution<RealType>(
                 lowerBound, upperBound
-            ));
+            )
+        );
     }
     else if(mode == "FIXED_SEED_LONG"){
-        urdGen = std::unique_ptr<std::mt19937>(
-            new std::mt19937(getLongSeed())
+        urdGen = std::unique_ptr<boost::mt19937>(
+            new boost::mt19937(getLongSeed())
         );
-        urd = std::unique_ptr<std::uniform_real_distribution<RealType>>(
-            new std::uniform_real_distribution<RealType>(
+        urd = std::unique_ptr<
+            boost::random::uniform_real_distribution<RealType>
+        >(
+            new boost::random::uniform_real_distribution<RealType>(
                 lowerBound, upperBound
-            ));
+            )
+        );
     }
 }
 template <typename RealType>
@@ -381,28 +401,28 @@ void RandomnessGenerator<RealType>::computeNormalDistribution(
     RealType mean, RealType stdev
 ){
     if(mode == "AUTO_SEED") {
-        std::random_device rd;
-        ndGen = std::unique_ptr<std::mt19937>(new std::mt19937(rd()));
-        nd = std::unique_ptr<std::normal_distribution<RealType>>(
-            new std::normal_distribution<RealType>(
+        boost::random_device rd;
+        ndGen = std::unique_ptr<boost::mt19937>(new boost::mt19937(rd()));
+        nd = std::unique_ptr<boost::normal_distribution<RealType>>(
+            new boost::normal_distribution<RealType>(
                 mean, stdev
             ));
     }
     else if(mode == "FIXED_SEED_DOUBLE"){
-        ndGen = std::unique_ptr<std::mt19937>(
-            new std::mt19937(getDoubleSeed())
+        ndGen = std::unique_ptr<boost::mt19937>(
+            new boost::mt19937(getDoubleSeed())
         );
-        nd = std::unique_ptr<std::normal_distribution<RealType>>(
-            new std::normal_distribution<RealType>(
+        nd = std::unique_ptr<boost::normal_distribution<RealType>>(
+            new boost::normal_distribution<RealType>(
                 mean, stdev
             ));
     }
     else if(mode == "FIXED_SEED_LONG"){
-        ndGen = std::unique_ptr<std::mt19937>(
-            new std::mt19937(getLongSeed())
+        ndGen = std::unique_ptr<boost::mt19937>(
+            new boost::mt19937(getLongSeed())
         );
-        nd = std::unique_ptr<std::normal_distribution<RealType>>(
-            new std::normal_distribution<RealType>(
+        nd = std::unique_ptr<boost::normal_distribution<RealType>>(
+            new boost::normal_distribution<RealType>(
                 mean, stdev
             ));
     }

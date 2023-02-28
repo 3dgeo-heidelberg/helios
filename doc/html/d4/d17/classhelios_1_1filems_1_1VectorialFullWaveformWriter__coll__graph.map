@@ -1,0 +1,5 @@
+<map id="helios::filems::VectorialFullWaveformWriter" name="helios::filems::VectorialFullWaveformWriter">
+<area shape="rect" id="node1" title="Common implementation for any vectorial full waveform writer." alt="" coords="19,199,178,240"/>
+<area shape="rect" id="node2" href="$df/dfa/classhelios_1_1filems_1_1BaseFullWaveformWriter.html" title=" " alt="" coords="5,95,192,151"/>
+<area shape="rect" id="node3" href="$d1/d3b/classhelios_1_1filems_1_1HeliosWriter.html" title=" " alt="" coords="9,5,188,47"/>
+</map>

@@ -1,3 +1,4 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$d1/d65/classpyhelios_1_1PyHeliosOutputWrapper.html" title="Python wrapper for helios output. " alt="" coords="5,5,176,47"/>
+<area shape="rect" id="node1" href="$de/dd3/classhelios_1_1filems_1_1WriteStrategy.html" title=" " alt="" coords="5,5,192,61"/>
+<area shape="rect" id="node2" href="$da/dca/classhelios_1_1filems_1_1VectorialWriteStrategy.html" title="Concrete class specializing WriteStrategy to make any other write strategy operate over a vector." alt="" coords="240,5,407,61"/>
 </map>

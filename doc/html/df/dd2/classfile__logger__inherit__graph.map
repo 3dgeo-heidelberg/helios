@@ -1,4 +1,5 @@
 <map id="file_logger" name="file_logger">
-<area shape="rect" id="node3" href="$d2/d65/classfull__logger.html" title="Class representing a logger capable of writing to files and, at the same time, to standard out..." alt="" coords="5,155,87,181"/>
-<area shape="rect" id="node2" href="$dc/d37/classlogger.html" title="Class providing the base for any logger. " alt="" coords="17,5,75,32"/>
+<area shape="rect" id="node1" title="Class representing a logger capable of writing to files." alt="" coords="5,80,87,107"/>
+<area shape="rect" id="node3" href="$d2/d65/classfull__logger.html" title="Class representing a logger capable of writing to files and, at the same time, to standard out." alt="" coords="5,155,87,181"/>
+<area shape="rect" id="node2" href="$dc/d37/classlogger.html" title="Class providing the base for any logger." alt="" coords="17,5,75,32"/>
 </map>

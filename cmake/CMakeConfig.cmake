@@ -17,7 +17,7 @@ endif()
 if(WIN32 OR MSVC) # Windows flags
     set(CMAKE_CXX_FLAGS_RELEASE "/MD /O2 /Ob2 /DNDEBUG")
     set(CMAKE_CXX_FLAGS_DEBUG "")
-    set(CMAKE_CXX_FLAGS "-D_OS_WINDOWS_  /EHsc")
+    set(CMAKE_CXX_FLAGS "-D_OS_WINDOWS_ /DWIN32_LEAN_AND_MEAN /EHsc")
 else() # Linux flags
     #set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "-O3 -g -DNDEBUG -Wall")
     set(CMAKE_CXX_FLAGS_RELEASE "-O3 -DNDEBUG -Wall")
@@ -30,6 +30,11 @@ if(NOT PYTHON_VERSION)
     set(PYTHON_VERSION 37)
 endif()
 string(TOUPPER ${CMAKE_BUILD_TYPE} BUILD_TYPE)
+
+# Add debug build definition
+if("${BUILD_TYPE}" STREQUAL "DEBUG")
+    add_definitions(-DDEBUG_BUILD)
+endif()
 
 # Initial messages
 if(WIN32 OR MSVC)

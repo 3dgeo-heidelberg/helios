@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['iterativemethodstatus',['IterativeMethodStatus',['../d8/d34/classfluxionum_1_1IterativeMethodHandler.html#a68da247395386266539ad156c606aacd',1,'fluxionum::IterativeMethodHandler']]]
+  ['funtype_6166',['FunType',['../d7/d02/classUnivarExprTreeNode.html#a37f57b62afa8ee464cabaf22677bfbd8',1,'UnivarExprTreeNode']]]
 ];

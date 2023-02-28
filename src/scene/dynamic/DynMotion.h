@@ -76,6 +76,17 @@ protected:
      */
     bool normalMode = false;
 
+    /**
+     * @brief Specify if the translation vector must be translated to the
+     *  simulation's coordinate reference system (CRS) automatically
+     *  (\f$\neq=0\f$) or not (\f$=0\f$).
+     *
+     * The CRS translation will be applied scaled by autoCRS. Thus, a value
+     * of 1 implies adding the CRS translation while a value of -1 implies
+     * subtracting it.
+     */
+    double autoCRS = 0.0;
+
 public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //
     // ************************************ //
@@ -86,9 +97,10 @@ public:
      * @see rigidmotion::RigidMotion
      * @see DynMotion::selfMode
      */
-    DynMotion(RigidMotion const & rm, bool selfMode=false) :
+    DynMotion(RigidMotion const & rm, bool selfMode=false, double autoCRS=0.0):
         RigidMotion(rm),
-        selfMode(selfMode)
+        selfMode(selfMode),
+        autoCRS(autoCRS)
     {}
     /**
      * @brief Dynamic motion construction from given translation column vector
@@ -185,4 +197,28 @@ public:
      */
     inline void setNormalMode(bool const normalMode)
     {this->normalMode = normalMode;}
+    /**
+     * @brief Obtain the value of the autoCRS attribute
+     * @return The value of the autoCRS attribute
+     * @see DynMotion::autoCRS
+     * @see DynMotion::setAutoCRS
+     * @see DynMotion::isAutoCRS
+     */
+    inline double getAutoCRS() const {return autoCRS;}
+    /**
+     * @brief Check whether there is a non-null autoCRS (True) or not (False)
+     * @return True if there is a non-null autoCRS, false otherwise
+     * @see DynMotion::autoCRS
+     * @see DynMotion::getAutoCRS
+     * @see DynMotion::setAutoCrs
+     */
+    inline bool isAutoCRS() const {return autoCRS != 0.0;}
+    /**
+     * @brief Set the value of the autoCRS attribute
+     * @param autoCRS New value of the autoCRS attribute
+     * @see DynMotion::autoCRS
+     * @see DynMotion::getAutoCRS
+     * @see DynMotion::isAutoCRS
+     */
+    inline void setAutoCRS(double const autoCRS) {this->autoCRS = autoCRS;}
 };

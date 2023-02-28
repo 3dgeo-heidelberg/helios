@@ -1,0 +1,7 @@
+<map id="helios::filems::ZipSyncFileTrajectoryWriter" name="helios::filems::ZipSyncFileTrajectoryWriter">
+<area shape="rect" id="node1" title="Concrete class specializing ZipSyncFileWriter to write compressed trajectory to a file." alt="" coords="11,363,187,404"/>
+<area shape="rect" id="node2" href="$d9/d45/classhelios_1_1filems_1_1ZipSyncFileWriter.html" title=" " alt="" coords="5,273,192,315"/>
+<area shape="rect" id="node3" href="$d1/db6/classhelios_1_1filems_1_1SimpleSyncFileWriter.html" title=" " alt="" coords="10,184,187,225"/>
+<area shape="rect" id="node4" href="$d4/dfb/classhelios_1_1filems_1_1SingleSyncFileWriter.html" title=" " alt="" coords="11,95,186,136"/>
+<area shape="rect" id="node5" href="$da/d4c/classhelios_1_1filems_1_1SyncFileWriter.html" title=" " alt="" coords="19,5,178,47"/>
+</map>

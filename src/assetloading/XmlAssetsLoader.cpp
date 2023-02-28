@@ -1,5 +1,7 @@
 #include "logging.hpp"
 #include <HeliosException.h>
+#include <scanner/SingleScanner.h>
+#include <scanner/MultiScanner.h>
 
 #define _USE_MATH_DEFINES
 #include <cmath>
@@ -15,9 +17,12 @@ namespace fs = boost::filesystem;
 #include "typedef.h"
 #include <XmlUtils.h>
 
+#include <fluxionum/TemporalDesignMatrix.h>
+
 #include "GroundVehiclePlatform.h"
 #include "HelicopterPlatform.h"
 #include "LinearPathPlatform.h"
+#include "InterpolatedMovingPlatformEgg.h"
 
 #include "ConicBeamDeflector.h"
 #include "FiberArrayBeamDeflector.h"
@@ -33,6 +38,14 @@ namespace fs = boost::filesystem;
 #include "MathConverter.h"
 #include "TimeWatcher.h"
 
+using std::unique_ptr;
+
+// ***  CONSTANTS  *** //
+// ******************* //
+std::string const XmlAssetsLoader::defaultScannerSettingsMsg =
+    "Using scanner default value for attribute";
+std::string const XmlAssetsLoader::defaultPlatformSettingsMsg =
+    "Using platform default value for attribute";
 
 
 // ***  CONSTRUCTION / DESTRUCTION  *** //
@@ -52,6 +65,8 @@ XmlAssetsLoader::XmlAssetsLoader(std::string &filePath, std::string &assetsDir)
   if (result != tinyxml2::XML_SUCCESS) {
     logging::ERR("ERROR: loading " + filePath + " failed.");
   }
+
+  makeDefaultTemplates();
 }
 
 // ***  CREATION METHODS  *** //
@@ -67,7 +82,7 @@ XmlAssetsLoader::createAssetFromXml(
     exit(-1);
   }
 
-  std::shared_ptr<Asset> result;
+  std::shared_ptr<Asset> result = nullptr;
   if (type == "platform") {
     result = std::dynamic_pointer_cast<Asset>(
         createPlatformFromXml(assetNode)
@@ -106,6 +121,26 @@ XmlAssetsLoader::createAssetFromXml(
   return result;
 }
 
+std::shared_ptr<Asset> XmlAssetsLoader::createProceduralAssetFromXml(
+    std::string const &type,
+    std::string const &id,
+    void *extraOutput
+){
+    std::shared_ptr<Asset> result = nullptr;
+    if(type == "platform"){
+        result = std::dynamic_pointer_cast<Asset>(
+            procedurallyCreatePlatformFromXml(type, id)
+        );
+    }
+    else{
+        logging::ERR(
+            "ERROR: Unknown procedurally created asset type: " + type
+        );
+        exit(-1);
+    }
+    return result;
+}
+
 std::shared_ptr<Platform>
 XmlAssetsLoader::createPlatformFromXml(tinyxml2::XMLElement *platformNode) {
   std::shared_ptr<Platform> platform(new Platform());
@@ -127,7 +162,7 @@ XmlAssetsLoader::createPlatformFromXml(tinyxml2::XMLElement *platformNode) {
   // Read SimplePhysicsPlatform related stuff
   SimplePhysicsPlatform *spp =
       dynamic_cast<SimplePhysicsPlatform *>(platform.get());
-  if (spp != NULL) {
+  if (spp != nullptr) {
     spp->mCfg_drag = platformNode->DoubleAttribute("drag", 1.0);
   }
 
@@ -235,21 +270,48 @@ XmlAssetsLoader::createPlatformFromXml(tinyxml2::XMLElement *platformNode) {
 }
 
 std::shared_ptr<PlatformSettings>
-XmlAssetsLoader::createPlatformSettingsFromXml(tinyxml2::XMLElement *node) {
+XmlAssetsLoader::createPlatformSettingsFromXml(
+    tinyxml2::XMLElement *node,
+    std::unordered_set<std::string> *fields
+){
+  // Prepare platform settings
+  std::shared_ptr<PlatformSettings> settings = \
+    std::make_shared<PlatformSettings>();
 
-  std::shared_ptr<PlatformSettings> settings(new PlatformSettings());
-  std::shared_ptr<PlatformSettings> template1(new PlatformSettings());
+  // Start with default template as basis
+  std::shared_ptr<PlatformSettings> template1 = \
+    std::make_shared<PlatformSettings>(defaultPlatformTemplate.get());
+  std::string const DEFAULT_TEMPLATE_ID = template1->id;
+
+  // Load specified template
   if (node->Attribute("template") != nullptr) {
-    std::shared_ptr<Asset> bla =
-        getAssetByLocation("platformSettings", node->Attribute("template"));
+    std::string templateId = node->Attribute("template");
+    std::shared_ptr<PlatformSettings> bla = nullptr;
+    if(platformTemplates.find(templateId) == platformTemplates.end()){
+        // If platform template has not been loaded yet, load it
+        bla = std::dynamic_pointer_cast<PlatformSettings>(
+            getAssetByLocation("platformSettings", node->Attribute("template"))
+        );
+        bla->id = templateId;
+        platformTemplates.emplace(templateId, bla);
+        std::unordered_set<std::string> templateFields;
+        trackNonDefaultPlatformSettings(
+            bla, template1, DEFAULT_TEMPLATE_ID, templateFields
+        );
+        platformTemplatesFields.emplace(templateId, templateFields);
+    }
+    else{
+        bla = platformTemplates[templateId];
+    }
     if (bla != nullptr) {
-      template1 = std::dynamic_pointer_cast<PlatformSettings>(bla);
+      template1 = std::make_shared<PlatformSettings>(*bla);
       // ATTENTION:
-      // We need to temporarily convert the head rotation settings from radians
+      // We need to temporarily convert the yaw at departure from radians
       // back to degrees, since degrees is the unit in which they are read from
       // the XML, and below, the template settings are used as defaults in case
       // that a value is not specified in the XML!
-
+      template1->yawAtDeparture =
+          MathConverter::radiansToDegrees(template1->yawAtDeparture);
     } else {
       std::stringstream ss;
       ss << "XML Assets Loader: WARNING: "
@@ -260,25 +322,37 @@ XmlAssetsLoader::createPlatformSettingsFromXml(tinyxml2::XMLElement *node) {
     }
   }
 
-  // Read platform coordinates
+  // Overload settings themselves
+  settings->baseTemplate = template1;
   settings->x = boost::get<double>(XmlUtils::getAttribute(
-      node, "x", "double", template1->x));
+      node, "x", "double", template1->x, defaultPlatformSettingsMsg));
   settings->y = boost::get<double>(XmlUtils::getAttribute(
-      node, "y", "double", template1->y));
+      node, "y", "double", template1->y, defaultPlatformSettingsMsg));
   settings->z = boost::get<double>(XmlUtils::getAttribute(
-      node, "z", "double", template1->z));
+      node, "z", "double", template1->z, defaultPlatformSettingsMsg));
 
   // Read if platform should be put on ground, ignoring z coordinate:
-  settings->onGround = boost::get<bool>(
-      XmlUtils::getAttribute(node, "onGround", "bool", template1->onGround));
+  settings->onGround = boost::get<bool>(XmlUtils::getAttribute(
+      node, "onGround", "bool", template1->onGround, defaultPlatformSettingsMsg
+  ));
 
   // Read if platform must use stop and turn mechanics or not
   settings->stopAndTurn = boost::get<bool>(XmlUtils::getAttribute(
-      node, "stopAndTurn", "bool", template1->stopAndTurn));
+    node,
+    "stopAndTurn",
+    "bool",
+    template1->stopAndTurn,
+    defaultPlatformSettingsMsg
+  ));
 
   // Read if platform must use smooth turn mechanics or not
   settings->smoothTurn = boost::get<bool>(XmlUtils::getAttribute(
-      node, "smoothTurn", "bool", template1->smoothTurn));
+    node,
+    "smoothTurn",
+    "bool",
+    template1->smoothTurn,
+    defaultPlatformSettingsMsg
+  ));
 
   if (settings->stopAndTurn && settings->smoothTurn) {
     logging::INFO("Both stopAndTurn and smoothTurn have been set to true. "
@@ -288,27 +362,449 @@ XmlAssetsLoader::createPlatformSettingsFromXml(tinyxml2::XMLElement *node) {
 
   // Read if platform must be able to slowdown (true) or not (false)
   settings->slowdownEnabled = boost::get<bool>(XmlUtils::getAttribute(
-      node, "slowdownEnabled", "bool", template1->slowdownEnabled));
+      node,
+      "slowdownEnabled",
+      "bool",
+      template1->slowdownEnabled,
+      defaultPlatformSettingsMsg
+  ));
 
   // Read platform speed:
   settings->movePerSec_m = boost::get<double>(XmlUtils::getAttribute(
-      node, "movePerSec_m", "double", template1->movePerSec_m));
+    node,
+    "movePerSec_m",
+    "double",
+    template1->movePerSec_m,
+    defaultPlatformSettingsMsg
+  ));
 
   if (node->FindAttribute("yawAtDeparture_deg") != nullptr) {
     settings->yawAtDepartureSpecified = true;
     settings->yawAtDeparture = MathConverter::degreesToRadians(
         boost::get<double>(XmlUtils::getAttribute(
-            node, "yawAtDeparture_deg", "double", template1->yawAtDeparture
+            node,
+            "yawAtDeparture_deg",
+            "double",
+            template1->yawAtDeparture,
+            defaultPlatformSettingsMsg
         ))
     );
   }
 
+  // Track non default values if requested
+  if(fields != nullptr){
+      trackNonDefaultPlatformSettings(
+        settings, template1, DEFAULT_TEMPLATE_ID, *fields
+      );
+  }
+
+  // Return platform settings
   return settings;
+}
+
+std::shared_ptr<Platform> XmlAssetsLoader::procedurallyCreatePlatformFromXml(
+    std::string const &type,
+    std::string const &id
+){
+    if(id == "interpolated") return createInterpolatedMovingPlatform();
+    else{
+        logging::ERR(
+            "Unexpected procedurally creatable platform type: " + type
+        );
+        std::exit(-1);
+    }
+}
+std::shared_ptr<Platform> XmlAssetsLoader::createInterpolatedMovingPlatform(){
+    // Validate
+    XmlUtils::assertDocumentForAssetLoading(
+        doc, xmlDocFilename, xmlDocFilePath, "platform", "interpolated",
+        "XmlAssetsLoader::createInterpolatedMovingPlatform"
+    );
+    // Prepare egg building
+    std::shared_ptr<InterpolatedMovingPlatformEgg> platform =
+        std::make_shared<InterpolatedMovingPlatformEgg>();
+    tinyxml2::XMLElement *survey = doc.FirstChildElement()
+        ->FirstChildElement("survey");
+    tinyxml2::XMLElement *leg = survey->FirstChildElement("leg");
+    std::unordered_set<std::string> trajectoryFiles;
+    std::unordered_map<std::string, vector<size_t>> indices; // t, RPY, XYZ
+    std::string interpDom = "position_and_attitude";
+    std::string rotspec = XmlUtils::hasAttribute(survey, "rotationSpec") ?
+        survey->Attribute("rotationSpec") : "ARINC 705";
+    bool firstInterpDom = true;
+    bool toRadians = true;
+    double startTime = 0.0;
+    bool syncGPSTime = false;
+    if(leg==nullptr){
+        logging::ERR(
+            "XmlAssetsLoader::createInterpolatedMovingPlatform failed\n"
+            "There is no leg in the Survey XML document"
+        );
+        std::exit(-1);
+    }
+    // Iterate over legs, to obtain indices
+    while(leg!=nullptr){
+        // Obtain platform settings
+        tinyxml2::XMLElement *ps = leg->FirstChildElement(
+            "platformSettings"
+        );
+        // Validate platform settings
+        if(ps==nullptr){
+            logging::ERR(
+                "XmlAssetsLoader::createInterpolatedMovingPlatform failed\n"
+                "There is no platformSettings in the leg"
+            );
+            std::exit(-1);
+        }
+        if(!XmlUtils::hasAttribute(ps, "trajectory")){
+            logging::ERR(
+                "XmlAssetsLoader::createInterpolatedMovingPlatform failed\n"
+                "The platformSettings element has no trajectory attribute"
+            );
+            std::exit(-1);
+        }
+        // Get the trajectory path
+        string const trajectoryPath = ps->Attribute("trajectory");
+        // Check if input is given either as radians or as degrees
+        toRadians &= ps->BoolAttribute("toRadians", true);
+        // Check if either GPS time must be synchronized or not
+        syncGPSTime |= ps->BoolAttribute("syncGPSTime", false);
+        // Handle interpolation domain
+        string const interpolationDomain =
+            (XmlUtils::hasAttribute(ps, "interpolationDomain")) ?
+                ps->Attribute("interpolationDomain") : "";
+        if(!interpolationDomain.empty()){
+            if(firstInterpDom){
+                if(
+                    interpolationDomain != "position" &&
+                    interpolationDomain != "position_and_attitude"
+                ){
+                    std::stringstream ss;
+                    ss  << "XmlAssetsLoader::createInterpolatedMovingPlatform "
+                        << "failed.\n"
+                        << "Unexpected interpolation domain: \""
+                        << interpolationDomain << "\"";
+                    logging::ERR(ss.str());
+                    std::exit(-1);
+                }
+                interpDom = interpolationDomain;
+            }
+            else if(interpDom != interpolationDomain){
+                std::stringstream ss;
+                ss  << "XmlAssetsLoader::createInterpolatedMovingPlatform "
+                    << "failed.\n"
+                    << "Interpolation domain \"" << interpDom << "\" "
+                    << "was first specified.\n"
+                    << "But then, interpolation domain \""
+                    << interpolationDomain << "\" was given.";
+                logging::ERR(ss.str());
+                std::exit(-1);
+            }
+            firstInterpDom = false;
+        }
+        // Handle trajectory metadata : indices
+        if(
+            XmlUtils::hasAttribute(ps, "tIndex") ||
+            XmlUtils::hasAttribute(ps, "rollIndex") ||
+            XmlUtils::hasAttribute(ps, "pitchIndex") ||
+            XmlUtils::hasAttribute(ps, "yawIndex") ||
+            XmlUtils::hasAttribute(ps, "xIndex") ||
+            XmlUtils::hasAttribute(ps, "yIndex") ||
+            XmlUtils::hasAttribute(ps, "zIndex")
+        ){
+            if(indices.find(trajectoryPath) != indices.end()){
+                logging::ERR(
+                    "XmlAssetsLoader::createInterpolatedMovingPlatform failed."
+                    "\nIndices were specified more than once for the same "
+                    "trajectory:\n\"" + trajectoryPath + "\""
+                );
+                std::exit(-1);
+            }
+            indices.emplace(
+                trajectoryPath,
+                vector<size_t>({
+                    (size_t)ps->IntAttribute("tIndex",      0),
+                    (size_t)ps->IntAttribute("rollIndex",   1),
+                    (size_t)ps->IntAttribute("pitchIndex",  2),
+                    (size_t)ps->IntAttribute("yawIndex",    3),
+                    (size_t)ps->IntAttribute("xIndex",      4),
+                    (size_t)ps->IntAttribute("yIndex",      5),
+                    (size_t)ps->IntAttribute("zIndex",      6)
+                })
+            );
+        }
+
+        // Prepare next iteration
+        leg = leg->NextSiblingElement("leg");
+    }
+
+    // Correct indices for POSITION scope
+    if(interpDom == "position"){ // Position indices
+        std::unordered_map<std::string, std::vector<std::size_t>>::iterator it;
+        for(it = indices.begin() ; it != indices.end() ; ++it){
+            std::vector<std::size_t> &inds = it->second;
+            inds.erase(inds.begin()+1, inds.begin()+4);
+        }
+    }
+
+    // Iterate over legs again, to fulfill egg
+    leg = survey->FirstChildElement("leg");
+    while(leg!=nullptr){
+        // Obtain platform settings
+        tinyxml2::XMLElement *ps = leg->FirstChildElement(
+            "platformSettings"
+        );
+        // Obtain trajectory column separator
+        string sep = boost::get<string>(XmlUtils::getAttribute(
+            ps, "trajectory_separator", "string", string(",")
+        ));
+        // Handle trajectory itself
+        string const trajectoryPath = ps->Attribute("trajectory");
+        bool const alreadyLoaded =
+            trajectoryFiles.find(trajectoryPath) != trajectoryFiles.end();
+        if(!alreadyLoaded){ // Load trajectory data if not already loaded
+            if(platform->tdm == nullptr){ // First loaded trajectory
+                if(indices.find(trajectoryPath) != indices.end()){ // XML inds
+                    DesignMatrix<double> dm(trajectoryPath, sep);
+                    dm.swapColumns(indices[trajectoryPath]);
+                    platform->tdm =
+                    std::make_shared<TemporalDesignMatrix<double, double>>(
+                        dm, 0
+                    );
+                }
+                else{ // Trajectory file indices
+                    platform->tdm = std::make_shared<
+                        TemporalDesignMatrix<double, double>
+                    >(
+                        trajectoryPath, sep
+                    );
+                    if(interpDom == "position"){ // t, x, y, z from header
+                        vector<unsigned long long>inds({0, 1, 2});
+                        vector<string> const &names =
+                            platform->tdm->getColumnNames();
+                        for(size_t i = 0 ; i < names.size() ; ++i){
+                            if(names[i]=="x") inds[0] = i;
+                            else if(names[i]=="y") inds[1] = i;
+                            else if(names[i]=="z") inds[2] = i;
+                            else if(
+                                names[i]=="roll" ||
+                                names[i]=="pitch" ||
+                                names[i]=="yaw"
+                            ); // Ignore roll pitch yaw in position mode
+                            else{
+                                logging::ERR(
+                                    "XmlAssetsLoader::createInterpolated"
+                                    "MovingPlatform failed\n"
+                                    "Unexpected column \""+names[i]+"\""
+                                );
+                                std::exit(-1);
+                            }
+                        }
+                        platform->tdm->swapColumns(inds);
+                    }
+                    else{ // t, roll, pitch, yaw, x, y, z from header
+                        vector<unsigned long long>inds({0, 1, 2, 3, 4, 5});
+                        vector<string> const &names =
+                            platform->tdm->getColumnNames();
+                        for(size_t i = 0 ; i < names.size() ; ++i){
+                            if(names[i]=="roll") inds[0] = i;
+                            else if(names[i]=="pitch") inds[1] = i;
+                            else if(names[i]=="yaw") inds[2] = i;
+                            else if(names[i]=="x") inds[3] = i;
+                            else if(names[i]=="y") inds[4] = i;
+                            else if(names[i]=="z") inds[5] = i;
+                            else{
+                                logging::ERR(
+                                    "XmlAssetsLoader::createInterpolated"
+                                    "MovingPlatform failed\n"
+                                    "Unexpected column \""+names[i]+"\""
+                                );
+                                std::exit(-1);
+                            }
+                        }
+                        platform->tdm->swapColumns(inds);
+                    }
+                }
+                // Drop columns, if necessary
+                if(
+                    interpDom == "position" &&
+                    platform->tdm->getNumColumns() > 3
+                ){
+                    platform->tdm->dropColumns(vector<size_t>({0, 1, 2}));
+                }
+                // Apply slope filter, if requested
+                double const slopeFilterThreshold = ps->DoubleAttribute(
+                    "slopeFilterThreshold", 0.0
+                );
+                if(slopeFilterThreshold > 0.0){
+                    platform->tdm->sortByTime();
+                    size_t const filteredPoints =
+                        platform->tdm->slopeFilter(slopeFilterThreshold);
+                    std::stringstream ss;
+                    ss  << "Slope filter removed " << filteredPoints << " "
+                        << "points from \""+trajectoryPath+"\"";
+                    logging::DEBUG(ss.str());
+                }
+            }
+            else{ // Not first loaded, so merge with previous data
+                std::unique_ptr<TemporalDesignMatrix<double, double>> tdm;
+                if(indices.find(trajectoryPath) != indices.end()){ // XML inds
+                    DesignMatrix<double> dm(trajectoryPath, sep);
+                    dm.swapColumns(indices[trajectoryPath]);
+                    tdm = unique_ptr<TemporalDesignMatrix<double, double>>(
+                        new TemporalDesignMatrix<double, double>(
+                            dm, 0
+                        )
+                    );
+                }
+                else{  // Trajectory file indices
+                    tdm = unique_ptr<TemporalDesignMatrix<double, double>>(
+                        new TemporalDesignMatrix<double, double>(
+                            trajectoryPath, sep
+                        )
+                    );
+                    if(interpDom == "position"){ // t, x, y, z from header
+                        vector<unsigned long long>inds({0, 1, 2});
+                        vector<string> const &names = tdm->getColumnNames();
+                        for(size_t i = 0 ; i < names.size() ; ++i){
+                            if(names[i]=="x") inds[0] = i;
+                            else if(names[i]=="y") inds[1] = i;
+                            else if(names[i]=="z") inds[2] = i;
+                            else if(
+                                names[i]=="roll" ||
+                                names[i]=="pitch" ||
+                                names[i]=="yaw"
+                            ); // Ignore roll pitch yaw in position mode
+                            else{
+                                logging::ERR(
+                                    "XmlAssetsLoader::createInterpolated"
+                                    "MovingPlatform failed\n"
+                                    "Unexpected column \""+names[i]+"\""
+                                );
+                                std::exit(-1);
+                            }
+                        }
+                        tdm->swapColumns(inds);
+                    }
+                    else{ // t, roll, pitch, yaw, x, y, z from header
+                        vector<unsigned long long>inds({0, 1, 2, 3, 4, 5});
+                        vector<string> const &names = tdm->getColumnNames();
+                        for(size_t i = 0 ; i < names.size() ; ++i){
+                            if(names[i]=="roll") inds[0] = i;
+                            else if(names[i]=="pitch") inds[1] = i;
+                            else if(names[i]=="yaw") inds[2] = i;
+                            else if(names[i]=="x") inds[3] = i;
+                            else if(names[i]=="y") inds[4] = i;
+                            else if(names[i]=="z") inds[5] = i;
+                            else{
+                                logging::ERR(
+                                    "XmlAssetsLoader::createInterpolated"
+                                    "MovingPlatform failed\n"
+                                    "Unexpected column \""+names[i]+"\""
+                                );
+                                std::exit(-1);
+                            }
+                        }
+                        tdm->swapColumns(inds);
+                    }
+                }
+                // Drop columns, if necessary
+                if(
+                    interpDom == "position" &&
+                    tdm->getNumColumns() > 3
+                ){
+                    tdm->dropColumns(vector<size_t>({0, 1, 2}));
+                }
+                // Merge with previously loaded data
+                platform->tdm->mergeInPlace(*tdm);
+            }
+            trajectoryFiles.emplace(trajectoryPath);
+        }
+
+        // Prepare next iteration
+        leg = leg->NextSiblingElement("leg");
+    }
+
+    // Sort by time
+    platform->tdm->sortByTime();
+
+    // Subtract min time so time starts at t0=0, also handle sync GPS time flag
+    startTime = arma::min(platform->tdm->getTimeVector());
+    platform->startTime = startTime;
+    platform->tdm->shiftTime(-startTime);
+    platform->syncGPSTime = syncGPSTime;
+
+    // Angle to radians, if angles are given
+    if(interpDom == "position_and_attitude" && toRadians){
+        for(size_t j = 0 ; j < 3 ; ++j){
+            platform->tdm->setColumn(
+                j,
+                platform->tdm->getColumn(j) * PI_OVER_180
+            );
+        }
+    }
+
+    // Differentiate temporal matrix through FORWARD FINITE DIFFERENCES
+    platform->ddm = platform->tdm->toDiffDesignMatrixPointer(
+        DiffDesignMatrixType::FORWARD_FINITE_DIFFERENCES,
+        false
+    );
+
+    // Configure interpolation scope
+    if(interpDom == "position"){
+        platform->scope =
+            InterpolatedMovingPlatform::InterpolationScope::POSITION;
+    }
+
+    // Configure rotation specification
+    if(rotspec == "CANONICAL") platform->rotspec =
+        InterpolatedMovingPlatform::RotationSpec::CANONICAL;
+    else if(rotspec == "ARINC 705") platform->rotspec =
+        InterpolatedMovingPlatform::RotationSpec::ARINC_705;
+    else{
+        std::stringstream ss;
+        ss  << "XmlAssetsLoader::createInterpolatedMovingPlatform got an "
+            << "unexpected rotation specification: \"" << rotspec << "\""
+        ;
+        logging::ERR(ss.str());
+        std::exit(3);
+    }
+
+    // Configure scanner mount
+    // Algorithm to take ScannerMount from platforms ---
+    // Check basePlatform was given
+    string basePlatformLocation = boost::get<string>(XmlUtils::getAttribute(
+            survey, "basePlatform", "string", string("")
+    ));
+    if(basePlatformLocation.size() > 0){ // If so, ScannerMount from base plat.
+        std::shared_ptr<Platform> bp = dynamic_pointer_cast<Platform>(
+            getAssetByLocation("platform", basePlatformLocation)
+        );
+        platform->cfg_device_relativeMountPosition =
+            bp->cfg_device_relativeMountPosition;
+        platform->cfg_device_relativeMountAttitude =
+            bp->cfg_device_relativeMountAttitude;
+    }
+    // --- Algorithm to take ScannerMount from platforms
+
+    // Algorithm to set ScannerMount from survey ---
+    // Check scanner mount is specified in Survey
+    tinyxml2::XMLElement *scMount = survey->FirstChildElement("scannerMount");
+    if(scMount != nullptr){ // If so, assign it to interpolated platform
+        platform->cfg_device_relativeMountPosition =
+            XmlUtils::createVec3dFromXml(scMount, "");
+        platform->cfg_device_relativeMountAttitude =
+            XmlUtils::createRotationFromXml(scMount);
+    }
+    // --- Algorithm to set ScannerMount from survey
+
+
+    // Return egg
+    return platform;
 }
 
 std::shared_ptr<Scanner>
 XmlAssetsLoader::createScannerFromXml(tinyxml2::XMLElement *scannerNode) {
-
   // ############ BEGIN Read emitter position and orientation ############
   glm::dvec3 emitterPosition = glm::dvec3(0, 0, 0);
   Rotation emitterAttitude(glm::dvec3(1.0, 0.0, 0.0), 0.0);
@@ -326,7 +822,6 @@ XmlAssetsLoader::createScannerFromXml(tinyxml2::XMLElement *scannerNode) {
     logging::WARN(std::string("No scanner orientation defined.\n") +
                   "EXCEPTION: " + e.what());
   }
-
   // ############ END Read emitter position and orientation ############
 
   // ########## BEGIN Read supported pulse frequencies ############
@@ -343,7 +838,6 @@ XmlAssetsLoader::createScannerFromXml(tinyxml2::XMLElement *scannerNode) {
     int f = boost::lexical_cast<int>(freq);
     pulseFreqs.push_back(f);
   }
-
   // ########## END Read supported pulse frequencies ############
 
   // ########### BEGIN Read all the rest #############
@@ -367,153 +861,193 @@ XmlAssetsLoader::createScannerFromXml(tinyxml2::XMLElement *scannerNode) {
       scannerNode, "wavelength_nm", "int", 1064));
   // ########### END Read all the rest #############
 
-  std::shared_ptr<Scanner> scanner = std::make_shared<Scanner>(
-      beamDiv_rad, emitterPosition, emitterAttitude, pulseFreqs, pulseLength_ns,
-      id, avgPower, beamQuality, efficiency, receiverDiameter, visibility,
-      wavelength, false);
-
-  // Parse max number of returns per pulse
-  scanner->maxNOR = boost::get<int>(XmlUtils::getAttribute(
-      scannerNode, "maxNOR", "int", 0));
-
-  // ########## BEGIN Default FWF_settings ##########
-  std::shared_ptr<FWFSettings> settings = std::make_shared<FWFSettings>();
-  settings->pulseLength_ns = pulseLength_ns;
-  scanner->applySettingsFWF(*createFWFSettingsFromXml(
-      scannerNode->FirstChildElement("FWFSettings"), settings));
-  // ########## END Default FWF_settings ##########
-
-  // ############################# BEGIN Configure scanner head
-  // ##############################
-  // ################### BEGIN Read Scan head rotation axis #############
-  glm::dvec3 headRotateAxis = glm::dvec3(0, 0, 1);
-
-  try {
-    glm::dvec3 axis = XmlUtils::createVec3dFromXml(
-        scannerNode->FirstChildElement("headRotateAxis"), "");
-    if (glm::l2Norm(axis) > 0.1) {
-      headRotateAxis = axis;
-    }
-  } catch (std::exception &e) {
-    std::stringstream ss;
-    ss << "XML Assets Loader: Failed to read child element "
-       << "<headRotateAxis> of <scanner> element at line "
-       << scannerNode->GetLineNum()
-       << ". Using default.\nEXCEPTION: " << e.what();
-    logging::WARN(ss.str());
+  // Check multi scanner
+  tinyxml2::XMLElement * channels = scannerNode->FirstChildElement("channels");
+  bool const isMultiScanner = channels != nullptr;
+  std::shared_ptr<Scanner> scanner;
+  if(isMultiScanner){
+      size_t nChannels = 0;
+      tinyxml2::XMLElement * chan = channels->FirstChildElement("channel");
+      while(chan != nullptr){
+          ++nChannels;
+          chan = chan->NextSiblingElement("channel");
+      }
+      std::vector<ScanningDevice> scanDevs(
+          nChannels, ScanningDevice(
+              0, id, beamDiv_rad, emitterPosition, emitterAttitude,
+              pulseFreqs, pulseLength_ns, avgPower, beamQuality, efficiency,
+              receiverDiameter, visibility, wavelength*1e-9
+          )
+      );
+      scanner = std::make_shared<MultiScanner>(
+          std::move(scanDevs),
+          id,
+          pulseFreqs
+      );
+      std::shared_ptr<FWFSettings> settings = std::make_shared<FWFSettings>();
+      fillScanningDevicesFromChannels(
+          scanner,
+          scannerNode,
+          channels,
+          createBeamDeflectorFromXml(scannerNode),
+          createDetectorFromXml(scannerNode, scanner),
+          createScannerHeadFromXml(scannerNode),
+          createFWFSettingsFromXml(
+            scannerNode->FirstChildElement("FWFSettings"), settings
+          )
+      );
   }
-  // ############### END Read Scan head rotation axis ###############
-
-  // Read head rotation speed:
-  double headRotatePerSecMax_rad = MathConverter::degreesToRadians(
-      boost::get<double>(XmlUtils::getAttribute(
-          scannerNode, "headRotatePerSecMax_deg", "double", 0.0
-      ))
-  );
-
-  // Configure scanner head:
-  scanner->scannerHead = std::shared_ptr<ScannerHead>(
-      new ScannerHead(headRotateAxis, headRotatePerSecMax_rad));
-
-  // ############################# END Configure scanner head
-  // ##############################
-
-  // ################################## BEGIN Configure beam deflector
-  // ######################################
-
-  // ########### BEGIN Read and apply generic properties ##########
-  double scanFreqMax_Hz = boost::get<double>(
-      XmlUtils::getAttribute(scannerNode, "scanFreqMax_Hz", "double", 0.0));
-  double scanFreqMin_Hz = boost::get<double>(
-      XmlUtils::getAttribute(scannerNode, "scanFreqMin_Hz", "double", 0.0));
-
-  double scanAngleMax_rad = MathConverter::degreesToRadians(boost::get<double>(
-      XmlUtils::getAttribute(scannerNode, "scanAngleMax_deg", "double", 0.0)));
-  // ########### END Read and apply generic properties ##########
-
-  std::string str_opticsType = scannerNode->Attribute("optics");
-  std::shared_ptr<AbstractBeamDeflector> beamDeflector = NULL;
-
-  if (str_opticsType == "oscillating") {
-    int scanProduct = boost::get<int>(
-        XmlUtils::getAttribute(scannerNode, "scanProduct", "int", 1000000));
-    beamDeflector = std::shared_ptr<OscillatingMirrorBeamDeflector>(
-        new OscillatingMirrorBeamDeflector(scanAngleMax_rad, scanFreqMax_Hz,
-                                           scanFreqMin_Hz, scanProduct));
-  } else if (str_opticsType == "conic") {
-    beamDeflector = std::shared_ptr<ConicBeamDeflector>(new ConicBeamDeflector(
-        scanAngleMax_rad, scanFreqMax_Hz, scanFreqMin_Hz));
-  } else if (str_opticsType == "line") {
-    int numFibers = boost::get<int>(XmlUtils::getAttribute(
-        scannerNode, "numFibers", "int", 1));
-    beamDeflector =
-        std::shared_ptr<FiberArrayBeamDeflector>(new FiberArrayBeamDeflector(
-            scanAngleMax_rad, scanFreqMax_Hz, scanFreqMin_Hz, numFibers));
-  } else if (str_opticsType == "rotating") {
-    double scanAngleEffectiveMax_rad = MathConverter::degreesToRadians(
-        boost::get<double>(XmlUtils::getAttribute(
-            scannerNode, "scanAngleEffectiveMax_deg", "double", 0.0
-        ))
-    );
-    beamDeflector = std::shared_ptr<PolygonMirrorBeamDeflector>(
-        new PolygonMirrorBeamDeflector(scanFreqMax_Hz, scanFreqMin_Hz,
-                                       scanAngleMax_rad,
-                                       scanAngleEffectiveMax_rad));
-  } else if (str_opticsType == "risley") {
-    int rotorFreq_1_Hz = boost::get<int>(
-        XmlUtils::getAttribute(scannerNode, "rotorFreq1_Hz", "int", 7294));
-    int rotorFreq_2_Hz = boost::get<int>(
-        XmlUtils::getAttribute(scannerNode, "rotorFreq2_Hz", "int", -4664));
-    beamDeflector =
-        std::shared_ptr<RisleyBeamDeflector>(new RisleyBeamDeflector(
-            scanAngleMax_rad, (double)rotorFreq_1_Hz, (double)rotorFreq_2_Hz));
+  else{// Scanner as single scanner
+      scanner = std::make_shared<SingleScanner>(
+          beamDiv_rad, emitterPosition, emitterAttitude, pulseFreqs,
+          pulseLength_ns, id, avgPower, beamQuality, efficiency,
+          receiverDiameter, visibility, wavelength
+      );
+      // Parse max number of returns per pulse
+      scanner->setMaxNOR(boost::get<int>(XmlUtils::getAttribute(
+          scannerNode, "maxNOR", "int", 0)));
+      // Parse beam deflector
+      scanner->setBeamDeflector(createBeamDeflectorFromXml(scannerNode));
+      // Parse detector
+      scanner->setDetector(createDetectorFromXml(scannerNode, scanner));
+      // Parse scanner head
+      scanner->setScannerHead(createScannerHeadFromXml(scannerNode));
+      // Parse full waveform settings
+      std::shared_ptr<FWFSettings> settings = std::make_shared<FWFSettings>();
+      settings->pulseLength_ns = pulseLength_ns;
+      scanner->applySettingsFWF(*createFWFSettingsFromXml(
+          scannerNode->FirstChildElement("FWFSettings"), settings));
   }
-
-  if (beamDeflector == nullptr) {
-    std::stringstream ss;
-    ss << "ERROR: Unknown beam deflector type: '" << str_opticsType
-       << "'. Aborting.";
-    logging::ERR(ss.str());
-    exit(1);
-  }
-
-  scanner->beamDeflector = beamDeflector;
-
-  // ################################## END Configure beam deflector
-  // #######################################
-
-  // ############################ BEGIN Configure detector
-  // ###############################
-  double rangeMin_m = boost::get<double>(
-      XmlUtils::getAttribute(scannerNode, "rangeMin_m", "double", 0.0));
-  double accuracy_m = boost::get<double>(
-      XmlUtils::getAttribute(scannerNode, "accuracy_m", "double", 0.0));
-  scanner->detector = std::make_shared<FullWaveformPulseDetector>(
-      scanner, accuracy_m, rangeMin_m);
-  // ############################ END Configure detector
-  // ###############################
-
+  // Return built scanner
   return scanner;
 }
 
+std::shared_ptr<AbstractBeamDeflector>
+XmlAssetsLoader::createBeamDeflectorFromXml(
+    tinyxml2::XMLElement *scannerNode
+){
+    // Prepare beam deflector variable
+    std::shared_ptr<AbstractBeamDeflector> beamDeflector = nullptr;
+    // Parse beam deflector
+    std::string str_opticsType = scannerNode->Attribute("optics");
+    double scanFreqMax_Hz = boost::get<double>(
+        XmlUtils::getAttribute(scannerNode, "scanFreqMax_Hz", "double", 0.0));
+    double scanFreqMin_Hz = boost::get<double>(
+        XmlUtils::getAttribute(scannerNode, "scanFreqMin_Hz", "double", 0.0));
+    double scanAngleMax_rad = MathConverter::degreesToRadians(
+        boost::get<double>(XmlUtils::getAttribute(
+            scannerNode, "scanAngleMax_deg", "double", 0.0
+        ))
+    );
+    // Build beam deflector
+    if (str_opticsType == "oscillating") {
+        int scanProduct = boost::get<int>(
+            XmlUtils::getAttribute(scannerNode, "scanProduct", "int", 1000000));
+        beamDeflector = std::make_shared<OscillatingMirrorBeamDeflector>(
+            scanAngleMax_rad, scanFreqMax_Hz, scanFreqMin_Hz, scanProduct);
+    } else if (str_opticsType == "conic") {
+        beamDeflector = std::make_shared<ConicBeamDeflector>(
+            scanAngleMax_rad, scanFreqMax_Hz, scanFreqMin_Hz);
+    } else if (str_opticsType == "line") {
+        int numFibers = boost::get<int>(XmlUtils::getAttribute(
+            scannerNode, "numFibers", "int", 1));
+        beamDeflector = std::make_shared<FiberArrayBeamDeflector>(
+            scanAngleMax_rad, scanFreqMax_Hz, scanFreqMin_Hz, numFibers);
+    } else if (str_opticsType == "rotating") {
+        double scanAngleEffectiveMax_rad = MathConverter::degreesToRadians(
+            boost::get<double>(XmlUtils::getAttribute(
+                scannerNode, "scanAngleEffectiveMax_deg", "double", 0.0
+            ))
+        );
+        beamDeflector = std::make_shared<PolygonMirrorBeamDeflector>(
+            scanFreqMax_Hz, scanFreqMin_Hz, scanAngleMax_rad,
+            scanAngleEffectiveMax_rad
+        );
+    } else if (str_opticsType == "risley") {
+        int rotorFreq_1_Hz = boost::get<int>(
+            XmlUtils::getAttribute(scannerNode, "rotorFreq1_Hz", "int", 7294));
+        int rotorFreq_2_Hz = boost::get<int>(
+            XmlUtils::getAttribute(scannerNode, "rotorFreq2_Hz", "int", -4664));
+        beamDeflector = std::make_shared<RisleyBeamDeflector>(
+            scanAngleMax_rad, (double)rotorFreq_1_Hz, (double)rotorFreq_2_Hz);
+    }
+
+    if (beamDeflector == nullptr) {
+        std::stringstream ss;
+        ss << "ERROR: Unknown beam deflector type: '" << str_opticsType
+        << "'. Aborting.";
+        logging::ERR(ss.str());
+        exit(1);
+    }
+    // Return built beam deflector
+    return beamDeflector;
+}
+
+std::shared_ptr<AbstractDetector> XmlAssetsLoader::createDetectorFromXml(
+    tinyxml2::XMLElement *scannerNode,
+    std::shared_ptr<Scanner> scanner
+){
+    double const rangeMin_m = boost::get<double>(
+        XmlUtils::getAttribute(scannerNode, "rangeMin_m", "double", 0.0));
+    double const rangeMax_m = boost::get<double>(
+        XmlUtils::getAttribute(
+            scannerNode,
+            "rangeMax_m",
+            "double",
+            std::numeric_limits<double>::max()
+        )
+    );
+    double const accuracy_m = boost::get<double>(
+        XmlUtils::getAttribute(scannerNode, "accuracy_m", "double", 0.0));
+    return std::make_shared<FullWaveformPulseDetector>(
+        scanner, accuracy_m, rangeMin_m, rangeMax_m
+    );
+}
+
+std::shared_ptr<ScannerHead> XmlAssetsLoader::createScannerHeadFromXml(
+    tinyxml2::XMLElement *scannerNode
+){
+    glm::dvec3 headRotateAxis = glm::dvec3(0, 0, 1);
+    try {
+        glm::dvec3 axis = XmlUtils::createVec3dFromXml(
+            scannerNode->FirstChildElement("headRotateAxis"), "");
+        if (glm::l2Norm(axis) > 0.1) {
+            headRotateAxis = axis;
+        }
+    } catch (std::exception &e) {
+        std::stringstream ss;
+        ss << "XML Assets Loader: Failed to read child element "
+           << "<headRotateAxis> of <scanner> element at line "
+           << scannerNode->GetLineNum()
+           << ". Using default.\nEXCEPTION: " << e.what();
+        logging::WARN(ss.str());
+    }
+    double headRotatePerSecMax_rad = MathConverter::degreesToRadians(
+        boost::get<double>(XmlUtils::getAttribute(
+            scannerNode, "headRotatePerSecMax_deg", "double", 0.0
+        ))
+    );
+    return std::make_shared<ScannerHead>(
+        headRotateAxis, headRotatePerSecMax_rad
+    );
+}
+
 std::shared_ptr<ScannerSettings>
-XmlAssetsLoader::createScannerSettingsFromXml(tinyxml2::XMLElement *node) {
+XmlAssetsLoader::createScannerSettingsFromXml(
+    tinyxml2::XMLElement *node,
+    std::unordered_set<std::string> *fields
+) {
+  // Prepare scanner settings
+  std::shared_ptr<ScannerSettings> settings = \
+    std::make_shared<ScannerSettings>();
 
-  std::shared_ptr<ScannerSettings> settings(new ScannerSettings());
-  std::shared_ptr<ScannerSettings> template1(new ScannerSettings());
+  // Start with default template as basis
+  std::shared_ptr<ScannerSettings> template1 = \
+    std::make_shared<ScannerSettings>(defaultScannerTemplate.get());
+  std::string const DEFAULT_TEMPLATE_ID = template1->id;
 
-  template1->id = "DEFAULT_TEMPLATE1_HELIOSCPP";
-  template1->active = true;
-  template1->headRotatePerSec_rad = 0;
-  template1->headRotateStart_rad = 0;
-  template1->headRotateStop_rad = 0;
-  template1->pulseFreq_Hz = 0;
-  template1->scanAngle_rad = 0;
-  template1->verticalAngleMin_rad = 0;
-  template1->verticalAngleMax_rad = 0;
-  template1->scanFreq_Hz = 0;
-
-  if (node->Attribute("template") != nullptr) {
+  // Load specified template
+  if(XmlUtils::hasAttribute(node, "template")){
     std::string templateId = node->Attribute("template");
     std::shared_ptr<ScannerSettings> bla = nullptr;
     if (scannerTemplates.find(templateId) == scannerTemplates.end()) {
@@ -522,29 +1056,19 @@ XmlAssetsLoader::createScannerSettingsFromXml(tinyxml2::XMLElement *node) {
           getAssetByLocation("scannerSettings", node->Attribute("template")));
       bla->id = templateId;
       scannerTemplates.emplace(templateId, bla);
-    } else { // If scanner template has been loaded, then use already loaded
+      std::unordered_set<std::string> templateFields;
+      trackNonDefaultScannerSettings(
+          bla, template1, DEFAULT_TEMPLATE_ID, templateFields
+      );
+      scannerTemplatesFields.emplace(templateId, templateFields);
+    }
+    else { // If scanner template has been loaded, then use already loaded
       bla = scannerTemplates[templateId];
     }
     if (bla != nullptr) {
       template1 = std::make_shared<ScannerSettings>(*bla);
-      // ATTENTION:
-      // We need to temporarily convert the head rotation settings from radians
-      // back to degrees, since degrees is the unit in which they are read from
-      // the XML, and below, the template settings are used as defaults in case
-      // that a value is not specified in the XML!
-      template1->headRotatePerSec_rad =
-          MathConverter::radiansToDegrees(template1->headRotatePerSec_rad);
-      template1->headRotateStart_rad =
-          MathConverter::radiansToDegrees(template1->headRotateStart_rad);
-      template1->headRotateStop_rad =
-          MathConverter::radiansToDegrees(template1->headRotateStop_rad);
-      template1->scanAngle_rad =
-          MathConverter::radiansToDegrees(template1->scanAngle_rad);
-      template1->verticalAngleMin_rad =
-          MathConverter::radiansToDegrees(template1->scanAngle_rad);
-      template1->verticalAngleMax_rad =
-          MathConverter::radiansToDegrees(template1->scanAngle_rad);
-    } else {
+    }
+    else {
       std::stringstream ss;
       ss << "XML Assets Loader: "
          << "WARNING: Scanner settings template specified in line "
@@ -554,84 +1078,174 @@ XmlAssetsLoader::createScannerSettingsFromXml(tinyxml2::XMLElement *node) {
     }
   }
 
+  // Ovearload settings themselves
   settings->baseTemplate = template1;
   settings->active = boost::get<bool>(XmlUtils::getAttribute(
-      node, "active", "bool", template1->active
+      node, "active", "bool", template1->active, defaultScannerSettingsMsg
   ));
-  settings->beamSampleQuality = boost::get<int>(XmlUtils::getAttribute(
-      node, "beamSampleQuality", "int", template1->beamSampleQuality
-  ));
-  settings->headRotatePerSec_rad = MathConverter::degreesToRadians(
-      boost::get<double>(XmlUtils::getAttribute(
-          node, "headRotatePerSec_deg", "double",
-          template1->headRotatePerSec_rad
-      ))
-  );
-  settings->headRotateStart_rad = MathConverter::degreesToRadians(
-      boost::get<double>(XmlUtils::getAttribute(
-          node, "headRotateStart_deg", "double", template1->headRotateStart_rad
-          )
-      ));
-
-  double hrStop_rad = MathConverter::degreesToRadians(
-      boost::get<double>(XmlUtils::getAttribute(
-          node, "headRotateStop_deg", "double", template1->headRotateStop_rad
-      )));
-
-  // Make sure that rotation stop angle is larger than rotation start angle if
-  // rotation speed is positive:
-  if (hrStop_rad < settings->headRotateStart_rad &&
-      settings->headRotatePerSec_rad > 0) {
-    logging::ERR(std::string("XML Assets Loader: Error: ") +
-                 "Head Rotation Stop angle must be larger than start angle " +
-                 "if rotation speed is positive!");
-    exit(-1);
+  if(XmlUtils::hasAttribute(node, "headRotatePerSec_deg")){
+    settings->headRotatePerSec_rad = MathConverter::degreesToRadians(
+        boost::get<double>(XmlUtils::getAttribute(
+            node,
+            "headRotatePerSec_deg",
+            "double",
+            0.0,
+            defaultScannerSettingsMsg
+        ))
+    );
   }
-
-  // Make sure that rotation stop angle is larger than rotation start angle if
-  // rotation speed is positive:
-  if (hrStop_rad > settings->headRotateStart_rad &&
-      settings->headRotatePerSec_rad < 0) {
-    logging::ERR(
-        std::string("XML Assets Loader: Error: ") +
-        "Head Rotation Stop angle must be smaller than start angle if " +
-        "rotation speed is negative!");
-    exit(-1);
+  else settings->headRotatePerSec_rad = template1->headRotatePerSec_rad;
+  if(XmlUtils::hasAttribute(node, "headRotateStart_deg")){
+    settings->headRotateStart_rad = MathConverter::degreesToRadians(
+        boost::get<double>(XmlUtils::getAttribute(
+            node,
+            "headRotateStart_deg",
+            "double",
+            0.0,
+            defaultScannerSettingsMsg
+        ))
+    );
   }
+  else settings->headRotateStart_rad = template1->headRotateStart_rad;
 
-  settings->headRotateStop_rad = hrStop_rad;
+  if(XmlUtils::hasAttribute(node, "headRotateStop_deg")){
+    double hrStop_rad = MathConverter::degreesToRadians(
+        boost::get<double>(XmlUtils::getAttribute(
+            node,
+            "headRotateStop_deg",
+            "double",
+            0.0,
+            defaultScannerSettingsMsg
+        )));
+
+    // Make sure that rotation stop angle is larger than rotation start angle if
+    // rotation speed is positive:
+    if(hrStop_rad < settings->headRotateStart_rad &&
+        settings->headRotatePerSec_rad > 0
+    ){
+      logging::ERR(std::string("XML Assets Loader: Error: ") +
+                   "Head Rotation Stop angle must be larger than start angle " +
+                   "if rotation speed is positive!");
+      exit(-1);
+    }
+
+    // Make sure that rotation stop angle is larger than rotation start angle if
+    // rotation speed is negative:
+    if (hrStop_rad > settings->headRotateStart_rad &&
+        settings->headRotatePerSec_rad < 0) {
+      logging::ERR(
+          std::string("XML Assets Loader: Error: ") +
+          "Head Rotation Stop angle must be smaller than start angle if " +
+          "rotation speed is negative!");
+      exit(-1);
+    }
+
+    settings->headRotateStop_rad = hrStop_rad;
+  }
+  else settings->headRotateStop_rad = template1->headRotateStop_rad;
   settings->pulseFreq_Hz = boost::get<int>(XmlUtils::getAttribute(
-      node, "pulseFreq_hz", "int", template1->pulseFreq_Hz));
-  settings->scanAngle_rad = MathConverter::degreesToRadians(boost::get<double>(
-      XmlUtils::getAttribute(
-          node, "scanAngle_deg", "double", template1->scanAngle_rad
-      )
+      node,
+      "pulseFreq_hz",
+      "int",
+      template1->pulseFreq_Hz,
+      defaultScannerSettingsMsg
   ));
-  settings->verticalAngleMin_rad = MathConverter::degreesToRadians(
-      boost::get<double>(XmlUtils::getAttribute(
-          node, "verticalAngleMin_deg", "double",
-          template1->verticalAngleMin_rad
-      ))
-  );
-  settings->verticalAngleMax_rad = MathConverter::degreesToRadians(
-      boost::get<double>(XmlUtils::getAttribute(
-          node, "verticalAngleMax_deg", "double",
-          template1->verticalAngleMax_rad
-      ))
-  );
-  settings->scanFreq_Hz = boost::get<int>(XmlUtils::getAttribute(
-      node, "scanFreq_hz", "int", template1->scanFreq_Hz
+  if(XmlUtils::hasAttribute(node, "scanAngle_deg")){
+      settings->scanAngle_rad = MathConverter::degreesToRadians(
+          boost::get<double>(XmlUtils::getAttribute(
+              node, "scanAngle_deg", "double", 0.0, defaultScannerSettingsMsg
+          ))
+      );
+  }
+  else settings->scanAngle_rad = template1->scanAngle_rad;
+  if(XmlUtils::hasAttribute(node, "verticalAngleMin_deg")){
+      settings->verticalAngleMin_rad = MathConverter::degreesToRadians(
+          boost::get<double>(XmlUtils::getAttribute(
+              node,
+              "verticalAngleMin_deg",
+              "double",
+              NAN,
+              defaultScannerSettingsMsg
+          ))
+      );
+  }
+  else settings->verticalAngleMin_rad = template1->verticalAngleMin_rad;
+  if(XmlUtils::hasAttribute(node, "verticalAngleMax_deg")){
+      settings->verticalAngleMax_rad = MathConverter::degreesToRadians(
+          boost::get<double>(XmlUtils::getAttribute(
+              node,
+              "verticalAngleMax_deg",
+              "double",
+              NAN,
+              defaultScannerSettingsMsg
+          ))
+      );
+  }
+  else settings->verticalAngleMax_rad = template1->verticalAngleMax_rad;
+  settings->scanFreq_Hz = boost::get<double>(XmlUtils::getAttribute(
+      node,
+      "scanFreq_hz",
+      "double",
+      template1->scanFreq_Hz,
+      defaultScannerSettingsMsg
+  ));
+
+  settings->beamDivAngle = boost::get<double>(XmlUtils::getAttribute(
+    node,
+    "beamDivergence_rad",
+    "double",
+    template1->beamDivAngle,
+    defaultScannerSettingsMsg
   ));
 
   settings->trajectoryTimeInterval = boost::get<double>(XmlUtils::getAttribute(
-    node, "trajectoryTimeInterval_s", "double", 0.0)
-  );
+    node,
+    "trajectoryTimeInterval_s",
+    "double",
+    template1->trajectoryTimeInterval,
+    defaultScannerSettingsMsg
+  ));
 
+  // Parse alternative spec. based on vertical and horizontal resolutions
+  if(XmlUtils::hasAttribute(node, "verticalResolution_deg")){
+    settings->verticalResolution_rad = MathConverter::degreesToRadians(
+        boost::get<double>(XmlUtils::getAttribute(
+            node,
+            "verticalResolution_deg",
+            "double",
+            0.0,
+            defaultScannerSettingsMsg
+        ))
+    );
+  }
+  else settings->verticalResolution_rad = template1->verticalResolution_rad;
+  if(XmlUtils::hasAttribute(node, "horizontalResolution_deg")){
+      settings->horizontalResolution_rad = MathConverter::degreesToRadians(
+        boost::get<double>(XmlUtils::getAttribute(
+            node,
+            "horizontalResolution_deg",
+            "double",
+            0.0,
+            defaultScannerSettingsMsg
+        ))
+      );
+  }
+  else settings->horizontalResolution_rad=template1->horizontalResolution_rad;
+
+  // Track non default values if requested
+  if(fields != nullptr){
+    trackNonDefaultScannerSettings(
+        settings, template1, DEFAULT_TEMPLATE_ID, *fields
+    );
+  }
+
+  // Return scanner settings
   return settings;
 }
 
 std::shared_ptr<FWFSettings> XmlAssetsLoader::createFWFSettingsFromXml(
-    tinyxml2::XMLElement *node, std::shared_ptr<FWFSettings> settings) {
+    tinyxml2::XMLElement *node, std::shared_ptr<FWFSettings> settings
+) {
   if (settings == nullptr) {
     settings = std::make_shared<FWFSettings>();
   }
@@ -652,6 +1266,281 @@ std::shared_ptr<FWFSettings> XmlAssetsLoader::createFWFSettingsFromXml(
   return settings;
 }
 
+std::shared_ptr<TrajectorySettings>
+XmlAssetsLoader::createTrajectorySettingsFromXml(
+    tinyxml2::XMLElement *legNode,
+    std::shared_ptr<TrajectorySettings> settings
+){
+    // Create settings if not given
+    if(settings == nullptr){
+        settings = std::make_shared<TrajectorySettings>();
+    }
+
+    // Load start and end times from XML, if any
+    tinyxml2::XMLElement *ps = legNode->FirstChildElement("platformSettings");
+    if(ps!=nullptr){ // If PlatformSettings were specified
+        settings->tStart = ps->DoubleAttribute("tStart", settings->tStart);
+        settings->tEnd = ps->DoubleAttribute("tEnd", settings->tEnd);
+        settings->teleportToStart = ps->BoolAttribute(
+            "teleportToStart", settings->teleportToStart
+        );
+    }
+
+    // Return loaded settings
+    return settings;
+}
+
+void XmlAssetsLoader::fillScanningDevicesFromChannels(
+    std::shared_ptr<Scanner> scanner,
+    tinyxml2::XMLElement *scannerNode,
+    tinyxml2::XMLElement *channels,
+    std::shared_ptr<AbstractBeamDeflector> deflec,
+    std::shared_ptr<AbstractDetector> detec,
+    std::shared_ptr<ScannerHead> scanHead,
+    std::shared_ptr<FWFSettings> fwfSettings
+){
+    tinyxml2::XMLElement *chan = channels->FirstChildElement("channel");
+    tinyxml2::XMLElement *elem;
+    size_t idx = 0;  // Device/channel index
+    while(chan != nullptr){ // Update i-th device with i-th channel
+        // Set id
+        scanner->setDeviceIndex(idx, idx);
+        std::string const deviceId = boost::get<std::string>(
+            XmlUtils::getAttribute(
+                chan, "id", "string", std::to_string(idx), "DeviceID"
+            )
+        );
+        scanner->setDeviceId(deviceId, idx);
+        // Check beam update
+        elem = chan->FirstChildElement("beamOrigin");
+        if(elem != nullptr){
+            // Check beam origin
+            try{
+                scanner->setHeadRelativeEmitterPosition(
+                    XmlUtils::createVec3dFromXml(elem, ""), idx
+                );
+            }
+            catch(HeliosException &hex){
+                std::stringstream ss;
+                ss  << "Failed to find beamOrigin (x, y, z) in channel "
+                    << idx << ".\nEXCEPTION:\n" << hex.what();
+                logging::WARN(ss.str());
+            }
+            // Check beam attitude
+            try{
+                scanner->setHeadRelativeEmitterAttitude(
+                    XmlUtils::createRotationFromXml(elem), idx
+                );
+            }
+            catch(HeliosException &hex){
+                std::stringstream ss;
+                ss  << "Failed to find beamAttitude (q0, q1, q2, q3) in "
+                    << "channel " << idx << ".\nEXCEPTION:\n" << hex.what();
+                logging::WARN(ss.str());
+            }
+        }
+        // Check full waveform settings update
+        elem = chan->FirstChildElement("FWFSettings");
+        if(elem != nullptr){
+            std::shared_ptr<FWFSettings> fwfs = std::make_shared<FWFSettings>(
+                *fwfSettings
+            );
+            fwfs = createFWFSettingsFromXml(elem, fwfs);
+            scanner->applySettingsFWF(*fwfs, idx);
+        }
+        else{
+            scanner->applySettingsFWF(*fwfSettings, idx);
+        }
+        // Check beam deflector update
+        bool updateDeflector = true;
+        if(XmlUtils::hasAttribute(chan, "optics")){
+            std::string optics = chan->Attribute("optics");
+            bool deflectorsMatch = (
+                optics=="oscillating" && std::dynamic_pointer_cast<
+                    OscillatingMirrorBeamDeflector
+                >(deflec)!=nullptr
+            ) || (
+                optics=="conic" && std::dynamic_pointer_cast<
+                    ConicBeamDeflector
+                >(deflec)!=nullptr
+            ) || (
+                optics=="line" && std::dynamic_pointer_cast<
+                    FiberArrayBeamDeflector
+                >(deflec)!=nullptr
+            ) || (
+                optics=="rotating" && std::dynamic_pointer_cast<
+                    PolygonMirrorBeamDeflector
+                >(deflec)!=nullptr
+            ) || (
+                optics=="risley" && std::dynamic_pointer_cast<
+                    RisleyBeamDeflector
+                >(deflec)!=nullptr
+            );
+            if(!deflectorsMatch){ // Assign new beam deflector, dont update
+                scanner->setBeamDeflector(
+                    createBeamDeflectorFromXml(chan), idx
+                );
+                updateDeflector = false;
+            }
+        }
+        if(updateDeflector){
+            std::string optics = scannerNode->Attribute("optics");
+            scanner->setBeamDeflector(deflec->clone(), idx);
+            std::shared_ptr<AbstractBeamDeflector> _deflec =
+                scanner->getBeamDeflector(idx);
+            // Common beam deflector updates
+            _deflec->cfg_device_scanFreqMin_Hz = boost::get<double>(
+                XmlUtils::getAttribute(
+                    chan, "scanFreqMin_Hz", "double",
+                    _deflec->cfg_device_scanFreqMin_Hz
+               )
+            );
+            _deflec->cfg_device_scanFreqMax_Hz = boost::get<double>(
+                XmlUtils::getAttribute(
+                    chan, "scanFreqMax_Hz", "double",
+                    _deflec->cfg_device_scanFreqMax_Hz
+                )
+            );
+            if(XmlUtils::hasAttribute(chan, "scanAngleMax_deg")){
+                _deflec->cfg_device_scanAngleMax_rad = boost::get<double>(
+                    XmlUtils::getAttribute(
+                        chan, "scanAngleMax_deg", "double", 0.0
+                    )
+                );
+            }
+            // Oscillating mirror beam deflector updates
+            if(optics == "oscillating"){
+                std::shared_ptr<OscillatingMirrorBeamDeflector> ombd =
+                    std::static_pointer_cast<OscillatingMirrorBeamDeflector>(
+                        _deflec
+                    );
+                ombd->cfg_device_scanProduct = boost::get<int>(
+                    XmlUtils::getAttribute(
+                        chan, "scanProduct", "int",
+                        ombd->cfg_device_scanProduct
+                    )
+                );
+            }
+            // Conic beam deflector updates (NONE)
+            // Fiber array beam deflector updates
+            if(optics == "line"){
+                std::shared_ptr<FiberArrayBeamDeflector> fabd =
+                    std::static_pointer_cast<FiberArrayBeamDeflector>(
+                        _deflec
+                    );
+                fabd->setNumFibers(boost::get<int>(XmlUtils::getAttribute(
+                    scannerNode, "numFibers", "int", fabd->getNumFibers()
+                )));
+            }
+            // Polygon mirror beam deflector updates
+            if(optics == "rotating"){
+                std::shared_ptr<PolygonMirrorBeamDeflector> pmbd =
+                    std::static_pointer_cast<PolygonMirrorBeamDeflector>(
+                        _deflec
+                    );
+                pmbd->cfg_device_scanAngleMax_rad =
+                    MathConverter::degreesToRadians(boost::get<double>(
+                        XmlUtils::getAttribute(
+                            chan, "scanAngleEffectiveMax_deg", "double",
+                            MathConverter::radiansToDegrees(
+                                pmbd->cfg_device_scanAngleMax_rad
+                            )
+                        )
+                    ));
+            }
+            // Risley beam deflector updates
+            if(optics == "risley"){
+                std::shared_ptr<RisleyBeamDeflector> rbd =
+                    std::static_pointer_cast<RisleyBeamDeflector>(_deflec);
+                if(XmlUtils::hasAttribute(chan, "rotorFreq1_Hz")){
+                    rbd->rotorSpeed_rad_1 = ((double)boost::get<int>(
+                        XmlUtils::getAttribute(
+                            chan, "rotorFreq1_Hz", "int", 7294
+                        )
+                    )) / PI_2;
+                }
+                if(XmlUtils::hasAttribute(chan, "rotorFreq2_Hz")){
+                    rbd->rotorSpeed_rad_2 = ((double)boost::get<int>(
+                        XmlUtils::getAttribute(
+                            chan, "rotorFreq2_Hz", "int", -4664
+                        )
+                    )) / PI_2;
+                }
+            }
+        }
+        // Check detector related attributes
+        std::shared_ptr<AbstractDetector> _detec = detec->clone();
+        _detec->cfg_device_accuracy_m = boost::get<double>(
+            XmlUtils::getAttribute(
+                chan, "accuracy_m", "double", _detec->cfg_device_accuracy_m
+            )
+        );
+        _detec->cfg_device_rangeMin_m = boost::get<double>(
+            XmlUtils::getAttribute(
+                chan, "rangeMin_m", "double", _detec->cfg_device_rangeMin_m
+            )
+        );
+        _detec->cfg_device_rangeMax_m = boost::get<double>(
+            XmlUtils::getAttribute(
+                chan, "rangeMax_m", "double", _detec->cfg_device_rangeMax_m
+            )
+        );
+        scanner->setDetector(_detec, idx);
+        // Check scanner head related attributes
+        std::shared_ptr<ScannerHead> _scanHead = std::make_shared<ScannerHead>(
+            *scanHead
+        );
+        _scanHead->setRotatePerSecMax(MathConverter::degreesToRadians(
+            boost::get<double>(XmlUtils::getAttribute(
+                chan, "headRotatePerSecMax_deg", "double",
+                MathConverter::radiansToDegrees(
+                    _scanHead->getRotatePerSecMax()
+                )
+            ))
+        ));
+        tinyxml2::XMLElement *hraNode = chan->FirstChildElement(
+            "headRotateAxis");
+        if(hraNode != nullptr){
+            glm::dvec3 shra = XmlUtils::createVec3dFromXml(
+                chan->FirstChildElement("headRotateAxis"), "");
+            _scanHead->cfg_device_rotateAxis = shra;
+        }
+        scanner->setScannerHead(_scanHead, idx);
+        // Check general attributes
+        scanner->setBeamDivergence(
+            boost::get<double>(XmlUtils::getAttribute(
+                chan, "beamDivergence_rad", "double",
+                scanner->getBeamDivergence(idx)
+            )),
+            idx
+        );
+        scanner->setPulseLength_ns(
+            boost::get<double>(XmlUtils::getAttribute(
+                chan, "pulseLength_ns", "double",
+                scanner->getPulseLength_ns(idx)
+            )),
+            idx
+        );
+        if(XmlUtils::hasAttribute(chan, "wavelength_nm")){
+            scanner->setWavelength(
+                boost::get<int>(XmlUtils::getAttribute(
+                    chan, "wavelength_nm", "int", 1064
+                ))*1e-9,
+                idx
+            );
+        }
+        scanner->setMaxNOR(
+            boost::get<int>(XmlUtils::getAttribute(
+                chan, "maxNOR", "int", 0
+            )),
+            idx
+        );
+        // Next channel, if any
+        chan = chan->NextSiblingElement("channel");
+        ++idx;
+    }
+}
+
 // ***  GETTERS and SETTERS  *** //
 // ***************************** //
 std::shared_ptr<Asset> XmlAssetsLoader::getAssetById(
@@ -660,11 +1549,19 @@ std::shared_ptr<Asset> XmlAssetsLoader::getAssetById(
     void *extraOutput
 ) {
   std::string errorMsg = "# DEF ERR MSG #";
+  XmlUtils::assertDocumentForAssetLoading(
+    doc, xmlDocFilename, xmlDocFilePath, type, id,
+    "XmlAssetsLoader::getAssetById"
+  );
   try {
     tinyxml2::XMLElement *assetNodes =
         doc.FirstChild()->NextSibling()->FirstChildElement(type.c_str());
 
-    while (assetNodes != nullptr) {
+    if(isProceduralAsset(type, id)){ // Generate procedural assets
+        return createProceduralAssetFromXml(type, id, extraOutput);
+    }
+
+    while (assetNodes != nullptr) { // Load standard assets
       std::string str(assetNodes->Attribute("id"));
       if (str.compare(id) == 0) {
         return createAssetFromXml(type, assetNodes, extraOutput);
@@ -692,7 +1589,6 @@ std::shared_ptr<Asset> XmlAssetsLoader::getAssetById(
   }
 
   throw HeliosException(errorMsg);
-  return nullptr;
 }
 
 std::shared_ptr<Asset>
@@ -719,4 +1615,105 @@ XmlAssetsLoader::getAssetByLocation(
   if (freeLoader)
     delete loader;
   return asset;
+}
+
+// ***  UTIL METHODS  *** //
+// ********************** //
+void XmlAssetsLoader::reinitLoader(){
+    scannerTemplates.clear();
+    scannerTemplatesFields.clear();
+}
+
+void XmlAssetsLoader::makeDefaultTemplates(){
+    // Make default scanner settings template
+    defaultScannerTemplate = std::make_shared<ScannerSettings>();
+    defaultScannerTemplate->id = "DEFAULT_TEMPLATE1_HELIOSCPP";
+    defaultScannerTemplate->active = true;
+    defaultScannerTemplate->headRotatePerSec_rad = 0;
+    defaultScannerTemplate->headRotateStart_rad = 0;
+    defaultScannerTemplate->headRotateStop_rad = 0;
+    defaultScannerTemplate->pulseFreq_Hz = 0;
+    defaultScannerTemplate->scanAngle_rad = 0;
+    defaultScannerTemplate->verticalAngleMin_rad = NAN;
+    defaultScannerTemplate->verticalAngleMax_rad = NAN;
+    defaultScannerTemplate->scanFreq_Hz = 0;
+
+    // Make default platform settings template
+    defaultPlatformTemplate = std::make_shared<PlatformSettings>();
+    defaultPlatformTemplate->id = "DEFAULT_TEMPLATE1_HELIOSCPP";
+    defaultPlatformTemplate->setPosition(0, 0, 0);
+    defaultPlatformTemplate->yawAtDepartureSpecified = false;
+    defaultPlatformTemplate->yawAtDeparture= 0.0;
+    defaultPlatformTemplate->onGround = false;
+    defaultPlatformTemplate->stopAndTurn = true;
+    defaultPlatformTemplate->smoothTurn = false;
+    defaultPlatformTemplate->slowdownEnabled = true;
+    defaultPlatformTemplate->movePerSec_m = 70;
+}
+
+void XmlAssetsLoader::trackNonDefaultScannerSettings(
+    std::shared_ptr<ScannerSettings> base,
+    std::shared_ptr<ScannerSettings> ref,
+    std::string const defaultTemplateId,
+    std::unordered_set<std::string> &fields
+){
+    if(ref->id != defaultTemplateId) fields.insert("baseTemplate");
+    if(base->active != ref->active) fields.insert("active");
+    if(base->headRotatePerSec_rad != ref->headRotatePerSec_rad)
+        fields.insert("headRotatePerSec_rad");
+    if(base->headRotateStart_rad != ref->headRotateStart_rad)
+        fields.insert("headRotateStart_rad");
+    if(base->headRotateStop_rad != ref->headRotateStop_rad)
+        fields.insert("headRotateStop_rad");
+    if(base->pulseFreq_Hz != ref->pulseFreq_Hz)
+        fields.insert("pulseFreq_Hz");
+    if(base->scanAngle_rad != ref->scanAngle_rad)
+        fields.insert("scanAngle_rad");
+    if(base->verticalAngleMin_rad != ref->verticalAngleMin_rad)
+        fields.insert("verticalAngleMin_rad");
+    if(base->verticalAngleMax_rad != ref->verticalAngleMax_rad)
+        fields.insert("verticalAngleMax_rad");
+    if(base->scanFreq_Hz != ref->scanFreq_Hz)
+        fields.insert("scanFreq_Hz");
+    if(base->beamDivAngle != ref->beamDivAngle)
+        fields.insert("beamDivAngle");
+    if(base->trajectoryTimeInterval != ref->trajectoryTimeInterval)
+        fields.insert("trajectoryTimeInterval");
+    if(base->verticalResolution_rad != ref->verticalResolution_rad)
+        fields.insert("verticalResolution_rad");
+    if(base->horizontalResolution_rad != ref->horizontalResolution_rad)
+        fields.insert("horizontalResolution_rad");
+}
+
+void XmlAssetsLoader::trackNonDefaultPlatformSettings(
+    std::shared_ptr<PlatformSettings> base,
+    std::shared_ptr<PlatformSettings> ref,
+    std::string const defaultTemplateId,
+    std::unordered_set<std::string> &fields
+){
+    if(ref->id != defaultTemplateId) fields.insert("baseTemplate");
+    if(base->x != ref->x) fields.insert("x");
+    if(base->y != ref->y) fields.insert("y");
+    if(base->z != ref->z) fields.insert("z");
+    if(base->yawAtDepartureSpecified != ref->yawAtDepartureSpecified)
+        fields.insert("yawAtDepartureSpecified");
+    if(base->yawAtDeparture != ref->yawAtDeparture)
+        fields.insert("yawAtDeparture");
+    if(base->onGround != ref->onGround) fields.insert("onGround");
+    if(base->stopAndTurn != ref->stopAndTurn) fields.insert("stopAndTurn");
+    if(base->smoothTurn != ref->smoothTurn) fields.insert("smoothTurn");
+    if(base->slowdownEnabled != ref->slowdownEnabled)
+        fields.insert("slowdownEnabled");
+    if(base->movePerSec_m != ref->movePerSec_m) fields.insert("movePerSec_m");
+}
+// ***  STATIC METHODS  *** //
+// ************************ //
+bool XmlAssetsLoader::isProceduralAsset(
+    std::string const &type,
+    std::string const &id
+){
+    if(type=="platform"){
+        if(id=="interpolated") return true;
+    }
+    return false;
 }

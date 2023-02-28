@@ -212,6 +212,14 @@ public:
      * @brief Compute the distance threshold with respect to expected turn
      */
     void computeTurnDistanceThreshold();
+    /**
+     * @brief Compute the slowdown distance. This is necessary when using the
+     *  slowdown mode with no smooth turn. Otherwise, the helicopter will stop
+     *  before arriving to destination.
+     *
+     * @see HelicopterPlatform::cfg_slowdown_dist_xy
+     */
+    void computeNonSmoothSlowdownDist();
 
     // ***  GETTERS and SETTERS  *** //
     // ***************************** //
@@ -249,7 +257,7 @@ public:
     /**
      * @see Platform::canStopAndTurn
      */
-    bool canStopAndTurn() override {return true;}
+    bool canStopAndTurn() const override {return true;}
 
     // ***  CONTROL STEP  *** //
     // ********************** //
@@ -305,13 +313,13 @@ public:
      * @param[in] speedMagnitude The speed vector magnitude/norm
      * @return Speed magnitude after slowdown
      */
-    inline double computeSlowdownStep(double speedMagnitude)
+    inline double computeSlowdownStep(double const speedMagnitude) const
         {return cfg_slowdownFactor * speedMagnitude;}
     /**
      * @brief Compute speed magnitude after a speedup step
      * @param[in] speedMagnitude the speed vector magnitude/norm
      * @return Speed magnitude after speedup
      */
-    inline double computeSpeedupStep(double speedMagnitude)
+    inline double computeSpeedupStep(double const speedMagnitude) const
         {return cfg_speedupFactor * speedMagnitude;}
 };

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+	<!-- Default scanner settings: -->
+    <scannerSettings id="scaset" active="true" pulseFreq_hz="70000" scanAngle_deg="60" scanFreq_hz="50" />
+    <survey name="interpolated_trajectory_als" 
+			scene="data/scenes/demo/interpolated_trajectory.xml#interpolated_trajectory_demo"
+			platform="interpolated" basePlatform="data/platforms.xml#sr22" rotationSpec="CANONICAL"
+			scanner="data/scanners_als.xml#leica_als50-ii"
+	>
+		<scannerMount x="0" y="0" z="0.2">
+			<rot axis="x" angle_deg="180" />
+			<rot axis="z" angle_deg="175" />
+		</scannerMount>        
+		<FWFSettings beamSampleQuality="3" binSize_ns="0.25" winSize_ns="1"/>
+		<!-- Leg which interpolates the full trajectory -->
+        <leg>
+            <platformSettings 
+				trajectory="data/trajectories/cycloid.trj"
+				tIndex="0" xIndex="4" yIndex="5" zIndex="6" rollIndex="1" pitchIndex="2" yawIndex="3"
+				slopeFilterThreshold="0.0" toRadians="true" syncGPSTime="false"
+			/>
+            <scannerSettings template="scaset" trajectoryTimeInterval_s="0.054"/>
+        </leg>
+		<!-- Leg which interpolates the trajectory for all t in [4.78, 6.94] -->
+		<leg>
+            <platformSettings trajectory="data/trajectories/cycloid.trj" tStart="4.78" tEnd="6.94" teleportToStart="true"/>
+            <scannerSettings template="scaset" trajectoryTimeInterval_s="0.054"/>
+        </leg>
+		<!-- Leg which interpolates the trajectory for all t in [8.02, tb] where tb is the final time -->
+		<leg>
+            <platformSettings trajectory="data/trajectories/cycloid.trj" tStart="8.02"/>
+            <scannerSettings template="scaset" trajectoryTimeInterval_s="0.054"/>
+        </leg>
+		<!-- Leg which interpolates the full trajectory again from the start  -->
+		<leg>
+            <platformSettings trajectory="data/trajectories/cycloid.trj" tStart="3.7" teleportToStart="true"/>
+            <scannerSettings template="scaset" trajectoryTimeInterval_s="0.054"/>
+        </leg>
+    </survey>
+</document>

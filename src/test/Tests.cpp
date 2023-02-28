@@ -1,16 +1,23 @@
 #include <test/BaseTest.h>
 #include <test/RandomTest.h>
 #include <test/NoiseTest.h>
+#include <test/DiscreteTimeTest.h>
 #include <test/VoxelParsingTest.h>
 #include <test/RayIntersectionTest.h>
+#include <test/GroveTest.h>
 #include <test/SerializationTest.h>
+#include <test/AssetLoadingTest.h>
 #include <test/SurveyCopyTest.h>
 #include <test/PlaneFitterTest.h>
 #include <test/LadLutTest.h>
 #include <test/PlatformPhysicsTest.h>
+#include <test/FunctionalPlatformTest.h>
 #include <test/ScenePartSplitTest.h>
+#include <test/ExprTreeTest.h>
 #include <test/RigidMotionTest.h>
 #include <test/FluxionumTest.h>
+#include <test/EnergyModelsTest.h>
+#include <test/HPCTest.h>
 
 #include <boost/filesystem.hpp>
 
@@ -50,41 +57,65 @@ void doTests(std::string const & testDir){
 
     // ***  T E S T S  *** //
     // ******************* //
+    bool passed = true;
     RandomTest randomTest;
-    randomTest.test(std::cout, TEST_COLOR);
+    passed &= randomTest.test(std::cout, TEST_COLOR);
 
     NoiseTest noiseTest;
-    noiseTest.test(std::cout, TEST_COLOR);
+    passed &= noiseTest.test(std::cout, TEST_COLOR);
+
+    DiscreteTimeTest discreteTimeTest;
+    passed &= discreteTimeTest.test(std::cout, TEST_COLOR);
 
     VoxelParsingTest voxelParsingTest(testDir);
-    voxelParsingTest.test(std::cout, TEST_COLOR);
+    passed &= voxelParsingTest.test(std::cout, TEST_COLOR);
 
     RayIntersectionTest rayIntersectionTest;
-    rayIntersectionTest.test(std::cout, TEST_COLOR);
+    passed &= rayIntersectionTest.test(std::cout, TEST_COLOR);
+
+    GroveTest groveTest;
+    passed &= groveTest.test(std::cout, TEST_COLOR);
 
     SerializationTest serializationTest;
-    serializationTest.test(std::cout, TEST_COLOR);
+    passed &= serializationTest.test(std::cout, TEST_COLOR);
+
+    AssetLoadingTest assetLoadingTest;
+    passed &= assetLoadingTest.test(std::cout, TEST_COLOR);
 
     SurveyCopyTest surveyCopyTest;
-    surveyCopyTest.test(std::cout, TEST_COLOR);
+    passed &= surveyCopyTest.test(std::cout, TEST_COLOR);
 
     PlaneFitterTest planeFitterTest;
-    planeFitterTest.test(std::cout, TEST_COLOR);
+    passed &= planeFitterTest.test(std::cout, TEST_COLOR);
 
     LadLutTest ladLutTest(testDir);
-    ladLutTest.test(std::cout, TEST_COLOR);
+    passed &= ladLutTest.test(std::cout, TEST_COLOR);
 
     PlatformPhysicsTest platformPhysicsTest;
-    platformPhysicsTest.test(std::cout, TEST_COLOR);
+    passed &= platformPhysicsTest.test(std::cout, TEST_COLOR);
+
+    FunctionalPlatformTest functionalPlatformTest;
+    passed &= functionalPlatformTest.test(std::cout, TEST_COLOR);
 
     ScenePartSplitTest scenePartSplitTest;
-    scenePartSplitTest.test(std::cout, TEST_COLOR);
+    passed &= scenePartSplitTest.test(std::cout, TEST_COLOR);
+
+    ExprTreeTest exprTreeTest;
+    passed &= exprTreeTest.test(std::cout, TEST_COLOR);
 
     RigidMotionTest rigidMotionTest;
-    rigidMotionTest.test(std::cout, TEST_COLOR);
+    passed &= rigidMotionTest.test(std::cout, TEST_COLOR);
 
-    FluxionumTest fluxionumTest;
-    fluxionumTest.test(std::cout, TEST_COLOR);
+    FluxionumTest fluxionumTest(testDir);
+    passed &= fluxionumTest.test(std::cout, TEST_COLOR);
+
+    EnergyModelsTest energyModelsTest;
+    passed &= energyModelsTest.test(std::cout, TEST_COLOR);
+
+    HPCTest hpcTest;
+    passed &= hpcTest.test(std::cout, TEST_COLOR);
+
+    if(!passed) std::exit(3);
 }
 
 
@@ -96,8 +127,9 @@ bool validateTestsPrecondition(std::string const & testDir){
     });
     for(std::string &expectedFile : EXPECTED_FILES){
         std::stringstream ss;
+        char const pathsep = boost::filesystem::path::preferred_separator;
         ss  << testDir
-            << boost::filesystem::path::preferred_separator
+            << pathsep
             << expectedFile;
         if(!boost::filesystem::exists(ss.str())) return false;
     }

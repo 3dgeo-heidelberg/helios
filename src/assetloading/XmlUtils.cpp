@@ -116,7 +116,7 @@ Rotation XmlUtils::createRotationFromXml(tinyxml2::XMLElement* rotGroupNode){
             if (globalRotation)
                 r = r2.applyTo(r); // Global rotation
             else
-                    r = r.applyTo(r2); // Local rotation
+                r = r.applyTo(r2); // Local rotation
         }
 
         rotNodes = rotNodes->NextSiblingElement("rot");
@@ -130,17 +130,22 @@ glm::dvec3 XmlUtils::createVec3dFromXml(
     std::string attrPrefix
 ){
     if (node == nullptr) {
-        throw HeliosException("No node with attribute " + attrPrefix + "[xyz]");
+        throw HeliosException(
+            "No node with attribute " + attrPrefix + "[xyz]"
+        );
     }
 
-    double x =
-        boost::get<double>(getAttribute(node, attrPrefix + "x", "double", 0.0));
-    double y =
-        boost::get<double>(getAttribute(node, attrPrefix + "y", "double", 0.0));
-    double z =
-        boost::get<double>(getAttribute(node, attrPrefix + "z", "double", 0.0));
-
-    return glm::dvec3(x, y, z);
+    return glm::dvec3(
+        boost::get<double>(
+            getAttribute(node, attrPrefix + "x", "double", 0.0)
+        ),
+        boost::get<double>(
+            getAttribute(node, attrPrefix + "y", "double", 0.0)
+        ),
+        boost::get<double>(
+            getAttribute(node, attrPrefix + "z", "double", 0.0)
+        )
+    );
 }
 
 std::shared_ptr<NoiseSource<double>>
@@ -178,12 +183,15 @@ ObjectT XmlUtils::getAttribute(
     tinyxml2::XMLElement* element,
     std::string attrName,
     std::string type,
-    ObjectT defaultVal
+    ObjectT defaultVal,
+    std::string const defaultMsg
 ){
     ObjectT result;
     try {
         if (!element->Attribute(attrName.c_str())) {
-            throw HeliosException("Attribute '" + attrName + "' does not exist!");
+            throw HeliosException(
+                "Attribute '" + attrName + "' does not exist!"
+            );
         }
         std::string attrVal = element->Attribute(attrName.c_str());
         if (type == "bool") {
@@ -209,7 +217,6 @@ ObjectT XmlUtils::getAttribute(
             logging::ERR("ERROR: unknown type " + type);
         }
     }
-
     catch (std::exception &e) {
         std::stringstream ss;
         ss << "XML Assets Loader: Could not find attribute '" << attrName
@@ -221,10 +228,11 @@ ObjectT XmlUtils::getAttribute(
 
         if (!defaultVal.empty()) {
             result = defaultVal;
-            ss << "Using default value for attribute '" << attrName
+            ss << defaultMsg << " '" << attrName
                << "' : " << boost::apply_visitor(stringVisitor{}, defaultVal);
             logging::INFO(ss.str());
-        } else {
+        }
+        else {
             ss << "Exception:\n" << e.what() << "\n";
             ss << "ERROR: No default value specified for attribute '" << attrName
             << "'. Aborting.";
@@ -234,6 +242,13 @@ ObjectT XmlUtils::getAttribute(
     }
 
     return result;
+}
+
+bool XmlUtils::hasAttribute(
+    tinyxml2::XMLElement *element,
+    std::string attrName
+){
+    return element->Attribute(attrName.c_str()) != nullptr;
 }
 
 std::vector<std::shared_ptr<DynMotion>> XmlUtils::createDynMotionsVector(
@@ -271,9 +286,23 @@ std::vector<std::shared_ptr<DynMotion>> XmlUtils::createDynMotionsVector(
         if(selfModeAttr != nullptr && selfModeAttr->BoolValue()){
             selfMode = true;
         }
+        // Handle motion autoCRS flag
+        double autoCRS = 0.0;
+        tinyxml2::XMLAttribute const *autoCRSAttr = xmlMotion->FindAttribute(
+            "autoCRS"
+        );
+        if(autoCRSAttr != nullptr) autoCRS = autoCRSAttr->DoubleValue();
 
+
+        // Handle identity
+        if(type=="identity"){
+            dms.push_back(std::make_shared<DynMotion>(
+                rm3f.makeIdentity(),
+                selfMode
+            ));
+        }
         // Handle translation
-        if(type=="translation"){
+        else if(type=="translation"){
             motionAttr = xmlMotion->FindAttribute("vec");
             if(motionAttr == nullptr){
                 throw HeliosException(
@@ -283,8 +312,9 @@ std::vector<std::shared_ptr<DynMotion>> XmlUtils::createDynMotionsVector(
             }
             arma::colvec vec(motionAttr->Value());
             dms.push_back(std::make_shared<DynMotion>(
-                rm3f.makeTranslation(arma::colvec(vec)),
-                selfMode
+                rm3f.makeTranslation(vec),
+                selfMode,
+                autoCRS
             ));
         }
         else if(type=="reflection"){
@@ -324,6 +354,18 @@ std::vector<std::shared_ptr<DynMotion>> XmlUtils::createDynMotionsVector(
             ));
         }
         else if(type=="rotation"){
+            arma::colvec center({0, 0, 0});
+            bool requiresCentering = false;
+            motionAttr = xmlMotion->FindAttribute("center");
+            if(motionAttr != nullptr){
+                requiresCentering = true;
+                center = arma::colvec(motionAttr->Value());
+                dms.push_back(std::make_shared<DynMotion>(
+                    rm3f.makeTranslation(-center),
+                    selfMode,
+                    autoCRS
+                ));
+            }
             motionAttr = xmlMotion->FindAttribute("axis");
             if(motionAttr == nullptr){
                 throw HeliosException(
@@ -346,6 +388,13 @@ std::vector<std::shared_ptr<DynMotion>> XmlUtils::createDynMotionsVector(
                 rm3f.makeRotation(axis, angle),
                 selfMode
             ));
+            if(requiresCentering){
+                dms.push_back(std::make_shared<DynMotion>(
+                    rm3f.makeTranslation(center),
+                    selfMode,
+                    -autoCRS  // Compensate the autoCRS of first translation
+                ));
+            }
         }
         else if(type=="helical"){
             motionAttr = xmlMotion->FindAttribute("axis");
@@ -426,4 +475,35 @@ std::vector<std::shared_ptr<DynMotion>> XmlUtils::createDynMotionsVector(
     }
 
     return dms;
+}
+
+void XmlUtils::assertDocumentForAssetLoading(
+    tinyxml2::XMLDocument &doc,
+    std::string const &filename,
+    std::string const &path,
+    std::string const &type,
+    std::string const &id,
+    std::string const &caller
+){
+    if(doc.Error()){
+        if(doc.ErrorID() == tinyxml2::XML_ERROR_FILE_NOT_FOUND){
+            std::stringstream ss;
+            ss    << "File \"" << filename << "\" was not found at:\n"
+                  << "\"" << path << "\"\n"
+                  << "Thus, it is not possible to load the asset \""
+                  << type << "\":\"" << id << "\"";
+            logging::ERR(ss.str());
+        }
+        else{
+            std::stringstream ss;
+            ss    << "It was not possible to load the asset \""
+                  << type << "\":\"" << id << "\"\n"
+                  << "At least not from file \"" << filename
+                  << "\" at:\n" << "\"" << path << "\"";
+            logging::ERR(ss.str());
+        }
+        std::stringstream ss;
+        ss  << caller << " failed due to a document error";
+        throw HeliosException(ss.str());
+    }
 }

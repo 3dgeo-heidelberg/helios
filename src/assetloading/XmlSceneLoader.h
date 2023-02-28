@@ -8,6 +8,8 @@
 #include <SerialSceneWrapper.h>
 #include <SceneLoadingSpecification.h>
 #include <scene/dynamic/DynSequentiableMovingObject.h>
+#include <KDTreeFactory.h>
+#include <KDGroveFactory.h>
 
 /**
  * @brief Class for scene loading from XML file.
@@ -42,6 +44,15 @@ public:
      */
     size_t kdtNumJobs = 1;
     /**
+     * @brief How many threads must be used to build upper nodes of KDTree
+     * @see KDTreeFactory
+     * @see SimpleKDTreeFactory
+     * @see MultiThreadKDTreeFactory
+     * @see SAHKDTreeFactory
+     * @see MultiThreadSAHKDTreeFactory
+     */
+    size_t kdtGeomJobs = 1;
+    /**
      * @brief How many loss nodes for the Surface Area Heuristic if using a SAH
      *  like KDTree factory to build the scene
      */
@@ -52,7 +63,12 @@ public:
     /**
      * @brief Default constructor for XML scene loader
      */
-    XmlSceneLoader() = default;
+    XmlSceneLoader() :
+        kdtFactoryType(1),
+        kdtNumJobs(1),
+        kdtGeomJobs(1),
+        kdtSAHLossNodes(21)
+    {}
     virtual ~XmlSceneLoader() {}
 
     // ***  SCENE CREATION  *** //
@@ -89,6 +105,81 @@ public:
     );
 
     /**
+     * @brief Load the scene part identifier
+     * @param scenePartNode XML part node where the identifier might be
+     *  explicitly specified
+     * @param partIndex Index of scene part according to current loop
+     *  iteration. It will be used if no specific identifier is provided
+     *  through XML
+     * @param scenePart The scene part object to which identifier must be
+     *  assigned
+     * @return True if scene part must be splitted, false otherwise. A scene
+     *  part can only be splitted when a part identifier is explicitly provided
+     */
+    bool loadScenePartId(
+        tinyxml2::XMLElement *scenePartNode,
+        int partIndex,
+        shared_ptr<ScenePart> scenePart
+    );
+
+    /**
+     * @brief Validate the given loaded scene part
+     * @param scenePartNode XML part node corresponding to the scene part
+     *  being validated
+     * @param scenePart The scene part to be validated
+     * @return True if the given ScenePart is valid, false otherwise
+     */
+    bool validateScenePart(
+        shared_ptr<ScenePart> scenePart,
+        tinyxml2::XMLElement *scenePartNode
+    );
+
+    /**
+     * @brief Apply final processings to the built scene part so it is fully
+     *  integrated in the scene and totally configured
+     * @param scenePart The scene part object to be digested
+     * @param scene The scene where the scene part belongs
+     * @param holistic Flag used to specify if all vertices defining each
+     *  primitive must be considered as a whole (true) or not (false)
+     * @param splitPart Flag to specify if scene part must be splitted into
+     *  subparts (true) or not (false)
+     * @param dynObject Flag to specify if the scene part corresponds to a
+     *  dynamic object (true) or to a static one (false)
+     * @param[out] partIndex If the subpart is splitted, then partIndex will
+     *  be opportunely updated
+     * @see ScenePart::splitSubparts
+     */
+    void digestScenePart(
+        shared_ptr<ScenePart> &scenePart,
+        std::shared_ptr<StaticScene> &scene,
+        bool holistic,
+        bool splitPart,
+        bool dynObject,
+        int &partIndex
+    );
+
+    /**
+     * @brief Build the KDTree factory from loader's kdtFactoryType and
+     *  kdtSAHLossNodes attributes
+     * @return Built KDTree factory
+     * @see XmlSceneLoader::kdtFactoryType
+     * @see XmlSceneLoader::kdtSAHLossNodes
+     * @see KDTreeFactory
+     */
+    shared_ptr<KDTreeFactory> makeKDTreeFactory();
+
+    /**
+     * @brief Build the KDGrove factory from loader's KDTree factory
+     *  specification
+     * @return Build KDGrove factory
+     * @see XmlSceneLoader::makeKDTreeFactory
+     * @see KDGroveFactory
+     */
+    shared_ptr<KDGroveFactory> makeKDGroveFactory();
+
+    // ***  DYNAMIC SCENE LOADING METHODS  *** //
+    // *************************************** //
+    /**
      * @brief Build a dynamic sequentiable moving object which is composed of
      *  dynamic motions.
      *
@@ -118,48 +209,6 @@ public:
     );
 
     /**
-     * @brief Load the scene part identifier
-     * @param scenePartNode XML part node where the identifier might be
-     *  explicitly specified
-     * @param partIndex Index of scene part according to current loop
-     *  iteration. It will be used if no specific identifier is provided
-     *  through XML
-     * @param scenePart The scene part object to which identifier must be
-     *  assigned
-     * @return True if scene part must be splitted, false otherwise. A scene
-     *  part can only be splitted when a part identifier is explicitly provided
-     */
-    bool loadScenePartId(
-        tinyxml2::XMLElement *scenePartNode,
-        int partIndex,
-        shared_ptr<ScenePart> scenePart
-    );
-
-    /**
-     * @brief Apply final processings to the built scene part so it is fully
-     *  integrated in the scene and totally configured
-     * @param scenePart The scene part object to be digested
-     * @param scene The scene where the scene part belongs
-     * @param holistic Flag used to specify if all vertices defining each
-     *  primitive must be considered as a whole (true) or not (false)
-     * @param splitPart Flag to specify if scene part must be splitted into
-     *  subparts (true) or not (false)
-     * @param dynObject Flag to specify if the scene part corresponds to a
-     *  dynamic object (true) or to a static one (false)
-     * @param[out] partIndex If the subpart is splitted, then partIndex will
-     *  be opportunely updated
-     * @see ScenePart::splitSubparts
-     */
-    void digestScenePart(
-        shared_ptr<ScenePart> &scenePart,
-        std::shared_ptr<StaticScene> &scene,
-        bool holistic,
-        bool splitPart,
-        bool dynObject,
-        int &partIndex
-    );
-
-    /**
      * @brief Build a dynamic scene based on given static scene.
      *
      * NOTICE for this method to work properly given scene MUST be of
@@ -173,12 +222,12 @@ public:
     shared_ptr<StaticScene> makeSceneDynamic(shared_ptr<StaticScene> scene);
 
     /**
-     * @brief Build the KDTree factory from loader's kdtFactoryType and
-     *  kdtSAHLossNodes attributes
-     * @return Built KDTree factory
-     * @see XmlSceneLoader::kdtFactoryTypr
-     * @see XmlSceneLoader::kdtSAHLossNodes
-     * @see KDTreeFactory
+     * @brief Handle the loading of dynamic scene attributes
+     * @param sceneNode The XML node defining the dynamic scene
+     * @param scene Dynamic scene which attributes must be configured
      */
-    shared_ptr<KDTreeFactory> makeKDTreeFactory();
+    void handleDynamicSceneAttributes(
+        tinyxml2::XMLElement *sceneNode,
+        shared_ptr<DynScene> scene
+    );
 };

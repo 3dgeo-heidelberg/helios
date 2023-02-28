@@ -71,15 +71,30 @@ public:
     KDTreeFactory() : buildLightNodes(true) {}
     virtual ~KDTreeFactory() = default;
 
+    // ***  CLONE  *** //
+    // *************** //
+    /**
+     * @brief Create a clone of the KDTreeFactory
+     * @return Clone of the KDTreeFactory
+     */
+    virtual KDTreeFactory * clone() const = 0;
+
     // ***  K-DIMENSIONAL TREE FACTORY METHODS  *** //
     // **********************+********************* //
     /**
      * @brief Build a KDTree from given primitives
      * @param primitives Primitives to build KDTree splitting them
+     * @param computeStats If true, KDTree stats will be computed. If false,
+     *  they will not
+     * @param reportStats If true, KDTree stats will be reported. If false,
+     *  they will not. Notice stats can only be reported if computeStats flag
+     *  is setted to true too.
      * @return Pointer to root node of built KDTree
      */
     virtual KDTreeNodeRoot * makeFromPrimitivesUnsafe(
-        vector<Primitive *> &primitives
+        vector<Primitive *> &primitives,
+        bool const computeStats=false,
+        bool const reportStats=false
     ) = 0;
     /**
      * @brief Safe wrapper from makeFromPrimitivesUnsafe which handles a copy
@@ -94,11 +109,13 @@ public:
      * @see KDTreeFactory::makeFromPrimitivesUnsafe
      */
     virtual KDTreeNodeRoot * makeFromPrimitives(
-        vector<Primitive *> const &primitives
+        vector<Primitive *> const &primitives,
+        bool const computeStats=false,
+        bool const reportStats=false
     )
     {
-        vector<Primitive *> _primitives = primitives; // Copy to work over
-        return makeFromPrimitivesUnsafe(_primitives);
+        vector<Primitive *> prims = primitives; // Copy to work over
+        return makeFromPrimitivesUnsafe(prims, computeStats, reportStats);
     };
 
     // ***  GETTERs and SETTERs  *** //

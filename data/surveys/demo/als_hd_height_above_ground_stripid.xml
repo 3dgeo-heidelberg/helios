@@ -1,0 +1,154 @@
+<?xml version="1.0"?>
+<document>
+    <scannerSettings id="als_settings" active="true" pulseFreq_hz="83000" scanAngle_deg="30" scanFreq_hz="50" headRotatePerSec_deg="0.0" headRotateStart_deg="0.0" headRotateStop_deg="0.0" trajectoryTimeInterval_s="0.067"/>
+    <survey name="hdb_stripid5" platform="data/platforms.xml#sr22" scanner="data/scanners_als.xml#leica_als50" scene="data/scenes/demo/hd_demo.xml#hd_demo">
+        <leg stripId="0">
+            <platformSettings  x="477280.4197453116" y="5472582.624303755" z="1619.0" movePerSec_m="250"/>
+            <scannerSettings template="als_settings"/>
+        </leg>
+        <leg stripId="0">
+            <platformSettings  x="477899.24983534013" y="5472584.19493851" z="1658.0" movePerSec_m="250"/>
+            <scannerSettings template="als_settings"/>
+        </leg>
+        <leg stripId="0">
+            <platformSettings  x="478029.5298542935" y="5472584.525598458" z="1693.0" movePerSec_m="250"/>
+            <scannerSettings template="als_settings"/>
+        </leg>
+        <leg stripId="0">
+            <platformSettings  x="478159.8098732469" y="5472584.856258406" z="1731.0" movePerSec_m="250"/>
+            <scannerSettings template="als_settings"/>
+        </leg>
+        <leg stripId="0">
+            <platformSettings  x="478257.5198874619" y="5472585.1042533675" z="1766.0" movePerSec_m="250"/>
+            <scannerSettings template="als_settings"/>
+        </leg>
+        <leg stripId="0">
+            <platformSettings  x="478452.93991589197" y="5472585.60024329" z="1804.0" movePerSec_m="250"/>
+            <scannerSettings template="als_settings"/>
+        </leg>
+        <leg stripId="0">
+            <platformSettings  x="478713.4999537987" y="5472586.2615631865" z="1767.0" movePerSec_m="250"/>
+            <scannerSettings template="als_settings"/>
+        </leg>
+        <leg stripId="0">
+            <platformSettings  x="478843.7799727521" y="5472586.592223135" z="1732.0" movePerSec_m="250"/>
+            <scannerSettings template="als_settings"/>
+        </leg>
+        <leg stripId="0">
+            <platformSettings  x="479234.6200296122" y="5472587.58420298" z="1765.0" movePerSec_m="250"/>
+            <scannerSettings template="als_settings"/>
+        </leg>
+        <leg stripId="0">
+            <platformSettings  x="479397.4700533039" y="5472587.997527915" z="1802.0" movePerSec_m="250"/>
+            <scannerSettings template="als_settings"/>
+        </leg>
+        <leg stripId="0">
+            <platformSettings  x="479560.32007699565" y="5472588.41085285" z="1833.0" movePerSec_m="250"/>
+            <scannerSettings template="als_settings"/>
+        </leg>
+        <leg stripId="0">
+            <platformSettings  x="479625.46008647233" y="5472588.576182825" z="1880.0" movePerSec_m="250"/>
+            <scannerSettings template="als_settings"/>
+        </leg>
+        <leg stripId="0">
+            <platformSettings  x="479723.17010068736" y="5472588.824177786" z="1911.0" movePerSec_m="250"/>
+            <scannerSettings template="als_settings"/>
+        </leg>
+        <leg stripId="0">
+            <platformSettings  x="479886.0201243791" y="5472589.237502721" z="1942.0" movePerSec_m="250"/>
+            <scannerSettings template="als_settings"/>
+        </leg>
+        <leg stripId="0">
+            <platformSettings  x="480048.8701480708" y="5472589.6508276565" z="1987.0" movePerSec_m="250"/>
+            <scannerSettings template="als_settings"/>
+        </leg>
+        <leg stripId="0">
+            <platformSettings  x="480179.15016702417" y="5472589.981487605" z="2023.0" movePerSec_m="250"/>
+            <scannerSettings template="als_settings"/>
+        </leg>
+        <leg stripId="0">
+            <platformSettings  x="480537.4202191483" y="5472590.89080242" z="2023.0" movePerSec_m="250"/>
+            <scannerSettings template="als_settings" active="false"/>
+        </leg>
+        <leg stripId="1">
+            <platformSettings  x="480553.9532164774" y="5473285.276690253" z="1856.0" movePerSec_m="250"/>
+            <scannerSettings template="als_settings"/>
+        </leg>
+        <leg stripId="1">
+            <platformSettings  x="480031.5105008773" y="5473283.95405046" z="1823.0" movePerSec_m="250"/>
+            <scannerSettings template="als_settings"/>
+        </leg>
+        <leg stripId="1">
+            <platformSettings  x="479868.24715225224" y="5473283.540725525" z="1787.0" movePerSec_m="250"/>
+            <scannerSettings template="als_settings"/>
+        </leg>
+        <leg stripId="1">
+            <platformSettings  x="479737.6364733522" y="5473283.210065576" z="1752.0" movePerSec_m="250"/>
+            <scannerSettings template="als_settings"/>
+        </leg>
+        <leg stripId="1">
+            <platformSettings  x="479639.6784641772" y="5473282.962070615" z="1721.0" movePerSec_m="250"/>
+            <scannerSettings template="als_settings"/>
+        </leg>
+        <leg stripId="1">
+            <platformSettings  x="479541.72045500216" y="5473282.714075654" z="1673.000015258789" movePerSec_m="250"/>
+            <scannerSettings template="als_settings"/>
+        </leg>
+        <leg stripId="1">
+            <platformSettings  x="479280.4990972021" y="5473282.052755757" z="1638.0" movePerSec_m="250"/>
+            <scannerSettings template="als_settings"/>
+        </leg>
+        <leg stripId="1">
+            <platformSettings  x="477321.3389137016" y="5473277.092856533" z="1607.0" movePerSec_m="250"/>
+            <scannerSettings template="als_settings"/>
+        </leg>
+        <leg stripId="1">
+            <platformSettings  x="477288.6862439762" y="5473277.010191589" z="1607.0" movePerSec_m="250"/>
+            <scannerSettings template="als_settings" active="false"/>
+        </leg>
+        <leg stripId="2">
+            <platformSettings  x="477313.4857399699" y="5473863.93159678" z="1620.0000076293945" movePerSec_m="250"/>
+            <scannerSettings template="als_settings"/>
+        </leg>
+        <leg stripId="2">
+            <platformSettings  x="477868.581125295" y="5473868.147511105" z="1658.0" movePerSec_m="250"/>
+            <scannerSettings template="als_settings"/>
+        </leg>
+        <leg stripId="2">
+            <platformSettings  x="477999.19180419506" y="5473869.139490946" z="1700.0" movePerSec_m="250"/>
+            <scannerSettings template="als_settings"/>
+        </leg>
+        <leg stripId="2">
+            <platformSettings  x="478129.8024830951" y="5473870.131470787" z="1734.0" movePerSec_m="250"/>
+            <scannerSettings template="als_settings"/>
+        </leg>
+        <leg stripId="2">
+            <platformSettings  x="478325.71850144514" y="5473871.619440549" z="1769.0" movePerSec_m="250"/>
+            <scannerSettings template="als_settings"/>
+        </leg>
+        <leg stripId="2">
+            <platformSettings  x="478586.9398592452" y="5473873.603400231" z="1734.0" movePerSec_m="250"/>
+            <scannerSettings template="als_settings"/>
+        </leg>
+        <leg stripId="2">
+            <platformSettings  x="478782.85587759526" y="5473875.091369993" z="1700.0" movePerSec_m="250"/>
+            <scannerSettings template="als_settings"/>
+        </leg>
+        <leg stripId="2">
+            <platformSettings  x="479174.68791429535" y="5473878.0673095165" z="1661.0" movePerSec_m="250"/>
+            <scannerSettings template="als_settings"/>
+        </leg>
+        <leg stripId="2">
+            <platformSettings  x="479664.4779601705" y="5473881.787233921" z="1628.0" movePerSec_m="250"/>
+            <scannerSettings template="als_settings"/>
+        </leg>
+        <leg stripId="2">
+            <platformSettings  x="480350.18402439565" y="5473886.995128087" z="1660.0" movePerSec_m="250"/>
+            <scannerSettings template="als_settings"/>
+        </leg>
+        <leg stripId="2">
+            <platformSettings  x="480578.7527124712" y="5473888.731092774" z="1660.0" movePerSec_m="250"/>
+            <scannerSettings template="als_settings" active="false"/>
+        </leg>
+    </survey>
+</document>

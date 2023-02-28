@@ -13,6 +13,10 @@ bool ArgumentsParser::parseTestRequest(){
     return findIndexOfArgument("--test") >= 0;
 }
 
+bool ArgumentsParser::parseVersionRequest(){
+    return findIndexOfArgument("--version") >= 0;
+}
+
 std::string ArgumentsParser::parseTestDir(){
     int index = findIndexOfArgument("--testDir");
     if(index >= 0){
@@ -86,12 +90,30 @@ std::string ArgumentsParser::parseSeed(){
     return "";
 }
 
+int ArgumentsParser::parseParallelizationStrategy(){
+    int index = findIndexOfArgument("--parallelization");
+    if(index < 0) return 1;
+    return std::stoi(argv[index+1]);
+}
+
 std::size_t ArgumentsParser::parseNJobs(){
     int index = findIndexOfArgument("-j");
     if(index < 0) index = findIndexOfArgument("--njobs");
     if(index < 0) index = findIndexOfArgument("--nthreads");
     if(index < 0) return 0;
     return std::stoul(argv[index+1]);
+}
+
+int ArgumentsParser::parseChunkSize(){
+    int index = findIndexOfArgument("--chunkSize");
+    if(index < 0) return 32;
+    return std::stoi(argv[index+1]);
+}
+
+int ArgumentsParser::parseWarehouseFactor(){
+    int index = findIndexOfArgument("--warehouseFactor");
+    if(index < 0) return 4;
+    return std::stoi(argv[index+1]);
 }
 
 bool ArgumentsParser::parseDisablePlatformNoise(){
@@ -117,9 +139,10 @@ void ArgumentsParser::parseLoggingVerbosity(){
     else if(
         findIndexOfArgument("-v2")>=0 ||
         findIndexOfArgument("-vv")>=0
-        ){
+    ){
         logging::makeVerbose2();
     }
+    else if(findIndexOfArgument("-vt")>=0) logging::makeTime();
     else if(findIndexOfArgument("-v")>=0) logging::makeVerbose();
     else logging::makeDefault();
 }
@@ -168,22 +191,38 @@ bool ArgumentsParser::parseFixedIncidenceAngle(){
     return findIndexOfArgument("--fixedIncidenceAngle") >= 0;
 }
 
+std::string ArgumentsParser::parseGpsStartTime(){
+    int index = findIndexOfArgument("--gpsStartTime");
+    if(index >= 0) return argv[index+1];
+    return "";
+}
+
 int ArgumentsParser::parseKDTreeType(){
     int index = findIndexOfArgument("--kdt");
-    if(index < 0) return 1;
+    if(index < 0) return 4;
     return std::atoi(argv[index+1]);
 }
 
 size_t ArgumentsParser::parseKDTreeJobs(){
     int index = findIndexOfArgument("--kdtJobs");
-    if(index < 0) return 1;
+    if(index < 0) return 0;
+    return std::stoul(argv[index+1]);
+}
+
+size_t ArgumentsParser::parseKDTreeGeometricJobs(){
+    int index = findIndexOfArgument("--kdtGeomJobs");
+    if(index < 0) return 0;
     return std::stoul(argv[index+1]);
 }
 
 size_t ArgumentsParser::parseSAHLossNodes(){
     int index = findIndexOfArgument("--sahNodes");
-    if(index < 0) return 21;
+    if(index < 0) return 32;
     return std::stoul(argv[index+1]);
+}
+
+bool ArgumentsParser::parseSplitByChannel(){
+    return findIndexOfArgument("--splitByChannel") >= 0;
 }
 
 // *** PRIVATE METHODS *** //

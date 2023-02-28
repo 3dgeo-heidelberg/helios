@@ -1,0 +1,6 @@
+<map id="PointcloudYielder" name="PointcloudYielder">
+<area shape="rect" id="node1" title="Yield a point cloud from measurements so it is written when buffer size has been reached or,..." alt="" coords="41,247,164,273"/>
+<area shape="rect" id="node2" href="$de/d71/classWriteYielder.html" title=" " alt="" coords="5,171,200,197"/>
+<area shape="rect" id="node3" href="$d3/d60/classYielder.html" title="Abstract class representing a yielder. It is, an object which can be used to accumulate inputs until ..." alt="" coords="55,95,150,121"/>
+<area shape="rect" id="node4" title=" " alt="" coords="74,5,131,32"/>
+</map>

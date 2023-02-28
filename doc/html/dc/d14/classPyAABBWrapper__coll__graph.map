@@ -1,6 +1,0 @@
-<map id="PyAABBWrapper" name="PyAABBWrapper">
-<area shape="rect" id="node2" href="$d2/d1a/classAABB.html" title="Class representing an Axis Aligned Bounding Box (AABB) " alt="" coords="46,184,105,211"/>
-<area shape="rect" id="node3" href="$df/de1/classPrimitive.html" title="Abstract class defining the common behavior for all primitives. " alt="" coords="5,95,79,121"/>
-<area shape="rect" id="node4" href="$d2/da0/classVertex.html" title="Class representing a vertex. " alt="" coords="103,95,163,121"/>
-<area shape="rect" id="node5" href="$db/d02/classColor4f.html" title="Class representing a color with 4 float components: RGBA. " alt="" coords="101,5,165,32"/>
-</map>

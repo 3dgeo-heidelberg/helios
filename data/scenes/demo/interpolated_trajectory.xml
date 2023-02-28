@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+    <scene id="interpolated_trajectory_demo" name="InterpolatedTrajectoryDemo">
+        <part id="0">
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/basic/groundplane/groundplane.obj"/>
+            </filter>
+            <filter type="scale">
+                <param type="double" key="scale" value="100"/>
+            </filter>
+        </part>
+    </scene>
+</document>

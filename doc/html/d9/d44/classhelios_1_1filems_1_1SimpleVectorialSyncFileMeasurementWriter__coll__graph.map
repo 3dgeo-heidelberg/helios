@@ -1,0 +1,8 @@
+<map id="helios::filems::SimpleVectorialSyncFileMeasurementWriter" name="helios::filems::SimpleVectorialSyncFileMeasurementWriter">
+<area shape="rect" id="node1" title="Concrete class specializing SimpleSyncFileWriter to write a vector of measurements directly to a file..." alt="" coords="763,50,961,91"/>
+<area shape="rect" id="node2" href="$d1/db6/classhelios_1_1filems_1_1SimpleSyncFileWriter.html" title=" " alt="" coords="456,5,672,61"/>
+<area shape="rect" id="node3" href="$d4/dfb/classhelios_1_1filems_1_1SingleSyncFileWriter.html" title=" " alt="" coords="221,13,396,54"/>
+<area shape="rect" id="node4" href="$da/d4c/classhelios_1_1filems_1_1SyncFileWriter.html" title=" " alt="" coords="5,13,164,54"/>
+<area shape="rect" id="node5" href="$de/d6d/classhelios_1_1filems_1_1DirectMeasurementWriteStrategy.html" title="Concrete class specializing WriteStrategy to directly write measurements to a file." alt="" coords="453,86,675,127"/>
+<area shape="rect" id="node6" href="$de/dd3/classhelios_1_1filems_1_1WriteStrategy.html" title=" " alt="" coords="213,79,404,135"/>
+</map>

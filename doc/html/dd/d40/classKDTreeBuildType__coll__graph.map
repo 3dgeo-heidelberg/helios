@@ -1,9 +1,11 @@
 <map id="KDTreeBuildType" name="KDTreeBuildType">
-<area shape="rect" id="node3" href="$d8/d94/classKDTreeNode.html" title="Class representing a KDTree node. " alt="" coords="168,276,267,303"/>
-<area shape="rect" id="node4" href="$dd/d79/classLightKDTreeNode.html" title="Class representing a light KDTree node. It is, the basic representation of a KDTree node with uses le..." alt="" coords="54,185,181,212"/>
-<area shape="rect" id="node5" href="$d7/d98/classIBinaryTreeNode.html" title="Binary tree node interface that must be implemented by any class providing binary tree node based fun..." alt="" coords="57,95,177,121"/>
-<area shape="rect" id="node6" href="$d2/d1a/classAABB.html" title="Class representing an Axis Aligned Bounding Box (AABB) " alt="" coords="259,185,317,212"/>
-<area shape="rect" id="node7" href="$df/de1/classPrimitive.html" title="Abstract class defining the common behavior for all primitives. " alt="" coords="227,95,301,121"/>
-<area shape="rect" id="node8" href="$d2/da0/classVertex.html" title="Class representing a vertex. " alt="" coords="325,95,385,121"/>
-<area shape="rect" id="node9" href="$db/d02/classColor4f.html" title="Class representing a color with 4 float components: RGBA. " alt="" coords="323,5,387,32"/>
+<area shape="rect" id="node1" title="Build type to wrap data required for recursive building of KDTree nodes when using a KDTreeFactory ba..." alt="" coords="163,365,287,392"/>
+<area shape="rect" id="node2" href="$d8/d94/classKDTreeNode.html" title="Class representing a KDTree node." alt="" coords="102,276,201,303"/>
+<area shape="rect" id="node3" href="$dd/d79/classLightKDTreeNode.html" title="Class representing a light KDTree node. It is, the basic representation of a KDTree node with uses le..." alt="" coords="5,185,132,212"/>
+<area shape="rect" id="node4" href="$d7/d98/classIBinaryTreeNode.html" title="Binary tree node interface that must be implemented by any class providing binary tree node based fun..." alt="" coords="9,95,129,121"/>
+<area shape="rect" id="node5" href="$d2/d1a/classAABB.html" title="Class representing an Axis Aligned Bounding Box (AABB)" alt="" coords="206,185,265,212"/>
+<area shape="rect" id="node6" href="$df/de1/classPrimitive.html" title="Abstract class defining the common behavior for all primitives." alt="" coords="176,95,249,121"/>
+<area shape="rect" id="node7" href="$d2/da0/classVertex.html" title="Class representing a vertex." alt="" coords="273,95,333,121"/>
+<area shape="rect" id="node8" href="$db/d02/classColor4f.html" title="Class representing a color with 4 float components: RGBA." alt="" coords="271,5,335,32"/>
+<area shape="rect" id="node9" title=" " alt="" coords="225,276,368,303"/>
 </map>

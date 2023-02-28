@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+    <scannerSettings id="scaset" active="true" pulseFreq_hz="18750" scanFreq_hz="0"/>
+    <survey name="box_puck_moving" scene="data/scenes/demo/box_scene.xml#box_scene" platform="data/platforms.xml#simple_linearpath" scanner="data/scanners_tls.xml#vlp16">
+		<leg>
+            <platformSettings x="-40" y="0" z="0" movePerSec_m='8' /> <!-- with 8 m/s, we make it to +40 in 10 seconds -->
+			<scannerSettings template="scaset" trajectoryTimeInterval_s="0.01" headRotatePerSec_deg="3600" headRotateStart_deg="0" headRotateStop_deg="36000"/> <!-- the rotation will also take 10 seconds -->
+        </leg>
+			<leg>
+            <platformSettings x="40" y="0" z="0" />
+			<scannerSettings active="false"/>
+        </leg>
+    </survey>
+</document>

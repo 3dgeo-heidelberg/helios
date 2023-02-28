@@ -35,3 +35,6 @@ pyheliostools/*.pyc
 
 # Output log
 helios.log
+
+# wiki documentation
+*/site

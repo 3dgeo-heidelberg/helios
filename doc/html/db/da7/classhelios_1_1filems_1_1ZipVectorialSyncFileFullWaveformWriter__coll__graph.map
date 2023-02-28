@@ -1,0 +1,10 @@
+<map id="helios::filems::ZipVectorialSyncFileFullWaveformWriter" name="helios::filems::ZipVectorialSyncFileFullWaveformWriter">
+<area shape="rect" id="node1" title="Concrete class specializing ZipSyncFileWriter to write a vector of full waveform to a zip file." alt="" coords="972,50,1159,91"/>
+<area shape="rect" id="node2" href="$d9/d45/classhelios_1_1filems_1_1ZipSyncFileWriter.html" title=" " alt="" coords="681,5,877,61"/>
+<area shape="rect" id="node3" href="$d1/db6/classhelios_1_1filems_1_1SimpleSyncFileWriter.html" title=" " alt="" coords="449,13,627,54"/>
+<area shape="rect" id="node4" href="$d4/dfb/classhelios_1_1filems_1_1SingleSyncFileWriter.html" title=" " alt="" coords="219,13,394,54"/>
+<area shape="rect" id="node5" href="$da/d4c/classhelios_1_1filems_1_1SyncFileWriter.html" title=" " alt="" coords="5,13,164,54"/>
+<area shape="rect" id="node6" href="$d6/d70/classhelios_1_1filems_1_1ZipFullWaveformWriteStrategy.html" title="Like DirectFullWaveformWriteStrategy but zipping the output." alt="" coords="676,86,881,127"/>
+<area shape="rect" id="node7" href="$d8/df7/classhelios_1_1filems_1_1DirectFullWaveformWriteStrategy.html" title="Concrete class specializing WriteStrategy to directly write full waveform data to a file." alt="" coords="457,86,619,127"/>
+<area shape="rect" id="node8" href="$de/dd3/classhelios_1_1filems_1_1WriteStrategy.html" title=" " alt="" coords="213,86,400,127"/>
+</map>

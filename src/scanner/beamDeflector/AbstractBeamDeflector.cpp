@@ -34,7 +34,6 @@ void AbstractBeamDeflector::applySettings(std::shared_ptr<ScannerSettings> setti
 	setScanFreq_Hz(settings->scanFreq_Hz);
 	cfg_setting_verticalAngleMin_rad = settings->verticalAngleMin_rad;
 	cfg_setting_verticalAngleMax_rad = settings->verticalAngleMax_rad;
-	state_currentBeamAngle_rad = 0;
 	double angleMax = cfg_setting_scanAngle_rad;
 	double angleMin = -cfg_setting_scanAngle_rad;
 	if(angleMax == 0.0){
@@ -64,6 +63,10 @@ void AbstractBeamDeflector::setScanAngle_rad(double scanAngle_rad) {
 	else if (scanAngle_rad > cfg_device_scanAngleMax_rad) {
 		scanAngle_rad = cfg_device_scanAngleMax_rad;
 	}
+    // scanAngle of 0 would mean that no points are recorded - set to scanAngleMax instead
+    if (scanAngle_rad == 0) {
+        scanAngle_rad = cfg_device_scanAngleMax_rad;
+    }
 	this->cfg_setting_scanAngle_rad = scanAngle_rad;
 	stringstream ss;
 	ss << "Scan angle set to " << MathConverter::radiansToDegrees(
@@ -74,6 +77,10 @@ void AbstractBeamDeflector::setScanAngle_rad(double scanAngle_rad) {
 
 bool AbstractBeamDeflector::lastPulseLeftDevice() {
 	return true;
+}
+
+void AbstractBeamDeflector::restartDeflector(){
+    state_currentBeamAngle_rad = 0;
 }
 
 void AbstractBeamDeflector::setScanFreq_Hz(double scanFreq_hz) {

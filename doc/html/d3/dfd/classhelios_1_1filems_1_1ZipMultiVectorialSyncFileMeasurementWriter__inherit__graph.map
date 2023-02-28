@@ -1,0 +1,7 @@
+<map id="helios::filems::ZipMultiVectorialSyncFileMeasurementWriter" name="helios::filems::ZipMultiVectorialSyncFileMeasurementWriter">
+<area shape="rect" id="node1" title="Concrete class specializing ZipMultiSyncFileWriter to write a vector of measurements to multiple zip ..." alt="" coords="909,13,1112,69"/>
+<area shape="rect" id="node2" href="$d6/d1f/classhelios_1_1filems_1_1ZipMultiSyncFileWriter.html" title=" " alt="" coords="683,5,861,76"/>
+<area shape="rect" id="node3" href="$df/dfc/classhelios_1_1filems_1_1SimpleMultiSyncFileWriter.html" title=" " alt="" coords="435,20,635,61"/>
+<area shape="rect" id="node4" href="$d2/d66/classhelios_1_1filems_1_1MultiSyncFileWriter.html" title=" " alt="" coords="212,20,387,61"/>
+<area shape="rect" id="node5" href="$da/d4c/classhelios_1_1filems_1_1SyncFileWriter.html" title=" " alt="" coords="5,20,164,61"/>
+</map>

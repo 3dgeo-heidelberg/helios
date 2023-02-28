@@ -63,6 +63,13 @@ private:
         ar &A;
     }
 protected:
+    // ***  CONSTANTS  *** //
+    // ******************* //
+    /**
+     * @brief Decimal precision tolerance
+     */
+    static double const eps;
+
     // ***  ATTRIBUTES  *** //
     // ******************** //
     /**

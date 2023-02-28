@@ -1,0 +1,52 @@
+site_name: HELIOS++ documentation
+docs_dir: helios.wiki
+repo_url: https://github.com/3dgeo-heidelberg/helios/
+use_directory_urls: false
+extra_javascript: 
+    - https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML
+    - fixlinks.js
+markdown_extensions:
+    - mdx_math:
+        use_gitlab_delimiters: true
+    - toc
+    - extra
+    - tables
+    - fenced_code
+    - pymdownx.tasklist:
+        custom_checkbox: true        
+    - pymdownx.highlight
+    - pymdownx.superfences
+theme:
+  logo: geO_BW.png
+  favicon: geO.png
+  name: material
+  palette:
+    primary: green
+    accent: teal 
+  features:
+    - search.highlight
+nav:
+- 'Home': 'Main-page.md'
+- 'First steps': 'First-steps.md'
+- 'XML definitions':
+    - 'Survey': 'Survey.md'
+    - 'Scene': 'Scene.md'
+    - 'Scanner': 'Scanners.md'
+    - 'Platform': 'Platforms.md'
+- 'Random errors': 'Error-sources-and-randomness-control.md'
+- 'Fullwave processing': 'Fullwave.md'
+- 'Output': 'Output.md'
+- 'pyhelios':
+    - 'Getting started': 'Python-bindings-🐍-Getting-started.md'
+    - 'Details': 'Python-bindings-🐍-Details.md'
+    - 'The util subpackage': 'pyhelios-🐍-The-util-subpackage.md'
+- 'Misc':
+    - 'Dealing with large scenes': 'Dealing-with-large-scenes.md'
+    - 'Scene generation - external tools': 'Supplementary-tools-for-scene-generation.md'
+    - 'Visualising the simulation': 'Visualising-the-simulation.md'
+    - 'Tutorial videos': 'Tutorial-videos.md'
+    - 'Beta: Dynamic scenes': 'Dynamic-scenes.md'
+- 'Change log': 'Change-log.md'
+- 'References':
+    - 'Research using HELIOS': 'Research-using-HELIOS.md'
+    - 'References': 'References.md'

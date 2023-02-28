@@ -1,0 +1,20 @@
+name: pyhelios_pdal_env
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.8
+  - polyscope
+  - pip
+  - matplotlib
+  - pdal
+  - notebook
+  - geopandas
+  - jupyter
+  - gdal
+  - numpy
+  - python-pdal
+  - ipympl
+  - pyyaml
+  - pip:
+    - laspy[laszip]

@@ -1,0 +1,6 @@
+<map id="PulseTaskFactory" name="PulseTaskFactory">
+<area shape="rect" id="node1" title="Factory to make the adequate pulse task depending on the simulation." alt="" coords="5,289,132,316"/>
+<area shape="rect" id="node2" href="$d5/d9c/classScene.html" title="Class representing a scene asset." alt="" coords="39,200,98,227"/>
+<area shape="rect" id="node3" href="$de/d97/classAsset.html" title="Base class for all assets." alt="" coords="41,124,97,151"/>
+<area shape="rect" id="node4" title=" " alt="" coords="41,5,96,32"/>
+</map>

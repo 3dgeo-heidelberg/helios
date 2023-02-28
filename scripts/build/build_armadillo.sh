@@ -35,7 +35,7 @@ parse_build_args $@
 
 # Download armadillo if it is not downloaded yet
 if [ ! -f "${ARMA_TAR}" ]; then
-    wget -c "${ARMA_URL}" -O "${ARMA_TAR}"
+    wget -c "${ARMA_URL}" -O "${ARMA_TAR}" --no-check-certificate
 fi
 
 # Decompress armadillo if it has not been unzipped yet
@@ -47,6 +47,7 @@ fi
 
 # Build armadillo
 cd "${ARMA_DIR}"
-cmake . -DCMAKE_INSTALL_PREFIX:PATH="${ARMA_DIR}"
+cmake . -DCMAKE_INSTALL_PREFIX:PATH="${ARMA_DIR}"  # Default
+#cmake . -DCMAKE_INSTALL_PREFIX:PATH="${ARMA_DIR}" -DDETECT_HDF5=false # Bugfix
 make -j${HELIOS_BUILD_NCORES} install
 

@@ -1,183 +1,75 @@
 #pragma once
 
-#include "AbstractDetector.h"
+#include <scanner/detector/PulseTask.h>
+#include <scanner/detector/AbstractDetector.h>
 #include <noise/RandomnessGenerator.h>
 class Measurement;
 #include "LasSpecification.h"
+class Scanner;
+#include <scanner/SimulatedPulse.h>
+
+
 #include <mutex>
 
-// ############## BEGIN Static variables ###############
-/**
- * @brief Speed of light in meters per second
- */
-static const double speedOfLight_mPerSec = 299792458;
-
-/**
- * @brief Speed of light in meters per nanosecond
- */
-static const double cfg_speedOfLight_mPerNanosec = 0.299792458;
-
-/**
- * @brief Speed of light in meters per picosecond
- */
-static const double speedOfLight_mPerPicosec = 0.000299792458;
-// ############## END Static variables ###############
 
 /**
  * @brief Base abstract class for pulse runnables
  */
-class AbstractPulseRunnable{
+class AbstractPulseRunnable : public PulseTask{
 public:
     // ***  ATTRIBUTES  *** //
     // ******************** //
     /**
+	 * @brief Scanner used to simulate the pulse
+	 */
+    std::shared_ptr<Scanner> scanner = nullptr;
+    /**
      * @brief Detector used to simulate pulse
      */
 	std::shared_ptr<AbstractDetector> detector = nullptr;
-
+	/**
+	 * @brief The definition of the pulse to be simulated
+	 */
+	SimulatedPulse pulse;
     /**
-     * @brief Beam origin in absolute coordinates
+     * @brief Reference to the scene that is being scanned
      */
-	glm::dvec3 absoluteBeamOrigin;
-	/**
-	 * @brief Beam attitude
-	 */
-	Rotation absoluteBeamAttitude;
+    Scene &scene;
+    /**
+     * @brief Function to apply error to received measurement
+     * @see AbstractPulseRunnable::applyMeasurementErrorDirectly
+     * @see AbstractPulseRunnable::applyMeasurementErrorFromExpr
+     */
+    std::function<void(
+        RandomnessGenerator<double> &rg,
+        double &distance,
+        glm::dvec3 &beamOrigin,
+        glm::dvec3 &beamDirection
+    )> applyMeasurementError;
 
-	/**
-	 * @brief Number of current pulse
-	 */
-	int currentPulseNum;
-	/**
-	 * @brief Current GPS time in milliseconds
-	 */
-    double currentGpsTime; // In milliseconds
-
-	/**
-	 * @brief Flag to specify if ground points must be captured (true) or not
-	 * (false)
-	 */
-	bool writeGround = true;
-
-	// ***  CONSTRUCTION / DESTRUCTION  *** //
+    // ***  CONSTRUCTION / DESTRUCTION  *** //
 	// ************************************ //
 	/**
 	 * @brief Base constructor for pulse runnables
-	 * @see AbstractPulseRunnable::detector
-	 * @see AbstractPulseRunnable::absoluteBeamOrigin
-	 * @see AbstractPulseRunnable::absoluteBeamAttitude
-	 * @see AbstractPulseRunnable::currentPulseNum
-	 * @see AbstractPulseRunnable::currentGpsTime
+	 * @see AbstractPulseRunnable::scanner
+	 * @see AbstractPulseRunnable::pulse
+	 * @see SimulatedPulse
 	 */
 	AbstractPulseRunnable(
-		std::shared_ptr<AbstractDetector> detector,
-		glm::dvec3 absoluteBeamOrigin,
-		Rotation absoluteBeamAttitude,
-		int pulseNumber,
-		long gpsTime
-	){
-		this->detector = detector;
-		this->absoluteBeamAttitude = absoluteBeamAttitude;
-		this->absoluteBeamOrigin = absoluteBeamOrigin;
-		this->currentPulseNum = pulseNumber;
-		this->currentGpsTime = gpsTime;
-	}
+		std::shared_ptr<Scanner> const scanner,
+		SimulatedPulse const &pulse
+	);
 
 	// ***  M E T H O D S  *** //
 	// *********************** //
 	/**
-	 * @brief Compute cross section
+	 * @brief Initialize pending attributes of the abstract pulse runnable
+	 *  before doing further computations.
 	 *
-	 * \f[
-	 *  C_{S} = 4{\pi} \cdot f \cdot A_{lf} \cdot \cos(\theta)
-	 * \f]
-	 *
-	 * <br/>
-	 * Paper DOI: 10.1016/j.isprsjprs.2010.06.007
-	 *
-	 * @return Cross section
+	 * NOTE that this method alleviates the burden of the sequential thread
+	 *  by supporting deferred initialization whenever possible.
 	 */
-	double calcCrossSection(double f, double Alf, double theta);
-	/**
-	 * @brief Compute the phong model
-	 *
-	 * <br/>
-	 * Paper title: NORMALIZATION OF LIDAR INTENSITY DATA BASED ON RANGE AND
-	 *  SURFACE INCIDENCE ANGLE
-	 * <br/>
-	 * Paper authors: B. Jutzi, H. Gross
-	 */
-	double phongBDRF(
-	    double incidenceAngle,
-	    double targetSpecularity,
-	    double targetSpecularExponent
-    );
-	/**
-	 * @brief Compute atmospheric factor \f$f\f$, understood as the energy left
-	 * after attenuation by air particles in range \f$[0, 1]\f$
-	 * @param targetRange \f$r\f$
-	 *
-	 * Let \f$A_{e}\f$ be the atmospheric extinction
-	 * \f[
-	 *  f = e^{-2r \cdot A_{e}}
-	 * \f]
-	 *
-	 * @return \f$f\f$
-	 */
-	inline double calcAtmosphericFactor(double targetRange);
-	/**
-	 * @brief Solve the laser radar equation
-	 *
-	 * <br/>
-	 * Report title: Signature simulation and signal analysis for 3-D laser
-	 * radar
-	 * <br/>
-	 * Report authors: Tomas Carlsson, Ove Steinvall and Dietmar Letalick
-	 */
-	double calcReceivedPower(
-		double emittedPower,
-		double targetRange,
-		double incidenceAngle,
-		double targetReflectivity,
-		double targetSpecularity,
-		double targetSpecularExponent,
-		double targetArea
-	);
-	/**
-	 * @brief Alternative received power computation method
-	 *
-	 * @param emittedPower Emitted power
-	 * @param targetRange The distance with respect to intersection
-	 * multiplied by the sine of the divergence angle
-	 * @param sigma Sigma value taken from LadLut specification
-	 *
-	 * @return Received power
-	 *
-	 * @see LadLut
-	 * @see AbstractPulseRunnable::_calcReceivedPower
-	 */
-	double calcReceivedPower(
-	    double emittedPower,
-	    double targetRange,
-	    double sigma
-    );
-	/**
-	 * @brief Compute received power \f$P_{r}\f$
-	 *
-	 * \f[
-	 *  P_{r} = \textrm{etaSys} \cdot \textrm{etaAm} \cdot \sigma \cdot
-	 *      \frac{P_{t} \cdot D_{r2}}{4{\pi} \cdot R^{4} \cdot B_{t2}}
-	 * \f]
-	 */
-	static inline double _calcReceivedPower(
-	    double Pt,
-	    double Dr2,
-	    double R,
-	    double Bt2,
-	    double etaSys,
-	    double etaAtm,
-	    double sigma
-    );
+	virtual void initialize();
 	/**
 	 * @brief Capture point if proceed and write it
 	 * @param m Measurement
@@ -199,26 +91,120 @@ public:
         std::vector<Measurement> *cycleMeasurements,
         std::mutex *cycleMeasurementsMutex
     );
+
 	/**
 	 * @brief Apply error to received measurement
 	 *
+	 * Let \f$y\f$ be the distance with error, \f$x\f$ be the clean distance,
+	 *  and \f$\mathcal{N} = \mathcal{N}(\mu=0, \sigma=d_{\mathrm{acc}})\f$ be
+	 *  a normal distribution with mean 0 and standard deviation equal to the
+	 *  device accuracy (\f$d_{\mathrm{acc}}\f$). But then, the distance with
+	 *  error can be determined as follows:
+	 *
+	 * \f[
+	 *  y = x + \mathcal{N}
+	 * \f]
+	 *
 	 * @param rg RandomnessGenerator to be used to apply error to the measure
+	 *  directly from a normal distribution
 	 * @param distance Reference to the distance where error shall be applied
-	 * @param beamOrigin Reference to the beam originWaypoint where error shall be
-	 * applied
+	 * @param beamOrigin Reference to the beam originWaypoint where error shall
+	 *  be applied
 	 * @bream beamDirection Reference to the beam direction where error shall
 	 * be applied
+	 * @see AbstractPulseRunnable::applyMeasurementError
+	 * @see AbstractPulseRunnable::applyMeasurementErrorFromExpr
 	 */
-	void applyMeasurementError(
+	void applyMeasurementErrorDirectly(
 	    RandomnessGenerator<double> &rg,
 	    double &distance,
 	    glm::dvec3 &beamOrigin,
 	    glm::dvec3 &beamDirection
     );
+    /**
+     * @brief Apply error to received measurement.
+     *
+     * Let \f$y\f$ be the distance with error, \f$x\f$ be the clean distance,
+     *  and \f$\mathcal{N} = \mathcal{N}(\mu=0, \sigma=d_{\mathrm{acc}})\f$ be
+     *  a normal distribution with mean \f$0\f$ and standard deviation equal to
+     *  the device accuracy (\f$d_{\mathrm{acc}}\f$). But then, the distance
+     *  with error can be determined as follows:
+     *
+     * \f[
+     *  y = x + \mathcal{N} f(x)
+     * \f]
+     *
+     * In the above equation, \f$f(x)\f$ is a given expression. For instance,
+     *  it is possible to define a distance dependent error in parts per
+     *  million \f$d_{ppm}\f$:
+     *
+     * \f[
+     * \begin{split}
+     *  y = &\; x + \frac{\mathcal{N}}{d_\mathrm{acc}} \left(
+     *      d_{\mathrm{acc}} + x d_{\mathrm{ppm}} 10^{-6} \right) \\
+     *    = &\; x + \mathcal{N} \left(
+     *      1 + d_{\mathrm{acc}}^{-1} x d_{\mathrm{ppm}} 10^{-6}
+     *    \right)
+     * \end{split}
+     * \f]
+     *
+     * More concretely, for the above expression:
+     *
+     * \f[
+     *  f(x) = 1 + \frac{x d_{\mathrm{ppm}} 10^{-6}}{d_{\mathrm{acc}}}
+     * \f]
+     *
+     * For example, let us assume \f$d_{\mathrm{acc}} = 0.05\f$ and
+     *  \f$d_{ppm} = 30\f$. The expression string representing this would be
+     *  (note \f$t\f$ must be used as the variable when using
+     *  UnivarExprTreeNode):
+     *
+     * "1 + (t*30*10^(-6))/0.05"
+     *
+     * Simplifying to use less operations (more efficient):
+     *
+     * "1 + t*0.0006"
+     *
+     * Both expressions define the function:
+     *
+     * \f[
+     *  f(x) = 1 + \frac{x \times 30 \times 10^{-6}}{0.05}
+     * \f]
+     *
+     * Continuing the previous example, it is possible to transform the noise
+     *  to a standard normal distribution with mean \f$0\f$ and standard
+     *  deviation \f$1\f$ using:
+     *
+     * "1/0.05"
+     *
+     * Or equivalently:
+     *
+     * "20"
+     *
+     * The above expression corresponds to the function:
+     *
+     * \f[
+     *  f(x) = \frac{1}{d_{\mathrm{acc}}}
+     * \f]
+     *
+     * @param rg RandomnessGenerator to be used to apply error to the measure
+     *  from a given univariate expression where \f$t\f$ is the clean distance
+     *  in the expression such that \f$t = x\f$.
+     * @param distance Reference to the distance where error shall be applied
+     * @param beamOrigin Reference to the beam originWaypoint where error shall
+     *  be applied
+     * @param beamDirection Reference to the beam direction where error shall
+     *  be applied
+     * @see AbstractPulseRunnable::applyMeasurementError
+     * @see AbstractPulseRunnable::applyMeasurementErrorDirectly
+     * @see UnivarExprTreeNode
+     * @see UnivarExprTreeStringFactory
+     */
+    void applyMeasurementErrorFromExpr(
+        RandomnessGenerator<double> &rg,
+        double &distance,
+        glm::dvec3 &beamOrigin,
+        glm::dvec3 &beamDirection
+    );
 
-	/**
-	 * @brief Abstract operator. It must be overridden by any implementation
-	 * which concretes AbstractPulseRunnable
-	 */
-	virtual void operator()() = 0;
 };

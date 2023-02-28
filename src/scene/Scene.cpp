@@ -15,10 +15,10 @@ using namespace std;
 #include <glm/gtx/string_cast.hpp>
 using namespace glm;
 
-#include "KDTreeRaycaster.h"
+#include <KDTreeRaycaster.h>
 
-#include "Scene.h"
-#include "TimeWatcher.h"
+#include <Scene.h>
+#include <TimeWatcher.h>
 #include <UniformNoiseSource.h>
 #include <surfaceinspector/maths/Plane.hpp>
 #include <surfaceinspector/maths/PlaneFitter.hpp>
@@ -54,103 +54,89 @@ Scene::Scene(Scene &s) {
     this->primitives.push_back(p->clone());
   }
 
-  this->kdtf = s.kdtf;
-  this->kdtree = shared_ptr<KDTreeNodeRoot>(
-      kdtf->makeFromPrimitivesUnsafe(this->primitives)
-  );
   registerParts();
+  this->kdgf = s.kdgf;
+  if(s.parts.empty()){
+      kdgrove = nullptr;
+  }
+  else{
+      buildKDGrove(true);
+  }
 }
 
 // ***  M E T H O D S  *** //
 // *********************** //
 bool Scene::finalizeLoading(bool const safe) {
-  if (primitives.empty()) return false;
+    if (primitives.empty()) return false;
 
-  // #####   UPDATE PRIMITIVES ON FINISH LOADING   #####
-  UniformNoiseSource<double> uns(-1, 1);
-  for (Primitive *p : primitives) {
-    p->onFinishLoading(uns);
-  }
-
-  // ################ BEGIN Shift primitives to originWaypoint
-  // ##################
-
-  // Translate scene coordinates to originWaypoint (to prevent wasting of
-  // floating point precision):
-
-  vector<Vertex> vertices;
-
-  // Collect all vertices in an unordered set
-  // (makes sure that we don't translate the same vertex multiple times)
-  for (Primitive *p : primitives) {
-    Vertex *v = p->getFullVertices();
-    for (size_t i = 0; i < p->getNumFullVertices(); i++) {
-      vertices.push_back(v[i]);
+    // #####   UPDATE PRIMITIVES ON FINISH LOADING   #####
+    UniformNoiseSource<double> uns(*DEFAULT_RG, -1, 1);
+    for (Primitive *p : primitives) {
+        p->onFinishLoading(uns);
     }
-  }
-  ostringstream s;
-  s << "Total # of primitives in scene: " << primitives.size() << "\n";
-  logging::DEBUG(s.str());
 
-  if (vertices.size() == 0) return false;
+    // Report number of primitives in the scene
+    ostringstream s;
+    s << "Total # of primitives in scene: " << primitives.size() << "\n";
+    logging::DEBUG(s.str());
+    if (primitives.size() == 0) return false;
 
-  // Register all parts and translate to ground those flagged as forceOnGround
-  registerParts();
-  doForceOnGround();
+    // Compute the number of vertices in the scene
+    size_t numVertices = 0;
+    for(Primitive *p : primitives) numVertices += p->getNumVertices();
 
-  // ########## BEGIN Move the scene so that bounding box minimum is (0,0,0)
-  // ######## This is done to prevent precision problems (e.g. camera jitter)
+    // Register all parts and translate to ground those flagged as forceOnGround
+    registerParts();
+    doForceOnGround();
 
-  // Store original bounding box (CRS coordinates):
-  this->bbox_crs = AABB::getForVertices(vertices);
+    // Store original bounding box (CRS coordinates):
+    this->bbox_crs = AABB::getForPrimitives(primitives);
+    glm::dvec3 diff = this->bbox_crs->getMin();
+    stringstream ss;
+    ss  << "CRS bounding box (by vertices): " << this->bbox_crs->toString()
+        << "\nShift: " << glm::to_string(diff)
+        << "\n# vertices to translate: " << numVertices;
+    logging::INFO(ss.str());
+    ss.str("");
 
-  glm::dvec3 diff = this->bbox_crs->getMin();
-
-  stringstream ss;
-  ss << "CRS bounding box (by vertices): " << this->bbox_crs->toString()
-     << "\nShift: " << glm::to_string(diff)
-     << "\n# vertices to translate: " << vertices.size();
-  logging::INFO(ss.str());
-  ss.str("");
-
-  // Iterate over the hash set and translate each vertex:
-  for (Vertex &v : vertices) {
-    v.pos = v.pos - diff;
-  }
-
-  for (Primitive *p : primitives) {
-    Vertex *v = p->getVertices();
-    for (size_t i = 0; i < p->getNumVertices(); i++) {
-      v[i].pos = v[i].pos - diff;
+    // Iterate over the primitives and translate each vertex:
+    for (Primitive *p : primitives) {
+        Vertex *v = p->getVertices();
+        for (size_t i = 0; i < p->getNumVertices(); i++) {
+            v[i].pos = v[i].pos - diff;
+        }
+        p->update();
     }
-    p->update();
-  }
 
-  // Get new bounding box of tranlated scene:
-  this->bbox = AABB::getForVertices(vertices);
+    // Get new bounding box of translated scene:
+    this->bbox = AABB::getForPrimitives(primitives);
 
-  ss << "Actual bounding box (by vertices): " << this->bbox->toString();
-  logging::INFO(ss.str());
-  ss.str("");
+    ss << "Actual bounding box (by vertices): " << this->bbox->toString();
+    logging::INFO(ss.str());
+    ss.str("");
 
-  // ################ END Shift primitives to originWaypoint ##################
+    // ################ END Shift primitives to originWaypoint ##################
 
-  // Compute each part centroid wrt to scene
-  for(shared_ptr<ScenePart> & part : parts) part->computeCentroid();
+    // Compute each part centroid wrt to scene
+    for(shared_ptr<ScenePart> & part : parts) part->computeCentroid();
 
-  // ############# BEGIN Build KD-tree ##################
-  if(kdtf != nullptr) buildKDTreeWithLog(safe);
-  // ############# END Build KD-tree ##################
+    // Build KDGrove
+    if(kdgf != nullptr) buildKDGroveWithLog(safe);
 
-  return true;
+    return true;
 }
 
 void Scene::registerParts(){
+    // Find scene parts from primitives
     unordered_set<shared_ptr<ScenePart>> partsSet;
     for(Primitive *primitive : primitives)
         if(primitive->part != nullptr)
             partsSet.insert(primitive->part);
-    parts = vector<shared_ptr<ScenePart>>(partsSet.begin(), partsSet.end());
+    // Remove already registered scene parts
+    unordered_set<shared_ptr<ScenePart>>::iterator it;
+    for(shared_ptr<ScenePart> part : parts) partsSet.erase(part);
+    // Register all new scene parts
+    parts.insert(parts.end(), partsSet.begin(), partsSet.end());
 }
 
 shared_ptr<AABB> Scene::getAABB() { return this->bbox; }
@@ -180,34 +166,34 @@ glm::dvec3 Scene::getGroundPointAt(glm::dvec3 point) {
 
 shared_ptr<RaySceneIntersection>
 Scene::getIntersection(
-    glm::dvec3 &rayOrigin,
-    glm::dvec3 &rayDir,
-    bool groundOnly
-){
-  vector<double> tMinMax = bbox->getRayIntersection(rayOrigin, rayDir);
-  if (tMinMax.empty()) {
-    logging::DEBUG("tMinMax is empty");
-    return nullptr;
-  }
+    glm::dvec3 const &rayOrigin,
+    glm::dvec3 const &rayDir,
+    bool const groundOnly
+) const {
+    vector<double> tMinMax = bbox->getRayIntersection(rayOrigin, rayDir);
+    return getIntersection(tMinMax, rayOrigin, rayDir, groundOnly);
+}
 
-  // TODO test without kdtree
-  bool bruteForce = false;
-  shared_ptr<RaySceneIntersection> result;
-
-  if (!bruteForce) {
-    KDTreeRaycaster raycaster(kdtree);
-    result = shared_ptr<RaySceneIntersection>(raycaster.search(
-        rayOrigin, rayDir, tMinMax[0], tMinMax[1], groundOnly));
-  }
-
-  return result;
+std::shared_ptr<RaySceneIntersection> Scene::getIntersection(
+    vector<double> const &tMinMax,
+    glm::dvec3 const &rayOrigin,
+    glm::dvec3 const &rayDir,
+    bool const groundOnly
+) const{
+    if (tMinMax.empty()) {
+        logging::DEBUG("tMinMax is empty");
+        return nullptr;
+    }
+    return shared_ptr<RaySceneIntersection>(raycaster->search(
+        rayOrigin, rayDir, tMinMax[0], tMinMax[1], groundOnly
+    ));
 }
 
 map<double, Primitive *>
 Scene::getIntersections(
     glm::dvec3 &rayOrigin,
     glm::dvec3 &rayDir,
-    bool groundOnly
+    bool const groundOnly
 ){
 
   vector<double> tMinMax = bbox->getRayIntersection(rayOrigin, rayDir);
@@ -216,9 +202,9 @@ Scene::getIntersections(
     return {};
   }
 
-  shared_ptr<KDTreeRaycaster> raycaster(new KDTreeRaycaster(kdtree));
-  return raycaster->searchAll(rayOrigin, rayDir, tMinMax[0], tMinMax[1],
-                              groundOnly);
+  return raycaster->searchAll(
+      rayOrigin, rayDir, tMinMax[0], tMinMax[1], groundOnly
+  );
 }
 
 glm::dvec3 Scene::getShift() { return this->bbox_crs->getMin(); }
@@ -234,7 +220,6 @@ vector<Vertex *> Scene::getAllVertices(){
 }
 
 void Scene::doForceOnGround(){
-
     // 1. Find min and max vertices of ground scene parts
     vector<size_t> I; // Indices of ground parts
     vector<unique_ptr<Plane<double>>> planes; // Ground best fitting planes
@@ -371,23 +356,28 @@ glm::dvec3 Scene::findForceOnGroundQ(
     return minzv;
 }
 
-void Scene::buildKDTree(bool const safe){
-    kdtree = shared_ptr<KDTreeNodeRoot>(
-        safe ?
-        kdtf->makeFromPrimitives(primitives) :
-        kdtf->makeFromPrimitivesUnsafe(primitives)
+void Scene::buildKDGrove(bool const safe){
+    kdgrove = kdgf->makeFromSceneParts(
+        parts,  // Scene parts
+        true,   // Merge non moving
+        safe,   // Safe
+        true,   // Compute KDGrove stats
+        true,   // Report KDGrove stats
+        true,   // Compute KDTree stats
+        true    // Report KDTree stats
     );
+    raycaster = std::make_shared<KDGroveRaycaster>(kdgrove);
 }
 
-void Scene::buildKDTreeWithLog(bool const safe){
-    logging::INFO("Building KD-Tree... ");
-    TimeWatcher kdtTw;
-    kdtTw.start();
-    buildKDTree(safe);
-    kdtTw.stop();
+void Scene::buildKDGroveWithLog(bool const safe){
+    logging::INFO("Building KD-Grove... ");
+    TimeWatcher kdgTw;
+    kdgTw.start();
+    buildKDGrove(safe);
+    kdgTw.stop();
     std::stringstream ss;
-    ss << "KD built in " << kdtTw.getElapsedDecimalSeconds() << "s";
-    logging::INFO(ss.str());
+    ss << "KDG built in " << kdgTw.getElapsedDecimalSeconds() << "s";
+    logging::TIME(ss.str());
 }
 
 // ***  READ/WRITE  *** //

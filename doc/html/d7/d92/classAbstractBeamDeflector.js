@@ -9,6 +9,7 @@ var classAbstractBeamDeflector =
     [ "getEmitterRelativeAttitude", "d7/d92/classAbstractBeamDeflector.html#ae65d89b6a449aa58656a0416e1fd2fbc", null ],
     [ "getEmitterRelativeAttitudeByReference", "d7/d92/classAbstractBeamDeflector.html#a050489b7abe89c6758b6fa7737fe883e", null ],
     [ "lastPulseLeftDevice", "d7/d92/classAbstractBeamDeflector.html#ae45b6eb2f3596a65b5b278521610b0c9", null ],
+    [ "restartDeflector", "d7/d92/classAbstractBeamDeflector.html#af3200a0bcbeacfe62a3c083f2e22c136", null ],
     [ "setScanAngle_rad", "d7/d92/classAbstractBeamDeflector.html#a0746a01290e62c1ed4c60c3638a94374", null ],
     [ "setScanFreq_Hz", "d7/d92/classAbstractBeamDeflector.html#ad653f84b83d7d6b6030d9db0ca56e871", null ],
     [ "cached_angleBetweenPulses_rad", "d7/d92/classAbstractBeamDeflector.html#a9568e351ea8108ba88abf1111438a952", null ],

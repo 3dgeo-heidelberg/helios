@@ -1,4 +1,7 @@
 <map id="HeliosDemos::DynamicSceneDemo" name="HeliosDemos::DynamicSceneDemo">
-<area shape="rect" id="node2" href="$d2/d88/classHeliosDemos_1_1SurveyDemo.html" title="SurveyDemo class. " alt="" coords="5,173,191,200"/>
-<area shape="rect" id="node3" href="$df/df9/classHeliosDemos_1_1BaseDemo.html" title="BaseDemo class. " alt="" coords="177,96,352,123"/>
+<area shape="rect" id="node1" title="Dynamic scene demo." alt="" coords="81,263,315,289"/>
+<area shape="rect" id="node2" href="$d2/d88/classHeliosDemos_1_1SurveyDemo.html" title="SurveyDemo class." alt="" coords="5,173,191,200"/>
+<area shape="rect" id="node3" href="$df/df9/classHeliosDemos_1_1BaseDemo.html" title="BaseDemo class." alt="" coords="177,96,352,123"/>
+<area shape="rect" id="node4" title=" " alt="" coords="76,5,131,32"/>
+<area shape="rect" id="node5" title=" " alt="" coords="215,173,383,200"/>
 </map>

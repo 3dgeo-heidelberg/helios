@@ -1,31 +1,30 @@
 <?xml version="1.0"?>
 <document>
-	<survey name="toyblocks_uls_surveyscene" platform="data/platforms.xml#quadcopter" scanner="data/scanners_als.xml#riegl_vux-1uav" scene="data/surveys/toyblocks/uls_toyblocks_survey_scene_combo.xml#toyblocks_scene">
-	<!-- platform: quadcopter, deflector: rotating, smooth turn mode (which is the default) -->
+	<survey name="toyblocks_uls_surveyscene" platform="data/platforms.xml#quadcopter" scanner="data/scanners_als.xml#riegl_vux-1uav22" scene="data/surveys/toyblocks/uls_toyblocks_survey_scene_combo.xml#toyblocks_scene">
+	<!-- platform: copter_linearpath, deflector: rotating -->
 		<leg>
-			<platformSettings  x="-70.0" y="-60.0" z="60.000" onGround="false" movePerSec_m="5" smoothTurn="true" slowdownEnabled="false"/>
-			<scannerSettings  active="true" pulseFreq_hz="100000" scanAngle_deg="90" scanFreq_hz="50" headRotatePerSec_deg="0.00" headRotateStart_deg="0.00" headRotateStop_deg="0.00" trajectoryTimeInterval_s="0.05"/>
+			<platformSettings  x="-70.0" y="-60.0" z="80.000" onGround="false" movePerSec_m="10" smoothTurn="true" slowdownEnabled="false"/>
+			<scannerSettings  active="true" pulseFreq_hz="50000" scanAngle_deg="90" scanFreq_hz="25" headRotatePerSec_deg="0.00" headRotateStart_deg="0.00" headRotateStop_deg="0.00" trajectoryTimeInterval_s="0.05"/>
 		</leg>
 		<leg>
-			<platformSettings  x="70.0" y="-60.0" z="60.000" onGround="false" movePerSec_m="5" smoothTurn="true" slowdownEnabled="false"/>
-			<scannerSettings  active="true" pulseFreq_hz="100000" scanAngle_deg="90" scanFreq_hz="50" headRotatePerSec_deg="0.00" headRotateStart_deg="0.00" headRotateStop_deg="0.00" trajectoryTimeInterval_s="0.05"/>
-		</leg>
-		
-		<leg>
-			<platformSettings  x="70.0" y="60.0" z="60.000" onGround="false" movePerSec_m="5" smoothTurn="true" slowdownEnabled="false"/>
-			<scannerSettings  active="true" pulseFreq_hz="100000" scanAngle_deg="90" scanFreq_hz="50" headRotatePerSec_deg="0.00" headRotateStart_deg="0.00" headRotateStop_deg="0.00" trajectoryTimeInterval_s="0.05"/>
+			<platformSettings  x="70.0" y="-60.0" z="80.000" onGround="false" movePerSec_m="10" smoothTurn="true" slowdownEnabled="false"/>
+			<scannerSettings  active="true" pulseFreq_hz="50000" scanAngle_deg="90" scanFreq_hz="25" headRotatePerSec_deg="0.00" headRotateStart_deg="0.00" headRotateStop_deg="0.00" trajectoryTimeInterval_s="0.05"/>
 		</leg>
 		<leg>
-			<platformSettings  x="-70.0" y="60.0" z="60.000" onGround="false" movePerSec_m="5" smoothTurn="true" slowdownEnabled="false"/>
-			<scannerSettings  active="true" pulseFreq_hz="100000" scanAngle_deg="90" scanFreq_hz="50" headRotatePerSec_deg="0.00" headRotateStart_deg="0.00" headRotateStop_deg="0.00" trajectoryTimeInterval_s="0.05"/>
+			<platformSettings  x="70.0" y="60.0" z="80.000" onGround="false" movePerSec_m="7" smoothTurn="true" slowdownEnabled="false"/>
+			<scannerSettings  active="true" pulseFreq_hz="50000" scanAngle_deg="90" scanFreq_hz="25" headRotatePerSec_deg="0.00" headRotateStart_deg="0.00" headRotateStop_deg="0.00" trajectoryTimeInterval_s="0.05"/>
 		</leg>
 		<leg>
-			<platformSettings  x="0.0" y="-60.0" z="60.000" onGround="false" movePerSec_m="5" smoothTurn="true" slowdownEnabled="false"/>
-			<scannerSettings  active="true" pulseFreq_hz="100000" scanAngle_deg="90" scanFreq_hz="50" headRotatePerSec_deg="0.00" headRotateStart_deg="0.00" headRotateStop_deg="0.00" trajectoryTimeInterval_s="0.05"/>
+			<platformSettings  x="-70.0" y="60.0" z="80.000" onGround="false" movePerSec_m="10" smoothTurn="true" slowdownEnabled="false"/>
+			<scannerSettings  active="false" pulseFreq_hz="50000" scanAngle_deg="90" scanFreq_hz="25" headRotatePerSec_deg="0.00" headRotateStart_deg="0.00" headRotateStop_deg="0.00" trajectoryTimeInterval_s="0.05"/>
 		</leg>
 		<leg>
-			<platformSettings  x="0.0" y="60.0" z="60.000" onGround="false" movePerSec_m="5"/>
-			<scannerSettings  active="false" pulseFreq_hz="100000" scanAngle_deg="90" scanFreq_hz="50" headRotatePerSec_deg="0.00" headRotateStart_deg="0.00" headRotateStop_deg="0.00" trajectoryTimeInterval_s="0.05"/>
+			<platformSettings  x="0.0" y="-60.0" z="80.000" onGround="false" movePerSec_m="4" smoothTurn="true" slowdownEnabled="false"/>
+			<scannerSettings  active="true" pulseFreq_hz="50000" scanAngle_deg="90" scanFreq_hz="25" headRotatePerSec_deg="0.00" headRotateStart_deg="0.00" headRotateStop_deg="0.00" trajectoryTimeInterval_s="0.05"/>
+		</leg>
+		<leg>
+			<platformSettings  x="0.0" y="60.0" z="80.000" onGround="false" movePerSec_m="10"/>
+			<scannerSettings  active="false" pulseFreq_hz="50000" scanAngle_deg="90" scanFreq_hz="25" headRotatePerSec_deg="0.00" headRotateStart_deg="0.00" headRotateStop_deg="0.00" trajectoryTimeInterval_s="0.05"/>
 		</leg>
 	</survey>
 

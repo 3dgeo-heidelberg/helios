@@ -2,6 +2,7 @@ var classKDTreeNodeRoot =
 [
     [ "KDTreeNodeRoot", "d0/d64/classKDTreeNodeRoot.html#adcea65fa6661fa292b6d517998a816c7", null ],
     [ "~KDTreeNodeRoot", "d0/d64/classKDTreeNodeRoot.html#a6e8ad0c6ccdb18676b22ca456d13d5ab", null ],
+    [ "isDynamic", "d0/d64/classKDTreeNodeRoot.html#a0547ad91ff563f80f708493366c5d77e", null ],
     [ "serialize", "d0/d64/classKDTreeNodeRoot.html#a6a597d700fc1da1574837655caeedf7f", null ],
     [ "boost::serialization::access", "d0/d64/classKDTreeNodeRoot.html#ac98d07dd8f7b70e16ccb9a01abf56b9c", null ],
     [ "blocks", "d0/d64/classKDTreeNodeRoot.html#a6f6162545e781f00dc2593cb8fd5673d", null ],

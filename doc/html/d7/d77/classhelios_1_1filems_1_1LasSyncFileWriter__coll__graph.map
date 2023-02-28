@@ -1,0 +1,6 @@
+<map id="helios::filems::LasSyncFileWriter&lt; WriteArgs &gt;" name="helios::filems::LasSyncFileWriter&lt; WriteArgs &gt;">
+<area shape="rect" id="node1" title="Abstract specialization of SingleSyncFileWriter to write output in LAS format." alt="" coords="479,47,657,88"/>
+<area shape="rect" id="node2" href="$d4/dfb/classhelios_1_1filems_1_1SingleSyncFileWriter.html" title=" " alt="" coords="222,5,397,47"/>
+<area shape="rect" id="node3" href="$da/d4c/classhelios_1_1filems_1_1SyncFileWriter.html" title=" " alt="" coords="5,5,164,47"/>
+<area shape="rect" id="node4" href="$d3/d15/classhelios_1_1filems_1_1LasWriterSpec.html" title="Class representing the specification defining a LasWriter (not the writer itself)" alt="" coords="213,71,405,98"/>
+</map>

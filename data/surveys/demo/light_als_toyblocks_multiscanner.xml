@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<document>
+	<platformSettings id="platform1" movePerSec_m="30" z="100.0" />
+    <scannerSettings active="true" id="scanner1" pulseFreq_hz="10000" scanAngle_deg="20.0" scanFreq_hz="100" trajectoryTimeInterval_s="0.01"/>
+    <survey name="light_toyblocks_als" platform="data/platforms.xml#sr22" scanner="data/scanners_als.xml#livox-mid-100" scene="data/scenes/toyblocks/light_toyblocks_scene.xml#light_toyblocks_scene">
+		<leg>
+			<platformSettings x="-30.0" y="-50.0" template="platform1"/>
+			<scannerSettings template="scanner1" />
+		</leg>
+		<leg>
+			<platformSettings x="70.0" y="-50.0" template="platform1"/>
+			<scannerSettings template="scanner1" active="false"/>
+		</leg>
+		<leg>
+			<platformSettings x="70.0" y="0.0" template="platform1"/>
+			<scannerSettings template="scanner1" />
+		</leg>
+		<leg>
+			<platformSettings x="-30.0" y="0.0" template="platform1"/>
+			<scannerSettings template="scanner1" active="false"/>
+		</leg>
+	</survey>
+</document>

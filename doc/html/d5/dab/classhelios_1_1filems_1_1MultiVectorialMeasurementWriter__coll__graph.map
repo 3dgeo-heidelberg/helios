@@ -1,0 +1,6 @@
+<map id="helios::filems::MultiVectorialMeasurementWriter" name="helios::filems::MultiVectorialMeasurementWriter">
+<area shape="rect" id="node1" title="Common implementation for any vectorial measurement writer that supports concurrent multiple output s..." alt="" coords="703,13,889,54"/>
+<area shape="rect" id="node2" href="$d5/ded/classhelios_1_1filems_1_1VectorialMeasurementWriter.html" title="Common implementation for any vectorial measurement writer." alt="" coords="496,13,655,54"/>
+<area shape="rect" id="node3" href="$d7/d1a/classhelios_1_1filems_1_1BaseMeasurementWriter.html" title=" " alt="" coords="232,5,448,61"/>
+<area shape="rect" id="node4" href="$d1/d3b/classhelios_1_1filems_1_1HeliosWriter.html" title=" " alt="" coords="5,13,184,54"/>
+</map>

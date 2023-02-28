@@ -7,9 +7,19 @@
 #include <RotateFilter.h>
 #include <PyHeliosOutputWrapper.h>
 #include <chrono>
+#include <PulseThreadPoolFactory.h>
+#include <filems/facade/FMSFacade.h>
+#include <filems/facade/FMSWriteFacade.h>
+#include <filems/factory/FMSFacadeFactory.h>
+#include <PyScanningStripWrapper.h>
+
+using helios::filems::FMSWriteFacade;
 
 using pyhelios::PyHeliosSimulation;
 using pyhelios::PyHeliosOutputWrapper;
+using pyhelios::PyScanningStripWrapper;
+
+namespace fms = helios::filems;
 
 // ***  CONSTRUCTION / DESTRUCTION  *** //
 // ************************************ //
@@ -20,15 +30,32 @@ PyHeliosSimulation::PyHeliosSimulation(
     size_t numThreads,
     bool lasOutput,
     bool las10,
-    bool zipOutput
+    bool zipOutput,
+    bool splitByChannel,
+    int kdtFactory,
+    size_t kdtJobs,
+    size_t kdtSAHLossNodes,
+    int parallelizationStrategy,
+    int chunkSize,
+    int warehouseFactor
 ){
+    this->fixedGpsTimeStart = "";
     this->lasOutput = lasOutput;
     this->las10 = las10;
     this->zipOutput = zipOutput;
+    this->splitByChannel = splitByChannel;
     this->surveyPath = surveyPath;
     this->assetsPath = assetsPath;
     this->outputPath = outputPath;
-    this->numThreads = numThreads;
+    if(numThreads == 0) this->numThreads = std::thread::hardware_concurrency();
+    else this->numThreads = numThreads;
+    this->kdtFactory = kdtFactory;
+    if(kdtJobs == 0) this->kdtJobs = std::thread::hardware_concurrency();
+    else this->kdtJobs = kdtJobs;
+    this->kdtSAHLossNodes = kdtSAHLossNodes;
+    this->parallelizationStrategy = parallelizationStrategy;
+    this->chunkSize = chunkSize;
+    this->warehouseFactor = warehouseFactor;
     xmlreader = std::make_shared<XmlSurveyLoader>(surveyPath, assetsPath);
 }
 PyHeliosSimulation::~PyHeliosSimulation() {
@@ -38,7 +65,7 @@ PyHeliosSimulation::~PyHeliosSimulation() {
 // ***  GETTERs and SETTERs  *** //
 // ***************************** //
 Leg & PyHeliosSimulation::newLeg(int index){
-    int n = (int) survey->legs.size();
+    int const n = (int) survey->legs.size();
     if(index<0 || index>n) index = n;
     std::shared_ptr<Leg> leg = std::make_shared<Leg>();
     leg->mScannerSettings =
@@ -49,6 +76,35 @@ Leg & PyHeliosSimulation::newLeg(int index){
     return *leg;
 }
 
+PyScanningStripWrapper * PyHeliosSimulation::newScanningStrip(
+    std::string const &stripId
+){
+    std::shared_ptr<ScanningStrip> ss = std::make_shared<ScanningStrip>(
+        stripId
+    );
+    return new PyScanningStripWrapper(ss);
+}
+bool PyHeliosSimulation::assocLegWithScanningStrip(
+    Leg &leg, PyScanningStripWrapper *strip
+){
+    // Check leg status
+    bool previouslyAssoc = leg.isContainedInAStrip();
+    // Find leg pointer by serial ID
+    Leg *_leg = nullptr;
+    int const legSerialId = leg.getSerialId();
+    for(std::shared_ptr<Leg> l : survey->legs){
+        if(l->getSerialId() == legSerialId){
+            _leg = l.get();
+            break;
+        }
+    }
+    // Associate
+    leg.setStrip(strip->ss);
+    strip->ss->emplace(legSerialId, _leg);
+    // Return original leg association status
+    return previouslyAssoc;
+}
+
 // ***  CONTROL FUNCTIONS *** //
 // ************************** //
 void PyHeliosSimulation::start (){
@@ -57,6 +113,10 @@ void PyHeliosSimulation::start (){
     );
 
     if(finalOutput){
+        survey->scanner->allOutputPaths =
+            std::make_shared<std::vector<std::string>>(
+                std::vector<std::string>(0)
+            );
         survey->scanner->allMeasurements =
             std::make_shared<std::vector<Measurement>>(
                 std::vector<Measurement>(0)
@@ -68,22 +128,28 @@ void PyHeliosSimulation::start (){
         survey->scanner->allMeasurementsMutex = std::make_shared<std::mutex>();
     }
 
-    survey->scanner->detector->lasOutput = lasOutput;
-    survey->scanner->detector->las10 = las10;
-    survey->scanner->detector->zipOutput = zipOutput;
-    playback = std::shared_ptr<SurveyPlayback>(
-        new SurveyPlayback(
-            survey,
-            outputPath,
-            numThreads,
-            lasOutput,
-            las10,
-            zipOutput,
-            exportToFile
-        )
+    std::shared_ptr<fms::FMSFacade> fms = fms::FMSFacadeFactory().buildFacade(
+        outputPath,
+        lasScale,
+        lasOutput,
+        las10,
+        zipOutput,
+        splitByChannel,
+        *survey
+    );
+
+    buildPulseThreadPool();
+    playback = std::make_shared<SurveyPlayback>(
+        survey,
+        fms,
+        parallelizationStrategy,
+        pulseThreadPool,
+        chunkSize,
+        fixedGpsTimeStart,
+        exportToFile
     );
     playback->callback = callback;
-    playback->setSimFrequency(simFrequency);
+    playback->setCallbackFrequency(callbackFrequency);
     thread = new boost::thread(
         boost::bind(&SurveyPlayback::start, &(*playback))
     );
@@ -156,13 +222,19 @@ PyHeliosOutputWrapper * PyHeliosSimulation::join(){
     );
 
     // Callback concurrency handling (NON BLOCKING MODE)
-    if(simFrequency != 0 && callback != nullptr){
+    if(callbackFrequency != 0 && callback != nullptr){
         if(!playback->finished) {
             std::vector<Measurement> measurements(0);
             std::vector<Trajectory> trajectories(0);
             return new PyHeliosOutputWrapper(
                 measurements,
                 trajectories,
+                survey->scanner->fms->write
+                    .getMeasurementWriterOutputPath().string(),
+                std::vector<std::string>{
+                    survey->scanner->fms->write
+                        .getMeasurementWriterOutputPath().string()
+                },
                 false
             );
         }
@@ -171,6 +243,9 @@ PyHeliosOutputWrapper * PyHeliosSimulation::join(){
             return new PyHeliosOutputWrapper(
                 survey->scanner->allMeasurements,
                 survey->scanner->allTrajectories,
+                survey->scanner->fms->write
+                    .getMeasurementWriterOutputPath().string(),
+                survey->scanner->allOutputPaths,
                 true
             );
         }
@@ -178,6 +253,7 @@ PyHeliosOutputWrapper * PyHeliosSimulation::join(){
 
     // Join (BLOCKING MODE)
     thread->join();
+    playback->fms->disconnect();
     finished = true;
 
     // Final output (BLOCKING MODE)
@@ -185,6 +261,9 @@ PyHeliosOutputWrapper * PyHeliosSimulation::join(){
     return new PyHeliosOutputWrapper(
         survey->scanner->allMeasurements,
         survey->scanner->allTrajectories,
+        survey->scanner->fms->write
+            .getMeasurementWriterOutputPath().string(),
+        survey->scanner->allOutputPaths,
         true
     );
 }
@@ -199,6 +278,9 @@ void PyHeliosSimulation::loadSurvey(
     bool fullWaveNoise,
     bool platformNoiseDisabled
 ){
+    xmlreader->sceneLoader.kdtFactoryType = kdtFactory;
+    xmlreader->sceneLoader.kdtNumJobs = kdtJobs;
+    xmlreader->sceneLoader.kdtSAHLossNodes = kdtSAHLossNodes;
     survey = xmlreader->load(legNoiseDisabled, rebuildScene);
     survey->scanner->setWriteWaveform(writeWaveform);
     survey->scanner->setCalcEchowidth(calcEchowidth);
@@ -240,6 +322,20 @@ void PyHeliosSimulation::addTranslateFilter(
     xmlreader->sceneLoader.sceneSpec.translationsId.push_back(partId);
 }
 
+void PyHeliosSimulation::buildPulseThreadPool(){
+    // Prepare pulse thread pool factory
+    PulseThreadPoolFactory ptpf(
+        parallelizationStrategy,
+        numThreads-1,
+        survey->scanner->getDetector()->cfg_device_accuracy_m,
+        chunkSize,
+        warehouseFactor
+    );
+
+    // Build pulse thread pool
+    pulseThreadPool = ptpf.makePulseThreadPool();
+}
+
 // ***  SIMULATION COPY  *** //
 // ************************* //
 PyHeliosSimulation * PyHeliosSimulation::copy(){
@@ -250,13 +346,14 @@ PyHeliosSimulation * PyHeliosSimulation::copy(){
     phs->outputPath = this->outputPath;
     phs->numThreads = this->numThreads;
     phs->finalOutput = this->finalOutput;
-    phs->survey = std::make_shared<Survey>(*survey);
     phs->callback = this->callback;
     phs->lasOutput = this->lasOutput;
     phs->las10     = this->las10;
     phs->zipOutput = this->zipOutput;
     phs->exportToFile = this->exportToFile;
-    phs->setSimFrequency(getSimFrequency());
+    phs->setCallbackFrequency(getCallbackFrequency());
+    phs->survey = std::make_shared<Survey>(*survey);
+    phs->survey->scanner->initializeSequentialGenerators();
     return phs;
 }
 
@@ -282,6 +379,21 @@ void PyHeliosSimulation::setCallback(PyObject * pyCallback){
     if(survey->scanner->cycleMeasurementsMutex == nullptr){
         survey->scanner->cycleMeasurementsMutex =
             std::make_shared<std::mutex>();
+    }
+}
+
+// ***  INTERNAL USE  *** //
+// ********************** //
+std::shared_ptr<DynScene> PyHeliosSimulation::_getDynScene(){
+    try{
+        return std::dynamic_pointer_cast<DynScene>(
+            survey->scanner->platform->scene
+        );
+    }
+    catch(std::exception &ex){
+        throw PyHeliosException(
+            "Failed to obtain dynamic scene. Current scene is not dynamic."
+        );
     }
 }
 

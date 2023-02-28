@@ -1,0 +1,7 @@
+<map id="helios::filems::ZipSyncFileMeasurementWriter" name="helios::filems::ZipSyncFileMeasurementWriter">
+<area shape="rect" id="node1" title="Concrete class specializing ZipSyncFileWriter to write compressed measurements to a file." alt="" coords="9,377,185,419"/>
+<area shape="rect" id="node2" href="$d9/d45/classhelios_1_1filems_1_1ZipSyncFileWriter.html" title=" " alt="" coords="5,273,188,329"/>
+<area shape="rect" id="node3" href="$d1/db6/classhelios_1_1filems_1_1SimpleSyncFileWriter.html" title=" " alt="" coords="8,184,185,225"/>
+<area shape="rect" id="node4" href="$d4/dfb/classhelios_1_1filems_1_1SingleSyncFileWriter.html" title=" " alt="" coords="9,95,184,136"/>
+<area shape="rect" id="node5" href="$da/d4c/classhelios_1_1filems_1_1SyncFileWriter.html" title=" " alt="" coords="17,5,176,47"/>
+</map>

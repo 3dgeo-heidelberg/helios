@@ -1,21 +1,17 @@
 #pragma once
 
 #include <string>
-#include <boost/asio/thread_pool.hpp>
-#include <boost/asio/post.hpp>
-#include <boost/filesystem.hpp>
-namespace fs = boost::filesystem;
+#include <unordered_map>
 
 #include <Scanner.h>
-#include "ScannerSettings.h"
+#include <ScannerSettings.h>
+#include <Measurement.h>
+#include <util/PointcloudYielder.h>
+#include <util/FullWaveformYielder.h>
+#include <adt/exprtree/UnivarExprTreeNode.h>
 
-#include "Measurement.h"
-#include "MeasurementsBuffer.h"
-#include "SimpleSyncFileWriter.h"
-#include "LasSyncFileWriter.h"
-#include "Las14SyncFileWriter.h"
-#include "ZipSyncFileWriter.h"
-#include "SyncFileWriterFactory.h"
+namespace helios { namespace filems { class FMSFacade; }}
+using helios::filems::FMSFacade;
 
 
 /**
@@ -28,15 +24,25 @@ public:
     /**
      * @brief Scanner which the detector belongs to
      */
-	std::shared_ptr<Scanner> scanner;
+	std::shared_ptr<Scanner> scanner = nullptr;
+
+protected:
 	/**
-	 * @brief Buffer to store measurements
+	 * @brief Main facade to file management system
 	 */
-	std::shared_ptr<MeasurementsBuffer> mBuffer;
+	std::shared_ptr<FMSFacade> fms = nullptr;
+
+public:
 	/**
-	 * @brief Synchronous file writer
+	 * @brief The point cloud yielder which handles point cloud building from
+	 *  measurements
 	 */
-	std::shared_ptr<SyncFileWriter> sfw;
+	std::shared_ptr<PointcloudYielder> pcloudYielder = nullptr;
+	/**
+	 * @brief The full waveform yielder which handles full waveform building
+	 *  from full waveform data
+	 */
+	std::shared_ptr<FullWaveformYielder> fwfYielder = nullptr;
 
 	/**
 	 * @brief Detector accuracy in meters
@@ -46,44 +52,12 @@ public:
 	 * @brief Minimum range for detector in meters
 	 */
 	double cfg_device_rangeMin_m = 0;
+	/**
+	 * @brief Maximum range for detector in meters
+	 */
+	double cfg_device_rangeMax_m;
 
-	// File output:
-	/**
-	 * @brief Flag specifying if detector output must be written in LAS
-	 * format (true) or not (false)
-	 * @see AbstractDetector::lasScale
-	 */
-	bool lasOutput;
-    /**
-     * @brief Flag specifying if detect output must be writing in LAS 1.0
-     * (LAS 1.4 is written by default)
-     */
-    bool las10;
-	/**
-	 * @brief Flag specifying if detector output must be zipped (true)
-	 * or not (false)
-	 */
-	bool zipOutput;
-	/**
-	 * @brief Scale factor specification to be used when LAS output format
-	 * specified
-	 * @see AbstractDetector::lasOutput
-	 */
-	double lasScale;
-
-	/**
-	 * @brief Format string for output file line
-	 *
-	 * No longer used since synchronous file writers are now responsible of
-	 * handling output writing
-	 */
-	std::string outputFileLineFormatString =
-	    "%.3f %.3f %.3f %.4f %.4f %d %d %d %s %d";
-
-	/**
-	 * @brief Path to output file
-	 */
-	fs::path outputFilePath;
+    std::shared_ptr<UnivarExprTreeNode<double>> errorDistanceExpr=nullptr;
 
 	// ***  CONSTRUCTION / DESTRUCTION  *** //
 	// ************************************ //
@@ -96,15 +70,15 @@ public:
 	AbstractDetector(
 	    std::shared_ptr<Scanner> scanner,
 	    double accuracy_m,
-	    double rangeMin_m
+	    double rangeMin_m,
+	    double rangeMax_m=std::numeric_limits<double>::max(),
+        std::shared_ptr<UnivarExprTreeNode<double>> errorDistanceExpr=nullptr
     ){
-	    this->lasOutput = false;
-            this->las10     = false;
-	    this->zipOutput = false;
-	    this->lasScale = 0.0001;
-            this->cfg_device_accuracy_m = accuracy_m;
-            this->cfg_device_rangeMin_m = rangeMin_m;
-            this->scanner = std::move(scanner);
+        this->cfg_device_accuracy_m = accuracy_m;
+        this->cfg_device_rangeMin_m = rangeMin_m;
+        this->cfg_device_rangeMax_m = rangeMax_m;
+        this->scanner = std::move(scanner);
+        this->errorDistanceExpr = errorDistanceExpr;
 	}
 	virtual ~AbstractDetector() {}
 	virtual std::shared_ptr<AbstractDetector> clone() = 0;
@@ -116,48 +90,50 @@ public:
 	 * @brief Shutdown the detector when simulation has finished
 	 */
 	virtual void shutdown();
-	/**
-	 * @brief Write a measurement
-	 * @param m Measurement to be written
-	 */
-	void writeMeasurement(Measurement & m);
-	/**
-	 * @brief Write a list of measurements
-	 * @param m List of measurements to be written
-	 */
-    void writeMeasurements(std::list<Measurement*> & m);
-    /**
-     * @brief Choose a type of file writer based on input flags
-     * @return Type of writer to be created
-     */
-    WriterType chooseWriterType();
     /**
      * @brief Apply scanner settings to the detector
      * @param settings Settings to be applied to de detector
      */
-	virtual void applySettings(std::shared_ptr<ScannerSettings> & settings) {};
-
-	/**
-	 * @brief Compute pulse simulation
-	 * @param pool Thread pool to be used to distribute computational burden
-	 * @param absoluteBeamOrigin Origin of the beam in absolute coordinates
-	 * @param absoluteBeamAttitude Attitude of the beam
-	 * @param state_currentPulseNumber Current pulse number
-	 * @param currentGpsTime Current GPS time
-	 */
-	virtual void simulatePulse(
-	    PulseThreadPool & pool,
-	    glm::dvec3 absoluteBeamOrigin,
-	    Rotation absoluteBeamAttitude,
-	    int state_currentPulseNumber,
-        double currentGpsTime
-    ) = 0;
-
-	// ***  GETTERS and SETTERS  *** //
-	// ***************************** //
+    virtual void applySettings(std::shared_ptr<ScannerSettings> & settings) {};
     /**
-     * @brief Set path to output file
-     * @param path New path to output file
+     * @brief Handle detector behavior when leg has been completed.
+     *
+     * It mainly forces yielded point cloud to be flushed
      */
-    void setOutputFilePath(std::string path);
+    virtual void onLegComplete();
+
+    /**
+     * @brief Check whether the given distance is inside detected range or not
+     * @param distance The distance to be checked (in meters)
+     * @return True if given distance is inside detected range, false otherwise
+     */
+    inline bool isDistanceInRange(double const distance){
+        return  cfg_device_rangeMin_m <= distance &&
+                cfg_device_rangeMax_m >= distance;
+    }
+    /**
+     * @brief Check whether the given distance is inside detected range or not
+     * @param distance The distance to be checked (in meters)
+     * @return True if given distance is NOT inside detected range, false
+     *  otherwise
+     */
+    inline bool isDistanceNotInRange(double const distance){
+        return  cfg_device_rangeMin_m > distance ||
+                cfg_device_rangeMax_m < distance;
+    }
+
+    // ***  GETTERs and SETTERs  *** //
+    // ***************************** //
+    /**
+     * @brief Obtain the main facade to file management system
+     * @return The main facade to file management system
+     */
+    inline std::shared_ptr<FMSFacade> getFMS() const {return fms;}
+    /**
+     * @brief Set the main facade to file management system that will be used
+     *  by the detector
+     * @param fms The new main facade to file management system for the
+     *  detector
+     */
+    void setFMS(std::shared_ptr<FMSFacade> fms);
 };

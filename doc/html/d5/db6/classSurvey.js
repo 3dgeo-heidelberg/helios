@@ -6,6 +6,7 @@ var classSurvey =
     [ "addLeg", "d5/db6/classSurvey.html#a088718323fe8013b2e5eb5145cead976", null ],
     [ "calculateLength", "d5/db6/classSurvey.html#a5ad9641bc348c3ef54009afd1f6fc655", null ],
     [ "getLength", "d5/db6/classSurvey.html#a216064ca2a8723fe582ba66515dcaf29", null ],
+    [ "hatch", "d5/db6/classSurvey.html#aac82a3043baab19e4e6d49fdd5833a5c", null ],
     [ "removeLeg", "d5/db6/classSurvey.html#ad3a729ca193a8e594d7414886fb74e32", null ],
     [ "legs", "d5/db6/classSurvey.html#a3d7cbfdb4d295a51410a7c79cb2dc0fd", null ],
     [ "length", "d5/db6/classSurvey.html#aaf10cb05857106d44ce898ebd74059d2", null ],

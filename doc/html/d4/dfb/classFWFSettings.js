@@ -1,6 +1,8 @@
 var classFWFSettings =
 [
     [ "FWFSettings", "d4/dfb/classFWFSettings.html#aeece2d2aef30372b85fc9d1ba7cac29b", null ],
+    [ "toString", "d4/dfb/classFWFSettings.html#a8220711797a8424de63199529e4cf123", null ],
+    [ "operator<<", "d4/dfb/classFWFSettings.html#a7511781f0cb20e0cb4455553b01ed148", null ],
     [ "apertureDiameter", "d4/dfb/classFWFSettings.html#a4e38b213c268b8b55981b1cc4528b2fe", null ],
     [ "atmosphericVisibility", "d4/dfb/classFWFSettings.html#a27799c23f3b148e49013d503e2605e9c", null ],
     [ "beamDivergence_rad", "d4/dfb/classFWFSettings.html#a491decbce40b82022cd2d57ad4a21d4a", null ],

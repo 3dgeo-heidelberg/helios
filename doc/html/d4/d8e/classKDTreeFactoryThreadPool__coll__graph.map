@@ -1,4 +1,7 @@
 <map id="KDTreeFactoryThreadPool" name="KDTreeFactoryThreadPool">
-<area shape="rect" id="node2" href="$d0/d21/classMDThreadPool.html" title="MDThreadPool\&lt; KDTreeBuild\lType, KDTreeNode *, bool\l const, vector\&lt; Primitive\l *\&gt; &amp;, int const \&gt;" alt="" coords="209,5,404,76"/>
-<area shape="rect" id="node3" href="$dc/de7/classThreadPool.html" title="ThreadPool\&lt; TaskArgs\l ... \&gt;" alt="" coords="5,20,161,61"/>
+<area shape="rect" id="node1" title="Class implementing a thread pool to deal with multi thread KDTree building process." alt="" coords="796,27,973,54"/>
+<area shape="rect" id="node2" href="$d0/d21/classMDThreadPool.html" title=" " alt="" coords="552,5,747,76"/>
+<area shape="rect" id="node3" href="$d2/d1f/classSimpleThreadPool.html" title=" " alt="" coords="308,20,503,61"/>
+<area shape="rect" id="node4" href="$dc/de7/classThreadPool.html" title="Base class providing core implementation of a thread pool to deal with multi threading tasks." alt="" coords="171,27,259,54"/>
+<area shape="rect" id="node5" title=" " alt="" coords="5,27,63,54"/>
 </map>

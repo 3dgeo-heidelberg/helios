@@ -112,6 +112,16 @@ public:
      * @brief Remove all dynamic sequences composing the dynamic sequencer
      */
     inline void clear() {dynseqs.clear();}
+    /**
+     * @brief Obtain a read-write reference to the dynamic sequences.
+     *
+     * Using this method is strictly discouraged. It must be used (with
+     * caution) only when it is strictly necessary
+     *
+     * @return All the dynamic sequences
+     */
+    inline unordered_map<string, shared_ptr<DynSequence<T>>> &
+    getAllSequencesByRef() {return dynseqs;}
 };
 
 #include <scene/dynamic/DynSequencer.tpp>

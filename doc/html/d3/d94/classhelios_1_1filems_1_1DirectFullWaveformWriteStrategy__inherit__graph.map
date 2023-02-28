@@ -1,0 +1,5 @@
+<map id="helios::filems::DirectFullWaveformWriteStrategy" name="helios::filems::DirectFullWaveformWriteStrategy">
+<area shape="rect" id="node1" title="Concrete class specializing WriteStrategy to directly write full waveform data to a file." alt="" coords="27,95,189,136"/>
+<area shape="rect" id="node3" href="$d6/d70/classhelios_1_1filems_1_1ZipFullWaveformWriteStrategy.html" title="Like DirectFullWaveformWriteStrategy but zipping the output." alt="" coords="5,184,211,225"/>
+<area shape="rect" id="node2" href="$de/dd3/classhelios_1_1filems_1_1WriteStrategy.html" title=" " alt="" coords="15,5,201,47"/>
+</map>

@@ -58,6 +58,7 @@ void HelicopterPlatform::prepareSimulation(int simFrequency_hz){
     cfg_yawStepMagnitude = cfg_yaw_speed / simFrequency_hz;
     cfg_slowdownFactor = 1.0 - cfg_slowdown_magnitude / simFrequency_hz;
     cfg_speedupFactor = 1.0 + cfg_speedup_magnitude / simFrequency_hz;
+    SimplePhysicsPlatform::prepareSimulation(simFrequency_hz);
     Platform::prepareSimulation(simFrequency_hz);
 }
 void HelicopterPlatform::initLegManual(){
@@ -89,38 +90,41 @@ void HelicopterPlatform::initLeg(){
 }
 
 bool HelicopterPlatform::waypointReached(){
+    bool wayPointReached{};
     if(smoothTurn && cache_turning){
         cache_turnIterations--;
         if(cache_turnIterations <= 0){
             cache_turning = false;
             cache_speedUpFinished = false;
             logging::INFO("Waypoint passed (smooth turn)!");
-            return true;
+            wayPointReached = true;
         }
     }
 
     if(MovingPlatform::waypointReached()){
         cache_turning = false;
         cache_speedUpFinished = false;
-        return true;
+        wayPointReached = true;
     }
-    return false;
+
+    if (wayPointReached) SimplePhysicsPlatform::checkSpeedLimit();
+    return wayPointReached;
 }
 
 void HelicopterPlatform::updateStaticCache(){
     Platform::updateStaticCache();
     cache_turnIterations = cached_currentAngle_xy / cfg_yawStepMagnitude;
-    computeTurnDistanceThreshold();
+    if(smoothTurn) computeTurnDistanceThreshold();
+    else if(slowdownEnabled) computeNonSmoothSlowdownDist();
 };
 
 glm::dvec3 HelicopterPlatform::getCurrentDirection(){
     glm::dvec3 xyDir = Platform::getCurrentDirection();
     glm::dvec3 xyzDir = glm::normalize(cached_vectorToTarget);
-    double xyNorm = std::sqrt(xyzDir.x*xyzDir.x + xyzDir.y*xyzDir.y);
+    double const xyNorm = std::sqrt(xyzDir.x*xyzDir.x + xyzDir.y*xyzDir.y);
     return glm::dvec3( // Current direction
         xyDir.x * xyNorm, xyDir.y * xyNorm, xyzDir.z
     );
-
 }
 
 void HelicopterPlatform::computeTurnDistanceThreshold(){
@@ -147,7 +151,7 @@ void HelicopterPlatform::computeTurnDistanceThreshold(){
         angle = start + sign * t * cfg_yawStepMagnitude;
         vxt = sin(angle);
         vyt = cos(angle);
-        moveNorm = speed * velocityNorm;
+        moveNorm = std::min(speed * velocityNorm, movePerSec_m_stepMagnitude);
         xMove += vxt * moveNorm;
         yMove += vyt * moveNorm;
 
@@ -160,7 +164,35 @@ void HelicopterPlatform::computeTurnDistanceThreshold(){
     // Determine turn start condition
     double xDist = xMove * cached_dir_current_xy.x;
     double yDist = yMove * cached_dir_current_xy.y;
-    cache_xyDistanceThreshold = xDist + yDist;
+    cache_xyDistanceThreshold = std::sqrt(xDist*xDist + yDist*yDist);
+}
+
+void HelicopterPlatform::computeNonSmoothSlowdownDist(){
+    // Find speed at start of slowdown
+    double const sta = ef_xy_max;
+
+    // Find number of iters necessary to reach minimum speed threshold
+    double const f = cfg_slowdownFactor;
+    double const tau = 0.001; // Minimum speed threshold
+    size_t const k = (size_t) std::floor(
+        std::fabs(std::log(tau/sta))/std::fabs(std::log(f))
+    );
+
+    // Compute the point at which slowdown must start
+    double const velocityNorm = sta * mCfg_drag;
+    double st = sta;
+    double motionMagnitude = 0.0;
+
+    for(size_t i = 0 ; i < k ; ++i){
+        motionMagnitude += std::min(
+            st*velocityNorm,
+            movePerSec_m_stepMagnitude
+        );
+        st = computeSlowdownStep(st);
+    }
+
+    // Compute the slowdown distance
+    cfg_slowdown_dist_xy = motionMagnitude;
 }
 
 // ***  CONTROL STEP  *** //
@@ -206,10 +238,12 @@ void HelicopterPlatform::computeXYSpeed(int simFrequency_hz){
     bool stabilizePitch = true;
 
     // Slow down on arrival / turning
-    if( slowdownEnabled && (
+    if(
+        slowdownEnabled && (
             cache_turning ||
             (!smoothTurn && cached_distanceToTarget_xy < cfg_slowdown_dist_xy)
-    )){
+        )
+    ){
         speed_xy = speed_xy * computeSlowdownStep(glm::l2Norm(lastSpeed_xy));
         pitch += cfg_pitchStepMagnitude;
         stabilizePitch = false;
@@ -226,6 +260,7 @@ void HelicopterPlatform::computeXYSpeed(int simFrequency_hz){
 
     // Limit engine power
     if (glm::l2Norm(speed_xy) > ef_xy_max) {
+        if (!engineLimitReached) engineLimitReached = true;
         speed_xy = glm::normalize(speed_xy) * ef_xy_max;
         cache_speedUpFinished = true;
     }

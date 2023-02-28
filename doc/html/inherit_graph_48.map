@@ -1,3 +1,50 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$d6/d51/classPlaneFitter.html" title="Handle plane fitting operations. " alt="" coords="5,5,91,32"/>
+<area shape="rect" id="node1" href="$da/d4c/classhelios_1_1filems_1_1SyncFileWriter.html" title=" " alt="" coords="5,841,164,882"/>
+<area shape="rect" id="node2" href="$d2/d66/classhelios_1_1filems_1_1MultiSyncFileWriter.html" title=" " alt="" coords="212,253,387,294"/>
+<area shape="rect" id="node14" href="$d4/dfb/classhelios_1_1filems_1_1SingleSyncFileWriter.html" title=" " alt="" coords="212,807,387,849"/>
+<area shape="rect" id="node47" href="$d2/d66/classhelios_1_1filems_1_1MultiSyncFileWriter.html" title="Abstract class defining common behavior for all synchronous writers that work with multiple files at ..." alt="" coords="217,873,382,914"/>
+<area shape="rect" id="node48" href="$d4/dfb/classhelios_1_1filems_1_1SingleSyncFileWriter.html" title="Abstract class defining common behavior for all synchronous writers that work with a single file at a..." alt="" coords="213,938,386,979"/>
+<area shape="rect" id="node3" href="$de/daa/classhelios_1_1filems_1_1MultiLasSyncFileWriter.html" title=" " alt="" coords="454,34,633,105"/>
+<area shape="rect" id="node6" href="$df/dfc/classhelios_1_1filems_1_1SimpleMultiSyncFileWriter.html" title=" " alt="" coords="443,133,643,174"/>
+<area shape="rect" id="node10" href="$df/dfc/classhelios_1_1filems_1_1SimpleMultiSyncFileWriter.html" title=" " alt="" coords="446,198,641,269"/>
+<area shape="rect" id="node12" href="$de/daa/classhelios_1_1filems_1_1MultiLasSyncFileWriter.html" title="Abstract specialization of MultiSyncFileWriter to write output in LAS format." alt="" coords="449,293,637,334"/>
+<area shape="rect" id="node13" href="$df/dfc/classhelios_1_1filems_1_1SimpleMultiSyncFileWriter.html" title="Abstract specialization of MultiSyncFileWriter to write output to many files. Each writing operation ..." alt="" coords="449,358,637,399"/>
+<area shape="rect" id="node4" href="$dd/dc0/classhelios_1_1filems_1_1LasMultiVectorialSyncFileMeasurementWriter.html" title="Concrete class specializing MultiLasSyncFileWriter to write vectors of measurements to LAS files supp..." alt="" coords="717,5,920,61"/>
+<area shape="rect" id="node5" href="$d8/d0c/classhelios_1_1filems_1_1Las14MultiVectorialSyncFileMeasurementWriter.html" title="Concrete class specializing MultiLasSyncFileWriter to write vectors of measurements to LAS&#45;1...." alt="" coords="985,13,1223,54"/>
+<area shape="rect" id="node7" href="$d6/d1f/classhelios_1_1filems_1_1ZipMultiSyncFileWriter.html" title=" " alt="" coords="729,86,908,157"/>
+<area shape="rect" id="node9" href="$d6/d1f/classhelios_1_1filems_1_1ZipMultiSyncFileWriter.html" title="Abstract child of SimpleMultiSyncFileWriter which provides support for zipped output." alt="" coords="725,181,913,222"/>
+<area shape="rect" id="node8" href="$d6/df7/classhelios_1_1filems_1_1ZipMultiVectorialSyncFileMeasurementWriter.html" title="Concrete class specializing ZipMultiSyncFileWriter to write a vector of measurements to multiple zip ..." alt="" coords="1003,93,1205,149"/>
+<area shape="rect" id="node11" href="$d9/dd0/classhelios_1_1filems_1_1SimpleMultiVectorialSyncFileMeasurementWriter.html" title="Concrete class specializing a SimpleMultiSyncFileWriter to write vectors of measurements directly to ..." alt="" coords="700,246,937,287"/>
+<area shape="rect" id="node15" href="$d7/d5b/classhelios_1_1filems_1_1LasSyncFileWriter.html" title=" " alt="" coords="452,424,635,480"/>
+<area shape="rect" id="node18" href="$d7/d5b/classhelios_1_1filems_1_1LasSyncFileWriter.html" title=" " alt="" coords="435,504,651,560"/>
+<area shape="rect" id="node21" href="$d1/db6/classhelios_1_1filems_1_1SimpleSyncFileWriter.html" title=" " alt="" coords="441,585,645,641"/>
+<area shape="rect" id="node23" href="$d1/db6/classhelios_1_1filems_1_1SimpleSyncFileWriter.html" title=" " alt="" coords="455,669,632,725"/>
+<area shape="rect" id="node25" href="$d1/db6/classhelios_1_1filems_1_1SimpleSyncFileWriter.html" title=" " alt="" coords="455,756,632,812"/>
+<area shape="rect" id="node27" href="$d1/db6/classhelios_1_1filems_1_1SimpleSyncFileWriter.html" title=" " alt="" coords="455,851,632,893"/>
+<area shape="rect" id="node39" href="$d1/db6/classhelios_1_1filems_1_1SimpleSyncFileWriter.html" title=" " alt="" coords="435,917,651,973"/>
+<area shape="rect" id="node41" href="$d1/db6/classhelios_1_1filems_1_1SimpleSyncFileWriter.html" title=" " alt="" coords="455,997,632,1053"/>
+<area shape="rect" id="node43" href="$d1/db6/classhelios_1_1filems_1_1SimpleSyncFileWriter.html" title=" " alt="" coords="435,1077,652,1133"/>
+<area shape="rect" id="node45" href="$d7/d5b/classhelios_1_1filems_1_1LasSyncFileWriter.html" title="Abstract specialization of SingleSyncFileWriter to write output in LAS format." alt="" coords="454,1158,633,1199"/>
+<area shape="rect" id="node46" href="$d1/db6/classhelios_1_1filems_1_1SimpleSyncFileWriter.html" title="Abstract specialization of SingleSyncFileWriter to write output directly to a file." alt="" coords="455,1223,632,1265"/>
+<area shape="rect" id="node16" href="$d5/d76/classhelios_1_1filems_1_1LasSyncFileMeasurementWriter.html" title="SyncFileWriter implementation to write measurements in LAS format." alt="" coords="729,378,908,419"/>
+<area shape="rect" id="node17" href="$d6/d97/classhelios_1_1filems_1_1Las14SyncFileMeasurementWriter.html" title="LasSyncFileWriter implementation for LAS v1.4 format." alt="" coords="1018,378,1190,419"/>
+<area shape="rect" id="node19" href="$d6/de6/classhelios_1_1filems_1_1Las14VectorialSyncFileMeasurementWriter.html" title="Concrete class specializing LasSyncFileWriter to write a vector of measurements to a LAS14 file." alt="" coords="722,443,915,485"/>
+<area shape="rect" id="node20" href="$d6/dfd/classhelios_1_1filems_1_1LasVectorialSyncFileMeasurementWriter.html" title="Concrete class specializing LasSyncFileWriter to write a vector of measurements to a LAS file." alt="" coords="725,509,912,550"/>
+<area shape="rect" id="node22" href="$d1/dd1/classhelios_1_1filems_1_1SimpleSyncFileMeasurementWriter.html" title="Concrete class specializing SimpleSyncFileWriter to write measurements directly to a file." alt="" coords="730,574,907,615"/>
+<area shape="rect" id="node24" href="$df/d8e/classhelios_1_1filems_1_1SimpleSyncFileFullWaveformWriter.html" title="Concrete class specializing SimpleSyncFileWriter to write full waveform data directly to a file." alt="" coords="730,639,907,681"/>
+<area shape="rect" id="node26" href="$d4/d6d/classhelios_1_1filems_1_1SimpleSyncFileStringWriter.html" title="Concrete class specializing SimpleSyncFileWriter to write measurements directly to a file." alt="" coords="730,705,907,746"/>
+<area shape="rect" id="node28" href="$d9/d45/classhelios_1_1filems_1_1ZipSyncFileWriter.html" title=" " alt="" coords="727,771,910,827"/>
+<area shape="rect" id="node30" href="$d9/d45/classhelios_1_1filems_1_1ZipSyncFileWriter.html" title=" " alt="" coords="714,851,923,893"/>
+<area shape="rect" id="node32" href="$d9/d45/classhelios_1_1filems_1_1ZipSyncFileWriter.html" title=" " alt="" coords="711,917,927,973"/>
+<area shape="rect" id="node34" href="$d9/d45/classhelios_1_1filems_1_1ZipSyncFileWriter.html" title=" " alt="" coords="725,998,912,1039"/>
+<area shape="rect" id="node36" href="$d9/d45/classhelios_1_1filems_1_1ZipSyncFileWriter.html" title=" " alt="" coords="721,1064,917,1120"/>
+<area shape="rect" id="node38" href="$d9/d45/classhelios_1_1filems_1_1ZipSyncFileWriter.html" title="Abstract child of SimpleSyncFileWriter which provides support for zipped output." alt="" coords="731,1145,907,1186"/>
+<area shape="rect" id="node29" href="$df/d63/classhelios_1_1filems_1_1ZipSyncFileMeasurementWriter.html" title="Concrete class specializing ZipSyncFileWriter to write compressed measurements to a file." alt="" coords="1016,778,1192,819"/>
+<area shape="rect" id="node31" href="$db/dbf/classhelios_1_1filems_1_1ZipSyncFileFullWaveformWriter.html" title="Concrete class specializing ZipSyncFileWriter to write compressed full waveform data to a file." alt="" coords="1016,851,1192,893"/>
+<area shape="rect" id="node33" href="$d8/d56/classhelios_1_1filems_1_1ZipVectorialSyncFileMeasurementWriter.html" title="Concrete class specializing ZipSyncFileWriter to write a vector of measurements to a zip file." alt="" coords="1011,925,1197,966"/>
+<area shape="rect" id="node35" href="$d8/d74/classhelios_1_1filems_1_1ZipSyncFileTrajectoryWriter.html" title="Concrete class specializing ZipSyncFileWriter to write compressed trajectory to a file." alt="" coords="1016,998,1192,1039"/>
+<area shape="rect" id="node37" href="$de/d98/classhelios_1_1filems_1_1ZipVectorialSyncFileFullWaveformWriter.html" title="Concrete class specializing ZipSyncFileWriter to write a vector of full waveform to a zip file." alt="" coords="1011,1071,1197,1113"/>
+<area shape="rect" id="node40" href="$db/d36/classhelios_1_1filems_1_1SimpleVectorialSyncFileMeasurementWriter.html" title="Concrete class specializing SimpleSyncFileWriter to write a vector of measurements directly to a file..." alt="" coords="719,1210,918,1251"/>
+<area shape="rect" id="node42" href="$d0/dc9/classhelios_1_1filems_1_1SimpleSyncFileTrajectoryWriter.html" title="Concrete class specializing SimpleSyncFileWriter to write trajectory directly to a file." alt="" coords="730,1275,907,1317"/>
+<area shape="rect" id="node44" href="$d1/d76/classhelios_1_1filems_1_1SimpleVectorialSyncFileFullWaveformWriter.html" title="Concrete class specializing SimpleSyncFileWriter to write a vector of full waveforms directly to a fi..." alt="" coords="719,1341,918,1382"/>
 </map>

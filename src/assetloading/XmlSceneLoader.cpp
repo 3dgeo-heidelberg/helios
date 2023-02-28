@@ -6,12 +6,7 @@
 #include <XYZPointCloudFileLoader.h>
 #include <DetailedVoxelLoader.h>
 #include <scene/dynamic/DynScene.h>
-#include <SimpleKDTreeFactory.h>
-#include <MultiThreadKDTreeFactory.h>
-#include <SAHKDTreeFactory.h>
-#include <MultiThreadSAHKDTreeFactory.h>
-#include <AxisSAHKDTreeFactory.h>
-#include <FastSAHKDTreeFactory.h>
+#include <KDTreeFactoryMaker.h>
 
 #include <logging.hpp>
 
@@ -49,6 +44,13 @@ XmlSceneLoader::createSceneFromXml(
         // Read and set scene part ID
         bool splitPart = loadScenePartId(scenePartNode, partIndex, scenePart);
 
+        // Validate loaded scene part
+        if(!validateScenePart(scenePart, scenePartNode)){
+            // If not valid, proceed to next scene part, ignoring the malformed
+            scenePartNode = scenePartNode->NextSiblingElement("part");
+            continue;
+        }
+
         // Load dynamic motions if any
         shared_ptr<DynSequentiableMovingObject> dsmo =
             loadDynMotions(scenePartNode, scenePart);
@@ -80,22 +82,29 @@ XmlSceneLoader::createSceneFromXml(
     std::stringstream ss;
     ss  << std::to_string(scenePartCounter) << " sceneparts loaded in "
         << tw.getElapsedDecimalSeconds() << "s\n";
-    logging::INFO(ss.str());
+    logging::TIME(ss.str());
 
-    // Set KDTree factory and finish scene loading
-    //scene->setKDTreeFactory(makeKDTreeFactory()); // Not yet, avoid building
-    scene->setKDTreeFactory(nullptr); // Prevent building before serializing
+    // Set KDGrove factory and finish scene loading
+    scene->setKDGroveFactory(nullptr); // Prevent building before serializing
     bool success = scene->finalizeLoading();
     if (!success) {
         logging::ERR("Finalizing the scene failed.");
         exit(-1);
     }
-    scene->setKDTreeFactory(makeKDTreeFactory()); // Better after building
+    scene->setKDGroveFactory(makeKDGroveFactory()); // Better after building
 
     // Store scene type if requested
     if(sceneType != nullptr){
         if(dynScene) *sceneType = SerialSceneWrapper::SceneType::DYNAMIC_SCENE;
         else *sceneType = SerialSceneWrapper::SceneType::STATIC_SCENE;
+    }
+
+    // Handle dynamic scene attributes
+    if(dynScene){
+        handleDynamicSceneAttributes(
+            sceneNode,
+            std::static_pointer_cast<DynScene>(scene)
+        );
     }
 
     // Return built scene
@@ -126,33 +135,33 @@ shared_ptr<ScenePart> XmlSceneLoader::loadFilters(
             filter = new ScaleFilter(scenePart);
         }
 
-            // Read GeoTiff file:
+        // Read GeoTiff file:
         else if (filterType == "geotiffloader") {
             filter = new GeoTiffFileLoader();
         }
 
-            // Read Wavefront Object file:
+        // Read Wavefront Object file:
         else if (filterType == "objloader") {
             filter = new WavefrontObjFileLoader();
         }
 
-            // Apply rotation filter:
+        // Apply rotation filter:
         else if (filterType == "rotate") {
             filter = new RotateFilter(scenePart);
         }
 
-            // Apply translate transformation:
+        // Apply translate transformation:
         else if (filterType == "translate") {
             filter = new TranslateFilter(scenePart);
         }
 
-            // Read xyz ASCII point cloud file:
+        // Read xyz ASCII point cloud file:
         else if (filterType == "xyzloader") {
             filter = new XYZPointCloudFileLoader();
             holistic = true;
         }
 
-            // Read detailed voxels file
+        // Read detailed voxels file
         else if (filterType == "detailedvoxels") {
             filter = new DetailedVoxelLoader();
         }
@@ -174,72 +183,6 @@ shared_ptr<ScenePart> XmlSceneLoader::loadFilters(
     }
     // ############## END Loop over filter nodes ##################
     return shared_ptr<ScenePart>(scenePart);
-}
-
-shared_ptr<DynSequentiableMovingObject> XmlSceneLoader::loadDynMotions(
-    tinyxml2::XMLElement *scenePartNode,
-    shared_ptr<ScenePart> scenePart
-){
-    // Find first dmotion node
-    tinyxml2::XMLElement *dmotionNode =
-        scenePartNode->FirstChildElement("dmotion");
-    if(dmotionNode == nullptr) return nullptr; // No dmotion found
-
-    // Build dynamic sequential moving object from XML
-    shared_ptr<DynSequentiableMovingObject> dsmo =
-        make_shared<DynSequentiableMovingObject>(*scenePart);
-    while(dmotionNode != nullptr){
-        // Optional attributes
-        std::string nextId = "";
-        tinyxml2::XMLAttribute const *nextIdAttr =
-            dmotionNode->FindAttribute("next");
-        if(nextIdAttr != nullptr) nextId = nextIdAttr->Value();
-
-        // Mandatory attributes
-        tinyxml2::XMLAttribute const *idAttr =
-            dmotionNode->FindAttribute("id");
-        if(idAttr == nullptr) throw HeliosException(
-            "XmlSceneLoader::loadDynMotions found a dmotion element with "
-            "no id"
-        );
-        tinyxml2::XMLAttribute const *loopAttr =
-            dmotionNode->FindAttribute("loop");
-        if(loopAttr == nullptr) throw HeliosException(
-            "XmlSceneLoader::loadDynMotions found a dmotion element with "
-            "no loop"
-        );
-
-        // Add dynamic motion sequence
-        shared_ptr<DynSequence<DynMotion>> dmSequence =
-            make_shared<DynSequence<DynMotion>>(
-                idAttr->Value(),
-                nextId,
-                loopAttr->Int64Value()
-            );
-        dmSequence->append(XmlUtils::createDynMotionsVector(dmotionNode));
-        if(dmSequence == nullptr){  // Check dmSequence is not null
-            throw HeliosException(
-                "XmlSceneLoader::loadDynMotions found a dmotion element with"
-                " no motions. This is not allowed."
-            );
-        }
-        dsmo->addSequence(dmSequence);
-
-        // Next dynamic motion sequence
-        dmotionNode = dmotionNode->NextSiblingElement("dmotion");
-    }
-
-    for(Primitive *primitive : dsmo->mPrimitives){
-        primitive->part = dsmo;
-    }
-
-    // Use scene part ID to build dynamic dynamic sequentiable moving object ID
-    std::stringstream ss;
-    ss << "DSMO_" << scenePart->mId;
-    dsmo->setId(ss.str());
-
-    // Return
-    return dsmo;
 }
 
 bool XmlSceneLoader::loadScenePartId(
@@ -276,6 +219,53 @@ bool XmlSceneLoader::loadScenePartId(
     }
 
     return splitPart;
+}
+
+bool XmlSceneLoader::validateScenePart(
+    shared_ptr<ScenePart> scenePart,
+    tinyxml2::XMLElement *scenePartNode
+){
+    // If the scene part is not valid ...
+    if(
+        scenePart->getPrimitiveType() == ScenePart::PrimitiveType::NONE &&
+        scenePart->mPrimitives.empty()
+    ){
+        // Obtain the path
+        std::string path = "#NULL#";
+        std::string pathType = "path";
+        tinyxml2::XMLElement *filter = scenePartNode->FirstChildElement(
+            "filter"
+        );
+        bool foundPath = false;
+        while(filter != nullptr && !foundPath){
+            tinyxml2::XMLElement *param = filter->FirstChildElement("param");
+            while(param != nullptr && !foundPath){
+                if(!XmlUtils::hasAttribute(param, "key")) continue;
+                std::string key = param->Attribute("key");
+                bool const isFilePath = key == "filepath";
+                bool const isEFilePath = key == "efilepath";
+                if(isFilePath || isEFilePath){
+                    path = param->Attribute("value");
+                    if(isEFilePath) pathType = "extended path expression";
+                    foundPath = true;
+                    break;
+                }
+                param = param->NextSiblingElement("param");
+            }
+            filter = filter->NextSiblingElement("filter");
+        }
+        // Report the problem
+        std::stringstream ss;
+        ss  <<  "XmlSceneLoader::validateScenePart detected an invalid scene "
+                "part with id \"" << scenePart->mId << "\"\n"
+            << "The " << pathType << " \"" << path << "\" was given.\n"
+            << "It leads to the loading of an invalid scene part, which is "
+               "automatically ignored when composing the scene."
+            << std::endl;
+        logging::ERR(ss.str());
+        return false;
+    }
+    return true;
 }
 
 void XmlSceneLoader::digestScenePart(
@@ -317,6 +307,147 @@ void XmlSceneLoader::digestScenePart(
         size_t partIndexOffset = scenePart->subpartLimit.size() - 1;
         if (scenePart->splitSubparts()) partIndex += partIndexOffset;
     }
+
+    // Infer type of primitive for the scene part
+    size_t const numVertices = scenePart->mPrimitives[0]->getNumVertices();
+    if(numVertices == 3) scenePart->primitiveType = ScenePart::TRIANGLE;
+    else scenePart->primitiveType = ScenePart::VOXEL;
+}
+
+shared_ptr<KDTreeFactory> XmlSceneLoader::makeKDTreeFactory(){
+    if(kdtNumJobs == 0) kdtNumJobs = std::thread::hardware_concurrency();
+    if(kdtGeomJobs == 0) kdtGeomJobs = kdtNumJobs;
+
+    if(kdtFactoryType == 1){ // Simple
+        logging::DEBUG("XmlSceneLoader is using a SimpleKDTreeFactory");
+        if(kdtNumJobs > 1){
+            return KDTreeFactoryMaker::makeSimpleMultiThread(
+                kdtNumJobs, kdtGeomJobs
+            );
+        }
+        return KDTreeFactoryMaker::makeSimple();
+    }
+    else if(kdtFactoryType == 2){ // SAH
+        logging::DEBUG("XmlSceneLoader is using a SAHKDTreeFactory");
+        if(kdtNumJobs > 1){
+            return KDTreeFactoryMaker::makeSAHMultiThread(
+                kdtSAHLossNodes, kdtNumJobs, kdtGeomJobs
+            );
+        }
+        return KDTreeFactoryMaker::makeSAH(kdtSAHLossNodes);
+    }
+    else if(kdtFactoryType == 3){ // Axis SAH
+        logging::DEBUG("XmlSceneLoader is using a AxisSAHKDTreeFactory");
+        if(kdtNumJobs > 1){
+            return KDTreeFactoryMaker::makeAxisSAHMultiThread(
+                kdtSAHLossNodes, kdtNumJobs, kdtGeomJobs
+            );
+        }
+        return KDTreeFactoryMaker::makeAxisSAH(kdtSAHLossNodes);
+    }
+    else if(kdtFactoryType == 4){ // Fast SAH
+        logging::DEBUG("XmlSceneLoader is using a FastSAHKDTreeFactory");
+        if(kdtNumJobs > 1){
+            return KDTreeFactoryMaker::makeFastSAHMultiThread(
+                kdtSAHLossNodes, kdtNumJobs, kdtGeomJobs
+            );
+        }
+        return KDTreeFactoryMaker::makeFastSAH(kdtSAHLossNodes);
+    }
+    else{
+        std::stringstream ss;
+        ss  << "Unexpected KDT factory type at "
+            << "XmlSceneLoader::makeKDTreeFactory: "
+            << kdtFactoryType;
+        throw HeliosException(ss.str());
+    }
+}
+
+shared_ptr<KDGroveFactory> XmlSceneLoader::makeKDGroveFactory(){
+    return make_shared<KDGroveFactory>(makeKDTreeFactory());
+}
+
+// ***  DYNAMIC SCENE LOADINGMETHODS  *** //
+// ************************************** //
+shared_ptr<DynSequentiableMovingObject> XmlSceneLoader::loadDynMotions(
+    tinyxml2::XMLElement *scenePartNode,
+    shared_ptr<ScenePart> scenePart
+){
+    // Find first dmotion node
+    tinyxml2::XMLElement *dmotionNode =
+        scenePartNode->FirstChildElement("dmotion");
+    if(dmotionNode == nullptr) return nullptr; // No dmotion found
+
+    // Build the basis of dynamic sequential moving object from scene part
+    shared_ptr<DynSequentiableMovingObject> dsmo =
+        make_shared<DynSequentiableMovingObject>(*scenePart, true);
+
+    // Complete building of dynamic sequential moving object from XML
+    while(dmotionNode != nullptr){
+        // Optional attributes
+        std::string nextId = "";
+        tinyxml2::XMLAttribute const *nextIdAttr =
+            dmotionNode->FindAttribute("next");
+        if(nextIdAttr != nullptr) nextId = nextIdAttr->Value();
+
+        // Mandatory attributes
+        tinyxml2::XMLAttribute const *idAttr =
+            dmotionNode->FindAttribute("id");
+        if(idAttr == nullptr) throw HeliosException(
+                "XmlSceneLoader::loadDynMotions found a dmotion element with "
+                "no id"
+            );
+        tinyxml2::XMLAttribute const *loopAttr =
+            dmotionNode->FindAttribute("loop");
+        if(loopAttr == nullptr) throw HeliosException(
+                "XmlSceneLoader::loadDynMotions found a dmotion element with "
+                "no loop"
+            );
+
+        // Add dynamic motion sequence
+        shared_ptr<DynSequence<DynMotion>> dmSequence =
+            make_shared<DynSequence<DynMotion>>(
+                idAttr->Value(),
+                nextId,
+                loopAttr->Int64Value()
+            );
+        dmSequence->append(XmlUtils::createDynMotionsVector(dmotionNode));
+        if(dmSequence == nullptr){  // Check dmSequence is not null
+            throw HeliosException(
+                "XmlSceneLoader::loadDynMotions found a dmotion element with"
+                " no motions. This is not allowed."
+            );
+        }
+        dsmo->addSequence(dmSequence);
+
+        // Next dynamic motion sequence
+        dmotionNode = dmotionNode->NextSiblingElement("dmotion");
+    }
+
+    // Update scene part for each primitive so it is the new DMO
+    for(Primitive *primitive : dsmo->mPrimitives){
+        primitive->part = dsmo;
+    }
+
+    // Use scene part ID to build dynamic sequentiable moving object ID
+    std::stringstream ss;
+    ss << "DSMO_" << scenePart->mId;
+    dsmo->setId(ss.str());
+
+    // Configure the step interval for the dynamic object and its observer
+    dsmo->setStepInterval(
+        boost::get<int>(XmlUtils::getAttribute(
+            scenePartNode, "dynStep", "int", 1
+        ))
+    );
+    dsmo->setObserverStepInterval(
+        boost::get<int>(XmlUtils::getAttribute(
+            scenePartNode, "kdtDynStep", "int", 1
+        ))
+    );
+
+    // Return
+    return dsmo;
 }
 
 shared_ptr<StaticScene> XmlSceneLoader::makeSceneDynamic(
@@ -342,59 +473,26 @@ shared_ptr<StaticScene> XmlSceneLoader::makeSceneDynamic(
     return newScene;
 }
 
-shared_ptr<KDTreeFactory> XmlSceneLoader::makeKDTreeFactory(){
-    if(kdtNumJobs == 0) kdtNumJobs = std::thread::hardware_concurrency();
-
-    if(kdtFactoryType == 1){ // Simple
-        logging::DEBUG("XmlSceneLoader is using a SimpleKDTreeFactory");
-        shared_ptr<SimpleKDTreeFactory> factory =
-            make_shared<SimpleKDTreeFactory>();
-        if(kdtNumJobs > 1){
-            return make_shared<MultiThreadKDTreeFactory>(factory, kdtNumJobs);
-        }
-        return factory;
-    }
-    else if(kdtFactoryType == 2){ // SAH
-        logging::DEBUG("XmlSceneLoader is using a SAHKDTreeFactory");
-        shared_ptr<SAHKDTreeFactory> factory =
-            make_shared<SAHKDTreeFactory>(kdtSAHLossNodes);
-        if(kdtNumJobs > 1){
-            return make_shared<MultiThreadSAHKDTreeFactory>(
-                factory,
-                kdtNumJobs
+void XmlSceneLoader::handleDynamicSceneAttributes(
+    tinyxml2::XMLElement *sceneNode,
+    shared_ptr<DynScene> scene
+){
+    // Configure step interval
+    scene->setStepInterval(
+        boost::get<int>(XmlUtils::getAttribute(sceneNode, "dynStep", "int", 1))
+    );
+    // Apply automatic CRS translation when requested
+    glm::dvec3 const &shift = scene->getBBoxCRS()->getMin();
+    size_t const numDynObjects = scene->numDynObjects();
+    for (size_t i = 0; i < numDynObjects; ++i) {
+        std::shared_ptr<DynSequentiableMovingObject> dsmo =
+            std::dynamic_pointer_cast<DynSequentiableMovingObject>(
+                scene->getDynObject(i)
             );
+        if (dsmo != nullptr) {
+            dsmo->applyAutoCRS(shift.x, shift.y, shift.z);
         }
-        return factory;
     }
-    else if(kdtFactoryType == 3){ // Axis SAH
-        logging::DEBUG("XmlSceneLoader is using a AxisSAHKDTreeFactory");
-        shared_ptr<AxisSAHKDTreeFactory> factory =
-            make_shared<AxisSAHKDTreeFactory>(kdtSAHLossNodes);
-        if(kdtNumJobs > 1){
-            return make_shared<MultiThreadSAHKDTreeFactory>(
-                factory,
-                kdtNumJobs
-            );
-        }
-        return factory;
-    }
-    else if(kdtFactoryType == 4){ // Fast SAH
-        logging::DEBUG("XmlSceneLoader is using a FastSAHKDTreeFactory");
-        shared_ptr<FastSAHKDTreeFactory> factory =
-            make_shared<FastSAHKDTreeFactory>(kdtSAHLossNodes);
-        if(kdtNumJobs > 1){
-            return make_shared<MultiThreadSAHKDTreeFactory>(
-                factory,
-                kdtNumJobs
-            );
-        }
-        return factory;
-    }
-    else{
-        std::stringstream ss;
-        ss  << "Unexpected KDT factory type at "
-            << "XmlSceneLoader::makeKDTreeFactory: "
-            << kdtFactoryType;
-        throw HeliosException(ss.str());
-    }
+    // TODO Rethink : Implement rotation center here and make it incompatible
+    // with autoCRS (throw exception if both are specified)
 }

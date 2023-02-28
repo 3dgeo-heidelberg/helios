@@ -1,10 +1,11 @@
 #pragma once
 
 #include <string>
+#include <ostream>
 
 #include <glm/glm.hpp>
-#include <ostream>
-#include "PrintUtils.h"
+
+#include <util/PrintUtils.h>
 
 /**
  * @brief Class representing a measurement
@@ -14,6 +15,14 @@ class Measurement {
 public:
     // ***  ATTRIBUTES  *** //
     // ******************** //
+    /**
+     * @brief Identifier of the device which generated the measurement
+     */
+    std::string devId;
+    /**
+     * @brief The index of the scanning device which generated the measurement
+     */
+    size_t devIdx;
     /**
      * @brief ID of hit object
      */
@@ -61,7 +70,8 @@ public:
 	/**
 	 * @brief Measurement GPS time
 	 */
-	long gpsTime;
+	double gpsTime;
+
 
 	// ***  CONSTRUCTION / DESTRUCTION  *** //
 	// ************************************ //
@@ -70,6 +80,8 @@ public:
 	 */
 	Measurement() = default;
 	Measurement(const Measurement &m){
+	    devId = m.devId;
+	    devIdx = m.devIdx;
 	    hitObjectId = m.hitObjectId;
 	    position = glm::dvec3(m.position);
 	    beamDirection = glm::dvec3(m.beamDirection);
@@ -83,6 +95,7 @@ public:
 	    classification = m.classification;
 	    gpsTime = m.gpsTime;
 	}
+	virtual ~Measurement() = default;
 
 	// ***  O P E R A T O R S  *** //
 	// *************************** //

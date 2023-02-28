@@ -24,6 +24,7 @@ public:
      * @brief Platform physics test constructor
      */
     PlatformPhysicsTest() : BaseTest("Platform physics test"){}
+    virtual ~PlatformPhysicsTest() = default;
 
     // ***  R U N  *** //
     // *************** //

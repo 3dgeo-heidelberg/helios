@@ -1,0 +1,9 @@
+<map id="DesignTrajectoryFunction" name="DesignTrajectoryFunction">
+<area shape="rect" id="node1" title="Class representing a trajectory function that comes from interpolating a TemporalDesignMatrix using i..." alt="" coords="775,71,945,97"/>
+<area shape="rect" id="node2" href="$d9/de4/classTrajectoryFunction.html" title="Abstract class representing a trajectory function ." alt="" coords="519,5,650,32"/>
+<area shape="rect" id="node3" href="$d4/d73/classfluxionum_1_1Function.html" title=" " alt="" coords="264,23,401,79"/>
+<area shape="rect" id="node4" href="$d5/d9a/classfluxionum_1_1ParametricClosestLesserSampleFunction.html" title=" " alt="" coords="480,56,689,112"/>
+<area shape="rect" id="node5" href="$dc/d03/classfluxionum_1_1FixedParametricIterativeEulerMethod.html" title=" " alt="" coords="487,136,683,192"/>
+<area shape="rect" id="node6" href="$d4/de0/classfluxionum_1_1ParametricIterativeEulerMethod.html" title="Parametric iterative Euler method." alt="" coords="235,143,431,185"/>
+<area shape="rect" id="node7" href="$d4/d73/classfluxionum_1_1Function.html" title=" " alt="" coords="5,143,157,185"/>
+</map>

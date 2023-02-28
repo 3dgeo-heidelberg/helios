@@ -75,27 +75,27 @@ public:
 	 * @brief Wire structure class integer
 	 */
 	static const int WIRE_STRUCTURE = 16;
-        /**
-         * @brief Bridge Deck class integer
-         */
-        static const int BRIDGE_DECK = 17;
-        /**
-         * @brief High Noise class integer
-         */
-        static const int HIGH_NOISE = 18;
-        /**
-         * @brief Overhead Structure class integer
-         * E.g. conveyors, mining equipment, traffic lights
-         */
-        static const int OVERHEAD_STRUCTURE = 19;
-        /**
-         * @brief Ignored ground class integer
-         * E.g. breakline proximity
-         */
-        static const int IGNORED_GROUND = 20;
-        /**
-         * @brief Snow class integer
-         */
-        static const int SNOW = 21;
+    /**
+     * @brief Bridge Deck class integer
+     */
+    static const int BRIDGE_DECK = 17;
+    /**
+     * @brief High Noise class integer
+     */
+    static const int HIGH_NOISE = 18;
+    /**
+     * @brief Overhead Structure class integer
+     * E.g. conveyors, mining equipment, traffic lights
+     */
+    static const int OVERHEAD_STRUCTURE = 19;
+    /**
+     * @brief Ignored ground class integer
+     * E.g. breakline proximity
+     */
+    static const int IGNORED_GROUND = 20;
+    /**
+     * @brief Snow class integer
+     */
+    static const int SNOW = 21;
 
 };

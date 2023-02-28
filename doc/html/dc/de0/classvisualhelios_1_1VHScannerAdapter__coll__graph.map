@@ -1,0 +1,7 @@
+<map id="visualhelios::VHScannerAdapter" name="visualhelios::VHScannerAdapter">
+<area shape="rect" id="node1" title="Abstract class defining core mechanism to adapt scanners to the visual Helios context based on PCL an..." alt="" coords="5,289,216,316"/>
+<area shape="rect" id="node2" href="$dc/d42/classScanner.html" title="Class representing a scanner asset." alt="" coords="31,200,102,227"/>
+<area shape="rect" id="node3" href="$de/d97/classAsset.html" title="Base class for all assets." alt="" coords="89,124,145,151"/>
+<area shape="rect" id="node5" href="$d5/db6/classSurvey.html" title="Class representing a Helios++ survey." alt="" coords="126,200,189,227"/>
+<area shape="rect" id="node4" title=" " alt="" coords="67,5,122,32"/>
+</map>

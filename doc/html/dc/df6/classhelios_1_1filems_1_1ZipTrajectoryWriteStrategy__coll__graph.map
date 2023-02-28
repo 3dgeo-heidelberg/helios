@@ -1,0 +1,5 @@
+<map id="helios::filems::ZipTrajectoryWriteStrategy" name="helios::filems::ZipTrajectoryWriteStrategy">
+<area shape="rect" id="node1" title="Like DirectTrajectoryWriteStrategy but zipping the output." alt="" coords="14,184,197,225"/>
+<area shape="rect" id="node2" href="$d0/de5/classhelios_1_1filems_1_1DirectTrajectoryWriteStrategy.html" title="Concrete class specializing WriteStrategy to directly write trajectory to a file." alt="" coords="5,95,205,136"/>
+<area shape="rect" id="node3" href="$de/dd3/classhelios_1_1filems_1_1WriteStrategy.html" title=" " alt="" coords="12,5,199,47"/>
+</map>

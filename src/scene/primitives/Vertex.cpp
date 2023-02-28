@@ -9,13 +9,9 @@ Vertex::Vertex(const Vertex &v){
     this->texcoords = glm::dvec2(v.texcoords);
 }
 
+
 // ***  M E T H O D S  *** //
 // *********************** //
-Vertex Vertex::copy() {
-	return Vertex(*this);
-}
-
-
 double* Vertex::matxvec(double** mat, double* vec) {
 	double* res = new double[3];
 

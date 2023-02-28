@@ -4,14 +4,14 @@
 
 > Heidelberg LiDAR Operations Simulator ++
 
-![Logo](h++_bk_++.png)
+![Logo](h++.png)
 
 HELIOS++ is a general-purpose software package for simulation of terrestrial, mobile and airborne laser scanning surveys written in C++11. 
 It is developed and maintained by the [3DGeo Research Group](https://uni-heidelberg.de/3dgeo) at Heidelberg University.
 
 ## 💻 Download
 
-Precompiled versions for Windows and Linux are available under [releases](https://github.com/3dgeo-heidelberg/helios/releases).
+Precompiled versions for Windows and Ubuntu (other Debian might also work, but you need to install dependencies manually) are available under [releases](https://github.com/3dgeo-heidelberg/helios/releases).
 
 ## ℹ Documentation
 
@@ -22,21 +22,73 @@ Official website: https://uni-heidelberg.de/helios
 
 For scientific and collaboration inquiries please contact the HELIOS++ team at helios@uni-heidelberg.de
 
-We have also published a preprint on HELIOS++. If you use HELIOS++ in a scientific context, please cite
+We have also published two papers on HELIOS++. If you use HELIOS++ in a scientific context, please cite one of the following:
 
-> Winiwarter, L., Esmorís Pena, A., Weiser, H., Anders, K., Martínez Sanchez, J., Searle, M., Höfle, B. (2021): **Virtual laser scanning with HELIOS++: A novel take on ray tracing-based simulation of topographic 3D laser scanning**. [arXiv:2101.09154](https://arxiv.org/abs/2101.09154) **[cs.CV]**
+- General description of the framework:
+> Winiwarter, L., Esmorís Pena, A., Weiser, H., Anders, K., Martínez Sanchez, J., Searle, M., Höfle, B. (2022): **Virtual laser scanning with HELIOS++: A novel take on ray tracing-based simulation of topographic full-waveform 3D laser scanning**. _Remote Sensing of Environment_, 269, doi:10.1016/j.rse.2021.112772
+- High performance computing:
+> Esmorís, A. M., Yermo, M., Weiser, H., Winiwarter, L., Höfle, B., Rivera, F. F. (2022): **Virtual LiDAR Simulation as a High Performance Computing Challenge: Toward HPC HELIOS++**. _IEEE Access_, 10, doi:10.1109/ACCESS.2022.3211072
 
 BibTeX:
 ```
-@misc{winiwarter2021virtual, 
-      title={Virtual laser scanning with HELIOS++: A novel take on ray tracing-based simulation of topographic 3D laser scanning},  
-      author={Lukas Winiwarter and Alberto Manuel Esmorís Pena and Hannah Weiser and Katharina Anders and Jorge Martínez Sanchez and Mark Searle and Bernhard Höfle}, 
-      year={2021}, 
-      eprint={2101.09154}, 
-      archivePrefix={arXiv}, 
-      primaryClass={cs.CV} 
+article{heliosPlusPlus,
+title = {Virtual laser scanning with HELIOS++: A novel take on ray tracing-based simulation of topographic full-waveform 3D laser scanning},
+journal = {Remote Sensing of Environment},
+year = {2022},
+volume = {269},
+issn = {0034-4257},
+doi = {https://doi.org/10.1016/j.rse.2021.112772},
+url = {https://www.sciencedirect.com/science/article/pii/S0034425721004922},
+author = {Lukas Winiwarter and Alberto Manuel {Esmorís Pena} and Hannah Weiser and Katharina Anders and Jorge {Martínez Sánchez} and Mark Searle and Bernhard Höfle},
+keywords = {Software, LiDAR simulation, Point cloud, Data generation, Voxel, Vegetation modelling, Diffuse media}
 } 
 ```
+
+```
+@Article{Esmoris2022_HPC-HELIOS,
+  author={Esmorís, Alberto M. and Yermo, Miguel and Weiser, Hannah and Winiwarter, Lukas and Höfle, Bernhard and Rivera, Francisco F.},
+  journal={IEEE Access},
+  title={Virtual LiDAR Simulation as a High Performance Computing Challenge: Toward HPC HELIOS++},
+  year={2022},
+  volume={10},
+  issn = {2169-3536},
+  pages={105052--105073},
+  doi={https://doi.org/10.1109/ACCESS.2022.3211072},
+  url={https://ieeexplore.ieee.org/document/9906068}
+}
+```
+
+## 🎮 Examples
+
+### XML demos
+|                                                                                                                                                      |   |
+|------------------------------------------------------------------------------------------------------------------------------------------------------|---|
+| [![Example 1](img/example1_thumbnail.png)](https://nbviewer.org/github/3dgeo-heidelberg/helios/blob/dev/example_notebooks/1-tls_arbaro.ipynb)   | [![Example 2](img/example2_thumbnail.png)](https://nbviewer.org/github/3dgeo-heidelberg/helios/blob/dev/example_notebooks/2-mls_wheat.ipynb)            |
+| [![Example 3](img/example3_thumbnail.png)](https://nbviewer.org/github/3dgeo-heidelberg/helios/blob/dev/example_notebooks/3-mls_toyblocks.ipynb)   | [![Example 4](img/example4_thumbnail.png)](https://nbviewer.org/github/3dgeo-heidelberg/helios/blob/dev/example_notebooks/4-uls_toyblocks_surveyscene.ipynb)            |
+| [![Example 5](img/example5_thumbnail.png)](https://nbviewer.org/github/3dgeo-heidelberg/helios/blob/dev/example_notebooks/5_als_hd_demo.ipynb)   | [![Example 6](img/example6_thumbnail.png)](https://nbviewer.org/github/3dgeo-heidelberg/helios/blob/dev/example_notebooks/6-als_hd_height_above_ground.ipynb)            |
+| [![Example 7](img/example7_thumbnail.png)](https://nbviewer.org/github/3dgeo-heidelberg/helios/blob/dev/example_notebooks/7-tls_sphere_xyzloader.ipynb)   | [![Example 8](img/example8_thumbnail.png)](https://nbviewer.org/github/3dgeo-heidelberg/helios/blob/dev/example_notebooks/8-als_uls_detailed_voxel.ipynb)            |
+| [![Example 9](img/example9_thumbnail.png)](https://nbviewer.org/github/3dgeo-heidelberg/helios/blob/dev/example_notebooks/9-tls_livox_demo.ipynb)   | [![Example 10](img/example10_thumbnail.png)](https://nbviewer.org/github/3dgeo-heidelberg/helios/blob/dev/example_notebooks/10-uls_toyblocks_livox.ipynb)            |
+| [![Example 11](img/example11_thumbnail.png)](https://nbviewer.org/github/3dgeo-heidelberg/helios/blob/dev/example_notebooks/11-als_toyblock_multi_scanner_livox.ipynb)   | [![Example 12](img/example12_thumbnail.png)](https://nbviewer.org/github/3dgeo-heidelberg/helios/blob/dev/example_notebooks/12-multi_scanner_puck.ipynb)            |
+| [![Example 13](img/example13_thumbnail.png)](https://nbviewer.org/github/3dgeo-heidelberg/helios/blob/dev/example_notebooks/13-interpolated_trajectory.ipynb)   |             |
+
+
+
+### pyhelios
+|                                                                                                                                                      |   |
+|------------------------------------------------------------------------------------------------------------------------------------------------------|---|
+| [![Tutorial I](img/tutorial_I_thumbnail.png)](https://nbviewer.org/github/3dgeo-heidelberg/helios/blob/dev/example_notebooks/I-getting-started.ipynb)   | [![Tutorial II](img/tutorial_II_thumbnail.png)](https://nbviewer.org/github/3dgeo-heidelberg/helios/blob/dev/example_notebooks/II-the-survey.ipynb)            |
+| [![Tutorial III](img/tutorial_III_thumbnail.png)](https://nbviewer.org/github/3dgeo-heidelberg/helios/blob/dev/example_notebooks/III-pyhelios_sim_and_vis.ipynb)   | [![Tutorial IV](img/tutorial_IV_thumbnail.png)](https://nbviewer.org/github/3dgeo-heidelberg/helios/blob/dev/example_notebooks/IV-live_trajectory_plot.ipynb)            |
+
+
+### Further examples
+
+|                                                                                                                                                      |   |
+|------------------------------------------------------------------------------------------------------------------------------------------------------|---|
+| [![Example A](img/exampleA_thumbnail.png)](https://nbviewer.org/github/3dgeo-heidelberg/helios/blob/dev/example_notebooks/A-arboretum_notebook.ipynb)   |             |
+
+
+
+
 
 ## ⌨ Usage
 
@@ -48,6 +100,9 @@ helios --help
 
 helios --test
     Perform necessary tests to check everything works as expected
+    
+helios --version
+    Show the HELIOS++ version details
 
 helios <survey_file_path> [OPTIONAL ARGUMENTS]
     Perform requested simulation.
@@ -59,6 +114,9 @@ helios <survey_file_path> [OPTIONAL ARGUMENTS]
             Specify the path to assets directory
         --output <directory_path>
             Specify the path to output directory
+        --splitByChannel
+            Enable the one-file-per-device writing mode when using a
+            multi-channel scanner.
         --writeWaveform
             Specify the full waveform must be written
         --calcEchowidth
@@ -71,29 +129,55 @@ helios <survey_file_path> [OPTIONAL ARGUMENTS]
             Specify the seed to be used for randomness generation.
             The seed can be an integer number, a decimal number or a timestamp
             string with format "YYYY-mm-DD HH:MM:SS"
+        --gpsStartTime <string>
+            Specify the GPS start time. By default it is an empty string "",
+            which means using current system time.
+            It can be given as both, a posix timestamp as string or a datetime
+            string with format "YYYY-MM-DD hh:mm:ss"
         --lasOutput
             Specify the output point cloud must be generated using LAS format
         --zipOutput
             Specify the output point cloud and fullwave must be zipped
         --lasScale
             Specify the scale factor used to generate LAS output
+        --parallelization <integer>
+            Specify the parallelization strategy. Where 0 leads to a simple
+            static/dynamic chunk based strategy and 1 leads to a warehouse
+            based strategy
         -j OR --njobs OR --nthreads <integer>
             Specify the number of simultaneous threads to be used to compute
             the simulation
             If it is not specified or it is specified as 0, then all available
             threads will be used to compute the simulation
+        --chunkSize <integer>
+            Specify the chunk size. If it is positive, it will be used as a
+            fixed size but if it is negative the absolute value will be used
+            as starting size of a dynamic chunk-size based strategy.
+        --warehouseFactor <integer>
+            The number of tasks in the warehouse would be k times the number
+            of workers. Greater factor implies less probability of idle cores
+            at expenses of greater memory consumption.
         --rebuildScene
             Force scene rebuild even when a previosly built scene is available
         --kdt <integer>
-            Specify the type of KDTree to be bulid for the scene.
-            The default 1 is for the simple KDTree based on median balancing,
-            2 for the SAH based KDTree and 3 for the SAH with best axis one
+            Specify the type of KDTree to be built for the scene.
+            Using 1 leads to the simple KDTree based on median balancing,
+            2 to the SAH based KDTree, 3 for the SAH with best axis criteria
+            and 4 (the default) to the fast approximation of SAH
         --kdtJobs <integer>
             Specify the number of threads to be used for building the KDTree.
             Using 1 forces sequential building, 0 as many threads as available
             cores and n>1 implies using exactly n threads.
             Using more cores than required might degrade performance due to
             overhead.
+        --kdtGeomJobs <integer>
+            Specify the number of threads to be used for upper levels of
+            KDTree building.
+            By default it is 0, which means as many jobs as --kdtJobs
+            Using 1, means no geometry-level parallelization will be used when
+            building the KDTree
+            Using >1, means exactly n threads will be used at geometry-level
+            KDTree building
         --sahNodes <integer>
             Either how many nodes must be used by the Surface Area Heuristic
             or the number of bins for the fast approximation of SAH
@@ -107,6 +191,8 @@ helios <survey_file_path> [OPTIONAL ARGUMENTS]
             Nothing will be reported
         -q OR --quiet
             Only errors will be reported
+        -vt
+            Time and errors will be reported
         -v
             Errors, information and warnings will be reported
         -vv OR -v2
@@ -136,12 +222,12 @@ The demo simulation can be executed as follows:
 
 **LINUX**
 ```
-./helios data/surveys/demo/tls_arbaro_demo.xml
+run/helios data/surveys/demo/tls_arbaro_demo.xml
 ```
 
 **WINDOWS**
 ```
-helios.exe data/surveys/demo/tls_arbaro_demo.xml
+run\helios.exe data/surveys/demo/tls_arbaro_demo.xml
 ```
 
 
@@ -151,7 +237,7 @@ Build instructions for advanced users and developers are available [here](BUILDM
 
 ## 🐍 Running pyhelios
 
-For running pyhelios, we suggest setting up a seperate [conda](https://docs.conda.io/en/latest/miniconda.html) environment. Run 
+For running pyhelios, we suggest setting up a seperate [conda](https://docs.conda.io/en/latest/miniconda.html) environment. After downloading one of the [releases](https://github.com/3dgeo-heidelberg/helios/releases) or building from source, run 
 ```
 conda env create -f conda-environment.yml
 ```
@@ -164,6 +250,10 @@ to activate the environment and
 python pyhelios_demo\helios.py data\surveys\toyblocks\als_toyblocks.xml
 ```
 to run a demo survey including visualisation.
+
+## :earth_africa: QGIS Plugin
+
+Our QGIS Plugin AEOS, embeds HELIOS++ into one of the most widely used GIS applications. It enables the creation of HELIOS++ surveys using QGIS vector and raster layers and the subsequent execution of the surveys, with direct availability of the results in the form of a QGIS point cloud layer. Crucially, it allows for instant visualisation of both the input and output of a HELIOS++ simulation within a familiar user interface, thereby greatly improving ease of use. In Greek mythology, Aeos is the name of one of the four horses that pulls Helios' fiery chariot accross the sky. Feel free to download AEOS from its own [GitHub repo](https://github.com/3dgeo-heidelberg/aeos) and add it to your arsenal of QGIS plugins now!
 
 ## 📜 License
 

@@ -1,3 +1,4 @@
 <map id="Triangle" name="Triangle">
-<area shape="rect" id="node2" href="$df/de1/classPrimitive.html" title="Abstract class defining the common behavior for all primitives. " alt="" coords="5,5,79,32"/>
+<area shape="rect" id="node1" title="Class representing triangle primitive." alt="" coords="8,80,76,107"/>
+<area shape="rect" id="node2" href="$df/de1/classPrimitive.html" title="Abstract class defining the common behavior for all primitives." alt="" coords="5,5,79,32"/>
 </map>

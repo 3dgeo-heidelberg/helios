@@ -30,7 +30,9 @@ public:
 	/**
 	 * @brief Device mount attitude relative to the platform
 	 */
-	Rotation cfg_device_relativeMountAttitude = Rotation(glm::dvec3(0, 1, 0), 0);
+	Rotation cfg_device_relativeMountAttitude = Rotation(
+	    glm::dvec3(0, 1, 0), 0
+    );
 
     // misc stuff
     /**
@@ -232,6 +234,11 @@ public:
 	 */
 	virtual void prepareSimulation(int simFrequency_hz) {updateStaticCache();}
 	/**
+	 * @brief Prepare the platform to deal with the next leg
+	 * @param simFrequency_hz Simulation frequency the platform will work with
+	 */
+	virtual void prepareLeg(int const simFrequency_hz) {}
+	/**
 	 * @brief Apply given platform settings to the platform
 	 * @param settings Settings to be applied to the platform
 	 * @param manual Not used by base Platform class.
@@ -240,6 +247,13 @@ public:
 	    std::shared_ptr<PlatformSettings> settings,
 	    bool manual
     );
+	/**
+	 * @brief Retrieve current platform settings and build a new
+	 *  PlatformSettings object with them
+	 * @return Newly created PlatformSettings object with current platform
+	 *  settings
+	 */
+	std::shared_ptr<PlatformSettings> retrieveCurrentSettings();
 
 	/**"
 	 * @brief Cache update which only needs to be performed after static
@@ -317,7 +331,7 @@ public:
 	 * @brief Obtain platform absolute mount attitude
 	 * @return Platform absolute mount attitude
 	 */
-	Rotation getAbsoluteMountAttitude() {
+	inline Rotation getAbsoluteMountAttitude() const {
 		return cached_absoluteMountAttitude;
 	}
 
@@ -325,7 +339,7 @@ public:
 	 * @brief Obtain platform absolute mount position
 	 * @return Platform absolute mount position
 	 */
-	glm::dvec3 getAbsoluteMountPosition() {
+	inline glm::dvec3 getAbsoluteMountPosition() const {
 		return cached_absoluteMountPosition;
 	}
 
@@ -333,7 +347,7 @@ public:
 	 * @brief Obtain platform attitude
 	 * @return Platform attitude
 	 */
-	Rotation getAttitude() {
+	inline Rotation getAttitude() const {
 		return this->attitude;
 	}
 	/**
@@ -359,7 +373,7 @@ public:
 	 * @brief Obtain platform position
 	 * @return Platform position
 	 */
-	glm::dvec3 getPosition() {
+	inline glm::dvec3 getPosition() const {
 		return position;
 	}
 
@@ -367,7 +381,7 @@ public:
 	 * @brief Obtain platform vector to target (cache)
 	 * @return Platform vector to target (cache)
 	 */
-	glm::dvec3 getVectorToTarget() {
+	inline glm::dvec3 getVectorToTarget() const {
 		return cached_vectorToTarget;
 	}
 
@@ -404,12 +418,17 @@ public:
      * @brief Check if platform can move (true) or not (false)
      * @return True if platform can move, false otherwise
      */
-    virtual bool canMove() {return false;}
+    virtual bool canMove() const {return false;}
     /**
      * @brief Check if platform support stop and turn mode (true) or not
      *  (false)
      * @return True if platform support stop and turn mode, false otherwise
      */
-    virtual bool canStopAndTurn() {return false;}
+    virtual bool canStopAndTurn() const {return false;}
+    /**
+     * @brief Check if platform is simulated (false) or interpolated (true)
+     * @return False if platform is simulated, True otherwise
+     */
+    virtual bool isInterpolated() const {return false;}
 
 };

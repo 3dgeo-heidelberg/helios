@@ -1,0 +1,5 @@
+<map id="PulseTaskDropper" name="PulseTaskDropper">
+<area shape="rect" id="node1" title="Class implementing a task dropper to deal with pulse tasks." alt="" coords="591,49,720,76"/>
+<area shape="rect" id="node2" href="$d5/d2f/classBuddingTaskDropper.html" title=" " alt="" coords="248,5,543,120"/>
+<area shape="rect" id="node3" href="$da/d8d/classTaskDropper.html" title="Class which handles tasks dropping. It is, executing and then removing each task when dropping." alt="" coords="5,42,200,83"/>
+</map>

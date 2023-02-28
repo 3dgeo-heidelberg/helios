@@ -1,0 +1,5 @@
+<map id="helios::filems::VectorialMeasurementWriter" name="helios::filems::VectorialMeasurementWriter">
+<area shape="rect" id="node1" title="Common implementation for any vectorial measurement writer." alt="" coords="496,13,655,54"/>
+<area shape="rect" id="node2" href="$d7/d1a/classhelios_1_1filems_1_1BaseMeasurementWriter.html" title=" " alt="" coords="232,5,448,61"/>
+<area shape="rect" id="node3" href="$d1/d3b/classhelios_1_1filems_1_1HeliosWriter.html" title=" " alt="" coords="5,13,184,54"/>
+</map>

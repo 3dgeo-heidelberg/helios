@@ -1,0 +1,7 @@
+<map id="KDGrove" name="KDGrove">
+<area shape="rect" id="node1" title="Grove of KDTrees. It supports both static and dynamic KDTrees, handling each accordingly." alt="" coords="148,244,224,271"/>
+<area shape="rect" id="node2" href="$d1/d0a/classBasicDynGrove.html" title=" " alt="" coords="83,155,289,196"/>
+<area shape="rect" id="node3" href="$d9/dcd/classBasicStaticGrove.html" title="Basic implementation of a StaticGrove." alt="" coords="5,80,180,107"/>
+<area shape="rect" id="node4" href="$d8/da0/classStaticGrove.html" title="A StaticGrove is an abstract class which declares methods to handle a set of trees." alt="" coords="22,5,163,32"/>
+<area shape="rect" id="node5" href="$dc/d2c/classDynGrove.html" title="A DynGrove is an interface which declares observer&#45;like functionality so dynamic subjects can notify ..." alt="" coords="205,80,354,107"/>
+</map>

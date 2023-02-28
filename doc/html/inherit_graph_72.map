@@ -1,3 +1,5 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$dc/d6e/classRandomnessGenerator.html" title="Class to generate random numbers. " alt="" coords="5,5,161,47"/>
+<area shape="rect" id="node1" href="$df/d39/classITreeIterator.html" title=" " alt="" coords="5,46,191,73"/>
+<area shape="rect" id="node2" href="$d3/d43/classBinaryTreeFastBreadthIterator.html" title="Fast breadth first iterator for binary tree like nodes." alt="" coords="239,5,436,47"/>
+<area shape="rect" id="node3" href="$dc/da5/classBinaryTreeFastDepthIterator.html" title="Fast depth first iterator for binary tree like nodes." alt="" coords="244,71,431,112"/>
 </map>

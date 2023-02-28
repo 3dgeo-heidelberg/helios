@@ -54,6 +54,8 @@ public:
      * @param exactFormat When true it is assumed that only standard parameters
      * should be considering for each voxel. Using this knowledge parsing
      * process can be accelerated.
+     * @param discardNullPad When true, those voxels with a PadBvTotal of 0
+     *  will be discarded (by default they are preserved)
      * @param separator The separator between different fields
      *
      * For instance, if 1st line is a header line, 2nd line is a comment line,
@@ -67,6 +69,7 @@ public:
         std::string const & path,
         size_t numHeaderLines=2,
         bool const exactFormat = true,
+        bool const discardNullPad = false,
         std::string const separator = " "
     );
 
@@ -80,6 +83,7 @@ public:
         std::string const & path,
         size_t numHeaderLines=2,
         bool const exactFormat = true,
+        bool const discardNullPad = false,
         std::string const separator = " "
     );
 
@@ -295,12 +299,14 @@ protected:
      * voxel coordinates can be computed
      * @param format2 Format string to parse expected doubles
      * @param format3 Format string to parse extra values (doubles)
-     * @return Parsed DetailedVoxel
+     * @return Parsed DetailedVoxel (nullptr if it was discarded, for instance
+     *  to ignore transmittive voxels with PadBVTotal==0)
      */
     DetailedVoxel * parseDetailedVoxelLine(
         std::string &line,
         std::string const separator,
         bool const exactFormat,
+        bool const discardNullPad,
         char const *format1,
         char const *format2,
         char const *format3,

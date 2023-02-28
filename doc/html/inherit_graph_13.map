@@ -1,3 +1,8 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$db/d6f/classDynSequencer.html" title="Dynamic sequencer handles dynamic sequences in a sequential fashion. " alt="" coords="5,5,145,32"/>
+<area shape="rect" id="node1" href="$dc/d2c/classDynGrove.html" title="A DynGrove is an interface which declares observer&#45;like functionality so dynamic subjects can notify ..." alt="" coords="207,17,357,43"/>
+<area shape="rect" id="node2" href="$d1/d0a/classBasicDynGrove.html" title=" " alt="" coords="417,5,624,47"/>
+<area shape="rect" id="node4" href="$d1/d0a/classBasicDynGrove.html" title="Basic implementation of a DynGrove which extends BasicStaticGrove to provided dynamic funcionalities." alt="" coords="443,71,599,112"/>
+<area shape="rect" id="node3" href="$d9/d76/classKDGrove.html" title="Grove of KDTrees. It supports both static and dynamic KDTrees, handling each accordingly." alt="" coords="672,13,748,39"/>
+<area shape="rect" id="node5" href="$d8/da0/classStaticGrove.html" title="A StaticGrove is an abstract class which declares methods to handle a set of trees." alt="" coords="5,71,147,98"/>
+<area shape="rect" id="node6" href="$d9/dcd/classBasicStaticGrove.html" title="Basic implementation of a StaticGrove." alt="" coords="195,71,369,98"/>
 </map>
