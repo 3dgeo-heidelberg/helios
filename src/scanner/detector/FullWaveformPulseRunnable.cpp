@@ -577,15 +577,17 @@ void FullWaveformPulseRunnable::captureFullWave(
     }
 
     // Write full wave
-    fwDetector->fwfYielder->push(FullWaveform(
-        fullwave,
-        fullwaveIndex,
-        min_time,
-        max_time,
-        beamOrigin,
-        beamDir,
-        gpstime
-    ));
+    if(fwDetector->fwfYielder != nullptr) {
+        fwDetector->fwfYielder->push(FullWaveform(
+            fullwave,
+            fullwaveIndex,
+            min_time,
+            max_time,
+            beamOrigin,
+            beamDir,
+            gpstime
+        ));
+    }
 }
 
 bool FullWaveformPulseRunnable::detectPeak(

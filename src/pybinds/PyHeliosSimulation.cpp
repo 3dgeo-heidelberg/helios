@@ -128,15 +128,18 @@ void PyHeliosSimulation::start (){
         survey->scanner->allMeasurementsMutex = std::make_shared<std::mutex>();
     }
 
-    std::shared_ptr<fms::FMSFacade> fms = fms::FMSFacadeFactory().buildFacade(
-        outputPath,
-        lasScale,
-        lasOutput,
-        las10,
-        zipOutput,
-        splitByChannel,
-        *survey
-    );
+    std::shared_ptr<fms::FMSFacade> fms = exportToFile ?
+        fms::FMSFacadeFactory().buildFacade(
+            outputPath,
+            lasScale,
+            lasOutput,
+            las10,
+            zipOutput,
+            splitByChannel,
+            *survey
+        ) :
+        nullptr
+    ;
 
     buildPulseThreadPool();
     playback = std::make_shared<SurveyPlayback>(
@@ -221,6 +224,13 @@ PyHeliosOutputWrapper * PyHeliosSimulation::join(){
         "PyHeliosSimulation is not running so it cannot be joined"
     );
 
+    // Obtain measurements output path
+    std::string mwOutPath = "";
+    if(exportToFile){
+        mwOutPath = survey->scanner->fms->write
+            .getMeasurementWriterOutputPath().string();
+    }
+
     // Callback concurrency handling (NON BLOCKING MODE)
     if(callbackFrequency != 0 && callback != nullptr){
         if(!playback->finished) {
@@ -229,12 +239,8 @@ PyHeliosOutputWrapper * PyHeliosSimulation::join(){
             return new PyHeliosOutputWrapper(
                 measurements,
                 trajectories,
-                survey->scanner->fms->write
-                    .getMeasurementWriterOutputPath().string(),
-                std::vector<std::string>{
-                    survey->scanner->fms->write
-                        .getMeasurementWriterOutputPath().string()
-                },
+                mwOutPath,
+                std::vector<std::string>{mwOutPath},
                 false
             );
         }
@@ -243,8 +249,7 @@ PyHeliosOutputWrapper * PyHeliosSimulation::join(){
             return new PyHeliosOutputWrapper(
                 survey->scanner->allMeasurements,
                 survey->scanner->allTrajectories,
-                survey->scanner->fms->write
-                    .getMeasurementWriterOutputPath().string(),
+                mwOutPath,
                 survey->scanner->allOutputPaths,
                 true
             );
@@ -261,8 +266,7 @@ PyHeliosOutputWrapper * PyHeliosSimulation::join(){
     return new PyHeliosOutputWrapper(
         survey->scanner->allMeasurements,
         survey->scanner->allTrajectories,
-        survey->scanner->fms->write
-            .getMeasurementWriterOutputPath().string(),
+        mwOutPath,
         survey->scanner->allOutputPaths,
         true
     );

@@ -104,12 +104,16 @@ void Simulation::pause(bool pause) {
 void Simulation::shutdown(){
     finished = true;
     if(callback != nullptr && getCallbackFrequency() > 0){
+        std::string const mwOutPath = (exportToFile) ?
+            mScanner->fms->write.getMeasurementWriterOutputPath()
+                .string() :
+            ""
+        ;
         std::unique_lock<std::mutex> lock(*mScanner->cycleMeasurementsMutex);
         (*callback)(
             *mScanner->cycleMeasurements,
             *mScanner->cycleTrajectories,
-            mScanner->fms->write
-                .getMeasurementWriterOutputPath().string()
+            mwOutPath
         );
     }
 }
@@ -142,13 +146,17 @@ void Simulation::start() {
 		iter++;
 		if(iter-1 == getCallbackFrequency()){ // TODO Pending : iter-1 by iter?
 		    if(callback != nullptr){
+                std::string const mwOutPath = (exportToFile) ?
+                    mScanner->fms->write.getMeasurementWriterOutputPath()
+                        .string() :
+                    ""
+                ;
                 std::unique_lock<std::mutex> lock(
                     *mScanner->cycleMeasurementsMutex);
                 (*callback)(
                     *mScanner->cycleMeasurements,
                     *mScanner->cycleTrajectories,
-                    mScanner->fms->write
-                        .getMeasurementWriterOutputPath().string()
+                    mwOutPath
                 );
                 mScanner->cycleMeasurements->clear();
                 mScanner->cycleTrajectories->clear();
