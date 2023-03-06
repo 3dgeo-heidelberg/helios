@@ -87,7 +87,7 @@ void AbstractPulseRunnable::capturePoint(
         cycleMeasurements->push_back(m);
         (cycleMeasurements->end() - 1)->position += scene.getShift();
     }
-    detector->pcloudYielder->push(m);
+    if(detector->pcloudYielder != nullptr) detector->pcloudYielder->push(m);
 }
 
 void AbstractPulseRunnable::applyMeasurementErrorDirectly(

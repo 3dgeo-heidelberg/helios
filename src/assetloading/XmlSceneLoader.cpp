@@ -493,6 +493,4 @@ void XmlSceneLoader::handleDynamicSceneAttributes(
             dsmo->applyAutoCRS(shift.x, shift.y, shift.z);
         }
     }
-    // TODO Rethink : Implement rotation center here and make it incompatible
-    // with autoCRS (throw exception if both are specified)
 }
