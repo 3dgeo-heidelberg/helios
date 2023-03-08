@@ -288,7 +288,7 @@ def test_create_survey():
     os.remove(test_survey_path)
     if DELETE_FILES_AFTER:
         print(f"Deleting files in {Path(output.outpath).parent.as_posix()}")
-        shutil.rmtree(Path(output.outpath).parent)  # Fails with permission error (for the last trajectory file)
+        shutil.rmtree(Path(output.outpath).parent)
 
 
 def test_material(test_sim):
