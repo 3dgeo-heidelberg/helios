@@ -258,7 +258,7 @@ PyHeliosOutputWrapper * PyHeliosSimulation::join(){
 
     // Join (BLOCKING MODE)
     thread->join();
-    playback->fms->disconnect();
+    if(playback->fms != nullptr) playback->fms->disconnect();
     finished = true;
 
     // Final output (BLOCKING MODE)
