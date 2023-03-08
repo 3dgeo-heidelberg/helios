@@ -16,7 +16,7 @@ import xml.etree.ElementTree as ET
 import shutil
 
 
-DELETE_FILES_AFTER = True
+DELETE_FILES_AFTER = False
 HELIOS_EXE = str(Path('run') / 'helios')
 if sys.platform == "win32":
     HELIOS_EXE += ".exe"
