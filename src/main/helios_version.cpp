@@ -4,7 +4,7 @@
 
 const char * HELIOS_VERSION = "1.2.0";
 
-const char * HELIOS_GIT_HASH = "bd3ba553";
+const char * HELIOS_GIT_HASH = "619ed44a";
 
 const char * getHeliosVersion(){
     return HELIOS_VERSION;

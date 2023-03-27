@@ -55,10 +55,13 @@
  *
  * @tparam NumericType The numeric type of expression trees to be built by
  *  the factory
+ * @tparam ExprTreeType The type of expression tree to be built by the factory
  * @see UnivarExprTreeNode
  * @see IExprTreeNodeStringFactory
  */
-template <typename NumericType>
+template <
+    typename NumericType, typename ExprTreeType=UnivarExprTreeNode<NumericType>
+>
 class UnivarExprTreeStringFactory :
         public IExprTreeNodeStringFactory<NumericType, NumericType>{
 public:
@@ -125,7 +128,7 @@ public:
     /**
      * @brief The nodes at current state (must be used as a stack)
      */
-    std::vector<UnivarExprTreeNode<NumericType> *> nodes;
+    std::vector<ExprTreeType *> nodes;
     /**
      * @brief The operators at current state (must be used as a stack)
      */
@@ -156,6 +159,12 @@ public:
 
     // ***  MAKE METHODS  *** //
     // ********************** //
+    /**
+     * @brief Initialize a new building process (the previous state of the
+     *  object will no longer be available after calling this method)
+     */
+    virtual void initBuilding();
+
     /**
      * @brief Iteratively built the corresponding expression tree node
      *  from given expression
@@ -268,8 +277,49 @@ public:
      *  character
      * @param expr The expression to be parsed to obtain a symbol
      * @return First symbol contained in given expression
+     * @see UnivarExprTreeStringFactory::extractNamedOrVariableSymbol
+     * @see UnivarExprTreeStringFactory::handleSymbol
      */
     Symbol nextSymbol(std::string const &expr);
+    /**
+     * @brief Handle a symbol obtained through the
+     *  UnivarExprTreeStringFactory::nextSymbol method
+     * @param symbol The symbol to be handled
+     * @see UnivarExprTreeStringFactory::nextSymbol
+     */
+    virtual void handleSymbol(Symbol &symbol);
+    /**
+     * @brief Build a node of the expression tree
+     * @param left Left child of the node to be built
+     * @param right Right child of the node to be built
+     * @param extra Pointer to extra data (mainly for derived classes)
+     * @return Built node
+     */
+    virtual ExprTreeType * newExprTree(
+        ExprTreeType *left = nullptr,
+        ExprTreeType *right = nullptr,
+        void *extra = nullptr
+    ) {return new ExprTreeType(left, right);}
+    /**
+     * @brief Prepare the next sub expression at the end of an input expression
+     *  loop iteration in the UnivarExprTreeStringFactory::makeIterative method
+     * @param symbol The symbol generated on current iteration
+     * @param subexpr The sub expression to be prepared (it will be updated
+     *  by the method).
+     * @see UnivarExprTreeStringFactory::makeIterative
+     */
+    virtual void prepareNextSubExpression(
+        Symbol const &symbol, std::string &subexpr
+    );
+    /**
+     * @brief Extract a named symbol or a variable inside the nextSymbol method
+     * @param symstr Text token such that its first character is a letter
+     * @return Extracted named symbol or variable. If there was no named symbol
+     *  or variable to extract, then a null string symbol is returned (i.e.,
+     *  symbol.str is empty)
+     * @see UnivarExprTreeStringFactory::nextSymbol
+     */
+    virtual Symbol extractNamedOrVariableSymbol(std::string const &symstr);
     /**
      * @brief Prepare the expression string so it can be digested by an
      *  iterative make process.

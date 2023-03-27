@@ -4,6 +4,7 @@
 
 #include <cmath>
 
+
 /**
  * @author Alberto M. Esmoris Pena
  * @version 1.0
@@ -30,9 +31,12 @@ public:
     // ******************* //
     /**
      * @brief The different types of element (symbols) supported by the
-     *  univariate expression tree node
+     *  univariate expression tree node.
+     *
+     * The EXTENSION type is a particular SymbolType to be used for derived
+     *  classes to extend supported symbols.
      */
-    enum SymbolType {OPERATOR, NUMBER, VARIABLE, FUNCTION};
+    enum SymbolType {OPERATOR, NUMBER, VARIABLE, FUNCTION, EXTENSION};
     /**
      * @brief The different operators supported by the univariate expression
      *  tree node
@@ -95,11 +99,11 @@ public:
     /**
      * @brief The left child node
      */
-    UnivarExprTreeNode *left;
+    UnivarExprTreeNode<NumericType> *left;
     /**
      * @brief The right child node
      */
-    UnivarExprTreeNode *right;
+    UnivarExprTreeNode<NumericType> *right;
 
 
     // ***  CONSTRUCTION / DESTRUCTION  *** //
@@ -203,6 +207,11 @@ public:
                 return t;
             case FUNCTION:
                 return doFunction(left->eval(t));
+            case EXTENSION:{
+                throw HeliosException(
+                    "UnivarExprTreeNode received an unexpected symbol type"
+                );
+            }
         }
         std::stringstream ss;
         ss  << "UnivarExprTreeNode failed to eval t = " << t;

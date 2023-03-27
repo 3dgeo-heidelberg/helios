@@ -2,7 +2,9 @@
 
 #include <BaseTest.h>
 #include <adt/exprtree/UnivarExprTreeNode.h>
+#include <adt/exprtree/RegUnivarExprTreeNode.h> // TODO Restore
 #include <adt/exprtree/UnivarExprTreeStringFactory.h>
+#include <adt/exprtree/RegUnivarExprTreeStringFactory.h> // TODO Restore
 #include <adt/bintree/BinaryTreeFastDepthIterator.h>
 
 #include <memory>
@@ -45,6 +47,11 @@ public:
      * @return True if passed, false otherwise
      */
     bool testUnivarExprTree();
+    /**
+     * @brief Text register univariate expression tree
+     * @return True if passed, false otherwise
+     */
+    bool testRegUnivarExprTree();
 
     // ***  INNER METHODS  *** //
     // *********************** //
@@ -132,6 +139,7 @@ public:
 bool ExprTreeTest::run(){
     bool passed = true;
     passed = passed && testUnivarExprTree();
+    passed = passed && testRegUnivarExprTree();
     return passed;
 }
 
@@ -484,5 +492,33 @@ bool ExprTreeTest::testUnivarExprTree(){
     return true;
 }
 
+bool ExprTreeTest::testRegUnivarExprTree(){
+    // Prepare tests
+    // TODO Rethink : Implement below
+    double ER0, ER1, ER2, ER3, ER4, ER5, ER6, ER7; // The registers
+    std::vector<double const *> const registers({
+        &ER0, &ER1, &ER2, &ER3, &ER4, &ER5, &ER6, &ER7
+    });
+    RegUnivarExprTreeStringFactory<double> ruetsf(registers);
+    std::shared_ptr<IExprTreeNode<double, double>> node;
+    std::shared_ptr<IExprTreeNode<double, double>> node2;
+    std::vector<double> t({ // Input domain for all cases
+        -10, -3.14, -2.72, -1.1, -0.34, 0, 0.34, 1.1, 2.72, 3.14, 10
+    });
+    std::vector<double> y; // Expected output (distinct for each case)
+
+    // Test case 1: 1+(t-1)^2
+    ER0 = 1, ER1=2;
+    node = ruetsf.makeShared("ER0+(t-ER0)^ER1");
+    y = std::vector<double>({
+        122.00000000,  18.13960000,  14.83840000,   5.41000000,
+        2.79560000,   2.00000000,   1.43560000,   1.01000000,
+        3.95840000,   5.57960000,  82.00000000
+    });
+    if(!validate<double, double>(node, t, y)) return false;
+
+    // On test passed
+    return true;
+}
 
 }
