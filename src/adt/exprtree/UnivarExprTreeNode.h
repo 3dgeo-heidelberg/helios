@@ -1,6 +1,7 @@
 #pragma once
 
 #include <IExprTreeNode.h>
+#include <util/HeliosException.h>
 
 #include <cmath>
 

@@ -2,6 +2,7 @@
 
 #include <UnivarExprTreeNode.h>
 #include <ExpressionRegisterHandler.h>
+#include <util/HeliosException.h>
 
 
 /**

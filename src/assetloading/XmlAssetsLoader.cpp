@@ -3,6 +3,8 @@
 #include <scanner/SingleScanner.h>
 #include <scanner/MultiScanner.h>
 
+#include <adt/exprtree/UnivarExprTreeNode.h>
+
 #define _USE_MATH_DEFINES
 #include <cmath>
 #include <sstream>
@@ -30,6 +32,7 @@ namespace fs = boost::filesystem;
 #include "OscillatingMirrorBeamDeflector.h"
 #include "PolygonMirrorBeamDeflector.h"
 #include "RisleyBeamDeflector.h"
+#include <scanner/beamDeflector/evaluable/EvalPolygonMirrorBeamDeflector.h>
 
 #include "WavefrontObjCache.h"
 #include "XmlAssetsLoader.h"
@@ -959,10 +962,27 @@ XmlAssetsLoader::createBeamDeflectorFromXml(
                 scannerNode, "scanAngleEffectiveMax_deg", "double", 0.0
             ))
         );
-        beamDeflector = std::make_shared<PolygonMirrorBeamDeflector>(
-            scanFreqMax_Hz, scanFreqMin_Hz, scanAngleMax_rad,
-            scanAngleEffectiveMax_rad
-        );
+        tinyxml2::XMLElement *deflectionErrorNode = nullptr;
+        std::shared_ptr<UnivarExprTreeNode<double>> vertAngErrExpr = nullptr;
+        if(XmlUtils::hasAttribute(scannerNode, "deflectionError")) {
+            vertAngErrExpr =
+                XmlUtils::createUnivarExprTree<double>(
+                    deflectionErrorNode,
+                    {{"THETA", "t"}}
+                );
+        }
+        if(deflectionErrorNode != nullptr){
+            beamDeflector = std::make_shared<EvalPolygonMirrorBeamDeflector>(
+                scanFreqMax_Hz, scanFreqMin_Hz, scanAngleMax_rad,
+                scanAngleEffectiveMax_rad, vertAngErrExpr
+            );
+        }
+        else {
+            beamDeflector = std::make_shared<PolygonMirrorBeamDeflector>(
+                scanFreqMax_Hz, scanFreqMin_Hz, scanAngleMax_rad,
+                scanAngleEffectiveMax_rad
+            );
+        }
     } else if (str_opticsType == "risley") {
         int rotorFreq_1_Hz = boost::get<int>(
             XmlUtils::getAttribute(scannerNode, "rotorFreq1_Hz", "int", 7294));
