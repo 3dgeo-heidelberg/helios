@@ -321,6 +321,15 @@ public:
      */
     virtual Symbol extractNamedOrVariableSymbol(std::string const &symstr);
     /**
+     * @brief Given that received expression starts with an alphabetic
+     *  character, the index of the first character in the expression that does
+     *  not belong to the name will be obtained.
+     * @param expr The expression to be analyzed.
+     * @return The index of the first character in the expression after the
+     *  initial name.
+     */
+    virtual size_t findEndOfNameIdx(std::string const &expr);
+    /**
      * @brief Prepare the expression string so it can be digested by an
      *  iterative make process.
      *
@@ -368,6 +377,12 @@ public:
      * @return Crafted numeric symbol
      */
     Symbol craftNumSymbol(std::string const &expr);
+    /**
+     * @brief Craft a negative symbol from given string
+     * @param expr String starting by '-'
+     * @return Crafted negative symbol
+     */
+    virtual Symbol craftNegSymbol(std::string const &expr);
     /**
      * @brief Check whether the given string is representing a valid operator
      *  (true) or not (false).

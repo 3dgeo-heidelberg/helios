@@ -277,37 +277,17 @@ UnivarExprTreeStringFactory<NumericType, ExprTreeType>::nextSymbol(
 
     // Find next symbol when initial character is a letter
     if(std::isalpha(c0)){
-        size_t nonAlphaIdx = m;  // Index of the first non-letter character
-        for(size_t i = 1 ; i < m ; ++i){  // Iteratively find first non-letter
-            if(!std::isalpha(expr[i])){
-                nonAlphaIdx = i;
-                break;
-            }
-        }
-        // Extract consecutive text token
-        std::string symstr = expr.substr(0, nonAlphaIdx);
-        // TODO Rethink : Move section to RegUnivarExprTreeStringFactory if works ---
-        // Here nonAlphaIdx must be interpreted as nonAlphaNorRegisterIdx
-        if(symstr == "ER"){
-            for(size_t i = 2 ; i < m ; ++i){
-                if(std::isdigit(expr[i])) nonAlphaIdx = i+1;
-                else break;
-            }
-            symstr = expr.substr(0, nonAlphaIdx);
-        }
-        // --- TODO Rethink : Move section to RegUnivarExprTreeStringFactory if works
-        if(symstr == "atan" && expr[nonAlphaIdx] == '2'){ // Handle atan2 case
-            ++nonAlphaIdx;
-            symstr = expr.substr(0, nonAlphaIdx);
-        }
+        // Find index of first non-name char in expr and extract the name
+        size_t const nonNameIdx = findEndOfNameIdx(expr); // Find
+        std::string symstr = expr.substr(0, nonNameIdx); // Extract
         // Check named numbers and variables
-        if(expr[nonAlphaIdx] != '('){
+        if(expr[nonNameIdx] != '('){
             if( // If last char is an operator other than opening parentheses
-                nonAlphaIdx==m ||  // Or there is nothing after named num/var
-                expr[nonAlphaIdx] == '+'    || expr[nonAlphaIdx] == '-' ||
-                expr[nonAlphaIdx] == '*'    || expr[nonAlphaIdx] == '/' ||
-                expr[nonAlphaIdx] == '^'    || expr[nonAlphaIdx] == ')' ||
-                expr[nonAlphaIdx] == ','  // Also a separator
+                nonNameIdx==m ||  // Or there is nothing after named num/var
+                expr[nonNameIdx] == '+'    || expr[nonNameIdx] == '-' ||
+                expr[nonNameIdx] == '*'    || expr[nonNameIdx] == '/' ||
+                expr[nonNameIdx] == '^'    || expr[nonNameIdx] == ')' ||
+                expr[nonNameIdx] == ','  // Also a separator
             ){
                 Symbol symbol = extractNamedOrVariableSymbol(symstr);
                 if(!symbol.str.empty()) return symbol;
@@ -316,7 +296,7 @@ UnivarExprTreeStringFactory<NumericType, ExprTreeType>::nextSymbol(
                 std::stringstream ss;
                 ss << "UnivarExprTreeStringFactory::nextSymbol found an "
                    << "unexpected character after operator/function name: "
-                   << "'" << expr[nonAlphaIdx] << "'";
+                   << "'" << expr[nonNameIdx] << "'";
                 throw HeliosException(ss.str());
             }
         }
@@ -335,26 +315,8 @@ UnivarExprTreeStringFactory<NumericType, ExprTreeType>::nextSymbol(
 
     // Find next symbol when initial character is susceptible to be a number
     if(c0 == '-'){  // Handle negative numbers
-        const char c1 = expr[1];
-        if(c1 == 't'){  // Handle negative variable
-            Symbol symbol;
-            symbol.type =
-                UnivarExprTreeNode<NumericType>::SymbolType::VARIABLE;
-            symbol.str = "-t";
-            lastReadIsOpenPriorityOrSeparator = false;
-            return symbol;
-        }
-        if( (!std::isdigit(c1)) && c1 != '.'){
-            std::stringstream ss;
-            ss  << "UnivarExprTreeStringFactory::nextSymbol failed to parse "
-                << "a negative number from the expression: \""
-                << expr << "\"";
-            throw HeliosException(ss.str());
-        }
-        Symbol symbol = craftNumSymbol(expr.substr(1));
-        symbol.str = "-" + symbol.str;
         lastReadIsOpenPriorityOrSeparator = false;
-        return symbol;
+        return craftNegSymbol(expr);
     }
     else if(c0 == '.' || std::isdigit(c0)){  // Handle non-negative numbers
         lastReadIsOpenPriorityOrSeparator = false;
@@ -493,6 +455,29 @@ extractNamedOrVariableSymbol(
     return symbol;
 }
 
+template <typename NumericType, typename ExprTreeType> size_t
+UnivarExprTreeStringFactory<NumericType, ExprTreeType>::findEndOfNameIdx(
+    std::string const &expr
+){
+    // Initial name finding
+    size_t const m = expr.size();   // Num. characters in expression
+    size_t nonNameIdx = m;  // Index of the first non-letter character
+    for(size_t i = 1 ; i < m ; ++i){  // Iteratively find first non-letter
+        if(!std::isalpha(expr[i])){
+            nonNameIdx = i;
+            break;
+        }
+    }
+    // Extract consecutive text token
+    std::string symstr = expr.substr(0, nonNameIdx);
+    if(symstr == "atan" && expr[nonNameIdx] == '2'){ // Handle atan2 case
+        ++nonNameIdx;
+        symstr = expr.substr(0, nonNameIdx);
+    }
+    // Return index of first non-name character in expression
+    return nonNameIdx;
+}
+
 template <typename NumericType, typename ExprTreeType>
 std::string UnivarExprTreeStringFactory<NumericType, ExprTreeType>::\
 prepareExpressionString(
@@ -620,5 +605,31 @@ UnivarExprTreeStringFactory<NumericType, ExprTreeType>::craftNumSymbol(
     symbol.str = expr.substr(0, endOfNumberIdx);
 
     // Return crafted numeric symbol
+    return symbol;
+}
+
+template <typename NumericType, typename ExprTreeType>
+typename UnivarExprTreeStringFactory<NumericType, ExprTreeType>::Symbol
+UnivarExprTreeStringFactory<NumericType, ExprTreeType>::craftNegSymbol(
+    std::string const &expr
+){
+    // Prepare negative symbol crafting
+    const char c1 = expr[1];
+    if(c1 == 't'){  // Handle negative variable
+        Symbol symbol;
+        symbol.type =
+            UnivarExprTreeNode<NumericType>::SymbolType::VARIABLE;
+        symbol.str = "-t";
+        return symbol;
+    }
+    if( (!std::isdigit(c1)) && c1 != '.'){
+        std::stringstream ss;
+        ss  << "UnivarExprTreeStringFactory::craftNegSymbol failed to parse "
+            << "a negative number from the expression: \""
+            << expr << "\"";
+        throw HeliosException(ss.str());
+    }
+    Symbol symbol = craftNumSymbol(expr.substr(1));
+    symbol.str = "-" + symbol.str;
     return symbol;
 }

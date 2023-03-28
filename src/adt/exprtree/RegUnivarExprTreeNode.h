@@ -4,7 +4,23 @@
 #include <ExpressionRegisterHandler.h>
 
 
-// TODO Rethink : Document this class
+/**
+ * @author Alberto M. Esmoris Pena
+ * @version 1.0
+ * @brief Class implementing a univariate expression tree node with registers.
+ *
+ * The Register Univariate Expression Tree Node supports univariate expressions
+ *  that can access the software's internal variables.
+ * The registers are represented by a string starting with "ER" and followed
+ *  by a number that indicates the register index. The mapping between
+ *  expression registers and internal variables is done by the
+ *  ExpressionRegisterHandler
+ *
+ * @tparam NumericType The numeric type to be used by the univariate expression
+ *  tree with registers. It must be contained or equal to the reals (
+ *  \f$\subseteq \mathbb{R}\f$)
+ * @see ExpressionRegisterHandler
+ */
 template <typename NumericType>
 class RegUnivarExprTreeNode : public UnivarExprTreeNode<NumericType>{
 public:

@@ -4,7 +4,18 @@
 #include <memory>
 #include <initializer_list>
 
-// TODO Rethink : Document this class
+/**
+ * @author Alberto M. Esmoris Pena
+ * @version 1.0
+ * @brief Class to handle expression registers.
+ *
+ * The register handler supports accessing register values by their indices,
+ *  where the registers are stored as pointers to variables of interest inside
+ *  the software using the ExpressionRegisterHandler
+ *
+ * @tparam NumericType The numeric type of the registers.
+ * @see RegUnivarExprTreeNode
+ */
 template <typename NumericType>
 class ExpressionRegisterHandler{
 protected:

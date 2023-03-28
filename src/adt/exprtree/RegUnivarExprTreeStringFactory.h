@@ -28,7 +28,6 @@ class RegUnivarExprTreeStringFactory :
 public:
     // ***  ATTRIBUTES  *** //
     // ******************** //
-    // TODO Rethink : Root or register handler? If none, remove attributes
     /**
      * @brief The vector of pointers to the registers
      */
@@ -112,6 +111,12 @@ public:
     struct UnivarExprTreeStringFactory<NumericType, ExprTreeType>::Symbol
     extractNamedOrVariableSymbol(std::string const &symstr) override;
     /**
+     * @brief Extends the UnivarExprTreeStringFactory::findEndOfNameIdx method
+     *  to deal with register names
+     * @see UnivarExprTreeStringFactory::findEndOfNameIdx
+     */
+    size_t findEndOfNameIdx(std::string const &expr) override;
+    /**
      * @brief Count the number of digits required to represent the index of the
      *  register starting the given string.
      *
@@ -128,6 +133,13 @@ public:
      * @return
      */
     size_t countRegisterIndexDigits(std::string const &symstr);
+    /**
+     * @brief Extend UnivarExprTreeStringFactory::craftNegSymbol to support
+     *  negative expression registers.
+     * @see UnivarExprTreeStringFactory::craftNegSymbol
+     */
+    typename UnivarExprTreeStringFactory<NumericType, ExprTreeType>::Symbol
+    craftNegSymbol(std::string const &expr) override;
 };
 
 #include <adt/exprtree/RegUnivarExprTreeStringFactory.tpp>
