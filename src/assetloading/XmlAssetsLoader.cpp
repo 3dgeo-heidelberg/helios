@@ -1057,6 +1057,13 @@ std::shared_ptr<ScannerHead> XmlAssetsLoader::createScannerHeadFromXml(
     tinyxml2::XMLElement *headErrorNode =
         scannerNode->FirstChildElement("headError");
     if(headErrorNode != nullptr){ // Build evaluable scanner head
+        if(std::string(scannerNode->Attribute("optics")) != "rotating"){
+            throw HeliosException(
+                "Error at XmlAssetsLoader::createScannerHeadFromXml because "
+                "<headError ...> is ONLY supported for rotating optics "
+                "(PolygonMirrorBeamDeflector)"
+            );
+        }
         if(XmlUtils::hasAttribute(headErrorNode, "expr")){
             std::shared_ptr<UnivarExprTreeNode<double>> horizAngErrExpr =
                 XmlUtils::createUnivarExprTree<double>(
