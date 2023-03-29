@@ -143,6 +143,20 @@ def read_records(path, sep=','):
         'scanner_head_yaw': read_record(os.path.join(
             path, 'scanner_head_yaw.csv'
         ), sep),
+        # Scanner head angle records
+        'scanner_head_exact_angle': read_record(os.path.join(
+            path, 'scanner_head_exact_angle.csv'
+        ), sep),
+        'scanner_head_angle': read_record(os.path.join(
+            path, 'scanner_head_angle.csv'
+        ), sep),
+        # Deflector angle records
+        'deflector_exact_angle': read_record(os.path.join(
+            path, 'deflector_exact_angle.csv'
+        ), sep),
+        'deflector_angle': read_record(os.path.join(
+            path, 'deflector_angle.csv'
+        ), sep),
         # Beam deflector attitude records
         'deflector_emitting_roll': read_record(os.path.join(
             path, 'deflector_emitting_roll.csv'
@@ -209,6 +223,7 @@ def plot_records(arec, brec, outdir):
     do_scanner_position_plots(arec, brec, outdir)
     do_scanner_attitude_plots(arec, brec, outdir)
     do_scanner_head_attitude_plots(arec, brec, outdir)
+    do_head_and_deflector_angle_plots(arec, brec, outdir)
     do_deflector_emitting_attitude_plots(arec, brec, outdir)
     do_beam_origin_plots(arec, brec, outdir)
     do_beam_attitude_plots(arec, brec, outdir)
@@ -786,6 +801,86 @@ def do_scanner_head_attitude_plots(arec, brec, outdir):
     # Save figure to file and remove it from memory
     fig.savefig(
         os.path.join(outdir, 'scanner_head_attitude.png')
+    )
+    fig.clear()
+    plt.close(fig)
+
+
+def do_exact_and_error_subplot(
+    fig, ax, exact, witherr, title=None, maxpoints=65536, ylabel=None
+):
+    nsteps = len(exact)
+    steps = np.arange(1, nsteps+1)
+    h = max(1, nsteps//maxpoints)  # Step size
+    exact, witherr, steps = exact[::h], witherr[::h],  steps[::h]
+    if title is not None:
+        ax.set_title(title, fontsize=20)
+    ax.plot(
+        steps, exact, lw=2, color='black', label='No error', zorder=4
+    )
+    ax.plot(
+        steps, witherr, lw=4, color='tab:red',
+        label='With error', zorder=3
+    )
+    ax.set_xlabel('Simulation steps', fontsize=16)
+    if ylabel is not None:
+        ax.set_ylabel(ylabel, fontsize=16)
+    ax.tick_params(axis='both', which='both', labelsize=16)
+    ax.legend(loc='upper right', fontsize=14)
+    ax.grid('both')
+    ax.set_axisbelow(True)
+
+
+def do_head_and_deflector_angle_plots(arec, brec, outdir):
+    if not validate_record('scanner_head_exact_angle', arec, 'a') or \
+            not validate_record('scanner_head_angle', arec, 'a') or \
+            not validate_record('deflector_exact_angle', arec, 'a') or \
+            not validate_record('deflector_angle', arec, 'a') or \
+            not validate_record('scanner_head_exact_angle', brec, 'b') or \
+            not validate_record('scanner_head_angle', brec, 'b') or \
+            not validate_record('deflector_exact_angle', brec, 'b') or \
+            not validate_record('deflector_angle', brec, 'b'):
+        print('Cannot do head  and deflector angle plots')
+        return
+
+    # Do the scanner head angle plots
+    fig = init_figure()  # Initialize figure
+    ax = fig.add_subplot(2, 2, 1)  # Initialize head angle(a) subplot
+    do_exact_and_error_subplot(
+        fig, ax,
+        arec['scanner_head_exact_angle'],
+        arec['scanner_head_angle'],
+        title='A-ScannerHead\'s angle',
+        ylabel='rad'
+    )
+    ax = fig.add_subplot(2, 2, 2)  # Initialize deflector angle(a) subplot
+    do_exact_and_error_subplot(
+        fig, ax,
+        arec['deflector_exact_angle'],
+        arec['deflector_angle'],
+        title='A-Deflector\'s angle',
+        ylabel='rad'
+    )
+    ax = fig.add_subplot(2, 2, 3)  # Initialize head angle(b) subplot
+    do_exact_and_error_subplot(
+        fig, ax,
+        brec['scanner_head_exact_angle'],
+        brec['scanner_head_angle'],
+        title='B-ScannerHead\'s angle',
+        ylabel='rad'
+    )
+    ax = fig.add_subplot(2, 2, 4)  # Initialize deflector angle(b) subplot
+    do_exact_and_error_subplot(
+        fig, ax,
+        brec['deflector_exact_angle'],
+        brec['deflector_angle'],
+        title='B-Deflector\'s angle',
+        ylabel='rad'
+    )
+    fig.tight_layout()
+    # Save figure to file and remove it from memory
+    fig.savefig(
+        os.path.join(outdir, 'head_and_deflector_angles.png')
     )
     fig.clear()
     plt.close(fig)
