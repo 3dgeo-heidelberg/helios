@@ -1,6 +1,8 @@
 #include <scanner/SingleScanner.h>
 #include <scanner/detector/AbstractDetector.h>
 #include <maths/WaveMaths.h>
+#include <scanner/EvalScannerHead.h>
+#include <scanner/beamDeflector/evaluable/EvalPolygonMirrorBeamDeflector.h>
 
 #ifdef PYTHON_BINDING
 #include "PyDetectorWrapper.h"
@@ -78,6 +80,29 @@ void SingleScanner::_clone(Scanner &sc) const{
 
 // ***  SIM STEP UTILS  *** //
 // ************************ //
+void SingleScanner::prepareSimulation() {
+    // Link the deflector angle with the evaluable scanner head
+    std::shared_ptr<EvalScannerHead> sh =
+        std::dynamic_pointer_cast<EvalScannerHead>(getScannerHead(0));
+    std::shared_ptr<PolygonMirrorBeamDeflector> pmbd =
+        std::dynamic_pointer_cast<PolygonMirrorBeamDeflector>(
+            getBeamDeflector(0)
+        );
+    if(sh != nullptr && pmbd != nullptr){
+        std::shared_ptr<EvalPolygonMirrorBeamDeflector> epmbd =
+            std::dynamic_pointer_cast<EvalPolygonMirrorBeamDeflector>(
+                pmbd
+            );
+        if(epmbd != nullptr){
+            sh->setDeflectorAnglePtr(
+                &epmbd->state_currentExactBeamAngle_rad
+            );
+        }
+        else{
+            sh->setDeflectorAnglePtr(&pmbd->state_currentBeamAngle_rad);
+        }
+    }
+}
 void SingleScanner::onLegComplete(){
     // Call parent handler for on leg complete events
     Scanner::onLegComplete();

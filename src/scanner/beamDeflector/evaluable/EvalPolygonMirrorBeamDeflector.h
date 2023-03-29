@@ -3,8 +3,6 @@
 #include <scanner/beamDeflector/PolygonMirrorBeamDeflector.h>
 #include <adt/exprtree/UnivarExprTreeNode.h>
 
-// TODO Remove : If no longer necessary with RecursiveFullWaveformPulseRunnable
-// TODO Rethink : Maybe use this to simulate non-range dependent errors
 
 /**
  * @author Alberto M. Esmoris Pena
@@ -20,15 +18,18 @@ protected:
     // ***  ATTRIBUTES  *** //
     // ******************** //
     /**
-     * @brief The expression tree to compute vertical angle errors.
+     * @brief The expression tree to compute vertical angle errors as a
+     *  function of vertical angle
      *
      * \f[
-     *  f(\theta)
+     *  \Delta\theta(\theta)
      * \f]
      *
      * @see UnivarExprTreeNode
      */
     std::shared_ptr<UnivarExprTreeNode<double>> vertAngErrExpr;
+
+public:
     /**
      * @brief The exact value of the current beam angle (radians), i.e., the
      *  current beam angle withour error.
@@ -36,7 +37,6 @@ protected:
      */
     double state_currentExactBeamAngle_rad;
 
-public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //
     // ************************************ //
     /**
@@ -79,4 +79,12 @@ public:
      * @see PolygonMirrorBeamDeflector::doSimStep
      */
     void doSimStep() override;
+
+    // ***  GETTERS and SETTERS  *** //
+    // ***************************** //
+    /**
+     * @see AbstractBeamDeflector::getCurrentExactBeamAngle
+     */
+    double getCurrentExactBeamAngle() override
+    {return state_currentExactBeamAngle_rad;}
 };

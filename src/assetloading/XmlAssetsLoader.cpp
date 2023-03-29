@@ -33,6 +33,7 @@ namespace fs = boost::filesystem;
 #include "PolygonMirrorBeamDeflector.h"
 #include "RisleyBeamDeflector.h"
 #include <scanner/beamDeflector/evaluable/EvalPolygonMirrorBeamDeflector.h>
+#include <scanner/EvalScannerHead.h>
 
 #include "WavefrontObjCache.h"
 #include "XmlAssetsLoader.h"
@@ -962,22 +963,28 @@ XmlAssetsLoader::createBeamDeflectorFromXml(
                 scannerNode, "scanAngleEffectiveMax_deg", "double", 0.0
             ))
         );
-        tinyxml2::XMLElement *deflectionErrorNode = nullptr;
-        std::shared_ptr<UnivarExprTreeNode<double>> vertAngErrExpr = nullptr;
-        if(XmlUtils::hasAttribute(scannerNode, "deflectionError")) {
-            vertAngErrExpr =
-                XmlUtils::createUnivarExprTree<double>(
-                    deflectionErrorNode,
-                    {{"THETA", "t"}}
+        tinyxml2::XMLElement *deflectionErrorNode =
+            scannerNode->FirstChildElement("deflectionError");
+        if(deflectionErrorNode != nullptr){ // Build evaluable beam deflector
+            if(XmlUtils::hasAttribute(deflectionErrorNode, "expr")){
+                std::shared_ptr<UnivarExprTreeNode<double>> vertAngErrExpr =
+                    XmlUtils::createUnivarExprTree<double>(
+                        deflectionErrorNode,
+                        {{"THETA", "t"}}
+                    );
+                beamDeflector = make_shared<EvalPolygonMirrorBeamDeflector>(
+                    scanFreqMax_Hz, scanFreqMin_Hz, scanAngleMax_rad,
+                    scanAngleEffectiveMax_rad, vertAngErrExpr
                 );
+            }
+            else{
+                throw HeliosException(
+                    "XmlAssetsLoader::createBeamDeflectorFromXml received a "
+                    "deflectionError XML element with no expr attribute."
+                );
+            }
         }
-        if(deflectionErrorNode != nullptr){
-            beamDeflector = std::make_shared<EvalPolygonMirrorBeamDeflector>(
-                scanFreqMax_Hz, scanFreqMin_Hz, scanAngleMax_rad,
-                scanAngleEffectiveMax_rad, vertAngErrExpr
-            );
-        }
-        else {
+        else { // Build classical beam deflector
             beamDeflector = std::make_shared<PolygonMirrorBeamDeflector>(
                 scanFreqMax_Hz, scanFreqMin_Hz, scanAngleMax_rad,
                 scanAngleEffectiveMax_rad
@@ -1047,6 +1054,33 @@ std::shared_ptr<ScannerHead> XmlAssetsLoader::createScannerHeadFromXml(
             scannerNode, "headRotatePerSecMax_deg", "double", 0.0
         ))
     );
+    tinyxml2::XMLElement *headErrorNode =
+        scannerNode->FirstChildElement("headError");
+    if(headErrorNode != nullptr){ // Build evaluable scanner head
+        if(XmlUtils::hasAttribute(headErrorNode, "expr")){
+            std::shared_ptr<UnivarExprTreeNode<double>> horizAngErrExpr =
+                XmlUtils::createUnivarExprTree<double>(
+                    headErrorNode,
+                    {{"THETA", "t"}}
+                );
+            double const zeroSinThreshold_deg =
+                boost::get<double>(XmlUtils::getAttribute(
+                    headErrorNode, "zeroSinThreshold_deg", "double", 0
+                ));
+            return std::make_shared<EvalScannerHead>(
+                headRotateAxis,
+                headRotatePerSecMax_rad,
+                horizAngErrExpr,
+                MathConverter::degreesToRadians(zeroSinThreshold_deg)
+            );
+        }
+        else{
+            throw HeliosException(
+                "XmlAssetsLoader::createScannerHeadFromXml received a "
+                "headError XML element with no expr attribute"
+            );
+        }
+    }
     return std::make_shared<ScannerHead>(
         headRotateAxis, headRotatePerSecMax_rad
     );

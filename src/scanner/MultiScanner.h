@@ -102,6 +102,10 @@ public:
     // ***   M E T H O D S   *** //
     // ************************* //
     /**
+     * @see Scanner::prepareSimulation
+     */
+    void prepareSimulation() override;
+    /**
      * @see Scanner::applySettings
      */
     void applySettings(

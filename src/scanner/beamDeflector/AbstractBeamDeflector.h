@@ -138,4 +138,17 @@ public:
 	 * @param scanFreq_hz New scanning frequency (hertz)
 	 */
 	virtual void setScanFreq_Hz(double scanFreq_hz);
+    /**
+     * @brief Get the exact current beam angle.
+     *
+     * By default this function returns the base current beam angle
+     *  AbstractBeamDeflector::state_currentBeamAngle_rad but deflectors
+     *  modeling measurement error will need to override this to provide the
+     *  beam angle without error
+     *
+     * @return Current beam angle (radians) with no error
+     * @see AbstractBeamDeflector::state_currentBeamAngle_rad
+     */
+    virtual double getCurrentExactBeamAngle()
+    {return state_currentBeamAngle_rad;}
 };

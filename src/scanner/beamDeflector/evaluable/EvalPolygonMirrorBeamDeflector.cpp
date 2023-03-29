@@ -36,9 +36,8 @@ void EvalPolygonMirrorBeamDeflector::applySettings(
 void EvalPolygonMirrorBeamDeflector::doSimStep(){
     // Update beam angle
     state_currentExactBeamAngle_rad += cached_angleBetweenPulses_rad;
-    state_currentBeamAngle_rad -= vertAngErrExpr->eval(
-        state_currentExactBeamAngle_rad
-    );
+    state_currentBeamAngle_rad = state_currentExactBeamAngle_rad -
+        vertAngErrExpr->eval(state_currentExactBeamAngle_rad);
 
     // Fit beam angle to domain
     if(state_currentExactBeamAngle_rad >= cfg_device_scanAngleMax_rad){

@@ -11,7 +11,7 @@
  * Class representing a scanner head
  */
 class ScannerHead {
-private:
+protected:
     // ***  ATTRIBUTES  *** //
     // ******************** //
     /**
@@ -76,12 +76,12 @@ public:
 	 * @brief Apply scanner settings to the scanner head
 	 * @param settings Scanner settings to be applied
 	 */
-	void applySettings(std::shared_ptr<ScannerSettings> settings);
+	virtual void applySettings(std::shared_ptr<ScannerSettings> settings);
 	/**
 	 * @brief Perform computations for current simulation step
 	 * @param pulseFreq_Hz Pulse frequency (hertz)
 	 */
-	void doSimStep(double pulseFreq_Hz);
+	virtual void doSimStep(double pulseFreq_Hz);
 
 	/**
 	 * @brief Check if rotation has been completed.
@@ -92,7 +92,7 @@ public:
 	 * @return True of rotation has been completed, false otherwise
 	 * @see ScannerHead::cfg_setting_rotateStop_rad
 	 */
-	bool rotateCompleted();
+	virtual bool rotateCompleted();
 
     // ***  GETTERS and SETTERS  *** //
     // ***************************** //
@@ -131,11 +131,23 @@ public:
      */
     double getRotateCurrent() {return state_currentRotateAngle_rad;}
     /**
+     * @brief Get the exact current rotation angle.
+     *
+     * By default this function returns the same than
+     *  ScannerHead::getRotateCurrent but scanner heads modeling measurement
+     *  error will need to override this to provide the rotation angle without
+     *  error.
+     *
+     * @return Current rotation angle (radians) with no error
+     * @see ScannerHead::getRotateCurrent
+     */
+    virtual double getExactRotateCurrent() {return getRotateCurrent();}
+    /**
      * @brief Set the current rotation angle
      * @param angle_rad New current rotation angle (radians)
      * @see ScannerHead::state_currentRotateAngle_rad
      */
-	void setCurrentRotateAngle_rad(double angle_rad);
+	virtual void setCurrentRotateAngle_rad(double angle_rad);
 
 	/**
 	 * @brief Get rotation per second

@@ -217,6 +217,11 @@ public:
     // ***  M E T H O D S  *** //
     // *********************** //
     /**
+     * @brief Prepare the scanner to deal with the simulation.
+     * @param simFrequency_hz Simulation frequency the platform will work with
+     */
+    virtual void prepareSimulation() = 0;
+    /**
      * @brief Initialize randomness generators and noise sources that are
      *  necessary for sequential pulse computations
      */

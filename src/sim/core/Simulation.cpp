@@ -55,6 +55,7 @@ void Simulation::prepareSimulation(int simFrequency_hz){
     );
 
     // Prepare scanner
+    this->mScanner->prepareSimulation();
     this->mScanner->buildScanningPulseProcess(
         parallelizationStrategy,
         taskDropper,

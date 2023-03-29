@@ -154,6 +154,8 @@ public:
     /**
      * @brief Like XmlUtils::createUnivarExprTree(XMLElement *) but applying
      *  the rename map (dictionary) before parsing the expression
+     * @param[in] renameMap The <UserFriendly, TreeFriendly> dictionary to
+     *  translate between human language and expression tree language.
      * @see XmlUtils::createUnivarExprTree(XMLElement *)
      */
     template <typename NumericType=double>
