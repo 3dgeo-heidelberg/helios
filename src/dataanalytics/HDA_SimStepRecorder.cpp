@@ -377,7 +377,12 @@ void HDA_SimStepRecorder::recordBeam(){
     // Record beam attitude
     Rotation ba = s.calcAbsoluteBeamAttitude();
     double roll, pitch, yaw;
-    ba.getAngles(&RotationOrder::XYZ, roll, pitch, yaw);
+    try {
+        ba.getAngles(&RotationOrder::XYZ, roll, pitch, yaw);
+    }
+    catch(HeliosException &hex){ // Catch gimbal lock
+        roll = 0; pitch = 0; yaw = 0;
+    }
     beamRoll->push(roll);
     beamPitch->push(pitch);
     beamYaw->push(yaw);

@@ -122,6 +122,17 @@ public:
 	 * @return Relative emitter attitude
 	 */
 	Rotation getEmitterRelativeAttitude();
+    /**
+     * @brief  Obtain the exact relative emitter attitude. By default, it is
+     *  the relative emitter attitude. However, beam deflectors simulating
+     *  mechanical errors need to track the exact emitter relative attitude
+     *  separately because the typical one includes simulated mechanical
+     *  errors.
+     * @return The exact emitter relative attitude
+     * @see AbstractBeamDeflector::getEmitterRelativeAttitude
+     */
+    virtual Rotation getExactEmitterRelativeAttitude()
+    {return getEmitterRelativeAttitude();}
 	/**
 	 * @brief Get the relative emitter attitude by referencce
 	 * @return Reference to relative emitter attitude
@@ -151,4 +162,12 @@ public:
      */
     virtual double getCurrentExactBeamAngle()
     {return state_currentBeamAngle_rad;}
+
+    /**
+     * @brief Check whether the deflector simulates mechanical errors
+     *  (true) or not (false).
+     * @return True if the deflectors simulates mechanical errors,
+     *  false otherwise
+     */
+    virtual bool hasMechanicalError() {return false;}
 };

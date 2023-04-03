@@ -42,6 +42,21 @@ protected:
      * @see ScanningDevice
      */
     size_t deviceIndex;
+    /**
+     * @brief Flag that must be true when the simulated pulse comes from a
+     *  simulation with mechanical errors, false otherwise.
+     * @see ScanningDevice::hasMechanicalError
+     */
+    bool mechanicalError = false;
+
+    /**
+     * @brief The attitude without mechanical errors. When there is no
+     *  mechanical error simulation, it will match the Pulse::attitude
+     *  attribute
+     * @see Pulse::attitude
+     * @see SimulatedPulse::mechanicalError
+     */
+    Rotation exactAttitude;
 
 public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //
@@ -67,7 +82,32 @@ public:
         TimedPulse(origin, attitude, time_ns),
         legIndex(legIndex),
         pulseNumber(pulseNumber),
-        deviceIndex(deviceIndex)
+        deviceIndex(deviceIndex),
+        mechanicalError(false),
+        exactAttitude(attitude)
+    {}
+    /**
+     * @brief Simulated laser pulse constructor for simulations including
+     *  mechanical errors
+     * @see SimulatedPulse::SimulatedPulse
+     * @see SimulatedPulse::mechanicalError
+     * @see SimulatedPulse::exactAttitude
+     */
+    SimulatedPulse(
+        glm::dvec3 const &origin,
+        Rotation const &attitude,
+        Rotation const &exactAttitude,
+        double const time_ns,
+        unsigned int legIndex,
+        int const pulseNumber,
+        size_t const deviceIndex
+    ) :
+        TimedPulse(origin, attitude, time_ns),
+        legIndex(legIndex),
+        pulseNumber(pulseNumber),
+        deviceIndex(deviceIndex),
+        mechanicalError(true),
+        exactAttitude(exactAttitude)
     {}
     virtual ~SimulatedPulse() = default;
 
@@ -113,4 +153,27 @@ public:
      */
     inline void setDeviceIndex(size_t const deviceIndex)
     {this->deviceIndex = deviceIndex;}
+    /**
+     * @brief Obtain the exact attitude (ignoring mechanical errors) of the
+     *  ray
+     * @return Copy of the exact attitude of the ray
+     * @see SimulatedPulse::exactAttitude
+     */
+    inline Rotation getExactAttitude() const {return exactAttitude;}
+    /**
+     * @brief Obtain the exact attitude of the ray by reference
+     * @return Reference to the exact attitude of the ray
+     * @see SimulatedPulse::getExactAttitude
+     */
+    inline Rotation & getExactAttitudeRef() {return exactAttitude;}
+
+    // ***   M E T H O D S   *** //
+    // ************************* //
+    /**
+     * @brief Compute the director vector of the ray/beam without mechanical
+     *  errors.
+     * @return The director vector of the ray/beam without mechanical errors.
+     */
+    inline glm::dvec3 computeExactDirection()
+    {return exactAttitude.applyTo(Directions::forward);}
 };

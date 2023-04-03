@@ -296,7 +296,7 @@ void FullWaveformPulseRunnable::digestIntersections(
         apMatrix,
         fullwave,
         intersects,
-        beamDir,
+        pulse.computeExactDirection(),
         nsPerBin,
         numFullwaveBins,
         peakIntensityIndex,

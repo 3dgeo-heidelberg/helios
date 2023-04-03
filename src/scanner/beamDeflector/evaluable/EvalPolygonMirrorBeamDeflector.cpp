@@ -36,7 +36,7 @@ void EvalPolygonMirrorBeamDeflector::applySettings(
 void EvalPolygonMirrorBeamDeflector::doSimStep(){
     // Update beam angle
     state_currentExactBeamAngle_rad += cached_angleBetweenPulses_rad;
-    state_currentBeamAngle_rad = state_currentExactBeamAngle_rad -
+    state_currentBeamAngle_rad = state_currentExactBeamAngle_rad +
         vertAngErrExpr->eval(state_currentExactBeamAngle_rad);
 
     // Fit beam angle to domain
@@ -48,6 +48,8 @@ void EvalPolygonMirrorBeamDeflector::doSimStep(){
     }
 
     // Rotate to current position:
+    this->cached_exactEmitterRelativeAttitude =
+        Rotation(Directions::right, state_currentExactBeamAngle_rad);
     this->cached_emitterRelativeAttitude =
         Rotation(Directions::right, state_currentBeamAngle_rad);
 }

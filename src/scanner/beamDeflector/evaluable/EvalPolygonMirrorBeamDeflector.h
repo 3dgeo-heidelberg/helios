@@ -36,6 +36,11 @@ public:
      * @see AbstractBeamDeflector::state_currentBeamAngle_rad
      */
     double state_currentExactBeamAngle_rad;
+    /**
+     * @brief Relative emitter attitude with no mechanical error
+     */
+    Rotation cached_exactEmitterRelativeAttitude =
+        Rotation(glm::dvec3(1, 0, 0), 0);
 
     // ***  CONSTRUCTION / DESTRUCTION  *** //
     // ************************************ //
@@ -83,8 +88,18 @@ public:
     // ***  GETTERS and SETTERS  *** //
     // ***************************** //
     /**
+     * @see AbstractBeamDeflector::getExactEmitterRelativeAttitude
+     */
+    Rotation getExactEmitterRelativeAttitude() override
+    {return cached_exactEmitterRelativeAttitude;}
+    /**
      * @see AbstractBeamDeflector::getCurrentExactBeamAngle
      */
     double getCurrentExactBeamAngle() override
     {return state_currentExactBeamAngle_rad;}
+    /**
+     * @see AbstractBeamDeflector4::hasMechanicalError
+     */
+    bool hasMechanicalError() override {return true;}
+
 };

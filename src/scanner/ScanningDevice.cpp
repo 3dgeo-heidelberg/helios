@@ -157,24 +157,50 @@ void ScanningDevice::doSimStep(
     // Handle noise
     handleSimStepNoise(absoluteBeamOrigin, absoluteBeamAttitude);
     // Handle pulse computation
-    handlePulseComputation(SimulatedPulse(
-        absoluteBeamOrigin,
-        absoluteBeamAttitude,
-        currentGpsTime,
-        legIndex,
-        state_currentPulseNumber,
-        devIdx
-    ));
+    if(hasMechanicalError()) { // Simulated pulse with mechanical error
+        Rotation exactAbsoluteBeamAttitude = calcExactAbsoluteBeamAttitude(
+            platformAttitude
+        );
+        handlePulseComputation(SimulatedPulse(
+            absoluteBeamOrigin,
+            absoluteBeamAttitude,
+            exactAbsoluteBeamAttitude,
+            currentGpsTime,
+            legIndex,
+            state_currentPulseNumber,
+            devIdx
+        ));
+    }
+    else{ // Simulated pulse with NO mechanical error
+        handlePulseComputation(SimulatedPulse(
+            absoluteBeamOrigin,
+            absoluteBeamAttitude,
+            currentGpsTime,
+            legIndex,
+            state_currentPulseNumber,
+            devIdx
+        ));
+    }
 }
 
 Rotation ScanningDevice::calcAbsoluteBeamAttitude(
-    Rotation platformAttitude
+    Rotation const &platformAttitude
 ){
     Rotation mountRelativeEmitterAttitude =
         scannerHead->getMountRelativeAttitude()
             .applyTo(headRelativeEmitterAttitude);
     return platformAttitude.applyTo(mountRelativeEmitterAttitude)
         .applyTo(beamDeflector->getEmitterRelativeAttitude());
+}
+
+Rotation ScanningDevice::calcExactAbsoluteBeamAttitude(
+    Rotation const &platformAttitude
+){
+    Rotation exactMountRelativeEmitterAttitude =
+        scannerHead->getExactMountRelativeAttitude()
+            .applyTo(headRelativeEmitterAttitude);
+    return platformAttitude.applyTo(exactMountRelativeEmitterAttitude)
+        .applyTo(beamDeflector->getExactEmitterRelativeAttitude());
 }
 
 void ScanningDevice::computeSubrays(

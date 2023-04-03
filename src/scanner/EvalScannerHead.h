@@ -45,6 +45,11 @@ protected:
      * @see ScannerHead::state_currentRotateAngle_rad
      */
     double state_currentExactRotateAngle_rad = 0;
+    /**
+     * @brief Relative scanner head mount attitude with no mechanical error
+     */
+    Rotation cached_exactMountRelativeAttitude =
+        Rotation(glm::dvec3(0, 1, 0), 0);
 
 public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //
@@ -84,6 +89,10 @@ public:
     // ***  GETTERS and SETTERS  *** //
     // ***************************** //
     /**
+     * @see ScannerHead::getExactMountRelativeAttitude
+     */
+    Rotation getExactMountRelativeAttitude() override;
+    /**
      * @brief Set the current rotation angle.
      * @param angle_rad New current rotation angle (radians).
      * @see ScannerHead::state_currentRotateAngle_rad
@@ -111,5 +120,9 @@ public:
      */
     double getExactRotateCurrent() override
     {return state_currentExactRotateAngle_rad;}
+    /**
+     * @see ScannerHead::hasMechanicalError
+     */
+    bool hasMechanicalError() override {return true;}
 
 };

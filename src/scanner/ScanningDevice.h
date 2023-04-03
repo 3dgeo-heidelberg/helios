@@ -268,7 +268,15 @@ public:
      * @return The absolute beam attitude of the scanning device with respect
      *  to given absolute platform attitude
      */
-    Rotation calcAbsoluteBeamAttitude(Rotation platformAttitude);
+    Rotation calcAbsoluteBeamAttitude(Rotation const &platformAttitude);
+    /**
+     * @brief Compute the exact absolute beam attitude (which means ignoring
+     *  the mechanical errors).
+     * @return The exact absolute beam attitude (no mechanical errors) of the
+     *  scanning device with respect to given absolute platform attitude.
+     * @see ScanningDevice::calcAbsoluteBeamAttitude
+     */
+    Rotation calcExactAbsoluteBeamAttitude(Rotation const &platformAttitude);
 
     /**
      * @see Scanner::computeSubrays
@@ -421,6 +429,24 @@ public:
      */
     inline void setFWFSettings(std::shared_ptr<FWFSettings> FWF_settings)
     {this->FWF_settings = *FWF_settings;}
-
+    /**
+     * @brief Check whether the scanning device simulates mechanical errors
+     *  (true) or not (false).
+     *
+     * A scanning device is said to simulate mechanical errors if at least
+     *  one of its components (e.g., head or deflector) simulates mechanical
+     *  errors.
+     *
+     * @return True if the scanning device simulates mechanical errors,
+     *  false otherwise
+     *
+     * @see ScannerHead::hasMechanicalError
+     * @see AbstractBeamDeflector::hasMechanicalError
+     * @see SimulatedPulse::mechanicalError
+     */
+    inline bool hasMechanicalError(){
+        return scannerHead->hasMechanicalError() ||
+            beamDeflector->hasMechanicalError();
+    }
 
 };

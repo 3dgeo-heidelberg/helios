@@ -103,6 +103,16 @@ public:
      */
     Rotation getMountRelativeAttitude();
     /**
+     * @brief Obtain the exact relative mount attitude. By default, it is the
+     *  relative mount attitude. However, scanner heads simulating mechanical
+     *  errors need to track the exact relative mount attitude separately
+     *  because the typical one includes simulated mechanical errors.
+     * @return The exact relative mount attitude
+     * @see ScannerHead::getMountRelativeAttitude
+     */
+    virtual Rotation getExactMountRelativeAttitude()
+    {return getMountRelativeAttitude();}
+    /**
      * @see Obtain the relative mount attitude by reference
      * @return Reference to the relative mount attitude
      * @see ScannerHead::cached_mountRelativeAttitude
@@ -201,7 +211,14 @@ public:
 	 * @param rotateRange New rotation range
 	 * @see ScannerHead::cfg_setting_rotateRange_rad
 	 */
-	void setRotateRange(double rotateRange)
+    void setRotateRange(double rotateRange)
         {this->cfg_setting_rotateRange_rad = rotateRange;}
+    /**
+     * @brief Check whether the scanner head simulates mechanical errors
+     *  (true) or not (false).
+     * @return True if the scanner head simulates mechanical errors,
+     *  false otherwise
+     */
+    virtual bool hasMechanicalError() {return false;}
 
 };

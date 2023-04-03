@@ -27,10 +27,6 @@ void ScannerHead::doSimStep(double pulseFreq_Hz) {
 	}
 }
 
-Rotation ScannerHead::getMountRelativeAttitude() {
-	return this->cached_mountRelativeAttitude;
-}
-
 bool ScannerHead::rotateCompleted() {
 	bool result = false;
 
@@ -48,6 +44,10 @@ bool ScannerHead::rotateCompleted() {
 
 // ***  GETTERS and SETTERS  *** //
 // ***************************** //
+Rotation ScannerHead::getMountRelativeAttitude() {
+    return this->cached_mountRelativeAttitude;
+}
+
 void ScannerHead::setCurrentRotateAngle_rad(double angle_rad) {
 	if (angle_rad == state_currentRotateAngle_rad)
 		return;
