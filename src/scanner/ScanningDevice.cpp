@@ -19,7 +19,8 @@ ScanningDevice::ScanningDevice(
     double const efficiency,
     double const receiverDiameter_m,
     double const atmosphericVisibility_km,
-    double const wavelength_m
+    double const wavelength_m,
+    std::shared_ptr<UnivarExprTreeNode<double>> rangeErrExpr
 ) :
     devIdx(deviceIndex),
     id(id),
@@ -33,7 +34,8 @@ ScanningDevice::ScanningDevice(
     receiverDiameter_m(receiverDiameter_m),
     visibility_km(atmosphericVisibility_km),
     wavelength_m(wavelength_m),
-    supportedPulseFreqs_Hz(pulseFreqs)
+    supportedPulseFreqs_Hz(pulseFreqs),
+    rangeErrExpr(rangeErrExpr)
 {
     configureBeam();
     atmosphericExtinction = calcAtmosphericAttenuation();
@@ -62,6 +64,7 @@ ScanningDevice::ScanningDevice(ScanningDevice const &scdev){
     this->numTimeBins = scdev.numTimeBins;
     this->peakIntensityIndex = scdev.peakIntensityIndex;
     this->time_wave = scdev.time_wave;
+    this->rangeErrExpr = scdev.rangeErrExpr;
     this->state_currentPulseNumber = scdev.state_currentPulseNumber;
     this->state_lastPulseWasHit = scdev.state_lastPulseWasHit;
     this->cached_Dr2 = scdev.cached_Dr2;
@@ -84,6 +87,7 @@ void ScanningDevice::configureBeam(){
 }
 
 // Simulate energy loss from aerial particles (Carlsson et al., 2001)
+// Three-dimensional laser radar modelling (Ove Steinvall, Tomas Carlsson) ?
 double ScanningDevice::calcAtmosphericAttenuation() const {
     double q;
     double const lambda = wavelength_m * 1e9;
@@ -161,10 +165,15 @@ void ScanningDevice::doSimStep(
         Rotation exactAbsoluteBeamAttitude = calcExactAbsoluteBeamAttitude(
             platformAttitude
         );
+        double const mechanicalRangeError =
+            hasMechanicalRangeErrorExpression() ?
+                evalRangeErrorExpression() :
+                0.0;
         handlePulseComputation(SimulatedPulse(
             absoluteBeamOrigin,
             absoluteBeamAttitude,
             exactAbsoluteBeamAttitude,
+            mechanicalRangeError,
             currentGpsTime,
             legIndex,
             state_currentPulseNumber,

@@ -94,7 +94,7 @@ XmlSurveyLoader::createSurveyFromXml(
   // Apply scene geometry shift to platform waypoints
   applySceneShift(surveyNode, legNoiseDisabled, survey);
 
-  // Configure default randmoness generator
+  // Configure default randomness generator
   configureDefaultRandomnessGenerator(surveyNode);
 
   // Load platform noise

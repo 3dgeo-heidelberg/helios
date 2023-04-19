@@ -10,6 +10,7 @@
 class AbstractDetector;
 #include <scene/RaySceneIntersection.h>
 #include <noise/NoiseSource.h>
+#include <adt/exprtree/UnivarExprTreeNode.h>
 
 #include <glm/glm.hpp>
 
@@ -152,6 +153,18 @@ protected:
      */
     std::vector<double> time_wave;
 
+    /**
+     * @brief The expression tree to compute range errors as a function of
+     *  vertical angle \f$\thneta\f$
+     *
+     * \f[
+     *  \Delta r(\theta)
+     * \f]
+     *
+     * @see UnivarExprTreeNode
+     */
+    std::shared_ptr<UnivarExprTreeNode<double>> rangeErrExpr = nullptr;
+
     // ***  STATE ATTRIBUTES  *** //
     // ************************** //
     /**
@@ -159,7 +172,6 @@ protected:
 	 */
     int state_currentPulseNumber = 0;
 
-protected:
     /**
 	 * @brief Flag specifying if last pulse was hit (true) or not (false)
 	 */
@@ -208,7 +220,8 @@ public:
         double const efficiency,
         double const receiverDiameter_m,
         double const atmosphericVisibility_km,
-        double const wavelength_m
+        double const wavelength_m,
+        std::shared_ptr<UnivarExprTreeNode<double>> rangeErrExpr=nullptr
     );
     /**
      * @brief Copy constructor for the ScanningDevice
@@ -378,9 +391,21 @@ public:
         double const radius,
         double const sigma
     ) const;
+
     int calcTimePropagation(
         std::vector<double> &timeWave
     );
+
+    /**
+     * @brief Evaluate the expression tree modeling the mechanical range error
+     * @return Mechanical range error term
+     * @see ScanningDevice::rangeErrExpr
+     */
+    inline double evalRangeErrorExpression(){
+        return rangeErrExpr->eval(
+            beamDeflector->getCurrentExactBeamAngle()
+        );
+    }
 
 
     // ***  GETTERs and SETTERs  *** //
@@ -435,18 +460,41 @@ public:
      *
      * A scanning device is said to simulate mechanical errors if at least
      *  one of its components (e.g., head or deflector) simulates mechanical
-     *  errors.
+     *  errors. This includes the mechanical range error expression tree
+     *  handled directly by the scanning device.
      *
      * @return True if the scanning device simulates mechanical errors,
-     *  false otherwise
+     *  false otherwise.
      *
      * @see ScannerHead::hasMechanicalError
      * @see AbstractBeamDeflector::hasMechanicalError
      * @see SimulatedPulse::mechanicalError
+     * @see ScanningDevice::hasMechanicalRangeError
      */
     inline bool hasMechanicalError(){
         return scannerHead->hasMechanicalError() ||
-            beamDeflector->hasMechanicalError();
+            beamDeflector->hasMechanicalError() ||
+            hasMechanicalRangeErrorExpression();
+    }
+    /**
+     * @brief Check whether the scanning device models mechanical range errors
+     *  with an expression tree (true) or not (false).
+     *
+     * A scanning device is said to model mechanical range errors with an
+     *  expression tree if it has an associated expression tree for range
+     *  errors (i.e., non-null pointer).
+     *
+     * NOTE the expression tree for mechanical range errors is enough to
+     *  consider that the scanning device has mechanical errors.
+     *
+     * @return True if the scanning device models mechanical range errors with
+     *  an expression tree, False otherwise.
+     *
+     * @see ScanningDevice::hasMechanicalError
+     * @see ScanningDevice::rangeErrExpr
+     */
+    inline bool hasMechanicalRangeErrorExpression(){
+        return rangeErrExpr != nullptr;
     }
 
 };

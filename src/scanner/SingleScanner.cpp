@@ -23,6 +23,7 @@ SingleScanner::SingleScanner(
     double const receiverDiameter,
     double const atmosphericVisibility,
     int const wavelength,
+    std::shared_ptr<UnivarExprTreeNode<double>> rangeErrExpr,
     bool const writeWaveform,
     bool const calcEchowidth,
     bool const fullWaveNoise,
@@ -49,7 +50,8 @@ SingleScanner::SingleScanner(
         efficiency,
         receiverDiameter,
         atmosphericVisibility,
-        wavelength  / 1000000000.0
+        wavelength  / 1000000000.0,
+        rangeErrExpr
     )
 {
     // Report scanner state through logging system

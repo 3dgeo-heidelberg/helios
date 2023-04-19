@@ -3,7 +3,6 @@
 #include <scanner/ScannerHead.h>
 
 #include <adt/exprtree/UnivarExprTreeNode.h>
-#include <adt/exprtree/UnivarExprTreeStringFactory.h>
 
 /**
  * @author Alberto M. Esmoris Pena
@@ -24,6 +23,7 @@ protected:
      * \f[
      *  \Delta\varphi(\theta)
      * \f]
+     * @see EvalScannerHead::deflectorAngle
      */
     std::shared_ptr<UnivarExprTreeNode<double>> horizAngErrExpr;
     /**

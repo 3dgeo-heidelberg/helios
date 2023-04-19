@@ -58,6 +58,14 @@ protected:
      */
     Rotation exactAttitude;
 
+    /**
+     * @brief The mechanical range error. When there is no mechanical error
+     *  simulation, it will be exactly 0.
+     * @see SimulatedPulse::mechanicalError
+     * @see ScanningDevice::evalRangeErrorExpression
+     */
+    double mechanicalRangeError;
+
 public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //
     // ************************************ //
@@ -97,6 +105,7 @@ public:
         glm::dvec3 const &origin,
         Rotation const &attitude,
         Rotation const &exactAttitude,
+        double const mechanicalRangeError,
         double const time_ns,
         unsigned int legIndex,
         int const pulseNumber,
@@ -107,7 +116,8 @@ public:
         pulseNumber(pulseNumber),
         deviceIndex(deviceIndex),
         mechanicalError(true),
-        exactAttitude(exactAttitude)
+        exactAttitude(exactAttitude),
+        mechanicalRangeError(mechanicalRangeError)
     {}
     virtual ~SimulatedPulse() = default;
 
@@ -166,6 +176,13 @@ public:
      * @see SimulatedPulse::getExactAttitude
      */
     inline Rotation & getExactAttitudeRef() {return exactAttitude;}
+    /**
+     * @biref Obtain the simulated mechanical range error
+     * @return Simulated mechanical range error
+     * @see SimulatedPulse::mechanicalRangeError
+     */
+    inline double getMechanicalRangeError() const
+    {return mechanicalRangeError;}
 
     // ***   M E T H O D S   *** //
     // ************************* //

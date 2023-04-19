@@ -31,6 +31,7 @@ set(HELIOS_INCLUDE_DIRECTORIES
     "src/platform/trajectory/"
     "src/scanner/"
     "src/scanner/beamDeflector/"
+    "src/scanner/beamDeflector/evaluable"
     "src/scanner/detector/"
     "src/scene/"
     "src/scene/primitives/"

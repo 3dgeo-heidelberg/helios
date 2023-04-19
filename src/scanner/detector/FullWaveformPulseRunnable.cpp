@@ -408,6 +408,7 @@ void FullWaveformPulseRunnable::digestFullWaveform(
     double const minHitTime_ns
 ){
     // Extract points from waveform data via Gaussian decomposition
+    size_t const devIdx = pulse.getDeviceIndex();
     numReturns = 0;
     int win_size = (int)(
         scanner->getFWFSettings(pulse.getDeviceIndex()).winSize_ns/nsPerBin
@@ -455,11 +456,12 @@ void FullWaveformPulseRunnable::digestFullWaveform(
         shared_ptr<RaySceneIntersection> closestIntersection = nullptr;
 
         for (RaySceneIntersection intersect : intersects) {
-            double intersectDist = glm::distance(
+            double const intersectDist = glm::distance(
                 intersect.point, pulse.getOriginRef());
+            double const absDistDiff = std::fabs(intersectDist-distance);
 
-            if (std::fabs(intersectDist - distance) < minDifference) {
-                minDifference = std::fabs(intersectDist - distance);
+            if (absDistDiff < minDifference) {
+                minDifference = absDistDiff;
                 closestIntersection = make_shared<RaySceneIntersection>(
                     intersect);
             }
@@ -479,10 +481,13 @@ void FullWaveformPulseRunnable::digestFullWaveform(
                 closestIntersection->prim->material->classification;
         }
 
+        // Add distance error (mechanical range error)
+        distance += pulse.getMechanicalRangeError();
+
         // Build measurement
         Measurement tmp;
-        tmp.devIdx = pulse.getDeviceIndex();
-        tmp.devId = scanner->getDeviceId(tmp.devIdx);
+        tmp.devIdx = devIdx;
+        tmp.devId = scanner->getDeviceId(devIdx);
         tmp.beamOrigin = pulse.getOrigin();
         tmp.beamDirection = beamDir;
         tmp.distance = distance;
@@ -498,7 +503,7 @@ void FullWaveformPulseRunnable::digestFullWaveform(
         ++numReturns;
 
         // Check if maximum number of returns per pulse has been reached
-        if(!scanner->checkMaxNOR(numReturns, pulse.getDeviceIndex())) break;
+        if(!scanner->checkMaxNOR(numReturns, devIdx)) break;
     }
 
 }

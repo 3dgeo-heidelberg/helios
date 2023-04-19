@@ -843,6 +843,17 @@ XmlAssetsLoader::createScannerFromXml(tinyxml2::XMLElement *scannerNode) {
     pulseFreqs.push_back(f);
   }
   // ########## END Read supported pulse frequencies ############
+  // BEGIN : Read range error ---
+  tinyxml2::XMLElement *rangeErrorNode =
+      scannerNode->FirstChildElement("rangeError");
+  std::shared_ptr<UnivarExprTreeNode<double>> rangeErrExpr = nullptr;
+  if(rangeErrorNode != nullptr){
+      rangeErrExpr = XmlUtils::createUnivarExprTree<double>(
+          rangeErrorNode,
+          {{"THETA", "t"}}
+      );
+  }
+  // --- END : Read range error
 
   // ########### BEGIN Read all the rest #############
   double beamDiv_rad = boost::get<double>(XmlUtils::getAttribute(
@@ -876,11 +887,13 @@ XmlAssetsLoader::createScannerFromXml(tinyxml2::XMLElement *scannerNode) {
           ++nChannels;
           chan = chan->NextSiblingElement("channel");
       }
+
       std::vector<ScanningDevice> scanDevs(
           nChannels, ScanningDevice(
               0, id, beamDiv_rad, emitterPosition, emitterAttitude,
               pulseFreqs, pulseLength_ns, avgPower, beamQuality, efficiency,
-              receiverDiameter, visibility, wavelength*1e-9
+              receiverDiameter, visibility, wavelength*1e-9,
+              rangeErrExpr
           )
       );
       scanner = std::make_shared<MultiScanner>(
@@ -905,7 +918,7 @@ XmlAssetsLoader::createScannerFromXml(tinyxml2::XMLElement *scannerNode) {
       scanner = std::make_shared<SingleScanner>(
           beamDiv_rad, emitterPosition, emitterAttitude, pulseFreqs,
           pulseLength_ns, id, avgPower, beamQuality, efficiency,
-          receiverDiameter, visibility, wavelength
+          receiverDiameter, visibility, wavelength, rangeErrExpr
       );
       // Parse max number of returns per pulse
       scanner->setMaxNOR(boost::get<int>(XmlUtils::getAttribute(
