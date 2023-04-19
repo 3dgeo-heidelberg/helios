@@ -22,7 +22,7 @@ std::shared_ptr<Scanner> MultiScanner::clone(){
 
 void MultiScanner::_clone(Scanner &sc) const{
     // Call parent clone method
-    MultiScanner::_clone(sc);
+    Scanner::_clone(sc);
     // Clone attributes from MultiScanner class itself
     //MultiScanner &ssc = static_cast<MultiScanner &>(sc);  // Not used
     //ssc.scanDevs = scanDevs;  // Already handled by copy constructor

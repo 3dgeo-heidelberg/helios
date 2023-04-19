@@ -421,8 +421,9 @@ prepareNextSubExpression(
 
 template <typename NumericType, typename ExprTreeType>
 struct UnivarExprTreeStringFactory<NumericType, ExprTreeType>::Symbol
-UnivarExprTreeStringFactory<NumericType, ExprTreeType>::\
-extractNamedOrVariableSymbol(
+UnivarExprTreeStringFactory<
+    NumericType, ExprTreeType
+>::extractNamedOrVariableSymbol(
     std::string const &symstr
 ){
     // Check named number : pi
