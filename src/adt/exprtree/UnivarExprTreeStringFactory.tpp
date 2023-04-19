@@ -1,5 +1,6 @@
 #include <UnivarExprTreeStringFactory.h>
 #include <adt/bintree/BinaryTreeFastDepthIterator.h>
+#include <maths/MathConstants.h>
 
 #include <sstream>
 
@@ -332,7 +333,7 @@ UnivarExprTreeStringFactory<NumericType, ExprTreeType>::nextSymbol(
 
 template <typename NumericType, typename ExprTreeType>
 void UnivarExprTreeStringFactory<NumericType, ExprTreeType>::handleSymbol(
-    struct UnivarExprTreeStringFactory<NumericType, ExprTreeType>::\
+    typename UnivarExprTreeStringFactory<NumericType, ExprTreeType>::\
         Symbol &symbol
 ){
     // Handle symbol depending on type
@@ -402,7 +403,7 @@ void UnivarExprTreeStringFactory<NumericType, ExprTreeType>::handleSymbol(
 template <typename NumericType, typename ExprTreeType>
 void UnivarExprTreeStringFactory<NumericType, ExprTreeType>::\
 prepareNextSubExpression(
-    struct UnivarExprTreeStringFactory<NumericType, ExprTreeType>::\
+    typename UnivarExprTreeStringFactory<NumericType, ExprTreeType>::\
         Symbol const &symbol,
     std::string &subexpr
 ){
@@ -420,10 +421,9 @@ prepareNextSubExpression(
 }
 
 template <typename NumericType, typename ExprTreeType>
-struct UnivarExprTreeStringFactory<NumericType, ExprTreeType>::Symbol
-UnivarExprTreeStringFactory<
-    NumericType, ExprTreeType
->::extractNamedOrVariableSymbol(
+typename UnivarExprTreeStringFactory<NumericType, ExprTreeType>::Symbol
+UnivarExprTreeStringFactory<NumericType, ExprTreeType>::\
+extractNamedOrVariableSymbol(
     std::string const &symstr
 ){
     // Check named number : pi
