@@ -14,7 +14,7 @@ void RegUnivarExprTreeStringFactory<NumericType, ExprTreeType>::initBuilding(){
 // ********************** //
 template <typename NumericType, typename ExprTreeType>
 void RegUnivarExprTreeStringFactory<NumericType, ExprTreeType>::handleSymbol(
-    struct UnivarExprTreeStringFactory<NumericType, ExprTreeType>::\
+    typename UnivarExprTreeStringFactory<NumericType, ExprTreeType>::\
         Symbol &symbol
 ){
     // Handle register symbols here
@@ -51,7 +51,7 @@ void RegUnivarExprTreeStringFactory<NumericType, ExprTreeType>::handleSymbol(
 template <typename NumericType, typename ExprTreeType>
 void RegUnivarExprTreeStringFactory<NumericType, ExprTreeType>::\
 prepareNextSubExpression(
-    struct UnivarExprTreeStringFactory<NumericType, ExprTreeType>::\
+    typename UnivarExprTreeStringFactory<NumericType, ExprTreeType>::\
         Symbol const &symbol,
     std::string &subexpr
 ){
@@ -74,7 +74,7 @@ prepareNextSubExpression(
 }
 
 template <typename NumericType, typename ExprTreeType>
-struct UnivarExprTreeStringFactory<NumericType, ExprTreeType>::Symbol
+typename UnivarExprTreeStringFactory<NumericType, ExprTreeType>::Symbol
 RegUnivarExprTreeStringFactory<NumericType, ExprTreeType>::\
 extractNamedOrVariableSymbol(
     std::string const &symstr
@@ -93,7 +93,7 @@ extractNamedOrVariableSymbol(
         }
         std::string regIdxStr = symstr.substr(2, numConsecutiveDigits);
         // Build register symbol (using EXTENSION symbol type)
-        struct UnivarExprTreeStringFactory<NumericType, ExprTreeType>::\
+        typename UnivarExprTreeStringFactory<NumericType, ExprTreeType>::\
             Symbol symbol;
         symbol.type = UnivarExprTreeNode<NumericType>::SymbolType::EXTENSION;
         symbol.str = regIdxStr;

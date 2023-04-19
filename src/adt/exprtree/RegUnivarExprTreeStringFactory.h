@@ -71,7 +71,7 @@ public:
      * @see UnivarExprTreeStringFactory::handleSymbol
      */
     void handleSymbol(
-        struct UnivarExprTreeStringFactory<NumericType, ExprTreeType>::\
+        typename UnivarExprTreeStringFactory<NumericType, ExprTreeType>::\
             Symbol &symbol
     ) override;
     /**
@@ -98,7 +98,7 @@ public:
      * @see UnivarExprTreeStringFactory::prepareNextSubExpression
      */
     void prepareNextSubExpression(
-        struct UnivarExprTreeStringFactory<NumericType, ExprTreeType>::\
+        typename UnivarExprTreeStringFactory<NumericType, ExprTreeType>::\
             Symbol const &symbol,
         std::string &subexpr
     ) override;
@@ -108,7 +108,7 @@ public:
      *  also extract register symbols by name
      * @see UnivarExprTreeStringFactory::extractNamedOrVariableSymbol
      */
-    struct UnivarExprTreeStringFactory<NumericType, ExprTreeType>::Symbol
+    typename UnivarExprTreeStringFactory<NumericType, ExprTreeType>::Symbol
     extractNamedOrVariableSymbol(std::string const &symstr) override;
     /**
      * @brief Extends the UnivarExprTreeStringFactory::findEndOfNameIdx method
