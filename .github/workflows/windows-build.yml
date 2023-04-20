@@ -204,7 +204,7 @@ jobs:
         id: downloadgdal1
         name: Download GDAL (1/2)
         with:
-          url: "https://build2.gisinternals.com/sdk/downloads/release-1928-x64-gdal-3-5-3-mapserver-8-0-0-libs.zip"
+          url: "https://download.gisinternals.com/sdk/downloads/release-1928-x64-gdal-3-5-3-mapserver-8-0-0-libs.zip"
           target: lib/gdal.zip
 
 
