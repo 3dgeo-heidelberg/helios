@@ -64,7 +64,7 @@ protected:
      * @see SimulatedPulse::mechanicalError
      * @see ScanningDevice::evalRangeErrorExpression
      */
-    double mechanicalRangeError;
+    double mechanicalRangeError = 0.0;
 
 public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //
@@ -92,7 +92,8 @@ public:
         pulseNumber(pulseNumber),
         deviceIndex(deviceIndex),
         mechanicalError(false),
-        exactAttitude(attitude)
+        exactAttitude(attitude),
+        mechanicalRangeError(0.0)
     {}
     /**
      * @brief Simulated laser pulse constructor for simulations including
@@ -183,6 +184,15 @@ public:
      */
     inline double getMechanicalRangeError() const
     {return mechanicalRangeError;}
+    /**
+     * @brief Check whether the simulated pulse contains mechanical errors
+     *  (True) or not (False).
+     * @return True if the simulated pulse contains mechanical errors, False
+     *  otherwise
+     * @see SimulatedPulse::mechanicalError
+     */
+    inline bool hasMechanicalError() const
+    {return mechanicalError;}
 
     // ***   M E T H O D S   *** //
     // ************************* //

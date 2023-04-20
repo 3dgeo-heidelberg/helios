@@ -482,7 +482,9 @@ void FullWaveformPulseRunnable::digestFullWaveform(
         }
 
         // Add distance error (mechanical range error)
-        distance += pulse.getMechanicalRangeError();
+        if(pulse.hasMechanicalError()) {
+            distance += pulse.getMechanicalRangeError();
+        }
 
         // Build measurement
         Measurement tmp;
