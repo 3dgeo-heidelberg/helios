@@ -81,6 +81,10 @@ bool HDA_SimStepRecorder::isAnyBufferOpen(){
     anyOpen |= beamRoll->isOpen();
     anyOpen |= beamPitch->isOpen();
     anyOpen |= beamYaw->isOpen();
+    anyOpen |= exactDeflectionAngle->isOpen();
+    anyOpen |= deflectionAngle->isOpen();
+    anyOpen |= exactHeadAngle->isOpen();
+    anyOpen |= headAngle->isOpen();
     anyOpen |= measErrSeq->isOpen();
     anyOpen |= measErrPar->isOpen();
     return anyOpen;
@@ -157,6 +161,13 @@ void HDA_SimStepRecorder::openBuffers(){
     scannerHeadYaw = std::make_shared<HDA_RecordBuffer<double>>(
         craftOutputPath("scanner_head_yaw.csv")
     );
+    exactHeadAngle = std::make_shared<HDA_RecordBuffer<double>>(
+        craftOutputPath("scanner_head_exact_angle.csv")
+    );
+    headAngle = std::make_shared<HDA_RecordBuffer<double>>(
+        craftOutputPath("scanner_head_angle.csv")
+    );
+
 
     // Open deflector's pulses related buffers
     deflectorEmittingRoll = std::make_shared<HDA_RecordBuffer<double>>(
@@ -167,6 +178,12 @@ void HDA_SimStepRecorder::openBuffers(){
     );
     deflectorEmittingYaw = std::make_shared<HDA_RecordBuffer<double>>(
         craftOutputPath("deflector_emitting_yaw.csv")
+    );
+    exactDeflectionAngle = std::make_shared<HDA_RecordBuffer<double>>(
+        craftOutputPath("deflector_exact_angle.csv")
+    );
+    deflectionAngle = std::make_shared<HDA_RecordBuffer<double>>(
+        craftOutputPath("deflector_angle.csv")
     );
 
     // Open platform related buffers
@@ -227,11 +244,15 @@ void HDA_SimStepRecorder::closeBuffers(){
     scannerHeadRoll->close();
     scannerHeadPitch->close();
     scannerHeadYaw->close();
+    exactHeadAngle->close();
+    headAngle->close();
 
     // Close deflector buffers
     deflectorEmittingRoll->close();
     deflectorEmittingPitch->close();
     deflectorEmittingYaw->close();
+    exactDeflectionAngle->close();
+    deflectionAngle->close();
 
     // Close beam buffers
     beamOriginX->close();
@@ -324,6 +345,8 @@ void HDA_SimStepRecorder::recordScannerHead(){
     scannerHeadRoll->push(roll);
     scannerHeadPitch->push(pitch);
     scannerHeadYaw->push(yaw);
+    exactHeadAngle->push(sh.getExactRotateCurrent());
+    headAngle->push(sh.getRotateCurrent());
 }
 
 void HDA_SimStepRecorder::recordDeflector(){
@@ -337,6 +360,8 @@ void HDA_SimStepRecorder::recordDeflector(){
     deflectorEmittingRoll->push(roll);
     deflectorEmittingPitch->push(pitch);
     deflectorEmittingYaw->push(yaw);
+    exactDeflectionAngle->push(bd.getCurrentExactBeamAngle());
+    deflectionAngle->push(bd.state_currentBeamAngle_rad);
 }
 
 void HDA_SimStepRecorder::recordBeam(){
@@ -352,7 +377,12 @@ void HDA_SimStepRecorder::recordBeam(){
     // Record beam attitude
     Rotation ba = s.calcAbsoluteBeamAttitude();
     double roll, pitch, yaw;
-    ba.getAngles(&RotationOrder::XYZ, roll, pitch, yaw);
+    try {
+        ba.getAngles(&RotationOrder::XYZ, roll, pitch, yaw);
+    }
+    catch(HeliosException &hex){ // Catch gimbal lock
+        roll = 0; pitch = 0; yaw = 0;
+    }
     beamRoll->push(roll);
     beamPitch->push(pitch);
     beamYaw->push(yaw);

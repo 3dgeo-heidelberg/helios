@@ -1,4 +1,5 @@
-#pragma once
+#ifndef _HELIOS_XMLUTILS_H_
+#define _HELIOS_XMLUTILS_H_
 
 #include <Color4f.h>
 #include <typedef.h>
@@ -6,11 +7,13 @@
 #include <scene/dynamic/DynSequence.h>
 #include <maths/rigidmotion/RigidMotion.h>
 #include <DynMotion.h>
+#include <adt/exprtree/UnivarExprTreeNode.h>
 
 #include <tinyxml2.h>
 
 #include <map>
 #include <vector>
+#include <unordered_map>
 
 using namespace rigidmotion;
 
@@ -134,4 +137,34 @@ public:
         std::string const &id,
         std::string const &caller
     );
+
+    /**
+     * @brief Create a univariate expression tree from given XML expression
+     *  node (must have an "expr" attribute containing the mathematical
+     *  expression)
+     * @tparam NumericType The numeric type of the expression tree
+     * @param exprNode The XML expression node
+     * @return Built univariate expression tree
+     * @see XmlUtils::createUnivarExprTree(XMLElement *, unordered_map const &)
+     */
+    template <typename NumericType=double>
+    static std::shared_ptr<UnivarExprTreeNode<NumericType>>
+    createUnivarExprTree(tinyxml2::XMLElement *exprNode);
+
+    /**
+     * @brief Like XmlUtils::createUnivarExprTree(XMLElement *) but applying
+     *  the rename map (dictionary) before parsing the expression
+     * @param[in] renameMap The <UserFriendly, TreeFriendly> dictionary to
+     *  translate between human language and expression tree language.
+     * @see XmlUtils::createUnivarExprTree(XMLElement *)
+     */
+    template <typename NumericType=double>
+    static std::shared_ptr<UnivarExprTreeNode<NumericType>>
+    createUnivarExprTree(
+        tinyxml2::XMLElement *exprNode,
+        std::unordered_map<std::string, std::string> const & renameMap
+    );
 };
+
+#include <assetloading/XmlUtils.tpp>
+#endif

@@ -1,22 +1,29 @@
 #include <UnivarExprTreeStringFactory.h>
 #include <adt/bintree/BinaryTreeFastDepthIterator.h>
+#include <maths/MathConstants.h>
 
 #include <sstream>
 
 // ***  CONSTANTS  *** //
 // ******************* //
-template <typename NumericType> unsigned int const
-    UnivarExprTreeStringFactory<NumericType>::OP_ADD_BASE_PRIORITY = 100;
-template <typename NumericType> unsigned int const
-    UnivarExprTreeStringFactory<NumericType>::OP_MUL_BASE_PRIORITY = 101;
-template <typename NumericType> unsigned int const
-    UnivarExprTreeStringFactory<NumericType>::OP_POW_BASE_PRIORITY = 102;
-template <typename NumericType> unsigned int const
-    UnivarExprTreeStringFactory<NumericType>::FUN_BASE_PRIORITY = 110;
-template <typename NumericType> unsigned int const
-    UnivarExprTreeStringFactory<NumericType>::BRACKET_BASE_PRIORITY = 1000000;
-template <typename NumericType> char const
-    UnivarExprTreeStringFactory<NumericType>::EXPRESSION_CHARS[] = {
+template <typename NumericType, typename ExprTreeType> unsigned int const
+    UnivarExprTreeStringFactory<NumericType, ExprTreeType>::\
+    OP_ADD_BASE_PRIORITY = 100;
+template <typename NumericType, typename ExprTreeType> unsigned int const
+    UnivarExprTreeStringFactory<NumericType, ExprTreeType>::\
+    OP_MUL_BASE_PRIORITY = 101;
+template <typename NumericType, typename ExprTreeType> unsigned int const
+    UnivarExprTreeStringFactory<NumericType, ExprTreeType>::\
+    OP_POW_BASE_PRIORITY = 102;
+template <typename NumericType, typename ExprTreeType> unsigned int const
+    UnivarExprTreeStringFactory<NumericType, ExprTreeType>::\
+    FUN_BASE_PRIORITY = 110;
+template <typename NumericType, typename ExprTreeType> unsigned int const
+    UnivarExprTreeStringFactory<NumericType, ExprTreeType>::\
+    BRACKET_BASE_PRIORITY = 1000000;
+template <typename NumericType, typename ExprTreeType> char const
+    UnivarExprTreeStringFactory<NumericType, ExprTreeType>::\
+    EXPRESSION_CHARS[] = {
     'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', // Lower case
     'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', // letters
     'y', 'z',
@@ -26,10 +33,10 @@ template <typename NumericType> char const
     '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',           // Digits
     '.', ',',                                                   // Separators
     '+', '-', '*', '/', '^', '(', ')'                           // Operators
-};
+    };
 
-template <typename NumericType> std::string const
-UnivarExprTreeStringFactory<NumericType>::FUNCTION_NAMES[] = {
+template <typename NumericType, typename ExprTreeType> std::string const
+UnivarExprTreeStringFactory<NumericType, ExprTreeType>::FUNCTION_NAMES[] = {
     "exp",      "ln",       "sqrt",     "abs",      "cos",      "sin",
     "tan",      "acos",     "asin",     "atan",     "cosh",     "sinh",
     "tanh"
@@ -40,13 +47,13 @@ UnivarExprTreeStringFactory<NumericType>::FUNCTION_NAMES[] = {
 
 // ***  EXPRESSION TREE NODE STRING FACTORY INTERFACE  *** //
 // ******************************************************* //
-template <typename NumericType> IExprTreeNode<NumericType, NumericType> *
-UnivarExprTreeStringFactory<NumericType>::make(std::string const &expr){
+template <typename NumericType, typename ExprTreeType>
+IExprTreeNode<NumericType, NumericType> *
+UnivarExprTreeStringFactory<NumericType, ExprTreeType>::make(
+    std::string const &expr
+){
     // Initialize building process
-    basePriority = 0;
-    lastReadIsOpenPriorityOrSeparator = false;
-    nodes.clear();
-    ops.clear();
+    initBuilding();
 
     // Do iterative building
     return makeIterative(prepareExpressionString(expr));
@@ -57,8 +64,17 @@ UnivarExprTreeStringFactory<NumericType>::make(std::string const &expr){
 
 // ***  MAKE METHODS  *** //
 // ********************** //
-template <typename NumericType> IExprTreeNode<NumericType, NumericType> *
-UnivarExprTreeStringFactory<NumericType>::makeIterative(
+template <typename NumericType, typename ExprTreeType>
+void UnivarExprTreeStringFactory<NumericType, ExprTreeType>::initBuilding(){
+    basePriority = 0;
+    lastReadIsOpenPriorityOrSeparator = false;
+    nodes.clear();
+    ops.clear();
+}
+
+template <typename NumericType, typename ExprTreeType>
+IExprTreeNode<NumericType, NumericType> *
+UnivarExprTreeStringFactory<NumericType, ExprTreeType>::makeIterative(
     std::string const &expr
 ){
     // Iterate over input expression until it has been entirely digested
@@ -69,81 +85,15 @@ UnivarExprTreeStringFactory<NumericType>::makeIterative(
         if(subexpr[0] == ',') subexpr = subexpr.substr(1); // Skip separator
 
         // Handle symbol depending on type
-        switch(symbol.type){
-            case UnivarExprTreeNode<NumericType>::SymbolType::OPERATOR: {
-                if(isValidOpString(symbol.str)) handleOp(symbol);
-                else {
-                    std::stringstream ss;
-                    ss  << "UnivarExprTreeStringFactory::makeRecursive "
-                        << "received an unexpected operator: \""
-                        << symbol.str << "\"";
-                    throw HeliosException(ss.str());
-                }
-                break;
-            }
-            case UnivarExprTreeNode<NumericType>::SymbolType::NUMBER: {
-                UnivarExprTreeNode<NumericType> *node =
-                    new UnivarExprTreeNode<NumericType>();
-                node->symbolType = symbol.type;
-                node->num = (NumericType) stod(symbol.str);
-                nodes.push_back(node);
-                break;
-            }
-            case UnivarExprTreeNode<NumericType>::SymbolType::VARIABLE: {
-                if(symbol.str == "-t"){ // Negative variable
-                    UnivarExprTreeNode<NumericType> *right =
-                        new UnivarExprTreeNode<NumericType>();
-                    right->symbolType = symbol.type;
-                    UnivarExprTreeNode<NumericType> *left =
-                        new UnivarExprTreeNode<NumericType>();
-                    left->symbolType =
-                        UnivarExprTreeNode<NumericType>::SymbolType::NUMBER;
-                    left->num = -1.0;
-                    UnivarExprTreeNode<NumericType> *node =
-                        new UnivarExprTreeNode<NumericType>(left, right);
-                    node->symbolType =
-                        UnivarExprTreeNode<NumericType>::SymbolType::OPERATOR;
-                    node->op = UnivarExprTreeNode<NumericType>::OpType::OP_MUL;
-                    nodes.push_back(node);
-                }
-                else { // Positive variable
-                    UnivarExprTreeNode<NumericType> *node =
-                        new UnivarExprTreeNode<NumericType>();
-                    node->symbolType = symbol.type;
-                    nodes.push_back(node);
-                }
-                break;
-            }
-            case UnivarExprTreeNode<NumericType>::SymbolType::FUNCTION: {
-                if(isValidFunString(symbol.str)) handleFun(symbol);
-                else{
-                    std::stringstream ss;
-                    ss  << "UnivarExprTreeStringFactory::makeRecursive "
-                        << "received an unexpected function: \""
-                        << symbol.str << "\"";
-                    throw HeliosException(ss.str());
-                }
-                break;
-            }
-        }
+        handleSymbol(symbol);
 
         // Prepare for next iteration
-        if( // Handle subexpr starts with pi
-            subexpr.size() >= 2 && subexpr.substr(0, 2) == "pi" &&
-            (subexpr.size() == 2 || !std::isalpha(subexpr[2]))
-        )
-            subexpr = subexpr.substr(2);
-        else if( // Handle subexpr starts with e
-            subexpr.size() >= 1 && subexpr.substr(0, 1) == "e" &&
-            (subexpr.size() == 1 || !std::isalpha(subexpr[1]))
-        )
-            subexpr = subexpr.substr(1);
-        else subexpr = subexpr.substr(symbol.str.size());
+        prepareNextSubExpression(symbol, subexpr);
     }
 
     // Do the pending flushes after finishing the iterative process
     while(!ops.empty()) flush();
-    UnivarExprTreeNode<NumericType> * tree = nodes[0];
+    ExprTreeType * tree = nodes[0];
 
     // Optimize the built Univariate Expression Tree
     doIPowOptimization(tree);
@@ -153,8 +103,8 @@ UnivarExprTreeStringFactory<NumericType>::makeIterative(
 }
 
 
-template <typename NumericType>
-void UnivarExprTreeStringFactory<NumericType>::flush(){
+template <typename NumericType, typename ExprTreeType>
+void UnivarExprTreeStringFactory<NumericType, ExprTreeType>::flush(){
     // Get, remove and validate next top operator
     Symbol &symbol = ops.back();
     if(symbol.type != UnivarExprTreeNode<NumericType>::SymbolType::OPERATOR){
@@ -182,12 +132,11 @@ void UnivarExprTreeStringFactory<NumericType>::flush(){
         if(!ops.empty() && ops.back().str == "atan2") flush();
     }
     else { // Build new tree by merging two top trees with operator as root
-        UnivarExprTreeNode<NumericType> * right = nodes.back();
+        ExprTreeType * right = nodes.back();
         nodes.pop_back();
-        UnivarExprTreeNode<NumericType> * left = nodes.back();
+        ExprTreeType * left = nodes.back();
         nodes.pop_back();
-        UnivarExprTreeNode<NumericType> * newNode =
-            new UnivarExprTreeNode<NumericType>(left, right);
+        ExprTreeType * newNode = newExprTree(left, right);
         newNode->symbolType =
             UnivarExprTreeNode<NumericType>::SymbolType::OPERATOR;
         newNode->setOperator(symbol.str);
@@ -200,8 +149,9 @@ void UnivarExprTreeStringFactory<NumericType>::flush(){
 
 // ***  POST-PROCESS METHODS  *** //
 // ****************************** //
-template <typename NumericType>
-void UnivarExprTreeStringFactory<NumericType>::doIPowOptimization(
+template <typename NumericType, typename ExprTreeType>
+void UnivarExprTreeStringFactory<NumericType, ExprTreeType>::\
+doIPowOptimization(
     UnivarExprTreeNode<NumericType> *_node
 ){
     BinaryTreeFastDepthIterator<UnivarExprTreeNode<NumericType>> btdi(_node);
@@ -224,9 +174,10 @@ void UnivarExprTreeStringFactory<NumericType>::doIPowOptimization(
 
 // ***  HANDLE METHODS  *** //
 // ************************ //
-template <typename NumericType>
-void UnivarExprTreeStringFactory<NumericType>::handleOp(
-    UnivarExprTreeStringFactory<NumericType>::Symbol const &symbol
+template <typename NumericType, typename ExprTreeType>
+void UnivarExprTreeStringFactory<NumericType, ExprTreeType>::handleOp(
+    UnivarExprTreeStringFactory<NumericType, ExprTreeType>::
+        Symbol const &symbol
 ){
     if(symbol.str == ")"){ // On close priority / function close operator
         while(ops.back().str != "(") flush();
@@ -245,12 +196,12 @@ void UnivarExprTreeStringFactory<NumericType>::handleOp(
     }
 }
 
-template <typename NumericType>
-void UnivarExprTreeStringFactory<NumericType>::handleFun(
-    UnivarExprTreeStringFactory<NumericType>::Symbol const &symbol
+template <typename NumericType, typename ExprTreeType>
+void UnivarExprTreeStringFactory<NumericType, ExprTreeType>::handleFun(
+    UnivarExprTreeStringFactory<NumericType, ExprTreeType>::\
+        Symbol const &symbol
 ){
-    UnivarExprTreeNode<NumericType> *node =
-        new UnivarExprTreeNode<NumericType>();
+    ExprTreeType *node = newExprTree();
     node->symbolType = UnivarExprTreeNode<NumericType>::SymbolType::FUNCTION;
     nodes.push_back(node);
     if(symbol.str == "exp")
@@ -286,9 +237,9 @@ void UnivarExprTreeStringFactory<NumericType>::handleFun(
 
 // ***  UTIL METHODS  *** //
 // ********************** //
-template <typename NumericType>
-typename UnivarExprTreeStringFactory<NumericType>::Symbol
-UnivarExprTreeStringFactory<NumericType>::nextSymbol(
+template <typename NumericType, typename ExprTreeType>
+typename UnivarExprTreeStringFactory<NumericType, ExprTreeType>::Symbol
+UnivarExprTreeStringFactory<NumericType, ExprTreeType>::nextSymbol(
     std::string const &expr
 ){
     // Flush until start ( of atan2 and skip first character if it is a comma
@@ -327,61 +278,26 @@ UnivarExprTreeStringFactory<NumericType>::nextSymbol(
 
     // Find next symbol when initial character is a letter
     if(std::isalpha(c0)){
-        size_t nonAlphaIdx = m;  // Index of the first non-letter character
-        for(size_t i = 1 ; i < m ; ++i){  // Iteratively find first non-letter
-            if(!std::isalpha(expr[i])){
-                nonAlphaIdx = i;
-                break;
-            }
-        }
-        // Extract consecutive text token
-        std::string symstr = expr.substr(0, nonAlphaIdx);
-        if(symstr == "atan" && expr[nonAlphaIdx] == '2'){ // Handle atan2 case
-            ++nonAlphaIdx;
-            symstr = expr.substr(0, nonAlphaIdx);
-        }
+        // Find index of first non-name char in expr and extract the name
+        size_t const nonNameIdx = findEndOfNameIdx(expr); // Find
+        std::string symstr = expr.substr(0, nonNameIdx); // Extract
         // Check named numbers and variables
-        if(expr[nonAlphaIdx] != '('){
+        if(expr[nonNameIdx] != '('){
             if( // If last char is an operator other than opening parentheses
-                nonAlphaIdx==m ||  // Or there is nothing after named num/var
-                expr[nonAlphaIdx] == '+'    || expr[nonAlphaIdx] == '-' ||
-                expr[nonAlphaIdx] == '*'    || expr[nonAlphaIdx] == '/' ||
-                expr[nonAlphaIdx] == '^'    || expr[nonAlphaIdx] == ')' ||
-                expr[nonAlphaIdx] == ','  // Also a separator
+                nonNameIdx==m ||  // Or there is nothing after named num/var
+                expr[nonNameIdx] == '+'    || expr[nonNameIdx] == '-' ||
+                expr[nonNameIdx] == '*'    || expr[nonNameIdx] == '/' ||
+                expr[nonNameIdx] == '^'    || expr[nonNameIdx] == ')' ||
+                expr[nonNameIdx] == ','  // Also a separator
             ){
-                // Check named number : pi
-                if(symstr == "pi"){
-                    Symbol symbol;
-                    symbol.type =
-                        UnivarExprTreeNode<NumericType>::SymbolType::NUMBER;
-                    symbol.str = stringFromNumber(M_PI);
-                    lastReadIsOpenPriorityOrSeparator = false;
-                    return symbol;
-                }
-                // Check named number : e
-                if(symstr == "e"){
-                    Symbol symbol;
-                    symbol.type =
-                        UnivarExprTreeNode<NumericType>::SymbolType::NUMBER;
-                    symbol.str = stringFromNumber(M_E);
-                    lastReadIsOpenPriorityOrSeparator = false;
-                    return symbol;
-                }
-                // Check variable : t
-                if(symstr == "t"){
-                    Symbol symbol;
-                    symbol.type =
-                        UnivarExprTreeNode<NumericType>::SymbolType::VARIABLE;
-                    symbol.str = symstr;
-                    lastReadIsOpenPriorityOrSeparator = false;
-                    return symbol;
-                }
+                Symbol symbol = extractNamedOrVariableSymbol(symstr);
+                if(!symbol.str.empty()) return symbol;
             }
             else{ // Error : Unexpected case
                 std::stringstream ss;
                 ss << "UnivarExprTreeStringFactory::nextSymbol found an "
                    << "unexpected character after operator/function name: "
-                   << "'" << expr[nonAlphaIdx] << "'";
+                   << "'" << expr[nonNameIdx] << "'";
                 throw HeliosException(ss.str());
             }
         }
@@ -400,26 +316,8 @@ UnivarExprTreeStringFactory<NumericType>::nextSymbol(
 
     // Find next symbol when initial character is susceptible to be a number
     if(c0 == '-'){  // Handle negative numbers
-        const char c1 = expr[1];
-        if(c1 == 't'){  // Handle negative variable
-            Symbol symbol;
-            symbol.type =
-                UnivarExprTreeNode<NumericType>::SymbolType::VARIABLE;
-            symbol.str = "-t";
-            lastReadIsOpenPriorityOrSeparator = false;
-            return symbol;
-        }
-        if( (!std::isdigit(c1)) && c1 != '.'){
-            std::stringstream ss;
-            ss  << "UnivarExprTreeStringFactory::nextSymbol failed to parse "
-                << "a negative number from the expression: \""
-                << expr << "\"";
-            throw HeliosException(ss.str());
-        }
-        Symbol symbol = craftNumSymbol(expr.substr(1));
-        symbol.str = "-" + symbol.str;
         lastReadIsOpenPriorityOrSeparator = false;
-        return symbol;
+        return craftNegSymbol(expr);
     }
     else if(c0 == '.' || std::isdigit(c0)){  // Handle non-negative numbers
         lastReadIsOpenPriorityOrSeparator = false;
@@ -433,8 +331,157 @@ UnivarExprTreeStringFactory<NumericType>::nextSymbol(
     throw HeliosException(ss.str());
 }
 
-template <typename NumericType> std::string
-UnivarExprTreeStringFactory<NumericType>::prepareExpressionString(
+template <typename NumericType, typename ExprTreeType>
+void UnivarExprTreeStringFactory<NumericType, ExprTreeType>::handleSymbol(
+    typename UnivarExprTreeStringFactory<NumericType, ExprTreeType>::\
+        Symbol &symbol
+){
+    // Handle symbol depending on type
+    switch(symbol.type){
+        case UnivarExprTreeNode<NumericType>::SymbolType::OPERATOR: {
+            if(isValidOpString(symbol.str)) handleOp(symbol);
+            else {
+                std::stringstream ss;
+                ss  << "UnivarExprTreeStringFactory::makeIterative "
+                    << "received an unexpected operator: \""
+                    << symbol.str << "\"";
+                throw HeliosException(ss.str());
+            }
+            break;
+        }
+        case UnivarExprTreeNode<NumericType>::SymbolType::NUMBER: {
+            ExprTreeType *node = newExprTree();
+            node->symbolType = symbol.type;
+            node->num = (NumericType) stod(symbol.str);
+            nodes.push_back(node);
+            break;
+        }
+        case UnivarExprTreeNode<NumericType>::SymbolType::VARIABLE: {
+            if(symbol.str == "-t"){ // Negative variable
+                ExprTreeType *right = newExprTree();
+                right->symbolType = symbol.type;
+                ExprTreeType *left = newExprTree();
+                left->symbolType =
+                    UnivarExprTreeNode<NumericType>::SymbolType::NUMBER;
+                left->num = -1.0;
+                ExprTreeType *node = newExprTree(left, right);
+                node->symbolType =
+                    UnivarExprTreeNode<NumericType>::SymbolType::OPERATOR;
+                node->op = UnivarExprTreeNode<NumericType>::OpType::OP_MUL;
+                nodes.push_back(node);
+            }
+            else { // Positive variable
+                ExprTreeType *node = newExprTree();
+                node->symbolType = symbol.type;
+                nodes.push_back(node);
+            }
+            break;
+        }
+        case UnivarExprTreeNode<NumericType>::SymbolType::FUNCTION: {
+            if(isValidFunString(symbol.str)) handleFun(symbol);
+            else{
+                std::stringstream ss;
+                ss  << "UnivarExprTreeStringFactory::makeIterative "
+                    << "received an unexpected function: \""
+                    << symbol.str << "\"";
+                throw HeliosException(ss.str());
+            }
+            break;
+        }
+        case UnivarExprTreeNode<NumericType>::SymbolType::EXTENSION: {
+            std::stringstream ss;
+            ss  << "UnivarExprTreeStringFactory::makeIterative received an "
+                << "unexpected symbol: \"" << symbol.str << "\"\n"
+                << "It was understood as a EXTENSION but was not properly "
+                << "captured by any derived tree.";
+            throw HeliosException(ss.str());
+        }
+    }
+
+}
+
+template <typename NumericType, typename ExprTreeType>
+void UnivarExprTreeStringFactory<NumericType, ExprTreeType>::\
+prepareNextSubExpression(
+    typename UnivarExprTreeStringFactory<NumericType, ExprTreeType>::\
+        Symbol const &symbol,
+    std::string &subexpr
+){
+    if( // Handle subexpr starts with pi
+        subexpr.size() >= 2 && subexpr.substr(0, 2) == "pi" &&
+        (subexpr.size() == 2 || !std::isalpha(subexpr[2]))
+    )
+        subexpr = subexpr.substr(2);
+    else if( // Handle subexpr starts with e
+        subexpr.size() >= 1 && subexpr.substr(0, 1) == "e" &&
+        (subexpr.size() == 1 || !std::isalpha(subexpr[1]))
+    )
+        subexpr = subexpr.substr(1);
+    else subexpr = subexpr.substr(symbol.str.size());
+}
+
+template <typename NumericType, typename ExprTreeType>
+typename UnivarExprTreeStringFactory<NumericType, ExprTreeType>::Symbol
+UnivarExprTreeStringFactory<NumericType, ExprTreeType>::\
+extractNamedOrVariableSymbol(
+    std::string const &symstr
+){
+    // Check named number : pi
+    if(symstr == "pi"){
+        Symbol symbol;
+        symbol.type = UnivarExprTreeNode<NumericType>::SymbolType::NUMBER;
+        symbol.str = stringFromNumber(M_PI);
+        lastReadIsOpenPriorityOrSeparator = false;
+        return symbol;
+    }
+    // Check named number : e
+    if(symstr == "e"){
+        Symbol symbol;
+        symbol.type = UnivarExprTreeNode<NumericType>::SymbolType::NUMBER;
+        symbol.str = stringFromNumber(M_E);
+        lastReadIsOpenPriorityOrSeparator = false;
+        return symbol;
+    }
+    // Check variable : t
+    if(symstr == "t"){
+        Symbol symbol;
+        symbol.type = UnivarExprTreeNode<NumericType>::SymbolType::VARIABLE;
+        symbol.str = symstr;
+        lastReadIsOpenPriorityOrSeparator = false;
+        return symbol;
+    }
+    // Return void symbol
+    Symbol symbol;
+    symbol.str = "";
+    return symbol;
+}
+
+template <typename NumericType, typename ExprTreeType> size_t
+UnivarExprTreeStringFactory<NumericType, ExprTreeType>::findEndOfNameIdx(
+    std::string const &expr
+){
+    // Initial name finding
+    size_t const m = expr.size();   // Num. characters in expression
+    size_t nonNameIdx = m;  // Index of the first non-letter character
+    for(size_t i = 1 ; i < m ; ++i){  // Iteratively find first non-letter
+        if(!std::isalpha(expr[i])){
+            nonNameIdx = i;
+            break;
+        }
+    }
+    // Extract consecutive text token
+    std::string symstr = expr.substr(0, nonNameIdx);
+    if(symstr == "atan" && expr[nonNameIdx] == '2'){ // Handle atan2 case
+        ++nonNameIdx;
+        symstr = expr.substr(0, nonNameIdx);
+    }
+    // Return index of first non-name character in expression
+    return nonNameIdx;
+}
+
+template <typename NumericType, typename ExprTreeType>
+std::string UnivarExprTreeStringFactory<NumericType, ExprTreeType>::\
+prepareExpressionString(
     std::string const &expr
 ){
     // Clean expression
@@ -455,8 +502,8 @@ UnivarExprTreeStringFactory<NumericType>::prepareExpressionString(
     return prep;
 }
 
-template <typename NumericType> std::string
-UnivarExprTreeStringFactory<NumericType>::cleanExpressionString(
+template <typename NumericType, typename ExprTreeType> std::string
+UnivarExprTreeStringFactory<NumericType, ExprTreeType>::cleanExpressionString(
     std::string const &expr
 ){
     // Prepare cleaning
@@ -486,8 +533,9 @@ UnivarExprTreeStringFactory<NumericType>::cleanExpressionString(
     return clean;
 }
 
-template <typename NumericType>
-std::string UnivarExprTreeStringFactory<NumericType>::stringFromNumber(
+template <typename NumericType, typename ExprTreeType>
+std::string UnivarExprTreeStringFactory<NumericType, ExprTreeType>::\
+stringFromNumber(
     NumericType const x,
     std::streamsize const precision
 ){
@@ -497,9 +545,9 @@ std::string UnivarExprTreeStringFactory<NumericType>::stringFromNumber(
     return oss.str();
 }
 
-template <typename NumericType>
-typename UnivarExprTreeStringFactory<NumericType>::Symbol
-UnivarExprTreeStringFactory<NumericType>::craftFunSymbol(
+template <typename NumericType, typename ExprTreeType>
+typename UnivarExprTreeStringFactory<NumericType, ExprTreeType>::Symbol
+UnivarExprTreeStringFactory<NumericType, ExprTreeType>::craftFunSymbol(
     std::string const &symstr
 ){
     // Prepare crafting of function-symbol
@@ -531,9 +579,9 @@ UnivarExprTreeStringFactory<NumericType>::craftFunSymbol(
     return symbol;
 }
 
-template <typename NumericType>
-typename UnivarExprTreeStringFactory<NumericType>::Symbol
-UnivarExprTreeStringFactory<NumericType>::craftNumSymbol(
+template <typename NumericType, typename ExprTreeType>
+typename UnivarExprTreeStringFactory<NumericType, ExprTreeType>::Symbol
+UnivarExprTreeStringFactory<NumericType, ExprTreeType>::craftNumSymbol(
     std::string const &expr
 ){
     // Prepare crafting of numeric symbol
@@ -558,5 +606,31 @@ UnivarExprTreeStringFactory<NumericType>::craftNumSymbol(
     symbol.str = expr.substr(0, endOfNumberIdx);
 
     // Return crafted numeric symbol
+    return symbol;
+}
+
+template <typename NumericType, typename ExprTreeType>
+typename UnivarExprTreeStringFactory<NumericType, ExprTreeType>::Symbol
+UnivarExprTreeStringFactory<NumericType, ExprTreeType>::craftNegSymbol(
+    std::string const &expr
+){
+    // Prepare negative symbol crafting
+    const char c1 = expr[1];
+    if(c1 == 't'){  // Handle negative variable
+        Symbol symbol;
+        symbol.type =
+            UnivarExprTreeNode<NumericType>::SymbolType::VARIABLE;
+        symbol.str = "-t";
+        return symbol;
+    }
+    if( (!std::isdigit(c1)) && c1 != '.'){
+        std::stringstream ss;
+        ss  << "UnivarExprTreeStringFactory::craftNegSymbol failed to parse "
+            << "a negative number from the expression: \""
+            << expr << "\"";
+        throw HeliosException(ss.str());
+    }
+    Symbol symbol = craftNumSymbol(expr.substr(1));
+    symbol.str = "-" + symbol.str;
     return symbol;
 }

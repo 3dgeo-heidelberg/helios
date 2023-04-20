@@ -156,6 +156,23 @@ protected:
      */
     std::shared_ptr<HDA_RecordBuffer<double>> beamYaw;
     /**
+     * @brief The record buffer for the main deflection angle (with no error)
+     */
+    std::shared_ptr<HDA_RecordBuffer<double>> exactDeflectionAngle;
+    /**
+     * @brief The record buffer for the main deflection angle (with error)
+     */
+    std::shared_ptr<HDA_RecordBuffer<double>> deflectionAngle;
+    /**
+     * @brief The record buffer for the head angle (with no error)
+     */
+    std::shared_ptr<HDA_RecordBuffer<double>> exactHeadAngle;
+    /**
+     * @brief The record buffer for the head angle (with error)
+     */
+    std::shared_ptr<HDA_RecordBuffer<double>> headAngle;
+
+    /**
      * @brief The record buffer for the measurement error (used by sequential
      *  executions)
      */

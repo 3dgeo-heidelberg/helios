@@ -328,7 +328,7 @@ void Rotation::applyInverseTo(double* in, double* out) {
 * @param r rotation to apply the rotation to
 * @return a new rotation which is the composition of r by the instance
 */
-Rotation Rotation::applyTo(Rotation r) {
+Rotation Rotation::applyTo(Rotation const &r) const {
     return Rotation(
         r.q0 * q0 - (r.q1 * q1 + r.q2 * q2 + r.q3 * q3),
         r.q1 * q0 + r.q0 * q1 + (r.q2 * q3 - r.q3 * q2),

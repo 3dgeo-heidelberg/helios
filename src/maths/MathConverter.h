@@ -12,7 +12,7 @@ public:
     static inline double radiansToDegrees(double const radians)
     {return radians * _180_OVER_PI;}
     /**
-     * @brief Receive degres, return radians
+     * @brief Receive degrees, return radians
      */
     static inline double degreesToRadians(double const degrees)
     {return degrees * PI_OVER_180;}

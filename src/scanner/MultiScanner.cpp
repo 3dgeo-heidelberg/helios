@@ -1,6 +1,8 @@
 #include <scanner/MultiScanner.h>
 #include <maths/WaveMaths.h>
 #include <scanner/detector/AbstractDetector.h>
+#include <scanner/EvalScannerHead.h>
+#include <scanner/beamDeflector/evaluable/EvalPolygonMirrorBeamDeflector.h>
 
 // ***  CONSTRUCTION / DESTRUCTION  *** //
 // ************************************ //
@@ -20,7 +22,7 @@ std::shared_ptr<Scanner> MultiScanner::clone(){
 
 void MultiScanner::_clone(Scanner &sc) const{
     // Call parent clone method
-    MultiScanner::_clone(sc);
+    Scanner::_clone(sc);
     // Clone attributes from MultiScanner class itself
     //MultiScanner &ssc = static_cast<MultiScanner &>(sc);  // Not used
     //ssc.scanDevs = scanDevs;  // Already handled by copy constructor
@@ -40,6 +42,33 @@ void MultiScanner::onLegComplete(){
 
 // ***   M E T H O D S   *** //
 // ************************* //
+void MultiScanner::prepareSimulation() {
+    size_t const numDevs = getNumDevices();
+    for(size_t i = 0 ; i < numDevs ; ++i){ // For each i-th device
+        // Link the deflector angle with the evaluable scanner head
+        std::shared_ptr<EvalScannerHead> sh =
+            std::dynamic_pointer_cast<EvalScannerHead>(getScannerHead(i));
+        std::shared_ptr<PolygonMirrorBeamDeflector> pmbd =
+            std::dynamic_pointer_cast<PolygonMirrorBeamDeflector>(
+                getBeamDeflector(i)
+            );
+        if(sh != nullptr && pmbd != nullptr){
+            std::shared_ptr<EvalPolygonMirrorBeamDeflector> epmbd =
+                std::dynamic_pointer_cast<EvalPolygonMirrorBeamDeflector>(
+                    pmbd
+                );
+            if(epmbd != nullptr){
+                sh->setDeflectorAnglePtr(
+                    &epmbd->state_currentExactBeamAngle_rad
+                );
+            }
+            else{
+                sh->setDeflectorAnglePtr(&pmbd->state_currentBeamAngle_rad);
+            }
+        }
+    }
+}
+
 void MultiScanner::applySettings(
     std::shared_ptr<ScannerSettings> settings, size_t const idx
 ){

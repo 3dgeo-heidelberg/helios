@@ -39,6 +39,7 @@ public:
         double const receiverDiameter,
         double const atmosphericVisibility,
         int const wavelength,
+        std::shared_ptr<UnivarExprTreeNode<double>> rangeErrExpr = nullptr,
         bool const writeWaveform = false,
         bool const calcEchowidth = false,
         bool const fullWaveNoise = false,
@@ -73,6 +74,10 @@ public:
 
     // ***   M E T H O D S   *** //
     // ************************* //
+    /**
+     * @see Scanner::prepareSimulation
+     */
+    void prepareSimulation() override;
     /**
      * @see Scanner::applySettings
      */
