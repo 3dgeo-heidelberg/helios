@@ -170,6 +170,27 @@ public:
 	 *  SURFACE INCIDENCE ANGLE
 	 * <br/>
 	 * Paper authors: B. Jutzi, H. Gross
+     *
+     * Mathematically the Phong model is described by the equation below. In
+     *  this equation, \f$\varphi\f$ is the incidence angle, \f$K_s\f$ is the
+     *  specularity scalar, and \f$N_s\f$ is the specular exponent. Note the
+     *  specularity scalar is determined from the specular components as
+     *  defined in Material::setSpecularity
+     *
+     * \f[
+     *  \mathrm{BDRF} = \bigl(1-K_s\bigr) \cos(\varphi) -
+     *      K_s \bigl|{\cos(\varphi^*)}\bigr|^{N_s}
+     * \f]
+     *
+     *
+     * Also, \f$\varphi^*\f$ is modeled as shown below:
+     *
+     * \f[
+     *  \varphi^* = \left\{\begin{split}
+     *      & \varphi, &\;\; \varphi \leq \pi/2 \\
+     *      & \varphi - \pi/2, &\;\; \varphi > \pi/2
+     *  \end{split}\right.
+     * \f]
 	 */
     static double phongBDRF(
         double const incidenceAngle,
