@@ -185,13 +185,11 @@ void FullWaveformPulseRunnable::handleSubray(
                 );
             }
             else{
-                // Standard intensity computation
+                // Lighting-based intensity computation
                 intensity = scanner->calcIntensity(
                     incidenceAngle,
                     distance,
-                    intersect->prim->material->reflectance,
-                    intersect->prim->material->specularity,
-                    intersect->prim->material->specularExponent,
+                    *intersect->prim->material,
                     targetArea,
                     radius,
                     pulse.getDeviceIndex()

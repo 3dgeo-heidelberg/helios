@@ -165,9 +165,7 @@ public:
     double calcIntensity(
         double const incidenceAngle,
         double const targetRange,
-        double const targetReflectivity,
-        double const targetSpecularity,
-        double const targetSpecularExponent,
+        Material const &mat,
         double const targetArea,
         double const radius,
         size_t const idx

@@ -319,17 +319,30 @@ bool ScanningDevice::initializeFullWaveform(
 double ScanningDevice::calcIntensity(
     double const incidenceAngle,
     double const targetRange,
-    double const targetReflectivity,
-    double const targetSpecularity,
-    double const targetSpecularExponent,
+    Material const &mat,
     double const targetArea,
     double const radius
 ) const {
-    double const bdrf = targetReflectivity * EnergyMaths::phongBDRF(
-        incidenceAngle,
-        targetSpecularity,
-        targetSpecularExponent
-    );
+    double bdrf = 0;
+    if(mat.isPhong()) {
+        bdrf = mat.reflectance * EnergyMaths::phongBDRF(
+            incidenceAngle,
+            mat.specularity,
+            mat.specularExponent
+        );
+    }
+    else if(mat.isLambert()){
+        bdrf = mat.reflectance * std::cos(incidenceAngle);
+    }
+    else if(mat.isUniform()){
+        bdrf = mat.reflectance;
+    }
+    else{
+        std::stringstream ss;
+        ss  << "Unexpected lighting model for material \""
+            << mat.name << "\"";
+        logging::ERR(ss.str());
+    }
     double const sigma = EnergyMaths::calcCrossSection(
         bdrf, targetArea, incidenceAngle
     );
