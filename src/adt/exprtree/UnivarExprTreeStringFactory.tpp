@@ -106,7 +106,7 @@ UnivarExprTreeStringFactory<NumericType, ExprTreeType>::makeIterative(
 template <typename NumericType, typename ExprTreeType>
 void UnivarExprTreeStringFactory<NumericType, ExprTreeType>::flush(){
     // Get, remove and validate next top operator
-    Symbol &symbol = ops.back();
+    Symbol symbol = ops.back();
     if(symbol.type != UnivarExprTreeNode<NumericType>::SymbolType::OPERATOR){
         std::stringstream ss;
         ss  << "UnivarExprTreeStringFactory::flush detected an unexpected "
