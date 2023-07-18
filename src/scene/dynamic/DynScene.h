@@ -94,6 +94,14 @@ protected:
      */
     NonVoidStepLoop<bool> stepLoop;
 
+    /**
+     * @brief The dynamic time step. It will be NaN when not given.
+     * @see DynObject::dynTimeStep
+     * @see DynMovingObject::observerDynTimeStep
+     * @see DynScene::prepareSimulation
+     */
+    double dynTimeStep = std::numeric_limits<double>::quiet_NaN();
+
 public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //
     // ************************************ //
@@ -101,7 +109,8 @@ public:
      * @brief Dynamic scene default constructor
      */
     DynScene(int const stepInterval=1) :
-        stepLoop(stepInterval, [&] () -> bool{return doStep();})
+        stepLoop(stepInterval, [&] () -> bool{return doStep();}),
+        dynTimeStep(std::numeric_limits<double>::quiet_NaN())
     {}
     ~DynScene() override {}
     /**
@@ -125,6 +134,69 @@ public:
         StaticScene(ss),
         stepLoop(stepInterval, [&] () -> bool{return doStep();})
     {}
+
+    // ***   M E T H O D S   *** //
+    // ************************* //
+    /**
+     * @brief Prepare the dynamic scene to deal with the simulation.
+     *
+     * A dynamic scene must check the coherence of the many dynamic loops at
+     * potentially different frequencies, i.e., the step of the dynamic scene,
+     * the step of each scene part, and the step for KDT updates.
+     *
+     * Let \f$F_{\mathrm{sim}}\f$ be the simulation frequency,
+     *  \f$\Delta F_s\f$ the discrete step of the dynamic scene (i.e., the
+     *  dynStep parameter), \f$\Delta F_p\f$ the discrete step of a given scene
+     *  part (e.g., dynamic moving object), \f$\Delta F_k\f$ the discrete step
+     *  of a given KDTree, \f$\Delta t_s\f$ the continuous time step of the
+     *  dynamic scene, \f$\Delta t_p\f$ the continuous time step of a given
+     *  scene part, and \f$\Delta t_k\f$ the continuous time step of a given
+     *  KDTree.
+     *
+     * First, the scene dynamic step divides the simulation frequency to obtain
+     *  the iterations for scene updates, that must be less than or equal to
+     *  the iterations per second of the simulation loop. Thus, both the
+     *  discrete (number of iterations) and continuous (time) steps for the
+     *  dynamic scene are given by the following expressions:
+     *
+     * \f[
+     *  \Delta t_s = \frac{\Delta F_s}{F_{\mathrm{sim}}} \iff
+     *  \Delta F_s = F_{\mathrm{sim}} \Delta t_s
+     * \f]
+     *
+     * Second, the dynamic step of a moving scene part scales the dynamic step
+     * of the scene. Consequently, the discrete and continuous steps for a
+     * moving scene part are given by the following expressions:
+     *
+     * \f[
+     *  \Delta t_p = \frac{\Delta F_s \Delta F_p}{F_{\mathrm{sim}}} \iff
+     *  \Delta F_p = \frac{F_{\mathrm{sim}} \Delta t_p}{\Delta F_s}
+     *  = \frac{F_{\mathrm{sim}} \Delta t_p}{F_{\mathrm{sim}} \Delta t_s}
+     *  = \frac{\Delta t_p}{\Delta t_s}
+     * \f]
+     *
+     * Finally, the dynamic step of a dynamic KDT scales the dynamic step of
+     * its associated moving scene part. Consequently, the discrete and
+     * continuous steps for a dynamic KDT are given by the following
+     * expressions:
+     *
+     * \f[
+     *  \Delta t_k = \frac{\Delta F_k \Delta F_s \Delta F_p}{F_{\mathrm{sim}}}
+     *  \iff
+     *  \Delta F_k =\frac{F_{\mathrm{sim}}\Delta t_k}{\Delta F_s \Delta F_p}
+     *  = \frac{F_{\mathrm{sim}} \Delta t_k}{F_{\mathrm{sim}} \Delta t_s
+     *      \frac{\Delta t_p}{\Delta t_s}
+     *  }
+     *  = \frac{\Delta t_k}{\Delta t_p}
+     * \f]
+     *
+     * Note the continuous time steps are expected to be inside \f$[0, 1]\f$.
+     * Negative time and $t>1$ are not supported.
+     *
+     * @param simFrequency_hz Simulation frequency the scene will work with.
+     * @see Simulation::prepareSimulation
+     */
+    void prepareSimulation(int const simFrequency_hz) override;
 
     // ***  SIMULATION STEP  *** //
     // ************************* //
@@ -166,6 +238,7 @@ public:
      * @see StepLoop
      */
     virtual void makeStepLoop(int const stepInterval);
+
 
     // ***  GETTERs and SETTERs  *** //
     // ***************************** //
@@ -234,9 +307,30 @@ public:
      */
     inline void setStepInterval(int const stepInterval)
     {stepLoop.setStepInterval(stepInterval);}
-
-
-
+    /**
+     * @brief Get the dynamic time step of the dynamic scene. Note it is not
+     *  taken from the step loop, instead it represents a user-given parameter
+     *  that must be used to configure the stepLoop.
+     * @return The dynamic time step of the dynamic scene.
+     * @see DynScene::dynTimeStep
+     * @see DynScene::setDynTimeStep
+     * @see DynScene::stepLoop
+     * @see DynScene::prepareSimulation
+     */
+    inline double getDynTimeStep() const {return dynTimeStep;}
+    /**
+     * @brief Set the dynamic time step of the dynamic scene. Note it does not
+     *  modify the dynamic scene's step loop. The dynTimeStep attribute simply
+     *  represents a user-given parameter. Setting it will not automatically
+     *  update the stepLoop.
+     * @param dynTimeStep The new dynamic time step for the dynamic scene.
+     * @see DynScene::dynTimeStep
+     * @see DynScene::getDynTimeStep
+     * @see DynScene::stepLoop
+     * @see DynScene::prepareSimulation
+     */
+    inline void setDynTimeStep(double const dynTimeStep)
+    {this->dynTimeStep = dynTimeStep;}
 
     // ***   READ/WRITE  *** //
     // ********************* //

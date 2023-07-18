@@ -22,8 +22,8 @@ using std::string;
  */
 class DynObject : public ScenePart{
 private:
-    // ***  SERALIZATION  *** //
-    // ********************** //
+    // ***  SERIALIZATION  *** //
+    // *********************** //
     friend class boost::serialization::access;
     /**
      * @brief Serialize a dynamic object to a stream of bytes
@@ -69,6 +69,13 @@ protected:
      * @see DynObject::doStep
      */
     NonVoidStepLoop<bool> stepLoop;
+    /**
+     * @brief The dynamic time step for the dynamic object. It will be NaN when
+     *  not given.
+     * @see DynScene::dynTimeStep
+     * @see DynMovingObject::observerDynTimeStep
+     */
+    double dynTimeStep = std::numeric_limits<double>::quiet_NaN();
 
 public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //
@@ -77,7 +84,8 @@ public:
      * @brief Dynamic object default constructor
      */
     DynObject() :
-        stepLoop(1, [&] () -> bool{return doSimStep();})
+        stepLoop(1, [&] () -> bool{return doSimStep();}),
+        dynTimeStep(std::numeric_limits<double>::quiet_NaN())
     {}
     /**
      * @brief Build the dynamic object from given scene part
@@ -86,7 +94,8 @@ public:
      */
     DynObject(ScenePart const &sp, bool const shallowPrimitives=false) :
         ScenePart(sp, shallowPrimitives),
-        stepLoop(1, [&] () -> bool{return doSimStep();})
+        stepLoop(1, [&] () -> bool{return doSimStep();}),
+        dynTimeStep(std::numeric_limits<double>::quiet_NaN())
     {}
     /**
      * @brief Dynamic object constructor with id as argument
@@ -94,7 +103,8 @@ public:
      * @see DynObject::id
      */
     DynObject(string const id) :
-        stepLoop(1, [&] () -> bool{return doSimStep();})
+        stepLoop(1, [&] () -> bool{return doSimStep();}),
+        dynTimeStep(std::numeric_limits<double>::quiet_NaN())
     {setId(id);}
     /**
      * @brief Dynamic object constructor with primitives as argument
@@ -102,7 +112,8 @@ public:
      * @see DynObject::primitives
      */
     DynObject(vector<Primitive *> const &primitives) :
-        stepLoop(1, [&] () -> bool{return doSimStep();})
+        stepLoop(1, [&] () -> bool{return doSimStep();}),
+        dynTimeStep(std::numeric_limits<double>::quiet_NaN())
     {setPrimitives(primitives);}
     /**
      * @brief Dynamic object constructor with id and primitives as arguments
@@ -112,7 +123,8 @@ public:
      * @see DynObject::primitives
      */
     DynObject(string const id, vector<Primitive *> const &primitives) :
-        stepLoop(1, [&] () -> bool{return doSimStep();})
+        stepLoop(1, [&] () -> bool{return doSimStep();}),
+        dynTimeStep(std::numeric_limits<double>::quiet_NaN())
     {
         setId(id);
         setPrimitives(primitives);
@@ -414,4 +426,26 @@ public:
      */
     inline void setStepInterval(int const stepInterval)
     {stepLoop.setStepInterval(stepInterval);}
+    /**
+     * @brief Get the dynamic time step of the dynamic object. Note it is not
+     *  taken from the step loop, instead it represents a user-given parameter
+     *  that must be used to configure the stepLoop.
+     * @return The dynamic time step of the dynamic object.
+     * @see DynObject::dynTimeStep
+     * @see DynObject::setDynTimeStep
+     * @see DynObject:stepLoop
+     */
+    inline double getDynTimeStep() const {return dynTimeStep;}
+    /**
+     * @brief Set the dynamic time step of the dynamic object. Note it does not
+     *  modify the dynamic object's step loop. The dynTimeStep attribute simply
+     *  represents a user-given parameter. Setting it will not automatically
+     *  update the stepLoop.
+     * @param dynTimeStep The new dynamic time step for the dynamic object.
+     * @see DynObject::dynTimeStep
+     * @see DynObject::getDynTimeStep
+     * @see DynObject::stepLoop
+     */
+    inline void setDynTimeStep(double const dynTimeStep)
+    {this->dynTimeStep = dynTimeStep;}
 };
