@@ -446,6 +446,24 @@ shared_ptr<DynSequentiableMovingObject> XmlSceneLoader::loadDynMotions(
         ))
     );
 
+    // Get the time step for the dyn. obj. and its observer (nan if not given)
+    dsmo->setDynTimeStep(
+        boost::get<double>(XmlUtils::getAttribute(
+            scenePartNode,
+            "dynTimeStep",
+            "double",
+            std::numeric_limits<double>::quiet_NaN()
+        ))
+    );
+    dsmo->setObserverDynTimeStep(
+        boost::get<double>(XmlUtils::getAttribute(
+            scenePartNode,
+            "kdtDynTimeStep",
+            "double",
+            std::numeric_limits<double>::quiet_NaN()
+        ))
+    );
+
     // Return
     return dsmo;
 }
@@ -480,6 +498,15 @@ void XmlSceneLoader::handleDynamicSceneAttributes(
     // Configure step interval
     scene->setStepInterval(
         boost::get<int>(XmlUtils::getAttribute(sceneNode, "dynStep", "int", 1))
+    );
+    // Get the dynamic time step for the dynamic scene (nan if not given)
+    scene->setDynTimeStep(
+        boost::get<double>(XmlUtils::getAttribute(
+            sceneNode,
+            "dynTimeStep",
+            "double",
+            std::numeric_limits<double>::quiet_NaN()
+        ))
     );
     // Apply automatic CRS translation when requested
     glm::dvec3 const &shift = scene->getBBoxCRS()->getMin();

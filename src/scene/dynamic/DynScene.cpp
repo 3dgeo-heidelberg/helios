@@ -13,42 +13,35 @@ DynScene::DynScene(DynScene &ds) : DynScene(static_cast<StaticScene&>(ds)) {
     }
     makeStepLoop(ds.stepLoop.getStepInterval());
     stepLoop.setCurrentStep(ds.stepLoop.getCurrentStep());
+    dynTimeStep = ds.dynTimeStep;
 }
 
 // ***   M E T H O D S   *** //
 // ************************* //
 void DynScene::prepareSimulation(int const simFrequency_hz){
-    // TODO Rethink : To user given parameters ---
-    double const dynTimeStep = 0.0002;
-    double const partDynTimeStep = 0.001;
-    double const kdtDynTimeStep = 0.01;
-    // TODO Rethink : Warn about time steps > 1 second
-    // TODO Rethink : In asset loading, represent non-given as NaN
-    // TODO Rethink : But if dynTimeStep is given, part and kdt will match it
-    // TODO Rethink : Also if partDynTimeStep is given, kdt will match it
-    // --- TODO Rethink : To user given parameters
+    // TODO Rethink : Warn about time steps > 1 second.
     // Prepare variables
     double const simFreq_hz = (double) simFrequency_hz;
     // Configure the dynamic scene step interval from time
+    // (overrides the previous discrete step configuration)
     if(!std::isnan(dynTimeStep)) {
         setStepInterval((int) (simFreq_hz * dynTimeStep) );
-    }
-    // TODO Rethink : Each scene part must use its own time
-    // Configure each dynamic object step interval from time
-    for(std::shared_ptr<DynObject> dynObj : dynObjs){
-        // Configure the dynamic step interval for each scene part from time
-        double const partDt = partDynTimeStep; // TODO Rethink : From dynObj
-        if(!std::isnan(partDt)){  // Part dyn time step is needed
-            dynObj->setStepInterval((int) (partDynTimeStep / dynTimeStep));
+        // Configure each dynamic object step interval from time
+        for (std::shared_ptr<DynObject> &dynObj: dynObjs) {
+            // Configure the dynamic step interval for each part from time
+            if(std::isnan(dynObj->getDynTimeStep())) {
+                dynObj->setDynTimeStep(dynTimeStep);  // Part from scene
+            }
+            double const partDt = dynObj->getDynTimeStep();
+            dynObj->setStepInterval((int) (partDt / dynTimeStep));
             // Configure the dynamic step interval for each observer from time
             std::shared_ptr<DynMovingObject> obs = std::dynamic_pointer_cast<
                 DynMovingObject>(dynObj);
-            double const kdtDt = kdtDynTimeStep; // TODO Rethink : From obs
-            if(!std::isnan(kdtDt)){  // KDT t. step needs part t. step
-                obs->setObserverStepInterval(
-                    (int) (kdtDynTimeStep / partDynTimeStep)
-                );
+            if (std::isnan(obs->getObserverDynTimeStep())) {
+                obs->setObserverDynTimeStep(partDt);
             }
+            double const kdtDt = obs->getObserverDynTimeStep();
+            obs->setObserverStepInterval((int) (kdtDt / partDt));
         }
     }
 }

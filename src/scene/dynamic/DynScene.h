@@ -94,6 +94,14 @@ protected:
      */
     NonVoidStepLoop<bool> stepLoop;
 
+    /**
+     * @brief The dynamic time step. It will be NaN when not given.
+     * @see DynObject::dynTimeStep
+     * @see DynMovingObject::observerDynTimeStep
+     * @see DynScene::prepareSimulation
+     */
+    double dynTimeStep = std::numeric_limits<double>::quiet_NaN();
+
 public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //
     // ************************************ //
@@ -101,7 +109,8 @@ public:
      * @brief Dynamic scene default constructor
      */
     DynScene(int const stepInterval=1) :
-        stepLoop(stepInterval, [&] () -> bool{return doStep();})
+        stepLoop(stepInterval, [&] () -> bool{return doStep();}),
+        dynTimeStep(std::numeric_limits<double>::quiet_NaN())
     {}
     ~DynScene() override {}
     /**
@@ -180,6 +189,9 @@ public:
      *  }
      *  = \frac{\Delta t_k}{\Delta t_p}
      * \f]
+     *
+     * Note the continuous time steps are expected to be inside \f$[0, 1]\f$.
+     * Negative time and $t>1$ are not supported.
      *
      * @param simFrequency_hz Simulation frequency the scene will work with.
      * @see Simulation::prepareSimulation
@@ -295,7 +307,30 @@ public:
      */
     inline void setStepInterval(int const stepInterval)
     {stepLoop.setStepInterval(stepInterval);}
-
+    /**
+     * @brief Get the dynamic time step of the dynamic scene. Note it is not
+     *  taken from the step loop, instead it represents a user-given parameter
+     *  that must be used to configure the stepLoop.
+     * @return The dynamic time step of the dynamic scene.
+     * @see DynScene::dynTimeStep
+     * @see DynScene::setDynTimeStep
+     * @see DynScene::stepLoop
+     * @see DynScene::prepareSimulation
+     */
+    inline double getDynTimeStep() const {return dynTimeStep;}
+    /**
+     * @brief Set the dynamic time step of the dynamic scene. Note it does not
+     *  modify the dynamic scene's step loop. The dynTimeStep attribute simply
+     *  represents a user-given parameter. Setting it will not automatically
+     *  update the stepLoop.
+     * @param dynTimeStep The new dynamic time step for the dynamic scene.
+     * @see DynScene::dynTimeStep
+     * @see DynScene::getDynTimeStep
+     * @see DynScene::stepLoop
+     * @see DynScene::prepareSimulation
+     */
+    inline void setDynTimeStep(double const dynTimeStep)
+    {this->dynTimeStep = dynTimeStep;}
 
     // ***   READ/WRITE  *** //
     // ********************* //
