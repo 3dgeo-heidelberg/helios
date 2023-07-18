@@ -126,6 +126,20 @@ public:
         stepLoop(stepInterval, [&] () -> bool{return doStep();})
     {}
 
+    // ***   M E T H O D S   *** //
+    // ************************* //
+    /**
+     * @brief Prepare the dynamic scene to deal with the simulation.
+     *
+     * A dynamic scene must check the coherence of the many dynamic loops at
+     * potentially different frequencies, i.e., the step of the dynamic scene,
+     * the step of each scene part, and the step for KDT updates.
+     *
+     *
+     * @param simFrequency_hz Simulation frequency the scene will work with.
+     */
+    void prepareSimulation(int const simFrequency_hz) override;
+
     // ***  SIMULATION STEP  *** //
     // ************************* //
     /**
@@ -166,6 +180,7 @@ public:
      * @see StepLoop
      */
     virtual void makeStepLoop(int const stepInterval);
+
 
     // ***  GETTERs and SETTERs  *** //
     // ***************************** //
@@ -234,8 +249,6 @@ public:
      */
     inline void setStepInterval(int const stepInterval)
     {stepLoop.setStepInterval(stepInterval);}
-
-
 
 
     // ***   READ/WRITE  *** //

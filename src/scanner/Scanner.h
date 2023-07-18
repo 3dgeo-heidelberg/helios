@@ -218,7 +218,6 @@ public:
     // *********************** //
     /**
      * @brief Prepare the scanner to deal with the simulation.
-     * @param simFrequency_hz Simulation frequency the platform will work with
      */
     virtual void prepareSimulation() = 0;
     /**

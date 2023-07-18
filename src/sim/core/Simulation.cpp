@@ -8,6 +8,7 @@ using namespace std::chrono;
 #include <scanner/BuddingScanningPulseProcess.h>
 #include <platform/InterpolatedMovingPlatformEgg.h>
 #include <platform/InterpolatedMovingPlatform.h>
+#include <scene/dynamic/DynScene.h>
 #ifdef DATA_ANALYTICS
 #include <dataanalytics/HDA_StateJSONReporter.h>
 #include <dataanalytics/HDA_SimStepRecorder.h>
@@ -66,6 +67,9 @@ void Simulation::prepareSimulation(int simFrequency_hz){
     setSimFrequency(this->mScanner->getPulseFreq_Hz());
     stepLoop.setCurrentStep(0);
     stepGpsTime_ns = 1000000000. * stepLoop.getPeriod();
+
+    // Prepare scene (mostly for dynamic scenes)
+    mScanner->platform->scene->prepareSimulation(simFrequency_hz);
 }
 
 void Simulation::doSimStep(){
