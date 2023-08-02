@@ -112,6 +112,30 @@
 			type="NORMAL" mean="0.0" stdev="0.001"/>-->
 	</platform>
 
+    <platform id="vehicle_linearpath" name="Vehicle" type="linearpath">
+		<scannerMount x="0" y="0" z="2.4" rotations="local">
+			<rot axis="z" angle_deg="90" />
+		</scannerMount>
+		<!--<positionXNoise
+			clipMin="0.0" clipMax="0.0" clipEnabled="false" fixedLifespan="1"
+			type="NORMAL" mean="0.0" stdev="0.02"/>
+		<positionYNoise
+			clipMin="0.0" clipMax="0.0" clipEnabled="false" fixedLifespan="1"
+			type="NORMAL" mean="0.0" stdev="0.02"/>
+		<positionZNoise
+			clipMin="0.0" clipMax="0.0" clipEnabled="false" fixedLifespan="1"
+			type="NORMAL" mean="0.0" stdev="0.02"/>
+		<attitudeXNoise
+			clipMin="0.0" clipMax="0.0" clipEnabled="false" fixedLifespan="1"
+			type="NORMAL" mean="0.0" stdev="0.001"/>
+		<attitudeYNoise
+			clipMin="0.0" clipMax="0.0" clipEnabled="false" fixedLifespan="1"
+			type="NORMAL" mean="0.0" stdev="0.001"/>
+		<attitudeZNoise
+			clipMin="0.0" clipMax="0.0" clipEnabled="false" fixedLifespan="1"
+			type="NORMAL" mean="0.0" stdev="0.001"/>-->
+	</platform>
+    
 	<platform id="tractor_leftside" name="Tractor" type="groundvehicle" drag="0.01">
 		<scannerMount x="0" y="0.8" z="4">
 			<rot axis="y" angle_deg="-35" />

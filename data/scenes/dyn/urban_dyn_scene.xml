@@ -1,0 +1,2191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+    <scene id="urban_dyn" name="Scene with moving car" dynTimeStep="0.08333333333333333">
+        
+        <!--Dynamic scenepart-->
+        <part  kdtDynStep="0.4166666666666667">
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data\sceneparts\urban_dyn\vivaro.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+            <dmotion id="vivaro_0" loop="1" next="vivaro_1">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="8.26158047;50.00000000;7.52772188" autoCRS="1"/>
+              <motion type="translation" vec="0.00000000;0.00000000;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_1" loop="1" next="vivaro_2">
+              <motion type="rotation" axis="0.000;0.000;-0.000" angle="0.00000000" center="8.26158047;50.04164505;7.52772188" autoCRS="1"/>
+              <motion type="translation" vec="0.00000000;0.04164505;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_2" loop="1" next="vivaro_3">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="8.26158047;50.16369247;7.52772188" autoCRS="1"/>
+              <motion type="translation" vec="0.00000000;0.12204742;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_3" loop="1" next="vivaro_4">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="8.26158047;50.36178970;7.52772188" autoCRS="1"/>
+              <motion type="translation" vec="0.00000000;0.19809723;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_4" loop="1" next="vivaro_5">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="8.26158047;50.63158798;7.52772188" autoCRS="1"/>
+              <motion type="translation" vec="0.00000000;0.26979828;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_5" loop="1" next="vivaro_6">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="8.26158047;50.96875000;7.52772188" autoCRS="1"/>
+              <motion type="translation" vec="0.00000000;0.33716202;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_6" loop="1" next="vivaro_7">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="8.26158047;51.36892319;7.52772188" autoCRS="1"/>
+              <motion type="translation" vec="0.00000000;0.40017319;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_7" loop="1" next="vivaro_8">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="8.26158047;51.82776642;7.52772188" autoCRS="1"/>
+              <motion type="translation" vec="0.00000000;0.45884323;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_8" loop="1" next="vivaro_9">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="8.26158047;52.34093857;7.52772188" autoCRS="1"/>
+              <motion type="translation" vec="0.00000000;0.51317215;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_9" loop="1" next="vivaro_10">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="8.26158047;52.90407944;7.52772188" autoCRS="1"/>
+              <motion type="translation" vec="0.00000000;0.56314087;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_10" loop="1" next="vivaro_11">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="8.26158047;53.51285934;7.52772188" autoCRS="1"/>
+              <motion type="translation" vec="0.00000000;0.60877991;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_11" loop="1" next="vivaro_12">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="8.26158047;54.16292191;7.52772188" autoCRS="1"/>
+              <motion type="translation" vec="0.00000000;0.65006256;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_12" loop="1" next="vivaro_13">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="8.26158047;54.84992218;7.52772188" autoCRS="1"/>
+              <motion type="translation" vec="0.00000000;0.68700027;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_13" loop="1" next="vivaro_14">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="8.26158047;55.56951904;7.52772188" autoCRS="1"/>
+              <motion type="translation" vec="0.00000000;0.71959686;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_14" loop="1" next="vivaro_15">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="8.26158047;56.31736755;7.52772188" autoCRS="1"/>
+              <motion type="translation" vec="0.00000000;0.74784851;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_15" loop="1" next="vivaro_16">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="8.26158047;57.08911896;7.52772188" autoCRS="1"/>
+              <motion type="translation" vec="0.00000000;0.77175140;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_16" loop="1" next="vivaro_17">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="8.26158047;57.88042831;7.52772188" autoCRS="1"/>
+              <motion type="translation" vec="0.00000000;0.79130936;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_17" loop="1" next="vivaro_18">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="8.26158047;58.68694687;7.52772188" autoCRS="1"/>
+              <motion type="translation" vec="0.00000000;0.80651855;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_18" loop="1" next="vivaro_19">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="8.26158047;59.50433731;7.52772188" autoCRS="1"/>
+              <motion type="translation" vec="0.00000000;0.81739044;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_19" loop="1" next="vivaro_20">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="8.26158047;60.32824707;7.52772188" autoCRS="1"/>
+              <motion type="translation" vec="0.00000000;0.82390976;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_20" loop="1" next="vivaro_21">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="8.26158047;61.15432358;7.52772188" autoCRS="1"/>
+              <motion type="translation" vec="0.00000000;0.82607651;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_21" loop="1" next="vivaro_22">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="8.26158047;61.97824097;7.52772188" autoCRS="1"/>
+              <motion type="translation" vec="0.00000000;0.82391739;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_22" loop="1" next="vivaro_23">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="8.26158047;62.79562759;7.52772188" autoCRS="1"/>
+              <motion type="translation" vec="0.00000000;0.81738663;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_23" loop="1" next="vivaro_24">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="8.26158047;63.60216522;7.52772188" autoCRS="1"/>
+              <motion type="translation" vec="0.00000000;0.80653763;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_24" loop="1" next="vivaro_25">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="8.26158047;64.39359283;7.52772188" autoCRS="1"/>
+              <motion type="translation" vec="0.00000000;0.79142761;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_25" loop="1" next="vivaro_26">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="8.26158047;65.16819763;7.52772188" autoCRS="1"/>
+              <motion type="translation" vec="0.00000000;0.77460480;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_26" loop="1" next="vivaro_27">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="8.26158047;65.92672729;7.52772188" autoCRS="1"/>
+              <motion type="translation" vec="0.00000000;0.75852966;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_27" loop="1" next="vivaro_28">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="8.26158047;66.67005157;7.52772188" autoCRS="1"/>
+              <motion type="translation" vec="0.00000000;0.74332428;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_28" loop="1" next="vivaro_29">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="8.26158047;67.39904785;7.52772188" autoCRS="1"/>
+              <motion type="translation" vec="0.00000000;0.72899628;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_29" loop="1" next="vivaro_30">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="8.26158047;68.11459351;7.52772188" autoCRS="1"/>
+              <motion type="translation" vec="0.00000000;0.71554565;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_30" loop="1" next="vivaro_31">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="8.26158047;68.81754303;7.52772188" autoCRS="1"/>
+              <motion type="translation" vec="0.00000000;0.70294952;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_31" loop="1" next="vivaro_32">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="8.26158047;69.50880432;7.52772188" autoCRS="1"/>
+              <motion type="translation" vec="0.00000000;0.69126129;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_32" loop="1" next="vivaro_33">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="8.26158047;70.18920135;7.52772188" autoCRS="1"/>
+              <motion type="translation" vec="0.00000000;0.68039703;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_33" loop="1" next="vivaro_34">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="8.26158047;70.85964966;7.52772188" autoCRS="1"/>
+              <motion type="translation" vec="0.00000000;0.67044830;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_34" loop="1" next="vivaro_35">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="8.26158047;71.52099609;7.52772188" autoCRS="1"/>
+              <motion type="translation" vec="0.00000000;0.66134644;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_35" loop="1" next="vivaro_36">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="8.26158047;72.17411804;7.52772188" autoCRS="1"/>
+              <motion type="translation" vec="0.00000000;0.65312195;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_36" loop="1" next="vivaro_37">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="8.26158047;72.81989288;7.52772188" autoCRS="1"/>
+              <motion type="translation" vec="0.00000000;0.64577484;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_37" loop="1" next="vivaro_38">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="8.26158047;73.45918274;7.52772188" autoCRS="1"/>
+              <motion type="translation" vec="0.00000000;0.63928986;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_38" loop="1" next="vivaro_39">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="8.26158047;74.09286499;7.52772188" autoCRS="1"/>
+              <motion type="translation" vec="0.00000000;0.63368225;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_39" loop="1" next="vivaro_40">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="8.26158047;74.72181702;7.52772188" autoCRS="1"/>
+              <motion type="translation" vec="0.00000000;0.62895203;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_40" loop="1" next="vivaro_41">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="8.26158047;75.34690857;7.52772188" autoCRS="1"/>
+              <motion type="translation" vec="0.00000000;0.62509155;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_41" loop="1" next="vivaro_42">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="8.26158047;75.96900940;7.52772188" autoCRS="1"/>
+              <motion type="translation" vec="0.00000000;0.62210083;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_42" loop="1" next="vivaro_43">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="8.26158047;76.58898926;7.52772188" autoCRS="1"/>
+              <motion type="translation" vec="0.00000000;0.61997986;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_43" loop="1" next="vivaro_44">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="8.26158047;77.20771790;7.52772188" autoCRS="1"/>
+              <motion type="translation" vec="0.00000000;0.61872864;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_44" loop="1" next="vivaro_45">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="8.26158047;77.82608795;7.52772188" autoCRS="1"/>
+              <motion type="translation" vec="0.00000000;0.61837006;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_45" loop="1" next="vivaro_46">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="8.26158047;78.44494629;7.52772188" autoCRS="1"/>
+              <motion type="translation" vec="0.00000000;0.61885834;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_46" loop="1" next="vivaro_47">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="8.26158047;79.06517029;7.52772188" autoCRS="1"/>
+              <motion type="translation" vec="0.00000000;0.62022400;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_47" loop="1" next="vivaro_48">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="8.26158047;79.68765259;7.52772188" autoCRS="1"/>
+              <motion type="translation" vec="0.00000000;0.62248230;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_48" loop="1" next="vivaro_49">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="8.26154327;80.31321716;7.52772188" autoCRS="1"/>
+              <motion type="translation" vec="-0.00003719;0.62556458;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_49" loop="1" next="vivaro_50">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="8.26124763;80.94226074;7.52772188" autoCRS="1"/>
+              <motion type="translation" vec="-0.00029564;0.62904358;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_50" loop="1" next="vivaro_51">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="8.26066494;81.57469177;7.52772188" autoCRS="1"/>
+              <motion type="translation" vec="-0.00058270;0.63243103;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_51" loop="1" next="vivaro_52">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="8.25980568;82.21040344;7.52772188" autoCRS="1"/>
+              <motion type="translation" vec="-0.00085926;0.63571167;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_52" loop="1" next="vivaro_53">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="8.25867844;82.84927368;7.52772188" autoCRS="1"/>
+              <motion type="translation" vec="-0.00112724;0.63887024;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_53" loop="1" next="vivaro_54">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="8.25729275;83.49121094;7.52772188" autoCRS="1"/>
+              <motion type="translation" vec="-0.00138569;0.64193726;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_54" loop="1" next="vivaro_55">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="8.25565815;84.13610840;7.52772188" autoCRS="1"/>
+              <motion type="translation" vec="-0.00163460;0.64489746;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_55" loop="1" next="vivaro_56">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="8.25378609;84.78383636;7.52772188" autoCRS="1"/>
+              <motion type="translation" vec="-0.00187206;0.64772797;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_56" loop="1" next="vivaro_57">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="8.25168228;85.43430328;7.52772188" autoCRS="1"/>
+              <motion type="translation" vec="-0.00210381;0.65046692;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_57" loop="1" next="vivaro_58">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="8.24936008;86.08737946;7.52772188" autoCRS="1"/>
+              <motion type="translation" vec="-0.00232220;0.65307617;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_58" loop="1" next="vivaro_59">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="8.24682617;86.74299622;7.52772188" autoCRS="1"/>
+              <motion type="translation" vec="-0.00253391;0.65561676;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_59" loop="1" next="vivaro_60">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="8.24409103;87.40100098;7.52772188" autoCRS="1"/>
+              <motion type="translation" vec="-0.00273514;0.65800476;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_60" loop="1" next="vivaro_61">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="8.24116421;88.06130981;7.52772188" autoCRS="1"/>
+              <motion type="translation" vec="-0.00292683;0.66030884;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_61" loop="1" next="vivaro_62">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="8.23805523;88.72380066;7.52772188" autoCRS="1"/>
+              <motion type="translation" vec="-0.00310898;0.66249084;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_62" loop="1" next="vivaro_63">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="8.23477268;89.38838196;7.52772188" autoCRS="1"/>
+              <motion type="translation" vec="-0.00328255;0.66458130;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_63" loop="1" next="vivaro_64">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="8.23132801;90.05492401;7.52772188" autoCRS="1"/>
+              <motion type="translation" vec="-0.00344467;0.66654205;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_64" loop="1" next="vivaro_65">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="8.22772884;90.72332001;7.52772188" autoCRS="1"/>
+              <motion type="translation" vec="-0.00359917;0.66839600;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_65" loop="1" next="vivaro_66">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="8.22398567;91.39347839;7.52772188" autoCRS="1"/>
+              <motion type="translation" vec="-0.00374317;0.67015839;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_66" loop="1" next="vivaro_67">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="8.22010708;92.06529236;7.52772188" autoCRS="1"/>
+              <motion type="translation" vec="-0.00387859;0.67181396;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_67" loop="1" next="vivaro_68">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="8.21610355;92.73861694;7.52772188" autoCRS="1"/>
+              <motion type="translation" vec="-0.00400352;0.67332458;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_68" loop="1" next="vivaro_69">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="8.21198559;93.41338348;7.52772188" autoCRS="1"/>
+              <motion type="translation" vec="-0.00411797;0.67476654;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_69" loop="1" next="vivaro_70">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="8.20775986;94.08945465;7.52772188" autoCRS="1"/>
+              <motion type="translation" vec="-0.00422573;0.67607117;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_70" loop="1" next="vivaro_71">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="8.20343685;94.76673889;7.52772188" autoCRS="1"/>
+              <motion type="translation" vec="-0.00432301;0.67728424;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_71" loop="1" next="vivaro_72">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="8.19902706;95.44511414;7.52772188" autoCRS="1"/>
+              <motion type="translation" vec="-0.00440979;0.67837524;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_72" loop="1" next="vivaro_73">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="8.19454002;96.12448883;7.52772188" autoCRS="1"/>
+              <motion type="translation" vec="-0.00448704;0.67937469;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_73" loop="1" next="vivaro_74">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="8.18998337;96.80473328;7.52772188" autoCRS="1"/>
+              <motion type="translation" vec="-0.00455666;0.68024445;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_74" loop="1" next="vivaro_75">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="8.18536758;97.48575592;7.52772188" autoCRS="1"/>
+              <motion type="translation" vec="-0.00461578;0.68102264;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_75" loop="1" next="vivaro_76">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="8.18070316;98.16744232;7.52772188" autoCRS="1"/>
+              <motion type="translation" vec="-0.00466442;0.68168640;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_76" loop="1" next="vivaro_77">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="8.17599964;98.84967041;7.52772188" autoCRS="1"/>
+              <motion type="translation" vec="-0.00470352;0.68222809;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_77" loop="1" next="vivaro_78">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="8.17126465;99.53235626;7.52772188" autoCRS="1"/>
+              <motion type="translation" vec="-0.00473499;0.68268585;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_78" loop="1" next="vivaro_79">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="8.16650772;100.21537018;7.52772188" autoCRS="1"/>
+              <motion type="translation" vec="-0.00475693;0.68301392;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_79" loop="1" next="vivaro_80">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="8.16174126;100.89861298;7.52772188" autoCRS="1"/>
+              <motion type="translation" vec="-0.00476646;0.68324280;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_80" loop="1" next="vivaro_81">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="8.15697193;101.58196259;7.52772188" autoCRS="1"/>
+              <motion type="translation" vec="-0.00476933;0.68334961;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_81" loop="1" next="vivaro_82">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="8.15220928;102.26532745;7.52772188" autoCRS="1"/>
+              <motion type="translation" vec="-0.00476265;0.68336487;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_82" loop="1" next="vivaro_83">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="8.14746475;102.94858551;7.52772188" autoCRS="1"/>
+              <motion type="translation" vec="-0.00474453;0.68325806;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_83" loop="1" next="vivaro_84">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="8.14274693;103.63164520;7.52772188" autoCRS="1"/>
+              <motion type="translation" vec="-0.00471783;0.68305969;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_84" loop="1" next="vivaro_85">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="8.13806438;104.31437683;7.52772188" autoCRS="1"/>
+              <motion type="translation" vec="-0.00468254;0.68273163;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_85" loop="1" next="vivaro_86">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="8.13342762;104.99668884;7.52772188" autoCRS="1"/>
+              <motion type="translation" vec="-0.00463676;0.68231201;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_86" loop="1" next="vivaro_87">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="8.12884521;105.67845154;7.52772188" autoCRS="1"/>
+              <motion type="translation" vec="-0.00458241;0.68176270;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_87" loop="1" next="vivaro_88">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="8.12432766;106.35957336;7.52772188" autoCRS="1"/>
+              <motion type="translation" vec="-0.00451756;0.68112183;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_88" loop="1" next="vivaro_89">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="8.11988449;107.03994751;7.52772188" autoCRS="1"/>
+              <motion type="translation" vec="-0.00444317;0.68037415;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_89" loop="1" next="vivaro_90">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="8.11552334;107.71944427;7.52772188" autoCRS="1"/>
+              <motion type="translation" vec="-0.00436115;0.67949677;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_90" loop="1" next="vivaro_91">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="8.11125660;108.39797211;7.52772188" autoCRS="1"/>
+              <motion type="translation" vec="-0.00426674;0.67852783;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_91" loop="1" next="vivaro_92">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="8.10709190;109.07542419;7.52772188" autoCRS="1"/>
+              <motion type="translation" vec="-0.00416470;0.67745209;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_92" loop="1" next="vivaro_93">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="8.10303879;109.75167847;7.52772188" autoCRS="1"/>
+              <motion type="translation" vec="-0.00405312;0.67625427;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_93" loop="1" next="vivaro_94">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="8.09910679;110.42663574;7.52772188" autoCRS="1"/>
+              <motion type="translation" vec="-0.00393200;0.67495728;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_94" loop="1" next="vivaro_95">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="8.09530640;111.10018921;7.52772188" autoCRS="1"/>
+              <motion type="translation" vec="-0.00380039;0.67355347;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_95" loop="1" next="vivaro_96">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="8.09164524;111.77221680;7.52772188" autoCRS="1"/>
+              <motion type="translation" vec="-0.00366116;0.67202759;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_96" loop="1" next="vivaro_97">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="8.08813477;112.44261169;7.52772188" autoCRS="1"/>
+              <motion type="translation" vec="-0.00351048;0.67039490;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_97" loop="1" next="vivaro_98">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="8.08478355;113.11127472;7.52772188" autoCRS="1"/>
+              <motion type="translation" vec="-0.00335121;0.66866302;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_98" loop="1" next="vivaro_99">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="8.08160114;113.77809143;7.52772188" autoCRS="1"/>
+              <motion type="translation" vec="-0.00318241;0.66681671;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_99" loop="1" next="vivaro_100">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="8.07859707;114.44296265;7.52772188" autoCRS="1"/>
+              <motion type="translation" vec="-0.00300407;0.66487122;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_100" loop="1" next="vivaro_101">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="8.07577991;115.10576630;7.52772188" autoCRS="1"/>
+              <motion type="translation" vec="-0.00281715;0.66280365;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_101" loop="1" next="vivaro_102">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="8.07316113;115.76639557;7.52772188" autoCRS="1"/>
+              <motion type="translation" vec="-0.00261879;0.66062927;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_102" loop="1" next="vivaro_103">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="8.07074928;116.42474365;7.52772188" autoCRS="1"/>
+              <motion type="translation" vec="-0.00241184;0.65834808;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_103" loop="1" next="vivaro_104">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="8.06855202;117.08069611;7.52772188" autoCRS="1"/>
+              <motion type="translation" vec="-0.00219727;0.65595245;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_104" loop="1" next="vivaro_105">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="8.06658173;117.73415375;7.52772188" autoCRS="1"/>
+              <motion type="translation" vec="-0.00197029;0.65345764;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_105" loop="1" next="vivaro_106">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="8.06484604;118.38499451;7.52772188" autoCRS="1"/>
+              <motion type="translation" vec="-0.00173569;0.65084076;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_106" loop="1" next="vivaro_107">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="8.06335545;119.03313446;7.52772188" autoCRS="1"/>
+              <motion type="translation" vec="-0.00149059;0.64813995;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_107" loop="1" next="vivaro_108">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="8.06211948;119.67844391;7.52772188" autoCRS="1"/>
+              <motion type="translation" vec="-0.00123596;0.64530945;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_108" loop="1" next="vivaro_109">
+              <motion type="rotation" axis="0.000;0.000;0.000" angle="0.00000000" center="8.06111336;120.32083130;7.52772188" autoCRS="1"/>
+              <motion type="translation" vec="-0.00100613;0.64238739;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_109" loop="1" next="vivaro_110">
+              <motion type="rotation" axis="0.000;0.000;1.020" angle="0.10467831" center="8.05955029;120.96054840;7.52772188" autoCRS="1"/>
+              <motion type="translation" vec="-0.00156307;0.63971710;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_110" loop="1" next="vivaro_111">
+              <motion type="rotation" axis="0.000;0.000;1.021" angle="0.20558415" center="8.05587864;121.59822845;7.52772188" autoCRS="1"/>
+              <motion type="translation" vec="-0.00367165;0.63768005;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_111" loop="1" next="vivaro_112">
+              <motion type="rotation" axis="0.000;0.000;1.009" angle="0.30646680" center="8.04851151;122.23449707;7.52772188" autoCRS="1"/>
+              <motion type="translation" vec="-0.00736713;0.63626862;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_112" loop="1" next="vivaro_113">
+              <motion type="rotation" axis="0.000;0.000;0.999" angle="0.40541756" center="8.03586388;122.86997223;7.52772188" autoCRS="1"/>
+              <motion type="translation" vec="-0.01264763;0.63547516;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_113" loop="1" next="vivaro_114">
+              <motion type="rotation" axis="0.000;0.000;1.002" angle="0.49574441" center="8.01635456;123.50529480;7.52772188" autoCRS="1"/>
+              <motion type="translation" vec="-0.01950932;0.63532257;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_114" loop="1" next="vivaro_115">
+              <motion type="rotation" axis="0.000;0.000;1.002" angle="0.58416618" center="7.98839283;124.14108276;7.52772188" autoCRS="1"/>
+              <motion type="translation" vec="-0.02796173;0.63578796;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_115" loop="1" next="vivaro_116">
+              <motion type="rotation" axis="0.000;0.000;1.001" angle="0.66910043" center="7.95039701;124.77798462;7.52772188" autoCRS="1"/>
+              <motion type="translation" vec="-0.03799582;0.63690186;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_116" loop="1" next="vivaro_117">
+              <motion type="rotation" axis="0.000;0.000;1.002" angle="0.74860026" center="7.90078115;125.41661072;7.52772188" autoCRS="1"/>
+              <motion type="translation" vec="-0.04961586;0.63862610;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_117" loop="1" next="vivaro_118">
+              <motion type="rotation" axis="0.000;0.000;1.000" angle="0.82708345" center="7.83796024;126.05760193;7.52772188" autoCRS="1"/>
+              <motion type="translation" vec="-0.06282091;0.64099121;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_118" loop="1" next="vivaro_119">
+              <motion type="rotation" axis="0.000;0.000;1.002" angle="0.89873913" center="7.76034927;126.70157623;7.52772188" autoCRS="1"/>
+              <motion type="translation" vec="-0.07761097;0.64397430;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_119" loop="1" next="vivaro_120">
+              <motion type="rotation" axis="0.000;0.000;1.001" angle="0.96913575" center="7.66636276;127.34918213;7.52772188" autoCRS="1"/>
+              <motion type="translation" vec="-0.09398651;0.64760590;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_120" loop="1" next="vivaro_121">
+              <motion type="rotation" axis="0.000;0.000;1.001" angle="1.03475424" center="7.55441666;128.00103760;7.52772188" autoCRS="1"/>
+              <motion type="translation" vec="-0.11194611;0.65185547;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_121" loop="1" next="vivaro_122">
+              <motion type="rotation" axis="0.000;0.000;1.001" angle="1.09645283" center="7.42292309;128.65776062;7.52772188" autoCRS="1"/>
+              <motion type="translation" vec="-0.13149357;0.65672302;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_122" loop="1" next="vivaro_123">
+              <motion type="rotation" axis="0.000;0.000;1.001" angle="1.15418201" center="7.27029991;129.32000732;7.52772188" autoCRS="1"/>
+              <motion type="translation" vec="-0.15262318;0.66224670;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_123" loop="1" next="vivaro_124">
+              <motion type="rotation" axis="0.000;0.000;1.000" angle="1.21045210" center="7.09145927;129.98815918;7.52772188" autoCRS="1"/>
+              <motion type="translation" vec="-0.17884064;0.66815186;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_124" loop="1" next="vivaro_125">
+              <motion type="rotation" axis="0.000;0.000;1.000" angle="1.26483919" center="6.88307190;130.66168213;7.52772188" autoCRS="1"/>
+              <motion type="translation" vec="-0.20838737;0.67352295;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_125" loop="1" next="vivaro_126">
+              <motion type="rotation" axis="0.000;0.000;1.000" angle="1.31995060" center="6.64618969;131.33979797;7.52772141" autoCRS="1"/>
+              <motion type="translation" vec="-0.23688221;0.67811584;-0.00000048"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_126" loop="1" next="vivaro_127">
+              <motion type="rotation" axis="0.000;0.000;1.000" angle="1.37456063" center="6.38186407;132.02174377;7.52772141" autoCRS="1"/>
+              <motion type="translation" vec="-0.26432562;0.68194580;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_127" loop="1" next="vivaro_128">
+              <motion type="rotation" axis="0.000;0.000;1.000" angle="1.42982241" center="6.09114790;132.70675659;7.52772141" autoCRS="1"/>
+              <motion type="translation" vec="-0.29071617;0.68501282;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_128" loop="1" next="vivaro_129">
+              <motion type="rotation" axis="0.000;0.000;1.000" angle="1.48618961" center="5.77509117;133.39405823;7.52772141" autoCRS="1"/>
+              <motion type="translation" vec="-0.31605673;0.68730164;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_129" loop="1" next="vivaro_130">
+              <motion type="rotation" axis="0.000;0.000;1.000" angle="1.54201937" center="5.43474531;134.08290100;7.52772093" autoCRS="1"/>
+              <motion type="translation" vec="-0.34034586;0.68884277;-0.00000048"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_130" loop="1" next="vivaro_131">
+              <motion type="rotation" axis="0.000;0.000;1.000" angle="1.59736802" center="5.07116270;134.77247620;7.52772045" autoCRS="1"/>
+              <motion type="translation" vec="-0.36358261;0.68957520;-0.00000048"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_131" loop="1" next="vivaro_132">
+              <motion type="rotation" axis="0.000;0.000;1.000" angle="1.65370448" center="4.68539476;135.46203613;7.52772045" autoCRS="1"/>
+              <motion type="translation" vec="-0.38576794;0.68955994;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_132" loop="1" next="vivaro_133">
+              <motion type="rotation" axis="0.000;0.000;1.000" angle="1.71047349" center="4.27849293;136.15081787;7.52772045" autoCRS="1"/>
+              <motion type="translation" vec="-0.40690184;0.68878174;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_133" loop="1" next="vivaro_134">
+              <motion type="rotation" axis="0.000;0.000;1.000" angle="1.76763364" center="3.85150909;136.83802795;7.52771997" autoCRS="1"/>
+              <motion type="translation" vec="-0.42698383;0.68721008;-0.00000048"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_134" loop="1" next="vivaro_135">
+              <motion type="rotation" axis="0.000;0.000;1.000" angle="1.82429017" center="3.40549469;137.52294922;7.52772045" autoCRS="1"/>
+              <motion type="translation" vec="-0.44601440;0.68492126;0.00000048"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_135" loop="1" next="vivaro_136">
+              <motion type="rotation" axis="0.000;0.000;1.000" angle="1.88215254" center="2.94150090;138.20475769;7.52771997" autoCRS="1"/>
+              <motion type="translation" vec="-0.46399379;0.68180847;-0.00000048"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_136" loop="1" next="vivaro_137">
+              <motion type="rotation" axis="0.000;0.000;1.000" angle="1.93990328" center="2.46057963;138.88272095;7.52771997" autoCRS="1"/>
+              <motion type="translation" vec="-0.48092127;0.67796326;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_137" loop="1" next="vivaro_138">
+              <motion type="rotation" axis="0.000;0.000;1.000" angle="1.99755200" center="1.96375382;139.55598450;7.52771997" autoCRS="1"/>
+              <motion type="translation" vec="-0.49682581;0.67326355;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_138" loop="1" next="vivaro_139">
+              <motion type="rotation" axis="0.000;0.000;1.000" angle="2.05053164" center="1.45137978;140.22288513;7.52771997" autoCRS="1"/>
+              <motion type="translation" vec="-0.51237404;0.66690063;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_139" loop="1" next="vivaro_140">
+              <motion type="rotation" axis="0.000;0.000;1.000" angle="2.09583736" center="0.92314798;140.88076782;7.52771997" autoCRS="1"/>
+              <motion type="translation" vec="-0.52823180;0.65788269;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_140" loop="1" next="vivaro_141">
+              <motion type="rotation" axis="0.000;0.000;1.000" angle="2.13212295" center="0.37872010;141.52696228;7.52771997" autoCRS="1"/>
+              <motion type="translation" vec="-0.54442787;0.64619446;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_141" loop="1" next="vivaro_142">
+              <motion type="rotation" axis="0.000;0.000;1.000" angle="2.15911842" center="-0.18224248;142.15878296;7.52771997" autoCRS="1"/>
+              <motion type="translation" vec="-0.56096256;0.63182068;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_142" loop="1" next="vivaro_143">
+              <motion type="rotation" axis="0.000;0.000;1.000" angle="2.17788799" center="-0.76007855;142.77359009;7.52771997" autoCRS="1"/>
+              <motion type="translation" vec="-0.57783604;0.61480713;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_143" loop="1" next="vivaro_144">
+              <motion type="rotation" axis="0.000;0.000;1.000" angle="2.18757021" center="-1.35512590;143.36872864;7.52771997" autoCRS="1"/>
+              <motion type="translation" vec="-0.59504735;0.59513855;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_144" loop="1" next="vivaro_145">
+              <motion type="rotation" axis="0.000;0.000;1.000" angle="2.18828567" center="-1.96772361;143.94149780;7.52771997" autoCRS="1"/>
+              <motion type="translation" vec="-0.61259770;0.57276917;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_145" loop="1" next="vivaro_146">
+              <motion type="rotation" axis="0.000;0.000;1.000" angle="2.18112017" center="-2.59820938;144.48925781;7.52771997" autoCRS="1"/>
+              <motion type="translation" vec="-0.63048577;0.54776001;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_146" loop="1" next="vivaro_147">
+              <motion type="rotation" axis="0.000;0.000;1.000" angle="2.16454927" center="-3.24692249;145.00930786;7.52771997" autoCRS="1"/>
+              <motion type="translation" vec="-0.64871311;0.52005005;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_147" loop="1" next="vivaro_148">
+              <motion type="rotation" axis="0.000;0.000;1.000" angle="2.13872070" center="-3.91420126;145.49900818;7.52771997" autoCRS="1"/>
+              <motion type="translation" vec="-0.66727877;0.48970032;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_148" loop="1" next="vivaro_149">
+              <motion type="rotation" axis="0.000;0.000;1.000" angle="2.10440946" center="-4.60038376;145.95568848;7.52771997" autoCRS="1"/>
+              <motion type="translation" vec="-0.68618250;0.45668030;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_149" loop="1" next="vivaro_150">
+              <motion type="rotation" axis="0.000;0.000;1.000" angle="2.06195129" center="-5.30580854;146.37667847;7.52771997" autoCRS="1"/>
+              <motion type="translation" vec="-0.70542479;0.42098999;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_150" loop="1" next="vivaro_151">
+              <motion type="rotation" axis="0.000;0.000;1.000" angle="2.01044121" center="-6.03081417;146.75926208;7.52771997" autoCRS="1"/>
+              <motion type="translation" vec="-0.72500563;0.38258362;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_151" loop="1" next="vivaro_152">
+              <motion type="rotation" axis="0.000;0.000;1.000" angle="1.94996437" center="-6.77573967;147.10086060;7.52771997" autoCRS="1"/>
+              <motion type="translation" vec="-0.74492550;0.34159851;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_152" loop="1" next="vivaro_153">
+              <motion type="rotation" axis="0.000;0.000;1.000" angle="1.88090454" center="-7.54092264;147.39877319;7.52771997" autoCRS="1"/>
+              <motion type="translation" vec="-0.76518297;0.29791260;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_153" loop="1" next="vivaro_154">
+              <motion type="rotation" axis="0.000;0.000;1.000" angle="1.80314390" center="-8.32670021;147.65028381;7.52771997" autoCRS="1"/>
+              <motion type="translation" vec="-0.78577757;0.25151062;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_154" loop="1" next="vivaro_155">
+              <motion type="rotation" axis="0.000;0.000;1.000" angle="1.71595590" center="-9.13341522;147.85276794;7.52771997" autoCRS="1"/>
+              <motion type="translation" vec="-0.80671501;0.20248413;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_155" loop="1" next="vivaro_156">
+              <motion type="rotation" axis="0.000;0.000;1.000" angle="1.62071734" center="-9.96140099;148.00357056;7.52771997" autoCRS="1"/>
+              <motion type="translation" vec="-0.82798576;0.15080261;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_156" loop="1" next="vivaro_157">
+              <motion type="rotation" axis="0.000;0.000;1.000" angle="1.51694393" center="-10.81099987;148.10000610;7.52771997" autoCRS="1"/>
+              <motion type="translation" vec="-0.84959888;0.09643555;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_157" loop="1" next="vivaro_158">
+              <motion type="rotation" axis="0.000;0.000;1.001" angle="1.42433777" center="-11.68233013;148.16665649;7.52771997" autoCRS="1"/>
+              <motion type="translation" vec="-0.87133026;0.06665039;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_158" loop="1" next="vivaro_159">
+              <motion type="rotation" axis="0.000;0.000;1.001" angle="1.35217106" center="-12.57464504;148.22990417;7.52771997" autoCRS="1"/>
+              <motion type="translation" vec="-0.89231491;0.06324768;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_159" loop="1" next="vivaro_160">
+              <motion type="rotation" axis="0.000;0.000;1.001" angle="1.28204892" center="-13.48697662;148.28988647;7.52771997" autoCRS="1"/>
+              <motion type="translation" vec="-0.91233158;0.05998230;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_160" loop="1" next="vivaro_161">
+              <motion type="rotation" axis="0.000;0.000;1.000" angle="1.21432567" center="-14.41836071;148.34666443;7.52771997" autoCRS="1"/>
+              <motion type="translation" vec="-0.93138409;0.05677795;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_161" loop="1" next="vivaro_162">
+              <motion type="rotation" axis="0.000;0.000;1.001" angle="1.14669815" center="-15.36782932;148.40034485;7.52771997" autoCRS="1"/>
+              <motion type="translation" vec="-0.94946861;0.05368042;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_162" loop="1" next="vivaro_163">
+              <motion type="rotation" axis="0.000;0.000;1.000" angle="1.08352744" center="-16.33441544;148.45098877;7.52771997" autoCRS="1"/>
+              <motion type="translation" vec="-0.96658611;0.05064392;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_163" loop="1" next="vivaro_164">
+              <motion type="rotation" axis="0.000;0.000;1.001" angle="1.01951395" center="-17.31715584;148.49870300;7.52771997" autoCRS="1"/>
+              <motion type="translation" vec="-0.98274040;0.04771423;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_164" loop="1" next="vivaro_165">
+              <motion type="rotation" axis="0.000;0.000;1.001" angle="0.95857916" center="-18.31508255;148.54356384;7.52771997" autoCRS="1"/>
+              <motion type="translation" vec="-0.99792671;0.04486084;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_165" loop="1" next="vivaro_166">
+              <motion type="rotation" axis="0.000;0.000;1.000" angle="0.90047923" center="-19.32722664;148.58567810;7.52771997" autoCRS="1"/>
+              <motion type="translation" vec="-1.01214409;0.04211426;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_166" loop="1" next="vivaro_167">
+              <motion type="rotation" axis="0.000;0.000;1.000" angle="0.84301749" center="-20.35262680;148.62509155;7.52771997" autoCRS="1"/>
+              <motion type="translation" vec="-1.02540016;0.03941345;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_167" loop="1" next="vivaro_168">
+              <motion type="rotation" axis="0.000;0.000;1.001" angle="0.78732877" center="-21.39031410;148.66195679;7.52771997" autoCRS="1"/>
+              <motion type="translation" vec="-1.03768730;0.03686523;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_168" loop="1" next="vivaro_169">
+              <motion type="rotation" axis="0.000;0.000;1.001" angle="0.73381679" center="-22.43932343;148.69630432;7.52771997" autoCRS="1"/>
+              <motion type="translation" vec="-1.04900932;0.03434753;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_169" loop="1" next="vivaro_170">
+              <motion type="rotation" axis="0.000;0.000;1.000" angle="0.68299330" center="-23.49868393;148.72824097;7.52771997" autoCRS="1"/>
+              <motion type="translation" vec="-1.05936050;0.03193665;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_170" loop="1" next="vivaro_171">
+              <motion type="rotation" axis="0.000;0.000;1.003" angle="0.63179810" center="-24.56743431;148.75785828;7.52771997" autoCRS="1"/>
+              <motion type="translation" vec="-1.06875038;0.02961731;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_171" loop="1" next="vivaro_172">
+              <motion type="rotation" axis="0.000;0.000;1.003" angle="0.58416618" center="-25.64460754;148.78524780;7.52771997" autoCRS="1"/>
+              <motion type="translation" vec="-1.07717323;0.02738953;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_172" loop="1" next="vivaro_173">
+              <motion type="rotation" axis="0.000;0.000;1.000" angle="0.53959081" center="-26.72923851;148.81047058;7.52771997" autoCRS="1"/>
+              <motion type="translation" vec="-1.08463097;0.02522278;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_173" loop="1" next="vivaro_174">
+              <motion type="rotation" axis="0.000;0.000;1.003" angle="0.49416312" center="-27.82035828;148.83366394;7.52771997" autoCRS="1"/>
+              <motion type="translation" vec="-1.09111977;0.02319336;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_174" loop="1" next="vivaro_175">
+              <motion type="rotation" axis="0.000;0.000;1.005" angle="0.45110705" center="-28.91699791;148.85487366;7.52771997" autoCRS="1"/>
+              <motion type="translation" vec="-1.09663963;0.02120972;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_175" loop="1" next="vivaro_176">
+              <motion type="rotation" axis="0.000;0.000;1.005" angle="0.41116845" center="-30.01819992;148.87417603;7.52771997" autoCRS="1"/>
+              <motion type="translation" vec="-1.10120201;0.01930237;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_176" loop="1" next="vivaro_177">
+              <motion type="rotation" axis="0.000;0.000;0.999" angle="0.37534371" center="-31.12298965;148.89172363;7.52771997" autoCRS="1"/>
+              <motion type="translation" vec="-1.10478973;0.01754761;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_177" loop="1" next="vivaro_178">
+              <motion type="rotation" axis="0.000;0.000;1.008" angle="0.33571759" center="-32.23040771;148.90754700;7.52771997" autoCRS="1"/>
+              <motion type="translation" vec="-1.10741806;0.01582336;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_178" loop="1" next="vivaro_179">
+              <motion type="rotation" axis="0.000;0.000;0.999" angle="0.30390217" center="-33.33948135;148.92173767;7.52771997" autoCRS="1"/>
+              <motion type="translation" vec="-1.10907364;0.01419067;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_179" loop="1" next="vivaro_180">
+              <motion type="rotation" axis="0.000;0.000;0.999" angle="0.27124186" center="-34.44924545;148.93440247;7.52771997" autoCRS="1"/>
+              <motion type="translation" vec="-1.10976410;0.01266479;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_180" loop="1" next="vivaro_181">
+              <motion type="rotation" axis="0.000;0.000;1.011" angle="0.23738813" center="-35.55873871;148.94563293;7.52771997" autoCRS="1"/>
+              <motion type="translation" vec="-1.10949326;0.01123047;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_181" loop="1" next="vivaro_182">
+              <motion type="rotation" axis="0.000;0.000;1.007" angle="0.20935665" center="-36.66698837;148.95549011;7.52771997" autoCRS="1"/>
+              <motion type="translation" vec="-1.10824966;0.00985718;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_182" loop="1" next="vivaro_183">
+              <motion type="rotation" axis="0.000;0.000;1.038" angle="0.17693865" center="-37.77302933;148.96408081;7.52771997" autoCRS="1"/>
+              <motion type="translation" vec="-1.10604095;0.00859070;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_183" loop="1" next="vivaro_184">
+              <motion type="rotation" axis="0.000;0.000;1.001" angle="0.15825874" center="-38.87590408;148.97146606;7.52771997" autoCRS="1"/>
+              <motion type="translation" vec="-1.10287476;0.00738525;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_184" loop="1" next="vivaro_185">
+              <motion type="rotation" axis="0.000;0.000;1.079" angle="0.12511451" center="-39.97463608;148.97779846;7.52771997" autoCRS="1"/>
+              <motion type="translation" vec="-1.09873199;0.00633240;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_185" loop="1" next="vivaro_186">
+              <motion type="rotation" axis="0.000;0.000;1.014" angle="0.11190582" center="-41.06826019;148.98309326;7.52771997" autoCRS="1"/>
+              <motion type="translation" vec="-1.09362411;0.00529480;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_186" loop="1" next="vivaro_187">
+              <motion type="rotation" axis="0.000;0.000;1.060" angle="0.08846932" center="-42.15581512;148.98747253;7.52771997" autoCRS="1"/>
+              <motion type="translation" vec="-1.08755493;0.00437927;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_187" loop="1" next="vivaro_188">
+              <motion type="rotation" axis="0.000;0.000;0.001" angle="0.05595291" center="-43.23633575;148.99102783;7.52771997" autoCRS="1"/>
+              <motion type="translation" vec="-1.08052063;0.00355530;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_188" loop="1" next="vivaro_189">
+              <motion type="rotation" axis="0.000;0.000;0.001" angle="0.05595291" center="-44.30884171;148.99383545;7.52771997" autoCRS="1"/>
+              <motion type="translation" vec="-1.07250595;0.00280762;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_189" loop="1" next="vivaro_190">
+              <motion type="rotation" axis="0.000;0.000;0.000" angle="0.03956468" center="-45.37238312;148.99598694;7.52771997" autoCRS="1"/>
+              <motion type="translation" vec="-1.06354141;0.00215149;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_190" loop="1" next="vivaro_191">
+              <motion type="rotation" axis="0.000;0.000;0.000" angle="0.00000000" center="-46.42598724;148.99755859;7.52771997" autoCRS="1"/>
+              <motion type="translation" vec="-1.05360413;0.00157166;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_191" loop="1" next="vivaro_192">
+              <motion type="rotation" axis="0.000;0.000;0.000" angle="0.00000000" center="-47.46868515;148.99867249;7.52771997" autoCRS="1"/>
+              <motion type="translation" vec="-1.04269791;0.00111389;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_192" loop="1" next="vivaro_193">
+              <motion type="rotation" axis="0.000;0.000;0.000" angle="0.00000000" center="-48.49951553;148.99935913;7.52771997" autoCRS="1"/>
+              <motion type="translation" vec="-1.03083038;0.00068665;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_193" loop="1" next="vivaro_194">
+              <motion type="rotation" axis="0.000;0.000;0.000" angle="0.00000000" center="-49.51750946;148.99977112;7.52771997" autoCRS="1"/>
+              <motion type="translation" vec="-1.01799393;0.00041199;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_194" loop="1" next="vivaro_195">
+              <motion type="rotation" axis="0.000;0.000;0.000" angle="0.00000000" center="-50.52170563;148.99995422;7.52771997" autoCRS="1"/>
+              <motion type="translation" vec="-1.00419617;0.00018311;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_195" loop="1" next="vivaro_196">
+              <motion type="rotation" axis="0.000;0.000;0.000" angle="0.00000000" center="-51.51113129;148.99998474;7.52771997" autoCRS="1"/>
+              <motion type="translation" vec="-0.98942566;0.00003052;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_196" loop="1" next="vivaro_197">
+              <motion type="rotation" axis="0.000;0.000;0.000" angle="0.00000000" center="-52.48484421;148.99845886;7.52771997" autoCRS="1"/>
+              <motion type="translation" vec="-0.97371292;-0.00152588;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_197" loop="1" next="vivaro_198">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-53.44248199;148.98652649;7.52771997" autoCRS="1"/>
+              <motion type="translation" vec="-0.95763779;-0.01193237;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_198" loop="1" next="vivaro_199">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-54.38425827;148.96383667;7.52771997" autoCRS="1"/>
+              <motion type="translation" vec="-0.94177628;-0.02268982;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_199" loop="1" next="vivaro_200">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-55.31040955;148.93164062;7.52771997" autoCRS="1"/>
+              <motion type="translation" vec="-0.92615128;-0.03219604;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_200" loop="1" next="vivaro_201">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-56.22117233;148.89115906;7.52771997" autoCRS="1"/>
+              <motion type="translation" vec="-0.91076279;-0.04048157;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_201" loop="1" next="vivaro_202">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-57.11677551;148.84364319;7.52771997" autoCRS="1"/>
+              <motion type="translation" vec="-0.89560318;-0.04751587;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_202" loop="1" next="vivaro_203">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-57.99746704;148.79031372;7.52771997" autoCRS="1"/>
+              <motion type="translation" vec="-0.88069153;-0.05332947;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_203" loop="1" next="vivaro_204">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-58.86347580;148.73240662;7.52771997" autoCRS="1"/>
+              <motion type="translation" vec="-0.86600876;-0.05790710;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_204" loop="1" next="vivaro_205">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-59.71504211;148.67117310;7.52771997" autoCRS="1"/>
+              <motion type="translation" vec="-0.85156631;-0.06123352;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_205" loop="1" next="vivaro_206">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-60.55239487;148.60783386;7.52771997" autoCRS="1"/>
+              <motion type="translation" vec="-0.83735275;-0.06333923;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_206" loop="1" next="vivaro_207">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-61.37577820;148.54364014;7.52771997" autoCRS="1"/>
+              <motion type="translation" vec="-0.82338333;-0.06419373;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_207" loop="1" next="vivaro_208">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-62.18542480;148.47982788;7.52771997" autoCRS="1"/>
+              <motion type="translation" vec="-0.80964661;-0.06381226;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_208" loop="1" next="vivaro_209">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-62.98157501;148.41760254;7.52771997" autoCRS="1"/>
+              <motion type="translation" vec="-0.79615021;-0.06222534;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_209" loop="1" next="vivaro_210">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-63.76446152;148.35823059;7.52771997" autoCRS="1"/>
+              <motion type="translation" vec="-0.78288651;-0.05937195;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_210" loop="1" next="vivaro_211">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-64.53414154;148.30291748;7.52771997" autoCRS="1"/>
+              <motion type="translation" vec="-0.76968002;-0.05531311;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_211" loop="1" next="vivaro_212">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-65.28645325;148.25224304;7.52771997" autoCRS="1"/>
+              <motion type="translation" vec="-0.75231171;-0.05067444;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_212" loop="1" next="vivaro_213">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-66.01304626;148.20629883;7.52771997" autoCRS="1"/>
+              <motion type="translation" vec="-0.72659302;-0.04594421;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_213" loop="1" next="vivaro_214">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-66.70537567;148.16496277;7.52771997" autoCRS="1"/>
+              <motion type="translation" vec="-0.69232941;-0.04133606;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_214" loop="1" next="vivaro_215">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-67.35491180;148.12831116;7.52771997" autoCRS="1"/>
+              <motion type="translation" vec="-0.64953613;-0.03665161;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_215" loop="1" next="vivaro_216">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-67.95310974;148.09626770;7.52771997" autoCRS="1"/>
+              <motion type="translation" vec="-0.59819794;-0.03204346;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_216" loop="1" next="vivaro_217">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-68.49140167;148.06886292;7.52771997" autoCRS="1"/>
+              <motion type="translation" vec="-0.53829193;-0.02740479;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_217" loop="1" next="vivaro_218">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-68.96128845;148.04603577;7.52771997" autoCRS="1"/>
+              <motion type="translation" vec="-0.46988678;-0.02282715;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_218" loop="1" next="vivaro_219">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-69.35420990;148.02783203;7.52771997" autoCRS="1"/>
+              <motion type="translation" vec="-0.39292145;-0.01820374;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_219" loop="1" next="vivaro_220">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-69.66162109;148.01417542;7.52771997" autoCRS="1"/>
+              <motion type="translation" vec="-0.30741119;-0.01365662;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro_220" loop="1" >
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-69.87497711;148.00511169;7.52771997" autoCRS="1"/>
+              <motion type="translation" vec="-0.21335602;-0.00906372;0.00000000"/>
+            </dmotion>
+            
+        </part>
+		<!--Dynamic scenepart-->
+        <part  kdtDynStep="0.4166666666666667">
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data\sceneparts\urban_dyn\vivaro.001.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+            <dmotion id="vivaro.001_0" loop="1" next="vivaro.001_1">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-13.00000000;150.00000000;7.00000000" autoCRS="1"/>
+              <motion type="translation" vec="0.00000000;0.00000000;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro.001_1" loop="1" next="vivaro.001_2">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-12.99693489;149.93817139;7.00000000" autoCRS="1"/>
+              <motion type="translation" vec="0.00306511;-0.06182861;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro.001_2" loop="1" next="vivaro.001_3">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-12.98796368;149.75718689;7.00000000" autoCRS="1"/>
+              <motion type="translation" vec="0.00897121;-0.18098450;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro.001_3" loop="1" next="vivaro.001_4">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-12.97341824;149.46392822;7.00000000" autoCRS="1"/>
+              <motion type="translation" vec="0.01454544;-0.29325867;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro.001_4" loop="1" next="vivaro.001_5">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-12.95363522;149.06520081;7.00000000" autoCRS="1"/>
+              <motion type="translation" vec="0.01978302;-0.39872742;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro.001_5" loop="1" next="vivaro.001_6">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-12.92894840;148.56785583;7.00000000" autoCRS="1"/>
+              <motion type="translation" vec="0.02468681;-0.49734497;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro.001_6" loop="1" next="vivaro.001_7">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-12.89969349;147.97871399;7.00000000" autoCRS="1"/>
+              <motion type="translation" vec="0.02925491;-0.58914185;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro.001_7" loop="1" next="vivaro.001_8">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-12.86620331;147.30461121;7.00000000" autoCRS="1"/>
+              <motion type="translation" vec="0.03349018;-0.67410278;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro.001_8" loop="1" next="vivaro.001_9">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-12.82881165;146.55238342;7.00000000" autoCRS="1"/>
+              <motion type="translation" vec="0.03739166;-0.75222778;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro.001_9" loop="1" next="vivaro.001_10">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-12.78785515;145.72886658;7.00000000" autoCRS="1"/>
+              <motion type="translation" vec="0.04095650;-0.82351685;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro.001_10" loop="1" next="vivaro.001_11">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-12.74366760;144.84089661;7.00000000" autoCRS="1"/>
+              <motion type="translation" vec="0.04418755;-0.88796997;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro.001_11" loop="1" next="vivaro.001_12">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-12.69658375;143.89527893;7.00000000" autoCRS="1"/>
+              <motion type="translation" vec="0.04708385;-0.94561768;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro.001_12" loop="1" next="vivaro.001_13">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-12.64693642;142.89889526;7.00000000" autoCRS="1"/>
+              <motion type="translation" vec="0.04964733;-0.99638367;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro.001_13" loop="1" next="vivaro.001_14">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-12.59506130;141.85855103;7.00000000" autoCRS="1"/>
+              <motion type="translation" vec="0.05187511;-1.04034424;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro.001_14" loop="1" next="vivaro.001_15">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-12.54129219;140.78106689;7.00000000" autoCRS="1"/>
+              <motion type="translation" vec="0.05376911;-1.07748413;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro.001_15" loop="1" next="vivaro.001_16">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-12.48596478;139.67330933;7.00000000" autoCRS="1"/>
+              <motion type="translation" vec="0.05532742;-1.10775757;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro.001_16" loop="1" next="vivaro.001_17">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-12.42941284;138.54208374;7.00000000" autoCRS="1"/>
+              <motion type="translation" vec="0.05655193;-1.13122559;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro.001_17" loop="1" next="vivaro.001_18">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-12.37197018;137.39424133;7.00000000" autoCRS="1"/>
+              <motion type="translation" vec="0.05744267;-1.14784241;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro.001_18" loop="1" next="vivaro.001_19">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-12.31397343;136.23660278;7.00000000" autoCRS="1"/>
+              <motion type="translation" vec="0.05799675;-1.15763855;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro.001_19" loop="1" next="vivaro.001_20">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-12.25575447;135.07600403;7.00000000" autoCRS="1"/>
+              <motion type="translation" vec="0.05821896;-1.16059875;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro.001_20" loop="1" next="vivaro.001_21">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-12.19764900;133.91929626;7.00000000" autoCRS="1"/>
+              <motion type="translation" vec="0.05810547;-1.15670776;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro.001_21" loop="1" next="vivaro.001_22">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-12.13999081;132.77330017;7.00000000" autoCRS="1"/>
+              <motion type="translation" vec="0.05765820;-1.14599609;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro.001_22" loop="1" next="vivaro.001_23">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-12.08311462;131.64485168;7.00000000" autoCRS="1"/>
+              <motion type="translation" vec="0.05687618;-1.12844849;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro.001_23" loop="1" next="vivaro.001_24">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-12.02735615;130.54075623;7.00000000" autoCRS="1"/>
+              <motion type="translation" vec="0.05575848;-1.10409546;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro.001_24" loop="1" next="vivaro.001_25">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-11.97303963;129.46772766;7.00000000" autoCRS="1"/>
+              <motion type="translation" vec="0.05431652;-1.07302856;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro.001_25" loop="1" next="vivaro.001_26">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-11.92029762;128.42820740;7.00000000" autoCRS="1"/>
+              <motion type="translation" vec="0.05274200;-1.03952026;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro.001_26" loop="1" next="vivaro.001_27">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-11.86907005;127.42057037;7.00000000" autoCRS="1"/>
+              <motion type="translation" vec="0.05122757;-1.00763702;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro.001_27" loop="1" next="vivaro.001_28">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-11.81928253;126.44300079;7.00000000" autoCRS="1"/>
+              <motion type="translation" vec="0.04978752;-0.97756958;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro.001_28" loop="1" next="vivaro.001_29">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-11.77086830;125.49362946;7.00000000" autoCRS="1"/>
+              <motion type="translation" vec="0.04841423;-0.94937134;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro.001_29" loop="1" next="vivaro.001_30">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-11.72375393;124.57066345;7.00000000" autoCRS="1"/>
+              <motion type="translation" vec="0.04711437;-0.92296600;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro.001_30" loop="1" next="vivaro.001_31">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-11.67787170;123.67226410;7.00000000" autoCRS="1"/>
+              <motion type="translation" vec="0.04588223;-0.89839935;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro.001_31" loop="1" next="vivaro.001_32">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-11.63314819;122.79659271;7.00000000" autoCRS="1"/>
+              <motion type="translation" vec="0.04472351;-0.87567139;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro.001_32" loop="1" next="vivaro.001_33">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-11.58951569;121.94181824;7.00000000" autoCRS="1"/>
+              <motion type="translation" vec="0.04363251;-0.85477448;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro.001_33" loop="1" next="vivaro.001_34">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-11.54690266;121.10611725;7.00000000" autoCRS="1"/>
+              <motion type="translation" vec="0.04261303;-0.83570099;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro.001_34" loop="1" next="vivaro.001_35">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-11.50523853;120.28765106;7.00000000" autoCRS="1"/>
+              <motion type="translation" vec="0.04166412;-0.81846619;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro.001_35" loop="1" next="vivaro.001_36">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-11.46445179;119.48459625;7.00000000" autoCRS="1"/>
+              <motion type="translation" vec="0.04078674;-0.80305481;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro.001_36" loop="1" next="vivaro.001_37">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-11.42447376;118.69512177;7.00000000" autoCRS="1"/>
+              <motion type="translation" vec="0.03997803;-0.78947449;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro.001_37" loop="1" next="vivaro.001_38">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-11.38523293;117.91738892;7.00000000" autoCRS="1"/>
+              <motion type="translation" vec="0.03924084;-0.77773285;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro.001_38" loop="1" next="vivaro.001_39">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-11.34665966;117.14957428;7.00000000" autoCRS="1"/>
+              <motion type="translation" vec="0.03857327;-0.76781464;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro.001_39" loop="1" next="vivaro.001_40">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-11.30868149;116.38984680;7.00000000" autoCRS="1"/>
+              <motion type="translation" vec="0.03797817;-0.75972748;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro.001_40" loop="1" next="vivaro.001_41">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-11.27123165;115.63637543;7.00000000" autoCRS="1"/>
+              <motion type="translation" vec="0.03744984;-0.75347137;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro.001_41" loop="1" next="vivaro.001_42">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-11.23423481;114.88733673;7.00000000" autoCRS="1"/>
+              <motion type="translation" vec="0.03699684;-0.74903870;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro.001_42" loop="1" next="vivaro.001_43">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-11.19762516;114.14089203;7.00000000" autoCRS="1"/>
+              <motion type="translation" vec="0.03660965;-0.74644470;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro.001_43" loop="1" next="vivaro.001_44">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-11.16132832;113.39521027;7.00000000" autoCRS="1"/>
+              <motion type="translation" vec="0.03629684;-0.74568176;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro.001_44" loop="1" next="vivaro.001_45">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-11.12527657;112.64844513;7.00000000" autoCRS="1"/>
+              <motion type="translation" vec="0.03605175;-0.74676514;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro.001_45" loop="1" next="vivaro.001_46">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-11.08939838;111.89881134;7.00000000" autoCRS="1"/>
+              <motion type="translation" vec="0.03587818;-0.74963379;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro.001_46" loop="1" next="vivaro.001_47">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-11.05362415;111.14443207;7.00000000" autoCRS="1"/>
+              <motion type="translation" vec="0.03577423;-0.75437927;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro.001_47" loop="1" next="vivaro.001_48">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-11.01788044;110.38349915;7.00000000" autoCRS="1"/>
+              <motion type="translation" vec="0.03574371;-0.76093292;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro.001_48" loop="1" next="vivaro.001_49">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-10.98210049;109.61422729;7.00000000" autoCRS="1"/>
+              <motion type="translation" vec="0.03577995;-0.76927185;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro.001_49" loop="1" next="vivaro.001_50">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-10.94622231;108.83595276;7.00000000" autoCRS="1"/>
+              <motion type="translation" vec="0.03587818;-0.77827454;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro.001_50" loop="1" next="vivaro.001_51">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-10.91019249;108.04910278;7.00000000" autoCRS="1"/>
+              <motion type="translation" vec="0.03602982;-0.78684998;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro.001_51" loop="1" next="vivaro.001_52">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-10.87395954;107.25420380;7.00000000" autoCRS="1"/>
+              <motion type="translation" vec="0.03623295;-0.79489899;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro.001_52" loop="1" next="vivaro.001_53">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-10.83747005;106.45173645;7.00000000" autoCRS="1"/>
+              <motion type="translation" vec="0.03648949;-0.80246735;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro.001_53" loop="1" next="vivaro.001_54">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-10.80067348;105.64218903;7.00000000" autoCRS="1"/>
+              <motion type="translation" vec="0.03679657;-0.80954742;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro.001_54" loop="1" next="vivaro.001_55">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-10.76351547;104.82604980;7.00000000" autoCRS="1"/>
+              <motion type="translation" vec="0.03715801;-0.81613922;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro.001_55" loop="1" next="vivaro.001_56">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-10.72594547;104.00385284;7.00000000" autoCRS="1"/>
+              <motion type="translation" vec="0.03757000;-0.82219696;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro.001_56" loop="1" next="vivaro.001_57">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-10.68791008;103.17605591;7.00000000" autoCRS="1"/>
+              <motion type="translation" vec="0.03803539;-0.82779694;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro.001_57" loop="1" next="vivaro.001_58">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-10.64935875;102.34316254;7.00000000" autoCRS="1"/>
+              <motion type="translation" vec="0.03855133;-0.83289337;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro.001_58" loop="1" next="vivaro.001_59">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-10.61023808;101.50566101;7.00000000" autoCRS="1"/>
+              <motion type="translation" vec="0.03912067;-0.83750153;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro.001_59" loop="1" next="vivaro.001_60">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-10.57049656;100.66407776;7.00000000" autoCRS="1"/>
+              <motion type="translation" vec="0.03974152;-0.84158325;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro.001_60" loop="1" next="vivaro.001_61">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-10.53008080;99.81887817;7.00000000" autoCRS="1"/>
+              <motion type="translation" vec="0.04041576;-0.84519958;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro.001_61" loop="1" next="vivaro.001_62">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-10.48893929;98.97057343;7.00000000" autoCRS="1"/>
+              <motion type="translation" vec="0.04114151;-0.84830475;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro.001_62" loop="1" next="vivaro.001_63">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-10.44701958;98.11963654;7.00000000" autoCRS="1"/>
+              <motion type="translation" vec="0.04191971;-0.85093689;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro.001_63" loop="1" next="vivaro.001_64">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-10.40427017;97.26658630;7.00000000" autoCRS="1"/>
+              <motion type="translation" vec="0.04274940;-0.85305023;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro.001_64" loop="1" next="vivaro.001_65">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-10.36063766;96.41191101;7.00000000" autoCRS="1"/>
+              <motion type="translation" vec="0.04363251;-0.85467529;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro.001_65" loop="1" next="vivaro.001_66">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-10.31607151;95.55610657;7.00000000" autoCRS="1"/>
+              <motion type="translation" vec="0.04456615;-0.85580444;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro.001_66" loop="1" next="vivaro.001_67">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-10.27051830;94.69966125;7.00000000" autoCRS="1"/>
+              <motion type="translation" vec="0.04555321;-0.85644531;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro.001_67" loop="1" next="vivaro.001_68">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-10.22392559;93.84307861;7.00000000" autoCRS="1"/>
+              <motion type="translation" vec="0.04659271;-0.85658264;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro.001_68" loop="1" next="vivaro.001_69">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-10.17624187;92.98685455;7.00000000" autoCRS="1"/>
+              <motion type="translation" vec="0.04768372;-0.85622406;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro.001_69" loop="1" next="vivaro.001_70">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-10.12741470;92.13147736;7.00000000" autoCRS="1"/>
+              <motion type="translation" vec="0.04882717;-0.85537720;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro.001_70" loop="1" next="vivaro.001_71">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-10.07739162;91.27744293;7.00000000" autoCRS="1"/>
+              <motion type="translation" vec="0.05002308;-0.85403442;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro.001_71" loop="1" next="vivaro.001_72">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-10.02612019;90.42524719;7.00000000" autoCRS="1"/>
+              <motion type="translation" vec="0.05127144;-0.85219574;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro.001_72" loop="1" next="vivaro.001_73">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-9.97355080;89.57538605;7.00000000" autoCRS="1"/>
+              <motion type="translation" vec="0.05256939;-0.84986115;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro.001_73" loop="1" next="vivaro.001_74">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-9.91968918;88.72801208;7.00000000" autoCRS="1"/>
+              <motion type="translation" vec="0.05386162;-0.84737396;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro.001_74" loop="1" next="vivaro.001_75">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-9.86459446;87.88299561;7.00000000" autoCRS="1"/>
+              <motion type="translation" vec="0.05509472;-0.84501648;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro.001_75" loop="1" next="vivaro.001_76">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-9.80832958;87.04018402;7.00000000" autoCRS="1"/>
+              <motion type="translation" vec="0.05626488;-0.84281158;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro.001_76" loop="1" next="vivaro.001_77">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-9.75095749;86.19943237;7.00000000" autoCRS="1"/>
+              <motion type="translation" vec="0.05737209;-0.84075165;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro.001_77" loop="1" next="vivaro.001_78">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-9.69253826;85.36058044;7.00000000" autoCRS="1"/>
+              <motion type="translation" vec="0.05841923;-0.83885193;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro.001_78" loop="1" next="vivaro.001_79">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-9.63313580;84.52349091;7.00000000" autoCRS="1"/>
+              <motion type="translation" vec="0.05940247;-0.83708954;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro.001_79" loop="1" next="vivaro.001_80">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-9.57281113;83.68801117;7.00000000" autoCRS="1"/>
+              <motion type="translation" vec="0.06032467;-0.83547974;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro.001_80" loop="1" next="vivaro.001_81">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-9.51163101;82.85398102;7.00000000" autoCRS="1"/>
+              <motion type="translation" vec="0.06118011;-0.83403015;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro.001_81" loop="1" next="vivaro.001_82">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-9.44965172;82.02124786;7.00000000" autoCRS="1"/>
+              <motion type="translation" vec="0.06197929;-0.83273315;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro.001_82" loop="1" next="vivaro.001_83">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-9.38693905;81.18966675;7.00000000" autoCRS="1"/>
+              <motion type="translation" vec="0.06271267;-0.83158112;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro.001_83" loop="1" next="vivaro.001_84">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-9.32355404;80.35910034;7.00000000" autoCRS="1"/>
+              <motion type="translation" vec="0.06338501;-0.83056641;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro.001_84" loop="1" next="vivaro.001_85">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-9.25956154;79.52937317;7.00000000" autoCRS="1"/>
+              <motion type="translation" vec="0.06399250;-0.82972717;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro.001_85" loop="1" next="vivaro.001_86">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-9.19502068;78.70034790;7.00000000" autoCRS="1"/>
+              <motion type="translation" vec="0.06454086;-0.82902527;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro.001_86" loop="1" next="vivaro.001_87">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-9.12999439;77.87187195;7.00000000" autoCRS="1"/>
+              <motion type="translation" vec="0.06502628;-0.82847595;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro.001_87" loop="1" next="vivaro.001_88">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-9.06454659;77.04380035;7.00000000" autoCRS="1"/>
+              <motion type="translation" vec="0.06544781;-0.82807159;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro.001_88" loop="1" next="vivaro.001_89">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-8.99874115;76.21597290;7.00000000" autoCRS="1"/>
+              <motion type="translation" vec="0.06580544;-0.82782745;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro.001_89" loop="1" next="vivaro.001_90">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-8.93263435;75.38825226;7.00000000" autoCRS="1"/>
+              <motion type="translation" vec="0.06610680;-0.82772064;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro.001_90" loop="1" next="vivaro.001_91">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-8.86629391;74.56047058;7.00000000" autoCRS="1"/>
+              <motion type="translation" vec="0.06634045;-0.82778168;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro.001_91" loop="1" next="vivaro.001_92">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-8.79977989;73.73248291;7.00000000" autoCRS="1"/>
+              <motion type="translation" vec="0.06651402;-0.82798767;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro.001_92" loop="1" next="vivaro.001_93">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-8.73315620;72.90414429;7.00000000" autoCRS="1"/>
+              <motion type="translation" vec="0.06662369;-0.82833862;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro.001_93" loop="1" next="vivaro.001_94">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-8.66648293;72.07530212;7.00000000" autoCRS="1"/>
+              <motion type="translation" vec="0.06667328;-0.82884216;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro.001_94" loop="1" next="vivaro.001_95">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-8.59982491;71.24579620;7.00000000" autoCRS="1"/>
+              <motion type="translation" vec="0.06665802;-0.82950592;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro.001_95" loop="1" next="vivaro.001_96">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-8.53324223;70.41549683;7.00000000" autoCRS="1"/>
+              <motion type="translation" vec="0.06658268;-0.83029938;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro.001_96" loop="1" next="vivaro.001_97">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-8.46679783;69.58424377;7.00000000" autoCRS="1"/>
+              <motion type="translation" vec="0.06644440;-0.83125305;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro.001_97" loop="1" next="vivaro.001_98">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-8.40053368;68.75202179;7.00000000" autoCRS="1"/>
+              <motion type="translation" vec="0.06626415;-0.83222198;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro.001_98" loop="1" next="vivaro.001_99">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-8.33446789;67.91892242;7.00000000" autoCRS="1"/>
+              <motion type="translation" vec="0.06606579;-0.83309937;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro.001_99" loop="1" next="vivaro.001_100">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-8.26862144;67.08506012;7.00000000" autoCRS="1"/>
+              <motion type="translation" vec="0.06584644;-0.83386230;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro.001_100" loop="1" next="vivaro.001_101">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-8.20301533;66.25053406;7.00000000" autoCRS="1"/>
+              <motion type="translation" vec="0.06560612;-0.83452606;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro.001_101" loop="1" next="vivaro.001_102">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-8.13766861;65.41546631;7.00000000" autoCRS="1"/>
+              <motion type="translation" vec="0.06534672;-0.83506775;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro.001_102" loop="1" next="vivaro.001_103">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-8.07259941;64.57996368;7.00000000" autoCRS="1"/>
+              <motion type="translation" vec="0.06506920;-0.83550262;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro.001_103" loop="1" next="vivaro.001_104">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-8.00783157;63.74411392;7.00000000" autoCRS="1"/>
+              <motion type="translation" vec="0.06476784;-0.83584976;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro.001_104" loop="1" next="vivaro.001_105">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-7.94338036;62.90804672;7.00000000" autoCRS="1"/>
+              <motion type="translation" vec="0.06445122;-0.83606720;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro.001_105" loop="1" next="vivaro.001_106">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-7.87926912;62.07185745;7.00000000" autoCRS="1"/>
+              <motion type="translation" vec="0.06411123;-0.83618927;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro.001_106" loop="1" next="vivaro.001_107">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-7.81551647;61.23565674;7.00000000" autoCRS="1"/>
+              <motion type="translation" vec="0.06375265;-0.83620071;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro.001_107" loop="1" next="vivaro.001_108">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-7.75214243;60.39954758;7.00000000" autoCRS="1"/>
+              <motion type="translation" vec="0.06337404;-0.83610916;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro.001_108" loop="1" next="vivaro.001_109">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-7.68916655;59.56364441;7.00000000" autoCRS="1"/>
+              <motion type="translation" vec="0.06297588;-0.83590317;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro.001_109" loop="1" next="vivaro.001_110">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-7.62660837;58.72804642;7.00000000" autoCRS="1"/>
+              <motion type="translation" vec="0.06255817;-0.83559799;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro.001_110" loop="1" next="vivaro.001_111">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-7.56448889;57.89286423;7.00000000" autoCRS="1"/>
+              <motion type="translation" vec="0.06211948;-0.83518219;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro.001_111" loop="1" next="vivaro.001_112">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-7.50282717;57.05821228;7.00000000" autoCRS="1"/>
+              <motion type="translation" vec="0.06166172;-0.83465195;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro.001_112" loop="1" next="vivaro.001_113">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-7.44164276;56.22419357;7.00000000" autoCRS="1"/>
+              <motion type="translation" vec="0.06118441;-0.83401871;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro.001_113" loop="1" next="vivaro.001_114">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-7.38095713;55.39091110;7.00000000" autoCRS="1"/>
+              <motion type="translation" vec="0.06068563;-0.83328247;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro.001_114" loop="1" next="vivaro.001_115">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-7.32078886;54.55847549;7.00000000" autoCRS="1"/>
+              <motion type="translation" vec="0.06016827;-0.83243561;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro.001_115" loop="1" next="vivaro.001_116">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-7.26115704;53.72698975;7.00000000" autoCRS="1"/>
+              <motion type="translation" vec="0.05963182;-0.83148575;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro.001_116" loop="1" next="vivaro.001_117">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-7.20208311;52.89657211;7.00000000" autoCRS="1"/>
+              <motion type="translation" vec="0.05907393;-0.83041763;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro.001_117" loop="1" next="vivaro.001_118">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-7.14358664;52.06731033;7.00000000" autoCRS="1"/>
+              <motion type="translation" vec="0.05849648;-0.82926178;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro.001_118" loop="1" next="vivaro.001_119">
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-7.08568668;51.23933792;7.00000000" autoCRS="1"/>
+              <motion type="translation" vec="0.05789995;-0.82797241;0.00000000"/>
+            </dmotion>
+            
+            <dmotion id="vivaro.001_119" loop="1" >
+              <motion type="rotation" axis="0.000;1.000;0.000" angle="0.00000000" center="-7.02840424;50.41274643;7.00000000" autoCRS="1"/>
+              <motion type="translation" vec="0.05728245;-0.82659149;0.00000000"/>
+            </dmotion>
+            
+        </part>
+        <!--Static sceneparts-->
+        <part  >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/urban_dyn/Inliner-Bahn.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part  >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/urban_dyn/element.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part  >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/urban_dyn/element.003.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part  >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/urban_dyn/element.005.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part  >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/urban_dyn/element.006.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part  >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/urban_dyn/element.008.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part  >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/urban_dyn/element.013.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part  >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/urban_dyn/element.016.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part  >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/urban_dyn/element.017.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part  >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/urban_dyn/element.018.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part  >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/urban_dyn/element.019.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part  >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/urban_dyn/element.020.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part  >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/urban_dyn/element.021.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part  >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/urban_dyn/element.028.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part  >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/urban_dyn/element.029.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part  >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/urban_dyn/element.030.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part  >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/urban_dyn/element.031.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part  >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/urban_dyn/element.032.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part  >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/urban_dyn/element.033.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part  >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/urban_dyn/element.036.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part  >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/urban_dyn/element.037.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part  >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/urban_dyn/small_maple.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            <filter type="translate">
+                <param type="vec3" key="offset" value="2.16509;69.8026;6.94842" />
+                <param type="integer" key="onGround" value="1" />
+               </filter>
+            <filter type="rotate">
+                <param type="rotation" key="rotation">
+                <rot axis="z" angle_deg="1.11" />
+                </param>
+            </filter>
+        </part>
+        <part  >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/urban_dyn/small_maple.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            <filter type="translate">
+                <param type="vec3" key="offset" value="8.13497;53.3513;7.66822" />
+                <param type="integer" key="onGround" value="1" />
+               </filter>
+            <filter type="rotate">
+                <param type="rotation" key="rotation">
+                <rot axis="z" angle_deg="-23.2" />
+                </param>
+            </filter>
+        </part>
+        <part  >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/urban_dyn/small_maple.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            <filter type="translate">
+                <param type="vec3" key="offset" value="8.00714;40.7623;7.66822" />
+                <param type="integer" key="onGround" value="1" />
+               </filter>
+            <filter type="rotate">
+                <param type="rotation" key="rotation">
+                <rot axis="z" angle_deg="-23.2" />
+                </param>
+            </filter>
+        </part>
+        <part  >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/urban_dyn/small_maple.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            <filter type="translate">
+                <param type="vec3" key="offset" value="0.747932;88.9463;6.55873" />
+                <param type="integer" key="onGround" value="1" />
+               </filter>
+            <filter type="rotate">
+                <param type="rotation" key="rotation">
+                <rot axis="z" angle_deg="1.11"/>
+                </param>
+            </filter>
+        </part>
+        <part  >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/urban_dyn/small_maple.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            <filter type="translate">
+                <param type="vec3" key="offset" value="-3.42266;108.729;5.80861" />
+                <param type="integer" key="onGround" value="1" />
+               </filter>
+            <filter type="rotate">
+                <param type="rotation" key="rotation">
+                <rot axis="z" angle_deg="-9.59"/>
+                </param>
+            </filter>
+            <filter type="scale">
+                <param type="double" key="scale" value="1.271" />
+            </filter>
+        </part>
+        <part  >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/urban_dyn/small_maple.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            <filter type="translate">
+                <param type="vec3" key="offset" value="-18.5766;84.0126;6.6221" />
+                <param type="integer" key="onGround" value="1" />
+               </filter>
+            <filter type="rotate">
+                <param type="rotation" key="rotation">
+                <rot axis="z" angle_deg="1.11"/>
+                </param>
+            </filter>
+            <filter type="scale">
+                <param type="double" key="scale" value="0.322" />
+            </filter>
+        </part>
+        <part  >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/urban_dyn/small_maple.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            <filter type="translate">
+                <param type="vec3" key="offset" value="-17.9874;83.0696;6.6221" />
+                <param type="integer" key="onGround" value="1" />
+               </filter>
+            <filter type="rotate">
+                <param type="rotation" key="rotation">
+                <rot axis="z" angle_deg="-23.2"/>
+                </param>
+            </filter>
+            <filter type="scale">
+                <param type="double" key="scale" value="0.322" />
+            </filter>
+        </part>
+        <part  >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/urban_dyn/small_maple.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            <filter type="translate">
+                <param type="vec3" key="offset" value="-17.7965;79.5875;6.6029" />
+                <param type="integer" key="onGround" value="1" />
+               </filter>
+            <filter type="rotate">
+                <param type="rotation" key="rotation">
+                <rot axis="z" angle_deg="-23.2"/>
+                </param>
+            </filter>
+            <filter type="scale">
+                <param type="double" key="scale" value="0.322" />
+            </filter>
+        </part>
+        <part  >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/urban_dyn/white_birch.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            <filter type="translate">
+                <param type="vec3" key="offset" value="35.719;51.7917;7.59115" />
+                <param type="integer" key="onGround" value="1" />
+            </filter>
+            <filter type="rotate">
+                <param type="rotation" key="rotation">
+                <rot axis="z" angle_deg="64"/>
+                </param>
+            </filter>
+        </part>
+        <part  >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/urban_dyn/white_birch.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            <filter type="translate">
+                <param type="vec3" key="offset" value="24.2854;22.3744;8.30903" />
+                <param type="integer" key="onGround" value="1" />
+            </filter>
+        </part>
+        <part  >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/urban_dyn/white_birch.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            <filter type="translate">
+                <param type="vec3" key="offset" value="-21.9022;41.0781;5.93214" />
+                <param type="integer" key="onGround" value="1" />
+            </filter>
+            <filter type="rotate">
+                <param type="rotation" key="rotation">
+                <rot axis="z" angle_deg="64"/>
+                </param>
+            </filter>
+        </part>
+        <part  >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/urban_dyn/Terrain.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part  >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/urban_dyn/vivaro.000.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            <filter type="translate">
+                <param type="vec3" key="offset" value="-14.3558;62.1707;7" />
+                <param type="integer" key="onGround" value="1" />
+            </filter>
+            <filter type="rotate">
+                <param type="rotation" key="rotation">
+                <rot axis="z" angle_deg="-177"/>
+                </param>
+            </filter>
+            
+        </part>
+        <part  >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/urban_dyn/vivaro.000.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            <filter type="translate">
+                <param type="vec3" key="offset" value="-14.7988;67.8695;7.12181" />
+                <param type="integer" key="onGround" value="1" />
+            </filter>
+            <filter type="rotate">
+                <param type="rotation" key="rotation">
+                <rot axis="z" angle_deg="-177"/>
+                </param>
+            </filter>
+            
+        </part>
+        <part  >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/urban_dyn/vivaro.000.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            <filter type="translate">
+                <param type="vec3" key="offset" value="-15.1683;73.5638;7.23869" />
+                <param type="integer" key="onGround" value="1" />
+            </filter>
+            <filter type="rotate">
+                <param type="rotation" key="rotation">
+                <rot axis="z" angle_deg="-356"/>
+                </param>
+            </filter>
+            
+        </part>
+        <part  >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/urban_dyn/vivaro.000.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            <filter type="translate">
+                <param type="vec3" key="offset" value="-13.6314;50.2513;6.58378" />
+                <param type="integer" key="onGround" value="1" />
+            </filter>
+            <filter type="rotate">
+                <param type="rotation" key="rotation">
+                    <rot axis="z" angle_deg="-356"/>
+                    <rot axis="x" angle_deg="2.51"/>
+                </param>
+            </filter>
+            
+        </part>
+        <part  >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/urban_dyn/vivaro.000.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            <filter type="translate">
+                <param type="vec3" key="offset" value="-20.8724;64.6867;7" />
+                <param type="integer" key="onGround" value="1" />
+            </filter>
+            <filter type="rotate">
+                <param type="rotation" key="rotation">
+                <rot axis="z" angle_deg="-177"/>
+                </param>
+            </filter>
+            
+        </part>
+        <part  >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/urban_dyn/vivaro.000.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            <filter type="translate">
+                <param type="vec3" key="offset" value="-21.3052;71.8556;7" />
+                <param type="integer" key="onGround" value="1" />
+            </filter>
+            <filter type="rotate">
+                <param type="rotation" key="rotation">
+                <rot axis="z" angle_deg="-177"/>
+                </param>
+            </filter>
+            
+        </part>
+        <part  >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/urban_dyn/vivaro.000.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            <filter type="translate">
+                <param type="vec3" key="offset" value="-20.5888;59.0784;7" />
+                <param type="integer" key="onGround" value="1" />
+            </filter>
+            <filter type="rotate">
+                <param type="rotation" key="rotation">
+                <rot axis="z" angle_deg="-177"/>
+                </param>
+            </filter>
+            
+        </part>
+    </scene>
+</document>

@@ -1,0 +1,8 @@
+newmtl terrain
+Ns 0.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.300000 0.300000 0.300000
+Ks 0.300000 0.300000 0.300000
+helios_spectra asphalt
+helios_isGround 1
+helios_classification 1

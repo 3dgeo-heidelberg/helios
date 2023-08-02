@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+    <scannerSettings headRotatePerSec_deg="3600" scanFreq_hz="0" scanAngle_deg="1" pulseFreq_hz="20312" active="true" id="hdl-64e"/>
+    <survey name="mls_urban_dyn" scene="data/scenes/dyn/urban_dyn_scene.xml#urban_dyn" platform="data/platforms.xml#vehicle_linearpath" scanner="data/scanners_tls.xml#velodyne_hdl-64e">
+        <leg>
+            <platformSettings  x="8.2616" y="40" z="0" onGround="true" movePerSec_m="7"/>
+            <scannerSettings  template="hdl-64e" headRotateStart_deg="0.0" headRotateStop_deg="7560.0" trajectoryTimeInterval_s="0.01"/>
+        </leg>
+        <leg>
+            <platformSettings  x="8.17595185" y="80" z="0" onGround="true" movePerSec_m="7"/>
+            <scannerSettings  template="hdl-64e" headRotateStart_deg="0.0" headRotateStop_deg="7560.0" trajectoryTimeInterval_s="0.01"/>
+        </leg>
+        <leg>
+            <platformSettings  x="8.06175432" y="120" z="0" onGround="true" movePerSec_m="7"/>
+            <scannerSettings  template="hdl-64e" headRotateStart_deg="0.0" headRotateStop_deg="7560.0" trajectoryTimeInterval_s="0.01"/>
+        </leg>
+        <leg>
+            <platformSettings  x="7.44217937" y="150" z="0" onGround="true" movePerSec_m="7"/>
+            <scannerSettings  template="hdl-64e" headRotateStart_deg="0.0" headRotateStop_deg="7560.0" trajectoryTimeInterval_s="0.01"/>
+        </leg>
+        <leg>
+            <platformSettings  x="6.79880824" y="180" z="0" onGround="true" movePerSec_m="7"/>
+            <scannerSettings template="hdl-64e" headRotateStart_deg="0.0" headRotateStop_deg="7560.0" trajectoryTimeInterval_s="0.01"/>
+        </leg>
+        <leg>
+            <platformSettings  x="6.15543711" y="210" z="0" onGround="true" movePerSec_m="7"/>
+            <scannerSettings template="hdl-64e" active="false"/>
+        </leg>
+    </survey>
+</document>
