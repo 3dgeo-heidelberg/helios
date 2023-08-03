@@ -3,7 +3,7 @@
     <scene id="urban_dyn" name="Scene with moving car" dynTimeStep="0.08333333333333333">
         
         <!--Dynamic scenepart-->
-        <part  kdtDynStep="0.4166666666666667">
+        <part>
             <filter type="objloader">
                 <param type="string" key="filepath" value="data/sceneparts/urban_dyn/vivaro.obj" />
                 <param type="string" key="up" value="z" />
@@ -1116,7 +1116,7 @@
             
         </part>
 		<!--Dynamic scenepart-->
-        <part  kdtDynStep="0.4166666666666667">
+        <part>
             <filter type="objloader">
                 <param type="string" key="filepath" value="data/sceneparts/urban_dyn/vivaro.001.obj" />
                 <param type="string" key="up" value="z" />
