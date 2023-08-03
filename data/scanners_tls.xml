@@ -231,7 +231,7 @@
 			scanAngleEffectiveMax_deg	= "1"
 			scanFreqMin_Hz				= "0"
 			scanFreqMax_Hz				= "0"
-			wavelength_nm				= "905"
+			wavelength_nm				= "903"
             maxNOR                      = "1"
 			headRotatePerSecMax_deg		= "5250"
 	>
