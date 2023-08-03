@@ -246,7 +246,7 @@ def create_scenepart_obj(filepath: str, up_axis: str = "z", trafofilter: str = "
     filepath_mode = "efilepath" if efilepath else "filepath"
     assert up_axis in ["y", "z"]
     if sp_id is not None:
-        id_string = f'id="{sp_id}"'
+        id_string = f' id="{sp_id}"'
     else:
         id_string = ""
     if motionfilter != "":
@@ -259,22 +259,22 @@ def create_scenepart_obj(filepath: str, up_axis: str = "z", trafofilter: str = "
         if kdt_dyn_step and kdt_dyn_time_step:
             warnings.warn("Both kdtDynStep and kdtDynTimeStep were provided, but they are exclusive. Using kdtDynStep.")
         if dyn_step:
-            dyn_step_string = f'dynStep="{dyn_step}"'
+            dyn_step_string = f' dynStep="{dyn_step}"'
         elif dyn_time_step:
-            dyn_step_string = f'dynTimeStep="{dyn_time_step}"'
+            dyn_step_string = f' dynTimeStep="{dyn_time_step}"'
         else:
             dyn_step_string = ""
         if kdt_dyn_step:
-            kdt_dyn_step_string = f'kdtDynStep="{kdt_dyn_step}"'
+            kdt_dyn_step_string = f' kdtDynStep="{kdt_dyn_step}"'
         elif kdt_dyn_time_step:
-            kdt_dyn_step_string = f'kdtDynTimeStep="{kdt_dyn_time_step}"'
+            kdt_dyn_step_string = f' kdtDynTimeStep="{kdt_dyn_time_step}"'
         else:
             kdt_dyn_step_string = ""
     else:
         dyn_step_string = ""
         kdt_dyn_step_string = ""
     scenepart = f"""
-        <part {id_string} {dyn_step_string} {kdt_dyn_step_string}>
+        <part{id_string}{dyn_step_string}{kdt_dyn_step_string}>
             <filter type="objloader">
                 <param type="string" key="{filepath_mode}" value="{filepath}" />
                 <param type="string" key="up" value="{up_axis}" />
@@ -297,6 +297,7 @@ def create_scenepart_tiff(filepath: str, trafofilter: str = "",
     :type trafofilter: str
     :type matfile: str
     :param matname: name of the material to use
+    :type matname: str
     
     :return: scenepart
     :rtype: str
@@ -420,20 +421,20 @@ def build_scene(scene_id: str, name: str, sceneparts=None, dyn_step: int = None,
     if kdt_dyn_step and kdt_dyn_time_step:
         warnings.warn("Both kdtDynStep and kdtDynTimeStep were provided, but they are exclusive. Using kdtDynStep.")
     if dyn_step:
-        dyn_step_string = f'dynStep="{dyn_step}"'
+        dyn_step_string = f' dynStep="{dyn_step}"'
     elif dyn_time_step:
-        dyn_step_string = f'dynTimeStep="{dyn_time_step}"'
+        dyn_step_string = f' dynTimeStep="{dyn_time_step}"'
     else:
         dyn_step_string = ""
     if kdt_dyn_step:
-        kdt_dyn_step_string = f'kdtDynStep="{kdt_dyn_step}"'
+        kdt_dyn_step_string = f' kdtDynStep="{kdt_dyn_step}"'
     elif kdt_dyn_time_step:
-        kdt_dyn_step_string = f'kdtDynTimeStep="{kdt_dyn_time_step}"'
+        kdt_dyn_step_string = f' kdtDynTimeStep="{kdt_dyn_time_step}"'
     else:
         kdt_dyn_step_string = ""
     scene_content = f"""<?xml version="1.0" encoding="UTF-8"?>
 <document>
-    <scene id="{scene_id}" name="{name}" {dyn_step_string} {kdt_dyn_step_string}>
+    <scene id="{scene_id}" name="{name}"{dyn_step_string}{kdt_dyn_step_string}>
         {sceneparts}
     </scene>
 </document>"""
