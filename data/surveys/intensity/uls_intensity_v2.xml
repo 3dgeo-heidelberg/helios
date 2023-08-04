@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+	<scannerSettings id="template1" pulseFreq_hz="100000" active="true" scanFreq_hz="100" scanAngle_deg="50" trajectoryTimeInterval_s="0.05"/>
+    <survey name="uls_intensity_v2" scene="data/scenes/intensity/intensity_scene_v2.xml#intensity_scene" platform="data/platforms.xml#copter_linearpath" scanner="data/scanners_als.xml#riegl_vux-1uav">
+		<leg>
+            <platformSettings x="40" y="-40" z="50" movePerSec_m="5"/>
+            <scannerSettings template="template1" />
+        </leg>
+
+        <leg>
+            <platformSettings x="40" y="40" z="50" movePerSec_m="5" />
+            <scannerSettings template="template1"  />
+        </leg>
+
+        <leg>
+            <platformSettings x="-40" y="40" z="50" movePerSec_m="5" />
+            <scannerSettings template="template1" />
+        </leg>
+
+        <leg>
+            <platformSettings x="-40" y="-40" z="50" movePerSec_m="5" />
+            <scannerSettings template="template1" />
+        </leg>
+        
+        <leg>
+            <platformSettings x="40" y="40" z="50" />
+            <scannerSettings template="template1" active="false" />
+        </leg>
+    </survey>
+</document>

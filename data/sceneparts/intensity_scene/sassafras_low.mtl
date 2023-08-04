@@ -1,0 +1,32 @@
+newmtl leaves_v0
+
+newmtl leaves_v1
+helios_spectra deciduous
+
+newmtl leaves_v2
+Kd 0.028654 0.393112 0.018327
+Ks 0.000000 0.000000 0.000000
+helios_spectra deciduous
+
+newmtl leaves_v3
+Ns 250.000000
+Kd 0.028654 0.393112 0.018327
+Ks 0.400000 0.400000 0.400000
+helios_spectra deciduous
+
+newmtl trunk_stem_v0
+
+newmtl trunk_stem_v1
+Ka 1.000000 1.000000 1.000000
+helios_spectra wood
+
+newmtl trunk_stem_v2
+Kd 0.157434 0.066115 0.017540
+Ks 0.000000 0.000000 0.000000
+helios_spectra wood
+
+newmtl trunk_stem_v3
+Ns 29.070042
+Kd 0.157434 0.066115 0.017540
+Ks 0.100000 0.100000 0.100000
+helios_spectra wood

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+	<scannerSettings id="template1" pulseFreq_hz="300000" active="true" verticalResolution_deg="0.04" horizontalResolution_deg="0.04" />
+    <survey name="tls_intensity_v2" scene="data/scenes/intensity/intensity_scene_v2.xml#intensity_scene" platform="data/platforms.xml#tripod" scanner="data/scanners_tls.xml#riegl_vz400">
+		<leg>
+            <platformSettings x="20" y="-20" z="0" />
+            <scannerSettings template="template1" headRotateStart_deg="0" headRotateStop_deg="100"/>
+        </leg>
+
+    </survey>
+</document>

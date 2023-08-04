@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+    <document>
+        <scene id="intensity_scene" name="intensity_scene">
+            <part>
+                <filter type="objloader">
+                    <param type="string" key="filepath" value="data/sceneparts/intensity_scene/asphalt_v2.obj" />
+                    <param type="string" key="up" value="z" />
+                </filter>
+                <filter type="translate">
+                    <param type="vec3" key="offset" value="0.0;0.0;0.0" />
+                </filter>
+                <filter type="scale">
+                    <param type="double" key="scale" value="25.0" />
+                </filter>
+            </part>
+            <part>
+                <filter type="objloader">
+                    <param type="string" key="filepath" value="data/sceneparts/intensity_scene/grass_v2.obj" />
+                    <param type="string" key="up" value="z" />
+                </filter>
+                <filter type="translate">
+                    <param type="vec3" key="offset" value="-10.0;-10.0;0.02" />
+                </filter>
+                <filter type="scale">
+                    <param type="double" key="scale" value="5.0" />
+                </filter>
+            </part>
+            <part>
+                <filter type="objloader">
+                    <param type="string" key="filepath" value="data/sceneparts/intensity_scene/sassafras_low_v2.obj" />
+                    <param type="string" key="up" value="z" />
+                </filter>
+
+                <filter type="translate">
+                    <param type="vec3" key="offset" value="-10.0;-10.0;0.0" />
+                </filter>
+                <filter type="scale">
+                    <param type="double" key="scale" value="1.0" />
+                </filter>
+            </part>
+            <part>
+                <filter type="objloader">
+                    <param type="string" key="filepath" value="data/sceneparts/intensity_scene/Building1254_v2.obj" />
+                    <param type="string" key="up" value="z" />
+                </filter>
+
+                <filter type="translate">
+                    <param type="vec3" key="offset" value="-5.0;-10.0;0.0" />
+                </filter>
+                <filter type="scale">
+                    <param type="double" key="scale" value="1.0" />
+                </filter>
+            </part>
+        </scene>
+    </document>
+    

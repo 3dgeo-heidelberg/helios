@@ -1,0 +1,65 @@
+newmtl BUILDING_DEFAULT_0_v0
+
+newmtl BUILDING_DEFAULT_0_v1
+helios_spectra cement_cinderblock
+
+newmtl BUILDING_DEFAULT_0_v2
+Kd 0.501961 0.450980 0.274510
+Ks 0.000000 0.000000 0.000000
+helios_spectra cement_cinderblock
+
+newmtl BUILDING_DEFAULT_0_v3
+Ns 92.156860
+Kd 0.501961 0.450980 0.274510
+Ks 0.200000 0.200000 0.200000
+helios_spectra cement_cinderblock
+
+newmtl MAT_7_0_v0
+
+newmtl MAT_7_0_v1
+helios_spectra wood
+
+newmtl MAT_7_0_v2
+Kd 0.501961 0.450980 0.274510
+Ks 0.000000 0.000000 0.000000
+helios_spectra wood
+
+newmtl MAT_7_0_v3
+Ns 92.156860
+Kd 0.501961 0.450980 0.274510
+Ks 0.200000 0.200000 0.200000
+helios_spectra wood
+
+newmtl MAT_7_1_v0
+
+newmtl MAT_7_1_v1
+helios_spectra wood
+helios_spectra wood
+
+newmtl MAT_7_1_v2
+Kd 0.800000 0.800000 0.800000
+Ks 0.000000 0.000000 0.000000
+helios_spectra wood
+
+newmtl MAT_7_1_v3
+Ns 0.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.200000 0.200000 0.200000
+helios_spectra wood
+
+newmtl ROOF_DEFAULT_0_v0
+
+newmtl ROOF_DEFAULT_0_v1
+Ka 1.000000 1.000000 1.000000
+helios_spectra shingle_red
+
+newmtl ROOF_DEFAULT_0_v2
+Kd 0.400000 0.000000 0.000000
+Ks 0.000000 0.000000 0.000000
+helios_spectra shingle_red
+
+newmtl ROOF_DEFAULT_0_v3
+Ns 92.156860
+Kd 0.400000 0.000000 0.000000
+Ks 0.200000 0.200000 0.200000
+helios_spectra shingle_red

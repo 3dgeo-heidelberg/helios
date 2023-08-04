@@ -1,0 +1,18 @@
+newmtl Asphalt_v0
+
+newmtl Asphalt_v1
+helios_spectra asphalt
+helios_isGround 1
+
+newmtl Asphalt_v2
+Kd 0.157433 0.157433 0.157433
+Ks 0.000000 0.000000 0.000000
+helios_spectra asphalt
+helios_isGround 1
+
+newmtl Asphalt_v3
+Ns 0.000000
+Kd 0.157433 0.157433 0.157433
+Ks 0.100000 0.100000 0.100000
+helios_spectra asphalt
+helios_isGround 1
