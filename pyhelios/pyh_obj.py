@@ -80,7 +80,7 @@ class Scene:
                         part = PointCloudScenepart(scene_part, self.logging)
 
                     part.gen_from_xml()
-                    part.parse_tranformation()
+                    part.parse_transformation()
                     part.apply_tf()
                     self.parts.append(part)
 
@@ -282,7 +282,7 @@ class Scenepart:
                 print('Translating geometry...')
             self.o3dGeometry.translate(np.array(self.translation.translation, dtype=float), relative=True)
 
-    def parse_tranformation(self):
+    def parse_transformation(self):
         """
         Parse xml of scene and call method gen_from_xml to generate individual parts of general transformation.
         (self.translation, self.rotate, self.scale)
@@ -451,12 +451,12 @@ class VoxelScenepart(Scenepart):
             print("Voxel scenepart:")
             print("Source file: {}".format(self.path))
 
-    def parse_tranformation(self):
+    def parse_transformation(self):
         """
         Overloaded function to parse transformation for voxel scene parts. Runs super and then extracts further
         attribute voxel size.
         """
-        super().parse_tranformation()
+        super().parse_transformation()
         # Get transformation.
         for filter in self.xml_loc.findall('filter'):
             # Voxelsize for voxel scene parts.
