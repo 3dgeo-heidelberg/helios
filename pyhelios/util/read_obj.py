@@ -10,27 +10,32 @@ def read_obj(path, logging=False):
 
     # Count number of faces with more than 3 vertices and overall maximum number of vertices
     count = 0
+    count_four_verts = 0
     max_vert_num = 0
     four_verts = False
+
     for line in lines:
-        line = line.split(' ')
-    if line[0] == 'f' and len(line) > 4:
-        count += 1
-        max_vert_num = len(line) - 1 if len(line) - 1 > max_vert_num else max_vert_num
-    if line[0] == 'f' and len(line) == 5:
-        four_verts = True
+        vals = line.split(' ')
+        if vals[0] == 'f' and len(vals) > 4:
+            count += 1
+            max_vert_num = len(vals) - 1 if len(vals) - 1 > max_vert_num else max_vert_num
+        if vals[0] == 'f' and len(vals) == 5:
+            four_verts = True
+            count_four_verts += 1
 
     if logging:
         print('Total number of faces in OBJ with more than 3 vertices: {}'.format(count))
-        print('Total number of faces in OBJ with 4 vertices: {}'.format(count))
+        print('Total number of faces in OBJ with 4 vertices: {}'.format(count_four_verts))
         print('Maximum number of vertices per face: {}'.format(max_vert_num))
 
     if max_vert_num > 4:
-        print('[HELIOS.PY WARNING] {} contains at least one face with more than 4 vertices. These faces will not be visualised and are not considered by HELIOS++'.format(path))
+        print('[HELIOS.PY WARNING] {} contains at least one face with more than 4 vertices. \
+        These faces will not be visualised and are not considered by HELIOS++'.format(path))
 
     # If a face with four vertices exists, create copy of obj and write modified faces to new obj
     if four_verts:
-        print('{} contains at least one face with 4 vertices. Converting obj to triangles for use in o3d visualisation....'.format(path))
+        print('{} contains at least one face with 4 vertices. \
+        Converting obj to triangles for use in o3d visualisation....'.format(path))
         with tempfile.NamedTemporaryFile(mode='w', suffix='.obj', delete=False) as f:
             tempname = f.name
             for line in lines:
