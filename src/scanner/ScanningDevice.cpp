@@ -323,19 +323,29 @@ double ScanningDevice::calcIntensity(
     double const targetArea,
     double const radius
 ) const {
-    double bdrf = 0;
+    double bdrf = 0, sigma = 0;
     if(mat.isPhong()) {
         bdrf = mat.reflectance * EnergyMaths::phongBDRF(
             incidenceAngle,
             mat.specularity,
             mat.specularExponent
         );
+        sigma = EnergyMaths::calcCrossSection(
+            bdrf, targetArea, incidenceAngle
+        );
     }
     else if(mat.isLambert()){
         bdrf = mat.reflectance * std::cos(incidenceAngle);
+        sigma = EnergyMaths::calcCrossSection(
+            bdrf, targetArea, incidenceAngle
+        );
     }
     else if(mat.isUniform()){
         bdrf = mat.reflectance;
+        sigma = EnergyMaths::calcCrossSection(
+            bdrf, targetArea, incidenceAngle
+        );
+        if(sigma < 0) sigma = -sigma;
     }
     else{
         std::stringstream ss;
@@ -343,9 +353,6 @@ double ScanningDevice::calcIntensity(
             << mat.name << "\"";
         logging::ERR(ss.str());
     }
-    double const sigma = EnergyMaths::calcCrossSection(
-        bdrf, targetArea, incidenceAngle
-    );
     return EnergyMaths::calcReceivedPower(
         averagePower_w,
         wavelength_m,
