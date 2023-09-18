@@ -5,6 +5,9 @@
 #include <scanner/detector/PulseTaskDropper.h>
 #include <noise/RandomnessGenerator.h>
 #include <noise/UniformNoiseSource.h>
+#ifdef DATA_ANALYTICS
+#include <dataanalytics/HDA_PulseRecorder.h>
+#endif
 
 #include <memory>
 
@@ -23,6 +26,12 @@ class PulseWarehouseThreadPool :
 {
 #ifdef DATA_ANALYTICS
 public:
+    /**
+     * @brief The helios::analytics::PulseRecorder to be used to handle the
+     *  records representing the computed pulse tasks.
+     * @see helios::analytics::PulseRecorder
+     */
+    std::shared_ptr<HDA_PulseRecorder> pulseRecorder;
 #else
 protected:
 #endif
@@ -70,6 +79,11 @@ public:
         randGens2 = new RandomnessGenerator<double>[this->pool_size];
         intersectionHandlingNoiseSources =
             new UniformNoiseSource<double>[this->pool_size];
+#ifdef DATA_ANALYTICS
+        pulseRecorder = std::make_shared<HDA_PulseRecorder>(
+            "helios_pulse_records"
+        );
+#endif
 
         // Initialize
         for (std::size_t i = 0; i < this->pool_size; ++i){
@@ -85,6 +99,10 @@ public:
     }
 
     virtual ~PulseWarehouseThreadPool(){
+#ifdef DATA_ANALYTICS
+        // Flush and close pulse recorder
+        this->pulseRecorder->closeBuffers();
+#endif
         // Release memory
         delete[] apMatrices;
         delete[] randGens;
@@ -105,6 +123,9 @@ public:
             RandomnessGenerator<double>&,
             RandomnessGenerator<double>&,
             NoiseSource<double>&
+#ifdef DATA_ANALYTICS
+           ,std::shared_ptr<HDA_PulseRecorder>
+#endif
         > &dropper
     ) override {
         throw HeliosException(
@@ -123,6 +144,9 @@ public:
             RandomnessGenerator<double>&,
             RandomnessGenerator<double>&,
             NoiseSource<double>&
+#ifdef DATA_ANALYTICS
+           ,std::shared_ptr<HDA_PulseRecorder>
+#endif
         > &dropper
     ) override {
         return post(make_shared<PulseTaskDropper>(
@@ -135,6 +159,14 @@ public:
     inline void join() override{
         WarehouseThreadPool<PulseTaskDropper>::join();
     }
+#ifdef DATA_ANALYTICS
+    /**
+     * @see PulseThreadPoolInterface::getPulseRecorder
+     */
+    std::shared_ptr<HDA_PulseRecorder> getPulseRecorder() override{
+        return pulseRecorder;
+    }
+#endif
 
 protected:
     // ***  WAREHOUSE THREADPOOL  *** //
@@ -154,6 +186,9 @@ protected:
             randGens[tid],
             randGens2[tid],
             intersectionHandlingNoiseSources[tid]
+#ifdef DATA_ANALYTICS
+           ,pulseRecorder
+#endif
         );
     }
 };

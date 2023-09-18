@@ -34,21 +34,9 @@ void HDA_SimStepRecorder::delayedRecord(){
     recordStochastic();
 }
 
+
 // ***  RECORDER METHODS  *** //
 // ************************** //
-void HDA_SimStepRecorder::validateOutDir(){
-    // Check directory exists
-    if(!boost::filesystem::exists(outdir)){
-        if(!boost::filesystem::create_directory(outdir)){
-            std::stringstream ss;
-            ss  << "HDA_SimStepRecorder::validateOutDir thrown an exception "
-                << "because the output directory does not exist and cannot be"
-                << "created.\noutdir: \"" << outdir << "\"";
-            throw HeliosException(ss.str());
-        }
-    }
-}
-
 bool HDA_SimStepRecorder::isAnyBufferOpen(){
     bool anyOpen = false;
     anyOpen |= platformPositionX->isOpen();
@@ -453,16 +441,7 @@ void HDA_SimStepRecorder::recordStochastic(){
             measErrPar->push(err - ERR_BASE);
         }
     }
-
-
 }
 
-std::string HDA_SimStepRecorder::craftOutputPath(std::string const &fname){
-    std::stringstream ss;
-    ss  << outdir
-        << boost::filesystem::path::preferred_separator
-        << fname;
-    return ss.str();
-}
 
 #endif

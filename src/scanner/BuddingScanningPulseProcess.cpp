@@ -10,6 +10,9 @@ BuddingScanningPulseProcess::BuddingScanningPulseProcess(
     RandomnessGenerator<double> &randGen1,
     RandomnessGenerator<double> &randGen2,
     UniformNoiseSource<double> &intersectionHandlingNoiseSource
+#ifdef DATA_ANALYTICS
+   ,std::shared_ptr<HDA_PulseRecorder> pulseRecorder
+#endif
 ) :
     ScanningPulseProcess(scanner),
     dropper(dropper),
@@ -17,6 +20,9 @@ BuddingScanningPulseProcess::BuddingScanningPulseProcess(
     randGen1(randGen1),
     randGen2(randGen2),
     intersectionHandlingNoiseSource(intersectionHandlingNoiseSource)
+#ifdef DATA_ANALYTICS
+   ,pulseRecorder(pulseRecorder)
+#endif
 {
     if(pool.getPoolSize() > 0){
         if(pool.isDynamic()){ // Dynamic chunk schedule
@@ -51,6 +57,9 @@ void BuddingScanningPulseProcess::onLegComplete(){
         randGen1,
         randGen2,
         intersectionHandlingNoiseSource
+#ifdef DATA_ANALYTICS
+        ,pulseRecorder
+#endif
     );
 #ifdef BUDDING_METRICS
     ofsBudding.flush();
@@ -79,6 +88,9 @@ void BuddingScanningPulseProcess::handlePulseComputationSequential(
         randGen1,
         randGen2,
         intersectionHandlingNoiseSource
+#ifdef DATA_ANALYTICS
+        ,pulseRecorder
+#endif
     );
 }
 void BuddingScanningPulseProcess::handlePulseComputationParallelDynamic(
@@ -132,6 +144,9 @@ void BuddingScanningPulseProcess::handlePulseComputationParallelDynamic(
             randGen1,
             randGen2,
             intersectionHandlingNoiseSource
+#ifdef DATA_ANALYTICS
+            ,pulseRecorder
+#endif
         );
     }
 }
@@ -177,6 +192,9 @@ void BuddingScanningPulseProcess::handlePulseComputationParallelStatic(
             randGen1,
             randGen2,
             intersectionHandlingNoiseSource
+#ifdef DATA_ANALYTICS
+            ,pulseRecorder
+#endif
         );
     }
 }

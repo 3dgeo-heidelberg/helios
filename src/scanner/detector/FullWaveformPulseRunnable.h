@@ -8,6 +8,9 @@
 #include "ScenePart.h"
 #include <noise/RandomnessGenerator.h>
 #include <scanner/ScanningPulseProcess.h>
+#ifdef DATA_ANALYTICS
+#include <dataanalytics/HDA_PulseRecorder.h>
+#endif
 
 #include <LadLut.h>
 
@@ -83,6 +86,9 @@ private:
         NoiseSource<double> &intersectionHandlingNoiseSource,
         std::map<double, double> &reflections,
         vector<RaySceneIntersection> &intersects
+#ifdef DATA_ANALYTICS
+       ,std::shared_ptr<HDA_PulseRecorder> pulseRecorder
+#endif
     );
     /**
      * @brief Handle sub-rays along the circle
@@ -104,6 +110,9 @@ private:
         NoiseSource<double> &intersectionHandlingNoiseSource,
         std::map<double, double> &reflections,
         vector<RaySceneIntersection> &intersects
+#ifdef DATA_ANALYTICS
+        ,std::shared_ptr<HDA_PulseRecorder> pulseRecorder
+#endif
     );
     /**
      * @brief Digest intersections found through ray casting
@@ -293,5 +302,8 @@ public:
 	    RandomnessGenerator<double> &randGen,
         RandomnessGenerator<double> &randGen2,
         NoiseSource<double> &intersectionHandlingNoiseSource
+#ifdef DATA_ANALYTICS
+       ,std::shared_ptr<HDA_PulseRecorder> pulseRecorder
+#endif
     ) override;
 };

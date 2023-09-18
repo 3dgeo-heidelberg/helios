@@ -30,6 +30,9 @@ void FullWaveformPulseRunnable::operator()(
 	RandomnessGenerator<double> &randGen,
 	RandomnessGenerator<double> &randGen2,
 	NoiseSource<double> &intersectionHandlingNoiseSource
+#ifdef DATA_ANALYTICS
+    ,std::shared_ptr<HDA_PulseRecorder> pulseRecorder
+#endif
 ){
     // Deferred/lazy initialization
     initialize();
@@ -60,6 +63,9 @@ void FullWaveformPulseRunnable::operator()(
 	    intersectionHandlingNoiseSource,
 	    reflections,
 	    intersects
+#ifdef DATA_ANALYTICS
+       ,pulseRecorder
+#endif
     );
 
 	// Digest intersections
@@ -89,6 +95,9 @@ void FullWaveformPulseRunnable::computeSubrays(
     NoiseSource<double> &intersectionHandlingNoiseSource,
     std::map<double, double> &reflections,
     vector<RaySceneIntersection> &intersects
+#ifdef DATA_ANALYTICS
+    ,std::shared_ptr<HDA_PulseRecorder> pulseRecorder
+#endif
 ){
     scanner->computeSubrays(
         [&] (
@@ -100,7 +109,7 @@ void FullWaveformPulseRunnable::computeSubrays(
             NoiseSource<double> &intersectionHandlingNoiseSource,
             std::map<double, double> &reflections,
             vector<RaySceneIntersection> &intersects
-        ) -> void{
+        ) -> void {
             handleSubray(
                 _tMinMax,
                 circleStep,
@@ -110,6 +119,9 @@ void FullWaveformPulseRunnable::computeSubrays(
                 intersectionHandlingNoiseSource,
                 reflections,
                 intersects
+#ifdef DATA_ANALYTICS
+                ,pulseRecorder
+#endif
             );
         },
         tMinMax,
@@ -129,6 +141,9 @@ void FullWaveformPulseRunnable::handleSubray(
     NoiseSource<double> &intersectionHandlingNoiseSource,
     map<double, double> &reflections,
     vector<RaySceneIntersection> &intersects
+#ifdef DATA_ANALYTICS
+    ,std::shared_ptr<HDA_PulseRecorder> pulseRecorder
+#endif
 ){
     // Rotate around the circle:
     vector<double> tMinMax = _tMinMax;
@@ -158,6 +173,9 @@ void FullWaveformPulseRunnable::handleSubray(
                         subrayDirection,
                         intersect->point
                     );
+#ifdef DATA_ANALYTICS
+                pulseRecorder->recordIncidenceAngle(incidenceAngle);
+#endif
             }
 
             // Distance between beam origin and intersection:

@@ -6,6 +6,10 @@
 #include <scanner/detector/PulseThreadPool.h>
 #include <noise/RandomnessGenerator.h>
 #include <noise/NoiseSource.h>
+#ifdef DATA_ANALYTICS
+#include <dataanalytics/HDA_PulseRecorder.h>
+using helios::analytics::HDA_PulseRecorder;
+#endif
 
 
 /**
@@ -24,6 +28,9 @@ class PulseTaskDropper : public BuddingTaskDropper<
     RandomnessGenerator<double>&,
     RandomnessGenerator<double>&,
     NoiseSource<double>&
+#ifdef DATA_ANALYTICS
+   ,std::shared_ptr<HDA_PulseRecorder>
+#endif
 >{
 public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //
@@ -49,6 +56,9 @@ public:
             RandomnessGenerator<double>&,
             RandomnessGenerator<double>&,
             NoiseSource<double>&
+#ifdef DATA_ANALYTICS
+            ,std::shared_ptr<HDA_PulseRecorder>
+#endif
         >(maxTasks, delta1, initDelta1, delta2, lastSign)
     {}
     virtual ~PulseTaskDropper() = default;
@@ -62,6 +72,9 @@ public:
         RandomnessGenerator<double>&,
         RandomnessGenerator<double>&,
         NoiseSource<double>&
+#ifdef DATA_ANALYTICS
+        ,std::shared_ptr<HDA_PulseRecorder>
+#endif
     >::drop; // To avoid overriding hides drop overloads
     using TaskDropper<
         PulseTask,
@@ -70,6 +83,9 @@ public:
         RandomnessGenerator<double>&,
         RandomnessGenerator<double>&,
         NoiseSource<double>&
+#ifdef DATA_ANALYTICS
+        ,std::shared_ptr<HDA_PulseRecorder>
+#endif
     >::tryDrop; // To avoid override hides tryDrop overloads
     /**
      * @brief Like TaskDropper::drop but dropping all pulse tasks through a
