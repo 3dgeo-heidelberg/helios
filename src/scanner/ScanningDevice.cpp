@@ -322,6 +322,9 @@ double ScanningDevice::calcIntensity(
     Material const &mat,
     double const targetArea,
     double const radius
+#ifdef DATA_ANALYTICS
+   ,std::shared_ptr<HDA_PulseRecorder> pulseRecorder
+#endif
 ) const {
     double bdrf = 0, sigma = 0;
     if(mat.isPhong()) {
@@ -353,7 +356,7 @@ double ScanningDevice::calcIntensity(
             << mat.name << "\"";
         logging::ERR(ss.str());
     }
-    return EnergyMaths::calcReceivedPower(
+    double const receivedPower = EnergyMaths::calcReceivedPower(
         averagePower_w,
         wavelength_m,
         targetRange,
@@ -366,6 +369,13 @@ double ScanningDevice::calcIntensity(
         atmosphericExtinction,
         sigma
     ) * 1000000000.0;
+#ifdef DATA_ANALYTICS
+    pulseRecorder->recordIntensityCalculation(
+        incidenceAngle, targetRange, targetArea, radius, bdrf, sigma,
+        receivedPower
+    );
+#endif
+    return receivedPower;
 }
 double ScanningDevice::calcIntensity(
     double const targetRange,

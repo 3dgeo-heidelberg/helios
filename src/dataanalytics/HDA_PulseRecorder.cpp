@@ -8,28 +8,45 @@ using namespace helios::analytics;
 // ************************** //
 bool HDA_PulseRecorder::isAnyBufferOpen(){
     bool anyOpen = false;
-    anyOpen |= incidenceAngle_rad->isOpen();
+    anyOpen |= intensityCalc->isOpen();
     return anyOpen;
 }
 
 void HDA_PulseRecorder::openBuffers(){
     // Open subray related buffers
-    incidenceAngle_rad = std::make_shared<HDA_RecordBuffer<double>>(
-        craftOutputPath("incidence_angle_rad.csv")
+    size_t const maxSize = 256;
+    std::string const sep = ",";
+    intensityCalc = std::make_shared<HDA_RecordBuffer<std::vector<double>>>(
+        craftOutputPath("intensity_calc.csv"),
+        maxSize,
+        sep,
+        true  // vectorial flag
     );
 }
 
 void HDA_PulseRecorder::closeBuffers(){
     // Close subray buffers
-    incidenceAngle_rad->close();
+    std::unique_lock<std::mutex> lock(intensityCalcMutex);
+    intensityCalc->close();
 }
 
 
 // ***  RECORD METHODS  *** //
 // ************************ //
-void HDA_PulseRecorder::recordIncidenceAngle(double const _incidenceAngle_rad){
-    std::unique_lock<std::mutex> lock(incidenceAngle_rad_mutex);
-    incidenceAngle_rad->push(_incidenceAngle_rad);
+void HDA_PulseRecorder::recordIntensityCalculation(
+    double const incidenceAngle_rad,
+    double const targetRange_m,
+    double const targetArea_m2,
+    double const radius_m,
+    double const bdrf,
+    double const crossSection,
+    double const receivedPower
+){
+    std::unique_lock<std::mutex> lock(intensityCalcMutex);
+    intensityCalc->push(std::vector<double>({
+        incidenceAngle_rad, targetRange_m, targetArea_m2, radius_m, bdrf,
+        crossSection, receivedPower
+    }));
 }
 
 #endif

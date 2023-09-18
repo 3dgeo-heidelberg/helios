@@ -23,14 +23,32 @@ protected:
     // ***  ATTRIBUTES  *** //
     // ******************** //
     /**
-     * @brief The record buffer for the incidence angles (in radians).
+     * @brief The vector which components are variables involved on a
+     *  particular intensity calculation for a given subray.
+     *
+     * [0] -> Incidence angle in radians.
+     *
+     * [1] -> The target range in meters, i.e., the distance between the beam's
+     *  origin and the intersection point.
+     *
+     * [2] -> The target area in squared meters.
+     *
+     * [3] -> The radius in meters, i.e., the distance between the beam's
+     *  center line and the intersection point.
+     *
+     * [4] -> The bidirectional reflectance function (BDRF).
+     *
+     * [5] -> The cross-section in squared meters.
+     *
+     * [6] -> The calculated received power, i.e., intensity.
      */
-    std::shared_ptr<HDA_RecordBuffer<double>> incidenceAngle_rad;
+    std::shared_ptr<HDA_RecordBuffer<std::vector<double>>> intensityCalc;
+
     /**
-     * @brief The mutex to handle concurrent writes to the incidenceAngle_rad
-     *  record buffer.
+     * @brief The mutex to handle concurrent writes to the buffers related to
+     *  intensity calculation.
      */
-    std::mutex incidenceAngle_rad_mutex;
+    std::mutex intensityCalcMutex;
 
 public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //
@@ -74,7 +92,15 @@ public:
     /**
      * @brief Handle all the records for the current simulation step.
      */
-    virtual void recordIncidenceAngle(double const incidenceAngle_rad);
+    virtual void recordIntensityCalculation(
+        double const incidenceAngle_rad,
+        double const targetRange_m,
+        double const targetArea_m2,
+        double const radius_m,
+        double const bdrf,
+        double const crossSection,
+        double const receivedPower
+    );
 
 };
 

@@ -212,6 +212,9 @@ double MultiScanner::calcIntensity(
     double const targetArea,
     double const radius,
     size_t const idx
+#ifdef DATA_ANALYTICS
+    ,std::shared_ptr<HDA_PulseRecorder> pulseRecorder
+#endif
 ) const{
     return scanDevs[idx].calcIntensity(
         incidenceAngle,
@@ -219,6 +222,9 @@ double MultiScanner::calcIntensity(
         mat,
         targetArea,
         radius
+#ifdef DATA_ANALYTICS
+        ,pulseRecorder
+#endif
     );
 }
 

@@ -196,6 +196,9 @@ public:
         double const targetArea,
         double const radius,
         size_t const idx
+#ifdef DATA_ANALYTICS
+       ,std::shared_ptr<HDA_PulseRecorder> pulseRecorder
+#endif
     ) const override;
     /**
      * @see Scanner::calcIntensity

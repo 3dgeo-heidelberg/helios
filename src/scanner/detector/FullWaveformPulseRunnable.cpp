@@ -173,9 +173,6 @@ void FullWaveformPulseRunnable::handleSubray(
                         subrayDirection,
                         intersect->point
                     );
-#ifdef DATA_ANALYTICS
-                pulseRecorder->recordIncidenceAngle(incidenceAngle);
-#endif
             }
 
             // Distance between beam origin and intersection:
@@ -211,6 +208,9 @@ void FullWaveformPulseRunnable::handleSubray(
                     targetArea,
                     radius,
                     pulse.getDeviceIndex()
+#ifdef DATA_ANALYTICS
+                   ,pulseRecorder
+#endif
                 );
             }
 

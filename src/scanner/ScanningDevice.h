@@ -11,6 +11,10 @@ class AbstractDetector;
 #include <scene/RaySceneIntersection.h>
 #include <noise/NoiseSource.h>
 #include <adt/exprtree/UnivarExprTreeNode.h>
+#ifdef DATA_ANALYTICS
+#include <dataanalytics/HDA_PulseRecorder.h>
+using helios::analytics::HDA_PulseRecorder;
+#endif
 
 #include <glm/glm.hpp>
 
@@ -377,6 +381,9 @@ public:
         Material const &mat,
         double const targetArea,
         double const radius
+#ifdef DATA_ANALYTICS
+       ,std::shared_ptr<HDA_PulseRecorder> pulseRecorder
+#endif
     ) const;
 
     /**
