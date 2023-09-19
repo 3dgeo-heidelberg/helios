@@ -7,6 +7,9 @@ class Measurement;
 #include "LasSpecification.h"
 class Scanner;
 #include <scanner/SimulatedPulse.h>
+#ifdef DATA_ANALYTICS
+#include <dataanalytics/HDA_PulseRecorder.h>
+#endif
 
 
 #include <mutex>
@@ -90,6 +93,10 @@ public:
         std::mutex *allMeasurementsMutex,
         std::vector<Measurement> *cycleMeasurements,
         std::mutex *cycleMeasurementsMutex
+#ifdef DATA_ANALYTICS
+       ,std::vector<double> &calcIntensityRecord,
+        std::shared_ptr<HDA_PulseRecorder> pulseRecorder
+#endif
     );
 
 	/**

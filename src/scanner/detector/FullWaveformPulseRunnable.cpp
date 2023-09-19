@@ -9,7 +9,6 @@
 
 #include "maths/Rotation.h"
 #include <maths/EnergyMaths.h>
-#include "MarquardtFitter.h"
 #include <TimeWatcher.h>
 #include <maths/RayUtils.h>
 #include <filems/facade/FMSFacade.h>
@@ -58,13 +57,16 @@ void FullWaveformPulseRunnable::operator()(
 	// Ray casting (find intersections)
 	map<double, double> reflections;
 	vector<RaySceneIntersection> intersects;
+#ifdef DATA_ANALYTICS
+    std::vector<std::vector<double>> calcIntensityRecords;
+#endif
 	computeSubrays(
 	    tMinMax,
 	    intersectionHandlingNoiseSource,
 	    reflections,
 	    intersects
 #ifdef DATA_ANALYTICS
-       ,pulseRecorder
+       ,calcIntensityRecords
 #endif
     );
 
@@ -76,6 +78,10 @@ void FullWaveformPulseRunnable::operator()(
 	    beamDir,
 	    reflections,
 	    intersects
+#ifdef DATA_ANALYTICS
+       ,calcIntensityRecords,
+       pulseRecorder
+#endif
     );
 }
 
@@ -96,7 +102,7 @@ void FullWaveformPulseRunnable::computeSubrays(
     std::map<double, double> &reflections,
     vector<RaySceneIntersection> &intersects
 #ifdef DATA_ANALYTICS
-    ,std::shared_ptr<HDA_PulseRecorder> pulseRecorder
+   ,std::vector<std::vector<double>> &calcIntensityRecords
 #endif
 ){
     scanner->computeSubrays(
@@ -120,7 +126,7 @@ void FullWaveformPulseRunnable::computeSubrays(
                 reflections,
                 intersects
 #ifdef DATA_ANALYTICS
-                ,pulseRecorder
+               ,calcIntensityRecords
 #endif
             );
         },
@@ -142,7 +148,7 @@ void FullWaveformPulseRunnable::handleSubray(
     map<double, double> &reflections,
     vector<RaySceneIntersection> &intersects
 #ifdef DATA_ANALYTICS
-    ,std::shared_ptr<HDA_PulseRecorder> pulseRecorder
+   ,std::vector<std::vector<double>> &calcIntensityRecords
 #endif
 ){
     // Rotate around the circle:
@@ -209,7 +215,7 @@ void FullWaveformPulseRunnable::handleSubray(
                     radius,
                     pulse.getDeviceIndex()
 #ifdef DATA_ANALYTICS
-                   ,pulseRecorder
+                   ,calcIntensityRecords
 #endif
                 );
             }
@@ -256,17 +262,28 @@ void FullWaveformPulseRunnable::handleSubray(
                 );
                 intersects.push_back(*intersect);
             }
+#ifdef DATA_ANALYTICS
+            std::vector<double> &calcIntensityRecord =
+                calcIntensityRecords.back();
+            calcIntensityRecord[0] = intersect->point.x;
+            calcIntensityRecord[1] = intersect->point.y;
+            calcIntensityRecord[2] = intersect->point.z;
+#endif
         }
     }
 }
 
 void FullWaveformPulseRunnable::digestIntersections(
-    std::vector<std::vector<double>>& apMatrix,
+    std::vector<std::vector<double>> &apMatrix,
     RandomnessGenerator<double> &randGen,
     RandomnessGenerator<double> &randGen2,
     glm::dvec3 &beamDir,
     std::map<double, double> &reflections,
     vector<RaySceneIntersection> &intersects
+#ifdef DATA_ANALYTICS
+   ,vector<vector<double>> &calcIntensityRecords,
+   std::shared_ptr<HDA_PulseRecorder> pulseRecorder
+#endif
 ){
     // Find maximum hit distances
     double minHitDist_m, maxHitDist_m;
@@ -275,6 +292,11 @@ void FullWaveformPulseRunnable::digestIntersections(
     // If nothing was hit, get out of here
     if (maxHitDist_m < 0) {
         scanner->setLastPulseWasHit(false, pulse.getDeviceIndex());
+#ifdef DATA_ANALYTICS
+        if(!calcIntensityRecords.empty()) {
+            pulseRecorder->recordIntensityCalculation(calcIntensityRecords);
+        }
+#endif
         return;
     }
 
@@ -290,7 +312,12 @@ void FullWaveformPulseRunnable::digestIntersections(
         distanceThreshold,
         peakIntensityIndex,
         numFullwaveBins
-    )) return;
+    )){
+#ifdef DATA_ANALYTICS
+        pulseRecorder->recordIntensityCalculation(calcIntensityRecords);
+#endif
+        return;
+    }
     std::vector<double> fullwave(numFullwaveBins, 0.0);
 
     // Populate full waveform
@@ -317,6 +344,10 @@ void FullWaveformPulseRunnable::digestIntersections(
         numFullwaveBins,
         peakIntensityIndex,
         minHitTime_ns
+#ifdef DATA_ANALYTICS
+       ,calcIntensityRecords,
+       pulseRecorder
+#endif
     );
 
     // Export measurements and full waveform data
@@ -329,6 +360,10 @@ void FullWaveformPulseRunnable::digestIntersections(
         maxHitTime_ns,
         randGen,
         randGen2
+#ifdef DATA_ANALYTICS
+       ,calcIntensityRecords,
+       pulseRecorder
+#endif
     );
 }
 
@@ -422,6 +457,10 @@ void FullWaveformPulseRunnable::digestFullWaveform(
     int const numFullwaveBins,
     int const peakIntensityIndex,
     double const minHitTime_ns
+#ifdef DATA_ANALYTICS
+   ,std::vector<std::vector<double>> &calcIntensityRecords,
+    std::shared_ptr<HDA_PulseRecorder> pulseRecorder
+#endif
 ){
     // Extract points from waveform data via Gaussian decomposition
     size_t const devIdx = pulse.getDeviceIndex();
@@ -437,31 +476,20 @@ void FullWaveformPulseRunnable::digestFullWaveform(
 
     double echo_width = 0.0;
 
+#ifdef DATA_ANALYTICS
+    std::unordered_set<std::size_t> capturedIndices;
+#endif
+
     for (int i = 0; i < numFullwaveBins; ++i) {
-        if (fullwave[i] < eps) continue;
-
-        // Continue with next iteration if there is no peak
-        if(!detectPeak(i, win_size, fullwave)) continue;
-
-        // Gaussian model fitting
-        if (scanner->isCalcEchowidth()) {
-            try {
-                fit.setParameters(
-                    vector<double>{0, fullwave[i], (double) i, 1}
-                );
-                fit.fitData();
-            }
-            catch (std::exception &e) {
-                logging::ERR(e.what());
-                continue;
-            }
-            echo_width = fit.getParameters()[3];
-            echo_width = echo_width * nsPerBin;
-
-            if (echo_width < 0.1) { // TODO Pending : 0.1 to threshold variable
-                continue;
-            }
-        }
+        // Skip iteration if the handling of the bin_i does not accept the hit
+        if(handleFullWaveformBin(
+            fullwave,
+            fit,
+            echo_width,
+            i,
+            win_size,
+            nsPerBin
+        )) continue;
 
         // Compute distance
         double distance = SPEEDofLIGHT_mPerNanosec *
@@ -471,6 +499,10 @@ void FullWaveformPulseRunnable::digestFullWaveform(
         double minDifference = numeric_limits<double>::max();
         shared_ptr<RaySceneIntersection> closestIntersection = nullptr;
 
+#ifdef DATA_ANALYTICS
+        size_t intersectionIdx = 0;
+        size_t closestIntersectionIdx = 0;
+#endif
         for (RaySceneIntersection intersect : intersects) {
             double const intersectDist = glm::distance(
                 intersect.point, pulse.getOriginRef());
@@ -480,7 +512,13 @@ void FullWaveformPulseRunnable::digestFullWaveform(
                 minDifference = absDistDiff;
                 closestIntersection = make_shared<RaySceneIntersection>(
                     intersect);
+#ifdef DATA_ANALYTICS
+                closestIntersectionIdx = intersectionIdx;
+#endif
             }
+#ifdef DATA_ANALYTICS
+            ++intersectionIdx;
+#endif
         }
 
         string hitObject;
@@ -519,11 +557,65 @@ void FullWaveformPulseRunnable::digestFullWaveform(
 
         pointsMeasurement.push_back(tmp);
         ++numReturns;
+#ifdef DATA_ANALYTICS
+        capturedIndices.insert(closestIntersectionIdx);
+#endif
 
         // Check if maximum number of returns per pulse has been reached
         if(!scanner->checkMaxNOR(numReturns, devIdx)) break;
     }
+#ifdef DATA_ANALYTICS
+    // Record all non captured points and remove them from records
+    size_t const numRecords = calcIntensityRecords.size();
+    size_t nonCapturedCount = 0;
+    for(size_t i = 0 ; i < numRecords ; ++i){
+        if(capturedIndices.find(i) == capturedIndices.end()){
+            pulseRecorder->recordIntensityCalculation(
+                calcIntensityRecords[i-nonCapturedCount]
+            );
+            calcIntensityRecords.erase(
+                calcIntensityRecords.begin()+i-nonCapturedCount
+            );
+            ++nonCapturedCount;
+        }
+    }
+#endif
+}
 
+bool FullWaveformPulseRunnable::handleFullWaveformBin(
+    std::vector<double> const &fullwave,
+    MarquardtFitter &fit,
+    double &echoWidth,
+    int const binIndex,
+    int const winSize,
+    double const nsPerBin
+){
+    if (fullwave[binIndex] < eps) return true;
+
+    // Continue with next iteration if there is no peak
+    if(!detectPeak(binIndex, winSize, fullwave)) return true;
+
+    // Gaussian model fitting
+    if (scanner->isCalcEchowidth()) {
+        try {
+            fit.setParameters(
+                vector<double>{0, fullwave[binIndex], (double) binIndex, 1}
+            );
+            fit.fitData();
+        }
+        catch (std::exception &e) {
+            logging::ERR(e.what());
+            return true;
+        }
+        echoWidth = fit.getParameters()[3];
+        echoWidth = echoWidth * nsPerBin;
+
+        if (echoWidth < 0.1) { // TODO Pending : 0.1 to threshold variable
+            return true;
+        }
+    }
+    // Return false as the bin corresponds to an accepted hit
+    return false;
 }
 
 void FullWaveformPulseRunnable::exportOutput(
@@ -535,9 +627,16 @@ void FullWaveformPulseRunnable::exportOutput(
     double const maxHitTime_ns,
     RandomnessGenerator<double> &randGen,
     RandomnessGenerator<double> &randGen2
+#ifdef DATA_ANALYTICS
+   ,std::vector<std::vector<double>> &calcIntensityRecords,
+   std::shared_ptr<HDA_PulseRecorder> pulseRecorder
+#endif
 ){
     // ############ END Extract points from waveform data ################
     if (numReturns > 0) {
+#ifdef DATA_ANALYTICS
+        size_t i = 0;
+#endif
         for (Measurement & pm : pointsMeasurement) {
             pm.pulseReturnNumber = numReturns;
             capturePoint(
@@ -547,7 +646,14 @@ void FullWaveformPulseRunnable::exportOutput(
                 scanner->allMeasurementsMutex.get(),
                 scanner->cycleMeasurements.get(),
                 scanner->cycleMeasurementsMutex.get()
+#ifdef DATA_ANALYTICS
+               ,calcIntensityRecords[i],
+               pulseRecorder
+#endif
             );
+#ifdef DATA_ANALYTICS
+            ++i;
+#endif
         }
         if(scanner->isWriteWaveform()) {
             scanner->setLastPulseWasHit(true, pulse.getDeviceIndex());
@@ -624,7 +730,7 @@ bool FullWaveformPulseRunnable::detectPeak(
         }
     }
 
-    int size = fullwave.size();
+    int const size = fullwave.size();
     for (int j = std::min(size, i + 1); j < std::min(size, i + win_size); j++){
         if (fullwave[j] < eps || fullwave[j] >= fullwave[i]) {
             return false;

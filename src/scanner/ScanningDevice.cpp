@@ -323,7 +323,7 @@ double ScanningDevice::calcIntensity(
     double const targetArea,
     double const radius
 #ifdef DATA_ANALYTICS
-   ,std::shared_ptr<HDA_PulseRecorder> pulseRecorder
+   ,std::vector<std::vector<double>> &calcIntensityRecords
 #endif
 ) const {
     double bdrf = 0, sigma = 0;
@@ -370,10 +370,18 @@ double ScanningDevice::calcIntensity(
         sigma
     ) * 1000000000.0;
 #ifdef DATA_ANALYTICS
-    pulseRecorder->recordIntensityCalculation(
-        incidenceAngle, targetRange, targetArea, radius, bdrf, sigma,
-        receivedPower
+    std::vector<double> calcIntensityRecord(
+        11, std::numeric_limits<double>::quiet_NaN()
     );
+    calcIntensityRecord[3] = incidenceAngle;
+    calcIntensityRecord[4] = targetRange;
+    calcIntensityRecord[5] = targetArea;
+    calcIntensityRecord[6] = radius;
+    calcIntensityRecord[7] = bdrf;
+    calcIntensityRecord[8] = sigma;
+    calcIntensityRecord[9] = receivedPower;
+    calcIntensityRecord[10] = 0; // By default, assume the point isn't captured
+    calcIntensityRecords.push_back(calcIntensityRecord);
 #endif
     return receivedPower;
 }

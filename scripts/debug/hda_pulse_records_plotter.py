@@ -79,13 +79,13 @@ def read_records(path, sep=','):
     # Return key-word records
     return {
         # Intensity calculation records
-        'incidence_angle_rad': intensity_calc[:, 0],
-        'target_range_m': intensity_calc[:, 1],
-        'target_area_m2': intensity_calc[:, 2],
-        'radius_m': intensity_calc[:, 3],
-        'bdrf': intensity_calc[:, 4],
-        'cross_section': intensity_calc[:, 5],
-        'received_power': intensity_calc[:, 6]
+        'incidence_angle_rad': intensity_calc[:, 3],
+        'target_range_m': intensity_calc[:, 4],
+        'target_area_m2': intensity_calc[:, 5],
+        'radius_m': intensity_calc[:, 6],
+        'bdrf': intensity_calc[:, 7],
+        'cross_section': intensity_calc[:, 8],
+        'received_power': intensity_calc[:, 9]
     }
 
 

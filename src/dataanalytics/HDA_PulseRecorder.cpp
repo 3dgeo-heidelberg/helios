@@ -34,19 +34,18 @@ void HDA_PulseRecorder::closeBuffers(){
 // ***  RECORD METHODS  *** //
 // ************************ //
 void HDA_PulseRecorder::recordIntensityCalculation(
-    double const incidenceAngle_rad,
-    double const targetRange_m,
-    double const targetArea_m2,
-    double const radius_m,
-    double const bdrf,
-    double const crossSection,
-    double const receivedPower
+    std::vector<double> const &record
 ){
     std::unique_lock<std::mutex> lock(intensityCalcMutex);
-    intensityCalc->push(std::vector<double>({
-        incidenceAngle_rad, targetRange_m, targetArea_m2, radius_m, bdrf,
-        crossSection, receivedPower
-    }));
+    intensityCalc->push(record);
+}
+void HDA_PulseRecorder::recordIntensityCalculation(
+    std::vector<std::vector<double>> const &records
+){
+    std::unique_lock<std::mutex> lock(intensityCalcMutex);
+    for(std::vector<double> const & record : records) {
+        intensityCalc->push(record);
+    }
 }
 
 #endif

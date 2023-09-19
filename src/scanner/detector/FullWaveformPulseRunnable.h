@@ -1,11 +1,12 @@
 #pragma once
 
 #include <util/HeliosException.h>
-#include "AbstractDetector.h"
-#include "AbstractPulseRunnable.h"
-#include "FullWaveformPulseDetector.h"
-#include "RaySceneIntersection.h"
-#include "ScenePart.h"
+#include <MarquardtFitter.h>
+#include <AbstractDetector.h>
+#include <AbstractPulseRunnable.h>
+#include <FullWaveformPulseDetector.h>
+#include <RaySceneIntersection.h>
+#include <ScenePart.h>
 #include <noise/RandomnessGenerator.h>
 #include <scanner/ScanningPulseProcess.h>
 #ifdef DATA_ANALYTICS
@@ -87,7 +88,7 @@ private:
         std::map<double, double> &reflections,
         vector<RaySceneIntersection> &intersects
 #ifdef DATA_ANALYTICS
-       ,std::shared_ptr<HDA_PulseRecorder> pulseRecorder
+      ,std::vector<std::vector<double>> &calcIntensityRecords
 #endif
     );
     /**
@@ -111,7 +112,7 @@ private:
         std::map<double, double> &reflections,
         vector<RaySceneIntersection> &intersects
 #ifdef DATA_ANALYTICS
-        ,std::shared_ptr<HDA_PulseRecorder> pulseRecorder
+       ,std::vector<std::vector<double>> &calcIntensityRecords
 #endif
     );
     /**
@@ -135,6 +136,10 @@ private:
         glm::dvec3 &beamDir,
         std::map<double, double> &reflections,
         vector<RaySceneIntersection> &intersects
+#ifdef DATA_ANALYTICS
+       ,std::vector<std::vector<double>> &calcIntensityRecords,
+        std::shared_ptr<HDA_PulseRecorder> pulseRecorder
+#endif
     );
     /**
      * @brief Find min and max hit distances in meters
@@ -206,6 +211,30 @@ private:
         int const numFullwaveBins,
         int const peakIntensityIndex,
         double const minHitTime_ns
+#ifdef DATA_ANALYTICS
+       ,std::vector<std::vector<double>> &calcIntensityRecords,
+        std::shared_ptr<HDA_PulseRecorder> pulseRecorder
+#endif
+    );
+    /**
+     * @brief Handle the bin of the fullwave that corresponds to the given
+     *  bin index.
+     * @param fullwave The fullwave vector.
+     * @param fit Reference to the MarquardFitter object used to handle the
+     *  fullwave.
+     * @param echoWidth Output variable to store the echo width.
+     * @param binIndex Index of the bin to be handled.
+     * @return True when the handled bin does not correspond to an accepted
+     *  hit, i.e., true to skip the current iteration. False to proceed with
+     *  the computation of the current iteration.
+     */
+    bool handleFullWaveformBin(
+        std::vector<double> const &fullwave,
+        MarquardtFitter &fit,
+        double &echoWidth,
+        int const binIndex,
+        int const winSize,
+        double const nsPerBin
     );
     /**
      * @brief Export measurements and full waveform data
@@ -222,6 +251,10 @@ private:
         double const maxHitTime_ns,
         RandomnessGenerator<double> &randGen,
         RandomnessGenerator<double> &randGen2
+#ifdef DATA_ANALYTICS
+       ,std::vector<std::vector<double>> &calcIntensityRecords,
+        std::shared_ptr<HDA_PulseRecorder> pulseRecorder
+#endif
     );
 
     // ***  ASSISTANCE METHODS  *** //

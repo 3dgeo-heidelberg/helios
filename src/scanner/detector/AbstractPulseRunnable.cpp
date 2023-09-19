@@ -62,6 +62,10 @@ void AbstractPulseRunnable::capturePoint(
     std::mutex *allMeasurementsMutex,
     std::vector<Measurement> *cycleMeasurements,
     std::mutex *cycleMeasurementsMutex
+#ifdef DATA_ANALYTICS
+   ,std::vector<double> &calcIntensityRecord,
+   std::shared_ptr<HDA_PulseRecorder> pulseRecorder
+#endif
 ) {
 	// Abort if point distance is below mininum scanner range:
 	// TODO Pending : This check is already done in FullWaveformPulseRunnable
@@ -77,6 +81,10 @@ void AbstractPulseRunnable::capturePoint(
 	// TODO Pending : Is it necessary to compute position again? Notice it is
     // known from ray intersection point at FullWaveformPulseRunnable
 	m.position = m.beamOrigin + m.beamDirection * m.distance;
+#ifdef DATA_ANALYTICS
+    calcIntensityRecord[10] = 1;
+    pulseRecorder->recordIntensityCalculation(calcIntensityRecord);
+#endif
     if(allMeasurements != nullptr){
         std::unique_lock<std::mutex> lock(*allMeasurementsMutex);
         allMeasurements->push_back(m);

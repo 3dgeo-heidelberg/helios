@@ -382,7 +382,7 @@ public:
         double const targetArea,
         double const radius
 #ifdef DATA_ANALYTICS
-       ,std::shared_ptr<HDA_PulseRecorder> pulseRecorder
+       ,std::vector<std::vector<double>> &calcIntensityRecords
 #endif
     ) const;
 

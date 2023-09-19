@@ -26,21 +26,25 @@ protected:
      * @brief The vector which components are variables involved on a
      *  particular intensity calculation for a given subray.
      *
-     * [0] -> Incidence angle in radians.
+     * [0, 1, 2] -> \f$(x, y, z)\f$
      *
-     * [1] -> The target range in meters, i.e., the distance between the beam's
+     * [3] -> Incidence angle in radians.
+     *
+     * [4] -> The target range in meters, i.e., the distance between the beam's
      *  origin and the intersection point.
      *
-     * [2] -> The target area in squared meters.
+     * [5] -> The target area in squared meters.
      *
-     * [3] -> The radius in meters, i.e., the distance between the beam's
+     * [6] -> The radius in meters, i.e., the distance between the beam's
      *  center line and the intersection point.
      *
-     * [4] -> The bidirectional reflectance function (BDRF).
+     * [7] -> The bidirectional reflectance function (BDRF).
      *
-     * [5] -> The cross-section in squared meters.
+     * [8] -> The cross-section in squared meters.
      *
-     * [6] -> The calculated received power, i.e., intensity.
+     * [9] -> The calculated received power, i.e., intensity.
+     *
+     * [10] -> 1 if the point was captured, 0 otherwise.
      */
     std::shared_ptr<HDA_RecordBuffer<std::vector<double>>> intensityCalc;
 
@@ -92,14 +96,15 @@ public:
     /**
      * @brief Handle all the records for the current simulation step.
      */
+    virtual void recordIntensityCalculation(std::vector<double> const &record);
+    /**
+     * @brief Like
+     *  HDA_PulseRecorder::recordIntensityCalculation(std::vector<double>)
+     *  but receiving many records at once.
+     * @see HDA_PulseRecorder::recordIntensityCalculation(std::vector<double>)
+     */
     virtual void recordIntensityCalculation(
-        double const incidenceAngle_rad,
-        double const targetRange_m,
-        double const targetArea_m2,
-        double const radius_m,
-        double const bdrf,
-        double const crossSection,
-        double const receivedPower
+        std::vector<std::vector<double>> const &records
     );
 
 };
