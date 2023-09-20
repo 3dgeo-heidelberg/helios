@@ -161,7 +161,7 @@ def do_incidence_angle_plots(arec, brec, outdir):
         print('Cannot do incidence angle plots')
         return
 
-    # Do the incidence angle plots
+    # Do the incidence angle plots (rads)
     fig = init_figure()  # Initialize figure
     ax = fig.add_subplot(2, 2, 1)  # Initialize phi(a) subplot
     do_incidence_angle_subplot(
@@ -200,7 +200,50 @@ def do_incidence_angle_plots(arec, brec, outdir):
     fig.tight_layout()
     # Save figure to file and remove it from memory
     fig.savefig(
-        os.path.join(outdir, 'incidence_angle_distribution.png')
+        os.path.join(outdir, 'incidence_angle_distribution_rad.png')
+    )
+    fig.clear()
+    plt.close(fig)
+    # Do the incidence angle plots (degrees)
+    fig = init_figure()  # Initialize figure
+    ax = fig.add_subplot(2, 2, 1)  # Initialize phi(a) subplot
+    do_incidence_angle_subplot(
+        fig, ax, arec['incidence_angle_rad']*180/np.pi,
+        label='$\\varphi(a)$',
+        title='A-Incidence angle ($\\varphi$) in rad',
+        xlabel='$\\varphi(a)$',
+        ylabel='cases'
+    )
+    ax = fig.add_subplot(2, 2, 3)  # Initialize phi(a) log subplot
+    do_incidence_angle_subplot(
+        fig, ax, arec['incidence_angle_rad']*180/np.pi,
+        label='$\\varphi(a)$',
+        title='A-Incidence angle ($\\varphi$) in rad (logarithmic)',
+        xlabel='$\\varphi(a)$',
+        ylabel='cases',
+        log=True
+    )
+    ax = fig.add_subplot(2, 2, 2)  # Initialize phi(b) subplot
+    do_incidence_angle_subplot(
+        fig, ax, brec['incidence_angle_rad']*180/np.pi,
+        label='$\\varphi(b)$',
+        title='B-Incidence angle ($\\varphi$) in rad',
+        xlabel='$\\varphi(b)$',
+        ylabel='cases'
+    )
+    ax = fig.add_subplot(2, 2, 4)  # Initialize phi(a) log subplot
+    do_incidence_angle_subplot(
+        fig, ax, brec['incidence_angle_rad']*180/np.pi,
+        label='$\\varphi(b)$',
+        title='B-Incidence angle ($\\varphi$) in rad (logarithmic)',
+        xlabel='$\\varphi(b)$',
+        ylabel='cases',
+        log=True
+    )
+    fig.tight_layout()
+    # Save figure to file and remove it from memory
+    fig.savefig(
+        os.path.join(outdir, 'incidence_angle_distribution_degrees.png')
     )
     fig.clear()
     plt.close(fig)
@@ -240,11 +283,34 @@ def do_by_incidence_angle_plots(arec, brec, outdir):
             not validate_record('received_power', brec, 'b'):
         print('Cannot do by incidence angle plots')
         return
+    # Plot by radians
+    _do_by_incidence_angle_plots(
+        arec['incidence_angle_rad'],
+        brec['incidence_angle_rad'],
+        arec,
+        brec,
+        outdir,
+        fname='plot_by_incidence_angle_rad.png'
+    )
+    # Plot by degrees
+    _do_by_incidence_angle_plots(
+        arec['incidence_angle_rad']*180/np.pi,
+        brec['incidence_angle_rad']*180/np.pi,
+        arec,
+        brec,
+        outdir,
+        fname='plot_by_incidence_angle_degrees.png'
+    )
+
+
+def _do_by_incidence_angle_plots(
+    incidence_angle_a, incidence_angle_b, arec, brec, outdir, fname
+):
     # Do the "by incidence angle" plots
     fig = init_figure()  # Initialize figure
     ax = fig.add_subplot(3, 4, 1)  # Initialize target range A subplot
     do_y_by_x_subplot(
-        fig, ax, arec['incidence_angle_rad'], arec['target_range_m'],
+        fig, ax, incidence_angle_a, arec['target_range_m'],
         title='A-Target range (m)',
         xlabel='Incidence angle (rad)',
         ylabel='Target range (m)',
@@ -252,7 +318,7 @@ def do_by_incidence_angle_plots(arec, brec, outdir):
     )
     ax = fig.add_subplot(3, 4, 2)  # Initialize target area A subplot
     do_y_by_x_subplot(
-        fig, ax, arec['incidence_angle_rad'], arec['target_area_m2'],
+        fig, ax, incidence_angle_a, arec['target_area_m2'],
         title='A-Target area ($m^2$)',
         xlabel='Incidence angle (rad)',
         ylabel='Target area ($m^2$)',
@@ -260,7 +326,7 @@ def do_by_incidence_angle_plots(arec, brec, outdir):
     )
     ax = fig.add_subplot(3, 4, 5)  # Initialize radius A subplot
     do_y_by_x_subplot(
-        fig, ax, arec['incidence_angle_rad'], arec['radius_m'],
+        fig, ax, incidence_angle_a, arec['radius_m'],
         title='A-Radius (m)',
         xlabel='Incidence angle (rad)',
         ylabel='Radius (m)',
@@ -268,7 +334,7 @@ def do_by_incidence_angle_plots(arec, brec, outdir):
     )
     ax = fig.add_subplot(3, 4, 6)  # Initialize BDRF A subplot
     do_y_by_x_subplot(
-        fig, ax, arec['incidence_angle_rad'], arec['bdrf'],
+        fig, ax, incidence_angle_a, arec['bdrf'],
         title='A-BDRF',
         xlabel='Incidence angle (rad)',
         ylabel='BDRF',
@@ -276,7 +342,7 @@ def do_by_incidence_angle_plots(arec, brec, outdir):
     )
     ax = fig.add_subplot(3, 4, 9)  # Initialize Cross-section A subplot
     do_y_by_x_subplot(
-        fig, ax, arec['incidence_angle_rad'], arec['cross_section'],
+        fig, ax, incidence_angle_a, arec['cross_section'],
         title='A-Cross-section ($m^2$)',
         xlabel='Incidence angle (rad)',
         ylabel='Cross-section ($m^2$)',
@@ -284,7 +350,7 @@ def do_by_incidence_angle_plots(arec, brec, outdir):
     )
     ax = fig.add_subplot(3, 4, 10)  # Initialize received power A subplot
     do_y_by_x_subplot(
-        fig, ax, arec['incidence_angle_rad'], arec['received_power'],
+        fig, ax, incidence_angle_a, arec['received_power'],
         title='A-Received power',
         xlabel='Incidence angle (rad)',
         ylabel='Received power',
@@ -292,7 +358,7 @@ def do_by_incidence_angle_plots(arec, brec, outdir):
     )
     ax = fig.add_subplot(3, 4, 3)  # Initialize target range B subplot
     do_y_by_x_subplot(
-        fig, ax, brec['incidence_angle_rad'], brec['target_range_m'],
+        fig, ax, incidence_angle_b, brec['target_range_m'],
         title='B-Target range (m)',
         xlabel='Incidence angle (rad)',
         ylabel='Target range (m)',
@@ -300,7 +366,7 @@ def do_by_incidence_angle_plots(arec, brec, outdir):
     )
     ax = fig.add_subplot(3, 4, 4)  # Initialize target area B subplot
     do_y_by_x_subplot(
-        fig, ax, brec['incidence_angle_rad'], brec['target_area_m2'],
+        fig, ax, incidence_angle_b, brec['target_area_m2'],
         title='B-Target area ($m^2$)',
         xlabel='Incidence angle (rad)',
         ylabel='Target area ($m^2$)',
@@ -308,7 +374,7 @@ def do_by_incidence_angle_plots(arec, brec, outdir):
     )
     ax = fig.add_subplot(3, 4, 7)  # Initialize radius B subplot
     do_y_by_x_subplot(
-        fig, ax, brec['incidence_angle_rad'], brec['radius_m'],
+        fig, ax, incidence_angle_b, brec['radius_m'],
         title='B-Radius (m)',
         xlabel='Incidence angle (rad)',
         ylabel='Radius (m)',
@@ -316,7 +382,7 @@ def do_by_incidence_angle_plots(arec, brec, outdir):
     )
     ax = fig.add_subplot(3, 4, 8)  # Initialize BDRF B subplot
     do_y_by_x_subplot(
-        fig, ax, brec['incidence_angle_rad'], brec['bdrf'],
+        fig, ax, incidence_angle_b, brec['bdrf'],
         title='B-BDRF',
         xlabel='Incidence angle (rad)',
         ylabel='BDRF',
@@ -324,7 +390,7 @@ def do_by_incidence_angle_plots(arec, brec, outdir):
     )
     ax = fig.add_subplot(3, 4, 11)  # Initialize Cross-section B subplot
     do_y_by_x_subplot(
-        fig, ax, brec['incidence_angle_rad'], brec['cross_section'],
+        fig, ax, incidence_angle_b, brec['cross_section'],
         title='B-Cross-section ($m^2$)',
         xlabel='Incidence angle (rad)',
         ylabel='Cross-section ($m^2$)',
@@ -332,7 +398,7 @@ def do_by_incidence_angle_plots(arec, brec, outdir):
     )
     ax = fig.add_subplot(3, 4, 12)  # Initialize received power B subplot
     do_y_by_x_subplot(
-        fig, ax, brec['incidence_angle_rad'], brec['received_power'],
+        fig, ax, incidence_angle_b, brec['received_power'],
         title='B-Received power',
         xlabel='Incidence angle (rad)',
         ylabel='Received power',
@@ -341,11 +407,10 @@ def do_by_incidence_angle_plots(arec, brec, outdir):
     fig.tight_layout()
     # Save figure to file and remove it from memory
     fig.savefig(
-        os.path.join(outdir, 'plots_by_incidence_angle.png')
+        os.path.join(outdir, fname)
     )
     fig.clear()
     plt.close(fig)
-
 
 
 # ---   M A I N   --- #

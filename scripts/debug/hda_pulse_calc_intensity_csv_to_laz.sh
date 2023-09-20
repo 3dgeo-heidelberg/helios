@@ -38,7 +38,7 @@ fi
 echo -e "Transforming \"$1\" to \"$2\" ..."
 mkdir -p $(dirname "$2")
 ${TXT2LAS} -i "$1" \
-    -set_version 1.4 -parse xyz01234567 \
+    -set_version 1.4 -parse xyz01234567 -rescale 1e-5 1e-5 1e-5 \
     -add_attribute 10 'incidence_angle_rad' 'incidence_angle_rad' \
     -add_attribute 10 'target_range_m' 'target_range_m' \
     -add_attribute 10 'target_area_m2' 'target_area_m2' \
