@@ -9,6 +9,7 @@ using namespace helios::analytics;
 bool HDA_PulseRecorder::isAnyBufferOpen(){
     bool anyOpen = false;
     anyOpen |= intensityCalc->isOpen();
+    anyOpen |= subraySim->isOpen();
     return anyOpen;
 }
 
@@ -22,12 +23,19 @@ void HDA_PulseRecorder::openBuffers(){
         sep,
         true  // vectorial flag
     );
+    subraySim = std::make_shared<HDA_RecordBuffer<std::vector<double>>>(
+        craftOutputPath("subray_sim.csv"),
+        maxSize,
+        sep,
+        true  // vectorial flag
+    );
 }
 
 void HDA_PulseRecorder::closeBuffers(){
     // Close subray buffers
     std::unique_lock<std::mutex> lock(intensityCalcMutex);
     intensityCalc->close();
+    subraySim->close();
 }
 
 
@@ -48,4 +56,19 @@ void HDA_PulseRecorder::recordIntensityCalculation(
     }
 }
 
+void HDA_PulseRecorder::recordSubraySimuilation(
+    std::vector<double> const &record
+){
+    std::unique_lock<std::mutex> lock(subraySimMutex);
+    subraySim->push(record);
+}
+
+void HDA_PulseRecorder::recordSubraySimulation(
+    std::vector<std::vector<double>> const &records
+){
+    std::unique_lock<std::mutex> lock(subraySimMutex);
+    for(std::vector<double> const & record : records){
+        subraySim->push(record);
+    }
+}
 #endif

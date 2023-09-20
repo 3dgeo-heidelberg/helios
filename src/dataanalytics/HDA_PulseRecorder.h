@@ -23,7 +23,7 @@ protected:
     // ***  ATTRIBUTES  *** //
     // ******************** //
     /**
-     * @brief The vector which components are variables involved on a
+     * @brief The vectors which components are variables involved on a
      *  particular intensity calculation for a given subray.
      *
      * [0, 1, 2] -> \f$(x, y, z)\f$
@@ -47,12 +47,32 @@ protected:
      * [10] -> 1 if the point was captured, 0 otherwise.
      */
     std::shared_ptr<HDA_RecordBuffer<std::vector<double>>> intensityCalc;
+    /**
+     * @brief The vectors which components are variables involved on the
+     *  subray simulation.
+     *
+     * [0] -> Subray hit (0 does not hit, 1 hit)
+     *
+     * [1] -> Radius step
+     *
+     * [2] -> Circle steps
+     *
+     * [3] -> Circle step
+     *
+     * [4] -> Divergence angle (in rad)
+     */
+    std::shared_ptr<HDA_RecordBuffer<std::vector<double>>> subraySim;
 
     /**
      * @brief The mutex to handle concurrent writes to the buffers related to
      *  intensity calculation.
      */
     std::mutex intensityCalcMutex;
+    /**
+     * @brief The mutex to handle concurrent writes to the buffers related to
+     *  subray simulation.
+     */
+    std::mutex subraySimMutex;
 
 public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //
@@ -104,6 +124,19 @@ public:
      * @see HDA_PulseRecorder::recordIntensityCalculation(std::vector<double>)
      */
     virtual void recordIntensityCalculation(
+        std::vector<std::vector<double>> const &records
+    );
+    /**
+     * @brief Handle all the records for the current subray simulation.
+     */
+    virtual void recordSubraySimuilation(std::vector<double> const &record);
+    /**
+     * @brief Like
+     *  HDA_PulseRecorder::recordSubraySimulation(std::vector<double>)
+     *  but receiving many records at once.
+     * @see HDA_PulseRecorder::recordSubraySimulation(std::vector<double>)
+     */
+    virtual void recordSubraySimulation(
         std::vector<std::vector<double>> const &records
     );
 

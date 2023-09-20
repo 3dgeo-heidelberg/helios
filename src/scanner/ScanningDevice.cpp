@@ -3,6 +3,10 @@
 #include <logging.hpp>
 #include <scanner/detector/AbstractDetector.h>
 #include <maths/EnergyMaths.h>
+#ifdef DATA_ANALYTICS
+#include <dataanalytics/HDA_GlobalVars.h>
+using namespace helios::analytics;
+#endif
 
 // ***  CONSTRUCTION / DESTRUCTION  *** //
 // ************************************ //
@@ -222,12 +226,21 @@ void ScanningDevice::computeSubrays(
         NoiseSource<double> &intersectionHandlingNoiseSource,
         std::map<double, double> &reflections,
         vector<RaySceneIntersection> &intersects
+#ifdef DATA_ANALYTICS
+       ,bool &subrayHit
+#endif
     )> handleSubray,
     std::vector<double> const &tMinMax,
     NoiseSource<double> &intersectionHandlingNoiseSource,
     std::map<double, double> &reflections,
     std::vector<RaySceneIntersection> &intersects
+#ifdef DATA_ANALYTICS
+   ,std::shared_ptr<HDA_PulseRecorder> pulseRecorder
+#endif
 ){
+#ifdef DATA_ANALYTICS
+    bool subrayHit;
+#endif
 
     int const beamSampleQuality = FWF_settings.beamSampleQuality;
     double const radiusStep_rad = beamDivergence_rad/beamSampleQuality;
@@ -260,7 +273,20 @@ void ScanningDevice::computeSubrays(
                 intersectionHandlingNoiseSource,
                 reflections,
                 intersects
+#ifdef DATA_ANALYTICS
+               ,subrayHit
+#endif
             );
+#ifdef DATA_ANALYTICS
+            HDA_GV.incrementGeneratedSubraysCount();
+            pulseRecorder->recordSubraySimuilation(std::vector<double>({
+                (double)subrayHit,
+                (double) radiusStep,
+                (double) circleSteps,
+                (double) circleStep,
+                subrayDivergenceAngle_rad
+            }));
+#endif
         }
     }
 }

@@ -76,6 +76,9 @@ def read_records(path, sep=','):
     intensity_calc = read_record(os.path.join(
         path, 'intensity_calc.csv'
     ), sep)
+    subray_sim = read_record(os.path.join(
+        path, 'subray_sim.csv'
+    ), sep)
     # Return key-word records
     return {
         # Intensity calculation records
@@ -85,7 +88,13 @@ def read_records(path, sep=','):
         'radius_m': intensity_calc[:, 6],
         'bdrf': intensity_calc[:, 7],
         'cross_section': intensity_calc[:, 8],
-        'received_power': intensity_calc[:, 9]
+        'received_power': intensity_calc[:, 9],
+        # Subray simulation records
+        'subray_hit': subray_sim[:, 0].astype(bool),
+        'radius_step': subray_sim[:, 1],
+        'circle_steps': subray_sim[:, 2],
+        'circle_step': subray_sim[:, 3],
+        'divergence_angle_rad': subray_sim[:, 4]
     }
 
 
@@ -110,6 +119,7 @@ def plot_records(arec, brec, outdir):
     """
     do_incidence_angle_plots(arec, brec, outdir)
     do_by_incidence_angle_plots(arec, brec, outdir)
+    do_subray_hit_plots(arec, brec, outdir)
 
 
 def validate_record(key, rec, recid):
@@ -409,6 +419,202 @@ def _do_by_incidence_angle_plots(
     fig.savefig(
         os.path.join(outdir, fname)
     )
+    fig.clear()
+    plt.close(fig)
+
+
+def do_subray_hit_subplot_hist2d(
+    fig, ax, x, y, title=None, xlabel=None, ylabel=None, bins="auto"
+):
+    if title is not None:
+        ax.set_title(title, fontsize=15)
+    if bins == "auto":
+        bins = [len(np.unique(x)), len(np.unique(y))]
+    hist2d = ax.hist2d(
+        x, y, bins=bins, cmap='viridis',
+        weights=100*np.ones_like(x)/len(x),
+        edgecolors='black'
+    )
+    fig.colorbar(hist2d[3])
+    if xlabel is not None:
+        ax.set_xlabel(xlabel, fontsize=14)
+    if ylabel is not None:
+        ax.set_ylabel(ylabel, fontsize=14)
+    ax.tick_params(axis='both', which='both', labelsize=12)
+    ax.grid('both')
+    ax.set_axisbelow(True)
+
+
+def do_subray_hit_subplot_hist(
+    fig, ax, hit, x, title=None, xlabel=None, ylabel=None, bins=7,
+    relative=False
+):
+    # TODO Rethink : Implement
+    if title is not None:
+        ax.set_title(title, fontsize=15)
+    x_hit = x[hit]
+    x_nohit = x[~hit]
+    weights = [
+        100*np.ones_like(x_hit)/len(x_hit),
+        100*np.ones_like(x_nohit)/len(x_nohit)
+    ] if relative else None
+    hist = ax.hist(
+        [x_hit, x_nohit], bins=bins, label=['hit', 'miss'], weights=weights
+    )
+    if xlabel is not None:
+        ax.set_xlabel(xlabel, fontsize=14)
+    if ylabel is not None:
+        ax.set_ylabel(ylabel, fontsize=14)
+    ax.tick_params(axis='both', which='both', labelsize=14)
+    ax.legend(loc='upper right', fontsize=12)
+    ax.grid('both')
+    ax.set_axisbelow(True)
+
+
+def do_subray_hit_plots(arec, brec, outdir):
+    # Validate subray hit data
+    if(not validate_record('subray_hit', arec, 'a') or
+        not validate_record('radius_step', arec, 'a') or
+        not validate_record('circle_steps', arec, 'a') or
+        not validate_record('circle_step', arec, 'a') or
+        not validate_record('divergence_angle_rad', arec, 'a') or
+        not validate_record('subray_hit', brec, 'b') or
+        not validate_record('radius_step', brec, 'b') or
+        not validate_record('circle_steps', brec, 'b') or
+        not validate_record('circle_step', brec, 'b') or
+        not validate_record('divergence_angle_rad', brec, 'b')
+       ):
+        print('Cannot do subray hit plots')
+        return
+
+    # Do the subray hit plots
+    fig = init_figure()  # Initialize figure
+    # CASE A
+    ax = fig.add_subplot(4, 5, 1)  # Initialize hit2Dhist on (radstep,circstep)
+    do_subray_hit_subplot_hist2d(
+        fig, ax,
+        arec['circle_step'][arec['subray_hit']],
+        arec['radius_step'][arec['subray_hit']],
+        title='Hit distribution (100%) (A)',
+    )
+    ax = fig.add_subplot(4, 5, 2)  # Initialize a hist on radius step by hit
+    do_subray_hit_subplot_hist(
+        fig, ax, arec['subray_hit'], arec['radius_step'],
+        ylabel='Absolute'
+    )
+    ax = fig.add_subplot(4, 5, 3)  # Initialize a hist on circle steps by hit
+    do_subray_hit_subplot_hist(
+        fig, ax, arec['subray_hit'], arec['circle_steps'],
+    )
+    ax = fig.add_subplot(4, 5, 4)  # Initialize a hist on circle step by hit
+    do_subray_hit_subplot_hist(
+        fig, ax, arec['subray_hit'], arec['circle_step'],
+    )
+    ax = fig.add_subplot(4, 5, 5)  # Initialize a hist on div. angle by hit
+    do_subray_hit_subplot_hist(
+        fig, ax, arec['subray_hit'],
+        1e03*arec['divergence_angle_rad']*180/np.pi,
+    )
+    ax = fig.add_subplot(4, 5, 6)  # Initialize non-hit 2D hist on (rs, cs)
+    do_subray_hit_subplot_hist2d(
+        fig, ax,
+        arec['circle_step'][~arec['subray_hit']],
+        arec['radius_step'][~arec['subray_hit']],
+        title='No-hit distribution (100%)',
+        xlabel='Circle step',
+        ylabel='Radius step'
+    )
+    ax = fig.add_subplot(4, 5, 7)  # Initialize a hist on radius step by hit
+    do_subray_hit_subplot_hist(
+        fig, ax, arec['subray_hit'], arec['radius_step'],
+        ylabel='Relative ($100\\%$)',
+        relative=True,
+        xlabel='Radius step'
+    )
+    ax = fig.add_subplot(4, 5, 8)  # Initialize a hist on circle steps by hit
+    do_subray_hit_subplot_hist(
+        fig, ax, arec['subray_hit'], arec['circle_steps'],
+        relative=True,
+        xlabel='Circle steps'
+    )
+    ax = fig.add_subplot(4, 5, 9)  # Initialize a hist on circle step by hit
+    do_subray_hit_subplot_hist(
+        fig, ax, arec['subray_hit'], arec['circle_step'],
+        relative=True,
+        xlabel='Circle step'
+    )
+    ax = fig.add_subplot(4, 5, 10)  # Initialize a hist on div. angle by hit
+    do_subray_hit_subplot_hist(
+        fig, ax, arec['subray_hit'],
+        1e03*arec['divergence_angle_rad']*180/np.pi,
+        relative=True,
+        xlabel='Divergence angle (deg $\\times 10^{-3}$)'
+    )
+    # CASE B
+    ax = fig.add_subplot(4, 5, 11)  # Initialize hit2Dhist on (radstep,circstep)
+    do_subray_hit_subplot_hist2d(
+        fig, ax,
+        brec['circle_step'][brec['subray_hit']],
+        brec['radius_step'][brec['subray_hit']],
+        title='Hit distribution (100%) (B)',
+    )
+    ax = fig.add_subplot(4, 5, 12)  # Initialize a hist on radius step by hit
+    do_subray_hit_subplot_hist(
+        fig, ax, brec['subray_hit'], brec['radius_step'],
+        ylabel='Absolute'
+    )
+    ax = fig.add_subplot(4, 5, 13)  # Initialize a hist on circle steps by hit
+    do_subray_hit_subplot_hist(
+        fig, ax, brec['subray_hit'], brec['circle_steps'],
+    )
+    ax = fig.add_subplot(4, 5, 14)  # Initialize a hist on circle step by hit
+    do_subray_hit_subplot_hist(
+        fig, ax, brec['subray_hit'], brec['circle_step'],
+    )
+    ax = fig.add_subplot(4, 5, 15)  # Initialize a hist on div. angle by hit
+    do_subray_hit_subplot_hist(
+        fig, ax, brec['subray_hit'],
+        1e03*brec['divergence_angle_rad']*180/np.pi,
+    )
+    ax = fig.add_subplot(4, 5, 16)  # Initialize non-hit 2D hist on (rs, cs)
+    do_subray_hit_subplot_hist2d(
+        fig, ax,
+        brec['circle_step'][~brec['subray_hit']],
+        brec['radius_step'][~brec['subray_hit']],
+        title='No-hit distribution (100%)',
+        xlabel='Circle step',
+        ylabel='Radius step'
+    )
+    ax = fig.add_subplot(4, 5, 17)  # Initialize a hist on radius step by hit
+    do_subray_hit_subplot_hist(
+        fig, ax, brec['subray_hit'], brec['radius_step'],
+        ylabel='Relative ($100\\%$)',
+        relative=True,
+        xlabel='Radius step'
+    )
+    ax = fig.add_subplot(4, 5, 18)  # Initialize a hist on circle steps by hit
+    do_subray_hit_subplot_hist(
+        fig, ax, brec['subray_hit'], brec['circle_steps'],
+        relative=True,
+        xlabel='Circle steps'
+    )
+    ax = fig.add_subplot(4, 5, 19)  # Initialize a hist on circle step by hit
+    do_subray_hit_subplot_hist(
+        fig, ax, brec['subray_hit'], brec['circle_step'],
+        relative=True,
+        xlabel='Circle step'
+    )
+    ax = fig.add_subplot(4, 5, 20)  # Initialize a hist on div. angle by hit
+    do_subray_hit_subplot_hist(
+        fig, ax, brec['subray_hit'],
+        1e03*brec['divergence_angle_rad']*180/np.pi,
+        relative=True,
+        xlabel='Divergence angle (deg $\\times 10^{-3}$)'
+    )
+    # TODO Rethink : Implement
+    fig.tight_layout()
+    # Save figure to file and remove it from memory
+    fig.savefig(os.path.join(outdir, 'subray_hit_plots.png'))
     fig.clear()
     plt.close(fig)
 

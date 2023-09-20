@@ -15,6 +15,11 @@
 #include <scanner/detector/FullWaveform.h>
 #include <scanner/Scanner.h>
 
+#ifdef DATA_ANALYTICS
+#include <dataanalytics/HDA_GlobalVars.h>
+using helios::analytics::HDA_GV;
+#endif
+
 using namespace std;
 
 // ***  CONSTANTS  *** //
@@ -48,11 +53,17 @@ void FullWaveformPulseRunnable::operator()(
 	    pulse.getOriginRef(),
 	    beamDir
     );
+#ifdef DATA_ANALYTICS
+    HDA_GV.incrementGeneratedRaysBeforeEarlyAbortCount();
+#endif
 	if (tMinMax.empty()) {
 		logging::DEBUG("Early abort - beam does not intersect with the scene");
 		scanner->setLastPulseWasHit(false, pulse.getDeviceIndex());
 		return;
 	}
+#ifdef DATA_ANALYTICS
+    HDA_GV.incrementGeneratedRaysAfterEarlyAbortCount();
+#endif
 
 	// Ray casting (find intersections)
 	map<double, double> reflections;
@@ -66,7 +77,8 @@ void FullWaveformPulseRunnable::operator()(
 	    reflections,
 	    intersects
 #ifdef DATA_ANALYTICS
-       ,calcIntensityRecords
+      ,calcIntensityRecords,
+       pulseRecorder
 #endif
     );
 
@@ -102,7 +114,8 @@ void FullWaveformPulseRunnable::computeSubrays(
     std::map<double, double> &reflections,
     vector<RaySceneIntersection> &intersects
 #ifdef DATA_ANALYTICS
-   ,std::vector<std::vector<double>> &calcIntensityRecords
+   ,std::vector<std::vector<double>> &calcIntensityRecords,
+   std::shared_ptr<HDA_PulseRecorder> pulseRecorder
 #endif
 ){
     scanner->computeSubrays(
@@ -115,6 +128,9 @@ void FullWaveformPulseRunnable::computeSubrays(
             NoiseSource<double> &intersectionHandlingNoiseSource,
             std::map<double, double> &reflections,
             vector<RaySceneIntersection> &intersects
+#ifdef DATA_ANALYTICS
+           ,bool &subrayHit
+#endif
         ) -> void {
             handleSubray(
                 _tMinMax,
@@ -126,7 +142,8 @@ void FullWaveformPulseRunnable::computeSubrays(
                 reflections,
                 intersects
 #ifdef DATA_ANALYTICS
-               ,calcIntensityRecords
+               ,subrayHit,
+                calcIntensityRecords
 #endif
             );
         },
@@ -135,6 +152,9 @@ void FullWaveformPulseRunnable::computeSubrays(
         reflections,
         intersects,
         pulse.getDeviceIndex()
+#ifdef DATA_ANALYTICS
+       ,pulseRecorder
+#endif
     );
 }
 
@@ -148,9 +168,13 @@ void FullWaveformPulseRunnable::handleSubray(
     map<double, double> &reflections,
     vector<RaySceneIntersection> &intersects
 #ifdef DATA_ANALYTICS
-   ,std::vector<std::vector<double>> &calcIntensityRecords
+   ,bool &subrayHit,
+    std::vector<std::vector<double>> &calcIntensityRecords
 #endif
 ){
+#ifdef DATA_ANALYTICS
+    subrayHit = false;
+#endif
     // Rotate around the circle:
     vector<double> tMinMax = _tMinMax;
     Rotation r2 = Rotation(Directions::forward, circleStep_rad * circleStep);
@@ -171,8 +195,12 @@ void FullWaveformPulseRunnable::handleSubray(
         );
 
         if (intersect != nullptr && intersect->prim != nullptr) {
+#ifdef DATA_ANALYTICS
+            HDA_GV.incrementSubrayIntersectionCount();
+            subrayHit = true;
+#endif
             // Incidence angle:
-            if(!scanner->isFixedIncidenceAngle()) {
+            if (!scanner->isFixedIncidenceAngle()) {
                 incidenceAngle =
                     intersect->prim->getIncidenceAngle_rad(
                         pulse.getOriginRef(),
@@ -188,7 +216,7 @@ void FullWaveformPulseRunnable::handleSubray(
             );
 
             // Distance must be inside [rangeMin, rangeMax] interval
-            if(detector->isDistanceNotInRange(distance)) continue;
+            if (detector->isDistanceNotInRange(distance)) continue;
 
             // Distance between beam's center line and intersection point:
             double const radius = sin(divergenceAngle) * distance;
@@ -196,7 +224,7 @@ void FullWaveformPulseRunnable::handleSubray(
                 distance, pulse.getDeviceIndex()
             );
             double intensity = 0.0;
-            if(intersect->prim->canComputeSigmaWithLadLut()){
+            if (intersect->prim->canComputeSigmaWithLadLut()) {
                 // LadLut based intensity computation
                 double sigma = intersect->prim->computeSigmaWithLadLut(
                     subrayDirection
@@ -204,9 +232,11 @@ void FullWaveformPulseRunnable::handleSubray(
                 intensity = scanner->calcIntensity(
                     distance, radius, sigma, pulse.getDeviceIndex()
                 );
-            }
-            else{
+            } else {
                 // Lighting-based intensity computation
+#ifdef DATA_ANALYTICS
+                HDA_GV.incrementIntensityComputationsCount();
+#endif
                 intensity = scanner->calcIntensity(
                     incidenceAngle,
                     distance,
@@ -215,14 +245,14 @@ void FullWaveformPulseRunnable::handleSubray(
                     radius,
                     pulse.getDeviceIndex()
 #ifdef DATA_ANALYTICS
-                   ,calcIntensityRecords
+                    , calcIntensityRecords
 #endif
                 );
             }
 
 
             // Intersection handling
-            if(intersect->prim->canHandleIntersections()) {
+            if (intersect->prim->canHandleIntersections()) {
                 glm::dvec3 outsideIntersectionPoint =
                     RayUtils::obtainPointAfterTraversing(
                         *intersect->prim->getAABB(),
@@ -247,15 +277,14 @@ void FullWaveformPulseRunnable::handleSubray(
                         subrayDirection
                     );
                     rayContinues = true;
-                }
-                else{ // Update distance considering noise
+                } else { // Update distance considering noise
                     distance = glm::distance(
                         ihr.getIntersectionPoint(),
                         pulse.getOriginRef()
                     );
                 }
             }
-            if(!rayContinues) { // If ray is not continuing
+            if (!rayContinues) { // If ray is not continuing
                 // Then register hit by default
                 reflections.insert(
                     pair<double, double>(distance, intensity)
@@ -268,9 +297,16 @@ void FullWaveformPulseRunnable::handleSubray(
             calcIntensityRecord[0] = intersect->point.x;
             calcIntensityRecord[1] = intersect->point.y;
             calcIntensityRecord[2] = intersect->point.z;
+        }
+        else {
+            HDA_GV.incrementSubrayNonIntersectionCount();
 #endif
         }
     }
+#ifdef DATA_ANALYTICS
+    if(subrayHit) HDA_GV.incrementIntersectiveSubraysCount();
+    else HDA_GV.incrementNonIntersectiveSubraysCount();
+#endif
 }
 
 void FullWaveformPulseRunnable::digestIntersections(

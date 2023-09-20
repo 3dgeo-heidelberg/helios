@@ -88,7 +88,8 @@ private:
         std::map<double, double> &reflections,
         vector<RaySceneIntersection> &intersects
 #ifdef DATA_ANALYTICS
-      ,std::vector<std::vector<double>> &calcIntensityRecords
+       ,std::vector<std::vector<double>> &calcIntensityRecords,
+        std::shared_ptr<HDA_PulseRecorder> pulseRecorder
 #endif
     );
     /**
@@ -112,7 +113,8 @@ private:
         std::map<double, double> &reflections,
         vector<RaySceneIntersection> &intersects
 #ifdef DATA_ANALYTICS
-       ,std::vector<std::vector<double>> &calcIntensityRecords
+       ,bool &subrayHit,
+       std::vector<std::vector<double>> &calcIntensityRecords
 #endif
     );
     /**

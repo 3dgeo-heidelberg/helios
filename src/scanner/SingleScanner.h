@@ -138,12 +138,18 @@ public:
             NoiseSource<double> &intersectionHandlingNoiseSource,
             std::map<double, double> &reflections,
             vector<RaySceneIntersection> &intersects
+#ifdef DATA_ANALYTICS
+           ,bool &subrayHit
+#endif
         )> handleSubray,
         vector<double> const &tMinMax,
         NoiseSource<double> &intersectionHandlingNoiseSource,
         std::map<double, double> &reflections,
         vector<RaySceneIntersection> &intersects,
         size_t const idx
+#ifdef DATA_ANALYTICS
+       ,std::shared_ptr<HDA_PulseRecorder> pulseRecorder
+#endif
     ) override;
     /**
      * @see Scanner::initializeFullWaveform

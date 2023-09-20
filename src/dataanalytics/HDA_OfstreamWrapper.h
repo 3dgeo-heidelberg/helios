@@ -4,7 +4,6 @@
 #include <string>
 #include <fstream>
 
-// TODO Rethink : Document
 
 namespace helios { namespace analytics{
 
