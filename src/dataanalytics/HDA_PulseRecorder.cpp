@@ -56,7 +56,7 @@ void HDA_PulseRecorder::recordIntensityCalculation(
     }
 }
 
-void HDA_PulseRecorder::recordSubraySimuilation(
+void HDA_PulseRecorder::recordSubraySimulation(
     std::vector<double> const &record
 ){
     std::unique_lock<std::mutex> lock(subraySimMutex);

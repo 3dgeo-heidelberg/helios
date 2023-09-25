@@ -309,7 +309,8 @@ public:
             std::map<double, double> &reflections,
             vector<RaySceneIntersection> &intersects
 #ifdef DATA_ANALYTICS
-           ,bool &subrayHit
+           ,bool &subrayHit,
+            std::vector<double> &subraySimRecord
 #endif
         )> handleSubray,
         std::vector<double> const &tMinMax,

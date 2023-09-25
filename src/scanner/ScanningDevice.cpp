@@ -227,7 +227,8 @@ void ScanningDevice::computeSubrays(
         std::map<double, double> &reflections,
         vector<RaySceneIntersection> &intersects
 #ifdef DATA_ANALYTICS
-       ,bool &subrayHit
+       ,bool &subrayHit,
+        std::vector<double> &subraySimRecord
 #endif
     )> handleSubray,
     std::vector<double> const &tMinMax,
@@ -250,7 +251,8 @@ void ScanningDevice::computeSubrays(
         double const subrayDivergenceAngle_rad = radiusStep * radiusStep_rad;
 
         // Rotate subbeam into divergence step (towards outer rim of the beam cone):
-        Rotation r1 = Rotation(Directions::right, subrayDivergenceAngle_rad);
+        Rotation r1 = Rotation(Directions::right, subrayDivergenceAngle_rad);  // TODO Restore
+        //Rotation r1 = Rotation(Directions::right, 0.0);  // TODO Remove
 
         // Calculate circle step width:
         int circleSteps = (int)(PI_2 * radiusStep);
@@ -264,6 +266,11 @@ void ScanningDevice::computeSubrays(
 
         // # Loop over sub-rays along the circle
         for (int circleStep = 0; circleStep < circleSteps; circleStep++){
+#ifdef DATA_ANALYTICS
+            std::vector<double> subraySimRecord(
+                24, std::numeric_limits<double>::quiet_NaN()
+            );
+#endif
             handleSubray(
                 tMinMax,
                 circleStep,
@@ -274,18 +281,18 @@ void ScanningDevice::computeSubrays(
                 reflections,
                 intersects
 #ifdef DATA_ANALYTICS
-               ,subrayHit
+               ,subrayHit,
+                subraySimRecord
 #endif
             );
 #ifdef DATA_ANALYTICS
             HDA_GV.incrementGeneratedSubraysCount();
-            pulseRecorder->recordSubraySimuilation(std::vector<double>({
-                (double)subrayHit,
-                (double) radiusStep,
-                (double) circleSteps,
-                (double) circleStep,
-                subrayDivergenceAngle_rad
-            }));
+            subraySimRecord[0] = (double) subrayHit;
+            subraySimRecord[1] = (double) radiusStep;
+            subraySimRecord[2] = (double) circleSteps;
+            subraySimRecord[3] = (double) circleStep;
+            subraySimRecord[4] = subrayDivergenceAngle_rad;
+            pulseRecorder->recordSubraySimulation(subraySimRecord);
 #endif
         }
     }

@@ -94,7 +94,20 @@ def read_records(path, sep=','):
         'radius_step': subray_sim[:, 1],
         'circle_steps': subray_sim[:, 2],
         'circle_step': subray_sim[:, 3],
-        'divergence_angle_rad': subray_sim[:, 4]
+        'divergence_angle_rad': subray_sim[:, 4],
+        'ray_dir_norm': subray_sim[:, 5],
+        'subray_dir_norm': subray_sim[:, 6],
+        'ray_subray_angle_rad': subray_sim[:, 7],
+        'ray_subray_sign_check': subray_sim[:, 8],
+        'subray_tmin': subray_sim[:, 9],
+        'subray_tmax': subray_sim[:, 10],
+        'subray_rt_pos_dir': subray_sim[:, 11],  # Ray-tracing positive dir.
+        'subray_rt_neg_dir': subray_sim[:, 12],  # Ray-tracing negative dir.
+        'subray_rt_par_dir': subray_sim[:, 13],  # Ray-tracing parallel dir.
+        'subray_rt_no_second': subray_sim[:, 14],  # Ray-tracing no second half
+        'subray_rt_no_first': subray_sim[:, 15],  # Ray-tracing no first half
+        'subray_rt_both': subray_sim[:, 16],  # Ray-tracing both sides
+        'subray_rt_both2': subray_sim[:, 17]  # Ray-tracing both, second try
     }
 
 
@@ -120,6 +133,8 @@ def plot_records(arec, brec, outdir):
     do_incidence_angle_plots(arec, brec, outdir)
     do_by_incidence_angle_plots(arec, brec, outdir)
     do_subray_hit_plots(arec, brec, outdir)
+    do_ray_subray_plots(arec, brec, outdir)
+    do_raytracing_plots(arec, brec, outdir)
 
 
 def validate_record(key, rec, recid):
@@ -614,7 +629,205 @@ def do_subray_hit_plots(arec, brec, outdir):
     # TODO Rethink : Implement
     fig.tight_layout()
     # Save figure to file and remove it from memory
-    fig.savefig(os.path.join(outdir, 'subray_hit_plots.png'))
+    fig.savefig(os.path.join(outdir, 'subray_hit.png'))
+    fig.clear()
+    plt.close(fig)
+
+
+def do_ray_subray_plots(arec, brec, outdir):
+    # Validate ray subray data
+    if(
+        not validate_record('ray_dir_norm', arec, 'a') or
+        not validate_record('subray_dir_norm', arec, 'a') or
+        not validate_record('ray_subray_angle_rad', arec, 'a') or
+        not validate_record('ray_subray_sign_check', arec, 'a') or
+        not validate_record('subray_tmin', arec, 'a') or
+        not validate_record('subray_tmax', arec, 'a') or
+        not validate_record('ray_dir_norm', brec, 'b') or
+        not validate_record('subray_dir_norm', brec, 'b') or
+        not validate_record('ray_subray_angle_rad', brec, 'b') or
+        not validate_record('ray_subray_sign_check', brec, 'b') or
+        not validate_record('subray_tmin', brec, 'b') or
+        not validate_record('subray_tmax', brec, 'b')
+      ):
+        print('Cannot do ray-subray plots')
+        return
+    # Do the ray subray plots
+    fig = init_figure()  # Initialize figure
+    # CASE A
+    ax = fig.add_subplot(3, 4, 1)  # Initialize ray norm subplot
+    do_incidence_angle_subplot(
+        fig, ax, arec['ray_dir_norm'],
+        xlabel='Ray direction norm'
+    )
+    ax = fig.add_subplot(3, 4, 2)  # Initialize subray norm subplot
+    do_incidence_angle_subplot(
+        fig, ax, arec['subray_dir_norm'],
+        xlabel='Subay direction norm'
+    )
+    ax = fig.add_subplot(3, 4, 5)  # Initialize ray-subray angle subplot
+    do_incidence_angle_subplot(
+        fig, ax, arec['ray_subray_angle_rad']*180/np.pi,
+        xlabel='Ray-subray angle (deg)'
+    )
+    ax = fig.add_subplot(3, 4, 6)  # Initialize ray-subray sign check subplot
+    do_incidence_angle_subplot(
+        fig, ax, arec['ray_subray_sign_check'],
+        xlabel='Sign equality check'
+    )
+    ax = fig.add_subplot(3, 4, 9)  # Initialize subray tmin subplot
+    do_incidence_angle_subplot(
+        fig, ax, arec['subray_tmin'],
+        xlabel='Subray $t_{\\mathrm{min}}$'
+    )
+    ax = fig.add_subplot(3, 4, 10)  # Initialize subray tmin subplot
+    do_incidence_angle_subplot(
+        fig, ax, arec['subray_tmax'],
+        xlabel='Subray $t_{\\mathrm{max}}$'
+    )
+    # CASE B
+    ax = fig.add_subplot(3, 4, 3)  # Initialize ray norm subplot
+    do_incidence_angle_subplot(
+        fig, ax, brec['ray_dir_norm'],
+        xlabel='Ray direction norm'
+    )
+    ax = fig.add_subplot(3, 4, 4)  # Initialize subray norm subplot
+    do_incidence_angle_subplot(
+        fig, ax, brec['subray_dir_norm'],
+        xlabel='Subay direction norm'
+    )
+    ax = fig.add_subplot(3, 4, 7)  # Initialize ray-subray angle subplot
+    do_incidence_angle_subplot(
+        fig, ax, brec['ray_subray_angle_rad']*180/np.pi,
+        xlabel='Ray-subray angle (deg)'
+    )
+    ax = fig.add_subplot(3, 4, 8)  # Initialize ray-subray sign check subplot
+    do_incidence_angle_subplot(
+        fig, ax, brec['ray_subray_sign_check'],
+        xlabel='Sign equality check'
+    )
+    ax = fig.add_subplot(3, 4, 11)  # Initialize subray tmin subplot
+    do_incidence_angle_subplot(
+        fig, ax, brec['subray_tmin'],
+        xlabel='Subray $t_{\\mathrm{min}}$'
+    )
+    ax = fig.add_subplot(3, 4, 12)  # Initialize subray tmin subplot
+    do_incidence_angle_subplot(
+        fig, ax, brec['subray_tmax'],
+        xlabel='Subray $t_{\\mathrm{max}}$'
+    )
+    fig.tight_layout()
+    # Save figure to file and remove it from memory
+    fig.savefig(
+        os.path.join(outdir, 'ray_subray.png')
+    )
+    fig.clear()
+    plt.close(fig)
+
+
+def do_raytracing_plots(arec, brec, outdir):
+    # TODO Rethink : Implement
+    if(
+        not validate_record('subray_hit', arec, 'a') or
+        not validate_record('subray_rt_pos_dir', arec, 'a') or
+        not validate_record('subray_rt_neg_dir', arec, 'a') or
+        not validate_record('subray_rt_par_dir', arec, 'a') or
+        not validate_record('subray_rt_no_second', arec, 'a') or
+        not validate_record('subray_rt_no_first', arec, 'a') or
+        not validate_record('subray_rt_both', arec, 'a') or
+        not validate_record('subray_rt_both2', arec, 'a') or
+        not validate_record('subray_hit', brec, 'b') or
+        not validate_record('subray_rt_pos_dir', brec, 'b') or
+        not validate_record('subray_rt_neg_dir', brec, 'b') or
+        not validate_record('subray_rt_par_dir', brec, 'b') or
+        not validate_record('subray_rt_no_second', brec, 'b') or
+        not validate_record('subray_rt_no_first', brec, 'b') or
+        not validate_record('subray_rt_both', brec, 'b') or
+        not validate_record('subray_rt_both2', brec, 'b')
+      ):
+        print('Cannot do ray-tracing plots')
+        return
+    # Do the ray-tracing plots
+    fig = init_figure()  # Initialize figure
+    # CASE A
+    ax = fig.add_subplot(4, 7, 1)  # Initialize positive direction hist
+    do_subray_hit_subplot_hist(
+        fig, ax, arec['subray_hit'], arec['subray_rt_pos_dir'],
+        ylabel='Absolute'
+    )
+    ax = fig.add_subplot(4, 7, 2)  # Initialize negative direction hist
+    do_subray_hit_subplot_hist(
+        fig, ax, arec['subray_hit'], arec['subray_rt_neg_dir'],
+    )
+    ax = fig.add_subplot(4, 7, 3)  # Initialize parallel direction hist
+    do_subray_hit_subplot_hist(
+        fig, ax, arec['subray_hit'], arec['subray_rt_par_dir'],
+    )
+    ax = fig.add_subplot(4, 7, 4)  # Initialize no second half hist
+    do_subray_hit_subplot_hist(
+        fig, ax, arec['subray_hit'], arec['subray_rt_no_second'],
+    )
+    ax = fig.add_subplot(4, 7, 5)  # Initialize no second half hist
+    do_subray_hit_subplot_hist(
+        fig, ax, arec['subray_hit'], arec['subray_rt_no_first'],
+    )
+    ax = fig.add_subplot(4, 7, 6)  # Initialize both sides hist
+    do_subray_hit_subplot_hist(
+        fig, ax, arec['subray_hit'], arec['subray_rt_both'],
+    )
+    ax = fig.add_subplot(4, 7, 7)  # Initialize both sides hist
+    do_subray_hit_subplot_hist(
+        fig, ax, arec['subray_hit'], arec['subray_rt_both2'],
+    )
+    ax = fig.add_subplot(4, 7, 8)  # Initialize positive direction hist
+    do_subray_hit_subplot_hist(
+        fig, ax, arec['subray_hit'], arec['subray_rt_pos_dir'],
+        relative=True,
+        xlabel='Positive direction',
+        ylabel='Relative (100%)'
+    )
+    ax = fig.add_subplot(4, 7, 9)  # Initialize negative direction hist
+    do_subray_hit_subplot_hist(
+        fig, ax, arec['subray_hit'], arec['subray_rt_neg_dir'],
+        relative=True,
+        xlabel='Negative direction',
+    )
+    ax = fig.add_subplot(4, 7, 10)  # Initialize parallel direction hist
+    do_subray_hit_subplot_hist(
+        fig, ax, arec['subray_hit'], arec['subray_rt_par_dir'],
+        relative=True,
+        xlabel='Parallel direction',
+    )
+    ax = fig.add_subplot(4, 7, 11)  # Initialize no second half hist
+    do_subray_hit_subplot_hist(
+        fig, ax, arec['subray_hit'], arec['subray_rt_no_second'],
+        relative=True,
+        xlabel='No second half',
+    )
+    ax = fig.add_subplot(4, 7, 12)  # Initialize no second half hist
+    do_subray_hit_subplot_hist(
+        fig, ax, arec['subray_hit'], arec['subray_rt_no_first'],
+        relative=True,
+        xlabel='No first half',
+    )
+    ax = fig.add_subplot(4, 7, 13)  # Initialize both sides hist
+    do_subray_hit_subplot_hist(
+        fig, ax, arec['subray_hit'], arec['subray_rt_both'],
+        relative=True,
+        xlabel='Both sides',
+    )
+    ax = fig.add_subplot(4, 7, 14)  # Initialize both sides hist
+    do_subray_hit_subplot_hist(
+        fig, ax, arec['subray_hit'], arec['subray_rt_both2'],
+        relative=True,
+        xlabel='Both sides ($2^{\mathrm{nd}}$ try)',
+    )
+    # CASE B
+    fig.tight_layout()
+    # Save figure to file and remove it from memory
+    fig.savefig(
+        os.path.join(outdir, 'subray_ray_tracing.png')
+    )
     fig.clear()
     plt.close(fig)
 

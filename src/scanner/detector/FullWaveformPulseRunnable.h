@@ -114,7 +114,8 @@ private:
         vector<RaySceneIntersection> &intersects
 #ifdef DATA_ANALYTICS
        ,bool &subrayHit,
-       std::vector<std::vector<double>> &calcIntensityRecords
+        std::vector<double> &subraySimRecord,
+        std::vector<std::vector<double>> &calcIntensityRecords
 #endif
     );
     /**
@@ -273,6 +274,9 @@ private:
         vector<double> const &tMinMax,
         glm::dvec3 const &o,
         glm::dvec3 const &v
+#ifdef DATA_ANALYTICS
+       ,std::vector<double> &subraySimRecord
+#endif
     ) const;
     /**
      * @brief Detect full waveform peaks

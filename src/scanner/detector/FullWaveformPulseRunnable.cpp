@@ -18,6 +18,9 @@
 #ifdef DATA_ANALYTICS
 #include <dataanalytics/HDA_GlobalVars.h>
 using helios::analytics::HDA_GV;
+
+#include <glm/gtx/norm.hpp>
+#include <glm/gtx/vector_angle.hpp>
 #endif
 
 using namespace std;
@@ -52,11 +55,26 @@ void FullWaveformPulseRunnable::operator()(
 	vector<double> tMinMax = scene.getAABB()->getRayIntersection(
 	    pulse.getOriginRef(),
 	    beamDir
-    );
+    ); // TODO Restore
+    // TODO Remove ---
+    /*std::shared_ptr<AABB> aabb = std::make_shared<AABB>(*scene.getAABB());
+    aabb->vertices[0].pos.x -= 1.0;
+    aabb->vertices[0].pos.y -= 1.0;
+    aabb->vertices[0].pos.z -= 1.0;
+    aabb->vertices[1].pos.x += 1.0;
+    aabb->vertices[1].pos.y += 1.0;
+    aabb->vertices[1].pos.z += 1.0;
+    aabb->bounds[0] = aabb->vertices[0].pos;
+    aabb->bounds[1] = aabb->vertices[1].pos;
+    vector<double> tMinMax = aabb->getRayIntersection(
+        pulse.getOriginRef(),
+        beamDir
+    );*/
+    // --- TODO Remove
 #ifdef DATA_ANALYTICS
     HDA_GV.incrementGeneratedRaysBeforeEarlyAbortCount();
 #endif
-	if (tMinMax.empty()) {
+	if (tMinMax.empty() || (tMinMax[0] < 0 && tMinMax[1] < 0)) {
 		logging::DEBUG("Early abort - beam does not intersect with the scene");
 		scanner->setLastPulseWasHit(false, pulse.getDeviceIndex());
 		return;
@@ -129,7 +147,8 @@ void FullWaveformPulseRunnable::computeSubrays(
             std::map<double, double> &reflections,
             vector<RaySceneIntersection> &intersects
 #ifdef DATA_ANALYTICS
-           ,bool &subrayHit
+           ,bool &subrayHit,
+            std::vector<double> &subraySimRecord
 #endif
         ) -> void {
             handleSubray(
@@ -143,6 +162,7 @@ void FullWaveformPulseRunnable::computeSubrays(
                 intersects
 #ifdef DATA_ANALYTICS
                ,subrayHit,
+                subraySimRecord,
                 calcIntensityRecords
 #endif
             );
@@ -169,6 +189,7 @@ void FullWaveformPulseRunnable::handleSubray(
     vector<RaySceneIntersection> &intersects
 #ifdef DATA_ANALYTICS
    ,bool &subrayHit,
+    std::vector<double> &subraySimRecord,
     std::vector<std::vector<double>> &calcIntensityRecords
 #endif
 ){
@@ -182,6 +203,24 @@ void FullWaveformPulseRunnable::handleSubray(
 
     glm::dvec3 subrayDirection = pulse.getAttitude().applyTo(r2)
         .applyTo(Directions::forward);
+#ifdef DATA_ANALYTICS
+    glm::dvec3 rayDirection = pulse.computeDirection();
+    subraySimRecord[5] = glm::l2Norm(rayDirection); // Ray norm
+    subraySimRecord[6] = glm::l2Norm(subrayDirection); // Subray norm
+    subraySimRecord[7] = glm::angle( // Angle between ray and subray
+        rayDirection,
+        subrayDirection
+    );
+    subraySimRecord[8] = (rayDirection[0] < 0) == (subrayDirection[0] < 0);
+    subraySimRecord[9] = tMinMax[0];
+    subraySimRecord[10] = tMinMax[1];
+    subraySimRecord[18] = subrayDirection.x;
+    subraySimRecord[19] = subrayDirection.y;
+    subraySimRecord[20] = subrayDirection.z;
+    subraySimRecord[21] = rayDirection.x;
+    subraySimRecord[22] = rayDirection.y;
+    subraySimRecord[23] = rayDirection.z;
+#endif
 
     glm::dvec3 subrayOrigin(pulse.getOrigin());
     bool rayContinues = true;
@@ -192,6 +231,9 @@ void FullWaveformPulseRunnable::handleSubray(
             tMinMax,
             subrayOrigin,
             subrayDirection
+#ifdef DATA_ANALYTICS
+           ,subraySimRecord
+#endif
         );
 
         if (intersect != nullptr && intersect->prim != nullptr) {
@@ -718,8 +760,17 @@ shared_ptr<RaySceneIntersection> FullWaveformPulseRunnable::findIntersection(
     vector<double> const &tMinMax,
     glm::dvec3 const &o,
     glm::dvec3 const &v
+#ifdef DATA_ANALYTICS
+   ,std::vector<double> &subraySimRecord
+#endif
 ) const {
-    return scene.getIntersection(tMinMax, o, v, false);
+    return scene.getIntersection(
+        tMinMax, o, v, false
+#ifdef DATA_ANALYTICS
+       ,subraySimRecord,
+        true  // Subray flag
+#endif
+    );
 }
 
 void FullWaveformPulseRunnable::captureFullWave(

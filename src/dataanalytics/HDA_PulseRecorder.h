@@ -60,6 +60,49 @@ protected:
      * [3] -> Circle step
      *
      * [4] -> Divergence angle (in rad)
+     *
+     * [5] -> Ray direction norm
+     *
+     * [6] -> Subray direction norm
+     *
+     * [7] -> Angle between ray and subray (in rad)
+     *
+     * [8] -> Ray-subray sign check (1 if sign match, 0 otherwise)
+     *
+     * [9] -> Min time for subray intersection
+     *
+     * [10] -> Max time for subray intersection
+     *
+     * [11] -> Count of subray as positive direction during ray tracing
+     *
+     * [12] -> Count of subray as negative direction during ray tracing
+     *
+     * [13] -> Count of subray as parallel direction during ray tracing
+     *
+     * [14] -> Count of subray as not touching the second half of a node during
+     *  ray tracing
+     *
+     * [15] -> Count of subray as not touching the first half of a node during
+     *  ray tracing
+     *
+     * [16] -> Count of subray as touching both sides of a node during ray
+     *  tracing
+     *
+     * [17] -> Count of subrays as touching both sides of a node during a
+     *  second ray tracing try (which uses thit-epsilon for tmin, while the
+     *  first try uses thit+epsilon)
+     *
+     * [18] -> Subray direction (x component)
+     *
+     * [19] -> Subray direction (y component)
+     *
+     * [20] -> Subray direction (z component)
+     *
+     * [21] -> Ray direction (x component)
+     *
+     * [22] -> Ray direction (y component)
+     *
+     * [23] -> Ray direction (z component)
      */
     std::shared_ptr<HDA_RecordBuffer<std::vector<double>>> subraySim;
 
@@ -129,7 +172,7 @@ public:
     /**
      * @brief Handle all the records for the current subray simulation.
      */
-    virtual void recordSubraySimuilation(std::vector<double> const &record);
+    virtual void recordSubraySimulation(std::vector<double> const &record);
     /**
      * @brief Like
      *  HDA_PulseRecorder::recordSubraySimulation(std::vector<double>)

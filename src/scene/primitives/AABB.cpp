@@ -163,14 +163,15 @@ std::vector<double> AABB::getRayIntersection(
     const int ysign = dir.y < 0;
     const int zsign = dir.z < 0;
 
+    // As long as divide by zero yields +-infinity, this logic should work
 	double tmin, tmax;
 	tmin = (bounds[xsign].x - orig.x) / dir.x;
 	tmax = (bounds[1 - xsign].x - orig.x) / dir.x;
 	const double tymin = (bounds[ysign].y - orig.y) / dir.y;
 	const double tymax = (bounds[1 - ysign].y - orig.y) / dir.y;
 
-	if (tmin > tymax || tymin > tmax) return std::vector<double>();
-	if (tymin > tmin)tmin = tymin;
+	if (tmin > tymax || tymin > tmax) return {};
+	if (tymin > tmin) tmin = tymin;
 	if (tymax < tmax) tmax = tymax;
 
 	const double tzmin = (bounds[zsign].z - orig.z) / dir.z;

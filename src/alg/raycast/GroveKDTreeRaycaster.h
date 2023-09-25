@@ -80,8 +80,16 @@ public:
         double tmin,
         double tmax,
         bool groundOnly
+#ifdef DATA_ANALYTICS
+       ,std::vector<double> &subraySimRecord,
+        bool const isSubray=false
+#endif
     ) override {return KDTreeRaycaster::search(
         rayOrigin, rayDir, tmin, tmax, groundOnly
+#ifdef DATA_ANALYTICS
+       ,subraySimRecord,
+        isSubray
+#endif
     );}
 
     // ***  GROVE DYNAMIC TREE METHODS  *** //

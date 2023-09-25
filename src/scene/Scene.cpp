@@ -23,6 +23,11 @@ using namespace glm;
 #include <surfaceinspector/maths/Plane.hpp>
 #include <surfaceinspector/maths/PlaneFitter.hpp>
 
+#ifdef DATA_ANALYTICS
+#include <dataanalytics/HDA_GlobalVars.h>
+using helios::analytics::HDA_GV;
+#endif
+
 using SurfaceInspector::maths::Plane;
 using SurfaceInspector::maths::PlaneFitter;
 
@@ -91,6 +96,16 @@ bool Scene::finalizeLoading(bool const safe) {
 
     // Store original bounding box (CRS coordinates):
     this->bbox_crs = AABB::getForPrimitives(primitives);
+    // TODO Rethink : Does this solve the issue ? ---
+    this->bbox_crs->vertices[0].pos.x -= 1.0;
+    this->bbox_crs->vertices[0].pos.y -= 1.0;
+    this->bbox_crs->vertices[0].pos.z -= 1.0;
+    this->bbox_crs->vertices[1].pos.x += 1.0;
+    this->bbox_crs->vertices[1].pos.y += 1.0;
+    this->bbox_crs->vertices[1].pos.z += 1.0;
+    this->bbox_crs->bounds[0] = this->bbox_crs->vertices[0].pos;
+    this->bbox_crs->bounds[1] = this->bbox_crs->vertices[1].pos;
+    // --- TODO Rethink : Does this solve the issue ?
     glm::dvec3 diff = this->bbox_crs->getMin();
     stringstream ss;
     ss  << "CRS bounding box (by vertices): " << this->bbox_crs->toString()
@@ -110,6 +125,16 @@ bool Scene::finalizeLoading(bool const safe) {
 
     // Get new bounding box of translated scene:
     this->bbox = AABB::getForPrimitives(primitives);
+    // TODO Rethink : Does this solve the issue ? ---
+    this->bbox->vertices[0].pos.x -= 1.0;
+    this->bbox->vertices[0].pos.y -= 1.0;
+    this->bbox->vertices[0].pos.z -= 1.0;
+    this->bbox->vertices[1].pos.x += 1.0;
+    this->bbox->vertices[1].pos.y += 1.0;
+    this->bbox->vertices[1].pos.z += 1.0;
+    this->bbox->bounds[0] = this->bbox->vertices[0].pos;
+    this->bbox->bounds[1] = this->bbox->vertices[1].pos;
+    // --- TODO Rethink : Does this solve the issue ?
 
     ss << "Actual bounding box (by vertices): " << this->bbox->toString();
     logging::INFO(ss.str());
@@ -171,7 +196,14 @@ Scene::getIntersection(
     bool const groundOnly
 ) const {
     vector<double> tMinMax = bbox->getRayIntersection(rayOrigin, rayDir);
+#ifdef DATA_ANALYTICS
+    std::vector<double> subraySimRecord_fake(24, 0); // Not really recorded
+    return getIntersection(
+        tMinMax, rayOrigin, rayDir, groundOnly, subraySimRecord_fake
+    );
+#else
     return getIntersection(tMinMax, rayOrigin, rayDir, groundOnly);
+#endif
 }
 
 std::shared_ptr<RaySceneIntersection> Scene::getIntersection(
@@ -179,13 +211,24 @@ std::shared_ptr<RaySceneIntersection> Scene::getIntersection(
     glm::dvec3 const &rayOrigin,
     glm::dvec3 const &rayDir,
     bool const groundOnly
+#ifdef DATA_ANALYTICS
+   ,std::vector<double> &subraySimRecord,
+    bool const isSubray
+#endif
 ) const{
     if (tMinMax.empty()) {
         logging::DEBUG("tMinMax is empty");
+#ifdef DATA_ANALYTICS
+       HDA_GV.incrementNonIntersectiveSubraysDueToNullTimeCount();
+#endif
         return nullptr;
     }
     return shared_ptr<RaySceneIntersection>(raycaster->search(
         rayOrigin, rayDir, tMinMax[0], tMinMax[1], groundOnly
+#ifdef DATA_ANALYTICS
+       ,subraySimRecord,
+        isSubray
+#endif
     ));
 }
 
