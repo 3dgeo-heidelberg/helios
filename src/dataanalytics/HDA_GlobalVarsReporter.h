@@ -8,7 +8,14 @@
 
 namespace helios { namespace analytics{
 
-// TODO Rethink : Document
+/**
+ * @author Alberto M. Esmoris Pena
+ * @version 1.0
+ *
+ * @brief Class to handle reports related to global variables.
+ *
+ * @see helios::analytics::HDA_GlobalVars
+ */
 class HDA_GlobalVarsReporter{
 protected:
     // ***  ATTRIBUTES  *** //
