@@ -1,6 +1,6 @@
 # ---  B U I L D I N G  --- #
 # ------------------------- #
-ADD_EXECUTABLE(helios ${sources} AppIcon.rc)
+ADD_EXECUTABLE(helios ${sources} AppIcon.rc ../src/dataanalytics/HDA_PulseRecorder.h ../src/dataanalytics/HDA_PulseRecorder.cpp ../src/dataanalytics/HDA_Recorder.h ../src/dataanalytics/HDA_Recorder.cpp ../src/dataanalytics/HDA_OfstreamWrapper.h ../src/dataanalytics/HDA_GlobalVars.h ../src/dataanalytics/HDA_GlobalVars.cpp ../src/dataanalytics/HDA_GlobalVarsReporter.h)
 
 # HANDLE PYTHON BINDING
 if(PYTHON_BINDING)
