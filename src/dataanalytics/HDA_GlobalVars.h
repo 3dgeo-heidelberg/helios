@@ -9,7 +9,19 @@ namespace helios { namespace analytics{
 // *********************** //
 extern class HDA_GlobalVars HDA_GV;
 
-// TODO Rethink : Document
+/**
+ * @author Alberto M. Esmoris Pena
+ * @version 1.0
+ *
+ * @brief Class to handle global variables together with methods for safe
+ *  readings and updates.
+ *
+ * The HDA_GlobalVars class provides a series of variables and corresponding
+ *  methods for safe operations. For example, variables that must be
+ *  accessed through parallel threads are handled with a mutex such that, as
+ *  long as the proper methods are used, read and write operations are
+ *  thread safe.
+ */
 class HDA_GlobalVars{
 public:
     // ***  ATTRIBUTES  *** //
