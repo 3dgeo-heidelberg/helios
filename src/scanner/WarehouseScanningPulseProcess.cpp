@@ -11,7 +11,7 @@ WarehouseScanningPulseProcess::WarehouseScanningPulseProcess(
     RandomnessGenerator<double> &randGen1,
     RandomnessGenerator<double> &randGen2,
     UniformNoiseSource<double> &intersectionHandlingNoiseSource
-#ifdef DATA_ANALYTICS
+#if DATA_ANALYTICS >= 2
     ,std::shared_ptr<HDA_PulseRecorder> pulseRecorder
 #endif
 ) :
@@ -21,7 +21,7 @@ WarehouseScanningPulseProcess::WarehouseScanningPulseProcess(
     randGen1(randGen1),
     randGen2(randGen2),
     intersectionHandlingNoiseSource(intersectionHandlingNoiseSource)
-#ifdef DATA_ANALYTICS
+#if DATA_ANALYTICS >= 2
    ,pulseRecorder(pulseRecorder)
 #endif
         {
@@ -49,7 +49,7 @@ void WarehouseScanningPulseProcess::onLegComplete(){
         randGen1,
         randGen2,
         intersectionHandlingNoiseSource
-#ifdef DATA_ANALYTICS
+#if DATA_ANALYTICS >= 2
        ,pulseRecorder
 #endif
     );
@@ -59,7 +59,7 @@ void WarehouseScanningPulseProcess::onLegComplete(){
     while( (task=pool.get()) != nullptr){
         (*task)(
             apMatrix, randGen1, randGen2, intersectionHandlingNoiseSource
-#ifdef DATA_ANALYTICS
+#if DATA_ANALYTICS >= 2
             ,pulseRecorder
 #endif
         );
@@ -84,7 +84,7 @@ void WarehouseScanningPulseProcess::handlePulseComputationSequential(
         randGen1,
         randGen2,
         intersectionHandlingNoiseSource
-#ifdef DATA_ANALYTICS
+#if DATA_ANALYTICS >= 2
        ,pulseRecorder
 #endif
     );
@@ -110,7 +110,7 @@ void WarehouseScanningPulseProcess::handlePulseComputationParallel(
                 randGen1,
                 randGen2,
                 intersectionHandlingNoiseSource
-#ifdef DATA_ANALYTICS
+#if DATA_ANALYTICS >= 2
                ,pulseRecorder
 #endif
             );

@@ -5,7 +5,7 @@
 #include <scanner/detector/PulseTaskDropper.h>
 #include <noise/RandomnessGenerator.h>
 #include <noise/UniformNoiseSource.h>
-#ifdef DATA_ANALYTICS
+#if DATA_ANALYTICS >= 2
 #include <dataanalytics/HDA_PulseRecorder.h>
 #endif
 
@@ -26,14 +26,16 @@ class PulseWarehouseThreadPool :
 {
 #ifdef DATA_ANALYTICS
 public:
+#else
+protected:
+#endif
+#if DATA_ANALYTICS >= 2
     /**
      * @brief The helios::analytics::PulseRecorder to be used to handle the
      *  records representing the computed pulse tasks.
      * @see helios::analytics::PulseRecorder
      */
     std::shared_ptr<HDA_PulseRecorder> pulseRecorder;
-#else
-protected:
 #endif
     // ***  ATTRIBUTES  *** //
     // ******************** //
@@ -79,7 +81,7 @@ public:
         randGens2 = new RandomnessGenerator<double>[this->pool_size];
         intersectionHandlingNoiseSources =
             new UniformNoiseSource<double>[this->pool_size];
-#ifdef DATA_ANALYTICS
+#if DATA_ANALYTICS >= 2
         pulseRecorder = std::make_shared<HDA_PulseRecorder>(
             "helios_pulse_records"
         );
@@ -99,7 +101,7 @@ public:
     }
 
     virtual ~PulseWarehouseThreadPool(){
-#ifdef DATA_ANALYTICS
+#if DATA_ANALYTICS >= 2
         // Flush and close pulse recorder
         this->pulseRecorder->closeBuffers();
 #endif
@@ -123,7 +125,7 @@ public:
             RandomnessGenerator<double>&,
             RandomnessGenerator<double>&,
             NoiseSource<double>&
-#ifdef DATA_ANALYTICS
+#if DATA_ANALYTICS >= 2
            ,std::shared_ptr<HDA_PulseRecorder>
 #endif
         > &dropper
@@ -144,7 +146,7 @@ public:
             RandomnessGenerator<double>&,
             RandomnessGenerator<double>&,
             NoiseSource<double>&
-#ifdef DATA_ANALYTICS
+#if DATA_ANALYTICS >= 2
            ,std::shared_ptr<HDA_PulseRecorder>
 #endif
         > &dropper
@@ -159,7 +161,7 @@ public:
     inline void join() override{
         WarehouseThreadPool<PulseTaskDropper>::join();
     }
-#ifdef DATA_ANALYTICS
+#if DATA_ANALYTICS >= 2
     /**
      * @see PulseThreadPoolInterface::getPulseRecorder
      */
@@ -186,7 +188,7 @@ protected:
             randGens[tid],
             randGens2[tid],
             intersectionHandlingNoiseSources[tid]
-#ifdef DATA_ANALYTICS
+#if DATA_ANALYTICS >= 2
            ,pulseRecorder
 #endif
         );

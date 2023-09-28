@@ -17,14 +17,16 @@
 class BuddingScanningPulseProcess : public ScanningPulseProcess {
 #ifdef DATA_ANALYTICS
 public:
+#else
+    protected:
+#endif
+#if DATA_ANALYTICS >= 2
     /**
      * @brief The helios::analytics::PulseRecorder to be used to handle the
      *  records representing the computed pulse tasks.
      * @see helios::analytics::PulseRecorder
      */
     std::shared_ptr<HDA_PulseRecorder> pulseRecorder;
-#else
-protected:
 #endif
     // ***  ATTRIBUTES  *** //
     // ******************** //
@@ -115,7 +117,7 @@ public:
         RandomnessGenerator<double> &randGen1,
         RandomnessGenerator<double> &randGen2,
         UniformNoiseSource<double> &intersectionHandlingNoiseSource
-#ifdef DATA_ANALYTICS
+#if DATA_ANALYTICS >= 2
         ,std::shared_ptr<HDA_PulseRecorder> pulseRecorder
 #endif
     );

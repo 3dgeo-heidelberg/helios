@@ -166,7 +166,7 @@ int main(int argc, char** argv) {
         );
     }
 
-#ifdef DATA_ANALYTICS
+#if DATA_ANALYTICS >= 2
     helios::analytics::HDA_GlobalVarsReporter reporter(
         helios::analytics::HDA_GV
     );

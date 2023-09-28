@@ -2,7 +2,7 @@
 
 #include <noise/RandomnessGenerator.h>
 #include <noise/NoiseSource.h>
-#ifdef DATA_ANALYTICS
+#if DATA_ANALYTICS >= 2
 #include <dataanalytics/HDA_PulseRecorder.h>
 using helios::analytics::HDA_PulseRecorder;
 #endif
@@ -37,7 +37,7 @@ public:
         RandomnessGenerator<double> &randGen,
         RandomnessGenerator<double> &randGen2,
         NoiseSource<double> &intersectionHandlingNoiseSource
-#ifdef DATA_ANALYTICS
+#if DATA_ANALYTICS >= 2
        ,std::shared_ptr<HDA_PulseRecorder> pulseRecorder
 #endif
     ) = 0;

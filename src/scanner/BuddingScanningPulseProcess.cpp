@@ -10,7 +10,7 @@ BuddingScanningPulseProcess::BuddingScanningPulseProcess(
     RandomnessGenerator<double> &randGen1,
     RandomnessGenerator<double> &randGen2,
     UniformNoiseSource<double> &intersectionHandlingNoiseSource
-#ifdef DATA_ANALYTICS
+#if DATA_ANALYTICS >= 2
    ,std::shared_ptr<HDA_PulseRecorder> pulseRecorder
 #endif
 ) :
@@ -20,7 +20,7 @@ BuddingScanningPulseProcess::BuddingScanningPulseProcess(
     randGen1(randGen1),
     randGen2(randGen2),
     intersectionHandlingNoiseSource(intersectionHandlingNoiseSource)
-#ifdef DATA_ANALYTICS
+#if DATA_ANALYTICS >= 2
    ,pulseRecorder(pulseRecorder)
 #endif
 {
@@ -57,7 +57,7 @@ void BuddingScanningPulseProcess::onLegComplete(){
         randGen1,
         randGen2,
         intersectionHandlingNoiseSource
-#ifdef DATA_ANALYTICS
+#if DATA_ANALYTICS >= 2
         ,pulseRecorder
 #endif
     );
@@ -88,7 +88,7 @@ void BuddingScanningPulseProcess::handlePulseComputationSequential(
         randGen1,
         randGen2,
         intersectionHandlingNoiseSource
-#ifdef DATA_ANALYTICS
+#if DATA_ANALYTICS >= 2
         ,pulseRecorder
 #endif
     );
@@ -144,7 +144,7 @@ void BuddingScanningPulseProcess::handlePulseComputationParallelDynamic(
             randGen1,
             randGen2,
             intersectionHandlingNoiseSource
-#ifdef DATA_ANALYTICS
+#if DATA_ANALYTICS >= 2
             ,pulseRecorder
 #endif
         );
@@ -192,7 +192,7 @@ void BuddingScanningPulseProcess::handlePulseComputationParallelStatic(
             randGen1,
             randGen2,
             intersectionHandlingNoiseSource
-#ifdef DATA_ANALYTICS
+#if DATA_ANALYTICS >= 2
             ,pulseRecorder
 #endif
         );

@@ -1,4 +1,4 @@
-#ifdef DATA_ANALYTICS
+#if DATA_ANALYTICS >= 2
 #pragma once
 #include <HDA_GlobalVars.h>
 #include <util/logger/logging.hpp>

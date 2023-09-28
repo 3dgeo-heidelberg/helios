@@ -62,7 +62,7 @@ void AbstractPulseRunnable::capturePoint(
     std::mutex *allMeasurementsMutex,
     std::vector<Measurement> *cycleMeasurements,
     std::mutex *cycleMeasurementsMutex
-#ifdef DATA_ANALYTICS
+#if DATA_ANALYTICS >= 2
    ,std::vector<double> &calcIntensityRecord,
    std::shared_ptr<HDA_PulseRecorder> pulseRecorder
 #endif
@@ -81,7 +81,7 @@ void AbstractPulseRunnable::capturePoint(
 	// TODO Pending : Is it necessary to compute position again? Notice it is
     // known from ray intersection point at FullWaveformPulseRunnable
 	m.position = m.beamOrigin + m.beamDirection * m.distance;
-#ifdef DATA_ANALYTICS
+#if DATA_ANALYTICS >= 2
     calcIntensityRecord[10] = 1;
     pulseRecorder->recordIntensityCalculation(calcIntensityRecord);
 #endif

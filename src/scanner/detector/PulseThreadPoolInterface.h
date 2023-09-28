@@ -4,7 +4,7 @@
 #include <scanner/detector/PulseTask.h>
 #include <noise/RandomnessGenerator.h>
 #include <noise/NoiseSource.h>
-#ifdef DATA_ANALYTICS
+#if DATA_ANALYTICS >= 2
 #include <dataanalytics/HDA_PulseRecorder.h>
 using helios::analytics::HDA_PulseRecorder;
 #endif
@@ -42,7 +42,7 @@ public:
             RandomnessGenerator<double>&,
             RandomnessGenerator<double>&,
             NoiseSource<double>&
-#ifdef DATA_ANALYTICS
+#if DATA_ANALYTICS >= 2
            ,std::shared_ptr<HDA_PulseRecorder>
 #endif
         > &dropper
@@ -67,7 +67,7 @@ public:
             RandomnessGenerator<double>&,
             RandomnessGenerator<double>&,
             NoiseSource<double>&
-#ifdef DATA_ANALYTICS
+#if DATA_ANALYTICS >= 2
             ,std::shared_ptr<HDA_PulseRecorder>
 #endif
         > &dropper
@@ -77,7 +77,7 @@ public:
      */
     virtual void join() = 0;
 
-#ifdef DATA_ANALYTICS
+#if DATA_ANALYTICS >= 2
     /**
      * @brief Obtain the pointer to the pulse recorder being used by the
      *  pulse thread pool.

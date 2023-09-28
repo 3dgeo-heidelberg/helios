@@ -6,7 +6,7 @@
 #include <scanner/detector/PulseThreadPool.h>
 #include <noise/RandomnessGenerator.h>
 #include <noise/NoiseSource.h>
-#ifdef DATA_ANALYTICS
+#if DATA_ANALYTICS >= 2
 #include <dataanalytics/HDA_PulseRecorder.h>
 using helios::analytics::HDA_PulseRecorder;
 #endif
@@ -28,7 +28,7 @@ class PulseTaskDropper : public BuddingTaskDropper<
     RandomnessGenerator<double>&,
     RandomnessGenerator<double>&,
     NoiseSource<double>&
-#ifdef DATA_ANALYTICS
+#if DATA_ANALYTICS >= 2
    ,std::shared_ptr<HDA_PulseRecorder>
 #endif
 >{
@@ -56,7 +56,7 @@ public:
             RandomnessGenerator<double>&,
             RandomnessGenerator<double>&,
             NoiseSource<double>&
-#ifdef DATA_ANALYTICS
+#if DATA_ANALYTICS >= 2
             ,std::shared_ptr<HDA_PulseRecorder>
 #endif
         >(maxTasks, delta1, initDelta1, delta2, lastSign)
@@ -72,7 +72,7 @@ public:
         RandomnessGenerator<double>&,
         RandomnessGenerator<double>&,
         NoiseSource<double>&
-#ifdef DATA_ANALYTICS
+#if DATA_ANALYTICS >= 2
         ,std::shared_ptr<HDA_PulseRecorder>
 #endif
     >::drop; // To avoid overriding hides drop overloads
@@ -83,7 +83,7 @@ public:
         RandomnessGenerator<double>&,
         RandomnessGenerator<double>&,
         NoiseSource<double>&
-#ifdef DATA_ANALYTICS
+#if DATA_ANALYTICS >= 2
         ,std::shared_ptr<HDA_PulseRecorder>
 #endif
     >::tryDrop; // To avoid override hides tryDrop overloads

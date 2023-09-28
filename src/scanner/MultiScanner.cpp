@@ -166,7 +166,7 @@ void MultiScanner::computeSubrays(
         NoiseSource<double> &intersectionHandlingNoiseSource,
         std::map<double, double> &reflections,
         vector<RaySceneIntersection> &intersects
-#ifdef DATA_ANALYTICS
+#if DATA_ANALYTICS >= 2
        ,bool &subrayHit,
         std::vector<double> &subraySimRecord
 #endif
@@ -176,7 +176,7 @@ void MultiScanner::computeSubrays(
     std::map<double, double> &reflections,
     vector<RaySceneIntersection> &intersects,
     size_t const idx
-#ifdef DATA_ANALYTICS
+#if DATA_ANALYTICS >= 2
    ,std::shared_ptr<HDA_PulseRecorder> pulseRecorder
 #endif
 ){
@@ -186,7 +186,7 @@ void MultiScanner::computeSubrays(
         intersectionHandlingNoiseSource,
         reflections,
         intersects
-#ifdef DATA_ANALYTICS
+#if DATA_ANALYTICS >= 2
        ,pulseRecorder
 #endif
     );
@@ -222,7 +222,7 @@ double MultiScanner::calcIntensity(
     double const targetArea,
     double const radius,
     size_t const idx
-#ifdef DATA_ANALYTICS
+#if DATA_ANALYTICS >= 2
    ,std::vector<std::vector<double>> &calcIntensityRecords
 #endif
 ) const{
@@ -232,7 +232,7 @@ double MultiScanner::calcIntensity(
         mat,
         targetArea,
         radius
-#ifdef DATA_ANALYTICS
+#if DATA_ANALYTICS >= 2
        ,calcIntensityRecords
 #endif
     );

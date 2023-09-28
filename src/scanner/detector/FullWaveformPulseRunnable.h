@@ -9,7 +9,7 @@
 #include <ScenePart.h>
 #include <noise/RandomnessGenerator.h>
 #include <scanner/ScanningPulseProcess.h>
-#ifdef DATA_ANALYTICS
+#if DATA_ANALYTICS >= 2
 #include <dataanalytics/HDA_PulseRecorder.h>
 #endif
 
@@ -87,7 +87,7 @@ private:
         NoiseSource<double> &intersectionHandlingNoiseSource,
         std::map<double, double> &reflections,
         vector<RaySceneIntersection> &intersects
-#ifdef DATA_ANALYTICS
+#if DATA_ANALYTICS >= 2
        ,std::vector<std::vector<double>> &calcIntensityRecords,
         std::shared_ptr<HDA_PulseRecorder> pulseRecorder
 #endif
@@ -112,7 +112,7 @@ private:
         NoiseSource<double> &intersectionHandlingNoiseSource,
         std::map<double, double> &reflections,
         vector<RaySceneIntersection> &intersects
-#ifdef DATA_ANALYTICS
+#if DATA_ANALYTICS >= 2
        ,bool &subrayHit,
         std::vector<double> &subraySimRecord,
         std::vector<std::vector<double>> &calcIntensityRecords
@@ -139,7 +139,7 @@ private:
         glm::dvec3 &beamDir,
         std::map<double, double> &reflections,
         vector<RaySceneIntersection> &intersects
-#ifdef DATA_ANALYTICS
+#if DATA_ANALYTICS >= 2
        ,std::vector<std::vector<double>> &calcIntensityRecords,
         std::shared_ptr<HDA_PulseRecorder> pulseRecorder
 #endif
@@ -214,7 +214,7 @@ private:
         int const numFullwaveBins,
         int const peakIntensityIndex,
         double const minHitTime_ns
-#ifdef DATA_ANALYTICS
+#if DATA_ANALYTICS >= 2
        ,std::vector<std::vector<double>> &calcIntensityRecords,
         std::shared_ptr<HDA_PulseRecorder> pulseRecorder
 #endif
@@ -254,7 +254,7 @@ private:
         double const maxHitTime_ns,
         RandomnessGenerator<double> &randGen,
         RandomnessGenerator<double> &randGen2
-#ifdef DATA_ANALYTICS
+#if DATA_ANALYTICS >= 2
        ,std::vector<std::vector<double>> &calcIntensityRecords,
         std::shared_ptr<HDA_PulseRecorder> pulseRecorder
 #endif
@@ -338,7 +338,7 @@ public:
 	    RandomnessGenerator<double> &randGen,
         RandomnessGenerator<double> &randGen2,
         NoiseSource<double> &intersectionHandlingNoiseSource
-#ifdef DATA_ANALYTICS
+#if DATA_ANALYTICS >= 2
        ,std::shared_ptr<HDA_PulseRecorder> pulseRecorder
 #endif
     ) override;

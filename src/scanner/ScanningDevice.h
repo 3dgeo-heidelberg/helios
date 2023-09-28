@@ -11,7 +11,7 @@ class AbstractDetector;
 #include <scene/RaySceneIntersection.h>
 #include <noise/NoiseSource.h>
 #include <adt/exprtree/UnivarExprTreeNode.h>
-#ifdef DATA_ANALYTICS
+#if DATA_ANALYTICS >= 2
 #include <dataanalytics/HDA_PulseRecorder.h>
 using helios::analytics::HDA_PulseRecorder;
 #endif
@@ -308,7 +308,7 @@ public:
             NoiseSource<double> &intersectionHandlingNoiseSource,
             std::map<double, double> &reflections,
             vector<RaySceneIntersection> &intersects
-#ifdef DATA_ANALYTICS
+#if DATA_ANALYTICS >= 2
            ,bool &subrayHit,
             std::vector<double> &subraySimRecord
 #endif
@@ -317,7 +317,7 @@ public:
         NoiseSource<double> &intersectionHandlingNoiseSource,
         std::map<double, double> &reflections,
         std::vector<RaySceneIntersection> &intersects
-#ifdef DATA_ANALYTICS
+#if DATA_ANALYTICS >= 2
        ,std::shared_ptr<HDA_PulseRecorder> pulseRecorder
 #endif
     );
@@ -388,7 +388,7 @@ public:
         Material const &mat,
         double const targetArea,
         double const radius
-#ifdef DATA_ANALYTICS
+#if DATA_ANALYTICS >= 2
        ,std::vector<std::vector<double>> &calcIntensityRecords
 #endif
     ) const;

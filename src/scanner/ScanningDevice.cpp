@@ -3,7 +3,7 @@
 #include <logging.hpp>
 #include <scanner/detector/AbstractDetector.h>
 #include <maths/EnergyMaths.h>
-#ifdef DATA_ANALYTICS
+#if DATA_ANALYTICS >= 2
 #include <dataanalytics/HDA_GlobalVars.h>
 using namespace helios::analytics;
 #endif
@@ -226,7 +226,7 @@ void ScanningDevice::computeSubrays(
         NoiseSource<double> &intersectionHandlingNoiseSource,
         std::map<double, double> &reflections,
         vector<RaySceneIntersection> &intersects
-#ifdef DATA_ANALYTICS
+#if DATA_ANALYTICS >=2
        ,bool &subrayHit,
         std::vector<double> &subraySimRecord
 #endif
@@ -235,11 +235,11 @@ void ScanningDevice::computeSubrays(
     NoiseSource<double> &intersectionHandlingNoiseSource,
     std::map<double, double> &reflections,
     std::vector<RaySceneIntersection> &intersects
-#ifdef DATA_ANALYTICS
+#if DATA_ANALYTICS >=2
    ,std::shared_ptr<HDA_PulseRecorder> pulseRecorder
 #endif
 ){
-#ifdef DATA_ANALYTICS
+#if DATA_ANALYTICS >=2
     bool subrayHit;
 #endif
 
@@ -266,7 +266,7 @@ void ScanningDevice::computeSubrays(
 
         // # Loop over sub-rays along the circle
         for (int circleStep = 0; circleStep < circleSteps; circleStep++){
-#ifdef DATA_ANALYTICS
+#if DATA_ANALYTICS >=2
             std::vector<double> subraySimRecord(
                 17, std::numeric_limits<double>::quiet_NaN()
             );
@@ -280,12 +280,12 @@ void ScanningDevice::computeSubrays(
                 intersectionHandlingNoiseSource,
                 reflections,
                 intersects
-#ifdef DATA_ANALYTICS
+#if DATA_ANALYTICS >=2
                ,subrayHit,
                 subraySimRecord
 #endif
             );
-#ifdef DATA_ANALYTICS
+#if DATA_ANALYTICS >=2
             HDA_GV.incrementGeneratedSubraysCount();
             subraySimRecord[0] = (double) subrayHit;
             subraySimRecord[1] = (double) radiusStep;
@@ -355,7 +355,7 @@ double ScanningDevice::calcIntensity(
     Material const &mat,
     double const targetArea,
     double const radius
-#ifdef DATA_ANALYTICS
+#if DATA_ANALYTICS >=2
    ,std::vector<std::vector<double>> &calcIntensityRecords
 #endif
 ) const {
@@ -402,7 +402,7 @@ double ScanningDevice::calcIntensity(
         atmosphericExtinction,
         sigma
     ) * 1000000000.0;
-#ifdef DATA_ANALYTICS
+#if DATA_ANALYTICS >= 2
     std::vector<double> calcIntensityRecord(
         11, std::numeric_limits<double>::quiet_NaN()
     );
