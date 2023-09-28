@@ -27,16 +27,6 @@ public:
         // Initialize string stream to build the print
         std::stringstream ss;
 
-        // Extract variables for the sake of convenience
-        size_t const raycasterLeafFailedTminCheckCount =
-            HDA_GV.getRaycasterLeafFailedTminCheckCount();
-        size_t const raycasterLeafFailedTmaxCheckCount =
-            HDA_GV.getRaycasterLeafFailedTmaxCheckCount();
-        size_t const subrayLeafFailedTminCheckCount =
-            HDA_GV.getSubrayLeafFailedTminCheckCount();
-        size_t const subrayLeafFailedTmaxCheckCount =
-            HDA_GV.getSubrayLeafFailedTmaxCheckCount();
-
         // Print global variables
         ss << "HDA GLOBAL VARS REPORT:\n\n";
         ss  << "Generated rays before early abort: "
@@ -56,34 +46,6 @@ public:
             << gv.getSubrayNonIntersectionCount() << "\n";
         ss  << "Number of computed intensities: "
             << gv.getIntensityComputationsCount() << "\n";
-        ss  << "Raycaster fails-on-leaves distribution:\n"
-            << "\tNegative distances: "
-            << HDA_GV.getRaycasterLeafNegativeDistancesCount() << "\n"
-            << "\tFurther than current closest: "
-            << HDA_GV.getRaycasterLeafFurtherThanClosestCount() << "\n"
-            << "\tFailed tmin checks: "
-            << raycasterLeafFailedTminCheckCount << "\n"
-            << "\tFailed tmax checks: "
-            << raycasterLeafFailedTmaxCheckCount << "\n"
-            << "\tFailed t checks: "
-            << (
-                    raycasterLeafFailedTminCheckCount +
-                    raycasterLeafFailedTmaxCheckCount
-               ) << "\n"
-            << "\tSubrays only:\n"
-            << "\t\tNegative distances: "
-            << HDA_GV.getSubrayLeafNegativeDistancesCount() << "\n"
-            << "\t\tFurther than current closest: "
-            << HDA_GV.getSubrayLeafFurtherThanClosestCount() << "\n"
-            << "\t\tFailed tmin checks: "
-            << subrayLeafFailedTminCheckCount << "\n"
-            << "\t\tFailed tmax checks: "
-            << subrayLeafFailedTmaxCheckCount << "\n"
-            << "\t\tFailed t checks: "
-            << (
-                    raycasterLeafFailedTminCheckCount +
-                    raycasterLeafFailedTmaxCheckCount
-            ) << "\n";
         // Print through info logging level system
         std::string text = ss.str();
         logging::INFO(ss.str());

@@ -274,9 +274,6 @@ private:
         vector<double> const &tMinMax,
         glm::dvec3 const &o,
         glm::dvec3 const &v
-#ifdef DATA_ANALYTICS
-       ,std::vector<double> &subraySimRecord
-#endif
     ) const;
     /**
      * @brief Detect full waveform peaks

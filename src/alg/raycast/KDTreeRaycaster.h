@@ -140,10 +140,6 @@ public:
         double const tmin,
         double const tmax,
         bool const groundOnly
-#ifdef DATA_ANALYTICS
-       ,std::vector<double> &subraySimRecord,
-        bool const isSubray=false
-#endif
     ) override;
 
 protected:
@@ -187,15 +183,5 @@ protected:
 	    double const tmin,
 	    double const tmax,
 	    KDTreeRaycasterSearch &search
-#ifdef DATA_ANALYTICS
-      ,size_t &positiveDirectionCount,
-       size_t &negativeDirectionCount,
-       size_t &parallelDirectionCount,
-       size_t &noSecondHalfCount,
-       size_t &noFirstHalfCount,
-       size_t &bothSidesCount,
-       size_t &bothSidesSecondTryCount,
-       bool const isSubray=false
-#endif
     ) const;
 };

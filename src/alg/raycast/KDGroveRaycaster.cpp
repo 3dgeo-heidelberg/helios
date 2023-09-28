@@ -26,10 +26,6 @@ RaySceneIntersection * KDGroveRaycaster::search(
     double tmin,
     double tmax,
     bool groundOnly
-#ifdef DATA_ANALYTICS
-   ,std::vector<double> &subraySimRecord,
-   bool const isSubray
-#endif
 ){
     std::map<double, Primitive *> out;
     size_t const m = grove->getNumTrees();
@@ -37,10 +33,6 @@ RaySceneIntersection * KDGroveRaycaster::search(
     for(size_t i = 0 ; i < m ; ++i){
         rsi = grove->getTreeShared(i)->search(
             rayOrigin, rayDir, tmin, tmax, groundOnly
-#ifdef DATA_ANALYTICS
-           ,subraySimRecord,
-            isSubray
-#endif
         );
         if(
             bestRSI==nullptr ||

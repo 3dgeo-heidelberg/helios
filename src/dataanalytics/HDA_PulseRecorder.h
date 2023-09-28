@@ -73,36 +73,17 @@ protected:
      *
      * [10] -> Max time for subray intersection
      *
-     * [11] -> Count of subray as positive direction during ray tracing
+     * [11] -> Subray direction (x component)
      *
-     * [12] -> Count of subray as negative direction during ray tracing
+     * [12] -> Subray direction (y component)
      *
-     * [13] -> Count of subray as parallel direction during ray tracing
+     * [13] -> Subray direction (z component)
      *
-     * [14] -> Count of subray as not touching the second half of a node during
-     *  ray tracing
+     * [14] -> Ray direction (x component)
      *
-     * [15] -> Count of subray as not touching the first half of a node during
-     *  ray tracing
+     * [15] -> Ray direction (y component)
      *
-     * [16] -> Count of subray as touching both sides of a node during ray
-     *  tracing
-     *
-     * [17] -> Count of subrays as touching both sides of a node during a
-     *  second ray tracing try (which uses thit-epsilon for tmin, while the
-     *  first try uses thit+epsilon)
-     *
-     * [18] -> Subray direction (x component)
-     *
-     * [19] -> Subray direction (y component)
-     *
-     * [20] -> Subray direction (z component)
-     *
-     * [21] -> Ray direction (x component)
-     *
-     * [22] -> Ray direction (y component)
-     *
-     * [23] -> Ray direction (z component)
+     * [16] -> Ray direction (z component)
      */
     std::shared_ptr<HDA_RecordBuffer<std::vector<double>>> subraySim;
 

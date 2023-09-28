@@ -1,11 +1,6 @@
 #include "KDTreeRaycaster.h"
 #include "logging.hpp"
 
-#ifdef DATA_ANALYTICS
-#include <dataanalytics/HDA_GlobalVars.h>
-using helios::analytics::HDA_GV;
-#endif
-
 using namespace std;
 
 map<double, Primitive*> KDTreeRaycaster::searchAll(
@@ -37,10 +32,6 @@ RaySceneIntersection* KDTreeRaycaster::search(
     double const tmin,
     double const tmax,
     bool const groundOnly
-#ifdef DATA_ANALYTICS
-   ,std::vector<double> &subraySimRecord,
-    bool const isSubray
-#endif
 ){
     // Prepare search
     KDTreeRaycasterSearch search(rayDir, rayOrigin, groundOnly);
@@ -52,38 +43,12 @@ RaySceneIntersection* KDTreeRaycaster::search(
 	search.rayOriginArray.push_back(rayOrigin.z);
 
 	// Do recursive search
-#ifdef DATA_ANALYTICS
-    std::size_t positiveDirectionCount = 0, negativeDirectionCount = 0;
-    std::size_t noSecondHalfCount = 0, noFirstHalfCount = 0;
-    std::size_t parallelDirectionCount = 0, bothSidesCount = 0;
-    std::size_t bothSidesSecondTryCount = 0;
-#endif
 	Primitive* prim = this->search_recursive(
 	    this->root.get(),
 	    tmin-epsilon,
 	    tmax+epsilon,
 	    search
-#ifdef DATA_ANALYTICS
-       ,positiveDirectionCount,
-        negativeDirectionCount,
-        parallelDirectionCount,
-        noSecondHalfCount,
-        noFirstHalfCount,
-        bothSidesCount,
-        bothSidesSecondTryCount,
-        isSubray
-#endif
     );
-#ifdef DATA_ANALYTICS
-    // Write counts to subray simulation record
-    subraySimRecord[11] = (double) positiveDirectionCount;
-    subraySimRecord[12] = (double) negativeDirectionCount;
-    subraySimRecord[13] = (double) parallelDirectionCount;
-    subraySimRecord[14] = (double) noSecondHalfCount;
-    subraySimRecord[15] = (double) noFirstHalfCount;
-    subraySimRecord[16] = (double) bothSidesCount;
-    subraySimRecord[17] = (double) bothSidesSecondTryCount;
-#endif
 
 	// Handle search output
 	if (prim == nullptr) return nullptr;
@@ -205,16 +170,6 @@ Primitive* KDTreeRaycaster::search_recursive(
     double const tmin,
     double const tmax,
     KDTreeRaycasterSearch &search
-#ifdef DATA_ANALYTICS
-   ,size_t &positiveDirectionCount,
-    size_t &negativeDirectionCount,
-    size_t &parallelDirectionCount,
-    size_t &noSecondHalfCount,
-    size_t &noFirstHalfCount,
-    size_t &bothSidesCount,
-    size_t &bothSidesSecondTryCount,
-    bool const isSubray
-#endif
 ) const {
     if(node==nullptr) return nullptr; // Null nodes cannot contain primitives
 	Primitive* hitPrim = nullptr;
@@ -242,43 +197,9 @@ Primitive* KDTreeRaycaster::search_recursive(
 			// (in other leaves, with other primitives) that are *closer* to
 			// the ray originWaypoint. If this was the case, the returned intersection
 			// would be wrong.
-#ifdef DATA_ANALYTICS
-            bool const nonNegativeDistance = newDistance > 0;
-            bool const closerThanClosest =
-                newDistance < search.closestHitDistance;
-            bool const tminCheck = newDistance >= tmin;
-            bool const tmaxCheck = newDistance <= tmax;
-            if(!nonNegativeDistance){  // For any traced ray
-                HDA_GV.incrementRaycasterLeafNegativeDistancesCount();
-            } else if(!closerThanClosest){
-                HDA_GV.incrementRaycasterLeafFurtherThanClosestCount();
-            } else if(!tminCheck){
-                HDA_GV.incrementRaycasterLeafFailedTminCheckCount();
-            }
-            else if(!tmaxCheck){
-                HDA_GV.incrementRaycasterLeafFailedTmaxCheckCount();
-            }
-            if(isSubray){  // For any traced ray that is a subray
-                if(!nonNegativeDistance){
-                    HDA_GV.incrementSubrayLeafNegativeDistancesCount();
-                } else if(!closerThanClosest){
-                    HDA_GV.incrementSubrayLeafFurtherThanClosestCount();
-                } else if(!tminCheck){
-                    HDA_GV.incrementSubrayLeafFailedTminCheckCount();
-                }
-                else if(!tmaxCheck){
-                    HDA_GV.incrementSubrayLeafFailedTmaxCheckCount();
-                }
-
-            }
-            if(
-                nonNegativeDistance && closerThanClosest &&
-                tminCheck && tmaxCheck
-#else
             if(
 			    newDistance > 0 && newDistance < search.closestHitDistance &&
 			    newDistance >= tmin && newDistance <= tmax
-#endif
             ){
 				if(
 				    !search.groundOnly ||
@@ -306,9 +227,6 @@ Primitive* KDTreeRaycaster::search_recursive(
 
 		// Case 1: Ray goes in positive direction - it passes through the left side first, then through the right:
 		if (search.rayDirArray[a] > 0) {
-#ifdef DATA_ANALYTICS
-            ++positiveDirectionCount;
-#endif
 			first = node->left;
 			second = node->right;
 
@@ -317,9 +235,6 @@ Primitive* KDTreeRaycaster::search_recursive(
 		}
 		// Case 2: Ray goes in negative direction - it passes through the right side first, then through the left:
 		else if (search.rayDirArray[a] < 0) {
-#ifdef DATA_ANALYTICS
-            ++negativeDirectionCount;
-#endif
 			first = node->right;
 			second = node->left;
 
@@ -328,9 +243,6 @@ Primitive* KDTreeRaycaster::search_recursive(
 		}
 		// Case 3: Ray goes parallel to the split plane - it passes through only one side, depending on it's originWaypoint:
 		else {
-#ifdef DATA_ANALYTICS
-            ++parallelDirectionCount;
-#endif
 			first = (search.rayOriginArray[a] < node->splitPos) ?
 			    node->left : node->right;
 			second = (search.rayOriginArray[a] < node->splitPos) ?
@@ -343,74 +255,29 @@ Primitive* KDTreeRaycaster::search_recursive(
 		// thit >= tmax means that the ray crosses the split plane *after it has already left the volume*.
 		// In this case, it never enters the second half.
 		if (thit >= tmax) {
-#ifdef DATA_ANALYTICS
-            ++noSecondHalfCount;
-#endif
 			hitPrim = search_recursive(
                 first, tmin, tmax, search
-#ifdef DATA_ANALYTICS
-                ,positiveDirectionCount,
-                negativeDirectionCount,
-                parallelDirectionCount,
-                noSecondHalfCount,
-                noFirstHalfCount,
-                bothSidesCount,
-                bothSidesSecondTryCount
-#endif
             );
 		}
 
 		// thit <= tmin means that the ray crosses the split plane *before it enters the volume*.
 		// In this case, it never enters the first half:
 		else if (thit <= tmin) {
-#ifdef DATA_ANALYTICS
-            ++noFirstHalfCount;
-#endif
 			hitPrim = search_recursive(
                 second, tmin, tmax, search
-#ifdef DATA_ANALYTICS
-               ,positiveDirectionCount,
-               negativeDirectionCount,
-               parallelDirectionCount,
-               noSecondHalfCount,
-               noFirstHalfCount,
-               bothSidesCount,
-               bothSidesSecondTryCount
-#endif
             );
 		}
 
 		// Otherwise, the ray crosses the split plane within the volume.
 		// This means that it passes through both sides:
 		else {
-#ifdef DATA_ANALYTICS
-            ++bothSidesCount;
-#endif
 			hitPrim = search_recursive(
                 first, tmin, thit+epsilon, search
-#ifdef DATA_ANALYTICS
-                ,positiveDirectionCount,
-                negativeDirectionCount,
-                parallelDirectionCount,
-                noSecondHalfCount,
-                noFirstHalfCount,
-                bothSidesCount,
-                bothSidesSecondTryCount
-#endif
             );
 
 			if (hitPrim == nullptr) {
 				hitPrim = search_recursive(
                     second, thit-epsilon, tmax, search
-#ifdef DATA_ANALYTICS
-                    ,positiveDirectionCount,
-                    negativeDirectionCount,
-                    parallelDirectionCount,
-                    noSecondHalfCount,
-                    noFirstHalfCount,
-                    bothSidesCount,
-                    bothSidesSecondTryCount
-#endif
                 );
 			}
 		}

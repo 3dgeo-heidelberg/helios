@@ -75,61 +75,6 @@ HDA_GlobalVars & HDA_GlobalVars::incrementSubrayNonIntersectionCount() {
     return *this;
 }
 
-HDA_GlobalVars &
-HDA_GlobalVars::incrementRaycasterLeafNegativeDistancesCount(){
-    std::unique_lock<std::mutex> lock(
-        raycasterLeafNegativeDistancesCount_mutex
-    );
-    ++raycasterLeafNegativeDistancesCount;
-    return *this;
-}
-
-HDA_GlobalVars &
-HDA_GlobalVars::incrementRaycasterLeafFurtherThanClosestCount(){
-    std::unique_lock<std::mutex> lock(
-        raycasterLeafFurtherThanClosestCount_mutex
-    );
-    ++raycasterLeafFurtherThanClosestCount;
-    return *this;
-}
-
-HDA_GlobalVars & HDA_GlobalVars::incrementRaycasterLeafFailedTminCheckCount(){
-    std::unique_lock<std::mutex> lock(raycasterLeafFailedTminCheckCount_mutex);
-    ++raycasterLeafFailedTminCheckCount;
-    return *this;
-}
-
-HDA_GlobalVars & HDA_GlobalVars::incrementRaycasterLeafFailedTmaxCheckCount(){
-    std::unique_lock<std::mutex> lock(raycasterLeafFailedTmaxCheckCount_mutex);
-    ++raycasterLeafFailedTmaxCheckCount;
-    return *this;
-}
-
-HDA_GlobalVars &
-HDA_GlobalVars::incrementSubrayLeafNegativeDistancesCount(){
-    std::unique_lock<std::mutex> lock(subrayLeafNegativeDistancesCount_mutex);
-    ++subrayLeafNegativeDistancesCount;
-    return *this;
-}
-
-HDA_GlobalVars &
-HDA_GlobalVars::incrementSubrayLeafFurtherThanClosestCount(){
-    std::unique_lock<std::mutex> lock(subrayLeafFurtherThanClosestCount_mutex);
-    ++subrayLeafFurtherThanClosestCount;
-    return *this;
-}
-
-HDA_GlobalVars & HDA_GlobalVars::incrementSubrayLeafFailedTminCheckCount(){
-    std::unique_lock<std::mutex> lock(subrayLeafFailedTminCheckCount_mutex);
-    ++subrayLeafFailedTminCheckCount;
-    return *this;
-}
-
-HDA_GlobalVars & HDA_GlobalVars::incrementSubrayLeafFailedTmaxCheckCount(){
-    std::unique_lock<std::mutex> lock(subrayLeafFailedTmaxCheckCount_mutex);
-    ++subrayLeafFailedTmaxCheckCount;
-    return *this;
-}
 
 // ***  READ METHODS  *** //
 // ********************** //
@@ -182,50 +127,6 @@ std::size_t HDA_GlobalVars::getSubrayNonIntersectionCount() {
 std::size_t HDA_GlobalVars::getIntensityComputationsCount(){
     std::unique_lock<std::mutex> lock(intensityComputationsCount_mutex);
     return intensityComputationsCount;
-}
-
-std::size_t HDA_GlobalVars::getRaycasterLeafNegativeDistancesCount(){
-    std::unique_lock<std::mutex> lock(
-        raycasterLeafNegativeDistancesCount_mutex
-    );
-    return raycasterLeafNegativeDistancesCount;
-}
-
-std::size_t HDA_GlobalVars::getRaycasterLeafFurtherThanClosestCount(){
-    std::unique_lock<std::mutex> lock(
-        raycasterLeafFurtherThanClosestCount_mutex
-    );
-    return raycasterLeafFurtherThanClosestCount;
-}
-
-std::size_t HDA_GlobalVars::getRaycasterLeafFailedTminCheckCount(){
-    std::unique_lock<std::mutex> lock(raycasterLeafFailedTminCheckCount_mutex);
-    return raycasterLeafFailedTminCheckCount;
-}
-
-std::size_t HDA_GlobalVars::getRaycasterLeafFailedTmaxCheckCount(){
-    std::unique_lock<std::mutex> lock(raycasterLeafFailedTmaxCheckCount_mutex);
-    return raycasterLeafFailedTmaxCheckCount;
-}
-
-unsigned long HDA_GlobalVars::getSubrayLeafNegativeDistancesCount(){
-    std::unique_lock<std::mutex> lock(subrayLeafNegativeDistancesCount_mutex);
-    return subrayLeafNegativeDistancesCount;
-}
-
-unsigned long HDA_GlobalVars::getSubrayLeafFurtherThanClosestCount(){
-    std::unique_lock<std::mutex> lock(subrayLeafFurtherThanClosestCount_mutex);
-    return subrayLeafFurtherThanClosestCount;
-}
-
-unsigned long HDA_GlobalVars::getSubrayLeafFailedTminCheckCount(){
-    std::unique_lock<std::mutex> lock(subrayLeafFailedTminCheckCount_mutex);
-    return subrayLeafFailedTminCheckCount;
-}
-
-unsigned long HDA_GlobalVars::getSubrayLeafFailedTmaxCheckCount(){
-    std::unique_lock<std::mutex> lock(subrayLeafFailedTmaxCheckCount_mutex);
-    return subrayLeafFailedTmaxCheckCount;
 }
 
 

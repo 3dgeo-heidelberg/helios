@@ -62,9 +62,5 @@ public:
         double tmin,
         double tmax,
         bool groundOnly
-#ifdef DATA_ANALYTICS
-       ,std::vector<double> &subraySimRecord,
-        bool const isSubray=false
-#endif
     ) = 0;
 };

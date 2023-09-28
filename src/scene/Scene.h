@@ -217,10 +217,6 @@ public:
         glm::dvec3 const &rayOrigin,
         glm::dvec3 const &rayDir,
         bool const groundOnly
-#ifdef DATA_ANALYTICS
-       ,std::vector<double> &subraySimRecord,
-        bool const isSubray=false
-#endif
     ) const ;
     /**
      * @brief Obtain all intersections between the ray and the scene, if any

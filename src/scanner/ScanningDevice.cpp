@@ -268,7 +268,7 @@ void ScanningDevice::computeSubrays(
         for (int circleStep = 0; circleStep < circleSteps; circleStep++){
 #ifdef DATA_ANALYTICS
             std::vector<double> subraySimRecord(
-                24, std::numeric_limits<double>::quiet_NaN()
+                17, std::numeric_limits<double>::quiet_NaN()
             );
 #endif
             handleSubray(

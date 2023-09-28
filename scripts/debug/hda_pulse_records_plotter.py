@@ -3,6 +3,7 @@ import os
 import time
 import numpy as np
 import matplotlib.pyplot as plt
+import matplotlib as mpl
 
 
 # ---  FUNCTIONS  --- #
@@ -101,13 +102,12 @@ def read_records(path, sep=','):
         'ray_subray_sign_check': subray_sim[:, 8],
         'subray_tmin': subray_sim[:, 9],
         'subray_tmax': subray_sim[:, 10],
-        'subray_rt_pos_dir': subray_sim[:, 11],  # Ray-tracing positive dir.
-        'subray_rt_neg_dir': subray_sim[:, 12],  # Ray-tracing negative dir.
-        'subray_rt_par_dir': subray_sim[:, 13],  # Ray-tracing parallel dir.
-        'subray_rt_no_second': subray_sim[:, 14],  # Ray-tracing no second half
-        'subray_rt_no_first': subray_sim[:, 15],  # Ray-tracing no first half
-        'subray_rt_both': subray_sim[:, 16],  # Ray-tracing both sides
-        'subray_rt_both2': subray_sim[:, 17]  # Ray-tracing both, second try
+        'subray_dir_x': subray_sim[:, 11],
+        'subray_dir_y': subray_sim[:, 12],
+        'subray_dir_z': subray_sim[:, 13],
+        'ray_dir_x': subray_sim[:, 14],
+        'ray_dir_y': subray_sim[:, 15],
+        'ray_dir_z': subray_sim[:, 16]
     }
 
 
@@ -134,7 +134,7 @@ def plot_records(arec, brec, outdir):
     do_by_incidence_angle_plots(arec, brec, outdir)
     do_subray_hit_plots(arec, brec, outdir)
     do_ray_subray_plots(arec, brec, outdir)
-    do_raytracing_plots(arec, brec, outdir)
+    do_ray_subray_dir_plots(arec, brec, outdir)
 
 
 def validate_record(key, rec, recid):
@@ -153,26 +153,28 @@ def validate_record(key, rec, recid):
     return True
 
 
-def init_figure(figsize=(20, 12)):
+def init_figure(figsize=(20, 12), constrained_layout=False):
     """Initialize a matplotlib's figure context"""
     fig = plt.figure(
-        figsize=figsize
+        figsize=figsize,
+        constrained_layout=constrained_layout
     )
     return fig
 
 
 def do_incidence_angle_subplot(
     fig, ax, phi, label=None, title=None, xlabel=None, ylabel=None, bins=32,
-    log=False
+    log=False, relative=False, label_fontsize=16
 ):
     if title is not None:
         ax.set_title(title, fontsize=20)
-    hist = ax.hist(phi, bins=bins, label=label, log=log)
+    weights = 100*np.ones_like(phi)/len(phi) if relative else None
+    hist = ax.hist(phi, bins=bins, label=label, log=log, weights=weights)
     ax.axvline(x=np.mean(phi), color='tab:orange', lw=3, label='$\\mu$')
     if xlabel is not None:
-        ax.set_xlabel(xlabel, fontsize=16)
+        ax.set_xlabel(xlabel, fontsize=label_fontsize)
     if ylabel is not None:
-        ax.set_ylabel(ylabel, fontsize=16)
+        ax.set_ylabel(ylabel, fontsize=label_fontsize)
     ax.tick_params(axis='both', which='both', labelsize=14)
     ax.legend(loc='upper right', fontsize=14)
     ax.grid('both')
@@ -464,7 +466,6 @@ def do_subray_hit_subplot_hist(
     fig, ax, hit, x, title=None, xlabel=None, ylabel=None, bins=7,
     relative=False
 ):
-    # TODO Rethink : Implement
     if title is not None:
         ax.set_title(title, fontsize=15)
     x_hit = x[hit]
@@ -626,7 +627,6 @@ def do_subray_hit_plots(arec, brec, outdir):
         relative=True,
         xlabel='Divergence angle (deg $\\times 10^{-3}$)'
     )
-    # TODO Rethink : Implement
     fig.tight_layout()
     # Save figure to file and remove it from memory
     fig.savefig(os.path.join(outdir, 'subray_hit.png'))
@@ -725,108 +725,264 @@ def do_ray_subray_plots(arec, brec, outdir):
     plt.close(fig)
 
 
-def do_raytracing_plots(arec, brec, outdir):
-    # TODO Rethink : Implement
+def do_dir_2d_subplot(
+    fig, ax, x, y, hit=None, title=None, xlabel=None, ylabel=None, legend=False
+):
+    if title is not None:
+        ax.set_title(title, fontsize=15)
+    # Plot unitary circumference
+    theta = np.linspace(-np.pi, np.pi)
+    ax.plot(np.cos(theta), np.sin(theta), color='black', lw=3, zorder=7)
+    if hit is not None:
+        ax.scatter(x[hit], y[hit], s=64, c='tab:red', zorder=6, label='hit')
+        ax.scatter(x[~hit], y[~hit], s=64, c='tab:blue', zorder=5, label='hit')
+        if legend:
+            ax.legend(loc='upper right').set_zorder(11)
+    else:
+        ax.scatter(x, y, s=64, c='tab:green', zorder=6)
+    if xlabel is not None:
+        ax.set_xlabel(xlabel, fontsize=14)
+    if ylabel is not None:
+        ax.set_ylabel(ylabel, fontsize=14)
+    ax.axis('equal')
+
+
+def do_ray_subray_dir_plots(arec, brec, outdir):
+    # Validate ray and subray direction data
     if(
-        not validate_record('subray_hit', arec, 'a') or
-        not validate_record('subray_rt_pos_dir', arec, 'a') or
-        not validate_record('subray_rt_neg_dir', arec, 'a') or
-        not validate_record('subray_rt_par_dir', arec, 'a') or
-        not validate_record('subray_rt_no_second', arec, 'a') or
-        not validate_record('subray_rt_no_first', arec, 'a') or
-        not validate_record('subray_rt_both', arec, 'a') or
-        not validate_record('subray_rt_both2', arec, 'a') or
-        not validate_record('subray_hit', brec, 'b') or
-        not validate_record('subray_rt_pos_dir', brec, 'b') or
-        not validate_record('subray_rt_neg_dir', brec, 'b') or
-        not validate_record('subray_rt_par_dir', brec, 'b') or
-        not validate_record('subray_rt_no_second', brec, 'b') or
-        not validate_record('subray_rt_no_first', brec, 'b') or
-        not validate_record('subray_rt_both', brec, 'b') or
-        not validate_record('subray_rt_both2', brec, 'b')
+        not validate_record('subray_dir_x', arec, 'a') or
+        not validate_record('subray_dir_y', arec, 'a') or
+        not validate_record('subray_dir_z', arec, 'a') or
+        not validate_record('ray_dir_x', arec, 'a') or
+        not validate_record('ray_dir_y', arec, 'a') or
+        not validate_record('ray_dir_z', arec, 'a') or
+        not validate_record('subray_dir_x', brec, 'b') or
+        not validate_record('subray_dir_y', brec, 'b') or
+        not validate_record('subray_dir_z', brec, 'b') or
+        not validate_record('ray_dir_x', brec, 'b') or
+        not validate_record('ray_dir_y', brec, 'b') or
+        not validate_record('ray_dir_z', brec, 'b')
       ):
-        print('Cannot do ray-tracing plots')
+        print('Cannot do ray and subray direction plots')
         return
-    # Do the ray-tracing plots
+    # Do the ray subray direction plots
     fig = init_figure()  # Initialize figure
+    gs = plt.GridSpec(4, 1, figure=fig)
+    gs0 = mpl.gridspec.GridSpecFromSubplotSpec(
+        1, 6, subplot_spec=gs[0], wspace=0.3
+    )
+    gs1 = mpl.gridspec.GridSpecFromSubplotSpec(
+        1, 4, subplot_spec=gs[1]
+    )
+    gs2 = mpl.gridspec.GridSpecFromSubplotSpec(
+        1, 6, subplot_spec=gs[2], wspace=0.3
+    )
+    gs3 = mpl.gridspec.GridSpecFromSubplotSpec(
+        1, 4, subplot_spec=gs[3]
+    )
     # CASE A
-    ax = fig.add_subplot(4, 7, 1)  # Initialize positive direction hist
-    do_subray_hit_subplot_hist(
-        fig, ax, arec['subray_hit'], arec['subray_rt_pos_dir'],
-        ylabel='Absolute'
+    ax = fig.add_subplot(gs0[0, 0])  # Initialize subray dir xy subplot
+    subray_xynorm = np.linalg.norm(np.array([
+        arec['subray_dir_x'], arec['subray_dir_y']
+    ]), axis=0)
+    do_dir_2d_subplot(
+        fig, ax,
+        arec['subray_dir_x']/subray_xynorm,
+        arec['subray_dir_y']/subray_xynorm,
+        hit=arec['subray_hit'],
+        title='A subray (x, y)',
+        xlabel='$x$', ylabel='$y$',
+        legend=True
     )
-    ax = fig.add_subplot(4, 7, 2)  # Initialize negative direction hist
-    do_subray_hit_subplot_hist(
-        fig, ax, arec['subray_hit'], arec['subray_rt_neg_dir'],
+    ax = fig.add_subplot(gs0[0, 1])  # Initialize subray dir xz subplot
+    xznorm = np.linalg.norm(np.array([
+        arec['subray_dir_x'], arec['subray_dir_z']
+    ]), axis=0)
+    do_dir_2d_subplot(
+        fig, ax,
+        arec['subray_dir_x']/xznorm,
+        arec['subray_dir_z']/xznorm,
+        hit=arec['subray_hit'],
+        title='subray (x, z)',
+        xlabel='$x$', ylabel='$z$'
     )
-    ax = fig.add_subplot(4, 7, 3)  # Initialize parallel direction hist
-    do_subray_hit_subplot_hist(
-        fig, ax, arec['subray_hit'], arec['subray_rt_par_dir'],
+    ax = fig.add_subplot(gs0[0, 2])  # Initialize subray dir yz subplot
+    yznorm = np.linalg.norm(np.array([
+        arec['subray_dir_y'], arec['subray_dir_z']
+    ]), axis=0)
+    do_dir_2d_subplot(
+        fig, ax,
+        arec['subray_dir_y']/yznorm,
+        arec['subray_dir_z']/yznorm,
+        hit=arec['subray_hit'],
+        title='subray (y, z)',
+        xlabel='$y$', ylabel='$z$'
     )
-    ax = fig.add_subplot(4, 7, 4)  # Initialize no second half hist
-    do_subray_hit_subplot_hist(
-        fig, ax, arec['subray_hit'], arec['subray_rt_no_second'],
+    ax = fig.add_subplot(gs0[0, 3])  # Initialize ray dir xy subplot
+    ray_xynorm = np.linalg.norm(np.array([
+        arec['ray_dir_x'], arec['ray_dir_y']
+    ]), axis=0)
+    do_dir_2d_subplot(
+        fig, ax,
+        arec['ray_dir_x']/ray_xynorm,
+        arec['ray_dir_y']/ray_xynorm,
+        title='ray (x, y)',
+        xlabel='$x$', ylabel='$y$',
+        legend=True
     )
-    ax = fig.add_subplot(4, 7, 5)  # Initialize no second half hist
-    do_subray_hit_subplot_hist(
-        fig, ax, arec['subray_hit'], arec['subray_rt_no_first'],
+    ax = fig.add_subplot(gs0[0, 4])  # Initialize ray dir xz subplot
+    xznorm = np.linalg.norm(np.array([
+        arec['ray_dir_x'], arec['ray_dir_z']
+    ]), axis=0)
+    do_dir_2d_subplot(
+        fig, ax,
+        arec['ray_dir_x']/xznorm,
+        arec['ray_dir_z']/xznorm,
+        title='ray (x, z)',
+        xlabel='$x$', ylabel='$z$'
     )
-    ax = fig.add_subplot(4, 7, 6)  # Initialize both sides hist
-    do_subray_hit_subplot_hist(
-        fig, ax, arec['subray_hit'], arec['subray_rt_both'],
+    ax = fig.add_subplot(gs0[0, 5])  # Initialize ray dir yz subplot
+    yznorm = np.linalg.norm(np.array([
+        arec['ray_dir_y'], arec['ray_dir_z']
+    ]), axis=0)
+    do_dir_2d_subplot(
+        fig, ax,
+        arec['ray_dir_y']/yznorm,
+        arec['ray_dir_z']/yznorm,
+        title='ray (y, z)',
+        xlabel='$y$', ylabel='$z$'
     )
-    ax = fig.add_subplot(4, 7, 7)  # Initialize both sides hist
+
+    ax = fig.add_subplot(gs1[0, 0])  # Initialize subray dir xy histogram
     do_subray_hit_subplot_hist(
-        fig, ax, arec['subray_hit'], arec['subray_rt_both2'],
+        fig, ax, arec['subray_hit'], subray_xynorm,
+        xlabel='Subray dir norm on (x, y)',
+        ylabel='A Relative (100%)',
+        relative=True
     )
-    ax = fig.add_subplot(4, 7, 8)  # Initialize positive direction hist
+    ax = fig.add_subplot(gs1[0, 1])  # Initialize subray dir xy histogram
     do_subray_hit_subplot_hist(
-        fig, ax, arec['subray_hit'], arec['subray_rt_pos_dir'],
+        fig, ax, arec['subray_hit'], arec['subray_dir_z'],
+        xlabel='Subray dir z',
+        relative=True
+    )
+    ax = fig.add_subplot(gs1[0, 2])  # Initialize subray dir xy histogram
+    do_incidence_angle_subplot(
+        fig, ax, ray_xynorm,
+        xlabel='Ray dir norm on (x, y)',
         relative=True,
-        xlabel='Positive direction',
-        ylabel='Relative (100%)'
+        label_fontsize=14
     )
-    ax = fig.add_subplot(4, 7, 9)  # Initialize negative direction hist
-    do_subray_hit_subplot_hist(
-        fig, ax, arec['subray_hit'], arec['subray_rt_neg_dir'],
+    ax = fig.add_subplot(gs1[0, 3])  # Initialize subray dir xy histogram
+    do_incidence_angle_subplot(
+        fig, ax, arec['ray_dir_z'],
+        xlabel='Ray dir z',
         relative=True,
-        xlabel='Negative direction',
-    )
-    ax = fig.add_subplot(4, 7, 10)  # Initialize parallel direction hist
-    do_subray_hit_subplot_hist(
-        fig, ax, arec['subray_hit'], arec['subray_rt_par_dir'],
-        relative=True,
-        xlabel='Parallel direction',
-    )
-    ax = fig.add_subplot(4, 7, 11)  # Initialize no second half hist
-    do_subray_hit_subplot_hist(
-        fig, ax, arec['subray_hit'], arec['subray_rt_no_second'],
-        relative=True,
-        xlabel='No second half',
-    )
-    ax = fig.add_subplot(4, 7, 12)  # Initialize no second half hist
-    do_subray_hit_subplot_hist(
-        fig, ax, arec['subray_hit'], arec['subray_rt_no_first'],
-        relative=True,
-        xlabel='No first half',
-    )
-    ax = fig.add_subplot(4, 7, 13)  # Initialize both sides hist
-    do_subray_hit_subplot_hist(
-        fig, ax, arec['subray_hit'], arec['subray_rt_both'],
-        relative=True,
-        xlabel='Both sides',
-    )
-    ax = fig.add_subplot(4, 7, 14)  # Initialize both sides hist
-    do_subray_hit_subplot_hist(
-        fig, ax, arec['subray_hit'], arec['subray_rt_both2'],
-        relative=True,
-        xlabel='Both sides ($2^{\mathrm{nd}}$ try)',
+        label_fontsize=14
     )
     # CASE B
-    fig.tight_layout()
+    ax = fig.add_subplot(gs2[0, 0])  # Initialize subray dir xy subplot
+    subray_xynorm = np.linalg.norm(np.array([
+        brec['subray_dir_x'], brec['subray_dir_y']
+    ]), axis=0)
+    do_dir_2d_subplot(
+        fig, ax,
+        brec['subray_dir_x']/subray_xynorm,
+        brec['subray_dir_y']/subray_xynorm,
+        hit=brec['subray_hit'],
+        title='B subray (x, y)',
+        xlabel='$x$', ylabel='$y$',
+        legend=True
+    )
+    ax = fig.add_subplot(gs2[0, 1])  # Initialize subray dir xz subplot
+    xznorm = np.linalg.norm(np.array([
+        brec['subray_dir_x'], brec['subray_dir_z']
+    ]), axis=0)
+    do_dir_2d_subplot(
+        fig, ax,
+        brec['subray_dir_x']/xznorm,
+        brec['subray_dir_z']/xznorm,
+        hit=brec['subray_hit'],
+        title='subray (x, z)',
+        xlabel='$x$', ylabel='$z$'
+    )
+    ax = fig.add_subplot(gs2[0, 2])  # Initialize subray dir yz subplot
+    yznorm = np.linalg.norm(np.array([
+        brec['subray_dir_y'], brec['subray_dir_z']
+    ]), axis=0)
+    do_dir_2d_subplot(
+        fig, ax,
+        brec['subray_dir_y']/yznorm,
+        brec['subray_dir_z']/yznorm,
+        hit=brec['subray_hit'],
+        title='subray (y, z)',
+        xlabel='$y$', ylabel='$z$'
+    )
+    ax = fig.add_subplot(gs2[0, 3])  # Initialize ray dir xy subplot
+    ray_xynorm = np.linalg.norm(np.array([
+        brec['ray_dir_x'], brec['ray_dir_y']
+    ]), axis=0)
+    do_dir_2d_subplot(
+        fig, ax,
+        brec['ray_dir_x']/ray_xynorm,
+        brec['ray_dir_y']/ray_xynorm,
+        title='ray (x, y)',
+        xlabel='$x$', ylabel='$y$',
+        legend=True
+    )
+    ax = fig.add_subplot(gs2[0, 4])  # Initialize ray dir xz subplot
+    xznorm = np.linalg.norm(np.array([
+        brec['ray_dir_x'], brec['ray_dir_z']
+    ]), axis=0)
+    do_dir_2d_subplot(
+        fig, ax,
+        brec['ray_dir_x']/xznorm,
+        brec['ray_dir_z']/xznorm,
+        title='ray (x, z)',
+        xlabel='$x$', ylabel='$z$'
+    )
+    ax = fig.add_subplot(gs2[0, 5])  # Initialize ray dir yz subplot
+    yznorm = np.linalg.norm(np.array([
+        brec['ray_dir_y'], brec['ray_dir_z']
+    ]), axis=0)
+    do_dir_2d_subplot(
+        fig, ax,
+        brec['ray_dir_y']/yznorm,
+        brec['ray_dir_z']/yznorm,
+        title='ray (y, z)',
+        xlabel='$y$', ylabel='$z$'
+    )
+    ax = fig.add_subplot(gs3[0, 0])  # Initialize subray dir xy histogram
+    do_subray_hit_subplot_hist(
+        fig, ax, brec['subray_hit'], subray_xynorm,
+        xlabel='Subray dir norm on (x, y)',
+        ylabel='B Relative (100%)',
+        relative=True
+    )
+    ax = fig.add_subplot(gs3[0, 1])  # Initialize subray dir xy histogram
+    do_subray_hit_subplot_hist(
+        fig, ax, brec['subray_hit'], brec['subray_dir_z'],
+        xlabel='Subray dir z',
+        relative=True
+    )
+    ax = fig.add_subplot(gs3[0, 2])  # Initialize subray dir xy histogram
+    do_incidence_angle_subplot(
+        fig, ax, ray_xynorm,
+        xlabel='Ray dir norm on (x, y)',
+        relative=True,
+        label_fontsize=14
+    )
+    ax = fig.add_subplot(gs3[0, 3])  # Initialize subray dir xy histogram
+    do_incidence_angle_subplot(
+        fig, ax, brec['ray_dir_z'],
+        xlabel='Ray dir z',
+        relative=True,
+        label_fontsize=14
+    )
     # Save figure to file and remove it from memory
+    fig.tight_layout()
     fig.savefig(
-        os.path.join(outdir, 'subray_ray_tracing.png')
+        os.path.join(outdir, 'ray_subray_dir.png')
     )
     fig.clear()
     plt.close(fig)

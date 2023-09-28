@@ -214,12 +214,12 @@ void FullWaveformPulseRunnable::handleSubray(
     subraySimRecord[8] = (rayDirection[0] < 0) == (subrayDirection[0] < 0);
     subraySimRecord[9] = tMinMax[0];
     subraySimRecord[10] = tMinMax[1];
-    subraySimRecord[18] = subrayDirection.x;
-    subraySimRecord[19] = subrayDirection.y;
-    subraySimRecord[20] = subrayDirection.z;
-    subraySimRecord[21] = rayDirection.x;
-    subraySimRecord[22] = rayDirection.y;
-    subraySimRecord[23] = rayDirection.z;
+    subraySimRecord[11] = subrayDirection.x;
+    subraySimRecord[12] = subrayDirection.y;
+    subraySimRecord[13] = subrayDirection.z;
+    subraySimRecord[14] = rayDirection.x;
+    subraySimRecord[15] = rayDirection.y;
+    subraySimRecord[16] = rayDirection.z;
 #endif
 
     glm::dvec3 subrayOrigin(pulse.getOrigin());
@@ -231,9 +231,6 @@ void FullWaveformPulseRunnable::handleSubray(
             tMinMax,
             subrayOrigin,
             subrayDirection
-#ifdef DATA_ANALYTICS
-           ,subraySimRecord
-#endif
         );
 
         if (intersect != nullptr && intersect->prim != nullptr) {
@@ -760,17 +757,8 @@ shared_ptr<RaySceneIntersection> FullWaveformPulseRunnable::findIntersection(
     vector<double> const &tMinMax,
     glm::dvec3 const &o,
     glm::dvec3 const &v
-#ifdef DATA_ANALYTICS
-   ,std::vector<double> &subraySimRecord
-#endif
 ) const {
-    return scene.getIntersection(
-        tMinMax, o, v, false
-#ifdef DATA_ANALYTICS
-       ,subraySimRecord,
-        true  // Subray flag
-#endif
-    );
+    return scene.getIntersection(tMinMax, o, v, false);
 }
 
 void FullWaveformPulseRunnable::captureFullWave(
