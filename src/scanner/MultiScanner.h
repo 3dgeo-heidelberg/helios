@@ -157,7 +157,6 @@ public:
      */
     void computeSubrays(
         std::function<void(
-            vector<double> const &_tMinMax,
             int const circleStep,
             double const circleStep_rad,
             Rotation &r1,
@@ -170,7 +169,6 @@ public:
             std::vector<double> &subraySimRecord
 #endif
         )> handleSubray,
-        vector<double> const &tMinMax,
         NoiseSource<double> &intersectionHandlingNoiseSource,
         std::map<double, double> &reflections,
         vector<RaySceneIntersection> &intersects,

@@ -96,16 +96,6 @@ bool Scene::finalizeLoading(bool const safe) {
 
     // Store original bounding box (CRS coordinates):
     this->bbox_crs = AABB::getForPrimitives(primitives);
-    // TODO Rethink : Does this solve the issue ? ---
-    /*this->bbox_crs->vertices[0].pos.x -= 1.0;
-    this->bbox_crs->vertices[0].pos.y -= 1.0;
-    this->bbox_crs->vertices[0].pos.z -= 1.0;
-    this->bbox_crs->vertices[1].pos.x += 1.0;
-    this->bbox_crs->vertices[1].pos.y += 1.0;
-    this->bbox_crs->vertices[1].pos.z += 1.0;
-    this->bbox_crs->bounds[0] = this->bbox_crs->vertices[0].pos;
-    this->bbox_crs->bounds[1] = this->bbox_crs->vertices[1].pos;*/
-    // --- TODO Rethink : Does this solve the issue ?
     glm::dvec3 diff = this->bbox_crs->getMin();
     stringstream ss;
     ss  << "CRS bounding box (by vertices): " << this->bbox_crs->toString()
@@ -125,16 +115,6 @@ bool Scene::finalizeLoading(bool const safe) {
 
     // Get new bounding box of translated scene:
     this->bbox = AABB::getForPrimitives(primitives);
-    // TODO Rethink : Does this solve the issue ? ---
-    this->bbox->vertices[0].pos.x -= 0.01;
-    //this->bbox->vertices[0].pos.y -= 1.0;
-    //this->bbox->vertices[0].pos.z -= 1.0;
-    this->bbox->vertices[1].pos.x += 0.01;
-    //this->bbox->vertices[1].pos.y += 1.0;
-    //this->bbox->vertices[1].pos.z += 1.0;
-    this->bbox->bounds[0] = this->bbox->vertices[0].pos;
-    this->bbox->bounds[1] = this->bbox->vertices[1].pos;
-    // --- TODO Rethink : Does this solve the issue ?
 
     ss << "Actual bounding box (by vertices): " << this->bbox->toString();
     logging::INFO(ss.str());

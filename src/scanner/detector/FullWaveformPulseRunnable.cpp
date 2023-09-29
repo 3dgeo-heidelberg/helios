@@ -52,29 +52,14 @@ void FullWaveformPulseRunnable::operator()(
 	// performance optimization, so we should keep it nevertheless. sbecht 2016-04-24
 
 	// Early abort if central axis of the beam does not intersect with the scene:
-	vector<double> tMinMax = scene.getAABB()->getRayIntersection(
+	vector<double> const tMinMax = scene.getAABB()->getRayIntersection(
 	    pulse.getOriginRef(),
 	    beamDir
-    ); // TODO Restore
-    // TODO Remove ---
-    /*std::shared_ptr<AABB> aabb = std::make_shared<AABB>(*scene.getAABB());
-    aabb->vertices[0].pos.x -= 1.0;
-    aabb->vertices[0].pos.y -= 1.0;
-    aabb->vertices[0].pos.z -= 1.0;
-    aabb->vertices[1].pos.x += 1.0;
-    aabb->vertices[1].pos.y += 1.0;
-    aabb->vertices[1].pos.z += 1.0;
-    aabb->bounds[0] = aabb->vertices[0].pos;
-    aabb->bounds[1] = aabb->vertices[1].pos;
-    vector<double> tMinMax = aabb->getRayIntersection(
-        pulse.getOriginRef(),
-        beamDir
-    );*/
-    // --- TODO Remove
+    );
 #if DATA_ANALYTICS >= 2
     HDA_GV.incrementGeneratedRaysBeforeEarlyAbortCount();
 #endif
-	if (tMinMax.empty() || (tMinMax[0] < 0 && tMinMax[1] < 0)) {
+	if (checkEarlyAbort(tMinMax)) {
 		logging::DEBUG("Early abort - beam does not intersect with the scene");
 		scanner->setLastPulseWasHit(false, pulse.getDeviceIndex());
 		return;
@@ -90,7 +75,6 @@ void FullWaveformPulseRunnable::operator()(
     std::vector<std::vector<double>> calcIntensityRecords;
 #endif
 	computeSubrays(
-	    tMinMax,
 	    intersectionHandlingNoiseSource,
 	    reflections,
 	    intersects
@@ -127,7 +111,6 @@ void FullWaveformPulseRunnable::initialize(){
     );
 }
 void FullWaveformPulseRunnable::computeSubrays(
-    vector<double> const &tMinMax,
     NoiseSource<double> &intersectionHandlingNoiseSource,
     std::map<double, double> &reflections,
     vector<RaySceneIntersection> &intersects
@@ -138,7 +121,6 @@ void FullWaveformPulseRunnable::computeSubrays(
 ){
     scanner->computeSubrays(
         [&] (
-            vector<double> const &_tMinMax,
             int const circleStep,
             double const circleStep_rad,
             Rotation &r1,
@@ -152,7 +134,6 @@ void FullWaveformPulseRunnable::computeSubrays(
 #endif
         ) -> void {
             handleSubray(
-                _tMinMax,
                 circleStep,
                 circleStep_rad,
                 r1,
@@ -167,7 +148,6 @@ void FullWaveformPulseRunnable::computeSubrays(
 #endif
             );
         },
-        tMinMax,
         intersectionHandlingNoiseSource,
         reflections,
         intersects,
@@ -179,7 +159,6 @@ void FullWaveformPulseRunnable::computeSubrays(
 }
 
 void FullWaveformPulseRunnable::handleSubray(
-    vector<double> const &_tMinMax,
     int const circleStep,
     double const circleStep_rad,
     Rotation &r1,
@@ -197,12 +176,15 @@ void FullWaveformPulseRunnable::handleSubray(
     subrayHit = false;
 #endif
     // Rotate around the circle:
-    vector<double> tMinMax = _tMinMax;
     Rotation r2 = Rotation(Directions::forward, circleStep_rad * circleStep);
     r2 = r2.applyTo(r1);
 
     glm::dvec3 subrayDirection = pulse.getAttitude().applyTo(r2)
         .applyTo(Directions::forward);
+    vector<double> tMinMax = scene.getAABB()->getRayIntersection(
+        pulse.getOriginRef(),
+        subrayDirection
+    );
 #if DATA_ANALYTICS >= 2
     glm::dvec3 rayDirection = pulse.computeDirection();
     subraySimRecord[5] = glm::l2Norm(rayDirection); // Ray norm
@@ -221,6 +203,7 @@ void FullWaveformPulseRunnable::handleSubray(
     subraySimRecord[15] = rayDirection.y;
     subraySimRecord[16] = rayDirection.z;
 #endif
+    if(checkEarlyAbort(tMinMax)) return;
 
     glm::dvec3 subrayOrigin(pulse.getOrigin());
     bool rayContinues = true;

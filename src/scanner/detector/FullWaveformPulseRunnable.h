@@ -83,7 +83,6 @@ private:
      * @see FullWaveformPulseRunnable::handleSubray
      */
     void computeSubrays(
-        vector<double> const &tMinMax,
         NoiseSource<double> &intersectionHandlingNoiseSource,
         std::map<double, double> &reflections,
         vector<RaySceneIntersection> &intersects
@@ -104,7 +103,6 @@ private:
      * @see FullWaveformPulseRunnable::computeSubrays
      */
     void handleSubray(
-        vector<double> const &tMinMax,
         int const circleStep,
         double const circleStep_rad,
         Rotation &r1,
@@ -309,6 +307,28 @@ private:
 	    bool const fullWaveNoise,
 	    RandomnessGenerator<double> &rg2
     );
+
+    /**
+     * @brief Check whether the ray/subray must be aborted or not depending
+     *  on its intersection times.
+     *
+     * NOTE that typically the tMinMax vector is expected to come from a
+     *  intersection computation on the minimum axis aligned bounding box
+     *  containing the scene, i.e., the Scene::bbox attribute.
+     *
+     * @param tMinMax The first component is the minimum intersection time
+     *  \f$t_*\f$, the second component is the maximum intersection time
+     *  \f$t^*\f$, and no components means no intersection. See
+     *  AABB::getRayIntersection for more details because an early abort check
+     *  is a ray-AABB (Axis-Aligned Bounding-Box) check.
+     * @return True if the ray fails to intersects with the axis-aligned
+     *  bounding box, False otherwise.
+     * @see Scene
+     * @see AABB
+     */
+    inline bool checkEarlyAbort(std::vector<double> const &tMinMax){
+        return tMinMax.empty() || (tMinMax[0] < 0 && tMinMax[1] <= 0);
+    }
 
 public:
 	// ***  O P E R A T O R  *** //

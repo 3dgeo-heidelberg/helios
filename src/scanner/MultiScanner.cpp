@@ -158,7 +158,6 @@ Rotation MultiScanner::calcAbsoluteBeamAttitude(size_t const idx){
 }
 void MultiScanner::computeSubrays(
     std::function<void(
-        vector<double> const &_tMinMax,
         int const circleStep,
         double const circleStep_rad,
         Rotation &r1,
@@ -171,7 +170,6 @@ void MultiScanner::computeSubrays(
         std::vector<double> &subraySimRecord
 #endif
     )> handleSubray,
-    vector<double> const &tMinMax,
     NoiseSource<double> &intersectionHandlingNoiseSource,
     std::map<double, double> &reflections,
     vector<RaySceneIntersection> &intersects,
@@ -182,7 +180,6 @@ void MultiScanner::computeSubrays(
 ){
     scanDevs[idx].computeSubrays(
         handleSubray,
-        tMinMax,
         intersectionHandlingNoiseSource,
         reflections,
         intersects

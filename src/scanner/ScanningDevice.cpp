@@ -218,7 +218,6 @@ Rotation ScanningDevice::calcExactAbsoluteBeamAttitude(
 
 void ScanningDevice::computeSubrays(
     std::function<void(
-        std::vector<double> const &_tMinMax,
         int const circleStep,
         double const circleStep_rad,
         Rotation &r1,
@@ -231,7 +230,6 @@ void ScanningDevice::computeSubrays(
         std::vector<double> &subraySimRecord
 #endif
     )> handleSubray,
-    std::vector<double> const &tMinMax,
     NoiseSource<double> &intersectionHandlingNoiseSource,
     std::map<double, double> &reflections,
     std::vector<RaySceneIntersection> &intersects
@@ -251,8 +249,7 @@ void ScanningDevice::computeSubrays(
         double const subrayDivergenceAngle_rad = radiusStep * radiusStep_rad;
 
         // Rotate subbeam into divergence step (towards outer rim of the beam cone):
-        Rotation r1 = Rotation(Directions::right, subrayDivergenceAngle_rad);  // TODO Restore
-        //Rotation r1 = Rotation(Directions::right, 0.0);  // TODO Remove
+        Rotation r1 = Rotation(Directions::right, subrayDivergenceAngle_rad);
 
         // Calculate circle step width:
         int circleSteps = (int)(PI_2 * radiusStep);
@@ -272,7 +269,6 @@ void ScanningDevice::computeSubrays(
             );
 #endif
             handleSubray(
-                tMinMax,
                 circleStep,
                 circleStep_rad,
                 r1,
