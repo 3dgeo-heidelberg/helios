@@ -121,7 +121,7 @@ void FullWaveformPulseRunnable::computeSubrays(
 ){
     scanner->computeSubrays(
         [&] (
-            Rotation &subrayRotation,
+            Rotation const &subrayRotation,
             double const divergenceAngle,
             NoiseSource<double> &intersectionHandlingNoiseSource,
             std::map<double, double> &reflections,
@@ -155,7 +155,7 @@ void FullWaveformPulseRunnable::computeSubrays(
 }
 
 void FullWaveformPulseRunnable::handleSubray(
-    Rotation &subrayRotation,
+    Rotation const &subrayRotation,
     double const divergenceAngle,
     NoiseSource<double> &intersectionHandlingNoiseSource,
     map<double, double> &reflections,
@@ -239,7 +239,7 @@ void FullWaveformPulseRunnable::handleSubray(
             double intensity = 0.0;
             if (intersect->prim->canComputeSigmaWithLadLut()) {
                 // LadLut based intensity computation
-                double sigma = intersect->prim->computeSigmaWithLadLut(
+                double const sigma = intersect->prim->computeSigmaWithLadLut(
                     subrayDirection
                 );
                 intensity = scanner->calcIntensity(

@@ -255,7 +255,7 @@ Rotation ScanningDevice::calcExactAbsoluteBeamAttitude(
 
 void ScanningDevice::computeSubrays(
     std::function<void(
-        Rotation &subrayRotation,
+        Rotation const &subrayRotation,
         double const divergenceAngle,
         NoiseSource<double> &intersectionHandlingNoiseSource,
         std::map<double, double> &reflections,

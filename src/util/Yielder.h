@@ -70,8 +70,18 @@ public:
     inline void push(T const &elem){
         mtx.lock();
         buffer.push_back(elem);
-        mtx.unlock();
-        if(buffer.size() >= bufferSize) yield();
+        if(buffer.size() >= bufferSize){
+            // Copy what must be written before releasing the mutex
+            vector<T> copy = copyBuffer();
+            // Empty buffer before releasing the mutex
+            buffer.clear();
+            mtx.unlock();
+            // Digest temporal copy
+            digest(copy);
+        }
+        else{
+            mtx.unlock();
+        }
     }
 
     /**
