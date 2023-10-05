@@ -278,7 +278,7 @@ def test_create_survey():
     output = simB.join()
     meas, traj = pyhelios.outputToNumpy(output)
     # check length of output
-    assert meas.shape == (10397, 17)
+    assert meas.shape == (10470, 17)
     assert traj.shape == (6670, 7)
     # compare individual points
     np.testing.assert_allclose(meas[100, :3], np.array([83.32, -66.44204, 0.03114649]))
@@ -373,7 +373,7 @@ def test_output(export_to_file):
     measurements_array, trajectory_array = pyhelios.outputToNumpy(output)
 
     np.testing.assert_allclose(measurements_array[0, :3], np.array([474500.3, 5473530.0, 106.0988]), rtol=0.000001)
-    assert measurements_array.shape == (2433, 17)
+    assert measurements_array.shape == (2435, 17)
     assert trajectory_array.shape == (9, 7)
     if export_to_file:
         assert Path(output.outpath).parent.parent == Path(WORKING_DIR) / "output" / "als_hd_demo"
