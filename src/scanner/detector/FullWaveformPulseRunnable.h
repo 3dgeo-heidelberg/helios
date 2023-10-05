@@ -103,7 +103,7 @@ private:
      * @see FullWaveformPulseRunnable::computeSubrays
      */
     void handleSubray(
-        Rotation &subrayRotation,
+        Rotation const &subrayRotation,
         double const divergenceAngle,
         NoiseSource<double> &intersectionHandlingNoiseSource,
         std::map<double, double> &reflections,

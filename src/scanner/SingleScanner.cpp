@@ -196,7 +196,7 @@ Rotation SingleScanner::calcAbsoluteBeamAttitude(size_t const idx) {
 }
 void SingleScanner::computeSubrays(
     std::function<void(
-        Rotation &subrayRotation,
+        Rotation const &subrayRotation,
         double const divergenceAngle,
         NoiseSource<double> &intersectionHandlingNoiseSource,
         std::map<double, double> &reflections,
