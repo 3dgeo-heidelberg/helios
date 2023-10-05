@@ -204,6 +204,15 @@ public:
 	 * @see ScanningDevice::beamDivergence_rad
 	 */
     double cached_Bt2;
+    /**
+     * @brief The rotation representing the subray divergence wrt to the
+     *  central ray.
+     */
+    std::vector<Rotation> cached_subrayRotation;
+    /**
+     * @brief The divergence angle for each subray.
+     */
+    std::vector<double> cached_subrayDivergenceAngle_rad;
 
 public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //
@@ -236,6 +245,14 @@ public:
 
     // ***  M E T H O D S  *** //
     // *********************** //
+    /**
+     * @brief Prepare the scanning device to deal with the simulation.
+     *
+     * For example, data related to the subray generation process will be
+     *  cached to avoid redundant operations.
+     */
+    void prepareSimulation();
+
     /**
      * @brief Configure beam related attributes. It is recommended to
      *  reconfigure beam attributes always that beam divergence, beam quality
@@ -300,9 +317,7 @@ public:
      */
     void computeSubrays(
         std::function<void(
-            int const circleStep,
-            double const circleStep_rad,
-            Rotation &r1,
+            Rotation &subrayRotation,
             double const divergenceAngle,
             NoiseSource<double> &intersectionHandlingNoiseSource,
             std::map<double, double> &reflections,

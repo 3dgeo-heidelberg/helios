@@ -104,6 +104,8 @@ void SingleScanner::prepareSimulation() {
             sh->setDeflectorAnglePtr(&pmbd->state_currentBeamAngle_rad);
         }
     }
+    // Prepare scanning device
+    scanDev.prepareSimulation();
 }
 void SingleScanner::onLegComplete(){
     // Call parent handler for on leg complete events
@@ -194,9 +196,7 @@ Rotation SingleScanner::calcAbsoluteBeamAttitude(size_t const idx) {
 }
 void SingleScanner::computeSubrays(
     std::function<void(
-        int const circleStep,
-        double const circleStep_rad,
-        Rotation &r1,
+        Rotation &subrayRotation,
         double const divergenceAngle,
         NoiseSource<double> &intersectionHandlingNoiseSource,
         std::map<double, double> &reflections,

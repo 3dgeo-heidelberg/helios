@@ -130,9 +130,7 @@ public:
      */
     void computeSubrays(
         std::function<void(
-            int const circleStep,
-            double const circleStep_rad,
-            Rotation &r1,
+            Rotation &subrayRotation,
             double const divergenceAngle,
             NoiseSource<double> &intersectionHandlingNoiseSource,
             std::map<double, double> &reflections,
