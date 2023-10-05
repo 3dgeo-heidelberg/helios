@@ -92,22 +92,19 @@ def read_records(path, sep=','):
         'received_power': intensity_calc[:, 9],
         # Subray simulation records
         'subray_hit': subray_sim[:, 0].astype(bool),
-        'radius_step': subray_sim[:, 1],
-        'circle_steps': subray_sim[:, 2],
-        'circle_step': subray_sim[:, 3],
-        'divergence_angle_rad': subray_sim[:, 4],
-        'ray_dir_norm': subray_sim[:, 5],
-        'subray_dir_norm': subray_sim[:, 6],
-        'ray_subray_angle_rad': subray_sim[:, 7],
-        'ray_subray_sign_check': subray_sim[:, 8],
-        'subray_tmin': subray_sim[:, 9],
-        'subray_tmax': subray_sim[:, 10],
-        'subray_dir_x': subray_sim[:, 11],
-        'subray_dir_y': subray_sim[:, 12],
-        'subray_dir_z': subray_sim[:, 13],
-        'ray_dir_x': subray_sim[:, 14],
-        'ray_dir_y': subray_sim[:, 15],
-        'ray_dir_z': subray_sim[:, 16]
+        'divergence_angle_rad': subray_sim[:, 1],
+        'ray_dir_norm': subray_sim[:, 2],
+        'subray_dir_norm': subray_sim[:, 3],
+        'ray_subray_angle_rad': subray_sim[:, 4],
+        'ray_subray_sign_check': subray_sim[:, 5],
+        'subray_tmin': subray_sim[:, 6],
+        'subray_tmax': subray_sim[:, 7],
+        'subray_dir_x': subray_sim[:, 8],
+        'subray_dir_y': subray_sim[:, 9],
+        'subray_dir_z': subray_sim[:, 10],
+        'ray_dir_x': subray_sim[:, 11],
+        'ray_dir_y': subray_sim[:, 12],
+        'ray_dir_z': subray_sim[:, 13]
     }
 
 
@@ -490,14 +487,8 @@ def do_subray_hit_subplot_hist(
 def do_subray_hit_plots(arec, brec, outdir):
     # Validate subray hit data
     if(not validate_record('subray_hit', arec, 'a') or
-        not validate_record('radius_step', arec, 'a') or
-        not validate_record('circle_steps', arec, 'a') or
-        not validate_record('circle_step', arec, 'a') or
         not validate_record('divergence_angle_rad', arec, 'a') or
         not validate_record('subray_hit', brec, 'b') or
-        not validate_record('radius_step', brec, 'b') or
-        not validate_record('circle_steps', brec, 'b') or
-        not validate_record('circle_step', brec, 'b') or
         not validate_record('divergence_angle_rad', brec, 'b')
        ):
         print('Cannot do subray hit plots')
@@ -507,58 +498,66 @@ def do_subray_hit_plots(arec, brec, outdir):
     fig = init_figure()  # Initialize figure
     # CASE A
     ax = fig.add_subplot(4, 5, 1)  # Initialize hit2Dhist on (radstep,circstep)
-    do_subray_hit_subplot_hist2d(
-        fig, ax,
-        arec['circle_step'][arec['subray_hit']],
-        arec['radius_step'][arec['subray_hit']],
-        title='Hit distribution (100%) (A)',
-    )
+    #do_subray_hit_subplot_hist2d(
+    #    fig, ax,
+    #    arec['circle_step'][arec['subray_hit']],
+    #    arec['radius_step'][arec['subray_hit']],
+    #    title='Hit distribution (100%) (A)',
+    #)
+    # Removed because radstep and circstep are no longer exported
     ax = fig.add_subplot(4, 5, 2)  # Initialize a hist on radius step by hit
-    do_subray_hit_subplot_hist(
-        fig, ax, arec['subray_hit'], arec['radius_step'],
-        ylabel='Absolute'
-    )
+    #do_subray_hit_subplot_hist(
+    #    fig, ax, arec['subray_hit'], arec['radius_step'],
+    #    ylabel='Absolute'
+    #)
+    # Removed because radstep is no longer exported
     ax = fig.add_subplot(4, 5, 3)  # Initialize a hist on circle steps by hit
-    do_subray_hit_subplot_hist(
-        fig, ax, arec['subray_hit'], arec['circle_steps'],
-    )
+    #do_subray_hit_subplot_hist(
+    #    fig, ax, arec['subray_hit'], arec['circle_steps'],
+    #)
+    # Removed because circstep is no longer exported
     ax = fig.add_subplot(4, 5, 4)  # Initialize a hist on circle step by hit
-    do_subray_hit_subplot_hist(
-        fig, ax, arec['subray_hit'], arec['circle_step'],
-    )
+    #do_subray_hit_subplot_hist(
+    #    fig, ax, arec['subray_hit'], arec['circle_step'],
+    #)
+    # Removed because circstep is no longer exported
     ax = fig.add_subplot(4, 5, 5)  # Initialize a hist on div. angle by hit
     do_subray_hit_subplot_hist(
         fig, ax, arec['subray_hit'],
         1e03*arec['divergence_angle_rad']*180/np.pi,
     )
     ax = fig.add_subplot(4, 5, 6)  # Initialize non-hit 2D hist on (rs, cs)
-    do_subray_hit_subplot_hist2d(
-        fig, ax,
-        arec['circle_step'][~arec['subray_hit']],
-        arec['radius_step'][~arec['subray_hit']],
-        title='No-hit distribution (100%)',
-        xlabel='Circle step',
-        ylabel='Radius step'
-    )
+    #do_subray_hit_subplot_hist2d(
+    #    fig, ax,
+    #    arec['circle_step'][~arec['subray_hit']],
+    #    arec['radius_step'][~arec['subray_hit']],
+    #    title='No-hit distribution (100%)',
+    #    xlabel='Circle step',
+    #    ylabel='Radius step'
+    #)
+    # Removed because radstep and circstep are no longer exported
     ax = fig.add_subplot(4, 5, 7)  # Initialize a hist on radius step by hit
-    do_subray_hit_subplot_hist(
-        fig, ax, arec['subray_hit'], arec['radius_step'],
-        ylabel='Relative ($100\\%$)',
-        relative=True,
-        xlabel='Radius step'
-    )
+    #do_subray_hit_subplot_hist(
+    #    fig, ax, arec['subray_hit'], arec['radius_step'],
+    #    ylabel='Relative ($100\\%$)',
+    #    relative=True,
+    #    xlabel='Radius step'
+    #)
+    # Removed because radstep is no longer exported
     ax = fig.add_subplot(4, 5, 8)  # Initialize a hist on circle steps by hit
-    do_subray_hit_subplot_hist(
-        fig, ax, arec['subray_hit'], arec['circle_steps'],
-        relative=True,
-        xlabel='Circle steps'
-    )
+    #do_subray_hit_subplot_hist(
+    #    fig, ax, arec['subray_hit'], arec['circle_steps'],
+    #    relative=True,
+    #    xlabel='Circle steps'
+    #)
+    # Removed because circstep is no longer exported
     ax = fig.add_subplot(4, 5, 9)  # Initialize a hist on circle step by hit
-    do_subray_hit_subplot_hist(
-        fig, ax, arec['subray_hit'], arec['circle_step'],
-        relative=True,
-        xlabel='Circle step'
-    )
+    #do_subray_hit_subplot_hist(
+    #    fig, ax, arec['subray_hit'], arec['circle_step'],
+    #    relative=True,
+    #    xlabel='Circle step'
+    #)
+    # Removed because circstep is no longer exported
     ax = fig.add_subplot(4, 5, 10)  # Initialize a hist on div. angle by hit
     do_subray_hit_subplot_hist(
         fig, ax, arec['subray_hit'],
@@ -568,58 +567,66 @@ def do_subray_hit_plots(arec, brec, outdir):
     )
     # CASE B
     ax = fig.add_subplot(4, 5, 11)  # Initialize hit2Dhist on (radstep,circstep)
-    do_subray_hit_subplot_hist2d(
-        fig, ax,
-        brec['circle_step'][brec['subray_hit']],
-        brec['radius_step'][brec['subray_hit']],
-        title='Hit distribution (100%) (B)',
-    )
+    #do_subray_hit_subplot_hist2d(
+    #    fig, ax,
+    #    brec['circle_step'][brec['subray_hit']],
+    #    brec['radius_step'][brec['subray_hit']],
+    #    title='Hit distribution (100%) (B)',
+    #)
+    # Removed because radstep and circstep are no longer exported
     ax = fig.add_subplot(4, 5, 12)  # Initialize a hist on radius step by hit
-    do_subray_hit_subplot_hist(
-        fig, ax, brec['subray_hit'], brec['radius_step'],
-        ylabel='Absolute'
-    )
+    #do_subray_hit_subplot_hist(
+    #    fig, ax, brec['subray_hit'], brec['radius_step'],
+    #    ylabel='Absolute'
+    #)
+    # Removed because radstep is no longer exported
     ax = fig.add_subplot(4, 5, 13)  # Initialize a hist on circle steps by hit
-    do_subray_hit_subplot_hist(
-        fig, ax, brec['subray_hit'], brec['circle_steps'],
-    )
+    #do_subray_hit_subplot_hist(
+    #    fig, ax, brec['subray_hit'], brec['circle_steps'],
+    #)
+    # Removed because circstep is no longer exported
     ax = fig.add_subplot(4, 5, 14)  # Initialize a hist on circle step by hit
-    do_subray_hit_subplot_hist(
-        fig, ax, brec['subray_hit'], brec['circle_step'],
-    )
+    #do_subray_hit_subplot_hist(
+    #    fig, ax, brec['subray_hit'], brec['circle_step'],
+    #)
+    # Removed because circstep is no longer exported
     ax = fig.add_subplot(4, 5, 15)  # Initialize a hist on div. angle by hit
     do_subray_hit_subplot_hist(
         fig, ax, brec['subray_hit'],
         1e03*brec['divergence_angle_rad']*180/np.pi,
     )
     ax = fig.add_subplot(4, 5, 16)  # Initialize non-hit 2D hist on (rs, cs)
-    do_subray_hit_subplot_hist2d(
-        fig, ax,
-        brec['circle_step'][~brec['subray_hit']],
-        brec['radius_step'][~brec['subray_hit']],
-        title='No-hit distribution (100%)',
-        xlabel='Circle step',
-        ylabel='Radius step'
-    )
+    #do_subray_hit_subplot_hist2d(
+    #    fig, ax,
+    #    brec['circle_step'][~brec['subray_hit']],
+    #    brec['radius_step'][~brec['subray_hit']],
+    #    title='No-hit distribution (100%)',
+    #    xlabel='Circle step',
+    #    ylabel='Radius step'
+    #)
+    # Removed because radstep and circstep are no longer exported
     ax = fig.add_subplot(4, 5, 17)  # Initialize a hist on radius step by hit
-    do_subray_hit_subplot_hist(
-        fig, ax, brec['subray_hit'], brec['radius_step'],
-        ylabel='Relative ($100\\%$)',
-        relative=True,
-        xlabel='Radius step'
-    )
+    #do_subray_hit_subplot_hist(
+    #    fig, ax, brec['subray_hit'], brec['radius_step'],
+    #    ylabel='Relative ($100\\%$)',
+    #    relative=True,
+    #    xlabel='Radius step'
+    #)
+    # Removed because radstep is no longer exported
     ax = fig.add_subplot(4, 5, 18)  # Initialize a hist on circle steps by hit
-    do_subray_hit_subplot_hist(
-        fig, ax, brec['subray_hit'], brec['circle_steps'],
-        relative=True,
-        xlabel='Circle steps'
-    )
+    #do_subray_hit_subplot_hist(
+    #    fig, ax, brec['subray_hit'], brec['circle_steps'],
+    #    relative=True,
+    #    xlabel='Circle steps'
+    #)
+    # Removed because circstep is no longer exported
     ax = fig.add_subplot(4, 5, 19)  # Initialize a hist on circle step by hit
-    do_subray_hit_subplot_hist(
-        fig, ax, brec['subray_hit'], brec['circle_step'],
-        relative=True,
-        xlabel='Circle step'
-    )
+    #do_subray_hit_subplot_hist(
+    #    fig, ax, brec['subray_hit'], brec['circle_step'],
+    #    relative=True,
+    #    xlabel='Circle step'
+    #)
+    # Removed because circstep is no longer exported
     ax = fig.add_subplot(4, 5, 20)  # Initialize a hist on div. angle by hit
     do_subray_hit_subplot_hist(
         fig, ax, brec['subray_hit'],

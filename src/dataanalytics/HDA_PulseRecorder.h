@@ -53,37 +53,31 @@ protected:
      *
      * [0] -> Subray hit (0 does not hit, 1 hit)
      *
-     * [1] -> Radius step
+     * [1] -> Divergence angle (in rad)
      *
-     * [2] -> Circle steps
+     * [2] -> Ray direction norm
      *
-     * [3] -> Circle step
+     * [3] -> Subray direction norm
      *
-     * [4] -> Divergence angle (in rad)
+     * [4] -> Angle between ray and subray (in rad)
      *
-     * [5] -> Ray direction norm
+     * [5] -> Ray-subray sign check (1 if sign match, 0 otherwise)
      *
-     * [6] -> Subray direction norm
+     * [6] -> Min time for subray intersection
      *
-     * [7] -> Angle between ray and subray (in rad)
+     * [7] -> Max time for subray intersection
      *
-     * [8] -> Ray-subray sign check (1 if sign match, 0 otherwise)
+     * [8] -> Subray direction (x component)
      *
-     * [9] -> Min time for subray intersection
+     * [9] -> Subray direction (y component)
      *
-     * [10] -> Max time for subray intersection
+     * [10] -> Subray direction (z component)
      *
-     * [11] -> Subray direction (x component)
+     * [11] -> Ray direction (x component)
      *
-     * [12] -> Subray direction (y component)
+     * [12] -> Ray direction (y component)
      *
-     * [13] -> Subray direction (z component)
-     *
-     * [14] -> Ray direction (x component)
-     *
-     * [15] -> Ray direction (y component)
-     *
-     * [16] -> Ray direction (z component)
+     * [13] -> Ray direction (z component)
      */
     std::shared_ptr<HDA_RecordBuffer<std::vector<double>>> subraySim;
 

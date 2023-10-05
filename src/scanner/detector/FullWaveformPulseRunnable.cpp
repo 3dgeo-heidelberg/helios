@@ -121,9 +121,7 @@ void FullWaveformPulseRunnable::computeSubrays(
 ){
     scanner->computeSubrays(
         [&] (
-            int const circleStep,
-            double const circleStep_rad,
-            Rotation &r1,
+            Rotation &subrayRotation,
             double const divergenceAngle,
             NoiseSource<double> &intersectionHandlingNoiseSource,
             std::map<double, double> &reflections,
@@ -134,9 +132,7 @@ void FullWaveformPulseRunnable::computeSubrays(
 #endif
         ) -> void {
             handleSubray(
-                circleStep,
-                circleStep_rad,
-                r1,
+                subrayRotation,
                 divergenceAngle,
                 intersectionHandlingNoiseSource,
                 reflections,
@@ -159,9 +155,7 @@ void FullWaveformPulseRunnable::computeSubrays(
 }
 
 void FullWaveformPulseRunnable::handleSubray(
-    int const circleStep,
-    double const circleStep_rad,
-    Rotation &r1,
+    Rotation &subrayRotation,
     double const divergenceAngle,
     NoiseSource<double> &intersectionHandlingNoiseSource,
     map<double, double> &reflections,
@@ -176,10 +170,7 @@ void FullWaveformPulseRunnable::handleSubray(
     subrayHit = false;
 #endif
     // Rotate around the circle:
-    Rotation r2 = Rotation(Directions::forward, circleStep_rad * circleStep);
-    r2 = r2.applyTo(r1);
-
-    glm::dvec3 subrayDirection = pulse.getAttitude().applyTo(r2)
+    glm::dvec3 subrayDirection = pulse.getAttitude().applyTo(subrayRotation)
         .applyTo(Directions::forward);
     vector<double> tMinMax = scene.getAABB()->getRayIntersection(
         pulse.getOriginRef(),
@@ -187,21 +178,21 @@ void FullWaveformPulseRunnable::handleSubray(
     );
 #if DATA_ANALYTICS >= 2
     glm::dvec3 rayDirection = pulse.computeDirection();
-    subraySimRecord[5] = glm::l2Norm(rayDirection); // Ray norm
-    subraySimRecord[6] = glm::l2Norm(subrayDirection); // Subray norm
-    subraySimRecord[7] = glm::angle( // Angle between ray and subray
+    subraySimRecord[2] = glm::l2Norm(rayDirection); // Ray norm
+    subraySimRecord[3] = glm::l2Norm(subrayDirection); // Subray norm
+    subraySimRecord[4] = glm::angle( // Angle between ray and subray
         rayDirection,
         subrayDirection
     );
-    subraySimRecord[8] = (rayDirection[0] < 0) == (subrayDirection[0] < 0);
-    subraySimRecord[9] = tMinMax[0];
-    subraySimRecord[10] = tMinMax[1];
-    subraySimRecord[11] = subrayDirection.x;
-    subraySimRecord[12] = subrayDirection.y;
-    subraySimRecord[13] = subrayDirection.z;
-    subraySimRecord[14] = rayDirection.x;
-    subraySimRecord[15] = rayDirection.y;
-    subraySimRecord[16] = rayDirection.z;
+    subraySimRecord[5] = (rayDirection[0] < 0) == (subrayDirection[0] < 0);
+    subraySimRecord[6] = tMinMax[0];
+    subraySimRecord[7] = tMinMax[1];
+    subraySimRecord[8] = subrayDirection.x;
+    subraySimRecord[9] = subrayDirection.y;
+    subraySimRecord[10] = subrayDirection.z;
+    subraySimRecord[11] = rayDirection.x;
+    subraySimRecord[12] = rayDirection.y;
+    subraySimRecord[13] = rayDirection.z;
 #endif
     if(checkEarlyAbort(tMinMax)) return;
 

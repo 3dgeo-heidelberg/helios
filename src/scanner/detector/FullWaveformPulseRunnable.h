@@ -95,17 +95,15 @@ private:
      * @brief Handle sub-rays along the circle
      * @param[in] tMinMax Minimum and maximum time to intersection with respect
      *  to the axis aligned bounding box that bounds the scene
-     * @param[in] circleStep The iteration along the circle
-     * @param[in] circleStep_rad Angle in radians corresponding to the
-     *  iteration
-     * @param[in] r1 Sub-beam rotation into divergence step
+     * @param[in] subrayRotation The rotation that must be applied to the ray
+     *  to obtain the subray. It is typically a composition of two rotations,
+     *  one to model the radius (i.e., how far from the center) and other
+     *  to model the circumference (i.e., at which angle in the circle).
      * @param[in] divergenceAngle Subray divergence angle in radians
      * @see FullWaveformPulseRunnable::computeSubrays
      */
     void handleSubray(
-        int const circleStep,
-        double const circleStep_rad,
-        Rotation &r1,
+        Rotation &subrayRotation,
         double const divergenceAngle,
         NoiseSource<double> &intersectionHandlingNoiseSource,
         std::map<double, double> &reflections,

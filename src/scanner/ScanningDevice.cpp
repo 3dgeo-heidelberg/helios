@@ -84,6 +84,43 @@ ScanningDevice::ScanningDevice(ScanningDevice const &scdev){
 
 // ***  M E T H O D S  *** //
 // *********************** //
+void ScanningDevice::prepareSimulation(){
+    int const beamSampleQuality = FWF_settings.beamSampleQuality;
+    double const radiusStep_rad = beamDivergence_rad/beamSampleQuality;
+
+    // Outer loop over radius steps from beam center to outer edge
+    for (int radiusStep = 0; radiusStep < beamSampleQuality; radiusStep++){
+        double const subrayDivergenceAngle_rad = radiusStep * radiusStep_rad;
+
+        // Rotate subbeam into divergence step (towards outer rim of the beam cone):
+        Rotation r1 = Rotation(Directions::right, subrayDivergenceAngle_rad);
+
+        // Calculate circle step width:
+        int circleSteps = (int)(PI_2 * radiusStep);
+
+        // Make sure that central ray is not skipped:
+        if (circleSteps == 0) {
+            circleSteps = 1;
+        }
+
+        double const circleStep_rad = PI_2 / circleSteps;
+
+        // # Loop over sub-rays along the circle
+        for (int circleStep = 0; circleStep < circleSteps; circleStep++){
+            // Rotate around the circle
+            Rotation r2 = Rotation(
+                Directions::forward, circleStep_rad * circleStep
+            );
+            r2 = r2.applyTo(r1);
+            // Cache subray generation data
+            cached_subrayRotation.push_back(r2);
+            cached_subrayDivergenceAngle_rad.push_back(
+                subrayDivergenceAngle_rad
+            );
+        }
+    }
+}
+
 void ScanningDevice::configureBeam(){
     cached_Bt2 = beamDivergence_rad * beamDivergence_rad;
     beamWaistRadius = (beamQuality * wavelength_m) /
@@ -218,9 +255,7 @@ Rotation ScanningDevice::calcExactAbsoluteBeamAttitude(
 
 void ScanningDevice::computeSubrays(
     std::function<void(
-        int const circleStep,
-        double const circleStep_rad,
-        Rotation &r1,
+        Rotation &subrayRotation,
         double const divergenceAngle,
         NoiseSource<double> &intersectionHandlingNoiseSource,
         std::map<double, double> &reflections,
@@ -237,60 +272,33 @@ void ScanningDevice::computeSubrays(
    ,std::shared_ptr<HDA_PulseRecorder> pulseRecorder
 #endif
 ){
+    size_t const numSubrays = cached_subrayRotation.size();
+    for(size_t i = 0 ; i < numSubrays ; ++i) {
+    #if DATA_ANALYTICS >=2
+        bool subrayHit;
+    #endif
 #if DATA_ANALYTICS >=2
-    bool subrayHit;
+        std::vector<double> subraySimRecord(
+            14, std::numeric_limits<double>::quiet_NaN()
+        );
 #endif
-
-    int const beamSampleQuality = FWF_settings.beamSampleQuality;
-    double const radiusStep_rad = beamDivergence_rad/beamSampleQuality;
-
-    // Outer loop over radius steps from beam center to outer edge
-    for (int radiusStep = 0; radiusStep < beamSampleQuality; radiusStep++){
-        double const subrayDivergenceAngle_rad = radiusStep * radiusStep_rad;
-
-        // Rotate subbeam into divergence step (towards outer rim of the beam cone):
-        Rotation r1 = Rotation(Directions::right, subrayDivergenceAngle_rad);
-
-        // Calculate circle step width:
-        int circleSteps = (int)(PI_2 * radiusStep);
-
-        // Make sure that central ray is not skipped:
-        if (circleSteps == 0) {
-            circleSteps = 1;
-        }
-
-        double const circleStep_rad = PI_2 / circleSteps;
-
-        // # Loop over sub-rays along the circle
-        for (int circleStep = 0; circleStep < circleSteps; circleStep++){
+        handleSubray(
+            cached_subrayRotation[i],
+            cached_subrayDivergenceAngle_rad[i],
+            intersectionHandlingNoiseSource,
+            reflections,
+            intersects
 #if DATA_ANALYTICS >=2
-            std::vector<double> subraySimRecord(
-                17, std::numeric_limits<double>::quiet_NaN()
-            );
+           ,subrayHit,
+            subraySimRecord
 #endif
-            handleSubray(
-                circleStep,
-                circleStep_rad,
-                r1,
-                subrayDivergenceAngle_rad,
-                intersectionHandlingNoiseSource,
-                reflections,
-                intersects
+        );
 #if DATA_ANALYTICS >=2
-               ,subrayHit,
-                subraySimRecord
+        HDA_GV.incrementGeneratedSubraysCount();
+        subraySimRecord[0] = (double) subrayHit;
+        subraySimRecord[1] = subrayDivergenceAngle_rad;
+        pulseRecorder->recordSubraySimulation(subraySimRecord);
 #endif
-            );
-#if DATA_ANALYTICS >=2
-            HDA_GV.incrementGeneratedSubraysCount();
-            subraySimRecord[0] = (double) subrayHit;
-            subraySimRecord[1] = (double) radiusStep;
-            subraySimRecord[2] = (double) circleSteps;
-            subraySimRecord[3] = (double) circleStep;
-            subraySimRecord[4] = subrayDivergenceAngle_rad;
-            pulseRecorder->recordSubraySimulation(subraySimRecord);
-#endif
-        }
     }
 }
 
