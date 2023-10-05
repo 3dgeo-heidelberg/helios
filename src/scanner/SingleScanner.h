@@ -130,7 +130,6 @@ public:
      */
     void computeSubrays(
         std::function<void(
-            vector<double> const &_tMinMax,
             int const circleStep,
             double const circleStep_rad,
             Rotation &r1,
@@ -138,12 +137,18 @@ public:
             NoiseSource<double> &intersectionHandlingNoiseSource,
             std::map<double, double> &reflections,
             vector<RaySceneIntersection> &intersects
+#if DATA_ANALYTICS >= 2
+           ,bool &subrayHit,
+            std::vector<double> &subraySimRecord
+#endif
         )> handleSubray,
-        vector<double> const &tMinMax,
         NoiseSource<double> &intersectionHandlingNoiseSource,
         std::map<double, double> &reflections,
         vector<RaySceneIntersection> &intersects,
         size_t const idx
+#if DATA_ANALYTICS >= 2
+       ,std::shared_ptr<HDA_PulseRecorder> pulseRecorder
+#endif
     ) override;
     /**
      * @see Scanner::initializeFullWaveform
@@ -169,6 +174,9 @@ public:
         double const targetArea,
         double const radius,
         size_t const idx
+#if DATA_ANALYTICS >= 2
+       ,std::vector<std::vector<double>> &calcIntensityRecords
+#endif
     ) const override;
     /**
      * @see Scanner::calcIntensity

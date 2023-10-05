@@ -1,6 +1,7 @@
 #ifdef DATA_ANALYTICS
 #pragma once
 
+#include <HDA_Recorder.h>
 #include <HDA_RecordBuffer.h>
 #include <sim/core/SurveyPlayback.h>
 
@@ -16,7 +17,7 @@ namespace helios { namespace analytics{
  *  which records the data representing the state of simulation components at
  *  a certain simulation step.
  */
-class HDA_SimStepRecorder{
+class HDA_SimStepRecorder : public HDA_Recorder {
 protected:
     // ***  ATTRIBUTES  *** //
     // ******************** //
@@ -24,11 +25,6 @@ protected:
      * @brief The SurveyPlayback which simulation steps must be recorded
      */
     SurveyPlayback *sp;
-    /**
-     * @brief Path to the output directory where the different outputs will be
-     *  stored
-     */
-    std::string outdir;
     /**
      * @brief The record buffer for the x coordinate of the platform position
      */
@@ -198,23 +194,20 @@ public:
         SurveyPlayback *sp,
         std::string const &path
     ) :
-        sp(sp),
-        outdir(path)
+        HDA_Recorder(path),
+        sp(sp)
     {
-        validateOutDir();
         openBuffers();
     }
 
     virtual ~HDA_SimStepRecorder() {
-        if(isAnyBufferOpen()){
-            closeBuffers();
-        }
+        if(isAnyBufferOpen()) closeBuffers();
     }
 
     // ***  MAIN RECORD METHOD  *** //
     // **************************** //
     /**
-     * @brief Handle all the records for the current simulation step
+     * @brief Handle all the records for the current simulation step.
      */
     virtual void record();
     /**
@@ -227,26 +220,21 @@ public:
     // ***  RECORDER METHODS  *** //
     // ************************** //
     /**
-     * @brief Check whether the output directory is a valid one or not. If not,
-     *  an exception will be thrown
-     */
-    virtual void validateOutDir();
-    /**
      * @brief Check whether there are opened buffers or not
      * @return True if there is at least one opened buffer, false if there is
      *  not even a single opened buffer
      */
-    virtual bool isAnyBufferOpen();
+    bool isAnyBufferOpen();
     /**
      * @brief Open all the record buffers so the HDA_SimStepRecord can record
      */
-    virtual void openBuffers();
+    void openBuffers();
     /**
      * @brief Close all the record buffers. Once it is done, the
      *  HDA_SimStepRecorder will not be able to properly handle any new
-     *  record
+     *  record.
      */
-    virtual void closeBuffers();
+    void closeBuffers();
 
 protected:
     // ***  CONCRETE RECORD METHODS  *** //
@@ -286,14 +274,6 @@ protected:
      *  current simulation step
      */
     virtual void recordStochastic();
-    /**
-     * @brief Craft the full output path considering the output directory and
-     *  the given file name
-     * @param fname The given filename
-     * @return Full output path considering the output directory and the given
-     *  file name
-     */
-    virtual std::string craftOutputPath(std::string const &fname);
 };
 
 

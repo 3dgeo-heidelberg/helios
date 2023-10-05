@@ -403,6 +403,9 @@ void Scanner::buildScanningPulseProcess(
                 *randGen1,
                 *randGen2,
                 *intersectionHandlingNoiseSource
+#if DATA_ANALYTICS >= 2
+               ,pool->getPulseRecorder()
+#endif
             )
         );
     }
@@ -415,6 +418,9 @@ void Scanner::buildScanningPulseProcess(
                 *randGen1,
                 *randGen2,
                 *intersectionHandlingNoiseSource
+#if DATA_ANALYTICS >= 2
+               ,pool->getPulseRecorder()
+#endif
             )
         );
     }

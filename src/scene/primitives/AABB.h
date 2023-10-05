@@ -128,6 +128,27 @@ public:
 	    const glm::dvec3& intersectionPoint
     ) override;
 	/**
+	 * <b><span style="color: red">WARNING</span>!</b> The returned
+	 *  intersection times should be interpreted as follows, where \f$t_*\f$
+	 *  is the minimum time and \f$t^*\f$ the maximum:
+	 *
+	 * If \f$t_* \geq 0, t^* \geq 0\f$ then the ray intersects the box twice,
+	 *  one time to enter the box, another time to leave it.
+	 *
+	 * If \f$t_* < 0, t^* < 0\f$ then the ray does not intersect the
+	 *  box, the line will do, but not the ray which is not allowed to
+	 *  go backward (see Convex Optimization by Stephen Boyd and Lieven
+	 *  Vandenberghe, where a ray is defined as
+	 *  \f$\left\{o + tv : t \geq 0\right\}\f$).
+	 *
+	 * If either \f$t_* < 0\f$ or \f$t^* < 0\f$ then the ray intersects the
+	 *  box once, it starts inside the box and the intersection occurs when
+	 *  the ray leaves the box.
+	 *
+	 * If the returned vector is empty, then there is no line-box intersection
+	 *  at all.
+	 *
+	 *
 	 * @see Primitive::getRayIntersection
 	 */
 	std::vector<double> getRayIntersection(

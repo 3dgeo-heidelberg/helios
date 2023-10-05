@@ -9,6 +9,11 @@
 #include <demo/DemoSelector.h>
 #endif
 
+#ifdef DATA_ANALYTICS
+#include <dataanalytics/HDA_GlobalVars.h>
+#include <dataanalytics/HDA_GlobalVarsReporter.h>
+#endif
+
 #include <gdal_priv.h>
 #include <boost/filesystem.hpp>
 
@@ -160,6 +165,13 @@ int main(int argc, char** argv) {
             ap.parseSAHLossNodes()
         );
     }
+
+#if DATA_ANALYTICS >= 2
+    helios::analytics::HDA_GlobalVarsReporter reporter(
+        helios::analytics::HDA_GV
+    );
+    reporter.print();
+#endif
 
     // Return successful exit status code (0)
     return EXIT_SUCCESS;

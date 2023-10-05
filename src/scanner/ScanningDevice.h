@@ -11,6 +11,10 @@ class AbstractDetector;
 #include <scene/RaySceneIntersection.h>
 #include <noise/NoiseSource.h>
 #include <adt/exprtree/UnivarExprTreeNode.h>
+#if DATA_ANALYTICS >= 2
+#include <dataanalytics/HDA_PulseRecorder.h>
+using helios::analytics::HDA_PulseRecorder;
+#endif
 
 #include <glm/glm.hpp>
 
@@ -296,7 +300,6 @@ public:
      */
     void computeSubrays(
         std::function<void(
-            std::vector<double> const &_tMinMax,
             int const circleStep,
             double const circleStep_rad,
             Rotation &r1,
@@ -304,11 +307,17 @@ public:
             NoiseSource<double> &intersectionHandlingNoiseSource,
             std::map<double, double> &reflections,
             vector<RaySceneIntersection> &intersects
+#if DATA_ANALYTICS >= 2
+           ,bool &subrayHit,
+            std::vector<double> &subraySimRecord
+#endif
         )> handleSubray,
-        std::vector<double> const &tMinMax,
         NoiseSource<double> &intersectionHandlingNoiseSource,
         std::map<double, double> &reflections,
         std::vector<RaySceneIntersection> &intersects
+#if DATA_ANALYTICS >= 2
+       ,std::shared_ptr<HDA_PulseRecorder> pulseRecorder
+#endif
     );
     /**
      * @see Scanner::initializeFullWaveform
@@ -377,6 +386,9 @@ public:
         Material const &mat,
         double const targetArea,
         double const radius
+#if DATA_ANALYTICS >= 2
+       ,std::vector<std::vector<double>> &calcIntensityRecords
+#endif
     ) const;
 
     /**

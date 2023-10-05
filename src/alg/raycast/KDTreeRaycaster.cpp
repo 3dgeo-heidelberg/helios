@@ -176,7 +176,6 @@ Primitive* KDTreeRaycaster::search_recursive(
 
 	// ######### BEGIN If node is a leaf, perform ray-primitive intersection on all primitives in the leaf's bucket ###########
 	if (node->splitAxis == -1) {
-		//logging::DEBUG("leaf node:");
 		for (auto prim : *node->primitives) {
 			double const newDistance = prim->getRayIntersectionDistance(
 			    search.rayOrigin, search.rayDir
@@ -198,10 +197,9 @@ Primitive* KDTreeRaycaster::search_recursive(
 			// (in other leaves, with other primitives) that are *closer* to
 			// the ray originWaypoint. If this was the case, the returned intersection
 			// would be wrong.
-
-			if(
-			    (newDistance > 0 && newDistance < search.closestHitDistance) &&
-			    (newDistance >= tmin && newDistance <= tmax)
+            if(
+			    newDistance > 0 && newDistance < search.closestHitDistance &&
+			    newDistance >= tmin && newDistance <= tmax
             ){
 				if(
 				    !search.groundOnly ||
@@ -257,22 +255,30 @@ Primitive* KDTreeRaycaster::search_recursive(
 		// thit >= tmax means that the ray crosses the split plane *after it has already left the volume*.
 		// In this case, it never enters the second half.
 		if (thit >= tmax) {
-			hitPrim = search_recursive(first, tmin, tmax, search);
+			hitPrim = search_recursive(
+                first, tmin, tmax, search
+            );
 		}
 
 		// thit <= tmin means that the ray crosses the split plane *before it enters the volume*.
 		// In this case, it never enters the first half:
 		else if (thit <= tmin) {
-			hitPrim = search_recursive(second, tmin, tmax, search);
+			hitPrim = search_recursive(
+                second, tmin, tmax, search
+            );
 		}
 
 		// Otherwise, the ray crosses the split plane within the volume.
 		// This means that it passes through both sides:
 		else {
-			hitPrim = search_recursive(first, tmin, thit+epsilon, search);
+			hitPrim = search_recursive(
+                first, tmin, thit+epsilon, search
+            );
 
 			if (hitPrim == nullptr) {
-				hitPrim = search_recursive(second, thit-epsilon, tmax, search);
+				hitPrim = search_recursive(
+                    second, thit-epsilon, tmax, search
+                );
 			}
 		}
 

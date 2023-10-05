@@ -429,8 +429,6 @@ public:
      * @brief Perform ray casting to find intersections
      * @param[in] handleSubray The function where computed subrays must be
      *  delegated to
-     * @param[in] tMinMax Minimum and maximum time to intersection with respect
-     *  to the axis aligned bounding box that bounds the scene
      * @param[out] reflections Where reflections must be stored when a hit is
      *  registered
      * @param[out] intersects Where intersections must be stored when a hit is
@@ -442,7 +440,6 @@ public:
      */
     virtual void computeSubrays(
         std::function<void(
-            vector<double> const &_tMinMax,
             int const circleStep,
             double const circleStep_rad,
             Rotation &r1,
@@ -450,12 +447,18 @@ public:
             NoiseSource<double> &intersectionHandlingNoiseSource,
             std::map<double, double> &reflections,
             vector<RaySceneIntersection> &intersects
+#if DATA_ANALYTICS >= 2
+           ,bool &subrayHit,
+           std::vector<double> &subraySimRecord
+#endif
         )> handleSubray,
-        vector<double> const &tMinMax,
         NoiseSource<double> &intersectionHandlingNoiseSource,
         std::map<double, double> &reflections,
         vector<RaySceneIntersection> &intersects,
         size_t const idx
+#if DATA_ANALYTICS >= 2
+       ,std::shared_ptr<HDA_PulseRecorder> pulseRecorder
+#endif
     ) = 0;
 
     /**
@@ -499,6 +502,9 @@ public:
         double const targetArea,
         double const radius,
         size_t const idx
+#if DATA_ANALYTICS >= 2
+       ,std::vector<std::vector<double>> &calcIntensityRecords
+#endif
     ) const = 0;
     /**
      * @brief Handle to which scanning device request the intensity computation

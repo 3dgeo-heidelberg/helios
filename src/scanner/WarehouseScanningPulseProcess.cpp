@@ -11,6 +11,9 @@ WarehouseScanningPulseProcess::WarehouseScanningPulseProcess(
     RandomnessGenerator<double> &randGen1,
     RandomnessGenerator<double> &randGen2,
     UniformNoiseSource<double> &intersectionHandlingNoiseSource
+#if DATA_ANALYTICS >= 2
+    ,std::shared_ptr<HDA_PulseRecorder> pulseRecorder
+#endif
 ) :
     ScanningPulseProcess(scanner),
     dropper(dropper),
@@ -18,8 +21,11 @@ WarehouseScanningPulseProcess::WarehouseScanningPulseProcess(
     randGen1(randGen1),
     randGen2(randGen2),
     intersectionHandlingNoiseSource(intersectionHandlingNoiseSource)
-{
-    if(pool.getPoolSize() > 0){ // Parallel computation
+#if DATA_ANALYTICS >= 2
+   ,pulseRecorder(pulseRecorder)
+#endif
+        {
+            if(pool.getPoolSize() > 0){ // Parallel computation
         handler = [&] (SimulatedPulse const &sp) -> void {
             handlePulseComputationParallel(sp);
         };
@@ -43,12 +49,20 @@ void WarehouseScanningPulseProcess::onLegComplete(){
         randGen1,
         randGen2,
         intersectionHandlingNoiseSource
+#if DATA_ANALYTICS >= 2
+       ,pulseRecorder
+#endif
     );
 
     // Assist thread pool with pending tasks (on WarehouseThreadPool::join atm)
     shared_ptr<PulseTaskDropper> task;
     while( (task=pool.get()) != nullptr){
-        (*task)(apMatrix, randGen1, randGen2, intersectionHandlingNoiseSource);
+        (*task)(
+            apMatrix, randGen1, randGen2, intersectionHandlingNoiseSource
+#if DATA_ANALYTICS >= 2
+            ,pulseRecorder
+#endif
+        );
     }
 
     // Wait for threads to finish
@@ -70,6 +84,9 @@ void WarehouseScanningPulseProcess::handlePulseComputationSequential(
         randGen1,
         randGen2,
         intersectionHandlingNoiseSource
+#if DATA_ANALYTICS >= 2
+       ,pulseRecorder
+#endif
     );
 
 }
@@ -93,6 +110,9 @@ void WarehouseScanningPulseProcess::handlePulseComputationParallel(
                 randGen1,
                 randGen2,
                 intersectionHandlingNoiseSource
+#if DATA_ANALYTICS >= 2
+               ,pulseRecorder
+#endif
             );
         }
     }

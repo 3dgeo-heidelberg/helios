@@ -29,7 +29,7 @@ RaySceneIntersection * KDGroveRaycaster::search(
 ){
     std::map<double, Primitive *> out;
     size_t const m = grove->getNumTrees();
-    RaySceneIntersection *bestRSI = nullptr, *rsi = nullptr;
+    RaySceneIntersection *bestRSI = nullptr, *rsi;
     for(size_t i = 0 ; i < m ; ++i){
         rsi = grove->getTreeShared(i)->search(
             rayOrigin, rayDir, tmin, tmax, groundOnly

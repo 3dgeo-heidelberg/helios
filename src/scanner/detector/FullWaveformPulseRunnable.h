@@ -1,13 +1,17 @@
 #pragma once
 
 #include <util/HeliosException.h>
-#include "AbstractDetector.h"
-#include "AbstractPulseRunnable.h"
-#include "FullWaveformPulseDetector.h"
-#include "RaySceneIntersection.h"
-#include "ScenePart.h"
+#include <MarquardtFitter.h>
+#include <AbstractDetector.h>
+#include <AbstractPulseRunnable.h>
+#include <FullWaveformPulseDetector.h>
+#include <RaySceneIntersection.h>
+#include <ScenePart.h>
 #include <noise/RandomnessGenerator.h>
 #include <scanner/ScanningPulseProcess.h>
+#if DATA_ANALYTICS >= 2
+#include <dataanalytics/HDA_PulseRecorder.h>
+#endif
 
 #include <LadLut.h>
 
@@ -79,10 +83,13 @@ private:
      * @see FullWaveformPulseRunnable::handleSubray
      */
     void computeSubrays(
-        vector<double> const &tMinMax,
         NoiseSource<double> &intersectionHandlingNoiseSource,
         std::map<double, double> &reflections,
         vector<RaySceneIntersection> &intersects
+#if DATA_ANALYTICS >= 2
+       ,std::vector<std::vector<double>> &calcIntensityRecords,
+        std::shared_ptr<HDA_PulseRecorder> pulseRecorder
+#endif
     );
     /**
      * @brief Handle sub-rays along the circle
@@ -96,7 +103,6 @@ private:
      * @see FullWaveformPulseRunnable::computeSubrays
      */
     void handleSubray(
-        vector<double> const &tMinMax,
         int const circleStep,
         double const circleStep_rad,
         Rotation &r1,
@@ -104,6 +110,11 @@ private:
         NoiseSource<double> &intersectionHandlingNoiseSource,
         std::map<double, double> &reflections,
         vector<RaySceneIntersection> &intersects
+#if DATA_ANALYTICS >= 2
+       ,bool &subrayHit,
+        std::vector<double> &subraySimRecord,
+        std::vector<std::vector<double>> &calcIntensityRecords
+#endif
     );
     /**
      * @brief Digest intersections found through ray casting
@@ -126,6 +137,10 @@ private:
         glm::dvec3 &beamDir,
         std::map<double, double> &reflections,
         vector<RaySceneIntersection> &intersects
+#if DATA_ANALYTICS >= 2
+       ,std::vector<std::vector<double>> &calcIntensityRecords,
+        std::shared_ptr<HDA_PulseRecorder> pulseRecorder
+#endif
     );
     /**
      * @brief Find min and max hit distances in meters
@@ -197,6 +212,30 @@ private:
         int const numFullwaveBins,
         int const peakIntensityIndex,
         double const minHitTime_ns
+#if DATA_ANALYTICS >= 2
+       ,std::vector<std::vector<double>> &calcIntensityRecords,
+        std::shared_ptr<HDA_PulseRecorder> pulseRecorder
+#endif
+    );
+    /**
+     * @brief Handle the bin of the fullwave that corresponds to the given
+     *  bin index.
+     * @param fullwave The fullwave vector.
+     * @param fit Reference to the MarquardFitter object used to handle the
+     *  fullwave.
+     * @param echoWidth Output variable to store the echo width.
+     * @param binIndex Index of the bin to be handled.
+     * @return True when the handled bin does not correspond to an accepted
+     *  hit, i.e., true to skip the current iteration. False to proceed with
+     *  the computation of the current iteration.
+     */
+    bool handleFullWaveformBin(
+        std::vector<double> const &fullwave,
+        MarquardtFitter &fit,
+        double &echoWidth,
+        int const binIndex,
+        int const winSize,
+        double const nsPerBin
     );
     /**
      * @brief Export measurements and full waveform data
@@ -213,6 +252,10 @@ private:
         double const maxHitTime_ns,
         RandomnessGenerator<double> &randGen,
         RandomnessGenerator<double> &randGen2
+#if DATA_ANALYTICS >= 2
+       ,std::vector<std::vector<double>> &calcIntensityRecords,
+        std::shared_ptr<HDA_PulseRecorder> pulseRecorder
+#endif
     );
 
     // ***  ASSISTANCE METHODS  *** //
@@ -265,6 +308,28 @@ private:
 	    RandomnessGenerator<double> &rg2
     );
 
+    /**
+     * @brief Check whether the ray/subray must be aborted or not depending
+     *  on its intersection times.
+     *
+     * NOTE that typically the tMinMax vector is expected to come from a
+     *  intersection computation on the minimum axis aligned bounding box
+     *  containing the scene, i.e., the Scene::bbox attribute.
+     *
+     * @param tMinMax The first component is the minimum intersection time
+     *  \f$t_*\f$, the second component is the maximum intersection time
+     *  \f$t^*\f$, and no components means no intersection. See
+     *  AABB::getRayIntersection for more details because an early abort check
+     *  is a ray-AABB (Axis-Aligned Bounding-Box) check.
+     * @return True if the ray fails to intersects with the axis-aligned
+     *  bounding box, False otherwise.
+     * @see Scene
+     * @see AABB
+     */
+    inline bool checkEarlyAbort(std::vector<double> const &tMinMax){
+        return tMinMax.empty() || (tMinMax[0] < 0 && tMinMax[1] <= 0);
+    }
+
 public:
 	// ***  O P E R A T O R  *** //
 	// ************************* //
@@ -293,5 +358,8 @@ public:
 	    RandomnessGenerator<double> &randGen,
         RandomnessGenerator<double> &randGen2,
         NoiseSource<double> &intersectionHandlingNoiseSource
+#if DATA_ANALYTICS >= 2
+       ,std::shared_ptr<HDA_PulseRecorder> pulseRecorder
+#endif
     ) override;
 };
