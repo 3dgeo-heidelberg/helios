@@ -45,6 +45,8 @@ void FullWaveformPulseRunnable::operator()(
     initialize();
 	// Compute beam direction
 	glm::dvec3 beamDir = pulse.computeDirection();
+    // Capture pulse if requested
+    if(scanner->isWritePulse()) capturePulse(beamDir);
 
 	// NOTE:
 	// With beam divergence / full waveform being simulated, this is not perfect, since a sub-ray

@@ -7,6 +7,7 @@
 #include <scanner/FWFSettings.h>
 #include <scanner/SimulatedPulse.h>
 #include <scanner/beamDeflector/AbstractBeamDeflector.h>
+#include <scene/Scene.h>
 class AbstractDetector;
 #include <scene/RaySceneIntersection.h>
 #include <noise/NoiseSource.h>

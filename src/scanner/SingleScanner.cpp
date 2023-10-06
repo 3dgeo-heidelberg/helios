@@ -25,6 +25,7 @@ SingleScanner::SingleScanner(
     int const wavelength,
     std::shared_ptr<UnivarExprTreeNode<double>> rangeErrExpr,
     bool const writeWaveform,
+    bool const writePulse,
     bool const calcEchowidth,
     bool const fullWaveNoise,
     bool const platformNoiseDisabled
@@ -33,6 +34,7 @@ SingleScanner::SingleScanner(
         id,
         pulseFreqs,
         writeWaveform,
+        writePulse,
         calcEchowidth,
         fullWaveNoise,
         platformNoiseDisabled

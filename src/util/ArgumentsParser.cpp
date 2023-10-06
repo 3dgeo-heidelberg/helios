@@ -78,6 +78,10 @@ bool ArgumentsParser::parseWriteWaveform(){
     return findIndexOfArgument("--writeWaveform") >= 0;
 }
 
+bool ArgumentsParser::parseWritePulse(){
+    return findIndexOfArgument("--writePulse") >= 0;
+}
+
 bool ArgumentsParser::parseCalcEchowidth(){
     return findIndexOfArgument("--calcEchowidth") >= 0;
 }

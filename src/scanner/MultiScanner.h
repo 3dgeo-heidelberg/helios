@@ -34,6 +34,7 @@ public:
         std::string const id,
         std::list<int> const &pulseFreqs,
         bool const writeWaveform=false,
+        bool const writePulse=false,
         bool const calcEchowidth=false,
         bool const fullWaveNoise=false,
         bool const platformNoiseDisabled=false
@@ -42,6 +43,7 @@ public:
             id,
             pulseFreqs,
             writeWaveform,
+            writePulse,
             calcEchowidth,
             fullWaveNoise,
             platformNoiseDisabled

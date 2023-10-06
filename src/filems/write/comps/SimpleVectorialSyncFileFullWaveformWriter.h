@@ -34,7 +34,7 @@ protected:
      * @brief The full waveform write strategy that is wrapped by the main
      *  write strategy in a vectorial fashion
      *  ( filems::SimpleSyncFileWriter::writeStrategy )
-     * @see filems::DirectFullWaveformWriterStrategy
+     * @see filems::DirectFullWaveformWriteStrategy
      */
     DirectFullWaveformWriteStrategy dfwws;
 

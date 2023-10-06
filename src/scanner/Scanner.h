@@ -38,6 +38,10 @@ protected:
      */
     bool writeWaveform = false;
     /**
+     * @brief Flag specifying if write pulse (true) or not (false)
+     */
+    bool writePulse = false;
+    /**
      * @brief Flag specifying if calculate echo width (true) or not (false)
      */
     bool calcEchowidth = false;
@@ -186,6 +190,7 @@ public:
         std::string const id,
         std::list<int> const &pulseFreqs,
         bool const writeWaveform=false,
+        bool const writePulse=false,
         bool const calcEchowidth=false,
         bool const fullWaveNoise=false,
         bool const platformNoiseDisabled=false
@@ -1092,6 +1097,21 @@ public:
      */
     inline void setWriteWaveform(bool const writeWaveform)
     {this->writeWaveform = writeWaveform;}
+    /**
+     * @brief Check if scanner is configured to write pulses (true) or not
+     *  (false)
+     * @return True if scanner is configured to write pulses, false
+     *  otherwise
+     * @see Scanner::writePulse
+     */
+    inline bool isWritePulse() const {return this->writePulse;}
+    /**
+     * @brief Set scanner write pulse configuration.
+     * @param writePulse True to make scanner write pulse, false otherwise
+     * @see Scanner::writePulse
+     */
+    inline void setWritePulse(bool const writePulse)
+    {this->writePulse = writePulse;}
     /**
      * @brief Check if scanner is configured to compute echo width (true) or
      *  not (false)

@@ -3,6 +3,7 @@
 #include <filems/write/core/VectorialMeasurementWriter.h>
 #include <filems/write/core/TrajectoryWriter.h>
 #include <filems/write/core/VectorialFullWaveformWriter.h>
+#include <filems/write/core/VectorialPulseWriter.h>
 #include <scanner/detector/FullWaveform.h>
 
 #include <glm/glm.hpp>
@@ -43,9 +44,14 @@ protected:
     shared_ptr<TrajectoryWriter> tw = nullptr;
     /**
      * @brief The writer for full waveform
-     * @see filems::FullWaveformWriter
+     * @see filems::VectorialFullWaveformWriter
      */
     shared_ptr<VectorialFullWaveformWriter> fww = nullptr;
+    /**
+     * @brief The writer for pulses
+     * @see filems::VectorialPulseWriter
+     */
+    shared_ptr<VectorialPulseWriter> pw = nullptr;
     /**
      * @brief The root directory for output files
      */
@@ -78,6 +84,7 @@ public:
     void configure(
         string const &prefix,
         bool const computeWaveform,
+        bool const writePulse,
         bool const lastLegInStrip
     );
     /**
@@ -267,10 +274,10 @@ public:
      */
     void validateFullWaveformWriter(
         string const &callerName="FMSWriteFacade::validateFullWaveformWriter",
-        string const &errorMsg="could not accesss FullWaveformWriter"
+        string const &errorMsg="could not access FullWaveformWriter"
     ) const;
     /**
-     * @see FullWaveformWritter::writeFullWaveform
+     * @see VectorialFullWaveformWritter::writeFullWaveforms
      */
     void writeFullWaveforms(
         vector<FullWaveform> const &fullWaveforms
@@ -278,7 +285,7 @@ public:
     /**
      * @brief Write the full waveform without validations (it is faster than
      *  its non unsafe counterpart)
-     * @see FullWaveformWriter::writeFullWaveformUnsafe
+     * @see VectorialFullWaveformWriter::writeFullWaveformsUnsafe
      */
     inline void writeFullWaveformsUnsafe(
         vector<FullWaveform> const &fullWaveforms
@@ -295,6 +302,59 @@ public:
      * @see filems::FullWaveformWriter::setZipOutput
      */
     void setFullWaveformWriterZipOutput(bool const zipOutput);
+
+    // ***  FACADE PULSE WRITE METHODS  *** //
+    // ************************************ //
+    /**
+     * @brief Obtain the pulse writer of the write facade
+     * @return The pulse writer of the write facade
+     * @see FMSWriteFacade::pw
+     */
+    inline shared_ptr<VectorialPulseWriter> getPulseWriter() const
+    {return this->pw;}
+    /**
+     * @brief Set the pulse writer of the write facade
+     * @param pw New pulse writer for the write facade
+     * @see FMSWriteFacade::pw
+     */
+    inline void setPulseWriter(shared_ptr<VectorialPulseWriter> pw)
+    {this->pw = pw;}
+    /**
+     * @brief Check the pulse writer of the facade is valid to support
+     *  write methods. If it is not valid, an adequate exception will be
+     *  thrown.
+     * @see FMSWriteFacade::pw
+     */
+    void validatePulseWriter(
+        string const &callerName="FMSWriteFacade::validateWriteFacade",
+        string const &errorMsg="could not access PulseWriter"
+    ) const;
+    /**
+     * @see VectorialPulseWriter::writePulses
+     */
+    void writePulses(
+        vector<PulseRecord> const &pulses
+    );
+    /**
+     * @brief Write the pulses without validations (it is faster than its non
+     *  unsafe counterpart)
+     * @see VectorialPulseWriter::writePulsesUnsafe
+     */
+    inline void writePulsesUnsafe(
+        vector<PulseRecord> const &pulseRecords
+    ) const {pw->writePulsesUnsafe(pulseRecords);}
+    /**
+     * @see filems::HeliosWriter::finish
+     */
+    void finishPulseWriter();
+    /**
+     * @see filems::HeliosWriter::isZipOutput
+     */
+    bool isPulseWriterZipOutput() const;
+    /**
+     * @see filems::HeliosWriter::setZipOutput
+     */
+    bool setPulseWriterZipOutput(bool const zipOutput);
 };
 
     }}

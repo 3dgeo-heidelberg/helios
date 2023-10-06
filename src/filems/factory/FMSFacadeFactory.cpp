@@ -97,6 +97,10 @@ shared_ptr<FMSFacade> FMSFacadeFactory::buildFacade(
     fmsWrite.setFullWaveformWriter(make_shared<VectorialFullWaveformWriter>());
     fmsWrite.setFullWaveformWriterZipOutput(zipOutput);
 
+    // Configure pulse writer
+    fmsWrite.setPulseWriter(make_shared<VectorialPulseWriter>());
+    fmsWrite.setPulseWriterZipOutput(zipOutput);
+
     // Return
     return fms;
 }

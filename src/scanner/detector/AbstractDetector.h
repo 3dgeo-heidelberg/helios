@@ -8,6 +8,7 @@
 #include <Measurement.h>
 #include <util/PointcloudYielder.h>
 #include <util/FullWaveformYielder.h>
+#include <util/PulseRecordYielder.h>
 #include <adt/exprtree/UnivarExprTreeNode.h>
 
 namespace helios { namespace filems { class FMSFacade; }}
@@ -39,10 +40,13 @@ public:
 	 */
 	std::shared_ptr<PointcloudYielder> pcloudYielder = nullptr;
 	/**
-	 * @brief The full waveform yielder which handles full waveform building
-	 *  from full waveform data
+	 * @brief The full waveform yielder which handles full waveform output
 	 */
 	std::shared_ptr<FullWaveformYielder> fwfYielder = nullptr;
+    /**
+     * @brief The pulse record yielder which handles the pulse records output
+     */
+    std::shared_ptr<PulseRecordYielder> pulseRecordYielder = nullptr;
 
 	/**
 	 * @brief Detector accuracy in meters

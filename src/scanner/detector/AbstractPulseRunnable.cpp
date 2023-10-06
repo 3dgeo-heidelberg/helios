@@ -6,6 +6,7 @@
 #include <maths/EnergyMaths.h>
 
 #include "AbstractDetector.h"
+#include <scanner/PulseRecord.h>
 #include <filems/facade/FMSFacade.h>
 
 #include <glm/glm.hpp>
@@ -96,6 +97,17 @@ void AbstractPulseRunnable::capturePoint(
         (cycleMeasurements->end() - 1)->position += scene.getShift();
     }
     if(detector->pcloudYielder != nullptr) detector->pcloudYielder->push(m);
+}
+
+void AbstractPulseRunnable::capturePulse(glm::dvec3 const &beamDir){
+    if(detector->pulseRecordYielder != nullptr)
+        detector->pulseRecordYielder->push(PulseRecord(
+            pulse.getOrigin() + scene.getShiftRef(),    // Pulse's origin
+            beamDir,                                    // Pulse's direction
+            pulse.getTime(),                            // Pulse's time (ns)
+            pulse.getPulseNumber(),                     // Pulse index
+            pulse.getDeviceIndex()                      // Pulse device index
+        ));
 }
 
 void AbstractPulseRunnable::applyMeasurementErrorDirectly(
