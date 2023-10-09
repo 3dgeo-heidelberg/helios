@@ -17,8 +17,10 @@ public:
      * @param surveyPath Path to the survey file
      * @param assetsPath Path to the assets directory
      * @param outputPath  Path to the output directory
-     * @param writeWaveform Write wave form flag. True to enable write wave
-     *  form, false otherwise
+     * @param writeWaveform Write waveform flag. True to enable writing
+     *  waveforms, false otherwise
+     * @param writePulse Write pulse flag. True to enable writing pulses,
+     *  false otherwise
      * @param calcEchowidth Calc echo width flag. True to enable echo width
      *  computation, false otherwise
      * @param parallelizationStrategy Specify the parallelization strategy
@@ -58,6 +60,7 @@ public:
         std::string assetsPath,
         std::string outputPath,
         bool writeWaveform = false,
+        bool writePulse = false,
         bool calcEchowidth = false,
         int parallelizationStrategy = 0,
         size_t njobs = 0,

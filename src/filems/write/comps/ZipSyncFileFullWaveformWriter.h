@@ -29,7 +29,7 @@ public:
     // ************************************ //
     /**
      * @brief Simple synchronous zipped full waveform writer constructor
-     * @see filems:ZipSyncFileWriter::ZipSyncFileWriter
+     * @see filems::ZipSyncFileWriter::ZipSyncFileWriter
      */
     explicit ZipSyncFileFullWaveformWriter(
         string const &path,

@@ -143,6 +143,7 @@ int main(int argc, char** argv) {
             ap.parseAssetsPath(),
             ap.parseOutputPath(),
             ap.parseWriteWaveform(),
+            ap.parseWritePulse(),
             ap.parseCalcEchowidth(),
             ap.parseParallelizationStrategy(),
             ap.parseNJobs(),

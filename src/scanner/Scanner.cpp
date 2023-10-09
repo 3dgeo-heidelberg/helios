@@ -23,6 +23,7 @@ Scanner::Scanner(
     std::string const id,
     std::list<int> const &pulseFreqs,
     bool const writeWaveform,
+    bool const writePulse,
     bool const calcEchowidth,
     bool const fullWaveNoise,
     bool const platformNoiseDisabled
