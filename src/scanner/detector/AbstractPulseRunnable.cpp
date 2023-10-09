@@ -6,6 +6,7 @@
 #include <maths/EnergyMaths.h>
 
 #include "AbstractDetector.h"
+#include <scanner/PulseRecord.h>
 #include <filems/facade/FMSFacade.h>
 
 #include <glm/glm.hpp>
@@ -62,6 +63,10 @@ void AbstractPulseRunnable::capturePoint(
     std::mutex *allMeasurementsMutex,
     std::vector<Measurement> *cycleMeasurements,
     std::mutex *cycleMeasurementsMutex
+#if DATA_ANALYTICS >= 2
+   ,std::vector<double> &calcIntensityRecord,
+   std::shared_ptr<HDA_PulseRecorder> pulseRecorder
+#endif
 ) {
 	// Abort if point distance is below mininum scanner range:
 	// TODO Pending : This check is already done in FullWaveformPulseRunnable
@@ -77,6 +82,10 @@ void AbstractPulseRunnable::capturePoint(
 	// TODO Pending : Is it necessary to compute position again? Notice it is
     // known from ray intersection point at FullWaveformPulseRunnable
 	m.position = m.beamOrigin + m.beamDirection * m.distance;
+#if DATA_ANALYTICS >= 2
+    calcIntensityRecord[10] = 1;
+    pulseRecorder->recordIntensityCalculation(calcIntensityRecord);
+#endif
     if(allMeasurements != nullptr){
         std::unique_lock<std::mutex> lock(*allMeasurementsMutex);
         allMeasurements->push_back(m);
@@ -88,6 +97,17 @@ void AbstractPulseRunnable::capturePoint(
         (cycleMeasurements->end() - 1)->position += scene.getShift();
     }
     if(detector->pcloudYielder != nullptr) detector->pcloudYielder->push(m);
+}
+
+void AbstractPulseRunnable::capturePulse(glm::dvec3 const &beamDir){
+    if(detector->pulseRecordYielder != nullptr)
+        detector->pulseRecordYielder->push(PulseRecord(
+            pulse.getOrigin() + scene.getShiftRef(),    // Pulse's origin
+            beamDir,                                    // Pulse's direction
+            pulse.getTime(),                            // Pulse's time (ns)
+            pulse.getPulseNumber(),                     // Pulse index
+            pulse.getDeviceIndex()                      // Pulse device index
+        ));
 }
 
 void AbstractPulseRunnable::applyMeasurementErrorDirectly(

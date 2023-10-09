@@ -34,21 +34,9 @@ void HDA_SimStepRecorder::delayedRecord(){
     recordStochastic();
 }
 
+
 // ***  RECORDER METHODS  *** //
 // ************************** //
-void HDA_SimStepRecorder::validateOutDir(){
-    // Check directory exists
-    if(!boost::filesystem::exists(outdir)){
-        if(!boost::filesystem::create_directory(outdir)){
-            std::stringstream ss;
-            ss  << "HDA_SimStepRecorder::validateOutDir thrown an exception "
-                << "because the output directory does not exist and cannot be"
-                << "created.\noutdir: \"" << outdir << "\"";
-            throw HeliosException(ss.str());
-        }
-    }
-}
-
 bool HDA_SimStepRecorder::isAnyBufferOpen(){
     bool anyOpen = false;
     anyOpen |= platformPositionX->isOpen();
@@ -326,9 +314,16 @@ void HDA_SimStepRecorder::recordScanner(){
     scannerPositionZ->push(pos.z);
     // Record scanner angles
     double roll, pitch, yaw;
-    s.getHeadRelativeEmitterAttitude().getAngles(
-        &RotationOrder::XYZ, roll, pitch, yaw
-    );
+    try {
+        s.getHeadRelativeEmitterAttitude().getAngles(
+            &RotationOrder::XYZ, roll, pitch, yaw
+        );
+    }
+    catch(HeliosException &hex){
+        roll = std::numeric_limits<double>::quiet_NaN();
+        pitch = std::numeric_limits<double>::quiet_NaN();
+        yaw = std::numeric_limits<double>::quiet_NaN();
+    }
     scannerRoll->push(roll);
     scannerPitch->push(pitch);
     scannerYaw->push(yaw);
@@ -398,15 +393,18 @@ void HDA_SimStepRecorder::recordStochastic(){
 
     // Obtain parallel randomness generator
     RandomnessGenerator<double> *rg1Par = nullptr;
+    size_t nthreads = 0;
     WarehouseScanningPulseProcess * wspp =
         dynamic_cast<WarehouseScanningPulseProcess *>(spp);
     if(wspp != nullptr){
         rg1Par = wspp->pool.randGens;
+        nthreads = wspp->pool.getPoolSize();
     }
     else{
         BuddingScanningPulseProcess *bspp =
             dynamic_cast<BuddingScanningPulseProcess *>(spp);
         rg1Par = bspp->pool.randGens;
+        nthreads = wspp->pool.getPoolSize();
     }
 
     // Prepare fake pulse
@@ -434,23 +432,16 @@ void HDA_SimStepRecorder::recordStochastic(){
     }
 
     // Record parallel measurement error
-    for(size_t i = 0 ; i < N_SAMPLES ; ++i) {
-        err = ERR_BASE;
-        fwpr.applyMeasurementError(
-            *rg1Par, err, fakePulse.getOriginRef(), fakePulse.getOriginRef()
-        );
-        measErrPar->push(err-ERR_BASE);
+    if(nthreads > 0) {  // There is no parallelism for empty thread pools
+        for (size_t i = 0; i < N_SAMPLES; ++i) {
+            err = ERR_BASE;
+            fwpr.applyMeasurementError(
+                *rg1Par, err, fakePulse.getOriginRef(), fakePulse.getOriginRef()
+            );
+            measErrPar->push(err - ERR_BASE);
+        }
     }
-
-
 }
 
-std::string HDA_SimStepRecorder::craftOutputPath(std::string const &fname){
-    std::stringstream ss;
-    ss  << outdir
-        << boost::filesystem::path::preferred_separator
-        << fname;
-    return ss.str();
-}
 
 #endif

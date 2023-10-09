@@ -34,6 +34,7 @@ public:
         std::string const id,
         std::list<int> const &pulseFreqs,
         bool const writeWaveform=false,
+        bool const writePulse=false,
         bool const calcEchowidth=false,
         bool const fullWaveNoise=false,
         bool const platformNoiseDisabled=false
@@ -42,6 +43,7 @@ public:
             id,
             pulseFreqs,
             writeWaveform,
+            writePulse,
             calcEchowidth,
             fullWaveNoise,
             platformNoiseDisabled
@@ -157,20 +159,23 @@ public:
      */
     void computeSubrays(
         std::function<void(
-            vector<double> const &_tMinMax,
-            int const circleStep,
-            double const circleStep_rad,
-            Rotation &r1,
+            Rotation const &subrayRotation,
             double const divergenceAngle,
             NoiseSource<double> &intersectionHandlingNoiseSource,
             std::map<double, double> &reflections,
             vector<RaySceneIntersection> &intersects
+#if DATA_ANALYTICS >= 2
+           ,bool &subrayHit,
+            std::vector<double> &subraySimRecord
+#endif
         )> handleSubray,
-        vector<double> const &tMinMax,
         NoiseSource<double> &intersectionHandlingNoiseSource,
         std::map<double, double> &reflections,
         vector<RaySceneIntersection> &intersects,
         size_t const idx
+#if DATA_ANALYTICS >= 2
+       ,std::shared_ptr<HDA_PulseRecorder> pulseRecorder
+#endif
     ) override;
     /**
      * @see Scanner::initializeFullWaveform
@@ -196,6 +201,9 @@ public:
         double const targetArea,
         double const radius,
         size_t const idx
+#if DATA_ANALYTICS >= 2
+       ,std::vector<std::vector<double>> &calcIntensityRecords
+#endif
     ) const override;
     /**
      * @see Scanner::calcIntensity

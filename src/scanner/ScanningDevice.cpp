@@ -3,6 +3,10 @@
 #include <logging.hpp>
 #include <scanner/detector/AbstractDetector.h>
 #include <maths/EnergyMaths.h>
+#if DATA_ANALYTICS >= 2
+#include <dataanalytics/HDA_GlobalVars.h>
+using namespace helios::analytics;
+#endif
 
 // ***  CONSTRUCTION / DESTRUCTION  *** //
 // ************************************ //
@@ -80,6 +84,43 @@ ScanningDevice::ScanningDevice(ScanningDevice const &scdev){
 
 // ***  M E T H O D S  *** //
 // *********************** //
+void ScanningDevice::prepareSimulation(){
+    int const beamSampleQuality = FWF_settings.beamSampleQuality;
+    double const radiusStep_rad = beamDivergence_rad/beamSampleQuality;
+
+    // Outer loop over radius steps from beam center to outer edge
+    for (int radiusStep = 0; radiusStep < beamSampleQuality; radiusStep++){
+        double const subrayDivergenceAngle_rad = radiusStep * radiusStep_rad;
+
+        // Rotate subbeam into divergence step (towards outer rim of the beam cone):
+        Rotation r1 = Rotation(Directions::right, subrayDivergenceAngle_rad);
+
+        // Calculate circle step width:
+        int circleSteps = (int)(PI_2 * radiusStep);
+
+        // Make sure that central ray is not skipped:
+        if (circleSteps == 0) {
+            circleSteps = 1;
+        }
+
+        double const circleStep_rad = PI_2 / circleSteps;
+
+        // # Loop over sub-rays along the circle
+        for (int circleStep = 0; circleStep < circleSteps; circleStep++){
+            // Rotate around the circle
+            Rotation r2 = Rotation(
+                Directions::forward, circleStep_rad * circleStep
+            );
+            r2 = r2.applyTo(r1);
+            // Cache subray generation data
+            cached_subrayRotation.push_back(r2);
+            cached_subrayDivergenceAngle_rad.push_back(
+                subrayDivergenceAngle_rad
+            );
+        }
+    }
+}
+
 void ScanningDevice::configureBeam(){
     cached_Bt2 = beamDivergence_rad * beamDivergence_rad;
     beamWaistRadius = (beamQuality * wavelength_m) /
@@ -214,54 +255,50 @@ Rotation ScanningDevice::calcExactAbsoluteBeamAttitude(
 
 void ScanningDevice::computeSubrays(
     std::function<void(
-        std::vector<double> const &_tMinMax,
-        int const circleStep,
-        double const circleStep_rad,
-        Rotation &r1,
+        Rotation const &subrayRotation,
         double const divergenceAngle,
         NoiseSource<double> &intersectionHandlingNoiseSource,
         std::map<double, double> &reflections,
         vector<RaySceneIntersection> &intersects
+#if DATA_ANALYTICS >=2
+       ,bool &subrayHit,
+        std::vector<double> &subraySimRecord
+#endif
     )> handleSubray,
-    std::vector<double> const &tMinMax,
     NoiseSource<double> &intersectionHandlingNoiseSource,
     std::map<double, double> &reflections,
     std::vector<RaySceneIntersection> &intersects
+#if DATA_ANALYTICS >=2
+   ,std::shared_ptr<HDA_PulseRecorder> pulseRecorder
+#endif
 ){
-
-    int const beamSampleQuality = FWF_settings.beamSampleQuality;
-    double const radiusStep_rad = beamDivergence_rad/beamSampleQuality;
-
-    // Outer loop over radius steps from beam center to outer edge
-    for (int radiusStep = 0; radiusStep < beamSampleQuality; radiusStep++){
-        double const subrayDivergenceAngle_rad = radiusStep * radiusStep_rad;
-
-        // Rotate subbeam into divergence step (towards outer rim of the beam cone):
-        Rotation r1 = Rotation(Directions::right, subrayDivergenceAngle_rad);
-
-        // Calculate circle step width:
-        int circleSteps = (int)(PI_2 * radiusStep);
-
-        // Make sure that central ray is not skipped:
-        if (circleSteps == 0) {
-            circleSteps = 1;
-        }
-
-        double const circleStep_rad = PI_2 / circleSteps;
-
-        // # Loop over sub-rays along the circle
-        for (int circleStep = 0; circleStep < circleSteps; circleStep++){
-            handleSubray(
-                tMinMax,
-                circleStep,
-                circleStep_rad,
-                r1,
-                subrayDivergenceAngle_rad,
-                intersectionHandlingNoiseSource,
-                reflections,
-                intersects
-            );
-        }
+    size_t const numSubrays = cached_subrayRotation.size();
+    for(size_t i = 0 ; i < numSubrays ; ++i) {
+    #if DATA_ANALYTICS >=2
+        bool subrayHit;
+    #endif
+#if DATA_ANALYTICS >=2
+        std::vector<double> subraySimRecord(
+            14, std::numeric_limits<double>::quiet_NaN()
+        );
+#endif
+        handleSubray(
+            cached_subrayRotation[i],
+            cached_subrayDivergenceAngle_rad[i],
+            intersectionHandlingNoiseSource,
+            reflections,
+            intersects
+#if DATA_ANALYTICS >=2
+           ,subrayHit,
+            subraySimRecord
+#endif
+        );
+#if DATA_ANALYTICS >=2
+        HDA_GV.incrementGeneratedSubraysCount();
+        subraySimRecord[0] = (double) subrayHit;
+        subraySimRecord[1] = subrayDivergenceAngle_rad;
+        pulseRecorder->recordSubraySimulation(subraySimRecord);
+#endif
     }
 }
 
@@ -322,20 +359,33 @@ double ScanningDevice::calcIntensity(
     Material const &mat,
     double const targetArea,
     double const radius
+#if DATA_ANALYTICS >=2
+   ,std::vector<std::vector<double>> &calcIntensityRecords
+#endif
 ) const {
-    double bdrf = 0;
+    double bdrf = 0, sigma = 0;
     if(mat.isPhong()) {
         bdrf = mat.reflectance * EnergyMaths::phongBDRF(
             incidenceAngle,
             mat.specularity,
             mat.specularExponent
         );
+        sigma = EnergyMaths::calcCrossSection(
+            bdrf, targetArea, incidenceAngle
+        );
     }
     else if(mat.isLambert()){
         bdrf = mat.reflectance * std::cos(incidenceAngle);
+        sigma = EnergyMaths::calcCrossSection(
+            bdrf, targetArea, incidenceAngle
+        );
     }
     else if(mat.isUniform()){
         bdrf = mat.reflectance;
+        sigma = EnergyMaths::calcCrossSection(
+            bdrf, targetArea, incidenceAngle
+        );
+        if(sigma < 0) sigma = -sigma;
     }
     else{
         std::stringstream ss;
@@ -343,10 +393,7 @@ double ScanningDevice::calcIntensity(
             << mat.name << "\"";
         logging::ERR(ss.str());
     }
-    double const sigma = EnergyMaths::calcCrossSection(
-        bdrf, targetArea, incidenceAngle
-    );
-    return EnergyMaths::calcReceivedPower(
+    double const receivedPower = EnergyMaths::calcReceivedPower(
         averagePower_w,
         wavelength_m,
         targetRange,
@@ -359,6 +406,21 @@ double ScanningDevice::calcIntensity(
         atmosphericExtinction,
         sigma
     ) * 1000000000.0;
+#if DATA_ANALYTICS >= 2
+    std::vector<double> calcIntensityRecord(
+        11, std::numeric_limits<double>::quiet_NaN()
+    );
+    calcIntensityRecord[3] = incidenceAngle;
+    calcIntensityRecord[4] = targetRange;
+    calcIntensityRecord[5] = targetArea;
+    calcIntensityRecord[6] = radius;
+    calcIntensityRecord[7] = bdrf;
+    calcIntensityRecord[8] = sigma;
+    calcIntensityRecord[9] = receivedPower;
+    calcIntensityRecord[10] = 0; // By default, assume the point isn't captured
+    calcIntensityRecords.push_back(calcIntensityRecord);
+#endif
+    return receivedPower;
 }
 double ScanningDevice::calcIntensity(
     double const targetRange,

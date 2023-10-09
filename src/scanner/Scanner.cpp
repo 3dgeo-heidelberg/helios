@@ -23,6 +23,7 @@ Scanner::Scanner(
     std::string const id,
     std::list<int> const &pulseFreqs,
     bool const writeWaveform,
+    bool const writePulse,
     bool const calcEchowidth,
     bool const fullWaveNoise,
     bool const platformNoiseDisabled
@@ -403,6 +404,9 @@ void Scanner::buildScanningPulseProcess(
                 *randGen1,
                 *randGen2,
                 *intersectionHandlingNoiseSource
+#if DATA_ANALYTICS >= 2
+               ,pool->getPulseRecorder()
+#endif
             )
         );
     }
@@ -415,6 +419,9 @@ void Scanner::buildScanningPulseProcess(
                 *randGen1,
                 *randGen2,
                 *intersectionHandlingNoiseSource
+#if DATA_ANALYTICS >= 2
+               ,pool->getPulseRecorder()
+#endif
             )
         );
     }

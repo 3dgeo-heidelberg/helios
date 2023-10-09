@@ -45,7 +45,7 @@ def parse_args(helpf=print_help):
     if not validate_directory(dirout_path):
         raise Exception(
             'The directory "{d}"\n'
-            'was given as the third directory of records, but it is not valid'
+            'was given as the third directory for plots, but it is not valid'
         )
     return {
         'dira_path': dira_path,

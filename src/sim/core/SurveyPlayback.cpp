@@ -487,6 +487,7 @@ void SurveyPlayback::prepareOutput(){
     fms->write.configure(
         getLegOutputPrefix(),
         getScanner()->isWriteWaveform(),
+        getScanner()->isWritePulse(),
         lastLegInStrip
     );
 

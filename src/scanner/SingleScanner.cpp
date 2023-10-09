@@ -25,6 +25,7 @@ SingleScanner::SingleScanner(
     int const wavelength,
     std::shared_ptr<UnivarExprTreeNode<double>> rangeErrExpr,
     bool const writeWaveform,
+    bool const writePulse,
     bool const calcEchowidth,
     bool const fullWaveNoise,
     bool const platformNoiseDisabled
@@ -33,6 +34,7 @@ SingleScanner::SingleScanner(
         id,
         pulseFreqs,
         writeWaveform,
+        writePulse,
         calcEchowidth,
         fullWaveNoise,
         platformNoiseDisabled
@@ -104,6 +106,8 @@ void SingleScanner::prepareSimulation() {
             sh->setDeflectorAnglePtr(&pmbd->state_currentBeamAngle_rad);
         }
     }
+    // Prepare scanning device
+    scanDev.prepareSimulation();
 }
 void SingleScanner::onLegComplete(){
     // Call parent handler for on leg complete events
@@ -194,27 +198,32 @@ Rotation SingleScanner::calcAbsoluteBeamAttitude(size_t const idx) {
 }
 void SingleScanner::computeSubrays(
     std::function<void(
-        vector<double> const &_tMinMax,
-        int const circleStep,
-        double const circleStep_rad,
-        Rotation &r1,
+        Rotation const &subrayRotation,
         double const divergenceAngle,
         NoiseSource<double> &intersectionHandlingNoiseSource,
         std::map<double, double> &reflections,
         vector<RaySceneIntersection> &intersects
+#if DATA_ANALYTICS >= 2
+       ,bool &subrayHit,
+        std::vector<double> &subraySimRecord
+#endif
     )> handleSubray,
-    vector<double> const &tMinMax,
     NoiseSource<double> &intersectionHandlingNoiseSource,
     std::map<double, double> &reflections,
     vector<RaySceneIntersection> &intersects,
     size_t const idx
+#if DATA_ANALYTICS >= 2
+   ,std::shared_ptr<HDA_PulseRecorder> pulseRecorder
+#endif
 ){
     scanDev.computeSubrays(
         handleSubray,
-        tMinMax,
         intersectionHandlingNoiseSource,
         reflections,
         intersects
+#if DATA_ANALYTICS >= 2
+       ,pulseRecorder
+#endif
     );
 }
 
@@ -248,6 +257,9 @@ double SingleScanner::calcIntensity(
     double const targetArea,
     double const radius,
     size_t const idx
+#if DATA_ANALYTICS >= 2
+   ,std::vector<std::vector<double>> &calcIntensityRecords
+#endif
 ) const {
     return scanDev.calcIntensity(
         incidenceAngle,
@@ -255,6 +267,9 @@ double SingleScanner::calcIntensity(
         mat,
         targetArea,
         radius
+#if DATA_ANALYTICS >= 2
+       ,calcIntensityRecords
+#endif
     );
 }
 double SingleScanner::calcIntensity(

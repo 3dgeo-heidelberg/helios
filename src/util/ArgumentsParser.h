@@ -78,6 +78,11 @@ public:
      */
     bool parseWriteWaveform();
     /**
+     * @brief Parse the write pulse flag specification
+     * @return True if write pulse flag was enabled, False otherwise
+     */
+    bool parseWritePulse();
+    /**
      * @brief Parse the calc echo width flag specification
      * @return True if calc echo width flag was enabled, False otherwise
      */

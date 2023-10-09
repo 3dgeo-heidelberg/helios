@@ -37,5 +37,7 @@ void AbstractDetector::setFMS(std::shared_ptr<FMSFacade> fms) {
         pcloudYielder = std::make_shared<PointcloudYielder>(fms->write);
         if(scanner->isWriteWaveform()) fwfYielder =
             std::make_shared<FullWaveformYielder>(fms->write);
+        if(scanner->isWritePulse()) pulseRecordYielder =
+            std::make_shared<PulseRecordYielder>(fms->write);
     }
 }
