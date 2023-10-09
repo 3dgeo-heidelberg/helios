@@ -354,7 +354,7 @@ public:
     /**
      * @see filems::HeliosWriter::setZipOutput
      */
-    bool setPulseWriterZipOutput(bool const zipOutput);
+    void setPulseWriterZipOutput(bool const zipOutput);
 };
 
     }}

@@ -360,7 +360,7 @@ bool FMSWriteFacade::isPulseWriterZipOutput() const{
     return pw->isZipOutput();
 }
 
-bool FMSWriteFacade::setPulseWriterZipOutput(bool const zipOutput){
+void FMSWriteFacade::setPulseWriterZipOutput(bool const zipOutput){
     // Check it is possible to do the operation
     validatePulseWriter(
         "FMSWriteFacade::setPulseWriterZipOutput",
