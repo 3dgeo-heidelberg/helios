@@ -34,8 +34,16 @@ public:
     // ************************************ //
     /**
      * @brief Default constructor for BasicStaticGrove
+     * @param initTreesCapacity The initial capacity for the vector of trees.
+     *  When it can be determined reallocations can be avoided leading to better
+     *  performance. The initial capacity does not modify the initial size,
+     *  which will be zero no matter the capacity. The initial capacity just
+     *  allocates enough memory so the first inserted trees (as many as the
+     *  initTreesCapacity argument) do not require memory reallocation.
      */
-    BasicStaticGrove() = default;
+    BasicStaticGrove(size_t const initTreesCapacity=1) : trees(0) {
+        trees.reserve(initTreesCapacity);
+    }
     virtual ~BasicStaticGrove() = default;
 
     // ***  QUERY METHODS  *** //

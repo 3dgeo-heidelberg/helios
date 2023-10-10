@@ -48,8 +48,12 @@ public:
     // ************************************ //
     /**
      * @brief Default constructor for BasicDynGrove
+     * @param initTreesCapacity See the initTreesCapacity argument of
+     *  BasicStaticGrove::BasicStaticGrove
      */
-    BasicDynGrove() : BasicStaticGrove<Tree>() {}
+    BasicDynGrove(size_t const initTreesCapacity=1) :
+        BasicStaticGrove<Tree>(initTreesCapacity)
+    {}
     virtual ~BasicDynGrove() = default;
 
     // ***  OBSERVER METHODS  *** //

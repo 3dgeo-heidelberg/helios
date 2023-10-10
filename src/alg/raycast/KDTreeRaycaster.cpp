@@ -12,12 +12,6 @@ map<double, Primitive*> KDTreeRaycaster::searchAll(
 ) {
     // Prepare search
     KDTreeRaycasterSearch search(rayDir, rayOrigin, groundOnly);
-	search.rayDirArray.push_back(rayDir.x);
-	search.rayDirArray.push_back(rayDir.y);
-    search.rayDirArray.push_back(rayDir.z);
-	search.rayOriginArray.push_back(rayOrigin.x);
-	search.rayOriginArray.push_back(rayOrigin.y);
-	search.rayOriginArray.push_back(rayOrigin.z);
 
 	// Do recursive search
 	this->searchAll_recursive(this->root.get(), tmin, tmax, search);
@@ -35,12 +29,6 @@ RaySceneIntersection* KDTreeRaycaster::search(
 ){
     // Prepare search
     KDTreeRaycasterSearch search(rayDir, rayOrigin, groundOnly);
-	search.rayDirArray.push_back(rayDir.x);
-	search.rayDirArray.push_back(rayDir.y);
-	search.rayDirArray.push_back(rayDir.z);
-	search.rayOriginArray.push_back(rayOrigin.x);
-	search.rayOriginArray.push_back(rayOrigin.y);
-	search.rayOriginArray.push_back(rayOrigin.z);
 
 	// Do recursive search
 	Primitive* prim = this->search_recursive(
@@ -116,26 +104,26 @@ void KDTreeRaycaster::searchAll_recursive(
 		// ############ BEGIN Check ray direction to figure out through which sides the ray passes in which order ###########
 
 		// Case 1: Ray goes in positive direction - it passes through the left side first, then through the right:
-		if (search.rayDirArray[a] > 0) {
+		if (search.rayDir[a] > 0) {
 			first = node->left;
 			second = node->right;
 
-			thit = (node->splitPos - search.rayOriginArray[a]) /
-			    search.rayDirArray[a];
+			thit = (node->splitPos - search.rayOrigin[a]) /
+			    search.rayDir[a];
 		}
 		// Case 2: Ray goes in negative direction - it passes through the right side first, then through the left:
-		else if (search.rayDirArray[a] < 0) {
+		else if (search.rayDir[a] < 0) {
 			first = node->right;
 			second = node->left;
 
-			thit = (node->splitPos - search.rayOriginArray[a]) /
-                search.rayDirArray[a];
+			thit = (node->splitPos - search.rayOrigin[a]) /
+                search.rayDir[a];
 		}
 		// Case 3: Ray goes parallel to the split plane - it passes through only one side, depending on it's originWaypoint:
 		else {
-			first = (search.rayOriginArray[a] < node->splitPos) ?
+			first = (search.rayOrigin[a] < node->splitPos) ?
 			    node->left : node->right;
-			second = (search.rayOriginArray[a] < node->splitPos) ?
+			second = (search.rayOrigin[a] < node->splitPos) ?
 			    node->right : node->left;
 		}
 		// ############ END Check ray direction to figure out thorugh which sides the ray passes in which order ###########
@@ -226,26 +214,26 @@ Primitive* KDTreeRaycaster::search_recursive(
 		// ############ BEGIN Check ray direction to figure out thorugh which sides the ray passes in which order ###########
 
 		// Case 1: Ray goes in positive direction - it passes through the left side first, then through the right:
-		if (search.rayDirArray[a] > 0) {
+		if (search.rayDir[a] > 0) {
 			first = node->left;
 			second = node->right;
 
-			thit = (node->splitPos - search.rayOriginArray[a]) /
-			    search.rayDirArray[a];
+			thit = (node->splitPos - search.rayOrigin[a]) /
+			    search.rayDir[a];
 		}
 		// Case 2: Ray goes in negative direction - it passes through the right side first, then through the left:
-		else if (search.rayDirArray[a] < 0) {
+		else if (search.rayDir[a] < 0) {
 			first = node->right;
 			second = node->left;
 
-			thit = (node->splitPos - search.rayOriginArray[a]) /
-			    search.rayDirArray[a];
+			thit = (node->splitPos - search.rayOrigin[a]) /
+			    search.rayDir[a];
 		}
 		// Case 3: Ray goes parallel to the split plane - it passes through only one side, depending on it's originWaypoint:
 		else {
-			first = (search.rayOriginArray[a] < node->splitPos) ?
+			first = (search.rayOrigin[a] < node->splitPos) ?
 			    node->left : node->right;
-			second = (search.rayOriginArray[a] < node->splitPos) ?
+			second = (search.rayOrigin[a] < node->splitPos) ?
 			    node->right : node->left;
 		}
 		// ############ END Check ray direction to figure out thorugh which sides the ray passes in which order ###########

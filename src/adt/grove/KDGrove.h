@@ -32,9 +32,13 @@ public:
     // ************************************ //
     /**
      * @brief Default constructor for KDGrove
+     * @param initTreesCapacity See the initTreesCapacity argument of
+     *  BasicStaticGrove::BasicStaticGrove
      */
-    KDGrove() :
-        BasicDynGrove<GroveKDTreeRaycaster, DynMovingObject>(),
+    KDGrove(size_t const initTreesCapacity=1) :
+        BasicDynGrove<GroveKDTreeRaycaster, DynMovingObject>(
+            initTreesCapacity
+        ),
         stats(nullptr)
     {}
     virtual ~KDGrove() = default;
