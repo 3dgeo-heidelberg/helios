@@ -51,7 +51,7 @@ void KDGroveFactory::handleKDGroveStats(
         KDTreeNodeRoot *root = (KDTreeNodeRoot *)
             kdgrove->getTreePointer(i)->root.get();
         // Count dynamic and static trees
-        if(root->isDynamic()) ++(stats.numDynTrees);
+        if(kdgrove->getSubjects()[i] != nullptr) ++(stats.numDynTrees);
         else ++(stats.numStaticTrees);
         // Handle min/max statistics
         if(i==0){ // Init value for min/max
