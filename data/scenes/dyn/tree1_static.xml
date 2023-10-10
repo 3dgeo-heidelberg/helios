@@ -1,0 +1,2214 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+    <scene id="tree1" name="Dynamic scene"  >
+        
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.001.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.008.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.009.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.011.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.012.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.013.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.015.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.019.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.020.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.021.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.024.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.027.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.029.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.030.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.033.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.035.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.036.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.038.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.039.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.047.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.048.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.056.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.058.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.061.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.062.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.064.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.065.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.066.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.067.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.068.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.069.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.070.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.073.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.074.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.075.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.077.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.079.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.082.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.089.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.090.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.091.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.094.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.095.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.097.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.099.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.101.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.104.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.106.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.107.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.109.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.110.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.111.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.113.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.114.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.115.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.116.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.120.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.121.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.122.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.126.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.127.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.131.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.134.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.135.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.138.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.139.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.141.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.142.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.143.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.144.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.145.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.148.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.149.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.150.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.151.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.152.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.156.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.157.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.159.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.160.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.162.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.165.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.169.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.170.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.173.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.174.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.177.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.178.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.179.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.181.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.182.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.184.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.185.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.186.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.188.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.190.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.191.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.192.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.193.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.194.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.195.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.197.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.198.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.201.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.202.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.204.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.205.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.207.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.208.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.209.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.211.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.212.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.213.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.214.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.216.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.217.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.218.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.220.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.224.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.225.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.228.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.230.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.239.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.248.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.252.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.254.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.256.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.258.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.260.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.261.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.262.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.265.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.268.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.270.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.271.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.272.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.273.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.274.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/tree.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.002.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.003.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.004.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.005.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.006.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.007.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.010.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.014.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.016.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.017.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.018.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.022.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.023.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.025.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.026.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.028.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.031.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.032.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.034.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.037.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.040.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.041.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.042.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.043.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.044.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.045.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.046.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.049.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.050.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.051.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.052.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.053.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.054.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.055.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.057.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.059.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.060.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.063.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.071.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.072.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.076.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.078.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.080.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.081.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.083.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.084.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.085.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.086.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.087.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.088.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.092.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.093.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.096.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.098.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.100.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.102.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.103.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.105.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.108.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.112.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.117.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.118.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.119.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.123.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.124.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.125.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.128.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.129.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.130.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.132.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.133.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.136.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.137.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.140.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.146.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.147.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.153.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.154.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.155.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.158.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.161.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.163.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.164.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.166.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.167.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.168.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.171.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.172.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.175.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.176.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.180.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.183.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.187.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.189.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.196.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.199.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.200.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.203.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.206.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.210.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.215.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.219.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.221.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.222.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.223.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.226.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.227.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.229.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.231.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.232.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.233.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.234.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.235.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.236.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.237.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.238.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.240.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.241.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.242.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.243.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.244.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.245.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.246.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.247.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.249.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.250.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.251.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.253.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.255.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.257.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.259.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.263.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.264.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.266.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.267.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+        <part   >
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/tree1/leaves.269.obj" />
+                <param type="string" key="up" value="z" />
+            </filter>
+            
+            
+        </part>
+    </scene>
+</document>
