@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+    <document>
+        <scannerSettings id="tls" active="true" pulseFreq_hz="600000" verticalResolution_deg="0.04" horizontalResolution_deg="0.04"/>
+        <survey name="tls_tree1_dyn" platform="data/platforms.xml#tripod" scanner="data/scanners_tls.xml#riegl_vz400" scene="data/scenes/dyn/tree1_dyn.xml#tree1">
+            <leg>
+            <platformSettings x="3.0000" y="0.0000" z="0" onGround="true"/>
+            <scannerSettings template="tls" headRotateStart_deg="45.0000" headRotateStop_deg="135.0000" trajectoryTimeInterval_s="0.05"/>
+        </leg>
+        <leg>
+            <platformSettings x="1.5000" y="2.5981" z="0" onGround="true"/>
+            <scannerSettings template="tls" headRotateStart_deg="105.0000" headRotateStop_deg="195.0000" trajectoryTimeInterval_s="0.05"/>
+        </leg>
+        <leg>
+            <platformSettings x="-1.5000" y="2.5981" z="0" onGround="true"/>
+            <scannerSettings template="tls" headRotateStart_deg="-195.0000" headRotateStop_deg="-105.0000" trajectoryTimeInterval_s="0.05"/>
+        </leg>
+        <leg>
+            <platformSettings x="-3.0000" y="0.0000" z="0" onGround="true"/>
+            <scannerSettings template="tls" headRotateStart_deg="-135.0000" headRotateStop_deg="-45.0000" trajectoryTimeInterval_s="0.05"/>
+        </leg>
+        <leg>
+            <platformSettings x="-1.5000" y="-2.5981" z="0" onGround="true"/>
+            <scannerSettings template="tls" headRotateStart_deg="-75.0000" headRotateStop_deg="15.0000" trajectoryTimeInterval_s="0.05"/>
+        </leg>
+        <leg>
+            <platformSettings x="1.5000" y="-2.5981" z="0" onGround="true"/>
+            <scannerSettings template="tls" headRotateStart_deg="-15.0000" headRotateStop_deg="75.0000" trajectoryTimeInterval_s="0.05"/>
+        </leg>
+        
+        </survey>
+    </document>
+    
