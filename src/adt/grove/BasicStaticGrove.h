@@ -75,6 +75,9 @@ public:
      * @see StaticGrove::removeAll
      */
     void removeAll() override;
+    /**
+     * @see StaticGrove::replaceTree
+     */
     void replaceTree(size_t const index, std::shared_ptr<Tree> tree) override;
 
     // ***  FOR LOOP METHODS  *** //
