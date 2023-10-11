@@ -110,12 +110,4 @@ public:
             }
         }
     }
-
-    // ***  GETTERs and SETTERs  *** //
-    // ***************************** //
-    /**
-     * @brief Check whether the KDTree is dynamic (true) or not (false)
-     * @return True if KDTree is dynamic, false otherwise
-     */
-    virtual bool isDynamic() const {return false;}
 };

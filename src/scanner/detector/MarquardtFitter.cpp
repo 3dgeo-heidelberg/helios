@@ -8,22 +8,22 @@
 
 using namespace std;
 
-double MarquardtFitter::evaluate(const vector<double> & values, const vector<double> & params) {
-	double A = params[0];
-	double B = params[1];
-	double C = params[2];
-	double D = params[3];
-	double x = values[0];
-	return A + B * std::exp(-std::pow(((x - C) / D), 2));
+double MarquardtFitter::evaluate(const double x, const vector<double> & params) {
+	double const A = params[0];
+	double const B = params[1];
+	double const C = params[2];
+	double const D = params[3];
+    double const u = (x-C)/D;
+	return A + B * std::exp(-u*u);
 }
 
 /*
-*      Sets the values of of the original data points that are going to be fit.
+*      Sets the values of the original data points that are going to be fit.
 */
 void MarquardtFitter::setData(const vector<double> & zvalues) {
 	X.resize(zvalues.size());
 	for (size_t i = 0; i < zvalues.size(); i++) {
-		X[i].resize(1, i);
+		X[i] = i;
 	}
 
 	Z = zvalues;
@@ -38,42 +38,45 @@ void MarquardtFitter::setParameters(const vector<double> & parameters) {
 double MarquardtFitter::calculateErrors() {
 	double new_error = 0;
 	for (size_t i = 0; i < Z.size(); i++) {
-		double v = evaluate(X[i], A);
+		double const v = evaluate(X[i], A);
 		ERR[i] = Z[i] - v;
-		new_error += pow(ERR[i], 2);
+		new_error += ERR[i]*ERR[i];
 	}
 	return new_error;
 }
 
-double MarquardtFitter::calculateDerivative(int k, vector<double> & x, vector<double> & params) {
+double MarquardtFitter::calculateDerivative(
+    int const k, const double x, vector<double> & params
+) {
     // Hybrid derivative
     if(k==0){ // Use analytical derivative as it is faster for k[0], a
         return 1;
     }
     else if(k==1){ // Use analytical derivative as it is faster for k[1], b
-        return std::exp(-std::pow((x[0]-params[2])/params[3], 2));
+        double const u = (x-params[2])/params[3];
+        return std::exp(-u*u);
     }
 
     // Use numerical derivative as it is faster for other cases
-    double b, a;
 	params[k] -= DELTA;
-	b = evaluate(x, params);
+	double const b = evaluate(x, params);
 	params[k] += 2 * DELTA;
-	a = evaluate(x, params);
+	double const a = evaluate(x, params);
 	params[k] -= DELTA;
 	return (a - b) / (2 * DELTA);
 }
 
 void MarquardtFitter::calculateDerivativeFast(
-    double x,
-    double c,
-    double d,
-    double coefficient,
+    double const x,
+    double const c,
+    double const d,
+    double const coefficient,
     std::vector<double>& dvec
 ){
-    double x_c = (x-c);
-    double db = std::exp(-std::pow((x-c)/d, 2));
-    double dc = db*coefficient*x_c;
+    double const x_c = (x-c);
+    double const u = (x-c)/d;
+    double const db = std::exp(-u*u);
+    double const dc = db*coefficient*x_c;
 
     dvec[0] = 1.0;
     dvec[1] = db;
@@ -98,13 +101,13 @@ void MarquardtFitter::calculateDerivativesFast(){
     vector<double> working = A;
 
     // Precompute params
-    double c = working[2];
-    double d = working[3];
-    double coefficient = 2*working[1]/(d*d);
+    double const c = working[2];
+    double const d = working[3];
+    double const coefficient = 2*working[1]/(d*d);
 
     // Compute derivative using precomputed params
     for(size_t i = 0 ; i < Z.size() ; i++){
-        calculateDerivativeFast(X[i][0], c, d, coefficient, DERIVATIVES[i]);
+        calculateDerivativeFast(X[i], c, d, coefficient, DERIVATIVES[i]);
     }
 }
 
