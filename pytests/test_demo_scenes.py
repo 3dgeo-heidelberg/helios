@@ -120,9 +120,9 @@ def test_arbaro_tls_pyh():
 
 def eval_arbaro_tls(dirname):
     assert (dirname / 'leg000_points.las').exists()
-    assert abs((dirname / 'leg000_points.las').stat().st_size - 21_656_853) < MAX_DIFFERENCE_BYTES
+    assert abs((dirname / 'leg000_points.las').stat().st_size - 21_755_791) < MAX_DIFFERENCE_BYTES
     assert (dirname / 'leg001_points.las').exists()
-    assert abs((dirname / 'leg001_points.las').stat().st_size - 13_908_757) < MAX_DIFFERENCE_BYTES
+    assert abs((dirname / 'leg001_points.las').stat().st_size - 13_936_877) < MAX_DIFFERENCE_BYTES
     with open(dirname / 'leg000_trajectory.txt', 'r') as f:
         line = f.readline()
         assert line.startswith('1.0000 25.5000 0.0000')
@@ -205,7 +205,7 @@ def test_xyzVoxels_tls_pyh():
 
 def eval_xyzVoxels_tls(dirname):
     assert (dirname / 'leg000_points.las').exists()
-    assert abs((dirname / 'leg000_points.las').stat().st_size - 19_342_873) < MAX_DIFFERENCE_BYTES
+    assert abs((dirname / 'leg000_points.las').stat().st_size - 19_287_965) < MAX_DIFFERENCE_BYTES
     # clean up
     if DELETE_FILES_AFTER:
         shutil.rmtree(dirname)
@@ -231,7 +231,7 @@ def test_interpolated_traj_pyh():
 def eval_interpolated_traj(dirname):
     assert (dirname / 'leg000_points.laz').exists()
     assert (dirname / 'leg000_trajectory.txt').exists()
-    assert abs((dirname / 'leg000_points.laz').stat().st_size - 873_554) < MAX_DIFFERENCE_BYTES
+    assert abs((dirname / 'leg000_points.laz').stat().st_size - 875_054) < MAX_DIFFERENCE_BYTES
     with open(dirname / 'leg000_trajectory.txt', 'r') as f:
         for _ in range(3):
             next(f)

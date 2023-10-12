@@ -7,6 +7,9 @@ class Measurement;
 #include "LasSpecification.h"
 class Scanner;
 #include <scanner/SimulatedPulse.h>
+#if DATA_ANALYTICS >= 2
+#include <dataanalytics/HDA_PulseRecorder.h>
+#endif
 
 
 #include <mutex>
@@ -90,7 +93,30 @@ public:
         std::mutex *allMeasurementsMutex,
         std::vector<Measurement> *cycleMeasurements,
         std::mutex *cycleMeasurementsMutex
+#if DATA_ANALYTICS >= 2
+       ,std::vector<double> &calcIntensityRecord,
+        std::shared_ptr<HDA_PulseRecorder> pulseRecorder
+#endif
     );
+    /**
+     * @brief Write the given pulse to the corresponding output file.
+     *
+     * Each pulse is represented as a vector such that:
+     *
+     * [0] -> Ray's origin (x coordinate)
+     * [1] -> Ray's origin (y coordinate)
+     * [2] -> Ray's origin (z coordinate)
+     * [3] -> Ray's director vector (x component)
+     * [4] -> Ray's director vector (y component)
+     * [5] -> Ray's director vector (z component)
+     * [6] -> Pulse time
+     * [7] -> Device index
+     * [8] -> Ray index
+     *
+     * @param beamDir The direction of the beam/ray (central ray wrt subrays)
+     *  corresponding to the pulse.
+     */
+    void capturePulse(glm::dvec3 const &beamDir);
 
 	/**
 	 * @brief Apply error to received measurement

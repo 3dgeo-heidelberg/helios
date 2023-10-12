@@ -27,6 +27,7 @@ void LidarSim::init(
     std::string assetsPath,
     std::string outputPath,
     bool writeWaveform,
+    bool writePulse,
     bool calcEchowidth,
     int parallelizationStrategy,
     size_t njobs,
@@ -54,6 +55,7 @@ void LidarSim::init(
 	    << "assetsPath: \"" << assetsPath << "\"\n"
 	    << "outputPath: \"" << outputPath << "\"\n"
 	    << "writeWaveform: " << writeWaveform << "\n"
+        << "writePulse: " << writePulse << "\n"
         << "calcEchowidth: " << calcEchowidth << "\n"
 	    << "fullWaveNoise: " << fullWaveNoise << "\n"
 	    << "splitByChannel: " << splitByChannel << "\n"
@@ -94,6 +96,7 @@ void LidarSim::init(
 
     // Configure scanner from input arguments
 	survey->scanner->setWriteWaveform(writeWaveform);
+    survey->scanner->setWritePulse(writePulse);
 	survey->scanner->setCalcEchowidth(calcEchowidth);
 	survey->scanner->setFullWaveNoise(fullWaveNoise);
 	survey->scanner->setPlatformNoiseDisabled(platformNoiseDisabled);

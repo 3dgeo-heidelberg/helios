@@ -18,13 +18,15 @@ void AbstractDetector::_clone(std::shared_ptr<AbstractDetector> ad){
 // ***  M E T H O D S  *** //
 // *********************** //
 void AbstractDetector::shutdown() {
-    fms->write.finishMeasurementWriter();
-    fms->write.finishTrajectoryWriter();
-    if(scanner->isWriteWaveform()) fms->write.finishFullWaveformWriter();
+    if(fms != nullptr) {
+        fms->write.finishMeasurementWriter();
+        fms->write.finishTrajectoryWriter();
+        if (scanner->isWriteWaveform()) fms->write.finishFullWaveformWriter();
+    }
 }
 void AbstractDetector::onLegComplete(){
-    pcloudYielder->yield();
-    if(scanner->isWriteWaveform()) fwfYielder->yield();
+    if(pcloudYielder != nullptr) pcloudYielder->yield();
+    if(fwfYielder != nullptr && scanner->isWriteWaveform())fwfYielder->yield();
 }
 
 // ***  GETTERs and SETTERs  *** //
@@ -35,5 +37,7 @@ void AbstractDetector::setFMS(std::shared_ptr<FMSFacade> fms) {
         pcloudYielder = std::make_shared<PointcloudYielder>(fms->write);
         if(scanner->isWriteWaveform()) fwfYielder =
             std::make_shared<FullWaveformYielder>(fms->write);
+        if(scanner->isWritePulse()) pulseRecordYielder =
+            std::make_shared<PulseRecordYielder>(fms->write);
     }
 }

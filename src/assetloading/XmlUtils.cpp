@@ -507,3 +507,4 @@ void XmlUtils::assertDocumentForAssetLoading(
         throw HeliosException(ss.str());
     }
 }
+

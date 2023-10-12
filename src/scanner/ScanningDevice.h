@@ -7,9 +7,15 @@
 #include <scanner/FWFSettings.h>
 #include <scanner/SimulatedPulse.h>
 #include <scanner/beamDeflector/AbstractBeamDeflector.h>
+#include <scene/Scene.h>
 class AbstractDetector;
 #include <scene/RaySceneIntersection.h>
 #include <noise/NoiseSource.h>
+#include <adt/exprtree/UnivarExprTreeNode.h>
+#if DATA_ANALYTICS >= 2
+#include <dataanalytics/HDA_PulseRecorder.h>
+using helios::analytics::HDA_PulseRecorder;
+#endif
 
 #include <glm/glm.hpp>
 
@@ -152,6 +158,18 @@ protected:
      */
     std::vector<double> time_wave;
 
+    /**
+     * @brief The expression tree to compute range errors as a function of
+     *  vertical angle \f$\thneta\f$
+     *
+     * \f[
+     *  \Delta r(\theta)
+     * \f]
+     *
+     * @see UnivarExprTreeNode
+     */
+    std::shared_ptr<UnivarExprTreeNode<double>> rangeErrExpr = nullptr;
+
     // ***  STATE ATTRIBUTES  *** //
     // ************************** //
     /**
@@ -159,7 +177,6 @@ protected:
 	 */
     int state_currentPulseNumber = 0;
 
-protected:
     /**
 	 * @brief Flag specifying if last pulse was hit (true) or not (false)
 	 */
@@ -188,6 +205,15 @@ public:
 	 * @see ScanningDevice::beamDivergence_rad
 	 */
     double cached_Bt2;
+    /**
+     * @brief The rotation representing the subray divergence wrt to the
+     *  central ray.
+     */
+    std::vector<Rotation> cached_subrayRotation;
+    /**
+     * @brief The divergence angle for each subray.
+     */
+    std::vector<double> cached_subrayDivergenceAngle_rad;
 
 public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //
@@ -208,7 +234,8 @@ public:
         double const efficiency,
         double const receiverDiameter_m,
         double const atmosphericVisibility_km,
-        double const wavelength_m
+        double const wavelength_m,
+        std::shared_ptr<UnivarExprTreeNode<double>> rangeErrExpr=nullptr
     );
     /**
      * @brief Copy constructor for the ScanningDevice
@@ -219,6 +246,14 @@ public:
 
     // ***  M E T H O D S  *** //
     // *********************** //
+    /**
+     * @brief Prepare the scanning device to deal with the simulation.
+     *
+     * For example, data related to the subray generation process will be
+     *  cached to avoid redundant operations.
+     */
+    void prepareSimulation();
+
     /**
      * @brief Configure beam related attributes. It is recommended to
      *  reconfigure beam attributes always that beam divergence, beam quality
@@ -268,26 +303,37 @@ public:
      * @return The absolute beam attitude of the scanning device with respect
      *  to given absolute platform attitude
      */
-    Rotation calcAbsoluteBeamAttitude(Rotation platformAttitude);
+    Rotation calcAbsoluteBeamAttitude(Rotation const &platformAttitude);
+    /**
+     * @brief Compute the exact absolute beam attitude (which means ignoring
+     *  the mechanical errors).
+     * @return The exact absolute beam attitude (no mechanical errors) of the
+     *  scanning device with respect to given absolute platform attitude.
+     * @see ScanningDevice::calcAbsoluteBeamAttitude
+     */
+    Rotation calcExactAbsoluteBeamAttitude(Rotation const &platformAttitude);
 
     /**
      * @see Scanner::computeSubrays
      */
     void computeSubrays(
         std::function<void(
-            std::vector<double> const &_tMinMax,
-            int const circleStep,
-            double const circleStep_rad,
-            Rotation &r1,
+            Rotation const &subrayRotation,
             double const divergenceAngle,
             NoiseSource<double> &intersectionHandlingNoiseSource,
             std::map<double, double> &reflections,
             vector<RaySceneIntersection> &intersects
+#if DATA_ANALYTICS >= 2
+           ,bool &subrayHit,
+            std::vector<double> &subraySimRecord
+#endif
         )> handleSubray,
-        std::vector<double> const &tMinMax,
         NoiseSource<double> &intersectionHandlingNoiseSource,
         std::map<double, double> &reflections,
         std::vector<RaySceneIntersection> &intersects
+#if DATA_ANALYTICS >= 2
+       ,std::shared_ptr<HDA_PulseRecorder> pulseRecorder
+#endif
     );
     /**
      * @see Scanner::initializeFullWaveform
@@ -353,11 +399,12 @@ public:
     double calcIntensity(
         double const incidenceAngle,
         double const targetRange,
-        double const targetReflectivity,
-        double const targetSpecularity,
-        double const targetSpecularExponent,
+        Material const &mat,
         double const targetArea,
         double const radius
+#if DATA_ANALYTICS >= 2
+       ,std::vector<std::vector<double>> &calcIntensityRecords
+#endif
     ) const;
 
     /**
@@ -370,9 +417,21 @@ public:
         double const radius,
         double const sigma
     ) const;
+
     int calcTimePropagation(
         std::vector<double> &timeWave
     );
+
+    /**
+     * @brief Evaluate the expression tree modeling the mechanical range error
+     * @return Mechanical range error term
+     * @see ScanningDevice::rangeErrExpr
+     */
+    inline double evalRangeErrorExpression(){
+        return rangeErrExpr->eval(
+            beamDeflector->getCurrentExactBeamAngle()
+        );
+    }
 
 
     // ***  GETTERs and SETTERs  *** //
@@ -421,6 +480,47 @@ public:
      */
     inline void setFWFSettings(std::shared_ptr<FWFSettings> FWF_settings)
     {this->FWF_settings = *FWF_settings;}
-
+    /**
+     * @brief Check whether the scanning device simulates mechanical errors
+     *  (true) or not (false).
+     *
+     * A scanning device is said to simulate mechanical errors if at least
+     *  one of its components (e.g., head or deflector) simulates mechanical
+     *  errors. This includes the mechanical range error expression tree
+     *  handled directly by the scanning device.
+     *
+     * @return True if the scanning device simulates mechanical errors,
+     *  false otherwise.
+     *
+     * @see ScannerHead::hasMechanicalError
+     * @see AbstractBeamDeflector::hasMechanicalError
+     * @see SimulatedPulse::mechanicalError
+     * @see ScanningDevice::hasMechanicalRangeError
+     */
+    inline bool hasMechanicalError(){
+        return scannerHead->hasMechanicalError() ||
+            beamDeflector->hasMechanicalError() ||
+            hasMechanicalRangeErrorExpression();
+    }
+    /**
+     * @brief Check whether the scanning device models mechanical range errors
+     *  with an expression tree (true) or not (false).
+     *
+     * A scanning device is said to model mechanical range errors with an
+     *  expression tree if it has an associated expression tree for range
+     *  errors (i.e., non-null pointer).
+     *
+     * NOTE the expression tree for mechanical range errors is enough to
+     *  consider that the scanning device has mechanical errors.
+     *
+     * @return True if the scanning device models mechanical range errors with
+     *  an expression tree, False otherwise.
+     *
+     * @see ScanningDevice::hasMechanicalError
+     * @see ScanningDevice::rangeErrExpr
+     */
+    inline bool hasMechanicalRangeErrorExpression(){
+        return rangeErrExpr != nullptr;
+    }
 
 };

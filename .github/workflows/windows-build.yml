@@ -118,13 +118,13 @@ jobs:
         id: downloadzlib
         name: Download zlib
         with:
-          url: "https://www.zlib.net/zlib1213.zip"
-          target: lib/boost/zlib1213.zip
+          url: "https://github.com/madler/zlib/releases/download/v1.3/zlib13.zip"
+          target: lib/boost/zlib13.zip
 
       - name: Extract zlib
         working-directory: ${{env.GITHUB_WORKSPACE}}
         run: |
-          7z x lib/boost/zlib1213.zip -olib/boost
+          7z x lib/boost/zlib13.zip -olib/boost
 
       - name: Build Boost
         if: steps.cache-boost.outputs.cache-hit != 'true'
@@ -133,7 +133,7 @@ jobs:
           Get-Content ${{env.USER_CONFIG}}
           cd lib/boost
           cmd.exe /c 'bootstrap.bat'
-          .\b2.exe --user-config=${{env.USER_CONFIG}} -j6 -sNO_ZLIB=0 -sZLIB_INCLUDE="zlib-1.2.13" -sZLIB_SOURCE="zlib-1.2.13" address-model=64 link=static python="3.6","3.7","3.8","3.9","3.10"
+          .\b2.exe --user-config=${{env.USER_CONFIG}} -j6 -sNO_ZLIB=0 -sZLIB_INCLUDE="zlib-1.3" -sZLIB_SOURCE="zlib-1.3" address-model=64 link=static python="3.6","3.7","3.8","3.9","3.10"
           
 
   build-libs:
@@ -204,7 +204,7 @@ jobs:
         id: downloadgdal1
         name: Download GDAL (1/2)
         with:
-          url: "https://build2.gisinternals.com/sdk/downloads/release-1916-x64-gdal-3-5-1-mapserver-7-6-4-libs.zip"
+          url: "https://download.gisinternals.com/sdk/downloads/release-1928-x64-gdal-3-5-3-mapserver-8-0-0-libs.zip"
           target: lib/gdal.zip
 
 

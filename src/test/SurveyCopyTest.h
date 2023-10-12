@@ -54,6 +54,7 @@ bool SurveyCopyTest::run(){
         0.7,
         0.8,
         100,
+        nullptr,
         false,
         false,
         false,

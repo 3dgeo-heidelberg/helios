@@ -232,7 +232,11 @@ public:
 	 * @brief Prepare the platform to deal with simulation
 	 * @param simFrequency_hz Simulation frequency the platform will work with
 	 */
-	virtual void prepareSimulation(int simFrequency_hz) {updateStaticCache();}
+	virtual void prepareSimulation(int simFrequency_hz) {
+        this->cached_absoluteMountAttitude = this->getDirectionalAttitude()
+            .applyTo(this->cfg_device_relativeMountAttitude);
+        updateStaticCache();
+    }
 	/**
 	 * @brief Prepare the platform to deal with the next leg
 	 * @param simFrequency_hz Simulation frequency the platform will work with

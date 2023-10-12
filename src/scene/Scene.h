@@ -177,10 +177,10 @@ public:
      */
     void registerParts();
     /**
-     * @brief Obtain the axis aligned bounding box defining scene boundaries
-     * @see Scene::bbox
+     * @brief Prepare the scene to deal with the simulation.
+     * @param simFrequency_hz Simulation frequency the scene will work with.
      */
-    std::shared_ptr<AABB> getAABB();
+    virtual void prepareSimulation(int const simFrequency_hz) {}
     /**
      * @brief Obtain the ground point at specified XY coordinates
      * @param point Point definint the XY coordinates for which the ground
@@ -382,6 +382,12 @@ public:
 
     // ***  GETTERs and SETTERs  *** //
     // ***************************** //
+    /**
+     * @brief Obtain the axis aligned bounding box defining scene boundaries
+     * @see Scene::bbox
+     */
+    std::shared_ptr<AABB> getAABB();
+
     virtual inline std::shared_ptr<KDGroveRaycaster> const &getRaycaster()
     const {return raycaster;}
     /**

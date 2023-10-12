@@ -87,7 +87,7 @@
                                                     <xs:complexType>
                                                         <xs:simpleContent>
                                                             <xs:extension base="xs:string">
-                                                                <xs:attribute type="xs:byte" name="angle_deg" use="optional"/>
+                                                                <xs:attribute type="xs:float" name="angle_deg" use="optional"/>
                                                                 <xs:attribute type="axisType" name="axis" use="optional"/>
                                                             </xs:extension>
                                                         </xs:simpleContent>
@@ -127,15 +127,19 @@
                         </xs:element>
                     </xs:sequence>
                     <xs:attribute type="xs:string" name="id" use="optional"/>
-                    <xs:attribute type="xs:string" name="dynStep" use="optional"/>
-                    <xs:attribute type="xs:string" name="kdtDynStep" use="optional"/>
+                    <xs:attribute type="xs:int" name="dynStep" use="optional"/>
+                    <xs:attribute type="xs:int" name="kdtDynStep" use="optional"/>
+                    <xs:attribute type="xs:float" name="dynTimeStep" use="optional"/>
+                    <xs:attribute type="xs:float" name="kdtDynTimeStep" use="optional"/>
                 </xs:complexType>
             </xs:element>
         </xs:sequence>
         <xs:attribute type="xs:string" name="id" use="required"/>
         <xs:attribute type="xs:string" name="name" use="optional"/>
-        <xs:attribute type="xs:string" name="dynStep" use="optional"/>
-        <xs:attribute type="xs:string" name="kdtDynStep" use="optional"/>
+        <xs:attribute type="xs:int" name="dynStep" use="optional"/>
+        <xs:attribute type="xs:int" name="kdtDynStep" use="optional"/>
+        <xs:attribute type="xs:float" name="dynTimeStep" use="optional"/>
+        <xs:attribute type="xs:float" name="kdtDynTimeStep" use="optional"/>
     </xs:complexType>
 
     <xs:element name="document">

@@ -1,6 +1,8 @@
 #include <scanner/SingleScanner.h>
 #include <scanner/detector/AbstractDetector.h>
 #include <maths/WaveMaths.h>
+#include <scanner/EvalScannerHead.h>
+#include <scanner/beamDeflector/evaluable/EvalPolygonMirrorBeamDeflector.h>
 
 #ifdef PYTHON_BINDING
 #include "PyDetectorWrapper.h"
@@ -21,7 +23,9 @@ SingleScanner::SingleScanner(
     double const receiverDiameter,
     double const atmosphericVisibility,
     int const wavelength,
+    std::shared_ptr<UnivarExprTreeNode<double>> rangeErrExpr,
     bool const writeWaveform,
+    bool const writePulse,
     bool const calcEchowidth,
     bool const fullWaveNoise,
     bool const platformNoiseDisabled
@@ -30,6 +34,7 @@ SingleScanner::SingleScanner(
         id,
         pulseFreqs,
         writeWaveform,
+        writePulse,
         calcEchowidth,
         fullWaveNoise,
         platformNoiseDisabled
@@ -47,7 +52,8 @@ SingleScanner::SingleScanner(
         efficiency,
         receiverDiameter,
         atmosphericVisibility,
-        wavelength  / 1000000000.0
+        wavelength  / 1000000000.0,
+        rangeErrExpr
     )
 {
     // Report scanner state through logging system
@@ -78,6 +84,31 @@ void SingleScanner::_clone(Scanner &sc) const{
 
 // ***  SIM STEP UTILS  *** //
 // ************************ //
+void SingleScanner::prepareSimulation() {
+    // Link the deflector angle with the evaluable scanner head
+    std::shared_ptr<EvalScannerHead> sh =
+        std::dynamic_pointer_cast<EvalScannerHead>(getScannerHead(0));
+    std::shared_ptr<PolygonMirrorBeamDeflector> pmbd =
+        std::dynamic_pointer_cast<PolygonMirrorBeamDeflector>(
+            getBeamDeflector(0)
+        );
+    if(sh != nullptr && pmbd != nullptr){
+        std::shared_ptr<EvalPolygonMirrorBeamDeflector> epmbd =
+            std::dynamic_pointer_cast<EvalPolygonMirrorBeamDeflector>(
+                pmbd
+            );
+        if(epmbd != nullptr){
+            sh->setDeflectorAnglePtr(
+                &epmbd->state_currentExactBeamAngle_rad
+            );
+        }
+        else{
+            sh->setDeflectorAnglePtr(&pmbd->state_currentBeamAngle_rad);
+        }
+    }
+    // Prepare scanning device
+    scanDev.prepareSimulation();
+}
 void SingleScanner::onLegComplete(){
     // Call parent handler for on leg complete events
     Scanner::onLegComplete();
@@ -167,27 +198,32 @@ Rotation SingleScanner::calcAbsoluteBeamAttitude(size_t const idx) {
 }
 void SingleScanner::computeSubrays(
     std::function<void(
-        vector<double> const &_tMinMax,
-        int const circleStep,
-        double const circleStep_rad,
-        Rotation &r1,
+        Rotation const &subrayRotation,
         double const divergenceAngle,
         NoiseSource<double> &intersectionHandlingNoiseSource,
         std::map<double, double> &reflections,
         vector<RaySceneIntersection> &intersects
+#if DATA_ANALYTICS >= 2
+       ,bool &subrayHit,
+        std::vector<double> &subraySimRecord
+#endif
     )> handleSubray,
-    vector<double> const &tMinMax,
     NoiseSource<double> &intersectionHandlingNoiseSource,
     std::map<double, double> &reflections,
     vector<RaySceneIntersection> &intersects,
     size_t const idx
+#if DATA_ANALYTICS >= 2
+   ,std::shared_ptr<HDA_PulseRecorder> pulseRecorder
+#endif
 ){
     scanDev.computeSubrays(
         handleSubray,
-        tMinMax,
         intersectionHandlingNoiseSource,
         reflections,
         intersects
+#if DATA_ANALYTICS >= 2
+       ,pulseRecorder
+#endif
     );
 }
 
@@ -217,21 +253,23 @@ bool SingleScanner::initializeFullWaveform(
 double SingleScanner::calcIntensity(
     double const incidenceAngle,
     double const targetRange,
-    double const targetReflectivity,
-    double const targetSpecularity,
-    double const targetSpecularExponent,
+    Material const &mat,
     double const targetArea,
     double const radius,
     size_t const idx
+#if DATA_ANALYTICS >= 2
+   ,std::vector<std::vector<double>> &calcIntensityRecords
+#endif
 ) const {
     return scanDev.calcIntensity(
         incidenceAngle,
         targetRange,
-        targetReflectivity,
-        targetSpecularity,
-        targetSpecularExponent,
+        mat,
         targetArea,
         radius
+#if DATA_ANALYTICS >= 2
+       ,calcIntensityRecords
+#endif
     );
 }
 double SingleScanner::calcIntensity(

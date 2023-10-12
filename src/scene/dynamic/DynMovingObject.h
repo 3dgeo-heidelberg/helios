@@ -118,19 +118,26 @@ protected:
     std::shared_ptr<KDGrove> kdGroveObserver;
     /**
      * @brief The identifier of the dynamic moving object as subject of a
-     *  KDGrove
+     *  KDGrove.
      * @see DynMovingObject::kdGroveObserver
      */
     size_t groveSubjectId;
     /**
      * @brief Handle how many consecutive updates must elapse so the
-     *  observer is notified
+     *  observer is notified.
      * @see DynMovingObject::kdGroveObserver
      * @see DynMovingObject::doObserverUpdate
      * @see DynMovingObject::getObserverStepInterval
      * @see DynMovingObject::setObserverStepInterval
      */
     VoidStepLoop<> observerStepLoop;
+    /**
+     * @brief The dynamic time step for the observer (i.e., dynamic KDT).
+     *  It will be NaN when not given.
+     * @see DynScene::dynTimeStep
+     * @see DynObject::dynTimeStep
+     */
+    double observerDynTimeStep = std::numeric_limits<double>::quiet_NaN();
 
 public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //
@@ -140,7 +147,8 @@ public:
      */
     DynMovingObject() :
         DynObject(),
-        observerStepLoop(1, [&] () -> void {doObserverUpdate();})
+        observerStepLoop(1, [&] () -> void {doObserverUpdate();}),
+        observerDynTimeStep(std::numeric_limits<double>::quiet_NaN())
     {}
     /**
      * @see DynObject::DynObject(ScenePart const &, bool const)
@@ -148,7 +156,8 @@ public:
     DynMovingObject(ScenePart const &sp, bool const shallowPrimitives=false) :
         DynObject(sp, shallowPrimitives),
         kdGroveObserver(nullptr),
-        observerStepLoop(1, [&] () -> void {doObserverUpdate();})
+        observerStepLoop(1, [&] () -> void {doObserverUpdate();}),
+        observerDynTimeStep(std::numeric_limits<double>::quiet_NaN())
     {}
     /**
      * @see DynObject::DynObject(string const)
@@ -156,7 +165,8 @@ public:
     DynMovingObject(string const id) :
         DynObject(id),
         kdGroveObserver(nullptr),
-        observerStepLoop(1, [&] () -> void {doObserverUpdate();})
+        observerStepLoop(1, [&] () -> void {doObserverUpdate();}),
+        observerDynTimeStep(std::numeric_limits<double>::quiet_NaN())
     {}
     /**
      * @see DynObject::DynObject(vector<Primitive *> const &)
@@ -164,7 +174,8 @@ public:
     DynMovingObject(vector<Primitive *> const &primitives) :
         DynObject(primitives),
         kdGroveObserver(nullptr),
-        observerStepLoop(1, [&] () -> void {doObserverUpdate();})
+        observerStepLoop(1, [&] () -> void {doObserverUpdate();}),
+        observerDynTimeStep(std::numeric_limits<double>::quiet_NaN())
     {}
     /**
      * @see DynObject::DynObject(string const, vector<Primitive *> const &)
@@ -172,7 +183,8 @@ public:
     DynMovingObject(string const id, vector<Primitive *> const &primitives) :
         DynObject(id, primitives),
         kdGroveObserver(nullptr),
-        observerStepLoop(1, [&] () -> void {doObserverUpdate();})
+        observerStepLoop(1, [&] () -> void {doObserverUpdate();}),
+        observerDynTimeStep(std::numeric_limits<double>::quiet_NaN())
     {}
     virtual ~DynMovingObject() = default;
 
@@ -367,4 +379,29 @@ public:
      */
     inline int getObserverStepInterval() const
     {return observerStepLoop.getStepInterval();}
+
+    /**
+     * @brief Get the dynamic time step of the observer. Note it is not taken
+     *  from the observer step loop, instead it represents a user-given
+     *  parameter that must be used to configure the observerStepLoop.
+     * @return The dynamic time step of the observer.
+     * @see DynMovingObject::observerDynTimeStep
+     * @see DynMovingObject::setObserverDynTimeStep
+     * @see DynMovingObject::observerStepLoop
+     */
+    inline double getObserverDynTimeStep() const
+    {return observerDynTimeStep;}
+    /**
+     * @brief Set the dynamic time step of the observer. Note it does not
+     *  modify the observer step loop. The observerDynTimeStep attribute
+     *  simply represents a user-given parameter. Setting it will not
+     *  automatically update the observerStepLoop.
+     * @param dynTimeStep The new dynamic time step for the observer.
+     * @see DynMovingObject::observerDynTimeStep
+     * @see DynMovingObject::getObserverDynTimeStep
+     * @see DynMovingObject::observerStepLoop
+     */
+    inline void setObserverDynTimeStep(double const dynTimeStep)
+    {observerDynTimeStep = dynTimeStep;}
+
 };

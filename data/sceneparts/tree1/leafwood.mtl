@@ -1,0 +1,15 @@
+# Blender3D MTL File:
+# Material Count: 2
+newmtl Leaves
+Ka 0.05 0.4 0.05
+Kd 0.05 0.4 0.05
+Ks 0.5 0.5 0.5
+helios_classification 1
+
+
+newmtl TrunkAndBranches
+Ka 0.2 0.2 0.05
+Kd 0.2 0.2 0.05
+Ks 0 0 0
+helios_classification 0
+

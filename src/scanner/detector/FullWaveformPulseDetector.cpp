@@ -38,5 +38,6 @@ void FullWaveformPulseDetector::applySettings(shared_ptr<ScannerSettings> & sett
 
 void FullWaveformPulseDetector::shutdown() {
 	AbstractDetector::shutdown();
-	if(scanner->isWriteWaveform()) fms->write.finishFullWaveformWriter();
+	if(fms != nullptr && scanner->isWriteWaveform())
+        fms->write.finishFullWaveformWriter();
 }

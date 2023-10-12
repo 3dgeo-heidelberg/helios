@@ -39,7 +39,9 @@ public:
         double const receiverDiameter,
         double const atmosphericVisibility,
         int const wavelength,
+        std::shared_ptr<UnivarExprTreeNode<double>> rangeErrExpr = nullptr,
         bool const writeWaveform = false,
+        bool const writePulse = false,
         bool const calcEchowidth = false,
         bool const fullWaveNoise = false,
         bool const platformNoiseDisabled = false
@@ -73,6 +75,10 @@ public:
 
     // ***   M E T H O D S   *** //
     // ************************* //
+    /**
+     * @see Scanner::prepareSimulation
+     */
+    void prepareSimulation() override;
     /**
      * @see Scanner::applySettings
      */
@@ -125,20 +131,23 @@ public:
      */
     void computeSubrays(
         std::function<void(
-            vector<double> const &_tMinMax,
-            int const circleStep,
-            double const circleStep_rad,
-            Rotation &r1,
+            Rotation const &subrayRotation,
             double const divergenceAngle,
             NoiseSource<double> &intersectionHandlingNoiseSource,
             std::map<double, double> &reflections,
             vector<RaySceneIntersection> &intersects
+#if DATA_ANALYTICS >= 2
+           ,bool &subrayHit,
+            std::vector<double> &subraySimRecord
+#endif
         )> handleSubray,
-        vector<double> const &tMinMax,
         NoiseSource<double> &intersectionHandlingNoiseSource,
         std::map<double, double> &reflections,
         vector<RaySceneIntersection> &intersects,
         size_t const idx
+#if DATA_ANALYTICS >= 2
+       ,std::shared_ptr<HDA_PulseRecorder> pulseRecorder
+#endif
     ) override;
     /**
      * @see Scanner::initializeFullWaveform
@@ -160,12 +169,13 @@ public:
     double calcIntensity(
         double const incidenceAngle,
         double const targetRange,
-        double const targetReflectivity,
-        double const targetSpecularity,
-        double const targetSpecularExponent,
+        Material const &mat,
         double const targetArea,
         double const radius,
         size_t const idx
+#if DATA_ANALYTICS >= 2
+       ,std::vector<std::vector<double>> &calcIntensityRecords
+#endif
     ) const override;
     /**
      * @see Scanner::calcIntensity
