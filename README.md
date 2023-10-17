@@ -26,8 +26,6 @@ We have also published two papers on HELIOS++. If you use HELIOS++ in a scientif
 
 - General description of the framework:
 > Winiwarter, L., Esmorís Pena, A., Weiser, H., Anders, K., Martínez Sanchez, J., Searle, M., Höfle, B. (2022): **Virtual laser scanning with HELIOS++: A novel take on ray tracing-based simulation of topographic full-waveform 3D laser scanning**. _Remote Sensing of Environment_, 269, doi:10.1016/j.rse.2021.112772
-- High performance computing:
-> Esmorís, A. M., Yermo, M., Weiser, H., Winiwarter, L., Höfle, B., Rivera, F. F. (2022): **Virtual LiDAR Simulation as a High Performance Computing Challenge: Toward HPC HELIOS++**. _IEEE Access_, 10, doi:10.1109/ACCESS.2022.3211072
 
 BibTeX:
 ```
@@ -44,6 +42,10 @@ keywords = {Software, LiDAR simulation, Point cloud, Data generation, Voxel, Veg
 } 
 ```
 
+- High performance computing:
+> Esmorís, A. M., Yermo, M., Weiser, H., Winiwarter, L., Höfle, B., Rivera, F. F. (2022): **Virtual LiDAR Simulation as a High Performance Computing Challenge: Toward HPC HELIOS++**. _IEEE Access_, 10, doi:10.1109/ACCESS.2022.3211072
+
+BibTeX:
 ```
 @Article{Esmoris2022_HPC-HELIOS,
   author={Esmorís, Alberto M. and Yermo, Miguel and Weiser, Hannah and Winiwarter, Lukas and Höfle, Bernhard and Rivera, Francisco F.},
@@ -233,7 +235,7 @@ run\helios.exe data/surveys/demo/tls_arbaro_demo.xml
 ```
 
 
-## 🛠 Building from source
+## 🛠 Building from Source
 
 Build instructions for advanced users and developers are available [here](BUILDME.md).
 
@@ -253,9 +255,13 @@ python pyhelios_demo\helios.py data\surveys\toyblocks\als_toyblocks.xml
 ```
 to run a demo survey including visualisation.
 
+## :film_strip: Blender Add-ons
+
+Our two Blender add-ons allow you to export animated Blender scenes to HELIOS++, providing an interface to probably the most popular free and open source 3D software. `dyn_b2h` exports a Blender animation to a dynamic HELIOS++ scene with rigid motions, while `multi_epoch_b2h` exports static snapshots of the animation, creating a time series of HELIOS++ scenes. The add-ons include exporting scene part OBJ files and writing scene XML files, and can also be used for static scenes. Download the add-ons from the [GitHub repo](https://github.com/3dgeo-heidelberg/dyn_b2h) and get started!
+
 ## :earth_africa: QGIS Plugin
 
-Our QGIS Plugin AEOS, embeds HELIOS++ into one of the most widely used GIS applications. It enables the creation of HELIOS++ surveys using QGIS vector and raster layers and the subsequent execution of the surveys, with direct availability of the results in the form of a QGIS point cloud layer. Crucially, it allows for instant visualisation of both the input and output of a HELIOS++ simulation within a familiar user interface, thereby greatly improving ease of use. In Greek mythology, Aeos is the name of one of the four horses that pulls Helios' fiery chariot accross the sky. Feel free to download AEOS from its own [GitHub repo](https://github.com/3dgeo-heidelberg/aeos) and add it to your arsenal of QGIS plugins now!
+Our QGIS Plugin AEOS embeds HELIOS++ into one of the most widely used GIS applications. It enables the creation of HELIOS++ surveys using QGIS vector and raster layers and the subsequent execution of the surveys, with direct availability of the results in the form of a QGIS point cloud layer. Crucially, it allows for instant visualisation of both the input and output of a HELIOS++ simulation within a familiar user interface, thereby greatly improving ease of use. In Greek mythology, Aeos is the name of one of the four horses that pulls Helios' fiery chariot accross the sky. Feel free to download AEOS from its own [GitHub repo](https://github.com/3dgeo-heidelberg/aeos) and add it to your arsenal of QGIS plugins now!
 
 ## 📜 License
 
