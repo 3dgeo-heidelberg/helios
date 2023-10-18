@@ -31,6 +31,7 @@ nav:
 - 'XML definitions':
     - 'Survey': 'Survey.md'
     - 'Scene': 'Scene.md'
+    - 'Dynamic scene': 'Dynamic-scenes.md'
     - 'Scanner': 'Scanners.md'
     - 'Platform': 'Platforms.md'
 - 'Random errors': 'Error-sources-and-randomness-control.md'
@@ -45,7 +46,6 @@ nav:
     - 'Scene generation - external tools': 'Supplementary-tools-for-scene-generation.md'
     - 'Visualising the simulation': 'Visualising-the-simulation.md'
     - 'Tutorial videos': 'Tutorial-videos.md'
-    - 'Beta: Dynamic scenes': 'Dynamic-scenes.md'
 - 'Change log': 'Change-log.md'
 - 'References':
     - 'Research using HELIOS': 'Research-using-HELIOS.md'
