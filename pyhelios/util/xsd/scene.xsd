@@ -83,7 +83,7 @@
                                     <xs:element name="param" maxOccurs="unbounded" minOccurs="1">
                                         <xs:complexType>
                                             <xs:sequence>
-                                                <xs:element name="rot" minOccurs="0">
+                                                <xs:element name="rot" minOccurs="0" maxOccurs="3">
                                                     <xs:complexType>
                                                         <xs:simpleContent>
                                                             <xs:extension base="xs:string">
@@ -117,6 +117,7 @@
                                             <xs:attribute type="vector" name="ortho" use="optional"/>
                                             <xs:attribute type="vector" name="shift" use="optional"/>
                                             <xs:attribute type="xs:boolean" name="selfMode" use="optional"/>
+                                            <xs:attribute type="xs:float" name="autoCRS" use="optional"/>
                                         </xs:complexType>
                                     </xs:element>
                                 </xs:sequence>
