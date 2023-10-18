@@ -23,8 +23,6 @@ valgrind.xml
 *.temp
 *.lock
 *.exe
-*.pyd
-*.pyc
 libhelios.so
 pyhelios.so
 helios
