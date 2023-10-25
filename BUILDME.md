@@ -147,7 +147,7 @@ If you are using a custom Python installation, we must provide GDAL its executab
 - ```apt install libgl1-mesa-dev```
 - ```pip3 install open3d```
 
-Note: The PyHelios scripts can be executed which whatever version of Python3 you want to use.
+Note: The PyHelios scripts can be executed with whatever version of Python3 you want to use.
 
 ### Helios project configuration and compilation
 

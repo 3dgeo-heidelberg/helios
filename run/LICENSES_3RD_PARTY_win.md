@@ -7,10 +7,10 @@ HELIOS++ development team <helios@uni-heidelberg.de>.
 License texts follow below the list of third-party software.
 
 Below follows a list of software, license, links to download the source code, and the respective DLLs:
-* scilab (GPLv2, https://www.scilab.org/download/6.1.0)
+* scilab (GPLv2, https://www.scilab.org/download/scilab-6.1.1)
   * `api_scilab.dll`
-  * `blasplus.dll`
   * `ast.dll`
+  * `blasplus.dll`
   * `boolean.dll`
   * `boolean_gw.dll`
   * `cacsd.dll`
@@ -45,13 +45,13 @@ Below follows a list of software, license, links to download the source code, an
   * `integer_gw.dll`
   * `io.dll`
   * `io_gw.dll`
+  * `lapack.dll`
+  * `libcurl.dll`
   * `libifcoremd.dll`
   * `libintl.dll`
   * `libiomp5md.dll`
   * `libjvm.dll`
   * `libmmd.dll`
-  * `lapack.dll`
-  * `libcurl.dll`
   * `libxml2.dll`
   * `linear_algebra.dll`
   * `linear_algebra_f.dll`
@@ -92,17 +92,27 @@ Below follows a list of software, license, links to download the source code, an
   * `string_gw.dll`
   * `szip.dll`
   * `tcl85.dll`
-  
+  * `tclsci.dll`
+  * `threads.dll`
+  * `time.dll`
+  * `time_gw.dll`
+  * `tk85.dll`
+  * `windows_tools.dll`
+  * `xml.dll`
+  * `zlib.dll`
+  * `zlib1.dll`
+
 * GDAL (MIT, https://gdal.org/download.html, https://anaconda.org/conda-forge/gdal) 
   via OSGEO4W (https://download.osgeo.org/osgeo4w/v2/) and GISInternals (http://download.gisinternals.com/release.php)
   * `expat.dll`
   * `freexl.dll`
-  * `gdal300.dll`
+  * `gdal304.dll`
   * `geos.dll`
   * `geos_c.dll`
   * `iconv.dll`
   * `iconv-2.dll`
   * `libcrypto-1_1-x64.dll`
+  * `libexpat.dll`
   * `liblzma.dll`
   * `libmysql.dll`
   * `libpng16.dll`
@@ -113,21 +123,111 @@ Below follows a list of software, license, links to download the source code, an
   * `ogdi.dll`
   * `openjp2.dll`
   * `proj_6_3.dll`
+  * `proj_7_2.dll`
   * `spatialite.dll`
   * `sqlite3.dll`
+  * `tiff.dll`
   * `xerces-c_3_2.dll`
   * `zstd.dll`
 
  
-* Python (Python license, https://www.python.org/) 
+* Python (PSF License Agreement, https://www.python.org/) 
   * `python36.dll`
   * `python37.dll`
   * `python38.dll`
   * `python39.dll`
+  * `python310.dll`
 
-### License text for scilab:
+
+## License texts
+```
+-----------------------------------------------------------------------------
+                              MIT License
+        applies to: 
+        - GDAL/OGR/OSGeo4W
+            https://github.com/OSGeo/gdal
+            https://gdal.org/
+-----------------------------------------------------------------------------
+Permission is hereby granted, free of charge, to any person obtaining a
+copy of this software and associated documentation files (the "Software"),
+to deal in the Software without restriction, including without limitation
+the rights to use, copy, modify, merge, publish, distribute, sublicense,
+and/or sell copies of the Software, and to permit persons to whom the
+Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included
+in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+DEALINGS IN THE SOFTWARE.
+```
+```
+-----------------------------------------------------------------------------
+             PSF (Python Software Foundation) License Agreement
+        applies to: 
+        - Python 3.6, 3.7. 3.8, 3.9, and 3.10
+           (below license text for Python 3.8.17)
+           https://www.python.org/
+            
+-----------------------------------------------------------------------------
+1. This LICENSE AGREEMENT is between the Python Software Foundation ("PSF"), and
+   the Individual or Organization ("Licensee") accessing and otherwise using Python
+   3.8.17 software in source or binary form and its associated documentation.
+
+2. Subject to the terms and conditions of this License Agreement, PSF hereby
+   grants Licensee a nonexclusive, royalty-free, world-wide license to reproduce,
+   analyze, test, perform and/or display publicly, prepare derivative works,
+   distribute, and otherwise use Python 3.8.17 alone or in any derivative
+   version, provided, however, that PSF's License Agreement and PSF's notice of
+   copyright, i.e., "Copyright © 2001-2023 Python Software Foundation; All Rights
+   Reserved" are retained in Python 3.8.17 alone or in any derivative version
+   prepared by Licensee.
+
+3. In the event Licensee prepares a derivative work that is based on or
+   incorporates Python 3.8.17 or any part thereof, and wants to make the
+   derivative work available to others as provided herein, then Licensee hereby
+   agrees to include in any such work a brief summary of the changes made to Python
+   3.8.17.
+
+4. PSF is making Python 3.8.17 available to Licensee on an "AS IS" basis.
+   PSF MAKES NO REPRESENTATIONS OR WARRANTIES, EXPRESS OR IMPLIED.  BY WAY OF
+   EXAMPLE, BUT NOT LIMITATION, PSF MAKES NO AND DISCLAIMS ANY REPRESENTATION OR
+   WARRANTY OF MERCHANTABILITY OR FITNESS FOR ANY PARTICULAR PURPOSE OR THAT THE
+   USE OF PYTHON 3.8.17 WILL NOT INFRINGE ANY THIRD PARTY RIGHTS.
+
+5. PSF SHALL NOT BE LIABLE TO LICENSEE OR ANY OTHER USERS OF PYTHON 3.8.17
+   FOR ANY INCIDENTAL, SPECIAL, OR CONSEQUENTIAL DAMAGES OR LOSS AS A RESULT OF
+   MODIFYING, DISTRIBUTING, OR OTHERWISE USING PYTHON 3.8.17, OR ANY DERIVATIVE
+   THEREOF, EVEN IF ADVISED OF THE POSSIBILITY THEREOF.
+
+6. This License Agreement will automatically terminate upon a material breach of
+   its terms and conditions.
+
+7. Nothing in this License Agreement shall be deemed to create any relationship
+   of agency, partnership, or joint venture between PSF and Licensee.  This License
+   Agreement does not grant permission to use PSF trademarks or trade name in a
+   trademark sense to endorse or promote products or services of Licensee, or any
+   third party.
+
+8. By copying, installing or otherwise using Python 3.8.17, Licensee agrees
+   to be bound by the terms and conditions of this License Agreement.
 
 ```
+
+```
+-----------------------------------------------------------------------------
+                    License Note for scilab
+        applies to: 
+        - scilab,
+            https://www.scilab.org/download/scilab-6.1.1
+            https://www.scilab.org/software/scilab
+            https://gitlab.com/scilab/scilab/
+-----------------------------------------------------------------------------
 Scilab is a free software, and starting with version 6.0.0 beta 1, is 
 released under the terms of the GNU General Public License (GPL) v2.0,
 which you can find below.
@@ -153,11 +253,16 @@ in the COPYING-BSD file.
 
 Scilab is also using some codes with other licenses. Please see 
 SCI/modules/*/license.txt for details.
-
-
-====
-
-
+```
+```
+-----------------------------------------------------------------------------
+                    GNU LESSER GENERAL PUBLIC LICENSE 2.1
+        applies to: 
+        - scilab,
+            https://www.scilab.org/download/scilab-6.1.1
+            https://www.scilab.org/software/scilab
+            https://gitlab.com/scilab/scilab/
+-----------------------------------------------------------------------------
                     GNU GENERAL PUBLIC LICENSE
                        Version 2, June 1991
 
@@ -498,8 +603,16 @@ consider it more useful to permit linking proprietary applications with the
 library.  If this is what you want to do, use the GNU Lesser General
 Public License instead of this License.
 
-
-
+```
+```
+-----------------------------------------------------------------------------
+                  CeCILL FREE SOFTWARE LICENSE AGREEMENT
+        applies to: 
+        - scilab,
+            https://www.scilab.org/download/scilab-6.1.1
+            https://www.scilab.org/software/scilab
+            https://gitlab.com/scilab/scilab/
+-----------------------------------------------------------------------------
 ====
 
 
@@ -1022,73 +1135,6 @@ disagreements or disputes shall be referred to the Paris Courts having
 jurisdiction, by the more diligent Party.
 ```
 
-
-### License text for GDAL/OSGeo4W:
-```
-Copyright (c) [multiple years] [multiple copyright holders]
-
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
-```
-### License text for GISInternals Suite: 
-```
-Copyright (c) 2020, Tamas Szekeres
-
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
-```
-### License text for Python: 
-```
-PSF LICENSE AGREEMENT FOR PYTHON 3.9.6
-
-1. This LICENSE AGREEMENT is between the Python Software Foundation ("PSF"), and
-   the Individual or Organization ("Licensee") accessing and otherwise using Python
-   3.9.6 software in source or binary form and its associated documentation.
-
-2. Subject to the terms and conditions of this License Agreement, PSF hereby
-   grants Licensee a nonexclusive, royalty-free, world-wide license to reproduce,
-   analyze, test, perform and/or display publicly, prepare derivative works,
-   distribute, and otherwise use Python 3.9.6 alone or in any derivative
-   version, provided, however, that PSF's License Agreement and PSF's notice of
-   copyright, i.e., "Copyright © 2001-2021 Python Software Foundation; All Rights
-   Reserved" are retained in Python 3.9.6 alone or in any derivative version
-   prepared by Licensee.
-
-3. In the event Licensee prepares a derivative work that is based on or
-   incorporates Python 3.9.6 or any part thereof, and wants to make the
-   derivative work available to others as provided herein, then Licensee hereby
-   agrees to include in any such work a brief summary of the changes made to Python
-   3.9.6.
-
-4. PSF is making Python 3.9.6 available to Licensee on an "AS IS" basis.
-   PSF MAKES NO REPRESENTATIONS OR WARRANTIES, EXPRESS OR IMPLIED.  BY WAY OF
-   EXAMPLE, BUT NOT LIMITATION, PSF MAKES NO AND DISCLAIMS ANY REPRESENTATION OR
-   WARRANTY OF MERCHANTABILITY OR FITNESS FOR ANY PARTICULAR PURPOSE OR THAT THE
-   USE OF PYTHON 3.9.6 WILL NOT INFRINGE ANY THIRD PARTY RIGHTS.
-
-5. PSF SHALL NOT BE LIABLE TO LICENSEE OR ANY OTHER USERS OF PYTHON 3.9.6
-   FOR ANY INCIDENTAL, SPECIAL, OR CONSEQUENTIAL DAMAGES OR LOSS AS A RESULT OF
-   MODIFYING, DISTRIBUTING, OR OTHERWISE USING PYTHON 3.9.6, OR ANY DERIVATIVE
-   THEREOF, EVEN IF ADVISED OF THE POSSIBILITY THEREOF.
-
-6. This License Agreement will automatically terminate upon a material breach of
-   its terms and conditions.
-
-7. Nothing in this License Agreement shall be deemed to create any relationship
-   of agency, partnership, or joint venture between PSF and Licensee.  This License
-   Agreement does not grant permission to use PSF trademarks or trade name in a
-   trademark sense to endorse or promote products or services of Licensee, or any
-   third party.
-
-8. By copying, installing or otherwise using Python 3.9.6, Licensee agrees
-   to be bound by the terms and conditions of this License Agreement.
-```
 
 ### Other external libraries
 

@@ -2,7 +2,7 @@
 <document>
     <scannerSettings id="scaset" active="true" pulseFreq_hz="180000" scanFreq_hz="100"/>
 
-    <survey name="box_interpolation" scene="data/scenes/demo/box_scene.xml#box_scene" platform="interpolated" basePlatform="data\platforms.xml#sr22" scanner="data/scanners_als.xml#riegl_lms-q560">
+    <survey name="box_interpolation" scene="data/scenes/demo/box_scene.xml#box_scene" platform="interpolated" basePlatform="data/platforms.xml#sr22" scanner="data/scanners_als.xml#riegl_lms-q560">
 		<leg>
             <platformSettings 
 				trajectory="data/trajectories/flyandrotate.trj"
