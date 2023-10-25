@@ -125,6 +125,7 @@ Below follows a list of software, license, links to download the source code, an
         - Armadillo, Copyright (C) 2008-2023 Conrad Sanderson (https://conradsanderson.id.au)
                      Copyright (C) 2008-2016 National ICT Australia (NICTA)
                      Copyright (C) 2017-2023 Data61 / CSIRO
+                     Attribution NOTICE at the end of this file
             https://arma.sourceforge.net/
         - OpenSSL, Copyright (c) 1998-2023 The OpenSSL Project Authors
                    Copyright (c) 1995-1998 Eric A. Young, Tim J. Hudson
@@ -2822,4 +2823,35 @@ consistent with the licensing of the Independent Modules.
 The availability of this Exception does not imply any general
 presumption that third-party software is unaffected by the copyleft
 requirements of the license of GCC.
+```
+
+```
+-----------------------------------------------------------------------------
+                       Attribution Notice for Armadillo
+        applies to:
+        - Armadillo
+            https://arma.sourceforge.net/
+-----------------------------------------------------------------------------
+Armadillo C++ Linear Algebra Library
+Copyright 2008-2023 Conrad Sanderson (https://conradsanderson.id.au)
+Copyright 2008-2016 National ICT Australia (NICTA)
+Copyright 2017-2023 Data61 / CSIRO
+
+This product includes software developed by Conrad Sanderson (https://conradsanderson.id.au)
+This product includes software developed at National ICT Australia (NICTA)
+This product includes software developed at Data61 / CSIRO
+
+---
+
+Attribution Notice.
+As per UN General Assembly Resolution A/RES/ES-11/1
+adopted on 2 March 2022 with 141 votes in favour and 5 votes against,
+we attribute the violation of the sovereignty and territorial integrity of Ukraine,
+and subsequent destruction of many Ukrainian cities and civilian infrastructure,
+to large-scale military aggression by the Russian Federation (aided by Belarus).
+Further details:
+https://undocs.org/A/RES/ES-11/1
+https://digitallibrary.un.org/record/3965290/files/A_RES_ES-11_1-EN.pdf
+https://digitallibrary.un.org/record/3965290/files/A_RES_ES-11_1-RU.pdf
+
 ```
