@@ -84,7 +84,7 @@ def get_paths(survey_file):
                   id="custom_als_toyblocks.xml"),
      pytest.param((Path(WORKING_DIR) / 'data' / 'surveys' / 'toyblocks' / 'mls_toyblocks.xml'),
                   id="mls_toyblocks.xml"),
-     pytest.param((Path(WORKING_DIR) / 'data' / 'surveys' / 'toyblocks' / 'moving_tls_toyblocks.xml'),
+     pytest.param((Path(WORKING_DIR) / 'data' / 'dev' / 'moving_tls_toyblocks.xml'),
                   id="moving_tls_toyblocks.xml"),
      pytest.param((Path(WORKING_DIR) / 'data' / 'surveys' / 'toyblocks' / 'tls_toyblocks.xml'),
                   id="tls_toyblocks.xml"),
