@@ -45,20 +45,6 @@ public:
 	 */
     bool const groundOnly;
     /**
-	 * @brief Vector containing components of ray director vector. It is filled
-	 *  at the start of a search operation
-     * @see KDTreeRaycaster::searchAll
-     * @see KDTreeRaycaster::search
-	 */
-    std::vector<double> rayDirArray;
-    /**
-	 * @brief Vector containing components of ray origin. It is filled at the
-	 *  start of a search operation
-     * @see KDTreeRaycaster::searchAll
-     * @see KDTreeRaycaster::search
-	 */
-    std::vector<double> rayOriginArray;
-    /**
 	 * @brief Distance of closest hit. It is numeric_limits<double>::max() by
 	 *  default
 	 */

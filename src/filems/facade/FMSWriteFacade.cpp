@@ -20,6 +20,7 @@ void FMSWriteFacade::disconnect(){
 void FMSWriteFacade::configure(
     string const &prefix,
     bool const computeWaveform,
+    bool const writePulse,
     bool const lastLegInStrip
 ){
     // Configure measurement output path
@@ -30,6 +31,9 @@ void FMSWriteFacade::configure(
 
     // Configure full waveform output path
     getFullWaveformWriter()->configure(rootDir, prefix, computeWaveform);
+
+    // Configure pulse output path
+    getPulseWriter()->configure(rootDir, prefix, writePulse);
 
 }
 
@@ -282,7 +286,7 @@ void FMSWriteFacade::writeFullWaveforms(
 
 void FMSWriteFacade::finishFullWaveformWriter(){
     // Check it is possible to do the operation
-    validateMeasurementWriter(
+    validateFullWaveformWriter(
         "FMSWriteFacade::finishFullWaveformWriter",
         "could not finish FullWaveformWriter"
     );
@@ -291,8 +295,8 @@ void FMSWriteFacade::finishFullWaveformWriter(){
 }
 
 bool FMSWriteFacade::isFullWaveformWriterZipOutput() const{
-    // Check if it possible to do the operation
-    validateTrajectoryWriter(
+    // Check it is possible to do the operation
+    validateFullWaveformWriter(
         "FMSWriteFacade::isFullWaveformWriterZipOutput",
         "could not get FullWaveformWriter zip output flag"
     );
@@ -302,10 +306,66 @@ bool FMSWriteFacade::isFullWaveformWriterZipOutput() const{
 
 void FMSWriteFacade::setFullWaveformWriterZipOutput(bool const zipOutput){
     // Check it is possible to do the operation
-    validateTrajectoryWriter(
+    validateFullWaveformWriter(
         "FMSWriteFacade::setFullWaveformWriterZipOutput",
         "could not set FullWaveformWriter zip output flag"
     );
     // Set the zip output flag
     fww->setZipOutput(zipOutput);
+}
+
+// ***  FACADE PULSE WRITE METHODS  *** //
+// ************************************ //
+void FMSWriteFacade::validatePulseWriter(
+    string const &callerName,
+    string const &errorMsg
+) const {
+    // Check pulse writer does exist
+    if(pw == nullptr){
+        stringstream ss;
+        ss  << callerName << " " << errorMsg << " because it does not exist";
+        throw HeliosException(ss.str());
+    }
+}
+
+void FMSWriteFacade::writePulses(
+    vector<PulseRecord> const &pulses
+){
+    // Check it is possible to do the operation
+    validatePulseWriter(
+        "FMSWriteFacade::writePulses",
+        "could not write pulse"
+    );
+    // Write the pulse data
+    pw->writePulsesUnsafe(pulses);
+}
+
+void FMSWriteFacade::finishPulseWriter(){
+    // Check it is possible to do the operation
+    validatePulseWriter(
+        "FMSWriteFacade::finishPulseWriter",
+        "could not finish PulseWriter"
+    );
+    // Check there is a pulse writer to finish
+    pw->finish();
+}
+
+bool FMSWriteFacade::isPulseWriterZipOutput() const{
+    // Check it is possible to do the operation
+    validatePulseWriter(
+        "FMSWriteFacade::isPulseWriterZipOutput",
+        "could not get PulseWriter zip output flag"
+    );
+    // Get the zip output flag
+    return pw->isZipOutput();
+}
+
+void FMSWriteFacade::setPulseWriterZipOutput(bool const zipOutput){
+    // Check it is possible to do the operation
+    validatePulseWriter(
+        "FMSWriteFacade::setPulseWriterZipOutput",
+        "could not set PulseWriter zip output flag"
+    );
+    // Set the zip output flag
+    pw->setZipOutput(zipOutput);
 }

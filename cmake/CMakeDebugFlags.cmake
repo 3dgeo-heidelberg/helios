@@ -7,5 +7,5 @@ endif()
 
 #-DDATA_ANALYTICS=1 to enable
 if(${DATA_ANALYTICS})
-    add_definitions(-DDATA_ANALYTICS)
+    add_compile_definitions(DATA_ANALYTICS=${DATA_ANALYTICS})
 endif()

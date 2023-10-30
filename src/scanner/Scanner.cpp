@@ -23,6 +23,7 @@ Scanner::Scanner(
     std::string const id,
     std::list<int> const &pulseFreqs,
     bool const writeWaveform,
+    bool const writePulse,
     bool const calcEchowidth,
     bool const fullWaveNoise,
     bool const platformNoiseDisabled
@@ -324,8 +325,6 @@ void Scanner::handleSimStepNoise(
 void Scanner::handleTrajectoryOutput(double const currentGpsTime){
     // Get out of here if trajectory time interval is 0 (no trajectory output)
     if(trajectoryTimeInterval_ns == 0.0) return;
-    // Get out of here if it has been explicitly specified to dont write
-    if(!platform->writeNextTrajectory) return;
 
     // Check elapsed time
     double const elapsedTime = currentGpsTime-lastTrajectoryTime;
@@ -348,7 +347,7 @@ void Scanner::handleTrajectoryOutput(double const currentGpsTime){
     Trajectory trajectory(currentGpsTime, pos, roll, pitch, yaw);
 
     // Write trajectory output
-    fms->write.writeTrajectoryUnsafe(trajectory);
+    if(fms != nullptr) fms->write.writeTrajectoryUnsafe(trajectory);
 
     // Add trajectory to all trajectories vector
     if(allTrajectories != nullptr){
@@ -362,7 +361,7 @@ void Scanner::handleTrajectoryOutput(double const currentGpsTime){
         cycleTrajectories->push_back(trajectory);
     }
 
-    // Avoid repeating trajectory for non moving platforms
+    // Avoid repeating trajectory for non-moving platforms
     if(!platform->canMove()) platform->writeNextTrajectory = false;
 }
 
@@ -405,6 +404,9 @@ void Scanner::buildScanningPulseProcess(
                 *randGen1,
                 *randGen2,
                 *intersectionHandlingNoiseSource
+#if DATA_ANALYTICS >= 2
+               ,pool->getPulseRecorder()
+#endif
             )
         );
     }
@@ -417,6 +419,9 @@ void Scanner::buildScanningPulseProcess(
                 *randGen1,
                 *randGen2,
                 *intersectionHandlingNoiseSource
+#if DATA_ANALYTICS >= 2
+               ,pool->getPulseRecorder()
+#endif
             )
         );
     }

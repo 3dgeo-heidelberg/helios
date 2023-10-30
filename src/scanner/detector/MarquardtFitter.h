@@ -15,7 +15,7 @@ class MarquardtFitter {
 	/**
 	 * @brief X input vector
 	 */
-	std::vector<std::vector<double>> X; //values
+	std::vector<double> X; //values
 	/**
 	 * @brief Z output vecctor
 	 */
@@ -116,12 +116,11 @@ public:
     // *********************** //
     /**
      * @brief Evaluate the marquardt fitter
-     * @param values Values to evaluate over. At the moment values[0] is the
-     * only considered one.
+     * @param x Value to evaluate.
      * @param params Arguments/parameters which define the evaluation
      * @return Marquardt fitter evaluation
      */
-	double evaluate(const std::vector<double> & values, const std::vector<double> & params);
+	double evaluate(const double x, const std::vector<double> & params);
 	/**
 	 * @brief Compute the cumulative error for current values
 	 * @return Cumulative error for current values
@@ -137,12 +136,14 @@ public:
     *
     * @param k Index of the parameter that the derivative is being taken of
     * @param params Array that will be used to calculate derivatives, note params will be modified.
-    * @param x Set of values to use.
+    * @param x The input value
     * @return Computed derivative
      * @see MarquardtFitter::calculateDerivativeFast(
      *  double, double, double, double, std::vector<double>&)
     **/
-	double calculateDerivative(int k, std::vector<double> & values, std::vector<double> & params);
+	double calculateDerivative(
+        int const k, double const x, std::vector<double> & params
+    );
 	/**
 	 * @brief Alternative method for faster derivative computation
 	 * @param x Input for the Marquardt fitter
@@ -156,10 +157,10 @@ public:
 	 *  std::vector<double>&)
 	 */
 	void calculateDerivativeFast(
-	    double x,
-	    double c,
-	    double d,
-	    double coefficient,
+	    double const x,
+	    double const c,
+	    double const d,
+	    double const coefficient,
 	    std::vector<double>& dvec
     );
 	/**

@@ -5,6 +5,9 @@
 #include <noise/RandomnessGenerator.h>
 #include <noise/UniformNoiseSource.h>
 #include <TimeWatcher.h>
+#if DATA_ANALYTICS >= 2
+#include <dataanalytics/HDA_PulseRecorder.h>
+#endif
 
 /**
  * @version 1.0
@@ -17,6 +20,9 @@ class PulseThreadPool :
         RandomnessGenerator<double>&,
         RandomnessGenerator<double>&,
         NoiseSource<double>&
+#if DATA_ANALYTICS >= 2
+        ,std::shared_ptr<HDA_PulseRecorder>
+#endif
     >,
     public PulseThreadPoolInterface
 {
@@ -24,6 +30,9 @@ class PulseThreadPool :
 public:
 #else
 protected:
+#endif
+#if DATA_ANALYTICS >= 2
+    std::shared_ptr<HDA_PulseRecorder> pulseRecorder;
 #endif
     // ***  ATTRIBUTES  *** //
     // ******************** //
@@ -86,10 +95,18 @@ public:
             RandomnessGenerator<double>&,
             RandomnessGenerator<double>&,
             NoiseSource<double>&
+#if DATA_ANALYTICS >= 2
+           ,std::shared_ptr<HDA_PulseRecorder>
+#endif
         >(_pool_size),
         dynamic(dynamic)
     {
         // Allocate
+#if DATA_ANALYTICS >= 2
+        pulseRecorder = std::make_shared<HDA_PulseRecorder>(
+            "helios_pulse_records"
+        );
+#endif
         apMatrices = new std::vector<std::vector<double>>[this->pool_size];
         randGens = new RandomnessGenerator<double>[this->pool_size];
         randGens2 = new RandomnessGenerator<double>[this->pool_size];
@@ -110,6 +127,10 @@ public:
     }
 
     virtual ~PulseThreadPool(){
+#if DATA_ANALYTICS >= 2
+        // Flush and close pulse recorder
+        this->pulseRecorder->closeBuffers();
+#endif
         // Release memory
         delete[] apMatrices;
         delete[] randGens;
@@ -130,6 +151,9 @@ public:
             RandomnessGenerator<double>&,
             RandomnessGenerator<double>&,
             NoiseSource<double>&
+#if DATA_ANALYTICS >= 2
+            ,std::shared_ptr<HDA_PulseRecorder>
+#endif
         > &dropper
     ) override {
         run_res_task(dropper);
@@ -145,6 +169,9 @@ public:
             RandomnessGenerator<double>&,
             RandomnessGenerator<double>&,
             NoiseSource<double>&
+#if DATA_ANALYTICS >= 2
+            ,std::shared_ptr<HDA_PulseRecorder>
+#endif
         > &dropper
     ) override {
         return try_run_res_task(dropper);
@@ -158,8 +185,20 @@ public:
             RandomnessGenerator<double>&,
             RandomnessGenerator<double>&,
             NoiseSource<double>&
+#if DATA_ANALYTICS >= 2
+           ,std::shared_ptr<HDA_PulseRecorder>
+#endif
         >::join();
     }
+
+#if DATA_ANALYTICS >= 2
+    /**
+     * @see PulseThreadPoolInterface::getPulseRecorder
+     */
+    std::shared_ptr<HDA_PulseRecorder> getPulseRecorder() override{
+        return pulseRecorder;
+    }
+#endif
 
 protected:
     // ***  M E T H O D S  *** //
@@ -175,6 +214,9 @@ protected:
             RandomnessGenerator<double>&,
             RandomnessGenerator<double>&,
             NoiseSource<double>&
+#if DATA_ANALYTICS >= 2
+           ,std::shared_ptr<HDA_PulseRecorder>
+#endif
         )> &task,
         int const resourceIdx
     ) override{
@@ -183,6 +225,9 @@ protected:
             randGens[resourceIdx],
             randGens2[resourceIdx],
             intersectionHandlingNoiseSources[resourceIdx]
+#if DATA_ANALYTICS >= 2
+            ,pulseRecorder
+#endif
         );
     }
     /**
@@ -196,6 +241,9 @@ protected:
             RandomnessGenerator<double>&,
             RandomnessGenerator<double>&,
             NoiseSource<double>&
+#if DATA_ANALYTICS >= 2
+           ,std::shared_ptr<HDA_PulseRecorder>
+#endif
         )> &task,
         int const resourceIdx
     ) override {

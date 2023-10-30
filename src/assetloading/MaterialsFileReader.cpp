@@ -96,7 +96,8 @@ map<string, Material> MaterialsFileReader::loadMaterials(string filePathString) 
 		}
 
 		// Don't forget to put final material to the map:
-		newMats.insert(newMats.end(), pair<string, Material>(newMat.name, newMat));
+        newMat.setSpecularity(); // Specularity scalar from components
+        newMats.insert(newMats.end(), pair<string, Material>(newMat.name, newMat));
 		std::stringstream ss;
 		ss << newMats.size() << " material(s) loaded.";
 		logging::DEBUG(ss.str());

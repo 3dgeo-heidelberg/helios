@@ -147,7 +147,7 @@ public:
 	void applyTo(double* in, double* out);
 	glm::dvec3 applyInverseTo(glm::dvec3 u);
 	void applyInverseTo(double* in, double* out);
-	Rotation applyTo(Rotation r);
+	Rotation applyTo(Rotation const &r) const;
 	Rotation applyInverseTo(Rotation r);
 	glm::dvec3 operator*(glm::dvec3 u) {return applyTo(u);}
 	Rotation operator*(Rotation r) {return applyTo(r);}

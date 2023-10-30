@@ -135,6 +135,37 @@ public:
 	 * @see Material::specularity
 	 */
 	void setSpecularity();
+    /**
+     * @brief Find if the \f$\pmb{K}_s\f$ and \f$\pmb{K}_d\f$ vectors have
+     *  any non-null component or not.
+     * @param[out] nonNullKs Will be true if vector \f$\pmb{K}_s\f$ has
+     *  at least one non-null component, false otherwise.
+     * @param[out] nonNullKd Will be true if vector \f$\pmb{K}_d\f$ has
+     *  at least one non-null component, false otherwise.
+     */
+    void findNonNullComponents(bool &nonNullKs, bool &nonNullKd) const;
+    /**
+     * @brief A material is said to be Phong when it has both specular
+     *  \f$\pmb{K}_s\f$ and diffuse \f$\pmb{K}_d\f$ vectors with at least one
+     *  non-null component.
+     * @return True if the material is Phong (specular and diffuse), False
+     *  otherwise.
+     */
+    bool isPhong() const;
+    /**
+     * @brief A material is said to be Lambert when it has a null specular
+     *  vector \f$\pmb{K}_s = 0\f$ and a diffuse vector \f$\pmb{K}_d \neq 0\f$
+     *  with at least one non-null component.
+     * @return True if the material is Lambert (non-specular), False otherwise.
+     */
+    bool isLambert() const;
+    /**
+     * @brief A material is said to be uniform when it does not account for
+     *  either specular or diffuse lighting modeling.
+     * @return True if the material is uniform (null specular and diffuse
+     *  vectors), False otherwise
+     */
+    bool isUniform() const;
 
 #ifdef PYTHON_BINDING
 	/**

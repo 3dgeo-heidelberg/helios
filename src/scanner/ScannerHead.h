@@ -11,7 +11,7 @@
  * Class representing a scanner head
  */
 class ScannerHead {
-private:
+protected:
     // ***  ATTRIBUTES  *** //
     // ******************** //
     /**
@@ -76,12 +76,12 @@ public:
 	 * @brief Apply scanner settings to the scanner head
 	 * @param settings Scanner settings to be applied
 	 */
-	void applySettings(std::shared_ptr<ScannerSettings> settings);
+	virtual void applySettings(std::shared_ptr<ScannerSettings> settings);
 	/**
 	 * @brief Perform computations for current simulation step
 	 * @param pulseFreq_Hz Pulse frequency (hertz)
 	 */
-	void doSimStep(double pulseFreq_Hz);
+	virtual void doSimStep(double pulseFreq_Hz);
 
 	/**
 	 * @brief Check if rotation has been completed.
@@ -92,7 +92,7 @@ public:
 	 * @return True of rotation has been completed, false otherwise
 	 * @see ScannerHead::cfg_setting_rotateStop_rad
 	 */
-	bool rotateCompleted();
+	virtual bool rotateCompleted();
 
     // ***  GETTERS and SETTERS  *** //
     // ***************************** //
@@ -102,6 +102,16 @@ public:
      * @see ScannerHead::cached_mountRelativeAttitude
      */
     Rotation getMountRelativeAttitude();
+    /**
+     * @brief Obtain the exact relative mount attitude. By default, it is the
+     *  relative mount attitude. However, scanner heads simulating mechanical
+     *  errors need to track the exact relative mount attitude separately
+     *  because the typical one includes simulated mechanical errors.
+     * @return The exact relative mount attitude
+     * @see ScannerHead::getMountRelativeAttitude
+     */
+    virtual Rotation getExactMountRelativeAttitude()
+    {return getMountRelativeAttitude();}
     /**
      * @see Obtain the relative mount attitude by reference
      * @return Reference to the relative mount attitude
@@ -131,11 +141,23 @@ public:
      */
     double getRotateCurrent() {return state_currentRotateAngle_rad;}
     /**
+     * @brief Get the exact current rotation angle.
+     *
+     * By default this function returns the same than
+     *  ScannerHead::getRotateCurrent but scanner heads modeling measurement
+     *  error will need to override this to provide the rotation angle without
+     *  error.
+     *
+     * @return Current rotation angle (radians) with no error
+     * @see ScannerHead::getRotateCurrent
+     */
+    virtual double getExactRotateCurrent() {return getRotateCurrent();}
+    /**
      * @brief Set the current rotation angle
      * @param angle_rad New current rotation angle (radians)
      * @see ScannerHead::state_currentRotateAngle_rad
      */
-	void setCurrentRotateAngle_rad(double angle_rad);
+	virtual void setCurrentRotateAngle_rad(double angle_rad);
 
 	/**
 	 * @brief Get rotation per second
@@ -189,7 +211,14 @@ public:
 	 * @param rotateRange New rotation range
 	 * @see ScannerHead::cfg_setting_rotateRange_rad
 	 */
-	void setRotateRange(double rotateRange)
+    void setRotateRange(double rotateRange)
         {this->cfg_setting_rotateRange_rad = rotateRange;}
+    /**
+     * @brief Check whether the scanner head simulates mechanical errors
+     *  (true) or not (false).
+     * @return True if the scanner head simulates mechanical errors,
+     *  false otherwise
+     */
+    virtual bool hasMechanicalError() {return false;}
 
 };

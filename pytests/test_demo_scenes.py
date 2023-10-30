@@ -120,9 +120,9 @@ def test_arbaro_tls_pyh():
 
 def eval_arbaro_tls(dirname):
     assert (dirname / 'leg000_points.las').exists()
-    assert abs((dirname / 'leg000_points.las').stat().st_size - 21_656_853) < MAX_DIFFERENCE_BYTES
+    assert abs((dirname / 'leg000_points.las').stat().st_size - 21_755_791) < MAX_DIFFERENCE_BYTES
     assert (dirname / 'leg001_points.las').exists()
-    assert abs((dirname / 'leg001_points.las').stat().st_size - 13_908_757) < MAX_DIFFERENCE_BYTES
+    assert abs((dirname / 'leg001_points.las').stat().st_size - 13_936_877) < MAX_DIFFERENCE_BYTES
     with open(dirname / 'leg000_trajectory.txt', 'r') as f:
         line = f.readline()
         assert line.startswith('1.0000 25.5000 0.0000')
@@ -205,7 +205,7 @@ def test_xyzVoxels_tls_pyh():
 
 def eval_xyzVoxels_tls(dirname):
     assert (dirname / 'leg000_points.las').exists()
-    assert abs((dirname / 'leg000_points.las').stat().st_size - 19_342_873) < MAX_DIFFERENCE_BYTES
+    assert abs((dirname / 'leg000_points.las').stat().st_size - 19_287_965) < MAX_DIFFERENCE_BYTES
     # clean up
     if DELETE_FILES_AFTER:
         shutil.rmtree(dirname)
@@ -231,7 +231,7 @@ def test_interpolated_traj_pyh():
 def eval_interpolated_traj(dirname):
     assert (dirname / 'leg000_points.laz').exists()
     assert (dirname / 'leg000_trajectory.txt').exists()
-    assert abs((dirname / 'leg000_points.laz').stat().st_size - 873_554) < MAX_DIFFERENCE_BYTES
+    assert abs((dirname / 'leg000_points.laz').stat().st_size - 875_054) < MAX_DIFFERENCE_BYTES
     with open(dirname / 'leg000_trajectory.txt', 'r') as f:
         for _ in range(3):
             next(f)
@@ -414,6 +414,7 @@ def eval_las(dirname, las_version, check_empty=False):
 
 @pytest.mark.skipif("laspy" not in sys.modules,
                     reason="requires the laspy library")
+@pytest.mark.pyh
 def test_strip_id_pyh():
     """"""
     dirname_pyh = run_helios_pyhelios(Path('data') / 'test' / 'als_hd_height_above_ground_stripid_light.xml',
@@ -424,9 +425,29 @@ def test_strip_id_pyh():
 
 @pytest.mark.skipif("laspy" not in sys.modules,
                     reason="requires the laspy library")
+@pytest.mark.exe
 def test_strip_id_exe():
 
     dirname_exe = run_helios_executable(Path('data') / 'test' / 'als_hd_height_above_ground_stripid_light.xml',
                                         options=["--lasOutput", "--zipOutput"])
     las_version = "1.4"
     eval_las(dirname_exe, las_version, check_empty=True)
+
+@pytest.mark.pyh
+def test_dyn_pyh():
+    dirname_pyh = run_helios_pyhelios(Path('data') / 'surveys' / 'dyn' / 'tls_dyn_cube.xml',
+                                      las_output=True, zip_output=True)
+
+@pytest.mark.exe
+def test_dyn_exe():
+    dirname_exe = run_helios_executable(Path('data') / 'surveys' / 'dyn' / 'tls_dyn_cube.xml',
+                                        options=["--lasOutput", "--zipOutput"])
+    eval_dyn(dirname_exe)
+
+
+def eval_dyn(dirname):
+    assert (dirname / 'leg000_points.laz').exists()
+    assert abs((dirname / 'leg000_points.laz').stat().st_size - 2_654_123) < MAX_DIFFERENCE_BYTES
+    # clean up
+    if DELETE_FILES_AFTER:
+        shutil.rmtree(dirname)

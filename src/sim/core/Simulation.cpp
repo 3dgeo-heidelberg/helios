@@ -8,6 +8,7 @@ using namespace std::chrono;
 #include <scanner/BuddingScanningPulseProcess.h>
 #include <platform/InterpolatedMovingPlatformEgg.h>
 #include <platform/InterpolatedMovingPlatform.h>
+#include <scene/dynamic/DynScene.h>
 #ifdef DATA_ANALYTICS
 #include <dataanalytics/HDA_StateJSONReporter.h>
 #include <dataanalytics/HDA_SimStepRecorder.h>
@@ -55,6 +56,7 @@ void Simulation::prepareSimulation(int simFrequency_hz){
     );
 
     // Prepare scanner
+    this->mScanner->prepareSimulation();
     this->mScanner->buildScanningPulseProcess(
         parallelizationStrategy,
         taskDropper,
@@ -65,6 +67,9 @@ void Simulation::prepareSimulation(int simFrequency_hz){
     setSimFrequency(this->mScanner->getPulseFreq_Hz());
     stepLoop.setCurrentStep(0);
     stepGpsTime_ns = 1000000000. * stepLoop.getPeriod();
+
+    // Prepare scene (mostly for dynamic scenes)
+    mScanner->platform->scene->prepareSimulation(simFrequency_hz);
 }
 
 void Simulation::doSimStep(){
@@ -104,12 +109,16 @@ void Simulation::pause(bool pause) {
 void Simulation::shutdown(){
     finished = true;
     if(callback != nullptr && getCallbackFrequency() > 0){
+        std::string const mwOutPath = (exportToFile) ?
+            mScanner->fms->write.getMeasurementWriterOutputPath()
+                .string() :
+            ""
+        ;
         std::unique_lock<std::mutex> lock(*mScanner->cycleMeasurementsMutex);
         (*callback)(
             *mScanner->cycleMeasurements,
             *mScanner->cycleTrajectories,
-            mScanner->fms->write
-                .getMeasurementWriterOutputPath().string()
+            mwOutPath
         );
     }
 }
@@ -142,13 +151,17 @@ void Simulation::start() {
 		iter++;
 		if(iter-1 == getCallbackFrequency()){ // TODO Pending : iter-1 by iter?
 		    if(callback != nullptr){
+                std::string const mwOutPath = (exportToFile) ?
+                    mScanner->fms->write.getMeasurementWriterOutputPath()
+                        .string() :
+                    ""
+                ;
                 std::unique_lock<std::mutex> lock(
                     *mScanner->cycleMeasurementsMutex);
                 (*callback)(
                     *mScanner->cycleMeasurements,
                     *mScanner->cycleTrajectories,
-                    mScanner->fms->write
-                        .getMeasurementWriterOutputPath().string()
+                    mwOutPath
                 );
                 mScanner->cycleMeasurements->clear();
                 mScanner->cycleTrajectories->clear();

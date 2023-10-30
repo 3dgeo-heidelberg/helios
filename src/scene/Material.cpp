@@ -33,10 +33,40 @@ float* Material::getKd(float factor){
 }
 
 void Material::setSpecularity() {
-	double kdSum = kd[0] + kd[1] + kd[2];
-	double ksSum = ks[0] + ks[1] + ks[2];
-	double dsSum = kdSum + ksSum;
-	if (dsSum > 0) {
-		specularity = ksSum / dsSum;
-	}
+    double kdSum = kd[0] + kd[1] + kd[2];
+    double ksSum = ks[0] + ks[1] + ks[2];
+    double dsSum = kdSum + ksSum;
+    if (dsSum > 0) {
+        specularity = ksSum / dsSum;
+    }
+}
+
+void Material::findNonNullComponents(
+    bool &nonNullKs,
+    bool &nonNullKd
+) const {
+    nonNullKs = false;
+    nonNullKd = false;
+    for(size_t i = 0 ; i < 3 ; ++i){
+        nonNullKs |= ks[i] != 0.0;
+        nonNullKd |= kd[i] != 0.0;
+    }
+}
+
+bool Material::isPhong() const{
+    bool nonNullKs, nonNullKd;
+    findNonNullComponents(nonNullKs, nonNullKd);
+    return nonNullKs && nonNullKd;
+}
+
+bool Material::isLambert() const{
+    bool nonNullKs, nonNullKd;
+    findNonNullComponents(nonNullKs, nonNullKd);
+    return !nonNullKs && nonNullKd;
+}
+
+bool Material::isUniform() const{
+    bool nonNullKs, nonNullKd;
+    findNonNullComponents(nonNullKs, nonNullKd);
+    return !nonNullKs && !nonNullKd;
 }

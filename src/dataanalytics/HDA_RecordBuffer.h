@@ -1,6 +1,8 @@
 #ifdef DATA_ANALYTICS
 #pragma once
 
+#include <HDA_OfstreamWrapper.h>
+
 #include <vector>
 #include <string>
 #include <fstream>
@@ -34,18 +36,9 @@ protected:
      */
     std::string outpath;
     /**
-     * @brief The output stream to write the contents of the buffer
+     * @brief The wrapped output stream to write the contents of the buffer
      */
-    std::ofstream ofs;
-    /**
-     * @brief The separator between recorded elements
-     */
-    std::string sep;
-    /**
-     * @brief The function to write the content of the buffer through the
-     *  output stream
-     */
-    std::function<void(void)> write;
+    HDA_OfstreamWrapper ofsw;
 
 public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //
@@ -59,15 +52,13 @@ public:
     HDA_RecordBuffer(
         std::string const &outpath,
         size_t const maxSize=256,
-        std::string const &sep=","
+        std::string const &sep=",",
+        bool const vectorial=false
     ) :
         maxSize(maxSize),
         outpath(outpath),
-        ofs(outpath, std::ios_base::out),
-        sep(sep)
-    {
-        write = [&](void) -> void {this->firstWrite();};
-    }
+        ofsw(outpath, sep)
+    {}
 
     virtual ~HDA_RecordBuffer(){
         if(isOpen()) close();
@@ -80,32 +71,17 @@ public:
      *  not
      * @return True if the output stream is opened, false otherwise
      */
-    inline bool isOpen() {return ofs.is_open();}
+    inline bool isOpen() {return ofsw.is_open();}
     /**
-     * @brief Write the contents of the buffer through the output stream for
-     *  the first time
+     * @brief Method to write the elements of the buffer to a file.
      */
-    inline void firstWrite() {
-        size_t numElems = buff.size();
-        ofs << buff[0];
-        for(size_t i = 1 ; i < numElems ; ++i){
-            ofs << sep << buff[i];
-        }
-        this->write = [&] (void) -> void {this->nextWrite();};
-    }
-    /**
-     * @brief Write the contents of the buffer through the output stream after
-     *  the first time
-     */
-    inline void nextWrite() {
-        for(T const & elem : buff) ofs << sep << elem;
-    }
+    inline void write() {for(T const & elem : buff) ofsw << elem;}
     /**
      * @brief Write all the contents of the buffer and then make it empty
      */
     inline void flush(){
         if(buff.size() > 0){
-            this->write();
+            write();
             buff.clear();
         }
     }
@@ -115,7 +91,7 @@ public:
      */
     inline void close(){
         flush();
-        if(isOpen()) ofs.close();
+        if(isOpen()) ofsw.close();
     }
     /**
      * @brief Insert given element in the buffer. If the buffer is full, it

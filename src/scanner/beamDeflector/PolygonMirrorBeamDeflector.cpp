@@ -13,12 +13,10 @@
 std::shared_ptr<AbstractBeamDeflector> PolygonMirrorBeamDeflector::clone(){
     std::shared_ptr<AbstractBeamDeflector> pmbd =
         std::make_shared<PolygonMirrorBeamDeflector>(
-            PolygonMirrorBeamDeflector(
-                cfg_device_scanFreqMax_Hz,
-                cfg_device_scanFreqMin_Hz,
-                cfg_device_scanAngleMax_rad,
-                cfg_device_scanAngleEffectiveMax_rad
-            )
+            cfg_device_scanFreqMax_Hz,
+            cfg_device_scanFreqMin_Hz,
+            cfg_device_scanAngleMax_rad,
+            cfg_device_scanAngleEffectiveMax_rad
         );
     _clone(pmbd);
     return pmbd;
@@ -98,7 +96,6 @@ void PolygonMirrorBeamDeflector::doSimStep() {
 	// Rotate to current position:
 	this->cached_emitterRelativeAttitude =
 	    Rotation(Directions::right, state_currentBeamAngle_rad);
-
 }
 
 bool PolygonMirrorBeamDeflector::lastPulseLeftDevice() {

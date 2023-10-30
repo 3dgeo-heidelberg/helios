@@ -48,6 +48,11 @@ SurveyPlayback::SurveyPlayback(
 	this->exportToFile = exportToFile;
 	this->setScanner(mSurvey->scanner);
 
+    // Disable exports if requested
+    if(!this->exportToFile){
+        mSurvey->scanner->platform->writeNextTrajectory = false;
+    }
+
     // ############### BEGIN If the leg has no survey defined, create a default one ################
 	if (mSurvey->legs.size() == 0) {
 		shared_ptr<Leg> leg(new Leg());
@@ -180,7 +185,7 @@ void SurveyPlayback::trackProgress() {
 	if(!platform->canMove()){
 		double legElapsedAngle = std::fabs(
 		    getScanner()->getScannerHead()->getRotateStart() -
-		    getScanner()->getScannerHead()->getRotateCurrent()
+		    getScanner()->getScannerHead()->getExactRotateCurrent()
         );
 		int const legProgress = estimateAngularLegProgress(legElapsedAngle);
 		estimateTime(legProgress, true, 0);
@@ -392,8 +397,10 @@ void SurveyPlayback::startLeg(unsigned int const legIndex, bool const manual) {
 	}
 
 
-    if(exportToFile) prepareOutput();
-    platform->writeNextTrajectory = true;
+    if(exportToFile){
+        prepareOutput();
+        platform->writeNextTrajectory = true;
+    }
 }
 
 void SurveyPlayback::startNextLeg(bool manual) {
@@ -462,6 +469,9 @@ void SurveyPlayback::stopAndTurn(
 }
 
 void SurveyPlayback::prepareOutput(){
+    // Check File Management System is active (sim without output is possible)
+    if(fms == nullptr) return;
+
     // Check leg is active, otherwise there is no output to prepare
     std::shared_ptr<Leg> leg = getCurrentLeg();
     if(!leg->getScannerSettings().active) return;
@@ -477,6 +487,7 @@ void SurveyPlayback::prepareOutput(){
     fms->write.configure(
         getLegOutputPrefix(),
         getScanner()->isWriteWaveform(),
+        getScanner()->isWritePulse(),
         lastLegInStrip
     );
 

@@ -23,6 +23,11 @@ using namespace glm;
 #include <surfaceinspector/maths/Plane.hpp>
 #include <surfaceinspector/maths/PlaneFitter.hpp>
 
+#if DATA_ANALYTICS >= 2
+#include <dataanalytics/HDA_GlobalVars.h>
+using helios::analytics::HDA_GV;
+#endif
+
 using SurfaceInspector::maths::Plane;
 using SurfaceInspector::maths::PlaneFitter;
 
@@ -182,6 +187,9 @@ std::shared_ptr<RaySceneIntersection> Scene::getIntersection(
 ) const{
     if (tMinMax.empty()) {
         logging::DEBUG("tMinMax is empty");
+#if DATA_ANALYTICS >= 2
+       HDA_GV.incrementNonIntersectiveSubraysDueToNullTimeCount();
+#endif
         return nullptr;
     }
     return shared_ptr<RaySceneIntersection>(raycaster->search(

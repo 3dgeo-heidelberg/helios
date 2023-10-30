@@ -13,8 +13,7 @@ import os
 import time
 import struct
 import xml.etree.ElementTree as ET
-
-# import shutil
+import shutil
 
 
 DELETE_FILES_AFTER = False
@@ -279,7 +278,7 @@ def test_create_survey():
     output = simB.join()
     meas, traj = pyhelios.outputToNumpy(output)
     # check length of output
-    assert meas.shape == (10403, 17)
+    assert meas.shape == (10470, 17)
     assert traj.shape == (6670, 7)
     # compare individual points
     np.testing.assert_allclose(meas[100, :3], np.array([83.32, -66.44204, 0.03114649]))
@@ -287,7 +286,9 @@ def test_create_survey():
 
     # cleanup
     os.remove(test_survey_path)
-    # shutil.rmtree(Path(output.outpath).parent)  # Fails with permission error (for the last trajectory file)
+    if DELETE_FILES_AFTER:
+        print(f"Deleting files in {Path(output.outpath).parent.as_posix()}")
+        shutil.rmtree(Path(output.outpath).parent)
 
 
 def test_material(test_sim):
@@ -343,8 +344,12 @@ def test_detector(test_sim):
     if os.path.isfile(scene_file):
         os.remove(scene_file)
 
-
-def test_output():
+@pytest.mark.parametrize(
+    "export_to_file",
+    [pytest.param(True, id="setExportToFile(True)"),
+     pytest.param(False, id="setExportToFile(False)")]
+)
+def test_output(export_to_file):
     """Validating the output of a survey started with pyhelios"""
     from pyhelios import SimulationBuilder
     survey_path = Path('data') / 'test' / 'als_hd_demo_tiff_min.xml'
@@ -355,6 +360,7 @@ def test_output():
         outputDir=WORKING_DIR + os.sep + 'output' + os.sep,
     )
     simB.setFinalOutput(True)
+    simB.setExportToFile(export_to_file)
     simB.setRebuildScene(True)
     simB.setCallbackFrequency(100)
     simB.setNumThreads(1)
@@ -367,9 +373,11 @@ def test_output():
     measurements_array, trajectory_array = pyhelios.outputToNumpy(output)
 
     np.testing.assert_allclose(measurements_array[0, :3], np.array([474500.3, 5473530.0, 106.0988]), rtol=0.000001)
-    assert measurements_array.shape == (2433, 17)
+    assert measurements_array.shape == (2435, 17)
     assert trajectory_array.shape == (9, 7)
-    assert Path(output.outpath).parent.parent == Path(WORKING_DIR) / "output" / "als_hd_demo"
-
-    # cleanup
-    # shutil.rmtree(Path(output.outpath).parent)  # Fails with permission error (for the last trajectory file)
+    if export_to_file:
+        assert Path(output.outpath).parent.parent == Path(WORKING_DIR) / "output" / "als_hd_demo"
+        # cleanup
+        if DELETE_FILES_AFTER:
+            print(f"Deleting files in {Path(output.outpath).parent.as_posix()}")
+            shutil.rmtree(Path(output.outpath).parent)

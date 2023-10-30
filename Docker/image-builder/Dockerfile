@@ -56,6 +56,10 @@ mv proj-8.0.0 proj && cd proj && \
 WORKDIR /home/helios/lib
 RUN mv gdal-3.3.0/* gdal/ && cd gdal && ./configure --prefix=/home/helios/lib/gdal --with-proj=/home/helios/lib/gdal/projlib && make -j 15 && make install
 
+# Make libgdal.so and libproj.so link against libcurl4 installed by libcurl4-openssl-dev
+RUN apt install patchelf && patchelf --replace-needed libcurl.so.4 /usr/lib/x86_64-linux-gnu/libcurl.so ./gdal/lib/libgdal.so && \
+patchelf --replace-needed libcurl.so.4 /usr/lib/x86_64-linux-gnu/libcurl.so ./gdal/projlib/lib/libproj.so
+
 # Manage Python Version
 ARG pyv
 ENV PYTHON_VERSION=$pyv
@@ -79,6 +83,8 @@ RUN sed -i "s/name:.*/name: ${ENV_NAME}/" conda-environment.yml
     # Change Python version in the environment
 RUN sed -i "s/python=.*/python=$PYTHON_VERSION/" conda-environment.yml
 
+RUN conda update -n base conda && conda install -n base conda-libmamba-solver && conda config --set solver libmamba
+
 RUN cat conda-environment.yml && conda config --set channel_priority strict
     # Create the conda environment
 RUN conda env create -f conda-environment.yml
@@ -101,7 +107,7 @@ RUN apt install -y libglu1-mesa-dev
 
 # Compile Helios with PyBindings active
 WORKDIR /home/helios
-RUN cmake -DPYTHON_BINDING=1 -DPYTHON_VERSION=${PYTHON_VERSION} . && make -j 15
+RUN cmake -DPYTHON_BINDING=1 -DPYTHON_VERSION=${PYTHON_VERSION} -DPYTHON_PATH=${CONDA_ENV_DIR} . && make -j 15
 
 # Install PyHelios dependencies
 
