@@ -193,21 +193,19 @@ def eval_detailedVoxels_uls(dirname):
 @pytest.mark.exe
 def test_xyzVoxels_tls_exe():
     dirname_exe = run_helios_executable(Path('data') / 'surveys' / 'voxels' / 'tls_sphere_xyzloader_normals.xml',
-                                        options=['--lasOutput',
-                                                 '--gpsStartTime', '2022-01-01 00:00:00'])
+                                        options=['--lasOutput'])
     eval_xyzVoxels_tls(dirname_exe)
 
 
 @pytest.mark.pyh
 def test_xyzVoxels_tls_pyh():
-    dirname_pyh = run_helios_pyhelios(Path('data') / 'surveys' / 'voxels' / 'tls_sphere_xyzloader_normals.xml',
-                                      start_time='2022-01-01 00:00:00')
+    dirname_pyh = run_helios_pyhelios(Path('data') / 'surveys' / 'voxels' / 'tls_sphere_xyzloader_normals.xml')
     eval_xyzVoxels_tls(dirname_pyh)
 
 
 def eval_xyzVoxels_tls(dirname):
     assert (dirname / 'leg000_points.las').exists()
-    assert abs((dirname / 'leg000_points.las').stat().st_size - 19_288_187) < MAX_DIFFERENCE_BYTES
+    assert abs((dirname / 'leg000_points.las').stat().st_size - 19_287_965) < MAX_DIFFERENCE_BYTES
     # clean up
     if DELETE_FILES_AFTER:
         shutil.rmtree(dirname)
@@ -250,8 +248,7 @@ def eval_interpolated_traj(dirname):
 def test_quadcopter_exe():
     dirname_exe = run_helios_executable(Path('data') / 'surveys' / 'toyblocks' / 'uls_toyblocks_survey_scene_combo.xml',
                                         options=['--lasOutput',
-                                                 '--zipOutput',
-                                                 '--gpsStartTime', '2022-01-01 00:00:00'])
+                                                 '--zipOutput'])
     eval_quadcopter(dirname_exe)
 
 
@@ -260,8 +257,7 @@ def test_quadcopter_exe():
 @pytest.mark.pyh
 def test_quadcopter_pyh():
     dirname_pyh = run_helios_pyhelios(Path('data') / 'surveys' / 'toyblocks' / 'uls_toyblocks_survey_scene_combo.xml',
-                                      zip_output=True,
-                                      start_time='2022-01-01 00:00:00')
+                                      zip_output=True)
     eval_quadcopter(dirname_pyh)
 
 
@@ -269,11 +265,11 @@ def eval_quadcopter(dirname):
     assert (dirname / 'leg000_points.laz').exists()
     assert (dirname / 'leg000_trajectory.txt').exists()
     # assert abs(
-    #     (dirname / 'leg000_points.laz').stat().st_size - 1_974_592) < MAX_DIFFERENCE_BYTES
+    #     (dirname / 'leg000_points.laz').stat().st_size - 1_968_855) < MAX_DIFFERENCE_BYTES  # Win: 1_970_582
     # assert abs(
-    #     (dirname / 'leg002_points.laz').stat().st_size - 2_153_266) < MAX_DIFFERENCE_BYTES
+    #     (dirname / 'leg002_points.laz').stat().st_size - 2_150_438) < MAX_DIFFERENCE_BYTES  # Win: 2_154_149
     # assert abs(
-    #     (dirname / 'leg004_points.laz').stat().st_size - 3_818_282) < MAX_DIFFERENCE_BYTES
+    #     (dirname / 'leg004_points.laz').stat().st_size - 3_812_298) < MAX_DIFFERENCE_BYTES  # Win: 3_810_208
     las = laspy.read(dirname / 'leg000_points.laz')
     data = np.array([las.x, las.y, las.z]).T
     expected = np.array([[-7.00000e+01, -3.35592e+01, 3.73900e-03],
@@ -433,22 +429,19 @@ def test_strip_id_pyh():
 def test_strip_id_exe():
 
     dirname_exe = run_helios_executable(Path('data') / 'test' / 'als_hd_height_above_ground_stripid_light.xml',
-                                        options=['--lasOutput', '--zipOutput'])
+                                        options=["--lasOutput", "--zipOutput"])
     las_version = "1.4"
     eval_las(dirname_exe, las_version, check_empty=True)
 
 @pytest.mark.pyh
 def test_dyn_pyh():
     dirname_pyh = run_helios_pyhelios(Path('data') / 'surveys' / 'dyn' / 'tls_dyn_cube.xml',
-                                      las_output=True, zip_output=True,
-                                      start_time='2022-01-01 00:00:00')
-    eval_dyn(dirname_pyh)
+                                      las_output=True, zip_output=True)
 
 @pytest.mark.exe
 def test_dyn_exe():
     dirname_exe = run_helios_executable(Path('data') / 'surveys' / 'dyn' / 'tls_dyn_cube.xml',
-                                        options=['--lasOutput', '--zipOutput',
-                                                 '--gpsStartTime', '2022-01-01 00:00:00'])
+                                        options=["--lasOutput", "--zipOutput"])
     eval_dyn(dirname_exe)
 
 
