@@ -178,19 +178,18 @@ public:
      *  defined in Material::setSpecularity
      *
      * \f[
-     *  \mathrm{BDRF} = \bigl(1-K_s\bigr) \cos(\varphi) -
-     *      K_s \bigl|{\cos(\varphi^*)}\bigr|^{N_s}
+     *  \mathrm{BDRF}_{\mathrm{PHONG}} = \bigl(1-K_s\bigr) +
+     *      K_s {\cos(2\varphi)}^{N_s}
      * \f]
      *
-     *
-     * Also, \f$\varphi^*\f$ is modeled as shown below:
+     * The final BDRF will often be the Phong BDRF multiplied by the
+     *  reflectance \f$\rho\f$:
      *
      * \f[
-     *  \varphi^* = \left\{\begin{split}
-     *      & \varphi, &\;\; \varphi \leq \pi/2 \\
-     *      & \varphi - \pi/2, &\;\; \varphi > \pi/2
-     *  \end{split}\right.
+     *  \mathrm{BDRF} = \rho \mathrm{BDRF}_{\mathrm{PHONG}} = \rho \biggl(
+     *      \bigl(1-K_s\bigr) + K_s {\cos(2\varphi)}^{N_s} \biggr)
      * \f]
+     *
 	 */
     static double phongBDRF(
         double const incidenceAngle,
