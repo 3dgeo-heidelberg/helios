@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+	<!-- Approx. 100m radius cylinder vertically centered at approx. 0  -->
+    <scene id="cylinder_scene" name="cylinder_scene">
+        <part>
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/toyblocks/cylinder.obj" />
+            </filter>
+			<filter type="scale">
+                <param type="double" key="scale" value="10" />
+            </filter>
+			<filter type="translate">
+                <param type="vec3" key="offset" value="-500;0;-100" />
+            </filter>
+        </part>
+    </scene>
+</document>

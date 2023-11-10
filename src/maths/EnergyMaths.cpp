@@ -98,12 +98,10 @@ double EnergyMaths::phongBDRF(
 ){
     double const ks = targetSpecularity;
     double const kd = (1 - ks);
-    double const diffuse = kd * cos(incidenceAngle);
-    double const specularAngle = (incidenceAngle <= PI_HALF) ?
-                                 incidenceAngle : incidenceAngle - PI_HALF;
+    double const specularAngle = 2*incidenceAngle;
     double const specular = ks * pow(
-        abs(cos(specularAngle)),
+        cos(specularAngle),
         targetSpecularExponent
-    );
-    return diffuse + specular;
+    )/cos(incidenceAngle);
+    return kd + specular;
 }
