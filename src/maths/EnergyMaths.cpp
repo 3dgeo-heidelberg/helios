@@ -41,15 +41,10 @@ double EnergyMaths::calcSubrayWiseEmittedPower(
     double const numSubrays
 ){
     // TODO Rethink : Is it okay that w0 cancels out?
-    double const wSquared = beamDiv_rad*beamDiv_rad*R*R;
-    double const ratioSquared = beamDiv_rad*beamDiv_rad/(BSQ*BSQ);
+    double const denom = BSQ*BSQ*R*R;
     double const nextCircleIter = circleIter + 1.0;
-    double const expA = std::exp(
-        -2/wSquared * ratioSquared*circleIter*circleIter
-    );
-    double const expB = std::exp(
-        -2/wSquared * ratioSquared*nextCircleIter*nextCircleIter
-    );
+    double const expA = std::exp(-2/denom * circleIter*circleIter);
+    double const expB = std::exp(-2/denom * nextCircleIter*nextCircleIter);
     double const expDiff = expA - expB;
     return I0/numSubrays * expDiff;
 }

@@ -83,6 +83,20 @@ public:
      *  w = \varphi_* R
      * \f]
      *
+     * Note that the previous expression can be simplified to reduce the
+     * computational burden such that:
+     *
+     * \f[
+     *  P_e = \frac{I_0}{n_{sr}} \Biggl(
+     *      \exp\biggl[
+     *          - \frac{2i^2}{\mathrm{BSQ}^2 R^2}
+     *      \biggr]
+     *      - \exp\biggl[
+     *          - \frac{2(i+1)^2}{\mathrm{BSQ}^2 R^2}
+     *      \biggr]
+     *  \Biggr)
+     * \f]
+     *
      * @param I0 The average power of the device \f$I_0\f$.
      * @param R The target range (in meters) \f$R\f$.
      * @param beamDiv_mrad The beam divergence of the device (in milliradians)
