@@ -60,6 +60,52 @@ public:
     );
 
     /**
+     * @brief Compute the emitted power for a subray such that the sum of the
+     *  emitted energy by each subray matches the emitted energy when only a
+     *  single ray is used.
+     *
+     * \f[
+     *  P_e =  \frac{I_0}{n_{sr}} \Biggl(
+     *      \exp\biggl[
+     *          - \frac{2}{w^2}
+     *              \left(\frac{\varphi_*}{\mathrm{BSQ}}i\right)^2
+     *      \biggr]
+     *      - \exp\biggl[
+     *          - \frac{2}{w^2}
+     *              \left(\frac{\varphi_*}{\mathrm{BSQ}}(i+1)\right)^2
+     *      \biggr]
+     *  \Biggr)
+     * \f]
+     *
+     * Where
+     *
+     * \f[
+     *  w = \varphi_* R
+     * \f]
+     *
+     * @param I0 The average power of the device \f$I_0\f$.
+     * @param R The target range (in meters) \f$R\f$.
+     * @param beamDiv_mrad The beam divergence of the device (in milliradians)
+     *  \f$\varphi_*\f$
+     * @param w0 The beam waist radius \f$w_0\f$
+     * @param BSQ The beam sample quality parameter governing the
+     *  discrete approximation of the elliptical footprint \f$\mathrm{BSQ}\f$.
+     * @param circleIter The iteration along the circle \f$i\f$.
+     * @param numSubrays The number of subrays in the elliptical footprint
+     *  approximation \f$n_{sr}\f$.
+     * @return The emitted power for the corresponding subray.
+     */
+    static double calcSubrayWiseEmittedPower(
+        double const I0,
+        double const R,
+        double const beamDiv_mrad,
+        double const w0,
+        double const BSQ,
+        double const circleIter,
+        double const numSubrays
+    );
+
+    /**
      * @brief Solve the laser radar equation
 	 *
      * <br/>

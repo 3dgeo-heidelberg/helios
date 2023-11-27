@@ -31,6 +31,29 @@ double EnergyMaths::calcEmittedPowerLegacy(
     return I0 * exp((-2 * r * r) / (w * w));
 }
 
+double EnergyMaths::calcSubrayWiseEmittedPower(
+    double const I0,
+    double const R,
+    double const beamDiv_rad,
+    double const w0,
+    double const BSQ,
+    double const circleIter,
+    double const numSubrays
+){
+    // TODO Rethink : Is it okay that w0 cancels out?
+    double const wSquared = beamDiv_rad*beamDiv_rad*R*R;
+    double const ratioSquared = beamDiv_rad*beamDiv_rad/(BSQ*BSQ);
+    double const nextCircleIter = circleIter + 1.0;
+    double const expA = std::exp(
+        -2/wSquared * ratioSquared*circleIter*circleIter
+    );
+    double const expB = std::exp(
+        -2/wSquared * ratioSquared*nextCircleIter*nextCircleIter
+    );
+    double const expDiff = expA - expB;
+    return I0/numSubrays * expDiff;
+}
+
 // Laser radar equation "Signature simulation..." (Carlsson et al., 2000)
 double EnergyMaths::calcReceivedPower(
     double const I0,
