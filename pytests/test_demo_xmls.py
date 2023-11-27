@@ -84,7 +84,7 @@ def get_paths(survey_file):
                   id="custom_als_toyblocks.xml"),
      pytest.param((Path(WORKING_DIR) / 'data' / 'surveys' / 'toyblocks' / 'mls_toyblocks.xml'),
                   id="mls_toyblocks.xml"),
-     pytest.param((Path(WORKING_DIR) / 'data' / 'surveys' / 'toyblocks' / 'moving_tls_toyblocks.xml'),
+     pytest.param((Path(WORKING_DIR) / 'data' / 'dev' / 'moving_tls_toyblocks.xml'),
                   id="moving_tls_toyblocks.xml"),
      pytest.param((Path(WORKING_DIR) / 'data' / 'surveys' / 'toyblocks' / 'tls_toyblocks.xml'),
                   id="tls_toyblocks.xml"),
@@ -103,6 +103,12 @@ def get_paths(survey_file):
                   id="tls_sphere_xyzloader_normals.xml"),
      pytest.param((Path(WORKING_DIR) / 'data' / 'surveys' / 'voxels' / 'uls_detailedVoxels_mode_comparison.xml'),
                   id="uls_detailedVoxels_mode_comparison.xml"),
+     pytest.param((Path(WORKING_DIR) / 'data' / 'surveys' / 'dyn' / 'tls_dyn_cube.xml'),
+                  id="tls_dyn_cube.xml"),
+     pytest.param((Path(WORKING_DIR) / 'data' / 'surveys' / 'dyn' / 'mls_urban_dyn.xml'),
+                  id="mls_urban_dyn.xml"),
+     pytest.param((Path(WORKING_DIR) / 'data' / 'surveys' / 'dyn' / 'tls_tree1_dyn.xml'),
+                  id="tls_tree1_dyn.xml"),
      ]
 )
 def test_xmls(f_survey):

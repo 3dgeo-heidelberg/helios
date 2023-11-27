@@ -2,15 +2,14 @@
 
 ## Table of contents
 1. [Legacy version](#legacy-version)
-1. [Install](#install)
+2. [Install](#install)
     1. [Dependencies](#dependencies)
     2. [Install on Linux](#install-on-linux)
     3. [Install on Linux with PyHelios Support](#install-on-linux-with-pyhelios-support) 
     4. [Install on Linux with Visual Debug](#install-on-linux-with-visual-debug)
     5. [Install on Windows](#install-on-windows)
-1. [Building the Wiki](#wiki)
-1. [Usage](#usage)
-1. [License](#license)
+3. [Building the Wiki](#wiki)
+4. [License](#license)
 
 ## Legacy version
 HELIOS, the predecessor of HELIOS++, can still be found at https://github.com/GIScience/helios
@@ -148,7 +147,7 @@ If you are using a custom Python installation, we must provide GDAL its executab
 - ```apt install libgl1-mesa-dev```
 - ```pip3 install open3d```
 
-Note: The PyHelios scripts can be executed which whatever version of Python3 you want to use.
+Note: The PyHelios scripts can be executed with whatever version of Python3 you want to use.
 
 ### Helios project configuration and compilation
 
@@ -479,7 +478,7 @@ at the end:
 ## Wiki
 You can build the HELIOS++ Wiki locally as html files using `mkdocs`. For this, the wiki is included as a `git submodule`.
 
-Make sure you have the latest copy of the submodule checked out with `git submodule update --init --recursive`
+Make sure you have the latest copy of the submodule checked out with `git submodule update --init --recursive` or, if not checking out for the first time, `git submodule update --recursive --remote` (to update to latest tip of the submodule). 
 
 Then change to the respective directory: `cd wiki-repo`
 
@@ -488,99 +487,6 @@ And run mkdocs (you may need to install it and any required packages using `pip`
 `python -m mkdocs build`
 
 The local wiki build is then generated in the `site` subdirectory.
-
----
-## Usage
-Helios++ can be invoked with following syntax:
-
-```
-helios --help
-    Show the help for helios++ usage
-
-helios --test
-    Perform necessary tests to check everything works as expected
-
-helios <survey_file_path> [OPTIONAL ARGUMENTS]
-    Perform requested simulation.
-
-    NOTICE specifying the path to the survey specification file is mandatory
-
-    Available general OPTIONAL ARGUMENTS are:
-        --assets <directory_path>
-            Specify the path to assets directory
-        --output <directory_path>
-            Specify the path to output directory
-        --writeWaveform
-            Specify the full waveform must be written
-        --calcEchowidth
-            Specify the full waveform must be fitted
-        --fullwaveNoise
-            Enable random noise at full waveform computation
-        --fixedIncidenceAngle
-            Sets incidence angle to exactly 1.0 for all intersections
-        --seed <seed>
-            Specify the seed to be used for randomness generation.
-            The seed can be an integer number, a decimal number or a timestamp
-            string with format "YYYY-mm-DD HH:MM:SS"
-        --lasOutput
-            Specify the output point cloud must be generated using LAS format
-        --zipOutput
-            Specify the output point cloud and fullwave must be zipped
-        --lasScale
-            Specify the scale factor used to generate LAS output
-        -j OR --njobs OR --nthreads <integer>
-            Specify the number of simultaneous threads to be used to compute
-            the simulation
-            If it is not specified or it is specified as 0, then all available
-            threads will be used to compute the simulation
-        --rebuildScene
-            Force scene rebuild even when a previosly built scene is available
-        --disablePlatformNoise
-            Disable platform noise, no matter what is specified on XML files
-        --disableLegNoise
-            Disable leg noise, no matter what is specified on XML files
-
-    Available logging verbosity OPTIONAL ARGUMENTS are:
-        --silent
-            Nothing will be reported
-        -q OR --quiet
-            Only errors will be reported
-        -v
-            Errors, information and warnings will be reported
-        -vv OR -v2
-            Everything will be reported
-        IF NONE IS SPECIFIED
-            Errors and information will be reported by default
-
-    Available logging output mode OPTIONAL ARGUMENTS are:
-        --logFile
-            Reports will be emitted through standard output and output file
-        --logFileOnly
-            Reports will be emitted through output file only
-        IF NONE IS SPECIFIED
-            Reports will be emitted through standard output only
-
-    Unzip compressed output:
-        --unzip <input_path> <output_path>
-            When helios++ is executed with --zipOutput flag, output files are
-            compressed. They can be decompressed using --unzip.
-            The path to a readable helios++ compressed output file must be
-            given through input path.
-            The path to a writable file/location must be given through
-            output path.
-```
-
-The demo simulation can be executed as follows:
-
-**LINUX**
-```
-./helios data/surveys/demo/tls_arbaro_demo.xml
-```
-
-**WINDOWS**
-```
-helios.exe data/surveys/demo/tls_arbaro_demo.xml
-```
 
 ## License
 

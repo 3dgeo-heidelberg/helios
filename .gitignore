@@ -25,16 +25,16 @@ valgrind.xml
 *.exe
 libhelios.so
 pyhelios.so
-pysimulation_demo.py
-pysimulation_run_demo.py
-pysimulation_multirun_demo.py
-pysimulation_config_demo.py
 helios
-simulate_pyhelios.py
-pyheliostools/*.pyc
 
 # Output log
-helios.log
+*.log
 
 # wiki documentation
 */site
+
+# ignore pytest stuff
+# Byte-compiled / optimized / DLL files
+*__pycache__/
+*.py[cod]
+

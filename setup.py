@@ -18,7 +18,7 @@ def read(fname):
 
 setup(
     name="pyhelios",
-    version="1.2.0",
+    version="1.3.0",
     author="HELIOS++ dev team",
     author_email="helios@uni-heidelberg.de",
     description=("python bindings of the HELIOS++ Virtual Laser Scanning "
