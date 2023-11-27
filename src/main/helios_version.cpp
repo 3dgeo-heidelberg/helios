@@ -2,7 +2,7 @@
 
 #include <sstream>
 
-const char * HELIOS_VERSION = "1.2.0";
+const char * HELIOS_VERSION = "1.3.0";
 
 const char * HELIOS_GIT_HASH = "c61a540f";
 
