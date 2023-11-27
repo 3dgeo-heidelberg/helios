@@ -31,6 +31,24 @@ double EnergyMaths::calcEmittedPowerLegacy(
     return I0 * exp((-2 * r * r) / (w * w));
 }
 
+double EnergyMaths::calcSubrayWiseEmittedPower(
+    double const I0,
+    double const R,
+    double const beamDiv_rad,
+    double const w0,
+    double const BSQ,
+    double const circleIter,
+    double const numSubrays
+){
+    // TODO Rethink : Is it okay that w0 cancels out?
+    double const denom = BSQ*BSQ*R*R;
+    double const nextCircleIter = circleIter + 1.0;
+    double const expA = std::exp(-2/denom * circleIter*circleIter);
+    double const expB = std::exp(-2/denom * nextCircleIter*nextCircleIter);
+    double const expDiff = expA - expB;
+    return I0/numSubrays * expDiff;
+}
+
 // Laser radar equation "Signature simulation..." (Carlsson et al., 2000)
 double EnergyMaths::calcReceivedPower(
     double const I0,
@@ -98,12 +116,10 @@ double EnergyMaths::phongBDRF(
 ){
     double const ks = targetSpecularity;
     double const kd = (1 - ks);
-    double const diffuse = kd * cos(incidenceAngle);
-    double const specularAngle = (incidenceAngle <= PI_HALF) ?
-                                 incidenceAngle : incidenceAngle - PI_HALF;
+    double const specularAngle = 2*incidenceAngle;
     double const specular = ks * pow(
-        abs(cos(specularAngle)),
+        cos(specularAngle),
         targetSpecularExponent
-    );
-    return diffuse + specular;
+    )/cos(incidenceAngle);
+    return kd + specular;
 }

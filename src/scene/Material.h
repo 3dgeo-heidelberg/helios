@@ -160,12 +160,12 @@ public:
      */
     bool isLambert() const;
     /**
-     * @brief A material is said to be uniform when it does not account for
-     *  either specular or diffuse lighting modeling.
+     * @brief A material is said to be direction independent when it does not
+     *  account for either specular or diffuse lighting modeling.
      * @return True if the material is uniform (null specular and diffuse
      *  vectors), False otherwise
      */
-    bool isUniform() const;
+    bool isDirectionIndependent() const;
 
 #ifdef PYTHON_BINDING
 	/**

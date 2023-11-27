@@ -1,5 +1,6 @@
 import sys
 import pandas as pd
+import csv
 import numpy as np
 import time
 import matplotlib.pyplot as plt
@@ -36,31 +37,48 @@ def read_inargs():
                          sys.argv[1] == '--help')
         else False,
         'inpath': sys.argv[1] if len(sys.argv) > 1 else None,
-        'fwidx': int(sys.argv[2]) if len(sys.argv) > 2 else 0
+        'fwidx': int(sys.argv[2]) if len(sys.argv) > 2 else None
     }
 
 
 def load_fullwave(inargs):
-    return pd.read_csv(
-        inargs['inpath'],
-        sep=' ',
-        header=None,
-        skiprows=inargs['fwidx'],
-        nrows=1
-    ).to_numpy()
+    # Get csv rows (pandas not used due to varying number of columns per row)
+    rows = []
+    with open(inargs['inpath'], 'r') as fwfin:
+        csv_reader = csv.reader(fwfin, delimiter=' ')
+        for row in csv_reader:
+            rows.append(row)
+    return rows
 
 
 def plot_fullwave(fw):
-    y = fw[10:]
-    t = np.linspace(0, 1, y.shape[0])
+    # Prepare plot
     fig = plt.figure(figsize=(14, 9))
-    fig.suptitle('Fullwave')
     ax = fig.add_subplot(1, 1, 1)
-    ax.plot(t, y, color='red', lw=2)
+    # Plot data
+    if inargs['fwidx'] is None:
+        resolution = 256
+        fig.suptitle(f'Fullwaves ({resolution})')
+        step = max(1, len(fw)//resolution)
+        for fwi in fw[::step]:
+            _plot_fullwave(fwi, ax, alpha=1.0, lw=1)
+    else:
+        fig.suptitle('Fullwave')
+        _plot_fullwave(fw[inargs['fwidx']], ax, lw=2)
+    # Post-process plot
     ax.grid('both')
+    ax.set_xlabel('Time  [$\\mathrm{ns}$]')
     ax.set_axisbelow(True)
-    plt.tight_layout()
+    fig.tight_layout()
+    # Show plot
     plt.show()
+
+
+def _plot_fullwave(fw, ax, alpha=1, lw=2):
+    tmin, tmax = float(fw[7]), float(fw[8])
+    y = np.array(fw[10:], dtype=float)
+    t = np.linspace(tmin, tmax, y.shape[0])
+    ax.plot(t, y, lw=lw, alpha=alpha)
 
 
 # ---  M A I N  --- #
@@ -71,4 +89,4 @@ if __name__ == '__main__':
         print_help()
         sys.exit(0)
     fw = timef(load_fullwave, fargs={'inargs': inargs}, name='Load fullwave')
-    plot_fullwave(fw[0])
+    plot_fullwave(fw)

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+    <scannerSettings id="scaset" active="true" pulseFreq_hz="100000" scanFreq_hz="100"/>
+    <survey name="tls_cylinder" scene="data/scenes/demo/cylinder_scene.xml#cylinder_scene" platform="data/platforms.xml#tripod" scanner="data/scanners_tls.xml#panoscanner" >
+		<leg>
+            <platformSettings x="0" y="0" z="-0.2" />
+			<scannerSettings template="scaset" headRotatePerSec_deg="5" headRotateStart_deg="-180" headRotateStop_deg="180"/>
+        </leg>
+    </survey>
+</document>

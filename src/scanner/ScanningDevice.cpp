@@ -296,7 +296,7 @@ void ScanningDevice::computeSubrays(
 #if DATA_ANALYTICS >=2
         HDA_GV.incrementGeneratedSubraysCount();
         subraySimRecord[0] = (double) subrayHit;
-        subraySimRecord[1] = subrayDivergenceAngle_rad;
+        subraySimRecord[1] = cached_subrayDivergenceAngle_rad[i];
         pulseRecorder->recordSubraySimulation(subraySimRecord);
 #endif
     }
@@ -375,13 +375,13 @@ double ScanningDevice::calcIntensity(
         );
     }
     else if(mat.isLambert()){
-        bdrf = mat.reflectance * std::cos(incidenceAngle);
+        bdrf = mat.reflectance;
         sigma = EnergyMaths::calcCrossSection(
             bdrf, targetArea, incidenceAngle
         );
     }
-    else if(mat.isUniform()){
-        bdrf = mat.reflectance;
+    else if(mat.isDirectionIndependent()){
+        bdrf = mat.reflectance/std::cos(incidenceAngle);  // Alt. 1/cos(incid)
         sigma = EnergyMaths::calcCrossSection(
             bdrf, targetArea, incidenceAngle
         );

@@ -1628,8 +1628,8 @@ std::shared_ptr<Asset> XmlAssetsLoader::getAssetById(
     "XmlAssetsLoader::getAssetById"
   );
   try {
-    tinyxml2::XMLElement *assetNodes =
-        doc.FirstChild()->NextSibling()->FirstChildElement(type.c_str());
+    tinyxml2::XMLElement *assetNodes = doc.FirstChild()->\
+        NextSiblingElement()->FirstChildElement(type.c_str());
 
     if(isProceduralAsset(type, id)){ // Generate procedural assets
         return createProceduralAssetFromXml(type, id, extraOutput);

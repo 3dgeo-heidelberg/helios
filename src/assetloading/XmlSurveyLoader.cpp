@@ -36,7 +36,7 @@ shared_ptr<Survey> XmlSurveyLoader::load(
     return nullptr;
   }
   tinyxml2::XMLElement *surveyNodes =
-      pRoot->NextSibling()->FirstChildElement("survey");
+      pRoot->NextSiblingElement()->FirstChildElement("survey");
   if (surveyNodes == nullptr) {
     stringstream ss;
     ss << "XML Survey playback loader: "

@@ -234,7 +234,7 @@ def do_incidence_angle_plots(arec, brec, outdir):
     do_incidence_angle_subplot(
         fig, ax, arec['incidence_angle_rad']*180/np.pi,
         label='$\\varphi(a)$',
-        title='A-Incidence angle ($\\varphi$) in rad',
+        title='A-Incidence angle ($\\varphi$) in degrees',
         xlabel='$\\varphi(a)$',
         ylabel='cases'
     )
@@ -242,7 +242,7 @@ def do_incidence_angle_plots(arec, brec, outdir):
     do_incidence_angle_subplot(
         fig, ax, arec['incidence_angle_rad']*180/np.pi,
         label='$\\varphi(a)$',
-        title='A-Incidence angle ($\\varphi$) in rad (logarithmic)',
+        title='A-Incidence angle ($\\varphi$) in degrees (logarithmic)',
         xlabel='$\\varphi(a)$',
         ylabel='cases',
         log=True
@@ -251,7 +251,7 @@ def do_incidence_angle_plots(arec, brec, outdir):
     do_incidence_angle_subplot(
         fig, ax, brec['incidence_angle_rad']*180/np.pi,
         label='$\\varphi(b)$',
-        title='B-Incidence angle ($\\varphi$) in rad',
+        title='B-Incidence angle ($\\varphi$) in degrees',
         xlabel='$\\varphi(b)$',
         ylabel='cases'
     )
@@ -259,7 +259,7 @@ def do_incidence_angle_plots(arec, brec, outdir):
     do_incidence_angle_subplot(
         fig, ax, brec['incidence_angle_rad']*180/np.pi,
         label='$\\varphi(b)$',
-        title='B-Incidence angle ($\\varphi$) in rad (logarithmic)',
+        title='B-Incidence angle ($\\varphi$) in degrees (logarithmic)',
         xlabel='$\\varphi(b)$',
         ylabel='cases',
         log=True
@@ -314,7 +314,8 @@ def do_by_incidence_angle_plots(arec, brec, outdir):
         arec,
         brec,
         outdir,
-        fname='plot_by_incidence_angle_rad.png'
+        fname='plot_by_incidence_angle_rad.png',
+        unit='rad'
     )
     # Plot by degrees
     _do_by_incidence_angle_plots(
@@ -323,12 +324,14 @@ def do_by_incidence_angle_plots(arec, brec, outdir):
         arec,
         brec,
         outdir,
-        fname='plot_by_incidence_angle_degrees.png'
+        fname='plot_by_incidence_angle_degrees.png',
+        unit='deg'
     )
 
 
 def _do_by_incidence_angle_plots(
-    incidence_angle_a, incidence_angle_b, arec, brec, outdir, fname
+    incidence_angle_a, incidence_angle_b, arec, brec, outdir, fname,
+    unit='rad'
 ):
     # Do the "by incidence angle" plots
     fig = init_figure()  # Initialize figure
@@ -336,7 +339,7 @@ def _do_by_incidence_angle_plots(
     do_y_by_x_subplot(
         fig, ax, incidence_angle_a, arec['target_range_m'],
         title='A-Target range (m)',
-        xlabel='Incidence angle (rad)',
+        xlabel=f'Incidence angle ({unit})',
         ylabel='Target range (m)',
         color='black'
     )
@@ -344,7 +347,7 @@ def _do_by_incidence_angle_plots(
     do_y_by_x_subplot(
         fig, ax, incidence_angle_a, arec['target_area_m2'],
         title='A-Target area ($m^2$)',
-        xlabel='Incidence angle (rad)',
+        xlabel=f'Incidence angle ({unit})',
         ylabel='Target area ($m^2$)',
         color='tab:blue'
     )
@@ -352,7 +355,7 @@ def _do_by_incidence_angle_plots(
     do_y_by_x_subplot(
         fig, ax, incidence_angle_a, arec['radius_m'],
         title='A-Radius (m)',
-        xlabel='Incidence angle (rad)',
+        xlabel=f'Incidence angle ({unit})',
         ylabel='Radius (m)',
         color='tab:red'
     )
@@ -360,7 +363,7 @@ def _do_by_incidence_angle_plots(
     do_y_by_x_subplot(
         fig, ax, incidence_angle_a, arec['bdrf'],
         title='A-BDRF',
-        xlabel='Incidence angle (rad)',
+        xlabel=f'Incidence angle ({unit})',
         ylabel='BDRF',
         color='tab:green'
     )
@@ -368,7 +371,7 @@ def _do_by_incidence_angle_plots(
     do_y_by_x_subplot(
         fig, ax, incidence_angle_a, arec['cross_section'],
         title='A-Cross-section ($m^2$)',
-        xlabel='Incidence angle (rad)',
+        xlabel=f'Incidence angle ({unit})',
         ylabel='Cross-section ($m^2$)',
         color='tab:orange'
     )
@@ -376,7 +379,7 @@ def _do_by_incidence_angle_plots(
     do_y_by_x_subplot(
         fig, ax, incidence_angle_a, arec['received_power'],
         title='A-Received power',
-        xlabel='Incidence angle (rad)',
+        xlabel=f'Incidence angle ({unit})',
         ylabel='Received power',
         color='tab:purple'
     )
@@ -384,7 +387,7 @@ def _do_by_incidence_angle_plots(
     do_y_by_x_subplot(
         fig, ax, incidence_angle_b, brec['target_range_m'],
         title='B-Target range (m)',
-        xlabel='Incidence angle (rad)',
+        xlabel=f'Incidence angle ({unit})',
         ylabel='Target range (m)',
         color='black'
     )
@@ -392,7 +395,7 @@ def _do_by_incidence_angle_plots(
     do_y_by_x_subplot(
         fig, ax, incidence_angle_b, brec['target_area_m2'],
         title='B-Target area ($m^2$)',
-        xlabel='Incidence angle (rad)',
+        xlabel=f'Incidence angle ({unit})',
         ylabel='Target area ($m^2$)',
         color='tab:blue'
     )
@@ -400,7 +403,7 @@ def _do_by_incidence_angle_plots(
     do_y_by_x_subplot(
         fig, ax, incidence_angle_b, brec['radius_m'],
         title='B-Radius (m)',
-        xlabel='Incidence angle (rad)',
+        xlabel=f'Incidence angle ({unit})',
         ylabel='Radius (m)',
         color='tab:red'
     )
@@ -408,7 +411,7 @@ def _do_by_incidence_angle_plots(
     do_y_by_x_subplot(
         fig, ax, incidence_angle_b, brec['bdrf'],
         title='B-BDRF',
-        xlabel='Incidence angle (rad)',
+        xlabel=f'Incidence angle ({unit})',
         ylabel='BDRF',
         color='tab:green'
     )
@@ -416,7 +419,7 @@ def _do_by_incidence_angle_plots(
     do_y_by_x_subplot(
         fig, ax, incidence_angle_b, brec['cross_section'],
         title='B-Cross-section ($m^2$)',
-        xlabel='Incidence angle (rad)',
+        xlabel=f'Incidence angle ({unit})',
         ylabel='Cross-section ($m^2$)',
         color='tab:orange'
     )
@@ -424,7 +427,7 @@ def _do_by_incidence_angle_plots(
     do_y_by_x_subplot(
         fig, ax, incidence_angle_b, brec['received_power'],
         title='B-Received power',
-        xlabel='Incidence angle (rad)',
+        xlabel=f'Incidence angle ({unit})',
         ylabel='Received power',
         color='tab:purple'
     )

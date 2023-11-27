@@ -35,10 +35,15 @@ public:
     // ***  SUB-TESTS  *** //
     // ******************* //
     /**
-     * @brief Test emitted received power
-     * @return True if passed, false otherwise
+     * @brief Test emitted received power.
+     * @return True if passed, false otherwise.
      */
     bool testEmittedReceivedPower();
+    /**
+     * @brief Test emitted subray-wise power.
+     * @return True if passed, false otherwise.
+     */
+    bool testEmittedSubrayWisePower();
 };
 
 // ***  R U N  *** //
@@ -46,6 +51,7 @@ public:
 bool EnergyModelsTest::run(){
     // Run tests
     if(!testEmittedReceivedPower()) return false;
+    if(!testEmittedSubrayWisePower()) return false;
     return true;
 }
 
@@ -91,7 +97,42 @@ bool EnergyModelsTest::testEmittedReceivedPower(){
         if(std::fabs(PrNew-PrOld) > eps) return false;
 
     }
-        return true;
+    return true;
+}
+
+bool EnergyModelsTest::testEmittedSubrayWisePower() {
+    // Values for the tests
+    double const I0 = 4.0;
+    double const R = 1.0;
+    double const beamDiv_mrad = 0.3;
+    int const BSQ = 5;
+    vector<int> circleIter({
+        0, 1, 2, 3, 4
+    });
+    vector<int> nsr({
+        1, 6, 12, 18, 25
+    });
+    vector<double> expectedPe({
+        0.3075346144534569, 0.1313115395419632, 0.07979892703790642,
+        0.04638110122372834, 0.022832322754653023,
+    });
+
+    // Compute emitted power and validate it
+    for(int i = 0 ; i < nsr.size() ; ++i){
+        double const Pe = EnergyMaths::calcSubrayWiseEmittedPower(
+            I0,
+            R,
+            beamDiv_mrad,
+            0.0,
+            BSQ,
+            circleIter[i],
+            nsr[i]
+        );
+        double const absDiff = std::fabs(Pe-expectedPe[i]);
+        if(absDiff > eps) return false;
+    }
+    // Return true if all emitted powers were as expected
+    return true;
 }
 
 

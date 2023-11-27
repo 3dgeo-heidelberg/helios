@@ -57,7 +57,7 @@ protected:
      * @see DynMotion::isSelfMode
      * @see DynMotion::setSelfMode
      * @see DynMotion::normalMode
-     * @see DynMotionEngine::apply(DynMotion const &, mat const &, DynObject &)
+     * @see DynMotionEngine::apply(DynMotion const &, arma::mat const &, DynObject &)
      */
     bool selfMode = false;
 
@@ -72,14 +72,14 @@ protected:
      * @see DynMotion::isNormalMode
      * @see DynMotion::setNormalMode
      * @see DynMotion::selfMode
-     * @see DynMotionEngine::apply(DynMotion const &, mat const &, DynObject &)
+     * @see DynMotionEngine::apply(DynMotion const &, arma::mat const &, DynObject &)
      */
     bool normalMode = false;
 
     /**
      * @brief Specify if the translation vector must be translated to the
      *  simulation's coordinate reference system (CRS) automatically
-     *  (\f$\neq=0\f$) or not (\f$=0\f$).
+     *  (\f$\neq0\f$) or not (\f$=0\f$).
      *
      * The CRS translation will be applied scaled by autoCRS. Thus, a value
      * of 1 implies adding the CRS translation while a value of -1 implies

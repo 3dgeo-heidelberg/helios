@@ -60,6 +60,66 @@ public:
     );
 
     /**
+     * @brief Compute the emitted power for a subray such that the sum of the
+     *  emitted energy by each subray matches the emitted energy when only a
+     *  single ray is used.
+     *
+     * \f[
+     *  P_e =  \frac{I_0}{n_{sr}} \Biggl(
+     *      \exp\biggl[
+     *          - \frac{2}{w^2}
+     *              \left(\frac{\varphi_*}{\mathrm{BSQ}}i\right)^2
+     *      \biggr]
+     *      - \exp\biggl[
+     *          - \frac{2}{w^2}
+     *              \left(\frac{\varphi_*}{\mathrm{BSQ}}(i+1)\right)^2
+     *      \biggr]
+     *  \Biggr)
+     * \f]
+     *
+     * Where
+     *
+     * \f[
+     *  w = \varphi_* R
+     * \f]
+     *
+     * Note that the previous expression can be simplified to reduce the
+     * computational burden such that:
+     *
+     * \f[
+     *  P_e = \frac{I_0}{n_{sr}} \Biggl(
+     *      \exp\biggl[
+     *          - \frac{2i^2}{\mathrm{BSQ}^2 R^2}
+     *      \biggr]
+     *      - \exp\biggl[
+     *          - \frac{2(i+1)^2}{\mathrm{BSQ}^2 R^2}
+     *      \biggr]
+     *  \Biggr)
+     * \f]
+     *
+     * @param I0 The average power of the device \f$I_0\f$.
+     * @param R The target range (in meters) \f$R\f$.
+     * @param beamDiv_mrad The beam divergence of the device (in milliradians)
+     *  \f$\varphi_*\f$
+     * @param w0 The beam waist radius \f$w_0\f$
+     * @param BSQ The beam sample quality parameter governing the
+     *  discrete approximation of the elliptical footprint \f$\mathrm{BSQ}\f$.
+     * @param circleIter The iteration along the circle \f$i\f$.
+     * @param numSubrays The number of subrays in the elliptical footprint
+     *  approximation \f$n_{sr}\f$.
+     * @return The emitted power for the corresponding subray.
+     */
+    static double calcSubrayWiseEmittedPower(
+        double const I0,
+        double const R,
+        double const beamDiv_mrad,
+        double const w0,
+        double const BSQ,
+        double const circleIter,
+        double const numSubrays
+    );
+
+    /**
      * @brief Solve the laser radar equation
 	 *
      * <br/>
@@ -178,19 +238,18 @@ public:
      *  defined in Material::setSpecularity
      *
      * \f[
-     *  \mathrm{BDRF} = \bigl(1-K_s\bigr) \cos(\varphi) -
-     *      K_s \bigl|{\cos(\varphi^*)}\bigr|^{N_s}
+     *  \mathrm{BDRF}_{\mathrm{PHONG}} = \bigl(1-K_s\bigr) +
+     *      K_s {\cos(2\varphi)}^{N_s}
      * \f]
      *
-     *
-     * Also, \f$\varphi^*\f$ is modeled as shown below:
+     * The final BDRF will often be the Phong BDRF multiplied by the
+     *  reflectance \f$\rho\f$:
      *
      * \f[
-     *  \varphi^* = \left\{\begin{split}
-     *      & \varphi, &\;\; \varphi \leq \pi/2 \\
-     *      & \varphi - \pi/2, &\;\; \varphi > \pi/2
-     *  \end{split}\right.
+     *  \mathrm{BDRF} = \rho \mathrm{BDRF}_{\mathrm{PHONG}} = \rho \biggl(
+     *      \bigl(1-K_s\bigr) + K_s {\cos(2\varphi)}^{N_s} \biggr)
      * \f]
+     *
 	 */
     static double phongBDRF(
         double const incidenceAngle,
