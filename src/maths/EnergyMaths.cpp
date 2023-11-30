@@ -40,7 +40,6 @@ double EnergyMaths::calcSubrayWiseEmittedPower(
     double const circleIter,
     double const numSubrays
 ){
-    // TODO Rethink : Is it okay that w0 cancels out?
     double const denom = BSQ*BSQ*R*R;
     double const nextCircleIter = circleIter + 1.0;
     double const expA = std::exp(-2/denom * circleIter*circleIter);

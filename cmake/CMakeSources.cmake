@@ -43,6 +43,7 @@ set(HELIOS_INCLUDE_DIRECTORIES
     "src/maths/"
     "src/maths/rigidmotion/"
     "src/maths/fluxionum/"
+    "src/maths/model/"
     "src/surfaceinspector/maths/"
     "src/surfaceinspector/maths/functions/"
     "src/surfaceinspector/maths/permuters/"
