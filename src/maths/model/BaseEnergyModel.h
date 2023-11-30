@@ -1,18 +1,17 @@
 #pragma once
 
 #include <maths/model/EnergyModel.h>
+#include <maths/model/ModelArg.h>
 #include <scene/Material.h>
 
 // ***  ARGUMENT CLASSES  *** //
 // ************************** //
-class BaseReceivedPowerArgs{
+class BaseReceivedPowerArgs : public ModelArg {
 public:
     double const incidenceAngle_rad;
     double const targetRange;
-    Material const &mat;
-    double const targetArea;
+    Material const &material;
     double const subrayRadius;
-    double const crossSection;
     double const averagePower_w;
     double const wavelength_m;
     double const rangeMin;
@@ -21,9 +20,39 @@ public:
     double const Bt2;  // Squared device's beam divergence (not subray)
     double const efficiency;
     double const atmosphericExtinction;
+    double const numSubrays;  // Number of subrays used by the discrete model
+    BaseReceivedPowerArgs(
+        double const incidenceAngle_rad,
+        double const targetRange,
+        Material const &material,
+        double const subrayRadius,
+        double const averagePower_w,
+        double const wavelength_m,
+        double const rangeMin,
+        double const beamWaistRadius,
+        double const Dr2,
+        double const Bt2,
+        double const efficiency,
+        double const atmosphericExtinction,
+        double const numSubrays
+    ) :
+        incidenceAngle_rad(incidenceAngle_rad),
+        targetRange(targetRange),
+        material(material),
+        subrayRadius(subrayRadius),
+        averagePower_w(averagePower_w),
+        wavelength_m(wavelength_m),
+        rangeMin(rangeMin),
+        beamWaistRadius(beamWaistRadius),
+        Dr2(Dr2),
+        Bt2(Bt2),
+        efficiency(efficiency),
+        atmosphericExtinction(atmosphericExtinction),
+        numSubrays(numSubrays)
+    {}
 };
 
-class BaseEmittedPowerArgs{
+class BaseEmittedPowerArgs : public ModelArg {
 public:
     double const averagePower_w;
     double const wavelength_m;
@@ -31,20 +60,56 @@ public:
     double const rangeMin;
     double const subrayRadius;
     double const beamWaistRadius;
+    BaseEmittedPowerArgs(
+        double const averagePower_w,
+        double const wavelength_m,
+        double const targetRange,
+        double const rangeMin,
+        double const subrayRadius,
+        double const beamWaistRadius
+    ) :
+        averagePower_w(averagePower_w),
+        wavelength_m(wavelength_m),
+        targetRange(targetRange),
+        rangeMin(rangeMin),
+        subrayRadius(subrayRadius),
+        beamWaistRadius(beamWaistRadius)
+    {}
 };
 
-class BaseTargetAreaArgs{
+class BaseTargetAreaArgs : public ModelArg {
 public:
     double const range;
     double const Bt2;  // Squared device's beam divergence (not subray)
     double const numSubrays;  // Number of subrays used by the discrete model
+    BaseTargetAreaArgs(
+        double const range,
+        double const Bt2,
+        double const numSubrays
+    ) :
+        range(range),
+        Bt2(Bt2),
+        numSubrays(numSubrays)
+    {}
 };
 
-class BaseCrossSectionArgs{
+class BaseCrossSectionArgs : public ModelArg {
 public:
+    Material const &material;
     double const bdrf; // Bidirectional reflectance function
     double const targetArea;
     double const incidenceAngle_rad;
+    BaseCrossSectionArgs(
+        Material const &material,
+        double const bdrf,
+        double const targetArea,
+        double const incidenceAngle_rad
+    ) :
+        material(material),
+        bdrf(bdrf),
+        targetArea(targetArea),
+        incidenceAngle_rad(incidenceAngle_rad)
+    {}
 };
 
 
@@ -55,12 +120,7 @@ public:
  *
  * @brief Class providing a baseline energy model.
  */
-class BaseEnergyModel : public EnergyModel<
-    BaseReceivedPowerArgs,
-    BaseEmittedPowerArgs,
-    BaseTargetAreaArgs,
-    BaseCrossSectionArgs
->{
+class BaseEnergyModel : public EnergyModel {
 public:
     // ***  METHODS  *** //
     // ***************** //
@@ -99,8 +159,14 @@ public:
      *
      * @return The received power \f$P_r\f$.
      * @see EnergyModel::computeReceivedPower
+     * @see BaseReceivedPowerArgs
      */
-    double computeReceivedPower(BaseReceivedPowerArgs const & args) override;
+    double computeReceivedPower(
+        ModelArg const & args
+#if DATA_ANALYTICS >=2
+        ,std::vector<std::vector<double>> &calcIntensityRecords
+#endif
+    ) override;
     /**
      * @brief Compute the emitted power \f$P_e\f$.
      *
@@ -135,7 +201,7 @@ public:
      * @return The emitted power \f$P_e\f$.
      * @see EnergyModel::computeEmittedPower
      */
-    double computeEmittedPower(BaseEmittedPowerArgs const & args) override;
+    double computeEmittedPower(ModelArg const & args) override;
     /**
      * @brief Compute the target area \f$A\f$.
      *
@@ -159,7 +225,7 @@ public:
      * @return The target area \f$A\f$.
      * @see EnergyModel::computeTargetArea
      */
-    double computeTargetArea(BaseTargetAreaArgs const & args) override;
+    double computeTargetArea(ModelArg const & args) override;
     /**
      * @brief Compute the cross section \f$\sigma\f$.
      *
@@ -203,5 +269,5 @@ public:
      * @return The target area \f$\sigma\f$.
      * @see EnergyModel::computeCrossSection
      */
-    double computeCrossSection(BaseCrossSectionArgs const & args) override;
+    double computeCrossSection(ModelArg const & args) override;
 };

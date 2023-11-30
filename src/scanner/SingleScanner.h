@@ -191,6 +191,11 @@ public:
     // ***  GETTERs and SETTERs  *** //
     // ***************************** //
     /**
+     * @see Scanner::getScanningDevice
+     */
+    ScanningDevice & getScanningDevice(size_t const idx)
+    {return scanDev;}
+    /**
      * @see Scanner::setDeviceIndex
      */
     void setDeviceIndex(size_t const newIdx, size_t const oldIdx) override

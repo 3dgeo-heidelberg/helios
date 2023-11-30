@@ -1,4 +1,5 @@
 #pragma once
+#include <maths/model/ModelArg.h>
 
 
 /**
@@ -6,12 +7,6 @@
  *
  * @brief Abstract class providing the interface for any energy model.
  */
-template <
-    typename ReceivedPowerArgs,
-    typename EmittedPowerArgs,
-    typename TargetAreaArgs,
-    typename CrossSectionArgs
->
 class EnergyModel{
 public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //
@@ -29,7 +24,12 @@ public:
      *
      * @return The received power \f$P_r\f$.
      */
-    virtual double computeReceivedPower(ReceivedPowerArgs const & args) = 0;
+    virtual double computeReceivedPower(
+        ModelArg const & args
+#if DATA_ANALYTICS >=2
+        ,std::vector<std::vector<double>> &calcIntensityRecords
+#endif
+    ) = 0;
     /**
      * @brief Compute the emitted power \f$P_e\f$.
      *
@@ -38,7 +38,7 @@ public:
      *
      * @return The emitted power \f$P_e\f$.
      */
-    virtual double computeEmittedPower(EmittedPowerArgs const & args) = 0;
+    virtual double computeEmittedPower(ModelArg const & args) = 0;
     /**
      * @brief Compute the target area \f$A\f$.
      *
@@ -47,7 +47,7 @@ public:
      *
      * @return The target area \f$A\f$.
      */
-    virtual double computeTargetArea(TargetAreaArgs const & args) = 0;
+    virtual double computeTargetArea(ModelArg const & args) = 0;
     /**
      * @brief Compute the cross section \f$\sigma\f$.
      *
@@ -56,5 +56,5 @@ public:
      *
      * @return The target area \f$\sigma\f$.
      */
-    virtual double computeCrossSection(CrossSectionArgs const & args) = 0;
+    virtual double computeCrossSection(ModelArg const & args) = 0;
 };

@@ -85,6 +85,10 @@ ScanningDevice::ScanningDevice(ScanningDevice const &scdev){
 // ***  M E T H O D S  *** //
 // *********************** //
 void ScanningDevice::prepareSimulation(){
+    // Prepare energy model
+    energyModel = std::make_shared<BaseEnergyModel>();
+
+    // Elliptical footprint discrete method
     int const beamSampleQuality = FWF_settings.beamSampleQuality;
     double const radiusStep_rad = beamDivergence_rad/beamSampleQuality;
 
@@ -363,64 +367,21 @@ double ScanningDevice::calcIntensity(
    ,std::vector<std::vector<double>> &calcIntensityRecords
 #endif
 ) const {
-    double bdrf = 0, sigma = 0;
-    if(mat.isPhong()) {
-        bdrf = mat.reflectance * EnergyMaths::phongBDRF(
-            incidenceAngle,
-            mat.specularity,
-            mat.specularExponent
-        );
-        sigma = EnergyMaths::calcCrossSection(
-            bdrf, targetArea, incidenceAngle
-        );
-    }
-    else if(mat.isLambert()){
-        bdrf = mat.reflectance;
-        sigma = EnergyMaths::calcCrossSection(
-            bdrf, targetArea, incidenceAngle
-        );
-    }
-    else if(mat.isDirectionIndependent()){
-        bdrf = mat.reflectance/std::cos(incidenceAngle);  // Alt. 1/cos(incid)
-        sigma = EnergyMaths::calcCrossSection(
-            bdrf, targetArea, incidenceAngle
-        );
-        if(sigma < 0) sigma = -sigma;
-    }
-    else{
-        std::stringstream ss;
-        ss  << "Unexpected lighting model for material \""
-            << mat.name << "\"";
-        logging::ERR(ss.str());
-    }
-    double const receivedPower = EnergyMaths::calcReceivedPower(
+    return energyModel->computeReceivedPower(BaseReceivedPowerArgs{
+        incidenceAngle,
+        targetRange,
+        mat,
+        radius,
         averagePower_w,
         wavelength_m,
-        targetRange,
         detector->cfg_device_rangeMin_m,
-        radius,
         beamWaistRadius,
         cached_Dr2,
         cached_Bt2,
         efficiency,
         atmosphericExtinction,
-        sigma
-    ) * 1000000000.0;
-#if DATA_ANALYTICS >= 2
-    std::vector<double> calcIntensityRecord(
-        11, std::numeric_limits<double>::quiet_NaN()
-    );
-    calcIntensityRecord[3] = incidenceAngle;
-    calcIntensityRecord[4] = targetRange;
-    calcIntensityRecord[5] = targetArea;
-    calcIntensityRecord[6] = radius;
-    calcIntensityRecord[7] = bdrf;
-    calcIntensityRecord[8] = sigma;
-    calcIntensityRecord[9] = receivedPower;
-    calcIntensityRecord[10] = 0; // By default, assume the point isn't captured
-    calcIntensityRecords.push_back(calcIntensityRecord);
-#endif
-    return receivedPower;
+        (double) numRays
+    });
 }
 double ScanningDevice::calcIntensity(
     double const targetRange,

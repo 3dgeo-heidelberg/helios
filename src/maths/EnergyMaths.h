@@ -2,6 +2,7 @@
 
 #include <cmath>
 #include <maths/MathConstants.h>
+#include <scene/Material.h>
 
 /**
  * @author Alberto M. Esmoris Pena
@@ -222,6 +223,9 @@ public:
 
     // ***  LIGHTING  *** //
     // ****************** //
+    static double computeBDRF(
+        Material const &mat, double const incidenceAngle
+    );
     /**
 	 * @brief Compute the Phong model
 	 *

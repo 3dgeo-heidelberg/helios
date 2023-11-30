@@ -2,6 +2,8 @@
 
 #include <maths/Rotation.h>
 #include <maths/Directions.h>
+#include <maths/model/EnergyModel.h>
+#include <maths/model/BaseEnergyModel.h>
 #include <assetloading/Asset.h>
 #include <scanner/ScannerHead.h>
 #include <scanner/FWFSettings.h>
@@ -169,6 +171,14 @@ protected:
      * @see UnivarExprTreeNode
      */
     std::shared_ptr<UnivarExprTreeNode<double>> rangeErrExpr = nullptr;
+
+    /**
+     * @brief The energy model to compute the intensity for any pulse
+     *  emitted by the scanning device.
+     * @see EnergyModel
+     * @see BaseEnergyModel
+     */
+    std::shared_ptr<EnergyModel> energyModel = nullptr;
 
     // ***  STATE ATTRIBUTES  *** //
     // ************************** //
@@ -522,5 +532,18 @@ public:
     inline bool hasMechanicalRangeErrorExpression(){
         return rangeErrExpr != nullptr;
     }
+    /**
+     * @brief Set the energy model for the scanning device.
+     * @param energyModel The new energy model for the scanning device.
+     */
+    inline void setEnergyModel(std::shared_ptr<EnergyModel> energyModel){
+        this->energyModel = energyModel;
+    }
+    /**
+     * @brief Get the energy model of the scanning device.
+     * @return Return the energy model of the scanning device.
+     */
+    inline std::shared_ptr<EnergyModel> getEnergyModel() const
+    {return energyModel;}
 
 };

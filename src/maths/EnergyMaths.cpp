@@ -1,4 +1,6 @@
 #include <EnergyMaths.h>
+#include <util/logger/logging.hpp>
+#include <util/HeliosException.h>
 
 
 // ***  EMITTED / RECEIVED POWER  *** //
@@ -107,6 +109,32 @@ double EnergyMaths::calcCrossSection(
 
 // ***  LIGHTING  *** //
 // ****************** //
+double EnergyMaths::computeBDRF(
+    Material const& mat,
+    double const incidenceAngle
+){
+    // Supported lighting models
+    if(mat.isPhong()) {
+        return mat.reflectance * EnergyMaths::phongBDRF(
+            incidenceAngle,
+            mat.specularity,
+            mat.specularExponent
+        );
+    }
+    else if(mat.isLambert()){
+        return mat.reflectance;
+    }
+    else if(mat.isDirectionIndependent()){
+        return mat.reflectance/std::cos(incidenceAngle);  // Alt. 1/cos(incid)
+    }
+    // Not acceptable lighting model
+    std::stringstream ss;
+    ss  << "Unexpected lighting model for material \""
+        << mat.name << "\"";
+    logging::ERR(ss.str());
+    throw HeliosException("Unexpected lighting model.");
+}
+
 // Phong reflection model "Normalization of Lidar Intensity..." (Jutzi and Gross, 2009)
 double EnergyMaths::phongBDRF(
     double const incidenceAngle,

@@ -175,6 +175,9 @@ bool EnergyModelsTest::testEllipticalFootprintEnergy(){
         0.01 // rangeMin_m
     );
     // Configure scanner to match expected values
+    scanner->getScanningDevice(0).setEnergyModel(
+        std::make_shared<BaseEnergyModel>()
+    );
     scanner->setDetector(detector);
     scanner->setNumRays(37);
     scanner->setWavelength(1064e-06);

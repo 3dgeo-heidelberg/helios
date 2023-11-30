@@ -244,6 +244,7 @@ void FullWaveformPulseRunnable::handleSubray(
                 double const sigma = intersect->prim->computeSigmaWithLadLut(
                     subrayDirection
                 );
+                // TODO Rethink : Make an energy model por LadLuts too
                 intensity = scanner->calcIntensity(
                     distance, radius, sigma, pulse.getDeviceIndex()
                 );

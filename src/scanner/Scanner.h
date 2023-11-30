@@ -5,6 +5,7 @@
 #include <Asset.h>
 #include <ScannerHead.h>
 #include <AbstractBeamDeflector.h>
+#include <ScanningDevice.h>
 class AbstractDetector;
 #include <scanner/ScanningPulseProcess.h>
 #include <scanner/detector/PulseTaskDropper.h>
@@ -563,6 +564,12 @@ public:
 
     // *** GETTERs and SETTERs *** //
     // *************************** //
+    /**
+     * @brief Obtain the requested scanning device.
+     * @param idx The index of the scanning device to be obtained.
+     * @see ScanningDevice::getScanningDevice
+     */
+    virtual ScanningDevice& getScanningDevice(size_t const idx) = 0;
     /**
 	 * @brief Obtain the current pulse number of the scanning device
      * @param idx The index of the scanning device which pulse number must be
