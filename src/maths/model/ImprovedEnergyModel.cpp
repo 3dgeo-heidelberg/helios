@@ -60,6 +60,7 @@ double ImprovedEnergyModel::computeReceivedPower(
     calcIntensityRecord[5] = targetArea;
     calcIntensityRecord[7] = bdrf;
     calcIntensityRecord[8] = sigma;
+    // TODO Rethink : Include Emitted power and also in BaseEnergyModel
     calcIntensityRecord[9] = receivedPower;
     calcIntensityRecord[10] = 0; // By default, assume the point isn't captured
     calcIntensityRecords.push_back(calcIntensityRecord);
@@ -103,5 +104,8 @@ double ImprovedEnergyModel::computeTargetArea(
     calcIntensityRecord[6] = ri;
     calcIntensityRecords.push_back(calcIntensityRecord);
 #endif
-    return (ri*ri - rbeforei*rbeforei)*M_PI;
+    // TODO Rethink : Divide by number of subrays at current ring
+    double const numSubraysAtRing = (args.subrayRadiusStep == 0) ? 1.0 :
+        args.subrayRadiusStep*6.0;  // TODO Rethink : Use a more reliable alternative ?
+    return (ri*ri - rbeforei*rbeforei)*M_PI/numSubraysAtRing;
 }
