@@ -74,6 +74,10 @@ double ImprovedEnergyModel::computeTargetArea(
     >(_args);
     double const rmax = args.targetRange * args.deviceBeamDivergence_rad / 2.0;
     double const dr = rmax / args.beamSampleQuality;
-    double const ri = (args.beamSampleQuality - args.circleIter - 1.0) * dr;
-    return (ri*ri)*M_PI;
+    double const ri = rmax - (
+        args.beamSampleQuality - args.circleIter - 1.0
+    ) * dr;
+    double const rbeforei =  (args.circleIter == 0) ? 0.0 :
+        rmax - (args.beamSampleQuality - args.circleIter - 2.0) * dr;
+    return (ri*ri - rbeforei*rbeforei)*M_PI;
 }
