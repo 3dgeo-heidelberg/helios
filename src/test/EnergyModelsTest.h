@@ -113,7 +113,6 @@ bool EnergyModelsTest::testEmittedSubrayWisePower() {
     // Values for the tests
     double const I0 = 4.0;
     double const R = 1.0;
-    double const beamDiv_mrad = 0.3;
     int const BSQ = 5;
     vector<int> circleIter({
         0, 1, 2, 3, 4
@@ -132,8 +131,6 @@ bool EnergyModelsTest::testEmittedSubrayWisePower() {
         double const Pe = EnergyMaths::calcSubrayWiseEmittedPower(
             I0,
             R,
-            beamDiv_mrad,
-            0.0,
             BSQ,
             circleIter[i],
             nsr[i]
@@ -175,9 +172,7 @@ bool EnergyModelsTest::testEllipticalFootprintEnergy(){
         0.01 // rangeMin_m
     );
     // Configure scanner to match expected values
-    scanner->getScanningDevice(0).setEnergyModel(
-        std::make_shared<BaseEnergyModel>()
-    );
+    scanner->prepareSimulation();
     scanner->setDetector(detector);
     scanner->setNumRays(37);
     scanner->setWavelength(1064e-06);
@@ -230,10 +225,9 @@ bool EnergyModelsTest::testEllipticalFootprintEnergy(){
         double const incidenceAngle = incidenceAngles[i];
         double const divergenceAngle = divergenceAngles[i];
         double const radius = std::sin(divergenceAngle) * raytracingRange;
-        double const targetArea = scanner->calcTargetArea(raytracingRange, 0);
         double const intensity = scanner->calcIntensity(
             incidenceAngle, raytracingRange, material,
-            targetArea, radius, 0
+            radius, 0
         );
         double const expectedIntensity = expectedIntensities[i];
         double const absDiff = std::fabs(expectedIntensity-intensity);

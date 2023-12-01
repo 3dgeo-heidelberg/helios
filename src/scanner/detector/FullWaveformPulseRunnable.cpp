@@ -235,9 +235,6 @@ void FullWaveformPulseRunnable::handleSubray(
 
             // Distance between beam's center line and intersection point:
             double const radius = sin(divergenceAngle) * distance;
-            double const targetArea = scanner->calcTargetArea(
-                distance, pulse.getDeviceIndex()
-            );
             double intensity = 0.0;
             if (intersect->prim->canComputeSigmaWithLadLut()) {
                 // LadLut based intensity computation
@@ -257,7 +254,6 @@ void FullWaveformPulseRunnable::handleSubray(
                     incidenceAngle,
                     distance,
                     *intersect->prim->material,
-                    targetArea,
                     radius,
                     pulse.getDeviceIndex()
 #if DATA_ANALYTICS >= 2

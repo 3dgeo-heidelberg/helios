@@ -361,7 +361,6 @@ double ScanningDevice::calcIntensity(
     double const incidenceAngle,
     double const targetRange,
     Material const &mat,
-    double const targetArea,
     double const radius
 #if DATA_ANALYTICS >=2
    ,std::vector<std::vector<double>> &calcIntensityRecords

@@ -178,19 +178,6 @@ void SingleScanner::prepareDiscretization(size_t const idx){
     ), 0);
 }
 
-
-double SingleScanner::calcFootprintArea(
-    double const distance, size_t const idx
-) const {
-    return PI_QUARTER * distance * distance * getBt2(0);
-}
-
-double SingleScanner::calcTargetArea(
-    double const distance, size_t const idx
-) const{
-    return calcFootprintArea(distance, 0) / ((double)getNumRays(0));
-}
-
 Rotation SingleScanner::calcAbsoluteBeamAttitude(size_t const idx) {
     return scanDev.calcAbsoluteBeamAttitude(
         platform->getAbsoluteMountAttitude()
@@ -254,7 +241,6 @@ double SingleScanner::calcIntensity(
     double const incidenceAngle,
     double const targetRange,
     Material const &mat,
-    double const targetArea,
     double const radius,
     size_t const idx
 #if DATA_ANALYTICS >= 2
@@ -265,7 +251,6 @@ double SingleScanner::calcIntensity(
         incidenceAngle,
         targetRange,
         mat,
-        targetArea,
         radius
 #if DATA_ANALYTICS >= 2
        ,calcIntensityRecords

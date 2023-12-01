@@ -36,8 +36,6 @@ double EnergyMaths::calcEmittedPowerLegacy(
 double EnergyMaths::calcSubrayWiseEmittedPower(
     double const I0,
     double const R,
-    double const beamDiv_rad,
-    double const w0,
     double const BSQ,
     double const circleIter,
     double const numSubrays

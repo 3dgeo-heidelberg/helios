@@ -334,27 +334,6 @@ public:
      */
     inline void prepareDiscretization() {this->prepareDiscretization(0);}
     /**
-     * @brief Compute the footprint area \f$f_{a}\f$
-     *
-     * \f[
-     *  f_{a} = \frac{{\pi}d^{2}B_{t2}}{4}
-     * \f]
-     *
-     * @param distance Distance \f$d\f$
-     * @return Footprint area \f$f_{a}\f$
-     * @see Scanner::cached_Bt2
-     */
-    virtual double calcFootprintArea(
-        double const distance, size_t const idx
-    ) const = 0;
-    /**
-     * @brief Non index version of the
-     *  Scanner::calcFootprintArea(double const, size_t const) method
-     * @see Scanner::calcFootprintArea(double const, size_t const)
-     */
-    inline double calcFootprintArea(double const distance) const
-    {return calcFootprintArea(distance, 0);}
-    /**
      * @brief Compute the footprint radius \f$f_{r}\f$
      *
      * \f[
@@ -366,29 +345,6 @@ public:
      * @see Scanner::calcFootprintArea
      */
     double calcFootprintRadius(double const distance, size_t const idx);
-    /**
-     * @brief Non index version of the
-     *  Scanner::calcFootprintRadius(double const, size_t const) method
-     * @see Scanner::calcFootprintRadius(double const, size_t const)
-     */
-    double calcFootprintRadius(double const distance)
-    {return calcFootprintRadius(distance, 0);}
-    /**
-     * @brief Calculate the target area. It is the footprint area divided by
-     *  the number of rays
-     * @see Scanner::calcFootprintArea
-     * @see Scanner::getNumRays
-     */
-    virtual double calcTargetArea(
-        double const distance, size_t const idx
-    ) const = 0;
-    /**
-     * @brief Non index version of the
-     *  Scanner::calcTargetArea(double const, size_t const) method
-     * @see Scanner::calcTargetArea(double const, size_t const)
-     */
-    inline double calcTargetArea(double const distance) const
-    {return calcTargetArea(distance, 0);}
     /**
      * @see ScanningDevice::calcAtmosphericAttenuation
      */
@@ -504,7 +460,6 @@ public:
         double const incidenceAngle,
         double const targetRange,
         Material const &mat,
-        double const targetArea,
         double const radius,
         size_t const idx
 #if DATA_ANALYTICS >= 2

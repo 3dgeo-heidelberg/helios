@@ -141,18 +141,6 @@ void MultiScanner::prepareDiscretization(size_t const idx){
     ), idx);
 }
 
-double MultiScanner::calcFootprintArea(
-    double const distance, size_t const idx
-) const{
-    return PI_QUARTER * distance * distance * getBt2(idx);
-}
-
-double MultiScanner::calcTargetArea(
-    double const distance, size_t const idx
-) const{
-    return calcFootprintArea(distance, idx) / ((double)getNumRays(idx));
-}
-
 Rotation MultiScanner::calcAbsoluteBeamAttitude(size_t const idx){
     return scanDevs[idx].calcAbsoluteBeamAttitude(
         platform->getAbsoluteMountAttitude()
@@ -216,7 +204,6 @@ double MultiScanner::calcIntensity(
     double const incidenceAngle,
     double const targetRange,
     Material const &mat,
-    double const targetArea,
     double const radius,
     size_t const idx
 #if DATA_ANALYTICS >= 2
@@ -227,7 +214,6 @@ double MultiScanner::calcIntensity(
         incidenceAngle,
         targetRange,
         mat,
-        targetArea,
         radius
 #if DATA_ANALYTICS >= 2
        ,calcIntensityRecords

@@ -129,18 +129,6 @@ public:
      */
     void prepareDiscretization(size_t const idx) override;
     /**
-     * @see Scanner::calcFootprintArea
-     */
-    double calcFootprintArea(
-        double const distance, size_t const idx
-    ) const override;
-    /**
-     * @see Scanner::calcTargetArea
-     */
-    double calcTargetArea(
-        double const distance, size_t const idx
-    ) const override;
-    /**
      * @see Scanner::calcAbsoluteBeamAttitude
      */
     Rotation calcAbsoluteBeamAttitude(size_t const idx) override;
@@ -198,7 +186,6 @@ public:
         double const incidenceAngle,
         double const targetRange,
         Material const &mat,
-        double const targetArea,
         double const radius,
         size_t const idx
 #if DATA_ANALYTICS >= 2
