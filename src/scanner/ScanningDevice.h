@@ -3,7 +3,6 @@
 #include <maths/Rotation.h>
 #include <maths/Directions.h>
 #include <maths/model/EnergyModel.h>
-#include <maths/model/BaseEnergyModel.h>
 #include <assetloading/Asset.h>
 #include <scanner/ScannerHead.h>
 #include <scanner/FWFSettings.h>
@@ -224,6 +223,10 @@ public:
      * @brief The divergence angle for each subray.
      */
     std::vector<double> cached_subrayDivergenceAngle_rad;
+    /**
+     * @brief The subray radius step or iteration.
+     */
+    std::vector<int> cached_subrayRadiusStep;
 
 public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //
@@ -330,6 +333,7 @@ public:
         std::function<void(
             Rotation const &subrayRotation,
             double const divergenceAngle,
+            int const subrayRadiusStep,
             NoiseSource<double> &intersectionHandlingNoiseSource,
             std::map<double, double> &reflections,
             vector<RaySceneIntersection> &intersects
@@ -410,7 +414,8 @@ public:
         double const incidenceAngle,
         double const targetRange,
         Material const &mat,
-        double const radius
+        double const radius,
+        int const subrayRadiusStep
 #if DATA_ANALYTICS >= 2
        ,std::vector<std::vector<double>> &calcIntensityRecords
 #endif

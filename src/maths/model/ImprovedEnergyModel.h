@@ -16,7 +16,7 @@ public:
     Material const &material;
     double const deviceBeamDivergence_rad;
     double const beamSampleQuality;
-    double const circleIter;
+    double const subrayRadiusStep;
     ImprovedReceivedPowerArgs(
         double const averagePower_w,
         double const targetRange,
@@ -29,7 +29,7 @@ public:
         Material const &material,
         double const deviceBeamDivergence_rad,
         double const beamSampleQuality,
-        double const circleIter
+        double const subrayRadiusStep
     ) :
         averagePower_w(averagePower_w),
         targetRange(targetRange),
@@ -42,7 +42,7 @@ public:
         material(material),
         deviceBeamDivergence_rad(deviceBeamDivergence_rad),
         beamSampleQuality(beamSampleQuality),
-        circleIter(circleIter)
+        subrayRadiusStep(subrayRadiusStep)
     {}
 };
 
@@ -52,19 +52,19 @@ public:
     double const targetRange;
     double const numSubrays;
     double const beamSampleQuality;
-    double const circleIter;
+    double const subrayRadiusStep;
     ImprovedEmittedPowerArgs(
         double const averagePower_w,
         double const targetRange,
         double const numSubrays,
         double const beamSampleQuality,
-        double const circleIter
+        double const subrayRadiusStep
     ) :
         averagePower_w(averagePower_w),
         targetRange(targetRange),
         numSubrays(numSubrays),
         beamSampleQuality(beamSampleQuality),
-        circleIter(circleIter)
+        subrayRadiusStep(subrayRadiusStep)
     {}
 };
 
@@ -73,17 +73,17 @@ public:
     double const targetRange;
     double const deviceBeamDivergence_rad;
     double const beamSampleQuality;
-    double const circleIter;
+    double const subrayRadiusStep;
     ImprovedTargetAreaArgs(
         double const targetRange,
         double const deviceBeamDivergence_rad,
         double const beamSampleQuality,
-        double const circleIter
+        double const subrayRadiusStep
     ) :
         targetRange(targetRange),
         deviceBeamDivergence_rad(deviceBeamDivergence_rad),
         beamSampleQuality(beamSampleQuality),
-        circleIter(circleIter)
+        subrayRadiusStep(subrayRadiusStep)
     {}
 };
 
@@ -95,7 +95,7 @@ public:
  * @brief Class providing an improved energy model with better energy
  *  distribution modeling.
  */
-class ImprovedEnergyModel : public EnergyModel {
+class ImprovedEnergyModel : public BaseEnergyModel {
 public:
     // TODO Rethink : Some arguments as beamSampleQuality might be "cached" in the class apart from the look-up tables?
     // ***  METHODS  *** //
@@ -108,11 +108,7 @@ public:
 #endif
     ) override;
     // TODO Rethink : Doxygen doc
-    double computeEmittedPower(
-        ModelArg const &args
-    ) override;
+    double computeEmittedPower(ModelArg const &args) override;
     // TODO Rethink : Doxygen doc
-    double computeTargetArea(
-        ModelArg const &args
-    ) override;
+    double computeTargetArea(ModelArg const &args) override;
 };

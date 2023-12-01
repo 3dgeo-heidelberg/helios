@@ -105,6 +105,7 @@ private:
     void handleSubray(
         Rotation const &subrayRotation,
         double const divergenceAngle,
+        int const subrayRadiusStep,
         NoiseSource<double> &intersectionHandlingNoiseSource,
         std::map<double, double> &reflections,
         vector<RaySceneIntersection> &intersects

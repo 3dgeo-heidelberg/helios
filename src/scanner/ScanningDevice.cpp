@@ -3,6 +3,8 @@
 #include <logging.hpp>
 #include <scanner/detector/AbstractDetector.h>
 #include <maths/EnergyMaths.h>
+#include <maths/model/BaseEnergyModel.h>
+#include <maths/model/ImprovedEnergyModel.h>
 #if DATA_ANALYTICS >= 2
 #include <dataanalytics/HDA_GlobalVars.h>
 using namespace helios::analytics;
@@ -86,7 +88,9 @@ ScanningDevice::ScanningDevice(ScanningDevice const &scdev){
 // *********************** //
 void ScanningDevice::prepareSimulation(){
     // Prepare energy model
-    energyModel = std::make_shared<BaseEnergyModel>();
+    // TODO Rethink : Dynamically choose the energy model
+    //energyModel = std::make_shared<BaseEnergyModel>();
+    energyModel = std::make_shared<ImprovedEnergyModel>();
 
     // Elliptical footprint discrete method
     int const beamSampleQuality = FWF_settings.beamSampleQuality;
@@ -121,6 +125,7 @@ void ScanningDevice::prepareSimulation(){
             cached_subrayDivergenceAngle_rad.push_back(
                 subrayDivergenceAngle_rad
             );
+            cached_subrayRadiusStep.push_back(radiusStep);
         }
     }
 }
@@ -261,6 +266,7 @@ void ScanningDevice::computeSubrays(
     std::function<void(
         Rotation const &subrayRotation,
         double const divergenceAngle,
+        int const sburayRadiusStep,
         NoiseSource<double> &intersectionHandlingNoiseSource,
         std::map<double, double> &reflections,
         vector<RaySceneIntersection> &intersects
@@ -289,6 +295,7 @@ void ScanningDevice::computeSubrays(
         handleSubray(
             cached_subrayRotation[i],
             cached_subrayDivergenceAngle_rad[i],
+            cached_subrayRadiusStep[i],
             intersectionHandlingNoiseSource,
             reflections,
             intersects
@@ -361,12 +368,15 @@ double ScanningDevice::calcIntensity(
     double const incidenceAngle,
     double const targetRange,
     Material const &mat,
-    double const radius
+    double const radius,
+    int const subrayRadiusStep
 #if DATA_ANALYTICS >=2
    ,std::vector<std::vector<double>> &calcIntensityRecords
 #endif
 ) const {
-    return energyModel->computeReceivedPower(BaseReceivedPowerArgs{
+    // TODO Rethink: Dynamically select the model's arguments
+    // Base energy model
+    /*return energyModel->computeReceivedPower(BaseReceivedPowerArgs{
         incidenceAngle,
         targetRange,
         mat,
@@ -380,6 +390,21 @@ double ScanningDevice::calcIntensity(
         efficiency,
         atmosphericExtinction,
         (double) numRays
+    });*/
+    // Improved energy model
+    return energyModel->computeReceivedPower(ImprovedReceivedPowerArgs{
+        averagePower_w,
+        targetRange,
+        atmosphericExtinction,
+        incidenceAngle,
+        cached_Dr2,
+        cached_Bt2,
+        efficiency,
+        (double) numRays,
+        mat,
+        beamDivergence_rad,
+        (double) FWF_settings.beamSampleQuality,
+        (double) subrayRadiusStep
     });
 }
 double ScanningDevice::calcIntensity(

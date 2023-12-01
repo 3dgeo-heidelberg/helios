@@ -150,6 +150,7 @@ void MultiScanner::computeSubrays(
     std::function<void(
         Rotation const &subrayRotation,
         double const divergenceAngle,
+        int const subrayRadiusStep,
         NoiseSource<double> &intersectionHandlingNoiseSource,
         std::map<double, double> &reflections,
         vector<RaySceneIntersection> &intersects
@@ -205,6 +206,7 @@ double MultiScanner::calcIntensity(
     double const targetRange,
     Material const &mat,
     double const radius,
+    int const subrayRadiusStep,
     size_t const idx
 #if DATA_ANALYTICS >= 2
    ,std::vector<std::vector<double>> &calcIntensityRecords
@@ -214,7 +216,8 @@ double MultiScanner::calcIntensity(
         incidenceAngle,
         targetRange,
         mat,
-        radius
+        radius,
+        subrayRadiusStep
 #if DATA_ANALYTICS >= 2
        ,calcIntensityRecords
 #endif

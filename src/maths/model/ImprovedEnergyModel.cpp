@@ -17,7 +17,7 @@ double ImprovedEnergyModel::computeReceivedPower(
         args.targetRange,
         args.numSubrays,
         args.beamSampleQuality,
-        args.circleIter
+        args.subrayRadiusStep
     });
     double const atmosphericFactor = std::exp(
         -2 * args.targetRange * args.atmosphericExtinction
@@ -26,7 +26,7 @@ double ImprovedEnergyModel::computeReceivedPower(
         args.targetRange,
         args.deviceBeamDivergence_rad,
         args.beamSampleQuality,
-        args.circleIter
+        args.subrayRadiusStep
     });
     // TODO Rethink : To common impl, consider also BaseEnergyModel ---
     double const bdrf = EnergyMaths::computeBDRF(
@@ -61,7 +61,7 @@ double ImprovedEnergyModel::computeEmittedPower(
         args.averagePower_w,
         args.targetRange,
         args.beamSampleQuality,
-        args.circleIter,
+        args.subrayRadiusStep,
         args.numSubrays
     );
 }
@@ -75,9 +75,9 @@ double ImprovedEnergyModel::computeTargetArea(
     double const rmax = args.targetRange * args.deviceBeamDivergence_rad / 2.0;
     double const dr = rmax / args.beamSampleQuality;
     double const ri = rmax - (
-        args.beamSampleQuality - args.circleIter - 1.0
+        args.beamSampleQuality - args.subrayRadiusStep - 1.0
     ) * dr;
-    double const rbeforei =  (args.circleIter == 0) ? 0.0 :
-        rmax - (args.beamSampleQuality - args.circleIter - 2.0) * dr;
+    double const rbeforei =  (args.subrayRadiusStep == 0) ? 0.0 :
+        rmax - (args.beamSampleQuality - args.subrayRadiusStep - 2.0) * dr;
     return (ri*ri - rbeforei*rbeforei)*M_PI;
 }

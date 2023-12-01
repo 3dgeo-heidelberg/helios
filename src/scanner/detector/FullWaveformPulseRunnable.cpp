@@ -125,6 +125,7 @@ void FullWaveformPulseRunnable::computeSubrays(
         [&] (
             Rotation const &subrayRotation,
             double const divergenceAngle,
+            int const subrayRadiusStep,
             NoiseSource<double> &intersectionHandlingNoiseSource,
             std::map<double, double> &reflections,
             vector<RaySceneIntersection> &intersects
@@ -136,6 +137,7 @@ void FullWaveformPulseRunnable::computeSubrays(
             handleSubray(
                 subrayRotation,
                 divergenceAngle,
+                subrayRadiusStep,
                 intersectionHandlingNoiseSource,
                 reflections,
                 intersects
@@ -159,6 +161,7 @@ void FullWaveformPulseRunnable::computeSubrays(
 void FullWaveformPulseRunnable::handleSubray(
     Rotation const &subrayRotation,
     double const divergenceAngle,
+    int const subrayRadiusStep,
     NoiseSource<double> &intersectionHandlingNoiseSource,
     map<double, double> &reflections,
     vector<RaySceneIntersection> &intersects
@@ -255,6 +258,7 @@ void FullWaveformPulseRunnable::handleSubray(
                     distance,
                     *intersect->prim->material,
                     radius,
+                    subrayRadiusStep,
                     pulse.getDeviceIndex()
 #if DATA_ANALYTICS >= 2
                     , calcIntensityRecords

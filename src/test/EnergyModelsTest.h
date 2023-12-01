@@ -227,7 +227,7 @@ bool EnergyModelsTest::testEllipticalFootprintEnergy(){
         double const radius = std::sin(divergenceAngle) * raytracingRange;
         double const intensity = scanner->calcIntensity(
             incidenceAngle, raytracingRange, material,
-            radius, 0
+            radius, 0, 0
         );
         double const expectedIntensity = expectedIntensities[i];
         double const absDiff = std::fabs(expectedIntensity-intensity);
