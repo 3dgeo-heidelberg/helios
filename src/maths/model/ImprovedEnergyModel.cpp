@@ -6,7 +6,7 @@
 double ImprovedEnergyModel::computeReceivedPower(
     ModelArg const & _args
 #if DATA_ANALYTICS >=2
-    ,std::vector<std::vector<double>> &calcIntensityRecords
+   ,std::vector<std::vector<double>> &calcIntensityRecords
 #endif
 ){
     ImprovedReceivedPowerArgs const &args = static_cast<
@@ -23,11 +23,15 @@ double ImprovedEnergyModel::computeReceivedPower(
         -2 * args.targetRange * args.atmosphericExtinction
     );
     double const targetArea = computeTargetArea(ImprovedTargetAreaArgs{
-        args.targetRange,
-        args.deviceBeamDivergence_rad,
-        args.beamSampleQuality,
-        args.subrayRadiusStep
-    });
+            args.targetRange,
+            args.deviceBeamDivergence_rad,
+            args.beamSampleQuality,
+            args.subrayRadiusStep
+        }
+#if DATA_ANALYTICS >= 2
+       ,calcIntensityRecords
+#endif
+    );
     // TODO Rethink : To common impl, consider also BaseEnergyModel ---
     double const bdrf = EnergyMaths::computeBDRF(
         args.material,
@@ -40,7 +44,7 @@ double ImprovedEnergyModel::computeReceivedPower(
         args.incidenceAngle_rad
     });
     // --- TODO Rethink : To common impl, consider also BaseEnergyModel
-    return EnergyMaths::calcReceivedPowerLegacy(
+    double const receivedPower = EnergyMaths::calcReceivedPowerLegacy(
         Pe,
         args.Dr2,
         args.targetRange,
@@ -48,7 +52,18 @@ double ImprovedEnergyModel::computeReceivedPower(
         args.efficiency,
         atmosphericFactor,
         sigma
-    );
+    ) * 1e9;
+#if DATA_ANALYTICS >= 2
+    std::vector<double> & calcIntensityRecord = calcIntensityRecords.back();
+    calcIntensityRecord[3] = args.incidenceAngle_rad;
+    calcIntensityRecord[4] = args.targetRange;
+    calcIntensityRecord[5] = targetArea;
+    calcIntensityRecord[7] = bdrf;
+    calcIntensityRecord[8] = sigma;
+    calcIntensityRecord[9] = receivedPower;
+    calcIntensityRecord[10] = 0; // By default, assume the point isn't captured
+    calcIntensityRecords.push_back(calcIntensityRecord);
+#endif
 }
 
 double ImprovedEnergyModel::computeEmittedPower(
@@ -68,6 +83,9 @@ double ImprovedEnergyModel::computeEmittedPower(
 
 double ImprovedEnergyModel::computeTargetArea(
     ModelArg const &_args
+#if DATA_ANALYTICS >=2
+   ,std::vector<std::vector<double>> &calcIntensityRecords
+#endif
 ){
     ImprovedTargetAreaArgs const & args = static_cast<
         ImprovedTargetAreaArgs const &
@@ -77,7 +95,13 @@ double ImprovedEnergyModel::computeTargetArea(
     double const ri = rmax - (
         args.beamSampleQuality - args.subrayRadiusStep - 1.0
     ) * dr;
-    double const rbeforei =  (args.subrayRadiusStep == 0) ? 0.0 :
-        rmax - (args.beamSampleQuality - args.subrayRadiusStep - 2.0) * dr;
+    double const rbeforei =  (args.subrayRadiusStep == 0) ? 0.0 : ri - dr;
+#if DATA_ANALYTICS >= 2
+    std::vector<double> calcIntensityRecord(
+        11, std::numeric_limits<double>::quiet_NaN()
+    );
+    calcIntensityRecord[6] = ri;
+    calcIntensityRecords.push_back(calcIntensityRecord);
+#endif
     return (ri*ri - rbeforei*rbeforei)*M_PI;
 }

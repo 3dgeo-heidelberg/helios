@@ -393,19 +393,23 @@ double ScanningDevice::calcIntensity(
     });*/
     // Improved energy model
     return energyModel->computeReceivedPower(ImprovedReceivedPowerArgs{
-        averagePower_w,
-        targetRange,
-        atmosphericExtinction,
-        incidenceAngle,
-        cached_Dr2,
-        cached_Bt2,
-        efficiency,
-        (double) numRays,
-        mat,
-        beamDivergence_rad,
-        (double) FWF_settings.beamSampleQuality,
-        (double) subrayRadiusStep
-    });
+            averagePower_w,
+            targetRange,
+            atmosphericExtinction,
+            incidenceAngle,
+            cached_Dr2,
+            cached_Bt2,
+            efficiency,
+            (double) numRays,
+            mat,
+            beamDivergence_rad,
+            (double) FWF_settings.beamSampleQuality,
+            (double) subrayRadiusStep
+        }
+#if DATA_ANALYTICS >= 2
+       ,calcIntensityRecords
+#endif
+    );
 }
 double ScanningDevice::calcIntensity(
     double const targetRange,

@@ -1,5 +1,6 @@
 #pragma once
 #include <maths/model/ModelArg.h>
+#include <vector>
 
 
 /**
@@ -27,7 +28,7 @@ public:
     virtual double computeReceivedPower(
         ModelArg const & args
 #if DATA_ANALYTICS >=2
-        ,std::vector<std::vector<double>> &calcIntensityRecords
+       ,std::vector<std::vector<double>> &calcIntensityRecords
 #endif
     ) = 0;
     /**
@@ -47,7 +48,12 @@ public:
      *
      * @return The target area \f$A\f$.
      */
-    virtual double computeTargetArea(ModelArg const & args) = 0;
+    virtual double computeTargetArea(
+        ModelArg const & args
+#if DATA_ANALYTICS >=2
+       ,std::vector<std::vector<double>> &calcIntensityRecords
+#endif
+    ) = 0;
     /**
      * @brief Compute the cross section \f$\sigma\f$.
      *

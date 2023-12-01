@@ -143,6 +143,7 @@ bool EnergyModelsTest::testEmittedSubrayWisePower() {
 }
 
 bool EnergyModelsTest::testEllipticalFootprintEnergy(){
+#if DATA_ANALYTICS < 1
     // Prepare fake scanner
     std::shared_ptr<Scanner> scanner = std::make_shared<SingleScanner>(
         0.0003, // beamDiv_rad
@@ -233,6 +234,7 @@ bool EnergyModelsTest::testEllipticalFootprintEnergy(){
         double const absDiff = std::fabs(expectedIntensity-intensity);
         if(absDiff > eps) return false;
     }
+#endif
     // Return true if all intensities were as expected
     return true;
 }

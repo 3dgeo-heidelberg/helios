@@ -164,7 +164,7 @@ public:
     double computeReceivedPower(
         ModelArg const & args
 #if DATA_ANALYTICS >=2
-        ,std::vector<std::vector<double>> &calcIntensityRecords
+       ,std::vector<std::vector<double>> &calcIntensityRecords
 #endif
     ) override;
     /**
@@ -225,7 +225,12 @@ public:
      * @return The target area \f$A\f$.
      * @see EnergyModel::computeTargetArea
      */
-    double computeTargetArea(ModelArg const & args) override;
+    double computeTargetArea(
+        ModelArg const & args
+#if DATA_ANALYTICS >=2
+       ,std::vector<std::vector<double>> &calcIntensityRecords
+#endif
+    ) override;
     /**
      * @brief Compute the cross section \f$\sigma\f$.
      *

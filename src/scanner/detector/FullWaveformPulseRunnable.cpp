@@ -38,7 +38,7 @@ void FullWaveformPulseRunnable::operator()(
 	RandomnessGenerator<double> &randGen2,
 	NoiseSource<double> &intersectionHandlingNoiseSource
 #if DATA_ANALYTICS >= 2
-    ,std::shared_ptr<HDA_PulseRecorder> pulseRecorder
+   ,std::shared_ptr<HDA_PulseRecorder> pulseRecorder
 #endif
 ){
     // Deferred/lazy initialization
@@ -261,7 +261,7 @@ void FullWaveformPulseRunnable::handleSubray(
                     subrayRadiusStep,
                     pulse.getDeviceIndex()
 #if DATA_ANALYTICS >= 2
-                    , calcIntensityRecords
+                   ,calcIntensityRecords
 #endif
                 );
             }

@@ -6,17 +6,21 @@
 double BaseEnergyModel::computeReceivedPower(
     ModelArg const & _args
 #if DATA_ANALYTICS >=2
-    ,std::vector<std::vector<double>> &calcIntensityRecords
+   ,std::vector<std::vector<double>> &calcIntensityRecords
 #endif
 ){
     BaseReceivedPowerArgs const & args = static_cast<
         BaseReceivedPowerArgs const&
     >(_args);
     double const targetArea = computeTargetArea(BaseTargetAreaArgs{
-        args.targetRange,
-        args.Bt2,
-        args.numSubrays
-    });
+            args.targetRange,
+            args.Bt2,
+            args.numSubrays
+        }
+#if DATA_ANALYTICS >= 2
+       ,calcIntensityRecords
+#endif
+    );
     double const bdrf = EnergyMaths::computeBDRF(
             args.material,
             args.incidenceAngle_rad
@@ -47,7 +51,7 @@ double BaseEnergyModel::computeReceivedPower(
     calcIntensityRecord[3] = args.incidenceAngle_rad;
     calcIntensityRecord[4] = args.targetRange;
     calcIntensityRecord[5] = targetArea;
-    calcIntensityRecord[6] = args.radius;
+    calcIntensityRecord[6] = args.subrayRadius;
     calcIntensityRecord[7] = bdrf;
     calcIntensityRecord[8] = sigma;
     calcIntensityRecord[9] = receivedPower;
@@ -75,6 +79,9 @@ double BaseEnergyModel::computeEmittedPower(
 
 double BaseEnergyModel::computeTargetArea(
     ModelArg const & _args
+#if DATA_ANALYTICS >=2
+   ,std::vector<std::vector<double>> &calcIntensityRecords
+#endif
 ){
     BaseTargetAreaArgs const & args = static_cast<
         BaseTargetAreaArgs const &

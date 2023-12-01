@@ -104,11 +104,16 @@ public:
     double computeReceivedPower(
         ModelArg const & args
 #if DATA_ANALYTICS >=2
-        ,std::vector<std::vector<double>> &calcIntensityRecords
+       ,std::vector<std::vector<double>> &calcIntensityRecords
 #endif
     ) override;
     // TODO Rethink : Doxygen doc
     double computeEmittedPower(ModelArg const &args) override;
     // TODO Rethink : Doxygen doc
-    double computeTargetArea(ModelArg const &args) override;
+    double computeTargetArea(
+        ModelArg const &args
+#if DATA_ANALYTICS >=2
+       ,std::vector<std::vector<double>> &calcIntensityRecords
+#endif
+    ) override;
 };
