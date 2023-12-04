@@ -75,6 +75,7 @@ void FullWaveformPulseRunnable::operator()(
 	vector<RaySceneIntersection> intersects;
 #if DATA_ANALYTICS >= 2
     std::vector<std::vector<double>> calcIntensityRecords;
+    std::vector<std::vector<int>> calcIntensityIndices;
 #endif
 	computeSubrays(
 	    intersectionHandlingNoiseSource,
@@ -86,6 +87,14 @@ void FullWaveformPulseRunnable::operator()(
 #endif
     );
 
+#if DATA_ANALYTICS >= 2
+    for(std::vector<double> &calcIntensityRecord : calcIntensityRecords) {
+        calcIntensityIndices.push_back(
+            std::vector<int>({pulse.getPulseNumber()})
+        );
+    }
+#endif
+
 	// Digest intersections
 	digestIntersections(
 	    apMatrix,
@@ -96,7 +105,8 @@ void FullWaveformPulseRunnable::operator()(
 	    intersects
 #if DATA_ANALYTICS >= 2
        ,calcIntensityRecords,
-       pulseRecorder
+        calcIntensityIndices,
+        pulseRecorder
 #endif
     );
 }
@@ -118,7 +128,7 @@ void FullWaveformPulseRunnable::computeSubrays(
     vector<RaySceneIntersection> &intersects
 #if DATA_ANALYTICS >= 2
    ,std::vector<std::vector<double>> &calcIntensityRecords,
-   std::shared_ptr<HDA_PulseRecorder> pulseRecorder
+    std::shared_ptr<HDA_PulseRecorder> pulseRecorder
 #endif
 ){
     scanner->computeSubrays(
@@ -182,6 +192,7 @@ void FullWaveformPulseRunnable::handleSubray(
         subrayDirection
     );
 #if DATA_ANALYTICS >= 2
+    // Subray simulation record
     glm::dvec3 rayDirection = pulse.computeDirection();
     subraySimRecord[2] = glm::l2Norm(rayDirection); // Ray norm
     subraySimRecord[3] = glm::l2Norm(subrayDirection); // Subray norm
@@ -244,7 +255,7 @@ void FullWaveformPulseRunnable::handleSubray(
                 double const sigma = intersect->prim->computeSigmaWithLadLut(
                     subrayDirection
                 );
-                // TODO Rethink : Make an energy model por LadLuts too
+                // TODO Rethink : Make an energy model for LadLuts too
                 intensity = scanner->calcIntensity(
                     distance, radius, sigma, pulse.getDeviceIndex()
                 );
@@ -308,6 +319,7 @@ void FullWaveformPulseRunnable::handleSubray(
                 intersects.push_back(*intersect);
             }
 #if DATA_ANALYTICS >= 2
+            // TODO Rethink : At this point, double insertion has happened
             std::vector<double> &calcIntensityRecord =
                 calcIntensityRecords.back();
             calcIntensityRecord[0] = intersect->point.x;
@@ -334,7 +346,8 @@ void FullWaveformPulseRunnable::digestIntersections(
     vector<RaySceneIntersection> &intersects
 #if DATA_ANALYTICS >= 2
    ,vector<vector<double>> &calcIntensityRecords,
-   std::shared_ptr<HDA_PulseRecorder> pulseRecorder
+    vector<vector<int>> &calcIntensityIndices,
+    std::shared_ptr<HDA_PulseRecorder> pulseRecorder
 #endif
 ){
     // Find maximum hit distances
@@ -346,7 +359,10 @@ void FullWaveformPulseRunnable::digestIntersections(
         scanner->setLastPulseWasHit(false, pulse.getDeviceIndex());
 #if DATA_ANALYTICS >= 2
         if(!calcIntensityRecords.empty()) {
-            pulseRecorder->recordIntensityCalculation(calcIntensityRecords);
+            pulseRecorder->recordIntensityCalculation(
+                calcIntensityRecords,
+                calcIntensityIndices
+            );
         }
 #endif
         return;
@@ -366,7 +382,10 @@ void FullWaveformPulseRunnable::digestIntersections(
         numFullwaveBins
     )){
 #if DATA_ANALYTICS >= 2
-        pulseRecorder->recordIntensityCalculation(calcIntensityRecords);
+        pulseRecorder->recordIntensityCalculation(
+            calcIntensityRecords,
+            calcIntensityIndices
+        );
 #endif
         return;
     }
@@ -398,7 +417,8 @@ void FullWaveformPulseRunnable::digestIntersections(
         minHitTime_ns
 #if DATA_ANALYTICS >= 2
        ,calcIntensityRecords,
-       pulseRecorder
+        calcIntensityIndices,
+        pulseRecorder
 #endif
     );
 
@@ -414,7 +434,8 @@ void FullWaveformPulseRunnable::digestIntersections(
         randGen2
 #if DATA_ANALYTICS >= 2
        ,calcIntensityRecords,
-       pulseRecorder
+        calcIntensityIndices,
+        pulseRecorder
 #endif
     );
 }
@@ -511,6 +532,7 @@ void FullWaveformPulseRunnable::digestFullWaveform(
     double const minHitTime_ns
 #if DATA_ANALYTICS >= 2
    ,std::vector<std::vector<double>> &calcIntensityRecords,
+    std::vector<std::vector<int>> &calcIntensityIndices,
     std::shared_ptr<HDA_PulseRecorder> pulseRecorder
 #endif
 ){
@@ -621,12 +643,17 @@ void FullWaveformPulseRunnable::digestFullWaveform(
     size_t const numRecords = calcIntensityRecords.size();
     size_t nonCapturedCount = 0;
     for(size_t i = 0 ; i < numRecords ; ++i){
+        // TODO Rethink : Why with BSQ==1 there is n=2 instead of n=1 here ?
         if(capturedIndices.find(i) == capturedIndices.end()){
             pulseRecorder->recordIntensityCalculation(
-                calcIntensityRecords[i-nonCapturedCount]
+                calcIntensityRecords[i-nonCapturedCount],
+                calcIntensityIndices[i-nonCapturedCount]
             );
             calcIntensityRecords.erase(
                 calcIntensityRecords.begin()+i-nonCapturedCount
+            );
+            calcIntensityIndices.erase(
+                calcIntensityIndices.begin()+i-nonCapturedCount
             );
             ++nonCapturedCount;
         }
@@ -681,7 +708,8 @@ void FullWaveformPulseRunnable::exportOutput(
     RandomnessGenerator<double> &randGen2
 #if DATA_ANALYTICS >= 2
    ,std::vector<std::vector<double>> &calcIntensityRecords,
-   std::shared_ptr<HDA_PulseRecorder> pulseRecorder
+    std::vector<std::vector<int>> &calcIntensityIndices,
+    std::shared_ptr<HDA_PulseRecorder> pulseRecorder
 #endif
 ){
     // ############ END Extract points from waveform data ################
@@ -700,7 +728,8 @@ void FullWaveformPulseRunnable::exportOutput(
                 scanner->cycleMeasurementsMutex.get()
 #if DATA_ANALYTICS >= 2
                ,calcIntensityRecords[i],
-               pulseRecorder
+                calcIntensityIndices[i],
+                pulseRecorder
 #endif
             );
 #if DATA_ANALYTICS >= 2

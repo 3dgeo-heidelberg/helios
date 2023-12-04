@@ -138,6 +138,7 @@ private:
         vector<RaySceneIntersection> &intersects
 #if DATA_ANALYTICS >= 2
        ,std::vector<std::vector<double>> &calcIntensityRecords,
+        std::vector<std::vector<int>> &calcIntensityIndices,
         std::shared_ptr<HDA_PulseRecorder> pulseRecorder
 #endif
     );
@@ -213,6 +214,7 @@ private:
         double const minHitTime_ns
 #if DATA_ANALYTICS >= 2
        ,std::vector<std::vector<double>> &calcIntensityRecords,
+        std::vector<std::vector<int>> &calcIntensityIndices,
         std::shared_ptr<HDA_PulseRecorder> pulseRecorder
 #endif
     );
@@ -253,6 +255,7 @@ private:
         RandomnessGenerator<double> &randGen2
 #if DATA_ANALYTICS >= 2
        ,std::vector<std::vector<double>> &calcIntensityRecords,
+        std::vector<std::vector<int>> &calcIntensityIndices,
         std::shared_ptr<HDA_PulseRecorder> pulseRecorder
 #endif
     );

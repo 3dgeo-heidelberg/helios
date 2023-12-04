@@ -77,6 +77,9 @@ def read_records(path, sep=','):
     intensity_calc = read_record(os.path.join(
         path, 'intensity_calc.csv'
     ), sep)
+    intensity_indices = read_record(os.path.join(
+        path, 'intensity_calc_indices.csv'
+    ), sep, dtype=int)
     subray_sim = read_record(os.path.join(
         path, 'subray_sim.csv'
     ), sep)
@@ -90,6 +93,10 @@ def read_records(path, sep=','):
         'bdrf': intensity_calc[:, 7],
         'cross_section': intensity_calc[:, 8],
         'received_power': intensity_calc[:, 9],
+        'emitted_power': intensity_calc[:, 11],
+        'radius_step': intensity_calc[:, 12],
+        # Intensity calculation indices
+        'ray_idx': intensity_indices,
         # Subray simulation records
         'subray_hit': subray_sim[:, 0].astype(bool),
         'divergence_angle_rad': subray_sim[:, 1],
@@ -108,7 +115,7 @@ def read_records(path, sep=','):
     }
 
 
-def read_record(path, sep):
+def read_record(path, sep, dtype=float):
     """Read given record file
     :param path: The path to the record file to be read
     :param sep: The separator used in the record file
@@ -116,7 +123,7 @@ def read_record(path, sep):
         array otherwise
     """
     if os.path.exists(path) and os.path.isfile(path):
-        return np.loadtxt(path, delimiter=sep)
+        return np.loadtxt(path, delimiter=sep, dtype=dtype)
     return None
 
 
@@ -129,9 +136,11 @@ def plot_records(arec, brec, outdir):
     """
     do_incidence_angle_plots(arec, brec, outdir)
     do_by_incidence_angle_plots(arec, brec, outdir)
+    do_by_incidence_angle_plots(arec, brec, outdir, emitted_power=True)
     do_subray_hit_plots(arec, brec, outdir)
     do_ray_subray_plots(arec, brec, outdir)
     do_ray_subray_dir_plots(arec, brec, outdir)
+    do_energy_plots(arec, brec, outdir)
 
 
 def validate_record(key, rec, recid):
@@ -184,7 +193,6 @@ def do_incidence_angle_plots(arec, brec, outdir):
             not validate_record('incidence_angle_rad', brec, 'b'):
         print('Cannot do incidence angle plots')
         return
-
     # Do the incidence angle plots (rads)
     fig = init_figure()  # Initialize figure
     ax = fig.add_subplot(2, 2, 1)  # Initialize phi(a) subplot
@@ -289,7 +297,7 @@ def do_y_by_x_subplot(
     ax.set_axisbelow(True)
 
 
-def do_by_incidence_angle_plots(arec, brec, outdir):
+def do_by_incidence_angle_plots(arec, brec, outdir, emitted_power=False):
     # Validate classification calculation data
     if not validate_record('incidence_angle_rad', arec, 'a') or \
             not validate_record('target_range_m', arec, 'a') or \
@@ -297,6 +305,7 @@ def do_by_incidence_angle_plots(arec, brec, outdir):
             not validate_record('radius_m', arec, 'a') or \
             not validate_record('bdrf', arec, 'a') or \
             not validate_record('cross_section', arec, 'a') or \
+            not validate_record('emitted_power', arec, 'a') or \
             not validate_record('received_power', arec, 'a') or \
             not validate_record('incidence_angle_rad', brec, 'b') or \
             not validate_record('target_range_m', brec, 'b') or \
@@ -304,18 +313,23 @@ def do_by_incidence_angle_plots(arec, brec, outdir):
             not validate_record('radius_m', brec, 'b') or \
             not validate_record('bdrf', brec, 'b') or \
             not validate_record('cross_section', brec, 'b') or \
+            not validate_record('emitted_power', brec, 'b') or \
             not validate_record('received_power', brec, 'b'):
         print('Cannot do by incidence angle plots')
         return
     # Plot by radians
+    fname = 'plot_by_incidence_angle_'
+    if emitted_power:
+        fname += 'pe_'
     _do_by_incidence_angle_plots(
         arec['incidence_angle_rad'],
         brec['incidence_angle_rad'],
         arec,
         brec,
         outdir,
-        fname='plot_by_incidence_angle_rad.png',
-        unit='rad'
+        fname=fname+'rad.png',
+        unit='rad',
+        emitted_power=emitted_power
     )
     # Plot by degrees
     _do_by_incidence_angle_plots(
@@ -324,14 +338,15 @@ def do_by_incidence_angle_plots(arec, brec, outdir):
         arec,
         brec,
         outdir,
-        fname='plot_by_incidence_angle_degrees.png',
-        unit='deg'
+        fname=fname+'degrees.png',
+        unit='deg',
+        emitted_power=emitted_power
     )
 
 
 def _do_by_incidence_angle_plots(
     incidence_angle_a, incidence_angle_b, arec, brec, outdir, fname,
-    unit='rad'
+    unit='rad', emitted_power=False
 ):
     # Do the "by incidence angle" plots
     fig = init_figure()  # Initialize figure
@@ -360,13 +375,22 @@ def _do_by_incidence_angle_plots(
         color='tab:red'
     )
     ax = fig.add_subplot(3, 4, 6)  # Initialize BDRF A subplot
-    do_y_by_x_subplot(
-        fig, ax, incidence_angle_a, arec['bdrf'],
-        title='A-BDRF',
-        xlabel=f'Incidence angle ({unit})',
-        ylabel='BDRF',
-        color='tab:green'
-    )
+    if emitted_power:  # Do emitted power instead
+        do_y_by_x_subplot(
+            fig, ax, incidence_angle_a, arec['emitted_power'],
+            title='A-Emitted power',
+            xlabel=f'Incidence angle ({unit})',
+            ylabel='Emitted power',
+            color='tab:green'
+        )
+    else:  # Do BDRF subplot as expected
+        do_y_by_x_subplot(
+            fig, ax, incidence_angle_a, arec['bdrf'],
+            title='A-BDRF',
+            xlabel=f'Incidence angle ({unit})',
+            ylabel='BDRF',
+            color='tab:green'
+        )
     ax = fig.add_subplot(3, 4, 9)  # Initialize Cross-section A subplot
     do_y_by_x_subplot(
         fig, ax, incidence_angle_a, arec['cross_section'],
@@ -408,13 +432,22 @@ def _do_by_incidence_angle_plots(
         color='tab:red'
     )
     ax = fig.add_subplot(3, 4, 8)  # Initialize BDRF B subplot
-    do_y_by_x_subplot(
-        fig, ax, incidence_angle_b, brec['bdrf'],
-        title='B-BDRF',
-        xlabel=f'Incidence angle ({unit})',
-        ylabel='BDRF',
-        color='tab:green'
-    )
+    if emitted_power:  # Do emitted power instead
+        do_y_by_x_subplot(
+            fig, ax, incidence_angle_b, brec['emitted_power'],
+            title='B-Emitted power',
+            xlabel=f'Incidence angle ({unit})',
+            ylabel='Emitted power',
+            color='tab:green'
+        )
+    else:  # Do BDRF subplot as expected
+        do_y_by_x_subplot(
+            fig, ax, incidence_angle_b, brec['bdrf'],
+            title='B-BDRF',
+            xlabel=f'Incidence angle ({unit})',
+            ylabel='BDRF',
+            color='tab:green'
+        )
     ax = fig.add_subplot(3, 4, 11)  # Initialize Cross-section B subplot
     do_y_by_x_subplot(
         fig, ax, incidence_angle_b, brec['cross_section'],
@@ -745,7 +778,9 @@ def do_dir_2d_subplot(
     ax.plot(np.cos(theta), np.sin(theta), color='black', lw=3, zorder=7)
     if hit is not None:
         ax.scatter(x[hit], y[hit], s=64, c='tab:red', zorder=6, label='hit')
-        ax.scatter(x[~hit], y[~hit], s=64, c='tab:blue', zorder=5, label='hit')
+        ax.scatter(
+            x[~hit], y[~hit], s=64, c='tab:blue', zorder=5, label='miss'
+        )
         if legend:
             ax.legend(loc='upper right').set_zorder(11)
     else:
@@ -997,6 +1032,163 @@ def do_ray_subray_dir_plots(arec, brec, outdir):
     fig.clear()
     plt.close(fig)
 
+
+def do_energy_plots(arec, brec, outdir):
+    # Validate energy plots
+    if(
+        not validate_record('incidence_angle_rad', arec, 'a') or
+        not validate_record('target_area_m2', arec, 'a') or
+        not validate_record('cross_section', arec, 'a') or
+        not validate_record('emitted_power', arec, 'a') or
+        not validate_record('received_power', arec, 'a') or
+        not validate_record('radius_step', arec, 'a') or
+        not validate_record('ray_idx', arec, 'a') or
+        not validate_record('incidence_angle_rad', brec, 'b') or
+        not validate_record('target_area_m2', brec, 'b') or
+        not validate_record('cross_section', brec, 'b') or
+        not validate_record('emitted_power', brec, 'b') or
+        not validate_record('received_power', brec, 'b') or
+        not validate_record('radius_step', brec, 'b') or
+        not validate_record('ray_idx', brec, 'b')
+    ):
+        print('Cannot do energy plots')
+        return
+    # Remove all records with nan ray idx
+    amask, bmask = ~np.isnan(arec['ray_idx']), ~np.isnan(brec['ray_idx'])
+    arec['incidence_angle_rad']= arec['incidence_angle_rad'][amask]
+    arec['target_area_m2']= arec['target_area_m2'][amask]
+    arec['cross_section']= arec['cross_section'][amask]
+    arec['emitted_power']= arec['emitted_power'][amask]
+    arec['received_power']= arec['received_power'][amask]
+    arec['radius_step']= arec['radius_step'][amask]
+    arec['ray_idx']= arec['ray_idx'][amask]
+    brec['incidence_angle_rad']= brec['incidence_angle_rad'][bmask]
+    brec['target_area_m2']= brec['target_area_m2'][bmask]
+    brec['cross_section']= brec['cross_section'][bmask]
+    brec['emitted_power']= brec['emitted_power'][bmask]
+    brec['received_power']= brec['received_power'][bmask]
+    brec['radius_step']= brec['radius_step'][bmask]
+    brec['ray_idx']= brec['ray_idx'][bmask]
+    # Find four cases equally spaced wrt incidence angle distribution
+    theta_rad_a = arec['incidence_angle_rad']
+    theta_rad_b = brec['incidence_angle_rad']
+    theta_rad = np.concatenate([theta_rad_a, theta_rad_b])
+    theta_min, theta_max = np.min(theta_rad), np.max(theta_rad)
+    n_cases = 4
+    theta_linspace = np.linspace(theta_min, theta_max, n_cases)
+    ray_indices_a = []
+    ray_indices_b = []
+    print(f'ray_idx_a:\n{arec["ray_idx"]}\n')  # TODO Remove
+    print(f'ray_idx_b:\n{brec["ray_idx"]}\n')  # TODO Remove
+    for theta_target in theta_linspace:
+        print(f'theta_target: {theta_target}')  # TODO Remove
+        theta_index_a = np.argmin(np.abs(theta_rad_a-theta_target))
+        print(f'theta_index_a: {theta_index_a}')  # TODO Remove
+        ray_idx_a = int(arec['ray_idx'][theta_index_a])
+        print(f'ray_idx_a: {ray_idx_a}')  # TODO Remove
+        ray_indices_a.append(ray_idx_a)
+        theta_index_b = np.argmin(np.abs(theta_rad_b-theta_target))
+        print(f'theta_index_b: {theta_index_b}')  # TODO Remove
+        ray_idx_b = int(brec['ray_idx'][theta_index_b])
+        print(f'ray_idx_b: {ray_idx_b}')  # TODO Remove
+        ray_indices_b.append(ray_idx_b)
+        print('-----------------------------------')  # TODO Remove
+    # TODO Remove section ---
+    print(f'ray_indices_a:\n{ray_indices_a}\n')
+    print(f'ray_indices_b:\n{ray_indices_b}\n')
+    # --- TODO Remove section
+    # For each case generate a dataset with all the subrays
+    ray_idx_a, ray_idx_b = arec['ray_idx'], brec['ray_idx']
+    energy_dataset_a, energy_dataset_b = [], []
+    for i in range(n_cases):
+        mask_a = ray_idx_a == ray_indices_a[i]  # Records in a for given ray
+        mask_b = ray_idx_b == ray_indices_b[i]  # Records in b for given ray
+        energy_dataset_a.append({
+            'incidence_angle_rad': theta_rad_a[mask_a],
+            'target_area_m2': arec['target_area_m2'][mask_a],
+            'cross_section': arec['cross_section'][mask_a],
+            'emitted_power': arec['emitted_power'][mask_a],
+            'received_power': arec['received_power'][mask_a],
+            'radius_step': arec['radius_step'][mask_a],
+            'ray_idx': arec['ray_idx'][mask_a]
+        })
+        energy_dataset_b.append({
+            'incidence_angle_rad': theta_rad_b[mask_b],
+            'target_area_m2': brec['target_area_m2'][mask_b],
+            'cross_section': brec['cross_section'][mask_b],
+            'emitted_power': brec['emitted_power'][mask_b],
+            'received_power': brec['received_power'][mask_b],
+            'radius_step': brec['radius_step'][mask_b],
+            'ray_idx': brec['ray_idx'][mask_b]
+        })
+    print(f'len(energy_dataset_a) = {len(energy_dataset_a)}')  # TODO Remove
+    print(f'len(energy_dataset_a[0][x]) = {len(energy_dataset_a[0]["incidence_angle_rad"])}')  # TODO Remove
+    print(f'len(energy_dataset_b) = {len(energy_dataset_b)}')  # TODO Remove
+    print(f'len(energy_dataset_b[0][x]) = {len(energy_dataset_b[0]["incidence_angle_rad"])}')  # TODO Remove
+    # Do the energy plots
+    _do_energy_plots(energy_dataset_a, energy_dataset_b, outdir)
+
+
+def _do_energy_plots(eda, edb, outdir):
+    # Build figure
+    fig = init_figure()  # Initialize figure
+    n_cases = 2*len(eda)
+    nrows = int(np.sqrt(n_cases))
+    ncols = int(np.ceil(n_cases/nrows))
+    fig = plt.figure(figsize=(16, 10))
+    # Do the subplots
+    for i in range(n_cases//2):
+        ax = fig.add_subplot(nrows, ncols, i+1)
+        do_energy_subplot(fig, ax, eda[i], 'A')
+        ax = fig.add_subplot(nrows, ncols, i+1+n_cases//2)
+        do_energy_subplot(fig, ax, edb[i], 'B')
+    # Post-process figure
+    fig.tight_layout()
+    # Save figure to file and remove it from memory
+    fig.savefig(
+        os.path.join(outdir, 'energy_plots.png')
+    )
+    fig.clear()
+    plt.close(fig)
+
+
+def do_energy_subplot(fig, ax, edi, case_letter):
+    # Extract values of interest
+    rstep = edi['radius_step']
+    n_subrays = len(rstep)
+    rstep_uniq = np.unique(rstep)
+    # Group by radius step
+    pe = edi['emitted_power']
+    pe_by_rs = [pe[rstep == rstepk] for rstepk in rstep_uniq]
+    # Do the plot
+    pe_by_rs_sum = 0
+    print(f'rstep_uniq: {rstep_uniq}')  # TODO Remove
+    print(f'pe_by_rs:\n{pe_by_rs}')  # TODO Remove
+    for j, rstepk in enumerate(rstep_uniq):
+        pe_by_rsj = pe_by_rs[j]
+        pe_by_rsj_sum = np.sum(pe_by_rsj)
+        pe_by_rs_sum += pe_by_rsj_sum
+        ax.bar(
+            rstepk, pe_by_rsj_sum,
+            color='gray',
+            align='center',
+            width=0.8,
+            label='sum' if j == 0 else None
+        )
+        ax.bar(
+            rstepk, pe_by_rsj[0],
+            color='tab:red',
+            align='center',
+            width=0.8,
+            label='subray' if j == 0 else None
+        )
+    ax.legend(loc='best')
+    ax.set_xlabel('Radius step', fontsize=14)
+    ax.set_ylabel('Emitted power ($P_e$)', fontsize=14)
+    ax.set_title(
+        f'{case_letter}) $P_e = $ {pe_by_rs_sum:.3g} ({n_subrays} subrays)\n'
+        f'$\\theta = {(edi["incidence_angle_rad"][0]*180/np.pi):.3f}$ deg'
+    )
 
 # ---   M A I N   --- #
 # ------------------- #

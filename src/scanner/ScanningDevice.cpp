@@ -400,7 +400,9 @@ double ScanningDevice::calcIntensity(
             cached_Dr2,
             cached_Bt2,
             efficiency,
-            (double) numRays,
+            (double) ( (subrayRadiusStep==0) ? 1 :
+                (int) (subrayRadiusStep*PI_2) // 2 pi x depth = samples/ring
+            ),
             mat,
             beamDivergence_rad,
             (double) FWF_settings.beamSampleQuality,

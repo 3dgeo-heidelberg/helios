@@ -26,7 +26,8 @@ double ImprovedEnergyModel::computeReceivedPower(
             args.targetRange,
             args.deviceBeamDivergence_rad,
             args.beamSampleQuality,
-            args.subrayRadiusStep
+            args.subrayRadiusStep,
+            args.numSubrays
         }
 #if DATA_ANALYTICS >= 2
        ,calcIntensityRecords
@@ -52,7 +53,7 @@ double ImprovedEnergyModel::computeReceivedPower(
         args.efficiency,
         atmosphericFactor,
         sigma
-    ) * 1e9;
+    );
 #if DATA_ANALYTICS >= 2
     std::vector<double> & calcIntensityRecord = calcIntensityRecords.back();
     calcIntensityRecord[3] = args.incidenceAngle_rad;
@@ -63,8 +64,10 @@ double ImprovedEnergyModel::computeReceivedPower(
     // TODO Rethink : Include Emitted power and also in BaseEnergyModel
     calcIntensityRecord[9] = receivedPower;
     calcIntensityRecord[10] = 0; // By default, assume the point isn't captured
-    calcIntensityRecords.push_back(calcIntensityRecord);
+    calcIntensityRecord[11] = Pe;
+    calcIntensityRecord[12] = args.subrayRadiusStep;
 #endif
+    return receivedPower * 1e09;
 }
 
 double ImprovedEnergyModel::computeEmittedPower(
@@ -99,13 +102,11 @@ double ImprovedEnergyModel::computeTargetArea(
     double const rbeforei =  (args.subrayRadiusStep == 0) ? 0.0 : ri - dr;
 #if DATA_ANALYTICS >= 2
     std::vector<double> calcIntensityRecord(
-        11, std::numeric_limits<double>::quiet_NaN()
+        13, std::numeric_limits<double>::quiet_NaN()
     );
     calcIntensityRecord[6] = ri;
     calcIntensityRecords.push_back(calcIntensityRecord);
 #endif
     // TODO Rethink : Divide by number of subrays at current ring
-    double const numSubraysAtRing = (args.subrayRadiusStep == 0) ? 1.0 :
-        args.subrayRadiusStep*6.0;  // TODO Rethink : Use a more reliable alternative ?
-    return (ri*ri - rbeforei*rbeforei)*M_PI/numSubraysAtRing;
+    return (ri*ri - rbeforei*rbeforei)*M_PI/args.numSubrays;
 }

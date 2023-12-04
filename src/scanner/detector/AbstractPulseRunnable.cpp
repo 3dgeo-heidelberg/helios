@@ -65,7 +65,8 @@ void AbstractPulseRunnable::capturePoint(
     std::mutex *cycleMeasurementsMutex
 #if DATA_ANALYTICS >= 2
    ,std::vector<double> &calcIntensityRecord,
-   std::shared_ptr<HDA_PulseRecorder> pulseRecorder
+    std::vector<int> &calcIntensityIndices,
+    std::shared_ptr<HDA_PulseRecorder> pulseRecorder
 #endif
 ) {
 	// Abort if point distance is below mininum scanner range:
@@ -84,7 +85,10 @@ void AbstractPulseRunnable::capturePoint(
 	m.position = m.beamOrigin + m.beamDirection * m.distance;
 #if DATA_ANALYTICS >= 2
     calcIntensityRecord[10] = 1;
-    pulseRecorder->recordIntensityCalculation(calcIntensityRecord);
+    pulseRecorder->recordIntensityCalculation(
+        calcIntensityRecord,
+        calcIntensityIndices
+    );
 #endif
     if(allMeasurements != nullptr){
         std::unique_lock<std::mutex> lock(*allMeasurementsMutex);

@@ -43,10 +43,10 @@ double BaseEnergyModel::computeReceivedPower(
         args.efficiency,
         args.atmosphericExtinction,
         sigma
-    ) * 1e09;
+    );
 #if DATA_ANALYTICS >= 2
     std::vector<double> calcIntensityRecord(
-        11, std::numeric_limits<double>::quiet_NaN()
+        13, std::numeric_limits<double>::quiet_NaN()
     );
     calcIntensityRecord[3] = args.incidenceAngle_rad;
     calcIntensityRecord[4] = args.targetRange;
@@ -56,9 +56,18 @@ double BaseEnergyModel::computeReceivedPower(
     calcIntensityRecord[8] = sigma;
     calcIntensityRecord[9] = receivedPower;
     calcIntensityRecord[10] = 0; // By default, assume the point isn't captured
+    calcIntensityRecord[11] = EnergyMaths::calcEmittedPower(
+        args.averagePower_w,
+        args.wavelength_m,
+        args.targetRange,
+        args.rangeMin,
+        args.subrayRadius,
+        args.beamWaistRadius
+    );
+    calcIntensityRecord[12] = -1.0;
     calcIntensityRecords.push_back(calcIntensityRecord);
 #endif
-    return receivedPower;
+    return receivedPower * 1e09;
 }
 
 double BaseEnergyModel::computeEmittedPower(

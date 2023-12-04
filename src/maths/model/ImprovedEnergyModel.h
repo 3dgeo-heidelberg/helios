@@ -74,16 +74,19 @@ public:
     double const deviceBeamDivergence_rad;
     double const beamSampleQuality;
     double const subrayRadiusStep;
+    double const numSubrays;
     ImprovedTargetAreaArgs(
         double const targetRange,
         double const deviceBeamDivergence_rad,
         double const beamSampleQuality,
-        double const subrayRadiusStep
+        double const subrayRadiusStep,
+        double const numSubrays
     ) :
         targetRange(targetRange),
         deviceBeamDivergence_rad(deviceBeamDivergence_rad),
         beamSampleQuality(beamSampleQuality),
-        subrayRadiusStep(subrayRadiusStep)
+        subrayRadiusStep(subrayRadiusStep),
+        numSubrays(numSubrays)
     {}
 };
 
