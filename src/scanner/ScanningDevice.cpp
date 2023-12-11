@@ -394,6 +394,8 @@ double ScanningDevice::calcIntensity(
     // Improved energy model
     return energyModel->computeReceivedPower(ImprovedReceivedPowerArgs{
             averagePower_w,
+            wavelength_m,
+            detector->cfg_device_rangeMin_m,
             targetRange,
             atmosphericExtinction,
             incidenceAngle,
@@ -405,6 +407,7 @@ double ScanningDevice::calcIntensity(
             ),
             mat,
             beamDivergence_rad,
+            beamWaistRadius,
             (double) FWF_settings.beamSampleQuality,
             (double) subrayRadiusStep
         }

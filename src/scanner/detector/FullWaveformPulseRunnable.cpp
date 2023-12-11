@@ -88,7 +88,7 @@ void FullWaveformPulseRunnable::operator()(
     );
 
 #if DATA_ANALYTICS >= 2
-    for(std::vector<double> &calcIntensityRecord : calcIntensityRecords) {
+    for(size_t i = 0 ; i < calcIntensityRecords.size() ; ++i){
         calcIntensityIndices.push_back(
             std::vector<int>({pulse.getPulseNumber()})
         );

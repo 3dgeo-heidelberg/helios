@@ -14,7 +14,11 @@ double ImprovedEnergyModel::computeReceivedPower(
     >(_args);
     double const Pe = computeEmittedPower(ImprovedEmittedPowerArgs{
         args.averagePower_w,
+        args.wavelength_m,
+        args.rangeMin,
         args.targetRange,
+        args.deviceBeamDivergence_rad,
+        args.beamWaistRadius,
         args.numSubrays,
         args.beamSampleQuality,
         args.subrayRadiusStep
@@ -61,7 +65,6 @@ double ImprovedEnergyModel::computeReceivedPower(
     calcIntensityRecord[5] = targetArea;
     calcIntensityRecord[7] = bdrf;
     calcIntensityRecord[8] = sigma;
-    // TODO Rethink : Include Emitted power and also in BaseEnergyModel
     calcIntensityRecord[9] = receivedPower;
     calcIntensityRecord[10] = 0; // By default, assume the point isn't captured
     calcIntensityRecord[11] = Pe;
@@ -76,11 +79,32 @@ double ImprovedEnergyModel::computeEmittedPower(
     ImprovedEmittedPowerArgs const & args = static_cast<
         ImprovedEmittedPowerArgs const &
     >(_args);
+    // TODO Rethink : Review
+    // TODO Rethink : Radius and prevRadius are computed twice
+    double const angle = args.deviceBeamDivergence_rad/2.0 * (
+        args.subrayRadiusStep / (args.beamSampleQuality-0.5)
+    );
+    double const prevAngle = (args.subrayRadiusStep == 0.0) ? 0.0 :
+        args.deviceBeamDivergence_rad / 2.0 * (
+            (args.subrayRadiusStep-1.0) / (args.beamSampleQuality-0.5)
+    );
+    double const radius = angle + args.deviceBeamDivergence_rad/2.0 * (
+        0.5 / (args.beamSampleQuality-0.5)
+    );
+    double const prevRadius = (args.subrayRadiusStep == 0.0) ? 0.0 :
+        prevAngle + args.deviceBeamDivergence_rad/2.0 * (
+        0.5 / (args.beamSampleQuality-0.5)
+    );
+    double const w = args.wavelength_m*args.wavelength_m * (
+        args.rangeMin*args.rangeMin + args.targetRange*args.targetRange
+    ) / (
+        M_PI*args.beamWaistRadius*args.beamWaistRadius
+    );
     return EnergyMaths::calcSubrayWiseEmittedPower(
         args.averagePower_w,
-        args.targetRange,
-        args.beamSampleQuality,
-        args.subrayRadiusStep,
+        w,
+        radius,
+        prevRadius,
         args.numSubrays
     );
 }
@@ -91,22 +115,36 @@ double ImprovedEnergyModel::computeTargetArea(
    ,std::vector<std::vector<double>> &calcIntensityRecords
 #endif
 ){
+    // Once for target area and once for emitted power
     ImprovedTargetAreaArgs const & args = static_cast<
         ImprovedTargetAreaArgs const &
     >(_args);
-    double const rmax = args.targetRange * args.deviceBeamDivergence_rad / 2.0;
-    double const dr = rmax / args.beamSampleQuality;
-    double const ri = rmax - (
-        args.beamSampleQuality - args.subrayRadiusStep - 1.0
-    ) * dr;
-    double const rbeforei =  (args.subrayRadiusStep == 0) ? 0.0 : ri - dr;
+    // TODO Rethink : Review
+    // TODO Rethink : Radius and prevRadius are computed twice
+    double const angle = args.deviceBeamDivergence_rad/2.0 * (
+        args.subrayRadiusStep / (args.beamSampleQuality-0.5)
+    );
+    double const prevAngle = (args.subrayRadiusStep == 0.0) ? 0.0 :
+        args.deviceBeamDivergence_rad / 2.0 * (
+        (args.subrayRadiusStep-1.0) / (args.beamSampleQuality-0.5)
+    );
+    double const radius = angle + args.deviceBeamDivergence_rad/2.0 * (
+        0.5 / (args.beamSampleQuality-0.5)
+    );
+    double const prevRadius = (args.subrayRadiusStep == 0.0) ? 0.0 :
+        prevAngle + args.deviceBeamDivergence_rad/2.0 * (
+        0.5 / (args.beamSampleQuality-0.5)
+    );
+    double const radius_m = radius * args.targetRange;
+    double const prevRadius_m = (args.subrayRadiusStep == 0) ? 0.0 :
+        prevRadius * args.targetRange;
 #if DATA_ANALYTICS >= 2
     std::vector<double> calcIntensityRecord(
         13, std::numeric_limits<double>::quiet_NaN()
     );
-    calcIntensityRecord[6] = ri;
+    calcIntensityRecord[6] = radius_m;
     calcIntensityRecords.push_back(calcIntensityRecord);
 #endif
-    // TODO Rethink : Divide by number of subrays at current ring
-    return (ri*ri - rbeforei*rbeforei)*M_PI/args.numSubrays;
+    return M_PI * (radius_m*radius_m - prevRadius_m*prevRadius_m)
+        / args.numSubrays;
 }

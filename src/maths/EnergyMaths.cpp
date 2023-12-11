@@ -35,17 +35,15 @@ double EnergyMaths::calcEmittedPowerLegacy(
 
 double EnergyMaths::calcSubrayWiseEmittedPower(
     double const I0,
-    double const R,
-    double const BSQ,
-    double const circleIter,
+    double const w,
+    double const radius,
+    double const prevRadius,
     double const numSubrays
 ){
-    double const denom = BSQ*BSQ*R*R;
-    double const nextCircleIter = circleIter + 1.0;
-    double const expA = std::exp(-2/denom * circleIter*circleIter);
-    double const expB = std::exp(-2/denom * nextCircleIter*nextCircleIter);
-    double const expDiff = expA - expB;
-    return I0/numSubrays * expDiff;
+    return I0 / numSubrays * (
+        std::exp(-2/(w*w) * prevRadius*prevRadius) -
+        std::exp(-2/(w*w) * radius*radius)
+    );
 }
 
 // Laser radar equation "Signature simulation..." (Carlsson et al., 2000)

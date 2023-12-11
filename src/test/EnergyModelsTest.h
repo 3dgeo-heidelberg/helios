@@ -113,26 +113,30 @@ bool EnergyModelsTest::testEmittedSubrayWisePower() {
     // Values for the tests
     double const I0 = 4.0;
     double const R = 1.0;
+    double const beamDiv = 0.3;
+    double const w = beamDiv * R;
     int const BSQ = 5;
-    vector<int> circleIter({
-        0, 1, 2, 3, 4
-    });
     vector<int> nsr({
         1, 6, 12, 18, 25
     });
     vector<double> expectedPe({
-        0.3075346144534569, 0.1313115395419632, 0.07979892703790642,
-        0.04638110122372834, 0.022832322754653023,
+        0.02461531, 0.03192447, 0.02965419, 0.02622347, 0.0211937
     });
 
     // Compute emitted power and validate it
     int const n = nsr.size();
     for(int i = 0 ; i < n ; ++i){
+        double const angle = beamDiv/2.0 * (i / (BSQ-0.5));
+        double const prevAngle = (i == 0) ? 0.0 :
+            beamDiv / 2.0 * ((i-1.0) / (BSQ-0.5));
+        double const radius = angle + beamDiv/2.0 * (0.5 / (BSQ-0.5));
+        double const prevRadius = (i == 0) ? 0.0 :
+            prevAngle + beamDiv/2.0 * (0.5 / (BSQ-0.5));
         double const Pe = EnergyMaths::calcSubrayWiseEmittedPower(
             I0,
-            R,
-            BSQ,
-            circleIter[i],
+            w,
+            radius,
+            prevRadius,
             nsr[i]
         );
         double const absDiff = std::fabs(Pe-expectedPe[i]);

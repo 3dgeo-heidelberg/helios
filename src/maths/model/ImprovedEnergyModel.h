@@ -6,6 +6,8 @@
 class ImprovedReceivedPowerArgs : public ModelArg {
 public:
     double const averagePower_w;
+    double const wavelength_m;
+    double const rangeMin;
     double const targetRange;
     double const atmosphericExtinction;
     double const incidenceAngle_rad;
@@ -15,10 +17,13 @@ public:
     double const numSubrays;
     Material const &material;
     double const deviceBeamDivergence_rad;
+    double const beamWaistRadius;
     double const beamSampleQuality;
     double const subrayRadiusStep;
     ImprovedReceivedPowerArgs(
         double const averagePower_w,
+        double const wavelength_m,
+        double const rangeMin,
         double const targetRange,
         double const atmosphericExtinction,
         double const incidenceAngle_rad,
@@ -28,10 +33,13 @@ public:
         double const numSubrays,
         Material const &material,
         double const deviceBeamDivergence_rad,
+        double const beamWaistRadius,
         double const beamSampleQuality,
         double const subrayRadiusStep
     ) :
         averagePower_w(averagePower_w),
+        wavelength_m(wavelength_m),
+        rangeMin(rangeMin),
         targetRange(targetRange),
         atmosphericExtinction(atmosphericExtinction),
         incidenceAngle_rad(incidenceAngle_rad),
@@ -41,6 +49,7 @@ public:
         numSubrays(numSubrays),
         material(material),
         deviceBeamDivergence_rad(deviceBeamDivergence_rad),
+        beamWaistRadius(beamWaistRadius),
         beamSampleQuality(beamSampleQuality),
         subrayRadiusStep(subrayRadiusStep)
     {}
@@ -49,19 +58,31 @@ public:
 class ImprovedEmittedPowerArgs : public ModelArg {
 public:
     double const averagePower_w;
+    double const wavelength_m;
+    double const rangeMin;
     double const targetRange;
+    double const deviceBeamDivergence_rad;
+    double const beamWaistRadius;
     double const numSubrays;
     double const beamSampleQuality;
     double const subrayRadiusStep;
     ImprovedEmittedPowerArgs(
         double const averagePower_w,
+        double const wavelength_m,
+        double const rangeMin,
         double const targetRange,
+        double const deviceBeamDivergence_rad,
+        double const beamWaistRadius,
         double const numSubrays,
         double const beamSampleQuality,
         double const subrayRadiusStep
     ) :
         averagePower_w(averagePower_w),
+        wavelength_m(wavelength_m),
+        rangeMin(rangeMin),
         targetRange(targetRange),
+        deviceBeamDivergence_rad(deviceBeamDivergence_rad),
+        beamWaistRadius(beamWaistRadius),
         numSubrays(numSubrays),
         beamSampleQuality(beamSampleQuality),
         subrayRadiusStep(subrayRadiusStep)

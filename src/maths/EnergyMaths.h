@@ -65,56 +65,48 @@ public:
      *  emitted energy by each subray matches the emitted energy when only a
      *  single ray is used.
      *
-     * \f[
-     *  P_e =  \frac{I_0}{n_{sr}} \Biggl(
-     *      \exp\biggl[
-     *          - \frac{2}{w^2}
-     *              \left(\frac{\varphi_*}{\mathrm{BSQ}}i\right)^2
-     *      \biggr]
-     *      - \exp\biggl[
-     *          - \frac{2}{w^2}
-     *              \left(\frac{\varphi_*}{\mathrm{BSQ}}(i+1)\right)^2
-     *      \biggr]
-     *  \Biggr)
-     * \f]
-     *
-     * Where
-     *
-     * \f[
-     *  w = \varphi_* R
-     * \f]
-     *
-     * Note that the previous expression can be simplified to reduce the
-     * computational burden such that:
      *
      * \f[
      *  P_e = \frac{I_0}{n_{sr}} \Biggl(
      *      \exp\biggl[
-     *          - \frac{2i^2}{\mathrm{BSQ}^2 R^2}
+     *          - \frac{2 r_{i-1}^2}{w^2}
      *      \biggr]
      *      - \exp\biggl[
-     *          - \frac{2(i+1)^2}{\mathrm{BSQ}^2 R^2}
+     *          - \frac{2 r_i^2}{w^2}
      *      \biggr]
      *  \Biggr)
      * \f]
      *
      * @param I0 The average power of the device \f$I_0\f$.
-     * @param R The target range (in meters) \f$R\f$.
-     * @param beamDiv_mrad The beam divergence of the device (in milliradians)
-     *  \f$\varphi_*\f$
-     * @param w0 The beam waist radius \f$w_0\f$
-     * @param BSQ The beam sample quality parameter governing the
-     *  discrete approximation of the elliptical footprint \f$\mathrm{BSQ}\f$.
-     * @param circleIter The iteration along the circle \f$i\f$.
+     * @param w Let \f$\lambda\f$ be the wavelength in meters,
+     *  \f$w_0\f$ be the beam waist radius,
+     *  \f$R_0\f$ the minimum range,
+     *  \f$R\f$ the range, and
+     *  \f$w_0\f$ the beam waist radius
+     *  so \f$w\f$ can be defined as:
+     *
+     * \f[
+     *  w = \frac{
+     *      \lambda^2 (R_0^2 + R^2)
+     *  }{
+     *      \pi^2w_0^2
+     *  }
+     * \f]
+     *
+     * @param radius The radius of the ring to which the current subray
+     *  belongs \f$r_i\f$.
+     * @param prevRadius the radius of the previous ring, i.e.,
+     *  the immediately smaller one \f$r_{i-1}\f$. The previous radius for the
+     *  first ring is zero.
      * @param numSubrays The number of subrays in the elliptical footprint
      *  approximation \f$n_{sr}\f$.
      * @return The emitted power for the corresponding subray.
      */
     static double calcSubrayWiseEmittedPower(
         double const I0,
-        double const R,
-        double const BSQ,
-        double const circleIter,
+        double const w,
+        double const radius,
+        double const prevRadius,
         double const numSubrays
     );
 
