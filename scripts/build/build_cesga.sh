@@ -22,6 +22,7 @@
 #   scripts/run/helios_cesga --test --testDir ${HELIOS_DIR}data/test/
 # Also, if environment is loaded:
 #   ${HELIOS_CESGA} --test --testDir ${HELIOS_DIR}data/test/
+
 # ---  PREPARE ENVIRONMENT  --- #
 # ----------------------------- #
 # Load environment if it has not been loaded yet
