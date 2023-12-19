@@ -19,6 +19,7 @@ public:
     double const deviceBeamDivergence_rad;
     double const beamWaistRadius;
     double const beamSampleQuality;
+    double const beamQualityFactor;
     double const subrayRadiusStep;
     ImprovedReceivedPowerArgs(
         double const averagePower_w,
@@ -35,6 +36,7 @@ public:
         double const deviceBeamDivergence_rad,
         double const beamWaistRadius,
         double const beamSampleQuality,
+        double const beamQualityFactor,
         double const subrayRadiusStep
     ) :
         averagePower_w(averagePower_w),
@@ -51,6 +53,7 @@ public:
         deviceBeamDivergence_rad(deviceBeamDivergence_rad),
         beamWaistRadius(beamWaistRadius),
         beamSampleQuality(beamSampleQuality),
+        beamQualityFactor(beamQualityFactor),
         subrayRadiusStep(subrayRadiusStep)
     {}
 };
@@ -65,6 +68,7 @@ public:
     double const beamWaistRadius;
     double const numSubrays;
     double const beamSampleQuality;
+    double const beamQualityFactor;
     double const subrayRadiusStep;
     ImprovedEmittedPowerArgs(
         double const averagePower_w,
@@ -75,6 +79,7 @@ public:
         double const beamWaistRadius,
         double const numSubrays,
         double const beamSampleQuality,
+        double const beamQualityFactor,
         double const subrayRadiusStep
     ) :
         averagePower_w(averagePower_w),
@@ -85,6 +90,7 @@ public:
         beamWaistRadius(beamWaistRadius),
         numSubrays(numSubrays),
         beamSampleQuality(beamSampleQuality),
+        beamQualityFactor(beamQualityFactor),
         subrayRadiusStep(subrayRadiusStep)
     {}
 };

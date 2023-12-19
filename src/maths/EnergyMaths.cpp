@@ -35,14 +35,17 @@ double EnergyMaths::calcEmittedPowerLegacy(
 
 double EnergyMaths::calcSubrayWiseEmittedPower(
     double const I0,
+    double const w0,
     double const w,
     double const radius,
     double const prevRadius,
     double const numSubrays
 ){
-    return I0 / numSubrays * (
-        std::exp(-2/(w*w) * prevRadius*prevRadius) -
-        std::exp(-2/(w*w) * radius*radius)
+    double const wSquared = w*w;
+    double const _I0 = 2*I0 / (M_PI*w0*w0);  // TODO Rethink : New tot_power
+    return M_PI * _I0 * w0*w0 / (2*numSubrays) * (
+        std::exp(-2*prevRadius*prevRadius/wSquared)  -  // inner radius
+        std::exp(-2*radius*radius/wSquared)  // outer radius
     );
 }
 
@@ -80,6 +83,21 @@ double EnergyMaths::calcReceivedPowerLegacy(
     double const sigma
 ){
     return (Pe * Dr2) / (PI_4 * pow(R, 4) * Bt2) * etaSys * etaAtm * sigma;
+}
+
+double EnergyMaths::calcReceivedPowerImproved(
+    double const Pe,
+    double const Dr2,
+    double const R,
+    double const targetArea,
+    double const etaSys,
+    double const etaAtm,
+    double const sigma
+){
+    double const beamDivFromArea = 2 * std::sqrt(targetArea/M_PI) / R;
+    return (Pe * Dr2) /
+        (PI_4 * (R*R*R*R) * beamDivFromArea*beamDivFromArea) *
+        etaSys * etaAtm * sigma;
 }
 
 

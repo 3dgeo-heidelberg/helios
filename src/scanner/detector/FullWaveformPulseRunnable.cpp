@@ -643,7 +643,6 @@ void FullWaveformPulseRunnable::digestFullWaveform(
     size_t const numRecords = calcIntensityRecords.size();
     size_t nonCapturedCount = 0;
     for(size_t i = 0 ; i < numRecords ; ++i){
-        // TODO Rethink : Why with BSQ==1 there is n=2 instead of n=1 here ?
         if(capturedIndices.find(i) == capturedIndices.end()){
             pulseRecorder->recordIntensityCalculation(
                 calcIntensityRecords[i-nonCapturedCount],

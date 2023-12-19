@@ -409,6 +409,7 @@ double ScanningDevice::calcIntensity(
             beamDivergence_rad,
             beamWaistRadius,
             (double) FWF_settings.beamSampleQuality,
+            (double) beamQuality,
             (double) subrayRadiusStep
         }
 #if DATA_ANALYTICS >= 2

@@ -21,6 +21,7 @@ double ImprovedEnergyModel::computeReceivedPower(
         args.beamWaistRadius,
         args.numSubrays,
         args.beamSampleQuality,
+        args.beamQualityFactor,
         args.subrayRadiusStep
     });
     double const atmosphericFactor = std::exp(
@@ -49,11 +50,11 @@ double ImprovedEnergyModel::computeReceivedPower(
         args.incidenceAngle_rad
     });
     // --- TODO Rethink : To common impl, consider also BaseEnergyModel
-    double const receivedPower = EnergyMaths::calcReceivedPowerLegacy(
+    double const receivedPower = EnergyMaths::calcReceivedPowerImproved(
         Pe,
         args.Dr2,
         args.targetRange,
-        args.Bt2,
+        targetArea,
         args.efficiency,
         atmosphericFactor,
         sigma
@@ -81,27 +82,32 @@ double ImprovedEnergyModel::computeEmittedPower(
     >(_args);
     // TODO Rethink : Review
     // TODO Rethink : Radius and prevRadius are computed twice
-    double const angle = args.deviceBeamDivergence_rad/2.0 * (
+    // TODO Rethink : Some expressions can be simplified and are unnecessary
+    // TODO Rethink : e.g., w is not needed as w^2 is used later on
+    // TODO Rethink : Angle and radius stuff
+    double const devBeamDiv_rad = args.deviceBeamDivergence_rad;
+    double const angle = devBeamDiv_rad/2.0 * (
         args.subrayRadiusStep / (args.beamSampleQuality-0.5)
     );
     double const prevAngle = (args.subrayRadiusStep == 0.0) ? 0.0 :
-        args.deviceBeamDivergence_rad / 2.0 * (
+        devBeamDiv_rad / 2.0 * (
             (args.subrayRadiusStep-1.0) / (args.beamSampleQuality-0.5)
     );
-    double const radius = angle + args.deviceBeamDivergence_rad/2.0 * (
+    double const radius = angle + devBeamDiv_rad/2.0 * (
         0.5 / (args.beamSampleQuality-0.5)
     );
     double const prevRadius = (args.subrayRadiusStep == 0.0) ? 0.0 :
-        prevAngle + args.deviceBeamDivergence_rad/2.0 * (
+        prevAngle + devBeamDiv_rad/2.0 * (
         0.5 / (args.beamSampleQuality-0.5)
     );
-    double const w = args.wavelength_m*args.wavelength_m * (
-        args.rangeMin*args.rangeMin + args.targetRange*args.targetRange
-    ) / (
-        M_PI*args.beamWaistRadius*args.beamWaistRadius
-    );
+    double const w0 = args.beamQualityFactor * args.wavelength_m / (
+        M_PI*args.deviceBeamDivergence_rad);
+    double const Omega0 = 1 - args.targetRange/args.rangeMin;
+    double const Omega = args.wavelength_m*args.targetRange / (M_PI*w0*w0);
+    double const w = w0 * std::sqrt(Omega0*Omega0 + Omega*Omega);
     return EnergyMaths::calcSubrayWiseEmittedPower(
         args.averagePower_w,
+        w0,
         w,
         radius,
         prevRadius,
@@ -120,19 +126,21 @@ double ImprovedEnergyModel::computeTargetArea(
         ImprovedTargetAreaArgs const &
     >(_args);
     // TODO Rethink : Review
-    // TODO Rethink : Radius and prevRadius are computed twice
-    double const angle = args.deviceBeamDivergence_rad/2.0 * (
+    // TODO Rethink : Radius and prevRadius are computed twice (see emitted power)
+    // TODO Rethink : Angle and radius might be precomputed
+    double const devBeamDiv_rad = args.deviceBeamDivergence_rad;
+    double const angle = devBeamDiv_rad/2.0 * (
         args.subrayRadiusStep / (args.beamSampleQuality-0.5)
     );
     double const prevAngle = (args.subrayRadiusStep == 0.0) ? 0.0 :
-        args.deviceBeamDivergence_rad / 2.0 * (
+        devBeamDiv_rad / 2.0 * (
         (args.subrayRadiusStep-1.0) / (args.beamSampleQuality-0.5)
     );
-    double const radius = angle + args.deviceBeamDivergence_rad/2.0 * (
+    double const radius = angle + devBeamDiv_rad/2.0 * (
         0.5 / (args.beamSampleQuality-0.5)
     );
     double const prevRadius = (args.subrayRadiusStep == 0.0) ? 0.0 :
-        prevAngle + args.deviceBeamDivergence_rad/2.0 * (
+        prevAngle + devBeamDiv_rad/2.0 * (
         0.5 / (args.beamSampleQuality-0.5)
     );
     double const radius_m = radius * args.targetRange;

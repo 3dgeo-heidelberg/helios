@@ -1320,10 +1320,11 @@ XmlAssetsLoader::createScannerSettingsFromXml(
 std::shared_ptr<FWFSettings> XmlAssetsLoader::createFWFSettingsFromXml(
     tinyxml2::XMLElement *node, std::shared_ptr<FWFSettings> settings
 ) {
+    // If no FWFSettings node appears on XML, default is used
   if (settings == nullptr) {
     settings = std::make_shared<FWFSettings>();
   }
-  // If no FWFSettings node appears on XML, default is used
+  // Given FWFSettings
   if (node != nullptr) {
     settings->binSize_ns = boost::get<double>(XmlUtils::getAttribute(
         node, "binSize_ns", "double", settings->binSize_ns
@@ -1335,6 +1336,9 @@ std::shared_ptr<FWFSettings> XmlAssetsLoader::createFWFSettingsFromXml(
         node, "winSize_ns", "double", settings->winSize_ns));
     settings->maxFullwaveRange_ns = boost::get<double>(XmlUtils::getAttribute(
         node, "maxFullwaveRange_ns", "double", settings->maxFullwaveRange_ns));
+    settings->apertureDiameter = boost::get<double>(XmlUtils::getAttribute(
+        node, "apertureDiameter_m", "double", settings->apertureDiameter
+    ));
   }
 
   return settings;

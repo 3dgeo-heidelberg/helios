@@ -67,7 +67,7 @@ public:
      *
      *
      * \f[
-     *  P_e = \frac{I_0}{n_{sr}} \Biggl(
+     *  P_e = \frac{\pi w_0^2 I_0}{2n_{sr}} \Biggl(
      *      \exp\biggl[
      *          - \frac{2 r_{i-1}^2}{w^2}
      *      \biggr]
@@ -86,24 +86,24 @@ public:
      *  so \f$w\f$ can be defined as:
      *
      * \f[
-     *  w = \frac{
-     *      \lambda^2 (R_0^2 + R^2)
-     *  }{
-     *      \pi^2w_0^2
-     *  }
+     * w = w_0 \sqrt{
+     *  \left(\dfrac{\lambda R}{\pi w_0^2}\right)^2 +
+     *  \left(1 - \dfrac{R}{R_0}\right)^2
+     * }
      * \f]
      *
      * @param radius The radius of the ring to which the current subray
-     *  belongs \f$r_i\f$.
+     *  belongs \f$r_i\f$ (also outer radius).
      * @param prevRadius the radius of the previous ring, i.e.,
      *  the immediately smaller one \f$r_{i-1}\f$. The previous radius for the
-     *  first ring is zero.
+     *  first ring is zero (also inner radius).
      * @param numSubrays The number of subrays in the elliptical footprint
      *  approximation \f$n_{sr}\f$.
      * @return The emitted power for the corresponding subray.
      */
     static double calcSubrayWiseEmittedPower(
         double const I0,
+        double const w0,
         double const w,
         double const radius,
         double const prevRadius,
@@ -168,6 +168,29 @@ public:
         double const Dr2,
         double const R,
         double const Bt2,
+        double const etaSys,
+        double const etaAtm,
+        double const sigma
+    );
+
+    /**
+     * @brief Improved version of EnergyMaths::calcReceivedPower to be used
+     *  with the improved energy model.
+     * @param Pe The emitted power
+     * @param Dr2 Squared receiver diameter
+     * @param R Target range
+     * @param targetArea The target area for the subray
+     * @param etaSys Efficiency of scanning device
+     * @param etaAtm Atmospheric factor
+     * @param sigma Cross section between target area and incidence angle
+     * @return Calculated received power
+     * @see ImprovedEnergyModel
+     */
+    static double calcReceivedPowerImproved(
+        double const Pe,
+        double const Dr2,
+        double const R,
+        double const targetArea,
         double const etaSys,
         double const etaAtm,
         double const sigma

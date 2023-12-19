@@ -111,16 +111,21 @@ bool EnergyModelsTest::testEmittedReceivedPower(){
 
 bool EnergyModelsTest::testEmittedSubrayWisePower() {
     // Values for the tests
-    double const I0 = 4.0;
-    double const R = 1.0;
-    double const beamDiv = 0.3;
-    double const w = beamDiv * R;
-    int const BSQ = 5;
-    vector<int> nsr({
-        1, 6, 12, 18, 25
-    });
+    double const I0 = 499504.174245084;
+    double const beamDiv = 0.0003;
+    double const w = 0.01288227007085636;
+    double const w0 = 0.0022578781259970223;
+    int const BSQ = 8;
+    vector<int> nsr({1, 6, 12, 18, 25, 31, 37, 43});
     vector<double> expectedPe({
-        0.02461531, 0.03192447, 0.02965419, 0.02622347, 0.0211937
+        4.820642506508932e-06,
+        6.427488484487635e-06,
+        6.427395531249935e-06,
+        6.4272406122957276e-06,
+        6.16994278269445e-06,
+        6.219430545125497e-06,
+        6.252717516617577e-06,
+        6.276559501937178e-06
     });
 
     // Compute emitted power and validate it
@@ -134,6 +139,7 @@ bool EnergyModelsTest::testEmittedSubrayWisePower() {
             prevAngle + beamDiv/2.0 * (0.5 / (BSQ-0.5));
         double const Pe = EnergyMaths::calcSubrayWiseEmittedPower(
             I0,
+            w0,
             w,
             radius,
             prevRadius,
@@ -147,6 +153,7 @@ bool EnergyModelsTest::testEmittedSubrayWisePower() {
 }
 
 bool EnergyModelsTest::testEllipticalFootprintEnergy(){
+    // TODO Rethink : Update test
 #if DATA_ANALYTICS < 1
     // Prepare fake scanner
     std::shared_ptr<Scanner> scanner = std::make_shared<SingleScanner>(
