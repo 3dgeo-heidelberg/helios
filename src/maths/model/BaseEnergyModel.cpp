@@ -1,8 +1,29 @@
 #include <maths/model/BaseEnergyModel.h>
 #include <maths/EnergyMaths.h>
+#include <scanner/ScanningDevice.h>
+#include <scanner/detector/AbstractDetector.h>
 
 // ***  METHODS  *** //
 // ***************** //
+double BaseEnergyModel::computeIntensity(
+    ScanningDevice const &sd,
+    double const incidenceAngle,
+    double const targetRange,
+    Material const &mat,
+    double const radius,
+    int const subrayRadiusStep
+){
+    BaseReceivedPowerArgs args = BaseEnergyModel::extractArgumentsFromScanningDevice(
+        sd,
+        incidenceAngle,
+        targetRange,
+        mat,
+        radius,
+        subrayRadiusStep
+    );
+    return computeReceivedPower(args);
+}
+
 double BaseEnergyModel::computeReceivedPower(
     ModelArg const & _args
 #if DATA_ANALYTICS >=2
@@ -109,5 +130,32 @@ double BaseEnergyModel::computeCrossSection(
         args.bdrf,
         args.targetArea,
         args.incidenceAngle_rad
+    );
+}
+
+// ***  EXTRACT-ARGUMENTS METHODS  *** //
+// *********************************** //
+BaseReceivedPowerArgs BaseEnergyModel::extractArgumentsFromScanningDevice(
+    ScanningDevice const &sd,
+    double const incidenceAngle,
+    double const targetRange,
+    Material const &mat,
+    double const radius,
+    int const subrayRadiusStep
+){
+    return BaseReceivedPowerArgs(
+        incidenceAngle,
+        targetRange,
+        mat,
+        radius,
+        sd.averagePower_w,
+        sd.wavelength_m,
+        sd.detector->cfg_device_rangeMin_m,
+        sd.beamWaistRadius,
+        sd.cached_Dr2,
+        sd.cached_Bt2,
+        sd.efficiency,
+        sd.atmosphericExtinction,
+        (double) sd.numRays
     );
 }

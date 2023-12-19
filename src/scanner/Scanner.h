@@ -225,7 +225,7 @@ public:
     /**
      * @brief Prepare the scanner to deal with the simulation.
      */
-    virtual void prepareSimulation() = 0;
+    virtual void prepareSimulation(bool const legacyEnergyModel=0) = 0;
     /**
      * @brief Initialize randomness generators and noise sources that are
      *  necessary for sequential pulse computations

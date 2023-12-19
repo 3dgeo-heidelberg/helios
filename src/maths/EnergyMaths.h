@@ -67,7 +67,7 @@ public:
      *
      *
      * \f[
-     *  P_e = \frac{\pi w_0^2 I_0}{2n_{sr}} \Biggl(
+     *  P_e = \frac{\pi w_0^2 I_0'}{2n_{sr}} \Biggl(
      *      \exp\biggl[
      *          - \frac{2 r_{i-1}^2}{w^2}
      *      \biggr]
@@ -77,7 +77,9 @@ public:
      *  \Biggr)
      * \f]
      *
-     * @param I0 The average power of the device \f$I_0\f$.
+     * @param reversedI0 The reversed average power of the device \f$I_0'\f$
+     *  as in Carlsson 2001, Signature simulation and signal analysis for 3D
+     *  laser radar, equation 2.3.
      * @param w Let \f$\lambda\f$ be the wavelength in meters,
      *  \f$w_0\f$ be the beam waist radius,
      *  \f$R_0\f$ the minimum range,
@@ -102,7 +104,7 @@ public:
      * @return The emitted power for the corresponding subray.
      */
     static double calcSubrayWiseEmittedPower(
-        double const I0,
+        double const reversedI0,
         double const w0,
         double const w,
         double const radius,

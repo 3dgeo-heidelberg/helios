@@ -47,7 +47,8 @@ void LidarSim::init(
     int kdtType,
     size_t kdtJobs,
     size_t kdtGeomJobs,
-    size_t sahLossNodes
+    size_t sahLossNodes,
+    bool const legacyEnergyModel
 ){
     // Info about execution arguments
     std::stringstream ss;
@@ -137,7 +138,8 @@ void LidarSim::init(
         parallelizationStrategy,
         pulseThreadPool,
         std::abs(chunkSize),
-        gpsStartTime
+        gpsStartTime,
+        legacyEnergyModel
 	);
 
 	// Start simulation

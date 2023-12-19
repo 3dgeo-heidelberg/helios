@@ -42,7 +42,7 @@ void MultiScanner::onLegComplete(){
 
 // ***   M E T H O D S   *** //
 // ************************* //
-void MultiScanner::prepareSimulation() {
+void MultiScanner::prepareSimulation(bool const legacyEnergyModel) {
     size_t const numDevs = getNumDevices();
     for(size_t i = 0 ; i < numDevs ; ++i){ // For each i-th device
         // Link the deflector angle with the evaluable scanner head

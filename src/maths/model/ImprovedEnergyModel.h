@@ -130,6 +130,22 @@ public:
     // TODO Rethink : Some arguments as beamSampleQuality might be "cached" in the class apart from the look-up tables?
     // ***  METHODS  *** //
     // ***************** //
+    /**
+     * @brief Compute the intensity, i.e., the received power from the given
+     *  scanning device and input arguments.
+     * @return The computed intensity or received power.
+     * @see BaseEnergyModel::computeReceivedPower
+     * @see BaseEnergyModel::extractArgumentsFromScanningDevice
+     * @see EnergyModel::computeIntensity
+     */
+    double computeIntensity(
+        ScanningDevice const &sd,
+        double const incidenceAngle,
+        double const targetRange,
+        Material const &mat,
+        double const radius,
+        int const subrayRadiusStep
+    ) override;
     // TODO Rethink : Doxygen doc
     double computeReceivedPower(
         ModelArg const & args
@@ -146,4 +162,23 @@ public:
        ,std::vector<std::vector<double>> &calcIntensityRecords
 #endif
     ) override;
+
+    // ***  EXTRACT-ARGUMENTS METHODS  *** //
+    // *********************************** //
+    /**
+     * @brief Extract the received power arguments from the given scanning
+     *  device.
+     * @param sd The scanning device to extract arguments from.
+     * @return The extracted received power arguments.
+     * @see ScanningDevice
+     * @see BaseReceivedPowerArgs
+     */
+    static ImprovedReceivedPowerArgs extractArgumentsFromScanningDevice(
+        ScanningDevice const &sd,
+        double const incidenceAngle,
+        double const targetRange,
+        Material const &mat,
+        double const radius,
+        int const subrayRadiusStep
+    );
 };

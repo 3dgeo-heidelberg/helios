@@ -86,11 +86,10 @@ ScanningDevice::ScanningDevice(ScanningDevice const &scdev){
 
 // ***  M E T H O D S  *** //
 // *********************** //
-void ScanningDevice::prepareSimulation(){
+void ScanningDevice::prepareSimulation(bool const legacyEnergyModel){
     // Prepare energy model
-    // TODO Rethink : Dynamically choose the energy model
-    //energyModel = std::make_shared<BaseEnergyModel>();
-    energyModel = std::make_shared<ImprovedEnergyModel>();
+    if(legacyEnergyModel) energyModel = std::make_shared<BaseEnergyModel>();
+    else energyModel = std::make_shared<ImprovedEnergyModel>();
 
     // Elliptical footprint discrete method
     int const beamSampleQuality = FWF_settings.beamSampleQuality;
@@ -375,45 +374,15 @@ double ScanningDevice::calcIntensity(
 #endif
 ) const {
     // TODO Rethink: Dynamically select the model's arguments
-    // Base energy model
-    /*return energyModel->computeReceivedPower(BaseReceivedPowerArgs{
+    energyModel->computeIntensity(
+        *this,
         incidenceAngle,
         targetRange,
         mat,
         radius,
-        averagePower_w,
-        wavelength_m,
-        detector->cfg_device_rangeMin_m,
-        beamWaistRadius,
-        cached_Dr2,
-        cached_Bt2,
-        efficiency,
-        atmosphericExtinction,
-        (double) numRays
-    });*/
-    // Improved energy model
-    return energyModel->computeReceivedPower(ImprovedReceivedPowerArgs{
-            averagePower_w,
-            wavelength_m,
-            detector->cfg_device_rangeMin_m,
-            targetRange,
-            atmosphericExtinction,
-            incidenceAngle,
-            cached_Dr2,
-            cached_Bt2,
-            efficiency,
-            (double) ( (subrayRadiusStep==0) ? 1 :
-                (int) (subrayRadiusStep*PI_2) // 2 pi x depth = samples/ring
-            ),
-            mat,
-            beamDivergence_rad,
-            beamWaistRadius,
-            (double) FWF_settings.beamSampleQuality,
-            (double) beamQuality,
-            (double) subrayRadiusStep
-        }
+        subrayRadiusStep
 #if DATA_ANALYTICS >= 2
-       ,calcIntensityRecords
+        ,calcIntensityRecords
 #endif
     );
 }

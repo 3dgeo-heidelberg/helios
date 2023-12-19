@@ -1,6 +1,11 @@
 #pragma once
 #include <maths/model/ModelArg.h>
 #include <vector>
+#include <scene/Material.h>
+
+// ***  FORWARD DECLARATIONS  *** //
+// ****************************** //
+class ScanningDevice;
 
 
 /**
@@ -17,6 +22,26 @@ public:
 
     // ***  METHODS  *** //
     // ***************** //
+    /**
+     * @brief Compute the intenstiy, i.e., the received power from the given
+     *  scanning device and input arguments.
+     * @param sd The scanning device
+     * @param incidenceAngle The incidence angle (in radians)
+     * @param targetRange The raget range (in meters)
+     * @param mat The material specification
+     * @param radius The subray radius
+     * @param subrayRadiusStep The step corresponding to the subray radius
+     *  (i.e., ring).
+     * @return The computed intensity or received power.
+     */
+    virtual double computeIntensity(
+        ScanningDevice const &sd,
+        double const incidenceAngle,
+        double const targetRange,
+        Material const &mat,
+        double const radius,
+        int const subrayRadiusStep
+    ) = 0;
     /**
      * @brief Compute the received power \f$P_r\f$.
      *
@@ -63,4 +88,5 @@ public:
      * @return The target area \f$\sigma\f$.
      */
     virtual double computeCrossSection(ModelArg const & args) = 0;
+
 };

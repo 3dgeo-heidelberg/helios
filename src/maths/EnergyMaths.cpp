@@ -34,7 +34,7 @@ double EnergyMaths::calcEmittedPowerLegacy(
 }
 
 double EnergyMaths::calcSubrayWiseEmittedPower(
-    double const I0,
+    double const reversedI0,
     double const w0,
     double const w,
     double const radius,
@@ -42,8 +42,7 @@ double EnergyMaths::calcSubrayWiseEmittedPower(
     double const numSubrays
 ){
     double const wSquared = w*w;
-    double const _I0 = 2*I0 / (M_PI*w0*w0);  // TODO Rethink : New tot_power
-    return M_PI * _I0 * w0*w0 / (2*numSubrays) * (
+    return M_PI * reversedI0 * w0*w0 / (2*numSubrays) * (
         std::exp(-2*prevRadius*prevRadius/wSquared)  -  // inner radius
         std::exp(-2*radius*radius/wSquared)  // outer radius
     );

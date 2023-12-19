@@ -1,8 +1,29 @@
 #include <ImprovedEnergyModel.h>
 #include <maths/EnergyMaths.h>
+#include <scanner/ScanningDevice.h>
+#include <scanner/detector/AbstractDetector.h>
 
 // ***  METHODS  *** //
 // ***************** //
+double ImprovedEnergyModel::computeIntensity(
+    ScanningDevice const &sd,
+    double const incidenceAngle,
+    double const targetRange,
+    Material const &mat,
+    double const radius,
+    int const subrayRadiusStep
+){
+    ImprovedReceivedPowerArgs args = ImprovedEnergyModel::extractArgumentsFromScanningDevice(
+        sd,
+        incidenceAngle,
+        targetRange,
+        mat,
+        radius,
+        subrayRadiusStep
+    );
+    return computeReceivedPower(args);
+}
+
 double ImprovedEnergyModel::computeReceivedPower(
     ModelArg const & _args
 #if DATA_ANALYTICS >=2
@@ -106,7 +127,7 @@ double ImprovedEnergyModel::computeEmittedPower(
     double const Omega = args.wavelength_m*args.targetRange / (M_PI*w0*w0);
     double const w = w0 * std::sqrt(Omega0*Omega0 + Omega*Omega);
     return EnergyMaths::calcSubrayWiseEmittedPower(
-        args.averagePower_w,
+        2*args.averagePower_w / (M_PI*w0*w0),  // TODO Rethink : New tot_power
         w0,
         w,
         radius,
@@ -155,4 +176,36 @@ double ImprovedEnergyModel::computeTargetArea(
 #endif
     return M_PI * (radius_m*radius_m - prevRadius_m*prevRadius_m)
         / args.numSubrays;
+}
+
+// ***  EXTRACT-ARGUMENTS METHODS  *** //
+// *********************************** //
+ImprovedReceivedPowerArgs ImprovedEnergyModel::extractArgumentsFromScanningDevice(
+    ScanningDevice const &sd,
+    double const incidenceAngle,
+    double const targetRange,
+    Material const &mat,
+    double const radius,
+    int const subrayRadiusStep
+){
+    return ImprovedReceivedPowerArgs(
+        sd.averagePower_w,
+        sd.wavelength_m,
+        sd.detector->cfg_device_rangeMin_m,
+        targetRange,
+        sd.atmosphericExtinction,
+        incidenceAngle,
+        sd.cached_Dr2,
+        sd.cached_Bt2,
+        sd.efficiency,
+        (double) ( (subrayRadiusStep==0) ? 1 :
+                   (int) (subrayRadiusStep*PI_2) // 2 pi x depth = samples/ring
+        ),
+        mat,
+        sd.beamDivergence_rad,
+        sd.beamWaistRadius,
+        (double) sd.FWF_settings.beamSampleQuality,
+        (double) sd.beamQuality,
+        (double) subrayRadiusStep
+    );
 }

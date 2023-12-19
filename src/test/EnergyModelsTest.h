@@ -153,7 +153,6 @@ bool EnergyModelsTest::testEmittedSubrayWisePower() {
 }
 
 bool EnergyModelsTest::testEllipticalFootprintEnergy(){
-    // TODO Rethink : Update test
 #if DATA_ANALYTICS < 1
     // Prepare fake scanner
     std::shared_ptr<Scanner> scanner = std::make_shared<SingleScanner>(
@@ -226,11 +225,11 @@ bool EnergyModelsTest::testEllipticalFootprintEnergy(){
         0.015,      0.0015,     0.00015,    0.000015,   0.15,
     });
     std::vector<double> expectedIntensities({
-        94565825.352190837, 3782423.834751925,
-        945031.965353, 556754.596874, 417176.862884,
-        214427.570343, 68727.120275, 37069.098079, 9032.612891, 1750.769938,
-        1000.026362, 911.724653, 346.419866, 61.854047, 1.147646,
-        0.0287837, 0.102365, 0.0826968, 0.123183, 0.0452485
+        0.061007356437843892, 8.231786690673595e-05,
+        5.0388698965697264e-06, 1.7473066265510948e-06, 9.8214055513872063e-07,
+        2.5632187072077593e-07, 2.6255666684330216e-08, 7.7659421201791914e-09,
+        4.8235713209654749e-10, 2.1576050021742726e-11, 8.2158742656362774e-12,
+        3.7452055307437231e-12, 0, 0, 0, 0, 0, 0, 0, 0
     });
     for(size_t i = 0 ; i < raytracingRanges.size(); ++i){
         double const raytracingRange = raytracingRanges[i];

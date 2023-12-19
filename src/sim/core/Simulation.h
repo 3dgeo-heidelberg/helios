@@ -122,6 +122,15 @@ protected:
      */
     std::string fixedGpsTimeStart = "";
     /**
+     * @brief Whether to use the legacy energy model (true) or not (false).
+     * @see EnergyModel
+     * @see BaseEnergyModel
+     * @see ImprovedEnergyModel
+     * @see ScanningDevice
+     * @see Simulation::prepareSimulation
+     */
+    bool legacyEnergyModel = false;
+    /**
      * @brief The report to generate reports about simulation
      * @see SimulationReporter
      */
@@ -165,7 +174,8 @@ public:
         int const parallelizationStrategy,
         std::shared_ptr<PulseThreadPoolInterface> pulseThreadPoolInterface,
         int const chunkSize,
-        std::string fixedGpsTimeStart=""
+        std::string fixedGpsTimeStart="",
+        bool const legacyEnergyModel=false
     );
 
     // ***  SIMULATION METHODS  *** //

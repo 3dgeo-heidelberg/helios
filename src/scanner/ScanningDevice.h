@@ -43,6 +43,8 @@ protected:
     friend class Scanner;
     friend class SingleScanner;
     friend class MultiScanner;
+    friend class BaseEnergyModel;  // TODO Rethink : Necessary ?
+    friend class ImprovedEnergyModel;  // TODO Rethink : Necessary ?
 
     // ***  DEVICE ATTRIBUTES  *** //
     // *************************** //
@@ -264,8 +266,11 @@ public:
      *
      * For example, data related to the subray generation process will be
      *  cached to avoid redundant operations.
+     *
+     * @param legacyEnergyModel Whether to use the legacy energy model (True)
+     *  or not (False).
      */
-    void prepareSimulation();
+    void prepareSimulation(bool const legacyEnergyModel = false);
 
     /**
      * @brief Configure beam related attributes. It is recommended to

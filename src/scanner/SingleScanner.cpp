@@ -84,7 +84,7 @@ void SingleScanner::_clone(Scanner &sc) const{
 
 // ***  SIM STEP UTILS  *** //
 // ************************ //
-void SingleScanner::prepareSimulation() {
+void SingleScanner::prepareSimulation(bool const legacyEnergyModel) {
     // Link the deflector angle with the evaluable scanner head
     std::shared_ptr<EvalScannerHead> sh =
         std::dynamic_pointer_cast<EvalScannerHead>(getScannerHead(0));
@@ -107,7 +107,7 @@ void SingleScanner::prepareSimulation() {
         }
     }
     // Prepare scanning device
-    scanDev.prepareSimulation();
+    scanDev.prepareSimulation(legacyEnergyModel);
 }
 void SingleScanner::onLegComplete(){
     // Call parent handler for on leg complete events

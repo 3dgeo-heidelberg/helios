@@ -54,6 +54,8 @@ public:
      *  of the KDTree
      * @param sahLossNodes Specify the number of nodes used to find the optimal
      *  split point when SAH or the number of samples if fast SAH is used
+     * @param legacyEnergyModel Whether to use the legacy energy model (true)
+     *  or not (false).
      */
     void init(
         std::string surveyPath,
@@ -80,7 +82,8 @@ public:
         int kdtType = 1,
         size_t kdtJobs = 1,
         size_t kdtGeomJobs = 1,
-        size_t sahLossNodes = 21
+        size_t sahLossNodes = 21,
+        bool legacyEnergyModel = false
     );
 };
 

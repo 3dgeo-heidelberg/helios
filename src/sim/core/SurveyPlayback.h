@@ -93,6 +93,7 @@ public:
         std::shared_ptr<PulseThreadPoolInterface> pulseThreadPoolInterface,
         int const chunkSize,
         std::string fixedGpsTimeStart,
+        bool const legacyEnergyModel,
         bool const exportToFile=true
     );
 
