@@ -6,7 +6,6 @@
 // ***  METHODS  *** //
 // ***************** //
 double ImprovedEnergyModel::computeIntensity(
-    ScanningDevice const &sd,
     double const incidenceAngle,
     double const targetRange,
     Material const &mat,
@@ -45,8 +44,8 @@ double ImprovedEnergyModel::computeReceivedPower(
         args.beamQualityFactor,
         args.subrayRadiusStep
     });
-    double const atmosphericFactor = std::exp(
-        -2 * args.targetRange * args.atmosphericExtinction
+    double const atmosphericFactor = EnergyMaths::calcAtmosphericFactor(
+        args.targetRange, args.atmosphericExtinction
     );
     double const targetArea = computeTargetArea(ImprovedTargetAreaArgs{
             args.targetRange,
@@ -67,8 +66,7 @@ double ImprovedEnergyModel::computeReceivedPower(
     double const sigma = computeCrossSection(BaseCrossSectionArgs{
         args.material,
         bdrf,
-        targetArea,
-        args.incidenceAngle_rad
+        targetArea
     });
     // --- TODO Rethink : To common impl, consider also BaseEnergyModel
     double const receivedPower = EnergyMaths::calcReceivedPowerImproved(

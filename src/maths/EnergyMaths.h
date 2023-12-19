@@ -159,6 +159,26 @@ public:
         double const sigma
     );
     /**
+     * @brief Fast version of EnergyMaths::calcReceivedPower .
+     *
+     * It received the squared range that is assumed to be precomputed, thus
+     *  it is expected to be faster too.
+     */
+    static double calcReceivedPowerFast(
+        double const I0,
+        double const lambdaSquared,
+        double const R,
+        double const RSquared,
+        double const R0Squared,
+        double const rSquared,
+        double const w0Squared,
+        double const Dr2,
+        double const Bt2,
+        double const etaSys,
+        double const ae,
+        double const sigma
+    );
+    /**
      * @brief Legacy version of EnergyMaths::calcReceivedPower
      * @param Pe The emitted power
      * @param etaAtm The atmospheric factor
@@ -221,23 +241,29 @@ public:
 	 * @brief Compute cross section
 	 *
 	 * \f[
-	 *  C_{S} = 4{\pi} \cdot f \cdot A_{lf} \cdot \cos(\theta)
+	 *  C_{S} = 4{\pi} \cdot f \cdot A_{lf}
 	 * \f]
 	 *
 	 * <br/>
 	 * Paper DOI: 10.1016/j.isprsjprs.2010.06.007
 	 *
 	 * @return Cross section
+     * @see computeBDRF
 	 */
     static double calcCrossSection(
         double const f,
-        double const Alf,
-        double const theta
+        double const Alf
     );
 
 
     // ***  LIGHTING  *** //
     // ****************** //
+    /**
+     * @brief Compute the Bidirectional Reflectande Function (BDRF).
+     * @param mat The material specification.
+     * @param incidenceAngle The incidence angle.
+     * @return The value of the BDRF.
+     */
     static double computeBDRF(
         Material const &mat, double const incidenceAngle
     );
@@ -272,6 +298,17 @@ public:
 	 */
     static double phongBDRF(
         double const incidenceAngle,
+        double const targetSpecularity,
+        double const targetSpecularExponent
+    );
+    /**
+     * @brief The EnergyMaths::phongBDRF function assuming the cosine of the
+     * incidence angle is precomputed, thus it is expected to be faster.
+     * @see EnergyMaths::phongBDRF
+     */
+    static double phongBDRFFast(
+        double const incidenceAngle,
+        double const cosIncidenceAngle,
         double const targetSpecularity,
         double const targetSpecularExponent
     );

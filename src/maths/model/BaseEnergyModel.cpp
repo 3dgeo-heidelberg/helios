@@ -3,10 +3,18 @@
 #include <scanner/ScanningDevice.h>
 #include <scanner/detector/AbstractDetector.h>
 
+// ***  CONSTRUCTION / DESTRUCTION  *** //
+// ************************************ //
+BaseEnergyModel::BaseEnergyModel(ScanningDevice const &sd) :
+    EnergyModel(sd)
+{
+    // Precompute cached values
+    targetAreaCache = PI_QUARTER * sd.cached_Bt2 / sd.numRays;
+}
+
 // ***  METHODS  *** //
 // ***************** //
 double BaseEnergyModel::computeIntensity(
-    ScanningDevice const &sd,
     double const incidenceAngle,
     double const targetRange,
     Material const &mat,
@@ -33,36 +41,40 @@ double BaseEnergyModel::computeReceivedPower(
     BaseReceivedPowerArgs const & args = static_cast<
         BaseReceivedPowerArgs const&
     >(_args);
+    // Pre-computations
+    double const squaredRange = args.targetRange * args.targetRange;
+    // Target area
     double const targetArea = computeTargetArea(BaseTargetAreaArgs{
-            args.targetRange,
-            args.Bt2,
-            args.numSubrays
+            squaredRange
         }
 #if DATA_ANALYTICS >= 2
        ,calcIntensityRecords
 #endif
     );
+    // BDRF
     double const bdrf = EnergyMaths::computeBDRF(
-            args.material,
-            args.incidenceAngle_rad
+        args.material,
+        args.incidenceAngle_rad
     );
+    // Cross-section
     double const sigma = computeCrossSection(BaseCrossSectionArgs{
         args.material,
         bdrf,
-        targetArea,
-        args.incidenceAngle_rad
+        targetArea
     });
-    double const receivedPower = EnergyMaths::calcReceivedPower(
-        args.averagePower_w,
-        args.wavelength_m,
+    // Received power
+    double const receivedPower = EnergyMaths::calcReceivedPowerFast(
+        sd.averagePower_w,
+        sd.wavelength_m*sd.wavelength_m,
         args.targetRange,
-        args.rangeMin,
-        args.subrayRadius,
-        args.beamWaistRadius,
-        args.Dr2,
-        args.Bt2,
-        args.efficiency,
-        args.atmosphericExtinction,
+        squaredRange,
+        sd.detector->cfg_device_rangeMin_m*sd.detector->cfg_device_rangeMin_m,
+        args.subrayRadius*args.subrayRadius,
+        sd.beamWaistRadius*sd.beamWaistRadius,
+        sd.cached_Dr2,
+        sd.cached_Bt2,
+        sd.efficiency,
+        sd.atmosphericExtinction,
         sigma
     );
 #if DATA_ANALYTICS >= 2
@@ -116,8 +128,7 @@ double BaseEnergyModel::computeTargetArea(
     BaseTargetAreaArgs const & args = static_cast<
         BaseTargetAreaArgs const &
     >(_args);
-    return (PI_QUARTER * args.range*args.range * args.Bt2) /
-        args.numSubrays;
+    return targetAreaCache * args.squaredRange;
 }
 
 double BaseEnergyModel::computeCrossSection(
@@ -128,8 +139,7 @@ double BaseEnergyModel::computeCrossSection(
     >(_args);
     return EnergyMaths::calcCrossSection(
         args.bdrf,
-        args.targetArea,
-        args.incidenceAngle_rad
+        args.targetArea
     );
 }
 
@@ -147,15 +157,6 @@ BaseReceivedPowerArgs BaseEnergyModel::extractArgumentsFromScanningDevice(
         incidenceAngle,
         targetRange,
         mat,
-        radius,
-        sd.averagePower_w,
-        sd.wavelength_m,
-        sd.detector->cfg_device_rangeMin_m,
-        sd.beamWaistRadius,
-        sd.cached_Dr2,
-        sd.cached_Bt2,
-        sd.efficiency,
-        sd.atmosphericExtinction,
-        (double) sd.numRays
+        radius
     );
 }

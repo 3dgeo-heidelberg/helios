@@ -126,7 +126,17 @@ public:
  *  distribution modeling.
  */
 class ImprovedEnergyModel : public BaseEnergyModel {
+    // ***  ATTRIBUTES  *** //
+    // ******************** //
+
 public:
+    // ***  CONSTRUCTION / DESTRUCTION  *** //
+    // ************************************ //
+    /**
+     * @see EnergyModel::EnergyModel
+     */
+    ImprovedEnergyModel(ScanningDevice const &sd) : BaseEnergyModel(sd) {}
+
     // TODO Rethink : Some arguments as beamSampleQuality might be "cached" in the class apart from the look-up tables?
     // ***  METHODS  *** //
     // ***************** //
@@ -139,13 +149,12 @@ public:
      * @see EnergyModel::computeIntensity
      */
     double computeIntensity(
-        ScanningDevice const &sd,
         double const incidenceAngle,
         double const targetRange,
         Material const &mat,
         double const radius,
         int const subrayRadiusStep
-    ) override;
+    );
     // TODO Rethink : Doxygen doc
     double computeReceivedPower(
         ModelArg const & args

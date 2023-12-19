@@ -14,18 +14,31 @@ class ScanningDevice;
  * @brief Abstract class providing the interface for any energy model.
  */
 class EnergyModel{
+protected:
+    // ***  ATTRIBUTES  *** //
+    // ******************** //
+    /**
+     * @brief The scanning device attached to the energy model
+     */
+    ScanningDevice const &sd;
+
 public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //
     // ************************************ //
-    EnergyModel() = default;
+    /**
+     * @brief Instantiate the EnergyModel such that it is attached to the
+     *  given scanning device.
+     * @param sd The scanning device attached to the energy model.
+     * @see EnergyModel::ScanningDevice
+     */
+    EnergyModel(ScanningDevice const &sd) : sd(sd){}
     virtual ~EnergyModel() = default;
 
     // ***  METHODS  *** //
     // ***************** //
     /**
-     * @brief Compute the intenstiy, i.e., the received power from the given
+     * @brief Compute the intensity, i.e., the received power from the given
      *  scanning device and input arguments.
-     * @param sd The scanning device
      * @param incidenceAngle The incidence angle (in radians)
      * @param targetRange The raget range (in meters)
      * @param mat The material specification
@@ -35,7 +48,6 @@ public:
      * @return The computed intensity or received power.
      */
     virtual double computeIntensity(
-        ScanningDevice const &sd,
         double const incidenceAngle,
         double const targetRange,
         Material const &mat,

@@ -62,13 +62,43 @@ double EnergyMaths::calcReceivedPower(
     double const ae,
     double const sigma
 ){
-    double const Rsquared = R*R;
+    return calcReceivedPowerFast(
+        I0,
+        lambda*lambda,
+        R,
+        R*R,
+        R0*R0,
+        r*r,
+        w0*w0,
+        Dr2,
+        Bt2,
+        etaSys,
+        ae,
+        sigma
+    );
+}
+
+double EnergyMaths::calcReceivedPowerFast(
+    double const I0,
+    double const lambdaSquared,
+    double const R,
+    double const RSquared,
+    double const R0Squared,
+    double const rSquared,
+    double const w0Squared,
+    double const Dr2,
+    double const Bt2,
+    double const etaSys,
+    double const ae,
+    double const sigma
+){
     double const numer = I0 * Dr2 * etaSys * sigma;
     double const expon = exp(
-        (PI_SQUARED_2 * r*r * w0*w0) / (lambda*lambda * (R0*R0 + Rsquared)) +
+        (PI_SQUARED_2 * rSquared * w0Squared) /
+        (lambdaSquared * (R0Squared + RSquared)) +
         2*R*ae
     );
-    double const denom = PI_4 * Rsquared*Rsquared * Bt2 * expon;
+    double const denom = PI_4 * RSquared*RSquared * Bt2 * expon;
     return numer / denom;
 }
 
@@ -113,10 +143,9 @@ double EnergyMaths::calcAtmosphericFactor(double const R, double const ae){
 // ALS Simplification "Radiometric Calibration..." (Wagner, 2010) Eq. 14
 double EnergyMaths::calcCrossSection(
     double const f,
-    double const Alf,
-    double const theta
+    double const Alf
 ){
-    return PI_4 * f * Alf * cos(theta);
+    return PI_4 * f * Alf;
 }
 
 
@@ -132,13 +161,13 @@ double EnergyMaths::computeBDRF(
             incidenceAngle,
             mat.specularity,
             mat.specularExponent
-        );
+        ) * std::cos(incidenceAngle);
     }
     else if(mat.isLambert()){
-        return mat.reflectance;
+        return mat.reflectance * std::cos(incidenceAngle);
     }
     else if(mat.isDirectionIndependent()){
-        return mat.reflectance/std::cos(incidenceAngle);  // Alt. 1/cos(incid)
+        return mat.reflectance;
     }
     // Not acceptable lighting model
     std::stringstream ss;
@@ -154,12 +183,26 @@ double EnergyMaths::phongBDRF(
     double const targetSpecularity,
     double const targetSpecularExponent
 ){
+    return EnergyMaths::phongBDRFFast(
+        incidenceAngle,
+        std::cos(incidenceAngle),
+        targetSpecularity,
+        targetSpecularExponent
+    );
+}
+
+double EnergyMaths::phongBDRFFast(
+    double const incidenceAngle,
+    double const cosIncidenceAngle,
+    double const targetSpecularity,
+    double const targetSpecularExponent
+){
     double const ks = targetSpecularity;
     double const kd = (1 - ks);
     double const specularAngle = 2*incidenceAngle;
     double const specular = ks * pow(
         cos(specularAngle),
         targetSpecularExponent
-    )/cos(incidenceAngle);
+    )/cosIncidenceAngle;
     return kd + specular;
 }

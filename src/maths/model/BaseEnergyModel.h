@@ -12,43 +12,16 @@ public:
     double const targetRange;
     Material const &material;
     double const subrayRadius;
-    double const averagePower_w;
-    double const wavelength_m;
-    double const rangeMin;
-    double const beamWaistRadius;
-    double const Dr2;  // Squared aperture diameter
-    double const Bt2;  // Squared device's beam divergence (not subray)
-    double const efficiency;
-    double const atmosphericExtinction;
-    double const numSubrays;  // Number of subrays used by the discrete model
     BaseReceivedPowerArgs(
         double const incidenceAngle_rad,
         double const targetRange,
         Material const &material,
-        double const subrayRadius,
-        double const averagePower_w,
-        double const wavelength_m,
-        double const rangeMin,
-        double const beamWaistRadius,
-        double const Dr2,
-        double const Bt2,
-        double const efficiency,
-        double const atmosphericExtinction,
-        double const numSubrays
+        double const subrayRadius
     ) :
         incidenceAngle_rad(incidenceAngle_rad),
         targetRange(targetRange),
         material(material),
-        subrayRadius(subrayRadius),
-        averagePower_w(averagePower_w),
-        wavelength_m(wavelength_m),
-        rangeMin(rangeMin),
-        beamWaistRadius(beamWaistRadius),
-        Dr2(Dr2),
-        Bt2(Bt2),
-        efficiency(efficiency),
-        atmosphericExtinction(atmosphericExtinction),
-        numSubrays(numSubrays)
+        subrayRadius(subrayRadius)
     {}
 };
 
@@ -79,17 +52,11 @@ public:
 
 class BaseTargetAreaArgs : public ModelArg {
 public:
-    double const range;
-    double const Bt2;  // Squared device's beam divergence (not subray)
-    double const numSubrays;  // Number of subrays used by the discrete model
+    double const squaredRange;
     BaseTargetAreaArgs(
-        double const range,
-        double const Bt2,
-        double const numSubrays
+        double const squaredRange
     ) :
-        range(range),
-        Bt2(Bt2),
-        numSubrays(numSubrays)
+        squaredRange(squaredRange)
     {}
 };
 
@@ -98,17 +65,14 @@ public:
     Material const &material;
     double const bdrf; // Bidirectional reflectance function
     double const targetArea;
-    double const incidenceAngle_rad;
     BaseCrossSectionArgs(
         Material const &material,
         double const bdrf,
-        double const targetArea,
-        double const incidenceAngle_rad
+        double const targetArea
     ) :
         material(material),
         bdrf(bdrf),
-        targetArea(targetArea),
-        incidenceAngle_rad(incidenceAngle_rad)
+        targetArea(targetArea)
     {}
 };
 
@@ -121,7 +85,25 @@ public:
  * @brief Class providing a baseline energy model.
  */
 class BaseEnergyModel : public EnergyModel {
+protected:
+    // ***  ATTRIBUTES  *** //
+    // ******************** //
+    /**
+     * @brief Precomputed value for the target area computation.
+     *
+     * \f[
+     *  \frac{\pi \varphi_*}{4 n_s}
+     * \f]
+     */
+    double targetAreaCache;
 public:
+    // ***  CONSTRUCTION / DESTRUCTION  *** //
+    // ************************************ //
+    /**
+     * @see EnergyModel::EnergyModel
+     */
+    BaseEnergyModel(ScanningDevice const &sd);
+
     // ***  METHODS  *** //
     // ***************** //
     /**
@@ -133,13 +115,12 @@ public:
      * @see EnergyModel::computeIntensity
      */
     double computeIntensity(
-        ScanningDevice const &sd,
         double const incidenceAngle,
         double const targetRange,
         Material const &mat,
         double const radius,
         int const subrayRadiusStep
-    ) override;
+    );
     /**
      * @brief Compute the received power \f$P_r\f$.
      *

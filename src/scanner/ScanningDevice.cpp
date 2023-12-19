@@ -88,8 +88,13 @@ ScanningDevice::ScanningDevice(ScanningDevice const &scdev){
 // *********************** //
 void ScanningDevice::prepareSimulation(bool const legacyEnergyModel){
     // Prepare energy model
-    if(legacyEnergyModel) energyModel = std::make_shared<BaseEnergyModel>();
-    else energyModel = std::make_shared<ImprovedEnergyModel>();
+    if(legacyEnergyModel){
+        energyModel = std::make_shared<BaseEnergyModel>(*this);
+    }
+    else{
+        energyModel = std::make_shared<ImprovedEnergyModel>(*this);
+    }
+
 
     // Elliptical footprint discrete method
     int const beamSampleQuality = FWF_settings.beamSampleQuality;
@@ -375,7 +380,6 @@ double ScanningDevice::calcIntensity(
 ) const {
     // TODO Rethink: Dynamically select the model's arguments
     energyModel->computeIntensity(
-        *this,
         incidenceAngle,
         targetRange,
         mat,
