@@ -65,6 +65,7 @@ public:
     double const wavelength_m;
     double const rangeMin;
     double const targetRange;
+    double const targetRangeSquared;
     double const deviceBeamDivergence_rad;
     double const beamWaistRadius;
     double const numSubrays;
@@ -76,6 +77,7 @@ public:
         double const wavelength_m,
         double const rangeMin,
         double const targetRange,
+        double const targetRangeSquared,
         double const deviceBeamDivergence_rad,
         double const beamWaistRadius,
         double const numSubrays,
@@ -87,6 +89,7 @@ public:
         wavelength_m(wavelength_m),
         rangeMin(rangeMin),
         targetRange(targetRange),
+        targetRangeSquared(targetRangeSquared),
         deviceBeamDivergence_rad(deviceBeamDivergence_rad),
         beamWaistRadius(beamWaistRadius),
         numSubrays(numSubrays),
@@ -98,19 +101,19 @@ public:
 
 class ImprovedTargetAreaArgs : public ModelArg{
 public:
-    double const targetRange;
+    double const targetRangeSquared;
     double const deviceBeamDivergence_rad;
     double const beamSampleQuality;
     double const subrayRadiusStep;
     double const numSubrays;
     ImprovedTargetAreaArgs(
-        double const targetRange,
+        double const targetRangeSquared,
         double const deviceBeamDivergence_rad,
         double const beamSampleQuality,
         double const subrayRadiusStep,
         double const numSubrays
     ) :
-        targetRange(targetRange),
+        targetRangeSquared(targetRangeSquared),
         deviceBeamDivergence_rad(deviceBeamDivergence_rad),
         beamSampleQuality(beamSampleQuality),
         subrayRadiusStep(subrayRadiusStep),
@@ -144,28 +147,21 @@ class ImprovedEnergyModel : public BaseEnergyModel {
      */
     std::vector<double> radii;
     /**
-     * @brief Precomputed beam waist radius:
+     * @brief The values of ImprovedEnergyModel::radii but squared.
+     */
+    std::vector<double> radiiSquared;
+    /**
+     * @brief Precomputed squared of beam waist radius:
      *
      * \f[
-     *  w_0 = \frac{\mathrm{BQ} \lambda}{\pi \varphi_*}
+     *  w_0^2 = \left(\frac{\mathrm{BQ} \lambda}{\pi \varphi_*}\right)^2
      * \f]
      *
      * Where \f$\varphi_*\f$ is the device's beam divergence,
      * \f$\lambda\f$ is the wavelength (in meters), and \f$\mathrm{BQ}\f$
      * the beam quality factor.
      */
-    double const w0;
-    /**
-     * @brief Precompute part of the \f$\Omega\f$ term, more concretely:
-     *
-     * \f[
-     *  \frac{\lambda}{\pi w_0^2}
-     * \f]
-     *
-     * Where \f$w_0\f$ is the beam waist radius, and \f$\lambda\f$ is the
-     *  wavelength (in meters).
-     */
-    double const omegaCache;
+    double const w0Squared;
     /**
      * @brief Precompute the total power from the average power by undoing
      *  Equation 2.3 in Carlsson et al. 2021 (
@@ -180,6 +176,28 @@ class ImprovedEnergyModel : public BaseEnergyModel {
      *  waist radius.
      */
     double const totPower;
+    /**
+     * @brief Precompute part of the squared \f$\Omega\f$ term, more
+     *  concretely:
+     *
+     * \f[
+     *  \left(\frac{\lambda}{\pi w_0^2}\right)^2
+     * \f]
+     *
+     * Where \f$w_0\f$ is the beam waist radius, and \f$\lambda\f$ is the
+     *  wavelength (in meters).
+     */
+    double const omegaCacheSquared;
+    /**
+     * @brief Precompute part of the target area, more concretely:
+     *
+     * \f[
+     *  \frac{\pi}{n_sr}
+     * \f]
+     *
+     * Where \f$n_sr\f$ is the number of subrays.
+     */
+    double const targetAreaCache;
 
 public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //

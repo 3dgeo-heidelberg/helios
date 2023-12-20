@@ -8,19 +8,28 @@
 ImprovedEnergyModel::ImprovedEnergyModel(ScanningDevice const &sd) :
     BaseEnergyModel(sd),
     radii(sd.FWF_settings.beamSampleQuality+1),
-    w0(sd.beamQuality * sd.wavelength_m / (M_PI*sd.beamDivergence_rad)),
-    omegaCache(sd.wavelength_m/(M_PI*w0*w0)),
-    totPower(2*sd.averagePower_w / (M_PI*w0*w0))
+    radiiSquared(sd.FWF_settings.beamSampleQuality+1),
+    w0Squared(
+        (sd.beamQuality*sd.wavelength_m)*(sd.beamQuality*sd.wavelength_m) / (
+            (M_PI*sd.beamDivergence_rad)*(M_PI*sd.beamDivergence_rad)
+        )
+    ),
+    totPower(2*sd.averagePower_w / (M_PI*w0Squared)),
+    omegaCacheSquared(
+        (sd.wavelength_m/(M_PI*w0Squared))*(sd.wavelength_m/(M_PI*w0Squared))
+    ),
+    targetAreaCache(M_PI/sd.numRays)
 {
-    // Cached angles
+// Cached angles
     int const BSQ = sd.FWF_settings.beamSampleQuality;
     radii[0] = 0.0;
+    radiiSquared[0] = 0.0;
     for(int i = 0 ; i < BSQ ; ++i){
         radii[i+1] = sd.beamDivergence_rad*(
             sd.cached_subrayRadiusStep[i]+0.5
         ) / (2 * (BSQ-0.5));
+        radiiSquared[i+1] = radii[i+1] * radii[i+1];
     }
-    // TODO Rethink : Implement
 }
 
 
@@ -53,11 +62,15 @@ double ImprovedEnergyModel::computeReceivedPower(
     ImprovedReceivedPowerArgs const &args = static_cast<
         ImprovedReceivedPowerArgs const &
     >(_args);
+    // Pre-computations
+    double const rangeSquared = args.targetRange*args.targetRange;
+    // Emitted power
     double const Pe = computeEmittedPower(ImprovedEmittedPowerArgs{
         args.averagePower_w,
         args.wavelength_m,
         args.rangeMin,
         args.targetRange,
+        rangeSquared,
         args.deviceBeamDivergence_rad,
         args.beamWaistRadius,
         args.numSubrays,
@@ -65,11 +78,9 @@ double ImprovedEnergyModel::computeReceivedPower(
         args.beamQualityFactor,
         args.subrayRadiusStep
     });
-    double const atmosphericFactor = EnergyMaths::calcAtmosphericFactor(
-        args.targetRange, args.atmosphericExtinction
-    );
+    // Target area
     double const targetArea = computeTargetArea(ImprovedTargetAreaArgs{
-            args.targetRange,
+            rangeSquared,
             args.deviceBeamDivergence_rad,
             args.beamSampleQuality,
             args.subrayRadiusStep,
@@ -79,7 +90,7 @@ double ImprovedEnergyModel::computeReceivedPower(
        ,calcIntensityRecords
 #endif
     );
-    // TODO Rethink : To common impl, consider also BaseEnergyModel ---
+    // Cross-section
     double const bdrf = EnergyMaths::computeBDRF(
         args.material,
         args.incidenceAngle_rad
@@ -89,12 +100,14 @@ double ImprovedEnergyModel::computeReceivedPower(
         bdrf,
         targetArea
     });
-    // --- TODO Rethink : To common impl, consider also BaseEnergyModel
-    double const receivedPower = EnergyMaths::calcReceivedPowerImproved(
+    // Received power
+    double const atmosphericFactor = EnergyMaths::calcAtmosphericFactor(
+        args.targetRange, args.atmosphericExtinction
+    );
+    double const receivedPower = EnergyMaths::calcReceivedPowerImprovedFast(
         Pe,
         args.Dr2,
-        args.targetRange,
-        targetArea,
+        16*targetArea*rangeSquared,
         args.efficiency,
         atmosphericFactor,
         sigma
@@ -120,22 +133,17 @@ double ImprovedEnergyModel::computeEmittedPower(
     ImprovedEmittedPowerArgs const & args = static_cast<
         ImprovedEmittedPowerArgs const &
     >(_args);
-    // TODO Rethink : Review
-    // TODO Rethink : Radius and prevRadius are computed twice
-    // TODO Rethink : Some expressions can be simplified and are unnecessary
-    // TODO Rethink : e.g., w is not needed as w^2 is used later on
-    // TODO Rethink : Angle and radius stuff
-    double prevRadius = radii[int(args.subrayRadiusStep)];
-    double const radius = radii[int(args.subrayRadiusStep)+1];
+    double prevRadiusSquared = radiiSquared[int(args.subrayRadiusStep)];
+    double const radiusSquared = radiiSquared[int(args.subrayRadiusStep)+1];
     double const Omega0 = 1 - args.targetRange/args.rangeMin;
-    double const Omega = args.targetRange * omegaCache;
-    double const w = w0 * std::sqrt(Omega0*Omega0 + Omega*Omega);
-    return EnergyMaths::calcSubrayWiseEmittedPower(
+    double const OmegaSquared = args.targetRangeSquared * omegaCacheSquared;
+    double const wSquared = w0Squared * (Omega0*Omega0 + OmegaSquared);
+    return EnergyMaths::calcSubrayWiseEmittedPowerFast(
         totPower,
-        w0,
-        w,
-        radius,
-        prevRadius,
+        w0Squared,
+        wSquared,
+        radiusSquared,
+        prevRadiusSquared,
         args.numSubrays
     );
 }
@@ -150,22 +158,19 @@ double ImprovedEnergyModel::computeTargetArea(
     ImprovedTargetAreaArgs const & args = static_cast<
         ImprovedTargetAreaArgs const &
     >(_args);
-    // TODO Rethink : Review
-    // TODO Rethink : Radius and prevRadius are computed twice (see emitted power)
-    // TODO Rethink : Angle and radius might be precomputed
-    double const prevRadius = radii[int(args.subrayRadiusStep)];
-    double const radius = radii[int(args.subrayRadiusStep)+1];
-    double const radius_m = radius * args.targetRange;
-    double const prevRadius_m = prevRadius * args.targetRange;
+    double const prevRadiusSquared = radiiSquared[int(args.subrayRadiusStep)];
+    double const radiusSquared = radiiSquared[int(args.subrayRadiusStep)+1];
+    double const radius_m_squared = radiusSquared * args.targetRangeSquared;
+    double const prevRadius_m_squared =
+        prevRadiusSquared * args.targetRangeSquared;
 #if DATA_ANALYTICS >= 2
     std::vector<double> calcIntensityRecord(
         13, std::numeric_limits<double>::quiet_NaN()
     );
-    calcIntensityRecord[6] = radius_m;
+    calcIntensityRecord[6] = std::sqrt(radius_m_squared);
     calcIntensityRecords.push_back(calcIntensityRecord);
 #endif
-    return M_PI * (radius_m*radius_m - prevRadius_m*prevRadius_m)
-        / args.numSubrays;
+    return (radius_m_squared - prevRadius_m_squared) * targetAreaCache;
 }
 
 // ***  EXTRACT-ARGUMENTS METHODS  *** //

@@ -113,6 +113,20 @@ public:
     );
 
     /**
+     * @brief The EnergyMaths::calcSubrayWiseEmittedPower assuming some terms
+     *  are given already squared so there is no need for those operations.
+     * @see EnergyMaths::calcSubrayWiseEmittedPower
+     */
+    static double calcSubrayWiseEmittedPowerFast(
+        double const reversedI0,
+        double const w0Squared,
+        double const wSquared,
+        double const radiusSquared,
+        double const prevRadiusSquared,
+        double const numSubrays
+    );
+
+    /**
      * @brief Solve the laser radar equation
 	 *
      * <br/>
@@ -161,7 +175,7 @@ public:
     /**
      * @brief Fast version of EnergyMaths::calcReceivedPower .
      *
-     * It received the squared range that is assumed to be precomputed, thus
+     * It receives the squared range that is assumed to be precomputed, thus
      *  it is expected to be faster too.
      */
     static double calcReceivedPowerFast(
@@ -213,6 +227,21 @@ public:
         double const Dr2,
         double const R,
         double const targetArea,
+        double const etaSys,
+        double const etaAtm,
+        double const sigma
+    );
+
+    /**
+     * @brief Fast version of EnergyMaths::calcReceivedPowerImproved .
+     * The denominator is assumed to be precomputed, so it is expected to be
+     * faster.
+     * @see EnergyMaths::calcReceivedPowerImproved
+     */
+    static double calcReceivedPowerImprovedFast(
+        double const Pe,
+        double const Dr2,
+        double const denom,
         double const etaSys,
         double const etaAtm,
         double const sigma

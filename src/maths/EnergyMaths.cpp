@@ -41,10 +41,27 @@ double EnergyMaths::calcSubrayWiseEmittedPower(
     double const prevRadius,
     double const numSubrays
 ){
-    double const wSquared = w*w;
-    return M_PI * reversedI0 * w0*w0 / (2*numSubrays) * (
-        std::exp(-2*prevRadius*prevRadius/wSquared)  -  // inner radius
-        std::exp(-2*radius*radius/wSquared)  // outer radius
+    return EnergyMaths::calcSubrayWiseEmittedPowerFast(
+        reversedI0,
+        w0*w0,
+        w*w,
+        radius*radius,
+        prevRadius*prevRadius,
+        numSubrays
+    );
+}
+
+double EnergyMaths::calcSubrayWiseEmittedPowerFast(
+    double const reversedI0,
+    double const w0Squared,
+    double const wSquared,
+    double const radiusSquared,
+    double const prevRadiusSquared,
+    double const numSubrays
+){
+    return M_PI * reversedI0 * w0Squared / (2*numSubrays) * (
+        std::exp(-2*prevRadiusSquared/wSquared)  -  // inner radius
+        std::exp(-2*radiusSquared/wSquared)  // outer radius
     );
 }
 
@@ -123,13 +140,27 @@ double EnergyMaths::calcReceivedPowerImproved(
     double const etaAtm,
     double const sigma
 ){
-    double const Rsquared = R*R;
-    double const beamDivFromAreaSquared = 4 * targetArea/M_PI/ Rsquared;
-    return (Pe * Dr2) /
-        (PI_4 * (Rsquared*Rsquared) * beamDivFromAreaSquared) *
-        etaSys * etaAtm * sigma;
+    double const denom = 16.0 * targetArea * R*R;
+    return EnergyMaths::calcReceivedPowerImprovedFast(
+        Pe,
+        Dr2,
+        denom,
+        etaSys,
+        etaAtm,
+        sigma
+    );
 }
 
+double EnergyMaths::calcReceivedPowerImprovedFast(
+    double const Pe,
+    double const Dr2,
+    double const denom,
+    double const etaSys,
+    double const etaAtm,
+    double const sigma
+){
+    return Pe * Dr2 * etaSys * etaAtm * sigma / denom;
+}
 
 // ***  ATMOSPHERIC STUFF  *** //
 // *************************** //
