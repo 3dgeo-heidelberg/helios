@@ -134,7 +134,6 @@ void FullWaveformPulseRunnable::computeSubrays(
     scanner->computeSubrays(
         [&] (
             Rotation const &subrayRotation,
-            double const divergenceAngle,
             int const subrayRadiusStep,
             NoiseSource<double> &intersectionHandlingNoiseSource,
             std::map<double, double> &reflections,
@@ -146,7 +145,6 @@ void FullWaveformPulseRunnable::computeSubrays(
         ) -> void {
             handleSubray(
                 subrayRotation,
-                divergenceAngle,
                 subrayRadiusStep,
                 intersectionHandlingNoiseSource,
                 reflections,
@@ -170,7 +168,6 @@ void FullWaveformPulseRunnable::computeSubrays(
 
 void FullWaveformPulseRunnable::handleSubray(
     Rotation const &subrayRotation,
-    double const divergenceAngle,
     int const subrayRadiusStep,
     NoiseSource<double> &intersectionHandlingNoiseSource,
     map<double, double> &reflections,
@@ -248,16 +245,14 @@ void FullWaveformPulseRunnable::handleSubray(
             if (detector->isDistanceNotInRange(distance)) continue;
 
             // Distance between beam's center line and intersection point:
-            double const radius = sin(divergenceAngle) * distance;
             double intensity = 0.0;
             if (intersect->prim->canComputeSigmaWithLadLut()) {
                 // LadLut based intensity computation
                 double const sigma = intersect->prim->computeSigmaWithLadLut(
                     subrayDirection
                 );
-                // TODO Rethink : Make an energy model for LadLuts too
                 intensity = scanner->calcIntensity(
-                    distance, radius, sigma, pulse.getDeviceIndex()
+                    distance, sigma, subrayRadiusStep, pulse.getDeviceIndex()
                 );
             } else {
                 // Lighting-based intensity computation
@@ -268,7 +263,6 @@ void FullWaveformPulseRunnable::handleSubray(
                     incidenceAngle,
                     distance,
                     *intersect->prim->material,
-                    radius,
                     subrayRadiusStep,
                     pulse.getDeviceIndex()
 #if DATA_ANALYTICS >= 2

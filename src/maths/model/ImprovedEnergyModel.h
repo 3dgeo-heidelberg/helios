@@ -6,95 +6,38 @@
 // ************************** //
 class ImprovedReceivedPowerArgs : public ModelArg {
 public:
-    double const averagePower_w;
-    double const wavelength_m;
-    double const rangeMin;
     double const targetRange;
-    double const atmosphericExtinction;
     double const incidenceAngle_rad;
-    double const Dr2;  // Squared aperture diameter
-    double const Bt2;  // Squared device's beam divergence (not subray)
-    double const efficiency;
-    double const numSubrays;
     Material const &material;
-    double const deviceBeamDivergence_rad;
-    double const beamWaistRadius;
-    double const beamSampleQuality;
-    double const beamQualityFactor;
-    double const subrayRadiusStep;
+    int const subrayRadiusStep;
     ImprovedReceivedPowerArgs(
-        double const averagePower_w,
-        double const wavelength_m,
-        double const rangeMin,
         double const targetRange,
-        double const atmosphericExtinction,
         double const incidenceAngle_rad,
-        double const Dr2,
-        double const Bt2,
-        double const efficiency,
-        double const numSubrays,
         Material const &material,
-        double const deviceBeamDivergence_rad,
-        double const beamWaistRadius,
-        double const beamSampleQuality,
-        double const beamQualityFactor,
-        double const subrayRadiusStep
+        int const subrayRadiusStep
     ) :
-        averagePower_w(averagePower_w),
-        wavelength_m(wavelength_m),
-        rangeMin(rangeMin),
         targetRange(targetRange),
-        atmosphericExtinction(atmosphericExtinction),
         incidenceAngle_rad(incidenceAngle_rad),
-        Dr2(Dr2),
-        Bt2(Bt2),
-        efficiency(efficiency),
-        numSubrays(numSubrays),
         material(material),
-        deviceBeamDivergence_rad(deviceBeamDivergence_rad),
-        beamWaistRadius(beamWaistRadius),
-        beamSampleQuality(beamSampleQuality),
-        beamQualityFactor(beamQualityFactor),
         subrayRadiusStep(subrayRadiusStep)
     {}
 };
 
 class ImprovedEmittedPowerArgs : public ModelArg {
 public:
-    double const averagePower_w;
-    double const wavelength_m;
-    double const rangeMin;
     double const targetRange;
     double const targetRangeSquared;
-    double const deviceBeamDivergence_rad;
-    double const beamWaistRadius;
-    double const numSubrays;
-    double const beamSampleQuality;
-    double const beamQualityFactor;
-    double const subrayRadiusStep;
+    double const rangeMin;
+    int const subrayRadiusStep;
     ImprovedEmittedPowerArgs(
-        double const averagePower_w,
-        double const wavelength_m,
-        double const rangeMin,
         double const targetRange,
         double const targetRangeSquared,
-        double const deviceBeamDivergence_rad,
-        double const beamWaistRadius,
-        double const numSubrays,
-        double const beamSampleQuality,
-        double const beamQualityFactor,
-        double const subrayRadiusStep
+        double const rangeMin,
+        int const subrayRadiusStep
     ) :
-        averagePower_w(averagePower_w),
-        wavelength_m(wavelength_m),
-        rangeMin(rangeMin),
         targetRange(targetRange),
         targetRangeSquared(targetRangeSquared),
-        deviceBeamDivergence_rad(deviceBeamDivergence_rad),
-        beamWaistRadius(beamWaistRadius),
-        numSubrays(numSubrays),
-        beamSampleQuality(beamSampleQuality),
-        beamQualityFactor(beamQualityFactor),
+        rangeMin(rangeMin),
         subrayRadiusStep(subrayRadiusStep)
     {}
 };
@@ -102,22 +45,13 @@ public:
 class ImprovedTargetAreaArgs : public ModelArg{
 public:
     double const targetRangeSquared;
-    double const deviceBeamDivergence_rad;
-    double const beamSampleQuality;
-    double const subrayRadiusStep;
-    double const numSubrays;
+    int const subrayRadiusStep;
     ImprovedTargetAreaArgs(
         double const targetRangeSquared,
-        double const deviceBeamDivergence_rad,
-        double const beamSampleQuality,
-        double const subrayRadiusStep,
-        double const numSubrays
+        int const subrayRadiusStep
     ) :
         targetRangeSquared(targetRangeSquared),
-        deviceBeamDivergence_rad(deviceBeamDivergence_rad),
-        beamSampleQuality(beamSampleQuality),
-        subrayRadiusStep(subrayRadiusStep),
-        numSubrays(numSubrays)
+        subrayRadiusStep(subrayRadiusStep)
     {}
 };
 
@@ -150,6 +84,11 @@ class ImprovedEnergyModel : public BaseEnergyModel {
      * @brief The values of ImprovedEnergyModel::radii but squared.
      */
     std::vector<double> radiiSquared;
+    /**
+     * @brief The values of ImprovedEnergyModel::radiiSquared but multiplied
+     * by \f$-2\f$.
+     */
+    std::vector<double> negRadiiSquaredx2;
     /**
      * @brief Precomputed squared of beam waist radius:
      *
@@ -197,7 +136,19 @@ class ImprovedEnergyModel : public BaseEnergyModel {
      *
      * Where \f$n_sr\f$ is the number of subrays.
      */
-    double const targetAreaCache;
+    std::vector<double> targetAreaCache;
+    /**
+     * @brief Precompute the expression involving the device's constants
+     * to speedup the subray-wise emitted power computation such that:
+     *
+     * \f[
+     *  \frac{\pi P_{T} w_0^2}{2 n_{sr}}
+     * \f]
+     *
+     * Where \f$P_{T}\f$ is the total power, \f$w_0\f$ is the beam waist
+     *  radius, and \f$n_{sr}\f$ is the number of subrays.
+     */
+    std::vector<double> deviceConstantExpression;
 
 public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //
@@ -207,7 +158,6 @@ public:
      */
     ImprovedEnergyModel(ScanningDevice const &sd);
 
-    // TODO Rethink : Some arguments as beamSampleQuality might be "cached" in the class apart from the look-up tables?
     // ***  METHODS  *** //
     // ***************** //
     /**
@@ -222,42 +172,104 @@ public:
         double const incidenceAngle,
         double const targetRange,
         Material const &mat,
-        double const radius,
         int const subrayRadiusStep
+#if DATA_ANALYTICS >=2
+       ,std::vector<std::vector<double>> &calcIntensityRecords
+#endif
     );
-    // TODO Rethink : Doxygen doc
+    /**
+     * @brief Compute the received power \f$P_r\f$.
+     *
+     * \f[
+     *  P_r = \frac{
+     *      P_e D_r^2 \eta_{\mathrm{sys}} \eta_{\mathrm{atm}} \sigma
+     *  }{
+     *      4 \pi R^4 \varphi
+     *  }
+     * \f]
+     *
+     * Where:
+     * <ol>
+     *  <li>\f$P_e\f$ is the emitted power</li>
+     *  <li>\f$D_r\f$ is the diameter of the receiver aperture</li>
+     *  <li>\f$\eta_{\mathrm{sys}}\f$</li> is the system's efficiency</li>
+     *  <li>\f$\eta_{\mathrm{atm}}\f$</li> is the atmospheric efficiency</li>
+     *  <li>\f$\sigma\f$ is the cross-section\f$</li>
+     *  <li>\f$R\f$ is the range</li>
+     *  <li>\f$\varphi\f$ is the subray's beam divergence</li>
+     * </ol>
+     *
+     * @return The received power \f$P_r\f$
+     * @see EnergyModel::computeReceivedPower
+     * @see ImprovedReceivedPowerArgs
+     */
     double computeReceivedPower(
         ModelArg const & args
 #if DATA_ANALYTICS >=2
        ,std::vector<std::vector<double>> &calcIntensityRecords
 #endif
     ) override;
-    // TODO Rethink : Doxygen doc
+    /**
+     * @brief Compute the emitted power \f$P_e\f$.
+     *
+     * \f[
+     *  P_e = \frac{
+     *      \pi w_0^2
+     *  }{
+     *      2 n_{\mathrm{sr}}
+     *  }
+     *  \biggl[
+     *      \exp\left({
+     *          - \frac{2 r_{\mathrm{inner}}^2}{w^2}
+     *      }\right) -
+     *      \exp\left({
+     *          - \frac{2 r_{\mathrm{outer}}^2}{w^2}
+     *      }\right)
+     *  \biggr)]
+     *  P_T
+     * \f]
+     *
+     * Where:
+     * <ol>
+     * <li>\f$w_0\f$ is the beam waist radius</li>
+     * <li>\f$n_{\mathrm{sr}}\f$ is the number of subrays at current ring</li>
+     * <li>\f$r_{\mathrm{inner}}\f$ is the radius of the inner ring</li>
+     * <li>\f$r_{\mathrm{outer}}\f$ is the radius of the outer ring</li>
+     * <li>\f$w\f$ is the beam radius for the current range</li>
+     * <li>\f$P_T\f$ is the total power reversed following Carlsson et al 2001
+     * "Signature simulation and signal analysis for 3-D laser radar" equation
+     * 2.3</li>
+     * </ol>
+     *
+     * @return The emitted power \f$P_e\f$.
+     * @see EnergyModel::computeEmittedPower
+     */
     double computeEmittedPower(ModelArg const &args) override;
-    // TODO Rethink : Doxygen doc
+    /**
+     * @brief Compute the target area \f$A\f$.
+     *
+     * \f[
+     *  A = \pi \frac{
+     *      r_{\mathrm{outer}^2 - r_{\mathrm{inner}}^2}
+     *  }{
+     *      n_{\mathrm{sr}}
+     *  }
+     * \f]
+     *
+     * Where:
+     * <ol>
+     * <li>\f$n_{\mathrm{sr}}\f$ is the number of subrays at current ring</li>
+     * <li>\f$r_{\mathrm{inner}}\f$ is the radius of the inner ring</li>
+     * <li>\f$r_{\mathrm{outer}}\f$ is the radius of the outer ring</li>
+     * </ol>
+     *
+     * @return The target area \f$A\f$.
+     * @see EnergyModel::computeTargetArea
+     */
     double computeTargetArea(
         ModelArg const &args
 #if DATA_ANALYTICS >=2
        ,std::vector<std::vector<double>> &calcIntensityRecords
 #endif
     ) override;
-
-    // ***  EXTRACT-ARGUMENTS METHODS  *** //
-    // *********************************** //
-    /**
-     * @brief Extract the received power arguments from the given scanning
-     *  device.
-     * @param sd The scanning device to extract arguments from.
-     * @return The extracted received power arguments.
-     * @see ScanningDevice
-     * @see BaseReceivedPowerArgs
-     */
-    static ImprovedReceivedPowerArgs extractArgumentsFromScanningDevice(
-        ScanningDevice const &sd,
-        double const incidenceAngle,
-        double const targetRange,
-        Material const &mat,
-        double const radius,
-        int const subrayRadiusStep
-    );
 };

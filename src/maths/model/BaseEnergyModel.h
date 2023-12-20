@@ -118,8 +118,10 @@ public:
         double const incidenceAngle,
         double const targetRange,
         Material const &mat,
-        double const radius,
         int const subrayRadiusStep
+#if DATA_ANALYTICS >=2
+       ,std::vector<std::vector<double>> &calcIntensityRecords
+#endif
     );
     /**
      * @brief Compute the received power \f$P_r\f$.
@@ -272,24 +274,5 @@ public:
      * @see EnergyModel::computeCrossSection
      */
     double computeCrossSection(ModelArg const & args) override;
-
-    // ***  EXTRACT-ARGUMENTS METHODS  *** //
-    // *********************************** //
-    /**
-     * @brief Extract the received power arguments from the given scanning
-     *  device.
-     * @param sd The scanning device to extract arguments from.
-     * @return The extracted received power arguments.
-     * @see ScanningDevice
-     * @see BaseReceivedPowerArgs
-     */
-    static BaseReceivedPowerArgs extractArgumentsFromScanningDevice(
-        ScanningDevice const &sd,
-        double const incidenceAngle,
-        double const targetRange,
-        Material const &mat,
-        double const radius,
-        int const subrayRadiusStep
-    );
 
 };

@@ -120,7 +120,6 @@ public:
     void computeSubrays(
         std::function<void(
             Rotation const &subrayRotation,
-            double const divergenceAngle,
             int const subrayRadiusStep,
             NoiseSource<double> &intersectionHandlingNoiseSource,
             std::map<double, double> &reflections,
@@ -159,7 +158,6 @@ public:
         double const incidenceAngle,
         double const targetRange,
         Material const &mat,
-        double const radius,
         int const subrayRadiusStep,
         size_t const idx
 #if DATA_ANALYTICS >= 2
@@ -171,8 +169,8 @@ public:
      */
     double calcIntensity(
         double const targetRange,
-        double const radius,
         double const sigma,
+        int const subrayRadiusStep,
         size_t const idx
     ) const override;
 

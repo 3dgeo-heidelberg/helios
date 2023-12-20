@@ -38,6 +38,9 @@ void printMainHelp(){
     <<  "writing\n"
     <<  "\t\t\tBy default waveform is NOT written to output file\n\n"
 
+    << "\t\t--writePulse : Use this flag to enable pulse-wise data writing\n"
+    << "\t\t\tBy default pulse-wise ata is NOT written to output file\n\n"
+
     <<  "\t\t--calcEchowidth : Use this flag to enable full waveform "
     <<  "fitting\n"
     <<  "\t\t\tBy default the full waveform is NOT fitted\n\n"

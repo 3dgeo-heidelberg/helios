@@ -42,26 +42,22 @@ double EnergyMaths::calcSubrayWiseEmittedPower(
     double const numSubrays
 ){
     return EnergyMaths::calcSubrayWiseEmittedPowerFast(
-        reversedI0,
-        w0*w0,
+        M_PI * reversedI0 * (w0*w0) / (2*numSubrays),
         w*w,
-        radius*radius,
-        prevRadius*prevRadius,
-        numSubrays
+        -2.0*radius*radius,
+        -2.0*prevRadius*prevRadius
     );
 }
 
 double EnergyMaths::calcSubrayWiseEmittedPowerFast(
-    double const reversedI0,
-    double const w0Squared,
+    double const deviceConstantExpression,
     double const wSquared,
-    double const radiusSquared,
-    double const prevRadiusSquared,
-    double const numSubrays
+    double const negRadiusSquaredx2,
+    double const negPrevRadiusSquaredx2
 ){
-    return M_PI * reversedI0 * w0Squared / (2*numSubrays) * (
-        std::exp(-2*prevRadiusSquared/wSquared)  -  // inner radius
-        std::exp(-2*radiusSquared/wSquared)  // outer radius
+    return deviceConstantExpression * (
+           std::exp(negPrevRadiusSquaredx2/wSquared)  -  // inner radius
+           std::exp(negRadiusSquaredx2/wSquared)  // outer radius
     );
 }
 

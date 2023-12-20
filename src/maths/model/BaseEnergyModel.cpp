@@ -18,18 +18,23 @@ double BaseEnergyModel::computeIntensity(
     double const incidenceAngle,
     double const targetRange,
     Material const &mat,
-    double const radius,
     int const subrayRadiusStep
+#if DATA_ANALYTICS >=2
+   ,std::vector<std::vector<double>> &calcIntensityRecords
+#endif
 ){
-    BaseReceivedPowerArgs args = BaseEnergyModel::extractArgumentsFromScanningDevice(
-        sd,
-        incidenceAngle,
-        targetRange,
-        mat,
-        radius,
-        subrayRadiusStep
+    BaseReceivedPowerArgs args = BaseReceivedPowerArgs(
+        incidenceAngle, targetRange, mat,
+        targetRange * std::sin(
+            sd.cached_subrayDivergenceAngle_rad[subrayRadiusStep]
+        )
     );
-    return computeReceivedPower(args);
+    return computeReceivedPower(
+        args
+#if DATA_ANALYTICS >=2
+       ,calcIntensityRecords
+#endif
+    );
 }
 
 double BaseEnergyModel::computeReceivedPower(
@@ -90,12 +95,12 @@ double BaseEnergyModel::computeReceivedPower(
     calcIntensityRecord[9] = receivedPower;
     calcIntensityRecord[10] = 0; // By default, assume the point isn't captured
     calcIntensityRecord[11] = EnergyMaths::calcEmittedPower(
-        args.averagePower_w,
-        args.wavelength_m,
+        sd.averagePower_w,
+        sd.wavelength_m,
         args.targetRange,
-        args.rangeMin,
+        sd.detector->cfg_device_rangeMin_m,
         args.subrayRadius,
-        args.beamWaistRadius
+        sd.beamWaistRadius
     );
     calcIntensityRecord[12] = -1.0;
     calcIntensityRecords.push_back(calcIntensityRecord);
@@ -140,23 +145,5 @@ double BaseEnergyModel::computeCrossSection(
     return EnergyMaths::calcCrossSection(
         args.bdrf,
         args.targetArea
-    );
-}
-
-// ***  EXTRACT-ARGUMENTS METHODS  *** //
-// *********************************** //
-BaseReceivedPowerArgs BaseEnergyModel::extractArgumentsFromScanningDevice(
-    ScanningDevice const &sd,
-    double const incidenceAngle,
-    double const targetRange,
-    Material const &mat,
-    double const radius,
-    int const subrayRadiusStep
-){
-    return BaseReceivedPowerArgs(
-        incidenceAngle,
-        targetRange,
-        mat,
-        radius
     );
 }

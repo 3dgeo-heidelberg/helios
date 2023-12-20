@@ -189,6 +189,8 @@ bool EnergyModelsTest::testEllipticalFootprintEnergy(){
     scanner->setBeamWaistRadius(0.0011289390629985112);
     scanner->setAtmosphericExtinction(9.07603791e-6);
     scanner->prepareSimulation(false);
+    // Get reference to scanning device
+    ScanningDevice &scanDev = scanner->getScanningDevice(0);
 
     Material material;
     material.isGround = false;
@@ -234,11 +236,11 @@ bool EnergyModelsTest::testEllipticalFootprintEnergy(){
     for(size_t i = 0 ; i < raytracingRanges.size(); ++i){
         double const raytracingRange = raytracingRanges[i];
         double const incidenceAngle = incidenceAngles[i];
-        double const divergenceAngle = divergenceAngles[i];
-        double const radius = std::sin(divergenceAngle) * raytracingRange;
+        for(size_t j = 0 ; j < scanDev.cached_subrayDivergenceAngle_rad.size() ; ++j){
+            scanDev.cached_subrayDivergenceAngle_rad[j] = divergenceAngles[i];
+        }
         double const intensity = scanner->calcIntensity(
-            incidenceAngle, raytracingRange, material,
-            radius, 0, 0
+            incidenceAngle, raytracingRange, material, 0, 0
         );
         if(isnan(intensity)) return false;
         double const expectedIntensity = expectedIntensities[i];

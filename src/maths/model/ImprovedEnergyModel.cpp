@@ -9,6 +9,7 @@ ImprovedEnergyModel::ImprovedEnergyModel(ScanningDevice const &sd) :
     BaseEnergyModel(sd),
     radii(sd.FWF_settings.beamSampleQuality+1),
     radiiSquared(sd.FWF_settings.beamSampleQuality+1),
+    negRadiiSquaredx2(sd.FWF_settings.beamSampleQuality+1),
     w0Squared(
         (sd.beamQuality*sd.wavelength_m)*(sd.beamQuality*sd.wavelength_m) / (
             (M_PI*sd.beamDivergence_rad)*(M_PI*sd.beamDivergence_rad)
@@ -18,17 +19,25 @@ ImprovedEnergyModel::ImprovedEnergyModel(ScanningDevice const &sd) :
     omegaCacheSquared(
         (sd.wavelength_m/(M_PI*w0Squared))*(sd.wavelength_m/(M_PI*w0Squared))
     ),
-    targetAreaCache(M_PI/sd.numRays)
+    targetAreaCache(sd.FWF_settings.beamSampleQuality),
+    deviceConstantExpression(sd.FWF_settings.beamSampleQuality)
 {
-// Cached angles
+    // Cached radii
     int const BSQ = sd.FWF_settings.beamSampleQuality;
     radii[0] = 0.0;
     radiiSquared[0] = 0.0;
+    negRadiiSquaredx2[0] = 0.0;
     for(int i = 0 ; i < BSQ ; ++i){
+        int const subraysAtRing = (i==0) ? 1 : (int) (i * PI_2);
         radii[i+1] = sd.beamDivergence_rad*(
-            sd.cached_subrayRadiusStep[i]+0.5
+            i+0.5
         ) / (2 * (BSQ-0.5));
         radiiSquared[i+1] = radii[i+1] * radii[i+1];
+        negRadiiSquaredx2[i+1] = -2.0*radiiSquared[i+1];
+        targetAreaCache[i] = M_PI/((double) subraysAtRing);
+        deviceConstantExpression[i] = M_PI * totPower * w0Squared / (
+            2.0 * ((double)subraysAtRing)
+        );
     }
 }
 
@@ -39,18 +48,20 @@ double ImprovedEnergyModel::computeIntensity(
     double const incidenceAngle,
     double const targetRange,
     Material const &mat,
-    double const radius,
     int const subrayRadiusStep
+#if DATA_ANALYTICS >=2
+   ,std::vector<std::vector<double>> &calcIntensityRecords
+#endif
 ){
-    ImprovedReceivedPowerArgs args = ImprovedEnergyModel::extractArgumentsFromScanningDevice(
-        sd,
-        incidenceAngle,
-        targetRange,
-        mat,
-        radius,
-        subrayRadiusStep
+    ImprovedReceivedPowerArgs args = ImprovedReceivedPowerArgs(
+        targetRange, incidenceAngle, mat, subrayRadiusStep
     );
-    return computeReceivedPower(args);
+    return computeReceivedPower(
+        args
+#if DATA_ANALYTICS >=2
+       ,calcIntensityRecords
+#endif
+    );
 }
 
 double ImprovedEnergyModel::computeReceivedPower(
@@ -66,25 +77,15 @@ double ImprovedEnergyModel::computeReceivedPower(
     double const rangeSquared = args.targetRange*args.targetRange;
     // Emitted power
     double const Pe = computeEmittedPower(ImprovedEmittedPowerArgs{
-        args.averagePower_w,
-        args.wavelength_m,
-        args.rangeMin,
         args.targetRange,
         rangeSquared,
-        args.deviceBeamDivergence_rad,
-        args.beamWaistRadius,
-        args.numSubrays,
-        args.beamSampleQuality,
-        args.beamQualityFactor,
+        sd.detector->cfg_device_rangeMin_m,
         args.subrayRadiusStep
     });
     // Target area
     double const targetArea = computeTargetArea(ImprovedTargetAreaArgs{
             rangeSquared,
-            args.deviceBeamDivergence_rad,
-            args.beamSampleQuality,
-            args.subrayRadiusStep,
-            args.numSubrays
+            args.subrayRadiusStep
         }
 #if DATA_ANALYTICS >= 2
        ,calcIntensityRecords
@@ -102,13 +103,13 @@ double ImprovedEnergyModel::computeReceivedPower(
     });
     // Received power
     double const atmosphericFactor = EnergyMaths::calcAtmosphericFactor(
-        args.targetRange, args.atmosphericExtinction
+        args.targetRange, sd.atmosphericExtinction
     );
     double const receivedPower = EnergyMaths::calcReceivedPowerImprovedFast(
         Pe,
-        args.Dr2,
+        sd.cached_Dr2,
         16*targetArea*rangeSquared,
-        args.efficiency,
+        sd.efficiency,
         atmosphericFactor,
         sigma
     );
@@ -133,18 +134,14 @@ double ImprovedEnergyModel::computeEmittedPower(
     ImprovedEmittedPowerArgs const & args = static_cast<
         ImprovedEmittedPowerArgs const &
     >(_args);
-    double prevRadiusSquared = radiiSquared[int(args.subrayRadiusStep)];
-    double const radiusSquared = radiiSquared[int(args.subrayRadiusStep)+1];
     double const Omega0 = 1 - args.targetRange/args.rangeMin;
     double const OmegaSquared = args.targetRangeSquared * omegaCacheSquared;
     double const wSquared = w0Squared * (Omega0*Omega0 + OmegaSquared);
     return EnergyMaths::calcSubrayWiseEmittedPowerFast(
-        totPower,
-        w0Squared,
+        deviceConstantExpression[args.subrayRadiusStep],
         wSquared,
-        radiusSquared,
-        prevRadiusSquared,
-        args.numSubrays
+        negRadiiSquaredx2[args.subrayRadiusStep+1],
+        negRadiiSquaredx2[args.subrayRadiusStep]
     );
 }
 
@@ -158,8 +155,8 @@ double ImprovedEnergyModel::computeTargetArea(
     ImprovedTargetAreaArgs const & args = static_cast<
         ImprovedTargetAreaArgs const &
     >(_args);
-    double const prevRadiusSquared = radiiSquared[int(args.subrayRadiusStep)];
-    double const radiusSquared = radiiSquared[int(args.subrayRadiusStep)+1];
+    double const prevRadiusSquared = radiiSquared[args.subrayRadiusStep];
+    double const radiusSquared = radiiSquared[args.subrayRadiusStep+1];
     double const radius_m_squared = radiusSquared * args.targetRangeSquared;
     double const prevRadius_m_squared =
         prevRadiusSquared * args.targetRangeSquared;
@@ -170,37 +167,7 @@ double ImprovedEnergyModel::computeTargetArea(
     calcIntensityRecord[6] = std::sqrt(radius_m_squared);
     calcIntensityRecords.push_back(calcIntensityRecord);
 #endif
-    return (radius_m_squared - prevRadius_m_squared) * targetAreaCache;
-}
-
-// ***  EXTRACT-ARGUMENTS METHODS  *** //
-// *********************************** //
-ImprovedReceivedPowerArgs ImprovedEnergyModel::extractArgumentsFromScanningDevice(
-    ScanningDevice const &sd,
-    double const incidenceAngle,
-    double const targetRange,
-    Material const &mat,
-    double const radius,
-    int const subrayRadiusStep
-){
-    return ImprovedReceivedPowerArgs(
-        sd.averagePower_w,
-        sd.wavelength_m,
-        sd.detector->cfg_device_rangeMin_m,
-        targetRange,
-        sd.atmosphericExtinction,
-        incidenceAngle,
-        sd.cached_Dr2,
-        sd.cached_Bt2,
-        sd.efficiency,
-        (double) ( (subrayRadiusStep==0) ? 1 :
-                   (int) (subrayRadiusStep*PI_2) // 2 pi x depth = samples/ring
-        ),
-        mat,
-        sd.beamDivergence_rad,
-        sd.beamWaistRadius,
-        (double) sd.FWF_settings.beamSampleQuality,
-        (double) sd.beamQuality,
-        (double) subrayRadiusStep
-    );
+    return (radius_m_squared - prevRadius_m_squared) * targetAreaCache[
+        args.subrayRadiusStep
+    ];
 }

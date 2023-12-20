@@ -94,6 +94,9 @@ void ScanningDevice::prepareSimulation(bool const legacyEnergyModel){
     // Outer loop over radius steps from beam center to outer edge
     for (int radiusStep = 0; radiusStep < beamSampleQuality; radiusStep++){
         double const subrayDivergenceAngle_rad = radiusStep * radiusStep_rad;
+        cached_subrayDivergenceAngle_rad.push_back(
+            subrayDivergenceAngle_rad
+        );
 
         // Rotate subbeam into divergence step (towards outer rim of the beam cone):
         Rotation r1 = Rotation(Directions::right, subrayDivergenceAngle_rad);
@@ -117,9 +120,6 @@ void ScanningDevice::prepareSimulation(bool const legacyEnergyModel){
             r2 = r2.applyTo(r1);
             // Cache subray generation data
             cached_subrayRotation.push_back(r2);
-            cached_subrayDivergenceAngle_rad.push_back(
-                subrayDivergenceAngle_rad
-            );
             cached_subrayRadiusStep.push_back(radiusStep);
         }
     }
@@ -268,7 +268,6 @@ Rotation ScanningDevice::calcExactAbsoluteBeamAttitude(
 void ScanningDevice::computeSubrays(
     std::function<void(
         Rotation const &subrayRotation,
-        double const divergenceAngle,
         int const sburayRadiusStep,
         NoiseSource<double> &intersectionHandlingNoiseSource,
         std::map<double, double> &reflections,
@@ -297,7 +296,6 @@ void ScanningDevice::computeSubrays(
 #endif
         handleSubray(
             cached_subrayRotation[i],
-            cached_subrayDivergenceAngle_rad[i],
             cached_subrayRadiusStep[i],
             intersectionHandlingNoiseSource,
             reflections,
@@ -371,35 +369,34 @@ double ScanningDevice::calcIntensity(
     double const incidenceAngle,
     double const targetRange,
     Material const &mat,
-    double const radius,
     int const subrayRadiusStep
 #if DATA_ANALYTICS >=2
    ,std::vector<std::vector<double>> &calcIntensityRecords
 #endif
 ) const {
-    // TODO Rethink: Dynamically select the model's arguments
     return energyModel->computeIntensity(
         incidenceAngle,
         targetRange,
         mat,
-        radius,
         subrayRadiusStep
 #if DATA_ANALYTICS >= 2
-        ,calcIntensityRecords
+       ,calcIntensityRecords
 #endif
     );
 }
 double ScanningDevice::calcIntensity(
     double const targetRange,
-    double const radius,
-    double const sigma
+    double const sigma,
+    int const subrayRadiusStep
 ) const {
     return EnergyMaths::calcReceivedPower(
         averagePower_w,
         wavelength_m,
         targetRange,
         detector->cfg_device_rangeMin_m,
-        radius,
+        targetRange*std::sin(
+            cached_subrayDivergenceAngle_rad[subrayRadiusStep]
+        ),
         beamWaistRadius,
         cached_Dr2,
         cached_Bt2,

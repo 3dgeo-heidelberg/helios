@@ -114,16 +114,15 @@ public:
 
     /**
      * @brief The EnergyMaths::calcSubrayWiseEmittedPower assuming some terms
-     *  are given already squared so there is no need for those operations.
+     *  are given already squared, and the constants defining a device have
+     *  already been precomputed so there is no need for those operations.
      * @see EnergyMaths::calcSubrayWiseEmittedPower
      */
     static double calcSubrayWiseEmittedPowerFast(
-        double const reversedI0,
-        double const w0Squared,
+        double const deviceConstantExpression,
         double const wSquared,
         double const radiusSquared,
-        double const prevRadiusSquared,
-        double const numSubrays
+        double const prevRadiusSquared
     );
 
     /**

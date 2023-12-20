@@ -51,8 +51,10 @@ public:
         double const incidenceAngle,
         double const targetRange,
         Material const &mat,
-        double const radius,
         int const subrayRadiusStep
+#if DATA_ANALYTICS >=2
+       ,std::vector<std::vector<double>> &calcIntensityRecords
+#endif
     ) = 0;
     /**
      * @brief Compute the received power \f$P_r\f$.

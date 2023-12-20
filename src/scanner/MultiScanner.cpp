@@ -149,7 +149,6 @@ Rotation MultiScanner::calcAbsoluteBeamAttitude(size_t const idx){
 void MultiScanner::computeSubrays(
     std::function<void(
         Rotation const &subrayRotation,
-        double const divergenceAngle,
         int const subrayRadiusStep,
         NoiseSource<double> &intersectionHandlingNoiseSource,
         std::map<double, double> &reflections,
@@ -205,7 +204,6 @@ double MultiScanner::calcIntensity(
     double const incidenceAngle,
     double const targetRange,
     Material const &mat,
-    double const radius,
     int const subrayRadiusStep,
     size_t const idx
 #if DATA_ANALYTICS >= 2
@@ -216,7 +214,6 @@ double MultiScanner::calcIntensity(
         incidenceAngle,
         targetRange,
         mat,
-        radius,
         subrayRadiusStep
 #if DATA_ANALYTICS >= 2
        ,calcIntensityRecords
@@ -226,9 +223,9 @@ double MultiScanner::calcIntensity(
 
 double MultiScanner::calcIntensity(
     double const targetRange,
-    double const radius,
     double const sigma,
+    int const subrayRadiusStep,
     size_t const idx
 ) const{
-    return scanDevs[idx].calcIntensity(targetRange, radius, sigma);
+    return scanDevs[idx].calcIntensity(targetRange, sigma, subrayRadiusStep);
 }

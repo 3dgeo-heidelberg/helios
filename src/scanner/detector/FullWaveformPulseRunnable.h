@@ -99,12 +99,10 @@ private:
      *  to obtain the subray. It is typically a composition of two rotations,
      *  one to model the radius (i.e., how far from the center) and other
      *  to model the circumference (i.e., at which angle in the circle).
-     * @param[in] divergenceAngle Subray divergence angle in radians
      * @see FullWaveformPulseRunnable::computeSubrays
      */
     void handleSubray(
         Rotation const &subrayRotation,
-        double const divergenceAngle,
         int const subrayRadiusStep,
         NoiseSource<double> &intersectionHandlingNoiseSource,
         std::map<double, double> &reflections,
