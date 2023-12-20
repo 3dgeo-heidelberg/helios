@@ -123,9 +123,10 @@ double EnergyMaths::calcReceivedPowerImproved(
     double const etaAtm,
     double const sigma
 ){
-    double const beamDivFromArea = 2 * std::sqrt(targetArea/M_PI) / R;
+    double const Rsquared = R*R;
+    double const beamDivFromAreaSquared = 4 * targetArea/M_PI/ Rsquared;
     return (Pe * Dr2) /
-        (PI_4 * (R*R*R*R) * beamDivFromArea*beamDivFromArea) *
+        (PI_4 * (Rsquared*Rsquared) * beamDivFromAreaSquared) *
         etaSys * etaAtm * sigma;
 }
 

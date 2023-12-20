@@ -183,12 +183,12 @@ bool EnergyModelsTest::testEllipticalFootprintEnergy(){
         0.01 // rangeMin_m
     );
     // Configure scanner to match expected values
-    scanner->prepareSimulation();
     scanner->setDetector(detector);
     scanner->setNumRays(37);
     scanner->setWavelength(1064e-06);
     scanner->setBeamWaistRadius(0.0011289390629985112);
     scanner->setAtmosphericExtinction(9.07603791e-6);
+    scanner->prepareSimulation(false);
 
     Material material;
     material.isGround = false;
@@ -240,8 +240,9 @@ bool EnergyModelsTest::testEllipticalFootprintEnergy(){
             incidenceAngle, raytracingRange, material,
             radius, 0, 0
         );
+        if(isnan(intensity)) return false;
         double const expectedIntensity = expectedIntensities[i];
-        double const absDiff = std::fabs(expectedIntensity-intensity);
+        double const absDiff = std::fabs(expectedIntensity-intensity)*1e09;
         if(absDiff > eps) return false;
     }
 #endif

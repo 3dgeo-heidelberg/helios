@@ -3,6 +3,27 @@
 #include <scanner/ScanningDevice.h>
 #include <scanner/detector/AbstractDetector.h>
 
+// ***  CONSTRUCTION / DESTRUCTION  *** //
+// ************************************ //
+ImprovedEnergyModel::ImprovedEnergyModel(ScanningDevice const &sd) :
+    BaseEnergyModel(sd),
+    radii(sd.FWF_settings.beamSampleQuality+1),
+    w0(sd.beamQuality * sd.wavelength_m / (M_PI*sd.beamDivergence_rad)),
+    omegaCache(sd.wavelength_m/(M_PI*w0*w0)),
+    totPower(2*sd.averagePower_w / (M_PI*w0*w0))
+{
+    // Cached angles
+    int const BSQ = sd.FWF_settings.beamSampleQuality;
+    radii[0] = 0.0;
+    for(int i = 0 ; i < BSQ ; ++i){
+        radii[i+1] = sd.beamDivergence_rad*(
+            sd.cached_subrayRadiusStep[i]+0.5
+        ) / (2 * (BSQ-0.5));
+    }
+    // TODO Rethink : Implement
+}
+
+
 // ***  METHODS  *** //
 // ***************** //
 double ImprovedEnergyModel::computeIntensity(
@@ -104,28 +125,13 @@ double ImprovedEnergyModel::computeEmittedPower(
     // TODO Rethink : Some expressions can be simplified and are unnecessary
     // TODO Rethink : e.g., w is not needed as w^2 is used later on
     // TODO Rethink : Angle and radius stuff
-    double const devBeamDiv_rad = args.deviceBeamDivergence_rad;
-    double const angle = devBeamDiv_rad/2.0 * (
-        args.subrayRadiusStep / (args.beamSampleQuality-0.5)
-    );
-    double const prevAngle = (args.subrayRadiusStep == 0.0) ? 0.0 :
-        devBeamDiv_rad / 2.0 * (
-            (args.subrayRadiusStep-1.0) / (args.beamSampleQuality-0.5)
-    );
-    double const radius = angle + devBeamDiv_rad/2.0 * (
-        0.5 / (args.beamSampleQuality-0.5)
-    );
-    double const prevRadius = (args.subrayRadiusStep == 0.0) ? 0.0 :
-        prevAngle + devBeamDiv_rad/2.0 * (
-        0.5 / (args.beamSampleQuality-0.5)
-    );
-    double const w0 = args.beamQualityFactor * args.wavelength_m / (
-        M_PI*args.deviceBeamDivergence_rad);
+    double prevRadius = radii[int(args.subrayRadiusStep)];
+    double const radius = radii[int(args.subrayRadiusStep)+1];
     double const Omega0 = 1 - args.targetRange/args.rangeMin;
-    double const Omega = args.wavelength_m*args.targetRange / (M_PI*w0*w0);
+    double const Omega = args.targetRange * omegaCache;
     double const w = w0 * std::sqrt(Omega0*Omega0 + Omega*Omega);
     return EnergyMaths::calcSubrayWiseEmittedPower(
-        2*args.averagePower_w / (M_PI*w0*w0),  // TODO Rethink : New tot_power
+        totPower,
         w0,
         w,
         radius,
@@ -147,24 +153,10 @@ double ImprovedEnergyModel::computeTargetArea(
     // TODO Rethink : Review
     // TODO Rethink : Radius and prevRadius are computed twice (see emitted power)
     // TODO Rethink : Angle and radius might be precomputed
-    double const devBeamDiv_rad = args.deviceBeamDivergence_rad;
-    double const angle = devBeamDiv_rad/2.0 * (
-        args.subrayRadiusStep / (args.beamSampleQuality-0.5)
-    );
-    double const prevAngle = (args.subrayRadiusStep == 0.0) ? 0.0 :
-        devBeamDiv_rad / 2.0 * (
-        (args.subrayRadiusStep-1.0) / (args.beamSampleQuality-0.5)
-    );
-    double const radius = angle + devBeamDiv_rad/2.0 * (
-        0.5 / (args.beamSampleQuality-0.5)
-    );
-    double const prevRadius = (args.subrayRadiusStep == 0.0) ? 0.0 :
-        prevAngle + devBeamDiv_rad/2.0 * (
-        0.5 / (args.beamSampleQuality-0.5)
-    );
+    double const prevRadius = radii[int(args.subrayRadiusStep)];
+    double const radius = radii[int(args.subrayRadiusStep)+1];
     double const radius_m = radius * args.targetRange;
-    double const prevRadius_m = (args.subrayRadiusStep == 0) ? 0.0 :
-        prevRadius * args.targetRange;
+    double const prevRadius_m = prevRadius * args.targetRange;
 #if DATA_ANALYTICS >= 2
     std::vector<double> calcIntensityRecord(
         13, std::numeric_limits<double>::quiet_NaN()

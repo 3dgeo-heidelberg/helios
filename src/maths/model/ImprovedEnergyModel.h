@@ -1,5 +1,6 @@
 #pragma once
 #include <maths/model/BaseEnergyModel.h>
+#include <vector>
 
 // ***  ARGUMENT CLASSES  *** //
 // ************************** //
@@ -128,6 +129,57 @@ public:
 class ImprovedEnergyModel : public BaseEnergyModel {
     // ***  ATTRIBUTES  *** //
     // ******************** //
+    /**
+     * @brief Precomptued radii for each subradius step (i.e., ring).
+     *
+     * radii[0] is 0, and for any \f$i>0\f$ radii[i] is:
+     *
+     * \f[
+     *  \frac{\varphi_* (s+0.5)}{2 (\mathrm{BSQ}-0.5)}
+     * \f]
+     *
+     * Where \f$\varphi_*\f$ is the device's beam divergence,
+     * \f$s\f$ is the subray radius step, and \f$\mathrm{BSQ}\f$ is the beam
+     * sample quality.
+     */
+    std::vector<double> radii;
+    /**
+     * @brief Precomputed beam waist radius:
+     *
+     * \f[
+     *  w_0 = \frac{\mathrm{BQ} \lambda}{\pi \varphi_*}
+     * \f]
+     *
+     * Where \f$\varphi_*\f$ is the device's beam divergence,
+     * \f$\lambda\f$ is the wavelength (in meters), and \f$\mathrm{BQ}\f$
+     * the beam quality factor.
+     */
+    double const w0;
+    /**
+     * @brief Precompute part of the \f$\Omega\f$ term, more concretely:
+     *
+     * \f[
+     *  \frac{\lambda}{\pi w_0^2}
+     * \f]
+     *
+     * Where \f$w_0\f$ is the beam waist radius, and \f$\lambda\f$ is the
+     *  wavelength (in meters).
+     */
+    double const omegaCache;
+    /**
+     * @brief Precompute the total power from the average power by undoing
+     *  Equation 2.3 in Carlsson et al. 2021 (
+     *      Signature simulation and signal analysis for 3-D laser radar
+     *  ) such that:
+     *
+     *  \f[
+     *      \frac{2 P_{\mu}}{\pi w_0^2}
+     *  \f]
+     *
+     * Where \f$P_{\mu}\f$ is the average power, and \f$w_0\f$ is the beam
+     *  waist radius.
+     */
+    double const totPower;
 
 public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //
@@ -135,7 +187,7 @@ public:
     /**
      * @see EnergyModel::EnergyModel
      */
-    ImprovedEnergyModel(ScanningDevice const &sd) : BaseEnergyModel(sd) {}
+    ImprovedEnergyModel(ScanningDevice const &sd);
 
     // TODO Rethink : Some arguments as beamSampleQuality might be "cached" in the class apart from the look-up tables?
     // ***  METHODS  *** //
