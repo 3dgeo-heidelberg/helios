@@ -53,6 +53,7 @@ class SimulationBuilder:
         fullwaveNoise -- Compute fullwave noise enabling flag
         platformNoiseDisabled -- Platform noise disabling flag
         exportToFile -- Export to file enabling flag
+        legacyEnergyModel -- Legacy energy model enabling flag
         callback -- Callback function to be used when callbackFrequency is
             greater than 0. It can be None, then no callbacks will occur
         rotateFilters -- List of rotate filters to apply
@@ -94,6 +95,7 @@ class SimulationBuilder:
         self.setCalcEchowidth(False)
         self.setFullwaveNoise(False)
         self.setPlatformNoiseDisabled(True)
+        self.setLegacyEnergyModel(False)
         self.setExportToFile(True)
         self.setCallback(None)
         self.rotateFilters = []
@@ -118,6 +120,7 @@ class SimulationBuilder:
         )
         build.sim.callbackFrequency = self.callbackFrequency
         build.sim.finalOutput = self.finalOutput
+        build.sim.legacyEnergyModel = self.legacyEnergyModel
         build.sim.exportToFile = self.exportToFile
         build.sim.loadSurvey(
             self.legNoiseDisabled,
@@ -162,6 +165,9 @@ class SimulationBuilder:
     # ---  GETTERS and SETTERS  --- #
     # ----------------------------- #
     def setSurveyPath(self, surveyPath):
+        # TODO Remove ---
+        print(f'surveyPath: "{surveyPath}"')
+        # --- TODO Remove
         self.validatePath(surveyPath)
         self.surveyPath = surveyPath
 
@@ -253,6 +259,10 @@ class SimulationBuilder:
     def setPlatformNoiseDisabled(self, platformNoiseDisabled):
         self.validateBoolean(platformNoiseDisabled)
         self.platformNoiseDisabled = platformNoiseDisabled
+
+    def setLegacyEnergyModel(self, legacyEnergyModel):
+        self.validateBoolean(legacyEnergyModel)
+        self.legacyEnergyModel = legacyEnergyModel
 
     def setExportToFile(self, exportToFile):
         self.validateBoolean(exportToFile)

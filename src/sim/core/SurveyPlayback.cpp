@@ -33,7 +33,7 @@ SurveyPlayback::SurveyPlayback(
     int const chunkSize,
     std::string fixedGpsTimeStart,
     bool const legacyEnergyModel,
-    bool exportToFile
+    bool const exportToFile
 ):
     Simulation(
         parallelizationStrategy,

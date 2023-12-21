@@ -183,6 +183,11 @@ BOOST_PYTHON_MODULE(_pyhelios){
             &PyHeliosSimulation::finalOutput
         )
         .add_property(
+            "legacyEnergyModel",
+            &PyHeliosSimulation::legacyEnergyModel,
+            &PyHeliosSimulation::legacyEnergyModel
+        )
+        .add_property(
             "exportToFile",
             &PyHeliosSimulation::exportToFile,
             &PyHeliosSimulation::exportToFile
