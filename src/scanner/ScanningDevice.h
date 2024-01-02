@@ -180,6 +180,15 @@ protected:
      * @see BaseEnergyModel
      */
     std::shared_ptr<EnergyModel> energyModel = nullptr;
+    /**
+     * @brief The minimum energy threshold (in Jules) to filter received energy
+     *  values during fullwave analysis in
+     *  FullWaveformPulseRunnable::handleFullWaveformBin and
+     *  FullWaveformPulseRunnable::detectPeak methods.
+     * @see FullWaveformPulseRunnable::handleFullWaveformBin
+     * @see FullWaveformPulseRunnable::detectPeak
+     */
+    double receivedEnergyMin_J = 0.0001;
 
     // ***  STATE ATTRIBUTES  *** //
     // ************************** //
@@ -548,9 +557,25 @@ public:
     }
     /**
      * @brief Get the energy model of the scanning device.
-     * @return Return the energy model of the scanning device.
+     * @return The energy model of the scanning device.
      */
     inline std::shared_ptr<EnergyModel> getEnergyModel() const
     {return energyModel;}
 
+    /**
+     * @brief Get the minimum received energy threshold of the scanning device.
+     * @return The minimum received energy threshold of the scanning device.
+     * @see ScanningDevice::receivedEnergyMin_J
+     */
+    inline double getReceivedEnergyMin() const {return receivedEnergyMin_J;}
+
+    /**
+     * @brief Set the minimum received energy threshold for the scanning
+     *  device.
+     * @param receivedEnergyMin_J The new minimum received energy threshold
+     *  for the scanning device.
+     */
+    inline void setReceivedEnergyMin(double const receivedEnergyMin_J) {
+        this->receivedEnergyMin_J = receivedEnergyMin_J;
+    }
 };

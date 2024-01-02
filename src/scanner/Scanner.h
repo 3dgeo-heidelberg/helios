@@ -1483,6 +1483,39 @@ public:
      */
     inline void setTimeWave(std::vector<double> &&timewave)
     {setTimeWave(timewave, 0);}
+    /**
+     * @brief Obtain the minimum received energy threshold of the scanning
+     *  device.
+     * @param idx The index of the scanning device which minimum received
+     *  energy threshold must be obtained.
+     * @return The minimum received energy threshold of the scanning device.
+     */
+    virtual double getReceivedEnergyMin(size_t const idx) const = 0;
+    /**
+     * @brief Non index version of the
+     * Scanner::getReceivedEnergyMin(size_t const) method.
+     * @see Scanner::getReceivedEnergyMin(size_t const)
+     */
+    inline double getReceivedEnergyMin() const
+    {return getReceivedEnergyMin(0);}
+    /**
+     * @brief Set the minimum threshold for the received energy of the
+     *  scanning device.
+     * @param receivedEnergyMin_J The new minimum threshold for the received
+     *  energy of the scanning device.
+     * @param idx The index of the scanning device which time discretization
+     *  vector must be updated.
+     */
+    virtual void setReceivedEnergyMin(
+        double const receivedEnergyMin_J, size_t const idx
+    ) = 0;
+    /**
+     * @brief Non index version of the
+     *  Scanner::setReceivedEnergyMin(double const, size_t const) method.
+     * @see Scanner::setReceivedEnergyMin(double const, size_t const)
+     */
+    inline void setReceivedEnergyMin(double const receivedEnergyMin_J)
+    {setReceivedEnergyMin(receivedEnergyMin_J, 0);}
 
 #ifdef DATA_ANALYTICS
     /**

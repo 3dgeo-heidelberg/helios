@@ -24,14 +24,6 @@
  * @see AbstractPulseRunnable
  */
 class FullWaveformPulseRunnable : public AbstractPulseRunnable {
-public:
-    // ***  CONSTANTS  *** //
-    // ******************* //
-    /**
-     * @brief Decimal precision constant for FullWaveformPulseRunnable
-     * computations
-     */
-    static const double eps;
 private:
     // ***  ATTRIBUTES  *** //
     // ******************** //
@@ -279,7 +271,8 @@ private:
     bool detectPeak(
         int const i,
         int const win_size,
-        vector<double> const &fullwave
+        vector<double> const &fullwave,
+        double const eps
     );
 
 	/**

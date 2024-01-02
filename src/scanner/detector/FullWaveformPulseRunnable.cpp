@@ -25,11 +25,6 @@ using helios::analytics::HDA_GV;
 
 using namespace std;
 
-// ***  CONSTANTS  *** //
-// ******************* //
-const double FullWaveformPulseRunnable::eps = 0.001;
-
-
 // ***  O P E R A T O R  *** //
 // ************************* //
 void FullWaveformPulseRunnable::operator()(
@@ -662,10 +657,11 @@ bool FullWaveformPulseRunnable::handleFullWaveformBin(
     int const winSize,
     double const nsPerBin
 ){
+    double const eps = scanner->getReceivedEnergyMin(pulse.getDeviceIndex());
     if (fullwave[binIndex] < eps) return true;
 
     // Continue with next iteration if there is no peak
-    if(!detectPeak(binIndex, winSize, fullwave)) return true;
+    if(!detectPeak(binIndex, winSize, fullwave, eps)) return true;
 
     // Gaussian model fitting
     if (scanner->isCalcEchowidth()) {
@@ -796,7 +792,8 @@ void FullWaveformPulseRunnable::captureFullWave(
 bool FullWaveformPulseRunnable::detectPeak(
     int const i,
     int const win_size,
-    vector<double> const &fullwave
+    vector<double> const &fullwave,
+    double const eps
 ){
     for (int j = std::max(0, i - 1); j > std::max(0, i - win_size); j--) {
         if (fullwave[j] < eps || fullwave[j] >= fullwave[i]) {

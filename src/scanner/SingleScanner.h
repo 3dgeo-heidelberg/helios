@@ -495,6 +495,20 @@ public:
     ) override
     {scanDev.time_wave = timewave;}
     /**
+     * @see Scanner::setReceivedEnergyMin(double const, size_t const)
+     */
+    void setReceivedEnergyMin(
+        double const receivedEnergyMin_J, size_t const idx
+    ) override {
+        scanDev.setReceivedEnergyMin(receivedEnergyMin_J);
+    }
+    /**
+     * @see Scanner::getReceivedEnergyMin(size_t const)
+     */
+    double getReceivedEnergyMin(size_t const idx) const override {
+        return scanDev.getReceivedEnergyMin();
+    }
+    /**
      * @see Scanner::getCurrentPulseNumber(size_t const)
      */
     int getCurrentPulseNumber(size_t const idx) const override
