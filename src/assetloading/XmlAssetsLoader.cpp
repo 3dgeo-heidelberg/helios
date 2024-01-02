@@ -887,15 +887,18 @@ XmlAssetsLoader::createScannerFromXml(tinyxml2::XMLElement *scannerNode) {
           ++nChannels;
           chan = chan->NextSiblingElement("channel");
       }
-
-      std::vector<ScanningDevice> scanDevs(
-          nChannels, ScanningDevice(
-              0, id, beamDiv_rad, emitterPosition, emitterAttitude,
-              pulseFreqs, pulseLength_ns, avgPower, beamQuality, efficiency,
-              receiverDiameter, visibility, wavelength*1e-9,
-              rangeErrExpr
-          )
+      ScanningDevice baseScanDev(
+      0, id, beamDiv_rad, emitterPosition, emitterAttitude,
+          pulseFreqs, pulseLength_ns, avgPower, beamQuality, efficiency,
+          receiverDiameter, visibility, wavelength*1e-9,
+          rangeErrExpr
       );
+      baseScanDev.setReceivedEnergyMin(
+          boost::get<double>(XmlUtils::getAttribute(
+              scannerNode, "receivedEnergyMin_J", "double", 0.0001
+          ))
+      );
+      std::vector<ScanningDevice> scanDevs(nChannels, baseScanDev);
       scanner = std::make_shared<MultiScanner>(
           std::move(scanDevs),
           id,
@@ -934,6 +937,9 @@ XmlAssetsLoader::createScannerFromXml(tinyxml2::XMLElement *scannerNode) {
       settings->pulseLength_ns = pulseLength_ns;
       scanner->applySettingsFWF(*createFWFSettingsFromXml(
           scannerNode->FirstChildElement("FWFSettings"), settings));
+      // Parse minimum received energy threshold
+      scanner->setReceivedEnergyMin(boost::get<double>(XmlUtils::getAttribute(
+              scannerNode, "receivedEnergyMin_J", "double", 0.0001)));
   }
   // Return built scanner
   return scanner;
@@ -1610,6 +1616,13 @@ void XmlAssetsLoader::fillScanningDevicesFromChannels(
         scanner->setMaxNOR(
             boost::get<int>(XmlUtils::getAttribute(
                 chan, "maxNOR", "int", 0
+            )),
+            idx
+        );
+        scanner->setReceivedEnergyMin(
+            boost::get<double>(XmlUtils::getAttribute(
+                chan, "receivedEnergyMin_J", "double",
+                scanner->getReceivedEnergyMin(idx)
             )),
             idx
         );
