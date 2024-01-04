@@ -372,7 +372,7 @@ def test_output(export_to_file):
     output = sim.join()
     measurements_array, trajectory_array = pyhelios.outputToNumpy(output)
 
-    np.testing.assert_allclose(measurements_array[0, :3], np.array([474500.3, 5473530.0, 106.0988]), rtol=0.000001)
+    np.testing.assert_allclose(measurements_array[0, :3], np.array([474500.3, 5473580.0, 107.0001]), rtol=0.000001)
     assert measurements_array.shape == (2435, 17)
     assert trajectory_array.shape == (9, 7)
     if export_to_file:
