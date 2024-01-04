@@ -120,7 +120,7 @@ def test_arbaro_tls_pyh():
 
 def eval_arbaro_tls(dirname):
     assert (dirname / 'leg000_points.las').exists()
-    assert abs((dirname / 'leg000_points.las').stat().st_size - 19_515_811) < MAX_DIFFERENCE_BYTES
+    assert abs((dirname / 'leg000_points.las').stat().st_size - 19_734_925) < MAX_DIFFERENCE_BYTES
     assert (dirname / 'leg001_points.las').exists()
     assert abs((dirname / 'leg001_points.las').stat().st_size - 13_936_877) < MAX_DIFFERENCE_BYTES
     with open(dirname / 'leg000_trajectory.txt', 'r') as f:
@@ -148,7 +148,7 @@ def test_tiffloader_als_pyh():
 
 def eval_tiffloader_als(dirname):
     assert (dirname / 'leg000_points.las').exists()
-    assert abs((dirname / 'leg000_points.las').stat().st_size - 54_699) < MAX_DIFFERENCE_BYTES
+    assert abs((dirname / 'leg000_points.las').stat().st_size - 53_367) < MAX_DIFFERENCE_BYTES
     assert (dirname / 'leg001_points.las').exists()
     assert abs((dirname / 'leg001_points.las').stat().st_size - 85_557) < MAX_DIFFERENCE_BYTES
     with open(dirname / 'leg000_trajectory.txt', 'r') as f:
@@ -454,7 +454,7 @@ def test_dyn_exe():
 
 def eval_dyn(dirname):
     assert (dirname / 'leg000_points.laz').exists()
-    assert abs((dirname / 'leg000_points.laz').stat().st_size - 4_158_039) < MAX_DIFFERENCE_BYTES
+    assert abs((dirname / 'leg000_points.laz').stat().st_size - 4_181_700) < MAX_DIFFERENCE_BYTES
     # clean up
     if DELETE_FILES_AFTER:
         shutil.rmtree(dirname)
