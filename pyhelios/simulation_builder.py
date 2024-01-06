@@ -122,14 +122,6 @@ class SimulationBuilder:
         build.sim.finalOutput = self.finalOutput
         build.sim.legacyEnergyModel = self.legacyEnergyModel
         build.sim.exportToFile = self.exportToFile
-        build.sim.loadSurvey(
-            self.legNoiseDisabled,
-            self.rebuildScene,
-            self.writeWaveform,
-            self.calcEchowidth,
-            self.fullwaveNoise,
-            self.platformNoiseDisabled
-        )
         if self.callback is not None:
             build.sim.setCallback(self.callback)
         for rotateFilter in self.rotateFilters:
@@ -152,6 +144,14 @@ class SimulationBuilder:
                 translateFilter.z,
                 translateFilter.id
             )
+        build.sim.loadSurvey(
+            self.legNoiseDisabled,
+            self.rebuildScene,
+            self.writeWaveform,
+            self.calcEchowidth,
+            self.fullwaveNoise,
+            self.platformNoiseDisabled
+        )
 
         end = time.perf_counter()
         print(
