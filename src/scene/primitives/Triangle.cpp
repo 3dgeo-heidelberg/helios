@@ -2,6 +2,7 @@
 
 #define _USE_MATH_DEFINES
 #include "math.h"
+#include <MathConstants.h>
 
 #include <algorithm>
 #include <sstream>
@@ -67,7 +68,8 @@ double Triangle::getIncidenceAngle_rad(
         const glm::dvec3 &rayDir,
         const glm::dvec3 &intersectionPoint
  ){
-    return M_PI - glm::angle(faceNormal, rayDir);
+    double const angle = glm::angle(faceNormal, rayDir);
+    return (angle > PI_HALF) ? M_PI - angle : angle;  // Return min. angle
 }
 
 // These naive methods are much faster than the built-in in Vector3D
