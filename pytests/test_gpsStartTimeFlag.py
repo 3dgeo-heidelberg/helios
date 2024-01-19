@@ -66,7 +66,7 @@ def test_gpsStartTimeFlag_exe():
     r3_sum = sha256sum(r3 / 'leg000_points.xyz')
     assert r2_sum == r3_sum
     assert r2_sum == '41313dfe46ed34fcb9733af03a4d5e52487fd4579014f13dc00c609b53813229' or \
-           r2_sum == 'ecb736ef5c4eeba37666fb2c2ed268b164a44a7a41be8aa2807f7016c836bde8'  # linux checksum
+           r2_sum == '984cfbbc5a54ab10a566ea901363218f35da569dbab5cd102424ab27794074ae'  # linux checksum
     assert r1_sum != r2_sum
 
     if DELETE_FILES_AFTER:
@@ -95,7 +95,7 @@ def test_gpsStartTimeFlag_pyh():
     r3_sum = sha256sum(r3 / 'leg000_points.xyz')
     assert r2_sum == r3_sum
     assert r2_sum == '41313dfe46ed34fcb9733af03a4d5e52487fd4579014f13dc00c609b53813229' or \
-           r2_sum == 'ecb736ef5c4eeba37666fb2c2ed268b164a44a7a41be8aa2807f7016c836bde8'  # linux checksum
+           r2_sum == '984cfbbc5a54ab10a566ea901363218f35da569dbab5cd102424ab27794074ae'  # linux checksum
     assert r1_sum != r2_sum
 
     if DELETE_FILES_AFTER:

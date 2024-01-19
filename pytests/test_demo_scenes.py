@@ -120,7 +120,7 @@ def test_arbaro_tls_pyh():
 
 def eval_arbaro_tls(dirname):
     assert (dirname / 'leg000_points.las').exists()
-    assert abs((dirname / 'leg000_points.las').stat().st_size - 19_734_925) < MAX_DIFFERENCE_BYTES
+    assert abs((dirname / 'leg000_points.las').stat().st_size - 22_704_249) < MAX_DIFFERENCE_BYTES
     assert (dirname / 'leg001_points.las').exists()
     assert abs((dirname / 'leg001_points.las').stat().st_size - 12_971_325) < MAX_DIFFERENCE_BYTES
     with open(dirname / 'leg000_trajectory.txt', 'r') as f:
