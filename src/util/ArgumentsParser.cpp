@@ -1,6 +1,7 @@
 #include <ArgumentsParser.h>
 
 #include <iostream>
+#include <algorithm>
 
 // *** PUBLIC METHODS *** //
 // ********************** //
@@ -229,11 +230,31 @@ bool ArgumentsParser::parseSplitByChannel(){
     return findIndexOfArgument("--splitByChannel") >= 0;
 }
 
+bool ArgumentsParser::parseLegacyEnergyModel(){
+    return findIndexOfArgument("--legacyEnergyModel") >= 0;
+}
+
 // *** PRIVATE METHODS *** //
 // *********************** //
 int ArgumentsParser::findIndexOfArgument(std::string&& arg){
+    // Get lower case arg
+    std::string argLow(arg);
+    std::transform(arg.begin(), arg.end(), argLow.begin(),
+        [](unsigned char c) {
+            return std::tolower(c);
+        }
+    );
+    // Compare arg against each argvi in argv
     for(int i = 1 ; i < argc ; i++){
-        if(arg == argv[i]) return i;
+        // Get lower case argvi
+        std::string argvi(argv[i]);
+        std::transform(argvi.begin(), argvi.end(), argvi.begin(),
+            [](unsigned char c){
+                return std::tolower(c);
+            }
+        );
+        // Compare lower case strings
+        if(argLow == argvi) return i;
     }
     return -1;
 }

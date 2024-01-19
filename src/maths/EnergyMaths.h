@@ -2,6 +2,7 @@
 
 #include <cmath>
 #include <maths/MathConstants.h>
+#include <scene/Material.h>
 
 /**
  * @author Alberto M. Esmoris Pena
@@ -64,59 +65,64 @@ public:
      *  emitted energy by each subray matches the emitted energy when only a
      *  single ray is used.
      *
+     *
      * \f[
-     *  P_e =  \frac{I_0}{n_{sr}} \Biggl(
+     *  P_e = \frac{\pi w_0^2 I_0'}{2n_{sr}} \Biggl(
      *      \exp\biggl[
-     *          - \frac{2}{w^2}
-     *              \left(\frac{\varphi_*}{\mathrm{BSQ}}i\right)^2
+     *          - \frac{2 r_{i-1}^2}{w^2}
      *      \biggr]
      *      - \exp\biggl[
-     *          - \frac{2}{w^2}
-     *              \left(\frac{\varphi_*}{\mathrm{BSQ}}(i+1)\right)^2
+     *          - \frac{2 r_i^2}{w^2}
      *      \biggr]
      *  \Biggr)
      * \f]
      *
-     * Where
+     * @param reversedI0 The reversed average power of the device \f$I_0'\f$
+     *  as in Carlsson 2001, Signature simulation and signal analysis for 3D
+     *  laser radar, equation 2.3.
+     * @param w Let \f$\lambda\f$ be the wavelength in meters,
+     *  \f$w_0\f$ be the beam waist radius,
+     *  \f$R_0\f$ the minimum range,
+     *  \f$R\f$ the range, and
+     *  \f$w_0\f$ the beam waist radius
+     *  so \f$w\f$ can be defined as:
      *
      * \f[
-     *  w = \varphi_* R
+     * w = w_0 \sqrt{
+     *  \left(\dfrac{\lambda R}{\pi w_0^2}\right)^2 +
+     *  \left(1 - \dfrac{R}{R_0}\right)^2
+     * }
      * \f]
      *
-     * Note that the previous expression can be simplified to reduce the
-     * computational burden such that:
-     *
-     * \f[
-     *  P_e = \frac{I_0}{n_{sr}} \Biggl(
-     *      \exp\biggl[
-     *          - \frac{2i^2}{\mathrm{BSQ}^2 R^2}
-     *      \biggr]
-     *      - \exp\biggl[
-     *          - \frac{2(i+1)^2}{\mathrm{BSQ}^2 R^2}
-     *      \biggr]
-     *  \Biggr)
-     * \f]
-     *
-     * @param I0 The average power of the device \f$I_0\f$.
-     * @param R The target range (in meters) \f$R\f$.
-     * @param beamDiv_mrad The beam divergence of the device (in milliradians)
-     *  \f$\varphi_*\f$
-     * @param w0 The beam waist radius \f$w_0\f$
-     * @param BSQ The beam sample quality parameter governing the
-     *  discrete approximation of the elliptical footprint \f$\mathrm{BSQ}\f$.
-     * @param circleIter The iteration along the circle \f$i\f$.
+     * @param radius The radius of the ring to which the current subray
+     *  belongs \f$r_i\f$ (also outer radius).
+     * @param prevRadius the radius of the previous ring, i.e.,
+     *  the immediately smaller one \f$r_{i-1}\f$. The previous radius for the
+     *  first ring is zero (also inner radius).
      * @param numSubrays The number of subrays in the elliptical footprint
      *  approximation \f$n_{sr}\f$.
      * @return The emitted power for the corresponding subray.
      */
     static double calcSubrayWiseEmittedPower(
-        double const I0,
-        double const R,
-        double const beamDiv_mrad,
+        double const reversedI0,
         double const w0,
-        double const BSQ,
-        double const circleIter,
+        double const w,
+        double const radius,
+        double const prevRadius,
         double const numSubrays
+    );
+
+    /**
+     * @brief The EnergyMaths::calcSubrayWiseEmittedPower assuming some terms
+     *  are given already squared, and the constants defining a device have
+     *  already been precomputed so there is no need for those operations.
+     * @see EnergyMaths::calcSubrayWiseEmittedPower
+     */
+    static double calcSubrayWiseEmittedPowerFast(
+        double const deviceConstantExpression,
+        double const wSquared,
+        double const radiusSquared,
+        double const prevRadiusSquared
     );
 
     /**
@@ -166,6 +172,26 @@ public:
         double const sigma
     );
     /**
+     * @brief Fast version of EnergyMaths::calcReceivedPower .
+     *
+     * It receives the squared range that is assumed to be precomputed, thus
+     *  it is expected to be faster too.
+     */
+    static double calcReceivedPowerFast(
+        double const I0,
+        double const lambdaSquared,
+        double const R,
+        double const RSquared,
+        double const R0Squared,
+        double const rSquared,
+        double const w0Squared,
+        double const Dr2,
+        double const Bt2,
+        double const etaSys,
+        double const ae,
+        double const sigma
+    );
+    /**
      * @brief Legacy version of EnergyMaths::calcReceivedPower
      * @param Pe The emitted power
      * @param etaAtm The atmospheric factor
@@ -177,6 +203,44 @@ public:
         double const Dr2,
         double const R,
         double const Bt2,
+        double const etaSys,
+        double const etaAtm,
+        double const sigma
+    );
+
+    /**
+     * @brief Improved version of EnergyMaths::calcReceivedPower to be used
+     *  with the improved energy model.
+     * @param Pe The emitted power
+     * @param Dr2 Squared receiver diameter
+     * @param R Target range
+     * @param targetArea The target area for the subray
+     * @param etaSys Efficiency of scanning device
+     * @param etaAtm Atmospheric factor
+     * @param sigma Cross section between target area and incidence angle
+     * @return Calculated received power
+     * @see ImprovedEnergyModel
+     */
+    static double calcReceivedPowerImproved(
+        double const Pe,
+        double const Dr2,
+        double const R,
+        double const targetArea,
+        double const etaSys,
+        double const etaAtm,
+        double const sigma
+    );
+
+    /**
+     * @brief Fast version of EnergyMaths::calcReceivedPowerImproved .
+     * The denominator is assumed to be precomputed, so it is expected to be
+     * faster.
+     * @see EnergyMaths::calcReceivedPowerImproved
+     */
+    static double calcReceivedPowerImprovedFast(
+        double const Pe,
+        double const Dr2,
+        double const denom,
         double const etaSys,
         double const etaAtm,
         double const sigma
@@ -205,23 +269,32 @@ public:
 	 * @brief Compute cross section
 	 *
 	 * \f[
-	 *  C_{S} = 4{\pi} \cdot f \cdot A_{lf} \cdot \cos(\theta)
+	 *  C_{S} = 4{\pi} \cdot f \cdot A_{lf}
 	 * \f]
 	 *
 	 * <br/>
 	 * Paper DOI: 10.1016/j.isprsjprs.2010.06.007
 	 *
 	 * @return Cross section
+     * @see computeBDRF
 	 */
     static double calcCrossSection(
         double const f,
-        double const Alf,
-        double const theta
+        double const Alf
     );
 
 
     // ***  LIGHTING  *** //
     // ****************** //
+    /**
+     * @brief Compute the Bidirectional Reflectande Function (BDRF).
+     * @param mat The material specification.
+     * @param incidenceAngle The incidence angle.
+     * @return The value of the BDRF.
+     */
+    static double computeBDRF(
+        Material const &mat, double const incidenceAngle
+    );
     /**
 	 * @brief Compute the Phong model
 	 *
@@ -253,6 +326,17 @@ public:
 	 */
     static double phongBDRF(
         double const incidenceAngle,
+        double const targetSpecularity,
+        double const targetSpecularExponent
+    );
+    /**
+     * @brief The EnergyMaths::phongBDRF function assuming the cosine of the
+     * incidence angle is precomputed, thus it is expected to be faster.
+     * @see EnergyMaths::phongBDRF
+     */
+    static double phongBDRFFast(
+        double const incidenceAngle,
+        double const cosIncidenceAngle,
         double const targetSpecularity,
         double const targetSpecularExponent
     );

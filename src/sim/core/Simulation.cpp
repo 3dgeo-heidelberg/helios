@@ -30,15 +30,16 @@ Simulation::Simulation(
     int const parallelizationStrategy,
     std::shared_ptr<PulseThreadPoolInterface> pulseThreadPoolInterface,
     int chunkSize,
-    std::string fixedGpsTimeStart
+    std::string fixedGpsTimeStart,
+    bool const legacyEnergyModel
 ):
     parallelizationStrategy(parallelizationStrategy),
     threadPool(pulseThreadPoolInterface),
     taskDropper(chunkSize),
     stepLoop([&] () -> void{doSimStep();}),
     fixedGpsTimeStart(fixedGpsTimeStart),
+    legacyEnergyModel(legacyEnergyModel),
     reporter(*this)
-
 {
     currentGpsTime_ns = calcCurrentGpsTime();
 }
@@ -56,7 +57,7 @@ void Simulation::prepareSimulation(int simFrequency_hz){
     );
 
     // Prepare scanner
-    this->mScanner->prepareSimulation();
+    this->mScanner->prepareSimulation(legacyEnergyModel);
     this->mScanner->buildScanningPulseProcess(
         parallelizationStrategy,
         taskDropper,

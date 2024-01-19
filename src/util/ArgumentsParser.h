@@ -254,6 +254,16 @@ public:
      *  on the same file with no concern for the channel
      */
     bool parseSplitByChannel();
+    /**
+     * @brief Parse whether the legacy energy model must be used (true) or not
+     *  (false).
+     * @return True if the legacy energy model must be used, false otherwise.
+     * @see EnergyModel
+     * @see BaseEnergyModel
+     * @see ImprovedEnervyModel
+     * @see ScanningDevice
+     */
+    bool parseLegacyEnergyModel();
 
 
 private:

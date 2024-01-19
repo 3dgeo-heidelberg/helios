@@ -887,15 +887,18 @@ XmlAssetsLoader::createScannerFromXml(tinyxml2::XMLElement *scannerNode) {
           ++nChannels;
           chan = chan->NextSiblingElement("channel");
       }
-
-      std::vector<ScanningDevice> scanDevs(
-          nChannels, ScanningDevice(
-              0, id, beamDiv_rad, emitterPosition, emitterAttitude,
-              pulseFreqs, pulseLength_ns, avgPower, beamQuality, efficiency,
-              receiverDiameter, visibility, wavelength*1e-9,
-              rangeErrExpr
-          )
+      ScanningDevice baseScanDev(
+      0, id, beamDiv_rad, emitterPosition, emitterAttitude,
+          pulseFreqs, pulseLength_ns, avgPower, beamQuality, efficiency,
+          receiverDiameter, visibility, wavelength*1e-9,
+          rangeErrExpr
       );
+      baseScanDev.setReceivedEnergyMin(
+          boost::get<double>(XmlUtils::getAttribute(
+              scannerNode, "receivedEnergyMin_W", "double", 0.0001
+          ))
+      );
+      std::vector<ScanningDevice> scanDevs(nChannels, baseScanDev);
       scanner = std::make_shared<MultiScanner>(
           std::move(scanDevs),
           id,
@@ -934,6 +937,9 @@ XmlAssetsLoader::createScannerFromXml(tinyxml2::XMLElement *scannerNode) {
       settings->pulseLength_ns = pulseLength_ns;
       scanner->applySettingsFWF(*createFWFSettingsFromXml(
           scannerNode->FirstChildElement("FWFSettings"), settings));
+      // Parse minimum received energy threshold
+      scanner->setReceivedEnergyMin(boost::get<double>(XmlUtils::getAttribute(
+              scannerNode, "receivedEnergyMin_W", "double", 0.0001)));
   }
   // Return built scanner
   return scanner;
@@ -1320,10 +1326,11 @@ XmlAssetsLoader::createScannerSettingsFromXml(
 std::shared_ptr<FWFSettings> XmlAssetsLoader::createFWFSettingsFromXml(
     tinyxml2::XMLElement *node, std::shared_ptr<FWFSettings> settings
 ) {
+    // If no FWFSettings node appears on XML, default is used
   if (settings == nullptr) {
     settings = std::make_shared<FWFSettings>();
   }
-  // If no FWFSettings node appears on XML, default is used
+  // Given FWFSettings
   if (node != nullptr) {
     settings->binSize_ns = boost::get<double>(XmlUtils::getAttribute(
         node, "binSize_ns", "double", settings->binSize_ns
@@ -1335,6 +1342,9 @@ std::shared_ptr<FWFSettings> XmlAssetsLoader::createFWFSettingsFromXml(
         node, "winSize_ns", "double", settings->winSize_ns));
     settings->maxFullwaveRange_ns = boost::get<double>(XmlUtils::getAttribute(
         node, "maxFullwaveRange_ns", "double", settings->maxFullwaveRange_ns));
+    settings->apertureDiameter = boost::get<double>(XmlUtils::getAttribute(
+        node, "apertureDiameter_m", "double", settings->apertureDiameter
+    ));
   }
 
   return settings;
@@ -1606,6 +1616,13 @@ void XmlAssetsLoader::fillScanningDevicesFromChannels(
         scanner->setMaxNOR(
             boost::get<int>(XmlUtils::getAttribute(
                 chan, "maxNOR", "int", 0
+            )),
+            idx
+        );
+        scanner->setReceivedEnergyMin(
+            boost::get<double>(XmlUtils::getAttribute(
+                chan, "receivedEnergyMin_W", "double",
+                scanner->getReceivedEnergyMin(idx)
             )),
             idx
         );

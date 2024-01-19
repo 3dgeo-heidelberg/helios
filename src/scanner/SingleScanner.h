@@ -78,7 +78,7 @@ public:
     /**
      * @see Scanner::prepareSimulation
      */
-    void prepareSimulation() override;
+    void prepareSimulation(bool const legacyEnergyModel=false) override;
     /**
      * @see Scanner::applySettings
      */
@@ -101,18 +101,6 @@ public:
      */
     void prepareDiscretization(size_t const idx) override;
     /**
-     * @see Scanner::calcFootprintArea
-     */
-    double calcFootprintArea(
-        double const distance, size_t const idx
-    ) const override;
-    /**
-     * @see Scanner::calcTargetArea
-     */
-    double calcTargetArea(
-        double const distance, size_t const idx
-    ) const override;
-    /**
      * @see Scanner::calcAbsoluteBeamAttitude
      */
     Rotation calcAbsoluteBeamAttitude(size_t const idx) override;
@@ -132,7 +120,7 @@ public:
     void computeSubrays(
         std::function<void(
             Rotation const &subrayRotation,
-            double const divergenceAngle,
+            int const subrayRadiusStep,
             NoiseSource<double> &intersectionHandlingNoiseSource,
             std::map<double, double> &reflections,
             vector<RaySceneIntersection> &intersects
@@ -170,8 +158,7 @@ public:
         double const incidenceAngle,
         double const targetRange,
         Material const &mat,
-        double const targetArea,
-        double const radius,
+        int const subrayRadiusStep,
         size_t const idx
 #if DATA_ANALYTICS >= 2
        ,std::vector<std::vector<double>> &calcIntensityRecords
@@ -182,14 +169,19 @@ public:
      */
     double calcIntensity(
         double const targetRange,
-        double const radius,
         double const sigma,
+        int const subrayRadiusStep,
         size_t const idx
     ) const override;
 
 
     // ***  GETTERs and SETTERs  *** //
     // ***************************** //
+    /**
+     * @see Scanner::getScanningDevice
+     */
+    ScanningDevice & getScanningDevice(size_t const idx)
+    {return scanDev;}
     /**
      * @see Scanner::setDeviceIndex
      */
@@ -502,6 +494,20 @@ public:
         std::vector<double> &&timewave, size_t const idx
     ) override
     {scanDev.time_wave = timewave;}
+    /**
+     * @see Scanner::setReceivedEnergyMin(double const, size_t const)
+     */
+    void setReceivedEnergyMin(
+        double const receivedEnergyMin_W, size_t const idx
+    ) override {
+        scanDev.setReceivedEnergyMin(receivedEnergyMin_W);
+    }
+    /**
+     * @see Scanner::getReceivedEnergyMin(size_t const)
+     */
+    double getReceivedEnergyMin(size_t const idx) const override {
+        return scanDev.getReceivedEnergyMin();
+    }
     /**
      * @see Scanner::getCurrentPulseNumber(size_t const)
      */
