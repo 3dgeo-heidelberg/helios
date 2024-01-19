@@ -308,7 +308,6 @@ void FullWaveformPulseRunnable::handleSubray(
                 intersects.push_back(*intersect);
             }
 #if DATA_ANALYTICS >= 2
-            // TODO Rethink : At this point, double insertion has happened
             std::vector<double> &calcIntensityRecord =
                 calcIntensityRecords.back();
             calcIntensityRecord[0] = intersect->point.x;

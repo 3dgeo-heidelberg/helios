@@ -70,6 +70,7 @@ double Triangle::getIncidenceAngle_rad(
  ){
     double const angle = glm::angle(faceNormal, rayDir);
     return (angle > PI_HALF) ? M_PI - angle : angle;  // Return min. angle
+    // If (PI_HALF - min. angle), then 0 rad does no longer mean orthogonal
 }
 
 // These naive methods are much faster than the built-in in Vector3D
