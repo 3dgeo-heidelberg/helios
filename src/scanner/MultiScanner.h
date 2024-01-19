@@ -545,9 +545,9 @@ public:
      * @see Scanner::setReceivedEnergyMin(double const, size_t const)
      */
     void setReceivedEnergyMin(
-        double const receivedEnergyMin_J, size_t const idx
+        double const receivedEnergyMin_W, size_t const idx
     ) override {
-        scanDevs[idx].setReceivedEnergyMin(receivedEnergyMin_J);
+        scanDevs[idx].setReceivedEnergyMin(receivedEnergyMin_W);
     }
     /**
      * @see Scanner::getReceivedEnergyMin(size_t const)

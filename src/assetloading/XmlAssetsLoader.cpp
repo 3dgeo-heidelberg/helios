@@ -895,7 +895,7 @@ XmlAssetsLoader::createScannerFromXml(tinyxml2::XMLElement *scannerNode) {
       );
       baseScanDev.setReceivedEnergyMin(
           boost::get<double>(XmlUtils::getAttribute(
-              scannerNode, "receivedEnergyMin_J", "double", 0.0001
+              scannerNode, "receivedEnergyMin_W", "double", 0.0001
           ))
       );
       std::vector<ScanningDevice> scanDevs(nChannels, baseScanDev);
@@ -939,7 +939,7 @@ XmlAssetsLoader::createScannerFromXml(tinyxml2::XMLElement *scannerNode) {
           scannerNode->FirstChildElement("FWFSettings"), settings));
       // Parse minimum received energy threshold
       scanner->setReceivedEnergyMin(boost::get<double>(XmlUtils::getAttribute(
-              scannerNode, "receivedEnergyMin_J", "double", 0.0001)));
+              scannerNode, "receivedEnergyMin_W", "double", 0.0001)));
   }
   // Return built scanner
   return scanner;
@@ -1621,7 +1621,7 @@ void XmlAssetsLoader::fillScanningDevicesFromChannels(
         );
         scanner->setReceivedEnergyMin(
             boost::get<double>(XmlUtils::getAttribute(
-                chan, "receivedEnergyMin_J", "double",
+                chan, "receivedEnergyMin_W", "double",
                 scanner->getReceivedEnergyMin(idx)
             )),
             idx

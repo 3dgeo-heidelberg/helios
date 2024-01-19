@@ -1501,21 +1501,21 @@ public:
     /**
      * @brief Set the minimum threshold for the received energy of the
      *  scanning device.
-     * @param receivedEnergyMin_J The new minimum threshold for the received
+     * @param receivedEnergyMin_W The new minimum threshold for the received
      *  energy of the scanning device.
      * @param idx The index of the scanning device which time discretization
      *  vector must be updated.
      */
     virtual void setReceivedEnergyMin(
-        double const receivedEnergyMin_J, size_t const idx
+        double const receivedEnergyMin_W, size_t const idx
     ) = 0;
     /**
      * @brief Non index version of the
      *  Scanner::setReceivedEnergyMin(double const, size_t const) method.
      * @see Scanner::setReceivedEnergyMin(double const, size_t const)
      */
-    inline void setReceivedEnergyMin(double const receivedEnergyMin_J)
-    {setReceivedEnergyMin(receivedEnergyMin_J, 0);}
+    inline void setReceivedEnergyMin(double const receivedEnergyMin_W)
+    {setReceivedEnergyMin(receivedEnergyMin_W, 0);}
 
 #ifdef DATA_ANALYTICS
     /**
