@@ -1,7 +1,5 @@
 #pragma once
 
-#ifdef PYTHON_BINDING
-
 #include <PyPrimitiveWrapper.h>
 #include <Triangle.h>
 
@@ -31,5 +29,3 @@ public:
 };
 
 }
-
-#endif

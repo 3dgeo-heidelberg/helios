@@ -11,9 +11,6 @@
 #include "Scene.h"
 #include <NoiseSource.h>
 #include "Directions.h"
-#ifdef PYTHON_BINDING
-#include <PythonDVec3.h>
-#endif
 
 /**
  * @brief Class representing a platform asset

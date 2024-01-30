@@ -1,7 +1,6 @@
 #pragma once
 
-#ifdef PYTHON_BINDING
-
+#include <PythonDVec3.h>
 #include <PyNoiseSourceWrapper.h>
 
 namespace pyhelios{
@@ -118,5 +117,3 @@ public:
 };
 
 }
-
-#endif

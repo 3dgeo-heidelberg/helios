@@ -1,0 +1,37 @@
+target_include_directories(
+  helios
+  PUBLIC
+  "."
+  "beamDeflector"
+  "beamDeflector/evaluable"
+  "detector"
+)
+
+target_sources(
+  helios
+  PRIVATE
+  "WarehouseScanningPulseProcess.cpp"
+  "ScanningDevice.cpp"
+  "SingleScanner.cpp"
+  "Scanner.cpp"
+  "beamDeflector/AbstractBeamDeflector.cpp"
+  "beamDeflector/evaluable/EvalPolygonMirrorBeamDeflector.cpp"
+  "beamDeflector/RisleyBeamDeflector.cpp"
+  "beamDeflector/PolygonMirrorBeamDeflector.cpp"
+  "beamDeflector/FiberArrayBeamDeflector.cpp"
+  "beamDeflector/ConicBeamDeflector.cpp"
+  "beamDeflector/OscillatingMirrorBeamDeflector.cpp"
+  "MultiScanner.cpp"
+  "ScannerHead.cpp"
+  "FWFSettings.cpp"
+  "ScanningPulseProcess.cpp"
+  "BuddingScanningPulseProcess.cpp"
+  "EvalScannerHead.cpp"
+  "detector/DynFullWaveformPulseRunnable.cpp"
+  "detector/AbstractDetector.cpp"
+  "detector/FullWaveformPulseDetector.cpp"
+  "detector/FullWaveformPulseRunnable.cpp"
+  "detector/AbstractPulseRunnable.cpp"
+  "detector/MarquardtFitter.cpp"
+  "detector/PulseTaskFactory.cpp"
+)

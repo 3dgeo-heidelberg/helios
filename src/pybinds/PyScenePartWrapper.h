@@ -1,8 +1,7 @@
 #pragma once
 
-#ifdef PYTHON_BINDING
-
 #include <string>
+#include <PythonDVec3.h>
 #include <ScenePart.h>
 #include <DynMovingObject.h>
 
@@ -64,5 +63,3 @@ public:
 };
 
 }
-
-#endif

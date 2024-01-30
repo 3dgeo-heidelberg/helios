@@ -1,7 +1,5 @@
 #pragma once
 
-#ifdef PYTHON_BINDING
-
 #include <PyMeasurementVectorWrapper.h>
 #include <PyTrajectoryVectorWrapper.h>
 #include <PyStringVector.h>
@@ -58,5 +56,3 @@ public:
 };
 
 }
-
-#endif

@@ -1,7 +1,5 @@
 #pragma once
 
-#ifdef PYTHON_BINDING
-
 #include <PyPrimitiveWrapper.h>
 
 namespace pyhelios{
@@ -39,5 +37,3 @@ public:
 };
 
 }
-
-#endif

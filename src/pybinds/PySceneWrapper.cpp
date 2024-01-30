@@ -1,4 +1,3 @@
-#ifdef PYTHON_BINDING
 #include <PySceneWrapper.h>
 #include <PyHeliosException.h>
 
@@ -16,5 +15,3 @@ DynScene & PySceneWrapper::_asDynScene(){
         );
     }
 }
-
-#endif

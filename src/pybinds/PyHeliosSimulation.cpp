@@ -1,5 +1,3 @@
-#ifdef PYTHON_BINDING
-
 #include <PyHeliosSimulation.h>
 #include <PyHeliosException.h>
 #include <AbstractDetector.h>
@@ -400,5 +398,3 @@ std::shared_ptr<DynScene> PyHeliosSimulation::_getDynScene(){
         );
     }
 }
-
-#endif

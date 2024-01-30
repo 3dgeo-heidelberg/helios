@@ -1,0 +1,31 @@
+target_include_directories(
+  helios
+  PUBLIC
+  "."
+  "tree"
+  "bintree"
+  "kdtree"
+  "grove"
+  "exprtree"
+)
+
+target_sources(
+  helios
+  PRIVATE
+  "kdtree/AxisSAHKDTreeFactory.cpp"
+  "kdtree/SimpleKDTreeGeometricStrategy.cpp"
+  "kdtree/MultiThreadSAHKDTreeFactory.cpp"
+  "kdtree/KDTreeNode.cpp"
+  "kdtree/FastSAHKDTreeFactory.cpp"
+  "kdtree/SimpleKDTreeFactory.cpp"
+  "kdtree/FastSAHKDTreeGeometricStrategy.cpp"
+  "kdtree/MultiThreadKDTreeFactory.cpp"
+  "kdtree/KDTreeFactory.cpp"
+  "kdtree/LightKDTreeNode.cpp"
+  "kdtree/SAHKDTreeGeometricStrategy.cpp"
+  "kdtree/SAHKDTreeFactory.cpp"
+  "kdtree/AxisSAHKDTreeGeometricStrategy.cpp"
+  "grove/KDGrove.cpp"
+  "grove/KDGroveSubject.cpp"
+  "grove/KDGroveFactory.cpp"
+)

@@ -1,7 +1,5 @@
 #pragma once
 
-#ifdef PYTHON_BINDING
-
 #include <PyScenePartWrapper.h>
 #include <PyAABBWrapper.h>
 #include <PythonDVec3.h>
@@ -75,5 +73,3 @@ public:
 };
 
 }
-
-#endif

@@ -1,7 +1,5 @@
 #pragma once
 
-#ifdef PYTHON_BINDING
-
 #include <AbstractBeamDeflector.h>
 #include <scanner/beamDeflector/ConicBeamDeflector.h>
 #include <scanner/beamDeflector/FiberArrayBeamDeflector.h>
@@ -104,5 +102,3 @@ public:
 };
 
 }
-
-#endif

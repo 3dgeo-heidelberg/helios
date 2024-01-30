@@ -1,7 +1,5 @@
 #pragma once
 
-#ifdef PYTHON_BINDING
-
 #include <PyHeliosUtils.h>
 #include <list>
 
@@ -56,5 +54,3 @@ public:
 };
 
 }
-
-#endif

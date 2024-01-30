@@ -1,5 +1,3 @@
-#ifdef PYTHON_BINDING
-
 #include <boost/python.hpp>
 #include <helios_version.h>
 #include <PyHeliosSimulation.h>
@@ -15,7 +13,12 @@
 #include <PyScanningStripWrapper.h>
 #include <Material.h>
 #include <gdal_priv.h>
+#include <logging.hpp>
 
+// LOGGING FLAGS (DO NOT MODIFY HERE BUT IN logging.hpp makeDefault())
+bool    logging::LOGGING_SHOW_TRACE,    logging::LOGGING_SHOW_DEBUG,
+        logging::LOGGING_SHOW_INFO,     logging::LOGGING_SHOW_TIME,
+        logging::LOGGING_SHOW_WARN,     logging::LOGGING_SHOW_ERR;
 
 // ***  PYHELIOS PYTHON MODULE  *** //
 // ******************************** //
@@ -23,6 +26,7 @@ BOOST_PYTHON_MODULE(_pyhelios){
     // Namespace must be used locally to prevent conflicts
     using namespace boost::python;
     using namespace pyhelios;
+
 
     // Configure logging system
     logging::makeQuiet();
@@ -430,10 +434,14 @@ BOOST_PYTHON_MODULE(_pyhelios){
         .add_property(
             "strip",
             make_function(
-                &Leg::getPyStrip,
+                +[](const Leg &leg) {
+                    return new PyScanningStripWrapper(leg.getStrip());
+                },
                 return_value_policy<manage_new_object>()
             ),
-            &Leg::setPyStrip
+            +[](Leg& leg, PyScanningStripWrapper *pssw) {
+                leg.setStrip(pssw->ss);
+            }
         )
         .def(
             "getScannerSettings",
@@ -1120,7 +1128,12 @@ BOOST_PYTHON_MODULE(_pyhelios){
         .add_property("q3", &Rotation::getQ3, &Rotation::setQ3)
         .def(
             "getAxis",
-            &Rotation::getAxisPython,
+            // The unary operator+ is a C++ trick to convert a capture-less
+            // lambda to a function pointer, so that we can do this inline.
+            +[](Rotation &r) {
+                return new PythonDVec3(r.getAxis());
+            },
+            //&Rotation::getAxisPython,
             return_value_policy<manage_new_object>()
         )
         .def("getAngle", &Rotation::getAngle)
@@ -1662,19 +1675,54 @@ BOOST_PYTHON_MODULE(_pyhelios){
             &Material::spectra,
             &Material::spectra
         )
-        .add_property("ka0", &Material::getKa0, &Material::setKa0)
-        .add_property("ka1", &Material::getKa1, &Material::setKa1)
-        .add_property("ka2", &Material::getKa2, &Material::setKa2)
-        .add_property("ka3", &Material::getKa3, &Material::setKa3)
-        .add_property("kd0", &Material::getKd0, &Material::setKd0)
-        .add_property("kd1", &Material::getKd1, &Material::setKd1)
-        .add_property("kd2", &Material::getKd2, &Material::setKd2)
-        .add_property("kd3", &Material::getKd3, &Material::setKd3)
-        .add_property("ks0", &Material::getKs0, &Material::setKs0)
-        .add_property("ks1", &Material::getKs1, &Material::setKs1)
-        .add_property("ks2", &Material::getKs2, &Material::setKs2)
-        .add_property("ks3", &Material::getKs3, &Material::setKs3)
-    ;
+        .add_property("ka0",
+            +[](Material &m){ return m.ka[0]; },
+            +[](Material &m, double v){ m.ka[0] = v; }
+        )
+        .add_property("ka1",
+            +[](Material &m){ return m.ka[1]; },
+            +[](Material &m, double v){ m.ka[1] = v; }
+        )
+        .add_property("ka2",
+            +[](Material &m){ return m.ka[2]; },
+            +[](Material &m, double v){ m.ka[2] = v; }
+        )
+        .add_property("ka3",
+            +[](Material &m){ return m.ka[3]; },
+            +[](Material &m, double v){ m.ka[3] = v; }
+        )
+        .add_property("kd0",
+            +[](Material &m){ return m.kd[0]; },
+            +[](Material &m, double v){ m.kd[0] = v; }
+        )
+        .add_property("kd1",
+            +[](Material &m){ return m.kd[1]; },
+            +[](Material &m, double v){ m.kd[1] = v; }
+        )
+        .add_property("kd2",
+            +[](Material &m){ return m.kd[2]; },
+            +[](Material &m, double v){ m.kd[2] = v; }
+        )
+        .add_property("kd3",
+            +[](Material &m){ return m.kd[3]; },
+            +[](Material &m, double v){ m.kd[3] = v; }
+        )
+        .add_property("ks0",
+            +[](Material &m){ return m.ks[0]; },
+            +[](Material &m, double v){ m.ks[0] = v; }
+        )
+        .add_property("ks1",
+            +[](Material &m){ return m.ks[1]; },
+            +[](Material &m, double v){ m.ks[1] = v; }
+        )
+        .add_property("ks2",
+            +[](Material &m){ return m.ks[2]; },
+            +[](Material &m, double v){ m.ks[2] = v; }
+        )
+        .add_property("ks3",
+            +[](Material &m){ return m.ks[3]; },
+            +[](Material &m, double v){ m.ks[3] = v; }
+        );
 
     // Register ScenePart
     class_<PyScenePartWrapper>("ScenePart", no_init)
@@ -2069,5 +2117,3 @@ BOOST_PYTHON_MODULE(_pyhelios){
         .def("call", &PySimulationCycleCallback::operator())
     ;
 }
-
-#endif

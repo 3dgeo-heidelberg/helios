@@ -5,11 +5,6 @@
 #include <boost/archive/text_iarchive.hpp>
 #include <boost/archive/text_oarchive.hpp>
 
-#if PYTHON_BINDING
-#include <PythonDVec3.h>
-using pyhelios::PythonDVec3;
-#endif
-
 /**
 * This class implements rotations in a three-dimensional space.
 *
@@ -167,9 +162,4 @@ public:
     );
 
 	friend std::ostream& operator << (std::ostream& out, Rotation& r);
-
-#ifdef PYTHON_BINDING
-	PythonDVec3 * getAxisPython() {return new PythonDVec3(getAxis());}
-#endif
-
 };

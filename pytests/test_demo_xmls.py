@@ -5,22 +5,13 @@ Tests for checking that the XMLs are conform with the XSD
 
 import pytest
 import xmlschema
-import sys
 import xml.etree.ElementTree as ET
 from pathlib import Path
 import urllib
 
-HELIOS_EXE = str(Path('run') / 'helios')
-if sys.platform == "win32":
-    HELIOS_EXE += ".exe"
+
 WORKING_DIR = str(Path(__file__).parent.parent.absolute())
-# find helios executable
-HELIOS_EXE_NAME = "helios"
-if sys.platform == "win32" or sys.platform == "win64":
-    HELIOS_EXE_NAME += ".exe"
-HELIOS_EXE = str(list(Path(WORKING_DIR).glob(f"**/{HELIOS_EXE_NAME}"))[0])
-# get XSD files and read schemas
-XSD_DIR = Path(WORKING_DIR) / 'pyhelios/util/xsd'
+XSD_DIR = Path(WORKING_DIR) / 'python/pyhelios/util/xsd'
 survey_schema = xmlschema.XMLSchema(str(XSD_DIR / 'survey.xsd'))
 scene_schema = xmlschema.XMLSchema(str(XSD_DIR / 'scene.xsd'))
 scanner_schema = xmlschema.XMLSchema(str(XSD_DIR / 'scanner.xsd'))

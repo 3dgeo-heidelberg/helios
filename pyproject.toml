@@ -1,11 +1,42 @@
 [build-system]
 requires = [
-    "setuptools>=42",
-    "wheel"
+    "scikit-build-core",
 ]
+build-backend = "scikit_build_core.build"
+
+[project]
+name = "pyhelios"
+version = "3.0.0a0"
+description = "The HELIOS++ Virtual Laser Scanning Simulator"
+readme = "README.md"
+maintainers = [
+    { name = "HELIOS++ dev team", email = "helios@uni-heidelberg.de" },
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+]
+
+[project.scripts]
+helios = "pyhelios.__main__:helios_entrypoint"
+
+[tool.scikit-build.cmake]
+minimum-version = "3.18"
+
+[tool.scikit-build.cmake.define]
+BUILD_DOCS = "OFF"
+BUILD_PYTHON = "ON"
+HELIOS_DATA_ANALYTICS = "0"
+# Executable built and installed during "pip install" should
+# find the shared libaries of their dependencies without manual
+# fiddling with LD_LIBRARY_PATH. As a downside, the built executables
+# are not relocatable.
+CMAKE_INSTALL_RPATH_USE_LINK_PATH = "ON"
+
 [tool.pytest.ini_options]
 markers = [
     "exe: mark tests for the command line tool",
     "pyh: mark tests for the python bindings pyhelios",
 ]
-build-backend = "setuptools.build_meta"
+testpaths = [
+    "pytests",
+]

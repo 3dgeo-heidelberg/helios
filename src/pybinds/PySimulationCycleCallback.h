@@ -1,7 +1,5 @@
 #pragma once
 
-#ifdef PYTHON_BINDING
-
 #include <SimulationCycleCallback.h>
 #include <PyHeliosOutputWrapper.h>
 #include <boost/python.hpp>
@@ -51,5 +49,3 @@ public:
 };
 
 }
-
-#endif

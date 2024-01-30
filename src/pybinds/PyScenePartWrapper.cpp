@@ -1,5 +1,3 @@
-#ifdef PYTHON_BINDING
-
 #include <PyScenePartWrapper.h>
 #include <PyHeliosException.h>
 
@@ -27,5 +25,3 @@ DynMovingObject & PyScenePartWrapper::_asDynMovingObject(){
         );
     }
 }
-
-#endif

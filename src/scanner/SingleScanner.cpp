@@ -4,10 +4,6 @@
 #include <scanner/EvalScannerHead.h>
 #include <scanner/beamDeflector/evaluable/EvalPolygonMirrorBeamDeflector.h>
 
-#ifdef PYTHON_BINDING
-#include "PyDetectorWrapper.h"
-#endif
-
 // ***  CONSTRUCTION / DESTRUCTION  *** //
 // ************************************ //
 SingleScanner::SingleScanner(

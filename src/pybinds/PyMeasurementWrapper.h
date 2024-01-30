@@ -1,7 +1,5 @@
 #pragma once
 
-#ifdef PYTHON_BINDING
-
 #include <string>
 #include <Measurement.h>
 #include <PythonDVec3.h>
@@ -61,5 +59,3 @@ public:
 };
 
 }
-
-#endif

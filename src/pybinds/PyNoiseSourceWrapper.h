@@ -1,7 +1,5 @@
 #pragma once
 
-#ifdef PYTHON_BINDING
-
 #include <NoiseSource.h>
 
 namespace pyhelios{
@@ -44,5 +42,3 @@ public:
 };
 
 }
-
-#endif

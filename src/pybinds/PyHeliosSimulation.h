@@ -1,17 +1,18 @@
 #pragma once
-#ifdef PYTHON_BINDING
 
 #include <string>
 #include <Leg.h>
 #include <SurveyPlayback.h>
 #include <memory>
 #include <noise/RandomnessGenerator.h>
+#include <PySimulationCycleCallback.h>
 #include <PyPlatformWrapper.h>
 #include <PySceneWrapper.h>
 #include <PyHeliosOutputWrapper.h>
 #include <PyHeliosException.h>
 #include <XmlSurveyLoader.h>
 #include <PyScannerWrapper.h>
+#include <PyScanningStripWrapper.h>
 
 namespace pyhelios{
 
@@ -419,5 +420,3 @@ public:
 };
 
 }
-
-#endif

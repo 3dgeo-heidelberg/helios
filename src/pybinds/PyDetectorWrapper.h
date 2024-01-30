@@ -1,7 +1,5 @@
 #pragma once
 
-#ifdef PYTHON_BINDING
-
 #include <PyDetectorWrapper.h>
 #include <filems/facade/FMSFacade.h>
 using helios::filems::FMSFacade;
@@ -55,5 +53,3 @@ public:
 };
 
 }
-
-#endif

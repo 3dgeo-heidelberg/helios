@@ -1,7 +1,5 @@
 #pragma once
 
-#ifdef PYTHON_BINDING
-
 #include <glm/glm.hpp>
 #include <memory>
 
@@ -48,5 +46,3 @@ public:
 };
 
 }
-
-#endif

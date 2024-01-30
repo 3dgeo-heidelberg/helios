@@ -1,0 +1,21 @@
+name: helios-dev
+channels:
+  - conda-forge
+dependencies:
+  - armadillo
+  - blas
+  - boost
+  - gdal
+  - glm
+  - lapack
+  - lastools
+  - pcl
+  - pip
+  - python
+  - tinyxml2
+  - xmlschema
+  - zlib
+  # The following packages are not dependencies, but required
+  # for development workflows e.g. local testing
+  - doxygen
+  - pytest

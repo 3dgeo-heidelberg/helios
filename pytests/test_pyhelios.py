@@ -17,9 +17,6 @@ import shutil
 
 
 DELETE_FILES_AFTER = False
-HELIOS_EXE = str(Path('run') / 'helios')
-if sys.platform == "win32":
-    HELIOS_EXE += ".exe"
 WORKING_DIR = str(Path(__file__).parent.parent.absolute())
 sys.path.append(WORKING_DIR)
 import pyhelios

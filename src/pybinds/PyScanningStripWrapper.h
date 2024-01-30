@@ -1,7 +1,5 @@
 #pragma once
 
-#ifdef PYTHON_BINDING
-
 #include <ScanningStrip.h>
 
 #include <memory>
@@ -43,5 +41,3 @@ public:
 };
 
 }
-
-#endif

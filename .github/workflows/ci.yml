@@ -1,0 +1,52 @@
+name: Build + Test
+
+on:
+  push:
+    branches:
+      - main
+      - dev
+  pull_request:
+    branches:
+      - main
+      - dev
+  workflow_dispatch:
+
+jobs:
+  build-and-test:
+    runs-on: ${{ matrix.os }}
+    name: Testing on ${{ matrix.os }} with Python ${{ matrix.python }}
+    strategy:
+      matrix:
+        os:
+          - ubuntu-latest
+          - macos-latest
+          - windows-latest
+        python:
+          - "3.8"
+          - "3.12"
+    
+    defaults:
+      run:
+        # Conda requires a login shell in order to work properly
+        shell: bash -l {0}  
+    
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Create Helios dev environment
+        uses: conda-incubator/setup-miniconda@v2
+        with:
+          auto-update-conda: true
+          auto-activate-base: false
+          activate-environment: helios-dev
+          environment-file: environment-dev.yml
+          python-version: ${{ matrix.python }}
+
+      - name: Install Helios
+        run: |
+          CMAKE_PREFIX_PATH=${CONDA_PREFIX} python -m pip install -v .
+      
+      - name: Run tests
+        run: |
+          python -m pytest -m exe
+          python -m pytest -m pyh

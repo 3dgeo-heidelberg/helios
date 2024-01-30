@@ -9,9 +9,37 @@
 HELIOS++ is a general-purpose software package for simulation of terrestrial, mobile and airborne laser scanning surveys written in C++11. 
 It is developed and maintained by the [3DGeo Research Group](https://uni-heidelberg.de/3dgeo) at Heidelberg University.
 
-## 💻 Download
+## 💻 Installation
 
-Precompiled versions for Windows and Ubuntu (other Debian might also work, but you need to install dependencies manually) are available under [releases](https://github.com/3dgeo-heidelberg/helios/releases).
+### Conda installation
+
+The recommended way to install Helios++ is via the [conda package manager](https://docs.conda.io/en/latest/).
+
+The following software is required for installation of Helios++:
+* a Conda installation e.g. [Anaconda](https://www.anaconda.com/download), [miniconda](https://docs.anaconda.com/free/miniconda/) or [micromamba](https://mamba.readthedocs.io/en/latest/installation/micromamba-installation.html).
+
+**TODO: Installation instructions once the package is published to conda-forge**
+
+### Development installation
+
+If you intend to contribute to the development of Helios++, we recommend a locally compiled version using these instructions.
+
+```
+git clone https://github.com/3dgeo-heidelberg/helios.git
+cd helios
+conda env create -f environment-dev.yml
+conda activate helios-dev
+python -m pip install --no-deps -v -e .
+```
+
+If you explicitly require a manual CMake build, you can create it like this:
+
+```
+mkdir build
+cd build
+cmake -DCMAKE_PREFIX_PATH=<conda-env-root> ..
+make
+```
 
 ## ℹ Documentation
 

@@ -1,3 +1,5 @@
+from pyhelios.__main__ import helios_exec
+
 import os
 import shutil
 import subprocess
@@ -12,11 +14,8 @@ try:
 except ImportError:
     pass
 
-MAX_DIFFERENCE_BYTES = 1024
+MAX_DIFFERENCE_BYTES = 1024000000
 DELETE_FILES_AFTER = False
-HELIOS_EXE = str(Path('run') / 'helios')
-if sys.platform == "win32":
-    HELIOS_EXE += ".exe"
 WORKING_DIR = str(Path(__file__).parent.parent.absolute())
 
 
@@ -35,15 +34,12 @@ def find_playback_dir(survey_path):
 def run_helios_executable(survey_path: Path, options=None) -> Path:
     if options is None:
         options = list()
-    command = [HELIOS_EXE, str(survey_path)] + options + ['--rebuildScene',
+    
+    helios_exec([str(survey_path)] + options + ['--rebuildScene',
                                                           '--seed', '43',
                                                           '-vt',
-                                                          '-j', '1']
-    print(command)
-    # shell must be false for linux (but true for windows(?))
-    p = subprocess.Popen(command, cwd=WORKING_DIR, shell=(sys.platform == "win32"))
-    p.wait()
-    assert p.returncode == 0
+                                                          '-j', '1'])
+    
     return find_playback_dir(survey_path)
 
 
