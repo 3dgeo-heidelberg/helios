@@ -334,9 +334,9 @@ public:
         lwHeader.remove_attribute(fwiAttrIdx);
         lwHeader.remove_attribute(hoiAttrIdx);
         lwHeader.remove_attribute(ampAttrIdx);
-        free(lwHeader.attributes);
-        free(lwHeader.attribute_starts);
-        free(lwHeader.attribute_sizes);
+        //free(lwHeader.attributes);
+        //free(lwHeader.attribute_starts);
+        //free(lwHeader.attribute_sizes);
     }
 
 };
