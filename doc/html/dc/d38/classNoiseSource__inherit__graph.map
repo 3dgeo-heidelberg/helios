@@ -1,7 +1,0 @@
-<map id="NoiseSource&lt; RealType &gt;" name="NoiseSource&lt; RealType &gt;">
-<area shape="rect" id="node1" title="Class to handle a noise source." alt="" coords="5,78,181,105"/>
-<area shape="rect" id="node2" href="$d4/d38/classRandomNoiseSource.html" title="Abstract class for random noise handling." alt="" coords="229,71,384,112"/>
-<area shape="rect" id="node3" href="$d3/d57/classUniformNoiseSource.html" title=" " alt="" coords="434,5,577,47"/>
-<area shape="rect" id="node4" href="$d9/d8f/classNormalNoiseSource.html" title="Class for normal noise handling." alt="" coords="432,71,579,112"/>
-<area shape="rect" id="node5" href="$d3/d57/classUniformNoiseSource.html" title="Class for uniform noise handling." alt="" coords="434,136,577,177"/>
-</map>

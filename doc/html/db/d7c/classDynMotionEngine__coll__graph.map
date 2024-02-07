@@ -1,6 +1,0 @@
-<map id="DynMotionEngine" name="DynMotionEngine">
-<area shape="rect" id="node1" title="Adapter which wraps a rigid motion engine to make it fit the dynamic Helios context." alt="" coords="164,200,289,227"/>
-<area shape="rect" id="node2" href="$dc/df6/classrigidmotion_1_1RigidMotionR3Factory.html" title="Class providing building methods for rigid motions in ." alt="" coords="5,96,168,137"/>
-<area shape="rect" id="node3" href="$dc/d00/classrigidmotion_1_1RigidMotionFactory.html" title="Class that must be extended by any class which provides factory methods for rigid motions...." alt="" coords="5,5,168,47"/>
-<area shape="rect" id="node4" href="$d2/da8/classrigidmotion_1_1RigidMotionEngine.html" title="Class to handle operations with rigid motions." alt="" coords="192,96,355,137"/>
-</map>

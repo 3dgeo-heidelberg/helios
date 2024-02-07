@@ -1,6 +1,0 @@
-<map id="SimulationStepLoop" name="SimulationStepLoop">
-<area shape="rect" id="node1" title="Class extending LinearVoidStepLoop to support main simulation loop." alt="" coords="21,259,160,285"/>
-<area shape="rect" id="node2" href="$df/dd6/classLinearVoidStepLoop.html" title=" " alt="" coords="13,184,168,211"/>
-<area shape="rect" id="node3" href="$dd/d96/classVoidStepLoop.html" title=" " alt="" coords="5,95,176,136"/>
-<area shape="rect" id="node4" href="$dd/dcc/classStepLoop.html" title=" " alt="" coords="18,5,163,47"/>
-</map>
