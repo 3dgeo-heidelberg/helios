@@ -7,6 +7,7 @@ dependencies:
   - boost
   - gdal
   - glm
+  - importlib_resources
   - lapack
   - lastools
   - pcl

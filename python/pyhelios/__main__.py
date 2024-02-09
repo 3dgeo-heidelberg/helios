@@ -1,7 +1,6 @@
+import importlib_resources as resources
 import subprocess
 import sys
-
-from importlib import resources
 
 
 def _get_executable():
