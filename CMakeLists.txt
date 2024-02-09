@@ -1,6 +1,12 @@
 # Initialize the CMake project
 cmake_minimum_required(VERSION 3.18)
 
+# If we are running in a Conda environment, we automatically
+# add the Conda env prefix to the CMAKE_PREFIX_PATH
+if(DEFINED ENV{CONDA_PREFIX})
+  list(APPEND CMAKE_PREFIX_PATH "$ENV{CONDA_PREFIX}")
+endif()
+
 # Set the version strings for the project
 if(SKBUILD)
   set(HELIOS_VERSION ${SKBUILD_PROJECT_VERSION})
