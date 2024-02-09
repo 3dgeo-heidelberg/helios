@@ -5,6 +5,9 @@ cmake_minimum_required(VERSION 3.18)
 # add the Conda env prefix to the CMAKE_PREFIX_PATH
 if(DEFINED ENV{CONDA_PREFIX})
   list(APPEND CMAKE_PREFIX_PATH "$ENV{CONDA_PREFIX}")
+  #TODO: Windows Conda environments are structured differently,
+  #      how unfortunate is this?
+  list(APPEND CMAKE_PREFIX_PATH "$ENV{CONDA_PREFIX}/Library")
 endif()
 
 # Set the version strings for the project
