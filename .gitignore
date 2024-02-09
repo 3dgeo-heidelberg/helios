@@ -1,3 +1,6 @@
+# Ignore the setuptools_scm output
+python/pyhelios/_version.py
+
 # Ignore output, build and library dirs
 cmake-build-*
 bin/*

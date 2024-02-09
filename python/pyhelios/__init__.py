@@ -1,3 +1,6 @@
+# Import the setuptools_scm provided version
+from pyhelios._version import __version__
+
 from .output_handling import outputToNumpy
 from .coordinates_utils import \
     cartesianToSpherical, sphericalToCartesian

@@ -1,7 +1,17 @@
 # Initialize the CMake project
 cmake_minimum_required(VERSION 3.18)
+
+# Set the version strings for the project
+if(SKBUILD)
+  set(HELIOS_VERSION ${SKBUILD_PROJECT_VERSION})
+  set(HELIOS_VERSION_FULL ${SKBUILD_PROJECT_VERSION_FULL})
+else()
+  set(HELIOS_VERSION "1.3.0")
+  set(HELIOS_VERSION_FULL "1.3.0")
+endif()
+
 project(Helios++
-  VERSION 1.3.0
+  VERSION ${HELIOS_VERSION}
   LANGUAGES C CXX
   DESCRIPTION "Helios software for LiDAR simulations")
 
@@ -79,6 +89,13 @@ target_include_directories(helios
   PUBLIC
     ${ARMADILLO_INCLUDE_DIRS}
     ${LASTOOLS_INCLUDE_DIRS}
+)
+
+# Expose version information to the C++ sources
+target_compile_definitions(helios
+  PUBLIC
+    HELIOS_VERSION="${HELIOS_VERSION_FULL}"
+    HELIOS_BUILD_TYPE="${CMAKE_BUILD_TYPE}"
 )
 
 # Ensure Windows-specific compile options

@@ -2,33 +2,20 @@
 
 #include <sstream>
 
-const char * HELIOS_VERSION = "1.3.0";
 
-const char * HELIOS_GIT_HASH = "c61a540f";
-
-const char * getHeliosVersion(){
+std::string getHeliosVersion(){
     return HELIOS_VERSION;
 }
 
 std::string getHeliosFullVersion(){
     std::stringstream ss;
-    ss << "HELIOS_" << getHeliosVersion();
-#ifdef DEBUG_BUILD
-    ss << "_DBG";
-#else
-    ss << "_REL";
-#endif
+    ss << "Helios v" << getHeliosVersion() << " [" << HELIOS_BUILD_TYPE;
 #ifdef DATA_ANALYTICS
-    ss << "_DAmode";
+    ss << " DAmode";
 #endif
 #ifdef PCL_BINDING
-    ss << "_PCL";
+    ss << " PCL";
 #endif
-#ifdef DYNAMIC_BOOST
-    ss << "_dynBoost";
-#else
-    ss << "_staBoost";
-#endif
-    ss << "\nGitHash: " << HELIOS_GIT_HASH;
+    ss << "]";
     return ss.str();
 }

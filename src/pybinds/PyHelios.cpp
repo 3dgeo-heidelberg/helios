@@ -1,5 +1,4 @@
 #include <boost/python.hpp>
-#include <helios_version.h>
 #include <PyHeliosSimulation.h>
 #include <PythonDVec3.h>
 #include <PyBeamDeflectorWrapper.h>
@@ -70,7 +69,6 @@ BOOST_PYTHON_MODULE(_pyhelios){
     );
 
     // Register PyHeliosSimulation
-    def("getVersion", getHeliosVersion, "Obtain the current helios version");
     def(
         "setDefaultRandomnessGeneratorSeed",
         setDefaultRandomnessGeneratorSeed,
