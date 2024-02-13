@@ -1,18 +1,18 @@
-import sys
-import os
 import shutil
-from pathlib import Path
-import polyscope as ps
 from math import pi, cos, sin
 from scipy import stats as sstats
 import numpy as np
 import tqdm
 import matplotlib.pyplot as plt
-
-helios_root = str(Path(__file__).parent.parent.absolute())
-sys.path.append(helios_root)
-os.chdir(helios_root)
 import pyhelios
+import sys
+
+try:
+    import polyscope as ps
+except ImportError:
+    print('Polyscope is not installed. Please install Polyscope with "pip install polyscope".')
+    sys.exit()
+
 
 DELETE_AFTER = True
 
