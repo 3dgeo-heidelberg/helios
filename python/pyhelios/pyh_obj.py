@@ -1,9 +1,14 @@
-import open3d as o3d
 import numpy as np
-import time
 import matplotlib.pyplot as plt
 import xml.etree.ElementTree as ET
 import os
+import sys
+
+try:
+    import open3d as o3d
+except ImportError:
+    print('Open3D is not installed. Please install Open3D with "pip install open3d".')
+    sys.exit()
 
 
 class Scene:

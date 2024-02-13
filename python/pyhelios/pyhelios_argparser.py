@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 
 import argparse
-import sys
 
 parser = argparse.ArgumentParser(description='Parser for PyHelios')
 
@@ -88,17 +87,3 @@ parser.add_argument('-o3d', '--open3d', dest='open3d', action='store_const', con
                     help='Enable live open3d plot of simulation.')
 
 args = parser.parse_args()
-
-
-if __name__ == '__main__':
-    # Change working directory to helios path and configure runpath within pyhelios.
-    helios_run_path = r'D:\Documents\ss_2020\helios\202007_helios_bin\run/'
-
-    # Survey to be used.
-    survey_path = 'toyblocks/custom_als_toyblocks.xml'
-
-    # Add run path to python path.
-    sys.path.append(helios_run_path)
-
-    # PyHelios import only now possible.
-    import pyhelios

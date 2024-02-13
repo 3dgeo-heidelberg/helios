@@ -1,14 +1,8 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-
-import sys
-from pathlib import Path
-sys.path.append(str(Path(__file__).parent.parent))
-
 from pyhelios import pyhelios_argparser
 from pyhelios.pyh_obj import *
 
 import pyhelios
+import sys
 
 # Empty list for trajectory values and/or measurement values
 tpoints = []
@@ -60,8 +54,7 @@ def callback(output=None):
 
 # ---  M A I N  --- #
 # ----------------- #
-if __name__ == '__main__':
-
+def helios_live():
     # Parse arguments.
     args = pyhelios_argparser.args
 
@@ -113,11 +106,14 @@ if __name__ == '__main__':
         output = sim.join()
 
     elif args.open3d:
-        import open3d as o3d
+        try:
+            import open3d as o3d
+        except ImportError:
+            print('Open3D is not installed. Please install Open3D with "pip install open3d".')
+            sys.exit()
+        
         import numpy as np
         import time
-        import matplotlib.pyplot as plt
-        import xml.etree.ElementTree as ET
 
         # Create instance of Scene class, generate scene, print scene (if logging v2), and visualize.
         scene = Scene(args.survey_file, args.loggingv2)
@@ -161,3 +157,7 @@ if __name__ == '__main__':
 
         # Keep window open after sim.
         scene.visualizer.run()
+
+
+if __name__ == '__main__':
+    helios_live()
