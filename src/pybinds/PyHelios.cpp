@@ -185,6 +185,11 @@ BOOST_PYTHON_MODULE(_pyhelios){
             &PyHeliosSimulation::finalOutput
         )
         .add_property(
+            "legacyEnergyModel",
+            &PyHeliosSimulation::legacyEnergyModel,
+            &PyHeliosSimulation::legacyEnergyModel
+        )
+        .add_property(
             "exportToFile",
             &PyHeliosSimulation::exportToFile,
             &PyHeliosSimulation::exportToFile
@@ -967,18 +972,6 @@ BOOST_PYTHON_MODULE(_pyhelios){
             return_value_policy<manage_new_object>()
         )
         .def(
-            "calcFootprintArea",
-            static_cast<double(PyScannerWrapper::*)(double const)const>(
-                &PyScannerWrapper::calcFootprintArea
-            )
-        )
-        .def(
-            "calcFootprintArea",
-            static_cast<
-                double(PyScannerWrapper::*)(double const, size_t const)const
-            >(&PyScannerWrapper::calcFootprintArea)
-        )
-        .def(
             "calcAtmosphericAttenuation",
             static_cast<double(PyScannerWrapper::*)()const>(
                 &PyScannerWrapper::calcAtmosphericAttenuation
@@ -989,18 +982,6 @@ BOOST_PYTHON_MODULE(_pyhelios){
             static_cast<double(PyScannerWrapper::*)(size_t const)const>(
                 &PyScannerWrapper::calcAtmosphericAttenuation
             )
-        )
-        .def(
-            "calcFootprintRadius",
-            static_cast<
-                double(PyScannerWrapper::*)(double const)
-            >(&PyScannerWrapper::calcFootprintRadius)
-        )
-        .def(
-            "calcFootprintRadius",
-            static_cast<
-                double(PyScannerWrapper::*)(double const, size_t const)
-            >(&PyScannerWrapper::calcFootprintRadius)
         )
         .add_property(
             "fixedIncidenceAngle",

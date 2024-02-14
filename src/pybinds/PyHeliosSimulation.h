@@ -55,6 +55,7 @@ private:
     int warehouseFactor = 1;
 public:
     bool finalOutput = true;
+    bool legacyEnergyModel = false;
     bool exportToFile = true;
 
     // ***  CONSTRUCTION / DESTRUCTION  *** //

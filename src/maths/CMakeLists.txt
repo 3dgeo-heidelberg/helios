@@ -4,11 +4,14 @@ target_include_directories(
   "."
   "rigidmotion"
   "fluxionum"
+  "model"
 )
 
 target_sources(
   helios
   PRIVATE
+  "model/BaseEnergyModel.cpp"
+  "model/ImprovedEnergyModel.cpp"
   "rigidmotion/RigidMotionEngine.cpp"
   "rigidmotion/RigidMotionR2Factory.cpp"
   "rigidmotion/RigidMotionR3Factory.cpp"

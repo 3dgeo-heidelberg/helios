@@ -32,13 +32,15 @@ SurveyPlayback::SurveyPlayback(
     std::shared_ptr<PulseThreadPoolInterface> pulseThreadPoolInterface,
     int const chunkSize,
     std::string fixedGpsTimeStart,
-    bool exportToFile
+    bool const legacyEnergyModel,
+    bool const exportToFile
 ):
     Simulation(
         parallelizationStrategy,
         pulseThreadPoolInterface,
         chunkSize,
-        fixedGpsTimeStart
+        fixedGpsTimeStart,
+        legacyEnergyModel
     ),
     fms(fms)
 {

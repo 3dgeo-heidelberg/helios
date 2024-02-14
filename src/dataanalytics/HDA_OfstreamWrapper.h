@@ -90,6 +90,21 @@ public:
         return *this;
     }
 
+    /**
+     * @brief Stream input operator to handle vectors of ints as element.
+     * @param elem The vector of ints as element.
+     * @return A reference to the HDA_OfstreamWrapper itself for fluent
+     *  programming purposes.
+     */
+    HDA_OfstreamWrapper & operator <<(std::vector<int> const &elem){
+        ofs << elem[0];
+        for(size_t i = 1 ; i < elem.size(); ++i){
+            ofs << sep << elem[i];
+        }
+        ofs << "\n";
+        return *this;
+    }
+
 };
 
 }}

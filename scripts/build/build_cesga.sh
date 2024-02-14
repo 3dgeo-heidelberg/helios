@@ -8,11 +8,6 @@
 #   ./build_cesga.sh -p 3.8 -w 12 -c
 # To compile later use:
 #   cmake -DPYTHON_BINDING=1 -DPCL_BINDING=0 -DBOOST_DYNAMIC_LIBS=1 \
-#       -DPYTHON_VERSION=38 -DLAPACK_LIB="lib/lapack/install/lib/liblapack.so"
-# And:
-#   make -j12
-# To run tests and check everything is working:
-#   LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:lib/lapack/install/lib/ ./helios --test
 #       -DPYTHON_VERSION=38 -DLAPACK_LIB="${HELIOS_LIB_DIR}/lapack/install/lib/liblapack.so"
 # And:
 #   make -j12

@@ -163,7 +163,8 @@ int main(int argc, char** argv) {
             ap.parseKDTreeType(),
             ap.parseKDTreeJobs(),
             ap.parseKDTreeGeometricJobs(),
-            ap.parseSAHLossNodes()
+            ap.parseSAHLossNodes(),
+            ap.parseLegacyEnergyModel()
         );
     }
 

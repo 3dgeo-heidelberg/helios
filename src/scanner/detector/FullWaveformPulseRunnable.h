@@ -24,14 +24,6 @@
  * @see AbstractPulseRunnable
  */
 class FullWaveformPulseRunnable : public AbstractPulseRunnable {
-public:
-    // ***  CONSTANTS  *** //
-    // ******************* //
-    /**
-     * @brief Decimal precision constant for FullWaveformPulseRunnable
-     * computations
-     */
-    static const double eps;
 private:
     // ***  ATTRIBUTES  *** //
     // ******************** //
@@ -99,12 +91,11 @@ private:
      *  to obtain the subray. It is typically a composition of two rotations,
      *  one to model the radius (i.e., how far from the center) and other
      *  to model the circumference (i.e., at which angle in the circle).
-     * @param[in] divergenceAngle Subray divergence angle in radians
      * @see FullWaveformPulseRunnable::computeSubrays
      */
     void handleSubray(
         Rotation const &subrayRotation,
-        double const divergenceAngle,
+        int const subrayRadiusStep,
         NoiseSource<double> &intersectionHandlingNoiseSource,
         std::map<double, double> &reflections,
         vector<RaySceneIntersection> &intersects
@@ -137,6 +128,7 @@ private:
         vector<RaySceneIntersection> &intersects
 #if DATA_ANALYTICS >= 2
        ,std::vector<std::vector<double>> &calcIntensityRecords,
+        std::vector<std::vector<int>> &calcIntensityIndices,
         std::shared_ptr<HDA_PulseRecorder> pulseRecorder
 #endif
     );
@@ -212,6 +204,7 @@ private:
         double const minHitTime_ns
 #if DATA_ANALYTICS >= 2
        ,std::vector<std::vector<double>> &calcIntensityRecords,
+        std::vector<std::vector<int>> &calcIntensityIndices,
         std::shared_ptr<HDA_PulseRecorder> pulseRecorder
 #endif
     );
@@ -252,6 +245,7 @@ private:
         RandomnessGenerator<double> &randGen2
 #if DATA_ANALYTICS >= 2
        ,std::vector<std::vector<double>> &calcIntensityRecords,
+        std::vector<std::vector<int>> &calcIntensityIndices,
         std::shared_ptr<HDA_PulseRecorder> pulseRecorder
 #endif
     );
@@ -277,7 +271,8 @@ private:
     bool detectPeak(
         int const i,
         int const win_size,
-        vector<double> const &fullwave
+        vector<double> const &fullwave,
+        double const eps
     );
 
 	/**

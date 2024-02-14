@@ -85,20 +85,6 @@ public:
             7.0  // 3.5 too many ops., 7.0 just one op.
         );
     }
-    inline double calcFootprintArea(double const distance) const{
-        return scanner.calcFootprintArea(distance);
-    }
-    inline double calcFootprintArea(
-        double const distance, size_t const idx
-    )const{
-        return scanner.calcFootprintArea(distance, idx);
-    }
-    inline double calcFootprintRadius(double const distance){
-        return scanner.calcFootprintRadius(distance);
-    }
-    inline double calcFootprintRadius(double const distance, size_t const idx){
-        return scanner.calcFootprintRadius(distance, idx);
-    }
     inline double calcAtmosphericAttenuation() const{
         return scanner.calcAtmosphericAttenuation();
     }

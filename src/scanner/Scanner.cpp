@@ -244,13 +244,6 @@ string Scanner::toString() {
     return ss.str();
 }
 
-
-double Scanner::calcFootprintRadius(double distance, size_t const idx) {
-	double area = calcFootprintArea(distance, idx);
-	return sqrt(area / M_PI);
-}
-
-
 void Scanner::setPulseFreq_Hz(int pulseFreq_Hz) {
 
 	// Check of requested pulse freq is > 0:

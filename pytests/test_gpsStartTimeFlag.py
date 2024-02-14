@@ -6,7 +6,7 @@ import sys
 import datetime, time
 import hashlib
 
-MAX_DIFFERENCE_BYTES = 102400000000
+MAX_DIFFERENCE_BYTES = 1024
 DELETE_FILES_AFTER = True
 WORKING_DIR = str(Path(__file__).parent.parent.absolute())
 
@@ -62,8 +62,8 @@ def test_gpsStartTimeFlag_exe():
     r2_sum = sha256sum(r2 / 'leg000_points.xyz')
     r3_sum = sha256sum(r3 / 'leg000_points.xyz')
     # assert r2_sum == r3_sum
-    # assert r2_sum == 'e1daca137b066eca4bd29b62f3cb5ecde4bcc41650f2cdfc44110c87b97f23dc' or \
-    #        r2_sum == 'e5ff320c318bd8cb87865ff8a3fd5d8835ca7a66736cc7469e59ad2c365a3a31'  # linux checksum
+    # assert r2_sum == '41313dfe46ed34fcb9733af03a4d5e52487fd4579014f13dc00c609b53813229' or \
+    #        r2_sum == '984cfbbc5a54ab10a566ea901363218f35da569dbab5cd102424ab27794074ae'  # linux checksum
     # assert r1_sum != r2_sum
 
     if DELETE_FILES_AFTER:
@@ -91,8 +91,8 @@ def test_gpsStartTimeFlag_pyh():
     r2_sum = sha256sum(r2 / 'leg000_points.xyz')
     r3_sum = sha256sum(r3 / 'leg000_points.xyz')
     # assert r2_sum == r3_sum
-    # assert r2_sum == 'e1daca137b066eca4bd29b62f3cb5ecde4bcc41650f2cdfc44110c87b97f23dc' or \
-    #        r2_sum == 'e5ff320c318bd8cb87865ff8a3fd5d8835ca7a66736cc7469e59ad2c365a3a31'  # linux checksum
+    # assert r2_sum == '41313dfe46ed34fcb9733af03a4d5e52487fd4579014f13dc00c609b53813229' or \
+    #        r2_sum == '984cfbbc5a54ab10a566ea901363218f35da569dbab5cd102424ab27794074ae'  # linux checksum
     # assert r1_sum != r2_sum
 
     if DELETE_FILES_AFTER:

@@ -80,7 +80,7 @@ void SingleScanner::_clone(Scanner &sc) const{
 
 // ***  SIM STEP UTILS  *** //
 // ************************ //
-void SingleScanner::prepareSimulation() {
+void SingleScanner::prepareSimulation(bool const legacyEnergyModel) {
     // Link the deflector angle with the evaluable scanner head
     std::shared_ptr<EvalScannerHead> sh =
         std::dynamic_pointer_cast<EvalScannerHead>(getScannerHead(0));
@@ -103,7 +103,7 @@ void SingleScanner::prepareSimulation() {
         }
     }
     // Prepare scanning device
-    scanDev.prepareSimulation();
+    scanDev.prepareSimulation(legacyEnergyModel);
 }
 void SingleScanner::onLegComplete(){
     // Call parent handler for on leg complete events
@@ -174,19 +174,6 @@ void SingleScanner::prepareDiscretization(size_t const idx){
     ), 0);
 }
 
-
-double SingleScanner::calcFootprintArea(
-    double const distance, size_t const idx
-) const {
-    return PI_QUARTER * distance * distance * getBt2(0);
-}
-
-double SingleScanner::calcTargetArea(
-    double const distance, size_t const idx
-) const{
-    return calcFootprintArea(distance, 0) / ((double)getNumRays(0));
-}
-
 Rotation SingleScanner::calcAbsoluteBeamAttitude(size_t const idx) {
     return scanDev.calcAbsoluteBeamAttitude(
         platform->getAbsoluteMountAttitude()
@@ -195,7 +182,7 @@ Rotation SingleScanner::calcAbsoluteBeamAttitude(size_t const idx) {
 void SingleScanner::computeSubrays(
     std::function<void(
         Rotation const &subrayRotation,
-        double const divergenceAngle,
+        int const subrayRadiusStep,
         NoiseSource<double> &intersectionHandlingNoiseSource,
         std::map<double, double> &reflections,
         vector<RaySceneIntersection> &intersects
@@ -250,8 +237,7 @@ double SingleScanner::calcIntensity(
     double const incidenceAngle,
     double const targetRange,
     Material const &mat,
-    double const targetArea,
-    double const radius,
+    int const subrayRadiusStep,
     size_t const idx
 #if DATA_ANALYTICS >= 2
    ,std::vector<std::vector<double>> &calcIntensityRecords
@@ -261,8 +247,7 @@ double SingleScanner::calcIntensity(
         incidenceAngle,
         targetRange,
         mat,
-        targetArea,
-        radius
+        subrayRadiusStep
 #if DATA_ANALYTICS >= 2
        ,calcIntensityRecords
 #endif
@@ -270,9 +255,9 @@ double SingleScanner::calcIntensity(
 }
 double SingleScanner::calcIntensity(
     double const targetRange,
-    double const radius,
     double const sigma,
+    int const subrayRadiusStep,
     size_t const idx
 ) const{
-    return scanDev.calcIntensity(targetRange, radius, sigma);
+    return scanDev.calcIntensity(targetRange, sigma, subrayRadiusStep);
 }

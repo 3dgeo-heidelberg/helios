@@ -116,9 +116,9 @@ def test_arbaro_tls_pyh():
 
 def eval_arbaro_tls(dirname):
     assert (dirname / 'leg000_points.las').exists()
-    assert abs((dirname / 'leg000_points.las').stat().st_size - 21_755_791) < MAX_DIFFERENCE_BYTES
+    assert abs((dirname / 'leg000_points.las').stat().st_size - 22_704_249) < MAX_DIFFERENCE_BYTES
     assert (dirname / 'leg001_points.las').exists()
-    assert abs((dirname / 'leg001_points.las').stat().st_size - 13_936_877) < MAX_DIFFERENCE_BYTES
+    assert abs((dirname / 'leg001_points.las').stat().st_size - 14_381_469) < MAX_DIFFERENCE_BYTES
     with open(dirname / 'leg000_trajectory.txt', 'r') as f:
         line = f.readline()
         assert line.startswith('1.0000 25.5000 0.0000')
@@ -144,7 +144,7 @@ def test_tiffloader_als_pyh():
 
 def eval_tiffloader_als(dirname):
     assert (dirname / 'leg000_points.las').exists()
-    assert abs((dirname / 'leg000_points.las').stat().st_size - 54_699) < MAX_DIFFERENCE_BYTES
+    assert abs((dirname / 'leg000_points.las').stat().st_size - 53_367) < MAX_DIFFERENCE_BYTES
     assert (dirname / 'leg001_points.las').exists()
     assert abs((dirname / 'leg001_points.las').stat().st_size - 85_557) < MAX_DIFFERENCE_BYTES
     with open(dirname / 'leg000_trajectory.txt', 'r') as f:
@@ -173,7 +173,7 @@ def test_detailedVoxels_uls_pyh():
 
 def eval_detailedVoxels_uls(dirname):
     assert (dirname / 'leg000_points.las').exists()
-    assert abs((dirname / 'leg000_points.las').stat().st_size - 459_701) < MAX_DIFFERENCE_BYTES
+    assert abs((dirname / 'leg000_points.las').stat().st_size - 460_737) < MAX_DIFFERENCE_BYTES
     assert (dirname / 'leg000_trajectory.txt').exists()
     assert abs((dirname / 'leg000_trajectory.txt').stat().st_size - 2_541) < MAX_DIFFERENCE_BYTES
     with open(dirname / 'leg000_trajectory.txt', 'r') as f:
@@ -203,7 +203,7 @@ def test_xyzVoxels_tls_pyh():
 
 def eval_xyzVoxels_tls(dirname):
     assert (dirname / 'leg000_points.las').exists()
-    assert abs((dirname / 'leg000_points.las').stat().st_size - 19_288_187) < MAX_DIFFERENCE_BYTES
+    assert abs((dirname / 'leg000_points.las').stat().st_size - 50_340_807) < MAX_DIFFERENCE_BYTES
     # clean up
     if DELETE_FILES_AFTER:
         shutil.rmtree(dirname)
@@ -229,7 +229,7 @@ def test_interpolated_traj_pyh():
 def eval_interpolated_traj(dirname):
     assert (dirname / 'leg000_points.laz').exists()
     assert (dirname / 'leg000_trajectory.txt').exists()
-    assert abs((dirname / 'leg000_points.laz').stat().st_size - 875_054) < MAX_DIFFERENCE_BYTES
+    assert abs((dirname / 'leg000_points.laz').stat().st_size - 850_173) < MAX_DIFFERENCE_BYTES
     with open(dirname / 'leg000_trajectory.txt', 'r') as f:
         for _ in range(3):
             next(f)
@@ -450,7 +450,7 @@ def test_dyn_exe():
 
 def eval_dyn(dirname):
     assert (dirname / 'leg000_points.laz').exists()
-    assert abs((dirname / 'leg000_points.laz').stat().st_size - 2_654_123) < MAX_DIFFERENCE_BYTES
+    assert abs((dirname / 'leg000_points.laz').stat().st_size - 4_181_700) < MAX_DIFFERENCE_BYTES
     # clean up
     if DELETE_FILES_AFTER:
         shutil.rmtree(dirname)

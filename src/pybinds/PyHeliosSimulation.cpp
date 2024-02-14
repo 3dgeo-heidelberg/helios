@@ -147,6 +147,7 @@ void PyHeliosSimulation::start (){
         pulseThreadPool,
         chunkSize,
         fixedGpsTimeStart,
+        legacyEnergyModel,
         exportToFile
     );
     playback->callback = callback;
