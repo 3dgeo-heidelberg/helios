@@ -255,11 +255,24 @@ python pyhelios_demo\helios.py data\surveys\toyblocks\als_toyblocks.xml
 ```
 to run a demo survey including visualisation.
 
-## :film_strip: Blender Add-ons
+## :gift: Related projects and Contributions
 
-Our two Blender add-ons allow you to export animated Blender scenes to HELIOS++, providing an interface to probably the most popular free and open source 3D software. `dyn_b2h` exports a Blender animation to a dynamic HELIOS++ scene with rigid motions, while `multi_epoch_b2h` exports static snapshots of the animation, creating a time series of HELIOS++ scenes. The add-ons include exporting scene part OBJ files and writing scene XML files, and can also be used for static scenes. Download the add-ons from the [GitHub repo](https://github.com/3dgeo-heidelberg/dyn_b2h) and get started!
+### :rocket: helios launcher
 
-## :earth_africa: QGIS Plugin
+Not a fan of the command line? Check out the graphical helios launcher by [Jonathan Schellhase](https://github.com/dg-505) at [github.com/dg-505/helios-launcher](https://github.com/dg-505/helios-launcher). 
+You can select the HELIOS++ installation directory and the survey path, and set additional options in a text field. Clicking the "Run" button will execute the survey and display the output in a text window. Another button opens the output folder for you. As simple as that.
+
+### :film_strip: Blender Add-ons
+
+#### Blender2Helios
+
+Since December 2019, the [Blender2Helios](https://github.com/neumicha/Blender2Helios) add-on by [Michael Neumann](https://github.com/neumicha) allows easy conversion of Blender scenes to HELIOS++ scenes. Semantic labels are also supported and can be combined easily by using collections in Blender. 
+
+#### dyn_b2h
+
+Our two own Blender add-ons allow you to export animated Blender scenes to HELIOS++, providing an interface to probably the most popular free and open source 3D software. `dyn_b2h` exports a Blender animation to a dynamic HELIOS++ scene with rigid motions, while `multi_epoch_b2h` exports static snapshots of the animation, creating a time series of HELIOS++ scenes. The add-ons include exporting scene part OBJ files and writing scene XML files, and can also be used for static scenes. Download the add-ons from the [GitHub repo](https://github.com/3dgeo-heidelberg/dyn_b2h) and get started!
+
+### :earth_africa: QGIS Plugin
 
 Our QGIS Plugin AEOS embeds HELIOS++ into one of the most widely used GIS applications. It enables the creation of HELIOS++ surveys using QGIS vector and raster layers and the subsequent execution of the surveys, with direct availability of the results in the form of a QGIS point cloud layer. Crucially, it allows for instant visualisation of both the input and output of a HELIOS++ simulation within a familiar user interface, thereby greatly improving ease of use. In Greek mythology, Aeos is the name of one of the four horses that pulls Helios' fiery chariot accross the sky. Feel free to download AEOS from its own [GitHub repo](https://github.com/3dgeo-heidelberg/aeos) and add it to your arsenal of QGIS plugins now!
 
