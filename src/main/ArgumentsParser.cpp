@@ -54,14 +54,15 @@ std::string ArgumentsParser::parseSurveyPath() {
     return std::string(argv[1]);
 }
 
-std::string ArgumentsParser::parseAssetsPath(){
+std::vector<std::string> ArgumentsParser::parseAssetsPath(){
     int index = findIndexOfArgument("--assets");
-    if(index >= 0){
-        size_t idx = std::string(argv[index+1]).length()-1;
-        if(argv[index+1][idx] == '/') return argv[index+1];
-        return std::string(argv[index+1])+"/";
+    std::vector<std::string> assetsPaths;
+    while(index >= 0){
+        assetsPaths.push_back(argv[index+1]);
+        index = findIndexOfArgument("--assets", index);
     }
-    return "assets/";
+    assetsPaths.push_back("assets/");
+    return assetsPaths;
 }
 
 std::string ArgumentsParser::parseOutputPath(){
@@ -236,7 +237,7 @@ bool ArgumentsParser::parseLegacyEnergyModel(){
 
 // *** PRIVATE METHODS *** //
 // *********************** //
-int ArgumentsParser::findIndexOfArgument(std::string&& arg){
+int ArgumentsParser::findIndexOfArgument(std::string&& arg, int offset){
     // Get lower case arg
     std::string argLow(arg);
     std::transform(arg.begin(), arg.end(), argLow.begin(),
@@ -245,7 +246,7 @@ int ArgumentsParser::findIndexOfArgument(std::string&& arg){
         }
     );
     // Compare arg against each argvi in argv
-    for(int i = 1 ; i < argc ; i++){
+    for(int i = 1 + offset; i < argc ; i++){
         // Get lower case argvi
         std::string argvi(argv[i]);
         std::transform(argvi.begin(), argvi.end(), argvi.begin(),

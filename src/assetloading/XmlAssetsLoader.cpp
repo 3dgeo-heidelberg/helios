@@ -55,17 +55,28 @@ std::string const XmlAssetsLoader::defaultPlatformSettingsMsg =
 // ***  CONSTRUCTION / DESTRUCTION  *** //
 // ************************************ //
 
-XmlAssetsLoader::XmlAssetsLoader(std::string &filePath, std::string &assetsDir)
+XmlAssetsLoader::XmlAssetsLoader(std::string &filePath, std::vector<std::string> &assetsDir)
     : assetsDir(assetsDir)
+    , sceneLoader(assetsDir)
 {
 
   fs::path xmlFile(filePath);
+
+  if(xmlFile.is_relative()){
+    for(const auto path : assetsDir){
+        if(fs::exists(fs::path(path) / xmlFile)){
+            xmlFile = fs::path(path) / xmlFile;
+            break;
+        }
+    }
+  }
+
   xmlDocFilename = xmlFile.filename().string();
   xmlDocFilePath = xmlFile.parent_path().string();
   logging::INFO("xmlDocFilename: " + xmlDocFilename);
   logging::INFO("xmlDocFilePath: " + xmlDocFilePath);
 
-  tinyxml2::XMLError result = doc.LoadFile(filePath.c_str());
+  tinyxml2::XMLError result = doc.LoadFile(xmlFile.c_str());
   if (result != tinyxml2::XML_SUCCESS) {
     logging::ERR("ERROR: loading " + filePath + " failed.");
   }

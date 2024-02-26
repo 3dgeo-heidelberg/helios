@@ -18,7 +18,8 @@ char const FileUtils::pathSeparator =
 
 
 std::vector<std::string> FileUtils::handleFilePath(
-    std::map<std::string, ObjectT> & params
+    std::map<std::string, ObjectT> & params,
+    const std::vector<std::string> & assetsDir
 ){
     std::vector<std::string> filePaths(0);
     std::string path;
@@ -40,8 +41,24 @@ std::vector<std::string> FileUtils::handleFilePath(
         }
     }
 
-    if(extendedFilePath) filePaths = FileUtils::getFilesByExpression(path);
-    return filePaths;
+    // Compile the resulting list of files
+    std::vector<std::string> paths;
+    if(extendedFilePath) {
+        for(auto assetPath : assetsDir) {
+            std::vector<std::string> files = getFilesByExpression((fs::path(assetPath) / path).string());
+            paths.insert(paths.end(), files.begin(), files.end());
+        }
+    }
+    else {
+        for(auto assetPath : assetsDir) {
+            if(fs::exists(fs::path(assetPath) / path)) {
+                paths.push_back((fs::path(assetPath) / path).string());
+                break;
+            }
+        }
+    }
+
+    return paths;
 }
 
 

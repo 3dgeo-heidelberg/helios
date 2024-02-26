@@ -23,7 +23,7 @@ namespace fs = boost::filesystem;
 // *************** //
 ScenePart* XYZPointCloudFileLoader::run() {
     // Determine filepath
-    std::vector<std::string> filePaths = FileUtils::handleFilePath(params);
+    std::vector<std::string> filePaths = FileUtils::handleFilePath(params, assetsDir);
 
     // Read separator
 	string const & pSep = boost::get<string const &>(params["separator"]);

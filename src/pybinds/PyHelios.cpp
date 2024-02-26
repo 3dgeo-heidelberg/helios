@@ -77,7 +77,7 @@ BOOST_PYTHON_MODULE(_pyhelios){
     class_<PyHeliosSimulation>("Simulation", init<>())
         .def(init<
             std::string,
-            std::string,
+            std::vector<std::string>,
             std::string,
             size_t,
             bool,
@@ -87,7 +87,7 @@ BOOST_PYTHON_MODULE(_pyhelios){
         >())
         .def(init<
             std::string,
-            std::string,
+            std::vector<std::string>,
             std::string,
             size_t,
             bool,

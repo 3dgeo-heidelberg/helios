@@ -29,7 +29,8 @@ public:
      * @return Vector of parsed file paths (1 for filepath, n for efilepath)
      */
     static std::vector<std::string> handleFilePath(
-        std::map<std::string, ObjectT> & params
+        std::map<std::string, ObjectT> & params,
+        const std::vector<std::string> & assetsDir
     );
 
     /**

@@ -15,6 +15,7 @@
 #include <string>
 #include <unordered_map>
 #include <unordered_set>
+#include <vector>
 
 /**
  * @brief Class for asset loading from XML file.
@@ -45,7 +46,7 @@ protected:
     /**
      * @brief Assets directory
      */
-	std::string assetsDir;
+	std::vector<std::string> assetsDir;
 	/**
 	 * @brief Name of the XML file
 	 */
@@ -122,7 +123,7 @@ public:
 	 * @param filePath Path to XML File
 	 * @param assetsDir Path to assets directory
 	 */
-	XmlAssetsLoader(std::string& filePath, std::string& assetsDir);
+	XmlAssetsLoader(std::string& filePath, std::vector<std::string>& assetsDir);
 	virtual ~XmlAssetsLoader() {}
 
 	// ***  GETTERS and SETTERS  *** //

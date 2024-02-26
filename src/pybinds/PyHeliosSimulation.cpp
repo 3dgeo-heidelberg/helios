@@ -23,7 +23,7 @@ namespace fms = helios::filems;
 // ************************************ //
 PyHeliosSimulation::PyHeliosSimulation(
     std::string surveyPath,
-    std::string assetsPath,
+    std::vector<std::string> assetsPath,
     std::string outputPath,
     size_t numThreads,
     bool lasOutput,
