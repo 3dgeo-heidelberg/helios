@@ -9,6 +9,7 @@ on:
     branches:
       - main
       - dev
+      - alpha-dev
   workflow_dispatch:
 
 jobs:
