@@ -3,6 +3,7 @@
 Tests for checking that the XMLs are conform with the XSD
 """
 
+import os
 import pytest
 import xmlschema
 import xml.etree.ElementTree as ET
@@ -10,7 +11,7 @@ from pathlib import Path
 import urllib
 
 
-WORKING_DIR = str(Path(__file__).parent.parent.absolute())
+WORKING_DIR = os.getcwd()
 XSD_DIR = Path(WORKING_DIR) / 'python/pyhelios/util/xsd'
 survey_schema = xmlschema.XMLSchema(str(XSD_DIR / 'survey.xsd'))
 scene_schema = xmlschema.XMLSchema(str(XSD_DIR / 'scene.xsd'))

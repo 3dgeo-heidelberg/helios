@@ -2,7 +2,6 @@ from pyhelios.__main__ import helios_exec
 
 import os
 import shutil
-import subprocess
 import sys
 from pathlib import Path
 import numpy as np
@@ -16,7 +15,7 @@ except ImportError:
 
 MAX_DIFFERENCE_BYTES = 1024000000
 DELETE_FILES_AFTER = False
-WORKING_DIR = str(Path(__file__).parent.parent.absolute())
+WORKING_DIR = os.getcwd()
 
 
 def find_playback_dir(survey_path):
