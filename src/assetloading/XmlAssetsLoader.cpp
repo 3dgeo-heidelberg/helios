@@ -59,17 +59,7 @@ XmlAssetsLoader::XmlAssetsLoader(std::string &filePath, std::vector<std::string>
     : assetsDir(assetsDir)
     , sceneLoader(assetsDir)
 {
-
-  fs::path xmlFile(filePath);
-
-  if(xmlFile.is_relative()){
-    for(const auto path : assetsDir){
-        if(fs::exists(fs::path(path) / xmlFile)){
-            xmlFile = fs::path(path) / xmlFile;
-            break;
-        }
-    }
-  }
+  auto xmlFile = locateAssetFile(filePath);
 
   xmlDocFilename = xmlFile.filename().string();
   xmlDocFilePath = xmlFile.parent_path().string();
@@ -661,10 +651,12 @@ std::shared_ptr<Platform> XmlAssetsLoader::createInterpolatedMovingPlatform(){
                     logging::DEBUG(ss.str());
                 }
             }
-            else{ // Not first loaded, so merge with previous data
+            else{
+                // Not first loaded, so merge with previous data
+                auto resolved_path = locateAssetFile(trajectoryPath).string();
                 std::unique_ptr<TemporalDesignMatrix<double, double>> tdm;
                 if(indices.find(trajectoryPath) != indices.end()){ // XML inds
-                    DesignMatrix<double> dm(trajectoryPath, sep);
+                    DesignMatrix<double> dm(resolved_path, sep);
                     dm.swapColumns(indices[trajectoryPath]);
                     tdm = unique_ptr<TemporalDesignMatrix<double, double>>(
                         new TemporalDesignMatrix<double, double>(
@@ -675,7 +667,7 @@ std::shared_ptr<Platform> XmlAssetsLoader::createInterpolatedMovingPlatform(){
                 else{  // Trajectory file indices
                     tdm = unique_ptr<TemporalDesignMatrix<double, double>>(
                         new TemporalDesignMatrix<double, double>(
-                            trajectoryPath, sep
+                            resolved_path, sep
                         )
                     );
                     if(interpDom == "position"){ // t, x, y, z from header
@@ -1818,4 +1810,17 @@ bool XmlAssetsLoader::isProceduralAsset(
         if(id=="interpolated") return true;
     }
     return false;
+}
+
+fs::path XmlAssetsLoader::locateAssetFile(const std::string& filename) {
+  fs::path searchfile(filename);
+  if(searchfile.is_relative()){
+    for(const auto path : assetsDir){
+        if(fs::exists(fs::path(path) / searchfile)){
+            searchfile = fs::path(path) / searchfile;
+            break;
+        }
+    }
+  }
+  return searchfile.string();
 }

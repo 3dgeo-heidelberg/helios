@@ -11,11 +11,14 @@
 
 #include <tinyxml2.h>
 
+#include <boost/filesystem.hpp>
 #include <memory>
 #include <string>
 #include <unordered_map>
 #include <unordered_set>
 #include <vector>
+
+namespace fs = boost::filesystem;
 
 /**
  * @brief Class for asset loading from XML file.
@@ -371,6 +374,12 @@ protected:
         std::string const defaultTemplateId,
         std::unordered_set<std::string> &fields
     );
+
+	/**
+	 * @brief Locate an asset file in the given asset directories
+	 *
+	 */
+	fs::path locateAssetFile(const std::string& filename);
 
 public:
     // ***  STATIC METHODS  *** //
