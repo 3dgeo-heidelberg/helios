@@ -8,6 +8,8 @@ import numpy as np
 import pytest
 import fnmatch
 
+import pyhelios
+
 try:
     import laspy
 except ImportError:
@@ -44,14 +46,11 @@ def run_helios_executable(survey_path: Path, options=None) -> Path:
 
 def run_helios_pyhelios(survey_path: Path, las_output: bool = True, zip_output: bool = False,
                         start_time: str = None, split_by_channel: bool = False, las10: bool = False) -> Path:
-    sys.path.append(WORKING_DIR)
-    import pyhelios
     pyhelios.setDefaultRandomnessGeneratorSeed("43")
-    from pyhelios import SimulationBuilder
-    simB = SimulationBuilder(
+    simB = pyhelios.SimulationBuilder(
         surveyPath=str(survey_path.absolute()),
-        assetsDir=WORKING_DIR + os.sep + 'assets' + os.sep,
-        outputDir=WORKING_DIR + os.sep + 'output' + os.sep,
+        assetsDir=[str(Path("assets")), os.getcwd()],
+        outputDir=str(Path("output")),
     )
     simB.setLasOutput(las_output)
     simB.setLas10(las10)

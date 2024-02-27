@@ -21,7 +21,6 @@ std::vector<std::string> FileUtils::handleFilePath(
     std::map<std::string, ObjectT> & params,
     const std::vector<std::string> & assetsDir
 ){
-    std::vector<std::string> filePaths(0);
     std::string path;
     bool extendedFilePath = false;
 
@@ -32,7 +31,6 @@ std::vector<std::string> FileUtils::handleFilePath(
     catch(std::exception &e){
         try{
             path = boost::get<std::string const &>(params["filepath"]);
-            filePaths.push_back(path);
         }
         catch(std::exception &e2){
             std::stringstream ss;

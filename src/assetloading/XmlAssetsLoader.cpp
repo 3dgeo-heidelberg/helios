@@ -66,7 +66,7 @@ XmlAssetsLoader::XmlAssetsLoader(std::string &filePath, std::vector<std::string>
   logging::INFO("xmlDocFilename: " + xmlDocFilename);
   logging::INFO("xmlDocFilePath: " + xmlDocFilePath);
 
-  tinyxml2::XMLError result = doc.LoadFile(xmlFile.c_str());
+  tinyxml2::XMLError result = doc.LoadFile(xmlFile.string().c_str());
   if (result != tinyxml2::XML_SUCCESS) {
     logging::ERR("ERROR: loading " + filePath + " failed.");
   }
