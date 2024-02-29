@@ -19,11 +19,19 @@ using pyhelios::PyScanningStripWrapper;
 
 namespace fms = helios::filems;
 
+template<typename T>
+std::vector<T> py_list_to_std_vector(const boost::python::object& iterable)
+{
+    return std::vector<T>(boost::python::stl_input_iterator< T >(iterable),
+                          boost::python::stl_input_iterator< T >());
+}
+
+
 // ***  CONSTRUCTION / DESTRUCTION  *** //
 // ************************************ //
 PyHeliosSimulation::PyHeliosSimulation(
     std::string surveyPath,
-    std::string assetsPath,
+    boost::python::list assetsPath,
     std::string outputPath,
     size_t numThreads,
     bool lasOutput,
@@ -43,7 +51,7 @@ PyHeliosSimulation::PyHeliosSimulation(
     this->zipOutput = zipOutput;
     this->splitByChannel = splitByChannel;
     this->surveyPath = surveyPath;
-    this->assetsPath = assetsPath;
+    this->assetsPath = py_list_to_std_vector<std::string>(assetsPath);
     this->outputPath = outputPath;
     if(numThreads == 0) this->numThreads = std::thread::hardware_concurrency();
     else this->numThreads = numThreads;
@@ -54,7 +62,7 @@ PyHeliosSimulation::PyHeliosSimulation(
     this->parallelizationStrategy = parallelizationStrategy;
     this->chunkSize = chunkSize;
     this->warehouseFactor = warehouseFactor;
-    xmlreader = std::make_shared<XmlSurveyLoader>(surveyPath, assetsPath);
+    xmlreader = std::make_shared<XmlSurveyLoader>(surveyPath, this->assetsPath);
 }
 PyHeliosSimulation::~PyHeliosSimulation() {
     if(thread != nullptr) delete thread;

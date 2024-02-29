@@ -30,7 +30,7 @@ ScenePart* DetailedVoxelLoader::run() {
     }
 
     // Determine filepath
-    std::vector<std::string> filePaths = FileUtils::handleFilePath(params);
+    std::vector<std::string> filePaths = FileUtils::handleFilePath(params, assetsDir);
     for(std::string filePath : filePaths){
         std::stringstream ss;
         ss << "Reading detailed voxels from " << filePath;

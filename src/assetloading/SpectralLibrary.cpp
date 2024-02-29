@@ -11,8 +11,8 @@
 
 using namespace std;
 
-SpectralLibrary::SpectralLibrary(float wavelength_m, const std::string spectra)
-: spectra(spectra){
+SpectralLibrary::SpectralLibrary(float wavelength_m, std::vector<std::string> assetsDir, const std::string spectra)
+: assetsDir(assetsDir), spectra(spectra){
 
 	reflectanceMap = map<string, float>();
 	wavelength_um = wavelength_m * 1000000;
@@ -85,14 +85,20 @@ void SpectralLibrary::readFileAster(fs::path path) {
 void SpectralLibrary::readReflectances() {
 	logging::INFO("Reading Spectral Library...");
 
-	if (!fs::is_directory(spectra)) {
-		logging::ERR("ERROR: folder " + spectra + " not found");
-		return;
+	bool found = false;
+	for(const auto path : assetsDir){
+		if (!fs::is_directory(fs::path(path) / spectra))
+			continue;
+
+		found = true;
+		for (auto& p : fs::directory_iterator(fs::path(path) / spectra)) {
+			readFileAster(p.path());
+		}
 	}
 
-	fs::directory_iterator it{ fs::path(spectra) };
-	for (auto& p : fs::directory_iterator(fs::path(spectra))) {
-		readFileAster(p.path());
+	if (!found) {
+        logging::ERR("ERROR: folder " + spectra + " not found");
+        return;
 	}
 
 	stringstream ss;

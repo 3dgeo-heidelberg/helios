@@ -171,6 +171,7 @@ shared_ptr<ScenePart> XmlSceneLoader::loadFilters(
         // Finally, apply the filter:
         if (filter != nullptr) {
             // Set params:
+            filter->setAssetsDir(assetsDir);
             filter->params = XmlUtils::createParamsFromXml(filterNodes);
             logging::DEBUG("Applying filter: " + filterType);
             scenePart = filter->run();

@@ -34,7 +34,7 @@ private:
     size_t numThreads = 0;
     size_t callbackFrequency = 0;
     std::string surveyPath = "NULL";
-    std::string assetsPath = "NULL";
+    std::vector<std::string> assetsPath;
     std::string outputPath = "NULL";
     std::shared_ptr<Survey> survey = nullptr;
     std::shared_ptr<SurveyPlayback> playback = nullptr;
@@ -72,7 +72,7 @@ public:
      */
     PyHeliosSimulation(
         std::string surveyPath,
-        std::string assetsPath = "assets/",
+        boost::python::list assetsPath,
         std::string outputPath = "output/",
         size_t numThreads = 0,
         bool lasOutput = false,
@@ -131,7 +131,7 @@ public:
      *
      * @return Path to the assets directory used by the simulation
      */
-    std::string getAssetsPath() {return assetsPath;}
+    std::vector<std::string> getAssetsPath() {return assetsPath;}
 
     /**
      * @brief Obtain the survey used by the simulation

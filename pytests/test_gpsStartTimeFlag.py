@@ -1,14 +1,14 @@
-import pytest
-import os, shutil
+import os
+import shutil
 from test_demo_scenes import run_helios_executable, find_playback_dir
 from pathlib import Path
 import sys
-import datetime, time
+import datetime
 import hashlib
 
 MAX_DIFFERENCE_BYTES = 1024
 DELETE_FILES_AFTER = True
-WORKING_DIR = str(Path(__file__).parent.parent.absolute())
+WORKING_DIR = os.getcwd()
 
 
 def sha256sum(filename):

@@ -1,10 +1,9 @@
+import os
 import pytest
-import numpy as np
-from pathlib import Path
 from pyhelios.util import scene_writer
 import re
 
-WORKING_DIR = str(Path(__file__).parent.parent.absolute())
+WORKING_DIR = os.getcwd()
 
 
 def test_add_translation_filter():

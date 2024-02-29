@@ -33,22 +33,8 @@ namespace fs = boost::filesystem;
 // ***  MAIN METHODS *** //
 // ********************* //
 ScenePart *WavefrontObjFileLoader::run() {
-    // Determine filepath
-    bool extendedFilePath = false;
-    std::vector<std::string> filePaths(0);
-    try {
-        filePathString = boost::get<string const &>(params["efilepath"]);
-        extendedFilePath = true;
-    } catch (std::exception &e) {
-        try {
-            filePathString = boost::get<string const &>(params["filepath"]);
-            filePaths.push_back(filePathString);
-        } catch (std::exception &e2) {
-            stringstream ss;
-            ss << "No filepath was provided.\nEXCEPTION: " << e2.what();
-            logging::ERR(ss.str());
-        }
-    }
+  // Determine filepath
+  auto filePaths = FileUtils::handleFilePath(params, assetsDir);
 
   // Determine up-axis
   bool yIsUp = false;
@@ -72,10 +58,6 @@ ScenePart *WavefrontObjFileLoader::run() {
     logging::INFO(ss.str());
   }
   // ######### END Read up axis ###########
-
-  // If extended file path, determine all file paths
-  if(extendedFilePath)
-      filePaths = FileUtils::getFilesByExpression(filePathString);
 
   // Load OBJ Cache
   auto &cache = WavefrontObjCache::getInstance();

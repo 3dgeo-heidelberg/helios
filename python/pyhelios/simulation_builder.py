@@ -165,19 +165,12 @@ class SimulationBuilder:
     # ---  GETTERS and SETTERS  --- #
     # ----------------------------- #
     def setSurveyPath(self, surveyPath):
-        # TODO Remove ---
-        print(f'surveyPath: "{surveyPath}"')
-        # --- TODO Remove
-        self.validatePath(surveyPath)
         self.surveyPath = surveyPath
 
     def setAssetsDir(self, assetsDir):
-        self.validateDir(assetsDir)
         self.assetsDir = assetsDir
 
     def setOutputDir(self, outputDir):
-        # self.validateDir(outputDir)  # note: the output dir does not have to exist at this point
-        #                                      as it can be created by (py)helios when running it
         self.outputDir = outputDir
 
     def setNumThreads(self, numThreads):
@@ -287,44 +280,6 @@ class SimulationBuilder:
 
     # ---  VALIDATION METHODS  --- #
     # ---------------------------- #
-    def validatePath(self, path):
-        if not os.path.exists(path):
-            raise PyHeliosToolsException(
-                'SimulationBuilder EXCEPTION!\n\t'
-                'Path \'{p}\' does not exist'.format(p=path)
-            )
-
-        if not os.path.isfile(path):
-            raise PyHeliosToolsException(
-                'SimulationBuilder EXCEPTION!\n\t'
-                'Path \'{p}\' does not point to a file'.format(p=path)
-            )
-
-        if not os.access(path, os.R_OK):
-            raise PyHeliosToolsException(
-                'SimulationBuilder EXCEPTION!\n\t'
-                'Cannot read path \'{p}\''.format(p=path)
-            )
-
-    def validateDir(self, dir):
-        if not os.path.exists(dir):
-            raise PyHeliosToolsException(
-                'SimulationBuilder EXCEPTION!\n\t'
-                'Dir \'{d}\' does not exist'.format(d=dir)
-            )
-
-        if not os.path.isdir(dir):
-            raise PyHeliosToolsException(
-                'SimulationBuilder EXCEPTION!\n\t'
-                'Dir \'{d}\' does not point to a directory'.format(d=dir)
-            )
-
-        if not (os.access(dir, os.R_OK) and os.access(dir, os.X_OK)):
-            raise PyHeliosToolsException(
-                'SimulationBuilder EXCEPTION!\n\t'
-                'Cannot access directory \'{d}\''.format(d=dir)
-            )
-
     def validateNumThreads(self, numThreads):
         if isnan(numThreads):
             raise PyHeliosToolsException(

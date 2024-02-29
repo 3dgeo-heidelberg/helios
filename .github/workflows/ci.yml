@@ -9,6 +9,7 @@ on:
     branches:
       - main
       - dev
+      - alpha-dev
   workflow_dispatch:
 
 jobs:
@@ -44,7 +45,7 @@ jobs:
 
       - name: Install Helios
         run: |
-          CMAKE_PREFIX_PATH=${CONDA_PREFIX} python -m pip install -v .
+          python -m pip install -v .
       
       - name: Run tests
         run: |

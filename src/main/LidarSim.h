@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <vector>
 
 namespace helios { namespace main{
 
@@ -59,7 +60,7 @@ public:
      */
     void init(
         std::string surveyPath,
-        std::string assetsPath,
+        std::vector<std::string> assetsPath,
         std::string outputPath,
         bool writeWaveform = false,
         bool writePulse = false,

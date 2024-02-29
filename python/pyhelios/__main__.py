@@ -1,4 +1,5 @@
 import importlib_resources as resources
+import os
 import subprocess
 import sys
 
@@ -9,6 +10,9 @@ def _get_executable():
 
 
 def helios_exec(args):
+    # Inject additional arguments to account for standard paths
+    args = args + ["--assets", os.getcwd()]
+
     executable = _get_executable()
     return subprocess.call([executable] + args)
 

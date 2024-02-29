@@ -10,6 +10,7 @@
 #include <unordered_set>
 #include <unordered_map>
 #include <memory>
+#include <vector>
 
 /**
  * @brief Survey loader from XML
@@ -41,7 +42,7 @@ public:
      * @param filePath Path to the XML File
      * @param assetsDir Path to the assets directory
      */
-	XmlSurveyLoader(std::string& filePath, std::string& assetsDir)
+	XmlSurveyLoader(std::string& filePath, std::vector<std::string>& assetsDir)
 	    : XmlAssetsLoader(filePath, assetsDir) {}
 
     // ***  M E T H O D S  *** //
