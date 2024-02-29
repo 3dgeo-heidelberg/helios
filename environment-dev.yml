@@ -21,3 +21,5 @@ dependencies:
   # for development workflows e.g. local testing
   - doxygen
   - pytest
+  - laspy
+  - lazrs-python
