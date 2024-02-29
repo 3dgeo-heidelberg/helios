@@ -49,7 +49,7 @@ def run_helios_pyhelios(survey_path: Path, las_output: bool = True, zip_output: 
     pyhelios.setDefaultRandomnessGeneratorSeed("43")
     simB = pyhelios.SimulationBuilder(
         surveyPath=str(survey_path.absolute()),
-        assetsDir=[str(Path("assets")), os.getcwd()],
+        assetsDir=[str(Path("assets"))],
         outputDir=str(Path("output")),
     )
     simB.setLasOutput(las_output)

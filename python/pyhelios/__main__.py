@@ -10,9 +10,18 @@ def _get_executable():
 
 
 def helios_exec(args):
+    #
     # Inject additional arguments to account for standard paths
+    #
+
+    # We always look for assets in the current working directory
     args = args + ["--assets", os.getcwd()]
 
+    # We always look in the Python installation tree
+    args = args + ["--assets", resources.files("pyhelios")]
+    args = args + ["--assets", resources.files("pyhelios") / "data"]
+
+    # Call the executable
     executable = _get_executable()
     return subprocess.call([executable] + args)
 
