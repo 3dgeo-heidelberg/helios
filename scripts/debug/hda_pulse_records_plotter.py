@@ -1078,25 +1078,13 @@ def do_energy_plots(arec, brec, outdir):
     theta_linspace = np.linspace(theta_min, theta_max, n_cases)
     ray_indices_a = []
     ray_indices_b = []
-    print(f'ray_idx_a:\n{arec["ray_idx"]}\n')  # TODO Remove
-    print(f'ray_idx_b:\n{brec["ray_idx"]}\n')  # TODO Remove
     for theta_target in theta_linspace:
-        print(f'theta_target: {theta_target}')  # TODO Remove
         theta_index_a = np.argmin(np.abs(theta_rad_a-theta_target))
-        print(f'theta_index_a: {theta_index_a}')  # TODO Remove
         ray_idx_a = int(arec['ray_idx'][theta_index_a])
-        print(f'ray_idx_a: {ray_idx_a}')  # TODO Remove
         ray_indices_a.append(ray_idx_a)
         theta_index_b = np.argmin(np.abs(theta_rad_b-theta_target))
-        print(f'theta_index_b: {theta_index_b}')  # TODO Remove
         ray_idx_b = int(brec['ray_idx'][theta_index_b])
-        print(f'ray_idx_b: {ray_idx_b}')  # TODO Remove
         ray_indices_b.append(ray_idx_b)
-        print('-----------------------------------')  # TODO Remove
-    # TODO Remove section ---
-    print(f'ray_indices_a:\n{ray_indices_a}\n')
-    print(f'ray_indices_b:\n{ray_indices_b}\n')
-    # --- TODO Remove section
     # For each case generate a dataset with all the subrays
     ray_idx_a, ray_idx_b = arec['ray_idx'], brec['ray_idx']
     energy_dataset_a, energy_dataset_b = [], []
@@ -1121,62 +1109,91 @@ def do_energy_plots(arec, brec, outdir):
             'radius_step': brec['radius_step'][mask_b],
             'ray_idx': brec['ray_idx'][mask_b]
         })
-    print(f'len(energy_dataset_a) = {len(energy_dataset_a)}')  # TODO Remove
-    print(f'len(energy_dataset_a[0][x]) = {len(energy_dataset_a[0]["incidence_angle_rad"])}')  # TODO Remove
-    print(f'len(energy_dataset_b) = {len(energy_dataset_b)}')  # TODO Remove
-    print(f'len(energy_dataset_b[0][x]) = {len(energy_dataset_b[0]["incidence_angle_rad"])}')  # TODO Remove
     # Do the energy plots
     _do_energy_plots(energy_dataset_a, energy_dataset_b, outdir)
 
 
 def _do_energy_plots(eda, edb, outdir):
-    # Build figure
-    fig = init_figure()  # Initialize figure
+    # Prepare figures
     n_cases = 2*len(eda)
     nrows = int(np.sqrt(n_cases))
     ncols = int(np.ceil(n_cases/nrows))
-    fig = plt.figure(figsize=(16, 10))
-    # Do the subplots
-    for i in range(n_cases//2):
-        ax = fig.add_subplot(nrows, ncols, i+1)
-        do_energy_subplot(fig, ax, eda[i], 'A')
-        ax = fig.add_subplot(nrows, ncols, i+1+n_cases//2)
-        do_energy_subplot(fig, ax, edb[i], 'B')
-    # Post-process figure
-    fig.tight_layout()
-    # Save figure to file and remove it from memory
-    fig.savefig(
-        os.path.join(outdir, 'energy_plots.png')
-    )
-    fig.clear()
-    plt.close(fig)
+    fig_data = [
+        {
+            'key': 'emitted_power',
+            'full_name': 'Emitted power',
+            'name': '$P_e$'
+        },
+        {
+            'key': 'target_area_m2',
+            'full_name': 'Target area',
+            'name': '$A$'
+        },
+        {
+            'key': 'cross_section',
+            'full_name': 'Cross-section',
+            'name': '$\\sigma$'
+        },
+        {
+            'key': 'received_power',
+            'full_name': 'Received power',
+            'name': '$P_r$'
+        }
+    ]
+    for fig_record in fig_data:
+        # Build figure
+        fig = init_figure(figsize=(16, 10))  # Initialize figure
+        # Do the subplots
+        for i in range(n_cases//2):
+            ax = fig.add_subplot(nrows, ncols, i+1)
+            do_energy_subplots(
+                fig, ax, eda[i], 'A',
+                fig_record['key'],
+                fig_record['full_name'],
+                fig_record['name']
+            )
+            ax = fig.add_subplot(nrows, ncols, i+1+n_cases//2)
+            do_energy_subplots(
+                fig, ax, edb[i], 'B',
+                fig_record['key'],
+                fig_record['full_name'],
+                fig_record['name']
+            )
+        # Post-process figure
+        fig.tight_layout()
+        # Save figure to file and remove it from memory
+        fig.savefig(
+            os.path.join(outdir, f'energy_plots_{fig_record["key"]}.png')
+        )
+        fig.clear()
+        plt.close(fig)
 
 
-def do_energy_subplot(fig, ax, edi, case_letter):
+def do_energy_subplots(
+    fig, ax, edi, case_letter, key, full_name, name
+):
     # Extract values of interest
     rstep = edi['radius_step']
     n_subrays = len(rstep)
     rstep_uniq = np.unique(rstep)
     # Group by radius step
-    pe = edi['emitted_power']
-    pe_by_rs = [pe[rstep == rstepk] for rstepk in rstep_uniq]
+    x = edi[key]
+    x_by_rs = [x[rstep == rstepk] for rstepk in rstep_uniq]
     # Do the plot
-    pe_by_rs_sum = 0
-    print(f'rstep_uniq: {rstep_uniq}')  # TODO Remove
-    print(f'pe_by_rs:\n{pe_by_rs}')  # TODO Remove
+    x_by_rs_sum = 0
     for j, rstepk in enumerate(rstep_uniq):
-        pe_by_rsj = pe_by_rs[j]
-        pe_by_rsj_sum = np.sum(pe_by_rsj)
-        pe_by_rs_sum += pe_by_rsj_sum
+        x_by_rsj = x_by_rs[j]
+        x_by_rsj_sum = np.sum(x_by_rsj)
+        x_by_rs_sum += x_by_rsj_sum
         ax.bar(
-            rstepk, pe_by_rsj_sum,
+            rstepk, x_by_rsj_sum,
             color='gray',
             align='center',
             width=0.8,
             label='sum' if j == 0 else None
         )
         ax.bar(
-            rstepk, pe_by_rsj[0],
+            rstepk, x_by_rsj[0],
             color='tab:red',
             align='center',
             width=0.8,
@@ -1184,9 +1201,9 @@ def do_energy_subplot(fig, ax, edi, case_letter):
         )
     ax.legend(loc='best')
     ax.set_xlabel('Radius step', fontsize=14)
-    ax.set_ylabel('Emitted power ($P_e$)', fontsize=14)
+    ax.set_ylabel(f'{full_name} ({name})', fontsize=14)
     ax.set_title(
-        f'{case_letter}) $P_e = $ {pe_by_rs_sum:.3g} ({n_subrays} subrays)\n'
+        f'{case_letter}) {name} $ = $ {x_by_rs_sum:.3g} ({n_subrays} subrays)\n'
         f'$\\theta = {(edi["incidence_angle_rad"][0]*180/np.pi):.3f}$ deg'
     )
 
