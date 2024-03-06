@@ -14,6 +14,7 @@
 #include <dataanalytics/HDA_StateJSONReporter.h>
 #endif
 #include <SimulationReporter.h>
+#include <SimulationPlayer.h>
 
 #include <chrono>
 
@@ -21,9 +22,11 @@
  * @brief Class representing a simulation
  */
 class Simulation {
-friend class SimulationReporter;
+private:
+    friend class SimulationReporter;
+    friend class SimulationPlayer;
 #ifdef DATA_ANALYTICS
-friend class helios::analytics::HDA_StateJSONReporter;
+    friend class helios::analytics::HDA_StateJSONReporter;
 #endif
 protected:
     // ***  ATTRIBUTES  *** //
@@ -198,6 +201,12 @@ public:
 	 * @brief Start the simmulation
 	 */
 	void start();
+    /**
+     * @brief Handle the main simulation loop, i.e., the loop that governs
+     *  the computations between the first and the last leg of the survey.
+     * @return The number of iterations run in the simulation loop.
+     */
+    virtual void doSimLoop();
 	/**
 	 * @brief Stop the simulation
 	 *

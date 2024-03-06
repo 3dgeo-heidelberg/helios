@@ -41,6 +41,9 @@ XmlSceneLoader::createSceneFromXml(
         // Load filter nodes, if any
         shared_ptr<ScenePart> scenePart = loadFilters(scenePartNode, holistic);
 
+        // Load swaps, if any
+        scenePart->sorh = loadScenePartSwaps(scenePartNode, scenePart);
+
         // Read and set scene part ID
         bool splitPart = loadScenePartId(scenePartNode, partIndex, scenePart);
 
@@ -119,56 +122,12 @@ shared_ptr<ScenePart> XmlSceneLoader::loadFilters(
     tinyxml2::XMLElement *filterNodes =
         scenePartNode->FirstChildElement("filter");
     while (filterNodes != nullptr) {
+        // Load the filter
         std::string filterType = filterNodes->Attribute("type");
-        std::transform(
-            filterType.begin(),
-            filterType.end(),
-            filterType.begin(),
-            ::tolower
+        AbstractGeometryFilter *filter = loadFilter(
+            filterNodes, holistic, scenePart
         );
-        AbstractGeometryFilter *filter = nullptr;
-
-        // ################### BEGIN Set up filter ##################
-
-        // Apply scale transformation:
-        if (filterType == "scale") {
-            filter = new ScaleFilter(scenePart);
-        }
-
-        // Read GeoTiff file:
-        else if (filterType == "geotiffloader") {
-            filter = new GeoTiffFileLoader();
-        }
-
-        // Read Wavefront Object file:
-        else if (filterType == "objloader") {
-            filter = new WavefrontObjFileLoader();
-        }
-
-        // Apply rotation filter:
-        else if (filterType == "rotate") {
-            filter = new RotateFilter(scenePart);
-        }
-
-        // Apply translate transformation:
-        else if (filterType == "translate") {
-            filter = new TranslateFilter(scenePart);
-        }
-
-        // Read xyz ASCII point cloud file:
-        else if (filterType == "xyzloader") {
-            filter = new XYZPointCloudFileLoader();
-            holistic = true;
-        }
-
-        // Read detailed voxels file
-        else if (filterType == "detailedvoxels") {
-            filter = new DetailedVoxelLoader();
-        }
-
-        // ################### END Set up filter ##################
-
-        // Finally, apply the filter:
+        // Apply the filter
         if (filter != nullptr) {
             // Set params:
             filter->params = XmlUtils::createParamsFromXml(filterNodes);
@@ -183,6 +142,98 @@ shared_ptr<ScenePart> XmlSceneLoader::loadFilters(
     }
     // ############## END Loop over filter nodes ##################
     return shared_ptr<ScenePart>(scenePart);
+}
+
+AbstractGeometryFilter * XmlSceneLoader::loadFilter(
+    tinyxml2::XMLElement *filterNode,
+    bool &holistic,
+    ScenePart *scenePart
+){
+    std::string filterType = filterNode->Attribute("type");
+
+    std::transform(
+        filterType.begin(),
+        filterType.end(),
+        filterType.begin(),
+        ::tolower
+    );
+    AbstractGeometryFilter *filter = nullptr;
+
+    // ################### BEGIN Set up filter ##################
+
+    // Apply scale transformation:
+    if (filterType == "scale") {
+        filter = new ScaleFilter(scenePart);
+    }
+
+        // Read GeoTiff file:
+    else if (filterType == "geotiffloader") {
+        filter = new GeoTiffFileLoader();
+    }
+
+        // Read Wavefront Object file:
+    else if (filterType == "objloader") {
+        filter = new WavefrontObjFileLoader();
+    }
+
+        // Apply rotation filter:
+    else if (filterType == "rotate") {
+        filter = new RotateFilter(scenePart);
+    }
+
+        // Apply translate transformation:
+    else if (filterType == "translate") {
+        filter = new TranslateFilter(scenePart);
+    }
+
+        // Read xyz ASCII point cloud file:
+    else if (filterType == "xyzloader") {
+        filter = new XYZPointCloudFileLoader();
+        holistic = true;
+    }
+
+        // Read detailed voxels file
+    else if (filterType == "detailedvoxels") {
+        filter = new DetailedVoxelLoader();
+    }
+    // ################### END Set up filter ##################
+
+    return filter;
+}
+
+shared_ptr<SwapOnRepeatHandler> XmlSceneLoader::loadScenePartSwaps(
+    tinyxml2::XMLElement *scenePartNode,
+    shared_ptr<ScenePart> scenePart
+){
+    // Find swap nodes
+    tinyxml2::XMLElement *swapNodes = scenePartNode->FirstChildElement("swap");
+    // If there are no swaps, then there is no handler
+    if(swapNodes == nullptr) return nullptr;
+    // Build handler from the swaps
+    shared_ptr<SwapOnRepeatHandler> sorh =
+        std::make_shared<SwapOnRepeatHandler>();
+    while(swapNodes != nullptr){
+        bool holistic = false;
+        tinyxml2::XMLElement *filterNodes =
+            swapNodes->FirstChildElement("filter");
+        std::deque<AbstractGeometryFilter *> swapFilters;
+        // Add filters to the handler
+        while(filterNodes != nullptr){
+            AbstractGeometryFilter *filter = loadFilter(
+                filterNodes, holistic, scenePart.get()
+            );
+            filter->params = XmlUtils::createParamsFromXml(filterNodes);
+            swapFilters.push_back(filter);
+            // Find next XML filter element
+            filterNodes = filterNodes->NextSiblingElement("filter");
+        }
+        sorh->pushSwapFilters(swapFilters);
+        // Find next XML swap element
+        swapNodes = swapNodes->NextSiblingElement("swap");
+    }
+    sorh->prepare(scenePart);
+    // Return built handler
+    return sorh;
 }
 
 bool XmlSceneLoader::loadScenePartId(

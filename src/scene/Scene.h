@@ -460,6 +460,15 @@ public:
         }
         return false;
     }
+    /**
+     * @brief Get all the scene parts in the scene that need a swap between
+     *  consecutive simulation replays.
+     * @return Vector of scene parts with a handle for swap on repeat
+     *  operations.
+     * @see ScenePart::getSwapOnRepeatHandler
+     * @see ScenePart::sorh
+     */
+    std::vector<std::shared_ptr<ScenePart>> getSwapOnRepeatObjects();
 
     // ***   READ/WRITE  *** //
     // ********************* //
