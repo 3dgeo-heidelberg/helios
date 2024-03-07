@@ -162,6 +162,19 @@ public:
 
     std::shared_ptr<SimulationCycleCallback> callback = nullptr;
 
+    /**
+     * @brief Simulation player to handle the simulation loop from the outside.
+     *
+     * While the simulation loop handles all the legs of a survey, the
+     *  simulation player handles the simulation loop, e.g., for a survey
+     *  with repetitions the simulation player provides the logic to correctly
+     *  launch the simulation loop correctly many times (one per repetition).
+     *
+     * @see SimulationPlayer
+     * @see SwapOnRepeatHandler
+     */
+    std::unique_ptr<SimulationPlayer> simPlayer = nullptr;
+
     // ***  CONSTRUCTION / DESTRUCTION  *** //
     // ************************************ //
     /**

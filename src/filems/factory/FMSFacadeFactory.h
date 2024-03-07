@@ -48,7 +48,8 @@ public:
         bool const las10,
         bool const zipOutput,
         bool const splitByChannel,
-        Survey &survey
+        Survey &survey,
+        bool const updateSurvey=true
     );
     /**
      * @brief Overload of buildFacade method that considers splitByChannel as
@@ -61,10 +62,12 @@ public:
         bool const lasOutput,
         bool const las10,
         bool const zipOutput,
-        Survey &survey
+        Survey &survey,
+        bool const updateSurvey=true
     ){
         return buildFacade(
-            outdir, lasScale, lasOutput, las10, zipOutput, false, survey
+            outdir, lasScale, lasOutput, las10, zipOutput, false, survey,
+            updateSurvey
         );
     }
 

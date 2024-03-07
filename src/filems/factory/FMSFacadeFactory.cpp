@@ -25,7 +25,8 @@ shared_ptr<FMSFacade> FMSFacadeFactory::buildFacade(
     bool const las10,
     bool const zipOutput,
     bool const splitByChannel,
-    Survey &survey
+    Survey &survey,
+    bool const updateSurvey
 ){
     // Try to find a non-existent root directory
     time_t t = std::time(nullptr);
@@ -61,14 +62,18 @@ shared_ptr<FMSFacade> FMSFacadeFactory::buildFacade(
 
     // Create FMS facade
     shared_ptr<FMSFacade> fms = make_shared<FMSFacade>();
-    // Assign facade to interested survey components
-    survey.scanner->fms = fms;
-    for(size_t i = 0 ; i < survey.scanner->getNumDevices() ; ++i){
-        survey.scanner->getDetector(i)->setFMS(fms);
+    // Assign facade to interested survey components, if requested
+    if(updateSurvey) {
+        survey.scanner->fms = fms;
+        for (size_t i = 0; i < survey.scanner->getNumDevices(); ++i) {
+            survey.scanner->getDetector(i)->setFMS(fms);
+        }
     }
 
     // Configure write facade
     FMSWriteFacade &fmsWrite = fms->write;
+    fmsWrite.splitByChannel = splitByChannel;
+    fmsWrite.outDir = outdir;
     fmsWrite.setRootDir(rootDir);
 
     // Configure measurement writer

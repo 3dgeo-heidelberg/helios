@@ -5,6 +5,7 @@ class Scene;
 class Platform;
 namespace helios { namespace filems { class FMSFacade; }}
 using helios::filems::FMSFacade;
+class Scanner;
 
 #include <memory>
 
@@ -84,6 +85,15 @@ public:
      * @return How many times the simulation has been played.
      */
     int getNumComputedPlays();
+    /**
+     * @brief The logic after finishing one play of the survey and before
+     *  starting the next one.
+     * @see SurveyPlayback
+     * @see SurveyPlayback::startNextLeg
+     * @see Simulation
+     * @see Simulation::simPlayer
+     */
+    void prepareRepeat();
 
 protected:
     // ***  UTIL PROTECTED METHODS  *** //
@@ -102,6 +112,12 @@ protected:
      * @see FMSFacade
      */
     void restartFileMS(FMSFacade &fms);
+    /**
+     * @brief Restart a scanner to its start point.
+     * @param sc The scanner to be restarted.
+     * @see Scanner
+     */
+    void restartScanner(Scanner &sc);
     /**
      * @brief Restart a simulation to its start point.
      * @param sim The simulation to be restarted.

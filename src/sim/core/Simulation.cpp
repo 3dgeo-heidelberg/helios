@@ -142,14 +142,15 @@ void Simulation::start() {
 #endif
 
     // Play simulation
-    SimulationPlayer simPlayer(*this);
-    while(simPlayer.hasPendingPlays()){
+    simPlayer = std::make_unique<SimulationPlayer>(*this);
+    while(simPlayer->hasPendingPlays()){
         doSimLoop();
         // TODO Rethink : Synchronization barrier before next iteration, if any
         // NOTE there is no need for a sync. barrier after the last iteration
         // because end of simulation will handle it.
-        simPlayer.endPlay();
+        simPlayer->endPlay();
     }
+    simPlayer = nullptr;
 
 #ifdef DATA_ANALYTICS
 	// Finish data analytics stuff
