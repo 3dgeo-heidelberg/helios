@@ -214,6 +214,13 @@ shared_ptr<SwapOnRepeatHandler> XmlSceneLoader::loadScenePartSwaps(
         std::make_shared<SwapOnRepeatHandler>();
     while(swapNodes != nullptr){
         bool holistic = false;
+        int const swapStep = boost::get<int>(XmlUtils::getAttribute(
+            swapNodes,
+            "swapStep",
+            "int",
+            1
+        ));
+        sorh->pushTimeToLive(swapStep);
         tinyxml2::XMLElement *filterNodes =
             swapNodes->FirstChildElement("filter");
         std::deque<AbstractGeometryFilter *> swapFilters;

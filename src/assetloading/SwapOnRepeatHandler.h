@@ -30,6 +30,15 @@ protected:
      */
     std::deque<std::deque<AbstractGeometryFilter *>> swapFilters;
     /**
+     * @brief The time to live for each swap (in number of simulation plays).
+     */
+    std::deque<int> timesToLive;
+    /**
+     * @brief The time to live of the current scene part before doing further
+     *  swaps (in number of simulation plays).
+     */
+    int currentTimeToLive;
+    /**
      * @brief The baseline scene part before applying any transformation.
      */
     std::unique_ptr<ScenePart> baseline;
@@ -55,8 +64,9 @@ public:
      * @brief Compute the swap on the given scene part.
      * @param sp The scene part that needs the swap.
      * @see ScenePart
+     * @see SwapOnRepeatHandler::doSwap
      */
-    void swap(std::shared_ptr<ScenePart> sp);
+    void swap(ScenePart &sp);
     /**
      * @brief This method must be called after constructing a handler but
      *  before using it.
@@ -95,17 +105,35 @@ public:
     void pushSwapFilters(
         std::deque<AbstractGeometryFilter *> const &swapFilters
     );
+    /**
+     * @brief Push the time to live to its queue.
+     * @param timeToLive The time to live to be pushed.
+     * @see SwapOnRepeatHandler::timesToLive
+     */
+    void pushTimeToLive(int const timeToLive);
 
 protected:
     // ***  UTIL METHODS  *** //
     // ********************** //
     /**
+     * @brief Compute the logic of the swap operation.
+     *
+     * Note that this method assists the SwapOnRepeatHandler::swap method.
+     * The main swap method handles the logic on whether the swap must be
+     * effective or not (e.g., depending on the time to live), and the doSwap
+     * method is called only when the swap must be effective.
+     *
+     * @param sp The scene part that needs the swap.
+     * @see SwapOnRepeatHandler::swap
+     */
+    void doSwap(ScenePart &sp);
+    /**
      * @brief Update the geometry of the destiny scene part with the geometry
      *  of the source scene part.
      * @param src The source scene part.
      * @param dst The destiny scene part.
+     * @see SwapOnRepeatHandler::doSwap
      */
     void doGeometricSwap(ScenePart &src, ScenePart &dst);
-
 
 };

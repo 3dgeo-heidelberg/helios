@@ -33,7 +33,7 @@ void SimulationPlayer::endPlay(){
     for(std::shared_ptr<ScenePart> sp : swapOnRepeatObjects){
         std::shared_ptr<SwapOnRepeatHandler> sorh =
             sp->getSwapOnRepeatHandler();
-        if(sorh->hasPendingSwaps()) sorh->swap(sp);
+        if(sorh->hasPendingSwaps()) sorh->swap(*sp);
     }
     // Prepare next play, if any
     if(plays < getNumTargetPlays()) {
