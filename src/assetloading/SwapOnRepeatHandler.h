@@ -33,6 +33,11 @@ protected:
      * @brief The baseline scene part before applying any transformation.
      */
     std::unique_ptr<ScenePart> baseline;
+    /**
+     * @brief Specify whether the scene part associated to the handler must
+     *  be discarded before the next simulation play.
+     */
+    bool discardOnReplay;
 
 public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //
@@ -51,7 +56,7 @@ public:
      * @param sp The scene part that needs the swap.
      * @see ScenePart
      */
-    void swap(ScenePart &sp);
+    void swap(std::shared_ptr<ScenePart> sp);
     /**
      * @brief This method must be called after constructing a handler but
      *  before using it.
@@ -70,12 +75,14 @@ public:
      * @return Number of swaps that must be handled.
      * @see SwapOnRepeatHandler::numTargetSwaps
      */
-    inline int getNumTargetSwaps() {return numTargetSwaps;}
+    inline int getNumTargetSwaps() const {return numTargetSwaps;}
     /**
      * @brief Check whether the handler has pending swaps.
      * @return True if the handler has pending swaps, false otherwise.
      */
-    inline bool hasPendingSwaps() {return numCurrentSwaps < numTargetSwaps;}
+    inline bool hasPendingSwaps() const
+    {return numCurrentSwaps < numTargetSwaps;}
+    inline bool needsDiscardOnReplay() const {return discardOnReplay;}
     /**
      * @brief Push the swap filters to the handler.
      *

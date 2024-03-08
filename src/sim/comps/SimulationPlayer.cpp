@@ -33,7 +33,7 @@ void SimulationPlayer::endPlay(){
     for(std::shared_ptr<ScenePart> sp : swapOnRepeatObjects){
         std::shared_ptr<SwapOnRepeatHandler> sorh =
             sp->getSwapOnRepeatHandler();
-        if(sorh->hasPendingSwaps()) sorh->swap(*sp);
+        if(sorh->hasPendingSwaps()) sorh->swap(sp);
     }
     // Prepare next play, if any
     if(plays < getNumTargetPlays()) {
@@ -43,6 +43,8 @@ void SimulationPlayer::endPlay(){
         restartFileMS(*sim.getScanner()->fms);
         // Restart scanner
         restartScanner(*sim.getScanner());
+        // Restar scene
+        restartScene(*sim.getScanner()->platform->scene);
         // Restart simulation
         restartSimulation(sim);
     }
@@ -60,6 +62,7 @@ int SimulationPlayer::getNumTargetPlays(){
             sp->getSwapOnRepeatHandler();
         if(sorh->getNumTargetSwaps() >= numTargetPlays){
             numTargetPlays = 1 + sorh->getNumTargetSwaps();
+            for(Primitive * p: sp->getPrimitives()) p->part = sp; // TODO Remove : Just to check if solves null part issue
         }
     }
     // Return the number of target plays
@@ -71,6 +74,7 @@ int SimulationPlayer::getNumComputedPlays(){
 }
 
 void SimulationPlayer::prepareRepeat(){
+    // Handle end of current simulation play to prepare next replay
     // TODO Rethink : Implement
     // TODO Rethink : Strategy ---
     sim.mStopped = true;
@@ -111,6 +115,7 @@ void SimulationPlayer::restartFileMS(FMSFacade &fms){
 }
 
 void SimulationPlayer::restartScanner(Scanner &sc){
+    // TODO Rethink : Implement
     // TODO Rethink : Strategy ---
     // Restart scanner head
     ScannerHead &sh = *sc.getScannerHead();
@@ -119,7 +124,37 @@ void SimulationPlayer::restartScanner(Scanner &sc){
 
 }
 
+void SimulationPlayer::restartScene(Scene &scene){
+    // TODO Rethink : Implement
+    // TODO Rethink : Strategy --
+    // Discard scene parts that should be null for the next play, and
+    // get primitives from current scene parts (thus, those that belong to
+    // non existent scene parts will be discarded)
+    std::vector<std::shared_ptr<ScenePart>> newParts;
+    std::vector<Primitive *> newPrims;
+    for(std::shared_ptr<ScenePart> sp : scene.parts){
+        if(sp->sorh != nullptr && sp->sorh->needsDiscardOnReplay()){
+            // TODO Rethink : Where to set discardOnReplay to true (def. false)
+            for(Primitive * p: sp->mPrimitives) delete p;
+            continue;
+        }
+        for(Primitive * p : sp->mPrimitives) p->part = sp;
+        newParts.push_back(sp);
+        newPrims.insert(
+            newPrims.cend(),
+            sp->mPrimitives.begin(),
+            sp->mPrimitives.end()
+        );
+    }
+    scene.parts = newParts;
+    scene.primitives = newPrims;
+    // Reload scene
+    scene.finalizeLoading(false);
+    // --- TODO Rethink : Strategy
+}
+
 void SimulationPlayer::restartSimulation(Simulation &sim){
+    // TODO Rethink : Implement
     // TODO Rethink : Strategy ---
     // Restart survey playback attributes
     SurveyPlayback &sp = static_cast<SurveyPlayback &>(sim);

@@ -119,6 +119,14 @@ protected:
      */
     void restartScanner(Scanner &sc);
     /**
+     * @brief Restart a scene to its start point, considering the swapped
+     *  geometries.
+     * @param scene The scene to be restarted.
+     * @see Scene
+     * @see SwapOnRepeatHandler
+     */
+    void restartScene(Scene &scene);
+    /**
      * @brief Restart a simulation to its start point.
      * @param sim The simulation to be restarted.
      * @see Simulation
