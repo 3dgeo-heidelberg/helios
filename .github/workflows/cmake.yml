@@ -136,7 +136,7 @@ jobs:
            ls ${{github.workspace}}
            echo 'lib: '${{github.workspace}}/lib
            ls ${{github.workspace}}/lib
-           echo 'LAStools: '${{github.workspace}}/lib/LAStools'
+           echo 'LAStools: '${{github.workspace}}/lib/LAStools
            ls ${{github.workspace}}/lib/LAStools
            echo 'Removing OLD LASTools ...'
            rm -fr ${{github.workspace}}/lib/LAStools
