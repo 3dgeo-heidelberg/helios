@@ -333,4 +333,22 @@ public:
     inline std::shared_ptr<SwapOnRepeatHandler> getSwapOnRepeatHandler()
     {return sorh;}
 
+    // ***  STATIC METHODS  *** //
+    // ************************ //
+    /**
+     * @brief Compute the transformations for each primitive in the scene part.
+     *  The transformations are typically specified through assetloading
+     *  filters.
+     * @param sp The ScenePart whose transformations must be computed.
+     * @param holistic Whether to use an holistic approach for all the vertices
+     *  (e.g., for points loaded from point clouds as input).
+     * @see XmlSceneLoader
+     * @see XmlSceneLoader::digestScenePart
+     * @see SwapOnRepeatHandler
+     * @see SimulationPlayer
+     */
+    static void computeTransformations(
+        std::shared_ptr<ScenePart> sp, bool const holistic=false
+    );
+
 };

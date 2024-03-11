@@ -129,7 +129,7 @@ public:
      */
     shared_ptr<SwapOnRepeatHandler> loadScenePartSwaps(
         tinyxml2::XMLElement *scenePartNode,
-        std::shared_ptr<ScenePart> scenePart
+        ScenePart * scenePart
     );
 
     /**

@@ -5,6 +5,7 @@
 #include <WavefrontObjFileLoader.h>
 #include <XYZPointCloudFileLoader.h>
 #include <DetailedVoxelLoader.h>
+#include <NullGeometryFilter.h>
 #include <scene/dynamic/DynScene.h>
 #include <KDTreeFactoryMaker.h>
 
@@ -40,9 +41,6 @@ XmlSceneLoader::createSceneFromXml(
 
         // Load filter nodes, if any
         shared_ptr<ScenePart> scenePart = loadFilters(scenePartNode, holistic);
-
-        // Load swaps, if any
-        scenePart->sorh = loadScenePartSwaps(scenePartNode, scenePart);
 
         // Read and set scene part ID
         bool splitPart = loadScenePartId(scenePartNode, partIndex, scenePart);
@@ -133,6 +131,23 @@ shared_ptr<ScenePart> XmlSceneLoader::loadFilters(
             filter->params = XmlUtils::createParamsFromXml(filterNodes);
             logging::DEBUG("Applying filter: " + filterType);
             scenePart = filter->run();
+            // Load the sawps now so their baseline is defined from the raw
+            // geometry with no transformation filters (e.g., scales or rotations)
+            if(
+                XmlUtils::isGeometryLoadingFilter(filter) &&
+                scenePartNode->FirstChildElement("swap") != nullptr
+            ){
+                if(scenePart->sorh != nullptr){
+                    std::stringstream ss;
+                    ss << "XmlSceneLoader::loadFilters found a geometry "
+                          "loading filter when a SwapOnRepeatHandler has "
+                          "already been built.";
+                    logging::ERR(ss.str());
+                    throw HeliosException(ss.str());
+                }
+                scenePart->sorh = loadScenePartSwaps(scenePartNode, scenePart);
+            }
+            // Delete the filter (not used anymore)
             if (scenePart == filter->primsOut)
                 filter->primsOut = nullptr;
             delete filter;
@@ -203,7 +218,7 @@ AbstractGeometryFilter * XmlSceneLoader::loadFilter(
 
 shared_ptr<SwapOnRepeatHandler> XmlSceneLoader::loadScenePartSwaps(
     tinyxml2::XMLElement *scenePartNode,
-    shared_ptr<ScenePart> scenePart
+    ScenePart * scenePart
 ){
     // Find swap nodes
     tinyxml2::XMLElement *swapNodes = scenePartNode->FirstChildElement("swap");
@@ -224,15 +239,22 @@ shared_ptr<SwapOnRepeatHandler> XmlSceneLoader::loadScenePartSwaps(
         tinyxml2::XMLElement *filterNodes =
             swapNodes->FirstChildElement("filter");
         std::deque<AbstractGeometryFilter *> swapFilters;
-        // Add filters to the handler
-        while(filterNodes != nullptr){
-            AbstractGeometryFilter *filter = loadFilter(
-                filterNodes, holistic, scenePart.get()
-            );
-            filter->params = XmlUtils::createParamsFromXml(filterNodes);
-            swapFilters.push_back(filter);
-            // Find next XML filter element
-            filterNodes = filterNodes->NextSiblingElement("filter");
+        std::shared_ptr<ScenePart> spGeom = nullptr;
+        // Handle null geometry filter
+        if(XmlUtils::hasAttribute(swapNodes, "force_null")){
+            swapFilters.push_back(new NullGeometryFilter(scenePart));
+        }
+        else {
+            // Add non-null filters to the handler
+            while (filterNodes != nullptr) {
+                AbstractGeometryFilter *filter = loadFilter(
+                    filterNodes, holistic, scenePart
+                );
+                filter->params = XmlUtils::createParamsFromXml(filterNodes);
+                swapFilters.push_back(filter);
+                // Find next XML filter element
+                filterNodes = filterNodes->NextSiblingElement("filter");
+            }
         }
         sorh->pushSwapFilters(swapFilters);
         // Find next XML swap element
@@ -335,19 +357,7 @@ void XmlSceneLoader::digestScenePart(
     int &partIndex
 ){
     // For all primitives, set reference to their scene part and transform:
-    for (Primitive *p : scenePart->mPrimitives) {
-        p->part = scenePart;
-        p->rotate(scenePart->mRotation);
-        if (holistic) {
-            for (size_t i = 0; i < p->getNumVertices(); i++) {
-                p->getVertices()[i].pos.x *= scenePart->mScale;
-                p->getVertices()[i].pos.y *= scenePart->mScale;
-                p->getVertices()[i].pos.z *= scenePart->mScale;
-            }
-        }
-        p->scale(scenePart->mScale);
-        p->translate(scenePart->mOrigin);
-    }
+    ScenePart::computeTransformations(scenePart, holistic);
 
     // Append as static object if it is not dynamic
     // If it is dynamic, it must have been appended before

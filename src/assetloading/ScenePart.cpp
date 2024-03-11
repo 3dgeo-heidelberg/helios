@@ -231,3 +231,23 @@ void ScenePart::computeCentroid(bool const computeBound){
         );
     }
 }
+
+void ScenePart::computeTransformations(
+    std::shared_ptr<ScenePart> sp,
+    bool const holistic
+){
+    // For all primitives, set reference to their scene part and transform:
+    for (Primitive *p : sp->mPrimitives) {
+        p->part = sp;
+        p->rotate(sp->mRotation);
+        if (holistic) {
+            for (size_t i = 0; i < p->getNumVertices(); i++) {
+                p->getVertices()[i].pos.x *= sp->mScale;
+                p->getVertices()[i].pos.y *= sp->mScale;
+                p->getVertices()[i].pos.z *= sp->mScale;
+            }
+        }
+        p->scale(sp->mScale);
+        p->translate(sp->mOrigin);
+    }
+}

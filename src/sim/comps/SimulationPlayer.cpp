@@ -30,10 +30,46 @@ void SimulationPlayer::endPlay(){
     // Get all the scene parts (objects) that will do a swap on repeat
     std::vector<std::shared_ptr<ScenePart>> swapOnRepeatObjects =
         scene.getSwapOnRepeatObjects();
+    // TODO Remove : Debug print ---
+    std::cout << "BEFORE:\n";
+    for(int i = 0 ; i < scene.primitives.size() ; ++i){
+        Primitive * p = scene.primitives[i];
+        std::cout << "P[" << i << "] (part " << scene.primitives[i]->part->mId << "):  ";
+        for(int j = 0 ; j < p->getNumVertices() ; ++j){
+            Vertex & v = p->getVertices()[j];
+            std::cout   << "\t(" << v.pos.x << ", " << v.pos.y << ", "
+                        << v.pos.z << ") ";
+        }
+        std::cout << std::endl;
+    }
+    std::cout << std::endl;
+    // --- TODO Remove : Debug print
     for(std::shared_ptr<ScenePart> sp : swapOnRepeatObjects){
         std::shared_ptr<SwapOnRepeatHandler> sorh =
             sp->getSwapOnRepeatHandler();
-        if(sorh->hasPendingSwaps()) sorh->swap(*sp);
+        if(sorh->hasPendingSwaps()){
+            // TODO Rethink : Testing full backup for filters ---
+            // Backup rotation (because RotateFilter modifies inplace)
+            Rotation const rotationBackup = sp->mRotation;
+            /*double const scaleBackup = sp->mScale;
+            glm::dvec3 const originBackup = sp->mOrigin;*/
+            std::cout << "\nsp pre-swap reflectance: " << sp->mPrimitives[0]->material->reflectance << std::endl; // TODO Remove
+            // --- TODO Rethink : Testing full backup for filters
+            // Do the swap
+            sorh->swap(*sp);
+            std::cout << "sp rotation angle: " << sp->mRotation.getAngle() << std::endl; // TODO Remove
+            std::cout << "sp scale: " << sp->mScale << std::endl; // TODO Remove
+            std::cout << "sp origin: " << sp->mOrigin << std::endl; // TODO Remove
+            std::cout << "sp material pointer: " << sp->mPrimitives[0]->material << std::endl; // TODO Remove
+            std::cout << "sp reflectance: " << sp->mPrimitives[0]->material->reflectance << std::endl; // TODO Remove
+            std::cout << "sp pointer: " << sp.get() << "\n" << std::endl; // TODO Remove
+            // TODO Rethink : Testing full backup for filters ---
+            // Backup rotation (because RotateFilter modifies inplace)
+            sp->mRotation = rotationBackup;
+            /*sp->mScale = scaleBackup;
+            sp->mOrigin = originBackup;*/
+            // --- TODO Rethink : Testing full backup for filters
+        }
     }
     // Prepare next play, if any
     if(plays < getNumTargetPlays()) {
@@ -61,8 +97,7 @@ int SimulationPlayer::getNumTargetPlays(){
         std::shared_ptr<SwapOnRepeatHandler> sorh =
             sp->getSwapOnRepeatHandler();
         if(sorh->getNumTargetSwaps() >= numTargetPlays){
-            numTargetPlays = 1 + sorh->getNumTargetSwaps();
-            for(Primitive * p: sp->getPrimitives()) p->part = sp; // TODO Remove : Just to check if solves null part issue
+            numTargetPlays = 1 + sorh->getNumTargetReplays();
         }
     }
     // Return the number of target plays
@@ -125,6 +160,20 @@ void SimulationPlayer::restartScanner(Scanner &sc){
 }
 
 void SimulationPlayer::restartScene(Scene &scene){
+    // TODO Remove : Debug print ---
+    std::cout << "MID:\n";
+    for(int i = 0 ; i < scene.primitives.size() ; ++i){
+        Primitive * p = scene.primitives[i];
+        std::cout << "P[" << i << "] (part " << scene.primitives[i]->part->mId << "):  ";
+        for(int j = 0 ; j < p->getNumVertices() ; ++j){
+            Vertex & v = p->getVertices()[j];
+            std::cout   << "\t(" << v.pos.x << ", " << v.pos.y << ", "
+                        << v.pos.z << ") ";
+        }
+        std::cout << std::endl;
+    }
+    std::cout << std::endl;
+    // --- TODO Remove : Debug print
     // TODO Rethink : Implement
     // TODO Rethink : Strategy --
     // Discard scene parts that should be null for the next play, and
@@ -132,13 +181,35 @@ void SimulationPlayer::restartScene(Scene &scene){
     // non existent scene parts will be discarded)
     std::vector<std::shared_ptr<ScenePart>> newParts;
     std::vector<Primitive *> newPrims;
+    glm::dvec3 diff = scene.getBBoxCRS()->getMin(); // TODO Rethink : Move before the loop
+    std::cout << "\ndiff = " << diff << "\n" << std::endl; // TODO Remove
     for(std::shared_ptr<ScenePart> sp : scene.parts){
+        // Handle scene parts that need to be discarded
         if(sp->sorh != nullptr && sp->sorh->needsDiscardOnReplay()){
-            // TODO Rethink : Where to set discardOnReplay to true (def. false)
             for(Primitive * p: sp->mPrimitives) delete p;
+            sp->sorh = nullptr;
             continue;
         }
-        for(Primitive * p : sp->mPrimitives) p->part = sp;
+        // Handle scene parts that must be preserved
+        if(sp->sorh == nullptr || (
+            sp->sorh != nullptr && !sp->sorh->isOnSwapFirstPlay()
+        )){
+            // Undo old CRS shift on primitives before scene update and reload
+            for(Primitive * p : sp->mPrimitives){
+                Vertex *v = p->getVertices();
+                for(size_t i = 0 ; i < p->getNumVertices() ; ++i){
+                    v[i].pos = v[i].pos + diff;
+                }
+                p->update();
+            }
+        }
+        // Handle scene parts who are in the first play after a swap
+        if(sp->sorh != nullptr && sp->sorh->isOnSwapFirstPlay()) {
+            // TODO Rethink : What if step=2, this should not be computed more than once
+            ScenePart::computeTransformations(sp, sp->sorh->isHolistic());  // TODO Restore
+            sp->sorh->setOnSwapFirstPlay(false);
+        }
+        // Prepare new data for scene
         newParts.push_back(sp);
         newPrims.insert(
             newPrims.cend(),
@@ -148,8 +219,36 @@ void SimulationPlayer::restartScene(Scene &scene){
     }
     scene.parts = newParts;
     scene.primitives = newPrims;
+    // TODO Remove : Debug print ---
+    std::cout << "PRE-AFTER:\n";
+    for(int i = 0 ; i < scene.primitives.size() ; ++i){
+        Primitive * p = scene.primitives[i];
+        std::cout << "P[" << i << "] (part " << scene.primitives[i]->part->mId << "):  ";
+        for(int j = 0 ; j < p->getNumVertices() ; ++j){
+            Vertex & v = p->getVertices()[j];
+            std::cout   << "\t(" << v.pos.x << ", " << v.pos.y << ", "
+                        << v.pos.z << ") ";
+        }
+        std::cout << std::endl;
+    }
+    std::cout << "\n-------------------------------------\n\n" << std::endl;
+    // --- TODO Remove : Debug print
     // Reload scene
     scene.finalizeLoading(false);
+    // TODO Remove : Debug print ---
+    std::cout << "AFTER:\n";
+    for(size_t i = 0 ; i < scene.primitives.size() ; ++i){
+        Primitive * p = scene.primitives[i];
+        std::cout << "P[" << i << "] (part " << scene.primitives[i]->part->mId << "):  ";
+        for(size_t j = 0 ; j < p->getNumVertices() ; ++j){
+            Vertex & v = p->getVertices()[j];
+            std::cout   << "\t(" << v.pos.x << ", " << v.pos.y << ", "
+                        << v.pos.z << ") ";
+        }
+        std::cout << std::endl;
+    }
+    std::cout << "\n-------------------------------------\n\n" << std::endl;
+    // --- TODO Remove : Debug print
     // --- TODO Rethink : Strategy
 }
 

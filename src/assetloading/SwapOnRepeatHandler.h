@@ -1,10 +1,12 @@
 #pragma once
 
+class Primitive;
 class ScenePart;
 class AbstractGeometryFilter;
 
 #include <deque>
 #include <memory>
+#include <vector>
 
 /**
  * @author Alberto M. Esmoris Pena
@@ -21,6 +23,10 @@ protected:
      * @brief How many swaps must be handled.
      */
     int numTargetSwaps =  0;
+    /**
+     * @brief How many replays are expected by this handler.
+     */
+    int numTargetReplays = 0;
     /**
      * @brief How many swaps have been handled.
      */
@@ -47,6 +53,16 @@ protected:
      *  be discarded before the next simulation play.
      */
     bool discardOnReplay;
+    /**
+     * @brief Whether all the vertices defining each primitive must be
+     *  considered as a whole.
+     */
+    bool holistic;
+    /**
+     * @brief Whether the simulation is at the first play of the current
+     *  swap.
+     */
+    bool onSwapFirstPlay;
 
 public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //
@@ -76,7 +92,7 @@ public:
      *
      * @param sp The baseline scene part for the handler.
      */
-    void prepare(std::shared_ptr<ScenePart> sp);
+    void prepare(ScenePart * sp);
 
     // ***  GETTERs and SETTERs  *** //
     // ***************************** //
@@ -87,12 +103,55 @@ public:
      */
     inline int getNumTargetSwaps() const {return numTargetSwaps;}
     /**
+     * @brief Get the number of replays that are expected from this handler.
+     *  Note that the final number of replays for a simulation will be the
+     *  number of the replays of the handler that leads to more replays
+     *  (i.e., the max).
+     * @return Target number of replays.
+     */
+    inline int getNumTargetReplays() const {return numTargetReplays;}
+    /**
      * @brief Check whether the handler has pending swaps.
      * @return True if the handler has pending swaps, false otherwise.
      */
     inline bool hasPendingSwaps() const
     {return numCurrentSwaps < numTargetSwaps;}
+    /**
+     * @brief Check whether the handler needs an holistic approach (all the
+     *  vertices must be considered as a whole).
+     *
+     * Swap on repeat handlers are typically holistic if the geometry they
+     *  handle was loaded from a point cloud (see XYZPointCloudFileLoader).
+     * @return True if the handler needs an holistic approach, false otherwise.
+     */
+    inline bool isHolistic() const {return holistic;}
+    /**
+     * @brief Check whether the active swap of the handler is at its first
+     *  play or not (when TTL>1, a swap will be active for more than one play).
+     * @return True if the active swap is at its first play, false otherwise.
+     */
+    inline bool isOnSwapFirstPlay() const {return onSwapFirstPlay;}
+    /**
+     * @brief Set the flag that specifies whether the active swap is at its
+     *  first simulation play.
+     * @param onSwapFirstPlay The new value for the flag.
+     */
+    inline void setOnSwapFirstPlay(bool const onSwapFirstPlay)
+    {this->onSwapFirstPlay = onSwapFirstPlay;}
+    /**
+     * @brief Check whether the scene part must be discarded before the next
+     *  replay.
+     * @return True if the scene part must be discarded before the next replay,
+     *  false otherwise.
+     */
     inline bool needsDiscardOnReplay() const {return discardOnReplay;}
+    /**
+     * @brief Set the discard on replay flag.
+     * @param discardOnReplay New value for the discard on replay flag.
+     * @see SwapOnRepeatHandler::discardOnReplay
+     */
+    inline void setDiscardOnReplay(bool const discardOnReplay)
+    {this->discardOnReplay = discardOnReplay;}
     /**
      * @brief Push the swap filters to the handler.
      *
@@ -111,6 +170,14 @@ public:
      * @see SwapOnRepeatHandler::timesToLive
      */
     void pushTimeToLive(int const timeToLive);
+    /**
+     * @brief Obtain a vector of pointers to the primitives representing the
+     *  baseline of the handler.
+     * @return Vector of pointers to the primitives representing the handler's
+     *  baseline.
+     * @see SwapOnRepeatHandler::mPrimitives
+     */
+    std::vector<Primitive *> & getBaselinePrimitives();
 
 protected:
     // ***  UTIL METHODS  *** //

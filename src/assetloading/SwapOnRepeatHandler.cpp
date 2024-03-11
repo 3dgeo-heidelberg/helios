@@ -1,13 +1,17 @@
 #include <SwapOnRepeatHandler.h>
 #include <AbstractGeometryFilter.h>
+#include <XYZPointCloudFileLoader.h>
 #include <ScenePart.h>
 #include <scene/primitives/Primitive.h>
 
 // ***  CONSTRUCTION / DESTRUCTION  *** //
 // ************************************ //
 SwapOnRepeatHandler::SwapOnRepeatHandler() :
+    currentTimeToLive(1),
     baseline(nullptr),
-    discardOnReplay(false)
+    discardOnReplay(false),
+    holistic(false),
+    onSwapFirstPlay(false)
 {}
 
 
@@ -18,10 +22,17 @@ void SwapOnRepeatHandler::swap(ScenePart &sp){
     if(currentTimeToLive < 1) doSwap(sp);
 }
 
-void SwapOnRepeatHandler::prepare(std::shared_ptr<ScenePart> sp){
+void SwapOnRepeatHandler::prepare(ScenePart * sp){
     numTargetSwaps = (int) swapFilters.size();
+    std::deque<int> ttls(timesToLive);
+    numTargetReplays = 0;
+    while(!ttls.empty()){
+        numTargetReplays += ttls.front();
+        ttls.pop_front();
+    }
     numCurrentSwaps = 0;
     this->baseline = std::make_unique<ScenePart>(*sp);
+    for(Primitive *p : this->baseline->mPrimitives) p->part = nullptr;
 }
 
 // ***  GETTERs and SETTERs  *** //
@@ -36,52 +47,72 @@ void SwapOnRepeatHandler::pushTimeToLive(int const timeToLive){
     this->timesToLive.push_back(timeToLive);
 }
 
+std::vector<Primitive *> & SwapOnRepeatHandler::getBaselinePrimitives(){
+    return baseline->mPrimitives;
+}
+
 // ***  UTIL METHODS  *** //
 // ********************** //
 void SwapOnRepeatHandler::doSwap(ScenePart &sp){
     // Get next queue of filters and update time to live
-    std::deque<AbstractGeometryFilter *> filters = swapFilters.back();
-    swapFilters.pop_back();
-    currentTimeToLive = timesToLive.back();
-    timesToLive.pop_back();
+    std::deque<AbstractGeometryFilter *> filters = swapFilters.front();
+    swapFilters.pop_front();
+    currentTimeToLive = timesToLive.front();
+    timesToLive.pop_front();
 
     // Apply filters
     bool firstIter = true;
     while(!filters.empty()){
         // Get next filter
-        AbstractGeometryFilter *filter = filters.back();
-        filters.pop_back();
+        AbstractGeometryFilter *filter = filters.front();
+        filters.pop_front();
         // Run the filter
         ScenePart * genSP = filter->run();
         // Update the geometry if a new one has been loaded
-        if(genSP != nullptr && genSP != filter->primsOut){
-            // Mark scene part to be discarded through the SoR handler
-            // Delete primitives from old scene part before geometric swap
+        if(genSP != nullptr && genSP != std::addressof(sp)){
+            // Make holistic only if geometry is derived from a point cloud
+            holistic = false;
+            if(dynamic_cast<XYZPointCloudFileLoader *>(filter) != nullptr){
+                holistic = true;
+            }
+            // TODO Rethink : Also update reflectances (see SpectralLibrary::setReflectances)
             doGeometricSwap(*genSP, sp);
             // Delete generated geometry (it will no longer be used)
             delete genSP;
         }
-            // Otherwise
+        // Otherwise
         else{
             // Reload the baseline geometry on the first iteration only
             if(firstIter) {
+                // Backup primitives to prevent that baseline is updated
+                std::vector<Primitive *> primitivesBackup = baseline->mPrimitives;
+                for(size_t i = 0 ; i < primitivesBackup.size() ; ++i){
+                    Primitive * newPrimitive = primitivesBackup[i]->clone();
+                    newPrimitive->part = nullptr;
+                    baseline->mPrimitives[i] = newPrimitive;
+                }
+                // The geometric swap itself
                 doGeometricSwap(*baseline, sp);
+                // Restore baseline to prevent any update to propagate further
+                baseline->mPrimitives = primitivesBackup;
             }
             // Remove pointer to primitives to prevent delete current ones
-            filter->primsOut = nullptr;
         }
         // Delete filter
+        filter->primsOut = nullptr;
         delete filter;
         firstIter = false;
     }
 
-    // Update current swaps count
+    // Update current swaps count and activate first play flag
     ++numCurrentSwaps;
+    onSwapFirstPlay = true;
 }
 
 void SwapOnRepeatHandler::doGeometricSwap(ScenePart &src, ScenePart &dst){
     // Assign to dst from src
     dst.primitiveType = src.primitiveType;
+    // TODO Rethink : This primitives update below is not correct for baseline (it will propagate the pointers)
     dst.mPrimitives = src.mPrimitives;
     dst.centroid = src.centroid;
     dst.bound = src.bound;
@@ -91,5 +122,10 @@ void SwapOnRepeatHandler::doGeometricSwap(ScenePart &src, ScenePart &dst){
     dst.ladlut = src.ladlut;
     dst.mCrs = src.mCrs;
     dst.mEnv = src.mEnv;
+    // TODO Rethink : Strategy to solve accumulative issues ---
+    /*dst.mOrigin = src.mOrigin;
+    dst.mScale = src.mScale;
+    dst.mRotation = src.mRotation;*/
+    // --- TODO Rethink : Strategy to solve accumulative issues
     // TODO Rethink : Delete old primitives from dst before updating them?
 }
