@@ -137,7 +137,10 @@ jobs:
            echo 'lib: '${{github.workspace}}/lib
            ls ${{github.workspace}}/lib
            echo 'LAStools: '${{github.workspace}}/lib/LAStools'
-           ls '${{github.workspace}}/lib/LAStools
+           ls ${{github.workspace}}/lib/LAStools
+           echo 'Removing OLD LASTools ...'
+           rm -fr ${{github.workspace}}/lib/LAStools
+           echo 'Removed OLD LASTools!'
            echo "Unzipping ..."
            unzip LAStools.zip -d ${{github.workspace}}/lib
            echo 'Unzip!"
