@@ -131,7 +131,7 @@ jobs:
        - name: Build LASTools
          if: steps.cache-lastools-armadillo-gdal.outputs.cache-hit != 'true'
          run: |
-           wget -O LAStools.zip http://lastools.github.io/download/LAStools.zip
+           wget -O LAStools.zip https://github.com/LAStools/LAStools/releases/download/v2.0.2/LAStools.zip
            unzip LAStools.zip -d ${{github.workspace}}/lib
            cd LAStools && cmake . && make
            cd .. && rm LAStools.zip
