@@ -132,6 +132,8 @@ jobs:
          #if: steps.cache-lastools-armadillo-gdal.outputs.cache-hit != 'true'  # TODO Restore
          run: |
            wget -O LAStools.zip https://github.com/LAStools/LAStools/releases/download/v2.0.2/LAStools.zip
+           echo  'github.workspace: '${{ github.workspace }}
+           ls ${{ github.workspace }}
            unzip LAStools.zip -d ${{github.workspace}}/lib
            echo  'github.workspace: '${{ github.workspace }}
            ls ${{ github.workspace }}
