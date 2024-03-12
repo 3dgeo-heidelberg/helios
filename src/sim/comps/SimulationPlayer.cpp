@@ -6,6 +6,7 @@
 #include <filems/factory/FMSFacadeFactory.h>
 using helios::filems::FMSFacadeFactory;
 #include <scanner/Scanner.h>
+#include <platform/MovingPlatform.h>
 
 #include <memory>
 
@@ -92,10 +93,20 @@ void SimulationPlayer::restartPlatform(Platform &p){
     //p = *platformStart;
     // --- TODO Rethink : Strategy 1
     // TODO Rethink : Strategy 2 ---
+    // Restart general platform
     p.attitude = platformStart->attitude;
     p.position = platformStart->position;
     p.originWaypoint = platformStart->originWaypoint;
     p.targetWaypoint = platformStart->targetWaypoint;
+    // Restart moving platform
+    try {
+        MovingPlatform &mp = dynamic_cast<MovingPlatform &>(p);
+        std::shared_ptr<MovingPlatform> mpStart =
+            std::dynamic_pointer_cast<MovingPlatform>(platformStart);
+        mp.setVelocity(mpStart->getVelocity());
+        mp.cached_vectorToTarget = mpStart->cached_vectorToTarget;
+    }
+    catch(std::bad_cast &bcex){}
     // --- TODO Rethink : Strategy 2
 }
 
