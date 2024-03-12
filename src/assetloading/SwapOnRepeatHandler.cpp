@@ -75,7 +75,6 @@ void SwapOnRepeatHandler::doSwap(ScenePart &sp){
             if(dynamic_cast<XYZPointCloudFileLoader *>(filter) != nullptr){
                 holistic = true;
             }
-            // TODO Rethink : Also update reflectances (see SpectralLibrary::setReflectances)
             doGeometricSwap(*genSP, sp);
             // Delete generated geometry (it will no longer be used)
             delete genSP;
@@ -112,7 +111,6 @@ void SwapOnRepeatHandler::doSwap(ScenePart &sp){
 void SwapOnRepeatHandler::doGeometricSwap(ScenePart &src, ScenePart &dst){
     // Assign to dst from src
     dst.primitiveType = src.primitiveType;
-    // TODO Rethink : This primitives update below is not correct for baseline (it will propagate the pointers)
     dst.mPrimitives = src.mPrimitives;
     dst.centroid = src.centroid;
     dst.bound = src.bound;
@@ -122,10 +120,4 @@ void SwapOnRepeatHandler::doGeometricSwap(ScenePart &src, ScenePart &dst){
     dst.ladlut = src.ladlut;
     dst.mCrs = src.mCrs;
     dst.mEnv = src.mEnv;
-    // TODO Rethink : Strategy to solve accumulative issues ---
-    /*dst.mOrigin = src.mOrigin;
-    dst.mScale = src.mScale;
-    dst.mRotation = src.mRotation;*/
-    // --- TODO Rethink : Strategy to solve accumulative issues
-    // TODO Rethink : Delete old primitives from dst before updating them?
 }
