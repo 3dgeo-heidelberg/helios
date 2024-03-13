@@ -188,17 +188,18 @@ void SimulationPlayer::restartSimulation(Simulation &sim){
     SurveyPlayback &sp = static_cast<SurveyPlayback &>(sim);
     sp.progress = 0;
     sp.legProgress = 0;
-    sp.prepareOutput();
     sp.mLegStarted = true;
     sp.legProgress = 0;
     sp.legStartTime_ns = duration_cast<nanoseconds>(
         system_clock::now().time_since_epoch()
     );
+    sp.timeStart_ns = sp.legStartTime_ns;
+    sp.elapsedLength = 0;
     // Restart simulation attributes
     sim.finished = false;
     sim.mStopped = false;
     sim.mCurrentLegIndex = 0;
-    // Restart simulation step loop
+    // Restart simulation step loop (i.e., time)
     sim.getStepLoop().setCurrentStep(0);
     // Start first leg
     sp.startLeg(sp.mCurrentLegIndex, true);

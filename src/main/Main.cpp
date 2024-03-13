@@ -154,6 +154,7 @@ int main(int argc, char** argv) {
             ap.parseDisablePlatformNoise(),
             ap.parseDisableLegNoise(),
             ap.parseRebuildScene(),
+            !ap.parseNoSceneWriting(),
             ap.parseLasOutput(),
             ap.parseLas10(),
             ap.parseZipOutput(),

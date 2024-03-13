@@ -225,7 +225,9 @@ shared_ptr<Scene> XmlSurveyLoader::loadScene(
       scene = dynamic_pointer_cast<Scene>(
           getAssetByLocation("scene", sceneString, &sceneType)
       );
-      SerialSceneWrapper(sceneType, scene.get()).writeScene(sceneObjPath);
+      if(writeScene) {
+          SerialSceneWrapper(sceneType, scene.get()).writeScene(sceneObjPath);
+      }
       /*
        * Build KDGrove for Scene after exporting it.
        * This way memory issues coming from tracking of pointers at
