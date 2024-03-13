@@ -421,7 +421,6 @@ void SurveyPlayback::startNextLeg(bool manual) {
     else {
         pause(true);
     }
-
 }
 
 void SurveyPlayback::shutdown() {

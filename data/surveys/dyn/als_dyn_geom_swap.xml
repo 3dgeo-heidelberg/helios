@@ -5,10 +5,17 @@
             <platformSettings  x="100" y="100.0" z="400" onGround="false" movePerSec_m="5" />
             <scannerSettings  active="true" pulseFreq_hz="83000" scanFreq_hz="70" scanAngle_deg="60" />
         </leg>
-
 		<leg>
             <platformSettings  x="-100" y="-100.0" z="400" onGround="false" movePerSec_m="5" />
+            <scannerSettings  active="false" pulseFreq_hz="83000" scanFreq_hz="70" scanAngle_deg="60" />
+        </leg>
+		<leg>
+            <platformSettings  x="-100" y="100.0" z="400" onGround="false" movePerSec_m="5" />
             <scannerSettings  active="true" pulseFreq_hz="83000" scanFreq_hz="70" scanAngle_deg="60" />
+        </leg>
+		<leg>
+            <platformSettings  x="100" y="-100.0" z="400" onGround="false" movePerSec_m="5" />
+            <scannerSettings  active="false" pulseFreq_hz="83000" scanFreq_hz="70" scanAngle_deg="60" />
         </leg>
     </survey>
 </document>

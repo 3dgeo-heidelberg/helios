@@ -79,6 +79,7 @@ template <typename VarType> void DesignMatrixReader<VarType>::parseRow(
     size_t n = s.size();
     size_t eraseStart = string::npos;
     for(size_t i = 0 ; i < n ; ++i){
+        // TODO Rethink : Ignore space or tab if they are the separator
         if(s[i]==' ' || s[i]=='\t'){
             if(eraseStart == string::npos) eraseStart = i;
         }

@@ -9,6 +9,8 @@ using helios::filems::FMSFacadeFactory;
 #include <platform/MovingPlatform.h>
 
 #include <memory>
+#include <chrono>
+using namespace std::chrono;
 
 // ***  CONSTRUCTION / DESTRUCTION  *** //
 // ************************************ //
@@ -184,9 +186,19 @@ void SimulationPlayer::restartSimulation(Simulation &sim){
     sp.progress = 0;
     sp.legProgress = 0;
     sp.prepareOutput();
+    // TODO Rethink : Solves multileg replay issue ? ---
+    sp.mLegStarted = true;
+    sp.legProgress = 0;
+    sp.legStartTime_ns = duration_cast<nanoseconds>(
+        system_clock::now().time_since_epoch()
+    );
+    // --- TODO Rethink : Solves multileg replay issue ?
     // Restart simulation attributes
     sim.finished = false;
     sim.mStopped = false;
+    sim.mCurrentLegIndex = 0;
     // Restart simulation step loop
     sim.getStepLoop().setCurrentStep(0);
+    // Start first leg
+    sp.startLeg(sp.mCurrentLegIndex, true);
 }
