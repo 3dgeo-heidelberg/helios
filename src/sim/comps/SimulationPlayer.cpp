@@ -7,6 +7,7 @@
 using helios::filems::FMSFacadeFactory;
 #include <scanner/Scanner.h>
 #include <platform/MovingPlatform.h>
+#include <platform/InterpolatedMovingPlatform.h>
 
 #include <memory>
 #include <chrono>
@@ -91,10 +92,6 @@ void SimulationPlayer::prepareRepeat(){
 // ***  UTIL PROTECTED METHODS  *** //
 // ******************************** //
 void SimulationPlayer::restartPlatform(Platform &p){
-    // TODO Rethink : Strategy 1 ---
-    //p = *platformStart;
-    // --- TODO Rethink : Strategy 1
-    // TODO Rethink : Strategy 2 ---
     // Restart general platform
     p.attitude = platformStart->attitude;
     p.position = platformStart->position;
@@ -109,7 +106,13 @@ void SimulationPlayer::restartPlatform(Platform &p){
         mp.cached_vectorToTarget = mpStart->cached_vectorToTarget;
     }
     catch(std::bad_cast &bcex){}
-    // --- TODO Rethink : Strategy 2
+    // Restart interpolated moving platform
+    try{
+        InterpolatedMovingPlatform &imp =
+            dynamic_cast<InterpolatedMovingPlatform &>(p);
+        imp.getTrajectoryFunctionRef().setLastTime(0);
+    }
+    catch(std::bad_cast &bcex){}
 }
 
 void SimulationPlayer::restartFileMS(FMSFacade &fms){
@@ -186,13 +189,11 @@ void SimulationPlayer::restartSimulation(Simulation &sim){
     sp.progress = 0;
     sp.legProgress = 0;
     sp.prepareOutput();
-    // TODO Rethink : Solves multileg replay issue ? ---
     sp.mLegStarted = true;
     sp.legProgress = 0;
     sp.legStartTime_ns = duration_cast<nanoseconds>(
         system_clock::now().time_since_epoch()
     );
-    // --- TODO Rethink : Solves multileg replay issue ?
     // Restart simulation attributes
     sim.finished = false;
     sim.mStopped = false;

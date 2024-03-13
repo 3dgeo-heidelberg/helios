@@ -145,7 +145,6 @@ void Simulation::start() {
     simPlayer = std::make_unique<SimulationPlayer>(*this);
     while(simPlayer->hasPendingPlays()){
         doSimLoop();
-        // TODO Rethink : Synchronization barrier before next iteration, if any
         // NOTE there is no need for a sync. barrier after the last iteration
         // because end of simulation will handle it.
         simPlayer->endPlay();
