@@ -131,50 +131,25 @@ void Simulation::start() {
 
     // Prepare to execute the main loop of simulation
     prepareSimulation(mScanner->getPulseFreq_Hz());
-    size_t iter = 1;
     timeStart_ns = duration_cast<nanoseconds>(
         system_clock::now().time_since_epoch()
     );
+
 #ifdef DATA_ANALYTICS
     HDA_StateJSONReporter sjr((SurveyPlayback *) this, "helios_state.json");
     sjr.report();
     HDA_SimStepRecorder ssr((SurveyPlayback *) this, "helios_sim_records");
 #endif
 
-    // Execute the main loop of the simulation
-	while (!isStopped()) {
-	    if(iter==1){ // TODO Pending : Does this lock make sense?
-	        std::unique_lock<std::mutex> lock(mutex);
-	    }
-
-	    stepLoop.doStep();
-
-		iter++;
-		if(iter-1 == getCallbackFrequency()){ // TODO Pending : iter-1 by iter?
-		    if(callback != nullptr){
-                std::string const mwOutPath = (exportToFile) ?
-                    mScanner->fms->write.getMeasurementWriterOutputPath()
-                        .string() :
-                    ""
-                ;
-                std::unique_lock<std::mutex> lock(
-                    *mScanner->cycleMeasurementsMutex);
-                (*callback)(
-                    *mScanner->cycleMeasurements,
-                    *mScanner->cycleTrajectories,
-                    mwOutPath
-                );
-                mScanner->cycleMeasurements->clear();
-                mScanner->cycleTrajectories->clear();
-		    }
-		    iter = 1;
-		    condvar.notify_all();
-		}
-
-#ifdef DATA_ANALYTICS
-        ssr.record();
-#endif
-	}
+    // Play simulation
+    simPlayer = std::make_unique<SimulationPlayer>(*this);
+    while(simPlayer->hasPendingPlays()){
+        doSimLoop();
+        // NOTE there is no need for a sync. barrier after the last iteration
+        // because end of simulation will handle it.
+        simPlayer->endPlay();
+    }
+    simPlayer = nullptr;
 
 #ifdef DATA_ANALYTICS
 	// Finish data analytics stuff
@@ -202,6 +177,44 @@ void Simulation::start() {
 
 	// Shutdown the simulation (e.g. close all file output streams. Implemented in derived classes.)
 	shutdown();
+}
+
+void Simulation::doSimLoop(){
+    size_t iter = 1;
+    // Execute the main loop of the simulation
+    while (!isStopped()) {
+        if(iter==1){ // TODO Pending : Does this lock make sense?
+            std::unique_lock<std::mutex> lock(mutex);
+        }
+
+        stepLoop.doStep();
+
+        iter++;
+        if(iter-1 == getCallbackFrequency()){ // TODO Pending : iter-1 by iter?
+            if(callback != nullptr){
+                std::string const mwOutPath = (exportToFile) ?
+                    mScanner->fms->write.getMeasurementWriterOutputPath()
+                        .string() :
+                    ""
+                ;
+                std::unique_lock<std::mutex> lock(
+                    *mScanner->cycleMeasurementsMutex);
+                (*callback)(
+                    *mScanner->cycleMeasurements,
+                    *mScanner->cycleTrajectories,
+                    mwOutPath
+                );
+                mScanner->cycleMeasurements->clear();
+                mScanner->cycleTrajectories->clear();
+            }
+            iter = 1;
+            condvar.notify_all();
+        }
+
+#ifdef DATA_ANALYTICS
+        ssr.record();
+#endif
+    }
 }
 
 

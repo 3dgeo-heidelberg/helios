@@ -38,6 +38,7 @@ void LidarSim::init(
     bool platformNoiseDisabled,
     bool legNoiseDisabled,
     bool rebuildScene,
+    bool writeScene,
     bool lasOutput,
     bool las10,
     bool zipOutput,
@@ -67,6 +68,7 @@ void LidarSim::init(
 	    << "platformNoiseDisabled: " << platformNoiseDisabled << "\n"
 	    << "legNoiseDisabled: " << legNoiseDisabled << "\n"
 	    << "rebuildScene: " << rebuildScene << "\n"
+        << "writeScene: " << writeScene << "\n"
 	    << "lasOutput: " << lasOutput << "\n"
         << "las10: " << las10 << "\n"
 	    << "fixedIncidenceAngle: " << fixedIncidenceAngle << "\n"
@@ -81,7 +83,7 @@ void LidarSim::init(
 	// Load survey description from XML file:
  	std::shared_ptr<XmlSurveyLoader> xmlreader = std::make_shared<
  	    XmlSurveyLoader
-    >(surveyPath, assetsPath);
+    >(surveyPath, assetsPath, writeScene);
  	xmlreader->sceneLoader.kdtFactoryType = kdtType;
  	xmlreader->sceneLoader.kdtNumJobs = kdtJobs;
  	xmlreader->sceneLoader.kdtGeomJobs = kdtGeomJobs;

@@ -15,7 +15,7 @@ using std::shared_ptr;
  * @author Alberto M. Esmoris Pena
  * @version 1.0
  *
- * @brief Dynamic scene base implementation
+ * @brief Dynamic scene base implementation.
  *
  * A dynamic scene extends the functionalities of a static scene considering
  *  dynamic objects. Thus, the dynamic scene implements a doSimStep method

@@ -133,6 +133,10 @@ bool ArgumentsParser::parseRebuildScene(){
     return findIndexOfArgument("--rebuildScene")>=0;
 }
 
+bool ArgumentsParser::parseNoSceneWriting(){
+    return findIndexOfArgument("--noSceneWriting") >= 0;
+}
+
 void ArgumentsParser::parseLoggingVerbosity(){
     if(findIndexOfArgument("--silent")>=0) logging::makeSilent();
     else if(

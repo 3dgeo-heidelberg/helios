@@ -388,6 +388,14 @@ void Scene::buildKDGroveWithLog(bool const safe){
     logging::TIME(ss.str());
 }
 
+std::vector<std::shared_ptr<ScenePart>> Scene::getSwapOnRepeatObjects(){
+    std::vector<std::shared_ptr<ScenePart>> sorObjs;
+    for(std::shared_ptr<ScenePart> sp : parts){
+        if(sp->getSwapOnRepeatHandler() != nullptr) sorObjs.push_back(sp);
+    }
+    return sorObjs;
+}
+
 // ***  READ/WRITE  *** //
 // ******************** //
 void Scene::writeObject(string path) {

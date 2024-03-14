@@ -1,6 +1,7 @@
 #pragma once
 
 
+#include <assetloading/SwapOnRepeatHandler.h>
 class Primitive;
 class AABB;
 class WavefrontObj;
@@ -13,6 +14,7 @@ class WavefrontObj;
 #include <ogr_geometry.h>
 #include <iostream>
 #include <vector>
+#include <memory>
 
 /**
  * @brief Class representing a scene part
@@ -160,6 +162,15 @@ public:
 
     OGRSpatialReference *mCrs = nullptr;
     OGREnvelope *mEnv = nullptr;
+
+    /**
+     * @brief The handler for scene parts that must swap its geometry for
+     *  different simulation runs (repetitions).
+     * @see SwapOnRepeatHandler
+     * @see ScenePart::getSwapOnRepeatHandler
+     * @see SimulationPlayer
+     */
+    std::shared_ptr<SwapOnRepeatHandler> sorh = nullptr;
 
     // ***  CONSTRUCTION / DESTRUCTION  *** //
     // ************************************ //
@@ -314,5 +325,30 @@ public:
     virtual ObjectType getType() const {return ObjectType::STATIC_OBJECT;}
     virtual PrimitiveType getPrimitiveType() const {return primitiveType;}
 
+    /**
+     * @brief Obtain the swap on repeat handler of the scene part.
+     * @return Swap on repeat handler of the scene part.
+     * @see ScenePart::sorh
+     */
+    inline std::shared_ptr<SwapOnRepeatHandler> getSwapOnRepeatHandler()
+    {return sorh;}
+
+    // ***  STATIC METHODS  *** //
+    // ************************ //
+    /**
+     * @brief Compute the transformations for each primitive in the scene part.
+     *  The transformations are typically specified through assetloading
+     *  filters.
+     * @param sp The ScenePart whose transformations must be computed.
+     * @param holistic Whether to use an holistic approach for all the vertices
+     *  (e.g., for points loaded from point clouds as input).
+     * @see XmlSceneLoader
+     * @see XmlSceneLoader::digestScenePart
+     * @see SwapOnRepeatHandler
+     * @see SimulationPlayer
+     */
+    static void computeTransformations(
+        std::shared_ptr<ScenePart> sp, bool const holistic=false
+    );
 
 };

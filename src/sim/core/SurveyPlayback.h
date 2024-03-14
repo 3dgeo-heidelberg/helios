@@ -16,7 +16,8 @@ using helios::filems::FMSFacade;
  * @see Simulation
  */
 class SurveyPlayback : public Simulation {
-
+private:
+    friend class SimulationPlayer;
 public:
     // ***  ATTRIBUTES  *** //
     // ******************** //

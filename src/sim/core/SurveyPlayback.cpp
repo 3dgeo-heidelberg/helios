@@ -407,19 +407,20 @@ void SurveyPlayback::startLeg(unsigned int const legIndex, bool const manual) {
 
 void SurveyPlayback::startNextLeg(bool manual) {
 	if (mCurrentLegIndex < mSurvey->legs.size() - 1) {
-		// If there are still legs left, start the next one:
+		// If there are pending legs, start the next one:
 		startLeg(mCurrentLegIndex + 1, manual);
 	}
-	else {
-		// If this was the final leg, stop the simulation:
-		if (exitAtEnd) {
-			shutdown();
-			stop();
-		}
-		else {
-			pause(true);
-		}
-	}
+    else if(simPlayer->hasPendingPlays()){
+        simPlayer->prepareRepeat();
+    }
+    else if(exitAtEnd) {
+        // If this was the final leg, stop the simulation:
+        shutdown();
+        stop();
+    }
+    else {
+        pause(true);
+    }
 }
 
 void SurveyPlayback::shutdown() {
