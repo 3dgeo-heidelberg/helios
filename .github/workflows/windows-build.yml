@@ -225,7 +225,7 @@ jobs:
         id: downloadlastools
         name: Download LAStools
         with:
-          url: "https://lastools.github.io/download/LAStools.zip"
+          url: "https://github.com/LAStools/LAStools/releases/download/v2.0.2/LAStools.zip"
           target: lib/LAStools.zip
 
       - name: Extract LAStools
