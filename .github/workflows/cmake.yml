@@ -96,6 +96,9 @@ jobs:
 
        - name: Update package lists
          run: sudo apt update
+       
+       - name: Install cmake and unzip
+         run: sudo apt-get install -y cmake unzip
 
        - name: Cache Armadillo, GDAL and LASTools
          id: cache-lastools-armadillo-gdal
@@ -104,6 +107,15 @@ jobs:
            path: |
              ${{github.workspace}}/lib
            key: ${{ runner.os }}-gdal-lastools-armadillo-latest
+         
+         ##### LasTools #####
+       - name: Build LASTools
+         if: steps.cache-lastools-armadillo-gdal.outputs.cache-hit != 'true'
+         run: |
+           wget -O LAStools.zip https://github.com/LAStools/LAStools/releases/download/v2.0.2/LAStools.zip
+           unzip LAStools.zip -d ${{github.workspace}}/lib
+           cd LAStools && cmake . && make
+           cd .. && rm LAStools.zip
 
 
          ##### ARMADILLO #####
@@ -126,35 +138,6 @@ jobs:
            cd ${{github.workspace}}/lib/proj && ./configure --prefix=${{github.workspace}}/lib/gdal/projlib && make && make install
            cd ${{github.workspace}}/lib/gdal && ./configure --prefix=${{github.workspace}}/lib/gdal --with-proj=${{github.workspace}}/lib/gdal/projlib && make && make install
            cd .. && rm proj-8.0.0.tar.gz gdal-3.3.0.tar.gz
-
-         ##### LasTools #####
-       - name: Build LASTools
-         #if: steps.cache-lastools-armadillo-gdal.outputs.cache-hit != 'true'  # TODO Restore
-         run: |
-           wget -O LAStools.zip https://github.com/LAStools/LAStools/releases/download/v2.0.2/LAStools.zip
-           echo 'github.workspace: '${{github.workspace}}
-           ls ${{github.workspace}}
-           echo 'lib: '${{github.workspace}}/lib
-           ls ${{github.workspace}}/lib
-           echo 'LAStools: '${{github.workspace}}/lib/LAStools
-           ls ${{github.workspace}}/lib/LAStools
-           echo 'Removing OLD LASTools ...'
-           rm -fr ${{github.workspace}}/lib/LAStools
-           echo 'Removed OLD LASTools!'
-           echo "Unzipping ..."
-           unzip LAStools.zip -d ${{github.workspace}}/lib
-           echo 'Unzip!'
-           echo  'github.workspace: '${{github.workspace}}
-           ls ${{github.workspace}}
-           echo -e "\n"
-           echo  ${{github.workspace}}'/lib'
-           ls ${{github.workspace}}/lib
-           echo -e "\n"
-           echo -e "PWD BEFORE: ${PWD}"
-           cd LAStools && cmake . && make
-           echo -e "PWD AFTER: ${PWD}"
-           echo -e "\n------------------------------------------------\n\n"
-           cd .. && rm LAStools.zip
 
 
    build-helios:
