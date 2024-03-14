@@ -19,10 +19,10 @@ fi
 # LAStools package
 LAS_PKG='LAStools.zip'
 # LAStools URL
-LAS_URL='https://lastools.github.io/download/'"${LAS_PKG}"
+LAS_URL='https://github.com/LAStools/LAStools/releases/download/v2.0.2/'"${LAS_PKG}"
 # LAStools download path
-LAS_TAR="${HELIOS_LIB_DIR}${LAS_PKG}"
-# LAStools lib papth (where it MUST be placed)
+LAS_ZIP="${HELIOS_LIB_DIR}${LAS_PKG}"
+# LAStools lib path (where it MUST be placed)
 LAS_DIR="${HELIOS_LIB_DIR}"'LAStools/'
 
 
@@ -32,14 +32,14 @@ LAS_DIR="${HELIOS_LIB_DIR}"'LAStools/'
 parse_build_args $@
 
 # Download LAStools if it is not downloaded yet
-if [ ! -f "${LAS_TAR}" ]; then
-    wget -c "${LAS_URL}" -O "${LAS_TAR}"
+if [ ! -f "${LAS_ZIP}" ]; then
+    wget -c "${LAS_URL}" -O "${LAS_ZIP}"
 fi
 
 # Decompress LAStools if it has not been unzipped yet
 if [ ! -d "${LAS_DIR}" ]; then
     cd "${HELIOS_LIB_DIR}"
-    unzip "${LAS_TAR}"
+    unzip "${LAS_ZIP}"
 fi
 
 # Build LAStools

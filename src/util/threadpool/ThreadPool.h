@@ -77,7 +77,8 @@ public:
 
         // Suppress all exceptions.
         try{
-            threads_.join_all();
+            threads_.interrupt_all();  // Avoid hang-up after end of simulation
+            //threads_.join_all();  // Legacy mode
         }
         catch (const std::exception&) {}
     }

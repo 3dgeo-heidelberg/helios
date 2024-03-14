@@ -133,7 +133,7 @@ jobs:
           Get-Content ${{env.USER_CONFIG}}
           cd lib/boost
           cmd.exe /c 'bootstrap.bat'
-          .\b2.exe --user-config=${{env.USER_CONFIG}} -j6 -sNO_ZLIB=0 -sZLIB_INCLUDE="zlib-1.3" -sZLIB_SOURCE="zlib-1.3" address-model=64 link=static python="3.6","3.7","3.8","3.9","3.10"
+          .\b2.exe --user-config=${{env.USER_CONFIG}} -j6 -sNO_ZLIB=0 -sZLIB_INCLUDE="zlib-1.3" -sZLIB_SOURCE="zlib-1.3" address-model=64 link=static python=3.6,3.7,3.8,3.9,3.10
           
 
   build-libs:
@@ -225,7 +225,7 @@ jobs:
         id: downloadlastools
         name: Download LAStools
         with:
-          url: "https://lastools.github.io/download/LAStools.zip"
+          url: "https://github.com/LAStools/LAStools/releases/download/v2.0.2/LAStools.zip"
           target: lib/LAStools.zip
 
       - name: Extract LAStools
