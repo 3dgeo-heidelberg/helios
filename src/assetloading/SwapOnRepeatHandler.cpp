@@ -90,6 +90,10 @@ void SwapOnRepeatHandler::doSwap(ScenePart &sp){
                     newPrimitive->part = nullptr;
                     baseline->mPrimitives[i] = newPrimitive;
                 }
+                // TODO Rethink : Solves the memory leak? ---
+                // Free primitives memory from scene part
+                for(Primitive *p : sp.mPrimitives) delete p;
+                // --- TODO Rethink : Solves the memory leak?
                 // The geometric swap itself
                 doGeometricSwap(*baseline, sp);
                 // Restore baseline to prevent any update to propagate further
