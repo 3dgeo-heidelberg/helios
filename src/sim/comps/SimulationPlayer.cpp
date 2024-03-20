@@ -34,7 +34,10 @@ void SimulationPlayer::endPlay(){
     // Get all the scene parts (objects) that will do a swap on repeat
     std::vector<std::shared_ptr<ScenePart>> swapOnRepeatObjects =
         scene.getSwapOnRepeatObjects();
+    std::stringstream ss;
     for(std::shared_ptr<ScenePart> sp : swapOnRepeatObjects){
+        ss << "Swapping scene part \"" << sp->mId << "\"";
+        logging::DEBUG(ss.str());
         std::shared_ptr<SwapOnRepeatHandler> sorh =
             sp->getSwapOnRepeatHandler();
         if(sorh->hasPendingSwaps()){
@@ -45,19 +48,31 @@ void SimulationPlayer::endPlay(){
             // Backup rotation (because RotateFilter modifies inplace)
             sp->mRotation = rotationBackup;
         }
+        ss.str("");
+        ss << "Swapped scene part \"" << sp->mId << "\"";
+        logging::DEBUG(ss.str());
     }
     // Prepare next play, if any
     if(plays < getNumTargetPlays()) {
+        logging::DEBUG("Preparing next simulation play ...");
         // Restart platform
+        logging::DEBUG("Restarting platform for next simulation play ...");
         restartPlatform(*sim.getScanner()->platform);
         // Restart filems
+        logging::DEBUG(
+            "Restarting file management system for next simulation play ..."
+        );
         restartFileMS(*sim.getScanner()->fms);
         // Restart scanner
+        logging::DEBUG("Restarting scanner for next simulation play ...");
         restartScanner(*sim.getScanner());
         // Restar scene
+        logging::DEBUG("Restarting scene for next simulation play ...");
         restartScene(*sim.getScanner()->platform->scene);
         // Restart simulation
+        logging::DEBUG("Restarting context for next simulation play ...");
         restartSimulation(sim);
+        logging::DEBUG("Next simulation play prepared.");
     }
 }
 

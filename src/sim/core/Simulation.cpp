@@ -143,11 +143,16 @@ void Simulation::start() {
 
     // Play simulation
     simPlayer = std::make_unique<SimulationPlayer>(*this);
+    int simLoopIndex = 0;
     while(simPlayer->hasPendingPlays()){
+        logging::INFO("Starting simulation loop ...");
         doSimLoop();
         // NOTE there is no need for a sync. barrier after the last iteration
         // because end of simulation will handle it.
+        logging::INFO("Finishing simulation loop ...");
         simPlayer->endPlay();
+        ++simLoopIndex;
+        logging::INFO("Finished simulation loop.");
     }
     simPlayer = nullptr;
 
