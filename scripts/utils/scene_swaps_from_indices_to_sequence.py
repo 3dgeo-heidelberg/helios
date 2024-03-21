@@ -18,7 +18,7 @@ import sys
 # ----------------- #
 def sequence_from_indices(old_node, i, last_old_node, last_new_node):
     """
-    Transform and swap element in the old index-like format to the new
+    Transform a swap element in the old index-like format to the new
     sequence-like format.
 
     :param old_node: The swap element with indices.
