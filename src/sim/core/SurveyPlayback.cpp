@@ -387,6 +387,7 @@ void SurveyPlayback::startLeg(unsigned int const legIndex, bool const manual) {
 
 		// ################ END Set platform destination ##################
 		platform->prepareLeg(mScanner->getPulseFreq_Hz());
+        logging::DEBUG("Prepared platform for current leg.");
 	}
 
     // Restart deflector if previous leg was not active
@@ -397,11 +398,13 @@ void SurveyPlayback::startLeg(unsigned int const legIndex, bool const manual) {
     ){
         mSurvey->scanner->getBeamDeflector()->restartDeflector();
 	}
+    logging::DEBUG("Started deflector for current leg.");
 
 
     if(exportToFile){
         prepareOutput();
         platform->writeNextTrajectory = true;
+        logging::DEBUG("Output prepared for current leg.");
     }
 }
 
@@ -485,6 +488,11 @@ void SurveyPlayback::prepareOutput(){
     if(strip != nullptr){
         lastLegInStrip = getCurrentLeg()->getStrip()->isLastLegInStrip();
     }
+    logging::DEBUG(
+        lastLegInStrip ?
+        "Current leg was found to be the last in the strip." :
+        "Current leg is not the last in the strip."
+    );
 
     // Configure output paths
     fms->write.configure(

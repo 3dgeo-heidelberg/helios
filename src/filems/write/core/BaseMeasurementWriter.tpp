@@ -11,6 +11,7 @@ void BaseMeasurementWriter<WriteArgs ...>::configure(
     string const &prefix,
     bool const lastLegInStrip
 ){
+    // Prepare
     stringstream ss;
     ss << parent << prefix;
     if(this->isLasOutput()){
@@ -19,6 +20,16 @@ void BaseMeasurementWriter<WriteArgs ...>::configure(
     }
     else if(isZipOutput()) ss << "_points.bin";
     else ss << "_points.xyz";
+
+    // Log for debug level
+    stringstream ss2;
+    ss2     << "Parent path for base measurement writer: \""
+            << ss.str() << "\"\n"
+            << "Prefix for base measurement writer: \""
+            << prefix << "\"";
+    logging::DEBUG(ss2.str());
+
+    // Set
     setOutputFilePath(ss.str(), lastLegInStrip);
 }
 
