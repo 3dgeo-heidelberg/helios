@@ -20,17 +20,20 @@ void BaseMeasurementWriter<WriteArgs ...>::configure(
     }
     else if(isZipOutput()) ss << "_points.bin";
     else ss << "_points.xyz";
+    std::string const outpath = ss.str();
 
     // Log for debug level
     stringstream ss2;
     ss2     << "Parent path for base measurement writer: \""
-            << ss.str() << "\"\n"
+            << parent << "\"\n"
             << "Prefix for base measurement writer: \""
-            << prefix << "\"";
+            << prefix << "\"\n"
+            << "Output path for base measurement writer: \""
+            << outpath << "\"";
     logging::DEBUG(ss2.str());
 
     // Set
-    setOutputFilePath(ss.str(), lastLegInStrip);
+    setOutputFilePath(outpath, lastLegInStrip);
 }
 
 template <typename ... WriteArgs>

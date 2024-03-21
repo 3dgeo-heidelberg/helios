@@ -36,6 +36,7 @@ void SimulationPlayer::endPlay(){
         scene.getSwapOnRepeatObjects();
     std::stringstream ss;
     for(std::shared_ptr<ScenePart> sp : swapOnRepeatObjects){
+        ss.str("");
         ss << "Swapping scene part \"" << sp->mId << "\"";
         logging::DEBUG(ss.str());
         std::shared_ptr<SwapOnRepeatHandler> sorh =

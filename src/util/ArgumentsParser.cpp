@@ -70,7 +70,6 @@ std::string ArgumentsParser::parseOutputPath(){
         size_t idx = std::string(argv[index+1]).length()-1;
         if(argv[index+1][idx] == '/') return argv[index+1];
         return std::string(argv[index+1])+"/";
-
     }
     return "output/";
 }
