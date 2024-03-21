@@ -788,6 +788,13 @@ std::shared_ptr<Platform> XmlAssetsLoader::createInterpolatedMovingPlatform(){
             bp->cfg_device_relativeMountPosition;
         platform->cfg_device_relativeMountAttitude =
             bp->cfg_device_relativeMountAttitude;
+        // Also, propagate noise sources from base platform to interpolated
+        platform->positionXNoiseSource = bp->positionXNoiseSource;
+        platform->positionYNoiseSource = bp->positionYNoiseSource;
+        platform->positionZNoiseSource = bp->positionZNoiseSource;
+        platform->attitudeXNoiseSource = bp->attitudeXNoiseSource;
+        platform->attitudeYNoiseSource = bp->attitudeYNoiseSource;
+        platform->attitudeZNoiseSource = bp->attitudeZNoiseSource;
     }
     // --- Algorithm to take ScannerMount from platforms
 
