@@ -75,6 +75,9 @@ void SwapOnRepeatHandler::doSwap(ScenePart &sp){
             if(dynamic_cast<XYZPointCloudFileLoader *>(filter) != nullptr){
                 holistic = true;
             }
+            // Free primitives memory from scene part
+            for(Primitive *p : sp.mPrimitives) delete p;
+            // The geometric swap itself
             doGeometricSwap(*genSP, sp);
             // Delete generated geometry (it will no longer be used)
             delete genSP;

@@ -37,11 +37,14 @@ void SimulationPlayer::endPlay(){
     std::stringstream ss;
     for(std::shared_ptr<ScenePart> sp : swapOnRepeatObjects){
         ss.str("");
-        ss << "Swapping scene part \"" << sp->mId << "\"";
+        ss << "Swapping scene part \"" << sp->mId << "\" ...";
         logging::DEBUG(ss.str());
         std::shared_ptr<SwapOnRepeatHandler> sorh =
             sp->getSwapOnRepeatHandler();
         if(sorh->hasPendingSwaps()){
+            ss.str("");
+            ss << "Scene part \"" << sp->mId << "\" has pending swaps.";
+            logging::DEBUG(ss.str());
             // Backup rotation (because RotateFilter modifies inplace)
             Rotation const rotationBackup = sp->mRotation;
             // Do the swap
@@ -50,7 +53,7 @@ void SimulationPlayer::endPlay(){
             sp->mRotation = rotationBackup;
         }
         ss.str("");
-        ss << "Swapped scene part \"" << sp->mId << "\"";
+        ss << "Swapped scene part \"" << sp->mId << "\"!";
         logging::DEBUG(ss.str());
     }
     // Prepare next play, if any
@@ -163,6 +166,7 @@ void SimulationPlayer::restartScene(Scene &scene){
     for(std::shared_ptr<ScenePart> sp : scene.parts){
         // Handle scene parts that need to be discarded
         if(sp->sorh != nullptr && sp->sorh->needsDiscardOnReplay()){
+            for(Primitive * p: sp->sorh->getBaselinePrimitives()) delete p;
             for(Primitive * p: sp->mPrimitives) delete p;
             sp->sorh = nullptr;
             continue;
