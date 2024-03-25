@@ -167,6 +167,13 @@ void LidarSim::release(std::shared_ptr<SurveyPlayback> sp){
             delete p;
         }
         part->mPrimitives.clear();
+        if(part->sorh != nullptr){
+            for(Primitive * p : part->sorh->getBaselinePrimitives()){
+                delete p;
+            }
+            part->sorh->baseline = nullptr;
+            part->sorh = nullptr;
+        }
     }
     // Release scene
     scene->primitives.clear();

@@ -8,10 +8,10 @@
 // ************************************ //
 SwapOnRepeatHandler::SwapOnRepeatHandler() :
     currentTimeToLive(1),
-    baseline(nullptr),
     discardOnReplay(false),
     holistic(false),
-    onSwapFirstPlay(false)
+    onSwapFirstPlay(false),
+    baseline(nullptr)
 {}
 
 

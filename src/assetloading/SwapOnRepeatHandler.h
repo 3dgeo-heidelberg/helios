@@ -45,10 +45,6 @@ protected:
      */
     int currentTimeToLive;
     /**
-     * @brief The baseline scene part before applying any transformation.
-     */
-    std::unique_ptr<ScenePart> baseline;
-    /**
      * @brief Specify whether the scene part associated to the handler must
      *  be discarded before the next simulation play.
      */
@@ -65,6 +61,11 @@ protected:
     bool onSwapFirstPlay;
 
 public:
+    /**
+     * @brief The baseline scene part before applying any transformation.
+     */
+    std::unique_ptr<ScenePart> baseline;
+
     // ***  CONSTRUCTION / DESTRUCTION  *** //
     // ************************************ //
     /**
