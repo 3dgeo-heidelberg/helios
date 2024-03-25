@@ -201,6 +201,7 @@ void SimulationPlayer::restartScene(Scene &scene){
 
 void SimulationPlayer::restartSimulation(Simulation &sim){
     // Restart survey playback attributes
+    logging::DEBUG("Restarting survey playback attributes ...");
     SurveyPlayback &sp = static_cast<SurveyPlayback &>(sim);
     sp.progress = 0;
     sp.legProgress = 0;
@@ -212,11 +213,14 @@ void SimulationPlayer::restartSimulation(Simulation &sim){
     sp.timeStart_ns = sp.legStartTime_ns;
     sp.elapsedLength = 0;
     // Restart simulation attributes
+    logging::DEBUG("Restarting simulation attributes ...");
     sim.finished = false;
     sim.mStopped = false;
     sim.mCurrentLegIndex = 0;
     // Restart simulation step loop (i.e., time)
+    logging::DEBUG("Restarting simulation step loop ...");
     sim.getStepLoop().setCurrentStep(0);
     // Start first leg
+    logging::DEBUG("Restarting first leg ...");
     sp.startLeg(sp.mCurrentLegIndex, true);
 }

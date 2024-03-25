@@ -5,7 +5,6 @@
 #include "logging.hpp"
 
 #include "Survey.h"
-#include "SurveyPlayback.h"
 #include "XmlSurveyLoader.h"
 #include <TimeWatcher.h>
 #include <scanner/detector/PulseThreadPoolFactory.h>
@@ -154,6 +153,46 @@ void LidarSim::init(
 
 	// Disconnect FMS
     fms->disconnect();
+
+    // Release resources before finishing
+    release(playback);
+}
+
+
+void LidarSim::release(std::shared_ptr<SurveyPlayback> sp){
+    // Release scene parts
+    std::shared_ptr<Scene> scene = sp->mSurvey->scanner->platform->scene;
+    for(std::shared_ptr<ScenePart> part : scene->parts){
+        for(Primitive *p : part->mPrimitives){
+            delete p;
+        }
+        part->mPrimitives.clear();
+    }
+    // Release scene
+    scene->primitives.clear();
+    scene->parts.clear();
+    // Release scanner
+    std::shared_ptr<Scanner> sc = sp->mSurvey->scanner;
+    sc->randGen1 = nullptr;
+    sc->randGen2 = nullptr;
+    sc->intersectionHandlingNoiseSource = nullptr;
+    sc->setAllDetectors(nullptr);
+    sc->spp = nullptr;
+    sc->allOutputPaths = nullptr;
+    sc->allMeasurements = nullptr;
+    sc->allTrajectories = nullptr;
+    sc->allMeasurementsMutex = nullptr;
+    sc->cycleMeasurements = nullptr;
+    sc->cycleTrajectories = nullptr;
+    sc->cycleMeasurementsMutex = nullptr;
+    // Release file management system
+    sc->fms = nullptr;
+    sp->fms = nullptr;
+    // Release main components
+    sc->platform->scene = nullptr;
+    sc->platform = nullptr;
+    sp->mSurvey->scanner = nullptr;
+    sp->mSurvey = nullptr;
 }
 
 }}

@@ -1,5 +1,7 @@
 #pragma once
 
+#include <SurveyPlayback.h>
+
 #include <string>
 
 namespace helios { namespace main{
@@ -90,6 +92,23 @@ public:
         size_t sahLossNodes = 21,
         bool legacyEnergyModel = false
     );
+
+    /**
+     * @brief Release the resources of the lidar simulation (typically this
+     *  method should be called after finishing all simulation plays because
+     *  after this point the resources will no longer be used).
+     *
+     * If the release method is not used, some indirect memory leaks might
+     *  lead to dirty logs (e.g., valgrind or gcc sanitize). Some of these
+     *  leaks are not really problematic because they correspond to objects
+     *  whose lifespan is the entire execution (i.e., it is okay to release
+     *  them on exit). However, they make it more difficult to debug the
+     *  software.
+     *
+     * @param sp The survey playback whose resources must be released.
+     */
+    void release(std::shared_ptr<SurveyPlayback> sp);
+
 };
 
 }}

@@ -146,6 +146,7 @@ void Simulation::start() {
     int simLoopIndex = 0;
     std::stringstream ss;
     while(simPlayer->hasPendingPlays()){
+        ss.str("");
         ss << "Starting simulation loop " << simLoopIndex+1 << " ...";
         logging::INFO(ss.str());
         doSimLoop();
