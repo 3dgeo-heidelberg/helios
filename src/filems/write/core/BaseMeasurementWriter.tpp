@@ -95,6 +95,7 @@ void BaseMeasurementWriter<WriteArgs ...>::setOutputFilePath(
 
         // Create the Writer
         if(!fs::exists(path)){
+            logging::DEBUG("Creating writer for measurements ...");
             sfw = makeWriter(
                 wt,                                     // Writer type
                 path,                                   // Output path
@@ -107,14 +108,23 @@ void BaseMeasurementWriter<WriteArgs ...>::setOutputFilePath(
             writers[path] = sfw;
         }
         else{ // Consider existing writer
+            logging::DEBUG("Loading existing writer for measurements ...");
             sfw = writers[path];
         }
 
         // Remove writer from writers hashmap if it is the last leg in strip
         // to allow the sfw destructor to be called when sfw is replaced in the
         // next leg
-        if(lastLegInStrip) writers.erase(path);
+        if(lastLegInStrip) {
+            logging::DEBUG("Erasing existing writer ...");
+            writers.erase(path);
+        }
 
+        std::stringstream ss;
+        std::string const sfwPath = (sfw != nullptr) ? sfw->getPath() : "NULL";
+        ss  << "Set output file path for measurements!\n"
+            << "sfw = " << sfw << " writing to \"" << sfwPath << "\"";
+        logging::DEBUG(ss.str());
     } catch (std::exception &e) {
         logging::WARN(e.what());
     }
