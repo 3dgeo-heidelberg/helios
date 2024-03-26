@@ -105,7 +105,9 @@ void BaseMeasurementWriter<WriteArgs ...>::setOutputFilePath(
                 0.0,                                    // Min intensity
                 1000000.0                               // Delta intensity
             );
+            logging::DEBUG("Created synchronous file writer!");
             writers[path] = sfw;
+            logging::DEBUG("Stored synchronous file writer!");
         }
         else{ // Consider existing writer
             logging::DEBUG("Loading existing writer for measurements ...");
