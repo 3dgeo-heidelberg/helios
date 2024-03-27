@@ -150,7 +150,9 @@ endif()
 add_subdirectory(src)
 
 # Add documentation building through the CMake build system
-add_subdirectory(doc)
+if(BUILD_DOCS)
+  add_subdirectory(doc)
+endif()
 
 # Add installation rules for the Helios++ executable and Python bindings library
 
