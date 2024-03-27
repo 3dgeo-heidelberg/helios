@@ -85,7 +85,7 @@ target_link_libraries(helios
     Boost::iostreams
     Boost::random
     ${LASTOOLS_LIBRARIES}
-    ${ARMADILLO_LIBRARIES}
+    armadillo
 )
 
 target_include_directories(helios
