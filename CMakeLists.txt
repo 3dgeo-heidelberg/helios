@@ -58,11 +58,8 @@ add_library(helios)
 find_package(GDAL REQUIRED)
 find_package(tinyxml2 REQUIRED)
 find_package(glm REQUIRED)
-find_package(ZLIB REQUIRED)
 find_package(Boost REQUIRED COMPONENTS system thread regex filesystem serialization iostreams random)
 find_package(Armadillo REQUIRED)
-find_package(BLAS REQUIRED)
-find_package(LAPACK REQUIRED)
 
 # LasTools's CMake is not Modern CMake yet, so we have to use old-style find_package
 # that uses the provoded FindLASTools.cmake file
@@ -80,7 +77,6 @@ target_link_libraries(helios
     GDAL::GDAL
     tinyxml2::tinyxml2
     glm::glm
-    ZLIB::ZLIB
     Boost::system
     Boost::thread
     Boost::regex
@@ -88,8 +84,6 @@ target_link_libraries(helios
     Boost::serialization
     Boost::iostreams
     Boost::random
-    BLAS::BLAS
-    LAPACK::LAPACK
     ${LASTOOLS_LIBRARIES}
     ${ARMADILLO_LIBRARIES}
 )
