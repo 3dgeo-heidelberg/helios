@@ -160,24 +160,6 @@ void LidarSim::init(
 
 
 void LidarSim::release(std::shared_ptr<SurveyPlayback> sp){
-    // Release scene parts
-    std::shared_ptr<Scene> scene = sp->mSurvey->scanner->platform->scene;
-    for(std::shared_ptr<ScenePart> part : scene->parts){
-        for(Primitive *p : part->mPrimitives){
-            delete p;
-        }
-        part->mPrimitives.clear();
-        if(part->sorh != nullptr){
-            for(Primitive * p : part->sorh->getBaselinePrimitives()){
-                delete p;
-            }
-            part->sorh->baseline = nullptr;
-            part->sorh = nullptr;
-        }
-    }
-    // Release scene
-    scene->primitives.clear();
-    scene->parts.clear();
     // Release scanner
     std::shared_ptr<Scanner> sc = sp->mSurvey->scanner;
     sc->randGen1 = nullptr;

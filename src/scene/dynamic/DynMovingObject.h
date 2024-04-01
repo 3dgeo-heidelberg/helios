@@ -349,6 +349,13 @@ public:
      */
     std::size_t getGroveSubjectId() override;
 
+    // ***   M E T H O D S   *** //
+    // ************************* //
+    /**
+     * @see ScenePart::release
+     */
+    void release() override;
+
     // ***  GETTERs and SETTERs  *** //
     // ***************************** //
     /**

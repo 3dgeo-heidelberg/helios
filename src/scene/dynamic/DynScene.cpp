@@ -72,6 +72,11 @@ void DynScene::prepareSimulation(int const simFrequency_hz){
     }
 }
 
+void DynScene::shutdown(){
+    StaticScene::shutdown();
+    dynObjs.clear();
+}
+
 // ***  SIMULATION STEP  *** //
 // ************************* //
 bool DynScene::doSimStep(){

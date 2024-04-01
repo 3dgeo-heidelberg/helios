@@ -55,3 +55,11 @@ void DynSequentiableMovingObject::applyAutoCRS(
         }
     }
 }
+
+// ***   M E T H O D S   *** //
+// ************************* //
+void DynSequentiableMovingObject::release(){
+    DynMovingObject::release();
+    dmSequencer.release();
+
+}

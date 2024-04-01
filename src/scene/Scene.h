@@ -379,6 +379,10 @@ public:
      * @see Scene::buildKDGrove
      */
     void buildKDGroveWithLog(bool const safe=false);
+    /**
+     * @brief Shutdown the scene whe simulation has finished.
+     */
+    virtual void shutdown();
 
     // ***  GETTERs and SETTERs  *** //
     // ***************************** //

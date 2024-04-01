@@ -77,6 +77,15 @@ public:
      */
     virtual inline bool hasNextStep() {return current != nullptr;}
 
+    // ***   M E T H O D S   *** //
+    // ************************* //
+    /**
+     * @brief Release all the resources that belong to the dynamic sequencer.
+     *  Note that calling release implies that the scene part can no longer be
+     *  used.
+     */
+    virtual void release();
+
     // ***  GETTERs and SETTERs  *** //
     // ***************************** //
     /**

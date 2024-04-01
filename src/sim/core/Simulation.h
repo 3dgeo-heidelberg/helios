@@ -234,9 +234,9 @@ public:
 	 */
 	void pause(bool pause);
 	/**
-	 * @brief Handle simulation shutdown
+	 * @brief Handle simulation shutdown.
 	 */
-	void shutdown();
+	virtual void shutdown();
 
 
 	// ***  UTIL METHODS  *** //

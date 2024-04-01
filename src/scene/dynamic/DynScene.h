@@ -198,6 +198,11 @@ public:
      */
     void prepareSimulation(int const simFrequency_hz) override;
 
+    /**
+     * @see Scene::shutdown
+     */
+    void shutdown() override;
+
     // ***  SIMULATION STEP  *** //
     // ************************* //
     /**

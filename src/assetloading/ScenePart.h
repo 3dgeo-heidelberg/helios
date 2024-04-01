@@ -276,6 +276,13 @@ public:
      */
     void computeCentroid(bool const computeBound=false);
 
+    /*
+     * @brief Release all the resources that belong to the scene part. Note
+     *  that calling release implies that the scene part can no longer be
+     *  used.
+     */
+    virtual void release();
+
      // ***  GETTERS and SETTERS  *** //
     // ***************************** //
     /**

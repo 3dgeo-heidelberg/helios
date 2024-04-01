@@ -251,3 +251,17 @@ void ScenePart::computeTransformations(
         p->translate(sp->mOrigin);
     }
 }
+
+void ScenePart::release(){
+    for(Primitive *p : mPrimitives){
+        delete p;
+    }
+    mPrimitives.clear();
+    if(sorh != nullptr){
+        for(Primitive * p : sorh->getBaselinePrimitives()){
+            delete p;
+        }
+        sorh->baseline = nullptr;
+        sorh = nullptr;
+    }
+}

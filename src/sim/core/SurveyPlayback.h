@@ -203,11 +203,11 @@ public:
      */
     void startNextLeg(bool manual);
     /**
-     * @brief Handle survey playback shutdown
+     * @brief Handle survey playback shutdown.
      * @see Simulation::shutdown
      * @see Scanner::AbstractDetector
      */
-    void shutdown();
+    void shutdown() override;
     /**
      * @brief Translate milliseconds to time stamp string
      *

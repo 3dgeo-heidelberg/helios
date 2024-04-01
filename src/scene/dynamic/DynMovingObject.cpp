@@ -130,9 +130,19 @@ void DynMovingObject::unregisterObserverGrove(){
     kdGroveObserver->removeSubject(this);
     kdGroveObserver = nullptr;
 }
+
 void DynMovingObject::setGroveSubjectId(std::size_t const id){
     groveSubjectId = id;
 }
 std::size_t DynMovingObject::getGroveSubjectId(){
     return groveSubjectId;
+}
+
+// ***   M E T H O D S   *** //
+// ************************* //
+void DynMovingObject::release(){
+    ScenePart::release();
+    positionMotionQueue.clear();
+    normalMotionQueue.clear();
+    kdGroveObserver = nullptr;
 }

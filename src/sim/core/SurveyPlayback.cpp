@@ -429,6 +429,7 @@ void SurveyPlayback::startNextLeg(bool manual) {
 void SurveyPlayback::shutdown() {
 	Simulation::shutdown();
 	mSurvey->scanner->getDetector()->shutdown();
+    mSurvey->scanner->platform->scene->shutdown();
 }
 
 string SurveyPlayback::milliToString(long millis) {
