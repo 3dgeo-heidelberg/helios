@@ -117,7 +117,7 @@ endif()
 # Add the HelIOS++ executable
 add_executable(helios++)
 
-target_link_libraries(helios++ PUBLIC helios)
+target_link_libraries(helios++ PRIVATE helios)
 
 if(BUILD_PYTHON)
   find_package(Python COMPONENTS Interpreter Development)
@@ -126,7 +126,7 @@ if(BUILD_PYTHON)
   add_library(_pyhelios MODULE)
 
   target_link_libraries(_pyhelios
-  PUBLIC
+  PRIVATE
     helios
     Boost::python
     Python::Module
