@@ -59,7 +59,7 @@ find_package(GDAL REQUIRED)
 find_package(tinyxml2 REQUIRED)
 find_package(glm REQUIRED)
 find_package(Boost REQUIRED COMPONENTS system thread regex filesystem serialization iostreams random)
-find_package(Armadillo REQUIRED)
+find_package(Armadillo CONFIG REQUIRED)
 
 # LasTools's CMake is not Modern CMake yet, so we have to use old-style find_package
 # that uses the provoded FindLASTools.cmake file
