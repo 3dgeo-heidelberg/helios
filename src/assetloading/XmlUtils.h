@@ -5,6 +5,7 @@
 #include <typedef.h>
 #include <NoiseSource.h>
 #include <scene/dynamic/DynSequence.h>
+#include <assetloading/geometryfilter/AbstractGeometryFilter.h>
 #include <maths/rigidmotion/RigidMotion.h>
 #include <DynMotion.h>
 #include <adt/exprtree/UnivarExprTreeNode.h>
@@ -101,6 +102,14 @@ public:
         tinyxml2::XMLElement *element,
         std::string attrName
     );
+
+    /**
+     * @brief Check whether the given filter loads a geometry (true) or not
+     *  (false, e.g., transforming a geometry with rotations).
+     * @param filter The filter to be checked.
+     * @return True if the given filter loads a geometry, false otherwise.
+     */
+    static bool isGeometryLoadingFilter(AbstractGeometryFilter * filter);
 
     /**
      * @brief Obtain a dynamic sequence of dynamic motions from given XML

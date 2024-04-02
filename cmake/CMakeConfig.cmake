@@ -9,11 +9,7 @@ if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE RELEASE)
 endif()
 # Common flags
-if(PCL_BINDING)
-    set(CMAKE_CXX_STANDARD 14)
-else()
-    set(CMAKE_CXX_STANDARD 11)
-endif()
+set(CMAKE_CXX_STANDARD 14)
 if(WIN32 OR MSVC) # Windows flags
     set(CMAKE_CXX_FLAGS_RELEASE "/MD /O2 /Ob2 /DNDEBUG")
     set(CMAKE_CXX_FLAGS_DEBUG "")

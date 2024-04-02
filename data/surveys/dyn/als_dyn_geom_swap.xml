@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+    <survey name="dyn_geom_swap_als" scene="data/scenes/dyn/dyn_geom_swap_scene.xml#dyn_geom_swap_scene" platform="data/platforms.xml#sr22" scanner="data/scanners_als.xml#leica_als50">
+		<leg>
+            <platformSettings  x="100" y="100.0" z="400" onGround="false" movePerSec_m="5" />
+            <scannerSettings  active="true" pulseFreq_hz="83000" scanFreq_hz="70" scanAngle_deg="60" />
+        </leg>
+		<leg>
+            <platformSettings  x="-100" y="-100.0" z="400" onGround="false" movePerSec_m="5" />
+            <scannerSettings  active="false" pulseFreq_hz="83000" scanFreq_hz="70" scanAngle_deg="60" />
+        </leg>
+		<leg>
+            <platformSettings  x="-100" y="100.0" z="400" onGround="false" movePerSec_m="5" />
+            <scannerSettings  active="true" pulseFreq_hz="83000" scanFreq_hz="70" scanAngle_deg="60" />
+        </leg>
+		<leg>
+            <platformSettings  x="100" y="-100.0" z="400" onGround="false" movePerSec_m="5" />
+            <scannerSettings  active="false" pulseFreq_hz="83000" scanFreq_hz="70" scanAngle_deg="60" />
+        </leg>
+    </survey>
+</document>

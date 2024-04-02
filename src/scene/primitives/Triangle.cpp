@@ -15,7 +15,7 @@ using namespace glm;
 using namespace std;
 
 // ***    CONSTRUCTION / DESTRUCTION    *** //
-// ************************************ //
+// **************************************** //
 Triangle::Triangle(Vertex v0, Vertex v1, Vertex v2) {
     verts[0] = v0;
     verts[1] = v1;

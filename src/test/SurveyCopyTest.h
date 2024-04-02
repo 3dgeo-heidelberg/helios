@@ -99,7 +99,7 @@ bool SurveyCopyTest::run(){
     baseScene->primitives[1]->material->ks[1] = 1.2;
 
     // Copy base Survey
-    std::shared_ptr<Survey> copy = std::make_shared<Survey>(*survey);
+    std::shared_ptr<Survey> copy = std::make_shared<Survey>(*survey, true);
 
     // Do some changes on copy
     copy->name = "CopiedSurvey";

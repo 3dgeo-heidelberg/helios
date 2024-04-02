@@ -127,6 +127,13 @@ public:
      */
     void applyAutoCRS(double const x, double const y, double const z);
 
+    // ***   M E T H O D S   *** //
+    // ************************* //
+    /**
+     * @see ScenePart::release
+     */
+    void release() override;
+
     // ***  GETTERs and SETTERs  *** //
     // ***************************** //
     /**

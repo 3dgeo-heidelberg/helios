@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+    <scene id="dyn_geom_swap_scene" name="DynGeomSwapScene">
+
+
+		<!-- Ground plane -->
+		<!-- ************ -->
+		<part id="1">
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/basic/groundplane/groundplane.obj" />
+            </filter>
+            <filter type="scale">
+                <param type="double" key="scale" value="120" />
+            </filter>
+			<filter type="translate">
+				<param type="vec3" key="offset" value="50.0;0;0" />
+			</filter>
+        </part>
+
+
+
+
+		<!-- Small cube goes sphere for two repetitions then goes big cube -->
+		<!-- ************************************************************* -->
+		<part id="2">
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/toyblocks/cube.obj" />
+            </filter>
+			<filter type="rotate">
+				<param key="rotation" type="rotation">
+					<rot angle_deg="45" axis="z"/>
+				</param>
+			</filter>
+			<filter type="scale">
+                <param type="double" key="scale" value="0.75" />
+            </filter>
+			<filter type="translate">
+				<param type="vec3" key="offset" value="-40.0;-50.0;0" />
+			</filter>
+			<!-- Swap small cube by sphere -->
+			<swap swapStep="2">
+				<filter type="objloader">
+                	<param type="string" key="filepath" value="data/sceneparts/toyblocks/sphere.obj" />
+		        </filter>
+				<filter type="scale">
+		            <param type="double" key="scale" value="1.25" />
+		        </filter>
+				<filter type="translate">
+					<param type="vec3" key="offset" value="-30.0;-60.0;0" />
+				</filter>
+			</swap>
+			<!-- Swap sphere by big cube -->
+			<swap swapStep="1">
+				<filter type="objloader">
+		            <param type="string" key="filepath" value="data/sceneparts/toyblocks/cube.obj" />
+		        </filter>
+				<filter type="rotate">
+					<param key="rotation" type="rotation">
+						<rot angle_deg="45" axis="z"/>
+					</param>
+				</filter>
+				<filter type="scale">
+		            <param type="double" key="scale" value="1.5" />
+		        </filter>
+				<filter type="translate">
+					<param type="vec3" key="offset" value="-20.0;-60.0;0" />
+				</filter>
+			</swap>
+        </part>
+
+
+
+
+		<!-- Sphere goes cube goes nothing -->
+		<!-- ***************************** -->
+		<part id="3">
+			<filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/toyblocks/sphere.obj" />
+            </filter>
+			<filter type="scale">
+                <param type="double" key="scale" value="1.25" />
+            </filter>
+			<filter type="translate">
+				<param type="vec3" key="offset" value="-10.0;-20.0;0" />
+			</filter>
+			<!-- Swap sphere by cube -->
+			<swap>
+				<filter type="objloader">
+		            <param type="string" key="filepath" value="data/sceneparts/toyblocks/cube.obj" />
+		        </filter>
+				<filter type="scale">
+		            <param type="double" key="scale" value="2.0" />
+		        </filter>
+				<filter type="translate">
+					<param type="vec3" key="offset" value="-40.0;40.0;0" />
+				</filter>
+			</swap>
+			<!-- Swap cube by nothing -->
+			<swap force_null="true">
+			</swap>
+		</part>
+
+
+
+
+		<!-- Small cube goes mid goes big goes bigger -->
+		<!-- **************************************** -->
+		<part id="4">
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/toyblocks/cube.obj" />
+            </filter>
+			<filter type="rotate">
+				<param key="rotation" type="rotation">
+					<rot angle_deg="45" axis="z"/>
+				</param>
+			</filter>
+			<filter type="scale">
+                <param type="double" key="scale" value="0.75" />
+            </filter>
+			<filter type="translate">
+				<param type="vec3" key="offset" value="-20.0;10.0;0" />
+			</filter>
+			<!-- Swap small cube by mid cube -->
+			<swap swapStep="1">
+				<filter type="rotate">
+					<param key="rotation" type="rotation">
+						<rot angle_deg="45" axis="z"/>
+					</param>
+				</filter>
+				<filter type="scale">
+		            <param type="double" key="scale" value="2.0" />
+		        </filter>
+				<filter type="translate">
+					<param type="vec3" key="offset" value="-22.0;12.0;0" />
+				</filter>
+			</swap>
+			<!-- Swap mid cube by big cube -->
+			<swap swapStep="1">
+				<filter type="rotate">
+					<param key="rotation" type="rotation">
+						<rot angle_deg="45" axis="z"/>
+					</param>
+				</filter>
+				<filter type="scale">
+		            <param type="double" key="scale" value="3.0" />
+		        </filter>
+				<filter type="translate">
+					<param type="vec3" key="offset" value="-18.0;11.0;0.0" />
+				</filter>
+			</swap>
+			<!-- Swap big cube by bigger cube -->
+			<swap swapStep="1">
+				<filter type="rotate">
+					<param key="rotation" type="rotation">
+						<rot angle_deg="45" axis="z"/>
+					</param>
+				</filter>
+				<filter type="scale">
+		            <param type="double" key="scale" value="3.5" />
+		        </filter>
+				<filter type="translate">
+					<param type="vec3" key="offset" value="-42.0;12.0;0.0" />
+				</filter>
+			</swap>
+        </part>
+    </scene>
+</document>

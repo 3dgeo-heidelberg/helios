@@ -388,6 +388,28 @@ void Scene::buildKDGroveWithLog(bool const safe){
     logging::TIME(ss.str());
 }
 
+void Scene::shutdown(){
+    kdgf = nullptr;
+    kdgrove = nullptr;
+    bbox = nullptr;
+    bbox_crs = nullptr;
+    raycaster = nullptr;
+    // Release scene parts and primitives
+    for(std::shared_ptr<ScenePart> part : parts){
+        part->release();
+    }
+    parts.clear();
+    primitives.clear();
+}
+
+std::vector<std::shared_ptr<ScenePart>> Scene::getSwapOnRepeatObjects(){
+    std::vector<std::shared_ptr<ScenePart>> sorObjs;
+    for(std::shared_ptr<ScenePart> sp : parts){
+        if(sp->getSwapOnRepeatHandler() != nullptr) sorObjs.push_back(sp);
+    }
+    return sorObjs;
+}
+
 // ***  READ/WRITE  *** //
 // ******************** //
 void Scene::writeObject(string path) {

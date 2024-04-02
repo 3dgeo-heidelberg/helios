@@ -74,14 +74,12 @@ protected:
     bool state_isActive = true;
 
 
+public:
     /**
 	 * @brief The scanning pulse process used by the scanner
 	 * @see ScanningPulseProcess
 	 */
     std::unique_ptr<ScanningPulseProcess> spp = nullptr;
-
-
-public:
     /**
 	 * @brief Main facade to file management system
 	 */

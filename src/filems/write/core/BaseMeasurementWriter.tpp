@@ -11,6 +11,7 @@ void BaseMeasurementWriter<WriteArgs ...>::configure(
     string const &prefix,
     bool const lastLegInStrip
 ){
+    // Prepare
     stringstream ss;
     ss << parent << prefix;
     if(this->isLasOutput()){
@@ -19,7 +20,20 @@ void BaseMeasurementWriter<WriteArgs ...>::configure(
     }
     else if(isZipOutput()) ss << "_points.bin";
     else ss << "_points.xyz";
-    setOutputFilePath(ss.str(), lastLegInStrip);
+    std::string const outpath = ss.str();
+
+    // Log for debug level
+    stringstream ss2;
+    ss2     << "Parent path for base measurement writer: \""
+            << parent << "\"\n"
+            << "Prefix for base measurement writer: \""
+            << prefix << "\"\n"
+            << "Output path for base measurement writer: \""
+            << outpath << "\"";
+    logging::DEBUG(ss2.str());
+
+    // Set
+    setOutputFilePath(outpath, lastLegInStrip);
 }
 
 template <typename ... WriteArgs>
@@ -81,6 +95,7 @@ void BaseMeasurementWriter<WriteArgs ...>::setOutputFilePath(
 
         // Create the Writer
         if(!fs::exists(path)){
+            logging::DEBUG("Creating writer for measurements ...");
             sfw = makeWriter(
                 wt,                                     // Writer type
                 path,                                   // Output path
@@ -90,17 +105,28 @@ void BaseMeasurementWriter<WriteArgs ...>::setOutputFilePath(
                 0.0,                                    // Min intensity
                 1000000.0                               // Delta intensity
             );
+            logging::DEBUG("Created synchronous file writer!");
             writers[path] = sfw;
+            logging::DEBUG("Stored synchronous file writer!");
         }
         else{ // Consider existing writer
+            logging::DEBUG("Loading existing writer for measurements ...");
             sfw = writers[path];
         }
 
         // Remove writer from writers hashmap if it is the last leg in strip
         // to allow the sfw destructor to be called when sfw is replaced in the
         // next leg
-        if(lastLegInStrip) writers.erase(path);
+        if(lastLegInStrip) {
+            logging::DEBUG("Erasing existing writer ...");
+            writers.erase(path);
+        }
 
+        std::stringstream ss;
+        std::string const sfwPath = (sfw != nullptr) ? sfw->getPath() : "NULL";
+        ss  << "Set output file path for measurements!\n"
+            << "sfw = " << sfw << " writing to \"" << sfwPath << "\"";
+        logging::DEBUG(ss.str());
     } catch (std::exception &e) {
         logging::WARN(e.what());
     }

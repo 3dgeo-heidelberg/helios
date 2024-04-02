@@ -59,6 +59,8 @@ if(WIN32 OR MSVC)  # Windows compilation
     endif()
 else()  # Linux compilation
     target_link_libraries(helios ${HELIOS_TARGET_LIBRARIES})
+    # target_link_libraries below is for profiling/debugging only
+    #target_link_libraries(helios ${HELIOS_TARGET_LIBRARIES} -fsanitize=address)
     if(PYTHON_BINDING)
         target_link_libraries(libhelios ${HELIOS_TARGET_LIBRARIES})
         target_link_libraries(pyhelios libhelios)
