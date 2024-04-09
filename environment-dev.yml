@@ -4,11 +4,11 @@ channels:
 dependencies:
   # These are the dependencies that are also formulated on the feedstock
   - armadillo
+  - blas
   - glm
   - importlib_resources
+  - lapack
   - lastools
-  - libblas
-  - liblapack
   - libboost-python-devel
   - libboost-devel
   - libgdal
