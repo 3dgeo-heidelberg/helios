@@ -18,7 +18,11 @@ The recommended way to install Helios++ is via the [conda package manager](https
 The following software is required for installation of Helios++:
 * a Conda installation e.g. [Anaconda](https://www.anaconda.com/download), [miniconda](https://docs.anaconda.com/free/miniconda/) or [micromamba](https://mamba.readthedocs.io/en/latest/installation/micromamba-installation.html).
 
-**TODO: Installation instructions once the package is published to conda-forge**
+Helios++ can then be installed with:
+
+```bash
+conda install -c conda-forge -c conda-forge/label/helios_dev helios
+```
 
 ### Development installation
 
