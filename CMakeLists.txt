@@ -59,7 +59,9 @@ find_package(GDAL REQUIRED)
 find_package(tinyxml2 REQUIRED)
 find_package(glm REQUIRED)
 find_package(Boost REQUIRED COMPONENTS system thread regex filesystem serialization iostreams random)
-find_package(Armadillo CONFIG REQUIRED)
+find_package(Armadillo REQUIRED)
+find_package(LAPACK REQUIRED)
+find_package(BLAS REQUIRED)
 
 # LasTools's CMake is not Modern CMake yet, so we have to use old-style find_package
 # that uses the provoded FindLASTools.cmake file
@@ -70,6 +72,23 @@ if(HELIOS_PCL)
   find_package(PCL COMPONENTS common features io io_ply visualization)
   target_link_libraries(helios PUBLIC ${PCL_LIBRARIES})
 endif()
+
+# We use Armadillo as a a header library and link against LAPACK and BLAS
+# ourselves. We do so in a desperate attempt to circumvent a conda packaging
+# issue on Windows that reports overlinking of the LAPACK library.
+target_include_directories(helios
+  PUBLIC
+    ${ARMADILLO_INCLUDE_DIRS}
+)
+target_compile_definitions(helios
+  PUBLIC
+    ARMA_DONT_USE_WRAPPER
+)
+target_link_libraries(helios
+  PUBLIC
+    LAPACK::LAPACK
+    BLAS::BLAS
+)
 
 # Add all the dependencies to the Helios library
 target_link_libraries(helios
@@ -85,12 +104,10 @@ target_link_libraries(helios
     Boost::iostreams
     Boost::random
     ${LASTOOLS_LIBRARIES}
-    armadillo
 )
 
 target_include_directories(helios
   PUBLIC
-    ${ARMADILLO_INCLUDE_DIRS}
     ${LASTOOLS_INCLUDE_DIRS}
 )
 
