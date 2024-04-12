@@ -15,6 +15,13 @@ StaticScene::StaticScene(StaticScene &ss) :
     }
 }
 
+// ***   M E T H O D S   *** //
+// ************************* //
+void StaticScene::shutdown(){
+    Scene::shutdown();
+    staticObjs.clear();
+}
+
 // ***  READ/WRITE  *** //
 // ******************** //
 void StaticScene::writeObject(std::string path) {

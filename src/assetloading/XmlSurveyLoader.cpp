@@ -91,6 +91,19 @@ XmlSurveyLoader::createSurveyFromXml(
   spectralLibrary.readReflectances();
   spectralLibrary.setReflectances(survey->scanner->platform->scene.get());
 
+  // Update materials for all swap on repeat handlers
+  for(std::shared_ptr<ScenePart> sp : survey->scanner->platform->scene->parts){
+      // Ignore scene parts with no swap on repeat
+      if(sp->sorh == nullptr) continue;
+      // Update material for each primitive
+      size_t const numPrimitives = sp->mPrimitives.size();
+      std::vector<Primitive *> & baselinePrimitives =
+          sp->sorh->getBaselinePrimitives();
+      for(size_t i = 0 ; i < numPrimitives ; ++i){
+          baselinePrimitives[i]->material = sp->mPrimitives[i]->material;
+      }
+  }
+
   // Apply scene geometry shift to platform waypoints
   applySceneShift(surveyNode, legNoiseDisabled, survey);
 
@@ -223,7 +236,9 @@ shared_ptr<Scene> XmlSurveyLoader::loadScene(
       scene = dynamic_pointer_cast<Scene>(
           getAssetByLocation("scene", sceneString, &sceneType)
       );
-      SerialSceneWrapper(sceneType, scene.get()).writeScene(sceneObj.string());
+      if(writeScene) {
+        SerialSceneWrapper(sceneType, scene.get()).writeScene(sceneObj.string());
+      }
       /*
        * Build KDGrove for Scene after exporting it.
        * This way memory issues coming from tracking of pointers at

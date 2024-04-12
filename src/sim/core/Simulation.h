@@ -11,6 +11,7 @@
 #include <dataanalytics/HDA_StateJSONReporter.h>
 #endif
 #include <SimulationReporter.h>
+#include <SimulationPlayer.h>
 
 #include <chrono>
 
@@ -18,9 +19,11 @@
  * @brief Class representing a simulation
  */
 class Simulation {
-friend class SimulationReporter;
+private:
+    friend class SimulationReporter;
+    friend class SimulationPlayer;
 #ifdef DATA_ANALYTICS
-friend class helios::analytics::HDA_StateJSONReporter;
+    friend class helios::analytics::HDA_StateJSONReporter;
 #endif
 protected:
     // ***  ATTRIBUTES  *** //
@@ -156,6 +159,19 @@ public:
 
     std::shared_ptr<SimulationCycleCallback> callback = nullptr;
 
+    /**
+     * @brief Simulation player to handle the simulation loop from the outside.
+     *
+     * While the simulation loop handles all the legs of a survey, the
+     *  simulation player handles the simulation loop, e.g., for a survey
+     *  with repetitions the simulation player provides the logic to correctly
+     *  launch the simulation loop correctly many times (one per repetition).
+     *
+     * @see SimulationPlayer
+     * @see SwapOnRepeatHandler
+     */
+    std::unique_ptr<SimulationPlayer> simPlayer = nullptr;
+
     // ***  CONSTRUCTION / DESTRUCTION  *** //
     // ************************************ //
     /**
@@ -195,6 +211,12 @@ public:
 	 * @brief Start the simmulation
 	 */
 	void start();
+    /**
+     * @brief Handle the main simulation loop, i.e., the loop that governs
+     *  the computations between the first and the last leg of the survey.
+     * @return The number of iterations run in the simulation loop.
+     */
+    virtual void doSimLoop();
 	/**
 	 * @brief Stop the simulation
 	 *
@@ -209,9 +231,9 @@ public:
 	 */
 	void pause(bool pause);
 	/**
-	 * @brief Handle simulation shutdown
+	 * @brief Handle simulation shutdown.
 	 */
-	void shutdown();
+	virtual void shutdown();
 
 
 	// ***  UTIL METHODS  *** //

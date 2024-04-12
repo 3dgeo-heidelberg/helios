@@ -123,4 +123,3 @@ void DynObject::updatePrimitivesNormalFromMatrix(
         X
     );
 }
-

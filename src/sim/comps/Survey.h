@@ -50,8 +50,10 @@ public:
      * @brief Survey default constructor
      */
     Survey() = default;
-    Survey(Survey &survey);
-    ~Survey() override {scanner->setAllDetectors(nullptr);}
+    Survey(Survey &survey, bool const deepCopy=false);
+    ~Survey() override {
+        if(scanner != nullptr) scanner->setAllDetectors(nullptr);
+    }
 
     // ***  M E T H O D S  *** //
     // *********************** //

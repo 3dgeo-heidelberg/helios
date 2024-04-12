@@ -43,8 +43,8 @@ protected:
     friend class Scanner;
     friend class SingleScanner;
     friend class MultiScanner;
-    friend class BaseEnergyModel;  // TODO Rethink : Necessary ?
-    friend class ImprovedEnergyModel;  // TODO Rethink : Necessary ?
+    friend class BaseEnergyModel;
+    friend class ImprovedEnergyModel;
 
     // ***  DEVICE ATTRIBUTES  *** //
     // *************************** //

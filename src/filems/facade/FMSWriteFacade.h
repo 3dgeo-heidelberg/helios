@@ -53,9 +53,30 @@ protected:
      */
     shared_ptr<VectorialPulseWriter> pw = nullptr;
     /**
-     * @brief The root directory for output files
+     * @brief The root directory for output files.
      */
     string rootDir = "./";
+
+    /**
+     * @brief Whether the write facade has been configured to split the
+     *  output by channel (true) or not (false).
+     *
+     * NOTE that this flag is for reading purposes only, i.e., updating the
+     *  flag will not change the way the writers work.
+     */
+    bool splitByChannel;
+
+    /**
+     * @brief The output directory on top of which the root directory is
+     * built (it is the ancestor of the root directory).
+     *
+     * NOTE that this string is for reading purposes only, i.e., updating the
+     *  string will not change the way the writers work.
+     *
+     * @see helios::filems::FMSWriteFacade::rootDir
+     * @see helios::filems::FMSWriteFacade::buildFacade
+     */
+    string outDir;
 
 public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //
@@ -98,6 +119,17 @@ public:
      * @see filems::FMSWriteFacade:rootDir
      */
     inline void setRootDir(string const &rootDir) {this->rootDir = rootDir;}
+    /**
+     * @brief Check whether the output is split by channel.
+     * @see filems::FMSWriteFacade::splitByChannel
+     */
+    inline bool isSplitByChannel() const {return splitByChannel;}
+    /**
+     * @brief Obtain the output directory that is an ancestor of the
+     *  root directory.
+     * @see filems::FMSWriteFacade::outDir
+     */
+    inline string getOutDir() const {return outDir;}
 
     // ***  FACADE MEASUREMENT WRITE METHODS  *** //
     // ****************************************** //

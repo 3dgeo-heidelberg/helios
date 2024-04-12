@@ -20,7 +20,7 @@ SimulationReporter::SimulationReporter(Simulation const &sim) :
 // ************************ //
 void SimulationReporter::preStartReport() const{
     stringstream ss;
-    ss << "STARTING SIMULATION\n";
+    ss << "SIMULATION START\n";
     string dmoReport = reportDynMovingObjects();
     if(dmoReport != "") ss << dmoReport;
     logging::DEBUG(ss.str());

@@ -273,6 +273,13 @@ public:
     getTrajectoryFunction() const
     {return tf;}
     /**
+     * @brief Obtain the TrajectoryFunction as a reference that can be
+     *  modified.
+     * @see InterpolatedMovingPlatform::tf
+     * @see InterpolatedMovingPlatform::getTrajectoryFunction
+     */
+    inline DesignTrajectoryFunction & getTrajectoryFunctionRef() {return *tf;}
+    /**
      * @brief Set the TrajectoryFunction
      * @see InterpolatedMovingPlatform::tf
      */
