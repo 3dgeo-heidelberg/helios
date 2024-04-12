@@ -2,22 +2,29 @@ name: helios-dev
 channels:
   - conda-forge
 dependencies:
+  # These are the dependencies that are also formulated on the feedstock
   - armadillo
   - blas
-  - boost
-  - gdal
   - glm
   - importlib_resources
   - lapack
   - lastools
-  - matplotlib
-  - pcl
+  - libboost-python-devel
+  - libboost-devel
+  - libgdal
+  - matplotlib-base
   - pip
   - python
+  - scikit-build-core
+  - setuptools_scm
   - tinyxml2
   - xmlschema
   - zlib
+  # These are additional ones only used in development builds
+  - pcl
   # The following packages are not dependencies, but required
   # for development workflows e.g. local testing
   - doxygen
   - pytest
+  - laspy
+  - lazrs-python

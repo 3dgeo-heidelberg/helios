@@ -8,7 +8,6 @@ Tests for the Python bindings
 import pytest
 import numpy as np
 from pathlib import Path
-import sys
 import os
 import time
 import struct
@@ -17,8 +16,7 @@ import shutil
 
 
 DELETE_FILES_AFTER = False
-WORKING_DIR = str(Path(__file__).parent.parent.absolute())
-sys.path.append(WORKING_DIR)
+WORKING_DIR = os.getcwd()
 import pyhelios
 
 

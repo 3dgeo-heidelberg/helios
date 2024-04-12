@@ -87,7 +87,7 @@ XmlSurveyLoader::createSurveyFromXml(
   string sceneString = surveyNode->Attribute("scene");
   survey->scanner->platform->scene = loadScene(sceneString, rebuildScene);
   SpectralLibrary spectralLibrary = SpectralLibrary(
-      (float)survey->scanner->getWavelength(), assetsDir + "spectra");
+      (float)survey->scanner->getWavelength(), assetsDir, "spectra");
   spectralLibrary.readReflectances();
   spectralLibrary.setReflectances(survey->scanner->platform->scene.get());
 
@@ -200,11 +200,22 @@ shared_ptr<Scene> XmlSurveyLoader::loadScene(
   try {
     fs::path sceneObj(sceneObjPath);
     fs::path sceneXml(sceneFullPath + "xml");
+
+    if(sceneXml.is_relative()) {
+      for (auto path : assetsDir) {
+        if(fs::exists(fs::path(path) / sceneXml)) {
+            sceneXml = fs::path(path) / sceneXml;
+            sceneObj = fs::path(path) / sceneObj;
+            break;
+        }
+      }
+    }
+
     if (fs::is_regular_file(sceneObj) &&
         fs::last_write_time(sceneObj) > fs::last_write_time(sceneXml) &&
         !rebuildScene
     ){
-      SerialSceneWrapper *ssw = SerialSceneWrapper::readScene(sceneObjPath);
+      SerialSceneWrapper *ssw = SerialSceneWrapper::readScene(sceneObj.string());
       scene = shared_ptr<Scene>(ssw->getScene());
       delete ssw;
     } else {
@@ -212,7 +223,7 @@ shared_ptr<Scene> XmlSurveyLoader::loadScene(
       scene = dynamic_pointer_cast<Scene>(
           getAssetByLocation("scene", sceneString, &sceneType)
       );
-      SerialSceneWrapper(sceneType, scene.get()).writeScene(sceneObjPath);
+      SerialSceneWrapper(sceneType, scene.get()).writeScene(sceneObj.string());
       /*
        * Build KDGrove for Scene after exporting it.
        * This way memory issues coming from tracking of pointers at

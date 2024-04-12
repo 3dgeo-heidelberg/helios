@@ -121,7 +121,7 @@ bool AssetLoadingTest::run(){
 bool AssetLoadingTest::testScannerLoading(){
     // Prepare scanner loading
     std::string testScannersPath = "data/test/test_scanners.xml";
-    std::string assetsPath = "assets/";
+    std::vector<std::string> assetsPath = { "assets/" };
     XmlAssetsLoader loader(testScannersPath, assetsPath);
     // Load and validate Leica ALS50
     std::shared_ptr<Scanner> scanner = std::static_pointer_cast<Scanner>(
@@ -524,7 +524,7 @@ bool AssetLoadingTest::testScannerLoading(){
 bool AssetLoadingTest::testPlatformLoading(){
     // Prepare platform loading
     std::string testPlatformsPath = "data/test/test_platforms.xml";
-    std::string assetsPath = "assets/";
+    std::vector<std::string> assetsPath = { "assets/" };
     XmlAssetsLoader loader(testPlatformsPath, assetsPath);
     // Load and validate Quadrocopter UAV
     std::shared_ptr<Platform> platf = std::dynamic_pointer_cast<Platform>(

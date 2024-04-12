@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <vector>
 #include <logging.hpp>
 
 /**
@@ -63,10 +64,10 @@ public:
      */
     std::string parseSurveyPath();
     /**
-     * @brief Parse the assets path from invocation arguments
+     * @brief Parse the assets paths from invocation arguments
      * @return Parsed assets path or default value if none was found
      */
-    std::string parseAssetsPath();
+    std::vector<std::string> parseAssetsPath();
     /**
      * @brief Parse the output path from invocation arguments
      * @return Parsed output path or default value if none was found
@@ -287,5 +288,5 @@ private:
      * @param arg Argument to be found
      * @return Index Index of the argument to be found, -1 if it was not found
      */
-    int findIndexOfArgument(std::string&& arg);
+    int findIndexOfArgument(std::string&& arg, int offset = 0);
 };

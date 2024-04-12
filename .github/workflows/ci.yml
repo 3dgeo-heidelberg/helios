@@ -9,6 +9,7 @@ on:
     branches:
       - main
       - dev
+      - alpha-dev
   workflow_dispatch:
 
 jobs:
@@ -19,7 +20,9 @@ jobs:
       matrix:
         os:
           - ubuntu-latest
-          - macos-latest
+          # Disable MacOS for now - we do not yet officially support it and we need to invest a bit
+          # more efforts into investigating broken LAZ files written by Helios on MacOS.
+          # - macos-latest
           - windows-latest
         python:
           - "3.8"
@@ -44,7 +47,7 @@ jobs:
 
       - name: Install Helios
         run: |
-          CMAKE_PREFIX_PATH=${CONDA_PREFIX} python -m pip install -v .
+          python -m pip install -v .
       
       - name: Run tests
         run: |
