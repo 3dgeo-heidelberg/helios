@@ -13,6 +13,10 @@ def helios_exec(args):
     # Inject additional arguments to account for standard paths
     args = args + ["--assets", os.getcwd()]
 
+    # Inject the legacy model switch. This is part of our transitioning strategy
+    # to the new energy model.
+    args = args + ["--legacyEnergyModel"]
+
     executable = _get_executable()
     return subprocess.call([executable] + args)
 
