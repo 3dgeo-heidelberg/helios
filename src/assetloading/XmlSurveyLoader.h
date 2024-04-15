@@ -33,6 +33,11 @@ protected:
      *  so the first leg has 0 as serial id.
      */
     int lastLegSerialId = -1;
+    /**
+     * @brief Flag to decide whether to write a scene (provided it was created
+     *  and not read during asset loading).
+     */
+    bool writeScene = true;
 
 public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //
@@ -42,8 +47,11 @@ public:
      * @param filePath Path to the XML File
      * @param assetsDir Path to the assets directory
      */
-	XmlSurveyLoader(std::string& filePath, std::vector<std::string>& assetsDir)
-	    : XmlAssetsLoader(filePath, assetsDir) {}
+	XmlSurveyLoader(
+          std::string& filePath,
+          std::vector<std::string>& assetsDir,
+          bool writeScene=true)
+	    : XmlAssetsLoader(filePath, assetsDir), writeScene(writeScene) {}
 
     // ***  M E T H O D S  *** //
     // *********************** //

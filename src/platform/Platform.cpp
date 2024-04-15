@@ -20,8 +20,7 @@ void Platform::_clone(std::shared_ptr<Platform> p){
         Rotation(this->cfg_device_relativeMountAttitude);
     p->lastCheckZ = this->lastCheckZ;
     p->lastGroundCheck = glm::dvec3(this->lastGroundCheck);
-    if(this->scene == nullptr) p->scene = nullptr;
-    else p->scene = std::make_shared<Scene>(*this->scene);
+    p->scene = scene;
 
     p->positionXNoiseSource = this->positionXNoiseSource;
     p->positionYNoiseSource = this->positionYNoiseSource;

@@ -20,6 +20,7 @@ target_sources(
   "geometryfilter/AbstractGeometryFilter.cpp"
   "geometryfilter/WavefrontObjCache.cpp"
   "geometryfilter/ScaleFilter.cpp"
+  "geometryfilter/NullGeometryFilter.cpp"
   "XmlSceneLoader.cpp"
   "LadLutLoader.cpp"
   "MaterialsFileReader.cpp"
@@ -29,4 +30,5 @@ target_sources(
   "XmlUtils.cpp"
   "Asset.cpp"
   "XmlAssetsLoader.cpp"
+  "SwapOnRepeatHandler.cpp"
 )

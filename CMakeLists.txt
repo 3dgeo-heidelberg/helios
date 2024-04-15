@@ -58,11 +58,10 @@ add_library(helios)
 find_package(GDAL REQUIRED)
 find_package(tinyxml2 REQUIRED)
 find_package(glm REQUIRED)
-find_package(ZLIB REQUIRED)
 find_package(Boost REQUIRED COMPONENTS system thread regex filesystem serialization iostreams random)
 find_package(Armadillo REQUIRED)
-find_package(BLAS REQUIRED)
 find_package(LAPACK REQUIRED)
+find_package(BLAS REQUIRED)
 
 # LasTools's CMake is not Modern CMake yet, so we have to use old-style find_package
 # that uses the provoded FindLASTools.cmake file
@@ -74,13 +73,29 @@ if(HELIOS_PCL)
   target_link_libraries(helios PUBLIC ${PCL_LIBRARIES})
 endif()
 
+# We use Armadillo as a a header library and link against LAPACK and BLAS
+# ourselves. We do so in a desperate attempt to circumvent a conda packaging
+# issue on Windows that reports overlinking of the LAPACK library.
+target_include_directories(helios
+  PUBLIC
+    ${ARMADILLO_INCLUDE_DIRS}
+)
+target_compile_definitions(helios
+  PUBLIC
+    ARMA_DONT_USE_WRAPPER
+)
+target_link_libraries(helios
+  PUBLIC
+    LAPACK::LAPACK
+    BLAS::BLAS
+)
+
 # Add all the dependencies to the Helios library
 target_link_libraries(helios
   PUBLIC
     GDAL::GDAL
     tinyxml2::tinyxml2
     glm::glm
-    ZLIB::ZLIB
     Boost::system
     Boost::thread
     Boost::regex
@@ -88,15 +103,11 @@ target_link_libraries(helios
     Boost::serialization
     Boost::iostreams
     Boost::random
-    BLAS::BLAS
-    LAPACK::LAPACK
     ${LASTOOLS_LIBRARIES}
-    ${ARMADILLO_LIBRARIES}
 )
 
 target_include_directories(helios
   PUBLIC
-    ${ARMADILLO_INCLUDE_DIRS}
     ${LASTOOLS_INCLUDE_DIRS}
 )
 
@@ -123,7 +134,7 @@ endif()
 # Add the HelIOS++ executable
 add_executable(helios++)
 
-target_link_libraries(helios++ PUBLIC helios)
+target_link_libraries(helios++ PRIVATE helios)
 
 if(BUILD_PYTHON)
   find_package(Python COMPONENTS Interpreter Development)
@@ -132,7 +143,7 @@ if(BUILD_PYTHON)
   add_library(_pyhelios MODULE)
 
   target_link_libraries(_pyhelios
-  PUBLIC
+  PRIVATE
     helios
     Boost::python
     Python::Module
@@ -150,7 +161,9 @@ endif()
 add_subdirectory(src)
 
 # Add documentation building through the CMake build system
-add_subdirectory(doc)
+if(BUILD_DOCS)
+  add_subdirectory(doc)
+endif()
 
 # Add installation rules for the Helios++ executable and Python bindings library
 

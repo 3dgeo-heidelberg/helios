@@ -49,6 +49,10 @@ protected:
      * @brief Group of threads
      */
 	boost::thread_group threads_;
+    /**
+     * @brief True when the thread pool has been finished, false otherwise.
+     */
+    bool finished;
 
 public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //
@@ -59,7 +63,8 @@ public:
      */
     explicit ThreadPool(std::size_t const _pool_size) :
         work_(boost::asio::make_work_guard(io_service_)),
-        pool_size(_pool_size)
+        pool_size(_pool_size),
+        finished(false)
     {
         // Create threads
         for (std::size_t i = 0; i < pool_size; ++i){
@@ -76,10 +81,12 @@ public:
         io_service_.stop();
 
         // Suppress all exceptions.
-        try{
-            threads_.join_all();
+        if(!finished) {
+            try {
+                threads_.join_all();  // Legacy mode
+            }
+            catch (const std::exception &) {}
         }
-        catch (const std::exception&) {}
     }
 
 public:

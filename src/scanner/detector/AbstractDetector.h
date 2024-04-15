@@ -91,7 +91,7 @@ public:
 	// ***  M E T H O D S  *** //
 	// *********************** //
 	/**
-	 * @brief Shutdown the detector when simulation has finished
+	 * @brief Shutdown the detector when simulation has finished.
 	 */
 	virtual void shutdown();
     /**

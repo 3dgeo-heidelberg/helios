@@ -11,6 +11,7 @@ target_sources(
   PRIVATE
   "tools/DiscreteTime.cpp"
   "comps/Leg.cpp"
+  "comps/SimulationPlayer.cpp"
   "comps/SimulationReporter.cpp"
   "comps/Survey.cpp"
   "comps/ScanningStrip.cpp"

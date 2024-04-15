@@ -105,10 +105,38 @@ public:
      * @param[out] holistic Used to specify if all vertices defining each
      *  primitive must be considered as a whole (true) or not
      * @return Built scene part if any, nullptr otherwise
+     * @see XmlSceneLoader::loadfilter
      */
     shared_ptr<ScenePart> loadFilters(
         tinyxml2::XMLElement *scenePartNode,
         bool &holistic
+    );
+
+    /**
+     * @brief Load a filter from a XML filter node.
+     * @param filterNode XML node defining the filter.
+     * @param[out] holistic Used to specify if all vertices defining each
+     *  primitive must be considered as a whole (true) or not
+     * @param scenePart The scene part to be transformed by the filter.
+     * @return Built filter if any, nullptr otherwise
+     * @see XmlSceneLoader::loadFilters
+     */
+    AbstractGeometryFilter * loadFilter(
+        tinyxml2::XMLElement *filterNode,
+        bool &holistic,
+        ScenePart *scenePart
+    );
+
+    /**
+     * @brief Load all the swaps inside a part node and build a handler with
+     *  them.
+     * @param scenePartNode XML part node defining the scene part.
+     * @param scenePart The scene part that is transformed by each swap.
+     * @return Handler for the many swaps associated with the scene part.
+     */
+    shared_ptr<SwapOnRepeatHandler> loadScenePartSwaps(
+        tinyxml2::XMLElement *scenePartNode,
+        ScenePart * scenePart
     );
 
     /**

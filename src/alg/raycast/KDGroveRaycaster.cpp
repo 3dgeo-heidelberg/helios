@@ -41,6 +41,9 @@ RaySceneIntersection * KDGroveRaycaster::search(
             delete bestRSI;
             bestRSI = rsi;
         }
+        else{
+            delete rsi;
+        }
     }
     return bestRSI;
 }

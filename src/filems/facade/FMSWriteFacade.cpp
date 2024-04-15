@@ -24,17 +24,22 @@ void FMSWriteFacade::configure(
     bool const lastLegInStrip
 ){
     // Configure measurement output path
+    logging::DEBUG("Configuring measurement writer ...");
     getMeasurementWriter()->configure(rootDir, prefix, lastLegInStrip);
 
     // Configure trajectory output path
+    logging::DEBUG("Configuring trajectory writer ...");
     getTrajectoryWriter()->configure(rootDir, prefix);
 
     // Configure full waveform output path
+    logging::DEBUG("Configuring full waveform writer writer ...");
     getFullWaveformWriter()->configure(rootDir, prefix, computeWaveform);
 
     // Configure pulse output path
+    logging::DEBUG("Configuring pulse writer ...");
     getPulseWriter()->configure(rootDir, prefix, writePulse);
 
+    logging::DEBUG("All writers are now configured!");
 }
 
 // ***  FACADE MEASUREMENT WRITE METHODS  *** //

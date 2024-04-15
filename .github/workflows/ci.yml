@@ -5,6 +5,7 @@ on:
     branches:
       - main
       - dev
+      - alpha-dev
   pull_request:
     branches:
       - main
@@ -20,7 +21,9 @@ jobs:
       matrix:
         os:
           - ubuntu-latest
-          - macos-latest
+          # Disable MacOS for now - we do not yet officially support it and we need to invest a bit
+          # more efforts into investigating broken LAZ files written by Helios on MacOS.
+          # - macos-latest
           - windows-latest
         python:
           - "3.8"

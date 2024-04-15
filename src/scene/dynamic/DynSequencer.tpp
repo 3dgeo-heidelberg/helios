@@ -34,6 +34,18 @@ vector<shared_ptr<T>> DynSequencer<T>::nextStep(){
     return sequence;
 }
 
+// ***   M E T H O D S   *** //
+// ************************* //
+template <typename T>
+void DynSequencer<T>::release(){
+    for(auto it = dynseqs.begin() ; it != dynseqs.end() ; ++it){
+        it->second->clear();
+    }
+    dynseqs.clear();
+    start = nullptr;
+    current = nullptr;
+}
+
 // ***  GETTERs and SETTERs  *** //
 // ***************************** //
 template <typename T>

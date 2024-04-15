@@ -5,7 +5,6 @@
 #include "logging.hpp"
 
 #include "Survey.h"
-#include "SurveyPlayback.h"
 #include "XmlSurveyLoader.h"
 #include <TimeWatcher.h>
 #include <scanner/detector/PulseThreadPoolFactory.h>
@@ -38,6 +37,7 @@ void LidarSim::init(
     bool platformNoiseDisabled,
     bool legNoiseDisabled,
     bool rebuildScene,
+    bool writeScene,
     bool lasOutput,
     bool las10,
     bool zipOutput,
@@ -71,6 +71,7 @@ void LidarSim::init(
 	    << "platformNoiseDisabled: " << platformNoiseDisabled << "\n"
 	    << "legNoiseDisabled: " << legNoiseDisabled << "\n"
 	    << "rebuildScene: " << rebuildScene << "\n"
+        << "writeScene: " << writeScene << "\n"
 	    << "lasOutput: " << lasOutput << "\n"
         << "las10: " << las10 << "\n"
 	    << "fixedIncidenceAngle: " << fixedIncidenceAngle << "\n"
@@ -85,7 +86,7 @@ void LidarSim::init(
 	// Load survey description from XML file:
  	std::shared_ptr<XmlSurveyLoader> xmlreader = std::make_shared<
  	    XmlSurveyLoader
-    >(surveyPath, assetsPath);
+    >(surveyPath, assetsPath, writeScene);
  	xmlreader->sceneLoader.kdtFactoryType = kdtType;
  	xmlreader->sceneLoader.kdtNumJobs = kdtJobs;
  	xmlreader->sceneLoader.kdtGeomJobs = kdtGeomJobs;
@@ -156,6 +157,35 @@ void LidarSim::init(
 
 	// Disconnect FMS
     fms->disconnect();
+
+    // Release resources before finishing
+    release(playback);
+}
+
+
+void LidarSim::release(std::shared_ptr<SurveyPlayback> sp){
+    // Release scanner
+    std::shared_ptr<Scanner> sc = sp->mSurvey->scanner;
+    sc->randGen1 = nullptr;
+    sc->randGen2 = nullptr;
+    sc->intersectionHandlingNoiseSource = nullptr;
+    sc->setAllDetectors(nullptr);
+    sc->spp = nullptr;
+    sc->allOutputPaths = nullptr;
+    sc->allMeasurements = nullptr;
+    sc->allTrajectories = nullptr;
+    sc->allMeasurementsMutex = nullptr;
+    sc->cycleMeasurements = nullptr;
+    sc->cycleTrajectories = nullptr;
+    sc->cycleMeasurementsMutex = nullptr;
+    // Release file management system
+    sc->fms = nullptr;
+    sp->fms = nullptr;
+    // Release main components
+    sc->platform->scene = nullptr;
+    sc->platform = nullptr;
+    sp->mSurvey->scanner = nullptr;
+    sp->mSurvey = nullptr;
 }
 
 }}

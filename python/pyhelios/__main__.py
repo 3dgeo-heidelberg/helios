@@ -21,6 +21,10 @@ def helios_exec(args):
     args = args + ["--assets", resources.files("pyhelios")]
     args = args + ["--assets", resources.files("pyhelios") / "data"]
 
+    # Inject the legacy model switch. This is part of our transitioning strategy
+    # to the new energy model.
+    args = args + ["--legacyEnergyModel"]
+
     # Call the executable
     executable = _get_executable()
     return subprocess.call([executable] + args)

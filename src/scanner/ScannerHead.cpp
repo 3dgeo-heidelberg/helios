@@ -60,7 +60,6 @@ void ScannerHead::setCurrentRotateAngle_rad(double angle_rad) {
 }
 
 void ScannerHead::setRotatePerSec_rad(double rotateSpeed_rad) {
-
 	// Limit head rotate speed to device maximum:
 	if (std::fabs(rotateSpeed_rad) > cfg_device_rotatePerSecMax_rad) {
 		rotateSpeed_rad = sgn(rotateSpeed_rad) * cfg_device_rotatePerSecMax_rad;
