@@ -70,7 +70,7 @@ void SimulationPlayer::endPlay(){
         // Restart scanner
         logging::DEBUG("Restarting scanner for next simulation play ...");
         restartScanner(*sim.getScanner());
-        // Restar scene
+        // Restart scene
         logging::DEBUG("Restarting scene for next simulation play ...");
         restartScene(*sim.getScanner()->platform->scene);
         // Restart simulation
@@ -168,7 +168,7 @@ void SimulationPlayer::restartScene(Scene &scene){
         if(sp->sorh != nullptr && sp->sorh->needsDiscardOnReplay()){
             for(Primitive * p: sp->sorh->getBaselinePrimitives()) delete p;
             for(Primitive * p: sp->mPrimitives) delete p;
-            sp->sorh = nullptr;
+            //sp->sorh = nullptr; // TODO Rethink : Remove to enable rebirth?
             continue;
         }
         // Handle scene parts that must be preserved
@@ -181,7 +181,7 @@ void SimulationPlayer::restartScene(Scene &scene){
                 for(size_t i = 0 ; i < p->getNumVertices() ; ++i){
                     v[i].pos = v[i].pos + diff;
                 }
-                p->update();
+                //p->update(); // TODO Rethink : Avoid calling twice
             }
         }
         // Handle scene parts who are in the first play after a swap
@@ -199,8 +199,15 @@ void SimulationPlayer::restartScene(Scene &scene){
     }
     scene.parts = newParts;
     scene.primitives = newPrims;
+    // Apply default reflectances when needed
+    for(Primitive * p : scene.primitives){
+        Material &mat = *p->material;
+        if(std::isnan(mat.reflectance)){
+            mat.reflectance = scene.getDefaultReflectance();
+        }
+    }
     // Reload scene
-    scene.finalizeLoading(false);
+    scene.finalizeLoading(false); // TODO Rethink : p->update is called here
 }
 
 void SimulationPlayer::restartSimulation(Simulation &sim){

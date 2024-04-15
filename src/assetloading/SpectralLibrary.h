@@ -79,4 +79,10 @@ public:
 	 * @param scene Scene with materials which reflectance must be setted
 	 */
 	void setReflectances(Scene* scene);
+
+    /**
+     * @brief Obtain the default reflectance of the spectral library.
+     * @see SpectralLibrary::defaultReflectance
+     */
+    inline double getDefaultReflectance(){return defaultReflectance;}
 };

@@ -12,6 +12,7 @@
 #endif
 #ifdef DATA_ANALYTICS
 #include <dataanalytics/HDA_StateJSONReporter.h>
+#include <dataanalytics/HDA_Recorder.h>
 #endif
 #include <SimulationReporter.h>
 #include <SimulationPlayer.h>
@@ -219,7 +220,11 @@ public:
      *  the computations between the first and the last leg of the survey.
      * @return The number of iterations run in the simulation loop.
      */
-    virtual void doSimLoop();
+    virtual void doSimLoop(
+#ifdef DATA_ANALYTICS
+        helios::analytics::HDA_Recorder &ssr
+#endif
+    );
 	/**
 	 * @brief Stop the simulation
 	 *

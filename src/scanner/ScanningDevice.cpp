@@ -286,10 +286,8 @@ void ScanningDevice::computeSubrays(
 ){
     size_t const numSubrays = cached_subrayRotation.size();
     for(size_t i = 0 ; i < numSubrays ; ++i) {
-    #if DATA_ANALYTICS >=2
-        bool subrayHit;
-    #endif
 #if DATA_ANALYTICS >=2
+        bool subrayHit;
         std::vector<double> subraySimRecord(
             14, std::numeric_limits<double>::quiet_NaN()
         );
