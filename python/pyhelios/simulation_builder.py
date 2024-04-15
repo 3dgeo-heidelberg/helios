@@ -4,6 +4,8 @@ from collections import namedtuple
 from math import isnan
 import os
 import time
+import importlib_resources as resources
+
 
 SimulationBuilderRotateFilter = namedtuple(
     'SimulationBuilderRotateFilter',
@@ -64,6 +66,9 @@ class SimulationBuilder:
     # ---  CONSTRUCTOR  --- #
     # --------------------- #
     def __init__(self, surveyPath, assetsDir, outputDir):
+        # Add default values for asset directories
+        assetsDir = assetsDir + [os.getcwd(), str(resources.files("pyhelios")), str(resources.files("pyhelios") / "data")]
+
         # Base values
         self.setSurveyPath(surveyPath)
         self.setAssetsDir(assetsDir)
