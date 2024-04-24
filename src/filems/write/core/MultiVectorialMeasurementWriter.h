@@ -25,7 +25,7 @@ public:
     MultiVectorialMeasurementWriter() :
         VectorialMeasurementWriter()
     {}
-    virtual ~MultiVectorialMeasurementWriter() = default;
+    ~MultiVectorialMeasurementWriter() override = default;
 
     // ***   M E T H O D S   *** //
     // ************************* //

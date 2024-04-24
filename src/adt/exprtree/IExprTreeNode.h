@@ -20,7 +20,7 @@ class IExprTreeNode : public IBinaryTreeNode {
 public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //
     // ************************************ //
-    virtual ~IExprTreeNode() = default;
+    ~IExprTreeNode() override = default;
 
     // ***  EXPRESSION TREE NODE INTERFACE *** //
     // *************************************** //

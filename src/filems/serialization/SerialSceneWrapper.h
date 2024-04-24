@@ -84,7 +84,7 @@ public:
         sceneType(sceneType),
         scene(scene)
     {}
-    virtual ~SerialSceneWrapper() = default;
+    ~SerialSceneWrapper() override = default;
 
     // ***  READ / WRITE  *** //
     // ********************** //

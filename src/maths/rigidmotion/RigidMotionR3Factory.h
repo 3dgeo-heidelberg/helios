@@ -71,7 +71,7 @@ public:
      * @brief RigidMotionR3Factory default constructor
      */
     RigidMotionR3Factory() = default;
-    virtual ~RigidMotionR3Factory() = default;
+    ~RigidMotionR3Factory() override = default;
 
     // ***  RIGID MOTION FACTORY METHODS  *** //
     // ************************************** //

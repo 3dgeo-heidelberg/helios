@@ -76,7 +76,7 @@ public:
         ),
         lastTime(0)
     {}
-    virtual ~DesignTrajectoryFunction() = default;
+    ~DesignTrajectoryFunction() override = default;
 
     // ***  TRAJECTORY FUNCTION  *** //
     // ***************************** //

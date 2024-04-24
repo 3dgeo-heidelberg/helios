@@ -91,11 +91,11 @@ public:
      * @return The path to the output file
      * @see filems::BaseFullWaveformWriter::getOutputPath
      */
-    fs::path getOutputFilePath() const {return fs::path(getOutputPath());}
+    fs::path getOutputFilePath() const override {return fs::path(getOutputPath());}
     /**
      * @see filems::BaseFullWaveformWriter::getOutputFilePath
      */
-    string getOutputPath() const {return sfw->getPath();}
+    string getOutputPath() const override {return sfw->getPath();}
 };
 
 #include <filems/write/core/BaseFullWaveformWriter.tpp>

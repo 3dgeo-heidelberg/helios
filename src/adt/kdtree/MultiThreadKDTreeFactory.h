@@ -146,7 +146,7 @@ public:
         size_t const numJobs=2,
         size_t const geomJobs=2
     );
-    virtual ~MultiThreadKDTreeFactory() = default;
+    ~MultiThreadKDTreeFactory() override = default;
 
     // ***  CLONE  *** //
     // *************** //

@@ -110,7 +110,7 @@ public:
         partialSplitPos(partialSplitPos),
         splitLoss(splitLoss)
     {}
-    virtual ~SAHKDTreeComputeLossNodesSubTask() {}
+    ~SAHKDTreeComputeLossNodesSubTask() override {}
 
     // ***  RUNNABLE SHARED TASK  *** //
     // ****************************** //

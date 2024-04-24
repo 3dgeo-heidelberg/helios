@@ -57,8 +57,9 @@ inline std::string timestamp() {
       std::chrono::seconds(gmt.tm_sec);
     //format the string
     std::string buffer("year/mo/dy hr:mn:sc.xxxxxx");
-    sprintf(
+    snprintf(
         &buffer.front(),
+        buffer.size(),
         "%04d/%02d/%02d %02d:%02d:%09.6f",
         gmt.tm_year + 1900,
         gmt.tm_mon + 1,

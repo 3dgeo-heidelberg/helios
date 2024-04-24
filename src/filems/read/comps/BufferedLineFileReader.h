@@ -43,7 +43,7 @@ public:
         lrs(ifs, this->maxCharsPerLine),
         bufferSize(bufferSize)
     {makeBufferedStrategy();}
-    virtual ~BufferedLineFileReader() = default;
+    ~BufferedLineFileReader() override = default;
 
 protected:
     // ***  INNER METHODS  *** //

@@ -37,7 +37,7 @@ public:
         FullWaveformPulseRunnable(scanner, pulse),
         raycaster(raycaster)
     {}
-    virtual ~DynFullWaveformPulseRunnable() = default;
+    ~DynFullWaveformPulseRunnable() override = default;
 
     // ***  ASSISTANCE METHODS  *** //
     // **************************** //

@@ -16,7 +16,7 @@ public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //
     // ************************************ //
     PyDetailedVoxelWrapper(DetailedVoxel *dv) : PyPrimitiveWrapper(dv) {}
-    virtual ~PyDetailedVoxelWrapper() = default;
+    ~PyDetailedVoxelWrapper() override = default;
 
     // ***  GETTERS and SETTERS  *** //
     // ***************************** //

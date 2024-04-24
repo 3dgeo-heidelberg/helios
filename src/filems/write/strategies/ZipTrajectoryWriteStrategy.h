@@ -38,7 +38,7 @@ public:
         DirectTrajectoryWriteStrategy(ofs),
         oa(oa)
     {}
-    virtual ~ZipTrajectoryWriteStrategy() = default;
+    ~ZipTrajectoryWriteStrategy() override = default;
 
     // ***  WRITE STRATEGY INTERFACE  *** //
     // ********************************** //

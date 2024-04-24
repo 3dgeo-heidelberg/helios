@@ -50,7 +50,7 @@ public:
         double const cl=1,
         double const co=1
     );
-    virtual ~AxisSAHKDTreeFactory() = default;
+    ~AxisSAHKDTreeFactory() override = default;
 
     // ***  CLONE  *** //
     // *************** //

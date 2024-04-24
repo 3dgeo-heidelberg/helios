@@ -17,7 +17,7 @@ public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //
     // ************************************ //
     PyTriangleWrapper(Triangle * tri) : PyPrimitiveWrapper(tri) {}
-    virtual ~PyTriangleWrapper() = default;
+    ~PyTriangleWrapper() override = default;
 
     // ***  GETTERS and SETTERS  *** //
     // ***************************** //

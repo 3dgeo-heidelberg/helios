@@ -33,7 +33,7 @@ public:
      * @param grove The KDGrove for the ray casting
      */
     KDGroveRaycaster(std::shared_ptr<KDGrove> grove) : grove(grove) {}
-    virtual ~KDGroveRaycaster() = default;
+    ~KDGroveRaycaster() override = default;
 
     // ***  RAYCASTING METHODS  *** //
     // **************************** //

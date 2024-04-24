@@ -42,7 +42,7 @@ public:
         ThreadPool(_pool_size),
         available_(_pool_size)
     {}
-    virtual ~SimpleThreadPool() = default;
+    ~SimpleThreadPool() override = default;
 
     // ***  M E T H O D S  *** //
     // *********************** //

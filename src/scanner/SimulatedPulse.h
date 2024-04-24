@@ -120,7 +120,7 @@ public:
         exactAttitude(exactAttitude),
         mechanicalRangeError(mechanicalRangeError)
     {}
-    virtual ~SimulatedPulse() = default;
+    ~SimulatedPulse() override = default;
 
 
     // ***  GETTERs and SETTERs  *** //

@@ -88,7 +88,7 @@ using ThreadPool::pool_size;
         workersCount(0),
         pendingCount(0)
     {}
-    virtual ~WarehouseThreadPool() = default;
+    ~WarehouseThreadPool() override = default;
 
 public:
     // ***  WAREHOUSE THREADPOOL  *** //

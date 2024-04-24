@@ -48,7 +48,7 @@ public:
         syncGPSTime(false),
         startTime(0)
     {}
-    virtual ~InterpolatedMovingPlatformEgg() = default;
+    ~InterpolatedMovingPlatformEgg() override = default;
 
     // ***  EGG METHODS  *** //
     // ********************* //

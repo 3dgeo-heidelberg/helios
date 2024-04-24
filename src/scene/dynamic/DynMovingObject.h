@@ -220,7 +220,7 @@ public:
      * @see DynMovingObject::positionMotionQueue
      * @see DynMovingObject::normalMotionQueue
      */
-    virtual bool doSimStep();
+    bool doSimStep() override;
     /**
      * @brief Handle update notifications to the subscribed observer. It is,
      *  notify the observer that it has been updated by the dynamic moving

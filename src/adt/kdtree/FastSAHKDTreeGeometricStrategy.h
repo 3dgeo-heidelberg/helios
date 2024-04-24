@@ -41,7 +41,7 @@ public:
         SAHKDTreeGeometricStrategy(kdtf),
         fsahkdtf(kdtf)
     {}
-    virtual ~FastSAHKDTreeGeometricStrategy() = default;
+    ~FastSAHKDTreeGeometricStrategy() override = default;
 
     // ***  CLONE  *** //
     // *************** //

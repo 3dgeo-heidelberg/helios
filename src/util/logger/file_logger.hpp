@@ -67,7 +67,7 @@ public:
     /**
      * @see logger::log(const std::string&, const log_level)
      */
-    virtual void log(const std::string& message, const log_level level) {
+    void log(const std::string& message, const log_level level) override {
         if(level < LOG_LEVEL_CUTOFF) return;
         std::string output;
         output.reserve(message.length() + 64);

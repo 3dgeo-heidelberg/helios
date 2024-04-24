@@ -170,11 +170,11 @@ public:
 	/**
 	 * @brief Perform computations for current simulation step
 	 */
-	virtual void doSimStep();
+	void doSimStep() override;
 	/**
 	 * @brief Handle leg completion
 	 */
-    void onLegComplete();
+    void onLegComplete() override;
     /**
      * @brief Start specified leg
      * @param legIndex Index of leg to start

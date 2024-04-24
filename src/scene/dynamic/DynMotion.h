@@ -110,7 +110,7 @@ public:
      * @see rigidmotion::RigidMotion::RigidMotion(colvec const, mat const)
      */
     DynMotion(colvec const &C, arma::mat const &A) : RigidMotion(C, A) {}
-    virtual ~DynMotion() = default;
+    ~DynMotion() override = default;
 
     // ***  NORMALS UTILS  *** //
     // *********************** //

@@ -122,7 +122,7 @@ public:
 #if DATA_ANALYTICS >=2
        ,std::vector<std::vector<double>> &calcIntensityRecords
 #endif
-    );
+    ) override;
     /**
      * @brief Compute the received power \f$P_r\f$.
      *
