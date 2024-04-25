@@ -124,6 +124,17 @@ protected:
      * @see Scene::getIntersections
      */
     std::shared_ptr<KDGroveRaycaster> raycaster;
+    /**
+     * @brief The default reflectance that must be used for primitives with
+     *  not reflectance (NaN). It is typically loaded through the spectral
+     *  library and then assigned to the scene so it can be known when needed.
+     * @see Scene::setDefaultReflectance
+     * @see Scene::getDefaultReflectance
+     * @see SpectralLibrary
+     * @see SpectralLibrary::defaultReflectance
+     * @see XmlSurveyLoader::createSurveyFromXml
+     */
+    double defaultReflectance = 50.0;
 
 public:
     /**
@@ -473,6 +484,31 @@ public:
      * @see ScenePart::sorh
      */
     std::vector<std::shared_ptr<ScenePart>> getSwapOnRepeatObjects();
+    /**
+     * @brief Set the default reflectance that must be used for primitives
+     *  that have no assigned reflectance.
+     * @param defaultReflectance The new default reflectance.
+     * @see Scene::defaultReflectance
+     * @see Scene::getDefaultReflectance
+     * @see SpectralLibrary
+     * @see SpectralLibrary::defaultReflectance
+     * @see XmlSurveyLoader::createSurveyFromXml
+     */
+    inline void setDefaultReflectance(double const defaultReflectance)
+    {this->defaultReflectance = defaultReflectance;}
+    /**
+     * @brief Get the default reflectance that must be used for primitives that
+     *  have not got an assigned reflectance.
+     * @return The default reflectance for primitives that have not got an
+     *  assigned reflectance.
+     * @see Scene::setDefaultReflectance
+     * @see SpectralLibrary
+     * @see SpectralLibrary::defaultReflectance
+     * @see XmlSurveyLoader::createSurveyFromXml
+     */
+    inline double getDefaultReflectance() const {return defaultReflectance;}
+
+
 
     // ***   READ/WRITE  *** //
     // ********************* //

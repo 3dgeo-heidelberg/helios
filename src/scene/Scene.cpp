@@ -96,7 +96,7 @@ bool Scene::finalizeLoading(bool const safe) {
 
     // Store original bounding box (CRS coordinates):
     this->bbox_crs = AABB::getForPrimitives(primitives);
-    glm::dvec3 diff = this->bbox_crs->getMin();
+    glm::dvec3 const diff = this->bbox_crs->getMin();
     stringstream ss;
     ss  << "CRS bounding box (by vertices): " << this->bbox_crs->toString()
         << "\nShift: " << glm::to_string(diff)
