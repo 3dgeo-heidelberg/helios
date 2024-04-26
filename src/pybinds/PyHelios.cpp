@@ -1216,7 +1216,7 @@ BOOST_PYTHON_MODULE(_pyhelios){
         )
         .def(
             "getOpticsType",
-            &PyBeamDeflectorWrapper::getOpticsTypeName
+            &PyBeamDeflectorWrapper::getOpticsType
         )
     ;
 
