@@ -35,12 +35,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install Git
-        if: runner.os == 'macOS'
-        run: |
-          brew update
-          brew install git
-
       - name: Create Helios dev environment
         uses: conda-incubator/setup-miniconda@v2
         with:
@@ -49,6 +43,7 @@ jobs:
           activate-environment: helios-dev
           environment-file: environment-dev.yml
           python-version: ${{ matrix.python }}
+          miniconda-version: "latest"
 
       - name: Install Helios
         run: |
