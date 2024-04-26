@@ -53,6 +53,13 @@ public:
 	 */
 	void doSimStep() override;
 
+     /**
+	 * @see AbstractBeamDeflector::getOpticsType
+	 */
+    std::string getOpticsType() const override {
+        return "FIBER_ARRAY";
+    }
+
 	// ***  GETTERS and SETTERS *** //
 	// **************************** //
     /**
