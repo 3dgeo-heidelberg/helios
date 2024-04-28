@@ -77,7 +77,7 @@ public:
         {return beamDeflector.getEmitterRelativeAttitudeByReference();}
     inline std::string getOpticsType() const {
     return beamDeflector.getOpticsType();}
-}
+
 };
 
 }
