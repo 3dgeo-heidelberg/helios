@@ -75,7 +75,9 @@ public:
         {beamDeflector.cached_angleBetweenPulses_rad = angleBetweenPulses;}
     inline Rotation& getEmitterRelativeAttitude()
         {return beamDeflector.getEmitterRelativeAttitudeByReference();}
-    virtual std::string getOpticsType() const = 0;
+    inline std::string getOpticsType() const {
+    return beamDeflector.getOpticsType();}
+}
 };
 
 }
