@@ -50,9 +50,6 @@ jobs:
           environment-file: environment-dev.yml
           python-version: ${{ matrix.python }}
           miniconda-version: "latest"
-      
-      - name: Set version for setuptools-scm
-        run: export SETUPTOOLS_SCM_PRETEND_VERSION=$pkgver
         
       - name: Install Helios
         run: |
