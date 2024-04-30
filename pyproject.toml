@@ -40,7 +40,6 @@ HELIOS_BUDDING_METRICS = "0"
 CMAKE_INSTALL_RPATH_USE_LINK_PATH = "ON"
 
 [tool.setuptools_scm]  # Section required
-
 write_to = "python/pyhelios/_version.py"
 
 [tool.pytest.ini_options]
