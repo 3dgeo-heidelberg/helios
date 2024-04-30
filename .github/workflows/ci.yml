@@ -53,6 +53,7 @@ jobs:
         
       - name: Install Helios
         run: |
+          echo "export SETUPTOOLS_SCM_SUBPROCESS_TIMEOUT=100" >> $GITHUB_ENV
           python -m pip install -v .
       
       - name: Run tests
