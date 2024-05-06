@@ -255,12 +255,6 @@ public:
      *  before translating to (0, 0, 0)
      */
     glm::dvec3 getShift();
-    /**
-     * @brief Like Scene::getShift but returning a const reference instead of a
-     *    copy
-     * @see Scene::getShift
-     */
-    inline glm::dvec3 const& getShiftRef() const {return bbox_crs->getMin();}
 
     /**
      * @brief Obtain all vertices (without repetitions) composing the scene

@@ -59,6 +59,11 @@ protected:
      *  swap.
      */
     bool onSwapFirstPlay;
+    /**
+     * @brief True if the handler requires to keep the current scene's CRS
+     *  bounding box (default), False otherwise.
+     */
+    bool keepCRS;
 
 public:
     /**
@@ -179,6 +184,19 @@ public:
      * @see SwapOnRepeatHandler::mPrimitives
      */
     std::vector<Primitive *> & getBaselinePrimitives();
+    /**
+     * @brief Set the keepCRS flag.
+     * @param keepCRS The new keepCRS flag for the handler.
+     * @see SwapOnRepeatHandler::keepCRS
+     */
+    inline void setKeepCRS(bool const keepCRS) {this->keepCRS = keepCRS;}
+    /**
+     * @brief Check whether the current keepCRS flag.
+     * @return True if the handler requires to keep the current scene's CRS,
+     *  False otherwise.
+     * @see SwapOnRepeatHandler::keepCRS
+     */
+    inline bool isKeepCRS() const {return keepCRS;}
 
 protected:
     // ***  UTIL METHODS  *** //

@@ -2,14 +2,13 @@
 #include <sim/core/Simulation.h>
 #include <sim/core/SurveyPlayback.h>
 #include <scene/Scene.h>
-#include <filems/facade/FMSFacade.h>
+#include <assetloading/ScenePart.h>
 #include <filems/factory/FMSFacadeFactory.h>
 using helios::filems::FMSFacadeFactory;
 #include <scanner/Scanner.h>
 #include <platform/MovingPlatform.h>
 #include <platform/InterpolatedMovingPlatform.h>
 
-#include <memory>
 #include <chrono>
 using namespace std::chrono;
 
@@ -34,6 +33,7 @@ void SimulationPlayer::endPlay(){
     // Get all the scene parts (objects) that will do a swap on repeat
     std::vector<std::shared_ptr<ScenePart>> swapOnRepeatObjects =
         scene.getSwapOnRepeatObjects();
+    bool const keepCRS = isKeepCRS(swapOnRepeatObjects);
     std::stringstream ss;
     for(std::shared_ptr<ScenePart> sp : swapOnRepeatObjects){
         ss.str("");
@@ -72,7 +72,7 @@ void SimulationPlayer::endPlay(){
         restartScanner(*sim.getScanner());
         // Restart scene
         logging::DEBUG("Restarting scene for next simulation play ...");
-        restartScene(*sim.getScanner()->platform->scene);
+        restartScene(*sim.getScanner()->platform->scene, keepCRS);
         // Restart simulation
         logging::DEBUG("Restarting context for next simulation play ...");
         restartSimulation(sim);
@@ -156,13 +156,33 @@ void SimulationPlayer::restartScanner(Scanner &sc){
     sh.setCurrentRotateAngle_rad(sh.getRotateStart());
 }
 
-void SimulationPlayer::restartScene(Scene &scene){
+void SimulationPlayer::restartScene(Scene &scene, bool const keepCRS){
+    // TODO Remove : Report previous bounding boxes ---
+    std::cout   << "Scene previous CRS bounding box: ("
+                << scene.getBBoxCRS()->getMin().x << ", "
+                << scene.getBBoxCRS()->getMin().y << ", "
+                << scene.getBBoxCRS()->getMin().z << ")  ->  ("
+                << scene.getBBoxCRS()->getMax().x << ", "
+                << scene.getBBoxCRS()->getMax().y << ", "
+                << scene.getBBoxCRS()->getMax().z << ")"
+                << std::endl;
+    std::cout   << "Scene previous bounding box: ("
+                << scene.getBBox()->getMin().x << ", "
+                << scene.getBBox()->getMin().y << ", "
+                << scene.getBBox()->getMin().z << ")  ->  ("
+                << scene.getBBox()->getMax().x << ", "
+                << scene.getBBox()->getMax().y << ", "
+                << scene.getBBox()->getMax().z << ")"
+                << std::endl;
+    // --- TODO Remove : Report old bounding boxes
     // Discard scene parts that should be null for the next play, and
     // get primitives from current scene parts (thus, those that belong to
-    // non existent scene parts will be discarded)
+    // non-existent scene parts will be discarded)
     std::vector<std::shared_ptr<ScenePart>> newParts;
     std::vector<Primitive *> newPrims;
-    glm::dvec3 const diff = scene.getBBoxCRS()->getMin();
+    glm::dvec3 const oldCRSCenter = scene.getBBoxCRS()->getCentroid();
+    glm::dvec3 const oldFinalCenter = scene.getBBox()->getCentroid();
+    AABB const oldCRSBBox = *scene.getBBoxCRS();
     for(std::shared_ptr<ScenePart> sp : scene.parts){
         // Handle scene parts that need to be discarded
         if(sp->sorh != nullptr && sp->sorh->needsDiscardOnReplay()){
@@ -179,7 +199,7 @@ void SimulationPlayer::restartScene(Scene &scene){
             for(Primitive * p : sp->mPrimitives){
                 Vertex *v = p->getVertices();
                 for(size_t i = 0 ; i < p->getNumVertices() ; ++i){
-                    v[i].pos = v[i].pos + diff;
+                    v[i].pos = v[i].pos + oldCRSCenter;
                 }
                 //p->update(); // TODO Rethink : Avoid calling twice
             }
@@ -206,8 +226,131 @@ void SimulationPlayer::restartScene(Scene &scene){
             mat.reflectance = scene.getDefaultReflectance();
         }
     }
-    // Reload scene
+    // Reload scene (without KDDGrove rebuilding)
+    std::shared_ptr<KDGroveFactory> kdgf = scene.getKDGroveFactory();
+    scene.setKDGroveFactory(nullptr);
     scene.finalizeLoading(false); // TODO Rethink : p->update is called here
+    // Keep CRS if requested
+    if(keepCRS){
+        // TODO Remove : Report centers for debugging ---
+        std::cout   << "oldCRSCenter: " << oldCRSCenter << "\n"
+                    << "oldFinalCenter: " << oldFinalCenter << std::endl;
+        // ---  TODO Remove : Report centers for debugging
+        // TODO Remove : Report old bounding boxes ---
+        std::cout   << "\nScene old CRS bounding box: ("
+                    << scene.getBBoxCRS()->getMin().x << ", "
+                    << scene.getBBoxCRS()->getMin().y << ", "
+                    << scene.getBBoxCRS()->getMin().z << ")  ->  ("
+                    << scene.getBBoxCRS()->getMax().x << ", "
+                    << scene.getBBoxCRS()->getMax().y << ", "
+                    << scene.getBBoxCRS()->getMax().z << ")"
+                    << std::endl;
+        std::cout   << "Scene old bounding box: ("
+                    << scene.getBBox()->getMin().x << ", "
+                    << scene.getBBox()->getMin().y << ", "
+                    << scene.getBBox()->getMin().z << ")  ->  ("
+                    << scene.getBBox()->getMax().x << ", "
+                    << scene.getBBox()->getMax().y << ", "
+                    << scene.getBBox()->getMax().z << ")"
+                    << std::endl;
+        // --- TODO Remove : Report old bounding boxes
+        // Undo current CRS shift on primitives
+        glm::dvec3 const currentDiff = scene.getBBoxCRS()->getCentroid();
+        double xmin = std::numeric_limits<double>::max();
+        double xmax = std::numeric_limits<double>::lowest();
+        double ymin=xmin, ymax=xmax, zmin=xmin, zmax=xmax;
+        for(std::shared_ptr<ScenePart> sp : scene.parts) {
+            for (Primitive *p: sp->mPrimitives) {
+                Vertex *v = p->getVertices();
+                for (size_t i = 0; i < p->getNumVertices(); ++i) {
+                    v[i].pos = v[i].pos + currentDiff;
+                }
+                p->update();
+                // Also, find min and max coordinates
+                for (size_t i = 0; i < p->getNumVertices(); ++i) {
+                    glm::dvec3 const pos = v[i].pos;
+                    if(pos.x < xmin) xmin = pos.x;
+                    if(pos.x > xmax) xmax = pos.x;
+                    if(pos.y < ymin) ymin = pos.y;
+                    if(pos.y > ymax) ymax = pos.y;
+                    if(pos.z < zmin) zmin = pos.z;
+                    if(pos.z > zmax) zmax = pos.z;
+                }
+            }
+        }
+        // Compute the size of the new bounding box
+        // TODO Rethink : Check again if using final BBOX instead of CRS saves the +currentDiff in the previous for loop
+        glm::dvec3 const oldCRSMin = oldCRSBBox.getMin();
+        glm::dvec3 const oldCRSMax = oldCRSBBox.getMax();
+        if(oldCRSMin.x < xmin) xmin=oldCRSMin.x;
+        if(oldCRSMin.y < ymin) ymin=oldCRSMin.y;
+        if(oldCRSMin.z < zmin) zmin=oldCRSMin.z;
+        if(oldCRSMax.x > xmax) xmax=oldCRSMax.x;
+        if(oldCRSMax.y > ymax) ymax=oldCRSMax.y;
+        if(oldCRSMax.z > zmax) zmax=oldCRSMax.z;
+        glm::dvec3 const minOffset = glm::abs(
+            oldCRSCenter-glm::dvec3(xmin, ymin, zmin)
+        );
+        glm::dvec3 const maxOffset = glm::abs(
+            oldCRSCenter-glm::dvec3(xmax, ymax, zmax)
+        );
+        glm::dvec3 const halfSize(
+            std::max(minOffset.x, maxOffset.x),
+            std::max(minOffset.y, maxOffset.y),
+            std::max(minOffset.z, maxOffset.z)
+        );
+        // Calculate new CRS bounding box
+        glm::dvec3 const newCRSMin = oldCRSCenter - halfSize;
+        glm::dvec3 const newCRSMax = oldCRSCenter + halfSize;
+        std::shared_ptr<AABB> newCRS = std::make_shared<AABB>(
+            newCRSMin, newCRSMax
+        );
+        // Calculate new final bounding box
+        glm::dvec3 const newBBoxMin = oldFinalCenter - halfSize;
+        glm::dvec3 const newBBoxMax = oldFinalCenter + halfSize;
+        std::shared_ptr<AABB> newBBox = std::make_shared<AABB>(
+            newBBoxMin, newBBoxMax
+        );
+        // Apply new CRS shift on primitives
+        for(std::shared_ptr<ScenePart> sp : scene.parts) {
+            for (Primitive *p: sp->mPrimitives) {
+                Vertex *v = p->getVertices();
+                for (size_t i = 0; i < p->getNumVertices(); ++i) {
+                    v[i].pos = v[i].pos - oldCRSCenter;
+                }
+                p->update();
+            }
+        }
+        // --- TODO Rethink : No needed when using center instead of min
+        // Assign bounding boxes to scene
+        scene.setBBoxCRS(newCRS);
+        scene.setBBox(newBBox);
+        // TODO Remove : Report new bounding boxes ---
+        std::cout   << "\nScene new CRS bounding box: ("
+                    << scene.getBBoxCRS()->getMin().x << ", "
+                    << scene.getBBoxCRS()->getMin().y << ", "
+                    << scene.getBBoxCRS()->getMin().z << ")  ->  ("
+                    << scene.getBBoxCRS()->getMax().x << ", "
+                    << scene.getBBoxCRS()->getMax().y << ", "
+                    << scene.getBBoxCRS()->getMax().z << ")"
+                    << std::endl;
+        std::cout   << "Scene new bounding box: ("
+                    << scene.getBBox()->getMin().x << ", "
+                    << scene.getBBox()->getMin().y << ", "
+                    << scene.getBBox()->getMin().z << ")  ->  ("
+                    << scene.getBBox()->getMax().x << ", "
+                    << scene.getBBox()->getMax().y << ", "
+                    << scene.getBBox()->getMax().z << ")\n"
+                    << "-----------------------------------------\n"
+                    << std::endl;
+        // --- TODO Remove : Report new bounding boxes
+        // Report
+        logging::DEBUG("SimulationPlayer::restartScene kept the scene's CRS.");
+        std::cout << "SimulationPlayer::restartScene kept the scene's CRS." << std::endl;  // TODO Remove
+    }
+    // Rebuild KDGrove
+    scene.setKDGroveFactory(kdgf);
+    scene.buildKDGroveWithLog(false);
 }
 
 void SimulationPlayer::restartSimulation(Simulation &sim){
@@ -234,4 +377,27 @@ void SimulationPlayer::restartSimulation(Simulation &sim){
     // Start first leg
     logging::DEBUG("Restarting first leg ...");
     sp.startLeg(sp.mCurrentLegIndex, true);
+}
+
+bool SimulationPlayer::isKeepCRS(
+    std::vector<std::shared_ptr<ScenePart>> const &sorObjects
+){
+    // Check Keep CRS flag for each swap-on-repeat handler
+    bool anyFalse = false, anyTrue = false;
+    for(std::shared_ptr<ScenePart> const & sp : sorObjects){
+        if(!sp->sorh->isKeepCRS()) anyFalse = true;
+        else anyTrue = true;
+    }
+    // Report that both trues and falses were found
+    if(anyFalse && anyTrue){
+        logging::WARN(
+            "SimulationPlayer::isKeepCRS found at least one "
+            "SwapOnRepeatHandler with a KeepCRS flag set to true and another "
+            "one with the flag set to false.\n"
+            "Consequently, the CRS of the current scene will not be kept "
+            "because at least one flag is set to false."
+        );
+    }
+    // Return true to keep CRS only if no SoRH has the flag to false
+    return !anyFalse;
 }
