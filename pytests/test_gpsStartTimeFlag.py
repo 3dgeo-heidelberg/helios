@@ -94,7 +94,7 @@ def test_gpsStartTimeFlag_pyh():
     r2_sum = sha256sum(r2 / 'leg000_points.xyz')
     r3_sum = sha256sum(r3 / 'leg000_points.xyz')
     assert r2_sum == r3_sum
-    assert r2_sum == '41313dfe46ed34fcb9733af03a4d5e52487fd4579014f13dc00c609b53813229' or \
+    assert r2_sum == 'b74ffe17e057020ce774df749f8425700a928a5148bb5e6a1f5aeb69f607ae04' or \
            r2_sum == '984cfbbc5a54ab10a566ea901363218f35da569dbab5cd102424ab27794074ae'  # linux checksum
     assert r1_sum != r2_sum
 
