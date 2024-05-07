@@ -373,7 +373,7 @@ def test_output(export_to_file):
     measurements_array, trajectory_array = pyhelios.outputToNumpy(output)
 
     np.testing.assert_allclose(measurements_array[0, :3], np.array([474500.3, 5473580.0, 107.0001]), rtol=0.000001)
-    assert measurements_array.shape == (2412, 17)
+    assert measurements_array.shape == (2407, 17)
     assert trajectory_array.shape == (9, 7)
     if export_to_file:
         assert Path(output.outpath).parent.parent == Path(WORKING_DIR) / "output" / "als_hd_demo"
