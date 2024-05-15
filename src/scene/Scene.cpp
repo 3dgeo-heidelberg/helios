@@ -96,7 +96,7 @@ bool Scene::finalizeLoading(bool const safe) {
 
     // Store original bounding box (CRS coordinates):
     this->bbox_crs = AABB::getForPrimitives(primitives);
-    glm::dvec3 const diff = this->bbox_crs->getMin();
+    glm::dvec3 const diff = this->bbox_crs->getCentroid();
     stringstream ss;
     ss  << "CRS bounding box (by vertices): " << this->bbox_crs->toString()
         << "\nShift: " << glm::to_string(diff)
@@ -215,7 +215,7 @@ Scene::getIntersections(
   );
 }
 
-glm::dvec3 Scene::getShift() { return this->bbox_crs->getMin(); }
+glm::dvec3 Scene::getShift() { return this->bbox_crs->getCentroid(); }
 
 vector<Vertex *> Scene::getAllVertices(){
     unordered_set<Vertex *> vset;
