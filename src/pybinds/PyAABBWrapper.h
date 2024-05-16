@@ -3,6 +3,7 @@
 #ifdef PYTHON_BINDING
 
 #include <PyVertexWrapper.h>
+#include <AABB.h>
 
 namespace pyhelios{
 

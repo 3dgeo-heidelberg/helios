@@ -7,6 +7,10 @@
 #include <PythonDVec3.h>
 #include <PyDoubleVector.h>
 #include <PyVertexWrapper.h>
+#include <Triangle.h>
+#include <AABB.h>
+#include <Voxel.h>
+#include <DetailedVoxel.h>
 
 namespace pyhelios{
 
@@ -69,6 +73,14 @@ public:
     size_t getNumVertices(){return prim->getNumVertices();}
     PyVertexWrapper * getVertex(size_t index)
         {return new PyVertexWrapper(prim->getVertices()+index);}
+    bool isTriangle () const
+        {return dynamic_cast<Triangle *>(prim) != nullptr;}
+    bool isAABB () const
+        {return dynamic_cast<AABB *>(prim) != nullptr;}
+    bool isVoxel () const
+        {return dynamic_cast<Voxel *>(prim) != nullptr;}
+    bool isDetailedVoxel () const
+        {return dynamic_cast<DetailedVoxel *>(prim) != nullptr;}
     void update(){prim->update();}
 
 
