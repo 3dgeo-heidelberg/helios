@@ -1505,7 +1505,17 @@ BOOST_PYTHON_MODULE(_pyhelios){
             return_value_policy<manage_new_object>()
         )
         .def(
+            "getPosition",
+            &PyPlatformWrapper::getPositionPython,
+            return_value_policy<manage_new_object>()
+        )
+        .def(
             "getAttitudePython",
+            &PyPlatformWrapper::getAttitudePython,
+            return_internal_reference<>()
+        )
+        .def(
+            "getAttitude",
             &PyPlatformWrapper::getAttitudePython,
             return_internal_reference<>()
         )
@@ -1588,6 +1598,22 @@ BOOST_PYTHON_MODULE(_pyhelios){
         .def(
             "update",
             &PyPrimitiveWrapper::update
+        )
+        .def(
+            "isTriangle",
+            &PyPrimitiveWrapper::isTriangle
+        )
+        .def(
+            "isAABB",
+            &PyPrimitiveWrapper::isAABB
+        )
+        .def(
+            "isVoxel",
+            &PyPrimitiveWrapper::isVoxel
+        )
+        .def(
+            "isDetailedVoxel",
+            &PyPrimitiveWrapper::isDetailedVoxel
         )
     ;
 
@@ -1701,6 +1727,37 @@ BOOST_PYTHON_MODULE(_pyhelios){
             &PyScenePartWrapper::getObserverStep,
             &PyScenePartWrapper::setObserverStep
         )
+        .def(
+            "getPrimitive",
+            &PyScenePartWrapper::getPrimitive,
+            return_value_policy<manage_new_object>()
+        )
+        .def(
+            "getNumPrimitives",
+            &PyScenePartWrapper::getNumPrimitives
+        )
+        .def(
+            "computeCentroid",
+            &PyScenePartWrapper::computeCentroid
+        )
+        .def(
+            "computeBound",
+            &PyScenePartWrapper::computeBound
+        )
+        .def(
+            "getCentroid",
+            &PyScenePartWrapper::getCentroid,
+            return_value_policy<manage_new_object>()
+        )
+        .def(
+            "getBound",
+            &PyScenePartWrapper::getBound,
+            return_value_policy<manage_new_object>()
+        )
+        .def(
+            "translate",
+            &PySceneWrapper::translate
+        )
     ;
 
     // Register Scene
@@ -1719,6 +1776,10 @@ BOOST_PYTHON_MODULE(_pyhelios){
             "getPrimitive",
             &PySceneWrapper::getPrimitive,
             return_value_policy<manage_new_object>()
+        )
+        .def(
+            "getNumPrimitives",
+            &PySceneWrapper::getNumPrimitives
         )
         .def(
             "getAABB",
@@ -1761,6 +1822,20 @@ BOOST_PYTHON_MODULE(_pyhelios){
             "dynSceneStep",
             &PySceneWrapper::getDynSceneStep,
             &PySceneWrapper::setDynSceneStep
+        )
+        .def(
+            "getBBox",
+            &PySceneWrapper::getBBox,
+            return_value_policy<manage_new_object>()
+        )
+        .def(
+            "getBBoxCRS",
+            &PySceneWrapper::getBBoxCRS,
+            return_value_policy<manage_new_object>()
+        )
+        .def(
+            "translate",
+            &PySceneWrapper::translate
         )
     ;
 
