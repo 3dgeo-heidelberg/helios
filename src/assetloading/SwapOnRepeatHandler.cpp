@@ -11,7 +11,9 @@ SwapOnRepeatHandler::SwapOnRepeatHandler() :
     discardOnReplay(false),
     holistic(false),
     onSwapFirstPlay(false),
-    baseline(nullptr)
+    keepCRS(true),
+    baseline(nullptr),
+    null(false)
 {}
 
 
@@ -58,7 +60,7 @@ void SwapOnRepeatHandler::doSwap(ScenePart &sp){
     std::deque<AbstractGeometryFilter *> filters = swapFilters.front();
     swapFilters.pop_front();
     currentTimeToLive = timesToLive.front();
-    timesToLive.pop_front();
+   timesToLive.pop_front();
 
     // Apply filters
     bool firstIter = true;

@@ -19,6 +19,21 @@ else()
   set(HELIOS_VERSION_FULL "1.3.0")
 endif()
 
+# Fetch pybind11
+find_package(pybind11 QUIET)
+
+if (NOT pybind11_FOUND)
+    message(STATUS "pybind11 not found, using FetchContent to download pybind11.")
+
+    FetchContent_Declare(
+        pybind11
+        GIT_REPOSITORY https://github.com/pybind/pybind11.git
+    )
+    FetchContent_MakeAvailable(pybind11)
+else()
+    message(STATUS "Found pybind11: ${pybind11_DIR}")
+endif()
+
 project(Helios++
   VERSION ${HELIOS_VERSION}
   LANGUAGES C CXX
@@ -131,31 +146,20 @@ if(HELIOS_BUDDING_METRICS)
   target_compile_definitions(helios PUBLIC BUDDING_METRICS=ON)
 endif()
 
-# Add the HelIOS++ executable
+# # Add the HelIOS++ executable
 add_executable(helios++)
 
 target_link_libraries(helios++ PRIVATE helios)
 
 if(BUILD_PYTHON)
-  find_package(Python COMPONENTS Interpreter Development)
-  find_package(Boost REQUIRED COMPONENTS python)
-
-  add_library(_pyhelios MODULE)
-
-  target_link_libraries(_pyhelios
-  PRIVATE
-    helios
-    Boost::python
-    Python::Module
-  )
-
-  # Control the output name of the produced shared library
-  set_target_properties(_pyhelios PROPERTIES PREFIX "")
-  set_target_properties(_pyhelios PROPERTIES OUTPUT_NAME "_pyhelios")
-  if(WIN32)
-    set_target_properties(_pyhelios PROPERTIES SUFFIX ".pyd")
-  endif()
+  include_directories(${Python_INCLUDE_DIRS})
+  include_directories(${CMAKE_SOURCE_DIR}/src/binds)
+  pybind11_add_module(_helios MODULE python/helios/helios_python.cpp)
+  target_link_libraries(_helios PUBLIC helios pybind11::module)
+  install(TARGETS _helios DESTINATION .)
 endif()
+
+
 
 # Traverse the source tree to add all relevant sources
 add_subdirectory(src)
@@ -171,16 +175,8 @@ endif()
 install(
   TARGETS
     helios++
-  DESTINATION pyhelios/bin
+  DESTINATION helios/bin
 )
-
-if(BUILD_PYTHON)
-  install(
-    TARGETS
-      _pyhelios
-    DESTINATION .
-  )
-endif()
 
 include(FeatureSummary)
 feature_summary(WHAT ALL)

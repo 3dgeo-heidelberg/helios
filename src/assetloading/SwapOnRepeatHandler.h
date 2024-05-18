@@ -59,6 +59,18 @@ protected:
      *  swap.
      */
     bool onSwapFirstPlay;
+    /**
+     * @brief True if the handler requires to keep the current scene's CRS
+     *  bounding box (default), False otherwise.
+     */
+    bool keepCRS;
+    /**
+     * @brief Whether the handled scene part is null (e.g., it has been
+     *  discarded). It can be useful to handle null scene parts that will
+     *  be recycled in the future (they are flagged as null instead of
+     *  fully deleted, so they can become available later on).
+     */
+    bool null;
 
 public:
     /**
@@ -154,6 +166,18 @@ public:
     inline void setDiscardOnReplay(bool const discardOnReplay)
     {this->discardOnReplay = discardOnReplay;}
     /**
+     * @brief Check whether there are pending filters (True) or not (False).
+     *
+     * A SwapOnRepeatHandler is said to have no future if there are no further
+     * filters to be applied at any point in the future. When the handler
+     * needs to be discarded on replay and it has no future, it can be fully
+     * deleted. Otherwise, it will be recycled in the future despite it is
+     * discarded in the present.
+     *
+     * @see SwapOnRepeatHandler::swapFilters
+     */
+    inline bool hasNoFuture() const {return swapFilters.empty();}
+    /**
      * @brief Push the swap filters to the handler.
      *
      * NOTE that swap filters are executed in the same order they are given.
@@ -179,6 +203,31 @@ public:
      * @see SwapOnRepeatHandler::mPrimitives
      */
     std::vector<Primitive *> & getBaselinePrimitives();
+    /**
+     * @brief Set the keepCRS flag.
+     * @param keepCRS The new keepCRS flag for the handler.
+     * @see SwapOnRepeatHandler::keepCRS
+     */
+    inline void setKeepCRS(bool const keepCRS) {this->keepCRS = keepCRS;}
+    /**
+     * @brief Check whether the current keepCRS flag is enabled.
+     * @return True if the handler requires to keep the current scene's CRS,
+     *  False otherwise.
+     * @see SwapOnRepeatHandler::keepCRS
+     */
+    inline bool isKeepCRS() const {return keepCRS;}
+    /**
+     * @brief Check whether the current null flag is enabled.
+     * @return True if the handled scene part is null, False otherwise.
+     * @see SwapOnRepeatHandler::null
+     */
+    inline bool isNull() const {return null;}
+    /**
+     * @brief Set the null flag.
+     * @param null The new null flag for the handler.
+     * @see SwapOnRepeatHandler::null
+     */
+    inline void setNull(bool const null) {this->null = null;}
 
 protected:
     // ***  UTIL METHODS  *** //

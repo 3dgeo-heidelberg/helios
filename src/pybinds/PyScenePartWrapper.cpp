@@ -1,7 +1,23 @@
 #include <PyScenePartWrapper.h>
 #include <PyHeliosException.h>
+#include <PyPrimitiveWrapper.h>
+#include <Primitive.h>
 
 using pyhelios::PyScenePartWrapper;
+using pyhelios::PyPrimitiveWrapper;
+
+// ***   UTIL METHODS   *** //
+// ************************ //
+void PyScenePartWrapper::translate(double const x, double const y, double const z){
+    glm::dvec3 const v(x, y, z);
+    for(Primitive *p : sp.mPrimitives) p->translate(v);
+}
+
+// ***  GETTERs and SETTERs  *** //
+// ***************************** //
+PyPrimitiveWrapper * PyScenePartWrapper::getPrimitive(size_t const index){
+    return new PyPrimitiveWrapper(sp.mPrimitives[index]);
+}
 
 // ***  INTERNAL USE  *** //
 // ********************** //

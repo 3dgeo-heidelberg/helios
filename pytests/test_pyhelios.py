@@ -273,7 +273,7 @@ def test_create_survey():
     output = simB.join()
     meas, traj = pyhelios.outputToNumpy(output)
     # check length of output
-    assert meas.shape == (34317, 17)
+    assert meas.shape == (9926, 17)
     assert traj.shape == (6670, 7)
     # compare individual points
     np.testing.assert_allclose(meas[100, :3], np.array([83.32, -66.44204, 0.03114649]))
@@ -294,7 +294,7 @@ def test_material(test_sim):
     mat0 = prim0.getMaterial()
     assert mat0.name == 'None'
     assert mat0.isGround is True
-    assert mat0.matFilePath == 'data/sceneparts/basic/groundplane/groundplane.mtl'
+    assert Path(mat0.matFilePath) == Path.cwd() / 'data/sceneparts/basic/groundplane/groundplane.mtl'
     assert mat0.reflectance == 50.0
     assert mat0.specularity == 0.0
     assert mat0.specularExponent == 0.0
@@ -368,7 +368,7 @@ def test_output(export_to_file):
     measurements_array, trajectory_array = pyhelios.outputToNumpy(output)
 
     np.testing.assert_allclose(measurements_array[0, :3], np.array([474500.3, 5473580.0, 107.0001]), rtol=0.000001)
-    assert measurements_array.shape == (2412, 17)
+    assert measurements_array.shape == (2407, 17)
     assert trajectory_array.shape == (9, 7)
     if export_to_file:
         assert Path(output.outpath).parent.parent == Path(WORKING_DIR) / "output" / "als_hd_demo"

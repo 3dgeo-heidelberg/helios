@@ -1,6 +1,7 @@
 #pragma once
 
 #include <PyVertexWrapper.h>
+#include <AABB.h>
 
 namespace pyhelios{
 

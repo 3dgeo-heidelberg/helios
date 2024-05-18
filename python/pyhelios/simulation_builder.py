@@ -1,6 +1,7 @@
 from .pyheliostools_exception import PyHeliosToolsException
 from .simulation_build import SimulationBuild
 from collections import namedtuple
+from collections.abc import Iterable
 from math import isnan
 import os
 import time
@@ -66,6 +67,8 @@ class SimulationBuilder:
     # ---  CONSTRUCTOR  --- #
     # --------------------- #
     def __init__(self, surveyPath, assetsDir, outputDir):
+        if not isinstance(assetsDir, Iterable) or isinstance(assetsDir, str):
+            assetsDir = [assetsDir]
         # Add default values for asset directories
         assetsDir = assetsDir + [os.getcwd(), str(resources.files("pyhelios")), str(resources.files("pyhelios") / "data")]
 
@@ -127,8 +130,6 @@ class SimulationBuilder:
         build.sim.finalOutput = self.finalOutput
         build.sim.legacyEnergyModel = self.legacyEnergyModel
         build.sim.exportToFile = self.exportToFile
-        if self.callback is not None:
-            build.sim.setCallback(self.callback)
         for rotateFilter in self.rotateFilters:
             build.sim.addRotateFilter(
                 rotateFilter.q0,
@@ -157,6 +158,8 @@ class SimulationBuilder:
             self.fullwaveNoise,
             self.platformNoiseDisabled
         )
+        if self.callback is not None:
+            build.sim.setCallback(self.callback)
 
         end = time.perf_counter()
         print(

@@ -50,12 +50,13 @@ jobs:
       - name: Install Helios
         run: |
           python -m pip install -v .
-      
+        env:
+          SETUPTOOLS_SCM_SUBPROCESS_TIMEOUT: "120"
+
       - name: Run tests
+        # Disable MacOS for now - we do not yet officially support it and we need to invest a bit
+        # more efforts into investigating broken LAZ files written by Helios on MacOS.
         if: runner.os != 'macOS' 
-         # Disable MacOS for now - we do not yet officially support it and we need to invest a bit
-          # more efforts into investigating broken LAZ files written by Helios on MacOS.
-          # - macos-latest
         run: |
-          python -m pytest -m exe
-          python -m pytest -m pyh
+          python -m pytest
+
