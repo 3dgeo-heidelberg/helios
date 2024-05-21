@@ -2,6 +2,8 @@
 
 #include "AbstractGeometryFilter.h"
 #include "Voxel.h"
+#include <assetloading/geometryfilter/DenseVoxelGrid.h>
+
 #include <string>
 #include <fstream>
 #include <armadillo>
@@ -10,16 +12,6 @@ using std::string;
 using std::ifstream;
 using arma::Mat;
 
-/**
- * @brief VoxelGridCell is used to build and fill all necessary voxels to
- * represent input point cloud
- */
-struct VoxelGridCell{
-    Voxel *voxel = nullptr;
-    Mat<double> *matrix = nullptr;
-    size_t cursor = 0;
-    double closestPointDistance = std::numeric_limits<double>::max();
-};
 
 /**
  * @brief Import point cloud files abstracting them to a set of voxels
@@ -350,7 +342,11 @@ public:
 	explicit XYZPointCloudFileLoader() :
 	    AbstractGeometryFilter(new ScenePart())
     {}
+    virtual ~XYZPointCloudFileLoader() = default;
 
+
+    // ***  MAIN METHODS  *** //
+    // ********************** //
     /**
      * @see AbstractGeometryFilter::run
      */
