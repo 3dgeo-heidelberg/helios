@@ -1,8 +1,8 @@
 #pragma once
 
+#include <assetloading/geometryfilter/IVoxelGrid.h>
 #include "AbstractGeometryFilter.h"
 #include "Voxel.h"
-#include <assetloading/geometryfilter/DenseVoxelGrid.h>
 
 #include <string>
 #include <fstream>

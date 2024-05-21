@@ -6,7 +6,6 @@ DenseVoxelGrid::DenseVoxelGrid(size_t const maxNVoxels) :
     IVoxelGrid(maxNVoxels)
 {
     voxels = new VoxelGridCell[maxNVoxels];
-
 }
 
 

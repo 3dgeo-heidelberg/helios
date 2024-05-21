@@ -1,3 +1,14 @@
+#include <assetloading/geometryfilter/XYZPointCloudFileLoader.h>
+#include <assetloading/geometryfilter/DenseVoxelGrid.h>
+#include <assetloading/geometryfilter/SparseVoxelGrid.h>
+
+#include <logging.hpp>
+#include <util/HeliosException.h>
+#include <util/FileUtils.h>
+
+#include "Material.h"
+#include "PlaneFitter.h"
+
 #include <iostream>
 using namespace std;
 
@@ -10,14 +21,7 @@ using namespace std;
 using namespace glm;
 namespace fs = boost::filesystem;
 
-#include <logging.hpp>
-#include <util/HeliosException.h>
-#include <util/FileUtils.h>
 
-#include "Material.h"
-#include "PlaneFitter.h"
-
-#include "XYZPointCloudFileLoader.h"
 
 // ***  R U N  *** //
 // *************** //
@@ -273,7 +277,8 @@ void XYZPointCloudFileLoader::prepareVoxelsGrid(
     zCoeff = nz / deltaZ;
 
     // Allocate voxel grid
-    voxelGrid = new DenseVoxelGrid(maxNVoxels);
+    //voxelGrid = new DenseVoxelGrid(maxNVoxels); // TODO Rethink
+    voxelGrid = new SparseVoxelGrid(maxNVoxels); // TODO Rethink
 
     // Check if voxel grid needs normal estimation or not
     estimateNormals = 0;
