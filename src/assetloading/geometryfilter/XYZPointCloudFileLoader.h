@@ -154,6 +154,14 @@ private:
 	 * @brief Full voxels grid
 	 */
 	VoxelGridCell *voxels = nullptr;
+    /**
+     * @brief The voxel grid used to load a representation of the input point
+     *  cloud.
+     * @see IVoxelGrid
+     * @see DenseVoxelGrid
+     * @see SparseVoxelGrid
+     */
+    IVoxelGrid *voxelGrid = nullptr;
 	/**
 	 * @brief Total size of full voxels grid
 	 * @see XYZPointCloudFileLoader::voxels

@@ -46,9 +46,6 @@ protected:
      */
     size_t maxNVoxels;
 
-
-
-
 public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //
     // ************************************ //
@@ -99,33 +96,10 @@ public:
         double halfVoxelSize
     ) = 0;
     /**
-     * @brief Add a point to a voxel.
-     * @param key The key univocally identifying the voxel.
-     * @param r The red color component.
-     * @param g The green color component.
-     * @param b The blue color component.
-     * @param closestPointDistance The distance between the voxel and the
-     *  closest point contained inside.
-     * @param nx The x component of the normal vector.
-     * @param ny The y component of the normal vector.
-     * @param nz The z component of the normal vector.
+     * @brief Delete the given voxel, provided it exists.
+     * @param key The key that univocally identifies the voxel to be deteled.
      */
-    virtual void addPointToVoxel(
-        size_t const key,
-        double const r, double const g, double const b,
-        double const closestPointDistance,
-        double const nx, double const ny, double const nz
-    ) = 0;
-    /**
-     * @brief Like IVoxelGrid::addPointToVoxel but assuming the
-     *  closestPointDistance does not need to be updated.
-     * @see IVoxelGrid::addPointToVoxel
-     */
-    virtual void addPointToVoxel(
-        size_t const key,
-        double const r, double const g, double const b,
-        double const nx, double const ny, double const nz
-    ) = 0;
+    virtual void deleteVoxel(size_t const key) = 0;
 
 
     /**
@@ -149,9 +123,29 @@ public:
     /**
      * @brief Set the matrix of point-wise coordinates for a given voxel.
      * @param key The key that univocally identifies the voxel.
-     * @param mat The new patrix of point-wise coordinates for the voxel.
+     * @param mat The new matrix of point-wise coordinates for the voxel.
      */
     virtual void setMatrix(size_t const key, Mat<double> *mat) = 0;
+    /**
+     * @brief Set the next column (point) of the matrix.
+     *
+     * This method must be called carefully as it will update the cursor for
+     * each matrix to govern where the next call must be written. Thus, make
+     * sure it is not called more times than what it is strictly expected.
+     *
+     * The method XYZPointCloudFileLoader::estimateNormals shows a good example
+     *  of how this function must be called inside a loop.
+     *
+     * @param key The key of the voxel which matrix of coordinates must be
+     *  updated.
+     * @param x The first component for the new point.
+     * @param y The second component for the new point.
+     * @param z The third component for the new point.
+     */
+    virtual void setNextMatrixCol(
+        size_t const key,
+        double const x, double const y, double const z
+    ) = 0;
     /**
      * @brief Delete the matrix of point-wise coordinates for a given voxel.
      * @param key The key that univocally identifies the voxel.
@@ -183,9 +177,24 @@ public:
     virtual void incrementCursor(size_t const key) = 0;
 
     /**
+     * @brief Obtain the distance to the closest point wrt the given voxel.
+     * @param key The key that univocally identifies the voxel.
+     * @return The distance between the voxel and the closest point.
+     */
+    virtual double getClosestPointDistance(size_t const key) const = 0;
+    /**
+     * @brief Set the distance to the closest point wrt the given voxel.
+     * @param key The key that univocally identifies the voxel.
+     */
+    virtual void setClosestPointDistance(
+        size_t const key, double const distance
+    ) = 0;
+
+    /**
      * @brief Obtain the max number of supported voxels.
      * @return Max number of supported voxels.
      * @see IVoxelGrid::maxNVoxels
      */
     inline size_t getMaxNVoxels() const {return maxNVoxels;}
+
 };
