@@ -106,7 +106,7 @@ void AbstractPulseRunnable::capturePoint(
 void AbstractPulseRunnable::capturePulse(glm::dvec3 const &beamDir){
     if(detector->pulseRecordYielder != nullptr)
         detector->pulseRecordYielder->push(PulseRecord(
-            pulse.getOrigin() + scene.getShiftRef(),    // Pulse's origin
+            pulse.getOrigin() + scene.getShift(),       // Pulse's origin
             beamDir,                                    // Pulse's direction
             pulse.getTime(),                            // Pulse's time (ns)
             pulse.getPulseNumber(),                     // Pulse index

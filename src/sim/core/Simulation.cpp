@@ -10,10 +10,10 @@ using namespace std::chrono;
 #include <platform/InterpolatedMovingPlatform.h>
 #include <scene/dynamic/DynScene.h>
 #ifdef DATA_ANALYTICS
-#include <dataanalytics/HDA_StateJSONReporter.h>
 #include <dataanalytics/HDA_SimStepRecorder.h>
 using helios::analytics::HDA_StateJSONReporter;
 using helios::analytics::HDA_SimStepRecorder;
+using helios::analytics::HDA_Recorder;
 #endif
 
 #include "Simulation.h"
@@ -149,7 +149,11 @@ void Simulation::start() {
         ss.str("");
         ss << "Starting simulation loop " << simLoopIndex+1 << " ...";
         logging::INFO(ss.str());
-        doSimLoop();
+        doSimLoop(
+#ifdef DATA_ANALYTICS
+            ssr
+#endif
+        );
         // NOTE there is no need for a sync. barrier after the last iteration
         // because end of simulation will handle it.
         ss.str("");
@@ -191,7 +195,14 @@ void Simulation::start() {
 	shutdown();
 }
 
-void Simulation::doSimLoop(){
+void Simulation::doSimLoop(
+#ifdef DATA_ANALYTICS
+    HDA_Recorder &_ssr
+#endif
+){
+#ifdef DATA_ANALYTICS
+    HDA_SimStepRecorder &ssr = static_cast<HDA_SimStepRecorder &>(_ssr);
+#endif
     size_t iter = 1;
     // Execute the main loop of the simulation
     while (!isStopped()) {

@@ -2,12 +2,14 @@
 
 class Simulation;
 class Scene;
+class ScenePart;
 class Platform;
 namespace helios { namespace filems { class FMSFacade; }}
 using helios::filems::FMSFacade;
 class Scanner;
 
 #include <memory>
+#include <vector>
 
 /**
  * @author Alberto M. Esmoris Pena
@@ -122,10 +124,12 @@ protected:
      * @brief Restart a scene to its start point, considering the swapped
      *  geometries.
      * @param scene The scene to be restarted.
+     * @param keepCRS Whether to keep the current scene's CRS (true) or not
+     *  (false).
      * @see Scene
      * @see SwapOnRepeatHandler
      */
-    void restartScene(Scene &scene);
+    void restartScene(Scene &scene, bool const keepCRS=true);
     /**
      * @brief Restart a simulation to its start point.
      * @param sim The simulation to be restarted.
@@ -133,4 +137,25 @@ protected:
      * @see SimulationPlayer::sim
      */
     void restartSimulation(Simulation &sim);
+    /**
+     * @brief Check whether the current scene's CRS must be preserved (true) or
+     *  not (false).
+     *
+     * The CRS will be preserved iff the keepCRS flag of each
+     *  SwapOnRepeatHandler is set to True. It will be updated even if just
+     *  one single handler has the keepCRS flag set to False.
+     *
+     * @param sorObjects The scene parts that have a swap on repeat handler.
+     *  They can be obtained through the Scene::getSwapOnRepeatObjects
+     *  method.
+     * @return True if the current scene's CRS must be preserved, false
+     *  otherwise.
+     * @see SwapOnRepeatHandler
+     * @see SwapOnRepeatHandler::keepCRS
+     * @see SwapOnRepeatHandler::isKeepCRS
+     * @see ScenePart
+     * @see Scene
+     * @see Scene::getSwapOnRepeatObjects
+     */
+    bool isKeepCRS(std::vector<std::shared_ptr<ScenePart>> const &sorObjects);
 };

@@ -236,7 +236,14 @@ shared_ptr<SwapOnRepeatHandler> XmlSceneLoader::loadScenePartSwaps(
             "int",
             1
         ));
+        bool const keepCRS = boost::get<bool>(XmlUtils::getAttribute(
+            swapNodes,
+            "keepCRS",
+            "bool",
+            sorh->isKeepCRS()
+        ));
         sorh->pushTimeToLive(swapStep);
+        sorh->setKeepCRS(keepCRS);
         tinyxml2::XMLElement *filterNodes =
             swapNodes->FirstChildElement("filter");
         std::deque<AbstractGeometryFilter *> swapFilters;
@@ -578,7 +585,7 @@ void XmlSceneLoader::handleDynamicSceneAttributes(
         ))
     );
     // Apply automatic CRS translation when requested
-    glm::dvec3 const &shift = scene->getBBoxCRS()->getMin();
+    glm::dvec3 const &shift = scene->getBBoxCRS()->getCentroid();
     size_t const numDynObjects = scene->numDynObjects();
     for (size_t i = 0; i < numDynObjects; ++i) {
         std::shared_ptr<DynSequentiableMovingObject> dsmo =
