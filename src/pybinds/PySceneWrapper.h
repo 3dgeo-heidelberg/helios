@@ -48,8 +48,9 @@ public:
         scene.primitives.push_back(dv);
         return new PyDetailedVoxelWrapper(dv);
     }
-    PyPrimitiveWrapper * getPrimitive(size_t index)
+    PyPrimitiveWrapper * getPrimitive(size_t const index)
         {return new PyPrimitiveWrapper(scene.primitives[index]);}
+    size_t getNumPrimitives() const {return scene.primitives.size();}
     PyAABBWrapper * getAABB()
         {return new PyAABBWrapper(scene.getAABB().get());}
     PythonDVec3 * getGroundPointAt(double x, double y, double z){
@@ -74,12 +75,17 @@ public:
     size_t getDynSceneStep(){return _asDynScene().getStepInterval();}
     void setDynSceneStep(size_t const stepInterval)
     {_asDynScene().setStepInterval(stepInterval);}
+    PyAABBWrapper * getBBox()
+    {return new PyAABBWrapper(scene.getBBox().get());}
+    PyAABBWrapper * getBBoxCRS()
+    {return new PyAABBWrapper(scene.getBBoxCRS().get());}
 
 
     // ***  M E T H O D S  *** //
     // *********************** //
     bool finalizeLoading() {return scene.finalizeLoading();}
     void writeObject(std::string path) {scene.writeObject(path);}
+    void translate(double const x, double const y, double const z);
 
     // ***  INTERNAL USE  *** //
     // ********************** //

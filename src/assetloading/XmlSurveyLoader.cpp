@@ -90,6 +90,9 @@ XmlSurveyLoader::createSurveyFromXml(
       (float)survey->scanner->getWavelength(), assetsDir, "spectra");
   spectralLibrary.readReflectances();
   spectralLibrary.setReflectances(survey->scanner->platform->scene.get());
+  survey->scanner->platform->scene->setDefaultReflectance(
+      spectralLibrary.getDefaultReflectance()
+  );
 
   // Update materials for all swap on repeat handlers
   for(std::shared_ptr<ScenePart> sp : survey->scanner->platform->scene->parts){
