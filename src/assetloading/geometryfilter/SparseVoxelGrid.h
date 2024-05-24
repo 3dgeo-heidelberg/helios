@@ -3,8 +3,6 @@
 #include <assetloading/geometryfilter/IVoxelGrid.h>
 #include <unordered_map>
 
-using std::unordered_map;
-
 /**
  * @author Alberto M. Esmoris Pena
  * @version 1.0
@@ -23,7 +21,11 @@ protected:
      * @see VoxelGridCell
      * @see Voxel
      */
-    unordered_map<size_t, VoxelGridCell> map;
+    std::unordered_map<size_t, VoxelGridCell> map;
+    /**
+     * @brief Internal iterator to track the while loop.
+     */
+    std::unordered_map<size_t, VoxelGridCell>::iterator whileLoopIter;
 
 public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //
@@ -54,7 +56,7 @@ public:
     /**
      * @see IVoxelGrid::setVoxel
      */
-    void setVoxel(
+    Voxel * setVoxel(
         size_t const key,
         double const x, double const y, double const z,
         double halfVoxelSize
@@ -121,4 +123,19 @@ public:
     void setClosestPointDistance(
         size_t const key, double const distance
     ) override;
+
+    // ***   WHILE INTERFACE   *** //
+    // *************************** //
+    /**
+     * @see IVoxelGrid::whileLoopStart
+     */
+    void whileLoopStart() override;
+    /**
+     * @see IVoxelGrid::whileLoopHasNext
+     */
+    bool whileLoopHasNext() override;
+    /**
+     * @see IVoxelGrid::whileLoopNext
+     */
+    Voxel * whileLoopNext() override;
 };

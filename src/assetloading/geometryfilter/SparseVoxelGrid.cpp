@@ -21,19 +21,22 @@ bool SparseVoxelGrid::hasVoxel(size_t const key){
 }
 
 Voxel* SparseVoxelGrid::getVoxel(size_t const key){
-    return map.at(key).voxel;
+    try {
+        return map.at(key).voxel;
+    } catch(std::out_of_range &ex){
+        return nullptr;
+    }
 }
 
-void SparseVoxelGrid::setVoxel(
+Voxel * SparseVoxelGrid::setVoxel(
     size_t const key,
     double const x, double const y, double const z,
     double halfVoxelSize
 ){
     Voxel *voxel = new Voxel(x, y, z, halfVoxelSize);
-    if(!hasVoxel(key)) {
-        map.insert(std::pair<size_t, VoxelGridCell>(key, VoxelGridCell()));
-    }
-    map.at(key).voxel = voxel;
+    VoxelGridCell &vgc = map[key];
+    vgc.voxel = voxel;
+    return voxel;
 }
 
 void SparseVoxelGrid::deleteVoxel(size_t const key){
@@ -103,4 +106,24 @@ void SparseVoxelGrid::setClosestPointDistance(
     size_t const key, double const distance
 ) {
     map.at(key).closestPointDistance = distance;
+}
+
+
+// ***   WHILE INTERFACE   *** //
+// *************************** //
+void SparseVoxelGrid::whileLoopStart(){
+    whileLoopIter = map.begin();
+}
+
+bool SparseVoxelGrid::whileLoopHasNext(){
+    return whileLoopIter != map.end();
+}
+
+Voxel * SparseVoxelGrid::whileLoopNext(){
+    // Obtain current voxel
+    Voxel * voxel  = whileLoopIter->second.voxel;
+    // Update iterator for next iteration
+    ++whileLoopIter;
+    // Return current voxel
+    return voxel;
 }

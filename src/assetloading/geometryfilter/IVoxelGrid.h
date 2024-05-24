@@ -89,8 +89,9 @@ public:
      * @param z The z coordinate for the voxel.
      * @param halfVoxelSize Half of the voxel size (in the same unit than the
      *  coordinates).
+     * @return A pointer to the setted voxel
      */
-    virtual void setVoxel(
+    virtual Voxel * setVoxel(
         size_t const key,
         double const x, double const y, double const z,
         double halfVoxelSize
@@ -197,4 +198,23 @@ public:
      */
     inline size_t getMaxNVoxels() const {return maxNVoxels;}
 
+    // ***   WHILE INTERFACE   *** //
+    // *************************** //
+    /**
+     * @brief Prepare the grid so it can be iterated through a while loop.
+     */
+    virtual void whileLoopStart() = 0;
+    /**
+     * @brief Check whether the current iteration of the while loop is the
+     *  last (false) or not (true).
+     * @return True if the current iteration is not the last, false otherwise.
+     */
+    virtual bool whileLoopHasNext() = 0;
+    /**
+     * @brief Move to the next while iteration and obtain the corresponding
+     *  VoxelGridCell.
+     * @return The VoxelGridCell of the next iteration.
+     * @see VoxelGridCell
+     */
+    virtual Voxel * whileLoopNext() = 0;
 };

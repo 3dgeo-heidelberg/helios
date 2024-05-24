@@ -27,12 +27,14 @@ Voxel* DenseVoxelGrid::getVoxel(size_t const key){
     return voxels[key].voxel;
 }
 
-void DenseVoxelGrid::setVoxel(
+Voxel * DenseVoxelGrid::setVoxel(
     size_t const key,
     double const x, double const y, double const z,
     double halfVoxelSize
 ){
-    voxels[key].voxel = new Voxel(x, y, z, halfVoxelSize);
+    VoxelGridCell &vgc = voxels[key];
+    vgc.voxel = new Voxel(x, y, z, halfVoxelSize);
+    return vgc.voxel;
 }
 
 void DenseVoxelGrid::deleteVoxel(size_t const key){
@@ -100,4 +102,32 @@ void DenseVoxelGrid::setClosestPointDistance(
     size_t const key, double const distance
 ) {
     voxels[key].closestPointDistance = distance;
+}
+
+
+// ***   WHILE INTERFACE   *** //
+// *************************** //
+void DenseVoxelGrid::whileLoopStart(){
+    for(
+        whileLoopIter = 0 ;
+        whileLoopIter < maxNVoxels && voxels[whileLoopIter].voxel == nullptr;
+        ++whileLoopIter
+    );
+}
+
+bool DenseVoxelGrid::whileLoopHasNext(){
+    return whileLoopIter < maxNVoxels;
+}
+
+Voxel * DenseVoxelGrid::whileLoopNext(){
+    // Obtain current voxel
+    Voxel *voxel = voxels[whileLoopIter].voxel;
+    // Iterate to find next voxel, if any, and update whileLoopIter
+    for(
+        ++whileLoopIter;
+        whileLoopIter < maxNVoxels && voxels[whileLoopIter].voxel == nullptr;
+        ++whileLoopIter
+    );
+    // Return current voxel
+    return voxel;
 }

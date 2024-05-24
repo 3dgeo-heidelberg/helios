@@ -21,6 +21,10 @@ protected:
      * @see Voxel
      */
     VoxelGridCell *voxels;
+    /**
+     * @brief Used internally to track the current iteration of the while loop.
+     */
+    size_t whileLoopIter;
 
 public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //
@@ -51,7 +55,7 @@ public:
     /**
      * @see IVoxelGrid::setVoxel
      */
-    void setVoxel(
+    Voxel * setVoxel(
         size_t const key,
         double const x, double const y, double const z,
         double halfVoxelSize
@@ -118,4 +122,20 @@ public:
     void setClosestPointDistance(
         size_t const key, double const distance
     ) override;
+
+
+    // ***   WHILE INTERFACE   *** //
+    // *************************** //
+    /**
+     * @see IVoxelGrid::whileLoopStart
+     */
+    void whileLoopStart() override;
+    /**
+     * @see IVoxelGrid::whileLoopHasNext
+     */
+    bool whileLoopHasNext() override;
+    /**
+     * @see IVoxelGrid::whileLoopNext
+     */
+    Voxel * whileLoopNext() override;
 };
