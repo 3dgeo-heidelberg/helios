@@ -652,10 +652,11 @@ void XYZPointCloudFileLoader::estimateNormalsBatch(ifstream &ifs){
 
 void XYZPointCloudFileLoader::_estimateNormals(size_t start, size_t end){
     // Find populated matrices
-    for(size_t i = start ; i < end ; i++){
-        VoxelGridCell &vgc = voxels[i];
-        Mat<double> *matrix = voxelGrid->getMatrix(i);
-        Voxel *voxel = voxelGrid->getVoxel(i);
+    voxelGrid->whileLoopStart();
+    while(voxelGrid->whileLoopHasNext()){
+        size_t key;
+        Voxel *voxel = voxelGrid->whileLoopNext(&key);
+        Mat<double> *matrix = voxelGrid->getMatrix(key);
         if(matrix != nullptr){
             if(voxel->numPoints <
                 XYZPointCloudFileLoader::minPointsForSafeNormalEstimation
@@ -668,17 +669,17 @@ void XYZPointCloudFileLoader::_estimateNormals(size_t start, size_t end){
                 }
                 else{
                     // Discard voxel
-                    voxelGrid->deleteVoxel(i);
-                    voxelGrid->deleteMatrix(i);
+                    voxelGrid->deleteVoxel(key);
+                    voxelGrid->deleteMatrix(key);
                 }
             }
             else {
                 // Estimate normal
                 std::vector<double> orthonormal =
                     PlaneFitter::bestFittingPlaneOrthoNormal(*matrix, true);
-                vgc.voxel->v.normal.x = orthonormal[0];
-                vgc.voxel->v.normal.y = orthonormal[1];
-                vgc.voxel->v.normal.z = orthonormal[2];
+                voxel->v.normal.x = orthonormal[0];
+                voxel->v.normal.y = orthonormal[1];
+                voxel->v.normal.z = orthonormal[2];
             }
         }
     }
@@ -687,7 +688,9 @@ void XYZPointCloudFileLoader::_estimateNormals(size_t start, size_t end){
 void XYZPointCloudFileLoader::voxelsGridToScenePart(){
     voxelGrid->whileLoopStart();
     while(voxelGrid->whileLoopHasNext()){  // For each occupied voxel in grid
-        primsOut->mPrimitives.push_back(voxelGrid->whileLoopNext());
+        Voxel * voxel = voxelGrid->whileLoopNext();
+        // Add to primitives only if voxel has not been deleted (i.e., not null)
+        if(voxel != nullptr) primsOut->mPrimitives.push_back(voxel);
     }
 }
 

@@ -119,9 +119,11 @@ bool DenseVoxelGrid::whileLoopHasNext(){
     return whileLoopIter < maxNVoxels;
 }
 
-Voxel * DenseVoxelGrid::whileLoopNext(){
+Voxel * DenseVoxelGrid::whileLoopNext(size_t *key){
     // Obtain current voxel
     Voxel *voxel = voxels[whileLoopIter].voxel;
+    // Obtain the matrix, if requested
+    if(key != nullptr) *key = whileLoopIter;
     // Iterate to find next voxel, if any, and update whileLoopIter
     for(
         ++whileLoopIter;

@@ -137,5 +137,5 @@ public:
     /**
      * @see IVoxelGrid::whileLoopNext
      */
-    Voxel * whileLoopNext() override;
+    Voxel * whileLoopNext(size_t *key=nullptr) override;
 };

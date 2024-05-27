@@ -213,8 +213,10 @@ public:
     /**
      * @brief Move to the next while iteration and obtain the corresponding
      *  VoxelGridCell.
-     * @return The VoxelGridCell of the next iteration.
+     * @param[out] key When not null, it will be used to store the key
+     *  associated to the returned voxel.
+     * @return The Voxel of the next iteration.
      * @see VoxelGridCell
      */
-    virtual Voxel * whileLoopNext() = 0;
+    virtual Voxel * whileLoopNext(size_t *key=nullptr) = 0;
 };

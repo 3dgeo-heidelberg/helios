@@ -150,10 +150,6 @@ private:
      */
 	double zCoeff;
 
-	/**
-	 * @brief Full voxels grid
-	 */
-	VoxelGridCell *voxels = nullptr;
     /**
      * @brief The voxel grid used to load a representation of the input point
      *  cloud.

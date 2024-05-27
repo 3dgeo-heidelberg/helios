@@ -69,18 +69,21 @@ void SparseVoxelGrid::setNextMatrixCol(
     size_t const key,
     double const x, double const y, double const z
 ) {
-    VoxelGridCell &vgc = map.at(key);
-    size_t const startIdx = vgc.cursor*3;
-    (*vgc.matrix)[startIdx] = x;
-    (*vgc.matrix)[startIdx+1] = y;
-    (*vgc.matrix)[startIdx+2] = z;
-    ++vgc.cursor;
+        VoxelGridCell &vgc = map.at(key);
+        size_t const startIdx = vgc.cursor * 3;
+        (*vgc.matrix)[startIdx] = x;
+        (*vgc.matrix)[startIdx + 1] = y;
+        (*vgc.matrix)[startIdx + 2] = z;
+        ++vgc.cursor;
 }
 
 void SparseVoxelGrid::deleteMatrix(size_t const key){
-    VoxelGridCell &vgc = map.at(key);
-    delete vgc.matrix;
-    vgc.matrix = nullptr;
+    try {
+        VoxelGridCell &vgc = map.at(key);
+        delete vgc.matrix;
+        vgc.matrix = nullptr;
+    }
+    catch(std::out_of_range &oorex){} // Ignore already deleted matrices
 }
 void SparseVoxelGrid::deleteMatrices(){
     for(size_t i = 0 ; i < maxNVoxels ; ++i) deleteMatrix(i);
@@ -119,9 +122,11 @@ bool SparseVoxelGrid::whileLoopHasNext(){
     return whileLoopIter != map.end();
 }
 
-Voxel * SparseVoxelGrid::whileLoopNext(){
+Voxel * SparseVoxelGrid::whileLoopNext(size_t *key){
     // Obtain current voxel
     Voxel * voxel  = whileLoopIter->second.voxel;
+    // Obtain the matrix, if requested
+    if(key != nullptr) *key = whileLoopIter->first;
     // Update iterator for next iteration
     ++whileLoopIter;
     // Return current voxel
