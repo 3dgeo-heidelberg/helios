@@ -66,6 +66,8 @@ class SimulationBuilder:
     # ---  CONSTRUCTOR  --- #
     # --------------------- #
     def __init__(self, surveyPath, assetsDir, outputDir):
+        if isinstance(assetsDir, str):
+            assetsDir = [assetsDir]
         # Add default values for asset directories
         assetsDir = assetsDir + [os.getcwd(), str(resources.files("pyhelios")), str(resources.files("pyhelios") / "data")]
 
