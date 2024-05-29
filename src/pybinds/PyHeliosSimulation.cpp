@@ -65,6 +65,10 @@ PyHeliosSimulation::PyHeliosSimulation(
     xmlreader = std::make_shared<XmlSurveyLoader>(surveyPath, this->assetsPath);
 }
 PyHeliosSimulation::~PyHeliosSimulation() {
+    if(playback != nullptr){
+        playback->mSurvey->scanner->getDetector()->shutdown();
+        playback->mSurvey->scanner->platform->scene->shutdown();
+    }
     if(thread != nullptr) delete thread;
 }
 
@@ -156,7 +160,8 @@ void PyHeliosSimulation::start (){
         chunkSize,
         fixedGpsTimeStart,
         legacyEnergyModel,
-        exportToFile
+        exportToFile,
+        true
     );
     playback->callback = callback;
     playback->setCallbackFrequency(callbackFrequency);
