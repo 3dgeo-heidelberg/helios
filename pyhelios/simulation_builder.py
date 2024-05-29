@@ -122,8 +122,6 @@ class SimulationBuilder:
         build.sim.finalOutput = self.finalOutput
         build.sim.legacyEnergyModel = self.legacyEnergyModel
         build.sim.exportToFile = self.exportToFile
-        if self.callback is not None:
-            build.sim.setCallback(self.callback)
         for rotateFilter in self.rotateFilters:
             build.sim.addRotateFilter(
                 rotateFilter.q0,
@@ -152,6 +150,8 @@ class SimulationBuilder:
             self.fullwaveNoise,
             self.platformNoiseDisabled
         )
+        if self.callback is not None:
+            build.sim.setCallback(self.callback)
 
         end = time.perf_counter()
         print(
