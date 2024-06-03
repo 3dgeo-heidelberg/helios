@@ -59,7 +59,9 @@ InterpolatedMovingPlatform::InterpolatedMovingPlatform(
             _getRollPitchYaw = [] (
                 double &roll, double &pitch, double &yaw, Rotation &attitude
             ) -> void {
-                attitude.getAngles(&RotationOrder::XYZ, pitch, roll, yaw);
+                attitude.getAngles(&RotationOrder::XYZ, roll, pitch, yaw);
+                roll = -roll;
+                pitch = -pitch;
                 yaw = -yaw;
             };
             break;
