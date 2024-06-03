@@ -50,8 +50,8 @@ InterpolatedMovingPlatform::InterpolatedMovingPlatform(
             break;
         case RotationSpec::ARINC_705:
             calcAttitude = [] (arma::Col<double> const x) -> Rotation {
-                return Rotation(Directions::right, x[1]).applyTo(
-                    Rotation(Directions::forward, x[0])
+                return Rotation(Directions::right, -x[0]).applyTo(
+                    Rotation(Directions::forward, -x[1])
                 ).applyTo(
                     Rotation(Directions::up, -x[2])
                 );
