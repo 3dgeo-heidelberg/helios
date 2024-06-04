@@ -276,9 +276,16 @@ void XYZPointCloudFileLoader::prepareVoxelsGrid(
     yCoeff = ny / deltaY;
     zCoeff = nz / deltaZ;
 
-    // Allocate voxel grid
-    //voxelGrid = new DenseVoxelGrid(maxNVoxels); // TODO Rethink
-    voxelGrid = new SparseVoxelGrid(maxNVoxels); // TODO Rethink
+    // Instantiate voxel grid
+    if(
+        params.find("sparse") != params.end() &&
+        boost::get<bool>(params["sparse"])
+    ){ // Sparse voxel grid
+        voxelGrid = new SparseVoxelGrid(maxNVoxels);
+    }
+    else{ // Dense voxel grid
+        voxelGrid = new DenseVoxelGrid(maxNVoxels);
+    }
 
     // Check if voxel grid needs normal estimation or not
     estimateNormals = 0;
