@@ -33,7 +33,8 @@ SurveyPlayback::SurveyPlayback(
     int const chunkSize,
     std::string fixedGpsTimeStart,
     bool const legacyEnergyModel,
-    bool const exportToFile
+    bool const exportToFile,
+    bool const disableShutdown
 ):
     Simulation(
         parallelizationStrategy,
@@ -42,7 +43,8 @@ SurveyPlayback::SurveyPlayback(
         fixedGpsTimeStart,
         legacyEnergyModel
     ),
-    fms(fms)
+    fms(fms),
+    disableShutdown(disableShutdown)
 {
     this->mSurvey = survey;
     this->mSurvey->hatch(*this);
@@ -428,8 +430,10 @@ void SurveyPlayback::startNextLeg(bool manual) {
 
 void SurveyPlayback::shutdown() {
 	Simulation::shutdown();
-	mSurvey->scanner->getDetector()->shutdown();
-    mSurvey->scanner->platform->scene->shutdown();
+    if(!disableShutdown) {
+        mSurvey->scanner->getDetector()->shutdown();
+        mSurvey->scanner->platform->scene->shutdown();
+    }
 }
 
 string SurveyPlayback::milliToString(long millis) {

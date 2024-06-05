@@ -67,7 +67,8 @@ void DetailedVoxelLoader::loadDv(
     }
     // Prepare default material
     Material mat;
-    mat.isGround = false;
+    // Legacy default material for vegetation studies commented below
+    /*mat.isGround = false;
     mat.useVertexColors = true;
     mat.reflectance = 0.5;
     mat.specularity = 0.5;
@@ -78,7 +79,7 @@ void DetailedVoxelLoader::loadDv(
     mat.kd[2] = 0.5;    mat.kd[3] = 0.5;
     mat.ks[0] = 0.5;    mat.ks[1] = 0.5;
     mat.ks[2] = 0.5;    mat.ks[3] = 0.5;
-    mat.spectra = "wood";
+    mat.spectra = "wood";*/
 
     // Parse detailed voxels
     VoxelFileParser vfp;

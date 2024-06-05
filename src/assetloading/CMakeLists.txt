@@ -15,6 +15,8 @@ target_sources(
   "geometryfilter/RotateFilter.cpp"
   "geometryfilter/GeoTiffFileLoader.cpp"
   "geometryfilter/DetailedVoxelLoader.cpp"
+  "geometryfilter/DenseVoxelGrid.cpp"
+  "geometryfilter/SparseVoxelGrid.cpp"
   "geometryfilter/WavefrontObj.cpp"
   "geometryfilter/XYZPointCloudFileLoader.cpp"
   "geometryfilter/AbstractGeometryFilter.cpp"

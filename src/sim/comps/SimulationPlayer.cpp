@@ -207,7 +207,7 @@ void SimulationPlayer::restartScene(Scene &scene, bool const keepCRS){
             mat.reflectance = scene.getDefaultReflectance();
         }
     }
-    // Reload scene (without KDDGrove rebuilding)
+    // Reload scene (without KDGrove rebuilding)
     std::shared_ptr<KDGroveFactory> kdgf = scene.getKDGroveFactory();
     scene.setKDGroveFactory(nullptr);
     scene.finalizeLoading(false);

@@ -65,6 +65,36 @@ PyHeliosSimulation::PyHeliosSimulation(
     xmlreader = std::make_shared<XmlSurveyLoader>(surveyPath, this->assetsPath);
 }
 PyHeliosSimulation::~PyHeliosSimulation() {
+    if(survey != nullptr){
+        // Release shared resources
+        bool sharedDetector = false;
+        bool sharedScene = false;
+        std::shared_ptr<AbstractDetector> ad = survey->scanner->getDetector();
+        std::shared_ptr<Scene> scene = survey->scanner->platform->scene;
+        for(PyHeliosSimulation * copy : copies){
+            if(copy->survey->scanner->getDetector() == ad){
+                sharedDetector = true;
+            }
+            if(copy->survey->scanner->platform->scene == scene){
+                sharedScene = true;
+            }
+        }
+        if(!sharedDetector){
+            survey->scanner->getDetector()->shutdown();
+        }
+        if(!sharedScene){
+            survey->scanner->platform->scene->shutdown();
+        }
+        // Update copy tracking for non-destroyed copies
+        for(PyHeliosSimulation * copy : copies){
+            for(size_t i = 0 ; i < copy->copies.size() ; ++i) {
+                if(copy->copies[i] == this){
+                    copy->copies.erase(copy->copies.begin()+i);
+                    break;
+                }
+            }
+        }
+    }
     if(thread != nullptr) delete thread;
 }
 
@@ -156,7 +186,8 @@ void PyHeliosSimulation::start (){
         chunkSize,
         fixedGpsTimeStart,
         legacyEnergyModel,
-        exportToFile
+        exportToFile,
+        true
     );
     playback->callback = callback;
     playback->setCallbackFrequency(callbackFrequency);
@@ -350,6 +381,7 @@ void PyHeliosSimulation::buildPulseThreadPool(){
 // ***  SIMULATION COPY  *** //
 // ************************* //
 PyHeliosSimulation * PyHeliosSimulation::copy(){
+    // Copy
     PyHeliosSimulation *phs = new PyHeliosSimulation(); // The copy itself
     phs->xmlreader = std::make_shared<XmlSurveyLoader>(surveyPath, assetsPath);
     phs->surveyPath = this->surveyPath;
@@ -365,6 +397,12 @@ PyHeliosSimulation * PyHeliosSimulation::copy(){
     phs->setCallbackFrequency(getCallbackFrequency());
     phs->survey = std::make_shared<Survey>(*survey);
     phs->survey->scanner->initializeSequentialGenerators();
+    // Track copies
+    phs->copies = copies;
+    phs->copies.push_back(this);
+    for(PyHeliosSimulation *phsi : copies) phsi->copies.push_back(phs);
+    copies.push_back(phs);
+    // Return
     return phs;
 }
 
