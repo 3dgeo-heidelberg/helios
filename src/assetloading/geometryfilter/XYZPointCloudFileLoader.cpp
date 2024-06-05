@@ -83,13 +83,12 @@ void XYZPointCloudFileLoader::parse(std::string const & filePath){
     discardedPointsByNormal = 0;
 
     // Material
-    string matName = "default";
     logging::INFO("Adding default material");
     Material mat;
-    mat.useVertexColors = true;
-    mat.isGround = true;
-    mat.name = matName;
-    materials.insert(materials.end(), pair<string, Material>(matName, mat));
+    // Legacy default material commented below
+    /*mat.useVertexColors = true;
+    mat.isGround = true;*/
+    materials.insert(materials.end(), pair<string, Material>(mat.name, mat));
 
     // Open file input stream
     ifstream ifs;
@@ -106,7 +105,7 @@ void XYZPointCloudFileLoader::parse(std::string const & filePath){
     firstPass(filePath, ifs);
 
     // Second pass
-    secondPass(filePath, matName, ifs);
+    secondPass(filePath, mat.name, ifs);
 
     // Release
     if(voxelGrid != nullptr){
@@ -276,9 +275,16 @@ void XYZPointCloudFileLoader::prepareVoxelsGrid(
     yCoeff = ny / deltaY;
     zCoeff = nz / deltaZ;
 
-    // Allocate voxel grid
-    //voxelGrid = new DenseVoxelGrid(maxNVoxels); // TODO Rethink
-    voxelGrid = new SparseVoxelGrid(maxNVoxels); // TODO Rethink
+    // Instantiate voxel grid
+    if(
+        params.find("sparse") != params.end() &&
+        boost::get<bool>(params["sparse"])
+    ){ // Sparse voxel grid
+        voxelGrid = new SparseVoxelGrid(maxNVoxels);
+    }
+    else{ // Dense voxel grid
+        voxelGrid = new DenseVoxelGrid(maxNVoxels);
+    }
 
     // Check if voxel grid needs normal estimation or not
     estimateNormals = 0;
