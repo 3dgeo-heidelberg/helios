@@ -51,8 +51,8 @@ shared_ptr<AABB> AABB::getForPrimitives(std::vector<Primitive*> & primitives) {
 	double maxZ = numeric_limits<double>::lowest();
 
 	for (Primitive *p : primitives) {
-	    Vertex *v = p->getVertices();
-	    size_t const numVertices = p->getNumVertices();
+        Vertex *v = p->getFullVertices();
+        size_t const numVertices = p->getNumFullVertices();
 	    for(size_t i = 0 ; i < numVertices ; ++i){
 	        double const vx = v[i].pos.x;
             double const vy = v[i].pos.y;

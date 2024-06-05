@@ -207,7 +207,7 @@ def test_xyzVoxels_tls_pyh():
 
 def eval_xyzVoxels_tls(dirname):
     assert (dirname / 'leg000_points.las').exists()
-    assert abs((dirname / 'leg000_points.las').stat().st_size - 50_340_807) < MAX_DIFFERENCE_BYTES
+    assert abs((dirname / 'leg000_points.las').stat().st_size - 19_352_123) < MAX_DIFFERENCE_BYTES
     # clean up
     if DELETE_FILES_AFTER:
         shutil.rmtree(dirname)
@@ -456,7 +456,7 @@ def test_dyn_exe():
 
 def eval_dyn(dirname):
     assert (dirname / 'leg000_points.laz').exists()
-    assert abs((dirname / 'leg000_points.laz').stat().st_size - 4_174_789) < MAX_DIFFERENCE_BYTES
+    assert abs((dirname / 'leg000_points.laz').stat().st_size - 2_642_291) < MAX_DIFFERENCE_BYTES
     # clean up
     if DELETE_FILES_AFTER:
         shutil.rmtree(dirname)

@@ -1,4 +1,5 @@
 #include "Voxel.h"
+#include <MathConstants.h>
 #include <glm/gtx/vector_angle.hpp>
 
 // ***  CONSTRUCTION  *** //
@@ -57,7 +58,8 @@ double Voxel::getIncidenceAngle_rad(
     }
 
     // Determine incidence angle considering voxel normal
-    return M_PI - glm::angle(v.normal, rayDir);
+    double const angle = glm::angle(v.normal, rayDir);
+    return (angle > PI_HALF) ? M_PI - angle : angle;  // Return min. angle
 }
 
 double Voxel::getIncidenceAngleClosestFace_rad(
@@ -102,7 +104,8 @@ double Voxel::getIncidenceAngleClosestFace_rad(
     }
 
     // Compute incidence angle
-    return M_PI - glm::angle(normal, rayDir);
+    double const angle = glm::angle(normal, rayDir);
+    return (angle > PI_HALF) ? M_PI - angle : angle;  // Return min. angle
 }
 
 std::vector<double> Voxel::getRayIntersection(

@@ -52,6 +52,7 @@ private:
     int parallelizationStrategy = 1;
     int chunkSize = 32;
     int warehouseFactor = 1;
+    std::vector<PyHeliosSimulation *> copies;
 public:
     bool finalOutput = true;
     bool legacyEnergyModel = false;

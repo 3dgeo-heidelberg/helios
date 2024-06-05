@@ -194,7 +194,7 @@ void FullWaveformPulseRunnable::handleSubray(
     );
     subraySimRecord[5] = (rayDirection[0] < 0) == (subrayDirection[0] < 0);
     subraySimRecord[6] = (tMinMax.size()<1) ? 0 : tMinMax[0];
-    subraySimRecord[7] = (tMinMax.size()<1) ? 0 : tMinMax[1];
+    subraySimRecord[7] = (tMinMax.size()<2) ? 0 : tMinMax[1];
     subraySimRecord[8] = subrayDirection.x;
     subraySimRecord[9] = subrayDirection.y;
     subraySimRecord[10] = subrayDirection.z;

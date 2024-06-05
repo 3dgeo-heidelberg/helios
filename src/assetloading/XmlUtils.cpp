@@ -55,7 +55,7 @@ std::map<std::string, ObjectT> XmlUtils::createParamsFromXml(
                 result.insert(std::pair<std::string, std::string>(key, valueString));
             } else {
 
-                if (type == "boolean") {
+                if (type == "boolean" || type == "bool") {
                     bool b = valueString == "true";
                     result.insert(std::pair<std::string, bool>(key, b));
                 } else if (type == "double") {

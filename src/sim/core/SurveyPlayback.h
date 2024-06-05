@@ -74,6 +74,13 @@ private:
 	 * @brief Expected remaining time (nanoseconds) for current leg completion
 	 */
 	long long legRemainingTime_ns;
+    /**
+     * Flag to specify whether the shutdown process
+     *  after finishing a simulation must be finished or not. It is mostly
+     *  useful to run multiple simulations from PyHelios without rebuilding
+     *  the survey.
+     */
+    bool disableShutdown;
 
 public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //
@@ -84,6 +91,10 @@ public:
      * @param fms The main facade of file management system
      * @param exportToFile Flag to specify if output must be written to a file
      *  (true) or not (false)
+     * @param disableShutdown Flag to specify whether the shutdown process
+     *  after finishing a simulation must be finished or not. It is mostly
+     *  useful to run multiple simulations from PyHelios without rebuilding
+     *  the survey.
      * @see Survey
      * @see Simulation::Simulation(unsigned, double, size_t)
      */
@@ -95,7 +106,8 @@ public:
         int const chunkSize,
         std::string fixedGpsTimeStart,
         bool const legacyEnergyModel,
-        bool const exportToFile=true
+        bool const exportToFile=true,
+        bool const disableShutdown=false
     );
 
 

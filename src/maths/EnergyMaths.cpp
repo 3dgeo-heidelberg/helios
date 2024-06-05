@@ -229,7 +229,7 @@ double EnergyMaths::phongBDRFFast(
     double const kd = (1 - ks);
     double const specularAngle = 2*incidenceAngle;
     double const specular = ks * pow(
-        cos(specularAngle),
+        std::abs(cos(specularAngle)),
         targetSpecularExponent
     )/cosIncidenceAngle;
     return kd + specular;
