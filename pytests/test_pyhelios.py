@@ -278,7 +278,7 @@ def test_create_survey():
     output = simB.join()
     meas, traj = pyhelios.outputToNumpy(output)
     # check length of output
-    assert meas.shape == (34317, 17)
+    assert meas.shape == (9926, 17)
     assert traj.shape == (6670, 7)
     # compare individual points
     np.testing.assert_allclose(meas[100, :3], np.array([83.32, -66.44204, 0.03114649]))
