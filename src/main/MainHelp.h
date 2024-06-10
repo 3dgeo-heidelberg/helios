@@ -25,7 +25,8 @@ void printMainHelp(){
     <<  "\n\n"
 
     <<  "\t\t--assets <dir_path> : Specify the path(s) to assets/data directory\n"
-    <<  "\t\t\tTo specify multiple paths, duplicate the argument, e.g. --assets path/one --assets path/two\n\n"
+    <<  "\t\t\tTo specify multiple paths, duplicate the argument,"
+    <<  "e.g. --assets path1 --assets path2\n"
     <<  "\t\t\tBy default: './assets/' and the Python package installation directory\n\n"
 
     <<  "\t\t--output <dir_path> : Specify the path to output directory\n"
