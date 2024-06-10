@@ -283,7 +283,7 @@ public:
      */
     virtual void release();
 
-     // ***  GETTERS and SETTERS  *** //
+    // ***  GETTERS and SETTERS  *** //
     // ***************************** //
     /**
      * @brief Obtain the primitives of the scene part
@@ -339,6 +339,17 @@ public:
      */
     inline std::shared_ptr<SwapOnRepeatHandler> getSwapOnRepeatHandler()
     {return sorh;}
+
+    /**
+     * @brief Check whether the scene part is null, according to the underlying
+     *  swap on repeat handler.
+     * @return True if the scene part is null, false otherwise.
+     * @see SwapOnRepeatHandler
+     * @see SwapOnRepeatHandler::null
+     * @see SwapOnRepeatHandler::isNull
+     */
+    inline bool isNull() const
+    {return (sorh==nullptr) ? false : sorh->isNull();}
 
     // ***  STATIC METHODS  *** //
     // ************************ //

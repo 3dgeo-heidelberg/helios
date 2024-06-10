@@ -167,10 +167,20 @@ void SimulationPlayer::restartScene(Scene &scene, bool const keepCRS){
     AABB const oldCRSBBox = *scene.getBBoxCRS();
     for(std::shared_ptr<ScenePart> sp : scene.parts){
         // Handle scene parts that need to be discarded
-        if(sp->sorh != nullptr && sp->sorh->needsDiscardOnReplay()){
+        if(
+            sp->sorh != nullptr &&
+            sp->sorh->needsDiscardOnReplay() &&
+            !sp->isNull()
+        ){
             for(Primitive * p: sp->sorh->getBaselinePrimitives()) delete p;
             for(Primitive * p: sp->mPrimitives) delete p;
-            //sp->sorh = nullptr; // TODO Rethink : Remove to enable rebirth?
+            if(sp->sorh->hasNoFuture()) sp->sorh = nullptr;
+            else {
+                sp->sorh->setNull(true);
+                sp->sorh->getBaselinePrimitives().clear();
+                sp->mPrimitives.clear();
+                newParts.push_back(sp);
+            }
             continue;
         }
         // Handle scene parts that must be preserved
@@ -189,6 +199,10 @@ void SimulationPlayer::restartScene(Scene &scene, bool const keepCRS){
         if(sp->sorh != nullptr && sp->sorh->isOnSwapFirstPlay()) {
             ScenePart::computeTransformations(sp, sp->sorh->isHolistic());
             sp->sorh->setOnSwapFirstPlay(false);
+            if(!sp->mPrimitives.empty()) {
+                sp->sorh->setNull(false);
+                sp->sorh->setDiscardOnReplay(false);
+            }
         }
         // Prepare new data for scene
         newParts.push_back(sp);

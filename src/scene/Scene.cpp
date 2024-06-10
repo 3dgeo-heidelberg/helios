@@ -234,6 +234,7 @@ void Scene::doForceOnGround(){
     size_t const m = parts.size(); // How many parts there are in the scene
     for(size_t i=0 ; i < m ; ++i){
        shared_ptr<ScenePart> part = parts[i];
+       if(part->isNull()) continue;
        if(!part->mPrimitives[0]->material->isGround) continue;
        I.push_back(i); // Store index of found ground part
        planes.push_back(nullptr); // Null placeholder for best fitting plane
