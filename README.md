@@ -147,14 +147,18 @@ helios <survey_file_path> [OPTIONAL ARGUMENTS]
 
     Available general OPTIONAL ARGUMENTS are:
         --assets <directory_path>
-            Specify the path to assets directory
+            Specify the path to assets directory/directories
+            To specify multiple paths, duplicate the argument, 
+            e.g. --assets path/one --assets path/two
         --output <directory_path>
             Specify the path to output directory
         --splitByChannel
             Enable the one-file-per-device writing mode when using a
-            multi-channel scanner.
+            multi-channel scanner
         --writeWaveform
             Specify the full waveform must be written
+        --writePulse
+            Specify pulse-wise data must be written
         --calcEchowidth
             Specify the full waveform must be fitted
         --fullwaveNoise
@@ -195,6 +199,8 @@ helios <survey_file_path> [OPTIONAL ARGUMENTS]
             at expenses of greater memory consumption.
         --rebuildScene
             Force scene rebuild even when a previosly built scene is available
+        --noSceneWriting
+            Prevent scene from being written to .scene file.
         --kdt <integer>
             Specify the type of KDTree to be built for the scene.
             Using 1 leads to the simple KDTree based on median balancing,
@@ -256,36 +262,19 @@ helios <survey_file_path> [OPTIONAL ARGUMENTS]
 
 The demo simulation can be executed as follows:
 
-**LINUX**
 ```
-run/helios data/surveys/demo/tls_arbaro_demo.xml
-```
-
-**WINDOWS**
-```
-run\helios.exe data/surveys/demo/tls_arbaro_demo.xml
+helios data/surveys/demo/tls_arbaro_demo.xml
 ```
 
+### Live visualization
 
-## 🛠 Building from Source
+To visualize a survey while running it, we can use the `helios-live` entrypoint.
+Requirements: `open3d` (currently only supported for Python versions 3.8, 3.9, 3.10 and 3.11)
 
-Build instructions for advanced users and developers are available [here](BUILDME.md).
+```
+helios-live data/surveys/demo/tls_arbaro_demo.xml -o3d
+```
 
-## 🐍 Running pyhelios
-
-For running pyhelios, we suggest setting up a seperate [conda](https://docs.conda.io/en/latest/miniconda.html) environment. After downloading one of the [releases](https://github.com/3dgeo-heidelberg/helios/releases) or building from source, run 
-```
-conda env create -f conda-environment.yml
-```
-in the `base` environment of your conda installation, while you are in the HELIOS++ root directory. Then run
-```
-conda activate pyhelios_env
-```
-to activate the environment and 
-```
-python pyhelios_demo\helios.py data\surveys\toyblocks\als_toyblocks.xml
-```
-to run a demo survey including visualisation.
 
 ## :gift: Related projects and Contributions
 
