@@ -12,7 +12,8 @@ SwapOnRepeatHandler::SwapOnRepeatHandler() :
     holistic(false),
     onSwapFirstPlay(false),
     keepCRS(true),
-    baseline(nullptr)
+    baseline(nullptr),
+    null(false)
 {}
 
 
