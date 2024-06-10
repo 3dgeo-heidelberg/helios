@@ -13,6 +13,7 @@ import urllib
 
 WORKING_DIR = os.getcwd()
 XSD_DIR = Path(WORKING_DIR) / 'python/pyhelios/util/xsd'
+PYH_DIR = Path(WORKING_DIR) / 'python/pyhelios'
 survey_schema = xmlschema.XMLSchema(str(XSD_DIR / 'survey.xsd'))
 scene_schema = xmlschema.XMLSchema(str(XSD_DIR / 'scene.xsd'))
 scanner_schema = xmlschema.XMLSchema(str(XSD_DIR / 'scanner.xsd'))
@@ -29,7 +30,7 @@ def handle_relative_path(root, *paths):
             try:
                 path.resolve(strict=True)
             except FileNotFoundError:
-                # otherwise, assume that path is relative to helios directory
+                # otherwise, assume that path is relative to given directory
                 path = str(root / path)
         new_paths.append(path)
 
@@ -42,7 +43,7 @@ def get_paths(survey_file):
         scene_file = ET.parse(survey_file).find('survey').attrib['scene'].split('#')[0]
         scanner_file = ET.parse(survey_file).find('survey').attrib['scanner'].split('#')[0]
         platform_file = ET.parse(survey_file).find('survey').attrib['platform'].split('#')[0]
-        scene_file, scanner_file, platform_file = handle_relative_path(WORKING_DIR, scene_file, scanner_file,
+        scene_file, scanner_file, platform_file = handle_relative_path(PYH_DIR, scene_file, scanner_file,
                                                                        platform_file)
     except KeyError as e:
         print("ERROR: Missing 'platform', 'scanner' or 'scene' key in <survey> tag.\n"
