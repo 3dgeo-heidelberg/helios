@@ -294,7 +294,7 @@ def test_material(test_sim):
     mat0 = prim0.getMaterial()
     assert mat0.name == 'None'
     assert mat0.isGround is True
-    assert mat0.matFilePath == 'data/sceneparts/basic/groundplane/groundplane.mtl'
+    assert Path(mat0.matFilePath) == Path.cwd() / 'data/sceneparts/basic/groundplane/groundplane.mtl'
     assert mat0.reflectance == 50.0
     assert mat0.specularity == 0.0
     assert mat0.specularExponent == 0.0
