@@ -60,3 +60,45 @@ jobs:
         run: |
           python -m pytest -m exe
           python -m pytest -m pyh
+
+  address-sanitizer:
+    name: Address Sanitizer
+    runs-on: ubuntu-latest
+    env:
+      ASAN_OPTIONS: "alloc_dealloc_mismatch=0:detect_stack_use_after_return=1:check_initialization_order=1:strict_init_order=1"
+
+    defaults:
+      run:
+        # Conda requires a login shell in order to work properly
+        shell: bash -l {0}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Create Helios dev environment
+        uses: conda-incubator/setup-miniconda@v2
+        with:
+          auto-update-conda: true
+          auto-activate-base: false
+          activate-environment: helios-dev
+          environment-file: environment-dev.yml
+          python-version: "3.11"
+
+      - name: Install Helios
+        run: |
+          python -m pip install -v .
+        env:
+          SKBUILD_CMAKE_BUILD_TYPE: "Debug"
+          # CMAKE_ARGS: "-DCMAKE_CXX_FLAGS='-fsanitize=address -fsanitize-address-use-after-scope -fno-omit-frame-pointer'"
+          CMAKE_ARGS: "-DCMAKE_CXX_FLAGS=-fsanitize=address"
+
+      - name: run python tests
+        # for LD_PRELOAD see https://github.com/google/sanitizers/issues/934#issuecomment-649516500
+        run: |
+          echo "leak:/usr/bin/bash" > supp.txt
+          # hack to prevent external libs from dlclosing libraries,
+          # which otherwise results in <module not found> LSAN leaks that cannot be suppressed
+          # https://github.com/google/sanitizers/issues/89#issuecomment-406316683
+          echo "#include <stdio.h>" > dlclose.c
+          echo "int dlclose(void *handle) { return 0; }" >> dlclose.c
+          clang -shared dlclose.c -o libdlclose.so
+          LSAN_OPTIONS=suppressions="$(pwd)/supp.txt" LD_PRELOAD="$(gcc -print-file-name=libasan.so) /usr/lib/x86_64-linux-gnu/libstdc++.so.6 $(pwd)/libdlclose.so" PYTHONMALLOC=malloc python -m pytest -s
