@@ -58,5 +58,4 @@ jobs:
         # more efforts into investigating broken LAZ files written by Helios on MacOS.
         if: runner.os != 'macOS' 
         run: |
-          python -m pytest -m exe
-          python -m pytest -m pyh
+          python -m pytest
