@@ -312,13 +312,15 @@ void PyHeliosSimulation::loadSurvey(
     bool writeWaveform,
     bool calcEchowidth,
     bool fullWaveNoise,
-    bool platformNoiseDisabled
+    bool platformNoiseDisabled,
+    bool writePulse
 ){
     xmlreader->sceneLoader.kdtFactoryType = kdtFactory;
     xmlreader->sceneLoader.kdtNumJobs = kdtJobs;
     xmlreader->sceneLoader.kdtSAHLossNodes = kdtSAHLossNodes;
     survey = xmlreader->load(legNoiseDisabled, rebuildScene);
     survey->scanner->setWriteWaveform(writeWaveform);
+    survey->scanner->setWritePulse(writePulse);
     survey->scanner->setCalcEchowidth(calcEchowidth);
     survey->scanner->setFullWaveNoise(fullWaveNoise);
     survey->scanner->setPlatformNoiseDisabled(platformNoiseDisabled);
