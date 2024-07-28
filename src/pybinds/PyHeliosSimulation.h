@@ -402,7 +402,8 @@ public:
         bool writeWaveform = false,
         bool calcEchowidth = false,
         bool fullWaveNoise = false,
-        bool platformNoiseDisabled = true
+        bool platformNoiseDisabled = true,
+        bool writePulse = false
     );
     void addRotateFilter(
         double q0,
