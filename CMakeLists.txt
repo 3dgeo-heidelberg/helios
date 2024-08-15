@@ -153,7 +153,7 @@ target_link_libraries(helios++ PRIVATE helios)
 
 if(BUILD_PYTHON)
   include_directories(${Python_INCLUDE_DIRS})
-  include_directories(${CMAKE_SOURCE_DIR}/src/binds)
+  include_directories(${CMAKE_SOURCE_DIR}/src/python)
   pybind11_add_module(_helios MODULE python/helios/helios_python.cpp)
   target_link_libraries(_helios PUBLIC helios pybind11::module)
   install(TARGETS _helios DESTINATION .)
@@ -175,7 +175,7 @@ endif()
 install(
   TARGETS
     helios++
-  DESTINATION helios/bin
+  DESTINATION pyhelios/bin
 )
 
 include(FeatureSummary)

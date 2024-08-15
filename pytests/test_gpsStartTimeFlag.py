@@ -24,7 +24,7 @@ def sha256sum(filename):
 def run_helios_pyhelios(survey_path: Path, options=None) -> Path:
     sys.path.append(WORKING_DIR)
     import pyhelios
-    pyhelios.setDefaultRandomnessGeneratorSeed("43")
+    pyhelios.default_rand_generator_seed("43")
     from pyhelios import SimulationBuilder
     simB = SimulationBuilder(
         surveyPath=str(survey_path.absolute()),

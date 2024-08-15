@@ -52,7 +52,7 @@ class SimulationBuild:
             chunkSize,
             warehouseFactor
         )
-        self.sim.fixedGpsTimeStart = fixedGpsTimeStart
+        self.sim.fixed_gps_time_start = fixedGpsTimeStart
 
     # ---  CONTROL METHODS  --- #
     # ------------------------- #
@@ -71,11 +71,11 @@ class SimulationBuild:
     def join(self):
         # Conditional variable necessary for callback mode
         with PYHELIOS_SIMULATION_BUILD_CONDITION_VARIABLE:
-            output = self.sim.join()
-            while not output.finished:
+            measurements, trajectories, outpath, outpaths, finished = self.sim.join()
+            while not finished:
                 PYHELIOS_SIMULATION_BUILD_CONDITION_VARIABLE.wait()
-                output = self.sim.join()
-        return output
+                measurements, trajectories, outpath, outpaths, finished = self.sim.join()
+        return (measurements, trajectories, outpath, outpaths, finished)
 
     # ---  C O P Y  --- #
     # ----------------- #
@@ -92,19 +92,19 @@ class SimulationBuild:
     # ---  GETTERS and SETTERS  --- #
     # ----------------------------- #
     def isStarted(self):
-        return self.sim.isStarted()
+        return self.sim.is_started
 
     def isPaused(self):
-        return self.sim.isPaused()
+        return self.sim.is_paused
 
     def isStopped(self):
-        return self.sim.isStopped()
+        return self.sim.is_stopped
 
     def isFinished(self):
-        return self.sim.isFinished()
+        return self.sim.is_finished
 
     def isRunning(self):
-        return self.sim.isRunning()
+        return self.sim.is_running
 
     def getScanner(self):
-        return self.sim.getScanner()
+        return self.sim.scanner

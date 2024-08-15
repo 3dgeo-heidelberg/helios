@@ -53,10 +53,17 @@ jobs:
         env:
           SETUPTOOLS_SCM_SUBPROCESS_TIMEOUT: "120"
 
-      - name: Run tests
+      - name: Run unmarked tests
         # Disable MacOS for now - we do not yet officially support it and we need to invest a bit
         # more efforts into investigating broken LAZ files written by Helios on MacOS.
         if: runner.os != 'macOS' 
         run: |
           python -m pytest
+
+      - name: Run marked tests
+        if: runner.os != 'macOS' 
+        run: |
+          python -m pytest -m exe
+          python -m pytest -m pyh
+
 
