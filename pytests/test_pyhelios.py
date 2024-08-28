@@ -13,6 +13,7 @@ import time
 import struct
 import xml.etree.ElementTree as ET
 import shutil
+import laspy
 
 
 DELETE_FILES_AFTER = False
@@ -274,7 +275,7 @@ def test_create_survey():
     output = simB.join()
     meas, traj = pyhelios.outputToNumpy(output)
     # check length of output
-    assert meas.shape == (9926, 17)
+    assert meas.shape == (10531, 17)
     assert traj.shape == (6670, 7)
     # compare individual points
     np.testing.assert_allclose(meas[100, :3], np.array([83.32, -66.44204, 0.03114649]))
@@ -362,20 +363,22 @@ def test_output(export_to_file):
     simB.setCallbackFrequency(100)
     simB.setNumThreads(1)
     simB.setKDTJobs(1)
+    simB.setFixedGpsTimeStart('2022-01-01 00:00:00')
 
     sim = simB.build()
 
     sim.start()
     output = sim.join()
     measurements_array, trajectory_array = pyhelios.outputToNumpy(output)
-
-    pcloud = pcu.PointCloud(measurements_array[:, :3])
-    pcloud_ref = pcu.PointCloud.from_las_file(Path('data') / 'test' / 'tiffloader_als_merged.las')
+    time = measurements_array[:, 16]
+    pcloud = pcu.PointCloud(measurements_array[:, :3], fnames=['gps_time'], F=time.reshape(time.shape[0], 1))
+    las = laspy.read(Path('data') / 'test' / 'tiffloader_als_merged.las')
+    pcloud_ref = pcu.PointCloud.from_las(las, fnames=['gps_time'])
     pcloud.assert_equals(pcloud_ref)
     if export_to_file:
-        assert (Path(outdir) / 'leg000_points.las').exists()
-        assert (Path(outdir) / 'leg001_points.las').exists()
-        assert (Path(outdir) / 'leg002_points.las').exists()
+        assert (Path(outdir) / 'leg000_points.xyz').exists()
+        assert (Path(outdir) / 'leg001_points.xyz').exists()
+        assert (Path(outdir) / 'leg002_points.xyz').exists()
         # cleanup
         if DELETE_FILES_AFTER:
             print(f"Deleting files in {Path(output.outpath).parent.as_posix()}")

@@ -156,7 +156,7 @@ def eval_tiffloader_als(dirname):
     pcloud1 = pcu.PointCloud.from_las_file(dirname / 'leg001_points.las')
     pcloud1.assert_equals(pcloud1_ref)
     assert (dirname / 'leg002_points.las').exists()
-    pcloud2_ref = pcu.PointCloud.from_las_file(Path('data') / 'test' / 'tiffloader_leg002_points.las')
+    pcloud2_ref = pcu.PointCloud.from_las_file(Path('data') / 'test' / 'tiffloader_als_leg002_points.las')
     pcloud2 = pcu.PointCloud.from_las_file(dirname / 'leg002_points.las')
     pcloud2.assert_equals(pcloud2_ref)
     with open(dirname / 'leg000_trajectory.txt', 'r') as f:
