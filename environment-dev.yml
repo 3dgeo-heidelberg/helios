@@ -28,3 +28,5 @@ dependencies:
   - pytest
   - laspy
   - lazrs-python
+  - pandas
+  - scipy
