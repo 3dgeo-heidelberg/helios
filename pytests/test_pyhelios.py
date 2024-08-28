@@ -375,12 +375,14 @@ def test_output(export_to_file):
     pcloud = pcu.PointCloud(measurements_array[:, :3], fnames=['gps_time'], F=time.reshape(time.shape[0], 1))
     las = laspy.read(Path('data') / 'test' / 'tiffloader_als_merged.las')
     pcloud_ref = pcu.PointCloud.from_las(las, fnames=['gps_time'])
-    pcloud.assert_equals(pcloud_ref)
+    pcloud.assert_equals(pcloud_ref, eps=0.00011)  # larger tolerance due to las scale factor of 0.0001
     if export_to_file:
         assert (Path(dirname) / 'leg000_points.xyz').exists()
+        pcloud0 = pcu.PointCloud.from_xyz_file(Path(dirname) / 'leg000_points.xyz', cols=(0, 1, 2), names=['x', 'y', 'z'])
+        pcloud_ref0 = pcu.PointCloud.from_las_file(Path('data') / 'test' / 'tiffloader_als_leg000_points.las')
+        pcloud0.assert_equals(pcloud_ref0, eps=0.00011)  # larger tolerance due to las scale factor of 0.0001
         assert (Path(dirname) / 'leg001_points.xyz').exists()
         assert (Path(dirname) / 'leg002_points.xyz').exists()
-        # cleanup
         if DELETE_FILES_AFTER:
             print(f"Deleting files in {Path(output.outpath).parent.as_posix()}")
             shutil.rmtree(Path(output.outpath).parent)

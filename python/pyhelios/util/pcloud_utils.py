@@ -113,6 +113,8 @@ class PointCloud:
         F = None
         if len(fnames) > 0:
             F = np.vstack([P[fname] for fname in fnames]).T
+        else:
+            fnames = None
         # Build point cloud
         return PointCloud(X, fnames=fnames, F=F, y=y)
 
@@ -149,7 +151,7 @@ class PointCloud:
             assert np.all(np.array(self.F.shape) == np.array(pcloud.F.shape))
             # Check numerical differences in the features
             NF = pcloud.F[N]
-            assert np.testing.assert_allclose(self.F, NF, atol=eps, rtol=0)
+            np.testing.assert_allclose(self.F, NF, atol=eps, rtol=0)
         # Compare classes
         check = int(self.y is None) + int(pcloud.y is None)
         assert check != 1  # One has classes, other does not
