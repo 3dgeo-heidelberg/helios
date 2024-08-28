@@ -103,7 +103,7 @@ class SimulationBuilder:
         self.setCalcEchowidth(False)
         self.setFullwaveNoise(False)
         self.setPlatformNoiseDisabled(True)
-        self.setLegacyEnergyModel(False)
+        self.setLegacyEnergyModel(True)
         self.setExportToFile(True)
         self.setCallback(None)
         self.rotateFilters = []
