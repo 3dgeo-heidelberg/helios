@@ -9,6 +9,7 @@ import pytest
 import fnmatch
 
 import pyhelios
+from pyhelios.util import pcloud_utils as pcu
 
 try:
     import laspy
@@ -114,9 +115,14 @@ def test_arbaro_tls_pyh():
 
 def eval_arbaro_tls(dirname):
     assert (dirname / 'leg000_points.las').exists()
-    assert abs((dirname / 'leg000_points.las').stat().st_size - 22_698_181) < MAX_DIFFERENCE_BYTES
+    pcloud0_ref = pcu.PointCloud.from_las_file(Path('data') / 'test' / 'arbaro_tls_leg000_points.las')
+    pcloud0 = pcu.PointCloud.from_las_file(dirname / 'leg000_points.las')
+    pcloud0.assert_equals(pcloud0_ref)
     assert (dirname / 'leg001_points.las').exists()
-    assert abs((dirname / 'leg001_points.las').stat().st_size - 14_381_469) < MAX_DIFFERENCE_BYTES
+    pcloud1_ref = pcu.PointCloud.from_las_file(Path('data') / 'test' / 'arbaro_tls_leg001_points.las')
+    pcloud1 = pcu.PointCloud.from_las_file(dirname / 'leg001_points.las')
+    pcloud1.assert_equals(pcloud1_ref)
+    # ToDo: same approach for trajectory?
     with open(dirname / 'leg000_trajectory.txt', 'r') as f:
         line = f.readline()
         assert line.startswith('1.0000 25.5000 0.0000')
@@ -142,9 +148,17 @@ def test_tiffloader_als_pyh():
 
 def eval_tiffloader_als(dirname):
     assert (dirname / 'leg000_points.las').exists()
-    assert abs((dirname / 'leg000_points.las').stat().st_size - 53_367) < MAX_DIFFERENCE_BYTES
+    pcloud0_ref = pcu.PointCloud.from_las_file(Path('data') / 'test' / 'tiffloader_als_leg000_points.las')
+    pcloud0 = pcu.PointCloud.from_las_file(dirname / 'leg000_points.las')
+    pcloud0.assert_equals(pcloud0_ref)
     assert (dirname / 'leg001_points.las').exists()
-    assert abs((dirname / 'leg001_points.las').stat().st_size - 85_557) < MAX_DIFFERENCE_BYTES
+    pcloud1_ref = pcu.PointCloud.from_las_file(Path('data') / 'test' / 'tiffloader_als_leg001_points.las')
+    pcloud1 = pcu.PointCloud.from_las_file(dirname / 'leg001_points.las')
+    pcloud1.assert_equals(pcloud1_ref)
+    assert (dirname / 'leg002_points.las').exists()
+    pcloud2_ref = pcu.PointCloud.from_las_file(Path('data') / 'test' / 'tiffloader_leg002_points.las')
+    pcloud2 = pcu.PointCloud.from_las_file(dirname / 'leg002_points.las')
+    pcloud2.assert_equals(pcloud2_ref)
     with open(dirname / 'leg000_trajectory.txt', 'r') as f:
         next(f)
         line = f.readline()
@@ -171,9 +185,9 @@ def test_detailedVoxels_uls_pyh():
 
 def eval_detailedVoxels_uls(dirname):
     assert (dirname / 'leg000_points.las').exists()
-    assert abs((dirname / 'leg000_points.las').stat().st_size - 460_737) < MAX_DIFFERENCE_BYTES
-    assert (dirname / 'leg000_trajectory.txt').exists()
-    assert abs((dirname / 'leg000_trajectory.txt').stat().st_size - 2_541) < MAX_DIFFERENCE_BYTES
+    pcloud0_ref = pcu.PointCloud.from_las_file(Path('data') / 'test' / 'detailedVoxels_uls_leg000_points.las')
+    pcloud0 = pcu.PointCloud.from_las_file(dirname / 'leg000_points.las')
+    pcloud0.assert_equals(pcloud0_ref)
     with open(dirname / 'leg000_trajectory.txt', 'r') as f:
         for _ in range(6):
             next(f)
@@ -201,7 +215,9 @@ def test_xyzVoxels_tls_pyh():
 
 def eval_xyzVoxels_tls(dirname):
     assert (dirname / 'leg000_points.las').exists()
-    assert abs((dirname / 'leg000_points.las').stat().st_size - 19_352_123) < MAX_DIFFERENCE_BYTES
+    pcloud_ref = pcu.PointCloud.from_las_file(Path('data') / 'test' / 'xyzVoxels_tls_leg000_points.las')
+    pcloud = pcu.PointCloud.from_las_file(dirname / 'leg000_points.las')
+    pcloud.assert_equals(pcloud_ref)
     # clean up
     if DELETE_FILES_AFTER:
         shutil.rmtree(dirname)
@@ -226,8 +242,21 @@ def test_interpolated_traj_pyh():
 
 def eval_interpolated_traj(dirname):
     assert (dirname / 'leg000_points.laz').exists()
-    assert (dirname / 'leg000_trajectory.txt').exists()
-    assert abs((dirname / 'leg000_points.laz').stat().st_size - 850_173) < MAX_DIFFERENCE_BYTES
+    pcloud0_ref = pcu.PointCloud.from_las_file(Path('data') / 'test' / 'interpolated_traj_leg000_points.laz')
+    pcloud0 = pcu.PointCloud.from_las_file(dirname / 'leg000_points.laz')
+    pcloud0.assert_equals(pcloud0_ref)
+    assert (dirname / 'leg001_points.laz').exists()
+    pcloud1_ref = pcu.PointCloud.from_las_file(Path('data') / 'test' / 'interpolated_traj_leg001_points.laz')
+    pcloud1 = pcu.PointCloud.from_las_file(dirname / 'leg001_points.laz')
+    pcloud1.assert_equals(pcloud1_ref)
+    assert (dirname / 'leg002_points.laz').exists()
+    pcloud2_ref = pcu.PointCloud.from_las_file(Path('data') / 'test' / 'interpolated_traj_leg002_points.laz')
+    pcloud2 = pcu.PointCloud.from_las_file(dirname / 'leg002_points.laz')
+    pcloud2.assert_equals(pcloud2_ref)
+    assert (dirname / 'leg003_points.laz').exists()
+    pcloud3_ref = pcu.PointCloud.from_las_file(Path('data') / 'test' / 'interpolated_traj_leg003_points.laz')
+    pcloud3 = pcu.PointCloud.from_las_file(dirname / 'leg003_points.laz')
+    pcloud3.assert_equals(pcloud3_ref)
     with open(dirname / 'leg000_trajectory.txt', 'r') as f:
         for _ in range(3):
             next(f)
@@ -261,38 +290,21 @@ def test_quadcopter_pyh():
 
 def eval_quadcopter(dirname):
     assert (dirname / 'leg000_points.laz').exists()
-    assert (dirname / 'leg000_trajectory.txt').exists()
-    # assert abs(
-    #     (dirname / 'leg000_points.laz').stat().st_size - 1_974_592) < MAX_DIFFERENCE_BYTES
-    # assert abs(
-    #     (dirname / 'leg002_points.laz').stat().st_size - 2_153_266) < MAX_DIFFERENCE_BYTES
-    # assert abs(
-    #     (dirname / 'leg004_points.laz').stat().st_size - 3_818_282) < MAX_DIFFERENCE_BYTES
-    las = laspy.read(dirname / 'leg000_points.laz')
-    data = np.array([las.x, las.y, las.z]).T
-    expected = np.array([[-7.00000e+01, -3.35592e+01, 3.73900e-03],
-                         [-7.00000e+01, -3.32781e+01, -5.61000e-04],
-                         [-7.00000e+01, -3.29992e+01, 3.23900e-03],
-                         [-7.00000e+01, -3.27169e+01, -1.16100e-03],
-                         [-7.00000e+01, -3.24399e+01, 1.16390e-02],
-                         [-7.00000e+01, -3.21570e+01, 8.93900e-03],
-                         [-7.00000e+01, -3.18751e+01, 1.09390e-02],
-                         [-7.00000e+01, -3.15897e+01, 4.83900e-03],
-                         [-7.00000e+01, -3.13079e+01, 1.04390e-02],
-                         [-7.00000e+01, -3.10238e+01, 1.14390e-02],
-                         [-7.00000e+01, -3.07325e+01, -5.36100e-03],
-                         [-7.00000e+01, -3.04460e+01, -7.36100e-03],
-                         [-7.00000e+01, -3.01620e+01, -6.61000e-04],
-                         [-7.00000e+01, -2.98794e+01, 1.15390e-02],
-                         [-7.00000e+01, -2.95864e+01, -2.36100e-03],
-                         [-7.00000e+01, -2.93011e+01, 6.13900e-03],
-                         [-7.00000e+01, -2.90174e+01, 2.02390e-02],
-                         [-7.00000e+01, -2.87225e+01, 7.13900e-03],
-                         [-7.00000e+01, -2.84326e+01, 8.83900e-03],
-                         [-7.00000e+01, -2.81384e+01, 1.53900e-03]])
-    # atol for numpy assert moved to 1e-3 from 1e-12 due to discrepancies
-    # between local and remote (GitHub action) results
-    np.testing.assert_allclose(data[100:120, :], expected, atol=1e-3)
+    pcloud0_ref = pcu.PointCloud.from_las_file(Path('data') / 'test' / 'quadcopter_leg000_points.laz')
+    pcloud0 = pcu.PointCloud.from_las_file(dirname / 'leg000_points.laz')
+    pcloud0.assert_equals(pcloud0_ref)
+    assert (dirname / 'leg001_points.laz').exists()
+    pcloud1_ref = pcu.PointCloud.from_las_file(Path('data') / 'test' / 'quadcopter_leg001_points.laz')
+    pcloud1 = pcu.PointCloud.from_las_file(dirname / 'leg001_points.laz')
+    pcloud1.assert_equals(pcloud1_ref)
+    assert (dirname / 'leg002_points.laz').exists()
+    pcloud2_ref = pcu.PointCloud.from_las_file(Path('data') / 'test' / 'quadcopter_leg002_points.laz')
+    pcloud2 = pcu.PointCloud.from_las_file(dirname / 'leg002_points.laz')
+    pcloud2.assert_equals(pcloud2_ref)
+    assert (dirname / 'leg004_points.laz').exists()
+    pcloud3_ref = pcu.PointCloud.from_las_file(Path('data') / 'test' / 'quadcopter_leg004_points.laz')
+    pcloud3 = pcu.PointCloud.from_las_file(dirname / 'leg004_points.laz')
+    pcloud3.assert_equals(pcloud3_ref)
     assert speed_from_traj(dirname / 'leg000_trajectory.txt') == pytest.approx(10.0, 0.001)
     assert speed_from_traj(dirname / 'leg002_trajectory.txt') == pytest.approx(7.0, 0.001)
     assert speed_from_traj(dirname / 'leg004_trajectory.txt') == pytest.approx(4.0, 0.001)
@@ -309,41 +321,77 @@ def eval_quadcopter(dirname):
 @pytest.mark.pyh
 def test_als_multichannel_pyh():
     dirname_pyh = run_helios_pyhelios(Path('data') / 'surveys' / 'demo' / 'light_als_toyblocks_multiscanner.xml',
-                                      zip_output=True)
+                                      zip_output=True,
+                                      start_time='2022-01-01 00:00:00')
     eval_als_multichannel(dirname_pyh)
 
 
 @pytest.mark.pyh
 def test_als_multichannel_split_pyh():
     dirname_pyh = run_helios_pyhelios(Path('data') / 'surveys' / 'demo' / 'light_als_toyblocks_multiscanner.xml',
-                                      zip_output=True, split_by_channel=True)
+                                      zip_output=True, split_by_channel=True,
+                                      start_time='2022-01-01 00:00:00')
     eval_als_multichannel_split(dirname_pyh)
 
 
 @pytest.mark.exe
-def test_als_multichannel():
+def test_als_multichannel_exe():
     dirname_exe = run_helios_executable(Path('data') / 'surveys' / 'demo' / 'light_als_toyblocks_multiscanner.xml',
                                         options=['--lasOutput',
-                                                 '--zipOutput'])
+                                                 '--zipOutput',
+                                                 '--gpsStartTime', '2022-01-01 00:00:00'])
     eval_als_multichannel(dirname_exe)
 
 
 @pytest.mark.exe
-def test_als_multichannel_split():
+def test_als_multichannel_split_exe():
     dirname_exe = run_helios_executable(Path('data') / 'surveys' / 'demo' / 'light_als_toyblocks_multiscanner.xml',
                                         options=['--lasOutput',
                                                  '--zipOutput',
+                                                 '--gpsStartTime', '2022-01-01 00:00:00',
                                                  '--splitByChannel'])
     eval_als_multichannel_split(dirname_exe)
 
 
 def eval_als_multichannel(dirname):
     assert len(fnmatch.filter(os.listdir(dirname), '*.laz')) == 2
+    assert (dirname / 'leg000_points.laz').exists()
+    pcloud0_ref = pcu.PointCloud.from_las_file(Path('data') / 'test' / 'als_multichannel_leg000_points.laz')
+    pcloud0 = pcu.PointCloud.from_las_file(dirname / 'leg000_points.laz')
+    pcloud0.assert_equals(pcloud0_ref)
+    assert (dirname / 'leg002_points.laz').exists()
+    pcloud1_ref = pcu.PointCloud.from_las_file(Path('data') / 'test' / 'als_multichannel_leg002_points.laz')
+    pcloud1 = pcu.PointCloud.from_las_file(dirname / 'leg002_points.laz')
+    pcloud1.assert_equals(pcloud1_ref)
 
 
 def eval_als_multichannel_split(dirname):
     # 2 legs, Livox Mid-100 has 3 channels, so we expect 6 point clouds
     assert len(fnmatch.filter(os.listdir(dirname), '*.laz')) == 6
+    assert (dirname / 'leg000_points_dev0.laz').exists()
+    pcloud0_0_ref = pcu.PointCloud.from_las_file(Path('data') / 'test' / 'als_multichannel_split_leg000_points_dev0.laz')
+    pcloud0_0 = pcu.PointCloud.from_las_file(dirname / 'leg000_points_dev0.laz')
+    pcloud0_0.assert_equals(pcloud0_0_ref)
+    assert (dirname / 'leg000_points_dev1.laz').exists()
+    pcloud0_1_ref = pcu.PointCloud.from_las_file(Path('data') / 'test' / 'als_multichannel_split_leg000_points_dev1.laz')
+    pcloud0_1 = pcu.PointCloud.from_las_file(dirname / 'leg000_points_dev1.laz')
+    pcloud0_1.assert_equals(pcloud0_1_ref)
+    assert (dirname / 'leg000_points_dev2.laz').exists()
+    pcloud0_2_ref = pcu.PointCloud.from_las_file(Path('data') / 'test' / 'als_multichannel_split_leg000_points_dev2.laz')
+    pcloud0_2 = pcu.PointCloud.from_las_file(dirname / 'leg000_points_dev2.laz')
+    pcloud0_2.assert_equals(pcloud0_2_ref)
+    assert (dirname / 'leg002_points_dev0.laz').exists()
+    pcloud1_0_ref = pcu.PointCloud.from_las_file(Path('data') / 'test' / 'als_multichannel_split_leg002_points_dev0.laz')
+    pcloud1_0 = pcu.PointCloud.from_las_file(dirname / 'leg002_points_dev0.laz')
+    pcloud1_0.assert_equals(pcloud1_0_ref)
+    assert (dirname / 'leg002_points_dev1.laz').exists()
+    pcloud1_1_ref = pcu.PointCloud.from_las_file(Path('data') / 'test' / 'als_multichannel_split_leg002_points_dev1.laz')
+    pcloud1_1 = pcu.PointCloud.from_las_file(dirname / 'leg002_points_dev1.laz')
+    pcloud1_1.assert_equals(pcloud1_1_ref)
+    assert (dirname / 'leg002_points_dev2.laz').exists()
+    pcloud1_2_ref = pcu.PointCloud.from_las_file(Path('data') / 'test' / 'als_multichannel_split_leg002_points_dev2.laz')
+    pcloud1_2 = pcu.PointCloud.from_las_file(dirname / 'leg002_points_dev2.laz')
+    pcloud1_2.assert_equals(pcloud1_2_ref)
 
 
 @pytest.mark.skipif("laspy" not in sys.modules,
@@ -450,7 +498,9 @@ def test_dyn_exe():
 
 def eval_dyn(dirname):
     assert (dirname / 'leg000_points.laz').exists()
-    assert abs((dirname / 'leg000_points.laz').stat().st_size - 2_642_291) < MAX_DIFFERENCE_BYTES
+    pcloud0_ref = pcu.PointCloud.from_las_file(Path('data') / 'test' / 'dyn_leg000_points.laz')
+    pcloud0 = pcu.PointCloud.from_las_file(dirname / 'leg000_points.laz')
+    pcloud0.assert_equals(pcloud0_ref)
     # clean up
     if DELETE_FILES_AFTER:
         shutil.rmtree(dirname)

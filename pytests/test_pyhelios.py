@@ -18,6 +18,7 @@ import shutil
 DELETE_FILES_AFTER = False
 WORKING_DIR = os.getcwd()
 import pyhelios
+from pyhelios.util import pcloud_utils as pcu
 
 
 def find_scene(survey_file):
@@ -349,10 +350,11 @@ def test_output(export_to_file):
     from pyhelios import SimulationBuilder
     survey_path = Path('data') / 'test' / 'als_hd_demo_tiff_min.xml'
     pyhelios.setDefaultRandomnessGeneratorSeed("43")
+    outdir = WORKING_DIR + os.sep + 'output' + os.sep
     simB = SimulationBuilder(
         surveyPath=str(survey_path.absolute()),
         assetsDir=WORKING_DIR + os.sep + 'assets' + os.sep,
-        outputDir=WORKING_DIR + os.sep + 'output' + os.sep,
+        outputDir=outdir,
     )
     simB.setFinalOutput(True)
     simB.setExportToFile(export_to_file)
@@ -367,11 +369,13 @@ def test_output(export_to_file):
     output = sim.join()
     measurements_array, trajectory_array = pyhelios.outputToNumpy(output)
 
-    np.testing.assert_allclose(measurements_array[0, :3], np.array([474500.3, 5473580.0, 107.0001]), rtol=0.000001)
-    assert measurements_array.shape == (2407, 17)
-    assert trajectory_array.shape == (9, 7)
+    pcloud = pcu.PointCloud(measurements_array[:, :3])
+    pcloud_ref = pcu.PointCloud.from_las_file(Path('data') / 'test' / 'tiffloader_als_merged.las')
+    pcloud.assert_equals(pcloud_ref)
     if export_to_file:
-        assert Path(output.outpath).parent.parent == Path(WORKING_DIR) / "output" / "als_hd_demo"
+        assert (Path(outdir) / 'leg000_points.las').exists()
+        assert (Path(outdir) / 'leg001_points.las').exists()
+        assert (Path(outdir) / 'leg002_points.las').exists()
         # cleanup
         if DELETE_FILES_AFTER:
             print(f"Deleting files in {Path(output.outpath).parent.as_posix()}")
