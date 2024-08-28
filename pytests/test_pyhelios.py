@@ -20,6 +20,7 @@ DELETE_FILES_AFTER = False
 WORKING_DIR = os.getcwd()
 import pyhelios
 from pyhelios.util import pcloud_utils as pcu
+from pyhelios.util import xmldisplayer
 
 
 def find_scene(survey_file):
@@ -351,11 +352,11 @@ def test_output(export_to_file):
     from pyhelios import SimulationBuilder
     survey_path = Path('data') / 'test' / 'als_hd_demo_tiff_min.xml'
     pyhelios.setDefaultRandomnessGeneratorSeed("43")
-    outdir = WORKING_DIR + os.sep + 'output' + os.sep
+    dirname = xmldisplayer.find_playback_dir(survey_path, helios_root=WORKING_DIR)
     simB = SimulationBuilder(
         surveyPath=str(survey_path.absolute()),
         assetsDir=WORKING_DIR + os.sep + 'assets' + os.sep,
-        outputDir=outdir,
+        outputDir=WORKING_DIR + os.sep + 'output' + os.sep,
     )
     simB.setFinalOutput(True)
     simB.setExportToFile(export_to_file)
@@ -376,9 +377,9 @@ def test_output(export_to_file):
     pcloud_ref = pcu.PointCloud.from_las(las, fnames=['gps_time'])
     pcloud.assert_equals(pcloud_ref)
     if export_to_file:
-        assert (Path(outdir) / 'leg000_points.xyz').exists()
-        assert (Path(outdir) / 'leg001_points.xyz').exists()
-        assert (Path(outdir) / 'leg002_points.xyz').exists()
+        assert (Path(dirname) / 'leg000_points.xyz').exists()
+        assert (Path(dirname) / 'leg001_points.xyz').exists()
+        assert (Path(dirname) / 'leg002_points.xyz').exists()
         # cleanup
         if DELETE_FILES_AFTER:
             print(f"Deleting files in {Path(output.outpath).parent.as_posix()}")
