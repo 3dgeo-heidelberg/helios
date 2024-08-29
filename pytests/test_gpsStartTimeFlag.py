@@ -1,6 +1,6 @@
 import os
 import shutil
-from test_demo_scenes import run_helios_executable, find_playback_dir
+from .test_demo_scenes import run_helios_executable, find_playback_dir
 from pathlib import Path
 import sys
 import datetime

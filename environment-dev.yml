@@ -30,3 +30,4 @@ dependencies:
   - lazrs-python
   - pandas
   - scipy
+  - pooch

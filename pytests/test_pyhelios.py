@@ -19,7 +19,7 @@ import laspy
 DELETE_FILES_AFTER = False
 WORKING_DIR = os.getcwd()
 import pyhelios
-from pyhelios.util import pcloud_utils as pcu
+from . import pcloud_utils as pcu
 from pyhelios.util import xmldisplayer
 
 
@@ -347,7 +347,7 @@ def test_detector(test_sim):
     [pytest.param(True, id="setExportToFile(True)"),
      pytest.param(False, id="setExportToFile(False)")]
 )
-def test_output(export_to_file):
+def test_output(regression_data, export_to_file):
     """Validating the output of a survey started with pyhelios"""
     from pyhelios import SimulationBuilder
     survey_path = Path('data') / 'test' / 'als_hd_demo_tiff_min.xml'
@@ -373,13 +373,13 @@ def test_output(export_to_file):
     measurements_array, trajectory_array = pyhelios.outputToNumpy(output)
     time = measurements_array[:, 16]
     pcloud = pcu.PointCloud(measurements_array[:, :3], fnames=['gps_time'], F=time.reshape(time.shape[0], 1))
-    las = laspy.read(Path('data') / 'test' / 'tiffloader_als_merged.las')
+    las = laspy.read(regression_data / 'tiffloader_als_merged.las')
     pcloud_ref = pcu.PointCloud.from_las(las, fnames=['gps_time'])
     pcloud.assert_equals(pcloud_ref, eps=0.00011)  # larger tolerance due to las scale factor of 0.0001
     if export_to_file:
         assert (Path(dirname) / 'leg000_points.xyz').exists()
         pcloud0 = pcu.PointCloud.from_xyz_file(Path(dirname) / 'leg000_points.xyz', cols=(0, 1, 2), names=['x', 'y', 'z'])
-        pcloud_ref0 = pcu.PointCloud.from_las_file(Path('data') / 'test' / 'tiffloader_als_leg000_points.las')
+        pcloud_ref0 = pcu.PointCloud.from_las_file(regression_data / 'tiffloader_als_leg000_points.las')
         pcloud0.assert_equals(pcloud_ref0, eps=0.00011)  # larger tolerance due to las scale factor of 0.0001
         assert (Path(dirname) / 'leg001_points.xyz').exists()
         assert (Path(dirname) / 'leg002_points.xyz').exists()
