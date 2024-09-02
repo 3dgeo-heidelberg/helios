@@ -67,11 +67,13 @@ PYBIND11_MAKE_OPAQUE(std::vector<Trajectory>);
 #include <filems/facade/FMSFacade.h>
 #include <python/GLMTypeCaster.h>
 #include <python/ScannerWrap.h>
-#include<python/PyHeliosSimulation.h>
+#include <python/PyHeliosSimulation.h>
 #include <python/SimulationWrap.h>
-#include<python/NoiseSourceWrap.h>
-#include<python/AbstractDetectorWrap.h>
-#include<python/utils.h>
+#include <python/NoiseSourceWrap.h>
+#include <python/AbstractDetectorWrap.h>
+#include <python/utils.h>
+#include <python/PrimitiveWrap.h>
+#include <python/AbstractBeamDeflectorWrap.h>
 
 
 
@@ -83,8 +85,7 @@ namespace pyhelios{
         py::bind_vector<std::vector<std::string>>(m, "StringVector");
         py::bind_vector<std::vector<Measurement>>(m, "MeasurementVector");
         py::bind_vector<std::vector<Trajectory>>(m, "TrajectoryVector"); 
-        py::bind_vector<std::vector<double>>(m, "DoubleVector"); // CHECK THIS!!!! : you'll need to make sure that you correctly handle the vector's indexing and modification methods. 
-
+        py::bind_vector<std::vector<double>>(m, "DoubleVector");
         py::implicitly_convertible<py::iterable, VectorString>();
 
         logging::makeQuiet();
@@ -105,16 +106,19 @@ namespace pyhelios{
         m.def("logging_time", &logging::makeTime, "Set the logging verbosity level to time");
 
         m.def("default_rand_generator_seed", &setDefaultRandomnessGeneratorSeed, "Set the seed for the default randomness generator");
-
-        py::class_<AABB> aabb(m, "AABB");
+        
+        py::class_<AABB, std::shared_ptr<AABB>> aabb(m, "AABB");
         aabb
-            .def_static("create", []() { return std::make_unique<AABB>(); }, py::return_value_policy::take_ownership)
+            .def_static("create", []() { return std::make_shared<AABB>(); }, py::return_value_policy::take_ownership)
+  
             .def_property_readonly("min_vertex", [](AABB &aabb) { return &(aabb.vertices[0]); }, py::return_value_policy::reference)
             .def_property_readonly("max_vertex", [](AABB &aabb) { return &(aabb.vertices[1]); }, py::return_value_policy::reference)
             .def("__str__", &AABB::toString);
 
-        py::class_<AbstractBeamDeflector, std::shared_ptr<AbstractBeamDeflector>> abstract_beam_deflector(m, "AbstractBeamDeflector");
+        py::class_<AbstractBeamDeflector, AbstractBeamDeflectorWrap, std::shared_ptr<AbstractBeamDeflector>> abstract_beam_deflector(m, "AbstractBeamDeflector");
         abstract_beam_deflector
+            .def(py::init<double, double, double>(),
+            py::arg("scanAngleMax_rad"), py::arg("scanFreqMax_Hz"), py::arg("scanFreqMin_Hz"))
             .def_readwrite("scan_freq_max",&AbstractBeamDeflector::cfg_device_scanFreqMax_Hz)
             .def_readwrite("scan_freq_min",&AbstractBeamDeflector::cfg_device_scanFreqMin_Hz)
             .def_readwrite("scan_angle_max",&AbstractBeamDeflector::cfg_device_scanAngleMax_rad)
@@ -129,8 +133,9 @@ namespace pyhelios{
                                 &AbstractBeamDeflector::getEmitterRelativeAttitudeByReference)
             .def_property_readonly("optics_type", &AbstractBeamDeflector::getOpticsType);
 
-        py::class_<Primitive> primitive(m, "Primitive");
+        py::class_<Primitive, PrimitiveWrap, std::shared_ptr<Primitive>> primitive(m, "Primitive");
         primitive
+            .def(py::init<>())
             .def_property_readonly("scene_part", [](Primitive &prim) {
             return prim.part.get(); })
             .def_property_readonly("material", [](Primitive &prim) {
@@ -169,18 +174,18 @@ namespace pyhelios{
                     });
 
         
-        py::class_<DetailedVoxel> detailed_voxel(m, "DetailedVoxel", py::base<Primitive>());
+        py::class_<DetailedVoxel, std::shared_ptr<DetailedVoxel>, Primitive> detailed_voxel(m, "DetailedVoxel");
         detailed_voxel
             .def(py::init<>())
-            .def(py::init<double, double, double, double, std::vector<int>, std::vector<double>>(),
-                py::arg("x"), py::arg("y"), py::arg("z"), py::arg("halfVoxelSize"), py::arg("intValues"), py::arg("doubleValues"))
+            .def(py::init<glm::dvec3, double, std::vector<int>, std::vector<double>>(),
+                py::arg("center"), py::arg("VoxelSize"), py::arg("intValues"), py::arg("doubleValues"))
             
             .def_property("nb_echos", &DetailedVoxel::getNbEchos, &DetailedVoxel::setNbEchos)
             .def_property("nb_sampling", &DetailedVoxel::getNbSampling, &DetailedVoxel::setNbSampling)
             .def_property_readonly("number_of_double_values", &DetailedVoxel::getNumberOfDoubleValues)
-            .def_property("maxPad", &DetailedVoxel::getMaxPad, &DetailedVoxel::setMaxPad)
-            .def("doubleValue", &DetailedVoxel::getDoubleValue, "Get the value at index")
-            .def("doubleValue", &DetailedVoxel::setDoubleValue, "Set the value at index", py::arg("index"), py::arg("value"));
+            .def_property("max_pad", &DetailedVoxel::getMaxPad, &DetailedVoxel::setMaxPad)
+            .def("get_double_value", &DetailedVoxel::getDoubleValue, "Get the value at index")
+            .def("set_double_value", &DetailedVoxel::setDoubleValue, "Set the value at index", py::arg("index"), py::arg("value"));
 
 
         py::class_<AbstractDetector, AbstractDetectorWrap,  std::shared_ptr<AbstractDetector>> abstract_detector(m, "AbstractDetector");
@@ -189,14 +194,12 @@ namespace pyhelios{
                     std::shared_ptr<Scanner>, 
                     double, 
                     double, 
-                    double, 
-                    std::shared_ptr<UnivarExprTreeNode<double>>
+                    double
                 >(), 
                 py::arg("scanner"), 
                 py::arg("accuracy_m"), 
                 py::arg("rangeMin_m"), 
-                py::arg("rangeMax_m") = std::numeric_limits<double>::max(),
-                py::arg("errorDistanceExpr") = nullptr)
+                py::arg("rangeMax_m") = std::numeric_limits<double>::max())
       
             .def_readwrite("accuracy", &AbstractDetector::cfg_device_accuracy_m)
             .def_readwrite("range_min", &AbstractDetector::cfg_device_rangeMin_m)
@@ -207,7 +210,7 @@ namespace pyhelios{
                 [](AbstractDetector &self, double lasScale) {
                     self.getFMS()->write.setMeasurementWriterLasScale(lasScale);});
 
-        py::class_<Triangle> triangle(m, "Triangle", py::base<Primitive>());
+        py::class_<Triangle, std::shared_ptr<Triangle>, Primitive> triangle(m, "Triangle");
         triangle
             .def(py::init<Vertex, Vertex, Vertex>(), py::arg("v0"), py::arg("v1"), py::arg("v2"))
             .def("__str__", &Triangle::toString)
@@ -229,9 +232,7 @@ namespace pyhelios{
             .def(py::init<>())
             .def(py::init<double, glm::dvec3, double, double, double>())
             .def_readwrite("gps_time", &Trajectory::gpsTime)
-            .def_property("position",
-                [](const Trajectory &t) { return t.position; },
-                [](Trajectory &t, const glm::dvec3 &pos) { t.position = pos; })
+            .def_readwrite("position", &Trajectory::position)
             .def_readwrite("roll", &Trajectory::roll)
             .def_readwrite("pitch", &Trajectory::pitch)
             .def_readwrite("yaw", &Trajectory::yaw);
@@ -462,6 +463,8 @@ namespace pyhelios{
         py::class_<Survey, std::unique_ptr<Survey, py::nodelete>> survey(m, "Survey", py::module_local()); 
         survey
             .def(py::init<>())
+            
+            .def_readwrite("scanner", &Survey::scanner)
             .def("calculate_length", &Survey::calculateLength)
             .def_property_readonly("length", &Survey::getLength)
             .def_property("name", 
@@ -489,7 +492,7 @@ namespace pyhelios{
             .def_property("strip", &Leg::getStrip, &Leg::setStrip)
             .def("belongs_to_strip", &Leg::isContainedInAStrip);
 
-        py::class_<ScenePart> scene_part(m, "ScenePart");
+        py::class_<ScenePart, std::shared_ptr<ScenePart>> scene_part(m, "ScenePart");
         scene_part
             .def(py::init<>())
             .def(py::init<const ScenePart&, bool>(),
@@ -534,7 +537,7 @@ namespace pyhelios{
                           }
                       })
 
-
+            .def_property("primitives", &ScenePart::getPrimitives, &ScenePart::setPrimitives)
             .def("primitive", [](ScenePart& self, size_t index) -> Primitive* {
                 if (index < self.mPrimitives.size()) {
                     return self.mPrimitives[index];
@@ -610,12 +613,10 @@ namespace pyhelios{
             .def_readwrite("speed_m_s", &PlatformSettings::movePerSec_m)
 
             .def_property_readonly("base_template", &PlatformSettings::getTemplate, py::return_value_policy::reference)
-            .def_property_readonly("position", &PlatformSettings::getPosition)
+            .def_property("position", &PlatformSettings::getPosition, [](PlatformSettings& self, const glm::dvec3& pos) { self.setPosition(pos); }) //&PlatformSettings::setPosition)
 
             .def("cherryPick", &PlatformSettings::cherryPick, py::arg("cherries"), py::arg("fields"), py::arg("templateFields") = nullptr)
             
-            .def("set_position", py::overload_cast<glm::dvec3>(&PlatformSettings::setPosition))
-            .def("set_position", py::overload_cast<double, double, double>(&PlatformSettings::setPosition))
             .def("has_template", &PlatformSettings::hasTemplate)
             .def("to_string", &PlatformSettings::toString);
         
@@ -624,12 +625,13 @@ namespace pyhelios{
             .def(py::init<>())
             .def(py::init<Scene&>(), py::arg("scene"))
 
+            .def_readwrite("scene_parts", &Scene::parts)
 
             .def_property("bbox", &Scene::getBBox, &Scene::setBBox)
             .def_property("bbox_crs", &Scene::getBBoxCRS, &Scene::setBBoxCRS)
             .def_property_readonly("num_primitives", [](const ScenePart& self) -> size_t {
                 return self.mPrimitives.size();})
-            .def_property_readonly("AABB", &Scene::getAABB, py::return_value_policy::reference)
+            .def_property_readonly("aabb", &Scene::getAABB, py::return_value_policy::reference)
            
             .def_property_readonly("shift", &Scene::getShift)
             .def_property("dyn_scene_step",
@@ -720,8 +722,8 @@ namespace pyhelios{
             .def_property_readonly("last_ground_check", [](const Platform &self) {
                 return self.lastGroundCheck;})
 
-            .def_property_readonly("position", &Platform::getPosition)//, &Platform::setPosition)
-            .def_property_readonly("attitude", &Platform::getAttitude)//, &Platform::setAttitude)
+            .def_property_readonly("position", &Platform::getPosition)
+            .def_property_readonly("attitude", &Platform::getAttitude)
             .def_property_readonly("absolute_mount_position", &Platform::getAbsoluteMountPosition)
             .def_property_readonly("absolute_mount_attitude", &Platform::getAbsoluteMountAttitude)
 
@@ -791,7 +793,14 @@ namespace pyhelios{
 
         py::class_<Scanner, ScannerWrap, std::shared_ptr<Scanner>> scanner(m, "Scanner");
         scanner
-            .def(py::init<>())
+            .def(py::init<std::string const&, std::list<int> const&, bool, bool, bool, bool, bool>(),
+                 py::arg("id"),
+                 py::arg("pulseFreqs"),
+                 py::arg("writeWaveform") = false,
+                 py::arg("writePulse") = false,
+                 py::arg("calcEchowidth") = false,
+                 py::arg("fullWaveNoise") = false,
+                 py::arg("platformNoiseDisabled") = false)
             .def(py::init<Scanner&>(), py::arg("scanner"))
             
             .def("initialize_sequential_generators", &Scanner::initializeSequentialGenerators)
@@ -950,21 +959,17 @@ namespace pyhelios{
                         py::overload_cast<>(&Scanner::getDeviceId, py::const_),
                         py::overload_cast<std::string>(&Scanner::setDeviceId))
         
-            .def_property("scanner_head",
-                        py::overload_cast<>(&Scanner::getScannerHead),
-                        py::overload_cast<std::shared_ptr<ScannerHead>>(&Scanner::setScannerHead))
+            .def_property_readonly("scanner_head",
+                        py::overload_cast<>(&Scanner::getScannerHead))
 
-            .def_property("beam_deflector",
-                        py::overload_cast<>(&Scanner::getBeamDeflector),
-                        py::overload_cast<std::shared_ptr<AbstractBeamDeflector>>(&Scanner::setBeamDeflector))
+            .def_property_readonly("beam_deflector",
+                        py::overload_cast<>(&Scanner::getBeamDeflector))
             
-            .def_property("detector",
-                        py::overload_cast<>(&Scanner::getDetector),
-                        py::overload_cast<std::shared_ptr<AbstractDetector>>(&Scanner::setDetector))
+            .def_property_readonly("detector",
+                        py::overload_cast<>(&Scanner::getDetector))
 
-            .def_property("supported_pulse_freqs_hz",
-                        py::overload_cast<>(&Scanner::getSupportedPulseFreqs_Hz),
-                        py::overload_cast<std::list<int>&>(&Scanner::setSupportedPulseFreqs_Hz))
+            .def_property_readonly("supported_pulse_freqs_hz",
+                        py::overload_cast<>(&Scanner::getSupportedPulseFreqs_Hz))
 
             .def_property("num_time_bins",
                         py::overload_cast<>(&Scanner::getNumTimeBins, py::const_),
