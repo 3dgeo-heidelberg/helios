@@ -201,6 +201,8 @@ void PyHeliosSimulation::start (){
         legacyEnergyModel,
         exportToFile,
         true
+        exportToFile,
+        true
     );
     playback->callback = callback;
     playback->setCallbackFrequency(callbackFrequency);
@@ -405,6 +407,7 @@ void PyHeliosSimulation::buildPulseThreadPool(){
 // ************************* //
 PyHeliosSimulation * PyHeliosSimulation::copy(){
     // Copy
+    // Copy
     PyHeliosSimulation *phs = new PyHeliosSimulation(); // The copy itself
     phs->xmlreader = std::make_shared<XmlSurveyLoader>(surveyPath, assetsPath);
     phs->surveyPath = this->surveyPath;
@@ -420,6 +423,12 @@ PyHeliosSimulation * PyHeliosSimulation::copy(){
     phs->setCallbackFrequency(getCallbackFrequency());
     phs->survey = std::make_shared<Survey>(*survey);
     phs->survey->scanner->initializeSequentialGenerators();
+    // Track copies
+    phs->copies = copies;
+    phs->copies.push_back(this);
+    for(PyHeliosSimulation *phsi : copies) phsi->copies.push_back(phs);
+    copies.push_back(phs);
+    // Return
     // Track copies
     phs->copies = copies;
     phs->copies.push_back(this);
