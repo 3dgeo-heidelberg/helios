@@ -109,7 +109,7 @@
 
 
 	<!-- ##### BEGIN Velodyne VLP-16 ("Puck") ##### -->
-	<!-- for the angles and corrections, see https://velodynelidar.com/wp-content/uploads/2019/12/63-9243-Rev-E-VLP-16-User-Manual.pdf, page 54) -->
+	<!-- for the angles and corrections, see https://www.amtechs.co.jp/product/VLP-16-Puck.pdf) -->
 
 	<scanner 	id 						= "vlp16"
 			accuracy_m					= "0.03"
@@ -117,19 +117,19 @@
 			name              			= "Velodyne VLP-16"
 			optics            			= "rotating"
 			pulseFreqs_Hz				= "18750"
-			pulseLength_ns     			= "4"
-			rangeMin_m					= "0.0100"
+			pulseLength_ns     			= "5"
+			rangeMin_m					= "0.09144"
 			rangeMax_m					= "100"
 			scanAngleMax_deg   			= "1"
 			scanAngleEffectiveMax_deg	= "1"
 			scanFreqMin_Hz				= "0"
 			scanFreqMax_Hz				= "0"
-			wavelength_nm				= "903"
+			wavelength_nm				= "905"
             maxNOR                      = "2"
 			headRotatePerSecMax_deg		= "7200"
 	>
 				
-		<FWFSettings beamSampleQuality="1"/>	<!-- set to one for fast simulations -->
+		<FWFSettings beamSampleQuality="3"/>	<!-- set to one for fast simulations -->
 		<channels>
 			<channel id="0">
 				<beamOrigin x="0" y="0" z="0">
@@ -224,14 +224,14 @@
 			name              			= "Velodyne HDL-64E"
 			optics            			= "rotating"
 			pulseFreqs_Hz				= "20312"
-			pulseLength_ns     			= "10"
-			rangeMin_m					= "0.0100"
+			pulseLength_ns     			= "5"
+			rangeMin_m					= "0.9144"
 			rangeMax_m					= "120"
 			scanAngleMax_deg   			= "1"
 			scanAngleEffectiveMax_deg	= "1"
 			scanFreqMin_Hz				= "0"
 			scanFreqMax_Hz				= "0"
-			wavelength_nm				= "903"
+			wavelength_nm				= "905"
             maxNOR                      = "1"
 			headRotatePerSecMax_deg		= "5250"
 	>
