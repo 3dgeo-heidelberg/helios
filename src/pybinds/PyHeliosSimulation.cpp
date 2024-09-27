@@ -98,10 +98,20 @@ Leg & PyHeliosSimulation::newLeg(int index){
     int const n = (int) survey->legs.size();
     if(index<0 || index>n) index = n;
     std::shared_ptr<Leg> leg = std::make_shared<Leg>();
-    leg->mScannerSettings =
-        std::make_shared<ScannerSettings>();
-    leg->mPlatformSettings =
-        std::make_shared<PlatformSettings>();
+    leg->mScannerSettings = std::make_shared<ScannerSettings>();
+    leg->mPlatformSettings = std::make_shared<PlatformSettings>();
+    survey->addLeg(index, leg);
+    return *leg;
+}
+
+Leg & PyHeliosSimulation::newLegFromTemplate(
+    int index,
+    Leg &baseLeg
+){
+    int const n = (int) survey->legs.size();
+    if(index<0 || index>n) index = n;
+    std::shared_ptr<Leg> leg = std::make_shared<Leg>(baseLeg);
+    leg->setSerialId(index);
     survey->addLeg(index, leg);
     return *leg;
 }
