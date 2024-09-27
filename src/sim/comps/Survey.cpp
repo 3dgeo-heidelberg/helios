@@ -19,7 +19,9 @@ Survey::Survey(Survey &survey, bool const deepCopy){
 
     // Copy Scanner
     this->scanner = survey.scanner->clone();
-    this->scanner->getDetector()->scanner = this->scanner;
+    for(size_t i = 0 ; i < this->scanner->getNumDevices() ; ++i){
+        this->scanner->getDetector(i)->scanner = this->scanner;
+    }
 
     // Copy legs
     this->legs = std::vector<std::shared_ptr<Leg>>(0);
