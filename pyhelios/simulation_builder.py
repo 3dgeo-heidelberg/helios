@@ -148,7 +148,8 @@ class SimulationBuilder:
             self.writeWaveform,
             self.calcEchowidth,
             self.fullwaveNoise,
-            self.platformNoiseDisabled
+            self.platformNoiseDisabled,
+            False
         )
         if self.callback is not None:
             build.sim.setCallback(self.callback)

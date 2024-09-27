@@ -176,11 +176,23 @@ public:
         {survey->legs.erase(survey->legs.begin() + index);}
     /**
      * @brief Create a new empty leg
-     * @param index The  index specifying the position in the survey where the
-     *  leg will be inserted
-     * @return Created empty leg
+     * @param index The index specifying the position in the survey where the
+     *  leg will be inserted.
+     * @return Created leg.
      */
     Leg & newLeg(int index);
+    /**
+     * @brief Create a new leg from a template.
+     * @param index The index specifying the position in the survey where the
+     *  leg will be inserted.
+     * @param baseLeg The leg to be used as a template to build the new leg.
+     *  If null, the new leg will be created fully from scratch.
+     * @return Created leg.
+     */
+    Leg & newLegFromTemplate(
+        int index,
+        Leg &baseLeg
+    );
     /**
      * @brief Create a new empty scanning strip (with no legs)
      * @param stripId The identifier for the strip
@@ -390,7 +402,8 @@ public:
         bool writeWaveform = false,
         bool calcEchowidth = false,
         bool fullWaveNoise = false,
-        bool platformNoiseDisabled = true
+        bool platformNoiseDisabled = true,
+        bool writePulse = false
     );
     void addRotateFilter(
         double q0,

@@ -6,6 +6,7 @@ from pathlib import Path
 import numpy as np
 import pytest
 import fnmatch
+from pyhelios.util import pcloud_utils as pcu
 
 try:
     import laspy
@@ -120,9 +121,23 @@ def test_arbaro_tls_pyh():
 
 def eval_arbaro_tls(dirname):
     assert (dirname / 'leg000_points.las').exists()
-    assert abs((dirname / 'leg000_points.las').stat().st_size - 22_698_181) < MAX_DIFFERENCE_BYTES
+    # New point cloud validation approach ---
+    pcloud0_ref = pcu.PointCloud.from_las_file(Path('data') / 'test' / 'arbaro_tls_leg000_points.las')
+    pcloud0 = pcu.PointCloud.from_las_file(dirname / 'leg000_points.las')
+    pcloud0.assert_equals(pcloud0_ref)
+    # --- New point cloud validation approach ---
+    # Old point cloud validation approach ---
+    #assert abs((dirname / 'leg000_points.las').stat().st_size - 22_698_181) < MAX_DIFFERENCE_BYTES
+    # --- Old point cloud validation approach
     assert (dirname / 'leg001_points.las').exists()
-    assert abs((dirname / 'leg001_points.las').stat().st_size - 14_381_469) < MAX_DIFFERENCE_BYTES
+    # New point cloud validation approach ---
+    pcloud1_ref = pcu.PointCloud.from_las_file(Path('data') / 'test' / 'arbaro_tls_leg001_points.las')
+    pcloud1 = pcu.PointCloud.from_las_file(dirname / 'leg001_points.las')
+    pcloud1.assert_equals(pcloud1_ref)
+    # --- New point cloud validation approach ---
+    # Old point cloud validation approach ---
+    #assert abs((dirname / 'leg001_points.las').stat().st_size - 14_381_469) < MAX_DIFFERENCE_BYTES
+    # --- Old point cloud validation approach
     with open(dirname / 'leg000_trajectory.txt', 'r') as f:
         line = f.readline()
         assert line.startswith('1.0000 25.5000 0.0000')
