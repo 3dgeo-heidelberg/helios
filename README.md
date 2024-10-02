@@ -33,6 +33,11 @@ git clone https://github.com/3dgeo-heidelberg/helios.git
 cd helios
 conda env create -f environment-dev.yml
 conda activate helios-dev
+
+# On Linux, the following line is recommended, to go with a Conda-provided compiler.
+# We had issues with incompatible system compilers before.
+conda install -c conda-forge gcc gxx
+
 python -m pip install --no-deps -v -e .
 ```
 
