@@ -25,27 +25,27 @@ def callback(output=None):
     if callback_counter >= n:
 
         # Extract trajectory points.
-        trajectories = output.trajectories
+        trajectories = output[1]
 
         if len(trajectories) != 0:
-            tpoints.append([trajectories[len(trajectories) - 1].getPosition().x,
-                        trajectories[len(trajectories) - 1].getPosition().y,
-                        trajectories[len(trajectories) - 1].getPosition().z])
+            tpoints.append([trajectories[len(trajectories) - 1].position[0],
+                        trajectories[len(trajectories) - 1].position[1],
+                        trajectories[len(trajectories) - 1].position[2]])
 
             callback_counter = 0
 
     # Extract measurement points.
-    measurements = output.measurements
+    measurements = output[0]
 
     if len(measurements) == 0:
         return
 
     # Add current values to list.
     try:
-        mpoints.append([measurements[len(measurements) - 1].getPosition().x,
-                        measurements[len(measurements) - 1].getPosition().y,
-                        measurements[len(measurements) - 1].getPosition().z,
-                        int(measurements[len(measurements) - 1].hitObjectId)])
+        mpoints.append([measurements[len(measurements) - 1].position[0],
+                        measurements[len(measurements) - 1].position[1],
+                        measurements[len(measurements) - 1].position[2],
+                        int(measurements[len(measurements) - 1].hit_object_id)])
 
     except Exception as err:
         print(err)
@@ -59,24 +59,24 @@ def helios_live():
     args = pyhelios_argparser.args
 
     # Set logging style.
-    if args.loggingv:
-        pyhelios.loggingVerbose()
+    if args.logging_verbose:
+        pyhelios.logging_verbose()
 
-    elif args.loggingv2:
-        pyhelios.loggingVerbose2()
+    elif args.logging_verbose2:
+        pyhelios.logging_verbose2()
 
-    elif args.loggingquiet:
-        pyhelios.loggingQuiet()
+    elif args.logging_quiet:
+        pyhelios.logging_quiet()
 
-    elif args.loggingsilent:
-        pyhelios.loggingSilent()
+    elif args.logging_silent:
+        pyhelios.logging_silent()
 
     else:
-        pyhelios.loggingDefault()
+        pyhelios.logging_default()
 
     # Set random generator seed if value has been supplied.
     if args.randomness_seed:
-        pyhelios.setDefaultRandomnessGeneratorSeed(args.randomness_seed)
+        pyhelios.default_rand_generator_seed(args.randomness_seed)
 
     # Build a simulation
     simBuilder = pyhelios.SimulationBuilder(
@@ -116,10 +116,10 @@ def helios_live():
         import time
 
         # Create instance of Scene class, generate scene, print scene (if logging v2), and visualize.
-        scene = Scene(args.survey_file, args.loggingv2)
+        scene = Scene(args.survey_file, args.logging_verbose2)
         scene.gen_from_xml()
 
-        if args.loggingv2:
+        if args.logging_verbose2:
             scene.print_scene()
 
         scene.visualize()

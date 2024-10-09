@@ -2,6 +2,7 @@ from .pyheliostools_exception import PyHeliosToolsException
 from .simulation_build import SimulationBuild
 from collections import namedtuple
 from collections.abc import Iterable
+from collections.abc import Iterable
 from math import isnan
 import os
 import time
@@ -69,6 +70,8 @@ class SimulationBuilder:
     def __init__(self, surveyPath, assetsDir, outputDir):
         if not isinstance(assetsDir, Iterable) or isinstance(assetsDir, str):
             assetsDir = [assetsDir]
+        if not isinstance(assetsDir, Iterable) or isinstance(assetsDir, str):
+            assetsDir = [assetsDir]
         # Add default values for asset directories
         assetsDir = assetsDir + [os.getcwd(), str(resources.files("pyhelios")), str(resources.files("pyhelios") / "data")]
 
@@ -126,12 +129,12 @@ class SimulationBuilder:
             self.splitByChannel,
             fixedGpsTimeStart=self.fixedGpsTimeStart
         )
-        build.sim.callbackFrequency = self.callbackFrequency
-        build.sim.finalOutput = self.finalOutput
-        build.sim.legacyEnergyModel = self.legacyEnergyModel
-        build.sim.exportToFile = self.exportToFile
+        build.sim.callback_frequency = self.callbackFrequency
+        build.sim.final_output = self.finalOutput
+        build.sim.legacy_energy_model = self.legacyEnergyModel
+        build.sim.export_to_file = self.exportToFile
         for rotateFilter in self.rotateFilters:
-            build.sim.addRotateFilter(
+            build.sim.add_rotate_filter(
                 rotateFilter.q0,
                 rotateFilter.q1,
                 rotateFilter.q2,
@@ -139,18 +142,18 @@ class SimulationBuilder:
                 rotateFilter.id
             )
         for scaleFilter in self.scaleFilters:
-            build.sim.addScaleFilter(
+            build.sim.add_scale_filter(
                 scaleFilter.factor,
                 scaleFilter.id
             )
         for translateFilter in self.translateFilters:
-            build.sim.addTranslateFilter(
+            build.sim.add_translate_filter(
                 translateFilter.x,
                 translateFilter.y,
                 translateFilter.z,
                 translateFilter.id
             )
-        build.sim.loadSurvey(
+        build.sim.load_survey(
             self.legNoiseDisabled,
             self.rebuildScene,
             self.writeWaveform,
@@ -159,7 +162,7 @@ class SimulationBuilder:
             self.platformNoiseDisabled
         )
         if self.callback is not None:
-            build.sim.setCallback(self.callback)
+            build.sim.callback(self.callback)
 
         end = time.perf_counter()
         print(

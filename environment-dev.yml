@@ -28,3 +28,11 @@ dependencies:
   - pytest
   - laspy
   - lazrs-python
+  - scipy
+  - polyscope
+  - tqdm
+  - pandas
+  - pdal
+  - ipywidgets
+variables:
+  PYTHONPATH: "python"

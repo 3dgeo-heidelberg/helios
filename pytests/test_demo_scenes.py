@@ -20,7 +20,7 @@ DELETE_FILES_AFTER = False
 WORKING_DIR = os.getcwd()
 
 
-def find_playback_dir(survey_path):
+def find_playback_dir(survey_path):    
     playback = Path(WORKING_DIR) / 'output'
     with open(Path(WORKING_DIR) / survey_path, 'r') as sf:
         for line in sf:
@@ -46,7 +46,7 @@ def run_helios_executable(survey_path: Path, options=None) -> Path:
 
 def run_helios_pyhelios(survey_path: Path, las_output: bool = True, zip_output: bool = False,
                         start_time: str = None, split_by_channel: bool = False, las10: bool = False) -> Path:
-    pyhelios.setDefaultRandomnessGeneratorSeed("43")
+    pyhelios.default_rand_generator_seed("43")
     simB = pyhelios.SimulationBuilder(
         surveyPath=str(survey_path.absolute()),
         assetsDir=[str(Path("assets"))],
