@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+    <scene id="tree1" name="Dynamic scene"  >
+        
+        <part>
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/tds/Baum_1.obj" />
+                <param type="string" key="up" value="y" />
+            </filter>    
+        </part>
+ 	<part>
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/tds/Baum_2.obj" />
+                <param type="string" key="up" value="y" />
+            </filter>    
+        </part>
+	 <part>
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/tds/Baum_3.obj" />
+                <param type="string" key="up" value="y" />
+            </filter>    
+        </part>
+ 	<part>
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/tds/Baum_4.obj" />
+                <param type="string" key="up" value="y" />
+            </filter>    
+        </part>
+ 	<part>
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/tds/Baum_5.obj" />
+                <param type="string" key="up" value="y" />
+            </filter>
+			<filter type="scale">
+                <param type="double" key="scale" value="5" />
+            </filter>    
+        </part>
+
+    </scene>
+</document>
