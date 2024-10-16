@@ -7,6 +7,11 @@ parser = argparse.ArgumentParser(description='Parser for PyHelios')
 
 parser.add_argument('survey_file', help='Absolute or relative path to .XML survey file to be used for simulation.')
 
+# tds specific arguments
+parser.add_argument('--interval_s', dest='time_interval_s', default=30,
+                    help='Specify the fix time interval of each survey subset.')
+
+# general helios arguments
 parser.add_argument('--assets', dest='assets_path', default='assets/',
                     help='Specify the path to assets directory. Default: "assets/".')
 

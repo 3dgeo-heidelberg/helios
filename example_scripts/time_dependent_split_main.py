@@ -52,6 +52,7 @@ maxs = np.zeros(shape=(len(split_scene_files), 3))
 
 
 # Run simulation for each scene part to get bounding box information.
+print("Getting bounding boxes")
 for i, paths in enumerate(split_scene_files):
     # Overwrite original survey for each scene part scene.
     survey = tds.write_survey(original_survey, paths, suffix=f"sub_{i}")
@@ -99,6 +100,8 @@ survey_outfiles = tds.write_multiple_surveys(original_survey, bbox_scene_outfile
 
 
 # Run simulation for each bbox survey.
+print("Simulating over bounding boxes")
+bbox_output_files = []
 for path in survey_outfiles:
     pyhelios.loggingSilent()
     # Build simulation parameters
@@ -117,26 +120,19 @@ for path in survey_outfiles:
 
     sim = simBuilder.build()
     sim.start()
-    sim.join()
+    output = sim.join()
+    #bbox_output_folders.append(sim.outpath())
+    for j in range(output.outpaths.length()):
+        bbox_output_files.append(output.outpaths.get(j))
 
-
+sys.exit()
 
 # Merges all legs of all bbox surveys into one las/laz
-sub_dirs = []
-paths = []
-for fil in os.listdir(bboxes_pc_dir):
-        sub_dirs.append(os.path.join(bboxes_pc_dir,fil))
-for i, sub_dir in enumerate(sub_dirs):
-
-        for fil in os.listdir(sub_dir):
-            paths.append(os.path.join(sub_dir, fil))
-tds.laz_merge(paths, merged_bboxes_las)
-
+tds.laz_merge(bbox_output_files, merged_bboxes_las)
 
 # Checks for scene parts in a user defined interval
-interval = 30
+interval = args.time_interval_s
 obj_ids = tds.objs_in_interval(merged_bboxes_las, interval)
-
 
 # Writes scenes and surveys for intervals.
 interval_scene_outfiles = tds.gen_interval_scene(original_scene, scene_dir, obj_ids, obj_of_int)
@@ -187,4 +183,4 @@ tds.filter_and_write(pc_paths, merged_filtered_intervals, obj_ids, obj_of_int, i
 filtered_clouds_path = []
 for file in os.listdir(merged_filtered_intervals):
     filtered_clouds_path.append(os.path.join(merged_filtered_intervals, file))
-tds.laz_merge(filtered_clouds_path, final_cloud )
+tds.laz_merge(filtered_clouds_path, final_cloud)

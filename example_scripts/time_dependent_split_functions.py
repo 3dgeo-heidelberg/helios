@@ -63,7 +63,8 @@ def write_survey(template_path, sub_scene_path, suffix=""):
 
     output_filename = f'{template_path}_{suffix}.xml'
     template.write(output_filename, xml_declaration= True)
-    return 0
+    
+    return output_filename
 
 
 def create_obj_box(min_coords, max_coords, filename, output_dir):
