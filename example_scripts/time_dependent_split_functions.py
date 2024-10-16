@@ -48,20 +48,20 @@ def split_xml(file, output_dir):
     return outfiles
 
 
-def write_survey(template_path, paths):
+def write_survey(template_path, sub_scene_path, suffix=""):
     """
     Function which overwrites the original survey to add the scene path.
 
     :param template_path: Path to the original survey file.
-    :param paths: Path to the sub scene.
+    :param sub_scene_path: Path to the sub scene.
     """
     template = ET.parse(template_path)
     template_root = template.getroot()
 
     scene_path = template_root.find('.//survey[@scene]')
-    scene_path.attrib["scene"] = str(paths) + "#scene"
+    scene_path.attrib["scene"] = str(sub_scene_path) + "#scene"
 
-    output_filename = f'{template_path}'
+    output_filename = f'{template_path}_{suffix}.xml'
     template.write(output_filename, xml_declaration= True)
     return 0
 
@@ -118,17 +118,17 @@ def create_obj_box(min_coords, max_coords, filename, output_dir):
     return obj_outfile
 
 
-def write_scene_string(output_dir, objs_outfiles):
+def write_bbox_scenes(output_dir, objs_outfiles):
     """
     Function which writes scenes containing a single bbox.
 
     :param output_dir: Directory where the bbox sub scenes are saved.
     :param objs_outfiles: List of paths to the bboxes.
 
-    :return Bbox_outfiles: List of paths to the created scenes.
+    :return bbox_outfiles: List of paths to the created scenes.
     """
 
-    BBox_outfiles = []
+    bbox_outfiles = []
 
     for i, paths in enumerate(objs_outfiles):
     
@@ -149,8 +149,9 @@ def write_scene_string(output_dir, objs_outfiles):
         outfile = Path(output_dir) / f"BBox_{i}_scene.xml"
         with open(outfile, "w") as file:
             file.write(xml)
-            BBox_outfiles.append(outfile)
-    return BBox_outfiles
+            bbox_outfiles.append(outfile)
+
+    return bbox_outfiles
 
 
 def write_multiple_surveys(template_path, scene_outfiles, output_dir, filename):
@@ -178,6 +179,7 @@ def write_multiple_surveys(template_path, scene_outfiles, output_dir, filename):
 
         template.write(survey_outfile, xml_declaration= True)
         survey_outfiles.append(survey_outfile)
+    
     return survey_outfiles
 
 

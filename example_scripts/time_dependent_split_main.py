@@ -5,14 +5,12 @@ from pathlib import Path
 import numpy as np
 import tds_argparser
 import xml.etree.ElementTree as ET
+import pyhelios
 
 # Parse arguments.
 args = tds_argparser.args
 
 ### Paths to relevant files and directories.
-# os.chdir("C:/Users/an274/heliospp_alt")
-# HELIOS_DIR = Path("C:/Users/an274/heliospp_alt")  # make CLI argument --assets
-# sys.path.append(str(HELIOS_DIR))
 fixed_gps_time = "2024-07-07 00:00:00"
 original_survey = args.survey_file
 survey_name = ET.parse(original_survey).find('survey').attrib['name']
@@ -43,8 +41,6 @@ merged_intervals = Path(outdir) / survey_name / 'merged_intervals'  # add timest
 merged_filtered_intervals = Path(outdir) / survey_name / 'merged_filtered_intervals'  # add timestamp?
 final_cloud = Path(outdir) / survey_name / f'{survey_name}_final.laz'  # add timestamp?
 
-import pyhelios
-
 obj_of_int = []
 # Create sub scenes with one part each out of the original scene file.
 split_scene_files = tds.split_xml(original_scene, scene_dir)
@@ -58,12 +54,12 @@ maxs = np.zeros(shape=(len(split_scene_files), 3))
 # Run simulation for each scene part to get bounding box information.
 for i, paths in enumerate(split_scene_files):
     # Overwrite original survey for each scene part scene.
-    tds.write_survey(original_survey, paths)
+    survey = tds.write_survey(original_survey, paths, suffix=f"sub_{i}")
 
     pyhelios.loggingSilent()
     # Build simulation parameters
     simBuilder = pyhelios.SimulationBuilder(
-        str(original_survey),
+        str(survey),
         assets,
         outdir
     )
@@ -98,7 +94,7 @@ for i in range(len(mins)):
 
 
 # Writes scenes and surveys with one bbox .obj each.
-bbox_scene_outfiles = tds.write_scene_string(bboxes_obj_dir, objs_outfiles)
+bbox_scene_outfiles = tds.write_bbox_scenes(bboxes_obj_dir, objs_outfiles)
 survey_outfiles = tds.write_multiple_surveys(original_survey, bbox_scene_outfiles, bboxes_obj_dir, f"bbox_survey")
 
 
@@ -153,7 +149,6 @@ for path in interval_surveys:
     pyhelios.setDefaultRandomnessGeneratorSeed("123")
 
     # Build simulation parameters
-
     simBuilder = pyhelios.SimulationBuilder(
         str(path),
         assets,
