@@ -121,14 +121,15 @@ for path in survey_outfiles:
     sim = simBuilder.build()
     sim.start()
     output = sim.join()
-    #bbox_output_folders.append(sim.outpath())
     for j in range(output.outpaths.length()):
         bbox_output_files.append(output.outpaths.get(j))
 
-sys.exit()
 
+print("Merging bounding box surveys")
+print(bbox_output_files)
 # Merges all legs of all bbox surveys into one las/laz
 tds.laz_merge(bbox_output_files, merged_bboxes_las)
+print(merged_bboxes_las)
 
 # Checks for scene parts in a user defined interval
 interval = args.time_interval_s
@@ -138,11 +139,11 @@ obj_ids = tds.objs_in_interval(merged_bboxes_las, interval)
 interval_scene_outfiles = tds.gen_interval_scene(original_scene, scene_dir, obj_ids, obj_of_int)
 interval_surveys = tds.write_multiple_surveys(original_survey, interval_scene_outfiles, scene_dir, f"interval_survey")
 
-
+interval_output_folders = []
 # Run simulation for each interval survey.
 for path in interval_surveys:
     pyhelios.loggingSilent()
-    pyhelios.setDefaultRandomnessGeneratorSeed("123")
+    # pyhelios.setDefaultRandomnessGeneratorSeed("123")
 
     # Build simulation parameters
     simBuilder = pyhelios.SimulationBuilder(
@@ -153,30 +154,33 @@ for path in interval_surveys:
     simBuilder.setNumThreads(0)
     simBuilder.setRebuildScene(True)
     simBuilder.setLasOutput(True)
-    simBuilder.setZipOutput(False)
+    if args.zip_output_flag:
+        simBuilder.setZipOutput(True)
+        ext = "laz"
+    else:
+        ext = "las"
     simBuilder.setFixedGpsTimeStart(fixed_gps_time)
 
     sim = simBuilder.build()
     sim.start()
-    sim.join()
+    output = sim.join()
+    for j in range(output.outpaths.length()):
+        interval_output_folders.append(Path(output.outpath).parent)
 
 
 # Merge legs of interval and write them to separate interval pcs.
-pc_paths = []
-sub_dirs = []
-for file in os.listdir(output_interval_clouds):
-        sub_dirs.append(os.path.join(output_interval_clouds,file))
-
-for i, sub_dir in enumerate(sub_dirs):
-        paths = []
-        for file in os.listdir(sub_dir):
-            paths.append(os.path.join(sub_dir, file))
-        tds.laz_merge(paths, f"{merged_intervals}merged_interval_{i+1}.laz")
-        pc_paths.append(f"{merged_intervals}{i+1}.laz")
-
+print("Merging interval surveys")
+merged_interval_paths = []
+for i, interval_dir in enumerate(interval_output_folders):
+    print(interval_dir)
+    paths = list(Path(interval_dir).glob("*.{ext}"))
+    print(paths)
+    outpath = f"{merged_intervals}_merged_interval_{i+1}.laz"
+    tds.laz_merge(paths, outpath)
+    merged_interval_paths.append(outpath)
 
 # Filter merged interval pcs to points inside the interval time.
-tds.filter_and_write(pc_paths, merged_filtered_intervals, obj_ids, obj_of_int, interval)
+tds.filter_and_write(merged_interval_paths, merged_filtered_intervals, obj_ids, obj_of_int, interval)
 
 
 # Merge filtered interval pcs to final pc.

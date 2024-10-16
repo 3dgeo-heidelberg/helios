@@ -18,9 +18,6 @@ parser.add_argument('--assets', dest='assets_path', default='assets/',
 parser.add_argument('--output', dest='output_path', default='output/',
                     help='Specify the path to assets directory. Default: "output/".')
 
-parser.add_argument('--lasOutput', dest='las_output_flag', action='store_const', const=True, default=False,
-                    help='Use this flag to generate the output point cloud in LAS v1.4 format.')
-
 parser.add_argument('--zipOutput', dest='zip_output_flag', action='store_const', const=True, default=False,
                     help='Use this flag to generate compressed output.')
 

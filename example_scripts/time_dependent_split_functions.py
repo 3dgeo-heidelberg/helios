@@ -6,7 +6,6 @@ from pathlib import Path
 import laspy
 import numpy as np
 import matplotlib.pyplot as plt
-import os
 
 
 def split_xml(file, output_dir):
@@ -62,14 +61,15 @@ def write_survey(template_path, sub_scene_path, suffix=""):
     scene_path.attrib["scene"] = str(sub_scene_path) + "#scene"
 
     output_filename = f'{template_path}_{suffix}.xml'
-    template.write(output_filename, xml_declaration= True)
-    
+    template.write(output_filename, xml_declaration=True)
+
     return output_filename
 
 
 def create_obj_box(min_coords, max_coords, filename, output_dir):
     """
-    This functions takes the min and max coordinates of a scene part and creates an obj of the bbox.
+    This functions takes the min and max coordinates of a scene part and 
+    creates an obj of the bbox.
 
     :param min_coords: Minimum coordinates of the scene part.
     :param max_coords: Maximum coordinates of the scene part.
@@ -112,7 +112,6 @@ def create_obj_box(min_coords, max_coords, filename, output_dir):
         for vertex in vertices:
             file.write(f"v {vertex[0]} {vertex[1]} {vertex[2]}\n")
 
-
         for face in faces:
             file.write(f"f {' '.join(map(str, face))}\n")
 
@@ -131,14 +130,14 @@ def write_bbox_scenes(output_dir, objs_outfiles):
 
     bbox_outfiles = []
 
-    for i, paths in enumerate(objs_outfiles):
-    
+    for i, path in enumerate(objs_outfiles):
+
         xml = f"""<?xml version="1.0" encoding="UTF-8"?>
         <document>
             <scene id="scene" name="scene">
-                <part id = "{i+1}">
+                <part id="{i+1}">
                     <filter type="objloader">
-                        <param type="string" key="filepath" value="{objs_outfiles[i]}" />
+                        <param type="string" key="filepath" value="{path}" />
                     </filter> 
                         <filter type="scale"> 
                     <param type="double" key="scale" value="1" />
@@ -155,7 +154,10 @@ def write_bbox_scenes(output_dir, objs_outfiles):
     return bbox_outfiles
 
 
-def write_multiple_surveys(template_path, scene_outfiles, output_dir, filename):
+def write_multiple_surveys(template_path,
+                           scene_outfiles,
+                           output_dir,
+                           filename):
     """
     Function that creates multiple surveys with the bbox scenes.
 
@@ -178,9 +180,9 @@ def write_multiple_surveys(template_path, scene_outfiles, output_dir, filename):
 
         survey_outfile = Path(output_dir) / f"{filename}_{i}.xml"
 
-        template.write(survey_outfile, xml_declaration= True)
+        template.write(survey_outfile, xml_declaration=True)
         survey_outfiles.append(survey_outfile)
-    
+
     return survey_outfiles
 
 
@@ -196,9 +198,10 @@ def laz_merge(filepaths, outfile):
         las = lf_0.read()
         las.write(outfile)
     with laspy.open(outfile, "a") as lf:
+        # ToDo: Check if this is needed
         scales = lf.header.scales
         offsets = lf.header.offsets
-        
+
         for file in filepaths[1:]:
             if file.endswith(".las") or file.endswith(".laz"):
 
@@ -209,17 +212,20 @@ def laz_merge(filepaths, outfile):
                         lf_aa.Y = (lf_aa.y - offsets[1]) / scales[1]
                         lf_aa.Z = (lf_aa.z - offsets[2]) / scales[2]
                         lf.append_points(lf_aa.points)
-    return 0
+    
+    return outfile
 
 
-def objs_in_interval(infile, interval = 9.5):
+def objs_in_interval(infile, interval=9.5):
     """
-    Function which creates a list of all scene parts within a user defined interval.
+    Function which creates a list of all scene parts within a 
+    user defined interval.
 
     :param infile: Path to the merged bbox las/laz file.
     :param interval: Interval in seconds.
 
-    :return object_ids: List of arrays which store the hitObjectId for each interval.
+    :return object_ids: List of arrays which store the hitObjectId
+    for each interval.
     """
 
     coords, att = read_las(infile)
@@ -245,24 +251,26 @@ def objs_in_interval(infile, interval = 9.5):
         min_t += interval
         upper_interval += interval
 
-
     # Plotting unique GPS times
-    plt.figure(figsize=(10, 6))
-    plt.scatter(unique_gps_times, [1] * len(unique_gps_times), alpha=0.5)
-    plt.title("Unique GPS Times Distribution")
-    plt.xlabel("Normalized GPS Time")
-    plt.yticks([])
-    plt.show()
+    # plt.figure(figsize=(10, 6))
+    # plt.scatter(unique_gps_times, [1] * len(unique_gps_times), alpha=0.5)
+    # plt.title("Unique GPS Times Distribution")
+    # plt.xlabel("Normalized GPS Time")
+    # plt.yticks([])
+    # plt.show()
+    
     return object_ids
 
 
 def gen_interval_scene(original_scene_file, output_dir, id_list, obj_of_int):
     """
-    Function which creates interval scenes with the scene parts that are present in the interval.
+    Function which creates interval scenes with the scene parts that are 
+    present in the interval.
 
     :param original_scene_file: Path to the original scene file.
     :param output_dir: Directory where the interval scene will be saved.
-    :param id_list: List of arrays which store the hitObjectId for each interval.
+    :param id_list: List of arrays which store the hitObjectId for
+                    each interval.
     :param obj_of_int: List of objectIDs to be scanned.
 
     :return outfiles: List of paths to the interval scene files.
@@ -271,14 +279,16 @@ def gen_interval_scene(original_scene_file, output_dir, id_list, obj_of_int):
     outfiles = []
     i = 0
     for part_ids in id_list:
-        if len(part_ids) < 1 or (obj_of_int and not any(obj in part_ids for obj in obj_of_int)):
-            i +=1
+        if len(part_ids) < 1 or (obj_of_int and not 
+                                 any(obj in part_ids for obj in obj_of_int)
+                                 ):
+            i += 1
         else:
             part_ids_set = frozenset(part_ids)
 
             if part_ids_set in processed_scenes:
                 print(f"Scene with parts {part_ids} already created. Skipping...")
-                i +=1
+                i += 1
                 continue  
                 
             processed_scenes.add(part_ids_set)
@@ -325,6 +335,7 @@ def filter_and_write(interval_paths, filtered_interval_dir, id_list, obj_of_int,
     :param interval_paths: List of paths to the merged interval point clouds.
     :param filtered_interval_dir: Directory where the filtered interval point clouds will be saved.
     :param id_list: List of arrays which store the hitObjectId for each interval.
+    :param obj_of_int: ... ToDo @Jonas
     :param interval: Interval in seconds.
     """
 
@@ -362,14 +373,13 @@ def filter_and_write(interval_paths, filtered_interval_dir, id_list, obj_of_int,
             pc_attributes_filtered = {}
             for k, v in attributes.items():
                 pc_attributes_filtered[k] = v[(attributes['gps_time'] >= i_start) & (attributes['gps_time'] < i_end)]
-
+            print(pc_attributes_filtered)
             print(f"Filtered {len(pc_coords_filtered)} points from a total of {len(coords)} points")
 
             # Write filtered point cloud to file
             if len(pc_coords_filtered) > 0:
                 write_las(pc_coords_filtered, f"{filtered_interval_dir}merged_filtered_interval_{i + 1}.laz",
                           attribute_dict=pc_attributes_filtered)
-
 
         # Update time range for next interval
         i_start += interval
@@ -394,24 +404,19 @@ def read_las(infile):
     # get the coordinates (XYZ) and stack them in a 3D array
     coords = np.vstack((indata.x, indata.y, indata.z)).transpose()
 
-    # subsample the point cloud, if use_every = 1 will remain the full point cloud data
-    #coords = coords[::use_every, :]
-
-    # read attributes if get_attributes is set to True
-
     # get all attribute names in the las file as list
-    las_fields= list(indata.points.point_format.dimension_names)
+    las_fields = list(indata.points.point_format.dimension_names)
 
     # create a dictionary to store attributes
     attributes = {}
 
     # loop over all available fields in the las point cloud data
-    for las_field in las_fields[3:]: # skip the first three fields, which contain coordinate information (X,Y,Z)
-        attribute = np.array(indata.points[las_field]) # transpose shape to (N,1) to fit coordinates array
+    for las_field in las_fields[3:]:  # skip the first three fields, which contain coordinate information (X,Y,Z)
+        attribute = np.array(indata.points[las_field])  # transpose shape to (N,1) to fit coordinates array
         if np.sum(attribute)==0: # if field contains only 0, it is empty
             continue
         # add the attribute to the dictionary with the name (las_field) as key
-        attributes[las_field] = attribute[::1] # subsample by use_every, corresponding to point coordinates
+        attributes[las_field] = attribute
 
     # return coordinates and attribute data
     return coords, attributes
@@ -439,7 +444,8 @@ def write_las(outpoints, outfilepath, attribute_dict={}):
     for key, vals in attribute_dict.items():
         try:
             las[key] = vals
-        except:
+        except Exception as e:
+            print(e)
             las.add_extra_dim(laspy.ExtraBytesParams(
                 name=key,
                 type=type(vals[0])
@@ -450,8 +456,3 @@ def write_las(outpoints, outfilepath, attribute_dict={}):
     las.write(outfilepath)
 
     return 0
-
-
-
-
-
