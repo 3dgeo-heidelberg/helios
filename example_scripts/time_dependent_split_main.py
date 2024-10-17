@@ -28,14 +28,12 @@ original_scene = ET.parse(original_survey).find('survey').attrib['scene'].split(
 original_scene_fname = Path(original_scene).stem
 scene_dir = Path(original_scene).parent
 scene_name = ET.parse(original_survey).find('survey').attrib['scene'].split('#')[1]
+split_scene_dir = scene_dir / f"{original_scene_fname}_split"
 sp_surveys_dir = f"{Path(original_survey).stem}_per_sp"
 bboxes_obj_dir = Path(scene_dir) / f'{original_scene_fname}_bboxes'
 bboxes_pc_dir = Path(outdir) / survey_name / 'bbox_surveys'
 
 merged_bboxes_pc = Path(scene_dir) / f'{original_scene_fname}_bboxes.laz'
-
-# create folder where bboxes will be stored
-Path(bboxes_obj_dir).mkdir(parents=True, exist_ok=True)
 
 interval_surveys_dir = Path(outdir) / survey_name / 'interval_surveys'
 merged_intervals_dir = Path(outdir) / survey_name / 'merged_intervals'  # add timestamp?
@@ -44,8 +42,12 @@ final_pc = Path(outdir) / survey_name / f'{survey_name}_final.laz'  # add timest
 
 # ToDo @Jonas: read from args (if provided) and implement
 obj_of_int = []
+# create folders
+Path(bboxes_obj_dir).mkdir(parents=True, exist_ok=True)
+Path(split_scene_dir).mkdir(parents=True, exist_ok=True)
+
 # Create sub scenes with one part each out of the original scene file.
-split_scene_files = tds.split_xml(original_scene, scene_dir)
+split_scene_files = tds.split_xml(original_scene, split_scene_dir)
 
 # Initialize arrays that store min and max coordinates for each scene part.
 mins = np.zeros(shape=(len(split_scene_files), 3))
@@ -132,7 +134,6 @@ for path in survey_outfiles:
 
 
 print("Merging bounding box surveys")
-print(bbox_output_files)
 # Merges all legs of all bbox surveys into one las/laz
 tds.laz_merge(bbox_output_files, merged_bboxes_pc)
 
@@ -205,3 +206,8 @@ for file in os.listdir(merged_filtered_intervals_dir):
         os.path.join(merged_filtered_intervals_dir, file)
         )
 tds.laz_merge(filtered_clouds_path, final_pc)
+
+
+if args.delete_flag:
+    paths_to_delete = [sp_surveys_dir, bboxes_obj_dir, bboxes_pc_dir, interval_surveys_dir, merged_intervals_dir, merged_bboxes_pc, split_scene_dir, objs_outfiles, interval_output_folders]
+    tds.delete_files(paths_to_delete)

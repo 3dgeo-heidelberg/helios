@@ -2,6 +2,8 @@
 
 
 import xml.etree.ElementTree as ET
+import os
+import shutil
 from pathlib import Path
 import laspy
 import numpy as np
@@ -461,3 +463,16 @@ def write_las(outpoints, outfilepath, attribute_dict={}):
     las.write(outfilepath)
 
     return 0
+
+
+def delete_files(paths):
+    """
+    Function which deletes files and directories provided as a list.
+
+    :param paths: List of paths to be deleted.
+    """
+    for path in paths:
+        if os.path.isfile(path):
+            os.remove(path)
+        elif os.path.isdir(path):
+            shutil.rmtree(path)
