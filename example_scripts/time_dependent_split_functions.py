@@ -38,7 +38,7 @@ def split_xml(file, output_dir):
     for i, part in enumerate(parts):
         part_fp = part.find(".//param[@key='filepath']").get("value")
         part_name = Path(part_fp).stem
-        outfile = Path(output_dir)  / f"{part_name}_scene_part_{i}.xml"
+        outfile = Path(output_dir) / f"{part_name}_scene_part_{i}.xml"
         with open(outfile, "w") as f:
             f.write(xml_start)
             f.write("        " + ET.tostring(part).decode("utf-8"))
@@ -47,7 +47,7 @@ def split_xml(file, output_dir):
     return outfiles
 
 
-def write_survey(template_path, sub_scene_path, suffix=""):
+def write_survey(template_path, sub_scene_path, suffix="", subfolder=None):
     """
     Function which overwrites the original survey to add the scene path.
 
@@ -60,7 +60,12 @@ def write_survey(template_path, sub_scene_path, suffix=""):
     scene_path = template_root.find('.//survey[@scene]')
     scene_path.attrib["scene"] = str(sub_scene_path) + "#scene"
 
-    output_filename = f'{template_path}_{suffix}.xml'
+    if subfolder:
+        outfolder = Path(template_path).parent / subfolder
+    else:
+        outfolder = Path(template_path).parent
+    Path(outfolder).mkdir(parents=True, exist_ok=True)
+    output_filename = f'{outfolder}/{Path(template_path).stem}_{suffix}.xml'
     template.write(output_filename, xml_declaration=True)
 
     return output_filename

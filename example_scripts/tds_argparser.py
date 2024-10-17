@@ -10,6 +10,8 @@ parser.add_argument('survey_file', help='Absolute or relative path to .XML surve
 # tds specific arguments
 parser.add_argument('--interval_s', dest='time_interval_s', default=30,
                     help='Specify the fix time interval of each survey subset.')
+parser.add_argument('--deleteAfter', dest='delete_flag', action='store_const', const=True, default=False,
+                    help='Use this flag to delete all intermediate files after simulation.')
 
 # general helios arguments
 parser.add_argument('--assets', dest='assets_path', default='assets/',
