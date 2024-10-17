@@ -39,9 +39,11 @@ interval_surveys_dir = Path(outdir) / survey_name / 'interval_surveys'
 merged_intervals_dir = Path(outdir) / survey_name / 'merged_intervals'  # add timestamp?
 merged_filtered_intervals_dir = Path(outdir) / survey_name / 'merged_filtered_intervals'  # add timestamp?
 final_pc = Path(outdir) / survey_name / f'{survey_name}_final.laz'  # add timestamp?
+###
 
 # ToDo @Jonas: read from args (if provided) and implement
 obj_of_int = []
+
 # create folders
 Path(bboxes_obj_dir).mkdir(parents=True, exist_ok=True)
 Path(split_scene_dir).mkdir(parents=True, exist_ok=True)
@@ -54,7 +56,7 @@ mins = np.zeros(shape=(len(split_scene_files), 3))
 maxs = np.zeros(shape=(len(split_scene_files), 3))
 
 # Run simulation for each scene part to get bounding box information.
-print("Getting bounding boxes")
+print("\nGetting bounding boxes\n")
 for i, paths in enumerate(split_scene_files):
     # Write new survey for each scene part scene based on original survey
     survey = tds.write_survey(original_survey, paths, suffix=f"sub_{i}", 
@@ -90,8 +92,7 @@ for i, paths in enumerate(split_scene_files):
     maxs[i] = max_coords
 
 
-# Create .objs using the min, max values of the scene parts.
-# Obj paths are stored in list.
+# Create bbox .objs using the min, max values of the scene parts and store paths in list
 objs_outfiles = []
 for i, (min_val, max_val) in enumerate(zip(mins, maxs)):
     obj_outfile = tds.create_obj_box(
@@ -108,7 +109,7 @@ survey_outfiles = tds.write_multiple_surveys(original_survey,
                                              f"bbox_survey")
 
 # Run simulation for each bbox survey.
-print("Simulating over bounding boxes")
+print("\nSimulating over bounding boxes\n")
 bbox_output_files = []
 for path in survey_outfiles:
     pyhelios.loggingSilent()
@@ -133,7 +134,7 @@ for path in survey_outfiles:
         bbox_output_files.append(output.outpaths.get(j))
 
 
-print("Merging bounding box surveys")
+print("\nMerging bounding box point clouds\n")
 # Merges all legs of all bbox surveys into one las/laz
 tds.laz_merge(bbox_output_files, merged_bboxes_pc)
 
@@ -153,9 +154,10 @@ interval_surveys = tds.write_multiple_surveys(original_survey,
 
 interval_output_folders = []
 # Run simulation for each interval survey.
-for path in interval_surveys:
+print(f"\nSimulating {len(interval_surveys)} separate intervals\n")
+for i, path in enumerate(interval_surveys):
+    print(f"\nInterval {i+1}")
     pyhelios.loggingSilent()
-    # pyhelios.setDefaultRandomnessGeneratorSeed("123")
 
     # Build simulation parameters
     simBuilder = pyhelios.SimulationBuilder(
@@ -181,17 +183,15 @@ for path in interval_surveys:
 
 
 # Merge legs of interval and write them to separate interval pcs.
-print("Merging interval surveys")
 merged_interval_paths = []
 for i, interval_dir in enumerate(interval_output_folders):
-    print(interval_dir)
-    paths = list(Path(interval_dir).glob("*.{ext}"))
-    print(paths)
-    outpath = f"{merged_intervals_dir}_merged_interval_{i+1}.laz"
+    paths = list(Path(interval_dir).glob(f"*.{ext}"))
+    outpath = f"{merged_intervals_dir}/merged_interval_{i+1}.laz"
     tds.laz_merge(paths, outpath)
     merged_interval_paths.append(outpath)
 
 # Filter merged interval pcs to points inside the interval time.
+print("\nMerging intervals\n")
 tds.filter_and_write(merged_interval_paths, 
                      merged_filtered_intervals_dir,
                      obj_ids,
@@ -206,7 +206,6 @@ for file in os.listdir(merged_filtered_intervals_dir):
         os.path.join(merged_filtered_intervals_dir, file)
         )
 tds.laz_merge(filtered_clouds_path, final_pc)
-
 
 if args.delete_flag:
     paths_to_delete = [sp_surveys_dir, bboxes_obj_dir, bboxes_pc_dir, interval_surveys_dir, merged_intervals_dir, merged_bboxes_pc, split_scene_dir, objs_outfiles, interval_output_folders]

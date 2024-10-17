@@ -210,7 +210,7 @@ def laz_merge(filepaths, outfile):
         offsets = lf.header.offsets
 
         for file in filepaths[1:]:
-            if file.endswith(".las") or file.endswith(".laz"):
+            if Path(file).suffix == ".laz" or Path(file).suffix == ".las":
 
                 with laspy.open(file) as lf_a:
                     lf_aa = lf_a.read()
@@ -385,8 +385,9 @@ def filter_and_write(interval_paths, filtered_interval_dir, id_list, obj_of_int,
 
             # Write filtered point cloud to file
             if len(pc_coords_filtered) > 0:
-                write_las(pc_coords_filtered, f"{filtered_interval_dir}merged_filtered_interval_{i + 1}.laz",
+                write_las(pc_coords_filtered, f"{filtered_interval_dir}/merged_filtered_interval_{i + 1}.laz",
                           attribute_dict=pc_attributes_filtered)
+                print(f"Wrote intervall {i + 1}")
 
         # Update time range for next interval
         i_start += interval
