@@ -1,7 +1,5 @@
-import time
 import time_dependent_split_functions as tds
 import os
-import sys
 from pathlib import Path
 import numpy as np
 import tds_argparser
@@ -184,7 +182,6 @@ for i, path in enumerate(interval_surveys):
     interval_output_folders.append(Path(output.outpath).parent)
 
 
-print(interval_output_folders)
 # Merge legs of interval and write them to separate interval pcs.
 merged_interval_paths = []
 for i, interval_dir in enumerate(interval_output_folders):
