@@ -2,7 +2,7 @@
 <document>
     <scene id="tree1" name="Dynamic scene"  >
 
-<part id="1">
+<part>
             <filter type="objloader">
                 <param type="string" key="filepath" value="data/sceneparts/arbaro/sassafras_low.obj" />
  <param type="string" key="up" value="y" />
@@ -14,7 +14,7 @@
         </part>
         
 
-        <part id="2">
+        <part>
             <filter type="objloader">
                 <param type="string" key="filepath" value="data/sceneparts/arbaro/sassafras_low.obj" />
 
@@ -26,7 +26,7 @@
             </filter>
         </part>
 
-        <part id="3">
+        <part>
             <filter type="objloader">
                 <param type="string" key="filepath" value="data/sceneparts/arbaro/black_tupelo_low.obj" />
  <param type="string" key="up" value="y" />
@@ -38,7 +38,7 @@
         </part>
 
 
-        <part id="4">
+        <part>
             <filter type="objloader">
                 <param type="string" key="filepath" value="data/sceneparts/arbaro/black_tupelo_low.obj" />
  <param type="string" key="up" value="y" />
@@ -50,7 +50,7 @@
         </part>
 
 
-        <part id="5">
+        <part>
             <filter type="objloader">
                 <param type="string" key="filepath" value="data/sceneparts/arbaro/sassafras_low.obj" />
  <param type="string" key="up" value="y" />
@@ -62,7 +62,7 @@
         </part>
 
 
-        <part id="7">
+        <part>
             <filter type="objloader">
                 <param type="string" key="filepath" value="data/sceneparts/arbaro/black_tupelo_low.obj" />
  <param type="string" key="up" value="y" />
@@ -74,7 +74,7 @@
         </part>
 
 
-        <part id="6">
+        <part>
             <filter type="objloader">
                 <param type="string" key="filepath" value="data/sceneparts/arbaro/sassafras_low.obj" />
  <param type="string" key="up" value="y" />
@@ -86,7 +86,7 @@
         </part>
 
 
-        <part id="7">
+        <part>
             <filter type="objloader">
                 <param type="string" key="filepath" value="data/sceneparts/arbaro/black_tupelo_low.obj" />
  <param type="string" key="up" value="y" />
@@ -98,7 +98,7 @@
         </part>
 
 
-        <part id="8">
+        <part>
             <filter type="objloader">
                 <param type="string" key="filepath" value="data/sceneparts/arbaro/sassafras_low.obj" />
  <param type="string" key="up" value="y" />
@@ -110,7 +110,7 @@
         </part>
 
 
-        <part id="9">
+        <part>
             <filter type="objloader">
                 <param type="string" key="filepath" value="data/sceneparts/arbaro/black_tupelo_low.obj" />
  <param type="string" key="up" value="y" />
@@ -122,7 +122,7 @@
         </part>
 
 
-        <part id="1">
+        <part>
             <filter type="objloader">
                 <param type="string" key="filepath" value="data/sceneparts/arbaro/sassafras_low.obj" />
  <param type="string" key="up" value="y" />
@@ -134,7 +134,7 @@
         </part>
 
 
-        <part id="1">
+        <part>
             <filter type="objloader">
                 <param type="string" key="filepath" value="data/sceneparts/arbaro/black_tupelo_low.obj" />
  <param type="string" key="up" value="y" />
@@ -146,7 +146,7 @@
         </part>
 
 
-        <part id="1">
+        <part>
             <filter type="objloader">
                 <param type="string" key="filepath" value="data/sceneparts/arbaro/black_tupelo_low.obj" />
  <param type="string" key="up" value="y" />
@@ -157,7 +157,7 @@
             </filter>
         </part>
 
-        <part id="1">
+        <part>
             <filter type="objloader">
                 <param type="string" key="filepath" value="data/sceneparts/arbaro/black_tupelo_low.obj" />
  <param type="string" key="up" value="y" />
@@ -168,7 +168,7 @@
             </filter>
         </part>
 
-        <part id="1">
+        <part>
             <filter type="objloader">
                 <param type="string" key="filepath" value="data/sceneparts/arbaro/sassafras_low.obj" />
  <param type="string" key="up" value="y" />
@@ -180,7 +180,7 @@
         </part>
 
 
-        <part id="1">
+        <part>
             <filter type="objloader">
                 <param type="string" key="filepath" value="data/sceneparts/arbaro/black_tupelo_low.obj" />
  <param type="string" key="up" value="y" />
@@ -192,7 +192,7 @@
         </part>
 
 
-        <part id="1">
+        <part>
             <filter type="objloader">
                 <param type="string" key="filepath" value="data/sceneparts/arbaro/sassafras_low.obj" />
  <param type="string" key="up" value="y" />
@@ -204,7 +204,7 @@
         </part>
 
 
-        <part id="1">
+        <part>
             <filter type="objloader">
                 <param type="string" key="filepath" value="data/sceneparts/arbaro/black_tupelo_low.obj" />
  <param type="string" key="up" value="y" />
@@ -216,7 +216,7 @@
         </part>
 
 
-        <part id="1">
+        <part>
             <filter type="objloader">
                 <param type="string" key="filepath" value="data/sceneparts/arbaro/sassafras_low.obj" />
  <param type="string" key="up" value="y" />
@@ -228,7 +228,7 @@
         </part>
 
 
-        <part id="1">
+        <part>
             <filter type="objloader">
                 <param type="string" key="filepath" value="data/sceneparts/arbaro/black_tupelo_low.obj" />
  <param type="string" key="up" value="y" />
@@ -240,7 +240,7 @@
         </part>
 
 
-        <part id="1">
+        <part>
             <filter type="objloader">
                 <param type="string" key="filepath" value="data/sceneparts/arbaro/sassafras_low.obj" />
  <param type="string" key="up" value="y" />
@@ -252,7 +252,7 @@
         </part>
 
 
-        <part id="1">
+        <part>
             <filter type="objloader">
                 <param type="string" key="filepath" value="data/sceneparts/arbaro/black_tupelo_low.obj" />
  <param type="string" key="up" value="y" />
@@ -264,7 +264,7 @@
         </part>
 
 
-        <part id="1">
+        <part>
             <filter type="objloader">
                 <param type="string" key="filepath" value="data/sceneparts/arbaro/sassafras_low.obj" />
  <param type="string" key="up" value="y" />
@@ -276,7 +276,7 @@
         </part>
 
 
-        <part id="1">
+        <part>
             <filter type="objloader">
                 <param type="string" key="filepath" value="data/sceneparts/arbaro/black_tupelo_low.obj" />
  <param type="string" key="up" value="y" />
@@ -288,7 +288,7 @@
         </part>
 
 
-        <part id="1">
+        <part>
             <filter type="objloader">
                 <param type="string" key="filepath" value="data/sceneparts/arbaro/black_tupelo_low.obj" />
  <param type="string" key="up" value="y" />
@@ -299,7 +299,7 @@
             </filter>
         </part>
 
-        <part id="1">
+        <part>
             <filter type="objloader">
                 <param type="string" key="filepath" value="data/sceneparts/arbaro/sassafras_low.obj" />
  <param type="string" key="up" value="y" />
@@ -310,7 +310,7 @@
             </filter>
         </part>
 
-        <part id="1">
+        <part>
             <filter type="objloader">
                 <param type="string" key="filepath" value="data/sceneparts/arbaro/black_tupelo_low.obj" />
  <param type="string" key="up" value="y" />
@@ -322,7 +322,7 @@
         </part>
 
 
-        <part id="1">
+        <part>
             <filter type="objloader">
                 <param type="string" key="filepath" value="data/sceneparts/arbaro/sassafras_low.obj" />
  <param type="string" key="up" value="y" />
@@ -334,7 +334,7 @@
         </part>
 
 
-        <part id="1">
+        <part>
             <filter type="objloader">
                 <param type="string" key="filepath" value="data/sceneparts/arbaro/black_tupelo_low.obj" />
  <param type="string" key="up" value="y" />
@@ -346,7 +346,7 @@
         </part>
 
 
-        <part id="1">
+        <part>
             <filter type="objloader">
                 <param type="string" key="filepath" value="data/sceneparts/arbaro/sassafras_low.obj" />
  <param type="string" key="up" value="y" />
@@ -358,7 +358,7 @@
         </part>
 
 
-        <part id="1">
+        <part>
             <filter type="objloader">
                 <param type="string" key="filepath" value="data/sceneparts/arbaro/black_tupelo_low.obj" />
  <param type="string" key="up" value="y" />
@@ -370,7 +370,7 @@
         </part>
 
 
-        <part id="1">
+        <part>
             <filter type="objloader">
                 <param type="string" key="filepath" value="data/sceneparts/arbaro/sassafras_low.obj" />
  <param type="string" key="up" value="y" />
@@ -382,7 +382,7 @@
         </part>
 
 
-        <part id="1">
+        <part>
             <filter type="objloader">
                 <param type="string" key="filepath" value="data/sceneparts/arbaro/black_tupelo_low.obj" />
  <param type="string" key="up" value="y" />
@@ -394,7 +394,7 @@
         </part>
 
 
-        <part id="1">
+        <part>
             <filter type="objloader">
                 <param type="string" key="filepath" value="data/sceneparts/arbaro/sassafras_low.obj" />
  <param type="string" key="up" value="y" />
@@ -406,7 +406,7 @@
         </part>
 
 
-        <part id="1">
+        <part>
             <filter type="objloader">
                 <param type="string" key="filepath" value="data/sceneparts/arbaro/black_tupelo_low.obj" />
  <param type="string" key="up" value="y" />
@@ -418,7 +418,7 @@
         </part>
 
 
-        <part id="1">
+        <part>
             <filter type="objloader">
                 <param type="string" key="filepath" value="data/sceneparts/arbaro/sassafras_low.obj" />
  <param type="string" key="up" value="y" />
@@ -428,7 +428,8 @@
             	<param type="vec3" key="offset" value="-60;-30;0" />
             </filter>
         </part>
-        <part id="1">
+
+        <part>
             <filter type="objloader">
                 <param type="string" key="filepath" value="data/sceneparts/arbaro/black_tupelo_low.obj" />
  <param type="string" key="up" value="y" />
@@ -440,7 +441,7 @@
         </part>
 
 
-        <part id="1">
+        <part>
             <filter type="objloader">
                 <param type="string" key="filepath" value="data/sceneparts/arbaro/sassafras_low.obj" />
  <param type="string" key="up" value="y" />
@@ -452,7 +453,7 @@
         </part>
 
 
-        <part id="1">
+        <part>
             <filter type="objloader">
                 <param type="string" key="filepath" value="data/sceneparts/arbaro/black_tupelo_low.obj" />
  <param type="string" key="up" value="y" />
@@ -464,7 +465,7 @@
         </part>
 
 
-        <part id="1">
+        <part>
             <filter type="objloader">
                 <param type="string" key="filepath" value="data/sceneparts/arbaro/sassafras_low.obj" />
  <param type="string" key="up" value="y" />
