@@ -4,6 +4,7 @@
 import xml.etree.ElementTree as ET
 import os
 import shutil
+import copy
 from pathlib import Path
 import laspy
 import numpy as np
@@ -200,19 +201,24 @@ def laz_merge(filepaths, outfile):
     :param filepaths: Path list of point clouds to be merged.
     :param outfile: Path where the merged file will be saved.
     """
-
-    with laspy.open(filepaths[0], "r") as lf_0:
-        las = lf_0.read()
-        las.write(outfile)
+    for i, f in enumerate(filepaths):
+        with laspy.open(f, "r") as lf_0:
+            las = lf_0.read()
+            if len(las.points) == 0:
+                print("Empty file, skipping...")
+                continue
+            else:
+                print(f"Leg {i} not empty. Merging...")
+                las.write(outfile)
+                break
     with laspy.open(outfile, "a") as lf:
-        # ToDo: Check if this is needed
         scales = lf.header.scales
         offsets = lf.header.offsets
 
-        for file in filepaths[1:]:
+        for file in filepaths[i+1:]:
             if Path(file).suffix == ".laz" or Path(file).suffix == ".las":
 
-                with laspy.open(file) as lf_a:
+                with laspy.open(file, "r") as lf_a:
                     lf_aa = lf_a.read()
                     if len(lf_aa.points) > 0:
                         lf_aa.X = (lf_aa.x - offsets[0]) / scales[0]
@@ -380,7 +386,6 @@ def filter_and_write(interval_paths, filtered_interval_dir, id_list, obj_of_int,
             pc_attributes_filtered = {}
             for k, v in attributes.items():
                 pc_attributes_filtered[k] = v[(attributes['gps_time'] >= i_start) & (attributes['gps_time'] < i_end)]
-            print(pc_attributes_filtered)
             print(f"Filtered {len(pc_coords_filtered)} points from a total of {len(coords)} points")
 
             # Write filtered point cloud to file
@@ -448,6 +453,8 @@ def write_las(outpoints, outfilepath, attribute_dict={}):
     las.x = outpoints[:, 0]
     las.y = outpoints[:, 1]
     las.z = outpoints[:, 2]
+
+    attribute_dict.pop("ExtraBytes", None)
 
     for key, vals in attribute_dict.items():
         try:

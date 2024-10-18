@@ -1,3 +1,4 @@
+import time
 import time_dependent_split_functions as tds
 import os
 import sys
@@ -47,6 +48,8 @@ obj_of_int = []
 # create folders
 Path(bboxes_obj_dir).mkdir(parents=True, exist_ok=True)
 Path(split_scene_dir).mkdir(parents=True, exist_ok=True)
+Path(merged_intervals_dir).mkdir(parents=True, exist_ok=True)
+Path(merged_filtered_intervals_dir).mkdir(parents=True, exist_ok=True)
 
 # Create sub scenes with one part each out of the original scene file.
 split_scene_files = tds.split_xml(original_scene, split_scene_dir)
@@ -178,15 +181,15 @@ for i, path in enumerate(interval_surveys):
     sim = simBuilder.build()
     sim.start()
     output = sim.join()
-    for j in range(output.outpaths.length()):
-        interval_output_folders.append(Path(output.outpath).parent)
+    interval_output_folders.append(Path(output.outpath).parent)
 
 
+print(interval_output_folders)
 # Merge legs of interval and write them to separate interval pcs.
 merged_interval_paths = []
 for i, interval_dir in enumerate(interval_output_folders):
     paths = list(Path(interval_dir).glob(f"*.{ext}"))
-    outpath = f"{merged_intervals_dir}/merged_interval_{i+1}.laz"
+    outpath = Path(merged_intervals_dir) / f"merged_interval_{i+1}.laz"
     tds.laz_merge(paths, outpath)
     merged_interval_paths.append(outpath)
 
@@ -208,5 +211,6 @@ for file in os.listdir(merged_filtered_intervals_dir):
 tds.laz_merge(filtered_clouds_path, final_pc)
 
 if args.delete_flag:
-    paths_to_delete = [sp_surveys_dir, bboxes_obj_dir, bboxes_pc_dir, interval_surveys_dir, merged_intervals_dir, merged_bboxes_pc, split_scene_dir, objs_outfiles, interval_output_folders]
+    paths_to_delete = [sp_surveys_dir, bboxes_obj_dir, bboxes_pc_dir, interval_surveys_dir, merged_intervals_dir, merged_bboxes_pc, split_scene_dir]
+    paths_to_delete += objs_outfiles + interval_output_folders
     tds.delete_files(paths_to_delete)
