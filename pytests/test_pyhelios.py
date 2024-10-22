@@ -352,7 +352,6 @@ def test_output(regression_data, export_to_file):
     from pyhelios import SimulationBuilder
     survey_path = Path('data') / 'test' / 'als_hd_demo_tiff_min.xml'
     pyhelios.setDefaultRandomnessGeneratorSeed("43")
-    dirname = xmldisplayer.find_playback_dir(survey_path, helios_root=WORKING_DIR)
     simB = SimulationBuilder(
         surveyPath=str(survey_path.absolute()),
         assetsDir=WORKING_DIR + os.sep + 'assets' + os.sep,
@@ -377,6 +376,7 @@ def test_output(regression_data, export_to_file):
     pcloud_ref = pcu.PointCloud.from_las(las, fnames=['gps_time'])
     pcloud.assert_equals(pcloud_ref, eps=0.00011)  # larger tolerance due to las scale factor of 0.0001
     if export_to_file:
+        dirname = xmldisplayer.find_playback_dir(survey_path, helios_root=WORKING_DIR)
         assert (Path(dirname) / 'leg000_points.xyz').exists()
         pcloud0 = pcu.PointCloud.from_xyz_file(Path(dirname) / 'leg000_points.xyz', cols=(0, 1, 2), names=['x', 'y', 'z'])
         pcloud_ref0 = pcu.PointCloud.from_las_file(regression_data / 'tiffloader_als_leg000_points.las')
