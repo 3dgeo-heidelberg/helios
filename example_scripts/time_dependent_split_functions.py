@@ -243,7 +243,7 @@ def objs_in_interval(infile, interval=9.5):
 
     coords, att = read_las(infile)
     gps_time = att["gps_time"]
-    global_min_t = np.min(gps_time)
+    global_min_t = 590000 + 7590
     att["gps_time"] = gps_time - global_min_t
     norm_gps_time = att["gps_time"]
     min_t = 0
