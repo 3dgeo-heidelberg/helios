@@ -50,7 +50,6 @@ public:
     virtual ~AbstractDesignMatrix() = default;
 
 
-protected:
     // ***  INNER UTILS  *** //
     // ********************* //
     /**
@@ -60,8 +59,8 @@ protected:
      *  then a fluxionum::FluxionumException will be thrown
      */
     inline size_t translateColumnNameToIndex(string const &columnName) const{
-        for(string const &name : columnNames){
-            if(name == columnName) return true;
+        for(size_t i = 0 ; i < columnNames.size() ; ++i){
+            if(columnNames[i] == columnName) return i;
         }
         std::stringstream ss;
         ss  << "AbstractDesignMatrix::translateColumnNameToIndex failed to "

@@ -23,7 +23,7 @@ DesignMatrix<VarType> DesignMatrixReader<VarType>::read(
     bool firstRow = true;
     size_t nValuesPerRow = 0;
     try{
-        // Parsing loop : fill varialbes
+        // Parsing loop : fill variables
         while(true){
             string const str = br.read();
             size_t const comIdx = str.find(com);

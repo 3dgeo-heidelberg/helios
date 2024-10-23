@@ -85,7 +85,9 @@ class SimulationBuild:
         Return:
             SimulationBuild which is a copy of current one
         """
-        copySim = SimulationBuild(None, None, None, None, None, None, True)
+        copySim = SimulationBuild(
+            None, None, None, None, None, None, None, None, True
+        )
         copySim.sim = self.sim.copy()
         return copySim
 

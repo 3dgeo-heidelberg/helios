@@ -156,6 +156,11 @@ BOOST_PYTHON_MODULE(_pyhelios){
             return_internal_reference<>()
         )
         .def(
+            "newLegFromTemplate",
+            &PyHeliosSimulation::newLegFromTemplate,
+            return_internal_reference<>()
+        )
+        .def(
             "newScanningStrip",
             &PyHeliosSimulation::newScanningStrip,
             return_value_policy<manage_new_object>()
