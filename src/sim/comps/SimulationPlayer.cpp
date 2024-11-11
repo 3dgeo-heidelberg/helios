@@ -199,10 +199,7 @@ void SimulationPlayer::restartScene(Scene &scene, bool const keepCRS){
         if(sp->sorh != nullptr && sp->sorh->isOnSwapFirstPlay()) {
             ScenePart::computeTransformations(sp, sp->sorh->isHolistic());
             sp->sorh->setOnSwapFirstPlay(false);
-            if(sp->mPrimitives.empty()) {
-                sp->sorh->setNull(true);
-            }
-            else {
+            if(!sp->mPrimitives.empty()) {
                 sp->sorh->setNull(false);
                 sp->sorh->setDiscardOnReplay(false);
             }
