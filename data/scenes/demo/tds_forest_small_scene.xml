@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+    <scene id="tree1" name="Dynamic scene"  >
+
+<part>
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/arbaro/sassafras_low.obj" />
+ <param type="string" key="up" value="y" />
+
+            </filter>    
+	    <filter type="translate">
+            	<param type="vec3" key="offset" value="0;0;0" />
+            </filter>
+        </part>
+        
+
+        <part>
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/arbaro/sassafras_low.obj" />
+
+ <param type="string" key="up" value="y" />
+
+            </filter>    
+	    <filter type="translate">
+            	<param type="vec3" key="offset" value="0;15;0" />
+            </filter>
+        </part>
+
+        <part>
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/arbaro/black_tupelo_low.obj" />
+ <param type="string" key="up" value="y" />
+
+            </filter>    
+	    <filter type="translate">
+            	<param type="vec3" key="offset" value="15;0;0" />
+            </filter>
+        </part>
+
+
+        <part>
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/arbaro/black_tupelo_low.obj" />
+ <param type="string" key="up" value="y" />
+
+            </filter>    
+	    <filter type="translate">
+            	<param type="vec3" key="offset" value="0;-15;0" />
+            </filter>
+        </part>
+
+
+        <part>
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/arbaro/sassafras_low.obj" />
+ <param type="string" key="up" value="y" />
+
+            </filter>    
+	    <filter type="translate">
+            	<param type="vec3" key="offset" value="-15;-15;0" />
+            </filter>
+        </part>
+
+
+        <part>
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/arbaro/black_tupelo_low.obj" />
+ <param type="string" key="up" value="y" />
+
+            </filter>    
+	    <filter type="translate">
+            	<param type="vec3" key="offset" value="15;15;0" />
+            </filter>
+        </part>
+
+
+        <part>
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/arbaro/sassafras_low.obj" />
+ <param type="string" key="up" value="y" />
+
+            </filter>    
+	    <filter type="translate">
+            	<param type="vec3" key="offset" value="15;-15;0" />
+            </filter>
+        </part>
+
+
+        <part>
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/arbaro/black_tupelo_low.obj" />
+ <param type="string" key="up" value="y" />
+
+            </filter>    
+	    <filter type="translate">
+            	<param type="vec3" key="offset" value="-15;15;0" />
+            </filter>
+        </part>
+
+      
+
+    </scene>
+</document>
