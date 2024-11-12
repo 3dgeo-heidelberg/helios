@@ -154,6 +154,8 @@ public:
      *
      * @return Scanner used by the simulation
      */
+    void setSurvey(Survey & survey) {this->survey = std::make_shared<Survey>(survey);}
+
     Scanner * getScanner()
         {return survey->scanner.get();}
     /**

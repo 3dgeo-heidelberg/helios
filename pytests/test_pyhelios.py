@@ -300,7 +300,7 @@ def test_material(test_sim):
     assert mat0.specularity == 0.0
     assert mat0.specular_exponent == 0.0
     assert mat0.classification == 0
-    assert np.isclose(mat0.kd[0], 0.20, atol=1e-2)
+    assert np.isclose(mat0.diffuse_components[0], 0.20, atol=1e-2)
 
 
 def test_scanner(test_sim):

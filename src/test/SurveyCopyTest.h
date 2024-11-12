@@ -54,11 +54,12 @@ bool SurveyCopyTest::run(){
         0.7,
         0.8,
         100,
-        nullptr,
         false,
         false,
         false,
-        true
+        true,
+        false,
+        nullptr
     );
     survey->scanner->setScannerHead(std::make_shared<ScannerHead>(
         glm::dvec3(0.4, 0.7, 0.1), 0.067
