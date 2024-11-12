@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='us-ascii'?>
+<document>
+	<scannerSettings id="template1" active="true" pulseFreq_hz="100000" scanAngle_deg="23" /> 
+	<survey name="uls_tds_trees" platform="data/platforms.xml#copter_linearpath" scanner="data/scanners_als.xml#livox_mid-70" scene="data\scenes\demo\tds_forest_small_scene.xml#tree1">
+	
+				<leg>
+			<platformSettings x="-20.0" y="-20.0" z="40.000" onGround="false" movePerSec_m="5" />
+			<scannerSettings template="template1" trajectoryTimeInterval_s="0.05" />
+		</leg>
+		<leg>
+			<platformSettings x="-20.0" y="20.0" z="40.000" onGround="false" movePerSec_m="5" />
+			<scannerSettings template="template1" trajectoryTimeInterval_s="0.05" />
+		</leg>
+		<leg>
+			<platformSettings x="20.0" y="20.0" z="40.000" onGround="false" movePerSec_m="5" />
+			<scannerSettings template="template1" trajectoryTimeInterval_s="0.05" />
+		</leg>
+		<leg>
+			<platformSettings x="-20.0" y="-20.0" z="40.000" onGround="false" movePerSec_m="5" />
+			<scannerSettings template="template1" trajectoryTimeInterval_s="0.05" />
+		</leg>
+
+
+	</survey>
+</document>
