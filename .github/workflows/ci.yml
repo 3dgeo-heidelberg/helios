@@ -12,6 +12,11 @@ on:
       - dev
       - alpha-dev
   workflow_dispatch:
+    inputs:
+      upload-outputs:
+        description: 'Whether to upload outputs'
+        default: false
+        type: boolean
 
 jobs:
   build-and-test:
@@ -64,3 +69,11 @@ jobs:
         if: runner.os != 'macOS' 
         run: |
           python -m pytest
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        if: github.event.inputs.upload-outputs == 'true'
+        with:
+          name: test-results
+          path: output/*
+          retention-days: 1
