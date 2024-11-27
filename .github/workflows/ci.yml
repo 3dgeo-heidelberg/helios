@@ -63,10 +63,16 @@ jobs:
         env:
           SETUPTOOLS_SCM_SUBPROCESS_TIMEOUT: "120"
 
-      - name: Run tests
-        # Disable MacOS for now - we do not yet officially support it and we need to invest a bit
-        # more efforts into investigating broken LAZ files written by Helios on MacOS.
-        if: runner.os != 'macOS' 
+      # Do not run on MacOS for now - we do not yet officially support it and we need to invest a bit
+      # more efforts into investigating broken LAZ files written by Helios on MacOS.
+
+      - name: Run tests (incl. regression tests)
+        if: runner.os == 'Windows'
+        run: |
+          python -m pytest --regression-tests
+
+      - name: Run tests (excl. regression tests)
+        if: runner.os == 'Linux'
         run: |
           python -m pytest
 

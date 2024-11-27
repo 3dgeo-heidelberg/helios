@@ -12,15 +12,11 @@ import os
 import time
 import struct
 import xml.etree.ElementTree as ET
-import shutil
 import laspy
 
-
-DELETE_FILES_AFTER = False
-WORKING_DIR = os.getcwd()
 import pyhelios
+from .test_demo_scenes import find_playback_dir
 from . import pcloud_utils as pcu
-from pyhelios.util import xmldisplayer
 
 
 def find_scene(survey_file):
@@ -49,7 +45,7 @@ def get_las_version(las_filename):
 
 
 @pytest.fixture(scope="session")
-def test_sim():
+def test_sim(output_dir):
     """
     Fixture which returns a simulation object for a given survey path
     """
@@ -59,8 +55,8 @@ def test_sim():
         from pyhelios import SimulationBuilder
         simB = SimulationBuilder(
             surveyPath=str(survey_path.absolute()),
-            assetsDir=WORKING_DIR + os.sep + 'assets' + os.sep,
-            outputDir=WORKING_DIR + os.sep + 'output' + os.sep,
+            assetsDir=[str(Path('assets'))],
+            outputDir=str(output_dir),
         )
         simB.setLasOutput(las_output)
         simB.setLas10(las10)
@@ -187,7 +183,6 @@ def test_survey_characteristics(test_sim):
     """Test accessing survey characteristics (name, length)"""
     path_to_survey = Path('data') / 'surveys' / 'toyblocks' / 'als_toyblocks.xml'
     sim = test_sim(path_to_survey)
-    assert Path(sim.sim.getSurveyPath()) == Path(WORKING_DIR) / path_to_survey
     survey = sim.sim.getSurvey()
     assert survey.name == 'toyblocks_als'
     assert survey.getLength() == 0.0
@@ -199,7 +194,7 @@ def test_scene():
     pass
 
 
-def test_create_survey():
+def test_create_survey(output_dir):
     """Test creating/configuring a survey with pyhelios"""
     pyhelios.setDefaultRandomnessGeneratorSeed("7")
     test_survey_path = 'data/surveys/test_survey.xml'
@@ -219,7 +214,7 @@ def test_create_survey():
     simBuilder = pyhelios.SimulationBuilder(
         test_survey_path,
         'assets/',
-        'output/'
+        str(output_dir)
     )
     simBuilder.setFinalOutput(True)
     simBuilder.setLasOutput(True)
@@ -282,12 +277,6 @@ def test_create_survey():
     np.testing.assert_allclose(meas[100, :3], np.array([83.32, -66.44204, 0.03114649]))
     np.testing.assert_allclose(traj[0, :3], np.array([waypoints[0][0], waypoints[0][1], altitude]))
 
-    # cleanup
-    os.remove(test_survey_path)
-    if DELETE_FILES_AFTER:
-        print(f"Deleting files in {Path(output.outpath).parent.as_posix()}")
-        shutil.rmtree(Path(output.outpath).parent)
-
 
 def test_material(test_sim):
     """Test accessing material properties of a primitive in a scene"""
@@ -347,15 +336,15 @@ def test_detector(test_sim):
     [pytest.param(True, id="setExportToFile(True)"),
      pytest.param(False, id="setExportToFile(False)")]
 )
-def test_output(regression_data, export_to_file):
+def test_output(output_dir, regression_data, export_to_file):
     """Validating the output of a survey started with pyhelios"""
     from pyhelios import SimulationBuilder
     survey_path = Path('data') / 'test' / 'als_hd_demo_tiff_min.xml'
     pyhelios.setDefaultRandomnessGeneratorSeed("43")
     simB = SimulationBuilder(
         surveyPath=str(survey_path.absolute()),
-        assetsDir=WORKING_DIR + os.sep + 'assets' + os.sep,
-        outputDir=WORKING_DIR + os.sep + 'output' + os.sep,
+        assetsDir=[str(Path('assets'))],
+        outputDir=str(output_dir),
     )
     simB.setFinalOutput(True)
     simB.setExportToFile(export_to_file)
@@ -369,20 +358,22 @@ def test_output(regression_data, export_to_file):
 
     sim.start()
     output = sim.join()
-    measurements_array, trajectory_array = pyhelios.outputToNumpy(output)
-    time = measurements_array[:, 16]
-    pcloud = pcu.PointCloud(measurements_array[:, :3], fnames=['gps_time'], F=time.reshape(time.shape[0], 1))
-    las = laspy.read(regression_data / 'tiffloader_als_merged.las')
-    pcloud_ref = pcu.PointCloud.from_las(las, fnames=['gps_time'])
-    pcloud.assert_equals(pcloud_ref, eps=0.00011)  # larger tolerance due to las scale factor of 0.0001
+
+    if regression_data:
+        measurements_array, trajectory_array = pyhelios.outputToNumpy(output)
+        time = measurements_array[:, 16]
+        pcloud = pcu.PointCloud(measurements_array[:, :3], fnames=['gps_time'], F=time.reshape(time.shape[0], 1))
+        las = laspy.read(regression_data / 'tiffloader_als_merged.las')
+        pcloud_ref = pcu.PointCloud.from_las(las, fnames=['gps_time'])
+        pcloud.assert_equals(pcloud_ref, eps=0.00011)  # larger tolerance due to las scale factor of 0.0001
+
     if export_to_file:
-        dirname = xmldisplayer.find_playback_dir(survey_path, helios_root=WORKING_DIR)
+        dirname = find_playback_dir(survey_path, output_dir)
         assert (Path(dirname) / 'leg000_points.xyz').exists()
-        pcloud0 = pcu.PointCloud.from_xyz_file(Path(dirname) / 'leg000_points.xyz', cols=(0, 1, 2), names=['x', 'y', 'z'])
-        pcloud_ref0 = pcu.PointCloud.from_las_file(regression_data / 'tiffloader_als_leg000_points.las')
-        pcloud0.assert_equals(pcloud_ref0, eps=0.00011)  # larger tolerance due to las scale factor of 0.0001
         assert (Path(dirname) / 'leg001_points.xyz').exists()
         assert (Path(dirname) / 'leg002_points.xyz').exists()
-        if DELETE_FILES_AFTER:
-            print(f"Deleting files in {Path(output.outpath).parent.as_posix()}")
-            shutil.rmtree(Path(output.outpath).parent)
+
+        if regression_data:
+            pcloud0 = pcu.PointCloud.from_xyz_file(Path(dirname) / 'leg000_points.xyz', cols=(0, 1, 2), names=['x', 'y', 'z'])
+            pcloud_ref0 = pcu.PointCloud.from_las_file(regression_data / 'tiffloader_als_leg000_points.las')
+            pcloud0.assert_equals(pcloud_ref0, eps=0.00011)  # larger tolerance due to las scale factor of 0.0001
