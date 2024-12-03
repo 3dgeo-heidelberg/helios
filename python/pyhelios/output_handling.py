@@ -3,7 +3,7 @@ import numpy as np
 
 def outputToList(output=None):
     """Obtain the output as two different lists, the first one containing
-    measurements and the seconds one containing trajectories.
+    measurements and the second one containing trajectories.
 
     Arguments:
         output --- The output returned by a simulation
@@ -12,38 +12,35 @@ def outputToList(output=None):
         list of measurements, list of trajectories
     """
     # Prepare
-    measurements = output.measurements
-    nMeasurements = measurements.length()
-    lMeasurements = []
-    trajectories = output.trajectories
-    nTrajectories = trajectories.length()
-    lTrajectories = []
+    measurements, trajectories, _, _, _ = output
+    lMeasurements = []  # Initialize as empty list
+    lTrajectories = []  # Initialize as empty list
 
-    # Fill
-    for i in range(nMeasurements):
-        meas = measurements[i]
-        pos = meas.getPosition()
-        ori = meas.getBeamOrigin()
-        dir = meas.getBeamDirection()
+    # Fill measurements
+    for meas in measurements:
+        pos = meas.position
+        ori = meas.beam_origin
+        dir = meas.beam_direction
         lMeasurements.append([
-            pos.x, pos.y, pos.z,
-            ori.x, ori.y, ori.z,
-            dir.x, dir.y, dir.z,
+            pos[0], pos[1], pos[2],
+            ori[0], ori[1], ori[2],
+            dir[0], dir[1], dir[2],
             meas.intensity,  # 9
-            meas.echoWidth,  # 10
-            meas.returnNumber,  # 11
-            meas.pulseReturnNumber,  # 12
-            meas.fullwaveIndex,  # 13
-            int(meas.hitObjectId),  # 14
+            meas.echo_width,  # 10
+            meas.return_number,  # 11
+            meas.pulse_return_number,  # 12
+            meas.fullwave_index,  # 13
+            int(meas.hit_object_id),  # 14
             meas.classification,  # 15
-            meas.gpsTime  # 16
+            meas.gps_time  # 16
         ])
-    for i in range(nTrajectories):
-        traj = trajectories[i]
-        pos = traj.getPosition()
+
+    # Fill trajectories
+    for traj in trajectories:
+        pos = traj.position
         lTrajectories.append([
-            pos.x, pos.y, pos.z,
-            traj.gpsTime,
+            pos[0], pos[1], pos[2],
+            traj.gps_time,
             traj.roll,
             traj.pitch,
             traj.yaw
@@ -66,5 +63,5 @@ def outputToNumpy(output=None):
     # Obtain lists
     lMeasurements, lTrajectories = outputToList(output)
 
-    # Return
-    return np.array(lMeasurements), np.array(lTrajectories)
+    # Convert lists to numpy arrays
+    return np.array(lMeasurements, dtype=np.float64), np.array(lTrajectories, dtype=np.float64)

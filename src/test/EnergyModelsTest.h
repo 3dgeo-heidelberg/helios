@@ -168,12 +168,12 @@ bool EnergyModelsTest::testEllipticalFootprintEnergy(){
         0.15, // receiverDiameter_m
         9.07603791e-6, // atmosphericExtinction
         1.064e-06, // wavelength_m
-        nullptr, // rangeErrExpr
         false, // Write waveform
         false, // Write pulse
         false, // Calc echowidth
         false, // Fullwave noise
-        false // Platform noise disabled
+        false, // Platform noise disabled
+        nullptr // rangeErrExpr
     );
     std::shared_ptr<AbstractDetector> detector = std::make_shared<
         FullWaveformPulseDetector

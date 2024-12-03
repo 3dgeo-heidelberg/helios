@@ -10,4 +10,4 @@ from .simulation_build import SimulationBuild,\
 
 # For now, we expose all the raw bindings code to the user
 # for backwards compatibility.
-from _pyhelios import *
+from _helios import *
