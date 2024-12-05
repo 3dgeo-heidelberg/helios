@@ -103,7 +103,7 @@ class SimulationBuilder:
         self.setCalcEchowidth(False)
         self.setFullwaveNoise(False)
         self.setPlatformNoiseDisabled(True)
-        self.setLegacyEnergyModel(False)
+        self.setLegacyEnergyModel(True)
         self.setExportToFile(True)
         self.setCallback(None)
         self.rotateFilters = []
@@ -156,7 +156,8 @@ class SimulationBuilder:
             self.writeWaveform,
             self.calcEchowidth,
             self.fullwaveNoise,
-            self.platformNoiseDisabled
+            self.platformNoiseDisabled,
+            False
         )
         if self.callback is not None:
             build.sim.setCallback(self.callback)

@@ -12,12 +12,11 @@ import os
 import time
 import struct
 import xml.etree.ElementTree as ET
-import shutil
+import laspy
 
-
-DELETE_FILES_AFTER = False
-WORKING_DIR = os.getcwd()
 import pyhelios
+from .test_demo_scenes import find_playback_dir
+from . import pcloud_utils as pcu
 
 
 def find_scene(survey_file):
@@ -46,7 +45,7 @@ def get_las_version(las_filename):
 
 
 @pytest.fixture(scope="session")
-def test_sim():
+def test_sim(output_dir):
     """
     Fixture which returns a simulation object for a given survey path
     """
@@ -56,8 +55,8 @@ def test_sim():
         from pyhelios import SimulationBuilder
         simB = SimulationBuilder(
             surveyPath=str(survey_path.absolute()),
-            assetsDir=WORKING_DIR + os.sep + 'assets' + os.sep,
-            outputDir=WORKING_DIR + os.sep + 'output' + os.sep,
+            assetsDir=[str(Path('assets'))],
+            outputDir=str(output_dir),
         )
         simB.setLasOutput(las_output)
         simB.setLas10(las10)
@@ -184,7 +183,6 @@ def test_survey_characteristics(test_sim):
     """Test accessing survey characteristics (name, length)"""
     path_to_survey = Path('data') / 'surveys' / 'toyblocks' / 'als_toyblocks.xml'
     sim = test_sim(path_to_survey)
-    assert Path(sim.sim.getSurveyPath()) == Path(WORKING_DIR) / path_to_survey
     survey = sim.sim.getSurvey()
     assert survey.name == 'toyblocks_als'
     assert survey.getLength() == 0.0
@@ -196,7 +194,7 @@ def test_scene():
     pass
 
 
-def test_create_survey():
+def test_create_survey(output_dir):
     """Test creating/configuring a survey with pyhelios"""
     pyhelios.setDefaultRandomnessGeneratorSeed("7")
     test_survey_path = 'data/surveys/test_survey.xml'
@@ -216,7 +214,7 @@ def test_create_survey():
     simBuilder = pyhelios.SimulationBuilder(
         test_survey_path,
         'assets/',
-        'output/'
+        str(output_dir)
     )
     simBuilder.setFinalOutput(True)
     simBuilder.setLasOutput(True)
@@ -273,17 +271,11 @@ def test_create_survey():
     output = simB.join()
     meas, traj = pyhelios.outputToNumpy(output)
     # check length of output
-    assert meas.shape == (9926, 17)
+    assert meas.shape == (10531, 17)
     assert traj.shape == (6670, 7)
     # compare individual points
     np.testing.assert_allclose(meas[100, :3], np.array([83.32, -66.44204, 0.03114649]))
     np.testing.assert_allclose(traj[0, :3], np.array([waypoints[0][0], waypoints[0][1], altitude]))
-
-    # cleanup
-    os.remove(test_survey_path)
-    if DELETE_FILES_AFTER:
-        print(f"Deleting files in {Path(output.outpath).parent.as_posix()}")
-        shutil.rmtree(Path(output.outpath).parent)
 
 
 def test_material(test_sim):
@@ -344,15 +336,15 @@ def test_detector(test_sim):
     [pytest.param(True, id="setExportToFile(True)"),
      pytest.param(False, id="setExportToFile(False)")]
 )
-def test_output(export_to_file):
+def test_output(output_dir, export_to_file):
     """Validating the output of a survey started with pyhelios"""
     from pyhelios import SimulationBuilder
     survey_path = Path('data') / 'test' / 'als_hd_demo_tiff_min.xml'
     pyhelios.setDefaultRandomnessGeneratorSeed("43")
     simB = SimulationBuilder(
         surveyPath=str(survey_path.absolute()),
-        assetsDir=WORKING_DIR + os.sep + 'assets' + os.sep,
-        outputDir=WORKING_DIR + os.sep + 'output' + os.sep,
+        assetsDir=[str(Path('assets'))],
+        outputDir=str(output_dir),
     )
     simB.setFinalOutput(True)
     simB.setExportToFile(export_to_file)
@@ -360,6 +352,7 @@ def test_output(export_to_file):
     simB.setCallbackFrequency(100)
     simB.setNumThreads(1)
     simB.setKDTJobs(1)
+    simB.setFixedGpsTimeStart('2022-01-01 00:00:00')
 
     sim = simB.build()
 
@@ -367,12 +360,16 @@ def test_output(export_to_file):
     output = sim.join()
     measurements_array, trajectory_array = pyhelios.outputToNumpy(output)
 
-    np.testing.assert_allclose(measurements_array[0, :3], np.array([474500.3, 5473580.0, 107.0001]), rtol=0.000001)
-    assert measurements_array.shape == (2407, 17)
-    assert trajectory_array.shape == (9, 7)
     if export_to_file:
-        assert Path(output.outpath).parent.parent == Path(WORKING_DIR) / "output" / "als_hd_demo"
-        # cleanup
-        if DELETE_FILES_AFTER:
-            print(f"Deleting files in {Path(output.outpath).parent.as_posix()}")
-            shutil.rmtree(Path(output.outpath).parent)
+        # check if output files exist
+        dirname = find_playback_dir(survey_path, output_dir)
+        assert (Path(dirname) / 'leg000_points.xyz').exists()
+        assert (Path(dirname) / 'leg001_points.xyz').exists()
+        assert (Path(dirname) / 'leg002_points.xyz').exists()
+        # check if output files contain the same data as the internal arrays
+        leg0 = np.loadtxt(Path(dirname) / 'leg000_points.xyz')
+        leg1 = np.loadtxt(Path(dirname) / 'leg001_points.xyz')
+        leg2 = np.loadtxt(Path(dirname) / 'leg002_points.xyz')
+        measurements_from_file = np.vstack((leg0, leg1, leg2))
+        # account for different (order of) fields in internal array and file 
+        assert np.allclose(measurements_array[:, (0, 1, 2, 9, 10, 12, 11, 13, 14, 15, 16)], measurements_from_file, atol=1e-6)

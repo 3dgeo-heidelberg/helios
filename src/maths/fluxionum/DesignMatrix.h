@@ -39,11 +39,12 @@ using std::string;
  */
 template <typename T>
 class DesignMatrix : public AbstractDesignMatrix<T>{
-protected:
+public:  // Originally it was protected, it has been changed to public
     // ***  USING  *** //
     // *************** //
     using AbstractDesignMatrix<T>::translateColumnNameToIndex;
 
+protected:
     // ***  ATTRIBUTES  *** //
     // ******************** //
     /**

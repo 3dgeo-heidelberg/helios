@@ -8,7 +8,7 @@
 // ************************************ //
 MultiScanner::MultiScanner(MultiScanner &scanner) :
     Scanner(scanner),
-    scanDevs(std::move(scanner.scanDevs))
+    scanDevs(scanner.scanDevs)
 {}
 
 
