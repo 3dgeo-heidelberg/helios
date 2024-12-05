@@ -8,7 +8,7 @@
 				trajectory="data/trajectories/flyandrotate.trj"
 				tIndex="0" xIndex="4" yIndex="5" zIndex="6" rollIndex="1" pitchIndex="2" yawIndex="3"
 				slopeFilterThreshold="0.0" toRadians="true" syncGPSTime="true"
-				tStart="0" tEnd="5" teleportToStart="true"
+				tStart="0" tEnd="5"
 			/>  
 			<scannerSettings template="scaset" trajectoryTimeInterval_s="0.01"/>
         </leg>
