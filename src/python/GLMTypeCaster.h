@@ -18,9 +18,9 @@ namespace pybind11 { namespace detail {
             if (t.size() != 3) return false;
 
             value = glm::dvec3(
-                pybind11::cast<double>(t[0]),
-                pybind11::cast<double>(t[1]),
-                pybind11::cast<double>(t[2])
+                static_cast<double>(pybind11::cast<double>(t[0])),
+                static_cast<double>(pybind11::cast<double>(t[1])),
+                static_cast<double>(pybind11::cast<double>(t[2]))
             );
 
             return true;
@@ -44,8 +44,8 @@ namespace pybind11 { namespace detail {
             if (t.size() != 2) return false;  // glm::dvec2 needs two elements
 
             value = glm::dvec2(
-                pybind11::cast<double>(t[0]),
-                pybind11::cast<double>(t[1])
+                static_cast<double>(pybind11::cast<double>(t[0])),
+                static_cast<double>(pybind11::cast<double>(t[1]))
             );
 
             return true;

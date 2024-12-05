@@ -1,4 +1,4 @@
-from pyhelios.utils import Validatable, ValidatedCppManagedProperty, RandomnessGenerator
+from pyhelios.utils import Validatable, ValidatedCppManagedProperty, RandomnessGenerator, AssetManager
 
 from pydantic import BaseModel, Field
 from typing import Optional, List, Dict
@@ -11,7 +11,6 @@ from collections import deque
 import math
 from abc import ABC, abstractmethod
 import _helios
- 
 
 class PrimitiveType(Enum):
     NONE = _helios.PrimitiveType.NONE
@@ -45,17 +44,24 @@ class Rotation(Validatable):
     def from_xml_node(cls, beam_origin_node: ET.Element) -> 'Rotation':
         if beam_origin_node is None:
             return cls._validate(cls(q0=1., q1=1., q2=0., q3=0.))
+        global_rotation = True
+        if beam_origin_node.attrib.get("rotations") == "local":
+            global_rotation = False
 
         rotation_node = beam_origin_node.findall('rot')
         result_rotation = cls(q0=1.0, q1=0.0, q2=0.0, q3=0.0)  # Identity rotation
-
+        
         for node in rotation_node:
             axis = node.get('axis')
             angle_deg = float(node.get('angle_deg', 0.0))
             angle_rad = math.radians(angle_deg)  # Convert to radians
             if angle_rad != 0:
                 rotation = cls._create_rotation_from_axis_angle(axis, angle_rad)
-                result_rotation = result_rotation.apply_rotation(rotation)  # Combine rotations
+                if global_rotation:
+                    result_rotation = rotation.apply_rotation(result_rotation)        
+                else:
+                    result_rotation = result_rotation.apply_rotation(rotation)  # Combine rotations
+                
         return result_rotation._validate(result_rotation)
 
     @staticmethod
@@ -63,7 +69,7 @@ class Rotation(Validatable):
         if axis.lower() == 'x':
             return Rotation(
                 math.cos(angle / 2),
-                math.sin(angle / 2),
+                -math.sin(angle / 2),
                 0.0,
                 0.0
             )
@@ -170,7 +176,7 @@ class BaseEnergyModel(EnergyModel):
 
 class Material(Validatable):
     def __init__(self, mat_file_path: Optional[str] = "", name: Optional[str] = "default", is_ground: Optional[bool] = False, 
-                 use_vertex_colors: Optional[bool] = False, reflectance: Optional[float] = .0, specularity: Optional[float] = .0,
+                 use_vertex_colors: Optional[bool] = False, reflectance: Optional[float] = -1., specularity: Optional[float] = .0,
                  ambient_components: Optional[List[float]] = None, diffuse_components: Optional[List[float]] = None,
                  specular_components: Optional[List[float]] = None, map_kd: Optional[str] = "", spectra: Optional[str] = "") -> None:
         self._cpp_object = _helios.Material()
@@ -202,11 +208,10 @@ class Material(Validatable):
     map_kd: Optional[str] = ValidatedCppManagedProperty("map_kd")
     spectra: Optional[str] = ValidatedCppManagedProperty("spectra")
 
-    def calculate_specularity(self,):
+    def calculate_specularity(self):
         ds_sum = sum(self.diffuse_components) + sum(self.specular_components)
         if ds_sum > 0:
             self.specularity = sum(self.specular_components) / ds_sum
-
     
     @classmethod
     def load_materials(cls, filePathString: str) -> Dict[str, 'Material']:
@@ -243,6 +248,7 @@ class Material(Validatable):
                 # HELIOS-specific additions
                 elif lineParts[0] == "helios_reflectance" and len(lineParts) >= 2:
                     newMat.reflectance = float(lineParts[1])
+
                 elif lineParts[0] == "helios_isGround" and len(lineParts) >= 2:
                     newMat.is_ground = lineParts[1].lower() in ["true", "1"]
                 elif lineParts[0] == "helios_useVertexColors" and len(lineParts) >= 2:
@@ -824,15 +830,16 @@ class SimulationCycleCallback:
     def __init__(self) -> None:
         self._cpp_object = _helios.SimulationCycleCallback()
         self.is_callback_in_progress = False  # Flag to prevent recursion
+        self._lock = threading.Lock()
 
     def __call__(self, measurements: List[Measurement], trajectories: List[Trajectory], outpath: str):
-        # Prevent recursion
-        if self.is_callback_in_progress:
-            return
-        self.is_callback_in_progress = True  # Set flag to prevent recursion
-        try:
-            self.measurements = measurements
-            self.trajectories = trajectories
-            self.output_path = outpath
-        finally:
-            self.is_callback_in_progress = False 
+        with self._lock:
+            if self.is_callback_in_progress:
+                return
+            self.is_callback_in_progress = True  # Set flag to prevent recursion
+            try:
+                self.measurements = measurements
+                self.trajectories = trajectories
+                self.output_path = outpath
+            finally:
+                self.is_callback_in_progress = False 

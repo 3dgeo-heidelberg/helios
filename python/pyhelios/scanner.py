@@ -15,7 +15,8 @@ class ScannerSettings(Validatable):
     def __init__(self, id: Optional[str] = "DEFAULT_TEMPLATE1_HELIOSCPP", is_active: Optional[bool] = True, head_rotation: Optional[float] = .0, 
                  rotation_start_angle: Optional[float] = .0, rotation_stop_angle: Optional[float] = .0, pulse_frequency: Optional[int] = 0,
                  scan_angle: Optional[float] = .0, min_vertical_angle: Optional[float] = -1, max_vertical_angle: Optional[float] = -1,
-                 scan_frequency: Optional[float] = .0, beam_divergence_angle: Optional[float] = .003, trajectory_time_interval: Optional[float] = .0,
+                 scan_frequency: Optional[float] = .0, beam_divergence_angle: Optional[float] = 0.0003,
+                   trajectory_time_interval: Optional[float] = .0,
                  vertical_resolution: Optional[float] = .0, horizontal_resolution: Optional[float] = .0) -> None:
 
         self._cpp_object = _helios.ScannerSettings()
@@ -60,7 +61,7 @@ class ScannerSettings(Validatable):
         settings.rotation_start_angle = float(node.get('headRotateStart_deg', settings.rotation_start_angle))
         settings.rotation_stop_angle = float(node.get('headRotateStop_deg', settings.rotation_stop_angle))
         settings.pulse_frequency = int(node.get('pulseFreq_hz', settings.pulse_frequency))
-        settings.scan_angle = float(node.get('scanAngle_deg', settings.scan_angle))
+        settings.scan_angle = math.radians(float(node.get('scanAngle_deg'))) if node.get('scanAngle_deg') is not None else settings.scan_angle
         settings.min_vertical_angle = float(node.get('verticalAngleMin_deg', settings.min_vertical_angle))
         settings.max_vertical_angle = float(node.get('verticalAngleMax_deg', settings.max_vertical_angle))
         settings.scan_frequency = float(node.get('scanFreq_hz', settings.scan_frequency))
@@ -74,7 +75,7 @@ class ScannerSettings(Validatable):
         
         if settings.rotation_start_angle < settings.rotation_stop_angle and settings.head_rotation < 0:
             raise ValueError("Rotation start angle must be greater than rotation stop angle if head rotation is negative")
-
+     
         return cls._validate(settings)
 
     @classmethod
@@ -263,7 +264,7 @@ class ScanningDevice(Validatable):
                     self.cached_radius_steps.append(i)
         
         if legacy_energy_model:
-            #TODO call the improved energy model
+            #TODO call the improved energy model for the more advanced functionality
             pass
         
         else:
@@ -299,7 +300,6 @@ class Scanner(Validatable):
         self.cycle_measurements_mutex = None
         self.all_measurements_mutex = None 
           
-#TODO: print IMPORTANT NOTE: YOU SHOULD CHECK THE LOGIC OF USAGE OF PARENT CLASS INITIALIZATION!!!!!!!!!!
     id: Optional[str] = ValidatedCppManagedProperty("id")
     trajectory_time_interval: float = ValidatedCppManagedProperty("trajectory_time_interval")
     is_state_active: bool = ValidatedCppManagedProperty("is_state_active")

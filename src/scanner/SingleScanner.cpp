@@ -24,7 +24,7 @@ SingleScanner::SingleScanner(
     bool const calcEchowidth,
     bool const fullWaveNoise,
     bool const platformNoiseDisabled,
-    std::shared_ptr<UnivarExprTreeNode<double>> rangeErrExpr
+    std::shared_ptr<UnivarExprTreeNode<double>> rangeErrExpr // placed in the end to skip it 
 ) :
     Scanner(
         id,

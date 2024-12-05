@@ -175,6 +175,7 @@ bool EnergyModelsTest::testEllipticalFootprintEnergy(){
         false, // Platform noise disabled
         nullptr // rangeErrExpr
     );
+    
     std::shared_ptr<AbstractDetector> detector = std::make_shared<
         FullWaveformPulseDetector
     >(

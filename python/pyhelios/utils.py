@@ -169,7 +169,7 @@ class PyHeliosException(Exception):
 
 def create_property(property_name, cpp_function_setter, cpp_function_getter=None, index_function=None):
     """
-    Factory function to create a property getter and setter for scanning_device and _cpp_object.
+    Factory function to create a property getter and setter for python instance and _cpp_object.
     
     Args:
         property_name (str): The name of the property.

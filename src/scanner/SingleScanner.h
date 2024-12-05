@@ -44,7 +44,7 @@ public:
         bool const calcEchowidth = false,
         bool const fullWaveNoise = false,
         bool const platformNoiseDisabled = false,
-        std::shared_ptr<UnivarExprTreeNode<double>> rangeErrExpr = nullptr
+        std::shared_ptr<UnivarExprTreeNode<double>> rangeErrExpr = nullptr // placed in the end to skip it 
     );
     /**
      * @brief Copy constructor for the SingleScanner

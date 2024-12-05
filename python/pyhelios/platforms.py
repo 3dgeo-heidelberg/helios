@@ -57,7 +57,7 @@ class PlatformSettings(Validatable):
             settings.yaw_angle = math.radians(float(yaw_at_departure_deg))
         if settings.is_stop_and_turn and settings.is_smooth_turn:
             raise ValueError("Platform cannot be both stop-and-turn and smooth-turn")
-        
+        settings.position = [settings.x, settings.y, settings.z]
         return cls._validate(settings)
 
     @classmethod
@@ -98,12 +98,28 @@ class Platform(Validatable):
         self.is_smooth_turn = is_smooth_turn
         self.position = position or [0, 0, 0]
         self.device_relative_position = [0.0, 0.0, 0.0]
-        self.device_relative_attitude = Rotation(0.0, 1.0, 0.0, 0.0)
-        self.cached_attitude = Rotation(0.0, 0.0, 1.0, 0.0)
+        self.device_relative_attitude = Rotation(0.0, 0.0, 1.0, 0.0)
+        self.attitude = Rotation(0.0, 0.0, 1.0, 0.0)
         self.scene = scene
         self.target_waypoint = [0.0, 0.0, 0.0]
         self.next_waypoint = [0.0, 0.0, 0.0]
         self.origin_waypoint = [0.0, 0.0, 0.0]
+        
+        self.absolute_mount_position = [0.0, 0.0, 0.0]
+        self.absolute_mount_attitude = Rotation(0.0, 0.0, 1.0, 0.0)
+        self.cached_dir_current = [0.0, 0.0, 0.0]
+        self.cached_dir_current_xy = [0.0, 0.0, 0.0]
+
+        self.cached_vector_to_target = [0.0, 0.0, 0.0]
+        self.cached_vector_to_target_xy = [0.0, 0.0, 0.0]
+        self.cached_origin_to_target_dir_xy = [0.0, 0.0, 0.0]
+        self.cached_target_to_next_dir_xy = [0.0, 0.0, 0.0]
+        self.cached_distance_to_target_xy = 0.0
+
+        self.cached_current_angle_xy
+        self.cached_end_target_angle_xy 
+        self.cached_origin_to_target_angle_xy 
+        self.cached_target_to_next_angle_xy 
     
 
     last_check_z: Optional[float] = ValidatedCppManagedProperty("last_check_z")
@@ -116,6 +132,21 @@ class Platform(Validatable):
     is_smooth_turn: Optional[bool] = ValidatedCppManagedProperty("is_smooth_turn")
     position: Optional[List[float]] = ValidatedCppManagedProperty("position")
     scene: Optional[Scene] = ValidatedCppManagedProperty("scene")
+    device_relative_position: Optional[List[float]] = ValidatedCppManagedProperty("device_relative_position")
+    device_relative_attitude: Rotation = ValidatedCppManagedProperty("device_relative_attitude")
+    absolute_mount_position: List[float] = ValidatedCppManagedProperty("absolute_mount_position")
+    absolute_mount_attitude: Rotation = ValidatedCppManagedProperty("absolute_mount_attitude")
+    cached_dir_current: List[float] = ValidatedCppManagedProperty("cached_dir_current")
+    cached_dir_current_xy: List[float] = ValidatedCppManagedProperty("cached_dir_current_xy")
+    cached_vector_to_target: List[float] = ValidatedCppManagedProperty("cached_vector_to_target")
+    cached_vector_to_target_xy: List[float] = ValidatedCppManagedProperty("cached_vector_to_target_xy")
+    cached_origin_to_target_dir_xy: List[float] = ValidatedCppManagedProperty("cached_origin_to_target_dir_xy")
+    cached_target_to_next_dir_xy: List[float] = ValidatedCppManagedProperty("cached_target_to_next_dir_xy")
+    cached_distance_to_target_xy: float = ValidatedCppManagedProperty("cached_distance_to_target_xy")
+    cached_current_angle_xy: float = ValidatedCppManagedProperty("cached_current_angle_xy")
+    cached_end_target_angle_xy: float = ValidatedCppManagedProperty("cached_end_target_angle_xy")
+    cached_origin_to_target_angle_xy: float = ValidatedCppManagedProperty("cached_origin_to_target_angle_xy")
+    cached_target_to_next_angle_xy: float = ValidatedCppManagedProperty("cached_target_to_next_angle_xy")
 
     @classmethod
     def from_xml(cls, filename: str, id: Optional[str] = None) -> 'Platform':
@@ -185,7 +216,7 @@ class Platform(Validatable):
 
         # Parse the rotation
         device_relative_attitude = Rotation.from_xml_node(scanner_mount)
-        
+       
         return device_relative_position, device_relative_attitude
     
     def retrieve_current_settings(self) -> PlatformSettings:
@@ -208,11 +239,74 @@ class Platform(Validatable):
             0
         ])
 
+        self.cached_end_target_angle_xy = self._angle_between_vectors(
+            self.cached_origin_to_target_dir_xy, 
+            self.cached_target_to_next_dir_xy
+        )
+
+        # Convert directions to angles
+        self.cached_origin_to_target_angle_xy = self._direction_to_angle_xy(
+            self.cached_origin_to_target_dir_xy
+        )
+
+        self.cached_target_to_next_angle_xy = self._direction_to_angle_xy(
+            self.cached_target_to_next_dir_xy
+        )
+
+        # Update dynamic cache
+        self.update_dynamic_cache()
+
+    def update_dynamic_cache(self):
+        self.cached_vector_to_target = [
+            self.target_waypoint[i] - self.position[i] for i in range(3)
+        ]
+        self.cached_dir_current = self.attitude.apply_vector_rotation([0,1,0])
+        # Projected Vector in XY-plane
+        self.cached_vector_to_target_xy = [
+            self.cached_vector_to_target[0],
+            self.cached_vector_to_target[1],
+            0
+        ]
+
+        # Distance to Target in XY-plane
+        self.cached_distance_to_target_xy = self._l2_norm(
+            self.cached_vector_to_target_xy
+        )
+
+        # Current Direction (normalized)
+        self.cached_dir_current_xy = self._normalize([
+            self.cached_dir_current[0],
+            self.cached_dir_current[1],
+            0
+        ])
+
+        # Angle between current direction and Target-to-Next
+        self.cached_current_angle_xy = self._angle_between_vectors(
+            self.cached_dir_current_xy,
+            self.cached_target_to_next_dir_xy
+        )
+
     def _normalize(self, vector):
         length = math.sqrt(sum(comp ** 2 for comp in vector))
         if length == 0:
             return [0, 0, 0]
         return [comp / length for comp in vector]
+    
+    def _angle_between_vectors(self, v1, v2):
+        # Compute dot product
+        dot_product = sum(v1[i] * v2[i] for i in range(3))
+        # Clamp to avoid precision errors
+        dot_product = max(-1.0, min(1.0, dot_product))
+        # Compute angle (in radians)
+        return math.acos(dot_product)
+
+    def _direction_to_angle_xy(self, vector):
+        # Angle in radians from X-axis
+        return math.atan2(vector[1], vector[0])
+
+    def _l2_norm(self, vector):
+        # Compute Euclidean norm (L2 norm)
+        return math.sqrt(sum(comp ** 2 for comp in vector))
 
     def prepare_simulation(self, pulse_frequency: int):
         self.cached_absolute_attitude = self.attitude.apply_rotation(self.device_relative_attitude)

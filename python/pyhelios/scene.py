@@ -198,7 +198,6 @@ class ScenePart(Validatable):
             return False
         return True
 
-
     def load_scene_part_id(self, part_elem: ET.Element, idx: int) -> bool:
         """
         This method loads the `id` attribute of a scene part from an XML element.
@@ -536,7 +535,7 @@ class ScenePart(Validatable):
             primitive.scale(self.scale)
             # Translate the primitive
             primitive.translate(self.origin)
-            
+              
     def smooth_vertex_normals(self):
         # Dictionary to store the list of triangles for each vertex
         vt_map = defaultdict(list)
@@ -571,6 +570,7 @@ class Scene(Validatable):
         self.kdt_geom_jobs: int = 1
         self.kdt_sah_loss_nodes: int = 21
         self.primitives: Optional[List[Primitive]] = []
+        self.default_reflectance: float = 50.0
 
     @property
     def scene_parts(self) -> Optional[List[ScenePart]]:
@@ -594,6 +594,7 @@ class Scene(Validatable):
     bbox: Optional[AABB] = ValidatedCppManagedProperty("bbox")
     bbox_crs: Optional[AABB] = ValidatedCppManagedProperty("bbox_crs")
     primitives: Optional[List[Primitive]] = ValidatedCppManagedProperty("primitives")
+    default_reflectance: Optional[float] = ValidatedCppManagedProperty("default_reflectance")
     
     def get_scene_parts_size(self) -> int:
         return len(self._scene_parts)
@@ -629,22 +630,24 @@ class Scene(Validatable):
             scene_parts.append(scene_part)
 
         scene.scene_parts = scene_parts
-       
+
+        #Trying to validate directly
+        scene._cpp_object.scene_parts = [scene_part._cpp_object for scene_part in scene_parts]
         scene._cpp_object.primitives = [primitive._cpp_object for primitive in scene.primitives]
-   
+
         for part in scene.scene_parts:
             part._cpp_object.primitives = [primitive._cpp_object for primitive in part.primitives]
             for primitive in part.primitives:
                 if primitive.material is not None:
                     primitive._cpp_object.material = primitive.material._cpp_object
-
+      
                 if primitive.vertices is not None:
-                    abd = [vertex._cpp_object for vertex in primitive.vertices]
+                    abd = [vertex._cpp_object for vertex in primitive.vertices]       
                     primitive._cpp_object.vertices = abd
 
-        #NOTE: Error starts here. The problem is with Plane class, calculated in Scene::doForceOnGround() 
+            part._cpp_object.compute_transform(False)
+        
         scene._cpp_object.finalize_loading()
-     
         scene.kd_factory_type = kd_factory_type
         scene.kdt_num_jobs = kdt_num_jobs
         scene.kdt_geom_jobs = kdt_geom_jobs
@@ -653,9 +656,6 @@ class Scene(Validatable):
         scene._cpp_object.kd_grove_factory = _helios.KDGroveFactory(kd_tree_type)
 
         return cls._validate(scene)
-    
-
-    
 
     def _digest_scene_part(self, scene_part: ScenePart, part_index: int, holistic: Optional[bool] = False, split_part: Optional[bool] = False, dyn_object: Optional[bool] = False) -> None:
         scene_part.compute_transform(holistic)
@@ -725,7 +725,82 @@ class Scene(Validatable):
                     return factory_func()
                 else:
                     return factory_func(self.kdt_sah_loss_nodes)
+    
+    # Function to interpolate reflectance
+    def interpolate_reflectance(self, wavelength: float, w0: float, w1: float, r0: float, r1: float) -> float:
+        w_range = w1 - w0
+        w_shift = wavelength - w0
+        factor = w_shift / w_range
+        r_range = r1 - r0
+        return r0 + (factor * r_range)
+
+    # Function to read reflectances from files in the given directory
+    def read_extra_reflectances(self, wavelength: float) -> Dict[str, float]:
+        reflectance_map = {}
+        wavelength_um = wavelength * 1000000 
+
+        for path in AssetManager._assets:
+            spectra_path = os.path.join(path, "spectra")
+            if not os.path.isdir(spectra_path):
+                continue
+
             
+            for file in os.listdir(spectra_path):
+                file_path = os.path.join(spectra_path, file)
+                try:
+                    with open(file_path, 'rb') as f:
+                        # Skip the header (first 26 lines)
+                        for _ in range(26):
+                            next(f)
+
+                        prev_wavelength = prev_reflectance = None
+                        for line in f:
+                            values = line.decode('utf-8').strip().split("\t")
+                            new_wavelength = float(values[0])
+                            reflectance = float(values[1])
+
+                            # Skip wavelengths smaller than the desired wavelength
+                            if new_wavelength < wavelength_um:
+                                prev_wavelength = new_wavelength
+                                prev_reflectance = reflectance
+                                continue
+
+                            if new_wavelength > wavelength_um:
+                                # Interpolate reflectance for the desired wavelength
+                                reflectance = self.interpolate_reflectance(wavelength_um, prev_wavelength, new_wavelength, prev_reflectance, reflectance)
+                            break
+
+                        # Store the reflectance value in the map with the file name as the key
+                        file_name = os.path.splitext(os.path.basename(file))[0]
+                        reflectance_map[file_name] = reflectance
+                except Exception as e:
+                    raise Exception(f"Error reading file {file_path}: {e}")
+
+        return reflectance_map
+
+    # Function to set reflectances for materials in the scene
+    def specify_extra_reflectances(self, reflectance_map: Dict[str, float], default_reflectance: Optional[float] = 50.0) -> None:
+        mats_missing = set()  
+
+        for prim in self.primitives:
+            if prim.material.reflectance >= 0:
+                continue  # If reflectance is already set, skip
+
+            prim.material.reflectance = default_reflectance  # Set the default reflectance
+
+            if not prim.material.spectra:
+                if prim.material.spectra not in mats_missing:
+                    mats_missing.add(prim.material.spectra)
+                continue
+
+            if prim.material.spectra not in reflectance_map:
+                if prim.material.spectra not in mats_missing:
+                    mats_missing.add(prim.material.spectra)
+                continue
+
+            prim.material.reflectance = reflectance_map[prim.material.spectra]
+            prim.material.calculate_specularity()        
+
     class Config:
         arbitrary_types_allowed = True              
 

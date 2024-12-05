@@ -42,7 +42,6 @@ class Survey(Validatable):
         self.split_by_channel: Optional[bool] = False
         self.playback: Optional[_helios.SurveyPlayback] = None
         self.callback: Optional[_helios.SimulationCycleCallback] = None
-        
 
         self.kd_factory_type: Optional[int] = 4
         self.kdt_num_jobs: Optional[int] = 0
@@ -113,9 +112,8 @@ class Survey(Validatable):
             
             if template_id:
                 template = ScannerSettings.from_xml_node(template_node)
-                scanner_settings_templates[template_id] = template
-                
-        # Extract legs information
+                scanner_settings_templates[template_id] = template     
+
         legs = []
         for idx, leg_node in enumerate(survey_node.findall('leg')):
           
@@ -123,14 +121,12 @@ class Survey(Validatable):
             legs.append(leg)
             # TODO:  waypoints for interpolated legs
 
-        # integrateSurveyAndLegs 
         if(scanner.beam_deflector is not None):
             for leg in legs:
                 if not (leg.scanner_settings.vertical_resolution == 0 and leg.scanner_settings.horizontal_resolution == 0):
                     leg.scanner_settings.scan_frequency = (leg.scanner_settings.pulse_frequency * leg.scanner_settings.vertical_resolution) / (2 * scanner.beam_deflector.scan_angle_max) 
                     leg.scanner_settings.head_rotation =  leg.scanner_settings.horizontal_resolution * leg.scanner_settings.scan_frequency
 
-        # validate Survey to derived func!!!!!!!!!!!
         for leg in legs:
             scan_settings = leg.scanner_settings
             beam_deflector = scanner.beam_deflector
@@ -138,16 +134,17 @@ class Survey(Validatable):
                 raise ValueError(f"Leg {leg.serial_id} scan frequency is below the minimum frequency of the beam deflector.\n The requested scanning frequency cannot be achieved by this scanner. \n")
             if scan_settings.scan_frequency > beam_deflector.scan_freq_max and beam_deflector.scan_freq_max != 0:
                 raise ValueError(f"Leg {leg.serial_id} scan frequency is above the maximum frequency of the beam deflector.\n The requested scanning frequency cannot be achieved by this scanner.\n")
-
-        #SCene parsing
+            #TODO: add cherry picking of the scan settings 
         scene_path, scene_id = survey_node.get('scene').split('#') if survey_node.get('scene') else (None, None)
 
         kd_factory_type = 4
         kdt_num_jobs = os.cpu_count()
         kdt_sah_loss_nodes = 32
         scanner.platform.scene = Scene.read_from_xml(scene_path, scene_id, kd_factory_type=kd_factory_type, kdt_num_jobs=kdt_num_jobs, kdt_sah_loss_nodes=kdt_sah_loss_nodes)
-        # CHECK AND IF SPECTRAL LIB IS WORKING add it
-
+        #TODO: add spec lib if required
+        reflectance_map = scanner.platform.scene.read_extra_reflectances(float(scanner.wavelength))
+        scanner.platform.scene.specify_extra_reflectances(reflectance_map)
+        
         for scene_part in scanner.platform.scene.scene_parts:
             if scene_part.sorh is None:
                 continue
@@ -157,9 +154,7 @@ class Survey(Validatable):
             for i in range(num_primitives):
                 baseline_primitives.primitives[i].material = scene_part.primitives[i].material
 
-        
         #TODO: add shifting of interpolated objects and a random offset
-   
         pos1 = scanner.platform.scene._cpp_object.bbox_crs.vertices[0].position
         pos2 = scanner.platform.scene._cpp_object.bbox_crs.vertices[1].position
 
@@ -200,9 +195,8 @@ class Survey(Validatable):
         survey_instance.platform_settings_templates = platform_settings_templates
         # Validate the created instance using _validate method
         survey_instance = cls._validate(survey_instance)
-        
         return survey_instance
-    
+   
     def run(self, num_threads: Optional[int] = 0, chunk_size: Optional[int] = 32, warehouse_factor: Optional[int] = 1,
             callback_frequency: Optional[int] = 0, blocking: Optional[bool] = True, export_to_file: Optional[bool] = True):
             
@@ -230,8 +224,10 @@ class Survey(Validatable):
             self.scanner._cpp_object.all_measurements = []
             self.scanner._cpp_object.all_trajectories = []
             self.scanner._cpp_object.all_output_paths = []
-            #NOTE: threaded version was realised, but hidden for this version, to simplify the usage
-            self.playback.start()
+            self.scanner._cpp_object.set_time_wave(self.scanner.timewave, 0)
+
+            self.thread = threading.Thread(target=self.playback.start)
+            self.thread.start()
             
             self.is_started = True
 
@@ -284,7 +280,6 @@ class Survey(Validatable):
         outpath = ""
         if self.export_to_file:
             outpath = str(self.scanner.fms.write.getMeasurementWriterOutputPath())
-        
         if self.callback_frequency > 0 and self.callback is not None:
             if not self.playback.is_finished:
                 # Return empty vectors if the simulation is not finished yet
@@ -292,27 +287,21 @@ class Survey(Validatable):
             else:
                 # Return collected data if the simulation is finished
                 self.is_finished = True
-                return (self.scanner.all_measurements, 
-                        self.scanner.all_trajectories, 
+                return (self.scanner._cpp_object.all_measurements, 
+                        self.scanner._cpp_object.all_trajectories, 
                         outpath, 
-                        self.scanner.all_output_paths, 
+                        self.scanner._cpp_object.all_output_paths, 
                         True)
 
         if self.thread and self.thread.is_alive():
             self.thread.join()
         
-        if self.playback.fms is not None:
-            self.playback.fms.disconnect() 
-        
         self.finished = True
-
-   
         if not self.final_output:
             return ([], [], outpath, [], False)
         
-        return (self.scanner.all_measurements, 
-                self.scanner.all_trajectories, 
+        return (self.scanner._cpp_object.all_measurements, 
+                self.scanner._cpp_object.all_trajectories, 
                 outpath, 
-                self.scanner.all_output_paths, 
+                self.scanner._cpp_object.all_output_paths, 
                 True)
-   

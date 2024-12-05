@@ -257,7 +257,8 @@ namespace pyhelios{
                     })
             .def("is_detailed_voxel", [](Primitive &prim) {
                         return dynamic_cast<DetailedVoxel *>(&prim) != nullptr;
-                    });
+                    })
+            .def("clone", &Primitive::clone);
 
         
         py::class_<AABB, Primitive, std::shared_ptr<AABB>> aabb(m, "AABB");
@@ -327,6 +328,8 @@ namespace pyhelios{
                     return self.getFMS()->write.getMeasurementWriterLasScale();},
                 [](AbstractDetector &self, double lasScale) {
                     self.getFMS()->write.setMeasurementWriterLasScale(lasScale);})
+
+            .def("shutdown", &AbstractDetector::shutdown)
                 
             .def("clone", &AbstractDetector::clone);
 
@@ -352,9 +355,10 @@ namespace pyhelios{
             .def(py::init<Vertex, Vertex, Vertex>(), py::arg("v0"), py::arg("v1"), py::arg("v2"))
             .def("__str__", &Triangle::toString)
             .def("ray_intersection", &Triangle::getRayIntersection)
+
             .def_property("vertices", 
-                [](const Triangle& tri) -> std::vector<Vertex> {
-                    return {tri.verts[0], tri.verts[1], tri.verts[2]}; 
+                [](const Triangle& tri) {
+                    return std::vector<Vertex>(tri.verts, tri.verts + 3); 
                 }, 
                 [](Triangle& tri, const std::vector<Vertex>& vertices) {
                     if (vertices.size() != 3) {
@@ -362,8 +366,7 @@ namespace pyhelios{
                     }
                     std::copy(vertices.begin(), vertices.end(), tri.verts); 
                 }, 
-                "Get and set the vertices of the triangle")
-
+                "Get and set the vertices of the Triangle")
             .def_property_readonly("face_normal", &Triangle::getFaceNormal);
 
 
@@ -372,7 +375,11 @@ namespace pyhelios{
             .def(py::init<>())
             .def(py::init<double, double, double>(), py::arg("x"), py::arg("y"), py::arg("z"))
 
-            .def_readwrite("position", &Vertex::pos)
+            .def_property("position", [](Vertex &self) {
+                    return self.pos;
+                }, [](Vertex &self, const glm::dvec3 &position) {
+                    self.pos = position;
+            })
             .def_readwrite("normal", &Vertex::normal)
             .def_readwrite("tex_coords", &Vertex::texcoords)
             .def("clone", &Vertex::copy);
@@ -387,10 +394,14 @@ namespace pyhelios{
             .def(py::init<>())
             .def(py::init<double, glm::dvec3, double, double, double>())
             .def_readwrite("gps_time", &Trajectory::gpsTime)
-            .def_readwrite("position", &Trajectory::position)
             .def_readwrite("roll", &Trajectory::roll)
             .def_readwrite("pitch", &Trajectory::pitch)
-            .def_readwrite("yaw", &Trajectory::yaw);
+            .def_readwrite("yaw", &Trajectory::yaw)
+            .def_property("position", [](Trajectory &self) {
+                    return self.position;
+                }, [](Trajectory &self, const glm::dvec3 &position) {
+                    self.position = position;
+            });
 
 
         py::class_<TrajectorySettings, std::shared_ptr<TrajectorySettings>> trajectory_settings(m, "TrajectorySettings");
@@ -407,7 +418,6 @@ namespace pyhelios{
             .def(py::init<const Measurement &>())
             
             .def_readwrite("hit_object_id", &Measurement::hitObjectId)
-            .def_readwrite("position", &Measurement::position)
             .def_readwrite("beam_direction", &Measurement::beamDirection)
             .def_readwrite("beam_origin", &Measurement::beamOrigin)
             .def_readwrite("distance", &Measurement::distance)
@@ -417,7 +427,13 @@ namespace pyhelios{
             .def_readwrite("pulse_return_number", &Measurement::pulseReturnNumber)
             .def_readwrite("fullwave_index", &Measurement::fullwaveIndex)
             .def_readwrite("classification", &Measurement::classification)
-            .def_readwrite("gps_time", &Measurement::gpsTime);
+            .def_readwrite("gps_time", &Measurement::gpsTime)
+            .def_property("position", [](Measurement &self) {
+                    return self.position;
+                }, [](Measurement &self, const glm::dvec3 &position) {
+                    self.position = position;
+            })
+            ;
 
 
         py::class_<RandomnessGenerator<double>> randomness_generator(m, "RandomnessGenerator");
@@ -492,7 +508,7 @@ namespace pyhelios{
                         py::return_value_policy::reference)
             .def_property("point",
                         [](RaySceneIntersection &self) { return self.point; }, 
-                        [](RaySceneIntersection &self, const glm::dvec3& point) { self.point = point; })//????
+                        [](RaySceneIntersection &self, const glm::dvec3& point) { self.point = point; })
             .def_property("incidence_angle",
                         [](RaySceneIntersection &self) { return self.incidenceAngle; },
                         [](RaySceneIntersection &self, double angle) { self.incidenceAngle = angle; });
@@ -743,7 +759,8 @@ namespace pyhelios{
             .def("isDynamicMovingObject", [](const ScenePart& self) -> bool {
                 return self.getType() == ScenePart::ObjectType::DYN_MOVING_OBJECT;})
             .def("compute_centroid", &ScenePart::computeCentroid, py::arg("computeBound") = false)
-            .def("compute_centroid_w_bound", &ScenePart::computeCentroid, py::arg("computeBound") = true);
+            .def("compute_centroid_w_bound", &ScenePart::computeCentroid, py::arg("computeBound") = true)
+            .def("compute_transform", &ScenePart::computeTransformations);
              
         
         py::enum_<ScenePart::ObjectType>(m, "ObjectType")
@@ -838,6 +855,7 @@ namespace pyhelios{
                       [](Scene& self, size_t stepInterval) {
                         dynamic_cast<DynScene&>(self).setStepInterval(stepInterval); 
                       })            
+            .def_property("default_reflectance", &Scene::getDefaultReflectance, &Scene::setDefaultReflectance)
 
             .def("scene_parts_size", [](Scene &self) { return self.parts.size(); })
             .def("get_scene_part", [](Scene &self, size_t index) -> ScenePart& {
@@ -880,7 +898,8 @@ namespace pyhelios{
             .def("build_kd_grove", &Scene::buildKDGroveWithLog, py::arg("safe") = true)
             .def("intersection_min_max",
                 py::overload_cast<std::vector<double> const&, glm::dvec3 const&, glm::dvec3 const&, bool const>(&Scene::getIntersection, py::const_),
-                py::arg("tMinMax"), py::arg("rayOrigin"), py::arg("rayDir"), py::arg("groundOnly"));
+                py::arg("tMinMax"), py::arg("rayOrigin"), py::arg("rayDir"), py::arg("groundOnly"))
+            .def("shutdown", &Scene::shutdown);
 
 
         py::class_<StaticScene, Scene, std::shared_ptr<StaticScene>> static_scene(m, "StaticScene");
@@ -891,7 +910,8 @@ namespace pyhelios{
             .def("append_static_object_part", &StaticScene::appendStaticObject, py::arg("part"))
             .def("remove_static_object_part", &StaticScene::removeStaticObject, py::arg("id"))
             .def("clear_static_object_parts", &StaticScene::clearStaticObjects)
-            .def("write_object", &StaticScene::writeObject, py::arg("path"));
+            .def("write_object", &StaticScene::writeObject, py::arg("path"))
+            .def("shutdown", &StaticScene::shutdown);
 
 
         py::class_<Platform, std::shared_ptr<Platform>> platform(m, "Platform");
@@ -919,6 +939,10 @@ namespace pyhelios{
             .def_readwrite("target_waypoint", &Platform::targetWaypoint)
             .def_readwrite("origin_waypoint", &Platform::originWaypoint)
             .def_readwrite("next_waypoint", &Platform::nextWaypoint)
+            .def_readwrite("cached_end_target_angle_xy", &Platform::cached_endTargetAngle_xy)
+            .def_readwrite("cached_origin_to_target_angle_xy", &Platform::cached_originToTargetAngle_xy)
+            .def_readwrite("cached_target_to_next_angle_xy", &Platform::cached_targetToNextAngle_xy)
+            .def_readwrite("cached_distance_to_target_xy", &Platform::cached_distanceToTarget_xy)
         
             .def_property("position", &Platform::getPosition, &Platform::setPosition)
             .def_property("attitude", [](Platform &self) {
@@ -960,6 +984,16 @@ namespace pyhelios{
                 return self.cached_vectorToTarget_xy;
             }, [](Platform &self, const glm::dvec3 &position) {
                 self.cached_vectorToTarget_xy = position;
+            })
+            .def_property("cached_origin_to_target_dir_xy", [](const Platform &self) {
+                return self.cached_originToTargetDir_xy;
+            }, [](Platform &self, const glm::dvec3 &position) {
+                self.cached_originToTargetDir_xy = position;
+            })
+            .def_property("cached_target_to_next_dir_xy", [](const Platform &self) {
+                return self.cached_targetToNextDir_xy;
+            }, [](Platform &self, const glm::dvec3 &position) {
+                self.cached_targetToNextDir_xy = position;
             });
         
 
@@ -1296,7 +1330,7 @@ namespace pyhelios{
             )
             .def_property("all_measurements",
                 [](Scanner &self) { py::list py_measurements;
-                for (const auto &measurement : *self.cycleMeasurements) {
+                for (const auto &measurement : *self.allMeasurements) {
                     py_measurements.append(measurement); 
                 }
                 return py_measurements; },
@@ -1418,8 +1452,9 @@ namespace pyhelios{
             .def_property_readonly("beam_deflector",
                         py::overload_cast<>(&Scanner::getBeamDeflector))
             
-            .def_property_readonly("detector",
-                        py::overload_cast<>(&Scanner::getDetector))
+            .def_property("detector",
+                        py::overload_cast<>(&Scanner::getDetector),
+                        py::overload_cast<std::shared_ptr<AbstractDetector>>(&Scanner::setDetector))
 
             .def_property("num_time_bins",
                         py::overload_cast<>(&Scanner::getNumTimeBins, py::const_),
@@ -1942,7 +1977,7 @@ namespace pyhelios{
                     py::arg("fixedGpsTimeStart"),
                     py::arg("legacyEnergyModel"),
                     py::arg("exportToFile") = true,
-                    py::arg("disableShutdown") = false)
+                    py::arg("disableShutdown") = true)
 
                 .def_readwrite("fms", &SurveyPlayback::fms)
                 .def_readwrite("survey", &SurveyPlayback::mSurvey)

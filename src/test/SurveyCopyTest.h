@@ -59,7 +59,7 @@ bool SurveyCopyTest::run(){
         false,
         true,
         false,
-        nullptr
+        nullptr // rangeErrExpr
     );
     survey->scanner->setScannerHead(std::make_shared<ScannerHead>(
         glm::dvec3(0.4, 0.7, 0.1), 0.067
