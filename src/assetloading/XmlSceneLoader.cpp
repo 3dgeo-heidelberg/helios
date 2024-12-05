@@ -214,6 +214,8 @@ AbstractGeometryFilter * XmlSceneLoader::loadFilter(
     }
     // ################### END Set up filter ##################
 
+    filter->setAssetsDir(assetsDir);
+
     return filter;
 }
 

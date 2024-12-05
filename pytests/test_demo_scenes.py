@@ -1,7 +1,6 @@
 from pyhelios.__main__ import helios_exec
 
 import os
-import shutil
 import sys
 from pathlib import Path
 import numpy as np
@@ -16,13 +15,9 @@ try:
 except ImportError:
     pass
 
-DELETE_FILES_AFTER = False
-WORKING_DIR = os.getcwd()
 
-
-def find_playback_dir(survey_path):
-    playback = Path(WORKING_DIR) / 'output'
-    with open(Path(WORKING_DIR) / survey_path, 'r') as sf:
+def find_playback_dir(survey_path, playback):
+    with open(survey_path, 'r') as sf:
         for line in sf:
             if '<survey name' in line:
                 survey_name = line.split('name="')[1].split('"')[0]
@@ -32,25 +27,26 @@ def find_playback_dir(survey_path):
     return last_run_dir
 
 
-def run_helios_executable(survey_path: Path, options=None) -> Path:
+def run_helios_executable(survey_path: Path, output_dir: Path, options=None) -> Path:
     if options is None:
         options = list()
     
-    helios_exec([str(survey_path)] + options + ['--rebuildScene',
-                                                          '--seed', '43',
-                                                          '-vt',
-                                                          '-j', '1'])
+    helios_exec([str(survey_path)] + options + ['--output', str(output_dir),
+                                                '--rebuildScene',
+                                                '--seed', '43',
+                                                '-vt',
+                                                '-j', '1'])
     
-    return find_playback_dir(survey_path)
+    return find_playback_dir(survey_path, output_dir)
 
 
-def run_helios_pyhelios(survey_path: Path, las_output: bool = True, zip_output: bool = False,
+def run_helios_pyhelios(survey_path: Path, output: Path, las_output: bool = True, zip_output: bool = False,
                         start_time: str = None, split_by_channel: bool = False, las10: bool = False) -> Path:
     pyhelios.setDefaultRandomnessGeneratorSeed("43")
     simB = pyhelios.SimulationBuilder(
         surveyPath=str(survey_path.absolute()),
         assetsDir=[str(Path("assets"))],
-        outputDir=str(Path("output")),
+        outputDir=str(output),
     )
     simB.setLasOutput(las_output)
     simB.setLas10(las10)
@@ -65,7 +61,7 @@ def run_helios_pyhelios(survey_path: Path, las_output: bool = True, zip_output: 
 
     sim.start()
     sim.join()
-    return find_playback_dir(survey_path)
+    return find_playback_dir(survey_path, output)
 
 
 def speed_from_traj(trajectory_file):
@@ -98,142 +94,156 @@ def speed_from_traj(trajectory_file):
 
 
 @pytest.mark.exe
-def test_arbaro_tls_exe(regression_data):
+def test_arbaro_tls_exe(regression_data, output_dir):
     dirname_exe = run_helios_executable(Path('data') / 'surveys' / 'demo' / 'tls_arbaro_demo.xml',
+                                        output_dir,
                                         options=['--lasOutput',
-                                                 '--gpsStartTime', '2022-01-01 00:00:00'])
+                                                 '--gpsStartTime', '2022-01-01 00:00:00',
+                                                 ])
     eval_arbaro_tls(regression_data, dirname_exe)
 
 
 @pytest.mark.pyh
-def test_arbaro_tls_pyh(regression_data):
+def test_arbaro_tls_pyh(regression_data, output_dir):
     dirname_pyh = run_helios_pyhelios(Path('data') / 'surveys' / 'demo' / 'tls_arbaro_demo.xml',
+                                      output=output_dir,
                                       start_time='2022-01-01 00:00:00')
     eval_arbaro_tls(regression_data, dirname_pyh)
 
 
 def eval_arbaro_tls(regression_data, dirname):
     assert (dirname / 'leg000_points.las').exists()
-    pcloud0_ref = pcu.PointCloud.from_las_file(regression_data / 'arbaro_tls_leg000_points.las')
-    pcloud0 = pcu.PointCloud.from_las_file(dirname / 'leg000_points.las')
-    pcloud0.assert_equals(pcloud0_ref)
     assert (dirname / 'leg001_points.las').exists()
-    pcloud1_ref = pcu.PointCloud.from_las_file(regression_data / 'arbaro_tls_leg001_points.las')
-    pcloud1 = pcu.PointCloud.from_las_file(dirname / 'leg001_points.las')
-    pcloud1.assert_equals(pcloud1_ref)
+
     # ToDo: same approach for trajectory?
     with open(dirname / 'leg000_trajectory.txt', 'r') as f:
         line = f.readline()
         assert line.startswith('1.0000 25.5000 0.0000')
-    # clean up
-    if DELETE_FILES_AFTER:
-        shutil.rmtree(dirname)
+
+    if regression_data:
+        pcloud0_ref = pcu.PointCloud.from_las_file(regression_data / 'arbaro_tls_leg000_points.las')
+        pcloud0 = pcu.PointCloud.from_las_file(dirname / 'leg000_points.las')
+        pcloud0.assert_equals(pcloud0_ref)
+
+        pcloud1_ref = pcu.PointCloud.from_las_file(regression_data / 'arbaro_tls_leg001_points.las')
+        pcloud1 = pcu.PointCloud.from_las_file(dirname / 'leg001_points.las')
+        pcloud1.assert_equals(pcloud1_ref)
 
 
 @pytest.mark.exe
-def test_tiffloader_als_exe(regression_data):
+def test_tiffloader_als_exe(regression_data, output_dir):
     dirname_exe = run_helios_executable(Path('data') / 'test' / 'als_hd_demo_tiff_min.xml',
+                                        output_dir,
                                         options=['--lasOutput',
-                                                 '--gpsStartTime', '2022-01-01 00:00:00'])
+                                                 '--gpsStartTime', '2022-01-01 00:00:00',
+                                                 ])
     eval_tiffloader_als(regression_data, dirname_exe)
 
 
 @pytest.mark.pyh
-def test_tiffloader_als_pyh(regression_data):
+def test_tiffloader_als_pyh(regression_data, output_dir):
     dirname_pyh = run_helios_pyhelios(Path('data') / 'test' / 'als_hd_demo_tiff_min.xml',
+                                      output=output_dir,
                                       start_time='2022-01-01 00:00:00')
     eval_tiffloader_als(regression_data, dirname_pyh)
 
 
 def eval_tiffloader_als(regression_data, dirname):
     assert (dirname / 'leg000_points.las').exists()
-    pcloud0_ref = pcu.PointCloud.from_las_file(regression_data / 'tiffloader_als_leg000_points.las')
-    pcloud0 = pcu.PointCloud.from_las_file(dirname / 'leg000_points.las')
-    pcloud0.assert_equals(pcloud0_ref)
     assert (dirname / 'leg001_points.las').exists()
-    pcloud1_ref = pcu.PointCloud.from_las_file(regression_data / 'tiffloader_als_leg001_points.las')
-    pcloud1 = pcu.PointCloud.from_las_file(dirname / 'leg001_points.las')
-    pcloud1.assert_equals(pcloud1_ref)
     assert (dirname / 'leg002_points.las').exists()
-    pcloud2_ref = pcu.PointCloud.from_las_file(regression_data / 'tiffloader_als_leg002_points.las')
-    pcloud2 = pcu.PointCloud.from_las_file(dirname / 'leg002_points.las')
-    pcloud2.assert_equals(pcloud2_ref)
+
+    if regression_data:
+        pcloud0_ref = pcu.PointCloud.from_las_file(regression_data / 'tiffloader_als_leg000_points.las')
+        pcloud0 = pcu.PointCloud.from_las_file(dirname / 'leg000_points.las')
+        pcloud0.assert_equals(pcloud0_ref)
+        pcloud1_ref = pcu.PointCloud.from_las_file(regression_data / 'tiffloader_als_leg001_points.las')
+        pcloud1 = pcu.PointCloud.from_las_file(dirname / 'leg001_points.las')
+        pcloud1.assert_equals(pcloud1_ref)
+        pcloud2_ref = pcu.PointCloud.from_las_file(regression_data / 'tiffloader_als_leg002_points.las')
+        pcloud2 = pcu.PointCloud.from_las_file(dirname / 'leg002_points.las')
+        pcloud2.assert_equals(pcloud2_ref)
+    
     with open(dirname / 'leg000_trajectory.txt', 'r') as f:
         next(f)
         line = f.readline()
         assert line.startswith('474500.7500 5474500.0000 1500.0000')
-    # clean up
-    if DELETE_FILES_AFTER:
-        shutil.rmtree(dirname)
 
 
 @pytest.mark.exe
-def test_detailedVoxels_uls_exe(regression_data):
+def test_detailedVoxels_uls_exe(regression_data, output_dir):
     dirname_exe = run_helios_executable(Path('data') / 'test' / 'uls_detailedVoxels_mode_comparison_min.xml',
+                                        output_dir,
                                         options=['--lasOutput',
-                                                 '--gpsStartTime', '2022-01-01 00:00:00'])
+                                                 '--gpsStartTime', '2022-01-01 00:00:00'
+                                                 ])
     eval_detailedVoxels_uls(regression_data, dirname_exe)
 
 
 @pytest.mark.pyh
-def test_detailedVoxels_uls_pyh(regression_data):
+def test_detailedVoxels_uls_pyh(regression_data, output_dir):
     dirname_pyh = run_helios_pyhelios(Path('data') / 'test' / 'uls_detailedVoxels_mode_comparison_min.xml',
+                                      output=output_dir,
                                       start_time='2022-01-01 00:00:00')
     eval_detailedVoxels_uls(regression_data, dirname_pyh)
 
 
 def eval_detailedVoxels_uls(regression_data, dirname):
     assert (dirname / 'leg000_points.las').exists()
-    pcloud0_ref = pcu.PointCloud.from_las_file(regression_data / 'detailedVoxels_uls_leg000_points.las')
-    pcloud0 = pcu.PointCloud.from_las_file(dirname / 'leg000_points.las')
-    pcloud0.assert_equals(pcloud0_ref)
     with open(dirname / 'leg000_trajectory.txt', 'r') as f:
         for _ in range(6):
             next(f)
         line = f.readline()
         assert line.startswith('-3.0000 -2.1000 50.0000')
-    # clean up
-    if DELETE_FILES_AFTER:
-        shutil.rmtree(dirname)
+    
+    if regression_data:
+        pcloud0_ref = pcu.PointCloud.from_las_file(regression_data / 'detailedVoxels_uls_leg000_points.las')
+        pcloud0 = pcu.PointCloud.from_las_file(dirname / 'leg000_points.las')
+        pcloud0.assert_equals(pcloud0_ref)
 
 
 @pytest.mark.exe
-def test_xyzVoxels_tls_exe(regression_data):
+def test_xyzVoxels_tls_exe(regression_data, output_dir):
     dirname_exe = run_helios_executable(Path('data') / 'surveys' / 'voxels' / 'tls_sphere_xyzloader_normals.xml',
+                                        output_dir,
                                         options=['--lasOutput',
-                                                 '--gpsStartTime', '2022-01-01 00:00:00'])
+                                                 '--gpsStartTime', '2022-01-01 00:00:00'
+                                                 ])
     eval_xyzVoxels_tls(regression_data, dirname_exe)
 
 
 @pytest.mark.pyh
-def test_xyzVoxels_tls_pyh(regression_data):
+def test_xyzVoxels_tls_pyh(regression_data, output_dir):
     dirname_pyh = run_helios_pyhelios(Path('data') / 'surveys' / 'voxels' / 'tls_sphere_xyzloader_normals.xml',
+                                      output=output_dir,
                                       start_time='2022-01-01 00:00:00')
     eval_xyzVoxels_tls(regression_data, dirname_pyh)
 
 
 def eval_xyzVoxels_tls(regression_data, dirname):
     assert (dirname / 'leg000_points.las').exists()
-    pcloud_ref = pcu.PointCloud.from_las_file(regression_data / 'xyzVoxels_tls_leg000_points.las')
-    pcloud = pcu.PointCloud.from_las_file(dirname / 'leg000_points.las')
-    pcloud.assert_equals(pcloud_ref)
-    # clean up
-    if DELETE_FILES_AFTER:
-        shutil.rmtree(dirname)
+
+    if regression_data:
+        pcloud_ref = pcu.PointCloud.from_las_file(regression_data / 'xyzVoxels_tls_leg000_points.las')
+        pcloud = pcu.PointCloud.from_las_file(dirname / 'leg000_points.las')
+        pcloud.assert_equals(pcloud_ref)
 
 
 @pytest.mark.exe
-def test_interpolated_traj_exe(regression_data):
+def test_interpolated_traj_exe(regression_data, output_dir):
     dirname_exe = run_helios_executable(Path('data') / 'surveys' / 'demo' / 'als_interpolated_trajectory.xml',
+                                        output_dir,
                                         options=['--lasOutput',
                                                  '--zipOutput',
-                                                 '--gpsStartTime', '2022-01-01 00:00:00'])
+                                                 '--gpsStartTime', '2022-01-01 00:00:00'
+                                                 ])
     eval_interpolated_traj(regression_data, dirname_exe)
 
 
 @pytest.mark.pyh
-def test_interpolated_traj_pyh(regression_data):
+def test_interpolated_traj_pyh(regression_data, output_dir):
     dirname_pyh = run_helios_pyhelios(Path('data') / 'surveys' / 'demo' / 'als_interpolated_trajectory.xml',
+                                      output=output_dir,
                                       zip_output=True,
                                       start_time='2022-01-01 00:00:00')
     eval_interpolated_traj(regression_data, dirname_pyh)
@@ -241,47 +251,50 @@ def test_interpolated_traj_pyh(regression_data):
 
 def eval_interpolated_traj(regression_data, dirname):
     assert (dirname / 'leg000_points.laz').exists()
-    pcloud0_ref = pcu.PointCloud.from_las_file(regression_data / 'interpolated_traj_leg000_points.laz')
-    pcloud0 = pcu.PointCloud.from_las_file(dirname / 'leg000_points.laz')
-    pcloud0.assert_equals(pcloud0_ref)
     assert (dirname / 'leg001_points.laz').exists()
-    pcloud1_ref = pcu.PointCloud.from_las_file(regression_data / 'interpolated_traj_leg001_points.laz')
-    pcloud1 = pcu.PointCloud.from_las_file(dirname / 'leg001_points.laz')
-    pcloud1.assert_equals(pcloud1_ref)
     assert (dirname / 'leg002_points.laz').exists()
-    pcloud2_ref = pcu.PointCloud.from_las_file(regression_data / 'interpolated_traj_leg002_points.laz')
-    pcloud2 = pcu.PointCloud.from_las_file(dirname / 'leg002_points.laz')
-    pcloud2.assert_equals(pcloud2_ref)
     assert (dirname / 'leg003_points.laz').exists()
-    pcloud3_ref = pcu.PointCloud.from_las_file(regression_data / 'interpolated_traj_leg003_points.laz')
-    pcloud3 = pcu.PointCloud.from_las_file(dirname / 'leg003_points.laz')
-    pcloud3.assert_equals(pcloud3_ref)
+
     with open(dirname / 'leg000_trajectory.txt', 'r') as f:
         for _ in range(3):
             next(f)
         line = f.readline()
         assert line.startswith('13.4766 1.7424 400.0000')
-    # clean up
-    if DELETE_FILES_AFTER:
-        shutil.rmtree(dirname)
+    
+    if regression_data:
+        pcloud0_ref = pcu.PointCloud.from_las_file(regression_data / 'interpolated_traj_leg000_points.laz')
+        pcloud0 = pcu.PointCloud.from_las_file(dirname / 'leg000_points.laz')
+        pcloud0.assert_equals(pcloud0_ref)
+        pcloud1_ref = pcu.PointCloud.from_las_file(regression_data / 'interpolated_traj_leg001_points.laz')
+        pcloud1 = pcu.PointCloud.from_las_file(dirname / 'leg001_points.laz')
+        pcloud2_ref = pcu.PointCloud.from_las_file(regression_data / 'interpolated_traj_leg002_points.laz')
+        pcloud2 = pcu.PointCloud.from_las_file(dirname / 'leg002_points.laz')
+        pcloud2.assert_equals(pcloud2_ref)
+        pcloud1.assert_equals(pcloud1_ref)
+        pcloud3_ref = pcu.PointCloud.from_las_file(regression_data / 'interpolated_traj_leg003_points.laz')
+        pcloud3 = pcu.PointCloud.from_las_file(dirname / 'leg003_points.laz')
+        pcloud3.assert_equals(pcloud3_ref)
 
 
 @pytest.mark.skipif("laspy" not in sys.modules,
                     reason="requires the laspy library")
 @pytest.mark.exe
-def test_quadcopter_exe(regression_data):
+def test_quadcopter_exe(regression_data, output_dir):
     dirname_exe = run_helios_executable(Path('data') / 'surveys' / 'toyblocks' / 'uls_toyblocks_survey_scene_combo.xml',
+                                        output_dir,
                                         options=['--lasOutput',
                                                  '--zipOutput',
-                                                 '--gpsStartTime', '2022-01-01 00:00:00'])
+                                                 '--gpsStartTime', '2022-01-01 00:00:00',
+                                                 ])
     eval_quadcopter(regression_data, dirname_exe)
 
 
 @pytest.mark.skipif("laspy" not in sys.modules,
                     reason="requires the laspy library")
 @pytest.mark.pyh
-def test_quadcopter_pyh(regression_data):
+def test_quadcopter_pyh(regression_data, output_dir):
     dirname_pyh = run_helios_pyhelios(Path('data') / 'surveys' / 'toyblocks' / 'uls_toyblocks_survey_scene_combo.xml',
+                                      output=output_dir,
                                       zip_output=True,
                                       start_time='2022-01-01 00:00:00')
     eval_quadcopter(regression_data, dirname_pyh)
@@ -289,21 +302,9 @@ def test_quadcopter_pyh(regression_data):
 
 def eval_quadcopter(regression_data, dirname):
     assert (dirname / 'leg000_points.laz').exists()
-    pcloud0_ref = pcu.PointCloud.from_las_file(regression_data / 'quadcopter_leg000_points.laz')
-    pcloud0 = pcu.PointCloud.from_las_file(dirname / 'leg000_points.laz')
-    pcloud0.assert_equals(pcloud0_ref)
     assert (dirname / 'leg001_points.laz').exists()
-    pcloud1_ref = pcu.PointCloud.from_las_file(regression_data / 'quadcopter_leg001_points.laz')
-    pcloud1 = pcu.PointCloud.from_las_file(dirname / 'leg001_points.laz')
-    pcloud1.assert_equals(pcloud1_ref)
     assert (dirname / 'leg002_points.laz').exists()
-    pcloud2_ref = pcu.PointCloud.from_las_file(regression_data / 'quadcopter_leg002_points.laz')
-    pcloud2 = pcu.PointCloud.from_las_file(dirname / 'leg002_points.laz')
-    pcloud2.assert_equals(pcloud2_ref)
     assert (dirname / 'leg004_points.laz').exists()
-    pcloud3_ref = pcu.PointCloud.from_las_file(regression_data / 'quadcopter_leg004_points.laz')
-    pcloud3 = pcu.PointCloud.from_las_file(dirname / 'leg004_points.laz')
-    pcloud3.assert_equals(pcloud3_ref)
     assert speed_from_traj(dirname / 'leg000_trajectory.txt') == pytest.approx(10.0, 0.001)
     assert speed_from_traj(dirname / 'leg002_trajectory.txt') == pytest.approx(7.0, 0.001)
     assert speed_from_traj(dirname / 'leg004_trajectory.txt') == pytest.approx(4.0, 0.001)
@@ -312,85 +313,106 @@ def eval_quadcopter(regression_data, dirname):
             next(f)
         line = f.readline()
         assert line.startswith('-69.9983 -60.0000 80.0002')
-    # clean up
-    if DELETE_FILES_AFTER:
-        shutil.rmtree(dirname)
+
+    if regression_data:    
+        pcloud0_ref = pcu.PointCloud.from_las_file(regression_data / 'quadcopter_leg000_points.laz')
+        pcloud0 = pcu.PointCloud.from_las_file(dirname / 'leg000_points.laz')
+        pcloud0.assert_equals(pcloud0_ref)
+        pcloud1_ref = pcu.PointCloud.from_las_file(regression_data / 'quadcopter_leg001_points.laz')
+        pcloud1 = pcu.PointCloud.from_las_file(dirname / 'leg001_points.laz')
+        pcloud1.assert_equals(pcloud1_ref)
+        pcloud2_ref = pcu.PointCloud.from_las_file(regression_data / 'quadcopter_leg002_points.laz')
+        pcloud2 = pcu.PointCloud.from_las_file(dirname / 'leg002_points.laz')
+        pcloud2.assert_equals(pcloud2_ref)
+        pcloud3_ref = pcu.PointCloud.from_las_file(regression_data / 'quadcopter_leg004_points.laz')
+        pcloud3 = pcu.PointCloud.from_las_file(dirname / 'leg004_points.laz')
+        pcloud3.assert_equals(pcloud3_ref)
 
 
 @pytest.mark.pyh
-def test_als_multichannel_pyh(regression_data):
+def test_als_multichannel_pyh(regression_data, output_dir):
     dirname_pyh = run_helios_pyhelios(Path('data') / 'surveys' / 'demo' / 'light_als_toyblocks_multiscanner.xml',
+                                      output=output_dir,
                                       zip_output=True,
                                       start_time='2022-01-01 00:00:00')
     eval_als_multichannel(regression_data, dirname_pyh)
 
 
 @pytest.mark.pyh
-def test_als_multichannel_split_pyh(regression_data):
+def test_als_multichannel_split_pyh(regression_data, output_dir):
     dirname_pyh = run_helios_pyhelios(Path('data') / 'surveys' / 'demo' / 'light_als_toyblocks_multiscanner.xml',
+                                      output=output_dir,
                                       zip_output=True, split_by_channel=True,
                                       start_time='2022-01-01 00:00:00')
     eval_als_multichannel_split(regression_data, dirname_pyh)
 
 
 @pytest.mark.exe
-def test_als_multichannel_exe(regression_data):
+def test_als_multichannel_exe(regression_data, output_dir):
     dirname_exe = run_helios_executable(Path('data') / 'surveys' / 'demo' / 'light_als_toyblocks_multiscanner.xml',
+                                        output_dir,
                                         options=['--lasOutput',
                                                  '--zipOutput',
-                                                 '--gpsStartTime', '2022-01-01 00:00:00'])
+                                                 '--gpsStartTime', '2022-01-01 00:00:00',
+                                                 ])
     eval_als_multichannel(regression_data, dirname_exe)
 
 
 @pytest.mark.exe
-def test_als_multichannel_split_exe(regression_data):
+def test_als_multichannel_split_exe(regression_data, output_dir):
     dirname_exe = run_helios_executable(Path('data') / 'surveys' / 'demo' / 'light_als_toyblocks_multiscanner.xml',
+                                        output_dir,
                                         options=['--lasOutput',
                                                  '--zipOutput',
                                                  '--gpsStartTime', '2022-01-01 00:00:00',
-                                                 '--splitByChannel'])
+                                                 '--splitByChannel',
+                                                 ])
     eval_als_multichannel_split(regression_data, dirname_exe)
 
 
 def eval_als_multichannel(regression_data, dirname):
     assert len(fnmatch.filter(os.listdir(dirname), '*.laz')) == 2
     assert (dirname / 'leg000_points.laz').exists()
-    pcloud0_ref = pcu.PointCloud.from_las_file(regression_data / 'als_multichannel_leg000_points.laz')
-    pcloud0 = pcu.PointCloud.from_las_file(dirname / 'leg000_points.laz')
-    pcloud0.assert_equals(pcloud0_ref)
     assert (dirname / 'leg002_points.laz').exists()
-    pcloud1_ref = pcu.PointCloud.from_las_file(regression_data / 'als_multichannel_leg002_points.laz')
-    pcloud1 = pcu.PointCloud.from_las_file(dirname / 'leg002_points.laz')
-    pcloud1.assert_equals(pcloud1_ref)
+    
+    if regression_data:
+        pcloud0_ref = pcu.PointCloud.from_las_file(regression_data / 'als_multichannel_leg000_points.laz')
+        pcloud0 = pcu.PointCloud.from_las_file(dirname / 'leg000_points.laz')
+        pcloud0.assert_equals(pcloud0_ref)
+        pcloud1_ref = pcu.PointCloud.from_las_file(regression_data / 'als_multichannel_leg002_points.laz')
+        pcloud1 = pcu.PointCloud.from_las_file(dirname / 'leg002_points.laz')
+        pcloud1.assert_equals(pcloud1_ref)
 
 
 def eval_als_multichannel_split(regression_data, dirname):
     # 2 legs, Livox Mid-100 has 3 channels, so we expect 6 point clouds
     assert len(fnmatch.filter(os.listdir(dirname), '*.laz')) == 6
     assert (dirname / 'leg000_points_dev0.laz').exists()
-    pcloud0_0_ref = pcu.PointCloud.from_las_file(regression_data / 'als_multichannel_split_leg000_points_dev0.laz')
-    pcloud0_0 = pcu.PointCloud.from_las_file(dirname / 'leg000_points_dev0.laz')
-    pcloud0_0.assert_equals(pcloud0_0_ref)
     assert (dirname / 'leg000_points_dev1.laz').exists()
-    pcloud0_1_ref = pcu.PointCloud.from_las_file(regression_data / 'als_multichannel_split_leg000_points_dev1.laz')
-    pcloud0_1 = pcu.PointCloud.from_las_file(dirname / 'leg000_points_dev1.laz')
-    pcloud0_1.assert_equals(pcloud0_1_ref)
     assert (dirname / 'leg000_points_dev2.laz').exists()
-    pcloud0_2_ref = pcu.PointCloud.from_las_file(regression_data / 'als_multichannel_split_leg000_points_dev2.laz')
-    pcloud0_2 = pcu.PointCloud.from_las_file(dirname / 'leg000_points_dev2.laz')
-    pcloud0_2.assert_equals(pcloud0_2_ref)
     assert (dirname / 'leg002_points_dev0.laz').exists()
-    pcloud1_0_ref = pcu.PointCloud.from_las_file(regression_data / 'als_multichannel_split_leg002_points_dev0.laz')
-    pcloud1_0 = pcu.PointCloud.from_las_file(dirname / 'leg002_points_dev0.laz')
-    pcloud1_0.assert_equals(pcloud1_0_ref)
     assert (dirname / 'leg002_points_dev1.laz').exists()
-    pcloud1_1_ref = pcu.PointCloud.from_las_file(regression_data / 'als_multichannel_split_leg002_points_dev1.laz')
-    pcloud1_1 = pcu.PointCloud.from_las_file(dirname / 'leg002_points_dev1.laz')
-    pcloud1_1.assert_equals(pcloud1_1_ref)
     assert (dirname / 'leg002_points_dev2.laz').exists()
-    pcloud1_2_ref = pcu.PointCloud.from_las_file(regression_data / 'als_multichannel_split_leg002_points_dev2.laz')
-    pcloud1_2 = pcu.PointCloud.from_las_file(dirname / 'leg002_points_dev2.laz')
-    pcloud1_2.assert_equals(pcloud1_2_ref)
+
+    if regression_data:    
+        pcloud0_0_ref = pcu.PointCloud.from_las_file(regression_data / 'als_multichannel_split_leg000_points_dev0.laz')
+        pcloud0_0 = pcu.PointCloud.from_las_file(dirname / 'leg000_points_dev0.laz')
+        pcloud0_0.assert_equals(pcloud0_0_ref)
+        pcloud0_1_ref = pcu.PointCloud.from_las_file(regression_data / 'als_multichannel_split_leg000_points_dev1.laz')
+        pcloud0_1 = pcu.PointCloud.from_las_file(dirname / 'leg000_points_dev1.laz')
+        pcloud0_1.assert_equals(pcloud0_1_ref)
+        pcloud0_2_ref = pcu.PointCloud.from_las_file(regression_data / 'als_multichannel_split_leg000_points_dev2.laz')
+        pcloud0_2 = pcu.PointCloud.from_las_file(dirname / 'leg000_points_dev2.laz')
+        pcloud0_2.assert_equals(pcloud0_2_ref)
+        pcloud1_0_ref = pcu.PointCloud.from_las_file(regression_data / 'als_multichannel_split_leg002_points_dev0.laz')
+        pcloud1_0 = pcu.PointCloud.from_las_file(dirname / 'leg002_points_dev0.laz')
+        pcloud1_0.assert_equals(pcloud1_0_ref)
+        pcloud1_1_ref = pcu.PointCloud.from_las_file(regression_data / 'als_multichannel_split_leg002_points_dev1.laz')
+        pcloud1_1 = pcu.PointCloud.from_las_file(dirname / 'leg002_points_dev1.laz')
+        pcloud1_1.assert_equals(pcloud1_1_ref)
+        pcloud1_2_ref = pcu.PointCloud.from_las_file(regression_data / 'als_multichannel_split_leg002_points_dev2.laz')
+        pcloud1_2 = pcu.PointCloud.from_las_file(dirname / 'leg002_points_dev2.laz')
+        pcloud1_2.assert_equals(pcloud1_2_ref)
 
 
 @pytest.mark.skipif("laspy" not in sys.modules,
@@ -405,10 +427,10 @@ def eval_als_multichannel_split(regression_data, dirname):
         pytest.param(True, True, id="LAZ v1.0"),
     ]
 )
-def test_las_pyh(zip_flag: bool, las10_flag: bool):
+def test_las_pyh(zip_flag: bool, las10_flag: bool, output_dir):
     """"""
     dirname_pyh = run_helios_pyhelios(Path('data') / 'surveys' / 'demo' / 'light_als_toyblocks_multiscanner.xml',
-                                      las_output=True, zip_output=zip_flag, las10=las10_flag)
+                                      output=output_dir, las_output=True, zip_output=zip_flag, las10=las10_flag)
     las_version = "1.0" if las10_flag else "1.4"
     eval_las(dirname_pyh, las_version)
 
@@ -425,7 +447,7 @@ def test_las_pyh(zip_flag: bool, las10_flag: bool):
         pytest.param(True, True, id="LAZ v1.0"),
     ]
 )
-def test_las_exe(zip_flag: bool, las10_flag: bool):
+def test_las_exe(zip_flag: bool, las10_flag: bool, output_dir):
     options = ["--lasOutput"]
     if zip_flag:
         options.append("--zipOutput")
@@ -433,7 +455,9 @@ def test_las_exe(zip_flag: bool, las10_flag: bool):
         options.append("--las10")
 
     dirname_exe = run_helios_executable(Path('data') / 'surveys' / 'demo' / 'light_als_toyblocks_multiscanner.xml',
-                                        options=options)
+                                        output_dir,
+                                        options=options,
+                                        )
     las_version = "1.0" if las10_flag else "1.4"
     eval_las(dirname_exe, las_version)
 
@@ -462,10 +486,10 @@ def eval_las(dirname, las_version, check_empty=False):
 @pytest.mark.skipif("laspy" not in sys.modules,
                     reason="requires the laspy library")
 @pytest.mark.pyh
-def test_strip_id_pyh():
+def test_strip_id_pyh(output_dir):
     """"""
     dirname_pyh = run_helios_pyhelios(Path('data') / 'test' / 'als_hd_height_above_ground_stripid_light.xml',
-                                      las_output=True, zip_output=True)
+                                      output=output_dir, las_output=True, zip_output=True)
     las_version = "1.4"
     eval_las(dirname_pyh, las_version, check_empty=False)
 
@@ -473,33 +497,35 @@ def test_strip_id_pyh():
 @pytest.mark.skipif("laspy" not in sys.modules,
                     reason="requires the laspy library")
 @pytest.mark.exe
-def test_strip_id_exe():
+def test_strip_id_exe(output_dir):
 
     dirname_exe = run_helios_executable(Path('data') / 'test' / 'als_hd_height_above_ground_stripid_light.xml',
+                                        output_dir,
                                         options=['--lasOutput', '--zipOutput'])
     las_version = "1.4"
     eval_las(dirname_exe, las_version, check_empty=True)
 
 @pytest.mark.pyh
-def test_dyn_pyh(regression_data):
+def test_dyn_pyh(regression_data, output_dir):
     dirname_pyh = run_helios_pyhelios(Path('data') / 'surveys' / 'dyn' / 'tls_dyn_cube.xml',
-                                      las_output=True, zip_output=True,
+                                      output=output_dir, las_output=True, zip_output=True,
                                       start_time='2022-01-01 00:00:00')
     eval_dyn(regression_data, dirname_pyh)
 
 @pytest.mark.exe
-def test_dyn_exe(regression_data):
+def test_dyn_exe(regression_data, output_dir):
     dirname_exe = run_helios_executable(Path('data') / 'surveys' / 'dyn' / 'tls_dyn_cube.xml',
+                                        output_dir,
                                         options=['--lasOutput', '--zipOutput',
-                                                 '--gpsStartTime', '2022-01-01 00:00:00'])
+                                                 '--gpsStartTime', '2022-01-01 00:00:00'
+                                                 ])
     eval_dyn(regression_data, dirname_exe)
 
 
 def eval_dyn(regression_data, dirname):
     assert (dirname / 'leg000_points.laz').exists()
-    pcloud0_ref = pcu.PointCloud.from_las_file(regression_data / 'dyn_leg000_points.laz')
-    pcloud0 = pcu.PointCloud.from_las_file(dirname / 'leg000_points.laz')
-    pcloud0.assert_equals(pcloud0_ref)
-    # clean up
-    if DELETE_FILES_AFTER:
-        shutil.rmtree(dirname)
+
+    if regression_data:
+        pcloud0_ref = pcu.PointCloud.from_las_file(regression_data / 'dyn_leg000_points.laz')
+        pcloud0 = pcu.PointCloud.from_las_file(dirname / 'leg000_points.laz')
+        pcloud0.assert_equals(pcloud0_ref)

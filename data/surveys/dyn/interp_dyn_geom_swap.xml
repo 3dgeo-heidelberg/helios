@@ -9,7 +9,7 @@
 			<platformSettings 
 				trajectory="data/trajectories/swap_on_repeat_trajectory.txt"
 				tIndex="0" xIndex="1" yIndex="2" zIndex="3" rollIndex="4" pitchIndex="5" yawIndex="6"
-				tStart="0" teleportToStart="true" trajectory_separator="," interpolationDomain="position"
+				tStart="0" trajectory_separator="," interpolationDomain="position"
 			/>
             <scannerSettings  active="true" pulseFreq_hz="83000" scanFreq_hz="70" scanAngle_deg="60" trajectoryTimeInterval_s="0.033" />
         </leg>
