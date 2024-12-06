@@ -6,23 +6,29 @@
 
 ![Logo](h++.png)
 
-HELIOS++ is a general-purpose software package for simulation of terrestrial, mobile and airborne laser scanning surveys written in C++11. 
+HELIOS++ is a general-purpose Python package for simulation of terrestrial, mobile and airborne laser scanning surveys written in C++11. 
 It is developed and maintained by the [3DGeo Research Group](https://uni-heidelberg.de/3dgeo) at Heidelberg University.
 
 ## 💻 Installation
 
 ### Conda installation
 
-The recommended way to install Helios++ is via the [conda package manager](https://docs.conda.io/en/latest/).
+The recommended way to install HELIOS++ is via the [conda package manager](https://docs.conda.io/en/latest/).
 
-The following software is required for installation of Helios++:
-* a Conda installation e.g. [Anaconda](https://www.anaconda.com/download), [miniconda](https://docs.anaconda.com/free/miniconda/) or [micromamba](https://mamba.readthedocs.io/en/latest/installation/micromamba-installation.html).
+The following software is required for installation of HELIOS++:
+* a Conda installation. We recommend [mamba](https://mamba.readthedocs.io/en/latest/installation/mamba-installation.html), [micromamba](https://mamba.readthedocs.io/en/latest/installation/micromamba-installation.html), or [miniconda](https://docs.anaconda.com/free/miniconda/).
 
-Helios++ can then be installed with:
+HELIOS++ can then be installed with:
 
 ```bash
-conda install -c conda-forge -c conda-forge/label/helios_dev helios
+conda install -c conda-forge helios
 ```
+
+### Standalone Installer
+
+You can also install HELOIOS++ via the standalone installers available for Windows, Linux and MacOS. They will not only install HELIOS++ but also add shortcuts for a) a H++ terminal session and b) a H++ Jupyter session.
+
+Download the correct installer for your operating system from the [release page](https://github.com/3dgeo-heidelberg/helios/releases) and run it (under Windows, this is a setup wizard, under Linux and MacOS, it is a shell script).
 
 ### Development installation
 
@@ -147,10 +153,12 @@ helios --version
 
 helios <survey_file_path> [OPTIONAL ARGUMENTS]
     Perform requested simulation.
-
     NOTICE specifying the path to the survey specification file is mandatory
+```
 
-    Available general OPTIONAL ARGUMENTS are:
+```
+Available general OPTIONAL ARGUMENTS are:
+
         --assets <directory_path>
             Specify the path to assets directory/directories
             To specify multiple paths, duplicate the argument, 
@@ -181,6 +189,8 @@ helios <survey_file_path> [OPTIONAL ARGUMENTS]
             string with format "YYYY-MM-DD hh:mm:ss"
         --lasOutput
             Specify the output point cloud must be generated using LAS format
+        --las10
+            Specify to write in LAS format v1.0
         --zipOutput
             Specify the output point cloud and fullwave must be zipped
         --lasScale
