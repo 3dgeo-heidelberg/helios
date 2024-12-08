@@ -91,7 +91,7 @@ public:
 	/**
 	 * @see AbstractGeometryFilter::run
 	 */
-	ScenePart* run();
+	ScenePart* run() override;
 
 	// ***  METHODS  *** //
 	// ***************** //

@@ -23,7 +23,7 @@ public:
      * @brief Default constructor for EggAsset
      */
     EggAsset() : Asset() {}
-    virtual ~EggAsset() = default;
+    ~EggAsset() override = default;
 
     // ***  EGG METHODS  *** //
     // ********************* //

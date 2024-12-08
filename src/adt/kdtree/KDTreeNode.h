@@ -72,7 +72,7 @@ public:
 	/**
 	 * @brief Destructor for KDTreeNode
 	 */
-    virtual ~KDTreeNode() = default;
+    ~KDTreeNode() override = default;
 
 	// ***  ASSIGNMENT OPERATORS  *** //
 	// ****************************** //

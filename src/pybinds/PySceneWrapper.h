@@ -1,7 +1,5 @@
 #pragma once
 
-#ifdef PYTHON_BINDING
-
 #include <string>
 #include <Triangle.h>
 #include <DetailedVoxel.h>
@@ -99,5 +97,3 @@ public:
 };
 
 }
-
-#endif

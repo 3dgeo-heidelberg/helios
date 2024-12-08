@@ -1,7 +1,5 @@
 #pragma once
 
-#ifdef PYTHON_BINDING
-
 #include <PyHeliosUtils.h>
 #include <vector>
 #include <string>
@@ -44,5 +42,3 @@ public:
 };
 
 }
-
-#endif

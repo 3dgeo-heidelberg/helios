@@ -1,0 +1,30 @@
+target_include_directories(
+  helios
+  PUBLIC
+  "."
+  "facade"
+  "factory"
+  "read"
+  "serialization"
+  "util"
+  "write"
+  "write/core"
+  "write/comps"
+  "write/strategies"
+)
+
+target_sources(
+  helios
+  PRIVATE
+  "serialization/SerialIO.cpp"
+  "serialization/serial_adt_utils.cpp"
+  "serialization/SerialSceneWrapper.cpp"
+  "util/FileUtils.cpp"
+  "facade/FMSWriteFacade.cpp"
+  "write/core/PulseWriter.cpp"
+  "write/core/FullWaveformWriter.cpp"
+  "write/core/VectorialMeasurementWriter.cpp"
+  "write/core/TrajectoryWriter.cpp"
+  "write/core/MeasurementWriter.cpp"
+  "factory/FMSFacadeFactory.cpp"
+)

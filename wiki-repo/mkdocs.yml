@@ -37,10 +37,10 @@ nav:
 - 'Random errors': 'Error-sources-and-randomness-control.md'
 - 'Fullwave processing': 'Fullwave.md'
 - 'Output': 'Output.md'
-- 'pyhelios':
+- 'pyhelios Tutorials':
     - 'Getting started': 'Python-bindings-🐍-Getting-started.md'
     - 'Details': 'Python-bindings-🐍-Details.md'
-    - 'The util subpackage': 'pyhelios-🐍-The-util-subpackage.md'
+- 'pyhelios: the util subpackage': 'pyhelios-🐍-The-util-subpackage.md'
 - 'Misc':
     - 'Dealing with large scenes': 'Dealing-with-large-scenes.md'
     - 'Scene generation - external tools': 'Supplementary-tools-for-scene-generation.md'

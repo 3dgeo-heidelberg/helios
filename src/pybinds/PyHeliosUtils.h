@@ -1,5 +1,4 @@
 #pragma once
-#ifdef PYTHON_BINDING
 
 #include <boost/python/errors.hpp>
 
@@ -29,5 +28,3 @@ public:
 };
 
 }
-
-#endif

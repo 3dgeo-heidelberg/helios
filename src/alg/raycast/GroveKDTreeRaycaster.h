@@ -55,7 +55,7 @@ public:
      *  resource that doesnt make sense after the time-of-live of the raycaster
      *  has finished
      */
-    virtual ~GroveKDTreeRaycaster() = default;
+    ~GroveKDTreeRaycaster() override = default;
 
     // ***  RAYCASTING METHODS  *** //
     // **************************** //

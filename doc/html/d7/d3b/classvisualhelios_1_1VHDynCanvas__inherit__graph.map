@@ -1,8 +1,0 @@
-<map id="visualhelios::VHDynCanvas" name="visualhelios::VHDynCanvas">
-<area shape="rect" id="node1" title="Visual Helios Dynamic Canvas is a class which provides the basis layer to deal with dynamic objects r..." alt="" coords="123,80,310,107"/>
-<area shape="rect" id="node3" href="$df/dd2/classvisualhelios_1_1VHNormalsCanvas.html" title="Abstract class providing some behaviors and defining the interface for all canvas which deal with nor..." alt="" coords="111,155,322,181"/>
-<area shape="rect" id="node2" href="$de/dda/classvisualhelios_1_1VHCanvas.html" title="Visual Helios Canvas is a class which provides the base mechanisms to implement Helios visualizations..." alt="" coords="135,5,298,32"/>
-<area shape="rect" id="node4" href="$d3/d71/classvisualhelios_1_1VHSceneCanvas.html" title="Visual Helios Scene Canvas is a class which supports rendering a dynamic scene." alt="" coords="5,229,204,256"/>
-<area shape="rect" id="node6" href="$d9/dc5/classvisualhelios_1_1VHSimpleCanvas.html" title="Visual Helios Simple Canvas is a class which supports rendering polygon meshes which are updated over..." alt="" coords="229,229,431,256"/>
-<area shape="rect" id="node5" href="$d9/d66/classvisualhelios_1_1VHRaycastingCanvas.html" title="Visual Helios Ray casting Canvas is a class which supports rendering a dynamic scene together with th..." alt="" coords="13,304,196,345"/>
-</map>

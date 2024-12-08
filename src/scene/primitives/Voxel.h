@@ -182,7 +182,7 @@ public:
     /**
      * @see Voxel::getNumVertices
      */
-    inline virtual size_t getNumVertices() override {return 1;}
+    inline size_t getNumVertices() override {return 1;}
     /**
      * @see Voxel::getVertices
      */
@@ -190,7 +190,7 @@ public:
 	/**
 	 * @see Voxel::getNumFullVertices
 	 */
-    inline virtual size_t getNumFullVertices() override {return 2;}
+    inline size_t getNumFullVertices() override {return 2;}
     /**
      * @see Voxel::getFullVertices
      */

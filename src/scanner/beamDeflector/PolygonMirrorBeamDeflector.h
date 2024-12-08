@@ -52,6 +52,14 @@ public:
      * @see AbstractBeamDeflector::doSimStep
      */
     void doSimStep() override;
+
+    /**
+	 * @see AbstractBeamDeflector::getOpticsType
+	 */
+    std::string getOpticsType() const override {
+        return "POLYGON_MIRROR";
+    }
+
 	/**
 	 * @see AbstractBeamDeflector::lastPulseLeftDevice
 	 */

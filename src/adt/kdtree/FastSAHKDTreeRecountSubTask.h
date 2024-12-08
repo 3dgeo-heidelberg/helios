@@ -75,7 +75,7 @@ public:
         cForward(cForward),
         cBackward(cBackward)
     {}
-    virtual ~FastSAHKDTreeRecountSubTask() = default;
+    ~FastSAHKDTreeRecountSubTask() override = default;
 
     // ***  RUNNABLE SHARED TASK  *** //
     // ****************************** //

@@ -1,5 +1,0 @@
-<map id="helios::filems::ZipMeasurementWriteStrategy" name="helios::filems::ZipMeasurementWriteStrategy">
-<area shape="rect" id="node1" title="Like DirectMeasurementWriteStrategy but zipping the output." alt="" coords="14,199,218,240"/>
-<area shape="rect" id="node2" href="$de/d6d/classhelios_1_1filems_1_1DirectMeasurementWriteStrategy.html" title="Concrete class specializing WriteStrategy to directly write measurements to a file." alt="" coords="5,109,227,151"/>
-<area shape="rect" id="node3" href="$de/dd3/classhelios_1_1filems_1_1WriteStrategy.html" title=" " alt="" coords="21,5,211,61"/>
-</map>

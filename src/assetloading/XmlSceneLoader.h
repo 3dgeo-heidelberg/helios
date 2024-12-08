@@ -24,6 +24,12 @@ class XmlSceneLoader {
 public:
     // ***  ATTRIBUTES  *** //
     // ******************** //
+
+    /**
+     * @brief Asset directories
+     */
+    std::vector<std::string> assetsDir;
+
     /**
 	 * @brief Scene loading specification
 	 * @see SceneLoadingSpecification
@@ -63,7 +69,8 @@ public:
     /**
      * @brief Default constructor for XML scene loader
      */
-    XmlSceneLoader() :
+    XmlSceneLoader(const std::vector<std::string>& assetsDir) :
+        assetsDir(assetsDir),
         kdtFactoryType(1),
         kdtNumJobs(1),
         kdtGeomJobs(1),

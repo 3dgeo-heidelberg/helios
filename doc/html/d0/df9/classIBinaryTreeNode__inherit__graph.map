@@ -1,9 +1,0 @@
-<map id="IBinaryTreeNode" name="IBinaryTreeNode">
-<area shape="rect" id="node1" title="Binary tree node interface that must be implemented by any class providing binary tree node based fun..." alt="" coords="5,78,125,105"/>
-<area shape="rect" id="node2" href="$dc/d7c/classIExprTreeNode.html" title=" " alt="" coords="173,5,376,47"/>
-<area shape="rect" id="node4" href="$dc/d7c/classIExprTreeNode.html" title="Interface extending the Binary Tree node definition to become a Expression Tree node...." alt="" coords="183,71,366,112"/>
-<area shape="rect" id="node5" href="$dd/d79/classLightKDTreeNode.html" title="Class representing a light KDTree node. It is, the basic representation of a KDTree node with uses le..." alt="" coords="211,137,338,163"/>
-<area shape="rect" id="node3" href="$d7/d02/classUnivarExprTreeNode.html" title="Class implementing a Univariate Expression Tree Node." alt="" coords="424,5,568,47"/>
-<area shape="rect" id="node6" href="$d8/d94/classKDTreeNode.html" title="Class representing a KDTree node." alt="" coords="447,137,545,163"/>
-<area shape="rect" id="node7" href="$d0/d64/classKDTreeNodeRoot.html" title="Class representing the root node of a KDTree." alt="" coords="616,137,743,163"/>
-</map>

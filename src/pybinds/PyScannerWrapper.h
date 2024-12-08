@@ -1,7 +1,6 @@
 #pragma once
 
-#ifdef PYTHON_BINDING
-
+#include <PythonDVec3.h>
 #include <PyBeamDeflectorWrapper.h>
 namespace pyhelios{ class PyDetectorWrapper;};
 #include <PyIntegerList.h>
@@ -454,5 +453,3 @@ public:
 };
 
 }
-
-#endif

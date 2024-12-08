@@ -23,7 +23,7 @@ using std::make_shared;
 
 void LidarSim::init(
     std::string surveyPath,
-    std::string assetsPath,
+    std::vector<std::string> assetsPath,
     std::string outputPath,
     bool writeWaveform,
     bool writePulse,
@@ -53,7 +53,11 @@ void LidarSim::init(
     // Info about execution arguments
     std::stringstream ss;
 	ss  << "surveyPath: \"" << surveyPath << "\"\n"
-	    << "assetsPath: \"" << assetsPath << "\"\n"
+	    << "assetsPath: [";
+    for (const auto path : assetsPath) {
+        ss << "\"" << path << "\", ";
+    }
+    ss  << "]\n"
 	    << "outputPath: \"" << outputPath << "\"\n"
 	    << "writeWaveform: " << writeWaveform << "\n"
         << "writePulse: " << writePulse << "\n"

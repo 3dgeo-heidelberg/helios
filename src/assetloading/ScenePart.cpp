@@ -20,7 +20,7 @@ ScenePart::ScenePart(ScenePart const &sp, bool const shallowPrimitives) {
   this->mOrigin = glm::dvec3(sp.mOrigin);
   this->mRotation = Rotation(sp.mRotation);
   this->mScale = sp.mScale;
-  this->forceOnGround = forceOnGround;
+  this->forceOnGround = sp.forceOnGround;
   this->mCrs = nullptr; // TODO Copy this too
   this->mEnv = nullptr; // TODO Copy this too
 

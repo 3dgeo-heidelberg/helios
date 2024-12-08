@@ -55,17 +55,18 @@ std::string const XmlAssetsLoader::defaultPlatformSettingsMsg =
 // ***  CONSTRUCTION / DESTRUCTION  *** //
 // ************************************ //
 
-XmlAssetsLoader::XmlAssetsLoader(std::string &filePath, std::string &assetsDir)
+XmlAssetsLoader::XmlAssetsLoader(std::string &filePath, std::vector<std::string> &assetsDir)
     : assetsDir(assetsDir)
+    , sceneLoader(assetsDir)
 {
+  auto xmlFile = locateAssetFile(filePath);
 
-  fs::path xmlFile(filePath);
   xmlDocFilename = xmlFile.filename().string();
   xmlDocFilePath = xmlFile.parent_path().string();
   logging::INFO("xmlDocFilename: " + xmlDocFilename);
   logging::INFO("xmlDocFilePath: " + xmlDocFilePath);
 
-  tinyxml2::XMLError result = doc.LoadFile(filePath.c_str());
+  tinyxml2::XMLError result = doc.LoadFile(xmlFile.string().c_str());
   if (result != tinyxml2::XML_SUCCESS) {
     logging::ERR("ERROR: loading " + filePath + " failed.");
   }
@@ -650,10 +651,12 @@ std::shared_ptr<Platform> XmlAssetsLoader::createInterpolatedMovingPlatform(){
                     logging::DEBUG(ss.str());
                 }
             }
-            else{ // Not first loaded, so merge with previous data
+            else{
+                // Not first loaded, so merge with previous data
+                auto resolved_path = locateAssetFile(trajectoryPath).string();
                 std::unique_ptr<TemporalDesignMatrix<double, double>> tdm;
                 if(indices.find(trajectoryPath) != indices.end()){ // XML inds
-                    DesignMatrix<double> dm(trajectoryPath, sep);
+                    DesignMatrix<double> dm(resolved_path, sep);
                     dm.swapColumns(indices[trajectoryPath]);
                     tdm = unique_ptr<TemporalDesignMatrix<double, double>>(
                         new TemporalDesignMatrix<double, double>(
@@ -664,7 +667,7 @@ std::shared_ptr<Platform> XmlAssetsLoader::createInterpolatedMovingPlatform(){
                 else{  // Trajectory file indices
                     tdm = unique_ptr<TemporalDesignMatrix<double, double>>(
                         new TemporalDesignMatrix<double, double>(
-                            trajectoryPath, sep
+                            resolved_path, sep
                         )
                     );
                     if(interpDom == "position"){ // t, x, y, z from header
@@ -1814,4 +1817,17 @@ bool XmlAssetsLoader::isProceduralAsset(
         if(id=="interpolated") return true;
     }
     return false;
+}
+
+fs::path XmlAssetsLoader::locateAssetFile(const std::string& filename) {
+  fs::path searchfile(filename);
+  if(searchfile.is_relative()){
+    for(const auto path : assetsDir){
+        if(fs::exists(fs::path(path) / searchfile)){
+            searchfile = fs::path(path) / searchfile;
+            break;
+        }
+    }
+  }
+  return searchfile.string();
 }

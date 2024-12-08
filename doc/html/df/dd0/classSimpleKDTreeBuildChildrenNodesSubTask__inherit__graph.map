@@ -1,4 +1,0 @@
-<map id="SimpleKDTreeBuildChildrenNodesSubTask" name="SimpleKDTreeBuildChildrenNodesSubTask">
-<area shape="rect" id="node1" title="Shared sub&#45;task to build children nodes when building a Simple KDTree on all geometry&#45;level depths ex..." alt="" coords="5,80,189,121"/>
-<area shape="rect" id="node2" href="$df/d6f/classSharedSubTask.html" title="A shared task is said to be a collection of shared sub&#45;tasks. Each shared sub&#45;task can be computed in..." alt="" coords="40,5,155,32"/>
-</map>

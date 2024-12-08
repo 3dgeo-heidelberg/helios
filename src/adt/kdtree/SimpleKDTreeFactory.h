@@ -82,7 +82,7 @@ public:
      *  function as member attribute
      */
     SimpleKDTreeFactory();
-    virtual ~SimpleKDTreeFactory() = default;
+    ~SimpleKDTreeFactory() override = default;
 
     // ***  CLONE  *** //
     // *************** //

@@ -23,7 +23,7 @@ public:
     EndOfReadingException(std::string const &msg = "End of reading exception"):
         HeliosException(msg)
     {}
-    virtual ~EndOfReadingException() = default;
+    ~EndOfReadingException() override = default;
 };
 
 }}

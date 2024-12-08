@@ -58,7 +58,7 @@ public:
         std::string const id,
         std::list<int> const &pulseFreqs,
         bool const writeWaveform=false,
-        bool const calcEchowdith=false,
+        bool const calcEchowidth=false,
         bool const fullWaveNoise=false,
         bool const platformNoiseDisabled=false
     ) :
@@ -77,7 +77,7 @@ public:
      * @param scanner The scanner to be copied
      */
     MultiScanner(MultiScanner &scanner);
-    virtual ~MultiScanner() = default;
+    ~MultiScanner() override = default;
 
 
     // ***   C L O N E   *** //
@@ -208,7 +208,7 @@ public:
     /**
      * @see Scanner::getScanningDevice
      */
-    ScanningDevice & getScanningDevice(size_t const idx)
+    ScanningDevice & getScanningDevice(size_t const idx) override
     {return scanDevs[idx];}
     /**
      * @see Scanner::setDeviceIndex
@@ -415,7 +415,7 @@ public:
     /**
      * @see Scanner::setNumRays
      */
-    void setNumRays(int const numRays, size_t const idx)
+    void setNumRays(int const numRays, size_t const idx) override
     {scanDevs[idx].numRays = numRays;}
     /**
      * @see Scanner::lastPulseWasHit(size_t const)
@@ -472,7 +472,7 @@ public:
     /**
      * @see Scanner::getFWFSettings
      */
-    FWFSettings & getFWFSettings(size_t const idx)
+    FWFSettings & getFWFSettings(size_t const idx) override
     {return scanDevs[idx].FWF_settings;}
     /**
      * @see Scanner::setFWFSettings(FWFSettings const &, size_t const)
@@ -491,7 +491,7 @@ public:
      */
     void setSupportedPulseFreqs_Hz(
         std::list<int> &pulseFreqs_Hz, size_t const idx
-    ){
+    ) override {
         scanDevs[idx].supportedPulseFreqs_Hz = pulseFreqs_Hz;
     }
     /**
@@ -507,12 +507,12 @@ public:
     /**
      * @see Scanner::getNumTimeBins(size_t const)
      */
-    int getNumTimeBins(size_t const idx) const
+    int getNumTimeBins(size_t const idx) const override
     {return scanDevs[idx].numTimeBins;}
     /**
      * @see Scanner::setNumTimeBins(int const, size_t const)
      */
-    void setNumTimeBins(int const numTimeBins, size_t const idx)
+    void setNumTimeBins(int const numTimeBins, size_t const idx) override
     {scanDevs[idx].numTimeBins = numTimeBins;}
     /**
      * @see Scanner::getPeakIntensityIndex(size_t const)
@@ -532,7 +532,7 @@ public:
     /**
      * @see Scanner::setTimeWave(std::vector<double> &, size_t const)
      */
-    void setTimeWave(std::vector<double> &timewave, size_t const idx)
+    void setTimeWave(std::vector<double> &timewave, size_t const idx) override
     {scanDevs[idx].time_wave = timewave;}
     /**
      * @see Scanner::setTimeWave(std::vector<double> &&, size_t const)

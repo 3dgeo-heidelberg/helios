@@ -1,6 +1,0 @@
-<map id="helios::filems::SimpleVectorialSyncFileFullWaveformWriter" name="helios::filems::SimpleVectorialSyncFileFullWaveformWriter">
-<area shape="rect" id="node1" title="Concrete class specializing SimpleSyncFileWriter to write a vector of full waveforms directly to a fi..." alt="" coords="15,288,213,329"/>
-<area shape="rect" id="node2" href="$d1/db6/classhelios_1_1filems_1_1SimpleSyncFileWriter.html" title=" " alt="" coords="5,184,223,240"/>
-<area shape="rect" id="node3" href="$d4/dfb/classhelios_1_1filems_1_1SingleSyncFileWriter.html" title=" " alt="" coords="27,95,201,136"/>
-<area shape="rect" id="node4" href="$da/d4c/classhelios_1_1filems_1_1SyncFileWriter.html" title=" " alt="" coords="35,5,193,47"/>
-</map>

@@ -1,4 +1,0 @@
-<map id="WarehouseScanningPulseProcess" name="WarehouseScanningPulseProcess">
-<area shape="rect" id="node1" title="Class implementing a scanning pulse process which works with a pulse task dropper based on budding ta..." alt="" coords="5,80,228,107"/>
-<area shape="rect" id="node2" href="$db/d85/classScanningPulseProcess.html" title="Class defining the scanning pulse process interface." alt="" coords="38,5,195,32"/>
-</map>

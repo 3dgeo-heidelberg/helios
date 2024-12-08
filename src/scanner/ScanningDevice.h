@@ -266,7 +266,7 @@ public:
      * @param scdev The scanning device to be copied
      */
     ScanningDevice(ScanningDevice const &scdev);
-    virtual ~ScanningDevice() = default;
+    ~ScanningDevice() override = default;
 
     // ***  M E T H O D S  *** //
     // *********************** //

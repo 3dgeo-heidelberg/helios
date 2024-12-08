@@ -42,4 +42,11 @@ public:
 	 * @see AbstractBeamDeflector::doSimStep
 	 */
 	void doSimStep() override;
+    
+    /**
+	 * @see AbstractBeamDeflector::getOpticsType
+	 */
+    std::string getOpticsType() const override {
+        return "CONIC";
+    }
 };

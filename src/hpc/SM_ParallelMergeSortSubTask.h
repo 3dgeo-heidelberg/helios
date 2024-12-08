@@ -148,7 +148,7 @@ public:
         end(end),
         comparator(comparator)
     {}
-    virtual ~SM_ParallelMergeSortSubTask() = default;
+    ~SM_ParallelMergeSortSubTask() override = default;
 
     // ***  RUNNABLE SHARED TASK  *** //
     // ****************************** //

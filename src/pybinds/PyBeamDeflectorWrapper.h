@@ -1,7 +1,5 @@
 #pragma once
 
-#ifdef PYTHON_BINDING
-
 #include <AbstractBeamDeflector.h>
 #include <scanner/beamDeflector/ConicBeamDeflector.h>
 #include <scanner/beamDeflector/FiberArrayBeamDeflector.h>
@@ -77,32 +75,9 @@ public:
         {beamDeflector.cached_angleBetweenPulses_rad = angleBetweenPulses;}
     inline Rotation& getEmitterRelativeAttitude()
         {return beamDeflector.getEmitterRelativeAttitudeByReference();}
-    inline std::string getOpticsType() const {return getOpticsType(0);}
-    inline std::string getOpticsType(size_t const idx) const {
-        try{
-            dynamic_cast<ConicBeamDeflector &>(beamDeflector);
-            return "CONIC";
-        }catch(std::exception &ex){}
-        try{
-            dynamic_cast<FiberArrayBeamDeflector &>(beamDeflector);
-            return "FIBER_ARRAY";
-        }catch(std::exception &ex){}
-        try{
-            dynamic_cast<OscillatingMirrorBeamDeflector &>(beamDeflector);
-            return "OSCILLATING_MIRROR";
-        }catch(std::exception &ex){}
-        try{
-            dynamic_cast<PolygonMirrorBeamDeflector &>(beamDeflector);
-            return "POLYGON_MIRROR";
-        }catch(std::exception &ex){}
-        try{
-            dynamic_cast<RisleyBeamDeflector &>(beamDeflector);
-            return "RISLEY";
-        }catch(std::exception &ex){}
-        return "UNKNOWN";
-    }
+    inline std::string getOpticsType() const {
+    return beamDeflector.getOpticsType();}
+
 };
 
 }
-
-#endif

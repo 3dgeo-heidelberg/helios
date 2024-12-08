@@ -35,7 +35,7 @@ public:
         Pulse(origin, attitude),
         time_ns(time_ns)
     {}
-    virtual ~TimedPulse() = default;
+    ~TimedPulse() override = default;
 
 
     // *** GETTERs and SETTERs  *** //

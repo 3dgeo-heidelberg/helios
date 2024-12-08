@@ -20,6 +20,15 @@ class AbstractGeometryFilter {
 public:
     // ***  ATTRIBUTES  *** //
     // ******************** //
+
+	/**
+	 * @brief Asset directories
+	 */
+	std::vector<std::string> assetsDir;
+
+	/**
+	 * @brief Spatial reference system for the source data
+	 */
 	OGRSpatialReference* sourceCRS;
 
     /**
@@ -59,9 +68,17 @@ public:
 	 */
     virtual ScenePart* run() = 0;
 
-
 	// ***  GETTERs and SETTERs  *** //
 	// ***************************** //
+
+	/**
+	 * @brief Set the asset directories
+	 * @param assetsDir Asset directories
+	 */
+	void setAssetsDir(std::vector<std::string> assetsDir) {
+	  this->assetsDir = assetsDir;
+	}
+
 	/**
 	 * @brief Retrieve requested material by name
 	 * @param materialName Name of material to be retrieved

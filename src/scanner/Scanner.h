@@ -199,7 +199,7 @@ public:
 	 * @param scanner The scanner to be copied
 	 */
     Scanner(Scanner &scanner);
-    virtual ~Scanner() = default;
+    ~Scanner() override = default;
 
     // ***   C L O N E   *** //
     // ********************* //

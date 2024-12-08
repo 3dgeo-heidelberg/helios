@@ -128,6 +128,7 @@ shared_ptr<ScenePart> XmlSceneLoader::loadFilters(
         // Apply the filter
         if (filter != nullptr) {
             // Set params:
+            filter->setAssetsDir(assetsDir);
             filter->params = XmlUtils::createParamsFromXml(filterNodes);
             logging::DEBUG("Applying filter: " + filterType);
             scenePart = filter->run();
@@ -212,6 +213,8 @@ AbstractGeometryFilter * XmlSceneLoader::loadFilter(
         filter = new DetailedVoxelLoader();
     }
     // ################### END Set up filter ##################
+
+    filter->setAssetsDir(assetsDir);
 
     return filter;
 }

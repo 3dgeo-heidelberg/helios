@@ -3,24 +3,17 @@
 Tests for checking that the XMLs are conform with the XSD
 """
 
+import os
 import pytest
 import xmlschema
-import sys
 import xml.etree.ElementTree as ET
 from pathlib import Path
 import urllib
 
-HELIOS_EXE = str(Path('run') / 'helios')
-if sys.platform == "win32":
-    HELIOS_EXE += ".exe"
-WORKING_DIR = str(Path(__file__).parent.parent.absolute())
-# find helios executable
-HELIOS_EXE_NAME = "helios"
-if sys.platform == "win32" or sys.platform == "win64":
-    HELIOS_EXE_NAME += ".exe"
-HELIOS_EXE = str(list(Path(WORKING_DIR).glob(f"**/{HELIOS_EXE_NAME}"))[0])
-# get XSD files and read schemas
-XSD_DIR = Path(WORKING_DIR) / 'pyhelios/util/xsd'
+
+WORKING_DIR = os.getcwd()
+XSD_DIR = Path(WORKING_DIR) / 'python/pyhelios/util/xsd'
+PYH_DIR = Path(WORKING_DIR) / 'python/pyhelios'
 survey_schema = xmlschema.XMLSchema(str(XSD_DIR / 'survey.xsd'))
 scene_schema = xmlschema.XMLSchema(str(XSD_DIR / 'scene.xsd'))
 scanner_schema = xmlschema.XMLSchema(str(XSD_DIR / 'scanner.xsd'))
@@ -37,7 +30,7 @@ def handle_relative_path(root, *paths):
             try:
                 path.resolve(strict=True)
             except FileNotFoundError:
-                # otherwise, assume that path is relative to helios directory
+                # otherwise, assume that path is relative to given directory
                 path = str(root / path)
         new_paths.append(path)
 
@@ -50,7 +43,7 @@ def get_paths(survey_file):
         scene_file = ET.parse(survey_file).find('survey').attrib['scene'].split('#')[0]
         scanner_file = ET.parse(survey_file).find('survey').attrib['scanner'].split('#')[0]
         platform_file = ET.parse(survey_file).find('survey').attrib['platform'].split('#')[0]
-        scene_file, scanner_file, platform_file = handle_relative_path(WORKING_DIR, scene_file, scanner_file,
+        scene_file, scanner_file, platform_file = handle_relative_path(PYH_DIR, scene_file, scanner_file,
                                                                        platform_file)
     except KeyError as e:
         print("ERROR: Missing 'platform', 'scanner' or 'scene' key in <survey> tag.\n"

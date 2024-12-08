@@ -1,8 +1,0 @@
-<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$d3/d60/classYielder.html" title="Abstract class representing a yielder. It is, an object which can be used to accumulate inputs until ..." alt="" coords="5,56,100,83"/>
-<area shape="rect" id="node2" href="$de/d71/classWriteYielder.html" title=" " alt="" coords="149,5,343,32"/>
-<area shape="rect" id="node4" href="$de/d71/classWriteYielder.html" title=" " alt="" coords="148,56,344,83"/>
-<area shape="rect" id="node6" href="$de/d71/classWriteYielder.html" title="Abstract class representing a write yielder. It is, a yielder which can use the FMSWriteFacade to wri..." alt="" coords="184,107,308,133"/>
-<area shape="rect" id="node3" href="$d6/d61/classPointcloudYielder.html" title="Yield a point cloud from measurements so it is written when buffer size has been reached or,..." alt="" coords="402,5,525,32"/>
-<area shape="rect" id="node5" href="$da/d06/classFullWaveformYielder.html" title="Yield a set of full waveforms from single full waveform data so it is written when buffer size has be..." alt="" coords="392,56,535,83"/>
-</map>

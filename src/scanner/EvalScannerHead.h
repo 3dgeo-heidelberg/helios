@@ -72,7 +72,7 @@ public:
     {
         state_currentExactRotateAngle_rad = state_currentRotateAngle_rad;
     }
-    virtual ~EvalScannerHead() {}
+    ~EvalScannerHead() override {}
 
     // ***  M E T H O D S  *** //
     // *********************** //
@@ -97,7 +97,7 @@ public:
      * @param angle_rad New current rotation angle (radians).
      * @see ScannerHead::state_currentRotateAngle_rad
      */
-    virtual void setCurrentRotateAngle_rad(double angle_rad);
+    void setCurrentRotateAngle_rad(double angle_rad) override;
     /**
      * @brief Set the pointer to the deflector angle associated to this head.
      * @param deflectorAngle Pointer to the new deflector angle associated to

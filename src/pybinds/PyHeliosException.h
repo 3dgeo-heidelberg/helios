@@ -1,5 +1,4 @@
 #pragma once
-#ifdef PYTHON_BINDING
 
 #include <HeliosException.h>
 
@@ -18,5 +17,3 @@ public:
 };
 
 }
-
-#endif

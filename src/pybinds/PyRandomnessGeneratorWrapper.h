@@ -1,7 +1,5 @@
 #pragma once
 
-#ifdef PYTHON_BINDING
-
 namespace pyhelios{
 
 /**
@@ -33,5 +31,3 @@ public:
 };
 
 }
-
-#endif

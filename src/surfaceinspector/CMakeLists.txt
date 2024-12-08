@@ -1,0 +1,9 @@
+target_include_directories(
+  helios
+  PUBLIC
+  "src/surfaceinspector/maths/"
+  "src/surfaceinspector/maths/functions/"
+  "src/surfaceinspector/maths/permuters/"
+  "src/surfaceinspector/util/"
+  "src/surfaceinspector/util/draggers/"
+)

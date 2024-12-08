@@ -1,7 +1,5 @@
 #pragma once
 
-#ifdef PYTHON_BINDING
-
 #include <string>
 #include <Measurement.h>
 #include <PythonDVec3.h>
@@ -56,10 +54,8 @@ public:
     int getClassification() {return m.classification;}
     void setClassification(int classification)
         {m.classification = classification;}
-    long getGpsTime() {return m.gpsTime;}
-    void setGpsTime(long gpsTime) {m.gpsTime = gpsTime;}
+    double getGpsTime() {return F64((m.gpsTime)/1000000000.0);}
+    void setGpsTime(double gpsTime) {m.gpsTime = gpsTime * 1000000000.0;}
 };
 
 }
-
-#endif

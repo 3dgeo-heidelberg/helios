@@ -1,7 +1,5 @@
 #pragma once
 
-#ifdef PYTHON_BINDING
-
 #include <PyVertexWrapper.h>
 #include <AABB.h>
 
@@ -38,5 +36,3 @@ public:
 };
 
 }
-
-#endif

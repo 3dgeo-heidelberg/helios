@@ -10,6 +10,7 @@
 #include <unordered_set>
 #include <unordered_map>
 #include <memory>
+#include <vector>
 
 /**
  * @brief Survey loader from XML
@@ -47,10 +48,10 @@ public:
      * @param assetsDir Path to the assets directory
      */
 	XmlSurveyLoader(
-        std::string& filePath,
-        std::string& assetsDir,
-        bool writeScene=true
-    ) : XmlAssetsLoader(filePath, assetsDir), writeScene(writeScene) {}
+          std::string& filePath,
+          std::vector<std::string>& assetsDir,
+          bool writeScene=true)
+	    : XmlAssetsLoader(filePath, assetsDir), writeScene(writeScene) {}
 
     // ***  M E T H O D S  *** //
     // *********************** //

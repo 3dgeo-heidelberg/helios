@@ -1,5 +1,0 @@
-<map id="DesignTrajectoryFunction" name="DesignTrajectoryFunction">
-<area shape="rect" id="node1" title="Class representing a trajectory function that comes from interpolating a TemporalDesignMatrix using i..." alt="" coords="5,184,176,211"/>
-<area shape="rect" id="node2" href="$d9/de4/classTrajectoryFunction.html" title="Abstract class representing a trajectory function ." alt="" coords="25,109,156,136"/>
-<area shape="rect" id="node3" href="$d4/d73/classfluxionum_1_1Function.html" title=" " alt="" coords="22,5,159,61"/>
-</map>

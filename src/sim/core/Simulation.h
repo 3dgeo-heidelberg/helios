@@ -7,9 +7,6 @@
 #include <PulseThreadPoolInterface.h>
 #include <FullWaveformPulseRunnable.h>
 #include <SimulationCycleCallback.h>
-#ifdef PYTHON_BINDING
-#include <PySimulationCycleCallback.h>
-#endif
 #ifdef DATA_ANALYTICS
 #include <dataanalytics/HDA_StateJSONReporter.h>
 #include <dataanalytics/HDA_Recorder.h>

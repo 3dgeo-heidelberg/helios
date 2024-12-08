@@ -205,7 +205,7 @@ public:
      * @param id New identifier for the dynamic sequence
      * @see DynSequence::setId
      */
-    inline void setId(string const & id) const {this->id = id;}
+    inline void setId(string const & id) {this->id = id;}
     /**
      * @brief Get next identifier for the dynamic sequence
      * @return Identifier of next dynamic sequence

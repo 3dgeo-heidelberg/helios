@@ -3,6 +3,7 @@
 #include <SurveyPlayback.h>
 
 #include <string>
+#include <vector>
 
 namespace helios { namespace main{
 
@@ -65,7 +66,7 @@ public:
      */
     void init(
         std::string surveyPath,
-        std::string assetsPath,
+        std::vector<std::string> assetsPath,
         std::string outputPath,
         bool writeWaveform = false,
         bool writePulse = false,
@@ -90,7 +91,7 @@ public:
         size_t kdtJobs = 1,
         size_t kdtGeomJobs = 1,
         size_t sahLossNodes = 21,
-        bool legacyEnergyModel = false
+        bool legacyEnergyModel = true
     );
 
     /**

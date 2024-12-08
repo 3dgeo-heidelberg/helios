@@ -1,7 +1,0 @@
-<map id="ScanningPulseProcess" name="ScanningPulseProcess">
-<area shape="rect" id="node1" title="Class defining the scanning pulse process interface." alt="" coords="5,379,163,405"/>
-<area shape="rect" id="node2" href="$da/dfd/classPulseTaskFactory.html" title="Factory to make the adequate pulse task depending on the simulation." alt="" coords="21,289,147,316"/>
-<area shape="rect" id="node3" href="$d5/d9c/classScene.html" title="Class representing a scene asset." alt="" coords="55,200,113,227"/>
-<area shape="rect" id="node4" href="$de/d97/classAsset.html" title="Base class for all assets." alt="" coords="56,124,112,151"/>
-<area shape="rect" id="node5" title=" " alt="" coords="57,5,111,32"/>
-</map>

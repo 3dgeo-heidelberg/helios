@@ -64,21 +64,23 @@ std::vector<DetailedVoxel *> VoxelFileParser::bruteParseDetailed(
     double voxelHalfSize = voxelSize / 2.0;
     const char * sep = separator.c_str();
     char format1[4096];
-    sprintf(
+    snprintf(
         format1,
+        sizeof(format1),
         "%s%s%s%s%s",
         "%zu",sep,"%zu",sep,"%zu"
     );
     char format2[4096];
-    sprintf(
+    snprintf(
         format2,
+        sizeof(format2),
         "%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s",
         "%lf",sep,"%lf",sep,"%lf",sep,"%lf",sep,
         "%lf",sep,"%lf",sep,"%lf",sep,"%lf",sep,
         "%d",sep,"%d",sep,"%lf",sep,"%lf",sep,"%lf"
     );
     char format3[4096];
-    sprintf(format3, "%s%s", "%lf", sep);
+    snprintf(format3, sizeof(format3), "%s%s", "%lf", sep);
     DetailedVoxel *dv;
     for(std::string line : lines){
         dv = parseDetailedVoxelLine(

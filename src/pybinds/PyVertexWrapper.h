@@ -1,7 +1,5 @@
 #pragma once
 
-#ifdef PYTHON_BINDING
-
 #include <Vertex.h>
 #include <PythonDVec3.h>
 
@@ -40,5 +38,3 @@ public:
 };
 
 }
-
-#endif

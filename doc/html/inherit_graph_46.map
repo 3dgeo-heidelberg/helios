@@ -1,9 +1,0 @@
-<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$df/dc7/classhelios_1_1filems_1_1ReadingStrategy.html" title="Abstract class defining the fundamentals of any file reading strategy." alt="" coords="5,71,209,112"/>
-<area shape="rect" id="node2" href="$da/d24/classhelios_1_1filems_1_1SimpleReadingStrategy.html" title=" " alt="" coords="257,5,452,47"/>
-<area shape="rect" id="node4" href="$da/d24/classhelios_1_1filems_1_1SimpleReadingStrategy.html" title=" " alt="" coords="257,71,452,112"/>
-<area shape="rect" id="node6" href="$da/d24/classhelios_1_1filems_1_1SimpleReadingStrategy.html" title=" " alt="" coords="257,136,452,177"/>
-<area shape="rect" id="node3" href="$de/d7a/classhelios_1_1filems_1_1BinaryReadingStrategy.html" title="Class defining the strategy to read byte by byte from a file input stream." alt="" coords="500,5,692,47"/>
-<area shape="rect" id="node5" href="$de/d50/classhelios_1_1filems_1_1LineReadingStrategy.html" title="Class defining the strategy to read line by line from a file input stream." alt="" coords="507,71,685,112"/>
-<area shape="rect" id="node7" href="$d5/db9/classhelios_1_1filems_1_1CharReadingStrategy.html" title="Class defining the strategy to read char by char from a file input stream." alt="" coords="505,136,687,177"/>
-</map>

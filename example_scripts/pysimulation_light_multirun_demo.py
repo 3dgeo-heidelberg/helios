@@ -3,11 +3,7 @@
 # As small simulations do not require too much memory, they can be all kept
 # in memory at the same time
 
-import sys
-import os
 from pathlib import Path
-helios_root = str(Path(__file__).parent.parent.absolute())
-sys.path.append(helios_root)
 import pyhelios
 from threading import Condition as CondVar
 
@@ -51,7 +47,6 @@ if __name__ == '__main__':
     # pyhelios.loggingVerbose2()
     pyhelios.loggingQuiet()
     pyhelios.setDefaultRandomnessGeneratorSeed("123")
-    os.chdir(helios_root)
 
     # Build multiple simulations
     nSimulations = 3

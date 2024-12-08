@@ -196,7 +196,7 @@ public:
         double const startTime,
         RotationSpec rotspec=RotationSpec::ARINC_705
     );
-    virtual ~InterpolatedMovingPlatform() = default;
+    ~InterpolatedMovingPlatform() override = default;
 
     // ***  M E T H O D S  *** //
     // *********************** //

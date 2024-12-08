@@ -39,8 +39,8 @@ public:
     {
 		cfg_device_numFibers = numFibers;
 	}
-    std::shared_ptr<AbstractBeamDeflector> clone();
-    void _clone(std::shared_ptr<AbstractBeamDeflector> abd);
+    std::shared_ptr<AbstractBeamDeflector> clone() override;
+    void _clone(std::shared_ptr<AbstractBeamDeflector> abd) override;
 
     // ***  M E T H O D S  *** //
     // *********************** //
@@ -52,6 +52,13 @@ public:
 	 * @see AbstractBeamDeflector::doSimStep
 	 */
 	void doSimStep() override;
+
+     /**
+	 * @see AbstractBeamDeflector::getOpticsType
+	 */
+    std::string getOpticsType() const override {
+        return "FIBER_ARRAY";
+    }
 
 	// ***  GETTERS and SETTERS *** //
 	// **************************** //

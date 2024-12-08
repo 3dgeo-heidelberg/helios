@@ -1,7 +1,5 @@
 #pragma once
 
-#ifdef PYTHON_BINDING
-
 #include <Trajectory.h>
 #include <PythonDVec3.h>
 
@@ -43,5 +41,3 @@ public:
 };
 
 }
-
-#endif

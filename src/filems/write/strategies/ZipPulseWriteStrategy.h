@@ -32,7 +32,7 @@ public:
         DirectPulseWriteStrategy(ofs),
         oa(oa)
     {}
-    virtual ~ZipPulseWriteStrategy() = default;
+    ~ZipPulseWriteStrategy() override = default;
 
     // ***  WRITE STRATEGY INTERFACE *** //
     // ********************************* //

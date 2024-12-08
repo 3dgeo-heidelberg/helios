@@ -1,5 +1,0 @@
-<map id="PolygonMirrorBeamDeflector" name="PolygonMirrorBeamDeflector">
-<area shape="rect" id="node1" title="Class representing a polygon mirror beam deflector." alt="" coords="5,171,195,197"/>
-<area shape="rect" id="node2" href="$d7/d92/classAbstractBeamDeflector.html" title="Base abstract class for beam deflectors." alt="" coords="21,95,179,121"/>
-<area shape="rect" id="node3" href="$d5/dcb/classRotation.html" title=" " alt="" coords="65,5,135,32"/>
-</map>

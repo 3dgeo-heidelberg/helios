@@ -1,9 +1,0 @@
-<map id="GroundVehiclePlatform" name="GroundVehiclePlatform">
-<area shape="rect" id="node1" title="Class representing a ground vehicle platform." alt="" coords="7,471,163,497"/>
-<area shape="rect" id="node2" href="$d5/d3b/classSimplePhysicsPlatform.html" title="Class representing a simple phyiscs platform." alt="" coords="5,395,164,421"/>
-<area shape="rect" id="node3" href="$d1/d83/classMovingPlatform.html" title="Class representing a moving platform." alt="" coords="28,319,141,345"/>
-<area shape="rect" id="node4" href="$df/d1e/classPlatform.html" title="Class representing a platform asset." alt="" coords="49,243,120,269"/>
-<area shape="rect" id="node5" href="$de/d97/classAsset.html" title="Base class for all assets." alt="" coords="13,124,69,151"/>
-<area shape="rect" id="node6" title=" " alt="" coords="13,5,68,32"/>
-<area shape="rect" id="node7" href="$d5/dcb/classRotation.html" title=" " alt="" coords="93,124,164,151"/>
-</map>
