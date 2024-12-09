@@ -1,7 +1,5 @@
 #pragma once
 
-#ifdef PYTHON_BINDING
-
 #include <SimulationCycleCallback.h>
 #include <PyHeliosOutputWrapper.h>
 #include <boost/python.hpp>
@@ -27,7 +25,7 @@ public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //
     // ************************************ //
     PySimulationCycleCallback(PyObject *pyCallback) : pyCallback(pyCallback) {}
-    virtual ~PySimulationCycleCallback() {}
+    ~PySimulationCycleCallback() override {}
 
     // ***  F U N C T O R  *** //
     // *********************** //
@@ -35,7 +33,7 @@ public:
         std::vector<Measurement> &measurements,
         std::vector<Trajectory> &trajectories,
         std::string const &outpath
-    ) {
+    ) override {
         PyHeliosOutputWrapper phow(
             measurements,
             trajectories,
@@ -51,5 +49,3 @@ public:
 };
 
 }
-
-#endif

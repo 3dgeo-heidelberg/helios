@@ -1,8 +1,0 @@
-<map id="visualhelios::VHDynObjectAdapter" name="visualhelios::VHDynObjectAdapter">
-<area shape="rect" id="node1" title="Abstract class defining core mechanisms to adapt dynamic objects to the visual Helios context based o..." alt="" coords="97,289,275,331"/>
-<area shape="rect" id="node2" href="$d1/dda/classvisualhelios_1_1VHStaticObjectAdapter.html" title="Abstract class defining core mechanisms to adapt static objects to the visual Helios context based on..." alt="" coords="91,199,281,240"/>
-<area shape="rect" id="node3" href="$dd/dc4/classScenePart.html" title="Class representing a scene part." alt="" coords="47,109,130,136"/>
-<area shape="rect" id="node4" href="$d5/dcb/classRotation.html" title=" " alt="" coords="5,5,76,32"/>
-<area shape="rect" id="node5" title=" " alt="" coords="109,5,164,32"/>
-<area shape="rect" id="node6" title=" " alt="" coords="154,109,309,136"/>
-</map>

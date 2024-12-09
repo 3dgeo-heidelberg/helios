@@ -1,9 +1,8 @@
 #pragma once
 
-#ifdef PYTHON_BINDING
-
 #include <glm/glm.hpp>
 #include <memory>
+#include <armadillo>
 
 namespace pyhelios{
 
@@ -32,6 +31,10 @@ public:
         this->v = v;
         release = false;
     }
+    PythonDVec3(arma::colvec const v){
+        this->v = new glm::dvec3(v[0], v[1], v[2]);
+        release = true;
+    }
     virtual ~PythonDVec3(){
         if(release && v!=nullptr) delete v;
     }
@@ -48,5 +51,3 @@ public:
 };
 
 }
-
-#endif

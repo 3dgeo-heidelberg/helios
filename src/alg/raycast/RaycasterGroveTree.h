@@ -23,7 +23,7 @@ class RaycasterGroveTree : Raycaster{
 public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //
     // ************************************ //
-    virtual ~RaycasterGroveTree() = default;
+    ~RaycasterGroveTree() override = default;
 
 
     // ***  GROVE DYNAMIC TREE METHODS  *** //

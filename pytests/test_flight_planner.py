@@ -1,9 +1,9 @@
-import pytest
+import os
 import numpy as np
 from pathlib import Path
 from pyhelios.util import flight_planner
 
-WORKING_DIR = str(Path(__file__).parent.parent.absolute())
+WORKING_DIR = os.getcwd()
 
 
 def test_rotate_around_origin():

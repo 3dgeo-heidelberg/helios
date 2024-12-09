@@ -19,6 +19,11 @@ private:
     // ***  ATTRIBUTES  *** //
     // ******************** //
     /**
+     * @brief Asset directories
+     */
+    const std::vector<std::string> assetsDir;
+
+    /**
      * @brief Spectra specification
      */
     const std::string spectra;
@@ -45,7 +50,7 @@ public:
      * @param wavelength_m Wavelength in meters \f$w_{m}\f$
      * @param spectra Path to spectra file
      */
-    SpectralLibrary(float wavelength_m, std::string spectra);
+    SpectralLibrary(float wavelength_m, std::vector<std::string> assetsDir, std::string spectra);
 
 private:
     /**
@@ -79,4 +84,10 @@ public:
 	 * @param scene Scene with materials which reflectance must be setted
 	 */
 	void setReflectances(Scene* scene);
+
+    /**
+     * @brief Obtain the default reflectance of the spectral library.
+     * @see SpectralLibrary::defaultReflectance
+     */
+    inline double getDefaultReflectance(){return defaultReflectance;}
 };

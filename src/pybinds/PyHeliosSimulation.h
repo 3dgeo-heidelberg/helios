@@ -1,17 +1,18 @@
 #pragma once
-#ifdef PYTHON_BINDING
 
 #include <string>
 #include <Leg.h>
 #include <SurveyPlayback.h>
 #include <memory>
 #include <noise/RandomnessGenerator.h>
+#include <PySimulationCycleCallback.h>
 #include <PyPlatformWrapper.h>
 #include <PySceneWrapper.h>
 #include <PyHeliosOutputWrapper.h>
 #include <PyHeliosException.h>
 #include <XmlSurveyLoader.h>
 #include <PyScannerWrapper.h>
+#include <PyScanningStripWrapper.h>
 
 namespace pyhelios{
 
@@ -33,7 +34,7 @@ private:
     size_t numThreads = 0;
     size_t callbackFrequency = 0;
     std::string surveyPath = "NULL";
-    std::string assetsPath = "NULL";
+    std::vector<std::string> assetsPath;
     std::string outputPath = "NULL";
     std::shared_ptr<Survey> survey = nullptr;
     std::shared_ptr<SurveyPlayback> playback = nullptr;
@@ -52,8 +53,10 @@ private:
     int parallelizationStrategy = 1;
     int chunkSize = 32;
     int warehouseFactor = 1;
+    std::vector<PyHeliosSimulation *> copies;
 public:
     bool finalOutput = true;
+    bool legacyEnergyModel = false;
     bool exportToFile = true;
 
     // ***  CONSTRUCTION / DESTRUCTION  *** //
@@ -70,7 +73,7 @@ public:
      */
     PyHeliosSimulation(
         std::string surveyPath,
-        std::string assetsPath = "assets/",
+        boost::python::list assetsPath,
         std::string outputPath = "output/",
         size_t numThreads = 0,
         bool lasOutput = false,
@@ -129,7 +132,7 @@ public:
      *
      * @return Path to the assets directory used by the simulation
      */
-    std::string getAssetsPath() {return assetsPath;}
+    std::vector<std::string> getAssetsPath() {return assetsPath;}
 
     /**
      * @brief Obtain the survey used by the simulation
@@ -174,11 +177,23 @@ public:
         {survey->legs.erase(survey->legs.begin() + index);}
     /**
      * @brief Create a new empty leg
-     * @param index The  index specifying the position in the survey where the
-     *  leg will be inserted
-     * @return Created empty leg
+     * @param index The index specifying the position in the survey where the
+     *  leg will be inserted.
+     * @return Created leg.
      */
     Leg & newLeg(int index);
+    /**
+     * @brief Create a new leg from a template.
+     * @param index The index specifying the position in the survey where the
+     *  leg will be inserted.
+     * @param baseLeg The leg to be used as a template to build the new leg.
+     *  If null, the new leg will be created fully from scratch.
+     * @return Created leg.
+     */
+    Leg & newLegFromTemplate(
+        int index,
+        Leg &baseLeg
+    );
     /**
      * @brief Create a new empty scanning strip (with no legs)
      * @param stripId The identifier for the strip
@@ -388,7 +403,8 @@ public:
         bool writeWaveform = false,
         bool calcEchowidth = false,
         bool fullWaveNoise = false,
-        bool platformNoiseDisabled = true
+        bool platformNoiseDisabled = true,
+        bool writePulse = false
     );
     void addRotateFilter(
         double q0,
@@ -419,5 +435,3 @@ public:
 };
 
 }
-
-#endif

@@ -79,7 +79,7 @@ public:
         setChild(setChild),
         buildRecursive(buildRecursive)
     {}
-    virtual ~SimpleKDTreeBuildChildrenNodesSubTask() {}
+    ~SimpleKDTreeBuildChildrenNodesSubTask() override {}
 
     // ***  RUNNABLE SHARED TASK  *** //
     // ****************************** //

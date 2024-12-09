@@ -2,6 +2,7 @@
 
 #include <maths/Rotation.h>
 #include <maths/Directions.h>
+#include <maths/model/EnergyModel.h>
 #include <assetloading/Asset.h>
 #include <scanner/ScannerHead.h>
 #include <scanner/FWFSettings.h>
@@ -42,6 +43,8 @@ protected:
     friend class Scanner;
     friend class SingleScanner;
     friend class MultiScanner;
+    friend class BaseEnergyModel;
+    friend class ImprovedEnergyModel;
 
     // ***  DEVICE ATTRIBUTES  *** //
     // *************************** //
@@ -170,6 +173,23 @@ protected:
      */
     std::shared_ptr<UnivarExprTreeNode<double>> rangeErrExpr = nullptr;
 
+    /**
+     * @brief The energy model to compute the intensity for any pulse
+     *  emitted by the scanning device.
+     * @see EnergyModel
+     * @see BaseEnergyModel
+     */
+    std::shared_ptr<EnergyModel> energyModel = nullptr;
+    /**
+     * @brief The minimum energy threshold (in Watts) to filter received energy
+     *  values during fullwave analysis in
+     *  FullWaveformPulseRunnable::handleFullWaveformBin and
+     *  FullWaveformPulseRunnable::detectPeak methods.
+     * @see FullWaveformPulseRunnable::handleFullWaveformBin
+     * @see FullWaveformPulseRunnable::detectPeak
+     */
+    double receivedEnergyMin_W = 0.0001;
+
     // ***  STATE ATTRIBUTES  *** //
     // ************************** //
     /**
@@ -214,6 +234,10 @@ public:
      * @brief The divergence angle for each subray.
      */
     std::vector<double> cached_subrayDivergenceAngle_rad;
+    /**
+     * @brief The subray radius step or iteration.
+     */
+    std::vector<int> cached_subrayRadiusStep;
 
 public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //
@@ -242,7 +266,7 @@ public:
      * @param scdev The scanning device to be copied
      */
     ScanningDevice(ScanningDevice const &scdev);
-    virtual ~ScanningDevice() = default;
+    ~ScanningDevice() override = default;
 
     // ***  M E T H O D S  *** //
     // *********************** //
@@ -251,8 +275,11 @@ public:
      *
      * For example, data related to the subray generation process will be
      *  cached to avoid redundant operations.
+     *
+     * @param legacyEnergyModel Whether to use the legacy energy model (True)
+     *  or not (False).
      */
-    void prepareSimulation();
+    void prepareSimulation(bool const legacyEnergyModel = false);
 
     /**
      * @brief Configure beam related attributes. It is recommended to
@@ -319,7 +346,7 @@ public:
     void computeSubrays(
         std::function<void(
             Rotation const &subrayRotation,
-            double const divergenceAngle,
+            int const subrayRadiusStep,
             NoiseSource<double> &intersectionHandlingNoiseSource,
             std::map<double, double> &reflections,
             vector<RaySceneIntersection> &intersects
@@ -400,8 +427,7 @@ public:
         double const incidenceAngle,
         double const targetRange,
         Material const &mat,
-        double const targetArea,
-        double const radius
+        int const subrayRadiusStep
 #if DATA_ANALYTICS >= 2
        ,std::vector<std::vector<double>> &calcIntensityRecords
 #endif
@@ -414,8 +440,8 @@ public:
      */
     double calcIntensity(
         double const targetRange,
-        double const radius,
-        double const sigma
+        double const sigma,
+        int const subrayRadiusStep
     ) const;
 
     int calcTimePropagation(
@@ -522,5 +548,34 @@ public:
     inline bool hasMechanicalRangeErrorExpression(){
         return rangeErrExpr != nullptr;
     }
+    /**
+     * @brief Set the energy model for the scanning device.
+     * @param energyModel The new energy model for the scanning device.
+     */
+    inline void setEnergyModel(std::shared_ptr<EnergyModel> energyModel){
+        this->energyModel = energyModel;
+    }
+    /**
+     * @brief Get the energy model of the scanning device.
+     * @return The energy model of the scanning device.
+     */
+    inline std::shared_ptr<EnergyModel> getEnergyModel() const
+    {return energyModel;}
 
+    /**
+     * @brief Get the minimum received energy threshold of the scanning device.
+     * @return The minimum received energy threshold of the scanning device.
+     * @see ScanningDevice::receivedEnergyMin_W
+     */
+    inline double getReceivedEnergyMin() const {return receivedEnergyMin_W;}
+
+    /**
+     * @brief Set the minimum received energy threshold for the scanning
+     *  device.
+     * @param receivedEnergyMin_W The new minimum received energy threshold
+     *  for the scanning device.
+     */
+    inline void setReceivedEnergyMin(double const receivedEnergyMin_W) {
+        this->receivedEnergyMin_W = receivedEnergyMin_W;
+    }
 };

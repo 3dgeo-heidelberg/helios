@@ -115,6 +115,11 @@ public:
      */
     virtual void doSimStep() = 0;
 
+	/**
+     * @brief Method to get optics type of deflector
+     */
+    virtual std::string getOpticsType() const = 0;
+
 	// ***  GETTERS and SETTERS  *** //
 	// ***************************** //
 	/**

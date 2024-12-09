@@ -1,8 +1,0 @@
-<map id="helios::filems::Las14VectorialSyncFileMeasurementWriter" name="helios::filems::Las14VectorialSyncFileMeasurementWriter">
-<area shape="rect" id="node1" title="Concrete class specializing LasSyncFileWriter to write a vector of measurements to a LAS14 file." alt="" coords="753,50,947,91"/>
-<area shape="rect" id="node2" href="$d7/d5b/classhelios_1_1filems_1_1LasSyncFileWriter.html" title=" " alt="" coords="453,5,669,61"/>
-<area shape="rect" id="node3" href="$d4/dfb/classhelios_1_1filems_1_1SingleSyncFileWriter.html" title=" " alt="" coords="221,13,396,54"/>
-<area shape="rect" id="node4" href="$da/d4c/classhelios_1_1filems_1_1SyncFileWriter.html" title=" " alt="" coords="5,13,164,54"/>
-<area shape="rect" id="node5" href="$da/d35/classhelios_1_1filems_1_1LasMeasurementWriteStrategy.html" title="Concrete class specializing WriteStrategy to directly write measurements to a file with LAS format." alt="" coords="458,86,665,127"/>
-<area shape="rect" id="node6" href="$de/dd3/classhelios_1_1filems_1_1WriteStrategy.html" title=" " alt="" coords="213,79,404,135"/>
-</map>

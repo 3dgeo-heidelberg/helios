@@ -121,7 +121,7 @@ public:
         ,std::shared_ptr<HDA_PulseRecorder> pulseRecorder
 #endif
     );
-    virtual ~BuddingScanningPulseProcess() = default;
+    ~BuddingScanningPulseProcess() override = default;
 
     // ***  PULSE COMPUTATION  *** //
     // *************************** //

@@ -20,7 +20,7 @@ ScenePart::ScenePart(ScenePart const &sp, bool const shallowPrimitives) {
   this->mOrigin = glm::dvec3(sp.mOrigin);
   this->mRotation = Rotation(sp.mRotation);
   this->mScale = sp.mScale;
-  this->forceOnGround = forceOnGround;
+  this->forceOnGround = sp.forceOnGround;
   this->mCrs = nullptr; // TODO Copy this too
   this->mEnv = nullptr; // TODO Copy this too
 
@@ -229,5 +229,39 @@ void ScenePart::computeCentroid(bool const computeBound){
         bound = make_shared<AABB>(
             xmin, ymin, zmin, xmax, ymax, zmax
         );
+    }
+}
+
+void ScenePart::computeTransformations(
+    std::shared_ptr<ScenePart> sp,
+    bool const holistic
+){
+    // For all primitives, set reference to their scene part and transform:
+    for (Primitive *p : sp->mPrimitives) {
+        p->part = sp;
+        p->rotate(sp->mRotation);
+        if (holistic) {
+            for (size_t i = 0; i < p->getNumVertices(); i++) {
+                p->getVertices()[i].pos.x *= sp->mScale;
+                p->getVertices()[i].pos.y *= sp->mScale;
+                p->getVertices()[i].pos.z *= sp->mScale;
+            }
+        }
+        p->scale(sp->mScale);
+        p->translate(sp->mOrigin);
+    }
+}
+
+void ScenePart::release(){
+    for(Primitive *p : mPrimitives){
+        delete p;
+    }
+    mPrimitives.clear();
+    if(sorh != nullptr){
+        for(Primitive * p : sorh->getBaselinePrimitives()){
+            delete p;
+        }
+        sorh->baseline = nullptr;
+        sorh = nullptr;
     }
 }

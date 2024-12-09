@@ -45,7 +45,7 @@ public:
             false // Prevent parent from creating LAS writer
         )
     {};
-    virtual ~Las14SyncFileMeasurementWriter() = default;
+    ~Las14SyncFileMeasurementWriter() override = default;
 
     // ***  CREATE WRITER  *** //
     // *********************** //

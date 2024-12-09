@@ -1,5 +1,3 @@
-#ifdef PYTHON_BINDING
-
 #include <pybinds/PyDetectorWrapper.h>
 #include <pybinds/PyScannerWrapper.h>
 
@@ -12,6 +10,3 @@ PyDetectorWrapper * PyScannerWrapper::getPyDetectorWrapper(){
 PyDetectorWrapper * PyScannerWrapper::getPyDetectorWrapper(size_t const idx){
     return new PyDetectorWrapper(scanner.getDetector(idx));
 }
-
-
-#endif

@@ -3,6 +3,8 @@
 #include <logging.hpp>
 #include <scanner/detector/AbstractDetector.h>
 #include <maths/EnergyMaths.h>
+#include <maths/model/BaseEnergyModel.h>
+#include <maths/model/ImprovedEnergyModel.h>
 #if DATA_ANALYTICS >= 2
 #include <dataanalytics/HDA_GlobalVars.h>
 using namespace helios::analytics;
@@ -84,13 +86,17 @@ ScanningDevice::ScanningDevice(ScanningDevice const &scdev){
 
 // ***  M E T H O D S  *** //
 // *********************** //
-void ScanningDevice::prepareSimulation(){
+void ScanningDevice::prepareSimulation(bool const legacyEnergyModel){
+    // Elliptical footprint discrete method
     int const beamSampleQuality = FWF_settings.beamSampleQuality;
     double const radiusStep_rad = beamDivergence_rad/beamSampleQuality;
 
     // Outer loop over radius steps from beam center to outer edge
     for (int radiusStep = 0; radiusStep < beamSampleQuality; radiusStep++){
         double const subrayDivergenceAngle_rad = radiusStep * radiusStep_rad;
+        cached_subrayDivergenceAngle_rad.push_back(
+            subrayDivergenceAngle_rad
+        );
 
         // Rotate subbeam into divergence step (towards outer rim of the beam cone):
         Rotation r1 = Rotation(Directions::right, subrayDivergenceAngle_rad);
@@ -114,10 +120,16 @@ void ScanningDevice::prepareSimulation(){
             r2 = r2.applyTo(r1);
             // Cache subray generation data
             cached_subrayRotation.push_back(r2);
-            cached_subrayDivergenceAngle_rad.push_back(
-                subrayDivergenceAngle_rad
-            );
+            cached_subrayRadiusStep.push_back(radiusStep);
         }
+    }
+
+    // Prepare energy model
+    if(legacyEnergyModel){
+        energyModel = std::make_shared<BaseEnergyModel>(*this);
+    }
+    else{
+        energyModel = std::make_shared<ImprovedEnergyModel>(*this);
     }
 }
 
@@ -256,7 +268,7 @@ Rotation ScanningDevice::calcExactAbsoluteBeamAttitude(
 void ScanningDevice::computeSubrays(
     std::function<void(
         Rotation const &subrayRotation,
-        double const divergenceAngle,
+        int const sburayRadiusStep,
         NoiseSource<double> &intersectionHandlingNoiseSource,
         std::map<double, double> &reflections,
         vector<RaySceneIntersection> &intersects
@@ -274,17 +286,15 @@ void ScanningDevice::computeSubrays(
 ){
     size_t const numSubrays = cached_subrayRotation.size();
     for(size_t i = 0 ; i < numSubrays ; ++i) {
-    #if DATA_ANALYTICS >=2
-        bool subrayHit;
-    #endif
 #if DATA_ANALYTICS >=2
+        bool subrayHit;
         std::vector<double> subraySimRecord(
             14, std::numeric_limits<double>::quiet_NaN()
         );
 #endif
         handleSubray(
             cached_subrayRotation[i],
-            cached_subrayDivergenceAngle_rad[i],
+            cached_subrayRadiusStep[i],
             intersectionHandlingNoiseSource,
             reflections,
             intersects
@@ -296,7 +306,7 @@ void ScanningDevice::computeSubrays(
 #if DATA_ANALYTICS >=2
         HDA_GV.incrementGeneratedSubraysCount();
         subraySimRecord[0] = (double) subrayHit;
-        subraySimRecord[1] = subrayDivergenceAngle_rad;
+        subraySimRecord[1] = cached_subrayDivergenceAngle_rad[i];
         pulseRecorder->recordSubraySimulation(subraySimRecord);
 #endif
     }
@@ -357,82 +367,34 @@ double ScanningDevice::calcIntensity(
     double const incidenceAngle,
     double const targetRange,
     Material const &mat,
-    double const targetArea,
-    double const radius
+    int const subrayRadiusStep
 #if DATA_ANALYTICS >=2
    ,std::vector<std::vector<double>> &calcIntensityRecords
 #endif
 ) const {
-    double bdrf = 0, sigma = 0;
-    if(mat.isPhong()) {
-        bdrf = mat.reflectance * EnergyMaths::phongBDRF(
-            incidenceAngle,
-            mat.specularity,
-            mat.specularExponent
-        );
-        sigma = EnergyMaths::calcCrossSection(
-            bdrf, targetArea, incidenceAngle
-        );
-    }
-    else if(mat.isLambert()){
-        bdrf = mat.reflectance * std::cos(incidenceAngle);
-        sigma = EnergyMaths::calcCrossSection(
-            bdrf, targetArea, incidenceAngle
-        );
-    }
-    else if(mat.isUniform()){
-        bdrf = mat.reflectance;
-        sigma = EnergyMaths::calcCrossSection(
-            bdrf, targetArea, incidenceAngle
-        );
-        if(sigma < 0) sigma = -sigma;
-    }
-    else{
-        std::stringstream ss;
-        ss  << "Unexpected lighting model for material \""
-            << mat.name << "\"";
-        logging::ERR(ss.str());
-    }
-    double const receivedPower = EnergyMaths::calcReceivedPower(
-        averagePower_w,
-        wavelength_m,
+    return energyModel->computeIntensity(
+        incidenceAngle,
         targetRange,
-        detector->cfg_device_rangeMin_m,
-        radius,
-        beamWaistRadius,
-        cached_Dr2,
-        cached_Bt2,
-        efficiency,
-        atmosphericExtinction,
-        sigma
-    ) * 1000000000.0;
+        mat,
+        subrayRadiusStep
 #if DATA_ANALYTICS >= 2
-    std::vector<double> calcIntensityRecord(
-        11, std::numeric_limits<double>::quiet_NaN()
-    );
-    calcIntensityRecord[3] = incidenceAngle;
-    calcIntensityRecord[4] = targetRange;
-    calcIntensityRecord[5] = targetArea;
-    calcIntensityRecord[6] = radius;
-    calcIntensityRecord[7] = bdrf;
-    calcIntensityRecord[8] = sigma;
-    calcIntensityRecord[9] = receivedPower;
-    calcIntensityRecord[10] = 0; // By default, assume the point isn't captured
-    calcIntensityRecords.push_back(calcIntensityRecord);
+       ,calcIntensityRecords
 #endif
-    return receivedPower;
+    );
 }
 double ScanningDevice::calcIntensity(
     double const targetRange,
-    double const radius,
-    double const sigma
+    double const sigma,
+    int const subrayRadiusStep
 ) const {
     return EnergyMaths::calcReceivedPower(
         averagePower_w,
         wavelength_m,
         targetRange,
         detector->cfg_device_rangeMin_m,
-        radius,
+        targetRange*std::sin(
+            cached_subrayDivergenceAngle_rad[subrayRadiusStep]
+        ),
         beamWaistRadius,
         cached_Dr2,
         cached_Bt2,

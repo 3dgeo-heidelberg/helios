@@ -1,5 +1,0 @@
-<map id="helios::filems::SimpleMultiSyncFileWriter&lt; WriteArgs &gt;" name="helios::filems::SimpleMultiSyncFileWriter&lt; WriteArgs &gt;">
-<area shape="rect" id="node1" title="Abstract specialization of MultiSyncFileWriter to write output to many files. Each writing operation ..." alt="" coords="5,184,193,225"/>
-<area shape="rect" id="node2" href="$d2/d66/classhelios_1_1filems_1_1MultiSyncFileWriter.html" title=" " alt="" coords="12,95,187,136"/>
-<area shape="rect" id="node3" href="$da/d4c/classhelios_1_1filems_1_1SyncFileWriter.html" title=" " alt="" coords="20,5,179,47"/>
-</map>

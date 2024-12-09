@@ -1,0 +1,20 @@
+target_include_directories(
+  helios
+  PUBLIC
+  "comps"
+  "core"
+  "tools"
+)
+
+target_sources(
+  helios
+  PRIVATE
+  "tools/DiscreteTime.cpp"
+  "comps/Leg.cpp"
+  "comps/SimulationPlayer.cpp"
+  "comps/SimulationReporter.cpp"
+  "comps/Survey.cpp"
+  "comps/ScanningStrip.cpp"
+  "core/SurveyPlayback.cpp"
+  "core/Simulation.cpp"
+)

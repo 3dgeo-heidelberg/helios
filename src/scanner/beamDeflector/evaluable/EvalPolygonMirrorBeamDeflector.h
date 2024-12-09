@@ -70,7 +70,7 @@ public:
         this->state_currentExactBeamAngle_rad =
             this->state_currentBeamAngle_rad;
     }
-    virtual ~EvalPolygonMirrorBeamDeflector() = default;
+    ~EvalPolygonMirrorBeamDeflector() override = default;
     std::shared_ptr<AbstractBeamDeflector> clone() override;
     void _clone(std::shared_ptr<AbstractBeamDeflector> abd) override;
 

@@ -1,5 +1,0 @@
-<map id="rigidmotion::RigidMotionFactory" name="rigidmotion::RigidMotionFactory">
-<area shape="rect" id="node1" title="Class that must be extended by any class which provides factory methods for rigid motions...." alt="" coords="99,5,261,47"/>
-<area shape="rect" id="node2" href="$d7/da7/classrigidmotion_1_1RigidMotionR2Factory.html" title="Class providing building methods for rigid motions in ." alt="" coords="5,95,168,136"/>
-<area shape="rect" id="node3" href="$dc/df6/classrigidmotion_1_1RigidMotionR3Factory.html" title="Class providing building methods for rigid motions in ." alt="" coords="192,95,355,136"/>
-</map>

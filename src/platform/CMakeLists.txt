@@ -1,0 +1,19 @@
+target_include_directories(
+  helios
+  PUBLIC
+  "."
+  "trajectory"
+)
+
+target_sources(
+  helios
+  PRIVATE
+  "PlatformSettings.cpp"
+  "Platform.cpp"
+  "GroundVehiclePlatform.cpp"
+  "InterpolatedMovingPlatform.cpp"
+  "SimplePhysicsPlatform.cpp"
+  "HelicopterPlatform.cpp"
+  "LinearPathPlatform.cpp"
+  "MovingPlatform.cpp"
+)

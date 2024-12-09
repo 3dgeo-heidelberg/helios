@@ -25,11 +25,6 @@ using helios::analytics::HDA_GV;
 
 using namespace std;
 
-// ***  CONSTANTS  *** //
-// ******************* //
-const double FullWaveformPulseRunnable::eps = 0.001;
-
-
 // ***  O P E R A T O R  *** //
 // ************************* //
 void FullWaveformPulseRunnable::operator()(
@@ -38,7 +33,7 @@ void FullWaveformPulseRunnable::operator()(
 	RandomnessGenerator<double> &randGen2,
 	NoiseSource<double> &intersectionHandlingNoiseSource
 #if DATA_ANALYTICS >= 2
-    ,std::shared_ptr<HDA_PulseRecorder> pulseRecorder
+   ,std::shared_ptr<HDA_PulseRecorder> pulseRecorder
 #endif
 ){
     // Deferred/lazy initialization
@@ -75,6 +70,7 @@ void FullWaveformPulseRunnable::operator()(
 	vector<RaySceneIntersection> intersects;
 #if DATA_ANALYTICS >= 2
     std::vector<std::vector<double>> calcIntensityRecords;
+    std::vector<std::vector<int>> calcIntensityIndices;
 #endif
 	computeSubrays(
 	    intersectionHandlingNoiseSource,
@@ -86,6 +82,14 @@ void FullWaveformPulseRunnable::operator()(
 #endif
     );
 
+#if DATA_ANALYTICS >= 2
+    for(size_t i = 0 ; i < calcIntensityRecords.size() ; ++i){
+        calcIntensityIndices.push_back(
+            std::vector<int>({pulse.getPulseNumber()})
+        );
+    }
+#endif
+
 	// Digest intersections
 	digestIntersections(
 	    apMatrix,
@@ -96,7 +100,8 @@ void FullWaveformPulseRunnable::operator()(
 	    intersects
 #if DATA_ANALYTICS >= 2
        ,calcIntensityRecords,
-       pulseRecorder
+        calcIntensityIndices,
+        pulseRecorder
 #endif
     );
 }
@@ -118,13 +123,13 @@ void FullWaveformPulseRunnable::computeSubrays(
     vector<RaySceneIntersection> &intersects
 #if DATA_ANALYTICS >= 2
    ,std::vector<std::vector<double>> &calcIntensityRecords,
-   std::shared_ptr<HDA_PulseRecorder> pulseRecorder
+    std::shared_ptr<HDA_PulseRecorder> pulseRecorder
 #endif
 ){
     scanner->computeSubrays(
         [&] (
             Rotation const &subrayRotation,
-            double const divergenceAngle,
+            int const subrayRadiusStep,
             NoiseSource<double> &intersectionHandlingNoiseSource,
             std::map<double, double> &reflections,
             vector<RaySceneIntersection> &intersects
@@ -135,7 +140,7 @@ void FullWaveformPulseRunnable::computeSubrays(
         ) -> void {
             handleSubray(
                 subrayRotation,
-                divergenceAngle,
+                subrayRadiusStep,
                 intersectionHandlingNoiseSource,
                 reflections,
                 intersects
@@ -158,7 +163,7 @@ void FullWaveformPulseRunnable::computeSubrays(
 
 void FullWaveformPulseRunnable::handleSubray(
     Rotation const &subrayRotation,
-    double const divergenceAngle,
+    int const subrayRadiusStep,
     NoiseSource<double> &intersectionHandlingNoiseSource,
     map<double, double> &reflections,
     vector<RaySceneIntersection> &intersects
@@ -179,6 +184,7 @@ void FullWaveformPulseRunnable::handleSubray(
         subrayDirection
     );
 #if DATA_ANALYTICS >= 2
+    // Subray simulation record
     glm::dvec3 rayDirection = pulse.computeDirection();
     subraySimRecord[2] = glm::l2Norm(rayDirection); // Ray norm
     subraySimRecord[3] = glm::l2Norm(subrayDirection); // Subray norm
@@ -187,8 +193,8 @@ void FullWaveformPulseRunnable::handleSubray(
         subrayDirection
     );
     subraySimRecord[5] = (rayDirection[0] < 0) == (subrayDirection[0] < 0);
-    subraySimRecord[6] = tMinMax[0];
-    subraySimRecord[7] = tMinMax[1];
+    subraySimRecord[6] = (tMinMax.size()<1) ? 0 : tMinMax[0];
+    subraySimRecord[7] = (tMinMax.size()<2) ? 0 : tMinMax[1];
     subraySimRecord[8] = subrayDirection.x;
     subraySimRecord[9] = subrayDirection.y;
     subraySimRecord[10] = subrayDirection.z;
@@ -234,10 +240,6 @@ void FullWaveformPulseRunnable::handleSubray(
             if (detector->isDistanceNotInRange(distance)) continue;
 
             // Distance between beam's center line and intersection point:
-            double const radius = sin(divergenceAngle) * distance;
-            double const targetArea = scanner->calcTargetArea(
-                distance, pulse.getDeviceIndex()
-            );
             double intensity = 0.0;
             if (intersect->prim->canComputeSigmaWithLadLut()) {
                 // LadLut based intensity computation
@@ -245,7 +247,7 @@ void FullWaveformPulseRunnable::handleSubray(
                     subrayDirection
                 );
                 intensity = scanner->calcIntensity(
-                    distance, radius, sigma, pulse.getDeviceIndex()
+                    distance, sigma, subrayRadiusStep, pulse.getDeviceIndex()
                 );
             } else {
                 // Lighting-based intensity computation
@@ -256,11 +258,10 @@ void FullWaveformPulseRunnable::handleSubray(
                     incidenceAngle,
                     distance,
                     *intersect->prim->material,
-                    targetArea,
-                    radius,
+                    subrayRadiusStep,
                     pulse.getDeviceIndex()
 #if DATA_ANALYTICS >= 2
-                    , calcIntensityRecords
+                   ,calcIntensityRecords
 #endif
                 );
             }
@@ -333,7 +334,8 @@ void FullWaveformPulseRunnable::digestIntersections(
     vector<RaySceneIntersection> &intersects
 #if DATA_ANALYTICS >= 2
    ,vector<vector<double>> &calcIntensityRecords,
-   std::shared_ptr<HDA_PulseRecorder> pulseRecorder
+    vector<vector<int>> &calcIntensityIndices,
+    std::shared_ptr<HDA_PulseRecorder> pulseRecorder
 #endif
 ){
     // Find maximum hit distances
@@ -345,7 +347,10 @@ void FullWaveformPulseRunnable::digestIntersections(
         scanner->setLastPulseWasHit(false, pulse.getDeviceIndex());
 #if DATA_ANALYTICS >= 2
         if(!calcIntensityRecords.empty()) {
-            pulseRecorder->recordIntensityCalculation(calcIntensityRecords);
+            pulseRecorder->recordIntensityCalculation(
+                calcIntensityRecords,
+                calcIntensityIndices
+            );
         }
 #endif
         return;
@@ -365,7 +370,10 @@ void FullWaveformPulseRunnable::digestIntersections(
         numFullwaveBins
     )){
 #if DATA_ANALYTICS >= 2
-        pulseRecorder->recordIntensityCalculation(calcIntensityRecords);
+        pulseRecorder->recordIntensityCalculation(
+            calcIntensityRecords,
+            calcIntensityIndices
+        );
 #endif
         return;
     }
@@ -397,7 +405,8 @@ void FullWaveformPulseRunnable::digestIntersections(
         minHitTime_ns
 #if DATA_ANALYTICS >= 2
        ,calcIntensityRecords,
-       pulseRecorder
+        calcIntensityIndices,
+        pulseRecorder
 #endif
     );
 
@@ -413,7 +422,8 @@ void FullWaveformPulseRunnable::digestIntersections(
         randGen2
 #if DATA_ANALYTICS >= 2
        ,calcIntensityRecords,
-       pulseRecorder
+        calcIntensityIndices,
+        pulseRecorder
 #endif
     );
 }
@@ -510,6 +520,7 @@ void FullWaveformPulseRunnable::digestFullWaveform(
     double const minHitTime_ns
 #if DATA_ANALYTICS >= 2
    ,std::vector<std::vector<double>> &calcIntensityRecords,
+    std::vector<std::vector<int>> &calcIntensityIndices,
     std::shared_ptr<HDA_PulseRecorder> pulseRecorder
 #endif
 ){
@@ -622,10 +633,14 @@ void FullWaveformPulseRunnable::digestFullWaveform(
     for(size_t i = 0 ; i < numRecords ; ++i){
         if(capturedIndices.find(i) == capturedIndices.end()){
             pulseRecorder->recordIntensityCalculation(
-                calcIntensityRecords[i-nonCapturedCount]
+                calcIntensityRecords[i-nonCapturedCount],
+                calcIntensityIndices[i-nonCapturedCount]
             );
             calcIntensityRecords.erase(
                 calcIntensityRecords.begin()+i-nonCapturedCount
+            );
+            calcIntensityIndices.erase(
+                calcIntensityIndices.begin()+i-nonCapturedCount
             );
             ++nonCapturedCount;
         }
@@ -641,10 +656,11 @@ bool FullWaveformPulseRunnable::handleFullWaveformBin(
     int const winSize,
     double const nsPerBin
 ){
+    double const eps = scanner->getReceivedEnergyMin(pulse.getDeviceIndex());
     if (fullwave[binIndex] < eps) return true;
 
     // Continue with next iteration if there is no peak
-    if(!detectPeak(binIndex, winSize, fullwave)) return true;
+    if(!detectPeak(binIndex, winSize, fullwave, eps)) return true;
 
     // Gaussian model fitting
     if (scanner->isCalcEchowidth()) {
@@ -680,7 +696,8 @@ void FullWaveformPulseRunnable::exportOutput(
     RandomnessGenerator<double> &randGen2
 #if DATA_ANALYTICS >= 2
    ,std::vector<std::vector<double>> &calcIntensityRecords,
-   std::shared_ptr<HDA_PulseRecorder> pulseRecorder
+    std::vector<std::vector<int>> &calcIntensityIndices,
+    std::shared_ptr<HDA_PulseRecorder> pulseRecorder
 #endif
 ){
     // ############ END Extract points from waveform data ################
@@ -699,7 +716,8 @@ void FullWaveformPulseRunnable::exportOutput(
                 scanner->cycleMeasurementsMutex.get()
 #if DATA_ANALYTICS >= 2
                ,calcIntensityRecords[i],
-               pulseRecorder
+                calcIntensityIndices[i],
+                pulseRecorder
 #endif
             );
 #if DATA_ANALYTICS >= 2
@@ -773,7 +791,8 @@ void FullWaveformPulseRunnable::captureFullWave(
 bool FullWaveformPulseRunnable::detectPeak(
     int const i,
     int const win_size,
-    vector<double> const &fullwave
+    vector<double> const &fullwave,
+    double const eps
 ){
     for (int j = std::max(0, i - 1); j > std::max(0, i - win_size); j--) {
         if (fullwave[j] < eps || fullwave[j] >= fullwave[i]) {

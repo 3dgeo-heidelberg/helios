@@ -124,6 +124,17 @@ protected:
      * @see Scene::getIntersections
      */
     std::shared_ptr<KDGroveRaycaster> raycaster;
+    /**
+     * @brief The default reflectance that must be used for primitives with
+     *  not reflectance (NaN). It is typically loaded through the spectral
+     *  library and then assigned to the scene so it can be known when needed.
+     * @see Scene::setDefaultReflectance
+     * @see Scene::getDefaultReflectance
+     * @see SpectralLibrary
+     * @see SpectralLibrary::defaultReflectance
+     * @see XmlSurveyLoader::createSurveyFromXml
+     */
+    double defaultReflectance = 50.0;
 
 public:
     /**
@@ -244,12 +255,6 @@ public:
      *  before translating to (0, 0, 0)
      */
     glm::dvec3 getShift();
-    /**
-     * @brief Like Scene::getShift but returning a const reference instead of a
-     *    copy
-     * @see Scene::getShift
-     */
-    inline glm::dvec3 const& getShiftRef() const {return bbox_crs->getMin();}
 
     /**
      * @brief Obtain all vertices (without repetitions) composing the scene
@@ -379,6 +384,10 @@ public:
      * @see Scene::buildKDGrove
      */
     void buildKDGroveWithLog(bool const safe=false);
+    /**
+     * @brief Shutdown the scene whe simulation has finished.
+     */
+    virtual void shutdown();
 
     // ***  GETTERs and SETTERs  *** //
     // ***************************** //
@@ -460,6 +469,40 @@ public:
         }
         return false;
     }
+    /**
+     * @brief Get all the scene parts in the scene that need a swap between
+     *  consecutive simulation replays.
+     * @return Vector of scene parts with a handle for swap on repeat
+     *  operations.
+     * @see ScenePart::getSwapOnRepeatHandler
+     * @see ScenePart::sorh
+     */
+    std::vector<std::shared_ptr<ScenePart>> getSwapOnRepeatObjects();
+    /**
+     * @brief Set the default reflectance that must be used for primitives
+     *  that have no assigned reflectance.
+     * @param defaultReflectance The new default reflectance.
+     * @see Scene::defaultReflectance
+     * @see Scene::getDefaultReflectance
+     * @see SpectralLibrary
+     * @see SpectralLibrary::defaultReflectance
+     * @see XmlSurveyLoader::createSurveyFromXml
+     */
+    inline void setDefaultReflectance(double const defaultReflectance)
+    {this->defaultReflectance = defaultReflectance;}
+    /**
+     * @brief Get the default reflectance that must be used for primitives that
+     *  have not got an assigned reflectance.
+     * @return The default reflectance for primitives that have not got an
+     *  assigned reflectance.
+     * @see Scene::setDefaultReflectance
+     * @see SpectralLibrary
+     * @see SpectralLibrary::defaultReflectance
+     * @see XmlSurveyLoader::createSurveyFromXml
+     */
+    inline double getDefaultReflectance() const {return defaultReflectance;}
+
+
 
     // ***   READ/WRITE  *** //
     // ********************* //

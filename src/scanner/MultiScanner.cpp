@@ -8,7 +8,7 @@
 // ************************************ //
 MultiScanner::MultiScanner(MultiScanner &scanner) :
     Scanner(scanner),
-    scanDevs(std::move(scanner.scanDevs))
+    scanDevs(scanner.scanDevs)
 {}
 
 
@@ -42,7 +42,7 @@ void MultiScanner::onLegComplete(){
 
 // ***   M E T H O D S   *** //
 // ************************* //
-void MultiScanner::prepareSimulation() {
+void MultiScanner::prepareSimulation(bool const legacyEnergyModel) {
     size_t const numDevs = getNumDevices();
     for(size_t i = 0 ; i < numDevs ; ++i){ // For each i-th device
         // Link the deflector angle with the evaluable scanner head
@@ -141,18 +141,6 @@ void MultiScanner::prepareDiscretization(size_t const idx){
     ), idx);
 }
 
-double MultiScanner::calcFootprintArea(
-    double const distance, size_t const idx
-) const{
-    return PI_QUARTER * distance * distance * getBt2(idx);
-}
-
-double MultiScanner::calcTargetArea(
-    double const distance, size_t const idx
-) const{
-    return calcFootprintArea(distance, idx) / ((double)getNumRays(idx));
-}
-
 Rotation MultiScanner::calcAbsoluteBeamAttitude(size_t const idx){
     return scanDevs[idx].calcAbsoluteBeamAttitude(
         platform->getAbsoluteMountAttitude()
@@ -161,7 +149,7 @@ Rotation MultiScanner::calcAbsoluteBeamAttitude(size_t const idx){
 void MultiScanner::computeSubrays(
     std::function<void(
         Rotation const &subrayRotation,
-        double const divergenceAngle,
+        int const subrayRadiusStep,
         NoiseSource<double> &intersectionHandlingNoiseSource,
         std::map<double, double> &reflections,
         vector<RaySceneIntersection> &intersects
@@ -216,8 +204,7 @@ double MultiScanner::calcIntensity(
     double const incidenceAngle,
     double const targetRange,
     Material const &mat,
-    double const targetArea,
-    double const radius,
+    int const subrayRadiusStep,
     size_t const idx
 #if DATA_ANALYTICS >= 2
    ,std::vector<std::vector<double>> &calcIntensityRecords
@@ -227,8 +214,7 @@ double MultiScanner::calcIntensity(
         incidenceAngle,
         targetRange,
         mat,
-        targetArea,
-        radius
+        subrayRadiusStep
 #if DATA_ANALYTICS >= 2
        ,calcIntensityRecords
 #endif
@@ -237,9 +223,9 @@ double MultiScanner::calcIntensity(
 
 double MultiScanner::calcIntensity(
     double const targetRange,
-    double const radius,
     double const sigma,
+    int const subrayRadiusStep,
     size_t const idx
 ) const{
-    return scanDevs[idx].calcIntensity(targetRange, radius, sigma);
+    return scanDevs[idx].calcIntensity(targetRange, sigma, subrayRadiusStep);
 }

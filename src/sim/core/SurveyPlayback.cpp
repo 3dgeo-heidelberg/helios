@@ -32,15 +32,19 @@ SurveyPlayback::SurveyPlayback(
     std::shared_ptr<PulseThreadPoolInterface> pulseThreadPoolInterface,
     int const chunkSize,
     std::string fixedGpsTimeStart,
-    bool exportToFile
+    bool const legacyEnergyModel,
+    bool const exportToFile,
+    bool const disableShutdown
 ):
     Simulation(
         parallelizationStrategy,
         pulseThreadPoolInterface,
         chunkSize,
-        fixedGpsTimeStart
+        fixedGpsTimeStart,
+        legacyEnergyModel
     ),
-    fms(fms)
+    fms(fms),
+    disableShutdown(disableShutdown)
 {
     this->mSurvey = survey;
     this->mSurvey->hatch(*this);
@@ -385,6 +389,7 @@ void SurveyPlayback::startLeg(unsigned int const legIndex, bool const manual) {
 
 		// ################ END Set platform destination ##################
 		platform->prepareLeg(mScanner->getPulseFreq_Hz());
+        logging::DEBUG("Prepared platform for current leg.");
 	}
 
     // Restart deflector if previous leg was not active
@@ -395,34 +400,40 @@ void SurveyPlayback::startLeg(unsigned int const legIndex, bool const manual) {
     ){
         mSurvey->scanner->getBeamDeflector()->restartDeflector();
 	}
+    logging::DEBUG("Started deflector for current leg.");
 
 
     if(exportToFile){
         prepareOutput();
         platform->writeNextTrajectory = true;
+        logging::DEBUG("Output prepared for current leg.");
     }
 }
 
 void SurveyPlayback::startNextLeg(bool manual) {
 	if (mCurrentLegIndex < mSurvey->legs.size() - 1) {
-		// If there are still legs left, start the next one:
+		// If there are pending legs, start the next one:
 		startLeg(mCurrentLegIndex + 1, manual);
 	}
-	else {
-		// If this was the final leg, stop the simulation:
-		if (exitAtEnd) {
-			shutdown();
-			stop();
-		}
-		else {
-			pause(true);
-		}
-	}
+    else if(simPlayer->hasPendingPlays()){
+        simPlayer->prepareRepeat();
+    }
+    else if(exitAtEnd) {
+        // If this was the final leg, stop the simulation:
+        shutdown();
+        stop();
+    }
+    else {
+        pause(true);
+    }
 }
 
 void SurveyPlayback::shutdown() {
 	Simulation::shutdown();
-	mSurvey->scanner->getDetector()->shutdown();
+    if(!disableShutdown) {
+        mSurvey->scanner->getDetector()->shutdown();
+        mSurvey->scanner->platform->scene->shutdown();
+    }
 }
 
 string SurveyPlayback::milliToString(long millis) {
@@ -482,6 +493,11 @@ void SurveyPlayback::prepareOutput(){
     if(strip != nullptr){
         lastLegInStrip = getCurrentLeg()->getStrip()->isLastLegInStrip();
     }
+    logging::DEBUG(
+        lastLegInStrip ?
+        "Current leg was found to be the last in the strip." :
+        "Current leg is not the last in the strip."
+    );
 
     // Configure output paths
     fms->write.configure(
@@ -501,7 +517,7 @@ void SurveyPlayback::clearPointcloudFile(){
     // Dont clear strip file, it would overwrite previous point cloud content
     if(getCurrentLeg()->isContainedInAStrip()) return;
     // Dont clear pcloud file, if leg is not active there is nothing to clear
-    // Otherwise, WATCHOUT because last active leg might be overwriten
+    // Otherwise, WATCH OUT because last active leg might be overwriten
     if(!getCurrentLeg()->mScannerSettings->active) return;
     fms->write.clearPointcloudFile();
 }

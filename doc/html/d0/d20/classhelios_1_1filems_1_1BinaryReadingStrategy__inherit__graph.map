@@ -1,5 +1,0 @@
-<map id="helios::filems::BinaryReadingStrategy" name="helios::filems::BinaryReadingStrategy">
-<area shape="rect" id="node1" title="Class defining the strategy to read byte by byte from a file input stream." alt="" coords="11,184,203,225"/>
-<area shape="rect" id="node2" href="$da/d24/classhelios_1_1filems_1_1SimpleReadingStrategy.html" title=" " alt="" coords="10,95,205,136"/>
-<area shape="rect" id="node3" href="$df/dc7/classhelios_1_1filems_1_1ReadingStrategy.html" title="Abstract class defining the fundamentals of any file reading strategy." alt="" coords="5,5,209,47"/>
-</map>

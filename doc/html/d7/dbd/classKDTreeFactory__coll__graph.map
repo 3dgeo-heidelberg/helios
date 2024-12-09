@@ -1,5 +1,0 @@
-<map id="KDTreeFactory" name="KDTreeFactory">
-<area shape="rect" id="node1" title="Class that must be extended by any class which provides factory methods for k&#45;dimensional trees...." alt="" coords="55,185,166,212"/>
-<area shape="rect" id="node2" href="$dd/d04/classLightKDTreeNodeBlockAllocator.html" title="Block allocator for LightKDTreeNode instances." alt="" coords="5,96,216,123"/>
-<area shape="rect" id="node3" href="$d9/d47/classBlockAllocator.html" title=" " alt="" coords="15,5,206,47"/>
-</map>

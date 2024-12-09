@@ -24,8 +24,10 @@ void printMainHelp(){
     <<  "\t\t\tFile at input path must be the compressed output of helios++"
     <<  "\n\n"
 
-    <<  "\t\t--assets <dir_path> : Specify the path to assets directory\n"
-    <<  "\t\t\tBy default: ./assets/\n\n"
+    <<  "\t\t--assets <dir_path> : Specify the path(s) to assets/data directory\n"
+    <<  "\t\t\tTo specify multiple paths, duplicate the argument,"
+    <<  "e.g. --assets path1 --assets path2\n"
+    <<  "\t\t\tBy default: './assets/' and the Python package installation directory\n\n"
 
     <<  "\t\t--output <dir_path> : Specify the path to output directory\n"
     <<  "\t\t\tBy default: ./output/\n\n"
@@ -37,6 +39,9 @@ void printMainHelp(){
     <<  "\t\t--writeWaveform : Use this flag to enable full waveform "
     <<  "writing\n"
     <<  "\t\t\tBy default waveform is NOT written to output file\n\n"
+
+    << "\t\t--writePulse : Use this flag to enable pulse-wise data writing\n"
+    << "\t\t\tBy default pulse-wise data is NOT written to output file\n\n"
 
     <<  "\t\t--calcEchowidth : Use this flag to enable full waveform "
     <<  "fitting\n"
@@ -101,6 +106,11 @@ void printMainHelp(){
     <<  "\t\t--rebuildScene : Force scene rebuild even when a previously\n"
     <<  "\t\t\tbuilt scene is available\n"
     <<  "\t\t\t\tBy default: previous scene is used if found\n\n"
+
+    << "\t\t--noSceneWriting : If a scene is created during asset loading,\n"
+    << "\t\t\tit will be written by default. Enabling this flag will prevent\n"
+    << "\t\t\tthis writing.\n\n"
+
 
     <<  "\t\t--kdt <integer> : Specify the type of KDTree to be built for "
     <<  "for the scene\n"

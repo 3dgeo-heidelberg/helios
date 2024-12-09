@@ -93,7 +93,7 @@ public:
         endPrimitive(endPrimitive),
         onPopulateSplitsDigestPrimitive(onPopulateSplitsDigestPrimitive)
     {}
-    virtual ~SimpleKDTreePopulateSplitsSubTask() {}
+    ~SimpleKDTreePopulateSplitsSubTask() override {}
 
     // ***  RUNNABLE SHARED TASK  *** //
     // ****************************** //

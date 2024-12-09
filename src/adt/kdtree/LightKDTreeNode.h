@@ -100,7 +100,7 @@ public:
     /**
 	 * @brief Destructor for LightKDTreeNode
 	 */
-    virtual ~LightKDTreeNode() {
+    ~LightKDTreeNode() override {
         delete left;
         delete right;
     }

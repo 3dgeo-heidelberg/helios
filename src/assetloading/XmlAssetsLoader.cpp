@@ -55,17 +55,18 @@ std::string const XmlAssetsLoader::defaultPlatformSettingsMsg =
 // ***  CONSTRUCTION / DESTRUCTION  *** //
 // ************************************ //
 
-XmlAssetsLoader::XmlAssetsLoader(std::string &filePath, std::string &assetsDir)
+XmlAssetsLoader::XmlAssetsLoader(std::string &filePath, std::vector<std::string> &assetsDir)
     : assetsDir(assetsDir)
+    , sceneLoader(assetsDir)
 {
+  auto xmlFile = locateAssetFile(filePath);
 
-  fs::path xmlFile(filePath);
   xmlDocFilename = xmlFile.filename().string();
   xmlDocFilePath = xmlFile.parent_path().string();
   logging::INFO("xmlDocFilename: " + xmlDocFilename);
   logging::INFO("xmlDocFilePath: " + xmlDocFilePath);
 
-  tinyxml2::XMLError result = doc.LoadFile(filePath.c_str());
+  tinyxml2::XMLError result = doc.LoadFile(xmlFile.string().c_str());
   if (result != tinyxml2::XML_SUCCESS) {
     logging::ERR("ERROR: loading " + filePath + " failed.");
   }
@@ -650,10 +651,12 @@ std::shared_ptr<Platform> XmlAssetsLoader::createInterpolatedMovingPlatform(){
                     logging::DEBUG(ss.str());
                 }
             }
-            else{ // Not first loaded, so merge with previous data
+            else{
+                // Not first loaded, so merge with previous data
+                auto resolved_path = locateAssetFile(trajectoryPath).string();
                 std::unique_ptr<TemporalDesignMatrix<double, double>> tdm;
                 if(indices.find(trajectoryPath) != indices.end()){ // XML inds
-                    DesignMatrix<double> dm(trajectoryPath, sep);
+                    DesignMatrix<double> dm(resolved_path, sep);
                     dm.swapColumns(indices[trajectoryPath]);
                     tdm = unique_ptr<TemporalDesignMatrix<double, double>>(
                         new TemporalDesignMatrix<double, double>(
@@ -664,7 +667,7 @@ std::shared_ptr<Platform> XmlAssetsLoader::createInterpolatedMovingPlatform(){
                 else{  // Trajectory file indices
                     tdm = unique_ptr<TemporalDesignMatrix<double, double>>(
                         new TemporalDesignMatrix<double, double>(
-                            trajectoryPath, sep
+                            resolved_path, sep
                         )
                     );
                     if(interpDom == "position"){ // t, x, y, z from header
@@ -788,6 +791,13 @@ std::shared_ptr<Platform> XmlAssetsLoader::createInterpolatedMovingPlatform(){
             bp->cfg_device_relativeMountPosition;
         platform->cfg_device_relativeMountAttitude =
             bp->cfg_device_relativeMountAttitude;
+        // Also, propagate noise sources from base platform to interpolated
+        platform->positionXNoiseSource = bp->positionXNoiseSource;
+        platform->positionYNoiseSource = bp->positionYNoiseSource;
+        platform->positionZNoiseSource = bp->positionZNoiseSource;
+        platform->attitudeXNoiseSource = bp->attitudeXNoiseSource;
+        platform->attitudeYNoiseSource = bp->attitudeYNoiseSource;
+        platform->attitudeZNoiseSource = bp->attitudeZNoiseSource;
     }
     // --- Algorithm to take ScannerMount from platforms
 
@@ -887,15 +897,18 @@ XmlAssetsLoader::createScannerFromXml(tinyxml2::XMLElement *scannerNode) {
           ++nChannels;
           chan = chan->NextSiblingElement("channel");
       }
-
-      std::vector<ScanningDevice> scanDevs(
-          nChannels, ScanningDevice(
-              0, id, beamDiv_rad, emitterPosition, emitterAttitude,
-              pulseFreqs, pulseLength_ns, avgPower, beamQuality, efficiency,
-              receiverDiameter, visibility, wavelength*1e-9,
-              rangeErrExpr
-          )
+      ScanningDevice baseScanDev(
+      0, id, beamDiv_rad, emitterPosition, emitterAttitude,
+          pulseFreqs, pulseLength_ns, avgPower, beamQuality, efficiency,
+          receiverDiameter, visibility, wavelength*1e-9,
+          rangeErrExpr
       );
+      baseScanDev.setReceivedEnergyMin(
+          boost::get<double>(XmlUtils::getAttribute(
+              scannerNode, "receivedEnergyMin_W", "double", 0.0001
+          ))
+      );
+      std::vector<ScanningDevice> scanDevs(nChannels, baseScanDev);
       scanner = std::make_shared<MultiScanner>(
           std::move(scanDevs),
           id,
@@ -934,6 +947,9 @@ XmlAssetsLoader::createScannerFromXml(tinyxml2::XMLElement *scannerNode) {
       settings->pulseLength_ns = pulseLength_ns;
       scanner->applySettingsFWF(*createFWFSettingsFromXml(
           scannerNode->FirstChildElement("FWFSettings"), settings));
+      // Parse minimum received energy threshold
+      scanner->setReceivedEnergyMin(boost::get<double>(XmlUtils::getAttribute(
+              scannerNode, "receivedEnergyMin_W", "double", 0.0001)));
   }
   // Return built scanner
   return scanner;
@@ -1320,10 +1336,11 @@ XmlAssetsLoader::createScannerSettingsFromXml(
 std::shared_ptr<FWFSettings> XmlAssetsLoader::createFWFSettingsFromXml(
     tinyxml2::XMLElement *node, std::shared_ptr<FWFSettings> settings
 ) {
+    // If no FWFSettings node appears on XML, default is used
   if (settings == nullptr) {
     settings = std::make_shared<FWFSettings>();
   }
-  // If no FWFSettings node appears on XML, default is used
+  // Given FWFSettings
   if (node != nullptr) {
     settings->binSize_ns = boost::get<double>(XmlUtils::getAttribute(
         node, "binSize_ns", "double", settings->binSize_ns
@@ -1335,6 +1352,9 @@ std::shared_ptr<FWFSettings> XmlAssetsLoader::createFWFSettingsFromXml(
         node, "winSize_ns", "double", settings->winSize_ns));
     settings->maxFullwaveRange_ns = boost::get<double>(XmlUtils::getAttribute(
         node, "maxFullwaveRange_ns", "double", settings->maxFullwaveRange_ns));
+    settings->apertureDiameter = boost::get<double>(XmlUtils::getAttribute(
+        node, "apertureDiameter_m", "double", settings->apertureDiameter
+    ));
   }
 
   return settings;
@@ -1609,6 +1629,13 @@ void XmlAssetsLoader::fillScanningDevicesFromChannels(
             )),
             idx
         );
+        scanner->setReceivedEnergyMin(
+            boost::get<double>(XmlUtils::getAttribute(
+                chan, "receivedEnergyMin_W", "double",
+                scanner->getReceivedEnergyMin(idx)
+            )),
+            idx
+        );
         // Next channel, if any
         chan = chan->NextSiblingElement("channel");
         ++idx;
@@ -1628,8 +1655,8 @@ std::shared_ptr<Asset> XmlAssetsLoader::getAssetById(
     "XmlAssetsLoader::getAssetById"
   );
   try {
-    tinyxml2::XMLElement *assetNodes =
-        doc.FirstChild()->NextSibling()->FirstChildElement(type.c_str());
+    tinyxml2::XMLElement *assetNodes = doc.FirstChild()->\
+        NextSiblingElement()->FirstChildElement(type.c_str());
 
     if(isProceduralAsset(type, id)){ // Generate procedural assets
         return createProceduralAssetFromXml(type, id, extraOutput);
@@ -1790,4 +1817,17 @@ bool XmlAssetsLoader::isProceduralAsset(
         if(id=="interpolated") return true;
     }
     return false;
+}
+
+fs::path XmlAssetsLoader::locateAssetFile(const std::string& filename) {
+  fs::path searchfile(filename);
+  if(searchfile.is_relative()){
+    for(const auto path : assetsDir){
+        if(fs::exists(fs::path(path) / searchfile)){
+            searchfile = fs::path(path) / searchfile;
+            break;
+        }
+    }
+  }
+  return searchfile.string();
 }

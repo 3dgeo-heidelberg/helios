@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+	<!-- Approx. 100m radius cylinder vertically centered at approx. 0  -->
+    <scene id="plane_scene" name="plane_scene">
+        <part>
+            <filter type="objloader">
+                <param type="string" key="filepath" value="data/sceneparts/basic/plane/plane.obj" />
+            </filter>
+			<filter type="rotate">
+				<param type="rotation" key="rotation">
+					<rot axis="y" angle_deg="90" />
+				</param>
+			</filter>
+			<filter type="scale">
+                <param type="double" key="scale" value="100" />
+            </filter>
+			<filter type="translate">
+                <param type="vec3" key="offset" value="-500;0;0" />
+            </filter>
+        </part>
+    </scene>
+</document>

@@ -1,0 +1,29 @@
+target_include_directories(
+  helios
+  PUBLIC
+  "."
+  "primitives"
+  "dynamic"
+)
+
+target_sources(
+  helios
+  PRIVATE
+  "RaySceneIntersection.cpp"
+  "Material.cpp"
+  "StaticScene.cpp"
+  "Scene.cpp"
+  "primitives/Primitive.cpp"
+  "primitives/DetailedVoxel.cpp"
+  "primitives/Voxel.cpp"
+  "primitives/Vertex.cpp"
+  "primitives/AABB.cpp"
+  "primitives/Triangle.cpp"
+  "IntersectionHandlingResult.cpp"
+  "dynamic/DynMotionEngine.cpp"
+  "dynamic/DynScene.cpp"
+  "dynamic/DynObject.cpp"
+  "dynamic/DynSequentiableMovingObject.cpp"
+  "dynamic/DynMovingObject.cpp"
+  "dynamic/DynMotion.cpp"
+)

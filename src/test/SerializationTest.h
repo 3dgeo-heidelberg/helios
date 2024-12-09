@@ -115,19 +115,30 @@ bool SerializationTest::run(){
     }
     scene1.finalizeLoading(true);
     shared_ptr<KDGroveFactory> kdgf = scene1.getKDGroveFactory();
-    scene1.setKDGroveFactory(nullptr);
     scene1.writeObject(path);
     scene1.setKDGroveFactory(kdgf);
     Scene *scene2 = Scene::readObject(path);
-    scene2->setKDGroveFactory(kdgf);
-    scene2->finalizeLoading(true);
-    if(!validate(dv1, *(DetailedVoxel *) scene2->primitives[0])) return false;
-    if(!validate(t1, *(Triangle *) scene2->primitives[1])) return false;
-    if(!validate(v1, *(Voxel *) scene2->primitives[2])) return false;
-    if(!validate(box1, *(AABB *) scene2->primitives[3])) return false;
+    if(!validate(
+        *(DetailedVoxel *) scene1.primitives[0],
+        *(DetailedVoxel *) scene2->primitives[0]
+    )) return false;
+    if(!validate(
+        *(Triangle *) scene1.primitives[1],
+        *(Triangle *) scene2->primitives[1]
+    )) return false;
+    if(!validate(
+        *(Voxel *) scene1.primitives[2],
+        *(Voxel *) scene2->primitives[2]
+    )) return false;
+    if(!validate(
+        *(AABB *) scene1.primitives[3],
+        *(AABB *) scene2->primitives[3]
+    )) return false;
     for(size_t i = 0 ; i < nRepeats ; i++){
-        if(!validate(dv1, *(DetailedVoxel *) scene2->primitives[i+4]))
-            return false;
+        if(!validate(
+            *(DetailedVoxel *) scene1.primitives[i+4],
+            *(DetailedVoxel *) scene2->primitives[i+4]
+        )) return false;
     }
 
 

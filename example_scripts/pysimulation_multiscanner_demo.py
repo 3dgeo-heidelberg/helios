@@ -1,9 +1,4 @@
-import sys
 import os
-from pathlib import Path
-
-helios_root = str(Path(__file__).parent.parent.absolute())
-sys.path.append(helios_root)
 import pyhelios
 import time
 import numpy as np
@@ -51,7 +46,6 @@ if __name__ == '__main__':
     # pyhelios.loggingVerbose2()
     pyhelios.loggingQuiet()
     pyhelios.setDefaultRandomnessGeneratorSeed("123")
-    os.chdir(helios_root)
 
     # Build a simulation
     simBuilder = pyhelios.SimulationBuilder(

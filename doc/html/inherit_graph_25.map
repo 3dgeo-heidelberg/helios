@@ -1,6 +1,0 @@
-<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$d4/d73/classfluxionum_1_1Function.html" title=" " alt="" coords="5,39,143,95"/>
-<area shape="rect" id="node2" href="$d5/d9a/classfluxionum_1_1ParametricClosestLesserSampleFunction.html" title=" " alt="" coords="191,5,400,61"/>
-<area shape="rect" id="node3" href="$d9/de4/classTrajectoryFunction.html" title="Abstract class representing a trajectory function ." alt="" coords="230,85,361,112"/>
-<area shape="rect" id="node4" href="$d4/dc7/classDesignTrajectoryFunction.html" title="Class representing a trajectory function that comes from interpolating a TemporalDesignMatrix using i..." alt="" coords="448,85,619,112"/>
-</map>

@@ -36,7 +36,7 @@ shared_ptr<Survey> XmlSurveyLoader::load(
     return nullptr;
   }
   tinyxml2::XMLElement *surveyNodes =
-      pRoot->NextSibling()->FirstChildElement("survey");
+      pRoot->NextSiblingElement()->FirstChildElement("survey");
   if (surveyNodes == nullptr) {
     stringstream ss;
     ss << "XML Survey playback loader: "
@@ -87,9 +87,25 @@ XmlSurveyLoader::createSurveyFromXml(
   string sceneString = surveyNode->Attribute("scene");
   survey->scanner->platform->scene = loadScene(sceneString, rebuildScene);
   SpectralLibrary spectralLibrary = SpectralLibrary(
-      (float)survey->scanner->getWavelength(), assetsDir + "spectra");
+      (float)survey->scanner->getWavelength(), assetsDir, "spectra");
   spectralLibrary.readReflectances();
   spectralLibrary.setReflectances(survey->scanner->platform->scene.get());
+  survey->scanner->platform->scene->setDefaultReflectance(
+      spectralLibrary.getDefaultReflectance()
+  );
+
+  // Update materials for all swap on repeat handlers
+  for(std::shared_ptr<ScenePart> sp : survey->scanner->platform->scene->parts){
+      // Ignore scene parts with no swap on repeat
+      if(sp->sorh == nullptr) continue;
+      // Update material for each primitive
+      size_t const numPrimitives = sp->mPrimitives.size();
+      std::vector<Primitive *> & baselinePrimitives =
+          sp->sorh->getBaselinePrimitives();
+      for(size_t i = 0 ; i < numPrimitives ; ++i){
+          baselinePrimitives[i]->material = sp->mPrimitives[i]->material;
+      }
+  }
 
   // Apply scene geometry shift to platform waypoints
   applySceneShift(surveyNode, legNoiseDisabled, survey);
@@ -200,11 +216,22 @@ shared_ptr<Scene> XmlSurveyLoader::loadScene(
   try {
     fs::path sceneObj(sceneObjPath);
     fs::path sceneXml(sceneFullPath + "xml");
+
+    if(sceneXml.is_relative()) {
+      for (auto path : assetsDir) {
+        if(fs::exists(fs::path(path) / sceneXml)) {
+            sceneXml = fs::path(path) / sceneXml;
+            sceneObj = fs::path(path) / sceneObj;
+            break;
+        }
+      }
+    }
+
     if (fs::is_regular_file(sceneObj) &&
         fs::last_write_time(sceneObj) > fs::last_write_time(sceneXml) &&
         !rebuildScene
     ){
-      SerialSceneWrapper *ssw = SerialSceneWrapper::readScene(sceneObjPath);
+      SerialSceneWrapper *ssw = SerialSceneWrapper::readScene(sceneObj.string());
       scene = shared_ptr<Scene>(ssw->getScene());
       delete ssw;
     } else {
@@ -212,7 +239,9 @@ shared_ptr<Scene> XmlSurveyLoader::loadScene(
       scene = dynamic_pointer_cast<Scene>(
           getAssetByLocation("scene", sceneString, &sceneType)
       );
-      SerialSceneWrapper(sceneType, scene.get()).writeScene(sceneObjPath);
+      if(writeScene) {
+        SerialSceneWrapper(sceneType, scene.get()).writeScene(sceneObj.string());
+      }
       /*
        * Build KDGrove for Scene after exporting it.
        * This way memory issues coming from tracking of pointers at

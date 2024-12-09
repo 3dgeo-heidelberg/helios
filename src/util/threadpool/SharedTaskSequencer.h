@@ -66,7 +66,7 @@ public:
         availableThreads(maxThreads),
         nextSharedSubTaskKey(0)
     {}
-    virtual ~SharedTaskSequencer() = default;
+    ~SharedTaskSequencer() override = default;
 
     // ***  SHARED TASK HANDLING  *** //
     // ****************************** //

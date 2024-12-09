@@ -97,7 +97,7 @@ public:
        ,std::shared_ptr<HDA_PulseRecorder> pulseRecorder
 #endif
     );
-    virtual ~WarehouseScanningPulseProcess() = default;
+    ~WarehouseScanningPulseProcess() override = default;
 
     // ***  PULSE COMPUTATION  *** //
     // *************************** //

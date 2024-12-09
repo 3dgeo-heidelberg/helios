@@ -47,7 +47,12 @@ public:
     explicit KDTreeFactoryThreadPool() :
         KDTreeFactoryThreadPool(std::thread::hardware_concurrency())
     {}
-    virtual ~KDTreeFactoryThreadPool() {}
+    virtual ~KDTreeFactoryThreadPool() {
+        if(!finished){
+            threads_.interrupt_all();
+            finished = false;
+        }
+    }
 
 protected:
     /**

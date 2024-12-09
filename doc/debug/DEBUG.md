@@ -200,7 +200,27 @@ below.
 
 <img src="https://drive.google.com/uc?export=view&id=1yfHzc1JiuifervHjgsZ6Avxm_kxhTR8x" alt="Platform mount attitude" width="600" height="400"/>
 
+#### Further data analytics
+Note that the data analytics flag can be set to level 2:
 
+```
+-DDATA_ANALYTICS=2
+```
+
+Running this level of data analytics will lead to slower executions, but it will also record more information during simulation. This information will be available in the directory `helios_pulse_records`, including CSV files representing the values of the internal variables and one particular CSV that represents a point cloud with all the intersections for each elliptical footprint (`intensity_calc.csv`). The script `scripts/debug/hda_pulse_records_plotter.py` can be used to automatically generate figures representing the captured data such that:
+
+```
+python3 scripts/debug/hda_pulse_records_plotter.py <First dir> <Second dir> <Output dir>
+```
+
+The generated plots will be exported in the given output directory. The first and second directories must point to a `helios_pulse_records` folder with its default structure and contents. Besides, the CSV point cloud can be transformed into a LAS/LAZ file using the `scripts/debug/hda_pulse_calc_intensity_csv_to_laz.sh` bash script such that:
+
+
+```
+python3 scripts/debug/hda_pulse_calc_intensity_csv_to_laz.sh <Input CSV> <Output LAS/LAZ>
+```
+
+The generated LAS/LAZ file will use the LAS 1.4 format, including (x, y, z) coordinates and the different available values for each point (e.g., incidence angle, target area, cross-section, or the emitted and received powers).
 
 
 

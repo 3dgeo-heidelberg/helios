@@ -262,7 +262,7 @@ public:
         double const cl=1,
         double const co=1
     );
-    virtual ~SAHKDTreeFactory() = default;
+    ~SAHKDTreeFactory() override = default;
 
     // ***  CLONE  *** //
     // *************** //

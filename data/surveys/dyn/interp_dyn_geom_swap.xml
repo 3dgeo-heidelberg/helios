@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+    <survey name="dyn_geom_swap_interp"
+			scene="data/scenes/dyn/dyn_geom_swap_scene.xml#dyn_geom_swap_scene"
+			platform="interpolated" basePlatform="data/platforms.xml#sr22"
+			scanner="data/scanners_als.xml#leica_als50"
+	>
+		<leg>
+			<platformSettings 
+				trajectory="data/trajectories/swap_on_repeat_trajectory.txt"
+				tIndex="0" xIndex="1" yIndex="2" zIndex="3" rollIndex="4" pitchIndex="5" yawIndex="6"
+				tStart="0" trajectory_separator="," interpolationDomain="position"
+			/>
+            <scannerSettings  active="true" pulseFreq_hz="83000" scanFreq_hz="70" scanAngle_deg="60" trajectoryTimeInterval_s="0.033" />
+        </leg>
+		<leg>
+			<platformSettings 
+				trajectory="data/trajectories/swap_on_repeat_trajectory.txt"
+				tStart="0" teleportToStart="true" trajectory_separator="," interpolationDomain="position"
+			/>
+            <scannerSettings  active="true" pulseFreq_hz="83000" scanFreq_hz="70" scanAngle_deg="30" trajectoryTimeInterval_s="0.033" />
+        </leg>
+    </survey>
+</document>

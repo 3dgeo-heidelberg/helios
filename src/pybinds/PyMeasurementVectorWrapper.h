@@ -1,7 +1,5 @@
 #pragma once
 
-#ifdef PYTHON_BINDING
-
 #include <PyMeasurementWrapper.h>
 #include <PyHeliosUtils.h>
 #include <vector>
@@ -47,5 +45,3 @@ public:
 };
 
 }
-
-#endif

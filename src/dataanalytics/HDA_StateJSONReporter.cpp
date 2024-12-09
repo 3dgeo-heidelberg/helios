@@ -1,7 +1,7 @@
 #ifdef DATA_ANALYTICS
 #include <dataanalytics/HDA_StateJSONReporter.h>
 #include <sim/core/SurveyPlayback.h>
-#include <main/helios_version.h>
+#include <util/helios_version.h>
 #include <filems/facade/FMSFacade.h>
 
 #include <sstream>

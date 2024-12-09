@@ -1,6 +1,9 @@
 #pragma once
 
+#include <SurveyPlayback.h>
+
 #include <string>
+#include <vector>
 
 namespace helios { namespace main{
 
@@ -36,8 +39,12 @@ public:
      * @param legNoiseDisabled Flag to specify leg noise disabled.
      *  True means leg noise is disabled, false means it is enabled
      * @param rebuildScene Flag to specify rebuild scene policy. True means
-     *  scene will be build even when a previously built scene has been found,
+     *  scene will be built even when a previously built scene has been found,
      *  false means previously built scene will be used when available
+     * @param writeScene Flag to specify scene writing policy. True means
+     *  the scene will be written if it is created during asset loading,
+     *  false means it will not. Note that if the scene is read, it will not
+     *  be written (no matter the flag).
      * @param lasOutput Flag to specify LAS output format. True implies using
      *  LAS output format, false implies don't
      * @param las10 Flag to specify that the output format must be LAS v1.0.
@@ -54,10 +61,12 @@ public:
      *  of the KDTree
      * @param sahLossNodes Specify the number of nodes used to find the optimal
      *  split point when SAH or the number of samples if fast SAH is used
+     * @param legacyEnergyModel Whether to use the legacy energy model (true)
+     *  or not (false).
      */
     void init(
         std::string surveyPath,
-        std::string assetsPath,
+        std::vector<std::string> assetsPath,
         std::string outputPath,
         bool writeWaveform = false,
         bool writePulse = false,
@@ -71,6 +80,7 @@ public:
         bool platformNoiseDisabled = false,
         bool legNoiseDisabled = false,
         bool rebuildScene = false,
+        bool writeScene = true,
         bool lasOutput = false,
         bool las10 = false,
         bool zipOutput = false,
@@ -80,8 +90,26 @@ public:
         int kdtType = 1,
         size_t kdtJobs = 1,
         size_t kdtGeomJobs = 1,
-        size_t sahLossNodes = 21
+        size_t sahLossNodes = 21,
+        bool legacyEnergyModel = true
     );
+
+    /**
+     * @brief Release the resources of the lidar simulation (typically this
+     *  method should be called after finishing all simulation plays because
+     *  after this point the resources will no longer be used).
+     *
+     * If the release method is not used, some indirect memory leaks might
+     *  lead to dirty logs (e.g., valgrind or gcc sanitize). Some of these
+     *  leaks are not really problematic because they correspond to objects
+     *  whose lifespan is the entire execution (i.e., it is okay to release
+     *  them on exit). However, they make it more difficult to debug the
+     *  software.
+     *
+     * @param sp The survey playback whose resources must be released.
+     */
+    void release(std::shared_ptr<SurveyPlayback> sp);
+
 };
 
 }}

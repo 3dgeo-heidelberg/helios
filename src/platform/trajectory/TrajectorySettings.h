@@ -53,7 +53,7 @@ public:
         tEnd(std::numeric_limits<double>::max()),
         teleportToStart(false)
     {}
-    virtual ~TrajectorySettings() = default;
+    ~TrajectorySettings() override = default;
 
     // ***  GETTERs and SETTErs  *** //
     // ***************************** //

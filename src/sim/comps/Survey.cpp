@@ -10,7 +10,7 @@
 
 // ***  CONSTRUCTION / DESTRUCTION  *** //
 // ************************************ //
-Survey::Survey(Survey &survey){
+Survey::Survey(Survey &survey, bool const deepCopy){
     // Copy basic attributes
     this->name = survey.name;
     this->numRuns = survey.numRuns;
@@ -19,13 +19,22 @@ Survey::Survey(Survey &survey){
 
     // Copy Scanner
     this->scanner = survey.scanner->clone();
-    this->scanner->getDetector()->scanner = this->scanner;
+    for(size_t i = 0 ; i < this->scanner->getNumDevices() ; ++i){
+        this->scanner->getDetector(i)->scanner = this->scanner;
+    }
 
     // Copy legs
     this->legs = std::vector<std::shared_ptr<Leg>>(0);
     for(size_t i = 0 ; i < survey.legs.size() ; i++){
         this->legs.push_back(
             std::make_shared<Leg>(*survey.legs[i])
+        );
+    }
+
+    // Make deep copy effective
+    if(deepCopy){
+        this->scanner->platform->scene = std::make_shared<Scene>(
+            *this->scanner->platform->scene
         );
     }
 }

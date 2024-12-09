@@ -65,7 +65,7 @@ bool Material::isLambert() const{
     return !nonNullKs && nonNullKd;
 }
 
-bool Material::isUniform() const{
+bool Material::isDirectionIndependent() const{
     bool nonNullKs, nonNullKd;
     findNonNullComponents(nonNullKs, nonNullKd);
     return !nonNullKs && !nonNullKd;

@@ -101,7 +101,7 @@ public:
 	 * @param root Root node of the KDTree
 	 */
 	KDTreeRaycaster(std::shared_ptr<LightKDTreeNode> root) : root(root) {}
-    virtual ~KDTreeRaycaster() = default;
+    ~KDTreeRaycaster() override = default;
 
 	// ***  RAYCASTING METHODS  *** //
 	// **************************** //

@@ -1,5 +1,0 @@
-<map id="OscillatingMirrorBeamDeflector" name="OscillatingMirrorBeamDeflector">
-<area shape="rect" id="node1" title="Class representing an oscillating mirror beam deflector." alt="" coords="5,171,208,197"/>
-<area shape="rect" id="node2" href="$d7/d92/classAbstractBeamDeflector.html" title="Base abstract class for beam deflectors." alt="" coords="27,95,186,121"/>
-<area shape="rect" id="node3" href="$d5/dcb/classRotation.html" title=" " alt="" coords="71,5,142,32"/>
-</map>

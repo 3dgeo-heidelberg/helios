@@ -95,6 +95,7 @@ public:
         std::mutex *cycleMeasurementsMutex
 #if DATA_ANALYTICS >= 2
        ,std::vector<double> &calcIntensityRecord,
+        std::vector<int> &calcIntensityIndices,
         std::shared_ptr<HDA_PulseRecorder> pulseRecorder
 #endif
     );

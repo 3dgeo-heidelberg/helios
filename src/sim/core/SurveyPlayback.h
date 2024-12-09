@@ -16,7 +16,8 @@ using helios::filems::FMSFacade;
  * @see Simulation
  */
 class SurveyPlayback : public Simulation {
-
+private:
+    friend class SimulationPlayer;
 public:
     // ***  ATTRIBUTES  *** //
     // ******************** //
@@ -73,6 +74,13 @@ private:
 	 * @brief Expected remaining time (nanoseconds) for current leg completion
 	 */
 	long long legRemainingTime_ns;
+    /**
+     * Flag to specify whether the shutdown process
+     *  after finishing a simulation must be finished or not. It is mostly
+     *  useful to run multiple simulations from PyHelios without rebuilding
+     *  the survey.
+     */
+    bool disableShutdown;
 
 public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //
@@ -83,6 +91,10 @@ public:
      * @param fms The main facade of file management system
      * @param exportToFile Flag to specify if output must be written to a file
      *  (true) or not (false)
+     * @param disableShutdown Flag to specify whether the shutdown process
+     *  after finishing a simulation must be finished or not. It is mostly
+     *  useful to run multiple simulations from PyHelios without rebuilding
+     *  the survey.
      * @see Survey
      * @see Simulation::Simulation(unsigned, double, size_t)
      */
@@ -93,7 +105,9 @@ public:
         std::shared_ptr<PulseThreadPoolInterface> pulseThreadPoolInterface,
         int const chunkSize,
         std::string fixedGpsTimeStart,
-        bool const exportToFile=true
+        bool const legacyEnergyModel,
+        bool const exportToFile=true,
+        bool const disableShutdown=false
     );
 
 
@@ -168,11 +182,11 @@ public:
 	/**
 	 * @brief Perform computations for current simulation step
 	 */
-	virtual void doSimStep();
+	void doSimStep() override;
 	/**
 	 * @brief Handle leg completion
 	 */
-    void onLegComplete();
+    void onLegComplete() override;
     /**
      * @brief Start specified leg
      * @param legIndex Index of leg to start
@@ -201,11 +215,11 @@ public:
      */
     void startNextLeg(bool manual);
     /**
-     * @brief Handle survey playback shutdown
+     * @brief Handle survey playback shutdown.
      * @see Simulation::shutdown
      * @see Scanner::AbstractDetector
      */
-    void shutdown();
+    void shutdown() override;
     /**
      * @brief Translate milliseconds to time stamp string
      *

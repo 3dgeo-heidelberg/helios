@@ -1,4 +1,0 @@
-<map id="pyhelios::PySimulationCycleCallback" name="pyhelios::PySimulationCycleCallback">
-<area shape="rect" id="node1" title="Python callback for each simulation cycle that has been completed." alt="" coords="5,80,195,121"/>
-<area shape="rect" id="node2" href="$dc/d7a/classSimulationCycleCallback.html" title="Abstract class to handle simulation cycle callbacks." alt="" coords="16,5,184,32"/>
-</map>

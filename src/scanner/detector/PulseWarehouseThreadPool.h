@@ -100,7 +100,7 @@ public:
         }
     }
 
-    virtual ~PulseWarehouseThreadPool(){
+    ~PulseWarehouseThreadPool() override{
 #if DATA_ANALYTICS >= 2
         // Flush and close pulse recorder
         this->pulseRecorder->closeBuffers();

@@ -1,7 +1,5 @@
 #pragma once
 
-#ifdef PYTHON_BINDING
-
 #include <PyPrimitiveWrapper.h>
 #include <Triangle.h>
 
@@ -19,7 +17,7 @@ public:
     // ***  CONSTRUCTION / DESTRUCTION  *** //
     // ************************************ //
     PyTriangleWrapper(Triangle * tri) : PyPrimitiveWrapper(tri) {}
-    virtual ~PyTriangleWrapper() = default;
+    ~PyTriangleWrapper() override = default;
 
     // ***  GETTERS and SETTERS  *** //
     // ***************************** //
@@ -31,5 +29,3 @@ public:
 };
 
 }
-
-#endif

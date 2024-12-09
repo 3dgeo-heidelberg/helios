@@ -107,7 +107,7 @@ public:
         bx(bx), by(by), bz(bz),
         onRootBoundariesDigestPrimitive(onRootBoundariesDigestPrimitive)
     {}
-    virtual ~SimpleKDTreeComputeRootNodeBoundariesSubTask() {}
+    ~SimpleKDTreeComputeRootNodeBoundariesSubTask() override {}
 
     // ***  RUNNABLE SHARED TASK  *** //
     // ****************************** //

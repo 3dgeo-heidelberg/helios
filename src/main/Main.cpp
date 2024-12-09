@@ -154,6 +154,7 @@ int main(int argc, char** argv) {
             ap.parseDisablePlatformNoise(),
             ap.parseDisableLegNoise(),
             ap.parseRebuildScene(),
+            !ap.parseNoSceneWriting(),
             ap.parseLasOutput(),
             ap.parseLas10(),
             ap.parseZipOutput(),
@@ -163,7 +164,8 @@ int main(int argc, char** argv) {
             ap.parseKDTreeType(),
             ap.parseKDTreeJobs(),
             ap.parseKDTreeGeometricJobs(),
-            ap.parseSAHLossNodes()
+            ap.parseSAHLossNodes(),
+            ap.parseLegacyEnergyModel()
         );
     }
 

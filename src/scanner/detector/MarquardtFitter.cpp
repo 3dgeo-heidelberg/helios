@@ -98,12 +98,10 @@ void MarquardtFitter::calculateDerivatives() {
 }
 
 void MarquardtFitter::calculateDerivativesFast(){
-    vector<double> working = A;
-
     // Precompute params
-    double const c = working[2];
-    double const d = working[3];
-    double const coefficient = 2*working[1]/(d*d);
+    double const c = A[2];
+    double const d = A[3];
+    double const coefficient = 2*A[1]/(d*d);
 
     // Compute derivative using precomputed params
     for(size_t i = 0 ; i < Z.size() ; i++){

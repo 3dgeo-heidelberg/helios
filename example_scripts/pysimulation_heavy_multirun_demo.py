@@ -9,9 +9,6 @@ import sys
 import os
 from pathlib import Path
 from threading import Condition as CondVar
-
-helios_root = str(Path(__file__).parent.parent.absolute())
-sys.path.append(helios_root)
 import pyhelios
 
 cv = CondVar()
@@ -54,12 +51,9 @@ if __name__ == '__main__':
     # pyhelios.loggingVerbose2()
     pyhelios.loggingQuiet()
     pyhelios.setDefaultRandomnessGeneratorSeed("123")
-    os.chdir(helios_root)
 
     # Build reference simulation
     print('>> Creating base/reference simulation\n')
-    from pyhelios import SimulationBuilder
-
     simB = pyhelios.SimulationBuilder(
         surveyPath='data/surveys/voxels/als_detailedVoxels_mode_comparison.xml',
         assetsDir='assets/',

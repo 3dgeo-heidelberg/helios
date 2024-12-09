@@ -45,8 +45,21 @@ protected:
      * [9] -> The calculated received power, i.e., intensity.
      *
      * [10] -> 1 if the point was captured, 0 otherwise.
+     *
+     * [11] -> The emitted power.
+     *
+     * [12] -> The radius step on the discrete elliptical footprint method.
+     *
      */
     std::shared_ptr<HDA_RecordBuffer<std::vector<double>>> intensityCalc;
+
+    /**
+     * @brief The vectors which components are indices involved on a
+     *  particular intensity calculation for a given subray.
+     *
+     * [0] -> The index of the pulse/ray.
+     */
+    std::shared_ptr<HDA_RecordBuffer<std::vector<int>>> intensityCalcIndices;
     /**
      * @brief The vectors which components are variables involved on the
      *  subray simulation.
@@ -134,7 +147,10 @@ public:
     /**
      * @brief Handle all the records for the current simulation step.
      */
-    virtual void recordIntensityCalculation(std::vector<double> const &record);
+    virtual void recordIntensityCalculation(
+        std::vector<double> const &record,
+        std::vector<int> const &indices
+    );
     /**
      * @brief Like
      *  HDA_PulseRecorder::recordIntensityCalculation(std::vector<double>)
@@ -142,7 +158,8 @@ public:
      * @see HDA_PulseRecorder::recordIntensityCalculation(std::vector<double>)
      */
     virtual void recordIntensityCalculation(
-        std::vector<std::vector<double>> const &records
+        std::vector<std::vector<double>> const &records,
+        std::vector<std::vector<int>> const &indices
     );
     /**
      * @brief Handle all the records for the current subray simulation.

@@ -1,5 +1,0 @@
-<map id="MultiScanner" name="MultiScanner">
-<area shape="rect" id="node1" title="Class representing a multi scanner. It is, a scanner that can emit more than one pulse per time insta..." alt="" coords="5,155,104,181"/>
-<area shape="rect" id="node2" href="$dc/d42/classScanner.html" title="Class representing a scanner asset." alt="" coords="19,80,90,107"/>
-<area shape="rect" id="node3" href="$de/d97/classAsset.html" title="Base class for all assets." alt="" coords="27,5,83,32"/>
-</map>

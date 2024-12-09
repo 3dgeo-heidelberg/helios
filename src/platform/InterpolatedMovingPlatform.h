@@ -196,7 +196,7 @@ public:
         double const startTime,
         RotationSpec rotspec=RotationSpec::ARINC_705
     );
-    virtual ~InterpolatedMovingPlatform() = default;
+    ~InterpolatedMovingPlatform() override = default;
 
     // ***  M E T H O D S  *** //
     // *********************** //
@@ -272,6 +272,13 @@ public:
     inline std::shared_ptr<DesignTrajectoryFunction>
     getTrajectoryFunction() const
     {return tf;}
+    /**
+     * @brief Obtain the TrajectoryFunction as a reference that can be
+     *  modified.
+     * @see InterpolatedMovingPlatform::tf
+     * @see InterpolatedMovingPlatform::getTrajectoryFunction
+     */
+    inline DesignTrajectoryFunction & getTrajectoryFunctionRef() {return *tf;}
     /**
      * @brief Set the TrajectoryFunction
      * @see InterpolatedMovingPlatform::tf

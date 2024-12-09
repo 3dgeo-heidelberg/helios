@@ -1,7 +1,4 @@
-#ifdef PYTHON_BINDING
-
 #include <boost/python.hpp>
-#include <helios_version.h>
 #include <PyHeliosSimulation.h>
 #include <PythonDVec3.h>
 #include <PyBeamDeflectorWrapper.h>
@@ -15,7 +12,12 @@
 #include <PyScanningStripWrapper.h>
 #include <Material.h>
 #include <gdal_priv.h>
+#include <logging.hpp>
 
+// LOGGING FLAGS (DO NOT MODIFY HERE BUT IN logging.hpp makeDefault())
+bool    logging::LOGGING_SHOW_TRACE,    logging::LOGGING_SHOW_DEBUG,
+        logging::LOGGING_SHOW_INFO,     logging::LOGGING_SHOW_TIME,
+        logging::LOGGING_SHOW_WARN,     logging::LOGGING_SHOW_ERR;
 
 // ***  PYHELIOS PYTHON MODULE  *** //
 // ******************************** //
@@ -23,6 +25,7 @@ BOOST_PYTHON_MODULE(_pyhelios){
     // Namespace must be used locally to prevent conflicts
     using namespace boost::python;
     using namespace pyhelios;
+
 
     // Configure logging system
     logging::makeQuiet();
@@ -66,7 +69,6 @@ BOOST_PYTHON_MODULE(_pyhelios){
     );
 
     // Register PyHeliosSimulation
-    def("getVersion", getHeliosVersion, "Obtain the current helios version");
     def(
         "setDefaultRandomnessGeneratorSeed",
         setDefaultRandomnessGeneratorSeed,
@@ -75,7 +77,7 @@ BOOST_PYTHON_MODULE(_pyhelios){
     class_<PyHeliosSimulation>("Simulation", init<>())
         .def(init<
             std::string,
-            std::string,
+            list,
             std::string,
             size_t,
             bool,
@@ -85,7 +87,7 @@ BOOST_PYTHON_MODULE(_pyhelios){
         >())
         .def(init<
             std::string,
-            std::string,
+            list,
             std::string,
             size_t,
             bool,
@@ -154,6 +156,11 @@ BOOST_PYTHON_MODULE(_pyhelios){
             return_internal_reference<>()
         )
         .def(
+            "newLegFromTemplate",
+            &PyHeliosSimulation::newLegFromTemplate,
+            return_internal_reference<>()
+        )
+        .def(
             "newScanningStrip",
             &PyHeliosSimulation::newScanningStrip,
             return_value_policy<manage_new_object>()
@@ -181,6 +188,11 @@ BOOST_PYTHON_MODULE(_pyhelios){
             "finalOutput",
             &PyHeliosSimulation::finalOutput,
             &PyHeliosSimulation::finalOutput
+        )
+        .add_property(
+            "legacyEnergyModel",
+            &PyHeliosSimulation::legacyEnergyModel,
+            &PyHeliosSimulation::legacyEnergyModel
         )
         .add_property(
             "exportToFile",
@@ -430,10 +442,14 @@ BOOST_PYTHON_MODULE(_pyhelios){
         .add_property(
             "strip",
             make_function(
-                &Leg::getPyStrip,
+                +[](const Leg &leg) {
+                    return new PyScanningStripWrapper(leg.getStrip());
+                },
                 return_value_policy<manage_new_object>()
             ),
-            &Leg::setPyStrip
+            +[](Leg& leg, PyScanningStripWrapper *pssw) {
+                leg.setStrip(pssw->ss);
+            }
         )
         .def(
             "getScannerSettings",
@@ -961,18 +977,6 @@ BOOST_PYTHON_MODULE(_pyhelios){
             return_value_policy<manage_new_object>()
         )
         .def(
-            "calcFootprintArea",
-            static_cast<double(PyScannerWrapper::*)(double const)const>(
-                &PyScannerWrapper::calcFootprintArea
-            )
-        )
-        .def(
-            "calcFootprintArea",
-            static_cast<
-                double(PyScannerWrapper::*)(double const, size_t const)const
-            >(&PyScannerWrapper::calcFootprintArea)
-        )
-        .def(
             "calcAtmosphericAttenuation",
             static_cast<double(PyScannerWrapper::*)()const>(
                 &PyScannerWrapper::calcAtmosphericAttenuation
@@ -983,18 +987,6 @@ BOOST_PYTHON_MODULE(_pyhelios){
             static_cast<double(PyScannerWrapper::*)(size_t const)const>(
                 &PyScannerWrapper::calcAtmosphericAttenuation
             )
-        )
-        .def(
-            "calcFootprintRadius",
-            static_cast<
-                double(PyScannerWrapper::*)(double const)
-            >(&PyScannerWrapper::calcFootprintRadius)
-        )
-        .def(
-            "calcFootprintRadius",
-            static_cast<
-                double(PyScannerWrapper::*)(double const, size_t const)
-            >(&PyScannerWrapper::calcFootprintRadius)
         )
         .add_property(
             "fixedIncidenceAngle",
@@ -1120,7 +1112,12 @@ BOOST_PYTHON_MODULE(_pyhelios){
         .add_property("q3", &Rotation::getQ3, &Rotation::setQ3)
         .def(
             "getAxis",
-            &Rotation::getAxisPython,
+            // The unary operator+ is a C++ trick to convert a capture-less
+            // lambda to a function pointer, so that we can do this inline.
+            +[](Rotation &r) {
+                return new PythonDVec3(r.getAxis());
+            },
+            //&Rotation::getAxisPython,
             return_value_policy<manage_new_object>()
         )
         .def("getAngle", &Rotation::getAngle)
@@ -1224,15 +1221,7 @@ BOOST_PYTHON_MODULE(_pyhelios){
         )
         .def(
             "getOpticsType",
-            static_cast<string(PyBeamDeflectorWrapper::*)()const>(
-                &PyBeamDeflectorWrapper::getOpticsType
-            )
-        )
-        .def(
-            "getOpticsType",
-            static_cast<string(PyBeamDeflectorWrapper::*)(size_t const)const>(
-                &PyBeamDeflectorWrapper::getOpticsType
-            )
+            &PyBeamDeflectorWrapper::getOpticsType
         )
     ;
 
@@ -1524,7 +1513,17 @@ BOOST_PYTHON_MODULE(_pyhelios){
             return_value_policy<manage_new_object>()
         )
         .def(
+            "getPosition",
+            &PyPlatformWrapper::getPositionPython,
+            return_value_policy<manage_new_object>()
+        )
+        .def(
             "getAttitudePython",
+            &PyPlatformWrapper::getAttitudePython,
+            return_internal_reference<>()
+        )
+        .def(
+            "getAttitude",
             &PyPlatformWrapper::getAttitudePython,
             return_internal_reference<>()
         )
@@ -1608,6 +1607,22 @@ BOOST_PYTHON_MODULE(_pyhelios){
             "update",
             &PyPrimitiveWrapper::update
         )
+        .def(
+            "isTriangle",
+            &PyPrimitiveWrapper::isTriangle
+        )
+        .def(
+            "isAABB",
+            &PyPrimitiveWrapper::isAABB
+        )
+        .def(
+            "isVoxel",
+            &PyPrimitiveWrapper::isVoxel
+        )
+        .def(
+            "isDetailedVoxel",
+            &PyPrimitiveWrapper::isDetailedVoxel
+        )
     ;
 
     // Register Material
@@ -1662,19 +1677,54 @@ BOOST_PYTHON_MODULE(_pyhelios){
             &Material::spectra,
             &Material::spectra
         )
-        .add_property("ka0", &Material::getKa0, &Material::setKa0)
-        .add_property("ka1", &Material::getKa1, &Material::setKa1)
-        .add_property("ka2", &Material::getKa2, &Material::setKa2)
-        .add_property("ka3", &Material::getKa3, &Material::setKa3)
-        .add_property("kd0", &Material::getKd0, &Material::setKd0)
-        .add_property("kd1", &Material::getKd1, &Material::setKd1)
-        .add_property("kd2", &Material::getKd2, &Material::setKd2)
-        .add_property("kd3", &Material::getKd3, &Material::setKd3)
-        .add_property("ks0", &Material::getKs0, &Material::setKs0)
-        .add_property("ks1", &Material::getKs1, &Material::setKs1)
-        .add_property("ks2", &Material::getKs2, &Material::setKs2)
-        .add_property("ks3", &Material::getKs3, &Material::setKs3)
-    ;
+        .add_property("ka0",
+            +[](Material &m){ return m.ka[0]; },
+            +[](Material &m, double v){ m.ka[0] = v; }
+        )
+        .add_property("ka1",
+            +[](Material &m){ return m.ka[1]; },
+            +[](Material &m, double v){ m.ka[1] = v; }
+        )
+        .add_property("ka2",
+            +[](Material &m){ return m.ka[2]; },
+            +[](Material &m, double v){ m.ka[2] = v; }
+        )
+        .add_property("ka3",
+            +[](Material &m){ return m.ka[3]; },
+            +[](Material &m, double v){ m.ka[3] = v; }
+        )
+        .add_property("kd0",
+            +[](Material &m){ return m.kd[0]; },
+            +[](Material &m, double v){ m.kd[0] = v; }
+        )
+        .add_property("kd1",
+            +[](Material &m){ return m.kd[1]; },
+            +[](Material &m, double v){ m.kd[1] = v; }
+        )
+        .add_property("kd2",
+            +[](Material &m){ return m.kd[2]; },
+            +[](Material &m, double v){ m.kd[2] = v; }
+        )
+        .add_property("kd3",
+            +[](Material &m){ return m.kd[3]; },
+            +[](Material &m, double v){ m.kd[3] = v; }
+        )
+        .add_property("ks0",
+            +[](Material &m){ return m.ks[0]; },
+            +[](Material &m, double v){ m.ks[0] = v; }
+        )
+        .add_property("ks1",
+            +[](Material &m){ return m.ks[1]; },
+            +[](Material &m, double v){ m.ks[1] = v; }
+        )
+        .add_property("ks2",
+            +[](Material &m){ return m.ks[2]; },
+            +[](Material &m, double v){ m.ks[2] = v; }
+        )
+        .add_property("ks3",
+            +[](Material &m){ return m.ks[3]; },
+            +[](Material &m, double v){ m.ks[3] = v; }
+        );
 
     // Register ScenePart
     class_<PyScenePartWrapper>("ScenePart", no_init)
@@ -1720,6 +1770,37 @@ BOOST_PYTHON_MODULE(_pyhelios){
             &PyScenePartWrapper::getObserverStep,
             &PyScenePartWrapper::setObserverStep
         )
+        .def(
+            "getPrimitive",
+            &PyScenePartWrapper::getPrimitive,
+            return_value_policy<manage_new_object>()
+        )
+        .def(
+            "getNumPrimitives",
+            &PyScenePartWrapper::getNumPrimitives
+        )
+        .def(
+            "computeCentroid",
+            &PyScenePartWrapper::computeCentroid
+        )
+        .def(
+            "computeBound",
+            &PyScenePartWrapper::computeBound
+        )
+        .def(
+            "getCentroid",
+            &PyScenePartWrapper::getCentroid,
+            return_value_policy<manage_new_object>()
+        )
+        .def(
+            "getBound",
+            &PyScenePartWrapper::getBound,
+            return_value_policy<manage_new_object>()
+        )
+        .def(
+            "translate",
+            &PySceneWrapper::translate
+        )
     ;
 
     // Register Scene
@@ -1738,6 +1819,10 @@ BOOST_PYTHON_MODULE(_pyhelios){
             "getPrimitive",
             &PySceneWrapper::getPrimitive,
             return_value_policy<manage_new_object>()
+        )
+        .def(
+            "getNumPrimitives",
+            &PySceneWrapper::getNumPrimitives
         )
         .def(
             "getAABB",
@@ -1780,6 +1865,20 @@ BOOST_PYTHON_MODULE(_pyhelios){
             "dynSceneStep",
             &PySceneWrapper::getDynSceneStep,
             &PySceneWrapper::setDynSceneStep
+        )
+        .def(
+            "getBBox",
+            &PySceneWrapper::getBBox,
+            return_value_policy<manage_new_object>()
+        )
+        .def(
+            "getBBoxCRS",
+            &PySceneWrapper::getBBoxCRS,
+            return_value_policy<manage_new_object>()
+        )
+        .def(
+            "translate",
+            &PySceneWrapper::translate
         )
     ;
 
@@ -2069,5 +2168,3 @@ BOOST_PYTHON_MODULE(_pyhelios){
         .def("call", &PySimulationCycleCallback::operator())
     ;
 }
-
-#endif

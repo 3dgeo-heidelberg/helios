@@ -38,7 +38,7 @@ public:
         DirectFullWaveformWriteStrategy(ofs),
         oa(oa)
     {}
-    virtual ~ZipFullWaveformWriteStrategy() = default;
+    ~ZipFullWaveformWriteStrategy() override = default;
 
     // ***  WRITE STRATEGY INTERFACE *** //
     // ********************************* //

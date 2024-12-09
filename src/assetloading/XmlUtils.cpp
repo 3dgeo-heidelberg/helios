@@ -4,6 +4,10 @@
 #include <UniformNoiseSource.h>
 #include <NormalNoiseSource.h>
 #include <rigidmotion/RigidMotionR3Factory.h>
+#include <assetloading/geometryfilter/WavefrontObjFileLoader.h>
+#include <assetloading/geometryfilter/XYZPointCloudFileLoader.h>
+#include <assetloading/geometryfilter/GeoTiffFileLoader.h>
+#include <assetloading/geometryfilter/DetailedVoxelLoader.h>
 
 #include <logging.hpp>
 
@@ -51,7 +55,7 @@ std::map<std::string, ObjectT> XmlUtils::createParamsFromXml(
                 result.insert(std::pair<std::string, std::string>(key, valueString));
             } else {
 
-                if (type == "boolean") {
+                if (type == "boolean" || type == "bool") {
                     bool b = valueString == "true";
                     result.insert(std::pair<std::string, bool>(key, b));
                 } else if (type == "double") {
@@ -249,6 +253,14 @@ bool XmlUtils::hasAttribute(
     std::string attrName
 ){
     return element->Attribute(attrName.c_str()) != nullptr;
+}
+
+bool XmlUtils::isGeometryLoadingFilter(AbstractGeometryFilter * filter){
+    if(dynamic_cast<WavefrontObjFileLoader *>(filter) != nullptr) return true;
+    if(dynamic_cast<XYZPointCloudFileLoader *>(filter) != nullptr) return true;
+    if(dynamic_cast<GeoTiffFileLoader *>(filter) != nullptr) return true;
+    if(dynamic_cast<DetailedVoxelLoader *>(filter) != nullptr) return true;
+    return false;
 }
 
 std::vector<std::shared_ptr<DynMotion>> XmlUtils::createDynMotionsVector(

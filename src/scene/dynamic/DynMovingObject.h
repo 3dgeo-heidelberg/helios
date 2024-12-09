@@ -220,7 +220,7 @@ public:
      * @see DynMovingObject::positionMotionQueue
      * @see DynMovingObject::normalMotionQueue
      */
-    virtual bool doSimStep();
+    bool doSimStep() override;
     /**
      * @brief Handle update notifications to the subscribed observer. It is,
      *  notify the observer that it has been updated by the dynamic moving
@@ -348,6 +348,13 @@ public:
      * @see BasicDynGroveSubject::getGroveSubjectId
      */
     std::size_t getGroveSubjectId() override;
+
+    // ***   M E T H O D S   *** //
+    // ************************* //
+    /**
+     * @see ScenePart::release
+     */
+    void release() override;
 
     // ***  GETTERs and SETTERs  *** //
     // ***************************** //

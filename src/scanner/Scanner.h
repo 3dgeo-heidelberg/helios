@@ -5,6 +5,7 @@
 #include <Asset.h>
 #include <ScannerHead.h>
 #include <AbstractBeamDeflector.h>
+#include <ScanningDevice.h>
 class AbstractDetector;
 #include <scanner/ScanningPulseProcess.h>
 #include <scanner/detector/PulseTaskDropper.h>
@@ -73,14 +74,12 @@ protected:
     bool state_isActive = true;
 
 
+public:
     /**
 	 * @brief The scanning pulse process used by the scanner
 	 * @see ScanningPulseProcess
 	 */
     std::unique_ptr<ScanningPulseProcess> spp = nullptr;
-
-
-public:
     /**
 	 * @brief Main facade to file management system
 	 */
@@ -200,7 +199,7 @@ public:
 	 * @param scanner The scanner to be copied
 	 */
     Scanner(Scanner &scanner);
-    virtual ~Scanner() = default;
+    ~Scanner() override = default;
 
     // ***   C L O N E   *** //
     // ********************* //
@@ -224,7 +223,7 @@ public:
     /**
      * @brief Prepare the scanner to deal with the simulation.
      */
-    virtual void prepareSimulation() = 0;
+    virtual void prepareSimulation(bool const legacyEnergyModel=0) = 0;
     /**
      * @brief Initialize randomness generators and noise sources that are
      *  necessary for sequential pulse computations
@@ -333,27 +332,6 @@ public:
      */
     inline void prepareDiscretization() {this->prepareDiscretization(0);}
     /**
-     * @brief Compute the footprint area \f$f_{a}\f$
-     *
-     * \f[
-     *  f_{a} = \frac{{\pi}d^{2}B_{t2}}{4}
-     * \f]
-     *
-     * @param distance Distance \f$d\f$
-     * @return Footprint area \f$f_{a}\f$
-     * @see Scanner::cached_Bt2
-     */
-    virtual double calcFootprintArea(
-        double const distance, size_t const idx
-    ) const = 0;
-    /**
-     * @brief Non index version of the
-     *  Scanner::calcFootprintArea(double const, size_t const) method
-     * @see Scanner::calcFootprintArea(double const, size_t const)
-     */
-    inline double calcFootprintArea(double const distance) const
-    {return calcFootprintArea(distance, 0);}
-    /**
      * @brief Compute the footprint radius \f$f_{r}\f$
      *
      * \f[
@@ -365,29 +343,6 @@ public:
      * @see Scanner::calcFootprintArea
      */
     double calcFootprintRadius(double const distance, size_t const idx);
-    /**
-     * @brief Non index version of the
-     *  Scanner::calcFootprintRadius(double const, size_t const) method
-     * @see Scanner::calcFootprintRadius(double const, size_t const)
-     */
-    double calcFootprintRadius(double const distance)
-    {return calcFootprintRadius(distance, 0);}
-    /**
-     * @brief Calculate the target area. It is the footprint area divided by
-     *  the number of rays
-     * @see Scanner::calcFootprintArea
-     * @see Scanner::getNumRays
-     */
-    virtual double calcTargetArea(
-        double const distance, size_t const idx
-    ) const = 0;
-    /**
-     * @brief Non index version of the
-     *  Scanner::calcTargetArea(double const, size_t const) method
-     * @see Scanner::calcTargetArea(double const, size_t const)
-     */
-    inline double calcTargetArea(double const distance) const
-    {return calcTargetArea(distance, 0);}
     /**
      * @see ScanningDevice::calcAtmosphericAttenuation
      */
@@ -447,7 +402,7 @@ public:
         std::function<void(
             Rotation const
             &subrayRotation,
-            double const divergenceAngle,
+            int const subrayRadiusStep,
             NoiseSource<double> &intersectionHandlingNoiseSource,
             std::map<double, double> &reflections,
             vector<RaySceneIntersection> &intersects
@@ -503,8 +458,7 @@ public:
         double const incidenceAngle,
         double const targetRange,
         Material const &mat,
-        double const targetArea,
-        double const radius,
+        int const subrayRadiusStep,
         size_t const idx
 #if DATA_ANALYTICS >= 2
        ,std::vector<std::vector<double>> &calcIntensityRecords
@@ -518,8 +472,8 @@ public:
      */
     virtual double calcIntensity(
         double const targetRange,
-        double const radius,
         double const sigma,
+        int const subrayRadiusStep,
         size_t const idx
     ) const = 0;
 
@@ -563,6 +517,12 @@ public:
 
     // *** GETTERs and SETTERs *** //
     // *************************** //
+    /**
+     * @brief Obtain the requested scanning device.
+     * @param idx The index of the scanning device to be obtained.
+     * @see ScanningDevice::getScanningDevice
+     */
+    virtual ScanningDevice& getScanningDevice(size_t const idx) = 0;
     /**
 	 * @brief Obtain the current pulse number of the scanning device
      * @param idx The index of the scanning device which pulse number must be
@@ -1521,6 +1481,39 @@ public:
      */
     inline void setTimeWave(std::vector<double> &&timewave)
     {setTimeWave(timewave, 0);}
+    /**
+     * @brief Obtain the minimum received energy threshold of the scanning
+     *  device.
+     * @param idx The index of the scanning device which minimum received
+     *  energy threshold must be obtained.
+     * @return The minimum received energy threshold of the scanning device.
+     */
+    virtual double getReceivedEnergyMin(size_t const idx) const = 0;
+    /**
+     * @brief Non index version of the
+     * Scanner::getReceivedEnergyMin(size_t const) method.
+     * @see Scanner::getReceivedEnergyMin(size_t const)
+     */
+    inline double getReceivedEnergyMin() const
+    {return getReceivedEnergyMin(0);}
+    /**
+     * @brief Set the minimum threshold for the received energy of the
+     *  scanning device.
+     * @param receivedEnergyMin_W The new minimum threshold for the received
+     *  energy of the scanning device.
+     * @param idx The index of the scanning device which time discretization
+     *  vector must be updated.
+     */
+    virtual void setReceivedEnergyMin(
+        double const receivedEnergyMin_W, size_t const idx
+    ) = 0;
+    /**
+     * @brief Non index version of the
+     *  Scanner::setReceivedEnergyMin(double const, size_t const) method.
+     * @see Scanner::setReceivedEnergyMin(double const, size_t const)
+     */
+    inline void setReceivedEnergyMin(double const receivedEnergyMin_W)
+    {setReceivedEnergyMin(receivedEnergyMin_W, 0);}
 
 #ifdef DATA_ANALYTICS
     /**

@@ -38,7 +38,7 @@ public:
         DirectMeasurementWriteStrategy(ofs),
         oa(oa)
     {}
-    virtual ~ZipMeasurementWriteStrategy() = default;
+    ~ZipMeasurementWriteStrategy() override = default;
 
     // ***  WRITE STRATEGY INTERFACE *** //
     // ********************************* //

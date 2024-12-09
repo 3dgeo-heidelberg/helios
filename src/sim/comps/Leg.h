@@ -7,9 +7,6 @@
 #include <platform/trajectory/TrajectorySettings.h>
 
 class ScanningStrip;
-#ifdef PYTHON_BINDING
-namespace pyhelios{ class PyScanningStripWrapper; };
-#endif
 
 /**
  * @brief Class representing a survey leg
@@ -146,9 +143,4 @@ public:
 	 * @return True if the leg belongs to a strip, false otherwise
 	 */
 	inline bool isContainedInAStrip() const {return strip!=nullptr;}
-
-#ifdef PYTHON_BINDING
-    pyhelios::PyScanningStripWrapper * getPyStrip() const;
-	void setPyStrip(pyhelios::PyScanningStripWrapper *pssw);
-#endif
 };

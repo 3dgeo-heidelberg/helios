@@ -80,7 +80,7 @@ public:
         double const cl=1,
         double const co=1
     );
-    virtual ~FastSAHKDTreeFactory () = default;
+    ~FastSAHKDTreeFactory () override = default;
 
     // ***  CLONE  *** //
     // *************** //

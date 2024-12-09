@@ -5,6 +5,7 @@
 #include <WavefrontObjFileLoader.h>
 #include <XYZPointCloudFileLoader.h>
 #include <DetailedVoxelLoader.h>
+#include <NullGeometryFilter.h>
 #include <scene/dynamic/DynScene.h>
 #include <KDTreeFactoryMaker.h>
 
@@ -119,61 +120,35 @@ shared_ptr<ScenePart> XmlSceneLoader::loadFilters(
     tinyxml2::XMLElement *filterNodes =
         scenePartNode->FirstChildElement("filter");
     while (filterNodes != nullptr) {
+        // Load the filter
         std::string filterType = filterNodes->Attribute("type");
-        std::transform(
-            filterType.begin(),
-            filterType.end(),
-            filterType.begin(),
-            ::tolower
+        AbstractGeometryFilter *filter = loadFilter(
+            filterNodes, holistic, scenePart
         );
-        AbstractGeometryFilter *filter = nullptr;
-
-        // ################### BEGIN Set up filter ##################
-
-        // Apply scale transformation:
-        if (filterType == "scale") {
-            filter = new ScaleFilter(scenePart);
-        }
-
-        // Read GeoTiff file:
-        else if (filterType == "geotiffloader") {
-            filter = new GeoTiffFileLoader();
-        }
-
-        // Read Wavefront Object file:
-        else if (filterType == "objloader") {
-            filter = new WavefrontObjFileLoader();
-        }
-
-        // Apply rotation filter:
-        else if (filterType == "rotate") {
-            filter = new RotateFilter(scenePart);
-        }
-
-        // Apply translate transformation:
-        else if (filterType == "translate") {
-            filter = new TranslateFilter(scenePart);
-        }
-
-        // Read xyz ASCII point cloud file:
-        else if (filterType == "xyzloader") {
-            filter = new XYZPointCloudFileLoader();
-            holistic = true;
-        }
-
-        // Read detailed voxels file
-        else if (filterType == "detailedvoxels") {
-            filter = new DetailedVoxelLoader();
-        }
-
-        // ################### END Set up filter ##################
-
-        // Finally, apply the filter:
+        // Apply the filter
         if (filter != nullptr) {
             // Set params:
+            filter->setAssetsDir(assetsDir);
             filter->params = XmlUtils::createParamsFromXml(filterNodes);
             logging::DEBUG("Applying filter: " + filterType);
             scenePart = filter->run();
+            // Load the sawps now so their baseline is defined from the raw
+            // geometry with no transformation filters (e.g., scales or rotations)
+            if(
+                XmlUtils::isGeometryLoadingFilter(filter) &&
+                scenePartNode->FirstChildElement("swap") != nullptr
+            ){
+                if(scenePart->sorh != nullptr){
+                    std::stringstream ss;
+                    ss << "XmlSceneLoader::loadFilters found a geometry "
+                          "loading filter when a SwapOnRepeatHandler has "
+                          "already been built.";
+                    logging::ERR(ss.str());
+                    throw HeliosException(ss.str());
+                }
+                scenePart->sorh = loadScenePartSwaps(scenePartNode, scenePart);
+            }
+            // Delete the filter (not used anymore)
             if (scenePart == filter->primsOut)
                 filter->primsOut = nullptr;
             delete filter;
@@ -183,6 +158,121 @@ shared_ptr<ScenePart> XmlSceneLoader::loadFilters(
     }
     // ############## END Loop over filter nodes ##################
     return shared_ptr<ScenePart>(scenePart);
+}
+
+AbstractGeometryFilter * XmlSceneLoader::loadFilter(
+    tinyxml2::XMLElement *filterNode,
+    bool &holistic,
+    ScenePart *scenePart
+){
+    std::string filterType = filterNode->Attribute("type");
+
+    std::transform(
+        filterType.begin(),
+        filterType.end(),
+        filterType.begin(),
+        ::tolower
+    );
+    AbstractGeometryFilter *filter = nullptr;
+
+    // ################### BEGIN Set up filter ##################
+
+    // Apply scale transformation:
+    if (filterType == "scale") {
+        filter = new ScaleFilter(scenePart);
+    }
+
+        // Read GeoTiff file:
+    else if (filterType == "geotiffloader") {
+        filter = new GeoTiffFileLoader();
+    }
+
+        // Read Wavefront Object file:
+    else if (filterType == "objloader") {
+        filter = new WavefrontObjFileLoader();
+    }
+
+        // Apply rotation filter:
+    else if (filterType == "rotate") {
+        filter = new RotateFilter(scenePart);
+    }
+
+        // Apply translate transformation:
+    else if (filterType == "translate") {
+        filter = new TranslateFilter(scenePart);
+    }
+
+        // Read xyz ASCII point cloud file:
+    else if (filterType == "xyzloader") {
+        filter = new XYZPointCloudFileLoader();
+        holistic = true;
+    }
+
+        // Read detailed voxels file
+    else if (filterType == "detailedvoxels") {
+        filter = new DetailedVoxelLoader();
+    }
+    // ################### END Set up filter ##################
+
+    filter->setAssetsDir(assetsDir);
+
+    return filter;
+}
+
+shared_ptr<SwapOnRepeatHandler> XmlSceneLoader::loadScenePartSwaps(
+    tinyxml2::XMLElement *scenePartNode,
+    ScenePart * scenePart
+){
+    // Find swap nodes
+    tinyxml2::XMLElement *swapNodes = scenePartNode->FirstChildElement("swap");
+    // If there are no swaps, then there is no handler
+    if(swapNodes == nullptr) return nullptr;
+    // Build handler from the swaps
+    shared_ptr<SwapOnRepeatHandler> sorh =
+        std::make_shared<SwapOnRepeatHandler>();
+    while(swapNodes != nullptr){
+        bool holistic = false;
+        int const swapStep = boost::get<int>(XmlUtils::getAttribute(
+            swapNodes,
+            "swapStep",
+            "int",
+            1
+        ));
+        bool const keepCRS = boost::get<bool>(XmlUtils::getAttribute(
+            swapNodes,
+            "keepCRS",
+            "bool",
+            sorh->isKeepCRS()
+        ));
+        sorh->pushTimeToLive(swapStep);
+        sorh->setKeepCRS(keepCRS);
+        tinyxml2::XMLElement *filterNodes =
+            swapNodes->FirstChildElement("filter");
+        std::deque<AbstractGeometryFilter *> swapFilters;
+        std::shared_ptr<ScenePart> spGeom = nullptr;
+        // Handle null geometry filter
+        if(XmlUtils::hasAttribute(swapNodes, "force_null")){
+            swapFilters.push_back(new NullGeometryFilter(scenePart));
+        }
+        else {
+            // Add non-null filters to the handler
+            while (filterNodes != nullptr) {
+                AbstractGeometryFilter *filter = loadFilter(
+                    filterNodes, holistic, scenePart
+                );
+                filter->params = XmlUtils::createParamsFromXml(filterNodes);
+                swapFilters.push_back(filter);
+                // Find next XML filter element
+                filterNodes = filterNodes->NextSiblingElement("filter");
+            }
+        }
+        sorh->pushSwapFilters(swapFilters);
+        // Find next XML swap element
+        swapNodes = swapNodes->NextSiblingElement("swap");
+    }
+    sorh->prepare(scenePart);
+    // Return built handler
+    return sorh;
 }
 
 bool XmlSceneLoader::loadScenePartId(
@@ -277,19 +367,7 @@ void XmlSceneLoader::digestScenePart(
     int &partIndex
 ){
     // For all primitives, set reference to their scene part and transform:
-    for (Primitive *p : scenePart->mPrimitives) {
-        p->part = scenePart;
-        p->rotate(scenePart->mRotation);
-        if (holistic) {
-            for (size_t i = 0; i < p->getNumVertices(); i++) {
-                p->getVertices()[i].pos.x *= scenePart->mScale;
-                p->getVertices()[i].pos.y *= scenePart->mScale;
-                p->getVertices()[i].pos.z *= scenePart->mScale;
-            }
-        }
-        p->scale(scenePart->mScale);
-        p->translate(scenePart->mOrigin);
-    }
+    ScenePart::computeTransformations(scenePart, holistic);
 
     // Append as static object if it is not dynamic
     // If it is dynamic, it must have been appended before
@@ -509,7 +587,7 @@ void XmlSceneLoader::handleDynamicSceneAttributes(
         ))
     );
     // Apply automatic CRS translation when requested
-    glm::dvec3 const &shift = scene->getBBoxCRS()->getMin();
+    glm::dvec3 const &shift = scene->getBBoxCRS()->getCentroid();
     size_t const numDynObjects = scene->numDynObjects();
     for (size_t i = 0; i < numDynObjects; ++i) {
         std::shared_ptr<DynSequentiableMovingObject> dsmo =

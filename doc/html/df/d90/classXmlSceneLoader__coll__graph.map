@@ -1,5 +1,0 @@
-<map id="XmlSceneLoader" name="XmlSceneLoader">
-<area shape="rect" id="node1" title="Class for scene loading from XML file." alt="" coords="45,124,167,151"/>
-<area shape="rect" id="node2" title=" " alt="" coords="5,5,63,32"/>
-<area shape="rect" id="node3" href="$d7/d48/classSceneLoadingSpecification.html" title="Manually specify scene transformation filters to apply when loading a scene." alt="" coords="89,5,267,32"/>
-</map>

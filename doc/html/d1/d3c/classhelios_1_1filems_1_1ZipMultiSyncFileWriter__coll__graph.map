@@ -1,6 +1,0 @@
-<map id="helios::filems::ZipMultiSyncFileWriter&lt; WriteArgs &gt;" name="helios::filems::ZipMultiSyncFileWriter&lt; WriteArgs &gt;">
-<area shape="rect" id="node1" title="Abstract child of SimpleMultiSyncFileWriter which provides support for zipped output." alt="" coords="11,273,199,315"/>
-<area shape="rect" id="node2" href="$df/dfc/classhelios_1_1filems_1_1SimpleMultiSyncFileWriter.html" title=" " alt="" coords="5,184,205,225"/>
-<area shape="rect" id="node3" href="$d2/d66/classhelios_1_1filems_1_1MultiSyncFileWriter.html" title=" " alt="" coords="18,95,193,136"/>
-<area shape="rect" id="node4" href="$da/d4c/classhelios_1_1filems_1_1SyncFileWriter.html" title=" " alt="" coords="26,5,185,47"/>
-</map>

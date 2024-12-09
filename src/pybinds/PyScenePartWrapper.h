@@ -1,12 +1,15 @@
 #pragma once
 
-#ifdef PYTHON_BINDING
-
 #include <string>
+#include <PythonDVec3.h>
 #include <ScenePart.h>
 #include <DynMovingObject.h>
+#include <pybinds/PyAABBWrapper.h>
+
 
 namespace pyhelios{
+
+class PyPrimitiveWrapper;
 
 /**
  * @author Alberto M. Esmoris Pena
@@ -47,6 +50,19 @@ public:
     {return _asDynMovingObject().getObserverStepInterval();}
     void setObserverStep(size_t const stepInterval)
     {_asDynMovingObject().setObserverStepInterval(stepInterval);}
+    PyPrimitiveWrapper * getPrimitive(size_t const index);
+    size_t getNumPrimitives() const {return sp.mPrimitives.size();}
+    PythonDVec3 * getCentroid() {return new PythonDVec3(sp.centroid);}
+    PyAABBWrapper * getBound() {return new PyAABBWrapper(sp.bound.get());}
+
+    // ***   UTIL METHODS   *** //
+    // ************************ //
+    void computeCentroid(bool const computeBound=false)
+    {sp.computeCentroid(computeBound);}
+    void computeBound() {sp.computeCentroid(true);}
+    void translate(double const x, double const y, double const z);
+
+
 
 
     // ***  INTERNAL USE  *** //
@@ -64,5 +80,3 @@ public:
 };
 
 }
-
-#endif

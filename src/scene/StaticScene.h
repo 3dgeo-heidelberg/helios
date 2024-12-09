@@ -67,6 +67,14 @@ public:
      */
     StaticScene(Scene &s) : Scene(s) {}
 
+    // ***   M E T H O D S   *** //
+    // ************************* //
+    /**
+     * @see Scene::shutdown
+     */
+    void shutdown() override;
+
+
     // ***  GETTERs and SETTERs  *** //
     // ***************************** //
     /**
