@@ -29,8 +29,8 @@ jobs:
           - macos-latest
           - windows-latest
         python:
-          - "3.8"
-          - "3.12"
+          - "3.9"
+          - "3.13"
     
     defaults:
       run:
@@ -43,7 +43,7 @@ jobs:
           fetch-depth: 0
 
       - name: Create Helios dev environment
-        uses: conda-incubator/setup-miniconda@v2
+        uses: conda-incubator/setup-miniconda@v3
         with:
           auto-update-conda: true
           auto-activate-base: false
