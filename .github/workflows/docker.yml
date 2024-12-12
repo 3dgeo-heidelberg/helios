@@ -22,19 +22,24 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Extract tag name
-        if: github.event_name == 'push'
-        run: echo "TAG_NAME=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
-
-      - name: Extract tag name
-        if: github.event_name == 'workflow_dispatch'
-        run: echo "TAG_NAME=${{ github.event.inputs.version }}" >> $GITHUB_ENV
-  
-      
       - name: Build Docker image
         uses: docker/build-push-action@v6
+        if: github.event_name == 'workflow_dispatch'
         with:
           context: .
           file: ./Dockerfile
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/helios:$TAG_NAME
+          tags: ${{ secrets.DOCKER_USERNAME }}/helios:${{ github.event.inputs.version }}
+
+      - name: Set tag as output
+        if: github.event_name == 'push'
+        run: echo "tag=${GITHUB_REF##*/}" >> "$GITHUB_ENV"
+
+      - name: Build Docker image
+        uses: docker/build-push-action@v6
+        if: github.event_name == 'push'
+        with:
+          context: .
+          file: ./Dockerfile
+          push: true
+          tags: ${{ secrets.DOCKER_USERNAME }}/helios:${{ env.tag }}
