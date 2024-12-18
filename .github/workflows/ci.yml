@@ -12,6 +12,11 @@ on:
       - dev
       - alpha-dev
   workflow_dispatch:
+    inputs:
+      upload-outputs:
+        description: 'Whether to upload outputs'
+        default: false
+        type: boolean
 
 jobs:
   build-and-test:
@@ -24,8 +29,8 @@ jobs:
           - macos-latest
           - windows-latest
         python:
-          - "3.8"
-          - "3.12"
+          - "3.9"
+          - "3.13"
     
     defaults:
       run:
@@ -38,7 +43,7 @@ jobs:
           fetch-depth: 0
 
       - name: Create Helios dev environment
-        uses: conda-incubator/setup-miniconda@v2
+        uses: conda-incubator/setup-miniconda@v3
         with:
           auto-update-conda: true
           auto-activate-base: false
@@ -46,24 +51,35 @@ jobs:
           environment-file: environment-dev.yml
           python-version: ${{ matrix.python }}
           miniconda-version: "latest"
-        
+
+      - name: Install Conda GCC
+        if: runner.os == 'Linux'
+        run: |
+          conda install -y -c conda-forge gcc gxx
+
       - name: Install Helios
         run: |
           python -m pip install -v .
         env:
           SETUPTOOLS_SCM_SUBPROCESS_TIMEOUT: "120"
 
-      - name: Run unmarked tests
-        # Disable MacOS for now - we do not yet officially support it and we need to invest a bit
-        # more efforts into investigating broken LAZ files written by Helios on MacOS.
-        if: runner.os != 'macOS' 
+      # Do not run on MacOS for now - we do not yet officially support it and we need to invest a bit
+      # more efforts into investigating broken LAZ files written by Helios on MacOS.
+
+      - name: Run tests (incl. regression tests)
+        if: runner.os == 'Windows'
+        run: |
+          python -m pytest --regression-tests
+
+      - name: Run tests (excl. regression tests)
+        if: runner.os == 'Linux'
         run: |
           python -m pytest
 
-      - name: Run marked tests
-        if: runner.os != 'macOS' 
-        run: |
-          python -m pytest -m exe
-          python -m pytest -m pyh
-
-
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        if: github.event.inputs.upload-outputs == 'true'
+        with:
+          name: test-results
+          path: output/*
+          retention-days: 1

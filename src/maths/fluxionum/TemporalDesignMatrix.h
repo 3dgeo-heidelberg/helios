@@ -249,9 +249,11 @@ public:
         helios::filems::DesignMatrixReader<VarType> reader(path, sep);
         std::unordered_map<string, string> kv;
         DesignMatrix<VarType> const dm = reader.read(&kv);
-        size_t const tCol = (size_t) std::strtoul(
-            kv.at("TIME_COLUMN").c_str(), nullptr, 10
-        );
+        size_t const tCol = (kv.find("TIME_COLUMN") == kv.end()) ?
+            dm.translateColumnNameToIndex("t") :
+            (size_t) std::strtoul(
+                kv.at("TIME_COLUMN").c_str(), nullptr, 10
+            );
         *this = TemporalDesignMatrix<TimeType, VarType>(
             dm,
             tCol,
