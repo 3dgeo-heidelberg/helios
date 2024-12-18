@@ -115,6 +115,12 @@ def helios_live():
         import numpy as np
         import time
 
+        # Check that numpy is major version 1
+        np_major = int(np.__version__.split('.')[0])
+        if np_major > 1:
+            print("WARNING: You are using Open3d together with numpy > 1. To our knowledge this is currently incompatible.")
+            print("Consider downgrading with 'pip install \"numpy<2\"'")
+
         # Create instance of Scene class, generate scene, print scene (if logging v2), and visualize.
         scene = Scene(args.survey_file, args.loggingv2)
         scene.gen_from_xml()
