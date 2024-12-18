@@ -13,7 +13,7 @@ args = tds_argparser.args
 fixed_gps_time = "2024-07-07 00:00:00"
 original_survey = args.survey_file
 survey_name = ET.parse(original_survey).find('survey').attrib['name']
-
+obj_of_int = args.obj_of_int
 assets = [os.getcwd()]
 if args.assets_path:
     assets.append(args.assets_path)
@@ -38,10 +38,7 @@ interval_surveys_dir = Path(outdir) / survey_name / 'interval_surveys'
 merged_intervals_dir = Path(outdir) / survey_name / 'merged_intervals'  # add timestamp?
 merged_filtered_intervals_dir = Path(outdir) / survey_name / 'merged_filtered_intervals'  # add timestamp?
 final_pc = Path(outdir) / survey_name / f'{survey_name}_final.laz'  # add timestamp?
-###
 
-# ToDo @Jonas: read from args (if provided) and implement
-obj_of_int = []
 
 # create folders
 Path(bboxes_obj_dir).mkdir(parents=True, exist_ok=True)
