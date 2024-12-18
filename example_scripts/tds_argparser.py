@@ -23,4 +23,12 @@ parser.add_argument('--output', dest='output_path', default='output/',
 parser.add_argument('--zipOutput', dest='zip_output_flag', action='store_const', const=True, default=False,
                     help='Use this flag to generate compressed output.')
 
+parser.add_argument('--primitiveThreshold', dest='prim_threshold', default=0.6,
+                    help='Specify the maximum primitiv percentage per interval.')
+parser.add_argument('--minInterval', dest='min_int_t', default=0.5,
+                    help='Minimum interval length, no further splitting with intervals smaller than the set value.')
+parser.add_argument('--objInterest',dest='obj_of_int', nargs='+', type=int, default=None,
+                    help='List of objects to be scanned, intervals without any of these objects wont be scanned')
+parser.add_argument('--tileSize', dest='tilesize', default=30,
+                    help='Tilesize of each sub xyz tile.')
 args = parser.parse_args()
