@@ -57,7 +57,7 @@ with open('data/surveys/plane_survey.xml', 'w') as f:
 
 tls_pos = np.array([[0, -10, 0]])
 
-pyhelios.setDefaultRandomnessGeneratorSeed("42")
+pyhelios.default_rand_generator_seed("42")
 # Build multiple simulations
 
 angles = np.arange(0, 90, 10)
@@ -106,30 +106,31 @@ for angle in angles:
     simBuilder.setFullwaveNoise(False)
     simBuilder.setPlatformNoiseDisabled(True)
     sim = simBuilder.build()
-
-    detector = sim.getScanner().getDetector()
+    
+    detector = sim.getScanner().detector
     detector.accuracy = 0.005
 
     for i in tqdm.tqdm(range(5)):
         sim0 = sim.sim.copy()
         sim0.start()
-        meas = sim0.join().measurements
+        meas = sim0.join()[0]
+        
 
         sim1 = sim.sim.copy()
         sim1.start()
-        meas1 = sim1.join().measurements
+        meas1 = sim1.join()[0]
 
         del sim1
         del sim0
 
-        points = [[meas[m].getPosition().x,
-                  meas[m].getPosition().y,
-                  meas[m].getPosition().z] for m in range(len(meas))]
+        points = [[meas[m].position[0],
+                  meas[m].position[1],
+                  meas[m].position[2]] for m in range(len(meas))]
         points = np.array(points)
         points = points[np.linalg.norm(points, axis=1) < 1, :]  # 1 m searchrad, "corepoint" at
-        points1 = [[meas1[m].getPosition().x,
-                  meas1[m].getPosition().y,
-                  meas1[m].getPosition().z] for m in range(len(meas1))]
+        points1 = [[meas1[m].position[0],
+                  meas1[m].position[1],
+                  meas1[m].position[2]] for m in range(len(meas1))]
         points1 = np.array(points1)
         points1 = points1[np.linalg.norm(points1, axis=1) < 1, :]
 

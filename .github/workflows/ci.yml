@@ -6,11 +6,13 @@ on:
       - main
       - dev
       - alpha-dev
+      - python_helios_stages
   pull_request:
     branches:
       - main
       - dev
       - alpha-dev
+      - python_helios_stages
   workflow_dispatch:
     inputs:
       upload-outputs:
@@ -65,6 +67,11 @@ jobs:
 
       # Do not run on MacOS for now - we do not yet officially support it and we need to invest a bit
       # more efforts into investigating broken LAZ files written by Helios on MacOS.
+      - name: Run marked tests
+        if: runner.os != 'macOS' 
+        run: |
+          python -m pytest -m exe
+          python -m pytest -m pyh
 
       - name: Run tests (incl. regression tests)
         if: runner.os == 'Windows'

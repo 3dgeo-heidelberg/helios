@@ -21,24 +21,24 @@ def callback(output=None):
         global cycleMeasurementsCount
         global cp1
         global cpn
-        measurements = output.measurements
+        measurements = output[0]
 
         # Set 1st cycle point
         if cycleMeasurementsCount == 0 and len(measurements) > 0:
-            pos = measurements[0].getPosition()
-            cp1.append(pos.x)
-            cp1.append(pos.y)
-            cp1.append(pos.z)
+            pos = measurements[0].position
+            cp1.append(pos[0])
+            cp1.append(pos[1])
+            cp1.append(pos[2])
 
         # Update cycle measurement count
         cycleMeasurementsCount += len(measurements)
 
         # Update last cycle point
         if len(measurements) > 0:
-            pos = measurements[len(measurements)-1].getPosition()
-            cpn[0] = pos.x
-            cpn[1] = pos.y
-            cpn[2] = pos.z
+            pos = measurements[len(measurements)-1].position
+            cpn[0] = pos[0]
+            cpn[1] = pos[1]
+            cpn[2] = pos[2]
 
         # Notify for conditional variable
         cv.notify()
@@ -49,8 +49,8 @@ def callback(output=None):
 if __name__ == '__main__':
     # Configure simulation context
     # pyhelios.loggingVerbose2()
-    pyhelios.loggingQuiet()
-    pyhelios.setDefaultRandomnessGeneratorSeed("123")
+    pyhelios.logging_quiet()
+    pyhelios.default_rand_generator_seed("123")
 
     # Build reference simulation
     print('>> Creating base/reference simulation\n')
@@ -78,11 +78,11 @@ if __name__ == '__main__':
         # Run the simulation
         print('>> Running simulation {i}'.format(i=i+1))
         sim_curr = sim0.sim.copy()
-        for j in range(sim_curr.getNumLegs()):
-            leg = sim_curr.getLeg(j)
-            leg.getScannerSettings().pulseFreq += i * 50000
-        print('Pulse frequency: {f} '.format(f=leg.getScannerSettings().pulseFreq))
-        sim_curr.callbackFrequency += i
+        for j in range(sim_curr.num_legs):
+            leg = sim_curr.get_leg(j)
+            leg.scanner_settings.pulse_frequency += i * 50000
+        print('Pulse frequency: {f} '.format(f=leg.scanner_settings.pulse_frequency))
+        sim_curr.callback_frequency += i
         cycleMeasurementsCount = 0
         cp1 = []
         cpn = [0, 0, 0]
@@ -91,25 +91,25 @@ if __name__ == '__main__':
         # Join simulation thread
         with cv:  # Conditional variable necessary for callback mode only
             output = sim_curr.join()
-            while not output.finished:  # Loop necessary for callback mode only
+            while not output[4]:  # Loop necessary for callback mode only
                 cv.wait()
                 output = sim_curr.join()
 
         # Digest output
-        measurements = output.measurements
-        trajectories = output.trajectories
+        measurements = output[0]
+        trajectories = output[1]
         print('\tSimulation {i}:'.format(i=i+1))
         print('\t\tnumber of measurements : {n}'.format(n=len(measurements)))
         print('number of trajectories: {n}'.format(n=len(trajectories)))
-        p1Pos = measurements[0].getPosition()
-        pnPos = measurements[len(measurements)-1].getPosition()
+        p1Pos = measurements[0].position
+        pnPos = measurements[len(measurements)-1].position
         print('\t\tp1 position  : ({x}, {y}, {z})'.format(
-            x=p1Pos.x, y=p1Pos.y, z=p1Pos.z))
+            x=p1Pos[0], y=p1Pos[1], z=p1Pos[2]))
         print('\t\tcp1 position : ({x}, {y}, {z})'.format(
             x=cp1[0], y=cp1[1], z=cp1[2]))
         print('\t\tpn position  : ({x}, {y}, {z})'.format(
-            x=pnPos.x, y=pnPos.y, z=pnPos.z))
+            x=pnPos[0], y=pnPos[1], z=pnPos[2]))
         print('\t\tcpn position : ({x}, {y}, {z})'.format(
             x=cpn[0], y=cpn[1], z=cpn[2]))
 
-        print("Simulated point clouds saved to {folder}".format(folder=str(Path(output.filepath).parent)))
+        print("Simulated point clouds saved to {folder}".format(folder=str(Path(output[2]).parent)))
