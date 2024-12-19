@@ -145,16 +145,6 @@ def write_bbox_scenes(output_dir, objs_outfiles):
     bbox_outfiles = []
 
     for i, path in enumerate(objs_outfiles):
-
-        # normalizing the path should be redundant after the bug fix
-        filepath_normalized = os.path.normpath(path)
-
-        out_index = filepath_normalized.find("data")
-        if out_index != -1:
-            path = filepath_normalized[out_index:]
-        else:
-            path = filepath_normalized
-        print(path)
         xml = f"""<?xml version="1.0" encoding="UTF-8"?>
         <document>
             <scene id="scene" name="scene">
@@ -782,13 +772,6 @@ def process_scene_and_split_xyz(scene_file, output_dir, tilesize, buffer=0):
 
             # Create new parts for each tile
             for tile in tiles:
-                filepath_normalized = os.path.normpath(tile)
-                out_index = filepath_normalized.find("data")
-                if out_index != -1:
-                    new_filepath = filepath_normalized[out_index:]
-                else:
-                    new_filepath = filepath_normalized
-
                 new_part = ET.Element("part")
                 filter_element = ET.SubElement(new_part, "filter", type="xyzloader")
 
@@ -796,7 +779,7 @@ def process_scene_and_split_xyz(scene_file, output_dir, tilesize, buffer=0):
                 original_filter = next(f for f in filters if f.get("type") == "xyzloader")
                 for param in original_filter.findall(".//param"):
                     key = param.get("key")
-                    value = new_filepath if key == "filepath" else param.get("value")
+                    value = tile if key == "filepath" else param.get("value")
                     ET.SubElement(filter_element, "param", type=param.get("type"), key=key, value=value)
 
                 for additional_filter in additional_filters:
