@@ -183,7 +183,7 @@ def test_survey_characteristics(test_sim):
     """Test accessing survey characteristics (name, length)"""
     path_to_survey = Path('data') / 'surveys' / 'toyblocks' / 'als_toyblocks.xml'
     sim = test_sim(path_to_survey)
-    survey = sim.sim.getSurvey()
+    survey = sim.sim.survey
     assert survey.name == 'toyblocks_als'
     assert survey.length == 0.0
     survey.calculate_length()
@@ -291,7 +291,7 @@ def test_material(test_sim):
     assert mat0.specularity == 0.0
     assert mat0.specular_exponent == 0.0
     assert mat0.classification == 0
-    assert np.isclose(mat0.kd[0], 0.20, atol=1e-2)
+    assert np.isclose(mat0.diffuse_components[0], 0.20, atol=1e-2)
 
 
 def test_scanner(test_sim):
@@ -359,7 +359,7 @@ def test_output(output_dir, export_to_file):
     sim.start()
     output = sim.join()
     measurements_array, trajectory_array = pyhelios.outputToNumpy(output)
-
+    
     if export_to_file:
         # check if output files exist
         dirname = find_playback_dir(survey_path, output_dir)

@@ -2,7 +2,6 @@ from .pyheliostools_exception import PyHeliosToolsException
 from .simulation_build import SimulationBuild
 from collections import namedtuple
 from collections.abc import Iterable
-from collections.abc import Iterable
 from math import isnan
 import os
 import time
@@ -68,8 +67,6 @@ class SimulationBuilder:
     # ---  CONSTRUCTOR  --- #
     # --------------------- #
     def __init__(self, surveyPath, assetsDir, outputDir):
-        if not isinstance(assetsDir, Iterable) or isinstance(assetsDir, str):
-            assetsDir = [assetsDir]
         if not isinstance(assetsDir, Iterable) or isinstance(assetsDir, str):
             assetsDir = [assetsDir]
         # Add default values for asset directories

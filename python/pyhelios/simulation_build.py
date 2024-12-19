@@ -1,4 +1,4 @@
-import pyhelios
+import _helios
 from threading import Condition as CondVar
 
 PYHELIOS_SIMULATION_BUILD_CONDITION_VARIABLE = CondVar()
@@ -36,7 +36,7 @@ class SimulationBuild:
         if copy:
             return
 
-        self.sim = pyhelios.Simulation(
+        self.sim = _helios.PyheliosSimulation(
             surveyPath,
             assetsDir,
             outputDir,

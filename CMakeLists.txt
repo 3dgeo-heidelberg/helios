@@ -19,20 +19,7 @@ else()
   set(HELIOS_VERSION_FULL "2.0.0")
 endif()
 
-# Fetch pybind11
-find_package(pybind11 QUIET)
-
-if (NOT pybind11_FOUND)
-    message(STATUS "pybind11 not found, using FetchContent to download pybind11.")
-
-    FetchContent_Declare(
-        pybind11
-        GIT_REPOSITORY https://github.com/pybind/pybind11.git
-    )
-    FetchContent_MakeAvailable(pybind11)
-else()
-    message(STATUS "Found pybind11: ${pybind11_DIR}")
-endif()
+find_package(pybind11 CONFIG REQUIRED)
 
 project(Helios++
   VERSION ${HELIOS_VERSION}
@@ -155,6 +142,9 @@ if(BUILD_PYTHON)
   include_directories(${Python_INCLUDE_DIRS})
   include_directories(${CMAKE_SOURCE_DIR}/src/python)
   pybind11_add_module(_helios MODULE python/helios/helios_python.cpp)
+  if(MSVC)
+    target_compile_options(_helios PRIVATE /bigobj)
+  endif()
   target_link_libraries(_helios PUBLIC helios pybind11::module)
   install(TARGETS _helios DESTINATION .)
 endif()

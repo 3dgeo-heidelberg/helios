@@ -19,12 +19,12 @@ SingleScanner::SingleScanner(
     double const receiverDiameter,
     double const atmosphericVisibility,
     int const wavelength,
-    std::shared_ptr<UnivarExprTreeNode<double>> rangeErrExpr,
     bool const writeWaveform,
     bool const writePulse,
     bool const calcEchowidth,
     bool const fullWaveNoise,
-    bool const platformNoiseDisabled
+    bool const platformNoiseDisabled,
+    std::shared_ptr<UnivarExprTreeNode<double>> rangeErrExpr
 ) :
     Scanner(
         id,
@@ -135,7 +135,6 @@ void SingleScanner::doSimStep(
 ){
     // Check whether the scanner is active or not
     bool const _isActive = isActive();
-
     // Simulate scanning devices
     scanDev.doSimStep(
         legIndex,

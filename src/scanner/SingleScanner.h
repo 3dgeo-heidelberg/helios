@@ -39,12 +39,12 @@ public:
         double const receiverDiameter,
         double const atmosphericVisibility,
         int const wavelength,
-        std::shared_ptr<UnivarExprTreeNode<double>> rangeErrExpr = nullptr,
         bool const writeWaveform = false,
         bool const writePulse = false,
         bool const calcEchowidth = false,
         bool const fullWaveNoise = false,
-        bool const platformNoiseDisabled = false
+        bool const platformNoiseDisabled = false,
+        std::shared_ptr<UnivarExprTreeNode<double>> rangeErrExpr = nullptr
     );
     /**
      * @brief Copy constructor for the SingleScanner

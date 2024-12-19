@@ -2,12 +2,12 @@
 requires = [
     "scikit-build-core",
     "setuptools_scm",
-    "pybind11[global]>=2.10.0",
+    "pybind11[global]",
 ]
 build-backend = "scikit_build_core.build"
 
 [project]
-name = "helios"
+name = "pyhelios"
 dynamic = ["version"]
 description = "The HELIOS++ Virtual Laser Scanning Simulator"
 readme = "README.md"
@@ -50,6 +50,10 @@ build-verbosity = 3
 test-command = "PYTHONPATH=$(pwd)/python pytest {package}/tests/python"
 test-requires = ["pytest", "ruptures"]
 [tool.pytest.ini_options]
+markers = [
+    "exe: mark tests for the command line tool",
+    "pyh: mark tests for the python bindings pyhelios",
+]
 testpaths = [
     "tests/python",
     "pytests",

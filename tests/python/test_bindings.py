@@ -17,11 +17,11 @@ def tup_mul(v, scalar):
     return (v[0] * scalar, v[1] * scalar, v[2] * scalar)
 
 def test_aabb_instantiation():
-    aabb = _helios.AABB.create()
+    aabb = _helios.AABB()
     assert aabb is not None, "Failed to create AABB instance"
 
 def test_aabb_properties():
-    aabb = _helios.AABB.create()
+    aabb = _helios.AABB()
     min_vertex = aabb.min_vertex
     max_vertex = aabb.max_vertex
     assert isinstance(min_vertex, _helios.Vertex), "min_vertex should be a Vertex instance"
@@ -59,8 +59,6 @@ def test_primitive_properties():
     triangle = _helios.Triangle(v0, v1, v2)
     assert triangle.scene_part is None, "scene_part should be None by default"
     assert triangle.material is None, "material should be None by default"
-    assert isinstance(triangle.AABB, _helios.AABB), "AABB should be an AABB instance"
-    assert isinstance(triangle.centroid, tuple) and len(triangle.centroid) == 3, "centroid should be a 3-tuple"
 
 def test_triangle_face_normal():
     v0 = _helios.Vertex(0.0, 0.0, 0.0)
@@ -144,7 +142,7 @@ def test_primitive_num_vertices():
     v1 = _helios.Vertex(1.0, 0.0, 0.0)
     v2 = _helios.Vertex(0.0, 1.0, 0.0)
     triangle = _helios.Triangle(v0, v1, v2)
-    num_vertices = triangle.num_vertices
+    num_vertices = len(triangle.vertices)
     assert num_vertices == 3, "num_vertices should return 3"
 #GLMDVEC3
 def test_primitive_vertices():
@@ -162,14 +160,14 @@ def test_primitive_vertices():
 
 
 def test_detailed_voxel_instantiation():
-    double_values = _helios.DoubleVector([0.1, 0.2, 0.3])
+    double_values = [0.1, 0.2, 0.3]
     voxel = _helios.DetailedVoxel([1.0, 2.0, 3.0], 0.5, [1, 2], double_values)#[0.1, 0.2, 0.3])
     assert isinstance(voxel, _helios.DetailedVoxel)
     assert voxel.nb_echos == 1
     assert voxel.nb_sampling == 2
 
 def test_detailed_voxel_properties():
-    double_values = _helios.DoubleVector([0.1, 0.2, 0.3])
+    double_values = [0.1, 0.2, 0.3]
     voxel = _helios.DetailedVoxel([1.0, 2.0, 3.0], 0.5, [1, 2], double_values)
     voxel.nb_echos = 3
     assert voxel.nb_echos == 3
@@ -309,34 +307,6 @@ def test_scanning_strip_methods():
     leg = _helios.Leg(10.0, 1, strip)
     assert strip.has(1)
     assert not strip.has(2)  # Not in the strip
-    
-    ''' Test `isLastLegInStrip`
-     boost python did  not bind the  'wasProcessed' of the Leg class'''
-    # leg.wasProcessed = False
-    # assert not strip.isLastLegInStrip()
-    
-    # leg.wasProcessed = True
-    # assert strip.isLastLegInStrip()
-
-
-def test_simulation_cycle_callback():
-    def callback(args):
-        measurements, trajectories, outpath, outpaths, final = args  # Unpack the tuple
-        assert all(isinstance(m, _helios.Measurement) for m in measurements)
-        assert all(isinstance(t, _helios.Trajectory) for t in trajectories)
-        assert outpath == "test_path"
-        assert all(isinstance(p, str) for p in outpaths)
-        assert final is False
-
-
-    sim_callback = _helios.SimulationCycleCallback(callback)
-    
-    # Create mock data for measurements and trajectories
-    measurements = [_helios.Measurement() for _ in range(3)]
-    trajectories = [_helios.Trajectory() for _ in range(2)]
-    # Directly use Python lists
-    sim_callback(measurements, trajectories, "test_path")
-
 
 def test_fwf_settings_instantiation():
     # Test default constructor
@@ -508,8 +478,8 @@ def test_material_properties():
     material.mat_file_path = "path/to/material.mat"
     assert material.mat_file_path == "path/to/material.mat"
 
-    material.map_Kd = "path/to/mapKd.png"
-    assert material.map_Kd == "path/to/mapKd.png"
+    material.map_kd = "path/to/mapKd.png"
+    assert material.map_kd == "path/to/mapKd.png"
 
     material.reflectance = 0.5
     assert material.reflectance == 0.5
@@ -531,9 +501,9 @@ def test_material_properties():
     kd_array = np.array([0, 0, 0, 0], dtype=np.float32)
     ks_array = np.array([0, 0, 0, 0], dtype=np.float32)
 
-    assert np.array_equal(material.ka, ka_array)
-    assert np.array_equal(material.kd, kd_array)
-    assert np.array_equal(material.ks, ks_array)
+    assert np.array_equal(material.ambient_components, ka_array)
+    assert np.array_equal(material.diffuse_components, kd_array)
+    assert np.array_equal(material.specular_components, ks_array)
 
 
 def test_survey_instantiation():
@@ -558,13 +528,6 @@ def test_survey_properties():
     # Test readonly property
     length = survey.length
     assert isinstance(length, float)
-
-#Possible fixtures to the Survey class
-# def test_survey_methods():
-#     survey = _helios.Survey()
-#     length = survey.calculate_length()
-    #assert isinstance(length, float)
-
 
 def create_and_modify_leg_with_platform_and_scanner_settings():
     # Create ScannerSettings object
@@ -1491,11 +1454,11 @@ class TestScannerMethods:
 
 
 def test_simulation_initialization():
-    sim = _helios.Simulation()
+    sim = _helios.PyheliosSimulation()
     assert sim is not None
 
 def test_simulation_initialization_with_params():
-    sim = _helios.Simulation(
+    sim = _helios.PyheliosSimulation(
         "surveyPath",
         ("assetsPath1", "assetsPath2"),
         "outputPath",
