@@ -20,7 +20,6 @@
 
 class ScannerWrap : public Scanner {
 public:
-  //  using Scanner::Scanner;  // Inherit constructors
 
     ScannerWrap() : Scanner("", std::list<int>()) {}
 
@@ -36,14 +35,30 @@ public:
 
     ScannerWrap(Scanner& scanner) : Scanner(scanner) {}
 
-    std::shared_ptr<Scanner> clone() override {
-        PYBIND11_OVERLOAD_PURE(
-            std::shared_ptr<Scanner>,  
-            Scanner,                   
-            clone                      
-        );
+    std::shared_ptr<std::mutex> cycle_measurements_mutex;
+
+    // Getter for cycle_measurements_mutex
+    std::shared_ptr<std::mutex> get_mutex() const {
+        return cycle_measurements_mutex;
     }
 
+    // Setter for cycle_measurements_mutex
+    void set_mutex(std::shared_ptr<std::mutex> mutex=nullptr) {
+        if (!mutex) {
+            cycle_measurements_mutex = std::make_shared<std::mutex>();
+        } else {
+            cycle_measurements_mutex = std::move(mutex);
+           
+        }
+         Scanner::cycleMeasurementsMutex = cycle_measurements_mutex;
+         Scanner::allMeasurementsMutex = cycle_measurements_mutex;
+    }
+    
+    std::shared_ptr<Scanner> clone() override {
+        // Create a copy of the current ScannerWrap object
+        // This can be a shallow or deep copy depending on your needs
+        return std::make_shared<ScannerWrap>(*this);
+    }
     void prepareSimulation(bool const legacyEnergyModel) override {
         PYBIND11_OVERLOAD_PURE(
             void,                      

@@ -30,3 +30,17 @@ template<typename T, size_t N>
 py::array_t<T> create_numpy_array(T (&arr)[N]) {
     return py::array_t<T>(N, arr);
 }
+
+template<size_t N>
+void from_numpy_array(py::array_t<double> arr, double (&out)[N]) {
+    if (arr.size() != N) {
+        throw std::runtime_error("Input array size does not match expected size.");
+    }
+    
+    // Create a buffer info object to access the data
+    auto buf = arr.unchecked<1>(); // Unchecked for 1D access
+    
+    for (size_t i = 0; i < N; ++i) {
+        out[i] = buf(i); // Copy each element into the output array
+    }
+}

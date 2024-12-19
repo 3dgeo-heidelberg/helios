@@ -9,7 +9,7 @@
 #include <filems/facade/FMSFacade.h>
 #include <filems/facade/FMSWriteFacade.h>
 #include <filems/factory/FMSFacadeFactory.h>
-// #include <PyScanningStripWrapper.h>
+
 
 using helios::filems::FMSWriteFacade;
 
@@ -34,26 +34,6 @@ PyHeliosSimulation::PyHeliosSimulation(
     int chunkSize,
     int warehouseFactor
 ){
-      std::cout << "Constructor called with:" << std::endl;
-        std::cout << "surveyPath: " << surveyPath << std::endl;
-        std::cout << "outputPath: " << outputPath << std::endl;
-        std::cout << "numThreads: " << numThreads << std::endl;
-        std::cout << "lasOutput: " << lasOutput << std::endl;
-        std::cout << "las10: " << las10 << std::endl;
-        std::cout << "zipOutput: " << zipOutput << std::endl;
-        std::cout << "splitByChannel: " << splitByChannel << std::endl;
-        std::cout << "kdtFactory: " << kdtFactory << std::endl;
-        std::cout << "kdtJobs: " << kdtJobs << std::endl;
-        std::cout << "kdtSAHLossNodes: " << kdtSAHLossNodes << std::endl;
-        std::cout << "parallelizationStrategy: " << parallelizationStrategy << std::endl;
-        std::cout << "chunkSize: " << chunkSize << std::endl;
-        std::cout << "warehouseFactor: " << warehouseFactor << std::endl;
-
-        std::cout << "assetsPath:" << std::endl;
-        for (const auto& path : assetsPath) {
-            std::cout << path << std::endl;
-        }
-        
     this->fixedGpsTimeStart = "";
     this->lasOutput = lasOutput;
     this->las10 = las10;
@@ -118,14 +98,16 @@ Leg & PyHeliosSimulation::newLeg(int index){
     int const n = (int) survey->legs.size();
     if(index<0 || index>n) index = n;
     std::shared_ptr<Leg> leg = std::make_shared<Leg>();
-    leg->mScannerSettings = std::make_shared<ScannerSettings>();
-    leg->mPlatformSettings = std::make_shared<PlatformSettings>();
+    leg->mScannerSettings =
+        std::make_shared<ScannerSettings>();
+    leg->mPlatformSettings =
+        std::make_shared<PlatformSettings>();
     survey->addLeg(index, leg);
     return *leg;
 }
 
 Leg & PyHeliosSimulation::newLegFromTemplate(
-    int index,
+    int index, 
     Leg &baseLeg
 ){
     int const n = (int) survey->legs.size();
@@ -184,7 +166,6 @@ void PyHeliosSimulation::start (){
                 std::vector<Trajectory>(0)
             );
         survey->scanner->allMeasurementsMutex = std::make_shared<std::mutex>();
-  
     }
 
     std::shared_ptr<fms::FMSFacade> fms = exportToFile ?
