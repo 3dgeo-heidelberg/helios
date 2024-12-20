@@ -1,37 +1,26 @@
 #include <PyHeliosSimulation.h>
-#include <PyHeliosException.h>
+#include <HeliosException.h>
 #include <AbstractDetector.h>
 #include <Rotation.h>
 #include <RotateFilter.h>
-#include <PyHeliosOutputWrapper.h>
+
 #include <chrono>
 #include <PulseThreadPoolFactory.h>
 #include <filems/facade/FMSFacade.h>
 #include <filems/facade/FMSWriteFacade.h>
 #include <filems/factory/FMSFacadeFactory.h>
-#include <PyScanningStripWrapper.h>
+
 
 using helios::filems::FMSWriteFacade;
 
-using pyhelios::PyHeliosSimulation;
-using pyhelios::PyHeliosOutputWrapper;
-using pyhelios::PyScanningStripWrapper;
 
 namespace fms = helios::filems;
-
-template<typename T>
-std::vector<T> py_list_to_std_vector(const boost::python::object& iterable)
-{
-    return std::vector<T>(boost::python::stl_input_iterator< T >(iterable),
-                          boost::python::stl_input_iterator< T >());
-}
-
 
 // ***  CONSTRUCTION / DESTRUCTION  *** //
 // ************************************ //
 PyHeliosSimulation::PyHeliosSimulation(
     std::string surveyPath,
-    boost::python::list assetsPath,
+    const std::vector<std::string>& assetsPath,
     std::string outputPath,
     size_t numThreads,
     bool lasOutput,
@@ -51,7 +40,7 @@ PyHeliosSimulation::PyHeliosSimulation(
     this->zipOutput = zipOutput;
     this->splitByChannel = splitByChannel;
     this->surveyPath = surveyPath;
-    this->assetsPath = py_list_to_std_vector<std::string>(assetsPath);
+    this->assetsPath = assetsPath;
     this->outputPath = outputPath;
     if(numThreads == 0) this->numThreads = std::thread::hardware_concurrency();
     else this->numThreads = numThreads;
@@ -95,7 +84,12 @@ PyHeliosSimulation::~PyHeliosSimulation() {
             }
         }
     }
-    if(thread != nullptr) delete thread;
+   if (thread) {
+        if (thread->joinable()) {
+            thread->join();
+        }
+        delete thread;
+    }
 }
 
 // ***  GETTERs and SETTERs  *** //
@@ -104,14 +98,16 @@ Leg & PyHeliosSimulation::newLeg(int index){
     int const n = (int) survey->legs.size();
     if(index<0 || index>n) index = n;
     std::shared_ptr<Leg> leg = std::make_shared<Leg>();
-    leg->mScannerSettings = std::make_shared<ScannerSettings>();
-    leg->mPlatformSettings = std::make_shared<PlatformSettings>();
+    leg->mScannerSettings =
+        std::make_shared<ScannerSettings>();
+    leg->mPlatformSettings =
+        std::make_shared<PlatformSettings>();
     survey->addLeg(index, leg);
     return *leg;
 }
 
 Leg & PyHeliosSimulation::newLegFromTemplate(
-    int index,
+    int index, 
     Leg &baseLeg
 ){
     int const n = (int) survey->legs.size();
@@ -122,17 +118,14 @@ Leg & PyHeliosSimulation::newLegFromTemplate(
     return *leg;
 }
 
-PyScanningStripWrapper * PyHeliosSimulation::newScanningStrip(
+std::shared_ptr<ScanningStrip> PyHeliosSimulation::newScanningStrip(
     std::string const &stripId
 ){
-    std::shared_ptr<ScanningStrip> ss = std::make_shared<ScanningStrip>(
-        stripId
-    );
-    return new PyScanningStripWrapper(ss);
+    return std::make_shared<ScanningStrip>(stripId);
 }
 bool PyHeliosSimulation::assocLegWithScanningStrip(
-    Leg &leg, PyScanningStripWrapper *strip
-){
+    Leg &leg, std::shared_ptr<ScanningStrip> strip)
+{
     // Check leg status
     bool previouslyAssoc = leg.isContainedInAStrip();
     // Find leg pointer by serial ID
@@ -145,8 +138,8 @@ bool PyHeliosSimulation::assocLegWithScanningStrip(
         }
     }
     // Associate
-    leg.setStrip(strip->ss);
-    strip->ss->emplace(legSerialId, _leg);
+    leg.setStrip(strip);
+    strip->emplace(legSerialId, _leg);
     // Return original leg association status
     return previouslyAssoc;
 }
@@ -154,7 +147,8 @@ bool PyHeliosSimulation::assocLegWithScanningStrip(
 // ***  CONTROL FUNCTIONS *** //
 // ************************** //
 void PyHeliosSimulation::start (){
-    if(started) throw PyHeliosException(
+    
+    if(started) throw HeliosException(
         "PyHeliosSimulation was already started so it cannot be started again"
     );
 
@@ -201,20 +195,20 @@ void PyHeliosSimulation::start (){
     );
     playback->callback = callback;
     playback->setCallbackFrequency(callbackFrequency);
-    thread = new boost::thread(
-        boost::bind(&SurveyPlayback::start, &(*playback))
+    thread = new std::thread(
+         std::bind(&SurveyPlayback::start, playback)
     );
 
     started = true;
 }
 void PyHeliosSimulation::pause (){
-    if(!started) throw PyHeliosException(
+    if(!started) throw HeliosException(
         "PyHeliosSimulation was not started so it cannot be paused"
     );
-    if(stopped) throw PyHeliosException(
+    if(stopped) throw HeliosException(
         "PyHeliosSimulation was stopped so it cannot be paused"
     );
-    if(finished) throw PyHeliosException(
+    if(finished) throw HeliosException(
         "PyHeliosSimulation has finished so it cannot be paused"
     );
 
@@ -223,13 +217,13 @@ void PyHeliosSimulation::pause (){
     paused = true;
 }
 void PyHeliosSimulation::stop (){
-    if(!started) throw PyHeliosException(
+    if(!started) throw HeliosException(
         "PyHeliosSimulation was not started so it cannot be stopped"
     );
-    if(stopped) throw PyHeliosException(
+    if(stopped) throw HeliosException(
         "PyHeliosSimulation was already stopped so it cannot be stopped again"
     );
-    if(finished) throw PyHeliosException(
+    if(finished) throw HeliosException(
         "PyHeliosSimulation has finished so it cannot be stopped"
     );
 
@@ -238,16 +232,16 @@ void PyHeliosSimulation::stop (){
     stopped = true;
 }
 void PyHeliosSimulation::resume (){
-    if(!started) throw PyHeliosException(
+    if(!started) throw HeliosException(
         "PyHeliosSimulation was not started so it cannot be resumed"
     );
-    if(stopped) throw PyHeliosException(
+    if(stopped) throw HeliosException(
         "PyHeliosSimulation was stopped so it cannot be resumed"
     );
-    if(playback->finished) throw PyHeliosException(
+    if(playback->finished) throw HeliosException(
         "PyHeliosSimulation has finished so it cannot be resumed"
     );
-    if(!paused) throw PyHeliosException(
+    if(!paused) throw HeliosException(
         "PyHeliosSimulation is not paused so it cannot be resumed"
     );
 
@@ -266,57 +260,67 @@ bool PyHeliosSimulation::isRunning() {
 }
 
 
-PyHeliosOutputWrapper * PyHeliosSimulation::join(){
+py::tuple PyHeliosSimulation::join() {
     // Status control
-    if(!started || paused) throw PyHeliosException(
-        "PyHeliosSimulation is not running so it cannot be joined"
-    );
+    if (!started || paused) {
+        throw std::runtime_error("PyHeliosSimulation is not running so it cannot be joined");
+    }
 
     // Obtain measurements output path
     std::string mwOutPath = "";
-    if(exportToFile){
-        mwOutPath = survey->scanner->fms->write
-            .getMeasurementWriterOutputPath().string();
+    if (exportToFile) {
+        mwOutPath = survey->scanner->fms->write.getMeasurementWriterOutputPath().string();
     }
 
     // Callback concurrency handling (NON BLOCKING MODE)
-    if(callbackFrequency != 0 && callback != nullptr){
-        if(!playback->finished) {
-            std::vector<Measurement> measurements(0);
-            std::vector<Trajectory> trajectories(0);
-            return new PyHeliosOutputWrapper(
-                measurements,
-                trajectories,
+    if (callbackFrequency != 0 && callback != nullptr) {
+        if (!playback->finished) {
+            // Return empty vectors if the simulation is not finished yet
+            return py::make_tuple(
+                std::vector<Measurement>{}, 
+                std::vector<Trajectory>{},  
                 mwOutPath,
                 std::vector<std::string>{mwOutPath},
-                false
+                false 
             );
-        }
-        else{
+        } else {
+            // Return collected data if the simulation is finished
             finished = true;
-            return new PyHeliosOutputWrapper(
-                survey->scanner->allMeasurements,
-                survey->scanner->allTrajectories,
+            return py::make_tuple(
+                *survey->scanner->allMeasurements, 
+                *survey->scanner->allTrajectories,  
                 mwOutPath,
-                survey->scanner->allOutputPaths,
-                true
+                *survey->scanner->allOutputPaths,   
+                true 
             );
         }
     }
 
     // Join (BLOCKING MODE)
-    thread->join();
-    if(playback->fms != nullptr) playback->fms->disconnect();
+    if (thread && thread->joinable()) {
+        thread->join();
+    }
+    if (playback->fms != nullptr) {
+        playback->fms->disconnect();
+    }
     finished = true;
 
     // Final output (BLOCKING MODE)
-    if(!finalOutput) return nullptr;
-    return new PyHeliosOutputWrapper(
-        survey->scanner->allMeasurements,
-        survey->scanner->allTrajectories,
+    if (!finalOutput) {
+        return py::make_tuple(
+            std::vector<Measurement>{}, 
+            std::vector<Trajectory>{},  
+            mwOutPath,
+            std::vector<std::string>{},
+            false 
+        );
+    }
+    return py::make_tuple(
+        *survey->scanner->allMeasurements, 
+        *survey->scanner->allTrajectories,  
         mwOutPath,
-        survey->scanner->allOutputPaths,
-        true
+        *survey->scanner->allOutputPaths,   
+        true 
     );
 }
 
@@ -418,26 +422,18 @@ PyHeliosSimulation * PyHeliosSimulation::copy(){
     return phs;
 }
 
-// ***  GETTERS and SETTERS  *** //
-// ***************************** //
-void PyHeliosSimulation::setCallback(PyObject * pyCallback){
-    callback = std::make_shared<PySimulationCycleCallback>(
-        PySimulationCycleCallback(pyCallback)
-    );
+void PyHeliosSimulation::setCallback(pybind11::object pyCallback) {
+    callback = std::make_shared<SimulationCycleCallbackWrap>(pyCallback);
 
-    if(survey->scanner->cycleMeasurements == nullptr) {
+    if (survey->scanner->cycleMeasurements == nullptr) {
         survey->scanner->cycleMeasurements =
-            std::make_shared<std::vector<Measurement>>(
-                std::vector<Measurement>(0)
-            );
+            std::make_shared<std::vector<Measurement>>(0);
     }
-    if(survey->scanner->cycleTrajectories == nullptr){
+    if (survey->scanner->cycleTrajectories == nullptr) {
         survey->scanner->cycleTrajectories =
-            std::make_shared<std::vector<Trajectory>>(
-                std::vector<Trajectory>(0)
-            );
+            std::make_shared<std::vector<Trajectory>>(0);
     }
-    if(survey->scanner->cycleMeasurementsMutex == nullptr){
+    if (survey->scanner->cycleMeasurementsMutex == nullptr) {
         survey->scanner->cycleMeasurementsMutex =
             std::make_shared<std::mutex>();
     }
@@ -452,7 +448,7 @@ std::shared_ptr<DynScene> PyHeliosSimulation::_getDynScene(){
         );
     }
     catch(std::exception &ex){
-        throw PyHeliosException(
+        throw HeliosException(
             "Failed to obtain dynamic scene. Current scene is not dynamic."
         );
     }

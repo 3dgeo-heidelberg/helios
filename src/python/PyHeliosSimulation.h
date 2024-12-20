@@ -1,20 +1,28 @@
 #pragma once
 
+#include <pybind11/pybind11.h>
+#include <pybind11/stl.h>
 #include <string>
+#include <memory>
+#include <vector>
+#include <thread>
+#include <mutex>
+
 #include <Leg.h>
 #include <SurveyPlayback.h>
-#include <memory>
 #include <noise/RandomnessGenerator.h>
-#include <PySimulationCycleCallback.h>
-#include <PyPlatformWrapper.h>
-#include <PySceneWrapper.h>
-#include <PyHeliosOutputWrapper.h>
-#include <PyHeliosException.h>
 #include <XmlSurveyLoader.h>
-#include <PyScannerWrapper.h>
-#include <PyScanningStripWrapper.h>
+#include <scene/Scene.h>
+#include <Survey.h>
+#include <platform/Platform.h>
+#include <SimulationCycleCallback.h>
+#include <scanner/Scanner.h>
+#include <sim/comps/ScanningStrip.h>
+#include <Measurement.h>
+#include <Trajectory.h>
+#include <HeliosException.h>
+#include <SimulationCycleCallbackWrap.h>
 
-namespace pyhelios{
 
 /**
  * @author Alberto M. Esmoris Pena
@@ -22,24 +30,25 @@ namespace pyhelios{
  *
  * Helios++ simulation wrapped to be used from Python
  */
+
 class PyHeliosSimulation{
 private:
     // ***  ATTRIBUTES  *** //
     // ******************** //
     std::shared_ptr<XmlSurveyLoader> xmlreader = nullptr;
-    bool started = false;
-    bool paused = false;
-    bool stopped = false;
-    bool finished = false;
+    bool started = false; 
+    bool paused = false; 
+    bool stopped = false; 
+    bool finished = false; 
     size_t numThreads = 0;
     size_t callbackFrequency = 0;
-    std::string surveyPath = "NULL";
-    std::vector<std::string> assetsPath;
+    std::string surveyPath = "NULL"; 
+    std::vector<std::string> assetsPath; 
     std::string outputPath = "NULL";
-    std::shared_ptr<Survey> survey = nullptr;
+    std::shared_ptr<Survey> survey = nullptr; 
     std::shared_ptr<SurveyPlayback> playback = nullptr;
-    boost::thread * thread = nullptr;
-    std::shared_ptr<PySimulationCycleCallback> callback = nullptr;
+    std::thread * thread = nullptr;
+    std::shared_ptr<SimulationCycleCallback> callback = nullptr;
     std::string fixedGpsTimeStart = "";
     bool lasOutput = false;
     bool las10     = false;
@@ -73,7 +82,7 @@ public:
      */
     PyHeliosSimulation(
         std::string surveyPath,
-        boost::python::list assetsPath,
+        const std::vector<std::string>& assetsPath,
         std::string outputPath = "output/",
         size_t numThreads = 0,
         bool lasOutput = false,
@@ -145,17 +154,19 @@ public:
      *
      * @return Scanner used by the simulation
      */
-    PyScannerWrapper * getScanner()
-        {return new PyScannerWrapper(*survey->scanner);}
+    void setSurvey(Survey & survey) {this->survey = std::make_shared<Survey>(survey);}
+
+    Scanner * getScanner()
+        {return survey->scanner.get();}
     /**
      * @brief Obtain the platform used by the simulation
      *
      * @return Platform used by the simulation
      */
-    PyPlatformWrapper * getPlatform()
-        {return new PyPlatformWrapper(*survey->scanner->platform);}
-    PySceneWrapper * getScene()
-        {return new PySceneWrapper(*survey->scanner->platform->scene);}
+    Platform * getPlatform()
+        {return survey->scanner->platform.get();}
+    Scene * getScene()
+        {return survey->scanner->platform->scene.get();}
     /**
      * @brief Obtain the number of legs
      *
@@ -177,29 +188,25 @@ public:
         {survey->legs.erase(survey->legs.begin() + index);}
     /**
      * @brief Create a new empty leg
-     * @param index The index specifying the position in the survey where the
-     *  leg will be inserted.
-     * @return Created leg.
+     * @param index The  index specifying the position in the survey where the
+     *  leg will be inserted
+     * @return Created empty leg
      */
     Leg & newLeg(int index);
     /**
-     * @brief Create a new leg from a template.
-     * @param index The index specifying the position in the survey where the
-     *  leg will be inserted.
-     * @param baseLeg The leg to be used as a template to build the new leg.
-     *  If null, the new leg will be created fully from scratch.
-     * @return Created leg.
+     * @brief Create a new leg from a template
+     * @param index The  index specifying the position in the survey where the
+     *  leg will be inserted
+     * @param baseLeg The leg to be used as template
+     * @return Created leg from template
      */
-    Leg & newLegFromTemplate(
-        int index,
-        Leg &baseLeg
-    );
+    Leg & newLegFromTemplate(int index, Leg & baseLeg);
     /**
      * @brief Create a new empty scanning strip (with no legs)
      * @param stripId The identifier for the strip
      * @return Created empty scanning strip
      */
-    PyScanningStripWrapper * newScanningStrip(std::string const &stripId);
+    std::shared_ptr<ScanningStrip> newScanningStrip(const std::string& stripId);
     /**
      * @brief Associate given leg with given strip
      * @param leg The leg to be associated with given strip
@@ -208,7 +215,7 @@ public:
      *  was updated. False if this is the first strip to which the leg is
      *  associated.
      */
-    bool assocLegWithScanningStrip(Leg &leg, PyScanningStripWrapper *strip);
+    bool assocLegWithScanningStrip(Leg& leg, std::shared_ptr<ScanningStrip> strip);
     /**
      * @brief Obtain callback frequency
      *
@@ -255,7 +262,7 @@ public:
     /**
      * @brief Set the simulation callback to specified python object functor
      */
-    void setCallback(PyObject * pyCallback);
+    void setCallback(py::object pyCallback);
     /**
      * @brief Clear simulation callback so it will no longer be invoked
      */
@@ -264,12 +271,13 @@ public:
         survey->scanner->cycleMeasurements = nullptr;
         survey->scanner->cycleMeasurementsMutex = nullptr;
     }
+
     std::string getFixedGpsTimeStart(){return fixedGpsTimeStart;}
     void setFixedGpsTimeStart(std::string const fixedGpsTimeStart)
     {this->fixedGpsTimeStart = fixedGpsTimeStart;}
     bool getLasOutput(){return lasOutput;}
     void setLasOutput(double lasOutput_){
-        if(started) throw PyHeliosException(
+        if(started) throw HeliosException(
             "Cannot modify LAS output flag for already started simulations."
         );
         this->lasOutput = lasOutput_;
@@ -277,7 +285,7 @@ public:
 
     bool getLas10(){return las10;}
     void setLas10(double las10_){
-        if(started) throw PyHeliosException(
+        if(started) throw HeliosException(
             "Cannot modify LAS v1.0 output flag for already started "
             "simulations."
         );
@@ -286,14 +294,14 @@ public:
 
     bool getZipOutput(){return zipOutput;}
     void setZipOutput(bool zipOutput_){
-        if(started) throw PyHeliosException(
+        if(started) throw HeliosException(
             "Cannot modify ZIP output flag for already started simulations."
         );
         this->zipOutput = zipOutput_;
     }
     bool getSplitByChannel(){return splitByChannel;}
     void setSplitByChannel(bool splitByChannel_){
-        if(started) throw PyHeliosException(
+        if(started) throw HeliosException(
             "Cannot modify splitByChannel flag for already started "
             "simulations."
         );
@@ -302,7 +310,7 @@ public:
 
     double getLasScale(){return lasScale;}
     void setLasScale(double const lasScale){
-        if(started) throw PyHeliosException(
+        if(started) throw HeliosException(
             "Cannot modify LAS scale for already started simulations."
         );
         this->lasScale = lasScale;
@@ -310,7 +318,7 @@ public:
 
     int getKDTFactory(){return kdtFactory;}
     void setKDTFactory(int kdtFactory){
-        if(started) throw PyHeliosException(
+        if(started) throw HeliosException(
             "Cannot modify KDT factory for already started simulations."
         );
         this->kdtFactory = kdtFactory;
@@ -318,7 +326,7 @@ public:
 
     size_t getKDTJobs(){return kdtJobs;}
     void setKDTJobs(size_t kdtJobs){
-        if(started) throw PyHeliosException(
+        if(started) throw HeliosException(
             "Cannot modify KDT jobs for already started simulations."
         );
         this->kdtJobs = kdtJobs;
@@ -326,7 +334,7 @@ public:
 
     size_t getKDTSAHLossNodes(){return kdtSAHLossNodes;}
     void setKDTSAHLossNodes(size_t kdtSAHLossNodes){
-        if(started) throw PyHeliosException(
+        if(started) throw HeliosException(
             "Cannot modify KDT SAH loss nodes for already started simulations."
         );
         this->kdtSAHLossNodes = kdtSAHLossNodes;
@@ -334,7 +342,7 @@ public:
 
     int getParallelizationStrategy(){return parallelizationStrategy;}
     void setParallelizationStrategy(int parallelizationStrategy){
-        if(started) throw PyHeliosException(
+        if(started) throw HeliosException(
             "Cannot modify parallelization strategy for already started "
             "simulations."
         );
@@ -343,7 +351,7 @@ public:
 
     int getChunkSize(){return chunkSize;}
     void setChunkSize(int chunkSize){
-        if(started) throw PyHeliosException(
+        if(started) throw HeliosException(
             "Cannot modify chunk size for already started simulations."
         );
         this->chunkSize = chunkSize;
@@ -351,12 +359,11 @@ public:
 
     int getWarehouseFactor(){return warehouseFactor;}
     void setWarehouseFactor(int warehouseFactor){
-        if(started) throw PyHeliosException(
+        if(started) throw HeliosException(
             "Cannot modify warehouse factor for already started simulations."
         );
         this->warehouseFactor = warehouseFactor;
     }
-
 
 
     // ***  CONTROL FUNCTIONS  *** //
@@ -384,7 +391,7 @@ public:
     /**
      * @brief Cause caller thread to wait until simulation has finished
      */
-    PyHeliosOutputWrapper * join();
+    py::tuple join();
 
     // ***  SIMULATION CONFIGURATION FUNCTIONS  *** //
     // ******************************************** //
@@ -434,4 +441,4 @@ public:
     std::shared_ptr<DynScene> _getDynScene();
 };
 
-}
+

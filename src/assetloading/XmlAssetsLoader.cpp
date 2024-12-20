@@ -931,7 +931,7 @@ XmlAssetsLoader::createScannerFromXml(tinyxml2::XMLElement *scannerNode) {
       scanner = std::make_shared<SingleScanner>(
           beamDiv_rad, emitterPosition, emitterAttitude, pulseFreqs,
           pulseLength_ns, id, avgPower, beamQuality, efficiency,
-          receiverDiameter, visibility, wavelength, rangeErrExpr
+          receiverDiameter, visibility, wavelength, false, false, false, false, false, rangeErrExpr
       );
       // Parse max number of returns per pulse
       scanner->setMaxNOR(boost::get<int>(XmlUtils::getAttribute(
