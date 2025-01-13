@@ -25,7 +25,9 @@ jobs:
 
       - name: Install Python dependencies
         run: |
-          python -m pip install mkdocs mkdocs-material python-markdown-math
+          python -m pip install mkdocs mkdocs-material python-markdown-math mkdoxy
+
+      - uses: ssciwr/doxygen-install@v1
 
       - name: Build the documentation
         working-directory: ./doc
