@@ -32,9 +32,9 @@ Download the correct installer for your operating system from the [release page]
 
 ### Development installation
 
-If you intend to contribute to the development of Helios++, we recommend a locally compiled version using these instructions.
+If you intend to contribute to the development of Helios++, we recommend a locally compiled version using these instructions:
 
-```
+```bash
 git clone https://github.com/3dgeo-heidelberg/helios.git
 cd helios
 conda env create -f environment-dev.yml
@@ -44,17 +44,12 @@ conda activate helios-dev
 # We had issues with incompatible system compilers before.
 conda install -c conda-forge gcc gxx
 
-python -m pip install --no-deps -v -e .
+python -m pip install --no-build-isolation --config-settings=build-dir="build" -v -e .
 ```
 
-If you explicitly require a manual CMake build, you can create it like this:
-
-```
-mkdir build
-cd build
-cmake -DCMAKE_PREFIX_PATH=<conda-env-root> ..
-make
-```
+This will install the Helios++ Python package in editable mode and expose the
+CMake build directory used as `build` (adapt as needed). Additional CMake variables
+can be passed with e.g. `--config-settings=cmake.define.BUILD_TESTING="ON"`.
 
 ## ℹ Documentation
 
