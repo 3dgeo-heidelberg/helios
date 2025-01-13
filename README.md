@@ -32,7 +32,7 @@ Download the correct installer for your operating system from the [release page]
 
 ### Development installation
 
-If you intend to contribute to the development of Helios++, we recommend a locally compiled version using these instructions:
+If you intend to contribute to the development of HELIOS++, we recommend a locally compiled version using these instructions:
 
 ```bash
 git clone https://github.com/3dgeo-heidelberg/helios.git
@@ -47,7 +47,7 @@ conda install -c conda-forge gcc gxx
 python -m pip install --no-build-isolation --config-settings=build-dir="build" -v -e .
 ```
 
-This will install the Helios++ Python package in editable mode and expose the
+This will install the HELIOS++ Python package in editable mode and expose the
 CMake build directory used as `build` (adapt as needed). Additional CMake variables
 can be passed with e.g. `--config-settings=cmake.define.BUILD_TESTING="ON"`.
 
