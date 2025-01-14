@@ -2,6 +2,8 @@
 python/pyhelios/_version.py
 
 # Ignore output, build and library dirs
+build
+pytest-output
 cmake-build-*
 bin/*
 lib/*
@@ -40,4 +42,7 @@ helios
 # Byte-compiled / optimized / DLL files
 *__pycache__/
 *.py[cod]
-
+.pytest_cache
+.coverage
+coverage.xml
+coverage.info
