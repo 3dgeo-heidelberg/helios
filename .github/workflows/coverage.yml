@@ -40,7 +40,7 @@ jobs:
 
       - name: Install Conda GCC
         run: |
-          conda install -y -c conda-forge gcc gxx
+          conda install -c conda-forge gcc gxx
       
       - name: Install LCov
         run: |

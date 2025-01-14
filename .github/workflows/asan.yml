@@ -1,0 +1,68 @@
+name: Address sanitizer build
+
+on:
+  push:
+    branches:
+      - main
+      - dev
+      - alpha-dev
+  pull_request:
+    branches:
+      - main
+      - dev
+      - alpha-dev
+  workflow_dispatch:
+
+jobs:
+  address-sanitizer:
+    name: Address Sanitizer
+    runs-on: ubuntu-latest
+    env:
+      ASAN_OPTIONS: "alloc_dealloc_mismatch=0:detect_stack_use_after_return=1:check_initialization_order=1:strict_init_order=1"
+
+    defaults:
+      run:
+        # Conda requires a login shell in order to work properly
+        shell: bash -l {0}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Create Helios dev environment
+        uses: conda-incubator/setup-miniconda@v2
+        with:
+          auto-update-conda: true
+          auto-activate-base: false
+          activate-environment: helios-dev
+          environment-file: environment-dev.yml
+          python-version: "3.12"
+
+      - name: Install conda-based gcc
+        run: |
+          conda install -c conda-forge gcc gxx
+
+      - name: Install Helios
+        run: |
+          python -m pip install \
+            --no-build-isolation \
+            --config-settings=build-dir="build" \
+            --config-settings=cmake.build-type="Debug" \
+            --config-settings=cmake.define.CMAKE_CXX_FLAGS="-fsanitize=address -fsanitize-address-use-after-scope -fno-omit-frame-pointer" \
+            --verbose \
+            --editable \
+            .
+
+      - name: run python tests
+        # for LD_PRELOAD see https://github.com/google/sanitizers/issues/934#issuecomment-649516500
+        run: |
+          echo "leak:/usr/bin/bash" > supp.txt
+          # hack to prevent external libs from dlclosing libraries,
+          # which otherwise results in <module not found> LSAN leaks that cannot be suppressed
+          # https://github.com/google/sanitizers/issues/89#issuecomment-406316683
+          echo "#include <stdio.h>" > dlclose.c
+          echo "int dlclose(void *handle) { return 0; }" >> dlclose.c
+          clang -shared dlclose.c -o libdlclose.so
+          LSAN_OPTIONS=suppressions="$(pwd)/supp.txt" LD_PRELOAD="$(gcc -print-file-name=libasan.so) $(gcc -print-file-name=libstdc++.so) $(pwd)/libdlclose.so" PYTHONMALLOC=malloc helios --test
+          LSAN_OPTIONS=suppressions="$(pwd)/supp.txt" LD_PRELOAD="$(gcc -print-file-name=libasan.so) $(gcc -print-file-name=libstdc++.so) $(pwd)/libdlclose.so" PYTHONMALLOC=malloc python -m pytest -s
+        env:
+          ASAN_OPTIONS: report_objects=0
