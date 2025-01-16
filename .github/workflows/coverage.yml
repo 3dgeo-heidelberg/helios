@@ -62,7 +62,7 @@ jobs:
 
       - name: Collect C++ coverage report
         run: |
-          lcov --directory build --capture --output-file coverage.info
+          lcov --directory build --capture --output-file coverage.info --ignore-errors mismatch
       
       - name: Upload coverage to CodeCov
         uses: codecov/codecov-action@v5
