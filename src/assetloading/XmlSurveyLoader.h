@@ -208,4 +208,9 @@ protected:
      * @param survey The survey to be validated
      */
     static void validateSurvey(std::shared_ptr<Survey> survey);
-};
+
+    /** Friend declarations */
+    friend std::shared_ptr<Scanner> readScannerFromXml(std::string, std::vector<std::string>, std::string);
+    friend std::shared_ptr<Platform> readPlatformFromXml(std::string, std::vector<std::string>, std::string);
+    friend std::shared_ptr<Scene> readSceneFromXml(std::string, std::vector<std::string>, bool, bool);
+ };

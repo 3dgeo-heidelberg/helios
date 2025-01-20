@@ -1,0 +1,59 @@
+# We currently omit C++ sources from pre-commit (by not specifying e.g. a clang-format
+# hook), because it would involve rewriting the entire code base. Can be discussed at a
+# dev meeting though.
+
+repos:
+- repo: https://github.com/psf/black
+  rev: 24.10.0
+  hooks:
+  # Run Black - the uncompromising Python code formatter (Jupyter version)
+  - id: black-jupyter
+
+- repo: https://github.com/pre-commit/pre-commit-hooks
+  rev: v5.0.0
+  hooks:
+  # Ensure existence of newline characters at file ends
+  - id: end-of-file-fixer
+  # Make sure that contained YAML files are well-formed
+  - id: check-yaml
+  # Apply a file size limit of 500kB
+  - id: check-added-large-files
+  # Simple parser validation of e.g. pyproject.toml
+  - id: check-toml
+  # Ensure consistent line endings
+  - id: mixed-line-ending
+
+- repo: https://github.com/rhysd/actionlint
+  rev: v1.7.6
+  hooks:
+  # GitHub Actions Workflow linter
+  - id: actionlint
+
+- repo: https://github.com/kynan/nbstripout
+  rev: 0.8.1
+  hooks:
+  # Make sure that Jupyter notebooks under version control have their outputs stripped before committing
+  - id: nbstripout
+    files: .ipynb
+
+- repo: https://github.com/cheshirekow/cmake-format-precommit
+  rev: v0.6.13
+  hooks:
+  # Apply formatting to CMake files
+  - id: cmake-format
+    additional_dependencies:
+    - pyyaml
+  # Apply linting to CMake files
+  - id: cmake-lint
+
+- repo: https://github.com/citation-file-format/cffconvert
+  rev: main
+  hooks:
+  # Validate CFF format
+  - id: validate-cff
+
+- repo: https://github.com/abravalheri/validate-pyproject
+  rev: v0.23
+  hooks:
+  # Validate the contents of pyproject.toml
+  - id: validate-pyproject
