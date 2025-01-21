@@ -125,7 +125,7 @@ PYBIND11_MAKE_OPAQUE(std::vector<Trajectory>);
 
 using helios::filems::FMSFacadeFactory;
 
-namespace pyhelios{
+namespace helios{
 
     PYBIND11_MODULE(_helios, m) {
         m.doc() = "Helios python bindings";
@@ -2246,5 +2246,6 @@ namespace pyhelios{
         m.def("read_scanner_from_xml", &readScannerFromXml);
         m.def("read_platform_from_xml", &readPlatformFromXml);
         m.def("read_scene_from_xml", &readSceneFromXml);
+        m.def("read_simulation_from_xml", &readSimulationFromXml);
     }
 }

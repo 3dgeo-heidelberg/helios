@@ -7,8 +7,11 @@ import _helios
 
 class ScenePart(Validatable):
     @classmethod
-    def from_xml(cls, scene_part_file: Path):
-        raise NotImplementedError
+    def from_xml(cls, scene_part_file: Path, id: int):
+        _cpp_scene_part = _helios.read_scene_part_from_xml(
+            scene_part_file, [str(p) for p in get_asset_directories()], id
+        )
+        return cls._from_cpp_object(_cpp_scene_part)
 
 
 class Scene(Validatable):

@@ -30,3 +30,9 @@ std::shared_ptr<Scene> readSceneFromXml(
     bool legNoiseDisabled,
     bool rebuildScene
 );
+
+std::shared_ptr<ScenePart> readScenePartFromXml(
+    std::string filePath,
+    std::vector<std::string> assetsPath,
+    int id
+);

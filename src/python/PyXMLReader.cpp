@@ -98,3 +98,82 @@ std::shared_ptr<Scene> readSceneFromXml(
     }
     return nullptr;
 }
+
+std::shared_ptr<ScenePart> readScenePartFromXml(
+    std::string filePath,
+    std::vector<std::string> assetsPath,
+    int id
+) {
+    //TODO: Has to be disscused after the meeting:
+    // 1.  Should the user provide the Scene to which the ScenePart will be added?
+    // It will affect the ability to read dynamic objects and on the way the ScenePart would be fitted to the Scene.
+
+    tinyxml2::XMLDocument doc;
+    if (doc.LoadFile(filePath.c_str()) != tinyxml2::XML_SUCCESS) {
+        logging::ERR("Failed to load file: " + filePath);
+        return nullptr;
+    }
+
+    tinyxml2::XMLElement* root = doc.FirstChildElement("document");
+    if (!root) {
+        logging::ERR("Invalid XML structure: Missing <document> root");
+        return nullptr;
+    }
+
+    tinyxml2::XMLElement* scene = root->FirstChildElement("scene");
+    if (!scene) {
+
+        logging::ERR("Invalid XML structure: Missing <scene> element");
+        return nullptr;
+    }
+
+    tinyxml2::XMLElement* part = scene->FirstChildElement("part");
+    int currentIndex = 0; 
+    std::string finalId = "";
+    bool splitPart = true;
+    bool holistic = false;
+
+    while (part) {
+        const char* partId = part->Attribute("id");
+        if (partId) {
+      
+            try{
+                int parsedId = std::stoi(partId);
+                if (parsedId == id) {
+                    finalId = partId;
+                    splitPart = false;
+                    break;
+                }
+            } catch (std::invalid_argument& e) {
+                logging::ERR("Error: Invalid ID format in XML for part: " + std::string(partId));
+                return nullptr;
+            }
+        } else {
+        
+            if (currentIndex == id) {
+                finalId = std::to_string(currentIndex);
+                break;
+            }
+        }
+
+        part = part->NextSiblingElement("part");
+        currentIndex++;
+    }
+    
+    if (finalId.empty()) {
+        logging::ERR("Error: No matching part found for id: " + std::to_string(id));
+        return nullptr;
+    }
+    XmlSceneLoader xmlSceneLoader(assetsPath);
+
+    shared_ptr<ScenePart> scenePart = xmlSceneLoader.loadFilters(part, holistic);
+    scenePart->mId = finalId;
+
+
+    if(!xmlSceneLoader.validateScenePart(scenePart, part)){
+        logging::ERR("Error: Invalid scene part");
+        return nullptr;
+    }
+
+    return scenePart;
+}
