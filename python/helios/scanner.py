@@ -159,7 +159,7 @@ def riegl_vux_1uav22():
     return Scanner.from_xml("data/scanners_als.xml", scanner_id="riegl_vux-1uav22")
 
 
-def riegl_Vux_1ha22():
+def riegl_vux_1ha22():
     return Scanner.from_xml("data/scanners_als.xml", scanner_id="riegl_vux-1ha22")
 
 

@@ -40,7 +40,7 @@ def get_asset_directories() -> list[Path]:
     return _custom_asset_directories + _builtin_asset_directories
 
 
-def find_file(filename: str, fatal: bool) -> Path | None:
+def find_file(filename: str, fatal: bool = True) -> Path | None:
     """
     Find a file in the list of directories that have been added as asset directories
     or in some default search locations.
