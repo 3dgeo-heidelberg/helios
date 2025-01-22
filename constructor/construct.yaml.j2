@@ -1,0 +1,21 @@
+name: helios
+version: {{ version }}
+channels:
+  - conda-forge
+{%- if "a" in version or "b" in version %}
+  - conda-forge/label/helios_dev
+{%- endif %}
+specs:
+  - conda
+  - helios={{ version }}
+  - helios-menuinst
+  - jupyterlab
+  - menuinst
+icon_image: 3dgeo.png
+welcome_image: welcome.png
+license_file: COPYING.LESSER
+register_python: false
+initialize_by_default: false
+menu_packages:
+  - helios
+  - helios-menuinst

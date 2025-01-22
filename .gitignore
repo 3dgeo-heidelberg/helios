@@ -21,6 +21,7 @@ coverage.info
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
+<<<<<<< HEAD
 *$py.class
 
 # C extensions
@@ -231,3 +232,9 @@ cython_debug/
 *.exe
 *.out
 *.app
+=======
+.pytest_cache
+.coverage
+coverage.xml
+coverage.info
+>>>>>>> alpha-dev

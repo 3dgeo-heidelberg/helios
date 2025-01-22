@@ -32,3 +32,5 @@ dependencies:
   - pandas
   - scipy
   - pooch
+  - ninja
+  - pytest-cov

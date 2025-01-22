@@ -16,6 +16,15 @@ char const FileUtils::pathSeparator =
 #endif
 ;
 
+void resolveExtendedPath(std::string epath, std::vector<std::string>& paths)
+{
+    auto dir = fs::path(epath).remove_filename();
+    if(fs::exists(dir)) {
+        std::vector<std::string> files = FileUtils::getFilesByExpression(epath);
+        paths.insert(paths.end(), files.begin(), files.end());
+    }
+}
+
 
 std::vector<std::string> FileUtils::handleFilePath(
     std::map<std::string, ObjectT> & params,
@@ -42,15 +51,14 @@ std::vector<std::string> FileUtils::handleFilePath(
     // Compile the resulting list of files
     std::vector<std::string> paths;
     if(extendedFilePath) {
-        for(auto assetPath : assetsDir) {
-            auto dir = (fs::path(assetPath) / path).remove_filename();
-            if(fs::exists(dir)) {
-                std::vector<std::string> files = getFilesByExpression((fs::path(assetPath) / path).string());
-                paths.insert(paths.end(), files.begin(), files.end());
-            }
-        }
+        resolveExtendedPath(path, paths);
+        for(auto assetPath : assetsDir)
+            resolveExtendedPath((fs::path(assetPath) / path).string(), paths);
     }
     else {
+        if (!fs::path(path).is_relative()) {
+            paths.push_back(path);
+        }
         for(auto assetPath : assetsDir) {
             if(fs::exists(fs::path(assetPath) / path)) {
                 paths.push_back((fs::path(assetPath) / path).string());
