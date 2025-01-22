@@ -42,7 +42,7 @@ def run_helios_executable(survey_path: Path, output_dir: Path, options=None) -> 
 
 def run_helios_pyhelios(survey_path: Path, output: Path, las_output: bool = True, zip_output: bool = False,
                         start_time: str = None, split_by_channel: bool = False, las10: bool = False) -> Path:
-    pyhelios.setDefaultRandomnessGeneratorSeed("43")
+    pyhelios.default_rand_generator_seed("43")
     simB = pyhelios.SimulationBuilder(
         surveyPath=str(survey_path.absolute()),
         assetsDir=[str(Path("assets"))],

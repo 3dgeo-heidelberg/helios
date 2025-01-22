@@ -313,7 +313,7 @@ public:
      *  the scanning device
 	 */
     virtual void calcRaysNumber(size_t const idx) = 0;
-    /**
+    /**calcAbsoluteBeamAttitude
      * @brief Non index version of the Scanner::calcRaysNumber(size_t const)
      *  method
      * @see Scanner::calcRaysNumber(size_t const)

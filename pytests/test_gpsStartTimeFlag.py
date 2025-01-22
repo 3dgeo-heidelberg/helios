@@ -6,7 +6,7 @@ import datetime
 
 def run_helios_pyhelios(survey_path: Path, output_dir: Path, options=None) -> Path:
     import pyhelios
-    pyhelios.setDefaultRandomnessGeneratorSeed("43")
+    pyhelios.default_rand_generator_seed("43")
     from pyhelios import SimulationBuilder
     simB = SimulationBuilder(
         surveyPath=str(survey_path.absolute()),

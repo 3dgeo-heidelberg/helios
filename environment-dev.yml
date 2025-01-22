@@ -9,11 +9,11 @@ dependencies:
   - importlib_resources
   - lapack
   - lastools
-  - libboost-python-devel
   - libboost-devel
   - libgdal
   - matplotlib-base
   - pip
+  - pybind11
   - python
   - scikit-build-core
   - setuptools_scm

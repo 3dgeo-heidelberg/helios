@@ -192,6 +192,7 @@ public:
         bool const legacyEnergyModel=false
     );
 
+    virtual ~Simulation() = default; 
     // ***  SIMULATION METHODS  *** //
     // **************************** //
     /**

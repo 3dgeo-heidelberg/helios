@@ -6,7 +6,7 @@ import sys
 
 def _get_executable():
     """Locate the compiled Helios executable."""
-    return resources.files("_pyhelios") / "pyhelios" / "bin" / "helios++"
+    return resources.files("_helios") / "pyhelios" / "bin" / "helios++"
 
 
 def helios_exec(args):
