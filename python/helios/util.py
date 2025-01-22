@@ -77,27 +77,31 @@ def find_file(filename: str, fatal: bool = True) -> Path | None:
     return None
 
 
-meas_dtype = np.dtype([
-    ('dev_id', 'U50'),
-    ('dev_idx', 'u8'),
-    ('hit_object_id', 'U50'),
-    ('position', '3f8'),
-    ('beam_direction', '3f8'),
-    ('beam_origin', '3f8'),
-    ('distance', 'f8'),
-    ('intensity', 'f8'),
-    ('echo_width', 'f8'),
-    ('return_number', 'i4'),
-    ('pulse_return_number', 'i4'),
-    ('fullwave_index', 'i4'),
-    ('classification', 'i4'),
-    ('gps_time', 'f8')
-])
+meas_dtype = np.dtype(
+    [
+        ("dev_id", "U50"),
+        ("dev_idx", "u8"),
+        ("hit_object_id", "U50"),
+        ("position", "3f8"),
+        ("beam_direction", "3f8"),
+        ("beam_origin", "3f8"),
+        ("distance", "f8"),
+        ("intensity", "f8"),
+        ("echo_width", "f8"),
+        ("return_number", "i4"),
+        ("pulse_return_number", "i4"),
+        ("fullwave_index", "i4"),
+        ("classification", "i4"),
+        ("gps_time", "f8"),
+    ]
+)
 
-traj_dtype = np.dtype([
-    ('gps_time', 'f8'),
-    ('position', '3f8'),
-    ('roll', 'f8'),
-    ('pitch', 'f8'),
-    ('yaw', 'f8')
-])
+traj_dtype = np.dtype(
+    [
+        ("gps_time", "f8"),
+        ("position", "3f8"),
+        ("roll", "f8"),
+        ("pitch", "f8"),
+        ("yaw", "f8"),
+    ]
+)

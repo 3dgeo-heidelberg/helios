@@ -65,14 +65,20 @@ class Survey(Validatable):
         warehouse_factor = 4
 
         if output is None:
-            #TODO: Implement approach where we don't need to write to disk
+            # TODO: Implement approach where we don't need to write to disk
             las_output, zip_output = False, False
             temp_dir_obj = tempfile.TemporaryDirectory()
-            
+
             fms = _helios.FMSFacadeFactory().build_facade(
-                    temp_dir_obj.name, 1.0, las_output, False, zip_output, False, self._cpp_object
-                )
-            
+                temp_dir_obj.name,
+                1.0,
+                las_output,
+                False,
+                zip_output,
+                False,
+                self._cpp_object,
+            )
+
         else:
             # Make the given output path absolute
             output = Path(output).absolute()
@@ -95,7 +101,7 @@ class Survey(Validatable):
         current_time = datetime.now(timezone.utc).isoformat(timespec="seconds")
 
         # Set up internal data structures for the execution
-       
+
         accuracy = self.scanner._cpp_object.detector.accuracy
         ptpf = _helios.PulseThreadPoolFactory(
             parallelization_strategy, num_threads - 1, accuracy, 32, warehouse_factor
@@ -126,9 +132,9 @@ class Survey(Validatable):
         if output is None:
             measurements = self.scanner._cpp_object.all_measurements
             num_measurements = len(measurements)
-            
+
             data_mes = np.empty(num_measurements, dtype=meas_dtype)
-            
+
             for i, measurement in enumerate(measurements):
                 data_mes[i] = (
                     measurement.dev_id,
@@ -164,6 +170,7 @@ class Survey(Validatable):
             temp_dir_obj.cleanup()
 
             return data_mes, data_traj
+
         # Return path to the created output directory
         return Path(playback.fms.write.get_measurement_writer_output_path()).parent
 
