@@ -9,6 +9,7 @@ from helios.validation import Validatable, ValidatedCppManagedProperty
 from pathlib import Path
 from pydantic import validate_call
 from typing import Literal, Optional
+import tempfile
 
 import os
 
@@ -63,12 +64,14 @@ class Survey(Validatable):
         parallelization_strategy = 1
         warehouse_factor = 4
 
-        # Temporary error message until we handle in-memory results
         if output is None:
+            #TODO: Implement approach where we don't need to write to disk
             las_output, zip_output = False, False
+            temp_dir_obj = tempfile.TemporaryDirectory()
+            
             fms = _helios.FMSFacadeFactory().build_facade(
-                "./output", 1.0, las_output, False, zip_output, False, self._cpp_object
-            )
+                    temp_dir_obj.name, 1.0, las_output, False, zip_output, False, self._cpp_object
+                )
             
         else:
             # Make the given output path absolute
@@ -114,7 +117,46 @@ class Survey(Validatable):
         playback.start()
 
         if output is None:
-            return self.get_all_measurements(), self.get_all_trajectories()
+            measurements = self.scanner._cpp_object.all_measurements
+            num_measurements = len(measurements)
+            
+            data_mes = np.empty(num_measurements, dtype=meas_dtype)
+            
+            for i, measurement in enumerate(measurements):
+                data_mes[i] = (
+                    measurement.dev_id,
+                    measurement.dev_idx,
+                    measurement.hit_object_id,
+                    tuple(measurement.position),
+                    tuple(measurement.beam_direction),
+                    tuple(measurement.beam_origin),
+                    measurement.distance,
+                    measurement.intensity,
+                    measurement.echo_width,
+                    measurement.return_number,
+                    measurement.pulse_return_number,
+                    measurement.fullwave_index,
+                    measurement.classification,
+                    measurement.gps_time,
+                )
+
+            trajectories = self.scanner._cpp_object.all_trajectories
+            num_trajectories = len(trajectories)
+
+            data_traj = np.empty(num_trajectories, dtype=traj_dtype)
+
+            for i, trajectory in enumerate(trajectories):
+                data_traj[i] = (
+                    trajectory.gps_time,
+                    tuple(trajectory.position),
+                    trajectory.roll,
+                    trajectory.pitch,
+                    trajectory.yaw,
+                )
+
+            temp_dir_obj.cleanup()
+
+            return data_mes, data_traj
         # Return path to the created output directory
         return Path(playback.fms.write.get_measurement_writer_output_path()).parent
 
@@ -145,42 +187,3 @@ class Survey(Validatable):
             survey_file, [str(p) for p in get_asset_directories()], True, True
         )
         return cls._from_cpp_object(_cpp_survey)
-
-    def get_all_measurements(self):
-        measurements = self.scanner._cpp_object.all_measurements
-        data = []
-        
-        for measurement in measurements:
-            data.append((
-                measurement.dev_id,
-                measurement.dev_idx,
-                measurement.hit_object_id,
-                tuple(measurement.position),
-                tuple(measurement.beam_direction),
-                tuple(measurement.beam_origin),
-                measurement.distance,
-                measurement.intensity,
-                measurement.echo_width,
-                measurement.return_number,
-                measurement.pulse_return_number,
-                measurement.fullwave_index,
-                measurement.classification,
-                measurement.gps_time,
-            ))
-        
-        return np.array(data, dtype=meas_dtype)
-    
-    def get_all_trajectories(self):
-        trajectories = self.scanner._cpp_object.all_trajectories
-        data = []
-        
-        for trajectory in trajectories:
-            data.append((
-                trajectory.gps_time,
-                tuple(trajectory.position),
-                trajectory.roll,
-                trajectory.pitch,
-                trajectory.yaw,
-            ))
-        
-        return np.array(data, dtype=traj_dtype)
