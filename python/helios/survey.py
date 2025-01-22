@@ -1,9 +1,10 @@
 from datetime import datetime, timezone
+import numpy as np
 from helios.leg import Leg
 from helios.platform import Platform, PlatformSettingsBase
 from helios.scanner import Scanner, ScannerSettingsBase
 from helios.scene import Scene
-from helios.util import get_asset_directories
+from helios.util import get_asset_directories, meas_dtype, traj_dtype
 from helios.validation import Validatable, ValidatedCppManagedProperty
 from pathlib import Path
 from pydantic import validate_call
@@ -64,17 +65,24 @@ class Survey(Validatable):
 
         # Temporary error message until we handle in-memory results
         if output is None:
-            raise NotImplementedError("Output path must be specified")
+            las_output, zip_output = False, False
+            fms = _helios.FMSFacadeFactory().build_facade(
+                "./output", 1.0, las_output, False, zip_output, False, self._cpp_object
+            )
+            
+        else:
+            # Make the given output path absolute
+            output = Path(output).absolute()
 
-        # Make the given output path absolute
-        output = Path(output).absolute()
-
-        # Determine boolean flags for the output
-        las_output, zip_output = {
-            "laz": (True, True),
-            "las": (True, False),
-            "xyz": (False, False),
-        }.get(format)
+            # Determine boolean flags for the output
+            las_output, zip_output = {
+                "laz": (True, True),
+                "las": (True, False),
+                "xyz": (False, False),
+            }.get(format)
+            fms = _helios.FMSFacadeFactory().build_facade(
+                str(output), 1.0, las_output, False, zip_output, False, self._cpp_object
+            )
 
         # Determine maximum number of threads to use
         if num_threads is None:
@@ -84,9 +92,7 @@ class Survey(Validatable):
         current_time = datetime.now(timezone.utc).isoformat(timespec="seconds")
 
         # Set up internal data structures for the execution
-        fms = _helios.FMSFacadeFactory().build_facade(
-            str(output), 1.0, las_output, False, zip_output, False, self._cpp_object
-        )
+       
         accuracy = self.scanner._cpp_object.detector.accuracy
         ptpf = _helios.PulseThreadPoolFactory(
             parallelization_strategy, num_threads - 1, accuracy, 32, warehouse_factor
@@ -107,6 +113,8 @@ class Survey(Validatable):
         # Start simulating the survey
         playback.start()
 
+        if output is None:
+            return self.get_all_measurements(), self.get_all_trajectories()
         # Return path to the created output directory
         return Path(playback.fms.write.get_measurement_writer_output_path()).parent
 
@@ -137,3 +145,42 @@ class Survey(Validatable):
             survey_file, [str(p) for p in get_asset_directories()], True, True
         )
         return cls._from_cpp_object(_cpp_survey)
+
+    def get_all_measurements(self):
+        measurements = self.scanner._cpp_object.all_measurements
+        data = []
+        
+        for measurement in measurements:
+            data.append((
+                measurement.dev_id,
+                measurement.dev_idx,
+                measurement.hit_object_id,
+                tuple(measurement.position),
+                tuple(measurement.beam_direction),
+                tuple(measurement.beam_origin),
+                measurement.distance,
+                measurement.intensity,
+                measurement.echo_width,
+                measurement.return_number,
+                measurement.pulse_return_number,
+                measurement.fullwave_index,
+                measurement.classification,
+                measurement.gps_time,
+            ))
+        
+        return np.array(data, dtype=meas_dtype)
+    
+    def get_all_trajectories(self):
+        trajectories = self.scanner._cpp_object.all_trajectories
+        data = []
+        
+        for trajectory in trajectories:
+            data.append((
+                trajectory.gps_time,
+                tuple(trajectory.position),
+                trajectory.roll,
+                trajectory.pitch,
+                trajectory.yaw,
+            ))
+        
+        return np.array(data, dtype=traj_dtype)

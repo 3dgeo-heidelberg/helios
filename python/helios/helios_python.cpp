@@ -417,6 +417,9 @@ namespace helios{
             .def(py::init<>())
             .def(py::init<const Measurement &>())
             
+
+            .def_readwrite("dev_id", &Measurement::devId)
+            .def_readwrite("dev_idx", &Measurement::devIdx)
             .def_readwrite("hit_object_id", &Measurement::hitObjectId)
             .def_readwrite("beam_direction", &Measurement::beamDirection)
             .def_readwrite("beam_origin", &Measurement::beamOrigin)
@@ -2246,6 +2249,6 @@ namespace helios{
         m.def("read_scanner_from_xml", &readScannerFromXml);
         m.def("read_platform_from_xml", &readPlatformFromXml);
         m.def("read_scene_from_xml", &readSceneFromXml);
-        m.def("read_simulation_from_xml", &readSimulationFromXml);
+        m.def("read_scene_part_from_xml", &readScenePartFromXml);
     }
 }
