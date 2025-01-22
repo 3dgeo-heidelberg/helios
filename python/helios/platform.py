@@ -1,46 +1,34 @@
 from helios.util import get_asset_directories
-from helios.validation import Validatable, ValidatedCppManagedProperty, UpdateableMixin
+from helios.validation import ValidatedCppModel, ValidatedCppManagedProperty, UpdateableMixin
 from pathlib import Path
 
 import _helios
 
 
-class PlatformSettingsBase(Validatable, UpdateableMixin):
+class PlatformSettingsBase(ValidatedCppModel, UpdateableMixin, cpp_class=_helios.PlatformSettings):
     pass
 
 
 class PlatformSettings(PlatformSettingsBase):
-    def __init__(self, x: float = 0, y: float = 0, z: float = 0):
-        self._cpp_object = _helios.PlatformSettings()
-        self.x = x
-        self.y = y
-        self.z = z
-
-    x: float = ValidatedCppManagedProperty("x")
-    y: float = ValidatedCppManagedProperty("y")
-    z: float = ValidatedCppManagedProperty("z")
+    x: float = ValidatedCppManagedProperty("x", default=0)
+    y: float = ValidatedCppManagedProperty("y", default=0)
+    z: float = ValidatedCppManagedProperty("z", default=0)
 
 
 class StaticPlatformSettings(PlatformSettingsBase):
-    def __init__(self, x: float = 0, y: float = 0, z: float = 0):
-        self._cpp_object = _helios.PlatformSettings()
-        self.x = x
-        self.y = y
-        self.z = z
-
-    x: float = ValidatedCppManagedProperty("x")
-    y: float = ValidatedCppManagedProperty("y")
-    z: float = ValidatedCppManagedProperty("z")
+    x: float = ValidatedCppManagedProperty("x", default=0)
+    y: float = ValidatedCppManagedProperty("y", default=0)
+    z: float = ValidatedCppManagedProperty("z", default=0)
 
 
-class Platform(Validatable):
+class Platform(ValidatedCppModel, cpp_class=_helios.Platform):
     @classmethod
     def from_xml(cls, platform_file: Path, platform_id: str = ""):
 
         _cpp_platform = _helios.read_platform_from_xml(
             platform_file, [str(p) for p in get_asset_directories()], platform_id
         )
-        return cls._from_cpp_object(_cpp_platform)
+        return cls.__new__(cls, _cpp_object=_cpp_platform)
 
 
 #

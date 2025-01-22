@@ -5,9 +5,9 @@ import pytest
 
 
 class MockCppObject:
-    someint = 42
-    somestr = "Foobar"
-    somebool = True
+    someint = 41
+    somestr = "Foobar2"
+    somebool = False
     somevec = [0, 1]
 
 
@@ -15,14 +15,11 @@ class RelatedCppMockObject:
     other = MockCppObject()
 
 
-def test_validatable():
-    class Obj(Validatable):
-        def __init__(self):
-            self._cpp_object = MockCppObject()
-
-        someint: int = ValidatedCppManagedProperty("someint")
-        somestr: str = ValidatedCppManagedProperty("somestr")
-        somebool: bool = ValidatedCppManagedProperty("somebool")
+def test_validated_cpp_model():
+    class Obj(ValidatedCppModel, cpp_class=MockCppObject):
+        someint: int = ValidatedCppManagedProperty("someint", default=42)
+        somestr: str = ValidatedCppManagedProperty("somestr", default="Foobar")
+        somebool: bool = ValidatedCppManagedProperty("somebool", default=True)
 
     obj = Obj()
 
@@ -37,12 +34,36 @@ def test_validatable():
         obj.someint = "Foobar"
 
 
-def test_iterable_property():
-    class IterObj(Validatable):
-        def __init__(self):
-            self._cpp_object = MockCppObject()
+def test_instantiation():
+    class Obj(ValidatedCppModel, cpp_class=MockCppObject):
+        someint: int = ValidatedCppManagedProperty("someint")
+        somestr: str = ValidatedCppManagedProperty("somestr")
+        somebool: bool = ValidatedCppManagedProperty("somebool", default=True)
 
-        somevec: list[int] = ValidatedCppManagedProperty("somevec", iterable=True)
+    obj = Obj(42, "Foobar")
+    assert obj.someint == 42
+    assert obj.somestr == "Foobar"
+    assert obj.somebool == True
+
+    obj = Obj(somestr="Foobar", someint=42)
+    assert obj.someint == 42
+    assert obj.somestr == "Foobar"
+    assert obj.somebool == True
+
+    obj = Obj(42, somebool=False, somestr="Foobar")
+    assert obj.someint == 42
+    assert obj.somestr == "Foobar"
+    assert obj.somebool == False
+
+    with pytest.raises(ValueError):
+        obj = Obj(42)
+
+
+def test_iterable_property():
+    class IterObj(ValidatedCppModel, cpp_class=MockCppObject):
+        somevec: list[int] = ValidatedCppManagedProperty(
+            "somevec", iterable=True, default=[0, 1]
+        )
 
     obj = IterObj()
 
@@ -57,19 +78,13 @@ def test_iterable_property():
 
 
 def test_wrapping():
-    class Obj(Validatable):
-        def __init__(self):
-            self._cpp_object = MockCppObject()
+    class Obj(ValidatedCppModel, cpp_class=MockCppObject):
+        someint: int = ValidatedCppManagedProperty("someint", default=0)
 
-        someint: int = ValidatedCppManagedProperty("someint")
-
-    class RelatedObj(Validatable):
-        def __init__(self):
-            self._cpp_object = RelatedCppMockObject()
-
-        other: Obj = ValidatedCppManagedProperty("other", Obj)
+    class RelatedObj(ValidatedCppModel, cpp_class=RelatedCppMockObject):
+        other: Obj = ValidatedCppManagedProperty("other", Obj, default=Obj())
         otherlist: list[Obj] = ValidatedCppManagedProperty(
-            "otherlist", Obj, iterable=True
+            "otherlist", Obj, iterable=True, default=[]
         )
 
     class DerivedObj(Obj):
@@ -92,10 +107,25 @@ def test_wrapping():
     assert isinstance(obj.otherlist[1], DerivedObj)
 
 
+def test_unique_across_instances():
+    class Obj(ValidatedCppModel, cpp_class=MockCppObject):
+        pass
+
+    class RelatedObj(ValidatedCppModel, cpp_class=RelatedCppMockObject):
+        other: Obj = ValidatedCppManagedProperty(
+            "other", Obj, unique_across_instances=True
+        )
+
+    obj = Obj()
+    related1 = RelatedObj(obj)
+
+    with pytest.raises(ValueError):
+        related2 = RelatedObj(obj)
+
+
 def test_repr():
-    class Obj(Validatable):
-        def __init__(self):
-            self._cpp_object = MockCppObject()
+    class Obj(ValidatedCppModel, cpp_class=MockCppObject):
+        pass
 
     x1 = Obj()
     x2 = Obj()
@@ -107,9 +137,8 @@ def test_repr():
 
 
 def test_cloning_not_implemented():
-    class Obj(Validatable):
-        def __init__(self):
-            self._cpp_object = MockCppObject()
+    class Obj(ValidatedCppModel, cpp_class=MockCppObject):
+        pass
 
     obj = Obj()
     with pytest.raises(NotImplementedError):
@@ -123,11 +152,8 @@ def test_cloning():
         def clone(self):
             return copy.deepcopy(self)
 
-    class Obj(Validatable):
-        def __init__(self):
-            self._cpp_object = CloneableMockCppObject()
-
-        someint: int = ValidatedCppManagedProperty("someint")
+    class Obj(ValidatedCppModel, cpp_class=CloneableMockCppObject):
+        someint: int = ValidatedCppManagedProperty("someint", default=42)
 
     obj = Obj()
     clone = obj.clone()
@@ -137,11 +163,8 @@ def test_cloning():
 
 
 def test_updateable_mixin():
-    class Obj(Validatable, UpdateableMixin):
-        def __init__(self):
-            self._cpp_object = MockCppObject()
-
-        someint: int = ValidatedCppManagedProperty("someint")
+    class Obj(ValidatedCppModel, UpdateableMixin, cpp_class=MockCppObject):
+        someint: int = ValidatedCppManagedProperty("someint", default=42)
 
     obj = Obj()
     obj.update_from_dict({"someint": 43})

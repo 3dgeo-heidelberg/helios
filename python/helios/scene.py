@@ -1,22 +1,22 @@
 from helios.util import get_asset_directories
-from helios.validation import Validatable, ValidatedCppManagedProperty
+from helios.validation import ValidatedCppModel, ValidatedCppManagedProperty
 from pathlib import Path
 
 import _helios
 
 
-class ScenePart(Validatable):
+class ScenePart(ValidatedCppModel, cpp_class=_helios.ScenePart):
     @classmethod
     def from_xml(cls, scene_part_file: Path, id: int):
         _cpp_scene_part = _helios.read_scene_part_from_xml(
             scene_part_file, [str(p) for p in get_asset_directories()], id
         )
-        return cls._from_cpp_object(_cpp_scene_part)
+        return cls.__new__(cls, _cpp_object=_cpp_scene_part)
 
 
-class Scene(Validatable):
+class Scene(ValidatedCppModel, cpp_class=_helios.Scene):
     scene_parts: list[ScenePart] = ValidatedCppManagedProperty(
-        "scene_parts", ScenePart, iterable=True
+        "scene_parts", ScenePart, iterable=True, default=[]
     )
 
     @classmethod
@@ -24,4 +24,4 @@ class Scene(Validatable):
         _cpp_scene = _helios.read_scene_from_xml(
             scene_file, [str(p) for p in get_asset_directories()], True, True
         )
-        return cls._from_cpp_object(_cpp_scene)
+        return cls.__new__(cls, _cpp_object=_cpp_scene)

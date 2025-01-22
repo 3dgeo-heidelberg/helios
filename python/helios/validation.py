@@ -1,6 +1,7 @@
 from pydantic import validate_call, GetCoreSchemaHandler
 from pydantic_core import core_schema
 from typing import Any, Type
+from typing_extensions import dataclass_transform
 
 
 class ValidatedCppManagedProperty:
@@ -11,15 +12,24 @@ class ValidatedCppManagedProperty:
     C++ object. Used heavily across the Helios++ codebase.
     """
 
-    def __init__(self, name, wraptype=None, iterable=False):
+    def __init__(
+        self,
+        name,
+        wraptype=None,
+        iterable=False,
+        default=None,
+        unique_across_instances=False,
+    ):
         self.name = name
-        assert wraptype is None or issubclass(wraptype, Validatable)
+        assert wraptype is None or issubclass(wraptype, ValidatedCppModel)
         self.wraptype = wraptype
         self.iterable = iterable
+        self.default = default
+        self.unique_across_instances = unique_across_instances
 
     def _maybe_wrap(self, value):
         if self.wraptype is not None and value is not None:
-            return self.wraptype._from_cpp_object(value)
+            return self.wraptype.__new__(self.wraptype, _cpp_object=value)
         return value
 
     def __get__(self, obj, objtype=None):
@@ -35,7 +45,7 @@ class ValidatedCppManagedProperty:
             if self.iterable:
                 if len(value) > 0:
                     if self.wraptype is not None:
-                        assert issubclass(type(value[0]), Validatable)
+                        assert issubclass(type(value[0]), ValidatedCppModel)
                         self.wraptype = type(value[0])
                     cpp_value = [
                         (
@@ -49,13 +59,26 @@ class ValidatedCppManagedProperty:
                     cpp_value = []
             else:
                 if self.wraptype is not None:
-                    assert issubclass(type(value), Validatable)
+                    assert issubclass(type(value), ValidatedCppModel)
                     self.wraptype = type(value)
                 cpp_value = (
                     getattr(value, "_cpp_object")
                     if hasattr(value, "_cpp_object")
                     else value
                 )
+
+            if self.unique_across_instances:
+                if self.iterable:
+                    raise NotImplementedError(
+                        "Unique-across-instances is not implemented for iterable properties"
+                    )
+                if not hasattr(obj.__class__, "_uniqueness"):
+                    obj.__class__._uniqueness = {}
+                if cpp_value in obj.__class__.__dict__["_uniqueness"].values():
+                    raise ValueError(
+                        f"This value for property {self.name} is already in use by a different instance."
+                    )
+                obj.__class__.__dict__["_uniqueness"][self.name] = cpp_value
 
             setattr(obj._cpp_object, self.name, cpp_value)
 
@@ -70,8 +93,55 @@ class ValidatedCppManagedProperty:
         )
 
 
-class Validatable:
+@dataclass_transform()
+class ValidatedCppModelMetaClass(type):
+    def __new__(cls, name, bases, dct, *args, **kwargs):
+        fields = {
+            k: v for k, v in dct.items() if isinstance(v, ValidatedCppManagedProperty)
+        }
+
+        def __init__(self, *args, **instance_kwargs):
+            # Iterate the fields in exactly the given order. When using a different order,
+            # we risk that properties are instantiated in an incorrect order.
+            for i, (name, field) in enumerate(fields.items()):
+                # Check whether we find this among positional arguments
+                if i < len(args):
+                    setattr(self, name, args[i])
+                    continue
+
+                # Check whether we find this among keyword arguments
+                if name in instance_kwargs:
+                    setattr(self, name, instance_kwargs[name])
+                    continue
+
+                # Use the provided default
+                if field.default is not None:
+                    setattr(self, name, field.default)
+                    continue
+
+                # Raise an error if this was required and not we reached this point
+                raise ValueError(f"Missing required argument: {name}")
+
+        dct["__init__"] = __init__
+
+        return super().__new__(cls, name, bases, dct, **kwargs)
+
+
+class ValidatedCppModel(metaclass=ValidatedCppModelMetaClass):
     """Base class for objects that use ValidatedCppManagedProperty"""
+
+    def __init_subclass__(cls, cpp_class=None, **kwargs):
+        super().__init_subclass__(**kwargs)
+        if cpp_class is not None:
+            cls._cpp_class = cpp_class
+
+    def __new__(cls, *args, **kwargs):
+        obj = super().__new__(cls)
+        cpp_object = kwargs.pop("_cpp_object", None)
+        if cpp_object is None:
+            cpp_object = cls._cpp_class()
+        obj._cpp_object = cpp_object
+        return obj
 
     @classmethod
     def __get_pydantic_core_schema__(
@@ -87,12 +157,6 @@ class Validatable:
             raise ValueError(f"Expected {cls.__name__}, got {type(value).__name__}")
         return value
 
-    @classmethod
-    def _from_cpp_object(cls, cpp_object):
-        obj = cls.__new__(cls)
-        obj._cpp_object = cpp_object
-        return obj
-
     def __repr__(self):
         return f"<{self.__class__.__name__} at {hex(id(self._cpp_object))}>"
 
@@ -103,14 +167,16 @@ class Validatable:
                 "does not yet implement a clone method. Please open an issue with your use "
                 "case."
             )
-        return self.__class__._from_cpp_object(self._cpp_object.clone())
+        return self.__class__.__new__(
+            self.__class__, _cpp_object=self._cpp_object.clone()
+        )
 
 
 class UpdateableMixin:
     """Mixin for objects that can be updated from another object"""
 
     def update_from_dict(self, kwargs, skip_exceptions=False):
-        """Update a validatable object from a dictionary of keyword arguments"""
+        """Update a ValidatedCppModel object from a dictionary of keyword arguments"""
 
         keys = list(kwargs.keys())
         for key in keys:
@@ -122,7 +188,7 @@ class UpdateableMixin:
                 raise ValueError(f"Invalid key: {key}")
 
     def update_from_object(self, other, skip_exceptions=False):
-        """Update a validatable object from another object"""
+        """Update a ValidatedCppModel object from another object"""
 
         parameters = {}
         for key, value in self.__class__.__dict__.items():

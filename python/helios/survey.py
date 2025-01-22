@@ -1,11 +1,11 @@
 from datetime import datetime, timezone
 import numpy as np
 from helios.leg import Leg
-from helios.platform import Platform, PlatformSettingsBase
-from helios.scanner import Scanner, ScannerSettingsBase
+from helios.platform import Platform, PlatformSettings
+from helios.scanner import Scanner, ScannerSettings
 from helios.scene import Scene
 from helios.util import get_asset_directories, meas_dtype, traj_dtype
-from helios.validation import Validatable, ValidatedCppManagedProperty
+from helios.validation import ValidatedCppModel, ValidatedCppManagedProperty
 from pathlib import Path
 from pydantic import validate_call
 from typing import Literal, Optional
@@ -16,41 +16,16 @@ import os
 import _helios
 
 
-class Survey(Validatable):
-    def __init__(
-        self,
-        scanner: Scanner = None,
-        platform: Platform = None,
-        scene: Scene = None,
-        legs: list[Leg] = [],
-        name: str = "",
-    ):
-        """Construct a survey object programmatically."""
-        # Instantiate the C++ object
-        self._cpp_object = _helios.Survey()
-
-        # Set the scanner - it is required for constructing a survey
-        if scanner is None:
-            raise ValueError("A scanner must be provided!")
-        self.scanner = scanner
-
-        if platform is None:
-            raise ValueError("A platform must be provided")
-        self.platform = platform
-
-        if scene is None:
-            raise ValueError("A scene must be provided")
-        self.scene = scene
-
-        # Set additional "easy" properties
-        self.legs = legs
-        self.name = name
-
-    legs: list[Leg] = ValidatedCppManagedProperty("legs", Leg, iterable=True)
-    name: str = ValidatedCppManagedProperty("name")
+class Survey(ValidatedCppModel, cpp_class=_helios.Survey):
+    scanner: Scanner = ValidatedCppManagedProperty(
+        "scanner", Scanner, unique_across_instances=True
+    )
     platform: Platform = ValidatedCppManagedProperty("platform", Platform)
-    scanner: Scanner = ValidatedCppManagedProperty("scanner", Scanner)
     scene: Scene = ValidatedCppManagedProperty("scene", Scene)
+    legs: list[Leg] = ValidatedCppManagedProperty(
+        "legs", Leg, iterable=True, default=[]
+    )
+    name: str = ValidatedCppManagedProperty("name", default="")
 
     @validate_call
     def run(
@@ -119,7 +94,7 @@ class Survey(Validatable):
         )
         playback.callback_frequency = 0
 
-        self.scanner._cpp_object.cycle_measurements_mutex  = None 
+        self.scanner._cpp_object.cycle_measurements_mutex = None
         self.scanner._cpp_object.cycle_measurements = []
         self.scanner._cpp_object.cycle_trajectories = []
         self.scanner._cpp_object.all_measurements = []
@@ -177,6 +152,8 @@ class Survey(Validatable):
     def add_leg(
         self,
         leg: Leg = None,
+        platform_settings: Optional[PlatformSettings] = None,
+        scanner_settings: Optional[ScannerSettings] = None,
         **parameters,
     ):
         """Add a new leg to the survey.
@@ -187,7 +164,21 @@ class Survey(Validatable):
 
         # We construct a leg if none was provided
         if leg is None:
-            leg = Leg(**parameters)
+            leg = Leg()
+
+        # Set the parameters given as scanner + platform settings
+        if platform_settings is not None:
+            leg.platform_settings.update_from_object(platform_settings)
+        if scanner_settings is not None:
+            leg.scanner_settings.update_from_object(scanner_settings)
+
+        # Update with the rest of the given parameters
+        leg.platform_settings.update_from_dict(parameters, skip_exceptions=True)
+        leg.scanner_settings.update_from_dict(parameters, skip_exceptions=True)
+
+        # If there are parameters left, we raise an error
+        if parameters:
+            raise ValueError(f"Unknown parameters: {', '.join(parameters)}")
 
         # By using assignment instead of append,
         # we ensure that the property is validated
@@ -200,4 +191,4 @@ class Survey(Validatable):
         _cpp_survey = _helios.read_survey_from_xml(
             survey_file, [str(p) for p in get_asset_directories()], True, True
         )
-        return cls._from_cpp_object(_cpp_survey)
+        return cls.__new__(cls, _cpp_object=_cpp_survey)
