@@ -113,6 +113,13 @@ class Survey(Validatable):
         )
         playback.callback_frequency = 0
 
+        self.scanner._cpp_object.cycle_measurements_mutex  = None 
+        self.scanner._cpp_object.cycle_measurements = []
+        self.scanner._cpp_object.cycle_trajectories = []
+        self.scanner._cpp_object.all_measurements = []
+        self.scanner._cpp_object.all_trajectories = []
+        self.scanner._cpp_object.all_output_paths = []
+
         # Start simulating the survey
         playback.start()
 
