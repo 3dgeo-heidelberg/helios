@@ -17,6 +17,8 @@ authors:
   given-names: "Katharina"
 - family-names: "Höfle"
   given-names: "Bernhard"
+- family-names: "Kempf"
+  given-names: "Dominic"
 title: "HELIOS++"
 version: 1.1.0
 doi: 10.5281/zenodo.4452870
