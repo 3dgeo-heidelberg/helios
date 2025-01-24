@@ -1,6 +1,6 @@
 # ✈ HELIOS ++
 [![DOI](https://zenodo.org/badge/331344393.svg)](https://zenodo.org/badge/latestdoi/331344393) [![Issues](https://img.shields.io/github/issues/3dgeo-heidelberg/helios)](https://github.com/3dgeo-heidelberg/helios/issues) [![License](https://img.shields.io/badge/license-GPLv3%2C%20LGPLv3-blue)](https://github.com/3dgeo-heidelberg/helios/blob/main/LICENSE.md) [![Activity](https://img.shields.io/github/commit-activity/m/3dgeo-heidelberg/helios)](https://github.com/3dgeo-heidelberg/helios/commits) [![Downloads](https://img.shields.io/github/downloads/3dgeo-heidelberg/helios/total)](https://github.com/3dgeo-heidelberg/helios/releases)
-[![Build](https://github.com/3dgeo-heidelberg/helios/actions/workflows/cmake.yml/badge.svg)](https://github.com/3dgeo-heidelberg/helios/actions)
+[![Build](https://github.com/3dgeo-heidelberg/helios/actions/workflows/ci.yml/badge.svg)](https://github.com/3dgeo-heidelberg/helios/actions)
 
 > Heidelberg LiDAR Operations Simulator ++
 
@@ -103,14 +103,14 @@ BibTeX:
 ### XML demos
 |                                                                                                                                                      |   |
 |------------------------------------------------------------------------------------------------------------------------------------------------------|---|
-| [![Example 1](img/example1_thumbnail.png)](https://nbviewer.org/github/3dgeo-heidelberg/helios/blob/dev/example_notebooks/1-tls_arbaro.ipynb)   | [![Example 2](img/example2_thumbnail.png)](https://nbviewer.org/github/3dgeo-heidelberg/helios/blob/dev/example_notebooks/2-mls_wheat.ipynb)            |
-| [![Example 3](img/example3_thumbnail.png)](https://nbviewer.org/github/3dgeo-heidelberg/helios/blob/dev/example_notebooks/3-mls_toyblocks.ipynb)   | [![Example 4](img/example4_thumbnail.png)](https://nbviewer.org/github/3dgeo-heidelberg/helios/blob/dev/example_notebooks/4-uls_toyblocks_surveyscene.ipynb)            |
-| [![Example 5](img/example5_thumbnail.png)](https://nbviewer.org/github/3dgeo-heidelberg/helios/blob/dev/example_notebooks/5_als_hd_demo.ipynb)   | [![Example 6](img/example6_thumbnail.png)](https://nbviewer.org/github/3dgeo-heidelberg/helios/blob/dev/example_notebooks/6-als_hd_height_above_ground.ipynb)            |
-| [![Example 7](img/example7_thumbnail.png)](https://nbviewer.org/github/3dgeo-heidelberg/helios/blob/dev/example_notebooks/7-tls_sphere_xyzloader.ipynb)   | [![Example 8](img/example8_thumbnail.png)](https://nbviewer.org/github/3dgeo-heidelberg/helios/blob/dev/example_notebooks/8-als_uls_detailed_voxel.ipynb)            |
-| [![Example 9](img/example9_thumbnail.png)](https://nbviewer.org/github/3dgeo-heidelberg/helios/blob/dev/example_notebooks/9-tls_livox_demo.ipynb)   | [![Example 10](img/example10_thumbnail.png)](https://nbviewer.org/github/3dgeo-heidelberg/helios/blob/dev/example_notebooks/10-uls_toyblocks_livox.ipynb)            |
-| [![Example 11](img/example11_thumbnail.png)](https://nbviewer.org/github/3dgeo-heidelberg/helios/blob/dev/example_notebooks/11-als_toyblock_multi_scanner_livox.ipynb)   | [![Example 12](img/example12_thumbnail.png)](https://nbviewer.org/github/3dgeo-heidelberg/helios/blob/dev/example_notebooks/12-multi_scanner_puck.ipynb)            |
-| [![Example 13](img/example13_thumbnail.png)](https://nbviewer.org/github/3dgeo-heidelberg/helios/blob/dev/example_notebooks/13-interpolated_trajectory.ipynb)   | [![Example 14](img/example14_thumbnail.png)](https://nbviewer.org/github/3dgeo-heidelberg/helios/blob/dev/example_notebooks/14-urban_mls_dynamic.ipynb) |
-| [![Example 15](img/example15_thumbnail.png)](https://nbviewer.org/github/3dgeo-heidelberg/helios/blob/dev/example_notebooks/15-tls_tree_dynamic.ipynb) | [![Example 16](img/example16_thumbnail.png)](https://nbviewer.org/github/3dgeo-heidelberg/helios/blob/dev/example_notebooks/16-dyn_geom_swap.ipynb) | |
+| [![Example 1](img/example1_thumbnail.png)](https://nbviewer.org/github/3dgeo-heidelberg/helios/blob/main/example_notebooks/1-tls_arbaro.ipynb)   | [![Example 2](img/example2_thumbnail.png)](https://nbviewer.org/github/3dgeo-heidelberg/helios/blob/main/example_notebooks/2-mls_wheat.ipynb)            |
+| [![Example 3](img/example3_thumbnail.png)](https://nbviewer.org/github/3dgeo-heidelberg/helios/blob/main/example_notebooks/3-mls_toyblocks.ipynb)   | [![Example 4](img/example4_thumbnail.png)](https://nbviewer.org/github/3dgeo-heidelberg/helios/blob/main/example_notebooks/4-uls_toyblocks_surveyscene.ipynb)            |
+| [![Example 5](img/example5_thumbnail.png)](https://nbviewer.org/github/3dgeo-heidelberg/helios/blob/main/example_notebooks/5_als_hd_demo.ipynb)   | [![Example 6](img/example6_thumbnail.png)](https://nbviewer.org/github/3dgeo-heidelberg/helios/blob/main/example_notebooks/6-als_hd_height_above_ground.ipynb)            |
+| [![Example 7](img/example7_thumbnail.png)](https://nbviewer.org/github/3dgeo-heidelberg/helios/blob/main/example_notebooks/7-tls_sphere_xyzloader.ipynb)   | [![Example 8](img/example8_thumbnail.png)](https://nbviewer.org/github/3dgeo-heidelberg/helios/blob/main/example_notebooks/8-als_uls_detailed_voxel.ipynb)            |
+| [![Example 9](img/example9_thumbnail.png)](https://nbviewer.org/github/3dgeo-heidelberg/helios/blob/main/example_notebooks/9-tls_livox_demo.ipynb)   | [![Example 10](img/example10_thumbnail.png)](https://nbviewer.org/github/3dgeo-heidelberg/helios/blob/main/example_notebooks/10-uls_toyblocks_livox.ipynb)            |
+| [![Example 11](img/example11_thumbnail.png)](https://nbviewer.org/github/3dgeo-heidelberg/helios/blob/main/example_notebooks/11-als_toyblock_multi_scanner_livox.ipynb)   | [![Example 12](img/example12_thumbnail.png)](https://nbviewer.org/github/3dgeo-heidelberg/helios/blob/main/example_notebooks/12-multi_scanner_puck.ipynb)            |
+| [![Example 13](img/example13_thumbnail.png)](https://nbviewer.org/github/3dgeo-heidelberg/helios/blob/main/example_notebooks/13-interpolated_trajectory.ipynb)   | [![Example 14](img/example14_thumbnail.png)](https://nbviewer.org/github/3dgeo-heidelberg/helios/blob/main/example_notebooks/14-urban_mls_dynamic.ipynb) |
+| [![Example 15](img/example15_thumbnail.png)](https://nbviewer.org/github/3dgeo-heidelberg/helios/blob/main/example_notebooks/15-tls_tree_dynamic.ipynb) | [![Example 16](img/example16_thumbnail.png)](https://nbviewer.org/github/3dgeo-heidelberg/helios/blob/main/example_notebooks/16-dyn_geom_swap.ipynb) | |
 
 
 
@@ -118,15 +118,15 @@ BibTeX:
 ### pyhelios
 |                                                                                                                                                      |   |
 |------------------------------------------------------------------------------------------------------------------------------------------------------|---|
-| [![Tutorial I](img/tutorial_I_thumbnail.png)](https://nbviewer.org/github/3dgeo-heidelberg/helios/blob/dev/example_notebooks/I-getting-started.ipynb)   | [![Tutorial II](img/tutorial_II_thumbnail.png)](https://nbviewer.org/github/3dgeo-heidelberg/helios/blob/dev/example_notebooks/II-the-survey.ipynb)            |
-| [![Tutorial III](img/tutorial_III_thumbnail.png)](https://nbviewer.org/github/3dgeo-heidelberg/helios/blob/dev/example_notebooks/III-pyhelios_sim_and_vis.ipynb)   | [![Tutorial IV](img/tutorial_IV_thumbnail.png)](https://nbviewer.org/github/3dgeo-heidelberg/helios/blob/dev/example_notebooks/IV-live_trajectory_plot.ipynb)            |
+| [![Tutorial I](img/tutorial_I_thumbnail.png)](https://nbviewer.org/github/3dgeo-heidelberg/helios/blob/main/example_notebooks/I-getting-started.ipynb)   | [![Tutorial II](img/tutorial_II_thumbnail.png)](https://nbviewer.org/github/3dgeo-heidelberg/helios/blob/main/example_notebooks/II-the-survey.ipynb)            |
+| [![Tutorial III](img/tutorial_III_thumbnail.png)](https://nbviewer.org/github/3dgeo-heidelberg/helios/blob/main/example_notebooks/III-pyhelios_sim_and_vis.ipynb)   | [![Tutorial IV](img/tutorial_IV_thumbnail.png)](https://nbviewer.org/github/3dgeo-heidelberg/helios/blob/main/example_notebooks/IV-live_trajectory_plot.ipynb)            |
 
 
 ### Further examples
 
 |                                                                                                                                                      |   |
 |------------------------------------------------------------------------------------------------------------------------------------------------------|---|
-| [![Example A](img/exampleA_thumbnail.png)](https://nbviewer.org/github/3dgeo-heidelberg/helios/blob/dev/example_notebooks/A-arboretum_notebook.ipynb)   |             |
+| [![Example A](img/exampleA_thumbnail.png)](https://nbviewer.org/github/3dgeo-heidelberg/helios/blob/main/example_notebooks/A-arboretum_notebook.ipynb)   |             |
 
 
 
@@ -306,6 +306,10 @@ Our two own Blender add-ons allow you to export animated Blender scenes to HELIO
 ### :earth_africa: QGIS Plugin
 
 Our QGIS Plugin AEOS embeds HELIOS++ into one of the most widely used GIS applications. It enables the creation of HELIOS++ surveys using QGIS vector and raster layers and the subsequent execution of the surveys, with direct availability of the results in the form of a QGIS point cloud layer. Crucially, it allows for instant visualisation of both the input and output of a HELIOS++ simulation within a familiar user interface, thereby greatly improving ease of use. In Greek mythology, Aeos is the name of one of the four horses that pulls Helios' fiery chariot accross the sky. Feel free to download AEOS from its own [GitHub repo](https://github.com/3dgeo-heidelberg/aeos) and add it to your arsenal of QGIS plugins now!
+
+## :palms_up_together: Contributing
+
+If you want to contribute to our project and make it better, your help is very welcome. Read the [Contribution Guide](https://github.com/3dgeo-heidelberg/helios/blob/main/CONTRIBUTING.md) to get started.
 
 ## 📜 License
 
