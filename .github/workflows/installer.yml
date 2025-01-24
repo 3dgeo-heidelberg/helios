@@ -1,0 +1,130 @@
+name: Create conda-based installers
+
+on:
+  workflow_dispatch:
+    inputs:
+      helios_version:
+        description: 'Helios version to build'
+        required: true
+        # It would be nice to somehow extract this from the actual
+        # latest version of Helios, but that would require a Python
+        # script to perform `conda repoquery search helios --json` etc.
+        default: '2.0.1'
+
+jobs:
+  build-installer:
+    name: Build installer for ${{ matrix.platform }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        include:
+          - os: ubuntu-latest
+            platform: linux-64
+          - os: windows-latest
+            platform: win-64
+          - os: macos-13
+            platform: osx-64
+          - os: macos-14
+            platform: osx-arm64
+    defaults:
+      run:
+        # Conda requires a login shell in order to work properly
+        shell: bash -l {0}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Create constructor dev environment
+        uses: conda-incubator/setup-miniconda@v3
+        with:
+          channels: conda-forge,defaults
+
+      - name: Install constructor and menuinst
+        run: |
+          conda install constructor menuinst
+
+      - name: Install jinja2-cli
+        run: |
+          python -m pip install jinja2-cli[yaml]
+
+      - name: Render the constructor configuration
+        run: |
+          jinja2 -D version=${{ github.event.inputs.helios_version }} ./constructor/construct.yaml.j2 -o construct.yaml
+
+      - name: Create installer
+        run: |
+          mkdir dist
+          constructor . --output-dir dist --verbose
+
+      - name: Upload installer
+        uses: actions/upload-artifact@v4
+        with:
+          name: installer-${{ matrix.platform }}
+          path: dist/*
+          retention-days: 1
+
+  test-installer:
+    name: Test installer for ${{ matrix.os }}
+    needs: [build-installer]
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        include:
+          - os: ubuntu-latest
+            platform: linux-64
+          - os: windows-latest
+            platform: win-64
+          - os: macos-13
+            platform: osx-64
+          - os: macos-14
+            platform: osx-arm64
+    defaults:
+      run:
+        # Conda requires a login shell in order to work properly
+        shell: bash -l {0}
+
+    steps:
+      - name: Download installer
+        uses: actions/download-artifact@v4
+        with:
+          name: installer-${{ matrix.platform }}
+          path: dist
+
+      - name: Extract installer path
+        run: |
+          echo "INSTALLER=$(ls ./dist)" >> $GITHUB_ENV
+
+      - name: Install Helios through installer
+        uses: conda-incubator/setup-miniconda@v3
+        with:
+          auto-activate-base: true
+          activate-environment: ""
+          installer-url: file://${{ github.workspace }}/dist/${{ env.INSTALLER }}
+
+      - name: Ensure that the package is working (rudimentary)
+        run: |
+          helios --version
+          python -c "import pyhelios; print(pyhelios.__version__)"
+
+  checksums:
+    name: Calculate checksums
+    needs: [test-installer]
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download all installers
+        uses: actions/download-artifact@v4
+        with:
+          pattern: installer-*
+          path: dist
+
+      - name: Calculate checksums
+        run: |
+          sha256sum $(find ./dist -type f) > checksums.txt
+
+      - name: Upload checksums
+        uses: actions/upload-artifact@v4
+        with:
+          name: checksums
+          path: checksums.txt
+          retention-days: 1
