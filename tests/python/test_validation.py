@@ -11,6 +11,10 @@ class MockCppObject:
     somevec = [0, 1]
 
 
+class DerivedMockCppObject(MockCppObject):
+    derived = 42
+
+
 class RelatedCppMockObject:
     other = MockCppObject()
 
@@ -57,6 +61,19 @@ def test_instantiation():
 
     with pytest.raises(ValueError):
         obj = Obj(42)
+
+
+class test_derived():
+    class Obj(ValidatedCppModel, cpp_class=MockCppObject):
+        someint: int = ValidatedCppManagedProperty("someint", default=42)
+
+    class DerivedObj(Obj, cpp_class=DerivedMockCppObject):
+        derived: int = ValidatedCppManagedProperty("derived", default=42)
+
+    obj = DerivedObj()
+    assert isinstance(obj._cpp_object, DerivedMockCppObject)
+    assert obj.someint == 42
+    assert obj.derived == 42
 
 
 def test_iterable_property():

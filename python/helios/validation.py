@@ -96,9 +96,15 @@ class ValidatedCppManagedProperty:
 @dataclass_transform()
 class ValidatedCppModelMetaClass(type):
     def __new__(cls, name, bases, dct, *args, **kwargs):
-        fields = {
-            k: v for k, v in dct.items() if isinstance(v, ValidatedCppManagedProperty)
-        }
+
+        cls = super().__new__(cls, name, bases, dct, **kwargs)
+
+        # Retrieve properties while preserving their definition order
+        fields = {}
+        for base in reversed(cls.mro()[:-1]):  # Traverse from base to derived
+            for key, value in base.__dict__.items():
+                if isinstance(value, ValidatedCppManagedProperty) and key not in fields:
+                    fields[key] = value
 
         def __init__(self, *args, **instance_kwargs):
             # Iterate the fields in exactly the given order. When using a different order,
@@ -122,9 +128,9 @@ class ValidatedCppModelMetaClass(type):
                 # Raise an error if this was required and not we reached this point
                 raise ValueError(f"Missing required argument: {name}")
 
-        dct["__init__"] = __init__
+        setattr(cls, "__init__", __init__)
 
-        return super().__new__(cls, name, bases, dct, **kwargs)
+        return cls
 
 
 class ValidatedCppModel(metaclass=ValidatedCppModelMetaClass):
