@@ -87,6 +87,11 @@ ScanningDevice::ScanningDevice(ScanningDevice const &scdev){
 // ***  M E T H O D S  *** //
 // *********************** //
 void ScanningDevice::prepareSimulation(bool const legacyEnergyModel){
+    // Clear cached data (required when running multiple times)
+    cached_subrayDivergenceAngle_rad.clear();
+    cached_subrayRotation.clear();
+    cached_subrayRadiusStep.clear();
+
     // Elliptical footprint discrete method
     int const beamSampleQuality = FWF_settings.beamSampleQuality;
     double const radiusStep_rad = beamDivergence_rad/beamSampleQuality;
