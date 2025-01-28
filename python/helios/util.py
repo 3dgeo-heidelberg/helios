@@ -3,6 +3,7 @@ import numpy as np
 import os
 
 from pathlib import Path
+from typing import Union
 
 
 # The list of user provided directories that will be searched for assets.
@@ -16,12 +17,12 @@ _builtin_asset_directories = [
 ]
 
 
-def add_asset_directory(directory: Path | str) -> None:
+def add_asset_directory(directory: Path) -> None:
     """
     Add a directory to the list of directories that will be searched for assets.
 
     :param directory: The directory to add.
-    :type directory: Path | str
+    :type directory: Path
     """
 
     directory = Path(directory)
@@ -41,7 +42,7 @@ def get_asset_directories() -> list[Path]:
     return _custom_asset_directories + _builtin_asset_directories
 
 
-def find_file(filename: str, fatal: bool = True) -> Path | None:
+def find_file(filename: str, fatal: bool = True) -> Union[Path, None]:
     """
     Find a file in the list of directories that have been added as asset directories
     or in some default search locations.
