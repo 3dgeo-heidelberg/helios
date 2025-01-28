@@ -6,7 +6,7 @@ import sys
 
 def _get_executable():
     """Locate the compiled Helios executable."""
-    return resources.files("_helios") / "pyhelios" / "bin" / "helios++"
+    return resources.files("_helios") / "helios" / "bin" / "helios++"
 
 
 def helios_exec(args):
@@ -18,8 +18,8 @@ def helios_exec(args):
     args = args + ["--assets", os.getcwd()]
 
     # We always look in the Python installation tree
-    args = args + ["--assets", resources.files("pyhelios")]
-    args = args + ["--assets", resources.files("pyhelios") / "data"]
+    args = args + ["--assets", resources.files("helios")]
+    args = args + ["--assets", resources.files("helios") / "data"]
 
     # Inject the legacy model switch. This is part of our transitioning strategy
     # to the new energy model.

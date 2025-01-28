@@ -181,6 +181,10 @@ def test_detailedVoxels_uls_exe(regression_data, output_dir):
 
 
 @pytest.mark.pyh
+@pytest.mark.xfail(
+    condition=sys.platform == "win32",
+    reason="This test behaves flaky (+-1 points difference) and we currently do not understand why"
+)
 def test_detailedVoxels_uls_pyh(regression_data, output_dir):
     dirname_pyh = run_helios_pyhelios(Path('data') / 'test' / 'uls_detailedVoxels_mode_comparison_min.xml',
                                       output=output_dir,

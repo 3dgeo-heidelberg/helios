@@ -14,6 +14,7 @@ dependencies:
   - matplotlib-base
   - pip
   - pybind11
+  - pydantic
   - python
   - scikit-build-core
   - setuptools_scm

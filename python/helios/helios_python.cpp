@@ -121,10 +121,11 @@ PYBIND11_MAKE_OPAQUE(std::vector<Trajectory>);
 #include <python/ScanningPulseProcessWrap.h>
 #include <python/KDTreeFactoryWrapper.h>
 #include <python/EnergyModelWrap.h>
+#include <python/PyXMLReader.h>
 
 using helios::filems::FMSFacadeFactory;
 
-namespace pyhelios{
+namespace helios{
 
     PYBIND11_MODULE(_helios, m) {
         m.doc() = "Helios python bindings";
@@ -416,6 +417,9 @@ namespace pyhelios{
             .def(py::init<>())
             .def(py::init<const Measurement &>())
             
+
+            .def_readwrite("dev_id", &Measurement::devId)
+            .def_readwrite("dev_idx", &Measurement::devIdx)
             .def_readwrite("hit_object_id", &Measurement::hitObjectId)
             .def_readwrite("beam_direction", &Measurement::beamDirection)
             .def_readwrite("beam_origin", &Measurement::beamOrigin)
@@ -705,6 +709,19 @@ namespace pyhelios{
                         [](Survey &s) { return s.simSpeedFactor; }, 
                         [](Survey &s, double simSpeedFactor) { s.simSpeedFactor = simSpeedFactor; });
 
+        // The following properties exist for ease of use in the Python API.
+        // A better solution would be to sort out object ownership on the C++
+        // side so that concepts such as scanners and platforms are independent.
+        survey.def_property(
+            "platform",
+            [](const Survey &s) { return s.scanner->platform; },
+            [](Survey& s, std::shared_ptr<Platform> p) { s.scanner->platform = p; }
+        );
+        survey.def_property(
+            "scene",
+            [](const Survey &s) { return s.scanner->platform->scene; },
+            [](Survey& s, std::shared_ptr<Scene> sc) { s.scanner->platform->scene = sc; }
+        );
 
         py::class_<Leg, std::shared_ptr<Leg>> leg(m, "Leg");
         leg
@@ -1963,8 +1980,7 @@ namespace pyhelios{
             fms_write_facade
                 .def(py::init<>())
                 .def("disconnect", &FMSWriteFacade::disconnect) 
-                .def("get_measurement_writer_output_path", &FMSWriteFacade::getMeasurementWriterOutputPath);
-
+                .def("get_measurement_writer_output_path", [](FMSWriteFacade& self){ return self.getMeasurementWriterOutputPath().string(); });
 
             py::class_<FMSFacadeFactory, std::shared_ptr<FMSFacadeFactory>> fms_facade_factory(m, "FMSFacadeFactory");
             fms_facade_factory
@@ -2228,5 +2244,11 @@ namespace pyhelios{
 
         m.def("calc_time_propagation", &calcTimePropagation, py::arg("timeWave"), py::arg("numBins"), py::arg("scanner"));
 
+        // Add helper methods for XML parsing
+        m.def("read_survey_from_xml", &readSurveyFromXml);
+        m.def("read_scanner_from_xml", &readScannerFromXml);
+        m.def("read_platform_from_xml", &readPlatformFromXml);
+        m.def("read_scene_from_xml", &readSceneFromXml);
+        m.def("read_scene_part_from_xml", &readScenePartFromXml);
     }
 }

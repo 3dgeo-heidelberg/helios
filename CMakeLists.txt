@@ -165,7 +165,7 @@ endif()
 install(
   TARGETS
     helios++
-  DESTINATION pyhelios/bin
+  DESTINATION helios/bin
 )
 
 include(FeatureSummary)

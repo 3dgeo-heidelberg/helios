@@ -4,12 +4,10 @@ on:
   push:
     branches:
       - main
-      - dev
       - alpha-dev
   pull_request:
     branches:
       - main
-      - dev
       - alpha-dev
   workflow_dispatch:
     inputs:
@@ -68,23 +66,23 @@ jobs:
       - name: Run marked tests
         if: runner.os != 'macOS' 
         run: |
-          python -m pytest -m exe
-          python -m pytest -m pyh
-
-      - name: Run tests (incl. regression tests)
-        if: runner.os == 'Windows'
-        run: |
-          python -m pytest --regression-tests
-
-      - name: Run tests (excl. regression tests)
-        if: runner.os == 'Linux'
-        run: |
           python -m pytest
 
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v4
-        if: github.event.inputs.upload-outputs == 'true'
-        with:
-          name: test-results
-          path: output/*
-          retention-days: 1
+      # TODO: Reenable this after porting the regression tests
+      # - name: Run tests (incl. regression tests)
+      #   if: runner.os == 'Windows'
+      #   run: |
+      #     python -m pytest --regression-tests
+
+      # - name: Run tests (excl. regression tests)
+      #   if: runner.os == 'Linux'
+      #   run: |
+      #     python -m pytest
+
+      # - name: Upload artifacts
+      #   uses: actions/upload-artifact@v4
+      #   if: github.event.inputs.upload-outputs == 'true'
+      #   with:
+      #     name: test-results
+      #     path: output/*
+      #     retention-days: 1

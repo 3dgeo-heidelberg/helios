@@ -1,0 +1,108 @@
+import importlib_resources as resources
+import numpy as np
+import os
+
+from pathlib import Path
+from typing import Union
+
+
+# The list of user provided directories that will be searched for assets.
+_custom_asset_directories = []
+
+# The list of built-in directories that will be searched for assets.
+_builtin_asset_directories = [
+    Path(os.getcwd()),
+    resources.files("helios"),
+    resources.files("helios") / "data",
+]
+
+
+def add_asset_directory(directory: Path) -> None:
+    """
+    Add a directory to the list of directories that will be searched for assets.
+
+    :param directory: The directory to add.
+    :type directory: Path
+    """
+
+    directory = Path(directory)
+
+    if directory not in _custom_asset_directories:
+        _custom_asset_directories.append(directory)
+
+
+def get_asset_directories() -> list[Path]:
+    """
+    Get the list of directories that will be searched for assets.
+
+    :return: The list of directories.
+    :rtype: list[Path]
+    """
+
+    return _custom_asset_directories + _builtin_asset_directories
+
+
+def find_file(filename: str, fatal: bool = True) -> Union[Path, None]:
+    """
+    Find a file in the list of directories that have been added as asset directories
+    or in some default search locations.
+
+    :param filename: The name of the file to find.
+    :type filename: str
+    :param fatal: Whether to raise an exception if the file is not found.
+    :type fatal: bool
+    :return: The path to the file, or None if the file was not found.
+    :rtype: Path
+    """
+
+    # Check if the given filename is an absolute path.
+    if Path(filename).is_absolute():
+        file_path = Path(filename)
+
+        # If it exists, return it.
+        if file_path.exists():
+            return file_path
+
+    # Iterate all the given asset directories
+    for directory in get_asset_directories():
+        file_path = directory / filename
+
+        if file_path.exists():
+            return file_path
+
+    if fatal:
+        raise FileNotFoundError(
+            f"Could not find file '{filename}' in any of the given asset directories."
+        )
+
+    return None
+
+
+meas_dtype = np.dtype(
+    [
+        ("dev_id", "U50"),
+        ("dev_idx", "u8"),
+        ("hit_object_id", "U50"),
+        ("position", "3f8"),
+        ("beam_direction", "3f8"),
+        ("beam_origin", "3f8"),
+        ("distance", "f8"),
+        ("intensity", "f8"),
+        ("echo_width", "f8"),
+        ("return_number", "i4"),
+        ("pulse_return_number", "i4"),
+        ("fullwave_index", "i4"),
+        ("classification", "i4"),
+        ("gps_time", "f8"),
+    ]
+)
+
+traj_dtype = np.dtype(
+    [
+        ("gps_time", "f8"),
+        ("position", "3f8"),
+        ("roll", "f8"),
+        ("pitch", "f8"),
+        ("yaw", "f8"),
+    ]
+)
