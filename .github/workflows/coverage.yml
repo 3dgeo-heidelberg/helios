@@ -1,0 +1,70 @@
+name: Coverage testing
+
+on:
+  push:
+    branches:
+      - main
+      - alpha-dev
+  pull_request:
+    branches:
+      - main
+      - alpha-dev
+  workflow_dispatch:
+
+jobs:
+  coverage:
+    runs-on: ubuntu-latest
+    name: Coverage Testing
+
+    defaults:
+      run:
+        # Conda requires a login shell in order to work properly
+        shell: bash -l {0}  
+    
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Create Helios dev environment
+        uses: conda-incubator/setup-miniconda@v3
+        with:
+          auto-update-conda: true
+          auto-activate-base: false
+          activate-environment: helios-dev
+          environment-file: environment-dev.yml
+          python-version: "3.13"
+          miniconda-version: "latest"
+
+      - name: Install Conda GCC
+        run: |
+          conda install -y -c conda-forge gcc gxx
+      
+      - name: Install LCov
+        run: |
+          sudo apt install lcov
+
+      - name: Install Helios (editable)
+        run: |
+          python -m pip install --no-build-isolation --config-settings=build-dir="build" --config-settings=cmake.define.CMAKE_CXX_FLAGS="--coverage" -v -e .
+        env:
+          SETUPTOOLS_SCM_SUBPROCESS_TIMEOUT: "120"
+
+      - name: Run C++ test suite
+        run: |
+          helios --test
+
+      - name: Run PyTest test suite
+        run: |
+          python -m pytest --cov --cov-report=xml 
+
+      - name: Collect C++ coverage report
+        run: |
+          lcov --directory build --capture --output-file coverage.info --ignore-errors mismatch
+      
+      - name: Upload coverage to CodeCov
+        uses: codecov/codecov-action@v5
+        with:
+          fail_ci_if_error: true
+          files: ./coverage.info,./coverage.xml
+          verbose: true
