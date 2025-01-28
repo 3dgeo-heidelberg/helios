@@ -52,7 +52,7 @@ protected:
     /**
      * @brief Decimal precision threshold for triangle computations
      */
-    double eps = 0.00001;
+    double eps = 0.0000001;
     /**
      * @brief Axis aligned bounding box containing the triangle
      * @see AABB
