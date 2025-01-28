@@ -78,7 +78,7 @@ def compute_flight_lines(bounding_box, spacing, rotate_deg=0.0, flight_pattern="
             Total distance of the flight plan
     """
     centre = np.array([(bounding_box[0] + bounding_box[2]) / 2, (bounding_box[1] + bounding_box[3]) / 2])
-    bbox_dims = np.array([[bounding_box[2] - bounding_box[0]], [bounding_box[3] - bounding_box[1]]])
+    bbox_dims = np.array([bounding_box[2] - bounding_box[0], bounding_box[3] - bounding_box[1]])
     n_flight_lines_x = int(np.floor(bbox_dims[1] / spacing))
     n_flight_lines_y = int(np.floor(bbox_dims[0] / spacing))
     pattern_options = ["parallel", "criss-cross"]
