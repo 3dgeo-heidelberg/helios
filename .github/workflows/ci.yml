@@ -76,7 +76,7 @@ jobs:
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
-        if: github.event.inputs.upload-outputs == 'true'
+        if: always() && github.event.inputs.upload-outputs == 'true'
         with:
           name: test-results
           path: output/*
