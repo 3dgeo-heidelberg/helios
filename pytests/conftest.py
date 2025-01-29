@@ -6,7 +6,7 @@ import shutil
 
 
 TEST_DATA_ARCHIVE = "https://github.com/3dgeo-heidelberg/helios-test-data/releases/download/2025-01-29/data.tar.gz"
-TEST_DATA_CHECKSUM = "b74b6591e9619dc03bd0c0ced6be6a047cc7ca3ef784e3ba25c3de0ef6291969"
+TEST_DATA_CHECKSUM = "d15873ddc06d6dd15d9db31277feefa8064082788c69a80dc403525f2e07dbe5"
 
 
 @pytest.fixture
