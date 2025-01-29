@@ -79,5 +79,5 @@ jobs:
         if: always() && github.event.inputs.upload-outputs == 'true'
         with:
           name: test-results
-          path: output/*
+          path: pytest-output/*
           retention-days: 1
