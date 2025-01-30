@@ -171,6 +171,10 @@ def eval_tiffloader_als(regression_data, dirname):
 
 
 @pytest.mark.exe
+@pytest.mark.xfail(
+    condition=sys.platform == "win32",
+    reason="This test behaves flaky (+-1 points difference) and we currently do not understand why"
+)
 def test_detailedVoxels_uls_exe(regression_data, output_dir):
     dirname_exe = run_helios_executable(Path('data') / 'test' / 'uls_detailedVoxels_mode_comparison_min.xml',
                                         output_dir,
