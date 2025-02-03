@@ -5,6 +5,17 @@ use_directory_urls: false
 extra_javascript: 
     - https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML
     - fixlinks.js
+plugins:
+    - mkdoxy:
+        projects:
+            heliosAPI:
+                src-dirs: ../src
+                full-doc: True
+                doxy-cfg:
+                    SHORT_NAMES: True
+        full-doc: True
+        debug: False
+        ignore-errors: False
 markdown_extensions:
     - mdx_math:
         use_gitlab_delimiters: true
@@ -41,6 +52,28 @@ nav:
     - 'Getting started': 'Python-bindings-🐍-Getting-started.md'
     - 'Details': 'Python-bindings-🐍-Details.md'
 - 'pyhelios: the util subpackage': 'pyhelios-🐍-The-util-subpackage.md'
+- 'C++ API documentation':
+    - "Links": "heliosAPI/links.md"
+    - "Classes":
+        - "Class List": "heliosAPI/annotated.md"
+        - "Class Index": "heliosAPI/classes.md"
+        - "Class Hierarchy": "heliosAPI/hierarchy.md"
+        - "Class Members": "heliosAPI/class_members.md"
+        - "Class Member Functions": "heliosAPI/class_member_functions.md"
+        - "Class Member Variables": "heliosAPI/class_member_variables.md"
+        - "Class Member Typedefs": "heliosAPI/class_member_typedefs.md"
+        - "Class Member Enumerations": "heliosAPI/class_member_enums.md"
+    - "Namespaces":
+        - "Namespace List": "heliosAPI/namespaces.md"
+        - "Namespace Members": "heliosAPI/namespace_members.md"
+        - "Namespace Member Functions": "heliosAPI/namespace_member_functions.md"
+        - "Namespace Member Variables": "heliosAPI/namespace_member_variables.md"
+        - "Namespace Member Typedefs": "heliosAPI/namespace_member_typedefs.md"
+        - "Namespace Member Enumerations": "heliosAPI/namespace_member_enums.md"
+    - "Functions": "heliosAPI/functions.md"
+    - "Variables": "heliosAPI/variables.md"
+    - "Macros": "heliosAPI/macros.md"
+    - "Files": "heliosAPI/files.md"
 - 'Misc':
     - 'Dealing with large scenes': 'Dealing-with-large-scenes.md'
     - 'Scene generation - external tools': 'Supplementary-tools-for-scene-generation.md'
