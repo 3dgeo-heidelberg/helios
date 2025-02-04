@@ -271,9 +271,9 @@ void XYZPointCloudFileLoader::prepareVoxelsGrid(
     if(nz == 0) nz = 1;
     nynz = ny * nz;
     maxNVoxels = nx*nynz;
-    xCoeff = nx / deltaX;
-    yCoeff = ny / deltaY;
-    zCoeff = nz / deltaZ;
+    xCoeff = 1/voxelSize;
+    yCoeff = 1/voxelSize;
+    zCoeff = 1/voxelSize;
 
     // Instantiate voxel grid
     if(
