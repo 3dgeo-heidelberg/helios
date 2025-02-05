@@ -18,14 +18,14 @@ import _helios
 
 class Survey(Model, cpp_class=_helios.Survey):
     scanner: Scanner = Property(
-        "scanner", Scanner, unique_across_instances=True
+        cpp="scanner", wraptype=Scanner, unique_across_instances=True
     )
-    platform: Platform = Property("platform", Platform)
-    scene: Scene = Property("scene", Scene)
+    platform: Platform = Property(cpp="platform", wraptype=Platform)
+    scene: Scene = Property(cpp="scene", wraptype=Scene)
     legs: list[Leg] = Property(
-        "legs", Leg, iterable=True, default=[]
+        cpp="legs", wraptype=Leg, iterable=True, default=[]
     )
-    name: str = Property("name", default="")
+    name: str = Property(cpp="name", default="")
 
     @validate_call
     def run(

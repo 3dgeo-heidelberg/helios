@@ -16,7 +16,7 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
 
 class Scene(Model, cpp_class=_helios.Scene):
     scene_parts: list[ScenePart] = Property(
-        "scene_parts", ScenePart, iterable=True, default=[]
+        cpp="scene_parts", wraptype=ScenePart, iterable=True, default=[]
     )
 
     @classmethod

@@ -21,9 +21,9 @@ class RelatedCppMockObject:
 
 def test_validated_cpp_model():
     class Obj(Model, cpp_class=MockCppObject):
-        someint: int = Property("someint", default=42)
-        somestr: str = Property("somestr", default="Foobar")
-        somebool: bool = Property("somebool", default=True)
+        someint: int = Property(cpp="someint", default=42)
+        somestr: str = Property(cpp="somestr", default="Foobar")
+        somebool: bool = Property(cpp="somebool", default=True)
 
     obj = Obj()
 
@@ -40,9 +40,9 @@ def test_validated_cpp_model():
 
 def test_instantiation():
     class Obj(Model, cpp_class=MockCppObject):
-        someint: int = Property("someint")
-        somestr: str = Property("somestr")
-        somebool: bool = Property("somebool", default=True)
+        someint: int = Property(cpp="someint")
+        somestr: str = Property(cpp="somestr")
+        somebool: bool = Property(cpp="somebool", default=True)
 
     obj = Obj(42, "Foobar")
     assert obj.someint == 42
@@ -65,10 +65,10 @@ def test_instantiation():
 
 class test_derived():
     class Obj(Model, cpp_class=MockCppObject):
-        someint: int = Property("someint", default=42)
+        someint: int = Property(cpp="someint", default=42)
 
     class DerivedObj(Obj, cpp_class=DerivedMockCppObject):
-        derived: int = Property("derived", default=42)
+        derived: int = Property(cpp="derived", default=42)
 
     obj = DerivedObj()
     assert isinstance(obj._cpp_object, DerivedMockCppObject)
@@ -79,7 +79,7 @@ class test_derived():
 def test_iterable_property():
     class IterObj(Model, cpp_class=MockCppObject):
         somevec: list[int] = Property(
-            "somevec", iterable=True, default=[0, 1]
+            cpp="somevec", iterable=True, default=[0, 1]
         )
 
     obj = IterObj()
@@ -96,12 +96,12 @@ def test_iterable_property():
 
 def test_wrapping():
     class Obj(Model, cpp_class=MockCppObject):
-        someint: int = Property("someint", default=0)
+        someint: int = Property(cpp="someint", default=0)
 
     class RelatedObj(Model, cpp_class=RelatedCppMockObject):
-        other: Obj = Property("other", Obj, default=Obj())
+        other: Obj = Property(cpp="other", wraptype=Obj, default=Obj())
         otherlist: list[Obj] = Property(
-            "otherlist", Obj, iterable=True, default=[]
+            cpp="otherlist", wraptype=Obj, iterable=True, default=[]
         )
 
     class DerivedObj(Obj):
@@ -130,7 +130,7 @@ def test_unique_across_instances():
 
     class RelatedObj(Model, cpp_class=RelatedCppMockObject):
         other: Obj = Property(
-            "other", Obj, unique_across_instances=True
+            cpp="other", wraptype=Obj, unique_across_instances=True
         )
 
     obj = Obj()
@@ -170,7 +170,7 @@ def test_cloning():
             return copy.deepcopy(self)
 
     class Obj(Model, cpp_class=CloneableMockCppObject):
-        someint: int = Property("someint", default=42)
+        someint: int = Property(cpp="someint", default=42)
 
     obj = Obj()
     clone = obj.clone()
@@ -181,7 +181,7 @@ def test_cloning():
 
 def test_updateable_mixin():
     class Obj(Model, UpdateableMixin, cpp_class=MockCppObject):
-        someint: int = Property("someint", default=42)
+        someint: int = Property(cpp="someint", default=42)
 
     obj = Obj()
     obj.update_from_dict({"someint": 43})

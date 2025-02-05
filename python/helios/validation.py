@@ -14,13 +14,13 @@ class Property:
 
     def __init__(
         self,
-        name,
+        cpp=None,
         wraptype=None,
         iterable=False,
         default=None,
         unique_across_instances=False,
     ):
-        self.name = name
+        self.cpp = cpp
         assert wraptype is None or issubclass(wraptype, Model)
         self.wraptype = wraptype
         self.iterable = iterable
@@ -33,7 +33,7 @@ class Property:
         return value
 
     def __get__(self, obj, objtype=None):
-        val = getattr(obj._cpp_object, self.name)
+        val = getattr(obj._cpp_object, self.cpp)
 
         if self.iterable:
             return type(val)(self._maybe_wrap(item) for item in val)
@@ -76,20 +76,20 @@ class Property:
                     obj.__class__._uniqueness = {}
                 if cpp_value in obj.__class__.__dict__["_uniqueness"].values():
                     raise ValueError(
-                        f"This value for property {self.name} is already in use by a different instance."
+                        f"This value for property {self.cpp} is already in use by a different instance."
                     )
-                obj.__class__.__dict__["_uniqueness"][self.name] = cpp_value
+                obj.__class__.__dict__["_uniqueness"][self.cpp] = cpp_value
 
-            setattr(obj._cpp_object, self.name, cpp_value)
+            setattr(obj._cpp_object, self.cpp, cpp_value)
 
         _validated_setter(value)
 
     def _get_annotation(self, obj):
         for cls in obj.__class__.__mro__:
-            if self.name in getattr(cls, "__annotations__", {}):
-                return cls.__annotations__[self.name]
+            if self.cpp in getattr(cls, "__annotations__", {}):
+                return cls.__annotations__[self.cpp]
         raise AttributeError(
-            f"'{obj.__class__.__name__}' object has no annotation for '{self.name}'"
+            f"'{obj.__class__.__name__}' object has no annotation for '{self.cpp}'"
         )
 
 

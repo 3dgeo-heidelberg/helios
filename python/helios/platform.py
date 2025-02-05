@@ -10,15 +10,15 @@ class PlatformSettingsBase(Model, UpdateableMixin, cpp_class=_helios.PlatformSet
 
 
 class PlatformSettings(PlatformSettingsBase):
-    x: float = Property("x", default=0)
-    y: float = Property("y", default=0)
-    z: float = Property("z", default=0)
+    x: float = Property(cpp="x", default=0)
+    y: float = Property(cpp="y", default=0)
+    z: float = Property(cpp="z", default=0)
 
 
 class StaticPlatformSettings(PlatformSettingsBase):
-    x: float = Property("x", default=0)
-    y: float = Property("y", default=0)
-    z: float = Property("z", default=0)
+    x: float = Property(cpp="x", default=0)
+    y: float = Property(cpp="y", default=0)
+    z: float = Property(cpp="z", default=0)
 
 
 class Platform(Model, cpp_class=_helios.Platform):

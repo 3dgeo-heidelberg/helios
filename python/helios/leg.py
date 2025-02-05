@@ -7,8 +7,8 @@ import _helios
 
 class Leg(Model, cpp_class=_helios.Leg):
     platform_settings: PlatformSettingsBase = Property(
-        "platform_settings", wraptype=PlatformSettings, default=PlatformSettings()
+        cpp="platform_settings", wraptype=PlatformSettings, default=PlatformSettings()
     )
     scanner_settings: ScannerSettingsBase = Property(
-        "scanner_settings", wraptype=ScannerSettings, default=ScannerSettings()
+        cpp="scanner_settings", wraptype=ScannerSettings, default=ScannerSettings()
     )
