@@ -95,56 +95,20 @@ class Survey(ValidatedCppModel, cpp_class=_helios.Survey):
         playback.callback_frequency = 0
 
         self.scanner._cpp_object.cycle_measurements_mutex = None
-        self.scanner._cpp_object.cycle_measurements = []
-        self.scanner._cpp_object.cycle_trajectories = []
-        self.scanner._cpp_object.all_measurements = []
-        self.scanner._cpp_object.all_trajectories = []
-        self.scanner._cpp_object.all_output_paths = []
-
+        self.scanner._cpp_object.cycle_measurements = np.empty((0,), dtype=meas_dtype)
+        self.scanner._cpp_object.cycle_trajectories = np.empty((0,), dtype=traj_dtype)
+        self.scanner._cpp_object.all_measurements = np.empty((0,), dtype=meas_dtype)
+        self.scanner._cpp_object.all_trajectories = np.empty((0,), dtype=traj_dtype)
+        self.scanner._cpp_object.all_output_paths = np.empty((0,))
         # Start simulating the survey
         playback.start()
 
         if output is None:
             measurements = self.scanner._cpp_object.all_measurements
-            num_measurements = len(measurements)
-
-            data_mes = np.empty(num_measurements, dtype=meas_dtype)
-
-            for i, measurement in enumerate(measurements):
-                data_mes[i] = (
-                    measurement.dev_id,
-                    measurement.dev_idx,
-                    measurement.hit_object_id,
-                    tuple(measurement.position),
-                    tuple(measurement.beam_direction),
-                    tuple(measurement.beam_origin),
-                    measurement.distance,
-                    measurement.intensity,
-                    measurement.echo_width,
-                    measurement.return_number,
-                    measurement.pulse_return_number,
-                    measurement.fullwave_index,
-                    measurement.classification,
-                    measurement.gps_time,
-                )
-
             trajectories = self.scanner._cpp_object.all_trajectories
-            num_trajectories = len(trajectories)
-
-            data_traj = np.empty(num_trajectories, dtype=traj_dtype)
-
-            for i, trajectory in enumerate(trajectories):
-                data_traj[i] = (
-                    trajectory.gps_time,
-                    tuple(trajectory.position),
-                    trajectory.roll,
-                    trajectory.pitch,
-                    trajectory.yaw,
-                )
-
             temp_dir_obj.cleanup()
-
-            return data_mes, data_traj
+            
+            return measurements, trajectories
 
         # Return path to the created output directory
         return Path(playback.fms.write.get_measurement_writer_output_path()).parent
