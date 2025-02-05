@@ -109,56 +109,22 @@ class Survey(Model, cpp_class=_helios.Survey):
         playback.callback_frequency = 0
 
         self.scanner._cpp_object.cycle_measurements_mutex = None
-        self.scanner._cpp_object.cycle_measurements = []
-        self.scanner._cpp_object.cycle_trajectories = []
-        self.scanner._cpp_object.all_measurements = []
-        self.scanner._cpp_object.all_trajectories = []
-        self.scanner._cpp_object.all_output_paths = []
-
+        self.scanner._cpp_object.cycle_measurements = np.empty((0,), dtype=meas_dtype)
+        self.scanner._cpp_object.cycle_trajectories = np.empty((0,), dtype=traj_dtype)
+        self.scanner._cpp_object.all_measurements = np.empty((0,), dtype=meas_dtype)
+        self.scanner._cpp_object.all_trajectories = np.empty((0,), dtype=traj_dtype)
+        self.scanner._cpp_object.all_output_paths = np.empty((0,))
         # Start simulating the survey
         playback.start()
 
         if output_settings.format in (OutputFormat.NPY, OutputFormat.LASPY):
             measurements = self.scanner._cpp_object.all_measurements
-            num_measurements = len(measurements)
-            data_mes = np.empty(num_measurements, dtype=meas_dtype)
-
-            for i, measurement in enumerate(measurements):
-                data_mes[i] = (
-                    measurement.dev_id,
-                    measurement.dev_idx,
-                    measurement.hit_object_id,
-                    tuple(measurement.position),
-                    tuple(measurement.beam_direction),
-                    tuple(measurement.beam_origin),
-                    measurement.distance,
-                    measurement.intensity,
-                    measurement.echo_width,
-                    measurement.return_number,
-                    measurement.pulse_return_number,
-                    measurement.fullwave_index,
-                    measurement.classification,
-                    measurement.gps_time,
-                )
 
             trajectories = self.scanner._cpp_object.all_trajectories
-            num_trajectories = len(trajectories)
-
-            data_traj = np.empty(num_trajectories, dtype=traj_dtype)
-
-            for i, trajectory in enumerate(trajectories):
-                data_traj[i] = (
-                    trajectory.gps_time,
-                    tuple(trajectory.position),
-                    trajectory.roll,
-                    trajectory.pitch,
-                    trajectory.yaw,
-                )
-
             temp_dir_obj.cleanup()
 
             if output_settings.format == OutputFormat.NPY:
-                return data_mes, data_traj
+                return measurements, trajectories
 
             if output_settings.format == OutputFormat.LASPY:
                 header = laspy.LasHeader(version="1.4", point_format=6)
@@ -174,19 +140,19 @@ class Survey(Model, cpp_class=_helios.Survey):
                 las = laspy.LasData(header)
                 las.synthetic = np.ones_like(las.synthetic)
 
-                las.x = data_mes["position"][:, 0]
-                las.y = data_mes["position"][:, 1]
-                las.z = data_mes["position"][:, 2]
-                las.intensity = data_mes["intensity"]
-                las.return_number = data_mes["return_number"]
-                las.number_of_returns = data_mes["pulse_return_number"]
-                las.gps_time = data_mes["gps_time"]
-                las.classification = data_mes["classification"]
-                las.echo_width = data_mes["echo_width"]
-                las.fullwaveIndex = data_mes["fullwave_index"]
+                las.x = measurements["position"][:, 0]
+                las.y = measurements["position"][:, 1]
+                las.z = measurements["position"][:, 2]
+                las.intensity = measurements["intensity"]
+                las.return_number = measurements["return_number"]
+                las.number_of_returns = measurements["pulse_return_number"]
+                las.gps_time = measurements["gps_time"]
+                las.classification = measurements["classification"]
+                las.echo_width = measurements["echo_width"]
+                las.fullwaveIndex = measurements["fullwave_index"]
                 # las.hitObjectId = data_mes["hit_object_id"]
 
-                return las, data_traj
+                return las, trajectories
 
         # Return path to the created output directory
         return Path(playback.fms.write.get_measurement_writer_output_path()).parent
