@@ -63,7 +63,7 @@ def test_instantiation():
         obj = Obj(42)
 
 
-class test_derived():
+def test_derived():
     class Obj(Model, cpp_class=MockCppObject):
         someint: int = Property(cpp="someint", default=42)
 
@@ -78,9 +78,7 @@ class test_derived():
 
 def test_iterable_property():
     class IterObj(Model, cpp_class=MockCppObject):
-        somevec: list[int] = Property(
-            cpp="somevec", iterable=True, default=[0, 1]
-        )
+        somevec: list[int] = Property(cpp="somevec", iterable=True, default=[0, 1])
 
     obj = IterObj()
 
@@ -129,9 +127,7 @@ def test_unique_across_instances():
         pass
 
     class RelatedObj(Model, cpp_class=RelatedCppMockObject):
-        other: Obj = Property(
-            cpp="other", wraptype=Obj, unique_across_instances=True
-        )
+        other: Obj = Property(cpp="other", wraptype=Obj, unique_across_instances=True)
 
     obj = Obj()
     related1 = RelatedObj(obj)
@@ -194,3 +190,43 @@ def test_updateable_mixin():
         obj.update_from_dict({"unknown": 42})
 
     obj.update_from_dict({"unknown": 42}, skip_exceptions=True)
+
+
+def test_non_cpp_property():
+    class Obj(Model, cpp_class=MockCppObject):
+        someint: int = Property(cpp="someint", default=42)
+        noncpp: int = Property(default=42)
+
+    obj = Obj()
+    assert obj.noncpp == 42
+
+    obj.noncpp = 43
+    assert obj.noncpp == 43
+
+    obj2 = Obj()
+    assert obj2.noncpp == 42
+    assert obj.noncpp == 43
+
+
+def test_no_cpp_class():
+    class Obj(Model):
+        noncpp: int = Property(default=42)
+
+    obj = Obj()
+    assert obj.noncpp == 42
+
+    obj.noncpp = 43
+    assert obj.noncpp == 43
+
+
+def test_rely_on_classdict():
+    # A testing scenario where we require the class dict to be used
+    class Obj(Model, cpp_class=MockCppObject):
+        noncpp: int = Property(default=42)
+
+    class RelatedObj(Model, cpp_class=RelatedCppMockObject):
+        other: Obj = Property(cpp="other", wraptype=Obj, default=Obj())
+
+    obj = RelatedObj()
+    obj.other.noncpp = 43
+    assert obj.other.noncpp == 43
