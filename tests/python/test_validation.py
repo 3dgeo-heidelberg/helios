@@ -230,3 +230,26 @@ def test_rely_on_classdict():
     obj = RelatedObj()
     obj.other.noncpp = 43
     assert obj.other.noncpp == 43
+
+
+def test_wrong_wraptype():
+    with pytest.raises(TypeError):
+
+        class Obj(Model, cpp_class=MockCppObject):
+            someint: int = Property(cpp="someint", wraptype=int)
+
+    class Obj(Model, cpp_class=MockCppObject):
+        someint: int = Property(cpp="someint")
+
+    with pytest.raises(ValueError):
+
+        class Obj(Model, cpp_class=MockCppObject):
+            other: Obj = Property(wraptype=Obj)
+
+
+def test_missing_type_annotation():
+    class Obj(Model, cpp_class=MockCppObject):
+        someint = Property(cpp="someint", default=42)
+
+    with pytest.raises(TypeError):
+        obj = Obj()
