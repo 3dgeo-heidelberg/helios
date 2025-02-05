@@ -1,39 +1,39 @@
 from helios.util import get_asset_directories
-from helios.validation import ValidatedCppModel, ValidatedCppManagedProperty, UpdateableMixin
+from helios.validation import Model, Property, UpdateableMixin
 from pathlib import Path
 
 import _helios
 import numpy as np
 
 
-class ScannerSettingsBase(ValidatedCppModel, UpdateableMixin, cpp_class=_helios.ScannerSettings):
+class ScannerSettingsBase(Model, UpdateableMixin, cpp_class=_helios.ScannerSettings):
     pass
 
 
 class ScannerSettings(ScannerSettingsBase):
-    is_active: bool = ValidatedCppManagedProperty("is_active", default=True)
-    head_rotation: float = ValidatedCppManagedProperty("head_rotation", default=0)
-    rotation_start_angle: float = ValidatedCppManagedProperty("rotation_start_angle", default=0)
-    rotation_stop_angle: float = ValidatedCppManagedProperty("rotation_stop_angle", default=0)
-    pulse_frequency: int = ValidatedCppManagedProperty("pulse_frequency", default=300000)
-    scan_angle: float = ValidatedCppManagedProperty("scan_angle", default=0.349066)
-    min_vertical_angle: float = ValidatedCppManagedProperty("min_vertical_angle", default=np.nan)
-    max_vertical_angle: float = ValidatedCppManagedProperty("max_vertical_angle", default=np.nan)
-    scan_frequency: float = ValidatedCppManagedProperty("scan_frequency", default=200)
-    beam_divergence_angle: float = ValidatedCppManagedProperty("beam_divergence_angle", default=0.0003)
-    trajectory_time_interval: float = ValidatedCppManagedProperty(
+    is_active: bool = Property("is_active", default=True)
+    head_rotation: float = Property("head_rotation", default=0)
+    rotation_start_angle: float = Property("rotation_start_angle", default=0)
+    rotation_stop_angle: float = Property("rotation_stop_angle", default=0)
+    pulse_frequency: int = Property("pulse_frequency", default=300000)
+    scan_angle: float = Property("scan_angle", default=0.349066)
+    min_vertical_angle: float = Property("min_vertical_angle", default=np.nan)
+    max_vertical_angle: float = Property("max_vertical_angle", default=np.nan)
+    scan_frequency: float = Property("scan_frequency", default=200)
+    beam_divergence_angle: float = Property("beam_divergence_angle", default=0.0003)
+    trajectory_time_interval: float = Property(
         "trajectory_time_interval", default=0.01
     )
-    vertical_resolution: float = ValidatedCppManagedProperty("vertical_resolution", default=0)
-    horizontal_resolution: float = ValidatedCppManagedProperty("horizontal_resolution", default=0)
+    vertical_resolution: float = Property("vertical_resolution", default=0)
+    horizontal_resolution: float = Property("horizontal_resolution", default=0)
 
 
 # TODO: Requires expert input
 class RotatingOpticsScannerSettings(ScannerSettingsBase):
-    is_active: bool = ValidatedCppManagedProperty("is_active", default=True)
-    head_rotation: float = ValidatedCppManagedProperty("head_rotation", default=0)
-    rotation_start_angle: float = ValidatedCppManagedProperty("rotation_start_angle", default=0)
-    rotation_stop_angle: float = ValidatedCppManagedProperty("rotation_stop_angle", default=0)
+    is_active: bool = Property("is_active", default=True)
+    head_rotation: float = Property("head_rotation", default=0)
+    rotation_start_angle: float = Property("rotation_start_angle", default=0)
+    rotation_stop_angle: float = Property("rotation_stop_angle", default=0)
 
 
 # TODO: Requires expert input
@@ -56,7 +56,7 @@ class RisleyOpticsScannerSettings(ScannerSettingsBase):
     pass
 
 
-class Scanner(ValidatedCppModel, cpp_class=_helios.Scanner):
+class Scanner(Model, cpp_class=_helios.Scanner):
     @classmethod
     def from_xml(cls, scanner_file: Path, scanner_id: str = ""):
 

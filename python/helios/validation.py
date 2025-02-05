@@ -4,7 +4,7 @@ from typing import Any, Type
 from typing_extensions import dataclass_transform
 
 
-class ValidatedCppManagedProperty:
+class Property:
     """Descriptor that performs pydantic validation and delegates to a C++ property
 
     An implementation of the descriptor protocol that allows us to perform
@@ -21,7 +21,7 @@ class ValidatedCppManagedProperty:
         unique_across_instances=False,
     ):
         self.name = name
-        assert wraptype is None or issubclass(wraptype, ValidatedCppModel)
+        assert wraptype is None or issubclass(wraptype, Model)
         self.wraptype = wraptype
         self.iterable = iterable
         self.default = default
@@ -45,7 +45,7 @@ class ValidatedCppManagedProperty:
             if self.iterable:
                 if len(value) > 0:
                     if self.wraptype is not None:
-                        assert issubclass(type(value[0]), ValidatedCppModel)
+                        assert issubclass(type(value[0]), Model)
                         self.wraptype = type(value[0])
                     cpp_value = [
                         (
@@ -59,7 +59,7 @@ class ValidatedCppManagedProperty:
                     cpp_value = []
             else:
                 if self.wraptype is not None:
-                    assert issubclass(type(value), ValidatedCppModel)
+                    assert issubclass(type(value), Model)
                     self.wraptype = type(value)
                 cpp_value = (
                     getattr(value, "_cpp_object")
@@ -103,7 +103,7 @@ class ValidatedCppModelMetaClass(type):
         fields = {}
         for base in reversed(cls.mro()[:-1]):  # Traverse from base to derived
             for key, value in base.__dict__.items():
-                if isinstance(value, ValidatedCppManagedProperty) and key not in fields:
+                if isinstance(value, Property) and key not in fields:
                     fields[key] = value
 
         def __init__(self, *args, **instance_kwargs):
@@ -133,7 +133,7 @@ class ValidatedCppModelMetaClass(type):
         return cls
 
 
-class ValidatedCppModel(metaclass=ValidatedCppModelMetaClass):
+class Model(metaclass=ValidatedCppModelMetaClass):
     """Base class for objects that use ValidatedCppManagedProperty"""
 
     def __init_subclass__(cls, cpp_class=None, **kwargs):
@@ -187,7 +187,7 @@ class UpdateableMixin:
         keys = list(kwargs.keys())
         for key in keys:
             if key in self.__class__.__dict__ and isinstance(
-                self.__class__.__dict__[key], ValidatedCppManagedProperty
+                self.__class__.__dict__[key], Property
             ):
                 setattr(self, key, kwargs.pop(key))
             elif not skip_exceptions:
@@ -198,6 +198,6 @@ class UpdateableMixin:
 
         parameters = {}
         for key, value in self.__class__.__dict__.items():
-            if isinstance(value, ValidatedCppManagedProperty):
+            if isinstance(value, Property):
                 parameters[key] = getattr(other, key)
         self.update_from_dict(parameters, skip_exceptions=skip_exceptions)
