@@ -1,27 +1,27 @@
 from helios.util import get_asset_directories
-from helios.validation import ValidatedCppModel, ValidatedCppManagedProperty, UpdateableMixin
+from helios.validation import Model, Property, UpdateableMixin
 from pathlib import Path
 
 import _helios
 
 
-class PlatformSettingsBase(ValidatedCppModel, UpdateableMixin, cpp_class=_helios.PlatformSettings):
+class PlatformSettingsBase(Model, UpdateableMixin, cpp_class=_helios.PlatformSettings):
     pass
 
 
 class PlatformSettings(PlatformSettingsBase):
-    x: float = ValidatedCppManagedProperty("x", default=0)
-    y: float = ValidatedCppManagedProperty("y", default=0)
-    z: float = ValidatedCppManagedProperty("z", default=0)
+    x: float = Property(cpp="x", default=0)
+    y: float = Property(cpp="y", default=0)
+    z: float = Property(cpp="z", default=0)
 
 
 class StaticPlatformSettings(PlatformSettingsBase):
-    x: float = ValidatedCppManagedProperty("x", default=0)
-    y: float = ValidatedCppManagedProperty("y", default=0)
-    z: float = ValidatedCppManagedProperty("z", default=0)
+    x: float = Property(cpp="x", default=0)
+    y: float = Property(cpp="y", default=0)
+    z: float = Property(cpp="z", default=0)
 
 
-class Platform(ValidatedCppModel, cpp_class=_helios.Platform):
+class Platform(Model, cpp_class=_helios.Platform):
     @classmethod
     def from_xml(cls, platform_file: Path, platform_id: str = ""):
 

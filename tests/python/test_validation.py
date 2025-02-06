@@ -20,10 +20,10 @@ class RelatedCppMockObject:
 
 
 def test_validated_cpp_model():
-    class Obj(ValidatedCppModel, cpp_class=MockCppObject):
-        someint: int = ValidatedCppManagedProperty("someint", default=42)
-        somestr: str = ValidatedCppManagedProperty("somestr", default="Foobar")
-        somebool: bool = ValidatedCppManagedProperty("somebool", default=True)
+    class Obj(Model, cpp_class=MockCppObject):
+        someint: int = Property(cpp="someint", default=42)
+        somestr: str = Property(cpp="somestr", default="Foobar")
+        somebool: bool = Property(cpp="somebool", default=True)
 
     obj = Obj()
 
@@ -39,10 +39,10 @@ def test_validated_cpp_model():
 
 
 def test_instantiation():
-    class Obj(ValidatedCppModel, cpp_class=MockCppObject):
-        someint: int = ValidatedCppManagedProperty("someint")
-        somestr: str = ValidatedCppManagedProperty("somestr")
-        somebool: bool = ValidatedCppManagedProperty("somebool", default=True)
+    class Obj(Model, cpp_class=MockCppObject):
+        someint: int = Property(cpp="someint")
+        somestr: str = Property(cpp="somestr")
+        somebool: bool = Property(cpp="somebool", default=True)
 
     obj = Obj(42, "Foobar")
     assert obj.someint == 42
@@ -63,12 +63,12 @@ def test_instantiation():
         obj = Obj(42)
 
 
-class test_derived():
-    class Obj(ValidatedCppModel, cpp_class=MockCppObject):
-        someint: int = ValidatedCppManagedProperty("someint", default=42)
+def test_derived():
+    class Obj(Model, cpp_class=MockCppObject):
+        someint: int = Property(cpp="someint", default=42)
 
     class DerivedObj(Obj, cpp_class=DerivedMockCppObject):
-        derived: int = ValidatedCppManagedProperty("derived", default=42)
+        derived: int = Property(cpp="derived", default=42)
 
     obj = DerivedObj()
     assert isinstance(obj._cpp_object, DerivedMockCppObject)
@@ -77,10 +77,8 @@ class test_derived():
 
 
 def test_iterable_property():
-    class IterObj(ValidatedCppModel, cpp_class=MockCppObject):
-        somevec: list[int] = ValidatedCppManagedProperty(
-            "somevec", iterable=True, default=[0, 1]
-        )
+    class IterObj(Model, cpp_class=MockCppObject):
+        somevec: list[int] = Property(cpp="somevec", iterable=True, default=[0, 1])
 
     obj = IterObj()
 
@@ -95,13 +93,13 @@ def test_iterable_property():
 
 
 def test_wrapping():
-    class Obj(ValidatedCppModel, cpp_class=MockCppObject):
-        someint: int = ValidatedCppManagedProperty("someint", default=0)
+    class Obj(Model, cpp_class=MockCppObject):
+        someint: int = Property(cpp="someint", default=0)
 
-    class RelatedObj(ValidatedCppModel, cpp_class=RelatedCppMockObject):
-        other: Obj = ValidatedCppManagedProperty("other", Obj, default=Obj())
-        otherlist: list[Obj] = ValidatedCppManagedProperty(
-            "otherlist", Obj, iterable=True, default=[]
+    class RelatedObj(Model, cpp_class=RelatedCppMockObject):
+        other: Obj = Property(cpp="other", wraptype=Obj, default=Obj())
+        otherlist: list[Obj] = Property(
+            cpp="otherlist", wraptype=Obj, iterable=True, default=[]
         )
 
     class DerivedObj(Obj):
@@ -125,13 +123,11 @@ def test_wrapping():
 
 
 def test_unique_across_instances():
-    class Obj(ValidatedCppModel, cpp_class=MockCppObject):
+    class Obj(Model, cpp_class=MockCppObject):
         pass
 
-    class RelatedObj(ValidatedCppModel, cpp_class=RelatedCppMockObject):
-        other: Obj = ValidatedCppManagedProperty(
-            "other", Obj, unique_across_instances=True
-        )
+    class RelatedObj(Model, cpp_class=RelatedCppMockObject):
+        other: Obj = Property(cpp="other", wraptype=Obj, unique_across_instances=True)
 
     obj = Obj()
     related1 = RelatedObj(obj)
@@ -141,7 +137,7 @@ def test_unique_across_instances():
 
 
 def test_repr():
-    class Obj(ValidatedCppModel, cpp_class=MockCppObject):
+    class Obj(Model, cpp_class=MockCppObject):
         pass
 
     x1 = Obj()
@@ -154,7 +150,7 @@ def test_repr():
 
 
 def test_cloning_not_implemented():
-    class Obj(ValidatedCppModel, cpp_class=MockCppObject):
+    class Obj(Model, cpp_class=MockCppObject):
         pass
 
     obj = Obj()
@@ -169,8 +165,8 @@ def test_cloning():
         def clone(self):
             return copy.deepcopy(self)
 
-    class Obj(ValidatedCppModel, cpp_class=CloneableMockCppObject):
-        someint: int = ValidatedCppManagedProperty("someint", default=42)
+    class Obj(Model, cpp_class=CloneableMockCppObject):
+        someint: int = Property(cpp="someint", default=42)
 
     obj = Obj()
     clone = obj.clone()
@@ -180,8 +176,8 @@ def test_cloning():
 
 
 def test_updateable_mixin():
-    class Obj(ValidatedCppModel, UpdateableMixin, cpp_class=MockCppObject):
-        someint: int = ValidatedCppManagedProperty("someint", default=42)
+    class Obj(Model, UpdateableMixin, cpp_class=MockCppObject):
+        someint: int = Property(cpp="someint", default=42)
 
     obj = Obj()
     obj.update_from_dict({"someint": 43})
@@ -194,3 +190,66 @@ def test_updateable_mixin():
         obj.update_from_dict({"unknown": 42})
 
     obj.update_from_dict({"unknown": 42}, skip_exceptions=True)
+
+
+def test_non_cpp_property():
+    class Obj(Model, cpp_class=MockCppObject):
+        someint: int = Property(cpp="someint", default=42)
+        noncpp: int = Property(default=42)
+
+    obj = Obj()
+    assert obj.noncpp == 42
+
+    obj.noncpp = 43
+    assert obj.noncpp == 43
+
+    obj2 = Obj()
+    assert obj2.noncpp == 42
+    assert obj.noncpp == 43
+
+
+def test_no_cpp_class():
+    class Obj(Model):
+        noncpp: int = Property(default=42)
+
+    obj = Obj()
+    assert obj.noncpp == 42
+
+    obj.noncpp = 43
+    assert obj.noncpp == 43
+
+
+def test_rely_on_classdict():
+    # A testing scenario where we require the class dict to be used
+    class Obj(Model, cpp_class=MockCppObject):
+        noncpp: int = Property(default=42)
+
+    class RelatedObj(Model, cpp_class=RelatedCppMockObject):
+        other: Obj = Property(cpp="other", wraptype=Obj, default=Obj())
+
+    obj = RelatedObj()
+    obj.other.noncpp = 43
+    assert obj.other.noncpp == 43
+
+
+def test_wrong_wraptype():
+    with pytest.raises(TypeError):
+
+        class Obj(Model, cpp_class=MockCppObject):
+            someint: int = Property(cpp="someint", wraptype=int)
+
+    class Obj(Model, cpp_class=MockCppObject):
+        someint: int = Property(cpp="someint")
+
+    with pytest.raises(ValueError):
+
+        class Obj(Model, cpp_class=MockCppObject):
+            other: Obj = Property(wraptype=Obj)
+
+
+def test_missing_type_annotation():
+    class Obj(Model, cpp_class=MockCppObject):
+        someint = Property(cpp="someint", default=42)
+
+    with pytest.raises(TypeError):
+        obj = Obj()

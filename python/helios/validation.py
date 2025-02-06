@@ -4,7 +4,7 @@ from typing import Any, Type
 from typing_extensions import dataclass_transform
 
 
-class ValidatedCppManagedProperty:
+class Property:
     """Descriptor that performs pydantic validation and delegates to a C++ property
 
     An implementation of the descriptor protocol that allows us to perform
@@ -14,14 +14,19 @@ class ValidatedCppManagedProperty:
 
     def __init__(
         self,
-        name,
+        cpp=None,
         wraptype=None,
         iterable=False,
         default=None,
         unique_across_instances=False,
     ):
-        self.name = name
-        assert wraptype is None or issubclass(wraptype, ValidatedCppModel)
+        if wraptype is not None and not issubclass(wraptype, Model):
+            raise TypeError("wraptype must be a subclass of Model")
+
+        if wraptype is not None and cpp is None:
+            raise ValueError("Wraptype can only used with C++-managed properties")
+
+        self.cpp = cpp
         self.wraptype = wraptype
         self.iterable = iterable
         self.default = default
@@ -33,7 +38,14 @@ class ValidatedCppManagedProperty:
         return value
 
     def __get__(self, obj, objtype=None):
-        val = getattr(obj._cpp_object, self.name)
+        if self.cpp is None:
+            val = (
+                obj.__class__.__dict__.get("_instance_data", {})
+                .get(repr(obj), {})
+                .get(repr(self), self.default)
+            )
+        else:
+            val = getattr(obj._cpp_object, self.cpp)
 
         if self.iterable:
             return type(val)(self._maybe_wrap(item) for item in val)
@@ -42,30 +54,28 @@ class ValidatedCppManagedProperty:
     def __set__(self, obj, value):
         @validate_call
         def _validated_setter(value: self._get_annotation(obj)):
-            if self.iterable:
-                if len(value) > 0:
-                    if self.wraptype is not None:
-                        assert issubclass(type(value[0]), ValidatedCppModel)
-                        self.wraptype = type(value[0])
-                    cpp_value = [
-                        (
-                            getattr(item, "_cpp_object")
-                            if hasattr(item, "_cpp_object")
-                            else item
-                        )
-                        for item in value
-                    ]
-                else:
-                    cpp_value = []
-            else:
-                if self.wraptype is not None:
-                    assert issubclass(type(value), ValidatedCppModel)
-                    self.wraptype = type(value)
-                cpp_value = (
+            def _assign_obj(value):
+                if self.cpp is None:
+                    return value
+                return (
                     getattr(value, "_cpp_object")
                     if hasattr(value, "_cpp_object")
                     else value
                 )
+
+            if self.iterable:
+                if len(value) > 0:
+                    if self.wraptype is not None:
+                        assert issubclass(type(value[0]), Model)
+                        self.wraptype = type(value[0])
+                    value = [_assign_obj(item) for item in value]
+                else:
+                    value = []
+            else:
+                if self.wraptype is not None:
+                    assert issubclass(type(value), Model)
+                    self.wraptype = type(value)
+                value = _assign_obj(value)
 
             if self.unique_across_instances:
                 if self.iterable:
@@ -74,23 +84,32 @@ class ValidatedCppManagedProperty:
                     )
                 if not hasattr(obj.__class__, "_uniqueness"):
                     obj.__class__._uniqueness = {}
-                if cpp_value in obj.__class__.__dict__["_uniqueness"].values():
+                if value in obj.__class__.__dict__["_uniqueness"].values():
                     raise ValueError(
-                        f"This value for property {self.name} is already in use by a different instance."
+                        f"This value for property {self.cpp} is already in use by a different instance."
                     )
-                obj.__class__.__dict__["_uniqueness"][self.name] = cpp_value
+                obj.__class__.__dict__["_uniqueness"][self.cpp] = value
 
-            setattr(obj._cpp_object, self.name, cpp_value)
+            if self.cpp is None:
+                if not hasattr(obj.__class__, "_instance_data"):
+                    setattr(obj.__class__, "_instance_data", {})
+                obj.__class__._instance_data.setdefault(repr(obj), {})[
+                    repr(self)
+                ] = value
+            else:
+                setattr(obj._cpp_object, self.cpp, value)
 
         _validated_setter(value)
 
     def _get_annotation(self, obj):
         for cls in obj.__class__.__mro__:
-            if self.name in getattr(cls, "__annotations__", {}):
-                return cls.__annotations__[self.name]
-        raise AttributeError(
-            f"'{obj.__class__.__name__}' object has no annotation for '{self.name}'"
-        )
+            for name, prop in cls.__dict__.items():
+                if prop is self:
+                    annotations = getattr(cls, "__annotations__", {})
+                    if name in annotations:
+                        return annotations[name]
+                    else:
+                        raise TypeError("Missing type annotation")
 
 
 @dataclass_transform()
@@ -103,7 +122,7 @@ class ValidatedCppModelMetaClass(type):
         fields = {}
         for base in reversed(cls.mro()[:-1]):  # Traverse from base to derived
             for key, value in base.__dict__.items():
-                if isinstance(value, ValidatedCppManagedProperty) and key not in fields:
+                if isinstance(value, Property) and key not in fields:
                     fields[key] = value
 
         def __init__(self, *args, **instance_kwargs):
@@ -133,7 +152,7 @@ class ValidatedCppModelMetaClass(type):
         return cls
 
 
-class ValidatedCppModel(metaclass=ValidatedCppModelMetaClass):
+class Model(metaclass=ValidatedCppModelMetaClass):
     """Base class for objects that use ValidatedCppManagedProperty"""
 
     def __init_subclass__(cls, cpp_class=None, **kwargs):
@@ -143,10 +162,11 @@ class ValidatedCppModel(metaclass=ValidatedCppModelMetaClass):
 
     def __new__(cls, *args, **kwargs):
         obj = super().__new__(cls)
-        cpp_object = kwargs.pop("_cpp_object", None)
-        if cpp_object is None:
-            cpp_object = cls._cpp_class()
-        obj._cpp_object = cpp_object
+        if hasattr(cls, "_cpp_class"):
+            cpp_object = kwargs.pop("_cpp_object", None)
+            if cpp_object is None:
+                cpp_object = cls._cpp_class()
+            obj._cpp_object = cpp_object
         return obj
 
     @classmethod
@@ -164,7 +184,10 @@ class ValidatedCppModel(metaclass=ValidatedCppModelMetaClass):
         return value
 
     def __repr__(self):
-        return f"<{self.__class__.__name__} at {hex(id(self._cpp_object))}>"
+        if hasattr(self.__class__, "_cpp_class"):
+            return f"<{self.__class__.__name__} at {hex(id(self._cpp_object))}>"
+        else:
+            return f"<{self.__class__.__name__} at {hex(id(self))}>"
 
     def clone(self):
         if not hasattr(self._cpp_object, "clone"):
@@ -187,7 +210,7 @@ class UpdateableMixin:
         keys = list(kwargs.keys())
         for key in keys:
             if key in self.__class__.__dict__ and isinstance(
-                self.__class__.__dict__[key], ValidatedCppManagedProperty
+                self.__class__.__dict__[key], Property
             ):
                 setattr(self, key, kwargs.pop(key))
             elif not skip_exceptions:
@@ -198,6 +221,6 @@ class UpdateableMixin:
 
         parameters = {}
         for key, value in self.__class__.__dict__.items():
-            if isinstance(value, ValidatedCppManagedProperty):
+            if isinstance(value, Property):
                 parameters[key] = getattr(other, key)
         self.update_from_dict(parameters, skip_exceptions=skip_exceptions)

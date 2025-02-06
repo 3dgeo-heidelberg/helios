@@ -5,7 +5,7 @@ from helios.platform import Platform, PlatformSettings
 from helios.scanner import Scanner, ScannerSettings
 from helios.scene import Scene
 from helios.util import get_asset_directories, meas_dtype, traj_dtype
-from helios.validation import ValidatedCppModel, ValidatedCppManagedProperty
+from helios.validation import Model, Property
 from pathlib import Path
 from pydantic import validate_call
 from typing import Literal, Optional
@@ -16,16 +16,16 @@ import os
 import _helios
 
 
-class Survey(ValidatedCppModel, cpp_class=_helios.Survey):
-    scanner: Scanner = ValidatedCppManagedProperty(
-        "scanner", Scanner, unique_across_instances=True
+class Survey(Model, cpp_class=_helios.Survey):
+    scanner: Scanner = Property(
+        cpp="scanner", wraptype=Scanner, unique_across_instances=True
     )
-    platform: Platform = ValidatedCppManagedProperty("platform", Platform)
-    scene: Scene = ValidatedCppManagedProperty("scene", Scene)
-    legs: list[Leg] = ValidatedCppManagedProperty(
-        "legs", Leg, iterable=True, default=[]
+    platform: Platform = Property(cpp="platform", wraptype=Platform)
+    scene: Scene = Property(cpp="scene", wraptype=Scene)
+    legs: list[Leg] = Property(
+        cpp="legs", wraptype=Leg, iterable=True, default=[]
     )
-    name: str = ValidatedCppManagedProperty("name", default="")
+    name: str = Property(cpp="name", default="")
 
     @validate_call
     def run(
