@@ -2,7 +2,9 @@ import importlib_resources as resources
 import numpy as np
 import os
 
+from collections.abc import Iterable
 from pathlib import Path
+from pydantic import validate_call
 from typing import Union
 
 
@@ -76,6 +78,94 @@ def find_file(filename: str, fatal: bool = True) -> Union[Path, None]:
         )
 
     return None
+
+
+@validate_call
+def combine_parameters(groups: Union[None, list[list[str]]] = None, **parameters):
+    """Combine parameter spaces for parameter studies.
+
+    This function allows to define lists of possible values for different parameters
+    and to combine them in complex ways to generate a list of parameter dicionaries.
+    Arbitrary parameters can be passed as keyword arguments. Parameter values may be
+    lists to define a set of possible values for that parameter, but they don't have
+    to.
+
+    There is two ways of combining two parameter ranges: Either the cartesian product
+    of possibilities can be generated or the two ranges can be zipped. The function
+    allows both methods and arbirtrary combinations there of. The combination behaviour
+    is controlled by the groups parameter, which accepts a list of lists that define
+    groups that should be zipped together.
+
+    Parameter values of type string may contain Python string formatting syntax. This
+    way, they can reference other parameters in the resulting parameter dictionary
+    and interpolate their values.
+
+    :param groups:
+        The list of groups that should be zipped instead of generating the cartesian
+        product. Each group is a list of parameter names. Passing None will result in
+        each parameter forming its own group and cartesian products being generated.
+        This is the default behaviour.
+    :type groups: Union[None, list[list[str]]]
+    :param parameters:
+        The actual parameters given as keyword arguments. Values can either be single
+        values or lists of possible values.
+    :type parameters: dict
+    :return:
+        A list of dictionaries where each dictionary represents a unique combination
+        of the parameters.
+    :rtype: list[dict]
+    :raises ValueError:
+        If any parameter within a group is not iterable or if the lengths of the
+        iterables within a group varies.
+    """
+
+    def _is_real_iterable(value):
+        return isinstance(value, Iterable) and not isinstance(value, str)
+
+    # Define default for groups: Each parameter that was passed an iterable
+    # of possible values forms its own group.
+    if groups is None:
+        groups = [
+            [key] for key, value in parameters.items() if _is_real_iterable(value)
+        ]
+
+    # Ensure that all parameters within a group are lists of the same length
+    for group in groups:
+        for key in group:
+            if not _is_real_iterable(parameters[key]):
+                raise ValueError("All parameters within a group must be iterable.")
+        if len(set(len(parameters[key]) for key in group)) > 1:
+            raise ValueError("All parameters within a group must have the same length.")
+
+    # Isolate the parameters that are not part of any group
+    ungrouped = {
+        key: value for key, value in parameters.items() if key not in sum(groups, [])
+    }
+
+    # Incrementally build the result dictionary
+    result = [ungrouped]
+
+    # Iterate over all groups to add their respective parameters
+    for group in groups:
+        # Build a dictionary of all parameters within this group
+        group_result = []
+
+        # We zip across the list of values of the contained parameters
+        for values in zip(*[parameters[key] for key in group]):
+            group_result.append({key: value for key, value in zip(group, values)})
+
+        # Update the result by building the cartesian product with the
+        # result for the current group
+        result = [{**a, **b} for a in result for b in group_result]
+
+    # Use Python string formatting on any string values, allowing complex
+    # replacement syntax at very low implementaion cost
+    for entry in result:
+        for key, value in entry.items():
+            if isinstance(value, str):
+                entry[key] = value.format(**entry)
+
+    return result
 
 
 meas_dtype = np.dtype(
