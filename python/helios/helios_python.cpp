@@ -122,6 +122,7 @@ PYBIND11_MAKE_OPAQUE(std::vector<Trajectory>);
 #include <python/KDTreeFactoryWrapper.h>
 #include <python/EnergyModelWrap.h>
 #include <python/PyXMLReader.h>
+#include <python/NumpyArrayConversion.h>
 
 using helios::filems::FMSFacadeFactory;
 
@@ -437,8 +438,7 @@ namespace helios{
                     return self.position;
                 }, [](Measurement &self, const glm::dvec3 &position) {
                     self.position = position;
-            })
-            ;
+            });
 
 
         py::class_<RandomnessGenerator<double>> randomness_generator(m, "RandomnessGenerator");
@@ -535,25 +535,6 @@ namespace helios{
             .def("has", py::overload_cast<Leg&>(&ScanningStrip::has));
 
 
-        // py::class_<SimulationCycleCallback, PySimulationCycleCallback, std::shared_ptr<SimulationCycleCallback>> simulation_cycle_callback(m, "SimulationCycleCallback");
-        // simulation_cycle_callback
-        //     .def(py::init<>())
-        //     .def("__call__", [](SimulationCycleCallback &callback,
-        //                     py::list measurements,
-        //                     py::list trajectories,
-        //                     const std::string &outpath) {
-        //         py::gil_scoped_acquire acquire;
-        //         auto measurements_vec = std::make_shared<std::vector<Measurement>>();
-        //         for (auto item : measurements) {
-        //             measurements_vec->push_back(item.cast<Measurement>());
-        //         }
-
-        //         auto trajectories_vec = std::make_shared<std::vector<Trajectory>>();
-        //         for (auto item : trajectories) {
-        //             trajectories_vec->push_back(item.cast<Trajectory>());
-        //         }
-        //         callback(*measurements_vec, *trajectories_vec, outpath);
-        //     });
         py::class_<SimulationCycleCallback, SimulationCycleCallbackWrap, std::shared_ptr<SimulationCycleCallback>> simulation_cycle_callback(m, "SimulationCycleCallback");
         simulation_cycle_callback
             .def(py::init<py::object>())
@@ -1368,66 +1349,47 @@ namespace helios{
                 }
             )
             .def_property("all_measurements",
-                [](Scanner &self) { py::list py_measurements;
-                for (const auto &measurement : *self.allMeasurements) {
-                    py_measurements.append(measurement); 
-                }
-                return py_measurements; },
-                [](Scanner &self, py::list measurements) {
-                     auto measurements_vec = std::make_shared<std::vector<Measurement>>();
-                    for (auto item : measurements) {
-                        measurements_vec->push_back(item.cast<Measurement>());
-                    }
-                    self.allMeasurements = measurements_vec;
+                [](Scanner &self) -> py::array {
+                    if (!self.allMeasurements)
+                        throw std::runtime_error("allMeasurements is null");
+                    return detail::measurements_to_numpy(*(self.allMeasurements));
+                },
+                [](Scanner &self, py::array arr) {
+                    std::vector<Measurement> vec = detail::numpy_to_measurements(arr);
+                    self.allMeasurements = std::make_shared<std::vector<Measurement>>(std::move(vec));
                 }
             )
             .def_property("all_trajectories",
-                [](Scanner &self) { 
-                    py::list py_trajectories;
-                    for (const auto &trajectory : *self.allTrajectories) {
-                        py_trajectories.append(trajectory); 
-                    }
-                    return py_trajectories;
+                [](Scanner &self) -> py::array {
+                    if (!self.allTrajectories)
+                        throw std::runtime_error("allTrajectories is null");
+                    return detail::trajectories_to_numpy(*(self.allTrajectories));
                 },
-                [](Scanner &self, py::list trajectories) {
-                    auto trajectories_vec = std::make_shared<std::vector<Trajectory>>();
-                    for (auto item : trajectories) {
-                        trajectories_vec->push_back(item.cast<Trajectory>());
-                    }
-                    self.allTrajectories = trajectories_vec;
+                [](Scanner &self, py::array arr) {
+                    std::vector<Trajectory> vec = detail::numpy_to_trajectories(arr);
+                    self.allTrajectories = std::make_shared<std::vector<Trajectory>>(std::move(vec));
                 }
             )
             .def_property("cycle_measurements",
-                [](Scanner &self) { 
-                      
-                    py::list py_measurements;
-                    for (const auto &measurement : *self.cycleMeasurements) {
-                        py_measurements.append(measurement); 
-                    }
-                    return py_measurements; 
+                [](Scanner &self) -> py::array {
+                    if (!self.cycleMeasurements)
+                        throw std::runtime_error("cycleMeasurements is null");
+                    return detail::measurements_to_numpy(*(self.cycleMeasurements));
                 },
-                [](Scanner &self, py::list measurements) {
-                    auto measurements_vec = std::make_shared<std::vector<Measurement>>();
-                    for (auto item : measurements) {
-                        measurements_vec->push_back(item.cast<Measurement>());
-                    }
-                    self.cycleMeasurements = measurements_vec;
+                [](Scanner &self, py::array arr) {
+                    std::vector<Measurement> vec = detail::numpy_to_measurements(arr);
+                    self.cycleMeasurements = std::make_shared<std::vector<Measurement>>(std::move(vec));
                 }
             )
             .def_property("cycle_trajectories",
-                [](Scanner &self) { 
-                    py::list py_trajectories;
-                    for (const auto &trajectory : *self.cycleTrajectories) {
-                        py_trajectories.append(trajectory); 
-                    }
-                    return py_trajectories;
+                [](Scanner &self) -> py::array {
+                    if (!self.cycleTrajectories)
+                        throw std::runtime_error("cycleTrajectories is null");
+                    return detail::trajectories_to_numpy(*(self.cycleTrajectories));
                 },
-                [](Scanner &self, py::list trajectories) {
-                    auto trajectories_vec = std::make_shared<std::vector<Trajectory>>();
-                    for (auto item : trajectories) {
-                        trajectories_vec->push_back(item.cast<Trajectory>());
-                    }
-                    self.cycleTrajectories = trajectories_vec;
+                [](Scanner &self, py::array arr) {
+                    std::vector<Trajectory> vec = detail::numpy_to_trajectories(arr);
+                    self.cycleTrajectories = std::make_shared<std::vector<Trajectory>>(std::move(vec));
                 }
             )
 
