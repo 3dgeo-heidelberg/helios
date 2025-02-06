@@ -2,7 +2,9 @@ import importlib_resources as resources
 import numpy as np
 import os
 
+from collections.abc import Iterable
 from pathlib import Path
+from pydantic import validate_call
 from typing import Union
 
 
@@ -76,6 +78,70 @@ def find_file(filename: str, fatal: bool = True) -> Union[Path, None]:
         )
 
     return None
+
+
+@validate_call
+def combine_parameters(groups: Union[None, list[list[str]]] = None, **parameters):
+    """
+    Combine parameters for parameter studies by building combinations of the given parameters.
+    This function allows for the combination of parameters, especially useful for parameter studies
+    where different combinations of parameters need to be evaluated. It supports grouping of parameters
+    and ensures that all parameters are expanded together (using Python's zip function), where as
+    across groups, the cartesian product is built.
+
+    :param groups: A list of groups where each group is a list of parameter names that should be combined together.
+    :type groups: Union[None, list[list[str]]], optional
+    :param parameters: Keyword arguments representing the parameters and their possible values. Each parameter can be
+    :type parameters: dict
+    :return: A list of dictionaries where each dictionary represents a unique combination of the parameters.
+    :rtype: list[dict]
+    :raises ValueError: If any parameter within a group is not iterable or if the lengths of the iterables within a group varies
+    """
+
+    # Define default for groups: Each parameter that was passed an iterable
+    # of possible values forms its own group.
+    if groups is None:
+        groups = [[key] for key, value in parameters.items() if isinstance(value, list)]
+
+    # Ensure that all parameters within a group are lists of the same length
+    for group in groups:
+        for key in group:
+            if isinstance(parameters[key], str) or not isinstance(
+                parameters[key], Iterable
+            ):
+                raise ValueError("All parameters within a group must be iterable.")
+        if len(set(len(parameters[key]) for key in group)) > 1:
+            raise ValueError("All parameters within a group must have the same length.")
+
+    # Isolate the parameters that are not part of any group
+    ungrouped = {
+        key: value for key, value in parameters.items() if key not in sum(groups, [])
+    }
+
+    # Incrementally build the result dictionary
+    result = [ungrouped]
+
+    # Iterate over all groups to add their respective parameters
+    for group in groups:
+        # Build a dictionary of all parameters within this group
+        group_result = []
+
+        # We zip across the list of values of the contained parameters
+        for values in zip(*[parameters[key] for key in group]):
+            group_result.append({key: value for key, value in zip(group, values)})
+
+        # Update the result by building the cartesian product with the
+        # result for the current group
+        result = [{**a, **b} for a in result for b in group_result]
+
+    # Use Python string formatting on any string values, allowing complex
+    # replacement syntax at very low implementaion cost
+    for entry in result:
+        for key, value in entry.items():
+            if isinstance(value, str):
+                entry[key] = value.format(**entry)
+
+    return result
 
 
 meas_dtype = np.dtype(
