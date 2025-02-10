@@ -281,3 +281,14 @@ def test_threadcount_annotation():
 
     with pytest.raises(ValueError):
         assert foo(1000000)
+
+
+def test_assetpath_annotation():
+    @validate_call
+    def foo(path: AssetPath):
+        return path
+
+    assert isinstance(foo("data/scanners_als.xml"), Path)
+
+    with pytest.raises(FileNotFoundError):
+        foo("data/scanners_als2.xml")

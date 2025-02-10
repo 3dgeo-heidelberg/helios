@@ -1,6 +1,12 @@
 from helios.util import get_asset_directories
-from helios.validation import Model, Property, UpdateableMixin
-from pathlib import Path
+from helios.validation import (
+    AssetPath,
+    Model,
+    Property,
+    UpdateableMixin,
+    validate_xml_file,
+)
+from pydantic import validate_call
 
 import _helios
 import numpy as np
@@ -58,10 +64,14 @@ class RisleyOpticsScannerSettings(ScannerSettingsBase):
 
 class Scanner(Model, cpp_class=_helios.Scanner):
     @classmethod
-    def from_xml(cls, scanner_file: Path, scanner_id: str = ""):
+    @validate_call
+    def from_xml(cls, scanner_file: AssetPath, scanner_id: str = ""):
+
+        # Validate the XML
+        validate_xml_file(scanner_file, "xsd/scanner.xsd")
 
         _cpp_scanner = _helios.read_scanner_from_xml(
-            scanner_file, [str(p) for p in get_asset_directories()], scanner_id
+            str(scanner_file), [str(p) for p in get_asset_directories()], scanner_id
         )
         return cls.__new__(cls, _cpp_object=_cpp_scanner)
 
