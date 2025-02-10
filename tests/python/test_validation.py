@@ -253,3 +253,15 @@ def test_missing_type_annotation():
 
     with pytest.raises(TypeError):
         obj = Obj()
+
+
+def test_threadcount_annotation():
+    @validate_call
+    def foo(count: ThreadCount):
+        return count
+
+    assert foo(1) == 1
+    assert foo(None) > 0
+
+    with pytest.raises(ValueError):
+        assert foo(1000000)

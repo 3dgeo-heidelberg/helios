@@ -1,7 +1,30 @@
 from pydantic import validate_call, GetCoreSchemaHandler
 from pydantic_core import core_schema
-from typing import Any, Type
-from typing_extensions import dataclass_transform
+from pydantic.functional_validators import AfterValidator
+from typing import Any, Type, Union
+from typing_extensions import Annotated, dataclass_transform
+
+import multiprocessing
+
+
+def _validate_thread_count(count: Union[int, None]) -> int:
+    physical = multiprocessing.cpu_count()
+    if count is None:
+        return physical
+
+    if count < 1:
+        raise ValueError(
+            "Thread count must be greater than 0, use None for automatic detection"
+        )
+    if count > physical:
+        raise ValueError(
+            f"Thread count must be less than or equal to the available number of cores ({physical})"
+        )
+
+    return count
+
+
+ThreadCount = Annotated[Union[int, None], AfterValidator(_validate_thread_count)]
 
 
 class Property:
