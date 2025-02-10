@@ -2,6 +2,7 @@ from helios.leg import Leg
 from helios.platform import Platform, PlatformSettings
 from helios.scanner import Scanner, ScannerSettings
 from helios.scene import Scene
+from helios.settings import ExecutionSettings
 from helios.util import get_asset_directories, meas_dtype, traj_dtype
 from helios.validation import AssetPath, Model, Property, validate_xml_file
 
@@ -30,13 +31,11 @@ class Survey(Model, cpp_class=_helios.Survey):
     def run(
         self,
         output: Optional[Path] = None,
-        num_threads: Optional[int] = None,
         format: Literal["laz", "las", "xyz"] = "las",
+        execution_settings: Optional[ExecutionSettings] = None,
     ):
-
-        # List of parameters to maybe incorporate in the future
-        parallelization_strategy = 1
-        warehouse_factor = 4
+        # TODO: Options that need to be incorporated:
+        # * Logging options from execution_settings
 
         if output is None:
             # TODO: Implement approach where we don't need to write to disk
@@ -67,10 +66,6 @@ class Survey(Model, cpp_class=_helios.Survey):
                 str(output), 1.0, las_output, False, zip_output, False, self._cpp_object
             )
 
-        # Determine maximum number of threads to use
-        if num_threads is None:
-            num_threads = os.cpu_count()
-
         # Use the current time as GPS time (will be argument later)
         current_time = datetime.now(timezone.utc).isoformat(timespec="seconds")
 
@@ -78,15 +73,19 @@ class Survey(Model, cpp_class=_helios.Survey):
 
         accuracy = self.scanner._cpp_object.detector.accuracy
         ptpf = _helios.PulseThreadPoolFactory(
-            parallelization_strategy, num_threads - 1, accuracy, 32, warehouse_factor
+            execution_settings.parallelization_strategy,
+            execution_settings.num_threads - 1,
+            accuracy,
+            execution_settings.chunk_size,
+            execution_settings.warehouse_factor,
         )
         pulse_thread_pool = ptpf.make_pulse_thread_pool()
         playback = _helios.SurveyPlayback(
             self._cpp_object,
             fms,
-            parallelization_strategy,
+            execution_settings.parallelization_strategy,
             pulse_thread_pool,
-            32,
+            execution_settings.chunk_size,
             current_time,
             True,
             True,
