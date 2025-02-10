@@ -44,7 +44,7 @@ def get_asset_directories() -> list[Path]:
     return _custom_asset_directories + _builtin_asset_directories
 
 
-def find_file(filename: str, fatal: bool = True) -> Union[Path, None]:
+def find_file(filename: Union[Path, str], fatal: bool = True) -> Union[Path, None]:
     """
     Find a file in the list of directories that have been added as asset directories
     or in some default search locations.
@@ -57,13 +57,14 @@ def find_file(filename: str, fatal: bool = True) -> Union[Path, None]:
     :rtype: Path
     """
 
-    # Check if the given filename is an absolute path.
-    if Path(filename).is_absolute():
-        file_path = Path(filename)
+    # Convert the filename to a Path object if it is a string.
+    filename = Path(filename)
 
+    # Check if the given filename is an absolute path.
+    if filename.is_absolute():
         # If it exists, return it.
-        if file_path.exists():
-            return file_path
+        if filename.exists():
+            return filename
 
     # Iterate all the given asset directories
     for directory in get_asset_directories():

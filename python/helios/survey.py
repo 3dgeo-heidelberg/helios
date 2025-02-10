@@ -5,7 +5,7 @@ from helios.platform import Platform, PlatformSettings
 from helios.scanner import Scanner, ScannerSettings
 from helios.scene import Scene
 from helios.util import get_asset_directories, meas_dtype, traj_dtype
-from helios.validation import Model, Property
+from helios.validation import AssetPath, Model, Property
 from pathlib import Path
 from pydantic import validate_call
 from typing import Literal, Optional
@@ -22,9 +22,7 @@ class Survey(Model, cpp_class=_helios.Survey):
     )
     platform: Platform = Property(cpp="platform", wraptype=Platform)
     scene: Scene = Property(cpp="scene", wraptype=Scene)
-    legs: list[Leg] = Property(
-        cpp="legs", wraptype=Leg, iterable=True, default=[]
-    )
+    legs: list[Leg] = Property(cpp="legs", wraptype=Leg, iterable=True, default=[])
     name: str = Property(cpp="name", default="")
 
     @validate_call
@@ -185,10 +183,11 @@ class Survey(Model, cpp_class=_helios.Survey):
         self.legs = self.legs + [leg]
 
     @classmethod
-    def from_xml(cls, survey_file: Path):
+    @validate_call
+    def from_xml(cls, survey_file: AssetPath):
         """Construct the survey object from an XML file."""
 
         _cpp_survey = _helios.read_survey_from_xml(
-            survey_file, [str(p) for p in get_asset_directories()], True, True
+            str(survey_file), [str(p) for p in get_asset_directories()], True, True
         )
         return cls.__new__(cls, _cpp_object=_cpp_survey)

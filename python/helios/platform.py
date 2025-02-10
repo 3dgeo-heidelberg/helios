@@ -1,6 +1,6 @@
 from helios.util import get_asset_directories
-from helios.validation import Model, Property, UpdateableMixin
-from pathlib import Path
+from helios.validation import AssetPath, Model, Property, UpdateableMixin
+from pydantic import validate_call
 
 import _helios
 
@@ -23,10 +23,11 @@ class StaticPlatformSettings(PlatformSettingsBase):
 
 class Platform(Model, cpp_class=_helios.Platform):
     @classmethod
-    def from_xml(cls, platform_file: Path, platform_id: str = ""):
+    @validate_call
+    def from_xml(cls, platform_file: AssetPath, platform_id: str = ""):
 
         _cpp_platform = _helios.read_platform_from_xml(
-            platform_file, [str(p) for p in get_asset_directories()], platform_id
+            str(platform_file), [str(p) for p in get_asset_directories()], platform_id
         )
         return cls.__new__(cls, _cpp_object=_cpp_platform)
 
