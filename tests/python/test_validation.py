@@ -282,6 +282,12 @@ def test_threadcount_annotation():
     with pytest.raises(ValueError):
         assert foo(1000000)
 
+    with pytest.raises(ValueError):
+        assert foo(0)
+
+    with pytest.raises(ValueError):
+        assert foo(-1)
+
 
 def test_assetpath_annotation():
     @validate_call
