@@ -40,8 +40,8 @@ class Property:
         cpp=None,
         wraptype=None,
         iterable=False,
-        default=None,
         unique_across_instances=False,
+        **maybe_default,
     ):
         if wraptype is not None and not issubclass(wraptype, Model):
             raise TypeError("wraptype must be a subclass of Model")
@@ -52,7 +52,8 @@ class Property:
         self.cpp = cpp
         self.wraptype = wraptype
         self.iterable = iterable
-        self.default = default
+        self.has_default = "default" in maybe_default
+        self.default = maybe_default.get("default", None)
         self.unique_across_instances = unique_across_instances
 
     def _maybe_wrap(self, value):
@@ -163,7 +164,7 @@ class ValidatedCppModelMetaClass(type):
                     continue
 
                 # Use the provided default
-                if field.default is not None:
+                if field.has_default:
                     setattr(self, name, field.default)
                     continue
 
