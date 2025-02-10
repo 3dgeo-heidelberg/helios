@@ -3,7 +3,7 @@ from helios.platform import Platform, PlatformSettings
 from helios.scanner import Scanner, ScannerSettings
 from helios.scene import Scene
 from helios.util import get_asset_directories, meas_dtype, traj_dtype
-from helios.validation import Model, Property, validate_xml_file
+from helios.validation import AssetPath, Model, Property, validate_xml_file
 
 from datetime import datetime, timezone
 from pathlib import Path
@@ -184,13 +184,14 @@ class Survey(Model, cpp_class=_helios.Survey):
         self.legs = self.legs + [leg]
 
     @classmethod
-    def from_xml(cls, survey_file: Path):
+    @validate_call
+    def from_xml(cls, survey_file: AssetPath):
         """Construct the survey object from an XML file."""
 
         # Validate the XML
         validate_xml_file(survey_file, "xsd/survey.xsd")
 
         _cpp_survey = _helios.read_survey_from_xml(
-            survey_file, [str(p) for p in get_asset_directories()], True, True
+            str(survey_file), [str(p) for p in get_asset_directories()], True, True
         )
         return cls.__new__(cls, _cpp_object=_cpp_survey)

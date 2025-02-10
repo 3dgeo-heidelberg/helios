@@ -2,9 +2,10 @@ from helios.util import find_file
 
 from pathlib import Path
 from pydantic import validate_call, GetCoreSchemaHandler
+from pydantic.functional_validators import AfterValidator
 from pydantic_core import core_schema
 from typing import Any, Type
-from typing_extensions import dataclass_transform
+from typing_extensions import Annotated, dataclass_transform
 
 import xmlschema
 
@@ -241,3 +242,6 @@ class UpdateableMixin:
             if isinstance(value, Property):
                 parameters[key] = getattr(other, key)
         self.update_from_dict(parameters, skip_exceptions=skip_exceptions)
+
+
+AssetPath = Annotated[Path, AfterValidator(find_file)]
