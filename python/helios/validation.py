@@ -7,6 +7,20 @@ from pydantic_core import core_schema
 from typing import Any, Type
 from typing_extensions import Annotated, dataclass_transform
 
+import xmlschema
+
+
+def validate_xml_file(file_path: Path, schema_path: Path):
+    """Validate an XML file against an XML schema"""
+
+    # Resolve file paths
+    file_path = find_file(file_path)
+    schema_path = find_file(schema_path)
+
+    # Validate the XML file against the schema
+    schema = xmlschema.XMLSchema(str(schema_path))
+    schema.validate(str(file_path))
+
 
 class Property:
     """Descriptor that performs pydantic validation and delegates to a C++ property

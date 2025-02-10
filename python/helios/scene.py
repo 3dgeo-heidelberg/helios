@@ -1,5 +1,5 @@
 from helios.util import get_asset_directories
-from helios.validation import AssetPath, Model, Property
+from helios.validation import AssetPath, Model, Property, validate_xml_file
 from pydantic import validate_call
 
 import _helios
@@ -9,6 +9,10 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
     @classmethod
     @validate_call
     def from_xml(cls, scene_part_file: AssetPath, id: int):
+
+        # Validate the XML
+        validate_xml_file(scene_part_file, "xsd/scene.xsd")
+
         _cpp_scene_part = _helios.read_scene_part_from_xml(
             str(scene_part_file), [str(p) for p in get_asset_directories()], id
         )
@@ -23,6 +27,10 @@ class Scene(Model, cpp_class=_helios.Scene):
     @classmethod
     @validate_call
     def from_xml(cls, scene_file: AssetPath):
+
+        # Validate the XML
+        validate_xml_file(scene_file, "xsd/scene.xsd")
+
         _cpp_scene = _helios.read_scene_from_xml(
             str(scene_file), [str(p) for p in get_asset_directories()], True, True
         )

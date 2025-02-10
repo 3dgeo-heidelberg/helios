@@ -1,5 +1,11 @@
 from helios.util import get_asset_directories
-from helios.validation import AssetPath, Model, Property, UpdateableMixin
+from helios.validation import (
+    AssetPath,
+    Model,
+    Property,
+    UpdateableMixin,
+    validate_xml_file,
+)
 from pydantic import validate_call
 
 import _helios
@@ -25,6 +31,9 @@ class Platform(Model, cpp_class=_helios.Platform):
     @classmethod
     @validate_call
     def from_xml(cls, platform_file: AssetPath, platform_id: str = ""):
+
+        # Validate the XML
+        validate_xml_file(platform_file, "xsd/platform.xsd")
 
         _cpp_platform = _helios.read_platform_from_xml(
             str(platform_file), [str(p) for p in get_asset_directories()], platform_id
