@@ -4,9 +4,10 @@ from pathlib import Path
 from pydantic import validate_call, GetCoreSchemaHandler
 from pydantic.functional_validators import AfterValidator
 from pydantic_core import core_schema
-from typing import Any, Type
+from typing import Any, Type, Union
 from typing_extensions import Annotated, dataclass_transform
 
+import multiprocessing
 import xmlschema
 
 
@@ -22,6 +23,26 @@ def validate_xml_file(file_path: Path, schema_path: Path):
     schema.validate(str(file_path))
 
 
+def _validate_thread_count(count: Union[int, None]) -> int:
+    physical = multiprocessing.cpu_count()
+    if count is None:
+        return physical
+
+    if count < 1:
+        raise ValueError(
+            "Thread count must be greater than 0, use None for automatic detection"
+        )
+    if count > physical:
+        raise ValueError(
+            f"Thread count must be less than or equal to the available number of cores ({physical})"
+        )
+
+    return count
+
+
+ThreadCount = Annotated[Union[int, None], AfterValidator(_validate_thread_count)]
+
+
 class Property:
     """Descriptor that performs pydantic validation and delegates to a C++ property
 
@@ -35,8 +56,8 @@ class Property:
         cpp=None,
         wraptype=None,
         iterable=False,
-        default=None,
         unique_across_instances=False,
+        **maybe_default,
     ):
         if wraptype is not None and not issubclass(wraptype, Model):
             raise TypeError("wraptype must be a subclass of Model")
@@ -47,7 +68,8 @@ class Property:
         self.cpp = cpp
         self.wraptype = wraptype
         self.iterable = iterable
-        self.default = default
+        self.has_default = "default" in maybe_default
+        self.default = maybe_default.get("default", None)
         self.unique_across_instances = unique_across_instances
 
     def _maybe_wrap(self, value):
@@ -158,7 +180,7 @@ class ValidatedCppModelMetaClass(type):
                     continue
 
                 # Use the provided default
-                if field.default is not None:
+                if field.has_default:
                     setattr(self, name, field.default)
                     continue
 

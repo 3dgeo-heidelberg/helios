@@ -255,6 +255,40 @@ def test_missing_type_annotation():
         obj = Obj()
 
 
+def test_none_default():
+    class Obj(Model, cpp_class=MockCppObject):
+        someint: Union[int, None] = Property(cpp="someint", default=None)
+
+    obj = Obj()
+    assert obj.someint is None
+
+
+def test_missing_required():
+    class Obj(Model, cpp_class=MockCppObject):
+        someint: Union[int, None] = Property(cpp="someint")
+
+    with pytest.raises(ValueError):
+        Obj()
+
+
+def test_threadcount_annotation():
+    @validate_call
+    def foo(count: ThreadCount):
+        return count
+
+    assert foo(1) == 1
+    assert foo(None) > 0
+
+    with pytest.raises(ValueError):
+        assert foo(1000000)
+
+    with pytest.raises(ValueError):
+        assert foo(0)
+
+    with pytest.raises(ValueError):
+        assert foo(-1)
+
+
 def test_assetpath_annotation():
     @validate_call
     def foo(path: AssetPath):
