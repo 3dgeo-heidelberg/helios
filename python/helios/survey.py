@@ -2,7 +2,7 @@ from helios.leg import Leg
 from helios.platform import Platform, PlatformSettings
 from helios.scanner import Scanner, ScannerSettings
 from helios.scene import Scene
-from helios.settings import ExecutionSettings
+from helios.settings import ExecutionSettings, compose_execution_settings
 from helios.util import get_asset_directories, meas_dtype, traj_dtype
 from helios.validation import AssetPath, Model, Property, validate_xml_file
 
@@ -33,9 +33,13 @@ class Survey(Model, cpp_class=_helios.Survey):
         output: Optional[Path] = None,
         format: Literal["laz", "las", "xyz"] = "las",
         execution_settings: Optional[ExecutionSettings] = None,
+        **parameters,
     ):
         # TODO: Options that need to be incorporated:
         # * Logging options from execution_settings
+
+        # Determine the execution settings to use
+        execution_settings = compose_execution_settings(execution_settings, parameters)
 
         if output is None:
             # TODO: Implement approach where we don't need to write to disk
