@@ -1,5 +1,5 @@
 from helios.util import get_asset_directories
-from helios.validation import Model, Property, UpdateableMixin
+from helios.validation import Model, Property, UpdateableMixin, validate_xml_file
 from pathlib import Path
 
 import _helios
@@ -24,6 +24,9 @@ class StaticPlatformSettings(PlatformSettingsBase):
 class Platform(Model, cpp_class=_helios.Platform):
     @classmethod
     def from_xml(cls, platform_file: Path, platform_id: str = ""):
+
+        # Validate the XML
+        validate_xml_file(platform_file, "xsd/platform.xsd")
 
         _cpp_platform = _helios.read_platform_from_xml(
             platform_file, [str(p) for p in get_asset_directories()], platform_id

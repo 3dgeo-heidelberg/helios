@@ -1,5 +1,5 @@
 from helios.util import get_asset_directories
-from helios.validation import Model, Property, UpdateableMixin
+from helios.validation import Model, Property, UpdateableMixin, validate_xml_file
 from pathlib import Path
 
 import _helios
@@ -59,6 +59,9 @@ class RisleyOpticsScannerSettings(ScannerSettingsBase):
 class Scanner(Model, cpp_class=_helios.Scanner):
     @classmethod
     def from_xml(cls, scanner_file: Path, scanner_id: str = ""):
+
+        # Validate the XML
+        validate_xml_file(scanner_file, "xsd/scanner.xsd")
 
         _cpp_scanner = _helios.read_scanner_from_xml(
             scanner_file, [str(p) for p in get_asset_directories()], scanner_id
