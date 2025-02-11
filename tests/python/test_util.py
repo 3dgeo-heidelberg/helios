@@ -126,3 +126,8 @@ def test_combine_tuple_okay():
     assert {"a": 1, "b": 4} in params
     assert {"a": 2, "b": 3} in params
     assert {"a": 2, "b": 4} in params
+
+
+def test_set_rng_seed():
+    set_rng_seed(43)
+    set_rng_seed(datetime.now(timezone.utc))

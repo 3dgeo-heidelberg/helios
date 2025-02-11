@@ -1,11 +1,14 @@
+from collections.abc import Iterable
+from datetime import datetime, timezone
+from pathlib import Path
+from pydantic import validate_call
+from typing import Union
+
 import importlib_resources as resources
 import numpy as np
 import os
 
-from collections.abc import Iterable
-from pathlib import Path
-from pydantic import validate_call
-from typing import Union
+import _helios
 
 
 # The list of user provided directories that will be searched for assets.
@@ -79,6 +82,21 @@ def find_file(filename: Union[Path, str], fatal: bool = True) -> Union[Path, Non
         )
 
     return None
+
+
+@validate_call
+def set_rng_seed(seed: Union[int, datetime] = datetime.now(timezone.utc)) -> None:
+    """Set the seed of the random number generator.
+
+    :param seed: The seed to set.
+        Can be an integer or a datetime object.
+    :type seed: Union[int, datetime]
+    """
+
+    # The backend takes the seed as a string. We keep this for compatibility
+    # of our regression tests, but ask the user to provide an integer. Only
+    # integers are allowed in those strings anyway.
+    _helios.default_rand_generator_seed(str(seed))
 
 
 @validate_call
