@@ -1,9 +1,23 @@
-from helios.validation import Model, Property, ThreadCount, UpdateableMixin
+from helios.validation import (
+    CreatedDirectory,
+    Model,
+    Property,
+    ThreadCount,
+    UpdateableMixin,
+)
 
 from enum import IntEnum
 from pathlib import Path
-from pydantic import Field
-from typing import Annotated, Union
+from pydantic import PositiveFloat, PositiveInt
+from typing import Optional
+
+import sys
+
+# StrEnum is Python >= 3.11, so we use a conda-forge packaged backport
+if sys.version_info >= (3, 11):
+    from enum import StrEnum
+else:
+    from backports.strenum import StrEnum
 
 
 class ParallelizationStrategy(IntEnum):
@@ -20,24 +34,44 @@ class LogVerbosity(IntEnum):
     VERY_VERBOSE = 0b111111
 
 
+class OutputFormat(StrEnum):
+    LAS = "las"
+    LAZ = "laz"
+    XYZ = "xyz"
+    LAS10 = "las10"
+    LAZ10 = "laz10"
+    NPY = "npy"
+    LASPY = "laspy"
+
+
 class ExecutionSettings(Model, UpdateableMixin):
     parallelization: ParallelizationStrategy = Property(
         default=ParallelizationStrategy.CHUNK
     )
     num_threads: ThreadCount = Property(default=None)
-    chunk_size: Annotated[int, Field(strict=True, gt=1)] = Property(default=32)
-    warehouse_factor: Annotated[int, Field(strict=True, gt=1)] = Property(default=4)
-    log_file: Union[Path, None] = Property(default="helios.log")
+    chunk_size: PositiveInt = Property(default=32)
+    warehouse_factor: PositiveInt = Property(default=4)
+    log_file: Optional[Path] = Property(default="helios.log")
     log_file_only: bool = Property(default=False)
     verbosity: LogVerbosity = Property(default=LogVerbosity.DEFAULT)
 
 
-# Storage for global execution settings
+class OutputSettings(Model, UpdateableMixin):
+    format: OutputFormat = Property(default=OutputFormat.NPY)
+    split_by_channel: bool = Property(default=False)
+    output_dir: CreatedDirectory = Property(default="output")
+    write_waveform: bool = Property(default=False)
+    write_pulse: bool = Property(default=False)
+    las_scale: PositiveFloat = Property(default=0.0001)
+
+
+# Storage for global settings
 _global_execution_settings: ExecutionSettings = ExecutionSettings()
+_global_output_settings: OutputSettings = OutputSettings()
 
 
 def set_execution_settings(
-    execution_settings: Union[ExecutionSettings, None] = None, **parameters
+    execution_settings: Optional[ExecutionSettings] = None, **parameters
 ):
     """Set the global execution settings for the Helios++ library
 
@@ -60,8 +94,58 @@ def set_execution_settings(
     _global_execution_settings.update_from_dict(parameters)
 
 
+def set_output_settings(output_settings: Optional[OutputSettings] = None, **parameters):
+    """Set the global output settings for the Helios++ library
+
+    :param output_settings:
+        An instance of output settings to use as the global settings.
+        Alternatively, None can be passed to only allow manipulation of
+        individual parameters passed as keyword arguments.
+    :type output_settings: Optional[OutputSettings]
+    :param parameters:
+        Individual parameters to set on the global output settings.
+    """
+
+    global _global_output_settings
+
+    # Update the global settings with the provided instance
+    if output_settings is not None:
+        _global_output_settings = output_settings
+
+    # Update the global settings with the provided parameters
+    _global_output_settings.update_from_dict(parameters)
+
+
+def _compose_settings(*settings, **parameters):
+    """Compose settings from multiple sources
+
+    :param settings:
+        The settings to compose. These should be instances of the
+        same Model class.
+    :param parameters:
+        Individual parameters to set on the composed settings.
+    """
+
+    result = None
+
+    # Find the most specialized base settings class
+    for base in settings:
+        if base is not None:
+            result = base
+            break
+
+    # There should always be one base settings class, because the
+    # global one defaults to a default instance of the settings class
+    assert result is not None
+
+    # Update the base settings with the provided parameters
+    result.update_from_dict(parameters, skip_exceptions=True)
+
+    return result
+
+
 def compose_execution_settings(
-    local_settings: Union[ExecutionSettings, None] = None, parameters: dict = {}
+    local_settings: Optional[ExecutionSettings] = None, parameters: dict = {}
 ) -> ExecutionSettings:
     """Compose execution settings from global, local and manual settings
 
@@ -73,13 +157,20 @@ def compose_execution_settings(
         Individual parameters to set on the execution settings.
     """
 
-    # Determine base settings
-    if local_settings is None:
-        result = _global_execution_settings
-    else:
-        result = local_settings
+    return _compose_settings(local_settings, _global_execution_settings, **parameters)
 
-    # Update the base settings with the provided parameters
-    result.update_from_dict(parameters, skip_exceptions=True)
 
-    return result
+def compose_output_settings(
+    local_settings: Optional[OutputSettings] = None, parameters: dict = {}
+) -> OutputSettings:
+    """Compose output settings from global, local and manual settings
+
+    :param local_settings:
+        The local output settings to use. If None, the global settings
+        will be used as the base.
+    :type local_settings: Union[OutputSettings, None]
+    :param parameters:
+        Individual parameters to set on the output settings.
+    """
+
+    return _compose_settings(local_settings, _global_output_settings, **parameters)

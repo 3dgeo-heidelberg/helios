@@ -2,17 +2,22 @@ from helios.leg import Leg
 from helios.platform import Platform, PlatformSettings
 from helios.scanner import Scanner, ScannerSettings
 from helios.scene import StaticScene
-from helios.settings import ExecutionSettings, compose_execution_settings
+from helios.settings import (
+    ExecutionSettings,
+    OutputFormat,
+    OutputSettings,
+    compose_execution_settings,
+    compose_output_settings,
+)
 from helios.util import get_asset_directories, meas_dtype, traj_dtype
 from helios.validation import AssetPath, Model, Property, validate_xml_file
 
 from datetime import datetime, timezone
 from pathlib import Path
 from pydantic import validate_call
-from typing import Literal, Optional
+from typing import Optional
 
 import numpy as np
-import os
 import tempfile
 
 import _helios
@@ -30,16 +35,16 @@ class Survey(Model, cpp_class=_helios.Survey):
     @validate_call
     def run(
         self,
-        output: Optional[Path] = None,
-        format: Literal["laz", "las", "xyz"] = "las",
         execution_settings: Optional[ExecutionSettings] = None,
+        output_settings: Optional[OutputSettings] = None,
         **parameters,
     ):
         # TODO: Options that need to be incorporated:
         # * Logging options from execution_settings
 
-        # Determine the execution settings to use
+        # Update the settings to use
         execution_settings = compose_execution_settings(execution_settings, parameters)
+        output_settings = compose_output_settings(output_settings, parameters)
 
         # Ensure that the scene has been finalized
         self.scene.finalize()
@@ -61,14 +66,14 @@ class Survey(Model, cpp_class=_helios.Survey):
 
         else:
             # Make the given output path absolute
-            output = Path(output).absolute()
+            output = Path(output_settings.output_dir).absolute()
 
             # Determine boolean flags for the output
             las_output, zip_output = {
                 "laz": (True, True),
                 "las": (True, False),
                 "xyz": (False, False),
-            }.get(format)
+            }.get(output_settings.format)
             fms = _helios.FMSFacadeFactory().build_facade(
                 str(output), 1.0, las_output, False, zip_output, False, self._cpp_object
             )
@@ -109,7 +114,7 @@ class Survey(Model, cpp_class=_helios.Survey):
         # Start simulating the survey
         playback.start()
 
-        if output is None:
+        if output_settings.format == OutputFormat.NPY:
             measurements = self.scanner._cpp_object.all_measurements
             num_measurements = len(measurements)
 

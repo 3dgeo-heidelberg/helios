@@ -313,3 +313,12 @@ def test_assetpath_annotation():
 
     with pytest.raises(FileNotFoundError):
         foo("data/scanners_als2.xml")
+
+
+def test_created_directory_annotation(tmp_path):
+    @validate_call
+    def foo(path: CreatedDirectory):
+        return path
+
+    foo(tmp_path / "nonexistent")
+    assert (tmp_path / "nonexistent").exists()

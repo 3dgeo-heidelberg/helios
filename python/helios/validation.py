@@ -4,10 +4,11 @@ from pathlib import Path
 from pydantic import validate_call, GetCoreSchemaHandler
 from pydantic.functional_validators import AfterValidator
 from pydantic_core import core_schema
-from typing import Any, Type, Union
+from typing import Any, Optional, Type, Union
 from typing_extensions import Annotated, dataclass_transform
 
 import multiprocessing
+import os
 import xmlschema
 
 
@@ -40,7 +41,15 @@ def _validate_thread_count(count: Union[int, None]) -> int:
     return count
 
 
-ThreadCount = Annotated[Union[int, None], AfterValidator(_validate_thread_count)]
+def _create_directory(directory: Path):
+    os.makedirs(directory, exist_ok=True)
+    return directory
+
+
+# Some type annotations for convenience
+AssetPath = Annotated[Path, AfterValidator(find_file)]
+ThreadCount = Annotated[Optional[int], AfterValidator(_validate_thread_count)]
+CreatedDirectory = Annotated[Path, AfterValidator(_create_directory)]
 
 
 class Property:
@@ -270,6 +279,3 @@ class UpdateableMixin:
             if isinstance(value, Property):
                 parameters[key] = getattr(other, key)
         self.update_from_dict(parameters, skip_exceptions=skip_exceptions)
-
-
-AssetPath = Annotated[Path, AfterValidator(find_file)]
