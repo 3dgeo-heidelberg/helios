@@ -34,3 +34,36 @@ def test_set_execution_settings(reset_global_state):
     set_execution_settings(log_file="test.log")
     assert compose_execution_settings().chunk_size == 64
     assert compose_execution_settings().log_file == Path("test.log")
+
+
+def test_output_settings_defaults():
+    settings = OutputSettings()
+
+    assert settings.format == OutputFormat.NPY
+    assert not settings.split_by_channel
+    assert isinstance(settings.output_dir, Path)
+    assert not settings.write_waveform
+    assert not settings.write_pulse
+    assert settings.las_scale == 0.0001
+
+
+def test_compose_output_settings():
+    # Use local settings if provided
+    local = OutputSettings(format=OutputFormat.XYZ)
+    settings = compose_output_settings(local)
+    assert settings.format == OutputFormat.XYZ
+
+    # Use manually provided parameters
+    settings = compose_output_settings(local, {"write_pulse": True})
+    assert settings.format == OutputFormat.XYZ
+    assert settings.write_pulse == True
+
+
+def test_set_output_settings(reset_global_state):
+    settings = OutputSettings(format=OutputFormat.XYZ)
+    set_output_settings(settings)
+    assert compose_output_settings().format == OutputFormat.XYZ
+
+    set_output_settings(write_pulse=True)
+    assert compose_output_settings().format == OutputFormat.XYZ
+    assert compose_output_settings().write_pulse == True
