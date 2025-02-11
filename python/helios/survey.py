@@ -47,7 +47,7 @@ class Survey(Model, cpp_class=_helios.Survey):
         output_settings = compose_output_settings(output_settings, parameters)
 
         # Ensure that the scene has been finalized
-        self.scene.finalize()
+        self.scene.finalize(execution_settings)
 
         if output is None:
             # TODO: Implement approach where we don't need to write to disk

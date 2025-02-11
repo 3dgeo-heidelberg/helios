@@ -34,6 +34,13 @@ class LogVerbosity(IntEnum):
     VERY_VERBOSE = 0b111111
 
 
+class KDTreeFactoryType(IntEnum):
+    SIMPLE = 1
+    SAH = 2
+    SAH_BEST_AXIS = 3
+    SAH_APPROXIMATION = 4
+
+
 class OutputFormat(StrEnum):
     LAS = "las"
     LAZ = "laz"
@@ -54,6 +61,12 @@ class ExecutionSettings(Model, UpdateableMixin):
     log_file: Optional[Path] = Property(default="helios.log")
     log_file_only: bool = Property(default=False)
     verbosity: LogVerbosity = Property(default=LogVerbosity.DEFAULT)
+    factory_type: KDTreeFactoryType = Property(
+        default=KDTreeFactoryType.SAH_APPROXIMATION
+    )
+    kdt_num_threads: ThreadCount = Property(default=None)
+    kdt_geom_num_threads: ThreadCount = Property(default=None)
+    sah_nodes: PositiveInt = Property(default=32)
 
 
 class OutputSettings(Model, UpdateableMixin):
