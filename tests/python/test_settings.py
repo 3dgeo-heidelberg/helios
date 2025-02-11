@@ -12,6 +12,12 @@ def test_execution_settings_defaults():
     assert settings.log_file
     assert not settings.log_file_only
     assert settings.verbosity == LogVerbosity.DEFAULT
+    assert settings.factory_type == KDTreeFactoryType.SAH_APPROXIMATION
+    assert isinstance(settings.kdt_num_threads, int)
+    assert settings.kdt_num_threads >= 1
+    assert isinstance(settings.kdt_geom_num_threads, int)
+    assert settings.kdt_geom_num_threads >= 1
+    assert settings.sah_nodes == 32
 
 
 def test_compose_execution_settings():

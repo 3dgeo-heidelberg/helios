@@ -1,7 +1,9 @@
+from helios.settings import ExecutionSettings, compose_execution_settings
 from helios.util import get_asset_directories
 from helios.validation import AssetPath, Model, Property, validate_xml_file
 
 from pydantic import validate_call
+from typing import Optional
 
 import _helios
 
@@ -25,11 +27,22 @@ class StaticScene(Model, cpp_class=_helios.StaticScene):
         cpp="scene_parts", wraptype=ScenePart, iterable=True, default=[]
     )
 
-    def finalize(self):
+    def finalize(
+        self, execution_settings: Optional[ExecutionSettings] = None, **parameters
+    ):
         """Finalize the scene, making it ready for rendering."""
 
         if len(self._cpp_object.primitives) == 0:
-            _helios.finalize_static_scene(self._cpp_object, 4, 1, 1, 32)
+            execution_settings = compose_execution_settings(
+                execution_settings, parameters
+            )
+            _helios.finalize_static_scene(
+                self._cpp_object,
+                execution_settings.parallelization,
+                execution_settings.kdt_num_threads,
+                execution_settings.kdt_geom_num_threads,
+                execution_settings.sah_nodes,
+            )
 
     def _update_hook(self):
         # When the Scene changes, we want to invalidate the KDTree etc.
