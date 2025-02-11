@@ -6,10 +6,18 @@ from helios.validation import (
     UpdateableMixin,
 )
 
-from enum import IntEnum, StrEnum
+from enum import IntEnum
 from pathlib import Path
 from pydantic import PositiveFloat, PositiveInt
 from typing import Optional
+
+import sys
+
+# StrEnum is Python >= 3.11, so we use a conda-forge packaged backport
+if sys.version_info >= (3, 11):
+    from enum import StrEnum
+else:
+    from backports.strenum import StrEnum
 
 
 class ParallelizationStrategy(IntEnum):

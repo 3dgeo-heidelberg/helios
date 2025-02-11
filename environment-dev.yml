@@ -4,6 +4,7 @@ channels:
 dependencies:
   # These are the dependencies that are also formulated on the feedstock
   - armadillo
+  - backports.strenum
   - blas
   - glm
   - importlib_resources
