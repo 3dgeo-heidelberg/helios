@@ -35,8 +35,7 @@ private:
     /**
      * @brief Number of threads available in the system
      */
-    static size_t const sysThreads;
-
+    inline static size_t const sysThreads = std::thread::hardware_concurrency();
 
 public:
     // ***  STATIC MAKE METHODS  *** //
@@ -298,9 +297,3 @@ public:
         return makeFastSAHMultiThread(32, sysThreads, sysThreads);
     }
 };
-
-// ***  STATIC ATTRIBUTES : INITIALIZE *** //
-// *************************************** //
-size_t const KDTreeFactoryMaker::sysThreads = \
-    std::thread::hardware_concurrency();
-

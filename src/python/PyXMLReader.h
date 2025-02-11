@@ -1,3 +1,5 @@
+#include <KDTreeFactoryMaker.h>
+#include <StaticScene.h>
 #include <Survey.h>
 
 #include <memory>
@@ -36,3 +38,13 @@ std::shared_ptr<ScenePart> readScenePartFromXml(
     std::vector<std::string> assetsPath,
     int id
 );
+
+void finalizeStaticScene(
+    std::shared_ptr<StaticScene>,
+    int kdtFactoryType,
+    int kdtNumJobs,
+    int kdtGeomJobs,
+    int kdtSAHLossNodes
+);
+
+void invalidateStaticScene(std::shared_ptr<StaticScene> scene);

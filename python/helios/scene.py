@@ -1,5 +1,6 @@
 from helios.util import get_asset_directories
 from helios.validation import AssetPath, Model, Property, validate_xml_file
+
 from pydantic import validate_call
 
 import _helios
@@ -19,10 +20,21 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
         return cls.__new__(cls, _cpp_object=_cpp_scene_part)
 
 
-class Scene(Model, cpp_class=_helios.Scene):
+class StaticScene(Model, cpp_class=_helios.StaticScene):
     scene_parts: list[ScenePart] = Property(
         cpp="scene_parts", wraptype=ScenePart, iterable=True, default=[]
     )
+
+    def finalize(self):
+        """Finalize the scene, making it ready for rendering."""
+
+        if len(self._cpp_object.primitives) == 0:
+            _helios.finalize_static_scene(self._cpp_object, 4, 1, 1, 32)
+
+    def _update_hook(self):
+        # When the Scene changes, we want to invalidate the KDTree etc.
+
+        _helios.invalidate_static_scene(self._cpp_object)
 
     @classmethod
     @validate_call

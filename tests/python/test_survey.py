@@ -1,6 +1,6 @@
 from helios.platform import Platform
 from helios.scanner import Scanner
-from helios.scene import Scene
+from helios.scene import StaticScene
 from helios.survey import *
 
 import pytest
@@ -13,7 +13,7 @@ def test_construct_survey_from_xml():
     assert len(survey.legs) == 6
     assert isinstance(survey.platform, Platform)
     assert isinstance(survey.scanner, Scanner)
-    assert isinstance(survey.scene, Scene)
+    assert isinstance(survey.scene, StaticScene)
 
 
 def test_add_leg_parameters():

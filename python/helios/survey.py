@@ -1,7 +1,7 @@
 from helios.leg import Leg
 from helios.platform import Platform, PlatformSettings
 from helios.scanner import Scanner, ScannerSettings
-from helios.scene import Scene
+from helios.scene import StaticScene
 from helios.settings import ExecutionSettings, compose_execution_settings
 from helios.util import get_asset_directories, meas_dtype, traj_dtype
 from helios.validation import AssetPath, Model, Property, validate_xml_file
@@ -23,7 +23,7 @@ class Survey(Model, cpp_class=_helios.Survey):
         cpp="scanner", wraptype=Scanner, unique_across_instances=True
     )
     platform: Platform = Property(cpp="platform", wraptype=Platform)
-    scene: Scene = Property(cpp="scene", wraptype=Scene)
+    scene: StaticScene = Property(cpp="scene", wraptype=StaticScene)
     legs: list[Leg] = Property(cpp="legs", wraptype=Leg, iterable=True, default=[])
     name: str = Property(cpp="name", default="")
 
@@ -40,6 +40,9 @@ class Survey(Model, cpp_class=_helios.Survey):
 
         # Determine the execution settings to use
         execution_settings = compose_execution_settings(execution_settings, parameters)
+
+        # Ensure that the scene has been finalized
+        self.scene.finalize()
 
         if output is None:
             # TODO: Implement approach where we don't need to write to disk
@@ -77,7 +80,7 @@ class Survey(Model, cpp_class=_helios.Survey):
 
         accuracy = self.scanner._cpp_object.detector.accuracy
         ptpf = _helios.PulseThreadPoolFactory(
-            execution_settings.parallelization_strategy,
+            execution_settings.parallelization,
             execution_settings.num_threads - 1,
             accuracy,
             execution_settings.chunk_size,
@@ -87,7 +90,7 @@ class Survey(Model, cpp_class=_helios.Survey):
         playback = _helios.SurveyPlayback(
             self._cpp_object,
             fms,
-            execution_settings.parallelization_strategy,
+            execution_settings.parallelization,
             pulse_thread_pool,
             execution_settings.chunk_size,
             current_time,

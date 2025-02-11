@@ -104,10 +104,6 @@ std::shared_ptr<ScenePart> readScenePartFromXml(
     std::vector<std::string> assetsPath,
     int id
 ) {
-    //TODO: Has to be disscused after the meeting:
-    // 1.  Should the user provide the Scene to which the ScenePart will be added?
-    // It will affect the ability to read dynamic objects and on the way the ScenePart would be fitted to the Scene.
-
     tinyxml2::XMLDocument doc;
     if (doc.LoadFile(filePath.c_str()) != tinyxml2::XML_SUCCESS) {
         logging::ERR("Failed to load file: " + filePath);
@@ -169,6 +165,15 @@ std::shared_ptr<ScenePart> readScenePartFromXml(
     shared_ptr<ScenePart> scenePart = xmlSceneLoader.loadFilters(part, holistic);
     scenePart->mId = finalId;
 
+    // For all primitives, set reference to their scene part and transform:
+    ScenePart::computeTransformations(scenePart, holistic);
+
+    // Infer type of primitive for the scene part
+    auto numVertices = scenePart->mPrimitives[0]->getNumVertices();
+    if(numVertices == 3)
+        scenePart->primitiveType = ScenePart::TRIANGLE;
+    else 
+        scenePart->primitiveType = ScenePart::VOXEL;
 
     if(!xmlSceneLoader.validateScenePart(scenePart, part)){
         logging::ERR("Error: Invalid scene part");
@@ -176,4 +181,70 @@ std::shared_ptr<ScenePart> readScenePartFromXml(
     }
 
     return scenePart;
+}
+
+
+std::shared_ptr<KDTreeFactory> makeKDTreeFactory(int kdtFactoryType, int kdtNumJobs, int kdtGeomJobs, int kdtSAHLossNodes){
+    if(kdtFactoryType == 1){ // Simple
+        if(kdtNumJobs > 1){
+            return KDTreeFactoryMaker::makeSimpleMultiThread(
+                kdtNumJobs, kdtGeomJobs
+            );
+        }
+        return KDTreeFactoryMaker::makeSimple();
+    }
+    else if(kdtFactoryType == 2){ // SAH
+        if(kdtNumJobs > 1){
+            return KDTreeFactoryMaker::makeSAHMultiThread(
+                kdtSAHLossNodes, kdtNumJobs, kdtGeomJobs
+            );
+        }
+        return KDTreeFactoryMaker::makeSAH(kdtSAHLossNodes);
+    }
+    else if(kdtFactoryType == 3){ // Axis SAH
+        if(kdtNumJobs > 1){
+            return KDTreeFactoryMaker::makeAxisSAHMultiThread(
+                kdtSAHLossNodes, kdtNumJobs, kdtGeomJobs
+            );
+        }
+        return KDTreeFactoryMaker::makeAxisSAH(kdtSAHLossNodes);
+    }
+    
+    if(kdtNumJobs > 1){
+        return KDTreeFactoryMaker::makeFastSAHMultiThread(
+            kdtSAHLossNodes, kdtNumJobs, kdtGeomJobs
+        );
+    }
+    return KDTreeFactoryMaker::makeFastSAH(kdtSAHLossNodes);
+}
+
+
+void finalizeStaticScene(std::shared_ptr<StaticScene> scene, int kdtFactoryType, int kdtNumJobs, int kdtGeomJobs, int kdtSAHLossNodes) {
+    // Loop over all scene parts and perform their final processing
+    for (auto& sp : scene->parts) {
+        // Append as a static object
+        scene->appendStaticObject(sp);
+
+        // Add scene part primitives to the scene
+        scene->primitives.insert(
+            scene->primitives.end(),
+            sp->mPrimitives.begin(),
+            sp->mPrimitives.end()
+        );
+    }
+
+    // Call scene finalization
+    if (!scene->finalizeLoading()) {
+        throw std::runtime_error("Finalizing the scene failed.");
+    }
+
+    // Build KDGroveFactory
+    scene->setKDGroveFactory(std::make_shared<KDGroveFactory>(makeKDTreeFactory(kdtFactoryType, kdtNumJobs, kdtGeomJobs, kdtSAHLossNodes)));
+}
+
+
+void invalidateStaticScene(std::shared_ptr<StaticScene> scene) {
+    scene->clearStaticObjects();
+    scene->setKDGroveFactory(nullptr);
+    scene->primitives.clear();
 }

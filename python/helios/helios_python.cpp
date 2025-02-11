@@ -2250,5 +2250,7 @@ namespace helios{
         m.def("read_platform_from_xml", &readPlatformFromXml);
         m.def("read_scene_from_xml", &readSceneFromXml);
         m.def("read_scene_part_from_xml", &readScenePartFromXml);
+        m.def("finalize_static_scene", &finalizeStaticScene);
+        m.def("invalidate_static_scene", &invalidateStaticScene);
     }
 }

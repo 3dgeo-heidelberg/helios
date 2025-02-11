@@ -140,6 +140,7 @@ class Property:
                 setattr(obj._cpp_object, self.cpp, value)
 
         _validated_setter(value)
+        obj._update_hook()
 
     def _get_annotation(self, obj):
         for cls in obj.__class__.__mro__:
@@ -216,6 +217,11 @@ class Model(metaclass=ValidatedCppModelMetaClass):
         return core_schema.no_info_after_validator_function(
             cls._validate, core_schema.any_schema()
         )
+
+    def _update_hook(self):
+        """This hook is called whenever after a property is updated."""
+
+        pass
 
     @classmethod
     def _validate(cls, value):

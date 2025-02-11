@@ -271,6 +271,21 @@ def test_missing_required():
         Obj()
 
 
+def test_update_hook():
+    class Obj(Model, UpdateableMixin, cpp_class=MockCppObject):
+        someint: int = Property(cpp="someint", default=42)
+
+        def _update_hook(self):
+            if self.someint == 100:
+                raise ValueError
+
+    obj = Obj()
+    obj.someint = 99
+
+    with pytest.raises(ValueError):
+        obj.someint = 100
+
+
 def test_threadcount_annotation():
     @validate_call
     def foo(count: ThreadCount):

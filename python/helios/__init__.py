@@ -7,7 +7,7 @@ del metadata
 from helios.leg import Leg
 from helios.platform import Platform, PlatformSettings
 from helios.scanner import Scanner, ScannerSettings
-from helios.scene import Scene, ScenePart
+from helios.scene import StaticScene, ScenePart
 from helios.settings import (
     ExecutionSettings,
     LogVerbosity,
