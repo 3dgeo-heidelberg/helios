@@ -2,6 +2,31 @@ from helios.scene import *
 
 
 def test_construct_scene_from_xml():
-    scene = Scene.from_xml("data/scenes/toyblocks/toyblocks_scene.xml")
+    scene = StaticScene.from_xml("data/scenes/toyblocks/toyblocks_scene.xml")
 
     assert len(scene.scene_parts) == 5
+
+
+def test_construct_scene_part_from_xml():
+    part = ScenePart.from_xml("data/scenes/toyblocks/toyblocks_scene.xml", id="0")
+
+
+def test_finalize_scene():
+    part = ScenePart.from_xml("data/scenes/toyblocks/toyblocks_scene.xml", id="0")
+
+    scene = StaticScene(scene_parts=[part])
+    assert len(scene._cpp_object.primitives) == 0
+    scene.finalize()
+    assert len(scene._cpp_object.primitives) > 0
+
+
+def test_scene_invalidation():
+    part = ScenePart.from_xml("data/scenes/toyblocks/toyblocks_scene.xml", id="0")
+    part2 = ScenePart.from_xml("data/scenes/toyblocks/toyblocks_scene.xml", id="0")
+    scene = StaticScene(scene_parts=[part])
+    scene.finalize()
+
+    scene.scene_parts = [part, part2]
+    assert len(scene._cpp_object.primitives) == 0
+    scene.finalize()
+    assert len(scene._cpp_object.primitives) > 0

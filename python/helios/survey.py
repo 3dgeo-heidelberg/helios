@@ -1,7 +1,7 @@
 from helios.leg import Leg
 from helios.platform import Platform, PlatformSettings
 from helios.scanner import Scanner, ScannerSettings
-from helios.scene import Scene
+from helios.scene import StaticScene
 from helios.settings import (
     ExecutionSettings,
     OutputFormat,
@@ -28,7 +28,7 @@ class Survey(Model, cpp_class=_helios.Survey):
         cpp="scanner", wraptype=Scanner, unique_across_instances=True
     )
     platform: Platform = Property(cpp="platform", wraptype=Platform)
-    scene: Scene = Property(cpp="scene", wraptype=Scene)
+    scene: StaticScene = Property(cpp="scene", wraptype=StaticScene)
     legs: list[Leg] = Property(cpp="legs", wraptype=Leg, iterable=True, default=[])
     name: str = Property(cpp="name", default="")
 
@@ -46,10 +46,10 @@ class Survey(Model, cpp_class=_helios.Survey):
         execution_settings = compose_execution_settings(execution_settings, parameters)
         output_settings = compose_output_settings(output_settings, parameters)
 
-        if len(parameters) > 0:
-            raise ValueError(f"Unknown parameters: {', '.join(parameters)}")
+        # Ensure that the scene has been finalized
+        self.scene.finalize()
 
-        if output_settings.format == OutputFormat.NPY:
+        if output is None:
             # TODO: Implement approach where we don't need to write to disk
             las_output, zip_output = False, False
             temp_dir_obj = tempfile.TemporaryDirectory()

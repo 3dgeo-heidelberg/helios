@@ -36,16 +36,6 @@ repos:
   - id: nbstripout
     files: .ipynb
 
-- repo: https://github.com/cheshirekow/cmake-format-precommit
-  rev: v0.6.13
-  hooks:
-  # Apply formatting to CMake files
-  - id: cmake-format
-    additional_dependencies:
-    - pyyaml
-  # Apply linting to CMake files
-  - id: cmake-lint
-
 - repo: https://github.com/citation-file-format/cffconvert
   rev: main
   hooks:
