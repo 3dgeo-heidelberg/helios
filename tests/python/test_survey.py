@@ -34,3 +34,12 @@ def test_add_leg_parameters():
 
     with pytest.raises(ValueError):
         survey.add_leg(foobar=12)
+
+
+def test_set_gpstime():
+    survey = Survey.from_xml("data/surveys/toyblocks/als_toyblocks.xml")
+
+    survey.gps_time = datetime.now(timezone.utc)
+    survey.gps_time = "2021-01-01T00:00:00Z"
+    with pytest.raises(ValueError):
+        survey.gps_time = "foobar"

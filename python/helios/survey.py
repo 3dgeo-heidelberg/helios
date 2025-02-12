@@ -31,6 +31,7 @@ class Survey(Model, cpp_class=_helios.Survey):
     scene: StaticScene = Property(cpp="scene", wraptype=StaticScene)
     legs: list[Leg] = Property(cpp="legs", wraptype=Leg, iterable=True, default=[])
     name: str = Property(cpp="name", default="")
+    gps_time: datetime = Property(default=datetime.now(timezone.utc))
 
     @validate_call
     def run(
@@ -49,7 +50,7 @@ class Survey(Model, cpp_class=_helios.Survey):
         # Ensure that the scene has been finalized
         self.scene.finalize(execution_settings)
 
-        if output is None:
+        if output_settings.format == OutputFormat.NPY:
             # TODO: Implement approach where we don't need to write to disk
             las_output, zip_output = False, False
             temp_dir_obj = tempfile.TemporaryDirectory()
@@ -78,9 +79,6 @@ class Survey(Model, cpp_class=_helios.Survey):
                 str(output), 1.0, las_output, False, zip_output, False, self._cpp_object
             )
 
-        # Use the current time as GPS time (will be argument later)
-        current_time = datetime.now(timezone.utc).isoformat(timespec="seconds")
-
         # Set up internal data structures for the execution
 
         accuracy = self.scanner._cpp_object.detector.accuracy
@@ -98,7 +96,7 @@ class Survey(Model, cpp_class=_helios.Survey):
             execution_settings.parallelization,
             pulse_thread_pool,
             execution_settings.chunk_size,
-            current_time,
+            str(self.gps_time),
             True,
             True,
         )
