@@ -250,13 +250,11 @@
 			scanFreqMax_Hz				= "200"
 			wavelength_nm				= "1064"
 	>
-				
-		<beamOrigin x="0" y="0.085" z="0.06">			
+		<beamOrigin x="0" y="0.085" z="0.06">
 			<rot axis="x" angle_deg="0" />
 			<rot axis="z" angle_deg="0" />
 		</beamOrigin>
 		<headRotateAxis x="0" y="0" z="1"/>
-
 	</scanner>
 	<!-- ##### END RIEGL LMS VQ-880-G II ##### -->
 
@@ -276,17 +274,16 @@
 			scanAngleEffectiveMax_deg	= "30"
 			scanFreqMin_Hz				= "40"
 			scanFreqMax_Hz				= "600"
-			wavelength_nm				= "532"
 	>
 				
 		<FWFSettings beamSampleQuality="3"/>	
 		<channels>
-			<channel id="0">
+			<channel id="0" wavelength_nm = "532">
 				<beamOrigin x="0" y="0.0" z="0.0">				
 					<rot axis="y" angle_deg="14" />					
 				</beamOrigin>
 			</channel>
-			<channel id="1">
+			<channel id="1" wavelength_nm = "1064">
 				<beamOrigin x="0" y="0.0" z="0.0">					
 					<rot axis="y" angle_deg="-14" />					
 				</beamOrigin>
