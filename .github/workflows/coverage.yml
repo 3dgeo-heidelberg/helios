@@ -35,6 +35,7 @@ jobs:
           environment-file: environment-dev.yml
           python-version: "3.13"
           miniconda-version: "latest"
+          conda-remove-defaults: true
 
       - name: Install Conda GCC
         run: |

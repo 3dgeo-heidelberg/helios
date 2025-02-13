@@ -49,6 +49,7 @@ jobs:
           environment-file: environment-dev.yml
           python-version: ${{ matrix.python }}
           miniconda-version: "latest"
+          conda-remove-defaults: true
 
       - name: Install Conda GCC
         if: runner.os == 'Linux'
