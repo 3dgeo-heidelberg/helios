@@ -11,3 +11,4 @@ ignore:
   - "scripts"
   - "example_scripts"
   - "src/test"
+  - "tests"

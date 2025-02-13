@@ -1,4 +1,5 @@
 #include <PyXMLReader.h>
+#include <SpectralLibrary.h>
 #include <XmlSurveyLoader.h>
 
 
@@ -25,6 +26,7 @@ std::shared_ptr<Scanner> readScannerFromXml(
     std::shared_ptr<Scanner> scanner = std::static_pointer_cast<Scanner>(
         xmlreader.getAssetById("scanner", scannerId, nullptr)
     );
+    scanner->initializeSequentialGenerators();
 
     return scanner;
 }
@@ -247,4 +249,12 @@ void invalidateStaticScene(std::shared_ptr<StaticScene> scene) {
     scene->clearStaticObjects();
     scene->setKDGroveFactory(nullptr);
     scene->primitives.clear();
+}
+
+
+void setSceneReflectances(std::shared_ptr<StaticScene> scene, std::vector<std::string> assetsPath, float wavelength) {
+    SpectralLibrary spectralLibrary(wavelength, assetsPath, "spectra");
+    spectralLibrary.readReflectances();
+    spectralLibrary.setReflectances(scene.get());
+    scene->setDefaultReflectance(spectralLibrary.getDefaultReflectance());
 }

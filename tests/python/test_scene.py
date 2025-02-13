@@ -16,7 +16,7 @@ def test_finalize_scene():
 
     scene = StaticScene(scene_parts=[part])
     assert len(scene._cpp_object.primitives) == 0
-    scene.finalize()
+    scene._finalize()
     assert len(scene._cpp_object.primitives) > 0
 
 
@@ -24,9 +24,9 @@ def test_scene_invalidation():
     part = ScenePart.from_xml("data/scenes/toyblocks/toyblocks_scene.xml", id="0")
     part2 = ScenePart.from_xml("data/scenes/toyblocks/toyblocks_scene.xml", id="0")
     scene = StaticScene(scene_parts=[part])
-    scene.finalize()
+    scene._finalize()
 
     scene.scene_parts = [part, part2]
     assert len(scene._cpp_object.primitives) == 0
-    scene.finalize()
+    scene._finalize()
     assert len(scene._cpp_object.primitives) > 0
