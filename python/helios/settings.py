@@ -45,10 +45,11 @@ class OutputFormat(StrEnum):
     LAS = "las"
     LAZ = "laz"
     XYZ = "xyz"
-    LAS10 = "las10"
-    LAZ10 = "laz10"
     NPY = "npy"
     LASPY = "laspy"
+
+    # TODO: Determine whether we want formats las10 and laz10 or whether this
+    #       is exactly the time to abolish them.
 
 
 class ExecutionSettings(Model, UpdateableMixin):
