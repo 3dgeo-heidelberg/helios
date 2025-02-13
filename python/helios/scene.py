@@ -27,7 +27,7 @@ class StaticScene(Model, cpp_class=_helios.StaticScene):
         cpp="scene_parts", wraptype=ScenePart, iterable=True, default=[]
     )
 
-    def finalize(
+    def _finalize(
         self, execution_settings: Optional[ExecutionSettings] = None, **parameters
     ):
         """Finalize the scene, making it ready for rendering."""
@@ -43,6 +43,13 @@ class StaticScene(Model, cpp_class=_helios.StaticScene):
                 execution_settings.kdt_geom_num_threads,
                 execution_settings.sah_nodes,
             )
+
+    def _set_reflectances(self, wavelength: float):
+        """Modify the scene's primitives with correct reflectances for the given wavelength."""
+
+        _helios.set_scene_reflectances(
+            self._cpp_object, [str(p) for p in get_asset_directories()], wavelength
+        )
 
     def _update_hook(self):
         # When the Scene changes, we want to invalidate the KDTree etc.

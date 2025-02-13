@@ -48,7 +48,8 @@ class Survey(Model, cpp_class=_helios.Survey):
         output_settings = compose_output_settings(output_settings, parameters)
 
         # Ensure that the scene has been finalized
-        self.scene.finalize(execution_settings)
+        self.scene._finalize(execution_settings)
+        self.scene._set_reflectances(self.scanner._cpp_object.wavelength)
 
         if output_settings.format == OutputFormat.NPY:
             # TODO: Implement approach where we don't need to write to disk
@@ -76,7 +77,13 @@ class Survey(Model, cpp_class=_helios.Survey):
                 "xyz": (False, False),
             }.get(output_settings.format)
             fms = _helios.FMSFacadeFactory().build_facade(
-                str(output), 1.0, las_output, False, zip_output, False, self._cpp_object
+                str(output),
+                1.0,
+                las_output,
+                False,
+                zip_output,
+                output_settings.split_by_channel,
+                self._cpp_object,
             )
 
         # Set up internal data structures for the execution

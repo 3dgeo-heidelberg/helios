@@ -2252,5 +2252,6 @@ namespace helios{
         m.def("read_scene_part_from_xml", &readScenePartFromXml);
         m.def("finalize_static_scene", &finalizeStaticScene);
         m.def("invalidate_static_scene", &invalidateStaticScene);
+        m.def("set_scene_reflectances", &setSceneReflectances);
     }
 }
