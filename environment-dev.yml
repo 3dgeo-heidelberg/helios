@@ -9,6 +9,7 @@ dependencies:
   - glm
   - importlib_resources
   - lapack
+  - laspy
   - lastools
   - libboost-devel
   - libgdal

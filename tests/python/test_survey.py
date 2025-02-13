@@ -3,6 +3,7 @@ from helios.scanner import Scanner
 from helios.scene import StaticScene
 from helios.survey import *
 
+import laspy
 import pytest
 
 
@@ -36,10 +37,64 @@ def test_add_leg_parameters():
         survey.add_leg(foobar=12)
 
 
-def test_set_gpstime():
-    survey = Survey.from_xml("data/surveys/toyblocks/als_toyblocks.xml")
+def test_survey_run_numpy_output(survey):
+    points, trajectory = survey.run(format=OutputFormat.NPY)
 
+    assert points.shape[0] == 200
+    assert trajectory.shape[0] == 101
+
+
+def test_survey_run_las_output(survey, tmp_path):
+    path = survey.run(output_dir=tmp_path, format=OutputFormat.LAS)
+
+    # Ensure there is one LAS file
+    files = list(path.rglob("*.las"))
+    assert len(files) == 1
+
+    # Read the output
+    las = laspy.read(files[0])
+    las.X.shape[0] == 200
+
+
+def test_survey_run_laz_output(survey, tmp_path):
+    path = survey.run(output_dir=tmp_path, format=OutputFormat.LAZ)
+
+    # Ensure there is one LAZ file
+    files = list(path.rglob("*.laz"))
+    assert len(files) == 1
+
+    # Read the output
+    las = laspy.read(files[0])
+    las.X.shape[0] == 200
+
+
+def test_survey_run_xyz_output(survey, tmp_path):
+    path = survey.run(output_dir=tmp_path, format=OutputFormat.XYZ)
+
+    # Ensure there is one XYZ file
+    files = list(path.rglob("*.xyz"))
+    assert len(files) == 1
+
+    # Read the output
+    points = np.genfromtxt(files[0], delimiter="")
+    assert points.shape[0] == 200
+
+
+def test_survey_run_laspy_output(survey):
+    with pytest.raises(NotImplementedError):
+        survey.run(format=OutputFormat.LASPY)
+
+
+def test_set_gpstime(survey):
     survey.gps_time = datetime.now(timezone.utc)
-    survey.gps_time = "2021-01-01T00:00:00Z"
+    # This timestamp is close to the week epoch. GPS Time is a complicated beast.
+    survey.gps_time = "2025-02-09T01:00:09"
     with pytest.raises(ValueError):
         survey.gps_time = "foobar"
+
+    points, _ = survey.run()
+
+    assert np.all(points["gps_time"] > 0)
+    # TODO: This seems to not be time zone agnostic. I get <1 on my machine.
+    #       But on GitHub Actions, I get 3600. This needs proper fixing.
+    assert np.all(points["gps_time"] < 3601)

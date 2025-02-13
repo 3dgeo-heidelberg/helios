@@ -47,8 +47,15 @@ class Survey(Model, cpp_class=_helios.Survey):
         execution_settings = compose_execution_settings(execution_settings, parameters)
         output_settings = compose_output_settings(output_settings, parameters)
 
+        # Throw an error for unsupported output formats
+        if output_settings.format == OutputFormat.LASPY:
+            raise NotImplementedError(
+                "LASPY output format is not yet supported, see https://github.com/3dgeo-heidelberg/helios/issues/561"
+            )
+
         # Ensure that the scene has been finalized
-        self.scene.finalize(execution_settings)
+        self.scene._finalize(execution_settings)
+        self.scene._set_reflectances(self.scanner._cpp_object.wavelength)
 
         if output_settings.format == OutputFormat.NPY:
             # TODO: Implement approach where we don't need to write to disk
@@ -76,7 +83,13 @@ class Survey(Model, cpp_class=_helios.Survey):
                 "xyz": (False, False),
             }.get(output_settings.format)
             fms = _helios.FMSFacadeFactory().build_facade(
-                str(output), 1.0, las_output, False, zip_output, False, self._cpp_object
+                str(output),
+                1.0,
+                las_output,
+                False,
+                zip_output,
+                output_settings.split_by_channel,
+                self._cpp_object,
             )
 
         # Set up internal data structures for the execution
