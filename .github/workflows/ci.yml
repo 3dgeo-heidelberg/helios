@@ -69,21 +69,15 @@ jobs:
         run: |
           python -m pytest
 
-      # TODO: Reenable this after porting the regression tests
-      # - name: Run tests (incl. regression tests)
-      #   if: runner.os == 'Windows'
-      #   run: |
-      #     python -m pytest --regression-tests
+      - name: Run tests (incl. regression tests)
+        if: runner.os == 'Windows'
+        run: |
+          python -m pytest --regression-tests
 
-      # - name: Run tests (excl. regression tests)
-      #   if: runner.os == 'Linux'
-      #   run: |
-      #     python -m pytest
-
-      # - name: Upload artifacts
-      #   uses: actions/upload-artifact@v4
-      #   if: github.event.inputs.upload-outputs == 'true'
-      #   with:
-      #     name: test-results
-      #     path: output/*
-      #     retention-days: 1
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        if: github.event.inputs.upload-outputs == 'true'
+        with:
+          name: test-results
+          path: pytest-output/*
+          retention-days: 1
