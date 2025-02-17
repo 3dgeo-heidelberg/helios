@@ -3,7 +3,7 @@ from helios.util import get_asset_directories
 from helios.validation import AssetPath, Model, Property, validate_xml_file
 
 from pydantic import validate_call
-from typing import Optional
+from typing import Literal, Optional
 
 import _helios
 
@@ -20,6 +20,17 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
             str(scene_part_file), [str(p) for p in get_asset_directories()], id
         )
         return cls.__new__(cls, _cpp_object=_cpp_scene_part)
+
+    @classmethod
+    @validate_call
+    def from_obj(cls, obj_file: AssetPath, up_axis: Literal["y", "z"] = "z"):
+        """Load the scene part from an OBJ file."""
+
+        _cpp_part = _helios.read_obj_scene_part(
+            str(obj_file), [str(p) for p in get_asset_directories()], up_axis
+        )
+
+        return cls.__new__(cls, _cpp_object=_cpp_part)
 
 
 class StaticScene(Model, cpp_class=_helios.StaticScene):
