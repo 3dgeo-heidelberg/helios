@@ -1,4 +1,3 @@
-#include <KDTreeFactoryMaker.h>
 #include <StaticScene.h>
 #include <Survey.h>
 
@@ -46,7 +45,3 @@ void finalizeStaticScene(
     int kdtGeomJobs,
     int kdtSAHLossNodes
 );
-
-void invalidateStaticScene(std::shared_ptr<StaticScene> scene);
-
-void setSceneReflectances(std::shared_ptr<StaticScene> scene, std::vector<std::string> assetsPath, float wavelength);

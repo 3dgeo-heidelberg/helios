@@ -1,5 +1,7 @@
 from helios.scene import *
 
+import pytest
+
 
 def test_construct_scene_from_xml():
     scene = StaticScene.from_xml("data/scenes/toyblocks/toyblocks_scene.xml")
@@ -30,3 +32,20 @@ def test_scene_invalidation():
     assert len(scene._cpp_object.primitives) == 0
     scene._finalize()
     assert len(scene._cpp_object.primitives) > 0
+
+
+def test_scenepart_from_obj():
+    box = ScenePart.from_obj("data/sceneparts/basic/box/box100.obj")
+    scene = StaticScene(scene_parts=[box])
+    scene._finalize()
+
+
+def test_scenepart_from_obj_yisup():
+    box = ScenePart.from_obj("data/sceneparts/basic/box/box100.obj")
+    scene = StaticScene(scene_parts=[box], up_axis="y")
+    scene._finalize()
+
+
+def test_scenepart_from_obj_wrong_axis_argument():
+    with pytest.raises(ValueError):
+        ScenePart.from_obj("data/sceneparts/basic/box/box100.obj", up_axis="x")

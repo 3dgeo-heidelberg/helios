@@ -122,6 +122,7 @@ PYBIND11_MAKE_OPAQUE(std::vector<Trajectory>);
 #include <python/KDTreeFactoryWrapper.h>
 #include <python/EnergyModelWrap.h>
 #include <python/PyXMLReader.h>
+#include <python/SceneHandling.h>
 
 using helios::filems::FMSFacadeFactory;
 
@@ -2250,8 +2251,11 @@ namespace helios{
         m.def("read_platform_from_xml", &readPlatformFromXml);
         m.def("read_scene_from_xml", &readSceneFromXml);
         m.def("read_scene_part_from_xml", &readScenePartFromXml);
+        
+        // Add helper function for scene handling
         m.def("finalize_static_scene", &finalizeStaticScene);
         m.def("invalidate_static_scene", &invalidateStaticScene);
         m.def("set_scene_reflectances", &setSceneReflectances);
+        m.def("read_obj_scene_part", &readObjScenePart);
     }
 }
