@@ -2,21 +2,14 @@
 <document>
     <scannerSettings id="scaset" active="true" pulseFreq_hz="180000" scanFreq_hz="100"/>
 
-    <survey name="box_interpolation" scene="data/scenes/demo/box_scene.xml#box_scene" platform="interpolated" basePlatform="data/platforms.xml#sr22" scanner="data/scanners_als.xml#riegl_lms-q560">
+    <survey name="box_interpolation" scene="data/scenes/toyblocks/toyblocks_scene_2.xml#toyblocks_scene" platform="interpolated" basePlatform="data/platforms.xml#copter_linearpath" scanner="data/scanners_als.xml#riegl_lms-q560">
 		<leg>
             <platformSettings 
-				trajectory="data/trajectories/flyandrotate.trj"
-				tIndex="0" xIndex="4" yIndex="5" zIndex="6" rollIndex="1" pitchIndex="2" yawIndex="3"
+				trajectory="data/trajectories/xyztrpyquadro_click.trj"
+				tIndex="3" xIndex="0" yIndex="1" zIndex="2" rollIndex="4" pitchIndex="5" yawIndex="6"
 				slopeFilterThreshold="0.0" toRadians="true" syncGPSTime="true"
-				tStart="0" tEnd="5"
+				tStart="0" tEnd="50"
 			/>  
-			<scannerSettings template="scaset" trajectoryTimeInterval_s="0.01"/>
-        </leg>
-		<leg>
-            <platformSettings
-				trajectory="data/trajectories/flyandrotate.trj"
-				tStart="5" tEnd="10" teleportToStart="true"
-			/>
 			<scannerSettings template="scaset" trajectoryTimeInterval_s="0.01"/>
         </leg>
     </survey>
