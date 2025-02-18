@@ -14,3 +14,5 @@ std::shared_ptr<ScenePart> readObjScenePart(
     std::vector<std::string> assetsPath,
     std::string upaxis
 );
+
+void scaleScenePart(std::shared_ptr<ScenePart> sp, double scaleFactor);

@@ -2,13 +2,20 @@ from helios.settings import ExecutionSettings, compose_execution_settings
 from helios.util import get_asset_directories
 from helios.validation import AssetPath, Model, Property, validate_xml_file
 
-from pydantic import validate_call
+from pydantic import PositiveFloat, validate_call
 from typing import Literal, Optional
 
 import _helios
 
 
 class ScenePart(Model, cpp_class=_helios.ScenePart):
+    @validate_call
+    def scale(self, factor: PositiveFloat):
+        """Scale the scene part by a factor."""
+
+        _helios.scale_scene_part(self._cpp_object, factor)
+        return self
+
     @classmethod
     @validate_call
     def from_xml(cls, scene_part_file: AssetPath, id: int):

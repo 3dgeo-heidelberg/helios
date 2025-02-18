@@ -79,12 +79,12 @@ def airplane():
 
 @pytest.fixture
 def box():
-    return ScenePart.from_obj("data/sceneparts/basic/box/box100.obj")
+    return lambda: ScenePart.from_obj("data/sceneparts/basic/box/box100.obj")
 
 
 @pytest.fixture
 def scene(box):
-    return StaticScene(scene_parts=[box])
+    return StaticScene(scene_parts=[box()])
 
 
 @pytest.fixture

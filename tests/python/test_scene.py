@@ -1,5 +1,6 @@
 from helios.scene import *
 
+import numpy as np
 import pytest
 
 
@@ -49,3 +50,19 @@ def test_scenepart_from_obj_yisup():
 def test_scenepart_from_obj_wrong_axis_argument():
     with pytest.raises(ValueError):
         ScenePart.from_obj("data/sceneparts/basic/box/box100.obj", up_axis="x")
+
+
+def test_scale_scenepart(box):
+    box1 = box()
+    box2 = box()
+
+    def get_bbox(part):
+        scene = StaticScene(scene_parts=[part])
+        scene._finalize()
+        return np.array(scene._cpp_object.bbox.bounds)
+
+    bbox1 = get_bbox(box1)
+    box2.scale(2.0)
+    bbox2 = get_bbox(box2)
+
+    assert np.allclose(bbox1 * 2, bbox2)

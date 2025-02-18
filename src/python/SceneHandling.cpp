@@ -89,11 +89,19 @@ std::shared_ptr<ScenePart> readObjScenePart(
     loader.setAssetsDir(assetsPath);
     std::shared_ptr<ScenePart> sp(loader.run());
 
-    ScenePart::computeTransformations(sp, false);
+    // Connect all primitives to their scene part
+    for (auto p : sp->mPrimitives)
+        p->part = sp;
 
     // Object lifetime caveat! Settings primsOut to nullptr will prevent the
     // loader destructor from deleting the primitives.
     loader.primsOut = nullptr;
 
     return sp;
+}
+
+
+void scaleScenePart(std::shared_ptr<ScenePart> sp, double scaleFactor) {
+    for (auto p : sp->mPrimitives)
+        p->scale(scaleFactor);
 }
