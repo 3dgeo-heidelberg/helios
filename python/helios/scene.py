@@ -42,7 +42,11 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
 
 class StaticScene(Model, cpp_class=_helios.StaticScene):
     scene_parts: list[ScenePart] = Property(
-        cpp="scene_parts", wraptype=ScenePart, iterable=True, default=[]
+        cpp="scene_parts",
+        wraptype=ScenePart,
+        iterable=True,
+        default=[],
+        unique_across_instances=True,
     )
 
     def _finalize(
