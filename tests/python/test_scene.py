@@ -52,9 +52,9 @@ def test_scenepart_from_obj_wrong_axis_argument():
         ScenePart.from_obj("data/sceneparts/basic/box/box100.obj", up_axis="x")
 
 
-def test_scale_scenepart(box):
-    box1 = box()
-    box2 = box()
+def test_scale_scenepart(box_f):
+    box1 = box_f()
+    box2 = box_f()
 
     def get_bbox(part):
         scene = StaticScene(scene_parts=[part])
