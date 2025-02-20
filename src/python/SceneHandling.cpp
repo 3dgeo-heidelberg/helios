@@ -101,7 +101,19 @@ std::shared_ptr<ScenePart> readObjScenePart(
 }
 
 
+void rotateScenePart(std::shared_ptr<ScenePart> sp, Rotation rotation) {
+    for (auto p : sp->mPrimitives)
+        p->rotate(rotation);
+}
+
+
 void scaleScenePart(std::shared_ptr<ScenePart> sp, double scaleFactor) {
     for (auto p : sp->mPrimitives)
         p->scale(scaleFactor);
+}
+
+
+void translateScenePart(std::shared_ptr<ScenePart> sp, glm::dvec3 offset) {
+    for (auto p : sp->mPrimitives)
+        p->translate(offset);
 }

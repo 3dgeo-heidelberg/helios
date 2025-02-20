@@ -1,4 +1,5 @@
 #pragma once
+#include <Rotation.h>
 #include <StaticScene.h>
 
 #include <memory>
@@ -15,4 +16,8 @@ std::shared_ptr<ScenePart> readObjScenePart(
     std::string upaxis
 );
 
+void rotateScenePart(std::shared_ptr<ScenePart> sp, Rotation rotation);
+
 void scaleScenePart(std::shared_ptr<ScenePart> sp, double scaleFactor);
+
+void translateScenePart(std::shared_ptr<ScenePart> sp, glm::dvec3 offset);
