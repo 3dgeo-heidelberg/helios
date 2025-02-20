@@ -14,6 +14,7 @@ dependencies:
   - libboost-devel
   - libgdal
   - matplotlib-base
+  - numpydantic
   - pip
   - pybind11
   - pydantic

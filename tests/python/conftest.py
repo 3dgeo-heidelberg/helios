@@ -78,8 +78,13 @@ def airplane():
 
 
 @pytest.fixture
-def box():
-    return ScenePart.from_obj("data/sceneparts/basic/box/box100.obj")
+def box_f():
+    return lambda: ScenePart.from_obj("data/sceneparts/basic/box/box100.obj")
+
+
+@pytest.fixture
+def box(box_f):
+    return box_f()
 
 
 @pytest.fixture

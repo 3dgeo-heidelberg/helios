@@ -127,17 +127,28 @@ class Property:
                 value = _assign_obj(value)
 
             if self.unique_across_instances:
+
+                def _apply_uniqueness(value):
+                    if not hasattr(obj.__class__, "_uniqueness"):
+                        obj.__class__._uniqueness = {}
+                    if (
+                        value in obj.__class__._uniqueness.get(self.cpp, {}).values()
+                        and not obj.__class__._uniqueness.get(self.cpp, {}).get(
+                            repr(obj), None
+                        )
+                        is value
+                    ):
+                        raise ValueError(
+                            f"This value for property {self.cpp} is already in use by a different instance."
+                        )
+                    obj.__class__._uniqueness.setdefault(self.cpp, {})
+                    obj.__class__._uniqueness[self.cpp][repr(obj)] = value
+
                 if self.iterable:
-                    raise NotImplementedError(
-                        "Unique-across-instances is not implemented for iterable properties"
-                    )
-                if not hasattr(obj.__class__, "_uniqueness"):
-                    obj.__class__._uniqueness = {}
-                if value in obj.__class__.__dict__["_uniqueness"].values():
-                    raise ValueError(
-                        f"This value for property {self.cpp} is already in use by a different instance."
-                    )
-                obj.__class__.__dict__["_uniqueness"][self.cpp] = value
+                    for val in value:
+                        _apply_uniqueness(val)
+                else:
+                    _apply_uniqueness(value)
 
             if self.cpp is None:
                 if not hasattr(obj.__class__, "_instance_data"):

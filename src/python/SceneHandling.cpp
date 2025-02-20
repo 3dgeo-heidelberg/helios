@@ -89,11 +89,31 @@ std::shared_ptr<ScenePart> readObjScenePart(
     loader.setAssetsDir(assetsPath);
     std::shared_ptr<ScenePart> sp(loader.run());
 
-    ScenePart::computeTransformations(sp, false);
+    // Connect all primitives to their scene part
+    for (auto p : sp->mPrimitives)
+        p->part = sp;
 
     // Object lifetime caveat! Settings primsOut to nullptr will prevent the
     // loader destructor from deleting the primitives.
     loader.primsOut = nullptr;
 
     return sp;
+}
+
+
+void rotateScenePart(std::shared_ptr<ScenePart> sp, Rotation rotation) {
+    for (auto p : sp->mPrimitives)
+        p->rotate(rotation);
+}
+
+
+void scaleScenePart(std::shared_ptr<ScenePart> sp, double scaleFactor) {
+    for (auto p : sp->mPrimitives)
+        p->scale(scaleFactor);
+}
+
+
+void translateScenePart(std::shared_ptr<ScenePart> sp, glm::dvec3 offset) {
+    for (auto p : sp->mPrimitives)
+        p->translate(offset);
 }

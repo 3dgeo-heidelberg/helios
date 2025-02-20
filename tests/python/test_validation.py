@@ -136,6 +136,22 @@ def test_unique_across_instances():
         related2 = RelatedObj(obj)
 
 
+def test_unique_across_iterable_instances():
+    class Obj(Model, cpp_class=MockCppObject):
+        pass
+
+    class RelatedObj(Model, cpp_class=RelatedCppMockObject):
+        other: list[Obj] = Property(
+            cpp="other", wraptype=Obj, unique_across_instances=True, iterable=True
+        )
+
+    obj = Obj()
+    related1 = RelatedObj([obj])
+
+    with pytest.raises(ValueError):
+        related2 = RelatedObj([obj])
+
+
 def test_repr():
     class Obj(Model, cpp_class=MockCppObject):
         pass
