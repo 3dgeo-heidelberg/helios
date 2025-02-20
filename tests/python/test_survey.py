@@ -87,14 +87,13 @@ def test_survey_run_laspy_output(survey):
 
 def test_set_gpstime(survey):
     survey.gps_time = datetime.now(timezone.utc)
-    # This timestamp is close to the week epoch. GPS Time is a complicated beast.
-    survey.gps_time = "2025-02-09T01:00:09"
+    # This timestamp is at the gps week start.
+    # A timezone must be given to make this system time independent.
+    survey.gps_time = "2025-02-09T00:00:09+00:00"
     with pytest.raises(ValueError):
         survey.gps_time = "foobar"
 
     points, _ = survey.run()
 
     assert np.all(points["gps_time"] > 0)
-    # TODO: This seems to not be time zone agnostic. I get <1 on my machine.
-    #       But on GitHub Actions, I get 3600. This needs proper fixing.
-    assert np.all(points["gps_time"] < 3601)
+    assert np.all(points["gps_time"] < 1)

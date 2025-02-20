@@ -109,7 +109,7 @@ class Survey(Model, cpp_class=_helios.Survey):
             execution_settings.parallelization,
             pulse_thread_pool,
             execution_settings.chunk_size,
-            str(self.gps_time),
+            str(self.gps_time.timestamp()),
             True,
             True,
         )
