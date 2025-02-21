@@ -1,6 +1,6 @@
 from helios.settings import ExecutionSettings, compose_execution_settings
 from helios.util import get_asset_directories
-from helios.validation import AssetPath, Model, Property, validate_xml_file
+from helios.validation import AssetPath, Model, validate_xml_file
 
 from numpydantic import NDArray, Shape
 from pydantic import PositiveFloat, validate_call
@@ -92,7 +92,7 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
         _cpp_scene_part = _helios.read_scene_part_from_xml(
             str(scene_part_file), [str(p) for p in get_asset_directories()], id
         )
-        return cls.__new__(cls, _cpp_object=_cpp_scene_part)
+        return cls._from_cpp(_cpp_scene_part)
 
     @classmethod
     @validate_call
@@ -103,17 +103,11 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
             str(obj_file), [str(p) for p in get_asset_directories()], up_axis
         )
 
-        return cls.__new__(cls, _cpp_object=_cpp_part)
+        return cls._from_cpp(_cpp_part)
 
 
 class StaticScene(Model, cpp_class=_helios.StaticScene):
-    scene_parts: list[ScenePart] = Property(
-        cpp="scene_parts",
-        wraptype=ScenePart,
-        iterable=True,
-        default=[],
-        unique_across_instances=True,
-    )
+    scene_parts: list[ScenePart] = []
 
     def _finalize(
         self, execution_settings: Optional[ExecutionSettings] = None, **parameters
@@ -139,7 +133,11 @@ class StaticScene(Model, cpp_class=_helios.StaticScene):
             self._cpp_object, [str(p) for p in get_asset_directories()], wavelength
         )
 
-    def _update_hook(self):
+    def _pre_set(self, field, value):
+        if field == "scene_parts":
+            self._enforce_uniqueness_across_instances(field, value)
+
+    def _post_set(self, field):
         # When the Scene changes, we want to invalidate the KDTree etc.
 
         _helios.invalidate_static_scene(self._cpp_object)
@@ -154,4 +152,4 @@ class StaticScene(Model, cpp_class=_helios.StaticScene):
         _cpp_scene = _helios.read_scene_from_xml(
             str(scene_file), [str(p) for p in get_asset_directories()], True, True
         )
-        return cls.__new__(cls, _cpp_object=_cpp_scene)
+        return cls._from_cpp(_cpp_scene)

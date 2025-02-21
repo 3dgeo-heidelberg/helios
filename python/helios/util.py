@@ -99,6 +99,10 @@ def set_rng_seed(seed: Union[int, datetime] = datetime.now(timezone.utc)) -> Non
     _helios.default_rand_generator_seed(str(seed))
 
 
+def is_real_iterable(value):
+    return isinstance(value, Iterable) and not isinstance(value, str)
+
+
 @validate_call
 def combine_parameters(groups: Union[None, list[list[str]]] = None, **parameters):
     """Combine parameter spaces for parameter studies.
@@ -138,20 +142,15 @@ def combine_parameters(groups: Union[None, list[list[str]]] = None, **parameters
         iterables within a group varies.
     """
 
-    def _is_real_iterable(value):
-        return isinstance(value, Iterable) and not isinstance(value, str)
-
     # Define default for groups: Each parameter that was passed an iterable
     # of possible values forms its own group.
     if groups is None:
-        groups = [
-            [key] for key, value in parameters.items() if _is_real_iterable(value)
-        ]
+        groups = [[key] for key, value in parameters.items() if is_real_iterable(value)]
 
     # Ensure that all parameters within a group are lists of the same length
     for group in groups:
         for key in group:
-            if not _is_real_iterable(parameters[key]):
+            if not is_real_iterable(parameters[key]):
                 raise ValueError("All parameters within a group must be iterable.")
         if len(set(len(parameters[key]) for key in group)) > 1:
             raise ValueError("All parameters within a group must have the same length.")

@@ -10,7 +10,7 @@ from helios.settings import (
     compose_output_settings,
 )
 from helios.util import get_asset_directories, meas_dtype, traj_dtype
-from helios.validation import AssetPath, Model, Property, validate_xml_file
+from helios.validation import AssetPath, Model, validate_xml_file
 
 from datetime import datetime, timezone
 from pathlib import Path
@@ -24,14 +24,12 @@ import _helios
 
 
 class Survey(Model, cpp_class=_helios.Survey):
-    scanner: Scanner = Property(
-        cpp="scanner", wraptype=Scanner, unique_across_instances=True
-    )
-    platform: Platform = Property(cpp="platform", wraptype=Platform)
-    scene: StaticScene = Property(cpp="scene", wraptype=StaticScene)
-    legs: list[Leg] = Property(cpp="legs", wraptype=Leg, iterable=True, default=[])
-    name: str = Property(cpp="name", default="")
-    gps_time: datetime = Property(default=datetime.now(timezone.utc))
+    scanner: Scanner
+    platform: Platform
+    scene: StaticScene
+    legs: list[Leg] = []
+    name: str = ""
+    gps_time: datetime = datetime.now(timezone.utc)
 
     @validate_call
     def run(
@@ -216,4 +214,9 @@ class Survey(Model, cpp_class=_helios.Survey):
         _cpp_survey = _helios.read_survey_from_xml(
             str(survey_file), [str(p) for p in get_asset_directories()], True, True
         )
-        return cls.__new__(cls, _cpp_object=_cpp_survey)
+
+        return cls._from_cpp(_cpp_survey)
+
+    def _pre_set(self, field, value):
+        if field == "scanner":
+            self._enforce_uniqueness_across_instances(field, value)
