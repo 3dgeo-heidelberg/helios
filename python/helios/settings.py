@@ -56,7 +56,7 @@ class ExecutionSettings(Model, UpdateableMixin):
     num_threads: ThreadCount = None
     chunk_size: PositiveInt = 32
     warehouse_factor: PositiveInt = 4
-    log_file: Optional[Path] = "helios.log"
+    log_file: bool = False
     log_file_only: bool = False
     verbosity: LogVerbosity = LogVerbosity.DEFAULT
     factory_type: KDTreeFactoryType = KDTreeFactoryType.SAH_APPROXIMATION
