@@ -1,4 +1,4 @@
-from helios.platform import Platform
+from helios.platforms import Platform
 from helios.scanner import Scanner
 from helios.scene import StaticScene
 from helios.survey import *

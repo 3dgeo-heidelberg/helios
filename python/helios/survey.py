@@ -1,5 +1,5 @@
 from helios.leg import Leg
-from helios.platform import Platform, PlatformSettings
+from helios.platforms import Platform, PlatformSettings
 from helios.scanner import Scanner, ScannerSettings
 from helios.scene import StaticScene
 from helios.settings import (
@@ -9,7 +9,7 @@ from helios.settings import (
     compose_execution_settings,
     compose_output_settings,
 )
-from helios.util import get_asset_directories, meas_dtype, traj_dtype
+from helios.utils import get_asset_directories, meas_dtype, traj_dtype
 from helios.validation import AssetPath, Model, validate_xml_file
 
 from datetime import datetime, timezone

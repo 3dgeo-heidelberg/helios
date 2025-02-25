@@ -1,4 +1,4 @@
-from helios.platform import PlatformSettingsBase, PlatformSettings
+from helios.platforms import PlatformSettingsBase, PlatformSettings
 from helios.scanner import ScannerSettings, ScannerSettingsBase
 from helios.validation import Model
 

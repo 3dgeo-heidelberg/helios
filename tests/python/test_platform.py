@@ -1,4 +1,4 @@
-from helios.platform import *
+from helios.platforms import *
 
 
 def test_preinstantiated_platforms():
