@@ -1,3 +1,4 @@
+from datetime import datetime
 import click
 from click_option_group import optgroup, MutuallyExclusiveOptionGroup
 import sys
@@ -314,7 +315,7 @@ def cli(**kw):
     output_settings.las_scale = kw.get("lasscale")
 
     survey = Survey.from_xml(kw.get("survey_file_path"))
-    if gps := kw.get("gpsStartTime"):
+    if gps := kw.get("gpsstarttime"):
         survey.gps_time = gps
 
     survey.run(execution_settings=execution_settings, output_settings=output_settings)
