@@ -118,7 +118,7 @@ def helios_entrypoint():
 )
 @optgroup.option(
     "--gpsStartTime",
-    is_flag=True,
+    type=click.STRING,
     help=(
         "Specify a fixed start time for GPS. It can be either a posix timestamp "
         "or a 'YYYY-MM-DD hh:mm:ss+00:00' date time string, including "
@@ -299,6 +299,7 @@ def cli(**kw):
     execution_settings.chunk_size = kw.get("chunksize")
     execution_settings.warehouse_factor = kw.get("warehousefactor")
     execution_settings.log_file = kw.get("logfile")
+    execution_settings.log_file_only = kw.get("logfileonly")
     execution_settings.verbosity = kw.get("verbose")
     execution_settings.factory_type = kw.get("kdt")
     execution_settings.kdt_num_threads = kw.get("kdtjobs")
@@ -313,6 +314,8 @@ def cli(**kw):
     output_settings.las_scale = kw.get("lasscale")
 
     survey = Survey.from_xml(kw.get("survey_file_path"))
+    if gps := kw.get("gpsStartTime"):
+        survey.gps_time = gps
 
     survey.run(execution_settings=execution_settings, output_settings=output_settings)
 
