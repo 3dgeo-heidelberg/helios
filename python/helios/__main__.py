@@ -281,9 +281,6 @@ def helios_entrypoint():
 )
 def cli(**kw):
 
-    for k, v in kw.items():
-        print(k, v)
-
     for asset in kw["assets"]:
         add_asset_directory(asset)
 
