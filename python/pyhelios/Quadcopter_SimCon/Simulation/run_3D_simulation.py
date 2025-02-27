@@ -152,7 +152,7 @@ def main():
     # utils.fullprint(sDes_traj_all[:,3:6])
     utils.makeFigures(quad.params, t_all, pos_all, vel_all, quat_all, omega_all, euler_all, w_cmd_all, wMotor_all, thr_all, tor_all, sDes_traj_all, sDes_calc_all)
     xyztrpy=np.zeros((len(t_all),7))
-    wp=np.loadtxt("/home/jule/Dokumente/helios-devel/helios/3dpoints.txt")
+    wp=np.loadtxt("3dpoints.txt")
     xyztrpy[:,0:3]=pos_all+wp[0,:3]
     xyztrpy[:,2]=xyztrpy[:,2]+height
     xyztrpy[:,3]=t_all
