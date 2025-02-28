@@ -139,12 +139,14 @@ void LidarSim::init(
     // Build the survey playback simulation itself
 	std::shared_ptr<SurveyPlayback> playback=std::make_shared<SurveyPlayback>(
         survey,
-        fms,
         parallelizationStrategy,
         pulseThreadPool,
         std::abs(chunkSize),
         gpsStartTime,
-        legacyEnergyModel
+        legacyEnergyModel,
+        true,
+        false,
+        fms
 	);
 
 	// Start simulation

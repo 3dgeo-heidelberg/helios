@@ -27,14 +27,14 @@ using namespace std;
 // ************************************ //
 SurveyPlayback::SurveyPlayback(
     shared_ptr<Survey> survey,
-    shared_ptr<FMSFacade> fms,
     int const parallelizationStrategy,
     std::shared_ptr<PulseThreadPoolInterface> pulseThreadPoolInterface,
     int const chunkSize,
     std::string fixedGpsTimeStart,
     bool const legacyEnergyModel,
     bool const exportToFile,
-    bool const disableShutdown
+    bool const disableShutdown,
+    shared_ptr<FMSFacade> fms
 ):
     Simulation(
         parallelizationStrategy,
@@ -43,9 +43,9 @@ SurveyPlayback::SurveyPlayback(
         fixedGpsTimeStart,
         legacyEnergyModel
     ),
-    fms(fms),
+    fms(fms ? fms : nullptr),
     disableShutdown(disableShutdown)
-{
+{  
     this->mSurvey = survey;
     this->mSurvey->hatch(*this);
 	this->exitAtEnd = true;

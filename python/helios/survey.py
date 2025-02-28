@@ -68,7 +68,7 @@ class Survey(Model, cpp_class=_helios.Survey):
         else:
             # Make the given output path absolute
             output = Path(output_settings.output_dir).absolute()
-
+            export_to_file = True
             # Determine boolean flags for the output
             las_output, zip_output = {
                 "laz": (True, True),
@@ -98,13 +98,14 @@ class Survey(Model, cpp_class=_helios.Survey):
         pulse_thread_pool = ptpf.make_pulse_thread_pool()
         playback = _helios.SurveyPlayback(
             self._cpp_object,
-            fms,
             execution_settings.parallelization,
             pulse_thread_pool,
             execution_settings.chunk_size,
             str(self.gps_time.timestamp()),
             True,
-            True,
+            export_to_file,
+            execution_settings.discard_shutdown,
+            fms
         )
         playback.callback_frequency = 0
 

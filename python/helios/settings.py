@@ -65,6 +65,7 @@ class ExecutionSettings(Model, UpdateableMixin):
     kdt_num_threads: ThreadCount = None
     kdt_geom_num_threads: ThreadCount = None
     sah_nodes: PositiveInt = 32
+    discard_shutdown: bool = True
 
 
 class OutputSettings(Model, UpdateableMixin):
