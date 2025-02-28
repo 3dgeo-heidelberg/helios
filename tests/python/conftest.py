@@ -26,13 +26,9 @@ def rng_seed():
     set_rng_seed(42)
 
 
-@pytest.fixture(autouse=True)
+@pytest.fixture
 def reset_global_state():
     """Reset global state after a test alters it"""
-
-    # NB: This fixture being autouse=True is a stop-gap measure until we
-    #     implemented clone behaviour for all model objects, so that we
-    #     avoid accidentally editing the global state.
 
     yield
 

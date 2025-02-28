@@ -140,7 +140,7 @@ def _compose_settings(*settings, **parameters):
     # Find the most specialized base settings class
     for base in settings:
         if base is not None:
-            result = base
+            result = base.clone()
             break
 
     # There should always be one base settings class, because the
