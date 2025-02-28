@@ -26,9 +26,12 @@ class ParallelizationStrategy(IntEnum):
 
 
 class LogVerbosity(IntEnum):
-    DEFAULT = 0
-    VERBOSE = 1
-    VERY_VERBOSE = 2
+    SILENT = 0b000000
+    QUIET = 0b100000
+    TIME = 0b101000
+    DEFAULT = 0b111000
+    VERBOSE = 0b111100
+    VERY_VERBOSE = 0b111111
 
 
 class KDTreeFactoryType(IntEnum):

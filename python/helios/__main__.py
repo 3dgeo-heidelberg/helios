@@ -1,15 +1,8 @@
-from datetime import datetime
 import click
 from click_option_group import optgroup, MutuallyExclusiveOptionGroup
-import sys
-from helios.settings import ExecutionSettings, OutputSettings
+from helios.settings import ExecutionSettings, OutputSettings, LogVerbosity
 from helios.survey import Survey
 from helios.utils import add_asset_directory, set_rng_seed
-
-
-def helios_entrypoint():
-    # raise SystemExit(helios_exec(sys.argv[1:]))
-    raise SystemExit(cli(sys.argv[1:]))
 
 
 @click.command()
@@ -264,21 +257,25 @@ def helios_entrypoint():
         "By default: logging will be outputted to standard output."
     ),
 )
+@optgroup.group("Verbosity", cls=MutuallyExclusiveOptionGroup)
 @optgroup.option(
-    "--silent",
-    is_flag=True,
-    help=("Disable logging output."),
-)
-@click.version_option()
-@click.option(
-    "-v",
     "--verbose",
+    "-v",
     count=True,
     help=(
-        "Increase the verbosity level to include warnings. Can be repeated "
-        "once to report all messages. Default: report errors only."
+        "Increase the verbosity level to include information. Can be repeated "
+        "once to report all messages. Default: report errors and warnings."
     ),
 )
+@optgroup.option(
+    "--silent",
+    "-s",
+    is_flag=True,
+    help=("Disable all logging output."),
+)
+@optgroup.option("--quiet", "-q", is_flag=True, help="Only errors are reported.")
+@optgroup.option("--vt", is_flag=True, help="Report time and errors.")
+@click.version_option()
 def cli(**kw):
 
     for asset in kw["assets"]:
@@ -289,6 +286,18 @@ def cli(**kw):
     else:
         set_rng_seed()
 
+    verbosity = LogVerbosity.DEFAULT
+    if kw.get("verbose") == 1:
+        verbosity = LogVerbosity.VERBOSE
+    elif kw.get("verbose") == 2:
+        verbosity = LogVerbosity.VERY_VERBOSE
+    elif kw.get("quiet"):
+        verbosity = LogVerbosity.QUIET
+    elif kw.get("vt"):
+        verbosity = LogVerbosity.TIME
+    elif kw.get("silent"):
+        verbosity = LogVerbosity.SILENT
+
     output_settings = OutputSettings()
     execution_settings = ExecutionSettings()
 
@@ -298,7 +307,7 @@ def cli(**kw):
     execution_settings.warehouse_factor = kw.get("warehousefactor")
     execution_settings.log_file = kw.get("logfile")
     execution_settings.log_file_only = kw.get("logfileonly")
-    execution_settings.verbosity = kw.get("verbose")
+    execution_settings.verbosity = verbosity
     execution_settings.factory_type = kw.get("kdt")
     execution_settings.kdt_num_threads = kw.get("kdtjobs")
     execution_settings.kdt_geom_num_threads = kw.get("kdtgeomjobs")
@@ -319,4 +328,4 @@ def cli(**kw):
 
 
 if __name__ == "__main__":
-    helios_entrypoint()
+    raise cli()
