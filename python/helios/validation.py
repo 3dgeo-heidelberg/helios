@@ -2,16 +2,42 @@ from helios.utils import find_file, is_real_iterable
 
 from collections.abc import Iterable
 from pathlib import Path
+from pint import UnitRegistry
 from pydantic import validate_call, GetCoreSchemaHandler
-from pydantic.functional_validators import AfterValidator
+from pydantic.functional_validators import AfterValidator, BeforeValidator
 from pydantic_core import core_schema
 from typing import Any, Optional, Type, Union, get_origin, get_args
 from typing_extensions import Annotated, dataclass_transform
 
+import annotated_types
 import inspect
 import multiprocessing
 import os
 import xmlschema
+
+
+# The global registry of physical units used in Helios++. Currently there
+# are no custom units, so we go with Pint's default registry.
+units = UnitRegistry()
+
+
+def _unit_validator(default_unit):
+    """A validator function that converts to a unit if necessary"""
+
+    def _validator(v):
+        quantity = units.Quantity(v)
+        if quantity.unitless:
+            return v
+        return quantity.to(default_unit).magnitude
+
+    return BeforeValidator(_validator)
+
+
+Angle = Annotated[float, _unit_validator(units.rad)]
+AngleVelocity = Annotated[float, _unit_validator(units.rad / units.s)]
+Frequency = Annotated[int, _unit_validator(units.Hz), annotated_types.Ge(0)]
+Length = Annotated[float, _unit_validator(units.m), annotated_types.Ge(0)]
+TimeInterval = Annotated[float, _unit_validator(units.s), annotated_types.Ge(0)]
 
 
 def validate_xml_file(file_path: Path, schema_path: Path):

@@ -15,6 +15,7 @@ dependencies:
   - libgdal
   - matplotlib-base
   - numpydantic
+  - pint
   - pip
   - pybind11
   - pydantic
