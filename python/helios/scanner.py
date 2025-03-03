@@ -1,8 +1,14 @@
 from helios.util import get_asset_directories
 from helios.validation import (
+    Angle,
+    AngleVelocity,
     AssetPath,
+    Frequency,
+    Length,
     Model,
+    units,
     UpdateableMixin,
+    TimeInterval,
     validate_xml_file,
 )
 from pydantic import validate_call
@@ -17,26 +23,26 @@ class ScannerSettingsBase(Model, UpdateableMixin, cpp_class=_helios.ScannerSetti
 
 class ScannerSettings(ScannerSettingsBase):
     is_active: bool = True
-    head_rotation: float = 0
-    rotation_start_angle: float = 0
-    rotation_stop_angle: float = 0
-    pulse_frequency: int = 300000
-    scan_angle: float = 0.349066
-    min_vertical_angle: float = np.nan
-    max_vertical_angle: float = np.nan
-    scan_frequency: float = 200
-    beam_divergence_angle: float = 0.0003
-    trajectory_time_interval: float = 0.01
-    vertical_resolution: float = 0
-    horizontal_resolution: float = 0
+    head_rotation: AngleVelocity = 0
+    rotation_start_angle: Angle = 0
+    rotation_stop_angle: Angle = 0
+    pulse_frequency: Frequency = 300000
+    scan_angle: Angle = 0.349066
+    min_vertical_angle: Angle = np.nan
+    max_vertical_angle: Angle = np.nan
+    scan_frequency: Frequency = 200
+    beam_divergence_angle: Angle = 0.0003 * units.deg
+    trajectory_time_interval: TimeInterval = 0.01
+    vertical_resolution: Length = 0
+    horizontal_resolution: Length = 0
 
 
 # TODO: Requires expert input
 class RotatingOpticsScannerSettings(ScannerSettingsBase):
     is_active: bool = True
-    head_rotation: float = 0
-    rotation_start_angle: float = 0
-    rotation_stop_angle: float = 0
+    head_rotation: AngleVelocity = 0
+    rotation_start_angle: Angle = 0
+    rotation_stop_angle: Angle = 0
 
 
 # TODO: Requires expert input
