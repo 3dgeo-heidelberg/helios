@@ -53,7 +53,7 @@ def find_file(filename: Union[Path, str], fatal: bool = True) -> Union[Path, Non
     or in some default search locations.
 
     :param filename: The name of the file to find.
-    :type filename: str
+    :type filename: Union[Path, str]
     :param fatal: Whether to raise an exception if the file is not found.
     :type fatal: bool
     :return: The path to the file, or None if the file was not found.
@@ -61,7 +61,7 @@ def find_file(filename: Union[Path, str], fatal: bool = True) -> Union[Path, Non
     """
 
     # Convert the filename to a Path object if it is a string.
-    filename = Path(filename)
+    filename = Path(filename).expanduser()
 
     # Check if the given filename is an absolute path.
     if filename.is_absolute():
@@ -77,11 +77,48 @@ def find_file(filename: Union[Path, str], fatal: bool = True) -> Union[Path, Non
             return file_path
 
     if fatal:
+        m = f"Could not find file '{filename}' in any of the given asset directories."
+        if "*" in str(filename):
+            m += " For resolving wildcards, use 'find_files' instead of 'find_file'!"
+        raise FileNotFoundError(m)
+
+    return None
+
+
+def find_files(filename: Union[Path, str], fatal: bool = True) -> list[Path]:
+    """
+    Find files in the list of directories that have been added as asset directories
+    or in some default search locations. Supports wildcards in the search pattern.
+
+    :param filename: The name of the file to find.
+    :type filename: Union[Path, str]
+    :param fatal: Whether to raise an exception if no file is not found.
+    :type fatal: bool
+    :return: A list of found filepaths.
+    :rtype: list[Path]
+    """
+
+    filename = Path(filename).expanduser()
+    assets = get_asset_directories()
+    files = []
+
+    if filename.is_absolute():
+        if filename.exists():
+            return [filename]
+        else:
+            # resolve wildcards in absolut paths
+            parts = filename.parts
+            asset = parts[0]
+            filename = Path().joinpath(*parts[1:])
+
+    for asset in assets:
+        files.extend(asset.glob(str(filename)))
+
+    if len(files) == 0 and fatal:
         raise FileNotFoundError(
             f"Could not find file '{filename}' in any of the given asset directories."
         )
-
-    return None
+    return files
 
 
 @validate_call

@@ -1,6 +1,6 @@
 from helios.settings import ExecutionSettings, compose_execution_settings
 from helios.utils import get_asset_directories
-from helios.validation import AssetPath, Model, validate_xml_file
+from helios.validation import AssetPath, Model, MultiAssetPath, validate_xml_file
 
 from numpydantic import NDArray, Shape
 from pydantic import PositiveFloat, validate_call
@@ -97,13 +97,35 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
     @classmethod
     @validate_call
     def from_obj(cls, obj_file: AssetPath, up_axis: Literal["y", "z"] = "z"):
-        """Load the scene part from an OBJ file."""
+        """Load the scene part from an OBJ file.
+
+        For paths (potentially) containing wildcards, use 'ScenePart.from_objs()' instead!
+        """
 
         _cpp_part = _helios.read_obj_scene_part(
             str(obj_file), [str(p) for p in get_asset_directories()], up_axis
         )
 
         return cls._from_cpp(_cpp_part)
+
+    @classmethod
+    @validate_call
+    def from_objs(cls, obj_files: MultiAssetPath, up_axis: Literal["y", "z"] = "z"):
+        """Load multiple scene parts from OBJ files
+
+        Expects a single Path containing some (or none) wildcards ('*').
+        Supports '**' for matching multiple directories.
+        """
+
+        _cpp_parts = []
+        for obj in obj_files:
+            _cpp_parts.append(
+                _helios.read_obj_scene_part(
+                    str(obj), [str(p) for p in get_asset_directories()], up_axis
+                )
+            )
+
+        return [cls._from_cpp(part) for part in _cpp_parts]
 
 
 class StaticScene(Model, cpp_class=_helios.StaticScene):

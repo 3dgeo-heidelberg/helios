@@ -406,3 +406,14 @@ def test_created_directory_annotation(tmp_path):
 
     foo(tmp_path / "nonexistent")
     assert (tmp_path / "nonexistent").exists()
+
+
+def test_multiassetpath(assetdir):
+    assert (b := assetdir / "b" / "bb" / "other.obj").exists()
+
+    @validate_call
+    def from_obj(obj_file: MultiAssetPath):
+        return obj_file
+
+    # tmp_dir has different parents, because it gets called from different functions
+    assert b.parts[-4:] == from_obj("root/b/*/*.obj")[0].parts[-4:]

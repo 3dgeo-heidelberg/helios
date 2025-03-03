@@ -42,6 +42,13 @@ def test_scenepart_from_obj():
     scene._finalize()
 
 
+def test_sceneparts_from_obj_wildcard():
+    box = ScenePart.from_objs("data/sceneparts/basic/**/*.obj")
+    assert len(box) == 4
+    scene = StaticScene(scene_parts=box)
+    scene._finalize()
+
+
 def test_scenepart_from_obj_yisup():
     box = ScenePart.from_obj("data/sceneparts/basic/box/box100.obj")
     scene = StaticScene(scene_parts=[box], up_axis="y")
