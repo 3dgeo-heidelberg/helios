@@ -6,7 +6,7 @@ dependencies:
   - armadillo
   - backports.strenum
   - click
-  - click_option_group
+  - click-option-group
   - blas
   - glm
   - importlib_resources
