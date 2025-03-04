@@ -148,3 +148,6 @@ def test_find_files(assetdir):
 
     found = find_files("root/*/*.obj")
     assert len(found) == 2
+
+    found = find_files(assetdir / "*/*.obj")
+    assert len(found) == 2

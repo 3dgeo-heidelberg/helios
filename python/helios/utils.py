@@ -92,7 +92,7 @@ def find_files(filename: Union[Path, str], fatal: bool = True) -> list[Path]:
 
     :param filename: The name of the file to find.
     :type filename: Union[Path, str]
-    :param fatal: Whether to raise an exception if no file is not found.
+    :param fatal: Whether to raise an exception if no file is found.
     :type fatal: bool
     :return: A list of found filepaths.
     :rtype: list[Path]
@@ -106,9 +106,9 @@ def find_files(filename: Union[Path, str], fatal: bool = True) -> list[Path]:
         if filename.exists():
             return [filename]
         else:
-            # resolve wildcards in absolut paths
+            # resolve wildcards in absolute paths
             parts = filename.parts
-            asset = parts[0]
+            assets = [Path(parts[0])]
             filename = Path().joinpath(*parts[1:])
 
     for asset in assets:
