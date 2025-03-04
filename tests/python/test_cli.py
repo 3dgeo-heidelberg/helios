@@ -15,3 +15,13 @@ def test_cli_version():
     assert result.exit_code == 0
     assert helios.__version__ in result.stdout
 
+
+def test_cli_call():
+    runner = CliRunner()
+    result = runner.invoke(
+        cli, ["--dryrun", "data/surveys/voxels/tls_sphere_xyzloader.xml"]
+    )
+    assert result.exit_code == 0
+    # Missing argument:
+    result = runner.invoke(cli, ["--dryrun"])
+    assert result.exit_code != 0
