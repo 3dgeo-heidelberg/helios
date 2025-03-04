@@ -341,4 +341,4 @@ def cli(**kw):
 
 
 if __name__ == "__main__":
-    raise cli()
+    cli()
