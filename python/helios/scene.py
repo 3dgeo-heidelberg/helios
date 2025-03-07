@@ -116,16 +116,7 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
         Expects a single Path containing some (or none) wildcards ('*').
         Supports '**' for matching multiple directories.
         """
-
-        _cpp_parts = []
-        for obj in obj_files:
-            _cpp_parts.append(
-                _helios.read_obj_scene_part(
-                    str(obj), [str(p) for p in get_asset_directories()], up_axis
-                )
-            )
-
-        return [cls._from_cpp(part) for part in _cpp_parts]
+        return [ScenePart.from_obj(obj, up_axis) for obj in obj_files]
 
 
 class StaticScene(Model, cpp_class=_helios.StaticScene):

@@ -2,7 +2,7 @@ from helios.utils import find_file, find_files, is_real_iterable
 
 from collections.abc import Iterable
 from pathlib import Path
-from pydantic import validate_call, GetCoreSchemaHandler
+from pydantic import BeforeValidator, validate_call, GetCoreSchemaHandler
 from pydantic.functional_validators import AfterValidator
 from pydantic_core import core_schema
 from typing import Any, Optional, Type, Union, get_origin, get_args
@@ -50,7 +50,7 @@ def _create_directory(directory: Path):
 
 # Some type annotations for convenience
 AssetPath = Annotated[Path, AfterValidator(find_file)]
-MultiAssetPath = Annotated[Path, AfterValidator(find_files)]
+MultiAssetPath = Annotated[list[Path], BeforeValidator(find_files)]
 ThreadCount = Annotated[Optional[int], AfterValidator(_validate_thread_count)]
 CreatedDirectory = Annotated[Path, AfterValidator(_create_directory)]
 
