@@ -19,6 +19,7 @@ from typing import Optional
 
 import numpy as np
 import tempfile
+import laspy
 
 import _helios
 
@@ -160,12 +161,6 @@ class Survey(Model, cpp_class=_helios.Survey):
                 return data_mes, data_traj
 
             if output_settings.format == OutputFormat.LASPY:
-                # raise NotImplementedError(
-                #     "LASPY output format is not yet supported, see https://github.com/3dgeo-heidelberg/helios/issues/561"
-                # )
-
-                import laspy
-
                 header = laspy.LasHeader(version="1.4", point_format=6)
                 header.add_extra_dims(
                     [
