@@ -45,17 +45,11 @@ class Survey(Model, cpp_class=_helios.Survey):
         execution_settings = compose_execution_settings(execution_settings, parameters)
         output_settings = compose_output_settings(output_settings, parameters)
 
-        # Throw an error for unsupported output formats
-        if output_settings.format == OutputFormat.LASPY:
-            raise NotImplementedError(
-                "LASPY output format is not yet supported, see https://github.com/3dgeo-heidelberg/helios/issues/561"
-            )
-
         # Ensure that the scene has been finalized
         self.scene._finalize(execution_settings)
         self.scene._set_reflectances(self.scanner._cpp_object.wavelength)
 
-        if output_settings.format == OutputFormat.NPY:
+        if output_settings.format in (OutputFormat.NPY, OutputFormat.LASPY):
             # TODO: Implement approach where we don't need to write to disk
             las_output, zip_output = False, False
             temp_dir_obj = tempfile.TemporaryDirectory()
@@ -123,10 +117,9 @@ class Survey(Model, cpp_class=_helios.Survey):
         # Start simulating the survey
         playback.start()
 
-        if output_settings.format == OutputFormat.NPY:
+        if output_settings.format in (OutputFormat.NPY, OutputFormat.LASPY):
             measurements = self.scanner._cpp_object.all_measurements
             num_measurements = len(measurements)
-
             data_mes = np.empty(num_measurements, dtype=meas_dtype)
 
             for i, measurement in enumerate(measurements):
@@ -163,7 +156,38 @@ class Survey(Model, cpp_class=_helios.Survey):
 
             temp_dir_obj.cleanup()
 
-            return data_mes, data_traj
+            if output_settings.format == OutputFormat.NPY:
+                return data_mes, data_traj
+
+            if output_settings.format == OutputFormat.LASPY:
+                # raise NotImplementedError(
+                #     "LASPY output format is not yet supported, see https://github.com/3dgeo-heidelberg/helios/issues/561"
+                # )
+
+                import laspy
+
+                header = laspy.LasHeader(version="1.4", point_format=6)
+                header.add_extra_dims(
+                    [
+                        laspy.ExtraBytesParams("echo_width", "f8"),
+                        laspy.ExtraBytesParams("fullwaveIndex", "i4"),
+                        # laspy.ExtraBytesParams("hitObjectId", "U50"),
+                    ]
+                )
+
+                las = laspy.LasData(header)
+                las.synthetic = np.ones_like(las.synthetic)
+
+                las.x, las.y, las.z = np.unstack(data_mes["position"], axis=1)
+                las.intensity = data_mes["intensity"]
+                las.return_number = data_mes["return_number"]
+                las.gps_time = data_mes["gps_time"]
+                las.classification = data_mes["classification"]
+                las.echo_width = data_mes["echo_width"]
+                las.fullwaveIndex = data_mes["fullwave_index"]
+                # las.hitObjectId = data_mes["hit_object_id"]
+
+                return las, data_traj
 
         # Return path to the created output directory
         return Path(playback.fms.write.get_measurement_writer_output_path()).parent
