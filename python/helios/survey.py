@@ -176,6 +176,7 @@ class Survey(Model, cpp_class=_helios.Survey):
                 las.x, las.y, las.z = np.unstack(data_mes["position"], axis=1)
                 las.intensity = data_mes["intensity"]
                 las.return_number = data_mes["return_number"]
+                las.number_of_returns = data_mes["pulse_return_number"]
                 las.gps_time = data_mes["gps_time"]
                 las.classification = data_mes["classification"]
                 las.echo_width = data_mes["echo_width"]
