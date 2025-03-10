@@ -169,6 +169,7 @@ class Survey(Model, cpp_class=_helios.Survey):
                         # laspy.ExtraBytesParams("hitObjectId", "U50"),
                     ]
                 )
+                header.generating_software = "HELIOS++"
 
                 las = laspy.LasData(header)
                 las.synthetic = np.ones_like(las.synthetic)
