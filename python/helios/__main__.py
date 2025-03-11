@@ -278,6 +278,19 @@ from helios.utils import add_asset_directory, set_rng_seed
 @click.version_option()
 def cli(**kw):
 
+    # TODO:
+    # The following parameters are defined but not yet implemented:
+    # * silent
+    # * disableLegNoise
+    # * disablePlatformNoise
+    # * noSceneWriting
+    # * rebuildScene
+    # * fixedIncidenceAngle
+    # * calcEchowidth
+    # * zipOutput
+    # * las10
+    # * fullwaveNoise
+
     for asset in kw["assets"]:
         add_asset_directory(asset)
 

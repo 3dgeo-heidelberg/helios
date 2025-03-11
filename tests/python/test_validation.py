@@ -1,6 +1,8 @@
 from helios.validation import *
 
 import copy
+import math
+import numpy as np
 import pytest
 
 
@@ -417,3 +419,89 @@ def test_multiassetpath(assetdir):
 
     # tmp_dir has different parents, because it gets called from different functions
     assert b.parts[-4:] == from_obj("root/b/*/*.obj")[0].parts[-4:]
+
+
+def test_angle_annotation():
+    class Obj(Model):
+        angle: Angle
+
+    # Testing all sorts of valid angle values
+    assert Obj(angle=1.0).angle == 1.0
+    assert Obj(angle=1 * units.rad).angle == 1.0
+    assert Obj(angle="1 rad").angle == 1.0
+    assert np.isclose(Obj(angle="180 deg").angle, math.pi)
+    assert np.isclose(Obj(angle=180 * units.deg).angle, math.pi)
+
+
+def test_anglevelocity_annotation():
+    class Obj(Model):
+        anglevel: Optional[AngleVelocity] = None
+
+    # Testing all sorts of valid angle velocity values
+    assert Obj(anglevel=1.0).anglevel == 1.0
+    assert Obj(anglevel=1 * units.rad / units.s).anglevel == 1.0
+    assert Obj(anglevel="1 rad/s").anglevel == 1.0
+    assert np.isclose(Obj(anglevel="180 deg/s").anglevel, math.pi)
+    assert np.isclose(Obj(anglevel=180 * units.deg / units.s).anglevel, math.pi)
+    assert np.isclose(Obj(anglevel=360 * units.deg / (2.0 * units.s)).anglevel, math.pi)
+
+
+def test_frequency_annotation():
+    class Obj(Model):
+        frequency: Frequency
+
+    # Testing all sorts of frequency values
+    assert Obj(frequency=1.0).frequency == 1.0
+    assert Obj(frequency=1 * units.Hz).frequency == 1.0
+    assert Obj(frequency="1 Hz").frequency == 1.0
+    assert Obj(frequency="1 kHz").frequency == 1000.0
+    assert Obj(frequency=1000 * units.mHz).frequency == 1.0
+    assert Obj(frequency=1 * units.kHz).frequency == 1000.0
+    assert Obj(frequency=1 * units.MHz).frequency == 1_000_000.0
+    assert Obj(frequency=1 * units.GHz).frequency == 1_000_000_000.0
+
+    with pytest.raises(ValueError):
+        Obj(frequency=-1.0)
+
+    with pytest.raises(ValueError):
+        Obj(frequency="-1 Hz")
+
+
+def test_length_annotation():
+    class Obj(Model):
+        length: Length
+
+    # Testing all sorts of valid length values
+    assert Obj(length=1.0).length == 1.0
+    assert Obj(length=1 * units.m).length == 1.0
+    assert Obj(length="1 m").length == 1.0
+    assert Obj(length="1 km").length == 1000.0
+    assert Obj(length=1000 * units.mm).length == 1.0
+    assert Obj(length=1 * units.cm).length == 0.01
+    assert Obj(length=1 * units.km).length == 1000.0
+
+    with pytest.raises(ValueError):
+        Obj(length=-1.0)
+
+    with pytest.raises(ValueError):
+        Obj(length="-1 m")
+
+
+def test_timeinterval_annotation():
+    class Obj(Model):
+        timeinterval: TimeInterval
+
+    # Testing all sorts of time interval values
+    assert Obj(timeinterval=1.0).timeinterval == 1.0
+    assert Obj(timeinterval=1 * units.s).timeinterval == 1.0
+    assert Obj(timeinterval="1 s").timeinterval == 1.0
+    assert Obj(timeinterval="1 ms").timeinterval == 0.001
+    assert Obj(timeinterval=1000 * units.us).timeinterval == 0.001
+    assert Obj(timeinterval=1 * units.ms).timeinterval == 0.001
+    assert Obj(timeinterval=1 * units.min).timeinterval == 60.0
+
+    with pytest.raises(ValueError):
+        Obj(timeinterval=-1.0)
+
+    with pytest.raises(ValueError):
+        Obj(timeinterval="-1 s")

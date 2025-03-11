@@ -92,18 +92,15 @@ def scene(box):
 
 @pytest.fixture
 def tls_survey(tls_scanner, tripod, scene):
-    def torad(x):
-        return (x / 180.0) * math.pi
-
     survey = Survey(scanner=tls_scanner, platform=tripod, scene=scene)
     survey.add_leg(
         x=0,
         y=0,
         z=0,
         pulse_frequency=2000,
-        head_rotation=torad(10),
-        rotation_start_angle=torad(0),
-        rotation_stop_angle=torad(10),
+        head_rotation="10 deg/s",
+        rotation_start_angle="0 deg",
+        rotation_stop_angle="10 deg",
     )
     return survey
 

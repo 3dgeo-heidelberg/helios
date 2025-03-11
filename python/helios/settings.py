@@ -1,5 +1,6 @@
 from helios.validation import (
     CreatedDirectory,
+    Length,
     Model,
     ThreadCount,
     UpdateableMixin,
@@ -72,7 +73,7 @@ class OutputSettings(Model, UpdateableMixin):
     output_dir: CreatedDirectory = "output"
     write_waveform: bool = False
     write_pulse: bool = False
-    las_scale: PositiveFloat = 0.0001
+    las_scale: Length = 0.0001
 
 
 # Storage for global settings
