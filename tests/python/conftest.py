@@ -1,4 +1,4 @@
-from helios.platform import tripod as tripod_platform, sr22
+from helios.platforms import tripod as tripod_platform, sr22
 from helios.scanner import (
     leica_als50,
     riegl_vq_1560i,
@@ -13,7 +13,7 @@ from helios.settings import (
     set_output_settings,
 )
 from helios.survey import Survey
-from helios.util import set_rng_seed
+from helios.utils import set_rng_seed
 
 import math
 import pytest

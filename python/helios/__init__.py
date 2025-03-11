@@ -5,7 +5,7 @@ __version__ = metadata.version(__package__)
 del metadata
 
 from helios.leg import Leg
-from helios.platform import Platform, PlatformSettings
+from helios.platforms import Platform, PlatformSettings
 from helios.scanner import Scanner, ScannerSettings
 from helios.scene import StaticScene, ScenePart
 from helios.settings import (
@@ -17,5 +17,5 @@ from helios.settings import (
     set_output_settings,
 )
 from helios.survey import Survey
-from helios.util import add_asset_directory, combine_parameters
+from helios.utils import add_asset_directory, combine_parameters
 from helios.validation import units

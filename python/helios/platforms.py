@@ -1,4 +1,4 @@
-from helios.util import get_asset_directories
+from helios.utils import get_asset_directories
 from helios.validation import (
     AssetPath,
     Model,

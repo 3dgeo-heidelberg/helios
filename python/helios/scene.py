@@ -1,5 +1,5 @@
 from helios.settings import ExecutionSettings, compose_execution_settings
-from helios.util import get_asset_directories
+from helios.utils import get_asset_directories
 from helios.validation import AssetPath, Model, validate_xml_file
 
 from numpydantic import NDArray, Shape
