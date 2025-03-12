@@ -1,3 +1,4 @@
+from typing import Annotated, Any, Optional
 from helios.utils import get_asset_directories
 from helios.validation import (
     AssetPath,
@@ -5,28 +6,84 @@ from helios.validation import (
     UpdateableMixin,
     validate_xml_file,
 )
-from pydantic import validate_call
+from pydantic import Field, GetPydanticSchema, StringConstraints, validate_call
+import numpy as np
 
 import _helios
 
 
-class PlatformSettingsBase(Model, UpdateableMixin, cpp_class=_helios.PlatformSettings):
+class Printable:
+    def __str__(self):
+        from pprint import pformat
+
+        return "<" + type(self).__name__ + "> " + pformat(vars(self), indent=4, width=1)
+
+
+HandleAsAny = GetPydanticSchema(lambda _s, h: h(Any))
+traj_dtype = np.dtype(
+    [
+        ("t", "f8"),
+        ("x", "f8"),
+        ("y", "f8"),
+        ("z", "f8"),
+        ("roll", "f8"),
+        ("pitch", "f8"),
+        ("yaw", "f8"),
+    ]
+)
+
+
+class PlatformSettingsBase(Printable, Model, UpdateableMixin):
     pass
 
 
-class PlatformSettings(PlatformSettingsBase):
+class TrajectoryParserSettings(Printable, Model):
+    trajectory: Optional[AssetPath] = None
+    tindex: Annotated[int, Field(strict=True, ge=0, le=6)] = 0
+    xindex: Annotated[int, Field(strict=True, ge=0, le=6)] = 1
+    yindex: Annotated[int, Field(strict=True, ge=0, le=6)] = 2
+    zindex: Annotated[int, Field(strict=True, ge=0, le=6)] = 3
+    rollIndex: Annotated[int, Field(strict=True, ge=0, le=6)] = 4
+    pitchIndex: Annotated[int, Field(strict=True, ge=0, le=6)] = 5
+    yawIndex: Annotated[int, Field(strict=True, ge=0, le=6)] = 6
+    trajectory_separator: Annotated[
+        str, Field(strict=True, min_length=1, max_length=1)
+    ] = ","
+    slopeFilterThreshold: float = 0.0
+    syncGPStime: bool = False
+    interpolationDomain: Annotated[
+        str, StringConstraints(pattern=r"(^$)|(position)|(position_and_attitude)")
+    ] = ""
+
+
+class TrajectorySettings(PlatformSettingsBase, cpp_class=_helios.TrajectorySettings):
+    start_time: float = 0
+    end_time: float = 0
+    teleport_to_start: bool = False
+    trajectory_parser_settings: Optional[TrajectoryParserSettings] = None
+
+
+class PlatformSettings(PlatformSettingsBase, cpp_class=_helios.PlatformSettings):
     x: float = 0
     y: float = 0
     z: float = 0
+    is_on_ground = False
 
 
-class StaticPlatformSettings(PlatformSettingsBase):
-    x: float = 0
-    y: float = 0
-    z: float = 0
+class StaticPlatformSettings(PlatformSettings):
+    pass
 
 
-class Platform(Model, cpp_class=_helios.Platform):
+class DynamicPlatformSettings(PlatformSettings):
+    trajectory_settings: TrajectorySettings = TrajectorySettings()
+    speed_m_s: Annotated[float, Field(ge=0)] = 70
+
+
+class Platform(Printable, Model, cpp_class=_helios.Platform):
+    # TODO: should these get set when calling `from_xml`?
+    platform_settings: Optional[PlatformSettings] = None
+    trajectory: Optional[Annotated[np.ndarray, HandleAsAny]] = None
+
     @classmethod
     @validate_call
     def from_xml(cls, platform_file: AssetPath, platform_id: str = ""):
@@ -37,7 +94,10 @@ class Platform(Model, cpp_class=_helios.Platform):
         _cpp_platform = _helios.read_platform_from_xml(
             str(platform_file), [str(p) for p in get_asset_directories()], platform_id
         )
-        return cls._from_cpp(_cpp_platform)
+        cppplatform = cls._from_cpp(_cpp_platform)
+        return cppplatform
+
+    # TODO: load traj from csv
 
 
 #
