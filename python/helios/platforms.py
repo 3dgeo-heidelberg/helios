@@ -64,6 +64,7 @@ class StaticPlatformSettings(PlatformSettingsBase):
     x: float = 0
     y: float = 0
     z: float = 0
+    is_on_ground = False
 
 
 class StaticPlatformSettings(PlatformSettings):
