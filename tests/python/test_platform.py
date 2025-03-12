@@ -38,3 +38,18 @@ def test_traj_from_np_loading():
     assert p.trajectory.shape == (10,)
     assert p.trajectory["x"].shape == (10,)
     assert len(p.trajectory[0]) == 7
+
+
+def test_traj_from_csv_loading():
+    tps = TrajectoryParserSettings()
+    traj_settings = TrajectorySettings(trajectory_parser_settings=tps)
+    dps = DynamicPlatformSettings(trajectory_settings=traj_settings)
+    p = Platform(platform_settings=dps)
+
+    csv = "data/trajectories/cycloid.trj"
+    p.load_traj_csv(csv=csv)
+    assert p.trajectory.shape == (51,)
+    t = np.void(
+        [(3.7, -60.0, 60.0, 330.7, 13.002584, 1.122905, 400.0)], dtype=traj_dtype
+    )
+    assert all([a == b for a, b in zip(p.trajectory[0], t[0])])
