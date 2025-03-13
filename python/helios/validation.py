@@ -1,4 +1,4 @@
-from helios.utils import find_file, is_real_iterable
+from helios.utils import find_file, find_files, is_real_iterable
 
 from collections.abc import Iterable
 from pathlib import Path
@@ -76,6 +76,7 @@ def _create_directory(directory: Path):
 
 # Some type annotations for convenience
 AssetPath = Annotated[Path, AfterValidator(find_file)]
+MultiAssetPath = Annotated[list[Path], BeforeValidator(find_files)]
 ThreadCount = Annotated[Optional[int], AfterValidator(_validate_thread_count)]
 CreatedDirectory = Annotated[Path, AfterValidator(_create_directory)]
 

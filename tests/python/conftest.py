@@ -1,3 +1,5 @@
+from pathlib import Path
+
 from helios.platforms import tripod as tripod_platform, sr22
 from helios.scanner import (
     leica_als50,
@@ -13,7 +15,7 @@ from helios.settings import (
     set_output_settings,
 )
 from helios.survey import Survey
-from helios.utils import set_rng_seed
+from helios.utils import add_asset_directory, set_rng_seed
 
 import math
 import pytest
@@ -104,3 +106,30 @@ def tls_survey(tls_scanner, tripod, scene):
 
 
 survey = tls_survey
+
+
+@pytest.fixture()
+def assetdir(tmp_path):
+    add_asset_directory(tmp_path)
+    tmp_path = tmp_path / "root"
+    tmp_path.mkdir()
+
+    a = tmp_path / "a"
+    b = tmp_path / "b" / "bb"
+    c = tmp_path / "c"
+    a.mkdir()
+    b.mkdir(parents=True)
+    c.mkdir()
+
+    a1 = a / "some.obj"
+    a2 = a / "second.obj"
+    a3 = a / "notobj.smth"
+    bb1 = b / "other.obj"
+    c1 = c / "notobj.smt"
+    a1.touch()
+    a2.touch()
+    a3.touch()
+    bb1.touch()
+    c1.touch()
+
+    return tmp_path
