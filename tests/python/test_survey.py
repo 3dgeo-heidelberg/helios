@@ -81,8 +81,11 @@ def test_survey_run_xyz_output(survey, tmp_path):
 
 
 def test_survey_run_laspy_output(survey):
-    with pytest.raises(NotImplementedError):
-        survey.run(format=OutputFormat.LASPY)
+    las, traj = survey.run(format=OutputFormat.LASPY)
+
+    assert len(las.points) == 200
+    assert all(las.return_number == np.ones_like(las.return_number))
+    assert traj.shape == (101,)
 
 
 def test_set_gpstime(survey):
