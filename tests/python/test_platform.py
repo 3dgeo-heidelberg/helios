@@ -1,3 +1,4 @@
+# ruff: noqa
 from helios.platforms import *
 from numpy.lib.recfunctions import unstructured_to_structured
 
@@ -51,5 +52,27 @@ def test_traj_from_csv_loading():
     assert p.trajectory.shape == (51,)
     t = np.void(
         [(3.7, -60.0, 60.0, 330.7, 13.002584, 1.122905, 400.0)], dtype=traj_dtype
+    )
+    assert all([a == b for a, b in zip(p.trajectory[0], t[0])])
+
+
+def test_traj_from_csv_reordering():
+    tps = TrajectoryParserSettings(
+        xIndex=4,
+        yIndex=5,
+        zIndex=6,
+        rollIndex=1,
+        pitchIndex=2,
+        yawIndex=3,
+    )
+    traj_settings = TrajectorySettings(trajectory_parser_settings=tps)
+    dps = DynamicPlatformSettings(trajectory_settings=traj_settings)
+    p = Platform(platform_settings=dps)
+
+    csv = "data/trajectories/cycloid.trj"
+    p.load_traj_csv(csv=csv)
+    assert p.trajectory.shape == (51,)
+    t = np.void(
+        [(3.7, 13.002584, 1.122905, 400.0, -60.0, 60.0, 330.7)], dtype=traj_dtype
     )
     assert all([a == b for a, b in zip(p.trajectory[0], t[0])])
