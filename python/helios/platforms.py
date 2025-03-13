@@ -99,7 +99,6 @@ class Platform(Printable, Model, cpp_class=_helios.Platform):
         cppplatform = cls._from_cpp(_cpp_platform)
         return cppplatform
 
-    # TODO: load traj from csv
     def load_traj_csv(self, csv: AssetPath):
         if not isinstance(self.platform_settings, DynamicPlatformSettings):
             raise TypeError(

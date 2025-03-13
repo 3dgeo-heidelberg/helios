@@ -1,6 +1,7 @@
 # ruff: noqa
 from helios.platforms import *
 from numpy.lib.recfunctions import unstructured_to_structured
+import pytest
 
 
 def test_preinstantiated_platforms():
@@ -76,3 +77,18 @@ def test_traj_from_csv_reordering():
         [(3.7, 13.002584, 1.122905, 400.0, -60.0, 60.0, 330.7)], dtype=traj_dtype
     )
     assert all([a == b for a, b in zip(p.trajectory[0], t[0])])
+
+
+def test_traj_wrong_initialization():
+    csv = "data/trajectories/cycloid.trj"
+    with pytest.raises(TypeError):
+        Platform().load_traj_csv(csv)
+
+    ts = TrajectorySettings()
+    dsp = DynamicPlatformSettings(trajectory_settings=ts)
+    with pytest.raises(ValueError):
+        Platform(platform_settings=dsp).load_traj_csv(csv)
+
+
+def test_platform_printable():
+    str(Platform())
