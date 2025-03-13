@@ -1973,16 +1973,16 @@ namespace helios{
 
             py::class_<SurveyPlayback, Simulation, std::shared_ptr<SurveyPlayback>> survey_playback(m, "SurveyPlayback");
             survey_playback
-                .def(py::init<std::shared_ptr<Survey>, int, std::shared_ptr<PulseThreadPoolInterface>, int, std::string, bool, bool, bool, std::shared_ptr<FMSFacade>>(),
+                .def(py::init<std::shared_ptr<Survey>, std::shared_ptr<FMSFacade>, int, std::shared_ptr<PulseThreadPoolInterface>, int, std::string, bool, bool, bool>(),
                     py::arg("survey"),
+                    py::arg("fms"),
                     py::arg("parallelizationStrategy"),
                     py::arg("pulseThreadPoolInterface"),
                     py::arg("chunkSize"),
                     py::arg("fixedGpsTimeStart"),
                     py::arg("legacyEnergyModel"),
                     py::arg("exportToFile") = true,
-                    py::arg("disableShutdown") = false,
-                    py::arg("fms") = nullptr)
+                    py::arg("disableShutdown") = true)
 
                 .def_readwrite("fms", &SurveyPlayback::fms)
                 .def_readwrite("survey", &SurveyPlayback::mSurvey)
