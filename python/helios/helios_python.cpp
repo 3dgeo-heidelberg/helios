@@ -1986,7 +1986,6 @@ namespace helios{
 
                 .def_readwrite("fms", &SurveyPlayback::fms)
                 .def_readwrite("survey", &SurveyPlayback::mSurvey)
-
                 .def("do_sim_step", &SurveyPlayback::doSimStep);
 
 

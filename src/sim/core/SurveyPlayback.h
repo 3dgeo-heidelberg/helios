@@ -110,7 +110,6 @@ public:
 		std::shared_ptr<FMSFacade> fms=nullptr
     );
 
-
     // ***  M E T H O D S  *** //
     // *********************** //
     /**

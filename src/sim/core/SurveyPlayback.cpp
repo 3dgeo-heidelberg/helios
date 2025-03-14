@@ -94,10 +94,10 @@ SurveyPlayback::SurveyPlayback(
             this->currentGpsTime_ns = (
                 mSurvey->legs[0]->mTrajectorySettings->tStart +
                 imp->getStartTime()
-            ) * 1000000000.0;
+            ) * 1e9;
         }
         else{  // Use min time from input trajectory
-            this->currentGpsTime_ns = imp->getStartTime() * 1000000000.0;
+            this->currentGpsTime_ns = imp->getStartTime() * 1e9;
         }
     }
 
