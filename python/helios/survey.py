@@ -20,6 +20,7 @@ from pathlib import Path
 from pydantic import Field, validate_call
 from typing import Annotated, Optional, Tuple
 
+from typing import Annotated, Optional
 import numpy as np
 import tempfile
 import laspy
