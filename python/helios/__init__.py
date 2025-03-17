@@ -12,6 +12,7 @@ from helios.settings import (
     ExecutionSettings,
     FullWaveformSettings,
     LogVerbosity,
+    OutputFormat,
     OutputSettings,
     ParallelizationStrategy,
     set_execution_settings,
