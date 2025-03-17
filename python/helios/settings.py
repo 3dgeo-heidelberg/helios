@@ -1,7 +1,7 @@
 from helios.validation import (
     CreatedDirectory,
+    Length,
     Model,
-    Property,
     ThreadCount,
     UpdateableMixin,
 )
@@ -10,6 +10,7 @@ from enum import IntEnum
 from pathlib import Path
 from pydantic import PositiveFloat, PositiveInt
 from typing import Optional
+from logging import ERROR, DEBUG, INFO, WARNING
 
 import sys
 
@@ -53,30 +54,26 @@ class OutputFormat(StrEnum):
 
 
 class ExecutionSettings(Model, UpdateableMixin):
-    parallelization: ParallelizationStrategy = Property(
-        default=ParallelizationStrategy.CHUNK
-    )
-    num_threads: ThreadCount = Property(default=None)
-    chunk_size: PositiveInt = Property(default=32)
-    warehouse_factor: PositiveInt = Property(default=4)
-    log_file: Optional[Path] = Property(default="helios.log")
-    log_file_only: bool = Property(default=False)
-    verbosity: LogVerbosity = Property(default=LogVerbosity.DEFAULT)
-    factory_type: KDTreeFactoryType = Property(
-        default=KDTreeFactoryType.SAH_APPROXIMATION
-    )
-    kdt_num_threads: ThreadCount = Property(default=None)
-    kdt_geom_num_threads: ThreadCount = Property(default=None)
-    sah_nodes: PositiveInt = Property(default=32)
+    parallelization: ParallelizationStrategy = ParallelizationStrategy.CHUNK
+    num_threads: ThreadCount = None
+    chunk_size: PositiveInt = 32
+    warehouse_factor: PositiveInt = 4
+    log_file: bool = False
+    log_file_only: bool = False
+    verbosity: LogVerbosity = LogVerbosity.DEFAULT
+    factory_type: KDTreeFactoryType = KDTreeFactoryType.SAH_APPROXIMATION
+    kdt_num_threads: ThreadCount = None
+    kdt_geom_num_threads: ThreadCount = None
+    sah_nodes: PositiveInt = 32
 
 
 class OutputSettings(Model, UpdateableMixin):
-    format: OutputFormat = Property(default=OutputFormat.NPY)
-    split_by_channel: bool = Property(default=False)
-    output_dir: CreatedDirectory = Property(default="output")
-    write_waveform: bool = Property(default=False)
-    write_pulse: bool = Property(default=False)
-    las_scale: PositiveFloat = Property(default=0.0001)
+    format: OutputFormat = OutputFormat.NPY
+    split_by_channel: bool = False
+    output_dir: CreatedDirectory = "output"
+    write_waveform: bool = False
+    write_pulse: bool = False
+    las_scale: Length = 0.0001
 
 
 # Storage for global settings
@@ -145,7 +142,7 @@ def _compose_settings(*settings, **parameters):
     # Find the most specialized base settings class
     for base in settings:
         if base is not None:
-            result = base
+            result = base.clone()
             break
 
     # There should always be one base settings class, because the

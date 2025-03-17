@@ -1,15 +1,43 @@
-from helios.util import find_file
+from helios.utils import find_file, find_files, is_real_iterable
 
+from collections.abc import Iterable
 from pathlib import Path
+from pint import UnitRegistry
 from pydantic import validate_call, GetCoreSchemaHandler
-from pydantic.functional_validators import AfterValidator
+from pydantic.functional_validators import AfterValidator, BeforeValidator
 from pydantic_core import core_schema
-from typing import Any, Optional, Type, Union
+from typing import Any, Optional, Type, Union, get_origin, get_args
 from typing_extensions import Annotated, dataclass_transform
 
+import annotated_types
+import inspect
 import multiprocessing
 import os
 import xmlschema
+
+
+# The global registry of physical units used in Helios++. Currently there
+# are no custom units, so we go with Pint's default registry.
+units = UnitRegistry()
+
+
+def _unit_validator(default_unit):
+    """A validator function that converts to a unit if necessary"""
+
+    def _validator(v):
+        quantity = units.Quantity(v)
+        if quantity.unitless:
+            return v
+        return quantity.to(default_unit).magnitude
+
+    return BeforeValidator(_validator)
+
+
+Angle = Annotated[float, _unit_validator(units.rad)]
+AngleVelocity = Annotated[float, _unit_validator(units.rad / units.s)]
+Frequency = Annotated[int, _unit_validator(units.Hz), annotated_types.Ge(0)]
+Length = Annotated[float, _unit_validator(units.m), annotated_types.Ge(0)]
+TimeInterval = Annotated[float, _unit_validator(units.s), annotated_types.Ge(0)]
 
 
 def validate_xml_file(file_path: Path, schema_path: Path):
@@ -48,176 +76,152 @@ def _create_directory(directory: Path):
 
 # Some type annotations for convenience
 AssetPath = Annotated[Path, AfterValidator(find_file)]
+MultiAssetPath = Annotated[list[Path], BeforeValidator(find_files)]
 ThreadCount = Annotated[Optional[int], AfterValidator(_validate_thread_count)]
 CreatedDirectory = Annotated[Path, AfterValidator(_create_directory)]
 
 
-class Property:
-    """Descriptor that performs pydantic validation and delegates to a C++ property
-
-    An implementation of the descriptor protocol that allows us to perform
-    pydantic validation of values for a property but then forward them to a
-    C++ object. Used heavily across the Helios++ codebase.
-    """
-
-    def __init__(
-        self,
-        cpp=None,
-        wraptype=None,
-        iterable=False,
-        unique_across_instances=False,
-        **maybe_default,
-    ):
-        if wraptype is not None and not issubclass(wraptype, Model):
-            raise TypeError("wraptype must be a subclass of Model")
-
-        if wraptype is not None and cpp is None:
-            raise ValueError("Wraptype can only used with C++-managed properties")
-
-        self.cpp = cpp
-        self.wraptype = wraptype
-        self.iterable = iterable
-        self.has_default = "default" in maybe_default
-        self.default = maybe_default.get("default", None)
-        self.unique_across_instances = unique_across_instances
-
-    def _maybe_wrap(self, value):
-        if self.wraptype is not None and value is not None:
-            return self.wraptype.__new__(self.wraptype, _cpp_object=value)
-        return value
-
-    def __get__(self, obj, objtype=None):
-        if self.cpp is None:
-            val = (
-                obj.__class__.__dict__.get("_instance_data", {})
-                .get(repr(obj), {})
-                .get(repr(self), self.default)
-            )
-        else:
-            val = getattr(obj._cpp_object, self.cpp)
-
-        if self.iterable:
-            return type(val)(self._maybe_wrap(item) for item in val)
-        return self._maybe_wrap(val)
-
-    def __set__(self, obj, value):
-        @validate_call
-        def _validated_setter(value: self._get_annotation(obj)):
-            def _assign_obj(value):
-                if self.cpp is None:
-                    return value
-                return (
-                    getattr(value, "_cpp_object")
-                    if hasattr(value, "_cpp_object")
-                    else value
-                )
-
-            if self.iterable:
-                if len(value) > 0:
-                    if self.wraptype is not None:
-                        assert issubclass(type(value[0]), Model)
-                        self.wraptype = type(value[0])
-                    value = [_assign_obj(item) for item in value]
-                else:
-                    value = []
-            else:
-                if self.wraptype is not None:
-                    assert issubclass(type(value), Model)
-                    self.wraptype = type(value)
-                value = _assign_obj(value)
-
-            if self.unique_across_instances:
-                if self.iterable:
-                    raise NotImplementedError(
-                        "Unique-across-instances is not implemented for iterable properties"
-                    )
-                if not hasattr(obj.__class__, "_uniqueness"):
-                    obj.__class__._uniqueness = {}
-                if value in obj.__class__.__dict__["_uniqueness"].values():
-                    raise ValueError(
-                        f"This value for property {self.cpp} is already in use by a different instance."
-                    )
-                obj.__class__.__dict__["_uniqueness"][self.cpp] = value
-
-            if self.cpp is None:
-                if not hasattr(obj.__class__, "_instance_data"):
-                    setattr(obj.__class__, "_instance_data", {})
-                obj.__class__._instance_data.setdefault(repr(obj), {})[
-                    repr(self)
-                ] = value
-            else:
-                setattr(obj._cpp_object, self.cpp, value)
-
-        _validated_setter(value)
-        obj._update_hook()
-
-    def _get_annotation(self, obj):
-        for cls in obj.__class__.__mro__:
-            for name, prop in cls.__dict__.items():
-                if prop is self:
-                    annotations = getattr(cls, "__annotations__", {})
-                    if name in annotations:
-                        return annotations[name]
-                    else:
-                        raise TypeError("Missing type annotation")
-
-
 @dataclass_transform()
-class ValidatedCppModelMetaClass(type):
-    def __new__(cls, name, bases, dct, *args, **kwargs):
-
+class ValidatedModelMetaClass(type):
+    def __new__(cls, name, bases, dct, **kwargs):
         cls = super().__new__(cls, name, bases, dct, **kwargs)
 
-        # Retrieve properties while preserving their definition order
-        fields = {}
-        for base in reversed(cls.mro()[:-1]):  # Traverse from base to derived
-            for key, value in base.__dict__.items():
-                if isinstance(value, Property) and key not in fields:
-                    fields[key] = value
+        # Determine fields that should be properties
+        defaults = {}
 
+        for base in reversed(cls.mro()[:-1]):
+            for key, value in list(base.__dict__.items()):
+                if key in inspect.get_annotations(cls):
+                    defaults[key] = value
+
+        # Creation of properties need to be wrapped in a function to accommodate
+        # a semantic weirdness of Python: If you define a function inside a loop,
+        # the function will capture the loop variable, not the value of the loop
+        # variable at the time of the function definition. Wrapping the logic in
+        # a function will create a new scope for the loop variable, which will
+        # then be captured correctly by the function.
+        def _make_property(f, a):
+            def _getter(self):
+                # If the property is backed by a C++ object, we first check for
+                # potential updates for the Python object
+                if hasattr(self, "_cpp_object") and hasattr(self._cpp_object, f):
+                    value = getattr(self._cpp_object, f)
+
+                    # Determine whether this is of type Iterable[Model]
+                    origin = get_origin(a)
+                    if (
+                        isinstance(origin, type)
+                        and issubclass(origin, Iterable)
+                        and issubclass(get_args(a)[0], Model)
+                    ):
+
+                        def _check_if_rebuild():
+                            if len(value) != len(getattr(self, f"_{f}")):
+                                return True
+                            for i, val in enumerate(value):
+                                if val is not getattr(self, f"_{f}")[i]._cpp_object:
+                                    return True
+                            return False
+
+                        if _check_if_rebuild():
+                            setattr(
+                                self,
+                                f"_{f}",
+                                [get_args(a)[0]._from_cpp(val) for val in value],
+                            )
+                    else:
+                        if hasattr(a, "_cpp_class"):
+                            getattr(self, f"_{f}")._cpp_object = value
+                        else:
+                            setattr(self, f"_{f}", value)
+
+                # Otherwise, we take the property from a variable with a prefixed underscore
+                return getattr(self, f"_{f}")
+
+            @validate_call
+            def _setter(self, value: a):
+                # If a pre_set hook was provided, we execute it
+                self._pre_set(f, value)
+
+                # We always store the object in a variable with a prefixed underscore
+                setattr(self, f"_{f}", value)
+
+                # If this property is backed by a C++ object, we additionally set it on C++
+                if hasattr(self, "_cpp_object") and hasattr(self._cpp_object, f):
+                    if (
+                        is_real_iterable(value)
+                        and len(value) > 0
+                        and hasattr(value[0], "_cpp_object")
+                    ):
+                        value = [v._cpp_object for v in value]
+                    if hasattr(value, "_cpp_object"):
+                        value = value._cpp_object
+                    setattr(self._cpp_object, f, value)
+
+                # If a post_set hook was provided, we execute it
+                self._post_set(f)
+
+            # Register the getter and setter on the property
+            return property().getter(_getter).setter(_setter)
+
+        # Make fields properties
+        for field, annot in inspect.get_annotations(cls).items():
+            setattr(cls, field, _make_property(field, annot))
+
+        # Create an __init__ for the class
         def __init__(self, *args, **instance_kwargs):
             # Iterate the fields in exactly the given order. When using a different order,
             # we risk that properties are instantiated in an incorrect order.
-            for i, (name, field) in enumerate(fields.items()):
+            for i, field in enumerate(inspect.get_annotations(cls).keys()):
                 # Check whether we find this among positional arguments
                 if i < len(args):
-                    setattr(self, name, args[i])
+                    setattr(self, field, args[i])
                     continue
 
                 # Check whether we find this among keyword arguments
-                if name in instance_kwargs:
-                    setattr(self, name, instance_kwargs[name])
+                if field in instance_kwargs:
+                    setattr(self, field, instance_kwargs[field])
                     continue
 
                 # Use the provided default
-                if field.has_default:
-                    setattr(self, name, field.default)
+                if field in defaults:
+                    setattr(self, field, defaults[field])
                     continue
 
                 # Raise an error if this was required and not we reached this point
-                raise ValueError(f"Missing required argument: {name}")
+                raise ValueError(f"Missing required argument: {field}")
 
         setattr(cls, "__init__", __init__)
 
         return cls
 
 
-class Model(metaclass=ValidatedCppModelMetaClass):
-    """Base class for objects that use ValidatedCppManagedProperty"""
+class Model(metaclass=ValidatedModelMetaClass):
+    """Base class for validated objects in Helios++."""
 
     def __init_subclass__(cls, cpp_class=None, **kwargs):
         super().__init_subclass__(**kwargs)
+        if not hasattr(cls, "_cpp_class"):
+            cls._cpp_class = None
         if cpp_class is not None:
             cls._cpp_class = cpp_class
 
     def __new__(cls, *args, **kwargs):
         obj = super().__new__(cls)
-        if hasattr(cls, "_cpp_class"):
+        if cls._cpp_class is not None:
             cpp_object = kwargs.pop("_cpp_object", None)
             if cpp_object is None:
                 cpp_object = cls._cpp_class()
             obj._cpp_object = cpp_object
         return obj
+
+    def _post_set(self, field):
+        """Hook that is called after a property is set"""
+        pass
+
+    def _pre_set(self, field, value):
+        """Hook that is called before a property is set"""
+        pass
 
     @classmethod
     def __get_pydantic_core_schema__(
@@ -227,11 +231,6 @@ class Model(metaclass=ValidatedCppModelMetaClass):
             cls._validate, core_schema.any_schema()
         )
 
-    def _update_hook(self):
-        """This hook is called whenever after a property is updated."""
-
-        pass
-
     @classmethod
     def _validate(cls, value):
         if not isinstance(value, cls):
@@ -239,21 +238,71 @@ class Model(metaclass=ValidatedCppModelMetaClass):
         return value
 
     def __repr__(self):
-        if hasattr(self.__class__, "_cpp_class"):
+        if hasattr(self, "_cpp_object"):
             return f"<{self.__class__.__name__} at {hex(id(self._cpp_object))}>"
         else:
             return f"<{self.__class__.__name__} at {hex(id(self))}>"
 
+    @classmethod
+    def _from_cpp(cls, value):
+        params = {}
+        for field, annot in inspect.get_annotations(cls).items():
+            if hasattr(value, field):
+                cpp_value = getattr(value, field)
+                origin = get_origin(annot)
+                if origin is None or not issubclass(origin, Iterable):
+                    if hasattr(annot, "_from_cpp"):
+                        cpp_value = annot._from_cpp(cpp_value)
+                else:
+                    args = get_args(annot)
+                    if hasattr(args[0], "_from_cpp"):
+                        cpp_value = [args[0]._from_cpp(v) for v in cpp_value]
+                params[field] = cpp_value
+
+        return cls(_cpp_object=value, **params)
+
+    def _enforce_uniqueness_across_instances(self, field, value):
+        """Enforce uniqueness of a field across all instances of a class"""
+
+        # Ensure that the uniqueness dictionary is present
+        if not hasattr(self.__class__, f"_uniqueness_{field}"):
+            setattr(self.__class__, f"_uniqueness_{field}", {})
+
+        # Extract the information mapping values to instances
+        info = getattr(self.__class__, f"_uniqueness_{field}")
+
+        # If the value already exists on another instance, raise an error
+        def _check_if_exists(val):
+            if val in info.keys() and not info[val] is self:
+                raise ValueError(f"Value {val} is already used by another instance")
+
+        # For iterables, we need to check every single value
+        if is_real_iterable(value):
+            for val in value:
+                _check_if_exists(val)
+                info[val] = self
+        else:
+            _check_if_exists(value)
+            info[value] = self
+
     def clone(self):
-        if not hasattr(self._cpp_object, "clone"):
-            raise NotImplementedError(
-                f"{self.__class__.__name__} does not support cloning, as the C++ object "
-                "does not yet implement a clone method. Please open an issue with your use "
-                "case."
-            )
-        return self.__class__.__new__(
-            self.__class__, _cpp_object=self._cpp_object.clone()
-        )
+        """Create a deep copy of the object"""
+
+        cpp_object = None
+
+        # Check whether the underlying C++ class supports cloning
+        if self.__class__._cpp_class is not None:
+            if not hasattr(self._cpp_object, "clone"):
+                raise ValueError("Underlying C++ class does not support cloning.")
+
+            # Clone the underlying C++ object
+            cpp_object = self._cpp_object.clone()
+
+        properties = {
+            f: getattr(self, f) for f in inspect.get_annotations(self.__class__).keys()
+        }
+
+        return self.__class__(_cpp_object=cpp_object, **properties)
 
 
 class UpdateableMixin:
@@ -264,9 +313,7 @@ class UpdateableMixin:
 
         keys = list(kwargs.keys())
         for key in keys:
-            if key in self.__class__.__dict__ and isinstance(
-                self.__class__.__dict__[key], Property
-            ):
+            if key in self.__class__.__dict__:
                 setattr(self, key, kwargs.pop(key))
             elif not skip_exceptions:
                 raise ValueError(f"Invalid key: {key}")
@@ -274,8 +321,10 @@ class UpdateableMixin:
     def update_from_object(self, other, skip_exceptions=False):
         """Update a ValidatedCppModel object from another object"""
 
+        if not isinstance(self, Model):
+            raise ValueError("update_from_object can only be called on Model objects")
+
         parameters = {}
-        for key, value in self.__class__.__dict__.items():
-            if isinstance(value, Property):
-                parameters[key] = getattr(other, key)
+        for field in inspect.get_annotations(self.__class__).keys():
+            parameters[field] = getattr(other, field)
         self.update_from_dict(parameters, skip_exceptions=skip_exceptions)

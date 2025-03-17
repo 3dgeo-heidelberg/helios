@@ -1,4 +1,6 @@
-from helios.platform import tripod as tripod_platform, sr22
+from pathlib import Path
+
+from helios.platforms import tripod as tripod_platform, sr22
 from helios.scanner import (
     leica_als50,
     riegl_vq_1560i,
@@ -13,7 +15,7 @@ from helios.settings import (
     set_output_settings,
 )
 from helios.survey import Survey
-from helios.util import set_rng_seed
+from helios.utils import add_asset_directory, set_rng_seed
 
 import math
 import os
@@ -68,13 +70,9 @@ def rng_seed():
     set_rng_seed(42)
 
 
-@pytest.fixture(autouse=True)
+@pytest.fixture
 def reset_global_state():
     """Reset global state after a test alters it"""
-
-    # NB: This fixture being autouse=True is a stop-gap measure until we
-    #     implemented clone behaviour for all model objects, so that we
-    #     avoid accidentally editing the global state.
 
     yield
 
@@ -120,29 +118,31 @@ def airplane():
 
 
 @pytest.fixture
-def box():
-    return ScenePart.from_xml("data/scenes/demo/box_scene.xml", id="0")
+def box_f():
+    return lambda: ScenePart.from_obj("data/sceneparts/basic/box/box100.obj")
 
 
 @pytest.fixture
-def scene():
-    return StaticScene.from_xml("data/scenes/demo/box_scene.xml")
+def box(box_f):
+    return box_f()
+
+
+@pytest.fixture
+def scene(box):
+    return StaticScene(scene_parts=[box])
 
 
 @pytest.fixture
 def tls_survey(tls_scanner, tripod, scene):
-    def torad(x):
-        return (x / 180.0) * math.pi
-
     survey = Survey(scanner=tls_scanner, platform=tripod, scene=scene)
     survey.add_leg(
         x=0,
         y=0,
         z=0,
         pulse_frequency=2000,
-        head_rotation=torad(10),
-        rotation_start_angle=torad(0),
-        rotation_stop_angle=torad(10),
+        head_rotation="10 deg/s",
+        rotation_start_angle="0 deg",
+        rotation_stop_angle="10 deg",
     )
     return survey
 
@@ -150,34 +150,28 @@ def tls_survey(tls_scanner, tripod, scene):
 survey = tls_survey
 
 
-def pytest_addoption(parser):
-    # Add an option to also run slow tests which are omitted by default
-    parser.addoption(
-        "--slow", action="store_true", default=False, help="run slow tests"
-    )
+@pytest.fixture()
+def assetdir(tmp_path):
+    add_asset_directory(tmp_path)
+    tmp_path = tmp_path / "root"
+    tmp_path.mkdir()
 
-    # Add an option for running regression tests. This is useful to e.g.
-    # restrict the regression testing bit to the platform on which we have
-    # regression data available.
-    parser.addoption(
-        "--regression-tests",
-        action="store_true",
-        default=False,
-        help="run regression tests",
-    )
+    a = tmp_path / "a"
+    b = tmp_path / "b" / "bb"
+    c = tmp_path / "c"
+    a.mkdir()
+    b.mkdir(parents=True)
+    c.mkdir()
 
-    # Add an option to keep the output of the demo regression tests in
-    # the pytest-output folder
-    parser.addoption(
-        "--keep-output",
-        action="store_true",
-        default=False,
-        help="keep output of demo tests",
-    )
+    a1 = a / "some.obj"
+    a2 = a / "second.obj"
+    a3 = a / "notobj.smth"
+    bb1 = b / "other.obj"
+    c1 = c / "notobj.smt"
+    a1.touch()
+    a2.touch()
+    a3.touch()
+    bb1.touch()
+    c1.touch()
 
-
-def pytest_runtest_setup(item):
-    if "slow" in item.keywords and not (
-        item.config.getoption("--slow") or item.config.getoption("--regression-tests")
-    ):
-        pytest.skip("need --slow option to run")
+    return tmp_path

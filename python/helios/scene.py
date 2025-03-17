@@ -1,14 +1,87 @@
 from helios.settings import ExecutionSettings, compose_execution_settings
-from helios.util import get_asset_directories
-from helios.validation import AssetPath, Model, Property, validate_xml_file
+from helios.utils import get_asset_directories
+from helios.validation import AssetPath, Model, MultiAssetPath, validate_xml_file
 
-from pydantic import validate_call
-from typing import Optional
+from numpydantic import NDArray, Shape
+from pydantic import PositiveFloat, validate_call
+from typing import Literal, Optional
+
+import numpy as np
 
 import _helios
 
 
 class ScenePart(Model, cpp_class=_helios.ScenePart):
+    @validate_call
+    def rotate(
+        self,
+        quaternion: Optional[NDArray[Shape["4"], np.float64]] = None,
+        axis: Optional[NDArray[Shape["3"], np.float64]] = None,
+        angle: Optional[float] = None,
+        origin: Optional[NDArray[Shape["3"], np.float64]] = None,
+        image: Optional[NDArray[Shape["3"], np.float64]] = None,
+    ):
+        """Rotate the scene part.
+
+        The rotation can be specified as one of the following parameters:
+        * A quaternion
+        * An axis and an angle
+        * An origin and an image vector
+        """
+
+        # The rotation object that we want to construct
+        rot = None
+
+        # Handle construction via a given quaternion
+        if quaternion is not None:
+            rot = _helios.Rotation(
+                quaternion[0], quaternion[1], quaternion[2], quaternion[3], True
+            )
+
+        # Handle construction via an axis and angle
+        if axis is not None or angle is not None:
+            if rot is not None:
+                raise ValueError("Too many rotation parameters specified")
+            if axis is None:
+                raise ValueError("Axis must be specified when angle is specified")
+            if angle is None:
+                raise ValueError("Angle must be specified when axis is specified")
+
+            rot = _helios.Rotation(axis, angle)
+
+        # Handle construction via two vectors
+        if origin is not None or image is not None:
+            if rot is not None:
+                raise ValueError("Too many rotation parameters specified")
+            if origin is None:
+                raise ValueError("Origin must be specified when image is specified")
+            if image is None:
+                raise ValueError("Image must be specified when origin is specified")
+
+            rot = _helios.Rotation(origin, image)
+
+        if rot is None:
+            raise ValueError("No rotation parameters specified")
+
+        # Perform the actual rotation
+        _helios.rotate_scene_part(self._cpp_object, rot)
+
+        return self
+
+    @validate_call
+    def scale(self, factor: PositiveFloat):
+        """Scale the scene part by a factor."""
+
+        _helios.scale_scene_part(self._cpp_object, factor)
+        return self
+
+    @validate_call
+    def translate(self, offset: NDArray[Shape["3"], np.float64]):
+        """Translate the scene part by an offset."""
+
+        _helios.translate_scene_part(self._cpp_object, offset)
+        return self
+
     @classmethod
     @validate_call
     def from_xml(cls, scene_part_file: AssetPath, id: int):
@@ -19,13 +92,35 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
         _cpp_scene_part = _helios.read_scene_part_from_xml(
             str(scene_part_file), [str(p) for p in get_asset_directories()], id
         )
-        return cls.__new__(cls, _cpp_object=_cpp_scene_part)
+        return cls._from_cpp(_cpp_scene_part)
+
+    @classmethod
+    @validate_call
+    def from_obj(cls, obj_file: AssetPath, up_axis: Literal["y", "z"] = "z"):
+        """Load the scene part from an OBJ file.
+
+        For paths (potentially) containing wildcards, use 'ScenePart.from_objs()' instead!
+        """
+
+        _cpp_part = _helios.read_obj_scene_part(
+            str(obj_file), [str(p) for p in get_asset_directories()], up_axis
+        )
+
+        return cls._from_cpp(_cpp_part)
+
+    @classmethod
+    @validate_call
+    def from_objs(cls, obj_files: MultiAssetPath, up_axis: Literal["y", "z"] = "z"):
+        """Load multiple scene parts from OBJ files
+
+        Expects a single Path containing some (or none) wildcards ('*').
+        Supports '**' for matching multiple directories.
+        """
+        return [ScenePart.from_obj(obj, up_axis) for obj in obj_files]
 
 
 class StaticScene(Model, cpp_class=_helios.StaticScene):
-    scene_parts: list[ScenePart] = Property(
-        cpp="scene_parts", wraptype=ScenePart, iterable=True, default=[]
-    )
+    scene_parts: list[ScenePart] = []
 
     def _finalize(
         self, execution_settings: Optional[ExecutionSettings] = None, **parameters
@@ -51,7 +146,11 @@ class StaticScene(Model, cpp_class=_helios.StaticScene):
             self._cpp_object, [str(p) for p in get_asset_directories()], wavelength
         )
 
-    def _update_hook(self):
+    def _pre_set(self, field, value):
+        if field == "scene_parts":
+            self._enforce_uniqueness_across_instances(field, value)
+
+    def _post_set(self, field):
         # When the Scene changes, we want to invalidate the KDTree etc.
 
         _helios.invalidate_static_scene(self._cpp_object)
@@ -66,4 +165,4 @@ class StaticScene(Model, cpp_class=_helios.StaticScene):
         _cpp_scene = _helios.read_scene_from_xml(
             str(scene_file), [str(p) for p in get_asset_directories()], True, True
         )
-        return cls.__new__(cls, _cpp_object=_cpp_scene)
+        return cls._from_cpp(_cpp_scene)

@@ -1,8 +1,7 @@
-from helios.util import get_asset_directories
+from helios.utils import get_asset_directories
 from helios.validation import (
     AssetPath,
     Model,
-    Property,
     UpdateableMixin,
     validate_xml_file,
 )
@@ -16,15 +15,15 @@ class PlatformSettingsBase(Model, UpdateableMixin, cpp_class=_helios.PlatformSet
 
 
 class PlatformSettings(PlatformSettingsBase):
-    x: float = Property(cpp="x", default=0)
-    y: float = Property(cpp="y", default=0)
-    z: float = Property(cpp="z", default=0)
+    x: float = 0
+    y: float = 0
+    z: float = 0
 
 
 class StaticPlatformSettings(PlatformSettingsBase):
-    x: float = Property(cpp="x", default=0)
-    y: float = Property(cpp="y", default=0)
-    z: float = Property(cpp="z", default=0)
+    x: float = 0
+    y: float = 0
+    z: float = 0
 
 
 class Platform(Model, cpp_class=_helios.Platform):
@@ -38,7 +37,7 @@ class Platform(Model, cpp_class=_helios.Platform):
         _cpp_platform = _helios.read_platform_from_xml(
             str(platform_file), [str(p) for p in get_asset_directories()], platform_id
         )
-        return cls.__new__(cls, _cpp_object=_cpp_platform)
+        return cls._from_cpp(_cpp_platform)
 
 
 #

@@ -9,7 +9,7 @@ def test_execution_settings_defaults():
     assert settings.num_threads >= 1
     assert settings.chunk_size == 32
     assert settings.warehouse_factor == 4
-    assert settings.log_file
+    assert not settings.log_file
     assert not settings.log_file_only
     assert settings.verbosity == LogVerbosity.DEFAULT
     assert settings.factory_type == KDTreeFactoryType.SAH_APPROXIMATION
@@ -27,9 +27,9 @@ def test_compose_execution_settings():
     assert settings.chunk_size == 64
 
     # Use manually provided parameters
-    settings = compose_execution_settings(local, {"log_file": "test.log"})
+    settings = compose_execution_settings(local, {"log_file": True})
     assert settings.chunk_size == 64
-    assert settings.log_file == Path("test.log")
+    assert settings.log_file
 
 
 def test_set_execution_settings(reset_global_state):
@@ -37,9 +37,9 @@ def test_set_execution_settings(reset_global_state):
     set_execution_settings(settings)
     assert compose_execution_settings().chunk_size == 64
 
-    set_execution_settings(log_file="test.log")
+    set_execution_settings(log_file=True)
     assert compose_execution_settings().chunk_size == 64
-    assert compose_execution_settings().log_file == Path("test.log")
+    assert compose_execution_settings().log_file
 
 
 def test_output_settings_defaults():

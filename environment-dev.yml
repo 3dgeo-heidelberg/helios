@@ -5,6 +5,8 @@ dependencies:
   # These are the dependencies that are also formulated on the feedstock
   - armadillo
   - backports.strenum
+  - click
+  - click-option-group
   - blas
   - glm
   - importlib_resources
@@ -14,6 +16,8 @@ dependencies:
   - libboost-devel
   - libgdal
   - matplotlib-base
+  - numpydantic
+  - pint
   - pip
   - pybind11
   - pydantic

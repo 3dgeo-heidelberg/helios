@@ -27,7 +27,7 @@ jobs:
           - macos-latest
           - windows-latest
         python:
-          - "3.9"
+          - "3.10"
           - "3.13"
     
     defaults:

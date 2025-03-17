@@ -1,4 +1,4 @@
-from helios.util import *
+from helios.utils import *
 
 from pathlib import Path
 
@@ -131,3 +131,23 @@ def test_combine_tuple_okay():
 def test_set_rng_seed():
     set_rng_seed(43)
     set_rng_seed(datetime.now(timezone.utc))
+
+
+def test_find_files(assetdir):
+    found = find_files("root/b/bb/other.obj")
+    assert len(found) == 1
+
+    found = find_files("root/b/*/other.obj")
+    assert len(found) == 1
+
+    found = find_files("root/a/*.obj")
+    assert len(found) == 2
+
+    found = find_files("root/**/*.obj")
+    assert len(found) == 3
+
+    found = find_files("root/*/*.obj")
+    assert len(found) == 2
+
+    found = find_files(assetdir / "*/*.obj")
+    assert len(found) == 2
