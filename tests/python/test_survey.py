@@ -42,6 +42,8 @@ def test_survey_run_numpy_output(survey):
 
     assert points.shape[0] == 200
     assert trajectory.shape[0] == 101
+    assert points.dtype == meas_dtype
+    assert trajectory.dtype == traj_dtype
 
 
 def test_survey_run_las_output(survey, tmp_path):
