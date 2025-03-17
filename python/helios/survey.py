@@ -1,5 +1,5 @@
 from helios.leg import Leg
-from helios.platforms import Platform, PlatformSettings
+from helios.platforms import Platform, PlatformSettings, traj_csv_dtype
 from helios.scanner import Scanner, ScannerSettings
 from helios.scene import StaticScene
 from helios.settings import (
@@ -14,9 +14,10 @@ from helios.validation import AssetPath, Model, validate_xml_file
 
 from datetime import datetime, timezone
 from pathlib import Path
-from pydantic import validate_call
-from typing import Optional
+from pydantic import Field, validate_call
+from numpydantic import NDArray
 
+from typing import Annotated, Optional
 import numpy as np
 import tempfile
 
@@ -30,6 +31,7 @@ class Survey(Model, cpp_class=_helios.Survey):
     legs: list[Leg] = []
     name: str = ""
     gps_time: datetime = datetime.now(timezone.utc)
+    trajectory: Optional[NDArray] = None
 
     @validate_call
     def run(
@@ -168,9 +170,59 @@ class Survey(Model, cpp_class=_helios.Survey):
         # Return path to the created output directory
         return Path(playback.fms.write.get_measurement_writer_output_path()).parent
 
+    def load_traj_csv(
+        self,
+        csv: AssetPath,
+        tIndex: Annotated[int, Field(strict=True, ge=0, le=6)] = 0,
+        xIndex: Annotated[int, Field(strict=True, ge=0, le=6)] = 1,
+        yIndex: Annotated[int, Field(strict=True, ge=0, le=6)] = 2,
+        zIndex: Annotated[int, Field(strict=True, ge=0, le=6)] = 3,
+        rollIndex: Annotated[int, Field(strict=True, ge=0, le=6)] = 4,
+        pitchIndex: Annotated[int, Field(strict=True, ge=0, le=6)] = 5,
+        yawIndex: Annotated[int, Field(strict=True, ge=0, le=6)] = 6,
+        trajectory_separator: Annotated[
+            str, Field(strict=True, min_length=1, max_length=1)
+        ] = ",",
+    ):
+        """Load a csv trajectory into this survey.
+
+        The parameters define how the csv is parsed.
+        All the ..Index parameters define the column order of the csv.
+
+
+        Args:
+            csv: File path to csv to load.
+            tIndex: Column number of time field
+            xIndex: Column number of x coordinates
+            yIndex: Column number of y coordinates
+            zIndex: Column number of z coordinates
+            rollIndex: Column number of roll
+            pitchIndex: Column number of pitch
+            yawIndex: Column number of yaw
+            trajectory_separator: Char which separates columns.
+        """
+
+        indices = {
+            "t": tIndex,
+            "x": xIndex,
+            "y": yIndex,
+            "z": zIndex,
+            "roll": rollIndex,
+            "pitch": pitchIndex,
+            "yaw": yawIndex,
+        }
+        traj = np.loadtxt(csv, dtype=traj_csv_dtype, delimiter=trajectory_separator)
+
+        # reorder columns
+        columns = sorted(list(indices.keys()), key=lambda k: indices[k])
+        traj = traj[columns]
+
+        self.trajectory = traj
+        return self
+
     def add_leg(
         self,
-        leg: Leg = None,
+        leg: Optional[Leg] = None,
         platform_settings: Optional[PlatformSettings] = None,
         scanner_settings: Optional[ScannerSettings] = None,
         **parameters,
