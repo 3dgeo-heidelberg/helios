@@ -1,3 +1,4 @@
+from typing import Annotated, Any, Literal, Optional
 from helios.utils import get_asset_directories
 from helios.validation import (
     AssetPath,
@@ -5,13 +6,42 @@ from helios.validation import (
     UpdateableMixin,
     validate_xml_file,
 )
-from pydantic import validate_call
+from pydantic import Field, validate_call
+import numpy as np
 
 import _helios
 
 
-class PlatformSettingsBase(Model, UpdateableMixin, cpp_class=_helios.PlatformSettings):
+class Printable:
+    def __str__(self):
+        from pprint import pformat
+
+        return "<" + type(self).__name__ + "> " + pformat(vars(self), indent=4, width=1)
+
+
+traj_csv_dtype = np.dtype(
+    [
+        ("t", "f8"),
+        ("x", "f8"),
+        ("y", "f8"),
+        ("z", "f8"),
+        ("roll", "f8"),
+        ("pitch", "f8"),
+        ("yaw", "f8"),
+    ]
+)
+
+
+class PlatformSettingsBase(
+    Printable, Model, UpdateableMixin, cpp_class=_helios.PlatformSettings
+):
     pass
+
+
+class TrajectorySettings(PlatformSettingsBase, cpp_class=_helios.TrajectorySettings):
+    start_time: float = 0
+    end_time: float = 0
+    teleport_to_start: bool = False
 
 
 class PlatformSettings(PlatformSettingsBase):
@@ -20,13 +50,19 @@ class PlatformSettings(PlatformSettingsBase):
     z: float = 0
 
 
-class StaticPlatformSettings(PlatformSettingsBase):
-    x: float = 0
-    y: float = 0
-    z: float = 0
+class StaticPlatformSettings(PlatformSettings):
+    pass
 
 
-class Platform(Model, cpp_class=_helios.Platform):
+class DynamicPlatformSettings(PlatformSettings):
+    trajectory_settings: TrajectorySettings = TrajectorySettings()
+    speed_m_s: Annotated[float, Field(ge=0)] = 70
+
+
+class Platform(Printable, Model, cpp_class=_helios.Platform):
+    # TODO: should platform_settings get set from xml as well?
+    platform_settings: Optional[PlatformSettings] = None
+
     @classmethod
     @validate_call
     def from_xml(cls, platform_file: AssetPath, platform_id: str = ""):
@@ -37,7 +73,8 @@ class Platform(Model, cpp_class=_helios.Platform):
         _cpp_platform = _helios.read_platform_from_xml(
             str(platform_file), [str(p) for p in get_asset_directories()], platform_id
         )
-        return cls._from_cpp(_cpp_platform)
+        cppplatform = cls._from_cpp(_cpp_platform)
+        return cppplatform
 
 
 #

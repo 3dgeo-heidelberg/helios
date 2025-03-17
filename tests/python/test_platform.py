@@ -1,4 +1,6 @@
+# ruff: noqa
 from helios.platforms import *
+from numpy.lib.recfunctions import unstructured_to_structured
 
 
 def test_preinstantiated_platforms():
@@ -13,3 +15,15 @@ def test_preinstantiated_platforms():
     assert isinstance(vmq_1ha_car(), Platform)
     assert isinstance(simple_linearpath(), Platform)
     assert isinstance(tripod(), Platform)
+
+
+def test_platform_defaults():
+    Platform()
+    sps = StaticPlatformSettings()
+    dps = DynamicPlatformSettings()
+    pd = Platform(platform_settings=dps)
+    ps = Platform(platform_settings=sps)
+
+
+def test_platform_printable():
+    str(Platform())
