@@ -184,14 +184,14 @@ void PyHeliosSimulation::start (){
     buildPulseThreadPool();
     playback = std::make_shared<SurveyPlayback>(
         survey,
-        fms,
         parallelizationStrategy,
         pulseThreadPool,
         chunkSize,
         fixedGpsTimeStart,
         legacyEnergyModel,
         exportToFile,
-        true
+        true,
+        fms
     );
     playback->callback = callback;
     playback->setCallbackFrequency(callbackFrequency);

@@ -51,24 +51,13 @@ class Survey(Model, cpp_class=_helios.Survey):
         self.scene._set_reflectances(self.scanner._cpp_object.wavelength)
 
         if output_settings.format in (OutputFormat.NPY, OutputFormat.LASPY):
-            # TODO: Implement approach where we don't need to write to disk
-            las_output, zip_output = False, False
-            temp_dir_obj = tempfile.TemporaryDirectory()
-
-            fms = _helios.FMSFacadeFactory().build_facade(
-                temp_dir_obj.name,
-                1.0,
-                las_output,
-                False,
-                zip_output,
-                False,
-                self._cpp_object,
-            )
+            las_output, zip_output, export_to_file = False, False, False
+            fms = None
 
         else:
             # Make the given output path absolute
             output = Path(output_settings.output_dir).absolute()
-
+            export_to_file = True
             # Determine boolean flags for the output
             las_output, zip_output = {
                 "laz": (True, True),
@@ -98,13 +87,14 @@ class Survey(Model, cpp_class=_helios.Survey):
         pulse_thread_pool = ptpf.make_pulse_thread_pool()
         playback = _helios.SurveyPlayback(
             self._cpp_object,
-            fms,
             execution_settings.parallelization,
             pulse_thread_pool,
             execution_settings.chunk_size,
             str(self.gps_time.timestamp()),
             True,
-            True,
+            export_to_file,
+            execution_settings.discard_shutdown,
+            fms
         )
         playback.callback_frequency = 0
 
@@ -119,9 +109,7 @@ class Survey(Model, cpp_class=_helios.Survey):
 
         if output_settings.format in (OutputFormat.NPY, OutputFormat.LASPY):
             measurements = self.scanner._cpp_object.all_measurements
-
             trajectories = self.scanner._cpp_object.all_trajectories
-            temp_dir_obj.cleanup()
 
             if output_settings.format == OutputFormat.NPY:
                 return measurements, trajectories
