@@ -75,7 +75,7 @@ def _create_directory(directory: Path):
 
 
 # Some type annotations for convenience
-AssetPath = Annotated[Path, AfterValidator(find_file)]
+AssetPath = Annotated[Union[Path, str], AfterValidator(find_file)]
 ThreadCount = Annotated[Optional[int], AfterValidator(_validate_thread_count)]
 CreatedDirectory = Annotated[Path, AfterValidator(_create_directory)]
 

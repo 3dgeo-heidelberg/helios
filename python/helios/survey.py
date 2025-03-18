@@ -218,6 +218,7 @@ class Survey(Model, cpp_class=_helios.Survey):
         traj = traj[columns]
 
         self.trajectory = traj
+        # TODO: decide on traj structure, flat or nested
         return self
 
     def add_leg(
