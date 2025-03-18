@@ -51,19 +51,8 @@ class Survey(Model, cpp_class=_helios.Survey):
         self.scene._set_reflectances(self.scanner._cpp_object.wavelength)
 
         if output_settings.format in (OutputFormat.NPY, OutputFormat.LASPY):
-            # TODO: Implement approach where we don't need to write to disk
-            las_output, zip_output = False, False
-            temp_dir_obj = tempfile.TemporaryDirectory()
-
-            fms = _helios.FMSFacadeFactory().build_facade(
-                temp_dir_obj.name,
-                1.0,
-                las_output,
-                False,
-                zip_output,
-                False,
-                self._cpp_object,
-            )
+            las_output, zip_output, export_to_file = False, False, False
+            fms = None
 
         else:
             # Make the given output path absolute
@@ -120,9 +109,7 @@ class Survey(Model, cpp_class=_helios.Survey):
 
         if output_settings.format in (OutputFormat.NPY, OutputFormat.LASPY):
             measurements = self.scanner._cpp_object.all_measurements
-
             trajectories = self.scanner._cpp_object.all_trajectories
-            temp_dir_obj.cleanup()
 
             if output_settings.format == OutputFormat.NPY:
                 return measurements, trajectories
