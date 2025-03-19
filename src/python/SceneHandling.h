@@ -16,6 +16,10 @@ std::shared_ptr<ScenePart> readObjScenePart(
     std::string upaxis
 );
 
+std::shared_ptr<ScenePart> readTiffScenePart(
+    std::string filePath
+);
+
 void rotateScenePart(std::shared_ptr<ScenePart> sp, Rotation rotation);
 
 void scaleScenePart(std::shared_ptr<ScenePart> sp, double scaleFactor);

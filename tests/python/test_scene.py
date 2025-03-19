@@ -60,6 +60,11 @@ def test_scenepart_from_obj_wrong_axis_argument():
         ScenePart.from_obj("data/sceneparts/basic/box/box100.obj", up_axis="x")
 
 
+def test_scenepart_from_tiff():
+    scene_part = ScenePart.from_tiff("data/sceneparts/tiff/dem_hd.tif")
+    assert len(scene_part._cpp_object.primitives) > 0
+
+
 def get_bbox(part):
     scene = StaticScene(scene_parts=[part])
     scene._finalize()
