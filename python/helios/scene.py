@@ -128,6 +128,17 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
         Supports '**' for matching multiple directories.
         """
         return [ScenePart.from_obj(obj, up_axis) for obj in obj_files]
+    
+    
+    @classmethod
+    @validate_call
+    def from_tiffs(cls, tiff_files: MultiAssetPath):
+        """Load multiple scene parts from TIFF files
+
+        Expects a single Path containing some (or none) wildcards ('*').
+        Supports '**' for matching multiple directories.
+        """
+        return [ScenePart.from_tiff(tiff) for tiff in tiff_files]
 
 
 class StaticScene(Model, cpp_class=_helios.StaticScene):

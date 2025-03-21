@@ -65,6 +65,11 @@ def test_scenepart_from_tiff():
     assert len(scene_part._cpp_object.primitives) > 0
 
 
+def test_scenepart_from_tiffs():
+    scene_parts = ScenePart.from_tiffs("data/test/*.tif")
+    assert len(scene_parts) == 2
+
+
 def get_bbox(part):
     scene = StaticScene(scene_parts=[part])
     scene._finalize()
