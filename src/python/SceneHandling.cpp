@@ -2,6 +2,7 @@
 #include <SceneHandling.h>
 #include <SpectralLibrary.h>
 #include <WavefrontObjFileLoader.h>
+#include <GeoTiffFileLoader.h>
 
 
 std::shared_ptr<KDTreeFactory> makeKDTreeFactory(int kdtFactoryType, int kdtNumJobs, int kdtGeomJobs, int kdtSAHLossNodes){
@@ -100,6 +101,24 @@ std::shared_ptr<ScenePart> readObjScenePart(
     return sp;
 }
 
+std::shared_ptr<ScenePart> readTiffScenePart(
+    std::string filePath
+){
+
+    GeoTiffFileLoader loader;
+    loader.params["filepath"] = filePath;
+    std::shared_ptr<ScenePart> sp(loader.run());
+
+    // Connect all primitives to their scene part
+    for (auto p : sp->mPrimitives)
+        p->part = sp;
+
+    // Object lifetime caveat! Settings primsOut to nullptr will prevent the
+    // loader destructor from deleting the primitives.
+    loader.primsOut = nullptr;
+
+    return sp;
+}
 
 void rotateScenePart(std::shared_ptr<ScenePart> sp, Rotation rotation) {
     for (auto p : sp->mPrimitives)

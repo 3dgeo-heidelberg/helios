@@ -2222,6 +2222,7 @@ namespace helios{
         m.def("invalidate_static_scene", &invalidateStaticScene);
         m.def("set_scene_reflectances", &setSceneReflectances);
         m.def("read_obj_scene_part", &readObjScenePart);
+        m.def("read_tiff_scene_part", &readTiffScenePart);
         m.def("rotate_scene_part", &rotateScenePart);
         m.def("scale_scene_part", &scaleScenePart);
         m.def("translate_scene_part", &translateScenePart);
