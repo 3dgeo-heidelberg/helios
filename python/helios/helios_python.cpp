@@ -143,6 +143,8 @@ namespace helios{
             {"type", "std_out"}
         });
 
+        py::register_exception<HeliosException>(m, "HeliosException");
+
         // Enable GDAL (Load its drivers)
         GDALAllRegister();
         if (GDALGetDriverCount() == 0) {
@@ -385,10 +387,6 @@ namespace helios{
             .def_readwrite("normal", &Vertex::normal)
             .def_readwrite("tex_coords", &Vertex::texcoords)
             .def("clone", &Vertex::copy);
-
-
-        py::class_<HeliosException>(m, "PyHeliosException")
-            .def(py::init<std::string const&>(), py::arg("msg")="");
 
 
         py::class_<Trajectory, std::shared_ptr<Trajectory>> trajectory(m, "Trajectory");
@@ -2223,6 +2221,7 @@ namespace helios{
         m.def("set_scene_reflectances", &setSceneReflectances);
         m.def("read_obj_scene_part", &readObjScenePart);
         m.def("read_tiff_scene_part", &readTiffScenePart);
+        m.def("read_xyz_scene_part", &readXYZScenePart);
         m.def("rotate_scene_part", &rotateScenePart);
         m.def("scale_scene_part", &scaleScenePart);
         m.def("translate_scene_part", &translateScenePart);

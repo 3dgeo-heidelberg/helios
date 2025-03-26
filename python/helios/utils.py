@@ -2,7 +2,8 @@ from collections.abc import Iterable
 from datetime import datetime, timezone
 from pathlib import Path
 from pydantic import validate_call
-from typing import Union
+from typing import Union, Sequence, TypeVar
+from numpydantic import NDArray, Shape
 
 import importlib_resources as resources
 import numpy as np
@@ -10,6 +11,8 @@ import os
 
 import _helios
 
+# Define a type variable for the return type of the 'broadcast_param' function.
+T = TypeVar("T")
 
 # The list of user provided directories that will be searched for assets.
 _custom_asset_directories = []
@@ -221,6 +224,39 @@ def combine_parameters(groups: Union[None, list[list[str]]] = None, **parameters
                 entry[key] = value.format(**entry)
 
     return result
+
+
+def broadcast_param(param: Union[T, Sequence[T]], expected_len: int, param_name: str = "parameter") -> list[T]:
+    """
+    Broadcast a single value or a sequence to a list of length `expected_len`.
+    """
+    if isinstance(param, (str, bytes)) or not isinstance(param, Iterable):
+        return [param] * expected_len
+
+    if len(param) != expected_len:
+        raise ValueError(f"{param_name} must have length {expected_len}, but got {len(param)}")
+
+    return param
+
+
+def broadcast_normals(default_normal: Union[NDArray[Shape["3"], np.float64], NDArray[Shape["*, 3"], np.float64]], expected_len: int) -> NDArray[Shape["*, 3"], np.float64]:
+    """
+    Validates and broadcasts normal vectors.
+
+    - If `default_normal` is 1D with shape (3,), it is broadcasted to (expected_len, 3).
+    - If `default_normal` is already (n, 3), it is returned as is.
+    - Otherwise, an error is raised.
+    """
+   
+    if default_normal.ndim == 1 and default_normal.shape[0] == 3:
+        return np.tile(default_normal, (expected_len, 1))  
+
+    if default_normal.ndim == 2 and default_normal.shape[1] == 3:
+        if default_normal.shape[0] != expected_len:
+            raise ValueError(f"default_normal must have shape ({expected_len}, 3), but got {default_normal.shape}")
+        return default_normal  
+
+    raise ValueError(f"default_normal must have shape (3,) or ({expected_len}, 3), but got {default_normal.shape}")
 
 
 meas_dtype = np.dtype(

@@ -1,10 +1,10 @@
 from helios.settings import ExecutionSettings, compose_execution_settings
-from helios.utils import get_asset_directories
+from helios.utils import get_asset_directories, broadcast_param, broadcast_normals
 from helios.validation import AssetPath, Model, MultiAssetPath, validate_xml_file
 
 from numpydantic import NDArray, Shape
-from pydantic import PositiveFloat, validate_call
-from typing import Literal, Optional
+from pydantic import PositiveFloat, NonNegativeFloat, validate_call
+from typing import Literal, Optional, Sequence, Union
 
 import numpy as np
 
@@ -139,6 +139,62 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
         Supports '**' for matching multiple directories.
         """
         return [ScenePart.from_tiff(tiff) for tiff in tiff_files]
+    
+
+    @classmethod
+    @validate_call
+    def from_xyz(
+        cls,
+        xyz_file: AssetPath, 
+        separator: str, 
+        voxel_size: PositiveFloat, 
+        max_color_value: Optional[NonNegativeFloat] = 0., 
+        default_normal: Optional[NDArray[Shape["3"], np.float64]] = np.array([np.finfo(np.float64).max] * 3, dtype=np.float64)
+        ):
+        """Load the scene part from an XYZ file."""
+
+   
+        _cpp_part = _helios.read_xyz_scene_part(
+            str(xyz_file),
+            [str(p) for p in get_asset_directories()],
+            separator,
+            voxel_size,
+            max_color_value,
+            default_normal
+        )
+
+        return cls._from_cpp(_cpp_part)
+    
+
+    @classmethod
+    @validate_call
+    def from_xyzs(
+        cls,
+        xyz_files: MultiAssetPath,
+        separator: Union[str, Sequence[str]],
+        voxel_size: Union[PositiveFloat, Sequence[PositiveFloat]],
+        max_color_value: Union[Optional[NonNegativeFloat], Sequence[Optional[NonNegativeFloat]]] = 0.0,
+        default_normal: Union[
+        Optional[NDArray[Shape["3"], np.float64]],
+        Optional[NDArray[Shape["*, 3"], np.float64]], 
+        ] = np.array([np.finfo(np.float64).max] * 3, dtype=np.float64),
+    ):
+        """
+        Load multiple scene parts from XYZ files.
+
+        Each parameter can either be a single shared value or a sequence of per-file values.
+        """
+        num_files = len(xyz_files)
+
+        separators = broadcast_param(separator, num_files, "separator")
+        voxel_sizes = broadcast_param(voxel_size, num_files, "voxel_size")
+        max_colors = broadcast_param(max_color_value, num_files, "max_color_value")
+        normals = broadcast_normals(default_normal, num_files)
+        
+        return [
+            cls.from_xyz(f, sep, vox, color, norm)
+            for f, sep, vox, color, norm in zip(xyz_files, separators, voxel_sizes, max_colors, normals)
+        ]
 
 
 class StaticScene(Model, cpp_class=_helios.StaticScene):

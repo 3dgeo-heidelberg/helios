@@ -3,6 +3,7 @@
 #include <SpectralLibrary.h>
 #include <WavefrontObjFileLoader.h>
 #include <GeoTiffFileLoader.h>
+#include <XYZPointCloudFileLoader.h>
 
 
 std::shared_ptr<KDTreeFactory> makeKDTreeFactory(int kdtFactoryType, int kdtNumJobs, int kdtGeomJobs, int kdtSAHLossNodes){
@@ -112,6 +113,40 @@ std::shared_ptr<ScenePart> readTiffScenePart(
     // Connect all primitives to their scene part
     for (auto p : sp->mPrimitives)
         p->part = sp;
+
+    // Object lifetime caveat! Settings primsOut to nullptr will prevent the
+    // loader destructor from deleting the primitives.
+    loader.primsOut = nullptr;
+
+    return sp;
+}
+
+std::shared_ptr<ScenePart> readXYZScenePart(
+    std::string filePath,
+    std::vector<std::string> assetsPath,
+    std::string separator,
+    double voxelSize,
+    double maxColorValue,
+    glm::dvec3 defaultNormal
+) {
+   
+    XYZPointCloudFileLoader loader;
+    loader.params["filepath"] = filePath;
+    loader.params["separator"] = separator;
+    loader.params["voxelSize"] = voxelSize;
+    if (maxColorValue != 0.0)
+        loader.params["maxColorValue"] = maxColorValue;
+    
+    if ( defaultNormal.x != std::numeric_limits<double>::max() &&
+         defaultNormal.y != std::numeric_limits<double>::max() &&
+         defaultNormal.z != std::numeric_limits<double>::max() ){
+        loader.params["defaultNormal"] = defaultNormal;}
+
+    loader.setAssetsDir(assetsPath);
+   
+    std::shared_ptr<ScenePart> sp(loader.run());
+    for (auto p : sp->mPrimitives)
+    p->part = sp;
 
     // Object lifetime caveat! Settings primsOut to nullptr will prevent the
     // loader destructor from deleting the primitives.
