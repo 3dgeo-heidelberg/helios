@@ -76,14 +76,14 @@ def test_scenepart_from_xyz():
           max_color_value=255.0, default_normal=[0.0, 0.0, 1.0])
     
     scene_part2 = ScenePart.from_xyz(
-        "data/sceneparts/pointclouds/sphere_dens25000.xyz", separator=" ", voxel_size=1.0,
+        "data/sceneparts/pointclouds/sphere_dens25000_sepcomma.xyz", separator=",", voxel_size=1.0,
           max_color_value=255.0)
     
     scene_part3 = ScenePart.from_xyz(
         "data/sceneparts/pointclouds/sphere_dens25000.xyz", separator=" ", voxel_size=1.0)
     
     scene_part4 = ScenePart.from_xyz(
-        "data/sceneparts/pointclouds/sphere_dens25000.xyz", separator=" ", voxel_size=1.0,
+        "data/sceneparts/pointclouds/sphere_dens25000.xyz", voxel_size=1.0,
           default_normal=[0.0, 0.0, 1.0])
     
     assert len(scene_part1._cpp_object.primitives) > 0
@@ -92,35 +92,21 @@ def test_scenepart_from_xyz():
     assert len(scene_part4._cpp_object.primitives) > 0
 
 def test_scenepart_from_xyzs():
-    scene_parts1 = ScenePart.from_xyzs("data/sceneparts/pointclouds/*.xyz",
-                                         separator= [",", " ", " "] , voxel_size= [1.0, 1.0, 1.0],
-                                         max_color_value= [255.0, 255.0, 255.0], default_normal= [[0.0, 0.0, 1.0], [0.0, 0.0, 1.0], [0.0, 0.0, 1.0]])
-    
-    
+    scene_parts1 = ScenePart.from_xyzs("data/sceneparts/pointclouds/*.xyz", voxel_size= 1.0)
+                                         
     scene_parts2 = ScenePart.from_xyzs("data/sceneparts/pointclouds/*.xyz",
-                            separator= [",", " ", " "], voxel_size= 1.0, max_color_value= 255.0, default_normal= [0.0, 0.0, 1.0])
-    
-    scene_parts3 = ScenePart.from_xyzs("data/sceneparts/pointclouds/*.xyz",
-                            separator= [",", " ", " "], voxel_size= 1.0)
+                            voxel_size= 1.0, max_color_value= 255.0, default_normal= [0.0, 0.0, 1.0]) 
                                
     assert len(scene_parts1) > 2
     assert len(scene_parts2) > 2
-    assert len(scene_parts3) > 2
 
     with pytest.raises(HeliosException, match="separator mismatch"):
         ScenePart.from_xyzs(
             "data/sceneparts/pointclouds/*.xyz",
-            separator=[" ", ",", " "],  # Wrong order
-            voxel_size=[1.0, 1.0, 1.0],
+            voxel_size=1.0,
+            separator=",",
         )
     
-    with pytest.raises(HeliosException, match="separator mismatch"):
-        ScenePart.from_xyzs(
-            "data/sceneparts/pointclouds/*.xyz",
-            separator= " ",  # It should crash since in files in the directory there are multiple separators
-            voxel_size=1.0,
-        )
-
 def get_bbox(part):
     scene = StaticScene(scene_parts=[part])
     scene._finalize()
