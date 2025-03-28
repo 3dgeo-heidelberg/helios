@@ -127,7 +127,8 @@ std::shared_ptr<ScenePart> readXYZScenePart(
     std::string separator,
     double voxelSize,
     double maxColorValue,
-    glm::dvec3 defaultNormal
+    glm::dvec3 defaultNormal,
+    bool sparse
 ) {
    
     XYZPointCloudFileLoader loader;
@@ -141,6 +142,9 @@ std::shared_ptr<ScenePart> readXYZScenePart(
          defaultNormal.y != std::numeric_limits<double>::max() &&
          defaultNormal.z != std::numeric_limits<double>::max() ){
         loader.params["defaultNormal"] = defaultNormal;}
+    
+    if (sparse)
+        loader.params["sparse"] = sparse;
 
     loader.setAssetsDir(assetsPath);
    

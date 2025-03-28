@@ -149,7 +149,8 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
         voxel_size: PositiveFloat,
         separator: Optional[str] = None,
         max_color_value: Optional[NonNegativeFloat] = 0., 
-        default_normal: Optional[NDArray[Shape["3"], np.float64]] = np.array([np.finfo(np.float64).max] * 3, dtype=np.float64)
+        default_normal: Optional[NDArray[Shape["3"], np.float64]] = np.array([np.finfo(np.float64).max] * 3, dtype=np.float64),
+        sparse: Optional[bool] = False,
         ):
         """Load the scene part from an XYZ file."""
         
@@ -162,7 +163,8 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
             separator,
             voxel_size,
             max_color_value,
-            default_normal
+            default_normal,
+            sparse
         )
 
         return cls._from_cpp(_cpp_part)
@@ -177,6 +179,7 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
         separator: Optional[str] = None,
         max_color_value: Optional[NonNegativeFloat] = 0.0,
         default_normal: Optional[NDArray[Shape["3"], np.float64]] = np.array([np.finfo(np.float64).max] * 3, dtype=np.float64),
+        sparse: Optional[bool] = False,
     ):
         """
         Load multiple scene parts from XYZ files.
@@ -184,7 +187,7 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
         Each parameters hould be a single shared value for all files.
         """
         return [
-            ScenePart.from_xyz(xyz, voxel_size, separator, max_color_value, default_normal)
+            ScenePart.from_xyz(xyz, voxel_size, separator, max_color_value, default_normal, sparse)
             for xyz in xyz_files
             ]
 

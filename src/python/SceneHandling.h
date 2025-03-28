@@ -30,7 +30,8 @@ std::shared_ptr<ScenePart> readXYZScenePart(
         std::numeric_limits<double>::max(),
         std::numeric_limits<double>::max(),
         std::numeric_limits<double>::max()
-    )
+    ),
+    bool sparse = false
 ); 
 
 void rotateScenePart(std::shared_ptr<ScenePart> sp, Rotation rotation);
