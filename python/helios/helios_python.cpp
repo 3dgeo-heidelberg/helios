@@ -2222,6 +2222,7 @@ namespace helios{
         m.def("read_obj_scene_part", &readObjScenePart);
         m.def("read_tiff_scene_part", &readTiffScenePart);
         m.def("read_xyz_scene_part", &readXYZScenePart);
+        m.def("read_vox_scene_part", &readVoxScenePart);
         m.def("rotate_scene_part", &rotateScenePart);
         m.def("scale_scene_part", &scaleScenePart);
         m.def("translate_scene_part", &translateScenePart);

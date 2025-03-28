@@ -106,6 +106,19 @@ def test_scenepart_from_xyzs():
             voxel_size=1.0,
             separator=",",
         )
+
+def test_scenepart_from_vox():
+    scene_parts1 = ScenePart.from_vox("data/sceneparts/syssifoss/F_BR08_08_crown_250.vox", intersection_mode="fixed")
+    scene_parts2 = ScenePart.from_vox("data/sceneparts/syssifoss/F_BR08_08_merged.vox", intersection_mode="scaled", intersection_argument=0.5)
+    scene_parts3 = ScenePart.from_vox("data/sceneparts/syssifoss/F_BR08_08_merged.vox", intersection_mode="scaled")
+
+    assert len(scene_parts1._cpp_object.primitives) > 0
+    assert len(scene_parts2._cpp_object.primitives) > 0
+    assert len(scene_parts3._cpp_object.primitives) > 0    
+
+    with pytest.raises(ValueError):
+        ScenePart.from_vox("data/sceneparts/syssifoss/F_BR08_08_crown_250.vox", intersection_mode="fixed", intersection_argument=0.1)
+    
     
 def get_bbox(part):
     scene = StaticScene(scene_parts=[part])

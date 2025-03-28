@@ -4,6 +4,7 @@
 #include <WavefrontObjFileLoader.h>
 #include <GeoTiffFileLoader.h>
 #include <XYZPointCloudFileLoader.h>
+#include <DetailedVoxelLoader.h>
 
 
 std::shared_ptr<KDTreeFactory> makeKDTreeFactory(int kdtFactoryType, int kdtNumJobs, int kdtGeomJobs, int kdtSAHLossNodes){
@@ -180,6 +181,38 @@ std::shared_ptr<ScenePart> readXYZScenePart(
 
     // Object lifetime caveat! Settings primsOut to nullptr will prevent the
     // loader destructor from deleting the primitives.
+    loader.primsOut = nullptr;
+
+    return sp;
+}
+
+std::shared_ptr<ScenePart> readVoxScenePart(
+    std::string filePath,
+    std::vector<std::string> assetsPath,
+    std::string intersectionMode,
+    double intersectionArgument,
+    bool randomShift,
+    std::string ladlutPath
+){
+    if (intersectionMode == "fixed" && intersectionArgument != 0.0) {
+        throw std::invalid_argument("'intersectionArgument' must not be provided when 'intersectionMode' is 'fixed'.");
+    }
+    DetailedVoxelLoader loader;
+    loader.params["filepath"] = filePath;
+    loader.params["intersectionMode"] = intersectionMode;
+    if (intersectionMode == "scaled") 
+        loader.params["intersectionArgument"] = intersectionArgument;
+    if (randomShift)
+        loader.params["randomShift"] = randomShift;
+    if (!ladlutPath.empty())
+        loader.params["ladlut"] = ladlutPath;
+
+    loader.setAssetsDir(assetsPath);
+    std::shared_ptr<ScenePart> sp(loader.run());
+    
+    for (auto p : sp->mPrimitives)
+        p->part = sp;
+
     loader.primsOut = nullptr;
 
     return sp;

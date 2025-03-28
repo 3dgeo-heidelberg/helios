@@ -208,6 +208,33 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
                                rgb_file_columns, snap_neighbor_normal)
             for xyz in xyz_files
             ]
+    
+
+    @classmethod
+    @validate_call
+    def from_vox(
+        cls,
+        vox_file: AssetPath,
+        intersection_mode: Literal["scaled", "fixed"],
+        intersection_argument: Optional[float] = None,
+        random_shift: bool = False,
+        ladlut_path: Optional[str] = None,
+    ):
+        """Load the scene part from a VOX file."""
+
+        if intersection_mode == "fixed" and intersection_argument is not None:
+            raise ValueError("'intersection_argument' must not be provided when 'intersection_mode' is 'fixed'.")
+
+        _cpp_part = _helios.read_vox_scene_part(
+            str(vox_file),
+            [str(p) for p in get_asset_directories()],
+            intersection_mode,
+            intersection_argument if intersection_argument is not None else 0.0,
+            random_shift,
+            ladlut_path if ladlut_path is not None else ""
+        )
+
+        return cls._from_cpp(_cpp_part)
 
 
 class StaticScene(Model, cpp_class=_helios.StaticScene):

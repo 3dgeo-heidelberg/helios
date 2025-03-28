@@ -42,6 +42,15 @@ std::shared_ptr<ScenePart> readXYZScenePart(
     bool snapNeighborNormal = false
 ); 
 
+std::shared_ptr<ScenePart> readVoxScenePart(
+    std::string filePath,
+    std::vector<std::string> assetsPath,
+    std::string intersectionMode,
+    double intersectionArgument,
+    bool randomShift = false,
+    std::string ladlutPath = "" 
+);
+
 void rotateScenePart(std::shared_ptr<ScenePart> sp, Rotation rotation);
 
 void scaleScenePart(std::shared_ptr<ScenePart> sp, double scaleFactor);
