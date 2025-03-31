@@ -128,7 +128,15 @@ std::shared_ptr<ScenePart> readXYZScenePart(
     double voxelSize,
     double maxColorValue,
     glm::dvec3 defaultNormal,
-    bool sparse
+    bool sparse,
+    int estimate_normals,
+    int normalXIndex,
+    int normalYIndex,
+    int normalZIndex,
+    int rgbRIndex,
+    int rgbGIndex,
+    int rgbBIndex,
+    bool snapNeighborNormal
 ) {
    
     XYZPointCloudFileLoader loader;
@@ -145,6 +153,24 @@ std::shared_ptr<ScenePart> readXYZScenePart(
     
     if (sparse)
         loader.params["sparse"] = sparse;
+
+    if (estimate_normals != 0)
+        loader.params["estimateNormals"] = estimate_normals;
+    
+    if (normalXIndex != 3){
+        loader.params["normalXIndex"] = normalXIndex;
+        loader.params["normalYIndex"] = normalYIndex;
+        loader.params["normalZIndex"] = normalZIndex;
+    }
+
+    if (rgbRIndex != 6){
+        loader.params["rgbRIndex"] = rgbRIndex;
+        loader.params["rgbGIndex"] = rgbGIndex;
+        loader.params["rgbBIndex"] = rgbBIndex;
+    }
+
+    if (snapNeighborNormal)
+        loader.params["snapNeighborNormal"] = snapNeighborNormal;
 
     loader.setAssetsDir(assetsPath);
    

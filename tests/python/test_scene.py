@@ -4,7 +4,7 @@ import math
 import numpy as np
 import pytest
 
-from _helios import HeliosException
+from helios import HeliosException
 
 def test_construct_scene_from_xml():
     scene = StaticScene.from_xml("data/scenes/toyblocks/toyblocks_scene.xml")

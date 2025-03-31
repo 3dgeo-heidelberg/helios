@@ -31,7 +31,15 @@ std::shared_ptr<ScenePart> readXYZScenePart(
         std::numeric_limits<double>::max(),
         std::numeric_limits<double>::max()
     ),
-    bool sparse = false
+    bool sparse = false,
+    int estimate_normals = 0,
+    int normalXIndex = 3,
+    int normalYIndex = 4,
+    int normalZIndex = 5,
+    int rgbRIndex = 6,
+    int rgbGIndex = 7,
+    int rgbBIndex = 8,
+    bool snapNeighborNormal = false
 ); 
 
 void rotateScenePart(std::shared_ptr<ScenePart> sp, Rotation rotation);

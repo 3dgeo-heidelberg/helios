@@ -3,7 +3,7 @@ from helios.utils import get_asset_directories, detect_separator
 from helios.validation import AssetPath, Model, MultiAssetPath, validate_xml_file
 
 from numpydantic import NDArray, Shape
-from pydantic import PositiveFloat, NonNegativeFloat, validate_call
+from pydantic import PositiveFloat, NonNegativeFloat, NonNegativeInt, validate_call
 from typing import Literal, Optional
 
 import numpy as np
@@ -148,10 +148,14 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
         xyz_file: AssetPath, 
         voxel_size: PositiveFloat,
         separator: Optional[str] = None,
-        max_color_value: Optional[NonNegativeFloat] = 0., 
-        default_normal: Optional[NDArray[Shape["3"], np.float64]] = np.array([np.finfo(np.float64).max] * 3, dtype=np.float64),
-        sparse: Optional[bool] = False,
-        ):
+        max_color_value: NonNegativeFloat = 0.0, 
+        default_normal: NDArray[Shape["3"], np.float64] = np.array([np.finfo(np.float64).max] * 3, dtype=np.float64),
+        sparse: bool = False,
+        estimate_normals: bool = False,
+        normals_file_columns: list[NonNegativeInt] = [3, 4, 5],
+        rgb_file_columns: list[NonNegativeInt] = [6, 7, 8],
+        snap_neighbor_normal: bool = False,
+    ):
         """Load the scene part from an XYZ file."""
         
         if separator is None:
@@ -164,7 +168,15 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
             voxel_size,
             max_color_value,
             default_normal,
-            sparse
+            sparse,
+            int(estimate_normals),
+            normals_file_columns[0],
+            normals_file_columns[1],
+            normals_file_columns[2],
+            rgb_file_columns[0],
+            rgb_file_columns[1],
+            rgb_file_columns[2],
+            snap_neighbor_normal,
         )
 
         return cls._from_cpp(_cpp_part)
@@ -177,9 +189,13 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
         xyz_files: MultiAssetPath,
         voxel_size: PositiveFloat,
         separator: Optional[str] = None,
-        max_color_value: Optional[NonNegativeFloat] = 0.0,
-        default_normal: Optional[NDArray[Shape["3"], np.float64]] = np.array([np.finfo(np.float64).max] * 3, dtype=np.float64),
-        sparse: Optional[bool] = False,
+        max_color_value: NonNegativeFloat = 0.0,
+        default_normal: NDArray[Shape["3"], np.float64] = np.array([np.finfo(np.float64).max] * 3, dtype=np.float64),
+        sparse: bool = False,
+        estimate_normals: bool = False,
+        normals_file_columns: list[NonNegativeInt] = [3, 4, 5],
+        rgb_file_columns: list[NonNegativeInt] = [6, 7, 8],
+        snap_neighbor_normal: bool = False,
     ):
         """
         Load multiple scene parts from XYZ files.
@@ -187,7 +203,9 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
         Each parameters hould be a single shared value for all files.
         """
         return [
-            ScenePart.from_xyz(xyz, voxel_size, separator, max_color_value, default_normal, sparse)
+            ScenePart.from_xyz(xyz, voxel_size, separator, max_color_value, default_normal, 
+                               sparse, estimate_normals, normals_file_columns, 
+                               rgb_file_columns, snap_neighbor_normal)
             for xyz in xyz_files
             ]
 

@@ -12,9 +12,6 @@ import os
 
 import _helios
 
-# Define a type variable for the return type of the 'broadcast_param' function.
-T = TypeVar("T")
-
 # The list of user provided directories that will be searched for assets.
 _custom_asset_directories = []
 
