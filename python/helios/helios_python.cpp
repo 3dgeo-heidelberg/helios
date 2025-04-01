@@ -1479,20 +1479,21 @@ namespace helios{
                         py::overload_cast<const FWFSettings&>(&Scanner::setFWFSettings))
             .def_property_readonly("num_devices", &Scanner::getNumDevices)
             .def_property_readonly("time_wave", py::overload_cast<>(&Scanner::getTimeWave))
+
             .def_property(
                 "cycle_measurements_mutex",
                 [](ScannerWrap &self) {
-                    if (!self.get_mutex()) {
-                        self.set_mutex(std::make_shared<std::mutex>());
+                    if (!self.get_cycle_measurements_mutex()) {
+                        self.set_cycle_measurements_mutex(std::make_shared<std::mutex>());
                     }
-                    return self.get_mutex();
+                    return self.get_cycle_measurements_mutex();
                 },
                 [](ScannerWrap &self, py::object mutex_obj) {
                     if (mutex_obj.is_none()) {
-                        self.set_mutex(nullptr);
+                        self.set_cycle_measurements_mutex(nullptr);
                     } else {
                         auto mutex_ptr = mutex_obj.cast<std::shared_ptr<std::mutex>>();
-                        self.set_mutex(mutex_ptr);
+                        self.set_cycle_measurements_mutex(mutex_ptr);
                     }
                 },
                 "A shared mutex for synchronized operations"
@@ -1500,17 +1501,17 @@ namespace helios{
             .def_property(
                 "all_measurements_mutex",
                 [](ScannerWrap &self) {
-                    if (!self.get_mutex()) {
-                        self.set_mutex(std::make_shared<std::mutex>());
+                    if (!self.get_all_measurements_mutex()) {
+                        self.set_all_measurements_mutex(std::make_shared<std::mutex>());
                     }
-                    return self.get_mutex();
+                    return self.get_all_measurements_mutex();
                 },
                 [](ScannerWrap &self, py::object mutex_obj) {
                     if (mutex_obj.is_none()) {
-                        self.set_mutex(nullptr);
+                        self.set_all_measurements_mutex(nullptr);
                     } else {
                         auto mutex_ptr = mutex_obj.cast<std::shared_ptr<std::mutex>>();
-                        self.set_mutex(mutex_ptr);
+                        self.set_all_measurements_mutex(mutex_ptr);
                     }
                 },
                 "A shared mutex for synchronized operations"
