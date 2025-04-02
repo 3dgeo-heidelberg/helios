@@ -75,6 +75,7 @@ class OutputSettings(Model, UpdateableMixin):
     write_waveform: bool = False
     write_pulse: bool = False
     las_scale: Length = 0.0001
+    trajectory_time_interval: PositiveFloat = 0.01
 
 
 # Storage for global settings

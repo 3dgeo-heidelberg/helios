@@ -102,3 +102,10 @@ def test_set_gpstime(survey):
 
     assert np.all(points["gps_time"] > 0)
     assert np.all(points["gps_time"] < 1)
+
+
+def test_survey_run_trajectory_for_all_scanner_types():
+    survey = Survey.from_xml("data/surveys/demo/light_als_toyblocks_multiscanner.xml")
+    points, trajectory = survey.run()
+    assert points.shape[0] > 0
+    assert trajectory.shape[0] > 0
