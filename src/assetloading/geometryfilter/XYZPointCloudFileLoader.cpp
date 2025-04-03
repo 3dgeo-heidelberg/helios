@@ -159,28 +159,23 @@ void XYZPointCloudFileLoader::firstPass(
             boost::split(lineParts, line, boost::is_any_of(separator));
             // ########## BEGIN Read vertex position ##########
             unsigned int size = lineParts.size();
-            if (size >= 3) {
-                x = std::strtod(lineParts[0].c_str(), nullptr);
-                y = std::strtod(lineParts[1].c_str(), nullptr);
-                z = std::strtod(lineParts[2].c_str(), nullptr);
-                if(x < minX) minX = x;
-                if(x > maxX) maxX = x;
-                if(y < minY) minY = y;
-                if(y > maxY) maxY = y;
-                if(z < minZ) minZ = z;
-                if(z > maxZ) maxZ = z;
-                n++;
-            }
-            else{
-                std::stringstream ss;
-                ss << "XYZPointCloudFileLoader ERROR:\n"
-                   << "\tRecord/row with no (x,y,z) has been found.";
-                logging::ERR(ss.str());
+            if (size < 3) {
                 throw HeliosException(
-                    "Exception at XYZPointCloudFileLoader::firstPass\n"
-                    "\tRecord with no (x,y,z)"
+                    "Exception in XYZPointCloudFileLoader::firstPass: "
+                    "Reading process failed. The problem might be due to a "
+                    "separator mismatch. The separator used is '" + separator +"'."
                 );
-            }
+            }    
+            x = std::strtod(lineParts[0].c_str(), nullptr);
+            y = std::strtod(lineParts[1].c_str(), nullptr);
+            z = std::strtod(lineParts[2].c_str(), nullptr);
+            if(x < minX) minX = x;
+            if(x > maxX) maxX = x;
+            if(y < minY) minY = y;
+            if(y > maxY) maxY = y;
+            if(z < minZ) minZ = z;
+            if(z > maxZ) maxZ = z;
+            n++;
         }
 
         // Compute number of necessary batches
@@ -188,13 +183,15 @@ void XYZPointCloudFileLoader::firstPass(
 
         // Restore file cursor position to beginning
         restartInputFileStream(ifs);
-    }
-    catch (std::exception &e) {
+    }catch (const HeliosException& e) {
         std::stringstream ss;
-        ss <<   "Failed to read xyz point cloud file \"" <<
-                filePathString << "\"\nEXCEPTION: " << e.what();
+        ss <<   "Failed to read xyz point cloud file \""
+            << filePathString << "\"\n"
+            << "XYZPointCloudFileLoader ERROR:\n"
+            << "\tRecord/row with no or incorrect (x,y,z) has been found. \n"
+            << "Check the exception message for more details.\n";
         logging::ERR(ss.str());
-        exit(-1);
+        throw;
     }
 }
 
