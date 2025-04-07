@@ -1363,7 +1363,7 @@ namespace helios{
             .def_property("all_trajectories",
                 [](Scanner &self) -> py::array {
                     if (!self.allTrajectories  || self.allTrajectories->empty())
-                        throw std::runtime_error("allTrajectories is null");
+                        return py::array();
                     return detail::trajectories_to_numpy(*(self.allTrajectories));
                 },
                 [](Scanner &self, py::array arr) {

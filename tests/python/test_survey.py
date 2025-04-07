@@ -106,6 +106,7 @@ def test_set_gpstime(survey):
 
 def test_survey_run_trajectory_for_all_scanner_types():
     survey = Survey.from_xml("data/surveys/demo/light_als_toyblocks_multiscanner.xml")
+    survey.legs[0].scanner_settings.trajectory_time_interval = 0.1
     points, trajectory = survey.run()
     assert points.shape[0] > 0
     assert trajectory.shape[0] > 0
