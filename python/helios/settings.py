@@ -128,7 +128,7 @@ def set_output_settings(output_settings: Optional[OutputSettings] = None, **para
     _global_output_settings.update_from_dict(parameters)
 
 
-def _compose_settings(*settings, **parameters):
+def _compose_settings(settings, parameters):
     """Compose settings from multiple sources
 
     :param settings:
@@ -169,7 +169,7 @@ def compose_execution_settings(
         Individual parameters to set on the execution settings.
     """
 
-    return _compose_settings(local_settings, _global_execution_settings, **parameters)
+    return _compose_settings((local_settings, _global_execution_settings), parameters)
 
 
 def compose_output_settings(
@@ -185,4 +185,4 @@ def compose_output_settings(
         Individual parameters to set on the output settings.
     """
 
-    return _compose_settings(local_settings, _global_output_settings, **parameters)
+    return _compose_settings((local_settings, _global_output_settings), parameters)

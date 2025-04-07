@@ -46,6 +46,10 @@ class Survey(Model, cpp_class=_helios.Survey):
         execution_settings = compose_execution_settings(execution_settings, parameters)
         output_settings = compose_output_settings(output_settings, parameters)
 
+        # Throw if there are still unknown parameters left
+        if parameters:
+            raise ValueError(f"Unknown parameters: {', '.join(parameters)}")
+
         # Ensure that the scene has been finalized
         self.scene._finalize(execution_settings)
         self.scene._set_reflectances(self.scanner._cpp_object.wavelength)
@@ -94,10 +98,10 @@ class Survey(Model, cpp_class=_helios.Survey):
             True,
             export_to_file,
             execution_settings.discard_shutdown,
-            fms
+            fms,
         )
         playback.callback_frequency = 0
-        
+
         self.scanner._cpp_object.cycle_measurements = np.empty((0,), dtype=meas_dtype)
         self.scanner._cpp_object.cycle_trajectories = np.empty((0,), dtype=traj_dtype)
         self.scanner._cpp_object.cycle_measurements_mutex = None
