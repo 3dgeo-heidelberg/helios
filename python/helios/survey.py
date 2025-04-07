@@ -97,20 +97,22 @@ class Survey(Model, cpp_class=_helios.Survey):
             fms
         )
         playback.callback_frequency = 0
-
-        self.scanner._cpp_object.cycle_measurements_mutex = None
+        
         self.scanner._cpp_object.cycle_measurements = np.empty((0,), dtype=meas_dtype)
         self.scanner._cpp_object.cycle_trajectories = np.empty((0,), dtype=traj_dtype)
+        self.scanner._cpp_object.cycle_measurements_mutex = None
         self.scanner._cpp_object.all_measurements = np.empty((0,), dtype=meas_dtype)
         self.scanner._cpp_object.all_trajectories = np.empty((0,), dtype=traj_dtype)
         self.scanner._cpp_object.all_output_paths = np.empty((0,))
+        self.scanner._cpp_object.all_measurements_mutex = None
         # Start simulating the survey
         playback.start()
 
         if output_settings.format in (OutputFormat.NPY, OutputFormat.LASPY):
+            # TODO: Handle situation when measurements or trajectories are empty, since they turned out to be not necessarily required
             measurements = self.scanner._cpp_object.all_measurements
-            trajectories = self.scanner._cpp_object.all_trajectories
 
+            trajectories = self.scanner._cpp_object.all_trajectories
             if output_settings.format == OutputFormat.NPY:
                 return measurements, trajectories
 

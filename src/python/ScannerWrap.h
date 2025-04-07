@@ -35,23 +35,28 @@ public:
 
     ScannerWrap(Scanner& scanner) : Scanner(scanner) {}
 
-    std::shared_ptr<std::mutex> cycle_measurements_mutex;
 
-    // Getter for cycle_measurements_mutex
-    std::shared_ptr<std::mutex> get_mutex() const {
-        return cycle_measurements_mutex;
+    std::shared_ptr<std::mutex> get_cycle_measurements_mutex() {
+        return Scanner::cycleMeasurementsMutex;
     }
 
-    // Setter for cycle_measurements_mutex
-    void set_mutex(std::shared_ptr<std::mutex> mutex=nullptr) {
+    std::shared_ptr<std::mutex> get_all_measurements_mutex() {
+        return Scanner::allMeasurementsMutex;
+    }
+    void set_cycle_measurements_mutex(std::shared_ptr<std::mutex> mutex=nullptr) {
         if (!mutex) {
-            cycle_measurements_mutex = std::make_shared<std::mutex>();
+            Scanner::cycleMeasurementsMutex = std::make_shared<std::mutex>();
         } else {
-            cycle_measurements_mutex = std::move(mutex);
-           
+            Scanner::cycleMeasurementsMutex = std::move(mutex);
         }
-         Scanner::cycleMeasurementsMutex = cycle_measurements_mutex;
-         Scanner::allMeasurementsMutex = cycle_measurements_mutex;
+    }
+
+    void set_all_measurements_mutex(std::shared_ptr<std::mutex> mutex=nullptr) {
+        if (!mutex) {
+            Scanner::allMeasurementsMutex = std::make_shared<std::mutex>();
+        } else {
+            Scanner::allMeasurementsMutex = std::move(mutex);
+        }
     }
     
     std::shared_ptr<Scanner> clone() override {
