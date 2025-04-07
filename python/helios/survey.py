@@ -49,10 +49,6 @@ class Survey(Model, cpp_class=_helios.Survey):
         # Ensure that the scene has been finalized
         self.scene._finalize(execution_settings)
         self.scene._set_reflectances(self.scanner._cpp_object.wavelength)
-  
-        for leg in self.legs:
-            if leg._cpp_object.scanner_settings.trajectory_time_interval == 0.0:
-                leg._cpp_object.scanner_settings.trajectory_time_interval = output_settings.trajectory_time_interval
 
         if output_settings.format in (OutputFormat.NPY, OutputFormat.LASPY):
             las_output, zip_output, export_to_file = False, False, False
@@ -98,10 +94,10 @@ class Survey(Model, cpp_class=_helios.Survey):
             True,
             export_to_file,
             execution_settings.discard_shutdown,
-            fms
+            fms,
         )
         playback.callback_frequency = 0
-        
+
         self.scanner._cpp_object.cycle_measurements = np.empty((0,), dtype=meas_dtype)
         self.scanner._cpp_object.cycle_trajectories = np.empty((0,), dtype=traj_dtype)
         self.scanner._cpp_object.cycle_measurements_mutex = None
