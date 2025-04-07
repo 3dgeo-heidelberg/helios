@@ -102,3 +102,8 @@ def test_set_gpstime(survey):
 
     assert np.all(points["gps_time"] > 0)
     assert np.all(points["gps_time"] < 1)
+
+
+def test_survey_run_unknown_parameters(survey):
+    with pytest.raises(ValueError):
+        survey.run(unknown_parameter=12)
