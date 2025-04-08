@@ -31,7 +31,7 @@ class ScannerSettings(ScannerSettingsBase):
     min_vertical_angle: Angle = np.nan
     max_vertical_angle: Angle = np.nan
     scan_frequency: Frequency = 200
-    beam_divergence_angle: Angle = 0.0003 * units.deg
+    beam_divergence_angle: Angle = 0.0003 * units.rad
     trajectory_time_interval: TimeInterval = 0.01
     vertical_resolution: Length = 0
     horizontal_resolution: Length = 0
