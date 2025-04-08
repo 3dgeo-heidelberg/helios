@@ -23,23 +23,6 @@ using ssize_t = std::ptrdiff_t;
 namespace py = pybind11;
 namespace detail {
 
-    void convert_utf8_to_fixed_utf32(const std::string &src, std::array<char32_t, 50>& dest) {
-        std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t> conv;
-        std::u32string u32 = conv.from_bytes(src);
-        dest.fill(U'\0');
-        size_t len = std::min(u32.size(), size_t(dest.size()));
-        std::copy(u32.begin(), u32.begin() + len, dest.begin());
-    }
-    
-    std::string convert_fixed_utf32_to_utf8(const char32_t* src) {
-        size_t len = 0;
-        while (len < 50 && src[len] != U'\0') {
-            ++len;
-        }
-        std::u32string u32(src, src + len);
-        std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t> conv;
-        return conv.to_bytes(u32);
-    }
     template <typename T>
     inline T read_field(const char* row, size_t offset) {
         return *reinterpret_cast<const T*>(row + offset);
@@ -64,9 +47,8 @@ namespace detail {
         py::object np = py::module_::import("numpy");
         py::list meas_fields;
     
-        meas_fields.append(py::make_tuple("dev_id", "U50"));
-        meas_fields.append(py::make_tuple("dev_idx", "u8"));
-        meas_fields.append(py::make_tuple("hit_object_id", "U50"));
+        meas_fields.append(py::make_tuple("channel_id", "u8"));
+        meas_fields.append(py::make_tuple("hit_object_id", "i4"));
         meas_fields.append(py::make_tuple("position", "3f8"));
         meas_fields.append(py::make_tuple("beam_direction", "3f8"));
         meas_fields.append(py::make_tuple("beam_origin", "3f8"));
@@ -74,7 +56,7 @@ namespace detail {
         meas_fields.append(py::make_tuple("intensity", "f8"));
         meas_fields.append(py::make_tuple("echo_width", "f8"));
         meas_fields.append(py::make_tuple("return_number", "i4"));
-        meas_fields.append(py::make_tuple("pulse_return_number", "i4"));
+        meas_fields.append(py::make_tuple("number_of_returns", "i4"));
         meas_fields.append(py::make_tuple("fullwave_index", "i4"));
         meas_fields.append(py::make_tuple("classification", "i4"));
         meas_fields.append(py::make_tuple("gps_time", "f8"));
@@ -95,8 +77,7 @@ namespace detail {
         char* base_ptr = static_cast<char*>(buf.ptr);
         size_t row_size = buf.itemsize;
         
-        size_t off_dev_id = offsets["dev_id"];
-        size_t off_dev_idx = offsets["dev_idx"];
+        size_t off_channel_id = offsets["channel_id"];
         size_t off_hit_id = offsets["hit_object_id"];
         size_t off_pos = offsets["position"];
         size_t off_beam_dir = offsets["beam_direction"];
@@ -105,24 +86,20 @@ namespace detail {
         size_t off_intens = offsets["intensity"];
         size_t off_width = offsets["echo_width"];
         size_t off_ret = offsets["return_number"];
-        size_t off_pulse_ret = offsets["pulse_return_number"];
+        size_t off_number_of_returns = offsets["number_of_returns"];
         size_t off_full = offsets["fullwave_index"];
         size_t off_class = offsets["classification"];
         size_t off_time = offsets["gps_time"];
     
         std::array<char32_t, 50> utf32_buffer;
-    
+        
         for (size_t i = 0; i < n; ++i) {
             const Measurement& m = measurements[i];
             char* row = base_ptr + i * row_size;
     
-            convert_utf8_to_fixed_utf32(m.devId, utf32_buffer);
-            std::memcpy(row + off_dev_id, utf32_buffer.data(), utf32_buffer.size() * sizeof(char32_t));
-    
-            *reinterpret_cast<uint64_t*>(row + off_dev_idx) = m.devIdx;
-    
-            convert_utf8_to_fixed_utf32(m.hitObjectId, utf32_buffer);
-            std::memcpy(row + off_hit_id, utf32_buffer.data(), utf32_buffer.size() * sizeof(char32_t));
+            *reinterpret_cast<uint64_t*>(row + off_channel_id) = m.devIdx;
+            int32_t hit_id = m.hitObjectId.empty() ? 0 : std::stoi(m.hitObjectId);
+            *reinterpret_cast<int32_t*>(row + off_hit_id) = hit_id;
     
             copy_dvec3(reinterpret_cast<double*>(row + off_pos), m.position);
             copy_dvec3(reinterpret_cast<double*>(row + off_beam_dir), m.beamDirection);
@@ -132,7 +109,7 @@ namespace detail {
             *reinterpret_cast<double*>(row + off_intens) = m.intensity;
             *reinterpret_cast<double*>(row + off_width) = m.echo_width;
             *reinterpret_cast<int32_t*>(row + off_ret) = m.returnNumber;
-            *reinterpret_cast<int32_t*>(row + off_pulse_ret) = m.pulseReturnNumber;
+            *reinterpret_cast<int32_t*>(row + off_number_of_returns) = m.pulseReturnNumber;
             *reinterpret_cast<int32_t*>(row + off_full) = m.fullwaveIndex;
             *reinterpret_cast<int32_t*>(row + off_class) = m.classification;
             *reinterpret_cast<double*>(row + off_time) = m.gpsTime / 1e9;
@@ -167,13 +144,8 @@ namespace detail {
             Measurement m;
             char* row = base_ptr + i * row_size;
             
-            m.devId = read_field(row, offsets.at("dev_id"), [](const char* ptr) {
-                return convert_fixed_utf32_to_utf8(reinterpret_cast<const char32_t*>(ptr));
-            });
-            m.devIdx = read_field<uint64_t>(row, offsets.at("dev_idx"));
-            m.hitObjectId = read_field(row, offsets.at("hit_object_id"), [](const char* ptr) {
-                return convert_fixed_utf32_to_utf8(reinterpret_cast<const char32_t*>(ptr));
-            });
+            m.devIdx = read_field<uint64_t>(row, offsets.at("channel_id"));
+            m.hitObjectId = std::to_string(read_field<int32_t>(row, offsets.at("hit_object_id")));
             m.position = read_field(row, offsets.at("position"), [](const char* ptr) {
                 const double* src = reinterpret_cast<const double*>(ptr);
                 return glm::dvec3(src[0], src[1], src[2]);
@@ -190,7 +162,7 @@ namespace detail {
             m.intensity = read_field<double>(row, offsets.at("intensity"));
             m.echo_width = read_field<double>(row, offsets.at("echo_width"));
             m.returnNumber = read_field<int32_t>(row, offsets.at("return_number"));
-            m.pulseReturnNumber = read_field<int32_t>(row, offsets.at("pulse_return_number"));
+            m.pulseReturnNumber = read_field<int32_t>(row, offsets.at("number_of_returns"));
             m.fullwaveIndex = read_field<int32_t>(row, offsets.at("fullwave_index"));
             m.classification = read_field<int32_t>(row, offsets.at("classification"));
             m.gpsTime = read_field<double>(row, offsets.at("gps_time")) * 1e9;

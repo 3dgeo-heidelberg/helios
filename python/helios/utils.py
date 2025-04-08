@@ -243,9 +243,8 @@ def detect_separator(file_path: Path) -> str:
 
 meas_dtype = np.dtype(
     [
-        ("dev_id", "U50"),
-        ("dev_idx", "u8"),
-        ("hit_object_id", "U50"),
+        ("channel_id", "u8"),
+        ("hit_object_id", "i4"),
         ("position", "3f8"),
         ("beam_direction", "3f8"),
         ("beam_origin", "3f8"),
@@ -253,7 +252,7 @@ meas_dtype = np.dtype(
         ("intensity", "f8"),
         ("echo_width", "f8"),
         ("return_number", "i4"),
-        ("pulse_return_number", "i4"),
+        ("number_of_returns", "i4"),
         ("fullwave_index", "i4"),
         ("classification", "i4"),
         ("gps_time", "f8"),
