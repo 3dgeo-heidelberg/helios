@@ -55,7 +55,7 @@ option(HELIOS_PCL "Enable PCL support for debugging visualization" OFF)
 add_library(helios)
 
 # Find external dependencies
-find_package(GDAL REQUIRED)
+find_package(GDAL CONFIG REQUIRED)
 find_package(tinyxml2 REQUIRED)
 find_package(glm REQUIRED)
 find_package(Boost REQUIRED COMPONENTS system thread regex filesystem serialization iostreams random)
