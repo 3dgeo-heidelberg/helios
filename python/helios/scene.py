@@ -13,8 +13,7 @@ import _helios
 
 class ScenePart(Model, cpp_class=_helios.ScenePart):
 
-    force_on_ground: ForceOnGroundStrategy = ForceOnGroundStrategy.NONE   #  temporary placeholder it would be as below
-    #Union[ForceOnGroundStrategy, PositiveInt] = ForceOnGroundStrategy.NONE
+    force_on_ground: Union[ForceOnGroundStrategy, PositiveInt] = ForceOnGroundStrategy.NONE
     is_ground: bool = False
 
     @validate_call

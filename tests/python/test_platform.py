@@ -18,7 +18,7 @@ def test_preinstantiated_platforms():
 
 
 def test_platform_settings_mls():
-    survey = Survey.from_xml("data/surveys/demo/mls_wheat_demo.xml")
+    survey = Survey.from_xml("data/surveys/toyblocks/mls_toyblocks.xml")
 
     platform_settings = PlatformSettings(x=10, y = 0,)
     scanner_settings = ScannerSettings(pulse_frequency=1000)
@@ -31,7 +31,7 @@ def test_platform_settings_mls():
     assert math.isclose(platform_settings.z, survey.legs[0].platform_settings._cpp_object.position[2])
 
 def test_platform_settings_tls():
-    survey = Survey.from_xml("data/surveys/demo/tls_arbaro_demo_angular_resolution.xml")
+    survey = Survey.from_xml("data/surveys/toyblocks/tls_toyblocks.xml")
 
     platform_settings = PlatformSettings(x=10, y = 0,)
 
