@@ -8,8 +8,9 @@ from helios.validation import (
 
 from enum import IntEnum
 from pathlib import Path
-from pydantic import PositiveFloat, PositiveInt
-from typing import Optional
+from pydantic import PositiveFloat, PositiveInt, GetCoreSchemaHandler
+from pydantic_core import core_schema
+from typing import Optional, Union, Generator
 from logging import ERROR, DEBUG, INFO, WARNING
 
 import sys
@@ -53,6 +54,12 @@ class OutputFormat(StrEnum):
     #       is exactly the time to abolish them.
 
 
+class ForceOnGroundStrategy(IntEnum):
+    NONE = 0
+    LEAST_COMPLEX = 1
+    MOST_COMPLEX = -1
+    
+    
 class ExecutionSettings(Model, UpdateableMixin):
     parallelization: ParallelizationStrategy = ParallelizationStrategy.CHUNK
     num_threads: ThreadCount = None
