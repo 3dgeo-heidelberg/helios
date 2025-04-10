@@ -729,8 +729,23 @@ namespace helios{
             .def_readwrite("rotation", &ScenePart::mRotation)
             .def_readwrite("scale", &ScenePart::mScale)
             .def_readwrite("bound", &ScenePart::bound)
-            .def_readwrite("is_force_on_ground", &ScenePart::forceOnGround)
+            .def_readwrite("force_on_ground", &ScenePart::forceOnGround)
 
+            .def_property("is_ground",
+                        [](const ScenePart& self) {
+                            if (self.mPrimitives.empty()) {
+                                throw std::runtime_error("It it required to have Primitives in the ScenePart to get the isGround property.");
+                            }
+                            return self.mPrimitives[0]->material->isGround;
+                        },
+                        [](ScenePart& self, bool isGround) {
+                            if (self.mPrimitives.empty()) {
+                                throw std::runtime_error("It it required to have Primitives in the ScenePart to set the isGround property.");
+                            }
+                            for (auto& primitive : self.mPrimitives) {
+                                primitive->material->isGround = isGround;
+                            }
+                        })
             .def_property("centroid", &ScenePart::getCentroid, &ScenePart::setCentroid) 
             .def_property("id", &ScenePart::getId, &ScenePart::setId)
             .def_property("dyn_object_step",
@@ -775,6 +790,7 @@ namespace helios{
             }, py::return_value_policy::reference)
             .def_property_readonly("num_primitives", [](const ScenePart& self) -> size_t {
                 return self.mPrimitives.size();})
+            .def_property_readonly("all_vertices", &ScenePart::getAllVertices)
             .def("isDynamicMovingObject", [](const ScenePart& self) -> bool {
                 return self.getType() == ScenePart::ObjectType::DYN_MOVING_OBJECT;})
             .def("compute_centroid", &ScenePart::computeCentroid, py::arg("computeBound") = false)

@@ -1,10 +1,10 @@
-from helios.settings import ExecutionSettings, compose_execution_settings
+from helios.settings import ExecutionSettings, compose_execution_settings, ForceOnGroundStrategy
 from helios.utils import get_asset_directories, detect_separator
 from helios.validation import AssetPath, Model, MultiAssetPath, validate_xml_file
 
 from numpydantic import NDArray, Shape
-from pydantic import PositiveFloat, NonNegativeFloat, NonNegativeInt, validate_call
-from typing import Literal, Optional
+from pydantic import Field, PositiveFloat, NonNegativeFloat, NonNegativeInt, PositiveInt, validate_call, conint
+from typing import Literal, Optional, Union, Annotated
 
 import numpy as np
 
@@ -12,6 +12,11 @@ import _helios
 
 
 class ScenePart(Model, cpp_class=_helios.ScenePart):
+
+    force_on_ground: ForceOnGroundStrategy = ForceOnGroundStrategy.NONE   #  temporary placeholder it would be as below
+    #Union[ForceOnGroundStrategy, PositiveInt] = ForceOnGroundStrategy.NONE
+    is_ground: bool = False
+
     @validate_call
     def rotate(
         self,

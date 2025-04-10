@@ -1,4 +1,6 @@
 from helios.scene import *
+from helios.settings import *
+from helios.survey import *
 
 import math
 import numpy as np
@@ -218,3 +220,37 @@ def test_transform_scenepart(box_f):
     bbox2 = get_bbox(box2)
 
     assert np.allclose(bbox1 + offset, bbox2)
+
+
+def test_ground_plane():
+    sp1 = ScenePart.from_obj("data/sceneparts/toyblocks/cube.obj")
+    sp1.rotate(axis=np.array([0, 0, 1.0]), angle=np.pi / 4)
+    sp1.scale(0.5)
+    sp1.translate(np.array([-45.0, 10.0, 10]))
+    sp1.force_on_ground = 1 #ForceOnGroundStrategy.LEAST_COMPLEX
+    
+    sp2 = ScenePart.from_obj("data/sceneparts/toyblocks/cube.obj")
+    sp2.scale(1)
+
+    sp3 = ScenePart.from_obj("data/sceneparts/basic/groundplane/groundplane.obj")
+    sp3.scale(70)
+    sp3.translate(np.array([20.0, 0, 0]))
+
+    sp4 = ScenePart.from_obj("data/sceneparts/toyblocks/cube.obj")
+    sp4.rotate(axis=np.array([0, 0, 1.0]), angle=np.pi / 4)
+    sp4.scale(0.5)
+    sp4.translate(np.array([-45.0, 10.0, 10]))
+    sp4.force_on_ground = 0 #ForceOnGroundStrategy.NONE
+
+    sp5 = ScenePart.from_obj("data/sceneparts/toyblocks/cube.obj")
+    sp5.rotate(axis=np.array([0, 0, 1.0]), angle=np.pi / 4)
+    sp5.scale(0.5)
+    sp5.translate(np.array([-45.0, 10.0, 10]))
+    sp5.force_on_ground = -1
+    
+    scene = StaticScene(scene_parts=[sp1, sp2, sp3, sp4, sp5])
+    scene._finalize()
+
+    assert np.isclose(sp1._cpp_object.all_vertices[0].position[2], sp3._cpp_object.all_vertices[0].position[2])
+    assert not np.isclose(sp1._cpp_object.all_vertices[0].position[2], sp4._cpp_object.all_vertices[0].position[2])
+    assert np.isclose(sp1._cpp_object.all_vertices[0].position[2], sp5._cpp_object.all_vertices[0].position[2])
