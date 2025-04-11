@@ -63,6 +63,7 @@ if __name__ == '__main__':
     simBuilder.setLegNoiseDisabled(True)
     simBuilder.setRebuildScene(True)
     simBuilder.setWriteWaveform(True)
+    simBuilder.setWritePulse(True)
     simBuilder.setCalcEchowidth(True)
     simBuilder.setFullwaveNoise(False)
     simBuilder.setPlatformNoiseDisabled(True)
