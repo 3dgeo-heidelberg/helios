@@ -48,10 +48,10 @@ build-verbosity = 3
 # Testing commands for our wheels
 test-command = "PYTHONPATH=$(pwd)/python pytest {package}/tests/python"
 test-requires = ["pytest", "ruptures"]
+
 [tool.pytest.ini_options]
 markers = [
-    "exe: mark tests for the command line tool",
-    "pyh: mark tests for the python bindings pyhelios",
+    "slow: mark slow tests and make their running opt-in",
 ]
 testpaths = [
     "tests/python",
