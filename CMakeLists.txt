@@ -133,7 +133,16 @@ if(HELIOS_BUDDING_METRICS)
   target_compile_definitions(helios PUBLIC BUDDING_METRICS=ON)
 endif()
 
-# # Add the HelIOS++ executable
+# Create test suite
+include(CTest)
+if(BUILD_TESTING)
+  find_package(Catch2 3 REQUIRED)
+  add_executable(helios_test)
+  add_test(NAME helios_test COMMAND helios_test)
+  target_link_libraries(helios_test PRIVATE helios Catch2::Catch2WithMain)
+endif()
+
+# Add the HelIOS++ executable
 add_executable(helios++)
 
 target_link_libraries(helios++ PRIVATE helios)
