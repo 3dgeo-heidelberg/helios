@@ -115,3 +115,14 @@ def test_survey_run_trajectory_for_all_scanner_types():
     points, trajectory = survey.run()
     assert points.shape[0] > 0
     assert trajectory.shape[0] > 0
+
+
+def test_full_waveform_settings_effect():
+    survey = Survey.from_xml("data/surveys/demo/light_als_toyblocks_multiscanner.xml")
+    points1, _ = survey.run(format=OutputFormat.NPY)
+
+    survey.full_waveform_settings.beam_sample_quality = 5
+    points2, _ = survey.run(format=OutputFormat.NPY)
+
+    # A higher beam sample quality should result in more points
+    assert points1.shape[0] < points2.shape[0]

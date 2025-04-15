@@ -4,6 +4,7 @@ from helios.scanner import Scanner, ScannerSettings
 from helios.scene import StaticScene
 from helios.settings import (
     ExecutionSettings,
+    FullWaveformSettings,
     OutputFormat,
     OutputSettings,
     compose_execution_settings,
@@ -31,6 +32,7 @@ class Survey(Model, cpp_class=_helios.Survey):
     legs: list[Leg] = []
     name: str = ""
     gps_time: datetime = datetime.now(timezone.utc)
+    full_waveform_settings: FullWaveformSettings = FullWaveformSettings()
 
     @validate_call
     def run(
@@ -53,6 +55,11 @@ class Survey(Model, cpp_class=_helios.Survey):
         # Ensure that the scene has been finalized
         self.scene._finalize(execution_settings)
         self.scene._set_reflectances(self.scanner._cpp_object.wavelength)
+
+        # Set the fullwave form settings on the scanner
+        self.scanner._cpp_object.apply_settings_FWF(
+            self.full_waveform_settings._to_cpp()
+        )
 
         if output_settings.format in (OutputFormat.NPY, OutputFormat.LASPY):
             las_output, zip_output, export_to_file = False, False, False

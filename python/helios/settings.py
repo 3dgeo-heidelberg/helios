@@ -3,15 +3,17 @@ from helios.validation import (
     Length,
     Model,
     ThreadCount,
+    TimeInterval,
     UpdateableMixin,
+    units,
 )
 
 from enum import IntEnum
-from pathlib import Path
-from pydantic import PositiveFloat, PositiveInt
+from pydantic import PositiveInt
 from typing import Optional
 from logging import ERROR, DEBUG, INFO, WARNING
 
+import _helios
 import sys
 
 # StrEnum is Python >= 3.11, so we use a conda-forge packaged backport
@@ -75,6 +77,24 @@ class OutputSettings(Model, UpdateableMixin):
     write_waveform: bool = False
     write_pulse: bool = False
     las_scale: Length = 0.0001
+
+
+class FullWaveformSettings(Model, cpp_class=_helios.FWFSettings):
+    bin_size: TimeInterval = 0.25 * units.ns
+    beam_sample_quality: PositiveInt = 3
+    win_size: TimeInterval = 1.0 * units.ns
+    max_fullwave_range: TimeInterval = 0.0 * units.ns
+
+    def _to_cpp(self):
+        # Convert to the underlying C++ structure, undoing SI unit conversion
+
+        fwf = _helios.FWFSettings()
+        fwf.bin_size = self.bin_size * 1e9
+        fwf.beam_sample_quality = self.beam_sample_quality
+        fwf.win_size = self.win_size * 1e9
+        fwf.max_fullwave_range = self.max_fullwave_range * 1e9
+
+        return fwf
 
 
 # Storage for global settings
