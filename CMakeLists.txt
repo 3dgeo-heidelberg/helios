@@ -116,6 +116,7 @@ target_include_directories(helios
 # Expose version information to the C++ sources
 target_compile_definitions(helios
   PUBLIC
+    GLM_ENABLE_EXPERIMENTAL
     HELIOS_VERSION="${HELIOS_VERSION_FULL}"
     HELIOS_BUILD_TYPE="${CMAKE_BUILD_TYPE}"
 )
