@@ -81,6 +81,27 @@ ThreadCount = Annotated[Optional[int], AfterValidator(_validate_thread_count)]
 CreatedDirectory = Annotated[Path, AfterValidator(_create_directory)]
 
 
+def _is_iterable_annotation(a):
+    """Determine whether a type annotation describes an iterable."""
+
+    origin = get_origin(a)
+    if origin is None:
+        return False
+    if not isinstance(origin, type):
+        return False
+    return issubclass(origin, Iterable)
+
+
+def _is_iterable_of_model_annotation(a):
+    """Determine whether this type annotation describes an iterable of Models"""
+
+    if not _is_iterable_annotation(a):
+        return False
+
+    args = get_args(a)
+    return issubclass(args[0], Model)
+
+
 @dataclass_transform()
 class ValidatedModelMetaClass(type):
     def __new__(cls, name, bases, dct, **kwargs):
@@ -108,12 +129,7 @@ class ValidatedModelMetaClass(type):
                     value = getattr(self._cpp_object, f)
 
                     # Determine whether this is of type Iterable[Model]
-                    origin = get_origin(a)
-                    if (
-                        isinstance(origin, type)
-                        and issubclass(origin, Iterable)
-                        and issubclass(get_args(a)[0], Model)
-                    ):
+                    if _is_iterable_of_model_annotation(a):
 
                         def _check_if_rebuild():
                             if len(value) != len(getattr(self, f"_{f}")):
@@ -249,8 +265,7 @@ class Model(metaclass=ValidatedModelMetaClass):
         for field, annot in inspect.get_annotations(cls).items():
             if hasattr(value, field):
                 cpp_value = getattr(value, field)
-                origin = get_origin(annot)
-                if origin is None or not issubclass(origin, Iterable):
+                if not _is_iterable_annotation(annot):
                     if hasattr(annot, "_from_cpp"):
                         cpp_value = annot._from_cpp(cpp_value)
                 else:
