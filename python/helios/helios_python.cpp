@@ -734,13 +734,13 @@ namespace helios{
             .def_property("is_ground",
                         [](const ScenePart& self) {
                             if (self.mPrimitives.empty()) {
-                                throw std::runtime_error("It it required to have Primitives in the ScenePart to get the isGround property.");
+                                throw std::runtime_error("It is required to have Primitives in the ScenePart to get the isGround property.");
                             }
                             return self.mPrimitives[0]->material->isGround;
                         },
                         [](ScenePart& self, bool isGround) {
                             if (self.mPrimitives.empty()) {
-                                throw std::runtime_error("It it required to have Primitives in the ScenePart to set the isGround property.");
+                                throw std::runtime_error("It is required to have Primitives in the ScenePart to set the isGround property.");
                             }
                             for (auto& primitive : self.mPrimitives) {
                                 primitive->material->isGround = isGround;
