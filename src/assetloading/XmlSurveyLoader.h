@@ -212,5 +212,5 @@ protected:
     /** Friend declarations */
     friend std::shared_ptr<Scanner> readScannerFromXml(std::string, std::vector<std::string>, std::string);
     friend std::shared_ptr<Platform> readPlatformFromXml(std::string, std::vector<std::string>, std::string);
-    friend std::shared_ptr<Scene> readSceneFromXml(std::string, std::vector<std::string>, bool, bool);
+    friend std::shared_ptr<Scene> readSceneFromXml(std::string, std::vector<std::string>, bool);
  };

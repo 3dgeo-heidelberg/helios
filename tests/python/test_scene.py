@@ -1,5 +1,9 @@
 from helios.scene import *
+from helios.scanner import *
+from helios.platforms import *
+from helios.survey import Survey
 
+import os
 import math
 import numpy as np
 import pytest
@@ -218,3 +222,17 @@ def test_transform_scenepart(box_f):
     bbox2 = get_bbox(box2)
 
     assert np.allclose(bbox1 + offset, bbox2)
+
+
+def test_scene_binary():
+    survey1 = Survey.from_xml("data/surveys/toyblocks/tls_toyblocks.xml")
+    survey1.scene.to_binary("data/scenes/toyblocks/toyblocks1.scene")
+    points1, _ = survey1.run()
+
+    survey2 = Survey.from_xml("data/surveys/toyblocks/tls_toyblocks.xml")
+    survey2.scene = StaticScene.from_binary("data/scenes/toyblocks/toyblocks1.scene")
+
+    points2, _ = survey2.run()
+    os.remove("data/scenes/toyblocks/toyblocks1.scene")
+    assert len(points1) == len(points2)
+    

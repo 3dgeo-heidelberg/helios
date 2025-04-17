@@ -2227,5 +2227,7 @@ namespace helios{
         m.def("rotate_scene_part", &rotateScenePart);
         m.def("scale_scene_part", &scaleScenePart);
         m.def("translate_scene_part", &translateScenePart);
+        m.def("write_scene_to_binary", &writeSceneToBinary);
+        m.def("read_scene_from_binary", &readSceneFromBinary);
     }
 }

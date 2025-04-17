@@ -56,3 +56,13 @@ void rotateScenePart(std::shared_ptr<ScenePart> sp, Rotation rotation);
 void scaleScenePart(std::shared_ptr<ScenePart> sp, double scaleFactor);
 
 void translateScenePart(std::shared_ptr<ScenePart> sp, glm::dvec3 offset);
+
+void writeSceneToBinary(
+    const std::string& writePath,
+    std::shared_ptr<Scene> scene,
+    bool isDynScene = false
+);
+
+std::shared_ptr<Scene> readSceneFromBinary(
+    const std::string& readPath
+);

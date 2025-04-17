@@ -202,7 +202,7 @@ class Survey(Model, cpp_class=_helios.Survey):
         validate_xml_file(survey_file, "xsd/survey.xsd")
 
         _cpp_survey = _helios.read_survey_from_xml(
-            str(survey_file), [str(p) for p in get_asset_directories()], True, True
+            str(survey_file), [str(p) for p in get_asset_directories()], True
         )
 
         return cls._from_cpp(_cpp_survey)
