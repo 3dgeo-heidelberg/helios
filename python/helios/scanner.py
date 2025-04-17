@@ -1,4 +1,4 @@
-from helios.utils import get_asset_directories
+from helios.utils import get_asset_directories, strip_asset_prefix
 from helios.validation import (
     Angle,
     AngleVelocity,
@@ -76,7 +76,26 @@ class Scanner(Model, cpp_class=_helios.Scanner):
         _cpp_scanner = _helios.read_scanner_from_xml(
             str(scanner_file), [str(p) for p in get_asset_directories()], scanner_id
         )
-        return cls._from_cpp(_cpp_scanner)
+
+        obj = cls._from_cpp(_cpp_scanner)
+
+        obj._provenance = {
+            "from_xml": {
+                "scanner_file": str(strip_asset_prefix(scanner_file)),
+                "scanner_id": scanner_id,
+            }
+        }
+
+        return obj
+
+    @classmethod
+    def _from_dict(cls, d):
+        if "from_xml" in d:
+            return cls.from_xml(**d["from_xml"])
+        return super()._from_dict(d)
+
+    def _can_be_serialized_shallow(self):
+        return False
 
 
 #

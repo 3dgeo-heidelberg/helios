@@ -3,7 +3,7 @@ from helios.utils import find_file, find_files, is_real_iterable
 from collections.abc import Iterable
 from pathlib import Path
 from pint import UnitRegistry
-from pydantic import validate_call, GetCoreSchemaHandler
+from pydantic import validate_call, BaseModel, GetCoreSchemaHandler
 from pydantic.functional_validators import AfterValidator, BeforeValidator
 from pydantic_core import core_schema
 from typing import Any, Optional, Type, Union, get_origin, get_args
@@ -11,9 +11,11 @@ from typing_extensions import Annotated, dataclass_transform
 
 import annotated_types
 import inspect
+import json
 import multiprocessing
 import os
 import xmlschema
+import yaml
 
 
 # The global registry of physical units used in Helios++. Currently there
@@ -100,6 +102,18 @@ def _is_iterable_of_model_annotation(a):
 
     args = get_args(a)
     return issubclass(args[0], Model)
+
+
+def _serialize_value(v, a):
+    if isinstance(v, Model):
+        return v._to_dict()
+    else:
+
+        class _M(BaseModel):
+            field: a = v
+
+        _m = _M()
+        return json.loads(_m.model_dump_json())["field"]
 
 
 @dataclass_transform()
@@ -318,6 +332,129 @@ class Model(metaclass=ValidatedModelMetaClass):
         }
 
         return self.__class__(_cpp_object=cpp_object, **properties)
+
+    def _default_serialization_filename(self):
+        """The default filename when serializing this model.
+
+        Especially important in the context of shallow serialization, where
+        explicit user input for filenames is not available for nested models.
+        """
+        return f"{self.__class__.__name__.lower()}.yml"
+
+    def _can_be_serialized_shallow(self):
+        """Whether this model should ever be serialized in shallow fashion."""
+        return True
+
+    def _to_dict(self):
+        # If the object recorded its provenance, we use it here.
+        if hasattr(self, "_provenance"):
+            return self._provenance
+
+        # Otherwise, we write out all the object properties
+        _dict = {}
+
+        for n, a in inspect.get_annotations(self.__class__).items():
+            f = getattr(self, n)
+
+            if _is_iterable_annotation(a):
+                _dict[n] = [_serialize_value(v, a) for v in f]
+            else:
+                _dict[n] = _serialize_value(f, a)
+
+        return _dict
+
+    @classmethod
+    def _from_dict(self, d):
+        return self.__class__(**d)
+
+    @validate_call
+    def to_yml(
+        self,
+        path: Path = Path("."),
+        shallow: bool = True,
+        filename: Optional[str] = None,
+    ):
+        """Serialize the object to YAML files"""
+
+        if not path.is_dir() and path.suffix == "":
+            _create_directory(path)
+
+        if shallow and not path.is_dir():
+            raise ValueError(
+                "Shallow serialization requires a directory path, not a filename"
+            )
+
+        if filename is None:
+            filename = self._default_serialization_filename()
+
+        if not Path(filename).is_absolute():
+            filename = path / filename
+
+        # If the object recorded its provenance, we use it here.
+        if hasattr(self, "_provenance"):
+            _dict = self._provenance
+        else:
+            _dict = {}
+
+        for n, a in inspect.get_annotations(self.__class__).items():
+            f = getattr(self, n)
+
+            def _serialize(v, counter=None):
+                if isinstance(v, Model) and v._can_be_serialized_shallow() and shallow:
+                    return str(
+                        Path(
+                            _serialize_value(
+                                v.to_yml(
+                                    path=path,
+                                    filename=n
+                                    + (
+                                        str(counter).zfill(4)
+                                        if counter is not None
+                                        else ""
+                                    )
+                                    + ".yml",
+                                    shallow=shallow,
+                                ),
+                                Path,
+                            )
+                        ).relative_to(path)
+                    )
+
+                return _serialize_value(v, a)
+
+            if _is_iterable_annotation(a):
+                _dict[n] = [_serialize(v, i) for i, v in enumerate(f)]
+            else:
+                _dict[n] = _serialize(f)
+
+        with open(filename, "w") as f:
+            yaml.safe_dump(_dict, f)
+
+        return filename
+
+    @classmethod
+    @validate_call
+    def from_yml(cls, filename: AssetPath):
+        """Load the object from a YAML file"""
+
+        with open(filename, "r") as f:
+            data = yaml.safe_load(f)
+
+        for n, a in inspect.get_annotations(cls).items():
+            if issubclass(a, Model):
+                if isinstance(data[n], str):
+                    # This was serialized in a shallow fashion
+                    data[n] = a.from_yml(filename.parent / data[n])
+                else:
+                    # This was serialized in a deep fashion
+                    data[n] = a(**data[n])
+            if _is_iterable_of_model_annotation(a):
+                if isinstance(data[n][0], str):
+                    data[n] = [a.from_yml(filename.parent / v) for v in data[n]]
+                else:
+                    data[n] = [a(**v) for v in data[n]]
+
+        return cls._from_dict(data)
 
 
 class UpdateableMixin:

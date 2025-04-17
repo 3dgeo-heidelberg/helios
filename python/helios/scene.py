@@ -1,5 +1,5 @@
 from helios.settings import ExecutionSettings, compose_execution_settings
-from helios.utils import get_asset_directories, detect_separator
+from helios.utils import get_asset_directories, detect_separator, strip_asset_prefix
 from helios.validation import AssetPath, Model, MultiAssetPath, validate_xml_file
 
 from numpydantic import NDArray, Shape
@@ -29,6 +29,9 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
         * An origin and an image vector
         """
 
+        # Record the rotation in the provenance
+        self._provenance.setdefault("transformations", [])
+
         # The rotation object that we want to construct
         rot = None
 
@@ -36,6 +39,14 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
         if quaternion is not None:
             rot = _helios.Rotation(
                 quaternion[0], quaternion[1], quaternion[2], quaternion[3], True
+            )
+
+            self._provenance["transformations"].append(
+                {
+                    "rotate": {
+                        "quaternion": quaternion,
+                    },
+                }
             )
 
         # Handle construction via an axis and angle
@@ -49,6 +60,15 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
 
             rot = _helios.Rotation(axis, angle)
 
+            self._provenance["transformations"].append(
+                {
+                    "rotate": {
+                        "axis": axis,
+                        "angle": angle,
+                    },
+                }
+            )
+
         # Handle construction via two vectors
         if origin is not None or image is not None:
             if rot is not None:
@@ -60,6 +80,16 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
 
             rot = _helios.Rotation(origin, image)
 
+            self._provenance["transformations"].append(
+                {
+                    "rotate": {
+                        "origin": origin,
+                        "image": image,
+                    },
+                }
+            )
+
+        # If no rotation was specified, raise an error
         if rot is None:
             raise ValueError("No rotation parameters specified")
 
@@ -73,6 +103,17 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
         """Scale the scene part by a factor."""
 
         _helios.scale_scene_part(self._cpp_object, factor)
+
+        # Record the scaling in the provenance
+        self._provenance.setdefault("transformations", [])
+        self._provenance["transformations"].append(
+            {
+                "scale": {
+                    "factor": factor,
+                },
+            }
+        )
+
         return self
 
     @validate_call
@@ -80,6 +121,17 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
         """Translate the scene part by an offset."""
 
         _helios.translate_scene_part(self._cpp_object, offset)
+
+        # Record the translation in the provenance
+        self._provenance.setdefault("transformations", [])
+        self._provenance["transformations"].append(
+            {
+                "translate": {
+                    "offset": offset,
+                },
+            }
+        )
+
         return self
 
     @classmethod
@@ -92,7 +144,16 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
         _cpp_scene_part = _helios.read_scene_part_from_xml(
             str(scene_part_file), [str(p) for p in get_asset_directories()], id
         )
-        return cls._from_cpp(_cpp_scene_part)
+        obj = cls._from_cpp(_cpp_scene_part)
+
+        obj._provenance = {
+            "from_xml": {
+                "scene_part_file": str(strip_asset_prefix(scene_part_file)),
+                "id": id,
+            }
+        }
+
+        return obj
 
     @classmethod
     @validate_call
@@ -106,8 +167,16 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
             str(obj_file), [str(p) for p in get_asset_directories()], up_axis
         )
 
-        return cls._from_cpp(_cpp_part)
-    
+        obj = cls._from_cpp(_cpp_part)
+
+        obj._provenance = {
+            "from_obj": {
+                "obj_file": str(strip_asset_prefix(obj_file)),
+                "up_axis": up_axis,
+            }
+        }
+
+        return obj
 
     @classmethod
     @validate_call
@@ -116,8 +185,15 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
 
         _cpp_part = _helios.read_tiff_scene_part(str(tiff_file))
 
-        return cls._from_cpp(_cpp_part)
+        obj = cls._from_cpp(_cpp_part)
 
+        obj._provenance = {
+            "from_tiff": {
+                "tiff_file": str(strip_asset_prefix(tiff_file)),
+            }
+        }
+
+        return obj
 
     @classmethod
     @validate_call
@@ -128,8 +204,7 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
         Supports '**' for matching multiple directories.
         """
         return [ScenePart.from_obj(obj, up_axis) for obj in obj_files]
-    
-    
+
     @classmethod
     @validate_call
     def from_tiffs(cls, tiff_files: MultiAssetPath):
@@ -139,17 +214,18 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
         Supports '**' for matching multiple directories.
         """
         return [ScenePart.from_tiff(tiff) for tiff in tiff_files]
-    
 
     @classmethod
     @validate_call
     def from_xyz(
         cls,
-        xyz_file: AssetPath, 
+        xyz_file: AssetPath,
         voxel_size: PositiveFloat,
         separator: Optional[str] = None,
-        max_color_value: NonNegativeFloat = 0.0, 
-        default_normal: NDArray[Shape["3"], np.float64] = np.array([np.finfo(np.float64).max] * 3, dtype=np.float64),
+        max_color_value: NonNegativeFloat = 0.0,
+        default_normal: NDArray[Shape["3"], np.float64] = np.array(
+            [np.finfo(np.float64).max] * 3, dtype=np.float64
+        ),
         sparse: bool = False,
         estimate_normals: bool = False,
         normals_file_columns: list[NonNegativeInt] = [3, 4, 5],
@@ -157,7 +233,7 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
         snap_neighbor_normal: bool = False,
     ):
         """Load the scene part from an XYZ file."""
-        
+
         if separator is None:
             separator = detect_separator(xyz_file)
 
@@ -179,8 +255,24 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
             snap_neighbor_normal,
         )
 
-        return cls._from_cpp(_cpp_part)
-    
+        obj = cls._from_cpp(_cpp_part)
+
+        obj._provenance = {
+            "from_xyz": {
+                "xyz_file": str(strip_asset_prefix(xyz_file)),
+                "separator": separator,
+                "voxel_size": voxel_size,
+                "max_color_value": max_color_value,
+                "default_normal": default_normal,
+                "sparse": sparse,
+                "estimate_normals": estimate_normals,
+                "normals_file_columns": normals_file_columns,
+                "rgb_file_columns": rgb_file_columns,
+                "snap_neighbor_normal": snap_neighbor_normal,
+            }
+        }
+
+        return obj
 
     @classmethod
     @validate_call
@@ -190,7 +282,9 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
         voxel_size: PositiveFloat,
         separator: Optional[str] = None,
         max_color_value: NonNegativeFloat = 0.0,
-        default_normal: NDArray[Shape["3"], np.float64] = np.array([np.finfo(np.float64).max] * 3, dtype=np.float64),
+        default_normal: NDArray[Shape["3"], np.float64] = np.array(
+            [np.finfo(np.float64).max] * 3, dtype=np.float64
+        ),
         sparse: bool = False,
         estimate_normals: bool = False,
         normals_file_columns: list[NonNegativeInt] = [3, 4, 5],
@@ -203,12 +297,20 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
         Each parameters hould be a single shared value for all files.
         """
         return [
-            ScenePart.from_xyz(xyz, voxel_size, separator, max_color_value, default_normal, 
-                               sparse, estimate_normals, normals_file_columns, 
-                               rgb_file_columns, snap_neighbor_normal)
+            ScenePart.from_xyz(
+                xyz,
+                voxel_size,
+                separator,
+                max_color_value,
+                default_normal,
+                sparse,
+                estimate_normals,
+                normals_file_columns,
+                rgb_file_columns,
+                snap_neighbor_normal,
+            )
             for xyz in xyz_files
-            ]
-    
+        ]
 
     @classmethod
     @validate_call
@@ -223,7 +325,9 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
         """Load the scene part from a VOX file."""
 
         if intersection_mode == "fixed" and intersection_argument is not None:
-            raise ValueError("'intersection_argument' must not be provided when 'intersection_mode' is 'fixed'.")
+            raise ValueError(
+                "'intersection_argument' must not be provided when 'intersection_mode' is 'fixed'."
+            )
 
         _cpp_part = _helios.read_vox_scene_part(
             str(vox_file),
@@ -231,10 +335,59 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
             intersection_mode,
             intersection_argument if intersection_argument is not None else 0.0,
             random_shift,
-            ladlut_path if ladlut_path is not None else ""
+            ladlut_path if ladlut_path is not None else "",
         )
 
-        return cls._from_cpp(_cpp_part)
+        obj = cls._from_cpp(_cpp_part)
+
+        obj._provenance = {
+            "from_vox": {
+                "vox_file": str(strip_asset_prefix(vox_file)),
+                "intersection_mode": intersection_mode,
+                "intersection_argument": intersection_argument,
+                "random_shift": random_shift,
+                "ladlut_path": ladlut_path,
+            }
+        }
+
+        return obj
+
+    @classmethod
+    def _from_dict(cls, d):
+        part = None
+        if "from_xml" in d:
+            part = cls.from_xml(**d["from_xml"])
+        if "from_obj" in d:
+            part = cls.from_obj(**d["from_obj"])
+        if "from_tiff" in d:
+            part = cls.from_tiff(**d["from_tiff"])
+        if "from_xyz" in d:
+            part = cls.from_xyz(**d["from_xyz"])
+        if "from_vox" in d:
+            part = cls.from_vox(**d["from_vox"])
+
+        if part is None:
+            raise ValueError(
+                "Error deserializing ScenePart: No valid source found in the dictionary."
+            )
+
+        if "transformations" in d:
+            for transformation in d["transformations"]:
+                if "rotate" in transformation:
+                    part = part.rotate(**transformation["rotate"])
+                    continue
+                if "scale" in transformation:
+                    part = part.scale(**transformation["scale"])
+                    continue
+                if "translate" in transformation:
+                    part = part.translate(**transformation["translate"])
+                    continue
+
+                raise ValueError(
+                    "Error deserializing ScenePart: Unknown transformation found in the dictionary."
+                )
+
+        return part
 
 
 class StaticScene(Model, cpp_class=_helios.StaticScene):

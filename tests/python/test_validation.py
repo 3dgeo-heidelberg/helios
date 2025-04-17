@@ -1,9 +1,12 @@
 from helios.validation import *
 
+from datetime import datetime
+
 import copy
 import math
 import numpy as np
 import pytest
+import yaml
 
 
 class MockCppObject:
@@ -526,3 +529,139 @@ def test_is_iterable_of_model_annotation():
     assert _is_iterable_of_model_annotation(Union[int, str]) == False
     assert _is_iterable_of_model_annotation(list[int]) == False
     assert _is_iterable_of_model_annotation(list[Obj]) == True
+
+
+def test_serialization_round_trip():
+    class Obj(Model):
+        somestr: str = "abc"
+        someint: int = 42
+        somebool: bool = False
+        somedate: datetime = datetime.now()
+
+    # Create two objects from one another
+    obj = Obj()
+    obj2 = Obj(**obj._to_dict())
+
+    assert obj.somestr == obj2.somestr
+    assert obj.someint == obj2.someint
+    assert obj.somebool == obj2.somebool
+    assert obj.somedate == obj2.somedate
+
+
+def test_yaml_serialization_default_filename(tmp_path):
+    class Obj(Model):
+        someint: int = 42
+
+    obj = Obj()
+    filename = obj.to_yml(tmp_path, shallow=False)
+
+    assert filename.exists()
+    assert filename.name == "obj.yml"
+
+
+def test_deep_yaml_serialization(tmp_path):
+    class RelatedObj(Model):
+        somestr: str = "abc"
+
+    class Obj(Model):
+        somemodel: RelatedObj = RelatedObj()
+        someint: int = 42
+
+    obj = Obj()
+    filename = obj.to_yml(path=tmp_path, filename="test.yaml", shallow=False)
+
+    assert filename.exists()
+    assert filename.is_file()
+    assert filename.name == "test.yaml"
+
+    with open(filename, "r") as f:
+        data = yaml.safe_load(f)
+
+    assert data["someint"] == 42
+    assert data["somemodel"]["somestr"] == "abc"
+
+
+def test_shallow_yaml_requires_path():
+    class Obj(Model):
+        someint: int = 42
+
+    obj = Obj()
+
+    with pytest.raises(ValueError):
+        obj.to_yml("./bla.yml", shallow=True)
+
+
+def test_shallow_yaml_serialization(tmp_path):
+    class RelatedObj(Model):
+        somestr: str = "abc"
+
+    class Obj(Model):
+        somemodel: RelatedObj = RelatedObj()
+        someint: int = 42
+
+    obj = Obj()
+    filename = obj.to_yml(tmp_path, shallow=True)
+
+    assert filename.exists()
+    assert filename.is_file()
+    assert filename.name == "obj.yml"
+
+    with open(filename, "r") as f:
+        data = yaml.safe_load(f)
+
+    assert data["someint"] == 42
+    assert "somemodel" in data
+    assert (tmp_path / data["somemodel"]).exists()
+
+    with open(tmp_path / data["somemodel"], "r") as f:
+        somemodel_data = yaml.safe_load(f)
+
+    assert somemodel_data["somestr"] == "abc"
+
+
+def test_shallow_yaml_list_serialization(tmp_path):
+    class RelatedObj(Model):
+        somestr: str = "abc"
+
+    class Obj(Model):
+        somemodel: list[RelatedObj] = [RelatedObj("foo"), RelatedObj("bar")]
+
+    obj = Obj()
+    filename = obj.to_yml(tmp_path, shallow=True)
+    assert filename.exists()
+    assert (tmp_path / "somemodel0000.yml").exists()
+    assert (tmp_path / "somemodel0001.yml").exists()
+
+    with open(filename, "r") as f:
+        data = yaml.safe_load(f)
+
+    assert data["somemodel"][0] == "somemodel0000.yml"
+    assert data["somemodel"][1] == "somemodel0001.yml"
+
+    with open(tmp_path / "somemodel0000.yml", "r") as f:
+        somemodel_data = yaml.safe_load(f)
+    assert somemodel_data["somestr"] == "foo"
+    with open(tmp_path / "somemodel0001.yml", "r") as f:
+        somemodel_data = yaml.safe_load(f)
+    assert somemodel_data["somestr"] == "bar"
+
+
+def test_can_be_serialized_shallow(tmp_path):
+    class RelatedObj(Model):
+        somestr: str = "abc"
+
+        def _can_be_serialized_shallow(self):
+            return False
+
+    class Obj(Model):
+        somemodel: RelatedObj = RelatedObj()
+
+    obj = Obj()
+    filename = obj.to_yml(tmp_path, shallow=True, filename="test.yaml")
+    assert filename.exists()
+
+    with open(filename, "r") as f:
+        data = yaml.safe_load(f)
+
+    assert "somestr" in data["somemodel"]
+    assert data["somemodel"]["somestr"] == "abc"

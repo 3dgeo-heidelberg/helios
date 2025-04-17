@@ -6,6 +6,7 @@ import pytest
 
 from helios import HeliosException
 
+
 def test_construct_scene_from_xml():
     scene = StaticScene.from_xml("data/scenes/toyblocks/toyblocks_scene.xml")
 
@@ -70,33 +71,54 @@ def test_scenepart_from_tiffs():
     scene_parts = ScenePart.from_tiffs("data/test/*.tif")
     assert len(scene_parts) == 2
 
+
 def test_scenepart_from_xyz():
     scene_part1 = ScenePart.from_xyz(
-        "data/sceneparts/pointclouds/sphere_dens25000.xyz", separator=" ", voxel_size=1.0,
-          max_color_value=255.0, default_normal=[0.0, 0.0, 1.0])
-    
+        "data/sceneparts/pointclouds/sphere_dens25000.xyz",
+        separator=" ",
+        voxel_size=1.0,
+        max_color_value=255.0,
+        default_normal=[0.0, 0.0, 1.0],
+    )
+
     scene_part2 = ScenePart.from_xyz(
-        "data/sceneparts/pointclouds/sphere_dens25000_sepcomma.xyz", separator=",", voxel_size=1.0,
-          max_color_value=255.0)
-    
+        "data/sceneparts/pointclouds/sphere_dens25000_sepcomma.xyz",
+        separator=",",
+        voxel_size=1.0,
+        max_color_value=255.0,
+    )
+
     scene_part3 = ScenePart.from_xyz(
-        "data/sceneparts/pointclouds/sphere_dens25000.xyz", separator=" ", voxel_size=1.0)
-    
+        "data/sceneparts/pointclouds/sphere_dens25000.xyz",
+        separator=" ",
+        voxel_size=1.0,
+    )
+
     scene_part4 = ScenePart.from_xyz(
-        "data/sceneparts/pointclouds/sphere_dens25000.xyz", voxel_size=1.0,
-          default_normal=[0.0, 0.0, 1.0], sparse=True)
-    
+        "data/sceneparts/pointclouds/sphere_dens25000.xyz",
+        voxel_size=1.0,
+        default_normal=[0.0, 0.0, 1.0],
+        sparse=True,
+    )
+
     assert len(scene_part1._cpp_object.primitives) > 0
     assert len(scene_part2._cpp_object.primitives) > 0
     assert len(scene_part3._cpp_object.primitives) > 0
     assert len(scene_part4._cpp_object.primitives) > 0
 
+
 def test_scenepart_from_xyzs():
-    scene_parts1 = ScenePart.from_xyzs("data/sceneparts/pointclouds/*.xyz", voxel_size= 1.0)
-                                         
-    scene_parts2 = ScenePart.from_xyzs("data/sceneparts/pointclouds/*.xyz",
-                            voxel_size= 1.0, max_color_value= 255.0, default_normal= [0.0, 0.0, 1.0]) 
-                               
+    scene_parts1 = ScenePart.from_xyzs(
+        "data/sceneparts/pointclouds/*.xyz", voxel_size=1.0
+    )
+
+    scene_parts2 = ScenePart.from_xyzs(
+        "data/sceneparts/pointclouds/*.xyz",
+        voxel_size=1.0,
+        max_color_value=255.0,
+        default_normal=[0.0, 0.0, 1.0],
+    )
+
     assert len(scene_parts1) > 2
     assert len(scene_parts2) > 2
 
@@ -107,19 +129,32 @@ def test_scenepart_from_xyzs():
             separator=",",
         )
 
+
 def test_scenepart_from_vox():
-    scene_parts1 = ScenePart.from_vox("data/sceneparts/syssifoss/F_BR08_08_crown_250.vox", intersection_mode="fixed")
-    scene_parts2 = ScenePart.from_vox("data/sceneparts/syssifoss/F_BR08_08_merged.vox", intersection_mode="scaled", intersection_argument=0.5)
-    scene_parts3 = ScenePart.from_vox("data/sceneparts/syssifoss/F_BR08_08_merged.vox", intersection_mode="scaled")
+    scene_parts1 = ScenePart.from_vox(
+        "data/sceneparts/syssifoss/F_BR08_08_crown_250.vox", intersection_mode="fixed"
+    )
+    scene_parts2 = ScenePart.from_vox(
+        "data/sceneparts/syssifoss/F_BR08_08_merged.vox",
+        intersection_mode="scaled",
+        intersection_argument=0.5,
+    )
+    scene_parts3 = ScenePart.from_vox(
+        "data/sceneparts/syssifoss/F_BR08_08_merged.vox", intersection_mode="scaled"
+    )
 
     assert len(scene_parts1._cpp_object.primitives) > 0
     assert len(scene_parts2._cpp_object.primitives) > 0
-    assert len(scene_parts3._cpp_object.primitives) > 0    
+    assert len(scene_parts3._cpp_object.primitives) > 0
 
     with pytest.raises(ValueError):
-        ScenePart.from_vox("data/sceneparts/syssifoss/F_BR08_08_crown_250.vox", intersection_mode="fixed", intersection_argument=0.1)
-    
-    
+        ScenePart.from_vox(
+            "data/sceneparts/syssifoss/F_BR08_08_crown_250.vox",
+            intersection_mode="fixed",
+            intersection_argument=0.1,
+        )
+
+
 def get_bbox(part):
     scene = StaticScene(scene_parts=[part])
     scene._finalize()
@@ -218,3 +253,10 @@ def test_transform_scenepart(box_f):
     bbox2 = get_bbox(box2)
 
     assert np.allclose(bbox1 + offset, bbox2)
+
+
+def test_scene_part_from_xml_serialization(box, tmp_path):
+    box.to_yml(path=tmp_path, filename="box.yml")
+    box2 = ScenePart.from_yml(tmp_path / "box.yml")
+
+    assert len(box._cpp_object.primitives) == len(box2._cpp_object.primitives)

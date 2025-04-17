@@ -1,4 +1,4 @@
-from helios.utils import get_asset_directories
+from helios.utils import get_asset_directories, strip_asset_prefix
 from helios.validation import (
     AssetPath,
     Model,
@@ -37,7 +37,17 @@ class Platform(Model, cpp_class=_helios.Platform):
         _cpp_platform = _helios.read_platform_from_xml(
             str(platform_file), [str(p) for p in get_asset_directories()], platform_id
         )
-        return cls._from_cpp(_cpp_platform)
+
+        obj = cls._from_cpp(_cpp_platform)
+
+        obj._provenance = {
+            "from_xml": {
+                "platform_file": str(strip_asset_prefix(platform_file)),
+                "platform_id": platform_id,
+            }
+        }
+
+        return obj
 
 
 #
