@@ -55,6 +55,12 @@ class OutputFormat(StrEnum):
     #       is exactly the time to abolish them.
 
 
+class ForceOnGroundStrategy(IntEnum):
+    NONE = 0
+    LEAST_COMPLEX = 1
+    MOST_COMPLEX = -1
+    
+    
 class ExecutionSettings(Model, UpdateableMixin):
     parallelization: ParallelizationStrategy = ParallelizationStrategy.CHUNK
     num_threads: ThreadCount = None
