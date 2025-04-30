@@ -179,6 +179,103 @@ TEST_CASE( "Discrete time test" ) {
 
     SECTION( "Discrete time test with f=1000000, periodScale=1.0" ) {
         DiscreteTime dt4(1000000, 1.0);
+
+        SECTION("toDiscrete") {
+            auto [cont, disc] = GENERATE(std::make_tuple(0.00000000001, 0), std::make_tuple(0.000001, 1), std::make_tuple(0.999999999999, 999999), std::make_tuple(3.00000000001, 3000000), std::make_tuple(2.000001, 2000001), std::make_tuple(4.999999999999, 4999999));
+
+            REQUIRE(dt4.toDiscrete(cont) == disc);
+        }
+
+        SECTION("toCyclicDiscrete and toPeriodicDiscrete") {
+            auto [cont, disc] = GENERATE(std::make_tuple(3.00000000001, 0), std::make_tuple(2.000001, 1), std::make_tuple(4.999999999999, 999999));
+            
+            SECTION("toCyclicDiscrete") {
+                REQUIRE(dt4.toCyclicDiscrete(cont) == disc);
+            }
+    
+            SECTION("toPeriodicDiscrete") {
+                REQUIRE(dt4.toPeriodicDiscrete(cont) == disc);
+            }
+        }
+
+        SECTION("toContinuous") {
+            auto [disc, cont] = GENERATE(std::make_tuple(0, 0.0), std::make_tuple(1, 0.000001));
+
+            REQUIRE(dt4.toContinuous(disc) == cont);
+        }
+
+        SECTION("toContinuous with many digits and differences") {
+            auto [disc, subtrahend, cont] = GENERATE(std::make_tuple(999999, 0.999999, 0.0000001), std::make_tuple(2000001, 2.000001, 0.0000001), std::make_tuple(4999999, 4.999999, 0.0000001));
+
+            REQUIRE(dt4.toContinuous(disc) - subtrahend < cont);
+        }
+
+        SECTION("toContinuous with absolute") {
+            auto [disc, cont] = GENERATE(std::tuple(3000000, 3.0));
+
+            REQUIRE(std::fabs(dt4.toContinuous(disc)) == cont);
+        }
+
+        SECTION("toCyclicContinuous and toPeriodicContinuous with absolute") {
+            auto [disc, cont] = GENERATE(std::tuple(3000000, 0.0));
+
+            SECTION("toCyclicContinuous with absolute") {
+                REQUIRE(std::fabs(dt4.toCyclicContinuous(disc)) == cont);
+            }
+            
+            SECTION("toPeriodicContinuous with absolute") {
+                REQUIRE(std::fabs(dt4.toPeriodicContinuous(disc)) == cont);
+            }	
+        }
+
+        SECTION("toCyclicContinuous and toPeriodicContinuous with many digits and differences") {
+            auto [disc, subtrahend, cont] = GENERATE(std::make_tuple(2000001, 0.000001, 0.0000001), std::make_tuple(4999999, 0.999999, 0.0000001));	
+
+            SECTION("toCyclicContinuous with many digits and differences") {
+                REQUIRE(std::fabs(dt4.toCyclicContinuous(disc) - subtrahend) < cont);
+            }
+
+            SECTION("toPeriodicContinuous with many digits and differences") {
+                REQUIRE(std::fabs(dt4.toPeriodicContinuous(disc) - subtrahend) < cont);
+            }
+        }
+
+        SECTION("Inverse tests with toDiscrete/toContinuous") {
+            auto i = GENERATE(0, 500000, 999999, 1000000);
+
+            REQUIRE(dt4.toDiscrete(dt4.toContinuous(i)) == i);
+        }
+
+        SECTION("Inverse tests with toCyclicDiscrete/toContinuous and toPeriodicDiscrete/toContinuous") {
+            auto [in, exp] = GENERATE(std::make_tuple(1000000, 0));
+
+            SECTION("toCyclicDiscrete/toContinuous") {
+                REQUIRE(dt4.toCyclicDiscrete(dt4.toContinuous(in)) == exp);
+            }
+
+            SECTION("toPeriodicDiscrete/toContinuous") {
+                REQUIRE(dt4.toPeriodicDiscrete(dt4.toContinuous(in)) == exp);
+            }
+            
+        }
+
+        SECTION("Inverse tests with toContinuous/toDiscrete") {
+            auto i = GENERATE(0.0, 0.5, 1.0);
+
+            REQUIRE(dt4.toContinuous(dt4.toDiscrete(i)) == i);
+        }
+
+        SECTION("Inverse tests with toCyclicContinuous/toDiscrete and toPeriodicContinuous/toDiscrete") {
+            auto [in, exp] = GENERATE(std::make_tuple(1.0, 0.0));
+
+            SECTION("toCyclicContinuous/toDiscrete") {
+                REQUIRE(dt4.toCyclicContinuous(dt4.toDiscrete(in)) == exp);
+            }
+
+            SECTION("toPeriodicContinuous/toDiscrete") {
+                REQUIRE(dt4.toPeriodicContinuous(dt4.toDiscrete(in)) == exp);
+            }
+        }
     }
 
 }
