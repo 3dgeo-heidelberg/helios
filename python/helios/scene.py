@@ -14,7 +14,8 @@ import _helios
 class ScenePart(Model, cpp_class=_helios.ScenePart):
     force_on_ground: Union[ForceOnGroundStrategy, PositiveInt] = ForceOnGroundStrategy.NONE
     is_ground: bool = False
-
+    classification: int = 0
+    
     @validate_call
     def rotate(
         self,
