@@ -269,7 +269,7 @@
 			optics            			= "rotating"
 			pulseFreqs_Hz				= "150000,250000,350000,500000,700000,1000000,2000000"
 			pulseLength_ns     			= "4"
-			rangeMin_m					= "0.0100"
+			rangeMin_m					= "100"
 			scanAngleMax_deg   			= "45"
 			scanAngleEffectiveMax_deg	= "30"
 			scanFreqMin_Hz				= "40"
