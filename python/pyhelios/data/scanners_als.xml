@@ -236,7 +236,7 @@
 		Laser has two channels (NIR, green); took specs from the NIR channel
 	-->
 
-	<scanner 	id 						= "riegl_vq-880g-green"
+	<scanner 	id 						= "riegl_vq-880g"
 			accuracy_m					= "0.025"
 			beamDivergence_rad 			= "0.0007"
 			name              			= "RIEGL VQ-880-G II (Green Channel)"
