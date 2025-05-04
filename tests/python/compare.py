@@ -1,6 +1,3 @@
-#!/usr/bin/env python
-# -- coding: utf-8 --
-
 """
 :author: Alberto M. Esmoris Pena
 
@@ -10,14 +7,16 @@ Utils for point cloud operations, e.g., point cloud comparison.
 import laspy
 import pandas as pd
 import numpy as np
+
+from pathlib import Path
 from scipy.spatial import KDTree as KDT
 
 # ---   CONSTANTS   --- #
 # --------------------- #
 # Expected names for the features
-PCLOUD_FNAME_GPS_TIME = 'gps_time'
-PCLOUD_FNAME_REFLECTANCE = 'reflectance'
-PCLOUD_FNAME_NIR = 'nir'
+PCLOUD_FNAME_GPS_TIME = "gps_time"
+PCLOUD_FNAME_REFLECTANCE = "reflectance"
+PCLOUD_FNAME_NIR = "nir"
 
 
 # ---   POINT CLOUD   --- #
@@ -36,6 +35,7 @@ class PointCloud:
     :ivar y: The vector of classes (represented by integers), if any.
     :vartype: :class:`np.ndarray` or None
     """
+
     # ---   CONSTRUCTION   --- #
     # ------------------------ #
     def __init__(self, X, fnames=None, F=None, y=None):
@@ -58,11 +58,13 @@ class PointCloud:
         """
         # Extract structure space
         scales, offsets = las.header.scales, las.header.offsets
-        X = np.array([
-            las.X * scales[0] + offsets[0],
-            las.Y * scales[1] + offsets[1],
-            las.Z * scales[2] + offsets[2],
-        ]).T
+        X = np.array(
+            [
+                las.X * scales[0] + offsets[0],
+                las.Y * scales[1] + offsets[1],
+                las.Z * scales[2] + offsets[2],
+            ]
+        ).T
         # Extract features
         F = None
         if fnames is not None:
@@ -84,7 +86,7 @@ class PointCloud:
         return PointCloud.from_las(laspy.read(path))
 
     @staticmethod
-    def from_xyz_file(path, cols, names, sep=' '):
+    def from_xyz_file(path, cols, names, sep=" "):
         """
         Build a point cloud object from the XYZ/CSV file at the given path.
 
@@ -102,13 +104,12 @@ class PointCloud:
         # Read data
         P = pd.read_csv(path, usecols=cols, names=names, header=None, sep=sep)
         # Extract structure space
-        X = np.array([P['x'], P['y'], P['z']]).T
+        X = np.array([P["x"], P["y"], P["z"]]).T
         # Extract classes
-        y = P['classification'] if 'classification' in names else None
+        y = P["classification"] if "classification" in names else None
         # Extract features
         fnames = [
-            name
-            for name in names if name not in ['x', 'y', 'z', 'classification']
+            name for name in names if name not in ["x", "y", "z", "classification"]
         ]
         F = None
         if len(fnames) > 0:
@@ -187,7 +188,7 @@ class PointCloud:
             min_distance_mask = (D.T == np.min(D, axis=1)).T
             N = [ni[min_distance_mask[i]] for i, ni in enumerate(N)]
             for i, ni in enumerate(N):
-                jmin = np.argmin(np.abs(pcloud_t[ni]-t[i]))
+                jmin = np.argmin(np.abs(pcloud_t[ni] - t[i]))
                 N[i] = ni[jmin]
             return N
 
@@ -201,83 +202,42 @@ class PointCloud:
         np.random.shuffle(indices)
         self.X = self.X[indices]
         # Random shuffle any other array-like member attribute
-        for attr in ['F', 'y']:
+        for attr in ["F", "y"]:
             if getattr(self, attr, None) is not None:
                 setattr(self, attr, getattr(self, attr)[indices])
         return self  # Return the object itself, because fluent :)
 
 
-# ---   M A I N   --- #
-# ------------------- #
-# Check the logic when called as an executable script
-if __name__ == '__main__':
-    def clipped_normal(mu, sigma, shape, xmin, xmax):
-        return np.clip(  # Force values to be inside [xmin, xmax]
-            np.random.normal(  # Normal distribution
-                mu,  # Mean
-                sigma,  # Standard deviation
-                shape  # Output dimensionality
-            ),
-            xmin,  # Min value for clipping
-            xmax  # Max value for clipping
-        )
-    # Test data with no repeated positions and no GPS time
-    X1 = np.unique(np.random.normal(0, 1, (1024, 3)), axis=0)
-    fnames1 = [PCLOUD_FNAME_REFLECTANCE, PCLOUD_FNAME_NIR]
-    F1 = clipped_normal(0, 1, (1024, 2), -3, 3)
-    y1 = np.random.randint(0, 5, 1024)
-    pcloud1 = PointCloud(X1, fnames=fnames1, F=F1, y=y1)
+def compare_clouds(cloud1_path: Path, cloud2_path: Path):
+    cloud1 = PointCloud.from_las_file(cloud1_path)
+    cloud2 = PointCloud.from_las_file(cloud2_path)
+    cloud1.assert_equals(cloud2)
 
-    # Test data with no repeated positions and GPS time
-    fnames2 = fnames1 + [PCLOUD_FNAME_GPS_TIME]
-    F2 = np.hstack([F1, np.linspace(0, 60, 1024).reshape(-1, 1)])
-    pcloud2 = PointCloud(X1, fnames=fnames2, F=F2, y=y1)
 
-    # Test data with repeated positions and no GPS time
-    X3 = np.random.normal(0, 1, (768, 3))
-    X3 = np.vstack([X3, X3[::100], X3[::300]])
-    F3 = clipped_normal(0, 1, (X3.shape[0], 1), -3, 3)
-    y3 = np.random.randint(0, 2, X3.shape[0])
-    fnames3 = [PCLOUD_FNAME_REFLECTANCE]
-    # Ignore F3 in pcloud3 because repeated positions without time will fail
-    pcloud3 = PointCloud(X3, fnames=fnames3, F=None, y=y3)
+def speed_from_traj(trajectory_file):
+    def mode(arr):
+        vals, counts = np.unique(arr, return_counts=True)
+        mode_idx = np.argwhere(counts == np.max(counts))
+        mode_val = vals[mode_idx].flatten().tolist()[0]
 
-    # Test data with repeated positions and GPS time
-    fnames4 = fnames3 + [PCLOUD_FNAME_GPS_TIME]
-    F4 = np.hstack([F3, np.linspace(0, 71.3, X3.shape[0]).reshape(-1, 1)])
-    pcloud4 = PointCloud(X3, fnames=fnames4, F=F4, y=y3)
+        # round to 4 decimal places
+        return np.round(mode_val, 3)
 
-    # Test data with no features and no classess at all
-    X5 = np.random.normal(0, 1, (999, 3))
-    pcloud5 = PointCloud(X5, fnames=None, F=None, y=None)
+    # load trajectory file
+    traj_data = np.loadtxt(trajectory_file, delimiter=" ", usecols=(0, 1, 2, 3))
 
-    # Test data in pcloud1 with negligible noise
-    X6 = X1 + clipped_normal(0, 1e-8, X1.shape, -3e-8, 3e-8)
-    F6 = F1 + clipped_normal(0, 1e-8, F1.shape, -3e-8, 3e-8)
-    pcloud6 = PointCloud(X6, fnames=fnames1, F=F6, y=y1).shuffle()
+    # get distance between all points
+    points = traj_data[:, :2]
+    d = np.diff(points, axis=0)
+    segdists = np.sqrt((d**2).sum(axis=1))
+    # get most frequent distance (ignore smaller distances from speedup/slowdown)
+    dist = mode(segdists)
 
-    # Test data in pcloud2 with negligible noise
-    F7 = np.hstack([F6, np.linspace(0, 60, 1024).reshape(-1, 1)])
-    pcloud7 = PointCloud(X6, fnames=fnames2, F=F7, y=y1).shuffle()
+    # get time diff. between points (should always be the same, but we're nevertheless computing the mode to be safe)
+    times = traj_data[:, 3]
+    dt = np.diff(times, axis=0)
+    time_diff = mode(dt)
 
-    # Run asserts that must be passed
-    pcloud1.assert_equals(pcloud1)
-    print('Asserted PointCloud 1')
-    pcloud2.assert_equals(pcloud2)
-    print('Asserted PointCloud 2')
-    pcloud3.assert_equals(pcloud3)
-    print('Asserted PointCloud 3')
-    pcloud4.assert_equals(pcloud4)
-    print('Asserted PointCloud 4')
-    pcloud5.assert_equals(pcloud5)
-    print('Asserted PointCloud 5')
-    pcloud6.assert_equals(pcloud6)
-    pcloud1.assert_equals(pcloud6)
-    pcloud6.assert_equals(pcloud1)
-    print('Asserted PointCloud 6')
-    pcloud7.assert_equals(pcloud7)
-    pcloud2.assert_equals(pcloud7)
-    pcloud7.assert_equals(pcloud2)
-    print('Asserted PointCloud 7')
-    # All asserts passed
-    print('\nAll asserts passed!  :)')
+    speed = dist / time_diff
+
+    return speed
