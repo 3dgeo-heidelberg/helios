@@ -3,7 +3,7 @@ from helios.utils import get_asset_directories, detect_separator
 from helios.validation import AssetPath, Model, MultiAssetPath, validate_xml_file
 
 from numpydantic import NDArray, Shape
-from pydantic import PositiveFloat, NonNegativeFloat, NonNegativeInt, validate_call
+from pydantic import PositiveFloat, PositiveInt, NonNegativeFloat, NonNegativeInt, validate_call
 from typing import Literal, Optional, Union
 
 import numpy as np

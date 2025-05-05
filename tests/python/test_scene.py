@@ -288,4 +288,4 @@ def test_is_ground():
     scene = StaticScene(scene_parts=[sp1, sp2])
     scene._finalize()
 
-    assert not np.isclose(sp1._cpp_object.all_vertices[0].position[2], sp2._cpp_object.all_vertices[0].position[2]  
+    assert not np.isclose(sp1._cpp_object.all_vertices[0].position[2], sp2._cpp_object.all_vertices[0].position[2])
