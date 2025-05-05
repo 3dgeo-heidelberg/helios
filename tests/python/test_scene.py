@@ -1,9 +1,9 @@
 from helios.scene import *
-from helios.scanner import *
-from helios.platforms import *
-from helios.survey import Survey
+from helios.settings import *
+from helios.survey import *
+from helios.settings import *
+from helios.survey import *
 
-import os
 import math
 import numpy as np
 import pytest
@@ -235,4 +235,57 @@ def test_scene_binary():
     points2, _ = survey2.run()
     os.remove("data/scenes/toyblocks/toyblocks1.scene")
     assert len(points1) == len(points2)
+
+
+def test_ground_plane():
+    """
+    Test the force_on_groundfunctionality of the ScenePart class.
+    This test verifies that scene parts are correctly adjusted vertically to the ground plane
+    depending on their force_on_ground flag.
+
+    Here, the following is tested: 
+    - Scene parts with not NONE force_on_ground value will have their z-coordinate translated
+      to the ground plane's z-coordinate after finalization.
+    - Scene parts with force_on_ground = NONE will not be vertically adjusted.
+    - Scene parts with optional positive int value for force_on_ground will specify
+      the number of search steps to be performed.
+    """
+
+    sp1 = ScenePart.from_obj("data/sceneparts/toyblocks/cube.obj")
+    sp1.force_on_ground = ForceOnGroundStrategy.LEAST_COMPLEX
     
+    sp2 = ScenePart.from_obj("data/sceneparts/toyblocks/cube.obj")
+    sp2.force_on_ground = ForceOnGroundStrategy.NONE
+
+    sp3 = ScenePart.from_obj("data/sceneparts/basic/groundplane/groundplane.obj")
+    sp3.scale(70)
+    
+    sp4 = ScenePart.from_obj("data/sceneparts/toyblocks/cube.obj")
+    sp4.force_on_ground = 5
+
+    scene = StaticScene(scene_parts=[sp1, sp2, sp3, sp4])
+    scene._finalize()
+
+    assert np.isclose(sp1._cpp_object.all_vertices[0].position[2], sp3._cpp_object.all_vertices[0].position[2])
+    assert not np.isclose(sp2._cpp_object.all_vertices[0].position[2], sp3._cpp_object.all_vertices[0].position[2])
+    assert np.isclose(sp4._cpp_object.all_vertices[0].position[2], sp3._cpp_object.all_vertices[0].position[2])
+
+
+def test_is_ground():
+    """
+    Test the effect of the is_ground flag on the Z-coordinate adjustment of a scene part.
+    If is_ground is set to False for the ground plane, indicating that there are no valid ground scene parts in the scene, 
+    any other scene part should not be adjusted or aligned to the ground plane.
+    """
+
+    sp1 = ScenePart.from_obj("data/sceneparts/toyblocks/cube.obj")
+    sp1.force_on_ground = ForceOnGroundStrategy.MOST_COMPLEX
+    
+    sp2 = ScenePart.from_obj("data/sceneparts/basic/groundplane/groundplane.obj")
+    sp2.scale(70)
+    sp2.is_ground = False
+
+    scene = StaticScene(scene_parts=[sp1, sp2])
+    scene._finalize()
+
+    assert not np.isclose(sp1._cpp_object.all_vertices[0].position[2], sp2._cpp_object.all_vertices[0].position[2]  
