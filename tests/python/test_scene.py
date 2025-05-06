@@ -4,6 +4,7 @@ from helios.survey import *
 from helios.settings import *
 from helios.survey import *
 
+import os
 import math
 import numpy as np
 import pytest
