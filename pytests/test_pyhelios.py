@@ -171,9 +171,9 @@ def test_templates(test_sim):
 
     assert ss_templ.id == 'scanner1'
     assert ss_templ.active is True
-    assert ss_templ.pulseFreq == 300_000
+    assert ss_templ.pulseFreq == 200_000
     assert ss_templ.trajectoryTimeInterval == 0.01
-    assert ss_templ.scanFreq == 200
+    assert ss_templ.scanFreq == 80
     assert ss_templ.scanAngle * 180 / np.pi == 20
     assert ps_templ.id == 'platform1'
     assert ps_templ.movePerSec == 30
