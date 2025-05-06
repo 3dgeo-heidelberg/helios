@@ -55,7 +55,7 @@ option(HELIOS_PCL "Enable PCL support for debugging visualization" OFF)
 add_library(helios)
 
 # Find external dependencies
-find_package(GDAL REQUIRED)
+find_package(GDAL CONFIG REQUIRED)
 find_package(tinyxml2 REQUIRED)
 find_package(glm REQUIRED)
 find_package(Boost REQUIRED COMPONENTS system thread regex filesystem serialization iostreams random)
@@ -114,6 +114,7 @@ target_include_directories(helios
 # Expose version information to the C++ sources
 target_compile_definitions(helios
   PUBLIC
+    GLM_ENABLE_EXPERIMENTAL
     HELIOS_VERSION="${HELIOS_VERSION_FULL}"
     HELIOS_BUILD_TYPE="${CMAKE_BUILD_TYPE}"
 )

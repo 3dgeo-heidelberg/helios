@@ -52,6 +52,7 @@ class SimulationBuilder:
         legNoiseDisabled -- Leg noise disabling flag
         rebuildScene -- Rebuild scene enabling flag
         writeWaveform -- Write waveform enabling flag
+        writePulse -- Enable pulse-wise data writing
         calcEchowidth -- Compute echowidth enabling flag
         fullwaveNoise -- Compute fullwave noise enabling flag
         platformNoiseDisabled -- Platform noise disabling flag
@@ -100,6 +101,7 @@ class SimulationBuilder:
         self.setLegNoiseDisabled(True)
         self.setRebuildScene(False)
         self.setWriteWaveform(False)
+        self.setWritePulse(False)
         self.setCalcEchowidth(False)
         self.setFullwaveNoise(False)
         self.setPlatformNoiseDisabled(True)
@@ -157,7 +159,7 @@ class SimulationBuilder:
             self.calcEchowidth,
             self.fullwaveNoise,
             self.platformNoiseDisabled,
-            False
+            self.writePulse
         )
         if self.callback is not None:
             build.sim.setCallback(self.callback)
@@ -249,6 +251,10 @@ class SimulationBuilder:
     def setWriteWaveform(self, writeWaveform):
         self.validateBoolean(writeWaveform)
         self.writeWaveform = writeWaveform
+
+    def setWritePulse(self, writePulse):
+        self.validateBoolean(writePulse)
+        self.writePulse = writePulse
 
     def setCalcEchowidth(self, calcEchowidth):
         self.validateBoolean(calcEchowidth)
