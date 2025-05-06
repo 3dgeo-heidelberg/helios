@@ -9,8 +9,7 @@
 std::shared_ptr<Survey> readSurveyFromXml(
     std::string surveyPath,
     std::vector<std::string> assetsPath,
-    bool legNoiseDisabled,
-    bool rebuildScene
+    bool legNoiseDisabled
 );
 
 std::shared_ptr<Scanner> readScannerFromXml(
@@ -28,8 +27,7 @@ std::shared_ptr<Platform> readPlatformFromXml(
 std::shared_ptr<Scene> readSceneFromXml(
     std::string filePath,
     std::vector<std::string> assetsPath,
-    bool legNoiseDisabled,
-    bool rebuildScene
+    bool legNoiseDisabled
 );
 
 std::shared_ptr<ScenePart> readScenePartFromXml(

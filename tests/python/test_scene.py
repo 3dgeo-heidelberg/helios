@@ -4,6 +4,7 @@ from helios.survey import *
 from helios.settings import *
 from helios.survey import *
 
+import os
 import math
 import numpy as np
 import pytest
@@ -224,6 +225,19 @@ def test_transform_scenepart(box_f):
     assert np.allclose(bbox1 + offset, bbox2)
 
 
+def test_scene_binary():
+    survey1 = Survey.from_xml("data/surveys/toyblocks/tls_toyblocks.xml")
+    survey1.scene.to_binary("data/scenes/toyblocks/toyblocks1.scene")
+    points1, _ = survey1.run()
+
+    survey2 = Survey.from_xml("data/surveys/toyblocks/tls_toyblocks.xml")
+    survey2.scene = StaticScene.from_binary("data/scenes/toyblocks/toyblocks1.scene")
+
+    points2, _ = survey2.run()
+    os.remove("data/scenes/toyblocks/toyblocks1.scene")
+    assert len(points1) == len(points2)
+
+
 def test_ground_plane():
     """
     Test the force_on_groundfunctionality of the ScenePart class.
@@ -276,5 +290,3 @@ def test_is_ground():
     scene._finalize()
 
     assert not np.isclose(sp1._cpp_object.all_vertices[0].position[2], sp2._cpp_object.all_vertices[0].position[2])
-
-  

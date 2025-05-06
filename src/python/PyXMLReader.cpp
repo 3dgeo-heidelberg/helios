@@ -6,9 +6,9 @@
 std::shared_ptr<Survey> readSurveyFromXml(
     std::string surveyPath,
     std::vector<std::string> assetsPath,
-    bool legNoiseDisabled,
-    bool rebuildScene
+    bool legNoiseDisabled
 ){
+    bool rebuildScene = false;
     XmlSurveyLoader xmlreader(surveyPath, assetsPath);
     xmlreader.sceneLoader.kdtFactoryType = 4;
     xmlreader.sceneLoader.kdtNumJobs = 0;
@@ -50,9 +50,9 @@ std::shared_ptr<Platform> readPlatformFromXml(
 std::shared_ptr<Scene> readSceneFromXml(
     std::string filePath,
     std::vector<std::string> assetsPath,
-    bool legNoiseDisabled,
-    bool rebuildScene
+    bool legNoiseDisabled
 ) {
+    bool rebuildScene = false;
     tinyxml2::XMLDocument doc;
     if (doc.LoadFile(filePath.c_str()) != tinyxml2::XML_SUCCESS) {
         logging::ERR("ERROR: Failed to load XML file " + filePath);
