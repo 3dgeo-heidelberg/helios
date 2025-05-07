@@ -1484,7 +1484,6 @@ namespace helios{
 
             .def_property("pulse_freq_hz", &Scanner::getPulseFreq_Hz, &Scanner::setPulseFreq_Hz)    
             .def_property("is_state_active", &Scanner::isActive, &Scanner::setActive)
-            .def_property("write_wave_form", &Scanner::isWriteWaveform, &Scanner::setWriteWaveform)
             .def_property("calc_echowidth", &Scanner::isCalcEchowidth, &Scanner::setCalcEchowidth)
             .def_property("full_wave_noise", &Scanner::isFullWaveNoise, &Scanner::setFullWaveNoise)
             .def_property("platform_noise_disabled", &Scanner::isPlatformNoiseDisabled, &Scanner::setPlatformNoiseDisabled)
@@ -1531,8 +1530,16 @@ namespace helios{
                     }
                 },
                 "A shared mutex for synchronized operations"
-            );
-      
+            )
+            .def_property("write_waveform",
+                          &Scanner::isWriteWaveform,
+                          &Scanner::setWriteWaveform)
+            
+            .def_property("write_pulse",
+                            &Scanner::isWritePulse,
+                            &Scanner::setWritePulse);
+
+
 
         py::class_<PyHeliosSimulation> helios_simulation (m, "PyheliosSimulation");
         helios_simulation
