@@ -21,3 +21,9 @@ target_sources(
   PUBLIC
   "CatchDiscreteTimeTest.cpp"
 )
+
+target_sources(
+  helios_test
+  PUBLIC
+  "CatchFunctionalPlatformTest.cpp"
+)
