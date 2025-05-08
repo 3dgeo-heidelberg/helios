@@ -290,3 +290,16 @@ def test_is_ground():
     scene._finalize()
 
     assert not np.isclose(sp1._cpp_object.all_vertices[0].position[2], sp2._cpp_object.all_vertices[0].position[2])
+    
+
+def test_classification_scenepart():
+    """
+    Test that the classification of a scene part can be set correctly and be used during run of Survey
+    """
+    survey = Survey.from_xml("data/surveys/toyblocks/als_toyblocks.xml")
+    survey.scene.scene_parts[0].classification = 1
+    assert survey.scene.scene_parts[0]._cpp_object.classification == 1
+
+    meas, _ = survey.run()
+   
+    assert np.any(meas["classification"] == 1)

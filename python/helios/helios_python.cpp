@@ -781,15 +781,32 @@ namespace helios{
                       })
 
             .def_property("primitives", &ScenePart::getPrimitives, &ScenePart::setPrimitives)
-            .def("primitive", [](ScenePart& self, size_t index) -> Primitive* {
-                if (index < self.mPrimitives.size()) {
-                    return self.mPrimitives[index];
-                } else {
-                    throw std::out_of_range("Index out of range");
-                }
-            }, py::return_value_policy::reference)
+            .def_property("classification",
+                        [](const ScenePart& self) {
+                            if (self.mPrimitives.empty()) {
+                                throw std::runtime_error("It is required to have Primitives in the ScenePart to get the classification property.");
+                            }
+                            return self.mPrimitives[0]->material->classification;
+                        }, 
+                        [](ScenePart& self, int classification) {
+                            if (self.mPrimitives.empty()) {
+                                throw std::runtime_error("It is required to have Primitives in the ScenePart to set the classification property.");
+                            }
+                            for (auto& primitive : self.mPrimitives) {
+                                primitive->material->classification = classification;
+                            }
+                        })
+                        
             .def_property_readonly("num_primitives", [](const ScenePart& self) -> size_t {
                 return self.mPrimitives.size();})
+            
+            .def("primitive", [](ScenePart& self, size_t index) -> Primitive* {
+                    if (index < self.mPrimitives.size()) {
+                        return self.mPrimitives[index];
+                    } else {
+                        throw std::out_of_range("Index out of range");
+                    }
+                }, py::return_value_policy::reference)
             .def_property_readonly("all_vertices", &ScenePart::getAllVertices)
             .def("isDynamicMovingObject", [](const ScenePart& self) -> bool {
                 return self.getType() == ScenePart::ObjectType::DYN_MOVING_OBJECT;})
