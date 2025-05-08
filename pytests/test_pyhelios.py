@@ -373,3 +373,15 @@ def test_output(output_dir, export_to_file):
         measurements_from_file = np.vstack((leg0, leg1, leg2))
         # account for different (order of) fields in internal array and file 
         assert np.allclose(measurements_array[:, (0, 1, 2, 9, 10, 12, 11, 13, 14, 15, 16)], measurements_from_file, atol=1e-6)
+
+
+def test_beam_origin(test_sim):
+    survey_path = Path('data') / 'surveys' / 'toyblocks' / 'custom_als_toyblocks.xml'
+    sim = test_sim(survey_path, las_output=False, zip_output=False)
+    sim.start()
+    output = sim.join()
+    measurements, trajectories = pyhelios.outputToNumpy(output)
+    z = 80.0
+    ori = measurements[:, 3:6]
+    z_expected = z + 0.7 - 0.286  # from platform scannerMount and scanner beamOrigin
+    assert np.max(ori[:, 2]) == z_expected
