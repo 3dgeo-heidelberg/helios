@@ -126,3 +126,14 @@ def test_full_waveform_settings_effect():
 
     # A higher beam sample quality should result in more points
     assert points1.shape[0] < points2.shape[0]
+
+
+def test_survey_serialization(survey, tmp_path):
+    survey.to_yml(path=tmp_path, filename="survey.yaml")
+    survey2 = Survey.from_yml(tmp_path / "survey.yaml")
+
+    points, traj = survey.run(format=OutputFormat.NPY)
+    points2, traj2 = survey2.run(format=OutputFormat.NPY)
+
+    assert np.allclose(points, points2)
+    assert np.allclose(traj, traj2)

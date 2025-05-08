@@ -353,7 +353,28 @@ def test_classification_scenepart():
 
 
 def test_scene_part_from_xml_serialization(box, tmp_path):
+    box = box.scale(2.0)
+    box = box.translate([1.0, 2.0, 3.0])
+    box = box.rotate(axis=[1.0, 0.0, 0.0], angle=np.pi / 4)
+
+    box.to_yml(path=tmp_path, filename="box.yml")
+    box2 = ScenePart.from_yml(tmp_path / "box.yml")
+    assert np.allclose(get_bbox(box), get_bbox(box2))
+
+
+def test_scene_part_serialization_additional_properties(box, tmp_path):
+    box.classification = 1
+    box.is_ground = True
+    box.force_on_ground = ForceOnGroundStrategy.LEAST_COMPLEX
     box.to_yml(path=tmp_path, filename="box.yml")
     box2 = ScenePart.from_yml(tmp_path / "box.yml")
 
-    assert len(box._cpp_object.primitives) == len(box2._cpp_object.primitives)
+    assert box2.classification == 1
+    assert box2.is_ground is True
+    assert box2.force_on_ground == ForceOnGroundStrategy.LEAST_COMPLEX
+
+
+def test_scene_serialization(scene, tmp_path):
+    scene.to_yml(path=tmp_path, filename="scene.yml")
+    scene2 = StaticScene.from_yml(tmp_path / "scene.yml")
+    assert len(scene.scene_parts) == len(scene2.scene_parts)

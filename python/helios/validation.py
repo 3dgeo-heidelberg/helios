@@ -94,6 +94,29 @@ def _is_iterable_annotation(a):
     return issubclass(origin, Iterable)
 
 
+def _is_potentially_model_annotation(a):
+    """Determine whether this type annotation describes potentially a Model.
+
+    This can be because it is a model or because it is a Union there of.
+    """
+
+    if _is_iterable_annotation(a):
+        return False
+
+    try:
+        return issubclass(a, Model)
+    except TypeError:
+        pass
+
+    if get_origin(a) is Annotated:
+        return _is_potentially_model_annotation(get_args(a)[0])
+
+    if get_origin(a) is Union:
+        return any(_is_potentially_model_annotation(arg) for arg in get_args(a))
+
+    raise NotImplementedError("Cannot analyze type annotation, please open an issue.")
+
+
 def _is_iterable_of_model_annotation(a):
     """Determine whether this type annotation describes an iterable of Models"""
 
@@ -101,7 +124,7 @@ def _is_iterable_of_model_annotation(a):
         return False
 
     args = get_args(a)
-    return issubclass(args[0], Model)
+    return _is_potentially_model_annotation(args[0])
 
 
 def _serialize_value(v, a):
@@ -364,8 +387,8 @@ class Model(metaclass=ValidatedModelMetaClass):
         return _dict
 
     @classmethod
-    def _from_dict(self, d):
-        return self.__class__(**d)
+    def _from_dict(cls, d):
+        return cls(**d)
 
     @validate_call
     def to_yml(
@@ -441,18 +464,22 @@ class Model(metaclass=ValidatedModelMetaClass):
             data = yaml.safe_load(f)
 
         for n, a in inspect.get_annotations(cls).items():
-            if issubclass(a, Model):
+            if _is_potentially_model_annotation(a):
                 if isinstance(data[n], str):
                     # This was serialized in a shallow fashion
                     data[n] = a.from_yml(filename.parent / data[n])
                 else:
                     # This was serialized in a deep fashion
-                    data[n] = a(**data[n])
+                    data[n] = a._from_dict(data[n])
             if _is_iterable_of_model_annotation(a):
-                if isinstance(data[n][0], str):
-                    data[n] = [a.from_yml(filename.parent / v) for v in data[n]]
-                else:
-                    data[n] = [a(**v) for v in data[n]]
+                if data[n]:
+                    if isinstance(data[n][0], str):
+                        data[n] = [
+                            get_args(a)[0].from_yml(filename.parent / v)
+                            for v in data[n]
+                        ]
+                    else:
+                        data[n] = [get_args(a)[0](**v) for v in data[n]]
 
         return cls._from_dict(data)
 

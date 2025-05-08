@@ -58,6 +58,20 @@ class Platform(Model, cpp_class=_helios.Platform):
 
         return obj
 
+    @classmethod
+    def _from_dict(cls, d):
+        platform = None
+        if "from_xml" in d:
+            platform = cls.from_xml(**d.pop("from_xml"))
+
+        for key, value in d.items():
+            setattr(platform, key, value)
+
+        return platform
+
+    def _can_be_serialized_shallow(self):
+        return False
+
 
 #
 # Predefined platforms

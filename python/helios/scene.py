@@ -60,7 +60,7 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
             self._provenance["transformations"].append(
                 {
                     "rotate": {
-                        "quaternion": quaternion,
+                        "quaternion": quaternion.tolist(),
                     },
                 }
             )
@@ -79,7 +79,7 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
             self._provenance["transformations"].append(
                 {
                     "rotate": {
-                        "axis": axis,
+                        "axis": axis.tolist(),
                         "angle": angle,
                     },
                 }
@@ -99,8 +99,8 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
             self._provenance["transformations"].append(
                 {
                     "rotate": {
-                        "origin": origin,
-                        "image": image,
+                        "origin": origin.tolist(),
+                        "image": image.tolist(),
                     },
                 }
             )
@@ -143,7 +143,7 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
         self._provenance["transformations"].append(
             {
                 "translate": {
-                    "offset": offset,
+                    "offset": offset.tolist(),
                 },
             }
         )
@@ -279,7 +279,7 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
                 "separator": separator,
                 "voxel_size": voxel_size,
                 "max_color_value": max_color_value,
-                "default_normal": default_normal,
+                "default_normal": default_normal.tolist(),
                 "sparse": sparse,
                 "estimate_normals": estimate_normals,
                 "normals_file_columns": normals_file_columns,
@@ -372,15 +372,15 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
     def _from_dict(cls, d):
         part = None
         if "from_xml" in d:
-            part = cls.from_xml(**d["from_xml"])
+            part = cls.from_xml(**d.pop("from_xml"))
         if "from_obj" in d:
-            part = cls.from_obj(**d["from_obj"])
+            part = cls.from_obj(**d.pop("from_obj"))
         if "from_tiff" in d:
-            part = cls.from_tiff(**d["from_tiff"])
+            part = cls.from_tiff(**d.pop("from_tiff"))
         if "from_xyz" in d:
-            part = cls.from_xyz(**d["from_xyz"])
+            part = cls.from_xyz(**d.pop("from_xyz"))
         if "from_vox" in d:
-            part = cls.from_vox(**d["from_vox"])
+            part = cls.from_vox(**d.pop("from_vox"))
 
         if part is None:
             raise ValueError(
@@ -388,7 +388,7 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
             )
 
         if "transformations" in d:
-            for transformation in d["transformations"]:
+            for transformation in d.pop("transformations"):
                 if "rotate" in transformation:
                     part = part.rotate(**transformation["rotate"])
                     continue
@@ -402,6 +402,9 @@ class ScenePart(Model, cpp_class=_helios.ScenePart):
                 raise ValueError(
                     "Error deserializing ScenePart: Unknown transformation found in the dictionary."
                 )
+
+        for key, value in d.items():
+            setattr(part, key, value)
 
         return part
 
@@ -446,7 +449,15 @@ class StaticScene(Model, cpp_class=_helios.StaticScene):
     @validate_call
     def from_binary(cls, filename: AssetPath):
         _cpp_scene = _helios.read_scene_from_binary(str(filename))
-        return cls._from_cpp(_cpp_scene)
+        obj = cls._from_cpp(_cpp_scene)
+
+        obj._provenance = {
+            "from_binary": {
+                "filename": str(strip_asset_prefix(filename)),
+            }
+        }
+
+        return obj
 
     def to_binary(self, filename: AssetPath, is_dyn_scene: bool = False):
         _helios.write_scene_to_binary(str(filename), self._cpp_object, is_dyn_scene)
@@ -461,4 +472,26 @@ class StaticScene(Model, cpp_class=_helios.StaticScene):
         _cpp_scene = _helios.read_scene_from_xml(
             str(scene_file), [str(p) for p in get_asset_directories()], True
         )
-        return cls._from_cpp(_cpp_scene)
+
+        obj = cls._from_cpp(_cpp_scene)
+        obj._provenance = {
+            "from_xml": {
+                "scene_file": str(strip_asset_prefix(scene_file)),
+            }
+        }
+        return obj
+
+    @classmethod
+    def _from_dict(cls, d):
+        scene = None
+        if "from_xml" in d:
+            scene = cls.from_xml(**d.pop("from_xml"))
+        if "from_binary" in d:
+            scene = cls.from_binary(**d.pop("from_binary"))
+        if scene is None:
+            scene = cls()
+
+        for key, value in d.items():
+            setattr(scene, key, value)
+
+        return scene
