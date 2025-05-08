@@ -377,7 +377,7 @@ def test_output(output_dir, export_to_file):
 
 def test_beam_origin(test_sim):
     survey_path = Path('data') / 'surveys' / 'toyblocks' / 'custom_als_toyblocks.xml'
-    sim = test_sim(survey_path, las_output=False, zip_output=False)
+    sim = test_sim(survey_path)
     sim.start()
     output = sim.join()
     measurements, trajectories = pyhelios.outputToNumpy(output)
