@@ -1,10 +1,20 @@
-from helios.settings import ExecutionSettings, compose_execution_settings
+from helios.settings import (
+    ExecutionSettings,
+    compose_execution_settings,
+    ForceOnGroundStrategy,
+)
 from helios.utils import get_asset_directories, detect_separator, strip_asset_prefix
 from helios.validation import AssetPath, Model, MultiAssetPath, validate_xml_file
 
 from numpydantic import NDArray, Shape
-from pydantic import PositiveFloat, NonNegativeFloat, NonNegativeInt, validate_call
-from typing import Literal, Optional
+from pydantic import (
+    PositiveFloat,
+    PositiveInt,
+    NonNegativeFloat,
+    NonNegativeInt,
+    validate_call,
+)
+from typing import Literal, Optional, Union
 
 import numpy as np
 
@@ -12,6 +22,12 @@ import _helios
 
 
 class ScenePart(Model, cpp_class=_helios.ScenePart):
+    force_on_ground: Union[ForceOnGroundStrategy, PositiveInt] = (
+        ForceOnGroundStrategy.NONE
+    )
+    is_ground: bool = False
+    classification: int = 0
+
     @validate_call
     def rotate(
         self,
@@ -428,12 +444,21 @@ class StaticScene(Model, cpp_class=_helios.StaticScene):
 
     @classmethod
     @validate_call
+    def from_binary(cls, filename: AssetPath):
+        _cpp_scene = _helios.read_scene_from_binary(str(filename))
+        return cls._from_cpp(_cpp_scene)
+
+    def to_binary(self, filename: AssetPath, is_dyn_scene: bool = False):
+        _helios.write_scene_to_binary(str(filename), self._cpp_object, is_dyn_scene)
+
+    @classmethod
+    @validate_call
     def from_xml(cls, scene_file: AssetPath):
 
         # Validate the XML
         validate_xml_file(scene_file, "xsd/scene.xsd")
 
         _cpp_scene = _helios.read_scene_from_xml(
-            str(scene_file), [str(p) for p in get_asset_directories()], True, True
+            str(scene_file), [str(p) for p in get_asset_directories()], True
         )
         return cls._from_cpp(_cpp_scene)

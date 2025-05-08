@@ -729,8 +729,23 @@ namespace helios{
             .def_readwrite("rotation", &ScenePart::mRotation)
             .def_readwrite("scale", &ScenePart::mScale)
             .def_readwrite("bound", &ScenePart::bound)
-            .def_readwrite("is_force_on_ground", &ScenePart::forceOnGround)
+            .def_readwrite("force_on_ground", &ScenePart::forceOnGround)
 
+            .def_property("is_ground",
+                        [](const ScenePart& self) {
+                            if (self.mPrimitives.empty()) {
+                                throw std::runtime_error("It is required to have Primitives in the ScenePart to get the isGround property.");
+                            }
+                            return self.mPrimitives[0]->material->isGround;
+                        },
+                        [](ScenePart& self, bool isGround) {
+                            if (self.mPrimitives.empty()) {
+                                throw std::runtime_error("It is required to have Primitives in the ScenePart to set the isGround property.");
+                            }
+                            for (auto& primitive : self.mPrimitives) {
+                                primitive->material->isGround = isGround;
+                            }
+                        })
             .def_property("centroid", &ScenePart::getCentroid, &ScenePart::setCentroid) 
             .def_property("id", &ScenePart::getId, &ScenePart::setId)
             .def_property("dyn_object_step",
@@ -766,15 +781,33 @@ namespace helios{
                       })
 
             .def_property("primitives", &ScenePart::getPrimitives, &ScenePart::setPrimitives)
-            .def("primitive", [](ScenePart& self, size_t index) -> Primitive* {
-                if (index < self.mPrimitives.size()) {
-                    return self.mPrimitives[index];
-                } else {
-                    throw std::out_of_range("Index out of range");
-                }
-            }, py::return_value_policy::reference)
+            .def_property("classification",
+                        [](const ScenePart& self) {
+                            if (self.mPrimitives.empty()) {
+                                throw std::runtime_error("It is required to have Primitives in the ScenePart to get the classification property.");
+                            }
+                            return self.mPrimitives[0]->material->classification;
+                        }, 
+                        [](ScenePart& self, int classification) {
+                            if (self.mPrimitives.empty()) {
+                                throw std::runtime_error("It is required to have Primitives in the ScenePart to set the classification property.");
+                            }
+                            for (auto& primitive : self.mPrimitives) {
+                                primitive->material->classification = classification;
+                            }
+                        })
+                        
             .def_property_readonly("num_primitives", [](const ScenePart& self) -> size_t {
                 return self.mPrimitives.size();})
+            
+            .def("primitive", [](ScenePart& self, size_t index) -> Primitive* {
+                    if (index < self.mPrimitives.size()) {
+                        return self.mPrimitives[index];
+                    } else {
+                        throw std::out_of_range("Index out of range");
+                    }
+                }, py::return_value_policy::reference)
+            .def_property_readonly("all_vertices", &ScenePart::getAllVertices)
             .def("isDynamicMovingObject", [](const ScenePart& self) -> bool {
                 return self.getType() == ScenePart::ObjectType::DYN_MOVING_OBJECT;})
             .def("compute_centroid", &ScenePart::computeCentroid, py::arg("computeBound") = false)
@@ -1468,7 +1501,6 @@ namespace helios{
 
             .def_property("pulse_freq_hz", &Scanner::getPulseFreq_Hz, &Scanner::setPulseFreq_Hz)    
             .def_property("is_state_active", &Scanner::isActive, &Scanner::setActive)
-            .def_property("write_wave_form", &Scanner::isWriteWaveform, &Scanner::setWriteWaveform)
             .def_property("calc_echowidth", &Scanner::isCalcEchowidth, &Scanner::setCalcEchowidth)
             .def_property("full_wave_noise", &Scanner::isFullWaveNoise, &Scanner::setFullWaveNoise)
             .def_property("platform_noise_disabled", &Scanner::isPlatformNoiseDisabled, &Scanner::setPlatformNoiseDisabled)
@@ -1515,8 +1547,16 @@ namespace helios{
                     }
                 },
                 "A shared mutex for synchronized operations"
-            );
-      
+            )
+            .def_property("write_waveform",
+                          &Scanner::isWriteWaveform,
+                          &Scanner::setWriteWaveform)
+            
+            .def_property("write_pulse",
+                            &Scanner::isWritePulse,
+                            &Scanner::setWritePulse);
+
+
 
         py::class_<PyHeliosSimulation> helios_simulation (m, "PyheliosSimulation");
         helios_simulation
@@ -2227,5 +2267,7 @@ namespace helios{
         m.def("rotate_scene_part", &rotateScenePart);
         m.def("scale_scene_part", &scaleScenePart);
         m.def("translate_scene_part", &translateScenePart);
+        m.def("write_scene_to_binary", &writeSceneToBinary);
+        m.def("read_scene_from_binary", &readSceneFromBinary);
     }
 }

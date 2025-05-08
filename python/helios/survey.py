@@ -75,16 +75,20 @@ class Survey(Model, cpp_class=_helios.Survey):
                 "las": (True, False),
                 "xyz": (False, False),
             }.get(output_settings.format)
+
+            self.scanner._cpp_object.write_waveform = output_settings.write_waveform
+            self.scanner._cpp_object.write_pulse = output_settings.write_pulse
+
             fms = _helios.FMSFacadeFactory().build_facade(
                 str(output),
-                1.0,
+                output_settings.las_scale,
                 las_output,
                 False,
                 zip_output,
                 output_settings.split_by_channel,
                 self._cpp_object,
             )
-
+     
         # Set up internal data structures for the execution
 
         accuracy = self.scanner._cpp_object.detector.accuracy
@@ -202,7 +206,7 @@ class Survey(Model, cpp_class=_helios.Survey):
         validate_xml_file(survey_file, "xsd/survey.xsd")
 
         _cpp_survey = _helios.read_survey_from_xml(
-            str(survey_file), [str(p) for p in get_asset_directories()], True, True
+            str(survey_file), [str(p) for p in get_asset_directories()], True
         )
 
         return cls._from_cpp(_cpp_survey)
