@@ -18,9 +18,8 @@ jobs:
 
     defaults:
       run:
-        # Conda requires a login shell in order to work properly
-        shell: bash -l {0}  
-    
+        shell: bash -l {0}  # Needed for Conda
+
     steps:
       - uses: actions/checkout@v4
         with:
@@ -37,24 +36,58 @@ jobs:
           miniconda-version: "latest"
           conda-remove-defaults: true
 
-      - name: Install Conda GCC
+      - name: Install GCC and tools
         run: |
-          conda install -y -c conda-forge gcc gxx
-      
+          conda install -y -c conda-forge gcc gxx gdb
+
       - name: Install LCov
         run: |
-          sudo apt install lcov
+          sudo apt install -y lcov
+
+      - name: Configure debug/crash output
+        run: |
+          ulimit -c unlimited
+          sudo sysctl -w kernel.core_pattern=core.%e.%p
+          sudo sh -c "echo 0 > /proc/sys/kernel/yama/ptrace_scope"
+          export ASAN_OPTIONS=abort_on_error=1:detect_leaks=1:check_initialization_order=1        
 
       - name: Install Helios (editable)
         run: |
-          python -m pip install --no-build-isolation --config-settings=cmake.build-type="Debug" --config-settings=build-dir="build" --config-settings=cmake.define.CMAKE_CXX_FLAGS="--coverage" -v -e .
+          python -m pip install --no-build-isolation \
+            --config-settings=cmake.build-type="Debug" \
+            --config-settings=build-dir="build" \
+            --config-settings=cmake.define.CMAKE_CXX_FLAGS="-g -O0 --coverage -D_GLIBCXX_ASSERTIONS=1" \
+            --config-settings=cmake.define.CMAKE_EXE_LINKER_FLAGS="--coverage" \
+            -v -e .
         env:
           SETUPTOOLS_SCM_SUBPROCESS_TIMEOUT: "120"
 
       - name: Run C++ test suite
         run: |
-          ./build/helios++ --test
-
+          ./build/helios++ --test || (
+            echo "::error::C++ test crashed. Checking for core dump..." && \
+            COREFILE=$(ls core.* 2>/dev/null | head -n 1) && \
+            if [ -n "$COREFILE" ]; then
+              echo "::group::GDB Backtrace"
+              gdb -batch -ex "bt" -ex "quit" ./build/helios++ "$COREFILE"
+              echo "::endgroup::"
+            else
+              echo "::warning::No core dump found."
+            fi
+            exit 1
+          )
+      
+      - name: Analyze crash with gdb if core dump exists
+        if: failure()
+        run: |
+          COREFILE=$(find . -type f -name 'core.*' | head -n 1 || true)
+          if [[ -f "$COREFILE" ]]; then
+            echo "Found core dump: $COREFILE"
+            gdb -q ./build/helios++ "$COREFILE" -ex "bt" -ex "quit"
+          else
+            echo "No core dump found."
+          fi
+      
       - name: Run PyTest test suite
         run: |
           python -m pytest --cov --cov-report=xml 
@@ -62,7 +95,7 @@ jobs:
       - name: Collect C++ coverage report
         run: |
           lcov --directory build --capture --output-file coverage.info --ignore-errors mismatch
-      
+
       - name: Upload coverage to CodeCov
         uses: codecov/codecov-action@v5
         with:

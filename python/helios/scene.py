@@ -255,7 +255,7 @@ class StaticScene(Model, cpp_class=_helios.StaticScene):
             )
             _helios.finalize_static_scene(
                 self._cpp_object,
-                execution_settings.parallelization,
+                execution_settings.factory_type,
                 execution_settings.kdt_num_threads,
                 execution_settings.kdt_geom_num_threads,
                 execution_settings.sah_nodes,

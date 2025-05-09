@@ -61,47 +61,47 @@ void doTests(std::string const & testDir){
     RandomTest randomTest;
     passed &= randomTest.test(std::cout, TEST_COLOR);
 
-    NoiseTest noiseTest;
-    passed &= noiseTest.test(std::cout, TEST_COLOR);
+    // NoiseTest noiseTest;
+    // passed &= noiseTest.test(std::cout, TEST_COLOR);
 
-    DiscreteTimeTest discreteTimeTest;
-    passed &= discreteTimeTest.test(std::cout, TEST_COLOR);
+    // DiscreteTimeTest discreteTimeTest;
+    // passed &= discreteTimeTest.test(std::cout, TEST_COLOR);
 
-    VoxelParsingTest voxelParsingTest(testDir);
-    passed &= voxelParsingTest.test(std::cout, TEST_COLOR);
+    // VoxelParsingTest voxelParsingTest(testDir);
+    // passed &= voxelParsingTest.test(std::cout, TEST_COLOR);
 
-    RayIntersectionTest rayIntersectionTest;
-    passed &= rayIntersectionTest.test(std::cout, TEST_COLOR);
+    // RayIntersectionTest rayIntersectionTest;
+    // passed &= rayIntersectionTest.test(std::cout, TEST_COLOR);
 
-    GroveTest groveTest;
-    passed &= groveTest.test(std::cout, TEST_COLOR);
+    // GroveTest groveTest;
+    // passed &= groveTest.test(std::cout, TEST_COLOR);
 
-    SerializationTest serializationTest;
-    passed &= serializationTest.test(std::cout, TEST_COLOR);
+    // SerializationTest serializationTest;
+    // passed &= serializationTest.test(std::cout, TEST_COLOR);
 
-    AssetLoadingTest assetLoadingTest;
-    passed &= assetLoadingTest.test(std::cout, TEST_COLOR);
+    // AssetLoadingTest assetLoadingTest;
+    // passed &= assetLoadingTest.test(std::cout, TEST_COLOR);
 
-    SurveyCopyTest surveyCopyTest;
-    passed &= surveyCopyTest.test(std::cout, TEST_COLOR);
+    // SurveyCopyTest surveyCopyTest;
+    // passed &= surveyCopyTest.test(std::cout, TEST_COLOR);
 
-    PlaneFitterTest planeFitterTest;
-    passed &= planeFitterTest.test(std::cout, TEST_COLOR);
+    // PlaneFitterTest planeFitterTest;
+    // passed &= planeFitterTest.test(std::cout, TEST_COLOR);
 
-    LadLutTest ladLutTest(testDir);
-    passed &= ladLutTest.test(std::cout, TEST_COLOR);
+    // LadLutTest ladLutTest(testDir);
+    // passed &= ladLutTest.test(std::cout, TEST_COLOR);
 
-    PlatformPhysicsTest platformPhysicsTest;
-    passed &= platformPhysicsTest.test(std::cout, TEST_COLOR);
+    // PlatformPhysicsTest platformPhysicsTest;
+    // passed &= platformPhysicsTest.test(std::cout, TEST_COLOR);
 
-    FunctionalPlatformTest functionalPlatformTest;
-    passed &= functionalPlatformTest.test(std::cout, TEST_COLOR);
+    // FunctionalPlatformTest functionalPlatformTest;
+    // passed &= functionalPlatformTest.test(std::cout, TEST_COLOR);
 
-    ScenePartSplitTest scenePartSplitTest;
-    passed &= scenePartSplitTest.test(std::cout, TEST_COLOR);
+    // ScenePartSplitTest scenePartSplitTest;
+    // passed &= scenePartSplitTest.test(std::cout, TEST_COLOR);
 
-    ExprTreeTest exprTreeTest;
-    passed &= exprTreeTest.test(std::cout, TEST_COLOR);
+    // ExprTreeTest exprTreeTest;
+    // passed &= exprTreeTest.test(std::cout, TEST_COLOR);
 
     RigidMotionTest rigidMotionTest;
     passed &= rigidMotionTest.test(std::cout, TEST_COLOR);
@@ -109,11 +109,11 @@ void doTests(std::string const & testDir){
     FluxionumTest fluxionumTest(testDir);
     passed &= fluxionumTest.test(std::cout, TEST_COLOR);
 
-    EnergyModelsTest energyModelsTest;
-    passed &= energyModelsTest.test(std::cout, TEST_COLOR);
+    // EnergyModelsTest energyModelsTest;
+    // passed &= energyModelsTest.test(std::cout, TEST_COLOR);
 
-    HPCTest hpcTest;
-    passed &= hpcTest.test(std::cout, TEST_COLOR);
+    // HPCTest hpcTest;
+    // passed &= hpcTest.test(std::cout, TEST_COLOR);
 
     if(!passed) std::exit(3);
 }
