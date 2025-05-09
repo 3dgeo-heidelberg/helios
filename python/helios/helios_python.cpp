@@ -140,6 +140,10 @@ namespace helios{
 
         py::register_exception<HeliosException>(m, "HeliosException");
 
+        logging::makeQuiet();
+        logging::configure({
+            {"type", "std_out"}
+        });
         // Enable GDAL (Load its drivers)
         GDALAllRegister();
         if (GDALGetDriverCount() == 0) {
