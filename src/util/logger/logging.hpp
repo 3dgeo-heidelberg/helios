@@ -37,6 +37,36 @@ g++ -std=c++11 -x c++ -pthread -DLOGGING_LEVEL_ALL -DTEST_LOGGING logging.hpp -o
 
 namespace logging {
 
+
+class dynamic_logger : public logger {
+private:
+    std::unique_ptr<logger> active_logger;
+
+public:
+    dynamic_logger()
+        : logger(logging_config_t{{"type", "std_out"}}) {}
+
+    void set_logger(std::unique_ptr<logger> new_logger) {
+        std::scoped_lock guard(lock);
+        active_logger = std::move(new_logger);
+    }
+
+    void log(const std::string& msg, log_level level) override {
+        std::scoped_lock guard(lock);
+        if (active_logger) {
+            active_logger->log(msg, level);
+        }
+    }
+
+    void log(const std::string& msg) override {
+        std::scoped_lock guard(lock);
+        if (active_logger) {
+            active_logger->log(msg);
+        }
+    }
+};
+
+
 //returns formated to: 'year/mo/dy hr:mn:sc.xxxxxx'
 /**
  * @brief Obtain current timestamp with format: "yy/mm/dd HH:MM:SS.xxxxxx"
@@ -55,18 +85,16 @@ inline std::string timestamp() {
     std::chrono::duration<double> fractional_seconds =
       (tp - std::chrono::system_clock::from_time_t(tt)) +
       std::chrono::seconds(gmt.tm_sec);
-    //format the string
-    std::string buffer("year/mo/dy hr:mn:sc.xxxxxx");
+    char buffer[64];  
     snprintf(
-        &buffer.front(),
-        buffer.size(),
-        "%04d/%02d/%02d %02d:%02d:%09.6f",
-        gmt.tm_year + 1900,
-        gmt.tm_mon + 1,
-        gmt.tm_mday,
-        gmt.tm_hour,
-        gmt.tm_min,
-        fractional_seconds.count()
+          buffer, sizeof(buffer),
+          "%04d/%02d/%02d %02d:%02d:%09.6f",
+          gmt.tm_year + 1900,
+          gmt.tm_mon + 1,
+          gmt.tm_mday,
+          gmt.tm_hour,
+          gmt.tm_min,
+          fractional_seconds.count()
     );
     return buffer;
   }
@@ -74,34 +102,40 @@ inline std::string timestamp() {
 
 //statically get a factory
 /**
- * @brief Obtain a logger factory singleton instance
- * @return Logger factory singleton instance
+ * @brief Obtain a logger factory instance
+ * @return Logger factory instance
  */
 inline logger_factory& get_factory() {
     static logger_factory factory_singleton{};
     return factory_singleton;
 }
 
-//get at the singleton
 /**
- * @brief Obtain a singleton logger through singleton factory
+ * @brief Obtain a logger through factory
  * @param config Config for the logger
- * @return Singleton logger
+ * @return logger
  */
-inline logger& get_logger(
-    const logging_config_t& config = { {"type", "std_out"}, {"color", ""} }
-){
-    static std::unique_ptr<logger> singleton(get_factory().produce(config));
-    return *singleton;
+inline logger& get_logger() {
+    static dynamic_logger dyn_logger;
+    return dyn_logger;
 }
 
-//configure the singleton (once only)
+//configure the logger (it is possible to do multiple times)
 /**
  * @brief Apply given configuration to current logger
- * @param config Configuration to be applied to singleton logger
+ * @param config Configuration to be applied to a logger
  */
 inline void configure(const logging_config_t& config) {
-    get_logger(config);
+    auto& base = get_logger();
+    auto* dyn = dynamic_cast<dynamic_logger*>(&base);
+
+    if (!dyn) {
+        throw std::runtime_error("Logger is not reconfigurable");
+    }
+
+    auto new_logger = get_factory().produce(config);
+    if (!new_logger) throw std::runtime_error("Logger production failed");
+    dyn->set_logger(std::unique_ptr<logger>(new_logger));
 }
 
 //statically log manually without the macros below

@@ -237,19 +237,22 @@ def compose_output_settings(
 
 def apply_log_writing(execution_settings: ExecutionSettings):
     """Apply the chosen log writing mode to c++ part"""
-    config = {}
-    log_dir = "output/logs"
-    os.makedirs(log_dir, exist_ok=True) 
-
-    file_log = os.path.join(log_dir, f"helios_{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}.log")
+    config: dict[str, str] = {}
+    
+    if execution_settings.log_file_only or execution_settings.log_file:
+        log_dir = "output/logs"
+        os.makedirs(log_dir, exist_ok=True)
+        file_log = os.path.join(log_dir, f"helios_{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}.log")
+        config["file_name"] = file_log
 
     if execution_settings.log_file_only:
         config["type"] = "file"
-        config["file_name"] = file_log
     elif execution_settings.log_file:
         config["type"] = "full"
-        config["file_name"] = file_log
     else:
         config["type"] = "std_out"
+    
+    if config["type"] in {"file", "full"} and "file_name" not in config:
+        raise ValueError(f"Logger type '{config['type']}' requires a file_name")
 
     _helios.configure_logging(config)
