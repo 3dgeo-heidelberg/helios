@@ -76,16 +76,14 @@ template <typename VarType> void DesignMatrixReader<VarType>::parseRow(
 ){
     // Make string s initially as str[nonEmptyIdx:] without spaces and tabs
     string s = str.substr(nonEmptyIdx);
-    size_t n = s.size();
-    size_t eraseStart = string::npos;
-    for(size_t i = 0 ; i < n ; ++i){
-        // TODO Rethink : Ignore space or tab if they are the separator
-        if(s[i]==' ' || s[i]=='\t'){
-            if(eraseStart == string::npos) eraseStart = i;
-        }
-        else if(eraseStart != string::npos){
-            s.erase(eraseStart, i-eraseStart);
-            eraseStart = string::npos;
+    size_t i = 0;
+    while (i < s.size()) {
+        if (s[i] == ' ' || s[i] == '\t') {
+            size_t j = i;
+            while (j < s.size() && (s[j] == ' ' || s[j] == '\t')) ++j;
+            s.erase(i, j - i);
+        } else {
+            ++i;
         }
     }
 
