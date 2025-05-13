@@ -137,12 +137,6 @@ namespace helios{
         py::bind_vector<std::vector<Trajectory>>(m, "TrajectoryList");
 
         py::implicitly_convertible<py::iterable, VectorString>();
-
-        logging::makeQuiet();
-        logging::configure({
-            {"type", "std_out"}
-        });
-
         py::register_exception<HeliosException>(m, "HeliosException");
 
         // Enable GDAL (Load its drivers)
@@ -156,8 +150,10 @@ namespace helios{
         m.def("logging_silent", &logging::makeSilent, "Set the logging verbosity level to silent");
         m.def("logging_default", &logging::makeDefault, "Set the logging verbosity level to default");
         m.def("logging_verbose", &logging::makeVerbose, "Set the logging verbosity level to verbose");
-        m.def("logging_verbose2", &logging::makeVerbose2, "Set the logging verbosity level to verbose 2");
+        m.def("logging_very_verbose", &logging::makeVerbose2, "Set the logging verbosity level to verbose 2");
         m.def("logging_time", &logging::makeTime, "Set the logging verbosity level to time");
+
+        m.def("configure_logging", &logging::configure,py::arg("config"));
 
         m.def("default_rand_generator_seed", &setDefaultRandomnessGeneratorSeed, "Set the seed for the default randomness generator");
         

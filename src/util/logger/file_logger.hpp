@@ -51,9 +51,10 @@ public:
                     std::stoul(interval->second)
                 );
             }
-            catch(...) {
+            catch(const std::exception& e) {
                 throw std::runtime_error(
-                    interval->second + " is not a valid reopen interval"
+                    "Invalid 'reopen_interval' value '" + interval->second +
+                "': must be an integer number of seconds."
                 );
             }
         }
