@@ -27,3 +27,9 @@ target_sources(
   PUBLIC
   "CatchFunctionalPlatformTest.cpp"
 )
+
+target_sources(
+  helios_test
+  PUBLIC
+  "CatchVoxelParsingTest.cpp"
+)
