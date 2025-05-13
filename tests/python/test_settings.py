@@ -13,7 +13,7 @@ def test_execution_settings_defaults():
     assert settings.warehouse_factor == 4
     assert not settings.log_file
     assert not settings.log_file_only
-    assert settings.verbosity == LogVerbosity.DEFAULT
+    assert settings.verbosity == LogVerbosity.QUIET
     assert settings.factory_type == KDTreeFactoryType.SAH_APPROXIMATION
     assert isinstance(settings.kdt_num_threads, int)
     assert settings.kdt_num_threads >= 1
