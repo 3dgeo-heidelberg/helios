@@ -4,12 +4,16 @@
 #include "logging.hpp"
 #include <string>
 #include <VoxelFileParser.h>
+#include <filesystem>
 
 TEST_CASE( "Voxel Parsing Test ") {
-    std::string testDir = "data/test/";
+    std::string testDir("data/test/");
 
     double eps = 0.0001;
     std::string vfPath = testDir + "semitransparent_voxels.vox";
+    if (!std::filesystem::exists(vfPath)) {
+        FAIL("Voxel file not found: " + vfPath);
+    }
     VoxelFileParser vfp;
     std::vector<std::shared_ptr<DetailedVoxel>> dvoxels = vfp.parseDetailed(
         vfPath,
