@@ -3,6 +3,8 @@
 
 #include <algorithm>
 
+using namespace helios::hpc;
+
 TEST_CASE( "HPC test" ) {
     struct HPCTest_IntComparator{
         bool operator() (int i, int j) {return (i<j);}
