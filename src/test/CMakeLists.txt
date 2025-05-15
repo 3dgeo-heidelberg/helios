@@ -33,3 +33,9 @@ target_sources(
   PUBLIC
   "CatchVoxelParsingTest.cpp"
 )
+
+target_sources(
+  helios_test
+  PUBLIC
+  "CatchHPCTest.cpp"
+)
