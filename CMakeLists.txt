@@ -183,5 +183,9 @@ if(BUILD_PYTHON)
   )
 endif()
 
+if(HELIOS_HEADERCHECK)
+  add_subdirectory(tests/headercheck)
+endif()
+
 include(FeatureSummary)
 feature_summary(WHAT ALL)

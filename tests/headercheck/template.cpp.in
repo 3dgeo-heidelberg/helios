@@ -1,0 +1,7 @@
+#include <@header@>
+
+int main()
+{
+    // This is a test to check if the header check works
+    return 0;
+}

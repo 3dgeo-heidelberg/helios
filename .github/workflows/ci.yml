@@ -57,7 +57,7 @@ jobs:
 
       - name: Install Helios
         run: |
-          python -m pip install -v .
+          python -m pip install -v --config-settings=cmake.define.HELIOS_HEADERCHECK="ON" .
         env:
           SETUPTOOLS_SCM_SUBPROCESS_TIMEOUT: "120"
 
