@@ -10,7 +10,9 @@ import sys
 try:
     import polyscope as ps
 except ImportError:
-    print('Polyscope is not installed. Please install Polyscope with "pip install polyscope".')
+    print(
+        'Polyscope is not installed. Please install Polyscope with "pip install polyscope".'
+    )
     sys.exit()
 
 
@@ -52,7 +54,7 @@ survey = """
     </survey>
 </document>"""
 
-with open('data/surveys/plane_survey.xml', 'w') as f:
+with open("data/surveys/plane_survey.xml", "w") as f:
     f.write(survey)
 
 tls_pos = np.array([[0, -10, 0]])
@@ -79,26 +81,20 @@ for angle in angles:
     dists = []
 
     simBuilder = pyhelios.SimulationBuilder(
-        'data/surveys/plane_survey.xml',
-        'assets/',
-        'output/'
+        "data/surveys/plane_survey.xml", "assets/", "output/"
     )
     simBuilder.setNumThreads(0)
     simBuilder.setLasOutput(True)
     simBuilder.setZipOutput(True)
     simBuilder.setCallbackFrequency(0)  # Run without callback
-    simBuilder.setExportToFile(True)    # Enable export point cloud to file
-    simBuilder.setFinalOutput(True)     # Return output at join
+    simBuilder.setExportToFile(True)  # Enable export point cloud to file
+    simBuilder.setFinalOutput(True)  # Return output at join
     # General rotation
-    simBuilder.addRotateFilter(cos(pi/4), sin(pi/4), 0, 0, "")
+    simBuilder.addRotateFilter(cos(pi / 4), sin(pi / 4), 0, 0, "")
     # Surface 1 rotation
-    simBuilder.addRotateFilter(
-        cos(-angle/2), 0, 0, sin(-angle/2), "1"
-    )
+    simBuilder.addRotateFilter(cos(-angle / 2), 0, 0, sin(-angle / 2), "1")
     # Surface 2 rotation
-    simBuilder.addRotateFilter(
-        cos(angle/2), 0, 0, sin(angle/2), "2"
-    )
+    simBuilder.addRotateFilter(cos(angle / 2), 0, 0, sin(angle / 2), "2")
     simBuilder.setLegNoiseDisabled(True)
     simBuilder.setRebuildScene(True)
     simBuilder.setWriteWaveform(False)
@@ -122,14 +118,22 @@ for angle in angles:
         del sim1
         del sim0
 
-        points = [[meas[m].getPosition().x,
-                  meas[m].getPosition().y,
-                  meas[m].getPosition().z] for m in range(len(meas))]
+        points = [
+            [meas[m].getPosition().x, meas[m].getPosition().y, meas[m].getPosition().z]
+            for m in range(len(meas))
+        ]
         points = np.array(points)
-        points = points[np.linalg.norm(points, axis=1) < 1, :]  # 1 m searchrad, "corepoint" at
-        points1 = [[meas1[m].getPosition().x,
-                  meas1[m].getPosition().y,
-                  meas1[m].getPosition().z] for m in range(len(meas1))]
+        points = points[
+            np.linalg.norm(points, axis=1) < 1, :
+        ]  # 1 m searchrad, "corepoint" at
+        points1 = [
+            [
+                meas1[m].getPosition().x,
+                meas1[m].getPosition().y,
+                meas1[m].getPosition().z,
+            ]
+            for m in range(len(meas1))
+        ]
         points1 = np.array(points1)
         points1 = points1[np.linalg.norm(points1, axis=1) < 1, :]
 
@@ -145,16 +149,17 @@ for angle in angles:
     lod_m3c2 = 1.96 * np.sqrt((sigma_y_2 / n_points) + (sigma_y_2 / n_points))
     sigma2_mean_ep = detector.accuracy**2  # / n_points
 
-    sigmaD = 2 * (n_points - 1) * sigma2_mean_ep / (
-                2 * n_points - 2)  # /n_points # adaption because our stddev comes from error prop and is not an estimate; weighted average of the matrices
+    sigmaD = (
+        2 * (n_points - 1) * sigma2_mean_ep / (2 * n_points - 2)
+    )  # /n_points # adaption because our stddev comes from error prop and is not an estimate; weighted average of the matrices
     p = 1  # three-dimensional
     # lods_m3c2_ep.append(1.96 * np.sqrt(sigma2_mean_ep/n_points)) #--> good solution
 
-    Tsqalt = 1 / (sigmaD) * (n_points ** 2 / (2 * n_points))
+    Tsqalt = 1 / (sigmaD) * (n_points**2 / (2 * n_points))
 
     # lods_m3c2_ep.append(np.sqrt(sstats.chi2.cdf(.95, p) / Tsqalt))
     t_rel2 = Tsqalt * (2 * n_points - p - 1) / (p * (2 * n_points - 2))
-    lod_ep = np.sqrt(sstats.f.ppf(.95, p, 2 * n_points - p - 1) / t_rel2)
+    lod_ep = np.sqrt(sstats.f.ppf(0.95, p, 2 * n_points - p - 1) / t_rel2)
     lods_m3c2.append(lod_m3c2)
     lods_ep.append(lod_ep)
     print(n_points, lod_ep, q975, sigma_y_2)
@@ -165,25 +170,26 @@ for angle in angles:
     # ps.show()
 
 
-
 # angles = 90 - angles
 
 fig, ax1 = plt.subplots()
 
-ax1.fill_between(angles, q975s, q025s, color='xkcd:lavender', alpha=0.4)
-ax1.plot(angles, lods_m3c2, color='xkcd:brick red', label='LoD M3C2')
-ax1.plot(angles, lods_ep, color='xkcd:bright red', label='LoD M3C2-EP')
-ax1.set_ylabel(r"Level of Detection [m]", color='tab:red')
+ax1.fill_between(angles, q975s, q025s, color="xkcd:lavender", alpha=0.4)
+ax1.plot(angles, lods_m3c2, color="xkcd:brick red", label="LoD M3C2")
+ax1.plot(angles, lods_ep, color="xkcd:bright red", label="LoD M3C2-EP")
+ax1.set_ylabel(r"Level of Detection [m]", color="tab:red")
 ax1.set_xlabel(r"Angle $\varphi$ (between plane normal and view direction) [deg]")
-ax1.tick_params(axis='y', labelcolor='tab:red')
+ax1.tick_params(axis="y", labelcolor="tab:red")
 ax1.set_ylim([0, 0.005])
 
 ax2 = ax1.twinx()  # instantiate a second axes that shares the same x-axis
 
-color = 'tab:blue'
-ax2.set_ylabel('Number of points', color=color)  # we already handled the x-label with ax1
+color = "tab:blue"
+ax2.set_ylabel(
+    "Number of points", color=color
+)  # we already handled the x-label with ax1
 ax2.plot(angles, nptss, color=color)
-ax2.tick_params(axis='y', labelcolor=color)
+ax2.tick_params(axis="y", labelcolor=color)
 
 fig.legend()
 plt.show()

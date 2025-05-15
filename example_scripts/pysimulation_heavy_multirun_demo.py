@@ -35,7 +35,7 @@ def callback(output=None):
 
         # Update last cycle point
         if len(measurements) > 0:
-            pos = measurements[len(measurements)-1].getPosition()
+            pos = measurements[len(measurements) - 1].getPosition()
             cpn[0] = pos.x
             cpn[1] = pos.y
             cpn[2] = pos.z
@@ -46,18 +46,18 @@ def callback(output=None):
 
 # ---  M A I N  --- #
 # ----------------- #
-if __name__ == '__main__':
+if __name__ == "__main__":
     # Configure simulation context
     # pyhelios.loggingVerbose2()
     pyhelios.loggingQuiet()
     pyhelios.setDefaultRandomnessGeneratorSeed("123")
 
     # Build reference simulation
-    print('>> Creating base/reference simulation\n')
+    print(">> Creating base/reference simulation\n")
     simB = pyhelios.SimulationBuilder(
-        surveyPath='data/surveys/voxels/als_detailedVoxels_mode_comparison.xml',
-        assetsDir='assets/',
-        outputDir='output/',
+        surveyPath="data/surveys/voxels/als_detailedVoxels_mode_comparison.xml",
+        assetsDir="assets/",
+        outputDir="output/",
     )
     simB.setCallbackFrequency(10)
     # Callback frequency has to be setted
@@ -73,15 +73,15 @@ if __name__ == '__main__':
 
     # Run multiple simulations
     nSimulations = 3
-    print('>> Running {n} simulations\n'.format(n=nSimulations))
+    print(">> Running {n} simulations\n".format(n=nSimulations))
     for i in range(nSimulations):
         # Run the simulation
-        print('>> Running simulation {i}'.format(i=i+1))
+        print(">> Running simulation {i}".format(i=i + 1))
         sim_curr = sim0.sim.copy()
         for j in range(sim_curr.getNumLegs()):
             leg = sim_curr.getLeg(j)
             leg.getScannerSettings().pulseFreq += i * 50000
-        print('Pulse frequency: {f} '.format(f=leg.getScannerSettings().pulseFreq))
+        print("Pulse frequency: {f} ".format(f=leg.getScannerSettings().pulseFreq))
         sim_curr.callbackFrequency += i
         cycleMeasurementsCount = 0
         cp1 = []
@@ -98,18 +98,22 @@ if __name__ == '__main__':
         # Digest output
         measurements = output.measurements
         trajectories = output.trajectories
-        print('\tSimulation {i}:'.format(i=i+1))
-        print('\t\tnumber of measurements : {n}'.format(n=len(measurements)))
-        print('number of trajectories: {n}'.format(n=len(trajectories)))
+        print("\tSimulation {i}:".format(i=i + 1))
+        print("\t\tnumber of measurements : {n}".format(n=len(measurements)))
+        print("number of trajectories: {n}".format(n=len(trajectories)))
         p1Pos = measurements[0].getPosition()
-        pnPos = measurements[len(measurements)-1].getPosition()
-        print('\t\tp1 position  : ({x}, {y}, {z})'.format(
-            x=p1Pos.x, y=p1Pos.y, z=p1Pos.z))
-        print('\t\tcp1 position : ({x}, {y}, {z})'.format(
-            x=cp1[0], y=cp1[1], z=cp1[2]))
-        print('\t\tpn position  : ({x}, {y}, {z})'.format(
-            x=pnPos.x, y=pnPos.y, z=pnPos.z))
-        print('\t\tcpn position : ({x}, {y}, {z})'.format(
-            x=cpn[0], y=cpn[1], z=cpn[2]))
+        pnPos = measurements[len(measurements) - 1].getPosition()
+        print(
+            "\t\tp1 position  : ({x}, {y}, {z})".format(x=p1Pos.x, y=p1Pos.y, z=p1Pos.z)
+        )
+        print("\t\tcp1 position : ({x}, {y}, {z})".format(x=cp1[0], y=cp1[1], z=cp1[2]))
+        print(
+            "\t\tpn position  : ({x}, {y}, {z})".format(x=pnPos.x, y=pnPos.y, z=pnPos.z)
+        )
+        print("\t\tcpn position : ({x}, {y}, {z})".format(x=cpn[0], y=cpn[1], z=cpn[2]))
 
-        print("Simulated point clouds saved to {folder}".format(folder=str(Path(output.filepath).parent)))
+        print(
+            "Simulated point clouds saved to {folder}".format(
+                folder=str(Path(output.filepath).parent)
+            )
+        )

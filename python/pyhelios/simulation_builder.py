@@ -9,18 +9,15 @@ import importlib_resources as resources
 
 
 SimulationBuilderRotateFilter = namedtuple(
-    'SimulationBuilderRotateFilter',
-    ['q0', 'q1', 'q2', 'q3', 'id']
+    "SimulationBuilderRotateFilter", ["q0", "q1", "q2", "q3", "id"]
 )
 
 SimulationBuilderScaleFilter = namedtuple(
-    'SimulationBuilderScaleFilter',
-    ['factor', 'id']
+    "SimulationBuilderScaleFilter", ["factor", "id"]
 )
 
 SimulationBuilderTranslateFilter = namedtuple(
-    'SimulationBuilderTranslateFilter',
-    ['x', 'y', 'z', 'id']
+    "SimulationBuilderTranslateFilter", ["x", "y", "z", "id"]
 )
 
 
@@ -71,7 +68,11 @@ class SimulationBuilder:
         if not isinstance(assetsDir, Iterable) or isinstance(assetsDir, str):
             assetsDir = [assetsDir]
         # Add default values for asset directories
-        assetsDir = assetsDir + [os.getcwd(), str(resources.files("pyhelios")), str(resources.files("pyhelios") / "data")]
+        assetsDir = assetsDir + [
+            os.getcwd(),
+            str(resources.files("pyhelios")),
+            str(resources.files("pyhelios") / "data"),
+        ]
 
         # Base values
         self.setSurveyPath(surveyPath)
@@ -115,7 +116,7 @@ class SimulationBuilder:
     # ---  BUILD METHOD  --- #
     # ---------------------- #
     def build(self):
-        print('SimulationBuilder is building simulation ...')
+        print("SimulationBuilder is building simulation ...")
         start = time.perf_counter()
         build = SimulationBuild(
             self.surveyPath,
@@ -126,7 +127,7 @@ class SimulationBuilder:
             self.las10,
             self.zipOutput,
             self.splitByChannel,
-            fixedGpsTimeStart=self.fixedGpsTimeStart
+            fixedGpsTimeStart=self.fixedGpsTimeStart,
         )
         build.sim.callbackFrequency = self.callbackFrequency
         build.sim.finalOutput = self.finalOutput
@@ -138,19 +139,16 @@ class SimulationBuilder:
                 rotateFilter.q1,
                 rotateFilter.q2,
                 rotateFilter.q3,
-                rotateFilter.id
+                rotateFilter.id,
             )
         for scaleFilter in self.scaleFilters:
-            build.sim.addScaleFilter(
-                scaleFilter.factor,
-                scaleFilter.id
-            )
+            build.sim.addScaleFilter(scaleFilter.factor, scaleFilter.id)
         for translateFilter in self.translateFilters:
             build.sim.addTranslateFilter(
                 translateFilter.x,
                 translateFilter.y,
                 translateFilter.z,
-                translateFilter.id
+                translateFilter.id,
             )
         build.sim.loadSurvey(
             self.legNoiseDisabled,
@@ -159,18 +157,13 @@ class SimulationBuilder:
             self.calcEchowidth,
             self.fullwaveNoise,
             self.platformNoiseDisabled,
-            self.writePulse
+            self.writePulse,
         )
         if self.callback is not None:
             build.sim.setCallback(self.callback)
 
         end = time.perf_counter()
-        print(
-            'SimulationBuilder built simulation in {t} seconds'
-            .format(
-                t=end - start
-            )
-        )
+        print("SimulationBuilder built simulation in {t} seconds".format(t=end - start))
         return build
 
     # ---  GETTERS and SETTERS  --- #
@@ -281,118 +274,108 @@ class SimulationBuilder:
         self.callback = callback
 
     def addRotateFilter(self, q0, q1, q2, q3, id):
-        self.rotateFilters.append(SimulationBuilderRotateFilter(
-            q0, q1, q2, q3, id
-        ))
+        self.rotateFilters.append(SimulationBuilderRotateFilter(q0, q1, q2, q3, id))
 
     def addScaleFilter(self, factor, id):
         self.scaleFilters.append(SimulationBuilderScaleFilter(factor, id))
 
     def addTranslateFilter(self, x, y, z, id):
-        self.translateFilters.append(SimulationBuilderTranslateFilter(
-            x, y, z, id
-        ))
+        self.translateFilters.append(SimulationBuilderTranslateFilter(x, y, z, id))
 
     # ---  VALIDATION METHODS  --- #
     # ---------------------------- #
     def validateNumThreads(self, numThreads):
         if isnan(numThreads):
             raise PyHeliosToolsException(
-                'SimulationBuilder EXCEPTION!\n\t'
-                'NaN number of threads is not allowed'
+                "SimulationBuilder EXCEPTION!\n\t"
+                "NaN number of threads is not allowed"
             )
 
         if numThreads < 0:
             raise PyHeliosToolsException(
-                'SimulationBuilder EXCEPTION!\n\t'
-                'Number of threads {n} < 0 is not allowed'.format(
-                    n=numThreads
-                )
+                "SimulationBuilder EXCEPTION!\n\t"
+                "Number of threads {n} < 0 is not allowed".format(n=numThreads)
             )
 
     def validateFixedGpsTimeStart(self, fgts):
-        if fgts == '':
+        if fgts == "":
             return
         if fgts.isnumeric():
             return
-        if len(fgts) == 19 and \
-                fgts[0:4].isnumeric() and \
-                fgts[4] == '-' and \
-                fgts[5:7].isnumeric() and \
-                fgts[7] == '-' and \
-                fgts[8:10].isnumeric() and \
-                fgts[10] == ' ' and \
-                fgts[11:13].isnumeric() and \
-                fgts[13] == ':' and \
-                fgts[14:16].isnumeric() and \
-                fgts[16] == ':' and \
-                fgts[17:].isnumeric():
+        if (
+            len(fgts) == 19
+            and fgts[0:4].isnumeric()
+            and fgts[4] == "-"
+            and fgts[5:7].isnumeric()
+            and fgts[7] == "-"
+            and fgts[8:10].isnumeric()
+            and fgts[10] == " "
+            and fgts[11:13].isnumeric()
+            and fgts[13] == ":"
+            and fgts[14:16].isnumeric()
+            and fgts[16] == ":"
+            and fgts[17:].isnumeric()
+        ):
             return
         raise PyHeliosToolsException(
-            'SimulationBuilder EXCEPTION!\n\t'
-            'Given fixed GPS time start "{fgts}" is not allowed'.format(
-                fgts=fgts
-            )
+            "SimulationBuilder EXCEPTION!\n\t"
+            'Given fixed GPS time start "{fgts}" is not allowed'.format(fgts=fgts)
         )
 
     def validateCallbackFrequency(self, freq):
         if isnan(freq):
             raise PyHeliosToolsException(
-                'SimulationBuilder EXCEPTION!\n\t'
-                'NaN frequency is not allowed'
+                "SimulationBuilder EXCEPTION!\n\t" "NaN frequency is not allowed"
             )
 
         if freq < 0:
             raise PyHeliosToolsException(
-                'SimulationBuilder EXCEPTION!\n\t'
-                'Frequency {f} < 0 is not allowed'.format(
-                    f=freq
-                )
+                "SimulationBuilder EXCEPTION!\n\t"
+                "Frequency {f} < 0 is not allowed".format(f=freq)
             )
 
     def validateBoolean(self, b):
         if type(b) != bool:
             raise PyHeliosToolsException(
-                'SimulationBuilder EXCEPTION!\n\t'
-                '{b} is not a boolean'.format(b=b)
+                "SimulationBuilder EXCEPTION!\n\t" "{b} is not a boolean".format(b=b)
             )
 
     def validateInteger(self, i):
         if type(i) != int:
             raise PyHeliosToolsException(
-                'SimulationBuilder EXCEPTION!\n\t'
-                '{i} is not integer'.format(i=i)
+                "SimulationBuilder EXCEPTION!\n\t" "{i} is not integer".format(i=i)
             )
 
     def validateNonNegativeInteger(self, i):
         self.validateInteger(i)
         if i < 0:
             raise PyHeliosToolsException(
-                'SimulationBuilder EXCEPTION!\n\t'
-                '{i} is not a non negative integer'.format(i=i)
+                "SimulationBuilder EXCEPTION!\n\t"
+                "{i} is not a non negative integer".format(i=i)
             )
 
     def validateCallback(self, callback):
         if callback is None:
             return
 
-        if not hasattr(callback, '__call__'):
+        if not hasattr(callback, "__call__"):
             raise PyHeliosToolsException(
-                'SimulationBuilder EXCEPTION!\n\t'
-                'Callback is NOT callable but it MUST be callable'
+                "SimulationBuilder EXCEPTION!\n\t"
+                "Callback is NOT callable but it MUST be callable"
             )
 
     def validateKDTFactory(self, kdtFactory):
         if kdtFactory not in (1, 2, 3, 4):
             raise PyHeliosToolsException(
-                'SimulationBuilder EXCEPTION!\n\t'
-                'Unexpected KDT Factory {kdtf}'.format(kdtf=kdtFactory)
+                "SimulationBuilder EXCEPTION!\n\t"
+                "Unexpected KDT Factory {kdtf}".format(kdtf=kdtFactory)
             )
 
     def validateParallelizationStrategy(self, parallelizationStrategy):
         if parallelizationStrategy not in (0, 1):
             raise PyHeliosToolsException(
-                'SimulationBuilder EXCEPTION!\n\t'
-                'Unexpected parallelization strategy {ps}'
-                .format(ps=parallelizationStrategy)
+                "SimulationBuilder EXCEPTION!\n\t"
+                "Unexpected parallelization strategy {ps}".format(
+                    ps=parallelizationStrategy
+                )
             )

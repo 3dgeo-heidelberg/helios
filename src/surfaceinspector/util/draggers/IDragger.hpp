@@ -4,7 +4,9 @@
 
 using SurfaceInspector::util::Object;
 
-namespace SurfaceInspector { namespace util { namespace draggers{
+namespace SurfaceInspector {
+namespace util {
+namespace draggers {
 
 /**
  * @author Alberto M. Esmoris Pena
@@ -17,21 +19,24 @@ namespace SurfaceInspector { namespace util { namespace draggers{
  * @tparam E Type of elements to drag
  * @tparam C Type of container to drag elements from
  */
-template <typename E, typename C>
-class IDragger : public Object{
+template<typename E, typename C>
+class IDragger : public Object
+{
 public:
-    // ***  INTERFACE  *** //
-    // ******************* //
-    /**
-     * @brief Check if dragger supports dragging at least one more element
-     * @return True if dragger supports dragging at leas one more element,
-     *  false otherwise
-     */
-    virtual bool hasNext() = 0;
-    /**
-     * @brief Drag the next element from collection
-     * @return Dragged element
-     */
-    virtual E next() = 0;
+  // ***  INTERFACE  *** //
+  // ******************* //
+  /**
+   * @brief Check if dragger supports dragging at least one more element
+   * @return True if dragger supports dragging at leas one more element,
+   *  false otherwise
+   */
+  virtual bool hasNext() = 0;
+  /**
+   * @brief Drag the next element from collection
+   * @return Dragged element
+   */
+  virtual E next() = 0;
 };
-}}}
+}
+}
+}

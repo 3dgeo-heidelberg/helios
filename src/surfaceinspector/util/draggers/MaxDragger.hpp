@@ -4,7 +4,9 @@
 
 using SurfaceInspector::util::draggers::MinDragger;
 
-namespace SurfaceInspector{ namespace util{ namespace draggers{
+namespace SurfaceInspector {
+namespace util {
+namespace draggers {
 /**
  * @author Alberto M. Esmoris PEna
  * @version 1.0
@@ -14,31 +16,35 @@ namespace SurfaceInspector{ namespace util{ namespace draggers{
  *  is returned and so on
  * @tparam E Type of elements to drag
  */
-template <typename E> class MaxDragger : public MinDragger<E>{
+template<typename E>
+class MaxDragger : public MinDragger<E>
+{
 public:
-    // ***  CONSTRUCTION / DESTRUCTION  *** //
-    // ************************************ //
-    /**
-     * @brief Build a maximum dragger
-     * @param x The collection to drag over
-     * @see SurfaceInspector::util::draggers::MinDragger::MinDragger(vector<E>)
-     */
-    MaxDragger(vector<E> x) : MinDragger<E>(x) {};
+  // ***  CONSTRUCTION / DESTRUCTION  *** //
+  // ************************************ //
+  /**
+   * @brief Build a maximum dragger
+   * @param x The collection to drag over
+   * @see SurfaceInspector::util::draggers::MinDragger::MinDragger(vector<E>)
+   */
+  MaxDragger(vector<E> x)
+    : MinDragger<E>(x) {};
 
-    /**
-     * @brief Default destructor
-     */
-    virtual ~MaxDragger() {};
+  /**
+   * @brief Default destructor
+   */
+  virtual ~MaxDragger() {};
 
 protected:
-    // ***  OPTIMIZATION DRAGGER METHODS  *** //
-    // ************************************** //
-    /**
-     * @brief Pick the minimum element inside \f$[a, b]\f$ indices
-     * @return Minimum element inside \f$[a, b]\f$ indices
-     * @see SurfaceInspector::util::draggers::OptimizationDragger::pick
-     */
-    inline E pick() override {return this->x[this->x.size()-1-this->c];};
-
+  // ***  OPTIMIZATION DRAGGER METHODS  *** //
+  // ************************************** //
+  /**
+   * @brief Pick the minimum element inside \f$[a, b]\f$ indices
+   * @return Minimum element inside \f$[a, b]\f$ indices
+   * @see SurfaceInspector::util::draggers::OptimizationDragger::pick
+   */
+  inline E pick() override { return this->x[this->x.size() - 1 - this->c]; };
 };
-}}}
+}
+}
+}

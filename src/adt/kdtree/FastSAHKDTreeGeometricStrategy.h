@@ -1,7 +1,7 @@
 #pragma once
 
-#include <SAHKDTreeGeometricStrategy.h>
 #include <FastSAHKDTreeFactory.h>
+#include <SAHKDTreeGeometricStrategy.h>
 
 /**
  * @author Alberto M. Esmoris Pena
@@ -14,59 +14,58 @@
  *
  * @see SAHKDTreeGeometricStrategy
  */
-class FastSAHKDTreeGeometricStrategy : public SAHKDTreeGeometricStrategy {
-    // ***  FRIENDS  *** //
-    // ***************** //
-    friend class MultiThreadKDTreeFactory;
+class FastSAHKDTreeGeometricStrategy : public SAHKDTreeGeometricStrategy
+{
+  // ***  FRIENDS  *** //
+  // ***************** //
+  friend class MultiThreadKDTreeFactory;
 
 protected:
-    // ***  ATTRIBUTES  *** //
-    // ******************** //
-    /**
-     * @brief The fast surface area heuristic KDTree factory to which geometric
-     *  strategy shall be applied
-     */
-    FastSAHKDTreeFactory &fsahkdtf;
+  // ***  ATTRIBUTES  *** //
+  // ******************** //
+  /**
+   * @brief The fast surface area heuristic KDTree factory to which geometric
+   *  strategy shall be applied
+   */
+  FastSAHKDTreeFactory& fsahkdtf;
 
 public:
-    // ***  CONSTRUCTION / DESTRUCTION  *** //
-    // ************************************ //
-    /**
-     * @brief FastSAHKDTreeGeometricStrategy default constructor.
-     *
-     * @see FastSAHKDTreeGeometricStrategy::fsahkdtf
-     * @see SAHKDTreeGeometricStrategy::SAHKDTreeGeometricStrategy
-     */
-    FastSAHKDTreeGeometricStrategy(FastSAHKDTreeFactory &kdtf) :
-        SAHKDTreeGeometricStrategy(kdtf),
-        fsahkdtf(kdtf)
-    {}
-    ~FastSAHKDTreeGeometricStrategy() override = default;
+  // ***  CONSTRUCTION / DESTRUCTION  *** //
+  // ************************************ //
+  /**
+   * @brief FastSAHKDTreeGeometricStrategy default constructor.
+   *
+   * @see FastSAHKDTreeGeometricStrategy::fsahkdtf
+   * @see SAHKDTreeGeometricStrategy::SAHKDTreeGeometricStrategy
+   */
+  FastSAHKDTreeGeometricStrategy(FastSAHKDTreeFactory& kdtf)
+    : SAHKDTreeGeometricStrategy(kdtf)
+    , fsahkdtf(kdtf)
+  {
+  }
+  ~FastSAHKDTreeGeometricStrategy() override = default;
 
-    // ***  CLONE  *** //
-    // *************** //
-    /**
-     * @brief Create a clone of the FastSAHKDTreeGeometricStrategy
-     * @param kdtf The KDTreeFactory to be referenced by the clone
-     * @return Clone of the FastSAHKDTreeGeometricStrategy
-     */
-    SimpleKDTreeGeometricStrategy * clone(
-        SimpleKDTreeFactory *kdtf
-    ) const override;
+  // ***  CLONE  *** //
+  // *************** //
+  /**
+   * @brief Create a clone of the FastSAHKDTreeGeometricStrategy
+   * @param kdtf The KDTreeFactory to be referenced by the clone
+   * @return Clone of the FastSAHKDTreeGeometricStrategy
+   */
+  SimpleKDTreeGeometricStrategy* clone(
+    SimpleKDTreeFactory* kdtf) const override;
 
-    // ***  GEOMETRY LEVEL BUILDING  *** //
-    // ********************************* //
-    /**
-     * @brief Geometry-level parallel version of the
-     *  FastSAHKDTreeFactory::findSplitPositionBySAH function
-     *
-     * @param assignedThreads How many threads can be used to parallelize
-     *  computations
-     * @see FastSAHKDTreeFactory::findSplitPositionBySAH
-     */
-    double GEOM_findSplitPositionBySAH(
-        KDTreeNode *node,
-        vector<Primitive *> &primitives,
-        int assignedThreads
-    ) const override;
+  // ***  GEOMETRY LEVEL BUILDING  *** //
+  // ********************************* //
+  /**
+   * @brief Geometry-level parallel version of the
+   *  FastSAHKDTreeFactory::findSplitPositionBySAH function
+   *
+   * @param assignedThreads How many threads can be used to parallelize
+   *  computations
+   * @see FastSAHKDTreeFactory::findSplitPositionBySAH
+   */
+  double GEOM_findSplitPositionBySAH(KDTreeNode* node,
+                                     vector<Primitive*>& primitives,
+                                     int assignedThreads) const override;
 };

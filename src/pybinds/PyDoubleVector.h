@@ -3,7 +3,7 @@
 #include <PyHeliosUtils.h>
 #include <vector>
 
-namespace pyhelios{
+namespace pyhelios {
 
 /**
  * @author Alberto M. Esmoris Pena
@@ -12,38 +12,51 @@ namespace pyhelios{
  *
  * @see std::vector
  */
-class PyDoubleVector{
+class PyDoubleVector
+{
 public:
-    // ***  ATTRIBUTES  *** //
-    // ******************** //
-    std::vector<double> *vec = nullptr;
-    bool release = true;
+  // ***  ATTRIBUTES  *** //
+  // ******************** //
+  std::vector<double>* vec = nullptr;
+  bool release = true;
 
-    // ***  CONSTRUCTION / DESTRUCTION  *** //
-    // ************************************ //
-    PyDoubleVector(std::vector<double> *vec) : vec(vec), release(false) {}
-    PyDoubleVector(std::vector<double> const vec){
-        this->vec = new std::vector<double>(vec);
-        release = true;
-    }
-    virtual ~PyDoubleVector(){if(release && vec != nullptr) free(vec);}
+  // ***  CONSTRUCTION / DESTRUCTION  *** //
+  // ************************************ //
+  PyDoubleVector(std::vector<double>* vec)
+    : vec(vec)
+    , release(false)
+  {
+  }
+  PyDoubleVector(std::vector<double> const vec)
+  {
+    this->vec = new std::vector<double>(vec);
+    release = true;
+  }
+  virtual ~PyDoubleVector()
+  {
+    if (release && vec != nullptr)
+      free(vec);
+  }
 
-    // ***  GETTERS and SETTERS  *** //
-    // ***************************** //
-    double get(long _index){
-        size_t index = PyHeliosUtils::handlePythonIndex(_index, vec->size());
-        return (*vec)[index];
-    }
-    void set(long _index, double value){
-        size_t index = PyHeliosUtils::handlePythonIndex(_index, vec->size());
-        (*vec)[index] = value;
-    }
-    void insert(double value){vec->push_back(value);}
-    void erase(long _index){
-        size_t index = PyHeliosUtils::handlePythonIndex(_index, vec->size());
-        vec->erase(vec->begin() + index);
-    }
-    size_t length() {return vec->size();}
+  // ***  GETTERS and SETTERS  *** //
+  // ***************************** //
+  double get(long _index)
+  {
+    size_t index = PyHeliosUtils::handlePythonIndex(_index, vec->size());
+    return (*vec)[index];
+  }
+  void set(long _index, double value)
+  {
+    size_t index = PyHeliosUtils::handlePythonIndex(_index, vec->size());
+    (*vec)[index] = value;
+  }
+  void insert(double value) { vec->push_back(value); }
+  void erase(long _index)
+  {
+    size_t index = PyHeliosUtils::handlePythonIndex(_index, vec->size());
+    vec->erase(vec->begin() + index);
+  }
+  size_t length() { return vec->size(); }
 };
 
 }

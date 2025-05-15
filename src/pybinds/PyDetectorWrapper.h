@@ -7,8 +7,7 @@ using helios::filems::FMSFacade;
 
 #include <memory>
 
-
-namespace pyhelios{
+namespace pyhelios {
 
 /**
  * @author Alberto M. Esmoris Pena
@@ -17,39 +16,47 @@ namespace pyhelios{
  *
  * @see AbstractDetector
  */
-class PyDetectorWrapper {
+class PyDetectorWrapper
+{
 public:
-    // ***  ATTRIBUTES  *** //
-    // ******************** //
-    AbstractDetector &detector;
+  // ***  ATTRIBUTES  *** //
+  // ******************** //
+  AbstractDetector& detector;
 
-    // ***  CONSTRUCTION  *** //
-    // ********************** //
-    PyDetectorWrapper(
-        std::shared_ptr<AbstractDetector> detector
-    ) :
-        detector(*detector) {}
+  // ***  CONSTRUCTION  *** //
+  // ********************** //
+  PyDetectorWrapper(std::shared_ptr<AbstractDetector> detector)
+    : detector(*detector)
+  {
+  }
 
-    virtual ~PyDetectorWrapper() {}
+  virtual ~PyDetectorWrapper() {}
 
-    // ***  GETTERS and SETTERS  *** //
-    // ***************************** //
-    inline double getAccuracy()
-        {return detector.cfg_device_accuracy_m;}
-    inline void setAccuracy(double const accuracy)
-        {detector.cfg_device_accuracy_m = accuracy;}
-    inline double getRangeMin()
-        {return detector.cfg_device_rangeMin_m;}
-    inline void setRangeMin(double const rangeMin)
-        {detector.cfg_device_rangeMin_m = rangeMin;}
-    inline double getRangeMax()
-        {return detector.cfg_device_rangeMax_m;}
-    inline void setRangeMax(double const rangeMax)
-        {detector.cfg_device_rangeMax_m = rangeMax;}
-    inline double getLasScale()
-        {return detector.getFMS()->write.getMeasurementWriterLasScale();}
-    inline void setLasScale(double const lasScale)
-        {detector.getFMS()->write.setMeasurementWriterLasScale(lasScale);}
+  // ***  GETTERS and SETTERS  *** //
+  // ***************************** //
+  inline double getAccuracy() { return detector.cfg_device_accuracy_m; }
+  inline void setAccuracy(double const accuracy)
+  {
+    detector.cfg_device_accuracy_m = accuracy;
+  }
+  inline double getRangeMin() { return detector.cfg_device_rangeMin_m; }
+  inline void setRangeMin(double const rangeMin)
+  {
+    detector.cfg_device_rangeMin_m = rangeMin;
+  }
+  inline double getRangeMax() { return detector.cfg_device_rangeMax_m; }
+  inline void setRangeMax(double const rangeMax)
+  {
+    detector.cfg_device_rangeMax_m = rangeMax;
+  }
+  inline double getLasScale()
+  {
+    return detector.getFMS()->write.getMeasurementWriterLasScale();
+  }
+  inline void setLasScale(double const lasScale)
+  {
+    detector.getFMS()->write.setMeasurementWriterLasScale(lasScale);
+  }
 };
 
 }

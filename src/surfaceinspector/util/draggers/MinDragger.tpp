@@ -64,5 +64,3 @@ template <typename E> void MinDragger<E>::update(){
         ++c; // Update index of current element
     }
 }
-
-

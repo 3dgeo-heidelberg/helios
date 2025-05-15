@@ -1,9 +1,9 @@
 #pragma once
 
-#include <PyVertexWrapper.h>
 #include <AABB.h>
+#include <PyVertexWrapper.h>
 
-namespace pyhelios{
+namespace pyhelios {
 
 /**
  * @author Alberto M. Esmoris Pena
@@ -12,27 +12,35 @@ namespace pyhelios{
  *
  * @see AABB
  */
-class PyAABBWrapper{
+class PyAABBWrapper
+{
 public:
-    // ***  ATTRIBUTE  *** //
-    // ******************* //
-    AABB *aabb;
+  // ***  ATTRIBUTE  *** //
+  // ******************* //
+  AABB* aabb;
 
-    // ***  CONSTRUCTION / DESTRUCTION  *** //
-    // ************************************ //
-    PyAABBWrapper(AABB *aabb) : aabb(aabb) {}
-    virtual ~PyAABBWrapper() = default;
+  // ***  CONSTRUCTION / DESTRUCTION  *** //
+  // ************************************ //
+  PyAABBWrapper(AABB* aabb)
+    : aabb(aabb)
+  {
+  }
+  virtual ~PyAABBWrapper() = default;
 
-    // ***  GETTERS and SETTERS  *** //
-    // ***************************** //
-    inline PyVertexWrapper * getMinVertex()
-        {return new PyVertexWrapper(aabb->vertices);}
-    inline PyVertexWrapper * getMaxVertex()
-        {return new PyVertexWrapper(aabb->vertices + 1);}
+  // ***  GETTERS and SETTERS  *** //
+  // ***************************** //
+  inline PyVertexWrapper* getMinVertex()
+  {
+    return new PyVertexWrapper(aabb->vertices);
+  }
+  inline PyVertexWrapper* getMaxVertex()
+  {
+    return new PyVertexWrapper(aabb->vertices + 1);
+  }
 
-    // ***  TO STRING  *** //
-    // ******************* //
-    inline std::string toString(){return aabb->toString();}
+  // ***  TO STRING  *** //
+  // ******************* //
+  inline std::string toString() { return aabb->toString(); }
 };
 
 }

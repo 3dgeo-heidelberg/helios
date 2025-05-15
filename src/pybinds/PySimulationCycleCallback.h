@@ -1,13 +1,13 @@
 #pragma once
 
-#include <SimulationCycleCallback.h>
 #include <PyHeliosOutputWrapper.h>
+#include <SimulationCycleCallback.h>
 #include <boost/python.hpp>
 
 using boost::ref;
 using boost::python::call;
 
-namespace pyhelios{
+namespace pyhelios {
 
 /**
  * @author Alberto M. Esmoris Pena
@@ -16,36 +16,36 @@ namespace pyhelios{
  *
  * @see PyHeliosOutputWrapper
  */
-class PySimulationCycleCallback : public SimulationCycleCallback {
+class PySimulationCycleCallback : public SimulationCycleCallback
+{
 public:
-    // ***  ATTRIBUTES  *** //
-    // ******************** //
-    PyObject *pyCallback;
+  // ***  ATTRIBUTES  *** //
+  // ******************** //
+  PyObject* pyCallback;
 
-    // ***  CONSTRUCTION / DESTRUCTION  *** //
-    // ************************************ //
-    PySimulationCycleCallback(PyObject *pyCallback) : pyCallback(pyCallback) {}
-    ~PySimulationCycleCallback() override {}
+  // ***  CONSTRUCTION / DESTRUCTION  *** //
+  // ************************************ //
+  PySimulationCycleCallback(PyObject* pyCallback)
+    : pyCallback(pyCallback)
+  {
+  }
+  ~PySimulationCycleCallback() override {}
 
-    // ***  F U N C T O R  *** //
-    // *********************** //
-    void operator() (
-        std::vector<Measurement> &measurements,
-        std::vector<Trajectory> &trajectories,
-        std::string const &outpath
-    ) override {
-        PyHeliosOutputWrapper phow(
-            measurements,
-            trajectories,
-            outpath,
-            std::vector<std::string>{outpath},
-            false
-        );
-        PyGILState_STATE gilState = PyGILState_Ensure();
-        call<void>(pyCallback, ref(phow));
-        PyGILState_Release(gilState);
-    }
-
+  // ***  F U N C T O R  *** //
+  // *********************** //
+  void operator()(std::vector<Measurement>& measurements,
+                  std::vector<Trajectory>& trajectories,
+                  std::string const& outpath) override
+  {
+    PyHeliosOutputWrapper phow(measurements,
+                               trajectories,
+                               outpath,
+                               std::vector<std::string>{ outpath },
+                               false);
+    PyGILState_STATE gilState = PyGILState_Ensure();
+    call<void>(pyCallback, ref(phow));
+    PyGILState_Release(gilState);
+  }
 };
 
 }

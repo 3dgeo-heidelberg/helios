@@ -7,8 +7,8 @@
 #include <memory>
 #include <vector>
 
-
-namespace helios { namespace filems{
+namespace helios {
+namespace filems {
 
 using std::make_shared;
 using std::vector;
@@ -24,46 +24,39 @@ using std::vector;
  * @see Measurement
  * @see filems::SimpleSyncFileMeasurementWriter
  */
-class SimpleVectorialSyncFileMeasurementWriter :
-    public SimpleSyncFileWriter<
-        vector<Measurement> const &,
-        glm::dvec3 const &
-    >
+class SimpleVectorialSyncFileMeasurementWriter
+  : public SimpleSyncFileWriter<vector<Measurement> const&, glm::dvec3 const&>
 {
 protected:
-    // ***  ATTRIBUTES  *** //
-    // ******************** //
-    /**
-     * @brief The measurement write strategy that is wrapped by the main write
-     *  strategy in a vectorial fashion
-     *  ( filems::SimpleSyncFileWriter::writeStrategy )
-     * @see filems::DirectMeasurementWriteStrategy
-     */
-    DirectMeasurementWriteStrategy dmws;
+  // ***  ATTRIBUTES  *** //
+  // ******************** //
+  /**
+   * @brief The measurement write strategy that is wrapped by the main write
+   *  strategy in a vectorial fashion
+   *  ( filems::SimpleSyncFileWriter::writeStrategy )
+   * @see filems::DirectMeasurementWriteStrategy
+   */
+  DirectMeasurementWriteStrategy dmws;
 
 public:
-    // ***  CONSTRUCTION / DESTRUCTION  *** //
-    // ************************************ //
-    /**
-     * @brief Simple synchronous file measurement vector writer constructor
-     * @see filems::SimpleSyncFileWriter::SimpleSyncFileWriter
-     */
-    explicit SimpleVectorialSyncFileMeasurementWriter(
-        const std::string& path,
-        std::ios_base::openmode om = std::ios_base::app
-    ) :
-        SimpleSyncFileWriter<
-            vector<Measurement> const&,
-            glm::dvec3 const&
-        >(path, om),
-        dmws(this->ofs)
-    {
-        this->writeStrategy = make_shared<VectorialWriteStrategy<
-            Measurement,
-            glm::dvec3 const &
-        >>(dmws);
-    }
-    virtual ~SimpleVectorialSyncFileMeasurementWriter() = default;
+  // ***  CONSTRUCTION / DESTRUCTION  *** //
+  // ************************************ //
+  /**
+   * @brief Simple synchronous file measurement vector writer constructor
+   * @see filems::SimpleSyncFileWriter::SimpleSyncFileWriter
+   */
+  explicit SimpleVectorialSyncFileMeasurementWriter(
+    const std::string& path,
+    std::ios_base::openmode om = std::ios_base::app)
+    : SimpleSyncFileWriter<vector<Measurement> const&, glm::dvec3 const&>(path,
+                                                                          om)
+    , dmws(this->ofs)
+  {
+    this->writeStrategy =
+      make_shared<VectorialWriteStrategy<Measurement, glm::dvec3 const&>>(dmws);
+  }
+  virtual ~SimpleVectorialSyncFileMeasurementWriter() = default;
 };
 
-}}
+}
+}

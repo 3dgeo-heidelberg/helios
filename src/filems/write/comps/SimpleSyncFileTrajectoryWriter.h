@@ -5,7 +5,8 @@
 
 #include <memory>
 
-namespace helios { namespace filems{
+namespace helios {
+namespace filems {
 
 using std::make_shared;
 
@@ -19,29 +20,26 @@ using std::make_shared;
  * @see filems::DirectTrajectoryWriteStrategy
  * @see Trajectory
  */
-class SimpleSyncFileTrajectoryWriter :
-    public SimpleSyncFileWriter<Trajectory const &>
+class SimpleSyncFileTrajectoryWriter
+  : public SimpleSyncFileWriter<Trajectory const&>
 {
 
 public:
-    // ***  CONSTRUCTION / DESTRUCTION  *** //
-    // ************************************ //
-    /**
-     * @brief Simple synchronous file trajectory writer constructor
-     * @see filems::SimpleSyncFileWriter::SimpleSyncFileWriter
-     */
-    explicit SimpleSyncFileTrajectoryWriter(
-        const std::string& path,
-        std::ios_base::openmode om = std::ios_base::app
-    ) :
-        SimpleSyncFileWriter<Trajectory const&>(path, om)
-    {
-        this->writeStrategy = make_shared<DirectTrajectoryWriteStrategy>(
-            this->ofs
-        );
-    }
-    virtual ~SimpleSyncFileTrajectoryWriter() = default;
+  // ***  CONSTRUCTION / DESTRUCTION  *** //
+  // ************************************ //
+  /**
+   * @brief Simple synchronous file trajectory writer constructor
+   * @see filems::SimpleSyncFileWriter::SimpleSyncFileWriter
+   */
+  explicit SimpleSyncFileTrajectoryWriter(
+    const std::string& path,
+    std::ios_base::openmode om = std::ios_base::app)
+    : SimpleSyncFileWriter<Trajectory const&>(path, om)
+  {
+    this->writeStrategy = make_shared<DirectTrajectoryWriteStrategy>(this->ofs);
+  }
+  virtual ~SimpleSyncFileTrajectoryWriter() = default;
 };
 
-
-}}
+}
+}

@@ -5,7 +5,8 @@
 
 #include <memory>
 
-namespace helios { namespace filems{
+namespace helios {
+namespace filems {
 
 using std::make_shared;
 
@@ -19,31 +20,28 @@ using std::make_shared;
  * @see filems::ZipM̀easurementWriteStrategy
  * @see Measurement
  */
-class ZipSyncFileMeasurementWriter :
-    public ZipSyncFileWriter<Measurement const&, glm::dvec3 const&>
+class ZipSyncFileMeasurementWriter
+  : public ZipSyncFileWriter<Measurement const&, glm::dvec3 const&>
 {
 
 public:
-    // ***  CONSTRUCTION / DESTRUCTION  *** //
-    // ************************************ //
-    /**
-     * @brief Simple synchronous zipped measurement writer constructor
-     * @see filems::ZipSyncFileWriter::ZipSyncFileWriter
-     */
-    explicit ZipSyncFileMeasurementWriter(
-        const string &path,
-        int compressionMode = boost::iostreams::zlib::best_compression
-    ) :
-        ZipSyncFileWriter<Measurement const&, glm::dvec3 const&>(
-            path, compressionMode
-        )
-    {
-        this->writeStrategy = make_shared<ZipMeasurementWriteStrategy>(
-            this->ofs,
-            *(this->oa)
-        );
-    }
-    virtual ~ZipSyncFileMeasurementWriter() = default;
+  // ***  CONSTRUCTION / DESTRUCTION  *** //
+  // ************************************ //
+  /**
+   * @brief Simple synchronous zipped measurement writer constructor
+   * @see filems::ZipSyncFileWriter::ZipSyncFileWriter
+   */
+  explicit ZipSyncFileMeasurementWriter(
+    const string& path,
+    int compressionMode = boost::iostreams::zlib::best_compression)
+    : ZipSyncFileWriter<Measurement const&, glm::dvec3 const&>(path,
+                                                               compressionMode)
+  {
+    this->writeStrategy =
+      make_shared<ZipMeasurementWriteStrategy>(this->ofs, *(this->oa));
+  }
+  virtual ~ZipSyncFileMeasurementWriter() = default;
 };
 
-}}
+}
+}

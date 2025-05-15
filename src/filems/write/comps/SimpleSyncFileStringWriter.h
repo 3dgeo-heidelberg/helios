@@ -5,7 +5,8 @@
 
 #include <memory>
 
-namespace helios{ namespace filems{
+namespace helios {
+namespace filems {
 
 using std::make_shared;
 
@@ -19,27 +20,25 @@ using std::make_shared;
  * @see filems::DirectStringWriteStrategy
  * @see Measurement
  */
-class SimpleSyncFileStringWriter :
-    public SimpleSyncFileWriter<std::string const &>
+class SimpleSyncFileStringWriter
+  : public SimpleSyncFileWriter<std::string const&>
 {
 public:
-    // ***  CONSTRUCTION / DESTRUCTION  *** //
-    // ************************************ //
-    /**
-     * @brief Simple synchronous file string writer constructor
-     * @see filems::SimpleSyncFileWriter::SimpleSyncFileWriter
-     */
-    explicit SimpleSyncFileStringWriter(
-        const std::string &path,
-        std::ios_base::openmode om = std::ios_base::app
-    ) :
-        SimpleSyncFileWriter<std::string const &>(path, om)
-    {
-        this->writeStrategy = make_shared<DirectStringWriteStrategy>(
-            this->ofs
-        );
-    }
-    virtual ~SimpleSyncFileStringWriter() = default;
+  // ***  CONSTRUCTION / DESTRUCTION  *** //
+  // ************************************ //
+  /**
+   * @brief Simple synchronous file string writer constructor
+   * @see filems::SimpleSyncFileWriter::SimpleSyncFileWriter
+   */
+  explicit SimpleSyncFileStringWriter(
+    const std::string& path,
+    std::ios_base::openmode om = std::ios_base::app)
+    : SimpleSyncFileWriter<std::string const&>(path, om)
+  {
+    this->writeStrategy = make_shared<DirectStringWriteStrategy>(this->ofs);
+  }
+  virtual ~SimpleSyncFileStringWriter() = default;
 };
 
-}}
+}
+}

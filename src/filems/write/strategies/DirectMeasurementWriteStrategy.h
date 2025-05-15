@@ -8,7 +8,8 @@
 #include <fstream>
 #include <sstream>
 
-namespace helios { namespace filems{
+namespace helios {
+namespace filems {
 
 /**
  * @author Alberto M. Esmoris Pena
@@ -19,69 +20,66 @@ namespace helios { namespace filems{
  * @see filems::SimpleSyncFileMeasurementWriter
  * @see filems::VectorialMeasurementWriteStrategy
  */
-class DirectMeasurementWriteStrategy :
-    public WriteStrategy<Measurement const &, glm::dvec3 const &>
+class DirectMeasurementWriteStrategy
+  : public WriteStrategy<Measurement const&, glm::dvec3 const&>
 {
 protected:
-    // ***  ATTRIBUTES  *** //
-    // ******************** //
-    /**
-     * @brief The output file stream to do the writing
-     */
-    std::ofstream &ofs;
+  // ***  ATTRIBUTES  *** //
+  // ******************** //
+  /**
+   * @brief The output file stream to do the writing
+   */
+  std::ofstream& ofs;
 
 public:
-    // ***  CONSTRUCTION / DESTRUCTION  *** //
-    // ************************************ //
-    /**
-     * @brief Default constructor for direct measurement write strategy
-     * @see DirectMeasurementWriteStrategy::ofs
-     */
-    DirectMeasurementWriteStrategy(std::ofstream &ofs) : ofs(ofs) {}
-    virtual ~DirectMeasurementWriteStrategy() {}
+  // ***  CONSTRUCTION / DESTRUCTION  *** //
+  // ************************************ //
+  /**
+   * @brief Default constructor for direct measurement write strategy
+   * @see DirectMeasurementWriteStrategy::ofs
+   */
+  DirectMeasurementWriteStrategy(std::ofstream& ofs)
+    : ofs(ofs)
+  {
+  }
+  virtual ~DirectMeasurementWriteStrategy() {}
 
-    // ***  WRITE STRATEGY INTERFACE *** //
-    // ********************************* //
-    /**
-     * @brief Write measurement to file
-     * @param m Measurement to be written
-     * @param shift Shift for the measurement position
-     * @see Measurement
-     */
-    void write(Measurement const &m, glm::dvec3 const & shift) override{
-        ofs << measurementToString(m, shift);
-    }
+  // ***  WRITE STRATEGY INTERFACE *** //
+  // ********************************* //
+  /**
+   * @brief Write measurement to file
+   * @param m Measurement to be written
+   * @param shift Shift for the measurement position
+   * @see Measurement
+   */
+  void write(Measurement const& m, glm::dvec3 const& shift) override
+  {
+    ofs << measurementToString(m, shift);
+  }
 
 protected:
-    // ***  UTILS  *** //
-    // *************** //
-    /**
-     * @brief Build a string from measurement data
-     * @param m Measurement data itself
-     * @param shift Shift for the measurement coordinates
-     * @return String with measurement data
-     */
-    virtual std::string measurementToString(
-        Measurement const &m,
-        glm::dvec3 const & shift
-    ){
-        glm::dvec3 const shifted = m.position + shift;
-        std::stringstream ss;
-        ss << std::setprecision(4) << std::fixed;
-        ss  << shifted.x << " "
-            << shifted.y << " "
-            << shifted.z << " "
-            << m.intensity << " "
-            << m.echo_width << " "
-            << m.returnNumber << " "
-            << m.pulseReturnNumber << " "
-            << m.fullwaveIndex << " "
-            << m.hitObjectId << " "
-            << m.classification << " "
-            << std::setprecision(9) << std::fixed
-            << m.gpsTime / 1000000000.0 << std::endl;
-        return ss.str();
-    }
+  // ***  UTILS  *** //
+  // *************** //
+  /**
+   * @brief Build a string from measurement data
+   * @param m Measurement data itself
+   * @param shift Shift for the measurement coordinates
+   * @return String with measurement data
+   */
+  virtual std::string measurementToString(Measurement const& m,
+                                          glm::dvec3 const& shift)
+  {
+    glm::dvec3 const shifted = m.position + shift;
+    std::stringstream ss;
+    ss << std::setprecision(4) << std::fixed;
+    ss << shifted.x << " " << shifted.y << " " << shifted.z << " "
+       << m.intensity << " " << m.echo_width << " " << m.returnNumber << " "
+       << m.pulseReturnNumber << " " << m.fullwaveIndex << " " << m.hitObjectId
+       << " " << m.classification << " " << std::setprecision(9) << std::fixed
+       << m.gpsTime / 1000000000.0 << std::endl;
+    return ss.str();
+  }
 };
 
-}}
+}
+}
