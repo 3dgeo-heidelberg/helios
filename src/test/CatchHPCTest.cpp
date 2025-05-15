@@ -1,4 +1,5 @@
 #include <catch2/catch_test_macros.hpp>
+#include <catch2/generators/catch_generators.hpp>
 #include <hpc/SM_ParallelMergeSort.h>
 
 #include <algorithm>
@@ -94,115 +95,30 @@ TEST_CASE( "HPC test" ) {
     Z4 = std::vector<int>(X4);
     Z5 = std::vector<int>(X5);
 
-    SECTION("2 threads sorter") {
-        SM_ParallelMergeSort<std::vector<int>::iterator, HPCTest_IntComparator>
-            PMS2T1(2, 4);  // 2 Threads, for ints
-        SM_ParallelMergeSort<std::vector<float>::iterator, HPCTest_FloatComparator>
-            PMS2T2(2, 4);  // 2 Threads, for floats
-        SM_ParallelMergeSort<
-            std::vector<double>::iterator,
-            HPCTest_DoubleComparator
-        > PMS2T3(2, 4);  // 2 Threads, for doubles
+    int n_threads = GENERATE(2, 3, 11, 16);
 
-        // Test 2 threads sorter
-        PMS2T1.sort(Z1.begin(), Z1.end(), HPCTest_IntComparator());
-        REQUIRE(Y1.size() == Z1.size());
-        REQUIRE(std::equal(Y1.begin(), Y1.end(), Z1.begin()));
-        PMS2T2.sort(Z2.begin(), Z2.end(), HPCTest_FloatComparator());
-        REQUIRE(Y2.size() == Z2.size());
-        REQUIRE(std::equal(Y2.begin(), Y2.end(), Z2.begin()));
-        PMS2T3.sort(Z3.begin(), Z3.end(), HPCTest_DoubleComparator());
-        REQUIRE(Y3.size() == Z3.size());
-        REQUIRE(std::equal(Y3.begin(), Y3.end(), Z3.begin()));
-        PMS2T1.sort(Z4.begin(), Z4.end(), HPCTest_IntComparator());
-        REQUIRE(Y4.size() == Z4.size());
-        REQUIRE(std::equal(Y4.begin(), Y4.end(), Z4.begin()));
-        PMS2T1.sort(Z5.begin(), Z5.end(), HPCTest_IntComparator());
-        REQUIRE(Y5.size() == Z5.size());
-        REQUIRE(std::equal(Y5.begin(), Y5.end(), Z5.begin()));
-    }
-
-    SECTION("3 threads sorter") {
-        SM_ParallelMergeSort<std::vector<int>::iterator, HPCTest_IntComparator>
-            PMS3T1(3, 6);  // 3 Threads, for ints
-        SM_ParallelMergeSort<std::vector<float>::iterator, HPCTest_FloatComparator>
-            PMS3T2(3, 6);  // 3 Threads, for floats
-        SM_ParallelMergeSort<
-            std::vector<double>::iterator,
-            HPCTest_DoubleComparator
-        > PMS3T3(3, 6);  // 3 Threads, for doubles
-
-        // Test 3 threads sorter
-        PMS3T1.sort(Z1.begin(), Z1.end(), HPCTest_IntComparator());
-        REQUIRE(Y1.size() == Z1.size());
-        REQUIRE(std::equal(Y1.begin(), Y1.end(), Z1.begin()));
-        PMS3T2.sort(Z2.begin(), Z2.end(), HPCTest_FloatComparator());
-        REQUIRE(Y2.size() == Z2.size());
-        REQUIRE(std::equal(Y2.begin(), Y2.end(), Z2.begin()));
-        PMS3T3.sort(Z3.begin(), Z3.end(), HPCTest_DoubleComparator());
-        REQUIRE(Y3.size() == Z3.size());
-        REQUIRE(std::equal(Y3.begin(), Y3.end(), Z3.begin()));
-        PMS3T1.sort(Z4.begin(), Z4.end(), HPCTest_IntComparator());
-        REQUIRE(Y4.size() == Z4.size());
-        REQUIRE(std::equal(Y4.begin(), Y4.end(), Z4.begin()));
-        PMS3T1.sort(Z5.begin(), Z5.end(), HPCTest_IntComparator());
-        REQUIRE(Y5.size() == Z5.size());
-        REQUIRE(std::equal(Y5.begin(), Y5.end(), Z5.begin()));
-    }
-
-    SECTION("11 threads sorter") {
-        SM_ParallelMergeSort<std::vector<int>::iterator, HPCTest_IntComparator>
-            PMS11T1(11, 22);  // 11 Threads, for ints
-        SM_ParallelMergeSort<std::vector<float>::iterator, HPCTest_FloatComparator>
-            PMS11T2(11, 22);  // 11 Threads, for floats
-        SM_ParallelMergeSort<
-            std::vector<double>::iterator,
-            HPCTest_DoubleComparator
-        > PMS11T3(11, 22);  // 11 Threads, for doubles
-
-        // Test 11 threads sorter
-        PMS11T1.sort(Z1.begin(), Z1.end(), HPCTest_IntComparator());
-        REQUIRE(Y1.size() == Z1.size());
-        REQUIRE(std::equal(Y1.begin(), Y1.end(), Z1.begin()));
-        PMS11T2.sort(Z2.begin(), Z2.end(), HPCTest_FloatComparator());
-        REQUIRE(Y2.size() == Z2.size());
-        REQUIRE(std::equal(Y2.begin(), Y2.end(), Z2.begin()));
-        PMS11T3.sort(Z3.begin(), Z3.end(), HPCTest_DoubleComparator());
-        REQUIRE(Y3.size() == Z3.size());
-        REQUIRE(std::equal(Y3.begin(), Y3.end(), Z3.begin()));
-        PMS11T1.sort(Z4.begin(), Z4.end(), HPCTest_IntComparator());
-        REQUIRE(Y4.size() == Z4.size());
-        REQUIRE(std::equal(Y4.begin(), Y4.end(), Z4.begin()));
-        PMS11T1.sort(Z5.begin(), Z5.end(), HPCTest_IntComparator());
-        REQUIRE(Y5.size() == Z5.size());
-        REQUIRE(std::equal(Y5.begin(), Y5.end(), Z5.begin()));
-    }
-
-    SECTION("16 threads sorter") {
-        SM_ParallelMergeSort<std::vector<int>::iterator, HPCTest_IntComparator>
-            PMS16T1(16, 32);  // 16 Threads, for ints
-        SM_ParallelMergeSort<std::vector<float>::iterator, HPCTest_FloatComparator>
-            PMS16T2(16, 32);  // 16 Threads, for floats
-        SM_ParallelMergeSort<
-            std::vector<double>::iterator,
-            HPCTest_DoubleComparator
-        > PMS16T3(16, 32);  // 16 Threads, for doubles
-
-        // Test 16 threads sorter
-        PMS16T1.sort(Z1.begin(), Z1.end(), HPCTest_IntComparator());
-        REQUIRE(Y1.size() == Z1.size());
-        REQUIRE(std::equal(Y1.begin(), Y1.end(), Z1.begin()));
-        PMS16T2.sort(Z2.begin(), Z2.end(), HPCTest_FloatComparator());
-        REQUIRE(Y2.size() == Z2.size());
-        REQUIRE(std::equal(Y2.begin(), Y2.end(), Z2.begin()));
-        PMS16T3.sort(Z3.begin(), Z3.end(), HPCTest_DoubleComparator());
-        REQUIRE(Y3.size() == Z3.size());
-        REQUIRE(std::equal(Y3.begin(), Y3.end(), Z3.begin()));
-        PMS16T1.sort(Z4.begin(), Z4.end(), HPCTest_IntComparator());
-        REQUIRE(Y4.size() == Z4.size());
-        REQUIRE(std::equal(Y4.begin(), Y4.end(), Z4.begin()));
-        PMS16T1.sort(Z5.begin(), Z5.end(), HPCTest_IntComparator());
-        REQUIRE(Y5.size() == Z5.size());
-        REQUIRE(std::equal(Y5.begin(), Y5.end(), Z5.begin()));
-    }
+    SM_ParallelMergeSort<std::vector<int>::iterator, HPCTest_IntComparator>
+        PMST1(n_threads, 2*n_threads);  // n Threads, for ints
+    SM_ParallelMergeSort<std::vector<float>::iterator, HPCTest_FloatComparator>
+        PMST2(n_threads, 2*n_threads);  // n Threads, for floats
+    SM_ParallelMergeSort<
+        std::vector<double>::iterator,
+        HPCTest_DoubleComparator
+    > PMST3(n_threads, 2*n_threads);  // n Threads, for doubles 
+    
+    PMST1.sort(Z1.begin(), Z1.end(), HPCTest_IntComparator());
+    REQUIRE(Y1.size() == Z1.size());
+    REQUIRE(std::equal(Y1.begin(), Y1.end(), Z1.begin()));
+    PMST2.sort(Z2.begin(), Z2.end(), HPCTest_FloatComparator());
+    REQUIRE(Y2.size() == Z2.size());
+    REQUIRE(std::equal(Y2.begin(), Y2.end(), Z2.begin()));
+    PMST3.sort(Z3.begin(), Z3.end(), HPCTest_DoubleComparator());
+    REQUIRE(Y3.size() == Z3.size());
+    REQUIRE(std::equal(Y3.begin(), Y3.end(), Z3.begin()));
+    PMST1.sort(Z4.begin(), Z4.end(), HPCTest_IntComparator());
+    REQUIRE(Y4.size() == Z4.size());
+    REQUIRE(std::equal(Y4.begin(), Y4.end(), Z4.begin()));
+    PMST1.sort(Z5.begin(), Z5.end(), HPCTest_IntComparator());
+    REQUIRE(Y5.size() == Z5.size());
+    REQUIRE(std::equal(Y5.begin(), Y5.end(), Z5.begin()));
 }
