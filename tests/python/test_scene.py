@@ -199,6 +199,18 @@ def test_rotate_scenepart_missing_parameters(box):
         box.rotate(to_axis=[1.0, 0, 0])
 
 
+def test_rotate_scenepart_rotation_center(box_f):
+    box1 = box_f()
+    box2 = box_f()
+
+    box1.rotate(angle="180 deg", axis=[0, 0, 1.0], rotation_center=[100.0, 0.0, 0.0])
+    box2.translate([200.0, 0.0, 0.0])
+    bbox1 = get_bbox(box1)
+    bbox2 = get_bbox(box2)
+
+    assert np.allclose(bbox1, bbox2)
+
+
 def test_scale_scenepart(box_f):
     box1 = box_f()
     box2 = box_f()
