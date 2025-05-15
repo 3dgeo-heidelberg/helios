@@ -18,6 +18,9 @@ import pyhelios
 from .test_demo_scenes import find_playback_dir
 from . import pcloud_utils as pcu
 
+cycleMeasurementsCount = 0
+cp1 = []
+cpn = [0, 0, 0]
 
 def find_scene(survey_file):
     """helper function which returns the path to the scene XML file"""
@@ -44,6 +47,34 @@ def get_las_version(las_filename):
         return int.from_bytes(version_minor, byteorder='big'), int.from_bytes(version_major, byteorder='big')
 
 
+def callback(output=None):
+    with pyhelios.PYHELIOS_SIMULATION_BUILD_CONDITION_VARIABLE:
+        global cycleMeasurementsCount
+        global cp1
+        global cpn
+        measurements = output.measurements
+
+        # Set 1st cycle point
+        if cycleMeasurementsCount == 0 and len(measurements) > 0:
+            pos = measurements[0].getPosition()
+            cp1.append(pos.x)
+            cp1.append(pos.y)
+            cp1.append(pos.z)
+
+        # Update cycle measurement count
+        cycleMeasurementsCount += len(measurements)
+
+        # Update last cycle point
+        if len(measurements) > 0:
+            pos = measurements[len(measurements)-1].getPosition()
+            cpn[0] = pos.x
+            cpn[1] = pos.y
+            cpn[2] = pos.z
+
+        # Notify for conditional variable
+        pyhelios.PYHELIOS_SIMULATION_BUILD_CONDITION_VARIABLE.notify()
+
+
 @pytest.fixture(scope="session")
 def test_sim(output_dir):
     """
@@ -62,6 +93,34 @@ def test_sim(output_dir):
         simB.setLas10(las10)
         simB.setRebuildScene(True)
         simB.setZipOutput(zip_output)
+
+        sim = simB.build()
+
+        return sim
+
+    return create_test_sim
+
+
+@pytest.fixture(scope="session")
+def test_sim_callback(output_dir):
+    """
+    Fixture which returns a simulation object for a given survey path
+    """
+
+    def create_test_sim(survey_path, zip_output=True, las_output=True):
+        # pyhelios.loggingSilent()
+        from pyhelios import SimulationBuilder
+        simB = SimulationBuilder(
+            surveyPath=str(survey_path.absolute()),
+            assetsDir=str(Path('assets')),
+            outputDir=str(output_dir),
+        )
+        simB.setLasOutput(las_output)
+        simB.setRebuildScene(True)
+        simB.setZipOutput(zip_output)
+        simB.setCallbackFrequency(10)
+        simB.setCallback(callback)
+        simB.setNumThreads(0)
 
         sim = simB.build()
 
@@ -378,6 +437,18 @@ def test_output(output_dir, export_to_file):
 def test_beam_origin(test_sim):
     survey_path = Path('data') / 'surveys' / 'toyblocks' / 'custom_als_toyblocks.xml'
     sim = test_sim(survey_path)
+    sim.start()
+    output = sim.join()
+    measurements, trajectories = pyhelios.outputToNumpy(output)
+    z = 80.0
+    ori = measurements[:, 3:6]
+    z_expected = z + 0.7 - 0.286  # from platform scannerMount and scanner beamOrigin
+    assert np.max(ori[:, 2]) == z_expected
+
+
+def test_beam_origin_with_callback(test_sim_callback):
+    survey_path = Path('data') / 'surveys' / 'toyblocks' / 'custom_als_toyblocks.xml'
+    sim = test_sim_callback(survey_path)
     sim.start()
     output = sim.join()
     measurements, trajectories = pyhelios.outputToNumpy(output)
