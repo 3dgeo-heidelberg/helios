@@ -1,7 +1,7 @@
 #ifndef _HELIOS_FILEMS_HELIOS_WRITER_H_
 #define _HELIOS_FILEMS_HELIOS_WRITER_H_
-
 #include <filems/write/comps/SyncFileWriter.h>
+#include <util/HeliosException.h>
 
 #include <boost/filesystem.hpp>
 

@@ -1,5 +1,9 @@
 #pragma once
 
+#include <string>
+#include <unordered_map>
+
+
 // TODO: use macros (again) so __FILE__ __LINE__ could be automatically added to
 // certain error levels? the log levels we support
 /**

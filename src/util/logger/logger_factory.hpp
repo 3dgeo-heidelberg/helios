@@ -2,6 +2,7 @@
 
 #include <logging_common.hpp>
 #include <logging_creation.hpp>
+#include <std_out_logger.hpp>
 
 /**
  * @brief Logger factory class can be used to build loggers

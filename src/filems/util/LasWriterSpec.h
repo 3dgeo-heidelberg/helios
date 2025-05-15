@@ -3,8 +3,10 @@
 #include <helios_version.h>
 
 #include <glm/glm.hpp>
+#include <logging.hpp>
 #include <laswriter.hpp>
 
+#include <memory>
 #include <sstream>
 #include <string>
 
@@ -294,7 +296,7 @@ public:
    * @brief Build a LAS writer from this specification
    * @return Built LAS writer from current state of specification
    */
-  shared_ptr<LASwriter> makeWriter(std::string const& path, bool const compress)
+  std::shared_ptr<LASwriter> makeWriter(std::string const& path, bool const compress)
   {
     // Create LAS writer from specification
     lwOpener.set_file_name(path.c_str());

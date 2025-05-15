@@ -1,5 +1,10 @@
 #pragma once
 
+#include <logger.hpp>
+
+#include <fstream>
+
+
 // TODO: add log rolling
 // logger that writes to file
 /**

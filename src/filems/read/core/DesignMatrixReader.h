@@ -2,7 +2,14 @@
 #define _HELIOS_FILEMS_DESIGN_MATRIX_READER_H_
 
 #include <filems/read/comps/BufferedLineFileReader.h>
+#include <filems/read/core/DesignMatrixReader.h>
+#include <filems/read/exceptions/EndOfReadingException.h>
+#include <fluxionum/DesignMatrix.h>
+#include <util/HeliosException.h>
 
+#include <armadillo>
+
+#include <string>
 #include <unordered_map>
 #include <vector>
 

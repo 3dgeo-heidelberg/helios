@@ -1,5 +1,7 @@
 #pragma once
 
+#include <KDTreeNode.h>
+
 /**
  * @author Alberto M. Esmoris Pena
  * @verison 1.0

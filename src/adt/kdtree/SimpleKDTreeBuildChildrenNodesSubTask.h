@@ -1,5 +1,6 @@
 #pragma once
 
+#include <KDTreeNode.h>
 #include <SharedSubTask.h>
 #include <SharedTaskSequencer.h>
 

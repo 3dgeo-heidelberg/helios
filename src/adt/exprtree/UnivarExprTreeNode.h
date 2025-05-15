@@ -4,6 +4,7 @@
 #include <util/HeliosException.h>
 
 #include <cmath>
+#include <sstream>
 
 /**
  * @author Alberto M. Esmoris Pena

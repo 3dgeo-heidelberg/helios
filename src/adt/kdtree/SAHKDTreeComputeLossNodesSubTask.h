@@ -1,7 +1,11 @@
 #pragma once
 
+#include <Primitive.h>
 #include <SharedSubTask.h>
 #include <SharedTaskSequencer.h>
+
+#include <vector>
+
 
 /**
  * @author Alberto M. Esmoris Pena
@@ -23,7 +27,7 @@ protected:
    * @brief Primitives being splitted to compute corresponding loss
    *  function
    */
-  vector<Primitive*> const& primitives;
+  std::vector<Primitive*> const& primitives;
   /**
    * @brief Start split position
    */
@@ -66,7 +70,7 @@ protected:
    * @brief Function to colculate the loss itself for a given split
    * @see SAHKDTreeFactory::splitLoss
    */
-  std::function<double(vector<Primitive*> const& primitives,
+  std::function<double(std::vector<Primitive*> const& primitives,
                        int const splitAxis,
                        double const splitPos,
                        double const r)>
@@ -80,7 +84,7 @@ public:
    */
   SAHKDTreeComputeLossNodesSubTask(
     std::shared_ptr<SharedTaskSequencer> ch,
-    vector<Primitive*> const& primitives,
+    std::vector<Primitive*> const& primitives,
     double const start,
     double const step,
     int const splitAxis,
@@ -90,7 +94,7 @@ public:
     size_t const endNode,
     double& partialLoss,
     double& partialSplitPos,
-    std::function<double(vector<Primitive*> const& primitives,
+    std::function<double(std::vector<Primitive*> const& primitives,
                          int const splitAxis,
                          double const splitPos,
                          double const r)> splitLoss)

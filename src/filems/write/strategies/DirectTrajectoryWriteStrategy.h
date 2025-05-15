@@ -1,9 +1,11 @@
 #pragma once
 
+#include <MathConverter.h>
 #include <filems/write/strategies/WriteStrategy.h>
 #include <scanner/Trajectory.h>
 
 #include <fstream>
+#include <iomanip>
 #include <sstream>
 
 namespace helios {

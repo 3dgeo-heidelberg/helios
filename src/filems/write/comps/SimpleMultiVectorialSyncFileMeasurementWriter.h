@@ -1,5 +1,7 @@
 #pragma once
 
+#include <filems/write/strategies/DirectMeasurementWriteStrategy.h>
+#include <filems/write/strategies/ZipMeasurementWriteStrategy.h>
 #include <filems/write/comps/SimpleMultiSyncFileWriter.h>
 
 #include <memory>

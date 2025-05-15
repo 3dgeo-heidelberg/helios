@@ -1,5 +1,7 @@
 #pragma once
 
+#include <iostream>
+
 /**
  * @brief Class representing a logger capable of writing to files and, at the
  *  same time, to standard out

@@ -1,5 +1,7 @@
 #ifndef _DYN_SEQUENCE_H_
 
+#include <HeliosException.h>
+
 #include <memory>
 #include <string>
 #include <vector>

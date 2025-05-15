@@ -6,6 +6,7 @@
 #include <glm/glm.hpp>
 
 #include <fstream>
+#include <iomanip>
 #include <sstream>
 
 namespace helios {
