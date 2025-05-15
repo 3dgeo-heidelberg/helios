@@ -86,6 +86,12 @@ TEST_CASE( "HPC test" ) {
     std::vector<int> Z4(X4);
     std::vector<int> Z5(X5);
 
+    Z1 = std::vector<int>(X1);
+    Z2 = std::vector<float>(X2);
+    Z3 = std::vector<double>(X3);
+    Z4 = std::vector<int>(X4);
+    Z5 = std::vector<int>(X5);
+
     SECTION("2 threads sorter") {
         SM_ParallelMergeSort<std::vector<int>::iterator, HPCTest_IntComparator>
             PMS2T1(2, 4);  // 2 Threads, for ints
@@ -98,20 +104,20 @@ TEST_CASE( "HPC test" ) {
 
         // Test 2 threads sorter
         PMS2T1.sort(Z1.begin(), Z1.end(), HPCTest_IntComparator());
-        if(Y1.size() != Z1.size()) return false;
-        if(!std::equal(Y1.begin(), Y1.end(), Z1.begin())) return false;
+        REQUIRE(Y1.size() == Z1.size());
+        REQUIRE(std::equal(Y1.begin(), Y1.end(), Z1.begin()));
         PMS2T2.sort(Z2.begin(), Z2.end(), HPCTest_FloatComparator());
-        if(Y2.size() != Z2.size()) return false;
-        if(!std::equal(Y2.begin(), Y2.end(), Z2.begin())) return false;
+        REQUIRE(Y2.size() == Z2.size());
+        REQUIRE(std::equal(Y2.begin(), Y2.end(), Z2.begin()));
         PMS2T3.sort(Z3.begin(), Z3.end(), HPCTest_DoubleComparator());
-        if(Y3.size() != Z3.size()) return false;
-        if(!std::equal(Y3.begin(), Y3.end(), Z3.begin())) return false;
+        REQUIRE(Y3.size() == Z3.size());
+        REQUIRE(std::equal(Y3.begin(), Y3.end(), Z3.begin()));
         PMS2T1.sort(Z4.begin(), Z4.end(), HPCTest_IntComparator());
-        if(Y4.size() != Z4.size()) return false;
-        if(!std::equal(Y4.begin(), Y4.end(), Z4.begin())) return false;
+        REQUIRE(Y4.size() == Z4.size());
+        REQUIRE(std::equal(Y4.begin(), Y4.end(), Z4.begin()));
         PMS2T1.sort(Z5.begin(), Z5.end(), HPCTest_IntComparator());
-        if(Y5.size() != Z5.size()) return false;
-        if(!std::equal(Y5.begin(), Y5.end(), Z5.begin())) return false;
+        REQUIRE(Y5.size() == Z5.size());
+        REQUIRE(std::equal(Y5.begin(), Y5.end(), Z5.begin()));
     }
 
     SECTION("3 threads sorter") {
@@ -125,26 +131,21 @@ TEST_CASE( "HPC test" ) {
         > PMS3T3(3, 6);  // 3 Threads, for doubles
 
         // Test 3 threads sorter
-        Z1 = std::vector<int>(X1);
         PMS3T1.sort(Z1.begin(), Z1.end(), HPCTest_IntComparator());
-        if(Y1.size() != Z1.size()) return false;
-        if(!std::equal(Y1.begin(), Y1.end(), Z1.begin())) return false;
-        Z2 = std::vector<float>(X2);
+        REQUIRE(Y1.size() == Z1.size());
+        REQUIRE(std::equal(Y1.begin(), Y1.end(), Z1.begin()));
         PMS3T2.sort(Z2.begin(), Z2.end(), HPCTest_FloatComparator());
-        if(Y2.size() != Z2.size()) return false;
-        if(!std::equal(Y2.begin(), Y2.end(), Z2.begin())) return false;
-        Z3 = std::vector<double>(X3);
+        REQUIRE(Y2.size() == Z2.size());
+        REQUIRE(std::equal(Y2.begin(), Y2.end(), Z2.begin()));
         PMS3T3.sort(Z3.begin(), Z3.end(), HPCTest_DoubleComparator());
-        if(Y3.size() != Z3.size()) return false;
-        if(!std::equal(Y3.begin(), Y3.end(), Z3.begin())) return false;
-        Z4 = std::vector<int>(X4);
+        REQUIRE(Y3.size() == Z3.size());
+        REQUIRE(std::equal(Y3.begin(), Y3.end(), Z3.begin()));
         PMS3T1.sort(Z4.begin(), Z4.end(), HPCTest_IntComparator());
-        if(Y4.size() != Z4.size()) return false;
-        if(!std::equal(Y4.begin(), Y4.end(), Z4.begin())) return false;
-        Z5 = std::vector<int>(X5);
+        REQUIRE(Y4.size() == Z4.size());
+        REQUIRE(std::equal(Y4.begin(), Y4.end(), Z4.begin()));
         PMS3T1.sort(Z5.begin(), Z5.end(), HPCTest_IntComparator());
-        if(Y5.size() != Z5.size()) return false;
-        if(!std::equal(Y5.begin(), Y5.end(), Z5.begin())) return false;
+        REQUIRE(Y5.size() == Z5.size());
+        REQUIRE(std::equal(Y5.begin(), Y5.end(), Z5.begin()));
     }
 
     SECTION("11 threads sorter") {
@@ -158,26 +159,21 @@ TEST_CASE( "HPC test" ) {
         > PMS11T3(11, 22);  // 11 Threads, for doubles
 
         // Test 11 threads sorter
-        Z1 = std::vector<int>(X1);
         PMS11T1.sort(Z1.begin(), Z1.end(), HPCTest_IntComparator());
-        if(Y1.size() != Z1.size()) return false;
-        if(!std::equal(Y1.begin(), Y1.end(), Z1.begin())) return false;
-        Z2 = std::vector<float>(X2);
+        REQUIRE(Y1.size() == Z1.size());
+        REQUIRE(std::equal(Y1.begin(), Y1.end(), Z1.begin()));
         PMS11T2.sort(Z2.begin(), Z2.end(), HPCTest_FloatComparator());
-        if(Y2.size() != Z2.size()) return false;
-        if(!std::equal(Y2.begin(), Y2.end(), Z2.begin())) return false;
-        Z3 = std::vector<double>(X3);
+        REQUIRE(Y2.size() == Z2.size());
+        REQUIRE(std::equal(Y2.begin(), Y2.end(), Z2.begin()));
         PMS11T3.sort(Z3.begin(), Z3.end(), HPCTest_DoubleComparator());
-        if(Y3.size() != Z3.size()) return false;
-        if(!std::equal(Y3.begin(), Y3.end(), Z3.begin())) return false;
-        Z4 = std::vector<int>(X4);
+        REQUIRE(Y3.size() == Z3.size());
+        REQUIRE(std::equal(Y3.begin(), Y3.end(), Z3.begin()));
         PMS11T1.sort(Z4.begin(), Z4.end(), HPCTest_IntComparator());
-        if(Y4.size() != Z4.size()) return false;
-        if(!std::equal(Y4.begin(), Y4.end(), Z4.begin())) return false;
-        Z5 = std::vector<int>(X5);
+        REQUIRE(Y4.size() == Z4.size());
+        REQUIRE(std::equal(Y4.begin(), Y4.end(), Z4.begin()));
         PMS11T1.sort(Z5.begin(), Z5.end(), HPCTest_IntComparator());
-        if(Y5.size() != Z5.size()) return false;
-        if(!std::equal(Y5.begin(), Y5.end(), Z5.begin())) return false;
+        REQUIRE(Y5.size() == Z5.size());
+        REQUIRE(std::equal(Y5.begin(), Y5.end(), Z5.begin()));
     }
 
     SECTION("16 threads sorter") {
@@ -191,25 +187,20 @@ TEST_CASE( "HPC test" ) {
         > PMS16T3(16, 32);  // 16 Threads, for doubles
 
         // Test 16 threads sorter
-        Z1 = std::vector<int>(X1);
         PMS16T1.sort(Z1.begin(), Z1.end(), HPCTest_IntComparator());
-        if(Y1.size() != Z1.size()) return false;
-        if(!std::equal(Y1.begin(), Y1.end(), Z1.begin())) return false;
-        Z2 = std::vector<float>(X2);
+        REQUIRE(Y1.size() == Z1.size());
+        REQUIRE(std::equal(Y1.begin(), Y1.end(), Z1.begin()));
         PMS16T2.sort(Z2.begin(), Z2.end(), HPCTest_FloatComparator());
-        if(Y2.size() != Z2.size()) return false;
-        if(!std::equal(Y2.begin(), Y2.end(), Z2.begin())) return false;
-        Z3 = std::vector<double>(X3);
+        REQUIRE(Y2.size() == Z2.size());
+        REQUIRE(std::equal(Y2.begin(), Y2.end(), Z2.begin()));
         PMS16T3.sort(Z3.begin(), Z3.end(), HPCTest_DoubleComparator());
-        if(Y3.size() != Z3.size()) return false;
-        if(!std::equal(Y3.begin(), Y3.end(), Z3.begin())) return false;
-        Z4 = std::vector<int>(X4);
+        REQUIRE(Y3.size() == Z3.size());
+        REQUIRE(std::equal(Y3.begin(), Y3.end(), Z3.begin()));
         PMS16T1.sort(Z4.begin(), Z4.end(), HPCTest_IntComparator());
-        if(Y4.size() != Z4.size()) return false;
-        if(!std::equal(Y4.begin(), Y4.end(), Z4.begin())) return false;
-        Z5 = std::vector<int>(X5);
+        REQUIRE(Y4.size() == Z4.size());
+        REQUIRE(std::equal(Y4.begin(), Y4.end(), Z4.begin()));
         PMS16T1.sort(Z5.begin(), Z5.end(), HPCTest_IntComparator());
-        if(Y5.size() != Z5.size()) return false;
-        if(!std::equal(Y5.begin(), Y5.end(), Z5.begin())) return false;
+        REQUIRE(Y5.size() == Z5.size());
+        REQUIRE(std::equal(Y5.begin(), Y5.end(), Z5.begin()));
     }
 }
